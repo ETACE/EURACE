@@ -46,13 +46,13 @@ int FinancialAgent_update_classifiersystem(int nr_selected_rule, double rule_per
   PublicClassifierSystem classifiersystem=get_classifiersystem();
   
   //Replace old performance adding new performance: 
-  classifiersystem->performance[nr_selected_rule] += rule_performance;
+  classifiersystem.performance[nr_selected_rule] += rule_performance;
   
   //Counter update: when do we reset the counter?   ******CHECK
-  classifiersystem->counter[nr_selected_rule] +=1;
+  classifiersystem.counter[nr_selected_rule] +=1;
   
   //Avgperformance update:
-  classifiersystem->avgperformance[nr_selected_rule] = classifiersystem->avgperformance[nr_selected_rule]/classifiersystem->counter[nr_selected_rule];
+  classifiersystem.avgperformance[nr_selected_rule] = classifiersystem.avgperformance[nr_selected_rule]/classifiersystem.counter[nr_selected_rule];
 
   //set_classifiersystem(classifiersystem); // setting value classifiersystem is an array need reference here
    /*classifiersystem[nr_selected_rule]->int_ruleperformance = 9;
