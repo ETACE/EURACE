@@ -109,13 +109,13 @@ DBclassifiersystem.experience         : number of observations
 
     ClassifiersystemType agent_classifiersystem=get_agent_classifiersystem();
     int nr_selected_rule=get_nr_selected_rule();
-    double[] performances=get_DBclassifiersystem.performances();
-    double[] attractions=get_DBclassifiersystem.attractions();
-    int experience=get_DBclassifiersystem.experience();
-    int experience_old=0;
+    double[] performance		= get_agent_classifiersystem.performance();
+    double[] attraction			= get_agent_classifiersystem.attraction();
+    int experience				= get_agent_classifiersystem.experience();
+    int experience_old			= 0;
 
-    int nr_rules=get_DBclassifiersystem.nr_rules();
     int j=0;
+    
     
     //EWA learning parameters:
     EWA_rho=get_EWA_rho();
@@ -128,21 +128,21 @@ DBclassifiersystem.experience         : number of observations
     experience=EWA_rho*experience + 1;
 
     //Updating the attractions
-    for (j=0;j++;j<nr_rules)
+    for (j=0;j++;j<NRRULES)
     {
         //If rule j is the currently used rule:
         if (j==nr_selected_rule)
         {
-            attractions[j] = (EWA_phi*experience_old*attractions[j] + rule_profit[j])/experience;
+            attraction[j] = (EWA_phi*experience_old*attraction[j] + performance[j])/experience;
         }
 
         //If rule j is not currently used:
         if (j~=nr_selected_rule)
         {
-            attractions[j] = (EWA_phi*experience_old*attractions[j] + EWA_delta*rule_profit[j])/experience;
+            attraction[j] = (EWA_phi*experience_old*attraction[j] + EWA_delta*performance[j])/experience;
         }
         //Set the attractions in the DBclassifiersystem:
-        DBclassifiersystem.attractions[j] = attractions[j];
+        agent_classifiersystem.attraction[j] = attraction[j];
     }
 
     //Computing the choice probabilities: multi-logit
