@@ -495,7 +495,6 @@ var><type>double</type><name>total_financial_needs</name></var>
 <var><type>double</type><name>x</name></var>
 <var><type>double</type><name>y</name></var>
 <var><type>double</type><name>z</name></var>
-
 </message>
 
 </messages>
