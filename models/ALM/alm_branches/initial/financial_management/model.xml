@@ -450,37 +450,40 @@ var><type>double</type><name>total_financial_needs</name></var>
 <message>
 <name>FirmBondTransaction</name>
 <note></note>
-
 <var><type>double</type><name>range</name></var>
 <var><type>double</type><name>x</name></var>
 <var><type>double</type><name>y</name></var>
 <var><type>double</type><name>z</name></var>
-
 </message>
 
 <message>
 <name>FirmStockTransaction</name>
 <note></note>
-
 <var><type>double</type><name>range</name></var>
 <var><type>double</type><name>x</name></var>
 <var><type>double</type><name>y</name></var>
 <var><type>double</type><name>z</name></var>
-
 </message>
 
 <message>
 <name>Rule_performance</name>
 <note>Message sent my household to tell the FA agent of the rule performance</note>
-<var><type>int</type><name>household_id</name></var>
 <var><type>int</type><name>nr_selected_rule</name></var>
-<var><type>int</type><name>rule_performance</name></var>
-<var><type>int</type><name>asset_value</name></var>
+<var><type>double</type><name>rule_performance</name></var>
 <var><type>double</type><name>range</name></var>
 <var><type>double</type><name>x</name></var>
 <var><type>double</type><name>y</name></var>
 <var><type>double</type><name>z</name></var>
+</message>
 
+<message>
+<name>all_performances</name>
+<note>Message sent my FA read by all household </note>
+<var><type>double</type><name>performances</name></var>
+<var><type>double</type><name>range</name></var>
+<var><type>double</type><name>x</name></var>
+<var><type>double</type><name>y</name></var>
+<var><type>double</type><name>z</name></var>
 </message>
 
 </messages>
