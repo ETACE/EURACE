@@ -107,7 +107,7 @@ DBclassifiersystem.experience         : number of observations
 
 */
 
-    DBclassifiersystemType DBclassifiersystem=get_DBclassifiersystem();
+    ClassifiersystemType agent_classifiersystem=get_agent_classifiersystem();
     int nr_selected_rule=get_nr_selected_rule();
     double[] performances=get_DBclassifiersystem.performances();
     double[] attractions=get_DBclassifiersystem.attractions();
