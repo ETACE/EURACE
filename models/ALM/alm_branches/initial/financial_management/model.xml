@@ -2,16 +2,48 @@
 
 <xmachine_agent_model>
 <name>Financial Market Model</name>
-<author>Mariam Kiran</author>
+<author>Eurace</author>
 <date>010607</date>
+
+<!--************************* NOTES ***************************************-->
+<!--This is the main description file for the financial market model-->
+<!-- Agents involved: Household, Firm, Bank, ClearingHouse Mechanism, LimitOrderBook, Government-->
+<!--13/11/07 Adding structures to the model.xml-->
+<!-- TODO- Make seperate c files for each agent's functions-->
 
 <!--***************** Environment values and functions **********************-->
 <environment>
 <functions>
-<file>functions.c</file>
+<file>functions.c</file><!--Should be changed to incorporate separate c files for each agent's functions-->
 </functions>
+<!--Structures-->
+<datatype>
+<name>StockDataType</name>
+<desc>All stocks have a data type StockDataType. Refer to file stock_creation.m</desc>
+<var><type>char</type><name>class[5]</name></var>
+<var><type>int</type><name>id[5]</name></var>
+<var><type>int</type><name>NrOutStandingShares</name></var>
+<var><type>int</type><name>NrOutStandingShares(1:Parameters.NrDaysInitialization)</name></var> <!--?-->
+<var><type>double</type><name>price</name></var>
+<var><type>int</type><name>Book_intraday_transaction</name></var>
+<var><type>int</type><name>dividends</name></var>
+<var><type>int</type><name>dividends(1:Parameters.NrMonthsInitialization)</name></var><!--?-->
+</datatype>
+<datatype>
+<name>BondDataType</name>
+<desc>All Bonds have the following datatype. Refer to bond_creation.m</desc>
+<var><type>char</type><name>class[5]</name></var>
+<var><type>int</type><name>id[5]</name></var>
+</datatype>
+<datatype>
+<name>DBFinancialAssets</name>
+<desc></desc>
+</datatype>
+<datatype>
+<name>RuleDataType</name>
+<desc></desc>
+</datatype>
 </environment>
-
 
 <!--********************* X-machine Agent - Household ****************************-->
 <xmachine>
@@ -24,7 +56,6 @@
 <var><type>double</type><name>iradius</name></var>
 <var><type>double</type><name>posx</name></var>
 <var><type>double</type><name>posy</name></var>
-
 </memory>
 <!----------------- Defining functions ---------------------------------------->
 <functions>
