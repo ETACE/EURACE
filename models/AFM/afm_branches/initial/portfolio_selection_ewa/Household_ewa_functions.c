@@ -144,13 +144,18 @@ DBclassifiersystem.experience         : number of observations
         //Set the attractions in the DBclassifiersystem:
         agent_classifiersystem.attraction[j] = attraction[j];
     }
-
-    //Computing the choice probabilities: multi-logit
-    sum_attr = sum(exp(EWA_beta * attractions));
-    for j=1:nr_rules
-        p(j) = exp(EWA_beta * attractions[j])/sum_attr;
-    end;
-
+//Computing the choice probabilities: multi-logit
+    sum_attr = 0;
+    for (j=0;j++;j<NRRULES)
+    {
+        sum_attr += math.exp(EWA_beta * attractions[j]);
+	}
+    
+    for (j=0;j++;j<NRRULES)
+    {
+        p[j] = math.exp(EWA_beta * attractions[j])/sum_attr;
+	}
+// *********** WARNING: MATLAB CODE BELOW ****************************
 
     //Selecting a strategy according to the prob.dens. function:
     //The cumulative pdf is:
@@ -173,7 +178,7 @@ DBclassifiersystem.experience         : number of observations
         end;
     
     //Case 2: Now travers the cpdf until u >= F(j-1)
-    for j=2:nr_rules
+    for j=2:NRRULES
         if (cpdf(j-1)<=u & u<cpdf(j))
             nr_selected_rule=j;
             break;
@@ -181,8 +186,8 @@ DBclassifiersystem.experience         : number of observations
     end;
     
     //Case 3: u>=F(J)
-        if (cpdf(nr_rules)<=u)
-            nr_selected_rule=nr_rules;
+        if (cpdf(NRRULES)<=u)
+            nr_selected_rule=NRRULES;
         end;
     
     //Test if a rule has been selected:
@@ -191,10 +196,10 @@ DBclassifiersystem.experience         : number of observations
     end;
     
     //Set the selected rule:
-    DBclassifiersystem.nr_selected_rule=nr_selected_rule;
+    agent_classifiersystem.selected_rule=nr_selected_rule;
 
-    //Output to new DBclassifiersystem:    
-    set_DBclassifiersystem(DBclassifiersystem);
+    //Output to new agent_classifiersystem:    
+    set_agent_classifiersystem(agent_classifiersystem);
 
     return 0;
 }
