@@ -53,10 +53,23 @@
 </datatype>
 <dataype>
 <name>ClassifierSystem</name>
-<desc>Each agent has their own classifier system.!Subject to change!</desc>
-<var><type>int</type><name>performance</name></var>
-<var><type>int</type><name>counter</name></var>
-<var><type>int</type><name>avgperformance</name></var>
+<desc>Central classifier system. !Subject to change!</desc>
+<!-- Arrays with rule measures -->
+<var><type>int_array[NrTotalRules-1]</type><name>counter</name></var>
+<var><type>double_array[NrTotalRules-1]</type><name>performance</name></var>
+<var><type>double_array[NrTotalRules-1]</type><name>avgperformance</name></var>
+</datatype>
+<datatype>
+<name>Agent_ClassifierSystem</name>
+<desc>Each agent has itw own classifier system. This datatype contains the agent-specific measures of the rules. !Subject to change!</desc>
+<!-- Classifier system data -->
+<var><type>double</type><name>experience</name></var>
+<var><type>char</type><name>current_rule[15]</name></var>
+<!-- Arrays with rule measures -->
+<var><type>double_array[NrTotalRules-1]</type><name>my_performance</name></var>
+<var><type>double_array[NrTotalRules-1]</type><name>avgperformance</name></var>
+<var><type>double_array[NrTotalRules-1]</type><name>attraction</name></var>
+<var><type>double_array[NrTotalRules-1]</type><name>choiceprob</name></var>
 </datatype>
 <datatype>
 <name>AssetPortfolioType</name>
