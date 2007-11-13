@@ -21,15 +21,11 @@
 int Household_send_rule_performance_message()
 { 
     /*Get input vars: declare and assign local vars */
-    int                 household_id = get_household_id();
-    double              asset_budget = get_asset_budget();
-    int                 nr_selected_rule      = get_nr_selected_rule();
-    double              current_rule_performance = get_current_rule_performance;
-    AssetPortfolioType  current_assetportfolio   = get_current_assetportfolio();
-    AssetPortfolioType  target_asset_portfolio   = EmptyAssetPortfolio;
+    int nr_selected_rule      = get_nr_selected_rule();
+    double current_rule_performance = get_current_rule_performance();
     
     rule_performance = calc_rule_performance(current_assetportfolio->performance_history);
-    add_rule_performance_message(household_id, nr_selected_rule, rule_performance, asset_value, range, x, y, z);
+    add_rule_performance_message(nr_selected_rule, rule_performance,range, x, y, z);
 
     return 0;
 }
@@ -40,6 +36,8 @@ int Household_send_rule_performance_message()
 /* Household reads the message from FA agent with all rule performances. */
 int Household_reads_all_performances_messages()
 {
+  double performances[NRRULES];
+  
   all_performances_message = get_first_all_performances_message();
   while(all_performances_message)
   {
@@ -47,21 +45,26 @@ int Household_reads_all_performances_messages()
      performances = all_performances_message->performances;
 
     /* Store in memory: */
-     set_performances(performances);
+    for (i=0; i<NRRULES; i++)
+  	{  /// why do you need performances to be an array when only one value is being written?
+ 	 classifiersystem[i]->performance = performances[i]; //code for structs
+ 	 classifiersystem->performance[i] = performances[i]; //code for dynamic arrays
+	}
+	set_classifiersystem(classifiersystem); // check how to set values in structs in FA
 
     /* Proceed to next message: */
      all_performances_message = get_next_all_performances_message(all_performances_message);
   }
     /*Select a rule: */
-    Household_select_allocation_rule();
+    Household_select_rule();
   
     return 0;
 }
 
 
 /* STEP 3. Select a rule.*/
-/* Household compares allocation rules, selects a rule according to some internal selection mechanism. */
-int Household_select_allocation_rule()
+/* Household compares rules, selects a rule according to some internal selection mechanism. */
+int Household_select_rule()
 {
     int household_id=get_household_id();
     double[] performances=get_performances();
@@ -71,9 +74,11 @@ int Household_select_allocation_rule()
     // {C-CODE}: EWA Learning
     Household_EWA_learning_rule();
 
+// ************************** START CODE SNIPPET ****************************
     /*Send a request for details of the selected rule: */
     add_rule_details_request_message(household_id, selected_rule_number, range, x, y, z);    
-    set_selected_rule_number(selected_rule_number);
+// ************************** END CODE SNIPPET ****************************
+
 
     return 0;
 }

@@ -18,13 +18,15 @@
 /* DEP: FA agent responds by sending the performance measures of all the rules*/
 int FinancialAgent_read_rule_performance_message()
 {
+	int nr_selected_rule;
+	double rule_performance;
   rule_performance_message = get_first_rule_performance_message();
   while(rule_performance_message)
   {
-    household_id = rule_performance_message->household_id;  
+   
     nr_selected_rule = rule_performance_message->nr_selected_rule;
     rule_performance = rule_performance_message->rule_performance;
-    asset_value = rule_performance_message->asset_value;
+   
 
     /* Update rule performance: */
     FinancialAgent_update_classifiersystem(nr_selected_rule, rule_performance);
@@ -41,21 +43,24 @@ int FinancialAgent_read_rule_performance_message()
  
 int FinancialAgent_update_classifiersystem(int nr_selected_rule, double rule_performance)
 {
-  RuleDatabaseType   classifiersystem=get_classifiersystem();
+  RuleDatabaseType classifiersystem=get_classifiersystem();
   double[HISTLENGTH] tmparray;
 
-  /* Update the most recent asset value invested using this rule: */
-  classifiersystem[nr_selected_rule].prescribed_asset_value = asset_value;
-
+  
   /* Update the performance history of the rule: */
   //Shift history:
-  for (i=2; i<HISTLENGTH; i++)
+  for (i=1; i<HISTLENGTH; i++)
   {  
-      tmparray = classifiersystem[nr_selected_rule].performance_history;
-      classifiersystem[nr_selected_rule].performance_history[i] = tmparray[i-1];
+      tmparray = classifiersystem[nr_selected_rule]->performance_history;
+      classifiersystem[nr_selected_rule]->performance_history[i] = tmparray[i-1];
   }
-  classifiersystem[nr_selected_rule].performance_history[1] = rule_performance;
-  set_classifiersystem(classifiersystem);
+  classifiersystem[nr_selected_rule]->performance_history[0] = rule_performance;
+  //set_classifiersystem(classifiersystem); // setting value classifiersystem is an array need reference here
+   /*classifiersystem[nr_selected_rule]->int_ruleperformance = 9;
+    * if you're adding a rule into the structure:
+    * add_classifiersystem_(classifersystem_dynamic_array, 0,2,25);
+    */
+  
   return 0;
 }
 
