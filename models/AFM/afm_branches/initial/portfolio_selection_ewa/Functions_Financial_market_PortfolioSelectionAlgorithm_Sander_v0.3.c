@@ -76,12 +76,12 @@ int FinancialAgent_update_classifiersystem(int nr_selected_rule, double rule_per
 
   /* Update the performance history of the rule: */
   //Shift history:
-  for (i=2; i<HISTLENGTH; i++)
+  for (i=1; i<HISTLENGTH; i++)
   {  
       tmparray = classifiersystem[nr_selected_rule].performance_history;
       classifiersystem[nr_selected_rule].performance_history[i] = tmparray[i-1];
   }
-  classifiersystem[nr_selected_rule].performance_history[1] = rule_performance;
+  classifiersystem[nr_selected_rule].performance_history[0] = rule_performance;
   set_classifiersystem(classifiersystem);
   return 0;
 }
@@ -91,27 +91,33 @@ int FinancialAgent_update_classifiersystem(int nr_selected_rule, double rule_per
 /* Household reads the message from FA agent with all rule performances. */
 int Household_reads_all_performances_messages()
 {
+  double[NRRULES]  performances;
+  
   all_performances_message = get_first_all_performances_message();
   while(all_performances_message)
   {
     /* Read the message: */
-     performances = all_performances_message->performances;
+    performances = all_performances_message->performances;
 
     /* Store in memory: */
-     set_performances(performances);
-
+    for (i=0; i<NRRULES; i++)
+  	{  
+ 	 classifiersystem[i].performance = performances[i];
+	}
+	set_classifiersystem(classifiersystem);
+ 
     /* Proceed to next message: */
      all_performances_message = get_next_all_performances_message(all_performances_message);
   }
     /*Select a rule: */
-    Household_select_allocation_rule();
+    Household_select_rule();
   
     return 0;
 }
 
 /* STEP 3. Select a rule.*/
-/* Household compares allocation rules, selects a rule according to some internal selection mechanism. */
-int Household_select_allocation_rule()
+/* Household compares rules, and selects a rule according to some internal selection mechanism. */
+int Household_select_rule()
 {
     int household_id=get_household_id();
     double[] performances=get_performances();
@@ -121,9 +127,11 @@ int Household_select_allocation_rule()
     // {C-CODE}: EWA Learning
     Household_EWA_learning_rule();
 
+// ************************** START CODE SNIPPET ****************************
     /*Send a request for details of the selected rule: */
     add_rule_details_request_message(household_id, selected_rule_number, range, x, y, z);    
-    set_selected_rule_number(selected_rule_number);
+// ************************** END CODE SNIPPET ****************************
+
 
     return 0;
 }
@@ -151,14 +159,13 @@ DBclassifiersystem.experience         : number of observations
 
 */
 
-    DBclassifiersystemType DBclassifiersystem=get_DBclassifiersystem();
+    ClassifiersystemType classifiersystem=get_agent_classifiersystem();
     int nr_selected_rule=get_nr_selected_rule();
-    double[] performances=get_DBclassifiersystem.performances();
-    double[] attractions=get_DBclassifiersystem.attractions();
-    int experience=get_DBclassifiersystem.experience();
+    double[] performances=get_agent_classifiersystem.performances();
+    double[] attractions=get_agent_classifiersystem.attractions();
+    int experience=get_agent_classifiersystem.experience();
     int experience_old=0;
 
-    int nr_rules=get_DBclassifiersystem.nr_rules();
     int j=0;
     
     //EWA learning parameters:
@@ -172,7 +179,7 @@ DBclassifiersystem.experience         : number of observations
     experience=EWA_rho*experience + 1;
 
     //Updating the attractions
-    for (j=0;j++;j<nr_rules)
+    for (j=0;j++;j<NRRULES)
     {
         //If rule j is the currently used rule:
         if (j==nr_selected_rule)
@@ -185,13 +192,13 @@ DBclassifiersystem.experience         : number of observations
         {
             attractions[j] = (EWA_phi*experience_old*attractions[j] + EWA_delta*rule_profit[j])/experience;
         }
-        //Set the attractions in the DBclassifiersystem:
-        DBclassifiersystem.attractions[j] = attractions[j];
+        //Set the attractions in the agent_classifiersystem:
+        agent_classifiersystem.attractions[j] = attractions[j];
     }
 
     //Computing the choice probabilities: multi-logit
     sum_attr = sum(exp(EWA_beta * attractions));
-    for j=1:nr_rules
+    for j=1:NRRULES
         p(j) = exp(EWA_beta * attractions[j])/sum_attr;
     end;
 
@@ -217,7 +224,7 @@ DBclassifiersystem.experience         : number of observations
         end;
     
     //Case 2: Now travers the cpdf until u >= F(j-1)
-    for j=2:nr_rules
+    for j=2:NRRULES
         if (cpdf(j-1)<=u & u<cpdf(j))
             nr_selected_rule=j;
             break;
@@ -225,8 +232,8 @@ DBclassifiersystem.experience         : number of observations
     end;
     
     //Case 3: u>=F(J)
-        if (cpdf(nr_rules)<=u)
-            nr_selected_rule=nr_rules;
+        if (cpdf(NRRULES)<=u)
+            nr_selected_rule=NRRULES;
         end;
     
     //Test if a rule has been selected:
@@ -235,14 +242,17 @@ DBclassifiersystem.experience         : number of observations
     end;
     
     //Set the selected rule:
-    DBclassifiersystem.nr_selected_rule=nr_selected_rule;
+    agent_classifiersystem.selected_rule=nr_selected_rule;
 
-    //Output to new DBclassifiersystem:    
-    set_DBclassifiersystem(DBclassifiersystem);
+    //Output to new agent_classifiersystem:    
+    set_agent_classifiersystem(agent_classifiersystem);
 
     return 0;
 }
 
+// ************************** START CODE SNIPPET ****************************
+// The following code snippet is only applicable if there is a rule details request.
+// Otherwise, the rule details are stored in the memory of the agents.
 /* DEP: The FA reads the rule_details_request_message. This is a private message. */
 /* DEP: The FA sends a message with the exact details of the selected rule.*/
  int FinancialAgent_read_rule_details_request_message()
@@ -287,6 +297,8 @@ int Household_read_rule_details_message()
     
     return 0;
 }
+// ************************** END CODE SNIPPET ****************************
+
 
 /* STEP 4. Apply the selected rule.*/
  /* HERE: The household uses the details of the selected rule to compute its asset allocation.
@@ -382,8 +394,8 @@ int Household_apply_selected_rule()
     return 0;
 }
 
-
-/* DEP: The Clearinghouse or Limit-Order Agent reads the message.
+/* STEP 5. Processing of limit_orders.
+ * DEP: The Clearinghouse or Limit-Order Agent reads the messages.
  * The personal message includes the household_id, so the response should include the household_id as well.
  */
 int Clearinghouse_read_order_messages()
