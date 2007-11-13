@@ -486,6 +486,18 @@ var><type>double</type><name>total_financial_needs</name></var>
 <var><type>double</type><name>z</name></var>
 </message>
 
+<message>
+<name>rule_details_request</name>
+<note>Household requests for details</note>
+<var><type>int</type><name>household_id</name></var>
+<var><type>int</type><name>selected_rule_number</name></var>
+<var><type>double</type><name>range</name></var>
+<var><type>double</type><name>x</name></var>
+<var><type>double</type><name>y</name></var>
+<var><type>double</type><name>z</name></var>
+
+</message>
+
 </messages>
 <!--********************** End of Messages **********************************-->
 
