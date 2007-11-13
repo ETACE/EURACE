@@ -58,6 +58,11 @@
 <var><type>int</type><name>counter</name></var>
 <var><type>int</type><name>avgperformance</name></var>
 </datatype>
+<datatype>
+<name>AssetPortfolioType</name>
+<desc>AssetportfolioType structs are used by the Household</desc> <!--What are the variables for asset portfolio?-->
+<var><type>int</type>performance_history</var>
+</datatype>
 </environment>
 
 <!--********************* X-machine Agent - Household ****************************-->
@@ -67,7 +72,12 @@
 <!-- All variables used by household are declared here to allocate them in memory -->
 
 <memory>
-<var><type>double</type><name>r</name></var>
+<var><type>int</type><name>household_id</name></var>
+<var><type>double</type><name>asset_budget</name></var>
+<var><type>int</type><name>nr_selected_rule</name></var>
+<var><type>double</type><name>current_rule_performance</name></var>
+<var><type>AssetPortfolioType</type><name>current_assetportfolio</name></var>
+
 <var><type>double</type><name>iradius</name></var>
 <var><type>double</type><name>posx</name></var>
 <var><type>double</type><name>posy</name></var>
@@ -429,6 +439,20 @@ var><type>double</type><name>total_financial_needs</name></var>
 <name>FirmStockTransaction</name>
 <note></note>
 
+<var><type>double</type><name>range</name></var>
+<var><type>double</type><name>x</name></var>
+<var><type>double</type><name>y</name></var>
+<var><type>double</type><name>z</name></var>
+
+</message>
+
+<message>
+<name>Rule_performance</name>
+<note>Message sent my household to tell the FA agent of the rule performance</note>
+<var><type>int</type><name>household_id</name></var>
+<var><type>int</type><name>nr_selected_rule</name></var>
+<var><type>int</type><name>rule_performance</name></var>
+<var><type>int</type><name>asset_value</name></var>
 <var><type>double</type><name>range</name></var>
 <var><type>double</type><name>x</name></var>
 <var><type>double</type><name>y</name></var>
