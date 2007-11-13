@@ -61,12 +61,12 @@
 </datatype>
 <datatype>
 <name>Agent_ClassifierSystem</name>
-<desc>Each agent has itw own classifier system. This datatype contains the agent-specific measures of the rules. !Subject to change!</desc>
-<!-- Classifier system data -->
+<desc>Each agent has itw own classifier system.  !Subject to change! This datatype contains the agent-specific measures of the rules.</desc>
+<!--General system data -->
 <var><type>double</type><name>experience</name></var>
 <var><type>char</type><name>current_rule[15]</name></var>
 <!-- Arrays with rule measures -->
-<var><type>double_array[NrTotalRules-1]</type><name>my_performance</name></var>
+<var><type>double</type><name>my_performance</name></var>
 <var><type>double_array[NrTotalRules-1]</type><name>avgperformance</name></var>
 <var><type>double_array[NrTotalRules-1]</type><name>attraction</name></var>
 <var><type>double_array[NrTotalRules-1]</type><name>choiceprob</name></var>
