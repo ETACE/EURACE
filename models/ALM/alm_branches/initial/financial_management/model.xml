@@ -51,26 +51,36 @@
 <var><type>int</type><name>attraction</name></var>
 <var><type>int</type><name>choiceprob</name></var>
 </datatype>
-<dataype>
-<name>ClassifierSystem</name>
-<desc>Central classifier system. !Subject to change!</desc>
-<!-- Arrays with rule measures -->
-<var><type>int_array[NrTotalRules-1]</type><name>counter</name></var>
-<var><type>double_array[NrTotalRules-1]</type><name>performance</name></var>
-<var><type>double_array[NrTotalRules-1]</type><name>avgperformance</name></var>
-</datatype>
+
 <datatype>
-<name>Agent_ClassifierSystem</name>
-<desc>Each agent has itw own classifier system.  !Subject to change! This datatype contains the agent-specific measures of the rules.</desc>
-<!--General system data -->
-<var><type>double</type><name>experience</name></var>
+<name>PublicClassifierSystem</name>
+<desc>Datatype for the central classifier system. !Subject to change!</desc>
+<!-- Arrays with rule measures -->
+<var><!--This is the user counter for each rule--><type>int_array[NrTotalRules]</type><name>counter</name>
+</var>
+<var><!--This is the performance for each rule--><type>double_array[NrTotalRules]</type><name>performance</name>
+</var>
+<var><!--This is the average performance for each rule--><type>double_array[NrTotalRules]</type><name>avgperformance</name>
+</var>
+</datatype>
+
+<datatype>
+<name>PrivateClassifierSystem</name>
+<desc>Datatype for the private classifier system inside each agent.  !Subject to change!</desc>
+<!--General data for the rule system--><var>
+	<!--Array holding the IDs of the rules in this CS (may differ per agent)--><type>int_array[NrTotalRules]</type>
+	<name>ids</name>
+</var>
+	<var><!--This is the experience variable for EWA learning--><type>double</type><name>experience</name>
+	</var>
 <var><type>char</type><name>current_rule[15]</name></var>
 <!-- Arrays with rule measures -->
 <var><type>double</type><name>my_performance</name></var>
-<var><type>double_array[NrTotalRules-1]</type><name>avgperformance</name></var>
-<var><type>double_array[NrTotalRules-1]</type><name>attraction</name></var>
-<var><type>double_array[NrTotalRules-1]</type><name>choiceprob</name></var>
+<var><type>double_array[NrTotalRules]</type><name>avgperformance</name></var>
+<var><type>double_array[NrTotalRules]</type><name>attraction</name></var>
+<var><type>double_array[NrTotalRules]</type><name>choiceprob</name></var>
 </datatype>
+
 <datatype>
 <name>AssetPortfolioType</name>
 <desc>AssetportfolioType structs are used by the Household</desc> <!--What are the variables for asset portfolio?-->
