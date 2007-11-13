@@ -24,6 +24,9 @@ int Household_send_rule_performance_message()
     int nr_selected_rule      = get_nr_selected_rule();
     double current_rule_performance = get_current_rule_performance();
     
+    //Here we compute the rule performance: this function uses the performance_history
+    //since performance is computed as a time-average of capital gains obtained by the
+    //current financial investment strategy. 
     rule_performance = calc_rule_performance(current_assetportfolio->performance_history);
     add_rule_performance_message(nr_selected_rule, rule_performance,range, x, y, z);
 
@@ -46,8 +49,13 @@ int Household_reads_all_performances_messages()
 
     /* Store in memory: */
     for (i=0; i<NRRULES; i++)
-  	{  /// why do you need performances to be an array when only one value is being written?
- 	 classifiersystem[i]->performance = performances[i]; //code for structs
+  	{
+  	 // why do you need performances to be an array when only one value is being written?
+ 	 // Question solved?
+ 	 
+ 	 //Redundant code for structs
+ 	 //classifiersystem[i]->performance = performances[i]; 
+ 	 
  	 classifiersystem->performance[i] = performances[i]; //code for dynamic arrays
 	}
 	set_classifiersystem(classifiersystem); // check how to set values in structs in FA
@@ -86,28 +94,7 @@ int Household_select_rule()
 
 int Household_EWA_learning_rule();
 {
-/*
-Household's Database of rules:
-DBclassifiersystem.nr_rules           : number of rules in the database
-DBclassifiersystem.nr_selected_rule   : id of currently used rule
-DBclassifiersystem.performances       : array of rule performances
-DBclassifiersystem.attractions        : array of rule attractions
-DBclassifiersystem.experience         : number of observations
-
-    rule.class = 'rule';
-    rule.id = id;
-    rule.agent_name = 'AgentID';
-    rule.holdingperiod=1;       %Default holding period
-    rule.performance = 0;       %total performance in agent population
-    rule.counter = 0;           %number of users of the rule
-    rule.avgperformance = 0;    %avg. performance
-    rule.my_performance = 0;    %performance of agent
-    rule.attraction = 1;        %attraction
-    rule.choiceprob = 0;        %choice probability 
-
-*/
-
-    ClassifiersystemType agent_classifiersystem=get_agent_classifiersystem();
+    PrivateClassifierSystem 		agent_classifiersystem=get_agent_classifiersystem();
     int nr_selected_rule=get_nr_selected_rule();
     double[] performance		= get_agent_classifiersystem.performance();
     double[] attraction			= get_agent_classifiersystem.attraction();

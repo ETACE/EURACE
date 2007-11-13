@@ -73,7 +73,7 @@
 </var>
 	<var><!--This is the experience variable for EWA learning--><type>double</type><name>experience</name>
 	</var>
-<var><type>char</type><name>current_rule[15]</name></var>
+<var><type>int</type><name>current_rule</name></var>
 <!-- Arrays with rule measures -->
 <var><type>double</type><name>my_performance</name></var>
 <var><type>double_array[NrTotalRules]</type><name>avgperformance</name></var>
@@ -96,9 +96,8 @@
 
 <memory>
 <var><type>int</type><name>household_id</name></var>
-<var><type>double</type><name>asset_budget</name></var>
-<var><type>int</type><name>nr_selected_rule</name></var>
-<var><type>double</type><name>current_rule_performance</name></var>
+<var><type>PrivateClassifierSystem</type><name>agent_classifiersystem</name></var><var><type>double</type><name>asset_budget</name></var>
+
 <var><type>AssetPortfolioType</type><name>current_assetportfolio</name></var>
 
 <var><type>double</type><name>iradius</name></var>
@@ -372,6 +371,25 @@ var><type>double</type><name>total_financial_needs</name></var>
 </xmachine>
 <!--*********************** End of Agent - government ****************************-->
 
+<!--********************* X-machine Agent - FinancialAdvisor ****************************-->
+<xmachine>
+<name>FinancialAdvisor</name>
+<!----------------- Variables-------------------------------------------------->
+<!-- All variables used by FinancialAdvisor are declared here to allocate them in memory -->
+<memory>
+
+<var>
+	<type>PublicClassifierSystem</type>
+	<name>central_classifiersystem</name></var><var><type>double</type><name>iradius</name></var>
+<var><type>double</type><name>posx</name></var>
+<var><type>double</type><name>posy</name></var>
+	
+
+</memory>
+<!----------------- Defining functions ---------------------------------------->
+
+</xmachine>
+<!--*********************** End of Agent - FinancialAdvisor ****************************-->
 
 
 
