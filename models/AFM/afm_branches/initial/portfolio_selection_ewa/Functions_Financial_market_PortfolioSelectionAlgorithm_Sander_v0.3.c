@@ -20,21 +20,20 @@
  * household
  * asset market role
  **********************************/
-/* STEP 1. Updating performance.*/
-/* HERE: Household sends message to FA agent with the per-day performance of it's own current rule, */
-/* including the total value invested in the asset portfolio (this is needed later on, when another household uses the rule). */
+/* STEP 1. Updating performance.
+ * HERE: Household sends message to FA agent with the per-period performance of it's own current rule
+ */
 int Household_send_rule_performance_message()
 { 
-    /*Get input vars: declare and assign local vars */
-    int                 household_id = get_household_id();
-    double              asset_budget = get_asset_budget();
+    // Get input vars: declare and assign local vars 
     int                 nr_selected_rule      = get_nr_selected_rule();
     double              current_rule_performance = get_current_rule_performance;
-    AssetPortfolioType  current_assetportfolio   = get_current_assetportfolio();
-    AssetPortfolioType  target_asset_portfolio   = EmptyAssetPortfolio;
     
+    // Compute rule performance
     rule_performance = calc_rule_performance(current_assetportfolio.performance_history);
-    add_rule_performance_message(household_id, nr_selected_rule, rule_performance, asset_value, range, x, y, z);
+
+	// Report rule performance
+    add_rule_performance_message(nr_selected_rule, rule_performance, range, x, y, z);
 
     return 0;
 }
@@ -48,10 +47,8 @@ int FinancialAgent_read_rule_performance_message()
   rule_performance_message = get_first_rule_performance_message();
   while(rule_performance_message)
   {
-    household_id = rule_performance_message->household_id;  
     nr_selected_rule = rule_performance_message->nr_selected_rule;
     rule_performance = rule_performance_message->rule_performance;
-    asset_value = rule_performance_message->asset_value;
 
     /* Update rule performance: */
     FinancialAgent_update_classifiersystem(nr_selected_rule, rule_performance);
@@ -70,9 +67,6 @@ int FinancialAgent_update_classifiersystem(int nr_selected_rule, double rule_per
 {
   RuleDatabaseType   classifiersystem=get_classifiersystem();
   double[HISTLENGTH] tmparray;
-
-  /* Update the most recent asset value invested using this rule: */
-  classifiersystem[nr_selected_rule].prescribed_asset_value = asset_value;
 
   /* Update the performance history of the rule: */
   //Shift history:
@@ -102,7 +96,8 @@ int Household_reads_all_performances_messages()
     /* Store in memory: */
     for (i=0; i<NRRULES; i++)
   	{  
- 	 classifiersystem[i].performance = performances[i];
+ 	 classifiersystem[i].performance = performances[i]; //code for structs
+ 	 classifiersystem.performance[i] = performances[i]; //code for dynamic arrays
 	}
 	set_classifiersystem(classifiersystem);
  
@@ -132,7 +127,6 @@ int Household_select_rule()
     add_rule_details_request_message(household_id, selected_rule_number, range, x, y, z);    
 // ************************** END CODE SNIPPET ****************************
 
-
     return 0;
 }
 
@@ -159,12 +153,12 @@ DBclassifiersystem.experience         : number of observations
 
 */
 
-    ClassifiersystemType classifiersystem=get_agent_classifiersystem();
-    int nr_selected_rule=get_nr_selected_rule();
-    double[] performances=get_agent_classifiersystem.performances();
-    double[] attractions=get_agent_classifiersystem.attractions();
-    int experience=get_agent_classifiersystem.experience();
-    int experience_old=0;
+    ClassifiersystemType 		agent_classifiersystem=get_agent_classifiersystem();
+    int nr_selected_rule		= get_nr_selected_rule();
+    double[] performance		= get_agent_classifiersystem.performance();
+    double[] attraction			= get_agent_classifiersystem.attraction();
+    int experience				= get_agent_classifiersystem.experience();
+    int experience_old			= 0;
 
     int j=0;
     
@@ -175,33 +169,41 @@ DBclassifiersystem.experience         : number of observations
     EWA_beta=get_EWA_beta();
   
     //Updating the experience weight
-    experience_old=experience;
-    experience=EWA_rho*experience + 1;
+    experience_old	= experience;
+    experience		= EWA_rho*experience + 1;
 
     //Updating the attractions
     for (j=0;j++;j<NRRULES)
     {
-        //If rule j is the currently used rule:
+        //If rule j is currently used:
         if (j==nr_selected_rule)
         {
-            attractions[j] = (EWA_phi*experience_old*attractions[j] + rule_profit[j])/experience;
+            attraction[j] = (EWA_phi*experience_old*attraction[j] + performance[j])/experience;
         }
 
         //If rule j is not currently used:
         if (j~=nr_selected_rule)
         {
-            attractions[j] = (EWA_phi*experience_old*attractions[j] + EWA_delta*rule_profit[j])/experience;
+            attraction[j] = (EWA_phi*experience_old*attraction[j] + EWA_delta*performance[j])/experience;
         }
+        
         //Set the attractions in the agent_classifiersystem:
-        agent_classifiersystem.attractions[j] = attractions[j];
+        agent_classifiersystem.attraction[j] = attraction[j];
     }
 
     //Computing the choice probabilities: multi-logit
-    sum_attr = sum(exp(EWA_beta * attractions));
-    for j=1:NRRULES
-        p(j) = exp(EWA_beta * attractions[j])/sum_attr;
-    end;
+    sum_attr = 0;
+    for (j=0;j++;j<NRRULES)
+    {
+        sum_attr += math.exp(EWA_beta * attractions[j]);
+	}
+    
+    for (j=0;j++;j<NRRULES)
+    {
+        p[j] = math.exp(EWA_beta * attractions[j])/sum_attr;
+	}
 
+// *********** WARNING: MATLAB CODE BELOW ****************************
 
     //Selecting a strategy according to the prob.dens. function:
     //The cumulative pdf is:
@@ -253,6 +255,7 @@ DBclassifiersystem.experience         : number of observations
 // ************************** START CODE SNIPPET ****************************
 // The following code snippet is only applicable if there is a rule details request.
 // Otherwise, the rule details are stored in the memory of the agents.
+
 /* DEP: The FA reads the rule_details_request_message. This is a private message. */
 /* DEP: The FA sends a message with the exact details of the selected rule.*/
  int FinancialAgent_read_rule_details_request_message()
