@@ -21,12 +21,13 @@
 int Household_send_rule_performance_message()
 { 
     /*Get input vars: declare and assign local vars */
-    int nr_selected_rule      = get_nr_selected_rule();
-    double current_rule_performance = get_current_rule_performance();
+    int 	nr_selected_rule      	 = get_nr_selected_rule();
+    double 	current_rule_performance = get_current_rule_performance();
     
     //Here we compute the rule performance: this function uses the performance_history
     //since performance is computed as a time-average of capital gains obtained by the
     //current financial investment strategy. 
+    
     rule_performance = calc_rule_performance(current_assetportfolio->performance_history);
     add_rule_performance_message(nr_selected_rule, rule_performance,range, x, y, z);
 
@@ -39,7 +40,9 @@ int Household_send_rule_performance_message()
 /* Household reads the message from FA agent with all rule performances. */
 int Household_reads_all_performances_messages()
 {
-  double performances[NRRULES];
+ 	double performances[NRRULES];
+    PrivateClassifierSystem 	  classifiersystem=get_classifiersystem();
+    int nr_selected_rule		= get_classifiersystem.nr_selected_rule();
   
   all_performances_message = get_first_all_performances_message();
   while(all_performances_message)
@@ -51,13 +54,14 @@ int Household_reads_all_performances_messages()
     for (i=0; i<NRRULES; i++)
   	{
   	 // why do you need performances to be an array when only one value is being written?
- 	 // Question solved?
- 	 
- 	 //Redundant code for structs
- 	 //classifiersystem[i]->performance = performances[i]; 
- 	 
- 	 classifiersystem->performance[i] = performances[i]; //code for dynamic arrays
+ 	 // Performances is the variable in the message that is coming from FA
+ 	 // So this is the array with the performances of ALL rules
+ 	 // Can we copy arrays instantaneously? I thought we need to loop over the elements. 
+ 	  
+ 	 classifiersystem.performance[i] = performances[i]; //code for dynamic arrays, copies the elements one by one
+	
 	}
+
 	set_classifiersystem(classifiersystem); // check how to set values in structs in FA
 
     /* Proceed to next message: */
@@ -94,12 +98,23 @@ int Household_select_rule()
 
 int Household_EWA_learning_rule();
 {
-    PrivateClassifierSystem 		agent_classifiersystem=get_agent_classifiersystem();
-    int nr_selected_rule=get_nr_selected_rule();
+
+//Can we do the declarations as follows?:
+    PrivateClassifierSystem 	agent_classifiersystem=get_agent_classifiersystem();
+    int nr_selected_rule		= get_agent_classifiersystem.nr_selected_rule();
     double[] performance		= get_agent_classifiersystem.performance();
     double[] attraction			= get_agent_classifiersystem.attraction();
     int experience				= get_agent_classifiersystem.experience();
     int experience_old			= 0;
+
+//Alternatively:
+    PrivateClassifierSystem 	agent_classifiersystem=get_agent_classifiersystem();
+    int nr_selected_rule		= agent_classifiersystem.nr_selected_rule;
+    double[] performance		= agent_classifiersystem.performance;
+    double[] attraction			= agent_classifiersystem.attraction;
+    int experience				= agent_classifiersystem.experience;
+    int experience_old			= 0;
+
 
     int j=0;
     
