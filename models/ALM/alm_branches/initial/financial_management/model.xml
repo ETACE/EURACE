@@ -41,7 +41,22 @@
 </datatype>
 <datatype>
 <name>RuleDataType</name>
-<desc></desc>
+<desc>The datatype for rules. Refer to rule_creation.m. !Subject to change!</desc>
+<var><type>char</type><name>class[15]</name></var>
+<var><type>int</type><name>id</name></var>
+<var><type>int</type><name>performance</name></var>
+<var><type>int</type><name>counter</name></var>
+<var><type>int</type><name>avgperformance</name></var>
+<var><type>int</type><name>my_performance</name></var>
+<var><type>int</type><name>attraction</name></var>
+<var><type>int</type><name>choiceprob</name></var>
+</datatype>
+<dataype>
+<name>ClassifierSystem</name>
+<desc>Each agent has their own classifier system.!Subject to change!</desc>
+<var><type>int</type><name>performance</name></var>
+<var><type>int</type><name>counter</name></var>
+<var><type>int</type><name>avgperformance</name></var>
 </datatype>
 </environment>
 
