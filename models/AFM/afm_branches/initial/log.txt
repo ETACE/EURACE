@@ -49,3 +49,9 @@ FAewafunctions.c
 							 This should again be a Private struct, in eacg agents memory. This will cause memory overhead, 
 							 but this is better than messages.
 --------------------------------------------------------------------------------------				
+Mariam, rev420
+Added model-ewa.xml file 	trying to run parser on present ewa code.
+Moved model.xml to folder portfolio_slection_ewa... This was unnecessary could be moved back
+
+
+------------------------------------------------------------

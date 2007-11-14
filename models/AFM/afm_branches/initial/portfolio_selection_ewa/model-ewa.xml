@@ -1,0 +1,642 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<xmachine_agent_model>
+<name>Financial Market Model</name>
+<author>Eurace</author>
+<date>010607</date>
+
+<!--************************* NOTES ***************************************-->
+<!--This is the main description file for the financial market model-->
+<!-- Agents involved: Household, Firm, Bank, ClearingHouse Mechanism, LimitOrderBook, Government-->
+<!--13/11/07 Adding structures to the model.xml-->
+<!-- TODO- Make seperate c files for each agent's functions-->
+
+<!--***************** Environment values and functions **********************-->
+<environment>
+<functions>
+<file>Household_ewa_functions.c</file>
+<file>ClearingHouseMechanism_ewa_functions.c</file>
+<file>FinancialAgent_ewa_functions.c</file>
+<file>mylibraryfunctions.c</file>
+</functions>
+<!--Structures-->
+<datatype>
+<name>StockDataType</name>
+<desc>All stocks have a data type StockDataType. Refer to file stock_creation.m</desc>
+<var><type>char</type><name>class[5]</name></var>
+<var><type>int</type><name>id[5]</name></var>
+<var><type>int</type><name>NrOutStandingShares</name></var>
+<var><type>int</type><name>NrOutStandingShares(1:Parameters.NrDaysInitialization)</name></var> <!--?-->
+<var><type>double</type><name>price</name></var>
+<var><type>int</type><name>Book_intraday_transaction</name></var>
+<var><type>int</type><name>dividends</name></var>
+<var><type>int</type><name>dividends(1:Parameters.NrMonthsInitialization)</name></var><!--?-->
+</datatype>
+<datatype>
+<name>BondDataType</name>
+<desc>All Bonds have the following datatype. Refer to bond_creation.m</desc>
+<var><type>char</type><name>class[5]</name></var>
+<var><type>int</type><name>id[5]</name></var>
+</datatype>
+<datatype>
+<name>DBFinancialAssets</name>
+<desc></desc>
+</datatype>
+<datatype>
+<name>RuleDataType</name>
+<desc>The datatype for rules. Refer to rule_creation.m. !Subject to change!</desc>
+<var><type>char</type><name>class[15]</name></var>
+<var><type>int</type><name>id</name></var>
+<var><type>int</type><name>performance</name></var>
+<var><type>int</type><name>counter</name></var>
+<var><type>int</type><name>avgperformance</name></var>
+<var><type>int</type><name>my_performance</name></var>
+<var><type>int</type><name>attraction</name></var>
+<var><type>int</type><name>choiceprob</name></var>
+</datatype>
+
+<datatype>
+<name>PublicClassifierSystem</name>
+<desc>Datatype for the central classifier system. !Subject to change!</desc>
+<!-- Arrays with rule measures -->
+<var><!--This is the user counter for each rule Mariam: removed the array[NRRules], using dynamic array-->
+<type>int_array</type><name>counter</name>
+</var>
+<var><!--This is the performance for each rule Mariam: removed the array[NRRules], using dynamic array-->
+<type>double_array</type><name>performance</name>
+</var>
+<var><!--This is the average performance for each rule Mariam: removed the array[NRRules], using dynamic array-->
+<type>double_array</type><name>avgperformance</name>
+</var>
+<var><!--This is the average performance for each rule Mariam: removed the array[NRRules], using dynamic array-->
+<type>double_array</type><name>performance_history</name>
+</var>
+</datatype>
+
+<datatype>
+<name>PrivateClassifierSystem</name>
+<desc>Datatype for the private classifier system inside each agent.  !Subject to change!</desc>
+<!--General data for the rule system--><var>
+	<!--Array holding the IDs of the rules in this CS (may differ per agent) Mariam: removed the array[NRRules], using dynamic array-->
+	<type>int_array</type>	<name>ids</name>
+</var>
+	<var><!--This is the experience variable for EWA learning--><type>double</type><name>experience</name>
+	</var>
+<var><type>int</type><name>current_rule</name></var>
+<!-- Arrays with rule measures -->
+<var><type>double</type><name>my_performance</name></var>
+<var><!--Mariam: removed the array[NrTotalRules], using dynamic array-->
+<type>double_array</type><name>avgperformance</name>
+</var>
+<var><!--Mariam: removed the array[NrTotalRules], using dynamic array-->
+<type>double_array</type><name>attraction</name></var>
+<var><!--Mariam: removed the array[NrTotalRules], using dynamic array-->
+<type>double_array</type><name>choiceprob</name></var>
+<var><type>int</type><name>nr_selected_rule</name></var><!--Do we need an array here?-->
+
+</datatype>
+
+<datatype>
+<name>AssetPortfolioType</name>
+<desc>AssetportfolioType structs are used by the Household</desc> <!--What are the variables for asset portfolio?-->
+<var><type>int</type>performance_history</var>
+<var><type>int_array</type>firmstocks</var>
+<var><type>int_array</type>firm_id</var>
+<var><type>double_array</type>current_price</var>
+<var><type>double_array</type>best_ask_price</var>
+<var><type>double_array</type>best_bid_price</var>
+<var><type>double_array</type>nr_units</var>
+<var><type>int_array</type>firmbonds</var>
+<var><type>int_array</type>firmbonds_firm_id</var>
+<var><type>double_array</type>firmbonds_current_price</var>
+<var><type>double_array</type>firmbonds_best_ask_price</var>
+<var><type>double_array</type>firmbonds_best_bid_price</var>
+<var><type>double_array</type>firmbonds_nr_units</var>
+<var><type>int_array</type>govbonds</var>
+<var><type>int_array</type>govbonds_gov_id</var>
+<var><type>double_array</type>govbonds_current_price</var>
+<var><type>double_array</type>govbonds_best_ask_price</var>
+<var><type>double_array</type>govbonds_best_bid_price</var>
+<var><type>double_array</type>govbonds_nr_units</var>
+</datatype>
+</environment>
+
+<!--********************* X-machine Agent - Household ****************************-->
+<xmachine>
+<name>Household</name>
+<!----------------- Variables-------------------------------------------------->
+<!-- All variables used by household are declared here to allocate them in memory -->
+
+<memory>
+<var><type>int</type><name>household_id</name></var>
+<var><type>PrivateClassifierSystem</type><name>agent_classifiersystem</name></var>
+<var><type>double</type><name>asset_budget</name></var>
+
+<var><type>AssetPortfolioType</type><name>current_assetportfolio</name></var>
+<var><type>AssetPortfolioType</type><name>prescribed_assetportfolio</name></var>
+
+<var><type>int</type><name>nr_selected_rule</name></var>
+<var><type>double</type><name>current_rule_performance</name></var>
+<var><type>double</type><name>EWA_rho</name></var>
+<var><type>double</type><name>EWA_phi</name></var>
+<var><type>double</type><name>EWA_delta</name></var>
+<var><type>double</type><name>EWA_beta</name></var>
+<var><type>double</type><name>prescribed_asset_value</name></var>
+<var><type>double</type><name>asset_budget</name></var>
+<var><type>double</type><name>iradius</name></var>
+<var><type>double</type><name>posx</name></var>
+<var><type>double</type><name>posy</name></var>
+</memory>
+<!----------------- Defining functions ---------------------------------------->
+<functions>
+<!---Role: Financial Management Role-->
+
+<!--<function><name>HouseholdCalculateGrossIncome</name></function>
+<function><name>HouseholdCalculateMonthlyTaxes</name><depends><name>HouseholdCalculateGrossIncome</name><type>internal</type></depends></function>
+<function><name>HouseholdCalculateNetIncome</name>
+<depends>
+<name>HouseholdCalculateMonthlyTaxes</name><type>internal</type>
+</depends>
+</function>
+<function><name>HouseholdCalculateTotalBudget</name>
+<depends>
+<name>HouseholdCalculateNetIncome</name><type>internal</type>
+</depends>
+</function>
+<function><name>HouseholdCalculateAssetWealth</name></function>
+
+
+<function><name>HouseholdCalculateCashOnHands</name>
+<depends>
+<name>HouseholdCalculateTotalBudget</name><type>internal</type>
+</depends>
+<depends>
+<name>HouseholdCalculateAssetWealth</name><type>internal</type>
+</depends>
+</function>
+
+<function><name>HouseholdCalculateConsumptionBudget</name>
+<depends>
+<name>HouseholdCalculateCashOnHands</name><type>internal</type>
+</depends>
+</function>
+
+<function><name>HouseholdCalculateFinancialNeedsMonthly</name>
+<depends>
+<name>HouseholdCalculateConsumptionBudget</name><type>internal</type>
+</depends>
+</function>
+-->
+
+<!---Role: Consumption Market Role-->
+<!---Role: Asset Market Role-->
+<!--<function><name>HouseholdUpdateAssetPortfolio</name></function>
+<function><name>HouseholdCalculateFinancialNeedsDaily</name>
+<depends>
+<name>HouseholdUpdateAssetPortfolio</name><type>internal</type>
+</depends>
+</function>
+<function><name>HouseholdEntryDecision</name>
+<depends>
+<name>HouseholdCalculateFinancialNeedsDaily</name><type>internal</type>
+</depends>
+<depends>
+<name>HouseholdCalculateFinancialNeedsMonthly</name><type>internal</type>
+</depends>
+</function>
+<function><name>HouseholdCalculateAssetBudget</name>
+<depends>
+<name>HouseholdEntryDecision</name><type>internal</type>
+</depends>
+</function>
+
+<function><name>HouseholdCalculateFirmBondOrders</name>
+<depends>
+<name>HouseholdCalculateAssetBudget</name><type>internal</type>
+</depends>
+</function>
+<function><name>HouseholdCalculateGovernmentBondOrders</name>
+<depends>
+<name>HouseholdCalculateAssetBudget</name><type>internal</type>
+</depends>
+</function>
+<function><name>HouseholdCalculateFirmStockOrders</name>
+<depends>
+<name>HouseholdCalculateAssetBudget</name><type>internal</type>
+</depends>
+</function>
+
+-->
+<!---Role: Credit Market Role-->
+<!--EWA Functions-->
+<function><name>Household_send_rule_performance_message</name></function>
+
+<function><name>Household_reads_all_performances_messages</name>
+<depends>
+<name>HouseholdCalculateAssetBudget</name><type>internal</type>
+</depends>
+</function>
+
+<function><name>Household_select_rule</name>
+<depends>
+<name>HouseholdCalculateAssetBudget</name><type>internal</type>
+</depends>
+</function>
+
+<function><name>Household_EWA_learning_rule</name>
+<depends>
+<name>HouseholdCalculateAssetBudget</name><type>internal</type>
+</depends>
+</function>
+
+
+<function><name>Household_read_rule_details_message</name>
+<depends>
+<name>HouseholdCalculateAssetBudget</name><type>internal</type>
+</depends>
+</function>
+
+<function><name>Household_apply_selected_rule</name>
+<depends>
+<name>HouseholdCalculateAssetBudget</name><type>internal</type>
+</depends>
+</function>
+
+
+<function><name>Household_read_transaction_message</name>
+<depends>
+<name>HouseholdCalculateAssetBudget</name><type>internal</type>
+</depends>
+</function>
+
+
+</functions>
+</xmachine>
+<!--*********************** End of Agent - Household *****************************-->
+
+<!--********************* X-machine Agent - Firm ****************************-->
+<xmachine>
+<name>Firm</name>
+<!----------------- Variables-------------------------------------------------->
+<!-- All variables used by firm are declared here to allocate them in memory -->
+<memory>
+<var><type>double_array</type><name>revenues</name></var>
+<var><type>double_array</type><name>sales_costs</name></var>
+<var><type>double</type><name>total_revenue</name></var>
+<var><type>double</type><name>net_revenue</name></var>
+
+<var><type>double</type><name>operational_cost</name></var>
+<var><type>double</type><name>total_wage_payments</name></var>
+<var><type>double</type><name>total_input_payments</name></var>
+<var><type>double</type><name>interest_payments</name></var>
+
+<var><type>double</type><name>total_earnings</name></var>
+<var><type>double</type><name>tax_rate_profits</name></var>
+<var><type>double</type><name>pretax_profit</name></var>
+<var><type>double</type><name>tax_provision</name></var>
+<var><type>double</type><name>net_earnings</name></var>
+<var><type>double</type><name>div_payments</name></var>
+
+<var><type>double</type><name>retained_earnings</name></var>
+<var><type>double</type><name>current_debt</name></var>
+<var><type>double</type><name>debt_interest_rate</name></var>
+<var><type>double</type><name>debt_repayments</name></var>
+
+<var><type>double</type><name>share_repurchase_value</name></var>
+<var><type>int</type><name>share_repurchase_units</name></var>
+<var><type>int</type><name>target_total_shares</name></var>
+<var><type>int</type><name>current_total_shares</name></var>
+
+var><type>double</type><name>total_financial_needs</name></var>
+<var><type>double</type><name>financial_needs</name></var>
+<var><type>double</type><name>add_financial_needs</name></var>
+<var><type>double</type><name>financial_reserves</name></var>
+
+<var><type>double</type><name>target_loans</name></var>
+<var><type>double</type><name>target_equity</name></var>
+<var><type>double</type><name>bonds_issue_target</name></var>
+<var><type>double</type><name>stocks_issue_target</name></var>
+
+<var><type>double</type><name>price</name></var>
+<var><type>double</type><name>max_debt</name></var>
+<var><type>double</type><name>div_earn_ratio</name></var>
+<var><type>double</type><name>debt_earn_ratio</name></var>
+<var><type>double</type><name>div_pshare_ratio</name></var>
+<var><type>double</type><name>earn_pshare_ratio</name></var>
+<var><type>double</type><name>price_earn_ratio</name></var>
+<var><type>double</type><name>retained_earn_ratio</name></var>
+
+<var><type>double</type><name>earn_pshare_ratio_growth</name></var>
+<var><type>double</type><name>critical_price_earn_ratio</name></var>
+<var><type>double</type><name>critical_earn_pshare_ratio</name></var>
+
+<var><type>double</type><name>iradius</name></var>
+<var><type>double</type><name>posx</name></var>
+<var><type>double</type><name>posy</name></var>
+
+</memory>
+<!----------------- Defining functions ---------------------------------------->
+<functions>
+<!---Role: Financial management role-->
+<function><name>FirmCalculateIncomeStatement</name></function>
+
+<function><name>FirmCalculateFinancialPolicies</name>
+<depends>
+<name>FirmCalculateIncomeStatement</name><type>internal</type>
+</depends>
+</function>
+
+<!---Role: asset market role-->
+<function><name>FirmCalculateFirmStockOrders</name>
+<depends>
+<name>FirmCalculateFinancialPolicies</name><type>internal</type>
+</depends>
+</function>
+<function><name>FirmCalculateFirmBondOrders</name>
+<depends>
+<name>FirmCalculateFinancialPolicies</name><type>internal</type>
+</depends>
+</function>
+<function><name>FirmUpdateOutstandingAssets</name>
+<depends>
+<name>FirmCalculateFirmStockOrders</name><type>internal</type>
+</depends>
+<depends>
+<name>FirmCalculateFirmBondOrders</name><type>internal</type>
+</depends>
+</function>
+<!---Role: Credit Market Role-->
+<function><name>FirmApplyForBankLoan</name>
+<depends>
+<name>FirmCalculateFinancialPolicies</name><type>internal</type>
+</depends>
+</function>
+
+</functions>
+</xmachine>
+<!--*********************** End of Agent - Firm *****************************-->
+
+
+<!--********************* X-machine Agent - Bank ****************************-->
+<xmachine>
+<name>Bank</name>
+<!----------------- Variables-------------------------------------------------->
+<!-- All variables used by bank are declared here to allocate them in memory -->
+<memory>
+<var><type>double</type><name>ra</name></var>
+<var><type>double</type><name>iradius</name></var>
+<var><type>double</type><name>posx</name></var>
+<var><type>double</type><name>posy</name></var>
+
+</memory>
+<!----------------- Defining functions ---------------------------------------->
+
+<!--- credit market role-->
+</xmachine>
+<!--*********************** End of Agent - Bank *****************************-->
+
+<!--********************* X-machine Agent - Clearing House ****************************-->
+<xmachine>
+<name>ClearingHouse</name>
+<!----------------- Variables-------------------------------------------------->
+<!-- All variables used by clearing house are declared here to allocate them in memory -->
+<memory>
+<var><type>double</type><name>rg</name></var>
+<var><type>double</type><name>iradius</name></var>
+<var><type>double</type><name>posx</name></var>
+<var><type>double</type><name>posy</name></var>
+
+</memory>
+<!----------------- Defining functions ---------------------------------------->
+
+<!--- asset market role-->
+<functions>
+<function><name>ClearingHouseComputeTransactions</name></function>
+</functions>
+</xmachine>
+<!--*********************** End of Agent - Clearing house *****************************-->
+
+<!--********************* X-machine Agent - Limit order book ****************************-->
+<xmachine>
+<name>LimitOrderBook</name>
+<!----------------- Variables-------------------------------------------------->
+<!-- All variables used by clearing house are declared here to allocate them in memory -->
+<memory>
+<var><type>double</type><name>re</name></var>
+<var><type>double</type><name>iradius</name></var>
+<var><type>double</type><name>posx</name></var>
+<var><type>double</type><name>posy</name></var>
+
+</memory>
+<!----------------- Defining functions ---------------------------------------->
+<!--- asset market role-->
+<functions>
+<function><name>LimitOrderBookComputeTransactions</name></function>
+</functions>
+</xmachine>
+<!--*********************** End of Agent - limit order book *****************************-->
+
+<!--********************* X-machine Agent - government ****************************-->
+<xmachine>
+<name>Government</name>
+<!----------------- Variables-------------------------------------------------->
+<!-- All variables used by government are declared here to allocate them in memory -->
+<memory>
+<var><type>double</type><name>rj</name></var>
+<var><type>double</type><name>iradius</name></var>
+<var><type>double</type><name>posx</name></var>
+<var><type>double</type><name>posy</name></var>
+
+</memory>
+<!----------------- Defining functions ---------------------------------------->
+
+<!--tax collector role-->
+
+</xmachine>
+<!--*********************** End of Agent - government ****************************-->
+
+<!--********************* X-machine Agent - FinancialAdvisor ****************************-->
+<xmachine>
+<name>FinancialAdvisor</name>
+<!----------------- Variables-------------------------------------------------->
+<!-- All variables used by FinancialAdvisor are declared here to allocate them in memory -->
+<memory>
+
+<var><type>PublicClassifierSystem</type>	<name>central_classifiersystem</name></var>
+<var><type>double</type><name>iradius</name></var>
+<var><type>double</type><name>posx</name></var>
+<var><type>double</type><name>posy</name></var>
+	
+
+</memory>
+<!----------------- Defining functions ---------------------------------------->
+
+</xmachine>
+<!--*********************** End of Agent - FinancialAdvisor ****************************-->
+
+
+
+
+
+<!--******** Messages being posted by the agents to communicate *************-->
+<messages>
+
+<!--asset market context-->
+<message>
+<name>WagePayment</name>
+<note></note>
+
+<var><type>double</type><name>range</name></var>
+<var><type>double</type><name>x</name></var>
+<var><type>double</type><name>y</name></var>
+<var><type>double</type><name>z</name></var>
+
+</message>
+
+<message>
+<name>DividendPayment</name>
+<note></note>
+
+<var><type>double</type><name>range</name></var>
+<var><type>double</type><name>x</name></var>
+<var><type>double</type><name>y</name></var>
+<var><type>double</type><name>z</name></var>
+
+</message>
+
+<message>
+<name>BondCouponPayment</name>
+<note></note>
+
+<var><type>double</type><name>range</name></var>
+<var><type>double</type><name>x</name></var>
+<var><type>double</type><name>y</name></var>
+<var><type>double</type><name>z</name></var>
+
+</message>
+
+<message>
+<name>firm_bond_orders</name>
+<note>Added by household after asset portfolio calculated</note>
+<var><type>int</type><name>household_id</name></var>
+<var><type>int</type><name>firm_id</name></var>
+<var><type>double</type><name>limit_price</name></var>
+<var><type>double</type><name>limit_quantity</name></var>
+<var><type>double</type><name>range</name></var>
+<var><type>double</type><name>x</name></var>
+<var><type>double</type><name>y</name></var>
+<var><type>double</type><name>z</name></var>
+</message>
+
+<message>
+<name>firm_stock_order</name>
+<note>Added by household after asset portfolio calculated</note>
+<var><type>int</type><name>household_id</name></var>
+<var><type>int</type><name>firm_id</name></var>
+<var><type>double</type><name>limit_price</name></var>
+<var><type>double</type><name>limit_quantity</name></var>
+<var><type>double</type><name>range</name></var>
+<var><type>double</type><name>x</name></var>
+<var><type>double</type><name>y</name></var>
+<var><type>double</type><name>z</name></var>
+</message>
+
+<message>
+<name>gov_bond_order</name>
+<note>Added by household after asset portfolio calculated</note>
+<var><type>int</type><name>household_id</name></var>
+<var><type>int</type><name>gov_id</name></var>
+<var><type>double</type><name>limit_price</name></var>
+<var><type>double</type><name>limit_quantity</name></var>
+<var><type>double</type><name>range</name></var>
+<var><type>double</type><name>x</name></var>
+<var><type>double</type><name>y</name></var>
+<var><type>double</type><name>z</name></var>
+</message>
+
+<message>
+<name>firm_bond_transaction</name>
+<note>Added by clearinghousemechanism</note>
+<var><type>int</type><name>household_id</name></var>
+<var><type>int</type><name>firm_id</name></var>
+<var><type>double</type><name>transaction_price</name></var>
+<var><type>double</type><name>transaction_quantity</name></var>
+<var><type>double</type><name>range</name></var>
+<var><type>double</type><name>x</name></var>
+<var><type>double</type><name>y</name></var>
+<var><type>double</type><name>z</name></var>
+</message>
+
+<message>
+<name>gov_bond_transaction</name>
+<note>Added by clearinghousemechanism</note>
+<var><type>int</type><name>household_id</name></var>
+<var><type>int</type><name>gov_id</name></var>
+<var><type>double</type><name>transaction_price</name></var>
+<var><type>double</type><name>transaction_quantity</name></var>
+<var><type>double</type><name>range</name></var>
+<var><type>double</type><name>x</name></var>
+<var><type>double</type><name>y</name></var>
+<var><type>double</type><name>z</name></var>
+</message>
+
+<message>
+<name>firm_stock_transaction</name>
+<note>Added by clearinghousemechanism</note>
+<var><type>int</type><name>household_id</name></var>
+<var><type>int</type><name>firm_id</name></var>
+<var><type>double</type><name>transaction_price</name></var>
+<var><type>double</type><name>transaction_quantity</name></var>
+<var><type>double</type><name>range</name></var>
+<var><type>double</type><name>x</name></var>
+<var><type>double</type><name>y</name></var>
+<var><type>double</type><name>z</name></var>
+</message>
+
+<message>
+<name>rule_performance</name>
+<note>Message sent my household to tell the FA agent of the rule performance</note>
+<var><type>int</type><name>nr_selected_rule</name></var>
+<var><type>double</type><name>rule_performance</name></var>
+<var><type>double</type><name>range</name></var>
+<var><type>double</type><name>x</name></var>
+<var><type>double</type><name>y</name></var>
+<var><type>double</type><name>z</name></var>
+</message>
+
+<message>
+<name>all_performances</name>
+<note>Message sent my FA read by all household </note>
+<var><type>double</type><name>performances</name></var>
+<var><type>double</type><name>range</name></var>
+<var><type>double</type><name>x</name></var>
+<var><type>double</type><name>y</name></var>
+<var><type>double</type><name>z</name></var>
+</message>
+
+<message>
+<name>rule_details_request</name>
+<note>Household requests for details</note>
+<var><type>int</type><name>household_id</name></var>
+<var><type>int</type><name>selected_rule_number</name></var>
+<var><type>double</type><name>range</name></var>
+<var><type>double</type><name>x</name></var>
+<var><type>double</type><name>y</name></var>
+<var><type>double</type><name>z</name></var>
+</message>
+
+<message>
+<name>rule_details</name>
+<note>FA adds rule details</note>
+<var><type>int</type><name>household_id</name></var>
+<var><type>int</type><name>selected_rule_number</name></var>
+<var><type>double</type><name>range</name></var>
+<var><type>double</type><name>x</name></var>
+<var><type>double</type><name>y</name></var>
+<var><type>double</type><name>z</name></var>
+</message>
+
+</messages>
+<!--********************** End of Messages **********************************-->
+
+</xmachine_agent_model>

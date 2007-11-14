@@ -377,3 +377,9 @@ int Household_read_transaction_message()
 }
 
 
+/*******************************************
+ * Adding the function names from the previously done work refer to financial_management.c file
+ * Only functions heading are added to prevent errors encountered from parser.
+ * This is done to test the ewa functions
+ *******************************************/
+ 
