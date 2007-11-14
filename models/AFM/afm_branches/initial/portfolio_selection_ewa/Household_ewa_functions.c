@@ -203,46 +203,34 @@ int Household_EWA_learning_rule();
     return 0;
 }
 
-
-/* Household reads message from FA agent with the exact details of the selected asset portfolio rule.*/
-int Household_read_rule_details_message()
+/* STEP 4. Apply the selected rule.*/
+ /*The household uses the details of the selected rule to compute its new asset allocation.
+ * It assigns its asset_budget to firm stocks, firm bonds and government bonds, according to the rule's
+ * prescribed asset portfolio. To determine the households target portfolio, we need to take the 
+ * difference between the current_assetportfolio and prescribed_assetportfolio. This is done later. 
+ * If the prescribed_portfolio is based on a prescribed_asset_value then  we have to multiply the units
+ * in the prescribed_portfolio by: asset_budget/prescribed_asset_value.
+ *
+ 
+/*
+ * HERE: Copying the selected rule details to the appropriate memory variables of the household.
+ */
+int Household_retrieve_rule_details()
 {
-    int household_id=get_household_id();
-    AssetPortfolioType prescribed_assetportfolio=EmptyPortfolio;
-    double prescribed_asset_value=0.0;
-    
-    rule_details_message = get_first_rule_details_message();
-    while(rule_details_message)
-    {
-       /* Test for correct household_id: We only want to read the message that is personally directed to this household */
-        if(household_id == rule_details_request_message->household_id)
-        {
-            prescribed_assetportfolio = rule_details_message->prescribed_assetportfolio;
-            prescribed_asset_value = rule_details_message->prescribed_asset_value;
-        }
-       rule_details_message = get_next_rule_details_request_message(rule_details_request_message); 
-    }
-    set_prescribed_assetportfolio(prescribed_assetportfolio);
-    set_prescribed_asset_value(prescribed_asset_value);
-    
+
+//Rule details:
+	//The name of the rule
+	char_array *   char_functioncall_dynamic_array   = get_char_functioncall_dynamic_array();
+
+	//Parameters:
+	
+
     return 0;
 }
 
-/* STEP 4. Apply the selected rule.*/
- /* HERE: The household uses the details of the selected rule to compute its asset allocation.
- * It assigns its asset_budget to firm stocks, firm bonds and government bonds, according to the prescribed portfolio.
- * The prescribed asset portfolio is based on a prescribed_asset_value, which is the most recently
- * invested value in the prescribed_portfolio.
- * The prescribed_asset_value is an argument in the original rule_performance_message send by the household
- * that updated the rule's performance in the FA agent's database.
- * To determine the households target portfolio, we need to multiply the units in the prescribed_portfolio
- * by: asset_budget/prescribed_asset_value.
- *
- * The C-CODE simply consists of copying the selected rule details from the prescribed_assetportfolio
- * to the appropriate memory variables of the household. To compute the actual limit_orders we need
- * to take the difference between the current_assetportfolio and prescribed_assetportfolio. This is done later.
+/*
+ * HERE: To compute the actual limit_orders we need to apply the rule to obtain the prescribed_assetportfolio.
  */
-
 int Household_apply_selected_rule()
 {
    AssetPortfolioType * current_assetportfolio=get_current_assetportfolio();

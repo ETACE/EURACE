@@ -59,31 +59,6 @@ int FinancialAgent_update_classifiersystem(int nr_selected_rule, double rule_per
     * if you're adding a rule into the structure:
     * add_classifiersystem_(classifersystem_dynamic_array, 0,2,25);
     */
-
-  
-  //********************* REDUNDANT CODE********************
-  //Idea here was to have a history of performance for each rule
-  //This is a bit exotic for classifier systems, so better to discard this.
-  //
-  //classifiersystem->performance_history[nr_selected_rule]
-  //actually would need a dynamic array with 2 indices:
-  //double_array[NrTotalRules][HISTLENGTH] performance_history
-  
-  /***** commenting out code NOT NEEDED
-  int i;
-  double[HISTLENGTH] tmparray;
-  // Update the performance history of the rule: 
-  //Shift history:
-  for (i=1; i<HISTLENGTH; i++)
-  {  
-  //This is incorrect code: 
-      tmparray[i] = classifiersystem->array[nr_selected_rule]->performance_history;
-      classifiersystem->array[nr_selected_rule]->performance_history = tmparray[i-1];
-  }
-  */
-  //This is incorrect code:
-  classifiersystem->array[nr_selected_rule]->performance_history = rule_performance;
-  //********************* END REDUNDANT CODE********************
-     
+    
   return 0;
 }

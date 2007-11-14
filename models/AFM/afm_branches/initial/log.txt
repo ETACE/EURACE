@@ -68,11 +68,24 @@ model.xml
 				Do new datatypes have to be declared in xml before they can be used in another datatype?
 				Or is the order irrelevant?
 --------------------------------------------------------------------------------------
-
 Mariam,rev 426
 
 Only answering Sander's query above
 model.xml	line 62: No we dont need to give size for the case of dynamic arrays.
 			line 107: The parser does not allow structs within structs. But Simon says 
 			He could allocate some time in Turkey to accomodate this. But the parser can do this at the moment.
-----------------------------------------------------------------
+--------------------------------------------------------------------------------------
+Sander, rev 427
+
+FinancialAgent_ewa_functions.c
+				line 64-86 function FinancialAgent_update_classifiersystem
+				Removed code for rule performance history in the classifier system.
+				This seems over the top, and would lead to major memory overload.
+				(since it means a time series of the CS is kept in memory).
+				
+Household_ewa_functions.c
+				line 207-229: Removed function Household_read_rule_details_message()
+							  No longer sending messages about rule details.
+model.xml
+				line 64: Added datatype RuleDetailSystem
+--------------------------------------------------------------------------------------
