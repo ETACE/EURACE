@@ -68,3 +68,11 @@ model.xml
 				Do new datatypes have to be declared in xml before they can be used in another datatype?
 				Or is the order irrelevant?
 --------------------------------------------------------------------------------------
+
+Mariam,rev 426
+
+Only answering Sander's query above
+model.xml	line 62: No we dont need to give size for the case of dynamic arrays.
+			line 107: The parser does not allow structs within structs. But Simon says 
+			He could allocate some time in Turkey to accomodate this. But the parser can do this at the moment.
+----------------------------------------------------------------
