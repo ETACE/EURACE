@@ -11,3 +11,11 @@
 
 
 int calc_rule_performance(current_assetportfolio.performance_history)
+ double set_limit_price(current_price, best_ask_price, best_bid_price);
+/** \fn double random_no()
+ * \brief Returns a random number between 0 and 1 (inclusive)
+ */
+double random_no()
+{
+    return ((double)rand()/(double)RAND_MAX);
+}

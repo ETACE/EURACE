@@ -43,16 +43,16 @@ int FinancialAgent_read_rule_performance_message()
  
 int FinancialAgent_update_classifiersystem(int nr_selected_rule, double rule_performance)
 {
-  PublicClassifierSystem classifiersystem=get_classifiersystem();
+  PublicClassifierSystem * classifiersystem=get_central_classifiersystem();
   
   //Replace old performance adding new performance: 
-  classifiersystem.performance[nr_selected_rule] += rule_performance;
+  classifiersystem->array[nr_selected_rule]->performance += rule_performance;
   
   //Counter update: when do we reset the counter?   ******CHECK
-  classifiersystem.counter[nr_selected_rule] +=1;
+  classifiersystem->array[nr_selected_rule]->counter +=1;
   
   //Avgperformance update:
-  classifiersystem.avgperformance[nr_selected_rule] = classifiersystem.avgperformance[nr_selected_rule]/classifiersystem.counter[nr_selected_rule];
+  classifiersystem->array[nr_selected_rule]-> avgperformance = classifiersystem->array[nr_selected_rule]->avgperformance/classifiersystem->array[nr_selected_rule]->counter;
 
   //set_classifiersystem(classifiersystem); // setting value classifiersystem is an array need reference here
    /*classifiersystem[nr_selected_rule]->int_ruleperformance = 9;
@@ -69,17 +69,20 @@ int FinancialAgent_update_classifiersystem(int nr_selected_rule, double rule_per
   //actually would need a dynamic array with 2 indices:
   //double_array[NrTotalRules][HISTLENGTH] performance_history
   
+  /***** commenting out code NOT NEEDED
+  int i;
   double[HISTLENGTH] tmparray;
-  /* Update the performance history of the rule: */
+  // Update the performance history of the rule: 
   //Shift history:
   for (i=1; i<HISTLENGTH; i++)
   {  
-  //This is incorrect code:
-      tmparray = classifiersystem[nr_selected_rule]->performance_history;
-      classifiersystem[nr_selected_rule]->performance_history[i] = tmparray[i-1];
+  //This is incorrect code: 
+      tmparray[i] = classifiersystem->array[nr_selected_rule]->performance_history;
+      classifiersystem->array[nr_selected_rule]->performance_history = tmparray[i-1];
   }
+  */
   //This is incorrect code:
-  classifiersystem[nr_selected_rule]->performance_history[0] = rule_performance;
+  classifiersystem->array[nr_selected_rule]->performance_history = rule_performance;
   //********************* END REDUNDANT CODE********************
      
   return 0;
@@ -94,8 +97,8 @@ int FinancialAgent_update_classifiersystem(int nr_selected_rule, double rule_per
    while(rule_details_request_message)
    {
      /*Read the message: */
-      selected_rule_number = rule_details_request_message->selected_rule_number;
-      household_id = rule_details_request_message->household_id;
+      int selected_rule_number = rule_details_request_message->selected_rule_number;
+      int household_id = rule_details_request_message->household_id;
   
      /* FA agent sends back a message with the requested details: */ 
       add_rule_details_message(household_id, classifiersystem[selected_rule_number].prescribed_assetportfolio, classifiersystem[selected_rule_number].prescribed_asset_value, range, x, y, z);

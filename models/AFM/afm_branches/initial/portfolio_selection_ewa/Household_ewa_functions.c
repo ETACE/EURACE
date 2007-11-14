@@ -21,8 +21,8 @@
 int Household_send_rule_performance_message()
 { 
     /*Get input vars: declare and assign local vars */
-    int 	nr_selected_rule      	 = get_nr_selected_rule();
-    double 	current_rule_performance = get_current_rule_performance();
+    int nr_selected_rule = get_nr_selected_rule();
+    double current_rule_performance = get_current_rule_performance();
     
     //Here we compute the rule performance: this function uses the performance_history
     //since performance is computed as a time-average of capital gains obtained by the
@@ -45,8 +45,8 @@ int Household_send_rule_performance_message()
 int Household_reads_all_performances_messages()
 {
  	double performances[NRRULES];
-    PrivateClassifierSystem 	  classifiersystem=get_classifiersystem();
-    int nr_selected_rule		= get_classifiersystem.nr_selected_rule();
+    PrivateClassifierSystem * classifiersystem = get_agent_classifiersystem();
+    int nr_selected_rule = classifiersystem->nr_selected_rule;
   
   all_performances_message = get_first_all_performances_message();
   while(all_performances_message)
@@ -62,7 +62,7 @@ int Household_reads_all_performances_messages()
  	 // So this is the array with the performances of ALL rules
  	 // Can we copy arrays instantaneously? I thought we need to loop over the elements. 
  	  
- 	 classifiersystem.performance[i] = performances[i]; //code for dynamic arrays, copies the elements one by one
+ 	 classifiersystem->performance[i] = performances[i]; //code for dynamic arrays, copies the elements one by one
 	
 	}
 
@@ -83,7 +83,7 @@ int Household_reads_all_performances_messages()
 int Household_select_rule()
 {
     int household_id=get_household_id();
-    double[] performances=get_performances();
+    double[] performances=get_performances();// performances is part of a struct?
     int selected_rule_number=0;    
     
     // Comparison of the rule performances and computation of selected_rule_number
@@ -103,20 +103,13 @@ int Household_select_rule()
 int Household_EWA_learning_rule();
 {
 
-//Can we do the declarations as follows?:
-    PrivateClassifierSystem 	agent_classifiersystem=get_agent_classifiersystem();
-    int nr_selected_rule		= get_agent_classifiersystem.nr_selected_rule();
-    double[] performance		= get_agent_classifiersystem.performance();
-    double[] attraction			= get_agent_classifiersystem.attraction();
-    int experience				= get_agent_classifiersystem.experience();
-    int experience_old			= 0;
-
-//Alternatively:
-    PrivateClassifierSystem 	agent_classifiersystem=get_agent_classifiersystem();
-    int nr_selected_rule		= agent_classifiersystem.nr_selected_rule;
-    double[] performance		= agent_classifiersystem.performance;
-    double[] attraction			= agent_classifiersystem.attraction;
-    int experience				= agent_classifiersystem.experience;
+    PrivateClassifierSystem * agent_classifiersystem= get_agent_classifiersystem();
+    int nr_selected_rule	= agent_classifiersystem->.nr_selected_rule;
+    // i think we need to call a for loop here to copy values here
+    double[] performance = agent_classifiersystem->performance[];
+    double[] attraction = agent_classifiersystem->attraction[];
+    //for dynamic array :test_datatype_1_var_dynamic_array->array[5]->int_datatype_var;
+    int experience	= agent_classifiersystem->experience;
     int experience_old			= 0;
 
 
@@ -124,10 +117,10 @@ int Household_EWA_learning_rule();
     
     
     //EWA learning parameters:
-    EWA_rho=get_EWA_rho();
-    EWA_phi=get_EWA_phi();
-    EWA_delta=get_EWA_delta();
-    EWA_beta=get_EWA_beta();
+    double EWA_rho=get_EWA_rho();
+    double EWA_phi=get_EWA_phi();
+    double EWA_delta=get_EWA_delta();
+    double EWA_beta=get_EWA_beta();
   
     //Updating the experience weight
     experience_old=experience;
@@ -148,10 +141,10 @@ int Household_EWA_learning_rule();
             attraction[j] = (EWA_phi*experience_old*attraction[j] + EWA_delta*performance[j])/experience;
         }
         //Set the attractions in the DBclassifiersystem:
-        agent_classifiersystem.attraction[j] = attraction[j];
+        agent_classifiersystem->attraction[j] = attraction[j];
     }
 //Computing the choice probabilities: multi-logit
-    sum_attr = 0;
+    double sum_attr = 0;
     for (j=0;j++;j<NRRULES)
     {
         sum_attr += math.exp(EWA_beta * attractions[j]);
@@ -252,8 +245,8 @@ int Household_read_rule_details_message()
 
 int Household_apply_selected_rule()
 {
-   AssetPortfolioType current_assetportfolio=get_current_assetportfolio();
-   AssetPortfolioType prescribed_assetportfolio=get_prescribed_assetportfolio();
+   AssetPortfolioType * current_assetportfolio=get_current_assetportfolio();
+   AssetPortfolioType * prescribed_assetportfolio=get_prescribed_assetportfolio();
    double prescribed_asset_value = get_prescribed_asset_value();
    double asset_budget = get_asset_budget();
    
@@ -271,59 +264,59 @@ int Household_apply_selected_rule()
    multfactor=asset_budget/prescribed_asset_value;
    
     /* 1. Firm stock order messages */
-    nr_assets = ArraySize(prescribed_assetportfolio.firmstocks);
+    nr_assets = prescribed_assetportfolio->firmstocks->size;// checkcode after compiling!
 
     /* We need to travers through prescribed_asset_portfolio to handle all the assets */
     for (i=0; i<nr_assets; i++)
     {
-        firm_id        = prescribed_assetportfolio.firmstocks[i].firm_id;
+        firm_id = prescribed_assetportfolio->array[i]->firm_id;
 
         /* Computation of the limit price is a function of:*/
-        current_price=prescribed_assetportfolio.firmstocks[i].current_price;
-        best_ask_price=prescribed_assetportfolio.firmstocks[i].best_ask_price;
-        best_bid_price=prescribed_assetportfolio.firmstocks[i].best_bid_price;
+        current_price=prescribed_assetportfolio->array[i]->current_price;
+        best_ask_price=prescribed_assetportfolio->array[i]->best_ask_price;
+        best_bid_price=prescribed_assetportfolio->array[i]->best_bid_price;
  
         limit_price    = set_limit_price(current_price, best_ask_price, best_bid_price);
 
     /* Limit quantity: diff between target and current holdings (maximum number of units to trade) */
-        limit_quantity = current_assetportfolio.firmstocks[i].nr_units - (prescribed_assetportfolio.firmstocks[i].nr_units * multfactor);
+        limit_quantity = current_assetportfolio->array[i]->nr_units - (prescribed_assetportfolio->array[i]->nr_units * multfactor);
 
     /* Sending Limit Order Messages to the AssetMarketAgent */
-        add_firm_stock_order_message(household_id, firm_id, limit_price, limit_quantity);
+        add_firm_stock_order_message(household_id, firm_id, limit_price, limit_quantity,range,x,y,z);
     }
     
 /* 2. Firm bond order messages */
-    nr_assets = ArraySize(prescribed_assetportfolio.firmbonds);
+    nr_assets = prescribed_assetportfolio->firmbonds->size;
     for (i=0; i<nr_assets; i++)
     {
-        firm_id        = prescribed_assetportfolio.firmbonds[i].firm_id;
+        firm_id        = prescribed_assetportfolio->array[i]->firmbonds_firm_id;
 
-        current_price=prescribed_assetportfolio.firmbonds[i].current_price;
-        best_ask_price=prescribed_assetportfolio.firmbonds[i].best_ask_price;
-        best_bid_price=prescribed_assetportfolio.firmbonds[i].best_bid_price;
+        current_price=prescribed_assetportfolio->array[i]->firmbonds_current_price;
+        best_ask_price=prescribed_assetportfolio->array[i]->firmbonds_best_ask_price;
+        best_bid_price=prescribed_assetportfolio->array[i]->firmbonds_best_bid_price;
 
         limit_price    = set_limit_price(current_price, best_ask_price, best_bid_price);
-        limit_quantity = current_assetportfolio.firmbonds[i].nr_units - (prescribed_assetportfolio.firmbonds[i].nr_units * multfactor);
+        limit_quantity = current_assetportfolio->array[i]->firmbonds_nr_units - (prescribed_assetportfolio->array[i]->firmbonds_nr_units * multfactor);
 
     /* Sending Limit Order Messages to the AssetMarketAgent */
-        add_firm_bond_order_message(household_id, firm_id, limit_price, limit_quantity);
+        add_firm_bond_order_message(household_id, firm_id, limit_price, limit_quantity,range,x,y,z);
     }
     
 /* 3. Government bond order messages */
-    nr_assets = ArraySize(prescribed_assetportfolio.govbonds);
+    nr_assets = prescribed_assetportfolio->govbonds->size;
     for (i=0; i<nr_assets; i++)
     {
-        gov_id         = prescribed_assetportfolio.govbonds[i].gov_id;
+        gov_id     = prescribed_assetportfolio->array[i]->govbonds_gov_id;
 
-        current_price=prescribed_assetportfolio.govbonds[i].current_price;
-        best_ask_price=prescribed_assetportfolio.govbonds[i].best_ask_price;
-        best_bid_price=prescribed_assetportfolio.govbonds[i].best_bid_price;
+        current_price=prescribed_assetportfolio->array[i]->govbonds_current_price;
+        best_ask_price=prescribed_assetportfolio->array[i]->govbonds_best_ask_price;
+        best_bid_price=prescribed_assetportfolio->array[i]->govbonds_best_bid_price;
 
         limit_price    = set_limit_price(current_price, best_ask_price, best_bid_price);
-        limit_quantity = current_assetportfolio.govbonds[i].nr_units - (prescribed_assetportfolio.govbonds[i].nr_units * multfactor);
+        limit_quantity = current_assetportfolio->array[i]->govbonds_nr_units - (prescribed_assetportfolio->array[i]->govbonds_nr_units * multfactor);
 
     /* Sending Limit Order Messages to the AssetMarketAgent */
-        add_gov_bond_order_message(household_id, gov_id, limit_price, limit_quantity);
+        add_gov_bond_order_message(household_id, gov_id, limit_price, limit_quantity,range,x,y,z);
     }
 
     return 0;

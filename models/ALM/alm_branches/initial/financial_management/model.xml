@@ -56,11 +56,17 @@
 <name>PublicClassifierSystem</name>
 <desc>Datatype for the central classifier system. !Subject to change!</desc>
 <!-- Arrays with rule measures -->
-<var><!--This is the user counter for each rule--><type>int_array[NrTotalRules]</type><name>counter</name>
+<var><!--This is the user counter for each rule Mariam: removed the array[NRRules], using dynamic array-->
+<type>int_array</type><name>counter</name>
 </var>
-<var><!--This is the performance for each rule--><type>double_array[NrTotalRules]</type><name>performance</name>
+<var><!--This is the performance for each rule Mariam: removed the array[NRRules], using dynamic array-->
+<type>double_array</type><name>performance</name>
 </var>
-<var><!--This is the average performance for each rule--><type>double_array[NrTotalRules]</type><name>avgperformance</name>
+<var><!--This is the average performance for each rule Mariam: removed the array[NRRules], using dynamic array-->
+<type>double_array</type><name>avgperformance</name>
+</var>
+<var><!--This is the average performance for each rule Mariam: removed the array[NRRules], using dynamic array-->
+<type>double_array</type><name>performance_history</name>
 </var>
 </datatype>
 
@@ -68,23 +74,47 @@
 <name>PrivateClassifierSystem</name>
 <desc>Datatype for the private classifier system inside each agent.  !Subject to change!</desc>
 <!--General data for the rule system--><var>
-	<!--Array holding the IDs of the rules in this CS (may differ per agent)--><type>int_array[NrTotalRules]</type>
-	<name>ids</name>
+	<!--Array holding the IDs of the rules in this CS (may differ per agent) Mariam: removed the array[NRRules], using dynamic array-->
+	<type>int_array</type>	<name>ids</name>
 </var>
 	<var><!--This is the experience variable for EWA learning--><type>double</type><name>experience</name>
 	</var>
 <var><type>int</type><name>current_rule</name></var>
 <!-- Arrays with rule measures -->
 <var><type>double</type><name>my_performance</name></var>
-<var><type>double_array[NrTotalRules]</type><name>avgperformance</name></var>
-<var><type>double_array[NrTotalRules]</type><name>attraction</name></var>
-<var><type>double_array[NrTotalRules]</type><name>choiceprob</name></var>
+<var><!--Mariam: removed the array[NrTotalRules], using dynamic array-->
+<type>double_array</type><name>avgperformance</name>
+</var>
+<var><!--Mariam: removed the array[NrTotalRules], using dynamic array-->
+<type>double_array</type><name>attraction</name></var>
+<var><!--Mariam: removed the array[NrTotalRules], using dynamic array-->
+<type>double_array</type><name>choiceprob</name></var>
+<var><type>int</type><name>nr_selected_rule</name></var><!--Do we need an array here?-->
+
 </datatype>
 
 <datatype>
 <name>AssetPortfolioType</name>
 <desc>AssetportfolioType structs are used by the Household</desc> <!--What are the variables for asset portfolio?-->
 <var><type>int</type>performance_history</var>
+<var><type>int_array</type>firmstocks</var>
+<var><type>int_array</type>firm_id</var>
+<var><type>double_array</type>current_price</var>
+<var><type>double_array</type>best_ask_price</var>
+<var><type>double_array</type>best_bid_price</var>
+<var><type>double_array</type>nr_units</var>
+<var><type>int_array</type>firmbonds</var>
+<var><type>int_array</type>firmbonds_firm_id</var>
+<var><type>double_array</type>firmbonds_current_price</var>
+<var><type>double_array</type>firmbonds_best_ask_price</var>
+<var><type>double_array</type>firmbonds_best_bid_price</var>
+<var><type>double_array</type>firmbonds_nr_units</var>
+<var><type>int_array</type>govbonds</var>
+<var><type>int_array</type>govbonds_gov_id</var>
+<var><type>double_array</type>govbonds_current_price</var>
+<var><type>double_array</type>govbonds_best_ask_price</var>
+<var><type>double_array</type>govbonds_best_bid_price</var>
+<var><type>double_array</type>govbonds_nr_units</var>
 </datatype>
 </environment>
 
@@ -96,10 +126,20 @@
 
 <memory>
 <var><type>int</type><name>household_id</name></var>
-<var><type>PrivateClassifierSystem</type><name>agent_classifiersystem</name></var><var><type>double</type><name>asset_budget</name></var>
+<var><type>PrivateClassifierSystem</type><name>agent_classifiersystem</name></var>
+<var><type>double</type><name>asset_budget</name></var>
 
 <var><type>AssetPortfolioType</type><name>current_assetportfolio</name></var>
+<var><type>AssetPortfolioType</type><name>prescribed_assetportfolio</name></var>
 
+<var><type>int</type><name>nr_selected_rule</name></var>
+<var><type>double</type><name>current_rule_performance</name></var>
+<var><type>double</type><name>EWA_rho</name></var>
+<var><type>double</type><name>EWA_phi</name></var>
+<var><type>double</type><name>EWA_delta</name></var>
+<var><type>double</type><name>EWA_beta</name></var>
+<var><type>double</type><name>prescribed_asset_value</name></var>
+<var><type>double</type><name>asset_budget</name></var>
 <var><type>double</type><name>iradius</name></var>
 <var><type>double</type><name>posx</name></var>
 <var><type>double</type><name>posy</name></var>
@@ -378,9 +418,8 @@ var><type>double</type><name>total_financial_needs</name></var>
 <!-- All variables used by FinancialAdvisor are declared here to allocate them in memory -->
 <memory>
 
-<var>
-	<type>PublicClassifierSystem</type>
-	<name>central_classifiersystem</name></var><var><type>double</type><name>iradius</name></var>
+<var><type>PublicClassifierSystem</type>	<name>central_classifiersystem</name></var>
+<var><type>double</type><name>iradius</name></var>
 <var><type>double</type><name>posx</name></var>
 <var><type>double</type><name>posy</name></var>
 	
@@ -433,41 +472,12 @@ var><type>double</type><name>total_financial_needs</name></var>
 </message>
 
 <message>
-<name>FirmBondOrders</name>
-<note></note>
-
-<var><type>double</type><name>range</name></var>
-<var><type>double</type><name>x</name></var>
-<var><type>double</type><name>y</name></var>
-<var><type>double</type><name>z</name></var>
-
-</message>
-
-<message>
-<name>FirmStockOrders</name>
-<note></note>
-
-<var><type>double</type><name>range</name></var>
-<var><type>double</type><name>x</name></var>
-<var><type>double</type><name>y</name></var>
-<var><type>double</type><name>z</name></var>
-
-</message>
-
-<message>
-<name>GovernmentBondOrders</name>
-<note></note>
-
-<var><type>double</type><name>range</name></var>
-<var><type>double</type><name>x</name></var>
-<var><type>double</type><name>y</name></var>
-<var><type>double</type><name>z</name></var>
-
-</message>
-
-<message>
-<name>FirmBondTransaction</name>
-<note></note>
+<name>firm_bond_orders</name>
+<note>Added by household after asset portfolio calculated</note>
+<var><type>int</type><name>household_id</name></var>
+<var><type>int</type><name>firm_id</name></var>
+<var><type>double</type><name>limit_price</name></var>
+<var><type>double</type><name>limit_quantity</name></var>
 <var><type>double</type><name>range</name></var>
 <var><type>double</type><name>x</name></var>
 <var><type>double</type><name>y</name></var>
@@ -475,8 +485,12 @@ var><type>double</type><name>total_financial_needs</name></var>
 </message>
 
 <message>
-<name>FirmStockTransaction</name>
-<note></note>
+<name>firm_stock_order</name>
+<note>Added by household after asset portfolio calculated</note>
+<var><type>int</type><name>household_id</name></var>
+<var><type>int</type><name>firm_id</name></var>
+<var><type>double</type><name>limit_price</name></var>
+<var><type>double</type><name>limit_quantity</name></var>
 <var><type>double</type><name>range</name></var>
 <var><type>double</type><name>x</name></var>
 <var><type>double</type><name>y</name></var>
@@ -484,7 +498,59 @@ var><type>double</type><name>total_financial_needs</name></var>
 </message>
 
 <message>
-<name>Rule_performance</name>
+<name>gov_bond_order</name>
+<note>Added by household after asset portfolio calculated</note>
+<var><type>int</type><name>household_id</name></var>
+<var><type>int</type><name>gov_id</name></var>
+<var><type>double</type><name>limit_price</name></var>
+<var><type>double</type><name>limit_quantity</name></var>
+<var><type>double</type><name>range</name></var>
+<var><type>double</type><name>x</name></var>
+<var><type>double</type><name>y</name></var>
+<var><type>double</type><name>z</name></var>
+</message>
+
+<message>
+<name>firm_bond_transaction</name>
+<note>Added by clearinghousemechanism</note>
+<var><type>int</type><name>household_id</name></var>
+<var><type>int</type><name>firm_id</name></var>
+<var><type>double</type><name>transaction_price</name></var>
+<var><type>double</type><name>transaction_quantity</name></var>
+<var><type>double</type><name>range</name></var>
+<var><type>double</type><name>x</name></var>
+<var><type>double</type><name>y</name></var>
+<var><type>double</type><name>z</name></var>
+</message>
+
+<message>
+<name>gov_bond_transaction</name>
+<note>Added by clearinghousemechanism</note>
+<var><type>int</type><name>household_id</name></var>
+<var><type>int</type><name>gov_id</name></var>
+<var><type>double</type><name>transaction_price</name></var>
+<var><type>double</type><name>transaction_quantity</name></var>
+<var><type>double</type><name>range</name></var>
+<var><type>double</type><name>x</name></var>
+<var><type>double</type><name>y</name></var>
+<var><type>double</type><name>z</name></var>
+</message>
+
+<message>
+<name>firm_stock_transaction</name>
+<note>Added by clearinghousemechanism</note>
+<var><type>int</type><name>household_id</name></var>
+<var><type>int</type><name>firm_id</name></var>
+<var><type>double</type><name>transaction_price</name></var>
+<var><type>double</type><name>transaction_quantity</name></var>
+<var><type>double</type><name>range</name></var>
+<var><type>double</type><name>x</name></var>
+<var><type>double</type><name>y</name></var>
+<var><type>double</type><name>z</name></var>
+</message>
+
+<message>
+<name>rule_performance</name>
 <note>Message sent my household to tell the FA agent of the rule performance</note>
 <var><type>int</type><name>nr_selected_rule</name></var>
 <var><type>double</type><name>rule_performance</name></var>
@@ -507,6 +573,17 @@ var><type>double</type><name>total_financial_needs</name></var>
 <message>
 <name>rule_details_request</name>
 <note>Household requests for details</note>
+<var><type>int</type><name>household_id</name></var>
+<var><type>int</type><name>selected_rule_number</name></var>
+<var><type>double</type><name>range</name></var>
+<var><type>double</type><name>x</name></var>
+<var><type>double</type><name>y</name></var>
+<var><type>double</type><name>z</name></var>
+</message>
+
+<message>
+<name>rule_details</name>
+<note>FA adds rule details</note>
 <var><type>int</type><name>household_id</name></var>
 <var><type>int</type><name>selected_rule_number</name></var>
 <var><type>double</type><name>range</name></var>

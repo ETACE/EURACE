@@ -73,9 +73,9 @@ int Clearinghouse_read_order_messages()
 
 /* 5. Sending back transactions messages*/
 
-    add_firm_stock_transaction_message(household_id, firm_id, transaction_price, transaction_quantity);
-    add_firm_bond_transaction_message(household_id, firm_id, transaction_price, transaction_quantity);
-    add_gov_bond_transaction_message(household_id, gov_id, transaction_price, transaction_quantity);
+    add_firm_stock_transaction_message(household_id, firm_id, transaction_price, transaction_quantity,range,x,y,z);
+    add_firm_bond_transaction_message(household_id, firm_id, transaction_price, transaction_quantity,range,x,y,z);
+    add_gov_bond_transaction_message(household_id, gov_id, transaction_price, transaction_quantity,range,x,y,z);
 
     return 0;
 }
