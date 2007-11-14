@@ -24,13 +24,29 @@ int reset_private_classifiersystem()
 
 	for (i=0; i<NrRules; i++)
 	{
-		classifiersystem->avgperformance[i]=0;
-		classifiersystem->attraction[i]=0;
-		classifiersystem->choiceprob[i]=0;
+	
+		classifiersystem->array[i]->avgperformance=0;
+		classifiersystem->array[i]->attraction=0;
+		classifiersystem->array[i]->choiceprob=0;
 	}
 
 //Setting values to memory:
 
 
+//Using the capitalisation method to access memory values directly
+//Resetting and storing in memory in one go:
+	CLASSIFIERSYSTEM->experience =0;
+	CLASSIFIERSYSTEM->current_rule=0;
+	CLASSIFIERSYSTEM->my_performance=0;
+
+	for (i=0; i<NrRules; i++)
+	{
+	
+		CLASSIFIERSYSTEM->array[i]->avgperformance=0;
+		CLASSIFIERSYSTEM->array[i]->attraction=0;
+		CLASSIFIERSYSTEM->array[i]->choiceprob=0;
+	}
+
     return 0;
 }
+
