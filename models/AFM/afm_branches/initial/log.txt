@@ -3,6 +3,7 @@ Description:
 This file contains details of various changes made to the different versions.
 *************************************/
 
+--------------------------------------------------------------
 Mariam, revision:415 
 libraryfunctions.c           Added random_no function to libraryfunctions
 libraryheader.h              added its prototype to 
@@ -26,5 +27,5 @@ Household_ewa_functions.c		Sander: check code household_ewafunctions:
 						If performance is an array line 55 should be performance[i]
 
 FAewafunctions.c			I think line 104 in FA functions is wrong please check
-				
+--------------------------------------------------------------------------------------				
 
