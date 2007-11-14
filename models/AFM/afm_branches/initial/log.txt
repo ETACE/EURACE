@@ -1,6 +1,30 @@
 /***********************************
-			Description
+Description: 
+This file contains details of various changes made to the different versions.
 *************************************/
 
+Mariam, revision:415 
+libraryfunctions.c           Added random_no function to libraryfunctions
+libraryheader.h              added its prototype to 
 
-This file contains details of various changes made to the different versions.
+model.xml                    modified privateclassifiersystem datastructure
+				added message firm_stock_order
+				PROBLEM i think we need a seperate struct for firm bonds? or can we incorporate all in one.
+				PROBLEM need one for gov bonds too
+				added firm_bond_order message
+				added firm_stock_order message
+				added gov_bond_order message
+				added firm_stock_transaction message
+				added firm_bond_transaction message
+				added gov_bond_transaction message
+				Household agent memory:		we need another asset portfolio struct here!
+										is classifier system struct containing an asset portfolio struct?
+										function line 208 in household functions is related to this problem .. left for later checking
+				
+
+Household_ewa_functions.c		Sander: check code household_ewafunctions:
+						If performance is an array line 55 should be performance[i]
+
+FAewafunctions.c			I think line 104 in FA functions is wrong please check
+				
+

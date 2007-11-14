@@ -12,3 +12,13 @@
 #define EmptyAssetPortfolio  {DEFINITION}
 
 #define NRRULES  
+//for messages
+#define range
+#define x
+#define y
+#define z
+
+
+
+/** function prototypes */
+double random_no();
