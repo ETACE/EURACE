@@ -12,10 +12,25 @@
 
 int calc_rule_performance(current_assetportfolio.performance_history)
  double set_limit_price(current_price, best_ask_price, best_bid_price);
+ 
 /** \fn double random_unif()
- * \brief Returns a random number between 0 and 1 (inclusive) according to the uniform distribution.
+ * \brief Uniformly distributed random numbers, chosen from
+    a uniform distribution on the interval (0.0,1.0).
  */
 double random_unif()
 {
     return ((double)rand()/(double)RAND_MAX);
 }
+
+/** \fn double random_norm()
+ * \brief Normally distributed random numbers, chosen from
+    a normal distribution with mean zero, variance one and standard
+    deviation one.
+ */
+double random_norm()
+{
+
+	//*****CODE*****
+    return ();
+}
+ 

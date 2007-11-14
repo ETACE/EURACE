@@ -82,7 +82,8 @@
 </var>
 	<var><!--This is the experience variable for EWA learning--><type>double</type><name>experience</name>
 	</var>
-<var><type>int</type><name>current_rule</name></var>
+<var><!--Current rule in use by the agent--><type>int</type><name>current_rule</name>
+</var>
 <!-- Arrays with rule measures -->
 <var><type>double</type><name>my_performance</name></var>
 <var><!--Mariam: removed the array[NrTotalRules], using dynamic array-->
@@ -92,33 +93,26 @@
 <type>double_array</type><name>attraction</name></var>
 <var><!--Mariam: removed the array[NrTotalRules], using dynamic array-->
 <type>double_array</type><name>choiceprob</name></var>
-<var><type>int</type><name>nr_selected_rule</name></var><!--Do we need an array here?-->
 
 </datatype>
-
 <datatype>
-<name>AssetPortfolioType</name>
-<desc>AssetportfolioType structs are used by the Household</desc> <!--What are the variables for asset portfolio?-->
-<var><type>int</type>performance_history</var>
-<var><type>int_array</type>firmstocks</var>
-<var><type>int_array</type>firm_id</var>
-<var><type>double_array</type>current_price</var>
-<var><type>double_array</type>best_ask_price</var>
-<var><type>double_array</type>best_bid_price</var>
-<var><type>double_array</type>nr_units</var>
-<var><type>int_array</type>firmbonds</var>
-<var><type>int_array</type>firmbonds_firm_id</var>
-<var><type>double_array</type>firmbonds_current_price</var>
-<var><type>double_array</type>firmbonds_best_ask_price</var>
-<var><type>double_array</type>firmbonds_best_bid_price</var>
-<var><type>double_array</type>firmbonds_nr_units</var>
-<var><type>int_array</type>govbonds</var>
-<var><type>int_array</type>govbonds_gov_id</var>
-<var><type>double_array</type>govbonds_current_price</var>
-<var><type>double_array</type>govbonds_best_ask_price</var>
-<var><type>double_array</type>govbonds_best_bid_price</var>
-<var><type>double_array</type>govbonds_nr_units</var>
+<name>AssetPortfolio</name>
+<desc>Assetportfolio structs are used by the Household</desc><!--After performance_history there should be 3 structs, one for firm bonds, firm stocks, and gov bonds--><!--In each struct we have dynamic arrays: ids, nr_units, current_price, best_ask_price, best_bid_price-->
+	<var><type>double_array</type>
+	<name>performance_history</name></var>
+	<var><type>AssetStruct</type><name>firm_stocks</name></var>
+	<var><type>AssetStruct</type><name>firm_bonds</name></var>
+	<var><type>AssetStruct</type><name>gov_bonds</name></var>
 </datatype>
+<datatype>
+	<name>AssetStruct</name>
+	<desc>Datatype for asset structures</desc>
+	<var><type>int_array</type><name>ids</name></var>
+	<var><type>int_array</type><name>nr_units</name></var>
+	<var><type>double_array</type><name>current_price</name></var>
+	<var><type>double_array</type><name>best_ask_price</name></var>
+	<var><type>double_array</type><name>best_bid_price</name></var>
+</datatype>	
 </environment>
 
 <!--********************* X-machine Agent - Household ****************************-->
