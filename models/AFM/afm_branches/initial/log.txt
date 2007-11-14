@@ -21,11 +21,31 @@ model.xml                    modified privateclassifiersystem datastructure
 				Household agent memory:		we need another asset portfolio struct here!
 										is classifier system struct containing an asset portfolio struct?
 										function line 208 in household functions is related to this problem .. left for later checking
-				
+
 
 Household_ewa_functions.c		Sander: check code household_ewafunctions:
 						If performance is an array line 55 should be performance[i]
 
 FAewafunctions.c			I think line 104 in FA functions is wrong please check
 --------------------------------------------------------------------------------------				
+Sander, rev 417
+libraryfunctions.c       Renamed random_no to random_unif, so we can add random_norm for the normal distribution later.
 
+ 
+Household_ewa_functions.c
+				line 208:function Household_read_rule_details_message is redundant
+						 asset portfolio struct is separate from classifier system struct
+
+				line 55: performances is the vector coming from the message, not the same as the performance[NrRules] dynamic array
+						 but we need to copy the values from performances[i] into performance[i].
+						 Renamed the local variable performances into: all_rule_performances
+						 to avoid confusion with the message variable performances.
+
+				line 72: Why would the household need to read multiple all_performances_messages?
+						 This code is here just for generality.
+						 
+FAewafunctions.c
+				lines 91-112 Code can be removed. Rule details are to be stored in a separate struct similar to classifiersystem.
+							 This should again be a Private struct, in eacg agents memory. This will cause memory overhead, 
+							 but this is better than messages.
+--------------------------------------------------------------------------------------				
