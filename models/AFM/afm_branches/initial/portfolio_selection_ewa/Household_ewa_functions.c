@@ -28,8 +28,12 @@ int Household_send_rule_performance_message()
     //since performance is computed as a time-average of capital gains obtained by the
     //current financial investment strategy. 
     
-    rule_performance = calc_rule_performance(current_assetportfolio->performance_history);
-    add_rule_performance_message(nr_selected_rule, rule_performance,range, x, y, z);
+    //rule_performance = calc_rule_performance(current_assetportfolio->performance_history);
+    
+    //Random performance (uses the function random_no() from financial_management.c)
+    rule_performance = random_no()*100;
+    
+    add_rule_performance_message(nr_selected_rule, rule_performance, range, x, y, z);
 
     return 0;
 }
