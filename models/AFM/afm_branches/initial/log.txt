@@ -52,6 +52,19 @@ FAewafunctions.c
 Mariam, rev420
 Added model-ewa.xml file 	trying to run parser on present ewa code.
 Moved model.xml to folder portfolio_slection_ewa... This was unnecessary could be moved back
+--------------------------------------------------------------------------------------
+Sander, rev 424
 
+model.xml
+				line 62: "comment: removed the array[NrTotalRules], using dynamic array"
+						 Do we not need to tell here what will be the size of the dynamic array?
+				
+				line 96: Removed nr_selected_rule: current_rule gets assigned the value nr_selected_rule
+						 after this has been determined by the rule selection mechanism.
+						
+				line 99: Changed datatype AssetPortfolio
 
-------------------------------------------------------------
+				line 107: New datatype AssetStruct
+				Do new datatypes have to be declared in xml before they can be used in another datatype?
+				Or is the order irrelevant?
+--------------------------------------------------------------------------------------

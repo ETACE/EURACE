@@ -2,13 +2,11 @@ int reset_private_classifiersystem()
 {
     PrivateClassifierSystem classifiersystem=get_classifiersystem();
 
-//Getting the size of the system:
+	//Getting the size of the system:
 	NrTotalRules=classifiersystem->double_ids_dynamic_array->size;
+	NrTotalRules=classifiersystem->array[]->ids->size;
 
-//Or is it:
-//	NrTotalRules=double_(classifiersystem->ids)_dynamic_array->size;
-
-//First declare local vars:
+	//First declare local vars:
     int_array[NrTotalRules] 	ids;
     double						experience;
     int							current_rule;
@@ -17,7 +15,7 @@ int reset_private_classifiersystem()
     double_array[NrTotalRules] 	attraction;
     double_array[NrTotalRules] 	choiceprob;
     
-//Resetting:
+	//Resetting:
 	classifiersystem->experience =0;
 	classifiersystem->current_rule=0;
 	classifiersystem->my_performance=0;
@@ -30,18 +28,14 @@ int reset_private_classifiersystem()
 		classifiersystem->array[i]->choiceprob=0;
 	}
 
-//Setting values to memory:
-
-
-//Using the capitalisation method to access memory values directly
-//Resetting and storing in memory in one go:
+	//Resetting and storing values to memory:
+	//Using the capitalisation method to access memory values directly
 	CLASSIFIERSYSTEM->experience =0;
 	CLASSIFIERSYSTEM->current_rule=0;
 	CLASSIFIERSYSTEM->my_performance=0;
 
 	for (i=0; i<NrRules; i++)
 	{
-	
 		CLASSIFIERSYSTEM->array[i]->avgperformance=0;
 		CLASSIFIERSYSTEM->array[i]->attraction=0;
 		CLASSIFIERSYSTEM->array[i]->choiceprob=0;
@@ -50,3 +44,33 @@ int reset_private_classifiersystem()
     return 0;
 }
 
+int reset_public_classifiersystem()
+{
+    PublicClassifierSystem classifiersystem=get_classifiersystem();
+
+	//Getting the size of the system:
+	NrTotalRules=classifiersystem->double_ids_dynamic_array->size;
+	NrTotalRules=classifiersystem->array[]->ids->size;
+
+	//First declare local vars:
+    int_array[NrTotalRules] 	ids;
+    double_array[NrTotalRules]	performance;
+    double_array[NrTotalRules] 	avgperformance;
+    
+	//Resetting:
+	for (i=0; i<NrRules; i++)
+	{
+		classifiersystem->array[i]->performance=0;
+		classifiersystem->array[i]->avgperformance=0;
+	}
+
+	//Resetting and storing values to memory:
+	//Using the capitalisation method to access memory values directly
+	for (i=0; i<NrRules; i++)
+	{
+		CLASSIFIERSYSTEM->array[i]->performance=0;	
+		CLASSIFIERSYSTEM->array[i]->avgperformance=0;
+	}
+
+    return 0;
+}
