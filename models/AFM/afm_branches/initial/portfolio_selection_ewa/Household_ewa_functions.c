@@ -44,7 +44,7 @@ int Household_send_rule_performance_message()
 /* Household reads the message from FA agent with all rule performances. */
 int Household_reads_all_performances_messages()
 {
- 	double performances[NRRULES];
+ 	double all_rule_performances[NRRULES];
     PrivateClassifierSystem * classifiersystem = get_agent_classifiersystem();
     int nr_selected_rule = classifiersystem->nr_selected_rule;
   
@@ -52,7 +52,7 @@ int Household_reads_all_performances_messages()
   while(all_performances_message)
   {
     /* Read the message: */
-     performances = all_performances_message->performances;
+     all_rule_performances = all_performances_message->performances;
 
     /* Store in memory: */
     for (i=0; i<NRRULES; i++)
@@ -62,7 +62,7 @@ int Household_reads_all_performances_messages()
  	 // So this is the array with the performances of ALL rules
  	 // Can we copy arrays instantaneously? I thought we need to loop over the elements. 
  	  
- 	 classifiersystem->performance[i] = performances[i]; //code for dynamic arrays, copies the elements one by one
+ 	 classifiersystem->performance[i] = all_rule_performances[i]; //code for dynamic arrays, copies the elements one by one
 	
 	}
 

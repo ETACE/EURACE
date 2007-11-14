@@ -87,28 +87,3 @@ int FinancialAgent_update_classifiersystem(int nr_selected_rule, double rule_per
      
   return 0;
 }
-
-//********************* REDUNDANT CODE********************
-/* DEP: The FA reads the rule_details_request_message. This is a private message. */
-/* DEP: The FA sends a message with the exact details of the selected rule.*/
- int FinancialAgent_read_rule_details_request_message()
- {
-   rule_details_request_message = get_first_rule_details_request_message();
-   while(rule_details_request_message)
-   {
-     /*Read the message: */
-      int selected_rule_number = rule_details_request_message->selected_rule_number;
-      int household_id = rule_details_request_message->household_id;
-  
-     /* FA agent sends back a message with the requested details: */ 
-      add_rule_details_message(household_id, classifiersystem[selected_rule_number].prescribed_assetportfolio, classifiersystem[selected_rule_number].prescribed_asset_value, range, x, y, z);
-  
-     /* Move on to process the next rule_details_request_message: */
-      rule_details_request_message = get_next_rule_details_request_message(rule_details_request_message);
-   }
-
-  return 0;
-}
-//********************* END REDUNDANT CODE********************
-
- 
