@@ -79,7 +79,12 @@ int Household_reads_all_performances_messages()
 
 
 /* STEP 3. Select a rule.*/
-/* Household compares rules, selects a rule according to some internal selection mechanism. */
+
+/* Household_select_rule()
+ * Household compares rules, selects a rule according to internal selection mechanism.
+ * Retrieve rule details, Apply rule. 
+ */
+
 int Household_select_rule()
 {
     int household_id=get_household_id();
@@ -87,20 +92,26 @@ int Household_select_rule()
     int selected_rule_number=0;    
     
     // Comparison of the rule performances and computation of selected_rule_number
-    // {C-CODE}: EWA Learning
-    Household_EWA_learning_rule();
+    Household_EWA_learning();
 
-// ************************** START CODE SNIPPET ****************************
-    /*Send a request for details of the selected rule: */
-    add_rule_details_request_message(household_id, selected_rule_number, range, x, y, z);    
-// ************************** END CODE SNIPPET ****************************
+	//Retrieve rule details
+	Household_retrieve_rule_details()
 
-
+	//Apply rule
+	Household_apply_rule();
+	
     return 0;
 }
 
-
-int Household_EWA_learning_rule()
+/* Household_EWA_learning()
+ * updates attractions
+ * updates choice probabilities
+ * selects a new rule
+ * outputs the selected rule to memory
+ * outputs the new classifier system to memory
+ */
+ 
+int Household_EWA_learning()
 {
 
     PrivateClassifierSystem * agent_classifiersystem= get_agent_classifiersystem();
@@ -143,7 +154,7 @@ int Household_EWA_learning_rule()
         //Set the attractions in the DBclassifiersystem:
         agent_classifiersystem->attraction[j] = attraction[j];
     }
-//Computing the choice probabilities: multi-logit
+	//Computing the choice probabilities: multi-logit
     double sum_attr = 0;
     for (j=0;j++;j<NRRULES)
     {
@@ -203,33 +214,61 @@ int Household_EWA_learning_rule()
     return 0;
 }
 
-/* STEP 4. Apply the selected rule.*/
- /*The household uses the details of the selected rule to compute its new asset allocation.
+/* Household_retrieve_rule_details()
+ * HERE: Copying the selected rule details to the appropriate memory variables of the household.
+ */
+int Household_retrieve_rule_details()
+{
+	#include <string.h>
+	//To use: 	char *strcat( char *str1, const char *str2 );
+	//			char *strcpy( char *to, const char *from );
+
+
+
+	//Does this work in this way?
+	PrivateClassifierSystem classifiersystem=CLASSIFIERSYSTEM;
+
+	double* param_vector;
+	char*	functioncall; 
+	int	imax;
+	char* str, new_str, param_vector_as_string;
+	
+	//Rule details:
+	//The name of the rule
+	functioncall = classifiersystem->array[i]->rule_execution
+
+	//Parameters: retrieve the list of parameter values for the current rule
+	param_vector = classifiersystem->array[i]->parameters;
+
+	//Convert param_vector to string
+	imax = param_vector->size;
+	str="\0"; 			//empty, null-terminated string
+	for (i=0;i<imax;i++)
+	{
+		new_str = sprintf('%s,%f',str,param_vector->array[i]);
+		strcpy(str, new_str);	
+	}
+	strcpy(param_vector_as_string,new_str);
+	
+//**********WARNING: SERIOUSLY BAD CODING BELOW******************
+	//Execute the rule's functioncall, with the appropriate parameter setting
+	sprintf('%s(%s)',functioncall, param_vector_as_string);
+
+    return 0;
+}
+
+
+ /* STEP 4. Apply the selected rule.
+ *The household uses the details of the selected rule to compute its new asset allocation.
  * It assigns its asset_budget to firm stocks, firm bonds and government bonds, according to the rule's
  * prescribed asset portfolio. To determine the households target portfolio, we need to take the 
  * difference between the current_assetportfolio and prescribed_assetportfolio. This is done later. 
  * If the prescribed_portfolio is based on a prescribed_asset_value then  we have to multiply the units
  * in the prescribed_portfolio by: asset_budget/prescribed_asset_value.
- *
- 
-/*
- * HERE: Copying the selected rule details to the appropriate memory variables of the household.
  */
-int Household_retrieve_rule_details()
-{
 
-//Rule details:
-	//The name of the rule
-	char_array *   char_functioncall_dynamic_array   = get_char_functioncall_dynamic_array();
-
-	//Parameters:
-	
-
-    return 0;
-}
-
-/*
- * HERE: To compute the actual limit_orders we need to apply the rule to obtain the prescribed_assetportfolio.
+/* Household_apply_selected_rule()
+ * To compute the actual limit_orders we need to apply the rule to obtain the prescribed_assetportfolio.
  */
 int Household_apply_selected_rule()
 {

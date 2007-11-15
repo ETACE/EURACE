@@ -100,7 +100,7 @@ int initialize_ruledetailsystem()
 	//Local vars:
 	int[NRRULES] 		id;
 	int[NRRULES]		nr_params;
-	double**			parameter; 			//parameter[NRRULES][MAX_PARAMS];
+	double**			parameters;			//parameter[NRRULES][MAX_PARAMS];
 	
 	char**				rule_execution;	    //rule_execution[NRRULES]
 	int[NRRULES]		rule_type;			//rule_type[NRRULES]
@@ -133,21 +133,24 @@ int initialize_ruledetailsystem()
 		//Filling the just added double_array parameter[i] with the parameter values of rule i
 		for (j=0; j<nr_params[i]; j++)
 		{
-			//Filling the parameter[i][j]
+			//Filling the parameters[i][j]
 			//A random value is chosen from the parameter resolution given by:
 			//[p0:dp:p1] where dp is the step size.
 				
-			par_res = (p1[i]-p0[i])/dp[i]; //total posibilities
+			par_res = (p1[i]-p0[i])/dp[i]; //total possibilities
 			k=rand_unif();
 			m=floor(k*par_res); //random uniform in [0,par_res]	
 	
 			//Can we add a double directly inside the function add_double?
+			add_double(parameters[i][j], p0[i] + m*dp[i]);		
+
 			//param_value = p0[i] + m*dp[i];
-			add_double(parameter[i][j], p0[i] + m*dp[i]);		
+			//add_double(parameters[i][j], param_value);
+
 		}		
 
 		//rule_execution
-		//First possibility: we test which functionname the rule has
+		//First possibility: we test which function name the rule has
 		rule_execution[i]=sprintf('my_function_names[%d]', rule_type[i]);
 	}
 
