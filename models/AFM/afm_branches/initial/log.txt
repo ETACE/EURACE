@@ -89,3 +89,10 @@ Household_ewa_functions.c
 model.xml
 				line 64: Added datatype RuleDetailSystem
 --------------------------------------------------------------------------------------
+Mariam, rev 428
+
+model-ewa.xml	made changes in order to test the outputs of the ewa functions only.
+				tested with parser. Outputs added. also did one change in household functions removed a comma
+dgraph.eps		added 	
+dgraph.svg		added
+----------------------------------------------------------------------
