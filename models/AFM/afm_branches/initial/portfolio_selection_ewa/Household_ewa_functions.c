@@ -100,7 +100,7 @@ int Household_select_rule()
 }
 
 
-int Household_EWA_learning_rule();
+int Household_EWA_learning_rule()
 {
 
     PrivateClassifierSystem * agent_classifiersystem= get_agent_classifiersystem();
