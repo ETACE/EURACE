@@ -109,3 +109,16 @@ model.xml
 some_new_functions.c
 		line 78 Added function initialize_ruledetailsystem()
 --------------------------------------------------------------------------------------
+Sander, rev 431
+
+General:
+Made links between functions. This should produce a new dgraph more like
+Portfolio_selection_algorithm_version3.eps
+
+Household_ewa_functions.c
+		line 220
+				Added function Household_retrieve_rule_details()
+				Tried to code a rule's executing function call using strcpy().
+				This should correspond to how the function names are initialized in
+				some_new_functions.c, line 154: initialize_ruledetailsystem()
+--------------------------------------------------------------------------------------		
