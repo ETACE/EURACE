@@ -42,36 +42,53 @@
 <name>DBFinancialAssets</name>
 <desc></desc>
 </datatype>
+
+<datatype>
+<name>string</name>
+<var><type>char_array</type><name>stringname</name></var>
+</datatype>
+
+<datatype>
+ <name>stringlist</name>
+ <var><type>string_array</type><name>stringlistname</name></var>
+</datatype>
+
+<datatype>
+ <name>word</name>
+ <var><type>char_array</type><name>wordname</name></var>
+</datatype>
+
+<datatype>
+ <name>wordlist</name>
+ <var><type>word_array</type><name>wordlistname</name></var>
+</datatype>
+
+<datatype>
+<name>int2D_array</name>
+<var><type>int**</type><name>int2Dname</name></var>
+</datatype>
+
+<datatype>
+<name>double2D_array</name>
+<var><type>double**</type><name>double2Dname</name></var>
+</datatype>
+
 <datatype>
 <name>RuleDetailSystem</name>
 <desc>Datatype for all rule details.  !Subject to change!</desc>
-<var><type>int_array</type><name>ids</name></var>
-<!--Here we would need a double_array for each parameter. Hence: a dynamic array of double_arrays!--><!--We do not know beforehand how many parameters there are in the rules, but we can set an upper limit to 10.-->
-	<!--Such that it is possible to do: function(parameter[1][id], parameter[2][id], parameter[3][id], parameter[4][id], parameter[5][id])--><var>
+	<!--Such that it is possible to do: function(parameter[1][id], parameter[2][id], parameter[3][id], parameter[4][id], parameter[5][id])--><var><!--int_array id[NRRULES]: ids for each rule (id[0]...id[NRRULES-1])--><type>int_array</type><name>id</name>
+</var>
+	<var>
+		<!--int_array nr_params[NRRULES]: nr. of parameters for each rule--><type>int_array</type><name>nr_params</name>
+	</var>
+	<var><!--double parameter[NRRULES][MAX_PARAMS]-->
+	<!--parameter[i] is a double_array containing the parameter settings for rule i.--><!--Here we would need a double_array for each parameter. Hence: a dynamic array of double_arrays!--><!--We do not know beforehand how many parameters there will be for each rule, but we can set an upper limit to MAX_PARAMS.--><!--Does this have to be a constant or can it be a global parameter MAX_PARAMS?-->
 	<type>double_array</type>
-	<name>parameter[10]</name></var>
-	<var>
-		<type>double_array</type>
-		<name>parameter1</name>
-	</var>
-	<var>
-		<type>double_array</type>
-		<name>parameter2</name>
-	</var>
-	<var>
-		<type>double_array</type>
-		<name>parameter3</name>
-	</var>
-	<var>
-		<type>double_array</type>
-		<name>parameter4</name>
-	</var>
-	<var>
-		<type>double_array</type>
-		<name>parameter5</name>
-	</var>
+	<name>parameter[MAX_PARAMS]</name></var>
 
-<!--Here I want to use a string as local variable to contain the function call that applies the rule.--><!--Using the example: char_array *   char_var_dynamic_array   = get_char_var_dynamic_array();--><var><type>char_array</type><name> functioncall</name>
+<var>
+	<!--myfunctionnames[NR_TYPES]--><type>wordlist</type>
+	<name>myfunctionnames</name></var><var><!--rule_execution[NRRULES]--><!--Here I want to use a string to contain the function name that has to be used to apply rule i.--><!--Using the example: char_array *   char_var_dynamic_array   = get_char_var_dynamic_array();--><type>wordlist</type><name>myfunctionnames</name>
 </var>
 </datatype>
 
