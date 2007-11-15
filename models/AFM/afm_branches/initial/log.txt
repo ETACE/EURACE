@@ -9,116 +9,116 @@ libraryfunctions.c           Added random_no function to libraryfunctions
 libraryheader.h              added its prototype to 
 
 model.xml                    modified privateclassifiersystem datastructure
-				added message firm_stock_order
-				PROBLEM i think we need a seperate struct for firm bonds? or can we incorporate all in one.
-				PROBLEM need one for gov bonds too
-				added firm_bond_order message
-				added firm_stock_order message
-				added gov_bond_order message
-				added firm_stock_transaction message
-				added firm_bond_transaction message
-				added gov_bond_transaction message
-				Household agent memory:		we need another asset portfolio struct here!
-										is classifier system struct containing an asset portfolio struct?
-										function line 208 in household functions is related to this problem .. left for later checking
+                added message firm_stock_order
+                PROBLEM i think we need a seperate struct for firm bonds? or can we incorporate all in one.
+                PROBLEM need one for gov bonds too
+                added firm_bond_order message
+                added firm_stock_order message
+                added gov_bond_order message
+                added firm_stock_transaction message
+                added firm_bond_transaction message
+                added gov_bond_transaction message
+                Household agent memory:     we need another asset portfolio struct here!
+                                        is classifier system struct containing an asset portfolio struct?
+                                        function line 208 in household functions is related to this problem .. left for later checking
 
 
-Household_ewa_functions.c		Sander: check code household_ewafunctions:
-						If performance is an array line 55 should be performance[i]
+Household_ewa_functions.c       Sander: check code household_ewafunctions:
+                        If performance is an array line 55 should be performance[i]
 
-FAewafunctions.c			I think line 104 in FA functions is wrong please check
---------------------------------------------------------------------------------------				
+FAewafunctions.c            I think line 104 in FA functions is wrong please check
+--------------------------------------------------------------------------------------              
 Sander, rev 417
 libraryfunctions.c       Renamed random_no to random_unif, so we can add random_norm for the normal distribution later.
 
  
 Household_ewa_functions.c
-				line 208:function Household_read_rule_details_message is redundant
-						 asset portfolio struct is separate from classifier system struct
+                line 208:function Household_read_rule_details_message is redundant
+                         asset portfolio struct is separate from classifier system struct
 
-				line 55: performances is the vector coming from the message, not the same as the performance[NrRules] dynamic array
-						 but we need to copy the values from performances[i] into performance[i].
-						 Renamed the local variable performances into: all_rule_performances
-						 to avoid confusion with the message variable performances.
+                line 55: performances is the vector coming from the message, not the same as the performance[NrRules] dynamic array
+                         but we need to copy the values from performances[i] into performance[i].
+                         Renamed the local variable performances into: all_rule_performances
+                         to avoid confusion with the message variable performances.
 
-				line 72: Why would the household need to read multiple all_performances_messages?
-						 This code is here just for generality.
-						 
+                line 72: Why would the household need to read multiple all_performances_messages?
+                         This code is here just for generality.
+                         
 FAewafunctions.c
-				lines 91-112 Code can be removed. Rule details are to be stored in a separate struct similar to classifiersystem.
-							 This should again be a Private struct, in eacg agents memory. This will cause memory overhead, 
-							 but this is better than messages.
---------------------------------------------------------------------------------------				
+                lines 91-112 Code can be removed. Rule details are to be stored in a separate struct similar to classifiersystem.
+                             This should again be a Private struct, in eacg agents memory. This will cause memory overhead, 
+                             but this is better than messages.
+--------------------------------------------------------------------------------------              
 Mariam, rev420
-Added model-ewa.xml file 	trying to run parser on present ewa code.
+Added model-ewa.xml file    trying to run parser on present ewa code.
 Moved model.xml to folder portfolio_slection_ewa... This was unnecessary could be moved back
 --------------------------------------------------------------------------------------
 Sander, rev 424
 
 model.xml
-				line 62: "comment: removed the array[NrTotalRules], using dynamic array"
-						 Do we not need to tell here what will be the size of the dynamic array?
-				
-				line 96: Removed nr_selected_rule: current_rule gets assigned the value nr_selected_rule
-						 after this has been determined by the rule selection mechanism.
-						
-				line 99: Changed datatype AssetPortfolio
+                line 62: "comment: removed the array[NrTotalRules], using dynamic array"
+                         Do we not need to tell here what will be the size of the dynamic array?
+                
+                line 96: Removed nr_selected_rule: current_rule gets assigned the value nr_selected_rule
+                         after this has been determined by the rule selection mechanism.
+                        
+                line 99: Changed datatype AssetPortfolio
 
-				line 107: New datatype AssetStruct
-				Do new datatypes have to be declared in xml before they can be used in another datatype?
-				Or is the order irrelevant?
+                line 107: New datatype AssetStruct
+                Do new datatypes have to be declared in xml before they can be used in another datatype?
+                Or is the order irrelevant?
 --------------------------------------------------------------------------------------
 Mariam,rev 426
 
 Only answering Sander's query above
-model.xml	line 62: No we dont need to give size for the case of dynamic arrays.
-			line 107: The parser does not allow structs within structs. But Simon says 
-			He could allocate some time in Turkey to accomodate this. But the parser can do this at the moment.
+model.xml   line 62: No we dont need to give size for the case of dynamic arrays.
+            line 107: The parser does not allow structs within structs. But Simon says 
+            He could allocate some time in Turkey to accomodate this. But the parser can do this at the moment.
 --------------------------------------------------------------------------------------
 Sander, rev 427
 
 FinancialAgent_ewa_functions.c
-				line 64-86 function FinancialAgent_update_classifiersystem
-				Removed code for rule performance history in the classifier system.
-				This seems over the top, and would lead to major memory overload.
-				(since it means a time series of the CS is kept in memory).
-				
+                line 64-86 function FinancialAgent_update_classifiersystem
+                Removed code for rule performance history in the classifier system.
+                This seems over the top, and would lead to major memory overload.
+                (since it means a time series of the CS is kept in memory).
+                
 Household_ewa_functions.c
-				line 207-229: Removed function Household_read_rule_details_message()
-							  No longer sending messages about rule details.
+                line 207-229: Removed function Household_read_rule_details_message()
+                              No longer sending messages about rule details.
 model.xml
-				line 64: Added datatype RuleDetailSystem
+                line 64: Added datatype RuleDetailSystem
 --------------------------------------------------------------------------------------
 Mariam, rev 428
 
-model-ewa.xml	made changes in order to test the outputs of the ewa functions only.
-				tested with parser. Outputs added. also did one change in household functions removed a comma
-dgraph.eps		added 	
-dgraph.svg		added
+model-ewa.xml   made changes in order to test the outputs of the ewa functions only.
+                tested with parser. Outputs added. also did one change in household functions removed a comma
+dgraph.eps      added   
+dgraph.svg      added
 -------------------------------------------------------------------------------------
 Sander, rev 430
 model.xml
-		line 46-93
-				Added some datatypes for testing purposes:
-				string is a char array
-				stringlist is a list of strings
-				word is a char array
-				wordlist is a list of words
-				int2D_array is a doubly-indexed dynamic array of ints
-				double2D_array is a doubly-indexed dynamic array of doubles
+        line 46-93
+                Added some datatypes for testing purposes:
+                string is a char array
+                stringlist is a list of strings
+                word is a char array
+                wordlist is a list of words
+                int2D_array is a doubly-indexed dynamic array of ints
+                double2D_array is a doubly-indexed dynamic array of doubles
 some_new_functions.c
-		line 78 Added function initialize_ruledetailsystem()
+        line 78 Added function initialize_ruledetailsystem()
 --------------------------------------------------------------------------------------
-Sander, rev 431
+Sander, rev 433/343
 
 General:
 Made links between functions. This should produce a new dgraph more like
 Portfolio_selection_algorithm_version3.eps
 
 Household_ewa_functions.c
-		line 220
-				Added function Household_retrieve_rule_details()
-				Tried to code a rule's executing function call using strcpy().
-				This should correspond to how the function names are initialized in
-				some_new_functions.c, line 154: initialize_ruledetailsystem()
---------------------------------------------------------------------------------------		
+        line 220
+                Added function Household_retrieve_rule_details()
+                Tried to code a rule's executing function call using strcpy().
+                This should correspond to how the function names are initialized in
+                some_new_functions.c, line 154: initialize_ruledetailsystem()
+--------------------------------------------------------------------------------------      
