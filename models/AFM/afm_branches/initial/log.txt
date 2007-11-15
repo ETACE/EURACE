@@ -95,4 +95,17 @@ model-ewa.xml	made changes in order to test the outputs of the ewa functions onl
 				tested with parser. Outputs added. also did one change in household functions removed a comma
 dgraph.eps		added 	
 dgraph.svg		added
-----------------------------------------------------------------------
+-------------------------------------------------------------------------------------
+Sander, rev 430
+model.xml
+		line 46-93
+				Added some datatypes for testing purposes:
+				string is a char array
+				stringlist is a list of strings
+				word is a char array
+				wordlist is a list of words
+				int2D_array is a doubly-indexed dynamic array of ints
+				double2D_array is a doubly-indexed dynamic array of doubles
+some_new_functions.c
+		line 78 Added function initialize_ruledetailsystem()
+--------------------------------------------------------------------------------------
