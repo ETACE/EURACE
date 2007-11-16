@@ -142,3 +142,7 @@ some_new_functions.c
 				NrRules
 				--> NRRULES
 --------------------------------------------------------------------------------------
+Mariam, rev 437
+model-ewa.xml accomodated all the dependencies.
+				produced dgraphv0.3.eps
+------------------------------------------------------------------------------------

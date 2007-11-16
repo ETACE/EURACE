@@ -258,16 +258,16 @@
 
 <function><name>Household_retrieve_rule_details</name>
 <depends>
-<name>Household_select_rule</name><type>internal</type>
+<name>Household_EWA_learning</name><type>internal</type>
 </depends>
 </function>
 
 
 
 
-<function><name>Household_apply_selected_rule</name>
+<function><name>Household_apply_rule</name>
 <depends>
-<name>Household_select_rule</name><type>internal</type>
+<name>Household_retrieve_rule_details</name><type>internal</type>
 </depends>
 </function>
 
@@ -423,9 +423,9 @@
 <functions>
 <!--EWA Functions-->
 <function><name>Clearinghouse_read_order_messages</name>
-<depends><name>Household_apply_selected_rule</name><type>firm_stock_order</type></depends>
-<depends><name>Household_apply_selected_rule</name><type>firm_bond_order</type></depends>
-<depends><name>Household_apply_selected_rule</name><type>gov_bond_order</type></depends>
+<depends><name>Household_apply_rule</name><type>firm_stock_order</type></depends>
+<depends><name>Household_apply_rule</name><type>firm_bond_order</type></depends>
+<depends><name>Household_apply_rule</name><type>gov_bond_order</type></depends>
 </function>
 </functions>
 </xmachine>
@@ -494,7 +494,12 @@
 <name>Household_send_rule_performance_message</name><type>rule_performance</type>
 </depends>
 </function>
-<function><name>FinancialAgent_update_classifiersystem</name></function>
+<function><name>FinancialAgent_update_classifiersystem</name>
+<depends>
+<name>FinancialAgent_read_rule_performance_message</name><type>internal</type>
+</depends>
+</function>
+
 </functions>
 </xmachine><!--*********************** End of Agent - FinancialAdvisor ****************************-->
 

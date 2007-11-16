@@ -877,7 +877,7 @@ int Household_reads_all_performances_messages(void);
 int Household_select_rule(void);
 int Household_EWA_learning(void);
 int Household_retrieve_rule_details(void);
-int Household_apply_selected_rule(void);
+int Household_apply_rule(void);
 int Household_read_transaction_message(void);
 int Clearinghouse_read_order_messages(void);
 int FinancialAgent_read_rule_performance_message(void);
