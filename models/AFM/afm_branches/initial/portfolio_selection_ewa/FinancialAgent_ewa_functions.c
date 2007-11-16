@@ -18,45 +18,45 @@
 /* DEP: FA agent responds by sending the performance measures of all the rules*/
 int FinancialAgent_read_rule_performance_message()
 {
-	int nr_selected_rule;
-	double rule_performance;
+	  int current_rule;
+	  double rule_performance;
 	
-  rule_performance_message = get_first_rule_performance_message();
-  while(rule_performance_message)
-  {
-   
-    nr_selected_rule = rule_performance_message->nr_selected_rule;
-    rule_performance = rule_performance_message->rule_performance;
-    
-
-    /* Update rule performance: */
-    FinancialAgent_update_classifiersystem(nr_selected_rule, rule_performance);
-    rule_performance_message = get_next_rule_performance_message(rule_performance_message)
-  }
-
-    //After all updates have been read and processed: send the result
-    //This message can be read by ALL household agents
-    add_all_performances_message(performances, range, x, y, z);
+	  rule_performance_message = get_first_rule_performance_message();
+	  while(rule_performance_message)
+	  {
+	   
+	    current_rule = rule_performance_message->current_rule;
+	    rule_performance = rule_performance_message->rule_performance;
+	    
+	
+	    /* Update rule performance: */
+	    FinancialAgent_update_classifiersystem(current_rule, rule_performance);
+	    rule_performance_message = get_next_rule_performance_message(rule_performance_message)
+	  }
+	
+	    //After all updates have been read and processed: send the result
+	    //This message can be read by ALL household agents
+	    add_all_performances_message(performances, range, x, y, z);
 
    return 0;
  }
  
  
-int FinancialAgent_update_classifiersystem(int nr_selected_rule, double rule_performance)
+int FinancialAgent_update_classifiersystem(int current_rule, double rule_performance)
 {
-  PublicClassifierSystem * classifiersystem=get_central_classifiersystem();
+  PublicClassifierSystem * classifiersystem;
   
   //Replace old performance adding new performance: 
-  classifiersystem->array[nr_selected_rule]->performance += rule_performance;
+  classifiersystem->array[current_rule]->performance += rule_performance;
   
-  //Counter update: when do we reset the counter?   ******CHECK WHEN RESET OCCURS: SHOULD BE DAILY?
-  classifiersystem->array[nr_selected_rule]->counter +=1;
+  //Counter update: ******CHECK WHEN RESET OCCURS: SHOULD BE DAILY?
+  classifiersystem->array[current_rule]->counter +=1;
   
   //Avgperformance update:
-  classifiersystem->array[nr_selected_rule]-> avgperformance = classifiersystem->array[nr_selected_rule]->avgperformance/classifiersystem->array[nr_selected_rule]->counter;
+  classifiersystem->array[current_rule]->avgperformance = classifiersystem->array[current_rule]->avgperformance / classifiersystem->array[current_rule]->counter;
 
   //set_classifiersystem(classifiersystem); // setting value classifiersystem is an array need reference here
-   /*classifiersystem[nr_selected_rule]->int_ruleperformance = 9;
+   /*classifiersystem[current_rule]->int_ruleperformance = 9;
     * if you're adding a rule into the structure:
     * add_classifiersystem_(classifersystem_dynamic_array, 0,2,25);
     */
@@ -69,7 +69,7 @@ int FinancialAgent_update_classifiersystem(int nr_selected_rule, double rule_per
  */
 int FinancialAgent_send_all_performances_message()
 {
-    PublicClassifierSystem * classifiersystem = get_classifiersystem();
+    PublicClassifierSystem * classifiersystem;
  	double[] all_performances;
  	 
  	//Get size of performance array:

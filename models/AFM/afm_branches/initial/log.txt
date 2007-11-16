@@ -184,4 +184,13 @@ model-ewa.xml
 Sander, rev 444
 model-ewa.xml slight edits
 --------------------------------------------------------------------------------------
-				
+Sander, rev 445
+Household_ewa_functions.c
+FinancialAgent_ewa_functions.c 
+			Still don't know how to do:
+			Initialisations:
+				PublicClassifierSystem * classifiersystem;
+				int current_rule = CLASSIFIERSYSTEM->current_rule;
+			Memory:	
+				set_classifiersystem(classifiersystem);
+--------------------------------------------------------------------------------------

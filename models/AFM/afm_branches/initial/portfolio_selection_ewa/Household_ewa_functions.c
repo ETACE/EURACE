@@ -20,9 +20,9 @@
 /* including the total value invested in the asset portfolio (this is needed later on, when another household uses the rule). */
 int Household_send_rule_performance_message()
 { 
-    /*Get input vars: declare and assign local vars */
-    int current_rule = get_current_rule();
-    double current_rule_performance = get_current_rule_performance();
+    //Declare and assign local vars
+    PrivateClassifierSystem * classifiersystem;
+    int current_rule = CLASSIFIERSYSTEM->current_rule;
     
     //Here we compute the rule performance: this function uses the performance_history
     //since performance is computed as a time-average of capital gains obtained by the
@@ -30,8 +30,8 @@ int Household_send_rule_performance_message()
     
     //rule_performance = calc_rule_performance(current_assetportfolio->performance_history);
     
-    //Random performance (uses the function random_no() from financial_management.c)
-    rule_performance = random_no()*100;
+    //Random performance (uses the function random_unif())
+    rule_performance = random_unif()*100;
     
     add_rule_performance_message(current_rule, rule_performance, range, x, y, z);
 
@@ -47,30 +47,28 @@ int Household_send_rule_performance_message()
  */
 int Household_read_all_performances_message()
 {
- 	  double all_performances[NRRULES];
-      PrivateClassifierSystem * classifiersystem = get_agent_classifiersystem();
+ 	  double * all_performances;
+      PrivateClassifierSystem * classifiersystem;
 	  
 	  all_performances_message = get_first_all_performances_message();
 	  while(all_performances_message)
 	  {
-	    /* Read the message: */
-	     all_performances = all_performances_message->performances;
-	
-	    /* Store in memory: */
+	    //Read the message
+	    //code for dynamic arrays, copies the elements one by one
 	    for (i=0; i<NRRULES; i++)
 	  	{
 	  	 // why do you need performances to be an array when only one value is being written?
 	 	 // performances is a dynamic array with ALL rule performances
 	 	 // It is the variable in the message that is coming from FA
 	 	 // Can we copy arrays instantaneously? I thought we need to loop over the elements. 
-	 	  
-	 	 classifiersystem->performance[i] = all_performances[i]; //code for dynamic arrays, copies the elements one by one
-		
+	
+		 // Store in memory:		 	  
+	 	 classifiersystem->performance[i] = all_performances[i];
 		}
 	
 		set_classifiersystem(classifiersystem); // check how to set values in structs in FA
 	
-	    /* Proceed to next message: */
+	    //Proceed to next message
 	     all_performances_message = get_next_all_performances_message(all_performances_message);
 	  }
  
@@ -90,7 +88,7 @@ int Household_read_all_performances_message()
  */
 int Household_select_rule()
 {
-    PrivateClassifierSystem * classifiersystem = CLASSIFIERSYSTEM;
+    PrivateClassifierSystem * classifiersystem;
     int current_rule = CLASSIFIERSYSTEM->current_rule;   
 
     // i think we need to call a for loop here to copy values here
@@ -103,7 +101,7 @@ int Household_select_rule()
     int i,j=0;
     
     //Get size of performance array:
-	NRRULES = CLASSIFIERSYSTEM->performance->size;
+	NRRULES = classifiersystem->performance->size;
 	
 	//Assign values to local dynamic arrays
 	for (i=0;i<NRRULES;i++)
