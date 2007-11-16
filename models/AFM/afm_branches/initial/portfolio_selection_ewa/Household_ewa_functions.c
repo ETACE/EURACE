@@ -44,33 +44,33 @@ int Household_send_rule_performance_message()
 /* Household reads the message from FA agent with all rule performances. */
 int Household_read_all_performances_message()
 {
- 	double all_rule_performances[NRRULES];
-    PrivateClassifierSystem * classifiersystem = get_agent_classifiersystem();
-    int nr_selected_rule = classifiersystem->nr_selected_rule;
-  
-  all_performances_message = get_first_all_performances_message();
-  while(all_performances_message)
-  {
-    /* Read the message: */
-     all_rule_performances = all_performances_message->performances;
-
-    /* Store in memory: */
-    for (i=0; i<NRRULES; i++)
-  	{
-  	 // why do you need performances to be an array when only one value is being written?
- 	 // Performances is the variable in the message that is coming from FA
- 	 // So this is the array with the performances of ALL rules
- 	 // Can we copy arrays instantaneously? I thought we need to loop over the elements. 
- 	  
- 	 classifiersystem->performance[i] = all_rule_performances[i]; //code for dynamic arrays, copies the elements one by one
+ 	  double all_performances[NRRULES];
+      PrivateClassifierSystem * classifiersystem = get_agent_classifiersystem();
+      int nr_selected_rule = classifiersystem->nr_selected_rule;
+	  
+	  all_performances_message = get_first_all_performances_message();
+	  while(all_performances_message)
+	  {
+	    /* Read the message: */
+	     all_performances = all_performances_message->performances;
 	
-	}
-
-	set_classifiersystem(classifiersystem); // check how to set values in structs in FA
-
-    /* Proceed to next message: */
-     all_performances_message = get_next_all_performances_message(all_performances_message);
-  }
+	    /* Store in memory: */
+	    for (i=0; i<NRRULES; i++)
+	  	{
+	  	 // why do you need performances to be an array when only one value is being written?
+	 	 // performances is a dynamic array with ALL rule performances
+	 	 // It is the variable in the message that is coming from FA
+	 	 // Can we copy arrays instantaneously? I thought we need to loop over the elements. 
+	 	  
+	 	 classifiersystem->performance[i] = all_performances[i]; //code for dynamic arrays, copies the elements one by one
+		
+		}
+	
+		set_classifiersystem(classifiersystem); // check how to set values in structs in FA
+	
+	    /* Proceed to next message: */
+	     all_performances_message = get_next_all_performances_message(all_performances_message);
+	  }
  
     return 0;
 }
