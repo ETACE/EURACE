@@ -98,7 +98,7 @@ int Household_select_rule()
 	Household_retrieve_rule_details()
 
 	//Apply rule
-	Household_apply_selected_rule();
+	Household_apply_rule();
 	
     return 0;
 }
