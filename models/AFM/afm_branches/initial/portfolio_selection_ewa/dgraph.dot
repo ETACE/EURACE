@@ -4,9 +4,16 @@ digraph dependency_graph {
 	node [shape = rect];
 	
 	/* Functions */
+	
+	subgraph cluster_FA
+	{
 	FinancialAgent_update_classifiersystem[height = 0.000000, label = "FinancialAgent_update_classifiersystem\n(0 lines)"]
 	FinancialAgent_read_rule_performance_message[height = 0.000000, label = "FinancialAgent_read_rule_performance_message\n(0 lines)"]
-	Clearinghouse_read_order_messages[height = 0.000000, label = "Clearinghouse_read_order_messages\n(0 lines)"]
+	
+	}
+	
+	subgraph cluster_HH
+	{
 	Household_read_transaction_message[height = 0.000000, label = "Household_read_transaction_message\n(0 lines)"]
 	Household_apply_selected_rule[height = 0.000000, label = "Household_apply_selected_rule\n(0 lines)"]
 	Household_retrieve_rule_details[height = 0.000000, label = "Household_retrieve_rule_details\n(0 lines)"]
@@ -14,6 +21,15 @@ digraph dependency_graph {
 	Household_select_rule[height = 0.000000, label = "Household_select_rule\n(0 lines)"]
 	Household_reads_all_performances_messages[height = 0.000000, label = "Household_reads_all_performances_messages\n(0 lines)"]
 	Household_send_rule_performance_message[height = 0.000000, label = "Household_send_rule_performance_message\n(0 lines)"]
+	
+	}
+	
+	subgraph cluster_CH
+	{
+	Clearinghouse_read_order_messages[height = 0.000000, label = "Clearinghouse_read_order_messages\n(0 lines)"]
+	
+	}
+	
 	
 	/* Dependencies */
 	FinancialAgent_read_rule_performance_message -> Household_send_rule_performance_message [ label = "<depends on rule_performance>" ];
