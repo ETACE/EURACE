@@ -3,24 +3,24 @@ int reset_private_classifiersystem()
     PrivateClassifierSystem classifiersystem=get_classifiersystem();
 
 	//Getting the size of the system:
-	NrTotalRules=classifiersystem->double_ids_dynamic_array->size;
-	NrTotalRules=classifiersystem->array[]->ids->size;
+	NRRULES=classifiersystem->double_ids_dynamic_array->size;
+	NRRULES=classifiersystem->array[]->ids->size;
 
 	//First declare local vars:
-    int_array[NrTotalRules] 	ids;
+    int_array[NRRULES] 	ids;
     double						experience;
     int							current_rule;
     double						my_performance;
-    double_array[NrTotalRules] 	avgperformance;
-    double_array[NrTotalRules] 	attraction;
-    double_array[NrTotalRules] 	choiceprob;
+    double_array[NRRULES] 	avgperformance;
+    double_array[NRRULES] 	attraction;
+    double_array[NRRULES] 	choiceprob;
     
 	//Resetting:
 	classifiersystem->experience =0;
 	classifiersystem->current_rule=0;
 	classifiersystem->my_performance=0;
 
-	for (i=0; i<NrRules; i++)
+	for (i=0; i<NRRULES; i++)
 	{
 	
 		classifiersystem->array[i]->avgperformance=0;
@@ -34,7 +34,7 @@ int reset_private_classifiersystem()
 	CLASSIFIERSYSTEM->current_rule=0;
 	CLASSIFIERSYSTEM->my_performance=0;
 
-	for (i=0; i<NrRules; i++)
+	for (i=0; i<NRRULES; i++)
 	{
 		CLASSIFIERSYSTEM->array[i]->avgperformance=0;
 		CLASSIFIERSYSTEM->array[i]->attraction=0;
@@ -49,16 +49,16 @@ int reset_public_classifiersystem()
     PublicClassifierSystem classifiersystem=get_classifiersystem();
 
 	//Getting the size of the system:
-	NrTotalRules=classifiersystem->double_ids_dynamic_array->size;
-	NrTotalRules=classifiersystem->array[]->ids->size;
+	NRRULES=classifiersystem->double_ids_dynamic_array->size;
+	NRRULES=classifiersystem->array[]->ids->size;
 
 	//First declare local vars:
-    int_array[NrTotalRules] 	ids;
-    double_array[NrTotalRules]	performance;
-    double_array[NrTotalRules] 	avgperformance;
+    int_array[NRRULES] 	ids;
+    double_array[NRRULES]	performance;
+    double_array[NRRULES] 	avgperformance;
     
 	//Resetting:
-	for (i=0; i<NrRules; i++)
+	for (i=0; i<NRRULES; i++)
 	{
 		classifiersystem->array[i]->performance=0;
 		classifiersystem->array[i]->avgperformance=0;
@@ -66,7 +66,7 @@ int reset_public_classifiersystem()
 
 	//Resetting and storing values to memory:
 	//Using the capitalisation method to access memory values directly
-	for (i=0; i<NrRules; i++)
+	for (i=0; i<NRRULES; i++)
 	{
 		CLASSIFIERSYSTEM->array[i]->performance=0;	
 		CLASSIFIERSYSTEM->array[i]->avgperformance=0;
@@ -84,7 +84,7 @@ int reset_public_classifiersystem()
 //nr_params: no. of parameters for each rule
 //parameter: parameter setting for each rule 
 //rule_execution:  function names to execute the rule
-//rule_type: type for eqch rule
+//rule_type: type for each rule
 //my_function_names: the names of the functions
 //my_function_name[1]='Markowitz';
 //my_function_name[2]='ProspectTheory';

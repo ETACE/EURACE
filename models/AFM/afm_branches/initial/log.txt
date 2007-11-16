@@ -109,7 +109,7 @@ model.xml
 some_new_functions.c
         line 78 Added function initialize_ruledetailsystem()
 --------------------------------------------------------------------------------------
-Sander, rev 433/343
+Sander, rev 433/434
 
 General:
 Made links between functions. This should produce a new dgraph more like
@@ -121,9 +121,24 @@ Household_ewa_functions.c
                 Tried to code a rule's executing function call using strcpy().
                 This should correspond to how the function names are initialized in
                 some_new_functions.c, line 154: initialize_ruledetailsystem()
---------------------------------------------------------------------------------------      
+--------------------------------------------------------------------------------------
 Mariam, rev 435
-Househiold_ewa_functions changes the apply_rule to apply_selected_rule. typo error.
+
+Household_ewa_functions changes the apply_rule to apply_selected_rule. typo error.
 Model-ewa.xml 	added internal dependency in household functions
 did run on xparser again added the second version of dotty graph dgraphv0.2.eps
-------------------------------------------------------------------
+------------------------------------------------------------------>>>>>>> .r435
+Sander, rev 436
+
+Household_ewa_functions.c small edits
+				Household_read_all_performances_messages
+				-->Household_read_all_performances_message
+
+				Household_apply_selected_rule()
+				-->Household_apply_rule()
+				(better name for this function)
+				
+some_new_functions.c 
+				NrRules
+				--> NRRULES
+--------------------------------------------------------------------------------------

@@ -42,7 +42,7 @@ int Household_send_rule_performance_message()
 
 /* STEP 2. Obtain information.*/
 /* Household reads the message from FA agent with all rule performances. */
-int Household_reads_all_performances_messages()
+int Household_read_all_performances_message()
 {
  	double all_rule_performances[NRRULES];
     PrivateClassifierSystem * classifiersystem = get_agent_classifiersystem();
@@ -267,10 +267,10 @@ int Household_retrieve_rule_details()
  * in the prescribed_portfolio by: asset_budget/prescribed_asset_value.
  */
 
-/* Household_apply_selected_rule()
+/* Household_apply_rule()
  * To compute the actual limit_orders we need to apply the rule to obtain the prescribed_assetportfolio.
  */
-int Household_apply_selected_rule()
+int Household_apply_rule()
 {
    AssetPortfolioType * current_assetportfolio=get_current_assetportfolio();
    AssetPortfolioType * prescribed_assetportfolio=get_prescribed_assetportfolio();
