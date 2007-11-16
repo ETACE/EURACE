@@ -146,7 +146,7 @@ Mariam, rev 437
 model-ewa.xml accomodated all the dependencies.
 				produced dgraphv0.3.eps
 --------------------------------------------------------------------------------------
-Sander, rev 440
+Sander, rev 441
 
 Household_ewa_functions.c 
 				line 51-72 While loop for all_performances_message:
@@ -163,4 +163,15 @@ FinancialAgent_ewa_functions.c
 model.xml
 			line 108 REMOVED var: performance_history
 					 We don't keep the performance_history of each rule in memory.
+--------------------------------------------------------------------------------------
+Sander, rev 442
+
+Household_ewa_functions.c 
+			line 83	REMOVED: Household_select_rule()
+			line 91 RENAMED: Household_EWA_learning() 
+							 -->Household_select_rule()
+			line 108-113: dynamic array loops
+			
+			various:		REPLACED: nr_selected_rule
+									  -->current_rule 				 
 --------------------------------------------------------------------------------------

@@ -21,7 +21,7 @@
 int Household_send_rule_performance_message()
 { 
     /*Get input vars: declare and assign local vars */
-    int nr_selected_rule = get_nr_selected_rule();
+    int current_rule = get_current_rule();
     double current_rule_performance = get_current_rule_performance();
     
     //Here we compute the rule performance: this function uses the performance_history
@@ -33,7 +33,7 @@ int Household_send_rule_performance_message()
     //Random performance (uses the function random_no() from financial_management.c)
     rule_performance = random_no()*100;
     
-    add_rule_performance_message(nr_selected_rule, rule_performance, range, x, y, z);
+    add_rule_performance_message(current_rule, rule_performance, range, x, y, z);
 
     return 0;
 }
@@ -41,12 +41,14 @@ int Household_send_rule_performance_message()
 
 
 /* STEP 2. Obtain information.*/
-/* Household reads the message from FA agent with all rule performances. */
+/* Household reads all_performances_message from FA
+ * Updates classifiersystem
+ * Stores classifiersystem in memory
+ */
 int Household_read_all_performances_message()
 {
  	  double all_performances[NRRULES];
       PrivateClassifierSystem * classifiersystem = get_agent_classifiersystem();
-      int nr_selected_rule = classifiersystem->nr_selected_rule;
 	  
 	  all_performances_message = get_first_all_performances_message();
 	  while(all_performances_message)
@@ -77,43 +79,38 @@ int Household_read_all_performances_message()
 
 
 /* STEP 3. Select a rule.*/
-/* Household_select_rule()
- * Household compares rules, selects a rule according to choice probabilities.
- */
-int Household_select_rule()
-{
-    int household_id=get_household_id();
-    double[] performances=get_performances();// performances is part of a struct?
-    int selected_rule_number=0;    
-    
-    //Comparison of rule performances and selection
-    Household_EWA_learning();
-	
-    return 0;
-}
-
-/* Household_EWA_learning()
+/*
+ * int Household_select_rule()
+ * Was: Household_EWA_learning()
  * updates attractions
  * updates choice probabilities
  * selects a new rule
  * outputs the selected rule to memory
  * outputs the new classifier system to memory
  */
-int Household_EWA_learning()
+int Household_select_rule()
 {
+    PrivateClassifierSystem * classifiersystem = CLASSIFIERSYSTEM;
+    int current_rule = CLASSIFIERSYSTEM->current_rule;   
 
-    PrivateClassifierSystem * agent_classifiersystem= get_agent_classifiersystem();
-    int nr_selected_rule	= agent_classifiersystem->.nr_selected_rule;
     // i think we need to call a for loop here to copy values here
-    double[] performance = agent_classifiersystem->performance[];
-    double[] attraction = agent_classifiersystem->attraction[];
-    //for dynamic array :test_datatype_1_var_dynamic_array->array[5]->int_datatype_var;
-    int experience	= agent_classifiersystem->experience;
-    int experience_old			= 0;
+    // See below
+    double[] performance;
+    double[] attraction;
 
-
-    int j=0;
+    int experience		= classifiersystem->experience;
+    int experience_old = 0;
+    int i,j=0;
     
+    //Get size of performance array:
+	NRRULES = CLASSIFIERSYSTEM->performance->size;
+	
+	//Assign values to local dynamic arrays
+	for (i=0;i<NRRULES;i++)
+	{
+		performance[i] = classifiersystem->array[i]->performance;
+		attraction[i]  = classifiersystem->array[i]->attraction;
+	}
     
     //EWA learning parameters:
     double EWA_rho=get_EWA_rho();
@@ -129,18 +126,18 @@ int Household_EWA_learning()
     for (j=0;j++;j<NRRULES)
     {
         //If rule j is the currently used rule:
-        if (j==nr_selected_rule)
+        if (j==current_rule)
         {
             attraction[j] = (EWA_phi*experience_old*attraction[j] + performance[j])/experience;
         }
 
         //If rule j is not currently used:
-        if (j~=nr_selected_rule)
+        if (j~=current_rule)
         {
             attraction[j] = (EWA_phi*experience_old*attraction[j] + EWA_delta*performance[j])/experience;
         }
-        //Set the attractions in the DBclassifiersystem:
-        agent_classifiersystem->attraction[j] = attraction[j];
+        //Set the attractions in the classifiersystem:
+        classifiersystem->attraction[j] = attraction[j];
     }
 	//Computing the choice probabilities: multi-logit
     double sum_attr = 0;
@@ -194,10 +191,10 @@ int Household_EWA_learning()
     end;
     
     //Set the selected rule:
-    agent_classifiersystem.selected_rule=nr_selected_rule;
+    classifiersystem->current_rule=nr_selected_rule;
 
-    //Output to new agent_classifiersystem:    
-    set_agent_classifiersystem(agent_classifiersystem);
+    //Output to new classifiersystem:    
+    set_classifiersystem(classifiersystem);
 
     return 0;
 }
@@ -224,10 +221,10 @@ int Household_retrieve_rule_details()
 	
 	//Rule details:
 	//The name of the rule
-	functioncall = AGENT_CLASSIFIERSYSTEM->array[i]->rule_execution
+	functioncall = classifiersystem->array[i]->rule_execution
 
 	//Parameters: retrieve the list of parameter values for the current rule
-	param_vector = AGENT_CLASSIFIERSYSTEM->array[i]->parameters;
+	param_vector = classifiersystem->array[i]->parameters;
 
 	//Convert param_vector to string
 	imax = param_vector->size;
