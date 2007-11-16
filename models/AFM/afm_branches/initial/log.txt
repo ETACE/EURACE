@@ -127,7 +127,7 @@ Mariam, rev 435
 Household_ewa_functions changes the apply_rule to apply_selected_rule. typo error.
 Model-ewa.xml 	added internal dependency in household functions
 did run on xparser again added the second version of dotty graph dgraphv0.2.eps
------------------------------------------------------------------->>>>>>> .r435
+--------------------------------------------------------------------------------------
 Sander, rev 436
 
 Household_ewa_functions.c small edits
@@ -145,4 +145,9 @@ some_new_functions.c
 Mariam, rev 437
 model-ewa.xml accomodated all the dependencies.
 				produced dgraphv0.3.eps
-------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------
+Sander, rev 440
+
+Household_ewa_functions.c 
+				maintenance
+--------------------------------------------------------------------------------------

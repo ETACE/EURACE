@@ -71,34 +71,23 @@ int Household_read_all_performances_message()
     /* Proceed to next message: */
      all_performances_message = get_next_all_performances_message(all_performances_message);
   }
-    /*Select a rule: */
-    Household_select_rule();
-  
+ 
     return 0;
 }
 
 
 /* STEP 3. Select a rule.*/
-
 /* Household_select_rule()
- * Household compares rules, selects a rule according to internal selection mechanism.
- * Retrieve rule details, Apply rule. 
+ * Household compares rules, selects a rule according to choice probabilities.
  */
-
 int Household_select_rule()
 {
     int household_id=get_household_id();
     double[] performances=get_performances();// performances is part of a struct?
     int selected_rule_number=0;    
     
-    // Comparison of the rule performances and computation of selected_rule_number
+    //Comparison of rule performances and selection
     Household_EWA_learning();
-
-	//Retrieve rule details
-	Household_retrieve_rule_details()
-
-	//Apply rule
-	Household_apply_rule();
 	
     return 0;
 }
@@ -110,7 +99,6 @@ int Household_select_rule()
  * outputs the selected rule to memory
  * outputs the new classifier system to memory
  */
- 
 int Household_EWA_learning()
 {
 
@@ -215,7 +203,8 @@ int Household_EWA_learning()
 }
 
 /* Household_retrieve_rule_details()
- * HERE: Copying the selected rule details to the appropriate memory variables of the household.
+ * Retrieve rule details
+ * Copying the selected rule details to the appropriate memory variables of the household. 
  */
 int Household_retrieve_rule_details()
 {
@@ -268,6 +257,7 @@ int Household_retrieve_rule_details()
  */
 
 /* Household_apply_rule()
+ * Apply a rule.
  * To compute the actual limit_orders we need to apply the rule to obtain the prescribed_assetportfolio.
  */
 int Household_apply_rule()
