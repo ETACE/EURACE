@@ -98,7 +98,7 @@ int Household_select_rule()
 	Household_retrieve_rule_details()
 
 	//Apply rule
-	Household_apply_rule();
+	Household_apply_selected_rule();
 	
     return 0;
 }
@@ -219,14 +219,14 @@ int Household_EWA_learning()
  */
 int Household_retrieve_rule_details()
 {
-	#include <string.h>
+	//#include <string.h>
 	//To use: 	char *strcat( char *str1, const char *str2 );
 	//			char *strcpy( char *to, const char *from );
 
 
 
-	//Does this work in this way?
-	PrivateClassifierSystem classifiersystem=CLASSIFIERSYSTEM;
+	//Does this work in this way? Ans: No need to create local copy. Can use directly.
+	//PrivateClassifierSystem classifiersystem=CLASSIFIERSYSTEM;
 
 	double* param_vector;
 	char*	functioncall; 
@@ -235,10 +235,10 @@ int Household_retrieve_rule_details()
 	
 	//Rule details:
 	//The name of the rule
-	functioncall = classifiersystem->array[i]->rule_execution
+	functioncall = AGENT_CLASSIFIERSYSTEM->array[i]->rule_execution
 
 	//Parameters: retrieve the list of parameter values for the current rule
-	param_vector = classifiersystem->array[i]->parameters;
+	param_vector = AGENT_CLASSIFIERSYSTEM->array[i]->parameters;
 
 	//Convert param_vector to string
 	imax = param_vector->size;
