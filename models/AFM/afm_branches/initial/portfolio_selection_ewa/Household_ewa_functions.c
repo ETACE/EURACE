@@ -63,7 +63,7 @@ int Household_read_all_performances_message()
 	 	 // Can we copy arrays instantaneously? I thought we need to loop over the elements. 
 	
 		 // Store in memory:		 	  
-	 	 classifiersystem->performance[i] = all_performances[i];
+	 	 CLASSIFIERSYSTEM->performance[i] = all_performances[i];
 		}
 	
 		set_classifiersystem(classifiersystem); // check how to set values in structs in FA
@@ -88,7 +88,9 @@ int Household_read_all_performances_message()
  */
 int Household_select_rule()
 {
-    PrivateClassifierSystem * classifiersystem;
+	//Not needed?
+    //PrivateClassifierSystem * classifiersystem;
+
     int current_rule = CLASSIFIERSYSTEM->current_rule;   
 
     // i think we need to call a for loop here to copy values here
@@ -96,18 +98,18 @@ int Household_select_rule()
     double[] performance;
     double[] attraction;
 
-    int experience		= classifiersystem->experience;
+    int experience		= CLASSIFIERSYSTEM->experience;
     int experience_old = 0;
     int i,j=0;
     
     //Get size of performance array:
-	NRRULES = classifiersystem->performance->size;
+	NRRULES = CLASSIFIERSYSTEM->performance->size;
 	
 	//Assign values to local dynamic arrays
 	for (i=0;i<NRRULES;i++)
 	{
-		performance[i] = classifiersystem->array[i]->performance;
-		attraction[i]  = classifiersystem->array[i]->attraction;
+		performance[i] = CLASSIFIERSYSTEM->array[i]->performance;
+		attraction[i]  = CLASSIFIERSYSTEM->array[i]->attraction;
 	}
     
     //EWA learning parameters:
@@ -135,7 +137,7 @@ int Household_select_rule()
             attraction[j] = (EWA_phi*experience_old*attraction[j] + EWA_delta*performance[j])/experience;
         }
         //Set the attractions in the classifiersystem:
-        classifiersystem->attraction[j] = attraction[j];
+        CLASSIFIERSYSTEM->attraction[j] = attraction[j];
     }
 	//Computing the choice probabilities: multi-logit
     double sum_attr = 0;
@@ -189,10 +191,7 @@ int Household_select_rule()
     end;
     
     //Set the selected rule:
-    classifiersystem->current_rule=nr_selected_rule;
-
-    //Output to new classifiersystem:    
-    set_classifiersystem(classifiersystem);
+    CLASSIFIERSYSTEM->current_rule=nr_selected_rule;
 
     return 0;
 }
@@ -207,10 +206,15 @@ int Household_retrieve_rule_details()
 	//To use: 	char *strcat( char *str1, const char *str2 );
 	//			char *strcpy( char *to, const char *from );
 
-
-
 	//Does this work in this way? Ans: No need to create local copy. Can use directly.
 	//PrivateClassifierSystem classifiersystem=CLASSIFIERSYSTEM;
+
+	//Q2: So no initializations?
+	//PrivateClassifierSystem * classifiersystem;
+	//RuleDetailSystem *	ruledetailsystem;
+	//Just use this?:
+	//CLASSIFIERSYSTEM->...
+	//RULEDETAILSYSTEM->...
 
 	double* param_vector;
 	char*	functioncall; 
@@ -219,10 +223,10 @@ int Household_retrieve_rule_details()
 	
 	//Rule details:
 	//The name of the rule
-	functioncall = classifiersystem->array[i]->rule_execution
+	functioncall = RULEDETAILSYSTEM->array[i]->rule_execution
 
 	//Parameters: retrieve the list of parameter values for the current rule
-	param_vector = classifiersystem->array[i]->parameters;
+	param_vector = RULEDETAILSYSTEM->array[i]->parameters;
 
 	//Convert param_vector to string
 	imax = param_vector->size;

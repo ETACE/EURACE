@@ -194,3 +194,13 @@ FinancialAgent_ewa_functions.c
 			Memory:	
 				set_classifiersystem(classifiersystem);
 --------------------------------------------------------------------------------------
+Sander, rev 446
+some_new_functions.c 
+			line 170 ADDED function FinancialAgent_send_ruledetailsystem_message()
+			line 179 Mariam please check these lines
+			line 185 ADDED function Household_read_ruledetailsystem_message()
+					 This function will become useful when updating the rule details.
+					 For example, when there is a crossover or mutation of the parameter
+					 settings of a rule.
+			line 234 Mariam please check these lines
+--------------------------------------------------------------------------------------

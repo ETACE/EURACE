@@ -81,10 +81,10 @@
 	<var>
 		<!--int_array nr_params[NRRULES]: nr. of parameters for each rule--><type>int_array</type><name>nr_params</name>
 	</var>
-	<var><!--double parameter[NRRULES][MAX_PARAMS]-->
-	<!--parameter[i] is a double_array containing the parameter settings for rule i.--><!--Here we would need a double_array for each parameter. Hence: a dynamic array of double_arrays!--><!--We do not know beforehand how many parameters there will be for each rule, but we can set an upper limit to MAX_PARAMS.--><!--Does this have to be a constant or can it be a global parameter MAX_PARAMS?-->
-	<type>double_array</type>
-	<name>parameter[MAX_PARAMS]</name></var>
+	<var><!--double parameters[NRRULES][MAX_PARAMS]-->
+	<!--parameters[i] is a double_array containing the parameter setting for rule i (these are multiple parameter values!!).--><!--Here we would need a double_array for each rule. Hence: a dynamic array of double_arrays!--><!--We do not know beforehand how many parameters there will be for each rule, but we can set an upper limit to MAX_PARAMS.--><!--Does this have to be a constant or can it be a global parameter MAX_PARAMS?-->
+	<type>double2D_array</type>
+	<name>parameters</name></var>
 
 <var>
 	<!--myfunctionnames[NR_TYPES]--><type>wordlist</type>
