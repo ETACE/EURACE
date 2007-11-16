@@ -48,7 +48,7 @@ int FinancialAgent_update_classifiersystem(int nr_selected_rule, double rule_per
   //Replace old performance adding new performance: 
   classifiersystem->array[nr_selected_rule]->performance += rule_performance;
   
-  //Counter update: when do we reset the counter?   ******CHECK
+  //Counter update: when do we reset the counter?   ******CHECK WHEN RESET OCCURS: SHOULD BE DAILY?
   classifiersystem->array[nr_selected_rule]->counter +=1;
   
   //Avgperformance update:
