@@ -236,29 +236,21 @@
 <!--EWA Functions-->
 <function><name>Household_send_rule_performance_message</name></function>
 
-<function><name>Household_reads_all_performances_messages</name>
-<depends>
-<name>FinancialAgent_read_rule_performance_message</name><type>all_performances</type>
-</depends>
+<function><name>Household_read_all_performances_message</name>
+	<depends><name>FinancialAgent_send_all_performances_message</name>
+		<type>all_performances_message</type></depends>
 </function>
 
 <function><name>Household_select_rule</name>
 <depends>
-<name>Household_reads_all_performances_messages</name><type>internal</type>
-</depends>
-</function>
-
-
-<function><name>Household_EWA_learning</name>
-<depends>
-<name>Household_select_rule</name><type>internal</type>
+<name>Household_read_all_performances_message</name><type>internal</type>
 </depends>
 </function>
 
 
 <function><name>Household_retrieve_rule_details</name>
 <depends>
-<name>Household_EWA_learning</name><type>internal</type>
+<name>Household_select_rule</name><type>internal</type>
 </depends>
 </function>
 
@@ -491,14 +483,19 @@
 <!--EWA Functions-->
 <function><name>FinancialAgent_read_rule_performance_message</name>
 <depends>
-<name>Household_send_rule_performance_message</name><type>rule_performance</type>
+<name>Household_send_rule_performance_message</name><type>rule_performance_message</type>
 </depends>
 </function>
 <function><name>FinancialAgent_update_classifiersystem</name>
 <depends>
 <name>FinancialAgent_read_rule_performance_message</name><type>internal</type>
 </depends>
-</function>
+</function><function>
+		<name>FinancialAgent_send_all_performances_message</name>
+		<depends>
+			<name>FinancialAgent_update_classifiersystem</name>
+			<type>internal</type></depends></function>
+	
 
 </functions>
 </xmachine><!--*********************** End of Agent - FinancialAdvisor ****************************-->
