@@ -180,4 +180,8 @@ model-ewa.xml
 			Modified to take new dependencies into account.
 			RENAMED Household_reads_all_performances_messages
 				-->	Household_read_all_performances_message
---------------------------------------------------------------------------------------				
+--------------------------------------------------------------------------------------
+Sander, rev 444
+model-ewa.xml slight edits
+--------------------------------------------------------------------------------------
+				
