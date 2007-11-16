@@ -875,7 +875,7 @@ typedef struct xmachine_message_rule_details xmachine_message_rule_details;
 int Household_send_rule_performance_message(void);
 int Household_reads_all_performances_messages(void);
 int Household_select_rule(void);
-int Household_EWA_learning_rule(void);
+int Household_EWA_learning(void);
 int Household_retrieve_rule_details(void);
 int Household_apply_selected_rule(void);
 int Household_read_transaction_message(void);

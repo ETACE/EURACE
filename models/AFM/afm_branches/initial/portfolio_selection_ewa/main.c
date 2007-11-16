@@ -372,12 +372,55 @@ printf("Ouput dir: %s\n", outputpath);
 		
 			if(current_xmachine->xmachine_Household != NULL)
 			{
-				i = Household_apply_selected_rule();
+				i = Household_reads_all_performances_messages();
 			}
+			
+			/* If agent is freed */
+			if(i == 1)
+			{
+				temp_free_xmachine = current_xmachine->next;
+				free_agent();
+				current_xmachine = temp_free_xmachine;
+			}
+			else
+			{
+				current_xmachine = current_xmachine->next;
+			}
+		}
+	
+		/* Loop through x-machines */
+		current_xmachine = *p_xmachine;
+		while(current_xmachine)
+		{
+			i = 0;
 		
 			if(current_xmachine->xmachine_Household != NULL)
 			{
-				i = Household_reads_all_performances_messages();
+				i = Household_select_rule();
+			}
+			
+			/* If agent is freed */
+			if(i == 1)
+			{
+				temp_free_xmachine = current_xmachine->next;
+				free_agent();
+				current_xmachine = temp_free_xmachine;
+			}
+			else
+			{
+				current_xmachine = current_xmachine->next;
+			}
+		}
+	
+		/* Loop through x-machines */
+		current_xmachine = *p_xmachine;
+		while(current_xmachine)
+		{
+			i = 0;
+		
+			if(current_xmachine->xmachine_Household != NULL)
+			{
+				i = Household_apply_selected_rule();
 			}
 			
 			/* If agent is freed */
@@ -447,11 +490,6 @@ printf("Ouput dir: %s\n", outputpath);
 			if(current_xmachine->xmachine_ClearingHouseMechanism != NULL)
 			{
 				i = Clearinghouse_read_order_messages();
-			}
-		
-			if(current_xmachine->xmachine_Household != NULL)
-			{
-				i = Household_select_rule();
 			}
 			
 			/* If agent is freed */
@@ -535,7 +573,7 @@ printf("Ouput dir: %s\n", outputpath);
 		
 			if(current_xmachine->xmachine_Household != NULL)
 			{
-				i = Household_EWA_learning_rule();
+				i = Household_EWA_learning();
 			}
 			
 			/* If agent is freed */

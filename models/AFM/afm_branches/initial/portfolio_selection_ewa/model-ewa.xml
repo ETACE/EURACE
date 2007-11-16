@@ -249,7 +249,7 @@
 </function>
 
 
-<function><name>Household_EWA_learning_rule</name>
+<function><name>Household_EWA_learning</name>
 <depends>
 <name>Household_select_rule</name><type>internal</type>
 </depends>
@@ -257,11 +257,18 @@
 
 
 <function><name>Household_retrieve_rule_details</name>
+<depends>
+<name>Household_select_rule</name><type>internal</type>
+</depends>
 </function>
 
 
 
+
 <function><name>Household_apply_selected_rule</name>
+<depends>
+<name>Household_select_rule</name><type>internal</type>
+</depends>
 </function>
 
 
