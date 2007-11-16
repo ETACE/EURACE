@@ -266,9 +266,9 @@
 
 
 <function><name>Household_read_transaction_message</name>
-<depends><name>Clearinghouse_read_order_messages</name><type>firm_stock_transaction</type></depends>
-<depends><name>Clearinghouse_read_order_messages</name><type>firm_bond_transaction</type></depends>
-<depends><name>Clearinghouse_read_order_messages</name><type>gov_bond_transaction</type></depends>
+<depends><name>Clearinghouse_read_order_message</name><type>firm_stock_transaction_message</type></depends>
+<depends><name>Clearinghouse_read_order_message</name><type>firm_bond_transaction_messages</type></depends>
+<depends><name>Clearinghouse_read_order_message</name><type>gov_bond_transaction_messages</type></depends>
 </function>
 
 
