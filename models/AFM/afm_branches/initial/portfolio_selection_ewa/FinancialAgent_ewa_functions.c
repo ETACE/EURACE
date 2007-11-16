@@ -20,13 +20,14 @@ int FinancialAgent_read_rule_performance_message()
 {
 	int nr_selected_rule;
 	double rule_performance;
+	
   rule_performance_message = get_first_rule_performance_message();
   while(rule_performance_message)
   {
    
     nr_selected_rule = rule_performance_message->nr_selected_rule;
     rule_performance = rule_performance_message->rule_performance;
-   
+    
 
     /* Update rule performance: */
     FinancialAgent_update_classifiersystem(nr_selected_rule, rule_performance);
@@ -62,3 +63,27 @@ int FinancialAgent_update_classifiersystem(int nr_selected_rule, double rule_per
     
   return 0;
 }
+
+/* int FinancialAgent_send_all_performances_message()
+ * Send dynamic array all_performances.
+ */
+int FinancialAgent_send_all_performances_message()
+{
+    PublicClassifierSystem * classifiersystem = get_classifiersystem();
+ 	double[] all_performances;
+ 	 
+ 	//Get size of performance array:
+	imax = CLASSIFIERSYSTEM->performance->size;
+
+	//Assign values to dynamic array all_rule_performances
+	for (i=0;i<imax;i++)
+	{
+		all_performances[i] = CLASSIFIERSYSTEM->array[i]->performance;
+	}
+	
+	//Send the message containing the dynamic array
+	add_all_performances_message(all_performances, range, x, y, z);
+     
+  return 0;
+}
+  

@@ -149,5 +149,18 @@ model-ewa.xml accomodated all the dependencies.
 Sander, rev 440
 
 Household_ewa_functions.c 
-				maintenance
+				line 51-72 While loop for all_performances_message:
+				There will be only a single all_performances_message send by the FA agent
+				each day, so the while loop is unnecessary here. The MB is cleared daily,
+				so there can be only one message to read by the household.
+				Should we keep it for genericity? If later on we want more than one 
+				all_performances_message send per day.
+				
+FinancialAgent_ewa_functions.c
+			line 67	ADDED function FinancialAgent_send_all_performances_message()
+			line 85 ADDED message: all_performances_message
+
+model.xml
+			line 108 REMOVED var: performance_history
+					 We don't keep the performance_history of each rule in memory.
 --------------------------------------------------------------------------------------
