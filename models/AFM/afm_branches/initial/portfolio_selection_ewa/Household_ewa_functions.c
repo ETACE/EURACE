@@ -399,3 +399,66 @@ int Household_read_transaction_message()
  * This is done to test the ewa functions
  *******************************************/
  
+ 
+//Household_read_ruledetailsystem_message()
+//Function to download a new rule_detail_system.
+//Used by agents to refresh their rule detail system
+//We allow for changes in:
+//parameters: changes occur due to crossover, mutation
+int Household_read_ruledetailsystem_message()
+{
+ 	//Getting the size of the system:
+	int NR_TYPES=CLASSIFIERSYSTEM->nr_types;
+
+	//dynamic array with number of rules in each type (size of subpopulations)
+	int* NRRULES_PER_TYPE=CLASSIFIERSYSTEM->nr_rules_per_type;
+
+	//total number of rules:
+	int NRRULES=CLASSIFIERSYSTEM->nr_rules;
+	
+	//Local vars:
+	int[NRRULES] 		ids;
+	int[NRRULES]		nr_params;
+	double**			parameters;			//parameter[NRRULES][MAX_PARAMS];
+	
+	char**				rule_execution;	    //rule_execution[NRRULES]
+	int[NRRULES]		rule_type;			//rule_type[NRRULES]
+	
+	word_array * 		my_function_names = get_my_function_names(); //list of function names
+	
+	double				param_value;
+	int					i,j,k,m,jmax=0;
+
+	//HERE: As an exception, we need a local copy of ruledetailsystem
+	//because we need to copy it from the message.
+	//And then we need to copy the values using a for loop.
+	//So we need to temporarily store the contents of the message.
+	//Do we need to free memory space afterward if we make a local copy of the struct?
+	
+	RuleDetailSystem *	ruledetailsystem;
+	
+	//Reading the ruledetailsystem_message
+	ruledetailsystem_message = get_first_ruledetailsystem_message();
+	while(ruledetailsystem_message)
+	{
+		ruledetailsystem = ruledetailsystem_message->ruledetailsystem;
+				
+		//Proceed to next message
+		ruledetailsystem_message = get_next_ruledetailsystem_message(ruledetailsystem_message);
+	}
+	
+	for (i=0; i<NRRULES; i++)
+	{
+		//Filling the double_array parameter[i] with the parameter values of rule i
+		jmax=CLASSIFIERSYSTEM->array[i]->nr_params;
+		for (j=0; j<jmax; j++)
+		{
+			//Filling the field parameters[i][j]
+			//Problem: in xml we cannot add a name for the array[j]->(double param_value);
+			//parameters[i] is a double_array, so to access its elements we need:
+			  parameters[i][j] = ruledetailsystem->array[i]->parameters->array[j]->(double param_value);
+		}
+	}
+	
+    return 0;
+}

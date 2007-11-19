@@ -212,3 +212,13 @@ model.xml
 			nr_types, nr_rules_per_type, nr_rules,
 			nr_params_per_type, nr_params.
 --------------------------------------------------------------------------------------
+Sander, rev 448
+some_new_functions.c 
+			Moved ruledetailsystem functions to households_ewa and FA_ewa.
+model-ewa.xml			
+			Added function dependencies for new functions.
+
+NOTE: Most up-to-date datatypes are in model.xml, while
+most up-to-date function dependencies are in model-ewa.xml.
+These files should be merged at some point. 						
+--------------------------------------------------------------------------------------
