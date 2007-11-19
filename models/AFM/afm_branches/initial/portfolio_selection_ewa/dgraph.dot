@@ -4,18 +4,19 @@ digraph dependency_graph {
 	node [shape = rect];
 	
 	/* Functions */
+	FinancialAgent_send_all_performances_message[height = 0.000000, label = "FinancialAgent_send_all_performances_message\n(0 lines)"]
 	FinancialAgent_update_classifiersystem[height = 0.000000, label = "FinancialAgent_update_classifiersystem\n(0 lines)"]
 	FinancialAgent_read_rule_performance_message[height = 0.000000, label = "FinancialAgent_read_rule_performance_message\n(0 lines)"]
 	Clearinghouse_read_order_messages[height = 0.000000, label = "Clearinghouse_read_order_messages\n(0 lines)"]
 	Household_read_transaction_message[height = 0.000000, label = "Household_read_transaction_message\n(0 lines)"]
 	Household_apply_rule[height = 0.000000, label = "Household_apply_rule\n(0 lines)"]
 	Household_retrieve_rule_details[height = 0.000000, label = "Household_retrieve_rule_details\n(0 lines)"]
-	Household_EWA_learning[height = 0.000000, label = "Household_EWA_learning\n(0 lines)"]
 	Household_select_rule[height = 0.000000, label = "Household_select_rule\n(0 lines)"]
-	Household_reads_all_performances_messages[height = 0.000000, label = "Household_reads_all_performances_messages\n(0 lines)"]
+	Household_read_all_performances_message[height = 0.000000, label = "Household_read_all_performances_message\n(0 lines)"]
 	Household_send_rule_performance_message[height = 0.000000, label = "Household_send_rule_performance_message\n(0 lines)"]
 	
 	/* Dependencies */
+	FinancialAgent_send_all_performances_message -> FinancialAgent_update_classifiersystem [ label = "<depends on internal>" ];
 	FinancialAgent_update_classifiersystem -> FinancialAgent_read_rule_performance_message [ label = "<depends on internal>" ];
 	FinancialAgent_read_rule_performance_message -> Household_send_rule_performance_message [ label = "<depends on rule_performance>" ];
 	Clearinghouse_read_order_messages -> Household_apply_rule [ label = "<depends on gov_bond_order>" ];
@@ -25,8 +26,7 @@ digraph dependency_graph {
 	Household_read_transaction_message -> Clearinghouse_read_order_messages [ label = "<depends on firm_bond_transaction>" ];
 	Household_read_transaction_message -> Clearinghouse_read_order_messages [ label = "<depends on firm_stock_transaction>" ];
 	Household_apply_rule -> Household_retrieve_rule_details [ label = "<depends on internal>" ];
-	Household_retrieve_rule_details -> Household_EWA_learning [ label = "<depends on internal>" ];
-	Household_EWA_learning -> Household_select_rule [ label = "<depends on internal>" ];
-	Household_select_rule -> Household_reads_all_performances_messages [ label = "<depends on internal>" ];
-	Household_reads_all_performances_messages -> FinancialAgent_read_rule_performance_message [ label = "<depends on all_performances>" ];
+	Household_retrieve_rule_details -> Household_select_rule [ label = "<depends on internal>" ];
+	Household_select_rule -> Household_read_all_performances_message [ label = "<depends on internal>" ];
+	Household_read_all_performances_message -> FinancialAgent_send_all_performances_message [ label = "<depends on all_performances>" ];
 }

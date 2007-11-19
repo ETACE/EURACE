@@ -319,6 +319,54 @@ printf("Ouput dir: %s\n", outputpath);
 			}
 		}
 	
+		/* Loop through x-machines */
+		current_xmachine = *p_xmachine;
+		while(current_xmachine)
+		{
+			i = 0;
+		
+			if(current_xmachine->xmachine_FinancialAdvisor != NULL)
+			{
+				i = FinancialAgent_update_classifiersystem();
+			}
+			
+			/* If agent is freed */
+			if(i == 1)
+			{
+				temp_free_xmachine = current_xmachine->next;
+				free_agent();
+				current_xmachine = temp_free_xmachine;
+			}
+			else
+			{
+				current_xmachine = current_xmachine->next;
+			}
+		}
+	
+		/* Loop through x-machines */
+		current_xmachine = *p_xmachine;
+		while(current_xmachine)
+		{
+			i = 0;
+		
+			if(current_xmachine->xmachine_FinancialAdvisor != NULL)
+			{
+				i = FinancialAgent_send_all_performances_message();
+			}
+			
+			/* If agent is freed */
+			if(i == 1)
+			{
+				temp_free_xmachine = current_xmachine->next;
+				free_agent();
+				current_xmachine = temp_free_xmachine;
+			}
+			else
+			{
+				current_xmachine = current_xmachine->next;
+			}
+		}
+	
 	
         randomisexagent();  /* randomise x-agents while waiting for communication to complete */
         
@@ -372,7 +420,7 @@ printf("Ouput dir: %s\n", outputpath);
 		
 			if(current_xmachine->xmachine_Household != NULL)
 			{
-				i = Household_reads_all_performances_messages();
+				i = Household_read_all_performances_message();
 			}
 			
 			/* If agent is freed */
@@ -397,30 +445,6 @@ printf("Ouput dir: %s\n", outputpath);
 			if(current_xmachine->xmachine_Household != NULL)
 			{
 				i = Household_select_rule();
-			}
-			
-			/* If agent is freed */
-			if(i == 1)
-			{
-				temp_free_xmachine = current_xmachine->next;
-				free_agent();
-				current_xmachine = temp_free_xmachine;
-			}
-			else
-			{
-				current_xmachine = current_xmachine->next;
-			}
-		}
-	
-		/* Loop through x-machines */
-		current_xmachine = *p_xmachine;
-		while(current_xmachine)
-		{
-			i = 0;
-		
-			if(current_xmachine->xmachine_Household != NULL)
-			{
-				i = Household_EWA_learning();
 			}
 			
 			/* If agent is freed */
@@ -603,11 +627,6 @@ printf("Ouput dir: %s\n", outputpath);
 		while(current_xmachine)
 		{
 			i = 0;
-		
-			if(current_xmachine->xmachine_FinancialAdvisor != NULL)
-			{
-				i = FinancialAgent_update_classifiersystem();
-			}
 		
 			if(current_xmachine->xmachine_Household != NULL)
 			{
