@@ -971,6 +971,42 @@ void readinitialstates(char * filename, int * itno, xmachine ** agent_list, doub
 				{
 					j = 0;
 					agent_classifiersystem = (PrivateClassifierSystem *)malloc(sizeof(PrivateClassifierSystem));
+					CHECK_POINTER(nr_types);
+					agent_classifiersystem->nr_types = 0;
+					array_k = 0;
+					j++;
+					while(buffer[j] != ',')
+					{
+						arraydata[array_k] = buffer[j];
+						array_k++;
+						j++;
+					}
+					arraydata[array_k] = 0;
+					agent_classifiersystem->nr_types = atoi(arraydata);
+					CHECK_POINTER(nr_rules_per_type);
+					agent_classifiersystem->nr_rules_per_type = 0;
+					array_k = 0;
+					j++;
+					while(buffer[j] != ',')
+					{
+						arraydata[array_k] = buffer[j];
+						array_k++;
+						j++;
+					}
+					arraydata[array_k] = 0;
+					agent_classifiersystem->nr_rules_per_type = atoi(arraydata);
+					CHECK_POINTER(nr_rules);
+					agent_classifiersystem->nr_rules = 0;
+					array_k = 0;
+					j++;
+					while(buffer[j] != ',')
+					{
+						arraydata[array_k] = buffer[j];
+						array_k++;
+						j++;
+					}
+					arraydata[array_k] = 0;
+					agent_classifiersystem->nr_rules = atoi(arraydata);
 					CHECK_POINTER(ids);
 					agent_classifiersystem->ids = 0;
 					array_k = 0;
@@ -983,6 +1019,18 @@ void readinitialstates(char * filename, int * itno, xmachine ** agent_list, doub
 					}
 					arraydata[array_k] = 0;
 					agent_classifiersystem->ids = atoi(arraydata);
+					CHECK_POINTER(rule_type);
+					agent_classifiersystem->rule_type = 0;
+					array_k = 0;
+					j++;
+					while(buffer[j] != ',')
+					{
+						arraydata[array_k] = buffer[j];
+						array_k++;
+						j++;
+					}
+					arraydata[array_k] = 0;
+					agent_classifiersystem->rule_type = atoi(arraydata);
 					CHECK_POINTER(experience);
 					agent_classifiersystem->experience = 0.0;
 					array_k = 0;
@@ -1047,18 +1095,6 @@ void readinitialstates(char * filename, int * itno, xmachine ** agent_list, doub
 					agent_classifiersystem->choiceprob = 0.0;
 					array_k = 0;
 					j++;
-					while(buffer[j] != ',')
-					{
-						arraydata[array_k] = buffer[j];
-						array_k++;
-						j++;
-					}
-					arraydata[array_k] = 0;
-					agent_classifiersystem->choiceprob = atof(arraydata);
-					CHECK_POINTER(nr_selected_rule);
-					agent_classifiersystem->nr_selected_rule = 0;
-					array_k = 0;
-					j++;
 					while(buffer[j] != '}')
 					{
 						arraydata[array_k] = buffer[j];
@@ -1066,7 +1102,7 @@ void readinitialstates(char * filename, int * itno, xmachine ** agent_list, doub
 						j++;
 					}
 					arraydata[array_k] = 0;
-					agent_classifiersystem->nr_selected_rule = atoi(arraydata);
+					agent_classifiersystem->choiceprob = atof(arraydata);
 				}
 				if(in_asset_budget) asset_budget = atof(buffer);
 				if(in_current_assetportfolio)
@@ -1631,6 +1667,66 @@ void readinitialstates(char * filename, int * itno, xmachine ** agent_list, doub
 				{
 					j = 0;
 					central_classifiersystem = (PublicClassifierSystem *)malloc(sizeof(PublicClassifierSystem));
+					CHECK_POINTER(nr_types);
+					central_classifiersystem->nr_types = 0;
+					array_k = 0;
+					j++;
+					while(buffer[j] != ',')
+					{
+						arraydata[array_k] = buffer[j];
+						array_k++;
+						j++;
+					}
+					arraydata[array_k] = 0;
+					central_classifiersystem->nr_types = atoi(arraydata);
+					CHECK_POINTER(nr_rules_per_type);
+					central_classifiersystem->nr_rules_per_type = 0;
+					array_k = 0;
+					j++;
+					while(buffer[j] != ',')
+					{
+						arraydata[array_k] = buffer[j];
+						array_k++;
+						j++;
+					}
+					arraydata[array_k] = 0;
+					central_classifiersystem->nr_rules_per_type = atoi(arraydata);
+					CHECK_POINTER(nr_rules);
+					central_classifiersystem->nr_rules = 0;
+					array_k = 0;
+					j++;
+					while(buffer[j] != ',')
+					{
+						arraydata[array_k] = buffer[j];
+						array_k++;
+						j++;
+					}
+					arraydata[array_k] = 0;
+					central_classifiersystem->nr_rules = atoi(arraydata);
+					CHECK_POINTER(ids);
+					central_classifiersystem->ids = 0;
+					array_k = 0;
+					j++;
+					while(buffer[j] != ',')
+					{
+						arraydata[array_k] = buffer[j];
+						array_k++;
+						j++;
+					}
+					arraydata[array_k] = 0;
+					central_classifiersystem->ids = atoi(arraydata);
+					CHECK_POINTER(rule_type);
+					central_classifiersystem->rule_type = 0;
+					array_k = 0;
+					j++;
+					while(buffer[j] != ',')
+					{
+						arraydata[array_k] = buffer[j];
+						array_k++;
+						j++;
+					}
+					arraydata[array_k] = 0;
+					central_classifiersystem->rule_type = atoi(arraydata);
 					CHECK_POINTER(counter);
 					central_classifiersystem->counter = 0;
 					array_k = 0;
@@ -1659,18 +1755,6 @@ void readinitialstates(char * filename, int * itno, xmachine ** agent_list, doub
 					central_classifiersystem->avgperformance = 0.0;
 					array_k = 0;
 					j++;
-					while(buffer[j] != ',')
-					{
-						arraydata[array_k] = buffer[j];
-						array_k++;
-						j++;
-					}
-					arraydata[array_k] = 0;
-					central_classifiersystem->avgperformance = atof(arraydata);
-					CHECK_POINTER(performance_history);
-					central_classifiersystem->performance_history = 0.0;
-					array_k = 0;
-					j++;
 					while(buffer[j] != '}')
 					{
 						arraydata[array_k] = buffer[j];
@@ -1678,7 +1762,7 @@ void readinitialstates(char * filename, int * itno, xmachine ** agent_list, doub
 						j++;
 					}
 					arraydata[array_k] = 0;
-					central_classifiersystem->performance_history = atof(arraydata);
+					central_classifiersystem->avgperformance = atof(arraydata);
 				}
 			}
 			
@@ -1851,7 +1935,19 @@ void saveiterationdata(int iteration_number)
 			fputs("</household_id>\n", file);
 			fputs("<agent_classifiersystem>", file);
 			fputs("{", file);
+			sprintf(data, "%i", current_Household->agent_classifiersystem->nr_types);
+			fputs(data, file);
+			fputs(", ", file);
+			sprintf(data, "%i", current_Household->agent_classifiersystem->nr_rules_per_type);
+			fputs(data, file);
+			fputs(", ", file);
+			sprintf(data, "%i", current_Household->agent_classifiersystem->nr_rules);
+			fputs(data, file);
+			fputs(", ", file);
 			sprintf(data, "%i", current_Household->agent_classifiersystem->ids);
+			fputs(data, file);
+			fputs(", ", file);
+			sprintf(data, "%i", current_Household->agent_classifiersystem->rule_type);
 			fputs(data, file);
 			fputs(", ", file);
 			sprintf(data, "%f", current_Household->agent_classifiersystem->experience);
@@ -1870,9 +1966,6 @@ void saveiterationdata(int iteration_number)
 			fputs(data, file);
 			fputs(", ", file);
 			sprintf(data, "%f", current_Household->agent_classifiersystem->choiceprob);
-			fputs(data, file);
-			fputs(", ", file);
-			sprintf(data, "%i", current_Household->agent_classifiersystem->nr_selected_rule);
 			fputs(data, file);
 			fputs("}", file);
 			fputs("</agent_classifiersystem>\n", file);
@@ -2332,6 +2425,21 @@ void saveiterationdata(int iteration_number)
 			fputs("<name>FinancialAdvisor</name>\n", file);
 			fputs("<central_classifiersystem>", file);
 			fputs("{", file);
+			sprintf(data, "%i", current_FinancialAdvisor->central_classifiersystem->nr_types);
+			fputs(data, file);
+			fputs(", ", file);
+			sprintf(data, "%i", current_FinancialAdvisor->central_classifiersystem->nr_rules_per_type);
+			fputs(data, file);
+			fputs(", ", file);
+			sprintf(data, "%i", current_FinancialAdvisor->central_classifiersystem->nr_rules);
+			fputs(data, file);
+			fputs(", ", file);
+			sprintf(data, "%i", current_FinancialAdvisor->central_classifiersystem->ids);
+			fputs(data, file);
+			fputs(", ", file);
+			sprintf(data, "%i", current_FinancialAdvisor->central_classifiersystem->rule_type);
+			fputs(data, file);
+			fputs(", ", file);
 			sprintf(data, "%i", current_FinancialAdvisor->central_classifiersystem->counter);
 			fputs(data, file);
 			fputs(", ", file);
@@ -2339,9 +2447,6 @@ void saveiterationdata(int iteration_number)
 			fputs(data, file);
 			fputs(", ", file);
 			sprintf(data, "%f", current_FinancialAdvisor->central_classifiersystem->avgperformance);
-			fputs(data, file);
-			fputs(", ", file);
-			sprintf(data, "%f", current_FinancialAdvisor->central_classifiersystem->performance_history);
 			fputs(data, file);
 			fputs("}", file);
 			fputs("</central_classifiersystem>\n", file);

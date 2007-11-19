@@ -88,18 +88,37 @@
 /** \def FINISH_ALL_PERFORMANCES_MESSAGE_LOOP
  * \brief Finish of loop to process all_performances messages. */
 #define FINISH_ALL_PERFORMANCES_MESSAGE_LOOP all_performances_message = get_next_all_performances_message(all_performances_message); }
-/** \def e START_RULE_DETAILS_REQUEST_MESSAGE_LOOP
- * \brief Start of loop to process rule_details_request messages. */
-#define START_RULE_DETAILS_REQUEST_MESSAGE_LOOP  rule_details_request_message = get_first_rule_details_request_message(); while(rule_details_request_message) {
-/** \def FINISH_RULE_DETAILS_REQUEST_MESSAGE_LOOP
- * \brief Finish of loop to process rule_details_request messages. */
-#define FINISH_RULE_DETAILS_REQUEST_MESSAGE_LOOP rule_details_request_message = get_next_rule_details_request_message(rule_details_request_message); }
 /** \def e START_RULEDETAILSYSTEM_MESSAGE_LOOP
  * \brief Start of loop to process ruledetailsystem messages. */
 #define START_RULEDETAILSYSTEM_MESSAGE_LOOP  ruledetailsystem_message = get_first_ruledetailsystem_message(); while(ruledetailsystem_message) {
 /** \def FINISH_RULEDETAILSYSTEM_MESSAGE_LOOP
  * \brief Finish of loop to process ruledetailsystem messages. */
 #define FINISH_RULEDETAILSYSTEM_MESSAGE_LOOP ruledetailsystem_message = get_next_ruledetailsystem_message(ruledetailsystem_message); }
+
+/** \struct AssetStruct
+ * \brief Datatype for asset structures.
+ *
+ * Datatype for asset structures.
+ */
+struct AssetStruct
+{
+	int_array ids;
+	int_array nr_units;
+	double_array current_price;
+	double_array best_ask_price;
+	double_array best_bid_price;
+};
+
+/** \struct AssetStruct_array
+ * \brief Dynamic array to hold AssetStructs
+ */
+struct AssetStruct_array
+{
+	int size;
+	int total_size;
+	
+	struct AssetStruct ** array;
+};
 
 /** \struct AssetPortfolioType
  * \brief AssetportfolioType structs are used by the Household.
@@ -147,14 +166,17 @@ struct AssetPortfolioType_array
  */
 struct PrivateClassifierSystem
 {
-	int ids;
+	int nr_types;
+	int_array nr_rules_per_type;
+	int nr_rules;
+	int_array ids;
+	int_array rule_type;
 	double experience;
 	int current_rule;
 	double my_performance;
-	double avgperformance;
-	double attraction;
-	double choiceprob;
-	int nr_selected_rule;
+	double_array avgperformance;
+	double_array attraction;
+	double_array choiceprob;
 };
 
 /** \struct PrivateClassifierSystem_array
@@ -175,10 +197,14 @@ struct PrivateClassifierSystem_array
  */
 struct PublicClassifierSystem
 {
-	int counter;
-	double performance;
-	double avgperformance;
-	double performance_history;
+	int nr_types;
+	int_array nr_rules_per_type;
+	int nr_rules;
+	int_array ids;
+	int_array rule_type;
+	int_array counter;
+	double_array performance;
+	double_array avgperformance;
 };
 
 /** \struct PublicClassifierSystem_array
@@ -192,32 +218,155 @@ struct PublicClassifierSystem_array
 	struct PublicClassifierSystem ** array;
 };
 
-/** \struct RuleDataType
- * \brief The datatype for rules. Refer to rule_creation.m. !Subject to change!.
+/** \struct RuleDetailSystem
+ * \brief Datatype for all rule details.  !Subject to change!.
  *
- * The datatype for rules. Refer to rule_creation.m. !Subject to change!.
+ * Datatype for all rule details.  !Subject to change!.
  */
-struct RuleDataType
+struct RuleDetailSystem
 {
-	char class;
-	int id;
-	int performance;
-	int counter;
-	int avgperformance;
-	int my_performance;
-	int attraction;
-	int choiceprob;
+	int_array nr_params_per_type;
+	int_array nr_params;
+	double2D_array parameters;
+	wordlist myfunctionnames;
+	wordlist myfunctionnames;
 };
 
-/** \struct RuleDataType_array
- * \brief Dynamic array to hold RuleDataTypes
+/** \struct RuleDetailSystem_array
+ * \brief Dynamic array to hold RuleDetailSystems
  */
-struct RuleDataType_array
+struct RuleDetailSystem_array
 {
 	int size;
 	int total_size;
 	
-	struct RuleDataType ** array;
+	struct RuleDetailSystem ** array;
+};
+
+/** \struct double2D_array
+ * \brief ¸.
+ *
+ * ¸.
+ */
+struct double2D_array
+{
+	double** double2Dname;
+};
+
+/** \struct double2D_array_array
+ * \brief Dynamic array to hold double2D_arrays
+ */
+struct double2D_array_array
+{
+	int size;
+	int total_size;
+	
+	struct double2D_array ** array;
+};
+
+/** \struct int2D_array
+ * \brief ¸.
+ *
+ * ¸.
+ */
+struct int2D_array
+{
+	int** int2Dname;
+};
+
+/** \struct int2D_array_array
+ * \brief Dynamic array to hold int2D_arrays
+ */
+struct int2D_array_array
+{
+	int size;
+	int total_size;
+	
+	struct int2D_array ** array;
+};
+
+/** \struct wordlist
+ * \brief ¸.
+ *
+ * ¸.
+ */
+struct wordlist
+{
+	word_array wordlistname;
+};
+
+/** \struct wordlist_array
+ * \brief Dynamic array to hold wordlists
+ */
+struct wordlist_array
+{
+	int size;
+	int total_size;
+	
+	struct wordlist ** array;
+};
+
+/** \struct word
+ * \brief ¸.
+ *
+ * ¸.
+ */
+struct word
+{
+	char_array wordname;
+};
+
+/** \struct word_array
+ * \brief Dynamic array to hold words
+ */
+struct word_array
+{
+	int size;
+	int total_size;
+	
+	struct word ** array;
+};
+
+/** \struct stringlist
+ * \brief ¸.
+ *
+ * ¸.
+ */
+struct stringlist
+{
+	string_array stringlistname;
+};
+
+/** \struct stringlist_array
+ * \brief Dynamic array to hold stringlists
+ */
+struct stringlist_array
+{
+	int size;
+	int total_size;
+	
+	struct stringlist ** array;
+};
+
+/** \struct string
+ * \brief ¸.
+ *
+ * ¸.
+ */
+struct string
+{
+	char_array stringname;
+};
+
+/** \struct string_array
+ * \brief Dynamic array to hold strings
+ */
+struct string_array
+{
+	int size;
+	int total_size;
+	
+	struct string ** array;
 };
 
 /** \struct DBFinancialAssets
@@ -359,6 +508,14 @@ typedef struct double_array double_array;
  */
 typedef struct char_array char_array;
 
+/** \var typedef AssetStruct AssetStruct
+ * \brief Typedef for AssetStruct struct.
+ */
+typedef struct AssetStruct AssetStruct;
+/** \var typedef AssetStruct_array AssetStruct_array
+ * \brief Typedef for AssetStruct_array struct.
+ */
+typedef struct AssetStruct_array AssetStruct_array;
 /** \var typedef AssetPortfolioType AssetPortfolioType
  * \brief Typedef for AssetPortfolioType struct.
  */
@@ -383,14 +540,62 @@ typedef struct PublicClassifierSystem PublicClassifierSystem;
  * \brief Typedef for PublicClassifierSystem_array struct.
  */
 typedef struct PublicClassifierSystem_array PublicClassifierSystem_array;
-/** \var typedef RuleDataType RuleDataType
- * \brief Typedef for RuleDataType struct.
+/** \var typedef RuleDetailSystem RuleDetailSystem
+ * \brief Typedef for RuleDetailSystem struct.
  */
-typedef struct RuleDataType RuleDataType;
-/** \var typedef RuleDataType_array RuleDataType_array
- * \brief Typedef for RuleDataType_array struct.
+typedef struct RuleDetailSystem RuleDetailSystem;
+/** \var typedef RuleDetailSystem_array RuleDetailSystem_array
+ * \brief Typedef for RuleDetailSystem_array struct.
  */
-typedef struct RuleDataType_array RuleDataType_array;
+typedef struct RuleDetailSystem_array RuleDetailSystem_array;
+/** \var typedef double2D_array double2D_array
+ * \brief Typedef for double2D_array struct.
+ */
+typedef struct double2D_array double2D_array;
+/** \var typedef double2D_array_array double2D_array_array
+ * \brief Typedef for double2D_array_array struct.
+ */
+typedef struct double2D_array_array double2D_array_array;
+/** \var typedef int2D_array int2D_array
+ * \brief Typedef for int2D_array struct.
+ */
+typedef struct int2D_array int2D_array;
+/** \var typedef int2D_array_array int2D_array_array
+ * \brief Typedef for int2D_array_array struct.
+ */
+typedef struct int2D_array_array int2D_array_array;
+/** \var typedef wordlist wordlist
+ * \brief Typedef for wordlist struct.
+ */
+typedef struct wordlist wordlist;
+/** \var typedef wordlist_array wordlist_array
+ * \brief Typedef for wordlist_array struct.
+ */
+typedef struct wordlist_array wordlist_array;
+/** \var typedef word word
+ * \brief Typedef for word struct.
+ */
+typedef struct word word;
+/** \var typedef word_array word_array
+ * \brief Typedef for word_array struct.
+ */
+typedef struct word_array word_array;
+/** \var typedef stringlist stringlist
+ * \brief Typedef for stringlist struct.
+ */
+typedef struct stringlist stringlist;
+/** \var typedef stringlist_array stringlist_array
+ * \brief Typedef for stringlist_array struct.
+ */
+typedef struct stringlist_array stringlist_array;
+/** \var typedef string string
+ * \brief Typedef for string struct.
+ */
+typedef struct string string;
+/** \var typedef string_array string_array
+ * \brief Typedef for string_array struct.
+ */
+typedef struct string_array string_array;
 /** \var typedef DBFinancialAssets DBFinancialAssets
  * \brief Typedef for DBFinancialAssets struct.
  */
@@ -716,7 +921,7 @@ struct xmachine_message_firm_stock_transaction
  */
 struct xmachine_message_rule_performance
 {
-	int nr_selected_rule;	/**< Message memory variable nr_selected_rule of type int. */
+	int current_rule;	/**< Message memory variable current_rule of type int. */
 	double rule_performance;	/**< Message memory variable rule_performance of type double. */
 	double range;	/**< Message memory variable range of type double. */
 	double x;	/**< Message memory variable x of type double. */
@@ -732,7 +937,7 @@ struct xmachine_message_rule_performance
  */
 struct xmachine_message_all_performances
 {
-	double performances;	/**< Message memory variable performances of type double. */
+	double_array performances;	/**< Message memory variable performances of type double_array. */
 	double range;	/**< Message memory variable range of type double. */
 	double x;	/**< Message memory variable x of type double. */
 	double y;	/**< Message memory variable y of type double. */
@@ -742,28 +947,12 @@ struct xmachine_message_all_performances
 };
 
 
-/** \struct xmachine_message_rule_details_request
- * \brief Holds message of type rule_details_request_message.
- */
-struct xmachine_message_rule_details_request
-{
-	int household_id;	/**< Message memory variable household_id of type int. */
-	int selected_rule_number;	/**< Message memory variable selected_rule_number of type int. */
-	double range;	/**< Message memory variable range of type double. */
-	double x;	/**< Message memory variable x of type double. */
-	double y;	/**< Message memory variable y of type double. */
-	double z;	/**< Message memory variable z of type double. */
-	
-	struct xmachine_message_rule_details_request * next;	/**< Pointer to next message in the list. */
-};
-
-
 /** \struct xmachine_message_ruledetailsystem
  * \brief Holds message of type ruledetailsystem_message.
  */
 struct xmachine_message_ruledetailsystem
 {
-	double parameters;	/**< Message memory variable parameters of type double. */
+	double2D_array parameters;	/**< Message memory variable parameters of type double2D_array. */
 	double range;	/**< Message memory variable range of type double. */
 	double x;	/**< Message memory variable x of type double. */
 	double y;	/**< Message memory variable y of type double. */
@@ -860,11 +1049,6 @@ typedef struct xmachine_message_rule_performance xmachine_message_rule_performan
  */
 typedef struct xmachine_message_all_performances xmachine_message_all_performances;
 
-/** \typedef xmachine_message_rule_details_request xmachine_message_rule_details_request
- * \brief Typedef for xmachine_message_rule_details_request struct.
- */
-typedef struct xmachine_message_rule_details_request xmachine_message_rule_details_request;
-
 /** \typedef xmachine_message_ruledetailsystem xmachine_message_ruledetailsystem
  * \brief Typedef for xmachine_message_ruledetailsystem struct.
  */
@@ -878,10 +1062,12 @@ int Household_retrieve_rule_details(void);
 int Household_apply_rule(void);
 int Household_read_ruledetailsystem_message(void);
 int Household_update_ruledetailsystem(void);
+int Household_reset_private_classifiersystem(void);
 int Household_read_transaction_message(void);
 int Clearinghouse_read_order_messages(void);
 int FinancialAgent_read_rule_performance_message(void);
 int FinancialAgent_update_classifiersystem(void);
+int FinancialAgent_reset_public_classifiersystem(void);
 int FinancialAgent_send_all_performances_message(void);
 int FinancialAgent_update_ruledetailsystem(void);
 int FinancialAgent_updateGA(void);
@@ -918,7 +1104,6 @@ struct node_information
 	struct xmachine_message_firm_stock_transaction * firm_stock_transaction_messages;	/**< Pointer to firm_stock_transaction message list. */
 	struct xmachine_message_rule_performance * rule_performance_messages;	/**< Pointer to rule_performance message list. */
 	struct xmachine_message_all_performances * all_performances_messages;	/**< Pointer to all_performances message list. */
-	struct xmachine_message_rule_details_request * rule_details_request_messages;	/**< Pointer to rule_details_request message list. */
 	struct xmachine_message_ruledetailsystem * ruledetailsystem_messages;	/**< Pointer to ruledetailsystem message list. */
 	
 	struct node_information * next;	/**< Pointer to next node on the list. */
@@ -971,9 +1156,6 @@ xmachine_message_rule_performance * temp_rule_performance_message;
 /** \var xmachine_message_all_performances * temp_all_performances_message
 * \brief Pointer to xmachine_message_all_performances to initialise linked list. */
 xmachine_message_all_performances * temp_all_performances_message;
-/** \var xmachine_message_rule_details_request * temp_rule_details_request_message
-* \brief Pointer to xmachine_message_rule_details_request to initialise linked list. */
-xmachine_message_rule_details_request * temp_rule_details_request_message;
 /** \var xmachine_message_ruledetailsystem * temp_ruledetailsystem_message
 * \brief Pointer to xmachine_message_ruledetailsystem to initialise linked list. */
 xmachine_message_ruledetailsystem * temp_ruledetailsystem_message;
@@ -1032,9 +1214,6 @@ xmachine_message_rule_performance ** p_rule_performance_message;
 /** \var xmachine_message_all_performances ** p_all_performances_message
 * \brief Pointer to first pointer of all_performances message list */
 xmachine_message_all_performances ** p_all_performances_message;
-/** \var xmachine_message_rule_details_request ** p_rule_details_request_message
-* \brief Pointer to first pointer of rule_details_request message list */
-xmachine_message_rule_details_request ** p_rule_details_request_message;
 /** \var xmachine_message_ruledetailsystem ** p_ruledetailsystem_message
 * \brief Pointer to first pointer of ruledetailsystem message list */
 xmachine_message_ruledetailsystem ** p_ruledetailsystem_message;
@@ -1072,9 +1251,6 @@ xmachine_message_rule_performance * rule_performance_message;
 /** \var xmachine_message_all_performances * all_performances_message
 * \brief Pointer to message struct for looping through all_performances message list */
 xmachine_message_all_performances * all_performances_message;
-/** \var xmachine_message_rule_details_request * rule_details_request_message
-* \brief Pointer to message struct for looping through rule_details_request message list */
-xmachine_message_rule_details_request * rule_details_request_message;
 /** \var xmachine_message_ruledetailsystem * ruledetailsystem_message
 * \brief Pointer to message struct for looping through ruledetailsystem message list */
 xmachine_message_ruledetailsystem * ruledetailsystem_message;
@@ -1123,6 +1299,12 @@ void free_agent(void);
 void freexmachines(void);
 /* model datatypes */
 
+AssetStruct_array * init_AssetStruct_array();
+void reset_AssetStruct_array(AssetStruct_array * array);
+void free_AssetStruct_array(AssetStruct_array * array);
+void add_AssetStruct(AssetStruct_array * array, int_array ids, int_array nr_units, double_array current_price, double_array best_ask_price, double_array best_bid_price);
+void remove_AssetStruct(AssetStruct_array * array, int index);
+
 AssetPortfolioType_array * init_AssetPortfolioType_array();
 void reset_AssetPortfolioType_array(AssetPortfolioType_array * array);
 void free_AssetPortfolioType_array(AssetPortfolioType_array * array);
@@ -1132,20 +1314,56 @@ void remove_AssetPortfolioType(AssetPortfolioType_array * array, int index);
 PrivateClassifierSystem_array * init_PrivateClassifierSystem_array();
 void reset_PrivateClassifierSystem_array(PrivateClassifierSystem_array * array);
 void free_PrivateClassifierSystem_array(PrivateClassifierSystem_array * array);
-void add_PrivateClassifierSystem(PrivateClassifierSystem_array * array, int ids, double experience, int current_rule, double my_performance, double avgperformance, double attraction, double choiceprob, int nr_selected_rule);
+void add_PrivateClassifierSystem(PrivateClassifierSystem_array * array, int nr_types, int_array nr_rules_per_type, int nr_rules, int_array ids, int_array rule_type, double experience, int current_rule, double my_performance, double_array avgperformance, double_array attraction, double_array choiceprob);
 void remove_PrivateClassifierSystem(PrivateClassifierSystem_array * array, int index);
 
 PublicClassifierSystem_array * init_PublicClassifierSystem_array();
 void reset_PublicClassifierSystem_array(PublicClassifierSystem_array * array);
 void free_PublicClassifierSystem_array(PublicClassifierSystem_array * array);
-void add_PublicClassifierSystem(PublicClassifierSystem_array * array, int counter, double performance, double avgperformance, double performance_history);
+void add_PublicClassifierSystem(PublicClassifierSystem_array * array, int nr_types, int_array nr_rules_per_type, int nr_rules, int_array ids, int_array rule_type, int_array counter, double_array performance, double_array avgperformance);
 void remove_PublicClassifierSystem(PublicClassifierSystem_array * array, int index);
 
-RuleDataType_array * init_RuleDataType_array();
-void reset_RuleDataType_array(RuleDataType_array * array);
-void free_RuleDataType_array(RuleDataType_array * array);
-void add_RuleDataType(RuleDataType_array * array, char class, int id, int performance, int counter, int avgperformance, int my_performance, int attraction, int choiceprob);
-void remove_RuleDataType(RuleDataType_array * array, int index);
+RuleDetailSystem_array * init_RuleDetailSystem_array();
+void reset_RuleDetailSystem_array(RuleDetailSystem_array * array);
+void free_RuleDetailSystem_array(RuleDetailSystem_array * array);
+void add_RuleDetailSystem(RuleDetailSystem_array * array, int_array nr_params_per_type, int_array nr_params, double2D_array parameters, wordlist myfunctionnames, wordlist myfunctionnames);
+void remove_RuleDetailSystem(RuleDetailSystem_array * array, int index);
+
+double2D_array_array * init_double2D_array_array();
+void reset_double2D_array_array(double2D_array_array * array);
+void free_double2D_array_array(double2D_array_array * array);
+void add_double2D_array(double2D_array_array * array, double** double2Dname);
+void remove_double2D_array(double2D_array_array * array, int index);
+
+int2D_array_array * init_int2D_array_array();
+void reset_int2D_array_array(int2D_array_array * array);
+void free_int2D_array_array(int2D_array_array * array);
+void add_int2D_array(int2D_array_array * array, int** int2Dname);
+void remove_int2D_array(int2D_array_array * array, int index);
+
+wordlist_array * init_wordlist_array();
+void reset_wordlist_array(wordlist_array * array);
+void free_wordlist_array(wordlist_array * array);
+void add_wordlist(wordlist_array * array, word_array wordlistname);
+void remove_wordlist(wordlist_array * array, int index);
+
+word_array * init_word_array();
+void reset_word_array(word_array * array);
+void free_word_array(word_array * array);
+void add_word(word_array * array, char_array wordname);
+void remove_word(word_array * array, int index);
+
+stringlist_array * init_stringlist_array();
+void reset_stringlist_array(stringlist_array * array);
+void free_stringlist_array(stringlist_array * array);
+void add_stringlist(stringlist_array * array, string_array stringlistname);
+void remove_stringlist(stringlist_array * array, int index);
+
+string_array * init_string_array();
+void reset_string_array(string_array * array);
+void free_string_array(string_array * array);
+void add_string(string_array * array, char_array stringname);
+void remove_string(string_array * array, int index);
 
 DBFinancialAssets_array * init_DBFinancialAssets_array();
 void reset_DBFinancialAssets_array(DBFinancialAssets_array * array);
@@ -1256,22 +1474,17 @@ xmachine_message_firm_stock_transaction * add_firm_stock_transaction_message_int
 xmachine_message_firm_stock_transaction * get_first_firm_stock_transaction_message(void);
 xmachine_message_firm_stock_transaction * get_next_firm_stock_transaction_message(xmachine_message_firm_stock_transaction * current);
 void freefirm_stock_transactionmessages(void);
-void add_rule_performance_message(int nr_selected_rule, double rule_performance, double range, double x, double y, double z);
+void add_rule_performance_message(int current_rule, double rule_performance, double range, double x, double y, double z);
 xmachine_message_rule_performance * add_rule_performance_message_internal(void);
 xmachine_message_rule_performance * get_first_rule_performance_message(void);
 xmachine_message_rule_performance * get_next_rule_performance_message(xmachine_message_rule_performance * current);
 void freerule_performancemessages(void);
-void add_all_performances_message(double performances, double range, double x, double y, double z);
+void add_all_performances_message(double_array performances, double range, double x, double y, double z);
 xmachine_message_all_performances * add_all_performances_message_internal(void);
 xmachine_message_all_performances * get_first_all_performances_message(void);
 xmachine_message_all_performances * get_next_all_performances_message(xmachine_message_all_performances * current);
 void freeall_performancesmessages(void);
-void add_rule_details_request_message(int household_id, int selected_rule_number, double range, double x, double y, double z);
-xmachine_message_rule_details_request * add_rule_details_request_message_internal(void);
-xmachine_message_rule_details_request * get_first_rule_details_request_message(void);
-xmachine_message_rule_details_request * get_next_rule_details_request_message(xmachine_message_rule_details_request * current);
-void freerule_details_requestmessages(void);
-void add_ruledetailsystem_message(double parameters, double range, double x, double y, double z);
+void add_ruledetailsystem_message(double2D_array parameters, double range, double x, double y, double z);
 xmachine_message_ruledetailsystem * add_ruledetailsystem_message_internal(void);
 xmachine_message_ruledetailsystem * get_first_ruledetailsystem_message(void);
 xmachine_message_ruledetailsystem * get_next_ruledetailsystem_message(xmachine_message_ruledetailsystem * current);
@@ -1414,7 +1627,6 @@ xmachine_message_gov_bond_transaction * get_next_message_gov_bond_transaction_in
 xmachine_message_firm_stock_transaction * get_next_message_firm_stock_transaction_in_range(xmachine_message_firm_stock_transaction * current);
 xmachine_message_rule_performance * get_next_message_rule_performance_in_range(xmachine_message_rule_performance * current);
 xmachine_message_all_performances * get_next_message_all_performances_in_range(xmachine_message_all_performances * current);
-xmachine_message_rule_details_request * get_next_message_rule_details_request_in_range(xmachine_message_rule_details_request * current);
 xmachine_message_ruledetailsystem * get_next_message_ruledetailsystem_in_range(xmachine_message_ruledetailsystem * current);
 
 /* memory.c */

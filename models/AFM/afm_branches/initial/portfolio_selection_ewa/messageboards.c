@@ -1790,7 +1790,7 @@ void process_rule_performance_message(xmachine_message_rule_performance * curren
 			{
 				p_rule_performance_message = &node_info->rule_performance_messages;
 				temp_send_message = add_rule_performance_message_internal();
-				temp_send_message->nr_selected_rule = current->nr_selected_rule;
+				temp_send_message->current_rule = current->current_rule;
 				temp_send_message->rule_performance = current->rule_performance;
 				temp_send_message->range = current->range;
 				temp_send_message->x = current->x;
@@ -1804,21 +1804,21 @@ void process_rule_performance_message(xmachine_message_rule_performance * curren
 	}
 }
 
-/** \fn void add_rule_performance_message(int nr_selected_rule, double rule_performance, double range, double x, double y, double z)
+/** \fn void add_rule_performance_message(int current_rule, double rule_performance, double range, double x, double y, double z)
  * \brief Add rule_performance message by calling internal and processing.
- * \param nr_selected_rule Message variable.
+ * \param current_rule Message variable.
  * \param rule_performance Message variable.
  * \param range Message variable.
  * \param x Message variable.
  * \param y Message variable.
  * \param z Message variable.
  */
-void add_rule_performance_message(int nr_selected_rule, double rule_performance, double range, double x, double y, double z)
+void add_rule_performance_message(int current_rule, double rule_performance, double range, double x, double y, double z)
 {
 
 	p_rule_performance_message = &current_node->rule_performance_messages;
 	xmachine_message_rule_performance * tmp = add_rule_performance_message_internal();
-	tmp->nr_selected_rule = nr_selected_rule;
+	tmp->current_rule = current_rule;
 	tmp->rule_performance = rule_performance;
 	tmp->range = range;
 	tmp->x = x;
@@ -1993,7 +1993,7 @@ void process_all_performances_message(xmachine_message_all_performances * curren
 	}
 }
 
-/** \fn void add_all_performances_message(double performances, double range, double x, double y, double z)
+/** \fn void add_all_performances_message(double_array performances, double range, double x, double y, double z)
  * \brief Add all_performances message by calling internal and processing.
  * \param performances Message variable.
  * \param range Message variable.
@@ -2001,7 +2001,7 @@ void process_all_performances_message(xmachine_message_all_performances * curren
  * \param y Message variable.
  * \param z Message variable.
  */
-void add_all_performances_message(double performances, double range, double x, double y, double z)
+void add_all_performances_message(double_array performances, double range, double x, double y, double z)
 {
 
 	p_all_performances_message = &current_node->all_performances_messages;
@@ -2111,196 +2111,6 @@ void freeall_performancesmessages()
 	*p_all_performances_message = NULL;
 }
 
-/** \fn xmachine_message_rule_details_request * add_rule_details_request_message_internal()
- * \brief Add rule_details_request message to the local message list.
- * \return The added message.
- */
-xmachine_message_rule_details_request * add_rule_details_request_message_internal()
-{
-	xmachine_message_rule_details_request * current = (xmachine_message_rule_details_request *)malloc(sizeof(xmachine_message_rule_details_request));
-	CHECK_POINTER(current);
-
-	current->next = *p_rule_details_request_message;
-	*p_rule_details_request_message = current;
-	
-	return current;
-}
-
-/** \fn void process_rule_details_request_message(xmachine_message_rule_details_request * current)
- * \brief Process rule_details_request message to calculate if it needs to be sent to another node.
- * \param current The message to be processed.
- */
-void process_rule_details_request_message(xmachine_message_rule_details_request * current)
-{
-	double x = 0.0;
-	double y = 0.0;
-	double z = 0.0;
-	double max_mess_dist;
-	int in_halo_region = 0;
-	node_information * node_info;
-	xmachine_message_rule_details_request * temp_send_message;
-	
-	max_mess_dist = (double)current->range;
-	x = current->x;
-	y = current->y;
-	z = current->z;
-	
-	/* Check x-axis halo region */
-	if((current_node->partition_data[0] != -SPINF && x <= (current_node->partition_data[0]+max_mess_dist)) ||
-	   (current_node->partition_data[1] !=  SPINF && x >= (current_node->partition_data[1]-max_mess_dist)))
-	{ in_halo_region = 1; }
-	/* Check y-axis halo region */
-	if((current_node->partition_data[2] != -SPINF && y <= (current_node->partition_data[2]+max_mess_dist)) ||
-	   (current_node->partition_data[3] !=  SPINF && y >= (current_node->partition_data[3]-max_mess_dist)))
-	{ in_halo_region = 1; }
-	/* Check z-axis halo region (if used) */
-	
-	
-	if(in_halo_region)
-	{
-		node_info = *p_node_info;
-		while(node_info)
-		{
-			if(node_info->node_id != current_node->node_id &&
-			node_info->partition_data[0]-max_mess_dist < x && node_info->partition_data[1]+max_mess_dist > x &&
-			node_info->partition_data[2]-max_mess_dist < y && node_info->partition_data[3]+max_mess_dist > y)
-			{
-				p_rule_details_request_message = &node_info->rule_details_request_messages;
-				temp_send_message = add_rule_details_request_message_internal();
-				temp_send_message->household_id = current->household_id;
-				temp_send_message->selected_rule_number = current->selected_rule_number;
-				temp_send_message->range = current->range;
-				temp_send_message->x = current->x;
-				temp_send_message->y = current->y;
-				temp_send_message->z = current->z;
-			}
-			node_info = node_info->next;
-		}
-		
-		p_rule_details_request_message = &current_node->rule_details_request_messages;
-	}
-}
-
-/** \fn void add_rule_details_request_message(int household_id, int selected_rule_number, double range, double x, double y, double z)
- * \brief Add rule_details_request message by calling internal and processing.
- * \param household_id Message variable.
- * \param selected_rule_number Message variable.
- * \param range Message variable.
- * \param x Message variable.
- * \param y Message variable.
- * \param z Message variable.
- */
-void add_rule_details_request_message(int household_id, int selected_rule_number, double range, double x, double y, double z)
-{
-
-	p_rule_details_request_message = &current_node->rule_details_request_messages;
-	xmachine_message_rule_details_request * tmp = add_rule_details_request_message_internal();
-	tmp->household_id = household_id;
-	tmp->selected_rule_number = selected_rule_number;
-	tmp->range = range;
-	tmp->x = x;
-	tmp->y = y;
-	tmp->z = z;
-
-
-	/* Check if agent in halo region */
-	process_rule_details_request_message(tmp);
-}
-
-xmachine_message_rule_details_request * get_next_message_rule_details_request_in_range(xmachine_message_rule_details_request * current)
-{
-	double x = 0.0, y = 0.0, z = 0.0;
-	
-	
-	if(current_xmachine->xmachine_Household)
-	{
-		x = (double)current_xmachine->xmachine_Household->posx;
-		y = (double)current_xmachine->xmachine_Household->posy;
-		z = 0.0;
-	}
-	if(current_xmachine->xmachine_Firm)
-	{
-		x = (double)current_xmachine->xmachine_Firm->posx;
-		y = (double)current_xmachine->xmachine_Firm->posy;
-		z = 0.0;
-	}
-	if(current_xmachine->xmachine_Bank)
-	{
-		x = (double)current_xmachine->xmachine_Bank->posx;
-		y = (double)current_xmachine->xmachine_Bank->posy;
-		z = 0.0;
-	}
-	if(current_xmachine->xmachine_ClearingHouseMechanism)
-	{
-		x = (double)current_xmachine->xmachine_ClearingHouseMechanism->posx;
-		y = (double)current_xmachine->xmachine_ClearingHouseMechanism->posy;
-		z = 0.0;
-	}
-	if(current_xmachine->xmachine_LimitOrderBook)
-	{
-		x = (double)current_xmachine->xmachine_LimitOrderBook->posx;
-		y = (double)current_xmachine->xmachine_LimitOrderBook->posy;
-		z = 0.0;
-	}
-	if(current_xmachine->xmachine_Government)
-	{
-		x = (double)current_xmachine->xmachine_Government->posx;
-		y = (double)current_xmachine->xmachine_Government->posy;
-		z = 0.0;
-	}
-	if(current_xmachine->xmachine_FinancialAdvisor)
-	{
-		x = (double)current_xmachine->xmachine_FinancialAdvisor->posx;
-		y = (double)current_xmachine->xmachine_FinancialAdvisor->posy;
-		z = 0.0;
-	}
-	
-	while(current)
-	{
-		if( ((x - current->x)*(x - current->x)+(y - current->y)*(y - current->y)) <= current->range*current->range ) return current;
-		else current = current->next;
-	}
-	
-	return current;
-}
-
-/** \fn xmachine_message_rule_details_request * get_first_rule_details_request_message()
- * \brief Get the first rule_details_request message in the rule_details_request message list.
- * \return The first message in the list.
- */
-xmachine_message_rule_details_request * get_first_rule_details_request_message()
-{
-	return get_next_message_rule_details_request_in_range(*p_rule_details_request_message);
-}
-
-/** \fn xmachine_message_rule_details_request * get_next_rule_details_request_message(xmachine_message_rule_details_request * current)
- * \brief Get the next rule_details_request message in the rule_details_request message list after the current message.
- * \param current The current message in the list.
- * \return The next message in the list.
- */
-xmachine_message_rule_details_request * get_next_rule_details_request_message(xmachine_message_rule_details_request * current)
-{
-	return get_next_message_rule_details_request_in_range(current->next);
-}
-
-/** \fn void freerule_details_requestmessages()
- * \brief Free the rule_details_request message list.
- */
-void freerule_details_requestmessages()
-{
-	xmachine_message_rule_details_request * tmp, * head;
-	head = *p_rule_details_request_message;
-	
-	while(head)
-	{
-		tmp = head->next;
-		free(head);
-		head = tmp;
-	}
-	
-	*p_rule_details_request_message = NULL;
-}
-
 /** \fn xmachine_message_ruledetailsystem * add_ruledetailsystem_message_internal()
  * \brief Add ruledetailsystem message to the local message list.
  * \return The added message.
@@ -2370,7 +2180,7 @@ void process_ruledetailsystem_message(xmachine_message_ruledetailsystem * curren
 	}
 }
 
-/** \fn void add_ruledetailsystem_message(double parameters, double range, double x, double y, double z)
+/** \fn void add_ruledetailsystem_message(double2D_array parameters, double range, double x, double y, double z)
  * \brief Add ruledetailsystem message by calling internal and processing.
  * \param parameters Message variable.
  * \param range Message variable.
@@ -2378,7 +2188,7 @@ void process_ruledetailsystem_message(xmachine_message_ruledetailsystem * curren
  * \param y Message variable.
  * \param z Message variable.
  */
-void add_ruledetailsystem_message(double parameters, double range, double x, double y, double z)
+void add_ruledetailsystem_message(double2D_array parameters, double range, double x, double y, double z)
 {
 
 	p_ruledetailsystem_message = &current_node->ruledetailsystem_messages;
