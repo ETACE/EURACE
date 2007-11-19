@@ -204,3 +204,11 @@ some_new_functions.c
 					 settings of a rule.
 			line 234 Mariam please check these lines
 --------------------------------------------------------------------------------------
+Sander, rev 447
+some_new_functions.c 
+			Maintenance of functions.
+model.xml			
+			Added to RuleDetailSystem:
+			nr_types, nr_rules_per_type, nr_rules,
+			nr_params_per_type, nr_params.
+--------------------------------------------------------------------------------------

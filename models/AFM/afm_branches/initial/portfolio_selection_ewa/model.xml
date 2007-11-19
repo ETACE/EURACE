@@ -76,59 +76,94 @@
 <datatype>
 <name>RuleDetailSystem</name>
 <desc>Datatype for all rule details.  !Subject to change!</desc>
-	<!--Such that it is possible to do: function(parameter[1][id], parameter[2][id], parameter[3][id], parameter[4][id], parameter[5][id])--><var><!--int_array id[NRRULES]: ids for each rule (id[0]...id[NRRULES-1])--><type>int_array</type><name>id</name>
-</var>
+	<!--Such that it is possible to do: function(parameter[1][id], parameter[2][id], parameter[3][id], parameter[4][id], parameter[5][id])-->
 	<var>
-		<!--int_array nr_params[NRRULES]: nr. of parameters for each rule--><type>int_array</type><name>nr_params</name>
+		<!--Nr_params_per_type is the number of parameters per type of rule--><type>int_array</type>
+		<name>nr_params_per_type</name>
+	</var>
+	<var>
+		<!--int_array nr_params[NRRULES]: nr. of parameters for each rule; derived from nr_params_per_type-->
+		<type>int_array</type><name>nr_params</name>
 	</var>
 	<var><!--double parameters[NRRULES][MAX_PARAMS]-->
 	<!--parameters[i] is a double_array containing the parameter setting for rule i (these are multiple parameter values!!).--><!--Here we would need a double_array for each rule. Hence: a dynamic array of double_arrays!--><!--We do not know beforehand how many parameters there will be for each rule, but we can set an upper limit to MAX_PARAMS.--><!--Does this have to be a constant or can it be a global parameter MAX_PARAMS?-->
 	<type>double2D_array</type>
-	<name>parameters</name></var>
-
-<var>
+	<name>parameters</name>
+	</var>
+	<var>
 	<!--myfunctionnames[NR_TYPES]--><type>wordlist</type>
 	<name>myfunctionnames</name></var><var><!--rule_execution[NRRULES]--><!--Here I want to use a string to contain the function name that has to be used to apply rule i.--><!--Using the example: char_array *   char_var_dynamic_array   = get_char_var_dynamic_array();--><type>wordlist</type><name>myfunctionnames</name>
-</var>
+	</var>
 </datatype>
 
 <datatype>
 <name>PublicClassifierSystem</name>
 <desc>Datatype for the central classifier system. !Subject to change!</desc>
+	<var>
+	<!--Nr of subpopulations--><type>int</type>
+	<name>nr_types</name>
+	</var>
+	<var>
+		<!--Nr_rules_per_type may differ for each type; size of subpopulations--><type>int_array</type>
+		<name>nr_rules_per_type</name>
+	</var>
+	<var>
+		<!--Total nr of rules--><type>int</type><name>nr_rules</name>
+	</var>
+	<var><!--int_array ids: ids for each rule (id[0]...id[nr_rules-1])-->
+	<type>int_array</type><name>ids</name>
+	</var>
+	<var><!--int_array rule_type-->
+		<type>int_array</type>
+		<name>rule_type</name>
+	</var>
 <!-- Arrays with rule measures -->
-<var><!--This is the user counter for each rule Mariam: removed the array[NRRules], using dynamic array-->
+<var><!--This is the user counter for each rule-->
 <type>int_array</type><name>counter</name>
 </var>
-<var><!--This is the performance for each rule Mariam: removed the array[NRRules], using dynamic array-->
+<var><!--This is the performance for each rule-->
 <type>double_array</type><name>performance</name>
 </var>
-<var><!--This is the average performance for each rule Mariam: removed the array[NRRules], using dynamic array-->
+<var><!--This is the average performance for each rule-->
 <type>double_array</type><name>avgperformance</name>
-</var>
-<var><!--This is the average performance for each rule Mariam: removed the array[NRRules], using dynamic array-->
-<type>double_array</type><name>performance_history</name>
 </var>
 </datatype>
 
 <datatype>
 <name>PrivateClassifierSystem</name>
 <desc>Datatype for the private classifier system inside each agent.  !Subject to change!</desc>
-<!--General data for the rule system--><var>
-	<!--Array holding the IDs of the rules in this CS (may differ per agent) Mariam: removed the array[NRRules], using dynamic array-->
-	<type>int_array</type>	<name>ids</name>
-</var>
+<!--General data for the rule system-->
+	<var>
+	<!--Nr of subpopulations--><type>int</type>
+	<name>nr_types</name>
+	</var>
+	<var>
+		<!--Nr_rules_per_type may differ for each type; size of subpopulations--><type>int_array</type>
+		<name>nr_rules_per_type</name>
+	</var>
+	<var>
+		<!--Total nr of rules--><type>int</type><name>nr_rules</name>
+	</var>
+	<var><!--int_array ids: ids for each rule (id[0]...id[nr_rules-1])-->
+	<type>int_array</type><name>ids</name>
+	</var>
+	<var><!--int_array rule_type-->
+		<type>int_array</type>
+		<name>rule_type</name>
+	</var>
 	<var><!--This is the experience variable for EWA learning--><type>double</type><name>experience</name>
 	</var>
 <var><!--Current rule in use by the agent--><type>int</type><name>current_rule</name>
 </var>
 <!-- Arrays with rule measures -->
-<var><type>double</type><name>my_performance</name></var>
-<var><!--Mariam: removed the array[NrTotalRules], using dynamic array-->
+<var><!--Agent performance of current_rule--><type>double</type><name>my_performance</name>
+</var>
+<var><!---->
 <type>double_array</type><name>avgperformance</name>
 </var>
-<var><!--Mariam: removed the array[NrTotalRules], using dynamic array-->
+<var><!--Agent attractions-->
 <type>double_array</type><name>attraction</name></var>
-<var><!--Mariam: removed the array[NrTotalRules], using dynamic array-->
+<var><!--Agent choice probabilities-->
 <type>double_array</type><name>choiceprob</name></var>
 
 </datatype>
