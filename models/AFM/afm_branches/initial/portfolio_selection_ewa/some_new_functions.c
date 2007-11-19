@@ -1,49 +1,4 @@
-int Household_reset_private_classifiersystem()
-{
- 	//Getting the size of the system:
-	int NR_TYPES=CLASSIFIERSYSTEM->NR_TYPES;
 
-	//dynamic array with number of rules in each type (size of subpopulations)
-	int* NRRULES_PER_TYPE=CLASSIFIERSYSTEM->NRRULES_PER_TYPE;
-
-	//total number of rules:
-	int NRRULES=CLASSIFIERSYSTEM->NRRULES;
-
-	//Resetting and storing values to memory:
-	CLASSIFIERSYSTEM->experience=0;
-	CLASSIFIERSYSTEM->current_rule=0;
-	CLASSIFIERSYSTEM->my_performance=0;
-
-	for (i=0; i<NRRULES; i++)
-	{
-		CLASSIFIERSYSTEM->array[i]->avgperformance=0;
-		CLASSIFIERSYSTEM->array[i]->attraction=0;
-		CLASSIFIERSYSTEM->array[i]->choiceprob=0;
-	}
-
-    return 0;
-}
-
-int FinancialAgent_reset_public_classifiersystem()
-{
- 	//Getting the size of the system:
-	int NR_TYPES=CLASSIFIERSYSTEM->nr_types;
-
-	//dynamic array with number of rules in each type (size of subpopulations)
-	int* NRRULES_PER_TYPE=CLASSIFIERSYSTEM->nr_rules_per_type;
-
-	//total number of rules:
-	int NRRULES=CLASSIFIERSYSTEM->nr_rules;
-    
-	//Resetting and storing values to memory:
-	for (i=0; i<NRRULES; i++)
-	{
-		CLASSIFIERSYSTEM->array[i]->performance=0;
-		CLASSIFIERSYSTEM->array[i]->avgperformance=0;
-	}
-
-    return 0;
-}
 
 //HERE: function to initialize the rule_detail_system.
 //Contains arrays for:
