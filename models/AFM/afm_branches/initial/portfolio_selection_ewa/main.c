@@ -218,8 +218,6 @@ printf("Ouput dir: %s\n", outputpath);
 				
 			p_all_performances_message = &current_node->all_performances_messages;
 				
-			p_rule_details_request_message = &current_node->rule_details_request_messages;
-				
 			p_ruledetailsystem_message = &current_node->ruledetailsystem_messages;
 				
 		p_xmachine = &current_node->agents;
@@ -286,8 +284,6 @@ printf("Ouput dir: %s\n", outputpath);
 			p_rule_performance_message = &current_node->rule_performance_messages;
 				
 			p_all_performances_message = &current_node->all_performances_messages;
-				
-			p_rule_details_request_message = &current_node->rule_details_request_messages;
 				
 			p_ruledetailsystem_message = &current_node->ruledetailsystem_messages;
 				
@@ -404,8 +400,6 @@ printf("Ouput dir: %s\n", outputpath);
 				
 			p_all_performances_message = &current_node->all_performances_messages;
 				
-			p_rule_details_request_message = &current_node->rule_details_request_messages;
-				
 			p_ruledetailsystem_message = &current_node->ruledetailsystem_messages;
 				
 		p_xmachine = &current_node->agents;
@@ -445,6 +439,11 @@ printf("Ouput dir: %s\n", outputpath);
 			if(current_xmachine->xmachine_FinancialAdvisor != NULL)
 			{
 				i = FinancialAgent_updateGA();
+			}
+		
+			if(current_xmachine->xmachine_FinancialAdvisor != NULL)
+			{
+				i = FinancialAgent_reset_public_classifiersystem();
 			}
 		
 			if(current_xmachine->xmachine_Household != NULL)
@@ -560,8 +559,6 @@ printf("Ouput dir: %s\n", outputpath);
 				
 			p_all_performances_message = &current_node->all_performances_messages;
 				
-			p_rule_details_request_message = &current_node->rule_details_request_messages;
-				
 			p_ruledetailsystem_message = &current_node->ruledetailsystem_messages;
 				
 		p_xmachine = &current_node->agents;
@@ -577,6 +574,11 @@ printf("Ouput dir: %s\n", outputpath);
 			if(current_xmachine->xmachine_ClearingHouseMechanism != NULL)
 			{
 				i = Clearinghouse_read_order_messages();
+			}
+		
+			if(current_xmachine->xmachine_Household != NULL)
+			{
+				i = Household_reset_private_classifiersystem();
 			}
 		
 			if(current_xmachine->xmachine_Household != NULL)
@@ -633,8 +635,6 @@ printf("Ouput dir: %s\n", outputpath);
 			p_rule_performance_message = &current_node->rule_performance_messages;
 				
 			p_all_performances_message = &current_node->all_performances_messages;
-				
-			p_rule_details_request_message = &current_node->rule_details_request_messages;
 				
 			p_ruledetailsystem_message = &current_node->ruledetailsystem_messages;
 				
@@ -711,8 +711,6 @@ printf("Ouput dir: %s\n", outputpath);
 		freerule_performancemessages();
 		p_all_performances_message = &current_node->all_performances_messages;
 		freeall_performancesmessages();
-		p_rule_details_request_message = &current_node->rule_details_request_messages;
-		freerule_details_requestmessages();
 		p_ruledetailsystem_message = &current_node->ruledetailsystem_messages;
 		freeruledetailsystemmessages();
 		p_xmachine = &current_node->agents;

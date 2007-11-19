@@ -34,8 +34,6 @@ void initialise_pointers()
 	p_rule_performance_message = &temp_rule_performance_message;
 	temp_all_performances_message = NULL;
 	p_all_performances_message = &temp_all_performances_message;
-	temp_rule_details_request_message = NULL;
-	p_rule_details_request_message = &temp_rule_details_request_message;
 	temp_ruledetailsystem_message = NULL;
 	p_ruledetailsystem_message = &temp_ruledetailsystem_message;
 	temp_node_info = NULL;
@@ -1977,7 +1975,6 @@ void add_node(int node_id, double minx, double maxx, double miny, double maxy, d
 	current->firm_stock_transaction_messages = NULL;
 	current->rule_performance_messages = NULL;
 	current->all_performances_messages = NULL;
-	current->rule_details_request_messages = NULL;
 	current->ruledetailsystem_messages = NULL;
 
 
@@ -2688,6 +2685,91 @@ void print_char_array(char_array * array)
 	printf("%s", array->array);
 }
 
+/* Functions for the AssetStruct datatype */
+/** \fn int_array * init_int_array()
+ * \brief Allocate memory for a dynamic integer array.
+ * \return int_array Pointer to the new dynamic integer array.
+ */
+AssetStruct_array * init_AssetStruct_array()
+{
+	AssetStruct_array * new_array = (AssetStruct_array *)malloc(sizeof(AssetStruct_array));
+		CHECK_POINTER(new_array);
+	new_array->size = 0;
+	new_array->total_size = ARRAY_BLOCK_SIZE;
+	new_array->array = (AssetStruct **)malloc(ARRAY_BLOCK_SIZE * sizeof(AssetStruct *));
+		CHECK_POINTER(new_array->array);
+	
+	return new_array;
+}
+
+/** \fn void reset_int_array(int_array * array)
+* \brief Reset the int array to hold nothing.
+* \param array Pointer to the dynamic integer array.
+*/
+void reset_AssetStruct_array(AssetStruct_array * array)
+{
+	array->size = 0;
+}
+
+/** \fn void free_int_array(int_array * array)
+* \brief Free the memory of a dynamic integer array.
+* \param array Pointer to the dynamic integer array.
+*/
+void free_AssetStruct_array(AssetStruct_array * array)
+{
+	int i;
+	
+	for(i = 0; i < array->size; i++)
+	{
+		free(array->array[i]);
+	}
+	free(array->array);
+	free(array);
+}
+
+/** \fn void add_int(int_array * array, int new_int)
+* \brief Add an integer to the dynamic integer array.
+* \param array Pointer to the dynamic integer array.
+* \param new_int The integer to add
+*/
+void add_AssetStruct(AssetStruct_array * array, int_array ids, int_array nr_units, double_array current_price, double_array best_ask_price, double_array best_bid_price)
+{
+	if(array->size == array->total_size)
+	{
+		array->total_size = array->total_size + ARRAY_BLOCK_SIZE;
+		array->array = (AssetStruct **)realloc(array->array, (array->total_size * sizeof(AssetStruct *)));
+	}
+	array->array[array->size] = (AssetStruct *)malloc(sizeof(AssetStruct));
+		CHECK_POINTER(array->array[array->size]);
+
+	array->array[array->size]->ids = ids;
+	array->array[array->size]->nr_units = nr_units;
+	array->array[array->size]->current_price = current_price;
+	array->array[array->size]->best_ask_price = best_ask_price;
+	array->array[array->size]->best_bid_price = best_bid_price;
+	
+	array->size++;
+}
+
+/** \fn void remove_int(int_array * array, int index)
+ * \brief Remove an integer from a dynamic integer array.
+ * \param array Pointer to the dynamic integer array.
+ * \param index The index of the integer to remove.
+ */
+void remove_AssetStruct(AssetStruct_array * array, int index)
+{
+	int i;
+	
+	if(index <= array->size)
+	{
+		/* memcopy?? */
+		for(i = index; i < array->size - 1; i++)
+		{
+			array->array[i] = array->array[i+1];
+		}
+		array->size--;
+	}
+}
 /* Functions for the AssetPortfolioType datatype */
 /** \fn int_array * init_int_array()
  * \brief Allocate memory for a dynamic integer array.
@@ -2834,7 +2916,7 @@ void free_PrivateClassifierSystem_array(PrivateClassifierSystem_array * array)
 * \param array Pointer to the dynamic integer array.
 * \param new_int The integer to add
 */
-void add_PrivateClassifierSystem(PrivateClassifierSystem_array * array, int ids, double experience, int current_rule, double my_performance, double avgperformance, double attraction, double choiceprob, int nr_selected_rule)
+void add_PrivateClassifierSystem(PrivateClassifierSystem_array * array, int nr_types, int_array nr_rules_per_type, int nr_rules, int_array ids, int_array rule_type, double experience, int current_rule, double my_performance, double_array avgperformance, double_array attraction, double_array choiceprob)
 {
 	if(array->size == array->total_size)
 	{
@@ -2844,14 +2926,17 @@ void add_PrivateClassifierSystem(PrivateClassifierSystem_array * array, int ids,
 	array->array[array->size] = (PrivateClassifierSystem *)malloc(sizeof(PrivateClassifierSystem));
 		CHECK_POINTER(array->array[array->size]);
 
+	array->array[array->size]->nr_types = nr_types;
+	array->array[array->size]->nr_rules_per_type = nr_rules_per_type;
+	array->array[array->size]->nr_rules = nr_rules;
 	array->array[array->size]->ids = ids;
+	array->array[array->size]->rule_type = rule_type;
 	array->array[array->size]->experience = experience;
 	array->array[array->size]->current_rule = current_rule;
 	array->array[array->size]->my_performance = my_performance;
 	array->array[array->size]->avgperformance = avgperformance;
 	array->array[array->size]->attraction = attraction;
 	array->array[array->size]->choiceprob = choiceprob;
-	array->array[array->size]->nr_selected_rule = nr_selected_rule;
 	
 	array->size++;
 }
@@ -2922,7 +3007,7 @@ void free_PublicClassifierSystem_array(PublicClassifierSystem_array * array)
 * \param array Pointer to the dynamic integer array.
 * \param new_int The integer to add
 */
-void add_PublicClassifierSystem(PublicClassifierSystem_array * array, int counter, double performance, double avgperformance, double performance_history)
+void add_PublicClassifierSystem(PublicClassifierSystem_array * array, int nr_types, int_array nr_rules_per_type, int nr_rules, int_array ids, int_array rule_type, int_array counter, double_array performance, double_array avgperformance)
 {
 	if(array->size == array->total_size)
 	{
@@ -2932,10 +3017,14 @@ void add_PublicClassifierSystem(PublicClassifierSystem_array * array, int counte
 	array->array[array->size] = (PublicClassifierSystem *)malloc(sizeof(PublicClassifierSystem));
 		CHECK_POINTER(array->array[array->size]);
 
+	array->array[array->size]->nr_types = nr_types;
+	array->array[array->size]->nr_rules_per_type = nr_rules_per_type;
+	array->array[array->size]->nr_rules = nr_rules;
+	array->array[array->size]->ids = ids;
+	array->array[array->size]->rule_type = rule_type;
 	array->array[array->size]->counter = counter;
 	array->array[array->size]->performance = performance;
 	array->array[array->size]->avgperformance = avgperformance;
-	array->array[array->size]->performance_history = performance_history;
 	
 	array->size++;
 }
@@ -2959,18 +3048,18 @@ void remove_PublicClassifierSystem(PublicClassifierSystem_array * array, int ind
 		array->size--;
 	}
 }
-/* Functions for the RuleDataType datatype */
+/* Functions for the RuleDetailSystem datatype */
 /** \fn int_array * init_int_array()
  * \brief Allocate memory for a dynamic integer array.
  * \return int_array Pointer to the new dynamic integer array.
  */
-RuleDataType_array * init_RuleDataType_array()
+RuleDetailSystem_array * init_RuleDetailSystem_array()
 {
-	RuleDataType_array * new_array = (RuleDataType_array *)malloc(sizeof(RuleDataType_array));
+	RuleDetailSystem_array * new_array = (RuleDetailSystem_array *)malloc(sizeof(RuleDetailSystem_array));
 		CHECK_POINTER(new_array);
 	new_array->size = 0;
 	new_array->total_size = ARRAY_BLOCK_SIZE;
-	new_array->array = (RuleDataType **)malloc(ARRAY_BLOCK_SIZE * sizeof(RuleDataType *));
+	new_array->array = (RuleDetailSystem **)malloc(ARRAY_BLOCK_SIZE * sizeof(RuleDetailSystem *));
 		CHECK_POINTER(new_array->array);
 	
 	return new_array;
@@ -2980,7 +3069,7 @@ RuleDataType_array * init_RuleDataType_array()
 * \brief Reset the int array to hold nothing.
 * \param array Pointer to the dynamic integer array.
 */
-void reset_RuleDataType_array(RuleDataType_array * array)
+void reset_RuleDetailSystem_array(RuleDetailSystem_array * array)
 {
 	array->size = 0;
 }
@@ -2989,7 +3078,7 @@ void reset_RuleDataType_array(RuleDataType_array * array)
 * \brief Free the memory of a dynamic integer array.
 * \param array Pointer to the dynamic integer array.
 */
-void free_RuleDataType_array(RuleDataType_array * array)
+void free_RuleDetailSystem_array(RuleDetailSystem_array * array)
 {
 	int i;
 	
@@ -3006,24 +3095,21 @@ void free_RuleDataType_array(RuleDataType_array * array)
 * \param array Pointer to the dynamic integer array.
 * \param new_int The integer to add
 */
-void add_RuleDataType(RuleDataType_array * array, char class, int id, int performance, int counter, int avgperformance, int my_performance, int attraction, int choiceprob)
+void add_RuleDetailSystem(RuleDetailSystem_array * array, int_array nr_params_per_type, int_array nr_params, double2D_array parameters, wordlist myfunctionnames, wordlist myfunctionnames)
 {
 	if(array->size == array->total_size)
 	{
 		array->total_size = array->total_size + ARRAY_BLOCK_SIZE;
-		array->array = (RuleDataType **)realloc(array->array, (array->total_size * sizeof(RuleDataType *)));
+		array->array = (RuleDetailSystem **)realloc(array->array, (array->total_size * sizeof(RuleDetailSystem *)));
 	}
-	array->array[array->size] = (RuleDataType *)malloc(sizeof(RuleDataType));
+	array->array[array->size] = (RuleDetailSystem *)malloc(sizeof(RuleDetailSystem));
 		CHECK_POINTER(array->array[array->size]);
 
-	array->array[array->size]->class = class;
-	array->array[array->size]->id = id;
-	array->array[array->size]->performance = performance;
-	array->array[array->size]->counter = counter;
-	array->array[array->size]->avgperformance = avgperformance;
-	array->array[array->size]->my_performance = my_performance;
-	array->array[array->size]->attraction = attraction;
-	array->array[array->size]->choiceprob = choiceprob;
+	array->array[array->size]->nr_params_per_type = nr_params_per_type;
+	array->array[array->size]->nr_params = nr_params;
+	array->array[array->size]->parameters = parameters;
+	array->array[array->size]->myfunctionnames = myfunctionnames;
+	array->array[array->size]->myfunctionnames = myfunctionnames;
 	
 	array->size++;
 }
@@ -3033,7 +3119,493 @@ void add_RuleDataType(RuleDataType_array * array, char class, int id, int perfor
  * \param array Pointer to the dynamic integer array.
  * \param index The index of the integer to remove.
  */
-void remove_RuleDataType(RuleDataType_array * array, int index)
+void remove_RuleDetailSystem(RuleDetailSystem_array * array, int index)
+{
+	int i;
+	
+	if(index <= array->size)
+	{
+		/* memcopy?? */
+		for(i = index; i < array->size - 1; i++)
+		{
+			array->array[i] = array->array[i+1];
+		}
+		array->size--;
+	}
+}
+/* Functions for the double2D_array datatype */
+/** \fn int_array * init_int_array()
+ * \brief Allocate memory for a dynamic integer array.
+ * \return int_array Pointer to the new dynamic integer array.
+ */
+double2D_array_array * init_double2D_array_array()
+{
+	double2D_array_array * new_array = (double2D_array_array *)malloc(sizeof(double2D_array_array));
+		CHECK_POINTER(new_array);
+	new_array->size = 0;
+	new_array->total_size = ARRAY_BLOCK_SIZE;
+	new_array->array = (double2D_array **)malloc(ARRAY_BLOCK_SIZE * sizeof(double2D_array *));
+		CHECK_POINTER(new_array->array);
+	
+	return new_array;
+}
+
+/** \fn void reset_int_array(int_array * array)
+* \brief Reset the int array to hold nothing.
+* \param array Pointer to the dynamic integer array.
+*/
+void reset_double2D_array_array(double2D_array_array * array)
+{
+	array->size = 0;
+}
+
+/** \fn void free_int_array(int_array * array)
+* \brief Free the memory of a dynamic integer array.
+* \param array Pointer to the dynamic integer array.
+*/
+void free_double2D_array_array(double2D_array_array * array)
+{
+	int i;
+	
+	for(i = 0; i < array->size; i++)
+	{
+		free(array->array[i]);
+	}
+	free(array->array);
+	free(array);
+}
+
+/** \fn void add_int(int_array * array, int new_int)
+* \brief Add an integer to the dynamic integer array.
+* \param array Pointer to the dynamic integer array.
+* \param new_int The integer to add
+*/
+void add_double2D_array(double2D_array_array * array, double** double2Dname)
+{
+	if(array->size == array->total_size)
+	{
+		array->total_size = array->total_size + ARRAY_BLOCK_SIZE;
+		array->array = (double2D_array **)realloc(array->array, (array->total_size * sizeof(double2D_array *)));
+	}
+	array->array[array->size] = (double2D_array *)malloc(sizeof(double2D_array));
+		CHECK_POINTER(array->array[array->size]);
+
+	array->array[array->size]->double2Dname = double2Dname;
+	
+	array->size++;
+}
+
+/** \fn void remove_int(int_array * array, int index)
+ * \brief Remove an integer from a dynamic integer array.
+ * \param array Pointer to the dynamic integer array.
+ * \param index The index of the integer to remove.
+ */
+void remove_double2D_array(double2D_array_array * array, int index)
+{
+	int i;
+	
+	if(index <= array->size)
+	{
+		/* memcopy?? */
+		for(i = index; i < array->size - 1; i++)
+		{
+			array->array[i] = array->array[i+1];
+		}
+		array->size--;
+	}
+}
+/* Functions for the int2D_array datatype */
+/** \fn int_array * init_int_array()
+ * \brief Allocate memory for a dynamic integer array.
+ * \return int_array Pointer to the new dynamic integer array.
+ */
+int2D_array_array * init_int2D_array_array()
+{
+	int2D_array_array * new_array = (int2D_array_array *)malloc(sizeof(int2D_array_array));
+		CHECK_POINTER(new_array);
+	new_array->size = 0;
+	new_array->total_size = ARRAY_BLOCK_SIZE;
+	new_array->array = (int2D_array **)malloc(ARRAY_BLOCK_SIZE * sizeof(int2D_array *));
+		CHECK_POINTER(new_array->array);
+	
+	return new_array;
+}
+
+/** \fn void reset_int_array(int_array * array)
+* \brief Reset the int array to hold nothing.
+* \param array Pointer to the dynamic integer array.
+*/
+void reset_int2D_array_array(int2D_array_array * array)
+{
+	array->size = 0;
+}
+
+/** \fn void free_int_array(int_array * array)
+* \brief Free the memory of a dynamic integer array.
+* \param array Pointer to the dynamic integer array.
+*/
+void free_int2D_array_array(int2D_array_array * array)
+{
+	int i;
+	
+	for(i = 0; i < array->size; i++)
+	{
+		free(array->array[i]);
+	}
+	free(array->array);
+	free(array);
+}
+
+/** \fn void add_int(int_array * array, int new_int)
+* \brief Add an integer to the dynamic integer array.
+* \param array Pointer to the dynamic integer array.
+* \param new_int The integer to add
+*/
+void add_int2D_array(int2D_array_array * array, int** int2Dname)
+{
+	if(array->size == array->total_size)
+	{
+		array->total_size = array->total_size + ARRAY_BLOCK_SIZE;
+		array->array = (int2D_array **)realloc(array->array, (array->total_size * sizeof(int2D_array *)));
+	}
+	array->array[array->size] = (int2D_array *)malloc(sizeof(int2D_array));
+		CHECK_POINTER(array->array[array->size]);
+
+	array->array[array->size]->int2Dname = int2Dname;
+	
+	array->size++;
+}
+
+/** \fn void remove_int(int_array * array, int index)
+ * \brief Remove an integer from a dynamic integer array.
+ * \param array Pointer to the dynamic integer array.
+ * \param index The index of the integer to remove.
+ */
+void remove_int2D_array(int2D_array_array * array, int index)
+{
+	int i;
+	
+	if(index <= array->size)
+	{
+		/* memcopy?? */
+		for(i = index; i < array->size - 1; i++)
+		{
+			array->array[i] = array->array[i+1];
+		}
+		array->size--;
+	}
+}
+/* Functions for the wordlist datatype */
+/** \fn int_array * init_int_array()
+ * \brief Allocate memory for a dynamic integer array.
+ * \return int_array Pointer to the new dynamic integer array.
+ */
+wordlist_array * init_wordlist_array()
+{
+	wordlist_array * new_array = (wordlist_array *)malloc(sizeof(wordlist_array));
+		CHECK_POINTER(new_array);
+	new_array->size = 0;
+	new_array->total_size = ARRAY_BLOCK_SIZE;
+	new_array->array = (wordlist **)malloc(ARRAY_BLOCK_SIZE * sizeof(wordlist *));
+		CHECK_POINTER(new_array->array);
+	
+	return new_array;
+}
+
+/** \fn void reset_int_array(int_array * array)
+* \brief Reset the int array to hold nothing.
+* \param array Pointer to the dynamic integer array.
+*/
+void reset_wordlist_array(wordlist_array * array)
+{
+	array->size = 0;
+}
+
+/** \fn void free_int_array(int_array * array)
+* \brief Free the memory of a dynamic integer array.
+* \param array Pointer to the dynamic integer array.
+*/
+void free_wordlist_array(wordlist_array * array)
+{
+	int i;
+	
+	for(i = 0; i < array->size; i++)
+	{
+		free(array->array[i]);
+	}
+	free(array->array);
+	free(array);
+}
+
+/** \fn void add_int(int_array * array, int new_int)
+* \brief Add an integer to the dynamic integer array.
+* \param array Pointer to the dynamic integer array.
+* \param new_int The integer to add
+*/
+void add_wordlist(wordlist_array * array, word_array wordlistname)
+{
+	if(array->size == array->total_size)
+	{
+		array->total_size = array->total_size + ARRAY_BLOCK_SIZE;
+		array->array = (wordlist **)realloc(array->array, (array->total_size * sizeof(wordlist *)));
+	}
+	array->array[array->size] = (wordlist *)malloc(sizeof(wordlist));
+		CHECK_POINTER(array->array[array->size]);
+
+	array->array[array->size]->wordlistname = wordlistname;
+	
+	array->size++;
+}
+
+/** \fn void remove_int(int_array * array, int index)
+ * \brief Remove an integer from a dynamic integer array.
+ * \param array Pointer to the dynamic integer array.
+ * \param index The index of the integer to remove.
+ */
+void remove_wordlist(wordlist_array * array, int index)
+{
+	int i;
+	
+	if(index <= array->size)
+	{
+		/* memcopy?? */
+		for(i = index; i < array->size - 1; i++)
+		{
+			array->array[i] = array->array[i+1];
+		}
+		array->size--;
+	}
+}
+/* Functions for the word datatype */
+/** \fn int_array * init_int_array()
+ * \brief Allocate memory for a dynamic integer array.
+ * \return int_array Pointer to the new dynamic integer array.
+ */
+word_array * init_word_array()
+{
+	word_array * new_array = (word_array *)malloc(sizeof(word_array));
+		CHECK_POINTER(new_array);
+	new_array->size = 0;
+	new_array->total_size = ARRAY_BLOCK_SIZE;
+	new_array->array = (word **)malloc(ARRAY_BLOCK_SIZE * sizeof(word *));
+		CHECK_POINTER(new_array->array);
+	
+	return new_array;
+}
+
+/** \fn void reset_int_array(int_array * array)
+* \brief Reset the int array to hold nothing.
+* \param array Pointer to the dynamic integer array.
+*/
+void reset_word_array(word_array * array)
+{
+	array->size = 0;
+}
+
+/** \fn void free_int_array(int_array * array)
+* \brief Free the memory of a dynamic integer array.
+* \param array Pointer to the dynamic integer array.
+*/
+void free_word_array(word_array * array)
+{
+	int i;
+	
+	for(i = 0; i < array->size; i++)
+	{
+		free(array->array[i]);
+	}
+	free(array->array);
+	free(array);
+}
+
+/** \fn void add_int(int_array * array, int new_int)
+* \brief Add an integer to the dynamic integer array.
+* \param array Pointer to the dynamic integer array.
+* \param new_int The integer to add
+*/
+void add_word(word_array * array, char_array wordname)
+{
+	if(array->size == array->total_size)
+	{
+		array->total_size = array->total_size + ARRAY_BLOCK_SIZE;
+		array->array = (word **)realloc(array->array, (array->total_size * sizeof(word *)));
+	}
+	array->array[array->size] = (word *)malloc(sizeof(word));
+		CHECK_POINTER(array->array[array->size]);
+
+	array->array[array->size]->wordname = wordname;
+	
+	array->size++;
+}
+
+/** \fn void remove_int(int_array * array, int index)
+ * \brief Remove an integer from a dynamic integer array.
+ * \param array Pointer to the dynamic integer array.
+ * \param index The index of the integer to remove.
+ */
+void remove_word(word_array * array, int index)
+{
+	int i;
+	
+	if(index <= array->size)
+	{
+		/* memcopy?? */
+		for(i = index; i < array->size - 1; i++)
+		{
+			array->array[i] = array->array[i+1];
+		}
+		array->size--;
+	}
+}
+/* Functions for the stringlist datatype */
+/** \fn int_array * init_int_array()
+ * \brief Allocate memory for a dynamic integer array.
+ * \return int_array Pointer to the new dynamic integer array.
+ */
+stringlist_array * init_stringlist_array()
+{
+	stringlist_array * new_array = (stringlist_array *)malloc(sizeof(stringlist_array));
+		CHECK_POINTER(new_array);
+	new_array->size = 0;
+	new_array->total_size = ARRAY_BLOCK_SIZE;
+	new_array->array = (stringlist **)malloc(ARRAY_BLOCK_SIZE * sizeof(stringlist *));
+		CHECK_POINTER(new_array->array);
+	
+	return new_array;
+}
+
+/** \fn void reset_int_array(int_array * array)
+* \brief Reset the int array to hold nothing.
+* \param array Pointer to the dynamic integer array.
+*/
+void reset_stringlist_array(stringlist_array * array)
+{
+	array->size = 0;
+}
+
+/** \fn void free_int_array(int_array * array)
+* \brief Free the memory of a dynamic integer array.
+* \param array Pointer to the dynamic integer array.
+*/
+void free_stringlist_array(stringlist_array * array)
+{
+	int i;
+	
+	for(i = 0; i < array->size; i++)
+	{
+		free(array->array[i]);
+	}
+	free(array->array);
+	free(array);
+}
+
+/** \fn void add_int(int_array * array, int new_int)
+* \brief Add an integer to the dynamic integer array.
+* \param array Pointer to the dynamic integer array.
+* \param new_int The integer to add
+*/
+void add_stringlist(stringlist_array * array, string_array stringlistname)
+{
+	if(array->size == array->total_size)
+	{
+		array->total_size = array->total_size + ARRAY_BLOCK_SIZE;
+		array->array = (stringlist **)realloc(array->array, (array->total_size * sizeof(stringlist *)));
+	}
+	array->array[array->size] = (stringlist *)malloc(sizeof(stringlist));
+		CHECK_POINTER(array->array[array->size]);
+
+	array->array[array->size]->stringlistname = stringlistname;
+	
+	array->size++;
+}
+
+/** \fn void remove_int(int_array * array, int index)
+ * \brief Remove an integer from a dynamic integer array.
+ * \param array Pointer to the dynamic integer array.
+ * \param index The index of the integer to remove.
+ */
+void remove_stringlist(stringlist_array * array, int index)
+{
+	int i;
+	
+	if(index <= array->size)
+	{
+		/* memcopy?? */
+		for(i = index; i < array->size - 1; i++)
+		{
+			array->array[i] = array->array[i+1];
+		}
+		array->size--;
+	}
+}
+/* Functions for the string datatype */
+/** \fn int_array * init_int_array()
+ * \brief Allocate memory for a dynamic integer array.
+ * \return int_array Pointer to the new dynamic integer array.
+ */
+string_array * init_string_array()
+{
+	string_array * new_array = (string_array *)malloc(sizeof(string_array));
+		CHECK_POINTER(new_array);
+	new_array->size = 0;
+	new_array->total_size = ARRAY_BLOCK_SIZE;
+	new_array->array = (string **)malloc(ARRAY_BLOCK_SIZE * sizeof(string *));
+		CHECK_POINTER(new_array->array);
+	
+	return new_array;
+}
+
+/** \fn void reset_int_array(int_array * array)
+* \brief Reset the int array to hold nothing.
+* \param array Pointer to the dynamic integer array.
+*/
+void reset_string_array(string_array * array)
+{
+	array->size = 0;
+}
+
+/** \fn void free_int_array(int_array * array)
+* \brief Free the memory of a dynamic integer array.
+* \param array Pointer to the dynamic integer array.
+*/
+void free_string_array(string_array * array)
+{
+	int i;
+	
+	for(i = 0; i < array->size; i++)
+	{
+		free(array->array[i]);
+	}
+	free(array->array);
+	free(array);
+}
+
+/** \fn void add_int(int_array * array, int new_int)
+* \brief Add an integer to the dynamic integer array.
+* \param array Pointer to the dynamic integer array.
+* \param new_int The integer to add
+*/
+void add_string(string_array * array, char_array stringname)
+{
+	if(array->size == array->total_size)
+	{
+		array->total_size = array->total_size + ARRAY_BLOCK_SIZE;
+		array->array = (string **)realloc(array->array, (array->total_size * sizeof(string *)));
+	}
+	array->array[array->size] = (string *)malloc(sizeof(string));
+		CHECK_POINTER(array->array[array->size]);
+
+	array->array[array->size]->stringname = stringname;
+	
+	array->size++;
+}
+
+/** \fn void remove_int(int_array * array, int index)
+ * \brief Remove an integer from a dynamic integer array.
+ * \param array Pointer to the dynamic integer array.
+ * \param index The index of the integer to remove.
+ */
+void remove_string(string_array * array, int index)
 {
 	int i;
 	

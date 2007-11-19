@@ -262,3 +262,9 @@ Functions: from model.xml:
 
 Messages: from model-ewa.xml:
 --------------------------------------------------------------------------------------=======
+Mariam, rev 452
+household ewa.c		added Household_reset_private_classifiersystem()
+faewa.c				FinancialAgent_reset_public_classifiersystem()
+model-ewa.xml		added dependencies
+					updated dgraphv0.7
+--------------------------------------------------------------------------------------

@@ -336,7 +336,13 @@
 
 <function><name>Household_update_ruledetailsystem</name><!--(now: inside read function)-->
 <depends><name>Household_read_ruledetailsystem_message</name><type>internal</type></depends>
+<depends><name>Household_retrieve_rule_details</name><type>internal</type></depends>
+<depends><name>Household_reset_private_classifiersystem</name><type>internal</type></depends>
 </function>
+
+<function><name>Household_reset_private_classifiersystem</name>
+</function>
+
 
 
 
@@ -562,11 +568,15 @@
 <function><name>FinancialAgent_update_classifiersystem</name>
 <depends><name>FinancialAgent_read_rule_performance_message</name><type>internal</type></depends>
 </function>
+<function><name>FinancialAgent_reset_public_classifiersystem</name>
+</function>
+
 <function><name>FinancialAgent_send_all_performances_message</name>
 <depends><name>FinancialAgent_update_classifiersystem</name><type>internal</type></depends>
 </function>
 <function><name>FinancialAgent_update_ruledetailsystem</name><!--Date-event triggered: every 100 days run the GA-->
 <depends><name>FinancialAgent_updateGA</name><type>internal</type></depends>
+<depends><name>FinancialAgent_reset_public_classifiersystem</name><type>internal</type></depends>
 </function>
 <function><name>FinancialAgent_updateGA</name></function>
 <function><name>FinancialAgent_send_ruledetailsystem_message</name>

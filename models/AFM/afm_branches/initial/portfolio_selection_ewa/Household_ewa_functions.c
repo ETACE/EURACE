@@ -446,3 +446,8 @@ int Household_update_ruledetailsystem()
 {
 	return 0;
 }
+
+int Household_reset_private_classifiersystem()
+{
+	return 0;
+}

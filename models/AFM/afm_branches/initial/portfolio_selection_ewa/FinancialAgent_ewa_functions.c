@@ -99,3 +99,8 @@ int FinancialAgent_send_ruledetailsystem_message()
 		
     return 0;
 }
+
+int FinancialAgent_reset_public_classifiersystem()
+{
+	return 0;
+}

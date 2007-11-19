@@ -8,10 +8,12 @@ digraph dependency_graph {
 	FinancialAgent_updateGA[height = 0.000000, label = "FinancialAgent_updateGA\n(0 lines)"]
 	FinancialAgent_update_ruledetailsystem[height = 0.000000, label = "FinancialAgent_update_ruledetailsystem\n(0 lines)"]
 	FinancialAgent_send_all_performances_message[height = 0.000000, label = "FinancialAgent_send_all_performances_message\n(0 lines)"]
+	FinancialAgent_reset_public_classifiersystem[height = 0.000000, label = "FinancialAgent_reset_public_classifiersystem\n(0 lines)"]
 	FinancialAgent_update_classifiersystem[height = 0.000000, label = "FinancialAgent_update_classifiersystem\n(0 lines)"]
 	FinancialAgent_read_rule_performance_message[height = 0.000000, label = "FinancialAgent_read_rule_performance_message\n(0 lines)"]
 	Clearinghouse_read_order_messages[height = 0.000000, label = "Clearinghouse_read_order_messages\n(0 lines)"]
 	Household_read_transaction_message[height = 0.000000, label = "Household_read_transaction_message\n(0 lines)"]
+	Household_reset_private_classifiersystem[height = 0.000000, label = "Household_reset_private_classifiersystem\n(0 lines)"]
 	Household_update_ruledetailsystem[height = 0.000000, label = "Household_update_ruledetailsystem\n(0 lines)"]
 	Household_read_ruledetailsystem_message[height = 0.000000, label = "Household_read_ruledetailsystem_message\n(0 lines)"]
 	Household_apply_rule[height = 0.000000, label = "Household_apply_rule\n(0 lines)"]
@@ -22,6 +24,7 @@ digraph dependency_graph {
 	
 	/* Dependencies */
 	FinancialAgent_send_ruledetailsystem_message -> FinancialAgent_update_ruledetailsystem [ label = "<depends on internal>" ];
+	FinancialAgent_update_ruledetailsystem -> FinancialAgent_reset_public_classifiersystem [ label = "<depends on internal>" ];
 	FinancialAgent_update_ruledetailsystem -> FinancialAgent_updateGA [ label = "<depends on internal>" ];
 	FinancialAgent_send_all_performances_message -> FinancialAgent_update_classifiersystem [ label = "<depends on internal>" ];
 	FinancialAgent_update_classifiersystem -> FinancialAgent_read_rule_performance_message [ label = "<depends on internal>" ];
@@ -32,6 +35,8 @@ digraph dependency_graph {
 	Household_read_transaction_message -> Clearinghouse_read_order_messages [ label = "<depends on gov_bond_transaction>" ];
 	Household_read_transaction_message -> Clearinghouse_read_order_messages [ label = "<depends on firm_bond_transaction>" ];
 	Household_read_transaction_message -> Clearinghouse_read_order_messages [ label = "<depends on firm_stock_transaction>" ];
+	Household_update_ruledetailsystem -> Household_reset_private_classifiersystem [ label = "<depends on internal>" ];
+	Household_update_ruledetailsystem -> Household_retrieve_rule_details [ label = "<depends on internal>" ];
 	Household_update_ruledetailsystem -> Household_read_ruledetailsystem_message [ label = "<depends on internal>" ];
 	Household_read_ruledetailsystem_message -> FinancialAgent_send_ruledetailsystem_message [ label = "<depends on ruledetailsystem>" ];
 	Household_apply_rule -> Household_retrieve_rule_details [ label = "<depends on internal>" ];
