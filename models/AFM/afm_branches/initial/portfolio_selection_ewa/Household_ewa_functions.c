@@ -21,7 +21,6 @@
 int Household_send_rule_performance_message()
 { 
     //Declare and assign local vars
-    PrivateClassifierSystem * classifiersystem;
     int current_rule = CLASSIFIERSYSTEM->current_rule;
     
     //Here we compute the rule performance: this function uses the performance_history
@@ -48,7 +47,6 @@ int Household_send_rule_performance_message()
 int Household_read_all_performances_message()
 {
  	  double * all_performances;
-      PrivateClassifierSystem * classifiersystem;
 	  
 	  all_performances_message = get_first_all_performances_message();
 	  while(all_performances_message)
@@ -57,17 +55,10 @@ int Household_read_all_performances_message()
 	    //code for dynamic arrays, copies the elements one by one
 	    for (i=0; i<NRRULES; i++)
 	  	{
-	  	 // why do you need performances to be an array when only one value is being written?
-	 	 // performances is a dynamic array with ALL rule performances
-	 	 // It is the variable in the message that is coming from FA
-	 	 // Can we copy arrays instantaneously? I thought we need to loop over the elements. 
-	
 		 // Store in memory:		 	  
-	 	 CLASSIFIERSYSTEM->performance[i] = all_performances[i];
+	 	 CLASSIFIERSYSTEM->array[i]->performance = all_performances[i];
 		}
-	
-		set_classifiersystem(classifiersystem); // check how to set values in structs in FA
-	
+		
 	    //Proceed to next message
 	     all_performances_message = get_next_all_performances_message(all_performances_message);
 	  }
@@ -88,11 +79,9 @@ int Household_read_all_performances_message()
  */
 int Household_select_rule()
 {
-	//Not needed?
-    //PrivateClassifierSystem * classifiersystem;
-
     int current_rule = CLASSIFIERSYSTEM->current_rule;   
-
+	int NRRULES = CLASSIFIERSYSTEM->nr_rules;
+	
     // i think we need to call a for loop here to copy values here
     // See below
     double[] performance;
@@ -102,9 +91,6 @@ int Household_select_rule()
     int experience_old = 0;
     int i,j=0;
     
-    //Get size of performance array:
-	NRRULES = CLASSIFIERSYSTEM->performance->size;
-	
 	//Assign values to local dynamic arrays
 	for (i=0;i<NRRULES;i++)
 	{
@@ -137,7 +123,7 @@ int Household_select_rule()
             attraction[j] = (EWA_phi*experience_old*attraction[j] + EWA_delta*performance[j])/experience;
         }
         //Set the attractions in the classifiersystem:
-        CLASSIFIERSYSTEM->attraction[j] = attraction[j];
+        CLASSIFIERSYSTEM->array[j]->attraction = attraction[j];
     }
 	//Computing the choice probabilities: multi-logit
     double sum_attr = 0;
@@ -206,16 +192,6 @@ int Household_retrieve_rule_details()
 	//To use: 	char *strcat( char *str1, const char *str2 );
 	//			char *strcpy( char *to, const char *from );
 
-	//Does this work in this way? Ans: No need to create local copy. Can use directly.
-	//PrivateClassifierSystem classifiersystem=CLASSIFIERSYSTEM;
-
-	//Q2: So no initializations?
-	//PrivateClassifierSystem * classifiersystem;
-	//RuleDetailSystem *	ruledetailsystem;
-	//Just use this?:
-	//CLASSIFIERSYSTEM->...
-	//RULEDETAILSYSTEM->...
-
 	double* param_vector;
 	char*	functioncall; 
 	int	imax;
@@ -223,7 +199,7 @@ int Household_retrieve_rule_details()
 	
 	//Rule details:
 	//The name of the rule
-	functioncall = RULEDETAILSYSTEM->array[i]->rule_execution
+	functioncall = RULEDETAILSYSTEM->array[i]->rule_execution;
 
 	//Parameters: retrieve the list of parameter values for the current rule
 	param_vector = RULEDETAILSYSTEM->array[i]->parameters;
@@ -261,10 +237,12 @@ int Household_retrieve_rule_details()
  */
 int Household_apply_rule()
 {
-   AssetPortfolioType * current_assetportfolio=get_current_assetportfolio();
-   AssetPortfolioType * prescribed_assetportfolio=get_prescribed_assetportfolio();
-   double prescribed_asset_value = get_prescribed_asset_value();
-   double asset_budget = get_asset_budget();
+
+	//Can be replaced with direct memory access:
+   //AssetPortfolioType * current_assetportfolio=get_current_assetportfolio();
+   //AssetPortfolioType * prescribed_assetportfolio=get_prescribed_assetportfolio();
+   //double prescribed_asset_value = get_prescribed_asset_value();
+   //double asset_budget = get_asset_budget();
    
    double multfactor= 0.0;
    int nr_assets=0;
@@ -462,6 +440,7 @@ int Household_read_ruledetailsystem_message()
 	
     return 0;
 }
+
 //Mariam: Maybe this is inside the read_ruledetailsystem so we would need to erase this.!Subject to be merged!
 int Household_update_ruledetailsystem()
 {
