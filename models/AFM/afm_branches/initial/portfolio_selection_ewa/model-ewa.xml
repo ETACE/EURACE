@@ -237,48 +237,40 @@
 <function><name>Household_send_rule_performance_message</name></function>
 
 <function><name>Household_read_all_performances_message</name>
-	<depends><name>FinancialAgent_send_all_performances_message</name>
-		<type>all_performances_message</type></depends>
+<depends><name>FinancialAgent_send_all_performances_message</name><type>all_performances</type></depends>
 </function>
 
 <function><name>Household_select_rule</name>
-<depends>
-<name>Household_read_all_performances_message</name><type>internal</type>
-</depends>
+<depends><name>Household_read_all_performances_message</name><type>internal</type></depends>
 </function>
 
 
 <function><name>Household_retrieve_rule_details</name>
-<depends>
-<name>Household_select_rule</name><type>internal</type>
-</depends>
+<depends><name>Household_select_rule</name><type>internal</type></depends>
 </function>
 
 
 
 
 <function><name>Household_apply_rule</name>
-<depends>
-<name>Household_retrieve_rule_details</name><type>internal</type>
-</depends>
+<depends><name>Household_retrieve_rule_details</name><type>internal</type></depends>
 </function>
-	<function>
-		<name>Household_read_ruledetailsystem_message</name>
-		<depends>
-			<name>FinancialAgent_send_ruledetailsystem_message</name>
-			<type>ruledetailsystem_message</type></depends></function>
-	<function>
-		<name>Household_update_ruledetailsystem (now: inside read function)</name>
-		<depends>
-			<name>Household_read_ruledetailsystem_message</name>
-			<type>internal</type></depends></function>
+
+<function>
+<name>Household_read_ruledetailsystem_message</name>
+<depends><name>FinancialAgent_send_ruledetailsystem_message</name><type>ruledetailsystem</type></depends>
+</function>
+
+<function><name>Household_update_ruledetailsystem</name><!--(now: inside read function)-->
+<depends><name>Household_read_ruledetailsystem_message</name><type>internal</type></depends>
+</function>
 
 
 
-	<function><name>Household_read_transaction_message</name>
-<depends><name>Clearinghouse_read_order_message</name><type>firm_stock_transaction_message</type></depends>
-<depends><name>Clearinghouse_read_order_message</name><type>firm_bond_transaction_messages</type></depends>
-<depends><name>Clearinghouse_read_order_message</name><type>gov_bond_transaction_messages</type></depends>
+<function><name>Household_read_transaction_message</name>
+<depends><name>Clearinghouse_read_order_messages</name><type>firm_stock_transaction</type></depends>
+<depends><name>Clearinghouse_read_order_messages</name><type>firm_bond_transaction</type></depends>
+<depends><name>Clearinghouse_read_order_messages</name><type>gov_bond_transaction</type></depends>
 </function>
 
 
@@ -492,29 +484,21 @@
 <functions>
 <!--EWA Functions-->
 <function><name>FinancialAgent_read_rule_performance_message</name>
-<depends>
-<name>Household_send_rule_performance_message</name><type>rule_performance_message</type>
-</depends>
+<depends><name>Household_send_rule_performance_message</name><type>rule_performance</type></depends>
 </function>
 <function><name>FinancialAgent_update_classifiersystem</name>
-<depends>
-<name>FinancialAgent_read_rule_performance_message</name><type>internal</type>
-</depends>
-</function><function>
-		<name>FinancialAgent_send_all_performances_message</name>
-		<depends>
-			<name>FinancialAgent_update_classifiersystem</name>
-			<type>internal</type></depends></function>
-	<function>
-		<name>FinancialAgent_update_ruledetailsystem</name>
-		<depends>
-			<name>Date-event triggered: every 100 days run the GA</name>
-			<type>internal</type></depends></function>
-	<function>
-		<name>FinancialAgent_send_ruledetailsystem_message</name>
-		<depends>
-			<name>FinancialAgent_update_ruledetailsystem</name>
-			<type>internal</type></depends></function>
+<depends><name>FinancialAgent_read_rule_performance_message</name><type>internal</type></depends>
+</function>
+<function><name>FinancialAgent_send_all_performances_message</name>
+<depends><name>FinancialAgent_update_classifiersystem</name><type>internal</type></depends>
+</function>
+<function><name>FinancialAgent_update_ruledetailsystem</name><!--Date-event triggered: every 100 days run the GA-->
+<depends><name>FinancialAgent_updateGA</name><type>internal</type></depends>
+</function>
+<function><name>FinancialAgent_updateGA</name></function>
+<function><name>FinancialAgent_send_ruledetailsystem_message</name>
+<depends><name>FinancialAgent_update_ruledetailsystem</name><type>internal</type></depends>
+</function>
 
 
 </functions>
@@ -674,10 +658,9 @@
 </message>
 
 <message>
-<name>rule_details</name>
+<name>ruledetailsystem</name>
 <note>FA adds rule details</note>
-<var><type>int</type><name>household_id</name></var>
-<var><type>int</type><name>selected_rule_number</name></var>
+<var><type>double</type><name>parameters</name></var><!--Mariam: I think parameters here should be a struct for rule details to be sent. !Subject to change!-->
 <var><type>double</type><name>range</name></var>
 <var><type>double</type><name>x</name></var>
 <var><type>double</type><name>y</name></var>

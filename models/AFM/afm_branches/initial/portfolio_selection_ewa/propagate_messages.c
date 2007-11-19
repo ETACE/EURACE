@@ -31,7 +31,7 @@ enum { \
     MESSAGE_rule_performance, \
     MESSAGE_all_performances, \
     MESSAGE_rule_details_request, \
-    MESSAGE_rule_details, \
+    MESSAGE_ruledetailsystem, \
     MESSAGE_TYPE_COUNT \
 };
 
@@ -121,9 +121,9 @@ void propagate_messages_init() {
     xmachine_message_rule_details_request *message_rule_details_request_temp;
     xmachine_message_rule_details_request_data *message_rule_details_request_list;
 
-    /* pointers to temp element and array for rule_details message */
-    xmachine_message_rule_details *message_rule_details_temp;
-    xmachine_message_rule_details_data *message_rule_details_list;
+    /* pointers to temp element and array for ruledetailsystem message */
+    xmachine_message_ruledetailsystem *message_ruledetailsystem_temp;
+    xmachine_message_ruledetailsystem_data *message_ruledetailsystem_list;
 
 
     /* ------------ Allocate Required Memory ----------------- */
@@ -186,7 +186,7 @@ void propagate_messages_init() {
 
         outcount += node_info->rule_details_request_message_no;
 
-        outcount += node_info->rule_details_message_no;
+        outcount += node_info->ruledetailsystem_message_no;
 
 
         
@@ -234,8 +234,8 @@ void propagate_messages_init() {
             bufsize += sizeof(xmachine_message_rule_details_request_data) * \
                        node_info->rule_details_request_message_no;
 
-            bufsize += sizeof(xmachine_message_rule_details_data) * \
-                       node_info->rule_details_message_no;
+            bufsize += sizeof(xmachine_message_ruledetailsystem_data) * \
+                       node_info->ruledetailsystem_message_no;
 
 
             /* allocate required memory */
@@ -319,9 +319,9 @@ void propagate_messages_init() {
                     &message_all_performances_list[message_count_list[MESSAGE_all_performances]];
             
 
-            /* For rule_details message list */
-            message_count_list[MESSAGE_rule_details] = node_info->rule_details_message_no;
-            message_rule_details_list = (xmachine_message_rule_details_data *)\
+            /* For ruledetailsystem message list */
+            message_count_list[MESSAGE_ruledetailsystem] = node_info->ruledetailsystem_message_no;
+            message_ruledetailsystem_list = (xmachine_message_ruledetailsystem_data *)\
                     &message_rule_details_request_list[message_count_list[MESSAGE_rule_details_request]];
             
 
@@ -598,26 +598,25 @@ void propagate_messages_init() {
                 p_rule_details_request_message = &current_node->rule_details_request_messages;
 
 
-                /* for rule_details message */            
-                message_rule_details_temp = node_info->rule_details_messages;
+                /* for ruledetailsystem message */            
+                message_ruledetailsystem_temp = node_info->ruledetailsystem_messages;
                 j = 0;
-                while (message_rule_details_temp)
+                while (message_ruledetailsystem_temp)
                 {
                     
-                    message_rule_details_list[j].household_id = message_rule_details_temp->household_id;
-                    message_rule_details_list[j].selected_rule_number = message_rule_details_temp->selected_rule_number;
-                    message_rule_details_list[j].range = message_rule_details_temp->range;
-                    message_rule_details_list[j].x = message_rule_details_temp->x;
-                    message_rule_details_list[j].y = message_rule_details_temp->y;
-                    message_rule_details_list[j].z = message_rule_details_temp->z;
+                    message_ruledetailsystem_list[j].parameters = message_ruledetailsystem_temp->parameters;
+                    message_ruledetailsystem_list[j].range = message_ruledetailsystem_temp->range;
+                    message_ruledetailsystem_list[j].x = message_ruledetailsystem_temp->x;
+                    message_ruledetailsystem_list[j].y = message_ruledetailsystem_temp->y;
+                    message_ruledetailsystem_list[j].z = message_ruledetailsystem_temp->z;
 
-                    message_rule_details_temp = message_rule_details_temp->next;
+                    message_ruledetailsystem_temp = message_ruledetailsystem_temp->next;
                     j++;
                 }
-                p_rule_details_message = &node_info->rule_details_messages;
-                freerule_detailsmessages();
-                node_info->rule_details_message_no = 0;
-                p_rule_details_message = &current_node->rule_details_messages;
+                p_ruledetailsystem_message = &node_info->ruledetailsystem_messages;
+                freeruledetailsystemmessages();
+                node_info->ruledetailsystem_message_no = 0;
+                p_ruledetailsystem_message = &current_node->ruledetailsystem_messages;
 
 
         }
@@ -725,8 +724,8 @@ void propagate_messages_complete() {
     xmachine_message_rule_details_request *message_rule_details_request_temp;
     xmachine_message_rule_details_request_data *message_rule_details_request_list; 
 
-    xmachine_message_rule_details *message_rule_details_temp;
-    xmachine_message_rule_details_data *message_rule_details_list; 
+    xmachine_message_ruledetailsystem *message_ruledetailsystem_temp;
+    xmachine_message_ruledetailsystem_data *message_ruledetailsystem_list; 
 
 
     
@@ -811,8 +810,8 @@ void propagate_messages_complete() {
                &message_all_performances_list[message_count_list[MESSAGE_all_performances]];
         
 
-        /* For rule_details message list */
-        message_rule_details_list = (xmachine_message_rule_details_data *)\
+        /* For ruledetailsystem message list */
+        message_ruledetailsystem_list = (xmachine_message_ruledetailsystem_data *)\
                &message_rule_details_request_list[message_count_list[MESSAGE_rule_details_request]];
         
 
@@ -1045,21 +1044,19 @@ void propagate_messages_complete() {
 
         }
 
-        for (i = 0; i < message_count_list[MESSAGE_rule_details]; i++)
+        for (i = 0; i < message_count_list[MESSAGE_ruledetailsystem]; i++)
         {
-            message_rule_details_temp = (xmachine_message_rule_details *)add_rule_details_message_internal();
+            message_ruledetailsystem_temp = (xmachine_message_ruledetailsystem *)add_ruledetailsystem_message_internal();
 
-            message_rule_details_temp->household_id = message_rule_details_list[i].household_id;
+            message_ruledetailsystem_temp->parameters = message_ruledetailsystem_list[i].parameters;
 
-            message_rule_details_temp->selected_rule_number = message_rule_details_list[i].selected_rule_number;
+            message_ruledetailsystem_temp->range = message_ruledetailsystem_list[i].range;
 
-            message_rule_details_temp->range = message_rule_details_list[i].range;
+            message_ruledetailsystem_temp->x = message_ruledetailsystem_list[i].x;
 
-            message_rule_details_temp->x = message_rule_details_list[i].x;
+            message_ruledetailsystem_temp->y = message_ruledetailsystem_list[i].y;
 
-            message_rule_details_temp->y = message_rule_details_list[i].y;
-
-            message_rule_details_temp->z = message_rule_details_list[i].z;
+            message_ruledetailsystem_temp->z = message_ruledetailsystem_list[i].z;
 
         }
 

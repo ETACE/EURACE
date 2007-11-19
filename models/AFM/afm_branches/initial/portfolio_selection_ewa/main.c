@@ -220,7 +220,7 @@ printf("Ouput dir: %s\n", outputpath);
 				
 			p_rule_details_request_message = &current_node->rule_details_request_messages;
 				
-			p_rule_details_message = &current_node->rule_details_messages;
+			p_ruledetailsystem_message = &current_node->ruledetailsystem_messages;
 				
 		p_xmachine = &current_node->agents;
 	
@@ -289,7 +289,7 @@ printf("Ouput dir: %s\n", outputpath);
 				
 			p_rule_details_request_message = &current_node->rule_details_request_messages;
 				
-			p_rule_details_message = &current_node->rule_details_messages;
+			p_ruledetailsystem_message = &current_node->ruledetailsystem_messages;
 				
 		p_xmachine = &current_node->agents;
 	
@@ -406,7 +406,7 @@ printf("Ouput dir: %s\n", outputpath);
 				
 			p_rule_details_request_message = &current_node->rule_details_request_messages;
 				
-			p_rule_details_message = &current_node->rule_details_messages;
+			p_ruledetailsystem_message = &current_node->ruledetailsystem_messages;
 				
 		p_xmachine = &current_node->agents;
 	
@@ -442,6 +442,11 @@ printf("Ouput dir: %s\n", outputpath);
 		{
 			i = 0;
 		
+			if(current_xmachine->xmachine_FinancialAdvisor != NULL)
+			{
+				i = FinancialAgent_updateGA();
+			}
+		
 			if(current_xmachine->xmachine_Household != NULL)
 			{
 				i = Household_select_rule();
@@ -466,6 +471,11 @@ printf("Ouput dir: %s\n", outputpath);
 		{
 			i = 0;
 		
+			if(current_xmachine->xmachine_FinancialAdvisor != NULL)
+			{
+				i = FinancialAgent_update_ruledetailsystem();
+			}
+		
 			if(current_xmachine->xmachine_Household != NULL)
 			{
 				i = Household_retrieve_rule_details();
@@ -489,6 +499,11 @@ printf("Ouput dir: %s\n", outputpath);
 		while(current_xmachine)
 		{
 			i = 0;
+		
+			if(current_xmachine->xmachine_FinancialAdvisor != NULL)
+			{
+				i = FinancialAgent_send_ruledetailsystem_message();
+			}
 		
 			if(current_xmachine->xmachine_Household != NULL)
 			{
@@ -547,7 +562,7 @@ printf("Ouput dir: %s\n", outputpath);
 				
 			p_rule_details_request_message = &current_node->rule_details_request_messages;
 				
-			p_rule_details_message = &current_node->rule_details_messages;
+			p_ruledetailsystem_message = &current_node->ruledetailsystem_messages;
 				
 		p_xmachine = &current_node->agents;
 	
@@ -562,6 +577,11 @@ printf("Ouput dir: %s\n", outputpath);
 			if(current_xmachine->xmachine_ClearingHouseMechanism != NULL)
 			{
 				i = Clearinghouse_read_order_messages();
+			}
+		
+			if(current_xmachine->xmachine_Household != NULL)
+			{
+				i = Household_read_ruledetailsystem_message();
 			}
 			
 			/* If agent is freed */
@@ -616,7 +636,7 @@ printf("Ouput dir: %s\n", outputpath);
 				
 			p_rule_details_request_message = &current_node->rule_details_request_messages;
 				
-			p_rule_details_message = &current_node->rule_details_messages;
+			p_ruledetailsystem_message = &current_node->ruledetailsystem_messages;
 				
 		p_xmachine = &current_node->agents;
 	
@@ -631,6 +651,11 @@ printf("Ouput dir: %s\n", outputpath);
 			if(current_xmachine->xmachine_Household != NULL)
 			{
 				i = Household_read_transaction_message();
+			}
+		
+			if(current_xmachine->xmachine_Household != NULL)
+			{
+				i = Household_update_ruledetailsystem();
 			}
 			
 			/* If agent is freed */
@@ -688,8 +713,8 @@ printf("Ouput dir: %s\n", outputpath);
 		freeall_performancesmessages();
 		p_rule_details_request_message = &current_node->rule_details_request_messages;
 		freerule_details_requestmessages();
-		p_rule_details_message = &current_node->rule_details_messages;
-		freerule_detailsmessages();
+		p_ruledetailsystem_message = &current_node->ruledetailsystem_messages;
+		freeruledetailsystemmessages();
 		p_xmachine = &current_node->agents;
 		/* Calculate if any agents need to jump S.P. */
 		propagate_agents();

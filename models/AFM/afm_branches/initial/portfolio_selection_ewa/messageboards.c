@@ -2301,26 +2301,26 @@ void freerule_details_requestmessages()
 	*p_rule_details_request_message = NULL;
 }
 
-/** \fn xmachine_message_rule_details * add_rule_details_message_internal()
- * \brief Add rule_details message to the local message list.
+/** \fn xmachine_message_ruledetailsystem * add_ruledetailsystem_message_internal()
+ * \brief Add ruledetailsystem message to the local message list.
  * \return The added message.
  */
-xmachine_message_rule_details * add_rule_details_message_internal()
+xmachine_message_ruledetailsystem * add_ruledetailsystem_message_internal()
 {
-	xmachine_message_rule_details * current = (xmachine_message_rule_details *)malloc(sizeof(xmachine_message_rule_details));
+	xmachine_message_ruledetailsystem * current = (xmachine_message_ruledetailsystem *)malloc(sizeof(xmachine_message_ruledetailsystem));
 	CHECK_POINTER(current);
 
-	current->next = *p_rule_details_message;
-	*p_rule_details_message = current;
+	current->next = *p_ruledetailsystem_message;
+	*p_ruledetailsystem_message = current;
 	
 	return current;
 }
 
-/** \fn void process_rule_details_message(xmachine_message_rule_details * current)
- * \brief Process rule_details message to calculate if it needs to be sent to another node.
+/** \fn void process_ruledetailsystem_message(xmachine_message_ruledetailsystem * current)
+ * \brief Process ruledetailsystem message to calculate if it needs to be sent to another node.
  * \param current The message to be processed.
  */
-void process_rule_details_message(xmachine_message_rule_details * current)
+void process_ruledetailsystem_message(xmachine_message_ruledetailsystem * current)
 {
 	double x = 0.0;
 	double y = 0.0;
@@ -2328,7 +2328,7 @@ void process_rule_details_message(xmachine_message_rule_details * current)
 	double max_mess_dist;
 	int in_halo_region = 0;
 	node_information * node_info;
-	xmachine_message_rule_details * temp_send_message;
+	xmachine_message_ruledetailsystem * temp_send_message;
 	
 	max_mess_dist = (double)current->range;
 	x = current->x;
@@ -2355,10 +2355,9 @@ void process_rule_details_message(xmachine_message_rule_details * current)
 			node_info->partition_data[0]-max_mess_dist < x && node_info->partition_data[1]+max_mess_dist > x &&
 			node_info->partition_data[2]-max_mess_dist < y && node_info->partition_data[3]+max_mess_dist > y)
 			{
-				p_rule_details_message = &node_info->rule_details_messages;
-				temp_send_message = add_rule_details_message_internal();
-				temp_send_message->household_id = current->household_id;
-				temp_send_message->selected_rule_number = current->selected_rule_number;
+				p_ruledetailsystem_message = &node_info->ruledetailsystem_messages;
+				temp_send_message = add_ruledetailsystem_message_internal();
+				temp_send_message->parameters = current->parameters;
 				temp_send_message->range = current->range;
 				temp_send_message->x = current->x;
 				temp_send_message->y = current->y;
@@ -2367,26 +2366,24 @@ void process_rule_details_message(xmachine_message_rule_details * current)
 			node_info = node_info->next;
 		}
 		
-		p_rule_details_message = &current_node->rule_details_messages;
+		p_ruledetailsystem_message = &current_node->ruledetailsystem_messages;
 	}
 }
 
-/** \fn void add_rule_details_message(int household_id, int selected_rule_number, double range, double x, double y, double z)
- * \brief Add rule_details message by calling internal and processing.
- * \param household_id Message variable.
- * \param selected_rule_number Message variable.
+/** \fn void add_ruledetailsystem_message(double parameters, double range, double x, double y, double z)
+ * \brief Add ruledetailsystem message by calling internal and processing.
+ * \param parameters Message variable.
  * \param range Message variable.
  * \param x Message variable.
  * \param y Message variable.
  * \param z Message variable.
  */
-void add_rule_details_message(int household_id, int selected_rule_number, double range, double x, double y, double z)
+void add_ruledetailsystem_message(double parameters, double range, double x, double y, double z)
 {
 
-	p_rule_details_message = &current_node->rule_details_messages;
-	xmachine_message_rule_details * tmp = add_rule_details_message_internal();
-	tmp->household_id = household_id;
-	tmp->selected_rule_number = selected_rule_number;
+	p_ruledetailsystem_message = &current_node->ruledetailsystem_messages;
+	xmachine_message_ruledetailsystem * tmp = add_ruledetailsystem_message_internal();
+	tmp->parameters = parameters;
 	tmp->range = range;
 	tmp->x = x;
 	tmp->y = y;
@@ -2394,10 +2391,10 @@ void add_rule_details_message(int household_id, int selected_rule_number, double
 
 
 	/* Check if agent in halo region */
-	process_rule_details_message(tmp);
+	process_ruledetailsystem_message(tmp);
 }
 
-xmachine_message_rule_details * get_next_message_rule_details_in_range(xmachine_message_rule_details * current)
+xmachine_message_ruledetailsystem * get_next_message_ruledetailsystem_in_range(xmachine_message_ruledetailsystem * current)
 {
 	double x = 0.0, y = 0.0, z = 0.0;
 	
@@ -2454,32 +2451,32 @@ xmachine_message_rule_details * get_next_message_rule_details_in_range(xmachine_
 	return current;
 }
 
-/** \fn xmachine_message_rule_details * get_first_rule_details_message()
- * \brief Get the first rule_details message in the rule_details message list.
+/** \fn xmachine_message_ruledetailsystem * get_first_ruledetailsystem_message()
+ * \brief Get the first ruledetailsystem message in the ruledetailsystem message list.
  * \return The first message in the list.
  */
-xmachine_message_rule_details * get_first_rule_details_message()
+xmachine_message_ruledetailsystem * get_first_ruledetailsystem_message()
 {
-	return get_next_message_rule_details_in_range(*p_rule_details_message);
+	return get_next_message_ruledetailsystem_in_range(*p_ruledetailsystem_message);
 }
 
-/** \fn xmachine_message_rule_details * get_next_rule_details_message(xmachine_message_rule_details * current)
- * \brief Get the next rule_details message in the rule_details message list after the current message.
+/** \fn xmachine_message_ruledetailsystem * get_next_ruledetailsystem_message(xmachine_message_ruledetailsystem * current)
+ * \brief Get the next ruledetailsystem message in the ruledetailsystem message list after the current message.
  * \param current The current message in the list.
  * \return The next message in the list.
  */
-xmachine_message_rule_details * get_next_rule_details_message(xmachine_message_rule_details * current)
+xmachine_message_ruledetailsystem * get_next_ruledetailsystem_message(xmachine_message_ruledetailsystem * current)
 {
-	return get_next_message_rule_details_in_range(current->next);
+	return get_next_message_ruledetailsystem_in_range(current->next);
 }
 
-/** \fn void freerule_detailsmessages()
- * \brief Free the rule_details message list.
+/** \fn void freeruledetailsystemmessages()
+ * \brief Free the ruledetailsystem message list.
  */
-void freerule_detailsmessages()
+void freeruledetailsystemmessages()
 {
-	xmachine_message_rule_details * tmp, * head;
-	head = *p_rule_details_message;
+	xmachine_message_ruledetailsystem * tmp, * head;
+	head = *p_ruledetailsystem_message;
 	
 	while(head)
 	{
@@ -2488,6 +2485,6 @@ void freerule_detailsmessages()
 		head = tmp;
 	}
 	
-	*p_rule_details_message = NULL;
+	*p_ruledetailsystem_message = NULL;
 }
 

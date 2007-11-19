@@ -36,8 +36,8 @@ void initialise_pointers()
 	p_all_performances_message = &temp_all_performances_message;
 	temp_rule_details_request_message = NULL;
 	p_rule_details_request_message = &temp_rule_details_request_message;
-	temp_rule_details_message = NULL;
-	p_rule_details_message = &temp_rule_details_message;
+	temp_ruledetailsystem_message = NULL;
+	p_ruledetailsystem_message = &temp_ruledetailsystem_message;
 	temp_node_info = NULL;
 	p_node_info = &temp_node_info;
 }
@@ -1978,7 +1978,7 @@ void add_node(int node_id, double minx, double maxx, double miny, double maxy, d
 	current->rule_performance_messages = NULL;
 	current->all_performances_messages = NULL;
 	current->rule_details_request_messages = NULL;
-	current->rule_details_messages = NULL;
+	current->ruledetailsystem_messages = NULL;
 
 
 	current->partition_data[0] = minx;

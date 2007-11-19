@@ -94,12 +94,12 @@
 /** \def FINISH_RULE_DETAILS_REQUEST_MESSAGE_LOOP
  * \brief Finish of loop to process rule_details_request messages. */
 #define FINISH_RULE_DETAILS_REQUEST_MESSAGE_LOOP rule_details_request_message = get_next_rule_details_request_message(rule_details_request_message); }
-/** \def e START_RULE_DETAILS_MESSAGE_LOOP
- * \brief Start of loop to process rule_details messages. */
-#define START_RULE_DETAILS_MESSAGE_LOOP  rule_details_message = get_first_rule_details_message(); while(rule_details_message) {
-/** \def FINISH_RULE_DETAILS_MESSAGE_LOOP
- * \brief Finish of loop to process rule_details messages. */
-#define FINISH_RULE_DETAILS_MESSAGE_LOOP rule_details_message = get_next_rule_details_message(rule_details_message); }
+/** \def e START_RULEDETAILSYSTEM_MESSAGE_LOOP
+ * \brief Start of loop to process ruledetailsystem messages. */
+#define START_RULEDETAILSYSTEM_MESSAGE_LOOP  ruledetailsystem_message = get_first_ruledetailsystem_message(); while(ruledetailsystem_message) {
+/** \def FINISH_RULEDETAILSYSTEM_MESSAGE_LOOP
+ * \brief Finish of loop to process ruledetailsystem messages. */
+#define FINISH_RULEDETAILSYSTEM_MESSAGE_LOOP ruledetailsystem_message = get_next_ruledetailsystem_message(ruledetailsystem_message); }
 
 /** \struct AssetPortfolioType
  * \brief AssetportfolioType structs are used by the Household.
@@ -758,19 +758,18 @@ struct xmachine_message_rule_details_request
 };
 
 
-/** \struct xmachine_message_rule_details
- * \brief Holds message of type rule_details_message.
+/** \struct xmachine_message_ruledetailsystem
+ * \brief Holds message of type ruledetailsystem_message.
  */
-struct xmachine_message_rule_details
+struct xmachine_message_ruledetailsystem
 {
-	int household_id;	/**< Message memory variable household_id of type int. */
-	int selected_rule_number;	/**< Message memory variable selected_rule_number of type int. */
+	double parameters;	/**< Message memory variable parameters of type double. */
 	double range;	/**< Message memory variable range of type double. */
 	double x;	/**< Message memory variable x of type double. */
 	double y;	/**< Message memory variable y of type double. */
 	double z;	/**< Message memory variable z of type double. */
 	
-	struct xmachine_message_rule_details * next;	/**< Pointer to next message in the list. */
+	struct xmachine_message_ruledetailsystem * next;	/**< Pointer to next message in the list. */
 };
 
 
@@ -866,10 +865,10 @@ typedef struct xmachine_message_all_performances xmachine_message_all_performanc
  */
 typedef struct xmachine_message_rule_details_request xmachine_message_rule_details_request;
 
-/** \typedef xmachine_message_rule_details xmachine_message_rule_details
- * \brief Typedef for xmachine_message_rule_details struct.
+/** \typedef xmachine_message_ruledetailsystem xmachine_message_ruledetailsystem
+ * \brief Typedef for xmachine_message_ruledetailsystem struct.
  */
-typedef struct xmachine_message_rule_details xmachine_message_rule_details;
+typedef struct xmachine_message_ruledetailsystem xmachine_message_ruledetailsystem;
 
 
 int Household_send_rule_performance_message(void);
@@ -877,11 +876,16 @@ int Household_read_all_performances_message(void);
 int Household_select_rule(void);
 int Household_retrieve_rule_details(void);
 int Household_apply_rule(void);
+int Household_read_ruledetailsystem_message(void);
+int Household_update_ruledetailsystem(void);
 int Household_read_transaction_message(void);
 int Clearinghouse_read_order_messages(void);
 int FinancialAgent_read_rule_performance_message(void);
 int FinancialAgent_update_classifiersystem(void);
 int FinancialAgent_send_all_performances_message(void);
+int FinancialAgent_update_ruledetailsystem(void);
+int FinancialAgent_updateGA(void);
+int FinancialAgent_send_ruledetailsystem_message(void);
 
 /** \struct location
  * \brief Holds location for calculating space partitioning .
@@ -915,7 +919,7 @@ struct node_information
 	struct xmachine_message_rule_performance * rule_performance_messages;	/**< Pointer to rule_performance message list. */
 	struct xmachine_message_all_performances * all_performances_messages;	/**< Pointer to all_performances message list. */
 	struct xmachine_message_rule_details_request * rule_details_request_messages;	/**< Pointer to rule_details_request message list. */
-	struct xmachine_message_rule_details * rule_details_messages;	/**< Pointer to rule_details message list. */
+	struct xmachine_message_ruledetailsystem * ruledetailsystem_messages;	/**< Pointer to ruledetailsystem message list. */
 	
 	struct node_information * next;	/**< Pointer to next node on the list. */
 };
@@ -970,9 +974,9 @@ xmachine_message_all_performances * temp_all_performances_message;
 /** \var xmachine_message_rule_details_request * temp_rule_details_request_message
 * \brief Pointer to xmachine_message_rule_details_request to initialise linked list. */
 xmachine_message_rule_details_request * temp_rule_details_request_message;
-/** \var xmachine_message_rule_details * temp_rule_details_message
-* \brief Pointer to xmachine_message_rule_details to initialise linked list. */
-xmachine_message_rule_details * temp_rule_details_message;
+/** \var xmachine_message_ruledetailsystem * temp_ruledetailsystem_message
+* \brief Pointer to xmachine_message_ruledetailsystem to initialise linked list. */
+xmachine_message_ruledetailsystem * temp_ruledetailsystem_message;
 /** \var node_information * temp_node_info
 * \brief Pointer to node_information to initialise linked list. */
 node_information * temp_node_info;
@@ -1031,9 +1035,9 @@ xmachine_message_all_performances ** p_all_performances_message;
 /** \var xmachine_message_rule_details_request ** p_rule_details_request_message
 * \brief Pointer to first pointer of rule_details_request message list */
 xmachine_message_rule_details_request ** p_rule_details_request_message;
-/** \var xmachine_message_rule_details ** p_rule_details_message
-* \brief Pointer to first pointer of rule_details message list */
-xmachine_message_rule_details ** p_rule_details_message;
+/** \var xmachine_message_ruledetailsystem ** p_ruledetailsystem_message
+* \brief Pointer to first pointer of ruledetailsystem message list */
+xmachine_message_ruledetailsystem ** p_ruledetailsystem_message;
 
 /** \var xmachine_message_WagePayment * WagePayment_message
 * \brief Pointer to message struct for looping through WagePayment message list */
@@ -1071,9 +1075,9 @@ xmachine_message_all_performances * all_performances_message;
 /** \var xmachine_message_rule_details_request * rule_details_request_message
 * \brief Pointer to message struct for looping through rule_details_request message list */
 xmachine_message_rule_details_request * rule_details_request_message;
-/** \var xmachine_message_rule_details * rule_details_message
-* \brief Pointer to message struct for looping through rule_details message list */
-xmachine_message_rule_details * rule_details_message;
+/** \var xmachine_message_ruledetailsystem * ruledetailsystem_message
+* \brief Pointer to message struct for looping through ruledetailsystem message list */
+xmachine_message_ruledetailsystem * ruledetailsystem_message;
 /** \var node_information ** p_node_info
 * \brief Pointer to first pointer of node list */
 node_information ** p_node_info;
@@ -1267,11 +1271,11 @@ xmachine_message_rule_details_request * add_rule_details_request_message_interna
 xmachine_message_rule_details_request * get_first_rule_details_request_message(void);
 xmachine_message_rule_details_request * get_next_rule_details_request_message(xmachine_message_rule_details_request * current);
 void freerule_details_requestmessages(void);
-void add_rule_details_message(int household_id, int selected_rule_number, double range, double x, double y, double z);
-xmachine_message_rule_details * add_rule_details_message_internal(void);
-xmachine_message_rule_details * get_first_rule_details_message(void);
-xmachine_message_rule_details * get_next_rule_details_message(xmachine_message_rule_details * current);
-void freerule_detailsmessages(void);
+void add_ruledetailsystem_message(double parameters, double range, double x, double y, double z);
+xmachine_message_ruledetailsystem * add_ruledetailsystem_message_internal(void);
+xmachine_message_ruledetailsystem * get_first_ruledetailsystem_message(void);
+xmachine_message_ruledetailsystem * get_next_ruledetailsystem_message(xmachine_message_ruledetailsystem * current);
+void freeruledetailsystemmessages(void);
 
 void set_household_id(int household_id);
 int get_household_id(void);
@@ -1411,7 +1415,7 @@ xmachine_message_firm_stock_transaction * get_next_message_firm_stock_transactio
 xmachine_message_rule_performance * get_next_message_rule_performance_in_range(xmachine_message_rule_performance * current);
 xmachine_message_all_performances * get_next_message_all_performances_in_range(xmachine_message_all_performances * current);
 xmachine_message_rule_details_request * get_next_message_rule_details_request_in_range(xmachine_message_rule_details_request * current);
-xmachine_message_rule_details * get_next_message_rule_details_in_range(xmachine_message_rule_details * current);
+xmachine_message_ruledetailsystem * get_next_message_ruledetailsystem_in_range(xmachine_message_ruledetailsystem * current);
 
 /* memory.c */
 xmachine * add_xmachine(void);

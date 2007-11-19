@@ -222,3 +222,18 @@ NOTE: Most up-to-date datatypes are in model.xml, while
 most up-to-date function dependencies are in model-ewa.xml.
 These files should be merged at some point. 						
 --------------------------------------------------------------------------------------
+Mariam, rev 450
+FinancialAgent_ewafunctions.c 
+				added FinancialAgent_update_ruledetailsystem()
+				added FinancialAgent_updateGA() this is to update the GA every 100 days
+				commented out line 93. another message sent out at end of fn
+Household_ewafns.c
+				added Household_update_ruledetailsystem()--> might need to merge it inside Household_read_ruledetailsystem_message
+				
+model-ewa.xml
+				cleaned up the messages used.
+				
+				Rerun parser
+				Added dgraphv0.5.eps
+---------------------------------------------------------------------------
+				
