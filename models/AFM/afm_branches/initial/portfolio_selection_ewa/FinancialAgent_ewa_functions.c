@@ -73,13 +73,24 @@ int FinancialAgent_send_all_performances_message()
   return 0;
 }
 
+int FinancialAgent_update_ruledetailsystem()
+{
+	//<!--Date-event triggered: every 100 days run the GA-->
+	return 0;
+}
 
+//-Date-event triggered: every 100 days run the GA
+int FinancialAgent_updateGA()
+{
+	return 0;
+}
 //FinancialAgent_send_ruledetailsystem_message()
 //Function to send ruledetailsystem updates.
 int FinancialAgent_send_ruledetailsystem_message()
 {
 	//Send a message containing the entire ruledetailsystem:
-	add_ruledetailsystem_message(RULEDETAILSYSTEM, range, x, y, z);
+    //--> commenting the follwing line: another message sent out at the end of this fn
+	//add_ruledetailsystem_message(RULEDETAILSYSTEM, range, x, y, z);
 
 	//Alternative: we only need to send the double2D_array 
 	//RULEDETAILSYSTEM->parameters

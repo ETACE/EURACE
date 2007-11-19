@@ -441,7 +441,7 @@ int Household_read_ruledetailsystem_message()
 	ruledetailsystem_message = get_first_ruledetailsystem_message();
 	while(ruledetailsystem_message)
 	{
-		ruledetailsystem = ruledetailsystem_message->ruledetailsystem;
+		ruledetailsystem = ruledetailsystem_message->parameters;
 				
 		//Proceed to next message
 		ruledetailsystem_message = get_next_ruledetailsystem_message(ruledetailsystem_message);
@@ -461,4 +461,9 @@ int Household_read_ruledetailsystem_message()
 	}
 	
     return 0;
+}
+//Mariam: Maybe this is inside the read_ruledetailsystem so we would need to erase this.!Subject to be merged!
+int Household_update_ruledetailsystem()
+{
+	return 0;
 }
