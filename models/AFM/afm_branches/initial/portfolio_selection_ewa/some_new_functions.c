@@ -1,4 +1,4 @@
-int reset_private_classifiersystem()
+int Household_reset_private_classifiersystem()
 {
  	//Getting the size of the system:
 	int NR_TYPES=CLASSIFIERSYSTEM->NR_TYPES;
@@ -24,7 +24,7 @@ int reset_private_classifiersystem()
     return 0;
 }
 
-int reset_public_classifiersystem()
+int FinancialAgent_reset_public_classifiersystem()
 {
  	//Getting the size of the system:
 	int NR_TYPES=CLASSIFIERSYSTEM->nr_types;
