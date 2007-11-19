@@ -261,7 +261,7 @@ AssetPortfolioType
 Functions: from model.xml:
 
 Messages: from model-ewa.xml:
---------------------------------------------------------------------------------------=======
+--------------------------------------------------------------------------------------
 Mariam, rev 452
 household ewa.c		added Household_reset_private_classifiersystem()
 faewa.c				FinancialAgent_reset_public_classifiersystem()
@@ -270,4 +270,8 @@ model-ewa.xml		added dependencies
 --------------------------------------------------------------------------------------
 Sander, rev 453
 		updated model-ewa.xml
---------------------------------------------------------------------------------------=======
+--------------------------------------------------------------------------------------
+Sander, rev 454
+		household ewa.c		wrote Household_reset_private_classifiersystem()
+		faewa.c				wrote FinancialAgent_reset_public_classifiersystem()
+--------------------------------------------------------------------------------------

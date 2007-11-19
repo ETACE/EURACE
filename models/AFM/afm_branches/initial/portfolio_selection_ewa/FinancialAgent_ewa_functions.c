@@ -102,5 +102,21 @@ int FinancialAgent_send_ruledetailsystem_message()
 
 int FinancialAgent_reset_public_classifiersystem()
 {
-	return 0;
+ 	//Getting the size of the system:
+	int NR_TYPES=CLASSIFIERSYSTEM->nr_types;
+
+	//dynamic array with number of rules in each type (size of subpopulations)
+	int* NRRULES_PER_TYPE=CLASSIFIERSYSTEM->nr_rules_per_type;
+
+	//total number of rules:
+	int NRRULES=CLASSIFIERSYSTEM->nr_rules;
+    
+	//Resetting and storing values to memory:
+	for (i=0; i<NRRULES; i++)
+	{
+		CLASSIFIERSYSTEM->array[i]->performance=0;
+		CLASSIFIERSYSTEM->array[i]->avgperformance=0;
+	}
+
+    return 0;
 }
