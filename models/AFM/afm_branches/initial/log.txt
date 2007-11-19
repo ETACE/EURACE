@@ -236,4 +236,29 @@ model-ewa.xml
 				Rerun parser
 				Added dgraphv0.5.eps
 ---------------------------------------------------------------------------
-				
+Sander, rev 451
+Household_ewa_functions.c
+			Clean-up of code. Removed most cases of
+			"PublicClassifierSystem * classifiersystem;"
+
+Merged model.xml with model-ewa.xml
+
+Datatypes used from model.xml:
+string
+stringlist
+word
+wordlist
+int2D_array
+double2D_array
+RuleDetailSystem
+PublicClassifierSystem
+PrivateClassifierSystem
+
+Datatypes used from model-ewa.xml:
+AssetStruct
+AssetPortfolioType
+
+Functions: from model.xml:
+
+Messages: from model-ewa.xml:
+--------------------------------------------------------------------------------------=======

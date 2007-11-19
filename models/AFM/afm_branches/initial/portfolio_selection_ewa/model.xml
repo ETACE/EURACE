@@ -621,7 +621,7 @@ var><type>double</type><name>total_financial_needs</name></var>
 <message>
 <name>rule_performance</name>
 <note>Message sent my household to tell the FA agent of the rule performance</note>
-<var><type>int</type><name>nr_selected_rule</name></var>
+<var><type>int</type><name>current_rule</name></var>
 <var><type>double</type><name>rule_performance</name></var>
 <var><type>double</type><name>range</name></var>
 <var><type>double</type><name>x</name></var>
@@ -632,7 +632,7 @@ var><type>double</type><name>total_financial_needs</name></var>
 <message>
 <name>all_performances</name>
 <note>Message sent my FA read by all household </note>
-<var><type>double</type><name>performances</name></var>
+<var><type>double_array</type><name>performances</name></var>
 <var><type>double</type><name>range</name></var>
 <var><type>double</type><name>x</name></var>
 <var><type>double</type><name>y</name></var>
@@ -640,22 +640,10 @@ var><type>double</type><name>total_financial_needs</name></var>
 </message>
 
 <message>
-<name>rule_details_request</name>
-<note>Household requests for details</note>
-<var><type>int</type><name>household_id</name></var>
-<var><type>int</type><name>selected_rule_number</name></var>
-<var><type>double</type><name>range</name></var>
-<var><type>double</type><name>x</name></var>
-<var><type>double</type><name>y</name></var>
-<var><type>double</type><name>z</name></var>
-</message>
-
-<message>
-<name>rule_details</name>
+<name>ruledetailsystem</name>
 <note>FA adds rule details</note>
-<var><type>int</type><name>household_id</name></var>
-<var><type>int</type><name>selected_rule_number</name></var>
-<var><type>double</type><name>range</name></var>
+<var><type>double2D_array</type><name>parameters</name></var><!--Mariam: I think parameters here should be a struct for rule details to be sent. !Subject to change!--><!--Sander: actually this should be a 2d-array-->
+	<var><type>double</type><name>range</name></var>
 <var><type>double</type><name>x</name></var>
 <var><type>double</type><name>y</name></var>
 <var><type>double</type><name>z</name></var>
