@@ -268,3 +268,6 @@ faewa.c				FinancialAgent_reset_public_classifiersystem()
 model-ewa.xml		added dependencies
 					updated dgraphv0.7
 --------------------------------------------------------------------------------------
+Sander, rev 453
+		updated model-ewa.xml
+--------------------------------------------------------------------------------------=======
