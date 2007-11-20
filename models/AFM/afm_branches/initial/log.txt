@@ -275,3 +275,34 @@ Sander, rev 454
 		household ewa.c		wrote Household_reset_private_classifiersystem()
 		faewa.c				wrote FinancialAgent_reset_public_classifiersystem()
 --------------------------------------------------------------------------------------
+Sander, rev 455
+model.xml + model-ewa.xml
+		Household memory:
+					RENAMED agent_classifiersystem
+							PrivateClassifierSystem classifiersystem
+		FA memory:	RENAMED central_classifiersystem
+							PublicClassifierSystem classifiersystem
+
+					RENAMED FinancialAgent_updateGA
+							--> FinancialAgent_apply_GA
+					ADDED FinancialAgent_daily_reset_public_classifiersystem()
+
+FA_ewa.c			ADDED FinancialAgent_daily_reset_public_classifiersystem()
+						  
+ran xparser: dgraphv0.8.eps, dgraphv0.9.eps, dgraphv0.10.eps
+
+I added the functions Every_100_periods and Every_period blocks just to make clear that
+the entire block of functions after Every_100_periods but before Every_period should be run
+only once every 100 periods.
+
+FinancialAgent_daily_reset_public_classifiersystem and FinancialAgent_reset_public_classifiersystem,
+have the same code (just resetting the values in the classifier system), but we need to distinguish
+between them in order to prevent strange loops in the dgraph that do not make sense (daily activity
+depending on a 100-day activity).
+
+The household should not have a daily_reset function, since the private classifiersystem should continue
+to collect experiences to learn. The only time the household should reset the private CS is when the 
+rule_detail_system is changed.
+
+See dgraphv0.9.eps and dgraphv0.10.eps
+--------------------------------------------------------------------------------------

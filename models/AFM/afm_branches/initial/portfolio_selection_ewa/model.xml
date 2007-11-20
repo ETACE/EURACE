@@ -20,30 +20,11 @@
 <file>mylibraryfunctions.c</file>
 </functions>
 <!--Structures-->
-<datatype>
-<name>StockDataType</name>
-<desc>All stocks have a data type StockDataType. Refer to file stock_creation.m</desc>
-<var><type>char</type><name>class[5]</name></var>
-<var><type>int</type><name>id[5]</name></var>
-<var><type>int</type><name>NrOutStandingShares</name></var>
-<var><type>int</type><name>NrOutStandingShares(1:Parameters.NrDaysInitialization)</name></var> <!--?-->
-<var><type>double</type><name>price</name></var>
-<var><type>int</type><name>Book_intraday_transaction</name></var>
-<var><type>int</type><name>dividends</name></var>
-<var><type>int</type><name>dividends(1:Parameters.NrMonthsInitialization)</name></var><!--?-->
-</datatype>
-<datatype>
-<name>BondDataType</name>
-<desc>All Bonds have the following datatype. Refer to bond_creation.m</desc>
-<var><type>char</type><name>class[5]</name></var>
-<var><type>int</type><name>id[5]</name></var>
-</datatype>
-<datatype>
-<name>DBFinancialAssets</name>
-<desc></desc>
-</datatype>
 
-<datatype>
+
+<!--Auxiliary structs-->
+
+	<datatype>
 <name>string</name>
 <var><type>char_array</type><name>stringname</name></var>
 </datatype>
@@ -71,9 +52,9 @@
 <datatype>
 <name>double2D_array</name>
 <var><type>double**</type><name>double2Dname</name></var>
-</datatype>
+</datatype><!--EWA structs-->
 
-<datatype>
+	<datatype>
 <name>RuleDetailSystem</name>
 <desc>Datatype for all rule details.  !Subject to change!</desc>
 	<!--Such that it is possible to do: function(parameter[1][id], parameter[2][id], parameter[3][id], parameter[4][id], parameter[5][id])-->
@@ -166,8 +147,27 @@
 <var><!--Agent choice probabilities-->
 <type>double_array</type><name>choiceprob</name></var>
 
-</datatype>
-<datatype>
+</datatype><!--Asset market structs-->
+	<datatype>
+<name>StockDataType</name>
+<desc>All stocks have a data type StockDataType. Refer to file stock_creation.m</desc>
+<var><type>char</type><name>class[5]</name></var>
+<var><type>int</type><name>id[5]</name></var>
+<var><type>int</type><name>NrOutStandingShares</name></var>
+<var><type>int</type><name>NrOutStandingShares(1:Parameters.NrDaysInitialization)</name></var> <!--?-->
+<var><type>double</type><name>price</name></var>
+<var><type>int</type><name>Book_intraday_transaction</name></var>
+<var><type>int</type><name>dividends</name></var>
+<var><type>int</type><name>dividends(1:Parameters.NrMonthsInitialization)</name></var><!--?-->
+</datatype><datatype>
+<name>BondDataType</name>
+<desc>All Bonds have the following datatype. Refer to bond_creation.m</desc>
+<var><type>char</type><name>class[5]</name></var>
+<var><type>int</type><name>id[5]</name></var>
+</datatype><datatype>
+<name>DBFinancialAssets</name>
+<desc></desc>
+</datatype><datatype>
 <name>AssetPortfolio</name>
 <desc>Assetportfolio structs are used by the Household</desc><!--After performance_history there should be 3 structs, one for firm bonds, firm stocks, and gov bonds--><!--In each struct we have dynamic arrays: ids, nr_units, current_price, best_ask_price, best_bid_price-->
 	<var><type>double_array</type>
@@ -195,7 +195,7 @@
 
 <memory>
 <var><type>int</type><name>household_id</name></var>
-<var><type>PrivateClassifierSystem</type><name>agent_classifiersystem</name></var>
+<var><type>PrivateClassifierSystem</type><name>classifiersystem</name></var>
 <var><type>double</type><name>asset_budget</name></var>
 
 <var><type>AssetPortfolioType</type><name>current_assetportfolio</name></var>
@@ -487,7 +487,7 @@ var><type>double</type><name>total_financial_needs</name></var>
 <!-- All variables used by FinancialAdvisor are declared here to allocate them in memory -->
 <memory>
 
-<var><type>PublicClassifierSystem</type>	<name>central_classifiersystem</name></var>
+<var><type>PublicClassifierSystem</type>	<name>classifiersystem</name></var>
 <var><type>double</type><name>iradius</name></var>
 <var><type>double</type><name>posx</name></var>
 <var><type>double</type><name>posy</name></var>
