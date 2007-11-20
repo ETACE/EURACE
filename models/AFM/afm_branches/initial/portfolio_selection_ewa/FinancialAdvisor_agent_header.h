@@ -3,9 +3,9 @@
  * \brief Header for agent type memory access.
  */
 
-/** \def CENTRAL_CLASSIFIERSYSTEM
+/** \def CLASSIFIERSYSTEM
  * \brief Direct access to central_classifiersystem of FinancialAdvisor agent memory variable. */
-#define CENTRAL_CLASSIFIERSYSTEM current_xmachine->xmachine_FinancialAdvisor->central_classifiersystem
+#define CLASSIFIERSYSTEM current_xmachine->xmachine_FinancialAdvisor->classifiersystem
 /** \def IRADIUS
  * \brief Direct access to iradius of FinancialAdvisor agent memory variable. */
 #define IRADIUS current_xmachine->xmachine_FinancialAdvisor->iradius
