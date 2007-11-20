@@ -20,29 +20,10 @@
 <file>mylibraryfunctions.c</file>
 </functions>
 <!--Structures-->
-<datatype>
-<name>StockDataType</name>
-<desc>All stocks have a data type StockDataType. Refer to file stock_creation.m</desc>
-<var><type>char</type><name>class[5]</name></var>
-<var><type>int</type><name>id[5]</name></var>
-<var><type>int</type><name>NrOutStandingShares</name></var>
-<var><type>int</type><name>NrOutStandingShares(1:Parameters.NrDaysInitialization)</name></var> <!--?-->
-<var><type>double</type><name>price</name></var>
-<var><type>int</type><name>Book_intraday_transaction</name></var>
-<var><type>int</type><name>dividends</name></var>
-<var><type>int</type><name>dividends(1:Parameters.NrMonthsInitialization)</name></var><!--?-->
-</datatype>
-<datatype>
-<name>BondDataType</name>
-<desc>All Bonds have the following datatype. Refer to bond_creation.m</desc>
-<var><type>char</type><name>class[5]</name></var>
-<var><type>int</type><name>id[5]</name></var>
-</datatype>
-<datatype>
-<name>DBFinancialAssets</name>
-<desc></desc>
-</datatype>
-<datatype>
+
+
+<!--Auxiliary structs-->
+	<datatype>
 <name>string</name>
 <var><type>char_array</type><name>stringname</name></var>
 </datatype>
@@ -70,9 +51,9 @@
 <datatype>
 <name>double2D_array</name>
 <var><type>double**</type><name>double2Dname</name></var>
-</datatype>
+</datatype><!--EWA structs-->
 
-<datatype>
+	<datatype>
 <name>RuleDetailSystem</name>
 <desc>Datatype for all rule details.  !Subject to change!</desc>
 	<!--Such that it is possible to do: function(parameter[1][id], parameter[2][id], parameter[3][id], parameter[4][id], parameter[5][id])-->
@@ -164,8 +145,27 @@
 <type>double_array</type><name>attraction</name></var>
 <var><!--Agent choice probabilities-->
 <type>double_array</type><name>choiceprob</name></var>
+</datatype><!--Asset market structs--><datatype>
+<name>StockDataType</name>
+<desc>All stocks have a data type StockDataType. Refer to file stock_creation.m</desc>
+<var><type>char</type><name>class[5]</name></var>
+<var><type>int</type><name>id[5]</name></var>
+<var><type>int</type><name>NrOutStandingShares</name></var>
+<var><type>int</type><name>NrOutStandingShares(1:Parameters.NrDaysInitialization)</name></var> <!--?-->
+<var><type>double</type><name>price</name></var>
+<var><type>int</type><name>Book_intraday_transaction</name></var>
+<var><type>int</type><name>dividends</name></var>
+<var><type>int</type><name>dividends(1:Parameters.NrMonthsInitialization)</name></var><!--?-->
+</datatype><datatype>
+<name>BondDataType</name>
+<desc>All Bonds have the following datatype. Refer to bond_creation.m</desc>
+<var><type>char</type><name>class[5]</name></var>
+<var><type>int</type><name>id[5]</name></var>
+</datatype><datatype>
+<name>DBFinancialAssets</name>
+<desc></desc>
 </datatype>
-<datatype>
+	<datatype>
 <name>AssetPortfolioType</name>
 <desc>AssetportfolioType structs are used by the Household</desc> <!--What are the variables for asset portfolio?-->
 <var><type>int</type><name>performance_history</name></var>
@@ -207,7 +207,7 @@
 
 <memory>
 <var><type>int</type><name>household_id</name></var>
-<var><type>PrivateClassifierSystem</type><name>agent_classifiersystem</name></var>
+<var><type>PrivateClassifierSystem</type><name>classifiersystem</name></var>
 <var><type>double</type><name>asset_budget</name></var>
 
 <var><type>AssetPortfolioType</type><name>current_assetportfolio</name></var>
@@ -306,8 +306,14 @@
 
 -->
 <!---Role: Credit Market Role-->
-<!--EWA Functions-->
-<function><name>Household_send_rule_performance_message</name></function>
+<!--EWA Functions--><function>
+	<name>Every_period</name><depends>
+		<name>Household_reset_private_classifiersystem</name>
+		<type>internal</type></depends></function>
+	<function><name>Household_send_rule_performance_message</name>
+		<depends>
+			<name>Every_period</name>
+			<type>internal</type></depends></function>
 
 <function><name>Household_read_all_performances_message</name>
 <depends><name>FinancialAgent_send_all_performances_message</name><type>all_performances</type></depends>
@@ -320,9 +326,7 @@
 
 <function><name>Household_retrieve_rule_details</name>
 <depends><name>Household_select_rule</name><type>internal</type></depends>
-	<depends>
-		<name>Household_reset_private_classifiersystem</name>
-		<type>internal</type></depends>
+	
 </function>
 
 
@@ -554,7 +558,7 @@
 <!-- All variables used by FinancialAdvisor are declared here to allocate them in memory -->
 <memory>
 
-<var><type>PublicClassifierSystem</type>	<name>central_classifiersystem</name></var>
+<var><type>PublicClassifierSystem</type>	<name>classifiersystem</name></var>
 <var><type>double</type><name>iradius</name></var>
 <var><type>double</type><name>posx</name></var>
 <var><type>double</type><name>posy</name></var>
@@ -565,26 +569,29 @@
 
 
 <functions>
-<!--EWA Functions-->
-<function><name>FinancialAgent_read_rule_performance_message</name>
+<!--EWA Functions--><function>
+		<!--Resets performance and avgperformance for all rules. Daily.--><name>FinancialAgent_daily_reset_public_classifiersystem</name>
+</function>
+<function><name>FinancialAgent_read_rule_performance_message</name><depends>
+			<name>FinancialAgent_daily_reset_public_classifiersystem</name>
+			<type>internal</type></depends>
 <depends><name>Household_send_rule_performance_message</name><type>rule_performance</type></depends>
 </function>
-<function><name>FinancialAgent_update_classifiersystem</name>
+	
+	<function><name>FinancialAgent_update_classifiersystem</name>
 <depends><name>FinancialAgent_read_rule_performance_message</name><type>internal</type></depends>
-</function>
-<function><name>FinancialAgent_reset_public_classifiersystem</name>
 </function>
 
 <function><name>FinancialAgent_send_all_performances_message</name>
 <depends><name>FinancialAgent_update_classifiersystem</name><type>internal</type></depends>
 </function>
 	<function>
-		<name>Every 100 periods</name></function>
-	<function><name>FinancialAgent_updateGA</name>
+		<name>Every_100_periods</name></function>
+	<function><name>FinancialAgent_apply_GA</name>
 	<depends>
-		<name>Every 100 periods</name>
+		<name>Every_100_periods</name>
 		<type>internal</type></depends></function><function><name>FinancialAgent_update_ruledetailsystem</name><!--Date-event triggered: every 100 days run the GA-->
-<depends><name>FinancialAgent_updateGA</name><type>internal</type></depends>
+<depends><name>FinancialAgent_apply_GA</name><type>internal</type></depends>
 </function>
 	<function>
 		<name>FinancialAgent_reset_public_classifiersystem</name>
@@ -719,9 +726,9 @@
 <var><type>double</type><name>x</name></var>
 <var><type>double</type><name>y</name></var>
 <var><type>double</type><name>z</name></var>
-</message>
+</message><!--EWA messages-->
 
-<message>
+	<message>
 <name>rule_performance</name>
 <note>Message sent my household to tell the FA agent of the rule performance</note>
 <var><type>int</type><name>current_rule</name></var>

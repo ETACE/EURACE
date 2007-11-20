@@ -13,6 +13,25 @@
 #include "my_library_header.h"
 
 
+//FinancialAgent_daily_reset_public_classifiersystem
+//Daily reset of the public classifiersystem, resetting user counter, performance sum, and avgperformance.
+//This should be run before any rule_performance_messages are being read.
+int FinancialAgent_daily_reset_public_classifiersystem()
+{
+	//total number of rules:
+	int NRRULES=CLASSIFIERSYSTEM->nr_rules;
+    
+	//Resetting and storing values to memory:
+	for (i=0; i<NRRULES; i++)
+	{
+		CLASSIFIERSYSTEM->array[i]->counter=0;
+		CLASSIFIERSYSTEM->array[i]->performance=0;
+		CLASSIFIERSYSTEM->array[i]->avgperformance=0;
+	}
+	
+  return 0;
+}
+
 /* DEP: FA agent reads the rule_performance_message */  
 /* DEP: FA agent updates the rule_performance in its classifiersystem (for the selected_rule_number)*/
 /* DEP: FA agent responds by sending the performance measures of all the rules*/
@@ -102,18 +121,13 @@ int FinancialAgent_send_ruledetailsystem_message()
 
 int FinancialAgent_reset_public_classifiersystem()
 {
- 	//Getting the size of the system:
-	int NR_TYPES=CLASSIFIERSYSTEM->nr_types;
-
-	//dynamic array with number of rules in each type (size of subpopulations)
-	int* NRRULES_PER_TYPE=CLASSIFIERSYSTEM->nr_rules_per_type;
-
 	//total number of rules:
 	int NRRULES=CLASSIFIERSYSTEM->nr_rules;
     
 	//Resetting and storing values to memory:
 	for (i=0; i<NRRULES; i++)
 	{
+		CLASSIFIERSYSTEM->array[i]->counter=0;
 		CLASSIFIERSYSTEM->array[i]->performance=0;
 		CLASSIFIERSYSTEM->array[i]->avgperformance=0;
 	}
