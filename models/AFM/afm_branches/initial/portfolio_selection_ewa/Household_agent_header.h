@@ -6,9 +6,9 @@
 /** \def HOUSEHOLD_ID
  * \brief Direct access to household_id of Household agent memory variable. */
 #define HOUSEHOLD_ID current_xmachine->xmachine_Household->household_id
-/** \def AGENT_CLASSIFIERSYSTEM
- * \brief Direct access to agent_classifiersystem of Household agent memory variable. */
-#define AGENT_CLASSIFIERSYSTEM current_xmachine->xmachine_Household->agent_classifiersystem
+/** \def CLASSIFIERSYSTEM
+ * \brief Direct access to classifiersystem of Household agent memory variable. */
+#define CLASSIFIERSYSTEM current_xmachine->xmachine_Household->classifiersystem
 /** \def ASSET_BUDGET
  * \brief Direct access to asset_budget of Household agent memory variable. */
 #define ASSET_BUDGET current_xmachine->xmachine_Household->asset_budget
