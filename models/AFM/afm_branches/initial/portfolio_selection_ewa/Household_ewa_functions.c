@@ -82,14 +82,17 @@ int Household_select_rule()
     int current_rule = CLASSIFIERSYSTEM->current_rule;   
 	int NRRULES = CLASSIFIERSYSTEM->nr_rules;
 	
-    // i think we need to call a for loop here to copy values here
-    // See below
     double[] performance;
     double[] attraction;
 
     int experience		= CLASSIFIERSYSTEM->experience;
     int experience_old = 0;
     int i,j=0;
+
+	//Rule selection
+	double sum_attr = 0;
+	double[NRRULES] cpdf;
+	
     
 	//Assign values to local dynamic arrays
 	for (i=0;i<NRRULES;i++)
@@ -125,8 +128,9 @@ int Household_select_rule()
         //Set the attractions in the classifiersystem:
         CLASSIFIERSYSTEM->array[j]->attraction = attraction[j];
     }
+    
 	//Computing the choice probabilities: multi-logit
-    double sum_attr = 0;
+    sum_attr=0;
     for (j=0;j++;j<NRRULES)
     {
         sum_attr += math.exp(EWA_beta * attractions[j]);
@@ -136,48 +140,20 @@ int Household_select_rule()
     {
         p[j] = math.exp(EWA_beta * attractions[j])/sum_attr;
 	}
-// *********** WARNING: MATLAB CODE BELOW ****************************
 
-    //Selecting a strategy according to the prob.dens. function:
-    //The cumulative pdf is:
-     cpdf = cumsum(p)/sum(p);
+    //Construct cumm. prob. dens. function
+	cpdf = cumpdf(p);
     
-    //Random number generator:
-    //To reset to a different seed each time:
-    rand('state',sum(100*clock));
-    
-    //To use a fixed seed:
-    rand('state',123456);
-    
-    u=rand;
-    
-    nr_selected_rule=0;
-    
-    //Case 1: u<F(1)
-        if (0<=u & u<cpdf(1))
-            nr_selected_rule=1;
-        end;
-    
-    //Case 2: Now travers the cpdf until u >= F(j-1)
-    for j=2:NRRULES
-        if (cpdf(j-1)<=u & u<cpdf(j))
-            nr_selected_rule=j;
-            break;
-        end;
-    end;
-    
-    //Case 3: u>=F(J)
-        if (cpdf(NRRULES)<=u)
-            nr_selected_rule=NRRULES;
-        end;
+    //Selecting a strategy according to the pdf:
+	nr_selected_rule = draw_with_replacement(1, cpdf, NRRULES);
     
     //Test if a rule has been selected:
     if(nr_selected_rule==0)
         printf('Error in EWA learning: No rule selection from choice probabilities');
     end;
     
-    //Set the selected rule:
-    CLASSIFIERSYSTEM->current_rule=nr_selected_rule;
+    //Set the selected rule in memory (0-indexed):
+    CLASSIFIERSYSTEM->current_rule = nr_selected_rule - 1;
 
     return 0;
 }
