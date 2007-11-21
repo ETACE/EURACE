@@ -306,3 +306,12 @@ rule_detail_system is changed.
 
 See dgraphv0.9.eps and dgraphv0.10.eps
 --------------------------------------------------------------------------------------
+Sander, rev 456
+		Household ewa.c		
+			Simplified the function Household_select_rule().
+			
+		Some_new_functions.c
+			Added auxiliary functions 
+			sum, cumsum, cumpdf, 
+			ismember, draw, draw_with_replacement, draw_without_replacement.
+--------------------------------------------------------------------------------------

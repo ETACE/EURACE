@@ -1,5 +1,3 @@
-
-
 //HERE: function to initialize the rule_detail_system.
 //Contains arrays for:
 //NR_TYPES: number of different types of rules (typically NR_TYPES=3)
@@ -119,5 +117,156 @@ int initialize_ruledetailsystem()
 }
 
 
+// *********** BEGIN AUXILIARY FUNCTIONS ****************************
+
+//double sum(double * p)
+//Sum of a elements of a vector p.
+double sum(double * p)
+{
+	int imax=p->size;
+	double sum=0.0;
+	
+	for (i=0;i<imax;i++)
+	{
+		sum+=p[i];
+	}	
+	
+    return sum;
+}
+
+//double * cumsum(double * p)
+//Cumulative sum of elements of a vector p.
+double * cumsum(double * p)
+{
+	int imax=p->size;
+	double[imax] cumsum;
+	
+	//Cummulative sum
+	cumsum[0]=p[0];
+	for (i=0;i<imax-2;i++)
+	{
+		cumsum[i+1]=cumsum[i]+p[i+1];
+	}
+	cumsum[imax-1]=cumsum[imax-2]+p[imax-1];
+	
+    return cumsum;
+}
+
+//double * cumpdf(double * p)
+//Cummulative probability density function.
+//Given a vector of probabilities p, the cumulative pdf is given by:
+//  cpdf = cumsum(p)/sum(p);
+double * cumpdf(double * p)
+{
+	int imax=p->size;
+	double sum_p = sum(p);
+	double[imax] cumsum_p = cumsum(p);	
+	double[imax] cpdf;
+
+    //The cumulative pdf is:
+	for (i=0;i<imax;i++)
+	{    	
+     	cpdf[i] = cumsum[i]/sum_p;
+	}
+	
+    return cpdf;
+}
+
+//int draw(double * cpdf)
+//Drawing a random number from the cummulative probability density function cpdf.
+//Returns the bin number of a randomly chosen number u.
+//Given a cummulative pdf F(.), the random number u belongs to bin j
+//if and only if F(j-1)<= u < F(j).
+int draw(double * cpdf)
+{	
+	int imax = cpdf->size;
+
+    //Random number generator:
+    u=rand_unif();
+    
+    nr_selected_bin=0;
+    
+    //Case 1: u<F(1)
+        if (0<=u && u<cpdf[0])  
+            nr_selected_bin=1;
+        end;
+    
+    //Case 2: Travers the cpdf until u >= F(j-1)
+	    for j=2:imax
+	        if (cpdf[j-1]<=u && u<cpdf[j])
+	            nr_selected_bin=j;
+	            break;
+	        end;
+	    end;
+	    
+    //Case 3: u>=F(J)
+        if (cpdf[imax]<=u)
+            nr_selected_bin=imax;
+        end;
+
+    return nr_selected_bin;
+}
+
+//int ismember(int i, int * x, int n)
+//Check if i is a member of the array x, with size n.
+//Returns 1 if i is a member, 0 else.
+int ismember(int i, int * x, int n)
+{
+	int k, ans=0;
+	for (k=0;k<n;k++)
+	{
+		if(i==x[k])
+		{
+			ans=1;
+			break;
+		}
+	}
+
+	return ans;
+}
 
 
+//int * draw_without_replacement(int N, double * cpdf)
+//Drawing N random numbers (integers) without replacement from the cummulative probability density function cpdf.
+int * draw_without_replacement(int N, double * cpdf)
+{
+	double[N] draws;
+	int i,k,count=0;
+	
+	for (k=0;k<N;k++)
+	{
+		draws[k]=-1;
+	}
+	
+	//Continue drawing until N different numbers have been drawn
+	while(count!=N)
+	{
+		i = draw(cpdf);
+		
+		//Check membership, only add if not yet a member
+		if (ismember(i,draws,N)==0)
+		{
+			draws[count]=i;
+			count += 1;
+		}
+	}
+	
+    return draws;
+}
+
+//int * draw_with_replacement(int N, double * cpdf)
+//Drawing N random numbers (integers) with replacement from the cummulative probability density function cpdf.
+int * draw_with_replacement(int N, double * cpdf)
+{
+	double[N] draws;
+	int k=0;
+
+	for (k=0;k<N;k++)
+	{
+		draws[k]=draw(cpdf);
+	}
+	
+    return draws;
+}
+
+// *********** END AUXILIARY FUNCTIONS ****************************
