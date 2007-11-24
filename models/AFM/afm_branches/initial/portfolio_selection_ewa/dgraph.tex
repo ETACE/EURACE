@@ -50,39 +50,7 @@
   \centering
   \begin{tabular}{|l|l|l|}
   \hline
-  Step & FinancialAdvisor & Household \\
-  \hline\hline
-    1 & send new rule detail system &   \\
-      & reset public classifier system &   \\
-    \hline
-    2 &                             & read new rule detail system \\
-      &                             & update rule detail system \\
-      &                             & reset private classifier system \\
-    \hline
-    3 &                             & send own rule performance \\
-    \hline
-    4 & read rule performance       &  \\
-      & update public classifier system &   \\
-    \hline
-    5 & send all rule performances  &  \\  \hline
-    6 &                             & read all rule performances \\
-      &                             & update private classifier system \\
-      &                             & select rule\\
-      &                             & retrieve rule details\\
-      &                             & apply rule\\      
-  \hline
-  \end{tabular}
-  \caption{Communication layers for the EWA learning algorithm in the AFM.}
-  \label{Table: messages}
-\end{table}
-
-
-
-\begin{table}
-  \centering
-  \begin{tabular}{|l|l|l|}
-  \hline
-  Step & FinancialAdvisor & Household \\
+  Step & Financial Advisor & Household \\
   \hline\hline
     1 & send new rule detail system &   \\
       & reset public classifier system &   \\
@@ -102,7 +70,38 @@
       &                             & apply rule\\      
   \hline
   \end{tabular}
-  \caption{Communication layers for the EWA learning algorithm in the AFM.}
+  \caption{Communication layers for the rule selection algorithm in the AFM.}
   \label{Table: messages}
 \end{table}
+
+
+
+\begin{table}
+  \centering
+  \begin{tabular}{|l|l|l|}
+  \hline
+  Step & Clearing house & Household \\
+  \hline\hline
+    1 &  & send firm stock orders  \\
+      &  & send firm bond orders  \\
+      &  & send gov bond orders  \\
+    \hline
+    2 & read firm stock orders &  \\
+      & read firm bond orders  & \\
+      & read gov bond orders   &  \\
+      & compute transactions   &   \\
+      & send firm stock transactions &  \\
+      & send firm bond transactions  &  \\
+      & send gov bond transactions   &  \\      
+    \hline
+    3 &  & read firm stock transactions  \\
+      &  & read firm bond transactions   \\
+      &  & read gov bond transactions    \\
+      &  & update accounts\\
+  \hline
+  \end{tabular}
+  \caption{Communication layers for the market clearing algorithm in the AFM.}
+  \label{Table: messages}
+\end{table}
+
 \end{document}
