@@ -130,7 +130,8 @@
 	<var><!--int_array rule_type-->
 		<type>int_array</type>
 		<name>rule_type</name>
-	</var>
+	</var><!--EWA Parameters-->
+	<var><type>double</type><name>EWA_rho</name></var><var><type>double</type><name>EWA_phi</name></var><var><type>double</type><name>EWA_delta</name></var><var><type>double</type><name>EWA_beta</name></var>
 	<var><!--This is the experience variable for EWA learning--><type>double</type><name>experience</name>
 	</var>
 <var><!--Current rule in use by the agent--><type>int</type><name>current_rule</name>
@@ -213,12 +214,9 @@
 <var><type>AssetPortfolioType</type><name>current_assetportfolio</name></var>
 <var><type>AssetPortfolioType</type><name>prescribed_assetportfolio</name></var>
 
-<var><type>int</type><name>nr_selected_rule</name></var>
-<var><type>double</type><name>current_rule_performance</name></var>
-<var><type>double</type><name>EWA_rho</name></var>
-<var><type>double</type><name>EWA_phi</name></var>
-<var><type>double</type><name>EWA_delta</name></var>
-<var><type>double</type><name>EWA_beta</name></var>
+
+
+
 <var><type>double</type><name>prescribed_asset_value</name></var>
 <var><type>double</type><name>asset_budget</name></var>
 <var><type>double</type><name>iradius</name></var>
@@ -306,43 +304,70 @@
 
 -->
 <!---Role: Credit Market Role-->
-<!--EWA Functions--><function>
-	<name>Every_period</name><depends>
+
+<!--EWA Functions-->
+<function>
+	<name>Every_period</name>
+	<depends>
 		<name>Household_reset_private_classifiersystem</name>
-		<type>internal</type></depends></function>
-	<function><name>Household_send_rule_performance_message</name>
-		<depends>
+		<type>internal</type>
+	</depends>
+</function>
+<function>
+	<name>Household_send_rule_performance_message</name>
+	<depends>
 			<name>Every_period</name>
-			<type>internal</type></depends></function>
-
-<function><name>Household_read_all_performances_message</name>
-<depends><name>FinancialAgent_send_all_performances_message</name><type>all_performances</type></depends>
-</function>
-
-<function><name>Household_select_rule</name>
-<depends><name>Household_read_all_performances_message</name><type>internal</type></depends>
-</function>
-
-
-<function><name>Household_retrieve_rule_details</name>
-<depends><name>Household_select_rule</name><type>internal</type></depends>
-	
-</function>
-
-
-
-
-<function><name>Household_apply_rule</name>
-<depends><name>Household_retrieve_rule_details</name><type>internal</type></depends>
+			<type>internal</type>
+	</depends>
 </function>
 
 <function>
-<name>Household_read_ruledetailsystem_message</name>
-<depends><name>FinancialAgent_send_ruledetailsystem_message</name><type>ruledetailsystem</type></depends>
+	<name>Household_read_all_performances_message</name>
+	<depends>
+		<name>FinancialAgent_send_all_performances_message</name>
+		<type>all_performances</type>
+	</depends>
 </function>
 
-<function><name>Household_update_ruledetailsystem</name><!--(now: inside read function)-->
-<depends><name>Household_read_ruledetailsystem_message</name><type>internal</type></depends>
+<function>
+	<name>Household_select_rule</name>
+	<depends>
+		<name>Household_read_all_performances_message</name>
+		<type>internal</type>
+	</depends>
+</function>
+
+<function>
+	<name>Household_retrieve_rule_details</name>
+	<depends>
+		<name>Household_select_rule</name>
+		<type>internal</type>
+	</depends>	
+</function>
+
+<function>
+	<name>Household_apply_rule</name>
+	<depends>
+		<name>Household_retrieve_rule_details</name>
+		<type>internal</type>
+	</depends>
+</function>
+
+<function>
+	<name>Household_read_ruledetailsystem_message</name>
+	<depends>
+		<name>FinancialAgent_send_ruledetailsystem_message</name>
+		<type>ruledetailsystem</type>
+	</depends>
+</function>
+
+<function>
+	<name>Household_update_ruledetailsystem</name>
+	<!--(now: inside read function)-->
+	<depends>
+		<name>Household_read_ruledetailsystem_message</name>
+		<type>internal</type>
+	</depends>
 </function>
 
 <function><name>Household_reset_private_classifiersystem</name>
@@ -351,15 +376,13 @@
 		<type>internal</type></depends>
 </function>
 
-
-
-
+<!-- 
 <function><name>Household_read_transaction_message</name>
-<depends><name>Clearinghouse_read_order_messages</name><type>firm_stock_transaction</type></depends>
-<depends><name>Clearinghouse_read_order_messages</name><type>firm_bond_transaction</type></depends>
-<depends><name>Clearinghouse_read_order_messages</name><type>gov_bond_transaction</type></depends>
+	<depends><name>Clearinghouse_read_order_messages</name><type>firm_stock_transaction</type></depends>
+	<depends><name>Clearinghouse_read_order_messages</name><type>firm_bond_transaction</type></depends>
+	<depends><name>Clearinghouse_read_order_messages</name><type>gov_bond_transaction</type></depends>
 </function>
-
+ -->
 
 </functions>
 </xmachine>
@@ -566,10 +589,9 @@
 
 </memory>
 <!----------------- Defining functions ---------------------------------------->
-
-
 <functions>
-<!--EWA Functions--><function>
+<!--EWA Functions-->
+<function>
 		<!--Resets performance and avgperformance for all rules. Daily.--><name>FinancialAgent_daily_reset_public_classifiersystem</name>
 </function>
 <function><name>FinancialAgent_read_rule_performance_message</name><depends>

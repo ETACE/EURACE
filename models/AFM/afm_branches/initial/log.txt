@@ -322,3 +322,20 @@ Sander, rev 463
 		Some_new_functions.c
 			Added UNIT TESTS for auxiliary functions 
 --------------------------------------------------------------------------------------
+Sander, rev 464
+
+model.xml + model-ewa.xml
+		Merged EWA functions from model-ewa.xml into model.xml
+		Moved memory vars from household memory to private classifier system struct:
+			EWA_rho, EWA_phi, EWA_delta, EWA_beta
+		Deleted memory vars from household memory (since they are inside the LCS):
+			nr_selected_rule, current_rule_performance
+
+household_ewa.c
+		Household_select_rule()
+			line 105: updated assignment of local EWA parameters to point to the classifier system struct.
+			
+draph-AFM-v0.1.eps
+		First dgraph showing both the FinancialManagement Role and EWA functions together.
+		Next: identify linking points between functions.
+--------------------------------------------------------------------------------------
