@@ -339,3 +339,6 @@ draph-AFM-v0.1.eps
 		First dgraph showing both the FinancialManagement Role and EWA functions together.
 		Next: identify linking points between functions.
 --------------------------------------------------------------------------------------
+Sander, rev 465
+	Some_new_functions.c Debugging
+--------------------------------------------------------------------------------------
