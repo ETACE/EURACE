@@ -15,34 +15,51 @@
 
 int initialize_ruledetailsystem()
 {
+	int i;
+	
  	//Getting the size of the system:
 	int NR_TYPES=CLASSIFIERSYSTEM->nr_types;
 
 	//dynamic array with number of rules in each type (size of subpopulations)
-	int* NRRULES_PER_TYPE=CLASSIFIERSYSTEM->nr_rules_per_type;
+	int * NRRULES_PER_TYPE=CLASSIFIERSYSTEM->nr_rules_per_type;
 
 	//total number of rules:
 	int NRRULES=CLASSIFIERSYSTEM->nr_rules;
 	
 	//dynamic array with number of parameters in each type
-	int* nr_params_per_type=CLASSIFIERSYSTEM->nr_params_per_type;
+	int nr_params_per_type[NR_TYPES];
+	for (i=0; i<NRRULES; i++)
+	{	
+		nr_params_per_type[i]=CLASSIFIERSYSTEM->array[i]->nr_params_per_type;
+	}
 	
 	//Local vars:
-	int[NRRULES] 		ids;
+	int 		ids[NRRULES];
 	
 	//Here: nr_params is the number of parameters for a rule of certain type
-	//For each type we should have a prototype and then fill the dynamic array
-	int[NRRULES]		rule_type;
-	int[NR_TYPES]		nr_params;
-	double**			parameters;			//parameter[NRRULES][MAX_PARAMS];
+	//For each type we should have a prototype and then fill in the dynamic array
+	int			rule_type[NRRULES];
+	int			nr_params[NRRULES];
+	double**	parameters;			//parameter[NRRULES][MAX_PARAMS];
 	
-	char**				rule_execution;	    //rule_execution[NRRULES]
-	int[NRRULES]		rule_type;			//rule_type[NRRULES]
+	double 		p0[NRRULES];
+	double 		dp[NRRULES];
+	double 		p1[NRRULES];
 	
-	word_array * 		my_function_names = get_my_function_names(); //list of function names
+	char**		rule_execution;	    //rule_execution[NRRULES]
 	
-	double				param_value;
-	int					i,j,k,m, count;
+	word_array * my_function_names = get_my_function_names(); //list of function names
+	
+	double		param_value;
+	int			j,jmax,k,m, count, par_resolution;
+
+	//Getting parameter settings
+	for (i=0; i<NRRULES; i++)
+	{
+		p0[i] = CLASSIFIERSYSTEM->array[i]->param_start_values;
+		dp[i] = CLASSIFIERSYSTEM->array[i]->param_increment_values;
+		p1[i] = CLASSIFIERSYSTEM->array[i]->param_end_values;
+	}
 	
 	//First we set the field 'rule_type':
 	count = 0;
@@ -52,6 +69,7 @@ int initialize_ruledetailsystem()
 		jmax = CLASSIFIERSYSTEM->array[i]->nr_rules_per_type;
 		
 		//For type i, traverse the rule ids from 0+count to jmax+count
+		//such that we go through all rules of type i
 		for (j=count;j<count+jmax;j++)
 		{
 			//We are now in rule id j
@@ -67,7 +85,7 @@ int initialize_ruledetailsystem()
 	for (i=0; i<NRRULES; i++)
 	{
 		//I want to add an empty double_array to the double2D_array parameter
-		add_double_array(double2D_parameter_dynamic_array->array[i], []);
+		add_double_array(double2D_parameter_dynamic_array->array[i], {});
 		
 		//Filling the just added double_array parameter[i] with the parameter values of rule i
 		for (j=0; j<nr_params[i]; j++)
@@ -76,9 +94,9 @@ int initialize_ruledetailsystem()
 			//A random value is chosen from the parameter resolution given by:
 			//[p0:dp:p1] where dp is the step size.
 				
-			par_res = (p1[i]-p0[i])/dp[i]; //total possibilities
+			par_resolution = (p1[i]-p0[i])/dp[i]; //total possibilities
 			k=rand_unif();
-			m=floor(k*par_res); //random uniform in [0,par_res]	
+			m=(int)(k*par_resolution); //random uniform in [0,par_res]: selecting a random param. setting
 	
 			//Can we add a double directly inside the function add_double?
 			add_double(parameters[i][j], p0[i] + m*dp[i]);		
@@ -123,6 +141,7 @@ int initialize_ruledetailsystem()
 //Sum of a elements of a vector p.
 double sum(double * p)
 {
+	int i;
 	int imax=p->size;
 	double sum=0.0;
 	
@@ -142,8 +161,11 @@ double sum(double * p)
 //Outcome: cumsum={0.6 0.8 1.6 2.0}
 double * cumsum(double * p)
 {
-	int imax=p->size;
-	double[imax] cumsum;
+	int i;
+	//int imax=p->size;
+	int imax=10;//testing
+
+	double cumsum[imax];
 	
 	//Cummulative sum
 	cumsum[0]=p[0];
@@ -153,7 +175,7 @@ double * cumsum(double * p)
 	}
 	cumsum[imax-1]=cumsum[imax-2]+p[imax-1];
 	
-    return cumsum;
+    return (&cumsum); //CHECK: is this proper way of returning the address of the start of array cumsum?
 }
 
 //double * cumpdf(double * p)
@@ -167,18 +189,24 @@ double * cumsum(double * p)
 //Outcome: cpdf={0.3 0.4 0.8 1.0}
 double * cumpdf(double * p)
 {
-	int imax=p->size;
+	int i;
+	//int imax=p->size;
+	int imax=10;//testing
+	
 	double sum_p = sum(p);
-	double[imax] cumsum_p = cumsum(p);	
-	double[imax] cpdf;
+	double cumsum_p[imax];	
+	double cpdf[imax];
 
-    //The cumulative pdf is:
+	//The cumulative sum is:
+	(*cumsum_p) = cumsum(p);
+    
+	//The cumulative pdf is:
 	for (i=0;i<imax;i++)
 	{    	
      	cpdf[i] = cumsum[i]/sum_p;
 	}
 	
-    return cpdf;
+    return (&cpdf); //CHECK: is this proper way of returning the address of the start of array?
 }
 
 //int draw(double * cpdf)
@@ -188,6 +216,7 @@ double * cumpdf(double * p)
 //if and only if F(j-1)<= u < F(j).
 int draw(double * cpdf)
 {	
+	int j,u, nr_selected_bin;
 	int imax = cpdf->size;
 
     //Random number generator:
@@ -196,22 +225,26 @@ int draw(double * cpdf)
     nr_selected_bin=0;
     
     //Case 1: u<F(1)
-        if (0<=u && u<cpdf[0])  
+        if (0<=u && u<cpdf[0])
+        {
             nr_selected_bin=1;
-        end;
+        }
     
     //Case 2: Travers the cpdf until u >= F(j-1)
-	    for j=2:imax
+	    for (j=2;j++;j<imax)
+	    {
 	        if (cpdf[j-1]<=u && u<cpdf[j])
+	        {
 	            nr_selected_bin=j;
 	            break;
-	        end;
-	    end;
+	    	}
+	    }
 	    
     //Case 3: u>=F(J)
         if (cpdf[imax]<=u)
+        {
             nr_selected_bin=imax;
-        end;
+        }
 
     return nr_selected_bin;
 }
@@ -244,7 +277,7 @@ int ismember(int i, int * x, int n)
 
 int * draw_without_replacement(int N, double * cpdf)
 {
-	double[N] draws;
+	double draws[N];
 	int i,k,count=0;
 	
 	for (k=0;k<N;k++)
@@ -265,7 +298,7 @@ int * draw_without_replacement(int N, double * cpdf)
 		}
 	}
 	
-    return draws;
+    return (&draws);//CHECK: is this proper way of returning the address of the start of array?
 }
 
 //int * draw_with_replacement(int N, double * cpdf)
@@ -281,7 +314,7 @@ int * draw_without_replacement(int N, double * cpdf)
 
 int * draw_with_replacement(int N, double * cpdf)
 {
-	double[N] draws;
+	double draws[N];
 	int k=0;
 
 	for (k=0;k<N;k++)
@@ -289,7 +322,7 @@ int * draw_with_replacement(int N, double * cpdf)
 		draws[k]=draw(cpdf);
 	}
 	
-    return draws;
+    return (&draws);//CHECK: is this proper way of returning the address of the start of array cumsum?
 }
 
 // *********** END AUXILIARY FUNCTIONS ****************************
