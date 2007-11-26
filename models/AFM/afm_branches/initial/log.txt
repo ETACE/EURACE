@@ -315,3 +315,10 @@ Sander, rev 456
 			sum, cumsum, cumpdf, 
 			ismember, draw, draw_with_replacement, draw_without_replacement.
 --------------------------------------------------------------------------------------
+Sander, rev 457-462
+		Added dgraphs, pdf.
+--------------------------------------------------------------------------------------
+Sander, rev 463
+		Some_new_functions.c
+			Added UNIT TESTS for auxiliary functions 
+--------------------------------------------------------------------------------------

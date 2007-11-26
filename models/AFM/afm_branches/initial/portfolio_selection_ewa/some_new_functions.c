@@ -136,6 +136,10 @@ double sum(double * p)
 
 //double * cumsum(double * p)
 //Cumulative sum of elements of a vector p.
+//UNIT TEST:
+//Input: p={0.6 0.2 0.8 0.4}
+//cumsum = cumsum(p);
+//Outcome: cumsum={0.6 0.8 1.6 2.0}
 double * cumsum(double * p)
 {
 	int imax=p->size;
@@ -154,8 +158,13 @@ double * cumsum(double * p)
 
 //double * cumpdf(double * p)
 //Cummulative probability density function.
-//Given a vector of probabilities p, the cumulative pdf is given by:
+//Given a vector of probabilities p, the cumulative pdf is given by
+//the normalized values in the cummulative sum:
 //  cpdf = cumsum(p)/sum(p);
+//UNIT TEST:
+//Input: p={0.6 0.2 0.8 0.4}
+//cpdf = cumpdf(p);
+//Outcome: cpdf={0.3 0.4 0.8 1.0}
 double * cumpdf(double * p)
 {
 	int imax=p->size;
@@ -228,6 +237,11 @@ int ismember(int i, int * x, int n)
 
 //int * draw_without_replacement(int N, double * cpdf)
 //Drawing N random numbers (integers) without replacement from the cummulative probability density function cpdf.
+//UNIT TEST:
+//cpdf={0.1 0.2 0.3 0.4 0.5};
+//draw_without_replacement(5, cpdf)
+//Outcome: array 'draws' should contain all values 1-5
+
 int * draw_without_replacement(int N, double * cpdf)
 {
 	double[N] draws;
@@ -255,7 +269,16 @@ int * draw_without_replacement(int N, double * cpdf)
 }
 
 //int * draw_with_replacement(int N, double * cpdf)
-//Drawing N random numbers (integers) with replacement from the cummulative probability density function cpdf.
+//Drawing N random numbers (integers) with replacement
+//from the cummulative probability density function cpdf.
+//UNIT TEST:
+//Do 1000 draws from 4 bins with probabilities according to a given pdf.
+//Input: 
+//pdf={0.3 0.1 0.4 0.2};
+//cpdf={0.3 0.4 0.8 1.0};
+//draw_with_replacement(1000, cpdf)
+//Outcome: approx. 300, 100, 400, 200 in each bin.
+
 int * draw_with_replacement(int N, double * cpdf)
 {
 	double[N] draws;
