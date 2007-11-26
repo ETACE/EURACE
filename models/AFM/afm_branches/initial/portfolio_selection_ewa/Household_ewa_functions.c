@@ -102,10 +102,10 @@ int Household_select_rule()
 	}
     
     //EWA learning parameters:
-    double EWA_rho=get_EWA_rho();
-    double EWA_phi=get_EWA_phi();
-    double EWA_delta=get_EWA_delta();
-    double EWA_beta=get_EWA_beta();
+    double EWA_rho=CLASSIFIERSYSTEM->EWA_rho;
+    double EWA_phi=CLASSIFIERSYSTEM->EWA_phi;
+    double EWA_delta=CLASSIFIERSYSTEM->EWA_delta;
+    double EWA_beta=CLASSIFIERSYSTEM->EWA_beta;
   
     //Updating the experience weight
     experience_old=experience;
