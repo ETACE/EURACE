@@ -128,8 +128,8 @@ int FinancialAgent_reset_public_classifiersystem()
 	for (i=0; i<NRRULES; i++)
 	{
 		CLASSIFIERSYSTEM->array[i]->counter=0;
-		CLASSIFIERSYSTEM->array[i]->performance=0;
-		CLASSIFIERSYSTEM->array[i]->avgperformance=0;
+		CLASSIFIERSYSTEM->array[i]->performance=math.log(math.pow(10,-5));
+		CLASSIFIERSYSTEM->array[i]->avgperformance=math.log(math.pow(10,-5));
 	}
 
     return 0;
