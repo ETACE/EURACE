@@ -340,5 +340,14 @@ draph-AFM-v0.1.eps
 		Next: identify linking points between functions.
 --------------------------------------------------------------------------------------
 Sander, rev 465
-	Some_new_functions.c Debugging
+		Some_new_functions.c Debugging
+--------------------------------------------------------------------------------------
+Sander, rev 466
+		household ewa.c		in Household_reset_private_classifiersystem()
+		faewa.c				in FinancialAgent_reset_public_classifiersystem()
+
+		Initial values for avgperformance, performance are set to default value: log(10^-5).
+		This leads to initial weights in the choice probabilities equal to: exp[log(10^-5)]=10^-5.
+		Non-used rules keep this weight, so they have small but positive
+		probability of being selected.
 --------------------------------------------------------------------------------------

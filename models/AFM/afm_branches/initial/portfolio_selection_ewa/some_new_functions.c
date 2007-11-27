@@ -138,7 +138,7 @@ int initialize_ruledetailsystem()
 // *********** BEGIN AUXILIARY FUNCTIONS ****************************
 
 //double sum(double * p)
-//Sum of a elements of a vector p.
+//Sum of elements of a vector p.
 double sum(double * p)
 {
 	int i;

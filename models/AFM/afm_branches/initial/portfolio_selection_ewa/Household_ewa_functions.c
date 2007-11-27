@@ -441,9 +441,9 @@ int Household_reset_private_classifiersystem()
 
 	for (i=0; i<NRRULES; i++)
 	{
-		CLASSIFIERSYSTEM->array[i]->avgperformance=0;
-		CLASSIFIERSYSTEM->array[i]->attraction=0;
-		CLASSIFIERSYSTEM->array[i]->choiceprob=0;
+		CLASSIFIERSYSTEM->array[i]->avgperformance=math.log(math.pow(10,-5));;
+		CLASSIFIERSYSTEM->array[i]->attraction=math.log(math.pow(10,-5));;
+		CLASSIFIERSYSTEM->array[i]->choiceprob=math.pow(10,-5);
 	}
 
     return 0;
