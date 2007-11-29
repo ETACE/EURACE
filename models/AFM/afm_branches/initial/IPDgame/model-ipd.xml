@@ -50,28 +50,23 @@
 <datatype>
 <name>double2D_array</name>
 <var><type>double**</type><name>double2Dname</name></var>
-</datatype><!--EWA structs-->
+</datatype><!--EWA structs--><datatype>
+	<name>AutomatonStruct</name>
+	<desc>Struct to hold a list of automata in use by GamePlayer agents.</desc><!--Holds for each agent: current_rule, performance.--><var>
+	<type>int</type><name>current_rule</name>
+	</var>
+	<var>
+		<type>double</type><name>rule_performance</name>
+		</var>
+</datatype>
 
 	<datatype>
 <name>RuleDetailSystem</name>
-<desc>Datatype for all rule details.  !Subject to change!</desc>
-	<!--Such that it is possible to do: function(parameter[1][id], parameter[2][id], parameter[3][id], parameter[4][id], parameter[5][id])-->
-	<var>
-		<!--Nr_params_per_type is the number of parameters per type of rule--><type>int_array</type>
-		<name>nr_params_per_type</name>
-	</var>
-	<var>
-		<!--int_array nr_params[NRRULES]: nr. of parameters for each rule; derived from nr_params_per_type-->
-		<type>int_array</type><name>nr_params</name>
-	</var>
-	<var><!--double parameters[NRRULES][MAX_PARAMS]-->
-	<!--parameters[i] is a double_array containing the parameter setting for rule i (these are multiple parameter values!!).--><!--Here we would need a double_array for each rule. Hence: a dynamic array of double_arrays!--><!--We do not know beforehand how many parameters there will be for each rule, but we can set an upper limit to MAX_PARAMS.--><!--Does this have to be a constant or can it be a global parameter MAX_PARAMS?-->
-	<type>double2D_array</type>
-	<name>parameters</name>
-	</var>
-	<var>
-	<!--myfunctionnames[NR_TYPES]--><type>wordlist</type>
-	<name>myfunctionnames</name></var><var><!--rule_execution[NRRULES]--><!--Here I want to use a string to contain the function name that has to be used to apply rule i.--><!--Using the example: char_array *   char_var_dynamic_array   = get_char_var_dynamic_array();--><type>wordlist</type><name>myfunctionnames</name>
+<desc>Datatype for rule details.  !Subject to change!</desc>
+	<!--In this case, the rule details are just bitstrings-->
+	<var><!--int2D_array[NRAGENTS][148]--><!--list_of_bitstrings: there are as many bitstrings as there are rules: NRAGENTS-->
+		<!--a bitstring has length 148, it is a binary coded decimal (BCD): [0,...,10^148-1]--><type>int2D_array</type>
+		<name>list_of_bitstrings</name>
 	</var>
 </datatype>
 
@@ -155,11 +150,14 @@
 <!-- All variables used by GamePlayer are declared here to allocate them in memory -->
 
 <memory>
-<var><type>int</type><name>GamePlayer_id</name></var>
-<var><type>PrivateClassifierSystem</type><name>classifiersystem</name></var>
+<var><type>int</type><name>id</name></var>
+<var>
+		<type>int</type><name>new_rules</name>
+		</var><var><type>PrivateClassifierSystem</type><name>classifiersystem</name></var>
 <var><type>double</type><name>iradius</name></var>
 <var><type>double</type><name>posx</name></var>
 <var><type>double</type><name>posy</name></var>
+	
 </memory>
 <!----------------- Defining functions ---------------------------------------->
 <functions>
@@ -173,7 +171,7 @@
 	</depends>
 </function>
 <function>
-	<name>GamePlayer_send_rule_performance_message</name>
+	<name>GamePlayer_send_current_rule_message</name>
 	<depends>
 			<name>Every_period</name>
 			<type>internal</type>
@@ -183,7 +181,7 @@
 <function>
 	<name>GamePlayer_read_all_performances_message</name>
 	<depends>
-		<name>FinancialAgent_send_all_performances_message</name>
+		<name>GameSolver_send_all_performances_message</name>
 		<type>all_performances</type>
 	</depends>
 </function>
@@ -191,46 +189,32 @@
 <function>
 	<name>GamePlayer_select_rule</name>
 	<depends>
-		<name>Household_read_all_performances_message</name>
+		<name>GamePlayer_read_all_performances_message</name>
+		<type>internal</type>
+	</depends>
+</function>
+
+
+
+<function>
+	<!--To apply a rule simply means: send a current_rule_message to the GameSolver agent, and the GameSolver plays the actual game.--><name>GamePlayer_apply_rule</name>
+	<depends>
+		<name>GamePlayer_select_rule</name>
 		<type>internal</type>
 	</depends>
 </function>
 
 <function>
-	<name>GamePlayer_retrieve_rule_details</name>
+	<!--Dummy function that only reads a ruledetailsystem_message and then fires up the reset_private_classifiersystem fn.--><name>GamePlayer_read_ruledetailsystem_message</name>
 	<depends>
-		<name>Household_select_rule</name>
-		<type>internal</type>
-	</depends>	
-</function>
-
-<function>
-	<name>GamePlayer_apply_rule</name>
-	<depends>
-		<name>Household_retrieve_rule_details</name>
-		<type>internal</type>
+		<name>GameSolver_send_ruledetailsystem_message</name>
+		<type>ruledetailsystem_message</type>
 	</depends>
 </function>
 
-<function>
-	<name>GamePlayer_read_ruledetailsystem_message</name>
-	<depends>
-		<name>FinancialAgent_send_ruledetailsystem_message</name>
-		<type>ruledetailsystem</type>
-	</depends>
-</function>
-
-<function>
-	<name>GamePlayer_update_ruledetailsystem</name>
+<function><!--This function should only run if there is a new ruledetailsystem in the GameSolver agent.--><name>GamePlayer_reset_private_classifiersystem</name>
 	<depends>
 		<name>GamePlayer_read_ruledetailsystem_message</name>
-		<type>internal</type>
-	</depends>
-</function>
-
-<function><name>GamePlayer_reset_private_classifiersystem</name>
-	<depends>
-		<name>GamePlayer_update_ruledetailsystem</name>
 		<type>internal</type></depends>
 </function>
 
@@ -245,11 +229,16 @@
 <!-- All variables used by GameSolver are declared here to allocate them in memory -->
 <memory>
 
-<var><type>PublicClassifierSystem</type>	<name>classifiersystem</name></var>
+<var>
+	<type>int</type><name>nragents</name>
+	</var><var>
+		<type>AutomatonStruct</type><name>automata</name>
+		</var><var><type>PublicClassifierSystem</type>	<name>classifiersystem</name></var>
 <var><type>double</type><name>iradius</name></var>
 <var><type>double</type><name>posx</name></var>
 <var><type>double</type><name>posy</name></var>
 	
+
 
 </memory>
 <!----------------- Defining functions ---------------------------------------->
@@ -258,17 +247,27 @@
 <function>
 		<!--Resets performance and avgperformance for all rules. Daily.--><name>GameSolver_daily_reset_public_classifiersystem</name>
 </function>
-<function><name>GameSolver_read_rule_performance_message</name><depends>
+<function><name>GameSolver_read_current_rule_message</name><depends>
 			<name>GameSolver_daily_reset_public_classifiersystem</name>
 			<type>internal</type></depends>
-<depends><name>Household_send_rule_performance_message</name><type>rule_performance</type></depends>
+<depends><name>GamePlayer_send_current_rule_message</name><type>current_rule_message</type></depends>
 </function>
 	
-	<function><name>GameSolver_update_classifiersystem</name>
-<depends><name>GameSolver_read_rule_performance_message</name><type>internal</type></depends>
+	<function>
+	<!--After current_rule_message is read, the GameSolver retrieves the rule details for the rule.--><name>GameSolver_retrieve_rule_details</name>
+	<depends>
+		<name>GameSolver_read_current_rule_message</name>
+		<type>internal</type>
+	</depends>
+	</function><function>
+		<name>GameSolver_play_tournament</name>
+		<depends><name>GameSolver_read_current_rule_message</name>
+			<type>internal</type></depends></function><function><name>GameSolver_update_classifiersystem</name>
+<depends><name>GameSolver_play_tournament</name><type>internal</type></depends>
 </function>
+	
 
-<function><name>GameSolver_send_all_performances_message</name>
+	<function><name>GameSolver_send_all_performances_message</name>
 <depends><name>GameSolver_update_classifiersystem</name><type>internal</type></depends>
 </function>
 	<function>
@@ -300,125 +299,15 @@
 
 
 <!--******** Messages being posted by the agents to communicate *************-->
-<messages>
-
-<!--asset market context-->
-<message>
-<name>WagePayment</name>
-<note></note>
-
-<var><type>double</type><name>range</name></var>
-<var><type>double</type><name>x</name></var>
-<var><type>double</type><name>y</name></var>
-<var><type>double</type><name>z</name></var>
-
-</message>
-
-<message>
-<name>DividendPayment</name>
-<note></note>
-
-<var><type>double</type><name>range</name></var>
-<var><type>double</type><name>x</name></var>
-<var><type>double</type><name>y</name></var>
-<var><type>double</type><name>z</name></var>
-
-</message>
-
-<message>
-<name>BondCouponPayment</name>
-<note></note>
-
-<var><type>double</type><name>range</name></var>
-<var><type>double</type><name>x</name></var>
-<var><type>double</type><name>y</name></var>
-<var><type>double</type><name>z</name></var>
-
-</message>
-
-<message>
-<name>firm_bond_order</name>
-<note>Added by household after asset portfolio calculated</note>
-<var><type>int</type><name>household_id</name></var>
-<var><type>int</type><name>firm_id</name></var>
-<var><type>double</type><name>limit_price</name></var>
-<var><type>double</type><name>limit_quantity</name></var>
-<var><type>double</type><name>range</name></var>
-<var><type>double</type><name>x</name></var>
-<var><type>double</type><name>y</name></var>
-<var><type>double</type><name>z</name></var>
-</message>
-
-<message>
-<name>firm_stock_order</name>
-<note>Added by household after asset portfolio calculated</note>
-<var><type>int</type><name>household_id</name></var>
-<var><type>int</type><name>firm_id</name></var>
-<var><type>double</type><name>limit_price</name></var>
-<var><type>double</type><name>limit_quantity</name></var>
-<var><type>double</type><name>range</name></var>
-<var><type>double</type><name>x</name></var>
-<var><type>double</type><name>y</name></var>
-<var><type>double</type><name>z</name></var>
-</message>
-
-<message>
-<name>gov_bond_order</name>
-<note>Added by household after asset portfolio calculated</note>
-<var><type>int</type><name>household_id</name></var>
-<var><type>int</type><name>gov_id</name></var>
-<var><type>double</type><name>limit_price</name></var>
-<var><type>double</type><name>limit_quantity</name></var>
-<var><type>double</type><name>range</name></var>
-<var><type>double</type><name>x</name></var>
-<var><type>double</type><name>y</name></var>
-<var><type>double</type><name>z</name></var>
-</message>
-
-<message>
-<name>firm_bond_transaction</name>
-<note>Added by clearinghousemechanism</note>
-<var><type>int</type><name>household_id</name></var>
-<var><type>int</type><name>firm_id</name></var>
-<var><type>double</type><name>transaction_price</name></var>
-<var><type>double</type><name>transaction_quantity</name></var>
-<var><type>double</type><name>range</name></var>
-<var><type>double</type><name>x</name></var>
-<var><type>double</type><name>y</name></var>
-<var><type>double</type><name>z</name></var>
-</message>
-
-<message>
-<name>gov_bond_transaction</name>
-<note>Added by clearinghousemechanism</note>
-<var><type>int</type><name>household_id</name></var>
-<var><type>int</type><name>gov_id</name></var>
-<var><type>double</type><name>transaction_price</name></var>
-<var><type>double</type><name>transaction_quantity</name></var>
-<var><type>double</type><name>range</name></var>
-<var><type>double</type><name>x</name></var>
-<var><type>double</type><name>y</name></var>
-<var><type>double</type><name>z</name></var>
-</message>
-
-<message>
-<name>firm_stock_transaction</name>
-<note>Added by clearinghousemechanism</note>
-<var><type>int</type><name>household_id</name></var>
-<var><type>int</type><name>firm_id</name></var>
-<var><type>double</type><name>transaction_price</name></var>
-<var><type>double</type><name>transaction_quantity</name></var>
-<var><type>double</type><name>range</name></var>
-<var><type>double</type><name>x</name></var>
-<var><type>double</type><name>y</name></var>
-<var><type>double</type><name>z</name></var>
-</message><!--EWA messages-->
+<messages><!--EWA messages-->
 
 	<message>
-<name>rule_performance</name>
-<note>Message sent my household to tell the FA agent of the rule performance</note>
-<var><type>int</type><name>current_rule</name></var>
-<var><type>double</type><name>rule_performance</name></var>
+<name>current_rule_message</name>
+<note>Message sent by GamePlayer to tell the GameSolver which rule is currently used</note>
+		<var>
+			<type>int</type><name>id</name>
+			</var>
+		<var><type>int</type><name>current_rule</name></var>
 <var><type>double</type><name>range</name></var>
 <var><type>double</type><name>x</name></var>
 <var><type>double</type><name>y</name></var>
@@ -427,7 +316,7 @@
 
 <message>
 <name>all_performances</name>
-<note>Message sent my FA read by all household </note>
+<note>Message sent by GameSolver to inform GamePlayers of all rule performances</note>
 <var><type>double_array</type><name>performances</name></var>
 <var><type>double</type><name>range</name></var>
 <var><type>double</type><name>x</name></var>
@@ -437,7 +326,7 @@
 
 <message>
 <name>ruledetailsystem</name>
-<note>FA adds rule details</note>
+<note>GameSolver adds new rule details</note>
 <var><type>double2D_array</type><name>parameters</name></var><!--Mariam: I think parameters here should be a struct for rule details to be sent. !Subject to change!--><!--Sander: actually this should be a 2d-array-->
 	<var><type>double</type><name>range</name></var>
 <var><type>double</type><name>x</name></var>
