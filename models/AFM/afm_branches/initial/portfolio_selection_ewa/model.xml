@@ -7,7 +7,7 @@
 
 <!--************************* NOTES ***************************************-->
 <!--This is the main description file for the financial market model-->
-<!-- Agents involved: Household, Firm, Bank, ClearingHouse Mechanism, LimitOrderBook, Government-->
+<!-- Agents involved: Household, FinancialAgent, Firm, Bank, ClearingHouse Mechanism, LimitOrderBook, Government-->
 <!--13/11/07 Adding structures to the model.xml-->
 <!-- TODO- Make seperate c files for each agent's functions-->
 
@@ -495,7 +495,7 @@
 </xmachine>
 <!--*********************** End of Agent - Bank *****************************-->
 
-<!--********************* X-machine Agent - Clearing House ****************************-->
+<!--********************* X-machine Agent - ClearingHouse ****************************-->
 <xmachine>
 <name>ClearingHouse</name>
 <!----------------- Variables-------------------------------------------------->
@@ -514,9 +514,9 @@
 <function><name>ClearingHouseComputeTransactions</name></function>
 </functions>
 </xmachine>
-<!--*********************** End of Agent - Clearing house *****************************-->
+<!--*********************** End of Agent - ClearingHouse *****************************-->
 
-<!--********************* X-machine Agent - Limit order book ****************************-->
+<!--********************* X-machine Agent - LimitOrderBook ****************************-->
 <xmachine>
 <name>LimitOrderBook</name>
 <!----------------- Variables-------------------------------------------------->
@@ -534,9 +534,9 @@
 <function><name>LimitOrderBookComputeTransactions</name></function>
 </functions>
 </xmachine>
-<!--*********************** End of Agent - limit order book *****************************-->
+<!--*********************** End of Agent - LimitOrderBook *****************************-->
 
-<!--********************* X-machine Agent - government ****************************-->
+<!--********************* X-machine Agent - Government ****************************-->
 <xmachine>
 <name>Government</name>
 <!----------------- Variables-------------------------------------------------->
@@ -553,13 +553,13 @@
 <!--tax collector role-->
 
 </xmachine>
-<!--*********************** End of Agent - government ****************************-->
+<!--*********************** End of Agent - Government ****************************-->
 
-<!--********************* X-machine Agent - FinancialAdvisor ****************************-->
+<!--********************* X-machine Agent - FinancialAgent ****************************-->
 <xmachine>
-<name>FinancialAdvisor</name>
+<name>FinancialAgent</name>
 <!----------------- Variables-------------------------------------------------->
-<!-- All variables used by FinancialAdvisor are declared here to allocate them in memory -->
+<!-- All variables used by FinancialAgent are declared here to allocate them in memory -->
 <memory>
 
 <var><type>PublicClassifierSystem</type>	<name>classifiersystem</name></var>
@@ -608,7 +608,7 @@
 </function>
 </functions>
 </xmachine>
-<!--*********************** End of Agent - FinancialAdvisor ****************************-->
+<!--*********************** End of Agent - FinancialAgent ****************************-->
 
 
 
@@ -742,7 +742,7 @@
 
 <message>
 <name>all_performances</name>
-<note>Message sent my FA read by all household </note>
+<note>Message sent by FA and read by all households</note>
 <var><type>double_array</type><name>performances</name></var>
 <var><type>double</type><name>range</name></var>
 <var><type>double</type><name>x</name></var>

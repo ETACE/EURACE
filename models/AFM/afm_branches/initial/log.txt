@@ -351,3 +351,28 @@ Sander, rev 466
 		Non-used rules keep this weight, so they have small but positive
 		probability of being selected.
 --------------------------------------------------------------------------------------
+Sander, rev 468
+	Added new directory: IPD
+		This will be an example model. IPD= Iterated Prisoners Dilemma.
+		A classic economic example using automata and GA/classifier systems.
+
+	model-ewa.xml
+		RENAMED: 
+		FinancialAdvisor
+		FinancialAgent (since all functions use FinancialAgent_function)
+		Or: should this be: FinancialAdvisor_function ?
+				
+		#include "FinancialAdvisor_agent_header.h"
+		#include "FinancialAgent_header.h"
+		Or, should this be called: #include "FinancialAgent_agent_header.h"?
+
+	Initializations: log(pow(10,-5)) should be replaced by
+		#DEFINE EPSILON=log(pow(10,-5));
+
+	Household ewa.c
+			line 426 Household_reset_private_classifiersystem()
+			
+	FinancialAgent_ewa.c
+			line 18	 FinancialAgent_daily_reset_public_classifiersystem
+			line 121 FinancialAgent_reset_public_classifiersystem()
+--------------------------------------------------------------------------------------

@@ -1,21 +1,21 @@
 /*********************************
- * FinancialAgent_ewa_functions.c 
- * Adapted code from  Functions_Financial_market_PortfolioSelectionAlgorithm_Sander_v0.3.c
+ * GameSolver_ewa_functions.c 
  * *********************************
  * History:
- * 13/11/07 Mariam: Converting the code into separate agent functions files. 
+ * 29/11/07 Sander: Started implementation of IPD game 
  *********************************/
  
  
 #include "header.h"
-#include "h"
-#include "FinancialAgent_header.h"
+#include "math.h"
+#include "GameSolver_agent_header.h"
 #include "my_library_header.h"
 
-//FinancialAgent_daily_reset_public_classifiersystem
+
+//GameSolver_daily_reset_public_classifiersystem
 //Daily reset of the public classifiersystem, resetting user counter, performance sum, and avgperformance.
 //This should be run before any rule_performance_messages are being read.
-int FinancialAgent_daily_reset_public_classifiersystem()
+int GameSolver_daily_reset_public_classifiersystem()
 {
 	//total number of rules:
 	int NRRULES=CLASSIFIERSYSTEM->nr_rules;
@@ -31,10 +31,11 @@ int FinancialAgent_daily_reset_public_classifiersystem()
   return 0;
 }
 
-/* DEP: FA agent reads the rule_performance_message */  
-/* DEP: FA agent updates the rule_performance in its classifiersystem (for the selected_rule_number)*/
-/* DEP: FA agent responds by sending the performance measures of all the rules*/
-int FinancialAgent_read_rule_performance_message()
+/* GameSolver agent reads the rule_performance_message
+ * - updates the rule_performance in its classifiersystem (for the selected_rule_number)
+ * - responds by sending the performance measures of all the rules
+ */
+int GameSolver_read_rule_performance_message()
 {
 	  int current_rule;
 	  double rule_performance;
@@ -46,7 +47,7 @@ int FinancialAgent_read_rule_performance_message()
 	    rule_performance = rule_performance_message->rule_performance;
 	
 	    /* Update rule performance: */
-	    FinancialAgent_update_classifiersystem(current_rule, rule_performance);
+	    GameSolver_update_classifiersystem(current_rule, rule_performance);
 	    rule_performance_message = get_next_rule_performance_message(rule_performance_message)
 	  }
 
@@ -54,7 +55,7 @@ int FinancialAgent_read_rule_performance_message()
  }
  
  
-int FinancialAgent_update_classifiersystem(int current_rule, double rule_performance)
+int GameSolver_update_classifiersystem(int current_rule, double rule_performance)
 {
   
   //Replace old performance adding new performance: ******CHECK WHEN RESET OCCURS: SHOULD BE DAILY? 
@@ -69,10 +70,10 @@ int FinancialAgent_update_classifiersystem(int current_rule, double rule_perform
   return 0;
 }
 
-/* int FinancialAgent_send_all_performances_message()
+/* int GameSolver_send_all_performances_message()
  * Send dynamic array all_performances.
  */
-int FinancialAgent_send_all_performances_message()
+int GameSolver_send_all_performances_message()
 {
   	double[] all_performances;
  	 
@@ -91,20 +92,21 @@ int FinancialAgent_send_all_performances_message()
   return 0;
 }
 
-int FinancialAgent_update_ruledetailsystem()
+int GameSolver_update_ruledetailsystem()
 {
 	//<!--Date-event triggered: every 100 days run the GA-->
 	return 0;
 }
 
 //-Date-event triggered: every 100 days run the GA
-int FinancialAgent_updateGA()
+int GameSolver_updateGA()
 {
 	return 0;
 }
-//FinancialAgent_send_ruledetailsystem_message()
+
+//GameSolver_send_ruledetailsystem_message()
 //Function to send ruledetailsystem updates.
-int FinancialAgent_send_ruledetailsystem_message()
+int GameSolver_send_ruledetailsystem_message()
 {
 	//Send a message containing the entire ruledetailsystem:
     //--> commenting the follwing line: another message sent out at the end of this fn
@@ -118,7 +120,7 @@ int FinancialAgent_send_ruledetailsystem_message()
     return 0;
 }
 
-int FinancialAgent_reset_public_classifiersystem()
+int GameSolver_reset_public_classifiersystem()
 {
 	//total number of rules:
 	int NRRULES=CLASSIFIERSYSTEM->nr_rules;
