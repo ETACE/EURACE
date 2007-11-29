@@ -376,3 +376,7 @@ Sander, rev 468
 			line 18	 FinancialAgent_daily_reset_public_classifiersystem
 			line 121 FinancialAgent_reset_public_classifiersystem()
 --------------------------------------------------------------------------------------
+Sander, rev 469
+	IPD
+		Lots of new coding for the IPD exmaple.
+--------------------------------------------------------------------------------------
