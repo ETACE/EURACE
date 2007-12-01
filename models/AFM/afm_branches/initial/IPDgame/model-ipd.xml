@@ -74,22 +74,10 @@
 <name>PublicClassifierSystem</name>
 <desc>Datatype for the central classifier system. !Subject to change!</desc>
 	<var>
-	<!--Nr of subpopulations--><type>int</type>
-	<name>nr_types</name>
-	</var>
-	<var>
-		<!--Nr_rules_per_type may differ for each type; size of subpopulations--><type>int_array</type>
-		<name>nr_rules_per_type</name>
-	</var>
-	<var>
 		<!--Total nr of rules--><type>int</type><name>nr_rules</name>
 	</var>
 	<var><!--int_array ids: ids for each rule (id[0]...id[nr_rules-1])-->
 	<type>int_array</type><name>ids</name>
-	</var>
-	<var><!--int_array rule_type-->
-		<type>int_array</type>
-		<name>rule_type</name>
 	</var>
 <!-- Arrays with rule measures -->
 <var><!--This is the user counter for each rule-->
@@ -108,22 +96,10 @@
 <desc>Datatype for the private classifier system inside each agent.  !Subject to change!</desc>
 <!--General data for the rule system-->
 	<var>
-	<!--Nr of subpopulations--><type>int</type>
-	<name>nr_types</name>
-	</var>
-	<var>
-		<!--Nr_rules_per_type may differ for each type; size of subpopulations--><type>int_array</type>
-		<name>nr_rules_per_type</name>
-	</var>
-	<var>
 		<!--Total nr of rules--><type>int</type><name>nr_rules</name>
 	</var>
 	<var><!--int_array ids: ids for each rule (id[0]...id[nr_rules-1])-->
 	<type>int_array</type><name>ids</name>
-	</var>
-	<var><!--int_array rule_type-->
-		<type>int_array</type>
-		<name>rule_type</name>
 	</var><!--EWA Parameters-->
 	<var><type>double</type><name>EWA_rho</name></var><var><type>double</type><name>EWA_phi</name></var><var><type>double</type><name>EWA_delta</name></var><var><type>double</type><name>EWA_beta</name></var>
 	<var><!--This is the experience variable for EWA learning--><type>double</type><name>experience</name>
@@ -190,16 +166,6 @@
 	<name>GamePlayer_select_rule</name>
 	<depends>
 		<name>GamePlayer_read_all_performances_message</name>
-		<type>internal</type>
-	</depends>
-</function>
-
-
-
-<function>
-	<!--To apply a rule simply means: send a current_rule_message to the GameSolver agent, and the GameSolver plays the actual game.--><name>GamePlayer_apply_rule</name>
-	<depends>
-		<name>GamePlayer_select_rule</name>
 		<type>internal</type>
 	</depends>
 </function>
