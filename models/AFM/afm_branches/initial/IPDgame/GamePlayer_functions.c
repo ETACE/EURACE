@@ -145,20 +145,7 @@ int GamePlayer_select_rule()
     return 0;
 }
 
-/* STEP 4. Apply the selected rule.
- * GamePlayer_apply_rule()
- * Apply a rule.
- * For the moment, applying a rule is nothing more than just
- *  sending the id of the current_rule to the GameSolver.
- */
-int GamePlayer_apply_rule()
-{
-	GamePlayer_send_current_rule_message();
-	
-    return 0;
-}
-
-/* STEP 5. Change in RuleDetailSystem. 
+/* STEP 4. Change in RuleDetailSystem. 
  * GamePlayer_read_ruledetailsystem_message()
  * Function to check if there is a new rule_detail_system in the GameSolver agent.
  */
@@ -180,17 +167,13 @@ int GamePlayer_read_ruledetailsystem_message()
     return 0;
 }
 
-
+/* GamePlayer_reset_private_classifiersystem()
+ * Only reset the private_classifiersystem when there has been a update in the ruledetailsystem.
+ */
 int GamePlayer_reset_private_classifiersystem()
 {
 	int new_rules = get_new_rules();
 	
- 	//Getting the size of the system:
-	int NR_TYPES=CLASSIFIERSYSTEM->NR_TYPES;
-
-	//dynamic array with number of rules in each type (size of subpopulations)
-	int* NRRULES_PER_TYPE=CLASSIFIERSYSTEM->NRRULES_PER_TYPE;
-
 	//total number of rules:
 	int NRRULES=CLASSIFIERSYSTEM->NRRULES;
 
