@@ -21,4 +21,4 @@
 
 
 /** function prototypes */
-double random_no();
+double random_unif();

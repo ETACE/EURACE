@@ -64,9 +64,9 @@
 <name>RuleDetailSystem</name>
 <desc>Datatype for rule details.  !Subject to change!</desc>
 	<!--In this case, the rule details are just bitstrings-->
-	<var><!--int2D_array[NRAGENTS][148]--><!--list_of_bitstrings: there are as many bitstrings as there are rules: NRAGENTS-->
-		<!--a bitstring has length 148, it is a binary coded decimal (BCD): [0,...,10^148-1]--><type>int2D_array</type>
-		<name>list_of_bitstrings</name>
+	<var><!--int_array[NRAGENTS]--><!--There are as many bitstrings as there are rules: NRAGENTS-->
+		<!--A bitstring has length 148, so it is a binary coded decimal (BCD): [0,...,10^148-1]--><type>int2D_array</type>
+		<name>bitstring</name>
 	</var>
 </datatype>
 
@@ -166,7 +166,7 @@
 <function>
 	<name>Every_period</name>
 	<depends>
-		<name>Household_reset_private_classifiersystem</name>
+		<name>GamePlayer_reset_private_classifiersystem</name>
 		<type>internal</type>
 	</depends>
 </function>
@@ -182,7 +182,7 @@
 	<name>GamePlayer_read_all_performances_message</name>
 	<depends>
 		<name>GameSolver_send_all_performances_message</name>
-		<type>all_performances</type>
+		<type>all_performances_message</type>
 	</depends>
 </function>
 
@@ -251,15 +251,7 @@
 			<name>GameSolver_daily_reset_public_classifiersystem</name>
 			<type>internal</type></depends>
 <depends><name>GamePlayer_send_current_rule_message</name><type>current_rule_message</type></depends>
-</function>
-	
-	<function>
-	<!--After current_rule_message is read, the GameSolver retrieves the rule details for the rule.--><name>GameSolver_retrieve_rule_details</name>
-	<depends>
-		<name>GameSolver_read_current_rule_message</name>
-		<type>internal</type>
-	</depends>
-	</function><function>
+</function><function>
 		<name>GameSolver_play_tournament</name>
 		<depends><name>GameSolver_read_current_rule_message</name>
 			<type>internal</type></depends></function><function><name>GameSolver_update_classifiersystem</name>
@@ -315,7 +307,7 @@
 </message>
 
 <message>
-<name>all_performances</name>
+<name>all_performances_message</name>
 <note>Message sent by GameSolver to inform GamePlayers of all rule performances</note>
 <var><type>double_array</type><name>performances</name></var>
 <var><type>double</type><name>range</name></var>
@@ -325,7 +317,7 @@
 </message>
 
 <message>
-<name>ruledetailsystem</name>
+<name>ruledetailsystem_message</name>
 <note>GameSolver adds new rule details</note>
 <var><type>double2D_array</type><name>parameters</name></var><!--Mariam: I think parameters here should be a struct for rule details to be sent. !Subject to change!--><!--Sander: actually this should be a 2d-array-->
 	<var><type>double</type><name>range</name></var>

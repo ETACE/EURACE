@@ -1,7 +1,7 @@
 PATH=C:\MinGW\bin;D:\Docs\EURACE\X-models\Xparser-0.12.0;%PATH%
 
-mingw32-make xparser
-pause
+REM mingw32-make xparser
+REM pause
 
-xparser ./model-ewa.xml
+xparser ./model-ipd.xml
 pause
