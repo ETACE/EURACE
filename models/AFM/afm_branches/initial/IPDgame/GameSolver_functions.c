@@ -47,8 +47,9 @@ int GameSolver_read_current_rule_message()
 		  agent_id     = current_rule_message->id;
 		  current_rule = current_rule_message->current_rule;
 
-	    //Store contents in memory array: automata[i]
-		  AUTOMATA->array[agent_id]->nr_rule = current_rule;
+	    //Store contents in memory array: automata[i].
+		//AUTOMATA is the list of rule ids currently used by the players.
+		  AUTOMATA->array[agent_id]->current_rule = current_rule;
 	    
 	    //Go to next message:
 		  current_rule_message = get_next_current_rule_message(current_rule_message)
@@ -57,20 +58,9 @@ int GameSolver_read_current_rule_message()
    return 0;
  }
  
-/* GameSolver_retrieve_rule_details()
- * Retrieve rule details
- * After reading current_rule_messages, the GameSolver retrieves the rule details.
- * This means copying the selected rule details to the appropriate memory variable.
- */
-int GameSolver_retrieve_rule_details()
-{
-
-	return 0;
-}
-
-
 /* GameSolver_play_tournament()
- * Runs the tournament procedure.
+ *  - retrieves rule details from RULEDETAILSYSTEM
+ *  - runs the tournament procedure
  * Every submitted automaton plays a match (one 150-period iterated PD), including a match against a clone of itself.
  * This results in an upper-diagonal matrix of results (because the game-matrix is symmetric, we do not have to run 2 times the same game,
  * A vs. B and B vs. A). The outcome of a match is the average payoff for the automaton over the 150 periods.
@@ -80,18 +70,51 @@ int GameSolver_play_tournament()
 {
 	double 		result,sum;
 	double ** 	outcome;
+	double *	b1,b2;
+	int 		STRINGLENGTH=148;
 	
 	//Match [i vs. j]
 	for (i=0;i<NRAGENTS; i++)
 	{
+		//Retrieve a copy of the automata bitstring for player i:
+		nr_rule_1 = AUTOMATON->array[i]->current_rule;
+		for (k=0;k<STRINGLENGTH;k++)
+		{
+			b1[k] = RULEDETAILSYSTEM->array[nr_rule_1]->bitstring[k];
+		}		
 		for (j=0;j<i+1; j++)
 		{
+			//Reset the starting state of automaton i (since during play, we update the initial state)
+			for (k=0;k<4;k++)
+			{
+				b1[k] = RULEDETAILSYSTEM->array[nr_rule_1]->bitstring[k];
+			}
+			//Retrieve a copy of the automata bitstring for player j:
+			nr_rule_2 = AUTOMATON->array[j]->current_rule;
+			for (k=0;k<STRINGLENGTH;k++)
+			{
+				b2[k] = RULEDETAILSYSTEM->array[nr_rule_2]->bitstring[k];
+			}
+
+			//Randomly initialize previous_moves in memory
+			//we need to initialize these because the first state transition requires a value
+			if (rand_unif()>0.5)
+			{
+				set_previous_move_player0(0);
+			}
+			else set_previous_move_player0(1);
+			if (rand_unif()>0.5)
+			{
+				set_previous_move_player1(0);
+			}
+			else set_previous_move_player1(1);
+
 			//Automaton of agent i plays against Automaton of agent j
 			sum=0;
 			for (t=0;t<TMAX; t++)
 			{
 				//play_game is a function that should give the outcome of a game played by 2 given automata
-				result = play_game(AUTOMATON->array[i]->current_rule, AUTOMATON->array[j]->current_rule);
+				result = play_game(b1,b2);
 				sum += result;
 			}
 			//Outcome of the match
@@ -114,7 +137,7 @@ int GameSolver_play_tournament()
 		{
 			sum += outcome[i][j];
 		}
-		//Add the avg performance directly to the memory variable:
+		//Add the avg performance from the tournament directly to the memory variable AUTOMATA:
 		AUTOMATA->array[i]->rule_performance = sum/NRAGENTS;
 	}
 	
@@ -157,11 +180,7 @@ int play_game(rule_1,rule_2)
 	//Get the previous moves from memory
 	int previous_move_player0 = get(previous_move_player0);
 	int previous_move_player1 = get(previous_move_player1);
-	
-	//Retrieve a copy of the automata bitstrings:
-	b1 = RULEDETAILSYSTEM->list_of_bitstrings->array[rule_1][];
-	b2 = RULEDETAILSYSTEM->list_of_bitstrings->array[rule_2][];
-	
+		
 	for (s=0;s<2;s++)
 	{
 		//Set the bitstring to consider
@@ -285,7 +304,7 @@ int play_game(rule_1,rule_2)
 
 
 /* GameSolver_update_classifiersystem()
- * Runs the tournament procedure.
+ * After running the tournament, update the public classifiersystem.
  */
 int GameSolver_update_classifiersystem()
 {
