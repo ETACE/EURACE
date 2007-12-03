@@ -64,7 +64,7 @@
 <name>RuleDetailSystem</name>
 <desc>Datatype for rule details.  !Subject to change!</desc>
 	<!--In this case, the rule details are just bitstrings-->
-	<var><!--int_array[NRAGENTS]--><!--There are as many bitstrings as there are rules: NRAGENTS-->
+	<var><!--int2D_array[NRAGENTS][148]--><!--There are as many bitstrings as there are rules: NRAGENTS-->
 		<!--A bitstring has length 148, so it is a binary coded decimal (BCD): [0,...,10^148-1]--><type>int2D_array</type>
 		<name>bitstring</name>
 	</var>
@@ -233,17 +233,15 @@
 	<function><name>GameSolver_apply_GA</name>
 	<depends>
 		<name>Every_100_periods</name>
-		<type>internal</type></depends></function><function><name>GameSolver_update_ruledetailsystem</name><!--Date-event triggered: every 100 days run the GA-->
-<depends><name>GameSolver_apply_GA</name><type>internal</type></depends>
-</function>
+		<type>internal</type></depends></function>
 	<function>
 		<name>GameSolver_reset_public_classifiersystem</name>
 		<depends>
-			<name>GameSolver_update_ruledetailsystem</name>
+			<name>GameSolver_apply_GA</name>
 			<type>internal</type></depends></function>
 	
 <function><name>GameSolver_send_ruledetailsystem_message</name>
-<depends><name>GameSolver_update_ruledetailsystem</name><type>internal</type></depends>
+<depends><name>GameSolver_apply_GA</name><type>internal</type></depends>
 </function>
 
 

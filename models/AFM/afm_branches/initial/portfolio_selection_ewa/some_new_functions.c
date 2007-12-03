@@ -178,8 +178,10 @@ double * cumsum(double * p)
     return (&cumsum); //CHECK: is this proper way of returning the address of the start of array cumsum?
 }
 
-//double * cumpdf(double * p)
+//double * cumpdf(int N, double * p)
 //Cummulative probability density function.
+//N: number of elements
+//p: probability vector (can be non-scaled, i.e. probabilities need not add to 1).
 //Given a vector of probabilities p, the cumulative pdf is given by
 //the normalized values in the cummulative sum:
 //  cpdf = cumsum(p)/sum(p);
@@ -187,11 +189,10 @@ double * cumsum(double * p)
 //Input: p={0.6 0.2 0.8 0.4}
 //cpdf = cumpdf(p);
 //Outcome: cpdf={0.3 0.4 0.8 1.0}
-double * cumpdf(double * p)
+double * cumpdf(int N, double * p)
 {
 	int i;
-	//int imax=p->size;
-	int imax=10;//testing
+	int imax=N;
 	
 	double sum_p = sum(p);
 	double cumsum_p[imax];	
@@ -209,15 +210,17 @@ double * cumpdf(double * p)
     return (&cpdf); //CHECK: is this proper way of returning the address of the start of array?
 }
 
-//int draw(double * cpdf)
+//int draw(int N, double * cpdf)
+//N: number of elements
+//cpdf: vector of probabilities
 //Drawing a random number from the cummulative probability density function cpdf.
 //Returns the bin number of a randomly chosen number u.
 //Given a cummulative pdf F(.), the random number u belongs to bin j
 //if and only if F(j-1)<= u < F(j).
-int draw(double * cpdf)
+int draw(int N, double * cpdf)
 {	
 	int j,u, nr_selected_bin;
-	int imax = cpdf->size;
+	int imax = N; //was: cpdf->size;
 
     //Random number generator:
     u=rand_unif();

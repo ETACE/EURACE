@@ -353,7 +353,7 @@ Sander, rev 466
 --------------------------------------------------------------------------------------
 Sander, rev 468
 	Added new directory: IPD
-		This will be an example model. IPD= Iterated Prisoners Dilemma.
+		This will be an example model. IPD= Iterated Prisoner's Dilemma.
 		A classic economic example using automata and GA/classifier systems.
 
 	model-ewa.xml
@@ -382,4 +382,12 @@ Sander, rev 469
 --------------------------------------------------------------------------------------
 Sander, rev 470
 	mylibraryheader.h  random_no() --> random_unif()
+--------------------------------------------------------------------------------------
+Sander, rev 471-475
+	ipd/model-ipd.xml
+	
+	ipd/GameSolver_functions.c
+			lines 359-474 Added code for GA
+			
+	Generated new dgraph.ps
 --------------------------------------------------------------------------------------

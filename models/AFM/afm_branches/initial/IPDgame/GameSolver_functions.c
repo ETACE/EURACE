@@ -356,18 +356,121 @@ int GameSolver_send_all_performances_message()
 }
 
 //-Date-event triggered: every 100 days run the GA
-int GameSolver_updateGA()
+int GameSolver_apply_GA()
 {
+	int n,c,ell;
+	int N = CLASSIFIERSYSTEM->nr_rules;	
+	int draw;
+	int a,b,k;
+	double p;
+	
+	//GA parameters
+	int prob_cross = 0.05;		//cross-over probability
+	int prob_mut = 0.01;		//mutation probability
+
+	int Nrep_prop = 0.5;		//Proportion of population used for reproduction
+	int Nrep;					//Number of pairs
+	int candidates[2*Nrep];		//Candidates for reproduction
+	int pair[Nrep][2];			//Nrep matched pairs of parents
+	int prob[2*Nrep]; 			//Selection probabilities (fitness proportional)
+
+	//***************** SELECTION ************************************
+	//Set reproduction population Nrep
+	Nrep = (int)(Nrep_prop*0.5*N);
+	
+	//Draw 2*Nrep candidate bitstrings with relative probabilities (draw with replacement)	
+	for (i=0;i<2*Nrep;i++)
+	{
+		prob[i] = CLASSIFIERSYSTEM->array[i]->avgperformance;
+	}
+	
+	//use: cumpdf(int N, double * p)
+	cpdf = cumpdf(2*Nrep, prob);
+	
+	//use: draw_with_replacement(int N, double * cpdf)
+	candidates = draw_with_replacement(2*Nrep, cpdf)		
+	
+	//Random matching of the 2*Nrep candidates into Nrep pairs with uniform prob. (draw with replacement)
+	for (i=0;i<Nrep;i++)
+	{
+		//draw a uniform number in [0,2*Nrep]
+		n = (int)(2*Nrep*random_unif());
+		pair[i][0] = candidates[n]; 
+		
+		n = (int)(2*Nrep*random_unif());
+		pair[i][1] = candidates[n];  
+	}
+	
+	//***************** REPRODUCTION ************************************
+	//Perform reproduction with each pair
+	for (i=0;i<Nrep;i++)
+	{
+		//Cross-over only occurs with probability prob_cross
+		p = random_unif();
+		if (p<=prob_cross)
+		{
+			//Get the two bitstrings of the pair
+			a = pair[i][0];
+			b = pair[i][1];
+			
+			//**********BEGIN REDUNANT CODE*********************		
+			//Get bitstrings from memory
+			for (k=0;k<LENGTH;k++)
+			{
+				string_a[k] = RULEDETAILSYSTEM->array[a]->bitstring->array[k];
+				string_b[k] = RULEDETAILSYSTEM->array[b]->bitstring->array[k];
+			};
+			//**********END REDUNANT CODE*********************
+			
+			//Random cross-over point
+			n = (int)(16*random_unif());
+			c = 4+n*9;
+			
+			//Random cross-over length
+			n = (int)(16*random_unif());
+			ell= n*9;
+			
+			//Prevent overrun
+			if (c+ell>LENGTH)
+			{ell = LENGTH-ell};
+			
+			//Set start to end bits
+			START=c;
+			END=c+ell;
+			
+			//Crossover the bitstrings
+			//**********BEGIN REDUNANT CODE*********************
+			for (k=START;k<END;k++)
+			{
+				string_a[k]=string_b[k];
+			};
+			for (k=START;k<END;k++)
+			{
+				string_b[k]=string_a[k];
+			};
+			//**********END REDUNANT CODE*********************
+			
+			//Crossover the bitstrings directly in memory
+			//Instead of making a local copy, then crossover, then copy to memory
+			//we can take the shorter route and copy the crossover bits directly in the memory
+			for (k=START;k<END;k++)
+			{
+				RULEDETAILSYSTEM->array[b]->bitstring->array[k] = RULEDETAILSYSTEM->array[a]->bitstring->array[k];
+				RULEDETAILSYSTEM->array[a]->bitstring->array[k] = RULEDETAILSYSTEM->array[b]->bitstring->array[k];
+			};
+			
+			//***************** MUTATION ************************************
+			//Mutation of offspring: each bit has probability prob_mut to mutate
+			for (k=0;k<LENGTH;k++)
+			{
+				RULEDETAILSYSTEM->array[a]->bitstring->array[k] = (RULEDETAILSYSTEM->array[a]->bitstring->array[k]+1)%2;
+				RULEDETAILSYSTEM->array[b]->bitstring->array[k] = (RULEDETAILSYSTEM->array[b]->bitstring->array[k]+1)%2;
+			};			
+		}
+	}
+	
 	return 0;
 }
-
-int GameSolver_update_ruledetailsystem()
-{
-	//<!--Date-event triggered: every 100 days run the GA-->
-	return 0;
-}
-
-
 
 //GameSolver_send_ruledetailsystem_message()
 //Function sends empty ruledetailsystem_message to signal to 
