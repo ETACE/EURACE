@@ -1,9 +1,10 @@
-/*********************************
- * GameSolver_functions.c 
- * *********************************
+/*****************************************************************
+ * GameSolver_functions.c
+ * 29/11/07 Sander van der Hoog (svdhoog@gmail.com) 
+ * ***************************************************************
  * History:
- * 29/11/07 Sander: Started implementation of IPD game 
- *********************************/
+ * 29/11/07: Started implementation of IPD game 
+ *****************************************************************/
  
 #include "header.h"
 #include "math.h"
@@ -18,6 +19,7 @@
 #define BLOCKSIZE 9 //1+2*STATESIZE //size of blocks, 9
 #define LENGTH 148  //STATESIZE+NRSTATES*BLOCKSIZE  //length of bitstrings, 148
 #define TMAX 150	//iterations of IPD game
+#define NRAGENTS 100
 
 //GameSolver_daily_reset_public_classifiersystem()
 //Daily reset of the public classifiersystem
@@ -75,10 +77,12 @@ int GameSolver_read_current_rule_message()
  */
 int GameSolver_play_tournament()
 {
-	int 		i;
-    double      result,sum;
-    double **   outcome;
-    double *    string_0,string_1;
+	int 		i,j,t;
+    int      	result;//result of a game is int
+    double		sum;   //sum can be double or int
+    
+    double 		outcome[NRAGENTS][NRAGENTS];
+    int		    string_0[LENGTH],string_1[LENGTH];
     
     //Match [i vs. j]
     for (i=0;i<NRAGENTS; i++)
@@ -89,7 +93,7 @@ int GameSolver_play_tournament()
         {
             string_0[k] = RULEDETAILSYSTEM->array[nr_rule_1]->bitstring[k];
         }       
-        for (j=0;j<i+1; j++)
+        for (j=0;j<i+1; j++) //j<i+1: each automaton also plays a clone of itself 
         {
             //Reset the starting state of automaton i (since during play, we update the initial state)
             for (k=0;k<4;k++)
@@ -118,12 +122,12 @@ int GameSolver_play_tournament()
 
             //***************** TOURNAMENT PLAY ***********************
             //Automaton of agent i plays against Automaton of agent j
-            sum=0;
+            sum=0.0;
             for (t=0;t<TMAX; t++)
             {
                 //play_game is a function that should give the outcome of a game played by 2 given automata
                 result = play_game(string_0,string_1);
-                sum += result;
+                sum += (double)result;
             }
             //Outcome of the match
             outcome[i][j]=sum/TMAX;
@@ -132,15 +136,16 @@ int GameSolver_play_tournament()
     //Full outcome matrix is symmetric
     for (i=0;i<NRAGENTS; i++)
     {
-        for (j=i;j<NRAGENTS; j++)
+        for (j=0;j<i; j++)
         {
             outcome[j][i]=outcome[i][j];
         }
     }
+     
     //Row-average payoffs of the symmetric outcome matrix
     for (i=0;i<NRAGENTS; i++)
     {
-        sum=0;
+        sum=0.0;
         for (j=0;j<NRAGENTS; j++)
         {
             sum += outcome[i][j];
@@ -148,7 +153,19 @@ int GameSolver_play_tournament()
         //Add the avg performance from the tournament directly to the memory variable AUTOMATA:
         AUTOMATA->array[i]->rule_performance = sum/NRAGENTS;
     }
-    
+
+    //Print entire matrix
+      printf("Tournament outcomes:\n");
+      for (i=0;i<NRAGENTS;i++)
+      {
+           for (j=0;j<NRAGENTS;j++)
+           {
+              	printf("[%d,%d]=%2.5f ", i, j, outcome[i][j]);
+           }
+           printf("|row avg=%2.5f\n", AUTOMATA->array[i]->rule_performance);
+      }
+      printf("\n");
+   
     return 0;
 }
 
@@ -217,7 +234,7 @@ int play_game(int * string_0, int * string_1)
         //read current state: 4 bits    
         //n is the current state 1-16: [0,2^n-1]
         n=0;
-        for (i=0;i<4;i++)
+        for (i=0;i<STATESIZE;i++)
         {
             n += pow(2,bitstr[i]);
         }
@@ -227,7 +244,7 @@ int play_game(int * string_0, int * string_1)
         
         //Enter into block n
         count=0;
-        for (i=OFFSET+(n-1)*BLOCKSIZE; i<OFFSET+n*BLOCKSIZE; i++)
+        for (i=STATESIZE+(n-1)*BLOCKSIZE; i<STATESIZE+n*BLOCKSIZE; i++)
         {
             state_block[count] = bitstr[i];
             count+=1;
@@ -420,7 +437,7 @@ int GameSolver_apply_GA()
         p = random_unif();
         if (p<=prob_cross)
         {
-            //Get the two bitstrings of the pair
+            //Get the indices for the two bitstrings of the pair
             a = pair[i][0];
             b = pair[i][1];
             
@@ -441,18 +458,31 @@ int GameSolver_apply_GA()
             n = (int)(16*random_unif());
             ell= n*9;
             
-            //Prevent overrun
+            //Set start and end bits
+            if (c+ell<=LENGTH)
+            {
+            	start=c;
+            	end=c+ell;
+            }
+            //Prevent overrun on right-hand side and cut to length
+/*
             if (c+ell>LENGTH)
             {
-            	ell = LENGTH-c;
+                start=c;
+                end=LENGTH;            	
             }
+*/
+            //Prevent overrun on right-hand side and make strings circular
             
-            //Set start to end bits
-            start=c;
-            end=c+ell;
-            
+            if (c+ell>LENGTH)
+            {
+            	start=(c+ell)%LENGTH;
+            	end=c;
+            }
+           
             //Crossover the bitstrings
             //**********BEGIN REDUNANT CODE*********************
+/*
             for (k=start;k<end;k++)
             {
                 temp_a = string_a[k];
@@ -460,6 +490,7 @@ int GameSolver_apply_GA()
                 string_a[k]=temp_b;
                 string_b[k]=temp_a;
             }
+*/
             //**********END REDUNANT CODE*********************
             
             //Crossover the bitstrings directly in memory
@@ -476,9 +507,15 @@ int GameSolver_apply_GA()
             
             //***************** MUTATION ************************************
             //Mutation of offspring: each bit has probability prob_mut to mutate
-            for (k=0;k<LENGTH;k++)
+            //Case 1. ALL bits have possibility to mutate
+            //for (k=0;k<LENGTH;k++)
+            //Case 2. Only the copied bits have possibility to mutate
+            //This represents errors in copying the bits
+            //for (k=start;k<end;k++)
+            
+            for (k=start;k<end;k++)            {
             {
-                //Mutation only occurs with probability prob_mut
+            	//Mutation only occurs with probability prob_mut
                 p = random_unif();
                 if (p<=prob_mut)
                 {
