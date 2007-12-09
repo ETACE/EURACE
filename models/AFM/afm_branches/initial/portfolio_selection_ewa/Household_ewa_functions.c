@@ -6,8 +6,9 @@
  * 13/11/07 Mariam: Converting the code into separate agent functions files. 
  *********************************/
 
-#include "header.h"
-#include "math.h"
+#include <stdio.h>
+#include <header.h>
+#include <math.h>
 #include "Household_agent_header.h"
 #include "my_library_header.h"
 
@@ -45,22 +46,22 @@ int Household_send_rule_performance_message()
  */
 int Household_read_all_performances_message()
 {
- 	  double * all_performances;
-	  
-	  all_performances_message = get_first_all_performances_message();
-	  while(all_performances_message)
-	  {
-	    //Read the message
-	    //code for dynamic arrays, copies the elements one by one
-	    for (i=0; i<NRRULES; i++)
-	  	{
-		 // Store in memory:		 	  
-	 	 CLASSIFIERSYSTEM->array[i]->performance = all_performances[i];
-		}
-		
-	    //Proceed to next message
-	     all_performances_message = get_next_all_performances_message(all_performances_message);
-	  }
+      double * all_performances;
+      
+      all_performances_message = get_first_all_performances_message();
+      while(all_performances_message)
+      {
+        //Read the message
+        //code for dynamic arrays, copies the elements one by one
+        for (i=0; i<NRRULES; i++)
+        {
+         // Store in memory:              
+         CLASSIFIERSYSTEM->array[i]->performance = all_performances[i];
+        }
+        
+        //Proceed to next message
+         all_performances_message = get_next_all_performances_message(all_performances_message);
+      }
  
     return 0;
 }
@@ -79,26 +80,26 @@ int Household_read_all_performances_message()
 int Household_select_rule()
 {
     int current_rule = CLASSIFIERSYSTEM->current_rule;   
-	int NRRULES = CLASSIFIERSYSTEM->nr_rules;
-	
+    int NRRULES = CLASSIFIERSYSTEM->nr_rules;
+    
     double[] performance;
     double[] attraction;
 
-    int experience		= CLASSIFIERSYSTEM->experience;
+    int experience      = CLASSIFIERSYSTEM->experience;
     int experience_old = 0;
     int i,j=0;
 
-	//Rule selection
-	double sum_attr = 0;
-	double[NRRULES] cpdf;
-	
+    //Rule selection
+    double sum_attr = 0;
+    double[NRRULES] cpdf;
     
-	//Assign values to local dynamic arrays
-	for (i=0;i<NRRULES;i++)
-	{
-		performance[i] = CLASSIFIERSYSTEM->array[i]->performance;
-		attraction[i]  = CLASSIFIERSYSTEM->array[i]->attraction;
-	}
+    
+    //Assign values to local dynamic arrays
+    for (i=0;i<NRRULES;i++)
+    {
+        performance[i] = CLASSIFIERSYSTEM->array[i]->performance;
+        attraction[i]  = CLASSIFIERSYSTEM->array[i]->attraction;
+    }
     
     //EWA learning parameters:
     double EWA_rho=CLASSIFIERSYSTEM->EWA_rho;
@@ -128,23 +129,23 @@ int Household_select_rule()
         CLASSIFIERSYSTEM->array[j]->attraction = attraction[j];
     }
     
-	//Computing the choice probabilities: multi-logit
+    //Computing the choice probabilities: multi-logit
     sum_attr=0;
     for (j=0;j++;j<NRRULES)
     {
         sum_attr += math.exp(EWA_beta * attractions[j]);
-	}
+    }
     
     for (j=0;j++;j<NRRULES)
     {
         p[j] = math.exp(EWA_beta * attractions[j])/sum_attr;
-	}
+    }
 
     //Construct cumm. prob. dens. function
-	cpdf = cumpdf(p);
+    cpdf = cumpdf(p);
     
     //Selecting a strategy according to the pdf:
-	nr_selected_rule = draw_with_replacement(1, cpdf, NRRULES);
+    nr_selected_rule = draw_with_replacement(1, cpdf, NRRULES);
     
     //Test if a rule has been selected:
     if(nr_selected_rule==0)
@@ -163,35 +164,35 @@ int Household_select_rule()
  */
 int Household_retrieve_rule_details()
 {
-	//#include <string.h>
-	//To use: 	char *strcat( char *str1, const char *str2 );
-	//			char *strcpy( char *to, const char *from );
-	int rule_type;
-	double* param_vector;
-	int	imax;
-	char* str, new_str, param_vector_as_string;
-	
-	//Rule details:
-	rule_type = RULEDETAILSYSTEM->rule_type[i]
+    //#include <string.h>
+    //To use:   char *strcat( char *str1, const char *str2 );
+    //          char *strcpy( char *to, const char *from );
+    int rule_type;
+    double* param_vector;
+    int imax;
+    char* str, new_str, param_vector_as_string;
+    
+    //Rule details:
+    rule_type = RULEDETAILSYSTEM->rule_type[i]
 
-	//Execute the rule's functioncall, with the appropriate parameter setting
-	//Parameters: retrieve the list of parameter values for the current rule
-	//Since parameter is double array, we have as prototype 
-	//int rule_function_1(* double var_name)
+    //Execute the rule's functioncall, with the appropriate parameter setting
+    //Parameters: retrieve the list of parameter values for the current rule
+    //Since parameter is double array, we have as prototype 
+    //int rule_function_1(* double var_name)
 
-	switch (rule_type)
-	{
-		case 1: rule_functioncall_1(RULEDETAILSYSTEM->parameters->array[1]);
-		break;
-		
-		case 2: rule_functioncall_2(RULEDETAILSYSTEM->parameters->array[2]);
-		break;
-	
-		case 3: rule_functioncall_3(RULEDETAILSYSTEM->parameters->array[3]);
-		break;
-	
-		default;
-	}
+    switch (rule_type)
+    {
+        case 1: rule_functioncall_1(RULEDETAILSYSTEM->parameters->array[1]);
+        break;
+        
+        case 2: rule_functioncall_2(RULEDETAILSYSTEM->parameters->array[2]);
+        break;
+    
+        case 3: rule_functioncall_3(RULEDETAILSYSTEM->parameters->array[3]);
+        break;
+    
+        default;
+    }
 
     return 0;
 }
@@ -213,7 +214,7 @@ int Household_retrieve_rule_details()
 int Household_apply_rule()
 {
 
-	//Can be replaced with direct memory access:
+    //Can be replaced with direct memory access:
    //AssetPortfolioType * current_assetportfolio=get_current_assetportfolio();
    //AssetPortfolioType * prescribed_assetportfolio=get_prescribed_assetportfolio();
    //double prescribed_asset_value = get_prescribed_asset_value();
@@ -360,90 +361,90 @@ int Household_read_transaction_message()
 //parameters: changes occur due to crossover, mutation
 int Household_read_ruledetailsystem_message()
 {
- 	//Getting the size of the system:
-	int NR_TYPES=CLASSIFIERSYSTEM->nr_types;
+    //Getting the size of the system:
+    int NR_TYPES=CLASSIFIERSYSTEM->nr_types;
 
-	//dynamic array with number of rules in each type (size of subpopulations)
-	int* NRRULES_PER_TYPE=CLASSIFIERSYSTEM->nr_rules_per_type;
+    //dynamic array with number of rules in each type (size of subpopulations)
+    int* NRRULES_PER_TYPE=CLASSIFIERSYSTEM->nr_rules_per_type;
 
-	//total number of rules:
-	int NRRULES=CLASSIFIERSYSTEM->nr_rules;
-	
-	//Local vars:
-	int[NRRULES] 		ids;
-	int[NRRULES]		nr_params;
-	double**			parameters;			//parameter[NRRULES][MAX_PARAMS];
-	
-	char**				rule_execution;	    //rule_execution[NRRULES]
-	int[NRRULES]		rule_type;			//rule_type[NRRULES]
-	
-	word_array * 		my_function_names = get_my_function_names(); //list of function names
-	
-	double				param_value;
-	int					i,j,k,m,jmax=0;
+    //total number of rules:
+    int NRRULES=CLASSIFIERSYSTEM->nr_rules;
+    
+    //Local vars:
+    int[NRRULES]        ids;
+    int[NRRULES]        nr_params;
+    double**            parameters;         //parameter[NRRULES][MAX_PARAMS];
+    
+    char**              rule_execution;     //rule_execution[NRRULES]
+    int[NRRULES]        rule_type;          //rule_type[NRRULES]
+    
+    word_array *        my_function_names = get_my_function_names(); //list of function names
+    
+    double              param_value;
+    int                 i,j,k,m,jmax=0;
 
-	//HERE: As an exception, we need a local copy of ruledetailsystem
-	//because we need to copy it from the message.
-	//And then we need to copy the values using a for loop.
-	//So we need to temporarily store the contents of the message.
-	//Do we need to free memory space afterward if we make a local copy of the struct?
-	
-	RuleDetailSystem *	ruledetailsystem;
-	
-	//Reading the ruledetailsystem_message
-	ruledetailsystem_message = get_first_ruledetailsystem_message();
-	while(ruledetailsystem_message)
-	{
-		ruledetailsystem = ruledetailsystem_message->parameters;
-				
-		//Proceed to next message
-		ruledetailsystem_message = get_next_ruledetailsystem_message(ruledetailsystem_message);
-	}
-	
-	for (i=0; i<NRRULES; i++)
-	{
-		//Filling the double_array parameter[i] with the parameter values of rule i
-		jmax=CLASSIFIERSYSTEM->array[i]->nr_params;
-		for (j=0; j<jmax; j++)
-		{
-			//Filling the field parameters[i][j]
-			//Problem: in xml we cannot add a name for the array[j]->(double param_value);
-			//parameters[i] is a double_array, so to access its elements we need:
-			  parameters[i][j] = ruledetailsystem->array[i]->parameters->array[j]->(double param_value);
-		}
-	}
-	
+    //HERE: As an exception, we need a local copy of ruledetailsystem
+    //because we need to copy it from the message.
+    //And then we need to copy the values using a for loop.
+    //So we need to temporarily store the contents of the message.
+    //Do we need to free memory space afterward if we make a local copy of the struct?
+    
+    RuleDetailSystem *  ruledetailsystem;
+    
+    //Reading the ruledetailsystem_message
+    ruledetailsystem_message = get_first_ruledetailsystem_message();
+    while(ruledetailsystem_message)
+    {
+        ruledetailsystem = ruledetailsystem_message->parameters;
+                
+        //Proceed to next message
+        ruledetailsystem_message = get_next_ruledetailsystem_message(ruledetailsystem_message);
+    }
+    
+    for (i=0; i<NRRULES; i++)
+    {
+        //Filling the double_array parameter[i] with the parameter values of rule i
+        jmax=CLASSIFIERSYSTEM->array[i]->nr_params;
+        for (j=0; j<jmax; j++)
+        {
+            //Filling the field parameters[i][j]
+            //Problem: in xml we cannot add a name for the array[j]->(double param_value);
+            //parameters[i] is a double_array, so to access its elements we need:
+              parameters[i][j] = ruledetailsystem->array[i]->parameters->array[j]->(double param_value);
+        }
+    }
+    
     return 0;
 }
 
 //Mariam: Maybe this is inside the read_ruledetailsystem so we would need to erase this.!Subject to be merged!
 int Household_update_ruledetailsystem()
 {
-	return 0;
+    return 0;
 }
 
 int Household_reset_private_classifiersystem()
 {
- 	//Getting the size of the system:
-	int NR_TYPES=CLASSIFIERSYSTEM->NR_TYPES;
+    //Getting the size of the system:
+    int NR_TYPES=CLASSIFIERSYSTEM->NR_TYPES;
 
-	//dynamic array with number of rules in each type (size of subpopulations)
-	int* NRRULES_PER_TYPE=CLASSIFIERSYSTEM->NRRULES_PER_TYPE;
+    //dynamic array with number of rules in each type (size of subpopulations)
+    int* NRRULES_PER_TYPE=CLASSIFIERSYSTEM->NRRULES_PER_TYPE;
 
-	//total number of rules:
-	int NRRULES=CLASSIFIERSYSTEM->NRRULES;
+    //total number of rules:
+    int NRRULES=CLASSIFIERSYSTEM->NRRULES;
 
-	//Resetting and storing values to memory:
-	CLASSIFIERSYSTEM->experience=0;
-	CLASSIFIERSYSTEM->current_rule=0;
-	CLASSIFIERSYSTEM->my_performance=0;
+    //Resetting and storing values to memory:
+    CLASSIFIERSYSTEM->experience=0;
+    CLASSIFIERSYSTEM->current_rule=0;
+    CLASSIFIERSYSTEM->my_performance=0;
 
-	for (i=0; i<NRRULES; i++)
-	{
-		CLASSIFIERSYSTEM->array[i]->avgperformance=log(pow(10,-5));
-		CLASSIFIERSYSTEM->array[i]->attraction=log(pow(10,-5));
-		CLASSIFIERSYSTEM->array[i]->choiceprob=pow(10,-5);
-	}
+    for (i=0; i<NRRULES; i++)
+    {
+        CLASSIFIERSYSTEM->array[i]->avgperformance=log(pow(10,-5));
+        CLASSIFIERSYSTEM->array[i]->attraction=log(pow(10,-5));
+        CLASSIFIERSYSTEM->array[i]->choiceprob=pow(10,-5);
+    }
 
     return 0;
-}
+} 
