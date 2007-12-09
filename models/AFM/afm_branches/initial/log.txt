@@ -125,61 +125,61 @@ Household_ewa_functions.c
 Mariam, rev 435
 
 Household_ewa_functions changes the apply_rule to apply_selected_rule. typo error.
-Model-ewa.xml 	added internal dependency in household functions
+Model-ewa.xml   added internal dependency in household functions
 did run on xparser again added the second version of dotty graph dgraphv0.2.eps
 --------------------------------------------------------------------------------------
 Sander, rev 436
 
 Household_ewa_functions.c small edits
-				Household_read_all_performances_messages
-				-->Household_read_all_performances_message
+                Household_read_all_performances_messages
+                -->Household_read_all_performances_message
 
-				Household_apply_selected_rule()
-				-->Household_apply_rule()
-				(better name for this function)
-				
+                Household_apply_selected_rule()
+                -->Household_apply_rule()
+                (better name for this function)
+                
 some_new_functions.c 
-				NrRules
-				--> NRRULES
+                NrRules
+                --> NRRULES
 --------------------------------------------------------------------------------------
 Mariam, rev 437
 model-ewa.xml accomodated all the dependencies.
-				produced dgraphv0.3.eps
+                produced dgraphv0.3.eps
 --------------------------------------------------------------------------------------
 Sander, rev 441
 
 Household_ewa_functions.c 
-				line 51-72 While loop for all_performances_message:
-				There will be only a single all_performances_message send by the FA agent
-				each day, so the while loop is unnecessary here. The MB is cleared daily,
-				so there can be only one message to read by the household.
-				Should we keep it for genericity? If later on we want more than one 
-				all_performances_message send per day.
-				
+                line 51-72 While loop for all_performances_message:
+                There will be only a single all_performances_message send by the FA agent
+                each day, so the while loop is unnecessary here. The MB is cleared daily,
+                so there can be only one message to read by the household.
+                Should we keep it for genericity? If later on we want more than one 
+                all_performances_message send per day.
+                
 FinancialAgent_ewa_functions.c
-			line 67	ADDED function FinancialAgent_send_all_performances_message()
-			line 85 ADDED message: all_performances_message
+            line 67 ADDED function FinancialAgent_send_all_performances_message()
+            line 85 ADDED message: all_performances_message
 
 model.xml
-			line 108 REMOVED var: performance_history
-					 We don't keep the performance_history of each rule in memory.
+            line 108 REMOVED var: performance_history
+                     We don't keep the performance_history of each rule in memory.
 --------------------------------------------------------------------------------------
 Sander, rev 442
 
 Household_ewa_functions.c 
-			line 83	REMOVED: Household_select_rule()
-			line 91 RENAMED: Household_EWA_learning() 
-							 -->Household_select_rule()
-			line 108-113: dynamic array loops
-			
-			various:		REPLACED: nr_selected_rule
-									  -->current_rule 				 
+            line 83 REMOVED: Household_select_rule()
+            line 91 RENAMED: Household_EWA_learning() 
+                             -->Household_select_rule()
+            line 108-113: dynamic array loops
+            
+            various:        REPLACED: nr_selected_rule
+                                      -->current_rule                
 --------------------------------------------------------------------------------------
 Sander, rev 443
 model-ewa.xml
-			Modified to take new dependencies into account.
-			RENAMED Household_reads_all_performances_messages
-				-->	Household_read_all_performances_message
+            Modified to take new dependencies into account.
+            RENAMED Household_reads_all_performances_messages
+                --> Household_read_all_performances_message
 --------------------------------------------------------------------------------------
 Sander, rev 444
 model-ewa.xml slight edits
@@ -187,59 +187,59 @@ model-ewa.xml slight edits
 Sander, rev 445
 Household_ewa_functions.c
 FinancialAgent_ewa_functions.c 
-			Still don't know how to do:
-			Initialisations:
-				PublicClassifierSystem * classifiersystem;
-				int current_rule = CLASSIFIERSYSTEM->current_rule;
-			Memory:	
-				set_classifiersystem(classifiersystem);
+            Still don't know how to do:
+            Initialisations:
+                PublicClassifierSystem * classifiersystem;
+                int current_rule = CLASSIFIERSYSTEM->current_rule;
+            Memory: 
+                set_classifiersystem(classifiersystem);
 --------------------------------------------------------------------------------------
 Sander, rev 446
 some_new_functions.c 
-			line 170 ADDED function FinancialAgent_send_ruledetailsystem_message()
-			line 179 Mariam please check these lines
-			line 185 ADDED function Household_read_ruledetailsystem_message()
-					 This function will become useful when updating the rule details.
-					 For example, when there is a crossover or mutation of the parameter
-					 settings of a rule.
-			line 234 Mariam please check these lines
+            line 170 ADDED function FinancialAgent_send_ruledetailsystem_message()
+            line 179 Mariam please check these lines
+            line 185 ADDED function Household_read_ruledetailsystem_message()
+                     This function will become useful when updating the rule details.
+                     For example, when there is a crossover or mutation of the parameter
+                     settings of a rule.
+            line 234 Mariam please check these lines
 --------------------------------------------------------------------------------------
 Sander, rev 447
 some_new_functions.c 
-			Maintenance of functions.
-model.xml			
-			Added to RuleDetailSystem:
-			nr_types, nr_rules_per_type, nr_rules,
-			nr_params_per_type, nr_params.
+            Maintenance of functions.
+model.xml           
+            Added to RuleDetailSystem:
+            nr_types, nr_rules_per_type, nr_rules,
+            nr_params_per_type, nr_params.
 --------------------------------------------------------------------------------------
 Sander, rev 448
 some_new_functions.c 
-			Moved ruledetailsystem functions to households_ewa and FA_ewa.
-model-ewa.xml			
-			Added function dependencies for new functions.
+            Moved ruledetailsystem functions to households_ewa and FA_ewa.
+model-ewa.xml           
+            Added function dependencies for new functions.
 
 NOTE: Most up-to-date datatypes are in model.xml, while
 most up-to-date function dependencies are in model-ewa.xml.
-These files should be merged at some point. 						
+These files should be merged at some point.                         
 --------------------------------------------------------------------------------------
 Mariam, rev 450
 FinancialAgent_ewafunctions.c 
-				added FinancialAgent_update_ruledetailsystem()
-				added FinancialAgent_updateGA() this is to update the GA every 100 days
-				commented out line 93. another message sent out at end of fn
+                added FinancialAgent_update_ruledetailsystem()
+                added FinancialAgent_updateGA() this is to update the GA every 100 days
+                commented out line 93. another message sent out at end of fn
 Household_ewafns.c
-				added Household_update_ruledetailsystem()--> might need to merge it inside Household_read_ruledetailsystem_message
-				
+                added Household_update_ruledetailsystem()--> might need to merge it inside Household_read_ruledetailsystem_message
+                
 model-ewa.xml
-				cleaned up the messages used.
-				
-				Rerun parser
-				Added dgraphv0.5.eps
+                cleaned up the messages used.
+                
+                Rerun parser
+                Added dgraphv0.5.eps
 ---------------------------------------------------------------------------
 Sander, rev 451
 Household_ewa_functions.c
-			Clean-up of code. Removed most cases of
-			"PublicClassifierSystem * classifiersystem;"
+            Clean-up of code. Removed most cases of
+            "PublicClassifierSystem * classifiersystem;"
 
 Merged model.xml with model-ewa.xml
 
@@ -263,32 +263,32 @@ Functions: from model.xml:
 Messages: from model-ewa.xml:
 --------------------------------------------------------------------------------------
 Mariam, rev 452
-household ewa.c		added Household_reset_private_classifiersystem()
-faewa.c				FinancialAgent_reset_public_classifiersystem()
-model-ewa.xml		added dependencies
-					updated dgraphv0.7
+household ewa.c     added Household_reset_private_classifiersystem()
+faewa.c             FinancialAgent_reset_public_classifiersystem()
+model-ewa.xml       added dependencies
+                    updated dgraphv0.7
 --------------------------------------------------------------------------------------
 Sander, rev 453
-		updated model-ewa.xml
+        updated model-ewa.xml
 --------------------------------------------------------------------------------------
 Sander, rev 454
-		household ewa.c		wrote Household_reset_private_classifiersystem()
-		faewa.c				wrote FinancialAgent_reset_public_classifiersystem()
+        household ewa.c     wrote Household_reset_private_classifiersystem()
+        faewa.c             wrote FinancialAgent_reset_public_classifiersystem()
 --------------------------------------------------------------------------------------
 Sander, rev 455
 model.xml + model-ewa.xml
-		Household memory:
-					RENAMED agent_classifiersystem
-							PrivateClassifierSystem classifiersystem
-		FA memory:	RENAMED central_classifiersystem
-							PublicClassifierSystem classifiersystem
+        Household memory:
+                    RENAMED agent_classifiersystem
+                            PrivateClassifierSystem classifiersystem
+        FA memory:  RENAMED central_classifiersystem
+                            PublicClassifierSystem classifiersystem
 
-					RENAMED FinancialAgent_updateGA
-							--> FinancialAgent_apply_GA
-					ADDED FinancialAgent_daily_reset_public_classifiersystem()
+                    RENAMED FinancialAgent_updateGA
+                            --> FinancialAgent_apply_GA
+                    ADDED FinancialAgent_daily_reset_public_classifiersystem()
 
-FA_ewa.c			ADDED FinancialAgent_daily_reset_public_classifiersystem()
-						  
+FA_ewa.c            ADDED FinancialAgent_daily_reset_public_classifiersystem()
+                          
 ran xparser: dgraphv0.8.eps, dgraphv0.9.eps, dgraphv0.10.eps
 
 I added the functions Every_100_periods and Every_period blocks just to make clear that
@@ -307,106 +307,106 @@ rule_detail_system is changed.
 See dgraphv0.9.eps and dgraphv0.10.eps
 --------------------------------------------------------------------------------------
 Sander, rev 456
-		Household ewa.c		
-			Simplified the function Household_select_rule().
-			
-		Some_new_functions.c
-			Added auxiliary functions 
-			sum, cumsum, cumpdf, 
-			ismember, draw, draw_with_replacement, draw_without_replacement.
+        Household ewa.c     
+            Simplified the function Household_select_rule().
+            
+        Some_new_functions.c
+            Added auxiliary functions 
+            sum, cumsum, cumpdf, 
+            ismember, draw, draw_with_replacement, draw_without_replacement.
 --------------------------------------------------------------------------------------
 Sander, rev 457-462
-		Added dgraphs, pdf.
+        Added dgraphs, pdf.
 --------------------------------------------------------------------------------------
 Sander, rev 463
-		Some_new_functions.c
-			Added UNIT TESTS for auxiliary functions 
+        Some_new_functions.c
+            Added UNIT TESTS for auxiliary functions 
 --------------------------------------------------------------------------------------
 Sander, rev 464
 
 model.xml + model-ewa.xml
-		Merged EWA functions from model-ewa.xml into model.xml
-		Moved memory vars from household memory to private classifier system struct:
-			EWA_rho, EWA_phi, EWA_delta, EWA_beta
-		Deleted memory vars from household memory (since they are inside the LCS):
-			nr_selected_rule, current_rule_performance
+        Merged EWA functions from model-ewa.xml into model.xml
+        Moved memory vars from household memory to private classifier system struct:
+            EWA_rho, EWA_phi, EWA_delta, EWA_beta
+        Deleted memory vars from household memory (since they are inside the LCS):
+            nr_selected_rule, current_rule_performance
 
 household_ewa.c
-		Household_select_rule()
-			line 105: updated assignment of local EWA parameters to point to the classifier system struct.
-			
+        Household_select_rule()
+            line 105: updated assignment of local EWA parameters to point to the classifier system struct.
+            
 draph-AFM-v0.1.eps
-		First dgraph showing both the FinancialManagement Role and EWA functions together.
-		Next: identify linking points between functions.
+        First dgraph showing both the FinancialManagement Role and EWA functions together.
+        Next: identify linking points between functions.
 --------------------------------------------------------------------------------------
 Sander, rev 465
-		Some_new_functions.c Debugging
+        Some_new_functions.c Debugging
 --------------------------------------------------------------------------------------
 Sander, rev 466
-		household ewa.c		in Household_reset_private_classifiersystem()
-		faewa.c				in FinancialAgent_reset_public_classifiersystem()
+        household ewa.c     in Household_reset_private_classifiersystem()
+        faewa.c             in FinancialAgent_reset_public_classifiersystem()
 
-		Initial values for avgperformance, performance are set to default value: log(10^-5).
-		This leads to initial weights in the choice probabilities equal to: exp[log(10^-5)]=10^-5.
-		Non-used rules keep this weight, so they have small but positive
-		probability of being selected.
+        Initial values for avgperformance, performance are set to default value: log(10^-5).
+        This leads to initial weights in the choice probabilities equal to: exp[log(10^-5)]=10^-5.
+        Non-used rules keep this weight, so they have small but positive
+        probability of being selected.
 --------------------------------------------------------------------------------------
 Sander, rev 468
-	Added new directory: IPD
-		This will be an example model. IPD= Iterated Prisoner's Dilemma.
-		A classic economic example using automata and GA/classifier systems.
+    Added new directory: IPD
+        This will be an example model. IPD= Iterated Prisoner's Dilemma.
+        A classic economic example using automata and GA/classifier systems.
 
-	model-ewa.xml
-		RENAMED: 
-		FinancialAdvisor
-		FinancialAgent (since all functions use FinancialAgent_function)
-		Or: should this be: FinancialAdvisor_function ?
-				
-		#include "FinancialAdvisor_agent_header.h"
-		#include "FinancialAgent_header.h"
-		Or, should this be called: #include "FinancialAgent_agent_header.h"?
+    model-ewa.xml
+        RENAMED: 
+        FinancialAdvisor
+        FinancialAgent (since all functions use FinancialAgent_function)
+        Or: should this be: FinancialAdvisor_function ?
+                
+        #include "FinancialAdvisor_agent_header.h"
+        #include "FinancialAgent_header.h"
+        Or, should this be called: #include "FinancialAgent_agent_header.h"?
 
-	Initializations: log(pow(10,-5)) should be replaced by
-		#DEFINE EPSILON=log(pow(10,-5));
+    Initializations: log(pow(10,-5)) should be replaced by
+        #DEFINE EPSILON=log(pow(10,-5));
 
-	Household ewa.c
-			line 426 Household_reset_private_classifiersystem()
-			
-	FinancialAgent_ewa.c
-			line 18	 FinancialAgent_daily_reset_public_classifiersystem
-			line 121 FinancialAgent_reset_public_classifiersystem()
+    Household ewa.c
+            line 426 Household_reset_private_classifiersystem()
+            
+    FinancialAgent_ewa.c
+            line 18  FinancialAgent_daily_reset_public_classifiersystem
+            line 121 FinancialAgent_reset_public_classifiersystem()
 --------------------------------------------------------------------------------------
 Sander, rev 469
-	IPD
-		Lots of new coding for the IPD example.
+    IPD
+        Lots of new coding for the IPD example.
 --------------------------------------------------------------------------------------
 Sander, rev 470
-	mylibraryheader.h  random_no() --> random_unif()
+    mylibraryheader.h  random_no() --> random_unif()
 --------------------------------------------------------------------------------------
 Sander, rev 471-475
-	ipd/model-ipd.xml
-	
-	ipd/GameSolver_functions.c
-			lines 359-474 Added code for GA
-			
-	Generated new dgraph.ps
+    ipd/model-ipd.xml
+    
+    ipd/GameSolver_functions.c
+            lines 359-474 Added code for GA
+            
+    Generated new dgraph.ps
 --------------------------------------------------------------------------------------
 Sander, rev 478
-	ipd/GameSolver_functions.c
+    ipd/GameSolver_functions.c
 --------------------------------------------------------------------------------------
-09-12-07 Sander, rev 481
- 	Created new directory portfolio_selection_ewa/testing to hold test code
- 	TODO: 
- 	 - For the main code: uses dynamic arrays, change all inits to use malloc 	 
- 	 - For the testing code: uses static arrays, change all instances of 
- 	    Datatype_name->array[i]->var_name to:
- 	    Datatype_name->var_name->array[i]
+09-12-07 Sander, rev 489
+    Created new directory portfolio_selection_ewa/testing to hold test code
+    TODO: 
+     - For the main code: uses dynamic arrays, change all inits to use malloc    
+     - For the testing code: uses static arrays, change all instances of 
+        Datatype_name->array[i]->var_name to:
+        Datatype_name->var_name->array[i]
  --------------------------------------------------------------------------------------
- Sander, rev 482
- 	ewa/testing
- 				#include "my_library_header.h" --> #include "mylibraryheader.h"
- 	Changed code for using static arrays.
- 	Malloc:	The best example of what is needed can be found in the function
- 			Household_read_and_update_ruledetailsystem_message()
- 				
--------------------------------------------------------------------------------------- 				
+ Sander, rev 491
+    ewa/testing
+                #include "my_library_header.h" --> #include "mylibraryheader.h"
+    Changed code for using static arrays.
+    Malloc: The best example of what is needed can be found in the function
+            Household_read_and_update_ruledetailsystem_message()
+                
+--------------------------------------------------------------------------------------              
