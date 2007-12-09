@@ -397,8 +397,7 @@ Sander, rev 478
 09-12-07 Sander, rev 481
  	Created new directory portfolio_selection_ewa/testing to hold test code
  	TODO: 
- 	 - For the main code: uses dynamic arrays, change all inits to use malloc
- 	 	 
+ 	 - For the main code: uses dynamic arrays, change all inits to use malloc 	 
  	 - For the testing code: uses static arrays, change all instances of 
  	    Datatype_name->array[i]->var_name to:
  	    Datatype_name->var_name->array[i]

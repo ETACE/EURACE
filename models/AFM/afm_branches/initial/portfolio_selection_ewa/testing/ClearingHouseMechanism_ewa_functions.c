@@ -6,9 +6,9 @@
  * 13/11/07 Mariam: Converting the code into separate agent functions files. 
  *********************************/
 
-
-#include "header.h"
-#include "math.h"
+#include <stdio.h>
+#include <header.h>
+#include <math.h>
 #include "ClearingHouseMechanism_agent_header.h"
 #include "my_library_header.h"
 
@@ -78,4 +78,4 @@ int Clearinghouse_read_order_messages()
     add_gov_bond_transaction_message(household_id, gov_id, transaction_price, transaction_quantity,range,x,y,z);
 
     return 0;
-}
+} 
