@@ -4,6 +4,8 @@
  * *********************************
  * History:
  * 13/11/07 Mariam: Converting the code into separate agent functions files. 
+ * 09-12-07 Sander
+ * TODO: Change all instances of array[i]->var to: var->array[i]
  *********************************/
 
 #include "header.h"
