@@ -402,3 +402,11 @@ Sander, rev 478
  	    Datatype_name->array[i]->var_name to:
  	    Datatype_name->var_name->array[i]
  --------------------------------------------------------------------------------------
+ Sander, rev 482
+ 	ewa/testing
+ 				#include "my_library_header.h" --> #include "mylibraryheader.h"
+ 	Changed code for using static arrays.
+ 	Malloc:	The best example of what is needed can be found in the function
+ 			Household_read_and_update_ruledetailsystem_message()
+ 				
+-------------------------------------------------------------------------------------- 				

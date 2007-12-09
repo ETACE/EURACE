@@ -72,7 +72,7 @@
 	</var>
 	<var>
 	<!--myfunctionnames[NR_TYPES]--><type>wordlist</type>
-	<name>myfunctionnames</name></var><var><!--rule_execution[NRRULES]--><!--Here I want to use a string to contain the function name that has to be used to apply rule i.--><!--Using the example: char_array *   char_var_dynamic_array   = get_char_var_dynamic_array();--><type>wordlist</type><name>myfunctionnames</name>
+	<name>myfunctionnames</name></var><var><!--rule_function_call[NRRULES]--><!--Here I want to use a string to contain the function name that has to be used to apply rule i.--><!--Using the example: char_array *   char_var_dynamic_array   = get_char_var_dynamic_array();--><type>wordlist</type><name>rule_function_call</name>
 	</var>
 </datatype>
 
@@ -354,25 +354,16 @@
 </function>
 
 <function>
-	<name>Household_read_ruledetailsystem_message</name>
+	<name>Household_read_and_update_ruledetailsystem</name>
 	<depends>
 		<name>FinancialAgent_send_ruledetailsystem_message</name>
 		<type>ruledetailsystem</type>
 	</depends>
 </function>
 
-<function>
-	<name>Household_update_ruledetailsystem</name>
-	<!--(now: inside read function)-->
-	<depends>
-		<name>Household_read_ruledetailsystem_message</name>
-		<type>internal</type>
-	</depends>
-</function>
-
 <function><name>Household_reset_private_classifiersystem</name>
 	<depends>
-		<name>Household_update_ruledetailsystem</name>
+		<name>Household_read_and_update_ruledetailsystem</name>
 		<type>internal</type></depends>
 </function>
 

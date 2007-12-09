@@ -7,10 +7,11 @@
  *********************************/
  
 #include <stdio.h>
-#include <header.h>
+#include <stdlib.h>
 #include <math.h>
+#include "header.h"
 #include "FinancialAgent_header.h"
-#include "my_library_header.h"
+#include "mylibraryheader.h"
 
 //FinancialAgent_daily_reset_public_classifiersystem
 //Daily reset of the public classifiersystem, resetting user counter, performance sum, and avgperformance.
