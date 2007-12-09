@@ -7,10 +7,11 @@
  *********************************/
 
 #include <stdio.h>
-#include <header.h>
+#include <stdlib.h>
 #include <math.h>
+#include "header.h"
 #include "ClearingHouseMechanism_agent_header.h"
-#include "my_library_header.h"
+#include "mylibraryheader.h"
 
 
 /* DEP: The Clearinghouse or Limit-Order Agent reads the message.

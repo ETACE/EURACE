@@ -7,10 +7,11 @@
  *********************************/
 
 #include <stdio.h>
-#include <header.h>
+#include <stdlib.h>
 #include <math.h>
+#include "header.h"
 #include "Household_agent_header.h"
-#include "my_library_header.h"
+#include "mylibraryheader.h"
 
 
 /************ Household : Asset market role ************/
@@ -345,94 +346,100 @@ int Household_read_transaction_message()
 */
     return 0;
 }
-
-
-/*******************************************
- * Adding the function names from the previously done work refer to financial_management.c file
- * Only functions heading are added to prevent errors encountered from parser.
- * This is done to test the ewa functions
- *******************************************/
  
- 
-//Household_read_ruledetailsystem_message()
-//Function to download a new rule_detail_system.
-//Used by agents to refresh their rule detail system
-//We allow for changes in:
-//parameters: changes occur due to crossover, mutation
-int Household_read_ruledetailsystem_message()
+//Household_read_and_update_ruledetailsystem_message()
+//Reads and updates a new rule_detail_system.
+//Used by agents to refresh their rule detail system.
+int Household_read_and_update_ruledetailsystem_message()
 {
-    //Getting the size of the system:
-    int NR_TYPES=CLASSIFIERSYSTEM->nr_types;
+    //In Classifiersystem we store the size settings:
 
-    //dynamic array with number of rules in each type (size of subpopulations)
-    int* NRRULES_PER_TYPE=CLASSIFIERSYSTEM->nr_rules_per_type;
+	//Getting the size of the system:
+    int NR_TYPES=CLASSIFIERSYSTEM->nr_types;
 
     //total number of rules:
     int NRRULES=CLASSIFIERSYSTEM->nr_rules;
+
+    //dynamic array with number of rules in each type (size of subsets of rules)
+    int[NR_TYPES] nr_rules_per_type; //this requires a malloc
+        
+    //In Ruledetailsystem we store the parameter settings:
+    int[NR_TYPES] nr_params_per_type; //this requires a malloc
     
     //Local vars:
     int[NRRULES]        ids;
     int[NRRULES]        nr_params;
-    double**            parameters;         //parameter[NRRULES][MAX_PARAMS];
-    
-    char**              rule_execution;     //rule_execution[NRRULES]
-    int[NRRULES]        rule_type;          //rule_type[NRRULES]
+    int MAX_PARAMS; 
+   
+    char*               rule_function_call; //string
+    int[NRRULES]        rule_type;          //rule_type indicator
     
     word_array *        my_function_names = get_my_function_names(); //list of function names
     
-    double              param_value;
     int                 i,j,k,m,jmax=0;
 
-    //HERE: As an exception, we need a local copy of ruledetailsystem
-    //because we need to copy it from the message.
-    //And then we need to copy the values using a for loop.
-    //So we need to temporarily store the contents of the message.
-    //Do we need to free memory space afterward if we make a local copy of the struct?
+    //Setting nr_rules for each type
+    for (i=0; i<NR_TYPES; i++)
+    {
+    	nr_rules_per_type[i]=CLASSIFIERSYSTEM->nr_rules_per_type[i];
+    }
+
+    //Setting nr_params for each type
+    for (i=0; i<NR_TYPES; i++)
+    {
+    	nr_params_per_type[i]=RULEDETAILSYSTEM->nr_params_per_type[i];
+    }
     
-    RuleDetailSystem *  ruledetailsystem;
+    //Only at this point can we allocate size for the paramater vector
+    MAX_PARAMS = max(nr_params_per_type); //max function gives max of a vector
+    
+    double[NRRULES][MAX_PARAMS] parameter;   //this requires a malloc
+
+    
+    //HERE: We need a local copy of the contents of the ruledetailsystem_message
+    //because we need to copy it from the message before storing it in memory.
     
     //Reading the ruledetailsystem_message
     ruledetailsystem_message = get_first_ruledetailsystem_message();
     while(ruledetailsystem_message)
     {
-        ruledetailsystem = ruledetailsystem_message->parameters;
+     
+        //Reading the contents of the message one rule at a time
+        for (i=0; i<NRRULES; i++)
+        {
+            //Filling the double_array parameter[i] with the parameter values of rule i
+            jmax=nr_params[i];
+            
+            for (j=0; j<jmax; j++)
+            {
+                //Filling the field parameters[i][j]
+                  parameters[i][j] = ruledetailsystem_message->parameters[i][j];
+            }
+        }
                 
         //Proceed to next message
         ruledetailsystem_message = get_next_ruledetailsystem_message(ruledetailsystem_message);
     }
     
+    //After copying the message contents to the local variable, we store it in memory
     for (i=0; i<NRRULES; i++)
     {
-        //Filling the double_array parameter[i] with the parameter values of rule i
-        jmax=CLASSIFIERSYSTEM->array[i]->nr_params;
+        jmax=nr_params[i];
+        
         for (j=0; j<jmax; j++)
         {
             //Filling the field parameters[i][j]
-            //Problem: in xml we cannot add a name for the array[j]->(double param_value);
-            //parameters[i] is a double_array, so to access its elements we need:
-              parameters[i][j] = ruledetailsystem->array[i]->parameters->array[j]->(double param_value);
+             RULEDETAILSYSTEM->parameters[i][j] = parameters[i][j];
         }
     }
     
     return 0;
 }
 
-//Mariam: Maybe this is inside the read_ruledetailsystem so we would need to erase this.!Subject to be merged!
-int Household_update_ruledetailsystem()
-{
-    return 0;
-}
-
 int Household_reset_private_classifiersystem()
 {
-    //Getting the size of the system:
-    int NR_TYPES=CLASSIFIERSYSTEM->NR_TYPES;
-
-    //dynamic array with number of rules in each type (size of subpopulations)
-    int* NRRULES_PER_TYPE=CLASSIFIERSYSTEM->NRRULES_PER_TYPE;
-
     //total number of rules:
-    int NRRULES=CLASSIFIERSYSTEM->NRRULES;
+    int NRRULES=CLASSIFIERSYSTEM->nr_rules;
 
     //Resetting and storing values to memory:
     CLASSIFIERSYSTEM->experience=0;
@@ -441,9 +448,9 @@ int Household_reset_private_classifiersystem()
 
     for (i=0; i<NRRULES; i++)
     {
-        CLASSIFIERSYSTEM->array[i]->avgperformance=log(pow(10,-5));
-        CLASSIFIERSYSTEM->array[i]->attraction=log(pow(10,-5));
-        CLASSIFIERSYSTEM->array[i]->choiceprob=pow(10,-5);
+        CLASSIFIERSYSTEM->avgperformance[i]=log(pow(10,-5));
+        CLASSIFIERSYSTEM->attraction[i]=log(pow(10,-5));
+        CLASSIFIERSYSTEM->choiceprob[i]=pow(10,-5);
     }
 
     return 0;
