@@ -6,11 +6,10 @@
  * 29/11/07 Sander: Started implementation of IPD game 
  ****************************************************************/
 
-#include "header.h"
-#include "math.h"
+#include <header.h>
+#include <math.h>
 #include "GamePlayer_agent_header.h"
-//path to mylibraryheader.h:
-#include "D:\Docs\EURACE\X-models\ModelFinancialMarket\SVNWorktree-xagents-Eclipse\Artificial_financial_market\IPDgame\mylibraryheader.h"
+#include "mylibraryheader.h"
 
 /* STEP 1. Send current rule.
  * GamePlayer_send_current_rule_message()
