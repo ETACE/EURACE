@@ -6,10 +6,10 @@
  * 29/11/07 Sander: Started implementation of IPD game 
  ****************************************************************/
 
-#include <header.h>
 #include <math.h>
 #include "GamePlayer_agent_header.h"
 #include "mylibraryheader.h"
+#include "header.h"
 
 /* STEP 1. Send current rule.
  * GamePlayer_send_current_rule_message()
