@@ -7,7 +7,7 @@
  <lastEditor>Sander &lt;svdhoog.at.gmaıl.com></lastEditor>
  <description>No description available</description>
  <XEnvironment>
-  <id></id>
+  <id>5000</id>
   <constants/>
   <functions/>
   <datatypes>
@@ -952,7 +952,7 @@
      </activities>
     </XRole>
     <XRole>
-     <id></id>
+     <id>5001</id>
      <name>Producer Role</name>
      <description></description>
      <activities>
@@ -1093,7 +1093,7 @@ Sends msg. to:
      </activities>
     </XRole>
     <XRole>
-     <id></id>
+     <id>5002</id>
      <name>Financial Management Role</name>
      <description></description>
      <activities>
@@ -1176,7 +1176,7 @@ Sends msg. to:
      </activities>
     </XRole>
     <XRole>
-     <id></id>
+     <id>5003</id>
      <name>Credit Market Role</name>
      <description></description>
      <activities>
@@ -1216,7 +1216,7 @@ Sends msg. to:
      </activities>
     </XRole>
     <XRole>
-     <id></id>
+     <id>5004</id>
      <name>Financial Market Role</name>
      <description></description>
      <activities>
@@ -1631,7 +1631,7 @@ Sends msg. to:
      </activities>
     </XRole>
     <XRole>
-     <id></id>
+     <id>5005</id>
      <name>Financial Management Role</name>
      <description></description>
      <activities>
@@ -1651,7 +1651,7 @@ Sends msg. to:
      </activities>
     </XRole>
     <XRole>
-     <id></id>
+     <id>5006</id>
      <name>Financial Market Role</name>
      <description></description>
      <activities>
@@ -1988,7 +1988,7 @@ Sends msg. to:
    <memory/>
    <roles>
     <XRole>
-     <id></id>
+     <id>5007</id>
      <name>Asset Market Role</name>
      <description></description>
      <activities>
@@ -2072,7 +2072,7 @@ Clearınghouse_compute_transactıons.</description>
    </memory>
    <roles>
     <XRole>
-     <id></id>
+     <id>5007</id>
      <name>Tax Collector Role</name>
      <description></description>
      <activities>
@@ -2093,7 +2093,7 @@ Clearınghouse_compute_transactıons.</description>
      </activities>
     </XRole>
     <XRole>
-     <id></id>
+     <id>5008</id>
      <name>Public Beneficiary Role</name>
      <description></description>
      <activities>
