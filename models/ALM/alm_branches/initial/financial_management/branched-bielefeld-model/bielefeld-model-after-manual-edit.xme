@@ -7,7 +7,7 @@
  <lastEditor>Sander &lt;svdhoog.at.gmaıl.com></lastEditor>
  <description>No description available</description>
  <XEnvironment>
-  <id>20071213155503862138130464</id>
+  <id>5000</id>
   <constants/>
   <functions/>
   <datatypes>
@@ -952,7 +952,7 @@
      </activities>
     </XRole>
     <XRole>
-     <id>1000</id>
+     <id>5001</id>
      <name>Producer Role</name>
      <description></description>
      <activities>
@@ -1093,7 +1093,7 @@ Sends msg. to:
      </activities>
     </XRole>
     <XRole>
-     <id>20071213155103862138130464</id>
+     <id>5002</id>
      <name>Financial Management Role</name>
      <description></description>
      <activities>
@@ -1176,7 +1176,7 @@ Sends msg. to:
      </activities>
     </XRole>
     <XRole>
-     <id>20071213155003862138130464</id>
+     <id>5003</id>
      <name>Credit Market Role</name>
      <description></description>
      <activities>
@@ -1216,7 +1216,7 @@ Sends msg. to:
      </activities>
     </XRole>
     <XRole>
-     <id>20071213154803862138130464</id>
+     <id>5004</id>
      <name>Financial Market Role</name>
      <description></description>
      <activities>
@@ -1631,7 +1631,7 @@ Sends msg. to:
      </activities>
     </XRole>
     <XRole>
-     <id>20071213154703862138130464</id>
+     <id>5005</id>
      <name>Financial Management Role</name>
      <description></description>
      <activities>
@@ -1651,7 +1651,7 @@ Sends msg. to:
      </activities>
     </XRole>
     <XRole>
-     <id>20071213154603862138130464</id>
+     <id>5006</id>
      <name>Financial Market Role</name>
      <description></description>
      <activities>
@@ -1988,7 +1988,7 @@ Sends msg. to:
    <memory/>
    <roles>
     <XRole>
-     <id>20071213154224575138107392</id>
+     <id>5007</id>
      <name>Asset Market Role</name>
      <description></description>
      <activities>
@@ -2056,14 +2056,14 @@ Clearınghouse_compute_transactıons.</description>
    <description></description>
    <memory>
     <XMemVar>
-     <id>1001</id>
+     <id></id>
      <type>int</type>
      <name>gov_id</name>
      <initForm></initForm>
      <description></description>
     </XMemVar>
     <XMemVar>
-     <id>1002</id>
+     <id></id>
      <type>double</type>
      <name>total_tax_receipts</name>
      <initForm></initForm>
@@ -2072,7 +2072,7 @@ Clearınghouse_compute_transactıons.</description>
    </memory>
    <roles>
     <XRole>
-     <id>20071213154424575138107392</id>
+     <id>5007</id>
      <name>Tax Collector Role</name>
      <description></description>
      <activities>
@@ -2093,7 +2093,7 @@ Clearınghouse_compute_transactıons.</description>
      </activities>
     </XRole>
     <XRole>
-     <id>20071213154524575138107392</id>
+     <id>5008</id>
      <name>Public Beneficiary Role</name>
      <description></description>
      <activities>
@@ -2849,9 +2849,141 @@ Clearınghouse_compute_transactıons.</description>
       </XMsgVar>
      </msgVars>
     </XMessage>
-    
-    
-    
+    <XMessage>
+     <id>317</id>
+     <name>capital_good_request</name>
+     <description></description>
+     <msgVars>
+      <XMsgVar>
+       <id>318</id>
+       <type>int</type>
+       <name>firm_id</name>
+       <description></description>
+      </XMsgVar>
+      <XMsgVar>
+       <id>319</id>
+       <type>double</type>
+       <name>capital_good_demand</name>
+       <description></description>
+      </XMsgVar>
+      <XMsgVar>
+       <id>320</id>
+       <type>double</type>
+       <name>range</name>
+       <description></description>
+      </XMsgVar>
+      <XMsgVar>
+       <id>321</id>
+       <type>double</type>
+       <name>x</name>
+       <description></description>
+      </XMsgVar>
+      <XMsgVar>
+       <id>322</id>
+       <type>double</type>
+       <name>y</name>
+       <description></description>
+      </XMsgVar>
+      <XMsgVar>
+       <id>323</id>
+       <type>double</type>
+       <name>z</name>
+       <description></description>
+      </XMsgVar>
+     </msgVars>
+    </XMessage>
+    <XMessage>
+     <id>324</id>
+     <name>capital_good_profit_distribution</name>
+     <description></description>
+     <msgVars>
+      <XMsgVar>
+       <id>325</id>
+       <type>double</type>
+       <name>capital_good_profit_shares</name>
+       <description></description>
+      </XMsgVar>
+      <XMsgVar>
+       <id>326</id>
+       <type>double</type>
+       <name>range</name>
+       <description></description>
+      </XMsgVar>
+      <XMsgVar>
+       <id>327</id>
+       <type>double</type>
+       <name>x</name>
+       <description></description>
+      </XMsgVar>
+      <XMsgVar>
+       <id>328</id>
+       <type>double</type>
+       <name>y</name>
+       <description></description>
+      </XMsgVar>
+      <XMsgVar>
+       <id>329</id>
+       <type>double</type>
+       <name>z</name>
+       <description></description>
+      </XMsgVar>
+     </msgVars>
+    </XMessage>
+    <XMessage>
+     <id>330</id>
+     <name>capital_good_delivery</name>
+     <description></description>
+     <msgVars>
+      <XMsgVar>
+       <id>331</id>
+       <type>int</type>
+       <name>firm_id</name>
+       <description></description>
+      </XMsgVar>
+      <XMsgVar>
+       <id>332</id>
+       <type>double</type>
+       <name>capital_good_delivery_volume</name>
+       <description></description>
+      </XMsgVar>
+      <XMsgVar>
+       <id>333</id>
+       <type>double</type>
+       <name>productivity</name>
+       <description></description>
+      </XMsgVar>
+      <XMsgVar>
+       <id>334</id>
+       <type>double</type>
+       <name>capital_good_price</name>
+       <description></description>
+      </XMsgVar>
+      <XMsgVar>
+       <id>335</id>
+       <type>double</type>
+       <name>range</name>
+       <description></description>
+      </XMsgVar>
+      <XMsgVar>
+       <id>336</id>
+       <type>double</type>
+       <name>x</name>
+       <description></description>
+      </XMsgVar>
+      <XMsgVar>
+       <id>337</id>
+       <type>double</type>
+       <name>y</name>
+       <description></description>
+      </XMsgVar>
+      <XMsgVar>
+       <id>338</id>
+       <type>double</type>
+       <name>z</name>
+       <description></description>
+      </XMsgVar>
+     </msgVars>
+    </XMessage>
     <XMessage>
      <id>339</id>
      <name>wage_payment</name>
@@ -3420,7 +3552,49 @@ Clearınghouse_compute_transactıons.</description>
       </XMsgVar>
      </msgVars>
     </XMessage>
-    
+    <XMessage>
+     <id>432</id>
+     <name>pay_capital_goods</name>
+     <description></description>
+     <msgVars>
+      <XMsgVar>
+       <id>433</id>
+       <type>int</type>
+       <name>firm_id</name>
+       <description></description>
+      </XMsgVar>
+      <XMsgVar>
+       <id>434</id>
+       <type>double</type>
+       <name>capital_bill</name>
+       <description></description>
+      </XMsgVar>
+      <XMsgVar>
+       <id>435</id>
+       <type>double</type>
+       <name>range</name>
+       <description></description>
+      </XMsgVar>
+      <XMsgVar>
+       <id>436</id>
+       <type>double</type>
+       <name>x</name>
+       <description></description>
+      </XMsgVar>
+      <XMsgVar>
+       <id>437</id>
+       <type>double</type>
+       <name>y</name>
+       <description></description>
+      </XMsgVar>
+      <XMsgVar>
+       <id>438</id>
+       <type>double</type>
+       <name>z</name>
+       <description></description>
+      </XMsgVar>
+     </msgVars>
+    </XMessage>
     <XMessage>
      <id>439</id>
      <name>current_mall_stock_info</name>
@@ -3476,182 +3650,7 @@ Clearınghouse_compute_transactıons.</description>
    <id>20071212125522925137176352</id>
    <name>Investment goods market</name>
    <description></description>
-   <messages>
-   	<XMessage>
-     <id>330</id>
-     <name>capital_good_delivery</name>
-     <description></description>
-     <msgVars>
-      <XMsgVar>
-       <id>331</id>
-       <type>int</type>
-       <name>firm_id</name>
-       <description></description>
-      </XMsgVar>
-      <XMsgVar>
-       <id>332</id>
-       <type>double</type>
-       <name>capital_good_delivery_volume</name>
-       <description></description>
-      </XMsgVar>
-      <XMsgVar>
-       <id>333</id>
-       <type>double</type>
-       <name>productivity</name>
-       <description></description>
-      </XMsgVar>
-      <XMsgVar>
-       <id>334</id>
-       <type>double</type>
-       <name>capital_good_price</name>
-       <description></description>
-      </XMsgVar>
-      <XMsgVar>
-       <id>335</id>
-       <type>double</type>
-       <name>range</name>
-       <description></description>
-      </XMsgVar>
-      <XMsgVar>
-       <id>336</id>
-       <type>double</type>
-       <name>x</name>
-       <description></description>
-      </XMsgVar>
-      <XMsgVar>
-       <id>337</id>
-       <type>double</type>
-       <name>y</name>
-       <description></description>
-      </XMsgVar>
-      <XMsgVar>
-       <id>338</id>
-       <type>double</type>
-       <name>z</name>
-       <description></description>
-      </XMsgVar>
-     </msgVars>
-    </XMessage><XMessage>
-     <id>317</id>
-     <name>capital_good_request</name>
-     <description></description>
-     <msgVars>
-      <XMsgVar>
-       <id>318</id>
-       <type>int</type>
-       <name>firm_id</name>
-       <description></description>
-      </XMsgVar>
-      <XMsgVar>
-       <id>319</id>
-       <type>double</type>
-       <name>capital_good_demand</name>
-       <description></description>
-      </XMsgVar>
-      <XMsgVar>
-       <id>320</id>
-       <type>double</type>
-       <name>range</name>
-       <description></description>
-      </XMsgVar>
-      <XMsgVar>
-       <id>321</id>
-       <type>double</type>
-       <name>x</name>
-       <description></description>
-      </XMsgVar>
-      <XMsgVar>
-       <id>322</id>
-       <type>double</type>
-       <name>y</name>
-       <description></description>
-      </XMsgVar>
-      <XMsgVar>
-       <id>323</id>
-       <type>double</type>
-       <name>z</name>
-       <description></description>
-      </XMsgVar>
-     </msgVars>
-    </XMessage><XMessage>
-     <id>324</id>
-     <name>capital_good_profit_distribution</name>
-     <description></description>
-     <msgVars>
-      <XMsgVar>
-       <id>325</id>
-       <type>double</type>
-       <name>capital_good_profit_shares</name>
-       <description></description>
-      </XMsgVar>
-      <XMsgVar>
-       <id>326</id>
-       <type>double</type>
-       <name>range</name>
-       <description></description>
-      </XMsgVar>
-      <XMsgVar>
-       <id>327</id>
-       <type>double</type>
-       <name>x</name>
-       <description></description>
-      </XMsgVar>
-      <XMsgVar>
-       <id>328</id>
-       <type>double</type>
-       <name>y</name>
-       <description></description>
-      </XMsgVar>
-      <XMsgVar>
-       <id>329</id>
-       <type>double</type>
-       <name>z</name>
-       <description></description>
-      </XMsgVar>
-     </msgVars>
-    </XMessage><XMessage>
-     <id>432</id>
-     <name>pay_capital_goods</name>
-     <description></description>
-     <msgVars>
-      <XMsgVar>
-       <id>433</id>
-       <type>int</type>
-       <name>firm_id</name>
-       <description></description>
-      </XMsgVar>
-      <XMsgVar>
-       <id>434</id>
-       <type>double</type>
-       <name>capital_bill</name>
-       <description></description>
-      </XMsgVar>
-      <XMsgVar>
-       <id>435</id>
-       <type>double</type>
-       <name>range</name>
-       <description></description>
-      </XMsgVar>
-      <XMsgVar>
-       <id>436</id>
-       <type>double</type>
-       <name>x</name>
-       <description></description>
-      </XMsgVar>
-      <XMsgVar>
-       <id>437</id>
-       <type>double</type>
-       <name>y</name>
-       <description></description>
-      </XMsgVar>
-      <XMsgVar>
-       <id>438</id>
-       <type>double</type>
-       <name>z</name>
-       <description></description>
-      </XMsgVar>
-     </msgVars>
-    </XMessage></messages>
+   <messages/>
   </XContext>
   <XContext>
    <id>20071212150655776137176352</id>
