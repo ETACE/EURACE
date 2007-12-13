@@ -9,19 +9,19 @@
   <name>Household</name>
   <description></description>
   <xmemvar>
-   <type></type>
+   <type>double</type>
    <name>consumption_budget</name>
    <description></description>
    <init></init>
   </xmemvar>
   <xmemvar>
-   <type></type>
+   <type>double</type>
    <name>total_budget</name>
    <description></description>
    <init></init>
   </xmemvar>
   <xmemvar>
-   <type></type>
+   <type>double</type>
    <name>asset_budget</name>
    <description></description>
    <init></init>
@@ -52,7 +52,7 @@
   </xmemvar>
   <xmemvar>
    <type>int</type>
-   <name>limit_qnty</name>
+   <name>limit_quantity</name>
    <description>test</description>
    <init></init>
   </xmemvar>
@@ -162,8 +162,7 @@
   <xrole>
    <name>Credit Market Role</name>
    <description></description>
-  </xrole>
- </xagent>
+  </xrole></xagent>
  <xagent>
   <name>Firm</name>
   <description></description>
@@ -265,7 +264,7 @@
    <name>Asset Market Role</name>
    <description></description>
    <xactivity>
-    <name>Compute Transactions</name>
+    <name>Clearing House Compute Transactions</name>
     <description></description>
     <code></code>
    </xactivity>
@@ -339,17 +338,20 @@
    <name>Update Savings Account</name>
    <description></description>
   </xmessage>
-  <xmessage>
+  
+  
+  
+ </xcontext>
+ <xcontext>
+ 	<name></name>
+ 	<description></description><xmessage>
    <name>Tax Payment</name>
    <description></description>
-  </xmessage>
-  <xmessage>
+  </xmessage><xmessage>
    <name>Benefits Payments</name>
    <description></description>
-  </xmessage>
-  <xmessage>
+  </xmessage><xmessage>
    <name>Transfer Payments</name>
    <description></description>
-  </xmessage>
- </xcontext>
+  </xmessage></xcontext>
 </xmodel>

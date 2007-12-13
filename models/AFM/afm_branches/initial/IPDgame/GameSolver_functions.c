@@ -6,11 +6,11 @@
  * 29/11/07: Started implementation of IPD game 
  *****************************************************************/
  
-#include "header.h"
-#include "math.h"
+#include <math.h>
 #include "GameSolver_agent_header.h"
 //path to mylibraryheader.h:
-#include "D:\Docs\EURACE\X-models\ModelFinancialMarket\SVNWorktree-xagents-Eclipse\Artificial_financial_market\IPDgame\mylibraryheader.h"
+#include "mylibraryheader.h"
+#include "header.h"
 
 //Definitions
 #define STATESIZE 4 //size of a state
