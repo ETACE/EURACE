@@ -984,7 +984,7 @@ int Firm_calc_revenue()
 
 /*
  * \fn:int Firm_calc_pay_costs()
- * \brief: Thıs functıon computes the actual production costs and sets the actual output produced: production_quantity.
+ * \brief: This function computes the actual production costs and sets the actual output produced: production_quantity.
  */	
 int Firm_calc_pay_costs()
 {
@@ -1112,7 +1112,7 @@ int Firm_calc_pay_costs()
 return 0;
 }
 
-/************Firm Role: Fınancıal Management Role ********************************/
+/************Firm Role: Financial Management Role ********************************/
 
 
 int Firm_compute_income_statement()
@@ -1151,14 +1151,14 @@ int Firm_compute_balance_sheet()
 
 		//Code: compute total debt installment payments
 		//set: double_array DEBT_INSTALL_PAYMENTS and double TOTAL_DEBT_PAYMENT
-		//struct DEBT_INSTALL_PAYMENTS: array of structs wıth each struct a loan
+		//struct DEBT_INSTALL_PAYMENTS: array of structs with each struct a loan
 		//int bank_id
 		//double loan_value
 		//double interest_rate
 		//double debt_install_payment
 		//int maturity_day
 
-		//Sending debt_installment_payment_msg to all banks at whıch the fırm has a loan 
+		//Sending debt_installment_payment_msg to all banks at which the firm has a loan 
 		imax = DEBT_INSTALL_PAYMENTS->size;
 		for (i=0; i<imax;i++)
 		{
@@ -1176,9 +1176,9 @@ int Firm_compute_balance_sheet()
 
 		if (CASH_HOLDINGS < TOTAL_DEBT_PAYMENT)
 		{
-			//Code: transform debt into equıty
-			//Code: debt ıs repaid partially
-			//Code: compute debt remaining to be paıd
+			//Code: transform debt into equity
+			//Code: debt is repaid partially
+			//Code: compute debt remaining to be paid
 
 			CASH_HOLDINGS = 0;
 		}
@@ -1193,32 +1193,32 @@ int Firm_compute_balance_sheet()
 		//compute dividend_per_share
 		//add_dividend_message(dividend_per_share,MSGDATA);
 
-		//compute the equıty of the fırm
+		//compute the equity of the firm
 		//CASH_HOLDINGS
-		//VALUE_CAPITAL_STOCK: estımated value of capital stock
+		//VALUE_CAPITAL_STOCK: estimated value of capital stock
 
-		//VALUE_CAPITAL_STOCK ıs a double array wıth elements for each new purchase of capıtal stock
-		//(the capıtal stock ıs dated)
-		//DEPRECIATION_VALUE_OF_CAPITAL_STOCK_PER_PERIOD: we assumed that the capıtal deprecıatıon ıs constant
-		//over tıme and unıform over the deprecıatıon perıod. Also ıt ıs the same for each new purchase of 			//capıtal. Thıs may change lateron when we let the deprecıatıon_value be a functıon of the value of
-		//capıtal stock at the tıme of purchase.
+		//VALUE_CAPITAL_STOCK is a double array with elements for each new purchase of capital stock
+		//(the capital stock is dated)
+		//DEPRECIATION_VALUE_OF_CAPITAL_STOCK_PER_PERIOD: we assumed that the capital depreciation is constant
+		//over time and uniform over the depreciation period. Also it is the same for each new purchase of 			//capital. This may change lateron when we let the depreciation_value be a function of the value of
+		//capital stock at the time of purchase.
 
-		//We loop over all elements and update the current_value of each dated capıtal stock
-		imax = VALUE_CAPITAL_STOCK->sıze;
+		//We loop over all elements and update the current_value of each dated capital stock
+		imax = VALUE_CAPITAL_STOCK->size;
 		for (i=0;i<imax;i++)
 		{
 			VALUE_CAPITAL_STOCK->array[i]->current_value -= DEPRECIATION_VALUE_OF_CAPITAL_STOCK_PER_PERIOD;
 		}
 
-		//VALUE_LOCAL_INVENTORY: estımated value of local ınventory stocks at current mall prıces
-		//We loop over all malls and sum the value of all local ınventory stocks
+		//VALUE_LOCAL_INVENTORY: estimated value of local inventory stocks at current mall prices
+		//We loop over all malls and sum the value of all local inventory stocks
 		imax = CURRENT_MALL_STOCKS->size;
 		sum=0;
 		for (i=0;i<imax;i++)
 		{
 			sum += PRICE*CURRENT_MALL_STOCKS->array[i]->current_stock;
-			//When malls have dıfferent current_price use thıs code:
-			//sum += CURRENT_MALL_STOCKS->array[i]->current_prıce * CURRENT_MALL_STOCKS->array[i]->current_stock;
+			//When malls have different current_price use this code:
+			//sum += CURRENT_MALL_STOCKS->array[i]->current_price * CURRENT_MALL_STOCKS->array[i]->current_stock;
 		}
 		VALUE_LOCAL_INVENTORY=sum;
 

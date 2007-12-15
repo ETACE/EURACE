@@ -98,13 +98,13 @@ int GameSolver_play_tournament()
             //Reset the starting state of automaton i (since during play, we update the initial state)
             for (k=0;k<4;k++)
             {
-            	string_0[k] = RULEDETAILSYSTEM->array[nr_rule_1]->bitstring[k];
+            	string_0[k] = CLASSIFIERSYSTEM->array[nr_rule_1]->bitstring[k];
             }
             //Retrieve a copy of the automata bitstring for player j:
             nr_rule_2 = AUTOMATON->array[j]->current_rule;
             for (k=0;k<LENGTH;k++)
             {
-                string_1[k] = RULEDETAILSYSTEM->array[nr_rule_2]->bitstring[k];
+                string_1[k] = CLASSIFIERSYSTEM->array[nr_rule_2]->bitstring[k];
             }
 
             //Randomly initialize previous_moves in memory
@@ -445,8 +445,8 @@ int GameSolver_apply_GA()
             //Get bitstrings from memory
             for (k=0;k<LENGTH;k++)
             {
-                string_a[k] = RULEDETAILSYSTEM->array[a]->bitstring->array[k];
-                string_b[k] = RULEDETAILSYSTEM->array[b]->bitstring->array[k];
+                string_a[k] = CLASSIFIERSYSTEM->array[a]->bitstring->array[k];
+                string_b[k] = CLASSIFIERSYSTEM->array[b]->bitstring->array[k];
             }
             //**********END REDUNANT CODE*********************
             
@@ -498,11 +498,11 @@ int GameSolver_apply_GA()
             //we can take the shorter route and copy the crossover bits directly in the memory
             for (k=START;k<END;k++)
             {
-                temp_a = RULEDETAILSYSTEM->array[a]->bitstring->array[k];
-                temp_b = RULEDETAILSYSTEM->array[b]->bitstring->array[k];
+                temp_a = CLASSIFIERSYSTEM->array[a]->bitstring->array[k];
+                temp_b = CLASSIFIERSYSTEM->array[b]->bitstring->array[k];
                 
-                RULEDETAILSYSTEM->array[b]->bitstring->array[k] = temp_a;
-                RULEDETAILSYSTEM->array[a]->bitstring->array[k] = temp_b;
+                CLASSIFIERSYSTEM->array[b]->bitstring->array[k] = temp_a;
+                CLASSIFIERSYSTEM->array[a]->bitstring->array[k] = temp_b;
             }
             
             //***************** MUTATION ************************************
@@ -519,12 +519,12 @@ int GameSolver_apply_GA()
                 p = random_unif();
                 if (p<=prob_mut)
                 {
-                    RULEDETAILSYSTEM->array[a]->bitstring->array[k] = (RULEDETAILSYSTEM->array[a]->bitstring->array[k]+1)%2;
+                    CLASSIFIERSYSTEM->array[a]->bitstring->array[k] = (CLASSIFIERSYSTEM->array[a]->bitstring->array[k]+1)%2;
                 }
                 p = random_unif();
                 if (p<=prob_mut)
                 {               
-                    RULEDETAILSYSTEM->array[b]->bitstring->array[k] = (RULEDETAILSYSTEM->array[b]->bitstring->array[k]+1)%2;
+                    CLASSIFIERSYSTEM->array[b]->bitstring->array[k] = (CLASSIFIERSYSTEM->array[b]->bitstring->array[k]+1)%2;
                 }
             }           
         }
