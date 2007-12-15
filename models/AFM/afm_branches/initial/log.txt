@@ -409,4 +409,10 @@ Sander, rev 478
     Malloc: The best example of what is needed can be found in the function
             Household_read_and_update_ruledetailsystem_message()
                 
---------------------------------------------------------------------------------------              
+--------------------------------------------------------------------------------------
+ Sander, rev 518
+	IPD: design changed from ClassifierSystem to ClassiferRule, to accomodate dynamic array of structs.
+		- changed AUTOMATON to AUTOMATA
+		- created EWAStruct to hold agent EWA parameters (in xml) and added EWAParameters (in agent memory)
+--------------------------------------------------------------------------------------
+	 

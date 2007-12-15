@@ -51,7 +51,7 @@
 <name>double2D_array</name>
 <var><type>double**</type><name>double2Dname</name></var>
 </datatype><!--EWA structs--><datatype>
-	<name>AutomatonStruct</name>
+	<name>Automata</name>
 	<desc>Struct to hold a list of automata in use by GamePlayer agents.</desc><!--Holds for each agent: current_rule, performance.--><var>
 	<type>int</type><name>current_rule</name>
 	</var>
@@ -59,63 +59,54 @@
 		<type>double</type><name>rule_performance</name>
 		</var>
 </datatype>
+	<datatype>
+		<!--Struct holding the EWA parameters--><name>EWAParameterStruct</name>
+		<desc></desc><!--***************************** EWA Parameters *************************--><var><type>double</type><name>EWA_rho</name></var><var><type>double</type><name>EWA_phi</name></var><var><type>double</type><name>EWA_delta</name></var><var><type>double</type><name>EWA_beta</name></var><var><!--Experience variable for EWA learning--><type>double</type><name>experience</name>
+	</var><var><!--Current rule in use by the agent--><type>int</type><name>current_rule</name>
+</var>
+	</datatype>
 
 	<datatype>
-<name>RuleDetailSystem</name>
-<desc>Datatype for rule details.  !Subject to change!</desc>
-	<!--In this case, the rule details are just bitstrings-->
-	<var><!--int2D_array[NRAGENTS][148]--><!--There are as many bitstrings as there are rules: NRAGENTS-->
-		<!--A bitstring has length 148, so it is a binary coded decimal (BCD): [0,...,10^148-1]--><type>int2D_array</type>
+<name>PublicClassifierRule</name>
+<desc>Datatype for the central classifier system. The system is a dynamic array of PublicClassifierRules !Subject to change!</desc>
+	<var><!--id for the rule-->
+	<type>int</type><name>id</name>
+	</var>
+<!--***************************** Rule measures *****************************-->
+<var><!--This is the user counter for each rule-->
+<type>int</type><name>counter</name>
+</var>
+<var><!--This is the performance for each rule-->
+<type>double</type><name>performance</name>
+</var>
+<var><!--This is the average performance for each rule-->
+<type>double</type><name>avgperformance</name>
+</var><!--***************************** Rule details *****************************--><var><!--In this case, the rule details are just bitstrings-->
+		<!--A bitstring has length 148, so it is a binary coded decimal (BCD) in the range: [0,...,10^148-1]--><type>int_array</type>
 		<name>bitstring</name>
 	</var>
 </datatype>
 
-<datatype>
-<name>PublicClassifierSystem</name>
-<desc>Datatype for the central classifier system. !Subject to change!</desc>
-	<var>
-		<!--Total nr of rules--><type>int</type><name>nr_rules</name>
-	</var>
-	<var><!--int_array ids: ids for each rule (id[0]...id[nr_rules-1])-->
-	<type>int_array</type><name>ids</name>
-	</var>
-<!-- Arrays with rule measures -->
-<var><!--This is the user counter for each rule-->
-<type>int_array</type><name>counter</name>
-</var>
-<var><!--This is the performance for each rule-->
-<type>double_array</type><name>performance</name>
-</var>
-<var><!--This is the average performance for each rule-->
-<type>double_array</type><name>avgperformance</name>
-</var>
-</datatype>
-
-<datatype>
-<name>PrivateClassifierSystem</name>
-<desc>Datatype for the private classifier system inside each agent.  !Subject to change!</desc>
+	<datatype>
+<name>PrivateClassifierRule</name>
+<desc>Datatype for the private classifier system inside each agent. The system is a dynamic array of PrivateClassifierRule.  !Subject to change!</desc>
 <!--General data for the rule system-->
-	<var>
-		<!--Total nr of rules--><type>int</type><name>nr_rules</name>
+	<var><!--id for each rule-->
+	<type>int</type><name>id</name>
 	</var>
-	<var><!--int_array ids: ids for each rule (id[0]...id[nr_rules-1])-->
-	<type>int_array</type><name>ids</name>
-	</var><!--EWA Parameters-->
-	<var><type>double</type><name>EWA_rho</name></var><var><type>double</type><name>EWA_phi</name></var><var><type>double</type><name>EWA_delta</name></var><var><type>double</type><name>EWA_beta</name></var>
-	<var><!--This is the experience variable for EWA learning--><type>double</type><name>experience</name>
-	</var>
-<var><!--Current rule in use by the agent--><type>int</type><name>current_rule</name>
-</var>
-<!-- Arrays with rule measures -->
-<var><!--Agent performance of current_rule--><type>double</type><name>my_performance</name>
+	
+	
+
+<!--***************************** Rule measures *****************************-->
+<var><!--Agent's performance of current_rule--><type>double</type><name>my_performance</name>
 </var>
 <var><!---->
-<type>double_array</type><name>avgperformance</name>
+<type>double</type><name>avgperformance</name>
 </var>
 <var><!--Agent attractions-->
-<type>double_array</type><name>attraction</name></var>
-<var><!--Agent choice probabilities-->
-<type>double_array</type><name>choiceprob</name></var>
+<type>double</type><name>attraction</name></var>
+<var><!--choice probability-->
+<type>double</type><name>choiceprob</name></var>
 </datatype>	
 </environment>
 
@@ -126,14 +117,17 @@
 <!-- All variables used by GamePlayer are declared here to allocate them in memory -->
 
 <memory>
-<var><type>int</type><name>id</name></var>
+<var><type>int</type><name>id</name></var><var>
+	<type>EWAParameterStruct</type>
+	<name>EWAParameters</name></var>
 <var>
 		<type>int</type><name>new_rules</name>
-		</var><var><type>PrivateClassifierSystem</type><name>classifiersystem</name></var>
+		</var><var><type>PrivateClassifierRule_array</type><name>classifiersystem</name></var>
 <var><type>double</type><name>iradius</name></var>
 <var><type>double</type><name>posx</name></var>
 <var><type>double</type><name>posy</name></var>
 	
+
 </memory>
 <!----------------- Defining functions ---------------------------------------->
 <functions>
@@ -198,8 +192,8 @@
 <var>
 	<type>int</type><name>nragents</name>
 	</var><var>
-		<type>AutomatonStruct</type><name>automata</name>
-		</var><var><type>PublicClassifierSystem</type>	<name>classifiersystem</name></var>
+		<type>Automata_array</type><name>automata</name>
+		</var><var><type>PublicClassifierRule_array</type>	<name>classifiersystem</name></var>
 <var><type>double</type><name>iradius</name></var>
 <var><type>double</type><name>posx</name></var>
 <var><type>double</type><name>posy</name></var>

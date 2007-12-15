@@ -1,0 +1,38 @@
+digraph dependency_graph {
+	rankdir=BT;
+	size="8,5"
+	node [shape = rect];
+	
+	/* Functions */
+	GameSolver_send_ruledetailsystem_message[height = 0.000000, label = "GameSolver_send_ruledetailsystem_message\n(0 lines)"]
+	GameSolver_reset_public_classifiersystem[height = 0.000000, label = "GameSolver_reset_public_classifiersystem\n(0 lines)"]
+	GameSolver_apply_GA[height = 0.000000, label = "GameSolver_apply_GA\n(0 lines)"]
+	Every_100_periods[height = 0.000000, label = "Every_100_periods\n(0 lines)"]
+	GameSolver_send_all_performances_message[height = 0.000000, label = "GameSolver_send_all_performances_message\n(0 lines)"]
+	GameSolver_update_classifiersystem[height = 0.000000, label = "GameSolver_update_classifiersystem\n(0 lines)"]
+	GameSolver_play_tournament[height = 0.000000, label = "GameSolver_play_tournament\n(0 lines)"]
+	GameSolver_read_current_rule_message[height = 0.000000, label = "GameSolver_read_current_rule_message\n(0 lines)"]
+	GameSolver_daily_reset_public_classifiersystem[height = 0.000000, label = "GameSolver_daily_reset_public_classifiersystem\n(0 lines)"]
+	GamePlayer_reset_private_classifiersystem[height = 0.000000, label = "GamePlayer_reset_private_classifiersystem\n(0 lines)"]
+	GamePlayer_read_ruledetailsystem_message[height = 0.000000, label = "GamePlayer_read_ruledetailsystem_message\n(0 lines)"]
+	GamePlayer_select_rule[height = 0.000000, label = "GamePlayer_select_rule\n(0 lines)"]
+	GamePlayer_read_all_performances_message[height = 0.000000, label = "GamePlayer_read_all_performances_message\n(0 lines)"]
+	GamePlayer_send_current_rule_message[height = 0.000000, label = "GamePlayer_send_current_rule_message\n(0 lines)"]
+	Every_period[height = 0.000000, label = "Every_period\n(0 lines)"]
+	
+	/* Dependencies */
+	GameSolver_send_ruledetailsystem_message -> GameSolver_apply_GA [ label = "<depends on internal>" ];
+	GameSolver_reset_public_classifiersystem -> GameSolver_apply_GA [ label = "<depends on internal>" ];
+	GameSolver_apply_GA -> Every_100_periods [ label = "<depends on internal>" ];
+	GameSolver_send_all_performances_message -> GameSolver_update_classifiersystem [ label = "<depends on internal>" ];
+	GameSolver_update_classifiersystem -> GameSolver_play_tournament [ label = "<depends on internal>" ];
+	GameSolver_play_tournament -> GameSolver_read_current_rule_message [ label = "<depends on internal>" ];
+	GameSolver_read_current_rule_message -> GamePlayer_send_current_rule_message [ label = "<depends on current_rule_message>" ];
+	GameSolver_read_current_rule_message -> GameSolver_daily_reset_public_classifiersystem [ label = "<depends on internal>" ];
+	GamePlayer_reset_private_classifiersystem -> GamePlayer_read_ruledetailsystem_message [ label = "<depends on internal>" ];
+	GamePlayer_read_ruledetailsystem_message -> GameSolver_send_ruledetailsystem_message [ label = "<depends on ruledetailsystem_message>" ];
+	GamePlayer_select_rule -> GamePlayer_read_all_performances_message [ label = "<depends on internal>" ];
+	GamePlayer_read_all_performances_message -> GameSolver_send_all_performances_message [ label = "<depends on all_performances_message>" ];
+	GamePlayer_send_current_rule_message -> Every_period [ label = "<depends on internal>" ];
+	Every_period -> GamePlayer_reset_private_classifiersystem [ label = "<depends on internal>" ];
+}
