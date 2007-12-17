@@ -55,7 +55,11 @@ tax_provision = income_tax_rate*gross_income;
 net_income = (1-income_tax_rate)*gross_income+leftover_consumption_budget;
 
 //Additional savings from net income
-savings_account_diff=0;
+savings_account_diff=0; //if no savings
+/* C-CODE */
+// savings_account_diff= ; //if some savings
+/* C-CODE */
+
 savings_account += savings_account_diff; 
 
 //Total budget
