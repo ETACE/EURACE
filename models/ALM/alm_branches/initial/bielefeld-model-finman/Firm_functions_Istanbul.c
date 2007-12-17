@@ -1119,10 +1119,10 @@ int Firm_compute_income_statement()
 {
 	if(DAY%MONTH==DAY_OF_MONTH_TO_ACT)
 	{
-		//old: EARNINGS = CUM_TOTAL_SOLD_QUANTITY*PRICE - COSTS;
+		//was: EARNINGS = CUM_TOTAL_SOLD_QUANTITY*PRICE - COSTS;
 		EBIT= CUM_TOTAL_SOLD_QUANTITY*PRICE - COSTS;		
 		
-
+		//update the cash holdings
 		CASH_HOLDINGS += CUM_TOTAL_SOLD_QUANTITY*PRICE;
 		CASH_HOLDINGS -= TOTAL_INTEREST_PAYMENT;
 		CASH_HOLDINGS -= TAX_PAYMENT;
@@ -1142,38 +1142,45 @@ int Firm_compute_income_statement()
 
 int Firm_compute_balance_sheet()
 {
-	double debt_install_payment;
+	double debt_installment_payment;
 	int bank_id;
 	double sum;
 
 	if(DAY%MONTH==DAY_OF_MONTH_TO_ACT)
 	{
-
-		//Code: compute total debt installment payments
-		//set: double_array DEBT_INSTALL_PAYMENTS and double TOTAL_DEBT_PAYMENT
+		//double PAYMENT_ACCOUNT: account out of which payments are made, to be separated from the income_account on which current sale receipts are incoming
+		//CASH_HOLDINGS: equal to payment_account???? Cash holdings is a ambiguous term.
+		//double TOTAL_DEBT_PAYMENT
+		//double TOTAL_INTEREST_PAYMENT
+		//double_array DEBT_INSTALLMENT_PAYMENTS		
 		//struct DEBT_INSTALL_PAYMENTS: array of structs with each struct a loan
 		//int bank_id
 		//double loan_value
 		//double interest_rate
-		//double debt_install_payment
+		//double interest_payment
+		//double debt_installment_payment
 		//int maturity_day
 
-		//Sending debt_installment_payment_msg to all banks at which the firm has a loan 
-		imax = DEBT_INSTALL_PAYMENTS->size;
+		//compute interest_payments, total_interest_payment
+		imax = DEBT_INSTALLMENT_PAYMENTS->size;
+		TOTAL_INTEREST_PAYMENT =0;
 		for (i=0; i<imax;i++)
 		{
-			debt_install_payment = DEBT_INSTALL_PAYMENTS->array[i]->debt_install_payment;
-			bank_id = DEBT_INSTALL_PAYMENTS->array[i]->bank_id;				
+			DEBT_INSTALLMENT_PAYMENTS->array[i]->interest_payment = DEBT_INSTALLMENT_PAYMENTS->array[i]->interest_rate * DEBT_INSTALL_PAYMENTS->array[i]->loan_value;							
 
-			//Code: reduce the value of each loan by the debt_install_payment:
-
-			//pay the installment
-			DEBT_INSTALLMENT_PAYMENTS->array[i]->loan_value -= DEBT_INSTALLMENT_PAYMENTS->array[i]->debt_install_payment;
-			//tell the bank I paid
-			add_debt_installment_payment_message(FİRM_İD, debt_install_payment, bank_id)
+			//add to total
+			TOTAL_INTEREST_PAYMENT += DEBT_INSTALLMENT_PAYMENTS->array[i]->interest_payment;
+		}
+		
+		//compute total debt installment payments
+		TOTAL_DEBT_INSTALLMENT_PAYMENT =0;
+		for (i=0; i<imax;i++)
+		{
+			//add to total
+			TOTAL_DEBT_INSTALLMENT_PAYMENT += DEBT_INSTALLMENT_PAYMENTS->array[i]->debt_installment_payment;
 		}
 
-
+		//Actual payment of interest_payment and debt_installment_payment
 		if (CASH_HOLDINGS < TOTAL_DEBT_PAYMENT)
 		{
 			//Code: transform debt into equity
@@ -1184,8 +1191,33 @@ int Firm_compute_balance_sheet()
 		}
 		else
 		{
-			CASH_HOLDINGS -= TOTAL_DEBT_PAYMENT;
-			//Code: compute interest_payments, total_interest_payment
+			//Sending interest_payment_msg to all banks at which the firm has a loan 
+			imax = DEBT_INSTALLMENT_PAYMENTS->size;
+			for (i=0; i<imax;i++)
+			{
+				//subtract the interest_payment from the payment_account
+				PAYMENT_ACCOUNT -= DEBT_INSTALLMENT_PAYMENTS->array[i]->interest_payment;
+
+				//tell the bank I paid
+				add_interest_payment_message(ID, bank_id, interest_payment);
+			}
+			
+			//Sending debt_installment_payment_msg to all banks at which the firm has a loan
+			for (i=0; i<imax;i++)
+			{
+				//get data
+				debt_installment_payment = DEBT_INSTALLMENT_PAYMENTS->array[i]->debt_installment_payment;
+				bank_id = DEBT_INSTALLMENT_PAYMENTS->array[i]->bank_id;				
+
+				//pay the installment from the payment_account
+				PAYMENT_ACCOUNT -= DEBT_INSTALLMENT_PAYMENTS->array[i]->debt_installment_payment;
+
+				//decrease the value of the loan with the debt_install_payment:
+				DEBT_INSTALLMENT_PAYMENTS->array[i]->loan_value -= DEBT_INSTALLMENT_PAYMENTS->array[i]->debt_installment_payment;
+
+				//tell the bank I paid
+				add_debt_installment_payment_message(ID, bank_id, debt_installment_payment);
+			}
 
 		}
 
@@ -1222,7 +1254,7 @@ int Firm_compute_balance_sheet()
 		}
 		VALUE_LOCAL_INVENTORY=sum;
 
-		EQUITY = CASH_HOLDINGS + VALUE_CAPITAL_STOCK + VALUE_LOCAL_INVENTORY;
+		EQUITY = PAYMENT_ACCOUNT + VALUE_CAPITAL_STOCK + VALUE_LOCAL_INVENTORY;
 	}
 
 	return 0;

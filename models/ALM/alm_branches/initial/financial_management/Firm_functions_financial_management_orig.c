@@ -185,27 +185,47 @@ int Firm_calculate_income_payout()
     payment_account -= operational_costs;
 
     //Wage payment messages to workers
+ 	//Code in Firm::Producer Role
+/*   
+    	for(int i=0; i<EMPLOYEES->size;i++)
+		{
+			labour_costs += EMPLOYEES->array[i]->wage;
+
+			
+			add_wage_payment_message(ID,EMPLOYEES->array[i]->id,EMPLOYEES->array[i]->wage,TECHNOLOGICAL_FRONTIER,MEAN_SPECIFIC_SKILLS,MSGDATA);
+		}
+*/    
     //Payment messages for other inputs
+	//Code in Firm::Producer Role
+/*       
+    	add_pay_capital_goods_message(ID,capital_costs,MSGDATA );
+*/
+
+	//If multiple capital goods producers:    
+    //investment_good_producer_id = ;
+	//add_pay_capital_goods_message(ID,investment_good_producer_id,capital_costs,MSGDATA );
 
     //step 4:
     interest_payments=min(debt_interest_rate * current_debt,net_revenue-operational_costs);
 
     //Interest payment message to bank
-    add_interest_payment_message(firm_id, bank_id, interest_payments, range, x, y, z);
+    //bank_id = ;
+    add_interest_payment_message(ID, bank_id, interest_payments, range, x, y, z);
     payment_account -= interest_payments;
     
-    //if interest_payments exceed the resources available, the current debt is increased automatically to finance the interest payments
+    //if interest_payments exceed the resources available, the current debt is increased
+    //automatically to finance the interest payments
     target_loans=current_debt+max(0,debt_interest_rate*current_debt-interest_payments);
 
     //step 5: earnings
-    total_earnings=net_revenue-operational_costs-interest_payments;
+    EARNINGS = EBIT - TOTAL_INTEREST_PAYMENT;
 
     //step6: tax payments
     pretax_profit=max(0,total_earnings);
-    tax_provision=tax_rate_profit*pretax_profit;
+    TAX_PAYMENT = TAX_RATE_CORPORATE* EARNINGS;
 
     //Tax payment message to government
-      add_tax_payment_message(firm_id, tax_provision, range, x, y, z);
+      add_tax_payment_message(ID, TAX_PAYMENT, range, x, y, z);
       payment_account -= tax_provision;
     
     //step7: net earnings
@@ -219,7 +239,7 @@ int Firm_calculate_income_payout()
     financial_reserves=net_earnings-div_payments;
 
     //Dividend payment message to shareholders (the per share dividends)
-      add_div_payment_message(firm_id, div_pshare_ratio, range, x, y, z);
+      add_div_payment_message(ID, div_pshare_ratio, range, x, y, z);
 
     //step9 : retained earnings and investment decision
     retained_earnings = retained_earn_ratio * (net_earnings-div_payments);
@@ -266,7 +286,8 @@ int Firm_calculate_income_payout()
     financial_reserves=net_earnings-div_payments-retained_earnings-share_repurchase-debt_repayments;
 
     //Debt repayment message to bank:
-    add_debt_repayment_message(firm_id, bank_id, debt_repayments, range, x, y, z);
+    //bank_id= ;
+    add_debt_repayment_message(ID, bank_id, debt_repayments, range, x, y, z);
     payment_account -= debt_repayments;
     
     //step 12: determination of total financial needs
