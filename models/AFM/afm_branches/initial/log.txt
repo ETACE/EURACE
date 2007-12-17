@@ -411,8 +411,12 @@ Sander, rev 478
                 
 --------------------------------------------------------------------------------------
  Sander, rev 518
-	IPD: design changed from ClassifierSystem to ClassiferRule, to accomodate dynamic array of structs.
+	IPD: design changed from ClassifierSystem to ClassiferRule, to accommodate dynamic array of structs.
 		- changed AUTOMATON to AUTOMATA
 		- created EWAStruct to hold agent EWA parameters (in xml) and added EWAParameters (in agent memory)
 --------------------------------------------------------------------------------------
-	 
+ Sander, rev 523
+ Artificial_financial_market:
+	./IPDGame: added directory "CUnit_tests", containing tests for GA functions.
+	./Financial_management: moved "branched-bielefeld-model" to top SVN dir: ./Artificial_financial_market/branched-bielefeld-model
+--------------------------------------------------------------------------------------	 
