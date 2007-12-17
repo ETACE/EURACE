@@ -1113,8 +1113,6 @@ return 0;
 }
 
 /************Firm Role: Financial Management Role ********************************/
-
-
 int Firm_compute_income_statement()
 {
 	if(DAY%MONTH==DAY_OF_MONTH_TO_ACT)
@@ -1123,18 +1121,7 @@ int Firm_compute_income_statement()
 		EBIT= CUM_TOTAL_SOLD_QUANTITY*PRICE - COSTS;		
 		
 		//update the cash holdings
-		CASH_HOLDINGS += CUM_TOTAL_SOLD_QUANTITY*PRICE;
-		CASH_HOLDINGS -= TOTAL_INTEREST_PAYMENT;
-		CASH_HOLDINGS -= TAX_PAYMENT;
-
-		//Firm_compute_interest_payments()
-		//loop over all loans and compute
-		//INTEREST_PAYMENT[nrloans]
-		//TOTAL_INTEREST_PAYMENT
-
-		EARNINGS = EBIT - TOTAL_INTEREST_PAYMENT;
-		TAX_PAYMENT = TAX_RATE_CORPORATE* EARNINGS;
-		NET_EARNINGS = EARNINGS -TAX_PAYMENT;
+		PAYMENT_ACCOUNT += CUM_TOTAL_SOLD_QUANTITY*PRICE;
 	}
 
 	return 0;
@@ -1150,6 +1137,7 @@ int Firm_compute_balance_sheet()
 	{
 		//double PAYMENT_ACCOUNT: account out of which payments are made, to be separated from the income_account on which current sale receipts are incoming
 		//CASH_HOLDINGS: equal to payment_account???? Cash holdings is a ambiguous term.
+
 		//double TOTAL_DEBT_PAYMENT
 		//double TOTAL_INTEREST_PAYMENT
 		//double_array DEBT_INSTALLMENT_PAYMENTS		
@@ -1161,7 +1149,15 @@ int Firm_compute_balance_sheet()
 		//double debt_installment_payment
 		//int maturity_day
 
-		//compute interest_payments, total_interest_payment
+		//compute total debt installment payments
+		TOTAL_DEBT_INSTALLMENT_PAYMENT =0;
+		for (i=0; i<imax;i++)
+		{
+			//add to total
+			TOTAL_DEBT_INSTALLMENT_PAYMENT += DEBT_INSTALLMENT_PAYMENTS->array[i]->debt_installment_payment;
+		}
+
+		//compute TOTAL_INTEREST_PAYMENT
 		imax = DEBT_INSTALLMENT_PAYMENTS->size;
 		TOTAL_INTEREST_PAYMENT =0;
 		for (i=0; i<imax;i++)
@@ -1172,22 +1168,22 @@ int Firm_compute_balance_sheet()
 			TOTAL_INTEREST_PAYMENT += DEBT_INSTALLMENT_PAYMENTS->array[i]->interest_payment;
 		}
 		
-		//compute total debt installment payments
-		TOTAL_DEBT_INSTALLMENT_PAYMENT =0;
-		for (i=0; i<imax;i++)
-		{
-			//add to total
-			TOTAL_DEBT_INSTALLMENT_PAYMENT += DEBT_INSTALLMENT_PAYMENTS->array[i]->debt_installment_payment;
-		}
-
+		//continue balance sheet
+		EARNINGS = EBIT - TOTAL_INTEREST_PAYMENT;
+		TAX_PAYMENT = TAX_RATE_CORPORATE * EARNINGS;
+		NET_EARNINGS = EARNINGS - TAX_PAYMENT;
+		
+		//Actual payment of tax_payment
+		add_tax_payment_message(ID, gov_id, TAX_PAYMENT,MSGDATA);
+		
 		//Actual payment of interest_payment and debt_installment_payment
-		if (CASH_HOLDINGS < TOTAL_DEBT_PAYMENT)
+		if (PAYMENT_ACCOUNT < TOTAL_DEBT_PAYMENT)
 		{
 			//Code: transform debt into equity
 			//Code: debt is repaid partially
 			//Code: compute debt remaining to be paid
 
-			CASH_HOLDINGS = 0;
+			PAYMENT_ACCOUNT = 0;
 		}
 		else
 		{
@@ -1199,16 +1195,12 @@ int Firm_compute_balance_sheet()
 				PAYMENT_ACCOUNT -= DEBT_INSTALLMENT_PAYMENTS->array[i]->interest_payment;
 
 				//tell the bank I paid
-				add_interest_payment_message(ID, bank_id, interest_payment);
+				add_interest_payment_message(ID, bank_id, DEBT_INSTALLMENT_PAYMENTS->array[i]->interest_payment,MSGDATA);
 			}
 			
 			//Sending debt_installment_payment_msg to all banks at which the firm has a loan
 			for (i=0; i<imax;i++)
 			{
-				//get data
-				debt_installment_payment = DEBT_INSTALLMENT_PAYMENTS->array[i]->debt_installment_payment;
-				bank_id = DEBT_INSTALLMENT_PAYMENTS->array[i]->bank_id;				
-
 				//pay the installment from the payment_account
 				PAYMENT_ACCOUNT -= DEBT_INSTALLMENT_PAYMENTS->array[i]->debt_installment_payment;
 
@@ -1216,30 +1208,38 @@ int Firm_compute_balance_sheet()
 				DEBT_INSTALLMENT_PAYMENTS->array[i]->loan_value -= DEBT_INSTALLMENT_PAYMENTS->array[i]->debt_installment_payment;
 
 				//tell the bank I paid
-				add_debt_installment_payment_message(ID, bank_id, debt_installment_payment);
+				debt_installment_payment = DEBT_INSTALLMENT_PAYMENTS->array[i]->debt_installment_payment;
+				bank_id = DEBT_INSTALLMENT_PAYMENTS->array[i]->bank_id;				
+				add_debt_installment_payment_message(ID, bank_id, debt_installment_payment, MSGDATA);
 			}
-
 		}
 
 		//total_dividend_payment
 		//compute dividend_per_share
-		//add_dividend_message(dividend_per_share,MSGDATA);
+		//add_dividend_message(ID, dividend_per_share, MSGDATA);
 
 		//compute the equity of the firm
-		//CASH_HOLDINGS
-		//VALUE_CAPITAL_STOCK: estimated value of capital stock
-
-		//VALUE_CAPITAL_STOCK is a double array with elements for each new purchase of capital stock
-		//(the capital stock is dated)
-		//DEPRECIATION_VALUE_OF_CAPITAL_STOCK_PER_PERIOD: we assumed that the capital depreciation is constant
-		//over time and uniform over the depreciation period. Also it is the same for each new purchase of 			//capital. This may change lateron when we let the depreciation_value be a function of the value of
-		//capital stock at the time of purchase.
-
-		//We loop over all elements and update the current_value of each dated capital stock
+		//1. PAYMENT_ACCOUNT: cash holdings of the firm
+		//2. VALUE_CAPITAL_STOCK: estimated value of capital stock
+		//3. VALUE_LOCAL_INVENTORY
+		
+		
+		//The capital stock is heterogeneous.
+		//struct VALUE_CAPITAL_STOCK				: array of structs with each struct a purchased quantity of capital stock
+		//double depreciation_value_per_period		: we assume that the capital stock depreciates with a fixed value in each period.
+		//int nr_periods_before_total_depreciation  : after some periods the capitla stock is completely depreciated
+		//double current_value
+		
+		//We loop over all elements and update the current_value for each item of capital stock
 		imax = VALUE_CAPITAL_STOCK->size;
 		for (i=0;i<imax;i++)
 		{
-			VALUE_CAPITAL_STOCK->array[i]->current_value -= DEPRECIATION_VALUE_OF_CAPITAL_STOCK_PER_PERIOD;
+			VALUE_CAPITAL_STOCK->array[i]->current_value -= VALUE_CAPITAL_STOCK->array[i]->depreciation_value_per_period;
+			VALUE_CAPITAL_STOCK->array[i]->nr_periods_before_total_depreciation -= 1;
+			if (VALUE_CAPITAL_STOCK->array[i]->nr_periods_before_total_depreciation==0)
+			{
+				remove_array(VALUE_CAPITAL_STOCK, i); //the period of full depreciation has been reached
+			}
 		}
 
 		//VALUE_LOCAL_INVENTORY: estimated value of local inventory stocks at current mall prices
