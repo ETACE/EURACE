@@ -144,8 +144,8 @@ int Firm_compute_balance_sheet()
 
 		//step 8: compute the equity of the firm
 		//1. PAYMENT_ACCOUNT: remaining cash holdings of the firm
-		//2. VALUE_CAPITAL_STOCK: estimated value of capital stock
-		//3. VALUE_LOCAL_INVENTORY
+		//2. TOTAL_VALUE_CAPITAL_STOCK: estimated value of the capital stock
+		//3. TOTAL_VALUE_LOCAL_INVENTORY: value of all the local inventory stocks held at the malls
 		
 		//The capital stock is heterogeneous.
 		//struct VALUE_CAPITAL_STOCK				: array of structs with each struct a purchased quantity of capital stock
@@ -155,7 +155,7 @@ int Firm_compute_balance_sheet()
 		
 		//We loop over all capital installment items and update the current_value for each item in the capital stock
 		imax = VALUE_CAPITAL_STOCK->size;
-		CAPITAL_STOCK=0;
+		TOTAL_VALUE_CAPITAL_STOCK=0;
 		for (i=0;i<imax;i++)
 		{
 			//decrease the value of each installment of capital by its own depreciation value
@@ -166,22 +166,22 @@ int Firm_compute_balance_sheet()
 				remove_<datatype_name>(VALUE_CAPITAL_STOCK, i); //the period of full depreciation has been reached
 			}
 			//update the current value of the capital stock:
-			CAPITAL_STOCK += VALUE_CAPITAL_STOCK->array[i]->current_value;
+			TOTAL_VALUE_CAPITAL_STOCK += VALUE_CAPITAL_STOCK->array[i]->current_value;
 		}
 		
 		//VALUE_LOCAL_INVENTORY: estimated value of local inventory stocks at current mall prices
 		//We loop over all malls and sum the value of all local inventory stocks
 		imax = CURRENT_MALL_STOCKS->size;
-		sum=0;
+		sum=0.0;
 		for (i=0;i<imax;i++)
 		{
 			sum += PRICE*CURRENT_MALL_STOCKS->array[i]->current_stock;
 			//When malls have different current_price use this code:
 			//sum += CURRENT_MALL_STOCKS->array[i]->current_price * CURRENT_MALL_STOCKS->array[i]->current_stock;
 		}
-		VALUE_LOCAL_INVENTORY=sum;
+		TOTAL_VALUE_LOCAL_INVENTORY=sum;
 
-		EQUITY = PAYMENT_ACCOUNT + VALUE_CAPITAL_STOCK + VALUE_LOCAL_INVENTORY;
+		EQUITY = PAYMENT_ACCOUNT + TOTAL_VALUE_CAPITAL_STOCK + TOTAL_VALUE_LOCAL_INVENTORY;
 	}
 
 	return 0;
