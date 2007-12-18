@@ -1,0 +1,17 @@
+/***********************************
+Description: 
+This file contains details of various changes made to the branched-bielefeld-model. 
+*************************************/
+--------------------------------------------------------------------------------------
+Sander, rev 527
+	Firm_functions_Istanbul.c
+		removed functions:
+		Firm_compute_income_statement()
+		Firm_compute_balance_sheet()
+	Firm_financial_management_functions.c: functions for financial management role
+		added code for computation of the balance sheet
+--------------------------------------------------------------------------------------
+Sander, rev 529
+	Firm_financial_management_functions.c:
+		added function Firm_compute_payout_policy()
+--------------------------------------------------------------------------------------
