@@ -419,4 +419,5 @@ Sander, rev 478
  Artificial_financial_market:
 	./IPDGame: added directory "CUnit_tests", containing tests for GA functions.
 	./Financial_management: moved "branched-bielefeld-model" to top SVN dir: ./Artificial_financial_market/branched-bielefeld-model
+	Testing...
 --------------------------------------------------------------------------------------	 
