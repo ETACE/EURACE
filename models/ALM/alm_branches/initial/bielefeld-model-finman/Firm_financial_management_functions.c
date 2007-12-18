@@ -26,10 +26,10 @@ int Firm_compute_income_statement()
 
 /*
  * \fn: int Firm_compute_balance_sheet()
- * \brief: This function computes the balance sheet of the firm:
- *  - debt_installment_payments
+ * \brief: This function computes the balance sheet of the firm at the END of the accounting period (month).
+ * The firm makes the actual payments by setting these values:
  *  - total_debt_installment_payment
- *  - interest_payments
+ *  - total_interest_payments
  *  - tax_payment
  *  - total_dividend_payment
  *  - value_capital_stock
@@ -59,17 +59,9 @@ int Firm_compute_balance_sheet()
 		//double debt_installment_payment	: installment payment per period
 		//int nr_periods_before_maturity 	: nr of periods to go before the loan has to be fully repaid
 
-		//compute total debt installment payments
-		TOTAL_DEBT_INSTALLMENT_PAYMENT =0;
-		for (i=0; i<imax;i++)
-		{
-			//add to total
-			TOTAL_DEBT_INSTALLMENT_PAYMENT += DEBT_INSTALLMENT_PAYMENTS->array[i]->debt_installment_payment;
-		}
-
-		//compute TOTAL_INTEREST_PAYMENT
-		imax = DEBT_INSTALLMENT_PAYMENTS->size;
+		//step 1: compute total interest payments
 		TOTAL_INTEREST_PAYMENT =0;
+		imax = DEBT_INSTALLMENT_PAYMENTS->size;
 		for (i=0; i<imax;i++)
 		{
 			DEBT_INSTALLMENT_PAYMENTS->array[i]->interest_payment = DEBT_INSTALLMENT_PAYMENTS->array[i]->interest_rate * DEBT_INSTALL_PAYMENTS->array[i]->loan_value;							
@@ -78,15 +70,25 @@ int Firm_compute_balance_sheet()
 			TOTAL_INTEREST_PAYMENT += DEBT_INSTALLMENT_PAYMENTS->array[i]->interest_payment;
 		}
 		
-		//continue balance sheet
-		EARNINGS = EBIT - TOTAL_INTEREST_PAYMENT;
-		TAX_PAYMENT = TAX_RATE_CORPORATE * EARNINGS;
-		NET_EARNINGS = EARNINGS - TAX_PAYMENT;
-		
-		//Actual payment of tax_payment
+		//step 2: compute total debt installment payments
+		TOTAL_DEBT_INSTALLMENT_PAYMENT =0;
+		for (i=0; i<imax;i++)
+		{
+			//add to total
+			TOTAL_DEBT_INSTALLMENT_PAYMENT += DEBT_INSTALLMENT_PAYMENTS->array[i]->debt_installment_payment;
+		}
+				
+		//step 3: Actual tax_payment to government
 		add_tax_payment_message(ID, gov_id, TAX_PAYMENT,MSGDATA);
 		
-		//Actual payment of interest_payment and debt_installment_payment
+		//step 4,5: continue balance sheet (net earnings, earnings per share)
+		EARNINGS = EBIT - TOTAL_INTEREST_PAYMENT;
+		TAX_PAYMENT = TAX_RATE_CORPORATE * EARNINGS;
+		PREVIOUS_NET_EARNINGS = NET_EARNINGS;
+		NET_EARNINGS = EARNINGS - TAX_PAYMENT;
+	    EARNINGS_PER_SHARE = NET_EARNINGS/CURRENT_SHARES_OUTSTANDING;
+
+		//step 6: Actual interest_payments and debt_installment_payments
 		if (PAYMENT_ACCOUNT < TOTAL_DEBT_PAYMENT)
 		{
 			//Code: transform debt into equity
@@ -127,15 +129,23 @@ int Firm_compute_balance_sheet()
 			}
 		}
 
-		//total_dividend_payment
-		//compute dividend_per_share
-		//add_dividend_message(ID, dividend_per_share, MSGDATA);
+		//step 7: Actual total_dividend_payment
+		//continue balance sheet (data pertains to the period that just ended)
+		PREVIOUS_DIVIDEND_PER_SHARE = CURRENT_DIVIDEND_PER_SHARE;
+		CURRENT_DIVIDEND_PER_SHARE = TOTAL_DIVIDEND_PAYMENT/CURRENT_SHARES_OUTSTANDING;
+		PREVIOUS_DIVIDEND_PER_EARNINGS = CURRENT_DIVIDEND_PER_EARNINGS;
+		CURRENT_DIVIDEND_PER_EARNINGS = TOTAL_DIVIDEND_PAYMENT/EARNINGS;
+				
+		//add dividend_payment_msg to shareholders (dividend per share)		
+		add_dividend_payment_message(ID, CURRENT_DIVIDEND_PER_SHARE, MSGDATA);
 
-		//compute the equity of the firm
-		//1. PAYMENT_ACCOUNT: cash holdings of the firm
+		//decrease payment_account with the total_dividend_payment
+		PAYMENT_ACCOUNT -= TOTAL_DIVIDEND_PAYMENT;
+
+		//step 8: compute the equity of the firm
+		//1. PAYMENT_ACCOUNT: remaining cash holdings of the firm
 		//2. VALUE_CAPITAL_STOCK: estimated value of capital stock
 		//3. VALUE_LOCAL_INVENTORY
-		
 		
 		//The capital stock is heterogeneous.
 		//struct VALUE_CAPITAL_STOCK				: array of structs with each struct a purchased quantity of capital stock
@@ -143,18 +153,22 @@ int Firm_compute_balance_sheet()
 		//int nr_periods_before_total_depreciation  : after some periods the capital stock is completely depreciated
 		//double current_value
 		
-		//We loop over all elements and update the current_value for each item of capital stock
+		//We loop over all capital installment items and update the current_value for each item in the capital stock
 		imax = VALUE_CAPITAL_STOCK->size;
+		CAPITAL_STOCK=0;
 		for (i=0;i<imax;i++)
 		{
+			//decrease the value of each installment of capital by its own depreciation value
 			VALUE_CAPITAL_STOCK->array[i]->current_value -= VALUE_CAPITAL_STOCK->array[i]->depreciation_value_per_period;
 			VALUE_CAPITAL_STOCK->array[i]->nr_periods_before_total_depreciation -= 1;
 			if (VALUE_CAPITAL_STOCK->array[i]->nr_periods_before_total_depreciation==0)
 			{
-				remove_array(VALUE_CAPITAL_STOCK, i); //the period of full depreciation has been reached
+				remove_<datatype_name>(VALUE_CAPITAL_STOCK, i); //the period of full depreciation has been reached
 			}
+			//update the current value of the capital stock:
+			CAPITAL_STOCK += VALUE_CAPITAL_STOCK->array[i]->current_value;
 		}
-
+		
 		//VALUE_LOCAL_INVENTORY: estimated value of local inventory stocks at current mall prices
 		//We loop over all malls and sum the value of all local inventory stocks
 		imax = CURRENT_MALL_STOCKS->size;
@@ -173,3 +187,63 @@ int Firm_compute_balance_sheet()
 	return 0;
 }
 
+/*
+ * \fn: int Firm_compute_payout_policy()
+ * \brief: This function computes the planned payout policy and the financial needs for the upcoming production cycle
+ * The values computed in this function are only planned values, not fixed, since the payout policy
+ * can be subject to revision if it turns out to be insupportable by the obtained financial resources.
+ */
+int Firm_compute_payout_policy()
+{
+	//step 9: compute planned_total_interest_payment for upcoming production cycle
+	PLANNED_TOTAL_INTEREST_PAYMENT =0;
+	imax = DEBT_INSTALLMENT_PAYMENTS->size;
+	for (i=0; i<imax;i++)
+	{
+		DEBT_INSTALLMENT_PAYMENTS->array[i]->interest_payment = DEBT_INSTALLMENT_PAYMENTS->array[i]->interest_rate * DEBT_INSTALL_PAYMENTS->array[i]->loan_value;							
+
+		//add to total
+		PLANNED_TOTAL_INTEREST_PAYMENT += DEBT_INSTALLMENT_PAYMENTS->array[i]->interest_payment;
+	}
+	
+	//step 10: compute planned_total_debt_installment_payment for upcoming production cycle
+	PLANNED_TOTAL_DEBT_INSTALLMENT_PAYMENT =0;
+	for (i=0; i<imax;i++)
+	{
+		//add to total
+		PLANNED_TOTAL_DEBT_INSTALLMENT_PAYMENT += DEBT_INSTALLMENT_PAYMENTS->array[i]->debt_installment_payment;
+	}
+	
+	//step 11: compute planned_total_dividend_payment.
+	//Goal: maintain a constant dividend to earnings ratio
+	//But: do not decrease the dividend per share ratio.
+	if (CURRENT_DIVIDEND_PER_EARNINGS < PREVIOUS_DIVIDEND_PER_EARNINGS)
+	{
+		//D_{t} = (D_{t-1}/E_{t-1})*E_{t}
+		PLANNED_TOTAL_DIVIDEND_PAYMENT = PREVIOUS_DIVIDEND_PER_EARNINGS * NET_EARNINGS;
+		
+		//do not decrease the dividend per share ratio
+		if (PLANNED_TOTAL_DIVIDEND_PAYMENT/CURRENT_SHARES_OUTSTANDING < CURRENT_DIVIDEND_PER_SHARE)
+		{
+			TOTAL_DIVIDEND_PAYMENT = CURRENT_DIVIDEND_PER_SHARE * CURRENT_SHARES_OUTSTANDING;
+		}
+		else
+		{
+			TOTAL_DIVIDEND_PAYMENT = PLANNED_TOTAL_DIVIDEND_PAYMENT;
+		}
+	}
+	else
+	{
+		//keep the dividend per share ratio
+		TOTAL_DIVIDEND_PAYMENT = PREVIOUS_DIVIDEND_PER_SHARE*CURRENT_SHARES_OUTSTANDING;
+	}
+	
+	//re-compute the final dividend per share ratio, given the total_dividend_payment
+	CURRENT_DIVIDEND_PER_SHARE = TOTAL_DIVIDEND_PAYMENT/CURRENT_SHARES_OUTSTANDING;
+	CURRENT_DIVIDEND_PER_EARNINGS = TOTAL_DIVIDEND_PAYMENT/EARNINGS;
+		
+	//step 12: set financial_needs for the upcoming production cycle
+	FINANCIAL_NEEDS = PLANNED_TOTAL_INTEREST_PAYMENT + PLANNED_TOTAL_DEBT_INSTALLMENT_PAYMENT + TOTAL_DIVIDEND_PAYMENT + CAPITAL_COSTS;
+	
+	return 0;
+}
