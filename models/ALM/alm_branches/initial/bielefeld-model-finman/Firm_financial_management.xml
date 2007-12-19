@@ -120,26 +120,6 @@
 </depends>
 </function>
 
-<!---Role: Asset Market Role-->
-<function><name>Firm_compute_stock_orders</name>
-<depends>
-<name>Firm_compute_payout_policy</name><type>internal</type>
-</depends>
-</function>
-<function><name>Firm_compute_bond_orders</name>
-<depends>
-<name>Firm_compute_payout_policy</name><type>internal</type>
-</depends>
-</function>
-<function><name>Firm_update_outstanding_shares</name>
-<depends>
-<name>Firm_compute_stock_orders</name><type>internal</type>
-</depends>
-<depends>
-<name>Firm_compute_bond_orders</name><type>internal</type>
-</depends>
-</function>
-
 <!---Role: Credit Market Role-->
 <function><name>Firm_apply_for_credit</name>
 <depends>
@@ -147,10 +127,82 @@
 </depends>
 </function>
 
+<function><name>Firm_read_credit_offers</name>
+<depends>
+<name>Firm_apply_for_credit</name><type>internal</type>
+</depends>
+</function>
+
+<!---Role: Asset Market Role-->
+<function><name>Firm_issue_equity</name>
+<depends>
+<name>Firm_read_credit_offers</name><type>internal</type>
+</depends>
+</function>
+
+<function><name>Firm_compute_stock_orders</name>
+<depends>
+<name>Firm_issue_equity</name><type>internal</type>
+</depends>
+</function>
+<function><name>Firm_compute_bond_orders</name>
+<depends>
+<name>Firm_issue_equity</name><type>internal</type>
+</depends>
+</function>
+
+<function><name>Firm_update_outstanding_shares</name>
+<depends>
+	<name>Clearinghouse_send_transaction_message</name>
+	<type>firm_stock_transaction</type>
+</depends>
+</function>
+
 </functions>
 </xmachine>
 <!--*********************** End of Agent - Firm *****************************-->
 
+
+<!--********************* X-machine Agent - Clearinghouse ****************************-->
+<xmachine>
+<name>Clearinghouse</name>
+<!----------------- Variables-------------------------------------------------->
+<!-- All variables used by clearing house are declared here to allocate them in memory -->
+<memory>
+<var><type>double</type><name>iradius</name></var>
+<var><type>double</type><name>posx</name></var>
+<var><type>double</type><name>posy</name></var>
+
+</memory>
+<!----------------- Defining functions ---------------------------------------->
+
+<!--- asset market role-->
+<functions>
+
+<function><name>Clearinghouse_read_order_messages</name>
+	<depends>
+		<name>Firm_compute_stock_orders</name>
+		<type>firm_stock_order</type>
+	</depends>
+</function>
+
+<function><name>Clearinghouse_compute_transactions</name>
+	<depends>
+		<name>Clearinghouse_read_order_messages</name>
+		<type>internal</type>
+	</depends>
+</function>
+
+<function><name>Clearinghouse_send_transaction_message</name>
+	<depends>
+		<name>Clearinghouse_compute_transactions</name>
+		<type>internal</type>
+	</depends>
+</function>
+
+</functions>
+</xmachine>
+<!--*********************** End of Agent - Clearinghouse *****************************-->
 
 <!--******** Messages being posted by the agents to communicate *************-->
 <messages>
@@ -210,6 +262,7 @@
 <var><type>int</type><name>firm_id</name></var>
 <var><type>int</type><name>bank_id</name></var>
 <var><type>double</type><name>credit_demand</name></var>
+<var><type>double</type><name>range</name></var>
 <var><type>double</type><name>x</name></var>
 <var><type>double</type><name>y</name></var>
 <var><type>double</type><name>z</name></var>
@@ -221,6 +274,7 @@
 <var><type>int</type><name>bank_id</name></var>
 <var><type>int</type><name>firm_id</name></var>
 <var><type>double</type><name>credit_offered</name></var>
+<var><type>double</type><name>range</name></var>
 <var><type>double</type><name>x</name></var>
 <var><type>double</type><name>y</name></var>
 <var><type>double</type><name>z</name></var>
@@ -232,6 +286,7 @@
 <var><type>int</type><name>firm_id</name></var>
 <var><type>int</type><name>bank_id</name></var>
 <var><type>double</type><name>credit_amount</name></var>
+<var><type>double</type><name>range</name></var>
 <var><type>double</type><name>x</name></var>
 <var><type>double</type><name>y</name></var>
 <var><type>double</type><name>z</name></var>
