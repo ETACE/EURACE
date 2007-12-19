@@ -1,0 +1,48 @@
+digraph dependency_graph {
+	rankdir=BT;
+	size="8,5"
+	node [shape = rect];
+	
+	/* Functions */
+	Clearinghouse_send_transaction_messages[height = 0.000000, label = "Clearinghouse_send_transaction_messages\n(0 lines)"]
+	Clearinghouse_compute_transactions[height = 0.000000, label = "Clearinghouse_compute_transactions\n(0 lines)"]
+	Clearinghouse_read_order_messages[height = 0.000000, label = "Clearinghouse_read_order_messages\n(0 lines)"]
+	Household_read_transaction_message[height = 0.000000, label = "Household_read_transaction_message\n(0 lines)"]
+	Household_compute_firm_stock_orders[height = 0.000000, label = "Household_compute_firm_stock_orders\n(0 lines)"]
+	Household_compute_government_bond_orders[height = 0.000000, label = "Household_compute_government_bond_orders\n(0 lines)"]
+	Household_compute_firm_bond_orders[height = 0.000000, label = "Household_compute_firm_bond_orders\n(0 lines)"]
+	Household_compute_asset_budget[height = 0.000000, label = "Household_compute_asset_budget\n(0 lines)"]
+	Household_entry_decision[height = 0.000000, label = "Household_entry_decision\n(0 lines)"]
+	Household_compute_financial_needs_daily[height = 0.000000, label = "Household_compute_financial_needs_daily\n(0 lines)"]
+	Household_update_asset_portfolio[height = 0.000000, label = "Household_update_asset_portfolio\n(0 lines)"]
+	Household_compute_financial_needs_monthly[height = 0.000000, label = "Household_compute_financial_needs_monthly\n(0 lines)"]
+	Household_compute_consumption_budget[height = 0.000000, label = "Household_compute_consumption_budget\n(0 lines)"]
+	Household_compute_cash_on_hands[height = 0.000000, label = "Household_compute_cash_on_hands\n(0 lines)"]
+	Household_compute_asset_wealth[height = 0.000000, label = "Household_compute_asset_wealth\n(0 lines)"]
+	Household_compute_total_budget[height = 0.000000, label = "Household_compute_total_budget\n(0 lines)"]
+	Household_compute_net_income[height = 0.000000, label = "Household_compute_net_income\n(0 lines)"]
+	Household_compute_monthly_taxes[height = 0.000000, label = "Household_compute_monthly_taxes\n(0 lines)"]
+	Household_compute_gross_income[height = 0.000000, label = "Household_compute_gross_income\n(0 lines)"]
+	Household_compute_income_and_financial_needs[height = 0.000000, label = "Household_compute_income_and_financial_needs\n(0 lines)"]
+	
+	/* Dependencies */
+	Clearinghouse_send_transaction_messages -> Clearinghouse_compute_transactions [ label = "<depends on internal>" ];
+	Clearinghouse_compute_transactions -> Clearinghouse_read_order_messages [ label = "<depends on internal>" ];
+	Clearinghouse_read_order_messages -> Household_compute_firm_stock_orders [ label = "<depends on firm_stock_order>" ];
+	Household_read_transaction_message -> Clearinghouse_send_transaction_messages [ label = "<depends on firm_stock_transaction>" ];
+	Household_compute_firm_stock_orders -> Household_compute_asset_budget [ label = "<depends on internal>" ];
+	Household_compute_government_bond_orders -> Household_compute_asset_budget [ label = "<depends on internal>" ];
+	Household_compute_firm_bond_orders -> Household_compute_asset_budget [ label = "<depends on internal>" ];
+	Household_compute_asset_budget -> Household_entry_decision [ label = "<depends on internal>" ];
+	Household_entry_decision -> Household_compute_financial_needs_monthly [ label = "<depends on internal>" ];
+	Household_entry_decision -> Household_compute_financial_needs_daily [ label = "<depends on internal>" ];
+	Household_compute_financial_needs_daily -> Household_update_asset_portfolio [ label = "<depends on internal>" ];
+	Household_compute_financial_needs_monthly -> Household_compute_consumption_budget [ label = "<depends on internal>" ];
+	Household_compute_consumption_budget -> Household_compute_cash_on_hands [ label = "<depends on internal>" ];
+	Household_compute_cash_on_hands -> Household_compute_asset_wealth [ label = "<depends on internal>" ];
+	Household_compute_cash_on_hands -> Household_compute_total_budget [ label = "<depends on internal>" ];
+	Household_compute_total_budget -> Household_compute_net_income [ label = "<depends on internal>" ];
+	Household_compute_net_income -> Household_compute_monthly_taxes [ label = "<depends on internal>" ];
+	Household_compute_monthly_taxes -> Household_compute_gross_income [ label = "<depends on internal>" ];
+	Household_compute_gross_income -> Household_compute_income_and_financial_needs [ label = "<depends on internal>" ];
+}

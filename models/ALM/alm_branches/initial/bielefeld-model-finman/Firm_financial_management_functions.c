@@ -259,3 +259,26 @@ int Firm_compute_payout_policy()
 		}
 	return 0;
 }
+
+
+/*
+ * \fn: Firm_apply_for_credit()
+ * \brief: This function sends a credit_demand_message
+ */
+int Firm_apply_for_credit()
+{
+   add_credit_demand_message(firm_id, bank_id, EXTERNAL_FINANCIAL_NEEDS);
+
+   return 0;
+}
+
+/*
+ * \fn: Firm_issue_equity()
+ * \brief: This function sends a firm_stock_order_message to the clearinghouse.
+ */
+int Firm_issue_equity()
+{
+   add_firm_stock_order_message(firm_id, clearinghouse_id, - EXTERNAL_FINANCIAL_NEEDS);
+
+return 0;
+}
