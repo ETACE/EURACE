@@ -420,4 +420,14 @@ Sander, rev 478
 	./IPDGame: added directory "CUnit_tests", containing tests for GA functions.
 	./Financial_management: moved "branched-bielefeld-model" to top SVN dir: ./Artificial_financial_market/branched-bielefeld-model
 	Testing...
+--------------------------------------------------------------------------------------
+Sander, rev 532
+	./branched-bielefeld-model:  added a log.txt file to this directory to keep a log of changes
+	./Financial_management: added a log.txt file to this directory to keep a log of changes
+							added Household_financial_management.xml
+							added Household_financial_management_functions.c: still old code, should be updated (Sander)
+	./portfolio_selection_ewa:
+		made a copy: model.xml -> Household_FinancialManagementRole-EWA_LearningRole.xml
+		This is to have a naming schedule for separate xml files for each role. 
+		Later on we like to do merging of xml files, so each role should have a separete one to facilitate his?
 --------------------------------------------------------------------------------------	 

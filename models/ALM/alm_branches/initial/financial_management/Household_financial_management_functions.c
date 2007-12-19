@@ -6,7 +6,7 @@
 /************Household Role: Financial Management********************************/
 
 //Household_calc_financial_management()
-int Household_calculate_income_payout()
+int Household_compute_income_and_financial_needs()
 {
 
 double income_account=get_income_account();   //the running income account
