@@ -51,7 +51,7 @@ int Firm_compute_balance_sheet()
 		//double TOTAL_INTEREST_PAYMENT
 		//double_array DEBT_INSTALLMENT_PAYMENTS		
 
-		//struct DEBT_INSTALL_PAYMENTS		: array of structs with each struct a loan
+		//struct LOANS		: array of structs with each struct a loan
 		//int bank_id						: bank at which the loan was obtained
 		//double loan_value					: total value of the loan remaining
 		//double interest_rate				: interest for this loan
@@ -64,7 +64,7 @@ int Firm_compute_balance_sheet()
 		imax = DEBT_INSTALLMENT_PAYMENTS->size;
 		for (i=0; i<imax;i++)
 		{
-			DEBT_INSTALLMENT_PAYMENTS->array[i]->interest_payment = DEBT_INSTALLMENT_PAYMENTS->array[i]->interest_rate * DEBT_INSTALL_PAYMENTS->array[i]->loan_value;							
+			DEBT_INSTALLMENT_PAYMENTS->array[i]->interest_payment = DEBT_INSTALLMENT_PAYMENTS->array[i]->interest_rate * LOANS->array[i]->loan_value;							
 
 			//add to total
 			TOTAL_INTEREST_PAYMENT += DEBT_INSTALLMENT_PAYMENTS->array[i]->interest_payment;
@@ -104,27 +104,27 @@ int Firm_compute_balance_sheet()
 			for (i=0; i<imax;i++)
 			{
 				//subtract the interest_payment from the payment_account
-				PAYMENT_ACCOUNT -= DEBT_INSTALLMENT_PAYMENTS->array[i]->interest_payment;
+				PAYMENT_ACCOUNT -= LOANS->array[i]->interest_payment;
 
 				//tell the bank I paid
-				add_interest_payment_message(ID, bank_id, DEBT_INSTALLMENT_PAYMENTS->array[i]->interest_payment,MSGDATA);
+				add_interest_payment_message(ID, bank_id, LOANS->array[i]->interest_payment,MSGDATA);
 			}
 			
 			//Sending debt_installment_payment_msg to all banks at which the firm has a loan
 			for (i=0; i<imax;i++)
 			{
 				//pay the installment from the payment_account
-				PAYMENT_ACCOUNT -= DEBT_INSTALLMENT_PAYMENTS->array[i]->debt_installment_payment;
+				PAYMENT_ACCOUNT -= LOANS->array[i]->debt_installment_payment;
 
 				//decrease the value of the loan with the debt_install_payment:
-				DEBT_INSTALLMENT_PAYMENTS->array[i]->loan_value -= DEBT_INSTALLMENT_PAYMENTS->array[i]->debt_installment_payment;
+				LOANS->array[i]->loan_value -= LOANS->array[i]->debt_installment_payment;
 
 				//decrease the value of the nr_periods_before_maturity
-				DEBT_INSTALLMENT_PAYMENTS->array[i]->nr_periods_before_maturity -= 1;
+				LOANS->array[i]->nr_periods_before_maturity -= 1;
 				
 				//tell the bank I paid
-				debt_installment_payment = DEBT_INSTALLMENT_PAYMENTS->array[i]->debt_installment_payment;
-				bank_id = DEBT_INSTALLMENT_PAYMENTS->array[i]->bank_id;				
+				debt_installment_payment = LOANS->array[i]->debt_installment_payment;
+				bank_id = LOANS->array[i]->bank_id;				
 				add_debt_installment_payment_message(ID, bank_id, debt_installment_payment, MSGDATA);
 			}
 		}
@@ -197,13 +197,13 @@ int Firm_compute_payout_policy()
 {
 	//step 9: compute planned_total_interest_payment for upcoming production cycle
 	PLANNED_TOTAL_INTEREST_PAYMENT =0;
-	imax = DEBT_INSTALLMENT_PAYMENTS->size;
+	imax = LOANS->size;
 	for (i=0; i<imax;i++)
 	{
-		DEBT_INSTALLMENT_PAYMENTS->array[i]->interest_payment = DEBT_INSTALLMENT_PAYMENTS->array[i]->interest_rate * DEBT_INSTALL_PAYMENTS->array[i]->loan_value;							
+		LOANS->array[i]->interest_payment = LOANS->array[i]->interest_rate * LOANS->array[i]->loan_value;							
 
 		//add to total
-		PLANNED_TOTAL_INTEREST_PAYMENT += DEBT_INSTALLMENT_PAYMENTS->array[i]->interest_payment;
+		PLANNED_TOTAL_INTEREST_PAYMENT += LOANS->array[i]->interest_payment;
 	}
 	
 	//step 10: compute planned_total_debt_installment_payment for upcoming production cycle
@@ -211,7 +211,7 @@ int Firm_compute_payout_policy()
 	for (i=0; i<imax;i++)
 	{
 		//add to total
-		PLANNED_TOTAL_DEBT_INSTALLMENT_PAYMENT += DEBT_INSTALLMENT_PAYMENTS->array[i]->debt_installment_payment;
+		PLANNED_TOTAL_DEBT_INSTALLMENT_PAYMENT += LOANS->array[i]->debt_installment_payment;
 	}
 	
 	//step 11: compute planned_total_dividend_payment.
@@ -228,9 +228,9 @@ int Firm_compute_payout_policy()
 			TOTAL_DIVIDEND_PAYMENT = CURRENT_DIVIDEND_PER_SHARE * CURRENT_SHARES_OUTSTANDING;
 		}
 		else
-		{
-			TOTAL_DIVIDEND_PAYMENT = PLANNED_TOTAL_DIVIDEND_PAYMENT;
-		}
+			{
+				TOTAL_DIVIDEND_PAYMENT = PLANNED_TOTAL_DIVIDEND_PAYMENT;
+			}
 	}
 	else
 	{
@@ -243,7 +243,19 @@ int Firm_compute_payout_policy()
 	CURRENT_DIVIDEND_PER_EARNINGS = TOTAL_DIVIDEND_PAYMENT/EARNINGS;
 	
 	//step 12: set financial_needs for the upcoming production cycle
-	FINANCIAL_NEEDS = PLANNED_TOTAL_INTEREST_PAYMENT + PLANNED_TOTAL_DEBT_INSTALLMENT_PAYMENT + TOTAL_DIVIDEND_PAYMENT + CAPITAL_COSTS;
+	//The total production costs (labor costs + capital investments) come from the function Firm_calc_pay_costs
+	TOTAL_FINANCIAL_NEEDS = PLANNED_TOTAL_INTEREST_PAYMENT + PLANNED_TOTAL_DEBT_INSTALLMENT_PAYMENT + TOTAL_DIVIDEND_PAYMENT + CAPITAL_COSTS;
 	
+	//Check if external financing is needed.
+	if (TOTAL_FINANCIAL_NEEDS < PAYMENT_ACCOUNT)
+	{
+		INTERNAL_FINANCIAL_NEEDS = TOTAL_FINANCIAL_NEEDS;
+		EXTERNAL_FINANCIAL_NEEDS = 0;
+	}
+	else
+		{
+			INTERNAL_FINANCIAL_NEEDS = PAYMENT_ACCOUNT;
+			EXTERNAL_FINANCIAL_NEEDS = TOTAL_FINANCIAL_NEEDS - PAYMENT_ACCOUNT;
+		}
 	return 0;
 }

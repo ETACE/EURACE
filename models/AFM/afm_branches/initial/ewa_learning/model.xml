@@ -24,7 +24,7 @@
 
 <!--Auxiliary structs-->
 
-	<datatype>
+<datatype>
 <name>string</name>
 <var><type>char_array</type><name>stringname</name></var>
 </datatype>

@@ -3,9 +3,10 @@ Description:
 This file contains details of changes made to ./financial_management_role. 
 *************************************/
 --------------------------------------------------------------------------------------
-Sander, rev 5
-Added Household_financial_management.xml
+Sander, rev 533
+	Added Firm_financial_management.xml
 
-Added Household_financial_management.xml
-	This file is the xml code for the original financial_management c code made in Bielefedl by Mariam and Sander.
+	Added Household_financial_management.xml
+		This file is the xml code for the original financial_management_functions.c
+		made in Bielefeld by Mariam and Sander.
 --------------------------------------------------------------------------------------
