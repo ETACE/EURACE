@@ -163,13 +163,13 @@ int Firm_compute_balance_sheet()
 			VALUE_CAPITAL_STOCK->array[i]->nr_periods_before_total_depreciation -= 1;
 			if (VALUE_CAPITAL_STOCK->array[i]->nr_periods_before_total_depreciation==0)
 			{
-				remove_<datatype_name>(VALUE_CAPITAL_STOCK, i); //the period of full depreciation has been reached
+				remove_value_capital_stock_item(VALUE_CAPITAL_STOCK, i); //the period of full depreciation has been reached
 			}
 			//update the current value of the capital stock:
 			TOTAL_VALUE_CAPITAL_STOCK += VALUE_CAPITAL_STOCK->array[i]->current_value;
 		}
 		
-		//VALUE_LOCAL_INVENTORY: estimated value of local inventory stocks at current mall prices
+		//TOTAL_VALUE_LOCAL_INVENTORY: estimated value of local inventory stocks at current mall prices
 		//We loop over all malls and sum the value of all local inventory stocks
 		imax = CURRENT_MALL_STOCKS->size;
 		sum=0.0;
@@ -241,7 +241,7 @@ int Firm_compute_payout_policy()
 	//re-compute the final dividend per share ratio, given the total_dividend_payment
 	CURRENT_DIVIDEND_PER_SHARE = TOTAL_DIVIDEND_PAYMENT/CURRENT_SHARES_OUTSTANDING;
 	CURRENT_DIVIDEND_PER_EARNINGS = TOTAL_DIVIDEND_PAYMENT/EARNINGS;
-		
+	
 	//step 12: set financial_needs for the upcoming production cycle
 	FINANCIAL_NEEDS = PLANNED_TOTAL_INTEREST_PAYMENT + PLANNED_TOTAL_DEBT_INSTALLMENT_PAYMENT + TOTAL_DIVIDEND_PAYMENT + CAPITAL_COSTS;
 	
