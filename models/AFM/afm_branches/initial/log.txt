@@ -430,4 +430,9 @@ Sander, rev 532
 		made a copy: model.xml -> Household_FinancialManagementRole-EWA_LearningRole.xml
 		This is to have a naming schedule for separate xml files for each role. 
 		Later on we like to do merging of xml files, so each role should have a separete one to facilitate his?
---------------------------------------------------------------------------------------	 
+--------------------------------------------------------------------------------------
+Sander, rev 533
+	Renamed ./portfolio_selection_ewa -> ewa_learning
+	./branched-bielefeld-model: added Firm_financial_management.xml
+			see ./branched-bielefeld-model/log.txt for variable names for this role.
+--------------------------------------------------------------------------------------

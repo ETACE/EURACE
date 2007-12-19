@@ -4,6 +4,12 @@
 #include "math.h"
 
 /************Household Role: Financial Management********************************/
+/*
+ * TODO:
+ * 1. update code using capitalized variable names
+ * 2. function names at bottom: change CamelCaps into camel_caps names.
+ */
+
 
 //Household_calc_financial_management()
 int Household_compute_income_and_financial_needs()

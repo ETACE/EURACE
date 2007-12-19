@@ -15,23 +15,26 @@ Sander, rev 529
 	Firm_financial_management_functions.c:
 		added function Firm_compute_payout_policy()
 --------------------------------------------------------------------------------------
-Sander, rev 531
+Sander, rev 533
 
-Firm::Financial_management Role variable names:
+./branched-bielefeld-model: added Firm_financial_management.xml
+
+Role variables:
 
 ebit
 payment_account
 
-datatype:
+New datatype:
 struct debt_item
+{
 int bank_id
 double loan_value
 double interest_rate
 double interest_payment
 double debt_installment_payment
 int nr_periods_before_maturity
-
-debt_item debt_installment_payments
+}
+debt_item_dynamic_array loans
 
 total_interest_payment
 total_debt_installment_payment
@@ -40,6 +43,7 @@ tax_payment
 tax_rate_corporate
 previous_net_earnings
 net_earnings
+
 earnings_per_share
 current_shares_outstanding
 previous_dividend_per_share
@@ -48,22 +52,33 @@ total_dividend_payment
 previous_dividend_per_earnings
 current_dividend_per_earnings
 
+debt_earnings_ratio
+price_earnings_ratio
+retained_earnings_ratio
+earnings_per_share_ratio_growth
+critical_price_earnings_ratio
+critical_earnings_per_share_ratio
 
-datatype:
+New datatype:
 struct capital_stock_item
+{
 double current_value
 double depreciation_value_per_period
 int nr_periods_before_total_depreciation
+}
+capital_stock_item_dynamic_array value_capital_stock
 
-capital_stock_item value_capital_stock
 total_value_capital_stock
 total_value_local_inventory
-total_equity
+equity
 
 planned_total_interest_payment 
 planned_total_debt_installment_payment
 planned_total_dividend_payment
-financial_needs
+
+total_financial_needs
+internal_financial_needs
+external_financial_needs
 
 Messages from financial_management_role:
 tax_payment_message(firm_id, gov_id, tax_payment)
@@ -71,11 +86,16 @@ interest_payment_message(firm_id, bank_id, interest_payment)
 debt_installment_payment_message(firm_id, bank_id, debt_installment_payment)
 dividend_payment_message(firm_id, current_dividend_per_share)
 
-To CM and FM:
-new_credit_demand_message(firm_id, bank_id, new_credit_demand)
-new_credit_obtained_message(bank_id, firm_id, new_credit_obtained)
-new_bonds_supply_message(ID, clearinghouse_id, new_bonds_supply)
-new_bonds_sold_message(clearinghouse_id, firm_id, new_bonds_sold)
-new_stocks_supply_message(firm_id, clearinghouse_id, new_stocks_supply)
-new_stocks_sold_message(clearinghouse_id, firm_id, new_stocks_sold)
+To credit market:
+credit_demand_message(firm_id, bank_id, credit_demand)
+credit_offer_message(bank_id, firm_id, credit_offer)
+credit_taken_message(bank_id, firm_id, credit_amount)
+
+To asset market:
+firm_stock_order_message(firm_id, clearinghouse_id, new_stocks_supply)
+firm_bonds_order_message(firm_id, clearinghouse_id, new_bonds_supply)
+gov_bonds_order_message(firm_id, clearinghouse_id, new_bonds_supply)
+firm_stock_transaction_message(clearinghouse_id, firm_id, new_stocks_sold)
+firm_bonds_transaction_message(clearinghouse_id, firm_id, new_bonds_sold)
+gov_bonds_transaction_message(clearinghouse_id, firm_id, new_bonds_sold)
 --------------------------------------------------------------------------------------
