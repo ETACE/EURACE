@@ -14,11 +14,13 @@ int Firm_compute_income_statement()
 {
 	if(DAY%MONTH==DAY_OF_MONTH_TO_ACT)
 	{
-		//was: EARNINGS = CUM_TOTAL_SOLD_QUANTITY*PRICE - COSTS;
-		EBIT= CUM_TOTAL_SOLD_QUANTITY*PRICE - COSTS;		
+		//In the future: if we want to include sales_costs
+		//SALES_COSTS = 0;
+		//EBIT = CUM_REVENUES - SALES_COSTS
+		EBIT = CUM_REVENUES; //net revenues = receipts - sales_costs;		
 		
 		//update the cash holdings
-		PAYMENT_ACCOUNT += CUM_TOTAL_SOLD_QUANTITY*PRICE;
+		PAYMENT_ACCOUNT += EBIT;
 	}
 
 	return 0;
@@ -243,8 +245,8 @@ int Firm_compute_payout_policy()
 	CURRENT_DIVIDEND_PER_EARNINGS = TOTAL_DIVIDEND_PAYMENT/EARNINGS;
 	
 	//step 12: set financial_needs for the upcoming production cycle
-	//The total production costs (labor costs + capital investments) come from the function Firm_calc_pay_costs
-	TOTAL_FINANCIAL_NEEDS = PLANNED_TOTAL_INTEREST_PAYMENT + PLANNED_TOTAL_DEBT_INSTALLMENT_PAYMENT + TOTAL_DIVIDEND_PAYMENT + CAPITAL_COSTS;
+	//The total production costs (costs = labor_costs + capital_costs) come from the function Firm_calc_pay_costs
+	TOTAL_FINANCIAL_NEEDS = PLANNED_TOTAL_INTEREST_PAYMENT + PLANNED_TOTAL_DEBT_INSTALLMENT_PAYMENT + TOTAL_DIVIDEND_PAYMENT + PRODUCTION_COSTS;
 	
 	//Check if external financing is needed.
 	if (TOTAL_FINANCIAL_NEEDS < PAYMENT_ACCOUNT)
@@ -278,7 +280,10 @@ int Firm_apply_for_credit()
  */
 int Firm_issue_equity()
 {
-   add_firm_stock_order_message(firm_id, clearinghouse_id, - EXTERNAL_FINANCIAL_NEEDS);
+	STOCK_UNITS =	EXTERNAL_FINANCIAL_NEEDS/SHARE_PRICE;
+
+	//Firm tries to sell stock_units shares:
+	add_firm_stock_order_message(firm_id, clearinghouse_id, -STOCK_UNITS);
 
 return 0;
 }

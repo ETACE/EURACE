@@ -105,6 +105,7 @@ int initialize_ruledetailsystem()
 			//add_double(parameters[i][j], param_value);
 		}		
 
+		//********** REDUNDANT CODE: execution_function = portfolio_strategy_<ruletype>(parameters)
 		//We set the field 'rule_execution':
 		//First possibility: we test which function name the rule has
 		j=CLASSIFIERSYSTEM->array[i]->rule_type;

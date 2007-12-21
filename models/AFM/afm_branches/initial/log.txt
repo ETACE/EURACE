@@ -436,3 +436,10 @@ Sander, rev 533
 	./branched-bielefeld-model: added Firm_financial_management.xml
 			see ./branched-bielefeld-model/log.txt for variable names for this role.
 --------------------------------------------------------------------------------------
+Sander, rev 534
+	added dgraph of fin. mgm role of firm and household
+--------------------------------------------------------------------------------------
+Sander, rev 535
+	./Firm_fin_mng.c: EBIT=cum_revenues
+	collected all files related to financial management roles in one directory
+--------------------------------------------------------------------------------------
