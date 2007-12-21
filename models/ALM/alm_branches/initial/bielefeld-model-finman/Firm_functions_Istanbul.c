@@ -974,8 +974,8 @@ int Firm_calc_revenue()
 		CUM_TOTAL_SOLD_QUANTITY=0.0;
 		CUM_REVENUE =0.0;
 	}
-	// BREAK: Thıs ıs the end of the productıon cycle
-	// We contınue from here wıth the Fırm::Fınancıal Management Role, functıon: compute_ıncome_statement
+	// BREAK: This is the end of the production cycle
+	// We continue from here with the Firm::Financial Management Role, function: compute_income_statement
 
 	return 0;
 }
