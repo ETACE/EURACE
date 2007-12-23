@@ -76,7 +76,7 @@
 <!----------------- Defining functions ---------------------------------------->
 <functions>
 <!--************** Role: Financial Management Role ************** -->
-<function><name>Household_compute_income_and_financial_needs</name></function>
+<function><name>Household_financial_planning</name></function>
 
 <!--************** Below here is old ************** -->
 <function><name>Household_compute_gross_income</name>

@@ -17,9 +17,9 @@ Sander, rev 529
 --------------------------------------------------------------------------------------
 Sander, rev 533
 
-./branched-bielefeld-model: added Firm_financial_management.xml
+./financial_management: added Firm_financial_management.xml
 
-Role variables:
+Role variables: Firm_financial_management
 
 ebit
 payment_account
@@ -80,7 +80,9 @@ total_financial_needs
 internal_financial_needs
 external_financial_needs
 
-Messages from financial_management_role:
+Messages:
+
+From financial_management_role:
 tax_payment_message(firm_id, gov_id, tax_payment)
 interest_payment_message(firm_id, bank_id, interest_payment)
 debt_installment_payment_message(firm_id, bank_id, debt_installment_payment)
@@ -92,10 +94,33 @@ credit_offer_message(bank_id, firm_id, credit_offer)
 credit_taken_message(bank_id, firm_id, credit_amount)
 
 To asset market:
-firm_stock_order_message(firm_id, clearinghouse_id, new_stocks_supply)
-firm_bonds_order_message(firm_id, clearinghouse_id, new_bonds_supply)
-gov_bonds_order_message(firm_id, clearinghouse_id, new_bonds_supply)
-firm_stock_transaction_message(clearinghouse_id, firm_id, new_stocks_sold)
-firm_bonds_transaction_message(clearinghouse_id, firm_id, new_bonds_sold)
-gov_bonds_transaction_message(clearinghouse_id, firm_id, new_bonds_sold)
+stock_order_message(firm_id, clearinghouse_id, limit_price, limit_quantity, stock_id)
+corp_bond_order_message(firm_id, clearinghouse_id, limit_price, limit_quantity, corp_bond_id)
+gov_bond_order_message(firm_id, clearinghouse_id, limit_price, limit_quantity, gov_bond_id)
+
+From asset market:
+stock_transaction_message(clearinghouse_id, firm_id, transaction_price, transaction_quantity, stock_id)
+corp_bond_transaction_message(clearinghouse_id, firm_id, transaction_price, transaction_quantity, corp_bond_id)
+gov_bond_transaction_message(clearinghouse_id, firm_id, transaction_price, transaction_quantity, gov_bond_id)
+--------------------------------------------------------------------------------------
+Sander, rev 536
+
+./financial_management: added Household_financial_management.xml
+
+Role variables: Household_financial_management
+
+Messages:
+
+From financial_management_role:
+tax_payment_message(household_id, gov_id, tax_payment)
+
+To asset market:
+stock_order_message(household_id, clearinghouse_id, limit_price, limit_quantity, stock_id)
+corp_bond_order_message(household_id, clearinghouse_id, limit_price, limit_quantity, corp_bond_id)
+gov_bond_order_message(household_id, clearinghouse_id, limit_price, limit_quantity, gov_bond_id)
+
+From asset market:
+stock_transaction_message(clearinghouse_id, household_id, transaction_price, transaction_quantity, stock_id)
+corp_bond_transaction_message(clearinghouse_id, household_id, transaction_price, transaction_quantity, corp_bond_id)
+gov_bond_transaction_message(clearinghouse_id, household_id, transaction_price, transaction_quantity, gov_bond_id)
 --------------------------------------------------------------------------------------
