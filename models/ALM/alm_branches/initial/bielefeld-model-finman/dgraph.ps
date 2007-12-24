@@ -1,0 +1,3472 @@
+%!PS-Adobe-2.0
+%%Creator: Graphviz version 2.12 (Mon Dec  4 22:04:37 UTC 2006)
+%%For: Bill Gates
+%%Title: A
+%%Pages: (atend)
+%%BoundingBox: (atend)
+%%EndComments
+save
+%%BeginProlog
+/DotDict 200 dict def
+DotDict begin
+
+/setupLatin1 {
+mark
+/EncodingVector 256 array def
+ EncodingVector 0
+
+ISOLatin1Encoding 0 255 getinterval putinterval
+EncodingVector 45 /hyphen put
+
+% Set up ISO Latin 1 character encoding
+/starnetISO {
+        dup dup findfont dup length dict begin
+        { 1 index /FID ne { def }{ pop pop } ifelse
+        } forall
+        /Encoding EncodingVector def
+        currentdict end definefont
+} def
+/Times-Roman starnetISO def
+/Times-Italic starnetISO def
+/Times-Bold starnetISO def
+/Times-BoldItalic starnetISO def
+/Helvetica starnetISO def
+/Helvetica-Oblique starnetISO def
+/Helvetica-Bold starnetISO def
+/Helvetica-BoldOblique starnetISO def
+/Courier starnetISO def
+/Courier-Oblique starnetISO def
+/Courier-Bold starnetISO def
+/Courier-BoldOblique starnetISO def
+cleartomark
+} bind def
+
+%%BeginResource: procset graphviz 0 0
+/coord-font-family /Times-Roman def
+/default-font-family /Times-Roman def
+/coordfont coord-font-family findfont 8 scalefont def
+
+/InvScaleFactor 1.0 def
+/set_scale {
+       dup 1 exch div /InvScaleFactor exch def
+       scale
+} bind def
+
+% styles
+/solid { [] 0 setdash } bind def
+/dashed { [9 InvScaleFactor mul dup ] 0 setdash } bind def
+/dotted { [1 InvScaleFactor mul 6 InvScaleFactor mul] 0 setdash } bind def
+/invis {/fill {newpath} def /stroke {newpath} def /show {pop newpath} def} bind def
+/bold { 2 setlinewidth } bind def
+/filled { } bind def
+/unfilled { } bind def
+/rounded { } bind def
+/diagonals { } bind def
+
+% hooks for setting color 
+/nodecolor { sethsbcolor } bind def
+/edgecolor { sethsbcolor } bind def
+/graphcolor { sethsbcolor } bind def
+/nopcolor {pop pop pop} bind def
+
+/beginpage {	% i j npages
+	/npages exch def
+	/j exch def
+	/i exch def
+	/str 10 string def
+	npages 1 gt {
+		gsave
+			coordfont setfont
+			0 0 moveto
+			(\() show i str cvs show (,) show j str cvs show (\)) show
+		grestore
+	} if
+} bind def
+
+/set_font {
+	findfont exch
+	scalefont setfont
+} def
+
+% draw aligned label in bounding box aligned to current point
+/alignedtext {			% width adj text
+	/text exch def
+	/adj exch def
+	/width exch def
+	gsave
+		width 0 gt {
+			text stringwidth pop adj mul 0 rmoveto
+		} if
+		[] 0 setdash
+		text show
+	grestore
+} def
+
+/boxprim {				% xcorner ycorner xsize ysize
+		4 2 roll
+		moveto
+		2 copy
+		exch 0 rlineto
+		0 exch rlineto
+		pop neg 0 rlineto
+		closepath
+} bind def
+
+/ellipse_path {
+	/ry exch def
+	/rx exch def
+	/y exch def
+	/x exch def
+	matrix currentmatrix
+	newpath
+	x y translate
+	rx ry scale
+	0 0 1 0 360 arc
+	setmatrix
+} bind def
+
+/endpage { showpage } bind def
+/showpage { } def
+
+/layercolorseq
+	[	% layer color sequence - darkest to lightest
+		[0 0 0]
+		[.2 .8 .8]
+		[.4 .8 .8]
+		[.6 .8 .8]
+		[.8 .8 .8]
+	]
+def
+
+/layerlen layercolorseq length def
+
+/setlayer {/maxlayer exch def /curlayer exch def
+	layercolorseq curlayer 1 sub layerlen mod get
+	aload pop sethsbcolor
+	/nodecolor {nopcolor} def
+	/edgecolor {nopcolor} def
+	/graphcolor {nopcolor} def
+} bind def
+
+/onlayer { curlayer ne {invis} if } def
+
+/onlayers {
+	/myupper exch def
+	/mylower exch def
+	curlayer mylower lt
+	curlayer myupper gt
+	or
+	{invis} if
+} def
+
+/curlayer 0 def
+
+%%EndResource
+%%EndProlog
+%%BeginSetup
+14 default-font-family set_font
+1 setmiterlimit
+% /arrowlength 10 def
+% /arrowwidth 5 def
+
+% make sure pdfmark is harmless for PS-interpreters other than Distiller
+/pdfmark where {pop} {userdict /pdfmark /cleartomark load put} ifelse
+% make '<<' and '>>' safe on PS Level 1 devices
+/languagelevel where {pop languagelevel}{1} ifelse
+2 lt {
+    userdict (<<) cvn ([) cvn load put
+    userdict (>>) cvn ([) cvn load put
+} if
+
+%%EndSetup
+setupLatin1
+%%Page: 1 1
+%%PageBoundingBox: 36 36 1433 2888
+%%PageOrientation: Portrait
+gsave
+36 36 1433 2888 boxprim clip newpath
+0 0 1 beginpage
+1 1 set_scale 0 rotate 40 40 translate
+0.000 0.000 1.000 graphcolor
+newpath -4 -4 moveto
+-4 2848 lineto
+1393 2848 lineto
+1393 -4 lineto
+closepath fill
+1 setlinewidth
+0.000 0.000 1.000 graphcolor
+newpath -4 -4 moveto
+-4 2848 lineto
+1393 2848 lineto
+1393 -4 lineto
+closepath stroke
+% {Firm}\n{Labor Market Role}\nFirm_send_vacancies
+gsave
+0.000 0.000 0.827 nodecolor
+newpath 665 1458 moveto
+529 1458 lineto
+529 1402 lineto
+665 1402 lineto
+closepath fill
+1 setlinewidth
+filled
+0.000 0.000 0.827 nodecolor
+newpath 665 1458 moveto
+529 1458 lineto
+529 1402 lineto
+665 1402 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+577 1440 moveto
+({Firm})
+[6.72 7.44 3.6 4.56 10.32 6.72]
+xshow
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+536.5 1424 moveto
+({Labor Market Role})
+[6.72 8.16 6.24 6.96 6.96 4.56 3.6 12.48 6.24 4.56 6.96 6.24 3.84 3.6 9.36 6.96 3.6 6.24 6.72]
+xshow
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+536.5 1408 moveto
+(Firm_send_vacancies)
+[7.44 3.6 4.56 10.32 6.96 5.52 6.24 6.72 6.96 6.96 6.72 6.24 6.24 6.24 6.72 6.24 3.6 6.24 5.52]
+xshow
+grestore
+% {Household}\n{Labor Market Role}\nHousehold_read_job_vacancies_or_firing_send_applications
+gsave
+0.000 0.000 0.827 nodecolor
+newpath 696 1350 moveto
+342 1350 lineto
+342 1294 lineto
+696 1294 lineto
+closepath fill
+1 setlinewidth
+filled
+0.000 0.000 0.827 nodecolor
+newpath 696 1350 moveto
+342 1350 lineto
+342 1294 lineto
+696 1294 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+482 1332 moveto
+({Household})
+[6.72 9.84 6.96 6.72 5.52 6.24 6.72 6.96 3.6 6.96 6.72]
+xshow
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+458.5 1316 moveto
+({Labor Market Role})
+[6.72 8.16 6.24 6.96 6.96 4.56 3.6 12.48 6.24 4.56 6.96 6.24 3.84 3.6 9.36 6.96 3.6 6.24 6.72]
+xshow
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+350 1300 moveto
+(Household_read_job_vacancies_or_firing_send_applications)
+[9.84 6.96 6.72 5.52 6.24 6.72 6.96 3.6 6.96 6.96 4.56 6.24 6.24 6.96 6.96 3.84 6.96 6.96 6.96 6.72 6.24 6.24 6.24 6.72 6.24 3.6 6.24 5.52 6.96 6.96 4.56 6.96 4.32 3.6 4.56 3.6 6.72 6.72 6.96 5.52 6.24 6.72 6.96 6.96 6.24 6.96 6.96 3.6 3.6 6.24 6.24 3.84 3.6 6.96 6.72 5.52]
+xshow
+grestore
+% {Firm}\n{Labor Market Role}\nFirm_send_vacancies->{Household}\n{Labor Market Role}\nHousehold_read_job_vacancies_or_firing_send_applications
+gsave
+1 setlinewidth
+0.000 1.000 1.000 edgecolor
+newpath 536 1402 moveto
+529 1397 524 1391 520 1384 curveto
+516 1377 514 1368 514 1360 curveto
+stroke
+0.000 1.000 1.000 edgecolor
+newpath 517.5 1360 moveto
+514 1350 lineto
+510.5 1360 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 1.000 1.000 edgecolor
+newpath 517.5 1360 moveto
+514 1350 lineto
+510.5 1360 lineto
+closepath stroke
+0.000 0.000 0.000 edgecolor
+14.00 /Times-Roman set_font
+523.5 1370 moveto
+(vacancies)
+[6.72 6.24 6.24 6.24 6.72 6.24 3.6 6.24 5.52]
+xshow
+grestore
+% {Firm}\n{Labor Market Role}\nFirm_send_vacancies->{Household}\n{Labor Market Role}\nHousehold_read_job_vacancies_or_firing_send_applications
+gsave
+1 setlinewidth
+0.000 1.000 1.000 edgecolor
+newpath 591 1402 moveto
+587 1390 582 1378 575 1368 curveto
+573 1365 570 1361 567 1358 curveto
+stroke
+0.000 1.000 1.000 edgecolor
+newpath 569.219 1355.22 moveto
+560 1350 lineto
+563.951 1359.83 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 1.000 1.000 edgecolor
+newpath 569.219 1355.22 moveto
+560 1350 lineto
+563.951 1359.83 lineto
+closepath stroke
+0.000 0.000 0.000 edgecolor
+14.00 /Times-Roman set_font
+586 1370 moveto
+(firing)
+[4.32 3.6 4.56 3.6 6.72 6.72]
+xshow
+grestore
+% {Firm}\n{Labor Market Role}\nFirm_read_job_applications_send_job_offer_or_rejection
+gsave
+0.000 0.000 0.827 nodecolor
+newpath 677 1242 moveto
+341 1242 lineto
+341 1186 lineto
+677 1186 lineto
+closepath fill
+1 setlinewidth
+filled
+0.000 0.000 0.827 nodecolor
+newpath 677 1242 moveto
+341 1242 lineto
+341 1186 lineto
+677 1186 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+489 1224 moveto
+({Firm})
+[6.72 7.44 3.6 4.56 10.32 6.72]
+xshow
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+448.5 1208 moveto
+({Labor Market Role})
+[6.72 8.16 6.24 6.96 6.96 4.56 3.6 12.48 6.24 4.56 6.96 6.24 3.84 3.6 9.36 6.96 3.6 6.24 6.72]
+xshow
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+348.5 1192 moveto
+(Firm_read_job_applications_send_job_offer_or_rejection)
+[7.44 3.6 4.56 10.32 6.96 4.56 6.24 6.24 6.96 6.96 3.84 6.96 6.96 6.96 6.24 6.96 6.96 3.6 3.6 6.24 6.24 3.84 3.6 6.96 6.72 5.52 6.96 5.52 6.24 6.72 6.96 6.96 3.84 6.96 6.96 6.96 6.96 4.08 4.32 6.24 4.56 6.96 6.96 4.56 6.96 4.56 6.24 3.84 6.24 6.24 3.84 3.6 6.96 6.72]
+xshow
+grestore
+% {Household}\n{Labor Market Role}\nHousehold_read_job_vacancies_or_firing_send_applications->{Firm}\n{Labor Market Role}\nFirm_read_job_applications_send_job_offer_or_rejection
+gsave
+1 setlinewidth
+0.000 1.000 1.000 edgecolor
+newpath 516 1294 moveto
+514 1281 513 1266 512 1252 curveto
+stroke
+0.000 1.000 1.000 edgecolor
+newpath 515.478 1251.6 moveto
+511 1242 lineto
+508.512 1252.3 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 1.000 1.000 edgecolor
+newpath 515.478 1251.6 moveto
+511 1242 lineto
+508.512 1252.3 lineto
+closepath stroke
+0.000 0.000 0.000 edgecolor
+14.00 /Times-Roman set_font
+516 1262 moveto
+(job_application)
+[3.84 6.96 6.96 6.96 6.24 6.96 6.96 3.6 3.6 6.24 6.24 3.84 3.6 6.96 6.72]
+xshow
+grestore
+% {Firm}\n{Labor Market Role}\nFirm_send_vacancies_2
+gsave
+0.000 0.000 0.827 nodecolor
+newpath 411 730 moveto
+261 730 lineto
+261 674 lineto
+411 674 lineto
+closepath fill
+1 setlinewidth
+filled
+0.000 0.000 0.827 nodecolor
+newpath 411 730 moveto
+261 730 lineto
+261 674 lineto
+411 674 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+316 712 moveto
+({Firm})
+[6.72 7.44 3.6 4.56 10.32 6.72]
+xshow
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+275.5 696 moveto
+({Labor Market Role})
+[6.72 8.16 6.24 6.96 6.96 4.56 3.6 12.48 6.24 4.56 6.96 6.24 3.84 3.6 9.36 6.96 3.6 6.24 6.72]
+xshow
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+268.5 680 moveto
+(Firm_send_vacancies_2)
+[7.44 3.6 4.56 10.32 6.96 5.52 6.24 6.72 6.96 6.96 6.72 6.24 6.24 6.24 6.72 6.24 3.6 6.24 5.52 6.96 6.96]
+xshow
+grestore
+% {Household}\n{Labor Market Role}\nHousehold_read_job_vacancies_or_firing_send_applications_2
+gsave
+0.000 0.000 0.827 nodecolor
+newpath 581 622 moveto
+213 622 lineto
+213 566 lineto
+581 566 lineto
+closepath fill
+1 setlinewidth
+filled
+0.000 0.000 0.827 nodecolor
+newpath 581 622 moveto
+213 622 lineto
+213 566 lineto
+581 566 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+360 604 moveto
+({Household})
+[6.72 9.84 6.96 6.72 5.52 6.24 6.72 6.96 3.6 6.96 6.72]
+xshow
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+336.5 588 moveto
+({Labor Market Role})
+[6.72 8.16 6.24 6.96 6.96 4.56 3.6 12.48 6.24 4.56 6.96 6.24 3.84 3.6 9.36 6.96 3.6 6.24 6.72]
+xshow
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+221 572 moveto
+(Household_read_job_vacancies_or_firing_send_applications_2)
+[9.84 6.96 6.72 5.52 6.24 6.72 6.96 3.6 6.96 6.96 4.56 6.24 6.24 6.96 6.96 3.84 6.96 6.96 6.96 6.72 6.24 6.24 6.24 6.72 6.24 3.6 6.24 5.52 6.96 6.96 4.56 6.96 4.32 3.6 4.56 3.6 6.72 6.72 6.96 5.52 6.24 6.72 6.96 6.96 6.24 6.96 6.96 3.6 3.6 6.24 6.24 3.84 3.6 6.96 6.72 5.52 6.96 6.96]
+xshow
+grestore
+% {Firm}\n{Labor Market Role}\nFirm_send_vacancies_2->{Household}\n{Labor Market Role}\nHousehold_read_job_vacancies_or_firing_send_applications_2
+gsave
+1 setlinewidth
+0.000 1.000 1.000 edgecolor
+newpath 350 674 moveto
+355 663 362 651 368 640 curveto
+370 637 371 634 373 630 curveto
+stroke
+0.000 1.000 1.000 edgecolor
+newpath 375.8 632.1 moveto
+379 622 lineto
+370.2 627.9 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 1.000 1.000 edgecolor
+newpath 375.8 632.1 moveto
+379 622 lineto
+370.2 627.9 lineto
+closepath stroke
+0.000 0.000 0.000 edgecolor
+14.00 /Times-Roman set_font
+368 642 moveto
+(vacancies2)
+[6.72 6.24 6.24 6.24 6.72 6.24 3.6 6.24 5.52 6.96]
+xshow
+grestore
+% {Firm}\n{Labor Market Role}\nFirm_read_job_applications_send_job_offer_or_rejection_2
+gsave
+0.000 0.000 0.827 nodecolor
+newpath 572 514 moveto
+222 514 lineto
+222 458 lineto
+572 458 lineto
+closepath fill
+1 setlinewidth
+filled
+0.000 0.000 0.827 nodecolor
+newpath 572 514 moveto
+222 514 lineto
+222 458 lineto
+572 458 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+377 496 moveto
+({Firm})
+[6.72 7.44 3.6 4.56 10.32 6.72]
+xshow
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+336.5 480 moveto
+({Labor Market Role})
+[6.72 8.16 6.24 6.96 6.96 4.56 3.6 12.48 6.24 4.56 6.96 6.24 3.84 3.6 9.36 6.96 3.6 6.24 6.72]
+xshow
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+229.5 464 moveto
+(Firm_read_job_applications_send_job_offer_or_rejection_2)
+[7.44 3.6 4.56 10.32 6.96 4.56 6.24 6.24 6.96 6.96 3.84 6.96 6.96 6.96 6.24 6.96 6.96 3.6 3.6 6.24 6.24 3.84 3.6 6.96 6.72 5.52 6.96 5.52 6.24 6.72 6.96 6.96 3.84 6.96 6.96 6.96 6.96 4.08 4.32 6.24 4.56 6.96 6.96 4.56 6.96 4.56 6.24 3.84 6.24 6.24 3.84 3.6 6.96 6.72 6.96 6.96]
+xshow
+grestore
+% {Household}\n{Labor Market Role}\nHousehold_read_job_vacancies_or_firing_send_applications_2->{Firm}\n{Labor Market Role}\nFirm_read_job_applications_send_job_offer_or_rejection_2
+gsave
+1 setlinewidth
+0.000 1.000 1.000 edgecolor
+newpath 397 566 moveto
+397 553 397 538 397 524 curveto
+stroke
+0.000 1.000 1.000 edgecolor
+newpath 400.5 524 moveto
+397 514 lineto
+393.5 524 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 1.000 1.000 edgecolor
+newpath 400.5 524 moveto
+397 514 lineto
+393.5 524 lineto
+closepath stroke
+0.000 0.000 0.000 edgecolor
+14.00 /Times-Roman set_font
+397.5 534 moveto
+(job_application2)
+[3.84 6.96 6.96 6.96 6.24 6.96 6.96 3.6 3.6 6.24 6.24 3.84 3.6 6.96 6.72 6.96]
+xshow
+grestore
+% {Household}\n{Labor Market Role}\nHousehold_read_job_offers_send_response
+gsave
+0.000 0.000 0.827 nodecolor
+newpath 401 1094 moveto
+141 1094 lineto
+141 1038 lineto
+401 1038 lineto
+closepath fill
+1 setlinewidth
+filled
+0.000 0.000 0.827 nodecolor
+newpath 401 1094 moveto
+141 1094 lineto
+141 1038 lineto
+401 1038 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+234 1076 moveto
+({Household})
+[6.72 9.84 6.96 6.72 5.52 6.24 6.72 6.96 3.6 6.96 6.72]
+xshow
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+210.5 1060 moveto
+({Labor Market Role})
+[6.72 8.16 6.24 6.96 6.96 4.56 3.6 12.48 6.24 4.56 6.96 6.24 3.84 3.6 9.36 6.96 3.6 6.24 6.72]
+xshow
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+149 1044 moveto
+(Household_read_job_offers_send_response)
+[9.84 6.96 6.72 5.52 6.24 6.72 6.96 3.6 6.96 6.96 4.56 6.24 6.24 6.96 6.96 3.84 6.96 6.96 6.96 6.96 4.08 4.32 6.24 4.56 5.52 6.96 5.52 6.24 6.72 6.96 6.96 4.56 6.24 5.52 6.96 6.96 6.72 5.52 6.24]
+xshow
+grestore
+% {Firm}\n{Labor Market Role}\nFirm_read_job_applications_send_job_offer_or_rejection->{Household}\n{Labor Market Role}\nHousehold_read_job_offers_send_response
+gsave
+1 setlinewidth
+0.000 1.000 1.000 edgecolor
+newpath 463 1186 moveto
+453 1180 443 1174 433 1168 curveto
+396 1145 356 1120 324 1100 curveto
+stroke
+0.000 1.000 1.000 edgecolor
+newpath 325.262 1096.63 moveto
+315 1094 lineto
+321.379 1102.46 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 1.000 1.000 edgecolor
+newpath 325.262 1096.63 moveto
+315 1094 lineto
+321.379 1102.46 lineto
+closepath stroke
+0.000 0.000 0.000 edgecolor
+14.00 /Times-Roman set_font
+439 1134 moveto
+(job_offer)
+[3.84 6.96 6.96 6.96 6.96 4.08 4.32 6.24 4.56]
+xshow
+grestore
+% {Household}\n{Labor Market Role}\nHousehold_read_application_rejection_update_wage_reservation
+gsave
+0.000 0.000 0.827 nodecolor
+newpath 699 1020 moveto
+319 1020 lineto
+319 964 lineto
+699 964 lineto
+closepath fill
+1 setlinewidth
+filled
+0.000 0.000 0.827 nodecolor
+newpath 699 1020 moveto
+319 1020 lineto
+319 964 lineto
+699 964 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+472 1002 moveto
+({Household})
+[6.72 9.84 6.96 6.72 5.52 6.24 6.72 6.96 3.6 6.96 6.72]
+xshow
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+448.5 986 moveto
+({Labor Market Role})
+[6.72 8.16 6.24 6.96 6.96 4.56 3.6 12.48 6.24 4.56 6.96 6.24 3.84 3.6 9.36 6.96 3.6 6.24 6.72]
+xshow
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+327 970 moveto
+(Household_read_application_rejection_update_wage_reservation)
+[9.84 6.96 6.72 5.52 6.24 6.72 6.96 3.6 6.96 6.96 4.56 6.24 6.24 6.96 6.96 6.24 6.96 6.96 3.6 3.6 6.24 6.24 3.84 3.6 6.96 6.72 6.96 4.56 6.24 3.84 6.24 6.24 3.84 3.6 6.96 6.72 6.96 6.72 6.96 6.96 6.24 3.84 6.24 6.96 10.08 6.24 6.72 6.24 6.96 4.56 6.24 5.52 6.24 4.56 6.72 6.24 3.84 3.6 6.96 6.72]
+xshow
+grestore
+% {Firm}\n{Labor Market Role}\nFirm_read_job_applications_send_job_offer_or_rejection->{Household}\n{Labor Market Role}\nHousehold_read_application_rejection_update_wage_reservation
+gsave
+1 setlinewidth
+0.000 1.000 1.000 edgecolor
+newpath 508 1186 moveto
+508 1180 507 1174 507 1168 curveto
+506 1120 507 1066 508 1030 curveto
+stroke
+0.000 1.000 1.000 edgecolor
+newpath 511.5 1030 moveto
+508 1020 lineto
+504.5 1030 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 1.000 1.000 edgecolor
+newpath 511.5 1030 moveto
+508 1020 lineto
+504.5 1030 lineto
+closepath stroke
+0.000 0.000 0.000 edgecolor
+14.00 /Times-Roman set_font
+509.5 1134 moveto
+(application_rejection)
+[6.24 6.96 6.96 3.6 3.6 6.24 6.24 3.84 3.6 6.96 6.72 6.96 4.56 6.24 3.84 6.24 6.24 3.84 3.6 6.96 6.72]
+xshow
+grestore
+% {Household}\n{Labor Market Role}\nHousehold_read_job_offers_send_response_2
+gsave
+0.000 0.000 0.827 nodecolor
+newpath 682 406 moveto
+410 406 lineto
+410 350 lineto
+682 350 lineto
+closepath fill
+1 setlinewidth
+filled
+0.000 0.000 0.827 nodecolor
+newpath 682 406 moveto
+410 406 lineto
+410 350 lineto
+682 350 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+509 388 moveto
+({Household})
+[6.72 9.84 6.96 6.72 5.52 6.24 6.72 6.96 3.6 6.96 6.72]
+xshow
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+485.5 372 moveto
+({Labor Market Role})
+[6.72 8.16 6.24 6.96 6.96 4.56 3.6 12.48 6.24 4.56 6.96 6.24 3.84 3.6 9.36 6.96 3.6 6.24 6.72]
+xshow
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+417.5 356 moveto
+(Household_read_job_offers_send_response_2)
+[9.84 6.96 6.72 5.52 6.24 6.72 6.96 3.6 6.96 6.96 4.56 6.24 6.24 6.96 6.96 3.84 6.96 6.96 6.96 6.96 4.08 4.32 6.24 4.56 5.52 6.96 5.52 6.24 6.72 6.96 6.96 4.56 6.24 5.52 6.96 6.96 6.72 5.52 6.24 6.96 6.96]
+xshow
+grestore
+% {Firm}\n{Labor Market Role}\nFirm_read_job_applications_send_job_offer_or_rejection_2->{Household}\n{Labor Market Role}\nHousehold_read_job_offers_send_response_2
+gsave
+1 setlinewidth
+0.000 1.000 1.000 edgecolor
+newpath 436 458 moveto
+455 444 479 427 499 412 curveto
+stroke
+0.000 1.000 1.000 edgecolor
+newpath 501.1 414.8 moveto
+507 406 lineto
+496.9 409.2 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 1.000 1.000 edgecolor
+newpath 501.1 414.8 moveto
+507 406 lineto
+496.9 409.2 lineto
+closepath stroke
+0.000 0.000 0.000 edgecolor
+14.00 /Times-Roman set_font
+481 426 moveto
+(job_offer2)
+[3.84 6.96 6.96 6.96 6.96 4.08 4.32 6.24 4.56 6.96]
+xshow
+grestore
+% {Household}\n{Labor Market Role}\nHousehold_read_application_rejection_update_wage_reservation_2
+gsave
+0.000 0.000 0.827 nodecolor
+newpath 392 406 moveto
+1.98952e-013 406 lineto
+2.84217e-014 350 lineto
+392 350 lineto
+closepath fill
+1 setlinewidth
+filled
+0.000 0.000 0.827 nodecolor
+newpath 392 406 moveto
+1.98952e-013 406 lineto
+2.84217e-014 350 lineto
+392 350 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+159 388 moveto
+({Household})
+[6.72 9.84 6.96 6.72 5.52 6.24 6.72 6.96 3.6 6.96 6.72]
+xshow
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+135.5 372 moveto
+({Labor Market Role})
+[6.72 8.16 6.24 6.96 6.96 4.56 3.6 12.48 6.24 4.56 6.96 6.24 3.84 3.6 9.36 6.96 3.6 6.24 6.72]
+xshow
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+7.5 356 moveto
+(Household_read_application_rejection_update_wage_reservation_2)
+[9.84 6.96 6.72 5.52 6.24 6.72 6.96 3.6 6.96 6.96 4.56 6.24 6.24 6.96 6.96 6.24 6.96 6.96 3.6 3.6 6.24 6.24 3.84 3.6 6.96 6.72 6.96 4.56 6.24 3.84 6.24 6.24 3.84 3.6 6.96 6.72 6.96 6.72 6.96 6.96 6.24 3.84 6.24 6.96 10.08 6.24 6.72 6.24 6.96 4.56 6.24 5.52 6.24 4.56 6.72 6.24 3.84 3.6 6.96 6.72 6.96 6.96]
+xshow
+grestore
+% {Firm}\n{Labor Market Role}\nFirm_read_job_applications_send_job_offer_or_rejection_2->{Household}\n{Labor Market Role}\nHousehold_read_application_rejection_update_wage_reservation_2
+gsave
+1 setlinewidth
+0.000 1.000 1.000 edgecolor
+newpath 345 458 moveto
+318 444 285 426 257 411 curveto
+stroke
+0.000 1.000 1.000 edgecolor
+newpath 258.441 407.797 moveto
+248 406 lineto
+255.042 413.916 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 1.000 1.000 edgecolor
+newpath 258.441 407.797 moveto
+248 406 lineto
+255.042 413.916 lineto
+closepath stroke
+0.000 0.000 0.000 edgecolor
+14.00 /Times-Roman set_font
+316 426 moveto
+(application_rejection2)
+[6.24 6.96 6.96 3.6 3.6 6.24 6.24 3.84 3.6 6.96 6.72 6.96 4.56 6.24 3.84 6.24 6.24 3.84 3.6 6.96 6.72 6.96]
+xshow
+grestore
+% {Firm}\n{Labor Market Role}\nFirm_read_job_responses
+gsave
+0.000 0.000 0.827 nodecolor
+newpath 351 946 moveto
+191 946 lineto
+191 890 lineto
+351 890 lineto
+closepath fill
+1 setlinewidth
+filled
+0.000 0.000 0.827 nodecolor
+newpath 351 946 moveto
+191 946 lineto
+191 890 lineto
+351 890 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+251 928 moveto
+({Firm})
+[6.72 7.44 3.6 4.56 10.32 6.72]
+xshow
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+210.5 912 moveto
+({Labor Market Role})
+[6.72 8.16 6.24 6.96 6.96 4.56 3.6 12.48 6.24 4.56 6.96 6.24 3.84 3.6 9.36 6.96 3.6 6.24 6.72]
+xshow
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+199 896 moveto
+(Firm_read_job_responses)
+[7.44 3.6 4.56 10.32 6.96 4.56 6.24 6.24 6.96 6.96 3.84 6.96 6.96 6.96 4.56 6.24 5.52 6.96 6.96 6.72 5.52 6.24 5.52]
+xshow
+grestore
+% {Household}\n{Labor Market Role}\nHousehold_read_job_offers_send_response->{Firm}\n{Labor Market Role}\nFirm_read_job_responses
+gsave
+1 setlinewidth
+0.000 1.000 1.000 edgecolor
+newpath 268 1038 moveto
+268 1032 267 1026 267 1020 curveto
+266 995 266 988 267 964 curveto
+267 961 267 959 267 956 curveto
+stroke
+0.000 1.000 1.000 edgecolor
+newpath 270.488 956.299 moveto
+268 946 lineto
+263.522 955.602 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 1.000 1.000 edgecolor
+newpath 270.488 956.299 moveto
+268 946 lineto
+263.522 955.602 lineto
+closepath stroke
+0.000 0.000 0.000 edgecolor
+14.00 /Times-Roman set_font
+270.5 986 moveto
+(quitting)
+[6.96 6.72 3.6 3.84 3.84 3.6 6.72 6.72]
+xshow
+grestore
+% {Household}\n{Labor Market Role}\nHousehold_read_job_offers_send_response->{Firm}\n{Labor Market Role}\nFirm_read_job_responses
+gsave
+1 setlinewidth
+0.000 1.000 1.000 edgecolor
+newpath 178 1038 moveto
+171 1033 165 1027 160 1020 curveto
+147 999 147 984 160 964 curveto
+166 955 174 948 182 942 curveto
+stroke
+0.000 1.000 1.000 edgecolor
+newpath 183.958 944.916 moveto
+191 937 lineto
+180.559 938.797 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 1.000 1.000 edgecolor
+newpath 183.958 944.916 moveto
+191 937 lineto
+180.559 938.797 lineto
+closepath stroke
+0.000 0.000 0.000 edgecolor
+14.00 /Times-Roman set_font
+163.5 986 moveto
+(job_acceptance)
+[3.84 6.96 6.96 6.96 6.24 6.24 6.24 6.24 6.96 3.84 6.24 6.72 6.24 6.24]
+xshow
+grestore
+% {Firm}\n{Labor Market Role}\nFirm_read_job_responses_2
+gsave
+0.000 0.000 0.827 nodecolor
+newpath 633 258 moveto
+459 258 lineto
+459 202 lineto
+633 202 lineto
+closepath fill
+1 setlinewidth
+filled
+0.000 0.000 0.827 nodecolor
+newpath 633 258 moveto
+459 258 lineto
+459 202 lineto
+633 202 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+526 240 moveto
+({Firm})
+[6.72 7.44 3.6 4.56 10.32 6.72]
+xshow
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+485.5 224 moveto
+({Labor Market Role})
+[6.72 8.16 6.24 6.96 6.96 4.56 3.6 12.48 6.24 4.56 6.96 6.24 3.84 3.6 9.36 6.96 3.6 6.24 6.72]
+xshow
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+467 208 moveto
+(Firm_read_job_responses_2)
+[7.44 3.6 4.56 10.32 6.96 4.56 6.24 6.24 6.96 6.96 3.84 6.96 6.96 6.96 4.56 6.24 5.52 6.96 6.96 6.72 5.52 6.24 5.52 6.96 6.96]
+xshow
+grestore
+% {Household}\n{Labor Market Role}\nHousehold_read_job_offers_send_response_2->{Firm}\n{Labor Market Role}\nFirm_read_job_responses_2
+gsave
+1 setlinewidth
+0.000 1.000 1.000 edgecolor
+newpath 546 350 moveto
+546 327 546 293 546 268 curveto
+stroke
+0.000 1.000 1.000 edgecolor
+newpath 549.5 268 moveto
+546 258 lineto
+542.5 268 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 1.000 1.000 edgecolor
+newpath 549.5 268 moveto
+546 258 lineto
+542.5 268 lineto
+closepath stroke
+0.000 0.000 0.000 edgecolor
+14.00 /Times-Roman set_font
+546 298 moveto
+(job_acceptance2)
+[3.84 6.96 6.96 6.96 6.24 6.24 6.24 6.24 6.96 3.84 6.24 6.72 6.24 6.24 6.96]
+xshow
+grestore
+% {Firm}\n{Labor Market Role}\nFirm_update_wage_offer
+gsave
+0.000 0.000 0.827 nodecolor
+newpath 399 838 moveto
+243 838 lineto
+243 782 lineto
+399 782 lineto
+closepath fill
+1 setlinewidth
+filled
+0.000 0.000 0.827 nodecolor
+newpath 399 838 moveto
+243 838 lineto
+243 782 lineto
+399 782 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+301 820 moveto
+({Firm})
+[6.72 7.44 3.6 4.56 10.32 6.72]
+xshow
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+260.5 804 moveto
+({Labor Market Role})
+[6.72 8.16 6.24 6.96 6.96 4.56 3.6 12.48 6.24 4.56 6.96 6.24 3.84 3.6 9.36 6.96 3.6 6.24 6.72]
+xshow
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+250.5 788 moveto
+(Firm_update_wage_offer)
+[7.44 3.6 4.56 10.32 6.96 6.72 6.96 6.96 6.24 3.84 6.24 6.96 10.08 6.24 6.72 6.24 6.96 6.96 4.08 4.32 6.24 4.56]
+xshow
+grestore
+% {Firm}\n{Labor Market Role}\nFirm_read_job_responses->{Firm}\n{Labor Market Role}\nFirm_update_wage_offer
+gsave
+1 setlinewidth
+0.667 1.000 1.000 edgecolor
+newpath 284 890 moveto
+290 877 297 861 304 847 curveto
+stroke
+0.667 1.000 1.000 edgecolor
+newpath 307.137 848.56 moveto
+308 838 lineto
+300.74 845.717 lineto
+closepath fill
+1 setlinewidth
+solid
+0.667 1.000 1.000 edgecolor
+newpath 307.137 848.56 moveto
+308 838 lineto
+300.74 845.717 lineto
+closepath stroke
+grestore
+% {Firm}\n{Labor Market Role}\nFirm_update_wage_offer_2
+gsave
+0.000 0.000 0.827 nodecolor
+newpath 631 150 moveto
+461 150 lineto
+461 94 lineto
+631 94 lineto
+closepath fill
+1 setlinewidth
+filled
+0.000 0.000 0.827 nodecolor
+newpath 631 150 moveto
+461 150 lineto
+461 94 lineto
+631 94 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+526 132 moveto
+({Firm})
+[6.72 7.44 3.6 4.56 10.32 6.72]
+xshow
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+485.5 116 moveto
+({Labor Market Role})
+[6.72 8.16 6.24 6.96 6.96 4.56 3.6 12.48 6.24 4.56 6.96 6.24 3.84 3.6 9.36 6.96 3.6 6.24 6.72]
+xshow
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+468.5 100 moveto
+(Firm_update_wage_offer_2)
+[7.44 3.6 4.56 10.32 6.96 6.72 6.96 6.96 6.24 3.84 6.24 6.96 10.08 6.24 6.72 6.24 6.96 6.96 4.08 4.32 6.24 4.56 6.96 6.96]
+xshow
+grestore
+% {Firm}\n{Labor Market Role}\nFirm_read_job_responses_2->{Firm}\n{Labor Market Role}\nFirm_update_wage_offer_2
+gsave
+1 setlinewidth
+0.667 1.000 1.000 edgecolor
+newpath 546 202 moveto
+546 189 546 174 546 160 curveto
+stroke
+0.667 1.000 1.000 edgecolor
+newpath 549.5 160 moveto
+546 150 lineto
+542.5 160 lineto
+closepath fill
+1 setlinewidth
+solid
+0.667 1.000 1.000 edgecolor
+newpath 549.5 160 moveto
+546 150 lineto
+542.5 160 lineto
+closepath stroke
+grestore
+% {Household}\n{Labor Market Role}\nHousehold_read_application_rejection_update_wage_reservation->{Household}\n{Labor Market Role}\nHousehold_read_job_vacancies_or_firing_send_applications_2
+gsave
+1 setlinewidth
+0.667 1.000 1.000 edgecolor
+newpath 485 964 moveto
+467 939 444 901 444 864 curveto
+444 864 444 864 444 702 curveto
+444 673 442 665 430 640 curveto
+428 637 427 634 425 631 curveto
+stroke
+0.667 1.000 1.000 edgecolor
+newpath 427.916 629.042 moveto
+420 622 lineto
+421.797 632.441 lineto
+closepath fill
+1 setlinewidth
+solid
+0.667 1.000 1.000 edgecolor
+newpath 427.916 629.042 moveto
+420 622 lineto
+421.797 632.441 lineto
+closepath stroke
+grestore
+% {IGFirm}\n{Default Role}\nIGFirm_update_productivity_price
+gsave
+0.000 0.000 0.827 nodecolor
+newpath 713 2844 moveto
+505 2844 lineto
+505 2788 lineto
+713 2788 lineto
+closepath fill
+1 setlinewidth
+filled
+0.000 0.000 0.827 nodecolor
+newpath 713 2844 moveto
+505 2844 lineto
+505 2788 lineto
+713 2788 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+581.5 2826 moveto
+({IGFirm})
+[6.72 4.56 10.08 7.44 3.6 4.56 10.32 6.72]
+xshow
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+566.5 2810 moveto
+({Default Role})
+[6.72 10.08 6.24 4.32 6.24 6.72 3.6 3.84 3.6 9.36 6.96 3.6 6.24 6.72]
+xshow
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+512.5 2794 moveto
+(IGFirm_update_productivity_price)
+[4.56 10.08 7.44 3.6 4.56 10.32 6.96 6.72 6.96 6.96 6.24 3.84 6.24 6.96 6.96 4.56 6.96 6.96 6.72 6.24 3.84 3.6 6.72 3.6 3.84 6.72 6.96 6.96 4.56 3.6 6.24 6.24]
+xshow
+grestore
+% {Firm}\n{Producer Role}\nFirm_calc_input_demands
+gsave
+0.000 0.000 0.827 nodecolor
+newpath 862 2736 moveto
+698 2736 lineto
+698 2680 lineto
+862 2680 lineto
+closepath fill
+1 setlinewidth
+filled
+0.000 0.000 0.827 nodecolor
+newpath 862 2736 moveto
+698 2736 lineto
+698 2680 lineto
+862 2680 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+760 2718 moveto
+({Firm})
+[6.72 7.44 3.6 4.56 10.32 6.72]
+xshow
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+733 2702 moveto
+({Producer Role})
+[6.72 7.68 4.56 6.96 6.96 6.72 6.24 6.24 4.56 3.6 9.36 6.96 3.6 6.24 6.72]
+xshow
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+706 2686 moveto
+(Firm_calc_input_demands)
+[7.44 3.6 4.56 10.32 6.96 6.24 6.24 3.6 6.24 6.96 3.6 6.72 6.96 6.72 3.84 6.96 6.96 6.24 10.32 6.24 6.72 6.96 5.52]
+xshow
+grestore
+% {IGFirm}\n{Default Role}\nIGFirm_update_productivity_price->{Firm}\n{Producer Role}\nFirm_calc_input_demands
+gsave
+1 setlinewidth
+0.000 1.000 1.000 edgecolor
+newpath 653 2788 moveto
+675 2774 703 2756 727 2741 curveto
+stroke
+0.000 1.000 1.000 edgecolor
+newpath 728.375 2744.27 moveto
+735 2736 lineto
+724.665 2738.33 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 1.000 1.000 edgecolor
+newpath 728.375 2744.27 moveto
+735 2736 lineto
+724.665 2738.33 lineto
+closepath stroke
+0.000 0.000 0.000 edgecolor
+14.00 /Times-Roman set_font
+706 2756 moveto
+(productivity)
+[6.96 4.56 6.96 6.96 6.72 6.24 3.84 3.6 6.72 3.6 3.84 6.72]
+xshow
+grestore
+% {Firm}\n{Producer Role}\nFirm_calc_input_demands_2
+gsave
+0.000 0.000 0.827 nodecolor
+newpath 735 1566 moveto
+559 1566 lineto
+559 1510 lineto
+735 1510 lineto
+closepath fill
+1 setlinewidth
+filled
+0.000 0.000 0.827 nodecolor
+newpath 735 1566 moveto
+559 1566 lineto
+559 1510 lineto
+735 1510 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+627 1548 moveto
+({Firm})
+[6.72 7.44 3.6 4.56 10.32 6.72]
+xshow
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+600 1532 moveto
+({Producer Role})
+[6.72 7.68 4.56 6.96 6.96 6.72 6.24 6.24 4.56 3.6 9.36 6.96 3.6 6.24 6.72]
+xshow
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+566.5 1516 moveto
+(Firm_calc_input_demands_2)
+[7.44 3.6 4.56 10.32 6.96 6.24 6.24 3.6 6.24 6.96 3.6 6.72 6.96 6.72 3.84 6.96 6.96 6.24 10.32 6.24 6.72 6.96 5.52 6.96 6.96]
+xshow
+grestore
+% {IGFirm}\n{Default Role}\nIGFirm_update_productivity_price->{Firm}\n{Producer Role}\nFirm_calc_input_demands_2
+gsave
+1 setlinewidth
+0.000 1.000 1.000 edgecolor
+newpath 609 2788 moveto
+609 2766 609 2735 609 2708 curveto
+609 2708 609 2708 609 1632 curveto
+609 1612 616 1592 624 1575 curveto
+stroke
+0.000 1.000 1.000 edgecolor
+newpath 627.203 1576.44 moveto
+629 1566 lineto
+621.084 1573.04 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 1.000 1.000 edgecolor
+newpath 627.203 1576.44 moveto
+629 1566 lineto
+621.084 1573.04 lineto
+closepath stroke
+0.000 0.000 0.000 edgecolor
+14.00 /Times-Roman set_font
+609 2178 moveto
+(productivity)
+[6.96 4.56 6.96 6.96 6.72 6.24 3.84 3.6 6.72 3.6 3.84 6.72]
+xshow
+grestore
+% {Firm}\n{Financial Management Role}\nFirm_compute_payout_policy
+gsave
+0.000 0.000 0.827 nodecolor
+newpath 873 2642 moveto
+687 2642 lineto
+687 2586 lineto
+873 2586 lineto
+closepath fill
+1 setlinewidth
+filled
+0.000 0.000 0.827 nodecolor
+newpath 873 2642 moveto
+687 2642 lineto
+687 2586 lineto
+873 2586 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+760 2624 moveto
+({Firm})
+[6.72 7.44 3.6 4.56 10.32 6.72]
+xshow
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+695 2608 moveto
+({Financial Management Role})
+[6.72 7.44 3.6 6.72 6.24 6.72 6.24 3.6 6.24 3.6 3.6 12.48 6.24 6.72 6.24 6.72 6.24 10.32 6.24 6.72 3.84 3.6 9.36 6.96 3.6 6.24 6.72]
+xshow
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+696.5 2592 moveto
+(Firm_compute_payout_policy)
+[7.44 3.6 4.56 10.32 6.96 6.24 6.96 10.32 6.96 6.72 3.84 6.24 6.96 6.96 6.24 6.72 6.96 6.72 3.84 6.96 6.96 6.96 3.6 3.6 6.24 6.72]
+xshow
+grestore
+% {Firm}\n{Producer Role}\nFirm_calc_input_demands->{Firm}\n{Financial Management Role}\nFirm_compute_payout_policy
+gsave
+1 setlinewidth
+0.667 1.000 1.000 edgecolor
+newpath 780 2680 moveto
+780 2671 780 2662 780 2652 curveto
+stroke
+0.667 1.000 1.000 edgecolor
+newpath 783.5 2652 moveto
+780 2642 lineto
+776.5 2652 lineto
+closepath fill
+1 setlinewidth
+solid
+0.667 1.000 1.000 edgecolor
+newpath 783.5 2652 moveto
+780 2642 lineto
+776.5 2652 lineto
+closepath stroke
+grestore
+% {Firm}\n{Producer Role}\nFirm_calc_input_demands_2->{Firm}\n{Labor Market Role}\nFirm_send_vacancies
+gsave
+1 setlinewidth
+0.667 1.000 1.000 edgecolor
+newpath 634 1510 moveto
+627 1497 620 1481 614 1467 curveto
+stroke
+0.667 1.000 1.000 edgecolor
+newpath 617.26 1465.72 moveto
+610 1458 lineto
+610.863 1468.56 lineto
+closepath fill
+1 setlinewidth
+solid
+0.667 1.000 1.000 edgecolor
+newpath 617.26 1465.72 moveto
+610 1458 lineto
+610.863 1468.56 lineto
+closepath stroke
+grestore
+% {IGFirm}\n{Default Role}\nIGFirm_send_capital_good
+gsave
+0.000 0.000 0.827 nodecolor
+newpath 885 1458 moveto
+717 1458 lineto
+717 1402 lineto
+885 1402 lineto
+closepath fill
+1 setlinewidth
+filled
+0.000 0.000 0.827 nodecolor
+newpath 885 1458 moveto
+717 1458 lineto
+717 1402 lineto
+885 1402 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+773.5 1440 moveto
+({IGFirm})
+[6.72 4.56 10.08 7.44 3.6 4.56 10.32 6.72]
+xshow
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+758.5 1424 moveto
+({Default Role})
+[6.72 10.08 6.24 4.32 6.24 6.72 3.6 3.84 3.6 9.36 6.96 3.6 6.24 6.72]
+xshow
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+725 1408 moveto
+(IGFirm_send_capital_good)
+[4.56 10.08 7.44 3.6 4.56 10.32 6.96 5.52 6.24 6.72 6.96 6.96 6.24 6.24 6.96 3.6 3.84 6.24 3.6 6.96 6.72 6.96 6.96 6.96]
+xshow
+grestore
+% {Firm}\n{Producer Role}\nFirm_calc_input_demands_2->{IGFirm}\n{Default Role}\nIGFirm_send_capital_good
+gsave
+1 setlinewidth
+0.000 1.000 1.000 edgecolor
+newpath 687 1510 moveto
+707 1496 732 1479 753 1464 curveto
+stroke
+0.000 1.000 1.000 edgecolor
+newpath 755.1 1466.8 moveto
+761 1458 lineto
+750.9 1461.2 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 1.000 1.000 edgecolor
+newpath 755.1 1466.8 moveto
+761 1458 lineto
+750.9 1461.2 lineto
+closepath stroke
+0.000 0.000 0.000 edgecolor
+14.00 /Times-Roman set_font
+735.5 1478 moveto
+(capital_good_request)
+[6.24 6.24 6.96 3.6 3.84 6.24 3.6 6.96 6.72 6.96 6.96 6.96 6.96 4.56 6.24 6.96 6.72 6.24 5.52 3.84]
+xshow
+grestore
+% {Firm}\n{Producer Role}\nFirm_calc_pay_costs
+gsave
+0.000 0.000 0.827 nodecolor
+newpath 890 1350 moveto
+756 1350 lineto
+756 1294 lineto
+890 1294 lineto
+closepath fill
+1 setlinewidth
+filled
+0.000 0.000 0.827 nodecolor
+newpath 890 1350 moveto
+756 1350 lineto
+756 1294 lineto
+890 1294 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+803 1332 moveto
+({Firm})
+[6.72 7.44 3.6 4.56 10.32 6.72]
+xshow
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+776 1316 moveto
+({Producer Role})
+[6.72 7.68 4.56 6.96 6.96 6.72 6.24 6.24 4.56 3.6 9.36 6.96 3.6 6.24 6.72]
+xshow
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+763.5 1300 moveto
+(Firm_calc_pay_costs)
+[7.44 3.6 4.56 10.32 6.96 6.24 6.24 3.6 6.24 6.96 6.96 6.24 6.72 6.96 6.24 6.96 5.52 3.84 5.52]
+xshow
+grestore
+% {IGFirm}\n{Default Role}\nIGFirm_send_capital_good->{Firm}\n{Producer Role}\nFirm_calc_pay_costs
+gsave
+1 setlinewidth
+0.000 1.000 1.000 edgecolor
+newpath 807 1402 moveto
+809 1389 812 1374 815 1360 curveto
+stroke
+0.000 1.000 1.000 edgecolor
+newpath 818.471 1360.49 moveto
+817 1350 lineto
+811.607 1359.12 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 1.000 1.000 edgecolor
+newpath 818.471 1360.49 moveto
+817 1350 lineto
+811.607 1359.12 lineto
+closepath stroke
+0.000 0.000 0.000 edgecolor
+14.00 /Times-Roman set_font
+814 1370 moveto
+(capital_good_delivery)
+[6.24 6.24 6.96 3.6 3.84 6.24 3.6 6.96 6.72 6.96 6.96 6.96 6.96 6.96 6.24 3.6 3.6 6.72 6.24 4.56 6.72]
+xshow
+grestore
+% {IGFirm}\n{Default Role}\nIGFirm_receive_payment
+gsave
+0.000 0.000 0.827 nodecolor
+newpath 791 1168 moveto
+633 1168 lineto
+633 1112 lineto
+791 1112 lineto
+closepath fill
+1 setlinewidth
+filled
+0.000 0.000 0.827 nodecolor
+newpath 791 1168 moveto
+633 1168 lineto
+633 1112 lineto
+791 1112 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+684.5 1150 moveto
+({IGFirm})
+[6.72 4.56 10.08 7.44 3.6 4.56 10.32 6.72]
+xshow
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+669.5 1134 moveto
+({Default Role})
+[6.72 10.08 6.24 4.32 6.24 6.72 3.6 3.84 3.6 9.36 6.96 3.6 6.24 6.72]
+xshow
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+641 1118 moveto
+(IGFirm_receive_payment)
+[4.56 10.08 7.44 3.6 4.56 10.32 6.96 4.56 6.24 6.24 6.24 3.6 6.72 6.24 6.96 6.96 6.24 6.72 10.32 6.24 6.72 3.84]
+xshow
+grestore
+% {Household}\n{Labor Market Role}\nHousehold_handle_leftover_budget
+gsave
+0.000 0.000 0.827 nodecolor
+newpath 877 150 moveto
+663 150 lineto
+663 94 lineto
+877 94 lineto
+closepath fill
+1 setlinewidth
+filled
+0.000 0.000 0.827 nodecolor
+newpath 877 150 moveto
+663 150 lineto
+663 94 lineto
+877 94 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+733 132 moveto
+({Household})
+[6.72 9.84 6.96 6.72 5.52 6.24 6.72 6.96 3.6 6.96 6.72]
+xshow
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+709.5 116 moveto
+({Labor Market Role})
+[6.72 8.16 6.24 6.96 6.96 4.56 3.6 12.48 6.24 4.56 6.96 6.24 3.84 3.6 9.36 6.96 3.6 6.24 6.72]
+xshow
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+671 100 moveto
+(Household_handle_leftover_budget)
+[9.84 6.96 6.72 5.52 6.24 6.72 6.96 3.6 6.96 6.96 6.72 6.24 6.72 6.96 3.6 6.24 6.96 3.6 6.24 4.32 3.84 6.96 6.72 6.24 4.56 6.96 6.96 6.72 6.96 6.72 6.24 3.84]
+xshow
+grestore
+% {IGFirm}\n{Default Role}\nIGFirm_receive_payment->{Household}\n{Labor Market Role}\nHousehold_handle_leftover_budget
+gsave
+1 setlinewidth
+0.000 1.000 1.000 edgecolor
+newpath 713 1112 moveto
+713 1082 714 1033 714 992 curveto
+714 992 714 992 714 230 curveto
+714 204 727 178 740 158 curveto
+stroke
+0.000 1.000 1.000 edgecolor
+newpath 742.8 160.1 moveto
+746 150 lineto
+737.2 155.9 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 1.000 1.000 edgecolor
+newpath 742.8 160.1 moveto
+746 150 lineto
+737.2 155.9 lineto
+closepath stroke
+0.000 0.000 0.000 edgecolor
+14.00 /Times-Roman set_font
+714.5 642 moveto
+(capital_good_profit_distribution)
+[6.24 6.24 6.96 3.6 3.84 6.24 3.6 6.96 6.72 6.96 6.96 6.96 6.96 6.96 4.56 6.96 4.32 3.6 3.84 6.96 6.96 3.6 5.52 3.84 4.56 3.6 6.96 6.72 3.84 3.6 6.96 6.72]
+xshow
+grestore
+% {Firm}\n{Producer Role}\nFirm_calc_pay_costs->{IGFirm}\n{Default Role}\nIGFirm_receive_payment
+gsave
+1 setlinewidth
+0.000 1.000 1.000 edgecolor
+newpath 756 1307 moveto
+740 1300 724 1290 714 1276 curveto
+695 1247 697 1208 702 1178 curveto
+stroke
+0.000 1.000 1.000 edgecolor
+newpath 705.471 1178.49 moveto
+704 1168 lineto
+698.607 1177.12 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 1.000 1.000 edgecolor
+newpath 705.471 1178.49 moveto
+704 1168 lineto
+698.607 1177.12 lineto
+closepath stroke
+0.000 0.000 0.000 edgecolor
+14.00 /Times-Roman set_font
+717.5 1262 moveto
+(pay_capital_goods)
+[6.96 6.24 6.72 6.96 6.24 6.24 6.96 3.6 3.84 6.24 3.6 6.96 6.72 6.96 6.96 6.96 5.52]
+xshow
+grestore
+% {Household}\n{Labor Market Role}\nHousehold_receive_wage
+gsave
+0.000 0.000 0.827 nodecolor
+newpath 1087 1168 moveto
+927 1168 lineto
+927 1112 lineto
+1087 1112 lineto
+closepath fill
+1 setlinewidth
+filled
+0.000 0.000 0.827 nodecolor
+newpath 1087 1168 moveto
+927 1168 lineto
+927 1112 lineto
+1087 1112 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+970 1150 moveto
+({Household})
+[6.72 9.84 6.96 6.72 5.52 6.24 6.72 6.96 3.6 6.96 6.72]
+xshow
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+946.5 1134 moveto
+({Labor Market Role})
+[6.72 8.16 6.24 6.96 6.96 4.56 3.6 12.48 6.24 4.56 6.96 6.24 3.84 3.6 9.36 6.96 3.6 6.24 6.72]
+xshow
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+935 1118 moveto
+(Household_receive_wage)
+[9.84 6.96 6.72 5.52 6.24 6.72 6.96 3.6 6.96 6.96 4.56 6.24 6.24 6.24 3.6 6.72 6.24 6.96 10.08 6.24 6.72 6.24]
+xshow
+grestore
+% {Firm}\n{Producer Role}\nFirm_calc_pay_costs->{Household}\n{Labor Market Role}\nHousehold_receive_wage
+gsave
+1 setlinewidth
+0.000 1.000 1.000 edgecolor
+newpath 856 1294 moveto
+874 1279 895 1260 913 1242 curveto
+934 1221 958 1196 975 1176 curveto
+stroke
+0.000 1.000 1.000 edgecolor
+newpath 978.049 1177.83 moveto
+982 1168 lineto
+972.781 1173.22 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 1.000 1.000 edgecolor
+newpath 978.049 1177.83 moveto
+982 1168 lineto
+972.781 1173.22 lineto
+closepath stroke
+0.000 0.000 0.000 edgecolor
+14.00 /Times-Roman set_font
+894.5 1262 moveto
+(wage_payment)
+[10.08 6.24 6.72 6.24 6.96 6.96 6.24 6.72 10.32 6.24 6.72 3.84]
+xshow
+grestore
+% {Firm}\n{Producer Role}\nFirm_send_goods_to_mall
+gsave
+0.000 0.000 0.827 nodecolor
+newpath 904 1242 moveto
+740 1242 lineto
+740 1186 lineto
+904 1186 lineto
+closepath fill
+1 setlinewidth
+filled
+0.000 0.000 0.827 nodecolor
+newpath 904 1242 moveto
+740 1242 lineto
+740 1186 lineto
+904 1186 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+802 1224 moveto
+({Firm})
+[6.72 7.44 3.6 4.56 10.32 6.72]
+xshow
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+775 1208 moveto
+({Producer Role})
+[6.72 7.68 4.56 6.96 6.96 6.72 6.24 6.24 4.56 3.6 9.36 6.96 3.6 6.24 6.72]
+xshow
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+747.5 1192 moveto
+(Firm_send_goods_to_mall)
+[7.44 3.6 4.56 10.32 6.96 5.52 6.24 6.72 6.96 6.96 6.72 6.96 6.96 6.96 5.52 6.96 3.84 6.96 6.96 10.32 6.24 3.6 3.6]
+xshow
+grestore
+% {Firm}\n{Producer Role}\nFirm_calc_pay_costs->{Firm}\n{Producer Role}\nFirm_send_goods_to_mall
+gsave
+1 setlinewidth
+0.667 1.000 1.000 edgecolor
+newpath 823 1294 moveto
+822 1281 822 1266 822 1252 curveto
+stroke
+0.667 1.000 1.000 edgecolor
+newpath 825.5 1252 moveto
+822 1242 lineto
+818.5 1252 lineto
+closepath fill
+1 setlinewidth
+solid
+0.667 1.000 1.000 edgecolor
+newpath 825.5 1252 moveto
+822 1242 lineto
+818.5 1252 lineto
+closepath stroke
+grestore
+% {Household}\n{Labor Market Role}\nHousehold_rank_and_buy_goods_1
+gsave
+0.000 0.000 0.827 nodecolor
+newpath 1080 838 moveto
+864 838 lineto
+864 782 lineto
+1080 782 lineto
+closepath fill
+1 setlinewidth
+filled
+0.000 0.000 0.827 nodecolor
+newpath 1080 838 moveto
+864 838 lineto
+864 782 lineto
+1080 782 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+935 820 moveto
+({Household})
+[6.72 9.84 6.96 6.72 5.52 6.24 6.72 6.96 3.6 6.96 6.72]
+xshow
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+911.5 804 moveto
+({Labor Market Role})
+[6.72 8.16 6.24 6.96 6.96 4.56 3.6 12.48 6.24 4.56 6.96 6.24 3.84 3.6 9.36 6.96 3.6 6.24 6.72]
+xshow
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+871.5 788 moveto
+(Household_rank_and_buy_goods_1)
+[9.84 6.96 6.72 5.52 6.24 6.72 6.96 3.6 6.96 6.96 4.56 6.24 6.72 6.96 6.96 6.24 6.72 6.96 6.96 6.96 6.72 6.72 6.96 6.72 6.96 6.96 6.96 5.52 6.96 6.96]
+xshow
+grestore
+% {Household}\n{Labor Market Role}\nHousehold_receive_wage->{Household}\n{Labor Market Role}\nHousehold_rank_and_buy_goods_1
+gsave
+1 setlinewidth
+0.667 1.000 1.000 edgecolor
+newpath 1008 1112 moveto
+1008 1060 1007 948 988 856 curveto
+988 853 987 850 986 848 curveto
+stroke
+0.667 1.000 1.000 edgecolor
+newpath 989.226 846.573 moveto
+983 838 lineto
+982.521 848.584 lineto
+closepath fill
+1 setlinewidth
+solid
+0.667 1.000 1.000 edgecolor
+newpath 989.226 846.573 moveto
+983 838 lineto
+982.521 848.584 lineto
+closepath stroke
+grestore
+% {Mall}\n{Default Role}\nMall_send_quality_price_info_1
+gsave
+0.000 0.000 0.827 nodecolor
+newpath 958 946 moveto
+760 946 lineto
+760 890 lineto
+958 890 lineto
+closepath fill
+1 setlinewidth
+filled
+0.000 0.000 0.827 nodecolor
+newpath 958 946 moveto
+760 946 lineto
+760 890 lineto
+958 890 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+839 928 moveto
+({Mall})
+[6.72 12.48 6.24 3.6 3.6 6.72]
+xshow
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+816.5 912 moveto
+({Default Role})
+[6.72 10.08 6.24 4.32 6.24 6.72 3.6 3.84 3.6 9.36 6.96 3.6 6.24 6.72]
+xshow
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+768 896 moveto
+(Mall_send_quality_price_info_1)
+[12.48 6.24 3.6 3.6 6.96 5.52 6.24 6.72 6.96 6.96 6.96 6.72 6.24 3.6 3.6 3.84 6.72 6.96 6.96 4.56 3.6 6.24 6.24 6.96 3.6 6.72 4.32 6.96 6.96 6.96]
+xshow
+grestore
+% {Mall}\n{Default Role}\nMall_send_quality_price_info_1->{Household}\n{Labor Market Role}\nHousehold_rank_and_buy_goods_1
+gsave
+1 setlinewidth
+0.000 1.000 1.000 edgecolor
+newpath 860 890 moveto
+862 878 866 865 873 856 curveto
+877 852 880 848 885 844 curveto
+stroke
+0.000 1.000 1.000 edgecolor
+newpath 887.1 846.8 moveto
+893 838 lineto
+882.9 841.2 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 1.000 1.000 edgecolor
+newpath 887.1 846.8 moveto
+893 838 lineto
+882.9 841.2 lineto
+closepath stroke
+0.000 0.000 0.000 edgecolor
+14.00 /Times-Roman set_font
+873.5 858 moveto
+(quality_price_info_1)
+[6.96 6.72 6.24 3.6 3.6 3.84 6.72 6.96 6.96 4.56 3.6 6.24 6.24 6.96 3.6 6.72 4.32 6.96 6.96 6.96]
+xshow
+grestore
+% {Mall}\n{Default Role}\nMall_update_mall_stocks_sales_rationing_1
+gsave
+0.000 0.000 0.827 nodecolor
+newpath 1104 730 moveto
+840 730 lineto
+840 674 lineto
+1104 674 lineto
+closepath fill
+1 setlinewidth
+filled
+0.000 0.000 0.827 nodecolor
+newpath 1104 730 moveto
+840 730 lineto
+840 674 lineto
+1104 674 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+952 712 moveto
+({Mall})
+[6.72 12.48 6.24 3.6 3.6 6.72]
+xshow
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+929.5 696 moveto
+({Default Role})
+[6.72 10.08 6.24 4.32 6.24 6.72 3.6 3.84 3.6 9.36 6.96 3.6 6.24 6.72]
+xshow
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+848 680 moveto
+(Mall_update_mall_stocks_sales_rationing_1)
+[12.48 6.24 3.6 3.6 6.96 6.72 6.96 6.96 6.24 3.84 6.24 6.96 10.32 6.24 3.6 3.6 6.96 5.52 3.84 6.96 6.24 6.96 5.52 6.96 5.52 6.24 3.6 6.24 5.52 6.96 4.56 6.24 3.84 3.6 6.96 6.72 3.6 6.72 6.72 6.96 6.96]
+xshow
+grestore
+% {Household}\n{Labor Market Role}\nHousehold_rank_and_buy_goods_1->{Mall}\n{Default Role}\nMall_update_mall_stocks_sales_rationing_1
+gsave
+1 setlinewidth
+0.000 1.000 1.000 edgecolor
+newpath 972 782 moveto
+972 769 972 754 972 740 curveto
+stroke
+0.000 1.000 1.000 edgecolor
+newpath 975.5 740 moveto
+972 730 lineto
+968.5 740 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 1.000 1.000 edgecolor
+newpath 975.5 740 moveto
+972 730 lineto
+968.5 740 lineto
+closepath stroke
+0.000 0.000 0.000 edgecolor
+14.00 /Times-Roman set_font
+972 750 moveto
+(consumption_request_1)
+[6.24 6.96 6.72 5.52 6.72 10.32 6.96 3.84 3.6 6.96 6.72 6.96 4.56 6.24 6.96 6.72 6.24 5.52 3.84 6.96 6.96]
+xshow
+grestore
+% {Household}\n{Labor Market Role}\nHousehold_rank_and_buy_goods_2
+gsave
+0.000 0.000 0.827 nodecolor
+newpath 1062 622 moveto
+846 622 lineto
+846 566 lineto
+1062 566 lineto
+closepath fill
+1 setlinewidth
+filled
+0.000 0.000 0.827 nodecolor
+newpath 1062 622 moveto
+846 622 lineto
+846 566 lineto
+1062 566 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+917 604 moveto
+({Household})
+[6.72 9.84 6.96 6.72 5.52 6.24 6.72 6.96 3.6 6.96 6.72]
+xshow
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+893.5 588 moveto
+({Labor Market Role})
+[6.72 8.16 6.24 6.96 6.96 4.56 3.6 12.48 6.24 4.56 6.96 6.24 3.84 3.6 9.36 6.96 3.6 6.24 6.72]
+xshow
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+853.5 572 moveto
+(Household_rank_and_buy_goods_2)
+[9.84 6.96 6.72 5.52 6.24 6.72 6.96 3.6 6.96 6.96 4.56 6.24 6.72 6.96 6.96 6.24 6.72 6.96 6.96 6.96 6.72 6.72 6.96 6.72 6.96 6.96 6.96 5.52 6.96 6.96]
+xshow
+grestore
+% {Mall}\n{Default Role}\nMall_update_mall_stocks_sales_rationing_1->{Household}\n{Labor Market Role}\nHousehold_rank_and_buy_goods_2
+gsave
+1 setlinewidth
+0.000 1.000 1.000 edgecolor
+newpath 1060 674 moveto
+1074 665 1081 654 1071 640 curveto
+1068 636 1062 631 1054 627 curveto
+stroke
+0.000 1.000 1.000 edgecolor
+newpath 1055.44 623.797 moveto
+1045 622 lineto
+1052.04 629.916 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 1.000 1.000 edgecolor
+newpath 1055.44 623.797 moveto
+1045 622 lineto
+1052.04 629.916 lineto
+closepath stroke
+0.000 0.000 0.000 edgecolor
+14.00 /Times-Roman set_font
+1077.5 642 moveto
+(quality_price_info_2)
+[6.96 6.72 6.24 3.6 3.6 3.84 6.72 6.96 6.96 4.56 3.6 6.24 6.24 6.96 3.6 6.72 4.32 6.96 6.96 6.96]
+xshow
+grestore
+% {Mall}\n{Default Role}\nMall_update_mall_stocks_sales_rationing_1->{Household}\n{Labor Market Role}\nHousehold_rank_and_buy_goods_2
+gsave
+1 setlinewidth
+0.000 1.000 1.000 edgecolor
+newpath 938 674 moveto
+933 668 929 662 926 656 curveto
+923 648 924 639 927 631 curveto
+stroke
+0.000 1.000 1.000 edgecolor
+newpath 930.137 632.56 moveto
+931 622 lineto
+923.74 629.717 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 1.000 1.000 edgecolor
+newpath 930.137 632.56 moveto
+931 622 lineto
+923.74 629.717 lineto
+closepath stroke
+0.000 0.000 0.000 edgecolor
+14.00 /Times-Roman set_font
+929.5 642 moveto
+(accepted_consumption_1)
+[6.24 6.24 6.24 6.24 6.96 3.84 6.24 6.96 6.96 6.24 6.96 6.72 5.52 6.72 10.32 6.96 3.84 3.6 6.96 6.72 6.96 6.96]
+xshow
+grestore
+% {Mall}\n{Default Role}\nMall_update_mall_stocks_sales_rationing_2
+gsave
+0.000 0.000 0.827 nodecolor
+newpath 1086 514 moveto
+822 514 lineto
+822 458 lineto
+1086 458 lineto
+closepath fill
+1 setlinewidth
+filled
+0.000 0.000 0.827 nodecolor
+newpath 1086 514 moveto
+822 514 lineto
+822 458 lineto
+1086 458 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+934 496 moveto
+({Mall})
+[6.72 12.48 6.24 3.6 3.6 6.72]
+xshow
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+911.5 480 moveto
+({Default Role})
+[6.72 10.08 6.24 4.32 6.24 6.72 3.6 3.84 3.6 9.36 6.96 3.6 6.24 6.72]
+xshow
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+830 464 moveto
+(Mall_update_mall_stocks_sales_rationing_2)
+[12.48 6.24 3.6 3.6 6.96 6.72 6.96 6.96 6.24 3.84 6.24 6.96 10.32 6.24 3.6 3.6 6.96 5.52 3.84 6.96 6.24 6.96 5.52 6.96 5.52 6.24 3.6 6.24 5.52 6.96 4.56 6.24 3.84 3.6 6.96 6.72 3.6 6.72 6.72 6.96 6.96]
+xshow
+grestore
+% {Household}\n{Labor Market Role}\nHousehold_rank_and_buy_goods_2->{Mall}\n{Default Role}\nMall_update_mall_stocks_sales_rationing_2
+gsave
+1 setlinewidth
+0.000 1.000 1.000 edgecolor
+newpath 954 566 moveto
+954 553 954 538 954 524 curveto
+stroke
+0.000 1.000 1.000 edgecolor
+newpath 957.5 524 moveto
+954 514 lineto
+950.5 524 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 1.000 1.000 edgecolor
+newpath 957.5 524 moveto
+954 514 lineto
+950.5 524 lineto
+closepath stroke
+0.000 0.000 0.000 edgecolor
+14.00 /Times-Roman set_font
+954 534 moveto
+(consumption_request_2)
+[6.24 6.96 6.72 5.52 6.72 10.32 6.96 3.84 3.6 6.96 6.72 6.96 4.56 6.24 6.96 6.72 6.24 5.52 3.84 6.96 6.96]
+xshow
+grestore
+% {Mall}\n{Default Role}\nMall_update_mall_stock
+gsave
+0.000 0.000 0.827 nodecolor
+newpath 901 1094 moveto
+747 1094 lineto
+747 1038 lineto
+901 1038 lineto
+closepath fill
+1 setlinewidth
+filled
+0.000 0.000 0.827 nodecolor
+newpath 901 1094 moveto
+747 1094 lineto
+747 1038 lineto
+901 1038 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+804 1076 moveto
+({Mall})
+[6.72 12.48 6.24 3.6 3.6 6.72]
+xshow
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+781.5 1060 moveto
+({Default Role})
+[6.72 10.08 6.24 4.32 6.24 6.72 3.6 3.84 3.6 9.36 6.96 3.6 6.24 6.72]
+xshow
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+754.5 1044 moveto
+(Mall_update_mall_stock)
+[12.48 6.24 3.6 3.6 6.96 6.72 6.96 6.96 6.24 3.84 6.24 6.96 10.32 6.24 3.6 3.6 6.96 5.52 3.84 6.96 6.24 6.96]
+xshow
+grestore
+% {Firm}\n{Producer Role}\nFirm_send_goods_to_mall->{Mall}\n{Default Role}\nMall_update_mall_stock
+gsave
+1 setlinewidth
+0.000 1.000 1.000 edgecolor
+newpath 815 1186 moveto
+814 1180 813 1174 812 1168 curveto
+810 1143 809 1136 812 1112 curveto
+812 1109 813 1107 813 1104 curveto
+stroke
+0.000 1.000 1.000 edgecolor
+newpath 816.479 1104.58 moveto
+816 1094 lineto
+809.774 1102.57 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 1.000 1.000 edgecolor
+newpath 816.479 1104.58 moveto
+816 1094 lineto
+809.774 1102.57 lineto
+closepath stroke
+0.000 0.000 0.000 edgecolor
+14.00 /Times-Roman set_font
+815 1134 moveto
+(update_mall_stock)
+[6.72 6.96 6.96 6.24 3.84 6.24 6.96 10.32 6.24 3.6 3.6 6.96 5.52 3.84 6.96 6.24 6.96]
+xshow
+grestore
+% {Mall}\n{Default Role}\nMall_update_mall_stock->{Mall}\n{Default Role}\nMall_send_quality_price_info_1
+gsave
+1 setlinewidth
+0.667 1.000 1.000 edgecolor
+newpath 831 1038 moveto
+836 1015 844 981 850 956 curveto
+stroke
+0.667 1.000 1.000 edgecolor
+newpath 853.471 956.492 moveto
+852 946 lineto
+846.607 955.119 lineto
+closepath fill
+1 setlinewidth
+solid
+0.667 1.000 1.000 edgecolor
+newpath 853.471 956.492 moveto
+852 946 lineto
+846.607 955.119 lineto
+closepath stroke
+grestore
+% {Firm}\n{Producer Role}\nFirm_calc_revenue
+gsave
+0.000 0.000 0.827 nodecolor
+newpath 1028 258 moveto
+906 258 lineto
+906 202 lineto
+1028 202 lineto
+closepath fill
+1 setlinewidth
+filled
+0.000 0.000 0.827 nodecolor
+newpath 1028 258 moveto
+906 258 lineto
+906 202 lineto
+1028 202 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+947 240 moveto
+({Firm})
+[6.72 7.44 3.6 4.56 10.32 6.72]
+xshow
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+920 224 moveto
+({Producer Role})
+[6.72 7.68 4.56 6.96 6.96 6.72 6.24 6.24 4.56 3.6 9.36 6.96 3.6 6.24 6.72]
+xshow
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+913.5 208 moveto
+(Firm_calc_revenue)
+[7.44 3.6 4.56 10.32 6.96 6.24 6.24 3.6 6.24 6.96 4.56 6.24 6.72 6.24 6.72 6.72 6.24]
+xshow
+grestore
+% {Firm}\n{Producer Role}\nFirm_calc_revenue->{Household}\n{Labor Market Role}\nHousehold_handle_leftover_budget
+gsave
+1 setlinewidth
+0.000 1.000 1.000 edgecolor
+newpath 916 202 moveto
+889 188 857 170 830 155 curveto
+stroke
+0.000 1.000 1.000 edgecolor
+newpath 831.441 151.797 moveto
+821 150 lineto
+828.042 157.916 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 1.000 1.000 edgecolor
+newpath 831.441 151.797 moveto
+821 150 lineto
+828.042 157.916 lineto
+closepath stroke
+0.000 0.000 0.000 edgecolor
+14.00 /Times-Roman set_font
+888 170 moveto
+(dividend)
+[6.96 3.6 6.72 3.6 6.96 6.24 6.72 6.96]
+xshow
+grestore
+% {Firm}\n{Financial Management Role}\nFirm_compute_income_statement
+gsave
+0.000 0.000 0.827 nodecolor
+newpath 1099 150 moveto
+895 150 lineto
+895 94 lineto
+1099 94 lineto
+closepath fill
+1 setlinewidth
+filled
+0.000 0.000 0.827 nodecolor
+newpath 1099 150 moveto
+895 150 lineto
+895 94 lineto
+1099 94 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+977 132 moveto
+({Firm})
+[6.72 7.44 3.6 4.56 10.32 6.72]
+xshow
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+912 116 moveto
+({Financial Management Role})
+[6.72 7.44 3.6 6.72 6.24 6.72 6.24 3.6 6.24 3.6 3.6 12.48 6.24 6.72 6.24 6.72 6.24 10.32 6.24 6.72 3.84 3.6 9.36 6.96 3.6 6.24 6.72]
+xshow
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+902.5 100 moveto
+(Firm_compute_income_statement)
+[7.44 3.6 4.56 10.32 6.96 6.24 6.96 10.32 6.96 6.72 3.84 6.24 6.96 3.6 6.72 6.24 6.96 10.32 6.24 6.96 5.52 3.84 6.24 3.84 6.24 10.32 6.24 6.72 3.84]
+xshow
+grestore
+% {Firm}\n{Producer Role}\nFirm_calc_revenue->{Firm}\n{Financial Management Role}\nFirm_compute_income_statement
+gsave
+1 setlinewidth
+0.667 1.000 1.000 edgecolor
+newpath 975 202 moveto
+978 189 983 174 986 160 curveto
+stroke
+0.667 1.000 1.000 edgecolor
+newpath 989.479 160.584 moveto
+989 150 lineto
+982.774 158.573 lineto
+closepath fill
+1 setlinewidth
+solid
+0.667 1.000 1.000 edgecolor
+newpath 989.479 160.584 moveto
+989 150 lineto
+982.774 158.573 lineto
+closepath stroke
+grestore
+% {Household}\n{Labor Market Role}\nHousehold_read_rationing
+gsave
+0.000 0.000 0.827 nodecolor
+newpath 893 332 moveto
+729 332 lineto
+729 276 lineto
+893 276 lineto
+closepath fill
+1 setlinewidth
+filled
+0.000 0.000 0.827 nodecolor
+newpath 893 332 moveto
+729 332 lineto
+729 276 lineto
+893 276 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+774 314 moveto
+({Household})
+[6.72 9.84 6.96 6.72 5.52 6.24 6.72 6.96 3.6 6.96 6.72]
+xshow
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+750.5 298 moveto
+({Labor Market Role})
+[6.72 8.16 6.24 6.96 6.96 4.56 3.6 12.48 6.24 4.56 6.96 6.24 3.84 3.6 9.36 6.96 3.6 6.24 6.72]
+xshow
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+737 282 moveto
+(Household_read_rationing)
+[9.84 6.96 6.72 5.52 6.24 6.72 6.96 3.6 6.96 6.96 4.56 6.24 6.24 6.96 6.96 4.56 6.24 3.84 3.6 6.96 6.72 3.6 6.72 6.72]
+xshow
+grestore
+% {Mall}\n{Default Role}\nMall_update_mall_stocks_sales_rationing_2->{Household}\n{Labor Market Role}\nHousehold_read_rationing
+gsave
+1 setlinewidth
+0.000 1.000 1.000 edgecolor
+newpath 847 458 moveto
+832 452 821 446 816 440 curveto
+795 412 796 372 801 342 curveto
+stroke
+0.000 1.000 1.000 edgecolor
+newpath 804.471 342.492 moveto
+803 332 lineto
+797.607 341.119 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 1.000 1.000 edgecolor
+newpath 804.471 342.492 moveto
+803 332 lineto
+797.607 341.119 lineto
+closepath stroke
+0.000 0.000 0.000 edgecolor
+14.00 /Times-Roman set_font
+819.5 426 moveto
+(accepted_consumption_2)
+[6.24 6.24 6.24 6.24 6.96 3.84 6.24 6.96 6.96 6.24 6.96 6.72 5.52 6.72 10.32 6.96 3.84 3.6 6.96 6.72 6.96 6.96]
+xshow
+grestore
+% {Mall}\n{Default Role}\nMall_pay_firm
+gsave
+0.000 0.000 0.827 nodecolor
+newpath 1017 406 moveto
+917 406 lineto
+917 350 lineto
+1017 350 lineto
+closepath fill
+1 setlinewidth
+filled
+0.000 0.000 0.827 nodecolor
+newpath 1017 406 moveto
+917 406 lineto
+917 350 lineto
+1017 350 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+947 388 moveto
+({Mall})
+[6.72 12.48 6.24 3.6 3.6 6.72]
+xshow
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+924.5 372 moveto
+({Default Role})
+[6.72 10.08 6.24 4.32 6.24 6.72 3.6 3.84 3.6 9.36 6.96 3.6 6.24 6.72]
+xshow
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+925 356 moveto
+(Mall_pay_firm)
+[12.48 6.24 3.6 3.6 6.96 6.96 6.24 6.72 6.96 4.32 3.6 4.56 10.32]
+xshow
+grestore
+% {Mall}\n{Default Role}\nMall_update_mall_stocks_sales_rationing_2->{Mall}\n{Default Role}\nMall_pay_firm
+gsave
+1 setlinewidth
+0.667 1.000 1.000 edgecolor
+newpath 957 458 moveto
+959 445 960 430 962 416 curveto
+stroke
+0.667 1.000 1.000 edgecolor
+newpath 965.488 416.299 moveto
+963 406 lineto
+958.522 415.602 lineto
+closepath fill
+1 setlinewidth
+solid
+0.667 1.000 1.000 edgecolor
+newpath 965.488 416.299 moveto
+963 406 lineto
+958.522 415.602 lineto
+closepath stroke
+grestore
+% {Household}\n{Labor Market Role}\nHousehold_read_rationing->{Household}\n{Labor Market Role}\nHousehold_handle_leftover_budget
+gsave
+1 setlinewidth
+0.667 1.000 1.000 edgecolor
+newpath 805 276 moveto
+798 245 786 195 778 160 curveto
+stroke
+0.667 1.000 1.000 edgecolor
+newpath 781.393 159.119 moveto
+776 150 lineto
+774.529 160.492 lineto
+closepath fill
+1 setlinewidth
+solid
+0.667 1.000 1.000 edgecolor
+newpath 781.393 159.119 moveto
+776 150 lineto
+774.529 160.492 lineto
+closepath stroke
+grestore
+% {Mall}\n{Default Role}\nMall_pay_firm->{Firm}\n{Producer Role}\nFirm_calc_revenue
+gsave
+1 setlinewidth
+0.000 1.000 1.000 edgecolor
+newpath 967 350 moveto
+967 327 967 293 967 268 curveto
+stroke
+0.000 1.000 1.000 edgecolor
+newpath 970.5 268 moveto
+967 258 lineto
+963.5 268 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 1.000 1.000 edgecolor
+newpath 970.5 268 moveto
+967 258 lineto
+963.5 268 lineto
+closepath stroke
+0.000 0.000 0.000 edgecolor
+14.00 /Times-Roman set_font
+967 298 moveto
+(sales)
+[5.52 6.24 3.6 6.24 5.52]
+xshow
+grestore
+% {Household}\n{Financial Management Role}\nHousehold_tax_payment
+gsave
+0.000 0.000 0.827 nodecolor
+newpath 1125 2844 moveto
+939 2844 lineto
+939 2788 lineto
+1125 2788 lineto
+closepath fill
+1 setlinewidth
+filled
+0.000 0.000 0.827 nodecolor
+newpath 1125 2844 moveto
+939 2844 lineto
+939 2788 lineto
+1125 2788 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+995 2826 moveto
+({Household})
+[6.72 9.84 6.96 6.72 5.52 6.24 6.72 6.96 3.6 6.96 6.72]
+xshow
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+947 2810 moveto
+({Financial Management Role})
+[6.72 7.44 3.6 6.72 6.24 6.72 6.24 3.6 6.24 3.6 3.6 12.48 6.24 6.72 6.24 6.72 6.24 10.32 6.24 6.72 3.84 3.6 9.36 6.96 3.6 6.24 6.72]
+xshow
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+962.5 2794 moveto
+(Household_tax_payment)
+[9.84 6.96 6.72 5.52 6.24 6.72 6.96 3.6 6.96 6.96 3.84 6.24 6.72 6.96 6.96 6.24 6.72 10.32 6.24 6.72 3.84]
+xshow
+grestore
+% {Government}\n{Tax Collector Role}\nGovernment_tax_receipts
+gsave
+0.000 0.000 0.827 nodecolor
+newpath 1214 2736 moveto
+1056 2736 lineto
+1056 2680 lineto
+1214 2680 lineto
+closepath fill
+1 setlinewidth
+filled
+0.000 0.000 0.827 nodecolor
+newpath 1214 2736 moveto
+1056 2736 lineto
+1056 2680 lineto
+1214 2680 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+1094 2718 moveto
+({Government})
+[6.72 10.08 6.96 6.72 6.24 4.56 6.72 10.32 6.24 6.72 3.84 6.72]
+xshow
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+1075.5 2702 moveto
+({Tax Collector Role})
+[6.72 7.44 6.24 6.72 3.6 9.36 6.96 3.6 3.6 6.24 6.24 3.84 6.96 4.56 3.6 9.36 6.96 3.6 6.24 6.72]
+xshow
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+1063.5 2686 moveto
+(Government_tax_receipts)
+[10.08 6.96 6.72 6.24 4.56 6.72 10.32 6.24 6.72 3.84 6.96 3.84 6.24 6.72 6.96 4.56 6.24 6.24 6.24 3.6 6.96 3.84 5.52]
+xshow
+grestore
+% {Household}\n{Financial Management Role}\nHousehold_tax_payment->{Government}\n{Tax Collector Role}\nGovernment_tax_receipts
+gsave
+1 setlinewidth
+0.000 1.000 1.000 edgecolor
+newpath 1026 2788 moveto
+1025 2776 1027 2764 1033 2754 curveto
+1037 2748 1042 2743 1048 2738 curveto
+stroke
+0.000 1.000 1.000 edgecolor
+newpath 1050.1 2740.8 moveto
+1056 2732 lineto
+1045.9 2735.2 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 1.000 1.000 edgecolor
+newpath 1050.1 2740.8 moveto
+1056 2732 lineto
+1045.9 2735.2 lineto
+closepath stroke
+0.000 0.000 0.000 edgecolor
+14.00 /Times-Roman set_font
+1033.5 2756 moveto
+(household_income_tax_payment)
+[6.72 6.96 6.72 5.52 6.24 6.72 6.96 3.6 6.96 6.96 3.6 6.72 6.24 6.96 10.32 6.24 6.96 3.84 6.24 6.72 6.96 6.96 6.24 6.72 10.32 6.24 6.72 3.84]
+xshow
+grestore
+% {Firm}\n{Financial Management Role}\nFirm_tax_payment
+gsave
+0.000 0.000 0.827 nodecolor
+newpath 1331 2844 moveto
+1145 2844 lineto
+1145 2788 lineto
+1331 2788 lineto
+closepath fill
+1 setlinewidth
+filled
+0.000 0.000 0.827 nodecolor
+newpath 1331 2844 moveto
+1145 2844 lineto
+1145 2788 lineto
+1331 2788 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+1218 2826 moveto
+({Firm})
+[6.72 7.44 3.6 4.56 10.32 6.72]
+xshow
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+1153 2810 moveto
+({Financial Management Role})
+[6.72 7.44 3.6 6.72 6.24 6.72 6.24 3.6 6.24 3.6 3.6 12.48 6.24 6.72 6.24 6.72 6.24 10.32 6.24 6.72 3.84 3.6 9.36 6.96 3.6 6.24 6.72]
+xshow
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+1185.5 2794 moveto
+(Firm_tax_payment)
+[7.44 3.6 4.56 10.32 6.96 3.84 6.24 6.72 6.96 6.96 6.24 6.72 10.32 6.24 6.72 3.84]
+xshow
+grestore
+% {Firm}\n{Financial Management Role}\nFirm_tax_payment->{Government}\n{Tax Collector Role}\nGovernment_tax_receipts
+gsave
+1 setlinewidth
+0.000 1.000 1.000 edgecolor
+newpath 1233 2788 moveto
+1229 2776 1224 2763 1216 2754 curveto
+1213 2750 1209 2745 1204 2742 curveto
+stroke
+0.000 1.000 1.000 edgecolor
+newpath 1206.1 2739.2 moveto
+1196 2736 lineto
+1201.9 2744.8 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 1.000 1.000 edgecolor
+newpath 1206.1 2739.2 moveto
+1196 2736 lineto
+1201.9 2744.8 lineto
+closepath stroke
+0.000 0.000 0.000 edgecolor
+14.00 /Times-Roman set_font
+1228.5 2756 moveto
+(firm_corporate_tax_payment)
+[4.32 3.6 4.56 10.32 6.96 6.24 6.96 4.56 6.96 6.96 4.56 6.24 3.84 6.24 6.96 3.84 6.24 6.72 6.96 6.96 6.24 6.72 10.32 6.24 6.72 3.84]
+xshow
+grestore
+% {Firm}\n{Financial Market Role}\nFirm_send_stock_orders
+gsave
+0.000 0.000 0.827 nodecolor
+newpath 857 2158 moveto
+703 2158 lineto
+703 2102 lineto
+857 2102 lineto
+closepath fill
+1 setlinewidth
+filled
+0.000 0.000 0.827 nodecolor
+newpath 857 2158 moveto
+703 2158 lineto
+703 2102 lineto
+857 2102 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+760 2140 moveto
+({Firm})
+[6.72 7.44 3.6 4.56 10.32 6.72]
+xshow
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+711 2124 moveto
+({Financial Market Role})
+[6.72 7.44 3.6 6.72 6.24 6.72 6.24 3.6 6.24 3.6 3.6 12.48 6.24 4.56 6.96 6.24 3.84 3.6 9.36 6.96 3.6 6.24 6.72]
+xshow
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+711 2108 moveto
+(Firm_send_stock_orders)
+[7.44 3.6 4.56 10.32 6.96 5.52 6.24 6.72 6.96 6.96 5.52 3.84 6.96 6.24 6.96 6.96 6.96 4.56 6.96 6.24 4.56 5.52]
+xshow
+grestore
+% {Clearinghouse}\n{Asset Market Role}\nClearinghouse_read_asset_orders
+gsave
+0.000 0.000 0.827 nodecolor
+newpath 951 2050 moveto
+749 2050 lineto
+749 1994 lineto
+951 1994 lineto
+closepath fill
+1 setlinewidth
+filled
+0.000 0.000 0.827 nodecolor
+newpath 951 2050 moveto
+749 2050 lineto
+749 1994 lineto
+951 1994 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+803.5 2032 moveto
+({Clearinghouse})
+[6.72 9.36 3.6 6.24 6.24 4.56 3.6 6.72 6.72 6.72 6.96 6.72 5.52 6.24 6.72]
+xshow
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+790.5 2016 moveto
+({Asset Market Role})
+[6.72 9.84 5.52 5.52 6.24 3.84 3.6 12.48 6.24 4.56 6.96 6.24 3.84 3.6 9.36 6.96 3.6 6.24 6.72]
+xshow
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+756.5 2000 moveto
+(Clearinghouse_read_asset_orders)
+[9.36 3.6 6.24 6.24 4.56 3.6 6.72 6.72 6.72 6.96 6.72 5.52 6.24 6.96 4.56 6.24 6.24 6.96 6.96 6.24 5.52 5.52 6.24 3.84 6.96 6.96 4.56 6.96 6.24 4.56 5.52]
+xshow
+grestore
+% {Firm}\n{Financial Market Role}\nFirm_send_stock_orders->{Clearinghouse}\n{Asset Market Role}\nClearinghouse_read_asset_orders
+gsave
+1 setlinewidth
+0.000 1.000 1.000 edgecolor
+newpath 795 2102 moveto
+801 2091 808 2079 815 2068 curveto
+817 2065 820 2061 822 2058 curveto
+stroke
+0.000 1.000 1.000 edgecolor
+newpath 824.8 2060.1 moveto
+828 2050 lineto
+819.2 2055.9 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 1.000 1.000 edgecolor
+newpath 824.8 2060.1 moveto
+828 2050 lineto
+819.2 2055.9 lineto
+closepath stroke
+0.000 0.000 0.000 edgecolor
+14.00 /Times-Roman set_font
+815 2070 moveto
+(stock_order)
+[5.52 3.84 6.96 6.24 6.96 6.96 6.96 4.56 6.96 6.24 4.56]
+xshow
+grestore
+% {Firm}\n{Financial Market Role}\nFirm_read_stock_transactions
+gsave
+0.000 0.000 0.827 nodecolor
+newpath 831 1754 moveto
+647 1754 lineto
+647 1698 lineto
+831 1698 lineto
+closepath fill
+1 setlinewidth
+filled
+0.000 0.000 0.827 nodecolor
+newpath 831 1754 moveto
+647 1754 lineto
+647 1698 lineto
+831 1698 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+719 1736 moveto
+({Firm})
+[6.72 7.44 3.6 4.56 10.32 6.72]
+xshow
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+670 1720 moveto
+({Financial Market Role})
+[6.72 7.44 3.6 6.72 6.24 6.72 6.24 3.6 6.24 3.6 3.6 12.48 6.24 4.56 6.96 6.24 3.84 3.6 9.36 6.96 3.6 6.24 6.72]
+xshow
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+655 1704 moveto
+(Firm_read_stock_transactions)
+[7.44 3.6 4.56 10.32 6.96 4.56 6.24 6.24 6.96 6.96 5.52 3.84 6.96 6.24 6.96 6.96 3.84 4.56 6.24 6.72 5.52 6.24 6.24 3.84 3.6 6.96 6.72 5.52]
+xshow
+grestore
+% {Firm}\n{Financial Market Role}\nFirm_send_stock_orders->{Firm}\n{Financial Market Role}\nFirm_read_stock_transactions
+gsave
+1 setlinewidth
+0.667 1.000 1.000 edgecolor
+newpath 746 2102 moveto
+726 2082 704 2053 704 2022 curveto
+704 2022 704 2022 704 1834 curveto
+704 1810 712 1784 720 1763 curveto
+stroke
+0.667 1.000 1.000 edgecolor
+newpath 723.137 1764.56 moveto
+724 1754 lineto
+716.74 1761.72 lineto
+closepath fill
+1 setlinewidth
+solid
+0.667 1.000 1.000 edgecolor
+newpath 723.137 1764.56 moveto
+724 1754 lineto
+716.74 1761.72 lineto
+closepath stroke
+grestore
+% {Clearinghouse}\n{Asset Market Role}\nClearinghouse_compute_transactions
+gsave
+0.000 0.000 0.827 nodecolor
+newpath 961 1956 moveto
+739 1956 lineto
+739 1900 lineto
+961 1900 lineto
+closepath fill
+1 setlinewidth
+filled
+0.000 0.000 0.827 nodecolor
+newpath 961 1956 moveto
+739 1956 lineto
+739 1900 lineto
+961 1900 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+803.5 1938 moveto
+({Clearinghouse})
+[6.72 9.36 3.6 6.24 6.24 4.56 3.6 6.72 6.72 6.72 6.96 6.72 5.52 6.24 6.72]
+xshow
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+790.5 1922 moveto
+({Asset Market Role})
+[6.72 9.84 5.52 5.52 6.24 3.84 3.6 12.48 6.24 4.56 6.96 6.24 3.84 3.6 9.36 6.96 3.6 6.24 6.72]
+xshow
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+746.5 1906 moveto
+(Clearinghouse_compute_transactions)
+[9.36 3.6 6.24 6.24 4.56 3.6 6.72 6.72 6.72 6.96 6.72 5.52 6.24 6.96 6.24 6.96 10.32 6.96 6.72 3.84 6.24 6.96 3.84 4.56 6.24 6.72 5.52 6.24 6.24 3.84 3.6 6.96 6.72 5.52]
+xshow
+grestore
+% {Clearinghouse}\n{Asset Market Role}\nClearinghouse_read_asset_orders->{Clearinghouse}\n{Asset Market Role}\nClearinghouse_compute_transactions
+gsave
+1 setlinewidth
+0.667 1.000 1.000 edgecolor
+newpath 850 1994 moveto
+850 1985 850 1976 850 1966 curveto
+stroke
+0.667 1.000 1.000 edgecolor
+newpath 853.5 1966 moveto
+850 1956 lineto
+846.5 1966 lineto
+closepath fill
+1 setlinewidth
+solid
+0.667 1.000 1.000 edgecolor
+newpath 853.5 1966 moveto
+850 1956 lineto
+846.5 1966 lineto
+closepath stroke
+grestore
+% {Household}\n{Financial Market Role}\nHousehold_send_stock_orders
+gsave
+0.000 0.000 0.827 nodecolor
+newpath 1088 2158 moveto
+900 2158 lineto
+900 2102 lineto
+1088 2102 lineto
+closepath fill
+1 setlinewidth
+filled
+0.000 0.000 0.827 nodecolor
+newpath 1088 2158 moveto
+900 2158 lineto
+900 2102 lineto
+1088 2102 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+957 2140 moveto
+({Household})
+[6.72 9.84 6.96 6.72 5.52 6.24 6.72 6.96 3.6 6.96 6.72]
+xshow
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+925 2124 moveto
+({Financial Market Role})
+[6.72 7.44 3.6 6.72 6.24 6.72 6.24 3.6 6.24 3.6 3.6 12.48 6.24 4.56 6.96 6.24 3.84 3.6 9.36 6.96 3.6 6.24 6.72]
+xshow
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+908 2108 moveto
+(Household_send_stock_orders)
+[9.84 6.96 6.72 5.52 6.24 6.72 6.96 3.6 6.96 6.96 5.52 6.24 6.72 6.96 6.96 5.52 3.84 6.96 6.24 6.96 6.96 6.96 4.56 6.96 6.24 4.56 5.52]
+xshow
+grestore
+% {Household}\n{Financial Market Role}\nHousehold_send_stock_orders->{Clearinghouse}\n{Asset Market Role}\nClearinghouse_read_asset_orders
+gsave
+1 setlinewidth
+0.000 1.000 1.000 edgecolor
+newpath 943 2102 moveto
+934 2096 925 2090 916 2084 curveto
+906 2076 895 2066 885 2057 curveto
+stroke
+0.000 1.000 1.000 edgecolor
+newpath 887.546 2054.6 moveto
+878 2050 lineto
+882.596 2059.55 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 1.000 1.000 edgecolor
+newpath 887.546 2054.6 moveto
+878 2050 lineto
+882.596 2059.55 lineto
+closepath stroke
+0.000 0.000 0.000 edgecolor
+14.00 /Times-Roman set_font
+922 2070 moveto
+(stock_order)
+[5.52 3.84 6.96 6.24 6.96 6.96 6.96 4.56 6.96 6.24 4.56]
+xshow
+grestore
+% {Household}\n{Financial Market Role}\nHousehold_read_stock_transactions
+gsave
+0.000 0.000 0.827 nodecolor
+newpath 1086 1754 moveto
+868 1754 lineto
+868 1698 lineto
+1086 1698 lineto
+closepath fill
+1 setlinewidth
+filled
+0.000 0.000 0.827 nodecolor
+newpath 1086 1754 moveto
+868 1754 lineto
+868 1698 lineto
+1086 1698 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+940 1736 moveto
+({Household})
+[6.72 9.84 6.96 6.72 5.52 6.24 6.72 6.96 3.6 6.96 6.72]
+xshow
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+908 1720 moveto
+({Financial Market Role})
+[6.72 7.44 3.6 6.72 6.24 6.72 6.24 3.6 6.24 3.6 3.6 12.48 6.24 4.56 6.96 6.24 3.84 3.6 9.36 6.96 3.6 6.24 6.72]
+xshow
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+876 1704 moveto
+(Household_read_stock_transactions)
+[9.84 6.96 6.72 5.52 6.24 6.72 6.96 3.6 6.96 6.96 4.56 6.24 6.24 6.96 6.96 5.52 3.84 6.96 6.24 6.96 6.96 3.84 4.56 6.24 6.72 5.52 6.24 6.24 3.84 3.6 6.96 6.72 5.52]
+xshow
+grestore
+% {Household}\n{Financial Market Role}\nHousehold_send_stock_orders->{Household}\n{Financial Market Role}\nHousehold_read_stock_transactions
+gsave
+1 setlinewidth
+0.667 1.000 1.000 edgecolor
+newpath 995 2102 moveto
+995 2080 996 2049 996 2022 curveto
+996 2022 996 2022 996 1834 curveto
+996 1810 992 1785 987 1764 curveto
+stroke
+0.667 1.000 1.000 edgecolor
+newpath 990.393 1763.12 moveto
+985 1754 lineto
+983.529 1764.49 lineto
+closepath fill
+1 setlinewidth
+solid
+0.667 1.000 1.000 edgecolor
+newpath 990.393 1763.12 moveto
+985 1754 lineto
+983.529 1764.49 lineto
+closepath stroke
+grestore
+% {Clearinghouse}\n{Asset Market Role}\nClearinghouse_send_asset_transactions
+gsave
+0.000 0.000 0.827 nodecolor
+newpath 968 1862 moveto
+732 1862 lineto
+732 1806 lineto
+968 1806 lineto
+closepath fill
+1 setlinewidth
+filled
+0.000 0.000 0.827 nodecolor
+newpath 968 1862 moveto
+732 1862 lineto
+732 1806 lineto
+968 1806 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+803.5 1844 moveto
+({Clearinghouse})
+[6.72 9.36 3.6 6.24 6.24 4.56 3.6 6.72 6.72 6.72 6.96 6.72 5.52 6.24 6.72]
+xshow
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+790.5 1828 moveto
+({Asset Market Role})
+[6.72 9.84 5.52 5.52 6.24 3.84 3.6 12.48 6.24 4.56 6.96 6.24 3.84 3.6 9.36 6.96 3.6 6.24 6.72]
+xshow
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+740 1812 moveto
+(Clearinghouse_send_asset_transactions)
+[9.36 3.6 6.24 6.24 4.56 3.6 6.72 6.72 6.72 6.96 6.72 5.52 6.24 6.96 5.52 6.24 6.72 6.96 6.96 6.24 5.52 5.52 6.24 3.84 6.96 3.84 4.56 6.24 6.72 5.52 6.24 6.24 3.84 3.6 6.96 6.72 5.52]
+xshow
+grestore
+% {Clearinghouse}\n{Asset Market Role}\nClearinghouse_send_asset_transactions->{Firm}\n{Financial Market Role}\nFirm_read_stock_transactions
+gsave
+1 setlinewidth
+0.000 1.000 1.000 edgecolor
+newpath 772 1806 moveto
+765 1801 758 1795 752 1788 curveto
+747 1781 743 1773 742 1764 curveto
+stroke
+0.000 1.000 1.000 edgecolor
+newpath 745.393 1763.12 moveto
+740 1754 lineto
+738.529 1764.49 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 1.000 1.000 edgecolor
+newpath 745.393 1763.12 moveto
+740 1754 lineto
+738.529 1764.49 lineto
+closepath stroke
+0.000 0.000 0.000 edgecolor
+14.00 /Times-Roman set_font
+755 1774 moveto
+(stock_transaction)
+[5.52 3.84 6.96 6.24 6.96 6.96 3.84 4.56 6.24 6.72 5.52 6.24 6.24 3.84 3.6 6.96 6.72]
+xshow
+grestore
+% {Clearinghouse}\n{Asset Market Role}\nClearinghouse_send_asset_transactions->{Household}\n{Financial Market Role}\nHousehold_read_stock_transactions
+gsave
+1 setlinewidth
+0.000 1.000 1.000 edgecolor
+newpath 861 1806 moveto
+867 1794 874 1781 884 1772 curveto
+889 1767 894 1763 899 1759 curveto
+stroke
+0.000 1.000 1.000 edgecolor
+newpath 900.958 1761.92 moveto
+908 1754 lineto
+897.559 1755.8 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 1.000 1.000 edgecolor
+newpath 900.958 1761.92 moveto
+908 1754 lineto
+897.559 1755.8 lineto
+closepath stroke
+0.000 0.000 0.000 edgecolor
+14.00 /Times-Roman set_font
+884 1774 moveto
+(stock_transaction)
+[5.52 3.84 6.96 6.24 6.96 6.96 3.84 4.56 6.24 6.72 5.52 6.24 6.24 3.84 3.6 6.96 6.72]
+xshow
+grestore
+% {Firm}\n{Producer Role}\nFirm_calc_production_quantity_2
+gsave
+0.000 0.000 0.827 nodecolor
+newpath 841 1660 moveto
+637 1660 lineto
+637 1604 lineto
+841 1604 lineto
+closepath fill
+1 setlinewidth
+filled
+0.000 0.000 0.827 nodecolor
+newpath 841 1660 moveto
+637 1660 lineto
+637 1604 lineto
+841 1604 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+719 1642 moveto
+({Firm})
+[6.72 7.44 3.6 4.56 10.32 6.72]
+xshow
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+692 1626 moveto
+({Producer Role})
+[6.72 7.68 4.56 6.96 6.96 6.72 6.24 6.24 4.56 3.6 9.36 6.96 3.6 6.24 6.72]
+xshow
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+644.5 1610 moveto
+(Firm_calc_production_quantity_2)
+[7.44 3.6 4.56 10.32 6.96 6.24 6.24 3.6 6.24 6.96 6.96 4.56 6.96 6.96 6.72 6.24 3.84 3.6 6.96 6.72 6.96 6.96 6.72 6.24 6.72 3.84 3.6 3.84 6.72 6.96 6.96]
+xshow
+grestore
+% {Firm}\n{Financial Market Role}\nFirm_read_stock_transactions->{Firm}\n{Producer Role}\nFirm_calc_production_quantity_2
+gsave
+1 setlinewidth
+0.667 1.000 1.000 edgecolor
+newpath 739 1698 moveto
+739 1689 739 1680 739 1670 curveto
+stroke
+0.667 1.000 1.000 edgecolor
+newpath 742.5 1670 moveto
+739 1660 lineto
+735.5 1670 lineto
+closepath fill
+1 setlinewidth
+solid
+0.667 1.000 1.000 edgecolor
+newpath 742.5 1670 moveto
+739 1660 lineto
+735.5 1670 lineto
+closepath stroke
+grestore
+% {Firm}\n{Labor Market Role}\nFirm_update_wage_offer->{Firm}\n{Labor Market Role}\nFirm_send_vacancies_2
+gsave
+1 setlinewidth
+0.667 1.000 1.000 edgecolor
+newpath 325 782 moveto
+327 769 329 754 331 740 curveto
+stroke
+0.667 1.000 1.000 edgecolor
+newpath 334.488 740.299 moveto
+332 730 lineto
+327.522 739.602 lineto
+closepath fill
+1 setlinewidth
+solid
+0.667 1.000 1.000 edgecolor
+newpath 334.488 740.299 moveto
+332 730 lineto
+327.522 739.602 lineto
+closepath stroke
+grestore
+% {Firm}\n{Producer Role}\nFirm_calc_production_quantity
+gsave
+0.000 0.000 0.827 nodecolor
+newpath 921 2844 moveto
+731 2844 lineto
+731 2788 lineto
+921 2788 lineto
+closepath fill
+1 setlinewidth
+filled
+0.000 0.000 0.827 nodecolor
+newpath 921 2844 moveto
+731 2844 lineto
+731 2788 lineto
+921 2788 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+806 2826 moveto
+({Firm})
+[6.72 7.44 3.6 4.56 10.32 6.72]
+xshow
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+779 2810 moveto
+({Producer Role})
+[6.72 7.68 4.56 6.96 6.96 6.72 6.24 6.24 4.56 3.6 9.36 6.96 3.6 6.24 6.72]
+xshow
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+738.5 2794 moveto
+(Firm_calc_production_quantity)
+[7.44 3.6 4.56 10.32 6.96 6.24 6.24 3.6 6.24 6.96 6.96 4.56 6.96 6.96 6.72 6.24 3.84 3.6 6.96 6.72 6.96 6.96 6.72 6.24 6.72 3.84 3.6 3.84 6.72]
+xshow
+grestore
+% {Firm}\n{Producer Role}\nFirm_calc_production_quantity->{Firm}\n{Producer Role}\nFirm_calc_input_demands
+gsave
+1 setlinewidth
+0.667 1.000 1.000 edgecolor
+newpath 814 2788 moveto
+808 2775 802 2759 796 2745 curveto
+stroke
+0.667 1.000 1.000 edgecolor
+newpath 799.26 2743.72 moveto
+792 2736 lineto
+792.863 2746.56 lineto
+closepath fill
+1 setlinewidth
+solid
+0.667 1.000 1.000 edgecolor
+newpath 799.26 2743.72 moveto
+792 2736 lineto
+792.863 2746.56 lineto
+closepath stroke
+grestore
+% {Firm}\n{Producer Role}\nFirm_calc_production_quantity_2->{Firm}\n{Producer Role}\nFirm_calc_input_demands_2
+gsave
+1 setlinewidth
+0.667 1.000 1.000 edgecolor
+newpath 711 1604 moveto
+701 1594 691 1583 681 1573 curveto
+stroke
+0.667 1.000 1.000 edgecolor
+newpath 683.546 1570.6 moveto
+674 1566 lineto
+678.596 1575.55 lineto
+closepath fill
+1 setlinewidth
+solid
+0.667 1.000 1.000 edgecolor
+newpath 683.546 1570.6 moveto
+674 1566 lineto
+678.596 1575.55 lineto
+closepath stroke
+grestore
+% {Firm}\n{Financial Management Role}\nFirm_compute_balance_sheet
+gsave
+0.000 0.000 0.827 nodecolor
+newpath 1090 56 moveto
+904 56 lineto
+904 2.4869e-014 lineto
+1090 1.06581e-014 lineto
+closepath fill
+1 setlinewidth
+filled
+0.000 0.000 0.827 nodecolor
+newpath 1090 56 moveto
+904 56 lineto
+904 2.4869e-014 lineto
+1090 1.06581e-014 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+977 38 moveto
+({Firm})
+[6.72 7.44 3.6 4.56 10.32 6.72]
+xshow
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+912 22 moveto
+({Financial Management Role})
+[6.72 7.44 3.6 6.72 6.24 6.72 6.24 3.6 6.24 3.6 3.6 12.48 6.24 6.72 6.24 6.72 6.24 10.32 6.24 6.72 3.84 3.6 9.36 6.96 3.6 6.24 6.72]
+xshow
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+913.5 6 moveto
+(Firm_compute_balance_sheet)
+[7.44 3.6 4.56 10.32 6.96 6.24 6.96 10.32 6.96 6.72 3.84 6.24 6.96 6.96 6.24 3.6 6.24 6.72 6.24 6.24 6.96 5.52 6.72 6.24 6.24 3.84]
+xshow
+grestore
+% {Firm}\n{Financial Management Role}\nFirm_compute_income_statement->{Firm}\n{Financial Management Role}\nFirm_compute_balance_sheet
+gsave
+1 setlinewidth
+0.667 1.000 1.000 edgecolor
+newpath 997 94 moveto
+997 85 997 76 997 66 curveto
+stroke
+0.667 1.000 1.000 edgecolor
+newpath 1000.5 66 moveto
+997 56 lineto
+993.5 66 lineto
+closepath fill
+1 setlinewidth
+solid
+0.667 1.000 1.000 edgecolor
+newpath 1000.5 66 moveto
+997 56 lineto
+993.5 66 lineto
+closepath stroke
+grestore
+% {Firm}\n{Financial Management Role}\nFirm_apply_financial_policy_plan
+gsave
+0.000 0.000 0.827 nodecolor
+newpath 883 2548 moveto
+677 2548 lineto
+677 2492 lineto
+883 2492 lineto
+closepath fill
+1 setlinewidth
+filled
+0.000 0.000 0.827 nodecolor
+newpath 883 2548 moveto
+677 2548 lineto
+677 2492 lineto
+883 2492 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+760 2530 moveto
+({Firm})
+[6.72 7.44 3.6 4.56 10.32 6.72]
+xshow
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+695 2514 moveto
+({Financial Management Role})
+[6.72 7.44 3.6 6.72 6.24 6.72 6.24 3.6 6.24 3.6 3.6 12.48 6.24 6.72 6.24 6.72 6.24 10.32 6.24 6.72 3.84 3.6 9.36 6.96 3.6 6.24 6.72]
+xshow
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+684.5 2498 moveto
+(Firm_apply_financial_policy_plan)
+[7.44 3.6 4.56 10.32 6.96 6.24 6.96 6.96 3.6 6.72 6.96 4.32 3.6 6.72 6.24 6.72 6.24 3.6 6.24 3.6 6.96 6.96 6.96 3.6 3.6 6.24 6.72 6.96 6.96 3.6 6.24 6.72]
+xshow
+grestore
+% {Firm}\n{Financial Management Role}\nFirm_compute_payout_policy->{Firm}\n{Financial Management Role}\nFirm_apply_financial_policy_plan
+gsave
+1 setlinewidth
+0.667 1.000 1.000 edgecolor
+newpath 780 2586 moveto
+780 2577 780 2568 780 2558 curveto
+stroke
+0.667 1.000 1.000 edgecolor
+newpath 783.5 2558 moveto
+780 2548 lineto
+776.5 2558 lineto
+closepath fill
+1 setlinewidth
+solid
+0.667 1.000 1.000 edgecolor
+newpath 783.5 2558 moveto
+780 2548 lineto
+776.5 2558 lineto
+closepath stroke
+grestore
+% {Firm}\n{Credit Market Role}\nFirm_apply_for_loans
+gsave
+0.000 0.000 0.827 nodecolor
+newpath 850 2454 moveto
+710 2454 lineto
+710 2398 lineto
+850 2398 lineto
+closepath fill
+1 setlinewidth
+filled
+0.000 0.000 0.827 nodecolor
+newpath 850 2454 moveto
+710 2454 lineto
+710 2398 lineto
+850 2398 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+760 2436 moveto
+({Firm})
+[6.72 7.44 3.6 4.56 10.32 6.72]
+xshow
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+719 2420 moveto
+({Credit Market Role})
+[6.72 9.36 4.56 6.24 6.96 3.6 3.84 3.6 12.48 6.24 4.56 6.96 6.24 3.84 3.6 9.36 6.96 3.6 6.24 6.72]
+xshow
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+718 2404 moveto
+(Firm_apply_for_loans)
+[7.44 3.6 4.56 10.32 6.96 6.24 6.96 6.96 3.6 6.72 6.96 4.32 6.96 4.56 6.96 3.6 6.96 6.24 6.72 5.52]
+xshow
+grestore
+% {Firm}\n{Financial Management Role}\nFirm_apply_financial_policy_plan->{Firm}\n{Credit Market Role}\nFirm_apply_for_loans
+gsave
+1 setlinewidth
+0.667 1.000 1.000 edgecolor
+newpath 780 2492 moveto
+780 2483 780 2474 780 2464 curveto
+stroke
+0.667 1.000 1.000 edgecolor
+newpath 783.5 2464 moveto
+780 2454 lineto
+776.5 2464 lineto
+closepath fill
+1 setlinewidth
+solid
+0.667 1.000 1.000 edgecolor
+newpath 783.5 2464 moveto
+780 2454 lineto
+776.5 2464 lineto
+closepath stroke
+grestore
+% {Firm}\n{Credit Market Role}\nFirm_read_loan_offers_send_loan_acceptance
+gsave
+0.000 0.000 0.827 nodecolor
+newpath 917 2360 moveto
+643 2360 lineto
+643 2304 lineto
+917 2304 lineto
+closepath fill
+1 setlinewidth
+filled
+0.000 0.000 0.827 nodecolor
+newpath 917 2360 moveto
+643 2360 lineto
+643 2304 lineto
+917 2304 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+760 2342 moveto
+({Firm})
+[6.72 7.44 3.6 4.56 10.32 6.72]
+xshow
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+719 2326 moveto
+({Credit Market Role})
+[6.72 9.36 4.56 6.24 6.96 3.6 3.84 3.6 12.48 6.24 4.56 6.96 6.24 3.84 3.6 9.36 6.96 3.6 6.24 6.72]
+xshow
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+650.5 2310 moveto
+(Firm_read_loan_offers_send_loan_acceptance)
+[7.44 3.6 4.56 10.32 6.96 4.56 6.24 6.24 6.96 6.96 3.6 6.96 6.24 6.72 6.96 6.96 4.08 4.32 6.24 4.56 5.52 6.96 5.52 6.24 6.72 6.96 6.96 3.6 6.96 6.24 6.72 6.96 6.24 6.24 6.24 6.24 6.96 3.84 6.24 6.72 6.24 6.24]
+xshow
+grestore
+% {Firm}\n{Credit Market Role}\nFirm_apply_for_loans->{Firm}\n{Credit Market Role}\nFirm_read_loan_offers_send_loan_acceptance
+gsave
+1 setlinewidth
+0.667 1.000 1.000 edgecolor
+newpath 780 2398 moveto
+780 2389 780 2380 780 2370 curveto
+stroke
+0.667 1.000 1.000 edgecolor
+newpath 783.5 2370 moveto
+780 2360 lineto
+776.5 2370 lineto
+closepath fill
+1 setlinewidth
+solid
+0.667 1.000 1.000 edgecolor
+newpath 783.5 2370 moveto
+780 2360 lineto
+776.5 2370 lineto
+closepath stroke
+grestore
+% {Firm}\n{Financial Market Role}\nFirm_compute_stock_orders
+gsave
+0.000 0.000 0.827 nodecolor
+newpath 868 2266 moveto
+692 2266 lineto
+692 2210 lineto
+868 2210 lineto
+closepath fill
+1 setlinewidth
+filled
+0.000 0.000 0.827 nodecolor
+newpath 868 2266 moveto
+692 2266 lineto
+692 2210 lineto
+868 2210 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+760 2248 moveto
+({Firm})
+[6.72 7.44 3.6 4.56 10.32 6.72]
+xshow
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+711 2232 moveto
+({Financial Market Role})
+[6.72 7.44 3.6 6.72 6.24 6.72 6.24 3.6 6.24 3.6 3.6 12.48 6.24 4.56 6.96 6.24 3.84 3.6 9.36 6.96 3.6 6.24 6.72]
+xshow
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+700 2216 moveto
+(Firm_compute_stock_orders)
+[7.44 3.6 4.56 10.32 6.96 6.24 6.96 10.32 6.96 6.72 3.84 6.24 6.96 5.52 3.84 6.96 6.24 6.96 6.96 6.96 4.56 6.96 6.24 4.56 5.52]
+xshow
+grestore
+% {Firm}\n{Credit Market Role}\nFirm_read_loan_offers_send_loan_acceptance->{Firm}\n{Financial Market Role}\nFirm_compute_stock_orders
+gsave
+1 setlinewidth
+0.667 1.000 1.000 edgecolor
+newpath 780 2304 moveto
+780 2295 780 2286 780 2276 curveto
+stroke
+0.667 1.000 1.000 edgecolor
+newpath 783.5 2276 moveto
+780 2266 lineto
+776.5 2276 lineto
+closepath fill
+1 setlinewidth
+solid
+0.667 1.000 1.000 edgecolor
+newpath 783.5 2276 moveto
+780 2266 lineto
+776.5 2276 lineto
+closepath stroke
+grestore
+% {Firm}\n{Financial Market Role}\nFirm_compute_stock_orders->{Firm}\n{Financial Market Role}\nFirm_send_stock_orders
+gsave
+1 setlinewidth
+0.667 1.000 1.000 edgecolor
+newpath 780 2210 moveto
+780 2197 780 2182 780 2168 curveto
+stroke
+0.667 1.000 1.000 edgecolor
+newpath 783.5 2168 moveto
+780 2158 lineto
+776.5 2168 lineto
+closepath fill
+1 setlinewidth
+solid
+0.667 1.000 1.000 edgecolor
+newpath 783.5 2168 moveto
+780 2158 lineto
+776.5 2168 lineto
+closepath stroke
+grestore
+% {Household}\n{Financial Market Role}\nHousehold_compute_stock_orders
+gsave
+0.000 0.000 0.827 nodecolor
+newpath 1099 2266 moveto
+889 2266 lineto
+889 2210 lineto
+1099 2210 lineto
+closepath fill
+1 setlinewidth
+filled
+0.000 0.000 0.827 nodecolor
+newpath 1099 2266 moveto
+889 2266 lineto
+889 2210 lineto
+1099 2210 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+957 2248 moveto
+({Household})
+[6.72 9.84 6.96 6.72 5.52 6.24 6.72 6.96 3.6 6.96 6.72]
+xshow
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+925 2232 moveto
+({Financial Market Role})
+[6.72 7.44 3.6 6.72 6.24 6.72 6.24 3.6 6.24 3.6 3.6 12.48 6.24 4.56 6.96 6.24 3.84 3.6 9.36 6.96 3.6 6.24 6.72]
+xshow
+0.000 0.000 0.000 nodecolor
+14.00 /Times-Roman set_font
+897 2216 moveto
+(Household_compute_stock_orders)
+[9.84 6.96 6.72 5.52 6.24 6.72 6.96 3.6 6.96 6.96 6.24 6.96 10.32 6.96 6.72 3.84 6.24 6.96 5.52 3.84 6.96 6.24 6.96 6.96 6.96 4.56 6.96 6.24 4.56 5.52]
+xshow
+grestore
+% {Household}\n{Financial Market Role}\nHousehold_compute_stock_orders->{Household}\n{Financial Market Role}\nHousehold_send_stock_orders
+gsave
+1 setlinewidth
+0.667 1.000 1.000 edgecolor
+newpath 994 2210 moveto
+994 2197 994 2182 994 2168 curveto
+stroke
+0.667 1.000 1.000 edgecolor
+newpath 997.5 2168 moveto
+994 2158 lineto
+990.5 2168 lineto
+closepath fill
+1 setlinewidth
+solid
+0.667 1.000 1.000 edgecolor
+newpath 997.5 2168 moveto
+994 2158 lineto
+990.5 2168 lineto
+closepath stroke
+grestore
+% {Clearinghouse}\n{Asset Market Role}\nClearinghouse_compute_transactions->{Clearinghouse}\n{Asset Market Role}\nClearinghouse_send_asset_transactions
+gsave
+1 setlinewidth
+0.667 1.000 1.000 edgecolor
+newpath 850 1900 moveto
+850 1891 850 1882 850 1872 curveto
+stroke
+0.667 1.000 1.000 edgecolor
+newpath 853.5 1872 moveto
+850 1862 lineto
+846.5 1872 lineto
+closepath fill
+1 setlinewidth
+solid
+0.667 1.000 1.000 edgecolor
+newpath 853.5 1872 moveto
+850 1862 lineto
+846.5 1872 lineto
+closepath stroke
+grestore
+endpage
+showpage
+grestore
+%%PageTrailer
+%%EndPage: 1
+%%Trailer
+%%Pages: 1
+%%BoundingBox: 36 36 1433 2888
+end
+restore
+%%EOF

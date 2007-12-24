@@ -124,3 +124,13 @@ stock_transaction_message(clearinghouse_id, household_id, transaction_price, tra
 corp_bond_transaction_message(clearinghouse_id, household_id, transaction_price, transaction_quantity, corp_bond_id)
 gov_bond_transaction_message(clearinghouse_id, household_id, transaction_price, transaction_quantity, gov_bond_id)
 --------------------------------------------------------------------------------------
+Sander, rev 537
+
+	XMME v.1.0.1: added dgraph of bielefeld-model.xme
+	Left-hand side shows labor market interaction between household and firm.
+	Right-hand side shows consumption market interaction between household and mall.
+
+	The production cycle starts with production planning (this uses the memory variable equity).
+	It ends on the lower RHS with Firm_calc_revenues and Firm_compute_balance_sheet
+	This sets the variables to start a new round of financial policy planning.	
+--------------------------------------------------------------------------------------	
