@@ -19,10 +19,17 @@ Sander, rev 533
 
 ./financial_management: added Firm_financial_management.xml
 
-Role variables: Firm_financial_management
+Role: Firm_financial_management
+
+Variables:
 
 ebit
 payment_account
+earnings
+tax_payment
+tax_rate_corporate
+net_earnings
+previous_net_earnings
 
 New datatype:
 struct debt_item
@@ -35,23 +42,17 @@ double debt_installment_payment
 int nr_periods_before_maturity
 }
 debt_item_dynamic_array loans
-
 total_interest_payment
 total_debt_installment_payment
-earnings
-tax_payment
-tax_rate_corporate
-previous_net_earnings
-net_earnings
+total_dividend_payment
 
-earnings_per_share
 current_shares_outstanding
 previous_dividend_per_share
 current_dividend_per_share
-total_dividend_payment
 previous_dividend_per_earnings
 current_dividend_per_earnings
 
+earnings_per_share_ratio
 debt_earnings_ratio
 price_earnings_ratio
 retained_earnings_ratio
@@ -89,9 +90,9 @@ debt_installment_payment_message(firm_id, bank_id, debt_installment_payment)
 dividend_payment_message(firm_id, current_dividend_per_share)
 
 To credit market:
-credit_demand_message(firm_id, bank_id, credit_demand)
-credit_offer_message(bank_id, firm_id, credit_offer)
-credit_taken_message(bank_id, firm_id, credit_amount)
+credit_request_message(firm_id, bank_id, credit_demand)
+credit_conditions_message(bank_id, firm_id, credit_offer)
+credit_acceptance_message(bank_id, firm_id, credit_amount)
 
 To asset market:
 stock_order_message(firm_id, clearinghouse_id, limit_price, limit_quantity, stock_id)
@@ -107,7 +108,9 @@ Sander, rev 536
 
 ./financial_management: added Household_financial_management.xml
 
-Role variables: Household_financial_management
+Role: Household_financial_management
+
+Variables:
 
 Messages:
 

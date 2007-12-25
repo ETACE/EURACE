@@ -450,3 +450,7 @@ Sander, rev 537
 
 	XMME v.1.0.1: added dgraph of bielefeld-model.xme
 --------------------------------------------------------------------------------------
+Sander, rev 538
+	New dgraph.ps
+	bielefeld-model.xme: Added memory vars for firm financial management role
+--------------------------------------------------------------------------------------
