@@ -28,8 +28,7 @@ digraph A {
     "{Mall}\n{Default Role}\nMall_update_mall_stocks_sales_rationing_2" -> "{Household}\n{Labor Market Role}\nHousehold_read_rationing"  [label = "accepted_consumption_2",color=red];
     "{Mall}\n{Default Role}\nMall_pay_firm" -> "{Firm}\n{Producer Role}\nFirm_calc_revenue"  [label = "sales",color=red];
     "{Firm}\n{Producer Role}\nFirm_calc_pay_costs" -> "{IGFirm}\n{Default Role}\nIGFirm_receive_payment"  [label = "pay_capital_goods",color=red];
-    "{Household}\n{Financial Management Role}\nHousehold_tax_payment" -> "{Government}\n{Tax Collector Role}\nGovernment_tax_receipts"  [label = "household_income_tax_payment",color=red];
-    "{Firm}\n{Financial Management Role}\nFirm_tax_payment" -> "{Government}\n{Tax Collector Role}\nGovernment_tax_receipts"  [label = "firm_corporate_tax_payment",color=red];
+    "{Household}\n{Financial Management Role}\nHousehold_tax_payment" -> "{Government}\n{Tax Collector Role}\nGovernment_tax_receipts"  [label = "tax_payment",color=red];
     "{Firm}\n{Financial Market Role}\nFirm_send_stock_orders" -> "{Clearinghouse}\n{Asset Market Role}\nClearinghouse_read_asset_orders"  [label = "stock_order",color=red];
     "{Household}\n{Financial Market Role}\nHousehold_send_stock_orders" -> "{Clearinghouse}\n{Asset Market Role}\nClearinghouse_read_asset_orders"  [label = "stock_order",color=red];
     "{Clearinghouse}\n{Asset Market Role}\nClearinghouse_send_asset_transactions" -> "{Firm}\n{Financial Market Role}\nFirm_read_stock_transactions"  [label = "stock_transaction",color=red];
@@ -39,14 +38,14 @@ digraph A {
     "{Firm}\n{Labor Market Role}\nFirm_update_wage_offer" -> "{Firm}\n{Labor Market Role}\nFirm_send_vacancies_2" [color=blue];
     "{Firm}\n{Labor Market Role}\nFirm_read_job_responses_2" -> "{Firm}\n{Labor Market Role}\nFirm_update_wage_offer_2" [color=blue];
     "{Firm}\n{Producer Role}\nFirm_calc_production_quantity" -> "{Firm}\n{Producer Role}\nFirm_calc_input_demands" [color=blue];
+    "{Firm}\n{Labor Market Role}\nFirm_update_wage_offer_2" -> "{Firm}\n{Producer Role}\nFirm_calc_pay_costs" [color=blue];
     "{Firm}\n{Producer Role}\nFirm_calc_pay_costs" -> "{Firm}\n{Producer Role}\nFirm_send_goods_to_mall" [color=blue];
     "{Firm}\n{Producer Role}\nFirm_calc_production_quantity_2" -> "{Firm}\n{Producer Role}\nFirm_calc_input_demands_2" [color=blue];
     "{Firm}\n{Financial Market Role}\nFirm_read_stock_transactions" -> "{Firm}\n{Producer Role}\nFirm_calc_production_quantity_2" [color=blue];
     "{Firm}\n{Producer Role}\nFirm_calc_revenue" -> "{Firm}\n{Financial Management Role}\nFirm_compute_income_statement" [color=blue];
     "{Firm}\n{Financial Management Role}\nFirm_compute_income_statement" -> "{Firm}\n{Financial Management Role}\nFirm_compute_balance_sheet" [color=blue];
     "{Firm}\n{Producer Role}\nFirm_calc_input_demands" -> "{Firm}\n{Financial Management Role}\nFirm_compute_payout_policy" [color=blue];
-    "{Firm}\n{Financial Management Role}\nFirm_compute_payout_policy" -> "{Firm}\n{Financial Management Role}\nFirm_apply_financial_policy_plan" [color=blue];
-    "{Firm}\n{Financial Management Role}\nFirm_apply_financial_policy_plan" -> "{Firm}\n{Credit Market Role}\nFirm_apply_for_loans" [color=blue];
+    "{Firm}\n{Financial Management Role}\nFirm_compute_payout_policy" -> "{Firm}\n{Credit Market Role}\nFirm_apply_for_loans" [color=blue];
     "{Firm}\n{Credit Market Role}\nFirm_apply_for_loans" -> "{Firm}\n{Credit Market Role}\nFirm_read_loan_offers_send_loan_acceptance" [color=blue];
     "{Firm}\n{Financial Market Role}\nFirm_compute_stock_orders" -> "{Firm}\n{Financial Market Role}\nFirm_send_stock_orders" [color=blue];
     "{Firm}\n{Financial Market Role}\nFirm_send_stock_orders" -> "{Firm}\n{Financial Market Role}\nFirm_read_stock_transactions" [color=blue];

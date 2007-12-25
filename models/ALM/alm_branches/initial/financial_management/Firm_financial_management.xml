@@ -63,7 +63,7 @@
 <var><type>double</type><name>net_earnings</name></var>
 
 <var><type>double</type><name>current_dividend_per_share</name></var>
-<var><type>double</type><name>earnings_per_share</name></var>
+
 <var><type>double</type><name>previous_dividend_per_share</name></var>
 <var><type>double</type><name>total_dividend_payment</name></var>
 <var><type>double</type><name>current_dividend_per_earnings</name></var>
@@ -85,10 +85,10 @@
 <var><type>double</type><name>external_financial_needs</name></var>
 
 <!----------------- Ratios ---------------------------------------->
-<var><type>double</type><name>debt_earnings_ratio</name></var>
+<var><type>double</type><name>earnings_per_share_ratio</name></var><var><type>double</type><name>debt_per_earnings_ratio</name></var>
 <var><type>double</type><name>price_earnings_ratio</name></var>
 <var><type>double</type><name>retained_earnings_ratio</name></var>
-<var><type>double</type><name>earn_per_share_ratio_growth</name></var>
+<var><type>double</type><name>earnings_per_share_ratio_growth</name></var>
 <var><type>double</type><name>critical_price_earnings_ratio</name></var>
 <var><type>double</type><name>critical_earnings_per_share_ratio</name></var>
 
@@ -127,7 +127,7 @@
 </depends>
 </function>
 
-<function><name>Firm_read_credit_offers</name>
+<function><name>Firm_read_loan_offers_send_loan_acceptance</name>
 <depends>
 <name>Firm_apply_for_credit</name><type>internal</type>
 </depends>
@@ -136,7 +136,7 @@
 <!---Role: Asset Market Role-->
 <function><name>Firm_issue_equity</name>
 <depends>
-<name>Firm_read_credit_offers</name><type>internal</type>
+<name>Firm_read_loan_offers_send_loan_acceptance</name><type>internal</type>
 </depends>
 </function>
 

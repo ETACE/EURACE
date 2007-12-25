@@ -88,10 +88,10 @@ int Firm_compute_balance_sheet()
 		TAX_PAYMENT = TAX_RATE_CORPORATE * EARNINGS;
 		PREVIOUS_NET_EARNINGS = NET_EARNINGS;
 		NET_EARNINGS = EARNINGS - TAX_PAYMENT;
-	    EARNINGS_PER_SHARE = NET_EARNINGS/CURRENT_SHARES_OUTSTANDING;
+	    EARNINGS_PER_SHARE_RATIO = NET_EARNINGS/CURRENT_SHARES_OUTSTANDING;
 
 		//step 6: Actual interest_payments and debt_installment_payments
-		if (PAYMENT_ACCOUNT < TOTAL_DEBT_PAYMENT)
+		if (PAYMENT_ACCOUNT < TOTAL_DEBT_INSTALLMENT_PAYMENT)
 		{
 			//Code: transform debt into equity
 			//Code: debt is repaid partially
@@ -269,7 +269,7 @@ int Firm_compute_payout_policy()
  */
 int Firm_apply_for_credit()
 {
-   add_credit_demand_message(firm_id, bank_id, EXTERNAL_FINANCIAL_NEEDS);
+   add_credit_demand_message(ID, bank_id, EXTERNAL_FINANCIAL_NEEDS);
 
    return 0;
 }
@@ -280,10 +280,10 @@ int Firm_apply_for_credit()
  */
 int Firm_issue_equity()
 {
-	STOCK_UNITS =	EXTERNAL_FINANCIAL_NEEDS/SHARE_PRICE;
+	limit_quantity = (int) -1*EXTERNAL_FINANCIAL_NEEDS/SHARE_PRICE;
 
 	//Firm tries to sell stock_units shares:
-	add_firm_stock_order_message(firm_id, clearinghouse_id, -STOCK_UNITS);
+	add_stock_order_message(ID, clearinghouse_id, limit_price, limit_quantity, stock_id)
 
-return 0;
+	return 0;
 }
