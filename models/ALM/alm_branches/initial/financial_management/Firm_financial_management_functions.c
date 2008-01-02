@@ -40,20 +40,15 @@ int Firm_compute_income_statement()
  */	
 int Firm_compute_balance_sheet()
 {
-	double debt_installment_payment;
-	int bank_id;
 	double sum;
 
 	if(DAY%MONTH==DAY_OF_MONTH_TO_ACT)
 	{
 		//double PAYMENT_ACCOUNT: account out of which payments are made, to be separated from the income_account on which current sale receipts are incoming
-		//CASH_HOLDINGS: equal to payment_account???? Cash holdings is a ambiguous term.
+		//CASH_HOLDINGS: equal to payment_account???? Cash holdings is an ambiguous term.
 
-		//double TOTAL_DEBT_PAYMENT
-		//double TOTAL_INTEREST_PAYMENT
-		//double_array DEBT_INSTALLMENT_PAYMENTS		
-
-		//struct LOANS		: array of structs with each struct a loan
+		//double_array LOANS				: dynamic array of structs with each struct a loan_item
+		//struct loan_item
 		//int bank_id						: bank at which the loan was obtained
 		//double loan_value					: total value of the loan remaining
 		//double interest_rate				: interest for this loan
@@ -63,13 +58,13 @@ int Firm_compute_balance_sheet()
 
 		//step 1: compute total interest payments
 		TOTAL_INTEREST_PAYMENT =0;
-		imax = DEBT_INSTALLMENT_PAYMENTS->size;
+		imax = LOANS->size;
 		for (i=0; i<imax;i++)
 		{
-			DEBT_INSTALLMENT_PAYMENTS->array[i]->interest_payment = DEBT_INSTALLMENT_PAYMENTS->array[i]->interest_rate * LOANS->array[i]->loan_value;							
+			LOANS->array[i]->interest_payment = LOANS->array[i]->interest_rate * LOANS->array[i]->loan_value;							
 
 			//add to total
-			TOTAL_INTEREST_PAYMENT += DEBT_INSTALLMENT_PAYMENTS->array[i]->interest_payment;
+			TOTAL_INTEREST_PAYMENT += LOANS->array[i]->interest_payment;
 		}
 		
 		//step 2: compute total debt installment payments
@@ -77,20 +72,20 @@ int Firm_compute_balance_sheet()
 		for (i=0; i<imax;i++)
 		{
 			//add to total
-			TOTAL_DEBT_INSTALLMENT_PAYMENT += DEBT_INSTALLMENT_PAYMENTS->array[i]->debt_installment_payment;
+			TOTAL_DEBT_INSTALLMENT_PAYMENT += LOANS->array[i]->debt_installment_payment;
 		}
-				
-		//step 3: Actual tax_payment to government
-		add_tax_payment_message(ID, gov_id, TAX_PAYMENT,MSGDATA);
-		
-		//step 4,5: continue balance sheet (net earnings, earnings per share)
+						
+		//step 3: continue balance sheet (net earnings, earnings per share)
 		EARNINGS = EBIT - TOTAL_INTEREST_PAYMENT;
 		TAX_PAYMENT = TAX_RATE_CORPORATE * EARNINGS;
 		PREVIOUS_NET_EARNINGS = NET_EARNINGS;
 		NET_EARNINGS = EARNINGS - TAX_PAYMENT;
 	    EARNINGS_PER_SHARE_RATIO = NET_EARNINGS/CURRENT_SHARES_OUTSTANDING;
 
-		//step 6: Actual interest_payments and debt_installment_payments
+		//step 4: actual tax_payment to government
+		add_tax_payment_message(ID, gov_id, TAX_PAYMENT,MSGDATA);
+
+		//step 5: actual interest_payments and debt_installment_payments
 		if (PAYMENT_ACCOUNT < TOTAL_DEBT_INSTALLMENT_PAYMENT)
 		{
 			//Code: transform debt into equity
@@ -102,10 +97,10 @@ int Firm_compute_balance_sheet()
 		else
 		{
 			//Sending interest_payment_msg to all banks at which the firm has a loan 
-			imax = DEBT_INSTALLMENT_PAYMENTS->size;
+			imax = LOANS->size;
 			for (i=0; i<imax;i++)
 			{
-				//subtract the interest_payment from the payment_account
+				//decrease payment_account with the interest_payment
 				PAYMENT_ACCOUNT -= LOANS->array[i]->interest_payment;
 
 				//tell the bank I paid
@@ -115,29 +110,49 @@ int Firm_compute_balance_sheet()
 			//Sending debt_installment_payment_msg to all banks at which the firm has a loan
 			for (i=0; i<imax;i++)
 			{
-				//pay the installment from the payment_account
+				//decrease payment_account with the installment payment
 				PAYMENT_ACCOUNT -= LOANS->array[i]->debt_installment_payment;
 
-				//decrease the value of the loan with the debt_install_payment:
+				//decrease the value of the loan with the debt_installment_payment:
 				LOANS->array[i]->loan_value -= LOANS->array[i]->debt_installment_payment;
 
 				//decrease the value of the nr_periods_before_maturity
 				LOANS->array[i]->nr_periods_before_maturity -= 1;
-				
+
 				//tell the bank I paid
-				debt_installment_payment = LOANS->array[i]->debt_installment_payment;
-				bank_id = LOANS->array[i]->bank_id;				
-				add_debt_installment_payment_message(ID, bank_id, debt_installment_payment, MSGDATA);
+				add_debt_installment_payment_message(ID, LOANS->array[i]->bank_id, LOANS->array[i]->debt_installment_payment, MSGDATA);
+
+				//if nr_periods_before_maturity == 0, remove the loan item
+				if (LOANS->array[i]->nr_periods_before_maturity==0)
+				{
+					remove_loan_item(LOANS, i);
+				}
 			}
 		}
 
-		//step 7: Actual total_dividend_payment
-		//continue balance sheet (data pertains to the period that just ended)
+		//step 6: determine total_dividend_payment
+		//option 1: total divided payment remains constant
+		//TOTAL_DIVIDEND_PAYMENT *= 1;
+		
+		//option 2: total divided payment increases with same ratio as earnings
+		//this is very dangerous, since earnings may fluctuate violently
+		//TOTAL_DIVIDEND_PAYMENT *= NET_EARNINGS/PREVIOUS_NET_EARNINGS;
+		
+		//option 3: keep dividend per share constant
+		//total divided payment increases with same ratio as current_shares_outstanding
+		//TOTAL_DIVIDEND_PAYMENT *= CURRENT_SHARES_OUTSTANDING/PREVIOUS_SHARES_OUTSTANDING;
+
+		//option 4: keep earnings per share constant
+		//total divided payment increases with same ratio as earnings per share
+		//if current_shares_outstanding remains constant, this keeps earnings per share constant
+		TOTAL_DIVIDEND_PAYMENT *= EARNINGS_PER_SHARE_RATIO;
+
+		//step 7: continue balance sheet (data pertaining to the period that just ended)
 		PREVIOUS_DIVIDEND_PER_SHARE = CURRENT_DIVIDEND_PER_SHARE;
 		CURRENT_DIVIDEND_PER_SHARE = TOTAL_DIVIDEND_PAYMENT/CURRENT_SHARES_OUTSTANDING;
 		PREVIOUS_DIVIDEND_PER_EARNINGS = CURRENT_DIVIDEND_PER_EARNINGS;
 		CURRENT_DIVIDEND_PER_EARNINGS = TOTAL_DIVIDEND_PAYMENT/EARNINGS;
-				
+		
 		//add dividend_payment_msg to shareholders (dividend per share)		
 		add_dividend_payment_message(ID, CURRENT_DIVIDEND_PER_SHARE, MSGDATA);
 
@@ -145,17 +160,19 @@ int Firm_compute_balance_sheet()
 		PAYMENT_ACCOUNT -= TOTAL_DIVIDEND_PAYMENT;
 
 		//step 8: compute the equity of the firm
-		//1. PAYMENT_ACCOUNT: remaining cash holdings of the firm
-		//2. TOTAL_VALUE_CAPITAL_STOCK: estimated value of the capital stock
-		//3. TOTAL_VALUE_LOCAL_INVENTORY: value of all the local inventory stocks held at the malls
+		//EQUITY=
+		//+ PAYMENT_ACCOUNT: remaining cash holdings of the firm
+		//+ TOTAL_VALUE_CAPITAL_STOCK: estimated value of the capital stock
+		//+ TOTAL_VALUE_LOCAL_INVENTORY: value of all the local inventory stocks held at the malls
 		
 		//The capital stock is heterogeneous.
-		//struct VALUE_CAPITAL_STOCK				: array of structs with each struct a purchased quantity of capital stock
+		//struct VALUE_CAPITAL_STOCK				: dynamic array of capital_stock_item; each item is a struct of a certain purchased quantity of capital stock
+		//double current_value						: current value of the item
 		//double depreciation_value_per_period		: we assume that the capital stock depreciates with a fixed value in each period.
 		//int nr_periods_before_total_depreciation  : after some periods the capital stock is completely depreciated
-		//double current_value
+
 		
-		//We loop over all capital installment items and update the current_value for each item in the capital stock
+		//We loop over all capital stock items and update the current_value
 		imax = VALUE_CAPITAL_STOCK->size;
 		TOTAL_VALUE_CAPITAL_STOCK=0;
 		for (i=0;i<imax;i++)
@@ -163,16 +180,19 @@ int Firm_compute_balance_sheet()
 			//decrease the value of each installment of capital by its own depreciation value
 			VALUE_CAPITAL_STOCK->array[i]->current_value -= VALUE_CAPITAL_STOCK->array[i]->depreciation_value_per_period;
 			VALUE_CAPITAL_STOCK->array[i]->nr_periods_before_total_depreciation -= 1;
-			if (VALUE_CAPITAL_STOCK->array[i]->nr_periods_before_total_depreciation==0)
-			{
-				remove_value_capital_stock_item(VALUE_CAPITAL_STOCK, i); //the period of full depreciation has been reached
-			}
+			
 			//update the current value of the capital stock:
 			TOTAL_VALUE_CAPITAL_STOCK += VALUE_CAPITAL_STOCK->array[i]->current_value;
+
+			//if the period of full depreciation has been reached: remove the capital_stock_item
+			if (VALUE_CAPITAL_STOCK->array[i]->nr_periods_before_total_depreciation==0)
+			{
+				remove_capital_stock_item(VALUE_CAPITAL_STOCK, i);
+			}
 		}
 		
 		//TOTAL_VALUE_LOCAL_INVENTORY: estimated value of local inventory stocks at current mall prices
-		//We loop over all malls and sum the value of all local inventory stocks
+		//We loop over the malls and sum the value of all local inventory stocks
 		imax = CURRENT_MALL_STOCKS->size;
 		sum=0.0;
 		for (i=0;i<imax;i++)

@@ -22,6 +22,9 @@ Sander, rev 533
 Role: Firm_financial_management
 
 Variables:
+============
+stock_price
+production_costs
 
 ebit
 payment_account
@@ -32,7 +35,7 @@ net_earnings
 previous_net_earnings
 
 New datatype:
-struct debt_item
+struct loan_item
 {
 int bank_id
 double loan_value
@@ -41,7 +44,7 @@ double interest_payment
 double debt_installment_payment
 int nr_periods_before_maturity
 }
-debt_item_dynamic_array loans
+loan_item_dynamic_array loans
 total_interest_payment
 total_debt_installment_payment
 total_dividend_payment
@@ -82,7 +85,7 @@ internal_financial_needs
 external_financial_needs
 
 Messages:
-
+=========
 From financial_management_role:
 tax_payment_message(firm_id, gov_id, tax_payment)
 interest_payment_message(firm_id, bank_id, interest_payment)
@@ -111,9 +114,10 @@ Sander, rev 536
 Role: Household_financial_management
 
 Variables:
+==========
 
 Messages:
-
+=========
 From financial_management_role:
 tax_payment_message(household_id, gov_id, tax_payment)
 
