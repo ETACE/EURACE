@@ -1,0 +1,118 @@
+/* Firm_compute_balance_sheet
+ * CUnit Test 1
+ */
+
+//===================
+// Variables: MemPre
+//===================
+ebit=100;
+payment_account=100;
+
+earnings=0.0;
+tax_payment=0.0;
+tax_rate_corporate=0.10;
+net_earnings=0.0;
+previous_net_earnings=90;
+
+loans[0]
+{
+	int bank_id=1;
+	double loan_value=100;
+	double interest_rate=0.01;
+	double interest_payment=0.0; //this value is updated at start of function to: interest_payment=1.0;
+	double debt_installment_payment=20;
+	int nr_periods_before_maturity=5;
+}
+
+loans[1]
+{
+	int bank_id=2;
+	double loan_value=200;
+	double interest_rate=0.02;
+	double interest_payment=0.0; //this value is updated at start of function to: interest_payment=4.0;
+	double debt_installment_payment=50;
+	int nr_periods_before_maturity=4;
+}
+
+total_interest_payment=0.0;
+total_debt_installment_payment=0.0;
+total_dividend_payment=0.0;
+
+value_capital_stock[0]
+{
+	double current_value=1000;
+	double depreciation_value_per_period=100;
+	int nr_periods_before_total_depreciation=10;
+}
+
+value_capital_stock[1]
+{
+	double current_value=2000;
+	double depreciation_value_per_period=100;
+	int nr_periods_before_total_depreciation=20;
+}
+
+total_value_capital_stock=0.0;
+total_value_local_inventory=1000;
+equity=0.0;
+
+//===================
+// Variables: MemPost
+//===================
+ebit=100;
+
+earnings=100;
+tax_payment=10;
+tax_rate_corporate=0.10;
+net_earnings=90;
+previous_net_earnings=90;
+
+loans[0]
+{
+	int bank_id=1;
+	double loan_value=80;
+	double interest_rate=0.01;
+	double interest_payment=1; //this value is updated the next time, at start of function to: interest_payment=0.8;
+	double debt_installment_payment=20;
+	int nr_periods_before_maturity=4;
+}
+
+loans[1]
+{
+	int bank_id=2;
+	double loan_value=150;
+	double interest_rate=0.02;
+	double interest_payment=4; //this value is updated the next time, at start of function to: interest_payment=0.75;
+	double debt_installment_payment=50;
+	int nr_periods_before_maturity=3;
+}
+
+total_interest_payment=5;
+total_debt_installment_payment=70;
+total_dividend_payment=5;
+
+value_capital_stock[0]
+{
+	double current_value=900;
+	double depreciation_value_per_period=100;
+	int nr_periods_before_total_depreciation=9;
+}
+
+value_capital_stock[1]
+{
+	double current_value=1900;
+	double depreciation_value_per_period=100;
+	int nr_periods_before_total_depreciation=19;
+}
+
+total_value_capital_stock=3000;
+
+current_mall_stocks[0]
+{
+	price=1;
+	current_stock=1000;
+}
+total_value_local_inventory=1000;
+
+payment_account=10; //payment_account=100-10-5-70-5=10;
+equity=4010;
