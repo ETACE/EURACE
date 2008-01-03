@@ -23,7 +23,7 @@ Role: Firm_financial_management
 
 Variables:
 ============
-stock_price
+current_share_price
 production_costs
 
 ebit
@@ -145,4 +145,7 @@ Sander, rev 539
 	This is an error log: all memory variables added to bielefeld-model.xme in rev 538
 	did not get assigned ids by the XMME editor. These should still be added manually.
 --------------------------------------------------------------------------------------
-	
+Sander, rev 541
+	Branched-bielefeld-model
+		Bielefeld-model.xme: Added msgs, ids, new dgraph.ps
+--------------------------------------------------------------------------------------

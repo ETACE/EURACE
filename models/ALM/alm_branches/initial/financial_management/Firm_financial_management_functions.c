@@ -69,9 +69,13 @@ int Firm_compute_balance_sheet()
 		
 		//step 2: compute total debt installment payments
 		TOTAL_DEBT_INSTALLMENT_PAYMENT =0;
+		TOTAL_DEBT=0;
 		for (i=0; i<imax;i++)
 		{
-			//add to total
+			//compute current total debt
+			TOTAL_DEBT += LOANS->array[i]->loan_value;
+			
+			//add debt_installment_payment to total installment payment
 			TOTAL_DEBT_INSTALLMENT_PAYMENT += LOANS->array[i]->debt_installment_payment;
 		}
 						
@@ -279,6 +283,8 @@ int Firm_compute_payout_policy()
 			INTERNAL_FINANCIAL_NEEDS = PAYMENT_ACCOUNT;
 			EXTERNAL_FINANCIAL_NEEDS = TOTAL_FINANCIAL_NEEDS - PAYMENT_ACCOUNT;
 		}
+	RETAINED_EARNINGS_RATIO = INTERNAL_FINANCIAL_NEEDS/NET_EARNINGS;
+	
 	return 0;
 }
 
@@ -289,7 +295,7 @@ int Firm_compute_payout_policy()
  */
 int Firm_apply_for_credit()
 {
-   add_credit_demand_message(ID, bank_id, EXTERNAL_FINANCIAL_NEEDS);
+   add_credit_request_message(ID, bank_id, EXTERNAL_FINANCIAL_NEEDS, EQUITY, TOTAL_DEBT, MSGDATA);
 
    return 0;
 }
@@ -300,10 +306,10 @@ int Firm_apply_for_credit()
  */
 int Firm_issue_equity()
 {
-	limit_quantity = (int) -1*EXTERNAL_FINANCIAL_NEEDS/SHARE_PRICE;
+	limit_quantity = (int) -1*EXTERNAL_FINANCIAL_NEEDS/CURRENT_SHARE_PRICE;
 
 	//Firm tries to sell stock_units shares:
-	add_stock_order_message(ID, clearinghouse_id, limit_price, limit_quantity, stock_id)
+	add_stock_order_message(ID, limit_price, limit_quantity, stock_id, MSGDATA)
 
 	return 0;
 }
