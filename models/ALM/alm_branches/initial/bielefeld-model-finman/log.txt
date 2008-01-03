@@ -149,3 +149,8 @@ Sander, rev 541
 	Branched-bielefeld-model
 		Bielefeld-model.xme: Added msgs, ids, new dgraph.ps
 --------------------------------------------------------------------------------------
+Sander, rev 542
+	Branched-bielefeld-model
+	Renamed	Bielefeld-model.xme to Bielefeld-model-finman.xme
+	Added dgraph-bielefeld-finman.ps
+--------------------------------------------------------------------------------------
