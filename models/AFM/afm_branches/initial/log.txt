@@ -464,4 +464,8 @@ Sander, rev 540
 	- CUnit_Firm_compute_income_statement
 	- CUnit_Firm_compute_balance_sheet
 	- CUnit_Firm_compute_payout_policy
---------------------------------------------------------------------------------------	
+--------------------------------------------------------------------------------------
+Sander, rev 541
+	Branched-bielefeld-model
+		Bielefeld-model.xme: Added msgs, ids, new dgraph.ps
+--------------------------------------------------------------------------------------		

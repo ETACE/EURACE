@@ -116,3 +116,11 @@ total_value_local_inventory=1000;
 
 payment_account=10; //payment_account=100-10-5-70-5=10;
 equity=4010;
+
+//===================
+// Messages send
+//===================
+tax_payment_message(agent_id, tax_payment)
+interest_payment_message(firm_id, bank_id, interest_payment)
+debt_installment_payment_message(firm_id, bank_id, debt_installment_payment)
+dividend_payment_message(firm_id, current_dividend_per_share)
