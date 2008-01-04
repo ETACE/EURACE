@@ -10,3 +10,7 @@ Sander, rev 533
 		This file is the xml code for the original financial_management_functions.c
 		made in Bielefeld by Mariam and Sander.
 --------------------------------------------------------------------------------------
+Sander, rev 543
+	Firm_compute_balance_sheet:
+		added consistency checks for planned_total_payments and total_payments
+--------------------------------------------------------------------------------------

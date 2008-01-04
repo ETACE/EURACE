@@ -67,6 +67,12 @@ int Firm_compute_balance_sheet()
 			TOTAL_INTEREST_PAYMENT += LOANS->array[i]->interest_payment;
 		}
 		
+		//consistency check
+		if(PLANNED_TOTAL_INTEREST_PAYMENT != TOTAL_INTEREST_PAYMENT)
+		{
+			printf('Error: planned total interest payment is not equal to total interest payment.\n Did you set the same option for the planned and actual payments?');
+		}
+		
 		//step 2: compute total debt installment payments
 		TOTAL_DEBT_INSTALLMENT_PAYMENT =0;
 		TOTAL_DEBT=0;
@@ -77,6 +83,11 @@ int Firm_compute_balance_sheet()
 			
 			//add debt_installment_payment to total installment payment
 			TOTAL_DEBT_INSTALLMENT_PAYMENT += LOANS->array[i]->debt_installment_payment;
+		}
+		//consistency check
+		if(PLANNED_TOTAL_DEBT_INSTALLMENT_PAYMENT != TOTAL_DEBT_INSTALLMENT_PAYMENT)
+		{
+			printf('Error: planned total debt installment payment is not equal to total debt installment payment.\n Did you set the same option for the planned and actualpayments?');
 		}
 						
 		//step 3: continue balance sheet (net earnings, earnings per share)
@@ -150,6 +161,34 @@ int Firm_compute_balance_sheet()
 		//total divided payment increases with same ratio as earnings per share
 		//if current_shares_outstanding remains constant, this keeps earnings per share constant
 		TOTAL_DIVIDEND_PAYMENT *= EARNINGS_PER_SHARE_RATIO;
+
+		//option 5: keep dividend to earnings ratio constant (dont let it fall), but do not decrease the dividend per share ratio.
+/*
+		if (CURRENT_DIVIDEND_PER_EARNINGS < PREVIOUS_DIVIDEND_PER_EARNINGS)
+		{
+			//Maintain the dividend to earnings ratio
+			//D_{t} = (D_{t-1}/E_{t-1})*E_{t}
+			TOTAL_DIVIDEND_PAYMENT = PREVIOUS_DIVIDEND_PER_EARNINGS * NET_EARNINGS;
+			
+			//But do not decrease the dividend per share ratio
+			if (TOTAL_DIVIDEND_PAYMENT/CURRENT_SHARES_OUTSTANDING < CURRENT_DIVIDEND_PER_SHARE)
+			{
+				TOTAL_DIVIDEND_PAYMENT = CURRENT_DIVIDEND_PER_SHARE * CURRENT_SHARES_OUTSTANDING;
+			}
+		}
+		else
+		{
+			//the dividend to earnings ratio did not decrease
+			//else keep the dividend per share ratio constant
+			TOTAL_DIVIDEND_PAYMENT = PREVIOUS_DIVIDEND_PER_SHARE*CURRENT_SHARES_OUTSTANDING;
+		}
+*/
+
+		//consistency check
+		if(PLANNED_TOTAL_DIVIDEND_PAYMENT != TOTAL_DIVIDEND_PAYMENT)
+		{
+			printf('Error: planned total dividend payment is not equal to total dividend payment.\n Did you set the same option for the planned and actual payments?');
+		}
 
 		//step 7: continue balance sheet (data pertaining to the period that just ended)
 		PREVIOUS_DIVIDEND_PER_SHARE = CURRENT_DIVIDEND_PER_SHARE;
@@ -241,36 +280,47 @@ int Firm_compute_payout_policy()
 	}
 	
 	//step 11: compute planned_total_dividend_payment.
-	//Goal: maintain a constant dividend to earnings ratio
-	//But: do not decrease the dividend per share ratio.
+
+	//option 1: total divided payment remains constant
+	//PLANNED_TOTAL_DIVIDEND_PAYMENT *= 1;
+	
+	//option 2: total divided payment increases with same ratio as earnings
+	//this is very dangerous, since earnings may fluctuate violently
+	//PLANNED_TOTAL_DIVIDEND_PAYMENT *= NET_EARNINGS/PREVIOUS_NET_EARNINGS;
+	
+	//option 3: keep dividend per share constant
+	//total divided payment increases with same ratio as current_shares_outstanding
+	//PLANNED_TOTAL_DIVIDEND_PAYMENT *= CURRENT_SHARES_OUTSTANDING/PREVIOUS_SHARES_OUTSTANDING;
+
+	//option 4: keep earnings per share constant
+	//total divided payment increases with same ratio as earnings per share
+	//if current_shares_outstanding remains constant, this keeps earnings per share constant
+	PLANNED_TOTAL_DIVIDEND_PAYMENT *= EARNINGS_PER_SHARE_RATIO;
+
+	//option 5: keep dividend to earnings ratio constant (dont let it fall), but do not decrease the dividend per share ratio.
+/*
 	if (CURRENT_DIVIDEND_PER_EARNINGS < PREVIOUS_DIVIDEND_PER_EARNINGS)
 	{
+		//Maintain the dividend to earnings ratio
 		//D_{t} = (D_{t-1}/E_{t-1})*E_{t}
 		PLANNED_TOTAL_DIVIDEND_PAYMENT = PREVIOUS_DIVIDEND_PER_EARNINGS * NET_EARNINGS;
 		
-		//do not decrease the dividend per share ratio
+		//But do not decrease the dividend per share ratio
 		if (PLANNED_TOTAL_DIVIDEND_PAYMENT/CURRENT_SHARES_OUTSTANDING < CURRENT_DIVIDEND_PER_SHARE)
 		{
-			TOTAL_DIVIDEND_PAYMENT = CURRENT_DIVIDEND_PER_SHARE * CURRENT_SHARES_OUTSTANDING;
+			PLANNED_TOTAL_DIVIDEND_PAYMENT = CURRENT_DIVIDEND_PER_SHARE * CURRENT_SHARES_OUTSTANDING;
 		}
-		else
-			{
-				TOTAL_DIVIDEND_PAYMENT = PLANNED_TOTAL_DIVIDEND_PAYMENT;
-			}
 	}
 	else
 	{
-		//keep the dividend per share ratio
-		TOTAL_DIVIDEND_PAYMENT = PREVIOUS_DIVIDEND_PER_SHARE*CURRENT_SHARES_OUTSTANDING;
+		//the dividend to earnings ratio did not decrease
+		//else keep the dividend per share ratio constant
+		PLANNED_TOTAL_DIVIDEND_PAYMENT = PREVIOUS_DIVIDEND_PER_SHARE*CURRENT_SHARES_OUTSTANDING;
 	}
-	
-	//re-compute the final dividend per share ratio, given the total_dividend_payment
-	CURRENT_DIVIDEND_PER_SHARE = TOTAL_DIVIDEND_PAYMENT/CURRENT_SHARES_OUTSTANDING;
-	CURRENT_DIVIDEND_PER_EARNINGS = TOTAL_DIVIDEND_PAYMENT/EARNINGS;
-	
+*/	
 	//step 12: set financial_needs for the upcoming production cycle
 	//The total production costs (costs = labor_costs + capital_costs) come from the function Firm_calc_pay_costs
-	TOTAL_FINANCIAL_NEEDS = PLANNED_TOTAL_INTEREST_PAYMENT + PLANNED_TOTAL_DEBT_INSTALLMENT_PAYMENT + TOTAL_DIVIDEND_PAYMENT + PRODUCTION_COSTS;
+	TOTAL_FINANCIAL_NEEDS = PLANNED_TOTAL_INTEREST_PAYMENT + PLANNED_TOTAL_DEBT_INSTALLMENT_PAYMENT + PLANNED_TOTAL_DIVIDEND_PAYMENT + PRODUCTION_COSTS;
 	
 	//Check if external financing is needed.
 	if (TOTAL_FINANCIAL_NEEDS < PAYMENT_ACCOUNT)
