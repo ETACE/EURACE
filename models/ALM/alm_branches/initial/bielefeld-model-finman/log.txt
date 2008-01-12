@@ -74,7 +74,7 @@ capital_stock_item_dynamic_array value_capital_stock
 
 total_value_capital_stock
 total_value_local_inventory
-equity
+total_assets
 
 planned_total_interest_payment 
 planned_total_debt_installment_payment
@@ -137,7 +137,7 @@ Sander, rev 537
 	Left-hand side shows labor market interaction between household and firm.
 	Right-hand side shows consumption market interaction between household and mall.
 
-	The production cycle starts with production planning (this uses the memory variable equity).
+	The production cycle starts with production planning (this uses the memory variable total_assets).
 	It ends on the lower RHS with Firm_calc_revenues and Firm_compute_balance_sheet
 	This sets the variables to start a new round of financial policy planning.	
 --------------------------------------------------------------------------------------
@@ -153,4 +153,9 @@ Sander, rev 542
 	Branched-bielefeld-model
 	Renamed	Bielefeld-model.xme to Bielefeld-model-finman.xme
 	Added dgraph-bielefeld-finman.ps
+--------------------------------------------------------------------------------------
+Sander, rev 544
+	Bielefeld-finman.xme
+	Firm_compute_balance_sheet:
+		renamed: EQUITY -> TOTAL_ASSETS
 --------------------------------------------------------------------------------------
