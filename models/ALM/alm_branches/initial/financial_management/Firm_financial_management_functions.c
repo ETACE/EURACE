@@ -92,6 +92,10 @@ int Firm_compute_balance_sheet()
 						
 		//step 3: continue balance sheet (net earnings, earnings per share)
 		EARNINGS = EBIT - TOTAL_INTEREST_PAYMENT;
+		
+		//Here: should debt_installment_payments be subtracted from earnings before taxes are paid, or after?
+		//They are of course liabilities, but debt installment payments are one of many payouts.
+		
 		TAX_PAYMENT = TAX_RATE_CORPORATE * EARNINGS;
 		PREVIOUS_NET_EARNINGS = NET_EARNINGS;
 		NET_EARNINGS = EARNINGS - TAX_PAYMENT;
@@ -203,7 +207,7 @@ int Firm_compute_balance_sheet()
 		PAYMENT_ACCOUNT -= TOTAL_DIVIDEND_PAYMENT;
 
 		//step 8: compute the equity of the firm
-		//EQUITY=
+		//TOTAL_ASSETS=
 		//+ PAYMENT_ACCOUNT: remaining cash holdings of the firm
 		//+ TOTAL_VALUE_CAPITAL_STOCK: estimated value of the capital stock
 		//+ TOTAL_VALUE_LOCAL_INVENTORY: value of all the local inventory stocks held at the malls
@@ -246,7 +250,7 @@ int Firm_compute_balance_sheet()
 		}
 		TOTAL_VALUE_LOCAL_INVENTORY=sum;
 
-		EQUITY = PAYMENT_ACCOUNT + TOTAL_VALUE_CAPITAL_STOCK + TOTAL_VALUE_LOCAL_INVENTORY;
+		TOTAL_ASSETS = PAYMENT_ACCOUNT + TOTAL_VALUE_CAPITAL_STOCK + TOTAL_VALUE_LOCAL_INVENTORY;
 	}
 
 	return 0;
@@ -345,7 +349,7 @@ int Firm_compute_payout_policy()
  */
 int Firm_apply_for_credit()
 {
-   add_credit_request_message(ID, bank_id, EXTERNAL_FINANCIAL_NEEDS, EQUITY, TOTAL_DEBT, MSGDATA);
+   add_credit_request_message(ID, bank_id, EXTERNAL_FINANCIAL_NEEDS, TOTAL_ASSETS, TOTAL_DEBT, MSGDATA);
 
    return 0;
 }

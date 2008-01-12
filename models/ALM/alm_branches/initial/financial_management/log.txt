@@ -14,3 +14,8 @@ Sander, rev 543
 	Firm_compute_balance_sheet:
 		added consistency checks for planned_total_payments and total_payments
 --------------------------------------------------------------------------------------
+Sander, rev 544
+	Bielefeld-finman.xme
+	Firm_compute_balance_sheet:
+		renamed: EQUITY -> TOTAL_ASSETS
+--------------------------------------------------------------------------------------

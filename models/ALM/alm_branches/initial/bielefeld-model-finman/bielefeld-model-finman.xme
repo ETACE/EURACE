@@ -891,7 +891,7 @@
     <XMemVar>
      <id>471</id>
      <type>double</type>
-     <name>equity</name>
+     <name>total_assets</name>
      <initForm></initForm>
      <description></description>
     </XMemVar>
@@ -4512,7 +4512,7 @@ Clearinghouse_compute_transactions.</description>
       <XMsgVar>
        <id>517</id>
        <type>double</type>
-       <name>equity</name>
+       <name>total_assets</name>
        <description></description>
       </XMsgVar>
       <XMsgVar>
@@ -4690,7 +4690,7 @@ Clearinghouse_compute_transactions.</description>
       <XMsgVar>
        <id>526</id>
        <type>double</type>
-       <name>equity</name>
+       <name>total_assets</name>
        <description></description>
       </XMsgVar>
       <XMsgVar>
