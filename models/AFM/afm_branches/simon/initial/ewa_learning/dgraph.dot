@@ -1,0 +1,87 @@
+digraph dependency_graph {
+	rankdir=BT;
+	size="8,5"
+	node [shape = rect];
+	
+	/* Functions */
+	FinancialAgent_send_ruledetailsystem_message[height = 0.000000, label = "FinancialAgent_send_ruledetailsystem_message\n(0 lines)"]
+	FinancialAgent_reset_public_classifiersystem[height = 0.000000, label = "FinancialAgent_reset_public_classifiersystem\n(0 lines)"]
+	FinancialAgent_update_ruledetailsystem[height = 0.000000, label = "FinancialAgent_update_ruledetailsystem\n(0 lines)"]
+	FinancialAgent_apply_GA[height = 0.000000, label = "FinancialAgent_apply_GA\n(0 lines)"]
+	Every_100_periods[height = 0.000000, label = "Every_100_periods\n(0 lines)"]
+	FinancialAgent_send_all_performances_message[height = 0.000000, label = "FinancialAgent_send_all_performances_message\n(0 lines)"]
+	FinancialAgent_update_classifiersystem[height = 0.000000, label = "FinancialAgent_update_classifiersystem\n(0 lines)"]
+	FinancialAgent_read_rule_performance_message[height = 0.000000, label = "FinancialAgent_read_rule_performance_message\n(0 lines)"]
+	FinancialAgent_daily_reset_public_classifiersystem[height = 0.000000, label = "FinancialAgent_daily_reset_public_classifiersystem\n(0 lines)"]
+	LimitOrderBookComputeTransactions[height = 0.000000, label = "LimitOrderBookComputeTransactions\n(0 lines)"]
+	ClearingHouseComputeTransactions[height = 0.000000, label = "ClearingHouseComputeTransactions\n(0 lines)"]
+	FirmApplyForBankLoan[height = 0.000000, label = "FirmApplyForBankLoan\n(0 lines)"]
+	FirmUpdateOutstandingAssets[height = 0.000000, label = "FirmUpdateOutstandingAssets\n(0 lines)"]
+	FirmCalculateFirmBondOrders[height = 0.000000, label = "FirmCalculateFirmBondOrders\n(0 lines)"]
+	FirmCalculateFirmStockOrders[height = 0.000000, label = "FirmCalculateFirmStockOrders\n(0 lines)"]
+	FirmCalculateFinancialPolicies[height = 0.000000, label = "FirmCalculateFinancialPolicies\n(0 lines)"]
+	FirmCalculateIncomeStatement[height = 0.000000, label = "FirmCalculateIncomeStatement\n(0 lines)"]
+	Household_reset_private_classifiersystem[height = 0.000000, label = "Household_reset_private_classifiersystem\n(0 lines)"]
+	Household_update_ruledetailsystem[height = 0.000000, label = "Household_update_ruledetailsystem\n(0 lines)"]
+	Household_read_ruledetailsystem_message[height = 0.000000, label = "Household_read_ruledetailsystem_message\n(0 lines)"]
+	Household_apply_rule[height = 0.000000, label = "Household_apply_rule\n(0 lines)"]
+	Household_retrieve_rule_details[height = 0.000000, label = "Household_retrieve_rule_details\n(0 lines)"]
+	Household_select_rule[height = 0.000000, label = "Household_select_rule\n(0 lines)"]
+	Household_read_all_performances_message[height = 0.000000, label = "Household_read_all_performances_message\n(0 lines)"]
+	Household_send_rule_performance_message[height = 0.000000, label = "Household_send_rule_performance_message\n(0 lines)"]
+	Every_period[height = 0.000000, label = "Every_period\n(0 lines)"]
+	HouseholdCalculateFirmStockOrders[height = 0.000000, label = "HouseholdCalculateFirmStockOrders\n(0 lines)"]
+	HouseholdCalculateGovernmentBondOrders[height = 0.000000, label = "HouseholdCalculateGovernmentBondOrders\n(0 lines)"]
+	HouseholdCalculateFirmBondOrders[height = 0.000000, label = "HouseholdCalculateFirmBondOrders\n(0 lines)"]
+	HouseholdCalculateAssetBudget[height = 0.000000, label = "HouseholdCalculateAssetBudget\n(0 lines)"]
+	HouseholdEntryDecision[height = 0.000000, label = "HouseholdEntryDecision\n(0 lines)"]
+	HouseholdCalculateFinancialNeedsDaily[height = 0.000000, label = "HouseholdCalculateFinancialNeedsDaily\n(0 lines)"]
+	HouseholdUpdateAssetPortfolio[height = 0.000000, label = "HouseholdUpdateAssetPortfolio\n(0 lines)"]
+	HouseholdCalculateFinancialNeedsMonthly[height = 0.000000, label = "HouseholdCalculateFinancialNeedsMonthly\n(0 lines)"]
+	HouseholdCalculateConsumptionBudget[height = 0.000000, label = "HouseholdCalculateConsumptionBudget\n(0 lines)"]
+	HouseholdCalculateCashOnHands[height = 0.000000, label = "HouseholdCalculateCashOnHands\n(0 lines)"]
+	HouseholdCalculateAssetWealth[height = 0.000000, label = "HouseholdCalculateAssetWealth\n(0 lines)"]
+	HouseholdCalculateTotalBudget[height = 0.000000, label = "HouseholdCalculateTotalBudget\n(0 lines)"]
+	HouseholdCalculateNetIncome[height = 0.000000, label = "HouseholdCalculateNetIncome\n(0 lines)"]
+	HouseholdCalculateMonthlyTaxes[height = 0.000000, label = "HouseholdCalculateMonthlyTaxes\n(0 lines)"]
+	HouseholdCalculateGrossIncome[height = 0.000000, label = "HouseholdCalculateGrossIncome\n(0 lines)"]
+	
+	/* Dependencies */
+	FinancialAgent_send_ruledetailsystem_message -> FinancialAgent_update_ruledetailsystem [ label = "<depends on internal>" ];
+	FinancialAgent_reset_public_classifiersystem -> FinancialAgent_update_ruledetailsystem [ label = "<depends on internal>" ];
+	FinancialAgent_update_ruledetailsystem -> FinancialAgent_apply_GA [ label = "<depends on internal>" ];
+	FinancialAgent_apply_GA -> Every_100_periods [ label = "<depends on internal>" ];
+	FinancialAgent_send_all_performances_message -> FinancialAgent_update_classifiersystem [ label = "<depends on internal>" ];
+	FinancialAgent_update_classifiersystem -> FinancialAgent_read_rule_performance_message [ label = "<depends on internal>" ];
+	FinancialAgent_read_rule_performance_message -> Household_send_rule_performance_message [ label = "<depends on rule_performance>" ];
+	FinancialAgent_read_rule_performance_message -> FinancialAgent_daily_reset_public_classifiersystem [ label = "<depends on internal>" ];
+	FirmApplyForBankLoan -> FirmCalculateFinancialPolicies [ label = "<depends on internal>" ];
+	FirmUpdateOutstandingAssets -> FirmCalculateFirmBondOrders [ label = "<depends on internal>" ];
+	FirmUpdateOutstandingAssets -> FirmCalculateFirmStockOrders [ label = "<depends on internal>" ];
+	FirmCalculateFirmBondOrders -> FirmCalculateFinancialPolicies [ label = "<depends on internal>" ];
+	FirmCalculateFirmStockOrders -> FirmCalculateFinancialPolicies [ label = "<depends on internal>" ];
+	FirmCalculateFinancialPolicies -> FirmCalculateIncomeStatement [ label = "<depends on internal>" ];
+	Household_reset_private_classifiersystem -> Household_update_ruledetailsystem [ label = "<depends on internal>" ];
+	Household_update_ruledetailsystem -> Household_read_ruledetailsystem_message [ label = "<depends on internal>" ];
+	Household_read_ruledetailsystem_message -> FinancialAgent_send_ruledetailsystem_message [ label = "<depends on ruledetailsystem>" ];
+	Household_apply_rule -> Household_retrieve_rule_details [ label = "<depends on internal>" ];
+	Household_retrieve_rule_details -> Household_select_rule [ label = "<depends on internal>" ];
+	Household_select_rule -> Household_read_all_performances_message [ label = "<depends on internal>" ];
+	Household_read_all_performances_message -> FinancialAgent_send_all_performances_message [ label = "<depends on all_performances>" ];
+	Household_send_rule_performance_message -> Every_period [ label = "<depends on internal>" ];
+	Every_period -> Household_reset_private_classifiersystem [ label = "<depends on internal>" ];
+	HouseholdCalculateFirmStockOrders -> HouseholdCalculateAssetBudget [ label = "<depends on internal>" ];
+	HouseholdCalculateGovernmentBondOrders -> HouseholdCalculateAssetBudget [ label = "<depends on internal>" ];
+	HouseholdCalculateFirmBondOrders -> HouseholdCalculateAssetBudget [ label = "<depends on internal>" ];
+	HouseholdCalculateAssetBudget -> HouseholdEntryDecision [ label = "<depends on internal>" ];
+	HouseholdEntryDecision -> HouseholdCalculateFinancialNeedsMonthly [ label = "<depends on internal>" ];
+	HouseholdEntryDecision -> HouseholdCalculateFinancialNeedsDaily [ label = "<depends on internal>" ];
+	HouseholdCalculateFinancialNeedsDaily -> HouseholdUpdateAssetPortfolio [ label = "<depends on internal>" ];
+	HouseholdCalculateFinancialNeedsMonthly -> HouseholdCalculateConsumptionBudget [ label = "<depends on internal>" ];
+	HouseholdCalculateConsumptionBudget -> HouseholdCalculateCashOnHands [ label = "<depends on internal>" ];
+	HouseholdCalculateCashOnHands -> HouseholdCalculateAssetWealth [ label = "<depends on internal>" ];
+	HouseholdCalculateCashOnHands -> HouseholdCalculateTotalBudget [ label = "<depends on internal>" ];
+	HouseholdCalculateTotalBudget -> HouseholdCalculateNetIncome [ label = "<depends on internal>" ];
+	HouseholdCalculateNetIncome -> HouseholdCalculateMonthlyTaxes [ label = "<depends on internal>" ];
+	HouseholdCalculateMonthlyTaxes -> HouseholdCalculateGrossIncome [ label = "<depends on internal>" ];
+}
