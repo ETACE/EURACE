@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<xmachine_agent_model>
+<name>Iterated Prisoners Dilemma Game</name>
+<author>Sander van der Hoog</author>
+<date>291107</date>
+
+<!--************************* NOTES ***************************************-->
+<!--This is the main description file for the IPD game-->
+<!-- Agents involved: GamePlayer, GameSolver-->
+<!--Ref.: Miller, J.H., 1996. The coevolution of automata in the repeated prisoner's dilemma. Journal of--><!--Journal of Economic Behavior and Organization 29, 87}112.-->
+	<!---->
+
+<!--***************** Environment values and functions **********************-->
+<environment>
+<functions>
+<file>GamePlayer_functions.c</file>
+<file>GameSolver_functions.c</file>
+<file>mylibraryfunctions.c</file>
+</functions>
+<!--Structures-->
+
+
+<!--Auxiliary structs-->
+	<datatype>
+<name>string</name>
+<var><type>char_array</type><name>stringname</name></var>
+</datatype>
+
+<datatype>
+ <name>stringlist</name>
+ <var><type>string_array</type><name>stringlistname</name></var>
+</datatype>
+
+<datatype>
+ <name>word</name>
+ <var><type>char_array</type><name>wordname</name></var>
+</datatype>
+
+<datatype>
+ <name>wordlist</name>
+ <var><type>word_array</type><name>wordlistname</name></var>
+</datatype>
+
+<datatype>
+<name>int2D_array</name>
+<var><type>int**</type><name>int2Dname</name></var>
+</datatype>
+
+<datatype>
+<name>double2D_array</name>
+<var><type>double**</type><name>double2Dname</name></var>
+</datatype><!--EWA structs--><datatype>
+	<name>Automata</name>
+	<desc>Struct to hold a list of automata in use by GamePlayer agents.</desc><!--Holds for each agent: current_rule, performance.--><var>
+	<type>int</type><name>current_rule</name>
+	</var>
+	<var>
+		<type>double</type><name>rule_performance</name>
+		</var>
+</datatype>
+	<datatype>
+		<!--Struct holding the EWA parameters--><name>EWAParameterStruct</name>
+		<desc></desc><!--***************************** EWA Parameters *************************--><var><type>double</type><name>EWA_rho</name></var><var><type>double</type><name>EWA_phi</name></var><var><type>double</type><name>EWA_delta</name></var><var><type>double</type><name>EWA_beta</name></var><var><!--Experience variable for EWA learning--><type>double</type><name>experience</name>
+	</var><var><!--Current rule in use by the agent--><type>int</type><name>current_rule</name>
+</var>
+	</datatype>
+
+	<datatype>
+<name>PublicClassifierRule</name>
+<desc>Datatype for the central classifier system. The system is a dynamic array of PublicClassifierRules !Subject to change!</desc>
+	<var><!--id for the rule-->
+	<type>int</type><name>id</name>
+	</var>
+<!--***************************** Rule measures *****************************-->
+<var><!--This is the user counter for each rule-->
+<type>int</type><name>counter</name>
+</var>
+<var><!--This is the performance for each rule-->
+<type>double</type><name>performance</name>
+</var>
+<var><!--This is the average performance for each rule-->
+<type>double</type><name>avgperformance</name>
+</var><!--***************************** Rule details *****************************--><var><!--In this case, the rule details are just bitstrings-->
+		<!--A bitstring has length 148, so it is a binary coded decimal (BCD) in the range: [0,...,10^148-1]--><type>int_array</type>
+		<name>bitstring</name>
+	</var>
+</datatype>
+
+	<datatype>
+<name>PrivateClassifierRule</name>
+<desc>Datatype for the private classifier system inside each agent. The system is a dynamic array of PrivateClassifierRule.  !Subject to change!</desc>
+<!--General data for the rule system-->
+	<var><!--id for each rule-->
+	<type>int</type><name>id</name>
+	</var>
+	
+	
+
+<!--***************************** Rule measures *****************************-->
+<var><!--Agent's performance of current_rule--><type>double</type><name>my_performance</name>
+</var>
+<var><!---->
+<type>double</type><name>avgperformance</name>
+</var>
+<var><!--Agent attractions-->
+<type>double</type><name>attraction</name></var>
+<var><!--choice probability-->
+<type>double</type><name>choiceprob</name></var>
+</datatype>	
+</environment>
+
+<!--********************* X-machine Agent - GamePlayer ****************************-->
+<xmachine>
+<name>GamePlayer</name>
+<!----------------- Variables-------------------------------------------------->
+<!-- All variables used by GamePlayer are declared here to allocate them in memory -->
+
+<memory>
+<var><type>int</type><name>id</name></var><var>
+	<type>EWAParameterStruct</type>
+	<name>EWAParameters</name></var>
+<var>
+		<type>int</type><name>new_rules</name>
+		</var><var><type>PrivateClassifierRule_array</type><name>classifiersystem</name></var>
+<var><type>double</type><name>iradius</name></var>
+<var><type>double</type><name>posx</name></var>
+<var><type>double</type><name>posy</name></var>
+	
+
+</memory>
+<!----------------- Defining functions ---------------------------------------->
+<functions>
+
+<!--EWA Functions-->
+<function>
+	<name>Every_period</name>
+	<depends>
+		<name>GamePlayer_reset_private_classifiersystem</name>
+		<type>internal</type>
+	</depends>
+</function>
+<function>
+	<name>GamePlayer_send_current_rule_message</name>
+	<depends>
+			<name>Every_period</name>
+			<type>internal</type>
+	</depends>
+</function>
+
+<function>
+	<name>GamePlayer_read_all_performances_message</name>
+	<depends>
+		<name>GameSolver_send_all_performances_message</name>
+		<type>all_performances_message</type>
+	</depends>
+</function>
+
+<function>
+	<name>GamePlayer_select_rule</name>
+	<depends>
+		<name>GamePlayer_read_all_performances_message</name>
+		<type>internal</type>
+	</depends>
+</function>
+
+<function>
+	<!--Dummy function that only reads a ruledetailsystem_message and then fires up the reset_private_classifiersystem fn.--><name>GamePlayer_read_ruledetailsystem_message</name>
+	<depends>
+		<name>GameSolver_send_ruledetailsystem_message</name>
+		<type>ruledetailsystem_message</type>
+	</depends>
+</function>
+
+<function><!--This function should only run if there is a new ruledetailsystem in the GameSolver agent.--><name>GamePlayer_reset_private_classifiersystem</name>
+	<depends>
+		<name>GamePlayer_read_ruledetailsystem_message</name>
+		<type>internal</type></depends>
+</function>
+
+</functions>
+</xmachine>
+<!--*********************** End of Agent - GamePlayer *****************************-->
+
+<!--********************* X-machine Agent - GameSolver ****************************-->
+<xmachine>
+<name>GameSolver</name>
+<!----------------- Variables-------------------------------------------------->
+<!-- All variables used by GameSolver are declared here to allocate them in memory -->
+<memory>
+
+<var>
+	<type>int</type><name>nragents</name>
+	</var><var>
+		<type>Automata_array</type><name>automata</name>
+		</var><var><type>PublicClassifierRule_array</type>	<name>classifiersystem</name></var>
+<var><type>double</type><name>iradius</name></var>
+<var><type>double</type><name>posx</name></var>
+<var><type>double</type><name>posy</name></var>
+	
+
+
+</memory>
+<!----------------- Defining functions ---------------------------------------->
+<functions>
+<!--EWA Functions-->
+<function>
+		<!--Resets performance and avgperformance for all rules. Daily.--><name>GameSolver_daily_reset_public_classifiersystem</name>
+</function>
+<function><name>GameSolver_read_current_rule_message</name><depends>
+			<name>GameSolver_daily_reset_public_classifiersystem</name>
+			<type>internal</type></depends>
+<depends><name>GamePlayer_send_current_rule_message</name><type>current_rule_message</type></depends>
+</function><function>
+		<name>GameSolver_play_tournament</name>
+		<depends><name>GameSolver_read_current_rule_message</name>
+			<type>internal</type></depends></function><function><name>GameSolver_update_classifiersystem</name>
+<depends><name>GameSolver_play_tournament</name><type>internal</type></depends>
+</function>
+	
+
+	<function><name>GameSolver_send_all_performances_message</name>
+<depends><name>GameSolver_update_classifiersystem</name><type>internal</type></depends>
+</function>
+	<function>
+		<name>Every_100_periods</name></function>
+	<function><name>GameSolver_apply_GA</name>
+	<depends>
+		<name>Every_100_periods</name>
+		<type>internal</type></depends></function>
+	<function>
+		<name>GameSolver_reset_public_classifiersystem</name>
+		<depends>
+			<name>GameSolver_apply_GA</name>
+			<type>internal</type></depends></function>
+	
+<function><name>GameSolver_send_ruledetailsystem_message</name>
+<depends><name>GameSolver_apply_GA</name><type>internal</type></depends>
+</function>
+
+
+</functions>
+</xmachine><!--*********************** End of Agent - GameSolver ****************************-->
+
+
+
+
+
+
+
+<!--******** Messages being posted by the agents to communicate *************-->
+<messages><!--EWA messages-->
+
+	<message>
+<name>current_rule_message</name>
+<note>Message sent by GamePlayer to tell the GameSolver which rule is currently used</note>
+		<var>
+			<type>int</type><name>id</name>
+			</var>
+		<var><type>int</type><name>current_rule</name></var>
+<var><type>double</type><name>range</name></var>
+<var><type>double</type><name>x</name></var>
+<var><type>double</type><name>y</name></var>
+<var><type>double</type><name>z</name></var>
+</message>
+
+<message>
+<name>all_performances_message</name>
+<note>Message sent by GameSolver to inform GamePlayers of all rule performances</note>
+<var><type>double_array</type><name>performances</name></var>
+<var><type>double</type><name>range</name></var>
+<var><type>double</type><name>x</name></var>
+<var><type>double</type><name>y</name></var>
+<var><type>double</type><name>z</name></var>
+</message>
+
+<message>
+<name>ruledetailsystem_message</name>
+<note>GameSolver adds new rule details</note>
+<var><type>double2D_array</type><name>parameters</name></var><!--Mariam: I think parameters here should be a struct for rule details to be sent. !Subject to change!--><!--Sander: actually this should be a 2d-array-->
+	<var><type>double</type><name>range</name></var>
+<var><type>double</type><name>x</name></var>
+<var><type>double</type><name>y</name></var>
+<var><type>double</type><name>z</name></var>
+</message>
+
+</messages>
+<!--********************** End of Messages **********************************-->
+
+</xmachine_agent_model>
