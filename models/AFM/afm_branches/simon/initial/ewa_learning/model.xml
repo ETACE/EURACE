@@ -9,7 +9,7 @@
 <!--This is the main description file for the financial market model-->
 <!-- Agents involved: Household, FinancialAgent, Firm, Bank, ClearingHouse Mechanism, LimitOrderBook, Government-->
 <!--13/11/07 Adding structures to the model.xml-->
-<!-- TODO- Make seperate c files for each agent's functions-->
+<!--05/02/08 TODO- ewa_learning: Merging ruledetailsystem into classifiersystem struct-->
 
 <!--***************** Environment values and functions **********************-->
 <environment>

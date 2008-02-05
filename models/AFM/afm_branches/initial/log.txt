@@ -468,4 +468,10 @@ Sander, rev 540
 Sander, rev 541
 	Branched-bielefeld-model
 		Bielefeld-model.xme: Added msgs, ids, new dgraph.ps
---------------------------------------------------------------------------------------		
+--------------------------------------------------------------------------------------
+Sander, rev 549
+	TODO ewa_learning/model.xml: Merging ruledetailsystem into classifiersystem struct
+		Planned after we get the IPD example running (already uses the integrated form).
+--------------------------------------------------------------------------------------
+
+		
