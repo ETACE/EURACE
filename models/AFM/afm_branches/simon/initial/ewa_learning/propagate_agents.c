@@ -26,10 +26,10 @@ enum { \
     AGENT_Household, \
     AGENT_Firm, \
     AGENT_Bank, \
-    AGENT_ClearingHouseMechanism, \
+    AGENT_ClearingHouse, \
     AGENT_LimitOrderBook, \
     AGENT_Government, \
-    AGENT_FinancialAdvisor, \
+    AGENT_FinancialAgent, \
     AGENT_TYPE_COUNT
 };
 
@@ -78,13 +78,13 @@ void propagate_agents() {
 
     xmachine_memory_Bank *agent_Bank_list; 
 
-    xmachine_memory_ClearingHouseMechanism *agent_ClearingHouseMechanism_list; 
+    xmachine_memory_ClearingHouse *agent_ClearingHouse_list; 
 
     xmachine_memory_LimitOrderBook *agent_LimitOrderBook_list; 
 
     xmachine_memory_Government *agent_Government_list; 
 
-    xmachine_memory_FinancialAdvisor *agent_FinancialAdvisor_list; 
+    xmachine_memory_FinancialAgent *agent_FinancialAgent_list; 
 
 
 
@@ -129,14 +129,14 @@ void propagate_agents() {
 			agent_type = AGENT_Bank;
 		}
         
-        else if(current_xmachine->xmachine_ClearingHouseMechanism != NULL)
+        else if(current_xmachine->xmachine_ClearingHouse != NULL)
 		{
-			x_xmachine = current_xmachine->xmachine_ClearingHouseMechanism->posx;
-			y_xmachine = current_xmachine->xmachine_ClearingHouseMechanism->posy;
+			x_xmachine = current_xmachine->xmachine_ClearingHouse->posx;
+			y_xmachine = current_xmachine->xmachine_ClearingHouse->posy;
             
             z_xmachine = 0.0;
 
-			agent_type = AGENT_ClearingHouseMechanism;
+			agent_type = AGENT_ClearingHouse;
 		}
         
         else if(current_xmachine->xmachine_LimitOrderBook != NULL)
@@ -159,14 +159,14 @@ void propagate_agents() {
 			agent_type = AGENT_Government;
 		}
         
-        else if(current_xmachine->xmachine_FinancialAdvisor != NULL)
+        else if(current_xmachine->xmachine_FinancialAgent != NULL)
 		{
-			x_xmachine = current_xmachine->xmachine_FinancialAdvisor->posx;
-			y_xmachine = current_xmachine->xmachine_FinancialAdvisor->posy;
+			x_xmachine = current_xmachine->xmachine_FinancialAgent->posx;
+			y_xmachine = current_xmachine->xmachine_FinancialAgent->posy;
             
             z_xmachine = 0.0;
 
-			agent_type = AGENT_FinancialAdvisor;
+			agent_type = AGENT_FinancialAgent;
 		}
 
 
@@ -223,11 +223,11 @@ void propagate_agents() {
                         node_info->Bank_agents = current_xmachine;
                     }
 
-                    else if (agent_type == AGENT_ClearingHouseMechanism)
+                    else if (agent_type == AGENT_ClearingHouse)
                     {
-                        node_info->ClearingHouseMechanism_agent_no ++;
-                        current_xmachine->next = node_info->ClearingHouseMechanism_agents;
-                        node_info->ClearingHouseMechanism_agents = current_xmachine;
+                        node_info->ClearingHouse_agent_no ++;
+                        current_xmachine->next = node_info->ClearingHouse_agents;
+                        node_info->ClearingHouse_agents = current_xmachine;
                     }
 
                     else if (agent_type == AGENT_LimitOrderBook)
@@ -244,11 +244,11 @@ void propagate_agents() {
                         node_info->Government_agents = current_xmachine;
                     }
 
-                    else if (agent_type == AGENT_FinancialAdvisor)
+                    else if (agent_type == AGENT_FinancialAgent)
                     {
-                        node_info->FinancialAdvisor_agent_no ++;
-                        current_xmachine->next = node_info->FinancialAdvisor_agents;
-                        node_info->FinancialAdvisor_agents = current_xmachine;
+                        node_info->FinancialAgent_agent_no ++;
+                        current_xmachine->next = node_info->FinancialAgent_agents;
+                        node_info->FinancialAgent_agents = current_xmachine;
                     }
 
                     
@@ -330,13 +330,13 @@ void propagate_agents() {
 
         outcount += node_info->Bank_agent_no;
 
-        outcount += node_info->ClearingHouseMechanism_agent_no;
+        outcount += node_info->ClearingHouse_agent_no;
 
         outcount += node_info->LimitOrderBook_agent_no;
 
         outcount += node_info->Government_agent_no;
 
-        outcount += node_info->FinancialAdvisor_agent_no;
+        outcount += node_info->FinancialAgent_agent_no;
 
 
         /* build output buffer */
@@ -359,9 +359,9 @@ void propagate_agents() {
             bufsize += sizeof(xmachine_memory_Bank) * \
                        node_info->Bank_agent_no;
 
-            /* mem requirements for ClearingHouseMechanism agents */
-            bufsize += sizeof(xmachine_memory_ClearingHouseMechanism) * \
-                       node_info->ClearingHouseMechanism_agent_no;
+            /* mem requirements for ClearingHouse agents */
+            bufsize += sizeof(xmachine_memory_ClearingHouse) * \
+                       node_info->ClearingHouse_agent_no;
 
             /* mem requirements for LimitOrderBook agents */
             bufsize += sizeof(xmachine_memory_LimitOrderBook) * \
@@ -371,9 +371,9 @@ void propagate_agents() {
             bufsize += sizeof(xmachine_memory_Government) * \
                        node_info->Government_agent_no;
 
-            /* mem requirements for FinancialAdvisor agents */
-            bufsize += sizeof(xmachine_memory_FinancialAdvisor) * \
-                       node_info->FinancialAdvisor_agent_no;
+            /* mem requirements for FinancialAgent agents */
+            bufsize += sizeof(xmachine_memory_FinancialAgent) * \
+                       node_info->FinancialAgent_agent_no;
 
 
             /* allocate required memory */
@@ -401,15 +401,15 @@ void propagate_agents() {
     
 
         
-            agent_count_list[AGENT_ClearingHouseMechanism] = node_info->ClearingHouseMechanism_agent_no;
-            agent_ClearingHouseMechanism_list = (xmachine_memory_ClearingHouseMechanism *) \
+            agent_count_list[AGENT_ClearingHouse] = node_info->ClearingHouse_agent_no;
+            agent_ClearingHouse_list = (xmachine_memory_ClearingHouse *) \
                  &agent_Bank_list[agent_count_list[AGENT_Bank]];
     
 
         
             agent_count_list[AGENT_LimitOrderBook] = node_info->LimitOrderBook_agent_no;
             agent_LimitOrderBook_list = (xmachine_memory_LimitOrderBook *) \
-                 &agent_ClearingHouseMechanism_list[agent_count_list[AGENT_ClearingHouseMechanism]];
+                 &agent_ClearingHouse_list[agent_count_list[AGENT_ClearingHouse]];
     
 
         
@@ -419,8 +419,8 @@ void propagate_agents() {
     
 
         
-            agent_count_list[AGENT_FinancialAdvisor] = node_info->FinancialAdvisor_agent_no;
-            agent_FinancialAdvisor_list = (xmachine_memory_FinancialAdvisor *) \
+            agent_count_list[AGENT_FinancialAgent] = node_info->FinancialAgent_agent_no;
+            agent_FinancialAgent_list = (xmachine_memory_FinancialAgent *) \
                  &agent_Government_list[agent_count_list[AGENT_Government]];
     
 
@@ -432,33 +432,17 @@ void propagate_agents() {
             while (temp_xmachine)
             {
     
-                agent_Household_list[j].household_id = temp_xmachine->xmachine_Household->household_id;
+                agent_Household_list[j].id = temp_xmachine->xmachine_Household->id;
     
-                agent_Household_list[j].agent_classifiersystem = temp_xmachine->xmachine_Household->agent_classifiersystem;
-    
-                agent_Household_list[j].asset_budget = temp_xmachine->xmachine_Household->asset_budget;
+                agent_Household_list[j].privateclassifiersystem = temp_xmachine->xmachine_Household->privateclassifiersystem;
     
                 agent_Household_list[j].current_assetportfolio = temp_xmachine->xmachine_Household->current_assetportfolio;
     
                 agent_Household_list[j].prescribed_assetportfolio = temp_xmachine->xmachine_Household->prescribed_assetportfolio;
     
-                agent_Household_list[j].nr_selected_rule = temp_xmachine->xmachine_Household->nr_selected_rule;
-    
-                agent_Household_list[j].current_rule_performance = temp_xmachine->xmachine_Household->current_rule_performance;
-    
-                agent_Household_list[j].EWA_rho = temp_xmachine->xmachine_Household->EWA_rho;
-    
-                agent_Household_list[j].EWA_phi = temp_xmachine->xmachine_Household->EWA_phi;
-    
-                agent_Household_list[j].EWA_delta = temp_xmachine->xmachine_Household->EWA_delta;
-    
-                agent_Household_list[j].EWA_beta = temp_xmachine->xmachine_Household->EWA_beta;
-    
-                agent_Household_list[j].prescribed_asset_value = temp_xmachine->xmachine_Household->prescribed_asset_value;
-    
                 agent_Household_list[j].asset_budget = temp_xmachine->xmachine_Household->asset_budget;
     
-                agent_Household_list[j].iradius = temp_xmachine->xmachine_Household->iradius;
+                agent_Household_list[j].range = temp_xmachine->xmachine_Household->range;
     
                 agent_Household_list[j].posx = temp_xmachine->xmachine_Household->posx;
     
@@ -478,6 +462,8 @@ void propagate_agents() {
             temp_xmachine = node_info->Firm_agents;
             while (temp_xmachine)
             {
+    
+                agent_Firm_list[j].id = temp_xmachine->xmachine_Firm->id;
     
                 agent_Firm_list[j].revenues = temp_xmachine->xmachine_Firm->revenues;
     
@@ -561,7 +547,7 @@ void propagate_agents() {
     
                 agent_Firm_list[j].critical_earn_pshare_ratio = temp_xmachine->xmachine_Firm->critical_earn_pshare_ratio;
     
-                agent_Firm_list[j].iradius = temp_xmachine->xmachine_Firm->iradius;
+                agent_Firm_list[j].range = temp_xmachine->xmachine_Firm->range;
     
                 agent_Firm_list[j].posx = temp_xmachine->xmachine_Firm->posx;
     
@@ -584,7 +570,9 @@ void propagate_agents() {
     
                 agent_Bank_list[j].id = temp_xmachine->xmachine_Bank->id;
     
-                agent_Bank_list[j].iradius = temp_xmachine->xmachine_Bank->iradius;
+                agent_Bank_list[j].ra = temp_xmachine->xmachine_Bank->ra;
+    
+                agent_Bank_list[j].range = temp_xmachine->xmachine_Bank->range;
     
                 agent_Bank_list[j].posx = temp_xmachine->xmachine_Bank->posx;
     
@@ -601,26 +589,28 @@ void propagate_agents() {
 
 
             j = 0;
-            temp_xmachine = node_info->ClearingHouseMechanism_agents;
+            temp_xmachine = node_info->ClearingHouse_agents;
             while (temp_xmachine)
             {
     
-                agent_ClearingHouseMechanism_list[j].id = temp_xmachine->xmachine_ClearingHouseMechanism->id;
+                agent_ClearingHouse_list[j].id = temp_xmachine->xmachine_ClearingHouse->id;
     
-                agent_ClearingHouseMechanism_list[j].iradius = temp_xmachine->xmachine_ClearingHouseMechanism->iradius;
+                agent_ClearingHouse_list[j].rg = temp_xmachine->xmachine_ClearingHouse->rg;
     
-                agent_ClearingHouseMechanism_list[j].posx = temp_xmachine->xmachine_ClearingHouseMechanism->posx;
+                agent_ClearingHouse_list[j].range = temp_xmachine->xmachine_ClearingHouse->range;
     
-                agent_ClearingHouseMechanism_list[j].posy = temp_xmachine->xmachine_ClearingHouseMechanism->posy;
+                agent_ClearingHouse_list[j].posx = temp_xmachine->xmachine_ClearingHouse->posx;
+    
+                agent_ClearingHouse_list[j].posy = temp_xmachine->xmachine_ClearingHouse->posy;
     
 
                 temp_xmachine = temp_xmachine->next;
                 j++;
             }
             /* free list early to conserve memory */
-            p_xmachine = &node_info->ClearingHouseMechanism_agents;
+            p_xmachine = &node_info->ClearingHouse_agents;
             freexmachines();
-            node_info->ClearingHouseMechanism_agent_no = 0;
+            node_info->ClearingHouse_agent_no = 0;
 
 
             j = 0;
@@ -628,9 +618,11 @@ void propagate_agents() {
             while (temp_xmachine)
             {
     
+                agent_LimitOrderBook_list[j].id = temp_xmachine->xmachine_LimitOrderBook->id;
+    
                 agent_LimitOrderBook_list[j].re = temp_xmachine->xmachine_LimitOrderBook->re;
     
-                agent_LimitOrderBook_list[j].iradius = temp_xmachine->xmachine_LimitOrderBook->iradius;
+                agent_LimitOrderBook_list[j].range = temp_xmachine->xmachine_LimitOrderBook->range;
     
                 agent_LimitOrderBook_list[j].posx = temp_xmachine->xmachine_LimitOrderBook->posx;
     
@@ -651,9 +643,11 @@ void propagate_agents() {
             while (temp_xmachine)
             {
     
+                agent_Government_list[j].id = temp_xmachine->xmachine_Government->id;
+    
                 agent_Government_list[j].rj = temp_xmachine->xmachine_Government->rj;
     
-                agent_Government_list[j].iradius = temp_xmachine->xmachine_Government->iradius;
+                agent_Government_list[j].range = temp_xmachine->xmachine_Government->range;
     
                 agent_Government_list[j].posx = temp_xmachine->xmachine_Government->posx;
     
@@ -670,26 +664,28 @@ void propagate_agents() {
 
 
             j = 0;
-            temp_xmachine = node_info->FinancialAdvisor_agents;
+            temp_xmachine = node_info->FinancialAgent_agents;
             while (temp_xmachine)
             {
     
-                agent_FinancialAdvisor_list[j].central_classifiersystem = temp_xmachine->xmachine_FinancialAdvisor->central_classifiersystem;
+                agent_FinancialAgent_list[j].id = temp_xmachine->xmachine_FinancialAgent->id;
     
-                agent_FinancialAdvisor_list[j].iradius = temp_xmachine->xmachine_FinancialAdvisor->iradius;
+                agent_FinancialAgent_list[j].publicclassifiersystem = temp_xmachine->xmachine_FinancialAgent->publicclassifiersystem;
     
-                agent_FinancialAdvisor_list[j].posx = temp_xmachine->xmachine_FinancialAdvisor->posx;
+                agent_FinancialAgent_list[j].range = temp_xmachine->xmachine_FinancialAgent->range;
     
-                agent_FinancialAdvisor_list[j].posy = temp_xmachine->xmachine_FinancialAdvisor->posy;
+                agent_FinancialAgent_list[j].posx = temp_xmachine->xmachine_FinancialAgent->posx;
+    
+                agent_FinancialAgent_list[j].posy = temp_xmachine->xmachine_FinancialAgent->posy;
     
 
                 temp_xmachine = temp_xmachine->next;
                 j++;
             }
             /* free list early to conserve memory */
-            p_xmachine = &node_info->FinancialAdvisor_agents;
+            p_xmachine = &node_info->FinancialAgent_agents;
             freexmachines();
-            node_info->FinancialAdvisor_agent_no = 0;
+            node_info->FinancialAgent_agent_no = 0;
 
 
             
@@ -790,13 +786,13 @@ void propagate_agents() {
     
 
     
-        agent_ClearingHouseMechanism_list = (xmachine_memory_ClearingHouseMechanism *) \
+        agent_ClearingHouse_list = (xmachine_memory_ClearingHouse *) \
              &agent_Bank_list[agent_count_list[AGENT_Bank]];
     
 
     
         agent_LimitOrderBook_list = (xmachine_memory_LimitOrderBook *) \
-             &agent_ClearingHouseMechanism_list[agent_count_list[AGENT_ClearingHouseMechanism]];
+             &agent_ClearingHouse_list[agent_count_list[AGENT_ClearingHouse]];
     
 
     
@@ -805,7 +801,7 @@ void propagate_agents() {
     
 
     
-        agent_FinancialAdvisor_list = (xmachine_memory_FinancialAdvisor *) \
+        agent_FinancialAgent_list = (xmachine_memory_FinancialAgent *) \
              &agent_Government_list[agent_count_list[AGENT_Government]];
     
 
@@ -816,33 +812,17 @@ void propagate_agents() {
         {
             add_Household_agent( \
     
-                    agent_Household_list[i].household_id, \
+                    agent_Household_list[i].id, \
     
-                    agent_Household_list[i].agent_classifiersystem, \
-    
-                    agent_Household_list[i].asset_budget, \
+                    agent_Household_list[i].privateclassifiersystem, \
     
                     agent_Household_list[i].current_assetportfolio, \
     
                     agent_Household_list[i].prescribed_assetportfolio, \
     
-                    agent_Household_list[i].nr_selected_rule, \
-    
-                    agent_Household_list[i].current_rule_performance, \
-    
-                    agent_Household_list[i].EWA_rho, \
-    
-                    agent_Household_list[i].EWA_phi, \
-    
-                    agent_Household_list[i].EWA_delta, \
-    
-                    agent_Household_list[i].EWA_beta, \
-    
-                    agent_Household_list[i].prescribed_asset_value, \
-    
                     agent_Household_list[i].asset_budget, \
     
-                    agent_Household_list[i].iradius, \
+                    agent_Household_list[i].range, \
     
                     agent_Household_list[i].posx, \
     
@@ -855,6 +835,8 @@ void propagate_agents() {
         for (i = 0; i < agent_count_list[AGENT_Firm]; i++)
         {
             add_Firm_agent( \
+    
+                    agent_Firm_list[i].id, \
     
                     agent_Firm_list[i].revenues, \
     
@@ -938,7 +920,7 @@ void propagate_agents() {
     
                     agent_Firm_list[i].critical_earn_pshare_ratio, \
     
-                    agent_Firm_list[i].iradius, \
+                    agent_Firm_list[i].range, \
     
                     agent_Firm_list[i].posx, \
     
@@ -954,7 +936,9 @@ void propagate_agents() {
     
                     agent_Bank_list[i].id, \
     
-                    agent_Bank_list[i].iradius, \
+                    agent_Bank_list[i].ra, \
+    
+                    agent_Bank_list[i].range, \
     
                     agent_Bank_list[i].posx, \
     
@@ -964,17 +948,19 @@ void propagate_agents() {
 
         }
 
-        for (i = 0; i < agent_count_list[AGENT_ClearingHouseMechanism]; i++)
+        for (i = 0; i < agent_count_list[AGENT_ClearingHouse]; i++)
         {
-            add_ClearingHouseMechanism_agent( \
+            add_ClearingHouse_agent( \
     
-                    agent_ClearingHouseMechanism_list[i].id, \
+                    agent_ClearingHouse_list[i].id, \
     
-                    agent_ClearingHouseMechanism_list[i].iradius, \
+                    agent_ClearingHouse_list[i].rg, \
     
-                    agent_ClearingHouseMechanism_list[i].posx, \
+                    agent_ClearingHouse_list[i].range, \
     
-                    agent_ClearingHouseMechanism_list[i].posy \
+                    agent_ClearingHouse_list[i].posx, \
+    
+                    agent_ClearingHouse_list[i].posy \
     
                     );
 
@@ -984,9 +970,11 @@ void propagate_agents() {
         {
             add_LimitOrderBook_agent( \
     
+                    agent_LimitOrderBook_list[i].id, \
+    
                     agent_LimitOrderBook_list[i].re, \
     
-                    agent_LimitOrderBook_list[i].iradius, \
+                    agent_LimitOrderBook_list[i].range, \
     
                     agent_LimitOrderBook_list[i].posx, \
     
@@ -1000,9 +988,11 @@ void propagate_agents() {
         {
             add_Government_agent( \
     
+                    agent_Government_list[i].id, \
+    
                     agent_Government_list[i].rj, \
     
-                    agent_Government_list[i].iradius, \
+                    agent_Government_list[i].range, \
     
                     agent_Government_list[i].posx, \
     
@@ -1012,17 +1002,19 @@ void propagate_agents() {
 
         }
 
-        for (i = 0; i < agent_count_list[AGENT_FinancialAdvisor]; i++)
+        for (i = 0; i < agent_count_list[AGENT_FinancialAgent]; i++)
         {
-            add_FinancialAdvisor_agent( \
+            add_FinancialAgent_agent( \
     
-                    agent_FinancialAdvisor_list[i].central_classifiersystem, \
+                    agent_FinancialAgent_list[i].id, \
     
-                    agent_FinancialAdvisor_list[i].iradius, \
+                    agent_FinancialAgent_list[i].publicclassifiersystem, \
     
-                    agent_FinancialAdvisor_list[i].posx, \
+                    agent_FinancialAgent_list[i].range, \
     
-                    agent_FinancialAdvisor_list[i].posy \
+                    agent_FinancialAgent_list[i].posx, \
+    
+                    agent_FinancialAgent_list[i].posy \
     
                     );
 

@@ -22,14 +22,14 @@ enum { \
     MESSAGE_WagePayment, \
     MESSAGE_DividendPayment, \
     MESSAGE_BondCouponPayment, \
-    MESSAGE_firm_bond_order, \
+    MESSAGE_firm_bond_orders, \
     MESSAGE_firm_stock_order, \
     MESSAGE_gov_bond_order, \
     MESSAGE_firm_bond_transaction, \
     MESSAGE_gov_bond_transaction, \
     MESSAGE_firm_stock_transaction, \
     MESSAGE_rule_performance, \
-    MESSAGE_all_performances, \
+    MESSAGE_fa_rule_performance, \
     MESSAGE_ruledetailsystem, \
     MESSAGE_TYPE_COUNT \
 };
@@ -84,9 +84,9 @@ void propagate_messages_init() {
     xmachine_message_BondCouponPayment *message_BondCouponPayment_temp;
     xmachine_message_BondCouponPayment_data *message_BondCouponPayment_list;
 
-    /* pointers to temp element and array for firm_bond_order message */
-    xmachine_message_firm_bond_order *message_firm_bond_order_temp;
-    xmachine_message_firm_bond_order_data *message_firm_bond_order_list;
+    /* pointers to temp element and array for firm_bond_orders message */
+    xmachine_message_firm_bond_orders *message_firm_bond_orders_temp;
+    xmachine_message_firm_bond_orders_data *message_firm_bond_orders_list;
 
     /* pointers to temp element and array for firm_stock_order message */
     xmachine_message_firm_stock_order *message_firm_stock_order_temp;
@@ -112,9 +112,9 @@ void propagate_messages_init() {
     xmachine_message_rule_performance *message_rule_performance_temp;
     xmachine_message_rule_performance_data *message_rule_performance_list;
 
-    /* pointers to temp element and array for all_performances message */
-    xmachine_message_all_performances *message_all_performances_temp;
-    xmachine_message_all_performances_data *message_all_performances_list;
+    /* pointers to temp element and array for fa_rule_performance message */
+    xmachine_message_fa_rule_performance *message_fa_rule_performance_temp;
+    xmachine_message_fa_rule_performance_data *message_fa_rule_performance_list;
 
     /* pointers to temp element and array for ruledetailsystem message */
     xmachine_message_ruledetailsystem *message_ruledetailsystem_temp;
@@ -163,7 +163,7 @@ void propagate_messages_init() {
 
         outcount += node_info->BondCouponPayment_message_no;
 
-        outcount += node_info->firm_bond_order_message_no;
+        outcount += node_info->firm_bond_orders_message_no;
 
         outcount += node_info->firm_stock_order_message_no;
 
@@ -177,7 +177,7 @@ void propagate_messages_init() {
 
         outcount += node_info->rule_performance_message_no;
 
-        outcount += node_info->all_performances_message_no;
+        outcount += node_info->fa_rule_performance_message_no;
 
         outcount += node_info->ruledetailsystem_message_no;
 
@@ -200,8 +200,8 @@ void propagate_messages_init() {
             bufsize += sizeof(xmachine_message_BondCouponPayment_data) * \
                        node_info->BondCouponPayment_message_no;
 
-            bufsize += sizeof(xmachine_message_firm_bond_order_data) * \
-                       node_info->firm_bond_order_message_no;
+            bufsize += sizeof(xmachine_message_firm_bond_orders_data) * \
+                       node_info->firm_bond_orders_message_no;
 
             bufsize += sizeof(xmachine_message_firm_stock_order_data) * \
                        node_info->firm_stock_order_message_no;
@@ -221,8 +221,8 @@ void propagate_messages_init() {
             bufsize += sizeof(xmachine_message_rule_performance_data) * \
                        node_info->rule_performance_message_no;
 
-            bufsize += sizeof(xmachine_message_all_performances_data) * \
-                       node_info->all_performances_message_no;
+            bufsize += sizeof(xmachine_message_fa_rule_performance_data) * \
+                       node_info->fa_rule_performance_message_no;
 
             bufsize += sizeof(xmachine_message_ruledetailsystem_data) * \
                        node_info->ruledetailsystem_message_no;
@@ -255,16 +255,16 @@ void propagate_messages_init() {
                     &message_DividendPayment_list[message_count_list[MESSAGE_DividendPayment]];
             
 
-            /* For firm_bond_order message list */
-            message_count_list[MESSAGE_firm_bond_order] = node_info->firm_bond_order_message_no;
-            message_firm_bond_order_list = (xmachine_message_firm_bond_order_data *)\
+            /* For firm_bond_orders message list */
+            message_count_list[MESSAGE_firm_bond_orders] = node_info->firm_bond_orders_message_no;
+            message_firm_bond_orders_list = (xmachine_message_firm_bond_orders_data *)\
                     &message_BondCouponPayment_list[message_count_list[MESSAGE_BondCouponPayment]];
             
 
             /* For firm_stock_order message list */
             message_count_list[MESSAGE_firm_stock_order] = node_info->firm_stock_order_message_no;
             message_firm_stock_order_list = (xmachine_message_firm_stock_order_data *)\
-                    &message_firm_bond_order_list[message_count_list[MESSAGE_firm_bond_order]];
+                    &message_firm_bond_orders_list[message_count_list[MESSAGE_firm_bond_orders]];
             
 
             /* For gov_bond_order message list */
@@ -297,16 +297,16 @@ void propagate_messages_init() {
                     &message_firm_stock_transaction_list[message_count_list[MESSAGE_firm_stock_transaction]];
             
 
-            /* For all_performances message list */
-            message_count_list[MESSAGE_all_performances] = node_info->all_performances_message_no;
-            message_all_performances_list = (xmachine_message_all_performances_data *)\
+            /* For fa_rule_performance message list */
+            message_count_list[MESSAGE_fa_rule_performance] = node_info->fa_rule_performance_message_no;
+            message_fa_rule_performance_list = (xmachine_message_fa_rule_performance_data *)\
                     &message_rule_performance_list[message_count_list[MESSAGE_rule_performance]];
             
 
             /* For ruledetailsystem message list */
             message_count_list[MESSAGE_ruledetailsystem] = node_info->ruledetailsystem_message_no;
             message_ruledetailsystem_list = (xmachine_message_ruledetailsystem_data *)\
-                    &message_all_performances_list[message_count_list[MESSAGE_all_performances]];
+                    &message_fa_rule_performance_list[message_count_list[MESSAGE_fa_rule_performance]];
             
 
 
@@ -373,28 +373,28 @@ void propagate_messages_init() {
                 p_BondCouponPayment_message = &current_node->BondCouponPayment_messages;
 
 
-                /* for firm_bond_order message */            
-                message_firm_bond_order_temp = node_info->firm_bond_order_messages;
+                /* for firm_bond_orders message */            
+                message_firm_bond_orders_temp = node_info->firm_bond_orders_messages;
                 j = 0;
-                while (message_firm_bond_order_temp)
+                while (message_firm_bond_orders_temp)
                 {
                     
-                    message_firm_bond_order_list[j].household_id = message_firm_bond_order_temp->household_id;
-                    message_firm_bond_order_list[j].firm_id = message_firm_bond_order_temp->firm_id;
-                    message_firm_bond_order_list[j].limit_price = message_firm_bond_order_temp->limit_price;
-                    message_firm_bond_order_list[j].limit_quantity = message_firm_bond_order_temp->limit_quantity;
-                    message_firm_bond_order_list[j].range = message_firm_bond_order_temp->range;
-                    message_firm_bond_order_list[j].x = message_firm_bond_order_temp->x;
-                    message_firm_bond_order_list[j].y = message_firm_bond_order_temp->y;
-                    message_firm_bond_order_list[j].z = message_firm_bond_order_temp->z;
+                    message_firm_bond_orders_list[j].household_id = message_firm_bond_orders_temp->household_id;
+                    message_firm_bond_orders_list[j].firm_id = message_firm_bond_orders_temp->firm_id;
+                    message_firm_bond_orders_list[j].limit_price = message_firm_bond_orders_temp->limit_price;
+                    message_firm_bond_orders_list[j].limit_quantity = message_firm_bond_orders_temp->limit_quantity;
+                    message_firm_bond_orders_list[j].range = message_firm_bond_orders_temp->range;
+                    message_firm_bond_orders_list[j].x = message_firm_bond_orders_temp->x;
+                    message_firm_bond_orders_list[j].y = message_firm_bond_orders_temp->y;
+                    message_firm_bond_orders_list[j].z = message_firm_bond_orders_temp->z;
 
-                    message_firm_bond_order_temp = message_firm_bond_order_temp->next;
+                    message_firm_bond_orders_temp = message_firm_bond_orders_temp->next;
                     j++;
                 }
-                p_firm_bond_order_message = &node_info->firm_bond_order_messages;
-                freefirm_bond_ordermessages();
-                node_info->firm_bond_order_message_no = 0;
-                p_firm_bond_order_message = &current_node->firm_bond_order_messages;
+                p_firm_bond_orders_message = &node_info->firm_bond_orders_messages;
+                freefirm_bond_ordersmessages();
+                node_info->firm_bond_orders_message_no = 0;
+                p_firm_bond_orders_message = &current_node->firm_bond_orders_messages;
 
 
                 /* for firm_stock_order message */            
@@ -539,25 +539,26 @@ void propagate_messages_init() {
                 p_rule_performance_message = &current_node->rule_performance_messages;
 
 
-                /* for all_performances message */            
-                message_all_performances_temp = node_info->all_performances_messages;
+                /* for fa_rule_performance message */            
+                message_fa_rule_performance_temp = node_info->fa_rule_performance_messages;
                 j = 0;
-                while (message_all_performances_temp)
+                while (message_fa_rule_performance_temp)
                 {
                     
-                    message_all_performances_list[j].performances = message_all_performances_temp->performances;
-                    message_all_performances_list[j].range = message_all_performances_temp->range;
-                    message_all_performances_list[j].x = message_all_performances_temp->x;
-                    message_all_performances_list[j].y = message_all_performances_temp->y;
-                    message_all_performances_list[j].z = message_all_performances_temp->z;
+                    message_fa_rule_performance_list[j].rule = message_fa_rule_performance_temp->rule;
+                    message_fa_rule_performance_list[j].rule_performance = message_fa_rule_performance_temp->rule_performance;
+                    message_fa_rule_performance_list[j].range = message_fa_rule_performance_temp->range;
+                    message_fa_rule_performance_list[j].x = message_fa_rule_performance_temp->x;
+                    message_fa_rule_performance_list[j].y = message_fa_rule_performance_temp->y;
+                    message_fa_rule_performance_list[j].z = message_fa_rule_performance_temp->z;
 
-                    message_all_performances_temp = message_all_performances_temp->next;
+                    message_fa_rule_performance_temp = message_fa_rule_performance_temp->next;
                     j++;
                 }
-                p_all_performances_message = &node_info->all_performances_messages;
-                freeall_performancesmessages();
-                node_info->all_performances_message_no = 0;
-                p_all_performances_message = &current_node->all_performances_messages;
+                p_fa_rule_performance_message = &node_info->fa_rule_performance_messages;
+                freefa_rule_performancemessages();
+                node_info->fa_rule_performance_message_no = 0;
+                p_fa_rule_performance_message = &current_node->fa_rule_performance_messages;
 
 
                 /* for ruledetailsystem message */            
@@ -659,8 +660,8 @@ void propagate_messages_complete() {
     xmachine_message_BondCouponPayment *message_BondCouponPayment_temp;
     xmachine_message_BondCouponPayment_data *message_BondCouponPayment_list; 
 
-    xmachine_message_firm_bond_order *message_firm_bond_order_temp;
-    xmachine_message_firm_bond_order_data *message_firm_bond_order_list; 
+    xmachine_message_firm_bond_orders *message_firm_bond_orders_temp;
+    xmachine_message_firm_bond_orders_data *message_firm_bond_orders_list; 
 
     xmachine_message_firm_stock_order *message_firm_stock_order_temp;
     xmachine_message_firm_stock_order_data *message_firm_stock_order_list; 
@@ -680,8 +681,8 @@ void propagate_messages_complete() {
     xmachine_message_rule_performance *message_rule_performance_temp;
     xmachine_message_rule_performance_data *message_rule_performance_list; 
 
-    xmachine_message_all_performances *message_all_performances_temp;
-    xmachine_message_all_performances_data *message_all_performances_list; 
+    xmachine_message_fa_rule_performance *message_fa_rule_performance_temp;
+    xmachine_message_fa_rule_performance_data *message_fa_rule_performance_list; 
 
     xmachine_message_ruledetailsystem *message_ruledetailsystem_temp;
     xmachine_message_ruledetailsystem_data *message_ruledetailsystem_list; 
@@ -724,14 +725,14 @@ void propagate_messages_complete() {
                &message_DividendPayment_list[message_count_list[MESSAGE_DividendPayment]];
         
 
-        /* For firm_bond_order message list */
-        message_firm_bond_order_list = (xmachine_message_firm_bond_order_data *)\
+        /* For firm_bond_orders message list */
+        message_firm_bond_orders_list = (xmachine_message_firm_bond_orders_data *)\
                &message_BondCouponPayment_list[message_count_list[MESSAGE_BondCouponPayment]];
         
 
         /* For firm_stock_order message list */
         message_firm_stock_order_list = (xmachine_message_firm_stock_order_data *)\
-               &message_firm_bond_order_list[message_count_list[MESSAGE_firm_bond_order]];
+               &message_firm_bond_orders_list[message_count_list[MESSAGE_firm_bond_orders]];
         
 
         /* For gov_bond_order message list */
@@ -759,14 +760,14 @@ void propagate_messages_complete() {
                &message_firm_stock_transaction_list[message_count_list[MESSAGE_firm_stock_transaction]];
         
 
-        /* For all_performances message list */
-        message_all_performances_list = (xmachine_message_all_performances_data *)\
+        /* For fa_rule_performance message list */
+        message_fa_rule_performance_list = (xmachine_message_fa_rule_performance_data *)\
                &message_rule_performance_list[message_count_list[MESSAGE_rule_performance]];
         
 
         /* For ruledetailsystem message list */
         message_ruledetailsystem_list = (xmachine_message_ruledetailsystem_data *)\
-               &message_all_performances_list[message_count_list[MESSAGE_all_performances]];
+               &message_fa_rule_performance_list[message_count_list[MESSAGE_fa_rule_performance]];
         
 
         
@@ -814,25 +815,25 @@ void propagate_messages_complete() {
 
         }
 
-        for (i = 0; i < message_count_list[MESSAGE_firm_bond_order]; i++)
+        for (i = 0; i < message_count_list[MESSAGE_firm_bond_orders]; i++)
         {
-            message_firm_bond_order_temp = (xmachine_message_firm_bond_order *)add_firm_bond_order_message_internal();
+            message_firm_bond_orders_temp = (xmachine_message_firm_bond_orders *)add_firm_bond_orders_message_internal();
 
-            message_firm_bond_order_temp->household_id = message_firm_bond_order_list[i].household_id;
+            message_firm_bond_orders_temp->household_id = message_firm_bond_orders_list[i].household_id;
 
-            message_firm_bond_order_temp->firm_id = message_firm_bond_order_list[i].firm_id;
+            message_firm_bond_orders_temp->firm_id = message_firm_bond_orders_list[i].firm_id;
 
-            message_firm_bond_order_temp->limit_price = message_firm_bond_order_list[i].limit_price;
+            message_firm_bond_orders_temp->limit_price = message_firm_bond_orders_list[i].limit_price;
 
-            message_firm_bond_order_temp->limit_quantity = message_firm_bond_order_list[i].limit_quantity;
+            message_firm_bond_orders_temp->limit_quantity = message_firm_bond_orders_list[i].limit_quantity;
 
-            message_firm_bond_order_temp->range = message_firm_bond_order_list[i].range;
+            message_firm_bond_orders_temp->range = message_firm_bond_orders_list[i].range;
 
-            message_firm_bond_order_temp->x = message_firm_bond_order_list[i].x;
+            message_firm_bond_orders_temp->x = message_firm_bond_orders_list[i].x;
 
-            message_firm_bond_order_temp->y = message_firm_bond_order_list[i].y;
+            message_firm_bond_orders_temp->y = message_firm_bond_orders_list[i].y;
 
-            message_firm_bond_order_temp->z = message_firm_bond_order_list[i].z;
+            message_firm_bond_orders_temp->z = message_firm_bond_orders_list[i].z;
 
         }
 
@@ -964,19 +965,21 @@ void propagate_messages_complete() {
 
         }
 
-        for (i = 0; i < message_count_list[MESSAGE_all_performances]; i++)
+        for (i = 0; i < message_count_list[MESSAGE_fa_rule_performance]; i++)
         {
-            message_all_performances_temp = (xmachine_message_all_performances *)add_all_performances_message_internal();
+            message_fa_rule_performance_temp = (xmachine_message_fa_rule_performance *)add_fa_rule_performance_message_internal();
 
-            message_all_performances_temp->performances = message_all_performances_list[i].performances;
+            message_fa_rule_performance_temp->rule = message_fa_rule_performance_list[i].rule;
 
-            message_all_performances_temp->range = message_all_performances_list[i].range;
+            message_fa_rule_performance_temp->rule_performance = message_fa_rule_performance_list[i].rule_performance;
 
-            message_all_performances_temp->x = message_all_performances_list[i].x;
+            message_fa_rule_performance_temp->range = message_fa_rule_performance_list[i].range;
 
-            message_all_performances_temp->y = message_all_performances_list[i].y;
+            message_fa_rule_performance_temp->x = message_fa_rule_performance_list[i].x;
 
-            message_all_performances_temp->z = message_all_performances_list[i].z;
+            message_fa_rule_performance_temp->y = message_fa_rule_performance_list[i].y;
+
+            message_fa_rule_performance_temp->z = message_fa_rule_performance_list[i].z;
 
         }
 

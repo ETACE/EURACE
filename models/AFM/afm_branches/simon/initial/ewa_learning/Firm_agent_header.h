@@ -3,6 +3,9 @@
  * \brief Header for agent type memory access.
  */
 
+/** \def ID
+ * \brief Direct access to id of Firm agent memory variable. */
+#define ID current_xmachine->xmachine_Firm->id
 /** \def REVENUES
  * \brief Direct access to revenues of Firm agent memory variable. */
 #define REVENUES current_xmachine->xmachine_Firm->revenues
@@ -126,9 +129,9 @@
 /** \def CRITICAL_EARN_PSHARE_RATIO
  * \brief Direct access to critical_earn_pshare_ratio of Firm agent memory variable. */
 #define CRITICAL_EARN_PSHARE_RATIO current_xmachine->xmachine_Firm->critical_earn_pshare_ratio
-/** \def IRADIUS
- * \brief Direct access to iradius of Firm agent memory variable. */
-#define IRADIUS current_xmachine->xmachine_Firm->iradius
+/** \def RANGE
+ * \brief Direct access to range of Firm agent memory variable. */
+#define RANGE current_xmachine->xmachine_Firm->range
 /** \def POSX
  * \brief Direct access to posx of Firm agent memory variable. */
 #define POSX current_xmachine->xmachine_Firm->posx

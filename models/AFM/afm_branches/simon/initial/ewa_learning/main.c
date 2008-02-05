@@ -202,7 +202,7 @@ printf("Ouput dir: %s\n", outputpath);
 				
 			p_BondCouponPayment_message = &current_node->BondCouponPayment_messages;
 				
-			p_firm_bond_order_message = &current_node->firm_bond_order_messages;
+			p_firm_bond_orders_message = &current_node->firm_bond_orders_messages;
 				
 			p_firm_stock_order_message = &current_node->firm_stock_order_messages;
 				
@@ -216,7 +216,7 @@ printf("Ouput dir: %s\n", outputpath);
 				
 			p_rule_performance_message = &current_node->rule_performance_messages;
 				
-			p_all_performances_message = &current_node->all_performances_messages;
+			p_fa_rule_performance_message = &current_node->fa_rule_performance_messages;
 				
 			p_ruledetailsystem_message = &current_node->ruledetailsystem_messages;
 				
@@ -230,76 +230,9 @@ printf("Ouput dir: %s\n", outputpath);
 		{
 			i = 0;
 		
-			if(current_xmachine->xmachine_Household != NULL)
+			if(current_xmachine->xmachine_FinancialAgent != NULL)
 			{
-				i = Household_send_rule_performance_message();
-			}
-			
-			/* If agent is freed */
-			if(i == 1)
-			{
-				temp_free_xmachine = current_xmachine->next;
-				free_agent();
-				current_xmachine = temp_free_xmachine;
-			}
-			else
-			{
-				current_xmachine = current_xmachine->next;
-			}
-		}
-	
-	
-        randomisexagent();  /* randomise x-agents while waiting for communication to complete */
-        
-			
-		current_node = current_node->next;
-		}
-			
-/* End of communications layer loop */
-
-/* Start of communications layer loop */
-	
-		current_node = *p_node_info;
-		while(current_node)
-		{
-				
-			p_WagePayment_message = &current_node->WagePayment_messages;
-				
-			p_DividendPayment_message = &current_node->DividendPayment_messages;
-				
-			p_BondCouponPayment_message = &current_node->BondCouponPayment_messages;
-				
-			p_firm_bond_order_message = &current_node->firm_bond_order_messages;
-				
-			p_firm_stock_order_message = &current_node->firm_stock_order_messages;
-				
-			p_gov_bond_order_message = &current_node->gov_bond_order_messages;
-				
-			p_firm_bond_transaction_message = &current_node->firm_bond_transaction_messages;
-				
-			p_gov_bond_transaction_message = &current_node->gov_bond_transaction_messages;
-				
-			p_firm_stock_transaction_message = &current_node->firm_stock_transaction_messages;
-				
-			p_rule_performance_message = &current_node->rule_performance_messages;
-				
-			p_all_performances_message = &current_node->all_performances_messages;
-				
-			p_ruledetailsystem_message = &current_node->ruledetailsystem_messages;
-				
-		p_xmachine = &current_node->agents;
-	
-	
-	
-		/* Loop through x-machines */
-		current_xmachine = *p_xmachine;
-		while(current_xmachine)
-		{
-			i = 0;
-		
-			if(current_xmachine->xmachine_FinancialAdvisor != NULL)
-			{
-				i = FinancialAgent_read_rule_performance_message();
+				i = Every_100_periods();
 			}
 			
 			/* If agent is freed */
@@ -321,9 +254,9 @@ printf("Ouput dir: %s\n", outputpath);
 		{
 			i = 0;
 		
-			if(current_xmachine->xmachine_FinancialAdvisor != NULL)
+			if(current_xmachine->xmachine_FinancialAgent != NULL)
 			{
-				i = FinancialAgent_update_classifiersystem();
+				i = FinancialAgent_apply_GA();
 			}
 			
 			/* If agent is freed */
@@ -345,140 +278,10 @@ printf("Ouput dir: %s\n", outputpath);
 		{
 			i = 0;
 		
-			if(current_xmachine->xmachine_FinancialAdvisor != NULL)
-			{
-				i = FinancialAgent_send_all_performances_message();
-			}
-			
-			/* If agent is freed */
-			if(i == 1)
-			{
-				temp_free_xmachine = current_xmachine->next;
-				free_agent();
-				current_xmachine = temp_free_xmachine;
-			}
-			else
-			{
-				current_xmachine = current_xmachine->next;
-			}
-		}
-	
-	
-        randomisexagent();  /* randomise x-agents while waiting for communication to complete */
-        
-			
-		current_node = current_node->next;
-		}
-			
-/* End of communications layer loop */
-
-/* Start of communications layer loop */
-	
-		current_node = *p_node_info;
-		while(current_node)
-		{
-				
-			p_WagePayment_message = &current_node->WagePayment_messages;
-				
-			p_DividendPayment_message = &current_node->DividendPayment_messages;
-				
-			p_BondCouponPayment_message = &current_node->BondCouponPayment_messages;
-				
-			p_firm_bond_order_message = &current_node->firm_bond_order_messages;
-				
-			p_firm_stock_order_message = &current_node->firm_stock_order_messages;
-				
-			p_gov_bond_order_message = &current_node->gov_bond_order_messages;
-				
-			p_firm_bond_transaction_message = &current_node->firm_bond_transaction_messages;
-				
-			p_gov_bond_transaction_message = &current_node->gov_bond_transaction_messages;
-				
-			p_firm_stock_transaction_message = &current_node->firm_stock_transaction_messages;
-				
-			p_rule_performance_message = &current_node->rule_performance_messages;
-				
-			p_all_performances_message = &current_node->all_performances_messages;
-				
-			p_ruledetailsystem_message = &current_node->ruledetailsystem_messages;
-				
-		p_xmachine = &current_node->agents;
-	
-	
-	
-		/* Loop through x-machines */
-		current_xmachine = *p_xmachine;
-		while(current_xmachine)
-		{
-			i = 0;
-		
-			if(current_xmachine->xmachine_Household != NULL)
-			{
-				i = Household_read_all_performances_message();
-			}
-			
-			/* If agent is freed */
-			if(i == 1)
-			{
-				temp_free_xmachine = current_xmachine->next;
-				free_agent();
-				current_xmachine = temp_free_xmachine;
-			}
-			else
-			{
-				current_xmachine = current_xmachine->next;
-			}
-		}
-	
-		/* Loop through x-machines */
-		current_xmachine = *p_xmachine;
-		while(current_xmachine)
-		{
-			i = 0;
-		
-			if(current_xmachine->xmachine_FinancialAdvisor != NULL)
-			{
-				i = FinancialAgent_updateGA();
-			}
-		
-			if(current_xmachine->xmachine_FinancialAdvisor != NULL)
-			{
-				i = FinancialAgent_reset_public_classifiersystem();
-			}
-		
-			if(current_xmachine->xmachine_Household != NULL)
-			{
-				i = Household_select_rule();
-			}
-			
-			/* If agent is freed */
-			if(i == 1)
-			{
-				temp_free_xmachine = current_xmachine->next;
-				free_agent();
-				current_xmachine = temp_free_xmachine;
-			}
-			else
-			{
-				current_xmachine = current_xmachine->next;
-			}
-		}
-	
-		/* Loop through x-machines */
-		current_xmachine = *p_xmachine;
-		while(current_xmachine)
-		{
-			i = 0;
-		
-			if(current_xmachine->xmachine_FinancialAdvisor != NULL)
+			if(current_xmachine->xmachine_FinancialAgent != NULL)
 			{
 				i = FinancialAgent_update_ruledetailsystem();
 			}
-		
-			if(current_xmachine->xmachine_Household != NULL)
-			{
-				i = Household_retrieve_rule_details();
-			}
 			
 			/* If agent is freed */
 			if(i == 1)
@@ -499,14 +302,9 @@ printf("Ouput dir: %s\n", outputpath);
 		{
 			i = 0;
 		
-			if(current_xmachine->xmachine_FinancialAdvisor != NULL)
+			if(current_xmachine->xmachine_FinancialAgent != NULL)
 			{
 				i = FinancialAgent_send_ruledetailsystem_message();
-			}
-		
-			if(current_xmachine->xmachine_Household != NULL)
-			{
-				i = Household_apply_rule();
 			}
 			
 			/* If agent is freed */
@@ -543,7 +341,7 @@ printf("Ouput dir: %s\n", outputpath);
 				
 			p_BondCouponPayment_message = &current_node->BondCouponPayment_messages;
 				
-			p_firm_bond_order_message = &current_node->firm_bond_order_messages;
+			p_firm_bond_orders_message = &current_node->firm_bond_orders_messages;
 				
 			p_firm_stock_order_message = &current_node->firm_stock_order_messages;
 				
@@ -557,7 +355,7 @@ printf("Ouput dir: %s\n", outputpath);
 				
 			p_rule_performance_message = &current_node->rule_performance_messages;
 				
-			p_all_performances_message = &current_node->all_performances_messages;
+			p_fa_rule_performance_message = &current_node->fa_rule_performance_messages;
 				
 			p_ruledetailsystem_message = &current_node->ruledetailsystem_messages;
 				
@@ -570,16 +368,6 @@ printf("Ouput dir: %s\n", outputpath);
 		while(current_xmachine)
 		{
 			i = 0;
-		
-			if(current_xmachine->xmachine_ClearingHouseMechanism != NULL)
-			{
-				i = Clearinghouse_read_order_messages();
-			}
-		
-			if(current_xmachine->xmachine_Household != NULL)
-			{
-				i = Household_reset_private_classifiersystem();
-			}
 		
 			if(current_xmachine->xmachine_Household != NULL)
 			{
@@ -599,6 +387,122 @@ printf("Ouput dir: %s\n", outputpath);
 			}
 		}
 	
+		/* Loop through x-machines */
+		current_xmachine = *p_xmachine;
+		while(current_xmachine)
+		{
+			i = 0;
+		
+			if(current_xmachine->xmachine_Household != NULL)
+			{
+				i = Household_update_ruledetailsystem();
+			}
+			
+			/* If agent is freed */
+			if(i == 1)
+			{
+				temp_free_xmachine = current_xmachine->next;
+				free_agent();
+				current_xmachine = temp_free_xmachine;
+			}
+			else
+			{
+				current_xmachine = current_xmachine->next;
+			}
+		}
+	
+		/* Loop through x-machines */
+		current_xmachine = *p_xmachine;
+		while(current_xmachine)
+		{
+			i = 0;
+		
+			if(current_xmachine->xmachine_Household != NULL)
+			{
+				i = Household_reset_private_classifiersystem();
+			}
+		
+			if(current_xmachine->xmachine_Household != NULL)
+			{
+				i = HouseholdCalculateGrossIncome();
+			}
+			
+			/* If agent is freed */
+			if(i == 1)
+			{
+				temp_free_xmachine = current_xmachine->next;
+				free_agent();
+				current_xmachine = temp_free_xmachine;
+			}
+			else
+			{
+				current_xmachine = current_xmachine->next;
+			}
+		}
+	
+		/* Loop through x-machines */
+		current_xmachine = *p_xmachine;
+		while(current_xmachine)
+		{
+			i = 0;
+		
+			if(current_xmachine->xmachine_Household != NULL)
+			{
+				i = Every_period();
+			}
+		
+			if(current_xmachine->xmachine_Household != NULL)
+			{
+				i = HouseholdCalculateMonthlyTaxes();
+			}
+			
+			/* If agent is freed */
+			if(i == 1)
+			{
+				temp_free_xmachine = current_xmachine->next;
+				free_agent();
+				current_xmachine = temp_free_xmachine;
+			}
+			else
+			{
+				current_xmachine = current_xmachine->next;
+			}
+		}
+	
+		/* Loop through x-machines */
+		current_xmachine = *p_xmachine;
+		while(current_xmachine)
+		{
+			i = 0;
+		
+			if(current_xmachine->xmachine_FinancialAgent != NULL)
+			{
+				i = FinancialAgent_daily_reset_public_classifiersystem();
+			}
+		
+			if(current_xmachine->xmachine_Household != NULL)
+			{
+				i = Household_send_rule_performance_message();
+			}
+		
+			if(current_xmachine->xmachine_Household != NULL)
+			{
+				i = HouseholdCalculateNetIncome();
+			}
+			
+			/* If agent is freed */
+			if(i == 1)
+			{
+				temp_free_xmachine = current_xmachine->next;
+				free_agent();
+				current_xmachine = temp_free_xmachine;
+			}
+			else
+			{
+				current_xmachine = current_xmachine->next;
+			}
+		}
+	
 	
         randomisexagent();  /* randomise x-agents while waiting for communication to complete */
         
@@ -620,7 +524,7 @@ printf("Ouput dir: %s\n", outputpath);
 				
 			p_BondCouponPayment_message = &current_node->BondCouponPayment_messages;
 				
-			p_firm_bond_order_message = &current_node->firm_bond_order_messages;
+			p_firm_bond_orders_message = &current_node->firm_bond_orders_messages;
 				
 			p_firm_stock_order_message = &current_node->firm_stock_order_messages;
 				
@@ -634,7 +538,7 @@ printf("Ouput dir: %s\n", outputpath);
 				
 			p_rule_performance_message = &current_node->rule_performance_messages;
 				
-			p_all_performances_message = &current_node->all_performances_messages;
+			p_fa_rule_performance_message = &current_node->fa_rule_performance_messages;
 				
 			p_ruledetailsystem_message = &current_node->ruledetailsystem_messages;
 				
@@ -648,14 +552,301 @@ printf("Ouput dir: %s\n", outputpath);
 		{
 			i = 0;
 		
-			if(current_xmachine->xmachine_Household != NULL)
+			if(current_xmachine->xmachine_FinancialAgent != NULL)
 			{
-				i = Household_read_transaction_message();
+				i = FinancialAgent_read_rule_performance_message();
 			}
 		
 			if(current_xmachine->xmachine_Household != NULL)
 			{
-				i = Household_update_ruledetailsystem();
+				i = HouseholdCalculateAssetWealth();
+			}
+		
+			if(current_xmachine->xmachine_Household != NULL)
+			{
+				i = HouseholdCalculateTotalBudget();
+			}
+			
+			/* If agent is freed */
+			if(i == 1)
+			{
+				temp_free_xmachine = current_xmachine->next;
+				free_agent();
+				current_xmachine = temp_free_xmachine;
+			}
+			else
+			{
+				current_xmachine = current_xmachine->next;
+			}
+		}
+	
+		/* Loop through x-machines */
+		current_xmachine = *p_xmachine;
+		while(current_xmachine)
+		{
+			i = 0;
+		
+			if(current_xmachine->xmachine_FinancialAgent != NULL)
+			{
+				i = FinancialAgent_update_classifiersystem();
+			}
+		
+			if(current_xmachine->xmachine_Household != NULL)
+			{
+				i = HouseholdCalculateCashOnHands();
+			}
+			
+			/* If agent is freed */
+			if(i == 1)
+			{
+				temp_free_xmachine = current_xmachine->next;
+				free_agent();
+				current_xmachine = temp_free_xmachine;
+			}
+			else
+			{
+				current_xmachine = current_xmachine->next;
+			}
+		}
+	
+		/* Loop through x-machines */
+		current_xmachine = *p_xmachine;
+		while(current_xmachine)
+		{
+			i = 0;
+		
+			if(current_xmachine->xmachine_FinancialAgent != NULL)
+			{
+				i = FinancialAgent_send_all_performances_message();
+			}
+		
+			if(current_xmachine->xmachine_Household != NULL)
+			{
+				i = HouseholdUpdateAssetPortfolio();
+			}
+		
+			if(current_xmachine->xmachine_Household != NULL)
+			{
+				i = HouseholdCalculateConsumptionBudget();
+			}
+			
+			/* If agent is freed */
+			if(i == 1)
+			{
+				temp_free_xmachine = current_xmachine->next;
+				free_agent();
+				current_xmachine = temp_free_xmachine;
+			}
+			else
+			{
+				current_xmachine = current_xmachine->next;
+			}
+		}
+	
+	
+        randomisexagent();  /* randomise x-agents while waiting for communication to complete */
+        
+			
+		current_node = current_node->next;
+		}
+			
+/* End of communications layer loop */
+
+/* Start of communications layer loop */
+	
+		current_node = *p_node_info;
+		while(current_node)
+		{
+				
+			p_WagePayment_message = &current_node->WagePayment_messages;
+				
+			p_DividendPayment_message = &current_node->DividendPayment_messages;
+				
+			p_BondCouponPayment_message = &current_node->BondCouponPayment_messages;
+				
+			p_firm_bond_orders_message = &current_node->firm_bond_orders_messages;
+				
+			p_firm_stock_order_message = &current_node->firm_stock_order_messages;
+				
+			p_gov_bond_order_message = &current_node->gov_bond_order_messages;
+				
+			p_firm_bond_transaction_message = &current_node->firm_bond_transaction_messages;
+				
+			p_gov_bond_transaction_message = &current_node->gov_bond_transaction_messages;
+				
+			p_firm_stock_transaction_message = &current_node->firm_stock_transaction_messages;
+				
+			p_rule_performance_message = &current_node->rule_performance_messages;
+				
+			p_fa_rule_performance_message = &current_node->fa_rule_performance_messages;
+				
+			p_ruledetailsystem_message = &current_node->ruledetailsystem_messages;
+				
+		p_xmachine = &current_node->agents;
+	
+	
+	
+		/* Loop through x-machines */
+		current_xmachine = *p_xmachine;
+		while(current_xmachine)
+		{
+			i = 0;
+		
+			if(current_xmachine->xmachine_Firm != NULL)
+			{
+				i = FirmCalculateIncomeStatement();
+			}
+		
+			if(current_xmachine->xmachine_Household != NULL)
+			{
+				i = Household_read_all_performances_message();
+			}
+		
+			if(current_xmachine->xmachine_Household != NULL)
+			{
+				i = HouseholdCalculateFinancialNeedsDaily();
+			}
+		
+			if(current_xmachine->xmachine_Household != NULL)
+			{
+				i = HouseholdCalculateFinancialNeedsMonthly();
+			}
+			
+			/* If agent is freed */
+			if(i == 1)
+			{
+				temp_free_xmachine = current_xmachine->next;
+				free_agent();
+				current_xmachine = temp_free_xmachine;
+			}
+			else
+			{
+				current_xmachine = current_xmachine->next;
+			}
+		}
+	
+		/* Loop through x-machines */
+		current_xmachine = *p_xmachine;
+		while(current_xmachine)
+		{
+			i = 0;
+		
+			if(current_xmachine->xmachine_Firm != NULL)
+			{
+				i = FirmCalculateFinancialPolicies();
+			}
+		
+			if(current_xmachine->xmachine_Household != NULL)
+			{
+				i = Household_select_rule();
+			}
+		
+			if(current_xmachine->xmachine_Household != NULL)
+			{
+				i = HouseholdEntryDecision();
+			}
+			
+			/* If agent is freed */
+			if(i == 1)
+			{
+				temp_free_xmachine = current_xmachine->next;
+				free_agent();
+				current_xmachine = temp_free_xmachine;
+			}
+			else
+			{
+				current_xmachine = current_xmachine->next;
+			}
+		}
+	
+		/* Loop through x-machines */
+		current_xmachine = *p_xmachine;
+		while(current_xmachine)
+		{
+			i = 0;
+		
+			if(current_xmachine->xmachine_Firm != NULL)
+			{
+				i = FirmCalculateFirmBondOrders();
+			}
+		
+			if(current_xmachine->xmachine_Firm != NULL)
+			{
+				i = FirmCalculateFirmStockOrders();
+			}
+		
+			if(current_xmachine->xmachine_Household != NULL)
+			{
+				i = Household_retrieve_rule_details();
+			}
+		
+			if(current_xmachine->xmachine_Household != NULL)
+			{
+				i = HouseholdCalculateAssetBudget();
+			}
+			
+			/* If agent is freed */
+			if(i == 1)
+			{
+				temp_free_xmachine = current_xmachine->next;
+				free_agent();
+				current_xmachine = temp_free_xmachine;
+			}
+			else
+			{
+				current_xmachine = current_xmachine->next;
+			}
+		}
+	
+		/* Loop through x-machines */
+		current_xmachine = *p_xmachine;
+		while(current_xmachine)
+		{
+			i = 0;
+		
+			if(current_xmachine->xmachine_FinancialAgent != NULL)
+			{
+				i = FinancialAgent_reset_public_classifiersystem();
+			}
+		
+			if(current_xmachine->xmachine_LimitOrderBook != NULL)
+			{
+				i = LimitOrderBookComputeTransactions();
+			}
+		
+			if(current_xmachine->xmachine_ClearingHouse != NULL)
+			{
+				i = ClearingHouseComputeTransactions();
+			}
+		
+			if(current_xmachine->xmachine_Firm != NULL)
+			{
+				i = FirmApplyForBankLoan();
+			}
+		
+			if(current_xmachine->xmachine_Firm != NULL)
+			{
+				i = FirmUpdateOutstandingAssets();
+			}
+		
+			if(current_xmachine->xmachine_Household != NULL)
+			{
+				i = Household_apply_rule();
+			}
+		
+			if(current_xmachine->xmachine_Household != NULL)
+			{
+				i = HouseholdCalculateFirmStockOrders();
+			}
+		
+			if(current_xmachine->xmachine_Household != NULL)
+			{
+				i = HouseholdCalculateGovernmentBondOrders();
+			}
+		
+			if(current_xmachine->xmachine_Household != NULL)
+			{
+				i = HouseholdCalculateFirmBondOrders();
 			}
 			
 			/* If agent is freed */
@@ -695,8 +886,8 @@ printf("Ouput dir: %s\n", outputpath);
 		freeDividendPaymentmessages();
 		p_BondCouponPayment_message = &current_node->BondCouponPayment_messages;
 		freeBondCouponPaymentmessages();
-		p_firm_bond_order_message = &current_node->firm_bond_order_messages;
-		freefirm_bond_ordermessages();
+		p_firm_bond_orders_message = &current_node->firm_bond_orders_messages;
+		freefirm_bond_ordersmessages();
 		p_firm_stock_order_message = &current_node->firm_stock_order_messages;
 		freefirm_stock_ordermessages();
 		p_gov_bond_order_message = &current_node->gov_bond_order_messages;
@@ -709,8 +900,8 @@ printf("Ouput dir: %s\n", outputpath);
 		freefirm_stock_transactionmessages();
 		p_rule_performance_message = &current_node->rule_performance_messages;
 		freerule_performancemessages();
-		p_all_performances_message = &current_node->all_performances_messages;
-		freeall_performancesmessages();
+		p_fa_rule_performance_message = &current_node->fa_rule_performance_messages;
+		freefa_rule_performancemessages();
 		p_ruledetailsystem_message = &current_node->ruledetailsystem_messages;
 		freeruledetailsystemmessages();
 		p_xmachine = &current_node->agents;

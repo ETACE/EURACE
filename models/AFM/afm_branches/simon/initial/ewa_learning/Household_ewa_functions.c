@@ -14,6 +14,87 @@
 #include "mylibraryheader.h"
 
 
+int HouseholdCalculateAssetBudget()
+{
+	return 0;
+}
+
+int HouseholdCalculateGrossIncome()
+{
+	return 0;
+}
+
+int Every_period()
+{
+	return 0;
+}
+
+int HouseholdCalculateMonthlyTaxes()
+{
+	return 0;
+}
+
+int HouseholdCalculateNetIncome()
+{
+	return 0;
+}
+
+int HouseholdCalculateAssetWealth()
+{
+	return 0;
+}
+
+int HouseholdCalculateTotalBudget()
+{
+	return 0;
+}
+
+int HouseholdCalculateCashOnHands()
+{
+	return 0;
+}
+
+int HouseholdUpdateAssetPortfolio()
+{
+	return 0;
+}
+
+int HouseholdCalculateConsumptionBudget()
+{
+	return 0;
+}
+
+int HouseholdCalculateFinancialNeedsDaily()
+{
+	return 0;
+}
+
+int HouseholdCalculateFinancialNeedsMonthly()
+{
+	return 0;
+}
+
+int HouseholdEntryDecision()
+{
+	return 0;
+}
+
+int HouseholdCalculateFirmStockOrders()
+{
+	return 0;
+}
+
+int HouseholdCalculateGovernmentBondOrders()
+{
+	return 0;
+}
+
+int HouseholdCalculateFirmBondOrders()
+{
+	return 0;
+}
+
+
 /************ Household : Asset market role ************/
 
 /* STEP 1. Updating performance.*/
@@ -22,7 +103,7 @@
 int Household_send_rule_performance_message()
 { 
     //Declare and assign local vars
-    int current_rule = CLASSIFIERSYSTEM->current_rule;
+    int current_rule = PRIVATECLASSIFIERSYSTEM->current_rule;
     
     //Here we compute the rule performance: this function uses the performance_history
     //since performance is computed as a time-average of capital gains obtained by the
@@ -31,9 +112,9 @@ int Household_send_rule_performance_message()
     //rule_performance = calc_rule_performance(current_assetportfolio->performance_history);
     
     //Random performance (uses the function random_unif())
-    rule_performance = random_unif()*100;
+    double rule_performance = random_unif()*100;
     
-    add_rule_performance_message(current_rule, rule_performance, range, x, y, z);
+    add_rule_performance_message(current_rule, rule_performance, MSGDATA);
 
     return 0;
 }
@@ -47,24 +128,20 @@ int Household_send_rule_performance_message()
  */
 int Household_read_all_performances_message()
 {
-      double * all_performances;
-      
-      all_performances_message = get_first_all_performances_message();
-      while(all_performances_message)
-      {
-        //Read the message
-        //code for dynamic arrays, copies the elements one by one
-        for (i=0; i<NRRULES; i++)
-        {
-         // Store in memory:              
-         CLASSIFIERSYSTEM->array[i]->performance = all_performances[i];
-        }
-        
-        //Proceed to next message
-         all_performances_message = get_next_all_performances_message(all_performances_message);
-      }
- 
-    return 0;
+	//int i;
+	
+	START_FA_RULE_PERFORMANCE_MESSAGE_LOOP
+		//Read the message
+		//code for dynamic arrays, copies the elements one by one
+		//for (i=0; i<NRRULES; i++)
+		//for (i=0; i<CLASSIFIERSYSTEM->nr_rules; i++)
+		//{
+			// Store in memory:              
+			PRIVATECLASSIFIERSYSTEM->avgperformance->array[fa_rule_performance_message->rule] = fa_rule_performance_message->rule_performance;
+		//}
+	FINISH_FA_RULE_PERFORMANCE_MESSAGE_LOOP
+	
+	return 0;
 }
 
 
@@ -80,26 +157,26 @@ int Household_read_all_performances_message()
  */
 int Household_select_rule()
 {
-    int current_rule = CLASSIFIERSYSTEM->current_rule;   
-    int NRRULES = CLASSIFIERSYSTEM->nr_rules;
+    /*int current_rule = CLASSIFIERSYSTEM->current_rule;   
+    int nr_rules = CLASSIFIERSYSTEM->nr_rules;
     
-    double[] performance;
-    double[] attraction;
+    //double[] performance;
+    //double[] attraction;
 
-    int experience      = CLASSIFIERSYSTEM->experience;
+    int experience = CLASSIFIERSYSTEM->experience;
     int experience_old = 0;
-    int i,j=0;
+    int i,j = 0;
 
     //Rule selection
     double sum_attr = 0;
-    double[NRRULES] cpdf;
+    //double[nr_rules] cpdf;
     
     
     //Assign values to local dynamic arrays
-    for (i=0;i<NRRULES;i++)
+    for (i=0;i<nr_rules;i++)
     {
-        performance[i] = CLASSIFIERSYSTEM->array[i]->performance;
-        attraction[i]  = CLASSIFIERSYSTEM->array[i]->attraction;
+        //performance[i] = CLASSIFIERSYSTEM->array[i]->performance;
+        //attraction[i]  = CLASSIFIERSYSTEM->array[i]->attraction;
     }
     
     //EWA learning parameters:
@@ -113,40 +190,40 @@ int Household_select_rule()
     experience=EWA_rho*experience + 1;
 
     //Updating the attractions
-    for (j=0;j++;j<NRRULES)
+    for (j=0;j++;j<nr_rules)
     {
         //If rule j is the currently used rule:
         if (j==current_rule)
         {
-            attraction[j] = (EWA_phi*experience_old*attraction[j] + performance[j])/experience;
+            //attraction[j] = (EWA_phi*experience_old*attraction[j] + performance[j])/experience;
         }
 
         //If rule j is not currently used:
-        if (j~=current_rule)
+        if (j!=current_rule)
         {
-            attraction[j] = (EWA_phi*experience_old*attraction[j] + EWA_delta*performance[j])/experience;
+            //attraction[j] = (EWA_phi*experience_old*attraction[j] + EWA_delta*performance[j])/experience;
         }
         //Set the attractions in the classifiersystem:
-        CLASSIFIERSYSTEM->array[j]->attraction = attraction[j];
+        //CLASSIFIERSYSTEM->array[j]->attraction = attraction[j];
     }
     
     //Computing the choice probabilities: multi-logit
     sum_attr=0;
-    for (j=0;j++;j<NRRULES)
+    for (j=0;j++;j<nr_rules)
     {
-        sum_attr += math.exp(EWA_beta * attractions[j]);
+        //sum_attr += math.exp(EWA_beta * attractions[j]);
     }
     
-    for (j=0;j++;j<NRRULES)
+    for (j=0;j++;j<nr_rules)
     {
-        p[j] = math.exp(EWA_beta * attractions[j])/sum_attr;
+        //p[j] = math.exp(EWA_beta * attractions[j])/sum_attr;
     }
 
     //Construct cumm. prob. dens. function
     cpdf = cumpdf(p);
     
     //Selecting a strategy according to the pdf:
-    nr_selected_rule = draw_with_replacement(1, cpdf, NRRULES);
+    nr_selected_rule = draw_with_replacement(1, cpdf, nr_rules);
     
     //Test if a rule has been selected:
     if(nr_selected_rule==0)
@@ -155,7 +232,7 @@ int Household_select_rule()
     
     //Set the selected rule in memory (0-indexed):
     CLASSIFIERSYSTEM->current_rule = nr_selected_rule - 1;
-
+*/
     return 0;
 }
 
@@ -168,7 +245,7 @@ int Household_retrieve_rule_details()
     //#include <string.h>
     //To use:   char *strcat( char *str1, const char *str2 );
     //          char *strcpy( char *to, const char *from );
-    int rule_type;
+/*    int rule_type;
     double* param_vector;
     int imax;
     char* str, new_str, param_vector_as_string;
@@ -194,7 +271,7 @@ int Household_retrieve_rule_details()
     
         default;
     }
-
+*/
     return 0;
 }
 
@@ -220,7 +297,7 @@ int Household_apply_rule()
    //AssetPortfolioType * prescribed_assetportfolio=get_prescribed_assetportfolio();
    //double prescribed_asset_value = get_prescribed_asset_value();
    //double asset_budget = get_asset_budget();
-   
+/*   
    double multfactor= 0.0;
    int nr_assets=0;
    int firm_id=0;
@@ -231,32 +308,32 @@ int Household_apply_rule()
    double limit_price=0.0;    
    int limit_quantity=0;
    
-   /*Multiplication factor*/
+   //Multiplication factor
    multfactor=asset_budget/prescribed_asset_value;
    
-    /* 1. Firm stock order messages */
+    // 1. Firm stock order messages 
     nr_assets = prescribed_assetportfolio->firmstocks->size;// checkcode after compiling!
 
-    /* We need to travers through prescribed_asset_portfolio to handle all the assets */
+    // We need to travers through prescribed_asset_portfolio to handle all the assets 
     for (i=0; i<nr_assets; i++)
     {
         firm_id = prescribed_assetportfolio->array[i]->firm_id;
 
-        /* Computation of the limit price is a function of:*/
+        // Computation of the limit price is a function of:
         current_price=prescribed_assetportfolio->array[i]->current_price;
         best_ask_price=prescribed_assetportfolio->array[i]->best_ask_price;
         best_bid_price=prescribed_assetportfolio->array[i]->best_bid_price;
  
         limit_price    = set_limit_price(current_price, best_ask_price, best_bid_price);
 
-    /* Limit quantity: diff between target and current holdings (maximum number of units to trade) */
+    // Limit quantity: diff between target and current holdings (maximum number of units to trade) 
         limit_quantity = current_assetportfolio->array[i]->nr_units - (prescribed_assetportfolio->array[i]->nr_units * multfactor);
 
-    /* Sending Limit Order Messages to the AssetMarketAgent */
+    // Sending Limit Order Messages to the AssetMarketAgent 
         add_firm_stock_order_message(household_id, firm_id, limit_price, limit_quantity,range,x,y,z);
     }
     
-/* 2. Firm bond order messages */
+// 2. Firm bond order messages 
     nr_assets = prescribed_assetportfolio->firmbonds->size;
     for (i=0; i<nr_assets; i++)
     {
@@ -269,11 +346,11 @@ int Household_apply_rule()
         limit_price    = set_limit_price(current_price, best_ask_price, best_bid_price);
         limit_quantity = current_assetportfolio->array[i]->firmbonds_nr_units - (prescribed_assetportfolio->array[i]->firmbonds_nr_units * multfactor);
 
-    /* Sending Limit Order Messages to the AssetMarketAgent */
+    // Sending Limit Order Messages to the AssetMarketAgent 
         add_firm_bond_order_message(household_id, firm_id, limit_price, limit_quantity,range,x,y,z);
     }
     
-/* 3. Government bond order messages */
+// 3. Government bond order messages 
     nr_assets = prescribed_assetportfolio->govbonds->size;
     for (i=0; i<nr_assets; i++)
     {
@@ -286,10 +363,10 @@ int Household_apply_rule()
         limit_price    = set_limit_price(current_price, best_ask_price, best_bid_price);
         limit_quantity = current_assetportfolio->array[i]->govbonds_nr_units - (prescribed_assetportfolio->array[i]->govbonds_nr_units * multfactor);
 
-    /* Sending Limit Order Messages to the AssetMarketAgent */
+    // Sending Limit Order Messages to the AssetMarketAgent 
         add_gov_bond_order_message(household_id, gov_id, limit_price, limit_quantity,range,x,y,z);
     }
-
+*/
     return 0;
 }
 
@@ -363,7 +440,7 @@ int Household_read_transaction_message()
 int Household_read_ruledetailsystem_message()
 {
     //Getting the size of the system:
-    int NR_TYPES=CLASSIFIERSYSTEM->nr_types;
+/*    int NR_TYPES=CLASSIFIERSYSTEM->nr_types;
 
     //dynamic array with number of rules in each type (size of subpopulations)
     int* NRRULES_PER_TYPE=CLASSIFIERSYSTEM->nr_rules_per_type;
@@ -414,7 +491,7 @@ int Household_read_ruledetailsystem_message()
               parameters[i][j] = ruledetailsystem->array[i]->parameters->array[j]->(double param_value);
         }
     }
-    
+*/
     return 0;
 }
 
@@ -427,7 +504,7 @@ int Household_update_ruledetailsystem()
 int Household_reset_private_classifiersystem()
 {
     //Getting the size of the system:
-    int NR_TYPES=CLASSIFIERSYSTEM->NR_TYPES;
+/*    int NR_TYPES=CLASSIFIERSYSTEM->NR_TYPES;
 
     //dynamic array with number of rules in each type (size of subpopulations)
     int* NRRULES_PER_TYPE=CLASSIFIERSYSTEM->NRRULES_PER_TYPE;
@@ -446,6 +523,6 @@ int Household_reset_private_classifiersystem()
         CLASSIFIERSYSTEM->array[i]->attraction=log(pow(10,-5));
         CLASSIFIERSYSTEM->array[i]->choiceprob=pow(10,-5);
     }
-
+*/
     return 0;
-} 
+}

@@ -1,6 +1,6 @@
 digraph dependency_graph {
 	rankdir=BT;
-	size="8,5"
+	size="8,5;"
 	node [shape = rect];
 	
 	/* Functions */
@@ -67,7 +67,7 @@ digraph dependency_graph {
 	Household_apply_rule -> Household_retrieve_rule_details [ label = "<depends on internal>" ];
 	Household_retrieve_rule_details -> Household_select_rule [ label = "<depends on internal>" ];
 	Household_select_rule -> Household_read_all_performances_message [ label = "<depends on internal>" ];
-	Household_read_all_performances_message -> FinancialAgent_send_all_performances_message [ label = "<depends on all_performances>" ];
+	Household_read_all_performances_message -> FinancialAgent_send_all_performances_message [ label = "<depends on fa_rule_performance>" ];
 	Household_send_rule_performance_message -> Every_period [ label = "<depends on internal>" ];
 	Every_period -> Household_reset_private_classifiersystem [ label = "<depends on internal>" ];
 	HouseholdCalculateFirmStockOrders -> HouseholdCalculateAssetBudget [ label = "<depends on internal>" ];

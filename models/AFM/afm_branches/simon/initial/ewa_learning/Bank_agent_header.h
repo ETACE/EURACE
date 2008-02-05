@@ -6,9 +6,12 @@
 /** \def ID
  * \brief Direct access to id of Bank agent memory variable. */
 #define ID current_xmachine->xmachine_Bank->id
-/** \def IRADIUS
- * \brief Direct access to iradius of Bank agent memory variable. */
-#define IRADIUS current_xmachine->xmachine_Bank->iradius
+/** \def RA
+ * \brief Direct access to ra of Bank agent memory variable. */
+#define RA current_xmachine->xmachine_Bank->ra
+/** \def RANGE
+ * \brief Direct access to range of Bank agent memory variable. */
+#define RANGE current_xmachine->xmachine_Bank->range
 /** \def POSX
  * \brief Direct access to posx of Bank agent memory variable. */
 #define POSX current_xmachine->xmachine_Bank->posx

@@ -3,6 +3,10 @@
  * \brief Header for user created library functions.
  ************************************************/
 
+/** \def MSGDATA
+ * \brief Temp message position and range data */
+#define MSGDATA 1.0, 0.0, 0.0, 0.0
+
 /** \def HISTLENGTH
  * \brief History length of performance of asset allocation rules */
 #define HISTLENGTH 60
