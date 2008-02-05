@@ -18,8 +18,8 @@ void initialise_pointers()
 	p_DividendPayment_message = &temp_DividendPayment_message;
 	temp_BondCouponPayment_message = NULL;
 	p_BondCouponPayment_message = &temp_BondCouponPayment_message;
-	temp_firm_bond_order_message = NULL;
-	p_firm_bond_order_message = &temp_firm_bond_order_message;
+	temp_firm_bond_orders_message = NULL;
+	p_firm_bond_orders_message = &temp_firm_bond_orders_message;
 	temp_firm_stock_order_message = NULL;
 	p_firm_stock_order_message = &temp_firm_stock_order_message;
 	temp_gov_bond_order_message = NULL;
@@ -32,8 +32,8 @@ void initialise_pointers()
 	p_firm_stock_transaction_message = &temp_firm_stock_transaction_message;
 	temp_rule_performance_message = NULL;
 	p_rule_performance_message = &temp_rule_performance_message;
-	temp_all_performances_message = NULL;
-	p_all_performances_message = &temp_all_performances_message;
+	temp_fa_rule_performance_message = NULL;
+	p_fa_rule_performance_message = &temp_fa_rule_performance_message;
 	temp_ruledetailsystem_message = NULL;
 	p_ruledetailsystem_message = &temp_ruledetailsystem_message;
 	temp_node_info = NULL;
@@ -112,67 +112,947 @@ xmachine * add_xmachine()
 	current->xmachine_Household = NULL;
 	current->xmachine_Firm = NULL;
 	current->xmachine_Bank = NULL;
-	current->xmachine_ClearingHouseMechanism = NULL;
+	current->xmachine_ClearingHouse = NULL;
 	current->xmachine_LimitOrderBook = NULL;
 	current->xmachine_Government = NULL;
-	current->xmachine_FinancialAdvisor = NULL;
+	current->xmachine_FinancialAgent = NULL;
 	current->next = *p_xmachine;
 	*p_xmachine = current;
 	
 	current_node->agent_total++;
 
 /* add by cg for round-robin so that set_ has something to point at */
-	current_xmachine = current;
+	//current_xmachine = current;
 	
 	return current;
 }
 
-/** \fn void add_Household_agent(int household_id, PrivateClassifierSystem * agent_classifiersystem, double asset_budget, AssetPortfolioType * current_assetportfolio, AssetPortfolioType * prescribed_assetportfolio, int nr_selected_rule, double current_rule_performance, double EWA_rho, double EWA_phi, double EWA_delta, double EWA_beta, double prescribed_asset_value, double asset_budget, double iradius, double posx, double posy)
+
+
+string * init_string()
+{
+	string *temp = (string *)malloc(sizeof(string));
+	CHECK_POINTER(temp);
+	temp->stringname = init_char_array();
+
+	return temp;
+}
+
+string ** init_string_static_array(int size)
+{
+	int i;
+	string ** temp = (string **)malloc(size * sizeof(string *));
+	CHECK_POINTER(temp);
+	
+	for(i = 0; i < size; i++)
+	{
+		temp[i] = init_string();
+	}
+	
+	return temp;
+}
+
+void free_string_static_array(string ** temp, int size)
+{
+	int i;
+	
+	for(i = 0; i < size; i++)
+	{
+		free_string_datatype(temp[i]);
+	}
+	free(temp);
+}
+
+void free_string_datatype(string * temp)
+{
+	free_char_array(temp->stringname);
+	free(temp);
+}
+
+void copy_string_static_array(string ** from, string ** to, int size)
+{
+	int i;
+	
+	for(i = 0; i < size; i++)
+	{
+		copy_string_datatype(from[i], to[i]);
+	}
+}
+
+void copy_string_datatype(string * from, string * to)
+{
+	copy_char_array(from->stringname, to->stringname);
+}
+
+
+stringlist * init_stringlist()
+{
+	stringlist *temp = (stringlist *)malloc(sizeof(stringlist));
+	CHECK_POINTER(temp);
+	temp->stringlistname = init_string_array();
+
+	return temp;
+}
+
+stringlist ** init_stringlist_static_array(int size)
+{
+	int i;
+	stringlist ** temp = (stringlist **)malloc(size * sizeof(stringlist *));
+	CHECK_POINTER(temp);
+	
+	for(i = 0; i < size; i++)
+	{
+		temp[i] = init_stringlist();
+	}
+	
+	return temp;
+}
+
+void free_stringlist_static_array(stringlist ** temp, int size)
+{
+	int i;
+	
+	for(i = 0; i < size; i++)
+	{
+		free_stringlist_datatype(temp[i]);
+	}
+	free(temp);
+}
+
+void free_stringlist_datatype(stringlist * temp)
+{
+	free_string_array(temp->stringlistname);
+	free(temp);
+}
+
+void copy_stringlist_static_array(stringlist ** from, stringlist ** to, int size)
+{
+	int i;
+	
+	for(i = 0; i < size; i++)
+	{
+		copy_stringlist_datatype(from[i], to[i]);
+	}
+}
+
+void copy_stringlist_datatype(stringlist * from, stringlist * to)
+{
+	copy_string_array(from->stringlistname, to->stringlistname);
+}
+
+
+word * init_word()
+{
+	word *temp = (word *)malloc(sizeof(word));
+	CHECK_POINTER(temp);
+	temp->wordname = init_char_array();
+
+	return temp;
+}
+
+word ** init_word_static_array(int size)
+{
+	int i;
+	word ** temp = (word **)malloc(size * sizeof(word *));
+	CHECK_POINTER(temp);
+	
+	for(i = 0; i < size; i++)
+	{
+		temp[i] = init_word();
+	}
+	
+	return temp;
+}
+
+void free_word_static_array(word ** temp, int size)
+{
+	int i;
+	
+	for(i = 0; i < size; i++)
+	{
+		free_word_datatype(temp[i]);
+	}
+	free(temp);
+}
+
+void free_word_datatype(word * temp)
+{
+	free_char_array(temp->wordname);
+	free(temp);
+}
+
+void copy_word_static_array(word ** from, word ** to, int size)
+{
+	int i;
+	
+	for(i = 0; i < size; i++)
+	{
+		copy_word_datatype(from[i], to[i]);
+	}
+}
+
+void copy_word_datatype(word * from, word * to)
+{
+	copy_char_array(from->wordname, to->wordname);
+}
+
+
+wordlist * init_wordlist()
+{
+	wordlist *temp = (wordlist *)malloc(sizeof(wordlist));
+	CHECK_POINTER(temp);
+	temp->wordlistname = init_word_array();
+
+	return temp;
+}
+
+wordlist ** init_wordlist_static_array(int size)
+{
+	int i;
+	wordlist ** temp = (wordlist **)malloc(size * sizeof(wordlist *));
+	CHECK_POINTER(temp);
+	
+	for(i = 0; i < size; i++)
+	{
+		temp[i] = init_wordlist();
+	}
+	
+	return temp;
+}
+
+void free_wordlist_static_array(wordlist ** temp, int size)
+{
+	int i;
+	
+	for(i = 0; i < size; i++)
+	{
+		free_wordlist_datatype(temp[i]);
+	}
+	free(temp);
+}
+
+void free_wordlist_datatype(wordlist * temp)
+{
+	free_word_array(temp->wordlistname);
+	free(temp);
+}
+
+void copy_wordlist_static_array(wordlist ** from, wordlist ** to, int size)
+{
+	int i;
+	
+	for(i = 0; i < size; i++)
+	{
+		copy_wordlist_datatype(from[i], to[i]);
+	}
+}
+
+void copy_wordlist_datatype(wordlist * from, wordlist * to)
+{
+	copy_word_array(from->wordlistname, to->wordlistname);
+}
+
+
+int2D * init_int2D()
+{
+	int2D *temp = (int2D *)malloc(sizeof(int2D));
+	CHECK_POINTER(temp);
+	temp->int2Dname = init_int_array();
+
+	return temp;
+}
+
+int2D ** init_int2D_static_array(int size)
+{
+	int i;
+	int2D ** temp = (int2D **)malloc(size * sizeof(int2D *));
+	CHECK_POINTER(temp);
+	
+	for(i = 0; i < size; i++)
+	{
+		temp[i] = init_int2D();
+	}
+	
+	return temp;
+}
+
+void free_int2D_static_array(int2D ** temp, int size)
+{
+	int i;
+	
+	for(i = 0; i < size; i++)
+	{
+		free_int2D_datatype(temp[i]);
+	}
+	free(temp);
+}
+
+void free_int2D_datatype(int2D * temp)
+{
+	free_int_array(temp->int2Dname);
+	free(temp);
+}
+
+void copy_int2D_static_array(int2D ** from, int2D ** to, int size)
+{
+	int i;
+	
+	for(i = 0; i < size; i++)
+	{
+		copy_int2D_datatype(from[i], to[i]);
+	}
+}
+
+void copy_int2D_datatype(int2D * from, int2D * to)
+{
+	copy_int_array(from->int2Dname, to->int2Dname);
+}
+
+
+double2D * init_double2D()
+{
+	double2D *temp = (double2D *)malloc(sizeof(double2D));
+	CHECK_POINTER(temp);
+	temp->double2Dname = init_double_array();
+
+	return temp;
+}
+
+double2D ** init_double2D_static_array(int size)
+{
+	int i;
+	double2D ** temp = (double2D **)malloc(size * sizeof(double2D *));
+	CHECK_POINTER(temp);
+	
+	for(i = 0; i < size; i++)
+	{
+		temp[i] = init_double2D();
+	}
+	
+	return temp;
+}
+
+void free_double2D_static_array(double2D ** temp, int size)
+{
+	int i;
+	
+	for(i = 0; i < size; i++)
+	{
+		free_double2D_datatype(temp[i]);
+	}
+	free(temp);
+}
+
+void free_double2D_datatype(double2D * temp)
+{
+	free_double_array(temp->double2Dname);
+	free(temp);
+}
+
+void copy_double2D_static_array(double2D ** from, double2D ** to, int size)
+{
+	int i;
+	
+	for(i = 0; i < size; i++)
+	{
+		copy_double2D_datatype(from[i], to[i]);
+	}
+}
+
+void copy_double2D_datatype(double2D * from, double2D * to)
+{
+	copy_double_array(from->double2Dname, to->double2Dname);
+}
+
+
+RuleDetailSystem * init_RuleDetailSystem()
+{
+	RuleDetailSystem *temp = (RuleDetailSystem *)malloc(sizeof(RuleDetailSystem));
+	CHECK_POINTER(temp);
+	temp->nr_params_per_type = init_int_array();
+	temp->nr_params = init_int_array();
+	temp->parameters = init_double2D_array();
+	temp->myfunctionnames = init_wordlist();
+
+	return temp;
+}
+
+RuleDetailSystem ** init_RuleDetailSystem_static_array(int size)
+{
+	int i;
+	RuleDetailSystem ** temp = (RuleDetailSystem **)malloc(size * sizeof(RuleDetailSystem *));
+	CHECK_POINTER(temp);
+	
+	for(i = 0; i < size; i++)
+	{
+		temp[i] = init_RuleDetailSystem();
+	}
+	
+	return temp;
+}
+
+void free_RuleDetailSystem_static_array(RuleDetailSystem ** temp, int size)
+{
+	int i;
+	
+	for(i = 0; i < size; i++)
+	{
+		free_RuleDetailSystem_datatype(temp[i]);
+	}
+	free(temp);
+}
+
+void free_RuleDetailSystem_datatype(RuleDetailSystem * temp)
+{
+	free_int_array(temp->nr_params_per_type);
+	free_int_array(temp->nr_params);
+	free_double2D_array(temp->parameters);
+	free_wordlist_datatype(temp->myfunctionnames);
+	free(temp);
+}
+
+void copy_RuleDetailSystem_static_array(RuleDetailSystem ** from, RuleDetailSystem ** to, int size)
+{
+	int i;
+	
+	for(i = 0; i < size; i++)
+	{
+		copy_RuleDetailSystem_datatype(from[i], to[i]);
+	}
+}
+
+void copy_RuleDetailSystem_datatype(RuleDetailSystem * from, RuleDetailSystem * to)
+{
+	copy_int_array(from->nr_params_per_type, to->nr_params_per_type);
+	copy_int_array(from->nr_params, to->nr_params);
+	copy_double2D_array(from->parameters, to->parameters);
+	copy_wordlist_datatype(from->myfunctionnames, to->myfunctionnames);
+}
+
+
+PublicClassifierSystem * init_PublicClassifierSystem()
+{
+	PublicClassifierSystem *temp = (PublicClassifierSystem *)malloc(sizeof(PublicClassifierSystem));
+	CHECK_POINTER(temp);
+	temp->nr_rules_per_type = init_int_array();
+	temp->ids = init_int_array();
+	temp->rule_type = init_int_array();
+	temp->counter = init_int_array();
+	temp->performance = init_double_array();
+	temp->avgperformance = init_double_array();
+
+	return temp;
+}
+
+PublicClassifierSystem ** init_PublicClassifierSystem_static_array(int size)
+{
+	int i;
+	PublicClassifierSystem ** temp = (PublicClassifierSystem **)malloc(size * sizeof(PublicClassifierSystem *));
+	CHECK_POINTER(temp);
+	
+	for(i = 0; i < size; i++)
+	{
+		temp[i] = init_PublicClassifierSystem();
+	}
+	
+	return temp;
+}
+
+void free_PublicClassifierSystem_static_array(PublicClassifierSystem ** temp, int size)
+{
+	int i;
+	
+	for(i = 0; i < size; i++)
+	{
+		free_PublicClassifierSystem_datatype(temp[i]);
+	}
+	free(temp);
+}
+
+void free_PublicClassifierSystem_datatype(PublicClassifierSystem * temp)
+{
+	free_int_array(temp->nr_rules_per_type);
+	free_int_array(temp->ids);
+	free_int_array(temp->rule_type);
+	free_int_array(temp->counter);
+	free_double_array(temp->performance);
+	free_double_array(temp->avgperformance);
+	free(temp);
+}
+
+void copy_PublicClassifierSystem_static_array(PublicClassifierSystem ** from, PublicClassifierSystem ** to, int size)
+{
+	int i;
+	
+	for(i = 0; i < size; i++)
+	{
+		copy_PublicClassifierSystem_datatype(from[i], to[i]);
+	}
+}
+
+void copy_PublicClassifierSystem_datatype(PublicClassifierSystem * from, PublicClassifierSystem * to)
+{
+	to->nr_types = from->nr_types;
+	copy_int_array(from->nr_rules_per_type, to->nr_rules_per_type);
+	to->nr_rules = from->nr_rules;
+	copy_int_array(from->ids, to->ids);
+	copy_int_array(from->rule_type, to->rule_type);
+	copy_int_array(from->counter, to->counter);
+	copy_double_array(from->performance, to->performance);
+	copy_double_array(from->avgperformance, to->avgperformance);
+}
+
+
+PrivateClassifierSystem * init_PrivateClassifierSystem()
+{
+	PrivateClassifierSystem *temp = (PrivateClassifierSystem *)malloc(sizeof(PrivateClassifierSystem));
+	CHECK_POINTER(temp);
+	temp->nr_rules_per_type = init_int_array();
+	temp->ids = init_int_array();
+	temp->rule_type = init_int_array();
+	temp->avgperformance = init_double_array();
+	temp->attraction = init_double_array();
+	temp->choiceprob = init_double_array();
+
+	return temp;
+}
+
+PrivateClassifierSystem ** init_PrivateClassifierSystem_static_array(int size)
+{
+	int i;
+	PrivateClassifierSystem ** temp = (PrivateClassifierSystem **)malloc(size * sizeof(PrivateClassifierSystem *));
+	CHECK_POINTER(temp);
+	
+	for(i = 0; i < size; i++)
+	{
+		temp[i] = init_PrivateClassifierSystem();
+	}
+	
+	return temp;
+}
+
+void free_PrivateClassifierSystem_static_array(PrivateClassifierSystem ** temp, int size)
+{
+	int i;
+	
+	for(i = 0; i < size; i++)
+	{
+		free_PrivateClassifierSystem_datatype(temp[i]);
+	}
+	free(temp);
+}
+
+void free_PrivateClassifierSystem_datatype(PrivateClassifierSystem * temp)
+{
+	free_int_array(temp->nr_rules_per_type);
+	free_int_array(temp->ids);
+	free_int_array(temp->rule_type);
+	free_double_array(temp->avgperformance);
+	free_double_array(temp->attraction);
+	free_double_array(temp->choiceprob);
+	free(temp);
+}
+
+void copy_PrivateClassifierSystem_static_array(PrivateClassifierSystem ** from, PrivateClassifierSystem ** to, int size)
+{
+	int i;
+	
+	for(i = 0; i < size; i++)
+	{
+		copy_PrivateClassifierSystem_datatype(from[i], to[i]);
+	}
+}
+
+void copy_PrivateClassifierSystem_datatype(PrivateClassifierSystem * from, PrivateClassifierSystem * to)
+{
+	to->nr_types = from->nr_types;
+	copy_int_array(from->nr_rules_per_type, to->nr_rules_per_type);
+	to->nr_rules = from->nr_rules;
+	copy_int_array(from->ids, to->ids);
+	copy_int_array(from->rule_type, to->rule_type);
+	to->EWA_rho = from->EWA_rho;
+	to->EWA_phi = from->EWA_phi;
+	to->EWA_delta = from->EWA_delta;
+	to->EWA_beta = from->EWA_beta;
+	to->experience = from->experience;
+	to->current_rule = from->current_rule;
+	to->my_performance = from->my_performance;
+	copy_double_array(from->avgperformance, to->avgperformance);
+	copy_double_array(from->attraction, to->attraction);
+	copy_double_array(from->choiceprob, to->choiceprob);
+}
+
+
+StockDataType * init_StockDataType()
+{
+	StockDataType *temp = (StockDataType *)malloc(sizeof(StockDataType));
+	CHECK_POINTER(temp);
+	temp->NrOutStandingShares = init_int_array();
+	temp->dividends = init_int_array();
+
+	return temp;
+}
+
+StockDataType ** init_StockDataType_static_array(int size)
+{
+	int i;
+	StockDataType ** temp = (StockDataType **)malloc(size * sizeof(StockDataType *));
+	CHECK_POINTER(temp);
+	
+	for(i = 0; i < size; i++)
+	{
+		temp[i] = init_StockDataType();
+	}
+	
+	return temp;
+}
+
+void free_StockDataType_static_array(StockDataType ** temp, int size)
+{
+	int i;
+	
+	for(i = 0; i < size; i++)
+	{
+		free_StockDataType_datatype(temp[i]);
+	}
+	free(temp);
+}
+
+void free_StockDataType_datatype(StockDataType * temp)
+{
+	free_int_array(temp->NrOutStandingShares);
+	free_int_array(temp->dividends);
+	free(temp);
+}
+
+void copy_StockDataType_static_array(StockDataType ** from, StockDataType ** to, int size)
+{
+	int i;
+	
+	for(i = 0; i < size; i++)
+	{
+		copy_StockDataType_datatype(from[i], to[i]);
+	}
+}
+
+void copy_StockDataType_datatype(StockDataType * from, StockDataType * to)
+{
+	memcpy(to->class, from->class, 5*sizeof(char));
+	memcpy(to->id, from->id, 5*sizeof(int));
+	copy_int_array(from->NrOutStandingShares, to->NrOutStandingShares);
+	to->price = from->price;
+	to->Book_intraday_transaction = from->Book_intraday_transaction;
+	copy_int_array(from->dividends, to->dividends);
+}
+
+
+BondDataType * init_BondDataType()
+{
+	BondDataType *temp = (BondDataType *)malloc(sizeof(BondDataType));
+	CHECK_POINTER(temp);
+
+	return temp;
+}
+
+BondDataType ** init_BondDataType_static_array(int size)
+{
+	int i;
+	BondDataType ** temp = (BondDataType **)malloc(size * sizeof(BondDataType *));
+	CHECK_POINTER(temp);
+	
+	for(i = 0; i < size; i++)
+	{
+		temp[i] = init_BondDataType();
+	}
+	
+	return temp;
+}
+
+void free_BondDataType_static_array(BondDataType ** temp, int size)
+{
+	int i;
+	
+	for(i = 0; i < size; i++)
+	{
+		free_BondDataType_datatype(temp[i]);
+	}
+	free(temp);
+}
+
+void free_BondDataType_datatype(BondDataType * temp)
+{
+	free(temp);
+}
+
+void copy_BondDataType_static_array(BondDataType ** from, BondDataType ** to, int size)
+{
+	int i;
+	
+	for(i = 0; i < size; i++)
+	{
+		copy_BondDataType_datatype(from[i], to[i]);
+	}
+}
+
+void copy_BondDataType_datatype(BondDataType * from, BondDataType * to)
+{
+	memcpy(to->class, from->class, 5*sizeof(char));
+	memcpy(to->id, from->id, 5*sizeof(int));
+}
+
+
+DBFinancialAssets * init_DBFinancialAssets()
+{
+	DBFinancialAssets *temp = (DBFinancialAssets *)malloc(sizeof(DBFinancialAssets));
+	CHECK_POINTER(temp);
+
+	return temp;
+}
+
+DBFinancialAssets ** init_DBFinancialAssets_static_array(int size)
+{
+	int i;
+	DBFinancialAssets ** temp = (DBFinancialAssets **)malloc(size * sizeof(DBFinancialAssets *));
+	CHECK_POINTER(temp);
+	
+	for(i = 0; i < size; i++)
+	{
+		temp[i] = init_DBFinancialAssets();
+	}
+	
+	return temp;
+}
+
+void free_DBFinancialAssets_static_array(DBFinancialAssets ** temp, int size)
+{
+	int i;
+	
+	for(i = 0; i < size; i++)
+	{
+		free_DBFinancialAssets_datatype(temp[i]);
+	}
+	free(temp);
+}
+
+void free_DBFinancialAssets_datatype(DBFinancialAssets * temp)
+{
+	free(temp);
+}
+
+void copy_DBFinancialAssets_static_array(DBFinancialAssets ** from, DBFinancialAssets ** to, int size)
+{
+	int i;
+	
+	for(i = 0; i < size; i++)
+	{
+		copy_DBFinancialAssets_datatype(from[i], to[i]);
+	}
+}
+
+void copy_DBFinancialAssets_datatype(DBFinancialAssets * from, DBFinancialAssets * to)
+{
+}
+
+
+Asset * init_Asset()
+{
+	Asset *temp = (Asset *)malloc(sizeof(Asset));
+	CHECK_POINTER(temp);
+	temp->ids = init_int_array();
+	temp->nr_units = init_int_array();
+	temp->current_price = init_double_array();
+	temp->best_ask_price = init_double_array();
+	temp->best_bid_price = init_double_array();
+
+	return temp;
+}
+
+Asset ** init_Asset_static_array(int size)
+{
+	int i;
+	Asset ** temp = (Asset **)malloc(size * sizeof(Asset *));
+	CHECK_POINTER(temp);
+	
+	for(i = 0; i < size; i++)
+	{
+		temp[i] = init_Asset();
+	}
+	
+	return temp;
+}
+
+void free_Asset_static_array(Asset ** temp, int size)
+{
+	int i;
+	
+	for(i = 0; i < size; i++)
+	{
+		free_Asset_datatype(temp[i]);
+	}
+	free(temp);
+}
+
+void free_Asset_datatype(Asset * temp)
+{
+	free_int_array(temp->ids);
+	free_int_array(temp->nr_units);
+	free_double_array(temp->current_price);
+	free_double_array(temp->best_ask_price);
+	free_double_array(temp->best_bid_price);
+	free(temp);
+}
+
+void copy_Asset_static_array(Asset ** from, Asset ** to, int size)
+{
+	int i;
+	
+	for(i = 0; i < size; i++)
+	{
+		copy_Asset_datatype(from[i], to[i]);
+	}
+}
+
+void copy_Asset_datatype(Asset * from, Asset * to)
+{
+	copy_int_array(from->ids, to->ids);
+	copy_int_array(from->nr_units, to->nr_units);
+	copy_double_array(from->current_price, to->current_price);
+	copy_double_array(from->best_ask_price, to->best_ask_price);
+	copy_double_array(from->best_bid_price, to->best_bid_price);
+}
+
+
+AssetPortfolio * init_AssetPortfolio()
+{
+	AssetPortfolio *temp = (AssetPortfolio *)malloc(sizeof(AssetPortfolio));
+	CHECK_POINTER(temp);
+	temp->performance_history = init_double_array();
+	temp->firm_stocks = init_Asset();
+	temp->firm_bonds = init_Asset();
+	temp->gov_bonds = init_Asset();
+
+	return temp;
+}
+
+AssetPortfolio ** init_AssetPortfolio_static_array(int size)
+{
+	int i;
+	AssetPortfolio ** temp = (AssetPortfolio **)malloc(size * sizeof(AssetPortfolio *));
+	CHECK_POINTER(temp);
+	
+	for(i = 0; i < size; i++)
+	{
+		temp[i] = init_AssetPortfolio();
+	}
+	
+	return temp;
+}
+
+void free_AssetPortfolio_static_array(AssetPortfolio ** temp, int size)
+{
+	int i;
+	
+	for(i = 0; i < size; i++)
+	{
+		free_AssetPortfolio_datatype(temp[i]);
+	}
+	free(temp);
+}
+
+void free_AssetPortfolio_datatype(AssetPortfolio * temp)
+{
+	free_double_array(temp->performance_history);
+	free_Asset_datatype(temp->firm_stocks);
+	free_Asset_datatype(temp->firm_bonds);
+	free_Asset_datatype(temp->gov_bonds);
+	free(temp);
+}
+
+void copy_AssetPortfolio_static_array(AssetPortfolio ** from, AssetPortfolio ** to, int size)
+{
+	int i;
+	
+	for(i = 0; i < size; i++)
+	{
+		copy_AssetPortfolio_datatype(from[i], to[i]);
+	}
+}
+
+void copy_AssetPortfolio_datatype(AssetPortfolio * from, AssetPortfolio * to)
+{
+	copy_double_array(from->performance_history, to->performance_history);
+	copy_Asset_datatype(from->firm_stocks, to->firm_stocks);
+	copy_Asset_datatype(from->firm_bonds, to->firm_bonds);
+	copy_Asset_datatype(from->gov_bonds, to->gov_bonds);
+}
+
+
+
+xmachine_memory_Household * init_Household_agent()
+{
+	xmachine_memory_Household * current = (xmachine_memory_Household *)malloc(sizeof(xmachine_memory_Household));
+	CHECK_POINTER(current);
+	
+	current->privateclassifiersystem = init_PrivateClassifierSystem();
+	current->current_assetportfolio = init_AssetPortfolio();
+	current->prescribed_assetportfolio = init_AssetPortfolio();
+	
+	return current;
+}
+
+void add_Household_agent_internal(xmachine_memory_Household * current)
+{
+	xmachine * new_xmachine = add_xmachine();
+	new_xmachine->xmachine_Household = current;
+}
+
+/** \fn void add_Household_agent(int id, PrivateClassifierSystem * privateclassifiersystem, AssetPortfolio * current_assetportfolio, AssetPortfolio * prescribed_assetportfolio, double asset_budget, double range, double posx, double posy)
  * \brief Add Household X-machine to the current being used X-machine list.
- * \param household_id Variable for the X-machine memory.
- * \param agent_classifiersystem Variable for the X-machine memory.
- * \param asset_budget Variable for the X-machine memory.
+ * \param id Variable for the X-machine memory.
+ * \param privateclassifiersystem Variable for the X-machine memory.
  * \param current_assetportfolio Variable for the X-machine memory.
  * \param prescribed_assetportfolio Variable for the X-machine memory.
- * \param nr_selected_rule Variable for the X-machine memory.
- * \param current_rule_performance Variable for the X-machine memory.
- * \param EWA_rho Variable for the X-machine memory.
- * \param EWA_phi Variable for the X-machine memory.
- * \param EWA_delta Variable for the X-machine memory.
- * \param EWA_beta Variable for the X-machine memory.
- * \param prescribed_asset_value Variable for the X-machine memory.
  * \param asset_budget Variable for the X-machine memory.
- * \param iradius Variable for the X-machine memory.
+ * \param range Variable for the X-machine memory.
  * \param posx Variable for the X-machine memory.
  * \param posy Variable for the X-machine memory.
  */
-void add_Household_agent(int household_id, PrivateClassifierSystem * agent_classifiersystem, double asset_budget, AssetPortfolioType * current_assetportfolio, AssetPortfolioType * prescribed_assetportfolio, int nr_selected_rule, double current_rule_performance, double EWA_rho, double EWA_phi, double EWA_delta, double EWA_beta, double prescribed_asset_value, double asset_budget, double iradius, double posx, double posy)
+void add_Household_agent(int id, PrivateClassifierSystem * privateclassifiersystem, AssetPortfolio * current_assetportfolio, AssetPortfolio * prescribed_assetportfolio, double asset_budget, double range, double posx, double posy)
 {
 	xmachine * new_xmachine = add_xmachine();
-	xmachine_memory_Household * current = (xmachine_memory_Household *)malloc(sizeof(xmachine_memory_Household));
-		CHECK_POINTER(current);
-
+	xmachine_memory_Household * current = init_Household_agent();
 	new_xmachine->xmachine_Household = current;
-	current->household_id = household_id;
-	current->agent_classifiersystem = agent_classifiersystem;
+	
+	current->id = id;
+	copy_PrivateClassifierSystem_datatype(privateclassifiersystem, current->privateclassifiersystem);
+	copy_AssetPortfolio_datatype(current_assetportfolio, current->current_assetportfolio);
+	copy_AssetPortfolio_datatype(prescribed_assetportfolio, current->prescribed_assetportfolio);
 	current->asset_budget = asset_budget;
-	current->current_assetportfolio = current_assetportfolio;
-	current->prescribed_assetportfolio = prescribed_assetportfolio;
-	current->nr_selected_rule = nr_selected_rule;
-	current->current_rule_performance = current_rule_performance;
-	current->EWA_rho = EWA_rho;
-	current->EWA_phi = EWA_phi;
-	current->EWA_delta = EWA_delta;
-	current->EWA_beta = EWA_beta;
-	current->prescribed_asset_value = prescribed_asset_value;
-	current->asset_budget = asset_budget;
-	current->iradius = iradius;
+	current->range = range;
 	current->posx = posx;
 	current->posy = posy;
 }
 
-/** \fn void add_Firm_agent(double_array * revenues, double_array * sales_costs, double total_revenue, double net_revenue, double operational_cost, double total_wage_payments, double total_input_payments, double interest_payments, double total_earnings, double tax_rate_profits, double pretax_profit, double tax_provision, double net_earnings, double div_payments, double retained_earnings, double current_debt, double debt_interest_rate, double debt_repayments, double share_repurchase_value, int share_repurchase_units, int target_total_shares, int current_total_shares, double total_financial_needs, double financial_needs, double add_financial_needs, double financial_reserves, double target_loans, double target_equity, double bonds_issue_target, double stocks_issue_target, double price, double max_debt, double div_earn_ratio, double debt_earn_ratio, double div_pshare_ratio, double earn_pshare_ratio, double price_earn_ratio, double retained_earn_ratio, double earn_pshare_ratio_growth, double critical_price_earn_ratio, double critical_earn_pshare_ratio, double iradius, double posx, double posy)
+xmachine_memory_Firm * init_Firm_agent()
+{
+	xmachine_memory_Firm * current = (xmachine_memory_Firm *)malloc(sizeof(xmachine_memory_Firm));
+	CHECK_POINTER(current);
+	
+	current->revenues = init_double_array();
+	current->sales_costs = init_double_array();
+	
+	return current;
+}
+
+void add_Firm_agent_internal(xmachine_memory_Firm * current)
+{
+	xmachine * new_xmachine = add_xmachine();
+	new_xmachine->xmachine_Firm = current;
+}
+
+/** \fn void add_Firm_agent(int id, double_array * revenues, double_array * sales_costs, double total_revenue, double net_revenue, double operational_cost, double total_wage_payments, double total_input_payments, double interest_payments, double total_earnings, double tax_rate_profits, double pretax_profit, double tax_provision, double net_earnings, double div_payments, double retained_earnings, double current_debt, double debt_interest_rate, double debt_repayments, double share_repurchase_value, int share_repurchase_units, int target_total_shares, int current_total_shares, double total_financial_needs, double financial_needs, double add_financial_needs, double financial_reserves, double target_loans, double target_equity, double bonds_issue_target, double stocks_issue_target, double price, double max_debt, double div_earn_ratio, double debt_earn_ratio, double div_pshare_ratio, double earn_pshare_ratio, double price_earn_ratio, double retained_earn_ratio, double earn_pshare_ratio_growth, double critical_price_earn_ratio, double critical_earn_pshare_ratio, double range, double posx, double posy)
  * \brief Add Firm X-machine to the current being used X-machine list.
+ * \param id Variable for the X-machine memory.
  * \param revenues Variable for the X-machine memory.
  * \param sales_costs Variable for the X-machine memory.
  * \param total_revenue Variable for the X-machine memory.
@@ -214,19 +1094,19 @@ void add_Household_agent(int household_id, PrivateClassifierSystem * agent_class
  * \param earn_pshare_ratio_growth Variable for the X-machine memory.
  * \param critical_price_earn_ratio Variable for the X-machine memory.
  * \param critical_earn_pshare_ratio Variable for the X-machine memory.
- * \param iradius Variable for the X-machine memory.
+ * \param range Variable for the X-machine memory.
  * \param posx Variable for the X-machine memory.
  * \param posy Variable for the X-machine memory.
  */
-void add_Firm_agent(double_array * revenues, double_array * sales_costs, double total_revenue, double net_revenue, double operational_cost, double total_wage_payments, double total_input_payments, double interest_payments, double total_earnings, double tax_rate_profits, double pretax_profit, double tax_provision, double net_earnings, double div_payments, double retained_earnings, double current_debt, double debt_interest_rate, double debt_repayments, double share_repurchase_value, int share_repurchase_units, int target_total_shares, int current_total_shares, double total_financial_needs, double financial_needs, double add_financial_needs, double financial_reserves, double target_loans, double target_equity, double bonds_issue_target, double stocks_issue_target, double price, double max_debt, double div_earn_ratio, double debt_earn_ratio, double div_pshare_ratio, double earn_pshare_ratio, double price_earn_ratio, double retained_earn_ratio, double earn_pshare_ratio_growth, double critical_price_earn_ratio, double critical_earn_pshare_ratio, double iradius, double posx, double posy)
+void add_Firm_agent(int id, double_array * revenues, double_array * sales_costs, double total_revenue, double net_revenue, double operational_cost, double total_wage_payments, double total_input_payments, double interest_payments, double total_earnings, double tax_rate_profits, double pretax_profit, double tax_provision, double net_earnings, double div_payments, double retained_earnings, double current_debt, double debt_interest_rate, double debt_repayments, double share_repurchase_value, int share_repurchase_units, int target_total_shares, int current_total_shares, double total_financial_needs, double financial_needs, double add_financial_needs, double financial_reserves, double target_loans, double target_equity, double bonds_issue_target, double stocks_issue_target, double price, double max_debt, double div_earn_ratio, double debt_earn_ratio, double div_pshare_ratio, double earn_pshare_ratio, double price_earn_ratio, double retained_earn_ratio, double earn_pshare_ratio_growth, double critical_price_earn_ratio, double critical_earn_pshare_ratio, double range, double posx, double posy)
 {
 	xmachine * new_xmachine = add_xmachine();
-	xmachine_memory_Firm * current = (xmachine_memory_Firm *)malloc(sizeof(xmachine_memory_Firm));
-		CHECK_POINTER(current);
-
+	xmachine_memory_Firm * current = init_Firm_agent();
 	new_xmachine->xmachine_Firm = current;
-	current->revenues = revenues;
-	current->sales_costs = sales_costs;
+	
+	current->id = id;
+	copy_double_array(revenues, current->revenues);
+	copy_double_array(sales_costs, current->sales_costs);
 	current->total_revenue = total_revenue;
 	current->net_revenue = net_revenue;
 	current->operational_cost = operational_cost;
@@ -266,107 +1146,188 @@ void add_Firm_agent(double_array * revenues, double_array * sales_costs, double 
 	current->earn_pshare_ratio_growth = earn_pshare_ratio_growth;
 	current->critical_price_earn_ratio = critical_price_earn_ratio;
 	current->critical_earn_pshare_ratio = critical_earn_pshare_ratio;
-	current->iradius = iradius;
+	current->range = range;
 	current->posx = posx;
 	current->posy = posy;
 }
 
-/** \fn void add_Bank_agent(int id, double iradius, double posx, double posy)
+xmachine_memory_Bank * init_Bank_agent()
+{
+	xmachine_memory_Bank * current = (xmachine_memory_Bank *)malloc(sizeof(xmachine_memory_Bank));
+	CHECK_POINTER(current);
+	
+	
+	return current;
+}
+
+void add_Bank_agent_internal(xmachine_memory_Bank * current)
+{
+	xmachine * new_xmachine = add_xmachine();
+	new_xmachine->xmachine_Bank = current;
+}
+
+/** \fn void add_Bank_agent(int id, double ra, double range, double posx, double posy)
  * \brief Add Bank X-machine to the current being used X-machine list.
  * \param id Variable for the X-machine memory.
- * \param iradius Variable for the X-machine memory.
+ * \param ra Variable for the X-machine memory.
+ * \param range Variable for the X-machine memory.
  * \param posx Variable for the X-machine memory.
  * \param posy Variable for the X-machine memory.
  */
-void add_Bank_agent(int id, double iradius, double posx, double posy)
+void add_Bank_agent(int id, double ra, double range, double posx, double posy)
 {
 	xmachine * new_xmachine = add_xmachine();
-	xmachine_memory_Bank * current = (xmachine_memory_Bank *)malloc(sizeof(xmachine_memory_Bank));
-		CHECK_POINTER(current);
-
+	xmachine_memory_Bank * current = init_Bank_agent();
 	new_xmachine->xmachine_Bank = current;
+	
 	current->id = id;
-	current->iradius = iradius;
+	current->ra = ra;
+	current->range = range;
 	current->posx = posx;
 	current->posy = posy;
 }
 
-/** \fn void add_ClearingHouseMechanism_agent(int id, double iradius, double posx, double posy)
- * \brief Add ClearingHouseMechanism X-machine to the current being used X-machine list.
+xmachine_memory_ClearingHouse * init_ClearingHouse_agent()
+{
+	xmachine_memory_ClearingHouse * current = (xmachine_memory_ClearingHouse *)malloc(sizeof(xmachine_memory_ClearingHouse));
+	CHECK_POINTER(current);
+	
+	
+	return current;
+}
+
+void add_ClearingHouse_agent_internal(xmachine_memory_ClearingHouse * current)
+{
+	xmachine * new_xmachine = add_xmachine();
+	new_xmachine->xmachine_ClearingHouse = current;
+}
+
+/** \fn void add_ClearingHouse_agent(int id, double rg, double range, double posx, double posy)
+ * \brief Add ClearingHouse X-machine to the current being used X-machine list.
  * \param id Variable for the X-machine memory.
- * \param iradius Variable for the X-machine memory.
+ * \param rg Variable for the X-machine memory.
+ * \param range Variable for the X-machine memory.
  * \param posx Variable for the X-machine memory.
  * \param posy Variable for the X-machine memory.
  */
-void add_ClearingHouseMechanism_agent(int id, double iradius, double posx, double posy)
+void add_ClearingHouse_agent(int id, double rg, double range, double posx, double posy)
 {
 	xmachine * new_xmachine = add_xmachine();
-	xmachine_memory_ClearingHouseMechanism * current = (xmachine_memory_ClearingHouseMechanism *)malloc(sizeof(xmachine_memory_ClearingHouseMechanism));
-		CHECK_POINTER(current);
-
-	new_xmachine->xmachine_ClearingHouseMechanism = current;
+	xmachine_memory_ClearingHouse * current = init_ClearingHouse_agent();
+	new_xmachine->xmachine_ClearingHouse = current;
+	
 	current->id = id;
-	current->iradius = iradius;
+	current->rg = rg;
+	current->range = range;
 	current->posx = posx;
 	current->posy = posy;
 }
 
-/** \fn void add_LimitOrderBook_agent(double re, double iradius, double posx, double posy)
- * \brief Add LimitOrderBook X-machine to the current being used X-machine list.
- * \param re Variable for the X-machine memory.
- * \param iradius Variable for the X-machine memory.
- * \param posx Variable for the X-machine memory.
- * \param posy Variable for the X-machine memory.
- */
-void add_LimitOrderBook_agent(double re, double iradius, double posx, double posy)
+xmachine_memory_LimitOrderBook * init_LimitOrderBook_agent()
 {
-	xmachine * new_xmachine = add_xmachine();
 	xmachine_memory_LimitOrderBook * current = (xmachine_memory_LimitOrderBook *)malloc(sizeof(xmachine_memory_LimitOrderBook));
-		CHECK_POINTER(current);
+	CHECK_POINTER(current);
+	
+	
+	return current;
+}
 
+void add_LimitOrderBook_agent_internal(xmachine_memory_LimitOrderBook * current)
+{
+	xmachine * new_xmachine = add_xmachine();
 	new_xmachine->xmachine_LimitOrderBook = current;
+}
+
+/** \fn void add_LimitOrderBook_agent(int id, double re, double range, double posx, double posy)
+ * \brief Add LimitOrderBook X-machine to the current being used X-machine list.
+ * \param id Variable for the X-machine memory.
+ * \param re Variable for the X-machine memory.
+ * \param range Variable for the X-machine memory.
+ * \param posx Variable for the X-machine memory.
+ * \param posy Variable for the X-machine memory.
+ */
+void add_LimitOrderBook_agent(int id, double re, double range, double posx, double posy)
+{
+	xmachine * new_xmachine = add_xmachine();
+	xmachine_memory_LimitOrderBook * current = init_LimitOrderBook_agent();
+	new_xmachine->xmachine_LimitOrderBook = current;
+	
+	current->id = id;
 	current->re = re;
-	current->iradius = iradius;
+	current->range = range;
 	current->posx = posx;
 	current->posy = posy;
 }
 
-/** \fn void add_Government_agent(double rj, double iradius, double posx, double posy)
- * \brief Add Government X-machine to the current being used X-machine list.
- * \param rj Variable for the X-machine memory.
- * \param iradius Variable for the X-machine memory.
- * \param posx Variable for the X-machine memory.
- * \param posy Variable for the X-machine memory.
- */
-void add_Government_agent(double rj, double iradius, double posx, double posy)
+xmachine_memory_Government * init_Government_agent()
 {
-	xmachine * new_xmachine = add_xmachine();
 	xmachine_memory_Government * current = (xmachine_memory_Government *)malloc(sizeof(xmachine_memory_Government));
-		CHECK_POINTER(current);
+	CHECK_POINTER(current);
+	
+	
+	return current;
+}
 
+void add_Government_agent_internal(xmachine_memory_Government * current)
+{
+	xmachine * new_xmachine = add_xmachine();
 	new_xmachine->xmachine_Government = current;
+}
+
+/** \fn void add_Government_agent(int id, double rj, double range, double posx, double posy)
+ * \brief Add Government X-machine to the current being used X-machine list.
+ * \param id Variable for the X-machine memory.
+ * \param rj Variable for the X-machine memory.
+ * \param range Variable for the X-machine memory.
+ * \param posx Variable for the X-machine memory.
+ * \param posy Variable for the X-machine memory.
+ */
+void add_Government_agent(int id, double rj, double range, double posx, double posy)
+{
+	xmachine * new_xmachine = add_xmachine();
+	xmachine_memory_Government * current = init_Government_agent();
+	new_xmachine->xmachine_Government = current;
+	
+	current->id = id;
 	current->rj = rj;
-	current->iradius = iradius;
+	current->range = range;
 	current->posx = posx;
 	current->posy = posy;
 }
 
-/** \fn void add_FinancialAdvisor_agent(PublicClassifierSystem * central_classifiersystem, double iradius, double posx, double posy)
- * \brief Add FinancialAdvisor X-machine to the current being used X-machine list.
- * \param central_classifiersystem Variable for the X-machine memory.
- * \param iradius Variable for the X-machine memory.
+xmachine_memory_FinancialAgent * init_FinancialAgent_agent()
+{
+	xmachine_memory_FinancialAgent * current = (xmachine_memory_FinancialAgent *)malloc(sizeof(xmachine_memory_FinancialAgent));
+	CHECK_POINTER(current);
+	
+	current->publicclassifiersystem = init_PublicClassifierSystem();
+	
+	return current;
+}
+
+void add_FinancialAgent_agent_internal(xmachine_memory_FinancialAgent * current)
+{
+	xmachine * new_xmachine = add_xmachine();
+	new_xmachine->xmachine_FinancialAgent = current;
+}
+
+/** \fn void add_FinancialAgent_agent(int id, PublicClassifierSystem * publicclassifiersystem, double range, double posx, double posy)
+ * \brief Add FinancialAgent X-machine to the current being used X-machine list.
+ * \param id Variable for the X-machine memory.
+ * \param publicclassifiersystem Variable for the X-machine memory.
+ * \param range Variable for the X-machine memory.
  * \param posx Variable for the X-machine memory.
  * \param posy Variable for the X-machine memory.
  */
-void add_FinancialAdvisor_agent(PublicClassifierSystem * central_classifiersystem, double iradius, double posx, double posy)
+void add_FinancialAgent_agent(int id, PublicClassifierSystem * publicclassifiersystem, double range, double posx, double posy)
 {
 	xmachine * new_xmachine = add_xmachine();
-	xmachine_memory_FinancialAdvisor * current = (xmachine_memory_FinancialAdvisor *)malloc(sizeof(xmachine_memory_FinancialAdvisor));
-		CHECK_POINTER(current);
-
-	new_xmachine->xmachine_FinancialAdvisor = current;
-	current->central_classifiersystem = central_classifiersystem;
-	current->iradius = iradius;
+	xmachine_memory_FinancialAgent * current = init_FinancialAgent_agent();
+	new_xmachine->xmachine_FinancialAgent = current;
+	
+	current->id = id;
+	copy_PublicClassifierSystem_datatype(publicclassifiersystem, current->publicclassifiersystem);
+	current->range = range;
 	current->posx = posx;
 	current->posy = posy;
 }
@@ -388,6 +1349,9 @@ void free_agent()
 			else *p_xmachine = head->next;
 			if(head->xmachine_Household)
 			{
+				free_PrivateClassifierSystem_datatype(head->xmachine_Household->privateclassifiersystem);
+				free_AssetPortfolio_datatype(head->xmachine_Household->current_assetportfolio);
+				free_AssetPortfolio_datatype(head->xmachine_Household->prescribed_assetportfolio);
 				free(head->xmachine_Household);
 			}
 			if(head->xmachine_Firm)
@@ -400,9 +1364,9 @@ void free_agent()
 			{
 				free(head->xmachine_Bank);
 			}
-			if(head->xmachine_ClearingHouseMechanism)
+			if(head->xmachine_ClearingHouse)
 			{
-				free(head->xmachine_ClearingHouseMechanism);
+				free(head->xmachine_ClearingHouse);
 			}
 			if(head->xmachine_LimitOrderBook)
 			{
@@ -412,11 +1376,11 @@ void free_agent()
 			{
 				free(head->xmachine_Government);
 			}
-			if(head->xmachine_FinancialAdvisor)
+			if(head->xmachine_FinancialAgent)
 			{
-				free(head->xmachine_FinancialAdvisor);
+				free_PublicClassifierSystem_datatype(head->xmachine_FinancialAgent->publicclassifiersystem);
+				free(head->xmachine_FinancialAgent);
 			}
-
 		free(head);
 		head = NULL;
 	}
@@ -444,7 +1408,7 @@ void freexmachines()
 		tmp = head->next;
 		if(head->xmachine_Household)
 		{
-			free(head->xmachine_Household->agent_classifiersystem);
+			free(head->xmachine_Household->privateclassifiersystem);
 			free(head->xmachine_Household->current_assetportfolio);
 			free(head->xmachine_Household->prescribed_assetportfolio);
 			free(head->xmachine_Household);
@@ -459,9 +1423,9 @@ void freexmachines()
 		{
 			free(head->xmachine_Bank);
 		}
-		if(head->xmachine_ClearingHouseMechanism)
+		if(head->xmachine_ClearingHouse)
 		{
-			free(head->xmachine_ClearingHouseMechanism);
+			free(head->xmachine_ClearingHouse);
 		}
 		if(head->xmachine_LimitOrderBook)
 		{
@@ -471,10 +1435,10 @@ void freexmachines()
 		{
 			free(head->xmachine_Government);
 		}
-		if(head->xmachine_FinancialAdvisor)
+		if(head->xmachine_FinancialAgent)
 		{
-			free(head->xmachine_FinancialAdvisor->central_classifiersystem);
-			free(head->xmachine_FinancialAdvisor);
+			free(head->xmachine_FinancialAgent->publicclassifiersystem);
+			free(head->xmachine_FinancialAgent);
 		}
 		free(head);
 		head = tmp;
@@ -484,35 +1448,73 @@ void freexmachines()
 }
 
 
-/** \fn void set_household_id(int household_id) 
- * \brief Set household_id memory variable for current X-machine.
- * \param household_id New value for variable.
+/** \fn void set_id(int id) 
+ * \brief Set id memory variable for current X-machine.
+ * \param id New value for variable.
  */
-void set_household_id(int household_id)
+void set_id(int id)
 {
-	if(current_xmachine->xmachine_Household) current_xmachine->xmachine_Household->household_id = household_id;
+	if(current_xmachine->xmachine_Household) current_xmachine->xmachine_Household->id = id;
+	if(current_xmachine->xmachine_Firm) current_xmachine->xmachine_Firm->id = id;
+	if(current_xmachine->xmachine_Bank) current_xmachine->xmachine_Bank->id = id;
+	if(current_xmachine->xmachine_ClearingHouse) current_xmachine->xmachine_ClearingHouse->id = id;
+	if(current_xmachine->xmachine_LimitOrderBook) current_xmachine->xmachine_LimitOrderBook->id = id;
+	if(current_xmachine->xmachine_Government) current_xmachine->xmachine_Government->id = id;
+	if(current_xmachine->xmachine_FinancialAgent) current_xmachine->xmachine_FinancialAgent->id = id;
 }
 
-/** \fn int get_household_id()
- * \brief Get household_id memory variable from current X-machine.
+/** \fn int get_id()
+ * \brief Get id memory variable from current X-machine.
  * \return Value for variable.
  */
-int get_household_id()
+int get_id()
 {
-	if(current_xmachine->xmachine_Household) return current_xmachine->xmachine_Household->household_id;
+	if(current_xmachine->xmachine_Household) return current_xmachine->xmachine_Household->id;
+	if(current_xmachine->xmachine_Firm) return current_xmachine->xmachine_Firm->id;
+	if(current_xmachine->xmachine_Bank) return current_xmachine->xmachine_Bank->id;
+	if(current_xmachine->xmachine_ClearingHouse) return current_xmachine->xmachine_ClearingHouse->id;
+	if(current_xmachine->xmachine_LimitOrderBook) return current_xmachine->xmachine_LimitOrderBook->id;
+	if(current_xmachine->xmachine_Government) return current_xmachine->xmachine_Government->id;
+	if(current_xmachine->xmachine_FinancialAgent) return current_xmachine->xmachine_FinancialAgent->id;
 
     /* suppress compiler warning by returning dummy value */
     /* this statement should rightfully NEVER be reached */
     return (int)0;
 }
 
-/** \fn PrivateClassifierSystem get_agent_classifiersystem()
- * \brief Get agent_classifiersystem memory variable from current X-machine.
+/** \fn PrivateClassifierSystem get_privateclassifiersystem()
+ * \brief Get privateclassifiersystem memory variable from current X-machine.
  * \return Value for variable.
  */
-PrivateClassifierSystem * get_agent_classifiersystem()
+PrivateClassifierSystem * get_privateclassifiersystem()
 {
-	if(current_xmachine->xmachine_Household) return current_xmachine->xmachine_Household->agent_classifiersystem;
+	if(current_xmachine->xmachine_Household) return current_xmachine->xmachine_Household->privateclassifiersystem;
+
+    /* suppress compiler warning by returning dummy value */
+    /* this statement should rightfully NEVER be reached */
+    return NULL;
+}
+
+/** \fn AssetPortfolio get_current_assetportfolio()
+ * \brief Get current_assetportfolio memory variable from current X-machine.
+ * \return Value for variable.
+ */
+AssetPortfolio * get_current_assetportfolio()
+{
+	if(current_xmachine->xmachine_Household) return current_xmachine->xmachine_Household->current_assetportfolio;
+
+    /* suppress compiler warning by returning dummy value */
+    /* this statement should rightfully NEVER be reached */
+    return NULL;
+}
+
+/** \fn AssetPortfolio get_prescribed_assetportfolio()
+ * \brief Get prescribed_assetportfolio memory variable from current X-machine.
+ * \return Value for variable.
+ */
+AssetPortfolio * get_prescribed_assetportfolio()
+{
+	if(current_xmachine->xmachine_Household) return current_xmachine->xmachine_Household->prescribed_assetportfolio;
 
     /* suppress compiler warning by returning dummy value */
     /* this statement should rightfully NEVER be reached */
@@ -541,214 +1543,34 @@ double get_asset_budget()
     return (double)0;
 }
 
-/** \fn AssetPortfolioType get_current_assetportfolio()
- * \brief Get current_assetportfolio memory variable from current X-machine.
+/** \fn void set_range(double range) 
+ * \brief Set range memory variable for current X-machine.
+ * \param range New value for variable.
+ */
+void set_range(double range)
+{
+	if(current_xmachine->xmachine_Household) current_xmachine->xmachine_Household->range = range;
+	if(current_xmachine->xmachine_Firm) current_xmachine->xmachine_Firm->range = range;
+	if(current_xmachine->xmachine_Bank) current_xmachine->xmachine_Bank->range = range;
+	if(current_xmachine->xmachine_ClearingHouse) current_xmachine->xmachine_ClearingHouse->range = range;
+	if(current_xmachine->xmachine_LimitOrderBook) current_xmachine->xmachine_LimitOrderBook->range = range;
+	if(current_xmachine->xmachine_Government) current_xmachine->xmachine_Government->range = range;
+	if(current_xmachine->xmachine_FinancialAgent) current_xmachine->xmachine_FinancialAgent->range = range;
+}
+
+/** \fn double get_range()
+ * \brief Get range memory variable from current X-machine.
  * \return Value for variable.
  */
-AssetPortfolioType * get_current_assetportfolio()
+double get_range()
 {
-	if(current_xmachine->xmachine_Household) return current_xmachine->xmachine_Household->current_assetportfolio;
-
-    /* suppress compiler warning by returning dummy value */
-    /* this statement should rightfully NEVER be reached */
-    return NULL;
-}
-
-/** \fn AssetPortfolioType get_prescribed_assetportfolio()
- * \brief Get prescribed_assetportfolio memory variable from current X-machine.
- * \return Value for variable.
- */
-AssetPortfolioType * get_prescribed_assetportfolio()
-{
-	if(current_xmachine->xmachine_Household) return current_xmachine->xmachine_Household->prescribed_assetportfolio;
-
-    /* suppress compiler warning by returning dummy value */
-    /* this statement should rightfully NEVER be reached */
-    return NULL;
-}
-
-/** \fn void set_nr_selected_rule(int nr_selected_rule) 
- * \brief Set nr_selected_rule memory variable for current X-machine.
- * \param nr_selected_rule New value for variable.
- */
-void set_nr_selected_rule(int nr_selected_rule)
-{
-	if(current_xmachine->xmachine_Household) current_xmachine->xmachine_Household->nr_selected_rule = nr_selected_rule;
-}
-
-/** \fn int get_nr_selected_rule()
- * \brief Get nr_selected_rule memory variable from current X-machine.
- * \return Value for variable.
- */
-int get_nr_selected_rule()
-{
-	if(current_xmachine->xmachine_Household) return current_xmachine->xmachine_Household->nr_selected_rule;
-
-    /* suppress compiler warning by returning dummy value */
-    /* this statement should rightfully NEVER be reached */
-    return (int)0;
-}
-
-/** \fn void set_current_rule_performance(double current_rule_performance) 
- * \brief Set current_rule_performance memory variable for current X-machine.
- * \param current_rule_performance New value for variable.
- */
-void set_current_rule_performance(double current_rule_performance)
-{
-	if(current_xmachine->xmachine_Household) current_xmachine->xmachine_Household->current_rule_performance = current_rule_performance;
-}
-
-/** \fn double get_current_rule_performance()
- * \brief Get current_rule_performance memory variable from current X-machine.
- * \return Value for variable.
- */
-double get_current_rule_performance()
-{
-	if(current_xmachine->xmachine_Household) return current_xmachine->xmachine_Household->current_rule_performance;
-
-    /* suppress compiler warning by returning dummy value */
-    /* this statement should rightfully NEVER be reached */
-    return (double)0;
-}
-
-/** \fn void set_EWA_rho(double EWA_rho) 
- * \brief Set EWA_rho memory variable for current X-machine.
- * \param EWA_rho New value for variable.
- */
-void set_EWA_rho(double EWA_rho)
-{
-	if(current_xmachine->xmachine_Household) current_xmachine->xmachine_Household->EWA_rho = EWA_rho;
-}
-
-/** \fn double get_EWA_rho()
- * \brief Get EWA_rho memory variable from current X-machine.
- * \return Value for variable.
- */
-double get_EWA_rho()
-{
-	if(current_xmachine->xmachine_Household) return current_xmachine->xmachine_Household->EWA_rho;
-
-    /* suppress compiler warning by returning dummy value */
-    /* this statement should rightfully NEVER be reached */
-    return (double)0;
-}
-
-/** \fn void set_EWA_phi(double EWA_phi) 
- * \brief Set EWA_phi memory variable for current X-machine.
- * \param EWA_phi New value for variable.
- */
-void set_EWA_phi(double EWA_phi)
-{
-	if(current_xmachine->xmachine_Household) current_xmachine->xmachine_Household->EWA_phi = EWA_phi;
-}
-
-/** \fn double get_EWA_phi()
- * \brief Get EWA_phi memory variable from current X-machine.
- * \return Value for variable.
- */
-double get_EWA_phi()
-{
-	if(current_xmachine->xmachine_Household) return current_xmachine->xmachine_Household->EWA_phi;
-
-    /* suppress compiler warning by returning dummy value */
-    /* this statement should rightfully NEVER be reached */
-    return (double)0;
-}
-
-/** \fn void set_EWA_delta(double EWA_delta) 
- * \brief Set EWA_delta memory variable for current X-machine.
- * \param EWA_delta New value for variable.
- */
-void set_EWA_delta(double EWA_delta)
-{
-	if(current_xmachine->xmachine_Household) current_xmachine->xmachine_Household->EWA_delta = EWA_delta;
-}
-
-/** \fn double get_EWA_delta()
- * \brief Get EWA_delta memory variable from current X-machine.
- * \return Value for variable.
- */
-double get_EWA_delta()
-{
-	if(current_xmachine->xmachine_Household) return current_xmachine->xmachine_Household->EWA_delta;
-
-    /* suppress compiler warning by returning dummy value */
-    /* this statement should rightfully NEVER be reached */
-    return (double)0;
-}
-
-/** \fn void set_EWA_beta(double EWA_beta) 
- * \brief Set EWA_beta memory variable for current X-machine.
- * \param EWA_beta New value for variable.
- */
-void set_EWA_beta(double EWA_beta)
-{
-	if(current_xmachine->xmachine_Household) current_xmachine->xmachine_Household->EWA_beta = EWA_beta;
-}
-
-/** \fn double get_EWA_beta()
- * \brief Get EWA_beta memory variable from current X-machine.
- * \return Value for variable.
- */
-double get_EWA_beta()
-{
-	if(current_xmachine->xmachine_Household) return current_xmachine->xmachine_Household->EWA_beta;
-
-    /* suppress compiler warning by returning dummy value */
-    /* this statement should rightfully NEVER be reached */
-    return (double)0;
-}
-
-/** \fn void set_prescribed_asset_value(double prescribed_asset_value) 
- * \brief Set prescribed_asset_value memory variable for current X-machine.
- * \param prescribed_asset_value New value for variable.
- */
-void set_prescribed_asset_value(double prescribed_asset_value)
-{
-	if(current_xmachine->xmachine_Household) current_xmachine->xmachine_Household->prescribed_asset_value = prescribed_asset_value;
-}
-
-/** \fn double get_prescribed_asset_value()
- * \brief Get prescribed_asset_value memory variable from current X-machine.
- * \return Value for variable.
- */
-double get_prescribed_asset_value()
-{
-	if(current_xmachine->xmachine_Household) return current_xmachine->xmachine_Household->prescribed_asset_value;
-
-    /* suppress compiler warning by returning dummy value */
-    /* this statement should rightfully NEVER be reached */
-    return (double)0;
-}
-
-/** \fn void set_iradius(double iradius) 
- * \brief Set iradius memory variable for current X-machine.
- * \param iradius New value for variable.
- */
-void set_iradius(double iradius)
-{
-	if(current_xmachine->xmachine_Household) current_xmachine->xmachine_Household->iradius = iradius;
-	if(current_xmachine->xmachine_Firm) current_xmachine->xmachine_Firm->iradius = iradius;
-	if(current_xmachine->xmachine_Bank) current_xmachine->xmachine_Bank->iradius = iradius;
-	if(current_xmachine->xmachine_ClearingHouseMechanism) current_xmachine->xmachine_ClearingHouseMechanism->iradius = iradius;
-	if(current_xmachine->xmachine_LimitOrderBook) current_xmachine->xmachine_LimitOrderBook->iradius = iradius;
-	if(current_xmachine->xmachine_Government) current_xmachine->xmachine_Government->iradius = iradius;
-	if(current_xmachine->xmachine_FinancialAdvisor) current_xmachine->xmachine_FinancialAdvisor->iradius = iradius;
-}
-
-/** \fn double get_iradius()
- * \brief Get iradius memory variable from current X-machine.
- * \return Value for variable.
- */
-double get_iradius()
-{
-	if(current_xmachine->xmachine_Household) return current_xmachine->xmachine_Household->iradius;
-	if(current_xmachine->xmachine_Firm) return current_xmachine->xmachine_Firm->iradius;
-	if(current_xmachine->xmachine_Bank) return current_xmachine->xmachine_Bank->iradius;
-	if(current_xmachine->xmachine_ClearingHouseMechanism) return current_xmachine->xmachine_ClearingHouseMechanism->iradius;
-	if(current_xmachine->xmachine_LimitOrderBook) return current_xmachine->xmachine_LimitOrderBook->iradius;
-	if(current_xmachine->xmachine_Government) return current_xmachine->xmachine_Government->iradius;
-	if(current_xmachine->xmachine_FinancialAdvisor) return current_xmachine->xmachine_FinancialAdvisor->iradius;
+	if(current_xmachine->xmachine_Household) return current_xmachine->xmachine_Household->range;
+	if(current_xmachine->xmachine_Firm) return current_xmachine->xmachine_Firm->range;
+	if(current_xmachine->xmachine_Bank) return current_xmachine->xmachine_Bank->range;
+	if(current_xmachine->xmachine_ClearingHouse) return current_xmachine->xmachine_ClearingHouse->range;
+	if(current_xmachine->xmachine_LimitOrderBook) return current_xmachine->xmachine_LimitOrderBook->range;
+	if(current_xmachine->xmachine_Government) return current_xmachine->xmachine_Government->range;
+	if(current_xmachine->xmachine_FinancialAgent) return current_xmachine->xmachine_FinancialAgent->range;
 
     /* suppress compiler warning by returning dummy value */
     /* this statement should rightfully NEVER be reached */
@@ -764,10 +1586,10 @@ void set_posx(double posx)
 	if(current_xmachine->xmachine_Household) current_xmachine->xmachine_Household->posx = posx;
 	if(current_xmachine->xmachine_Firm) current_xmachine->xmachine_Firm->posx = posx;
 	if(current_xmachine->xmachine_Bank) current_xmachine->xmachine_Bank->posx = posx;
-	if(current_xmachine->xmachine_ClearingHouseMechanism) current_xmachine->xmachine_ClearingHouseMechanism->posx = posx;
+	if(current_xmachine->xmachine_ClearingHouse) current_xmachine->xmachine_ClearingHouse->posx = posx;
 	if(current_xmachine->xmachine_LimitOrderBook) current_xmachine->xmachine_LimitOrderBook->posx = posx;
 	if(current_xmachine->xmachine_Government) current_xmachine->xmachine_Government->posx = posx;
-	if(current_xmachine->xmachine_FinancialAdvisor) current_xmachine->xmachine_FinancialAdvisor->posx = posx;
+	if(current_xmachine->xmachine_FinancialAgent) current_xmachine->xmachine_FinancialAgent->posx = posx;
 }
 
 /** \fn double get_posx()
@@ -779,10 +1601,10 @@ double get_posx()
 	if(current_xmachine->xmachine_Household) return current_xmachine->xmachine_Household->posx;
 	if(current_xmachine->xmachine_Firm) return current_xmachine->xmachine_Firm->posx;
 	if(current_xmachine->xmachine_Bank) return current_xmachine->xmachine_Bank->posx;
-	if(current_xmachine->xmachine_ClearingHouseMechanism) return current_xmachine->xmachine_ClearingHouseMechanism->posx;
+	if(current_xmachine->xmachine_ClearingHouse) return current_xmachine->xmachine_ClearingHouse->posx;
 	if(current_xmachine->xmachine_LimitOrderBook) return current_xmachine->xmachine_LimitOrderBook->posx;
 	if(current_xmachine->xmachine_Government) return current_xmachine->xmachine_Government->posx;
-	if(current_xmachine->xmachine_FinancialAdvisor) return current_xmachine->xmachine_FinancialAdvisor->posx;
+	if(current_xmachine->xmachine_FinancialAgent) return current_xmachine->xmachine_FinancialAgent->posx;
 
     /* suppress compiler warning by returning dummy value */
     /* this statement should rightfully NEVER be reached */
@@ -798,10 +1620,10 @@ void set_posy(double posy)
 	if(current_xmachine->xmachine_Household) current_xmachine->xmachine_Household->posy = posy;
 	if(current_xmachine->xmachine_Firm) current_xmachine->xmachine_Firm->posy = posy;
 	if(current_xmachine->xmachine_Bank) current_xmachine->xmachine_Bank->posy = posy;
-	if(current_xmachine->xmachine_ClearingHouseMechanism) current_xmachine->xmachine_ClearingHouseMechanism->posy = posy;
+	if(current_xmachine->xmachine_ClearingHouse) current_xmachine->xmachine_ClearingHouse->posy = posy;
 	if(current_xmachine->xmachine_LimitOrderBook) current_xmachine->xmachine_LimitOrderBook->posy = posy;
 	if(current_xmachine->xmachine_Government) current_xmachine->xmachine_Government->posy = posy;
-	if(current_xmachine->xmachine_FinancialAdvisor) current_xmachine->xmachine_FinancialAdvisor->posy = posy;
+	if(current_xmachine->xmachine_FinancialAgent) current_xmachine->xmachine_FinancialAgent->posy = posy;
 }
 
 /** \fn double get_posy()
@@ -813,10 +1635,10 @@ double get_posy()
 	if(current_xmachine->xmachine_Household) return current_xmachine->xmachine_Household->posy;
 	if(current_xmachine->xmachine_Firm) return current_xmachine->xmachine_Firm->posy;
 	if(current_xmachine->xmachine_Bank) return current_xmachine->xmachine_Bank->posy;
-	if(current_xmachine->xmachine_ClearingHouseMechanism) return current_xmachine->xmachine_ClearingHouseMechanism->posy;
+	if(current_xmachine->xmachine_ClearingHouse) return current_xmachine->xmachine_ClearingHouse->posy;
 	if(current_xmachine->xmachine_LimitOrderBook) return current_xmachine->xmachine_LimitOrderBook->posy;
 	if(current_xmachine->xmachine_Government) return current_xmachine->xmachine_Government->posy;
-	if(current_xmachine->xmachine_FinancialAdvisor) return current_xmachine->xmachine_FinancialAdvisor->posy;
+	if(current_xmachine->xmachine_FinancialAgent) return current_xmachine->xmachine_FinancialAgent->posy;
 
     /* suppress compiler warning by returning dummy value */
     /* this statement should rightfully NEVER be reached */
@@ -1707,28 +2529,48 @@ double get_critical_earn_pshare_ratio()
     return (double)0;
 }
 
-/** \fn void set_id(int id) 
- * \brief Set id memory variable for current X-machine.
- * \param id New value for variable.
+/** \fn void set_ra(double ra) 
+ * \brief Set ra memory variable for current X-machine.
+ * \param ra New value for variable.
  */
-void set_id(int id)
+void set_ra(double ra)
 {
-	if(current_xmachine->xmachine_Bank) current_xmachine->xmachine_Bank->id = id;
-	if(current_xmachine->xmachine_ClearingHouseMechanism) current_xmachine->xmachine_ClearingHouseMechanism->id = id;
+	if(current_xmachine->xmachine_Bank) current_xmachine->xmachine_Bank->ra = ra;
 }
 
-/** \fn int get_id()
- * \brief Get id memory variable from current X-machine.
+/** \fn double get_ra()
+ * \brief Get ra memory variable from current X-machine.
  * \return Value for variable.
  */
-int get_id()
+double get_ra()
 {
-	if(current_xmachine->xmachine_Bank) return current_xmachine->xmachine_Bank->id;
-	if(current_xmachine->xmachine_ClearingHouseMechanism) return current_xmachine->xmachine_ClearingHouseMechanism->id;
+	if(current_xmachine->xmachine_Bank) return current_xmachine->xmachine_Bank->ra;
 
     /* suppress compiler warning by returning dummy value */
     /* this statement should rightfully NEVER be reached */
-    return (int)0;
+    return (double)0;
+}
+
+/** \fn void set_rg(double rg) 
+ * \brief Set rg memory variable for current X-machine.
+ * \param rg New value for variable.
+ */
+void set_rg(double rg)
+{
+	if(current_xmachine->xmachine_ClearingHouse) current_xmachine->xmachine_ClearingHouse->rg = rg;
+}
+
+/** \fn double get_rg()
+ * \brief Get rg memory variable from current X-machine.
+ * \return Value for variable.
+ */
+double get_rg()
+{
+	if(current_xmachine->xmachine_ClearingHouse) return current_xmachine->xmachine_ClearingHouse->rg;
+
+    /* suppress compiler warning by returning dummy value */
+    /* this statement should rightfully NEVER be reached */
+    return (double)0;
 }
 
 /** \fn void set_re(double re) 
@@ -1775,13 +2617,13 @@ double get_rj()
     return (double)0;
 }
 
-/** \fn PublicClassifierSystem get_central_classifiersystem()
- * \brief Get central_classifiersystem memory variable from current X-machine.
+/** \fn PublicClassifierSystem get_publicclassifiersystem()
+ * \brief Get publicclassifiersystem memory variable from current X-machine.
  * \return Value for variable.
  */
-PublicClassifierSystem * get_central_classifiersystem()
+PublicClassifierSystem * get_publicclassifiersystem()
 {
-	if(current_xmachine->xmachine_FinancialAdvisor) return current_xmachine->xmachine_FinancialAdvisor->central_classifiersystem;
+	if(current_xmachine->xmachine_FinancialAgent) return current_xmachine->xmachine_FinancialAgent->publicclassifiersystem;
 
     /* suppress compiler warning by returning dummy value */
     /* this statement should rightfully NEVER be reached */
@@ -1796,13 +2638,13 @@ PublicClassifierSystem * get_central_classifiersystem()
 double agent_get_range()
 {
     double value = 0.0;
-    if (current_xmachine->xmachine_Household) value = current_xmachine->xmachine_Household->;
-    if (current_xmachine->xmachine_Firm) value = current_xmachine->xmachine_Firm->;
-    if (current_xmachine->xmachine_Bank) value = current_xmachine->xmachine_Bank->;
-    if (current_xmachine->xmachine_ClearingHouseMechanism) value = current_xmachine->xmachine_ClearingHouseMechanism->;
-    if (current_xmachine->xmachine_LimitOrderBook) value = current_xmachine->xmachine_LimitOrderBook->;
-    if (current_xmachine->xmachine_Government) value = current_xmachine->xmachine_Government->;
-    if (current_xmachine->xmachine_FinancialAdvisor) value = current_xmachine->xmachine_FinancialAdvisor->;
+    if (current_xmachine->xmachine_Household) value = current_xmachine->xmachine_Household->range;
+    if (current_xmachine->xmachine_Firm) value = current_xmachine->xmachine_Firm->range;
+    if (current_xmachine->xmachine_Bank) value = current_xmachine->xmachine_Bank->range;
+    if (current_xmachine->xmachine_ClearingHouse) value = current_xmachine->xmachine_ClearingHouse->range;
+    if (current_xmachine->xmachine_LimitOrderBook) value = current_xmachine->xmachine_LimitOrderBook->range;
+    if (current_xmachine->xmachine_Government) value = current_xmachine->xmachine_Government->range;
+    if (current_xmachine->xmachine_FinancialAgent) value = current_xmachine->xmachine_FinancialAgent->range;
 
     return value;
 }
@@ -1814,13 +2656,13 @@ double agent_get_range()
 int agent_get_id()
 {
     int value = 0;
-    if (current_xmachine->xmachine_Household) value = current_xmachine->xmachine_Household->;
-    if (current_xmachine->xmachine_Firm) value = current_xmachine->xmachine_Firm->;
+    if (current_xmachine->xmachine_Household) value = current_xmachine->xmachine_Household->id;
+    if (current_xmachine->xmachine_Firm) value = current_xmachine->xmachine_Firm->id;
     if (current_xmachine->xmachine_Bank) value = current_xmachine->xmachine_Bank->id;
-    if (current_xmachine->xmachine_ClearingHouseMechanism) value = current_xmachine->xmachine_ClearingHouseMechanism->id;
-    if (current_xmachine->xmachine_LimitOrderBook) value = current_xmachine->xmachine_LimitOrderBook->;
-    if (current_xmachine->xmachine_Government) value = current_xmachine->xmachine_Government->;
-    if (current_xmachine->xmachine_FinancialAdvisor) value = current_xmachine->xmachine_FinancialAdvisor->;
+    if (current_xmachine->xmachine_ClearingHouse) value = current_xmachine->xmachine_ClearingHouse->id;
+    if (current_xmachine->xmachine_LimitOrderBook) value = current_xmachine->xmachine_LimitOrderBook->id;
+    if (current_xmachine->xmachine_Government) value = current_xmachine->xmachine_Government->id;
+    if (current_xmachine->xmachine_FinancialAgent) value = current_xmachine->xmachine_FinancialAgent->id;
 
     return value;
 }
@@ -1835,10 +2677,10 @@ double agent_get_x()
     if (current_xmachine->xmachine_Household) value = current_xmachine->xmachine_Household->posx;
     if (current_xmachine->xmachine_Firm) value = current_xmachine->xmachine_Firm->posx;
     if (current_xmachine->xmachine_Bank) value = current_xmachine->xmachine_Bank->posx;
-    if (current_xmachine->xmachine_ClearingHouseMechanism) value = current_xmachine->xmachine_ClearingHouseMechanism->posx;
+    if (current_xmachine->xmachine_ClearingHouse) value = current_xmachine->xmachine_ClearingHouse->posx;
     if (current_xmachine->xmachine_LimitOrderBook) value = current_xmachine->xmachine_LimitOrderBook->posx;
     if (current_xmachine->xmachine_Government) value = current_xmachine->xmachine_Government->posx;
-    if (current_xmachine->xmachine_FinancialAdvisor) value = current_xmachine->xmachine_FinancialAdvisor->posx;
+    if (current_xmachine->xmachine_FinancialAgent) value = current_xmachine->xmachine_FinancialAgent->posx;
 
     return value;
 }
@@ -1852,10 +2694,10 @@ double agent_get_y()
     if (current_xmachine->xmachine_Household) value = current_xmachine->xmachine_Household->posy; 
     if (current_xmachine->xmachine_Firm) value = current_xmachine->xmachine_Firm->posy; 
     if (current_xmachine->xmachine_Bank) value = current_xmachine->xmachine_Bank->posy; 
-    if (current_xmachine->xmachine_ClearingHouseMechanism) value = current_xmachine->xmachine_ClearingHouseMechanism->posy; 
+    if (current_xmachine->xmachine_ClearingHouse) value = current_xmachine->xmachine_ClearingHouse->posy; 
     if (current_xmachine->xmachine_LimitOrderBook) value = current_xmachine->xmachine_LimitOrderBook->posy; 
     if (current_xmachine->xmachine_Government) value = current_xmachine->xmachine_Government->posy; 
-    if (current_xmachine->xmachine_FinancialAdvisor) value = current_xmachine->xmachine_FinancialAdvisor->posy; 
+    if (current_xmachine->xmachine_FinancialAgent) value = current_xmachine->xmachine_FinancialAgent->posy; 
 
     return value;
 }
@@ -1967,14 +2809,14 @@ void add_node(int node_id, double minx, double maxx, double miny, double maxy, d
 	current->WagePayment_messages = NULL;
 	current->DividendPayment_messages = NULL;
 	current->BondCouponPayment_messages = NULL;
-	current->firm_bond_order_messages = NULL;
+	current->firm_bond_orders_messages = NULL;
 	current->firm_stock_order_messages = NULL;
 	current->gov_bond_order_messages = NULL;
 	current->firm_bond_transaction_messages = NULL;
 	current->gov_bond_transaction_messages = NULL;
 	current->firm_stock_transaction_messages = NULL;
 	current->rule_performance_messages = NULL;
-	current->all_performances_messages = NULL;
+	current->fa_rule_performance_messages = NULL;
 	current->ruledetailsystem_messages = NULL;
 
 
@@ -2089,10 +2931,10 @@ void propagate_agents()
 			y_xmachine = current_xmachine->xmachine_Bank->posy;
 			z_xmachine = 0.0;
 		}
-		else if(current_xmachine->xmachine_ClearingHouseMechanism != NULL)
+		else if(current_xmachine->xmachine_ClearingHouse != NULL)
 		{
-			x_xmachine = current_xmachine->xmachine_ClearingHouseMechanism->posx;
-			y_xmachine = current_xmachine->xmachine_ClearingHouseMechanism->posy;
+			x_xmachine = current_xmachine->xmachine_ClearingHouse->posx;
+			y_xmachine = current_xmachine->xmachine_ClearingHouse->posy;
 			z_xmachine = 0.0;
 		}
 		else if(current_xmachine->xmachine_LimitOrderBook != NULL)
@@ -2107,10 +2949,10 @@ void propagate_agents()
 			y_xmachine = current_xmachine->xmachine_Government->posy;
 			z_xmachine = 0.0;
 		}
-		else if(current_xmachine->xmachine_FinancialAdvisor != NULL)
+		else if(current_xmachine->xmachine_FinancialAgent != NULL)
 		{
-			x_xmachine = current_xmachine->xmachine_FinancialAdvisor->posx;
-			y_xmachine = current_xmachine->xmachine_FinancialAdvisor->posy;
+			x_xmachine = current_xmachine->xmachine_FinancialAgent->posx;
+			y_xmachine = current_xmachine->xmachine_FinancialAgent->posy;
 			z_xmachine = 0.0;
 		}
 		
@@ -2185,6 +3027,17 @@ void free_int_array(int_array * array)
 {
 	free(array->array);
 	free(array);
+}
+
+void copy_int_array(int_array * from, int_array * to)
+{
+	int i;
+	//to = init_int_array();
+	
+	for (i = 0; i < from->size; i++)
+	{
+		add_int(to, from->array[i]);
+	}
 }
 
 /** \fn void sort_int_array(int_array * array)
@@ -2333,6 +3186,17 @@ void free_float_array(float_array * array)
 	free(array);
 }
 
+void copy_float_array(float_array * from, float_array * to)
+{
+	int i;
+	//to = init_float_array();
+	
+	for (i = 0; i < from->size; i++)
+	{
+		add_float(to, from->array[i]);
+	}
+}
+
 /** \fn void sort_float_array(float_array * array)
 * \brief Sort the elements of a dynamic float array with smallest first.
 * \param array Pointer to the dynamic float array.
@@ -2478,6 +3342,17 @@ void free_double_array(double_array * array)
 {
 	free(array->array);
 	free(array);
+}
+
+void copy_double_array(double_array * from, double_array * to)
+{
+	int i;
+	//to = init_double_array();
+	
+	for (i = 0; i < from->size; i++)
+	{
+		add_double(to, from->array[i]);
+	}
 }
 
 /** \fn void sort_double_array(double_array * array)
@@ -2628,6 +3503,17 @@ void free_char_array(char_array * array)
 	free(array);
 }
 
+void copy_char_array(char_array * from, char_array * to)
+{
+	int i;
+	//to = init_char_array();
+	
+	for (i = 0; i < from->size; i++)
+	{
+		add_char(to, from->array[i]);
+	}
+}
+
 /** \fn void add_char(char_array * array, char new_char)
  * \brief Add an char to the dynamic char array.
  * \param array Pointer to the dynamic char array.
@@ -2685,863 +3571,10 @@ void print_char_array(char_array * array)
 	printf("%s", array->array);
 }
 
-/* Functions for the AssetStruct datatype */
-/** \fn int_array * init_int_array()
- * \brief Allocate memory for a dynamic integer array.
- * \return int_array Pointer to the new dynamic integer array.
- */
-AssetStruct_array * init_AssetStruct_array()
-{
-	AssetStruct_array * new_array = (AssetStruct_array *)malloc(sizeof(AssetStruct_array));
-		CHECK_POINTER(new_array);
-	new_array->size = 0;
-	new_array->total_size = ARRAY_BLOCK_SIZE;
-	new_array->array = (AssetStruct **)malloc(ARRAY_BLOCK_SIZE * sizeof(AssetStruct *));
-		CHECK_POINTER(new_array->array);
-	
-	return new_array;
-}
-
-/** \fn void reset_int_array(int_array * array)
-* \brief Reset the int array to hold nothing.
-* \param array Pointer to the dynamic integer array.
-*/
-void reset_AssetStruct_array(AssetStruct_array * array)
-{
-	array->size = 0;
-}
-
-/** \fn void free_int_array(int_array * array)
-* \brief Free the memory of a dynamic integer array.
-* \param array Pointer to the dynamic integer array.
-*/
-void free_AssetStruct_array(AssetStruct_array * array)
-{
-	int i;
-	
-	for(i = 0; i < array->size; i++)
-	{
-		free(array->array[i]);
-	}
-	free(array->array);
-	free(array);
-}
-
-/** \fn void add_int(int_array * array, int new_int)
-* \brief Add an integer to the dynamic integer array.
-* \param array Pointer to the dynamic integer array.
-* \param new_int The integer to add
-*/
-void add_AssetStruct(AssetStruct_array * array, int_array ids, int_array nr_units, double_array current_price, double_array best_ask_price, double_array best_bid_price)
-{
-	if(array->size == array->total_size)
-	{
-		array->total_size = array->total_size + ARRAY_BLOCK_SIZE;
-		array->array = (AssetStruct **)realloc(array->array, (array->total_size * sizeof(AssetStruct *)));
-	}
-	array->array[array->size] = (AssetStruct *)malloc(sizeof(AssetStruct));
-		CHECK_POINTER(array->array[array->size]);
-
-	array->array[array->size]->ids = ids;
-	array->array[array->size]->nr_units = nr_units;
-	array->array[array->size]->current_price = current_price;
-	array->array[array->size]->best_ask_price = best_ask_price;
-	array->array[array->size]->best_bid_price = best_bid_price;
-	
-	array->size++;
-}
-
-/** \fn void remove_int(int_array * array, int index)
- * \brief Remove an integer from a dynamic integer array.
- * \param array Pointer to the dynamic integer array.
- * \param index The index of the integer to remove.
- */
-void remove_AssetStruct(AssetStruct_array * array, int index)
-{
-	int i;
-	
-	if(index <= array->size)
-	{
-		/* memcopy?? */
-		for(i = index; i < array->size - 1; i++)
-		{
-			array->array[i] = array->array[i+1];
-		}
-		array->size--;
-	}
-}
-/* Functions for the AssetPortfolioType datatype */
-/** \fn int_array * init_int_array()
- * \brief Allocate memory for a dynamic integer array.
- * \return int_array Pointer to the new dynamic integer array.
- */
-AssetPortfolioType_array * init_AssetPortfolioType_array()
-{
-	AssetPortfolioType_array * new_array = (AssetPortfolioType_array *)malloc(sizeof(AssetPortfolioType_array));
-		CHECK_POINTER(new_array);
-	new_array->size = 0;
-	new_array->total_size = ARRAY_BLOCK_SIZE;
-	new_array->array = (AssetPortfolioType **)malloc(ARRAY_BLOCK_SIZE * sizeof(AssetPortfolioType *));
-		CHECK_POINTER(new_array->array);
-	
-	return new_array;
-}
-
-/** \fn void reset_int_array(int_array * array)
-* \brief Reset the int array to hold nothing.
-* \param array Pointer to the dynamic integer array.
-*/
-void reset_AssetPortfolioType_array(AssetPortfolioType_array * array)
-{
-	array->size = 0;
-}
-
-/** \fn void free_int_array(int_array * array)
-* \brief Free the memory of a dynamic integer array.
-* \param array Pointer to the dynamic integer array.
-*/
-void free_AssetPortfolioType_array(AssetPortfolioType_array * array)
-{
-	int i;
-	
-	for(i = 0; i < array->size; i++)
-	{
-		free(array->array[i]);
-	}
-	free(array->array);
-	free(array);
-}
-
-/** \fn void add_int(int_array * array, int new_int)
-* \brief Add an integer to the dynamic integer array.
-* \param array Pointer to the dynamic integer array.
-* \param new_int The integer to add
-*/
-void add_AssetPortfolioType(AssetPortfolioType_array * array, int performance_history, int_array firmstocks, int_array firm_id, double_array current_price, double_array best_ask_price, double_array best_bid_price, double_array nr_units, int_array firmbonds, int_array firmbonds_firm_id, double_array firmbonds_current_price, double_array firmbonds_best_ask_price, double_array firmbonds_best_bid_price, double_array firmbonds_nr_units, int_array govbonds, int_array govbonds_gov_id, double_array govbonds_current_price, double_array govbonds_best_ask_price, double_array govbonds_best_bid_price, double_array govbonds_nr_units)
-{
-	if(array->size == array->total_size)
-	{
-		array->total_size = array->total_size + ARRAY_BLOCK_SIZE;
-		array->array = (AssetPortfolioType **)realloc(array->array, (array->total_size * sizeof(AssetPortfolioType *)));
-	}
-	array->array[array->size] = (AssetPortfolioType *)malloc(sizeof(AssetPortfolioType));
-		CHECK_POINTER(array->array[array->size]);
-
-	array->array[array->size]->performance_history = performance_history;
-	array->array[array->size]->firmstocks = firmstocks;
-	array->array[array->size]->firm_id = firm_id;
-	array->array[array->size]->current_price = current_price;
-	array->array[array->size]->best_ask_price = best_ask_price;
-	array->array[array->size]->best_bid_price = best_bid_price;
-	array->array[array->size]->nr_units = nr_units;
-	array->array[array->size]->firmbonds = firmbonds;
-	array->array[array->size]->firmbonds_firm_id = firmbonds_firm_id;
-	array->array[array->size]->firmbonds_current_price = firmbonds_current_price;
-	array->array[array->size]->firmbonds_best_ask_price = firmbonds_best_ask_price;
-	array->array[array->size]->firmbonds_best_bid_price = firmbonds_best_bid_price;
-	array->array[array->size]->firmbonds_nr_units = firmbonds_nr_units;
-	array->array[array->size]->govbonds = govbonds;
-	array->array[array->size]->govbonds_gov_id = govbonds_gov_id;
-	array->array[array->size]->govbonds_current_price = govbonds_current_price;
-	array->array[array->size]->govbonds_best_ask_price = govbonds_best_ask_price;
-	array->array[array->size]->govbonds_best_bid_price = govbonds_best_bid_price;
-	array->array[array->size]->govbonds_nr_units = govbonds_nr_units;
-	
-	array->size++;
-}
-
-/** \fn void remove_int(int_array * array, int index)
- * \brief Remove an integer from a dynamic integer array.
- * \param array Pointer to the dynamic integer array.
- * \param index The index of the integer to remove.
- */
-void remove_AssetPortfolioType(AssetPortfolioType_array * array, int index)
-{
-	int i;
-	
-	if(index <= array->size)
-	{
-		/* memcopy?? */
-		for(i = index; i < array->size - 1; i++)
-		{
-			array->array[i] = array->array[i+1];
-		}
-		array->size--;
-	}
-}
-/* Functions for the PrivateClassifierSystem datatype */
-/** \fn int_array * init_int_array()
- * \brief Allocate memory for a dynamic integer array.
- * \return int_array Pointer to the new dynamic integer array.
- */
-PrivateClassifierSystem_array * init_PrivateClassifierSystem_array()
-{
-	PrivateClassifierSystem_array * new_array = (PrivateClassifierSystem_array *)malloc(sizeof(PrivateClassifierSystem_array));
-		CHECK_POINTER(new_array);
-	new_array->size = 0;
-	new_array->total_size = ARRAY_BLOCK_SIZE;
-	new_array->array = (PrivateClassifierSystem **)malloc(ARRAY_BLOCK_SIZE * sizeof(PrivateClassifierSystem *));
-		CHECK_POINTER(new_array->array);
-	
-	return new_array;
-}
-
-/** \fn void reset_int_array(int_array * array)
-* \brief Reset the int array to hold nothing.
-* \param array Pointer to the dynamic integer array.
-*/
-void reset_PrivateClassifierSystem_array(PrivateClassifierSystem_array * array)
-{
-	array->size = 0;
-}
-
-/** \fn void free_int_array(int_array * array)
-* \brief Free the memory of a dynamic integer array.
-* \param array Pointer to the dynamic integer array.
-*/
-void free_PrivateClassifierSystem_array(PrivateClassifierSystem_array * array)
-{
-	int i;
-	
-	for(i = 0; i < array->size; i++)
-	{
-		free(array->array[i]);
-	}
-	free(array->array);
-	free(array);
-}
-
-/** \fn void add_int(int_array * array, int new_int)
-* \brief Add an integer to the dynamic integer array.
-* \param array Pointer to the dynamic integer array.
-* \param new_int The integer to add
-*/
-void add_PrivateClassifierSystem(PrivateClassifierSystem_array * array, int nr_types, int_array nr_rules_per_type, int nr_rules, int_array ids, int_array rule_type, double experience, int current_rule, double my_performance, double_array avgperformance, double_array attraction, double_array choiceprob)
-{
-	if(array->size == array->total_size)
-	{
-		array->total_size = array->total_size + ARRAY_BLOCK_SIZE;
-		array->array = (PrivateClassifierSystem **)realloc(array->array, (array->total_size * sizeof(PrivateClassifierSystem *)));
-	}
-	array->array[array->size] = (PrivateClassifierSystem *)malloc(sizeof(PrivateClassifierSystem));
-		CHECK_POINTER(array->array[array->size]);
-
-	array->array[array->size]->nr_types = nr_types;
-	array->array[array->size]->nr_rules_per_type = nr_rules_per_type;
-	array->array[array->size]->nr_rules = nr_rules;
-	array->array[array->size]->ids = ids;
-	array->array[array->size]->rule_type = rule_type;
-	array->array[array->size]->experience = experience;
-	array->array[array->size]->current_rule = current_rule;
-	array->array[array->size]->my_performance = my_performance;
-	array->array[array->size]->avgperformance = avgperformance;
-	array->array[array->size]->attraction = attraction;
-	array->array[array->size]->choiceprob = choiceprob;
-	
-	array->size++;
-}
-
-/** \fn void remove_int(int_array * array, int index)
- * \brief Remove an integer from a dynamic integer array.
- * \param array Pointer to the dynamic integer array.
- * \param index The index of the integer to remove.
- */
-void remove_PrivateClassifierSystem(PrivateClassifierSystem_array * array, int index)
-{
-	int i;
-	
-	if(index <= array->size)
-	{
-		/* memcopy?? */
-		for(i = index; i < array->size - 1; i++)
-		{
-			array->array[i] = array->array[i+1];
-		}
-		array->size--;
-	}
-}
-/* Functions for the PublicClassifierSystem datatype */
-/** \fn int_array * init_int_array()
- * \brief Allocate memory for a dynamic integer array.
- * \return int_array Pointer to the new dynamic integer array.
- */
-PublicClassifierSystem_array * init_PublicClassifierSystem_array()
-{
-	PublicClassifierSystem_array * new_array = (PublicClassifierSystem_array *)malloc(sizeof(PublicClassifierSystem_array));
-		CHECK_POINTER(new_array);
-	new_array->size = 0;
-	new_array->total_size = ARRAY_BLOCK_SIZE;
-	new_array->array = (PublicClassifierSystem **)malloc(ARRAY_BLOCK_SIZE * sizeof(PublicClassifierSystem *));
-		CHECK_POINTER(new_array->array);
-	
-	return new_array;
-}
-
-/** \fn void reset_int_array(int_array * array)
-* \brief Reset the int array to hold nothing.
-* \param array Pointer to the dynamic integer array.
-*/
-void reset_PublicClassifierSystem_array(PublicClassifierSystem_array * array)
-{
-	array->size = 0;
-}
-
-/** \fn void free_int_array(int_array * array)
-* \brief Free the memory of a dynamic integer array.
-* \param array Pointer to the dynamic integer array.
-*/
-void free_PublicClassifierSystem_array(PublicClassifierSystem_array * array)
-{
-	int i;
-	
-	for(i = 0; i < array->size; i++)
-	{
-		free(array->array[i]);
-	}
-	free(array->array);
-	free(array);
-}
-
-/** \fn void add_int(int_array * array, int new_int)
-* \brief Add an integer to the dynamic integer array.
-* \param array Pointer to the dynamic integer array.
-* \param new_int The integer to add
-*/
-void add_PublicClassifierSystem(PublicClassifierSystem_array * array, int nr_types, int_array nr_rules_per_type, int nr_rules, int_array ids, int_array rule_type, int_array counter, double_array performance, double_array avgperformance)
-{
-	if(array->size == array->total_size)
-	{
-		array->total_size = array->total_size + ARRAY_BLOCK_SIZE;
-		array->array = (PublicClassifierSystem **)realloc(array->array, (array->total_size * sizeof(PublicClassifierSystem *)));
-	}
-	array->array[array->size] = (PublicClassifierSystem *)malloc(sizeof(PublicClassifierSystem));
-		CHECK_POINTER(array->array[array->size]);
-
-	array->array[array->size]->nr_types = nr_types;
-	array->array[array->size]->nr_rules_per_type = nr_rules_per_type;
-	array->array[array->size]->nr_rules = nr_rules;
-	array->array[array->size]->ids = ids;
-	array->array[array->size]->rule_type = rule_type;
-	array->array[array->size]->counter = counter;
-	array->array[array->size]->performance = performance;
-	array->array[array->size]->avgperformance = avgperformance;
-	
-	array->size++;
-}
-
-/** \fn void remove_int(int_array * array, int index)
- * \brief Remove an integer from a dynamic integer array.
- * \param array Pointer to the dynamic integer array.
- * \param index The index of the integer to remove.
- */
-void remove_PublicClassifierSystem(PublicClassifierSystem_array * array, int index)
-{
-	int i;
-	
-	if(index <= array->size)
-	{
-		/* memcopy?? */
-		for(i = index; i < array->size - 1; i++)
-		{
-			array->array[i] = array->array[i+1];
-		}
-		array->size--;
-	}
-}
-/* Functions for the RuleDetailSystem datatype */
-/** \fn int_array * init_int_array()
- * \brief Allocate memory for a dynamic integer array.
- * \return int_array Pointer to the new dynamic integer array.
- */
-RuleDetailSystem_array * init_RuleDetailSystem_array()
-{
-	RuleDetailSystem_array * new_array = (RuleDetailSystem_array *)malloc(sizeof(RuleDetailSystem_array));
-		CHECK_POINTER(new_array);
-	new_array->size = 0;
-	new_array->total_size = ARRAY_BLOCK_SIZE;
-	new_array->array = (RuleDetailSystem **)malloc(ARRAY_BLOCK_SIZE * sizeof(RuleDetailSystem *));
-		CHECK_POINTER(new_array->array);
-	
-	return new_array;
-}
-
-/** \fn void reset_int_array(int_array * array)
-* \brief Reset the int array to hold nothing.
-* \param array Pointer to the dynamic integer array.
-*/
-void reset_RuleDetailSystem_array(RuleDetailSystem_array * array)
-{
-	array->size = 0;
-}
-
-/** \fn void free_int_array(int_array * array)
-* \brief Free the memory of a dynamic integer array.
-* \param array Pointer to the dynamic integer array.
-*/
-void free_RuleDetailSystem_array(RuleDetailSystem_array * array)
-{
-	int i;
-	
-	for(i = 0; i < array->size; i++)
-	{
-		free(array->array[i]);
-	}
-	free(array->array);
-	free(array);
-}
-
-/** \fn void add_int(int_array * array, int new_int)
-* \brief Add an integer to the dynamic integer array.
-* \param array Pointer to the dynamic integer array.
-* \param new_int The integer to add
-*/
-void add_RuleDetailSystem(RuleDetailSystem_array * array, int_array nr_params_per_type, int_array nr_params, double2D_array parameters, wordlist myfunctionnames, wordlist myfunctionnames)
-{
-	if(array->size == array->total_size)
-	{
-		array->total_size = array->total_size + ARRAY_BLOCK_SIZE;
-		array->array = (RuleDetailSystem **)realloc(array->array, (array->total_size * sizeof(RuleDetailSystem *)));
-	}
-	array->array[array->size] = (RuleDetailSystem *)malloc(sizeof(RuleDetailSystem));
-		CHECK_POINTER(array->array[array->size]);
-
-	array->array[array->size]->nr_params_per_type = nr_params_per_type;
-	array->array[array->size]->nr_params = nr_params;
-	array->array[array->size]->parameters = parameters;
-	array->array[array->size]->myfunctionnames = myfunctionnames;
-	array->array[array->size]->myfunctionnames = myfunctionnames;
-	
-	array->size++;
-}
-
-/** \fn void remove_int(int_array * array, int index)
- * \brief Remove an integer from a dynamic integer array.
- * \param array Pointer to the dynamic integer array.
- * \param index The index of the integer to remove.
- */
-void remove_RuleDetailSystem(RuleDetailSystem_array * array, int index)
-{
-	int i;
-	
-	if(index <= array->size)
-	{
-		/* memcopy?? */
-		for(i = index; i < array->size - 1; i++)
-		{
-			array->array[i] = array->array[i+1];
-		}
-		array->size--;
-	}
-}
-/* Functions for the double2D_array datatype */
-/** \fn int_array * init_int_array()
- * \brief Allocate memory for a dynamic integer array.
- * \return int_array Pointer to the new dynamic integer array.
- */
-double2D_array_array * init_double2D_array_array()
-{
-	double2D_array_array * new_array = (double2D_array_array *)malloc(sizeof(double2D_array_array));
-		CHECK_POINTER(new_array);
-	new_array->size = 0;
-	new_array->total_size = ARRAY_BLOCK_SIZE;
-	new_array->array = (double2D_array **)malloc(ARRAY_BLOCK_SIZE * sizeof(double2D_array *));
-		CHECK_POINTER(new_array->array);
-	
-	return new_array;
-}
-
-/** \fn void reset_int_array(int_array * array)
-* \brief Reset the int array to hold nothing.
-* \param array Pointer to the dynamic integer array.
-*/
-void reset_double2D_array_array(double2D_array_array * array)
-{
-	array->size = 0;
-}
-
-/** \fn void free_int_array(int_array * array)
-* \brief Free the memory of a dynamic integer array.
-* \param array Pointer to the dynamic integer array.
-*/
-void free_double2D_array_array(double2D_array_array * array)
-{
-	int i;
-	
-	for(i = 0; i < array->size; i++)
-	{
-		free(array->array[i]);
-	}
-	free(array->array);
-	free(array);
-}
-
-/** \fn void add_int(int_array * array, int new_int)
-* \brief Add an integer to the dynamic integer array.
-* \param array Pointer to the dynamic integer array.
-* \param new_int The integer to add
-*/
-void add_double2D_array(double2D_array_array * array, double** double2Dname)
-{
-	if(array->size == array->total_size)
-	{
-		array->total_size = array->total_size + ARRAY_BLOCK_SIZE;
-		array->array = (double2D_array **)realloc(array->array, (array->total_size * sizeof(double2D_array *)));
-	}
-	array->array[array->size] = (double2D_array *)malloc(sizeof(double2D_array));
-		CHECK_POINTER(array->array[array->size]);
-
-	array->array[array->size]->double2Dname = double2Dname;
-	
-	array->size++;
-}
-
-/** \fn void remove_int(int_array * array, int index)
- * \brief Remove an integer from a dynamic integer array.
- * \param array Pointer to the dynamic integer array.
- * \param index The index of the integer to remove.
- */
-void remove_double2D_array(double2D_array_array * array, int index)
-{
-	int i;
-	
-	if(index <= array->size)
-	{
-		/* memcopy?? */
-		for(i = index; i < array->size - 1; i++)
-		{
-			array->array[i] = array->array[i+1];
-		}
-		array->size--;
-	}
-}
-/* Functions for the int2D_array datatype */
-/** \fn int_array * init_int_array()
- * \brief Allocate memory for a dynamic integer array.
- * \return int_array Pointer to the new dynamic integer array.
- */
-int2D_array_array * init_int2D_array_array()
-{
-	int2D_array_array * new_array = (int2D_array_array *)malloc(sizeof(int2D_array_array));
-		CHECK_POINTER(new_array);
-	new_array->size = 0;
-	new_array->total_size = ARRAY_BLOCK_SIZE;
-	new_array->array = (int2D_array **)malloc(ARRAY_BLOCK_SIZE * sizeof(int2D_array *));
-		CHECK_POINTER(new_array->array);
-	
-	return new_array;
-}
-
-/** \fn void reset_int_array(int_array * array)
-* \brief Reset the int array to hold nothing.
-* \param array Pointer to the dynamic integer array.
-*/
-void reset_int2D_array_array(int2D_array_array * array)
-{
-	array->size = 0;
-}
-
-/** \fn void free_int_array(int_array * array)
-* \brief Free the memory of a dynamic integer array.
-* \param array Pointer to the dynamic integer array.
-*/
-void free_int2D_array_array(int2D_array_array * array)
-{
-	int i;
-	
-	for(i = 0; i < array->size; i++)
-	{
-		free(array->array[i]);
-	}
-	free(array->array);
-	free(array);
-}
-
-/** \fn void add_int(int_array * array, int new_int)
-* \brief Add an integer to the dynamic integer array.
-* \param array Pointer to the dynamic integer array.
-* \param new_int The integer to add
-*/
-void add_int2D_array(int2D_array_array * array, int** int2Dname)
-{
-	if(array->size == array->total_size)
-	{
-		array->total_size = array->total_size + ARRAY_BLOCK_SIZE;
-		array->array = (int2D_array **)realloc(array->array, (array->total_size * sizeof(int2D_array *)));
-	}
-	array->array[array->size] = (int2D_array *)malloc(sizeof(int2D_array));
-		CHECK_POINTER(array->array[array->size]);
-
-	array->array[array->size]->int2Dname = int2Dname;
-	
-	array->size++;
-}
-
-/** \fn void remove_int(int_array * array, int index)
- * \brief Remove an integer from a dynamic integer array.
- * \param array Pointer to the dynamic integer array.
- * \param index The index of the integer to remove.
- */
-void remove_int2D_array(int2D_array_array * array, int index)
-{
-	int i;
-	
-	if(index <= array->size)
-	{
-		/* memcopy?? */
-		for(i = index; i < array->size - 1; i++)
-		{
-			array->array[i] = array->array[i+1];
-		}
-		array->size--;
-	}
-}
-/* Functions for the wordlist datatype */
-/** \fn int_array * init_int_array()
- * \brief Allocate memory for a dynamic integer array.
- * \return int_array Pointer to the new dynamic integer array.
- */
-wordlist_array * init_wordlist_array()
-{
-	wordlist_array * new_array = (wordlist_array *)malloc(sizeof(wordlist_array));
-		CHECK_POINTER(new_array);
-	new_array->size = 0;
-	new_array->total_size = ARRAY_BLOCK_SIZE;
-	new_array->array = (wordlist **)malloc(ARRAY_BLOCK_SIZE * sizeof(wordlist *));
-		CHECK_POINTER(new_array->array);
-	
-	return new_array;
-}
-
-/** \fn void reset_int_array(int_array * array)
-* \brief Reset the int array to hold nothing.
-* \param array Pointer to the dynamic integer array.
-*/
-void reset_wordlist_array(wordlist_array * array)
-{
-	array->size = 0;
-}
-
-/** \fn void free_int_array(int_array * array)
-* \brief Free the memory of a dynamic integer array.
-* \param array Pointer to the dynamic integer array.
-*/
-void free_wordlist_array(wordlist_array * array)
-{
-	int i;
-	
-	for(i = 0; i < array->size; i++)
-	{
-		free(array->array[i]);
-	}
-	free(array->array);
-	free(array);
-}
-
-/** \fn void add_int(int_array * array, int new_int)
-* \brief Add an integer to the dynamic integer array.
-* \param array Pointer to the dynamic integer array.
-* \param new_int The integer to add
-*/
-void add_wordlist(wordlist_array * array, word_array wordlistname)
-{
-	if(array->size == array->total_size)
-	{
-		array->total_size = array->total_size + ARRAY_BLOCK_SIZE;
-		array->array = (wordlist **)realloc(array->array, (array->total_size * sizeof(wordlist *)));
-	}
-	array->array[array->size] = (wordlist *)malloc(sizeof(wordlist));
-		CHECK_POINTER(array->array[array->size]);
-
-	array->array[array->size]->wordlistname = wordlistname;
-	
-	array->size++;
-}
-
-/** \fn void remove_int(int_array * array, int index)
- * \brief Remove an integer from a dynamic integer array.
- * \param array Pointer to the dynamic integer array.
- * \param index The index of the integer to remove.
- */
-void remove_wordlist(wordlist_array * array, int index)
-{
-	int i;
-	
-	if(index <= array->size)
-	{
-		/* memcopy?? */
-		for(i = index; i < array->size - 1; i++)
-		{
-			array->array[i] = array->array[i+1];
-		}
-		array->size--;
-	}
-}
-/* Functions for the word datatype */
-/** \fn int_array * init_int_array()
- * \brief Allocate memory for a dynamic integer array.
- * \return int_array Pointer to the new dynamic integer array.
- */
-word_array * init_word_array()
-{
-	word_array * new_array = (word_array *)malloc(sizeof(word_array));
-		CHECK_POINTER(new_array);
-	new_array->size = 0;
-	new_array->total_size = ARRAY_BLOCK_SIZE;
-	new_array->array = (word **)malloc(ARRAY_BLOCK_SIZE * sizeof(word *));
-		CHECK_POINTER(new_array->array);
-	
-	return new_array;
-}
-
-/** \fn void reset_int_array(int_array * array)
-* \brief Reset the int array to hold nothing.
-* \param array Pointer to the dynamic integer array.
-*/
-void reset_word_array(word_array * array)
-{
-	array->size = 0;
-}
-
-/** \fn void free_int_array(int_array * array)
-* \brief Free the memory of a dynamic integer array.
-* \param array Pointer to the dynamic integer array.
-*/
-void free_word_array(word_array * array)
-{
-	int i;
-	
-	for(i = 0; i < array->size; i++)
-	{
-		free(array->array[i]);
-	}
-	free(array->array);
-	free(array);
-}
-
-/** \fn void add_int(int_array * array, int new_int)
-* \brief Add an integer to the dynamic integer array.
-* \param array Pointer to the dynamic integer array.
-* \param new_int The integer to add
-*/
-void add_word(word_array * array, char_array wordname)
-{
-	if(array->size == array->total_size)
-	{
-		array->total_size = array->total_size + ARRAY_BLOCK_SIZE;
-		array->array = (word **)realloc(array->array, (array->total_size * sizeof(word *)));
-	}
-	array->array[array->size] = (word *)malloc(sizeof(word));
-		CHECK_POINTER(array->array[array->size]);
-
-	array->array[array->size]->wordname = wordname;
-	
-	array->size++;
-}
-
-/** \fn void remove_int(int_array * array, int index)
- * \brief Remove an integer from a dynamic integer array.
- * \param array Pointer to the dynamic integer array.
- * \param index The index of the integer to remove.
- */
-void remove_word(word_array * array, int index)
-{
-	int i;
-	
-	if(index <= array->size)
-	{
-		/* memcopy?? */
-		for(i = index; i < array->size - 1; i++)
-		{
-			array->array[i] = array->array[i+1];
-		}
-		array->size--;
-	}
-}
-/* Functions for the stringlist datatype */
-/** \fn int_array * init_int_array()
- * \brief Allocate memory for a dynamic integer array.
- * \return int_array Pointer to the new dynamic integer array.
- */
-stringlist_array * init_stringlist_array()
-{
-	stringlist_array * new_array = (stringlist_array *)malloc(sizeof(stringlist_array));
-		CHECK_POINTER(new_array);
-	new_array->size = 0;
-	new_array->total_size = ARRAY_BLOCK_SIZE;
-	new_array->array = (stringlist **)malloc(ARRAY_BLOCK_SIZE * sizeof(stringlist *));
-		CHECK_POINTER(new_array->array);
-	
-	return new_array;
-}
-
-/** \fn void reset_int_array(int_array * array)
-* \brief Reset the int array to hold nothing.
-* \param array Pointer to the dynamic integer array.
-*/
-void reset_stringlist_array(stringlist_array * array)
-{
-	array->size = 0;
-}
-
-/** \fn void free_int_array(int_array * array)
-* \brief Free the memory of a dynamic integer array.
-* \param array Pointer to the dynamic integer array.
-*/
-void free_stringlist_array(stringlist_array * array)
-{
-	int i;
-	
-	for(i = 0; i < array->size; i++)
-	{
-		free(array->array[i]);
-	}
-	free(array->array);
-	free(array);
-}
-
-/** \fn void add_int(int_array * array, int new_int)
-* \brief Add an integer to the dynamic integer array.
-* \param array Pointer to the dynamic integer array.
-* \param new_int The integer to add
-*/
-void add_stringlist(stringlist_array * array, string_array stringlistname)
-{
-	if(array->size == array->total_size)
-	{
-		array->total_size = array->total_size + ARRAY_BLOCK_SIZE;
-		array->array = (stringlist **)realloc(array->array, (array->total_size * sizeof(stringlist *)));
-	}
-	array->array[array->size] = (stringlist *)malloc(sizeof(stringlist));
-		CHECK_POINTER(array->array[array->size]);
-
-	array->array[array->size]->stringlistname = stringlistname;
-	
-	array->size++;
-}
-
-/** \fn void remove_int(int_array * array, int index)
- * \brief Remove an integer from a dynamic integer array.
- * \param array Pointer to the dynamic integer array.
- * \param index The index of the integer to remove.
- */
-void remove_stringlist(stringlist_array * array, int index)
-{
-	int i;
-	
-	if(index <= array->size)
-	{
-		/* memcopy?? */
-		for(i = index; i < array->size - 1; i++)
-		{
-			array->array[i] = array->array[i+1];
-		}
-		array->size--;
-	}
-}
 /* Functions for the string datatype */
-/** \fn int_array * init_int_array()
- * \brief Allocate memory for a dynamic integer array.
- * \return int_array Pointer to the new dynamic integer array.
+/** \fn string_array * init_string_array()
+ * \brief Allocate memory for a dynamic string array.
+ * \return string_array Pointer to the new dynamic string array.
  */
 string_array * init_string_array()
 {
@@ -3555,18 +3588,18 @@ string_array * init_string_array()
 	return new_array;
 }
 
-/** \fn void reset_int_array(int_array * array)
-* \brief Reset the int array to hold nothing.
-* \param array Pointer to the dynamic integer array.
+/** \fn void reset_string_array(string_array* array)
+* \brief Reset the string array to hold nothing.
+* \param array Pointer to the dynamic string array.
 */
 void reset_string_array(string_array * array)
 {
 	array->size = 0;
 }
 
-/** \fn void free_int_array(int_array * array)
-* \brief Free the memory of a dynamic integer array.
-* \param array Pointer to the dynamic integer array.
+/** \fn void free_string_array(string_array * array)
+* \brief Free the memory of a dynamic string array.
+* \param array Pointer to the dynamic string array.
 */
 void free_string_array(string_array * array)
 {
@@ -3574,36 +3607,48 @@ void free_string_array(string_array * array)
 	
 	for(i = 0; i < array->size; i++)
 	{
-		free(array->array[i]);
+		free_string_datatype(array->array[i]);
 	}
 	free(array->array);
 	free(array);
 }
 
-/** \fn void add_int(int_array * array, int new_int)
-* \brief Add an integer to the dynamic integer array.
-* \param array Pointer to the dynamic integer array.
-* \param new_int The integer to add
+void copy_string_array(string_array * from, string_array * to)
+{
+	int i;
+	
+	//to = init_string_array();
+	
+	for(i = 0; i < from->size; i++)
+	{
+		add_string(to, from->array[i]->stringname);
+	}
+}
+
+/** \fn void add_string(string_array * array, char_array stringname)
+* \brief Add an string to the dynamic string array.
+* \param array Pointer to the dynamic string array.
+* \param new_int The string to add
 */
-void add_string(string_array * array, char_array stringname)
+void add_string(string_array * array, char_array * stringname)
 {
 	if(array->size == array->total_size)
 	{
 		array->total_size = array->total_size + ARRAY_BLOCK_SIZE;
 		array->array = (string **)realloc(array->array, (array->total_size * sizeof(string *)));
 	}
-	array->array[array->size] = (string *)malloc(sizeof(string));
-		CHECK_POINTER(array->array[array->size]);
-
-	array->array[array->size]->stringname = stringname;
+	array->array[array->size] = init_string();
 	
+	array->array[array->size]->stringname = init_char_array();
+	copy_char_array(stringname, array->array[array->size]->stringname);
+
 	array->size++;
 }
 
-/** \fn void remove_int(int_array * array, int index)
- * \brief Remove an integer from a dynamic integer array.
- * \param array Pointer to the dynamic integer array.
- * \param index The index of the integer to remove.
+/** \fn void remove_string(string_array * array, int index)
+ * \brief Remove an string from a dynamic string array.
+ * \param array Pointer to the dynamic string array.
+ * \param index The index of the string to remove.
  */
 void remove_string(string_array * array, int index)
 {
@@ -3619,73 +3664,873 @@ void remove_string(string_array * array, int index)
 		array->size--;
 	}
 }
-/* Functions for the DBFinancialAssets datatype */
-/** \fn int_array * init_int_array()
- * \brief Allocate memory for a dynamic integer array.
- * \return int_array Pointer to the new dynamic integer array.
+/* Functions for the stringlist datatype */
+/** \fn stringlist_array * init_stringlist_array()
+ * \brief Allocate memory for a dynamic stringlist array.
+ * \return stringlist_array Pointer to the new dynamic stringlist array.
  */
-DBFinancialAssets_array * init_DBFinancialAssets_array()
+stringlist_array * init_stringlist_array()
 {
-	DBFinancialAssets_array * new_array = (DBFinancialAssets_array *)malloc(sizeof(DBFinancialAssets_array));
+	stringlist_array * new_array = (stringlist_array *)malloc(sizeof(stringlist_array));
 		CHECK_POINTER(new_array);
 	new_array->size = 0;
 	new_array->total_size = ARRAY_BLOCK_SIZE;
-	new_array->array = (DBFinancialAssets **)malloc(ARRAY_BLOCK_SIZE * sizeof(DBFinancialAssets *));
+	new_array->array = (stringlist **)malloc(ARRAY_BLOCK_SIZE * sizeof(stringlist *));
 		CHECK_POINTER(new_array->array);
 	
 	return new_array;
 }
 
-/** \fn void reset_int_array(int_array * array)
-* \brief Reset the int array to hold nothing.
-* \param array Pointer to the dynamic integer array.
+/** \fn void reset_stringlist_array(stringlist_array* array)
+* \brief Reset the stringlist array to hold nothing.
+* \param array Pointer to the dynamic stringlist array.
 */
-void reset_DBFinancialAssets_array(DBFinancialAssets_array * array)
+void reset_stringlist_array(stringlist_array * array)
 {
 	array->size = 0;
 }
 
-/** \fn void free_int_array(int_array * array)
-* \brief Free the memory of a dynamic integer array.
-* \param array Pointer to the dynamic integer array.
+/** \fn void free_stringlist_array(stringlist_array * array)
+* \brief Free the memory of a dynamic stringlist array.
+* \param array Pointer to the dynamic stringlist array.
 */
-void free_DBFinancialAssets_array(DBFinancialAssets_array * array)
+void free_stringlist_array(stringlist_array * array)
 {
 	int i;
 	
 	for(i = 0; i < array->size; i++)
 	{
-		free(array->array[i]);
+		free_stringlist_datatype(array->array[i]);
 	}
 	free(array->array);
 	free(array);
 }
 
-/** \fn void add_int(int_array * array, int new_int)
-* \brief Add an integer to the dynamic integer array.
-* \param array Pointer to the dynamic integer array.
-* \param new_int The integer to add
+void copy_stringlist_array(stringlist_array * from, stringlist_array * to)
+{
+	int i;
+	
+	//to = init_stringlist_array();
+	
+	for(i = 0; i < from->size; i++)
+	{
+		add_stringlist(to, from->array[i]->stringlistname);
+	}
+}
+
+/** \fn void add_stringlist(stringlist_array * array, string_array * stringlistname)
+* \brief Add an stringlist to the dynamic stringlist array.
+* \param array Pointer to the dynamic stringlist array.
+* \param new_int The stringlist to add
 */
-void add_DBFinancialAssets(DBFinancialAssets_array * array)
+void add_stringlist(stringlist_array * array, string_array * stringlistname)
 {
 	if(array->size == array->total_size)
 	{
 		array->total_size = array->total_size + ARRAY_BLOCK_SIZE;
-		array->array = (DBFinancialAssets **)realloc(array->array, (array->total_size * sizeof(DBFinancialAssets *)));
+		array->array = (stringlist **)realloc(array->array, (array->total_size * sizeof(stringlist *)));
 	}
-	array->array[array->size] = (DBFinancialAssets *)malloc(sizeof(DBFinancialAssets));
-		CHECK_POINTER(array->array[array->size]);
-
+	array->array[array->size] = init_stringlist();
 	
+	array->array[array->size]->stringlistname = init_string_array();
+	copy_string_array(stringlistname, array->array[array->size]->stringlistname);
+
 	array->size++;
 }
 
-/** \fn void remove_int(int_array * array, int index)
- * \brief Remove an integer from a dynamic integer array.
- * \param array Pointer to the dynamic integer array.
- * \param index The index of the integer to remove.
+/** \fn void remove_stringlist(stringlist_array * array, int index)
+ * \brief Remove an stringlist from a dynamic stringlist array.
+ * \param array Pointer to the dynamic stringlist array.
+ * \param index The index of the stringlist to remove.
  */
-void remove_DBFinancialAssets(DBFinancialAssets_array * array, int index)
+void remove_stringlist(stringlist_array * array, int index)
+{
+	int i;
+	
+	if(index <= array->size)
+	{
+		/* memcopy?? */
+		for(i = index; i < array->size - 1; i++)
+		{
+			array->array[i] = array->array[i+1];
+		}
+		array->size--;
+	}
+}
+/* Functions for the word datatype */
+/** \fn word_array * init_word_array()
+ * \brief Allocate memory for a dynamic word array.
+ * \return word_array Pointer to the new dynamic word array.
+ */
+word_array * init_word_array()
+{
+	word_array * new_array = (word_array *)malloc(sizeof(word_array));
+		CHECK_POINTER(new_array);
+	new_array->size = 0;
+	new_array->total_size = ARRAY_BLOCK_SIZE;
+	new_array->array = (word **)malloc(ARRAY_BLOCK_SIZE * sizeof(word *));
+		CHECK_POINTER(new_array->array);
+	
+	return new_array;
+}
+
+/** \fn void reset_word_array(word_array* array)
+* \brief Reset the word array to hold nothing.
+* \param array Pointer to the dynamic word array.
+*/
+void reset_word_array(word_array * array)
+{
+	array->size = 0;
+}
+
+/** \fn void free_word_array(word_array * array)
+* \brief Free the memory of a dynamic word array.
+* \param array Pointer to the dynamic word array.
+*/
+void free_word_array(word_array * array)
+{
+	int i;
+	
+	for(i = 0; i < array->size; i++)
+	{
+		free_word_datatype(array->array[i]);
+	}
+	free(array->array);
+	free(array);
+}
+
+void copy_word_array(word_array * from, word_array * to)
+{
+	int i;
+	
+	//to = init_word_array();
+	
+	for(i = 0; i < from->size; i++)
+	{
+		add_word(to, from->array[i]->wordname);
+	}
+}
+
+/** \fn void add_word(word_array * array, char_array wordname)
+* \brief Add an word to the dynamic word array.
+* \param array Pointer to the dynamic word array.
+* \param new_int The word to add
+*/
+void add_word(word_array * array, char_array * wordname)
+{
+	if(array->size == array->total_size)
+	{
+		array->total_size = array->total_size + ARRAY_BLOCK_SIZE;
+		array->array = (word **)realloc(array->array, (array->total_size * sizeof(word *)));
+	}
+	array->array[array->size] = init_word();
+	
+	array->array[array->size]->wordname = init_char_array();
+	copy_char_array(wordname, array->array[array->size]->wordname);
+
+	array->size++;
+}
+
+/** \fn void remove_word(word_array * array, int index)
+ * \brief Remove an word from a dynamic word array.
+ * \param array Pointer to the dynamic word array.
+ * \param index The index of the word to remove.
+ */
+void remove_word(word_array * array, int index)
+{
+	int i;
+	
+	if(index <= array->size)
+	{
+		/* memcopy?? */
+		for(i = index; i < array->size - 1; i++)
+		{
+			array->array[i] = array->array[i+1];
+		}
+		array->size--;
+	}
+}
+/* Functions for the wordlist datatype */
+/** \fn wordlist_array * init_wordlist_array()
+ * \brief Allocate memory for a dynamic wordlist array.
+ * \return wordlist_array Pointer to the new dynamic wordlist array.
+ */
+wordlist_array * init_wordlist_array()
+{
+	wordlist_array * new_array = (wordlist_array *)malloc(sizeof(wordlist_array));
+		CHECK_POINTER(new_array);
+	new_array->size = 0;
+	new_array->total_size = ARRAY_BLOCK_SIZE;
+	new_array->array = (wordlist **)malloc(ARRAY_BLOCK_SIZE * sizeof(wordlist *));
+		CHECK_POINTER(new_array->array);
+	
+	return new_array;
+}
+
+/** \fn void reset_wordlist_array(wordlist_array* array)
+* \brief Reset the wordlist array to hold nothing.
+* \param array Pointer to the dynamic wordlist array.
+*/
+void reset_wordlist_array(wordlist_array * array)
+{
+	array->size = 0;
+}
+
+/** \fn void free_wordlist_array(wordlist_array * array)
+* \brief Free the memory of a dynamic wordlist array.
+* \param array Pointer to the dynamic wordlist array.
+*/
+void free_wordlist_array(wordlist_array * array)
+{
+	int i;
+	
+	for(i = 0; i < array->size; i++)
+	{
+		free_wordlist_datatype(array->array[i]);
+	}
+	free(array->array);
+	free(array);
+}
+
+void copy_wordlist_array(wordlist_array * from, wordlist_array * to)
+{
+	int i;
+	
+	//to = init_wordlist_array();
+	
+	for(i = 0; i < from->size; i++)
+	{
+		add_wordlist(to, from->array[i]->wordlistname);
+	}
+}
+
+/** \fn void add_wordlist(wordlist_array * array, word_array * wordlistname)
+* \brief Add an wordlist to the dynamic wordlist array.
+* \param array Pointer to the dynamic wordlist array.
+* \param new_int The wordlist to add
+*/
+void add_wordlist(wordlist_array * array, word_array * wordlistname)
+{
+	if(array->size == array->total_size)
+	{
+		array->total_size = array->total_size + ARRAY_BLOCK_SIZE;
+		array->array = (wordlist **)realloc(array->array, (array->total_size * sizeof(wordlist *)));
+	}
+	array->array[array->size] = init_wordlist();
+	
+	array->array[array->size]->wordlistname = init_word_array();
+	copy_word_array(wordlistname, array->array[array->size]->wordlistname);
+
+	array->size++;
+}
+
+/** \fn void remove_wordlist(wordlist_array * array, int index)
+ * \brief Remove an wordlist from a dynamic wordlist array.
+ * \param array Pointer to the dynamic wordlist array.
+ * \param index The index of the wordlist to remove.
+ */
+void remove_wordlist(wordlist_array * array, int index)
+{
+	int i;
+	
+	if(index <= array->size)
+	{
+		/* memcopy?? */
+		for(i = index; i < array->size - 1; i++)
+		{
+			array->array[i] = array->array[i+1];
+		}
+		array->size--;
+	}
+}
+/* Functions for the int2D datatype */
+/** \fn int2D_array * init_int2D_array()
+ * \brief Allocate memory for a dynamic int2D array.
+ * \return int2D_array Pointer to the new dynamic int2D array.
+ */
+int2D_array * init_int2D_array()
+{
+	int2D_array * new_array = (int2D_array *)malloc(sizeof(int2D_array));
+		CHECK_POINTER(new_array);
+	new_array->size = 0;
+	new_array->total_size = ARRAY_BLOCK_SIZE;
+	new_array->array = (int2D **)malloc(ARRAY_BLOCK_SIZE * sizeof(int2D *));
+		CHECK_POINTER(new_array->array);
+	
+	return new_array;
+}
+
+/** \fn void reset_int2D_array(int2D_array* array)
+* \brief Reset the int2D array to hold nothing.
+* \param array Pointer to the dynamic int2D array.
+*/
+void reset_int2D_array(int2D_array * array)
+{
+	array->size = 0;
+}
+
+/** \fn void free_int2D_array(int2D_array * array)
+* \brief Free the memory of a dynamic int2D array.
+* \param array Pointer to the dynamic int2D array.
+*/
+void free_int2D_array(int2D_array * array)
+{
+	int i;
+	
+	for(i = 0; i < array->size; i++)
+	{
+		free_int2D_datatype(array->array[i]);
+	}
+	free(array->array);
+	free(array);
+}
+
+void copy_int2D_array(int2D_array * from, int2D_array * to)
+{
+	int i;
+	
+	//to = init_int2D_array();
+	
+	for(i = 0; i < from->size; i++)
+	{
+		add_int2D(to, from->array[i]->int2Dname);
+	}
+}
+
+/** \fn void add_int2D(int2D_array * array, int_array int2Dname)
+* \brief Add an int2D to the dynamic int2D array.
+* \param array Pointer to the dynamic int2D array.
+* \param new_int The int2D to add
+*/
+void add_int2D(int2D_array * array, int_array * int2Dname)
+{
+	if(array->size == array->total_size)
+	{
+		array->total_size = array->total_size + ARRAY_BLOCK_SIZE;
+		array->array = (int2D **)realloc(array->array, (array->total_size * sizeof(int2D *)));
+	}
+	array->array[array->size] = init_int2D();
+	
+	array->array[array->size]->int2Dname = init_int_array();
+	copy_int_array(int2Dname, array->array[array->size]->int2Dname);
+
+	array->size++;
+}
+
+/** \fn void remove_int2D(int2D_array * array, int index)
+ * \brief Remove an int2D from a dynamic int2D array.
+ * \param array Pointer to the dynamic int2D array.
+ * \param index The index of the int2D to remove.
+ */
+void remove_int2D(int2D_array * array, int index)
+{
+	int i;
+	
+	if(index <= array->size)
+	{
+		/* memcopy?? */
+		for(i = index; i < array->size - 1; i++)
+		{
+			array->array[i] = array->array[i+1];
+		}
+		array->size--;
+	}
+}
+/* Functions for the double2D datatype */
+/** \fn double2D_array * init_double2D_array()
+ * \brief Allocate memory for a dynamic double2D array.
+ * \return double2D_array Pointer to the new dynamic double2D array.
+ */
+double2D_array * init_double2D_array()
+{
+	double2D_array * new_array = (double2D_array *)malloc(sizeof(double2D_array));
+		CHECK_POINTER(new_array);
+	new_array->size = 0;
+	new_array->total_size = ARRAY_BLOCK_SIZE;
+	new_array->array = (double2D **)malloc(ARRAY_BLOCK_SIZE * sizeof(double2D *));
+		CHECK_POINTER(new_array->array);
+	
+	return new_array;
+}
+
+/** \fn void reset_double2D_array(double2D_array* array)
+* \brief Reset the double2D array to hold nothing.
+* \param array Pointer to the dynamic double2D array.
+*/
+void reset_double2D_array(double2D_array * array)
+{
+	array->size = 0;
+}
+
+/** \fn void free_double2D_array(double2D_array * array)
+* \brief Free the memory of a dynamic double2D array.
+* \param array Pointer to the dynamic double2D array.
+*/
+void free_double2D_array(double2D_array * array)
+{
+	int i;
+	
+	for(i = 0; i < array->size; i++)
+	{
+		free_double2D_datatype(array->array[i]);
+	}
+	free(array->array);
+	free(array);
+}
+
+void copy_double2D_array(double2D_array * from, double2D_array * to)
+{
+	int i;
+	
+	//to = init_double2D_array();
+	
+	for(i = 0; i < from->size; i++)
+	{
+		add_double2D(to, from->array[i]->double2Dname);
+	}
+}
+
+/** \fn void add_double2D(double2D_array * array, double_array double2Dname)
+* \brief Add an double2D to the dynamic double2D array.
+* \param array Pointer to the dynamic double2D array.
+* \param new_int The double2D to add
+*/
+void add_double2D(double2D_array * array, double_array * double2Dname)
+{
+	if(array->size == array->total_size)
+	{
+		array->total_size = array->total_size + ARRAY_BLOCK_SIZE;
+		array->array = (double2D **)realloc(array->array, (array->total_size * sizeof(double2D *)));
+	}
+	array->array[array->size] = init_double2D();
+	
+	array->array[array->size]->double2Dname = init_double_array();
+	copy_double_array(double2Dname, array->array[array->size]->double2Dname);
+
+	array->size++;
+}
+
+/** \fn void remove_double2D(double2D_array * array, int index)
+ * \brief Remove an double2D from a dynamic double2D array.
+ * \param array Pointer to the dynamic double2D array.
+ * \param index The index of the double2D to remove.
+ */
+void remove_double2D(double2D_array * array, int index)
+{
+	int i;
+	
+	if(index <= array->size)
+	{
+		/* memcopy?? */
+		for(i = index; i < array->size - 1; i++)
+		{
+			array->array[i] = array->array[i+1];
+		}
+		array->size--;
+	}
+}
+/* Functions for the RuleDetailSystem datatype */
+/** \fn RuleDetailSystem_array * init_RuleDetailSystem_array()
+ * \brief Allocate memory for a dynamic RuleDetailSystem array.
+ * \return RuleDetailSystem_array Pointer to the new dynamic RuleDetailSystem array.
+ */
+RuleDetailSystem_array * init_RuleDetailSystem_array()
+{
+	RuleDetailSystem_array * new_array = (RuleDetailSystem_array *)malloc(sizeof(RuleDetailSystem_array));
+		CHECK_POINTER(new_array);
+	new_array->size = 0;
+	new_array->total_size = ARRAY_BLOCK_SIZE;
+	new_array->array = (RuleDetailSystem **)malloc(ARRAY_BLOCK_SIZE * sizeof(RuleDetailSystem *));
+		CHECK_POINTER(new_array->array);
+	
+	return new_array;
+}
+
+/** \fn void reset_RuleDetailSystem_array(RuleDetailSystem_array* array)
+* \brief Reset the RuleDetailSystem array to hold nothing.
+* \param array Pointer to the dynamic RuleDetailSystem array.
+*/
+void reset_RuleDetailSystem_array(RuleDetailSystem_array * array)
+{
+	array->size = 0;
+}
+
+/** \fn void free_RuleDetailSystem_array(RuleDetailSystem_array * array)
+* \brief Free the memory of a dynamic RuleDetailSystem array.
+* \param array Pointer to the dynamic RuleDetailSystem array.
+*/
+void free_RuleDetailSystem_array(RuleDetailSystem_array * array)
+{
+	int i;
+	
+	for(i = 0; i < array->size; i++)
+	{
+		free_RuleDetailSystem_datatype(array->array[i]);
+	}
+	free(array->array);
+	free(array);
+}
+
+void copy_RuleDetailSystem_array(RuleDetailSystem_array * from, RuleDetailSystem_array * to)
+{
+	int i;
+	
+	//to = init_RuleDetailSystem_array();
+	
+	for(i = 0; i < from->size; i++)
+	{
+		add_RuleDetailSystem(to, from->array[i]->nr_params_per_type, from->array[i]->nr_params, from->array[i]->parameters, from->array[i]->myfunctionnames);
+	}
+}
+
+/** \fn void add_RuleDetailSystem(RuleDetailSystem_array * array, int_array nr_params_per_type, int_array nr_params, double2D_array * parameters, wordlist * myfunctionnames)
+* \brief Add an RuleDetailSystem to the dynamic RuleDetailSystem array.
+* \param array Pointer to the dynamic RuleDetailSystem array.
+* \param new_int The RuleDetailSystem to add
+*/
+void add_RuleDetailSystem(RuleDetailSystem_array * array, int_array * nr_params_per_type, int_array * nr_params, double2D_array * parameters, wordlist * myfunctionnames)
+{
+	if(array->size == array->total_size)
+	{
+		array->total_size = array->total_size + ARRAY_BLOCK_SIZE;
+		array->array = (RuleDetailSystem **)realloc(array->array, (array->total_size * sizeof(RuleDetailSystem *)));
+	}
+	array->array[array->size] = init_RuleDetailSystem();
+	
+	array->array[array->size]->nr_params_per_type = init_int_array();
+	copy_int_array(nr_params_per_type, array->array[array->size]->nr_params_per_type);
+	array->array[array->size]->nr_params = init_int_array();
+	copy_int_array(nr_params, array->array[array->size]->nr_params);
+	array->array[array->size]->parameters = init_double2D_array();
+	copy_double2D_array(parameters, array->array[array->size]->parameters);
+	array->array[array->size]->myfunctionnames = init_wordlist();
+	copy_wordlist_datatype(myfunctionnames, array->array[array->size]->myfunctionnames);
+
+	array->size++;
+}
+
+/** \fn void remove_RuleDetailSystem(RuleDetailSystem_array * array, int index)
+ * \brief Remove an RuleDetailSystem from a dynamic RuleDetailSystem array.
+ * \param array Pointer to the dynamic RuleDetailSystem array.
+ * \param index The index of the RuleDetailSystem to remove.
+ */
+void remove_RuleDetailSystem(RuleDetailSystem_array * array, int index)
+{
+	int i;
+	
+	if(index <= array->size)
+	{
+		/* memcopy?? */
+		for(i = index; i < array->size - 1; i++)
+		{
+			array->array[i] = array->array[i+1];
+		}
+		array->size--;
+	}
+}
+/* Functions for the PublicClassifierSystem datatype */
+/** \fn PublicClassifierSystem_array * init_PublicClassifierSystem_array()
+ * \brief Allocate memory for a dynamic PublicClassifierSystem array.
+ * \return PublicClassifierSystem_array Pointer to the new dynamic PublicClassifierSystem array.
+ */
+PublicClassifierSystem_array * init_PublicClassifierSystem_array()
+{
+	PublicClassifierSystem_array * new_array = (PublicClassifierSystem_array *)malloc(sizeof(PublicClassifierSystem_array));
+		CHECK_POINTER(new_array);
+	new_array->size = 0;
+	new_array->total_size = ARRAY_BLOCK_SIZE;
+	new_array->array = (PublicClassifierSystem **)malloc(ARRAY_BLOCK_SIZE * sizeof(PublicClassifierSystem *));
+		CHECK_POINTER(new_array->array);
+	
+	return new_array;
+}
+
+/** \fn void reset_PublicClassifierSystem_array(PublicClassifierSystem_array* array)
+* \brief Reset the PublicClassifierSystem array to hold nothing.
+* \param array Pointer to the dynamic PublicClassifierSystem array.
+*/
+void reset_PublicClassifierSystem_array(PublicClassifierSystem_array * array)
+{
+	array->size = 0;
+}
+
+/** \fn void free_PublicClassifierSystem_array(PublicClassifierSystem_array * array)
+* \brief Free the memory of a dynamic PublicClassifierSystem array.
+* \param array Pointer to the dynamic PublicClassifierSystem array.
+*/
+void free_PublicClassifierSystem_array(PublicClassifierSystem_array * array)
+{
+	int i;
+	
+	for(i = 0; i < array->size; i++)
+	{
+		free_PublicClassifierSystem_datatype(array->array[i]);
+	}
+	free(array->array);
+	free(array);
+}
+
+void copy_PublicClassifierSystem_array(PublicClassifierSystem_array * from, PublicClassifierSystem_array * to)
+{
+	int i;
+	
+	//to = init_PublicClassifierSystem_array();
+	
+	for(i = 0; i < from->size; i++)
+	{
+		add_PublicClassifierSystem(to, from->array[i]->nr_types, from->array[i]->nr_rules_per_type, from->array[i]->nr_rules, from->array[i]->ids, from->array[i]->rule_type, from->array[i]->counter, from->array[i]->performance, from->array[i]->avgperformance);
+	}
+}
+
+/** \fn void add_PublicClassifierSystem(PublicClassifierSystem_array * array, int nr_types, int_array nr_rules_per_type, int nr_rules, int_array ids, int_array rule_type, int_array counter, double_array performance, double_array avgperformance)
+* \brief Add an PublicClassifierSystem to the dynamic PublicClassifierSystem array.
+* \param array Pointer to the dynamic PublicClassifierSystem array.
+* \param new_int The PublicClassifierSystem to add
+*/
+void add_PublicClassifierSystem(PublicClassifierSystem_array * array, int nr_types, int_array * nr_rules_per_type, int nr_rules, int_array * ids, int_array * rule_type, int_array * counter, double_array * performance, double_array * avgperformance)
+{
+	if(array->size == array->total_size)
+	{
+		array->total_size = array->total_size + ARRAY_BLOCK_SIZE;
+		array->array = (PublicClassifierSystem **)realloc(array->array, (array->total_size * sizeof(PublicClassifierSystem *)));
+	}
+	array->array[array->size] = init_PublicClassifierSystem();
+	
+	array->array[array->size]->nr_types = nr_types;
+	array->array[array->size]->nr_rules_per_type = init_int_array();
+	copy_int_array(nr_rules_per_type, array->array[array->size]->nr_rules_per_type);
+	array->array[array->size]->nr_rules = nr_rules;
+	array->array[array->size]->ids = init_int_array();
+	copy_int_array(ids, array->array[array->size]->ids);
+	array->array[array->size]->rule_type = init_int_array();
+	copy_int_array(rule_type, array->array[array->size]->rule_type);
+	array->array[array->size]->counter = init_int_array();
+	copy_int_array(counter, array->array[array->size]->counter);
+	array->array[array->size]->performance = init_double_array();
+	copy_double_array(performance, array->array[array->size]->performance);
+	array->array[array->size]->avgperformance = init_double_array();
+	copy_double_array(avgperformance, array->array[array->size]->avgperformance);
+
+	array->size++;
+}
+
+/** \fn void remove_PublicClassifierSystem(PublicClassifierSystem_array * array, int index)
+ * \brief Remove an PublicClassifierSystem from a dynamic PublicClassifierSystem array.
+ * \param array Pointer to the dynamic PublicClassifierSystem array.
+ * \param index The index of the PublicClassifierSystem to remove.
+ */
+void remove_PublicClassifierSystem(PublicClassifierSystem_array * array, int index)
+{
+	int i;
+	
+	if(index <= array->size)
+	{
+		/* memcopy?? */
+		for(i = index; i < array->size - 1; i++)
+		{
+			array->array[i] = array->array[i+1];
+		}
+		array->size--;
+	}
+}
+/* Functions for the PrivateClassifierSystem datatype */
+/** \fn PrivateClassifierSystem_array * init_PrivateClassifierSystem_array()
+ * \brief Allocate memory for a dynamic PrivateClassifierSystem array.
+ * \return PrivateClassifierSystem_array Pointer to the new dynamic PrivateClassifierSystem array.
+ */
+PrivateClassifierSystem_array * init_PrivateClassifierSystem_array()
+{
+	PrivateClassifierSystem_array * new_array = (PrivateClassifierSystem_array *)malloc(sizeof(PrivateClassifierSystem_array));
+		CHECK_POINTER(new_array);
+	new_array->size = 0;
+	new_array->total_size = ARRAY_BLOCK_SIZE;
+	new_array->array = (PrivateClassifierSystem **)malloc(ARRAY_BLOCK_SIZE * sizeof(PrivateClassifierSystem *));
+		CHECK_POINTER(new_array->array);
+	
+	return new_array;
+}
+
+/** \fn void reset_PrivateClassifierSystem_array(PrivateClassifierSystem_array* array)
+* \brief Reset the PrivateClassifierSystem array to hold nothing.
+* \param array Pointer to the dynamic PrivateClassifierSystem array.
+*/
+void reset_PrivateClassifierSystem_array(PrivateClassifierSystem_array * array)
+{
+	array->size = 0;
+}
+
+/** \fn void free_PrivateClassifierSystem_array(PrivateClassifierSystem_array * array)
+* \brief Free the memory of a dynamic PrivateClassifierSystem array.
+* \param array Pointer to the dynamic PrivateClassifierSystem array.
+*/
+void free_PrivateClassifierSystem_array(PrivateClassifierSystem_array * array)
+{
+	int i;
+	
+	for(i = 0; i < array->size; i++)
+	{
+		free_PrivateClassifierSystem_datatype(array->array[i]);
+	}
+	free(array->array);
+	free(array);
+}
+
+void copy_PrivateClassifierSystem_array(PrivateClassifierSystem_array * from, PrivateClassifierSystem_array * to)
+{
+	int i;
+	
+	//to = init_PrivateClassifierSystem_array();
+	
+	for(i = 0; i < from->size; i++)
+	{
+		add_PrivateClassifierSystem(to, from->array[i]->nr_types, from->array[i]->nr_rules_per_type, from->array[i]->nr_rules, from->array[i]->ids, from->array[i]->rule_type, from->array[i]->EWA_rho, from->array[i]->EWA_phi, from->array[i]->EWA_delta, from->array[i]->EWA_beta, from->array[i]->experience, from->array[i]->current_rule, from->array[i]->my_performance, from->array[i]->avgperformance, from->array[i]->attraction, from->array[i]->choiceprob);
+	}
+}
+
+/** \fn void add_PrivateClassifierSystem(PrivateClassifierSystem_array * array, int nr_types, int_array nr_rules_per_type, int nr_rules, int_array ids, int_array rule_type, double EWA_rho, double EWA_phi, double EWA_delta, double EWA_beta, int experience, int current_rule, double my_performance, double_array avgperformance, double_array attraction, double_array choiceprob)
+* \brief Add an PrivateClassifierSystem to the dynamic PrivateClassifierSystem array.
+* \param array Pointer to the dynamic PrivateClassifierSystem array.
+* \param new_int The PrivateClassifierSystem to add
+*/
+void add_PrivateClassifierSystem(PrivateClassifierSystem_array * array, int nr_types, int_array * nr_rules_per_type, int nr_rules, int_array * ids, int_array * rule_type, double EWA_rho, double EWA_phi, double EWA_delta, double EWA_beta, int experience, int current_rule, double my_performance, double_array * avgperformance, double_array * attraction, double_array * choiceprob)
+{
+	if(array->size == array->total_size)
+	{
+		array->total_size = array->total_size + ARRAY_BLOCK_SIZE;
+		array->array = (PrivateClassifierSystem **)realloc(array->array, (array->total_size * sizeof(PrivateClassifierSystem *)));
+	}
+	array->array[array->size] = init_PrivateClassifierSystem();
+	
+	array->array[array->size]->nr_types = nr_types;
+	array->array[array->size]->nr_rules_per_type = init_int_array();
+	copy_int_array(nr_rules_per_type, array->array[array->size]->nr_rules_per_type);
+	array->array[array->size]->nr_rules = nr_rules;
+	array->array[array->size]->ids = init_int_array();
+	copy_int_array(ids, array->array[array->size]->ids);
+	array->array[array->size]->rule_type = init_int_array();
+	copy_int_array(rule_type, array->array[array->size]->rule_type);
+	array->array[array->size]->EWA_rho = EWA_rho;
+	array->array[array->size]->EWA_phi = EWA_phi;
+	array->array[array->size]->EWA_delta = EWA_delta;
+	array->array[array->size]->EWA_beta = EWA_beta;
+	array->array[array->size]->experience = experience;
+	array->array[array->size]->current_rule = current_rule;
+	array->array[array->size]->my_performance = my_performance;
+	array->array[array->size]->avgperformance = init_double_array();
+	copy_double_array(avgperformance, array->array[array->size]->avgperformance);
+	array->array[array->size]->attraction = init_double_array();
+	copy_double_array(attraction, array->array[array->size]->attraction);
+	array->array[array->size]->choiceprob = init_double_array();
+	copy_double_array(choiceprob, array->array[array->size]->choiceprob);
+
+	array->size++;
+}
+
+/** \fn void remove_PrivateClassifierSystem(PrivateClassifierSystem_array * array, int index)
+ * \brief Remove an PrivateClassifierSystem from a dynamic PrivateClassifierSystem array.
+ * \param array Pointer to the dynamic PrivateClassifierSystem array.
+ * \param index The index of the PrivateClassifierSystem to remove.
+ */
+void remove_PrivateClassifierSystem(PrivateClassifierSystem_array * array, int index)
+{
+	int i;
+	
+	if(index <= array->size)
+	{
+		/* memcopy?? */
+		for(i = index; i < array->size - 1; i++)
+		{
+			array->array[i] = array->array[i+1];
+		}
+		array->size--;
+	}
+}
+/* Functions for the StockDataType datatype */
+/** \fn StockDataType_array * init_StockDataType_array()
+ * \brief Allocate memory for a dynamic StockDataType array.
+ * \return StockDataType_array Pointer to the new dynamic StockDataType array.
+ */
+StockDataType_array * init_StockDataType_array()
+{
+	StockDataType_array * new_array = (StockDataType_array *)malloc(sizeof(StockDataType_array));
+		CHECK_POINTER(new_array);
+	new_array->size = 0;
+	new_array->total_size = ARRAY_BLOCK_SIZE;
+	new_array->array = (StockDataType **)malloc(ARRAY_BLOCK_SIZE * sizeof(StockDataType *));
+		CHECK_POINTER(new_array->array);
+	
+	return new_array;
+}
+
+/** \fn void reset_StockDataType_array(StockDataType_array* array)
+* \brief Reset the StockDataType array to hold nothing.
+* \param array Pointer to the dynamic StockDataType array.
+*/
+void reset_StockDataType_array(StockDataType_array * array)
+{
+	array->size = 0;
+}
+
+/** \fn void free_StockDataType_array(StockDataType_array * array)
+* \brief Free the memory of a dynamic StockDataType array.
+* \param array Pointer to the dynamic StockDataType array.
+*/
+void free_StockDataType_array(StockDataType_array * array)
+{
+	int i;
+	
+	for(i = 0; i < array->size; i++)
+	{
+		free_StockDataType_datatype(array->array[i]);
+	}
+	free(array->array);
+	free(array);
+}
+
+void copy_StockDataType_array(StockDataType_array * from, StockDataType_array * to)
+{
+	int i;
+	
+	//to = init_StockDataType_array();
+	
+	for(i = 0; i < from->size; i++)
+	{
+		add_StockDataType(to, from->array[i]->class, from->array[i]->id, from->array[i]->NrOutStandingShares, from->array[i]->price, from->array[i]->Book_intraday_transaction, from->array[i]->dividends);
+	}
+}
+
+/** \fn void add_StockDataType(StockDataType_array * array, char class, int id, int_array NrOutStandingShares, double price, int Book_intraday_transaction, int_array dividends)
+* \brief Add an StockDataType to the dynamic StockDataType array.
+* \param array Pointer to the dynamic StockDataType array.
+* \param new_int The StockDataType to add
+*/
+void add_StockDataType(StockDataType_array * array, char * class, int * id, int_array * NrOutStandingShares, double price, int Book_intraday_transaction, int_array * dividends)
+{
+	if(array->size == array->total_size)
+	{
+		array->total_size = array->total_size + ARRAY_BLOCK_SIZE;
+		array->array = (StockDataType **)realloc(array->array, (array->total_size * sizeof(StockDataType *)));
+	}
+	array->array[array->size] = init_StockDataType();
+	
+	memcpy(array->array[array->size]->class, class, 5*sizeof(char));
+	memcpy(array->array[array->size]->id, id, 5*sizeof(int));
+	array->array[array->size]->NrOutStandingShares = init_int_array();
+	copy_int_array(NrOutStandingShares, array->array[array->size]->NrOutStandingShares);
+	array->array[array->size]->price = price;
+	array->array[array->size]->Book_intraday_transaction = Book_intraday_transaction;
+	array->array[array->size]->dividends = init_int_array();
+	copy_int_array(dividends, array->array[array->size]->dividends);
+
+	array->size++;
+}
+
+/** \fn void remove_StockDataType(StockDataType_array * array, int index)
+ * \brief Remove an StockDataType from a dynamic StockDataType array.
+ * \param array Pointer to the dynamic StockDataType array.
+ * \param index The index of the StockDataType to remove.
+ */
+void remove_StockDataType(StockDataType_array * array, int index)
 {
 	int i;
 	
@@ -3700,9 +4545,9 @@ void remove_DBFinancialAssets(DBFinancialAssets_array * array, int index)
 	}
 }
 /* Functions for the BondDataType datatype */
-/** \fn int_array * init_int_array()
- * \brief Allocate memory for a dynamic integer array.
- * \return int_array Pointer to the new dynamic integer array.
+/** \fn BondDataType_array * init_BondDataType_array()
+ * \brief Allocate memory for a dynamic BondDataType array.
+ * \return BondDataType_array Pointer to the new dynamic BondDataType array.
  */
 BondDataType_array * init_BondDataType_array()
 {
@@ -3716,18 +4561,18 @@ BondDataType_array * init_BondDataType_array()
 	return new_array;
 }
 
-/** \fn void reset_int_array(int_array * array)
-* \brief Reset the int array to hold nothing.
-* \param array Pointer to the dynamic integer array.
+/** \fn void reset_BondDataType_array(BondDataType_array* array)
+* \brief Reset the BondDataType array to hold nothing.
+* \param array Pointer to the dynamic BondDataType array.
 */
 void reset_BondDataType_array(BondDataType_array * array)
 {
 	array->size = 0;
 }
 
-/** \fn void free_int_array(int_array * array)
-* \brief Free the memory of a dynamic integer array.
-* \param array Pointer to the dynamic integer array.
+/** \fn void free_BondDataType_array(BondDataType_array * array)
+* \brief Free the memory of a dynamic BondDataType array.
+* \param array Pointer to the dynamic BondDataType array.
 */
 void free_BondDataType_array(BondDataType_array * array)
 {
@@ -3735,37 +4580,48 @@ void free_BondDataType_array(BondDataType_array * array)
 	
 	for(i = 0; i < array->size; i++)
 	{
-		free(array->array[i]);
+		free_BondDataType_datatype(array->array[i]);
 	}
 	free(array->array);
 	free(array);
 }
 
-/** \fn void add_int(int_array * array, int new_int)
-* \brief Add an integer to the dynamic integer array.
-* \param array Pointer to the dynamic integer array.
-* \param new_int The integer to add
+void copy_BondDataType_array(BondDataType_array * from, BondDataType_array * to)
+{
+	int i;
+	
+	//to = init_BondDataType_array();
+	
+	for(i = 0; i < from->size; i++)
+	{
+		add_BondDataType(to, from->array[i]->class, from->array[i]->id);
+	}
+}
+
+/** \fn void add_BondDataType(BondDataType_array * array, char class, int id)
+* \brief Add an BondDataType to the dynamic BondDataType array.
+* \param array Pointer to the dynamic BondDataType array.
+* \param new_int The BondDataType to add
 */
-void add_BondDataType(BondDataType_array * array, char class, int id)
+void add_BondDataType(BondDataType_array * array, char * class, int * id)
 {
 	if(array->size == array->total_size)
 	{
 		array->total_size = array->total_size + ARRAY_BLOCK_SIZE;
 		array->array = (BondDataType **)realloc(array->array, (array->total_size * sizeof(BondDataType *)));
 	}
-	array->array[array->size] = (BondDataType *)malloc(sizeof(BondDataType));
-		CHECK_POINTER(array->array[array->size]);
-
-	array->array[array->size]->class = class;
-	array->array[array->size]->id = id;
+	array->array[array->size] = init_BondDataType();
 	
+	memcpy(array->array[array->size]->class, class, 5*sizeof(char));
+	memcpy(array->array[array->size]->id, id, 5*sizeof(int));
+
 	array->size++;
 }
 
-/** \fn void remove_int(int_array * array, int index)
- * \brief Remove an integer from a dynamic integer array.
- * \param array Pointer to the dynamic integer array.
- * \param index The index of the integer to remove.
+/** \fn void remove_BondDataType(BondDataType_array * array, int index)
+ * \brief Remove an BondDataType from a dynamic BondDataType array.
+ * \param array Pointer to the dynamic BondDataType array.
+ * \param index The index of the BondDataType to remove.
  */
 void remove_BondDataType(BondDataType_array * array, int index)
 {
@@ -3781,81 +4637,284 @@ void remove_BondDataType(BondDataType_array * array, int index)
 		array->size--;
 	}
 }
-/* Functions for the StockDataType datatype */
-/** \fn int_array * init_int_array()
- * \brief Allocate memory for a dynamic integer array.
- * \return int_array Pointer to the new dynamic integer array.
+/* Functions for the DBFinancialAssets datatype */
+/** \fn DBFinancialAssets_array * init_DBFinancialAssets_array()
+ * \brief Allocate memory for a dynamic DBFinancialAssets array.
+ * \return DBFinancialAssets_array Pointer to the new dynamic DBFinancialAssets array.
  */
-StockDataType_array * init_StockDataType_array()
+DBFinancialAssets_array * init_DBFinancialAssets_array()
 {
-	StockDataType_array * new_array = (StockDataType_array *)malloc(sizeof(StockDataType_array));
+	DBFinancialAssets_array * new_array = (DBFinancialAssets_array *)malloc(sizeof(DBFinancialAssets_array));
 		CHECK_POINTER(new_array);
 	new_array->size = 0;
 	new_array->total_size = ARRAY_BLOCK_SIZE;
-	new_array->array = (StockDataType **)malloc(ARRAY_BLOCK_SIZE * sizeof(StockDataType *));
+	new_array->array = (DBFinancialAssets **)malloc(ARRAY_BLOCK_SIZE * sizeof(DBFinancialAssets *));
 		CHECK_POINTER(new_array->array);
 	
 	return new_array;
 }
 
-/** \fn void reset_int_array(int_array * array)
-* \brief Reset the int array to hold nothing.
-* \param array Pointer to the dynamic integer array.
+/** \fn void reset_DBFinancialAssets_array(DBFinancialAssets_array* array)
+* \brief Reset the DBFinancialAssets array to hold nothing.
+* \param array Pointer to the dynamic DBFinancialAssets array.
 */
-void reset_StockDataType_array(StockDataType_array * array)
+void reset_DBFinancialAssets_array(DBFinancialAssets_array * array)
 {
 	array->size = 0;
 }
 
-/** \fn void free_int_array(int_array * array)
-* \brief Free the memory of a dynamic integer array.
-* \param array Pointer to the dynamic integer array.
+/** \fn void free_DBFinancialAssets_array(DBFinancialAssets_array * array)
+* \brief Free the memory of a dynamic DBFinancialAssets array.
+* \param array Pointer to the dynamic DBFinancialAssets array.
 */
-void free_StockDataType_array(StockDataType_array * array)
+void free_DBFinancialAssets_array(DBFinancialAssets_array * array)
 {
 	int i;
 	
 	for(i = 0; i < array->size; i++)
 	{
-		free(array->array[i]);
+		free_DBFinancialAssets_datatype(array->array[i]);
 	}
 	free(array->array);
 	free(array);
 }
 
-/** \fn void add_int(int_array * array, int new_int)
-* \brief Add an integer to the dynamic integer array.
-* \param array Pointer to the dynamic integer array.
-* \param new_int The integer to add
+void copy_DBFinancialAssets_array(DBFinancialAssets_array * from, DBFinancialAssets_array * to)
+{
+	int i;
+	
+	//to = init_DBFinancialAssets_array();
+	
+	for(i = 0; i < from->size; i++)
+	{
+		add_DBFinancialAssets(to);
+	}
+}
+
+/** \fn void add_DBFinancialAssets(DBFinancialAssets_array * array)
+* \brief Add an DBFinancialAssets to the dynamic DBFinancialAssets array.
+* \param array Pointer to the dynamic DBFinancialAssets array.
+* \param new_int The DBFinancialAssets to add
 */
-void add_StockDataType(StockDataType_array * array, char class, int id, int NrOutStandingShares, int NrOutStandingShares(1:Parameters.NrDaysInitialization), double price, int Book_intraday_transaction, int dividends, int dividends(1:Parameters.NrMonthsInitialization))
+void add_DBFinancialAssets(DBFinancialAssets_array * array)
 {
 	if(array->size == array->total_size)
 	{
 		array->total_size = array->total_size + ARRAY_BLOCK_SIZE;
-		array->array = (StockDataType **)realloc(array->array, (array->total_size * sizeof(StockDataType *)));
+		array->array = (DBFinancialAssets **)realloc(array->array, (array->total_size * sizeof(DBFinancialAssets *)));
 	}
-	array->array[array->size] = (StockDataType *)malloc(sizeof(StockDataType));
-		CHECK_POINTER(array->array[array->size]);
-
-	array->array[array->size]->class = class;
-	array->array[array->size]->id = id;
-	array->array[array->size]->NrOutStandingShares = NrOutStandingShares;
-	array->array[array->size]->NrOutStandingShares(1:Parameters.NrDaysInitialization) = NrOutStandingShares(1:Parameters.NrDaysInitialization);
-	array->array[array->size]->price = price;
-	array->array[array->size]->Book_intraday_transaction = Book_intraday_transaction;
-	array->array[array->size]->dividends = dividends;
-	array->array[array->size]->dividends(1:Parameters.NrMonthsInitialization) = dividends(1:Parameters.NrMonthsInitialization);
+	array->array[array->size] = init_DBFinancialAssets();
 	
+
 	array->size++;
 }
 
-/** \fn void remove_int(int_array * array, int index)
- * \brief Remove an integer from a dynamic integer array.
- * \param array Pointer to the dynamic integer array.
- * \param index The index of the integer to remove.
+/** \fn void remove_DBFinancialAssets(DBFinancialAssets_array * array, int index)
+ * \brief Remove an DBFinancialAssets from a dynamic DBFinancialAssets array.
+ * \param array Pointer to the dynamic DBFinancialAssets array.
+ * \param index The index of the DBFinancialAssets to remove.
  */
-void remove_StockDataType(StockDataType_array * array, int index)
+void remove_DBFinancialAssets(DBFinancialAssets_array * array, int index)
+{
+	int i;
+	
+	if(index <= array->size)
+	{
+		/* memcopy?? */
+		for(i = index; i < array->size - 1; i++)
+		{
+			array->array[i] = array->array[i+1];
+		}
+		array->size--;
+	}
+}
+/* Functions for the Asset datatype */
+/** \fn Asset_array * init_Asset_array()
+ * \brief Allocate memory for a dynamic Asset array.
+ * \return Asset_array Pointer to the new dynamic Asset array.
+ */
+Asset_array * init_Asset_array()
+{
+	Asset_array * new_array = (Asset_array *)malloc(sizeof(Asset_array));
+		CHECK_POINTER(new_array);
+	new_array->size = 0;
+	new_array->total_size = ARRAY_BLOCK_SIZE;
+	new_array->array = (Asset **)malloc(ARRAY_BLOCK_SIZE * sizeof(Asset *));
+		CHECK_POINTER(new_array->array);
+	
+	return new_array;
+}
+
+/** \fn void reset_Asset_array(Asset_array* array)
+* \brief Reset the Asset array to hold nothing.
+* \param array Pointer to the dynamic Asset array.
+*/
+void reset_Asset_array(Asset_array * array)
+{
+	array->size = 0;
+}
+
+/** \fn void free_Asset_array(Asset_array * array)
+* \brief Free the memory of a dynamic Asset array.
+* \param array Pointer to the dynamic Asset array.
+*/
+void free_Asset_array(Asset_array * array)
+{
+	int i;
+	
+	for(i = 0; i < array->size; i++)
+	{
+		free_Asset_datatype(array->array[i]);
+	}
+	free(array->array);
+	free(array);
+}
+
+void copy_Asset_array(Asset_array * from, Asset_array * to)
+{
+	int i;
+	
+	//to = init_Asset_array();
+	
+	for(i = 0; i < from->size; i++)
+	{
+		add_Asset(to, from->array[i]->ids, from->array[i]->nr_units, from->array[i]->current_price, from->array[i]->best_ask_price, from->array[i]->best_bid_price);
+	}
+}
+
+/** \fn void add_Asset(Asset_array * array, int_array ids, int_array nr_units, double_array current_price, double_array best_ask_price, double_array best_bid_price)
+* \brief Add an Asset to the dynamic Asset array.
+* \param array Pointer to the dynamic Asset array.
+* \param new_int The Asset to add
+*/
+void add_Asset(Asset_array * array, int_array * ids, int_array * nr_units, double_array * current_price, double_array * best_ask_price, double_array * best_bid_price)
+{
+	if(array->size == array->total_size)
+	{
+		array->total_size = array->total_size + ARRAY_BLOCK_SIZE;
+		array->array = (Asset **)realloc(array->array, (array->total_size * sizeof(Asset *)));
+	}
+	array->array[array->size] = init_Asset();
+	
+	array->array[array->size]->ids = init_int_array();
+	copy_int_array(ids, array->array[array->size]->ids);
+	array->array[array->size]->nr_units = init_int_array();
+	copy_int_array(nr_units, array->array[array->size]->nr_units);
+	array->array[array->size]->current_price = init_double_array();
+	copy_double_array(current_price, array->array[array->size]->current_price);
+	array->array[array->size]->best_ask_price = init_double_array();
+	copy_double_array(best_ask_price, array->array[array->size]->best_ask_price);
+	array->array[array->size]->best_bid_price = init_double_array();
+	copy_double_array(best_bid_price, array->array[array->size]->best_bid_price);
+
+	array->size++;
+}
+
+/** \fn void remove_Asset(Asset_array * array, int index)
+ * \brief Remove an Asset from a dynamic Asset array.
+ * \param array Pointer to the dynamic Asset array.
+ * \param index The index of the Asset to remove.
+ */
+void remove_Asset(Asset_array * array, int index)
+{
+	int i;
+	
+	if(index <= array->size)
+	{
+		/* memcopy?? */
+		for(i = index; i < array->size - 1; i++)
+		{
+			array->array[i] = array->array[i+1];
+		}
+		array->size--;
+	}
+}
+/* Functions for the AssetPortfolio datatype */
+/** \fn AssetPortfolio_array * init_AssetPortfolio_array()
+ * \brief Allocate memory for a dynamic AssetPortfolio array.
+ * \return AssetPortfolio_array Pointer to the new dynamic AssetPortfolio array.
+ */
+AssetPortfolio_array * init_AssetPortfolio_array()
+{
+	AssetPortfolio_array * new_array = (AssetPortfolio_array *)malloc(sizeof(AssetPortfolio_array));
+		CHECK_POINTER(new_array);
+	new_array->size = 0;
+	new_array->total_size = ARRAY_BLOCK_SIZE;
+	new_array->array = (AssetPortfolio **)malloc(ARRAY_BLOCK_SIZE * sizeof(AssetPortfolio *));
+		CHECK_POINTER(new_array->array);
+	
+	return new_array;
+}
+
+/** \fn void reset_AssetPortfolio_array(AssetPortfolio_array* array)
+* \brief Reset the AssetPortfolio array to hold nothing.
+* \param array Pointer to the dynamic AssetPortfolio array.
+*/
+void reset_AssetPortfolio_array(AssetPortfolio_array * array)
+{
+	array->size = 0;
+}
+
+/** \fn void free_AssetPortfolio_array(AssetPortfolio_array * array)
+* \brief Free the memory of a dynamic AssetPortfolio array.
+* \param array Pointer to the dynamic AssetPortfolio array.
+*/
+void free_AssetPortfolio_array(AssetPortfolio_array * array)
+{
+	int i;
+	
+	for(i = 0; i < array->size; i++)
+	{
+		free_AssetPortfolio_datatype(array->array[i]);
+	}
+	free(array->array);
+	free(array);
+}
+
+void copy_AssetPortfolio_array(AssetPortfolio_array * from, AssetPortfolio_array * to)
+{
+	int i;
+	
+	//to = init_AssetPortfolio_array();
+	
+	for(i = 0; i < from->size; i++)
+	{
+		add_AssetPortfolio(to, from->array[i]->performance_history, from->array[i]->firm_stocks, from->array[i]->firm_bonds, from->array[i]->gov_bonds);
+	}
+}
+
+/** \fn void add_AssetPortfolio(AssetPortfolio_array * array, double_array performance_history, Asset * firm_stocks, Asset * firm_bonds, Asset * gov_bonds)
+* \brief Add an AssetPortfolio to the dynamic AssetPortfolio array.
+* \param array Pointer to the dynamic AssetPortfolio array.
+* \param new_int The AssetPortfolio to add
+*/
+void add_AssetPortfolio(AssetPortfolio_array * array, double_array * performance_history, Asset * firm_stocks, Asset * firm_bonds, Asset * gov_bonds)
+{
+	if(array->size == array->total_size)
+	{
+		array->total_size = array->total_size + ARRAY_BLOCK_SIZE;
+		array->array = (AssetPortfolio **)realloc(array->array, (array->total_size * sizeof(AssetPortfolio *)));
+	}
+	array->array[array->size] = init_AssetPortfolio();
+	
+	array->array[array->size]->performance_history = init_double_array();
+	copy_double_array(performance_history, array->array[array->size]->performance_history);
+	array->array[array->size]->firm_stocks = init_Asset();
+	copy_Asset_datatype(firm_stocks, array->array[array->size]->firm_stocks);
+	array->array[array->size]->firm_bonds = init_Asset();
+	copy_Asset_datatype(firm_bonds, array->array[array->size]->firm_bonds);
+	array->array[array->size]->gov_bonds = init_Asset();
+	copy_Asset_datatype(gov_bonds, array->array[array->size]->gov_bonds);
+
+	array->size++;
+}
+
+/** \fn void remove_AssetPortfolio(AssetPortfolio_array * array, int index)
+ * \brief Remove an AssetPortfolio from a dynamic AssetPortfolio array.
+ * \param array Pointer to the dynamic AssetPortfolio array.
+ * \param index The index of the AssetPortfolio to remove.
+ */
+void remove_AssetPortfolio(AssetPortfolio_array * array, int index)
 {
 	int i;
 	

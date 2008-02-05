@@ -1,3 +1,5 @@
+#include "header.h"
+#include "mylibraryheader.h"
 
 /*********************************
  * mylibraryfunctions.c 
@@ -10,8 +12,8 @@
 
 
 
-int calc_rule_performance(current_assetportfolio.performance_history)
- double set_limit_price(current_price, best_ask_price, best_bid_price);
+//int calc_rule_performance(current_assetportfolio.performance_history)
+//double set_limit_price(current_price, best_ask_price, best_bid_price);
  
 /** \fn double random_unif()
  * \brief Uniformly distributed random numbers, chosen from
@@ -31,6 +33,5 @@ double random_norm()
 {
 
 	//*****CODE*****
-    return ();
+    return 0.0;
 }
- 

@@ -3,12 +3,15 @@
  * \brief Header for agent type memory access.
  */
 
+/** \def ID
+ * \brief Direct access to id of LimitOrderBook agent memory variable. */
+#define ID current_xmachine->xmachine_LimitOrderBook->id
 /** \def RE
  * \brief Direct access to re of LimitOrderBook agent memory variable. */
 #define RE current_xmachine->xmachine_LimitOrderBook->re
-/** \def IRADIUS
- * \brief Direct access to iradius of LimitOrderBook agent memory variable. */
-#define IRADIUS current_xmachine->xmachine_LimitOrderBook->iradius
+/** \def RANGE
+ * \brief Direct access to range of LimitOrderBook agent memory variable. */
+#define RANGE current_xmachine->xmachine_LimitOrderBook->range
 /** \def POSX
  * \brief Direct access to posx of LimitOrderBook agent memory variable. */
 #define POSX current_xmachine->xmachine_LimitOrderBook->posx

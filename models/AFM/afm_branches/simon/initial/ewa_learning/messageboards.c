@@ -86,12 +86,12 @@ void add_WagePayment_message(double range, double x, double y, double z)
 
 	p_WagePayment_message = &current_node->WagePayment_messages;
 	xmachine_message_WagePayment * tmp = add_WagePayment_message_internal();
+	
 	tmp->range = range;
 	tmp->x = x;
 	tmp->y = y;
 	tmp->z = z;
-
-
+	
 	/* Check if agent in halo region */
 	process_WagePayment_message(tmp);
 }
@@ -119,10 +119,10 @@ xmachine_message_WagePayment * get_next_message_WagePayment_in_range(xmachine_me
 		y = (double)current_xmachine->xmachine_Bank->posy;
 		z = 0.0;
 	}
-	if(current_xmachine->xmachine_ClearingHouseMechanism)
+	if(current_xmachine->xmachine_ClearingHouse)
 	{
-		x = (double)current_xmachine->xmachine_ClearingHouseMechanism->posx;
-		y = (double)current_xmachine->xmachine_ClearingHouseMechanism->posy;
+		x = (double)current_xmachine->xmachine_ClearingHouse->posx;
+		y = (double)current_xmachine->xmachine_ClearingHouse->posy;
 		z = 0.0;
 	}
 	if(current_xmachine->xmachine_LimitOrderBook)
@@ -137,10 +137,10 @@ xmachine_message_WagePayment * get_next_message_WagePayment_in_range(xmachine_me
 		y = (double)current_xmachine->xmachine_Government->posy;
 		z = 0.0;
 	}
-	if(current_xmachine->xmachine_FinancialAdvisor)
+	if(current_xmachine->xmachine_FinancialAgent)
 	{
-		x = (double)current_xmachine->xmachine_FinancialAdvisor->posx;
-		y = (double)current_xmachine->xmachine_FinancialAdvisor->posy;
+		x = (double)current_xmachine->xmachine_FinancialAgent->posx;
+		y = (double)current_xmachine->xmachine_FinancialAgent->posy;
 		z = 0.0;
 	}
 	
@@ -183,6 +183,8 @@ void freeWagePaymentmessages()
 	while(head)
 	{
 		tmp = head->next;
+		
+		
 		free(head);
 		head = tmp;
 	}
@@ -270,12 +272,12 @@ void add_DividendPayment_message(double range, double x, double y, double z)
 
 	p_DividendPayment_message = &current_node->DividendPayment_messages;
 	xmachine_message_DividendPayment * tmp = add_DividendPayment_message_internal();
+	
 	tmp->range = range;
 	tmp->x = x;
 	tmp->y = y;
 	tmp->z = z;
-
-
+	
 	/* Check if agent in halo region */
 	process_DividendPayment_message(tmp);
 }
@@ -303,10 +305,10 @@ xmachine_message_DividendPayment * get_next_message_DividendPayment_in_range(xma
 		y = (double)current_xmachine->xmachine_Bank->posy;
 		z = 0.0;
 	}
-	if(current_xmachine->xmachine_ClearingHouseMechanism)
+	if(current_xmachine->xmachine_ClearingHouse)
 	{
-		x = (double)current_xmachine->xmachine_ClearingHouseMechanism->posx;
-		y = (double)current_xmachine->xmachine_ClearingHouseMechanism->posy;
+		x = (double)current_xmachine->xmachine_ClearingHouse->posx;
+		y = (double)current_xmachine->xmachine_ClearingHouse->posy;
 		z = 0.0;
 	}
 	if(current_xmachine->xmachine_LimitOrderBook)
@@ -321,10 +323,10 @@ xmachine_message_DividendPayment * get_next_message_DividendPayment_in_range(xma
 		y = (double)current_xmachine->xmachine_Government->posy;
 		z = 0.0;
 	}
-	if(current_xmachine->xmachine_FinancialAdvisor)
+	if(current_xmachine->xmachine_FinancialAgent)
 	{
-		x = (double)current_xmachine->xmachine_FinancialAdvisor->posx;
-		y = (double)current_xmachine->xmachine_FinancialAdvisor->posy;
+		x = (double)current_xmachine->xmachine_FinancialAgent->posx;
+		y = (double)current_xmachine->xmachine_FinancialAgent->posy;
 		z = 0.0;
 	}
 	
@@ -367,6 +369,8 @@ void freeDividendPaymentmessages()
 	while(head)
 	{
 		tmp = head->next;
+		
+		
 		free(head);
 		head = tmp;
 	}
@@ -454,12 +458,12 @@ void add_BondCouponPayment_message(double range, double x, double y, double z)
 
 	p_BondCouponPayment_message = &current_node->BondCouponPayment_messages;
 	xmachine_message_BondCouponPayment * tmp = add_BondCouponPayment_message_internal();
+	
 	tmp->range = range;
 	tmp->x = x;
 	tmp->y = y;
 	tmp->z = z;
-
-
+	
 	/* Check if agent in halo region */
 	process_BondCouponPayment_message(tmp);
 }
@@ -487,10 +491,10 @@ xmachine_message_BondCouponPayment * get_next_message_BondCouponPayment_in_range
 		y = (double)current_xmachine->xmachine_Bank->posy;
 		z = 0.0;
 	}
-	if(current_xmachine->xmachine_ClearingHouseMechanism)
+	if(current_xmachine->xmachine_ClearingHouse)
 	{
-		x = (double)current_xmachine->xmachine_ClearingHouseMechanism->posx;
-		y = (double)current_xmachine->xmachine_ClearingHouseMechanism->posy;
+		x = (double)current_xmachine->xmachine_ClearingHouse->posx;
+		y = (double)current_xmachine->xmachine_ClearingHouse->posy;
 		z = 0.0;
 	}
 	if(current_xmachine->xmachine_LimitOrderBook)
@@ -505,10 +509,10 @@ xmachine_message_BondCouponPayment * get_next_message_BondCouponPayment_in_range
 		y = (double)current_xmachine->xmachine_Government->posy;
 		z = 0.0;
 	}
-	if(current_xmachine->xmachine_FinancialAdvisor)
+	if(current_xmachine->xmachine_FinancialAgent)
 	{
-		x = (double)current_xmachine->xmachine_FinancialAdvisor->posx;
-		y = (double)current_xmachine->xmachine_FinancialAdvisor->posy;
+		x = (double)current_xmachine->xmachine_FinancialAgent->posx;
+		y = (double)current_xmachine->xmachine_FinancialAgent->posy;
 		z = 0.0;
 	}
 	
@@ -551,6 +555,8 @@ void freeBondCouponPaymentmessages()
 	while(head)
 	{
 		tmp = head->next;
+		
+		
 		free(head);
 		head = tmp;
 	}
@@ -558,26 +564,26 @@ void freeBondCouponPaymentmessages()
 	*p_BondCouponPayment_message = NULL;
 }
 
-/** \fn xmachine_message_firm_bond_order * add_firm_bond_order_message_internal()
- * \brief Add firm_bond_order message to the local message list.
+/** \fn xmachine_message_firm_bond_orders * add_firm_bond_orders_message_internal()
+ * \brief Add firm_bond_orders message to the local message list.
  * \return The added message.
  */
-xmachine_message_firm_bond_order * add_firm_bond_order_message_internal()
+xmachine_message_firm_bond_orders * add_firm_bond_orders_message_internal()
 {
-	xmachine_message_firm_bond_order * current = (xmachine_message_firm_bond_order *)malloc(sizeof(xmachine_message_firm_bond_order));
+	xmachine_message_firm_bond_orders * current = (xmachine_message_firm_bond_orders *)malloc(sizeof(xmachine_message_firm_bond_orders));
 	CHECK_POINTER(current);
 
-	current->next = *p_firm_bond_order_message;
-	*p_firm_bond_order_message = current;
+	current->next = *p_firm_bond_orders_message;
+	*p_firm_bond_orders_message = current;
 	
 	return current;
 }
 
-/** \fn void process_firm_bond_order_message(xmachine_message_firm_bond_order * current)
- * \brief Process firm_bond_order message to calculate if it needs to be sent to another node.
+/** \fn void process_firm_bond_orders_message(xmachine_message_firm_bond_orders * current)
+ * \brief Process firm_bond_orders message to calculate if it needs to be sent to another node.
  * \param current The message to be processed.
  */
-void process_firm_bond_order_message(xmachine_message_firm_bond_order * current)
+void process_firm_bond_orders_message(xmachine_message_firm_bond_orders * current)
 {
 	double x = 0.0;
 	double y = 0.0;
@@ -585,7 +591,7 @@ void process_firm_bond_order_message(xmachine_message_firm_bond_order * current)
 	double max_mess_dist;
 	int in_halo_region = 0;
 	node_information * node_info;
-	xmachine_message_firm_bond_order * temp_send_message;
+	xmachine_message_firm_bond_orders * temp_send_message;
 	
 	max_mess_dist = (double)current->range;
 	x = current->x;
@@ -612,8 +618,8 @@ void process_firm_bond_order_message(xmachine_message_firm_bond_order * current)
 			node_info->partition_data[0]-max_mess_dist < x && node_info->partition_data[1]+max_mess_dist > x &&
 			node_info->partition_data[2]-max_mess_dist < y && node_info->partition_data[3]+max_mess_dist > y)
 			{
-				p_firm_bond_order_message = &node_info->firm_bond_order_messages;
-				temp_send_message = add_firm_bond_order_message_internal();
+				p_firm_bond_orders_message = &node_info->firm_bond_orders_messages;
+				temp_send_message = add_firm_bond_orders_message_internal();
 				temp_send_message->household_id = current->household_id;
 				temp_send_message->firm_id = current->firm_id;
 				temp_send_message->limit_price = current->limit_price;
@@ -626,12 +632,12 @@ void process_firm_bond_order_message(xmachine_message_firm_bond_order * current)
 			node_info = node_info->next;
 		}
 		
-		p_firm_bond_order_message = &current_node->firm_bond_order_messages;
+		p_firm_bond_orders_message = &current_node->firm_bond_orders_messages;
 	}
 }
 
-/** \fn void add_firm_bond_order_message(int household_id, int firm_id, double limit_price, double limit_quantity, double range, double x, double y, double z)
- * \brief Add firm_bond_order message by calling internal and processing.
+/** \fn void add_firm_bond_orders_message(int household_id, int firm_id, double limit_price, double limit_quantity, double range, double x, double y, double z)
+ * \brief Add firm_bond_orders message by calling internal and processing.
  * \param household_id Message variable.
  * \param firm_id Message variable.
  * \param limit_price Message variable.
@@ -641,11 +647,12 @@ void process_firm_bond_order_message(xmachine_message_firm_bond_order * current)
  * \param y Message variable.
  * \param z Message variable.
  */
-void add_firm_bond_order_message(int household_id, int firm_id, double limit_price, double limit_quantity, double range, double x, double y, double z)
+void add_firm_bond_orders_message(int household_id, int firm_id, double limit_price, double limit_quantity, double range, double x, double y, double z)
 {
 
-	p_firm_bond_order_message = &current_node->firm_bond_order_messages;
-	xmachine_message_firm_bond_order * tmp = add_firm_bond_order_message_internal();
+	p_firm_bond_orders_message = &current_node->firm_bond_orders_messages;
+	xmachine_message_firm_bond_orders * tmp = add_firm_bond_orders_message_internal();
+	
 	tmp->household_id = household_id;
 	tmp->firm_id = firm_id;
 	tmp->limit_price = limit_price;
@@ -654,13 +661,12 @@ void add_firm_bond_order_message(int household_id, int firm_id, double limit_pri
 	tmp->x = x;
 	tmp->y = y;
 	tmp->z = z;
-
-
+	
 	/* Check if agent in halo region */
-	process_firm_bond_order_message(tmp);
+	process_firm_bond_orders_message(tmp);
 }
 
-xmachine_message_firm_bond_order * get_next_message_firm_bond_order_in_range(xmachine_message_firm_bond_order * current)
+xmachine_message_firm_bond_orders * get_next_message_firm_bond_orders_in_range(xmachine_message_firm_bond_orders * current)
 {
 	double x = 0.0, y = 0.0, z = 0.0;
 	
@@ -683,10 +689,10 @@ xmachine_message_firm_bond_order * get_next_message_firm_bond_order_in_range(xma
 		y = (double)current_xmachine->xmachine_Bank->posy;
 		z = 0.0;
 	}
-	if(current_xmachine->xmachine_ClearingHouseMechanism)
+	if(current_xmachine->xmachine_ClearingHouse)
 	{
-		x = (double)current_xmachine->xmachine_ClearingHouseMechanism->posx;
-		y = (double)current_xmachine->xmachine_ClearingHouseMechanism->posy;
+		x = (double)current_xmachine->xmachine_ClearingHouse->posx;
+		y = (double)current_xmachine->xmachine_ClearingHouse->posy;
 		z = 0.0;
 	}
 	if(current_xmachine->xmachine_LimitOrderBook)
@@ -701,10 +707,10 @@ xmachine_message_firm_bond_order * get_next_message_firm_bond_order_in_range(xma
 		y = (double)current_xmachine->xmachine_Government->posy;
 		z = 0.0;
 	}
-	if(current_xmachine->xmachine_FinancialAdvisor)
+	if(current_xmachine->xmachine_FinancialAgent)
 	{
-		x = (double)current_xmachine->xmachine_FinancialAdvisor->posx;
-		y = (double)current_xmachine->xmachine_FinancialAdvisor->posy;
+		x = (double)current_xmachine->xmachine_FinancialAgent->posx;
+		y = (double)current_xmachine->xmachine_FinancialAgent->posy;
 		z = 0.0;
 	}
 	
@@ -717,41 +723,43 @@ xmachine_message_firm_bond_order * get_next_message_firm_bond_order_in_range(xma
 	return current;
 }
 
-/** \fn xmachine_message_firm_bond_order * get_first_firm_bond_order_message()
- * \brief Get the first firm_bond_order message in the firm_bond_order message list.
+/** \fn xmachine_message_firm_bond_orders * get_first_firm_bond_orders_message()
+ * \brief Get the first firm_bond_orders message in the firm_bond_orders message list.
  * \return The first message in the list.
  */
-xmachine_message_firm_bond_order * get_first_firm_bond_order_message()
+xmachine_message_firm_bond_orders * get_first_firm_bond_orders_message()
 {
-	return get_next_message_firm_bond_order_in_range(*p_firm_bond_order_message);
+	return get_next_message_firm_bond_orders_in_range(*p_firm_bond_orders_message);
 }
 
-/** \fn xmachine_message_firm_bond_order * get_next_firm_bond_order_message(xmachine_message_firm_bond_order * current)
- * \brief Get the next firm_bond_order message in the firm_bond_order message list after the current message.
+/** \fn xmachine_message_firm_bond_orders * get_next_firm_bond_orders_message(xmachine_message_firm_bond_orders * current)
+ * \brief Get the next firm_bond_orders message in the firm_bond_orders message list after the current message.
  * \param current The current message in the list.
  * \return The next message in the list.
  */
-xmachine_message_firm_bond_order * get_next_firm_bond_order_message(xmachine_message_firm_bond_order * current)
+xmachine_message_firm_bond_orders * get_next_firm_bond_orders_message(xmachine_message_firm_bond_orders * current)
 {
-	return get_next_message_firm_bond_order_in_range(current->next);
+	return get_next_message_firm_bond_orders_in_range(current->next);
 }
 
-/** \fn void freefirm_bond_ordermessages()
- * \brief Free the firm_bond_order message list.
+/** \fn void freefirm_bond_ordersmessages()
+ * \brief Free the firm_bond_orders message list.
  */
-void freefirm_bond_ordermessages()
+void freefirm_bond_ordersmessages()
 {
-	xmachine_message_firm_bond_order * tmp, * head;
-	head = *p_firm_bond_order_message;
+	xmachine_message_firm_bond_orders * tmp, * head;
+	head = *p_firm_bond_orders_message;
 	
 	while(head)
 	{
 		tmp = head->next;
+		
+		
 		free(head);
 		head = tmp;
 	}
 	
-	*p_firm_bond_order_message = NULL;
+	*p_firm_bond_orders_message = NULL;
 }
 
 /** \fn xmachine_message_firm_stock_order * add_firm_stock_order_message_internal()
@@ -842,6 +850,7 @@ void add_firm_stock_order_message(int household_id, int firm_id, double limit_pr
 
 	p_firm_stock_order_message = &current_node->firm_stock_order_messages;
 	xmachine_message_firm_stock_order * tmp = add_firm_stock_order_message_internal();
+	
 	tmp->household_id = household_id;
 	tmp->firm_id = firm_id;
 	tmp->limit_price = limit_price;
@@ -850,8 +859,7 @@ void add_firm_stock_order_message(int household_id, int firm_id, double limit_pr
 	tmp->x = x;
 	tmp->y = y;
 	tmp->z = z;
-
-
+	
 	/* Check if agent in halo region */
 	process_firm_stock_order_message(tmp);
 }
@@ -879,10 +887,10 @@ xmachine_message_firm_stock_order * get_next_message_firm_stock_order_in_range(x
 		y = (double)current_xmachine->xmachine_Bank->posy;
 		z = 0.0;
 	}
-	if(current_xmachine->xmachine_ClearingHouseMechanism)
+	if(current_xmachine->xmachine_ClearingHouse)
 	{
-		x = (double)current_xmachine->xmachine_ClearingHouseMechanism->posx;
-		y = (double)current_xmachine->xmachine_ClearingHouseMechanism->posy;
+		x = (double)current_xmachine->xmachine_ClearingHouse->posx;
+		y = (double)current_xmachine->xmachine_ClearingHouse->posy;
 		z = 0.0;
 	}
 	if(current_xmachine->xmachine_LimitOrderBook)
@@ -897,10 +905,10 @@ xmachine_message_firm_stock_order * get_next_message_firm_stock_order_in_range(x
 		y = (double)current_xmachine->xmachine_Government->posy;
 		z = 0.0;
 	}
-	if(current_xmachine->xmachine_FinancialAdvisor)
+	if(current_xmachine->xmachine_FinancialAgent)
 	{
-		x = (double)current_xmachine->xmachine_FinancialAdvisor->posx;
-		y = (double)current_xmachine->xmachine_FinancialAdvisor->posy;
+		x = (double)current_xmachine->xmachine_FinancialAgent->posx;
+		y = (double)current_xmachine->xmachine_FinancialAgent->posy;
 		z = 0.0;
 	}
 	
@@ -943,6 +951,8 @@ void freefirm_stock_ordermessages()
 	while(head)
 	{
 		tmp = head->next;
+		
+		
 		free(head);
 		head = tmp;
 	}
@@ -1038,6 +1048,7 @@ void add_gov_bond_order_message(int household_id, int gov_id, double limit_price
 
 	p_gov_bond_order_message = &current_node->gov_bond_order_messages;
 	xmachine_message_gov_bond_order * tmp = add_gov_bond_order_message_internal();
+	
 	tmp->household_id = household_id;
 	tmp->gov_id = gov_id;
 	tmp->limit_price = limit_price;
@@ -1046,8 +1057,7 @@ void add_gov_bond_order_message(int household_id, int gov_id, double limit_price
 	tmp->x = x;
 	tmp->y = y;
 	tmp->z = z;
-
-
+	
 	/* Check if agent in halo region */
 	process_gov_bond_order_message(tmp);
 }
@@ -1075,10 +1085,10 @@ xmachine_message_gov_bond_order * get_next_message_gov_bond_order_in_range(xmach
 		y = (double)current_xmachine->xmachine_Bank->posy;
 		z = 0.0;
 	}
-	if(current_xmachine->xmachine_ClearingHouseMechanism)
+	if(current_xmachine->xmachine_ClearingHouse)
 	{
-		x = (double)current_xmachine->xmachine_ClearingHouseMechanism->posx;
-		y = (double)current_xmachine->xmachine_ClearingHouseMechanism->posy;
+		x = (double)current_xmachine->xmachine_ClearingHouse->posx;
+		y = (double)current_xmachine->xmachine_ClearingHouse->posy;
 		z = 0.0;
 	}
 	if(current_xmachine->xmachine_LimitOrderBook)
@@ -1093,10 +1103,10 @@ xmachine_message_gov_bond_order * get_next_message_gov_bond_order_in_range(xmach
 		y = (double)current_xmachine->xmachine_Government->posy;
 		z = 0.0;
 	}
-	if(current_xmachine->xmachine_FinancialAdvisor)
+	if(current_xmachine->xmachine_FinancialAgent)
 	{
-		x = (double)current_xmachine->xmachine_FinancialAdvisor->posx;
-		y = (double)current_xmachine->xmachine_FinancialAdvisor->posy;
+		x = (double)current_xmachine->xmachine_FinancialAgent->posx;
+		y = (double)current_xmachine->xmachine_FinancialAgent->posy;
 		z = 0.0;
 	}
 	
@@ -1139,6 +1149,8 @@ void freegov_bond_ordermessages()
 	while(head)
 	{
 		tmp = head->next;
+		
+		
 		free(head);
 		head = tmp;
 	}
@@ -1234,6 +1246,7 @@ void add_firm_bond_transaction_message(int household_id, int firm_id, double tra
 
 	p_firm_bond_transaction_message = &current_node->firm_bond_transaction_messages;
 	xmachine_message_firm_bond_transaction * tmp = add_firm_bond_transaction_message_internal();
+	
 	tmp->household_id = household_id;
 	tmp->firm_id = firm_id;
 	tmp->transaction_price = transaction_price;
@@ -1242,8 +1255,7 @@ void add_firm_bond_transaction_message(int household_id, int firm_id, double tra
 	tmp->x = x;
 	tmp->y = y;
 	tmp->z = z;
-
-
+	
 	/* Check if agent in halo region */
 	process_firm_bond_transaction_message(tmp);
 }
@@ -1271,10 +1283,10 @@ xmachine_message_firm_bond_transaction * get_next_message_firm_bond_transaction_
 		y = (double)current_xmachine->xmachine_Bank->posy;
 		z = 0.0;
 	}
-	if(current_xmachine->xmachine_ClearingHouseMechanism)
+	if(current_xmachine->xmachine_ClearingHouse)
 	{
-		x = (double)current_xmachine->xmachine_ClearingHouseMechanism->posx;
-		y = (double)current_xmachine->xmachine_ClearingHouseMechanism->posy;
+		x = (double)current_xmachine->xmachine_ClearingHouse->posx;
+		y = (double)current_xmachine->xmachine_ClearingHouse->posy;
 		z = 0.0;
 	}
 	if(current_xmachine->xmachine_LimitOrderBook)
@@ -1289,10 +1301,10 @@ xmachine_message_firm_bond_transaction * get_next_message_firm_bond_transaction_
 		y = (double)current_xmachine->xmachine_Government->posy;
 		z = 0.0;
 	}
-	if(current_xmachine->xmachine_FinancialAdvisor)
+	if(current_xmachine->xmachine_FinancialAgent)
 	{
-		x = (double)current_xmachine->xmachine_FinancialAdvisor->posx;
-		y = (double)current_xmachine->xmachine_FinancialAdvisor->posy;
+		x = (double)current_xmachine->xmachine_FinancialAgent->posx;
+		y = (double)current_xmachine->xmachine_FinancialAgent->posy;
 		z = 0.0;
 	}
 	
@@ -1335,6 +1347,8 @@ void freefirm_bond_transactionmessages()
 	while(head)
 	{
 		tmp = head->next;
+		
+		
 		free(head);
 		head = tmp;
 	}
@@ -1430,6 +1444,7 @@ void add_gov_bond_transaction_message(int household_id, int gov_id, double trans
 
 	p_gov_bond_transaction_message = &current_node->gov_bond_transaction_messages;
 	xmachine_message_gov_bond_transaction * tmp = add_gov_bond_transaction_message_internal();
+	
 	tmp->household_id = household_id;
 	tmp->gov_id = gov_id;
 	tmp->transaction_price = transaction_price;
@@ -1438,8 +1453,7 @@ void add_gov_bond_transaction_message(int household_id, int gov_id, double trans
 	tmp->x = x;
 	tmp->y = y;
 	tmp->z = z;
-
-
+	
 	/* Check if agent in halo region */
 	process_gov_bond_transaction_message(tmp);
 }
@@ -1467,10 +1481,10 @@ xmachine_message_gov_bond_transaction * get_next_message_gov_bond_transaction_in
 		y = (double)current_xmachine->xmachine_Bank->posy;
 		z = 0.0;
 	}
-	if(current_xmachine->xmachine_ClearingHouseMechanism)
+	if(current_xmachine->xmachine_ClearingHouse)
 	{
-		x = (double)current_xmachine->xmachine_ClearingHouseMechanism->posx;
-		y = (double)current_xmachine->xmachine_ClearingHouseMechanism->posy;
+		x = (double)current_xmachine->xmachine_ClearingHouse->posx;
+		y = (double)current_xmachine->xmachine_ClearingHouse->posy;
 		z = 0.0;
 	}
 	if(current_xmachine->xmachine_LimitOrderBook)
@@ -1485,10 +1499,10 @@ xmachine_message_gov_bond_transaction * get_next_message_gov_bond_transaction_in
 		y = (double)current_xmachine->xmachine_Government->posy;
 		z = 0.0;
 	}
-	if(current_xmachine->xmachine_FinancialAdvisor)
+	if(current_xmachine->xmachine_FinancialAgent)
 	{
-		x = (double)current_xmachine->xmachine_FinancialAdvisor->posx;
-		y = (double)current_xmachine->xmachine_FinancialAdvisor->posy;
+		x = (double)current_xmachine->xmachine_FinancialAgent->posx;
+		y = (double)current_xmachine->xmachine_FinancialAgent->posy;
 		z = 0.0;
 	}
 	
@@ -1531,6 +1545,8 @@ void freegov_bond_transactionmessages()
 	while(head)
 	{
 		tmp = head->next;
+		
+		
 		free(head);
 		head = tmp;
 	}
@@ -1626,6 +1642,7 @@ void add_firm_stock_transaction_message(int household_id, int firm_id, double tr
 
 	p_firm_stock_transaction_message = &current_node->firm_stock_transaction_messages;
 	xmachine_message_firm_stock_transaction * tmp = add_firm_stock_transaction_message_internal();
+	
 	tmp->household_id = household_id;
 	tmp->firm_id = firm_id;
 	tmp->transaction_price = transaction_price;
@@ -1634,8 +1651,7 @@ void add_firm_stock_transaction_message(int household_id, int firm_id, double tr
 	tmp->x = x;
 	tmp->y = y;
 	tmp->z = z;
-
-
+	
 	/* Check if agent in halo region */
 	process_firm_stock_transaction_message(tmp);
 }
@@ -1663,10 +1679,10 @@ xmachine_message_firm_stock_transaction * get_next_message_firm_stock_transactio
 		y = (double)current_xmachine->xmachine_Bank->posy;
 		z = 0.0;
 	}
-	if(current_xmachine->xmachine_ClearingHouseMechanism)
+	if(current_xmachine->xmachine_ClearingHouse)
 	{
-		x = (double)current_xmachine->xmachine_ClearingHouseMechanism->posx;
-		y = (double)current_xmachine->xmachine_ClearingHouseMechanism->posy;
+		x = (double)current_xmachine->xmachine_ClearingHouse->posx;
+		y = (double)current_xmachine->xmachine_ClearingHouse->posy;
 		z = 0.0;
 	}
 	if(current_xmachine->xmachine_LimitOrderBook)
@@ -1681,10 +1697,10 @@ xmachine_message_firm_stock_transaction * get_next_message_firm_stock_transactio
 		y = (double)current_xmachine->xmachine_Government->posy;
 		z = 0.0;
 	}
-	if(current_xmachine->xmachine_FinancialAdvisor)
+	if(current_xmachine->xmachine_FinancialAgent)
 	{
-		x = (double)current_xmachine->xmachine_FinancialAdvisor->posx;
-		y = (double)current_xmachine->xmachine_FinancialAdvisor->posy;
+		x = (double)current_xmachine->xmachine_FinancialAgent->posx;
+		y = (double)current_xmachine->xmachine_FinancialAgent->posy;
 		z = 0.0;
 	}
 	
@@ -1727,6 +1743,8 @@ void freefirm_stock_transactionmessages()
 	while(head)
 	{
 		tmp = head->next;
+		
+		
 		free(head);
 		head = tmp;
 	}
@@ -1818,14 +1836,14 @@ void add_rule_performance_message(int current_rule, double rule_performance, dou
 
 	p_rule_performance_message = &current_node->rule_performance_messages;
 	xmachine_message_rule_performance * tmp = add_rule_performance_message_internal();
+	
 	tmp->current_rule = current_rule;
 	tmp->rule_performance = rule_performance;
 	tmp->range = range;
 	tmp->x = x;
 	tmp->y = y;
 	tmp->z = z;
-
-
+	
 	/* Check if agent in halo region */
 	process_rule_performance_message(tmp);
 }
@@ -1853,10 +1871,10 @@ xmachine_message_rule_performance * get_next_message_rule_performance_in_range(x
 		y = (double)current_xmachine->xmachine_Bank->posy;
 		z = 0.0;
 	}
-	if(current_xmachine->xmachine_ClearingHouseMechanism)
+	if(current_xmachine->xmachine_ClearingHouse)
 	{
-		x = (double)current_xmachine->xmachine_ClearingHouseMechanism->posx;
-		y = (double)current_xmachine->xmachine_ClearingHouseMechanism->posy;
+		x = (double)current_xmachine->xmachine_ClearingHouse->posx;
+		y = (double)current_xmachine->xmachine_ClearingHouse->posy;
 		z = 0.0;
 	}
 	if(current_xmachine->xmachine_LimitOrderBook)
@@ -1871,10 +1889,10 @@ xmachine_message_rule_performance * get_next_message_rule_performance_in_range(x
 		y = (double)current_xmachine->xmachine_Government->posy;
 		z = 0.0;
 	}
-	if(current_xmachine->xmachine_FinancialAdvisor)
+	if(current_xmachine->xmachine_FinancialAgent)
 	{
-		x = (double)current_xmachine->xmachine_FinancialAdvisor->posx;
-		y = (double)current_xmachine->xmachine_FinancialAdvisor->posy;
+		x = (double)current_xmachine->xmachine_FinancialAgent->posx;
+		y = (double)current_xmachine->xmachine_FinancialAgent->posy;
 		z = 0.0;
 	}
 	
@@ -1917,6 +1935,8 @@ void freerule_performancemessages()
 	while(head)
 	{
 		tmp = head->next;
+		
+		
 		free(head);
 		head = tmp;
 	}
@@ -1924,26 +1944,26 @@ void freerule_performancemessages()
 	*p_rule_performance_message = NULL;
 }
 
-/** \fn xmachine_message_all_performances * add_all_performances_message_internal()
- * \brief Add all_performances message to the local message list.
+/** \fn xmachine_message_fa_rule_performance * add_fa_rule_performance_message_internal()
+ * \brief Add fa_rule_performance message to the local message list.
  * \return The added message.
  */
-xmachine_message_all_performances * add_all_performances_message_internal()
+xmachine_message_fa_rule_performance * add_fa_rule_performance_message_internal()
 {
-	xmachine_message_all_performances * current = (xmachine_message_all_performances *)malloc(sizeof(xmachine_message_all_performances));
+	xmachine_message_fa_rule_performance * current = (xmachine_message_fa_rule_performance *)malloc(sizeof(xmachine_message_fa_rule_performance));
 	CHECK_POINTER(current);
 
-	current->next = *p_all_performances_message;
-	*p_all_performances_message = current;
+	current->next = *p_fa_rule_performance_message;
+	*p_fa_rule_performance_message = current;
 	
 	return current;
 }
 
-/** \fn void process_all_performances_message(xmachine_message_all_performances * current)
- * \brief Process all_performances message to calculate if it needs to be sent to another node.
+/** \fn void process_fa_rule_performance_message(xmachine_message_fa_rule_performance * current)
+ * \brief Process fa_rule_performance message to calculate if it needs to be sent to another node.
  * \param current The message to be processed.
  */
-void process_all_performances_message(xmachine_message_all_performances * current)
+void process_fa_rule_performance_message(xmachine_message_fa_rule_performance * current)
 {
 	double x = 0.0;
 	double y = 0.0;
@@ -1951,7 +1971,7 @@ void process_all_performances_message(xmachine_message_all_performances * curren
 	double max_mess_dist;
 	int in_halo_region = 0;
 	node_information * node_info;
-	xmachine_message_all_performances * temp_send_message;
+	xmachine_message_fa_rule_performance * temp_send_message;
 	
 	max_mess_dist = (double)current->range;
 	x = current->x;
@@ -1978,9 +1998,10 @@ void process_all_performances_message(xmachine_message_all_performances * curren
 			node_info->partition_data[0]-max_mess_dist < x && node_info->partition_data[1]+max_mess_dist > x &&
 			node_info->partition_data[2]-max_mess_dist < y && node_info->partition_data[3]+max_mess_dist > y)
 			{
-				p_all_performances_message = &node_info->all_performances_messages;
-				temp_send_message = add_all_performances_message_internal();
-				temp_send_message->performances = current->performances;
+				p_fa_rule_performance_message = &node_info->fa_rule_performance_messages;
+				temp_send_message = add_fa_rule_performance_message_internal();
+				temp_send_message->rule = current->rule;
+				temp_send_message->rule_performance = current->rule_performance;
 				temp_send_message->range = current->range;
 				temp_send_message->x = current->x;
 				temp_send_message->y = current->y;
@@ -1989,35 +2010,37 @@ void process_all_performances_message(xmachine_message_all_performances * curren
 			node_info = node_info->next;
 		}
 		
-		p_all_performances_message = &current_node->all_performances_messages;
+		p_fa_rule_performance_message = &current_node->fa_rule_performance_messages;
 	}
 }
 
-/** \fn void add_all_performances_message(double_array performances, double range, double x, double y, double z)
- * \brief Add all_performances message by calling internal and processing.
- * \param performances Message variable.
+/** \fn void add_fa_rule_performance_message(int rule, double rule_performance, double range, double x, double y, double z)
+ * \brief Add fa_rule_performance message by calling internal and processing.
+ * \param rule Message variable.
+ * \param rule_performance Message variable.
  * \param range Message variable.
  * \param x Message variable.
  * \param y Message variable.
  * \param z Message variable.
  */
-void add_all_performances_message(double_array performances, double range, double x, double y, double z)
+void add_fa_rule_performance_message(int rule, double rule_performance, double range, double x, double y, double z)
 {
 
-	p_all_performances_message = &current_node->all_performances_messages;
-	xmachine_message_all_performances * tmp = add_all_performances_message_internal();
-	tmp->performances = performances;
+	p_fa_rule_performance_message = &current_node->fa_rule_performance_messages;
+	xmachine_message_fa_rule_performance * tmp = add_fa_rule_performance_message_internal();
+	
+	tmp->rule = rule;
+	tmp->rule_performance = rule_performance;
 	tmp->range = range;
 	tmp->x = x;
 	tmp->y = y;
 	tmp->z = z;
-
-
+	
 	/* Check if agent in halo region */
-	process_all_performances_message(tmp);
+	process_fa_rule_performance_message(tmp);
 }
 
-xmachine_message_all_performances * get_next_message_all_performances_in_range(xmachine_message_all_performances * current)
+xmachine_message_fa_rule_performance * get_next_message_fa_rule_performance_in_range(xmachine_message_fa_rule_performance * current)
 {
 	double x = 0.0, y = 0.0, z = 0.0;
 	
@@ -2040,10 +2063,10 @@ xmachine_message_all_performances * get_next_message_all_performances_in_range(x
 		y = (double)current_xmachine->xmachine_Bank->posy;
 		z = 0.0;
 	}
-	if(current_xmachine->xmachine_ClearingHouseMechanism)
+	if(current_xmachine->xmachine_ClearingHouse)
 	{
-		x = (double)current_xmachine->xmachine_ClearingHouseMechanism->posx;
-		y = (double)current_xmachine->xmachine_ClearingHouseMechanism->posy;
+		x = (double)current_xmachine->xmachine_ClearingHouse->posx;
+		y = (double)current_xmachine->xmachine_ClearingHouse->posy;
 		z = 0.0;
 	}
 	if(current_xmachine->xmachine_LimitOrderBook)
@@ -2058,10 +2081,10 @@ xmachine_message_all_performances * get_next_message_all_performances_in_range(x
 		y = (double)current_xmachine->xmachine_Government->posy;
 		z = 0.0;
 	}
-	if(current_xmachine->xmachine_FinancialAdvisor)
+	if(current_xmachine->xmachine_FinancialAgent)
 	{
-		x = (double)current_xmachine->xmachine_FinancialAdvisor->posx;
-		y = (double)current_xmachine->xmachine_FinancialAdvisor->posy;
+		x = (double)current_xmachine->xmachine_FinancialAgent->posx;
+		y = (double)current_xmachine->xmachine_FinancialAgent->posy;
 		z = 0.0;
 	}
 	
@@ -2074,41 +2097,43 @@ xmachine_message_all_performances * get_next_message_all_performances_in_range(x
 	return current;
 }
 
-/** \fn xmachine_message_all_performances * get_first_all_performances_message()
- * \brief Get the first all_performances message in the all_performances message list.
+/** \fn xmachine_message_fa_rule_performance * get_first_fa_rule_performance_message()
+ * \brief Get the first fa_rule_performance message in the fa_rule_performance message list.
  * \return The first message in the list.
  */
-xmachine_message_all_performances * get_first_all_performances_message()
+xmachine_message_fa_rule_performance * get_first_fa_rule_performance_message()
 {
-	return get_next_message_all_performances_in_range(*p_all_performances_message);
+	return get_next_message_fa_rule_performance_in_range(*p_fa_rule_performance_message);
 }
 
-/** \fn xmachine_message_all_performances * get_next_all_performances_message(xmachine_message_all_performances * current)
- * \brief Get the next all_performances message in the all_performances message list after the current message.
+/** \fn xmachine_message_fa_rule_performance * get_next_fa_rule_performance_message(xmachine_message_fa_rule_performance * current)
+ * \brief Get the next fa_rule_performance message in the fa_rule_performance message list after the current message.
  * \param current The current message in the list.
  * \return The next message in the list.
  */
-xmachine_message_all_performances * get_next_all_performances_message(xmachine_message_all_performances * current)
+xmachine_message_fa_rule_performance * get_next_fa_rule_performance_message(xmachine_message_fa_rule_performance * current)
 {
-	return get_next_message_all_performances_in_range(current->next);
+	return get_next_message_fa_rule_performance_in_range(current->next);
 }
 
-/** \fn void freeall_performancesmessages()
- * \brief Free the all_performances message list.
+/** \fn void freefa_rule_performancemessages()
+ * \brief Free the fa_rule_performance message list.
  */
-void freeall_performancesmessages()
+void freefa_rule_performancemessages()
 {
-	xmachine_message_all_performances * tmp, * head;
-	head = *p_all_performances_message;
+	xmachine_message_fa_rule_performance * tmp, * head;
+	head = *p_fa_rule_performance_message;
 	
 	while(head)
 	{
 		tmp = head->next;
+		
+		
 		free(head);
 		head = tmp;
 	}
 	
-	*p_all_performances_message = NULL;
+	*p_fa_rule_performance_message = NULL;
 }
 
 /** \fn xmachine_message_ruledetailsystem * add_ruledetailsystem_message_internal()
@@ -2188,18 +2213,19 @@ void process_ruledetailsystem_message(xmachine_message_ruledetailsystem * curren
  * \param y Message variable.
  * \param z Message variable.
  */
-void add_ruledetailsystem_message(double2D_array parameters, double range, double x, double y, double z)
+void add_ruledetailsystem_message(double2D_array * parameters, double range, double x, double y, double z)
 {
 
 	p_ruledetailsystem_message = &current_node->ruledetailsystem_messages;
 	xmachine_message_ruledetailsystem * tmp = add_ruledetailsystem_message_internal();
-	tmp->parameters = parameters;
+	
+	tmp->parameters = init_double2D_array();
+	copy_double2D_array(parameters, tmp->parameters);
 	tmp->range = range;
 	tmp->x = x;
 	tmp->y = y;
 	tmp->z = z;
-
-
+	
 	/* Check if agent in halo region */
 	process_ruledetailsystem_message(tmp);
 }
@@ -2227,10 +2253,10 @@ xmachine_message_ruledetailsystem * get_next_message_ruledetailsystem_in_range(x
 		y = (double)current_xmachine->xmachine_Bank->posy;
 		z = 0.0;
 	}
-	if(current_xmachine->xmachine_ClearingHouseMechanism)
+	if(current_xmachine->xmachine_ClearingHouse)
 	{
-		x = (double)current_xmachine->xmachine_ClearingHouseMechanism->posx;
-		y = (double)current_xmachine->xmachine_ClearingHouseMechanism->posy;
+		x = (double)current_xmachine->xmachine_ClearingHouse->posx;
+		y = (double)current_xmachine->xmachine_ClearingHouse->posy;
 		z = 0.0;
 	}
 	if(current_xmachine->xmachine_LimitOrderBook)
@@ -2245,10 +2271,10 @@ xmachine_message_ruledetailsystem * get_next_message_ruledetailsystem_in_range(x
 		y = (double)current_xmachine->xmachine_Government->posy;
 		z = 0.0;
 	}
-	if(current_xmachine->xmachine_FinancialAdvisor)
+	if(current_xmachine->xmachine_FinancialAgent)
 	{
-		x = (double)current_xmachine->xmachine_FinancialAdvisor->posx;
-		y = (double)current_xmachine->xmachine_FinancialAdvisor->posy;
+		x = (double)current_xmachine->xmachine_FinancialAgent->posx;
+		y = (double)current_xmachine->xmachine_FinancialAgent->posy;
 		z = 0.0;
 	}
 	
@@ -2291,6 +2317,9 @@ void freeruledetailsystemmessages()
 	while(head)
 	{
 		tmp = head->next;
+		
+		free_double2D_array(head->parameters);
+		
 		free(head);
 		head = tmp;
 	}

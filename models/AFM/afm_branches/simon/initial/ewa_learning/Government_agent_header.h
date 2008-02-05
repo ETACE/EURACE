@@ -3,12 +3,15 @@
  * \brief Header for agent type memory access.
  */
 
+/** \def ID
+ * \brief Direct access to id of Government agent memory variable. */
+#define ID current_xmachine->xmachine_Government->id
 /** \def RJ
  * \brief Direct access to rj of Government agent memory variable. */
 #define RJ current_xmachine->xmachine_Government->rj
-/** \def IRADIUS
- * \brief Direct access to iradius of Government agent memory variable. */
-#define IRADIUS current_xmachine->xmachine_Government->iradius
+/** \def RANGE
+ * \brief Direct access to range of Government agent memory variable. */
+#define RANGE current_xmachine->xmachine_Government->range
 /** \def POSX
  * \brief Direct access to posx of Government agent memory variable. */
 #define POSX current_xmachine->xmachine_Government->posx

@@ -13,6 +13,10 @@
 #include "ClearingHouseMechanism_agent_header.h"
 #include "mylibraryheader.h"
 
+int ClearingHouseComputeTransactions()
+{
+	return 0;
+}
 
 /* DEP: The Clearinghouse or Limit-Order Agent reads the message.
  * The personal message includes the household_id, so the response should include the household_id as well.
@@ -74,9 +78,10 @@ int Clearinghouse_read_order_messages()
 
 /* 5. Sending back transactions messages*/
 
+/*
     add_firm_stock_transaction_message(household_id, firm_id, transaction_price, transaction_quantity,range,x,y,z);
     add_firm_bond_transaction_message(household_id, firm_id, transaction_price, transaction_quantity,range,x,y,z);
     add_gov_bond_transaction_message(household_id, gov_id, transaction_price, transaction_quantity,range,x,y,z);
-
+*/
     return 0;
-} 
+}
