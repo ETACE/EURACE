@@ -16,7 +16,7 @@
 <functions>
 <file>Household_ewa_functions.c</file>
 <file>Firm_ewa_functions.c</file>
-<file>ClearingHouseMechanism_ewa_functions.c</file>
+<file>ClearingHouse_ewa_functions.c</file>
 <file>LimitOrderBook_ewa_functions.c</file>
 <file>FinancialAgent_ewa_functions.c</file>
 <file>mylibraryfunctions.c</file>

@@ -10,7 +10,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include "header.h"
-#include "FinancialAgent_header.h"
+#include "FinancialAgent_agent_header.h"
 #include "mylibraryheader.h"
 
 int Every_100_periods()
