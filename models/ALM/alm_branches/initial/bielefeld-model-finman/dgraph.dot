@@ -34,7 +34,7 @@ digraph A {
     "{Household}\n{Financial Market Role}\nHousehold_send_stock_orders" -> "{Clearinghouse}\n{Asset Market Role}\nClearinghouse_read_asset_orders"  [label = "stock_order",color=red];
     "{Clearinghouse}\n{Asset Market Role}\nClearinghouse_send_asset_transactions" -> "{Firm}\n{Financial Market Role}\nFirm_read_stock_transactions"  [label = "stock_transaction",color=red];
     "{Clearinghouse}\n{Asset Market Role}\nClearinghouse_send_asset_transactions" -> "{Household}\n{Financial Market Role}\nHousehold_read_stock_transactions"  [label = "stock_transaction",color=red];
-    "{Firm}\n{Financial Management Role}\nFirm_compute_balance_sheet" -> "{Eurostat}\n{Macrostatistics Role}\nEurostat_read_financial_statistics"  [label = "financial_statistics_to_eurostat",color=red];
+    "{Firm}\n{Financial Management Role}\nFirm_compute_balance_sheet" -> "{Eurostat}\n{Statistical office Role}\nEurostat_collect_data"  [label = "financial_statistics_to_eurostat",color=red];
     "{Firm}\n{Producer Role}\nFirm_calc_input_demands_2" -> "{Firm}\n{Labor Market Role}\nFirm_send_vacancies" [color=blue];
     "{Firm}\n{Labor Market Role}\nFirm_read_job_responses" -> "{Firm}\n{Labor Market Role}\nFirm_update_wage_offer" [color=blue];
     "{Firm}\n{Labor Market Role}\nFirm_update_wage_offer" -> "{Firm}\n{Labor Market Role}\nFirm_send_vacancies_2" [color=blue];
@@ -61,4 +61,6 @@ digraph A {
     "{Mall}\n{Seller Role}\nMall_update_mall_stocks_sales_rationing_2" -> "{Mall}\n{Seller Role}\nMall_pay_firm" [color=blue];
     "{Clearinghouse}\n{Asset Market Role}\nClearinghouse_read_asset_orders" -> "{Clearinghouse}\n{Asset Market Role}\nClearinghouse_compute_transactions" [color=blue];
     "{Clearinghouse}\n{Asset Market Role}\nClearinghouse_compute_transactions" -> "{Clearinghouse}\n{Asset Market Role}\nClearinghouse_send_asset_transactions" [color=blue];
+    "{Eurostat}\n{Statistical office Role}\nEurostat_collect_data" -> "{Eurostat}\n{Statistical office Role}\nEurostat_compute_statistics" [color=blue];
+    "{Eurostat}\n{Statistical office Role}\nEurostat_compute_statistics" -> "{Eurostat}\n{Statistical office Role}\nEurostat_publish_statistics" [color=blue];
 }
