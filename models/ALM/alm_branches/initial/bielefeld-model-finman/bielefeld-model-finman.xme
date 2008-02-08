@@ -450,11 +450,11 @@
    <XDataType>
     <id>2007122518040762617180904</id>
     <name>loan_item</name>
-    <description>Datatype is a struct that holds attributes for a new loan:&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-- bank_id at which the loan was obtained&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-- value of the loan&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-- interest rate&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-- amount of debt installment payments&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+    <description>Datatype is a struct that holds attributes for a new loan:&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+- bank_id at which the loan was obtained&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+- value of the loan&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+- interest rate&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+- amount of debt installment payments&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
 - nr of installments (periods) to go before maturity</description>
     <fields>
      <XDTField>
@@ -498,9 +498,9 @@
    <XDataType>
     <id>2007122518071218217180904</id>
     <name>capital_stock_item</name>
-    <description>Datatype is a struct for new capital_stock_items:&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-- double current_value&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-- double depreciation_value_per_period&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+    <description>Datatype is a struct for new capital_stock_items:&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+- double current_value&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+- double depreciation_value_per_period&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
 - int nr_periods_before_total_depreciation</description>
     <fields>
      <XDTField>
@@ -1238,12 +1238,12 @@
       <XFunction>
        <id>20071212130334067137176352</id>
        <name>Firm_calc_input_demands_2</name>
-       <description>This is second round of the calc input demands. &#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-Re-planning of:&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
- - labor force&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
- - investment good demand&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-Sends msg. to:&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
- - labor market&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+       <description>This is second round of the calc input demands. &#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+Re-planning of:&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+ - labor force&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+ - investment good demand&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+Sends msg. to:&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+ - labor market&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
  - investment market</description>
        <code></code>
        <funcDeps>
@@ -1272,28 +1272,28 @@ Sends msg. to:&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
       <XFunction>
        <id>20071212164355110137176352</id>
        <name>Firm_calc_production_quantity_2</name>
-       <description>This function starts with the following condition:&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-(external_financial_needs==0)&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-0: run re-planning of production_quantity&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+       <description>This function starts with the following condition:&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+(external_financial_needs==0)&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+0: run re-planning of production_quantity&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
 1: exit</description>
-       <code>int Firm_calc_production_quantity_2()&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-{&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-	if (external_financial_needs==0)&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-	{&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-		//In this case nothing is done and we finish&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-		return 0;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-	}&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-	if (external_financial_needs!=0)&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-	{&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-		//Code as is now in Firm_functons.c:&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-		//fn: Firm_calc_production_quantity_2()&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-	}&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-	return 0;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-}&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+       <code>int Firm_calc_production_quantity_2()&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+{&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+	if (external_financial_needs==0)&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+	{&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+		//In this case nothing is done and we finish&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+		return 0;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+	}&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+	if (external_financial_needs!=0)&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+	{&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+		//Code as is now in Firm_functons.c:&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+		//fn: Firm_calc_production_quantity_2()&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+	}&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+	return 0;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+}&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
 </code>
        <funcDeps>
         <id>20071213111322727138107392</id>
@@ -2238,12 +2238,12 @@ Sends msg. to:&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
       <XFunction>
        <id>20071213144708132138130464</id>
        <name>Clearinghouse_read_asset_orders</name>
-       <description>Clearing house reads all asset orders: &#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-- firm_stock_order messages&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-- firm_bond_order messages&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-- government_bond_order messages&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-All these are loaded into memory variables to be processed later by the function&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+       <description>Clearing house reads all asset orders: &#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+- firm_stock_order messages&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+- firm_bond_order messages&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+- government_bond_order messages&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+All these are loaded into memory variables to be processed later by the function&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
 Clearinghouse_compute_transactions.</description>
        <code></code>
        <funcDeps/>
@@ -2259,9 +2259,9 @@ Clearinghouse_compute_transactions.</description>
       <XFunction>
        <id>20071213144916476138130464</id>
        <name>Clearinghouse_send_asset_transactions</name>
-       <description>Clearinghouse sends transaction messages for all assets:&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-- firm_stock_transaction messages&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-- firm_bond_transaction messages&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+       <description>Clearinghouse sends transaction messages for all assets:&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+- firm_stock_transaction messages&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+- firm_bond_transaction messages&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
 - government_bond_transaction messages.</description>
        <code></code>
        <funcDeps>
@@ -2302,7 +2302,7 @@ Clearinghouse_compute_transactions.</description>
    </memory>
    <roles>
     <XRole>
-     <id>5007</id>
+     <id>5008</id>
      <name>Tax Collector Role</name>
      <description></description>
      <activities>
@@ -2323,7 +2323,7 @@ Clearinghouse_compute_transactions.</description>
      </activities>
     </XRole>
     <XRole>
-     <id>5008</id>
+     <id>5009</id>
      <name>Public Beneficiary Role</name>
      <description></description>
      <activities>
@@ -2351,13 +2351,13 @@ Clearinghouse_compute_transactions.</description>
    <memory/>
    <roles>
     <XRole>
-     <id></id>
-     <name>Macrostatistics Role</name>
+     <id>5010</id>
+     <name>Statistical office Role</name>
      <description></description>
      <activities>
       <XFunction>
        <id>2008010313505685917053392</id>
-       <name>Eurostat_read_financial_statistics</name>
+       <name>Eurostat_collect_data</name>
        <description></description>
        <code></code>
        <funcDeps/>
@@ -2368,7 +2368,47 @@ Clearinghouse_compute_transactions.</description>
        <varsSet/>
        <varsRead/>
       </XFunction>
+      <XFunction>
+       <id>2008020713445488617053840</id>
+       <name>Eurostat_compute_statistics</name>
+       <description></description>
+       <code></code>
+       <funcDeps>
+        <id>2008010313505685917053392</id>
+       </funcDeps>
+       <messagesThrown/>
+       <messagesNeeded/>
+       <varsSet/>
+       <varsRead/>
+      </XFunction>
+      <XFunction>
+       <id>2008020713461814617053840</id>
+       <name>Eurostat_communicate_statistics</name>
+       <description></description>
+       <code></code>
+       <funcDeps>
+        <id>2008020713445488617053840</id>
+       </funcDeps>
+       <messagesThrown/>
+       <messagesNeeded/>
+       <varsSet/>
+       <varsRead/>
+      </XFunction>
      </activities>
+    </XRole>
+   </roles>
+  </XMachine>
+  <XMachine>
+   <id>2008020713585658717053840</id>
+   <name>Central_Eurostat</name>
+   <description></description>
+   <memory/>
+   <roles>
+    <XRole>
+     <id>5011</id>
+     <name>Statistical office Role</name>
+     <description></description>
+     <activities/>
     </XRole>
    </roles>
   </XMachine>
@@ -4660,7 +4700,7 @@ Clearinghouse_compute_transactions.</description>
    <messages>
     <XMessage>
      <id>20071213101606478138071736</id>
-     <name>financial_statistics_to_eurostat</name>
+     <name>firm_statistics_to_eurostat</name>
      <description>Firm sends a msg to Eurostat with its financial statistics.</description>
      <msgVars>
       <XMsgVar>
@@ -4672,7 +4712,7 @@ Clearinghouse_compute_transactions.</description>
       <XMsgVar>
        <id>523</id>
        <type>double</type>
-       <name>cum_revenue</name>
+       <name>net_revenue</name>
        <description></description>
       </XMsgVar>
       <XMsgVar>
@@ -4730,6 +4770,12 @@ Clearinghouse_compute_transactions.</description>
        <description></description>
       </XMsgVar>
      </msgVars>
+    </XMessage>
+    <XMessage>
+     <id>2008020713562778317053840</id>
+     <name>statistics_from_regional_eurostat</name>
+     <description>A mesg containing the macroeconomic statistics from the (regional) eurostat agent.</description>
+     <msgVars/>
     </XMessage>
    </messages>
   </XContext>
