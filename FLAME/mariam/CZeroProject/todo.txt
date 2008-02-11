@@ -1,0 +1,45 @@
+*add that when program starts the value of null so first agent should be selected. - DONE
+
+/*****writing to file
+					//  FileWriter fstream = new FileWriter("xmlFile/0.xml");
+			     	//   BufferedWriter out = new BufferedWriter(fstream);
+			        System.out.println("printing file");
+			        	//  out.write("Hello Zero");
+			        //Close the output stream
+			        	//   out.close();
+				 ***/
+				 
+* collect data structures from xml file		DONE	 
+* add window for data structures DONE
+* checks for int string double DONE
+* write random functions for generating random values
+* identfy arrays and take inputs accoringly DONE 
+todo for structure arrays
+
+
+
+***scan user input on columns 1 and 3
+JTextField textField = new JTextField();
+        textField.addKeyListener(new java.awt.event.KeyAdapter(){
+            
+            public void keyPressed(java.awt.event.KeyEvent evt){
+                System.out.println("keyPressed");
+            }
+              
+            public void keyReleased(java.awt.event.KeyEvent evt){
+                System.out.println("keyReleased");
+            }
+              
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                System.out.println("keyTyped");
+            }
+        });
+        table.getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(textField));
+        table.getColumnModel().getColumn(3).setCellEditor(new DefaultCellEditor(textField));
+
+
+*recursive data type HALF DONE
+need to pass instance of text field to portray result -cases:
+if table do this
+if window display in text field
+
