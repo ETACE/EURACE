@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<xmachine_agent_model>
+<name>Financial Market</name>
+<author>Mario Locci</author>
+<date>010807</date>
+
+<!--***************** Environment values and functions **********************-->
+<environment>
+<datatypes>
+<datatype>
+<name>Order</name>
+<desc>ADT order </desc>
+<var><type>int</type><name>issuer</name></var>
+<var><type>int</type><name>quantity</name></var>
+<var><type>double</type><name>price</name></var>
+<var><type>int</type><name>assetId</name></var>
+</datatype>
+<datatype>
+<name>Belief</name>
+<desc>ADT Belief </desc>
+<var><type>double</type><name>assetsExpectedPriceReturns</name></var>
+<var><type>double</type><name>assetsExpectedTotalReturns</name></var>
+<var><type>double</type><name>assetsExpectedCashFlowYield</name></var>
+<var><type>double</type><name>volatility</name></var>
+<var><type>int</type><name>forwardWindow</name></var>
+<var><type>int</type><name>backwordWindow</name></var>
+<var><type>int</type><name>binsNumber</name></var>
+<var><type>double</type><name>randomReturnWeigth</name></var>
+<var><type>double</type><name>fundametalReturnWeigth</name></var>
+<var><type>double</type><name>chartistReturnWeigth</name></var>
+<var><type>int</type><name>holdingPeriodToForwardW</name></var>
+</datatype>
+<datatype>
+<name>Asset</name>
+<desc>ADT Asset </desc>
+<var><type>int</type><name>issuer</name></var>
+<var><type>int</type><name>quantity</name></var>
+<var><type>double</type><name>lastPrice</name></var>
+</datatype>
+<datatype>
+<name>Portfolio</name>
+<desc>ADT  portfolio </desc>
+<!--<var><type>Asset</type><name>assets</name></var>-->
+<var><type>double</type><name>bankAccount</name></var>
+</datatype>
+</datatypes>
+</environment>
+
+<!--********************* X-machine Agent - Trader ****************************-->
+<xmachine>
+<name>Eurostat</name>
+<memory>
+<var><type>Asset_array</type><name>assets</name></var>
+<var><type>double</type><name>posx</name></var>
+<var><type>double</type><name>posy</name></var>
+</memory>
+<functions>
+<function>
+<name>sendAssetInformationEURO</name>
+</function>
+<function>
+<name>receiveAssetInformationEURO</name>
+<depends><name>sendAssetInformation</name><type>infoAsset</type></depends>
+</function>
+</functions>
+</xmachine>
+<xmachine>
+<name>Household</name>
+<!--             Variables                -->
+<!-- All variables used by Producer are declared here to allocate them in memory -->
+<memory>
+<var><type>int</type><name>id</name></var>
+<var><type>double</type><name>wealth</name></var>
+<var><type>Belief</type><name>belief</name></var>
+<var>
+<type>Portfolio</type>
+<name>portfolio</name>
+</var>
+<var>
+<type>Order_array</type>
+<name>pendingOrders</name>
+</var>
+<var>
+<type>Asset_array</type>
+<name>assetsowned</name>
+</var>
+<var><type>double</type><name>posx</name></var>
+<var><type>double</type><name>posy</name></var>
+</memory>
+<!--     Defining functions     -->
+<functions>
+<function>
+<name>selectStrategy</name>
+</function>
+<function>
+<name>updateTrader</name>
+<depends><name>receiveOrdersAndRun</name><type>orderStatus</type></depends>
+<depends><name>selectStrategy</name><type>order</type></depends>
+</function>
+<function>
+<name>receiveAssetInformationHouse</name>
+<depends><name>receiveOrdersAndRun</name><type>orderStatus</type></depends>
+<depends><name>selectStrategy</name><type>order</type></depends>
+</function>
+</functions>
+</xmachine>
+<!--******************** X-machine Agent - ClearingHouse ***************************-->
+<xmachine>
+<name>ClearingHouse</name>
+<!--      Variables for the ClearingHouse     -->
+<memory>
+<var>
+<type>int</type>
+<name>id</name>
+</var>
+<var><type>Asset_array</type><name>assets</name></var>
+<var><type>double</type><name>posx</name></var>
+<var><type>double</type><name>posy</name></var>
+</memory>
+<!--        Defining functions                -->
+<functions>
+<function>
+<name>receiveAssetInformation</name>
+<depends><name>sendAssetInformationEURO</name><type>asset</type></depends>
+</function>
+<function>
+<name>receiveOrdersAndRun</name>
+<depends><name>selectStrategy</name><type>order</type></depends>
+<depends><name>receiveAssetInformation</name><type>internal</type></depends>
+</function>
+<function>
+<name>sendAssetInformation</name>
+<depends><name>receiveOrdersAndRun</name><type>internal</type></depends>
+</function>
+</functions>
+</xmachine>
+<!--******** Messages being posted by the agents to communicate *************-->
+<messages>
+<!--          Message posted to load a new value        -->
+<message>
+<name>order</name>
+<note>order posted by the Trader</note>
+<var><type>int</type><name>issuer</name></var>
+<var><type>int</type><name>assetId</name></var>
+<var><type>double</type><name>limitPrice</name></var>
+<var><type>int</type><name>quantity</name></var>
+<var><type>double</type><name>range</name></var>
+<var><type>double</type><name>x</name></var>
+<var><type>double</type><name>y</name></var>
+<var><type>double</type><name>z</name></var>
+</message>
+<message>
+<name>orderStatus</name>
+<note>The market is closed</note>
+<var><type>int</type><name>issuer</name></var>
+<var><type>int</type><name>assetId</name></var>
+<var><type>double</type><name>price</name></var>
+<var><type>int</type><name>quantity</name></var>
+<var><type>double</type><name>range</name></var>
+<var><type>double</type><name>x</name></var>
+<var><type>double</type><name>y</name></var>
+<var><type>double</type><name>z</name></var>
+</message>
+<message>
+<name>asset</name>
+<var><type>int</type><name>issuer</name></var>
+<var><type>double</type><name>price</name></var>
+<var><type>int</type><name>quantity</name></var>
+<var><type>double</type><name>range</name></var>
+<var><type>double</type><name>x</name></var>
+<var><type>double</type><name>y</name></var>
+<var><type>double</type><name>z</name></var>
+</message>
+<message>
+<name>infoAsset</name>
+<var><type>int</type><name>issuer</name></var>
+<var><type>double</type><name>price</name></var>
+<var><type>int</type><name>quantity</name></var>
+<var><type>double</type><name>range</name></var>
+<var><type>double</type><name>x</name></var>
+<var><type>double</type><name>y</name></var>
+<var><type>double</type><name>z</name></var>
+</message>
+
+</messages>
+<!--********************** End of Messages **********************************-->
+
+</xmachine_agent_model>

@@ -1,0 +1,26 @@
+digraph dependency_graph {
+	rankdir=BT;
+	size="8,5"
+	node [shape = rect];
+	
+	/* Functions */
+	sendAssetInformation[height = 0.000000, label = "sendAssetInformation\n(0 lines)"]
+	receiveOrdersAndRun[height = 0.000000, label = "receiveOrdersAndRun\n(0 lines)"]
+	receiveAssetInformation[height = 0.000000, label = "receiveAssetInformation\n(0 lines)"]
+	receiveAssetInformationHouse[height = 0.000000, label = "receiveAssetInformationHouse\n(0 lines)"]
+	updateTrader[height = 0.000000, label = "updateTrader\n(0 lines)"]
+	selectStrategy[height = 0.000000, label = "selectStrategy\n(0 lines)"]
+	receiveAssetInformationEURO[height = 0.000000, label = "receiveAssetInformationEURO\n(0 lines)"]
+	sendAssetInformationEURO[height = 0.000000, label = "sendAssetInformationEURO\n(0 lines)"]
+	
+	/* Dependencies */
+	sendAssetInformation -> receiveOrdersAndRun [ label = "<depends on internal>" ];
+	receiveOrdersAndRun -> receiveAssetInformation [ label = "<depends on internal>" ];
+	receiveOrdersAndRun -> selectStrategy [ label = "<depends on order>" ];
+	receiveAssetInformation -> sendAssetInformationEURO [ label = "<depends on asset>" ];
+	receiveAssetInformationHouse -> selectStrategy [ label = "<depends on order>" ];
+	receiveAssetInformationHouse -> receiveOrdersAndRun [ label = "<depends on orderStatus>" ];
+	updateTrader -> selectStrategy [ label = "<depends on order>" ];
+	updateTrader -> receiveOrdersAndRun [ label = "<depends on orderStatus>" ];
+	receiveAssetInformationEURO -> sendAssetInformation [ label = "<depends on infoAsset>" ];
+}
