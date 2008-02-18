@@ -1,7 +1,5 @@
 #include "header.h"
 #include "Firm_agent_header.h"
-#include "my_library_header.h"
-#include "math.h"
 
 
 /************Firm Role: Financial Management Role ********************************/
