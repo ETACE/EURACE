@@ -1,0 +1,21 @@
+/***********************************
+Description: 
+This file contains details of changes made to ./financial_management_role. 
+*************************************/
+--------------------------------------------------------------------------------------
+Sander, rev 533
+	Added Firm_financial_management.xml
+
+	Added Household_financial_management.xml
+		This file is the xml code for the original financial_management_functions.c
+		made in Bielefeld by Mariam and Sander.
+--------------------------------------------------------------------------------------
+Sander, rev 543
+	Firm_compute_balance_sheet:
+		added consistency checks for planned_total_payments and total_payments
+--------------------------------------------------------------------------------------
+Sander, rev 544
+	Bielefeld-finman.xme
+	Firm_compute_balance_sheet:
+		renamed: EQUITY -> TOTAL_ASSETS
+--------------------------------------------------------------------------------------

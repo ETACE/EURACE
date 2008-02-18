@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<xmachine_agent_model>
+<name>Household Financial Management Role</name>
+<author>Sander van der Hoog</author>
+<date>191207</date>
+
+<!--************************* NOTES ***************************************-->
+<!--This is the main description file for the Household financial management role-->
+<!--TODO: integrate with other xml files for credit and financial market roles from UG and UPM-->
+
+<!--***************** Environment values and functions **********************-->
+<environment>
+<functions>
+<file>Household_financial_management_functions.c</file>
+<file>mylibraryfunctions.c</file>
+</functions>
+<!--Structures-->
+
+<!--Asset market structs-->
+<datatype>
+<name>StockDataType</name>
+<desc>All stocks have a data type StockDataType. Refer to file stock_creation.m</desc>
+<var><type>char</type><name>class[5]</name></var>
+<var><type>int</type><name>id[5]</name></var>
+<var><type>int</type><name>NrOutStandingShares</name></var>
+<var><type>int</type><name>NrOutStandingShares(1:Parameters.NrDaysInitialization)</name></var> <!--?-->
+<var><type>double</type><name>price</name></var>
+<var><type>int</type><name>Book_intraday_transaction</name></var>
+<var><type>int</type><name>dividends</name></var>
+<var><type>int</type><name>dividends(1:Parameters.NrMonthsInitialization)</name></var><!--?-->
+</datatype>
+<datatype>
+<name>BondDataType</name>
+<desc>All Bonds have the following datatype. Refer to bond_creation.m</desc>
+<var><type>char</type><name>class[5]</name></var>
+<var><type>int</type><name>id[5]</name></var>
+</datatype>
+<datatype>
+<name>DBFinancialAssets</name>
+<desc></desc>
+</datatype>
+<datatype>
+<name>AssetPortfolio</name>
+<desc>Assetportfolio structs are used by the Household</desc><!--After performance_history there should be 3 structs, one for firm bonds, firm stocks, and gov bonds--><!--In each struct we have dynamic arrays: ids, nr_units, current_price, best_ask_price, best_bid_price-->
+	<var><type>double_array</type>
+	<name>performance_history</name></var>
+	<var><type>AssetStruct</type><name>firm_stocks</name></var>
+	<var><type>AssetStruct</type><name>firm_bonds</name></var>
+	<var><type>AssetStruct</type><name>gov_bonds</name></var>
+</datatype>
+<datatype>
+	<name>AssetStruct</name>
+	<desc>Datatype for asset structures</desc>
+	<var><type>int_array</type><name>ids</name></var>
+	<var><type>int_array</type><name>nr_units</name></var>
+	<var><type>double_array</type><name>current_price</name></var>
+	<var><type>double_array</type><name>best_ask_price</name></var>
+	<var><type>double_array</type><name>best_bid_price</name></var>
+</datatype>	
+</environment>
+
+<!--********************* X-machine Agent - Household ****************************-->
+<xmachine>
+<name>Household</name>
+<!----------------- Variables-------------------------------------------------->
+<!-- All variables used by household are declared here to allocate them in memory -->
+
+<memory>
+<var><type>int</type><name>household_id</name></var>
+<var><type>double</type><name>asset_budget</name></var>
+<var><type>double</type><name>iradius</name></var>
+<var><type>double</type><name>posx</name></var>
+<var><type>double</type><name>posy</name></var>
+</memory>
+<!----------------- Defining functions ---------------------------------------->
+<functions>
+<!--************** Role: Financial Management Role ************** -->
+<function><name>Household_financial_planning</name></function>
+
+<!--************** Below here is old ************** -->
+<function><name>Household_compute_gross_income</name>
+<depends><name>Household_compute_income_and_financial_needs</name>
+<type>internal</type></depends></function>
+<function><name>Household_compute_monthly_taxes</name>
+<depends><name>Household_compute_gross_income</name>
+<type>internal</type></depends></function>
+<function><name>Household_compute_net_income</name>
+<depends>
+<name>Household_compute_monthly_taxes</name><type>internal</type>
+</depends>
+</function>
+<function><name>Household_compute_total_budget</name>
+<depends>
+<name>Household_compute_net_income</name><type>internal</type>
+</depends>
+</function>
+<function><name>Household_compute_asset_wealth</name>
+</function>
+<function><name>Household_compute_cash_on_hands</name>
+<depends>
+<name>Household_compute_total_budget</name><type>internal</type>
+</depends>
+<depends>
+<name>Household_compute_asset_wealth</name><type>internal</type>
+</depends>
+</function>
+
+<function><name>Household_compute_consumption_budget</name>
+<depends>
+<name>Household_compute_cash_on_hands</name><type>internal</type>
+</depends>
+</function>
+
+<function><name>Household_compute_financial_needs_monthly</name>
+<depends>
+<name>Household_compute_consumption_budget</name><type>internal</type>
+</depends>
+</function>
+
+<!--************** Role: Asset Market Role **************-->
+<function><name>Household_update_asset_portfolio</name></function>
+<function><name>Household_compute_financial_needs_daily</name>
+<depends>
+<name>Household_update_asset_portfolio</name><type>internal</type>
+</depends>
+</function>
+<function><name>Household_entry_decision</name>
+<depends>
+<name>Household_compute_financial_needs_daily</name><type>internal</type>
+</depends>
+<depends>
+<name>Household_compute_financial_needs_monthly</name><type>internal</type>
+</depends>
+</function>
+<function><name>Household_compute_asset_budget</name>
+<depends>
+<name>Household_entry_decision</name><type>internal</type>
+</depends>
+</function>
+
+<function><name>Household_compute_firm_bond_orders</name>
+<depends>
+<name>Household_compute_asset_budget</name><type>internal</type>
+</depends>
+</function>
+<function><name>Household_compute_government_bond_orders</name>
+<depends>
+<name>Household_compute_asset_budget</name><type>internal</type>
+</depends>
+</function>
+<function>
+	<name>Household_compute_firm_stock_orders</name>
+	<depends>
+		<name>Household_compute_asset_budget</name>
+		<type>internal</type>
+	</depends>
+</function>
+<function><name>Household_read_transaction_message</name>
+	<depends>
+		<name>Clearinghouse_send_transaction_message</name>
+		<type>firm_stock_transaction</type>
+	</depends>
+</function>
+
+</functions>
+</xmachine>
+<!--*********************** End of Agent - Household *****************************-->
+
+
+<!--********************* X-machine Agent - Clearinghouse ****************************-->
+<xmachine>
+<name>Clearinghouse</name>
+<!----------------- Variables-------------------------------------------------->
+<!-- All variables used by clearing house are declared here to allocate them in memory -->
+<memory>
+<var><type>double</type><name>iradius</name></var>
+<var><type>double</type><name>posx</name></var>
+<var><type>double</type><name>posy</name></var>
+
+</memory>
+<!----------------- Defining functions ---------------------------------------->
+
+<!--- asset market role-->
+<functions>
+
+<function><name>Clearinghouse_read_order_messages</name>
+	<depends>
+		<name>Household_compute_firm_stock_orders</name>
+		<type>firm_stock_order</type>
+	</depends>
+</function>
+
+<function><name>Clearinghouse_compute_transactions</name>
+	<depends>
+		<name>Clearinghouse_read_order_messages</name>
+		<type>internal</type>
+	</depends>
+</function>
+
+<function><name>Clearinghouse_send_transaction_message</name>
+	<depends>
+		<name>Clearinghouse_compute_transactions</name>
+		<type>internal</type>
+	</depends>
+</function>
+
+</functions>
+</xmachine>
+<!--*********************** End of Agent - Clearinghouse *****************************-->
+
+
+
+<!--******** Messages being posted by the agents to communicate *************-->
+<messages>
+
+<!--asset market context-->
+
+<message>
+<name>firm_bond_order</name>
+<note>Added by household after asset portfolio calculated</note>
+<var><type>int</type><name>household_id</name></var>
+<var><type>int</type><name>asset_id</name></var>
+<var><type>double</type><name>limit_price</name></var>
+<var><type>double</type><name>limit_quantity</name></var>
+<var><type>double</type><name>range</name></var>
+<var><type>double</type><name>x</name></var>
+<var><type>double</type><name>y</name></var>
+<var><type>double</type><name>z</name></var>
+</message>
+
+<message>
+<name>firm_stock_order</name>
+<note>Added by household after asset portfolio calculated</note>
+<var><type>int</type><name>household_id</name></var>
+<var><type>int</type><name>asset_id</name></var>
+<var><type>double</type><name>limit_price</name></var>
+<var><type>double</type><name>limit_quantity</name></var>
+<var><type>double</type><name>range</name></var>
+<var><type>double</type><name>x</name></var>
+<var><type>double</type><name>y</name></var>
+<var><type>double</type><name>z</name></var>
+</message>
+
+<message>
+<name>gov_bond_order</name>
+<note>Added by household after asset portfolio calculated</note>
+<var><type>int</type><name>household_id</name></var>
+<var><type>int</type><name>gov_id</name></var>
+<var><type>double</type><name>limit_price</name></var>
+<var><type>double</type><name>limit_quantity</name></var>
+<var><type>double</type><name>range</name></var>
+<var><type>double</type><name>x</name></var>
+<var><type>double</type><name>y</name></var>
+<var><type>double</type><name>z</name></var>
+</message>
+
+<message>
+<name>firm_bond_transaction</name>
+<note>Added by clearinghouse</note>
+<var><type>int</type><name>household_id</name></var>
+<var><type>int</type><name>asset_id</name></var>
+<var><type>double</type><name>transaction_price</name></var>
+<var><type>double</type><name>transaction_quantity</name></var>
+<var><type>double</type><name>range</name></var>
+<var><type>double</type><name>x</name></var>
+<var><type>double</type><name>y</name></var>
+<var><type>double</type><name>z</name></var>
+</message>
+
+<message>
+<name>gov_bond_transaction</name>
+<note>Added by clearinghouse</note>
+<var><type>int</type><name>household_id</name></var>
+<var><type>int</type><name>gov_id</name></var>
+<var><type>double</type><name>transaction_price</name></var>
+<var><type>double</type><name>transaction_quantity</name></var>
+<var><type>double</type><name>range</name></var>
+<var><type>double</type><name>x</name></var>
+<var><type>double</type><name>y</name></var>
+<var><type>double</type><name>z</name></var>
+</message>
+
+<message>
+<name>firm_stock_transaction</name>
+<note>Added by clearinghouse</note>
+<var><type>int</type><name>household_id</name></var>
+<var><type>int</type><name>asset_id</name></var>
+<var><type>double</type><name>transaction_price</name></var>
+<var><type>double</type><name>transaction_quantity</name></var>
+<var><type>double</type><name>range</name></var>
+<var><type>double</type><name>x</name></var>
+<var><type>double</type><name>y</name></var>
+<var><type>double</type><name>z</name></var>
+</message>
+
+</messages>
+<!--********************** End of Messages **********************************-->
+
+</xmachine_agent_model>
