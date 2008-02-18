@@ -103,7 +103,7 @@ int HouseholdCalculateFirmBondOrders()
 int Household_send_rule_performance_message()
 { 
     //Declare and assign local vars
-    int current_rule = PRIVATECLASSIFIERSYSTEM->current_rule;
+    int current_rule = PRIVATECLASSIFIERSYSTEM.current_rule;
     
     //Here we compute the rule performance: this function uses the performance_history
     //since performance is computed as a time-average of capital gains obtained by the
@@ -137,7 +137,7 @@ int Household_read_all_performances_message()
 		//for (i=0; i<CLASSIFIERSYSTEM->nr_rules; i++)
 		//{
 			// Store in memory:              
-			PRIVATECLASSIFIERSYSTEM->avgperformance->array[fa_rule_performance_message->rule] = fa_rule_performance_message->rule_performance;
+			PRIVATECLASSIFIERSYSTEM.avgperformance.array[fa_rule_performance_message->rule] = fa_rule_performance_message->rule_performance;
 		//}
 	FINISH_FA_RULE_PERFORMANCE_MESSAGE_LOOP
 	
