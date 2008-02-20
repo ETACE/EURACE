@@ -1,0 +1,78 @@
+
+<xmachine_agent_model>
+<name>Repeated Prisoner's Dilemma</name>
+<author>Mariam Kiran</author>
+<date>200208</date>
+
+
+<!--***************** Environment values and functions **********************-->
+<environment>
+<functions>
+<file>GamePlayer_functions.c</file>
+<file>GameSolver_functions.c</file>
+<file>mylibraryfunctions.c</file>
+</functions>
+<!--Structures-->
+
+</environment>
+
+<!--********************* X-machine Agent - GamePlayer ****************************-->
+<xmachine>
+<name>GamePlayer</name>
+<!----------------- Variables-------------------------------------------------->
+
+<memory>
+<var><type>int</type><name>id</name></var><var>
+<var><type>int</type><name>strategy_adopted</name></var>	
+<var><type>int</type><name>performance</name></var>	
+<var><type>double</type><name>iradius</name></var>
+<var><type>double</type><name>posx</name></var>
+<var><type>double</type><name>posy</name></var>
+</memory>
+<!----------------- Defining functions ---------------------------------------->
+<functions>
+<function><name>move_randomly</name></function>
+<function><name>mutate_crossover</name></function>
+</functions>
+</xmachine>
+<!--*********************** End of Agent - GamePlayer *****************************-->
+
+<!--********************* X-machine Agent - GameSolver ****************************-->
+<xmachine>
+<name>GameSolver</name>
+<!----------------- Variables-------------------------------------------------->
+<!-- All variables used by GameSolver are declared here to allocate them in memory -->
+<memory>
+<var><type>int</type><name>nragents</name></var>
+<var><type>int</type><name>strategies</name></var><!--MARY: should be dynamic array continually growing-->
+<var><type>double</type><name>iradius</name></var><!--MARY: no need-->
+<var><type>double</type><name>posx</name></var><!--MARY: no need-->
+<var><type>double</type><name>posy</name></var><!--MARY: no need-->
+</memory>
+<!----------------- Defining functions ---------------------------------------->
+<functions>
+<function><name>Choose_parents_mutate</name></function><!--MARY: produce new offsprings and add to scenario-->
+<function><name>Update_strategies</name></function>
+</functions>
+</xmachine><!--*********************** End of Agent - GameSolver ****************************-->
+
+
+
+<!--******** Messages being posted by the agents to communicate *************-->
+<messages>
+
+<message>
+<name>play_neighbour</name>
+<note>Playing which neighbour</note><!--MARY: vary ranges to see effect on strategy emergence-->
+<var><type>int</type><name>id</name></var>
+<var><type>int</type><name>current_rule</name></var>
+<var><type>double</type><name>range</name></var>
+<var><type>double</type><name>x</name></var>
+<var><type>double</type><name>y</name></var>
+<var><type>double</type><name>z</name></var>
+</message>
+
+</messages>
+<!--********************** End of Messages **********************************-->
+
+</xmachine_agent_model>

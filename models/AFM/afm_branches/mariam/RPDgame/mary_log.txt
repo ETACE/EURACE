@@ -1,0 +1,13 @@
+NOTE: This work doesnot interfere which current implementation of the markets!
+******************************************************************************
+Implementation of Miller's paper
+This is a case study which implements the repeated prisoner's dilemma game as decribed by Miller in his 1988 paper.
+This work may border into the learning issues in EURACE.
+
+!20/2/08! Started model and xml file
+Adopting Sander's methodology with few variations.
+GamePlayer are the agents playing the game
+GameSolver is the environment holding the strategies the players are adopting.
+There can only be one game solver but initial population of gameplayers will be 30.
+
+NOTE: donot need iradius in agent, but due to conflicting version of parser keep for time being.
