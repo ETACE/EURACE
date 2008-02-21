@@ -1,5 +1,6 @@
 #include "header.h"
 #include "Firm_agent_header.h"
+#include "my_library_header.h"
 
 
 /************Firm Role: Financial Management Role ********************************/
@@ -39,6 +40,8 @@ int Firm_compute_income_statement()
 int Firm_compute_balance_sheet()
 {
 	double sum;
+	int imax;
+	int i;
 
 	if(DAY%MONTH==DAY_OF_MONTH_TO_ACT)
 	{
@@ -56,19 +59,19 @@ int Firm_compute_balance_sheet()
 
 		//step 1: compute total interest payments
 		TOTAL_INTEREST_PAYMENT =0;
-		imax = LOANS->size;
+		imax = LOANS.size;
 		for (i=0; i<imax;i++)
 		{
-			LOANS->array[i]->interest_payment = LOANS->array[i]->interest_rate * LOANS->array[i]->loan_value;							
+			LOANS.array[i].interest_payment = LOANS.array[i].interest_rate * LOANS.array[i].loan_value;							
 
 			//add to total
-			TOTAL_INTEREST_PAYMENT += LOANS->array[i]->interest_payment;
+			TOTAL_INTEREST_PAYMENT += LOANS.array[i].interest_payment;
 		}
 		
 		//consistency check
 		if(PLANNED_TOTAL_INTEREST_PAYMENT != TOTAL_INTEREST_PAYMENT)
 		{
-			printf('Error: planned total interest payment is not equal to total interest payment.\n Did you set the same option for the planned and actual payments?');
+			printf("Error: planned total interest payment is not equal to total interest payment.\n Did you set the same option for the planned and actual payments?");
 		}
 		
 		//step 2: compute total debt installment payments
@@ -77,15 +80,15 @@ int Firm_compute_balance_sheet()
 		for (i=0; i<imax;i++)
 		{
 			//compute current total debt
-			TOTAL_DEBT += LOANS->array[i]->loan_value;
+			TOTAL_DEBT += LOANS.array[i].loan_value;
 			
 			//add debt_installment_payment to total installment payment
-			TOTAL_DEBT_INSTALLMENT_PAYMENT += LOANS->array[i]->debt_installment_payment;
+			TOTAL_DEBT_INSTALLMENT_PAYMENT += LOANS.array[i].debt_installment_payment;
 		}
 		//consistency check
 		if(PLANNED_TOTAL_DEBT_INSTALLMENT_PAYMENT != TOTAL_DEBT_INSTALLMENT_PAYMENT)
 		{
-			printf('Error: planned total debt installment payment is not equal to total debt installment payment.\n Did you set the same option for the planned and actualpayments?');
+			printf("Error: planned total debt installment payment is not equal to total debt installment payment.\n Did you set the same option for the planned and actualpayments?");
 		}
 						
 		//step 3: continue balance sheet (net earnings, earnings per share)
@@ -100,7 +103,7 @@ int Firm_compute_balance_sheet()
 	    EARNINGS_PER_SHARE_RATIO = NET_EARNINGS/CURRENT_SHARES_OUTSTANDING;
 
 		//step 4: actual tax_payment to government
-		add_tax_payment_message(ID, gov_id, TAX_PAYMENT,MSGDATA);
+		add_tax_payment_message(ID, GOV_ID, TAX_PAYMENT, MSGDATA);
 
 		//step 5: actual interest_payments and debt_installment_payments
 		if (PAYMENT_ACCOUNT < TOTAL_DEBT_INSTALLMENT_PAYMENT)
@@ -114,35 +117,35 @@ int Firm_compute_balance_sheet()
 		else
 		{
 			//Sending interest_payment_msg to all banks at which the firm has a loan 
-			imax = LOANS->size;
+			imax = LOANS.size;
 			for (i=0; i<imax;i++)
 			{
 				//decrease payment_account with the interest_payment
-				PAYMENT_ACCOUNT -= LOANS->array[i]->interest_payment;
+				PAYMENT_ACCOUNT -= LOANS.array[i].interest_payment;
 
 				//tell the bank I paid
-				add_interest_payment_message(ID, bank_id, LOANS->array[i]->interest_payment,MSGDATA);
+				add_interest_payment_message(ID, BANK_ID, LOANS.array[i].interest_payment,MSGDATA);
 			}
 			
 			//Sending debt_installment_payment_msg to all banks at which the firm has a loan
 			for (i=0; i<imax;i++)
 			{
 				//decrease payment_account with the installment payment
-				PAYMENT_ACCOUNT -= LOANS->array[i]->debt_installment_payment;
+				PAYMENT_ACCOUNT -= LOANS.array[i].debt_installment_payment;
 
 				//decrease the value of the loan with the debt_installment_payment:
-				LOANS->array[i]->loan_value -= LOANS->array[i]->debt_installment_payment;
+				LOANS.array[i].loan_value -= LOANS.array[i].debt_installment_payment;
 
 				//decrease the value of the nr_periods_before_maturity
-				LOANS->array[i]->nr_periods_before_maturity -= 1;
+				LOANS.array[i].nr_periods_before_maturity -= 1;
 
 				//tell the bank I paid
-				add_debt_installment_payment_message(ID, LOANS->array[i]->bank_id, LOANS->array[i]->debt_installment_payment, MSGDATA);
+				add_debt_installment_payment_message(ID, LOANS.array[i].bank_id, LOANS.array[i].debt_installment_payment, MSGDATA);
 
 				//if nr_periods_before_maturity == 0, remove the loan item
-				if (LOANS->array[i]->nr_periods_before_maturity==0)
+				if (LOANS.array[i].nr_periods_before_maturity==0)
 				{
-					remove_loan_item(LOANS, i);
+					remove_debt_item(&LOANS, i);
 				}
 			}
 		}
@@ -189,7 +192,7 @@ int Firm_compute_balance_sheet()
 		//consistency check
 		if(PLANNED_TOTAL_DIVIDEND_PAYMENT != TOTAL_DIVIDEND_PAYMENT)
 		{
-			printf('Error: planned total dividend payment is not equal to total dividend payment.\n Did you set the same option for the planned and actual payments?');
+			printf("Error: planned total dividend payment is not equal to total dividend payment.\n Did you set the same option for the planned and actual payments?");
 		}
 
 		//step 7: continue balance sheet (data pertaining to the period that just ended)
@@ -218,31 +221,31 @@ int Firm_compute_balance_sheet()
 
 		
 		//We loop over all capital stock items and update the current_value
-		imax = VALUE_CAPITAL_STOCK->size;
+		imax = VALUE_CAPITAL_STOCK.size;
 		TOTAL_VALUE_CAPITAL_STOCK=0;
 		for (i=0;i<imax;i++)
 		{
 			//decrease the value of each installment of capital by its own depreciation value
-			VALUE_CAPITAL_STOCK->array[i]->current_value -= VALUE_CAPITAL_STOCK->array[i]->depreciation_value_per_period;
-			VALUE_CAPITAL_STOCK->array[i]->nr_periods_before_total_depreciation -= 1;
+			VALUE_CAPITAL_STOCK.array[i].current_value -= VALUE_CAPITAL_STOCK.array[i].depreciation_value_per_period;
+			VALUE_CAPITAL_STOCK.array[i].nr_periods_before_total_depreciation -= 1;
 			
 			//update the current value of the capital stock:
-			TOTAL_VALUE_CAPITAL_STOCK += VALUE_CAPITAL_STOCK->array[i]->current_value;
+			TOTAL_VALUE_CAPITAL_STOCK += VALUE_CAPITAL_STOCK.array[i].current_value;
 
 			//if the period of full depreciation has been reached: remove the capital_stock_item
-			if (VALUE_CAPITAL_STOCK->array[i]->nr_periods_before_total_depreciation==0)
+			if (VALUE_CAPITAL_STOCK.array[i].nr_periods_before_total_depreciation==0)
 			{
-				remove_capital_stock_item(VALUE_CAPITAL_STOCK, i);
+				remove_capital_stock_item(&VALUE_CAPITAL_STOCK, i);
 			}
 		}
 		
 		//TOTAL_VALUE_LOCAL_INVENTORY: estimated value of local inventory stocks at current mall prices
 		//We loop over the malls and sum the value of all local inventory stocks
-		imax = CURRENT_MALL_STOCKS->size;
+		imax = CURRENT_MALL_STOCKS.size;
 		sum=0.0;
 		for (i=0;i<imax;i++)
 		{
-			sum += PRICE*CURRENT_MALL_STOCKS->array[i]->current_stock;
+			sum += PRICE*CURRENT_MALL_STOCKS.array[i];//.current_stock;
 			//When malls have different current_price use this code:
 			//sum += CURRENT_MALL_STOCKS->array[i]->current_price * CURRENT_MALL_STOCKS->array[i]->current_stock;
 		}
@@ -262,15 +265,17 @@ int Firm_compute_balance_sheet()
  */
 int Firm_compute_payout_policy()
 {
+	int imax;
+	int i;
 	//step 9: compute planned_total_interest_payment for upcoming production cycle
 	PLANNED_TOTAL_INTEREST_PAYMENT =0;
-	imax = LOANS->size;
+	imax = LOANS.size;
 	for (i=0; i<imax;i++)
 	{
-		LOANS->array[i]->interest_payment = LOANS->array[i]->interest_rate * LOANS->array[i]->loan_value;							
+		LOANS.array[i].interest_payment = LOANS.array[i].interest_rate * LOANS.array[i].loan_value;							
 
 		//add to total
-		PLANNED_TOTAL_INTEREST_PAYMENT += LOANS->array[i]->interest_payment;
+		PLANNED_TOTAL_INTEREST_PAYMENT += LOANS.array[i].interest_payment;
 	}
 	
 	//step 10: compute planned_total_debt_installment_payment for upcoming production cycle
@@ -278,7 +283,7 @@ int Firm_compute_payout_policy()
 	for (i=0; i<imax;i++)
 	{
 		//add to total
-		PLANNED_TOTAL_DEBT_INSTALLMENT_PAYMENT += LOANS->array[i]->debt_installment_payment;
+		PLANNED_TOTAL_DEBT_INSTALLMENT_PAYMENT += LOANS.array[i].debt_installment_payment;
 	}
 	
 	//step 11: compute planned_total_dividend_payment.
@@ -347,7 +352,7 @@ int Firm_compute_payout_policy()
  */
 int Firm_apply_for_credit()
 {
-   add_credit_request_message(ID, bank_id, EXTERNAL_FINANCIAL_NEEDS, TOTAL_ASSETS, TOTAL_DEBT, MSGDATA);
+   add_credit_request_message(ID, BANK_ID, EXTERNAL_FINANCIAL_NEEDS, TOTAL_ASSETS, TOTAL_DEBT, MSGDATA);
 
    return 0;
 }
@@ -358,10 +363,30 @@ int Firm_apply_for_credit()
  */
 int Firm_issue_equity()
 {
-	limit_quantity = (int) -1*EXTERNAL_FINANCIAL_NEEDS/CURRENT_SHARE_PRICE;
+	double limit_quantity = (int) -1*EXTERNAL_FINANCIAL_NEEDS/CURRENT_SHARE_PRICE;
 
 	//Firm tries to sell stock_units shares:
-	add_stock_order_message(ID, limit_price, limit_quantity, stock_id, MSGDATA)
+	add_stock_order_message(ID, LIMIT_PRICE, limit_quantity, STOCK_ID, MSGDATA);
 
+	return 0;
+}
+
+int Firm_read_loan_offers_send_loan_acceptance()
+{
+	return 0;
+}
+
+int Firm_update_outstanding_shares()
+{
+	return 0;
+}
+
+int Firm_compute_bond_orders()
+{
+	return 0;
+}
+
+int Firm_compute_stock_orders()
+{
 	return 0;
 }

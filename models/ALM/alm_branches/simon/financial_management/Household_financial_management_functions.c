@@ -1,5 +1,6 @@
 #include "header.h"
 #include "Household_agent_header.h"
+#include "my_library_header.h"
 
 /************Household Role: Financial Management********************************/
 
@@ -7,66 +8,65 @@
 int Household_financial_planning()
 {
 	//Total gross income: labour income and capital income
-	GROSS_INCOME = WAGE_INCOME + CAPITAL_INCOME;
+//	GROSS_INCOME = WAGE_INCOME + CAPITAL_INCOME;
 	
 	//Compute taxes
-	TAX_PAYMENT = INCOME_TAX_RATE*GROSS_INCOME;
+//	TAX_PAYMENT = INCOME_TAX_RATE*GROSS_INCOME;
 	
 	//Send tax to goverment
-	add_tax_payment_message(ID, gov_id, TAX_PAYMENT, MSGDATA);
+//	add_tax_payment_message(ID, gov_id, TAX_PAYMENT, MSGDATA);
 	
 	//Compute net income
-	INCOME_ACCOUNT = (1-INCOME_TAX_RATE)*GROSS_INCOME + LEFTOVER_CONSUMPTION_BUDGET;
+//	INCOME_ACCOUNT = (1-INCOME_TAX_RATE)*GROSS_INCOME + LEFTOVER_CONSUMPTION_BUDGET;
 	
 	//If no savings
-	SAVINGS_PROPENSITY =0;
+//	SAVINGS_PROPENSITY =0;
 	
 	//Savings from net income
-	SAVINGS = SAVINGS_PROPENSITY * INCOME_ACCOUNT;	
+//	SAVINGS = SAVINGS_PROPENSITY * INCOME_ACCOUNT;	
 	
-	SAVINGS_ACCOUNT += SAVINGS; 
+//	SAVINGS_ACCOUNT += SAVINGS; 
 	
 	//Total budget: transfer funds from income account to payment account, minus savings
-	PAYMENT_ACCOUNT = INCOME_ACCOUNT - SAVINGS;
+//	PAYMENT_ACCOUNT = INCOME_ACCOUNT - SAVINGS;
 	
 	//Reset the income account
-	INCOME_ACCOUNT =0;
+//	INCOME_ACCOUNT = 0;
 	
 	//Current asset wealth, evaluated at current market prices
 	/* C-CODE */
 	// ASSET_WEALTH =
 	
 	//Cash-on-hands
-	CASH_ON_HANDS = PAYMENT_ACCOUNT + ASSET_WEALTH;
+//	CASH_ON_HANDS = PAYMENT_ACCOUNT + ASSET_WEALTH;
 	
 	//Consumption budget
-	if(CASH_ON_HANDS > MEAN_INCOME)
-	{
-		
-		TOTAL_CONSUMPTION_BUDGET = CASH_ON_HANDS + EXCESS_CONSUMPTION_PROPENSITY*(CASH_ON_HANDS - MEAN_INCOME);
-	}
-	else
-	{
-		TOTAL_CONSUMPTION_BUDGET = CASH_ON_HANDS;
-	}
+//	if(CASH_ON_HANDS > MEAN_INCOME)
+//	{
+//		TOTAL_CONSUMPTION_BUDGET = CASH_ON_HANDS + EXCESS_CONSUMPTION_PROPENSITY*(CASH_ON_HANDS - MEAN_INCOME);
+//	}
+//	else
+//	{
+//		TOTAL_CONSUMPTION_BUDGET = CASH_ON_HANDS;
+//	}
 	
 	//Weekly consumption budget
-	WEEKLY_CONSUMPTION_BUDGET = TOTAL_CONSUMPTION_BUDGET/4;
+//	WEEKLY_CONSUMPTION_BUDGET = TOTAL_CONSUMPTION_BUDGET/4;
 	
 	//Financial needs and asset_budget
-	FINANCIAL_NEEDS = 0; FINANCIAL_SURPLUS=0;
-	if (TOTAL_CONSUMPTION_BUDGET > CASH_ON_HANDS)
-	{
+//	FINANCIAL_NEEDS = 0; FINANCIAL_SURPLUS=0;
+//	if (TOTAL_CONSUMPTION_BUDGET > CASH_ON_HANDS)
+//	{
 		//planned consumption superceeds cash_on_hands: sell assets
-		FINANCIAL_NEEDS = TOTAL_CONSUMPTION_BUDGET - CASH_ON_HANDS;
-		ASSET_BUDGET = -FINANCIAL_NEEDS;
-	}
-	else
-		{
-			//planned consumption is less than cash_on_hands: use the excess to buy assets
-			FINANCIAL_SURPLUS = max(0, CASH_ON_HANDS-TOTAL_CONSUMPTION_BUDGET);
-			ASSET_BUDGET = FINANCIAL_SURPLUS;
-		}
+//		FINANCIAL_NEEDS = TOTAL_CONSUMPTION_BUDGET - CASH_ON_HANDS;
+//		ASSET_BUDGET = -FINANCIAL_NEEDS;
+//	}
+//	else
+//	{
+		//planned consumption is less than cash_on_hands: use the excess to buy assets
+//		FINANCIAL_SURPLUS = max(0, CASH_ON_HANDS-TOTAL_CONSUMPTION_BUDGET);
+//		ASSET_BUDGET = FINANCIAL_SURPLUS;
+//	}
 
 	
 	
@@ -94,4 +94,89 @@ int Household_financial_planning()
 	/********************************************************************************************/
 	
     return 0;
+}
+
+int Household_compute_gross_income()
+{
+	return 0;
+}
+
+int Household_compute_monthly_taxes()
+{
+	return 0;
+}
+
+int Household_compute_net_income()
+{
+	return 0;
+}
+
+int Household_compute_asset_wealth()
+{
+	return 0;
+}
+
+int Household_compute_total_budget()
+{
+	return 0;
+}
+
+int Household_compute_cash_on_hand()
+{
+	return 0;
+}
+
+int Household_update_asset_portfolio()
+{
+	return 0;
+}
+
+int Household_compute_cash_on_hands()
+{
+	return 0;
+}
+
+int Household_compute_consumption_budget()
+{
+	return 0;
+}
+
+int Household_compute_financial_needs_daily()
+{
+	return 0;
+}
+
+int Household_compute_financial_needs_monthly()
+{
+	return 0;
+}
+
+int Household_entry_decision()
+{
+	return 0;
+}
+
+int Household_compute_asset_budget()
+{
+	return 0;
+}
+
+int Household_compute_firm_stock_orders()
+{
+	return 0;
+}
+
+int Household_read_transaction_message()
+{
+	return 0;
+}
+
+int Household_compute_government_bond_orders()
+{
+	return 0;
+}
+
+int Household_compute_firm_bond_orders()
+{
+	return 0;
 }
