@@ -14,6 +14,8 @@
 <functions>
 <file>Household_financial_management_functions.c</file>
 <file>Firm_financial_management_functions.c</file>
+<file>Clearinghouse_financial_management_functions.c</file>
+<file>my_library_functions.c</file>
 </functions>
 
 <!--Structures-->
@@ -90,9 +92,9 @@
 <!-- All variables used by household are declared here to allocate them in memory -->
 
 <memory>
-<var><type>int</type><name>household_id</name></var>
+<var><type>int</type><name>id</name></var>
 <var><type>double</type><name>asset_budget</name></var>
-<var><type>double</type><name>iradius</name></var>
+<var><type>double</type><name>range</name></var>
 <var><type>double</type><name>posx</name></var>
 <var><type>double</type><name>posy</name></var>
 </memory>
@@ -194,7 +196,8 @@
 <!----------------- Variables-------------------------------------------------->
 <!-- All variables used by clearing house are declared here to allocate them in memory -->
 <memory>
-<var><type>double</type><name>iradius</name></var>
+<var><type>int</type><name>id</name></var>
+<var><type>double</type><name>range</name></var>
 <var><type>double</type><name>posx</name></var>
 <var><type>double</type><name>posy</name></var>
 
@@ -231,6 +234,21 @@
 <!-- All variables used by firm are declared here to allocate them in memory -->
 <memory>
 
+<!----------------- Variables used in functions ----------------------------->
+<var><type>int</type><name>day_of_month_to_act</name></var>
+<var><type>double</type><name>cum_revenues</name></var>
+<var><type>double</type><name>total_debt</name></var>
+<var><type>int</type><name>current_shares_outstanding</name></var>
+<var><type>int</type><name>id</name></var>
+<var><type>int</type><name>gov_id</name></var>
+<var><type>int</type><name>bank_id</name></var>
+<var><type>int_array</type><name>current_mall_stocks</name></var>
+<var><type>double</type><name>price</name></var>
+<var><type>double</type><name>total_assets</name></var>
+<var><type>double</type><name>production_costs</name></var>
+<var><type>double</type><name>current_share_price</name></var>
+<var><type>double</type><name>limit_price</name></var>
+<var><type>int</type><name>stock_id</name></var>
 
 <!---Role: Financial management role-->
 
@@ -286,7 +304,7 @@
 <var><type>double</type><name>stocks_issue_target</name></var>
 
 <!----------------- Standard variables ---------------------------------------->
-<var><type>double</type><name>iradius</name></var>
+<var><type>double</type><name>range</name></var>
 <var><type>double</type><name>posx</name></var>
 <var><type>double</type><name>posy</name></var>
 </memory>
@@ -397,11 +415,13 @@
 
 <!--credit market context-->
 <message>
-<name>credit_demand</name>
+<name>credit_request</name>
 <note>Added by firm to demand credit</note>
 <var><type>int</type><name>firm_id</name></var>
 <var><type>int</type><name>bank_id</name></var>
 <var><type>double</type><name>credit_demand</name></var>
+<var><type>double</type><name>total_assets</name></var>
+<var><type>double</type><name>total_debt</name></var>
 <var><type>double</type><name>range</name></var>
 <var><type>double</type><name>x</name></var>
 <var><type>double</type><name>y</name></var>
@@ -454,6 +474,19 @@
 <var><type>int</type><name>asset_id</name></var>
 <var><type>double</type><name>limit_price</name></var>
 <var><type>double</type><name>limit_quantity</name></var>
+<var><type>double</type><name>range</name></var>
+<var><type>double</type><name>x</name></var>
+<var><type>double</type><name>y</name></var>
+<var><type>double</type><name>z</name></var>
+</message>
+
+<message>
+<name>stock_order</name>
+<note>from function code</note>
+<var><type>int</type><name>firm_id</name></var>
+<var><type>double</type><name>limit_price</name></var>
+<var><type>double</type><name>limit_quantity</name></var>
+<var><type>int</type><name>stock_id</name></var>
 <var><type>double</type><name>range</name></var>
 <var><type>double</type><name>x</name></var>
 <var><type>double</type><name>y</name></var>
