@@ -13,6 +13,11 @@
 <file>mylibraryfunctions.c</file>
 </functions>
 <!--Structures-->
+<datatype>
+ <name>neighbours_data</name>
+ <var><type>int</type><name>neighbourid</name></var>
+ <var><type>double</type><name>payoff</name></var>
+</datatype>
 
 </environment>
 
@@ -24,7 +29,8 @@
 <memory>
 <var><type>int</type><name>id</name></var><var>
 <var><type>int</type><name>strategy_adopted</name></var>	
-<var><type>int</type><name>performance</name></var>	
+<var><type>int</type><name>previous_performance</name></var>	
+<var><type>neighbours_data_array</type><name>neighbours</name></var>
 <var><type>double</type><name>iradius</name></var>
 <var><type>double</type><name>posx</name></var>
 <var><type>double</type><name>posy</name></var>

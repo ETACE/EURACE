@@ -11,3 +11,9 @@ GameSolver is the environment holding the strategies the players are adopting.
 There can only be one game solver but initial population of gameplayers will be 30.
 
 NOTE: donot need iradius in agent, but due to conflicting version of parser keep for time being.
+
+!22/2/08! 
+How are we going to plot which were the evolving strategies which have evolved as a result of interaction.
+NOTETODO: Check convergence of strategies! 
+According to my understanding we would only need these agents and its functions.
+Do not need another agents Game solver.
