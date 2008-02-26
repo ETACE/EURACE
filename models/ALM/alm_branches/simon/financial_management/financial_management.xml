@@ -85,10 +85,10 @@
 </datatypes>
 </environment>
 
-<!--********************* X-machine Agent - Household ****************************-->
+<!-- ********************* X-machine Agent - Household **************************** -->
 <xmachine>
 <name>Household</name>
-<!----------------- Variables-------------------------------------------------->
+<!--  Variables -->
 <!-- All variables used by household are declared here to allocate them in memory -->
 
 <memory>
@@ -98,7 +98,7 @@
 <var><type>double</type><name>posx</name></var>
 <var><type>double</type><name>posy</name></var>
 </memory>
-<!----------------- Defining functions ---------------------------------------->
+<!-- Defining functions -->
 <functions>
 <!--************** Role: Financial Management Role ************** -->
 <function><name>Household_financial_planning</name></function>
@@ -193,7 +193,7 @@
 <!--********************* X-machine Agent - Clearinghouse ****************************-->
 <xmachine>
 <name>Clearinghouse</name>
-<!----------------- Variables-------------------------------------------------->
+<!-- Variables -->
 <!-- All variables used by clearing house are declared here to allocate them in memory -->
 <memory>
 <var><type>int</type><name>id</name></var>
@@ -202,7 +202,7 @@
 <var><type>double</type><name>posy</name></var>
 
 </memory>
-<!----------------- Defining functions ---------------------------------------->
+<!-- Defining functions -->
 
 <!--- asset market role-->
 <functions>
@@ -230,11 +230,11 @@
 <!--********************* X-machine Agent - Firm ****************************-->
 <xmachine>
 <name>Firm</name>
-<!----------------- Variables-------------------------------------------------->
+<!-- Variables -->
 <!-- All variables used by firm are declared here to allocate them in memory -->
 <memory>
 
-<!----------------- Variables used in functions ----------------------------->
+<!-- Variables used in functions -->
 <var><type>int</type><name>day_of_month_to_act</name></var>
 <var><type>double</type><name>cum_revenues</name></var>
 <var><type>double</type><name>total_debt</name></var>
@@ -250,13 +250,13 @@
 <var><type>double</type><name>limit_price</name></var>
 <var><type>int</type><name>stock_id</name></var>
 
-<!---Role: Financial management role-->
+<!-- Role: Financial management role -->
 
-<!----------------- Firm_compute_income_statement ---------------------------------------->
+<!-- Firm_compute_income_statement -->
 <var><type>double</type><name>ebit</name></var>
 <var><type>double</type><name>payment_account</name></var>
 
-<!----------------- Firm_compute_balance_sheet ---------------------------------------->
+<!-- Firm_compute_balance_sheet -->
 <var><type>debt_item_array</type><name>loans</name></var>
 <var><type>double</type><name>total_interest_payment</name></var>
 <var><type>double</type><name>total_debt_installment_payment</name></var>
@@ -278,17 +278,17 @@
 <var><type>double</type><name>total_value_local_inventory</name></var>
 <var><type>double</type><name>equity</name></var>
 
-<!----------------- Firm_compute_payout_policy ---------------------------------------->
+<!-- Firm_compute_payout_policy -->
 <var><type>double</type><name>planned_total_interest_payment</name></var>
 <var><type>double</type><name>planned_total_debt_installment_payment</name></var>
 <var><type>double</type><name>planned_total_dividend_payment</name></var>
 
-<!----------------- Financial needs ---------------------------------------->
+<!-- Financial needs -->
 <var><type>double</type><name>total_financial_needs</name></var>
 <var><type>double</type><name>internal_financial_needs</name></var>
 <var><type>double</type><name>external_financial_needs</name></var>
 
-<!----------------- Ratios ---------------------------------------->
+<!-- Ratios -->
 <var><type>double</type><name>earnings_per_share_ratio</name></var>
 <var><type>double</type><name>debt_per_earnings_ratio</name></var>
 <var><type>double</type><name>price_earnings_ratio</name></var>
@@ -297,20 +297,20 @@
 <var><type>double</type><name>critical_price_earnings_ratio</name></var>
 <var><type>double</type><name>critical_earnings_per_share_ratio</name></var>
 
-<!----------------- Misc variables (not yet used) ---------------------------------------->
+<!-- Misc variables (not yet used) -->
 <var><type>double</type><name>target_loans</name></var>
 <var><type>double</type><name>target_equity</name></var>
 <var><type>double</type><name>bonds_issue_target</name></var>
 <var><type>double</type><name>stocks_issue_target</name></var>
 
-<!----------------- Standard variables ---------------------------------------->
+<!-- Standard variables -->
 <var><type>double</type><name>range</name></var>
 <var><type>double</type><name>posx</name></var>
 <var><type>double</type><name>posy</name></var>
 </memory>
-<!----------------- Defining functions ---------------------------------------->
+<!-- Defining functions -->
 <functions>
-<!---Role: Financial management role-->
+<!-- Role: Financial management role -->
 <function>
 <name>Firm_compute_income_statement</name>
 </function>
@@ -325,7 +325,7 @@
 <depends><name>Firm_compute_balance_sheet</name><type>internal</type></depends>
 </function>
 
-<!---Role: Credit Market Role-->
+<!-- Role: Credit Market Role -->
 <function>
 <name>Firm_apply_for_credit</name>
 <depends><name>Firm_compute_payout_policy</name><type>internal</type></depends>
@@ -336,7 +336,7 @@
 <depends><name>Firm_apply_for_credit</name><type>internal</type></depends>
 </function>
 
-<!---Role: Asset Market Role-->
+<!-- Role: Asset Market Role -->
 <function>
 <name>Firm_issue_equity</name>
 <depends><name>Firm_read_loan_offers_send_loan_acceptance</name><type>internal</type></depends>
