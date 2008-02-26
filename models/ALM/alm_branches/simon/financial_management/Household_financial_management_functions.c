@@ -180,3 +180,5 @@ int Household_compute_firm_bond_orders()
 {
 	return 0;
 }
+
+
