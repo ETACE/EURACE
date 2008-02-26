@@ -1,0 +1,366 @@
+/**
+ * \file  main.c
+ * \brief Holds main function of the program.
+ */
+
+#include "header.h"
+
+/** \fn int main(int argc, char * argv[])
+ * \brief Main program loop.
+ * \param argc Argument count.
+ * \param argv Pointer Pointer to Argument vector.
+ */
+int main(int argc, char * argv[])
+{
+	/* Timing variables */
+	clock_t start, stop, interval;
+	FILE *file;
+	char data[100];
+	char logfilepath[100];
+	char inputpath[100];
+	int lastd = 0;
+	int i;
+	int iteration_number;
+	int iteration_total;
+	int * p_iteration_number;
+	xmachine * temp_free_xmachine;
+	xmachine **agent_list;
+	/* Ratio for calculating time in milliseconds */
+    /* (lsc) changed from long to double
+     * if "long", time_ratio == 0 when CLOCKS_PER_SEC > 1000
+     */
+	double time_ratio = 1000.0/CLOCKS_PER_SEC;
+	/* Particle cloud data */
+	double cloud_data[6];
+
+/* For partition method. Makes geometric (-g flag) the default but may be overridden with -r for round-robin */
+	int partition_method=1;
+
+<?if parallel?>	
+	int err; /* MPI errors */
+	char processor_name[MPI_MAX_PROCESSOR_NAME];
+	int processor_name_length;
+	MPI_Aint baseaddress;
+	/* Variables needed to construct spacePartitionType */
+	space_partition tmp_space_partition;
+	int array_of_block_lengths[2] = {1, 6};
+	MPI_Aint array_of_displacements[2];
+	MPI_Datatype array_of_types[2] = {MPI_INT, MPI_DOUBLE};
+<?end if?>
+	
+	/* Don't use binary output as default */
+	use_binary_output = 0;
+	/* Output frequency is 1 as default */
+	output_frequency = 1;
+	/* Set random seed */
+/*	srand(time(NULL)); */
+	
+	/* Initialise pointers */
+	initialise_pointers();
+	p_iteration_number = &iteration_number;
+	<?if parallel?>
+		
+		/* MPI initialisation routine */
+		err = MPI_Init(&argc, &argv);
+  		if (err != MPI_SUCCESS)
+		{
+			printf("MPI initialization failed!\n");
+			exit(1);
+		}
+		/* Get total number of nodes and own node number */
+		MPI_Comm_size(MPI_COMM_WORLD, &totalnodes);
+		MPI_Comm_rank(MPI_COMM_WORLD, &node_number);
+		/* Initialise spacePartitionType */
+		MPI_Address(&tmp_space_partition, &baseaddress);
+		MPI_Address(&tmp_space_partition.node_id, &array_of_displacements[0]);
+		array_of_displacements[0] -= baseaddress;
+		MPI_Address(&tmp_space_partition.partition_data[0], &array_of_displacements[1]);
+		array_of_displacements[1] -= baseaddress;
+		MPI_Type_struct(2, array_of_block_lengths, array_of_displacements, array_of_types, &spacePartitionType);
+		MPI_Type_commit(&spacePartitionType);
+<?end if?>	
+
+<?if serial?>
+	printf("FLAME Application: $model_name \n");
+<?end if?>
+<?if parallel?>
+	if(node_number == 0) {
+		printf("MPI FLAME Application: $model_name \n");
+	}
+<?end if?>
+
+
+
+if(argc < 2)
+	{
+<?if serial?>
+		printf("Usage: %s <number of iterations> [<states_directory>]/<init_state> <partitions> [-r | -g ]\n",argv[0]);
+<?end if?>
+<?if parallel?>
+		if(node_number == 0) {
+			printf("Usage: mpirun -np <partitions> %s <number of iterations> [<states_directory>]/<init_state> [-g | -r] \n",argv[0]);
+		}
+<?end if?>
+
+		exit(0);
+	}
+	iteration_total = atoi(argv[1]);
+<?if parallel?>	if(node_number == 0) <?end if?>printf("Iterations: %i\n", iteration_total);
+	
+	/* Read initial states of x-machines */
+	if(argc < 3)
+	{
+		printf("Need two parameters\n");
+		exit(0);
+	}
+	strcpy(inputpath, argv[2]);
+<?if parallel?>	if(node_number == 0) <?end if?>printf("Initial states: %s\n", inputpath);
+	
+	i = 0;
+	while(inputpath[i] != '\0')
+	{
+		/* For windows directories */
+		if(inputpath[i] == '\\') lastd=i;
+		/* For unix directories */
+		if(inputpath[i] == '/') lastd=i;
+		i++;
+	}
+	strcpy(outputpath, inputpath);
+	outputpath[lastd+1] = '\0';
+<?if parallel?>	if(node_number == 0) <?end if?>printf("Ouput dir: %s\n", outputpath);
+	
+<?if serial?>
+	/* Read number of space partitions (1 by default) */
+	totalnodes = 1;
+	if(argc > 3)
+	{
+		totalnodes = atoi(argv[3]);
+	}
+	
+<?end if?>
+	i = 3;
+	while(argc > i)
+	{
+		/* Use binary format for results */
+		if(strcmp(argv[i],"-b") == 0) use_binary_output = 1;
+		if(use_binary_output) printf("Using binary output for results\n");
+		if(strcmp(argv[i],"-f") == 0)
+		{
+			if(argc > (i+1))
+			{
+				output_frequency = atoi(argv[(i+1)]);
+				printf("Using output frequency of: %i\n", output_frequency);
+				i++;
+			}
+			else
+			{
+				printf("Output frequency number not defined\n");
+				exit(0);
+			}
+		}
+		/* Partitioning method: -g = geometric, -r = round-robin */
+		if(strcmp(argv[i],"-g") == 0) partition_method = 1;
+		if(strcmp(argv[i],"-r") == 0) partition_method = 2;
+		i++;
+	}
+	
+	/* Read initial data into p_xmachine <?if parallel?>on the master node<?end if?> */
+<?if parallel?>
+    if (node_number == 0)
+    {
+<?end if?>
+       agent_list = p_xmachine;
+       readinitialstates(inputpath, p_iteration_number, agent_list, cloud_data, partition_method, 0);
+       /* Generate partitions */
+       generate_partitions(cloud_data,totalnodes,partition_method);
+       save_partition_data();
+<?if parallel?>
+    }
+<?end if?> 
+
+
+<?if parallel?>
+    /* Broadcast node data */
+    broadcast_node_data(totalnodes, node_number);
+<?end if?>
+
+<?if serial?>
+    /* Partition data */
+    partition_data(totalnodes, agent_list, cloud_data, partition_method);
+<?end if?>
+<?if parallel?>
+    /* Clear previously populated agent list before readinitialstates()
+     *  overwrite the pointers and dereference allocated memory.
+     */
+    freexmachines();
+
+    /* Partition the data by reading it in. Partitions are known so get the read function
+     * to do the partitioning for us.
+     */
+    readinitialstates(inputpath, p_iteration_number, agent_list, cloud_data, partition_method, 1);
+<?end if?>
+
+<?if serial?>
+		i = 0;
+		current_node = *p_node_info;
+		while(current_node)
+		{
+			printf("No of agents on partition %d: %d\n", current_node->node_id, current_node->agent_total);
+			i += current_node->agent_total;
+			current_node = current_node->next;
+		}
+		printf("Agent total check: %d\n", i);
+
+        /* restore current_node pointer */
+		current_node = *p_node_info;
+<?end if?>
+<?if parallel?>
+		/* Print processor name */
+		printf("%d> ", node_number);
+		MPI_Get_processor_name(processor_name, &processor_name_length);
+		printf("Processor name: %s\n", processor_name);
+		/* Print number of agents on node */
+		printf("%d> ", node_number);
+		printf("No of agents on node: %d\n", current_node->agent_total);
+		
+		/* Quickly check account for all agents */
+		MPI_Reduce(&current_node->agent_total, &i, 1, MPI_INT, MPI_SUM, 0, MPI_COMM_WORLD);
+		if(node_number == 0) printf("%d> Agent total check: %d\n",node_number, i);
+<?end if?>
+	
+	/* Start log file (now so that xvisualiser can read straight away) */
+<?if parallel?>	if(node_number == 0)
+	{<?end if?>
+	/* Write log file */
+	sprintf(logfilepath, "%slog.xml", outputpath);
+	file = fopen(logfilepath, "w");
+	fputs("<model_run>\n", file);
+	fputs("<codetype>", file);
+<?if serial?>	fputs("serial", file);<?end if?>
+<?if parallel?>	fputs("parallel", file);<?end if?>
+	fputs("</codetype>\n", file);
+	fputs("<nodes>", file);
+	sprintf(data, "%i", totalnodes);
+	fputs(data, file);
+	fputs("</nodes>\n", file);
+	fputs("<!-- warning: time in milliseconds (seems to jump in 15/16ms) -->\n", file);
+	fclose(file);
+<?if parallel?>	}<?end if?>
+	/* Start timing */
+	start = clock();
+
+    /* pre-randomise agents for first iteration */
+    randomisexagent();
+	
+	for(iteration_loop=iteration_number+1; iteration_loop < iteration_number+iteration_total+1; iteration_loop++)
+	{
+		interval = clock();
+		/* Print out iteration number */
+<?if serial?>		<?end if?><?if parallel?>		if(node_number == 0) <?end if?>printf("Iteration - %d\n", iteration_loop);
+		/* START OF ITERATION */
+<?foreach comlayer?>
+/* Start of communications layer loop */
+	<?if serial?>
+		current_node = *p_node_info;
+		while(current_node)
+		{
+		<?foreach message?>		
+			p_$name_message = &current_node->$name_messages;
+		<?end foreach?>		
+		p_xmachine = &current_node->agents;
+	<?end if?>
+	<?if parallel?>		/* Barrier synchronisation */
+        /* (lsc) removed barriers. message propagation should already synchronise all nodes */
+		/* MPI_Barrier(MPI_COMM_WORLD); */
+	<?end if?>
+	<?foreach funclayer?>
+		/* Loop through x-machines */
+		current_xmachine = *p_xmachine;
+		while(current_xmachine)
+		{
+			i = 0;
+		<?foreach function?>
+			if(current_xmachine->xmachine_$note != NULL)
+			{
+				i = $name();
+			}
+		<?end foreach?>	
+			/* If agent is freed */
+			if(i == 1)
+			{
+				temp_free_xmachine = current_xmachine->next;
+				free_agent();
+				current_xmachine = temp_free_xmachine;
+			}
+			else
+			{
+				current_xmachine = current_xmachine->next;
+			}
+		}
+	<?end foreach?>
+	<?if parallel?>		/* Propagate messages between nodes */
+		propagate_messages_init();
+	<?end if?>
+        randomisexagent();  /* randomise x-agents while waiting for communication to complete */
+        <?if parallel?>
+		propagate_messages_complete();
+	<?end if?>
+	<?if serial?>		
+		current_node = current_node->next;
+		}
+	<?end if?>		
+/* End of communications layer loop */
+<?end foreach?>
+
+<?foreach enditfunc?>
+		/* End of iteration code */
+		$code<?end foreach?>
+		if(iteration_loop%output_frequency == 0)
+		{
+			if(use_binary_output) saveiterationdata_binary(iteration_loop);
+			else saveiterationdata(iteration_loop);
+		}<?if serial?>		current_node = *p_node_info;
+		while(current_node)
+		{<?end if?><?foreach message?><?if serial?>
+		p_$name_message = &current_node->$name_messages;<?end if?>
+		free$namemessages();<?end foreach?>
+<?if serial?>		p_xmachine = &current_node->agents;<?end if?>
+		/* Calculate if any agents need to jump S.P. */
+		propagate_agents();<?if serial?>
+		current_node = current_node->next;
+		}<?end if?>
+	/* Save iteration time to log file */
+<?if parallel?>		if(node_number == 0)
+		{<?end if?>
+		file = fopen(logfilepath, "a");
+		fputs("<iteration><no>", file);
+		sprintf(data, "%i", iteration_loop);
+		fputs(data, file);
+		fputs("</no><time>", file);
+        /* (lsc) Changed casting from "long" to "double"
+         * In different systems, clock_t can be either integer or floating point. Casting to 
+         * double ensures that arithmetic and printing operations work properly on all systems
+         * regardless of underlying representation 
+         */
+		sprintf(data, "%ld", (long)(((double)clock()*time_ratio)-((double)interval*time_ratio)));
+		fputs(data, file);
+		fputs("</time></iteration>\n", file);
+		fclose(file);
+<?if parallel?>		}<?end if?>
+	}
+	
+	/* Stop timing and print total time */
+	stop = clock();
+    /* (lsc) Changed casting from "long" to "double"
+     * In different systems, clock_t can be either integer or floating point. Casting to 
+     * double ensures that arithmetic and printing operations work properly on all systems
+     * regardless of underlying representation 
+     */
+	total_time = ((double)stop*time_ratio) - ((double)start*time_ratio);
+<?if serial?>	<?end if?><?if parallel?>	if(node_number == 0) <?end if?>printf("Execution time - %ld:%02ld:%ld [mins:secs:msecs]\n", total_time/60000, ((total_time/1000)%60), total_time%1000);
+	
+	clean_up(0);
+	
+	/* Exit successfully by returning zero to Operating System */
+	return 0;
+}
