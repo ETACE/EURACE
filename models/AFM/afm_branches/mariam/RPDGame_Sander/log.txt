@@ -1,0 +1,7 @@
+26/02/08
+This is an implementation of the RPD game adaptation of the Miller paper
+in conjunction with Sander.
+
+made  list of the palyers and the startegies they use.
+now iterate thorugh this list for them to play against each other
+and write those payopffs into the matrix
