@@ -1,0 +1,187 @@
+
+<xmachine_agent_model>
+<name>Iterated Prisoners Dilemma Game</name>
+<author>Mariam Kiran and Sander van der Hoog</author>
+<date>260208</date>
+
+<environment>
+<functions>
+<file>GamePlayer_functions.c</file>
+<file>GameSolver_functions.c</file>
+<file>mylibraryfunctions.c</file>
+</functions>
+
+<!--Structures-->
+
+
+<!--Auxiliary structs-->
+<datatype>
+<name>strategy_state</name>
+<var><type>int</type><name>starting_state[4]</name></var>
+<var><type>int</type><name>state_name</name></var>
+<var><type>int</type><name>state_ifcooperate[4]</name></var>
+<var><type>int</type><name>state_ifdefect[4]</name></var>
+</datatype>
+
+<datatype>
+<name>payoff_elements</name>
+<var><type>int</type><name>payoffs[2]</name></var>
+</datatype>
+
+
+<datatype>
+<name>complete_strategy</name>
+<var><type>strategy_state_array</type><name>strategy_path</name></var>
+</datatype>
+
+<datatype>
+<name>columns</name>
+<var><type>payoff_elements_array</type><name>opponents</name></var>
+</datatype>
+
+</environment>
+
+
+<!--********************* X-machine Agent - GamePlayer ****************************-->
+<xmachine>
+<name>GamePlayer</name>
+<!----------------- Variables-------------------------------------------------->
+<!-- All variables used by GamePlayer are declared here to allocate them in memory -->
+
+<memory>
+<var><type>int</type><name>id</name></var>
+<var><type>int</type><name>strategy_used</name></var>
+<var><type>int</type><name>previous_performance</name></var>
+<var><type>double</type><name>iradius</name></var>
+<var><type>double</type><name>posx</name></var>
+<var><type>double</type><name>posy</name></var>
+	
+
+</memory>
+<!----------------- Defining functions ---------------------------------------->
+<functions>
+<function><name>post_my_strategy</name></function>
+<function><name>play_game</name>
+<depends><name>post_my_strategy</name><type>internal</type></depends></function>
+<!--EWA Functions-->
+<function>	<name>Every_period</name>	<depends>		<name>GamePlayer_reset_private_classifiersystem</name>
+		<type>internal</type>
+	</depends>
+</function>
+<function>
+	<name>GamePlayer_send_current_rule_message</name>
+	<depends>
+			<name>Every_period</name>
+			<type>internal</type>
+	</depends>
+</function>
+
+<function>
+	<name>GamePlayer_read_all_performances_message</name>
+	<depends>
+		<name>GameSolver_send_all_performances_message</name>
+		<type>all_performances_message</type>
+	</depends>
+</function>
+
+<function>
+	<name>GamePlayer_select_rule</name>
+	<depends>
+		<name>GamePlayer_read_all_performances_message</name>
+		<type>internal</type>
+	</depends>
+</function>
+
+<function>
+	<!--Dummy function that only reads a ruledetailsystem_message and then fires up the reset_private_classifiersystem fn.--><name>GamePlayer_read_ruledetailsystem_message</name>
+	<depends>
+		<name>GameSolver_send_ruledetailsystem_message</name>
+		<type>ruledetailsystem_message</type>
+	</depends>
+</function>
+
+<function><!--This function should only run if there is a new ruledetailsystem in the GameSolver agent.--><name>GamePlayer_reset_private_classifiersystem</name>
+	<depends>
+		<name>GamePlayer_read_ruledetailsystem_message</name>
+		<type>internal</type></depends>
+</function>
+
+</functions>
+</xmachine>
+<!--*********************** End of Agent - GamePlayer *****************************-->
+
+<!--********************* X-machine Agent - GameSolver ****************************-->
+<xmachine>
+<name>GameSolver</name>
+<!----------------- Variables-------------------------------------------------->
+<!-- All variables used by GameSolver are declared here to allocate them in memory -->
+<memory>
+<var><type>complete_strategy</type><name>strategy_list[30]</name></var>
+<var><type>int</type><name>nragents</name>	</var>
+<var><type>int_array</type><name>automata_id</name></var>
+<var><type>int_array</type><name>players</name></var>
+<var><type>columns_array</type><name>rows</name></var>
+<var><type>double</type><name>iradius</name></var>
+<var><type>double</type><name>posx</name></var>
+<var><type>double</type><name>posy</name></var>
+	
+</memory>
+<!----------------- Defining functions ---------------------------------------->
+
+<functions>
+<!--EWA Functions-->
+<function>
+		<!--Resets performance and avgperformance for all rules. Daily.--><name>GameSolver_daily_reset_public_classifiersystem</name>
+</function>
+<function><name>GameSolver_read_current_rule_message</name><depends>
+			<name>GameSolver_daily_reset_public_classifiersystem</name>
+			<type>internal</type></depends>
+<depends><name>GamePlayer_send_current_rule_message</name><type>current_rule_message</type></depends>
+</function><function>
+		<name>GameSolver_play_tournament</name>
+		<depends><name>GameSolver_read_current_rule_message</name>
+			<type>internal</type></depends></function><function><name>GameSolver_update_classifiersystem</name>
+<depends><name>GameSolver_play_tournament</name><type>internal</type></depends>
+</function>
+	
+
+	<function><name>GameSolver_send_all_performances_message</name>
+<depends><name>GameSolver_update_classifiersystem</name><type>internal</type></depends>
+</function>
+	<function>
+		<name>Every_100_periods</name></function>
+	<function><name>GameSolver_apply_GA</name>
+	<depends>
+		<name>Every_100_periods</name>
+		<type>internal</type></depends></function>
+	<function>
+		<name>GameSolver_reset_public_classifiersystem</name>
+		<depends>
+			<name>GameSolver_apply_GA</name>
+			<type>internal</type></depends></function>
+	
+<function><name>GameSolver_send_ruledetailsystem_message</name>
+<depends><name>GameSolver_apply_GA</name><type>internal</type></depends>
+</function>
+
+
+</functions>
+</xmachine><!--*********************** End of Agent - GameSolver ****************************-->
+
+<messages>
+  <message>
+    <name>startegy_i_use</name>
+    <note>This message is posted all agents so that all agents can play the game against each other</note>
+    <var><type>int</type><name>player_id</name></var>
+    <var><type>int</type><name>strategy_used</name></var>
+      <var><type>double</type><name>range</name></var>
+    <var><type>double</type><name>x</name></var>
+    <var><type>double</type><name>y</name></var>
+    <var><type>double</type><name>z</name></var>
+  </message>
+</messages>
+<!--********************** End of Messages **********************************-->
+
+</xmachine_agent_model>
+
+
