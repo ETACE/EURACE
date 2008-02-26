@@ -42,10 +42,7 @@ $(OBJECTS): $(DEPS)
 .c.o:
 	$(CC) $(CFLAGS) $< -o $@
 
-unittest:
-	gcc -std=c99 -Wall unittest.c memory.c messageboards.c -o unittest $(LIBS) -lcunit
-
 clean:
-	$(RM) *.o $(EXECUTABLE) $(EXECUTABLE).exe unittest unittest.exe
+	$(RM) *.o $(EXECUTABLE) $(EXECUTABLE).exe
 vclean:
-	$(RM) main $(EXECUTABLE) $(EXECUTABLE).exe unittest unittest.exe *.o  $(FLAME) $(HEADERS)  $(AUX) Makefile
+	$(RM) main $(EXECUTABLE) $(EXECUTABLE).exe *.o  $(FLAME) $(HEADERS)  $(AUX) Makefile

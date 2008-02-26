@@ -18,6 +18,23 @@ void initialise_pointers()
 	p_node_info = &temp_node_info;
 }
 
+/** \fn void initialise_unit_testing()
+ * \brief Initialises framework for unit testing.
+ */
+void initialise_unit_testing()
+{
+	initialise_pointers();
+	add_node(0, -SPINF, SPINF, -SPINF, SPINF, -SPINF, SPINF);
+	current_node = *p_node_info;
+	p_xmachine = &current_node->agents;
+<?foreach message?>	p_$name_message = &current_node->$name_messages;
+<?end foreach?>	
+	/* Add one agent for each type */
+<?foreach xagent?>	xmachine_memory_$name * current_$name_agent = init_$name_agent();
+<?end foreach?><?foreach xagent?>	add_$name_agent_internal(current_$name_agent);
+<?end foreach?>	
+}
+
 /* add_location */
 /** \fn void add_location(double point, location ** p_location)
  * \brief Adds a location in order into the location list.
