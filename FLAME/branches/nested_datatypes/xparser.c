@@ -201,8 +201,6 @@ int main(int argc, char * argv[])
 	parseTemplate(filename, templatename, modeldata);
 	strcpy(filename, directory); strcat(filename, "Doxyfile"); strcpy(templatename, "Doxyfile.tmpl");
 	parseTemplate(filename, templatename, modeldata);
-	strcpy(filename, directory); strcat(filename, "unittest.c"); strcpy(templatename, "unittest.tmpl");
-	parseTemplate(filename, templatename, modeldata);
 	parseAgentHeaderTemplate(directory, modeldata);
 	
 	freexmachines(modeldata->p_xmachines);
