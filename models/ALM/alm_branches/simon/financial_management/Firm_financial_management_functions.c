@@ -27,15 +27,18 @@ int Firm_compute_income_statement()
 
 /*
  * \fn: int Firm_compute_balance_sheet()
- * \brief: This function computes the balance sheet of the firm at the END of the accounting period (month).
+ * \brief: This function computes the balance sheet of the firm at the END of an accounting period (typically a month).
  * The firm makes the actual payments by setting these values:
  *  - total_debt_installment_payment
  *  - total_interest_payments
  *  - tax_payment
  *  - total_dividend_payment
+ * The payments are all subtracted from the payment account.
+ * 
+ * In addition, we compute these values:
  *  - value_capital_stock
  *  - value_inventory_stock
- *  - equity
+ *  - total_asset_value
  */ 
 int Firm_compute_balance_sheet()
 {
@@ -58,7 +61,7 @@ int Firm_compute_balance_sheet()
         //int nr_periods_before_maturity    : nr of periods to go before the loan has to be fully repaid
 
         //step 1: compute total interest payments
-        TOTAL_INTEREST_PAYMENT =0;
+        TOTAL_INTEREST_PAYMENT=0.0;
         imax = LOANS.size;
         for (i=0; i<imax;i++)
         {
@@ -71,12 +74,12 @@ int Firm_compute_balance_sheet()
         //consistency check
         if(PLANNED_TOTAL_INTEREST_PAYMENT != TOTAL_INTEREST_PAYMENT)
         {
-            printf("Error: planned total interest payment is not equal to total interest payment.\n Did you set the same option for the planned and actual payments?");
+            printf("\nError: planned total interest payment is not equal to total interest payment.\n Did you set the same option for the planned and actual payments?");
         }
         
         //step 2: compute total debt installment payments
-        TOTAL_DEBT_INSTALLMENT_PAYMENT =0;
-        TOTAL_DEBT=0;
+        TOTAL_DEBT_INSTALLMENT_PAYMENT=0.0;
+        TOTAL_DEBT=0.0;
         for (i=0; i<imax;i++)
         {
             //compute current total debt
@@ -88,7 +91,7 @@ int Firm_compute_balance_sheet()
         //consistency check
         if(PLANNED_TOTAL_DEBT_INSTALLMENT_PAYMENT != TOTAL_DEBT_INSTALLMENT_PAYMENT)
         {
-            printf("Error: planned total debt installment payment is not equal to total debt installment payment.\n Did you set the same option for the planned and actualpayments?");
+            printf("\nError: planned total debt installment payment is not equal to total debt installment payment.\n Did you set the same option for the planned and actualpayments?");
         }
                         
         //step 3: continue balance sheet (net earnings, earnings per share)
@@ -106,13 +109,14 @@ int Firm_compute_balance_sheet()
         add_tax_payment_message(ID, GOV_ID, TAX_PAYMENT, MSGDATA);
 
         //step 5: actual interest_payments and debt_installment_payments
+        //printf("\n Checking: PAYMENT_ACCOUNT > TOTAL_DEBT_INSTALLMENT_PAYMENT: %f>%f \n", PAYMENT_ACCOUNT, TOTAL_DEBT_INSTALLMENT_PAYMENT);
         if (PAYMENT_ACCOUNT < TOTAL_DEBT_INSTALLMENT_PAYMENT)
         {
             //Code: transform debt into equity
             //Code: debt is repaid partially
             //Code: compute debt remaining to be paid
 
-            PAYMENT_ACCOUNT = 0;
+            PAYMENT_ACCOUNT = 0.0;
         }
         else
         {
@@ -135,7 +139,8 @@ int Firm_compute_balance_sheet()
 
                 //decrease the value of the loan with the debt_installment_payment:
                 LOANS.array[i].loan_value -= LOANS.array[i].debt_installment_payment;
-
+                //printf("Now subtracted debt_installment_payment from loan_value: %f (new value:%f).\n", LOANS.array[i].debt_installment_payment, LOANS.array[i].loan_value);
+                
                 //decrease the value of the nr_periods_before_maturity
                 LOANS.array[i].nr_periods_before_maturity -= 1;
 
@@ -192,7 +197,7 @@ int Firm_compute_balance_sheet()
         //consistency check
         if(PLANNED_TOTAL_DIVIDEND_PAYMENT != TOTAL_DIVIDEND_PAYMENT)
         {
-            printf("Error: planned total dividend payment is not equal to total dividend payment.\n Did you set the same option for the planned and actual payments?");
+            printf("\nError: planned total dividend payment is not equal to total dividend payment.\n Did you set the same option for the planned and actual payments?");
         }
 
         //step 7: continue balance sheet (data pertaining to the period that just ended)
@@ -245,13 +250,14 @@ int Firm_compute_balance_sheet()
         sum=0.0;
         for (i=0;i<imax;i++)
         {
-            sum += PRICE*CURRENT_MALL_STOCKS.array[i];//.current_stock;
+            sum += PRICE*CURRENT_MALL_STOCKS.array[i].current_stock;
             //When malls have different current_price use this code:
-            //sum += CURRENT_MALL_STOCKS->array[i]->current_price * CURRENT_MALL_STOCKS->array[i]->current_stock;
+            //sum += CURRENT_MALL_STOCKS.array[i].current_price * CURRENT_MALL_STOCKS.array[i].current_stock;
         }
         TOTAL_VALUE_LOCAL_INVENTORY=sum;
 
         TOTAL_ASSETS = PAYMENT_ACCOUNT + TOTAL_VALUE_CAPITAL_STOCK + TOTAL_VALUE_LOCAL_INVENTORY;
+        //printf("\nTOTAL_ASSETS in functions.c file: %f\n", TOTAL_ASSETS);
     }
 
     return 0;
@@ -259,16 +265,16 @@ int Firm_compute_balance_sheet()
 
 /*
  * \fn: int Firm_compute_payout_policy()
- * \brief: This function computes the planned payout policy and the financial needs for the upcoming production cycle
+ * \brief: This function computes the planned payout policy and the financial needs for the upcoming production cycle.
  * The values computed in this function are only planned values, not fixed, since the payout policy
- * can be subject to revision if it turns out to be insupportable by the obtained financial resources.
+ * can be subject to revision if it turns out to be unsupportable by the obtained financial resources.
  */
 int Firm_compute_payout_policy()
 {
     int imax;
     int i;
     //step 9: compute planned_total_interest_payment for upcoming production cycle
-    PLANNED_TOTAL_INTEREST_PAYMENT =0;
+    PLANNED_TOTAL_INTEREST_PAYMENT=0.0;
     imax = LOANS.size;
     for (i=0; i<imax;i++)
     {
@@ -279,7 +285,7 @@ int Firm_compute_payout_policy()
     }
     
     //step 10: compute planned_total_debt_installment_payment for upcoming production cycle
-    PLANNED_TOTAL_DEBT_INSTALLMENT_PAYMENT =0;
+    PLANNED_TOTAL_DEBT_INSTALLMENT_PAYMENT=0.0;
     for (i=0; i<imax;i++)
     {
         //add to total
@@ -328,18 +334,33 @@ int Firm_compute_payout_policy()
     //step 12: set financial_needs for the upcoming production cycle
     //The total production costs (costs = labor_costs + capital_costs) come from the function Firm_calc_pay_costs
     TOTAL_FINANCIAL_NEEDS = PLANNED_TOTAL_INTEREST_PAYMENT + PLANNED_TOTAL_DEBT_INSTALLMENT_PAYMENT + PLANNED_TOTAL_DIVIDEND_PAYMENT + PRODUCTION_COSTS;
+    //printf("\n Checking: TOTAL_FINANCIAL_NEEDS=%f+%f+%f+%f=%f \n", PLANNED_TOTAL_INTEREST_PAYMENT, PLANNED_TOTAL_DEBT_INSTALLMENT_PAYMENT, PLANNED_TOTAL_DIVIDEND_PAYMENT, PRODUCTION_COSTS, TOTAL_FINANCIAL_NEEDS);
     
     //Check if external financing is needed.
-    if (TOTAL_FINANCIAL_NEEDS < PAYMENT_ACCOUNT)
+    
+    if (PAYMENT_ACCOUNT>0)
     {
-        INTERNAL_FINANCIAL_NEEDS = TOTAL_FINANCIAL_NEEDS;
-        EXTERNAL_FINANCIAL_NEEDS = 0;
+    	//printf("\n Checking: TOTAL_FINANCIAL_NEEDS < PAYMENT_ACCOUNT \n", TOTAL_FINANCIAL_NEEDS, PAYMENT_ACCOUNT);
+	    if (TOTAL_FINANCIAL_NEEDS < PAYMENT_ACCOUNT)
+	    {
+	        INTERNAL_FINANCIAL_NEEDS = TOTAL_FINANCIAL_NEEDS;
+	        EXTERNAL_FINANCIAL_NEEDS = 0;
+	    }
+	    else
+	        {
+	            INTERNAL_FINANCIAL_NEEDS = PAYMENT_ACCOUNT;
+	            EXTERNAL_FINANCIAL_NEEDS = TOTAL_FINANCIAL_NEEDS - PAYMENT_ACCOUNT;
+	        }
     }
-    else
-        {
-            INTERNAL_FINANCIAL_NEEDS = PAYMENT_ACCOUNT;
-            EXTERNAL_FINANCIAL_NEEDS = TOTAL_FINANCIAL_NEEDS - PAYMENT_ACCOUNT;
-        }
+	else //Here: negative payment_account needs to be financed as well by a bank credit
+	        {
+				//printf("\n Checking: payment_account is negative due to dividend payment, this needs to be financed by credit or equity.\n");
+				//printf("\n PAYMENT_ACCOUNT=%f\n", PAYMENT_ACCOUNT);
+				EXTERNAL_FINANCIAL_NEEDS = TOTAL_FINANCIAL_NEEDS - PAYMENT_ACCOUNT;
+	        }
+    
+    //printf("\n Checking: INTERNAL_FINANCIAL_NEEDS=%f\n", INTERNAL_FINANCIAL_NEEDS);
+    //printf("\n Checking: EXTERNAL_FINANCIAL_NEEDS=%f\n", EXTERNAL_FINANCIAL_NEEDS);
     RETAINED_EARNINGS_RATIO = INTERNAL_FINANCIAL_NEEDS/NET_EARNINGS;
     
     return 0;
@@ -347,48 +368,94 @@ int Firm_compute_payout_policy()
 
 
 /*
- * \fn: Firm_apply_for_credit()
- * \brief: This function sends a credit_demand_message
+ * \fn: Firm_apply_for_loans()
+ * \brief: This function sends a loan_request_message.
  */
-int Firm_apply_for_credit()
+int Firm_apply_for_loans()
 {
-   add_credit_request_message(ID, BANK_ID, EXTERNAL_FINANCIAL_NEEDS, TOTAL_ASSETS, TOTAL_DEBT, MSGDATA);
+   add_loan_request_message(ID, bank_id, EXTERNAL_FINANCIAL_NEEDS, TOTAL_ASSETS, TOTAL_DEBT, MSGDATA);
 
    return 0;
 }
 
 /*
- * \fn: Firm_issue_equity()
- * \brief: This function sends a firm_stock_order_message to the clearinghouse.
+ * \fn: Firm_read_loan_offers_send_loan_acceptance()
+ * \brief: This function reads loan_conditions_messages from the bank. The firm sends out a loan_acceptance_message.
  */
-int Firm_issue_equity()
+int Firm_read_loan_offers_send_loan_acceptance()
+{
+	START_LOAN_CONDITIONS_MESSAGE_LOOP
+		if(loan_conditions_message->firm_id==ID)
+		{
+			//loan_conditions_message(bank_id, firm_id, proposed_interest_rate, amount_credit_offer, MSGDATA);
+			//loan_conditions_message->proposed_interest_rate;
+			//loan_conditions_message->amount_credit_offer;
+			//Now send out acceptance messages: the firm always accepts the credit offered by bank
+			//add_loan_acceptance_message(firm_id, bank_id, CREDIT_AMOUNT_TAKEN);
+			
+			add_loan_acceptance_message(ID, loan_conditions_message->bank_id, loan_conditions_message->amount_credit_offer);
+		}
+	FINISH_LOAN_CONDITIONS_MESSAGE_LOOP
+
+	return 0;
+}
+
+/*
+ * \fn: Firm_compute_and_send_bond_orders()
+ * \brief: This function computes the firm's bond orders and sends a bond_order_message to the clearinghouse.
+ */
+int Firm_compute_and_send_bond_orders()
+{
+	//add_bond_message(ID, bond_id, limit_price, limit_quantity, MSGDATA);
+	
+    return 0;
+}
+
+/*
+ * \fn: Firm_read_bond_transactions()
+ * \brief: This function reads a bond_transaction_message from the clearinghouse, and updates the firm's trading account.
+ */
+int Firm_read_bond_transactions()
+{
+	START_BOND_TRANSACTION_MESSAGE_LOOP
+	if(bond_transaction_message->trader_id==ID)
+	{
+		//bond_transaction_message->bond_id
+		//bond_transaction_message->limit_price
+		//bond_transaction_message->limit_quantity
+	}
+	FINISH_BOND_TRANSACTION_MESSAGE_LOOP
+    return 0;
+}
+
+
+/*
+ * \fn: Firm_compute_and_send_stock_orders()
+ * \brief: This function computes the firm's stock orders (share emmision) and sends a stock_order_message to the clearinghouse.
+ */
+int Firm_compute_and_send_stock_orders()
 {
     double limit_quantity = (int) -1*EXTERNAL_FINANCIAL_NEEDS/CURRENT_SHARE_PRICE;
 
     //Firm tries to sell stock_units shares:
-    add_stock_order_message(ID, LIMIT_PRICE, limit_quantity, STOCK_ID, MSGDATA);
+    add_stock_order_message(ID, stock_id, limit_price, limit_quantity, MSGDATA);
 
     return 0;
 }
 
-int Firm_read_loan_offers_send_loan_acceptance()
+/*
+ * \fn: Firm_read_stock_transactions()
+ * \brief: This function reads a stock_transaction_message from the clearinghouse, and updates the firm's trading account.
+ */
+int Firm_read_stock_transactions()
 {
+	START_STOCK_TRANSACTION_MESSAGE_LOOP
+	if(stock_transaction_message->trader_id==ID)
+	{
+		//stock_transaction_message->stock_id
+		//stock_transaction_message->limit_price
+		//stock_transaction_message->limit_quantity
+	}
+	FINISH_STOCK_TRANSACTION_MESSAGE_LOOP
     return 0;
 }
-
-int Firm_update_outstanding_shares()
-{
-    return 0;
-}
-
-int Firm_compute_bond_orders()
-{
-    return 0;
-}
-
-int Firm_compute_stock_orders()
-{
-    return 0;
-}
-
-
