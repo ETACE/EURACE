@@ -139,4 +139,17 @@ int actual_game()
 	}
 }
 
-int 
+int find_optimum_strategies()
+{
+	//identify the first 20 startegies....
+	//find last 10 startegies...
+	
+	return 0;
+}
+
+
+int apply_GA()
+{
+	//apply ga
+	return 0;
+}
