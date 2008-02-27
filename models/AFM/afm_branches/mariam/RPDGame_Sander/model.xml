@@ -14,7 +14,7 @@
 <!--Structures-->
 
 
-<!--Auxiliary structs-->
+
 <datatype>
 <name>strategy_state</name>
 <var><type>int</type><name>starting_state[4]</name></var>
@@ -39,6 +39,14 @@
 <var><type>payoff_elements_array</type><name>opponents</name></var>
 </datatype>
 
+
+<datatype>
+<name>player_list_element</name>
+<var><type>int</type><name>player_id</name></var>
+<var><type>int</type><name>strategy_id</name></var>
+<var><type>int</type><name>previous_move</name></var>
+</datatype>
+
 </environment>
 
 
@@ -52,6 +60,7 @@
 <var><type>int</type><name>id</name></var>
 <var><type>int</type><name>strategy_used</name></var>
 <var><type>int</type><name>previous_performance</name></var>
+<var><type>int</type><name>present_state</name></var>
 <var><type>double</type><name>iradius</name></var>
 <var><type>double</type><name>posx</name></var>
 <var><type>double</type><name>posy</name></var>
@@ -120,7 +129,13 @@
 <var><type>int</type><name>nragents</name>	</var>
 <var><type>int_array</type><name>automata_id</name></var>
 <var><type>int_array</type><name>players</name></var>
+<var><type>int</type><name>player_one_state[4]</name></var>
+<var><type>int</type><name>player_two_state[4]</name></var>
+<var><type>int</type><name>player_one_move</name></var>
+<var><type>int</type><name>player_two_move</name></var>
+
 <var><type>columns_array</type><name>rows</name></var>
+<var><type>player_list_element_array</type><name>player_list</name></var>
 <var><type>double</type><name>iradius</name></var>
 <var><type>double</type><name>posx</name></var>
 <var><type>double</type><name>posy</name></var>
