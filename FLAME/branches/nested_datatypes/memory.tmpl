@@ -117,8 +117,16 @@ xmachine * add_xmachine()
 void init_$name($name * temp)
 {
 <?foreach datatypevar?><?if modeldatatype?><?if not_array?>	init_$type(&(*temp).$name);
+<?end if?><?if static_array?>	init_$type_static_array((*temp).$name, $arraylength);
 <?end if?><?end if?><?if dynamic_array?>	init_$type(&(*temp).$name);
 <?end if?><?end foreach?>
+}
+
+void init_$name_static_array($name * array, int size)
+{
+	int i;
+	
+	for(i = 0; i < size; i++) init_$name(&array[i]);
 }
 
 void free_$name_datatype($name * temp)
@@ -157,6 +165,7 @@ xmachine_memory_$name * init_$name_agent()
 	CHECK_POINTER(current);
 	
 <?foreach xagentvar?><?if modeldatatype?><?if not_array?>	init_$type(&current->$name);
+<?end if?><?if static_array?>	init_$type_static_array(current->$name, $arraylength);
 <?end if?><?end if?><?if dynamic_array?>	init_$type(&current->$name);
 <?end if?><?end foreach?>	
 	return current;
@@ -459,6 +468,14 @@ void free_node_info()
 	}
 	
 	*p_node_info = NULL;
+}
+
+/**\fn void free_messages()
+ * \brief Frees all the message lists (of the current node if in serial).
+ */
+void free_messages()
+{
+<?foreach message?>	free$namemessages();<?end foreach?>
 }
 
 /** \fn void clean_up(int code)
