@@ -27,13 +27,9 @@ void initialise_unit_testing()
 	add_node(0, -SPINF, SPINF, -SPINF, SPINF, -SPINF, SPINF);
 	current_node = *p_node_info;
 	p_xmachine = &current_node->agents;
+	current_xmachine = *p_xmachine;
 <?foreach message?>	p_$name_message = &current_node->$name_messages;
-<?end foreach?>	
-	/* Add one agent for each type */
-<?foreach xagent?>	xmachine_memory_$name * current_$name_agent = init_$name_agent();
-<?end foreach?><?foreach xagent?>	add_$name_agent_internal(current_$name_agent);
-<?end foreach?>	
-}
+<?end foreach?>}
 
 /* add_location */
 /** \fn void add_location(double point, location ** p_location)
