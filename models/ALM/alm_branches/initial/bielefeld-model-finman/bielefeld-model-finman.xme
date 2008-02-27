@@ -4201,23 +4201,23 @@ Clearinghouse_compute_transactions.</description>
        <description></description>
       </XMsgVar>
       <XMsgVar>
+       <id>489</id>
+       <type>int</type>
+       <name>stock_id</name>
+       <description></description>
+      </XMsgVar><XMsgVar>
+       <id>488</id>
+       <type>double</type>
+       <name>limit_price</name>
+       <description></description>
+      </XMsgVar><XMsgVar>
        <id>487</id>
        <type>int</type>
        <name>limit_quantity</name>
        <description></description>
       </XMsgVar>
-      <XMsgVar>
-       <id>488</id>
-       <type>double</type>
-       <name>limit_price</name>
-       <description></description>
-      </XMsgVar>
-      <XMsgVar>
-       <id>489</id>
-       <type>int</type>
-       <name>stock_id</name>
-       <description></description>
-      </XMsgVar>
+      
+      
       <XMsgVar>
        <id>548</id>
        <type>double</type>
@@ -4256,23 +4256,23 @@ Clearinghouse_compute_transactions.</description>
        <description></description>
       </XMsgVar>
       <XMsgVar>
+       <id>493</id>
+       <type>int</type>
+       <name>stock_id</name>
+       <description></description>
+      </XMsgVar><XMsgVar>
+       <id>492</id>
+       <type>double</type>
+       <name>transaction_price</name>
+       <description></description>
+      </XMsgVar><XMsgVar>
        <id>491</id>
        <type>int</type>
        <name>transaction_quantity</name>
        <description></description>
       </XMsgVar>
-      <XMsgVar>
-       <id>492</id>
-       <type>double</type>
-       <name>transaction_price</name>
-       <description></description>
-      </XMsgVar>
-      <XMsgVar>
-       <id>493</id>
-       <type>int</type>
-       <name>stock_id</name>
-       <description></description>
-      </XMsgVar>
+      
+      
       <XMsgVar>
        <id>552</id>
        <type>double</type>
@@ -4311,23 +4311,23 @@ Clearinghouse_compute_transactions.</description>
        <description></description>
       </XMsgVar>
       <XMsgVar>
+       <id>497</id>
+       <type>int</type>
+       <name>corp_bond_id</name>
+       <description></description>
+      </XMsgVar><XMsgVar>
+       <id>496</id>
+       <type>double</type>
+       <name>limit_price</name>
+       <description></description>
+      </XMsgVar><XMsgVar>
        <id>495</id>
        <type>double</type>
        <name>limit_quantity</name>
        <description></description>
       </XMsgVar>
-      <XMsgVar>
-       <id>496</id>
-       <type>double</type>
-       <name>limit_price</name>
-       <description></description>
-      </XMsgVar>
-      <XMsgVar>
-       <id>497</id>
-       <type>int</type>
-       <name>corp_bond_id</name>
-       <description></description>
-      </XMsgVar>
+      
+      
       <XMsgVar>
        <id>556</id>
        <type>double</type>
@@ -4366,23 +4366,23 @@ Clearinghouse_compute_transactions.</description>
        <description></description>
       </XMsgVar>
       <XMsgVar>
+       <id>501</id>
+       <type>int</type>
+       <name>corp_bond_id</name>
+       <description></description>
+      </XMsgVar><XMsgVar>
+       <id>500</id>
+       <type>double</type>
+       <name>limit_price</name>
+       <description></description>
+      </XMsgVar><XMsgVar>
        <id>499</id>
        <type>double</type>
        <name>limit_quantity</name>
        <description></description>
       </XMsgVar>
-      <XMsgVar>
-       <id>500</id>
-       <type>double</type>
-       <name>limit_price</name>
-       <description></description>
-      </XMsgVar>
-      <XMsgVar>
-       <id>501</id>
-       <type>int</type>
-       <name>corp_bond_id</name>
-       <description></description>
-      </XMsgVar>
+      
+      
       <XMsgVar>
        <id>560</id>
        <type>double</type>
@@ -4421,23 +4421,23 @@ Clearinghouse_compute_transactions.</description>
        <description></description>
       </XMsgVar>
       <XMsgVar>
+       <id>505</id>
+       <type>int</type>
+       <name>gov_bond_id</name>
+       <description></description>
+      </XMsgVar><XMsgVar>
+       <id>504</id>
+       <type>double</type>
+       <name>limit_price</name>
+       <description></description>
+      </XMsgVar><XMsgVar>
        <id>503</id>
        <type>double</type>
        <name>limit_quantity</name>
        <description></description>
       </XMsgVar>
-      <XMsgVar>
-       <id>504</id>
-       <type>double</type>
-       <name>limit_price</name>
-       <description></description>
-      </XMsgVar>
-      <XMsgVar>
-       <id>505</id>
-       <type>int</type>
-       <name>gov_bond_id</name>
-       <description></description>
-      </XMsgVar>
+      
+      
       <XMsgVar>
        <id>564</id>
        <type>double</type>
@@ -4476,23 +4476,23 @@ Clearinghouse_compute_transactions.</description>
        <description></description>
       </XMsgVar>
       <XMsgVar>
+       <id>509</id>
+       <type>int</type>
+       <name>gov_bond_id</name>
+       <description></description>
+      </XMsgVar><XMsgVar>
+       <id>508</id>
+       <type>double</type>
+       <name>transaction_price</name>
+       <description></description>
+      </XMsgVar><XMsgVar>
        <id>507</id>
        <type>double</type>
        <name>transaction_quantity</name>
        <description></description>
       </XMsgVar>
-      <XMsgVar>
-       <id>508</id>
-       <type>double</type>
-       <name>transaction_price</name>
-       <description></description>
-      </XMsgVar>
-      <XMsgVar>
-       <id>509</id>
-       <type>int</type>
-       <name>gov_bond_id</name>
-       <description></description>
-      </XMsgVar>
+      
+      
       <XMsgVar>
        <id>568</id>
        <type>double</type>

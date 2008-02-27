@@ -20,50 +20,6 @@
 
 <!--Structures-->
 <datatypes>
-<!--Asset market structs-->
-<datatype>
-<name>StockDataType</name>
-<desc>All stocks have a data type StockDataType. Refer to file stock_creation.m</desc>
-<var><type>char</type><name>class[5]</name></var>
-<var><type>int</type><name>id[5]</name></var>
-<!-- <var><type>int</type><name>NrOutStandingShares</name></var> -->
-<var><type>int_array</type><name>NrOutStandingShares</name></var> <!--?-->
-<var><type>double</type><name>price</name></var>
-<var><type>int</type><name>Book_intraday_transaction</name></var>
-<var><type>int_array</type><name>dividends</name></var>
-<!-- <var><type>int</type><name>dividends</name></var> -->
-</datatype>
-
-<datatype>
-<name>BondDataType</name>
-<desc>All Bonds have the following datatype. Refer to bond_creation.m</desc>
-<var><type>char</type><name>class[5]</name></var>
-<var><type>int</type><name>id[5]</name></var>
-</datatype>
-
-<!-- <datatype>
-<name>DBFinancialAssets</name>
-<desc></desc>
-</datatype> -->
-
-<datatype>
-<name>AssetStruct</name>
-<desc>Datatype for asset structures</desc>
-<var><type>int_array</type><name>ids</name></var>
-<var><type>int_array</type><name>nr_units</name></var>
-<var><type>double_array</type><name>current_price</name></var>
-<var><type>double_array</type><name>best_ask_price</name></var>
-<var><type>double_array</type><name>best_bid_price</name></var>
-</datatype>
-
-<datatype>
-<name>AssetPortfolio</name>
-<desc>Assetportfolio structs are used by the Household</desc><!--After performance_history there should be 3 structs, one for firm bonds, firm stocks, and gov bonds--><!--In each struct we have dynamic arrays: ids, nr_units, current_price, best_ask_price, best_bid_price-->
-<var><type>double_array</type><name>performance_history</name></var>
-<var><type>AssetStruct</type><name>firm_stocks</name></var>
-<var><type>AssetStruct</type><name>firm_bonds</name></var>
-<var><type>AssetStruct</type><name>gov_bonds</name></var>
-</datatype>
 
 <datatype>
 <name>debt_item</name>
@@ -81,6 +37,19 @@
 <var><type>double</type><name>depreciation_value_per_period</name></var>
 <var><type>int</type><name>nr_periods_before_total_depreciation</name></var>
 </datatype>
+	<datatype>
+		<name>mall_info</name>
+		<var>
+			<type>int</type><name>mall_id</name>
+			</var>
+		<var><type>double</type>
+			<name>price</name></var><var>
+			<type>double</type>
+			<name>critical_stock</name></var>
+		<var>
+			<type>double</type><name>current_stock</name>
+			</var>
+	</datatype>
 
 </datatypes>
 </environment>
@@ -208,24 +177,55 @@
 <functions>
 
 <function>
-<name>Clearinghouse_read_order_messages</name>
-<depends><name>Household_compute_firm_stock_orders</name><type>firm_stock_order</type></depends>
+<name>Clearinghouse_read_stock_orders</name>
+<depends><name>Household_compute_stock_orders</name><type>stock_order</type></depends>
+	<depends>
+		<name>Firm_compute_stock_orders</name>
+		<type>stock_order</type></depends>
 </function>
 
 <function>
-<name>Clearinghouse_compute_transactions</name>
-<depends><name>Clearinghouse_read_order_messages</name><type>internal</type></depends>
+<name>Clearinghouse_compute_stock_transactions</name>
+<depends><name>Clearinghouse_read_stock_orders</name><type>internal</type></depends>
 </function>
 
 <function>
-<name>Clearinghouse_send_transaction_message</name>
-<depends><name>Clearinghouse_compute_transactions</name><type>internal</type></depends>
+<name>Clearinghouse_send_stock_transactions</name>
+<depends><name>Clearinghouse_compute_stock_transactions</name><type>internal</type></depends>
 </function>
 
 </functions>
 </xmachine>
 <!--*********************** End of Agent - Clearinghouse *****************************-->
 
+<!--********************* X-machine Agent - Bank ****************************-->
+<xmachine>
+<name>Bank</name>
+<!-- Variables -->
+<!-- All variables used by Bank are declared here to allocate them in memory -->
+<memory>
+<var><type>int</type><name>id</name></var>
+<var><type>double</type><name>range</name></var>
+<var><type>double</type><name>posx</name></var>
+<var><type>double</type><name>posy</name></var>
+
+</memory>
+<!-- Defining functions -->
+
+<!--- credit market role-->
+<functions>
+
+<function>
+<name>Bank_read_loan_request_send_offers</name>
+	<depends>
+	<name>Firm_send_loan_request</name>
+	<type>loan_request</type>
+	</depends>
+</function>
+
+</functions>
+</xmachine>
+<!--*********************** End of Agent - Bank *****************************-->
 
 <!--********************* X-machine Agent - Firm ****************************-->
 <xmachine>
@@ -242,7 +242,7 @@
 <var><type>int</type><name>id</name></var>
 <var><type>int</type><name>gov_id</name></var>
 <var><type>int</type><name>bank_id</name></var>
-<var><type>int_array</type><name>current_mall_stocks</name></var>
+<var><type>mall_info_array</type><name>current_mall_stocks</name></var>
 <var><type>double</type><name>price</name></var>
 <var><type>double</type><name>total_assets</name></var>
 <var><type>double</type><name>production_costs</name></var>
@@ -290,7 +290,7 @@
 
 <!-- Ratios -->
 <var><type>double</type><name>earnings_per_share_ratio</name></var>
-<var><type>double</type><name>debt_per_earnings_ratio</name></var>
+<var><type>double</type><name>debt_earnings_ratio</name></var>
 <var><type>double</type><name>price_earnings_ratio</name></var>
 <var><type>double</type><name>retained_earnings_ratio</name></var>
 <var><type>double</type><name>earnings_per_share_ratio_growth</name></var>
@@ -327,34 +327,44 @@
 
 <!-- Role: Credit Market Role -->
 <function>
-<name>Firm_apply_for_credit</name>
+<name>Firm_apply_for_loans</name>
 <depends><name>Firm_compute_payout_policy</name><type>internal</type></depends>
 </function>
 
 <function>
 <name>Firm_read_loan_offers_send_loan_acceptance</name>
-<depends><name>Firm_apply_for_credit</name><type>internal</type></depends>
+<depends><name>Bank_read_loan_request_send_offers</name><type>loan_conditions</type></depends>
 </function>
 
 <!-- Role: Asset Market Role -->
+
 <function>
-<name>Firm_issue_equity</name>
+<name>Firm_compute_and_send_bond_orders</name>
 <depends><name>Firm_read_loan_offers_send_loan_acceptance</name><type>internal</type></depends>
+</function><function>
+<name>Firm_read_bond_transactions</name>
+<depends><name>Clearinghouse_send_bond_transaction_message</name><type>bond_transaction</type></depends>
+</function><function>
+<name>Firm_compute_and_send_stock_orders</name>
+<depends><name>Firm_read_bond_transactions</name><type>internal</type></depends>
 </function>
 
-<function>
-<name>Firm_compute_stock_orders</name>
-<depends><name>Firm_issue_equity</name><type>internal</type></depends>
-</function>
+
 
 <function>
-<name>Firm_compute_bond_orders</name>
-<depends><name>Firm_issue_equity</name><type>internal</type></depends>
+<name>Firm_read_stock_transactions</name>
+<depends><name>Clearinghouse_send_stock_transaction_message</name><type>stock_transaction</type></depends>
 </function>
 
-<function>
-<name>Firm_update_outstanding_shares</name>
-<depends><name>Clearinghouse_send_transaction_message</name><type>firm_stock_transaction</type></depends>
+	<function>
+		<name>Firm_compute_and_send_govbond_orders</name>
+		<depends>
+			<name>Firm_read_stock_transactions</name>
+			<type>internal</type></depends></function>
+
+	<function>
+<name>Firm_read_govbond_transactions</name>
+<depends><name>Clearinghouse_send_govbond_transaction_message</name><type>govbond_transaction</type></depends>
 </function>
 
 </functions>
@@ -415,11 +425,11 @@
 
 <!--credit market context-->
 <message>
-<name>credit_request</name>
+<name>loan_request</name>
 <note>Added by firm to demand credit</note>
 <var><type>int</type><name>firm_id</name></var>
 <var><type>int</type><name>bank_id</name></var>
-<var><type>double</type><name>credit_demand</name></var>
+<var><type>double</type><name>credit_amount</name></var>
 <var><type>double</type><name>total_assets</name></var>
 <var><type>double</type><name>total_debt</name></var>
 <var><type>double</type><name>range</name></var>
@@ -429,11 +439,14 @@
 </message>
 
 <message>
-<name>credit_offer</name>
+<name>loan_conditions</name>
 <note>Added by bank to offer credit</note>
 <var><type>int</type><name>bank_id</name></var>
 <var><type>int</type><name>firm_id</name></var>
-<var><type>double</type><name>credit_offered</name></var>
+	<var>
+		<type>double</type><name>proposed_interest_rate</name>
+		</var>
+	<var><type>double</type><name>amount_credit_offer</name></var>
 <var><type>double</type><name>range</name></var>
 <var><type>double</type><name>x</name></var>
 <var><type>double</type><name>y</name></var>
@@ -441,11 +454,11 @@
 </message>
 
 <message>
-<name>credit_taken</name>
+<name>loan_acceptance</name>
 <note>Added by firm to demand credit</note>
 <var><type>int</type><name>firm_id</name></var>
 <var><type>int</type><name>bank_id</name></var>
-<var><type>double</type><name>credit_amount</name></var>
+<var><type>double</type><name>credit_amount_taken</name></var>
 <var><type>double</type><name>range</name></var>
 <var><type>double</type><name>x</name></var>
 <var><type>double</type><name>y</name></var>
@@ -454,50 +467,13 @@
 
 <!--asset market context-->
 
-<message>
-<name>firm_bond_order</name>
-<note>Added by household after asset portfolio calculated</note>
-<var><type>int</type><name>household_id</name></var>
-<var><type>int</type><name>asset_id</name></var>
-<var><type>double</type><name>limit_price</name></var>
-<var><type>double</type><name>limit_quantity</name></var>
-<var><type>double</type><name>range</name></var>
-<var><type>double</type><name>x</name></var>
-<var><type>double</type><name>y</name></var>
-<var><type>double</type><name>z</name></var>
-</message>
 
-<message>
-<name>firm_stock_order</name>
-<note>Added by household after asset portfolio calculated</note>
-<var><type>int</type><name>household_id</name></var>
-<var><type>int</type><name>asset_id</name></var>
-<var><type>double</type><name>limit_price</name></var>
-<var><type>double</type><name>limit_quantity</name></var>
-<var><type>double</type><name>range</name></var>
-<var><type>double</type><name>x</name></var>
-<var><type>double</type><name>y</name></var>
-<var><type>double</type><name>z</name></var>
-</message>
 
 <message>
 <name>stock_order</name>
-<note>from function code</note>
-<var><type>int</type><name>firm_id</name></var>
-<var><type>double</type><name>limit_price</name></var>
-<var><type>double</type><name>limit_quantity</name></var>
+<note>Added by trader after asset portfolio calculated</note>
+<var><type>int</type><name>trader_id</name></var>
 <var><type>int</type><name>stock_id</name></var>
-<var><type>double</type><name>range</name></var>
-<var><type>double</type><name>x</name></var>
-<var><type>double</type><name>y</name></var>
-<var><type>double</type><name>z</name></var>
-</message>
-
-<message>
-<name>gov_bond_order</name>
-<note>Added by household after asset portfolio calculated</note>
-<var><type>int</type><name>household_id</name></var>
-<var><type>int</type><name>gov_id</name></var>
 <var><type>double</type><name>limit_price</name></var>
 <var><type>double</type><name>limit_quantity</name></var>
 <var><type>double</type><name>range</name></var>
@@ -507,12 +483,45 @@
 </message>
 
 <message>
-<name>firm_bond_transaction</name>
+<name>stock_transaction</name>
 <note>Added by clearinghouse</note>
-<var><type>int</type><name>household_id</name></var>
-<var><type>int</type><name>asset_id</name></var>
+<var><type>int</type><name>trader_id</name></var>
+<var><type>int</type><name>stock_id</name></var>
 <var><type>double</type><name>transaction_price</name></var>
 <var><type>double</type><name>transaction_quantity</name></var>
+<var><type>double</type><name>range</name></var>
+<var><type>double</type><name>x</name></var>
+<var><type>double</type><name>y</name></var>
+<var><type>double</type><name>z</name></var>
+</message><message>
+<name>bond_order</name>
+<note>Added by trader</note>
+<var><type>int</type><name>trader_id</name></var>
+
+<var><type>int</type><name>bond_id</name></var><var><type>double</type><name>limit_price</name></var>
+<var><type>double</type><name>limit_quantity</name></var>
+<var><type>double</type><name>range</name></var>
+<var><type>double</type><name>x</name></var>
+<var><type>double</type><name>y</name></var>
+<var><type>double</type><name>z</name></var>
+</message><message>
+<name>bond_transaction</name>
+<note>Added by clearinghouse</note>
+<var><type>int</type><name>trader_id</name></var>
+<var><type>int</type><name>bond_id</name></var>
+<var><type>double</type><name>transaction_price</name></var>
+<var><type>double</type><name>transaction_quantity</name></var>
+<var><type>double</type><name>range</name></var>
+<var><type>double</type><name>x</name></var>
+<var><type>double</type><name>y</name></var>
+<var><type>double</type><name>z</name></var>
+</message><message>
+<name>gov_bond_order</name>
+<note>Added by trader</note>
+<var><type>int</type><name>trader_id</name></var>
+<var><type>int</type><name>govbond_id</name></var>
+<var><type>double</type><name>limit_price</name></var>
+<var><type>double</type><name>limit_quantity</name></var>
 <var><type>double</type><name>range</name></var>
 <var><type>double</type><name>x</name></var>
 <var><type>double</type><name>y</name></var>
@@ -522,8 +531,8 @@
 <message>
 <name>gov_bond_transaction</name>
 <note>Added by clearinghouse</note>
-<var><type>int</type><name>household_id</name></var>
-<var><type>int</type><name>gov_id</name></var>
+<var><type>int</type><name>trader_id</name></var>
+<var><type>int</type><name>govbond_id</name></var>
 <var><type>double</type><name>transaction_price</name></var>
 <var><type>double</type><name>transaction_quantity</name></var>
 <var><type>double</type><name>range</name></var>
@@ -532,18 +541,9 @@
 <var><type>double</type><name>z</name></var>
 </message>
 
-<message>
-<name>firm_stock_transaction</name>
-<note>Added by clearinghouse</note>
-<var><type>int</type><name>household_id</name></var>
-<var><type>int</type><name>asset_id</name></var>
-<var><type>double</type><name>transaction_price</name></var>
-<var><type>double</type><name>transaction_quantity</name></var>
-<var><type>double</type><name>range</name></var>
-<var><type>double</type><name>x</name></var>
-<var><type>double</type><name>y</name></var>
-<var><type>double</type><name>z</name></var>
-</message>
+
+
+
 
 
 

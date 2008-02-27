@@ -19,3 +19,7 @@ Sander, rev 544
 	Firm_compute_balance_sheet:
 		renamed: EQUITY -> TOTAL_ASSETS
 --------------------------------------------------------------------------------------
+Sander, rev 572
+		Added code: Firm, Bank, Clearinghouse
+		Added UnitTests: Firm, Bank, Clearinghouse
+--------------------------------------------------------------------------------------
