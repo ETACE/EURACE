@@ -24,11 +24,8 @@ int play_game()
 //the solver plays the game for the players
 void ipd_game(agent1, agent1_strategy, agent2, agent2_strategy)
 {
-	int i;
-		
-	for(i=0;i<50;i++) //play for 50 generations
-	{
-		
-	}
 	
 }
+
+//mutation would also be in solver
+

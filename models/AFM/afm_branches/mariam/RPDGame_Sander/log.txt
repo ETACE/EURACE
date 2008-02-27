@@ -1,7 +1,16 @@
-26/02/08
 This is an implementation of the RPD game adaptation of the Miller paper
 in conjunction with Sander.
 
-made  list of the palyers and the startegies they use.
-now iterate thorugh this list for them to play against each other
-and write those payopffs into the matrix
+26/02/08
+
+made  list of the players and the strategies they use.
+now iterate thorough this list for them to play against each other
+and write those payoffs into the matrix
+
+27/02/08
+finished the ipd game between the two agents.. payoffs are acalculated on an average 
+of 150 games and stored in a player x player matrix of elements of [2].
+
+Have to write GA code for optimal strategy calcultaion
+
+check correct implementation of datatypes-> the new ones
