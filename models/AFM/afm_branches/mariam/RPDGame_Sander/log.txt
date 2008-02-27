@@ -14,3 +14,5 @@ of 150 games and stored in a player x player matrix of elements of [2].
 Have to write GA code for optimal strategy calcultaion
 
 check correct implementation of datatypes-> the new ones
+
+for same players calculate the average of the payoff of the games
