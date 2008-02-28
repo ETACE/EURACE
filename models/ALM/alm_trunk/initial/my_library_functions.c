@@ -6,68 +6,55 @@
 #include "header.h"
 #include "my_library_header.h"
 
-/** \fn sort_vacancy_list(vacancy_array * vacancy_list)
- * \brief Sorts an array of vacancies highest wage first
- * \param vacancy_list The array of vacancies.
- */
-void sort_vacancy_list(vacancy_array * vacancy_list)
+int vacancy_list_rank_wage_offer_function(const void *x, const void *y)
 {
-	int i, j;
-	vacancy * first_vacancy, * second_vacancy;
-	vacancy * temp_vacancy = (vacancy *)malloc(sizeof(vacancy));
-	
-	/* Using a bubble sort */
-	for(i=0; i<(vacancy_list->size-1); i++)
-	{
-		for(j=0; j<(vacancy_list->size-1)-i; j++) 
-		{
-			first_vacancy = vacancy_list->array[j+1];
-			second_vacancy = vacancy_list->array[j];
-			
-			/* Comparing the values between neighbours */
-			if(first_vacancy->wage_offer > second_vacancy->wage_offer)
-			{
-				/* Swap neighbours */
-				* temp_vacancy = * second_vacancy;
-				* second_vacancy = * first_vacancy;
-				* first_vacancy = * temp_vacancy;
-			}
-		}
-	}
-	
-	free(temp_vacancy);
+	if( ((vacancy *)x)->wage_offer > ((vacancy *)y)->wage_offer) return -1;
+	else if( ((vacancy *)x)->wage_offer < ((vacancy *)y)->wage_offer) return 1;
+	else return 0;
 }
 
-/** \fn sort_job_offer_list(job_offer_array * job_offer_list)
- * \brief Sorts an array of job offers highest wage first
- * \param job_offer_list The array of job offers.
- */
-void sort_job_offer_list(job_offer_array * job_offer_list)
+int job_offer_list_rank_wage_offer_function(const void *x, const void *y)
 {
-	int i, j;
-	job_offer * first_job_offer, * second_job_offer;
-	job_offer * temp_job_offer = (job_offer *)malloc(sizeof(job_offer));
-	
-	/* Using a bubble sort */
-	for(i=0; i<(job_offer_list->size-1); i++)
+	if( ((job_offer *)x)->wage_offer > ((job_offer *)y)->wage_offer) return -1;
+	else if( ((job_offer *)x)->wage_offer < ((job_offer *)y)->wage_offer) return 1;
+	else
 	{
-		for(j=0; j<(job_offer_list->size-1)-i; j++) 
-		{
-			first_job_offer = job_offer_list->array[j+1];
-			second_job_offer = job_offer_list->array[j];
-			
-			/* Comparing the values between neighbours */
-			if(first_job_offer->wage_offer > second_job_offer->wage_offer)
-			{
-				/* Swap neighbours */
-				* temp_job_offer = * second_job_offer;
-				* second_job_offer = * first_job_offer;
-				* first_job_offer = * temp_job_offer;
-			}
-		}
+		/* If equal randomly sort */
+		if(rand()/((double)RAND_MAX + 1) <= 0.5) return -1;
+		else return 1;
 	}
-	
-	free(temp_job_offer);
+}
+
+int employee_list_rank_specific_skills_function(const void *x, const void *y)
+{
+	if( ((employee *)x)->specific_skill > ((employee *)y)->specific_skill) return -1;
+	else if( ((employee *)x)->specific_skill < ((employee *)y)->specific_skill) return 1;
+	else return 0;
+}
+
+/** \fn int job_application_list_rank_general_skill_function(const void *x, const void *y)
+ * \brief Returns an integer result of the comparision between the two elements
+ * \param x The first element to compare.
+ * \param y The second element to compare.
+ * \return The compare result.
+ */
+int job_application_list_rank_general_skill_function(const void *x, const void *y)
+{
+	if( ((job_application *)x)->general_skill > ((job_application *)y)->general_skill) return -1;
+	else if( ((job_application *)x)->general_skill < ((job_application *)y)->general_skill) return 1;
+	else
+	{
+		/* If equal randomly sort */
+		if(rand()/((double)RAND_MAX + 1) <= 0.5) return -1;
+		else return 1;
+	}
+}
+
+int sales_statistics_list_rank_sales_function(const void *x, const void *y)
+{
+	if( ((sales_statistics *)x)->sales < ((sales_statistics *)y)->sales) return -1;
+	else if( ((sales_statistics *)x)->sales > ((sales_statistics *)y)->sales) return 1;
+	else return 0;
 }
 
 /** \fn int random_int(int min,int max)
@@ -79,75 +66,4 @@ void sort_job_offer_list(job_offer_array * job_offer_list)
 int random_int(int min,int max)
 {
 	return min + rand() % (max - min + 1);
-}
-
-/** \fn sort_job_application_list(job_application_array * job_application_list)
- * \brief Sorts an array of job applications lowest wage first
- * \param job_application_list The array of job applications.
- */
-void sort_job_application_list(job_application_array * job_application_list)
-{
-	int i, j;
-	job_application * first_job_application, * second_job_application;
-	job_application * temp_job_application = (job_application *)malloc(sizeof(job_application));
-	
-	/* Using a bubble sort */
-	for(i=0; i<(job_application_list->size-1); i++)
-	{
-		for(j=0; j<(job_application_list->size-1)-i; j++) 
-		{
-			first_job_application = job_application_list->array[j+1];
-			second_job_application = job_application_list->array[j];
-			
-			/* Comparing the values between neighbours */
-			if(first_job_application->general_skill > second_job_application->general_skill)
-			{
-				/* Swap neighbours */
-				* temp_job_application = * second_job_application;
-				* second_job_application = * first_job_application;
-				* first_job_application = * temp_job_application;
-			}
-			
-			if(first_job_application->general_skill == second_job_application->general_skill && first_job_application->specific_skill > second_job_application->specific_skill)
-			{
-				/* Swap neighbours */
-				* temp_job_application = * second_job_application;
-				* second_job_application = * first_job_application;
-				* first_job_application = * temp_job_application;
-			}
-
-		}
-	}
-	
-	free(temp_job_application);
-}
-
-void sort_mall_sales_list(sales_statistics_array * sales_mall_list )
-{
-
-
-		int i, j;
-	sales_statistics * first_sales_statistics, * second_sales_statistics;
-	sales_statistics * temp_sales_statistics = (sales_statistics *)malloc(sizeof(sales_statistics));
-	
-	/* Using a bubble sort */
-	for(i=0; i<sales_mall_list->size -1; i++)
-	{
-		for(j=0; j<(sales_mall_list->size-1)-i; j++) 
-		{
-			first_sales_statistics = sales_mall_list->array[j+1];
-			second_sales_statistics = sales_mall_list->array[j];
-			
-			/* Comparing the values between neighbours */
-			if(first_sales_statistics->sales < second_sales_statistics->sales)
-			{
-				/* Swap neighbours */
-				* temp_sales_statistics = * second_sales_statistics;
-				* second_sales_statistics = * first_sales_statistics;
-				* first_sales_statistics = * temp_sales_statistics;
-
-			}
-		}
-	}free(temp_sales_statistics);
-
 }
