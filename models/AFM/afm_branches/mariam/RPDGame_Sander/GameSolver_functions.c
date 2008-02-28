@@ -103,13 +103,13 @@ int actual_game()
 						{
 							if(prev_move_player_two==COOP) //CC
 							{
-								get_rows->array[player_one]->columns[playertwo]->opponents->array[1]+=a;
-								get_rows->array[player_one]->columns[playertwo]->opponents->array[2]+=d;
+								set_rows->array[player_one]->columns[playertwo]->opponents->array[1]+=a;
+								set_rows->array[player_one]->columns[playertwo]->opponents->array[2]+=d;
 							}
 							if(prev_move_player_two==DEF)//CD
 							{
-								get_rows->array[player_one]->columns[playertwo]->opponents->array[1]+=a;
-								get_rows->array[player_one]->columns[playertwo]->opponents->array[2]+=d;
+								set_rows->array[player_one]->columns[playertwo]->opponents->array[1]+=a;
+								set_rows->array[player_one]->columns[playertwo]->opponents->array[2]+=d;
 							}
 							
 						}
@@ -118,13 +118,13 @@ int actual_game()
 						{
 							if(prev_move_player_two==COOP)//DC
 							{
-								get_rows->array[player_one]->columns[playertwo]->opponents->array[1]+=a;
-								get_rows->array[player_one]->columns[playertwo]->opponents->array[2]+=d;
+								set_rows->array[player_one]->columns[playertwo]->opponents->array[1]+=a;
+								set_rows->array[player_one]->columns[playertwo]->opponents->array[2]+=d;
 							}
 							if(prev_move_player_two==DEF) //DD
 							{
-								get_rows->array[player_one]->columns[playertwo]->opponents->array[1]+=a;
-								get_rows->array[player_one]->columns[playertwo]->opponents->array[2]+=d;
+								set_rows->array[player_one]->columns[playertwo]->opponents->array[1]+=a;
+								set_rows->array[player_one]->columns[playertwo]->opponents->array[2]+=d;
 							}
 							
 						}
@@ -143,13 +143,100 @@ int find_optimum_strategies()
 {
 	//identify the first 20 startegies....
 	//find last 10 startegies...
+	int i,j;
+	double sum_row=0.0;
+	int playerlistsize=player_list->size;
+	for(i=0;i<playerlistsize;i++)
+	{
+		for(j=0;j<playerlistsize;j++)
+		{
+		sum_row+=get_rows->array[player_one]->columns[playertwo]->opponents->array[1];
+		}
+		strategy_performance[strategy_id].strategy_perf=sum_row/playerlistsize;
+		
+	}
 	
+	//sort the list in order of highest performance up
+	qsort(strategy_performance[strategy_id].strategy_perf,30,sizeof(double),);
 	return 0;
 }
 
 
 int apply_GA()
 {
+	int i;
+	int parent_one, parent_two;
+	
+	int cross_over_bit;
+	int strategy_size_parent_one,strategy_size_parent_two;
+	int maxsize;
+	int population=0;
+	double probability_crossover;
 	//apply ga
+	while(population<10)
+	{
+		parent_one=random_unif_dist(20,30);
+		parent_two=random_unif_dist(20,30);
+		while(parent_two==parent_one)
+		{
+			parent_two=random_unif_dist(20,30);
+		}
+		//unique parents found... now mate them
+		strategy_size_parent_one=strategy_list[parent_one].strategy_path.size;
+		strategy_size_parent_two=strategy_list[parent_two].strategy_path.size;
+		//find the crossover bit
+		if(strategy_size_parent_one>strategy_size_parent_two)
+		{
+			cross_over_bit=rand()%strategy_size_parent_one;
+			maxsize=strategy_size_parent_one;
+		}
+		else
+		{
+			cross_over_bit=rand()%strategy_size_parent_two;
+			maxsize=strategy_size_parent_two;
+		} 
+		//copy the blocks to each other
+		probability_crossover=rand()%1;
+		if(probability_crossover<0.5)
+		{//cross
+			for(i=0;i<cross_over_bit;i++)
+			{
+				set_offspring[1].strategy_path.startegy_state.starting_state[4](strategy_list[parent_one].strategy_path.starting_state[4]);
+				set_offspring[1].strategy_path.startegy_state.starting_name(strategy_list[parent_one].strategy_path.state_name);
+				set_offspring[1].strategy_path.startegy_state.starting_state_ifcooperate[4](strategy_list[parent_one].strategy_path.state_ifcooperate[4]);
+				set_offspring[1].strategy_path.startegy_state.starting_state_ifdefect[4](strategy_list[parent_one].strategy_path.state_ifdefect[4]);
+			
+				set_offspring[2].strategy_path.startegy_state.starting_state[4](strategy_list[parent_two].strategy_path.starting_state[4]);
+				set_offspring[2].strategy_path.startegy_state.starting_name(strategy_list[parent_two].strategy_path.state_name);
+				set_offspring[2].strategy_path.startegy_state.starting_state_ifcooperate[4](strategy_list[parent_two].strategy_path.state_ifcooperate[4]);
+				set_offspring[2].strategy_path.startegy_state.starting_state_ifdefect[4](strategy_list[parent_two].strategy_path.state_ifdefect[4]);
+			}
+		
+			for(i=cross_over_bit;i<maxsize;i++)
+			{
+				set_offspring[2].strategy_path.startegy_state.starting_state[4](strategy_list[parent_one].strategy_path.starting_state[4]);
+				set_offspring[2].strategy_path.startegy_state.starting_name(strategy_list[parent_one].strategy_path.state_name);
+				set_offspring[2].strategy_path.startegy_state.starting_state_ifcooperate[4](strategy_list[parent_one].strategy_path.state_ifcooperate[4]);
+				set_offspring[2].strategy_path.startegy_state.starting_state_ifdefect[4](strategy_list[parent_one].strategy_path.state_ifdefect[4]);
+			
+				set_offspring[1].strategy_path.startegy_state.starting_state[4](strategy_list[parent_two].strategy_path.starting_state[4]);
+				set_offspring[1].strategy_path.startegy_state.starting_name(strategy_list[parent_two].strategy_path.state_name);
+				set_offspring[1].strategy_path.startegy_state.starting_state_ifcooperate[4](strategy_list[parent_two].strategy_path.state_ifcooperate[4]);
+				set_offspring[1].strategy_path.startegy_state.starting_state_ifdefect[4](strategy_list[parent_two].strategy_path.state_ifdefect[4]);
+		
+			}
+		
+			//now copy the two offsprings in place of the parents
+			for(i=0;i<maxsize;i++)
+			{
+				remove(strategy_list[parent_two]);
+				remove(strategy_list[parent_one]);
+				add_strategylist[parent_one](offspring[1].strategy_path.startegy_state.starting_state[4],offspring[1].strategy_path.startegy_state.starting_name,offspring[1].strategy_path.startegy_state.starting_state_ifcooperate[4],offspring[1].strategy_path.startegy_state.starting_state_ifdefect[4]);
+				add_strategylist[parent_two](offspring[2].strategy_path.startegy_state.starting_state[4],offspring[2].strategy_path.startegy_state.starting_name,offspring[2].strategy_path.startegy_state.starting_state_ifcooperate[4],offspring[2].strategy_path.startegy_state.starting_state_ifdefect[4]);
+			}
+		}
+		population+=2;//adding two 
+	}
+	
 	return 0;
 }
