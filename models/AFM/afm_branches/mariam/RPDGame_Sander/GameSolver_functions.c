@@ -198,7 +198,8 @@ int apply_GA()
 		//copy the blocks to each other
 		probability_crossover=rand()%1;
 		if(probability_crossover<0.5)
-		{//cross
+		{
+			//cross
 			for(i=0;i<cross_over_bit;i++)
 			{
 				set_offspring[1].strategy_path.startegy_state.starting_state[4](strategy_list[parent_one].strategy_path.starting_state[4]);
@@ -226,11 +227,11 @@ int apply_GA()
 		
 			}
 		
-			//now copy the two offsprings in place of the parents
+			//now copy the two offsprings in place of the dummy parents parents
 			for(i=0;i<maxsize;i++)
 			{
-				remove(strategy_list[parent_two]);
-				remove(strategy_list[parent_one]);
+				//remove(strategy_list[parent_two]);
+				//remove(strategy_list[parent_one]);
 				add_strategylist[parent_one](offspring[1].strategy_path.startegy_state.starting_state[4],offspring[1].strategy_path.startegy_state.starting_name,offspring[1].strategy_path.startegy_state.starting_state_ifcooperate[4],offspring[1].strategy_path.startegy_state.starting_state_ifdefect[4]);
 				add_strategylist[parent_two](offspring[2].strategy_path.startegy_state.starting_state[4],offspring[2].strategy_path.startegy_state.starting_name,offspring[2].strategy_path.startegy_state.starting_state_ifcooperate[4],offspring[2].strategy_path.startegy_state.starting_state_ifdefect[4]);
 			}
