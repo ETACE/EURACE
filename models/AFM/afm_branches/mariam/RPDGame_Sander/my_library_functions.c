@@ -18,3 +18,10 @@ int state_unique_value(int * state_array)
 
 //function for array copy
 
+//random number between two numbers
+int random_unif_dist(int a,int b)
+{
+	int number;
+	number=(rand()%b)+a;
+	return number;
+}

@@ -28,6 +28,11 @@
 <var><type>int</type><name>payoffs[2]</name></var>
 </datatype>
 
+<datatype>
+<name>strategy_data</name>
+<var><type>int</type><name>strategy_id</name></var>
+<var><type>double</type><name>strategy_perf</name></var>
+</datatype>
 
 <datatype>
 <name>complete_strategy</name>
@@ -90,7 +95,8 @@
 <var><type>int</type><name>player_two_state[4]</name></var>
 <var><type>int</type><name>player_one_move</name></var>
 <var><type>int</type><name>player_two_move</name></var>
-
+<var><type>strategy_data</type><name>strategy_performance[30]</name></var>
+<var><type>complete_strategy</type><name>offspring[2]</name></var>
 <var><type>columns_array</type><name>rows</name></var>
 <var><type>player_list_element_array</type><name>player_list</name></var>
 <var><type>double</type><name>iradius</name></var>

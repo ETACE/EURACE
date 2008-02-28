@@ -16,3 +16,12 @@ Have to write GA code for optimal strategy calcultaion
 check correct implementation of datatypes-> the new ones
 
 for same players calculate the average of the payoff of the games
+
+28/02/08
+create dummy children for parent mating
+whta if the probablity is to not mate.. then do we take the original parents in the 
+strategy list or should we enforce the parents to mutate again and again
+
+another thing is we have changes the value of the parent in the strategy list, wat if run cross over again
+then the next crossover would take the modifies strategy.. so we need a copy of the original
+parents !!!
