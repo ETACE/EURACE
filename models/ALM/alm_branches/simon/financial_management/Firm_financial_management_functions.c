@@ -373,7 +373,11 @@ int Firm_compute_payout_policy()
  */
 int Firm_apply_for_loans()
 {
-   add_loan_request_message(ID, bank_id, EXTERNAL_FINANCIAL_NEEDS, TOTAL_ASSETS, TOTAL_DEBT, MSGDATA);
+	/*TESTING*/
+	int bank_id=2;
+	
+	//add_loan_request_message(firm_id, bank_id, external_financial_needs, total_assets, total_debt, MSGDATA);
+      add_loan_request_message(ID, bank_id, EXTERNAL_FINANCIAL_NEEDS, TOTAL_ASSETS, TOTAL_DEBT, MSGDATA);
 
    return 0;
 }
@@ -390,10 +394,10 @@ int Firm_read_loan_offers_send_loan_acceptance()
 			//loan_conditions_message(bank_id, firm_id, proposed_interest_rate, amount_credit_offer, MSGDATA);
 			//loan_conditions_message->proposed_interest_rate;
 			//loan_conditions_message->amount_credit_offer;
-			//Now send out acceptance messages: the firm always accepts the credit offered by bank
-			//add_loan_acceptance_message(firm_id, bank_id, CREDIT_AMOUNT_TAKEN);
 			
-			add_loan_acceptance_message(ID, loan_conditions_message->bank_id, loan_conditions_message->amount_credit_offer);
+			//Now send out an acceptance message: the firm always accepts the credit offered by bank 2
+			//add_loan_acceptance_message(firm_id, bank_id, credit_amount_taken, MSGDATA);
+			add_loan_acceptance_message(ID, loan_conditions_message->bank_id, loan_conditions_message->amount_credit_offer, MSGDATA);
 		}
 	FINISH_LOAN_CONDITIONS_MESSAGE_LOOP
 
@@ -406,7 +410,12 @@ int Firm_read_loan_offers_send_loan_acceptance()
  */
 int Firm_compute_and_send_bond_orders()
 {
-	//add_bond_message(ID, bond_id, limit_price, limit_quantity, MSGDATA);
+    /*TESTING*/
+    int bond_id=1;
+    double limit_price=1.0;
+    double limit_quantity=1.0;
+    
+	add_bond_order_message(ID, bond_id, limit_price, limit_quantity, MSGDATA);
 	
     return 0;
 }
@@ -435,8 +444,13 @@ int Firm_read_bond_transactions()
  */
 int Firm_compute_and_send_stock_orders()
 {
-    double limit_quantity = (int) -1*EXTERNAL_FINANCIAL_NEEDS/CURRENT_SHARE_PRICE;
+//    double limit_quantity = (int) -1*EXTERNAL_FINANCIAL_NEEDS/CURRENT_SHARE_PRICE;
 
+    /*TESTING*/
+    int stock_id=1;
+    double limit_price=1.0;
+    double limit_quantity=1.0;
+    
     //Firm tries to sell stock_units shares:
     add_stock_order_message(ID, stock_id, limit_price, limit_quantity, MSGDATA);
 
