@@ -1,0 +1,287 @@
+''Date:'' 26/02/08 - 29/02/08
+''Location:'' Sheffield
+''Visitors:'' Sander 
+
+==Description of Tasks==
+{| border="1"
+|+  
+|-bgcolor=silver
+! ID!! Task  !! Assigned to 
+|-
+|  1. || Implementation of C-unit test suites to work with FLAME.
+ || Simon, Sander 
+|-
+| 2.|| Implementation of the Miller 1994 paper of the repeated prisoner's dilemma in FLAME.
+ || Mariam
+|-
+| 3. || Integration of financial management functions with the Bielefeld module.
+ || Simon, Sander 
+|-
+| 4. || Implementation of C-unit test functions for financial management functions.
+ || Sander 
+|-
+| 5. || Implementation of C-unit test functions for EWA learning functions.
+ || Sander 
+|}
+
+===Other things to do===
+{| border="1"
+|+  
+|-bgcolor=silver
+! id!! Task  !! Assigned to 
+|-
+| 1. || There needs to be a page on the wiki describing the use of the new datatype structures and how to use them. || Simon
+|-
+| 2. || Writing a coding standards document. || Simon
+|-
+| 3. || Go through all EWA functions and correct them. || Sander
+|-
+| 4. || A wiki-page describing unit-testing in FLAME. || Simon
+|-
+|}
+
+==Unit testing in FLAME==
+A CUnit test suite consists of the following files:
+* <Agent>_functions.c: a file containing C functions for each agent
+* <Agent>_unittest.c: a file containing unit tests for each file in <Agent>_functions.c
+* unittest.c: a file to run a test suite of all the unit tests defined in <Agent>_unittest.c
+
+==CU_ASSERT statements==
+The following statements are available in CUnit:
+[http://cunit.sourceforge.net/doc/writing_tests.html#assertions]
+
+    CU_ASSERT_TRUE
+    CU_ASSERT_FALSE
+    CU_ASSERT_EQUAL
+    CU_ASSERT_NOT_EQUAL
+    CU_ASSERT_PTR_EQUAL
+    CU_ASSERT_PTR_NOT_EQUAL
+    CU_ASSERT_PTR_NULL
+    CU_ASSERT_PTR_NOT_NULL
+    CU_ASSERT_STRING_EQUAL
+    CU_ASSERT_STRING_NOT_EQUAL
+    CU_ASSERT_NSTRING_EQUAL
+    CU_ASSERT_NSTRING_NOT_EQUAL
+
+For integers we use:
+
+    CU_ASSERT_EQUAL(<var_name2>, <value>);
+
+For doubles, we need to pass a 3rd argument that gives the precision of the comparison; we can set this equal to 1e-3:
+
+    CU_ASSERT_DOUBLE_EQUAL(<var_name1>, <value>, 1e-3);
+
+==unittest.c template==
+The '''unittest.c''' file holds the test suite.
+
+* At the top are all the prototypes for all tests to run.
+* In '''main()''', we add names for tests and the unittest_function to execute, separated by ||.
+
+Prototypes:
+
+ void unittest_Firm_compute_income_statement();
+
+Adding unit test functions:
+    
+    if(
+        NULL == CU_add_test(pSuite, "Firm_compute_income_statement", unittest_Firm_compute_income_statement) ||
+        NULL == CU_add_test(pSuite, "Firm_compute_balance_sheet", unittest_Firm_compute_balance_sheet)
+       )
+
+==<Agentname>_unittest.c template==
+This file holds for each function at least one unit test.
+
+Each unit test consists of the following code segments:
+
+* At the start of every unit test, we add one agent and we initialize a pointer to the current xmachine.
+* We add memory pre-conditions (fixtures).
+* We add messages that are expected to be present by the function.
+* We run the function evaluation.
+* We test CU_ASSERT statements to test whether all memory post-conditions are correctly set.
+* We test CU_ASSERT statements to test whether all output messages are correctly set.
+* At the end of the unit test we free the agent and messages.
+
+    void unittest_<function_name>()
+    {
+        /************* At start of unit test, add one agent **************/
+        add_<Agent_name>_agent(.......);
+        current_xmachine = *p_xmachine;
+        
+        /***** Variables: Memory pre-conditions **************************/
+        <var_name1>=0.0;
+        <var_name2>=0;
+
+        /***** Messages: pre-conditions **********************************/
+         add_<msg_name>_message(<msg_var>, ... );
+        
+        /***** Function evaluation ***************************************/
+        <functionname>();
+        
+        /***** Variables: Memory post-conditions *************************/
+        CU_ASSERT_DOUBLE_EQUAL(<var_name1>, <value>, 1e-3);
+        CU_ASSERT_EQUAL(<var_name2>, <value>);
+        
+        /***** Messages: post-conditions *********************************/
+         START_<MSG_NAME>_MESSAGE_LOOP 
+            CU_ASSERT_DOUBLE_EQUAL(<msg_name>_message-><var_name>, <value>, 1e-3);
+            CU_ASSERT_EQUAL(<msg_name>_message-><var_name>, <value>);
+         FINISH_<MSG_NAME>_MESSAGE_LOOP
+    
+        /************* At end of unit test, free the Agent **************/
+        free_agent();
+        /************* At end of unit tests, free all Messages **********/
+        free_messages();
+    }
+
+==Example==
+A full example uses the following files:
+* Firm_financial_management_functions.c: file containing the code for the C functions.
+* Firm_financial_management_unittest.c: file containing the code for the unit tests corresponding to all functions in the first file.
+* unittest.c: file to run the test suite.
+* compile_unittest.bat: batch file to compile unittest.c and its libraries.
+
+===Example: functions file===
+As an example, consider the following (very simple) function from the file '''Firm_financial_management_functions.c''':
+
+    /*
+    * \fn: int Firm_compute_income_statement()
+    * \brief: This function computes the income statement of the firm.
+    */
+    int Firm_compute_income_statement()
+    {
+        if(DAY%MONTH==DAY_OF_MONTH_TO_ACT)
+        {
+            EBIT = CUM_REVENUES;
+            
+            //update the cash holdings
+            PAYMENT_ACCOUNT += EBIT;
+        }
+    
+        return 0;
+    }
+
+All this function does is it assigns the value of the memory variable CUM_REVENUES to the memory variable EBIT, and it adds EBIT to the memory variable PAYMENT_ACCOUNT.
+
+===Example: unittest file===
+A unit test for this function is a code snippet from the file '''Firm_financial_management_unittest.c''':
+
+    #include <CUnit/Basic.h>
+    #include "header.h"
+    #include "Firm_agent_header.h"
+    #include "my_library_header.h"
+    
+    /************Firm Role: Financial Management Role ********************************/
+    /************ Unit tests ********************************/
+    /*
+    * \fn: void unittest_Firm_compute_income_statement()
+    * \brief: Unit test for: Firm_compute_income_statement
+    */
+    void unittest_Firm_compute_income_statement()
+    {
+        /************* At start of unit test, add one agent **************/
+        add_Firm_agent_internal(init_Firm_agent());
+        current_xmachine = *p_xmachine;
+        
+        /***** Variables: Memory pre-conditions **************************/
+        DAY_OF_MONTH_TO_ACT=0;
+        CUM_REVENUES=100.0;
+        EBIT=0.0;
+        PAYMENT_ACCOUNT=0.0;
+        
+        /***** Messages: pre-conditions **********************************/
+        //NONE
+        
+        /***** Function evaluation ***************************************/
+        Firm_compute_income_statement();
+        
+        /***** Variables: Memory post-conditions *****/
+        CU_ASSERT_DOUBLE_EQUAL(CUM_REVENUES, 100.0, 1e-3);
+        CU_ASSERT_DOUBLE_EQUAL(EBIT, 100.0, 1e-3);
+        CU_ASSERT_DOUBLE_EQUAL(PAYMENT_ACCOUNT, 100.0, 1e-3);
+  
+        /***** Messages: post-conditions *********************************/
+        //NONE
+    
+        /************* At end of unit test, free the Agent **************/
+        free_agent();
+        /************* At end of unit tests, free all Messages **********/
+        free_messages();
+    }
+
+This is a breakdown of what happens:
+
+* In the first part, the statement '''add_Firm_agent_internal''' adds one agent of type Firm, and allocates memory for all its variables.
+(At the moment it only allocates memory, but does not initialze the values. In the near future this can be changed to also initializing all memory values to zero.)
+* The second part sets the memory pre-conditions for all memory variables that are actually being used by the function.
+* The third part does the same for messages: it adds messages to the message board that are expected to be there at the start of the function.
+* Then we run the function.
+* We check all memory post-conditions by CU_ASSERT statements.
+* At the end of the file, we remove the agent and free all messages from the message board.
+
+===Example: unittest.c file===
+The file '''unittest.c''' for this example should look like this:
+
+    /**
+    * \file  unittest.c
+    * \brief Holds main function of the unittest program.
+    */
+    #include "header.h"
+    #include <CUnit/Basic.h>
+    
+    /*************************** unittest prototypes ***************************/
+    void unittest_Firm_compute_income_statement();
+    /*************************** end prototypes ***************************/
+    
+    int init_suite1(void)
+    {
+        return 0;
+    }
+    
+    int clean_suite1(void)
+    {
+        return 0;
+    }
+    
+    /** \fn int main(int argc, char * argv[])
+    * \brief Main program loop.
+    * \param argc Argument count.
+    * \param argv Pointer Pointer to Argument vector.
+    */
+    int main(int argc, char * argv[])
+    {
+        CU_pSuite pSuite = NULL;
+        
+        /* Init FLAME */
+        initialise_unit_testing();
+        
+        /* initialize the CUnit test registry */
+        if (CUE_SUCCESS != CU_initialize_registry())
+            return CU_get_error();
+        
+        /* add a suite to the registry */
+        pSuite = CU_add_suite("Suite_Firm_unittests", init_suite1, clean_suite1);
+        if (NULL == pSuite)
+        {
+            CU_cleanup_registry();
+            return CU_get_error();
+        }
+        
+        /* add the tests to the suite */
+        /* add extra tests using || */
+        
+        if( NULL == CU_add_test(pSuite, "Firm_compute_income_statement", unittest_Firm_compute_income_statement) )
+        {
+            CU_cleanup_registry();
+            return CU_get_error();
+        }
+        
+        /* Run all tests using the CUnit Basic interface */
+        CU_basic_set_mode(CU_BRM_VERBOSE);
+        CU_basic_run_tests();
+        CU_cleanup_registry();
+        
+        /* Free FLAME */
+        clean_up(0);
+        
+        return CU_get_error();
+    } 
