@@ -19,7 +19,7 @@
 /* STEP 1. Updating performance.*/
 /* HERE: Household sends message to FA agent with the per-day performance of it's own current rule, */
 /* including the total value invested in the asset portfolio (this is needed later on, when another household uses the rule). */
-int Household_send_rule_performance_message()
+int Household_send_rule_performance()
 { 
     //Declare and assign local vars
     int current_rule = CLASSIFIERSYSTEM->current_rule;
@@ -45,7 +45,7 @@ int Household_send_rule_performance_message()
  * Updates classifiersystem
  * Stores classifiersystem in memory
  */
-int Household_read_all_performances_message()
+int Household_read_all_performances()
 {
       double * all_performances;
       
@@ -295,7 +295,7 @@ int Household_apply_rule()
 
 
 /* HERE: The household reads the transaction messages send by the Asset Market Agent*/
-int Household_read_transaction_message()
+int Household_read_transaction()
 {
 
 /* 1. Reading all firm_stock_transaction_messages: */
@@ -360,7 +360,7 @@ int Household_read_transaction_message()
 //Used by agents to refresh their rule detail system
 //We allow for changes in:
 //parameters: changes occur due to crossover, mutation
-int Household_read_ruledetailsystem_message()
+int Household_read_and_update_ruledetailsystem()
 {
     //Getting the size of the system:
     int NR_TYPES=CLASSIFIERSYSTEM->nr_types;
@@ -415,12 +415,6 @@ int Household_read_ruledetailsystem_message()
         }
     }
     
-    return 0;
-}
-
-//Mariam: Maybe this is inside the read_ruledetailsystem so we would need to erase this.!Subject to be merged!
-int Household_update_ruledetailsystem()
-{
     return 0;
 }
 
