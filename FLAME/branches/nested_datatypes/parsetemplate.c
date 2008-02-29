@@ -1185,7 +1185,7 @@ void parseTemplate(char * filename, char * templatename, model_data * modeldata)
 				}
 				else if (strcmp("foreach xagentvar", lastloop) == 0)
 				{
-					while (strcmp(buffer3->array, "$name") != 0 && strcmp(buffer3->array, "$type") != 0 && strcmp(buffer3->array, "$agent_name") != 0 && strcmp(buffer3->array, "$c_type") != 0 && strcmp(buffer3->array, "$mpi_type") != 0 && strcmp(buffer3->array, "$arraylength") != 0 && strcmp(buffer3->array, "$var_count") != 0 && strcmp(buffer3->array, "$notarraytype") != 0 && pos <= (pos1 + 15))
+					while (strcmp(buffer3->array, "$name") != 0 && strcmp(buffer3->array, "$type") != 0 && strcmp(buffer3->array, "$agent_name") != 0 && strcmp(buffer3->array, "$c_type") != 0 && strcmp(buffer3->array, "$mpi_type") != 0 && strcmp(buffer3->array, "$arraylength") != 0 && strcmp(buffer3->array, "$var_count") != 0 && strcmp(buffer3->array, "$notarraytype") != 0 && strcmp(buffer3->array, "$default_value") != 0 && pos <= (pos1 + 15))
 					{
 						add_char(buffer3, c);
 						pos++;
@@ -1214,6 +1214,8 @@ void parseTemplate(char * filename, char * templatename, model_data * modeldata)
 					}
 					else if (strcmp(buffer3->array, "$notarraytype") == 0)
 						fputs(current_variable->typenotarray, file);
+					else if (strcmp(buffer3->array, "$default_value") == 0)
+						fputs(current_variable->defaultvalue, file);
 					else
 					{
 						fputs("$", file);

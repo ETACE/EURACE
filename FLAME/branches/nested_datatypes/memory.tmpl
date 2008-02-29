@@ -112,14 +112,43 @@ xmachine * add_xmachine()
 	return current;
 }
 
+void init_int_static_array(int * array, int size)
+{
+	int i;
+	
+	for(i = 0; i < size; i++) array[i] = 0;
+}
+
+void init_float_static_array(float * array, int size)
+{
+	int i;
+	
+	for(i = 0; i < size; i++) array[i] = 0.0;
+}
+
+void init_double_static_array(double* array, int size)
+{
+	int i;
+	
+	for(i = 0; i < size; i++) array[i] = 0.0;
+}
+
+void init_char_static_array(char * array, int size)
+{
+	int i;
+	
+	for(i = 0; i < size; i++) array[i] = '\0';
+}
+
 <?foreach datatype?>
 
 void init_$name($name * temp)
 {
 <?foreach datatypevar?><?if modeldatatype?><?if not_array?>	init_$type(&(*temp).$name);
-<?end if?><?if static_array?>	init_$type_static_array((*temp).$name, $arraylength);
-<?end if?><?end if?><?if dynamic_array?>	init_$type(&(*temp).$name);
-<?end if?><?end foreach?>
+<?end if?><?end if?><?if static_array?>	init_$type_static_array((*temp).$name, $arraylength);
+<?end if?><?if dynamic_array?>	init_$type(&(*temp).$name);
+<?end if?><?if not_modeldatatype?><?if not_array?>	(*temp).$name = $default_value;
+<?end if?><?end if?><?end foreach?>
 }
 
 void init_$name_static_array($name * array, int size)
@@ -129,13 +158,30 @@ void init_$name_static_array($name * array, int size)
 	for(i = 0; i < size; i++) init_$name(&array[i]);
 }
 
-void free_$name_datatype($name * temp)
+void free_$name($name * temp)
 {
-<?foreach datatypevar?><?if modeldatatype?><?if not_array?>	free_$type_datatype(&(*temp).$name);
-<?end if?><?if dynamic_array?>	free_$type(&(*temp).$name);
-<?end if?><?end if?><?if not_modeldatatype?><?if dynamic_array?>	free_$type(&(*temp).$name);
-<?end if?><?end if?><?end foreach?>
+<?foreach datatypevar?><?if modeldatatype?><?if not_array?>	free_$type(&(*temp).$name);
+<?end if?><?if static_array?>	free_$type_static_array((*temp).$name, $arraylength);
+<?end if?><?end if?><?if dynamic_array?>	free_$type(&(*temp).$name);
+<?end if?><?end foreach?>
 }
+
+void free_$name_static_array($name * array, int size)
+{
+	int i;
+	
+	for(i = 0; i < size; i++) free_$name(&array[i]);
+}
+
+void copy_$name($name * from, $name * to)
+{
+<?foreach datatypevar?>	<?if modeldatatype?><?if not_array?>copy_$type(&(*from).$name, &(*to).$name);
+<?end if?><?if dynamic_array?>copy_$type(&(*from).$name, &(*to).$name);
+<?end if?><?if static_array?>copy_$type_static_array((*from).$name, (*to).$name, $arraylength);
+<?end if?><?end if?><?if not_modeldatatype?><?if not_array?>(*to).$name = (*from).$name;
+<?end if?><?if dynamic_array?>copy_$type(&(*from).$name, &(*to).$name);
+<?end if?><?if static_array?>memcpy((*to).$name, (*from).$name, $arraylength*sizeof($type));
+<?end if?><?end if?><?end foreach?>}
 
 void copy_$name_static_array($name * from, $name * to, int size)
 {
@@ -143,19 +189,9 @@ void copy_$name_static_array($name * from, $name * to, int size)
 	
 	for(i = 0; i < size; i++)
 	{
-		copy_$name_datatype(&from[i], &to[i]);
+		copy_$name(&from[i], &to[i]);
 	}
 }
-
-void copy_$name_datatype($name * from, $name * to)
-{
-<?foreach datatypevar?>	<?if modeldatatype?><?if not_array?>copy_$type_datatype(&(*from).$name, &(*to).$name);
-<?end if?><?if dynamic_array?>copy_$type(&(*from).$name, &(*to).$name);
-<?end if?><?if static_array?>copy_$type_static_array((*from).$name, (*to).$name, $arraylength);
-<?end if?><?end if?><?if not_modeldatatype?><?if not_array?>(*to).$name = (*from).$name;
-<?end if?><?if dynamic_array?>copy_$type(&(*from).$name, &(*to).$name);
-<?end if?><?if static_array?>memcpy((*to).$name, (*from).$name, $arraylength*sizeof($type));
-<?end if?><?end if?><?end foreach?>}
 <?end foreach?>
 
 <?foreach xagent?>
@@ -165,15 +201,17 @@ xmachine_memory_$name * init_$name_agent()
 	CHECK_POINTER(current);
 	
 <?foreach xagentvar?><?if modeldatatype?><?if not_array?>	init_$type(&current->$name);
-<?end if?><?if static_array?>	init_$type_static_array(current->$name, $arraylength);
-<?end if?><?end if?><?if dynamic_array?>	init_$type(&current->$name);
-<?end if?><?end foreach?>	
+<?end if?><?end if?><?if static_array?>	init_$type_static_array(current->$name, $arraylength);
+<?end if?><?if dynamic_array?>	init_$type(&current->$name);
+<?end if?><?if not_modeldatatype?><?if not_array?>	current->$name = $default_value;
+<?end if?><?end if?><?end foreach?>	
 	return current;
 }
 
 void free_$name_agent(xmachine_memory_$name * tmp)
 {
-	<?foreach xagentvar?><?if modeldatatype?><?if not_array?>free_$type_datatype(&tmp->$name);
+	<?foreach xagentvar?><?if modeldatatype?><?if not_array?>free_$type(&tmp->$name);
+	<?end if?><?if static_array?>free_$type_static_array(tmp->$name, $arraylength);
 	<?end if?><?end if?><?if dynamic_array?>free_$type(&tmp->$name);
 	<?end if?><?end foreach?>
 }
@@ -188,7 +226,7 @@ void add_$name_agent_internal(xmachine_memory_$name * current)
  * \brief Add $name X-machine to the current being used X-machine list.
 <?foreach xagentvar?> * \param $name Variable for the X-machine memory.
 <?end foreach?> */
-void add_$name_agent(<?foreach xagentvar?>$type <?if dynamic_array?>* <?end if?><?if static_array?>*<?end if?>$name<?if static_array?>[]<?end if?><?if notlast?>, <?end if?><?end foreach?>)
+void add_$name_agent(<?foreach xagentvar?>$type <?if dynamic_array?>* <?end if?>$name<?if static_array?>[]<?end if?><?if notlast?>, <?end if?><?end foreach?>)
 {
 	xmachine * new_xmachine = add_xmachine();
 	xmachine_memory_$name * current;
@@ -196,13 +234,13 @@ void add_$name_agent(<?foreach xagentvar?>$type <?if dynamic_array?>* <?end if?>
 	init_$name_agent(current);
 	new_xmachine->xmachine_$name = current;
 	
-/*<?foreach xagentvar?>	<?if modeldatatype?><?if not_array?>copy_$type_datatype($name, current->$name);
-<?end if?><?if dynamic_array?>copy_$type($name, current->$name);
+<?foreach xagentvar?>	<?if modeldatatype?><?if not_array?>copy_$type(&$name, &current->$name);
+<?end if?><?if dynamic_array?>copy_$type($name, &current->$name);
 <?end if?><?if static_array?>copy_$type_static_array($name, current->$name, $arraylength);
 <?end if?><?end if?><?if not_modeldatatype?><?if not_array?>current->$name = $name;
-<?end if?><?if dynamic_array?>copy_$type($name, current->$name);
+<?end if?><?if dynamic_array?>copy_$type($name, &current->$name);
 <?end if?><?if static_array?>memcpy(current->$name, $name, $arraylength*sizeof($type));
-<?end if?><?end if?><?end foreach?>*/}
+<?end if?><?end if?><?end foreach?>}
 <?end foreach?>
 /** \fn void free_agent()
  * \brief Free the currently being used X-machine.
@@ -1217,11 +1255,8 @@ void add_$name($name_array * array<?foreach datatypevar?>, $type <?if modeldatat
 		(*array).total_size = (*array).total_size + ARRAY_BLOCK_SIZE;
 		(*array).array = ($name *)realloc((*array).array, ((*array).total_size * sizeof($name)));
 	}
-	
-<?foreach datatypevar?><?if modeldatatype?><?if not_array?>	init_$type(&(*array).array[(*array).size].$name);
-	copy_$type_datatype($name, &(*array).array[(*array).size].$name);<?end if?><?if dynamic_array?>	if($name != NULL) init_$type(&(*array).array[(*array).size].$name);
-	copy_$type($name, &(*array).array[(*array).size].$name);<?end if?><?if static_array?>	//copy_$type_static_array($name, (*array).array[(*array).size].$name, $arraylength);<?end if?><?end if?><?if not_modeldatatype?><?if not_array?>	(*array).array[(*array).size].$name = $name;<?end if?><?if dynamic_array?>	init_$type(&(*array).array[(*array).size].$name);
-	if($name != NULL) copy_$type($name, &(*array).array[(*array).size].$name);<?end if?><?if static_array?>	if($name != NULL) memcpy((*array).array[(*array).size].$name, $name, $arraylength*sizeof($type));<?end if?><?end if?>
+	init_$name(&(*array).array[(*array).size]);
+<?foreach datatypevar?><?if modeldatatype?><?if not_array?>	copy_$type($name, &(*array).array[(*array).size].$name);<?end if?><?if static_array?>	if($name != NULL) copy_$type_static_array($name, (*array).array[(*array).size].$name, $arraylength);<?end if?><?end if?><?if not_modeldatatype?><?if not_array?>	(*array).array[(*array).size].$name = $name;<?end if?><?if static_array?>	if($name != NULL) memcpy((*array).array[(*array).size].$name, $name, $arraylength*sizeof($type));<?end if?><?end if?><?if dynamic_array?>	if($name != NULL) copy_$type($name, &(*array).array[(*array).size].$name);<?end if?>
 <?end foreach?>
 	(*array).size++;
 }
@@ -1235,12 +1270,15 @@ void remove_$name($name_array * array, int index)
 {
 	int i;
 	
+	/* Free element at index index */
+	free_$name(&(*array).array[index]);
+	
+	/* Copy all elements up by one */
 	if(index <= (*array).size)
 	{
-		/* memcopy?? */
 		for(i = index; i < (*array).size - 1; i++)
 		{
-			(*array).array[i] = (*array).array[i+1];
+			copy_$name(&(*array).array[i+1], &(*array).array[i]);
 		}
 		(*array).size--;
 	}
