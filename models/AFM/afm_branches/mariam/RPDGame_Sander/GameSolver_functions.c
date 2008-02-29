@@ -172,7 +172,9 @@ int apply_GA()
 	int maxsize;
 	int population=0;
 	double probability_crossover;
-	//apply ga
+	//copy first 20 parents into new startegies...
+	
+	//apply ga on last 10 parents
 	while(population<10)
 	{
 		parent_one=random_unif_dist(20,30);
@@ -232,12 +234,33 @@ int apply_GA()
 			{
 				//remove(strategy_list[parent_two]);
 				//remove(strategy_list[parent_one]);
-				add_strategylist[parent_one](offspring[1].strategy_path.startegy_state.starting_state[4],offspring[1].strategy_path.startegy_state.starting_name,offspring[1].strategy_path.startegy_state.starting_state_ifcooperate[4],offspring[1].strategy_path.startegy_state.starting_state_ifdefect[4]);
-				add_strategylist[parent_two](offspring[2].strategy_path.startegy_state.starting_state[4],offspring[2].strategy_path.startegy_state.starting_name,offspring[2].strategy_path.startegy_state.starting_state_ifcooperate[4],offspring[2].strategy_path.startegy_state.starting_state_ifdefect[4]);
+				add_new_children[parent_one](offspring[1].strategy_path.startegy_state.starting_state[4],offspring[1].strategy_path.startegy_state.starting_name,offspring[1].strategy_path.startegy_state.starting_state_ifcooperate[4],offspring[1].strategy_path.startegy_state.starting_state_ifdefect[4]);
+				add_new_children[parent_two](offspring[2].strategy_path.startegy_state.starting_state[4],offspring[2].strategy_path.startegy_state.starting_name,offspring[2].strategy_path.startegy_state.starting_state_ifcooperate[4],offspring[2].strategy_path.startegy_state.starting_state_ifdefect[4]);
+				population+=2;//adding two
 			}
 		}
-		population+=2;//adding two 
+	 
 	}
 	
+	return 0;
+}
+
+int update_strategies()
+{	
+	int i;
+	//remove last 10 elements and then start copying the new 10 elements
+	for(i=20;i<30;i++)
+	{
+		remove(strategy_list->array[i]);
+	}
+	
+	for(i=0;i<10;i++)
+	{
+		add_strategy_list(new_children[i].strategy_path.startegy_state.starting_state[4],offspring[i].strategy_path.strategy_state.starting_name,offspring[i].strategy_path.startegy_state.starting_state_ifcooperate[4],offspring[i].strategy_path.startegy_state.starting_state_ifdefect[4]);
+	}
+	
+	
+   
+	 
 	return 0;
 }
