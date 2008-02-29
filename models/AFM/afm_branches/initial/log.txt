@@ -481,9 +481,18 @@ Sander, rev 593
 		  	- classifier_rule as a struct
 			- classifiersystem as a dynamic array of classifier_rules
 --------------------------------------------------------------------------------------
-Sander, rev 594
+Sander, rev 595
 	AFM/afm_branches/initial/ewa_learning/model-ewa.xml:
 			- merged ruledetailsystem into classifiersystem struct
 		  	- implemented classifier_rule as a struct
 			- implemented classifiersystem as a dynamic array of classifier_rules
+			- implemented Simple and Complex versions of PublicClassifierSystem
+			- implemented Simple and Complex versions of PrivateClassifierSystem
+
+			The Simple versions just have homogeneous rules with same number of parameters and 
+			the same execution function.
+			The Complex versions can have heterogeneous rules with different number of parameters and 
+			different execution functions.
+						
+	NOTE: The number of parameters in the classifier rules is now hard-coded to 10.
 --------------------------------------------------------------------------------------

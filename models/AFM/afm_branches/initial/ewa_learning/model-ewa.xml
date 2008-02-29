@@ -24,9 +24,7 @@
 
 <!--***************************** EWA Datastructures *****************************-->
 <datatype>
-<!--***************************** Struct for the EWA Parameters *****************************--><name>EWAParameterStruct</name><var><type>double</type><name>EWA_rho</name></var><var><type>double</type><name>EWA_phi</name></var><var><type>double</type><name>EWA_delta</name></var><var><type>double</type><name>EWA_beta</name></var><var><!--Experience variable for EWA learning--><type>double</type><name>experience</name>
-	</var><var><!--Current rule in use by the agent--><type>int</type><name>current_rule</name>
-</var>
+<!--***************************** Struct for the EWA Parameters *****************************--><name>EWAParameterStruct</name><var><type>double</type><name>EWA_rho</name></var><var><type>double</type><name>EWA_phi</name></var><var><type>double</type><name>EWA_delta</name></var><var><type>double</type><name>EWA_beta</name></var>
 	</datatype>
 
 	<datatype>
@@ -43,14 +41,15 @@
 <type>double</type><name>performance</name>
 </var>
 <var><!--This is the average performance for each rule-->
-<type>double</type><name>avgperformance</name>
-</var><!--------------------------------------- Rule details ---------------------------------------><!--Here are variables for the function to execute for each rule-->
-		<var><type></type>
-		<name></name>
-	</var>
-	</datatype>
-
-	<datatype>
+<type>double</type><name>avg_performance</name>
+</var>
+<!--------------------------------------- Rule details --------------------------------------->
+<!--Here are parameters for the execution function for each rule. We allow a rule to have 10 parameters that are all doubles.-->
+<var><type>double</type>
+<name>parameters[10]</name>
+</var>
+</datatype>
+<datatype>
 <!--***************************** Struct for the Private Classifier Rule *****************************--><name>PrivateClassifierRule</name>
 <desc>Datatype for the private classifier system inside each agent. The system is a dynamic array of PrivateClassifierRule.  !Subject to change!</desc>
 	<var><!--id for each rule-->
@@ -60,36 +59,74 @@
 <var><!--Agent's performance of current_rule--><type>double</type><name>my_performance</name>
 </var>
 <var><!--Agent average performance-->
-<type>double</type><name>avgperformance</name>
+<type>double</type><name>avg_performance</name>
 </var>
 <var><!--Agent attractions-->
 <type>double</type><name>attraction</name></var>
 <var><!--Agent choice probabilities-->
 <type>double</type><name>choiceprob</name></var>
-	</datatype>
+<!--------------------------------------- Rule details --------------------------------------->
+<!--Here are parameters for the execution function for each rule. We allow a rule to have 10 parameters that are all doubles.-->
+<var><type>double</type>
+<name>parameters[10]</name>
+</var>
+</datatype>
 
 <datatype>
-<!--***************************** Struct for the Public Classifier System *****************************--><name>PublicClassifierSystem</name>
-<desc>Datatype for the central classifier system. !Subject to change!</desc><!-------------------General data for the rule system---------------------->
-	<var>
-	<!--Nr of subpopulations--><type>int</type>
-	<name>nr_types</name>
-	</var>
-	<var>
-		<!--Nr_rules_per_type may differ for each type; size of subpopulations--><type>int_array</type>
-		<name>nr_rules_per_type</name>
-	</var>
-	<var>
-		<!--Total nr of rules--><type>int</type><name>nr_rules</name>
-	</var><!-------------------The rule system---------------------->
-	<var><!--Array of public classifier rules-->
+<!--***************************** Struct for the Simple Public Classifier System *****************************-->
+<name>SimplePublicClassifierSystem</name>
+<desc>Datatype for the central classifier system. !Subject to change!</desc>
+<!-------------------The rule system---------------------->
+	<var><!--Array of public classifier rules: this array contains rules of only one type-->
 		<type>PublicClassifierRule_array</type>
 		<name>rule_table</name>
 	</var>
 </datatype>
 
 <datatype>
-<!--***************************** Struct for the Private Classifier System *****************************--><name>PrivateClassifierSystem</name>
+<!--***************************** Struct for the Simple Private Classifier System *****************************-->
+<name>SimplePrivateClassifierSystem</name>
+<desc>Datatype for the private classifier system inside each agent.  !Subject to change!</desc>
+<!-------------------Metadata for the agent---------------------->
+	<var><!--Experience variable for EWA learning-->
+	<type>double</type><name>experience</name>
+	</var><var><!--Current rule in use by the agent-->
+	<type>int</type><name>current_rule</name>
+<!-------------------The rule system---------------------->
+	<var>
+	<!--Array of private classifier rules: this array contains rules of only one type-->
+		<type>PrivateClassifierRule_array</type>
+		<name>rule_table</name>
+	</var>
+</datatype>
+
+<datatype>
+<!--***************************** Struct for the Public Classifier System *****************************--><name>ComplexPublicClassifierSystem</name>
+<desc>Datatype for the central classifier system. !Subject to change!</desc>
+<!-------------------General data for the rule system---------------------->
+	<var>
+	<!--Nr of subpopulations--><type>int</type>
+	<name>nr_types</name>
+	</var>
+	<var>
+		<!--Nr_rules_per_type may differ for each type; size of subpopulations-->
+		<type>int_array</type>
+		<name>nr_rules_per_type</name>
+	</var>
+	<var>
+		<!--Total nr of rules-->
+		<type>int</type>
+		<name>nr_rules</name>
+	</var><!-------------------The rule system---------------------->
+	<var><!--Array of public classifier rules: this array contains rules of heterogenous types-->
+		<type>PublicClassifierRule_array</type>
+		<name>rule_table</name>
+	</var>
+</datatype>
+
+<datatype>
+<!--***************************** Struct for the Private Classifier System *****************************-->
+<name>ComplexPrivateClassifierSystem</name>
 <desc>Datatype for the private classifier system inside each agent.  !Subject to change!</desc>
 <!-------------------General data for the rule system---------------------->
 	<var>
@@ -97,16 +134,29 @@
 	<name>nr_types</name>
 	</var>
 	<var>
-		<!--Nr_rules_per_type may differ for each type; size of subpopulations--><type>int_array</type>
+		<!--Nr_rules_per_type may differ for each type; size of subpopulations-->
+		<type>int_array</type>
 		<name>nr_rules_per_type</name>
 	</var>
 	<var>
-		<!--Total nr of rules--><type>int</type><name>nr_rules</name>
-	</var><!-------------------The rule system---------------------->
-	<var><!--Array of private classifier rules-->
+		<!--Total nr of rules-->
+		<type>int</type>
+		<name>nr_rules</name>
+	</var>
+<!-------------------Metadata for the agent---------------------->
+	<var><!--Experience variable for EWA learning-->
+	<type>double</type><name>experience</name>
+	</var><var><!--Current rule in use by the agent-->
+	<type>int</type><name>current_rule</name>
+	</var>
+<!-------------------The rule system---------------------->
+	<var>
+	<!--Array of private classifier rules: this array contains rules of heterogenous types-->
 		<type>PrivateClassifierRule_array</type>
 		<name>rule_table</name>
 	</var>
+</datatype>
+
 </environment>
 
 <!--********************* X-machine Agent - Household ****************************-->
@@ -120,7 +170,7 @@
 	<var>
 		<type>EWAParameterStruct</type><name>EWA_parameters</name>
 		</var>
-	<var><type>PrivateClassifierSystem</type><name>classifiersystem</name></var>
+	<var><type>SimplePrivateClassifierSystem</type><name>classifiersystem</name></var>
 <var><type>double</type><name>asset_budget</name></var>
 
 <var><type>AssetPortfolioType</type><name>current_assetportfolio</name></var>
@@ -168,32 +218,23 @@
 </function>
 
 <function>
-	<name>Household_retrieve_rule_details</name>
-	<depends>
+	<name>Household_apply_rule</name><depends>
 		<name>Household_select_rule</name>
-		<type>internal</type>
-	</depends>	
-</function>
-
-<function>
-	<name>Household_apply_rule</name>
-	<depends>
-		<name>Household_retrieve_rule_details</name>
 		<type>internal</type>
 	</depends>
 </function>
 
 <function>
-	<name>Household_read_and_update_ruledetailsystem</name>
+	<name>Household_read_and_update_rule_details</name>
 	<depends>
-		<name>FinancialAgent_send_ruledetailsystem</name>
-		<type>ruledetailsystem</type>
+		<name>FinancialAgent_send_rule_details</name>
+		<type>rule_details</type>
 	</depends>
 </function>
 
 <function><name>Household_reset_private_classifiersystem</name>
 	<depends>
-		<name>Household_read_and_update_ruledetailsystem</name>
+		<name>Household_read_and_update_rule_details</name>
 		<type>internal</type></depends>
 </function>
 
@@ -232,7 +273,7 @@
 <!-- All variables used by FinancialAgent are declared here to allocate them in memory -->
 <memory>
 
-<var><type>PublicClassifierSystem</type>	<name>classifiersystem</name></var>
+<var><type>SimplePublicClassifierSystem</type>	<name>classifiersystem</name></var>
 <var><type>double</type><name>posx</name></var>
 <var><type>double</type><name>posy</name></var>
 	
@@ -257,17 +298,17 @@
 	<function><name>FinancialAgent_apply_GA</name>
 	<depends>
 		<name>Every_100_periods</name>
-		<type>internal</type></depends></function><function><name>FinancialAgent_update_ruledetailsystem</name><!--Date-event triggered: every 100 days run the GA-->
+		<type>internal</type></depends></function><function><name>FinancialAgent_update_rule_details</name><!--Date-event triggered: every 100 days run the GA-->
 <depends><name>FinancialAgent_apply_GA</name><type>internal</type></depends>
 </function>
 	<function>
 		<name>FinancialAgent_reset_public_classifiersystem</name>
 		<depends>
-			<name>FinancialAgent_update_ruledetailsystem</name>
+			<name>FinancialAgent_update_rule_details</name>
 			<type>internal</type></depends></function>
 	
-<function><name>FinancialAgent_send_ruledetailsystem</name>
-<depends><name>FinancialAgent_update_ruledetailsystem</name><type>internal</type></depends>
+<function><name>FinancialAgent_send_rule_details</name>
+<depends><name>FinancialAgent_update_rule_details</name><type>internal</type></depends>
 </function>
 
 </functions>
@@ -290,19 +331,25 @@
 </message>
 
 <message>
-<name>all_performances</name>
-<note>Message sent by FA and read by all households</note>
-<var><type>double_array</type><name>performances</name></var>
-<var><type>double</type><name>range</name></var>
+<name>new_performances</name>
+<note>Message sent by FA and read by all households. There will be a single message per rule.</note>
+<var><type>double</type><name>avg_performance</name></var>
+	<var>
+		<type>int</type><name>rule_id</name>
+		</var>
+	<var><type>double</type><name>range</name></var>
 <var><type>double</type><name>x</name></var>
 <var><type>double</type><name>y</name></var>
 <var><type>double</type><name>z</name></var>
 </message>
 
 <message>
-<name>ruledetailsystem</name>
-<note>FA adds rule details</note>
-<var><type>double2D_array</type><name>parameters</name></var><!--Mariam: I think parameters here should be a struct for rule details to be sent. !Subject to change!--><!--Sander: actually this should be a 2d-array-->
+<name>rule_details</name>
+<note>FA communicates new rule details. There will be a single message per rule.</note>
+	<var>
+		<type>int</type><name>rule_id</name>
+		</var>
+	<var><type>double</type><name>parameters[10]</name></var>
 	<var><type>double</type><name>range</name></var>
 <var><type>double</type><name>x</name></var>
 <var><type>double</type><name>y</name></var>
