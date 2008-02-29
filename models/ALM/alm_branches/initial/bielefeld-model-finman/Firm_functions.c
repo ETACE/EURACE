@@ -769,7 +769,7 @@ int Firm_calc_revenue()
 	
 	if(DAY%MONTH==DAY_OF_MONTH_TO_ACT)
 	{
-		EARNINGS= CUM_TOTAL_SOLD_QUANTITY*PRICE - COSTS;
+		EARNINGS= CUM_TOTAL_SOLD_QUANTITY*PRICE - PRODUCTION_COSTS;
 		
 		if(EARNINGS >0)
 		{
@@ -989,7 +989,7 @@ int Firm_calc_pay_costs()
 				//UNIT_COSTS=100000.0;
 			}
 			
-			COSTS = capital_costs + labour_costs;
+			PRODUCTION_COSTS = capital_costs + labour_costs;
 		}
 		
 		printf("Production Quantity : %f\n",PRODUCTION_QUANTITY);

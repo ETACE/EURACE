@@ -11,10 +11,10 @@ int Clearinghouse_read_stock_orders()
 {
 	START_STOCK_ORDER_MESSAGE_LOOP 
 		//stock_order_message(trader_id, bond_id, limit_price, limit_quantity, MSGDATA);
-		TRADER_ID = stock_order_message->trader_id
-		STOCK_ID = stock_order_message->stock_id
-		LIMIT_PRICE = stock_order_message->limit_price
-		LIMIT_QUANTITY = stock_order_message->limit_quantity
+		TRADER_ID = stock_order_message->trader_id;
+		STOCK_ID = stock_order_message->stock_id;
+		LIMIT_PRICE = stock_order_message->limit_price;
+		LIMIT_QUANTITY = stock_order_message->limit_quantity;
 	FINISH_STOCK_ORDER_MESSAGE_LOOP
 	
 	return 0;
