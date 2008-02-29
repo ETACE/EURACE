@@ -10,7 +10,8 @@
 void unittest_Clearinghouse_read_stock_orders()
 {
     /************* At start of unit test, add one agent **************/
-	add_Clearinghouse_agent(.......);
+	add_Clearinghouse_agent_internal(init_Clearinghouse_agent());
+	current_xmachine = *p_xmachine;
 
 	/***** Variables: Memory pre-conditions **************************/
 	
@@ -21,7 +22,7 @@ void unittest_Clearinghouse_read_stock_orders()
 	CU_ASSERT_DOUBLE_EQUAL(<var_name1>, <value>, 1e-3);
 	CU_ASSERT_EQUAL(<var_name2>, <value>);
 	
-    /***** Messages send *********************************************/
+    /***** Messages: post-conditions *********************************/
  	START_STOCK_ORDER_MESSAGE_LOOP 
  		//stock_order_message(trader_id, stock_id, limit_price, limit_quantity, MSGDATA);
  		CU_ASSERT_EQUAL(stock_order_message->trader_id, <value>);
@@ -39,7 +40,8 @@ void unittest_Clearinghouse_read_stock_orders()
 void unittest_Clearinghouse_compute_stock_transactions()
 {
     /************* At start of unit test, add one agent **************/
-	add_Clearinghouse_agent(.......);
+	add_Clearinghouse_agent_internal(init_Clearinghouse_agent());
+	current_xmachine = *p_xmachine;
 
 	/***** Variables: Memory pre-conditions **************************/
 	ID=1;
@@ -56,7 +58,7 @@ void unittest_Clearinghouse_compute_stock_transactions()
     
     /***** Variables: Memory post-conditions *************************/
 
-	/***** Messages send *********************************************/
+	/***** Messages: post-conditions *********************************/
  	START_STOCK_ORDER_MESSAGE_LOOP
 		CU_ASSERT_EQUAL(stock_order_message->trader_id, 1);
 		CU_ASSERT_EQUAL(stock_order_message->stock_id, 2);
@@ -73,7 +75,8 @@ void unittest_Clearinghouse_compute_stock_transactions()
 void unittest_Clearinghouse_send_stock_transactions()
 {
     /************* At start of unit test, add one agent **************/
-	add_Clearinghouse_agent(.......);
+	add_Clearinghouse_agent_internal(init_Clearinghouse_agent());
+	current_xmachine = *p_xmachine;
 
 	/***** Variables: Memory pre-conditions **************************/
 	ID=1;
@@ -89,7 +92,7 @@ void unittest_Clearinghouse_send_stock_transactions()
 	//CU_ASSERT_DOUBLE_EQUAL(<var_name1>, <value>, 1e-3);
 	//CU_ASSERT_EQUAL(<var_name2>, <value>);
 	
-    /***** Messages send *********************************************/
+    /***** Messages: post-conditions *********************************/
  	START_STOCK_TRANSACTION_MESSAGE_LOOP 
  		//stock_transaction_message(trader_id, stock_id, limit_price, limit_quantity, MSGDATA);
  		CU_ASSERT_EQUAL(stock_transaction_message->trader_id, 2);
