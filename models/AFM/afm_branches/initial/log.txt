@@ -473,5 +473,17 @@ Sander, rev 549
 	TODO ewa_learning/model.xml: Merging ruledetailsystem into classifiersystem struct
 		Planned after we get the IPD example running (already uses the integrated form).
 --------------------------------------------------------------------------------------
-
-		
+Sander, rev 593
+	AFM/afm_branches/initial/ewa_learning/model-ewa.xml:
+		simplified to only include EWA related functions
+	TODO: 
+			- merging ruledetailsystem into classifiersystem struct
+		  	- classifier_rule as a struct
+			- classifiersystem as a dynamic array of classifier_rules
+--------------------------------------------------------------------------------------
+Sander, rev 594
+	AFM/afm_branches/initial/ewa_learning/model-ewa.xml:
+			- merged ruledetailsystem into classifiersystem struct
+		  	- implemented classifier_rule as a struct
+			- implemented classifiersystem as a dynamic array of classifier_rules
+--------------------------------------------------------------------------------------

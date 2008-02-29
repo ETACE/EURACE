@@ -45,7 +45,6 @@
 <!-- All variables used by firm are declared here to allocate them in memory -->
 <memory>
 
-
 <!---Role: Financial management role-->
 
 <!----------------- Firm_compute_income_statement ---------------------------------------->
@@ -53,26 +52,19 @@
 <var><type>double</type><name>payment_account</name></var>
 
 <!----------------- Firm_compute_balance_sheet ---------------------------------------->
-<var><type>debt_item_dynamic_array</type><name>loans</name></var>
+<var><type>double</type><name>earnings</name></var>
+<var><type>double</type><name>tax_rate_corporate</name></var>
+<var><type>double</type><name>tax_payment</name></var>
+<var><type>double</type><name>net_earnings</name></var>
+<var><type>double</type><name>previous_net_earnings</name></var>
+<var><type>debt_item_array</type><name>loans</name></var>
 <var><type>double</type><name>total_interest_payment</name></var>
 <var><type>double</type><name>total_debt_installment_payment</name></var>
-<var><type>double</type><name>earnings</name></var>
-<var><type>double</type><name>tax_payment</name></var>
-<var><type>double</type><name>tax_rate_corporate</name></var>
-<var><type>double</type><name>previous_net_earnings</name></var>
-<var><type>double</type><name>net_earnings</name></var>
-
-<var><type>double</type><name>current_dividend_per_share</name></var>
-
-<var><type>double</type><name>previous_dividend_per_share</name></var>
 <var><type>double</type><name>total_dividend_payment</name></var>
-<var><type>double</type><name>current_dividend_per_earnings</name></var>
-<var><type>double</type><name>previous_dividend_per_earnings</name></var>
-
-<var><type>capital_stock_item_dynamic_array</type><name>value_capital_stock</name></var>
+<var><type>capital_stock_item_array</type><name>value_capital_stock</name></var>
 <var><type>double</type><name>total_value_capital_stock</name></var>
 <var><type>double</type><name>total_value_local_inventory</name></var>
-<var><type>double</type><name>equity</name></var>
+<var><type>double</type><name>total_assets</name></var>
 
 <!----------------- Firm_compute_payout_policy ---------------------------------------->
 <var><type>double</type><name>planned_total_interest_payment</name></var>
@@ -84,8 +76,17 @@
 <var><type>double</type><name>internal_financial_needs</name></var>
 <var><type>double</type><name>external_financial_needs</name></var>
 
+<!----------------- Financial variables ---------------------------------------->
+<var><type>double</type><name>current_share_price</name></var>
+<var><type>double</type><name>current_shares_outstanding</name></var>
+<var><type>double</type><name>previous_dividend_per_share</name></var>
+<var><type>double</type><name>current_dividend_per_share</name></var>
+<var><type>double</type><name>previous_dividend_per_earnings</name></var>
+<var><type>double</type><name>current_dividend_per_earnings</name></var>
+
 <!----------------- Ratios ---------------------------------------->
-<var><type>double</type><name>earnings_per_share_ratio</name></var><var><type>double</type><name>debt_per_earnings_ratio</name></var>
+<var><type>double</type><name>earnings_per_share_ratio</name></var>
+<var><type>double</type><name>debt_earnings_ratio</name></var>
 <var><type>double</type><name>price_earnings_ratio</name></var>
 <var><type>double</type><name>retained_earnings_ratio</name></var>
 <var><type>double</type><name>earnings_per_share_ratio_growth</name></var>

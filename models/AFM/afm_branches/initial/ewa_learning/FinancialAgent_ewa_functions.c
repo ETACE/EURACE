@@ -35,45 +35,36 @@ int FinancialAgent_daily_reset_public_classifiersystem()
 /* DEP: FA agent reads the rule_performance_message */  
 /* DEP: FA agent updates the rule_performance in its classifiersystem (for the selected_rule_number)*/
 /* DEP: FA agent responds by sending the performance measures of all the rules*/
-int FinancialAgent_read_rule_performance_message()
+int FinancialAgent_read_rule_performance_and_update_classifiersystem()
 {
       int current_rule;
       double rule_performance;
     
-      rule_performance_message = get_first_rule_performance_message();
-      while(rule_performance_message)
-      {
-        current_rule = rule_performance_message->current_rule;
+
+      START_RULE_PERFORMANCE_MESSAGE
+
+      	current_rule = rule_performance_message->current_rule;
         rule_performance = rule_performance_message->rule_performance;
     
         /* Update rule performance: */
-        FinancialAgent_update_classifiersystem(current_rule, rule_performance);
-        rule_performance_message = get_next_rule_performance_message(rule_performance_message)
-      }
+        //Replace old performance adding new performance: ******CHECK WHEN RESET OCCURS: SHOULD BE DAILY? 
+        CLASSIFIERSYSTEM->array[current_rule]->performance += rule_performance;
+        
+        //Counter update: ******CHECK WHEN RESET OCCURS: SHOULD BE DAILY?
+        CLASSIFIERSYSTEM->array[current_rule]->counter +=1;
+        
+        //Avgperformance update:
+        CLASSIFIERSYSTEM->array[current_rule]->avgperformance = CLASSIFIERSYSTEM->array[current_rule]->avgperformance / CLASSIFIERSYSTEM->array[current_rule]->counter;
 
-   return 0;
- }
- 
- 
-int FinancialAgent_update_classifiersystem(int current_rule, double rule_performance)
-{
-  
-  //Replace old performance adding new performance: ******CHECK WHEN RESET OCCURS: SHOULD BE DAILY? 
-  CLASSIFIERSYSTEM->array[current_rule]->performance += rule_performance;
-  
-  //Counter update: ******CHECK WHEN RESET OCCURS: SHOULD BE DAILY?
-  CLASSIFIERSYSTEM->array[current_rule]->counter +=1;
-  
-  //Avgperformance update:
-  CLASSIFIERSYSTEM->array[current_rule]->avgperformance = CLASSIFIERSYSTEM->array[current_rule]->avgperformance / CLASSIFIERSYSTEM->array[current_rule]->counter;
-    
-  return 0;
+      FINISH_RULE_PERFORMANCE_MESSAGE
+
+   return 0; }
 }
 
 /* int FinancialAgent_send_all_performances_message()
  * Send dynamic array all_performances.
  */
-int FinancialAgent_send_all_performances_message()
+int FinancialAgent_send_all_performances()
 {
     double[] all_performances;
      

@@ -2,7 +2,10 @@
  * \file  unittest.c
  * \brief Holds main function of the unittest program.
  */
+#include "header.h"
+#include <CUnit/Basic.h>
 
+/*************************** unittest prototypes ***************************/
 void unittest_Firm_compute_income_statement();
 void unittest_Firm_compute_balance_sheet();
 void unittest_Firm_compute_payout_policy();
@@ -32,8 +35,12 @@ void unittest_Household_read_transaction_message();
 void unittest_Household_compute_government_bond_orders();
 void unittest_Household_compute_firm_bond_orders();
 
-#include "header.h"
-#include <CUnit/Basic.h>
+void unittest_Clearinghouse_read_stock_orders();
+void unittest_Clearinghouse_compute_stock_transactions();
+void unittest_Clearinghouse_send_stock_transactions();
+
+void unittest_Bank_read_loan_request_send_offers();
+/*************************** end prototypes ***************************/
 
 int init_suite1(void)
 {
@@ -72,8 +79,7 @@ int main(int argc, char * argv[])
     /* add the tests to the suite */
     /* add extra tests using || */
     
-    if( 	
-        
+    if(
     	NULL == CU_add_test(pSuite, "Firm_compute_income_statement", unittest_Firm_compute_income_statement) ||
     	NULL == CU_add_test(pSuite, "Firm_compute_balance_sheet", unittest_Firm_compute_balance_sheet) ||
     	NULL == CU_add_test(pSuite, "Firm_compute_payout_policy", unittest_Firm_compute_payout_policy) ||
@@ -82,7 +88,11 @@ int main(int argc, char * argv[])
         NULL == CU_add_test(pSuite, "Firm_issue_equity", unittest_Firm_issue_equity) ||
         NULL == CU_add_test(pSuite, "Firm_compute_stock_orders", unittest_Firm_compute_stock_orders) ||
         NULL == CU_add_test(pSuite, "Firm_compute_bond_orders", unittest_Firm_compute_bond_orders) ||
-        NULL == CU_add_test(pSuite, "Firm_update_outstanding_shares", unittest_Firm_update_outstanding_shares))
+        NULL == CU_add_test(pSuite, "Firm_update_outstanding_shares", unittest_Firm_update_outstanding_shares) || 
+    	NULL == CU_add_test(pSuite, "Clearinghouse_read_stock_orders", unittest_Clearinghouse_read_stock_orders) ||
+    	NULL == CU_add_test(pSuite, "Clearinghouse_compute_stock_transactions", unittest_Clearinghouse_compute_stock_transactions) ||
+    	NULL == CU_add_test(pSuite, "Clearinghouse_send_stock_transactions", unittest_Clearinghouse_send_stock_transactions) ||
+    	NULL == CU_add_test(pSuite, "Bank_read_loan_request_send_offers", unittest_Bank_read_loan_request_send_offers))
     {
         CU_cleanup_registry();
         return CU_get_error();

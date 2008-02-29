@@ -6,7 +6,7 @@
 <date>191207</date>
 
 <!--************************* NOTES ***************************************-->
-<!--This is the main description file for the Household financial management role-->
+<!--This is the main description file for the financial management role of Firm and Household-->
 <!--TODO: integrate with other xml files for credit and financial market roles from UG and UPM-->
 
 <!--***************** Environment values and functions **********************-->
@@ -466,12 +466,9 @@
 </message>
 
 <!--asset market context-->
-
-
-
 <message>
 <name>stock_order</name>
-<note>Added by trader after asset portfolio calculated</note>
+<note>Added by trader</note>
 <var><type>int</type><name>trader_id</name></var>
 <var><type>int</type><name>stock_id</name></var>
 <var><type>double</type><name>limit_price</name></var>
@@ -497,14 +494,16 @@
 <name>bond_order</name>
 <note>Added by trader</note>
 <var><type>int</type><name>trader_id</name></var>
-
-<var><type>int</type><name>bond_id</name></var><var><type>double</type><name>limit_price</name></var>
+<var><type>int</type><name>bond_id</name></var>
+<var><type>double</type><name>limit_price</name></var>
 <var><type>double</type><name>limit_quantity</name></var>
 <var><type>double</type><name>range</name></var>
 <var><type>double</type><name>x</name></var>
 <var><type>double</type><name>y</name></var>
 <var><type>double</type><name>z</name></var>
-</message><message>
+</message>
+
+<message>
 <name>bond_transaction</name>
 <note>Added by clearinghouse</note>
 <var><type>int</type><name>trader_id</name></var>
@@ -515,7 +514,9 @@
 <var><type>double</type><name>x</name></var>
 <var><type>double</type><name>y</name></var>
 <var><type>double</type><name>z</name></var>
-</message><message>
+</message>
+
+<message>
 <name>gov_bond_order</name>
 <note>Added by trader</note>
 <var><type>int</type><name>trader_id</name></var>
@@ -540,12 +541,6 @@
 <var><type>double</type><name>y</name></var>
 <var><type>double</type><name>z</name></var>
 </message>
-
-
-
-
-
-
 
 </messages>
 <!--********************** End of Messages **********************************-->

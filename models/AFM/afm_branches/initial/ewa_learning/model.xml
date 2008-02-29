@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 
 <xmachine_agent_model>
-<name>Financial Market Model</name>
-<author>Eurace</author>
-<date>010607</date>
+<name>Financial Market Model: EWA learning module</name>
+<author>Sander van der Hoog</author>
+<date>010607, 280208</date>
 
 <!--************************* NOTES ***************************************-->
-<!--This is the main description file for the financial market model-->
+<!--This is the main description file for the financial market model, EWA learning module-->
 <!-- Agents involved: Household, FinancialAgent, Firm, Bank, ClearingHouse Mechanism, LimitOrderBook, Government-->
 <!--13/11/07 Adding structures to the model.xml-->
 <!--05/02/08 TODO ewa_learning: Merging ruledetailsystem into classifiersystem struct-->
@@ -15,7 +15,7 @@
 <environment>
 <functions>
 <file>Household_ewa_functions.c</file>
-<file>ClearingHouseMechanism_ewa_functions.c</file>
+<file>Clearinghouse_ewa_functions.c</file>
 <file>FinancialAgent_ewa_functions.c</file>
 <file>mylibraryfunctions.c</file>
 </functions>

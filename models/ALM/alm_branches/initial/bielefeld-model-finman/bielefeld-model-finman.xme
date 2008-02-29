@@ -449,12 +449,47 @@
    </XDataType>
    <XDataType>
     <id>2007122518040762617180904</id>
-    <name>loan_item</name>
-    <description>Datatype is a struct that holds attributes for a new loan:&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-- bank_id at which the loan was obtained&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-- value of the loan&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-- interest rate&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-- amount of debt installment payments&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+    <name>debt_item</name>
+    <description>Datatype is a struct that holds attributes for a new loan:
+
+
+
+
+
+
+
+- bank_id at which the loan was obtained
+
+
+
+
+
+
+
+- value of the loan
+
+
+
+
+
+
+
+- interest rate
+
+
+
+
+
+
+
+- amount of debt installment payments
+
+
+
+
+
+
+
 - nr of installments (periods) to go before maturity</description>
     <fields>
      <XDTField>
@@ -498,9 +533,9 @@
    <XDataType>
     <id>2007122518071218217180904</id>
     <name>capital_stock_item</name>
-    <description>Datatype is a struct for new capital_stock_items:&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-- double current_value&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-- double depreciation_value_per_period&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+    <description>Datatype is a struct for new capital_stock_items:&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+- double current_value&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+- double depreciation_value_per_period&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
 - int nr_periods_before_total_depreciation</description>
     <fields>
      <XDTField>
@@ -841,7 +876,7 @@
     </XMemVar>
     <XMemVar>
      <id>452</id>
-     <type>loan_item_dynamic_array</type>
+     <type>debt_item_array</type>
      <name>loans</name>
      <initForm></initForm>
      <description></description>
@@ -869,7 +904,7 @@
     </XMemVar>
     <XMemVar>
      <id>468</id>
-     <type>capital_stock_item_dynamic_array</type>
+     <type>capital_stock_item_array</type>
      <name>value_capital_stock</name>
      <initForm></initForm>
      <description></description>
@@ -1031,12 +1066,40 @@
     <XMemVar>
      <id>478</id>
      <type>double</type>
-     <name>posx</name>
+     <name>target_loans</name>
      <initForm></initForm>
      <description></description>
     </XMemVar>
     <XMemVar>
      <id>479</id>
+     <type>double</type>
+     <name>target_equity</name>
+     <initForm></initForm>
+     <description></description>
+    </XMemVar>
+    <XMemVar>
+     <id></id>
+     <type>double</type>
+     <name>bonds_issue_target</name>
+     <initForm></initForm>
+     <description></description>
+    </XMemVar>
+    <XMemVar>
+     <id></id>
+     <type>double</type>
+     <name>stocks_issue_target</name>
+     <initForm></initForm>
+     <description></description>
+    </XMemVar>
+    <XMemVar>
+     <id></id>
+     <type>double</type>
+     <name>posx</name>
+     <initForm></initForm>
+     <description></description>
+    </XMemVar>
+    <XMemVar>
+     <id></id>
      <type>double</type>
      <name>posy</name>
      <initForm></initForm>
@@ -1238,12 +1301,12 @@
       <XFunction>
        <id>20071212130334067137176352</id>
        <name>Firm_calc_input_demands_2</name>
-       <description>This is second round of the calc input demands. &#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-Re-planning of:&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
- - labor force&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
- - investment good demand&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-Sends msg. to:&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
- - labor market&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+       <description>This is second round of the calc input demands. &#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+Re-planning of:&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+ - labor force&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+ - investment good demand&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+Sends msg. to:&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+ - labor market&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
  - investment market</description>
        <code></code>
        <funcDeps>
@@ -1272,28 +1335,28 @@ Sends msg. to:&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
       <XFunction>
        <id>20071212164355110137176352</id>
        <name>Firm_calc_production_quantity_2</name>
-       <description>This function starts with the following condition:&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-(external_financial_needs==0)&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-0: run re-planning of production_quantity&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+       <description>This function starts with the following condition:&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+(external_financial_needs==0)&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+0: run re-planning of production_quantity&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
 1: exit</description>
-       <code>int Firm_calc_production_quantity_2()&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-{&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-	if (external_financial_needs==0)&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-	{&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-		//In this case nothing is done and we finish&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-		return 0;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-	}&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-	if (external_financial_needs!=0)&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-	{&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-		//Code as is now in Firm_functons.c:&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-		//fn: Firm_calc_production_quantity_2()&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-	}&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-	return 0;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-}&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+       <code>int Firm_calc_production_quantity_2()&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+{&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+	if (external_financial_needs==0)&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+	{&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+		//In this case nothing is done and we finish&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+		return 0;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+	}&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+	if (external_financial_needs!=0)&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+	{&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+		//Code as is now in Firm_functons.c:&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+		//fn: Firm_calc_production_quantity_2()&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+	}&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+	return 0;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+}&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
 </code>
        <funcDeps>
         <id>20071213111322727138107392</id>
@@ -2238,12 +2301,12 @@ Sends msg. to:&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
       <XFunction>
        <id>20071213144708132138130464</id>
        <name>Clearinghouse_read_asset_orders</name>
-       <description>Clearing house reads all asset orders: &#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-- firm_stock_order messages&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-- firm_bond_order messages&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-- government_bond_order messages&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-All these are loaded into memory variables to be processed later by the function&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+       <description>Clearing house reads all asset orders: &#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+- firm_stock_order messages&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+- firm_bond_order messages&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+- government_bond_order messages&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+All these are loaded into memory variables to be processed later by the function&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
 Clearinghouse_compute_transactions.</description>
        <code></code>
        <funcDeps/>
@@ -2259,9 +2322,9 @@ Clearinghouse_compute_transactions.</description>
       <XFunction>
        <id>20071213144916476138130464</id>
        <name>Clearinghouse_send_asset_transactions</name>
-       <description>Clearinghouse sends transaction messages for all assets:&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-- firm_stock_transaction messages&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-- firm_bond_transaction messages&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+       <description>Clearinghouse sends transaction messages for all assets:&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+- firm_stock_transaction messages&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+- firm_bond_transaction messages&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
 - government_bond_transaction messages.</description>
        <code></code>
        <funcDeps>
@@ -4205,19 +4268,19 @@ Clearinghouse_compute_transactions.</description>
        <type>int</type>
        <name>stock_id</name>
        <description></description>
-      </XMsgVar><XMsgVar>
+      </XMsgVar>
+      <XMsgVar>
        <id>488</id>
        <type>double</type>
        <name>limit_price</name>
        <description></description>
-      </XMsgVar><XMsgVar>
+      </XMsgVar>
+      <XMsgVar>
        <id>487</id>
        <type>int</type>
        <name>limit_quantity</name>
        <description></description>
       </XMsgVar>
-      
-      
       <XMsgVar>
        <id>548</id>
        <type>double</type>
@@ -4260,19 +4323,19 @@ Clearinghouse_compute_transactions.</description>
        <type>int</type>
        <name>stock_id</name>
        <description></description>
-      </XMsgVar><XMsgVar>
+      </XMsgVar>
+      <XMsgVar>
        <id>492</id>
        <type>double</type>
        <name>transaction_price</name>
        <description></description>
-      </XMsgVar><XMsgVar>
+      </XMsgVar>
+      <XMsgVar>
        <id>491</id>
        <type>int</type>
        <name>transaction_quantity</name>
        <description></description>
       </XMsgVar>
-      
-      
       <XMsgVar>
        <id>552</id>
        <type>double</type>
@@ -4315,19 +4378,19 @@ Clearinghouse_compute_transactions.</description>
        <type>int</type>
        <name>corp_bond_id</name>
        <description></description>
-      </XMsgVar><XMsgVar>
+      </XMsgVar>
+      <XMsgVar>
        <id>496</id>
        <type>double</type>
        <name>limit_price</name>
        <description></description>
-      </XMsgVar><XMsgVar>
+      </XMsgVar>
+      <XMsgVar>
        <id>495</id>
        <type>double</type>
        <name>limit_quantity</name>
        <description></description>
       </XMsgVar>
-      
-      
       <XMsgVar>
        <id>556</id>
        <type>double</type>
@@ -4370,19 +4433,19 @@ Clearinghouse_compute_transactions.</description>
        <type>int</type>
        <name>corp_bond_id</name>
        <description></description>
-      </XMsgVar><XMsgVar>
+      </XMsgVar>
+      <XMsgVar>
        <id>500</id>
        <type>double</type>
        <name>limit_price</name>
        <description></description>
-      </XMsgVar><XMsgVar>
+      </XMsgVar>
+      <XMsgVar>
        <id>499</id>
        <type>double</type>
        <name>limit_quantity</name>
        <description></description>
       </XMsgVar>
-      
-      
       <XMsgVar>
        <id>560</id>
        <type>double</type>
@@ -4425,19 +4488,19 @@ Clearinghouse_compute_transactions.</description>
        <type>int</type>
        <name>gov_bond_id</name>
        <description></description>
-      </XMsgVar><XMsgVar>
+      </XMsgVar>
+      <XMsgVar>
        <id>504</id>
        <type>double</type>
        <name>limit_price</name>
        <description></description>
-      </XMsgVar><XMsgVar>
+      </XMsgVar>
+      <XMsgVar>
        <id>503</id>
        <type>double</type>
        <name>limit_quantity</name>
        <description></description>
       </XMsgVar>
-      
-      
       <XMsgVar>
        <id>564</id>
        <type>double</type>
@@ -4480,19 +4543,19 @@ Clearinghouse_compute_transactions.</description>
        <type>int</type>
        <name>gov_bond_id</name>
        <description></description>
-      </XMsgVar><XMsgVar>
+      </XMsgVar>
+      <XMsgVar>
        <id>508</id>
        <type>double</type>
        <name>transaction_price</name>
        <description></description>
-      </XMsgVar><XMsgVar>
+      </XMsgVar>
+      <XMsgVar>
        <id>507</id>
        <type>double</type>
        <name>transaction_quantity</name>
        <description></description>
       </XMsgVar>
-      
-      
       <XMsgVar>
        <id>568</id>
        <type>double</type>
