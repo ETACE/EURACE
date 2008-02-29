@@ -33,5 +33,6 @@ the agents using the 10 weak strategies should change their strategies to the ne
 here we shud just look for the last 10 and just assign new 10 strategies?
 Ans: we dont need to this, because we added the new 10 to the same list of strategies the ids wouyld remain the same for players
 
+add function of array copy of 4 elements - TODO
 
 
