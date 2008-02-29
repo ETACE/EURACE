@@ -25,3 +25,13 @@ strategy list or should we enforce the parents to mutate again and again
 another thing is we have changes the value of the parent in the strategy list, wat if run cross over again
 then the next crossover would take the modifies strategy.. so we need a copy of the original
 parents !!!
+
+29/02/08
+added a function which updates the strategy list maintianing the old 20 parents and just adding the new 10 strategies.
+
+the agents using the 10 weak strategies should change their strategies to the new 10 ones.
+here we shud just look for the last 10 and just assign new 10 strategies?
+Ans: we dont need to this, because we added the new 10 to the same list of strategies the ids wouyld remain the same for players
+
+
+
