@@ -219,6 +219,8 @@
 
 <var><type>int</type><name>id</name></var>
 <var><type>int</type><name>region_id</name></var>
+<var><type>int</type><name>gov_id</name></var>
+<var><type>int</type><name>bank_id</name></var>
 
 <var><type>employee_array</type><name>employees</name></var>
 <var><type>double</type><name>wage_offer</name></var>
@@ -235,7 +237,7 @@
 <var><type>double</type><name>planned_production_quantity</name></var>
 <var><type>double</type><name>production_quantity</name></var>
 <var><type>double</type><name>unit_costs</name></var>
-<var><type>double</type><name>costs</name></var>
+<var><type>double</type><name>production_costs</name></var>
 <var><type>double</type><name>revenue_per_day</name></var>
 <var><type>double</type><name>technological_frontier</name></var>
 <var><type>double</type><name>cum_revenue</name></var>
@@ -264,7 +266,8 @@
 <var><type>double</type><name>ebit</name></var>
 <var><type>double</type><name>payment_account</name></var>
 <!----------------- Firm_compute_balance_sheet ---------------------------------------->
-<var><type>double</type><name>earnings</name></var>
+<!--<var><type>double</type><name>earnings</name></var>-->
+
 <var><type>double</type><name>tax_rate_corporate</name></var>
 <var><type>double</type><name>tax_payment</name></var>
 <var><type>double</type><name>net_earnings</name></var>
@@ -272,6 +275,7 @@
 <var><type>debt_item_array</type><name>loans</name></var>
 <var><type>double</type><name>total_interest_payment</name></var>
 <var><type>double</type><name>total_debt_installment_payment</name></var>
+<var><type>double</type><name>total_debt</name></var>
 <var><type>double</type><name>total_dividend_payment</name></var>
 <var><type>capital_stock_item_array</type><name>value_capital_stock</name></var>
 <var><type>double</type><name>total_value_capital_stock</name></var>
@@ -753,6 +757,11 @@
 <!-- All variables used by clearing house are declared here to allocate them in memory -->
 <memory>
 <var><type>int</type><name>id</name></var>
+<var><type>int</type><name>trader_id</name></var>
+<var><type>int</type><name>stock_id</name></var>
+<var><type>double</type><name>limit_price</name></var>
+<var><type>double</type><name>limit_quantity</name></var>
+
 <var><type>double</type><name>range</name></var>
 <var><type>double</type><name>posx</name></var>
 <var><type>double</type><name>posy</name></var>

@@ -15,8 +15,8 @@ int Firm_compute_income_statement()
     {
         //In the future: if we want to include sales_costs
         //SALES_COSTS = 0;
-        //EBIT = CUM_REVENUES - SALES_COSTS
-        EBIT = CUM_REVENUES; //net revenues = receipts - sales_costs;       
+        //EBIT = CUM_REVENUE - SALES_COSTS
+        EBIT = CUM_REVENUE; //net revenues = receipts - sales_costs;       
         
         //update the cash holdings
         PAYMENT_ACCOUNT += EBIT;

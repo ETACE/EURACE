@@ -291,7 +291,7 @@
 
 <!-- Variables used in functions -->
 <var><type>int</type><name>day_of_month_to_act</name></var>
-<var><type>double</type><name>cum_revenues</name></var>
+<var><type>double</type><name>cum_revenue</name></var>
 <var><type>double</type><name>total_debt</name></var>
 <var><type>int</type><name>current_shares_outstanding</name></var>
 <var><type>int</type><name>id</name></var>

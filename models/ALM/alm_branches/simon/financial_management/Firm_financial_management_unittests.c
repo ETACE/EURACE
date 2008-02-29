@@ -334,11 +334,11 @@ void unittest_Firm_compute_balance_sheet()
 	FINISH_TAX_PAYMENT_MESSAGE_LOOP
 	
  	START_INTEREST_PAYMENT_MESSAGE_LOOP
-		if(debt_installment_payment_message->bank_id==1)
+		if(interest_payment_message->bank_id==1)
 		{
 		 	CU_ASSERT_DOUBLE_EQUAL(interest_payment_message->interest_payment, 4.0, 1e-3);
 		}
-		if(debt_installment_payment_message->bank_id==2)
+		if(interest_payment_message->bank_id==2)
 		{
 		 	CU_ASSERT_DOUBLE_EQUAL(interest_payment_message->interest_payment, 1.0, 1e-3);
 		}
