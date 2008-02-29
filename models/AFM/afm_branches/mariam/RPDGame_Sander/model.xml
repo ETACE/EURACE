@@ -50,6 +50,7 @@
 <var><type>int</type><name>player_id</name></var>
 <var><type>int</type><name>strategy_id</name></var>
 <var><type>int</type><name>previous_move</name></var>
+<var><type>int</type><name>present_state</name></var>
 </datatype>
 
 </environment>
@@ -139,9 +140,9 @@
     <name>strategy_i_use</name>
     <note>This message is posted all agents so that all agents can play the game against each other</note>
     <var><type>int</type><name>player_id</name></var>
-    <var><type>int</type><name>strategy_used</name></var>
+    <var><type>int</type><name>strategy_id</name></var>
     <var><type>int</type><name>previous_move</name></var>
-    <var><type>int</type><name>previous_state</name></var>
+    <var><type>int</type><name>present_state</name></var>
       <var><type>double</type><name>range</name></var>
     <var><type>double</type><name>x</name></var>
     <var><type>double</type><name>y</name></var>
