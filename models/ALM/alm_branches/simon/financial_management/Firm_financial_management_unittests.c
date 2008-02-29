@@ -328,18 +328,35 @@ void unittest_Firm_compute_balance_sheet()
     debt_installment_payment_message(firm_id, bank_id, debt_installment_payment, MSGDATA)
     dividend_payment_message(firm_id, current_dividend_per_share, MSGDATA)
     */
-
- 	START_TAX_PAYMENT_MESSAGE_LOOP 
-    	CU_ASSERT_DOUBLE_EQUAL(tax_payment_message->tax_payment, 10.0, 1e-3);
+    
+ 	START_TAX_PAYMENT_MESSAGE_LOOP
+    	CU_ASSERT_DOUBLE_EQUAL(tax_payment_message->tax_payment, 9.5, 1e-3);
 	FINISH_TAX_PAYMENT_MESSAGE_LOOP
+	
  	START_INTEREST_PAYMENT_MESSAGE_LOOP
-    	CU_ASSERT_DOUBLE_EQUAL(interest_payment_message->interest_payment, 5.0, 1e-3);
+		if(debt_installment_payment_message->bank_id==1)
+		{
+		 	CU_ASSERT_DOUBLE_EQUAL(interest_payment_message->interest_payment, 4.0, 1e-3);
+		}
+		if(debt_installment_payment_message->bank_id==2)
+		{
+		 	CU_ASSERT_DOUBLE_EQUAL(interest_payment_message->interest_payment, 1.0, 1e-3);
+		}
     FINISH_INTEREST_PAYMENT_MESSAGE_LOOP
+    
     START_DEBT_INSTALLMENT_PAYMENT_MESSAGE_LOOP
-    	CU_ASSERT_DOUBLE_EQUAL(debt_installment_payment_message->debt_installment_payment, 70.0, 1e-3);
+    	if(debt_installment_payment_message->bank_id==1)
+    	{
+    		CU_ASSERT_DOUBLE_EQUAL(debt_installment_payment_message->debt_installment_payment, 20.0, 1e-3);
+    	}
+    	if(debt_installment_payment_message->bank_id==2)
+    	{
+    		CU_ASSERT_DOUBLE_EQUAL(debt_installment_payment_message->debt_installment_payment, 50.0, 1e-3);
+    	}
     FINISH_DEBT_INSTALLMENT_PAYMENT_MESSAGE_LOOP
+    
     START_DIVIDEND_PAYMENT_MESSAGE_LOOP
-    	CU_ASSERT_DOUBLE_EQUAL(dividend_payment_message->current_dividend_per_share, 1.0, 1e-3);
+    	CU_ASSERT_DOUBLE_EQUAL(dividend_payment_message->current_dividend_per_share, 85.5/100, 1e-3);
     FINISH_DIVIDEND_PAYMENT_MESSAGE_LOOP
     
     /************* At end of unit test, free the agent **************/
