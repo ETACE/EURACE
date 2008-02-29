@@ -389,7 +389,7 @@ void read_double_dynamic_array(char * buffer, int * j, double_array * double_dyn
 void read_char_dynamic_array(char * buffer, int * j, char_array * char_dynamic_array);
 <?foreach datatype?>
 void init_$name($name * temp);
-void init_$name_static_array($name * temp, int size);
+void init_$name_static_array($name * array, int size);
 void read_$name(char * buffer, int * j, $name * temp_datatype);
 void read_$name_dynamic_array(char * buffer, int * j, $name_array * temp_datatype_array);
 void read_$name_static_array(char * buffer, int * j, $name * temp_datatype_array, int size);
@@ -401,13 +401,14 @@ void readinitialstates(char * filename, int * itno, xmachine ** agent_list, doub
 void saveiterationdata_binary(int iteration_number);
 void saveiterationdata(int iteration_number);
 <?foreach datatype?>
-void free_$name_datatype($name * temp);
-void copy_$name_datatype($name * from, $name * to);
+void free_$name($name * temp);
+void free_$name_static_array($name * array, int size);
+void copy_$name($name * from, $name * to);
 void copy_$name_static_array($name * from, $name * to, int size);<?end foreach?>
 <?foreach xagent?>
 xmachine_memory_$name * init_$name_agent();
 void add_$name_agent_internal(xmachine_memory_$name * current);
-void add_$name_agent(<?foreach xagentvar?>$type <?if dynamic_array?>* <?end if?><?if static_array?>*<?end if?>$name<?if static_array?>[]<?end if?><?if notlast?>, <?end if?><?end foreach?>);<?end foreach?>
+void add_$name_agent(<?foreach xagentvar?>$type <?if dynamic_array?>* <?end if?>$name<?if static_array?>[]<?end if?><?if notlast?>, <?end if?><?end foreach?>);<?end foreach?>
 <?foreach message?>
 void add_$name_message(<?foreach messagevar?>$type $name<?if static_array?>[]<?end if?><?if notlast?>, <?end if?><?end foreach?>);
 xmachine_message_$name * add_$name_message_internal(void);
