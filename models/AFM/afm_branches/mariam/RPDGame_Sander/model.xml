@@ -8,7 +8,7 @@
 <functions>
 <file>GamePlayer_functions.c</file>
 <file>GameSolver_functions.c</file>
-<file>mylibraryfunctions.c</file>
+<file>my_library_functions.c</file>
 </functions>
 
 <!--Structures-->
@@ -69,14 +69,11 @@
 <var><type>double</type><name>iradius</name></var>
 <var><type>double</type><name>posx</name></var>
 <var><type>double</type><name>posy</name></var>
-	
-
 </memory>
+
 <!----------------- Defining functions ---------------------------------------->
 <functions>
 <function><name>post_my_strategy</name></function>
-<function><name>play_game</name>
-<depends><name>post_my_strategy</name><type>internal</type></depends></function>
 </functions>
 </xmachine>
 <!--*********************** End of Agent - GamePlayer *****************************-->
@@ -124,10 +121,14 @@
 </function>
 	
 
-<name>applyGA</name>
-<depends><name>find_optimum_strategies</name>
-<type>internal</type></depends></function>
-	
+<function><name>applyGA</name>
+<depends><name>find_optimum_strategies</name><type>internal</type></depends>
+</function>
+
+<function><name>update_strategies</name>
+<depends><name>applyGA</name><type>internal</type></depends>
+</function>
+
 
 </functions>
 
@@ -135,7 +136,7 @@
 
 <messages>
   <message>
-    <name>startegy_i_use</name>
+    <name>strategy_i_use</name>
     <note>This message is posted all agents so that all agents can play the game against each other</note>
     <var><type>int</type><name>player_id</name></var>
     <var><type>int</type><name>strategy_used</name></var>

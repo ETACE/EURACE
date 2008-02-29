@@ -1,0 +1,20 @@
+digraph dependency_graph {
+	rankdir=BT;
+	size="8,5;"
+	node [shape = rect];
+	
+	/* Functions */
+	update_strategies[height = 0.000000, label = "update_strategies\n(0 lines)"]
+	applyGA[height = 0.000000, label = "applyGA\n(0 lines)"]
+	find_optimum_strategies[height = 0.000000, label = "find_optimum_strategies\n(0 lines)"]
+	actual_game[height = 0.000000, label = "actual_game\n(0 lines)"]
+	ipd_game_within_players[height = 0.000000, label = "ipd_game_within_players\n(0 lines)"]
+	post_my_strategy[height = 0.000000, label = "post_my_strategy\n(0 lines)"]
+	
+	/* Dependencies */
+	update_strategies -> applyGA [ label = "<depends on internal>" ];
+	applyGA -> find_optimum_strategies [ label = "<depends on internal>" ];
+	find_optimum_strategies -> actual_game [ label = "<depends on internal>" ];
+	actual_game -> ipd_game_within_players [ label = "<depends on internal>" ];
+	ipd_game_within_players -> post_my_strategy [ label = "<depends on strategy_i_use>" ];
+}
