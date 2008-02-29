@@ -14,19 +14,19 @@
 #include "mylibraryheader.h"
 
 //FinancialAgent_daily_reset_public_classifiersystem
-//Daily reset of the public classifiersystem, resetting user counter, performance sum, and avgperformance.
+//Daily reset of the public classifiersystem, resetting user counter, performance sum, and avg_performance.
 //This should be run before any rule_performance_messages are being read.
 int FinancialAgent_daily_reset_public_classifiersystem()
 {
     //total number of rules:
-    int NRRULES=CLASSIFIERSYSTEM->nr_rules;
+    int nr_rules=CLASSIFIERSYSTEM->nr_rules;
     
     //Resetting and storing values to memory:
-    for (i=0; i<NRRULES; i++)
+    for (i=0; i<nr_rules; i++)
     {
-        CLASSIFIERSYSTEM->array[i]->counter=0;
-        CLASSIFIERSYSTEM->array[i]->performance=log(pow(10,-5));
-        CLASSIFIERSYSTEM->array[i]->avgperformance=log(pow(10,-5));
+        CLASSIFIERSYSTEM.rule_table.array[i].counter=0;
+        CLASSIFIERSYSTEM.rule_table.array[i].performance=log(pow(10,-5));
+        CLASSIFIERSYSTEM.rule_table.array[i].avg_performance=log(pow(10,-5));
     }
     
   return 0;
@@ -41,71 +41,65 @@ int FinancialAgent_read_rule_performance_and_update_classifiersystem()
       double rule_performance;
     
 
-      START_RULE_PERFORMANCE_MESSAGE
+      START_RULE_PERFORMANCE_MESSAGE_LOOP
 
       	current_rule = rule_performance_message->current_rule;
         rule_performance = rule_performance_message->rule_performance;
     
         /* Update rule performance: */
         //Replace old performance adding new performance: ******CHECK WHEN RESET OCCURS: SHOULD BE DAILY? 
-        CLASSIFIERSYSTEM->array[current_rule]->performance += rule_performance;
+        CLASSIFIERSYSTEM.rule_table.array[current_rule].performance += rule_performance;
         
         //Counter update: ******CHECK WHEN RESET OCCURS: SHOULD BE DAILY?
-        CLASSIFIERSYSTEM->array[current_rule]->counter +=1;
+        CLASSIFIERSYSTEM.rule_table.array[current_rule].counter +=1;
         
         //Avgperformance update:
-        CLASSIFIERSYSTEM->array[current_rule]->avgperformance = CLASSIFIERSYSTEM->array[current_rule]->avgperformance / CLASSIFIERSYSTEM->array[current_rule]->counter;
+        CLASSIFIERSYSTEM.rule_table.array[current_rule].avg_performance = CLASSIFIERSYSTEM.rule_table.array[current_rule].avg_performance / CLASSIFIERSYSTEM.rule_table.array[current_rule].counter;
 
-      FINISH_RULE_PERFORMANCE_MESSAGE
+      FINISH_RULE_PERFORMANCE_MESSAGE_LOOP
 
    return 0; }
 }
 
-/* int FinancialAgent_send_all_performances_message()
- * Send dynamic array all_performances.
+/* int FinancialAgent_send_all_performances()
+ * Send dynamic array with new_performance.
  */
 int FinancialAgent_send_all_performances()
 {
-    double[] all_performances;
-     
-    //Get size of performance array:
-    imax = CLASSIFIERSYSTEM->performance->size;
-
-    //Assign values to dynamic array all_performances to equal the average performances
-    for (i=0;i<imax;i++)
+	int i;
+	
+    //Send the average performance of each rule
+    for (i=0;i<CLASSIFIERSYSTEM.nr_rules;i++)
     {
-        all_performances[i] = CLASSIFIERSYSTEM->array[i]->avgperformance;
+        add_new_performances_message(i, CLASSIFIERSYSTEM.rule_table.array[i].avg_performance, range, x, y, z);
     }
     
-    //Send the message containing the dynamic array
-    add_all_performances_message(all_performances, range, x, y, z);
-     
   return 0;
 }
 
-int FinancialAgent_update_ruledetailsystem()
+int FinancialAgent_apply_GA()
 {
     //<!--Date-event triggered: every 100 days run the GA-->
+	if(DAY%MONTH == DAY_OF_MONTH_TO_ACT)
+	{
+		//GA CODE HERE
+
+		
+	}
+
     return 0;
 }
-
-//-Date-event triggered: every 100 days run the GA
-int FinancialAgent_updateGA()
+//FinancialAgent_send_rule_details()
+//Function to send rule_details updates.
+int FinancialAgent_send_rule_details()
 {
-    return 0;
-}
-//FinancialAgent_send_ruledetailsystem_message()
-//Function to send ruledetailsystem updates.
-int FinancialAgent_send_ruledetailsystem_message()
-{
-    //Send a message containing the entire ruledetailsystem:
-    //--> commenting the follwing line: another message sent out at the end of this fn
-    //add_ruledetailsystem_message(RULEDETAILSYSTEM, range, x, y, z);
-
-    //Alternative: we only need to send the double2D_array 
-    //RULEDETAILSYSTEM->parameters
-    double** parameters = RULEDETAILSYSTEM->parameters;
-    add_ruledetailsystem_message(parameters, range, x, y, z);
+	int i;
+	
+	//Send new rule details in a rule_details_messsage
+	for (i=0;i<CLASSIFIERSYSTEM.nr_rules;i++)
+	{
+		add_rule_details_messsage(i, CLASSIFIERSYSTEM.rule_table.array[i].parameters, MSGDATA);
+	}
         
     return 0;
 }
@@ -113,14 +107,14 @@ int FinancialAgent_send_ruledetailsystem_message()
 int FinancialAgent_reset_public_classifiersystem()
 {
     //total number of rules:
-    int NRRULES=CLASSIFIERSYSTEM->nr_rules;
+    int nr_rules=CLASSIFIERSYSTEM->nr_rules;
     
     //Resetting and storing values to memory:
-    for (i=0; i<NRRULES; i++)
+    for (i=0; i<nr_rules; i++)
     {
-        CLASSIFIERSYSTEM->array[i]->counter=0;
-        CLASSIFIERSYSTEM->array[i]->performance=log(pow(10,-5));
-        CLASSIFIERSYSTEM->array[i]->avgperformance=log(pow(10,-5));
+        CLASSIFIERSYSTEM.rule_table.array[i].counter=0;
+        CLASSIFIERSYSTEM.rule_table.array[i].performance=log(pow(10,-5));
+        CLASSIFIERSYSTEM.rule_table.array[i].avg_performance=log(pow(10,-5));
     }
 
     return 0;

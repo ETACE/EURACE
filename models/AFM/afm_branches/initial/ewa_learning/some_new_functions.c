@@ -105,7 +105,6 @@ int initialize_ruledetailsystem()
 			//add_double(parameters[i][j], param_value);
 		}		
 
-		//********** REDUNDANT CODE: execution_function = portfolio_strategy_<ruletype>(parameters)
 		//We set the field 'rule_execution':
 		//First possibility: we test which function name the rule has
 		j=CLASSIFIERSYSTEM->array[i]->rule_type;
@@ -136,17 +135,22 @@ int initialize_ruledetailsystem()
 }
 
 
-// *********** BEGIN AUXILIARY FUNCTIONS ****************************
+//*********** BEGIN AUXILIARY FUNCTIONS ****************************
 
-//double sum(double * p)
+
+//double sum(double * p, int size)
 //Sum of elements of a vector p.
-double sum(double * p)
+//
+//USAGE:
+//Before calling:
+//double * p;
+//int size
+double sum(double * p, int size)
 {
 	int i;
-	int imax=p->size;
 	double sum=0.0;
 	
-	for (i=0;i<imax;i++)
+	for (i=0;i<size;i++)
 	{
 		sum+=p[i];
 	}	
@@ -154,61 +158,86 @@ double sum(double * p)
     return sum;
 }
 
-//double * cumsum(double * p)
-//Cumulative sum of elements of a vector p.
+//\brief: Cumulative sum of elements of a vector p.
+//\fn: cumsum(double * p, int size, double * cumsum)
+//Call: cumsum(p, size, cumsum);
+//
+//USAGE:
+//Before calling:
+//double * p;
+//double * cumsum;
+//int size;
+//cumsum = malloc(sizeof((double)*size);
+//Call: cumsum(p, size, cumsum);
+//After calling:
+//free(cumsum);
+//
 //UNIT TEST:
 //Input: p={0.6 0.2 0.8 0.4}
 //cumsum = cumsum(p);
 //Outcome: cumsum={0.6 0.8 1.6 2.0}
-double * cumsum(double * p)
+void cumsum(double * p, int size, double * cumsum)
 {
-	int i;
-	//int imax=p->size;
-	int imax=10;//testing
+	//Before calling this function you need to have done:
+	//cumsum = malloc(sizeof((double)*size);
 
-	double cumsum[imax];
+	int i;
 	
 	//Cummulative sum
 	cumsum[0]=p[0];
-	for (i=0;i<imax-2;i++)
+	for (i=0;i<size-2;i++)
 	{
 		cumsum[i+1]=cumsum[i]+p[i+1];
 	}
-	cumsum[imax-1]=cumsum[imax-2]+p[imax-1];
-	
-    return (&cumsum); //CHECK: is this proper way of returning the address of the start of array cumsum?
+	cumsum[size-1]=cumsum[size-2]+p[size-1];
 }
 
 //double * cumpdf(int N, double * p)
 //Cummulative probability density function.
-//N: number of elements
 //p: probability vector (can be non-scaled, i.e. probabilities need not add to 1).
+//size: number of elements
 //Given a vector of probabilities p, the cumulative pdf is given by
 //the normalized values in the cummulative sum:
 //  cpdf = cumsum(p)/sum(p);
+//
+//USAGE:
+//Before calling:
+//double * p;
+//double * cpdf;
+//int size;
+//cpdf = malloc(sizeof((double)*size);
+//Call: cumpdf(p, size, cumpdf);
+//After calling:
+//free(cpdf);
+//
 //UNIT TEST:
 //Input: p={0.6 0.2 0.8 0.4}
-//cpdf = cumpdf(p);
+//cpdf = malloc(sizeof((double)*size);
+//cumpdf(p, 4, cpdf);
 //Outcome: cpdf={0.3 0.4 0.8 1.0}
-double * cumpdf(int N, double * p)
+//free(cpdf);
+void cumpdf(double * p, int size, double * cpdf)
 {
-	int i;
-	int imax=N;
+	//Before calling this function you need to have done:
+	//cpdf = malloc(sizeof((double)*size);
 	
-	double sum_p = sum(p);
-	double cumsum_p[imax];	
-	double cpdf[imax];
-
-	//The cumulative sum is:
-	(*cumsum_p) = cumsum(p);
+	int i;
+	double sum_p;		//this is the sum of p
+	double * cumsum_p;	//this is the cumulative sum of p	
+	
+	cumsum_p = malloc(sizeof((double)*size);
+	
+	//The sum is passed to sum_p:
+	sum_p = sum(p, size);
+	
+	//The cumulative sum is passed to cumsum_p:
+	cumsum(p, size, cumsum_p);
     
 	//The cumulative pdf is:
-	for (i=0;i<imax;i++)
+	for (i=0;i<size;i++)
 	{    	
-     	cpdf[i] = cumsum[i]/sum_p;
-	}
-	
-    return (&cpdf); //CHECK: is this proper way of returning the address of the start of array?
+     	cpdf[i] = cumsum_p[i]/sum_p;
+	}	
 }
 
 //int draw(int N, double * cpdf)
