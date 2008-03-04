@@ -79,22 +79,32 @@ void unittest_Household_compute_asset_budget()
 
 }
 
-void unittest_Household_compute_firm_stock_orders()
+void unittest_Household_compute_and_send_stock_orders()
 {
 
 }
 
-void unittest_Household_read_transaction_message()
+void unittest_Household_read_stock_transactions()
 {
 
 }
 
-void unittest_Household_compute_government_bond_orders()
+void unittest_Household_compute_and_send_bond_orders()
 {
 
 }
 
-void unittest_Household_compute_firm_bond_orders()
+void unittest_Household_read_bond_transactions()
+{
+
+}
+
+void unittest_Household_compute_and_send_gov_bond_orders()
+{
+
+}
+
+void unittest_Household_read_gov_bond_transactions()
 {
 
 }

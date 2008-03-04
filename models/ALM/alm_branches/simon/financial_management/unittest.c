@@ -8,7 +8,13 @@
 /*************************** unittest prototypes ***************************/
 void unittest_Firm_compute_income_statement();
 void unittest_Firm_compute_balance_sheet();
-void unittest_Firm_compute_payout_policy();
+
+void unittest1_Firm_compute_payout_policy();
+void unittest2_Firm_compute_payout_policy();
+void unittest3_Firm_compute_payout_policy();
+void unittest4_Firm_compute_payout_policy();
+void unittest5_Firm_compute_payout_policy();
+
 void unittest_Firm_apply_for_loans();
 void unittest_Firm_read_loan_offers_send_loan_acceptance();
 void unittest_Firm_issue_equity();
@@ -82,7 +88,11 @@ int main(int argc, char * argv[])
     if(
     	NULL == CU_add_test(pSuite, "Firm_compute_income_statement", unittest_Firm_compute_income_statement) ||
     	NULL == CU_add_test(pSuite, "Firm_compute_balance_sheet", unittest_Firm_compute_balance_sheet)  ||
-    	NULL == CU_add_test(pSuite, "Firm_compute_payout_policy", unittest_Firm_compute_payout_policy)  ||
+    	NULL == CU_add_test(pSuite, "Firm_compute_payout_policy, External financing: case 1", unittest1_Firm_compute_payout_policy)  ||
+    	NULL == CU_add_test(pSuite, "Firm_compute_payout_policy, External financing: case 2", unittest2_Firm_compute_payout_policy)  ||
+    	NULL == CU_add_test(pSuite, "Firm_compute_payout_policy, External financing: case 3", unittest3_Firm_compute_payout_policy)  ||
+    	NULL == CU_add_test(pSuite, "Firm_compute_payout_policy, External financing: case 4", unittest4_Firm_compute_payout_policy)  ||
+    	NULL == CU_add_test(pSuite, "Firm_compute_payout_policy, External financing: case 5", unittest5_Firm_compute_payout_policy)  ||
     	NULL == CU_add_test(pSuite, "Firm_apply_for_loans", unittest_Firm_apply_for_loans) ||
         NULL == CU_add_test(pSuite, "Firm_read_loan_offers_send_loan_acceptance", unittest_Firm_read_loan_offers_send_loan_acceptance) ||
     	NULL == CU_add_test(pSuite, "Bank_read_loan_request_send_offers", unittest_Bank_read_loan_request_send_offers))

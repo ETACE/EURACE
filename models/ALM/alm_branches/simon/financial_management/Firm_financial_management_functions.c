@@ -331,33 +331,116 @@ int Firm_compute_payout_policy()
         PLANNED_TOTAL_DIVIDEND_PAYMENT = PREVIOUS_DIVIDEND_PER_SHARE*CURRENT_SHARES_OUTSTANDING;
     }
 */  
-    //step 12: set financial_needs for the upcoming production cycle
-    //The total production costs (costs = labor_costs + capital_costs) come from the function Firm_calc_pay_costs
-    TOTAL_FINANCIAL_NEEDS = PLANNED_TOTAL_INTEREST_PAYMENT + PLANNED_TOTAL_DEBT_INSTALLMENT_PAYMENT + PLANNED_TOTAL_DIVIDEND_PAYMENT + PRODUCTION_COSTS;
-    //printf("\n Checking: TOTAL_FINANCIAL_NEEDS=%f+%f+%f+%f=%f \n", PLANNED_TOTAL_INTEREST_PAYMENT, PLANNED_TOTAL_DEBT_INSTALLMENT_PAYMENT, PLANNED_TOTAL_DIVIDEND_PAYMENT, PRODUCTION_COSTS, TOTAL_FINANCIAL_NEEDS);
+    //step 12A:
+    PLANNED_CUM_REVENUE = PRICE*PLANNED_PRODUCTION_QUANTITY;
     
-    //Check if external financing is needed.
-    
-    if (PAYMENT_ACCOUNT>0)
+    //step 12B: set direct and delayed financial_needs for the upcoming production cycle
+    DIRECT_FINANCIAL_NEEDS = PRODUCTION_COSTS;
+    DELAYED_FINANCIAL_NEEDS = PLANNED_TOTAL_INTEREST_PAYMENT + PLANNED_TOTAL_DEBT_INSTALLMENT_PAYMENT + PLANNED_TOTAL_DIVIDEND_PAYMENT;
+
+    //step 12C:
+    //Check if additional external financing is required for total financial needs (direct payable and delayed payable)    
+    TOTAL_FINANCIAL_NEEDS =  DIRECT_FINANCIAL_NEEDS + DELAYED_FINANCIAL_NEEDS;
+
+/*
+    //step 12D:
+    //Check if external financing is needed
+    //We use external financing only if it is needed to pay DIRECT_FINANCIAL_NEEDS or DELAYED_FINANCIAL_NEEDS  
+    if (PAYMENT_ACCOUNT>=0)
     {
-    	//printf("\n Checking: TOTAL_FINANCIAL_NEEDS < PAYMENT_ACCOUNT \n", TOTAL_FINANCIAL_NEEDS, PAYMENT_ACCOUNT);
-	    if (TOTAL_FINANCIAL_NEEDS < PAYMENT_ACCOUNT)
-	    {
-	        INTERNAL_FINANCIAL_NEEDS = TOTAL_FINANCIAL_NEEDS;
-	        EXTERNAL_FINANCIAL_NEEDS = 0;
-	    }
-	    else
-	        {
-	            INTERNAL_FINANCIAL_NEEDS = PAYMENT_ACCOUNT;
-	            EXTERNAL_FINANCIAL_NEEDS = TOTAL_FINANCIAL_NEEDS - PAYMENT_ACCOUNT;
-	        }
+        //printf("\n Checking: TOTAL_FINANCIAL_NEEDS < PAYMENT_ACCOUNT \n", TOTAL_FINANCIAL_NEEDS, PAYMENT_ACCOUNT);
+        if (PAYMENT_ACCOUNT >= DIRECT_FINANCIAL_NEEDS)
+        {
+            //The payment_account is sufficient to finance direct payments:
+            //INTERNAL_FINANCIAL_NEEDS = DIRECT_FINANCIAL_NEEDS;
+            //EXTERNAL_FINANCIAL_NEEDS = 0;
+
+            //Check the delayed payments:
+            if (DELAYED_FINANCIAL_NEEDS >  (PAYMENT_ACCOUNT+PLANNED_CUM_REVENUE-DIRECT_FINANCIAL_NEEDS))
+            {
+            	INTERNAL_FINANCIAL_NEEDS = DIRECT_FINANCIAL_NEEDS;
+                EXTERNAL_FINANCIAL_NEEDS = DELAYED_FINANCIAL_NEEDS - (PAYMENT_ACCOUNT+PLANNED_CUM_REVENUE-DIRECT_FINANCIAL_NEEDS);
+            }
+            else //Delayed payments do not need to be financed
+            {   
+            	INTERNAL_FINANCIAL_NEEDS = DIRECT_FINANCIAL_NEEDS + DELAYED_FINANCIAL_NEEDS;
+                EXTERNAL_FINANCIAL_NEEDS = 0;                   
+            }
+
+        }
+        else //Direct payments need to be financed
+        {
+            //Use up all of the payment_account and try to obtain the rest externally:
+            INTERNAL_FINANCIAL_NEEDS = PAYMENT_ACCOUNT;
+            
+            //Check the delayed payments:
+            if (DELAYED_FINANCIAL_NEEDS >  (PAYMENT_ACCOUNT+PLANNED_CUM_REVENUE-DIRECT_FINANCIAL_NEEDS))
+            {
+                EXTERNAL_FINANCIAL_NEEDS = DIRECT_FINANCIAL_NEEDS + DELAYED_FINANCIAL_NEEDS - (PAYMENT_ACCOUNT + PLANNED_CUM_REVENUE);
+            }
+            else //Delayed payments do not need to be financed, only direct payments financed
+            {                   
+                EXTERNAL_FINANCIAL_NEEDS = DIRECT_FINANCIAL_NEEDS - PAYMENT_ACCOUNT;                    
+            }
+        }
     }
-	else //Here: negative payment_account needs to be financed as well by a bank credit
-	        {
-				//printf("\n Checking: payment_account is negative due to dividend payment, this needs to be financed by credit or equity.\n");
-				//printf("\n PAYMENT_ACCOUNT=%f\n", PAYMENT_ACCOUNT);
-				EXTERNAL_FINANCIAL_NEEDS = TOTAL_FINANCIAL_NEEDS - PAYMENT_ACCOUNT;
-	        }
+    else
+    {
+         //Here: Code should never be executed. It would mean the firm prints its own money, spending more than its cash holdings and credit lines! 
+         //Negative payment_account needs to be financed as well as direct and delayed financial needs:
+         printf("\n Checking: payment_account is negative, this needs to be financed by credit or equity.\n");
+         printf("\n PAYMENT_ACCOUNT=%f, DIRECT_FINANCIAL_NEEDS = %f\n", PAYMENT_ACCOUNT, DIRECT_FINANCIAL_NEEDS);
+         EXTERNAL_FINANCIAL_NEEDS = DIRECT_FINANCIAL_NEEDS + DELAYED_FINANCIAL_NEEDS - PAYMENT_ACCOUNT;
+    }
+*/    
+
+    //step 12D: Equivalent to code above
+    //Check if external financing is needed
+
+    //CASE 1: No external financing needed
+        if (PAYMENT_ACCOUNT >= (DIRECT_FINANCIAL_NEEDS + DELAYED_FINANCIAL_NEEDS))
+        {
+            //printf("Firm_compute_payout_policy, External financing: case 1.");
+        	INTERNAL_FINANCIAL_NEEDS = DIRECT_FINANCIAL_NEEDS + DELAYED_FINANCIAL_NEEDS;
+            EXTERNAL_FINANCIAL_NEEDS = 0;                   
+        }
+        
+    //CASE 2: No external financing needed: direct is paid by payment account, delayed is paid by (payment - direct + cum_revenues)
+        if ( (PAYMENT_ACCOUNT >= DIRECT_FINANCIAL_NEEDS)
+            &&((PAYMENT_ACCOUNT - DIRECT_FINANCIAL_NEEDS + PLANNED_CUM_REVENUE) >= DELAYED_FINANCIAL_NEEDS)
+            &&(PAYMENT_ACCOUNT < (DIRECT_FINANCIAL_NEEDS + DELAYED_FINANCIAL_NEEDS)) )
+        {
+            //printf("Firm_compute_payout_policy, External financing: case 2.");
+        	INTERNAL_FINANCIAL_NEEDS = DIRECT_FINANCIAL_NEEDS + DELAYED_FINANCIAL_NEEDS;
+            EXTERNAL_FINANCIAL_NEEDS = 0;            
+        } 
+        
+    //CASE 3: External financing needed for direct payments, not for delayed payments
+        if ( (PAYMENT_ACCOUNT < DIRECT_FINANCIAL_NEEDS) &&
+             ((PAYMENT_ACCOUNT - DIRECT_FINANCIAL_NEEDS + PLANNED_CUM_REVENUE) >= DELAYED_FINANCIAL_NEEDS))
+        {
+            //printf("Firm_compute_payout_policy, External financing: case 3.");
+            INTERNAL_FINANCIAL_NEEDS = PAYMENT_ACCOUNT;
+            EXTERNAL_FINANCIAL_NEEDS = DIRECT_FINANCIAL_NEEDS - PAYMENT_ACCOUNT;
+        }
+                
+    //CASE 4: External financing needed for delayed payments, not for direct payments
+        if ( (PAYMENT_ACCOUNT >= DIRECT_FINANCIAL_NEEDS) &&
+             ((PAYMENT_ACCOUNT - DIRECT_FINANCIAL_NEEDS + PLANNED_CUM_REVENUE) < DELAYED_FINANCIAL_NEEDS))
+        {
+            //printf("Firm_compute_payout_policy, External financing: case 4.");
+        	INTERNAL_FINANCIAL_NEEDS = DIRECT_FINANCIAL_NEEDS;
+            EXTERNAL_FINANCIAL_NEEDS = DELAYED_FINANCIAL_NEEDS - (PAYMENT_ACCOUNT+PLANNED_CUM_REVENUE-DIRECT_FINANCIAL_NEEDS);
+        }
+        
+    //CASE 5: External financing is needed to pay for both the direct and delayed payments
+        if ( (PAYMENT_ACCOUNT < DIRECT_FINANCIAL_NEEDS) &&
+             ((PAYMENT_ACCOUNT - DIRECT_FINANCIAL_NEEDS + PLANNED_CUM_REVENUE) < DELAYED_FINANCIAL_NEEDS))
+        {
+            //printf("Firm_compute_payout_policy, External financing: case 5.");
+            INTERNAL_FINANCIAL_NEEDS = PAYMENT_ACCOUNT;
+            EXTERNAL_FINANCIAL_NEEDS = DIRECT_FINANCIAL_NEEDS + DELAYED_FINANCIAL_NEEDS - (PAYMENT_ACCOUNT + PLANNED_CUM_REVENUE);            
+        }
     
     //printf("\n Checking: INTERNAL_FINANCIAL_NEEDS=%f\n", INTERNAL_FINANCIAL_NEEDS);
     //printf("\n Checking: EXTERNAL_FINANCIAL_NEEDS=%f\n", EXTERNAL_FINANCIAL_NEEDS);
@@ -373,10 +456,10 @@ int Firm_compute_payout_policy()
  */
 int Firm_apply_for_loans()
 {
-	/*TESTING*/
-	int bank_id=2;
-	
-	//add_loan_request_message(firm_id, bank_id, external_financial_needs, total_assets, total_debt, MSGDATA);
+    /*TESTING*/
+    int bank_id=2;
+    
+    //add_loan_request_message(firm_id, bank_id, external_financial_needs, total_assets, total_debt, MSGDATA);
       add_loan_request_message(ID, bank_id, EXTERNAL_FINANCIAL_NEEDS, TOTAL_ASSETS, TOTAL_DEBT, MSGDATA);
 
    return 0;
@@ -388,20 +471,20 @@ int Firm_apply_for_loans()
  */
 int Firm_read_loan_offers_send_loan_acceptance()
 {
-	START_LOAN_CONDITIONS_MESSAGE_LOOP
-		if(loan_conditions_message->firm_id==ID)
-		{
-			//loan_conditions_message(bank_id, firm_id, proposed_interest_rate, amount_credit_offer, MSGDATA);
-			//loan_conditions_message->proposed_interest_rate;
-			//loan_conditions_message->amount_credit_offer;
-			
-			//Now send out an acceptance message: the firm always accepts the credit offered by bank 2
-			//add_loan_acceptance_message(firm_id, bank_id, credit_amount_taken, MSGDATA);
-			add_loan_acceptance_message(ID, loan_conditions_message->bank_id, loan_conditions_message->amount_credit_offer, MSGDATA);
-		}
-	FINISH_LOAN_CONDITIONS_MESSAGE_LOOP
+    START_LOAN_CONDITIONS_MESSAGE_LOOP
+        if(loan_conditions_message->firm_id==ID)
+        {
+            //loan_conditions_message(bank_id, firm_id, proposed_interest_rate, amount_credit_offer, MSGDATA);
+            //loan_conditions_message->proposed_interest_rate;
+            //loan_conditions_message->amount_credit_offer;
+            
+            //Now send out an acceptance message: the firm always accepts the credit offered by bank 2
+            //add_loan_acceptance_message(firm_id, bank_id, credit_amount_taken, MSGDATA);
+            add_loan_acceptance_message(ID, loan_conditions_message->bank_id, loan_conditions_message->amount_credit_offer, MSGDATA);
+        }
+    FINISH_LOAN_CONDITIONS_MESSAGE_LOOP
 
-	return 0;
+    return 0;
 }
 
 /*
@@ -415,8 +498,8 @@ int Firm_compute_and_send_bond_orders()
     double limit_price=1.0;
     double limit_quantity=1.0;
     
-	add_bond_order_message(ID, bond_id, limit_price, limit_quantity, MSGDATA);
-	
+    add_bond_order_message(ID, bond_id, limit_price, limit_quantity, MSGDATA);
+    
     return 0;
 }
 
@@ -426,17 +509,16 @@ int Firm_compute_and_send_bond_orders()
  */
 int Firm_read_bond_transactions()
 {
-	START_BOND_TRANSACTION_MESSAGE_LOOP
-	if(bond_transaction_message->trader_id==ID)
-	{
-		//bond_transaction_message->bond_id
-		//bond_transaction_message->limit_price
-		//bond_transaction_message->limit_quantity
-	}
-	FINISH_BOND_TRANSACTION_MESSAGE_LOOP
+    START_BOND_TRANSACTION_MESSAGE_LOOP
+    if(bond_transaction_message->trader_id==ID)
+    {
+        //bond_transaction_message->bond_id
+        //bond_transaction_message->limit_price
+        //bond_transaction_message->limit_quantity
+    }
+    FINISH_BOND_TRANSACTION_MESSAGE_LOOP
     return 0;
 }
-
 
 /*
  * \fn: Firm_compute_and_send_stock_orders()
@@ -463,13 +545,46 @@ int Firm_compute_and_send_stock_orders()
  */
 int Firm_read_stock_transactions()
 {
-	START_STOCK_TRANSACTION_MESSAGE_LOOP
-	if(stock_transaction_message->trader_id==ID)
-	{
-		//stock_transaction_message->stock_id
-		//stock_transaction_message->limit_price
-		//stock_transaction_message->limit_quantity
-	}
-	FINISH_STOCK_TRANSACTION_MESSAGE_LOOP
+    START_STOCK_TRANSACTION_MESSAGE_LOOP
+    if(stock_transaction_message->trader_id==ID)
+    {
+        //stock_transaction_message->stock_id
+        //stock_transaction_message->limit_price
+        //stock_transaction_message->limit_quantity
+    }
+    FINISH_STOCK_TRANSACTION_MESSAGE_LOOP
+    return 0;
+}
+
+/*
+ * \fn: Firm_compute_and_send_bond_orders()
+ * \brief: This function computes the firm's gov_bond orders and sends a gov_bond_order_message to the clearinghouse.
+ */
+int Firm_compute_and_send_gov_bond_orders()
+{
+    /*TESTING*/
+    int gov_bond_id=1;
+    double limit_price=1.0;
+    double limit_quantity=1.0;
+    
+    add_gov_bond_order_message(ID, gov_bond_id, limit_price, limit_quantity, MSGDATA);
+    
+    return 0;
+}
+
+/*
+ * \fn: Firm_read_gov_bond_transactions()
+ * \brief: This function reads a gov_bond_transaction_message from the clearinghouse, and updates the firm's trading account.
+ */
+int Firm_read_gov_bond_transactions()
+{
+    START_GOV_BOND_TRANSACTION_MESSAGE_LOOP
+    if(gov_bond_transaction_message->trader_id==ID)
+    {
+        //gov_bond_transaction_message->bond_id;
+        //gov_bond_transaction_message->limit_price;
+        //gov_bond_transaction_message->limit_quantity;
+    }
+    FINISH_GOV_BOND_TRANSACTION_MESSAGE_LOOP
     return 0;
 }
