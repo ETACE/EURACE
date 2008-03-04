@@ -62,10 +62,11 @@ void process_strategy_i_use_message(xmachine_message_strategy_i_use * current)
 			{
 				p_strategy_i_use_message = &node_info->strategy_i_use_messages;
 				temp_send_message = add_strategy_i_use_message_internal();
+				
 				temp_send_message->player_id = current->player_id;
-				temp_send_message->strategy_used = current->strategy_used;
+				temp_send_message->strategy_id = current->strategy_id;
 				temp_send_message->previous_move = current->previous_move;
-				temp_send_message->previous_state = current->previous_state;
+				temp_send_message->present_state = current->present_state;
 				temp_send_message->range = current->range;
 				temp_send_message->x = current->x;
 				temp_send_message->y = current->y;
@@ -78,41 +79,32 @@ void process_strategy_i_use_message(xmachine_message_strategy_i_use * current)
 	}
 }
 
-/** \fn void add_strategy_i_use_message(int player_id, int strategy_used, int previous_move, int previous_state, double range, double x, double y, double z)
+/** \fn void add_strategy_i_use_message(int player_id, int strategy_id, int previous_move, int present_state, double range, double x, double y, double z)
  * \brief Add strategy_i_use message by calling internal and processing.
  * \param player_id Message variable.
- * \param strategy_used Message variable.
+ * \param strategy_id Message variable.
  * \param previous_move Message variable.
- * \param previous_state Message variable.
+ * \param present_state Message variable.
  * \param range Message variable.
  * \param x Message variable.
  * \param y Message variable.
  * \param z Message variable.
  */
-void add_strategy_i_use_message(int player_id, int strategy_used, int previous_move, int previous_state, double range, double x, double y, double z)
+void add_strategy_i_use_message(int player_id, int strategy_id, int previous_move, int present_state, double range, double x, double y, double z)
 {
 
 	p_strategy_i_use_message = &current_node->strategy_i_use_messages;
 	xmachine_message_strategy_i_use * tmp = add_strategy_i_use_message_internal();
 	
 	tmp->player_id = player_id;
-	tmp->strategy_used = strategy_used;
+	tmp->strategy_id = strategy_id;
 	tmp->previous_move = previous_move;
-	tmp->previous_state = previous_state;
+	tmp->present_state = present_state;
 	tmp->range = range;
 	tmp->x = x;
 	tmp->y = y;
 	tmp->z = z;
 	
-/*	tmp->player_id = player_id;
-	tmp->strategy_used = strategy_used;
-	tmp->previous_move = previous_move;
-	tmp->previous_state = previous_state;
-	tmp->range = range;
-	tmp->x = x;
-	tmp->y = y;
-	tmp->z = z;
-*/	
 	/* Check if agent in halo region */
 	process_strategy_i_use_message(tmp);
 }

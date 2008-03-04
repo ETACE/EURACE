@@ -19,7 +19,7 @@ for same players calculate the average of the payoff of the games
 
 28/02/08
 create dummy children for parent mating
-whta if the probablity is to not mate.. then do we take the original parents in the 
+what if the probablity is to not mate.. then do we take the original parents in the 
 strategy list or should we enforce the parents to mutate again and again
 
 another thing is we have changes the value of the parent in the strategy list, wat if run cross over again
@@ -27,7 +27,7 @@ then the next crossover would take the modifies strategy.. so we need a copy of 
 parents !!!
 
 29/02/08
-added a function which updates the strategy list maintianing the old 20 parents and just adding the new 10 strategies.
+added a function which updates the strategy list maintaining the old 20 parents and just adding the new 10 strategies.
 
 the agents using the 10 weak strategies should change their strategies to the new 10 ones.
 here we shud just look for the last 10 and just assign new 10 strategies?
@@ -35,4 +35,16 @@ Ans: we dont need to this, because we added the new 10 to the same list of strat
 
 add function of array copy of 4 elements - TODO
 
+4/3/08
+If we only need the state to be represented as 4 bits when we need to apply GA on it then we dont need to 
+define the states as array of 4 elements. We can define it as an int and just convert it to array of 4 elements 
+when we need to do the GA.
 
+add the strategy unique id bit in startegy list. instead of relying on position in the array list
+
+remove calculation of strategy performance from optimum function and 
+combined it with the playGame function.
+all the strategy performance is recorded in the strategy list.
+the function optimum function is now only to sort the strategy list according to performance.
+
+write a sorting function which sorts the strategy_list according to performance. TODO

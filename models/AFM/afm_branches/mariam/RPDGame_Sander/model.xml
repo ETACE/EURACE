@@ -17,10 +17,10 @@
 
 <datatype>
 <name>strategy_state</name>
-<var><type>int</type><name>starting_state[4]</name></var>
+<var><type>int</type><name>starting_state</name></var>
 <var><type>int</type><name>state_name</name></var>
-<var><type>int</type><name>state_ifcooperate[4]</name></var>
-<var><type>int</type><name>state_ifdefect[4]</name></var>
+<var><type>int</type><name>state_ifcooperate</name></var>
+<var><type>int</type><name>state_ifdefect</name></var>
 </datatype>
 
 <datatype>
@@ -36,7 +36,9 @@
 
 <datatype>
 <name>complete_strategy</name>
+<var><type>int</type><name>strategy_unique_id</name></var>
 <var><type>strategy_state_array</type><name>strategy_path</name></var>
+<var><type>double</type><name>strategy_performance</name></var>
 </datatype>
 
 <datatype>

@@ -200,14 +200,11 @@ void read_double_dynamic_array(char * buffer, int * j, double_array * double_dyn
  */
 void read_char_dynamic_array(char * buffer, int * j, char_array * char_dynamic_array)
 {
-	while(buffer[(*j)] != '\0')
+	while(buffer[(*j)] != '\0' && buffer[(*j)] != ',' && buffer[(*j)] != '}')
 	{
-	
 		add_char(char_dynamic_array, buffer[(*j)]);
 		(*j)++;
 	}
-	
-	(*j)++;
 }
 
 
@@ -263,11 +260,14 @@ void read_strategy_state_dynamic_array(char * buffer, int * j, strategy_state_ar
 	
 	(*j)++;
 	
-	while(buffer[(*j)] != '\0')
+	while(buffer[(*j)] != '\0' && buffer[(*j)] != '}')
 	{
-		add_strategy_state(temp_datatype_array, NULL, 0, NULL, NULL);
-		read_strategy_state(buffer, j, &(*temp_datatype_array).array[arraycount]);
-		arraycount++;
+		if(buffer[(*j)] == '{')
+		{
+			add_strategy_state(temp_datatype_array, NULL, 0, NULL, NULL);
+			read_strategy_state(buffer, j, &(*temp_datatype_array).array[arraycount]);
+			arraycount++;
+		}
 		while(buffer[(*j)] != '{' && buffer[(*j)] != '\0') { (*j)++; }
 	}
 	
@@ -313,11 +313,14 @@ void read_payoff_elements_dynamic_array(char * buffer, int * j, payoff_elements_
 	
 	(*j)++;
 	
-	while(buffer[(*j)] != '\0')
+	while(buffer[(*j)] != '\0' && buffer[(*j)] != '}')
 	{
-		add_payoff_elements(temp_datatype_array, NULL);
-		read_payoff_elements(buffer, j, &(*temp_datatype_array).array[arraycount]);
-		arraycount++;
+		if(buffer[(*j)] == '{')
+		{
+			add_payoff_elements(temp_datatype_array, NULL);
+			read_payoff_elements(buffer, j, &(*temp_datatype_array).array[arraycount]);
+			arraycount++;
+		}
 		while(buffer[(*j)] != '{' && buffer[(*j)] != '\0') { (*j)++; }
 	}
 	
@@ -378,11 +381,14 @@ void read_strategy_data_dynamic_array(char * buffer, int * j, strategy_data_arra
 	
 	(*j)++;
 	
-	while(buffer[(*j)] != '\0')
+	while(buffer[(*j)] != '\0' && buffer[(*j)] != '}')
 	{
-		add_strategy_data(temp_datatype_array, 0, 0.0);
-		read_strategy_data(buffer, j, &(*temp_datatype_array).array[arraycount]);
-		arraycount++;
+		if(buffer[(*j)] == '{')
+		{
+			add_strategy_data(temp_datatype_array, 0, 0.0);
+			read_strategy_data(buffer, j, &(*temp_datatype_array).array[arraycount]);
+			arraycount++;
+		}
 		while(buffer[(*j)] != '{' && buffer[(*j)] != '\0') { (*j)++; }
 	}
 	
@@ -425,11 +431,14 @@ void read_complete_strategy_dynamic_array(char * buffer, int * j, complete_strat
 	
 	(*j)++;
 	
-	while(buffer[(*j)] != '\0')
+	while(buffer[(*j)] != '\0' && buffer[(*j)] != '}')
 	{
-		add_complete_strategy(temp_datatype_array, NULL);
-		read_complete_strategy(buffer, j, &(*temp_datatype_array).array[arraycount]);
-		arraycount++;
+		if(buffer[(*j)] == '{')
+		{
+			add_complete_strategy(temp_datatype_array, NULL);
+			read_complete_strategy(buffer, j, &(*temp_datatype_array).array[arraycount]);
+			arraycount++;
+		}
 		while(buffer[(*j)] != '{' && buffer[(*j)] != '\0') { (*j)++; }
 	}
 	
@@ -472,11 +481,14 @@ void read_columns_dynamic_array(char * buffer, int * j, columns_array * temp_dat
 	
 	(*j)++;
 	
-	while(buffer[(*j)] != '\0')
+	while(buffer[(*j)] != '\0' && buffer[(*j)] != '}')
 	{
-		add_columns(temp_datatype_array, NULL);
-		read_columns(buffer, j, &(*temp_datatype_array).array[arraycount]);
-		arraycount++;
+		if(buffer[(*j)] == '{')
+		{
+			add_columns(temp_datatype_array, NULL);
+			read_columns(buffer, j, &(*temp_datatype_array).array[arraycount]);
+			arraycount++;
+		}
 		while(buffer[(*j)] != '{' && buffer[(*j)] != '\0') { (*j)++; }
 	}
 	
@@ -531,7 +543,7 @@ void read_player_list_element(char * buffer, int * j, player_list_element * temp
 	(*j)++;
 	(*temp_datatype).previous_move = 0;
 	array_k = 0;
-	while(buffer[*j] != '}')
+	while(buffer[*j] != ',')
 	{
 		arraydata[array_k] = buffer[*j];
 		array_k++;
@@ -539,6 +551,17 @@ void read_player_list_element(char * buffer, int * j, player_list_element * temp
 	}
 	arraydata[array_k] = 0;
 	(*temp_datatype).previous_move = atoi(arraydata);
+	(*j)++;
+	(*temp_datatype).present_state = 0;
+	array_k = 0;
+	while(buffer[*j] != '}')
+	{
+		arraydata[array_k] = buffer[*j];
+		array_k++;
+		(*j)++;
+	}
+	arraydata[array_k] = 0;
+	(*temp_datatype).present_state = atoi(arraydata);
 	(*j)++;
 }
 
@@ -548,11 +571,14 @@ void read_player_list_element_dynamic_array(char * buffer, int * j, player_list_
 	
 	(*j)++;
 	
-	while(buffer[(*j)] != '\0')
+	while(buffer[(*j)] != '\0' && buffer[(*j)] != '}')
 	{
-		add_player_list_element(temp_datatype_array, 0, 0, 0);
-		read_player_list_element(buffer, j, &(*temp_datatype_array).array[arraycount]);
-		arraycount++;
+		if(buffer[(*j)] == '{')
+		{
+			add_player_list_element(temp_datatype_array, 0, 0, 0, 0);
+			read_player_list_element(buffer, j, &(*temp_datatype_array).array[arraycount]);
+			arraycount++;
+		}
 		while(buffer[(*j)] != '{' && buffer[(*j)] != '\0') { (*j)++; }
 	}
 	
@@ -775,7 +801,7 @@ void readinitialstates(char * filename, int * itno, xmachine ** agent_list, doub
 				
 				if(in_agent && !in_memory && !in_functions)
 				{
-					printf("in agent: %s\n", agentname);
+					/*printf("in agent: %s\n", agentname);*/
 					if(strcmp(agentname, "GamePlayer") == 0)
 					{
 						current_GamePlayer_agent = init_GamePlayer_agent();
@@ -1145,7 +1171,7 @@ void saveiterationdata_binary(int iteration_number)
 {
 	/* Pointer to file */
 	FILE *file;
-	char data[100];
+	char data[1000];
 	int i;
 	int agentcount = 0;
 	xmachine_memory_GamePlayer * current_GamePlayer;
@@ -1201,7 +1227,7 @@ void saveiterationdata_binary(int iteration_number)
 void write_int_static_array(FILE *file, int * temp, int size)
 {
 	int i;
-	char data[100];
+	char data[1000];
 	
 	fputs("{", file);
 	for(i=0; i<size; i++)
@@ -1219,7 +1245,7 @@ void write_int_static_array(FILE *file, int * temp, int size)
 void write_float_static_array(FILE *file, float * temp, int size)
 {
 	int i;
-	char data[100];
+	char data[1000];
 	
 	fputs("{", file);
 	for(i=0; i<size; i++)
@@ -1237,7 +1263,7 @@ void write_float_static_array(FILE *file, float * temp, int size)
 void write_double_static_array(FILE *file, double * temp, int size)
 {
 	int i;
-	char data[100];
+	char data[1000];
 	
 	for(i=0; i<size; i++)
 	{
@@ -1254,7 +1280,7 @@ void write_double_static_array(FILE *file, double * temp, int size)
 void write_char_static_array(FILE *file, char * temp, int size)
 {
 	int i;
-	char data[100];
+	char data[1000];
 	
 	//fputs("{", file);
 	for(i=0; i<size; i++)
@@ -1272,7 +1298,7 @@ void write_char_static_array(FILE *file, char * temp, int size)
 void write_int_dynamic_array(FILE *file, int_array * temp)
 {
 	int i;
-	char data[100];
+	char data[1000];
 	
 	fputs("{", file);
 	for(i=0; i<(*temp).size; i++)
@@ -1290,7 +1316,7 @@ void write_int_dynamic_array(FILE *file, int_array * temp)
 void write_float_dynamic_array(FILE *file, float_array * temp)
 {
 	int i;
-	char data[100];
+	char data[1000];
 	
 	fputs("{", file);
 	for(i=0; i<(*temp).size; i++)
@@ -1308,7 +1334,7 @@ void write_float_dynamic_array(FILE *file, float_array * temp)
 void write_double_dynamic_array(FILE *file, double_array * temp)
 {
 	int i;
-	char data[100];
+	char data[1000];
 	
 	fputs("{", file);
 	for(i=0; i<(*temp).size; i++)
@@ -1326,7 +1352,7 @@ void write_double_dynamic_array(FILE *file, double_array * temp)
 void write_char_dynamic_array(FILE *file, char_array * temp)
 {
 	int i;
-	char data[100];
+	char data[1000];
 	
 	for(i=0; i<(*temp).size; i++)
 	{
@@ -1340,7 +1366,7 @@ void write_char_dynamic_array(FILE *file, char_array * temp)
  */
 void write_strategy_state(FILE *file, strategy_state * temp_datatype)
 {
-	char data[100];
+	char data[1000];
 	
 	fputs("{", file);
 	write_int_static_array(file, (*temp_datatype).starting_state, 4);
@@ -1424,7 +1450,7 @@ void write_payoff_elements_dynamic_array(FILE *file, payoff_elements_array * tem
  */
 void write_strategy_data(FILE *file, strategy_data * temp_datatype)
 {
-	char data[100];
+	char data[1000];
 	
 	fputs("{", file);
 	sprintf(data, "%i", (*temp_datatype).strategy_id);
@@ -1547,7 +1573,7 @@ void write_columns_dynamic_array(FILE *file, columns_array * temp_datatype)
  */
 void write_player_list_element(FILE *file, player_list_element * temp_datatype)
 {
-	char data[100];
+	char data[1000];
 	
 	fputs("{", file);
 	sprintf(data, "%i", (*temp_datatype).player_id);
@@ -1555,6 +1581,8 @@ void write_player_list_element(FILE *file, player_list_element * temp_datatype)
 	fputs(", ", file);	sprintf(data, "%i", (*temp_datatype).strategy_id);
 	fputs(data, file);
 	fputs(", ", file);	sprintf(data, "%i", (*temp_datatype).previous_move);
+	fputs(data, file);
+	fputs(", ", file);	sprintf(data, "%i", (*temp_datatype).present_state);
 	fputs(data, file);
 	fputs("}", file);
 }
@@ -1597,7 +1625,7 @@ void saveiterationdata(int iteration_number)
 {
 	/* Pointer to file */
 	FILE *file;
-	char data[100];
+	char data[1000];
 	xmachine_memory_GamePlayer * current_GamePlayer;
 	xmachine_memory_GameSolver * current_GameSolver;
 	//int_array * automata_id;

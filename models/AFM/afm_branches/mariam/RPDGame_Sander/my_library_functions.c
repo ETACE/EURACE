@@ -17,6 +17,15 @@ int state_unique_value(int * state_array)
 }
 
 //function for array copy
+void array_element_copy(int * arrayFrom, int * arrayTo)
+{
+	int i,size;
+	size=arrayFrom.size;
+	for(i=0;i<size;i++)
+	{
+		arrayTo[i]=arrayFrom[i];
+	}
+}
 
 //random number between two numbers
 int random_unif_dist(int a,int b)

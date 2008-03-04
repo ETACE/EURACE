@@ -99,9 +99,9 @@ typedef struct double_array double_array;
 typedef struct char_array char_array;
 
 /** \struct strategy_state
- * \brief À>.
+ * \brief à>.
  *
- * À>.
+ * à>.
  */
 struct strategy_state
 {
@@ -131,9 +131,9 @@ typedef struct strategy_state strategy_state;
  */
 typedef struct strategy_state_array strategy_state_array;
 /** \struct payoff_elements
- * \brief >.
+ * \brief 0>.
  *
- * >.
+ * 0>.
  */
 struct payoff_elements
 {
@@ -160,9 +160,9 @@ typedef struct payoff_elements payoff_elements;
  */
 typedef struct payoff_elements_array payoff_elements_array;
 /** \struct strategy_data
- * \brief  >.
+ * \brief èjI.
  *
- *  >.
+ * èjI.
  */
 struct strategy_data
 {
@@ -190,9 +190,9 @@ typedef struct strategy_data strategy_data;
  */
 typedef struct strategy_data_array strategy_data_array;
 /** \struct complete_strategy
- * \brief àjI.
+ * \brief èjI.
  *
- * àjI.
+ * èjI.
  */
 struct complete_strategy
 {
@@ -219,9 +219,9 @@ typedef struct complete_strategy complete_strategy;
  */
 typedef struct complete_strategy_array complete_strategy_array;
 /** \struct columns
- * \brief àjI.
+ * \brief èjI.
  *
- * àjI.
+ * èjI.
  */
 struct columns
 {
@@ -248,15 +248,16 @@ typedef struct columns columns;
  */
 typedef struct columns_array columns_array;
 /** \struct player_list_element
- * \brief àjI.
+ * \brief èjI.
  *
- * àjI.
+ * èjI.
  */
 struct player_list_element
 {
 	int player_id;	/**< Datatype memory variable player_id of type int. */
 	int strategy_id;	/**< Datatype memory variable strategy_id of type int. */
 	int previous_move;	/**< Datatype memory variable previous_move of type int. */
+	int present_state;	/**< Datatype memory variable present_state of type int. */
 };
 
 /** \struct player_list_element_array
@@ -333,9 +334,9 @@ struct xmachine
 struct xmachine_message_strategy_i_use
 {
 	int player_id;	/**< Message memory variable player_id of type int. */
-	int strategy_used;	/**< Message memory variable strategy_used of type int. */
+	int strategy_id;	/**< Message memory variable strategy_id of type int. */
 	int previous_move;	/**< Message memory variable previous_move of type int. */
-	int previous_state;	/**< Message memory variable previous_state of type int. */
+	int present_state;	/**< Message memory variable present_state of type int. */
 	double range;	/**< Message memory variable range of type double. */
 	double x;	/**< Message memory variable x of type double. */
 	double y;	/**< Message memory variable y of type double. */
@@ -526,7 +527,7 @@ void init_player_list_element_array(player_list_element_array * array);
 void reset_player_list_element_array(player_list_element_array * array);
 void free_player_list_element_array(player_list_element_array * array);
 void copy_player_list_element_array(player_list_element_array * from, player_list_element_array * to);
-void add_player_list_element(player_list_element_array * array, int player_id, int strategy_id, int previous_move);
+void add_player_list_element(player_list_element_array * array, int player_id, int strategy_id, int previous_move, int present_state);
 void remove_player_list_element(player_list_element_array * array, int index);
 
 
@@ -576,7 +577,7 @@ void read_double_dynamic_array(char * buffer, int * j, double_array * double_dyn
 void read_char_dynamic_array(char * buffer, int * j, char_array * char_dynamic_array);
 
 void init_strategy_state(strategy_state * temp);
-void init_strategy_state_static_array(strategy_state * temp, int size);
+void init_strategy_state_static_array(strategy_state * array, int size);
 void read_strategy_state(char * buffer, int * j, strategy_state * temp_datatype);
 void read_strategy_state_dynamic_array(char * buffer, int * j, strategy_state_array * temp_datatype_array);
 void read_strategy_state_static_array(char * buffer, int * j, strategy_state * temp_datatype_array, int size);
@@ -584,7 +585,7 @@ void write_strategy_state(FILE *file, strategy_state * temp_datatype);
 void write_strategy_state_static_array(FILE *file, strategy_state * temp_datatype, int size);
 void write_strategy_state_dynamic_array(FILE *file, strategy_state_array * temp_datatype);
 void init_payoff_elements(payoff_elements * temp);
-void init_payoff_elements_static_array(payoff_elements * temp, int size);
+void init_payoff_elements_static_array(payoff_elements * array, int size);
 void read_payoff_elements(char * buffer, int * j, payoff_elements * temp_datatype);
 void read_payoff_elements_dynamic_array(char * buffer, int * j, payoff_elements_array * temp_datatype_array);
 void read_payoff_elements_static_array(char * buffer, int * j, payoff_elements * temp_datatype_array, int size);
@@ -592,7 +593,7 @@ void write_payoff_elements(FILE *file, payoff_elements * temp_datatype);
 void write_payoff_elements_static_array(FILE *file, payoff_elements * temp_datatype, int size);
 void write_payoff_elements_dynamic_array(FILE *file, payoff_elements_array * temp_datatype);
 void init_strategy_data(strategy_data * temp);
-void init_strategy_data_static_array(strategy_data * temp, int size);
+void init_strategy_data_static_array(strategy_data * array, int size);
 void read_strategy_data(char * buffer, int * j, strategy_data * temp_datatype);
 void read_strategy_data_dynamic_array(char * buffer, int * j, strategy_data_array * temp_datatype_array);
 void read_strategy_data_static_array(char * buffer, int * j, strategy_data * temp_datatype_array, int size);
@@ -600,7 +601,7 @@ void write_strategy_data(FILE *file, strategy_data * temp_datatype);
 void write_strategy_data_static_array(FILE *file, strategy_data * temp_datatype, int size);
 void write_strategy_data_dynamic_array(FILE *file, strategy_data_array * temp_datatype);
 void init_complete_strategy(complete_strategy * temp);
-void init_complete_strategy_static_array(complete_strategy * temp, int size);
+void init_complete_strategy_static_array(complete_strategy * array, int size);
 void read_complete_strategy(char * buffer, int * j, complete_strategy * temp_datatype);
 void read_complete_strategy_dynamic_array(char * buffer, int * j, complete_strategy_array * temp_datatype_array);
 void read_complete_strategy_static_array(char * buffer, int * j, complete_strategy * temp_datatype_array, int size);
@@ -608,7 +609,7 @@ void write_complete_strategy(FILE *file, complete_strategy * temp_datatype);
 void write_complete_strategy_static_array(FILE *file, complete_strategy * temp_datatype, int size);
 void write_complete_strategy_dynamic_array(FILE *file, complete_strategy_array * temp_datatype);
 void init_columns(columns * temp);
-void init_columns_static_array(columns * temp, int size);
+void init_columns_static_array(columns * array, int size);
 void read_columns(char * buffer, int * j, columns * temp_datatype);
 void read_columns_dynamic_array(char * buffer, int * j, columns_array * temp_datatype_array);
 void read_columns_static_array(char * buffer, int * j, columns * temp_datatype_array, int size);
@@ -616,7 +617,7 @@ void write_columns(FILE *file, columns * temp_datatype);
 void write_columns_static_array(FILE *file, columns * temp_datatype, int size);
 void write_columns_dynamic_array(FILE *file, columns_array * temp_datatype);
 void init_player_list_element(player_list_element * temp);
-void init_player_list_element_static_array(player_list_element * temp, int size);
+void init_player_list_element_static_array(player_list_element * array, int size);
 void read_player_list_element(char * buffer, int * j, player_list_element * temp_datatype);
 void read_player_list_element_dynamic_array(char * buffer, int * j, player_list_element_array * temp_datatype_array);
 void read_player_list_element_static_array(char * buffer, int * j, player_list_element * temp_datatype_array, int size);
@@ -628,23 +629,29 @@ void readinitialstates(char * filename, int * itno, xmachine ** agent_list, doub
 void saveiterationdata_binary(int iteration_number);
 void saveiterationdata(int iteration_number);
 
-void free_strategy_state_datatype(strategy_state * temp);
-void copy_strategy_state_datatype(strategy_state * from, strategy_state * to);
+void free_strategy_state(strategy_state * temp);
+void free_strategy_state_static_array(strategy_state * array, int size);
+void copy_strategy_state(strategy_state * from, strategy_state * to);
 void copy_strategy_state_static_array(strategy_state * from, strategy_state * to, int size);
-void free_payoff_elements_datatype(payoff_elements * temp);
-void copy_payoff_elements_datatype(payoff_elements * from, payoff_elements * to);
+void free_payoff_elements(payoff_elements * temp);
+void free_payoff_elements_static_array(payoff_elements * array, int size);
+void copy_payoff_elements(payoff_elements * from, payoff_elements * to);
 void copy_payoff_elements_static_array(payoff_elements * from, payoff_elements * to, int size);
-void free_strategy_data_datatype(strategy_data * temp);
-void copy_strategy_data_datatype(strategy_data * from, strategy_data * to);
+void free_strategy_data(strategy_data * temp);
+void free_strategy_data_static_array(strategy_data * array, int size);
+void copy_strategy_data(strategy_data * from, strategy_data * to);
 void copy_strategy_data_static_array(strategy_data * from, strategy_data * to, int size);
-void free_complete_strategy_datatype(complete_strategy * temp);
-void copy_complete_strategy_datatype(complete_strategy * from, complete_strategy * to);
+void free_complete_strategy(complete_strategy * temp);
+void free_complete_strategy_static_array(complete_strategy * array, int size);
+void copy_complete_strategy(complete_strategy * from, complete_strategy * to);
 void copy_complete_strategy_static_array(complete_strategy * from, complete_strategy * to, int size);
-void free_columns_datatype(columns * temp);
-void copy_columns_datatype(columns * from, columns * to);
+void free_columns(columns * temp);
+void free_columns_static_array(columns * array, int size);
+void copy_columns(columns * from, columns * to);
 void copy_columns_static_array(columns * from, columns * to, int size);
-void free_player_list_element_datatype(player_list_element * temp);
-void copy_player_list_element_datatype(player_list_element * from, player_list_element * to);
+void free_player_list_element(player_list_element * temp);
+void free_player_list_element_static_array(player_list_element * array, int size);
+void copy_player_list_element(player_list_element * from, player_list_element * to);
 void copy_player_list_element_static_array(player_list_element * from, player_list_element * to, int size);
 
 xmachine_memory_GamePlayer * init_GamePlayer_agent();
@@ -652,9 +659,9 @@ void add_GamePlayer_agent_internal(xmachine_memory_GamePlayer * current);
 void add_GamePlayer_agent(int id, int strategy_used, int previous_performance, int present_state, double iradius, double posx, double posy);
 xmachine_memory_GameSolver * init_GameSolver_agent();
 void add_GameSolver_agent_internal(xmachine_memory_GameSolver * current);
-void add_GameSolver_agent(complete_strategy *strategy_list[], complete_strategy *new_children[], int nragents, int_array * automata_id, int_array * players, int *player_one_state[], int *player_two_state[], int player_one_move, int player_two_move, strategy_data *strategy_performance[], complete_strategy *offspring[], columns_array * rows, player_list_element_array * player_list, double iradius, double posx, double posy);
+void add_GameSolver_agent(complete_strategy strategy_list[], complete_strategy new_children[], int nragents, int_array * automata_id, int_array * players, int player_one_state[], int player_two_state[], int player_one_move, int player_two_move, strategy_data strategy_performance[], complete_strategy offspring[], columns_array * rows, player_list_element_array * player_list, double iradius, double posx, double posy);
 
-void add_strategy_i_use_message(int player_id, int strategy_used, int previous_move, int previous_state, double range, double x, double y, double z);
+void add_strategy_i_use_message(int player_id, int strategy_id, int previous_move, int present_state, double range, double x, double y, double z);
 xmachine_message_strategy_i_use * add_strategy_i_use_message_internal(void);
 xmachine_message_strategy_i_use * get_first_strategy_i_use_message(void);
 xmachine_message_strategy_i_use * get_next_strategy_i_use_message(xmachine_message_strategy_i_use * current);

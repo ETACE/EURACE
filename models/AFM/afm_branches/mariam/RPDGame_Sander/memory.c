@@ -113,10 +113,42 @@ xmachine * add_xmachine()
 	return current;
 }
 
+void init_int_static_array(int * array, int size)
+{
+	int i;
+	
+	for(i = 0; i < size; i++) array[i] = 0;
+}
+
+void init_float_static_array(float * array, int size)
+{
+	int i;
+	
+	for(i = 0; i < size; i++) array[i] = 0.0;
+}
+
+void init_double_static_array(double* array, int size)
+{
+	int i;
+	
+	for(i = 0; i < size; i++) array[i] = 0.0;
+}
+
+void init_char_static_array(char * array, int size)
+{
+	int i;
+	
+	for(i = 0; i < size; i++) array[i] = '\0';
+}
+
 
 
 void init_strategy_state(strategy_state * temp)
 {
+	init_int_static_array((*temp).starting_state, 4);
+	(*temp).state_name = 0;
+	init_int_static_array((*temp).state_ifcooperate, 4);
+	init_int_static_array((*temp).state_ifdefect, 4);
 
 }
 
@@ -127,9 +159,24 @@ void init_strategy_state_static_array(strategy_state * array, int size)
 	for(i = 0; i < size; i++) init_strategy_state(&array[i]);
 }
 
-void free_strategy_state_datatype(strategy_state * temp)
+void free_strategy_state(strategy_state * temp)
 {
 
+}
+
+void free_strategy_state_static_array(strategy_state * array, int size)
+{
+	int i;
+	
+	for(i = 0; i < size; i++) free_strategy_state(&array[i]);
+}
+
+void copy_strategy_state(strategy_state * from, strategy_state * to)
+{
+	memcpy((*to).starting_state, (*from).starting_state, 4*sizeof(int));
+	(*to).state_name = (*from).state_name;
+	memcpy((*to).state_ifcooperate, (*from).state_ifcooperate, 4*sizeof(int));
+	memcpy((*to).state_ifdefect, (*from).state_ifdefect, 4*sizeof(int));
 }
 
 void copy_strategy_state_static_array(strategy_state * from, strategy_state * to, int size)
@@ -138,21 +185,14 @@ void copy_strategy_state_static_array(strategy_state * from, strategy_state * to
 	
 	for(i = 0; i < size; i++)
 	{
-		copy_strategy_state_datatype(&from[i], &to[i]);
+		copy_strategy_state(&from[i], &to[i]);
 	}
-}
-
-void copy_strategy_state_datatype(strategy_state * from, strategy_state * to)
-{
-	memcpy((*to).starting_state, (*from).starting_state, 4*sizeof(int));
-	(*to).state_name = (*from).state_name;
-	memcpy((*to).state_ifcooperate, (*from).state_ifcooperate, 4*sizeof(int));
-	memcpy((*to).state_ifdefect, (*from).state_ifdefect, 4*sizeof(int));
 }
 
 
 void init_payoff_elements(payoff_elements * temp)
 {
+	init_int_static_array((*temp).payoffs, 2);
 
 }
 
@@ -163,9 +203,21 @@ void init_payoff_elements_static_array(payoff_elements * array, int size)
 	for(i = 0; i < size; i++) init_payoff_elements(&array[i]);
 }
 
-void free_payoff_elements_datatype(payoff_elements * temp)
+void free_payoff_elements(payoff_elements * temp)
 {
 
+}
+
+void free_payoff_elements_static_array(payoff_elements * array, int size)
+{
+	int i;
+	
+	for(i = 0; i < size; i++) free_payoff_elements(&array[i]);
+}
+
+void copy_payoff_elements(payoff_elements * from, payoff_elements * to)
+{
+	memcpy((*to).payoffs, (*from).payoffs, 2*sizeof(int));
 }
 
 void copy_payoff_elements_static_array(payoff_elements * from, payoff_elements * to, int size)
@@ -174,18 +226,15 @@ void copy_payoff_elements_static_array(payoff_elements * from, payoff_elements *
 	
 	for(i = 0; i < size; i++)
 	{
-		copy_payoff_elements_datatype(&from[i], &to[i]);
+		copy_payoff_elements(&from[i], &to[i]);
 	}
-}
-
-void copy_payoff_elements_datatype(payoff_elements * from, payoff_elements * to)
-{
-	memcpy((*to).payoffs, (*from).payoffs, 2*sizeof(int));
 }
 
 
 void init_strategy_data(strategy_data * temp)
 {
+	(*temp).strategy_id = 0;
+	(*temp).strategy_perf = 0.0;
 
 }
 
@@ -196,9 +245,22 @@ void init_strategy_data_static_array(strategy_data * array, int size)
 	for(i = 0; i < size; i++) init_strategy_data(&array[i]);
 }
 
-void free_strategy_data_datatype(strategy_data * temp)
+void free_strategy_data(strategy_data * temp)
 {
 
+}
+
+void free_strategy_data_static_array(strategy_data * array, int size)
+{
+	int i;
+	
+	for(i = 0; i < size; i++) free_strategy_data(&array[i]);
+}
+
+void copy_strategy_data(strategy_data * from, strategy_data * to)
+{
+	(*to).strategy_id = (*from).strategy_id;
+	(*to).strategy_perf = (*from).strategy_perf;
 }
 
 void copy_strategy_data_static_array(strategy_data * from, strategy_data * to, int size)
@@ -207,14 +269,8 @@ void copy_strategy_data_static_array(strategy_data * from, strategy_data * to, i
 	
 	for(i = 0; i < size; i++)
 	{
-		copy_strategy_data_datatype(&from[i], &to[i]);
+		copy_strategy_data(&from[i], &to[i]);
 	}
-}
-
-void copy_strategy_data_datatype(strategy_data * from, strategy_data * to)
-{
-	(*to).strategy_id = (*from).strategy_id;
-	(*to).strategy_perf = (*from).strategy_perf;
 }
 
 
@@ -231,10 +287,22 @@ void init_complete_strategy_static_array(complete_strategy * array, int size)
 	for(i = 0; i < size; i++) init_complete_strategy(&array[i]);
 }
 
-void free_complete_strategy_datatype(complete_strategy * temp)
+void free_complete_strategy(complete_strategy * temp)
 {
 	free_strategy_state_array(&(*temp).strategy_path);
 
+}
+
+void free_complete_strategy_static_array(complete_strategy * array, int size)
+{
+	int i;
+	
+	for(i = 0; i < size; i++) free_complete_strategy(&array[i]);
+}
+
+void copy_complete_strategy(complete_strategy * from, complete_strategy * to)
+{
+	copy_strategy_state_array(&(*from).strategy_path, &(*to).strategy_path);
 }
 
 void copy_complete_strategy_static_array(complete_strategy * from, complete_strategy * to, int size)
@@ -243,13 +311,8 @@ void copy_complete_strategy_static_array(complete_strategy * from, complete_stra
 	
 	for(i = 0; i < size; i++)
 	{
-		copy_complete_strategy_datatype(&from[i], &to[i]);
+		copy_complete_strategy(&from[i], &to[i]);
 	}
-}
-
-void copy_complete_strategy_datatype(complete_strategy * from, complete_strategy * to)
-{
-	copy_strategy_state_array(&(*from).strategy_path, &(*to).strategy_path);
 }
 
 
@@ -266,10 +329,22 @@ void init_columns_static_array(columns * array, int size)
 	for(i = 0; i < size; i++) init_columns(&array[i]);
 }
 
-void free_columns_datatype(columns * temp)
+void free_columns(columns * temp)
 {
 	free_payoff_elements_array(&(*temp).opponents);
 
+}
+
+void free_columns_static_array(columns * array, int size)
+{
+	int i;
+	
+	for(i = 0; i < size; i++) free_columns(&array[i]);
+}
+
+void copy_columns(columns * from, columns * to)
+{
+	copy_payoff_elements_array(&(*from).opponents, &(*to).opponents);
 }
 
 void copy_columns_static_array(columns * from, columns * to, int size)
@@ -278,18 +353,17 @@ void copy_columns_static_array(columns * from, columns * to, int size)
 	
 	for(i = 0; i < size; i++)
 	{
-		copy_columns_datatype(&from[i], &to[i]);
+		copy_columns(&from[i], &to[i]);
 	}
-}
-
-void copy_columns_datatype(columns * from, columns * to)
-{
-	copy_payoff_elements_array(&(*from).opponents, &(*to).opponents);
 }
 
 
 void init_player_list_element(player_list_element * temp)
 {
+	(*temp).player_id = 0;
+	(*temp).strategy_id = 0;
+	(*temp).previous_move = 0;
+	(*temp).present_state = 0;
 
 }
 
@@ -300,9 +374,24 @@ void init_player_list_element_static_array(player_list_element * array, int size
 	for(i = 0; i < size; i++) init_player_list_element(&array[i]);
 }
 
-void free_player_list_element_datatype(player_list_element * temp)
+void free_player_list_element(player_list_element * temp)
 {
 
+}
+
+void free_player_list_element_static_array(player_list_element * array, int size)
+{
+	int i;
+	
+	for(i = 0; i < size; i++) free_player_list_element(&array[i]);
+}
+
+void copy_player_list_element(player_list_element * from, player_list_element * to)
+{
+	(*to).player_id = (*from).player_id;
+	(*to).strategy_id = (*from).strategy_id;
+	(*to).previous_move = (*from).previous_move;
+	(*to).present_state = (*from).present_state;
 }
 
 void copy_player_list_element_static_array(player_list_element * from, player_list_element * to, int size)
@@ -311,15 +400,8 @@ void copy_player_list_element_static_array(player_list_element * from, player_li
 	
 	for(i = 0; i < size; i++)
 	{
-		copy_player_list_element_datatype(&from[i], &to[i]);
+		copy_player_list_element(&from[i], &to[i]);
 	}
-}
-
-void copy_player_list_element_datatype(player_list_element * from, player_list_element * to)
-{
-	(*to).player_id = (*from).player_id;
-	(*to).strategy_id = (*from).strategy_id;
-	(*to).previous_move = (*from).previous_move;
 }
 
 
@@ -329,6 +411,13 @@ xmachine_memory_GamePlayer * init_GamePlayer_agent()
 	xmachine_memory_GamePlayer * current = (xmachine_memory_GamePlayer *)malloc(sizeof(xmachine_memory_GamePlayer));
 	CHECK_POINTER(current);
 	
+	current->id = 0;
+	current->strategy_used = 0;
+	current->previous_performance = 0;
+	current->present_state = 0;
+	current->iradius = 0.0;
+	current->posx = 0.0;
+	current->posy = 0.0;
 	
 	return current;
 }
@@ -362,14 +451,14 @@ void add_GamePlayer_agent(int id, int strategy_used, int previous_performance, i
 	init_GamePlayer_agent(current);
 	new_xmachine->xmachine_GamePlayer = current;
 	
-/*	current->id = id;
+	current->id = id;
 	current->strategy_used = strategy_used;
 	current->previous_performance = previous_performance;
 	current->present_state = present_state;
 	current->iradius = iradius;
 	current->posx = posx;
 	current->posy = posy;
-*/}
+}
 
 xmachine_memory_GameSolver * init_GameSolver_agent()
 {
@@ -378,20 +467,32 @@ xmachine_memory_GameSolver * init_GameSolver_agent()
 	
 	init_complete_strategy_static_array(current->strategy_list, 30);
 	init_complete_strategy_static_array(current->new_children, 10);
+	current->nragents = 0;
 	init_int_array(&current->automata_id);
 	init_int_array(&current->players);
+	init_int_static_array(current->player_one_state, 4);
+	init_int_static_array(current->player_two_state, 4);
+	current->player_one_move = 0;
+	current->player_two_move = 0;
 	init_strategy_data_static_array(current->strategy_performance, 30);
 	init_complete_strategy_static_array(current->offspring, 2);
 	init_columns_array(&current->rows);
 	init_player_list_element_array(&current->player_list);
+	current->iradius = 0.0;
+	current->posx = 0.0;
+	current->posy = 0.0;
 	
 	return current;
 }
 
 void free_GameSolver_agent(xmachine_memory_GameSolver * tmp)
 {
+	free_complete_strategy_static_array(tmp->strategy_list, 30);
+	free_complete_strategy_static_array(tmp->new_children, 10);
 	free_int_array(&tmp->automata_id);
 	free_int_array(&tmp->players);
+	free_strategy_data_static_array(tmp->strategy_performance, 30);
+	free_complete_strategy_static_array(tmp->offspring, 2);
 	free_columns_array(&tmp->rows);
 	free_player_list_element_array(&tmp->player_list);
 	
@@ -422,7 +523,7 @@ void add_GameSolver_agent_internal(xmachine_memory_GameSolver * current)
  * \param posx Variable for the X-machine memory.
  * \param posy Variable for the X-machine memory.
  */
-void add_GameSolver_agent(complete_strategy *strategy_list[], complete_strategy *new_children[], int nragents, int_array * automata_id, int_array * players, int *player_one_state[], int *player_two_state[], int player_one_move, int player_two_move, strategy_data *strategy_performance[], complete_strategy *offspring[], columns_array * rows, player_list_element_array * player_list, double iradius, double posx, double posy)
+void add_GameSolver_agent(complete_strategy strategy_list[], complete_strategy new_children[], int nragents, int_array * automata_id, int_array * players, int player_one_state[], int player_two_state[], int player_one_move, int player_two_move, strategy_data strategy_performance[], complete_strategy offspring[], columns_array * rows, player_list_element_array * player_list, double iradius, double posx, double posy)
 {
 	xmachine * new_xmachine = add_xmachine();
 	xmachine_memory_GameSolver * current;
@@ -430,23 +531,23 @@ void add_GameSolver_agent(complete_strategy *strategy_list[], complete_strategy 
 	init_GameSolver_agent(current);
 	new_xmachine->xmachine_GameSolver = current;
 	
-/*	copy_complete_strategy_static_array(strategy_list, current->strategy_list, 30);
+	copy_complete_strategy_static_array(strategy_list, current->strategy_list, 30);
 	copy_complete_strategy_static_array(new_children, current->new_children, 10);
 	current->nragents = nragents;
-	copy_int_array(automata_id, current->automata_id);
-	copy_int_array(players, current->players);
+	copy_int_array(automata_id, &current->automata_id);
+	copy_int_array(players, &current->players);
 	memcpy(current->player_one_state, player_one_state, 4*sizeof(int));
 	memcpy(current->player_two_state, player_two_state, 4*sizeof(int));
 	current->player_one_move = player_one_move;
 	current->player_two_move = player_two_move;
 	copy_strategy_data_static_array(strategy_performance, current->strategy_performance, 30);
 	copy_complete_strategy_static_array(offspring, current->offspring, 2);
-	copy_columns_array(rows, current->rows);
-	copy_player_list_element_array(player_list, current->player_list);
+	copy_columns_array(rows, &current->rows);
+	copy_player_list_element_array(player_list, &current->player_list);
 	current->iradius = iradius;
 	current->posx = posx;
 	current->posy = posy;
-*/}
+}
 
 /** \fn void free_agent()
  * \brief Free the currently being used X-machine.
@@ -1794,7 +1895,7 @@ void add_strategy_state(strategy_state_array * array, int * starting_state, int 
 		(*array).total_size = (*array).total_size + ARRAY_BLOCK_SIZE;
 		(*array).array = (strategy_state *)realloc((*array).array, ((*array).total_size * sizeof(strategy_state)));
 	}
-	
+	init_strategy_state(&(*array).array[(*array).size]);
 	if(starting_state != NULL) memcpy((*array).array[(*array).size].starting_state, starting_state, 4*sizeof(int));
 	(*array).array[(*array).size].state_name = state_name;
 	if(state_ifcooperate != NULL) memcpy((*array).array[(*array).size].state_ifcooperate, state_ifcooperate, 4*sizeof(int));
@@ -1812,12 +1913,15 @@ void remove_strategy_state(strategy_state_array * array, int index)
 {
 	int i;
 	
+	/* Free element at index index */
+	free_strategy_state(&(*array).array[index]);
+	
+	/* Copy all elements up by one */
 	if(index <= (*array).size)
 	{
-		/* memcopy?? */
 		for(i = index; i < (*array).size - 1; i++)
 		{
-			(*array).array[i] = (*array).array[i+1];
+			copy_strategy_state(&(*array).array[i+1], &(*array).array[i]);
 		}
 		(*array).size--;
 	}
@@ -1877,7 +1981,7 @@ void add_payoff_elements(payoff_elements_array * array, int * payoffs)
 		(*array).total_size = (*array).total_size + ARRAY_BLOCK_SIZE;
 		(*array).array = (payoff_elements *)realloc((*array).array, ((*array).total_size * sizeof(payoff_elements)));
 	}
-	
+	init_payoff_elements(&(*array).array[(*array).size]);
 	if(payoffs != NULL) memcpy((*array).array[(*array).size].payoffs, payoffs, 2*sizeof(int));
 
 	(*array).size++;
@@ -1892,12 +1996,15 @@ void remove_payoff_elements(payoff_elements_array * array, int index)
 {
 	int i;
 	
+	/* Free element at index index */
+	free_payoff_elements(&(*array).array[index]);
+	
+	/* Copy all elements up by one */
 	if(index <= (*array).size)
 	{
-		/* memcopy?? */
 		for(i = index; i < (*array).size - 1; i++)
 		{
-			(*array).array[i] = (*array).array[i+1];
+			copy_payoff_elements(&(*array).array[i+1], &(*array).array[i]);
 		}
 		(*array).size--;
 	}
@@ -1957,7 +2064,7 @@ void add_strategy_data(strategy_data_array * array, int strategy_id, double stra
 		(*array).total_size = (*array).total_size + ARRAY_BLOCK_SIZE;
 		(*array).array = (strategy_data *)realloc((*array).array, ((*array).total_size * sizeof(strategy_data)));
 	}
-	
+	init_strategy_data(&(*array).array[(*array).size]);
 	(*array).array[(*array).size].strategy_id = strategy_id;
 	(*array).array[(*array).size].strategy_perf = strategy_perf;
 
@@ -1973,12 +2080,15 @@ void remove_strategy_data(strategy_data_array * array, int index)
 {
 	int i;
 	
+	/* Free element at index index */
+	free_strategy_data(&(*array).array[index]);
+	
+	/* Copy all elements up by one */
 	if(index <= (*array).size)
 	{
-		/* memcopy?? */
 		for(i = index; i < (*array).size - 1; i++)
 		{
-			(*array).array[i] = (*array).array[i+1];
+			copy_strategy_data(&(*array).array[i+1], &(*array).array[i]);
 		}
 		(*array).size--;
 	}
@@ -2038,9 +2148,8 @@ void add_complete_strategy(complete_strategy_array * array, strategy_state_array
 		(*array).total_size = (*array).total_size + ARRAY_BLOCK_SIZE;
 		(*array).array = (complete_strategy *)realloc((*array).array, ((*array).total_size * sizeof(complete_strategy)));
 	}
-	
-	if(strategy_path != NULL) init_strategy_state_array(&(*array).array[(*array).size].strategy_path);
-	copy_strategy_state_array(strategy_path, &(*array).array[(*array).size].strategy_path);
+	init_complete_strategy(&(*array).array[(*array).size]);
+	if(strategy_path != NULL) copy_strategy_state_array(strategy_path, &(*array).array[(*array).size].strategy_path);
 
 	(*array).size++;
 }
@@ -2054,12 +2163,15 @@ void remove_complete_strategy(complete_strategy_array * array, int index)
 {
 	int i;
 	
+	/* Free element at index index */
+	free_complete_strategy(&(*array).array[index]);
+	
+	/* Copy all elements up by one */
 	if(index <= (*array).size)
 	{
-		/* memcopy?? */
 		for(i = index; i < (*array).size - 1; i++)
 		{
-			(*array).array[i] = (*array).array[i+1];
+			copy_complete_strategy(&(*array).array[i+1], &(*array).array[i]);
 		}
 		(*array).size--;
 	}
@@ -2119,9 +2231,8 @@ void add_columns(columns_array * array, payoff_elements_array * opponents)
 		(*array).total_size = (*array).total_size + ARRAY_BLOCK_SIZE;
 		(*array).array = (columns *)realloc((*array).array, ((*array).total_size * sizeof(columns)));
 	}
-	
-	if(opponents != NULL) init_payoff_elements_array(&(*array).array[(*array).size].opponents);
-	copy_payoff_elements_array(opponents, &(*array).array[(*array).size].opponents);
+	init_columns(&(*array).array[(*array).size]);
+	if(opponents != NULL) copy_payoff_elements_array(opponents, &(*array).array[(*array).size].opponents);
 
 	(*array).size++;
 }
@@ -2135,12 +2246,15 @@ void remove_columns(columns_array * array, int index)
 {
 	int i;
 	
+	/* Free element at index index */
+	free_columns(&(*array).array[index]);
+	
+	/* Copy all elements up by one */
 	if(index <= (*array).size)
 	{
-		/* memcopy?? */
 		for(i = index; i < (*array).size - 1; i++)
 		{
-			(*array).array[i] = (*array).array[i+1];
+			copy_columns(&(*array).array[i+1], &(*array).array[i]);
 		}
 		(*array).size--;
 	}
@@ -2184,26 +2298,27 @@ void copy_player_list_element_array(player_list_element_array * from, player_lis
 	
 	for(i = 0; i < (*from).size; i++)
 	{
-		add_player_list_element(to, (*from).array[i].player_id, (*from).array[i].strategy_id, (*from).array[i].previous_move);
+		add_player_list_element(to, (*from).array[i].player_id, (*from).array[i].strategy_id, (*from).array[i].previous_move, (*from).array[i].present_state);
 	}
 }
 
-/** \fn void add_player_list_element(player_list_element_array * array, int player_id, int strategy_id, int previous_move)
+/** \fn void add_player_list_element(player_list_element_array * array, int player_id, int strategy_id, int previous_move, int present_state)
 * \brief Add an player_list_element to the dynamic player_list_element array.
 * \param array Pointer to the dynamic player_list_element array.
 * \param new_int The player_list_element to add
 */
-void add_player_list_element(player_list_element_array * array, int player_id, int strategy_id, int previous_move)
+void add_player_list_element(player_list_element_array * array, int player_id, int strategy_id, int previous_move, int present_state)
 {
 	if((*array).size == (*array).total_size)
 	{
 		(*array).total_size = (*array).total_size + ARRAY_BLOCK_SIZE;
 		(*array).array = (player_list_element *)realloc((*array).array, ((*array).total_size * sizeof(player_list_element)));
 	}
-	
+	init_player_list_element(&(*array).array[(*array).size]);
 	(*array).array[(*array).size].player_id = player_id;
 	(*array).array[(*array).size].strategy_id = strategy_id;
 	(*array).array[(*array).size].previous_move = previous_move;
+	(*array).array[(*array).size].present_state = present_state;
 
 	(*array).size++;
 }
@@ -2217,12 +2332,15 @@ void remove_player_list_element(player_list_element_array * array, int index)
 {
 	int i;
 	
+	/* Free element at index index */
+	free_player_list_element(&(*array).array[index]);
+	
+	/* Copy all elements up by one */
 	if(index <= (*array).size)
 	{
-		/* memcopy?? */
 		for(i = index; i < (*array).size - 1; i++)
 		{
-			(*array).array[i] = (*array).array[i+1];
+			copy_player_list_element(&(*array).array[i+1], &(*array).array[i]);
 		}
 		(*array).size--;
 	}
