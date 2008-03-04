@@ -178,6 +178,13 @@
 <!-- All variables used by clearing house are declared here to allocate them in memory -->
 <memory>
 <var><type>int</type><name>id</name></var>
+<var><type>int</type><name>trader_id</name></var>
+<var><type>int</type><name>stock_id</name></var>
+<var><type>int</type><name>bond_id</name></var>
+<var><type>int</type><name>gov_bond_id</name></var>
+<var><type>double</type><name>limit_price</name></var>
+<var><type>double</type><name>limit_quantity</name></var>
+
 <var><type>double</type><name>range</name></var>
 <var><type>double</type><name>posx</name></var>
 <var><type>double</type><name>posy</name></var>
@@ -337,10 +344,20 @@
 <var><type>double</type><name>planned_total_interest_payment</name></var>
 <var><type>double</type><name>planned_total_debt_installment_payment</name></var>
 <var><type>double</type><name>planned_total_dividend_payment</name></var>
+<var><type>double</type><name>planned_cum_revenue</name></var>
+	<var>
+		<type>double</type>
+		<name>planned_production_quantity</name></var>
 
-<!------------------------------------- Financial needs ------------------------------------->
+	<!------------------------------------- Financial needs ------------------------------------->
+<!--total_financial_needs includes direct and delayed financial needs -->
 <var><type>double</type><name>total_financial_needs</name></var>
-<var><type>double</type><name>internal_financial_needs</name></var>
+<!--direct_financial_needs only includes payments that are directly payable: production costs -->
+<var><type>double</type><name>direct_financial_needs</name></var>
+	<var>
+		
+		<type>double</type><name>delayed_financial_needs</name></var>
+	<var><type>double</type><name>internal_financial_needs</name></var>
 <var><type>double</type><name>external_financial_needs</name></var>
 
 <!-- Ratios -->

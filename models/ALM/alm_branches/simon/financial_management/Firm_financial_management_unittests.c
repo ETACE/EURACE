@@ -19,7 +19,7 @@ void unittest_Firm_compute_income_statement()
 	
     /***** Variables: Memory pre-conditions **************************/
 	DAY_OF_MONTH_TO_ACT=0;
-	CUM_REVENUES=100.0;
+	CUM_REVENUE=100.0;
     EBIT=0.0;
     PAYMENT_ACCOUNT=0.0;
     
@@ -30,7 +30,7 @@ void unittest_Firm_compute_income_statement()
     
     /***** Variables: Memory post-conditions *****/
 
-    CU_ASSERT_DOUBLE_EQUAL(CUM_REVENUES, 100.0, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(CUM_REVENUE, 100.0, 1e-3);
     CU_ASSERT_DOUBLE_EQUAL(EBIT, 100.0, 1e-3);
     CU_ASSERT_DOUBLE_EQUAL(PAYMENT_ACCOUNT, 100.0, 1e-3);
 
@@ -150,7 +150,342 @@ void unittest_Firm_compute_payout_policy()
     free_agent();
     /************* At end of unit tests, free all Messages **********/
     free_messages();
+}
+
+
+/*
+ * UNIT TEST 1: No external financing needed:
+ * payment_account >= direct_financial_needs + delayed_financial_needs
+ */ 
+void unittest1_Firm_compute_payout_policy()
+{
+    /************* At start of unit test, add one agent **************/
+	add_Firm_agent_internal(init_Firm_agent());
+	current_xmachine = *p_xmachine;
+	
+    /***** Variables: Memory pre-conditions **************************/
+	ID=1;
+	BANK_ID=2;
+	EARNINGS_PER_SHARE_RATIO=0.0; //This sets the PLANNED_TOTAL_DIVIDEND_PAYMENT=0
+	
+	TOTAL_FINANCIAL_NEEDS=0.0;
+	EXTERNAL_FINANCIAL_NEEDS=0.0;
+	INTERNAL_FINANCIAL_NEEDS=0.0;
+
+	//PLANNED_CUM_REVENUE=0.0;
+	//PLANNED_CUM_REVENUE = PRICE*PLANNED_PRODUCTION_QUANTITY;
+	PRICE=1.0;
+	PLANNED_PRODUCTION_QUANTITY=0.0;
+	
+	PAYMENT_ACCOUNT=30.0;
+	//DIRECT_FINANCIAL_NEEDS=10.0:
+	PRODUCTION_COSTS=10.0;
+	
+	//DELAYED_FINANCIAL_NEEDS=20.0:
+	/*
+	    LOANS[0].bank_id=2;
+	    LOANS[0].loan_value=100.0;
+	    LOANS[0].interest_rate=0.0;
+	    LOANS[0].interest_payment=0.0;
+	    LOANS[0].debt_installment_payment=20.0;
+	    LOANS[0].nr_periods_before_maturity=5;
+	*/
+	    reset_debt_item_array(&LOANS);
+	    add_debt_item(&LOANS, 2, 100.0, 0.00, 0.0, 20.0, 5);
+	
+	/***** Messages: pre-conditions **********************************/
+	
+    /***** Function evaluation ***************************************/
+	Firm_compute_payout_policy();
     
+    /***** Variables: Memory post-conditions *************************/
+    CU_ASSERT_DOUBLE_EQUAL(TOTAL_FINANCIAL_NEEDS, 30.0, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(EXTERNAL_FINANCIAL_NEEDS, 0.0, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(INTERNAL_FINANCIAL_NEEDS, 30.0, 1e-3);
+
+    CU_ASSERT_DOUBLE_EQUAL(PLANNED_CUM_REVENUE, 0.0, 1e-3);
+
+    //    printf("TOTAL_FINANCIAL_NEEDS: %f", TOTAL_FINANCIAL_NEEDS);
+    //    printf("DIRECT_FINANCIAL_NEEDS: %f", DIRECT_FINANCIAL_NEEDS);
+    //    printf("DELAYED_FINANCIAL_NEEDS: %f", DELAYED_FINANCIAL_NEEDS);
+    //    printf("EXTERNAL_FINANCIAL_NEEDS: %f", EXTERNAL_FINANCIAL_NEEDS);
+    //    printf("INTERNAL_FINANCIAL_NEEDS: %f", INTERNAL_FINANCIAL_NEEDS);
+   
+    /***** Messages: post-conditions **********************************/
+
+	/************* At end of unit test, free the agent **************/
+    free_agent();
+    /************* At end of unit tests, free all Messages **********/
+    free_messages();
+}
+
+/*
+ * UNIT TEST 2: No external financing needed:
+ * payment_account >= direct_financial_needs
+ * AND payment_account - direct_financial_needs + planned_cum_revenues >= delayed_financial_needs
+ * AND payment_account < direct_financial_needs + delayed_financial_needs
+ */ 
+void unittest2_Firm_compute_payout_policy()
+{
+    /************* At start of unit test, add one agent **************/
+	add_Firm_agent_internal(init_Firm_agent());
+	current_xmachine = *p_xmachine;
+	
+    /***** Variables: Memory pre-conditions **************************/
+	ID=1;
+	BANK_ID=2;
+	EARNINGS_PER_SHARE_RATIO=0.0; //This sets the PLANNED_TOTAL_DIVIDEND_PAYMENT=0
+	
+	TOTAL_FINANCIAL_NEEDS=0.0;
+	EXTERNAL_FINANCIAL_NEEDS=0.0;
+	INTERNAL_FINANCIAL_NEEDS=0.0;
+
+	//PLANNED_CUM_REVENUE=15.0;
+	//PLANNED_CUM_REVENUE = PRICE*PLANNED_PRODUCTION_QUANTITY;
+	PRICE=1.0;
+	PLANNED_PRODUCTION_QUANTITY=15.0;
+	
+	PAYMENT_ACCOUNT=15.0;
+	//DIRECT_FINANCIAL_NEEDS=10.0:
+	PRODUCTION_COSTS=10.0;
+	
+	//DELAYED_FINANCIAL_NEEDS=20.0:    
+	/*
+	    LOANS[0].bank_id=2;
+	    LOANS[0].loan_value=100.0;
+	    LOANS[0].interest_rate=0.0;
+	    LOANS[0].interest_payment=0.0;
+	    LOANS[0].debt_installment_payment=20.0;
+	    LOANS[0].nr_periods_before_maturity=5;
+	*/
+	    reset_debt_item_array(&LOANS);
+	    add_debt_item(&LOANS, 2, 100.0, 0.00, 0.0, 20.0, 5);
+
+	/***** Messages: pre-conditions **********************************/
+	
+    /***** Function evaluation ***************************************/
+	Firm_compute_payout_policy();
+    
+    /***** Variables: Memory post-conditions *************************/
+    CU_ASSERT_DOUBLE_EQUAL(TOTAL_FINANCIAL_NEEDS, 30.0, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(EXTERNAL_FINANCIAL_NEEDS, 0.0, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(INTERNAL_FINANCIAL_NEEDS, 30.0, 1e-3);
+
+    CU_ASSERT_DOUBLE_EQUAL(PLANNED_CUM_REVENUE, 15.0, 1e-3);
+
+    //    printf("TOTAL_FINANCIAL_NEEDS: %f", TOTAL_FINANCIAL_NEEDS);
+    //    printf("DIRECT_FINANCIAL_NEEDS: %f", DIRECT_FINANCIAL_NEEDS);
+    //    printf("DELAYED_FINANCIAL_NEEDS: %f", DELAYED_FINANCIAL_NEEDS);
+    //    printf("EXTERNAL_FINANCIAL_NEEDS: %f", EXTERNAL_FINANCIAL_NEEDS);
+    //    printf("INTERNAL_FINANCIAL_NEEDS: %f", INTERNAL_FINANCIAL_NEEDS);
+    
+    /***** Messages: post-conditions **********************************/
+
+	/************* At end of unit test, free the agent **************/
+    free_agent();
+    /************* At end of unit tests, free all Messages **********/
+    free_messages();
+}
+
+/*
+ * UNIT TEST 3: External financing needed for direct payments, not for delayed payments:
+ * payment_account < direct_financial_needs AND
+ * payment_account - direct_financial_needs + planned_cum_revenues >= delayed_financial_needs
+ */ 
+void unittest3_Firm_compute_payout_policy()
+{
+    /************* At start of unit test, add one agent **************/
+	add_Firm_agent_internal(init_Firm_agent());
+	current_xmachine = *p_xmachine;
+	
+    /***** Variables: Memory pre-conditions **************************/
+	ID=1;
+	BANK_ID=2;
+	EARNINGS_PER_SHARE_RATIO=0.0; //This sets the PLANNED_TOTAL_DIVIDEND_PAYMENT=0
+	
+	TOTAL_FINANCIAL_NEEDS=0.0;
+	EXTERNAL_FINANCIAL_NEEDS=0.0;
+	INTERNAL_FINANCIAL_NEEDS=0.0;
+
+	//PLANNED_CUM_REVENUE=20.0;
+	//PLANNED_CUM_REVENUE = PRICE*PLANNED_PRODUCTION_QUANTITY;
+	PRICE=1.0;
+	PLANNED_PRODUCTION_QUANTITY=20.0;
+	
+	PAYMENT_ACCOUNT=5.0;
+	//DIRECT_FINANCIAL_NEEDS=10.0:
+	PRODUCTION_COSTS=10.0;
+	
+	//DELAYED_FINANCIAL_NEEDS=15.0:
+	/*
+	    LOANS[0].bank_id=2;
+	    LOANS[0].loan_value=100.0;
+	    LOANS[0].interest_rate=0.0;
+	    LOANS[0].interest_payment=0.0;
+	    LOANS[0].debt_installment_payment=15.0;
+	    LOANS[0].nr_periods_before_maturity=5;
+	*/
+	    reset_debt_item_array(&LOANS);
+	    add_debt_item(&LOANS, 2, 100.0, 0.00, 0.0, 15.0, 5);
+
+	/***** Messages: pre-conditions **********************************/
+	
+    /***** Function evaluation ***************************************/
+	Firm_compute_payout_policy();
+    
+    /***** Variables: Memory post-conditions *************************/
+    CU_ASSERT_DOUBLE_EQUAL(TOTAL_FINANCIAL_NEEDS, 25.0, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(EXTERNAL_FINANCIAL_NEEDS, 5.0, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(INTERNAL_FINANCIAL_NEEDS, 5.0, 1e-3);
+
+    CU_ASSERT_DOUBLE_EQUAL(PLANNED_CUM_REVENUE, 20.0, 1e-3);
+
+    //    printf("TOTAL_FINANCIAL_NEEDS: %f", TOTAL_FINANCIAL_NEEDS);
+    //    printf("DIRECT_FINANCIAL_NEEDS: %f", DIRECT_FINANCIAL_NEEDS);
+    //    printf("DELAYED_FINANCIAL_NEEDS: %f", DELAYED_FINANCIAL_NEEDS);
+    //    printf("EXTERNAL_FINANCIAL_NEEDS: %f", EXTERNAL_FINANCIAL_NEEDS);
+    //    printf("INTERNAL_FINANCIAL_NEEDS: %f", INTERNAL_FINANCIAL_NEEDS);
+    
+    /***** Messages: post-conditions **********************************/
+    
+    /************* At end of unit test, free the agent **************/
+    free_agent();
+    /************* At end of unit tests, free all Messages **********/
+    free_messages();
+}
+
+/*
+ * UNIT TEST 4: External financing needed for delayed payments, not for direct payments:
+ * payment_account >= direct_financial_needs AND
+ * payment_account - direct_financial_needs + planned_cum_revenues < delayed_financial_needs
+ */ 
+void unittest4_Firm_compute_payout_policy()
+{
+    /************* At start of unit test, add one agent **************/
+	add_Firm_agent_internal(init_Firm_agent());
+	current_xmachine = *p_xmachine;
+	
+    /***** Variables: Memory pre-conditions **************************/
+	ID=1;
+	BANK_ID=2;
+	EARNINGS_PER_SHARE_RATIO=0.0; //This sets the PLANNED_TOTAL_DIVIDEND_PAYMENT=0
+	
+	TOTAL_FINANCIAL_NEEDS=0.0;
+	EXTERNAL_FINANCIAL_NEEDS=0.0;
+	INTERNAL_FINANCIAL_NEEDS=0.0;
+
+	//PLANNED_CUM_REVENUE=0.0;
+	//PLANNED_CUM_REVENUE = PRICE*PLANNED_PRODUCTION_QUANTITY;
+	PRICE=1.0;
+	PLANNED_PRODUCTION_QUANTITY=0.0;
+	
+	PAYMENT_ACCOUNT=10.0;
+	//DIRECT_FINANCIAL_NEEDS=10.0:
+	PRODUCTION_COSTS=10.0;
+	
+	//DELAYED_FINANCIAL_NEEDS=20.0:
+	/*
+	    LOANS[0].bank_id=2;
+	    LOANS[0].loan_value=100.0;
+	    LOANS[0].interest_rate=0.00;
+	    LOANS[0].interest_payment=0.0;
+	    LOANS[0].debt_installment_payment=20.0;
+	    LOANS[0].nr_periods_before_maturity=5;
+	*/
+	    reset_debt_item_array(&LOANS);
+	    add_debt_item(&LOANS, 2, 100.0, 0.00, 0.0, 20.0, 5);
+
+	/***** Messages: pre-conditions **********************************/
+	
+    /***** Function evaluation ***************************************/
+	Firm_compute_payout_policy();
+    
+    /***** Variables: Memory post-conditions *************************/
+    CU_ASSERT_DOUBLE_EQUAL(TOTAL_FINANCIAL_NEEDS, 30.0, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(EXTERNAL_FINANCIAL_NEEDS, 20.0, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(INTERNAL_FINANCIAL_NEEDS, 10.0, 1e-3);
+
+    CU_ASSERT_DOUBLE_EQUAL(PLANNED_CUM_REVENUE, 0.0, 1e-3);
+
+    //    printf("TOTAL_FINANCIAL_NEEDS: %f", TOTAL_FINANCIAL_NEEDS);
+    //    printf("DIRECT_FINANCIAL_NEEDS: %f", DIRECT_FINANCIAL_NEEDS);
+    //    printf("DELAYED_FINANCIAL_NEEDS: %f", DELAYED_FINANCIAL_NEEDS);
+    //    printf("EXTERNAL_FINANCIAL_NEEDS: %f", EXTERNAL_FINANCIAL_NEEDS);
+    //    printf("INTERNAL_FINANCIAL_NEEDS: %f", INTERNAL_FINANCIAL_NEEDS);
+
+    /***** Messages: post-conditions **********************************/
+
+	/************* At end of unit test, free the agent **************/
+    free_agent();
+    /************* At end of unit tests, free all Messages **********/
+    free_messages();
+}
+
+/*
+ * UNIT TEST 5: External financing is needed to pay for both the direct and delayed payments:
+ * payment_account < direct_financial_needs AND
+ * payment_account - direct_financial_needs + planned_cum_revenues < delayed_financial_needs
+ */ 
+void unittest5_Firm_compute_payout_policy()
+{
+    /************* At start of unit test, add one agent **************/
+	add_Firm_agent_internal(init_Firm_agent());
+	current_xmachine = *p_xmachine;
+	
+    /***** Variables: Memory pre-conditions **************************/
+	ID=1;
+	BANK_ID=2;
+	EARNINGS_PER_SHARE_RATIO=0.0; //This sets the PLANNED_TOTAL_DIVIDEND_PAYMENT=0
+	
+	TOTAL_FINANCIAL_NEEDS=0.0;
+	EXTERNAL_FINANCIAL_NEEDS=0.0;
+	INTERNAL_FINANCIAL_NEEDS=0.0;
+
+	//PLANNED_CUM_REVENUE=24.0;
+	//PLANNED_CUM_REVENUE = PRICE*PLANNED_PRODUCTION_QUANTITY;
+	PRICE=1.0;
+	PLANNED_PRODUCTION_QUANTITY=24.0;
+	
+	PAYMENT_ACCOUNT=5.0;
+	//DIRECT_FINANCIAL_NEEDS=10.0:
+	PRODUCTION_COSTS=10.0;
+	
+	//DELAYED_FINANCIAL_NEEDS=20.0:
+	/*
+	    LOANS[0].bank_id=2;
+	    LOANS[0].loan_value=100.0;
+	    LOANS[0].interest_rate=0.0;
+	    LOANS[0].interest_payment=0.0;
+	    LOANS[0].debt_installment_payment=20.0;
+	    LOANS[0].nr_periods_before_maturity=5;
+	*/
+	    reset_debt_item_array(&LOANS);
+	    add_debt_item(&LOANS, 2, 100.0, 0.00, 0.0, 20.0, 5);
+
+	/***** Messages: pre-conditions **********************************/
+	
+    /***** Function evaluation ***************************************/
+	Firm_compute_payout_policy();
+    
+    /***** Variables: Memory post-conditions *************************/
+    CU_ASSERT_DOUBLE_EQUAL(TOTAL_FINANCIAL_NEEDS, 30.0, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(EXTERNAL_FINANCIAL_NEEDS, 1.0, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(INTERNAL_FINANCIAL_NEEDS, 5.0, 1e-3);
+
+    CU_ASSERT_DOUBLE_EQUAL(PLANNED_CUM_REVENUE, 24.0, 1e-3);
+
+    //    printf("TOTAL_FINANCIAL_NEEDS: %f", TOTAL_FINANCIAL_NEEDS);
+    //    printf("DIRECT_FINANCIAL_NEEDS: %f", DIRECT_FINANCIAL_NEEDS);
+    //    printf("DELAYED_FINANCIAL_NEEDS: %f", DELAYED_FINANCIAL_NEEDS);
+    //    printf("EXTERNAL_FINANCIAL_NEEDS: %f", EXTERNAL_FINANCIAL_NEEDS);
+    //    printf("INTERNAL_FINANCIAL_NEEDS: %f", INTERNAL_FINANCIAL_NEEDS);
+    
+    /***** Messages: post-conditions **********************************/
+
+	/************* At end of unit test, free the agent **************/
+    free_agent();
+    /************* At end of unit tests, free all Messages **********/
+    free_messages();
 }
 
 /*
@@ -375,24 +710,22 @@ void unittest_Firm_apply_for_loans()
 	ID=1;
 	BANK_ID=2;
 	EXTERNAL_FINANCIAL_NEEDS=100.0;
-	TOTAL_ASSETS=0.0;
-	TOTAL_DEBT=0.0;
-    
+	TOTAL_ASSETS=10.0;
+	TOTAL_DEBT=20.0;
+	
 	/***** Messages: pre-conditions **********************************/
 	
     /***** Function evaluation ***************************************/
-    Firm_apply_for_loans();
+	Firm_read_loan_offers_send_loan_acceptance();
     
     /***** Variables: Memory post-conditions *************************/
 
     /***** Messages: post-conditions **********************************/
-    //add_loan_request_message(firm_id, bank_id, external_financial_needs, total_assets, total_debt, MSGDATA);
+	//add_loan_request_message(firm_id, bank_id, external_financial_needs, total_assets, total_debt, MSGDATA);
  	START_LOAN_REQUEST_MESSAGE_LOOP 
     	CU_ASSERT_EQUAL(loan_request_message->firm_id, 1);
  		CU_ASSERT_EQUAL(loan_request_message->bank_id, 2);
- 		CU_ASSERT_DOUBLE_EQUAL(loan_request_message->credit_amount, 100.0, 1e-3);
- 		CU_ASSERT_DOUBLE_EQUAL(loan_request_message->total_assets, 0.0, 1e-3);
- 		CU_ASSERT_DOUBLE_EQUAL(loan_request_message->total_debt, 0.0, 1e-3);
+ 		CU_ASSERT_DOUBLE_EQUAL(loan_request_message->credit_amount, 100.0, 1e-3); 	
 	FINISH_LOAN_REQUEST_MESSAGE_LOOP
 
 	/************* At end of unit test, free the agent **************/
