@@ -1,5 +1,4 @@
 #include <CUnit/Basic.h>
-#include <math.h>
 #include "header.h"
 #include "mylibraryheader.h"
 
@@ -120,45 +119,45 @@ void unittest_ismember()
 {
      /***** Variables: Memory pre-conditions **************************/
 	  int size, ans;
-	  double * x;
+	  double * xvec;
 	  double i;
 	  
 	  size=4;
-	  x = malloc(sizeof(double)*size);
-	  x[0]=0.3; x[1]=0.4; x[0]=0.8; x[1]=1.0;
+	  xvec = malloc(sizeof(double)*size);
+	  xvec[0]=0.3; xvec[1]=0.4; xvec[0]=0.8; xvec[1]=1.0;
 	  i=0.3;
 	
      /***** Function evaluation ***************************************/
-	 //int ismember(int i, int * x, int size)
-	 ans = ismember(i, x, size);
+	 //int ismember(int i, int * xvec, int size)
+	 ans = ismember(i, xvec, size);
      
      /***** Variables: Memory post-conditions *************************/
      //CU_ASSERT_DOUBLE_EQUAL(<var_name1>, <value>, 1e-3);
      CU_ASSERT_EQUAL(ans, 1);
 
-     free(x);
+     free(xvec);
 }
 
 void unittest_draw_without_replacement()
 {
      /***** Variables: Memory pre-conditions **************************/
 	  int size, nr_draws, ans1, ans2, ans3, ans4;
-	  double * x;
+	  double * xvec;
 	  double * draws;
 	  double i;
 	  
 	  size=4; nr_draws=4;
-	  x = malloc(sizeof(double)*size);
-	  x[0]=0.3; x[1]=0.4; x[0]=0.8; x[1]=1.0;
+	  xvec = malloc(sizeof(double)*size);
+	  xvec[0]=0.3; xvec[1]=0.4; xvec[0]=0.8; xvec[1]=1.0;
 	  draws = malloc(nr_draws*sizeof(double));
 	  
      /***** Function evaluation ***************************************/
 	//void draw_without_replacement(int size, double * cpdf, double * draws, int Nr_draws)
-	 draw_without_replacement(size, x, draws, nr_draws);
-     ans1 = ismember(draws[0], x, size);
-     ans2 = ismember(draws[1], x, size);
-     ans3 = ismember(draws[2], x, size);
-     ans4 = ismember(draws[3], x, size);
+	 draw_without_replacement(size, xvec, draws, nr_draws);
+     ans1 = ismember(draws[0], xvec, size);
+     ans2 = ismember(draws[1], xvec, size);
+     ans3 = ismember(draws[2], xvec, size);
+     ans4 = ismember(draws[3], xvec, size);
 	 
      /***** Variables: Memory post-conditions *************************/
      //CU_ASSERT_DOUBLE_EQUAL(<var_name1>, <value>, 1e-3);
@@ -167,7 +166,7 @@ void unittest_draw_without_replacement()
      CU_ASSERT_EQUAL(ans3, 1);
      CU_ASSERT_EQUAL(ans4, 1);
      
-	 free(x);
+	 free(xvec);
 	 free(draws);	 
 }
 
@@ -176,24 +175,24 @@ void unittest_draw_with_replacement()
 {
      /***** Variables: Memory pre-conditions **************************/
 	  int size, nr_draws;
-	  double * x;
+	  double * xvec;
 	  double * draws;
 	  double i;
 	  
 	  size=4; nr_draws=4;
-	  x = malloc(sizeof(double)*size);
-	  x[0]=0.3; x[1]=0.4; x[0]=0.8; x[1]=1.0;
+	  xvec = malloc(sizeof(double)*size);
+	  xvec[0]=0.3; xvec[1]=0.4; xvec[0]=0.8; xvec[1]=1.0;
 	  draws = malloc(sizeof(double)*nr_draws);
 	  
      /***** Function evaluation ***************************************/
 	//void draw_with_replacement(int size, double * cpdf, double * draws, int Nr_draws)
- 	 draw_with_replacement(size, x, draws, nr_draws);
+ 	 draw_with_replacement(size, xvec, draws, nr_draws);
      
      /***** Variables: Memory post-conditions *************************/
      //CU_ASSERT_DOUBLE_EQUAL(<var_name1>, <value>, 1e-3);
      //CU_ASSERT_EQUAL(<var_name2>, <value>);
 
- 	 free(x);
+ 	 free(xvec);
 	 free(draws);
 }
 
