@@ -4,7 +4,6 @@
  */
 #include "header.h"
 #include <CUnit/Basic.h>
-#include <math.h>
 
 /*************************** unittest prototypes ***************************/
 void unittest_sum();

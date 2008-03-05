@@ -1,4 +1,3 @@
-
 /*********************************
  * mylibraryfunctions.c 
  * Adapted code from  Functions_Financial_market_PortfolioSelectionAlgorithm_Sander_v0.3.c
@@ -7,6 +6,8 @@
  * History:
  * 13/11/07 Mariam: Global functions. 
  *********************************/
+#include "header.h"
+#include "mylibraryheader.h"
 
 /** \fn double random_unif()
  * \brief Uniformly distributed random numbers, chosen from
