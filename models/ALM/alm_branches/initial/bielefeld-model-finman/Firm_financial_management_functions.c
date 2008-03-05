@@ -331,33 +331,48 @@ int Firm_compute_payout_policy()
         PLANNED_TOTAL_DIVIDEND_PAYMENT = PREVIOUS_DIVIDEND_PER_SHARE*CURRENT_SHARES_OUTSTANDING;
     }
 */  
-    //step 12: set financial_needs for the upcoming production cycle
+    //step 12A:
+    PLANNED_CUM_REVENUES = PRICE*PLANNED_PRODUCTION_QUANTITY;
+    
+    //step 12B: set direct_financial_needs for the upcoming production cycle
     //The total production costs (costs = labor_costs + capital_costs) come from the function Firm_calc_pay_costs
-    TOTAL_FINANCIAL_NEEDS = PLANNED_TOTAL_INTEREST_PAYMENT + PLANNED_TOTAL_DEBT_INSTALLMENT_PAYMENT + PLANNED_TOTAL_DIVIDEND_PAYMENT + PRODUCTION_COSTS;
-    //printf("\n Checking: TOTAL_FINANCIAL_NEEDS=%f+%f+%f+%f=%f \n", PLANNED_TOTAL_INTEREST_PAYMENT, PLANNED_TOTAL_DEBT_INSTALLMENT_PAYMENT, PLANNED_TOTAL_DIVIDEND_PAYMENT, PRODUCTION_COSTS, TOTAL_FINANCIAL_NEEDS);
-    
-    //Check if external financing is needed.
-    
-    if (PAYMENT_ACCOUNT>0)
+    DIRECT_FINANCIAL_NEEDS = PRODUCTION_COSTS;
+        
+    //Check if external financing is needed
+    //we use external financing only if DIRECT_FINANCIAL_NEEDS > PAYMENT_ACCOUNT
+    if (PAYMENT_ACCOUNT>=0)
     {
     	//printf("\n Checking: TOTAL_FINANCIAL_NEEDS < PAYMENT_ACCOUNT \n", TOTAL_FINANCIAL_NEEDS, PAYMENT_ACCOUNT);
-	    if (TOTAL_FINANCIAL_NEEDS < PAYMENT_ACCOUNT)
+	    if (DIRECT_FINANCIAL_NEEDS < PAYMENT_ACCOUNT)
 	    {
-	        INTERNAL_FINANCIAL_NEEDS = TOTAL_FINANCIAL_NEEDS;
+	    	//The payment_account is sufficient:
+	        INTERNAL_FINANCIAL_NEEDS = DIRECT_FINANCIAL_NEEDS;
 	        EXTERNAL_FINANCIAL_NEEDS = 0;
 	    }
 	    else
 	        {
+	    		//Use up all of the payment_account and try to obtain the rest externally:
 	            INTERNAL_FINANCIAL_NEEDS = PAYMENT_ACCOUNT;
-	            EXTERNAL_FINANCIAL_NEEDS = TOTAL_FINANCIAL_NEEDS - PAYMENT_ACCOUNT;
+	            EXTERNAL_FINANCIAL_NEEDS = DIRECT_FINANCIAL_NEEDS - PAYMENT_ACCOUNT;
 	        }
     }
-	else //Here: negative payment_account needs to be financed as well by a bank credit
-	        {
-				//printf("\n Checking: payment_account is negative due to dividend payment, this needs to be financed by credit or equity.\n");
-				//printf("\n PAYMENT_ACCOUNT=%f\n", PAYMENT_ACCOUNT);
-				EXTERNAL_FINANCIAL_NEEDS = TOTAL_FINANCIAL_NEEDS - PAYMENT_ACCOUNT;
-	        }
+	else
+	   {
+			//Here: negative payment_account needs to be financed as well as direct_financial_needs:
+			printf("\n Checking: payment_account is negative, this needs to be financed by credit or equity.\n");
+			printf("\n PAYMENT_ACCOUNT=%f, DIRECT_FINANCIAL_NEEDS = %f\n", PAYMENT_ACCOUNT, DIRECT_FINANCIAL_NEEDS);
+			EXTERNAL_FINANCIAL_NEEDS = DIRECT_FINANCIAL_NEEDS - PAYMENT_ACCOUNT;
+       }
+    
+    //step 12C:
+    //Check if additional external financing is required for total financial needs (direct payable and delayed payable)    
+    TOTAL_FINANCIAL_NEEDS = PLANNED_TOTAL_INTEREST_PAYMENT + PLANNED_TOTAL_DEBT_INSTALLMENT_PAYMENT + PLANNED_TOTAL_DIVIDEND_PAYMENT + PRODUCTION_COSTS;
+    //printf("\n Checking: TOTAL_FINANCIAL_NEEDS=%f+%f+%f+%f=%f \n", PLANNED_TOTAL_INTEREST_PAYMENT, PLANNED_TOTAL_DEBT_INSTALLMENT_PAYMENT, PLANNED_TOTAL_DIVIDEND_PAYMENT, PRODUCTION_COSTS, TOTAL_FINANCIAL_NEEDS);
+ 
+    if (TOTAL_FINANCIAL_NEEDS > (PAYMENT_ACCOUNT+PLANNED_CUM_REVENUES))
+    {
+    	EXTERNAL_FINANCIAL_NEEDS += TOTAL_FINANCIAL_NEEDS-(PAYMENT_ACCOUNT+PLANNED_CUM_REVENUES);
+    }
     
     //printf("\n Checking: INTERNAL_FINANCIAL_NEEDS=%f\n", INTERNAL_FINANCIAL_NEEDS);
     //printf("\n Checking: EXTERNAL_FINANCIAL_NEEDS=%f\n", EXTERNAL_FINANCIAL_NEEDS);
@@ -437,7 +452,6 @@ int Firm_read_bond_transactions()
     return 0;
 }
 
-
 /*
  * \fn: Firm_compute_and_send_stock_orders()
  * \brief: This function computes the firm's stock orders (share emmision) and sends a stock_order_message to the clearinghouse.
@@ -471,5 +485,38 @@ int Firm_read_stock_transactions()
 		//stock_transaction_message->limit_quantity
 	}
 	FINISH_STOCK_TRANSACTION_MESSAGE_LOOP
+    return 0;
+}
+
+/*
+ * \fn: Firm_compute_and_send_bond_orders()
+ * \brief: This function computes the firm's gov_bond orders and sends a gov_bond_order_message to the clearinghouse.
+ */
+int Firm_compute_and_send_gov_bond_orders()
+{
+    /*TESTING*/
+    int gov_bond_id=1;
+    double limit_price=1.0;
+    double limit_quantity=1.0;
+    
+	add_gov_bond_order_message(ID, gov_bond_id, limit_price, limit_quantity, MSGDATA);
+	
+    return 0;
+}
+
+/*
+ * \fn: Firm_read_gov_bond_transactions()
+ * \brief: This function reads a gov_bond_transaction_message from the clearinghouse, and updates the firm's trading account.
+ */
+int Firm_read_gov_bond_transactions()
+{
+	START_GOV_BOND_TRANSACTION_MESSAGE_LOOP
+	if(gov_bond_transaction_message->trader_id==ID)
+	{
+		//gov_bond_transaction_message->bond_id;
+		//gov_bond_transaction_message->limit_price;
+		//gov_bond_transaction_message->limit_quantity;
+	}
+	FINISH_GOV_BOND_TRANSACTION_MESSAGE_LOOP
     return 0;
 }

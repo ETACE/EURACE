@@ -196,29 +196,23 @@ printf("Ouput dir: %s\n", outputpath);
 		while(current_node)
 		{
 				
-			p_WagePayment_message = &current_node->WagePayment_messages;
+			p_rule_performance_message = &current_node->rule_performance_messages;
 				
-			p_DividendPayment_message = &current_node->DividendPayment_messages;
+			p_new_performances_message = &current_node->new_performances_messages;
 				
-			p_BondCouponPayment_message = &current_node->BondCouponPayment_messages;
+			p_new_rule_details_message = &current_node->new_rule_details_messages;
 				
-			p_firm_bond_order_message = &current_node->firm_bond_order_messages;
+			p_stock_order_message = &current_node->stock_order_messages;
 				
-			p_firm_stock_order_message = &current_node->firm_stock_order_messages;
+			p_stock_transaction_message = &current_node->stock_transaction_messages;
+				
+			p_bond_order_message = &current_node->bond_order_messages;
+				
+			p_bond_transaction_message = &current_node->bond_transaction_messages;
 				
 			p_gov_bond_order_message = &current_node->gov_bond_order_messages;
 				
-			p_firm_bond_transaction_message = &current_node->firm_bond_transaction_messages;
-				
 			p_gov_bond_transaction_message = &current_node->gov_bond_transaction_messages;
-				
-			p_firm_stock_transaction_message = &current_node->firm_stock_transaction_messages;
-				
-			p_rule_performance_message = &current_node->rule_performance_messages;
-				
-			p_all_performances_message = &current_node->all_performances_messages;
-				
-			p_ruledetailsystem_message = &current_node->ruledetailsystem_messages;
 				
 		p_xmachine = &current_node->agents;
 	
@@ -230,9 +224,81 @@ printf("Ouput dir: %s\n", outputpath);
 		{
 			i = 0;
 		
-			if(current_xmachine->xmachine_Household != NULL)
+			if(current_xmachine->xmachine_FinancialAgent != NULL)
 			{
-				i = Household_send_rule_performance_message();
+				i = Every_100_periods();
+			}
+			
+			/* If agent is freed */
+			if(i == 1)
+			{
+				temp_free_xmachine = current_xmachine->next;
+				free_agent();
+				current_xmachine = temp_free_xmachine;
+			}
+			else
+			{
+				current_xmachine = current_xmachine->next;
+			}
+		}
+	
+		/* Loop through x-machines */
+		current_xmachine = *p_xmachine;
+		while(current_xmachine)
+		{
+			i = 0;
+		
+			if(current_xmachine->xmachine_FinancialAgent != NULL)
+			{
+				i = FinancialAgent_apply_GA();
+			}
+			
+			/* If agent is freed */
+			if(i == 1)
+			{
+				temp_free_xmachine = current_xmachine->next;
+				free_agent();
+				current_xmachine = temp_free_xmachine;
+			}
+			else
+			{
+				current_xmachine = current_xmachine->next;
+			}
+		}
+	
+		/* Loop through x-machines */
+		current_xmachine = *p_xmachine;
+		while(current_xmachine)
+		{
+			i = 0;
+		
+			if(current_xmachine->xmachine_FinancialAgent != NULL)
+			{
+				i = FinancialAgent_update_rule_details();
+			}
+			
+			/* If agent is freed */
+			if(i == 1)
+			{
+				temp_free_xmachine = current_xmachine->next;
+				free_agent();
+				current_xmachine = temp_free_xmachine;
+			}
+			else
+			{
+				current_xmachine = current_xmachine->next;
+			}
+		}
+	
+		/* Loop through x-machines */
+		current_xmachine = *p_xmachine;
+		while(current_xmachine)
+		{
+			i = 0;
+		
+			if(current_xmachine->xmachine_FinancialAgent != NULL)
+			{
+				i = FinancialAgent_send_rule_details();
 			}
 			
 			/* If agent is freed */
@@ -263,29 +329,23 @@ printf("Ouput dir: %s\n", outputpath);
 		while(current_node)
 		{
 				
-			p_WagePayment_message = &current_node->WagePayment_messages;
+			p_rule_performance_message = &current_node->rule_performance_messages;
 				
-			p_DividendPayment_message = &current_node->DividendPayment_messages;
+			p_new_performances_message = &current_node->new_performances_messages;
 				
-			p_BondCouponPayment_message = &current_node->BondCouponPayment_messages;
+			p_new_rule_details_message = &current_node->new_rule_details_messages;
 				
-			p_firm_bond_order_message = &current_node->firm_bond_order_messages;
+			p_stock_order_message = &current_node->stock_order_messages;
 				
-			p_firm_stock_order_message = &current_node->firm_stock_order_messages;
+			p_stock_transaction_message = &current_node->stock_transaction_messages;
+				
+			p_bond_order_message = &current_node->bond_order_messages;
+				
+			p_bond_transaction_message = &current_node->bond_transaction_messages;
 				
 			p_gov_bond_order_message = &current_node->gov_bond_order_messages;
 				
-			p_firm_bond_transaction_message = &current_node->firm_bond_transaction_messages;
-				
 			p_gov_bond_transaction_message = &current_node->gov_bond_transaction_messages;
-				
-			p_firm_stock_transaction_message = &current_node->firm_stock_transaction_messages;
-				
-			p_rule_performance_message = &current_node->rule_performance_messages;
-				
-			p_all_performances_message = &current_node->all_performances_messages;
-				
-			p_ruledetailsystem_message = &current_node->ruledetailsystem_messages;
 				
 		p_xmachine = &current_node->agents;
 	
@@ -297,9 +357,9 @@ printf("Ouput dir: %s\n", outputpath);
 		{
 			i = 0;
 		
-			if(current_xmachine->xmachine_FinancialAdvisor != NULL)
+			if(current_xmachine->xmachine_Household != NULL)
 			{
-				i = FinancialAgent_read_rule_performance_message();
+				i = Household_read_and_update_rule_details();
 			}
 			
 			/* If agent is freed */
@@ -321,9 +381,9 @@ printf("Ouput dir: %s\n", outputpath);
 		{
 			i = 0;
 		
-			if(current_xmachine->xmachine_FinancialAdvisor != NULL)
+			if(current_xmachine->xmachine_Household != NULL)
 			{
-				i = FinancialAgent_update_classifiersystem();
+				i = Household_reset_private_classifiersystem();
 			}
 			
 			/* If agent is freed */
@@ -345,9 +405,33 @@ printf("Ouput dir: %s\n", outputpath);
 		{
 			i = 0;
 		
-			if(current_xmachine->xmachine_FinancialAdvisor != NULL)
+			if(current_xmachine->xmachine_Household != NULL)
 			{
-				i = FinancialAgent_send_all_performances_message();
+				i = Every_period();
+			}
+			
+			/* If agent is freed */
+			if(i == 1)
+			{
+				temp_free_xmachine = current_xmachine->next;
+				free_agent();
+				current_xmachine = temp_free_xmachine;
+			}
+			else
+			{
+				current_xmachine = current_xmachine->next;
+			}
+		}
+	
+		/* Loop through x-machines */
+		current_xmachine = *p_xmachine;
+		while(current_xmachine)
+		{
+			i = 0;
+		
+			if(current_xmachine->xmachine_Household != NULL)
+			{
+				i = Household_send_rule_performance();
 			}
 			
 			/* If agent is freed */
@@ -378,29 +462,23 @@ printf("Ouput dir: %s\n", outputpath);
 		while(current_node)
 		{
 				
-			p_WagePayment_message = &current_node->WagePayment_messages;
+			p_rule_performance_message = &current_node->rule_performance_messages;
 				
-			p_DividendPayment_message = &current_node->DividendPayment_messages;
+			p_new_performances_message = &current_node->new_performances_messages;
 				
-			p_BondCouponPayment_message = &current_node->BondCouponPayment_messages;
+			p_new_rule_details_message = &current_node->new_rule_details_messages;
 				
-			p_firm_bond_order_message = &current_node->firm_bond_order_messages;
+			p_stock_order_message = &current_node->stock_order_messages;
 				
-			p_firm_stock_order_message = &current_node->firm_stock_order_messages;
+			p_stock_transaction_message = &current_node->stock_transaction_messages;
+				
+			p_bond_order_message = &current_node->bond_order_messages;
+				
+			p_bond_transaction_message = &current_node->bond_transaction_messages;
 				
 			p_gov_bond_order_message = &current_node->gov_bond_order_messages;
 				
-			p_firm_bond_transaction_message = &current_node->firm_bond_transaction_messages;
-				
 			p_gov_bond_transaction_message = &current_node->gov_bond_transaction_messages;
-				
-			p_firm_stock_transaction_message = &current_node->firm_stock_transaction_messages;
-				
-			p_rule_performance_message = &current_node->rule_performance_messages;
-				
-			p_all_performances_message = &current_node->all_performances_messages;
-				
-			p_ruledetailsystem_message = &current_node->ruledetailsystem_messages;
 				
 		p_xmachine = &current_node->agents;
 	
@@ -412,9 +490,9 @@ printf("Ouput dir: %s\n", outputpath);
 		{
 			i = 0;
 		
-			if(current_xmachine->xmachine_Household != NULL)
+			if(current_xmachine->xmachine_FinancialAgent != NULL)
 			{
-				i = Household_read_all_performances_message();
+				i = FinancialAgent_read_rule_performance_and_update_classifiersystem();
 			}
 			
 			/* If agent is freed */
@@ -436,15 +514,90 @@ printf("Ouput dir: %s\n", outputpath);
 		{
 			i = 0;
 		
-			if(current_xmachine->xmachine_FinancialAdvisor != NULL)
+			if(current_xmachine->xmachine_FinancialAgent != NULL)
 			{
-				i = FinancialAgent_updateGA();
+				i = FinancialAgent_send_all_performances();
 			}
+			
+			/* If agent is freed */
+			if(i == 1)
+			{
+				temp_free_xmachine = current_xmachine->next;
+				free_agent();
+				current_xmachine = temp_free_xmachine;
+			}
+			else
+			{
+				current_xmachine = current_xmachine->next;
+			}
+		}
+	
+	
+        randomisexagent();  /* randomise x-agents while waiting for communication to complete */
+        
+			
+		current_node = current_node->next;
+		}
+			
+/* End of communications layer loop */
+
+/* Start of communications layer loop */
+	
+		current_node = *p_node_info;
+		while(current_node)
+		{
+				
+			p_rule_performance_message = &current_node->rule_performance_messages;
+				
+			p_new_performances_message = &current_node->new_performances_messages;
+				
+			p_new_rule_details_message = &current_node->new_rule_details_messages;
+				
+			p_stock_order_message = &current_node->stock_order_messages;
+				
+			p_stock_transaction_message = &current_node->stock_transaction_messages;
+				
+			p_bond_order_message = &current_node->bond_order_messages;
+				
+			p_bond_transaction_message = &current_node->bond_transaction_messages;
+				
+			p_gov_bond_order_message = &current_node->gov_bond_order_messages;
+				
+			p_gov_bond_transaction_message = &current_node->gov_bond_transaction_messages;
+				
+		p_xmachine = &current_node->agents;
+	
+	
+	
+		/* Loop through x-machines */
+		current_xmachine = *p_xmachine;
+		while(current_xmachine)
+		{
+			i = 0;
 		
-			if(current_xmachine->xmachine_FinancialAdvisor != NULL)
+			if(current_xmachine->xmachine_Household != NULL)
 			{
-				i = FinancialAgent_reset_public_classifiersystem();
+				i = Household_read_all_performances();
 			}
+			
+			/* If agent is freed */
+			if(i == 1)
+			{
+				temp_free_xmachine = current_xmachine->next;
+				free_agent();
+				current_xmachine = temp_free_xmachine;
+			}
+			else
+			{
+				current_xmachine = current_xmachine->next;
+			}
+		}
+	
+		/* Loop through x-machines */
+		current_xmachine = *p_xmachine;
+		while(current_xmachine)
+		{
+			i = 0;
 		
 			if(current_xmachine->xmachine_Household != NULL)
 			{
@@ -469,40 +622,6 @@ printf("Ouput dir: %s\n", outputpath);
 		while(current_xmachine)
 		{
 			i = 0;
-		
-			if(current_xmachine->xmachine_FinancialAdvisor != NULL)
-			{
-				i = FinancialAgent_update_ruledetailsystem();
-			}
-		
-			if(current_xmachine->xmachine_Household != NULL)
-			{
-				i = Household_retrieve_rule_details();
-			}
-			
-			/* If agent is freed */
-			if(i == 1)
-			{
-				temp_free_xmachine = current_xmachine->next;
-				free_agent();
-				current_xmachine = temp_free_xmachine;
-			}
-			else
-			{
-				current_xmachine = current_xmachine->next;
-			}
-		}
-	
-		/* Loop through x-machines */
-		current_xmachine = *p_xmachine;
-		while(current_xmachine)
-		{
-			i = 0;
-		
-			if(current_xmachine->xmachine_FinancialAdvisor != NULL)
-			{
-				i = FinancialAgent_send_ruledetailsystem_message();
-			}
 		
 			if(current_xmachine->xmachine_Household != NULL)
 			{
@@ -537,29 +656,23 @@ printf("Ouput dir: %s\n", outputpath);
 		while(current_node)
 		{
 				
-			p_WagePayment_message = &current_node->WagePayment_messages;
+			p_rule_performance_message = &current_node->rule_performance_messages;
 				
-			p_DividendPayment_message = &current_node->DividendPayment_messages;
+			p_new_performances_message = &current_node->new_performances_messages;
 				
-			p_BondCouponPayment_message = &current_node->BondCouponPayment_messages;
+			p_new_rule_details_message = &current_node->new_rule_details_messages;
 				
-			p_firm_bond_order_message = &current_node->firm_bond_order_messages;
+			p_stock_order_message = &current_node->stock_order_messages;
 				
-			p_firm_stock_order_message = &current_node->firm_stock_order_messages;
+			p_stock_transaction_message = &current_node->stock_transaction_messages;
+				
+			p_bond_order_message = &current_node->bond_order_messages;
+				
+			p_bond_transaction_message = &current_node->bond_transaction_messages;
 				
 			p_gov_bond_order_message = &current_node->gov_bond_order_messages;
 				
-			p_firm_bond_transaction_message = &current_node->firm_bond_transaction_messages;
-				
 			p_gov_bond_transaction_message = &current_node->gov_bond_transaction_messages;
-				
-			p_firm_stock_transaction_message = &current_node->firm_stock_transaction_messages;
-				
-			p_rule_performance_message = &current_node->rule_performance_messages;
-				
-			p_all_performances_message = &current_node->all_performances_messages;
-				
-			p_ruledetailsystem_message = &current_node->ruledetailsystem_messages;
 				
 		p_xmachine = &current_node->agents;
 	
@@ -571,91 +684,19 @@ printf("Ouput dir: %s\n", outputpath);
 		{
 			i = 0;
 		
-			if(current_xmachine->xmachine_ClearingHouseMechanism != NULL)
+			if(current_xmachine->xmachine_FinancialAgent != NULL)
 			{
-				i = Clearinghouse_read_order_messages();
+				i = FinancialAgent_reset_public_classifiersystem();
 			}
 		
-			if(current_xmachine->xmachine_Household != NULL)
+			if(current_xmachine->xmachine_FinancialAgent != NULL)
 			{
-				i = Household_reset_private_classifiersystem();
+				i = FinancialAgent_daily_reset_public_classifiersystem();
 			}
 		
-			if(current_xmachine->xmachine_Household != NULL)
+			if(current_xmachine->xmachine_Clearinghouse != NULL)
 			{
-				i = Household_read_ruledetailsystem_message();
-			}
-			
-			/* If agent is freed */
-			if(i == 1)
-			{
-				temp_free_xmachine = current_xmachine->next;
-				free_agent();
-				current_xmachine = temp_free_xmachine;
-			}
-			else
-			{
-				current_xmachine = current_xmachine->next;
-			}
-		}
-	
-	
-        randomisexagent();  /* randomise x-agents while waiting for communication to complete */
-        
-			
-		current_node = current_node->next;
-		}
-			
-/* End of communications layer loop */
-
-/* Start of communications layer loop */
-	
-		current_node = *p_node_info;
-		while(current_node)
-		{
-				
-			p_WagePayment_message = &current_node->WagePayment_messages;
-				
-			p_DividendPayment_message = &current_node->DividendPayment_messages;
-				
-			p_BondCouponPayment_message = &current_node->BondCouponPayment_messages;
-				
-			p_firm_bond_order_message = &current_node->firm_bond_order_messages;
-				
-			p_firm_stock_order_message = &current_node->firm_stock_order_messages;
-				
-			p_gov_bond_order_message = &current_node->gov_bond_order_messages;
-				
-			p_firm_bond_transaction_message = &current_node->firm_bond_transaction_messages;
-				
-			p_gov_bond_transaction_message = &current_node->gov_bond_transaction_messages;
-				
-			p_firm_stock_transaction_message = &current_node->firm_stock_transaction_messages;
-				
-			p_rule_performance_message = &current_node->rule_performance_messages;
-				
-			p_all_performances_message = &current_node->all_performances_messages;
-				
-			p_ruledetailsystem_message = &current_node->ruledetailsystem_messages;
-				
-		p_xmachine = &current_node->agents;
-	
-	
-	
-		/* Loop through x-machines */
-		current_xmachine = *p_xmachine;
-		while(current_xmachine)
-		{
-			i = 0;
-		
-			if(current_xmachine->xmachine_Household != NULL)
-			{
-				i = Household_read_transaction_message();
-			}
-		
-			if(current_xmachine->xmachine_Household != NULL)
-			{
-				i = Household_update_ruledetailsystem();
+				i = Clearinghouse_read_stock_orders();
 			}
 			
 			/* If agent is freed */
@@ -689,30 +730,24 @@ printf("Ouput dir: %s\n", outputpath);
 		}		current_node = *p_node_info;
 		while(current_node)
 		{
-		p_WagePayment_message = &current_node->WagePayment_messages;
-		freeWagePaymentmessages();
-		p_DividendPayment_message = &current_node->DividendPayment_messages;
-		freeDividendPaymentmessages();
-		p_BondCouponPayment_message = &current_node->BondCouponPayment_messages;
-		freeBondCouponPaymentmessages();
-		p_firm_bond_order_message = &current_node->firm_bond_order_messages;
-		freefirm_bond_ordermessages();
-		p_firm_stock_order_message = &current_node->firm_stock_order_messages;
-		freefirm_stock_ordermessages();
-		p_gov_bond_order_message = &current_node->gov_bond_order_messages;
-		freegov_bond_ordermessages();
-		p_firm_bond_transaction_message = &current_node->firm_bond_transaction_messages;
-		freefirm_bond_transactionmessages();
-		p_gov_bond_transaction_message = &current_node->gov_bond_transaction_messages;
-		freegov_bond_transactionmessages();
-		p_firm_stock_transaction_message = &current_node->firm_stock_transaction_messages;
-		freefirm_stock_transactionmessages();
 		p_rule_performance_message = &current_node->rule_performance_messages;
 		freerule_performancemessages();
-		p_all_performances_message = &current_node->all_performances_messages;
-		freeall_performancesmessages();
-		p_ruledetailsystem_message = &current_node->ruledetailsystem_messages;
-		freeruledetailsystemmessages();
+		p_new_performances_message = &current_node->new_performances_messages;
+		freenew_performancesmessages();
+		p_new_rule_details_message = &current_node->new_rule_details_messages;
+		freenew_rule_detailsmessages();
+		p_stock_order_message = &current_node->stock_order_messages;
+		freestock_ordermessages();
+		p_stock_transaction_message = &current_node->stock_transaction_messages;
+		freestock_transactionmessages();
+		p_bond_order_message = &current_node->bond_order_messages;
+		freebond_ordermessages();
+		p_bond_transaction_message = &current_node->bond_transaction_messages;
+		freebond_transactionmessages();
+		p_gov_bond_order_message = &current_node->gov_bond_order_messages;
+		freegov_bond_ordermessages();
+		p_gov_bond_transaction_message = &current_node->gov_bond_transaction_messages;
+		freegov_bond_transactionmessages();
 		p_xmachine = &current_node->agents;
 		/* Calculate if any agents need to jump S.P. */
 		propagate_agents();

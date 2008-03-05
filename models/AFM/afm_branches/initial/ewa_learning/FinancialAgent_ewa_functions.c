@@ -24,9 +24,9 @@ int FinancialAgent_daily_reset_public_classifiersystem()
     //Resetting and storing values to memory:
     for (i=0; i<nr_rules; i++)
     {
-        CLASSIFIERSYSTEM.rule_table.array[i].counter=0;
-        CLASSIFIERSYSTEM.rule_table.array[i].performance=log(pow(10,-5));
-        CLASSIFIERSYSTEM.rule_table.array[i].avg_performance=log(pow(10,-5));
+        CLASSIFIERSYSTEM.ruletable.array[i].counter=0;
+        CLASSIFIERSYSTEM.ruletable.array[i].performance=log(pow(10,-5));
+        CLASSIFIERSYSTEM.ruletable.array[i].avg_performance=log(pow(10,-5));
     }
     
   return 0;
@@ -48,13 +48,13 @@ int FinancialAgent_read_rule_performance_and_update_classifiersystem()
     
         /* Update rule performance: */
         //Replace old performance adding new performance: ******CHECK WHEN RESET OCCURS: SHOULD BE DAILY? 
-        CLASSIFIERSYSTEM.rule_table.array[current_rule].performance += rule_performance;
+        CLASSIFIERSYSTEM.ruletable.array[current_rule].performance += rule_performance;
         
         //Counter update: ******CHECK WHEN RESET OCCURS: SHOULD BE DAILY?
-        CLASSIFIERSYSTEM.rule_table.array[current_rule].counter +=1;
+        CLASSIFIERSYSTEM.ruletable.array[current_rule].counter +=1;
         
         //Avgperformance update:
-        CLASSIFIERSYSTEM.rule_table.array[current_rule].avg_performance = CLASSIFIERSYSTEM.rule_table.array[current_rule].avg_performance / CLASSIFIERSYSTEM.rule_table.array[current_rule].counter;
+        CLASSIFIERSYSTEM.ruletable.array[current_rule].avg_performance = CLASSIFIERSYSTEM.ruletable.array[current_rule].avg_performance / CLASSIFIERSYSTEM.ruletable.array[current_rule].counter;
 
       FINISH_RULE_PERFORMANCE_MESSAGE_LOOP
 
@@ -71,7 +71,7 @@ int FinancialAgent_send_all_performances()
     //Send the average performance of each rule
     for (i=0;i<CLASSIFIERSYSTEM.nr_rules;i++)
     {
-        add_new_performances_message(i, CLASSIFIERSYSTEM.rule_table.array[i].avg_performance, range, x, y, z);
+        add_new_performances_message(i, CLASSIFIERSYSTEM.ruletable.array[i].avg_performance, range, x, y, z);
     }
     
   return 0;
@@ -96,9 +96,10 @@ int FinancialAgent_send_rule_details()
 	int i;
 	
 	//Send new rule details in a rule_details_messsage
+	//The message contains the static array parameters[10]
 	for (i=0;i<CLASSIFIERSYSTEM.nr_rules;i++)
 	{
-		add_rule_details_messsage(i, CLASSIFIERSYSTEM.rule_table.array[i].parameters, MSGDATA);
+		add_new_rule_details_messsage(i, CLASSIFIERSYSTEM.ruletable.array[i].parameters, MSGDATA);
 	}
         
     return 0;
@@ -112,9 +113,9 @@ int FinancialAgent_reset_public_classifiersystem()
     //Resetting and storing values to memory:
     for (i=0; i<nr_rules; i++)
     {
-        CLASSIFIERSYSTEM.rule_table.array[i].counter=0;
-        CLASSIFIERSYSTEM.rule_table.array[i].performance=log(pow(10,-5));
-        CLASSIFIERSYSTEM.rule_table.array[i].avg_performance=log(pow(10,-5));
+        CLASSIFIERSYSTEM.ruletable.array[i].counter=0;
+        CLASSIFIERSYSTEM.ruletable.array[i].performance=log(pow(10,-5));
+        CLASSIFIERSYSTEM.ruletable.array[i].avg_performance=log(pow(10,-5));
     }
 
     return 0;
