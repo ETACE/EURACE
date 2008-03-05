@@ -860,8 +860,6 @@ int Firm_calc_revenue()
 	return 0;
 }
 
-
-
 int Firm_recalc_capital_demand()
 {
 if(DAY%MONTH==DAY_OF_MONTH_TO_ACT)
@@ -892,10 +890,6 @@ add_capital_good_request_message(ID,NEEDED_CAPITAL_STOCK -CAPITAL_STOCK,MSGDATA)
 }
 return 0;
 }
-
-
-
-
 
 int Firm_calc_pay_costs()
 {
@@ -1001,3 +995,16 @@ int Firm_calc_pay_costs()
 	
 	return 0;
 }
+
+int Firm_calc_input_demands_2()
+{
+	
+	return 0;
+}
+
+int Firm_calc_production_quantity_2()
+{
+	
+	return 0;
+}
+

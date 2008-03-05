@@ -161,24 +161,32 @@ int Household_compute_asset_budget()
 	return 0;
 }
 
-int Household_compute_firm_stock_orders()
+int Household_compute_and_send_stock_orders()
 {
 	return 0;
 }
 
-int Household_read_transaction_message()
+int Household_read_stock_transactions()
 {
 	return 0;
 }
 
-int Household_compute_government_bond_orders()
+int Household_compute_and_send_bond_orders()
 {
 	return 0;
 }
 
-int Household_compute_firm_bond_orders()
+int Household_read_bond_transactions()
 {
 	return 0;
 }
 
+int Household_compute_and_send_gov_bond_orders()
+{
+	return 0;
+}
 
+int Household_read_gov_bond_transactions()
+{
+	return 0;
+}

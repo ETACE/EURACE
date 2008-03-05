@@ -2,22 +2,22 @@
 
 <xmachine_agent_model>
 <name>Financial Market Model</name>
-<author>Eurace</author>
-<date>010607</date>
+<author>Sander van der Hoog</author>
+<date>010607, 050308</date>
 
 <!--************************* NOTES ***************************************-->
-<!--This is the main description file for the financial market model-->
+<!--This is the main description file for EWA learning in the financial market model-->
 <!-- Agents involved: Household, FinancialAgent, Firm, Bank, Clearinghouse, LimitOrderBook, Government-->
 <!--13/11/07 Adding structures to the model.xml-->
-<!-- TODO- Make seperate c files for each agent's functions-->
 
 <!--***************** Environment values and functions **********************-->
 <environment>
 <functions>
 <file>Household_ewa_functions.c</file>
-<file>Clearinghouse_ewa_functions.c</file>
+<file>Clearinghouse_financial_management_functions.c</file>
 <file>FinancialAgent_ewa_functions.c</file>
 <file>mylibraryfunctions.c</file>
+	<file>some_new_functions.c</file>
 </functions>
 <!--Auxiliary structs--><!--Structures-->
 
@@ -76,10 +76,16 @@
 <!--***************************** Struct for the Simple Public Classifier System *****************************-->
 <name>SimplePublicClassifierSystem</name>
 <desc>Datatype for the central classifier system. !Subject to change!</desc>
+<!-------------------Metadata for the rule system---------------------->
+	<var>
+		<!--Total nr of rules-->
+		<type>int</type>
+		<name>nr_rules</name>
+	</var>
 <!-------------------The rule system---------------------->
-	<var><!--Array of public classifier rules: this array contains rules of only one type-->
-		<type>PublicClassifierRule_array</type>
-		<name>rule_table</name>
+	<var><!--Static array of 100 public classifier rules: this array contains rules of only one type-->
+		<type>PublicClassifierRule</type>
+		<name>ruletable[100]</name>
 	</var>
 </datatype>
 
@@ -87,25 +93,38 @@
 <!--***************************** Struct for the Simple Private Classifier System *****************************-->
 <name>SimplePrivateClassifierSystem</name>
 <desc>Datatype for the private classifier system inside each agent.  !Subject to change!</desc>
+<!-------------------Metadata for the rule system---------------------->
+	<var>
+		<!--Total nr of rules-->
+		<type>int</type>
+		<name>nr_rules</name>
+	</var>
 <!-------------------Metadata for the agent---------------------->
-	<var><!--Experience variable for EWA learning-->
+	<var>
+	<!--Experience variable for EWA learning-->
 	<type>double</type><name>experience</name>
-	</var><var><!--Current rule in use by the agent-->
-	<type>int</type><name>current_rule</name>
+	</var>
+	
+	<var>
+	<!--Current rule in use by the agent-->
+	<type>int</type>
+	<name>current_rule</name>
+	</var>
 <!-------------------The rule system---------------------->
 	<var>
-	<!--Array of private classifier rules: this array contains rules of only one type-->
-		<type>PrivateClassifierRule_array</type>
-		<name>rule_table</name>
+	<!--Static array of 100 private classifier rules: this array contains rules of only one type-->
+		<type>PrivateClassifierRule</type>
+		<name>ruletable[100]</name>
 	</var>
 </datatype>
 
 <datatype>
 <!--***************************** Struct for the Public Classifier System *****************************--><name>ComplexPublicClassifierSystem</name>
 <desc>Datatype for the central classifier system. !Subject to change!</desc>
-<!-------------------General data for the rule system---------------------->
+<!-------------------Metadata for the rule system---------------------->
 	<var>
-	<!--Nr of subpopulations--><type>int</type>
+	<!--Nr of subpopulations-->
+	<type>int</type>
 	<name>nr_types</name>
 	</var>
 	<var>
@@ -118,9 +137,9 @@
 		<type>int</type>
 		<name>nr_rules</name>
 	</var><!-------------------The rule system---------------------->
-	<var><!--Array of public classifier rules: this array contains rules of heterogenous types-->
-		<type>PublicClassifierRule_array</type>
-		<name>rule_table</name>
+	<var><!--Static array of 100 public classifier rules: this array contains rules of heterogenous types-->
+		<type>PublicClassifierRule</type>
+		<name>ruletable[100]</name>
 	</var>
 </datatype>
 
@@ -128,7 +147,7 @@
 <!--***************************** Struct for the Private Classifier System *****************************-->
 <name>ComplexPrivateClassifierSystem</name>
 <desc>Datatype for the private classifier system inside each agent.  !Subject to change!</desc>
-<!-------------------General data for the rule system---------------------->
+<!-------------------Metadata for the rule system---------------------->
 	<var>
 	<!--Nr of subpopulations--><type>int</type>
 	<name>nr_types</name>
@@ -151,9 +170,9 @@
 	</var>
 <!-------------------The rule system---------------------->
 	<var>
-	<!--Array of private classifier rules: this array contains rules of heterogenous types-->
-		<type>PrivateClassifierRule_array</type>
-		<name>rule_table</name>
+	<!--Static array of 100 private classifier rules: this array contains rules of heterogenous types-->
+		<type>PrivateClassifierRule</type>
+		<name>ruletable[100]</name>
 	</var>
 </datatype>
 
@@ -172,10 +191,6 @@
 		</var>
 	<var><type>SimplePrivateClassifierSystem</type><name>classifiersystem</name></var>
 <var><type>double</type><name>asset_budget</name></var>
-
-<var><type>AssetPortfolioType</type><name>current_assetportfolio</name></var>
-<var><type>AssetPortfolioType</type><name>prescribed_assetportfolio</name></var>
-<var><type>double</type><name>prescribed_asset_value</name></var>
 <var><type>double</type><name>posx</name></var>
 <var><type>double</type><name>posy</name></var>
 </memory>
@@ -205,7 +220,7 @@
 	<name>Household_read_all_performances</name>
 	<depends>
 		<name>FinancialAgent_send_all_performances</name>
-		<type>all_performances</type>
+		<type>new_performances</type>
 	</depends>
 </function>
 
@@ -228,7 +243,7 @@
 	<name>Household_read_and_update_rule_details</name>
 	<depends>
 		<name>FinancialAgent_send_rule_details</name>
-		<type>rule_details</type>
+		<type>new_rule_details</type>
 	</depends>
 </function>
 
@@ -257,7 +272,7 @@
 <functions>
 <!--EWA Functions-->
 <!--- asset market role-->
-<function><name>Clearinghouse_read_order_messages</name>
+<function><name>Clearinghouse_read_stock_orders</name>
 <depends><name>Household_apply_rule</name><type>stock_order</type></depends>
 <depends><name>Household_apply_rule</name><type>bond_order</type></depends>
 <depends><name>Household_apply_rule</name><type>gov_bond_order</type></depends>
@@ -317,7 +332,7 @@
 
 <!--******** Messages being posted by the agents to communicate *************-->
 <messages>
-</message><!--EWA messages-->
+<!--EWA messages-->
 
 <message>
 <name>rule_performance</name>
@@ -344,18 +359,96 @@
 </message>
 
 <message>
-<name>rule_details</name>
+<name>new_rule_details</name>
 <note>FA communicates new rule details. There will be a single message per rule.</note>
 	<var>
 		<type>int</type><name>rule_id</name>
 		</var>
-	<var><type>double</type><name>parameters[10]</name></var>
+	<var><type>double</type><name>parameter</name></var>
 	<var><type>double</type><name>range</name></var>
 <var><type>double</type><name>x</name></var>
 <var><type>double</type><name>y</name></var>
 <var><type>double</type><name>z</name></var>
 </message>
 
+<!-- asset market context-->
+<message>
+<name>stock_order</name>
+<note>Added by trader</note>
+<var><type>int</type><name>trader_id</name></var>
+<var><type>int</type><name>stock_id</name></var>
+<var><type>double</type><name>limit_price</name></var>
+<var><type>double</type><name>limit_quantity</name></var>
+<var><type>double</type><name>range</name></var>
+<var><type>double</type><name>x</name></var>
+<var><type>double</type><name>y</name></var>
+<var><type>double</type><name>z</name></var>
+</message>
+
+<message>
+<name>stock_transaction</name>
+<note>Added by clearinghouse</note>
+<var><type>int</type><name>trader_id</name></var>
+<var><type>int</type><name>stock_id</name></var>
+<var><type>double</type><name>transaction_price</name></var>
+<var><type>double</type><name>transaction_quantity</name></var>
+<var><type>double</type><name>range</name></var>
+<var><type>double</type><name>x</name></var>
+<var><type>double</type><name>y</name></var>
+<var><type>double</type><name>z</name></var>
+</message>
+
+<message>
+<name>bond_order</name>
+<note>Added by trader</note>
+<var><type>int</type><name>trader_id</name></var>
+<var><type>int</type><name>bond_id</name></var>
+<var><type>double</type><name>limit_price</name></var>
+<var><type>double</type><name>limit_quantity</name></var>
+<var><type>double</type><name>range</name></var>
+<var><type>double</type><name>x</name></var>
+<var><type>double</type><name>y</name></var>
+<var><type>double</type><name>z</name></var>
+</message>
+
+<message>
+<name>bond_transaction</name>
+<note>Added by clearinghouse</note>
+<var><type>int</type><name>trader_id</name></var>
+<var><type>int</type><name>bond_id</name></var>
+<var><type>double</type><name>transaction_price</name></var>
+<var><type>double</type><name>transaction_quantity</name></var>
+<var><type>double</type><name>range</name></var>
+<var><type>double</type><name>x</name></var>
+<var><type>double</type><name>y</name></var>
+<var><type>double</type><name>z</name></var>
+</message>
+
+<message>
+<name>gov_bond_order</name>
+<note>Added by trader</note>
+<var><type>int</type><name>trader_id</name></var>
+<var><type>int</type><name>gov_bond_id</name></var>
+<var><type>double</type><name>limit_price</name></var>
+<var><type>double</type><name>limit_quantity</name></var>
+<var><type>double</type><name>range</name></var>
+<var><type>double</type><name>x</name></var>
+<var><type>double</type><name>y</name></var>
+<var><type>double</type><name>z</name></var>
+</message>
+
+<message>
+<name>gov_bond_transaction</name>
+<note>Added by clearinghouse</note>
+<var><type>int</type><name>trader_id</name></var>
+<var><type>int</type><name>gov_bond_id</name></var>
+<var><type>double</type><name>transaction_price</name></var>
+<var><type>double</type><name>transaction_quantity</name></var>
+<var><type>double</type><name>range</name></var>
+<var><type>double</type><name>x</name></var>
+<var><type>double</type><name>y</name></var>
+<var><type>double</type><name>z</name></var>
+</message>
 </messages>
 <!--********************** End of Messages **********************************-->
 

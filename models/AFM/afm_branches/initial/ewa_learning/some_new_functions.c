@@ -12,7 +12,7 @@
 //my_function_name[1]='Markowitz';
 //my_function_name[2]='ProspectTheory';
 //my_function_name[3]='RandomRule';
-
+/*
 int initialize_ruledetailsystem()
 {
 	int i;
@@ -133,7 +133,7 @@ int initialize_ruledetailsystem()
 	
     return 0;
 }
-
+*/
 
 //*********** BEGIN AUXILIARY FUNCTIONS ****************************
 
@@ -145,6 +145,15 @@ int initialize_ruledetailsystem()
 //Before calling:
 //double * p;
 //int size
+//p = malloc(sizeof(double)*size);
+//Call: sum = sum(p, size);
+//After calling:
+//free(p);
+//
+//UNIT TEST:
+//Input: p={0.6 0.2 0.8 0.4}
+//sum = sum(p,4);
+//Outcome: sum=2.0;
 double sum(double * p, int size)
 {
 	int i;
@@ -167,7 +176,7 @@ double sum(double * p, int size)
 //double * p;
 //double * cumsum;
 //int size;
-//cumsum = malloc(sizeof((double)*size);
+//cumsum = malloc(sizeof(double)*size);
 //Call: cumsum(p, size, cumsum);
 //After calling:
 //free(cumsum);
@@ -179,7 +188,7 @@ double sum(double * p, int size)
 void cumsum(double * p, int size, double * cumsum)
 {
 	//Before calling this function you need to have done:
-	//cumsum = malloc(sizeof((double)*size);
+	//cumsum = malloc(sizeof(double)*size);
 
 	int i;
 	
@@ -205,27 +214,29 @@ void cumsum(double * p, int size, double * cumsum)
 //double * p;
 //double * cpdf;
 //int size;
-//cpdf = malloc(sizeof((double)*size);
+//p = malloc(sizeof(double)*size);
+//cpdf = malloc(sizeof(double)*size);
 //Call: cumpdf(p, size, cumpdf);
 //After calling:
 //free(cpdf);
+//free(p);
 //
 //UNIT TEST:
 //Input: p={0.6 0.2 0.8 0.4}
-//cpdf = malloc(sizeof((double)*size);
+//cpdf = malloc(sizeof(double)*size);
 //cumpdf(p, 4, cpdf);
 //Outcome: cpdf={0.3 0.4 0.8 1.0}
 //free(cpdf);
 void cumpdf(double * p, int size, double * cpdf)
 {
 	//Before calling this function you need to have done:
-	//cpdf = malloc(sizeof((double)*size);
+	//cpdf = malloc(sizeof(double)*size);
 	
 	int i;
 	double sum_p;		//this is the sum of p
 	double * cumsum_p;	//this is the cumulative sum of p	
 	
-	cumsum_p = malloc(sizeof((double)*size);
+	cumsum_p = malloc(sizeof(double)*size);
 	
 	//The sum is passed to sum_p:
 	sum_p = sum(p, size);
@@ -237,7 +248,8 @@ void cumpdf(double * p, int size, double * cpdf)
 	for (i=0;i<size;i++)
 	{    	
      	cpdf[i] = cumsum_p[i]/sum_p;
-	}	
+	}
+	free(cumsum_p);
 }
 
 //int draw(int N, double * cpdf)
@@ -247,11 +259,21 @@ void cumpdf(double * p, int size, double * cpdf)
 //Returns the bin number of a randomly chosen number u.
 //Given a cummulative pdf F(.), the random number u belongs to bin j
 //if and only if F(j-1)<= u < F(j).
-int draw(int N, double * cpdf)
+//
+//USAGE:
+//Before calling:
+//double * cpdf;
+//int size;
+//cpdf = malloc(sizeof(double)*size);
+//Call: draw(size, cpdf);
+//After calling:
+//free(cpdf);
+//
+double draw(int size, double * cpdf)
 {	
 	int j,u, nr_selected_bin;
-	int imax = N; //was: cpdf->size;
-
+	double nr_drawn;
+	
     //Random number generator:
     u=rand_unif();
     
@@ -261,34 +283,51 @@ int draw(int N, double * cpdf)
         if (0<=u && u<cpdf[0])
         {
             nr_selected_bin=1;
+            nr_drawn = cpdf[0];
         }
-    
-    //Case 2: Travers the cpdf until u >= F(j-1)
-	    for (j=2;j++;j<imax)
+        
+    if (size>1)
+    {
+    	//Case 2: Travers the cpdf until u >= F(j-1)
+	    for (j=2;j++;j<size)
 	    {
 	        if (cpdf[j-1]<=u && u<cpdf[j])
 	        {
 	            nr_selected_bin=j;
+	            nr_drawn = cpdf[j];
 	            break;
 	    	}
 	    }
 	    
-    //Case 3: u>=F(J)
-        if (cpdf[imax]<=u)
+	    //Case 3: u>=F(J)
+        if (cpdf[size-1]<=u)
         {
-            nr_selected_bin=imax;
+            nr_selected_bin=size-1;
+            nr_drawn = cpdf[size-1];
         }
-
-    return nr_selected_bin;
+    }
+    
+    //return nr_selected_bin;
+    return nr_drawn;
 }
 
-//int ismember(int i, int * x, int n)
-//Check if i is a member of the array x, with size n.
+//int ismember(int i, int * x, int size)
+//Check if i is a member of the array "x", with length "size".
 //Returns 1 if i is a member, 0 else.
-int ismember(int i, int * x, int n)
+//
+//USAGE:
+//Before calling:
+//double * x;
+//int size;
+//x = malloc(sizeof(double)*size);
+//Call: draw(size, x);
+//After calling:
+//free(x);
+//
+int ismember(double i, double * x, int size)
 {
 	int k, ans=0;
-	for (k=0;k<n;k++)
+	for (k=0;k<size;k++)
 	{
 		if(i==x[k])
 		{
@@ -301,61 +340,86 @@ int ismember(int i, int * x, int n)
 }
 
 
-//int * draw_without_replacement(int N, double * cpdf)
+//void draw_without_replacement(int N, double * cpdf, double * draws)
 //Drawing N random numbers (integers) without replacement from the cummulative probability density function cpdf.
 //UNIT TEST:
 //cpdf={0.1 0.2 0.3 0.4 0.5};
 //draw_without_replacement(5, cpdf)
 //Outcome: array 'draws' should contain all values 1-5
-
-int * draw_without_replacement(int N, double * cpdf)
+//draw={0.1 0.2 0.3 0.4 0.5} in any order.
+//
+//USAGE:
+//Before calling:
+//double * cpdf;
+//double * draws;
+//int size;
+//cpdf = malloc(sizeof(double)*size);
+//draws = malloc(sizeof(double)*size);
+//Call: draw(size, cpdf);
+//After calling:
+//free(cpdf);
+//free(draws);
+//
+void draw_without_replacement(int size, double * cpdf, double * draws)
 {
-	double draws[N];
-	int i,k,count=0;
+	double i;
+	int k,count=0;
 	
-	for (k=0;k<N;k++)
+	for (k=0;k<size;k++)
 	{
 		draws[k]=-1;
 	}
 	
 	//Continue drawing until N different numbers have been drawn
-	while(count!=N)
+	while(count!=size)
 	{
-		i = draw(cpdf);
+		i = draw(size, cpdf);
 		
 		//Check membership, only add if not yet a member
-		if (ismember(i,draws,N)==0)
+		if (ismember(i,draws,size)==0)
 		{
 			draws[count]=i;
 			count += 1;
 		}
 	}
-	
-    return (&draws);//CHECK: is this proper way of returning the address of the start of array?
 }
 
-//int * draw_with_replacement(int N, double * cpdf)
+//void draw_with_replacement(int size, double * cpdf, double * draws, N)
 //Drawing N random numbers (integers) with replacement
 //from the cummulative probability density function cpdf.
+//size: size of cpdf
+//cpdf cpdf to sample from
+//draws: output
+//N: nr of draws
+//
 //UNIT TEST:
 //Do 1000 draws from 4 bins with probabilities according to a given pdf.
 //Input: 
 //pdf={0.3 0.1 0.4 0.2};
 //cpdf={0.3 0.4 0.8 1.0};
-//draw_with_replacement(1000, cpdf)
+//draw_with_replacement(4, cpdf, draws, 1000)
 //Outcome: approx. 300, 100, 400, 200 in each bin.
-
-int * draw_with_replacement(int N, double * cpdf)
+//
+//USAGE:
+//Before calling:
+//double * cpdf;
+//double * draws;
+//int size;
+//cpdf = malloc(sizeof(double)*size);
+//draws = malloc(sizeof(double)*N);
+//Call: draw(size, cpdf, draws, N);
+//After calling:
+//free(cpdf);
+//free(draws);
+//
+void draw_with_replacement(int size, double * cpdf, double * draws, int Nr_draws)
 {
-	double draws[N];
 	int k=0;
 
-	for (k=0;k<N;k++)
+	for (k=0;k<Nr_draws;k++)
 	{
-		draws[k]=draw(cpdf);
+		draws[k]=draw(size, cpdf);
 	}
-	
-    return (&draws);//CHECK: is this proper way of returning the address of the start of array cumsum?
 }
 
 // *********** END AUXILIARY FUNCTIONS ****************************
