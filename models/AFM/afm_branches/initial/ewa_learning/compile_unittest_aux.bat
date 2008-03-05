@@ -1,0 +1,1 @@
+gcc -g unittest.c mylibraryfunctions.c some_new_functions.c  some_new_functions_unittest.c -lm -lcunit 
