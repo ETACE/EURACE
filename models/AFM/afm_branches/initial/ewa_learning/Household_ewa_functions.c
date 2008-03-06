@@ -201,16 +201,16 @@ int Household_read_and_update_rule_details()
     int i,rule_id=0;
    
     //Reading the rule_details_message
-    START_NEW_RULE_DETAILS_MESSAGE_LOOP
-	    rule_id = new_rule_details_message->rule_id;
+    START_RULE_DETAILS_MESSAGE_LOOP
+	    rule_id = rule_details_message->rule_id;
 	    
     	//Filling the static array parameters[10] with parameter values
 		for (i=0; i<NR_PARAMS; i++)
 		{
 			//Filling the fields of the rule with parameters[i]
-			CLASSIFIERSYSTEM.ruletable[rule_id].parameters[i] = new_rule_details_message->parameters[i];
+			CLASSIFIERSYSTEM.ruletable[rule_id].parameters[i] = rule_details_message->parameters[i];
 		}
-	FINISH_NEW_RULE_DETAILS_MESSAGE_LOOP
+	FINISH_RULE_DETAILS_MESSAGE_LOOP
     
     return 0;
 }

@@ -28,7 +28,7 @@ digraph dependency_graph {
 	FinancialAgent_send_all_performances -> FinancialAgent_read_rule_performance_and_update_classifiersystem [ label = "<depends on internal>" ];
 	FinancialAgent_read_rule_performance_and_update_classifiersystem -> Household_send_rule_performance [ label = "<depends on rule_performance>" ];
 	Household_reset_private_classifiersystem -> Household_read_and_update_rule_details [ label = "<depends on internal>" ];
-	Household_read_and_update_rule_details -> FinancialAgent_send_rule_details [ label = "<depends on new_rule_details>" ];
+	Household_read_and_update_rule_details -> FinancialAgent_send_rule_details [ label = "<depends on rule_details>" ];
 	Household_apply_rule -> Household_select_rule [ label = "<depends on internal>" ];
 	Household_select_rule -> Household_read_all_performances [ label = "<depends on internal>" ];
 	Household_read_all_performances -> FinancialAgent_send_all_performances [ label = "<depends on new_performances>" ];

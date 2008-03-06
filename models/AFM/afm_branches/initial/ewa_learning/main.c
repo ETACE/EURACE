@@ -200,7 +200,7 @@ printf("Ouput dir: %s\n", outputpath);
 				
 			p_new_performances_message = &current_node->new_performances_messages;
 				
-			p_new_rule_details_message = &current_node->new_rule_details_messages;
+			p_rule_details_message = &current_node->rule_details_messages;
 				
 		p_xmachine = &current_node->agents;
 	
@@ -321,7 +321,7 @@ printf("Ouput dir: %s\n", outputpath);
 				
 			p_new_performances_message = &current_node->new_performances_messages;
 				
-			p_new_rule_details_message = &current_node->new_rule_details_messages;
+			p_rule_details_message = &current_node->rule_details_messages;
 				
 		p_xmachine = &current_node->agents;
 	
@@ -442,7 +442,7 @@ printf("Ouput dir: %s\n", outputpath);
 				
 			p_new_performances_message = &current_node->new_performances_messages;
 				
-			p_new_rule_details_message = &current_node->new_rule_details_messages;
+			p_rule_details_message = &current_node->rule_details_messages;
 				
 		p_xmachine = &current_node->agents;
 	
@@ -515,7 +515,7 @@ printf("Ouput dir: %s\n", outputpath);
 				
 			p_new_performances_message = &current_node->new_performances_messages;
 				
-			p_new_rule_details_message = &current_node->new_rule_details_messages;
+			p_rule_details_message = &current_node->rule_details_messages;
 				
 		p_xmachine = &current_node->agents;
 	
@@ -625,8 +625,8 @@ printf("Ouput dir: %s\n", outputpath);
 		freerule_performancemessages();
 		p_new_performances_message = &current_node->new_performances_messages;
 		freenew_performancesmessages();
-		p_new_rule_details_message = &current_node->new_rule_details_messages;
-		freenew_rule_detailsmessages();
+		p_rule_details_message = &current_node->rule_details_messages;
+		freerule_detailsmessages();
 		p_xmachine = &current_node->agents;
 		/* Calculate if any agents need to jump S.P. */
 		propagate_agents();
