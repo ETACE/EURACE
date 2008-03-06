@@ -1,1 +1,1 @@
-gcc -g unittest.c memory.c messageboards.c Household_ewa_functions.c Household_ewa_unittests.c FinancialAgent_ewa_functions.c FinancialAgent_ewa_unittests.c  some_new_functions.c  some_new_functions_unittest.c -lm -lcunit 
+gcc -g unittest.c memory.c messageboards.c Household_ewa_functions.c Household_ewa_unittest.c -lm -lcunit 

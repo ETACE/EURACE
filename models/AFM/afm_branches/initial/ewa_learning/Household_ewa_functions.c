@@ -33,7 +33,9 @@ int Household_send_rule_performance()
     //Random performance (uses the function random_unif())
     rule_performance = random_unif()*100;
     
-    add_rule_performance_message(current_rule, rule_performance, 0.0, 0, 0, 0);
+    //Note: rule_id = current_rule-1 because of 0-indexing in C
+    //add_rule_performance_message(rule_id, rule_performance, MSGDATA);
+    add_rule_performance_message(current_rule-1, rule_performance, MSGDATA);
 
     return 0;
 }
@@ -90,7 +92,8 @@ int Household_select_rule()
     //Updating the experience weight
     experience_old=experience;
     experience=EWA_rho*experience + 1;
-
+    CLASSIFIERSYSTEM.experience = experience;
+    
     //Updating the attractions
     for (j=0;j<nr_rules;j++)
     {
@@ -127,7 +130,17 @@ int Household_select_rule()
     //Construct cumulative probability density function: cpdf
      cpdf = malloc(sizeof(double)*nr_rules);
      cumpdf(p, nr_rules, cpdf);
-    
+     
+     //print prob. vector:
+     printf("\n prob: [");
+     for (j=0;j<nr_rules;j++){printf("%2.2f ", p[j]);}
+     printf("]\n");
+          
+     //print cpdf:
+     printf("\n cpdf: [");
+     for (j=0;j<nr_rules;j++){printf("%2.2f ", cpdf[j]);}
+     printf("]\n");
+     
     //Selecting a strategy according to the pdf:
     //we draw just 1 time from the cpdf
      draws = malloc(sizeof(double)*1);
@@ -237,6 +250,9 @@ int Household_reset_private_classifiersystem()
     return 0;
 } 
 
+/* \fn: Household_initialize_ruledetails()
+ * \brief: Initialization of all rule details to zero: parameters[10]=0.
+ */
 
 //HERE: function to initialize the rule_detail_system.
 //Contains arrays for:
@@ -253,7 +269,7 @@ int Household_reset_private_classifiersystem()
 //my_function_name[2]='ProspectTheory';
 //my_function_name[3]='RandomRule';
 /*
-int initialize_ruledetailsystem()
+int Household_initialize_ruledetailsystem()
 {
 	int i;
 	
