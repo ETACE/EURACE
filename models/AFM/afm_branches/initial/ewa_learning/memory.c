@@ -18,18 +18,6 @@ void initialise_pointers()
 	p_new_performances_message = &temp_new_performances_message;
 	temp_new_rule_details_message = NULL;
 	p_new_rule_details_message = &temp_new_rule_details_message;
-	temp_stock_order_message = NULL;
-	p_stock_order_message = &temp_stock_order_message;
-	temp_stock_transaction_message = NULL;
-	p_stock_transaction_message = &temp_stock_transaction_message;
-	temp_bond_order_message = NULL;
-	p_bond_order_message = &temp_bond_order_message;
-	temp_bond_transaction_message = NULL;
-	p_bond_transaction_message = &temp_bond_transaction_message;
-	temp_gov_bond_order_message = NULL;
-	p_gov_bond_order_message = &temp_gov_bond_order_message;
-	temp_gov_bond_transaction_message = NULL;
-	p_gov_bond_transaction_message = &temp_gov_bond_transaction_message;
 	temp_node_info = NULL;
 	p_node_info = &temp_node_info;
 }
@@ -47,12 +35,6 @@ void initialise_unit_testing()
 	p_rule_performance_message = &current_node->rule_performance_messages;
 	p_new_performances_message = &current_node->new_performances_messages;
 	p_new_rule_details_message = &current_node->new_rule_details_messages;
-	p_stock_order_message = &current_node->stock_order_messages;
-	p_stock_transaction_message = &current_node->stock_transaction_messages;
-	p_bond_order_message = &current_node->bond_order_messages;
-	p_bond_transaction_message = &current_node->bond_transaction_messages;
-	p_gov_bond_order_message = &current_node->gov_bond_order_messages;
-	p_gov_bond_transaction_message = &current_node->gov_bond_transaction_messages;
 }
 
 /* add_location */
@@ -125,7 +107,6 @@ xmachine * add_xmachine()
 	CHECK_POINTER(current);
 
 	current->xmachine_Household = NULL;
-	current->xmachine_Clearinghouse = NULL;
 	current->xmachine_FinancialAgent = NULL;
 	current->next = *p_xmachine;
 	*p_xmachine = current;
@@ -518,7 +499,6 @@ xmachine_memory_Household * init_Household_agent()
 	current->id = 0;
 	init_EWAParameterStruct(&current->EWA_parameters);
 	init_SimplePrivateClassifierSystem(&current->classifiersystem);
-	current->asset_budget = 0.0;
 	current->posx = 0.0;
 	current->posy = 0.0;
 	
@@ -538,16 +518,15 @@ void add_Household_agent_internal(xmachine_memory_Household * current)
 	new_xmachine->xmachine_Household = current;
 }
 
-/** \fn void add_Household_agent(int id, EWAParameterStruct * EWA_parameters, SimplePrivateClassifierSystem * classifiersystem, double asset_budget, double posx, double posy)
+/** \fn void add_Household_agent(int id, EWAParameterStruct * EWA_parameters, SimplePrivateClassifierSystem * classifiersystem, double posx, double posy)
  * \brief Add Household X-machine to the current being used X-machine list.
  * \param id Variable for the X-machine memory.
  * \param EWA_parameters Variable for the X-machine memory.
  * \param classifiersystem Variable for the X-machine memory.
- * \param asset_budget Variable for the X-machine memory.
  * \param posx Variable for the X-machine memory.
  * \param posy Variable for the X-machine memory.
  */
-void add_Household_agent(int id, EWAParameterStruct EWA_parameters, SimplePrivateClassifierSystem classifiersystem, double asset_budget, double posx, double posy)
+void add_Household_agent(int id, EWAParameterStruct EWA_parameters, SimplePrivateClassifierSystem classifiersystem, double posx, double posy)
 {
 	xmachine * new_xmachine = add_xmachine();
 	xmachine_memory_Household * current;
@@ -558,49 +537,6 @@ void add_Household_agent(int id, EWAParameterStruct EWA_parameters, SimplePrivat
 	current->id = id;
 	copy_EWAParameterStruct(&EWA_parameters, &current->EWA_parameters);
 	copy_SimplePrivateClassifierSystem(&classifiersystem, &current->classifiersystem);
-	current->asset_budget = asset_budget;
-	current->posx = posx;
-	current->posy = posy;
-}
-
-xmachine_memory_Clearinghouse * init_Clearinghouse_agent()
-{
-	xmachine_memory_Clearinghouse * current = (xmachine_memory_Clearinghouse *)malloc(sizeof(xmachine_memory_Clearinghouse));
-	CHECK_POINTER(current);
-	
-	current->id = 0;
-	current->posx = 0.0;
-	current->posy = 0.0;
-	
-	return current;
-}
-
-void free_Clearinghouse_agent(xmachine_memory_Clearinghouse * tmp)
-{
-	
-}
-
-void add_Clearinghouse_agent_internal(xmachine_memory_Clearinghouse * current)
-{
-	xmachine * new_xmachine = add_xmachine();
-	new_xmachine->xmachine_Clearinghouse = current;
-}
-
-/** \fn void add_Clearinghouse_agent(int id, double posx, double posy)
- * \brief Add Clearinghouse X-machine to the current being used X-machine list.
- * \param id Variable for the X-machine memory.
- * \param posx Variable for the X-machine memory.
- * \param posy Variable for the X-machine memory.
- */
-void add_Clearinghouse_agent(int id, double posx, double posy)
-{
-	xmachine * new_xmachine = add_xmachine();
-	xmachine_memory_Clearinghouse * current;
-	
-	init_Clearinghouse_agent(current);
-	new_xmachine->xmachine_Clearinghouse = current;
-	
-	current->id = id;
 	current->posx = posx;
 	current->posy = posy;
 }
@@ -610,6 +546,9 @@ xmachine_memory_FinancialAgent * init_FinancialAgent_agent()
 	xmachine_memory_FinancialAgent * current = (xmachine_memory_FinancialAgent *)malloc(sizeof(xmachine_memory_FinancialAgent));
 	CHECK_POINTER(current);
 	
+	current->day_of_month_to_act = 0;
+	current->day = 0;
+	current->month = 0;
 	init_SimplePublicClassifierSystem(&current->classifiersystem);
 	current->posx = 0.0;
 	current->posy = 0.0;
@@ -629,13 +568,16 @@ void add_FinancialAgent_agent_internal(xmachine_memory_FinancialAgent * current)
 	new_xmachine->xmachine_FinancialAgent = current;
 }
 
-/** \fn void add_FinancialAgent_agent(SimplePublicClassifierSystem * classifiersystem, double posx, double posy)
+/** \fn void add_FinancialAgent_agent(int day_of_month_to_act, int day, int month, SimplePublicClassifierSystem * classifiersystem, double posx, double posy)
  * \brief Add FinancialAgent X-machine to the current being used X-machine list.
+ * \param day_of_month_to_act Variable for the X-machine memory.
+ * \param day Variable for the X-machine memory.
+ * \param month Variable for the X-machine memory.
  * \param classifiersystem Variable for the X-machine memory.
  * \param posx Variable for the X-machine memory.
  * \param posy Variable for the X-machine memory.
  */
-void add_FinancialAgent_agent(SimplePublicClassifierSystem classifiersystem, double posx, double posy)
+void add_FinancialAgent_agent(int day_of_month_to_act, int day, int month, SimplePublicClassifierSystem classifiersystem, double posx, double posy)
 {
 	xmachine * new_xmachine = add_xmachine();
 	xmachine_memory_FinancialAgent * current;
@@ -643,6 +585,9 @@ void add_FinancialAgent_agent(SimplePublicClassifierSystem classifiersystem, dou
 	init_FinancialAgent_agent(current);
 	new_xmachine->xmachine_FinancialAgent = current;
 	
+	current->day_of_month_to_act = day_of_month_to_act;
+	current->day = day;
+	current->month = month;
 	copy_SimplePublicClassifierSystem(&classifiersystem, &current->classifiersystem);
 	current->posx = posx;
 	current->posy = posy;
@@ -667,11 +612,6 @@ void free_agent()
 			{
 				free_Household_agent(head->xmachine_Household);
 				free(head->xmachine_Household);
-			}
-			if(head->xmachine_Clearinghouse)
-			{
-				free_Clearinghouse_agent(head->xmachine_Clearinghouse);
-				free(head->xmachine_Clearinghouse);
 			}
 			if(head->xmachine_FinancialAgent)
 			{
@@ -708,11 +648,6 @@ void freexmachines()
 			free_Household_agent(head->xmachine_Household);
 			free(head->xmachine_Household);
 		}
-		if(head->xmachine_Clearinghouse)
-		{
-			free_Clearinghouse_agent(head->xmachine_Clearinghouse);
-			free(head->xmachine_Clearinghouse);
-		}
 		if(head->xmachine_FinancialAgent)
 		{
 			free_FinancialAgent_agent(head->xmachine_FinancialAgent);
@@ -733,7 +668,6 @@ void freexmachines()
 void set_id(int id)
 {
 	if(current_xmachine->xmachine_Household) (*current_xmachine->xmachine_Household).id = id;
-	if(current_xmachine->xmachine_Clearinghouse) (*current_xmachine->xmachine_Clearinghouse).id = id;
 }
 
 /** \fn int get_id()
@@ -743,7 +677,6 @@ void set_id(int id)
 int get_id()
 {
 	if(current_xmachine->xmachine_Household) return (*current_xmachine->xmachine_Household).id;
-	if(current_xmachine->xmachine_Clearinghouse) return (*current_xmachine->xmachine_Clearinghouse).id;
 
     // suppress compiler warning by returning dummy value /
     // this statement should rightfully NEVER be reached /
@@ -777,28 +710,6 @@ SimplePrivateClassifierSystem * get_classifiersystem()
     return NULL;
 }
 
-/** \fn void set_asset_budget(double asset_budget) 
- * \brief Set asset_budget memory variable for current X-machine.
- * \param asset_budget New value for variable.
- */
-void set_asset_budget(double asset_budget)
-{
-	if(current_xmachine->xmachine_Household) (*current_xmachine->xmachine_Household).asset_budget = asset_budget;
-}
-
-/** \fn double get_asset_budget()
- * \brief Get asset_budget memory variable from current X-machine.
- * \return Value for variable.
- */
-double get_asset_budget()
-{
-	if(current_xmachine->xmachine_Household) return (*current_xmachine->xmachine_Household).asset_budget;
-
-    // suppress compiler warning by returning dummy value /
-    // this statement should rightfully NEVER be reached /
-    return (double)0;
-}
-
 /** \fn void set_posx(double posx) 
  * \brief Set posx memory variable for current X-machine.
  * \param posx New value for variable.
@@ -806,7 +717,6 @@ double get_asset_budget()
 void set_posx(double posx)
 {
 	if(current_xmachine->xmachine_Household) (*current_xmachine->xmachine_Household).posx = posx;
-	if(current_xmachine->xmachine_Clearinghouse) (*current_xmachine->xmachine_Clearinghouse).posx = posx;
 	if(current_xmachine->xmachine_FinancialAgent) (*current_xmachine->xmachine_FinancialAgent).posx = posx;
 }
 
@@ -817,7 +727,6 @@ void set_posx(double posx)
 double get_posx()
 {
 	if(current_xmachine->xmachine_Household) return (*current_xmachine->xmachine_Household).posx;
-	if(current_xmachine->xmachine_Clearinghouse) return (*current_xmachine->xmachine_Clearinghouse).posx;
 	if(current_xmachine->xmachine_FinancialAgent) return (*current_xmachine->xmachine_FinancialAgent).posx;
 
     // suppress compiler warning by returning dummy value /
@@ -832,7 +741,6 @@ double get_posx()
 void set_posy(double posy)
 {
 	if(current_xmachine->xmachine_Household) (*current_xmachine->xmachine_Household).posy = posy;
-	if(current_xmachine->xmachine_Clearinghouse) (*current_xmachine->xmachine_Clearinghouse).posy = posy;
 	if(current_xmachine->xmachine_FinancialAgent) (*current_xmachine->xmachine_FinancialAgent).posy = posy;
 }
 
@@ -843,12 +751,77 @@ void set_posy(double posy)
 double get_posy()
 {
 	if(current_xmachine->xmachine_Household) return (*current_xmachine->xmachine_Household).posy;
-	if(current_xmachine->xmachine_Clearinghouse) return (*current_xmachine->xmachine_Clearinghouse).posy;
 	if(current_xmachine->xmachine_FinancialAgent) return (*current_xmachine->xmachine_FinancialAgent).posy;
 
     // suppress compiler warning by returning dummy value /
     // this statement should rightfully NEVER be reached /
     return (double)0;
+}
+
+/** \fn void set_day_of_month_to_act(int day_of_month_to_act) 
+ * \brief Set day_of_month_to_act memory variable for current X-machine.
+ * \param day_of_month_to_act New value for variable.
+ */
+void set_day_of_month_to_act(int day_of_month_to_act)
+{
+	if(current_xmachine->xmachine_FinancialAgent) (*current_xmachine->xmachine_FinancialAgent).day_of_month_to_act = day_of_month_to_act;
+}
+
+/** \fn int get_day_of_month_to_act()
+ * \brief Get day_of_month_to_act memory variable from current X-machine.
+ * \return Value for variable.
+ */
+int get_day_of_month_to_act()
+{
+	if(current_xmachine->xmachine_FinancialAgent) return (*current_xmachine->xmachine_FinancialAgent).day_of_month_to_act;
+
+    // suppress compiler warning by returning dummy value /
+    // this statement should rightfully NEVER be reached /
+    return (int)0;
+}
+
+/** \fn void set_day(int day) 
+ * \brief Set day memory variable for current X-machine.
+ * \param day New value for variable.
+ */
+void set_day(int day)
+{
+	if(current_xmachine->xmachine_FinancialAgent) (*current_xmachine->xmachine_FinancialAgent).day = day;
+}
+
+/** \fn int get_day()
+ * \brief Get day memory variable from current X-machine.
+ * \return Value for variable.
+ */
+int get_day()
+{
+	if(current_xmachine->xmachine_FinancialAgent) return (*current_xmachine->xmachine_FinancialAgent).day;
+
+    // suppress compiler warning by returning dummy value /
+    // this statement should rightfully NEVER be reached /
+    return (int)0;
+}
+
+/** \fn void set_month(int month) 
+ * \brief Set month memory variable for current X-machine.
+ * \param month New value for variable.
+ */
+void set_month(int month)
+{
+	if(current_xmachine->xmachine_FinancialAgent) (*current_xmachine->xmachine_FinancialAgent).month = month;
+}
+
+/** \fn int get_month()
+ * \brief Get month memory variable from current X-machine.
+ * \return Value for variable.
+ */
+int get_month()
+{
+	if(current_xmachine->xmachine_FinancialAgent) return (*current_xmachine->xmachine_FinancialAgent).month;
+
+    // suppress compiler warning by returning dummy value /
+    // this statement should rightfully NEVER be reached /
+    return (int)0;
 }
 
 
@@ -860,7 +833,6 @@ double agent_get_range()
 {
     double value = 0.0;
     if (current_xmachine->xmachine_Household) value = current_xmachine->xmachine_Household->;
-    if (current_xmachine->xmachine_Clearinghouse) value = current_xmachine->xmachine_Clearinghouse->;
     if (current_xmachine->xmachine_FinancialAgent) value = current_xmachine->xmachine_FinancialAgent->;
 
     return value;
@@ -874,7 +846,6 @@ int agent_get_id()
 {
     int value = 0;
     if (current_xmachine->xmachine_Household) value = current_xmachine->xmachine_Household->id;
-    if (current_xmachine->xmachine_Clearinghouse) value = current_xmachine->xmachine_Clearinghouse->id;
     if (current_xmachine->xmachine_FinancialAgent) value = current_xmachine->xmachine_FinancialAgent->;
 
     return value;
@@ -888,7 +859,6 @@ double agent_get_x()
 {
     double value = 0.0;
     if (current_xmachine->xmachine_Household) value = current_xmachine->xmachine_Household->posx;
-    if (current_xmachine->xmachine_Clearinghouse) value = current_xmachine->xmachine_Clearinghouse->posx;
     if (current_xmachine->xmachine_FinancialAgent) value = current_xmachine->xmachine_FinancialAgent->posx;
 
     return value;
@@ -901,7 +871,6 @@ double agent_get_y()
 {
     double value = 0.0;
     if (current_xmachine->xmachine_Household) value = current_xmachine->xmachine_Household->posy; 
-    if (current_xmachine->xmachine_Clearinghouse) value = current_xmachine->xmachine_Clearinghouse->posy; 
     if (current_xmachine->xmachine_FinancialAgent) value = current_xmachine->xmachine_FinancialAgent->posy; 
 
     return value;
@@ -1014,12 +983,6 @@ void add_node(int node_id, double minx, double maxx, double miny, double maxy, d
 	current->rule_performance_messages = NULL;
 	current->new_performances_messages = NULL;
 	current->new_rule_details_messages = NULL;
-	current->stock_order_messages = NULL;
-	current->stock_transaction_messages = NULL;
-	current->bond_order_messages = NULL;
-	current->bond_transaction_messages = NULL;
-	current->gov_bond_order_messages = NULL;
-	current->gov_bond_transaction_messages = NULL;
 
 
 	current->partition_data[0] = minx;
@@ -1053,7 +1016,7 @@ void free_node_info()
  */
 void free_messages()
 {
-	freerule_performancemessages();	freenew_performancesmessages();	freenew_rule_detailsmessages();	freestock_ordermessages();	freestock_transactionmessages();	freebond_ordermessages();	freebond_transactionmessages();	freegov_bond_ordermessages();	freegov_bond_transactionmessages();
+	freerule_performancemessages();	freenew_performancesmessages();	freenew_rule_detailsmessages();
 }
 
 /** \fn void clean_up(int code)
@@ -1127,12 +1090,6 @@ void propagate_agents()
 		{
 			x_xmachine = current_xmachine->xmachine_Household->posx;
 			y_xmachine = current_xmachine->xmachine_Household->posy;
-			z_xmachine = 0.0;
-		}
-		else if(current_xmachine->xmachine_Clearinghouse != NULL)
-		{
-			x_xmachine = current_xmachine->xmachine_Clearinghouse->posx;
-			y_xmachine = current_xmachine->xmachine_Clearinghouse->posy;
 			z_xmachine = 0.0;
 		}
 		else if(current_xmachine->xmachine_FinancialAgent != NULL)

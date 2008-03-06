@@ -133,14 +133,17 @@ void cumpdf(double * p, int size, double * cpdf)
 //Call: draw(size, cpdf);
 //After calling:
 //free(cpdf);
-//
+
 double draw(int size, double * cpdf)
 {	
+	//Before calling this function you need to have done:
+	//cpdf = malloc(sizeof(double)*size);
+
 	int j,u, nr_selected_bin;
 	double nr_drawn;
 	
     //Random number generator:
-    u=rand_unif();
+    u=random_unif();
     
     nr_selected_bin=0;
     
@@ -191,6 +194,9 @@ double draw(int size, double * cpdf)
 
 int ismember(double i, double * xvec, int size)
 {
+	//Before calling this function you need to have done:
+	//xvec = malloc(sizeof(double)*size);
+
 	int k;
 	int ans=0;
 	
@@ -225,8 +231,12 @@ int ismember(double i, double * xvec, int size)
 //free(cpdf);
 //free(draws);
 
-void draw_without_replacement(int size, double * cpdf, double * draws)
+void draw_without_replacement(int size, double * cpdf, int Nr_draws, double * draws)
 {
+	//Before calling this function you need to have done:
+	//cpdf = malloc(sizeof(double)*size);
+	//draws = malloc(sizeof(double)*Nr_draws);
+	
 	double i;
 	int k,count=0;
 	
@@ -278,8 +288,12 @@ void draw_without_replacement(int size, double * cpdf, double * draws)
 //free(cpdf);
 //free(draws);
 
-void draw_with_replacement(int size, double * cpdf, double * draws, int Nr_draws)
+void draw_with_replacement(int size, double * cpdf, int Nr_draws, double * draws)
 {
+	//Before calling this function you need to have done:
+	//cpdf = malloc(sizeof(double)*size);
+	//draws = malloc(sizeof(double)*Nr_draws);
+
 	int k=0;
 
 	for (k=0;k<Nr_draws;k++)

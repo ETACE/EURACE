@@ -6,10 +6,6 @@
  * 29/02/08 Sander: Converted code to use . instead of -> for structs.
  * 13/11/07 Mariam: Converting the code into separate agent functions files. 
  *********************************/
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
 #include "header.h"
 #include "Household_agent_header.h"
 #include "mylibraryheader.h"
@@ -37,7 +33,7 @@ int Household_send_rule_performance()
     //Random performance (uses the function random_unif())
     rule_performance = random_unif()*100;
     
-    add_rule_performance_message(current_rule, rule_performance, MSGDATA);
+    add_rule_performance_message(current_rule, rule_performance, 0.0, 0, 0, 0);
 
     return 0;
 }
@@ -75,14 +71,15 @@ int Household_select_rule()
     int nr_rules 	   = CLASSIFIERSYSTEM.nr_rules;
     int experience     = CLASSIFIERSYSTEM.experience;
     int experience_old = 0.0;
-    int i,j=0;
+    int j=0;
     int nr_selected_rule;
     double attraction, performance;
     
     //Rule selection
     double sum_attr;
-    double * cpdf;
     double * p;
+    double * cpdf;
+    double * draws;
     
     //EWA learning parameters:
     double EWA_rho	=	EWA_PARAMETERS.EWA_rho;
@@ -117,29 +114,32 @@ int Household_select_rule()
     for (j=0;j<nr_rules;j++)
     {
     	attraction  = CLASSIFIERSYSTEM.ruletable[j].attraction;
-        sum_attr += math.exp(EWA_beta * attraction);
+        sum_attr += exp(EWA_beta * attraction);
     }
     
-    p = malloc(sizeof((double)*nr_rules);
+    p = malloc(sizeof(double)*nr_rules);
     for (j=0;j<nr_rules;j++)
     {
     	attraction  = CLASSIFIERSYSTEM.ruletable[j].attraction;
-        p[j] = math.exp(EWA_beta * attraction)/sum_attr;
+        p[j] = exp(EWA_beta * attraction)/sum_attr;
     }
 
     //Construct cumulative probability density function: cpdf
-    cpdf = malloc(sizeof((double)*nr_rules);
-    cumpdf(p, nr_rules, cpdf);
-    draws = malloc(sizeof((double)*N);
+     cpdf = malloc(sizeof(double)*nr_rules);
+     cumpdf(p, nr_rules, cpdf);
     
     //Selecting a strategy according to the pdf:
-     draw_with_replacement(nr_rules, cpdf, draws, 1);
+    //we draw just 1 time from the cpdf
+     draws = malloc(sizeof(double)*1);
+     draw_with_replacement(nr_rules, cpdf, 1, draws);
+     
      nr_selected_rule = draws[0];
      
     //Test if a rule has been selected:
-    if(nr_selected_rule==0)
-        printf('Error in EWA learning: No rule selection from choice probabilities');
-    end;
+    if (nr_selected_rule==0)
+    {
+        printf("Error in EWA learning: No rule selection from choice probabilities");
+    }
     
     //Set the selected rule in memory (0-indexed):
     CLASSIFIERSYSTEM.current_rule = nr_selected_rule - 1;
@@ -147,6 +147,7 @@ int Household_select_rule()
     //Free allocated memory
     free(p);
     free(cpdf);
+    free(draws);
     
     return 0;
 }
@@ -187,7 +188,7 @@ int Household_read_and_update_rule_details()
     int i,rule_id=0;
    
     //Reading the rule_details_message
-    START_RULE_DETAILS_MESSAGE
+    START_NEW_RULE_DETAILS_MESSAGE_LOOP
 	    rule_id = new_rule_details_message->rule_id;
 	    
     	//Filling the static array parameters[10] with parameter values
@@ -196,7 +197,7 @@ int Household_read_and_update_rule_details()
 			//Filling the fields of the rule with parameters[i]
 			CLASSIFIERSYSTEM.ruletable[rule_id].parameters[i] = new_rule_details_message->parameters[i];
 		}
-    FINISH_RULE_DETAILS_MESSAGE
+	FINISH_NEW_RULE_DETAILS_MESSAGE_LOOP
     
     return 0;
 }
@@ -206,6 +207,8 @@ int Household_read_and_update_rule_details()
  */
 int Household_reset_private_classifiersystem()
 {
+	int i,j;
+	
     //Getting the size of the system:
     //int NR_TYPES=CLASSIFIERSYSTEM.NR_TYPES;
 

@@ -21,8 +21,8 @@ FLAME   = main.c memory.c xml.c messageboards.c partitioning.c
 AUX 	= dgraph.dot dgraph.svg
 
 # FLAME generated model files
-SOURCES =  Household_ewa_functions.c  Clearinghouse_financial_management_functions.c  FinancialAgent_ewa_functions.c  mylibraryfunctions.c 
-HEADERS = header.h low_primes.h  Household_agent_header.h  Clearinghouse_agent_header.h  FinancialAgent_agent_header.h  
+SOURCES =  Household_ewa_functions.c  FinancialAgent_ewa_functions.c  mylibraryfunctions.c  some_new_functions.c 
+HEADERS = header.h low_primes.h  Household_agent_header.h  FinancialAgent_agent_header.h  
 
 DEPS=Makefile header.h low_primes.h
 

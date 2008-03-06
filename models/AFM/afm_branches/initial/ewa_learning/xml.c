@@ -884,28 +884,30 @@ void readinitialstates(char * filename, int * itno, xmachine ** agent_list, doub
 	int reading, i;
 	int in_tag, in_itno, in_agent, in_name, in_environment, in_memory, in_functions;
 	int in_Household_agent;
-	int in_Clearinghouse_agent;
 	int in_FinancialAgent_agent;
 
 	int in_id;
 	int in_EWA_parameters;
 	int in_classifiersystem;
-	int in_asset_budget;
 	int in_posx;
 	int in_posy;
+	int in_day_of_month_to_act;
+	int in_day;
+	int in_month;
 
 
 	/* Variables for initial state data */
 //	int id;
 //	EWAParameterStruct * EWA_parameters;
 //	SimplePrivateClassifierSystem * classifiersystem;
-//	double asset_budget;
 //	double posx;
 //	double posy;
+//	int day_of_month_to_act;
+//	int day;
+//	int month;
 
 
 	xmachine_memory_Household * current_Household_agent;
-	xmachine_memory_Clearinghouse * current_Clearinghouse_agent;
 	xmachine_memory_FinancialAgent * current_FinancialAgent_agent;
 
 
@@ -928,23 +930,26 @@ void readinitialstates(char * filename, int * itno, xmachine ** agent_list, doub
 	in_memory = 0;
 	in_functions = 0;
 	in_Household_agent = 0;
-	in_Clearinghouse_agent = 0;
 	in_FinancialAgent_agent = 0;
 	in_id = 0;
 	in_EWA_parameters = 0;
 	in_classifiersystem = 0;
-	in_asset_budget = 0;
 	in_posx = 0;
 	in_posy = 0;
+	in_day_of_month_to_act = 0;
+	in_day = 0;
+	in_month = 0;
 
 	/* Default variables for memory */
 	/* Not implemented static arrays */
 //	id = 0;
 //	EWA_parameters = init_EWAParameterStruct();
 //	classifiersystem = init_SimplePrivateClassifierSystem();
-//	asset_budget = 0.0;
 //	posx = 0.0;
 //	posy = 0.0;
+//	day_of_month_to_act = 0;
+//	day = 0;
+//	month = 0;
 
 
 
@@ -993,11 +998,6 @@ void readinitialstates(char * filename, int * itno, xmachine ** agent_list, doub
 						current_Household_agent = init_Household_agent();
 						in_Household_agent = 1;
 					}
-					else if(strcmp(agentname, "Clearinghouse") == 0)
-					{
-						current_Clearinghouse_agent = init_Clearinghouse_agent();
-						in_Clearinghouse_agent = 1;
-					}
 					else if(strcmp(agentname, "FinancialAgent") == 0)
 					{
 						current_FinancialAgent_agent = init_FinancialAgent_agent();
@@ -1017,7 +1017,6 @@ void readinitialstates(char * filename, int * itno, xmachine ** agent_list, doub
 			{
 				in_agent = 0;
 				in_Household_agent = 0;
-in_Clearinghouse_agent = 0;
 in_FinancialAgent_agent = 0;
 
 				
@@ -1031,7 +1030,7 @@ in_FinancialAgent_agent = 0;
 					 * If flag is not zero we aleady have partition data so can read and distribute to the current node.*/
 					if( flag == 0 )
 					{
-						//add_Household_agent(id, EWA_parameters, classifiersystem, asset_budget, posx, posy);
+						//add_Household_agent(id, EWA_parameters, classifiersystem, posx, posy);
 						add_Household_agent_internal(current_Household_agent);
 						
 						/* Update the cloud data */
@@ -1057,7 +1056,7 @@ in_FinancialAgent_agent = 0;
 							)
 							{
 								p_xmachine = &(current_node->agents);
-								//add_Household_agent(id, EWA_parameters, classifiersystem, asset_budget, posx, posy);
+								//add_Household_agent(id, EWA_parameters, classifiersystem, posx, posy);
 								add_Household_agent_internal(current_Household_agent);
 							} 
 						}
@@ -1076,81 +1075,12 @@ in_FinancialAgent_agent = 0;
 								rrange=1.5;
 
 								p_xmachine = &(current_node->agents);
-								//add_Household_agent(id, EWA_parameters, classifiersystem, asset_budget, posx, posy);
+								//add_Household_agent(id, EWA_parameters, classifiersystem, posx, posy);
 								add_Household_agent_internal(current_Household_agent);
 
 								current_Household_agent->posx = xcentre;
 								current_Household_agent->posy = ycentre;
 								current_Household_agent-> = rrange;
-
-							}
-							++agent_count;
-						} /* if partition */
-
-					} /* if flag */
-
-				}
-				else if(strcmp(agentname, "Clearinghouse") == 0)
-				{
-					posx = current_Clearinghouse_agent->posx;
-					posy = current_Clearinghouse_agent->posy;
-					posz = 0.0;
-					
-					/* If flag is zero just read the data. We'll partition later.
-					 * If flag is not zero we aleady have partition data so can read and distribute to the current node.*/
-					if( flag == 0 )
-					{
-						//add_Clearinghouse_agent(id, posx, posy);
-						add_Clearinghouse_agent_internal(current_Clearinghouse_agent);
-						
-						/* Update the cloud data */
-						if ( posx < cloud_data[0] ) cloud_data[0] = posx;
-						if ( posx > cloud_data[1] ) cloud_data[1] = posx;
-						if ( posy < cloud_data[2] ) cloud_data[2] = posy;
-						if ( posy > cloud_data[3] ) cloud_data[3] = posy;
-						if ( posz < cloud_data[2] ) cloud_data[4] = posz;
-						if ( posz > cloud_data[3] ) cloud_data[5] = posz ;
-					}
-
-					else if (flag != 0)
-					{
-						if(partition_method == geometric)
-						{
-							if (
-								((current_node->partition_data[0] == SPINF) || (current_node->partition_data[0] != SPINF && posx >= current_node->partition_data[0])) &&
-								((current_node->partition_data[1] == SPINF) || (current_node->partition_data[1] != SPINF && posx < current_node->partition_data[1])) &&
-								((current_node->partition_data[2] == SPINF) || (current_node->partition_data[2] != SPINF && posy >= current_node->partition_data[2])) &&
-								((current_node->partition_data[3] == SPINF) || (current_node->partition_data[3] != SPINF && posy < current_node->partition_data[3])) &&
-								((current_node->partition_data[4] == SPINF) || (current_node->partition_data[4] != SPINF && posz >= current_node->partition_data[4])) &&
-								((current_node->partition_data[5] == SPINF) || (current_node->partition_data[5] != SPINF && posz < current_node->partition_data[5]))
-							)
-							{
-								p_xmachine = &(current_node->agents);
-								//add_Clearinghouse_agent(id, posx, posy);
-								add_Clearinghouse_agent_internal(current_Clearinghouse_agent);
-							} 
-						}
-						else if (partition_method == other)
-						{
-							if (agent_count % number_partitions == 0)
-							{
-								/* Compute centre of partition */
-								xmin=current_node->partition_data[0];
-								xmax=current_node->partition_data[1];
-								ymin=current_node->partition_data[2];
-								ymax=current_node->partition_data[3];
-
-								xcentre=xmin+(xmax-xmin)/2.0;
-								ycentre=ymin+(ymax-ymin)/2.0;
-								rrange=1.5;
-
-								p_xmachine = &(current_node->agents);
-								//add_Clearinghouse_agent(id, posx, posy);
-								add_Clearinghouse_agent_internal(current_Clearinghouse_agent);
-
-								current_Clearinghouse_agent->posx = xcentre;
-								current_Clearinghouse_agent->posy = ycentre;
-								current_Clearinghouse_agent-> = rrange;
 
 							}
 							++agent_count;
@@ -1169,7 +1099,7 @@ in_FinancialAgent_agent = 0;
 					 * If flag is not zero we aleady have partition data so can read and distribute to the current node.*/
 					if( flag == 0 )
 					{
-						//add_FinancialAgent_agent(classifiersystem, posx, posy);
+						//add_FinancialAgent_agent(day_of_month_to_act, day, month, classifiersystem, posx, posy);
 						add_FinancialAgent_agent_internal(current_FinancialAgent_agent);
 						
 						/* Update the cloud data */
@@ -1195,7 +1125,7 @@ in_FinancialAgent_agent = 0;
 							)
 							{
 								p_xmachine = &(current_node->agents);
-								//add_FinancialAgent_agent(classifiersystem, posx, posy);
+								//add_FinancialAgent_agent(day_of_month_to_act, day, month, classifiersystem, posx, posy);
 								add_FinancialAgent_agent_internal(current_FinancialAgent_agent);
 							} 
 						}
@@ -1214,7 +1144,7 @@ in_FinancialAgent_agent = 0;
 								rrange=1.5;
 
 								p_xmachine = &(current_node->agents);
-								//add_FinancialAgent_agent(classifiersystem, posx, posy);
+								//add_FinancialAgent_agent(day_of_month_to_act, day, month, classifiersystem, posx, posy);
 								add_FinancialAgent_agent_internal(current_FinancialAgent_agent);
 
 								current_FinancialAgent_agent->posx = xcentre;
@@ -1238,9 +1168,11 @@ in_FinancialAgent_agent = 0;
 				/* Reset xagent variables */
 				/* Not implemented static arrays */
 //				id = 0;
-//////				asset_budget = 0.0;
-//				posx = 0.0;
+//////				posx = 0.0;
 //				posy = 0.0;
+//				day_of_month_to_act = 0;
+//				day = 0;
+//				month = 0;
 
 	}
 			if(strcmp(buffer, "id") == 0) in_id = 1;
@@ -1249,12 +1181,16 @@ in_FinancialAgent_agent = 0;
 			if(strcmp(buffer, "/EWA_parameters") == 0) in_EWA_parameters = 0;
 			if(strcmp(buffer, "classifiersystem") == 0) in_classifiersystem = 1;
 			if(strcmp(buffer, "/classifiersystem") == 0) in_classifiersystem = 0;
-			if(strcmp(buffer, "asset_budget") == 0) in_asset_budget = 1;
-			if(strcmp(buffer, "/asset_budget") == 0) in_asset_budget = 0;
 			if(strcmp(buffer, "posx") == 0) in_posx = 1;
 			if(strcmp(buffer, "/posx") == 0) in_posx = 0;
 			if(strcmp(buffer, "posy") == 0) in_posy = 1;
 			if(strcmp(buffer, "/posy") == 0) in_posy = 0;
+			if(strcmp(buffer, "day_of_month_to_act") == 0) in_day_of_month_to_act = 1;
+			if(strcmp(buffer, "/day_of_month_to_act") == 0) in_day_of_month_to_act = 0;
+			if(strcmp(buffer, "day") == 0) in_day = 1;
+			if(strcmp(buffer, "/day") == 0) in_day = 0;
+			if(strcmp(buffer, "month") == 0) in_month = 1;
+			if(strcmp(buffer, "/month") == 0) in_month = 0;
 
 
 			
@@ -1288,16 +1224,13 @@ in_FinancialAgent_agent = 0;
 					j = 0;
 					read_SimplePrivateClassifierSystem(buffer, &j, &current_Household_agent->classifiersystem);
 				}
-				if(in_asset_budget) current_Household_agent->asset_budget = atof(buffer);
 				if(in_posx) current_Household_agent->posx = atof(buffer);
 				if(in_posy) current_Household_agent->posy = atof(buffer);
-			}else if(in_Clearinghouse_agent == 1)
-			{
-				if(in_id) current_Clearinghouse_agent->id = atoi(buffer);
-				if(in_posx) current_Clearinghouse_agent->posx = atof(buffer);
-				if(in_posy) current_Clearinghouse_agent->posy = atof(buffer);
 			}else if(in_FinancialAgent_agent == 1)
 			{
+				if(in_day_of_month_to_act) current_FinancialAgent_agent->day_of_month_to_act = atoi(buffer);
+				if(in_day) current_FinancialAgent_agent->day = atoi(buffer);
+				if(in_month) current_FinancialAgent_agent->month = atoi(buffer);
 				if(in_classifiersystem)
 				{
 					j = 0;
@@ -1344,7 +1277,7 @@ in_FinancialAgent_agent = 0;
 	/* Free temp data structures */
 ////	free_EWAParameterStruct_datatype(EWA_parameters);
 //	free_SimplePrivateClassifierSystem_datatype(classifiersystem);
-//////
+//////////
 }
 
 /** \fn void saveiterationdata_binary(int iteration_number)
@@ -1359,7 +1292,6 @@ void saveiterationdata_binary(int iteration_number)
 	int i;
 	int agentcount = 0;
 	xmachine_memory_Household * current_Household;
-	xmachine_memory_Clearinghouse * current_Clearinghouse;
 	xmachine_memory_FinancialAgent * current_FinancialAgent;
 
 	sprintf(data, "%s%i.binary", outputpath, iteration_number);
@@ -1379,11 +1311,6 @@ void saveiterationdata_binary(int iteration_number)
 		if(current_xmachine->xmachine_Household != NULL)
 		{
 			current_Household = current_xmachine->xmachine_Household;
-			agentcount++;
-		}
-		else if(current_xmachine->xmachine_Clearinghouse != NULL)
-		{
-			current_Clearinghouse = current_xmachine->xmachine_Clearinghouse;
 			agentcount++;
 		}
 		else if(current_xmachine->xmachine_FinancialAgent != NULL)
@@ -1884,7 +1811,6 @@ void saveiterationdata(int iteration_number)
 	FILE *file;
 	char data[1000];
 	xmachine_memory_Household * current_Household;
-	xmachine_memory_Clearinghouse * current_Clearinghouse;
 	xmachine_memory_FinancialAgent * current_FinancialAgent;
 	
 	sprintf(data, "%s%i.xml", outputpath, iteration_number);
@@ -1919,10 +1845,6 @@ void saveiterationdata(int iteration_number)
 			fputs("<classifiersystem>", file);
 			write_SimplePrivateClassifierSystem(file, &current_Household->classifiersystem);
 			fputs("</classifiersystem>\n", file);
-			fputs("<asset_budget>", file);
-			sprintf(data, "%f", current_Household->asset_budget);
-			fputs(data, file);
-			fputs("</asset_budget>\n", file);
 			fputs("<posx>", file);
 			sprintf(data, "%f", current_Household->posx);
 			fputs(data, file);
@@ -1932,27 +1854,22 @@ void saveiterationdata(int iteration_number)
 			fputs(data, file);
 			fputs("</posy>\n", file);
 		}
-		else if(current_xmachine->xmachine_Clearinghouse != NULL)
-		{
-			current_Clearinghouse = current_xmachine->xmachine_Clearinghouse;
-			fputs("<name>Clearinghouse</name>\n", file);
-			fputs("<id>", file);
-			sprintf(data, "%i", current_Clearinghouse->id);
-			fputs(data, file);
-			fputs("</id>\n", file);
-			fputs("<posx>", file);
-			sprintf(data, "%f", current_Clearinghouse->posx);
-			fputs(data, file);
-			fputs("</posx>\n", file);
-			fputs("<posy>", file);
-			sprintf(data, "%f", current_Clearinghouse->posy);
-			fputs(data, file);
-			fputs("</posy>\n", file);
-		}
 		else if(current_xmachine->xmachine_FinancialAgent != NULL)
 		{
 			current_FinancialAgent = current_xmachine->xmachine_FinancialAgent;
 			fputs("<name>FinancialAgent</name>\n", file);
+			fputs("<day_of_month_to_act>", file);
+			sprintf(data, "%i", current_FinancialAgent->day_of_month_to_act);
+			fputs(data, file);
+			fputs("</day_of_month_to_act>\n", file);
+			fputs("<day>", file);
+			sprintf(data, "%i", current_FinancialAgent->day);
+			fputs(data, file);
+			fputs("</day>\n", file);
+			fputs("<month>", file);
+			sprintf(data, "%i", current_FinancialAgent->month);
+			fputs(data, file);
+			fputs("</month>\n", file);
 			fputs("<classifiersystem>", file);
 			write_SimplePublicClassifierSystem(file, &current_FinancialAgent->classifiersystem);
 			fputs("</classifiersystem>\n", file);

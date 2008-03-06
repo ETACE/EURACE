@@ -12,9 +12,6 @@
 /** \def CLASSIFIERSYSTEM
  * \brief Direct access to classifiersystem of Household agent memory variable. */
 #define CLASSIFIERSYSTEM current_xmachine->xmachine_Household->classifiersystem
-/** \def ASSET_BUDGET
- * \brief Direct access to asset_budget of Household agent memory variable. */
-#define ASSET_BUDGET current_xmachine->xmachine_Household->asset_budget
 /** \def POSX
  * \brief Direct access to posx of Household agent memory variable. */
 #define POSX current_xmachine->xmachine_Household->posx

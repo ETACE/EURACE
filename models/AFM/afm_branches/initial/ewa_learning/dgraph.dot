@@ -12,7 +12,6 @@ digraph dependency_graph {
 	FinancialAgent_send_all_performances[height = 0.000000, label = "FinancialAgent_send_all_performances\n(0 lines)"]
 	FinancialAgent_read_rule_performance_and_update_classifiersystem[height = 0.000000, label = "FinancialAgent_read_rule_performance_and_update_classifiersystem\n(0 lines)"]
 	FinancialAgent_daily_reset_public_classifiersystem[height = 0.000000, label = "FinancialAgent_daily_reset_public_classifiersystem\n(0 lines)"]
-	Clearinghouse_read_stock_orders[height = 0.000000, label = "Clearinghouse_read_stock_orders\n(0 lines)"]
 	Household_reset_private_classifiersystem[height = 0.000000, label = "Household_reset_private_classifiersystem\n(0 lines)"]
 	Household_read_and_update_rule_details[height = 0.000000, label = "Household_read_and_update_rule_details\n(0 lines)"]
 	Household_apply_rule[height = 0.000000, label = "Household_apply_rule\n(0 lines)"]
@@ -28,9 +27,6 @@ digraph dependency_graph {
 	FinancialAgent_apply_GA -> Every_100_periods [ label = "<depends on internal>" ];
 	FinancialAgent_send_all_performances -> FinancialAgent_read_rule_performance_and_update_classifiersystem [ label = "<depends on internal>" ];
 	FinancialAgent_read_rule_performance_and_update_classifiersystem -> Household_send_rule_performance [ label = "<depends on rule_performance>" ];
-	Clearinghouse_read_stock_orders -> Household_apply_rule [ label = "<depends on gov_bond_order>" ];
-	Clearinghouse_read_stock_orders -> Household_apply_rule [ label = "<depends on bond_order>" ];
-	Clearinghouse_read_stock_orders -> Household_apply_rule [ label = "<depends on stock_order>" ];
 	Household_reset_private_classifiersystem -> Household_read_and_update_rule_details [ label = "<depends on internal>" ];
 	Household_read_and_update_rule_details -> FinancialAgent_send_rule_details [ label = "<depends on new_rule_details>" ];
 	Household_apply_rule -> Household_select_rule [ label = "<depends on internal>" ];
