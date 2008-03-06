@@ -40,42 +40,6 @@
 /** \def FINISH_NEW_RULE_DETAILS_MESSAGE_LOOP
  * \brief Finish of loop to process new_rule_details messages. */
 #define FINISH_NEW_RULE_DETAILS_MESSAGE_LOOP new_rule_details_message = get_next_new_rule_details_message(new_rule_details_message); }
-/** \def e START_STOCK_ORDER_MESSAGE_LOOP
- * \brief Start of loop to process stock_order messages. */
-#define START_STOCK_ORDER_MESSAGE_LOOP  stock_order_message = get_first_stock_order_message(); while(stock_order_message) {
-/** \def FINISH_STOCK_ORDER_MESSAGE_LOOP
- * \brief Finish of loop to process stock_order messages. */
-#define FINISH_STOCK_ORDER_MESSAGE_LOOP stock_order_message = get_next_stock_order_message(stock_order_message); }
-/** \def e START_STOCK_TRANSACTION_MESSAGE_LOOP
- * \brief Start of loop to process stock_transaction messages. */
-#define START_STOCK_TRANSACTION_MESSAGE_LOOP  stock_transaction_message = get_first_stock_transaction_message(); while(stock_transaction_message) {
-/** \def FINISH_STOCK_TRANSACTION_MESSAGE_LOOP
- * \brief Finish of loop to process stock_transaction messages. */
-#define FINISH_STOCK_TRANSACTION_MESSAGE_LOOP stock_transaction_message = get_next_stock_transaction_message(stock_transaction_message); }
-/** \def e START_BOND_ORDER_MESSAGE_LOOP
- * \brief Start of loop to process bond_order messages. */
-#define START_BOND_ORDER_MESSAGE_LOOP  bond_order_message = get_first_bond_order_message(); while(bond_order_message) {
-/** \def FINISH_BOND_ORDER_MESSAGE_LOOP
- * \brief Finish of loop to process bond_order messages. */
-#define FINISH_BOND_ORDER_MESSAGE_LOOP bond_order_message = get_next_bond_order_message(bond_order_message); }
-/** \def e START_BOND_TRANSACTION_MESSAGE_LOOP
- * \brief Start of loop to process bond_transaction messages. */
-#define START_BOND_TRANSACTION_MESSAGE_LOOP  bond_transaction_message = get_first_bond_transaction_message(); while(bond_transaction_message) {
-/** \def FINISH_BOND_TRANSACTION_MESSAGE_LOOP
- * \brief Finish of loop to process bond_transaction messages. */
-#define FINISH_BOND_TRANSACTION_MESSAGE_LOOP bond_transaction_message = get_next_bond_transaction_message(bond_transaction_message); }
-/** \def e START_GOV_BOND_ORDER_MESSAGE_LOOP
- * \brief Start of loop to process gov_bond_order messages. */
-#define START_GOV_BOND_ORDER_MESSAGE_LOOP  gov_bond_order_message = get_first_gov_bond_order_message(); while(gov_bond_order_message) {
-/** \def FINISH_GOV_BOND_ORDER_MESSAGE_LOOP
- * \brief Finish of loop to process gov_bond_order messages. */
-#define FINISH_GOV_BOND_ORDER_MESSAGE_LOOP gov_bond_order_message = get_next_gov_bond_order_message(gov_bond_order_message); }
-/** \def e START_GOV_BOND_TRANSACTION_MESSAGE_LOOP
- * \brief Start of loop to process gov_bond_transaction messages. */
-#define START_GOV_BOND_TRANSACTION_MESSAGE_LOOP  gov_bond_transaction_message = get_first_gov_bond_transaction_message(); while(gov_bond_transaction_message) {
-/** \def FINISH_GOV_BOND_TRANSACTION_MESSAGE_LOOP
- * \brief Finish of loop to process gov_bond_transaction messages. */
-#define FINISH_GOV_BOND_TRANSACTION_MESSAGE_LOOP gov_bond_transaction_message = get_next_gov_bond_transaction_message(gov_bond_transaction_message); }
 
 /** \struct int_array
  * \brief Dynamic array to hold integers.
@@ -147,9 +111,9 @@ typedef struct double_array double_array;
 typedef struct char_array char_array;
 
 /** \struct EWAParameterStruct
- * \brief `=.
+ * \brief €=.
  *
- * `=.
+ * €=.
  */
 struct EWAParameterStruct
 {
@@ -382,17 +346,6 @@ struct xmachine_memory_Household
 	int id;	/**< X-machine memory variable id of type int. */
 	EWAParameterStruct EWA_parameters;	/**< X-machine memory variable EWA_parameters of type EWAParameterStruct. */
 	SimplePrivateClassifierSystem classifiersystem;	/**< X-machine memory variable classifiersystem of type SimplePrivateClassifierSystem. */
-	double asset_budget;	/**< X-machine memory variable asset_budget of type double. */
-	double posx;	/**< X-machine memory variable posx of type double. */
-	double posy;	/**< X-machine memory variable posy of type double. */
-};
-
-/** \struct xmachine_memory_Clearinghouse
- * \brief Holds memory of xmachine Clearinghouse.
- */
-struct xmachine_memory_Clearinghouse
-{
-	int id;	/**< X-machine memory variable id of type int. */
 	double posx;	/**< X-machine memory variable posx of type double. */
 	double posy;	/**< X-machine memory variable posy of type double. */
 };
@@ -402,6 +355,9 @@ struct xmachine_memory_Clearinghouse
  */
 struct xmachine_memory_FinancialAgent
 {
+	int day_of_month_to_act;	/**< X-machine memory variable day_of_month_to_act of type int. */
+	int day;	/**< X-machine memory variable day of type int. */
+	int month;	/**< X-machine memory variable month of type int. */
 	SimplePublicClassifierSystem classifiersystem;	/**< X-machine memory variable classifiersystem of type SimplePublicClassifierSystem. */
 	double posx;	/**< X-machine memory variable posx of type double. */
 	double posy;	/**< X-machine memory variable posy of type double. */
@@ -413,7 +369,6 @@ struct xmachine_memory_FinancialAgent
 struct xmachine
 {
 	struct xmachine_memory_Household * xmachine_Household;	/**< Pointer to X-machine memory of type Household.  */
-	struct xmachine_memory_Clearinghouse * xmachine_Clearinghouse;	/**< Pointer to X-machine memory of type Clearinghouse.  */
 	struct xmachine_memory_FinancialAgent * xmachine_FinancialAgent;	/**< Pointer to X-machine memory of type FinancialAgent.  */
 	
 	struct xmachine * next;	/**< Pointer to next X-machine in the list.  */
@@ -424,7 +379,7 @@ struct xmachine
  */
 struct xmachine_message_rule_performance
 {
-	int current_rule;	/**< Message memory variable current_rule of type int. */
+	int rule_id;	/**< Message memory variable rule_id of type int. */
 	double rule_performance;	/**< Message memory variable rule_performance of type double. */
 	double range;	/**< Message memory variable range of type double. */
 	double x;	/**< Message memory variable x of type double. */
@@ -457,121 +412,13 @@ struct xmachine_message_new_performances
 struct xmachine_message_new_rule_details
 {
 	int rule_id;	/**< Message memory variable rule_id of type int. */
-	double parameter;	/**< Message memory variable parameter of type double. */
+	double parameters[10];	/**< Message memory variable parameters of type double. */
 	double range;	/**< Message memory variable range of type double. */
 	double x;	/**< Message memory variable x of type double. */
 	double y;	/**< Message memory variable y of type double. */
 	double z;	/**< Message memory variable z of type double. */
 	
 	struct xmachine_message_new_rule_details * next;	/**< Pointer to next message in the list. */
-};
-
-
-/** \struct xmachine_message_stock_order
- * \brief Holds message of type stock_order_message.
- */
-struct xmachine_message_stock_order
-{
-	int trader_id;	/**< Message memory variable trader_id of type int. */
-	int stock_id;	/**< Message memory variable stock_id of type int. */
-	double limit_price;	/**< Message memory variable limit_price of type double. */
-	double limit_quantity;	/**< Message memory variable limit_quantity of type double. */
-	double range;	/**< Message memory variable range of type double. */
-	double x;	/**< Message memory variable x of type double. */
-	double y;	/**< Message memory variable y of type double. */
-	double z;	/**< Message memory variable z of type double. */
-	
-	struct xmachine_message_stock_order * next;	/**< Pointer to next message in the list. */
-};
-
-
-/** \struct xmachine_message_stock_transaction
- * \brief Holds message of type stock_transaction_message.
- */
-struct xmachine_message_stock_transaction
-{
-	int trader_id;	/**< Message memory variable trader_id of type int. */
-	int stock_id;	/**< Message memory variable stock_id of type int. */
-	double transaction_price;	/**< Message memory variable transaction_price of type double. */
-	double transaction_quantity;	/**< Message memory variable transaction_quantity of type double. */
-	double range;	/**< Message memory variable range of type double. */
-	double x;	/**< Message memory variable x of type double. */
-	double y;	/**< Message memory variable y of type double. */
-	double z;	/**< Message memory variable z of type double. */
-	
-	struct xmachine_message_stock_transaction * next;	/**< Pointer to next message in the list. */
-};
-
-
-/** \struct xmachine_message_bond_order
- * \brief Holds message of type bond_order_message.
- */
-struct xmachine_message_bond_order
-{
-	int trader_id;	/**< Message memory variable trader_id of type int. */
-	int bond_id;	/**< Message memory variable bond_id of type int. */
-	double limit_price;	/**< Message memory variable limit_price of type double. */
-	double limit_quantity;	/**< Message memory variable limit_quantity of type double. */
-	double range;	/**< Message memory variable range of type double. */
-	double x;	/**< Message memory variable x of type double. */
-	double y;	/**< Message memory variable y of type double. */
-	double z;	/**< Message memory variable z of type double. */
-	
-	struct xmachine_message_bond_order * next;	/**< Pointer to next message in the list. */
-};
-
-
-/** \struct xmachine_message_bond_transaction
- * \brief Holds message of type bond_transaction_message.
- */
-struct xmachine_message_bond_transaction
-{
-	int trader_id;	/**< Message memory variable trader_id of type int. */
-	int bond_id;	/**< Message memory variable bond_id of type int. */
-	double transaction_price;	/**< Message memory variable transaction_price of type double. */
-	double transaction_quantity;	/**< Message memory variable transaction_quantity of type double. */
-	double range;	/**< Message memory variable range of type double. */
-	double x;	/**< Message memory variable x of type double. */
-	double y;	/**< Message memory variable y of type double. */
-	double z;	/**< Message memory variable z of type double. */
-	
-	struct xmachine_message_bond_transaction * next;	/**< Pointer to next message in the list. */
-};
-
-
-/** \struct xmachine_message_gov_bond_order
- * \brief Holds message of type gov_bond_order_message.
- */
-struct xmachine_message_gov_bond_order
-{
-	int trader_id;	/**< Message memory variable trader_id of type int. */
-	int gov_bond_id;	/**< Message memory variable gov_bond_id of type int. */
-	double limit_price;	/**< Message memory variable limit_price of type double. */
-	double limit_quantity;	/**< Message memory variable limit_quantity of type double. */
-	double range;	/**< Message memory variable range of type double. */
-	double x;	/**< Message memory variable x of type double. */
-	double y;	/**< Message memory variable y of type double. */
-	double z;	/**< Message memory variable z of type double. */
-	
-	struct xmachine_message_gov_bond_order * next;	/**< Pointer to next message in the list. */
-};
-
-
-/** \struct xmachine_message_gov_bond_transaction
- * \brief Holds message of type gov_bond_transaction_message.
- */
-struct xmachine_message_gov_bond_transaction
-{
-	int trader_id;	/**< Message memory variable trader_id of type int. */
-	int gov_bond_id;	/**< Message memory variable gov_bond_id of type int. */
-	double transaction_price;	/**< Message memory variable transaction_price of type double. */
-	double transaction_quantity;	/**< Message memory variable transaction_quantity of type double. */
-	double range;	/**< Message memory variable range of type double. */
-	double x;	/**< Message memory variable x of type double. */
-	double y;	/**< Message memory variable y of type double. */
-	double z;	/**< Message memory variable z of type double. */
-	
-	struct xmachine_message_gov_bond_transaction * next;	/**< Pointer to next message in the list. */
 };
 
 
@@ -583,10 +430,6 @@ typedef struct xmachine xmachine;
  * \brief Typedef for xmachine_memory_Household struct.
  */
 typedef struct xmachine_memory_Household xmachine_memory_Household;
-/** \var typedef xmachine_memory_Clearinghouse xmachine_memory_Clearinghouse
- * \brief Typedef for xmachine_memory_Clearinghouse struct.
- */
-typedef struct xmachine_memory_Clearinghouse xmachine_memory_Clearinghouse;
 /** \var typedef xmachine_memory_FinancialAgent xmachine_memory_FinancialAgent
  * \brief Typedef for xmachine_memory_FinancialAgent struct.
  */
@@ -606,36 +449,6 @@ typedef struct xmachine_message_new_performances xmachine_message_new_performanc
  */
 typedef struct xmachine_message_new_rule_details xmachine_message_new_rule_details;
 
-/** \typedef xmachine_message_stock_order xmachine_message_stock_order
- * \brief Typedef for xmachine_message_stock_order struct.
- */
-typedef struct xmachine_message_stock_order xmachine_message_stock_order;
-
-/** \typedef xmachine_message_stock_transaction xmachine_message_stock_transaction
- * \brief Typedef for xmachine_message_stock_transaction struct.
- */
-typedef struct xmachine_message_stock_transaction xmachine_message_stock_transaction;
-
-/** \typedef xmachine_message_bond_order xmachine_message_bond_order
- * \brief Typedef for xmachine_message_bond_order struct.
- */
-typedef struct xmachine_message_bond_order xmachine_message_bond_order;
-
-/** \typedef xmachine_message_bond_transaction xmachine_message_bond_transaction
- * \brief Typedef for xmachine_message_bond_transaction struct.
- */
-typedef struct xmachine_message_bond_transaction xmachine_message_bond_transaction;
-
-/** \typedef xmachine_message_gov_bond_order xmachine_message_gov_bond_order
- * \brief Typedef for xmachine_message_gov_bond_order struct.
- */
-typedef struct xmachine_message_gov_bond_order xmachine_message_gov_bond_order;
-
-/** \typedef xmachine_message_gov_bond_transaction xmachine_message_gov_bond_transaction
- * \brief Typedef for xmachine_message_gov_bond_transaction struct.
- */
-typedef struct xmachine_message_gov_bond_transaction xmachine_message_gov_bond_transaction;
-
 
 int Every_period(void);
 int Household_send_rule_performance(void);
@@ -644,7 +457,6 @@ int Household_select_rule(void);
 int Household_apply_rule(void);
 int Household_read_and_update_rule_details(void);
 int Household_reset_private_classifiersystem(void);
-int Clearinghouse_read_stock_orders(void);
 int FinancialAgent_daily_reset_public_classifiersystem(void);
 int FinancialAgent_read_rule_performance_and_update_classifiersystem(void);
 int FinancialAgent_send_all_performances(void);
@@ -677,12 +489,6 @@ struct node_information
 	struct xmachine_message_rule_performance * rule_performance_messages;	/**< Pointer to rule_performance message list. */
 	struct xmachine_message_new_performances * new_performances_messages;	/**< Pointer to new_performances message list. */
 	struct xmachine_message_new_rule_details * new_rule_details_messages;	/**< Pointer to new_rule_details message list. */
-	struct xmachine_message_stock_order * stock_order_messages;	/**< Pointer to stock_order message list. */
-	struct xmachine_message_stock_transaction * stock_transaction_messages;	/**< Pointer to stock_transaction message list. */
-	struct xmachine_message_bond_order * bond_order_messages;	/**< Pointer to bond_order message list. */
-	struct xmachine_message_bond_transaction * bond_transaction_messages;	/**< Pointer to bond_transaction message list. */
-	struct xmachine_message_gov_bond_order * gov_bond_order_messages;	/**< Pointer to gov_bond_order message list. */
-	struct xmachine_message_gov_bond_transaction * gov_bond_transaction_messages;	/**< Pointer to gov_bond_transaction message list. */
 	
 	struct node_information * next;	/**< Pointer to next node on the list. */
 };
@@ -710,24 +516,6 @@ xmachine_message_new_performances * temp_new_performances_message;
 /** \var xmachine_message_new_rule_details * temp_new_rule_details_message
 * \brief Pointer to xmachine_message_new_rule_details to initialise linked list. */
 xmachine_message_new_rule_details * temp_new_rule_details_message;
-/** \var xmachine_message_stock_order * temp_stock_order_message
-* \brief Pointer to xmachine_message_stock_order to initialise linked list. */
-xmachine_message_stock_order * temp_stock_order_message;
-/** \var xmachine_message_stock_transaction * temp_stock_transaction_message
-* \brief Pointer to xmachine_message_stock_transaction to initialise linked list. */
-xmachine_message_stock_transaction * temp_stock_transaction_message;
-/** \var xmachine_message_bond_order * temp_bond_order_message
-* \brief Pointer to xmachine_message_bond_order to initialise linked list. */
-xmachine_message_bond_order * temp_bond_order_message;
-/** \var xmachine_message_bond_transaction * temp_bond_transaction_message
-* \brief Pointer to xmachine_message_bond_transaction to initialise linked list. */
-xmachine_message_bond_transaction * temp_bond_transaction_message;
-/** \var xmachine_message_gov_bond_order * temp_gov_bond_order_message
-* \brief Pointer to xmachine_message_gov_bond_order to initialise linked list. */
-xmachine_message_gov_bond_order * temp_gov_bond_order_message;
-/** \var xmachine_message_gov_bond_transaction * temp_gov_bond_transaction_message
-* \brief Pointer to xmachine_message_gov_bond_transaction to initialise linked list. */
-xmachine_message_gov_bond_transaction * temp_gov_bond_transaction_message;
 /** \var node_information * temp_node_info
 * \brief Pointer to node_information to initialise linked list. */
 node_information * temp_node_info;
@@ -759,24 +547,6 @@ xmachine_message_new_performances ** p_new_performances_message;
 /** \var xmachine_message_new_rule_details ** p_new_rule_details_message
 * \brief Pointer to first pointer of new_rule_details message list */
 xmachine_message_new_rule_details ** p_new_rule_details_message;
-/** \var xmachine_message_stock_order ** p_stock_order_message
-* \brief Pointer to first pointer of stock_order message list */
-xmachine_message_stock_order ** p_stock_order_message;
-/** \var xmachine_message_stock_transaction ** p_stock_transaction_message
-* \brief Pointer to first pointer of stock_transaction message list */
-xmachine_message_stock_transaction ** p_stock_transaction_message;
-/** \var xmachine_message_bond_order ** p_bond_order_message
-* \brief Pointer to first pointer of bond_order message list */
-xmachine_message_bond_order ** p_bond_order_message;
-/** \var xmachine_message_bond_transaction ** p_bond_transaction_message
-* \brief Pointer to first pointer of bond_transaction message list */
-xmachine_message_bond_transaction ** p_bond_transaction_message;
-/** \var xmachine_message_gov_bond_order ** p_gov_bond_order_message
-* \brief Pointer to first pointer of gov_bond_order message list */
-xmachine_message_gov_bond_order ** p_gov_bond_order_message;
-/** \var xmachine_message_gov_bond_transaction ** p_gov_bond_transaction_message
-* \brief Pointer to first pointer of gov_bond_transaction message list */
-xmachine_message_gov_bond_transaction ** p_gov_bond_transaction_message;
 
 /** \var xmachine_message_rule_performance * rule_performance_message
 * \brief Pointer to message struct for looping through rule_performance message list */
@@ -787,24 +557,6 @@ xmachine_message_new_performances * new_performances_message;
 /** \var xmachine_message_new_rule_details * new_rule_details_message
 * \brief Pointer to message struct for looping through new_rule_details message list */
 xmachine_message_new_rule_details * new_rule_details_message;
-/** \var xmachine_message_stock_order * stock_order_message
-* \brief Pointer to message struct for looping through stock_order message list */
-xmachine_message_stock_order * stock_order_message;
-/** \var xmachine_message_stock_transaction * stock_transaction_message
-* \brief Pointer to message struct for looping through stock_transaction message list */
-xmachine_message_stock_transaction * stock_transaction_message;
-/** \var xmachine_message_bond_order * bond_order_message
-* \brief Pointer to message struct for looping through bond_order message list */
-xmachine_message_bond_order * bond_order_message;
-/** \var xmachine_message_bond_transaction * bond_transaction_message
-* \brief Pointer to message struct for looping through bond_transaction message list */
-xmachine_message_bond_transaction * bond_transaction_message;
-/** \var xmachine_message_gov_bond_order * gov_bond_order_message
-* \brief Pointer to message struct for looping through gov_bond_order message list */
-xmachine_message_gov_bond_order * gov_bond_order_message;
-/** \var xmachine_message_gov_bond_transaction * gov_bond_transaction_message
-* \brief Pointer to message struct for looping through gov_bond_transaction message list */
-xmachine_message_gov_bond_transaction * gov_bond_transaction_message;
 /** \var node_information ** p_node_info
 * \brief Pointer to first pointer of node list */
 node_information ** p_node_info;
@@ -1038,15 +790,12 @@ void copy_ComplexPrivateClassifierSystem_static_array(ComplexPrivateClassifierSy
 
 xmachine_memory_Household * init_Household_agent();
 void add_Household_agent_internal(xmachine_memory_Household * current);
-void add_Household_agent(int id, EWAParameterStruct EWA_parameters, SimplePrivateClassifierSystem classifiersystem, double asset_budget, double posx, double posy);
-xmachine_memory_Clearinghouse * init_Clearinghouse_agent();
-void add_Clearinghouse_agent_internal(xmachine_memory_Clearinghouse * current);
-void add_Clearinghouse_agent(int id, double posx, double posy);
+void add_Household_agent(int id, EWAParameterStruct EWA_parameters, SimplePrivateClassifierSystem classifiersystem, double posx, double posy);
 xmachine_memory_FinancialAgent * init_FinancialAgent_agent();
 void add_FinancialAgent_agent_internal(xmachine_memory_FinancialAgent * current);
-void add_FinancialAgent_agent(SimplePublicClassifierSystem classifiersystem, double posx, double posy);
+void add_FinancialAgent_agent(int day_of_month_to_act, int day, int month, SimplePublicClassifierSystem classifiersystem, double posx, double posy);
 
-void add_rule_performance_message(int current_rule, double rule_performance, double range, double x, double y, double z);
+void add_rule_performance_message(int rule_id, double rule_performance, double range, double x, double y, double z);
 xmachine_message_rule_performance * add_rule_performance_message_internal(void);
 xmachine_message_rule_performance * get_first_rule_performance_message(void);
 xmachine_message_rule_performance * get_next_rule_performance_message(xmachine_message_rule_performance * current);
@@ -1056,52 +805,26 @@ xmachine_message_new_performances * add_new_performances_message_internal(void);
 xmachine_message_new_performances * get_first_new_performances_message(void);
 xmachine_message_new_performances * get_next_new_performances_message(xmachine_message_new_performances * current);
 void freenew_performancesmessages(void);
-void add_new_rule_details_message(int rule_id, double parameter, double range, double x, double y, double z);
+void add_new_rule_details_message(int rule_id, double parameters[], double range, double x, double y, double z);
 xmachine_message_new_rule_details * add_new_rule_details_message_internal(void);
 xmachine_message_new_rule_details * get_first_new_rule_details_message(void);
 xmachine_message_new_rule_details * get_next_new_rule_details_message(xmachine_message_new_rule_details * current);
 void freenew_rule_detailsmessages(void);
-void add_stock_order_message(int trader_id, int stock_id, double limit_price, double limit_quantity, double range, double x, double y, double z);
-xmachine_message_stock_order * add_stock_order_message_internal(void);
-xmachine_message_stock_order * get_first_stock_order_message(void);
-xmachine_message_stock_order * get_next_stock_order_message(xmachine_message_stock_order * current);
-void freestock_ordermessages(void);
-void add_stock_transaction_message(int trader_id, int stock_id, double transaction_price, double transaction_quantity, double range, double x, double y, double z);
-xmachine_message_stock_transaction * add_stock_transaction_message_internal(void);
-xmachine_message_stock_transaction * get_first_stock_transaction_message(void);
-xmachine_message_stock_transaction * get_next_stock_transaction_message(xmachine_message_stock_transaction * current);
-void freestock_transactionmessages(void);
-void add_bond_order_message(int trader_id, int bond_id, double limit_price, double limit_quantity, double range, double x, double y, double z);
-xmachine_message_bond_order * add_bond_order_message_internal(void);
-xmachine_message_bond_order * get_first_bond_order_message(void);
-xmachine_message_bond_order * get_next_bond_order_message(xmachine_message_bond_order * current);
-void freebond_ordermessages(void);
-void add_bond_transaction_message(int trader_id, int bond_id, double transaction_price, double transaction_quantity, double range, double x, double y, double z);
-xmachine_message_bond_transaction * add_bond_transaction_message_internal(void);
-xmachine_message_bond_transaction * get_first_bond_transaction_message(void);
-xmachine_message_bond_transaction * get_next_bond_transaction_message(xmachine_message_bond_transaction * current);
-void freebond_transactionmessages(void);
-void add_gov_bond_order_message(int trader_id, int gov_bond_id, double limit_price, double limit_quantity, double range, double x, double y, double z);
-xmachine_message_gov_bond_order * add_gov_bond_order_message_internal(void);
-xmachine_message_gov_bond_order * get_first_gov_bond_order_message(void);
-xmachine_message_gov_bond_order * get_next_gov_bond_order_message(xmachine_message_gov_bond_order * current);
-void freegov_bond_ordermessages(void);
-void add_gov_bond_transaction_message(int trader_id, int gov_bond_id, double transaction_price, double transaction_quantity, double range, double x, double y, double z);
-xmachine_message_gov_bond_transaction * add_gov_bond_transaction_message_internal(void);
-xmachine_message_gov_bond_transaction * get_first_gov_bond_transaction_message(void);
-xmachine_message_gov_bond_transaction * get_next_gov_bond_transaction_message(xmachine_message_gov_bond_transaction * current);
-void freegov_bond_transactionmessages(void);
 
 void set_id(int id);
 int get_id();
 EWAParameterStruct * get_EWA_parameters();
 SimplePrivateClassifierSystem * get_classifiersystem();
-void set_asset_budget(double asset_budget);
-double get_asset_budget();
 void set_posx(double posx);
 double get_posx();
 void set_posy(double posy);
 double get_posy();
+void set_day_of_month_to_act(int day_of_month_to_act);
+int get_day_of_month_to_act();
+void set_day(int day);
+int get_day();
+void set_month(int month);
+int get_month();
 int agent_get_id(void);
 double agent_get_x(void);
 double agent_get_y(void);
@@ -1117,12 +840,6 @@ void generate_partitions(double cloud_data[6], int partitions, int partition_met
 xmachine_message_rule_performance * get_next_message_rule_performance_in_range(xmachine_message_rule_performance * current);
 xmachine_message_new_performances * get_next_message_new_performances_in_range(xmachine_message_new_performances * current);
 xmachine_message_new_rule_details * get_next_message_new_rule_details_in_range(xmachine_message_new_rule_details * current);
-xmachine_message_stock_order * get_next_message_stock_order_in_range(xmachine_message_stock_order * current);
-xmachine_message_stock_transaction * get_next_message_stock_transaction_in_range(xmachine_message_stock_transaction * current);
-xmachine_message_bond_order * get_next_message_bond_order_in_range(xmachine_message_bond_order * current);
-xmachine_message_bond_transaction * get_next_message_bond_transaction_in_range(xmachine_message_bond_transaction * current);
-xmachine_message_gov_bond_order * get_next_message_gov_bond_order_in_range(xmachine_message_gov_bond_order * current);
-xmachine_message_gov_bond_transaction * get_next_message_gov_bond_transaction_in_range(xmachine_message_gov_bond_transaction * current);
 
 /* memory.c */
 xmachine * add_xmachine(void);

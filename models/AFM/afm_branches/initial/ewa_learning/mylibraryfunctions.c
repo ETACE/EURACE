@@ -11,7 +11,7 @@
 
 /** \fn double random_unif()
  * \brief Uniformly distributed random numbers, chosen from
-    a uniform distribution on the interval (0.0,1.0).
+ *   a uniform distribution on the closed interval (0.0,1.0).
  */
 double random_unif()
 {
@@ -20,12 +20,13 @@ double random_unif()
 
 /** \fn double random_norm()
  * \brief Normally distributed random numbers, chosen from
-    a normal distribution with mean zero, variance one and standard
-    deviation one.
+ *   a normal distribution with mean zero, variance one and standard
+ *   deviation one.
  */
-//double random_norm()
-//{
-//*****CODE*****
-//    return ();
-//}
+/*
+double random_norm()
+{
 
+    return ();
+}
+*/

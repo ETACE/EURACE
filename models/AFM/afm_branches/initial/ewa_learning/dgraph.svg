@@ -41,19 +41,15 @@
 <rect x="20" y="570" width="164" height="40" stroke="black" stroke-width="2" fill="white"/>
 <text x="25" y="585" style="font-family: Lucida Console, monospace; font-size: 12px">Household_select_rule</text>
 <text x="25" y="602" style="font-family: Lucida Console, monospace; font-size: 12px">(40 lines)</text>
-<rect x="20" y="620" width="157" height="40" stroke="black" stroke-width="2" fill="white"/>
-<text x="25" y="635" style="font-family: Lucida Console, monospace; font-size: 12px">Household_apply_rule</text>
+<rect x="20" y="620" width="325" height="40" stroke="black" stroke-width="2" fill="white"/>
+<text x="25" y="635" style="font-family: Lucida Console, monospace; font-size: 12px">FinancialAgent_reset_public_classifiersystem</text>
 <text x="25" y="652" style="font-family: Lucida Console, monospace; font-size: 12px">(40 lines)</text>
+<rect x="355" y="620" width="367" height="40" stroke="black" stroke-width="2" fill="white"/>
+<text x="360" y="635" style="font-family: Lucida Console, monospace; font-size: 12px">FinancialAgent_daily_reset_public_classifiersystem</text>
+<text x="360" y="652" style="font-family: Lucida Console, monospace; font-size: 12px">(40 lines)</text>
+<rect x="732" y="620" width="157" height="40" stroke="black" stroke-width="2" fill="white"/>
+<text x="737" y="635" style="font-family: Lucida Console, monospace; font-size: 12px">Household_apply_rule</text>
+<text x="737" y="652" style="font-family: Lucida Console, monospace; font-size: 12px">(40 lines)</text>
 <line x1="0" y1="665" x2="120" y2="665" style="stroke:rgb(256,0,0);stroke-width:2"/>
-<rect x="20" y="670" width="325" height="40" stroke="black" stroke-width="2" fill="white"/>
-<text x="25" y="685" style="font-family: Lucida Console, monospace; font-size: 12px">FinancialAgent_reset_public_classifiersystem</text>
-<text x="25" y="702" style="font-family: Lucida Console, monospace; font-size: 12px">(40 lines)</text>
-<rect x="355" y="670" width="367" height="40" stroke="black" stroke-width="2" fill="white"/>
-<text x="360" y="685" style="font-family: Lucida Console, monospace; font-size: 12px">FinancialAgent_daily_reset_public_classifiersystem</text>
-<text x="360" y="702" style="font-family: Lucida Console, monospace; font-size: 12px">(40 lines)</text>
-<rect x="732" y="670" width="234" height="40" stroke="black" stroke-width="2" fill="white"/>
-<text x="737" y="685" style="font-family: Lucida Console, monospace; font-size: 12px">Clearinghouse_read_stock_orders</text>
-<text x="737" y="702" style="font-family: Lucida Console, monospace; font-size: 12px">(40 lines)</text>
-<line x1="0" y1="715" x2="120" y2="715" style="stroke:rgb(256,0,0);stroke-width:2"/>
 
 </svg>
