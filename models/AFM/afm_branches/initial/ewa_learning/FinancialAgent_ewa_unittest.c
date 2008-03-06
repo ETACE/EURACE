@@ -210,7 +210,9 @@ void unittest_FinancialAgent_send_rule_details()
       }
 
      /***** Messages: pre-conditions **********************************/
-     //add_<message_name>_message(<msg_var>, MSGDATA);
+     //add_rule_details_messsage(i, parameters, 0.0, 0.0, 0.0, 0.0);
+     //add_rule_details_messsage(0, {1.0,2.0,3.0,4.0,5.0,6.0,7.0,8.0,9.0,10.0}, 0.0, 0.0, 0.0, 0.0);
+     //add_rule_details_messsage(1, {11.0,12.0,13.0,14.0,15.0,16.0,17.0,18.0,19.0,20.0}, 0.0, 0.0, 0.0, 0.0);
 
      /***** Function evaluation ***************************************/
      FinancialAgent_send_rule_details();
@@ -220,22 +222,19 @@ void unittest_FinancialAgent_send_rule_details()
      //CU_ASSERT_EQUAL(<var_name2>, <value>);
      
     /***** Messages: post-conditions **********************************/
-     //add_new_rule_details_messsage(i, parameters, 0.0, 0.0, 0.0, 0.0);
-     //add_new_rule_details_messsage(0, {1.0,2.0,3.0,4.0,5.0,6.0,7.0,8.0,9.0,10.0}, 0.0, 0.0, 0.0, 0.0);
-     //add_new_rule_details_messsage(1, {11.0,12.0,13.0,14.0,15.0,16.0,17.0,18.0,19.0,20.0}, 0.0, 0.0, 0.0, 0.0);
 
-     START_NEW_RULE_DETAILS_MESSAGE_LOOP
-     	if (new_rule_details_messsage->rule_id==0)
+     START_RULE_DETAILS_MESSAGE_LOOP
+     	if (rule_details_messsage->rule_id==0)
      	{
-     		CU_ASSERT_DOUBLE_EQUAL(new_rule_details_messsage->parameters[0], 1.0, 1e-3);
-     		CU_ASSERT_DOUBLE_EQUAL(new_rule_details_messsage->parameters[9], 10.0, 1e-3);     		
+     		CU_ASSERT_DOUBLE_EQUAL(rule_details_messsage->parameters[0], 1.0, 1e-3);
+     		CU_ASSERT_DOUBLE_EQUAL(rule_details_messsage->parameters[9], 10.0, 1e-3);     		
      	}
-	  	if (new_rule_details_messsage->rule_id==1)
+	  	if (rule_details_messsage->rule_id==1)
 	  	{
-	  		CU_ASSERT_DOUBLE_EQUAL(new_rule_details_messsage->parameters[0], 11.0, 1e-3);
-	  		CU_ASSERT_DOUBLE_EQUAL(new_rule_details_messsage->parameters[9], 20.0, 1e-3);     		
+	  		CU_ASSERT_DOUBLE_EQUAL(rule_details_messsage->parameters[0], 11.0, 1e-3);
+	  		CU_ASSERT_DOUBLE_EQUAL(rule_details_messsage->parameters[9], 20.0, 1e-3);     		
 	  	}
-     FINISH_NEW_RULE_DETAILS_MESSAGE_LOOP
+     FINISH_RULE_DETAILS_MESSAGE_LOOP
  
      /************* At end of unit test, free the agent **************/
      free_agent();

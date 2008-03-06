@@ -34,12 +34,12 @@
 /** \def FINISH_NEW_PERFORMANCES_MESSAGE_LOOP
  * \brief Finish of loop to process new_performances messages. */
 #define FINISH_NEW_PERFORMANCES_MESSAGE_LOOP new_performances_message = get_next_new_performances_message(new_performances_message); }
-/** \def e START_NEW_RULE_DETAILS_MESSAGE_LOOP
- * \brief Start of loop to process new_rule_details messages. */
-#define START_NEW_RULE_DETAILS_MESSAGE_LOOP  new_rule_details_message = get_first_new_rule_details_message(); while(new_rule_details_message) {
-/** \def FINISH_NEW_RULE_DETAILS_MESSAGE_LOOP
- * \brief Finish of loop to process new_rule_details messages. */
-#define FINISH_NEW_RULE_DETAILS_MESSAGE_LOOP new_rule_details_message = get_next_new_rule_details_message(new_rule_details_message); }
+/** \def e START_RULE_DETAILS_MESSAGE_LOOP
+ * \brief Start of loop to process rule_details messages. */
+#define START_RULE_DETAILS_MESSAGE_LOOP  rule_details_message = get_first_rule_details_message(); while(rule_details_message) {
+/** \def FINISH_RULE_DETAILS_MESSAGE_LOOP
+ * \brief Finish of loop to process rule_details messages. */
+#define FINISH_RULE_DETAILS_MESSAGE_LOOP rule_details_message = get_next_rule_details_message(rule_details_message); }
 
 /** \struct int_array
  * \brief Dynamic array to hold integers.
@@ -406,10 +406,10 @@ struct xmachine_message_new_performances
 };
 
 
-/** \struct xmachine_message_new_rule_details
- * \brief Holds message of type new_rule_details_message.
+/** \struct xmachine_message_rule_details
+ * \brief Holds message of type rule_details_message.
  */
-struct xmachine_message_new_rule_details
+struct xmachine_message_rule_details
 {
 	int rule_id;	/**< Message memory variable rule_id of type int. */
 	double parameters[10];	/**< Message memory variable parameters of type double. */
@@ -418,7 +418,7 @@ struct xmachine_message_new_rule_details
 	double y;	/**< Message memory variable y of type double. */
 	double z;	/**< Message memory variable z of type double. */
 	
-	struct xmachine_message_new_rule_details * next;	/**< Pointer to next message in the list. */
+	struct xmachine_message_rule_details * next;	/**< Pointer to next message in the list. */
 };
 
 
@@ -444,10 +444,10 @@ typedef struct xmachine_message_rule_performance xmachine_message_rule_performan
  */
 typedef struct xmachine_message_new_performances xmachine_message_new_performances;
 
-/** \typedef xmachine_message_new_rule_details xmachine_message_new_rule_details
- * \brief Typedef for xmachine_message_new_rule_details struct.
+/** \typedef xmachine_message_rule_details xmachine_message_rule_details
+ * \brief Typedef for xmachine_message_rule_details struct.
  */
-typedef struct xmachine_message_new_rule_details xmachine_message_new_rule_details;
+typedef struct xmachine_message_rule_details xmachine_message_rule_details;
 
 
 int Every_period(void);
@@ -488,7 +488,7 @@ struct node_information
 	struct xmachine * agents;	/**< Pointer to list of X-machines. */
 	struct xmachine_message_rule_performance * rule_performance_messages;	/**< Pointer to rule_performance message list. */
 	struct xmachine_message_new_performances * new_performances_messages;	/**< Pointer to new_performances message list. */
-	struct xmachine_message_new_rule_details * new_rule_details_messages;	/**< Pointer to new_rule_details message list. */
+	struct xmachine_message_rule_details * rule_details_messages;	/**< Pointer to rule_details message list. */
 	
 	struct node_information * next;	/**< Pointer to next node on the list. */
 };
@@ -513,9 +513,9 @@ xmachine_message_rule_performance * temp_rule_performance_message;
 /** \var xmachine_message_new_performances * temp_new_performances_message
 * \brief Pointer to xmachine_message_new_performances to initialise linked list. */
 xmachine_message_new_performances * temp_new_performances_message;
-/** \var xmachine_message_new_rule_details * temp_new_rule_details_message
-* \brief Pointer to xmachine_message_new_rule_details to initialise linked list. */
-xmachine_message_new_rule_details * temp_new_rule_details_message;
+/** \var xmachine_message_rule_details * temp_rule_details_message
+* \brief Pointer to xmachine_message_rule_details to initialise linked list. */
+xmachine_message_rule_details * temp_rule_details_message;
 /** \var node_information * temp_node_info
 * \brief Pointer to node_information to initialise linked list. */
 node_information * temp_node_info;
@@ -544,9 +544,9 @@ xmachine_message_rule_performance ** p_rule_performance_message;
 /** \var xmachine_message_new_performances ** p_new_performances_message
 * \brief Pointer to first pointer of new_performances message list */
 xmachine_message_new_performances ** p_new_performances_message;
-/** \var xmachine_message_new_rule_details ** p_new_rule_details_message
-* \brief Pointer to first pointer of new_rule_details message list */
-xmachine_message_new_rule_details ** p_new_rule_details_message;
+/** \var xmachine_message_rule_details ** p_rule_details_message
+* \brief Pointer to first pointer of rule_details message list */
+xmachine_message_rule_details ** p_rule_details_message;
 
 /** \var xmachine_message_rule_performance * rule_performance_message
 * \brief Pointer to message struct for looping through rule_performance message list */
@@ -554,9 +554,9 @@ xmachine_message_rule_performance * rule_performance_message;
 /** \var xmachine_message_new_performances * new_performances_message
 * \brief Pointer to message struct for looping through new_performances message list */
 xmachine_message_new_performances * new_performances_message;
-/** \var xmachine_message_new_rule_details * new_rule_details_message
-* \brief Pointer to message struct for looping through new_rule_details message list */
-xmachine_message_new_rule_details * new_rule_details_message;
+/** \var xmachine_message_rule_details * rule_details_message
+* \brief Pointer to message struct for looping through rule_details message list */
+xmachine_message_rule_details * rule_details_message;
 /** \var node_information ** p_node_info
 * \brief Pointer to first pointer of node list */
 node_information ** p_node_info;
@@ -805,11 +805,11 @@ xmachine_message_new_performances * add_new_performances_message_internal(void);
 xmachine_message_new_performances * get_first_new_performances_message(void);
 xmachine_message_new_performances * get_next_new_performances_message(xmachine_message_new_performances * current);
 void freenew_performancesmessages(void);
-void add_new_rule_details_message(int rule_id, double parameters[], double range, double x, double y, double z);
-xmachine_message_new_rule_details * add_new_rule_details_message_internal(void);
-xmachine_message_new_rule_details * get_first_new_rule_details_message(void);
-xmachine_message_new_rule_details * get_next_new_rule_details_message(xmachine_message_new_rule_details * current);
-void freenew_rule_detailsmessages(void);
+void add_rule_details_message(int rule_id, double parameters[], double range, double x, double y, double z);
+xmachine_message_rule_details * add_rule_details_message_internal(void);
+xmachine_message_rule_details * get_first_rule_details_message(void);
+xmachine_message_rule_details * get_next_rule_details_message(xmachine_message_rule_details * current);
+void freerule_detailsmessages(void);
 
 void set_id(int id);
 int get_id();
@@ -839,7 +839,7 @@ void generate_partitions(double cloud_data[6], int partitions, int partition_met
 /* messageboard.c */
 xmachine_message_rule_performance * get_next_message_rule_performance_in_range(xmachine_message_rule_performance * current);
 xmachine_message_new_performances * get_next_message_new_performances_in_range(xmachine_message_new_performances * current);
-xmachine_message_new_rule_details * get_next_message_new_rule_details_in_range(xmachine_message_new_rule_details * current);
+xmachine_message_rule_details * get_next_message_rule_details_in_range(xmachine_message_rule_details * current);
 
 /* memory.c */
 xmachine * add_xmachine(void);

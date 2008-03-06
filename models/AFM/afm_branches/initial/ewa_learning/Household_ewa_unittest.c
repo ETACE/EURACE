@@ -259,9 +259,9 @@ void unittest_Household_read_and_update_rule_details()
      }
 
      /***** Messages: pre-conditions **********************************/
-     //add_new_rule_details_messsage(i, CLASSIFIERSYSTEM.ruletable[i].parameters, 0.0, 0.0, 0.0, 0.0);
-     add_new_rule_details_messsage(0, {1.0,2.0,3.0,4.0,5.0,6.0,7.0,8.0,9.0,10.0}, 0.0, 0.0, 0.0, 0.0);
-     add_new_rule_details_messsage(1, {11.0,12.0,13.0,14.0,15.0,16.0,17.0,18.0,19.0,20.0}, 0.0, 0.0, 0.0, 0.0);
+     //add_rule_details_messsage(i, CLASSIFIERSYSTEM.ruletable[i].parameters, 0.0, 0.0, 0.0, 0.0);
+     add_rule_details_messsage(0, {1.0,2.0,3.0,4.0,5.0,6.0,7.0,8.0,9.0,10.0}, 0.0, 0.0, 0.0, 0.0);
+     add_rule_details_messsage(1, {11.0,12.0,13.0,14.0,15.0,16.0,17.0,18.0,19.0,20.0}, 0.0, 0.0, 0.0, 0.0);
      
      /***** Function evaluation ***************************************/
      Household_read_and_update_rule_details();

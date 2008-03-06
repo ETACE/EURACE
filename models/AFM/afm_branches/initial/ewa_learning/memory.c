@@ -16,8 +16,8 @@ void initialise_pointers()
 	p_rule_performance_message = &temp_rule_performance_message;
 	temp_new_performances_message = NULL;
 	p_new_performances_message = &temp_new_performances_message;
-	temp_new_rule_details_message = NULL;
-	p_new_rule_details_message = &temp_new_rule_details_message;
+	temp_rule_details_message = NULL;
+	p_rule_details_message = &temp_rule_details_message;
 	temp_node_info = NULL;
 	p_node_info = &temp_node_info;
 }
@@ -34,7 +34,7 @@ void initialise_unit_testing()
 	current_xmachine = *p_xmachine;
 	p_rule_performance_message = &current_node->rule_performance_messages;
 	p_new_performances_message = &current_node->new_performances_messages;
-	p_new_rule_details_message = &current_node->new_rule_details_messages;
+	p_rule_details_message = &current_node->rule_details_messages;
 }
 
 /* add_location */
@@ -982,7 +982,7 @@ void add_node(int node_id, double minx, double maxx, double miny, double maxy, d
 	current->agents = NULL;
 	current->rule_performance_messages = NULL;
 	current->new_performances_messages = NULL;
-	current->new_rule_details_messages = NULL;
+	current->rule_details_messages = NULL;
 
 
 	current->partition_data[0] = minx;
@@ -1016,7 +1016,7 @@ void free_node_info()
  */
 void free_messages()
 {
-	freerule_performancemessages();	freenew_performancesmessages();	freenew_rule_detailsmessages();
+	freerule_performancemessages();	freenew_performancesmessages();	freerule_detailsmessages();
 }
 
 /** \fn void clean_up(int code)

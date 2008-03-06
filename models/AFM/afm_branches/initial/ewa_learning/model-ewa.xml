@@ -241,7 +241,7 @@
 	<name>Household_read_and_update_rule_details</name>
 	<depends>
 		<name>FinancialAgent_send_rule_details</name>
-		<type>new_rule_details</type>
+		<type>rule_details</type>
 	</depends>
 </function>
 
@@ -342,7 +342,7 @@
 </message>
 
 <message>
-<name>new_rule_details</name>
+<name>rule_details</name>
 <note>FA communicates new rule details. There will be a single message per rule, that contains the static array parameters[10] with the parameters values for that rule.</note>
 	<var>
 		<type>int</type><name>rule_id</name>
