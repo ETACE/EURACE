@@ -64,7 +64,7 @@ int FinancialAgent_send_all_performances()
     //Send the average performance of each rule
     for (i=0;i<CLASSIFIERSYSTEM.nr_rules;i++)
     {
-        add_new_performances_message(i, CLASSIFIERSYSTEM.ruletable[i].avg_performance, 0.0, 0.0, 0.0, 0.0);
+        add_new_performances_message(i, CLASSIFIERSYSTEM.ruletable[i].avg_performance, 1.0, 0.0, 0.0, 0.0);
     }
     
   return 0;
@@ -97,7 +97,7 @@ int FinancialAgent_send_rule_details()
 	//The message contains the static array parameters[10]
 	for (i=0;i<CLASSIFIERSYSTEM.nr_rules;i++)
 	{
-		add_rule_details_messsage(i, CLASSIFIERSYSTEM.ruletable[i].parameters, 0.0, 0.0, 0.0, 0.0);
+		add_rule_details_messsage(i, CLASSIFIERSYSTEM.ruletable[i].parameters, 1.0, 0.0, 0.0, 0.0);
 	}
         
     return 0;

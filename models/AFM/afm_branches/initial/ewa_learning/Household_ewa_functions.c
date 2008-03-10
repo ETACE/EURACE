@@ -35,7 +35,7 @@ int Household_send_rule_performance()
     
     //Note: rule_id = current_rule-1 because of 0-indexing in C
     //add_rule_performance_message(rule_id, rule_performance, MSGDATA);
-    add_rule_performance_message(current_rule-1, rule_performance, MSGDATA);
+    add_rule_performance_message(current_rule-1, rule_performance, 1.0, 0.0, 0.0, 0.0);
 
     return 0;
 }
