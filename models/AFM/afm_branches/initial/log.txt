@@ -496,3 +496,8 @@ Sander, rev 595
 						
 	NOTE: The number of parameters in the classifier rules is now hard-coded to 10.
 --------------------------------------------------------------------------------------
+Sander, rev 613
+	AFM/afm_branches/initial/ewa_learning/:
+		added unit tests for Household_ewa_functions, FinancialAgent_ewa_functions
+		debugged some_new_functions.c
+--------------------------------------------------------------------------------------
