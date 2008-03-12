@@ -18,6 +18,16 @@ double random_unif()
     return ((double)rand()/(double)RAND_MAX);
 }
 
+
+/** \fn double random_unif_interval(double a, double b)
+ * \brief Uniformly distributed random numbers, chosen from
+ *   a uniform distribution on the closed interval (a,b).
+ */
+double random_unif_interval(double a, double b)
+{
+	return (a + (b-a)*random_unif());
+}
+
 /** \fn double random_norm()
  * \brief Normally distributed random numbers, chosen from
  *   a normal distribution with mean zero, variance one and standard

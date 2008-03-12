@@ -3,6 +3,8 @@
 #include "Household_agent_header.h"
 #include "mylibraryheader.h"
 
+#define NR_PARAMS 10;
+
 /************Household: EWA learning Role ********************************/
 
 /************ Unit tests ********************************/
