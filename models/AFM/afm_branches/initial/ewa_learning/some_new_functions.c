@@ -302,4 +302,104 @@ void draw_with_replacement(int size, double * cpdf, int Nr_draws, double * draws
 	}
 }
 
+/* \fn void single_point_cross_over(int size, double * string1, double * string2, int cross_point)
+ * \brief Genetic operator: single_point_cross_over
+ */
+void single_point_cross_over(int size, double * string1, double * string2, int cross_point)
+{
+	int k;
+	double tmp;
+	
+	if (cross_point>size)
+	{
+		printf("Error in single_point_cross_over: cross_point > size of string");
+		return;
+	}
+	// perform single-point cross-over between two strings
+	for (k=0; k<cross_point; k++)
+	{
+		tmp = string1[k];
+		string1[k]=string2[k];
+		string2[k]=tmp;	
+	}
+}
+
+/* \fn void two_point_cross_over(int size, double * string1, double * string2, int cross_point, int cross_length)
+ * \brief Genetic operator: two_point_cross_over
+ */
+void two_point_cross_over(int size, double * string1, double * string2, int cross_point, int cross_length)
+{
+	int k, count;
+	double tmp;
+
+	if ((cross_point+cross_length)<size)
+	{
+	    // perform normal cross-over between parent pair
+		for (k=cross_point; k<(cross_point+cross_length); k++)
+		{
+			tmp = string1[k];
+			string1[k]=string2[k];
+			string2[k]=tmp;	
+		}
+	}
+	else
+	{
+		//cross-over crossed the bitstring boundary, so wrap-around is needed
+	
+	    //1. perform cross-over starting at cross-point:
+		count=0;
+		for (k=cross_point; k<size; k++)
+		{
+			tmp = string1[k];
+			string1[k]=string2[k];
+			string2[k]=tmp;
+			count++;
+		}
+	    //2. perform cross-over at beginning of string until count reaches cross_length
+		//for (k=0; k<(cross_point+cross_length)%size; k++)
+		k=0;
+		while (count!=cross_length)
+		{
+			tmp = string1[k];
+			string1[k]=string2[k];
+			string2[k]=tmp;
+			count++;
+		}
+	}
+}
+
+/* \fn void mutation(int size, double * offspring_1, double * offspring_2);
+ * \brief Genetic operator: Mutation of real-valued bitstrings 
+ * Size of the mutation is delta*stepsize[k], where: 
+ * delta = {-10, -5, 0, +5, +10} or delta in {-10,+10}
+ * stepsize[k]: can be a parameter dependent gridsize
+ */
+void mutation(int size, double * string, double * stepsize, double prob_mut)
+{
+	int k;
+	double delta;
+	
+	for (k=0; k<size; k++)
+	{
+		// apply mutation to the bit of string 1
+		if (random_unif() > prob_mut)
+		{	
+			//Set units to mutate
+			delta = random_unif_interval(-10.0, 10.0);
+			//mutate the value at position k
+			string[k] = string[k] + delta*stepsize[k];
+		}
+	}    
+}
+
+/* \fn void election(int size, double * offspring_1, double * offspring_2, double * parent_1, double * parent_2)
+ * \brief Genetic operator: Election of 2 out of 4 best bitstrings 
+ */
+/*
+void election(int size, double * offspring_1, double * offspring_2, double * parent_1, double * parent_2)
+{
+
+}
+*/
+
 // *********** END AUXILIARY FUNCTIONS ****************************

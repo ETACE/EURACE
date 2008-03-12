@@ -3,6 +3,8 @@
 #include "FinancialAgent_agent_header.h"
 #include "mylibraryheader.h"
 
+#define NR_PARAMS 10;
+
 /************FinancialAgent: Financial Advisor Role ********************************/
 
 /************ Unit tests ********************************/

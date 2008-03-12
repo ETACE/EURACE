@@ -298,6 +298,137 @@ void read_EWAParameterStruct_static_array(char * buffer, int * j, EWAParameterSt
 	(*j)++;
 }
 
+/** \fn void read_GAParameterStruct(char * buffer, int * j, GAParameterStruct * temp_datatype)
+ * \brief Reads GAParameterStruct datatype.
+ */
+void read_GAParameterStruct(char * buffer, int * j, GAParameterStruct * temp_datatype)
+{
+	int array_k;
+	char arraydata[10000];
+	(*j)++;
+	
+	(*temp_datatype).prob_cross = 0.0;
+	array_k = 0;
+	while(buffer[*j] != ',')
+	{
+		arraydata[array_k] = buffer[*j];
+		array_k++;
+		(*j)++;
+	}
+	arraydata[array_k] = 0;
+	(*temp_datatype).prob_cross = atof(arraydata);
+	(*j)++;
+	(*temp_datatype).prob_mut = 0.0;
+	array_k = 0;
+	while(buffer[*j] != ',')
+	{
+		arraydata[array_k] = buffer[*j];
+		array_k++;
+		(*j)++;
+	}
+	arraydata[array_k] = 0;
+	(*temp_datatype).prob_mut = atof(arraydata);
+	(*j)++;
+	(*temp_datatype).size = 0;
+	array_k = 0;
+	while(buffer[*j] != ',')
+	{
+		arraydata[array_k] = buffer[*j];
+		array_k++;
+		(*j)++;
+	}
+	arraydata[array_k] = 0;
+	(*temp_datatype).size = atoi(arraydata);
+	(*j)++;
+	(*temp_datatype).pop_size = 0;
+	array_k = 0;
+	while(buffer[*j] != ',')
+	{
+		arraydata[array_k] = buffer[*j];
+		array_k++;
+		(*j)++;
+	}
+	arraydata[array_k] = 0;
+	(*temp_datatype).pop_size = atoi(arraydata);
+	(*j)++;
+	(*temp_datatype).reproduction_proportion = 0.0;
+	array_k = 0;
+	while(buffer[*j] != ',')
+	{
+		arraydata[array_k] = buffer[*j];
+		array_k++;
+		(*j)++;
+	}
+	arraydata[array_k] = 0;
+	(*temp_datatype).reproduction_proportion = atof(arraydata);
+	(*j)++;
+	(*temp_datatype).single_point_cross_over = 0;
+	array_k = 0;
+	while(buffer[*j] != ',')
+	{
+		arraydata[array_k] = buffer[*j];
+		array_k++;
+		(*j)++;
+	}
+	arraydata[array_k] = 0;
+	(*temp_datatype).single_point_cross_over = atoi(arraydata);
+	(*j)++;
+	(*temp_datatype).election = 0;
+	array_k = 0;
+	while(buffer[*j] != ',')
+	{
+		arraydata[array_k] = buffer[*j];
+		array_k++;
+		(*j)++;
+	}
+	arraydata[array_k] = 0;
+	(*temp_datatype).election = atoi(arraydata);
+	(*j)++;
+
+	while(buffer[*j] != '}')
+	{
+		while(buffer[*j] != '{') (*j)++;
+		read_double_static_array(buffer, j, (*temp_datatype).stepsize, 10);
+	}
+	
+	(*j)++;
+}
+
+void read_GAParameterStruct_dynamic_array(char * buffer, int * j, GAParameterStruct_array * temp_datatype_array)
+{
+	int arraycount = 0;
+	
+	(*j)++;
+	
+	while(buffer[(*j)] != '\0' && buffer[(*j)] != '}')
+	{
+		if(buffer[(*j)] == '{')
+		{
+			add_GAParameterStruct(temp_datatype_array, 0.0, 0.0, 0, 0, 0.0, 0, 0, NULL);
+			read_GAParameterStruct(buffer, j, &(*temp_datatype_array).array[arraycount]);
+			arraycount++;
+		}
+		while(buffer[(*j)] != '{' && buffer[(*j)] != '\0') { (*j)++; }
+	}
+	
+	(*j)++;
+}
+
+void read_GAParameterStruct_static_array(char * buffer, int * j, GAParameterStruct * temp_datatype_array, int size)
+{
+	int arraycount;
+	
+	(*j)++;
+	
+	for(arraycount = 0; arraycount < size; arraycount++)
+	{
+		read_GAParameterStruct(buffer, j, &temp_datatype_array[arraycount]);
+		if(arraycount < (size-1)) while(buffer[(*j)] != '{') { (*j)++; }
+	}
+	
+	(*j)++;
+}
+
 /** \fn void read_PublicClassifierRule(char * buffer, int * j, PublicClassifierRule * temp_datatype)
  * \brief Reads PublicClassifierRule datatype.
  */
@@ -894,6 +1025,7 @@ void readinitialstates(char * filename, int * itno, xmachine ** agent_list, doub
 	int in_day_of_month_to_act;
 	int in_day;
 	int in_month;
+	int in_GA_parameters;
 
 
 	/* Variables for initial state data */
@@ -905,6 +1037,7 @@ void readinitialstates(char * filename, int * itno, xmachine ** agent_list, doub
 //	int day_of_month_to_act;
 //	int day;
 //	int month;
+//	GAParameterStruct * GA_parameters;
 
 
 	xmachine_memory_Household * current_Household_agent;
@@ -939,6 +1072,7 @@ void readinitialstates(char * filename, int * itno, xmachine ** agent_list, doub
 	in_day_of_month_to_act = 0;
 	in_day = 0;
 	in_month = 0;
+	in_GA_parameters = 0;
 
 	/* Default variables for memory */
 	/* Not implemented static arrays */
@@ -950,6 +1084,7 @@ void readinitialstates(char * filename, int * itno, xmachine ** agent_list, doub
 //	day_of_month_to_act = 0;
 //	day = 0;
 //	month = 0;
+//	GA_parameters = init_GAParameterStruct();
 
 
 
@@ -1099,7 +1234,7 @@ in_FinancialAgent_agent = 0;
 					 * If flag is not zero we aleady have partition data so can read and distribute to the current node.*/
 					if( flag == 0 )
 					{
-						//add_FinancialAgent_agent(day_of_month_to_act, day, month, classifiersystem, posx, posy);
+						//add_FinancialAgent_agent(day_of_month_to_act, day, month, EWA_parameters, classifiersystem, GA_parameters, posx, posy);
 						add_FinancialAgent_agent_internal(current_FinancialAgent_agent);
 						
 						/* Update the cloud data */
@@ -1125,7 +1260,7 @@ in_FinancialAgent_agent = 0;
 							)
 							{
 								p_xmachine = &(current_node->agents);
-								//add_FinancialAgent_agent(day_of_month_to_act, day, month, classifiersystem, posx, posy);
+								//add_FinancialAgent_agent(day_of_month_to_act, day, month, EWA_parameters, classifiersystem, GA_parameters, posx, posy);
 								add_FinancialAgent_agent_internal(current_FinancialAgent_agent);
 							} 
 						}
@@ -1144,7 +1279,7 @@ in_FinancialAgent_agent = 0;
 								rrange=1.5;
 
 								p_xmachine = &(current_node->agents);
-								//add_FinancialAgent_agent(day_of_month_to_act, day, month, classifiersystem, posx, posy);
+								//add_FinancialAgent_agent(day_of_month_to_act, day, month, EWA_parameters, classifiersystem, GA_parameters, posx, posy);
 								add_FinancialAgent_agent_internal(current_FinancialAgent_agent);
 
 								current_FinancialAgent_agent->posx = xcentre;
@@ -1173,7 +1308,7 @@ in_FinancialAgent_agent = 0;
 //				day_of_month_to_act = 0;
 //				day = 0;
 //				month = 0;
-
+//
 	}
 			if(strcmp(buffer, "id") == 0) in_id = 1;
 			if(strcmp(buffer, "/id") == 0) in_id = 0;
@@ -1191,6 +1326,8 @@ in_FinancialAgent_agent = 0;
 			if(strcmp(buffer, "/day") == 0) in_day = 0;
 			if(strcmp(buffer, "month") == 0) in_month = 1;
 			if(strcmp(buffer, "/month") == 0) in_month = 0;
+			if(strcmp(buffer, "GA_parameters") == 0) in_GA_parameters = 1;
+			if(strcmp(buffer, "/GA_parameters") == 0) in_GA_parameters = 0;
 
 
 			
@@ -1231,10 +1368,20 @@ in_FinancialAgent_agent = 0;
 				if(in_day_of_month_to_act) current_FinancialAgent_agent->day_of_month_to_act = atoi(buffer);
 				if(in_day) current_FinancialAgent_agent->day = atoi(buffer);
 				if(in_month) current_FinancialAgent_agent->month = atoi(buffer);
+				if(in_EWA_parameters)
+				{
+					j = 0;
+					read_EWAParameterStruct(buffer, &j, &current_FinancialAgent_agent->EWA_parameters);
+				}
 				if(in_classifiersystem)
 				{
 					j = 0;
 					read_SimplePublicClassifierSystem(buffer, &j, &current_FinancialAgent_agent->classifiersystem);
+				}
+				if(in_GA_parameters)
+				{
+					j = 0;
+					read_GAParameterStruct(buffer, &j, &current_FinancialAgent_agent->GA_parameters);
 				}
 				if(in_posx) current_FinancialAgent_agent->posx = atof(buffer);
 				if(in_posy) current_FinancialAgent_agent->posy = atof(buffer);
@@ -1277,7 +1424,8 @@ in_FinancialAgent_agent = 0;
 	/* Free temp data structures */
 ////	free_EWAParameterStruct_datatype(EWA_parameters);
 //	free_SimplePrivateClassifierSystem_datatype(classifiersystem);
-//////////
+////////////	free_GAParameterStruct_datatype(GA_parameters);
+
 }
 
 /** \fn void saveiterationdata_binary(int iteration_number)
@@ -1513,6 +1661,60 @@ void write_EWAParameterStruct_dynamic_array(FILE *file, EWAParameterStruct_array
 	for(i = 0; i < (*temp_datatype).size; i++)
 	{
 		write_EWAParameterStruct(file, &(*temp_datatype).array[i]);
+		
+		if(i < (*temp_datatype).size - 1) fputs(", ", file);
+	}
+	fputs("}", file);
+}
+
+/** \fn void write_GAParameterStruct(FILE *file, GAParameterStruct * temp_datatype)
+ * \brief Writes GAParameterStruct datatype.
+ */
+void write_GAParameterStruct(FILE *file, GAParameterStruct * temp_datatype)
+{
+	char data[1000];
+	
+	fputs("{", file);
+	sprintf(data, "%f", (*temp_datatype).prob_cross);
+	fputs(data, file);
+	fputs(", ", file);	sprintf(data, "%f", (*temp_datatype).prob_mut);
+	fputs(data, file);
+	fputs(", ", file);	sprintf(data, "%i", (*temp_datatype).size);
+	fputs(data, file);
+	fputs(", ", file);	sprintf(data, "%i", (*temp_datatype).pop_size);
+	fputs(data, file);
+	fputs(", ", file);	sprintf(data, "%f", (*temp_datatype).reproduction_proportion);
+	fputs(data, file);
+	fputs(", ", file);	sprintf(data, "%i", (*temp_datatype).single_point_cross_over);
+	fputs(data, file);
+	fputs(", ", file);	sprintf(data, "%i", (*temp_datatype).election);
+	fputs(data, file);
+	fputs(", ", file);	write_double_static_array(file, (*temp_datatype).stepsize, 10);
+	fputs("}", file);
+}
+
+void write_GAParameterStruct_static_array(FILE *file, GAParameterStruct * temp_datatype, int size)
+{
+	int i;
+	
+	fputs("{", file);
+	for(i = 0; i < size; i++)
+	{
+		write_GAParameterStruct(file, &temp_datatype[i]);
+		
+		if(i < size - 1) fputs(", ", file);
+	}
+	fputs("}", file);
+}
+
+void write_GAParameterStruct_dynamic_array(FILE *file, GAParameterStruct_array * temp_datatype)
+{
+	int i;
+	
+	fputs("{", file);
+	for(i = 0; i < (*temp_datatype).size; i++)
+	{
+		write_GAParameterStruct(file, &(*temp_datatype).array[i]);
 		
 		if(i < (*temp_datatype).size - 1) fputs(", ", file);
 	}
@@ -1870,9 +2072,15 @@ void saveiterationdata(int iteration_number)
 			sprintf(data, "%i", current_FinancialAgent->month);
 			fputs(data, file);
 			fputs("</month>\n", file);
+			fputs("<EWA_parameters>", file);
+			write_EWAParameterStruct(file, &current_FinancialAgent->EWA_parameters);
+			fputs("</EWA_parameters>\n", file);
 			fputs("<classifiersystem>", file);
 			write_SimplePublicClassifierSystem(file, &current_FinancialAgent->classifiersystem);
 			fputs("</classifiersystem>\n", file);
+			fputs("<GA_parameters>", file);
+			write_GAParameterStruct(file, &current_FinancialAgent->GA_parameters);
+			fputs("</GA_parameters>\n", file);
 			fputs("<posx>", file);
 			sprintf(data, "%f", current_FinancialAgent->posx);
 			fputs(data, file);

@@ -196,6 +196,61 @@ void copy_EWAParameterStruct_static_array(EWAParameterStruct * from, EWAParamete
 }
 
 
+void init_GAParameterStruct(GAParameterStruct * temp)
+{
+	(*temp).prob_cross = 0.0;
+	(*temp).prob_mut = 0.0;
+	(*temp).size = 0;
+	(*temp).pop_size = 0;
+	(*temp).reproduction_proportion = 0.0;
+	(*temp).single_point_cross_over = 0;
+	(*temp).election = 0;
+	init_double_static_array((*temp).stepsize, 10);
+
+}
+
+void init_GAParameterStruct_static_array(GAParameterStruct * array, int size)
+{
+	int i;
+	
+	for(i = 0; i < size; i++) init_GAParameterStruct(&array[i]);
+}
+
+void free_GAParameterStruct(GAParameterStruct * temp)
+{
+
+}
+
+void free_GAParameterStruct_static_array(GAParameterStruct * array, int size)
+{
+	int i;
+	
+	for(i = 0; i < size; i++) free_GAParameterStruct(&array[i]);
+}
+
+void copy_GAParameterStruct(GAParameterStruct * from, GAParameterStruct * to)
+{
+	(*to).prob_cross = (*from).prob_cross;
+	(*to).prob_mut = (*from).prob_mut;
+	(*to).size = (*from).size;
+	(*to).pop_size = (*from).pop_size;
+	(*to).reproduction_proportion = (*from).reproduction_proportion;
+	(*to).single_point_cross_over = (*from).single_point_cross_over;
+	(*to).election = (*from).election;
+	memcpy((*to).stepsize, (*from).stepsize, 10*sizeof(double));
+}
+
+void copy_GAParameterStruct_static_array(GAParameterStruct * from, GAParameterStruct * to, int size)
+{
+	int i;
+	
+	for(i = 0; i < size; i++)
+	{
+		copy_GAParameterStruct(&from[i], &to[i]);
+	}
+}
+
+
 void init_PublicClassifierRule(PublicClassifierRule * temp)
 {
 	(*temp).id = 0;
@@ -549,7 +604,9 @@ xmachine_memory_FinancialAgent * init_FinancialAgent_agent()
 	current->day_of_month_to_act = 0;
 	current->day = 0;
 	current->month = 0;
+	init_EWAParameterStruct(&current->EWA_parameters);
 	init_SimplePublicClassifierSystem(&current->classifiersystem);
+	init_GAParameterStruct(&current->GA_parameters);
 	current->posx = 0.0;
 	current->posy = 0.0;
 	
@@ -558,7 +615,9 @@ xmachine_memory_FinancialAgent * init_FinancialAgent_agent()
 
 void free_FinancialAgent_agent(xmachine_memory_FinancialAgent * tmp)
 {
+	free_EWAParameterStruct(&tmp->EWA_parameters);
 	free_SimplePublicClassifierSystem(&tmp->classifiersystem);
+	free_GAParameterStruct(&tmp->GA_parameters);
 	
 }
 
@@ -568,16 +627,18 @@ void add_FinancialAgent_agent_internal(xmachine_memory_FinancialAgent * current)
 	new_xmachine->xmachine_FinancialAgent = current;
 }
 
-/** \fn void add_FinancialAgent_agent(int day_of_month_to_act, int day, int month, SimplePublicClassifierSystem * classifiersystem, double posx, double posy)
+/** \fn void add_FinancialAgent_agent(int day_of_month_to_act, int day, int month, EWAParameterStruct * EWA_parameters, SimplePublicClassifierSystem * classifiersystem, GAParameterStruct * GA_parameters, double posx, double posy)
  * \brief Add FinancialAgent X-machine to the current being used X-machine list.
  * \param day_of_month_to_act Variable for the X-machine memory.
  * \param day Variable for the X-machine memory.
  * \param month Variable for the X-machine memory.
+ * \param EWA_parameters Variable for the X-machine memory.
  * \param classifiersystem Variable for the X-machine memory.
+ * \param GA_parameters Variable for the X-machine memory.
  * \param posx Variable for the X-machine memory.
  * \param posy Variable for the X-machine memory.
  */
-void add_FinancialAgent_agent(int day_of_month_to_act, int day, int month, SimplePublicClassifierSystem classifiersystem, double posx, double posy)
+void add_FinancialAgent_agent(int day_of_month_to_act, int day, int month, EWAParameterStruct EWA_parameters, SimplePublicClassifierSystem classifiersystem, GAParameterStruct GA_parameters, double posx, double posy)
 {
 	xmachine * new_xmachine = add_xmachine();
 	xmachine_memory_FinancialAgent * current;
@@ -588,7 +649,9 @@ void add_FinancialAgent_agent(int day_of_month_to_act, int day, int month, Simpl
 	current->day_of_month_to_act = day_of_month_to_act;
 	current->day = day;
 	current->month = month;
+	copy_EWAParameterStruct(&EWA_parameters, &current->EWA_parameters);
 	copy_SimplePublicClassifierSystem(&classifiersystem, &current->classifiersystem);
+	copy_GAParameterStruct(&GA_parameters, &current->GA_parameters);
 	current->posx = posx;
 	current->posy = posy;
 }
@@ -690,6 +753,7 @@ int get_id()
 EWAParameterStruct * get_EWA_parameters()
 {
 	if(current_xmachine->xmachine_Household) return &(*current_xmachine->xmachine_Household).EWA_parameters;
+	if(current_xmachine->xmachine_FinancialAgent) return &(*current_xmachine->xmachine_FinancialAgent).EWA_parameters;
 
     // suppress compiler warning by returning dummy value /
     // this statement should rightfully NEVER be reached /
@@ -822,6 +886,19 @@ int get_month()
     // suppress compiler warning by returning dummy value /
     // this statement should rightfully NEVER be reached /
     return (int)0;
+}
+
+/** \fn GAParameterStruct get_GA_parameters()
+ * \brief Get GA_parameters memory variable from current X-machine.
+ * \return Value for variable.
+ */
+GAParameterStruct * get_GA_parameters()
+{
+	if(current_xmachine->xmachine_FinancialAgent) return &(*current_xmachine->xmachine_FinancialAgent).GA_parameters;
+
+    // suppress compiler warning by returning dummy value /
+    // this statement should rightfully NEVER be reached /
+    return NULL;
 }
 
 
@@ -1775,6 +1852,96 @@ void remove_EWAParameterStruct(EWAParameterStruct_array * array, int index)
 		for(i = index; i < (*array).size - 1; i++)
 		{
 			copy_EWAParameterStruct(&(*array).array[i+1], &(*array).array[i]);
+		}
+		(*array).size--;
+	}
+}
+/* Functions for the GAParameterStruct datatype */
+/** \fn GAParameterStruct_array * init_GAParameterStruct_array()
+ * \brief Allocate memory for a dynamic GAParameterStruct array.
+ * \return GAParameterStruct_array Pointer to the new dynamic GAParameterStruct array.
+ */
+void init_GAParameterStruct_array(GAParameterStruct_array * array)
+{
+	(*array).size = 0;
+	(*array).total_size = ARRAY_BLOCK_SIZE;
+	(*array).array = (GAParameterStruct *)malloc(ARRAY_BLOCK_SIZE * sizeof(GAParameterStruct));
+	CHECK_POINTER((*array).array);
+}
+
+/** \fn void reset_GAParameterStruct_array(GAParameterStruct_array* array)
+* \brief Reset the GAParameterStruct array to hold nothing.
+* \param array Pointer to the dynamic GAParameterStruct array.
+*/
+void reset_GAParameterStruct_array(GAParameterStruct_array * array)
+{
+	(*array).size = 0;
+}
+
+/** \fn void free_GAParameterStruct_array(GAParameterStruct_array * array)
+* \brief Free the memory of a dynamic GAParameterStruct array.
+* \param array Pointer to the dynamic GAParameterStruct array.
+*/
+void free_GAParameterStruct_array(GAParameterStruct_array * array)
+{
+	free((*array).array);
+}
+
+void copy_GAParameterStruct_array(GAParameterStruct_array * from, GAParameterStruct_array * to)
+{
+	int i;
+	
+	//to = init_GAParameterStruct_array();
+	
+	for(i = 0; i < (*from).size; i++)
+	{
+		add_GAParameterStruct(to, (*from).array[i].prob_cross, (*from).array[i].prob_mut, (*from).array[i].size, (*from).array[i].pop_size, (*from).array[i].reproduction_proportion, (*from).array[i].single_point_cross_over, (*from).array[i].election, (*from).array[i].stepsize);
+	}
+}
+
+/** \fn void add_GAParameterStruct(GAParameterStruct_array * array, double prob_cross, double prob_mut, int size, int pop_size, double reproduction_proportion, int single_point_cross_over, int election, double stepsize)
+* \brief Add an GAParameterStruct to the dynamic GAParameterStruct array.
+* \param array Pointer to the dynamic GAParameterStruct array.
+* \param new_int The GAParameterStruct to add
+*/
+void add_GAParameterStruct(GAParameterStruct_array * array, double prob_cross, double prob_mut, int size, int pop_size, double reproduction_proportion, int single_point_cross_over, int election, double * stepsize)
+{
+	if((*array).size == (*array).total_size)
+	{
+		(*array).total_size = (*array).total_size + ARRAY_BLOCK_SIZE;
+		(*array).array = (GAParameterStruct *)realloc((*array).array, ((*array).total_size * sizeof(GAParameterStruct)));
+	}
+	init_GAParameterStruct(&(*array).array[(*array).size]);
+	(*array).array[(*array).size].prob_cross = prob_cross;
+	(*array).array[(*array).size].prob_mut = prob_mut;
+	(*array).array[(*array).size].size = size;
+	(*array).array[(*array).size].pop_size = pop_size;
+	(*array).array[(*array).size].reproduction_proportion = reproduction_proportion;
+	(*array).array[(*array).size].single_point_cross_over = single_point_cross_over;
+	(*array).array[(*array).size].election = election;
+	if(stepsize != NULL) memcpy((*array).array[(*array).size].stepsize, stepsize, 10*sizeof(double));
+
+	(*array).size++;
+}
+
+/** \fn void remove_GAParameterStruct(GAParameterStruct_array * array, int index)
+ * \brief Remove an GAParameterStruct from a dynamic GAParameterStruct array.
+ * \param array Pointer to the dynamic GAParameterStruct array.
+ * \param index The index of the GAParameterStruct to remove.
+ */
+void remove_GAParameterStruct(GAParameterStruct_array * array, int index)
+{
+	int i;
+	
+	/* Free element at index index */
+	free_GAParameterStruct(&(*array).array[index]);
+	
+	/* Copy all elements up by one */
+	if(index <= (*array).size)
+	{
+		for(i = index; i < (*array).size - 1; i++)
+		{
+			copy_GAParameterStruct(&(*array).array[i+1], &(*array).array[i]);
 		}
 		(*array).size--;
 	}

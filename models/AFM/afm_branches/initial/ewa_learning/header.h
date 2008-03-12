@@ -142,6 +142,42 @@ typedef struct EWAParameterStruct EWAParameterStruct;
  * \brief Typedef for EWAParameterStruct_array struct.
  */
 typedef struct EWAParameterStruct_array EWAParameterStruct_array;
+/** \struct GAParameterStruct
+ * \brief ˆZ=.
+ *
+ * ˆZ=.
+ */
+struct GAParameterStruct
+{
+	double prob_cross;	/**< Datatype memory variable prob_cross of type double. */
+	double prob_mut;	/**< Datatype memory variable prob_mut of type double. */
+	int size;	/**< Datatype memory variable size of type int. */
+	int pop_size;	/**< Datatype memory variable pop_size of type int. */
+	double reproduction_proportion;	/**< Datatype memory variable reproduction_proportion of type double. */
+	int single_point_cross_over;	/**< Datatype memory variable single_point_cross_over of type int. */
+	int election;	/**< Datatype memory variable election of type int. */
+	double stepsize[10];	/**< Datatype memory variable stepsize of type double. */
+};
+
+/** \struct GAParameterStruct_array
+ * \brief Dynamic array to hold GAParameterStructs
+ */
+struct GAParameterStruct_array
+{
+	int size;
+	int total_size;
+	
+	struct GAParameterStruct * array;
+};
+
+/** \var typedef GAParameterStruct GAParameterStruct
+ * \brief Typedef for GAParameterStruct struct.
+ */
+typedef struct GAParameterStruct GAParameterStruct;
+/** \var typedef GAParameterStruct_array GAParameterStruct_array
+ * \brief Typedef for GAParameterStruct_array struct.
+ */
+typedef struct GAParameterStruct_array GAParameterStruct_array;
 /** \struct PublicClassifierRule
  * \brief Datatype for the central classifier system. The system is a dynamic array of PublicClassifierRules !Subject to change!.
  *
@@ -358,7 +394,9 @@ struct xmachine_memory_FinancialAgent
 	int day_of_month_to_act;	/**< X-machine memory variable day_of_month_to_act of type int. */
 	int day;	/**< X-machine memory variable day of type int. */
 	int month;	/**< X-machine memory variable month of type int. */
+	EWAParameterStruct EWA_parameters;	/**< X-machine memory variable EWA_parameters of type EWAParameterStruct. */
 	SimplePublicClassifierSystem classifiersystem;	/**< X-machine memory variable classifiersystem of type SimplePublicClassifierSystem. */
+	GAParameterStruct GA_parameters;	/**< X-machine memory variable GA_parameters of type GAParameterStruct. */
 	double posx;	/**< X-machine memory variable posx of type double. */
 	double posy;	/**< X-machine memory variable posy of type double. */
 };
@@ -610,6 +648,13 @@ void copy_EWAParameterStruct_array(EWAParameterStruct_array * from, EWAParameter
 void add_EWAParameterStruct(EWAParameterStruct_array * array, double EWA_rho, double EWA_phi, double EWA_delta, double EWA_beta);
 void remove_EWAParameterStruct(EWAParameterStruct_array * array, int index);
 
+void init_GAParameterStruct_array(GAParameterStruct_array * array);
+void reset_GAParameterStruct_array(GAParameterStruct_array * array);
+void free_GAParameterStruct_array(GAParameterStruct_array * array);
+void copy_GAParameterStruct_array(GAParameterStruct_array * from, GAParameterStruct_array * to);
+void add_GAParameterStruct(GAParameterStruct_array * array, double prob_cross, double prob_mut, int size, int pop_size, double reproduction_proportion, int single_point_cross_over, int election, double * stepsize);
+void remove_GAParameterStruct(GAParameterStruct_array * array, int index);
+
 void init_PublicClassifierRule_array(PublicClassifierRule_array * array);
 void reset_PublicClassifierRule_array(PublicClassifierRule_array * array);
 void free_PublicClassifierRule_array(PublicClassifierRule_array * array);
@@ -706,6 +751,14 @@ void read_EWAParameterStruct_static_array(char * buffer, int * j, EWAParameterSt
 void write_EWAParameterStruct(FILE *file, EWAParameterStruct * temp_datatype);
 void write_EWAParameterStruct_static_array(FILE *file, EWAParameterStruct * temp_datatype, int size);
 void write_EWAParameterStruct_dynamic_array(FILE *file, EWAParameterStruct_array * temp_datatype);
+void init_GAParameterStruct(GAParameterStruct * temp);
+void init_GAParameterStruct_static_array(GAParameterStruct * array, int size);
+void read_GAParameterStruct(char * buffer, int * j, GAParameterStruct * temp_datatype);
+void read_GAParameterStruct_dynamic_array(char * buffer, int * j, GAParameterStruct_array * temp_datatype_array);
+void read_GAParameterStruct_static_array(char * buffer, int * j, GAParameterStruct * temp_datatype_array, int size);
+void write_GAParameterStruct(FILE *file, GAParameterStruct * temp_datatype);
+void write_GAParameterStruct_static_array(FILE *file, GAParameterStruct * temp_datatype, int size);
+void write_GAParameterStruct_dynamic_array(FILE *file, GAParameterStruct_array * temp_datatype);
 void init_PublicClassifierRule(PublicClassifierRule * temp);
 void init_PublicClassifierRule_static_array(PublicClassifierRule * array, int size);
 void read_PublicClassifierRule(char * buffer, int * j, PublicClassifierRule * temp_datatype);
@@ -763,6 +816,10 @@ void free_EWAParameterStruct(EWAParameterStruct * temp);
 void free_EWAParameterStruct_static_array(EWAParameterStruct * array, int size);
 void copy_EWAParameterStruct(EWAParameterStruct * from, EWAParameterStruct * to);
 void copy_EWAParameterStruct_static_array(EWAParameterStruct * from, EWAParameterStruct * to, int size);
+void free_GAParameterStruct(GAParameterStruct * temp);
+void free_GAParameterStruct_static_array(GAParameterStruct * array, int size);
+void copy_GAParameterStruct(GAParameterStruct * from, GAParameterStruct * to);
+void copy_GAParameterStruct_static_array(GAParameterStruct * from, GAParameterStruct * to, int size);
 void free_PublicClassifierRule(PublicClassifierRule * temp);
 void free_PublicClassifierRule_static_array(PublicClassifierRule * array, int size);
 void copy_PublicClassifierRule(PublicClassifierRule * from, PublicClassifierRule * to);
@@ -793,7 +850,7 @@ void add_Household_agent_internal(xmachine_memory_Household * current);
 void add_Household_agent(int id, EWAParameterStruct EWA_parameters, SimplePrivateClassifierSystem classifiersystem, double posx, double posy);
 xmachine_memory_FinancialAgent * init_FinancialAgent_agent();
 void add_FinancialAgent_agent_internal(xmachine_memory_FinancialAgent * current);
-void add_FinancialAgent_agent(int day_of_month_to_act, int day, int month, SimplePublicClassifierSystem classifiersystem, double posx, double posy);
+void add_FinancialAgent_agent(int day_of_month_to_act, int day, int month, EWAParameterStruct EWA_parameters, SimplePublicClassifierSystem classifiersystem, GAParameterStruct GA_parameters, double posx, double posy);
 
 void add_rule_performance_message(int rule_id, double rule_performance, double range, double x, double y, double z);
 xmachine_message_rule_performance * add_rule_performance_message_internal(void);
@@ -825,6 +882,7 @@ void set_day(int day);
 int get_day();
 void set_month(int month);
 int get_month();
+GAParameterStruct * get_GA_parameters();
 int agent_get_id(void);
 double agent_get_x(void);
 double agent_get_y(void);

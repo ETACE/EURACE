@@ -196,3 +196,61 @@ void unittest_draw_with_replacement()
 	 free(draws);
 }
 
+
+void unittest_single_point_cross_over()
+{
+    /***** Variables: Memory pre-conditions **************************/
+	
+    /***** Function evaluation ***************************************/
+	//void single_point_cross_over(int size, double * string1, double * string2, int cross_point)
+	
+	
+    /***** Variables: Memory post-conditions *************************/
+    //CU_ASSERT_DOUBLE_EQUAL(<var_name1>, <value>, 1e-3);
+    //CU_ASSERT_EQUAL(<var_name2>, <value>);
+
+	 free();
+}
+
+void unittest_two_point_cross_over()
+{
+    /***** Variables: Memory pre-conditions **************************/
+	
+    /***** Function evaluation ***************************************/
+	//void two_point_cross_over(int size, double * string1, double * string2, int cross_point, int cross_length)
+	
+	
+    /***** Variables: Memory post-conditions *************************/
+    //CU_ASSERT_DOUBLE_EQUAL(<var_name1>, <value>, 1e-3);
+    //CU_ASSERT_EQUAL(<var_name2>, <value>);
+
+	 free();
+}
+
+void unittest_mutation()
+{    /************* At start of unit test, add one agent **************/
+    add_FinancialAgent_agent_internal(init_FinancialAgent_agent());
+    current_xmachine = *p_xmachine;
+
+    /***** Variables: Memory pre-conditions **************************/
+	int j;
+	double string[4] = {1.0, 2.0, 3.0, 4.0};
+	EWA_PARAMETERS.EWA_beta = 1.0;
+	GA_PARAMETERS.stepsize[0]=0.1;
+	GA_PARAMETERS.stepsize[1]=0.1;
+	GA_PARAMETERS.stepsize[2]=0.1;
+	GA_PARAMETERS.stepsize[3]=0.1;
+	
+    /***** Function evaluation ***************************************/
+	//void mutation(int size, double * string);
+	mutation(4, string);
+	
+    printf("\n prob: [");
+    for (j=0;j<4;j++){printf("%2.2f ", string[j]);}
+    printf("]\n");
+
+    /***** Variables: Memory post-conditions *************************/
+	//CU_ASSERT_EQUAL(<var_name2>, <value>);
+
+	// free();
+}

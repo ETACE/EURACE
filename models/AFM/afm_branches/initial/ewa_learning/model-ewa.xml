@@ -20,13 +20,72 @@
 </functions>
 <!--Auxiliary structs--><!--Structures-->
 
-
 <!--***************************** EWA Datastructures *****************************-->
 <datatype>
-<!--***************************** Struct for the EWA Parameters *****************************--><name>EWAParameterStruct</name><var><type>double</type><name>EWA_rho</name></var><var><type>double</type><name>EWA_phi</name></var><var><type>double</type><name>EWA_delta</name></var><var><type>double</type><name>EWA_beta</name></var>
-	</datatype>
+<!--***************************** Struct for the EWA Parameters *****************************-->
+<name>EWAParameterStruct</name>
+<var>
+<type>double</type>
+<name>EWA_rho</name>
+</var>
+<var>
+<type>double</type>
+<name>EWA_phi</name>
+</var>
+<var>
+<type>double</type>
+<name>EWA_delta</name>
+</var>
+<var>
+<type>double</type>
+<name>EWA_beta</name>
+</var>
+</datatype>
+<!--***************************** GA Datastructure *****************************-->
+<datatype>
+<!--***************************** Struct for the GA Parameters *****************************-->
+<name>GAParameterStruct</name>
+<var>
+<type>double</type>
+<name>prob_cross</name>
+</var>
+<var>
+<type>double</type>
+<name>prob_mut</name>
+</var>
+<var>
+<type>int</type>
+<name>size</name>
+</var>
+<var>
+<!--Size of population -->
+<type>int</type>
+<name>pop_size</name>
+</var>
+<var>
+<!--Percentage of population that reproduces -->
+<type>double</type>
+<name>reproduction_proportion</name>
+</var>
+<var>
+<!--Dummy for single-point crossover operator (1: use sinle-point; 0: use 2-point cross-over)-->
+<type>int</type>
+<name>single_point_cross_over</name>
+</var>
+<var>
+<!--Dummy for election -->
+<type>int</type>
+<name>election</name>
+</var>
+<var>
+<!--Mutation stepsizes for each parameter-->
+<type>double</type>
+<name>stepsize[10]</name>
+</var>
 
-	<datatype>
+</datatype>
+
+<datatype>
 <!--***************************** Struct for the PublicClassifierRule *****************************--><name>PublicClassifierRule</name>
 <desc>Datatype for the central classifier system. The system is a dynamic array of PublicClassifierRules !Subject to change!</desc>
 	<var><!--id for the rule-->
@@ -273,7 +332,13 @@
 	<type>int</type>
 	<name>month</name>
 </var>
+<var>
+<!--EWA parameters are only used here for the determination of fitness-proportional selection probabilities: exp(beta*performance)-->
+<type>EWAParameterStruct</type><name>EWA_parameters</name>
+</var>
+
 <var><type>SimplePublicClassifierSystem</type>	<name>classifiersystem</name></var>
+<var><type>GAParameterStruct</type>	<name>GA_parameters</name></var>
 <var><type>double</type><name>posx</name></var>
 <var><type>double</type><name>posy</name></var>
 </memory>
