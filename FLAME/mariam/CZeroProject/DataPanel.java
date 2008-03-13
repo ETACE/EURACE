@@ -160,7 +160,7 @@ public class DataPanel extends JPanel implements TableModelListener{
 			
 			rowIndex=itsAgentTable.getSelectedRow();
 			colIndex=itsAgentTable.getSelectedColumn();
-			arraybracket=checking_array(tempString);
+			arraybracket=checking_array(tempString);//tempstring name of column
 			dataArrayCounter=arraybracket;
 			
 		}
@@ -191,10 +191,17 @@ public class DataPanel extends JPanel implements TableModelListener{
 				itsTextArea.setText( tempString + " will have auto generated values.");
 				}
 				//checking values
-				
+				//checking dynamic arrays
 				if ((checking_dynamicarrays(colIndex)==true)&&(tempValue!="Auto"))//dynamic arrays
 				{
 					itsAgentTable.getModel().setValueAt("Auto",rowIndex,colIndex);
+					
+				}
+				//checking arrays
+				if(arraybracket>0)
+				{
+					System.out.println("Array found");
+					JFrame arrayFrame=new ExtraFrame(arraybracket,whatisMyDataType(colIndex));
 					
 				}
 				
@@ -210,9 +217,16 @@ public class DataPanel extends JPanel implements TableModelListener{
 						}
 					}
 				}
+				
+				//random number input
+				if(tempValue.indexOf("random")>-1)
+				{
+					itsAgentTable.getModel().setValueAt(checking_random(tempValue),rowIndex,colIndex);
+				}
 			
 				
-				if((arraybracket>0)&&(tempValue.charAt(0)!='{')&&((checking_DS(colIndex)==false)))//arrays single data
+		//array commenting	
+				/*	if((arraybracket>0)&&(tempValue.charAt(0)!='{')&&((checking_DS(colIndex)==false)))//arrays single data
 				{
 					
 				
@@ -231,6 +245,7 @@ public class DataPanel extends JPanel implements TableModelListener{
 					//input for ints,doubles
 					
 				}
+				*/
 				if(tempValue.length()>2)
 				{
 					twoBrackets=tempValue.substring(0, 2);
@@ -394,18 +409,26 @@ public class DataPanel extends JPanel implements TableModelListener{
 			return false;
 	}//close: checking_DS()
 	
+	public Vector whatisMyDataType(int colIndex)
+	{
+		Vector typeVector=new Vector();
+		System.out.println("Datatype "+ varTypes[colIndex-1]);
+		typeVector.addElement((String)varTypes[colIndex-1]);
+		return typeVector;
+	}//close:whatismydatatype
+	
+	
 	public int checking_array(String temparray)
 	{
 		int is_arrayFirst= temparray.indexOf('[');
 		int is_arrayLast=temparray.indexOf(']');
 		Integer numInt;
 		String number=null;
-	//	System.out.println("isarray : "+ is_array);
 		if(is_arrayFirst>-1)
 		{
 			number=temparray.substring(is_arrayFirst+1,is_arrayLast);
 			numInt=Integer.parseInt(number);
-			System.out.println("number="+numInt);
+			System.out.println("Array number="+numInt);
 			
 			return numInt.intValue();
 		}
@@ -435,5 +458,88 @@ public class DataPanel extends JPanel implements TableModelListener{
 			return false;
 		}
 	}//close:isInteger
+
+	public String checking_random(String val)
+	{
+		//if random extract the limits
+		String temp_randomInt="randomInt";
+		String temp_randomDouble="randomDouble";
+		int limitOne, limitTwo;
+		String temp_first;
+		int numberOne, numberTwo;
+		Integer newvalue;
+		String returnString;
+		Long newOne;
+		Double newTwo;
+		
+		if(val.indexOf(temp_randomInt)>-1)//if true
+		{
+			//first number
+			limitOne=val.lastIndexOf("(")+1;
+			limitTwo=val.lastIndexOf(",");
+			temp_first=val.substring(limitOne, limitTwo);
+			System.out.println(limitOne + " " +  temp_first);
+			numberOne=Integer.parseInt(temp_first);
+			System.out.println("number="+temp_first);
+			//second number
+			limitOne=val.lastIndexOf(",")+1;
+			limitTwo=val.lastIndexOf(")");
+			temp_first=val.substring(limitOne, limitTwo);
+			System.out.println(limitOne + " " +  temp_first);
+			numberTwo=Integer.parseInt(temp_first);
+			System.out.println("number="+temp_first);
+			
+			if(numberTwo>=numberOne)
+			{
+				newOne=Math.round(numberOne + (Math.random()* (numberTwo-numberOne)));
+			//	System.out.println("random Integer= " + newOne);
+				newvalue=newOne.intValue();
+			//	System.out.println("random Integer= " + newvalue);
+			//	System.out.println("rounded = " + Math.round(newvalue));
+				returnString=newvalue.toString();
+				return returnString;
+			}
+			else
+			{
+				JOptionPane.showMessageDialog(null,"The second number should be bigger than the first!");
+			}
+		}//close int
+		
+		//double
+		if(val.indexOf(temp_randomDouble)>-1)//if true
+		{
+			//first number
+			limitOne=val.lastIndexOf("(")+1;
+			limitTwo=val.lastIndexOf(",");
+			temp_first=val.substring(limitOne, limitTwo);
+			numberOne=Integer.parseInt(temp_first);
+			System.out.println("number="+temp_first);
+			//second number
+			limitOne=val.lastIndexOf(",")+1;
+			limitTwo=val.lastIndexOf(")");
+			temp_first=val.substring(limitOne, limitTwo);
+			numberTwo=Integer.parseInt(temp_first);
+			System.out.println("number="+temp_first);
+			
+			if(numberTwo>=numberOne)
+			{
+				//System.out.println("random number");
+				newTwo=numberOne + (Math.random()* (numberTwo-numberOne));
+				System.out.println("random Double= " + newTwo);
+				//System.out.println("here");
+			//	System.out.println("rounded = " + Math.round(newvalue));
+				//System.out.println("here2");
+				returnString=newTwo.toString();
+				return returnString;
+			}
+			else
+			{
+				JOptionPane.showMessageDialog(null,"The second number should be bigger than the first!");
+			}
+		}//close double
+		return null;
+				
+	}//close:checking_Random
+	
 	
 }//close:DataPanel
