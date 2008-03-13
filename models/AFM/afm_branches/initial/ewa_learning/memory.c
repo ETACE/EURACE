@@ -200,7 +200,7 @@ void init_GAParameterStruct(GAParameterStruct * temp)
 {
 	(*temp).prob_cross = 0.0;
 	(*temp).prob_mut = 0.0;
-	(*temp).size = 0;
+	(*temp).string_size = 0;
 	(*temp).pop_size = 0;
 	(*temp).reproduction_proportion = 0.0;
 	(*temp).single_point_cross_over = 0;
@@ -232,7 +232,7 @@ void copy_GAParameterStruct(GAParameterStruct * from, GAParameterStruct * to)
 {
 	(*to).prob_cross = (*from).prob_cross;
 	(*to).prob_mut = (*from).prob_mut;
-	(*to).size = (*from).size;
+	(*to).string_size = (*from).string_size;
 	(*to).pop_size = (*from).pop_size;
 	(*to).reproduction_proportion = (*from).reproduction_proportion;
 	(*to).single_point_cross_over = (*from).single_point_cross_over;
@@ -556,6 +556,8 @@ xmachine_memory_Household * init_Household_agent()
 	init_SimplePrivateClassifierSystem(&current->classifiersystem);
 	current->posx = 0.0;
 	current->posy = 0.0;
+	current->posz = 0.0;
+	current->range = 0.0;
 	
 	return current;
 }
@@ -573,15 +575,17 @@ void add_Household_agent_internal(xmachine_memory_Household * current)
 	new_xmachine->xmachine_Household = current;
 }
 
-/** \fn void add_Household_agent(int id, EWAParameterStruct * EWA_parameters, SimplePrivateClassifierSystem * classifiersystem, double posx, double posy)
+/** \fn void add_Household_agent(int id, EWAParameterStruct * EWA_parameters, SimplePrivateClassifierSystem * classifiersystem, double posx, double posy, double posz, double range)
  * \brief Add Household X-machine to the current being used X-machine list.
  * \param id Variable for the X-machine memory.
  * \param EWA_parameters Variable for the X-machine memory.
  * \param classifiersystem Variable for the X-machine memory.
  * \param posx Variable for the X-machine memory.
  * \param posy Variable for the X-machine memory.
+ * \param posz Variable for the X-machine memory.
+ * \param range Variable for the X-machine memory.
  */
-void add_Household_agent(int id, EWAParameterStruct EWA_parameters, SimplePrivateClassifierSystem classifiersystem, double posx, double posy)
+void add_Household_agent(int id, EWAParameterStruct EWA_parameters, SimplePrivateClassifierSystem classifiersystem, double posx, double posy, double posz, double range)
 {
 	xmachine * new_xmachine = add_xmachine();
 	xmachine_memory_Household * current;
@@ -594,6 +598,8 @@ void add_Household_agent(int id, EWAParameterStruct EWA_parameters, SimplePrivat
 	copy_SimplePrivateClassifierSystem(&classifiersystem, &current->classifiersystem);
 	current->posx = posx;
 	current->posy = posy;
+	current->posz = posz;
+	current->range = range;
 }
 
 xmachine_memory_FinancialAgent * init_FinancialAgent_agent()
@@ -601,6 +607,7 @@ xmachine_memory_FinancialAgent * init_FinancialAgent_agent()
 	xmachine_memory_FinancialAgent * current = (xmachine_memory_FinancialAgent *)malloc(sizeof(xmachine_memory_FinancialAgent));
 	CHECK_POINTER(current);
 	
+	current->id = 0;
 	current->day_of_month_to_act = 0;
 	current->day = 0;
 	current->month = 0;
@@ -609,6 +616,8 @@ xmachine_memory_FinancialAgent * init_FinancialAgent_agent()
 	init_GAParameterStruct(&current->GA_parameters);
 	current->posx = 0.0;
 	current->posy = 0.0;
+	current->posz = 0.0;
+	current->range = 0.0;
 	
 	return current;
 }
@@ -627,8 +636,9 @@ void add_FinancialAgent_agent_internal(xmachine_memory_FinancialAgent * current)
 	new_xmachine->xmachine_FinancialAgent = current;
 }
 
-/** \fn void add_FinancialAgent_agent(int day_of_month_to_act, int day, int month, EWAParameterStruct * EWA_parameters, SimplePublicClassifierSystem * classifiersystem, GAParameterStruct * GA_parameters, double posx, double posy)
+/** \fn void add_FinancialAgent_agent(int id, int day_of_month_to_act, int day, int month, EWAParameterStruct * EWA_parameters, SimplePublicClassifierSystem * classifiersystem, GAParameterStruct * GA_parameters, double posx, double posy, double posz, double range)
  * \brief Add FinancialAgent X-machine to the current being used X-machine list.
+ * \param id Variable for the X-machine memory.
  * \param day_of_month_to_act Variable for the X-machine memory.
  * \param day Variable for the X-machine memory.
  * \param month Variable for the X-machine memory.
@@ -637,8 +647,10 @@ void add_FinancialAgent_agent_internal(xmachine_memory_FinancialAgent * current)
  * \param GA_parameters Variable for the X-machine memory.
  * \param posx Variable for the X-machine memory.
  * \param posy Variable for the X-machine memory.
+ * \param posz Variable for the X-machine memory.
+ * \param range Variable for the X-machine memory.
  */
-void add_FinancialAgent_agent(int day_of_month_to_act, int day, int month, EWAParameterStruct EWA_parameters, SimplePublicClassifierSystem classifiersystem, GAParameterStruct GA_parameters, double posx, double posy)
+void add_FinancialAgent_agent(int id, int day_of_month_to_act, int day, int month, EWAParameterStruct EWA_parameters, SimplePublicClassifierSystem classifiersystem, GAParameterStruct GA_parameters, double posx, double posy, double posz, double range)
 {
 	xmachine * new_xmachine = add_xmachine();
 	xmachine_memory_FinancialAgent * current;
@@ -646,6 +658,7 @@ void add_FinancialAgent_agent(int day_of_month_to_act, int day, int month, EWAPa
 	init_FinancialAgent_agent(current);
 	new_xmachine->xmachine_FinancialAgent = current;
 	
+	current->id = id;
 	current->day_of_month_to_act = day_of_month_to_act;
 	current->day = day;
 	current->month = month;
@@ -654,6 +667,8 @@ void add_FinancialAgent_agent(int day_of_month_to_act, int day, int month, EWAPa
 	copy_GAParameterStruct(&GA_parameters, &current->GA_parameters);
 	current->posx = posx;
 	current->posy = posy;
+	current->posz = posz;
+	current->range = range;
 }
 
 /** \fn void free_agent()
@@ -731,6 +746,7 @@ void freexmachines()
 void set_id(int id)
 {
 	if(current_xmachine->xmachine_Household) (*current_xmachine->xmachine_Household).id = id;
+	if(current_xmachine->xmachine_FinancialAgent) (*current_xmachine->xmachine_FinancialAgent).id = id;
 }
 
 /** \fn int get_id()
@@ -740,6 +756,7 @@ void set_id(int id)
 int get_id()
 {
 	if(current_xmachine->xmachine_Household) return (*current_xmachine->xmachine_Household).id;
+	if(current_xmachine->xmachine_FinancialAgent) return (*current_xmachine->xmachine_FinancialAgent).id;
 
     // suppress compiler warning by returning dummy value /
     // this statement should rightfully NEVER be reached /
@@ -816,6 +833,54 @@ double get_posy()
 {
 	if(current_xmachine->xmachine_Household) return (*current_xmachine->xmachine_Household).posy;
 	if(current_xmachine->xmachine_FinancialAgent) return (*current_xmachine->xmachine_FinancialAgent).posy;
+
+    // suppress compiler warning by returning dummy value /
+    // this statement should rightfully NEVER be reached /
+    return (double)0;
+}
+
+/** \fn void set_posz(double posz) 
+ * \brief Set posz memory variable for current X-machine.
+ * \param posz New value for variable.
+ */
+void set_posz(double posz)
+{
+	if(current_xmachine->xmachine_Household) (*current_xmachine->xmachine_Household).posz = posz;
+	if(current_xmachine->xmachine_FinancialAgent) (*current_xmachine->xmachine_FinancialAgent).posz = posz;
+}
+
+/** \fn double get_posz()
+ * \brief Get posz memory variable from current X-machine.
+ * \return Value for variable.
+ */
+double get_posz()
+{
+	if(current_xmachine->xmachine_Household) return (*current_xmachine->xmachine_Household).posz;
+	if(current_xmachine->xmachine_FinancialAgent) return (*current_xmachine->xmachine_FinancialAgent).posz;
+
+    // suppress compiler warning by returning dummy value /
+    // this statement should rightfully NEVER be reached /
+    return (double)0;
+}
+
+/** \fn void set_range(double range) 
+ * \brief Set range memory variable for current X-machine.
+ * \param range New value for variable.
+ */
+void set_range(double range)
+{
+	if(current_xmachine->xmachine_Household) (*current_xmachine->xmachine_Household).range = range;
+	if(current_xmachine->xmachine_FinancialAgent) (*current_xmachine->xmachine_FinancialAgent).range = range;
+}
+
+/** \fn double get_range()
+ * \brief Get range memory variable from current X-machine.
+ * \return Value for variable.
+ */
+double get_range()
+{
+	if(current_xmachine->xmachine_Household) return (*current_xmachine->xmachine_Household).range;
+	if(current_xmachine->xmachine_FinancialAgent) return (*current_xmachine->xmachine_FinancialAgent).range;
 
     // suppress compiler warning by returning dummy value /
     // this statement should rightfully NEVER be reached /
@@ -909,8 +974,8 @@ GAParameterStruct * get_GA_parameters()
 double agent_get_range()
 {
     double value = 0.0;
-    if (current_xmachine->xmachine_Household) value = current_xmachine->xmachine_Household->;
-    if (current_xmachine->xmachine_FinancialAgent) value = current_xmachine->xmachine_FinancialAgent->;
+    if (current_xmachine->xmachine_Household) value = current_xmachine->xmachine_Household->range;
+    if (current_xmachine->xmachine_FinancialAgent) value = current_xmachine->xmachine_FinancialAgent->range;
 
     return value;
 }
@@ -923,7 +988,7 @@ int agent_get_id()
 {
     int value = 0;
     if (current_xmachine->xmachine_Household) value = current_xmachine->xmachine_Household->id;
-    if (current_xmachine->xmachine_FinancialAgent) value = current_xmachine->xmachine_FinancialAgent->;
+    if (current_xmachine->xmachine_FinancialAgent) value = current_xmachine->xmachine_FinancialAgent->id;
 
     return value;
 }
@@ -959,6 +1024,8 @@ double agent_get_y()
 double agent_get_z()
 {
     double value = 0.0;
+    if (current_xmachine->xmachine_Household) value = current_xmachine->xmachine_Household->posz; 
+    if (current_xmachine->xmachine_FinancialAgent) value = current_xmachine->xmachine_FinancialAgent->posz; 
 
     return value;
 }
@@ -1167,13 +1234,13 @@ void propagate_agents()
 		{
 			x_xmachine = current_xmachine->xmachine_Household->posx;
 			y_xmachine = current_xmachine->xmachine_Household->posy;
-			z_xmachine = 0.0;
+			z_xmachine = current_xmachine->xmachine_Household->posz;
 		}
 		else if(current_xmachine->xmachine_FinancialAgent != NULL)
 		{
 			x_xmachine = current_xmachine->xmachine_FinancialAgent->posx;
 			y_xmachine = current_xmachine->xmachine_FinancialAgent->posy;
-			z_xmachine = 0.0;
+			z_xmachine = current_xmachine->xmachine_FinancialAgent->posz;
 		}
 		
 		if(x_xmachine < current_node->partition_data[0] ||
@@ -1895,16 +1962,16 @@ void copy_GAParameterStruct_array(GAParameterStruct_array * from, GAParameterStr
 	
 	for(i = 0; i < (*from).size; i++)
 	{
-		add_GAParameterStruct(to, (*from).array[i].prob_cross, (*from).array[i].prob_mut, (*from).array[i].size, (*from).array[i].pop_size, (*from).array[i].reproduction_proportion, (*from).array[i].single_point_cross_over, (*from).array[i].election, (*from).array[i].stepsize);
+		add_GAParameterStruct(to, (*from).array[i].prob_cross, (*from).array[i].prob_mut, (*from).array[i].string_size, (*from).array[i].pop_size, (*from).array[i].reproduction_proportion, (*from).array[i].single_point_cross_over, (*from).array[i].election, (*from).array[i].stepsize);
 	}
 }
 
-/** \fn void add_GAParameterStruct(GAParameterStruct_array * array, double prob_cross, double prob_mut, int size, int pop_size, double reproduction_proportion, int single_point_cross_over, int election, double stepsize)
+/** \fn void add_GAParameterStruct(GAParameterStruct_array * array, double prob_cross, double prob_mut, int string_size, int pop_size, double reproduction_proportion, int single_point_cross_over, int election, double stepsize)
 * \brief Add an GAParameterStruct to the dynamic GAParameterStruct array.
 * \param array Pointer to the dynamic GAParameterStruct array.
 * \param new_int The GAParameterStruct to add
 */
-void add_GAParameterStruct(GAParameterStruct_array * array, double prob_cross, double prob_mut, int size, int pop_size, double reproduction_proportion, int single_point_cross_over, int election, double * stepsize)
+void add_GAParameterStruct(GAParameterStruct_array * array, double prob_cross, double prob_mut, int string_size, int pop_size, double reproduction_proportion, int single_point_cross_over, int election, double * stepsize)
 {
 	if((*array).size == (*array).total_size)
 	{
@@ -1914,7 +1981,7 @@ void add_GAParameterStruct(GAParameterStruct_array * array, double prob_cross, d
 	init_GAParameterStruct(&(*array).array[(*array).size]);
 	(*array).array[(*array).size].prob_cross = prob_cross;
 	(*array).array[(*array).size].prob_mut = prob_mut;
-	(*array).array[(*array).size].size = size;
+	(*array).array[(*array).size].string_size = string_size;
 	(*array).array[(*array).size].pop_size = pop_size;
 	(*array).array[(*array).size].reproduction_proportion = reproduction_proportion;
 	(*array).array[(*array).size].single_point_cross_over = single_point_cross_over;

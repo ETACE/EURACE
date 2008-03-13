@@ -18,3 +18,9 @@
 /** \def POSY
  * \brief Direct access to posy of Household agent memory variable. */
 #define POSY current_xmachine->xmachine_Household->posy
+/** \def POSZ
+ * \brief Direct access to posz of Household agent memory variable. */
+#define POSZ current_xmachine->xmachine_Household->posz
+/** \def RANGE
+ * \brief Direct access to range of Household agent memory variable. */
+#define RANGE current_xmachine->xmachine_Household->range

@@ -384,10 +384,11 @@ void mutation(int size, double * string, double * stepsize, double prob_mut)
 		// apply mutation to the bit of string 1
 		if (random_unif() > prob_mut)
 		{	
-			//Set units to mutate
+			//Set units to mutate between -10% and +10%
 			delta = random_unif_interval(-10.0, 10.0);
-			//mutate the value at position k
-			string[k] = string[k] + delta*stepsize[k];
+			
+			//mutate the value at position k by a random percentage between -10% and +10% of the previous value
+			string[k] = delta*stepsize[k]*string[k];
 		}
 	}    
 }
