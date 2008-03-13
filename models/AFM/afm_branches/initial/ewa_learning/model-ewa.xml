@@ -55,7 +55,7 @@
 </var>
 <var>
 <type>int</type>
-<name>size</name>
+<name>string_size</name>
 </var>
 <var>
 <!--Size of population -->
@@ -250,6 +250,8 @@
 	<var><type>SimplePrivateClassifierSystem</type><name>classifiersystem</name></var>
 <var><type>double</type><name>posx</name></var>
 <var><type>double</type><name>posy</name></var>
+<var><type>double</type><name>posz</name></var>
+<var><type>double</type><name>range</name></var>
 </memory>
 <!----------------- Defining functions ---------------------------------------->
 <functions>
@@ -320,6 +322,7 @@
 <!----------------- Variables-------------------------------------------------->
 <!-- All variables used by FinancialAgent are declared here to allocate them in memory -->
 <memory>
+<var><type>int</type><name>id</name></var>
 <var>
 	<type>int</type>
 	<name>day_of_month_to_act</name>
@@ -341,6 +344,8 @@
 <var><type>GAParameterStruct</type>	<name>GA_parameters</name></var>
 <var><type>double</type><name>posx</name></var>
 <var><type>double</type><name>posy</name></var>
+<var><type>double</type><name>posz</name></var>
+<var><type>double</type><name>range</name></var>
 </memory>
 <!----------------- Defining functions ---------------------------------------->
 <functions>

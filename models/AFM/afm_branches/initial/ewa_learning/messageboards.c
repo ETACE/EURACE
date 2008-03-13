@@ -49,7 +49,19 @@ void process_rule_performance_message(xmachine_message_rule_performance * curren
 	   (current_node->partition_data[3] !=  SPINF && y >= (current_node->partition_data[3]-max_mess_dist)))
 	{ in_halo_region = 1; }
 	/* Check z-axis halo region (if used) */
-	
+	if(current_xmachine->xmachine_Household)
+	{
+		if(current_node->partition_data[4] != -SPINF && z <= current_node->partition_data[4]+max_mess_dist)
+		{ in_halo_region = 1; }
+		if(current_node->partition_data[5] != SPINF && z >= current_node->partition_data[5]-max_mess_dist)
+		{ in_halo_region = 1; }
+	}if(current_xmachine->xmachine_FinancialAgent)
+	{
+		if(current_node->partition_data[4] != -SPINF && z <= current_node->partition_data[4]+max_mess_dist)
+		{ in_halo_region = 1; }
+		if(current_node->partition_data[5] != SPINF && z >= current_node->partition_data[5]-max_mess_dist)
+		{ in_halo_region = 1; }
+	}
 	
 	if(in_halo_region)
 	{
@@ -112,13 +124,13 @@ xmachine_message_rule_performance * get_next_message_rule_performance_in_range(x
 	{
 		x = (double)current_xmachine->xmachine_Household->posx;
 		y = (double)current_xmachine->xmachine_Household->posy;
-		z = 0.0;
+		z = (double)current_xmachine->xmachine_Household->posz;
 	}
 	if(current_xmachine->xmachine_FinancialAgent)
 	{
 		x = (double)current_xmachine->xmachine_FinancialAgent->posx;
 		y = (double)current_xmachine->xmachine_FinancialAgent->posy;
-		z = 0.0;
+		z = (double)current_xmachine->xmachine_FinancialAgent->posz;
 	}
 	
 	while(current)
@@ -211,7 +223,19 @@ void process_new_performances_message(xmachine_message_new_performances * curren
 	   (current_node->partition_data[3] !=  SPINF && y >= (current_node->partition_data[3]-max_mess_dist)))
 	{ in_halo_region = 1; }
 	/* Check z-axis halo region (if used) */
-	
+	if(current_xmachine->xmachine_Household)
+	{
+		if(current_node->partition_data[4] != -SPINF && z <= current_node->partition_data[4]+max_mess_dist)
+		{ in_halo_region = 1; }
+		if(current_node->partition_data[5] != SPINF && z >= current_node->partition_data[5]-max_mess_dist)
+		{ in_halo_region = 1; }
+	}if(current_xmachine->xmachine_FinancialAgent)
+	{
+		if(current_node->partition_data[4] != -SPINF && z <= current_node->partition_data[4]+max_mess_dist)
+		{ in_halo_region = 1; }
+		if(current_node->partition_data[5] != SPINF && z >= current_node->partition_data[5]-max_mess_dist)
+		{ in_halo_region = 1; }
+	}
 	
 	if(in_halo_region)
 	{
@@ -274,13 +298,13 @@ xmachine_message_new_performances * get_next_message_new_performances_in_range(x
 	{
 		x = (double)current_xmachine->xmachine_Household->posx;
 		y = (double)current_xmachine->xmachine_Household->posy;
-		z = 0.0;
+		z = (double)current_xmachine->xmachine_Household->posz;
 	}
 	if(current_xmachine->xmachine_FinancialAgent)
 	{
 		x = (double)current_xmachine->xmachine_FinancialAgent->posx;
 		y = (double)current_xmachine->xmachine_FinancialAgent->posy;
-		z = 0.0;
+		z = (double)current_xmachine->xmachine_FinancialAgent->posz;
 	}
 	
 	while(current)
@@ -373,7 +397,19 @@ void process_rule_details_message(xmachine_message_rule_details * current)
 	   (current_node->partition_data[3] !=  SPINF && y >= (current_node->partition_data[3]-max_mess_dist)))
 	{ in_halo_region = 1; }
 	/* Check z-axis halo region (if used) */
-	
+	if(current_xmachine->xmachine_Household)
+	{
+		if(current_node->partition_data[4] != -SPINF && z <= current_node->partition_data[4]+max_mess_dist)
+		{ in_halo_region = 1; }
+		if(current_node->partition_data[5] != SPINF && z >= current_node->partition_data[5]-max_mess_dist)
+		{ in_halo_region = 1; }
+	}if(current_xmachine->xmachine_FinancialAgent)
+	{
+		if(current_node->partition_data[4] != -SPINF && z <= current_node->partition_data[4]+max_mess_dist)
+		{ in_halo_region = 1; }
+		if(current_node->partition_data[5] != SPINF && z >= current_node->partition_data[5]-max_mess_dist)
+		{ in_halo_region = 1; }
+	}
 	
 	if(in_halo_region)
 	{
@@ -436,13 +472,13 @@ xmachine_message_rule_details * get_next_message_rule_details_in_range(xmachine_
 	{
 		x = (double)current_xmachine->xmachine_Household->posx;
 		y = (double)current_xmachine->xmachine_Household->posy;
-		z = 0.0;
+		z = (double)current_xmachine->xmachine_Household->posz;
 	}
 	if(current_xmachine->xmachine_FinancialAgent)
 	{
 		x = (double)current_xmachine->xmachine_FinancialAgent->posx;
 		y = (double)current_xmachine->xmachine_FinancialAgent->posy;
-		z = 0.0;
+		z = (double)current_xmachine->xmachine_FinancialAgent->posz;
 	}
 	
 	while(current)

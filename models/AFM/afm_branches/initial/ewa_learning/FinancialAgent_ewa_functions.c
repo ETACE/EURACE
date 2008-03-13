@@ -81,6 +81,7 @@ int FinancialAgent_apply_GA()
 	//EWA_PARAMETERS.EWA_beta: used for the determination of fitness-proportional selection probabilities, exp(beta*performance)
 	//GA_PARAMETERS.prob_cross: cross-over probability
 	//GA_PARAMETERS.prob_mut: mutation  probability
+	//GA_PARAMETERS.string_size: length of strings
 	//GA_PARAMETERS.single_point_crossover: dummy for single_point_crossover (if 1: use single point cross-over, 0: use two point cross-over) 
 	//GA_PARAMETERS.pop_size: population size
 	//GA_PARAMETERS.reproduction_proportion: percentage of population

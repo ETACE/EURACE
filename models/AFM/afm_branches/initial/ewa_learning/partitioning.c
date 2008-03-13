@@ -326,12 +326,12 @@ void partition_data(int totalnodes, xmachine ** agent_list, double cloud_data[6]
                 current_xmemory = current_partition->agents;
 
                 /* Change agent position to centre */
-                set_(1.5);
+                set_range(1.5);
                 set_posx(x_centre);
                 set_posy(y_centre);
 
                 /* Change agent position to centre */
-                set_(1.5);
+                set_range(1.5);
                 set_posx(x_centre);
                 set_posy(y_centre);
 

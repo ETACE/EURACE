@@ -209,7 +209,7 @@ void unittest_single_point_cross_over()
     //CU_ASSERT_DOUBLE_EQUAL(<var_name1>, <value>, 1e-3);
     //CU_ASSERT_EQUAL(<var_name2>, <value>);
 
-	 free();
+	// free();
 }
 
 void unittest_two_point_cross_over()
@@ -224,7 +224,7 @@ void unittest_two_point_cross_over()
     //CU_ASSERT_DOUBLE_EQUAL(<var_name1>, <value>, 1e-3);
     //CU_ASSERT_EQUAL(<var_name2>, <value>);
 
-	 free();
+	// free();
 }
 
 void unittest_mutation()
@@ -235,11 +235,12 @@ void unittest_mutation()
     /***** Variables: Memory pre-conditions **************************/
 	int j;
 	double string[4] = {1.0, 2.0, 3.0, 4.0};
+	
 	EWA_PARAMETERS.EWA_beta = 1.0;
-	GA_PARAMETERS.stepsize[0]=0.1;
-	GA_PARAMETERS.stepsize[1]=0.1;
-	GA_PARAMETERS.stepsize[2]=0.1;
-	GA_PARAMETERS.stepsize[3]=0.1;
+	GA_PARAMETERS.stepsize[0]=0.01;
+	GA_PARAMETERS.stepsize[1]=0.01;
+	GA_PARAMETERS.stepsize[2]=0.01;
+	GA_PARAMETERS.stepsize[3]=0.01;
 	
     /***** Function evaluation ***************************************/
 	//void mutation(int size, double * string);

@@ -329,7 +329,7 @@ void read_GAParameterStruct(char * buffer, int * j, GAParameterStruct * temp_dat
 	arraydata[array_k] = 0;
 	(*temp_datatype).prob_mut = atof(arraydata);
 	(*j)++;
-	(*temp_datatype).size = 0;
+	(*temp_datatype).string_size = 0;
 	array_k = 0;
 	while(buffer[*j] != ',')
 	{
@@ -338,7 +338,7 @@ void read_GAParameterStruct(char * buffer, int * j, GAParameterStruct * temp_dat
 		(*j)++;
 	}
 	arraydata[array_k] = 0;
-	(*temp_datatype).size = atoi(arraydata);
+	(*temp_datatype).string_size = atoi(arraydata);
 	(*j)++;
 	(*temp_datatype).pop_size = 0;
 	array_k = 0;
@@ -1022,6 +1022,8 @@ void readinitialstates(char * filename, int * itno, xmachine ** agent_list, doub
 	int in_classifiersystem;
 	int in_posx;
 	int in_posy;
+	int in_posz;
+	int in_range;
 	int in_day_of_month_to_act;
 	int in_day;
 	int in_month;
@@ -1034,6 +1036,8 @@ void readinitialstates(char * filename, int * itno, xmachine ** agent_list, doub
 //	SimplePrivateClassifierSystem * classifiersystem;
 //	double posx;
 //	double posy;
+//	double posz;
+//	double range;
 //	int day_of_month_to_act;
 //	int day;
 //	int month;
@@ -1069,6 +1073,8 @@ void readinitialstates(char * filename, int * itno, xmachine ** agent_list, doub
 	in_classifiersystem = 0;
 	in_posx = 0;
 	in_posy = 0;
+	in_posz = 0;
+	in_range = 0;
 	in_day_of_month_to_act = 0;
 	in_day = 0;
 	in_month = 0;
@@ -1081,6 +1087,8 @@ void readinitialstates(char * filename, int * itno, xmachine ** agent_list, doub
 //	classifiersystem = init_SimplePrivateClassifierSystem();
 //	posx = 0.0;
 //	posy = 0.0;
+//	posz = 0.0;
+//	range = 0.0;
 //	day_of_month_to_act = 0;
 //	day = 0;
 //	month = 0;
@@ -1159,13 +1167,13 @@ in_FinancialAgent_agent = 0;
 				{
 					posx = current_Household_agent->posx;
 					posy = current_Household_agent->posy;
-					posz = 0.0;
+					posz = current_Household_agent->posz;
 					
 					/* If flag is zero just read the data. We'll partition later.
 					 * If flag is not zero we aleady have partition data so can read and distribute to the current node.*/
 					if( flag == 0 )
 					{
-						//add_Household_agent(id, EWA_parameters, classifiersystem, posx, posy);
+						//add_Household_agent(id, EWA_parameters, classifiersystem, posx, posy, posz, range);
 						add_Household_agent_internal(current_Household_agent);
 						
 						/* Update the cloud data */
@@ -1191,7 +1199,7 @@ in_FinancialAgent_agent = 0;
 							)
 							{
 								p_xmachine = &(current_node->agents);
-								//add_Household_agent(id, EWA_parameters, classifiersystem, posx, posy);
+								//add_Household_agent(id, EWA_parameters, classifiersystem, posx, posy, posz, range);
 								add_Household_agent_internal(current_Household_agent);
 							} 
 						}
@@ -1210,12 +1218,12 @@ in_FinancialAgent_agent = 0;
 								rrange=1.5;
 
 								p_xmachine = &(current_node->agents);
-								//add_Household_agent(id, EWA_parameters, classifiersystem, posx, posy);
+								//add_Household_agent(id, EWA_parameters, classifiersystem, posx, posy, posz, range);
 								add_Household_agent_internal(current_Household_agent);
 
 								current_Household_agent->posx = xcentre;
 								current_Household_agent->posy = ycentre;
-								current_Household_agent-> = rrange;
+								current_Household_agent->range = rrange;
 
 							}
 							++agent_count;
@@ -1228,13 +1236,13 @@ in_FinancialAgent_agent = 0;
 				{
 					posx = current_FinancialAgent_agent->posx;
 					posy = current_FinancialAgent_agent->posy;
-					posz = 0.0;
+					posz = current_FinancialAgent_agent->posz;
 					
 					/* If flag is zero just read the data. We'll partition later.
 					 * If flag is not zero we aleady have partition data so can read and distribute to the current node.*/
 					if( flag == 0 )
 					{
-						//add_FinancialAgent_agent(day_of_month_to_act, day, month, EWA_parameters, classifiersystem, GA_parameters, posx, posy);
+						//add_FinancialAgent_agent(id, day_of_month_to_act, day, month, EWA_parameters, classifiersystem, GA_parameters, posx, posy, posz, range);
 						add_FinancialAgent_agent_internal(current_FinancialAgent_agent);
 						
 						/* Update the cloud data */
@@ -1260,7 +1268,7 @@ in_FinancialAgent_agent = 0;
 							)
 							{
 								p_xmachine = &(current_node->agents);
-								//add_FinancialAgent_agent(day_of_month_to_act, day, month, EWA_parameters, classifiersystem, GA_parameters, posx, posy);
+								//add_FinancialAgent_agent(id, day_of_month_to_act, day, month, EWA_parameters, classifiersystem, GA_parameters, posx, posy, posz, range);
 								add_FinancialAgent_agent_internal(current_FinancialAgent_agent);
 							} 
 						}
@@ -1279,12 +1287,12 @@ in_FinancialAgent_agent = 0;
 								rrange=1.5;
 
 								p_xmachine = &(current_node->agents);
-								//add_FinancialAgent_agent(day_of_month_to_act, day, month, EWA_parameters, classifiersystem, GA_parameters, posx, posy);
+								//add_FinancialAgent_agent(id, day_of_month_to_act, day, month, EWA_parameters, classifiersystem, GA_parameters, posx, posy, posz, range);
 								add_FinancialAgent_agent_internal(current_FinancialAgent_agent);
 
 								current_FinancialAgent_agent->posx = xcentre;
 								current_FinancialAgent_agent->posy = ycentre;
-								current_FinancialAgent_agent-> = rrange;
+								current_FinancialAgent_agent->range = rrange;
 
 							}
 							++agent_count;
@@ -1305,6 +1313,8 @@ in_FinancialAgent_agent = 0;
 //				id = 0;
 //////				posx = 0.0;
 //				posy = 0.0;
+//				posz = 0.0;
+//				range = 0.0;
 //				day_of_month_to_act = 0;
 //				day = 0;
 //				month = 0;
@@ -1320,6 +1330,10 @@ in_FinancialAgent_agent = 0;
 			if(strcmp(buffer, "/posx") == 0) in_posx = 0;
 			if(strcmp(buffer, "posy") == 0) in_posy = 1;
 			if(strcmp(buffer, "/posy") == 0) in_posy = 0;
+			if(strcmp(buffer, "posz") == 0) in_posz = 1;
+			if(strcmp(buffer, "/posz") == 0) in_posz = 0;
+			if(strcmp(buffer, "range") == 0) in_range = 1;
+			if(strcmp(buffer, "/range") == 0) in_range = 0;
 			if(strcmp(buffer, "day_of_month_to_act") == 0) in_day_of_month_to_act = 1;
 			if(strcmp(buffer, "/day_of_month_to_act") == 0) in_day_of_month_to_act = 0;
 			if(strcmp(buffer, "day") == 0) in_day = 1;
@@ -1363,8 +1377,11 @@ in_FinancialAgent_agent = 0;
 				}
 				if(in_posx) current_Household_agent->posx = atof(buffer);
 				if(in_posy) current_Household_agent->posy = atof(buffer);
+				if(in_posz) current_Household_agent->posz = atof(buffer);
+				if(in_range) current_Household_agent->range = atof(buffer);
 			}else if(in_FinancialAgent_agent == 1)
 			{
+				if(in_id) current_FinancialAgent_agent->id = atoi(buffer);
 				if(in_day_of_month_to_act) current_FinancialAgent_agent->day_of_month_to_act = atoi(buffer);
 				if(in_day) current_FinancialAgent_agent->day = atoi(buffer);
 				if(in_month) current_FinancialAgent_agent->month = atoi(buffer);
@@ -1385,6 +1402,8 @@ in_FinancialAgent_agent = 0;
 				}
 				if(in_posx) current_FinancialAgent_agent->posx = atof(buffer);
 				if(in_posy) current_FinancialAgent_agent->posy = atof(buffer);
+				if(in_posz) current_FinancialAgent_agent->posz = atof(buffer);
+				if(in_range) current_FinancialAgent_agent->range = atof(buffer);
 			}
 			
 			/* Reset buffer */
@@ -1424,7 +1443,7 @@ in_FinancialAgent_agent = 0;
 	/* Free temp data structures */
 ////	free_EWAParameterStruct_datatype(EWA_parameters);
 //	free_SimplePrivateClassifierSystem_datatype(classifiersystem);
-////////////	free_GAParameterStruct_datatype(GA_parameters);
+////////////////	free_GAParameterStruct_datatype(GA_parameters);
 
 }
 
@@ -1679,7 +1698,7 @@ void write_GAParameterStruct(FILE *file, GAParameterStruct * temp_datatype)
 	fputs(data, file);
 	fputs(", ", file);	sprintf(data, "%f", (*temp_datatype).prob_mut);
 	fputs(data, file);
-	fputs(", ", file);	sprintf(data, "%i", (*temp_datatype).size);
+	fputs(", ", file);	sprintf(data, "%i", (*temp_datatype).string_size);
 	fputs(data, file);
 	fputs(", ", file);	sprintf(data, "%i", (*temp_datatype).pop_size);
 	fputs(data, file);
@@ -2055,11 +2074,23 @@ void saveiterationdata(int iteration_number)
 			sprintf(data, "%f", current_Household->posy);
 			fputs(data, file);
 			fputs("</posy>\n", file);
+			fputs("<posz>", file);
+			sprintf(data, "%f", current_Household->posz);
+			fputs(data, file);
+			fputs("</posz>\n", file);
+			fputs("<range>", file);
+			sprintf(data, "%f", current_Household->range);
+			fputs(data, file);
+			fputs("</range>\n", file);
 		}
 		else if(current_xmachine->xmachine_FinancialAgent != NULL)
 		{
 			current_FinancialAgent = current_xmachine->xmachine_FinancialAgent;
 			fputs("<name>FinancialAgent</name>\n", file);
+			fputs("<id>", file);
+			sprintf(data, "%i", current_FinancialAgent->id);
+			fputs(data, file);
+			fputs("</id>\n", file);
 			fputs("<day_of_month_to_act>", file);
 			sprintf(data, "%i", current_FinancialAgent->day_of_month_to_act);
 			fputs(data, file);
@@ -2089,6 +2120,14 @@ void saveiterationdata(int iteration_number)
 			sprintf(data, "%f", current_FinancialAgent->posy);
 			fputs(data, file);
 			fputs("</posy>\n", file);
+			fputs("<posz>", file);
+			sprintf(data, "%f", current_FinancialAgent->posz);
+			fputs(data, file);
+			fputs("</posz>\n", file);
+			fputs("<range>", file);
+			sprintf(data, "%f", current_FinancialAgent->range);
+			fputs(data, file);
+			fputs("</range>\n", file);
 		}
 	
 		fputs("</xagent>\n", file);

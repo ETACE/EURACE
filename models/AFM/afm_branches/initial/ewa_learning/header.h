@@ -143,15 +143,15 @@ typedef struct EWAParameterStruct EWAParameterStruct;
  */
 typedef struct EWAParameterStruct_array EWAParameterStruct_array;
 /** \struct GAParameterStruct
- * \brief ˆZ=.
+ * \brief °û=.
  *
- * ˆZ=.
+ * °û=.
  */
 struct GAParameterStruct
 {
 	double prob_cross;	/**< Datatype memory variable prob_cross of type double. */
 	double prob_mut;	/**< Datatype memory variable prob_mut of type double. */
-	int size;	/**< Datatype memory variable size of type int. */
+	int string_size;	/**< Datatype memory variable string_size of type int. */
 	int pop_size;	/**< Datatype memory variable pop_size of type int. */
 	double reproduction_proportion;	/**< Datatype memory variable reproduction_proportion of type double. */
 	int single_point_cross_over;	/**< Datatype memory variable single_point_cross_over of type int. */
@@ -384,6 +384,8 @@ struct xmachine_memory_Household
 	SimplePrivateClassifierSystem classifiersystem;	/**< X-machine memory variable classifiersystem of type SimplePrivateClassifierSystem. */
 	double posx;	/**< X-machine memory variable posx of type double. */
 	double posy;	/**< X-machine memory variable posy of type double. */
+	double posz;	/**< X-machine memory variable posz of type double. */
+	double range;	/**< X-machine memory variable range of type double. */
 };
 
 /** \struct xmachine_memory_FinancialAgent
@@ -391,6 +393,7 @@ struct xmachine_memory_Household
  */
 struct xmachine_memory_FinancialAgent
 {
+	int id;	/**< X-machine memory variable id of type int. */
 	int day_of_month_to_act;	/**< X-machine memory variable day_of_month_to_act of type int. */
 	int day;	/**< X-machine memory variable day of type int. */
 	int month;	/**< X-machine memory variable month of type int. */
@@ -399,6 +402,8 @@ struct xmachine_memory_FinancialAgent
 	GAParameterStruct GA_parameters;	/**< X-machine memory variable GA_parameters of type GAParameterStruct. */
 	double posx;	/**< X-machine memory variable posx of type double. */
 	double posy;	/**< X-machine memory variable posy of type double. */
+	double posz;	/**< X-machine memory variable posz of type double. */
+	double range;	/**< X-machine memory variable range of type double. */
 };
 
 /** \struct xmachine
@@ -652,7 +657,7 @@ void init_GAParameterStruct_array(GAParameterStruct_array * array);
 void reset_GAParameterStruct_array(GAParameterStruct_array * array);
 void free_GAParameterStruct_array(GAParameterStruct_array * array);
 void copy_GAParameterStruct_array(GAParameterStruct_array * from, GAParameterStruct_array * to);
-void add_GAParameterStruct(GAParameterStruct_array * array, double prob_cross, double prob_mut, int size, int pop_size, double reproduction_proportion, int single_point_cross_over, int election, double * stepsize);
+void add_GAParameterStruct(GAParameterStruct_array * array, double prob_cross, double prob_mut, int string_size, int pop_size, double reproduction_proportion, int single_point_cross_over, int election, double * stepsize);
 void remove_GAParameterStruct(GAParameterStruct_array * array, int index);
 
 void init_PublicClassifierRule_array(PublicClassifierRule_array * array);
@@ -847,10 +852,10 @@ void copy_ComplexPrivateClassifierSystem_static_array(ComplexPrivateClassifierSy
 
 xmachine_memory_Household * init_Household_agent();
 void add_Household_agent_internal(xmachine_memory_Household * current);
-void add_Household_agent(int id, EWAParameterStruct EWA_parameters, SimplePrivateClassifierSystem classifiersystem, double posx, double posy);
+void add_Household_agent(int id, EWAParameterStruct EWA_parameters, SimplePrivateClassifierSystem classifiersystem, double posx, double posy, double posz, double range);
 xmachine_memory_FinancialAgent * init_FinancialAgent_agent();
 void add_FinancialAgent_agent_internal(xmachine_memory_FinancialAgent * current);
-void add_FinancialAgent_agent(int day_of_month_to_act, int day, int month, EWAParameterStruct EWA_parameters, SimplePublicClassifierSystem classifiersystem, GAParameterStruct GA_parameters, double posx, double posy);
+void add_FinancialAgent_agent(int id, int day_of_month_to_act, int day, int month, EWAParameterStruct EWA_parameters, SimplePublicClassifierSystem classifiersystem, GAParameterStruct GA_parameters, double posx, double posy, double posz, double range);
 
 void add_rule_performance_message(int rule_id, double rule_performance, double range, double x, double y, double z);
 xmachine_message_rule_performance * add_rule_performance_message_internal(void);
@@ -876,6 +881,10 @@ void set_posx(double posx);
 double get_posx();
 void set_posy(double posy);
 double get_posy();
+void set_posz(double posz);
+double get_posz();
+void set_range(double range);
+double get_range();
 void set_day_of_month_to_act(int day_of_month_to_act);
 int get_day_of_month_to_act();
 void set_day(int day);

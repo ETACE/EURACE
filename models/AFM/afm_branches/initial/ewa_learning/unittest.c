@@ -13,6 +13,11 @@ void unittest_draw();
 void unittest_ismember();
 void unittest_draw_without_replacement();
 void unittest_draw_with_replacement();
+
+void unittest_single_point_cross_over();
+void unittest_two_point_cross_over();
+void unittest_mutation();
+
 /*************************** end prototypes ***************************/
 
 int init_suite1(void)
