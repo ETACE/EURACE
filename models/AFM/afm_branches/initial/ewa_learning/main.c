@@ -262,30 +262,6 @@ printf("Ouput dir: %s\n", outputpath);
 		
 			if(current_xmachine->xmachine_FinancialAgent != NULL)
 			{
-				i = FinancialAgent_update_rule_details();
-			}
-			
-			/* If agent is freed */
-			if(i == 1)
-			{
-				temp_free_xmachine = current_xmachine->next;
-				free_agent();
-				current_xmachine = temp_free_xmachine;
-			}
-			else
-			{
-				current_xmachine = current_xmachine->next;
-			}
-		}
-	
-		/* Loop through x-machines */
-		current_xmachine = *p_xmachine;
-		while(current_xmachine)
-		{
-			i = 0;
-		
-			if(current_xmachine->xmachine_FinancialAgent != NULL)
-			{
 				i = FinancialAgent_send_rule_details();
 			}
 			

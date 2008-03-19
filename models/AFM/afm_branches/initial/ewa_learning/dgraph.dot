@@ -6,7 +6,6 @@ digraph dependency_graph {
 	/* Functions */
 	FinancialAgent_send_rule_details[height = 0.000000, label = "FinancialAgent_send_rule_details\n(0 lines)"]
 	FinancialAgent_reset_public_classifiersystem[height = 0.000000, label = "FinancialAgent_reset_public_classifiersystem\n(0 lines)"]
-	FinancialAgent_update_rule_details[height = 0.000000, label = "FinancialAgent_update_rule_details\n(0 lines)"]
 	FinancialAgent_apply_GA[height = 0.000000, label = "FinancialAgent_apply_GA\n(0 lines)"]
 	Every_100_periods[height = 0.000000, label = "Every_100_periods\n(0 lines)"]
 	FinancialAgent_send_all_performances[height = 0.000000, label = "FinancialAgent_send_all_performances\n(0 lines)"]
@@ -21,9 +20,8 @@ digraph dependency_graph {
 	Every_period[height = 0.000000, label = "Every_period\n(0 lines)"]
 	
 	/* Dependencies */
-	FinancialAgent_send_rule_details -> FinancialAgent_update_rule_details [ label = "<depends on internal>" ];
-	FinancialAgent_reset_public_classifiersystem -> FinancialAgent_update_rule_details [ label = "<depends on internal>" ];
-	FinancialAgent_update_rule_details -> FinancialAgent_apply_GA [ label = "<depends on internal>" ];
+	FinancialAgent_send_rule_details -> FinancialAgent_apply_GA [ label = "<depends on internal>" ];
+	FinancialAgent_reset_public_classifiersystem -> FinancialAgent_apply_GA [ label = "<depends on internal>" ];
 	FinancialAgent_apply_GA -> Every_100_periods [ label = "<depends on internal>" ];
 	FinancialAgent_send_all_performances -> FinancialAgent_read_rule_performance_and_update_classifiersystem [ label = "<depends on internal>" ];
 	FinancialAgent_read_rule_performance_and_update_classifiersystem -> Household_send_rule_performance [ label = "<depends on rule_performance>" ];

@@ -1,0 +1,1 @@
+gcc -g unittest_FA.c memory.c messageboards.c FinancialAgent_ewa_functions.c FinancialAgent_ewa_unittest.c some_new_functions.c -lm -lcunit 

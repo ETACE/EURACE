@@ -21,7 +21,7 @@
 int Household_send_rule_performance()
 { 
     //Declare and assign local vars
-    int current_rule = CLASSIFIERSYSTEM.current_rule;
+    int current_rule = PRIVATE_CLASSIFIERSYSTEM.current_rule;
     double rule_performance = 0.0;
     
     //Here we compute the rule performance: this function uses the performance_history
@@ -51,7 +51,7 @@ int Household_read_all_performances()
 	//Read the messages: copies the elements one by one	
       START_NEW_PERFORMANCES_MESSAGE_LOOP
       	 rule_index = new_performances_message->rule_id;
-         CLASSIFIERSYSTEM.ruletable[rule_index].avg_performance = new_performances_message->avg_performance;
+         PRIVATE_CLASSIFIERSYSTEM.ruletable[rule_index].avg_performance = new_performances_message->avg_performance;
       FINISH_NEW_PERFORMANCES_MESSAGE_LOOP
  
     return 0;
@@ -69,9 +69,9 @@ int Household_read_all_performances()
  */
 int Household_select_rule()
 {
-    int current_rule   = CLASSIFIERSYSTEM.current_rule;   
-    int nr_rules 	   = CLASSIFIERSYSTEM.nr_rules;
-    int experience     = CLASSIFIERSYSTEM.experience;
+    int current_rule   = PRIVATE_CLASSIFIERSYSTEM.current_rule;   
+    int nr_rules 	   = PRIVATE_CLASSIFIERSYSTEM.nr_rules;
+    int experience     = PRIVATE_CLASSIFIERSYSTEM.experience;
     int experience_old = 0.0;
     int j=0;
     int nr_selected_rule;
@@ -92,23 +92,23 @@ int Household_select_rule()
     //Updating the experience weight
     experience_old=experience;
     experience=EWA_rho*experience + 1;
-    CLASSIFIERSYSTEM.experience = experience;
+    PRIVATE_CLASSIFIERSYSTEM.experience = experience;
     
     //Updating the attractions
     for (j=0;j<nr_rules;j++)
     {
     	//Set temporary vars:
-    	attraction  = CLASSIFIERSYSTEM.ruletable[j].attraction;
-    	performance = CLASSIFIERSYSTEM.ruletable[j].avg_performance;
+    	attraction  = PRIVATE_CLASSIFIERSYSTEM.ruletable[j].attraction;
+    	performance = PRIVATE_CLASSIFIERSYSTEM.ruletable[j].avg_performance;
 
         //If rule j is the currently used rule:
         if (j==current_rule)
         {
-        	CLASSIFIERSYSTEM.ruletable[j].attraction = (EWA_phi*experience_old*attraction + performance)/experience;
+        	PRIVATE_CLASSIFIERSYSTEM.ruletable[j].attraction = (EWA_phi*experience_old*attraction + performance)/experience;
         }
         else
         {
-        	CLASSIFIERSYSTEM.ruletable[j].attraction = (EWA_phi*experience_old*attraction + EWA_delta*performance)/experience;
+        	PRIVATE_CLASSIFIERSYSTEM.ruletable[j].attraction = (EWA_phi*experience_old*attraction + EWA_delta*performance)/experience;
         }
     }
     
@@ -116,14 +116,14 @@ int Household_select_rule()
     sum_attr=0.0;
     for (j=0;j<nr_rules;j++)
     {
-    	attraction  = CLASSIFIERSYSTEM.ruletable[j].attraction;
+    	attraction  = PRIVATE_CLASSIFIERSYSTEM.ruletable[j].attraction;
         sum_attr += exp(EWA_beta * attraction);
     }
     
     p = malloc(sizeof(double)*nr_rules);
     for (j=0;j<nr_rules;j++)
     {
-    	attraction  = CLASSIFIERSYSTEM.ruletable[j].attraction;
+    	attraction  = PRIVATE_CLASSIFIERSYSTEM.ruletable[j].attraction;
         p[j] = exp(EWA_beta * attraction)/sum_attr;
     }
 
@@ -155,7 +155,7 @@ int Household_select_rule()
     }
     
     //Set the selected rule in memory (0-indexed):
-    CLASSIFIERSYSTEM.current_rule = nr_selected_rule - 1;
+    PRIVATE_CLASSIFIERSYSTEM.current_rule = nr_selected_rule - 1;
 
     //Free allocated memory
     free(p);
@@ -192,11 +192,11 @@ int Household_apply_rule()
 int Household_read_and_update_rule_details()
 {
     //Getting the size of the system:
-    //int NR_TYPES=CLASSIFIERSYSTEM.nr_types;
+    //int NR_TYPES=PRIVATE_CLASSIFIERSYSTEM.nr_types;
 
     //Dynamic array with number of rules in each type (size of subpopulations)
     //int NRRULES_PER_TYPE[NR_TYPES];
-	//NRRULES_PER_TYPE[i]=CLASSIFIERSYSTEM.ruletable[i].nr_rules_per_type;
+	//NRRULES_PER_TYPE[i]=PRIVATE_CLASSIFIERSYSTEM.ruletable[i].nr_rules_per_type;
 
     int i,rule_id=0;
    
@@ -208,7 +208,7 @@ int Household_read_and_update_rule_details()
 		for (i=0; i<NR_PARAMS; i++)
 		{
 			//Filling the fields of the rule with parameters[i]
-			CLASSIFIERSYSTEM.ruletable[rule_id].parameters[i] = rule_details_message->parameters[i];
+			PRIVATE_CLASSIFIERSYSTEM.ruletable[rule_id].parameters[i] = rule_details_message->parameters[i];
 		}
 	FINISH_RULE_DETAILS_MESSAGE_LOOP
     
@@ -223,27 +223,27 @@ int Household_reset_private_classifiersystem()
 	int i,j;
 	
     //Getting the size of the system:
-    //int NR_TYPES=CLASSIFIERSYSTEM.NR_TYPES;
+    //int NR_TYPES=PRIVATE_CLASSIFIERSYSTEM.NR_TYPES;
 
     //dynamic array with number of rules in each type (size of subpopulations)
-    //int* NRRULES_PER_TYPE=CLASSIFIERSYSTEM.NRRULES_PER_TYPE;
+    //int* NRRULES_PER_TYPE=PRIVATE_CLASSIFIERSYSTEM.NRRULES_PER_TYPE;
 
     //Total number of rules:
-    int nr_rules=CLASSIFIERSYSTEM.nr_rules;
+    int nr_rules=PRIVATE_CLASSIFIERSYSTEM.nr_rules;
 
     //Resetting and storing values to memory:
-    CLASSIFIERSYSTEM.experience=0.0;
-    CLASSIFIERSYSTEM.current_rule=0;
+    PRIVATE_CLASSIFIERSYSTEM.experience=0.0;
+    PRIVATE_CLASSIFIERSYSTEM.current_rule=0;
 
     for (i=0; i<nr_rules; i++)
     {
-    	CLASSIFIERSYSTEM.ruletable[i].my_performance=0.0;
-    	CLASSIFIERSYSTEM.ruletable[i].avg_performance=log(pow(10,-5));
-        CLASSIFIERSYSTEM.ruletable[i].attraction=log(pow(10,-5));
-        CLASSIFIERSYSTEM.ruletable[i].choiceprob=pow(10,-5);
+    	PRIVATE_CLASSIFIERSYSTEM.ruletable[i].my_performance=0.0;
+    	PRIVATE_CLASSIFIERSYSTEM.ruletable[i].avg_performance=log(pow(10,-5));
+        PRIVATE_CLASSIFIERSYSTEM.ruletable[i].attraction=log(pow(10,-5));
+        PRIVATE_CLASSIFIERSYSTEM.ruletable[i].choiceprob=pow(10,-5);
         for (j=0; j<NR_PARAMS; j++)
         {        
-        	CLASSIFIERSYSTEM.ruletable[i].parameters[j]=0.0;
+        	PRIVATE_CLASSIFIERSYSTEM.ruletable[i].parameters[j]=0.0;
         }
     }
 
@@ -274,19 +274,19 @@ int Household_initialize_ruledetailsystem()
 	int i;
 	
  	//Getting the size of the system:
-	int NR_TYPES=CLASSIFIERSYSTEM->nr_types;
+	int NR_TYPES=PRIVATE_CLASSIFIERSYSTEM->nr_types;
 
 	//dynamic array with number of rules in each type (size of subpopulations)
-	int * NRRULES_PER_TYPE=CLASSIFIERSYSTEM->nr_rules_per_type;
+	int * NRRULES_PER_TYPE=PRIVATE_CLASSIFIERSYSTEM->nr_rules_per_type;
 
 	//total number of rules:
-	int NRRULES=CLASSIFIERSYSTEM->nr_rules;
+	int NRRULES=PRIVATE_CLASSIFIERSYSTEM->nr_rules;
 	
 	//dynamic array with number of parameters in each type
 	int nr_params_per_type[NR_TYPES];
 	for (i=0; i<NRRULES; i++)
 	{	
-		nr_params_per_type[i]=CLASSIFIERSYSTEM->array[i]->nr_params_per_type;
+		nr_params_per_type[i]=PRIVATE_CLASSIFIERSYSTEM->array[i]->nr_params_per_type;
 	}
 	
 	//Local vars:
@@ -312,9 +312,9 @@ int Household_initialize_ruledetailsystem()
 	//Getting parameter settings
 	for (i=0; i<NRRULES; i++)
 	{
-		p0[i] = CLASSIFIERSYSTEM->array[i]->param_start_values;
-		dp[i] = CLASSIFIERSYSTEM->array[i]->param_increment_values;
-		p1[i] = CLASSIFIERSYSTEM->array[i]->param_end_values;
+		p0[i] = PRIVATE_CLASSIFIERSYSTEM->array[i]->param_start_values;
+		dp[i] = PRIVATE_CLASSIFIERSYSTEM->array[i]->param_increment_values;
+		p1[i] = PRIVATE_CLASSIFIERSYSTEM->array[i]->param_end_values;
 	}
 	
 	//First we set the field 'rule_type':
@@ -322,15 +322,15 @@ int Household_initialize_ruledetailsystem()
 	for (i=0;i<NR_TYPES;i++)
 	{
 		//Set nr_rules in the current type
-		jmax = CLASSIFIERSYSTEM->array[i]->nr_rules_per_type;
+		jmax = PRIVATE_CLASSIFIERSYSTEM->array[i]->nr_rules_per_type;
 		
 		//For type i, traverse the rule ids from 0+count to jmax+count
 		//such that we go through all rules of type i
 		for (j=count;j<count+jmax;j++)
 		{
 			//We are now in rule id j
-			CLASSIFIERSYSTEM->array[j]->rule_type = i;
-			CLASSIFIERSYSTEM->array[j]->nr_params = CLASSIFIERSYSTEM->array[i]->nr_params_per_type;
+			PRIVATE_CLASSIFIERSYSTEM->array[j]->rule_type = i;
+			PRIVATE_CLASSIFIERSYSTEM->array[j]->nr_params = PRIVATE_CLASSIFIERSYSTEM->array[i]->nr_params_per_type;
 			
 		}
 		//Set counter to current rule id
@@ -363,8 +363,8 @@ int Household_initialize_ruledetailsystem()
 
 		//We set the field 'rule_execution':
 		//First possibility: we test which function name the rule has
-		j=CLASSIFIERSYSTEM->array[i]->rule_type;
-		CLASSIFIERSYSTEM->array[i]->rule_execution[i]=sprintf('my_function_names[%d]',j);
+		j=PRIVATE_CLASSIFIERSYSTEM->array[i]->rule_type;
+		PRIVATE_CLASSIFIERSYSTEM->array[i]->rule_execution[i]=sprintf('my_function_names[%d]',j);
 	}
 
 	//ALTERNATIVE CODE for rule_execution
@@ -374,14 +374,14 @@ int Household_initialize_ruledetailsystem()
 	for (i=0;i<NR_TYPES;i++)
 	{
 		//Set nr_rules in the current type
-		jmax = CLASSIFIERSYSTEM->array[i]->nr_rules_per_type;
+		jmax = PRIVATE_CLASSIFIERSYSTEM->array[i]->nr_rules_per_type;
 		
 		//For type i, traverse the rule ids from 0+count to jmax+count
 		for (j=count;j<count+jmax;j++)
 		{
 			//We are now in rule id j
 			//Set the function call for rule j, which is just my_function_names[i]
-			CLASSIFIERSYSTEM->array[j]->rule_execution=sprintf('my_function_names[%d]', i);
+			PRIVATE_CLASSIFIERSYSTEM->array[j]->rule_execution=sprintf('my_function_names[%d]', i);
 		}
 		//Set counter to current rule id
 		count=count+jmax;
@@ -390,3 +390,11 @@ int Household_initialize_ruledetailsystem()
     return 0;
 }
 */
+
+/* \fn int Every_period()
+ * \brief Dummy function for conditional function dependency.
+ */
+int Every_period()
+{
+    return 0;
+}

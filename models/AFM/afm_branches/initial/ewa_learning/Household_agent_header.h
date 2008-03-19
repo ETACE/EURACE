@@ -9,9 +9,9 @@
 /** \def EWA_PARAMETERS
  * \brief Direct access to EWA_parameters of Household agent memory variable. */
 #define EWA_PARAMETERS current_xmachine->xmachine_Household->EWA_parameters
-/** \def CLASSIFIERSYSTEM
- * \brief Direct access to classifiersystem of Household agent memory variable. */
-#define CLASSIFIERSYSTEM current_xmachine->xmachine_Household->classifiersystem
+/** \def PRIVATE_CLASSIFIERSYSTEM
+ * \brief Direct access to private_classifiersystem of Household agent memory variable. */
+#define PRIVATE_CLASSIFIERSYSTEM current_xmachine->xmachine_Household->private_classifiersystem
 /** \def POSX
  * \brief Direct access to posx of Household agent memory variable. */
 #define POSX current_xmachine->xmachine_Household->posx
