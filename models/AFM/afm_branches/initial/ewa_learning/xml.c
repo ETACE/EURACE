@@ -1019,7 +1019,7 @@ void readinitialstates(char * filename, int * itno, xmachine ** agent_list, doub
 
 	int in_id;
 	int in_EWA_parameters;
-	int in_classifiersystem;
+	int in_private_classifiersystem;
 	int in_posx;
 	int in_posy;
 	int in_posz;
@@ -1027,13 +1027,14 @@ void readinitialstates(char * filename, int * itno, xmachine ** agent_list, doub
 	int in_day_of_month_to_act;
 	int in_day;
 	int in_month;
+	int in_public_classifiersystem;
 	int in_GA_parameters;
 
 
 	/* Variables for initial state data */
 //	int id;
 //	EWAParameterStruct * EWA_parameters;
-//	SimplePrivateClassifierSystem * classifiersystem;
+//	SimplePrivateClassifierSystem * private_classifiersystem;
 //	double posx;
 //	double posy;
 //	double posz;
@@ -1041,6 +1042,7 @@ void readinitialstates(char * filename, int * itno, xmachine ** agent_list, doub
 //	int day_of_month_to_act;
 //	int day;
 //	int month;
+//	SimplePublicClassifierSystem * public_classifiersystem;
 //	GAParameterStruct * GA_parameters;
 
 
@@ -1070,7 +1072,7 @@ void readinitialstates(char * filename, int * itno, xmachine ** agent_list, doub
 	in_FinancialAgent_agent = 0;
 	in_id = 0;
 	in_EWA_parameters = 0;
-	in_classifiersystem = 0;
+	in_private_classifiersystem = 0;
 	in_posx = 0;
 	in_posy = 0;
 	in_posz = 0;
@@ -1078,13 +1080,14 @@ void readinitialstates(char * filename, int * itno, xmachine ** agent_list, doub
 	in_day_of_month_to_act = 0;
 	in_day = 0;
 	in_month = 0;
+	in_public_classifiersystem = 0;
 	in_GA_parameters = 0;
 
 	/* Default variables for memory */
 	/* Not implemented static arrays */
 //	id = 0;
 //	EWA_parameters = init_EWAParameterStruct();
-//	classifiersystem = init_SimplePrivateClassifierSystem();
+//	private_classifiersystem = init_SimplePrivateClassifierSystem();
 //	posx = 0.0;
 //	posy = 0.0;
 //	posz = 0.0;
@@ -1092,6 +1095,7 @@ void readinitialstates(char * filename, int * itno, xmachine ** agent_list, doub
 //	day_of_month_to_act = 0;
 //	day = 0;
 //	month = 0;
+//	public_classifiersystem = init_SimplePublicClassifierSystem();
 //	GA_parameters = init_GAParameterStruct();
 
 
@@ -1173,7 +1177,7 @@ in_FinancialAgent_agent = 0;
 					 * If flag is not zero we aleady have partition data so can read and distribute to the current node.*/
 					if( flag == 0 )
 					{
-						//add_Household_agent(id, EWA_parameters, classifiersystem, posx, posy, posz, range);
+						//add_Household_agent(id, EWA_parameters, private_classifiersystem, posx, posy, posz, range);
 						add_Household_agent_internal(current_Household_agent);
 						
 						/* Update the cloud data */
@@ -1199,7 +1203,7 @@ in_FinancialAgent_agent = 0;
 							)
 							{
 								p_xmachine = &(current_node->agents);
-								//add_Household_agent(id, EWA_parameters, classifiersystem, posx, posy, posz, range);
+								//add_Household_agent(id, EWA_parameters, private_classifiersystem, posx, posy, posz, range);
 								add_Household_agent_internal(current_Household_agent);
 							} 
 						}
@@ -1218,7 +1222,7 @@ in_FinancialAgent_agent = 0;
 								rrange=1.5;
 
 								p_xmachine = &(current_node->agents);
-								//add_Household_agent(id, EWA_parameters, classifiersystem, posx, posy, posz, range);
+								//add_Household_agent(id, EWA_parameters, private_classifiersystem, posx, posy, posz, range);
 								add_Household_agent_internal(current_Household_agent);
 
 								current_Household_agent->posx = xcentre;
@@ -1242,7 +1246,7 @@ in_FinancialAgent_agent = 0;
 					 * If flag is not zero we aleady have partition data so can read and distribute to the current node.*/
 					if( flag == 0 )
 					{
-						//add_FinancialAgent_agent(id, day_of_month_to_act, day, month, EWA_parameters, classifiersystem, GA_parameters, posx, posy, posz, range);
+						//add_FinancialAgent_agent(id, day_of_month_to_act, day, month, EWA_parameters, public_classifiersystem, GA_parameters, posx, posy, posz, range);
 						add_FinancialAgent_agent_internal(current_FinancialAgent_agent);
 						
 						/* Update the cloud data */
@@ -1268,7 +1272,7 @@ in_FinancialAgent_agent = 0;
 							)
 							{
 								p_xmachine = &(current_node->agents);
-								//add_FinancialAgent_agent(id, day_of_month_to_act, day, month, EWA_parameters, classifiersystem, GA_parameters, posx, posy, posz, range);
+								//add_FinancialAgent_agent(id, day_of_month_to_act, day, month, EWA_parameters, public_classifiersystem, GA_parameters, posx, posy, posz, range);
 								add_FinancialAgent_agent_internal(current_FinancialAgent_agent);
 							} 
 						}
@@ -1287,7 +1291,7 @@ in_FinancialAgent_agent = 0;
 								rrange=1.5;
 
 								p_xmachine = &(current_node->agents);
-								//add_FinancialAgent_agent(id, day_of_month_to_act, day, month, EWA_parameters, classifiersystem, GA_parameters, posx, posy, posz, range);
+								//add_FinancialAgent_agent(id, day_of_month_to_act, day, month, EWA_parameters, public_classifiersystem, GA_parameters, posx, posy, posz, range);
 								add_FinancialAgent_agent_internal(current_FinancialAgent_agent);
 
 								current_FinancialAgent_agent->posx = xcentre;
@@ -1318,14 +1322,14 @@ in_FinancialAgent_agent = 0;
 //				day_of_month_to_act = 0;
 //				day = 0;
 //				month = 0;
-//
+////
 	}
 			if(strcmp(buffer, "id") == 0) in_id = 1;
 			if(strcmp(buffer, "/id") == 0) in_id = 0;
 			if(strcmp(buffer, "EWA_parameters") == 0) in_EWA_parameters = 1;
 			if(strcmp(buffer, "/EWA_parameters") == 0) in_EWA_parameters = 0;
-			if(strcmp(buffer, "classifiersystem") == 0) in_classifiersystem = 1;
-			if(strcmp(buffer, "/classifiersystem") == 0) in_classifiersystem = 0;
+			if(strcmp(buffer, "private_classifiersystem") == 0) in_private_classifiersystem = 1;
+			if(strcmp(buffer, "/private_classifiersystem") == 0) in_private_classifiersystem = 0;
 			if(strcmp(buffer, "posx") == 0) in_posx = 1;
 			if(strcmp(buffer, "/posx") == 0) in_posx = 0;
 			if(strcmp(buffer, "posy") == 0) in_posy = 1;
@@ -1340,6 +1344,8 @@ in_FinancialAgent_agent = 0;
 			if(strcmp(buffer, "/day") == 0) in_day = 0;
 			if(strcmp(buffer, "month") == 0) in_month = 1;
 			if(strcmp(buffer, "/month") == 0) in_month = 0;
+			if(strcmp(buffer, "public_classifiersystem") == 0) in_public_classifiersystem = 1;
+			if(strcmp(buffer, "/public_classifiersystem") == 0) in_public_classifiersystem = 0;
 			if(strcmp(buffer, "GA_parameters") == 0) in_GA_parameters = 1;
 			if(strcmp(buffer, "/GA_parameters") == 0) in_GA_parameters = 0;
 
@@ -1370,10 +1376,10 @@ in_FinancialAgent_agent = 0;
 					j = 0;
 					read_EWAParameterStruct(buffer, &j, &current_Household_agent->EWA_parameters);
 				}
-				if(in_classifiersystem)
+				if(in_private_classifiersystem)
 				{
 					j = 0;
-					read_SimplePrivateClassifierSystem(buffer, &j, &current_Household_agent->classifiersystem);
+					read_SimplePrivateClassifierSystem(buffer, &j, &current_Household_agent->private_classifiersystem);
 				}
 				if(in_posx) current_Household_agent->posx = atof(buffer);
 				if(in_posy) current_Household_agent->posy = atof(buffer);
@@ -1390,10 +1396,10 @@ in_FinancialAgent_agent = 0;
 					j = 0;
 					read_EWAParameterStruct(buffer, &j, &current_FinancialAgent_agent->EWA_parameters);
 				}
-				if(in_classifiersystem)
+				if(in_public_classifiersystem)
 				{
 					j = 0;
-					read_SimplePublicClassifierSystem(buffer, &j, &current_FinancialAgent_agent->classifiersystem);
+					read_SimplePublicClassifierSystem(buffer, &j, &current_FinancialAgent_agent->public_classifiersystem);
 				}
 				if(in_GA_parameters)
 				{
@@ -1442,8 +1448,9 @@ in_FinancialAgent_agent = 0;
 	fclose(file);
 	/* Free temp data structures */
 ////	free_EWAParameterStruct_datatype(EWA_parameters);
-//	free_SimplePrivateClassifierSystem_datatype(classifiersystem);
-////////////////	free_GAParameterStruct_datatype(GA_parameters);
+//	free_SimplePrivateClassifierSystem_datatype(private_classifiersystem);
+////////////////	free_SimplePublicClassifierSystem_datatype(public_classifiersystem);
+//	free_GAParameterStruct_datatype(GA_parameters);
 
 }
 
@@ -2063,9 +2070,9 @@ void saveiterationdata(int iteration_number)
 			fputs("<EWA_parameters>", file);
 			write_EWAParameterStruct(file, &current_Household->EWA_parameters);
 			fputs("</EWA_parameters>\n", file);
-			fputs("<classifiersystem>", file);
-			write_SimplePrivateClassifierSystem(file, &current_Household->classifiersystem);
-			fputs("</classifiersystem>\n", file);
+			fputs("<private_classifiersystem>", file);
+			write_SimplePrivateClassifierSystem(file, &current_Household->private_classifiersystem);
+			fputs("</private_classifiersystem>\n", file);
 			fputs("<posx>", file);
 			sprintf(data, "%f", current_Household->posx);
 			fputs(data, file);
@@ -2106,9 +2113,9 @@ void saveiterationdata(int iteration_number)
 			fputs("<EWA_parameters>", file);
 			write_EWAParameterStruct(file, &current_FinancialAgent->EWA_parameters);
 			fputs("</EWA_parameters>\n", file);
-			fputs("<classifiersystem>", file);
-			write_SimplePublicClassifierSystem(file, &current_FinancialAgent->classifiersystem);
-			fputs("</classifiersystem>\n", file);
+			fputs("<public_classifiersystem>", file);
+			write_SimplePublicClassifierSystem(file, &current_FinancialAgent->public_classifiersystem);
+			fputs("</public_classifiersystem>\n", file);
 			fputs("<GA_parameters>", file);
 			write_GAParameterStruct(file, &current_FinancialAgent->GA_parameters);
 			fputs("</GA_parameters>\n", file);

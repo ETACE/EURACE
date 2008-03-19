@@ -15,11 +15,11 @@ void unittest_FinancialAgent_daily_reset_public_classifiersystem()
      current_xmachine = *p_xmachine;
 
      /***** Variables: Memory pre-conditions **************************/
-      CLASSIFIERSYSTEM.nr_rules=1;
-      CLASSIFIERSYSTEM.ruletable[0].id=1;
-      CLASSIFIERSYSTEM.ruletable[0].counter=100;
-      CLASSIFIERSYSTEM.ruletable[0].performance=10.0;
-      CLASSIFIERSYSTEM.ruletable[0].avg_performance=20.0;
+      PUBLIC_CLASSIFIERSYSTEM.nr_rules=1;
+      PUBLIC_CLASSIFIERSYSTEM.ruletable[0].id=1;
+      PUBLIC_CLASSIFIERSYSTEM.ruletable[0].counter=100;
+      PUBLIC_CLASSIFIERSYSTEM.ruletable[0].performance=10.0;
+      PUBLIC_CLASSIFIERSYSTEM.ruletable[0].avg_performance=20.0;
 
       /***** Messages: pre-conditions **********************************/
 
@@ -27,9 +27,9 @@ void unittest_FinancialAgent_daily_reset_public_classifiersystem()
      FinancialAgent_daily_reset_public_classifiersystem();
      
      /***** Variables: Memory post-conditions *************************/
-     CU_ASSERT_EQUAL(CLASSIFIERSYSTEM.ruletable[0].counter, 0);
-     CU_ASSERT_DOUBLE_EQUAL(CLASSIFIERSYSTEM.ruletable[0].performance, log(pow(10,-5)), 1e-3);
-     CU_ASSERT_DOUBLE_EQUAL(CLASSIFIERSYSTEM.ruletable[0].avg_performance, log(pow(10,-5)), 1e-3);
+     CU_ASSERT_EQUAL(PUBLIC_CLASSIFIERSYSTEM.ruletable[0].counter, 0);
+     CU_ASSERT_DOUBLE_EQUAL(PUBLIC_CLASSIFIERSYSTEM.ruletable[0].performance, log(pow(10,-5)), 1e-3);
+     CU_ASSERT_DOUBLE_EQUAL(PUBLIC_CLASSIFIERSYSTEM.ruletable[0].avg_performance, log(pow(10,-5)), 1e-3);
 
     /***** Messages: post-conditions **********************************/
  
@@ -46,16 +46,16 @@ void unittest_FinancialAgent_read_rule_performance_and_update_classifiersystem()
      current_xmachine = *p_xmachine;
 
      /***** Variables: Memory pre-conditions **************************/
-     CLASSIFIERSYSTEM.nr_rules =1;
-     CLASSIFIERSYSTEM.ruletable[0].id=1;
-     CLASSIFIERSYSTEM.ruletable[0].counter=0;
-     CLASSIFIERSYSTEM.ruletable[0].performance=0.0;
-     CLASSIFIERSYSTEM.ruletable[0].avg_performance=0.0;
+     PUBLIC_CLASSIFIERSYSTEM.nr_rules =1;
+     PUBLIC_CLASSIFIERSYSTEM.ruletable[0].id=1;
+     PUBLIC_CLASSIFIERSYSTEM.ruletable[0].counter=0;
+     PUBLIC_CLASSIFIERSYSTEM.ruletable[0].performance=0.0;
+     PUBLIC_CLASSIFIERSYSTEM.ruletable[0].avg_performance=0.0;
 
-     CLASSIFIERSYSTEM.ruletable[0].id=2;
-     CLASSIFIERSYSTEM.ruletable[0].counter=0;
-     CLASSIFIERSYSTEM.ruletable[0].performance=0.0;
-     CLASSIFIERSYSTEM.ruletable[0].avg_performance=0.0;
+     PUBLIC_CLASSIFIERSYSTEM.ruletable[0].id=2;
+     PUBLIC_CLASSIFIERSYSTEM.ruletable[0].counter=0;
+     PUBLIC_CLASSIFIERSYSTEM.ruletable[0].performance=0.0;
+     PUBLIC_CLASSIFIERSYSTEM.ruletable[0].avg_performance=0.0;
 
      /***** Messages: pre-conditions **********************************/
      //add_rule_performance_message(current_rule, rule_performance, 0.0, 0, 0, 0);
@@ -68,13 +68,13 @@ void unittest_FinancialAgent_read_rule_performance_and_update_classifiersystem()
      FinancialAgent_read_rule_performance_and_update_classifiersystem();
      
      /***** Variables: Memory post-conditions *************************/
-     CU_ASSERT_EQUAL(CLASSIFIERSYSTEM.ruletable[0].counter, 2);
-     CU_ASSERT_DOUBLE_EQUAL(CLASSIFIERSYSTEM.ruletable[0].performance, 30.0, 1e-3);
-     CU_ASSERT_DOUBLE_EQUAL(CLASSIFIERSYSTEM.ruletable[0].avg_performance, 15.0, 1e-3);
+     CU_ASSERT_EQUAL(PUBLIC_CLASSIFIERSYSTEM.ruletable[0].counter, 2);
+     CU_ASSERT_DOUBLE_EQUAL(PUBLIC_CLASSIFIERSYSTEM.ruletable[0].performance, 30.0, 1e-3);
+     CU_ASSERT_DOUBLE_EQUAL(PUBLIC_CLASSIFIERSYSTEM.ruletable[0].avg_performance, 15.0, 1e-3);
 
-     CU_ASSERT_EQUAL(CLASSIFIERSYSTEM.ruletable[1].counter, 2);
-     CU_ASSERT_DOUBLE_EQUAL(CLASSIFIERSYSTEM.ruletable[1].performance, 70.0, 1e-3);
-     CU_ASSERT_DOUBLE_EQUAL(CLASSIFIERSYSTEM.ruletable[1].avg_performance, 35.0, 1e-3);
+     CU_ASSERT_EQUAL(PUBLIC_CLASSIFIERSYSTEM.ruletable[1].counter, 2);
+     CU_ASSERT_DOUBLE_EQUAL(PUBLIC_CLASSIFIERSYSTEM.ruletable[1].performance, 70.0, 1e-3);
+     CU_ASSERT_DOUBLE_EQUAL(PUBLIC_CLASSIFIERSYSTEM.ruletable[1].avg_performance, 35.0, 1e-3);
 
     /***** Messages: post-conditions **********************************/
  
@@ -91,21 +91,21 @@ void unittest_FinancialAgent_send_all_performances()
      current_xmachine = *p_xmachine;
 
      /***** Variables: Memory pre-conditions **************************/
-     CLASSIFIERSYSTEM.nr_rules =2;
+     PUBLIC_CLASSIFIERSYSTEM.nr_rules =2;
      
-     CLASSIFIERSYSTEM.ruletable[0].id=1;
-     CLASSIFIERSYSTEM.ruletable[0].counter=0;
-     CLASSIFIERSYSTEM.ruletable[0].performance=0.0;
-     CLASSIFIERSYSTEM.ruletable[0].avg_performance=10.0;
+     PUBLIC_CLASSIFIERSYSTEM.ruletable[0].id=1;
+     PUBLIC_CLASSIFIERSYSTEM.ruletable[0].counter=0;
+     PUBLIC_CLASSIFIERSYSTEM.ruletable[0].performance=0.0;
+     PUBLIC_CLASSIFIERSYSTEM.ruletable[0].avg_performance=10.0;
      
-     CLASSIFIERSYSTEM.ruletable[1].id=2;
-     CLASSIFIERSYSTEM.ruletable[1].counter=0;
-     CLASSIFIERSYSTEM.ruletable[1].performance=0.0;
-     CLASSIFIERSYSTEM.ruletable[1].avg_performance=20.0;
+     PUBLIC_CLASSIFIERSYSTEM.ruletable[1].id=2;
+     PUBLIC_CLASSIFIERSYSTEM.ruletable[1].counter=0;
+     PUBLIC_CLASSIFIERSYSTEM.ruletable[1].performance=0.0;
+     PUBLIC_CLASSIFIERSYSTEM.ruletable[1].avg_performance=20.0;
 
      /***** Messages: pre-conditions **********************************/
-     //add_new_performances_message(0, CLASSIFIERSYSTEM.ruletable[i].avg_performance, 1.0, 0.0, 0.0, 0.0);
-     //add_new_performances_message(1, CLASSIFIERSYSTEM.ruletable[i].avg_performance, 1.0, 0.0, 0.0, 0.0);
+     //add_new_performances_message(0, PUBLIC_CLASSIFIERSYSTEM.ruletable[i].avg_performance, 1.0, 0.0, 0.0, 0.0);
+     //add_new_performances_message(1, PUBLIC_CLASSIFIERSYSTEM.ruletable[i].avg_performance, 1.0, 0.0, 0.0, 0.0);
 
      /***** Function evaluation ***************************************/
      FinancialAgent_send_all_performances();
@@ -139,24 +139,24 @@ void unittest_FinancialAgent_apply_GA() /*NOT IMPLEMENTED*/
      current_xmachine = *p_xmachine;
 
      /***** Variables: Memory pre-conditions **************************/
-     CLASSIFIERSYSTEM.ruletable[0].id=1;
-     CLASSIFIERSYSTEM.ruletable[0].counter=0;
-     CLASSIFIERSYSTEM.ruletable[0].performance=0.0;
-     CLASSIFIERSYSTEM.ruletable[0].avg_performance=0.0;
-     //CLASSIFIERSYSTEM.ruletable[0].parameters[10]={1.0,2.0,3.0,4.0,5.0,6.0,7.0,8.0,9.0,10.0};
+     PUBLIC_CLASSIFIERSYSTEM.ruletable[0].id=1;
+     PUBLIC_CLASSIFIERSYSTEM.ruletable[0].counter=0;
+     PUBLIC_CLASSIFIERSYSTEM.ruletable[0].performance=0.0;
+     PUBLIC_CLASSIFIERSYSTEM.ruletable[0].avg_performance=0.0;
+     //PUBLIC_CLASSIFIERSYSTEM.ruletable[0].parameters[10]={1.0,2.0,3.0,4.0,5.0,6.0,7.0,8.0,9.0,10.0};
      for (i=0;i<10;i++)
       {
-     	 CLASSIFIERSYSTEM.ruletable[0].parameters[i]= 1.0 + i*1.0;
+     	 PUBLIC_CLASSIFIERSYSTEM.ruletable[0].parameters[i]= 1.0 + i*1.0;
       }
 
-     CLASSIFIERSYSTEM.ruletable[1].id=2;
-     CLASSIFIERSYSTEM.ruletable[1].counter=0;
-     CLASSIFIERSYSTEM.ruletable[1].performance=0.0;
-     CLASSIFIERSYSTEM.ruletable[1].avg_performance=0.0;
-     //CLASSIFIERSYSTEM.ruletable[1].parameters[10]={11.0,12.0,13.0,14.0,15.0,16.0,17.0,18.0,19.0,20.0};
+     PUBLIC_CLASSIFIERSYSTEM.ruletable[1].id=2;
+     PUBLIC_CLASSIFIERSYSTEM.ruletable[1].counter=0;
+     PUBLIC_CLASSIFIERSYSTEM.ruletable[1].performance=0.0;
+     PUBLIC_CLASSIFIERSYSTEM.ruletable[1].avg_performance=0.0;
+     //PUBLIC_CLASSIFIERSYSTEM.ruletable[1].parameters[10]={11.0,12.0,13.0,14.0,15.0,16.0,17.0,18.0,19.0,20.0};
      for (i=0;i<10;i++)
       {
-     	 CLASSIFIERSYSTEM.ruletable[1].parameters[i]= 11.0 + i*1.0;
+     	 PUBLIC_CLASSIFIERSYSTEM.ruletable[1].parameters[i]= 11.0 + i*1.0;
       }
 
      /***** Messages: pre-conditions **********************************/
@@ -191,24 +191,24 @@ void unittest_FinancialAgent_send_rule_details()
      current_xmachine = *p_xmachine;
 
      /***** Variables: Memory pre-conditions **************************/
-     CLASSIFIERSYSTEM.nr_rules =1;
+     PUBLIC_CLASSIFIERSYSTEM.nr_rules =1;
      
-     CLASSIFIERSYSTEM.ruletable[0].id=1;
-     CLASSIFIERSYSTEM.ruletable[0].counter=0;
-     CLASSIFIERSYSTEM.ruletable[0].performance=0.0;
-     CLASSIFIERSYSTEM.ruletable[0].avg_performance=0.0;
+     PUBLIC_CLASSIFIERSYSTEM.ruletable[0].id=1;
+     PUBLIC_CLASSIFIERSYSTEM.ruletable[0].counter=0;
+     PUBLIC_CLASSIFIERSYSTEM.ruletable[0].performance=0.0;
+     PUBLIC_CLASSIFIERSYSTEM.ruletable[0].avg_performance=0.0;
      for (i=0;i<10;i++)
       {
-     	 CLASSIFIERSYSTEM.ruletable[0].parameters[i]= 1.0 + i*1.0;
+     	 PUBLIC_CLASSIFIERSYSTEM.ruletable[0].parameters[i]= 1.0 + i*1.0;
       }
 
-     CLASSIFIERSYSTEM.ruletable[1].id=2;
-     CLASSIFIERSYSTEM.ruletable[1].counter=0;
-     CLASSIFIERSYSTEM.ruletable[1].performance=0.0;
-     CLASSIFIERSYSTEM.ruletable[1].avg_performance=0.0;
+     PUBLIC_CLASSIFIERSYSTEM.ruletable[1].id=2;
+     PUBLIC_CLASSIFIERSYSTEM.ruletable[1].counter=0;
+     PUBLIC_CLASSIFIERSYSTEM.ruletable[1].performance=0.0;
+     PUBLIC_CLASSIFIERSYSTEM.ruletable[1].avg_performance=0.0;
      for (i=0;i<10;i++)
       {
-     	 CLASSIFIERSYSTEM.ruletable[1].parameters[i]= 11.0 + i*1.0;
+     	 PUBLIC_CLASSIFIERSYSTEM.ruletable[1].parameters[i]= 11.0 + i*1.0;
       }
 
      /***** Messages: pre-conditions **********************************/
@@ -251,11 +251,11 @@ void unittest_FinancialAgent_reset_public_classifiersystem()
      current_xmachine = *p_xmachine;
 
      /***** Variables: Memory pre-conditions **************************/
-     CLASSIFIERSYSTEM.nr_rules =1;
-     CLASSIFIERSYSTEM.ruletable[0].id=1;
-     CLASSIFIERSYSTEM.ruletable[0].counter=0;
-     CLASSIFIERSYSTEM.ruletable[0].performance=0.0;
-     CLASSIFIERSYSTEM.ruletable[0].avg_performance=0.0;
+     PUBLIC_CLASSIFIERSYSTEM.nr_rules =1;
+     PUBLIC_CLASSIFIERSYSTEM.ruletable[0].id=1;
+     PUBLIC_CLASSIFIERSYSTEM.ruletable[0].counter=0;
+     PUBLIC_CLASSIFIERSYSTEM.ruletable[0].performance=0.0;
+     PUBLIC_CLASSIFIERSYSTEM.ruletable[0].avg_performance=0.0;
 
      /***** Messages: pre-conditions **********************************/
 
@@ -263,9 +263,9 @@ void unittest_FinancialAgent_reset_public_classifiersystem()
      FinancialAgent_reset_public_classifiersystem();
      
      /***** Variables: Memory post-conditions *************************/
-     CU_ASSERT_DOUBLE_EQUAL(CLASSIFIERSYSTEM.ruletable[0].counter, 0.0, 1e-3);
-     CU_ASSERT_DOUBLE_EQUAL(CLASSIFIERSYSTEM.ruletable[0].performance, log(pow(10,-5)), 1e-3);
-     CU_ASSERT_DOUBLE_EQUAL(CLASSIFIERSYSTEM.ruletable[0].avg_performance, log(pow(10,-5)), 1e-3);
+     CU_ASSERT_DOUBLE_EQUAL(PUBLIC_CLASSIFIERSYSTEM.ruletable[0].counter, 0.0, 1e-3);
+     CU_ASSERT_DOUBLE_EQUAL(PUBLIC_CLASSIFIERSYSTEM.ruletable[0].performance, log(pow(10,-5)), 1e-3);
+     CU_ASSERT_DOUBLE_EQUAL(PUBLIC_CLASSIFIERSYSTEM.ruletable[0].avg_performance, log(pow(10,-5)), 1e-3);
 
     /***** Messages: post-conditions **********************************/
 

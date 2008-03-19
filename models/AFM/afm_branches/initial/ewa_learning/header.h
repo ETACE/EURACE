@@ -381,7 +381,7 @@ struct xmachine_memory_Household
 {
 	int id;	/**< X-machine memory variable id of type int. */
 	EWAParameterStruct EWA_parameters;	/**< X-machine memory variable EWA_parameters of type EWAParameterStruct. */
-	SimplePrivateClassifierSystem classifiersystem;	/**< X-machine memory variable classifiersystem of type SimplePrivateClassifierSystem. */
+	SimplePrivateClassifierSystem private_classifiersystem;	/**< X-machine memory variable private_classifiersystem of type SimplePrivateClassifierSystem. */
 	double posx;	/**< X-machine memory variable posx of type double. */
 	double posy;	/**< X-machine memory variable posy of type double. */
 	double posz;	/**< X-machine memory variable posz of type double. */
@@ -398,7 +398,7 @@ struct xmachine_memory_FinancialAgent
 	int day;	/**< X-machine memory variable day of type int. */
 	int month;	/**< X-machine memory variable month of type int. */
 	EWAParameterStruct EWA_parameters;	/**< X-machine memory variable EWA_parameters of type EWAParameterStruct. */
-	SimplePublicClassifierSystem classifiersystem;	/**< X-machine memory variable classifiersystem of type SimplePublicClassifierSystem. */
+	SimplePublicClassifierSystem public_classifiersystem;	/**< X-machine memory variable public_classifiersystem of type SimplePublicClassifierSystem. */
 	GAParameterStruct GA_parameters;	/**< X-machine memory variable GA_parameters of type GAParameterStruct. */
 	double posx;	/**< X-machine memory variable posx of type double. */
 	double posy;	/**< X-machine memory variable posy of type double. */
@@ -505,7 +505,6 @@ int FinancialAgent_read_rule_performance_and_update_classifiersystem(void);
 int FinancialAgent_send_all_performances(void);
 int Every_100_periods(void);
 int FinancialAgent_apply_GA(void);
-int FinancialAgent_update_rule_details(void);
 int FinancialAgent_reset_public_classifiersystem(void);
 int FinancialAgent_send_rule_details(void);
 
@@ -852,10 +851,10 @@ void copy_ComplexPrivateClassifierSystem_static_array(ComplexPrivateClassifierSy
 
 xmachine_memory_Household * init_Household_agent();
 void add_Household_agent_internal(xmachine_memory_Household * current);
-void add_Household_agent(int id, EWAParameterStruct EWA_parameters, SimplePrivateClassifierSystem classifiersystem, double posx, double posy, double posz, double range);
+void add_Household_agent(int id, EWAParameterStruct EWA_parameters, SimplePrivateClassifierSystem private_classifiersystem, double posx, double posy, double posz, double range);
 xmachine_memory_FinancialAgent * init_FinancialAgent_agent();
 void add_FinancialAgent_agent_internal(xmachine_memory_FinancialAgent * current);
-void add_FinancialAgent_agent(int id, int day_of_month_to_act, int day, int month, EWAParameterStruct EWA_parameters, SimplePublicClassifierSystem classifiersystem, GAParameterStruct GA_parameters, double posx, double posy, double posz, double range);
+void add_FinancialAgent_agent(int id, int day_of_month_to_act, int day, int month, EWAParameterStruct EWA_parameters, SimplePublicClassifierSystem public_classifiersystem, GAParameterStruct GA_parameters, double posx, double posy, double posz, double range);
 
 void add_rule_performance_message(int rule_id, double rule_performance, double range, double x, double y, double z);
 xmachine_message_rule_performance * add_rule_performance_message_internal(void);
@@ -876,7 +875,7 @@ void freerule_detailsmessages(void);
 void set_id(int id);
 int get_id();
 EWAParameterStruct * get_EWA_parameters();
-SimplePrivateClassifierSystem * get_classifiersystem();
+SimplePrivateClassifierSystem * get_private_classifiersystem();
 void set_posx(double posx);
 double get_posx();
 void set_posy(double posy);
@@ -891,6 +890,7 @@ void set_day(int day);
 int get_day();
 void set_month(int month);
 int get_month();
+SimplePublicClassifierSystem * get_public_classifiersystem();
 GAParameterStruct * get_GA_parameters();
 int agent_get_id(void);
 double agent_get_x(void);

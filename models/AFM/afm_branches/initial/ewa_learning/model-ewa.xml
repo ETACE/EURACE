@@ -247,7 +247,7 @@
 	<var>
 		<type>EWAParameterStruct</type><name>EWA_parameters</name>
 		</var>
-	<var><type>SimplePrivateClassifierSystem</type><name>classifiersystem</name></var>
+	<var><type>SimplePrivateClassifierSystem</type><name>private_classifiersystem</name></var>
 <var><type>double</type><name>posx</name></var>
 <var><type>double</type><name>posy</name></var>
 <var><type>double</type><name>posz</name></var>
@@ -340,7 +340,7 @@
 <type>EWAParameterStruct</type><name>EWA_parameters</name>
 </var>
 
-<var><type>SimplePublicClassifierSystem</type>	<name>classifiersystem</name></var>
+<var><type>SimplePublicClassifierSystem</type>	<name>public_classifiersystem</name></var>
 <var><type>GAParameterStruct</type>	<name>GA_parameters</name></var>
 <var><type>double</type><name>posx</name></var>
 <var><type>double</type><name>posy</name></var>
@@ -366,17 +366,15 @@
 	<function><name>FinancialAgent_apply_GA</name>
 	<depends>
 		<name>Every_100_periods</name>
-		<type>internal</type></depends></function><function><name>FinancialAgent_update_rule_details</name><!--Date-event triggered: every 100 days run the GA-->
-<depends><name>FinancialAgent_apply_GA</name><type>internal</type></depends>
-</function>
+		<type>internal</type></depends></function>
 	<function>
 		<name>FinancialAgent_reset_public_classifiersystem</name>
 		<depends>
-			<name>FinancialAgent_update_rule_details</name>
+			<name>FinancialAgent_apply_GA</name>
 			<type>internal</type></depends></function>
 	
 <function><name>FinancialAgent_send_rule_details</name>
-<depends><name>FinancialAgent_update_rule_details</name><type>internal</type></depends>
+<depends><name>FinancialAgent_apply_GA</name><type>internal</type></depends>
 </function>
 
 </functions>

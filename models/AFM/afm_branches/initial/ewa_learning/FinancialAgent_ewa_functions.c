@@ -21,11 +21,11 @@ int FinancialAgent_daily_reset_public_classifiersystem()
 	int i;
 	
     //Resetting and storing values to memory:
-    for (i=0; i<CLASSIFIERSYSTEM.nr_rules; i++)
+    for (i=0; i<PUBLIC_CLASSIFIERSYSTEM.nr_rules; i++)
     {
-        CLASSIFIERSYSTEM.ruletable[i].counter=0;
-        CLASSIFIERSYSTEM.ruletable[i].performance=log(pow(10,-5));
-        CLASSIFIERSYSTEM.ruletable[i].avg_performance=log(pow(10,-5));
+        PUBLIC_CLASSIFIERSYSTEM.ruletable[i].counter=0;
+        PUBLIC_CLASSIFIERSYSTEM.ruletable[i].performance=log(pow(10,-5));
+        PUBLIC_CLASSIFIERSYSTEM.ruletable[i].avg_performance=log(pow(10,-5));
     }
     
   return 0;
@@ -45,13 +45,13 @@ int FinancialAgent_read_rule_performance_and_update_classifiersystem()
     
         /* Update rule performance: */
         //Replace old performance adding new performance: ******CHECK WHEN RESET OCCURS: SHOULD BE DAILY? 
-        CLASSIFIERSYSTEM.ruletable[rule_id].performance += rule_performance;
+        PUBLIC_CLASSIFIERSYSTEM.ruletable[rule_id].performance += rule_performance;
         
         //Counter update: ******CHECK WHEN RESET OCCURS: SHOULD BE DAILY?
-        CLASSIFIERSYSTEM.ruletable[rule_id].counter +=1;
+        PUBLIC_CLASSIFIERSYSTEM.ruletable[rule_id].counter +=1;
         
         //Average performance update:
-        CLASSIFIERSYSTEM.ruletable[rule_id].avg_performance = CLASSIFIERSYSTEM.ruletable[rule_id].performance / CLASSIFIERSYSTEM.ruletable[rule_id].counter;
+        PUBLIC_CLASSIFIERSYSTEM.ruletable[rule_id].avg_performance = PUBLIC_CLASSIFIERSYSTEM.ruletable[rule_id].performance / PUBLIC_CLASSIFIERSYSTEM.ruletable[rule_id].counter;
       FINISH_RULE_PERFORMANCE_MESSAGE_LOOP
 
    return 0;}
@@ -64,9 +64,9 @@ int FinancialAgent_send_all_performances()
 	int i;
 	
     //Send the average performance of each rule
-    for (i=0;i<CLASSIFIERSYSTEM.nr_rules;i++)
+    for (i=0;i<PUBLIC_CLASSIFIERSYSTEM.nr_rules;i++)
     {
-        add_new_performances_message(i, CLASSIFIERSYSTEM.ruletable[i].avg_performance, 1.0, 0.0, 0.0, 0.0);
+        add_new_performances_message(i, PUBLIC_CLASSIFIERSYSTEM.ruletable[i].avg_performance, 1.0, 0.0, 0.0, 0.0);
     }
     
   return 0;
@@ -122,18 +122,18 @@ int FinancialAgent_apply_GA()
 		N_rep = (int) 2*floor((GA_PARAMETERS.reproduction_proportion * GA_PARAMETERS.pop_size)/2);
 
 	    //Computing fitness-based probabilities using multi-logit probabilities
-		nr_rules = CLASSIFIERSYSTEM.nr_rules;
+		nr_rules = PUBLIC_CLASSIFIERSYSTEM.nr_rules;
 		sum=0.0;
 	    for (j=0;j<nr_rules;j++)
 	    {
-	    	avg_performance  = CLASSIFIERSYSTEM.ruletable[j].avg_performance;
+	    	avg_performance  = PUBLIC_CLASSIFIERSYSTEM.ruletable[j].avg_performance;
 	        sum += exp(EWA_PARAMETERS.EWA_beta * avg_performance);
 	    }
 	    
 	    p = malloc(sizeof(double)*nr_rules);
 	    for (j=0;j<nr_rules;j++)
 	    {
-	    	avg_performance  = CLASSIFIERSYSTEM.ruletable[j].avg_performance;
+	    	avg_performance  = PUBLIC_CLASSIFIERSYSTEM.ruletable[j].avg_performance;
 	        p[j] = exp(EWA_PARAMETERS.EWA_beta * avg_performance)/sum;
 	    }
 
@@ -184,8 +184,8 @@ int FinancialAgent_apply_GA()
 
     		for (k=0; k<NR_PARAMS; k++)
     		{
-    			offspring_1[k]=CLASSIFIERSYSTEM.ruletable[id1].parameters[k];
-    			offspring_2[k]=CLASSIFIERSYSTEM.ruletable[id2].parameters[k];
+    			offspring_1[k]=PUBLIC_CLASSIFIERSYSTEM.ruletable[id1].parameters[k];
+    			offspring_2[k]=PUBLIC_CLASSIFIERSYSTEM.ruletable[id2].parameters[k];
     		}
     		
     		//now cross-over the strings
@@ -235,8 +235,8 @@ int FinancialAgent_apply_GA()
 
     			for (k=0; k<NR_PARAMS; k++)
 	    		{
-	     		    parent_1[k]=CLASSIFIERSYSTEM.ruletable[id1].parameters[k];
-	     		    parent_2[k]=CLASSIFIERSYSTEM.ruletable[id2].parameters[k];
+	     		    parent_1[k]=PUBLIC_CLASSIFIERSYSTEM.ruletable[id1].parameters[k];
+	     		    parent_2[k]=PUBLIC_CLASSIFIERSYSTEM.ruletable[id2].parameters[k];
 	    		}
 	    		*/
     			// void election(int size, double * offspring_1, double * offspring_2, double * parent_1, double * parent_2)
@@ -247,8 +247,8 @@ int FinancialAgent_apply_GA()
     		//This means: copy the parameters into the classifier system
     		for (k=0; k<NR_PARAMS; k++)
     		{
-    			CLASSIFIERSYSTEM.ruletable[id1].parameters[k] = offspring_1[k];
-	    		CLASSIFIERSYSTEM.ruletable[id2].parameters[k] = offspring_2[k];
+    			PUBLIC_CLASSIFIERSYSTEM.ruletable[id1].parameters[k] = offspring_1[k];
+	    		PUBLIC_CLASSIFIERSYSTEM.ruletable[id2].parameters[k] = offspring_2[k];
     		}
 	     }		
 	}
@@ -277,9 +277,9 @@ int FinancialAgent_send_rule_details()
 	
 	//Send new rule details in a rule_details_messsage
 	//The message contains the static array parameters[10]
-	for (i=0;i<CLASSIFIERSYSTEM.nr_rules;i++)
+	for (i=0;i<PUBLIC_CLASSIFIERSYSTEM.nr_rules;i++)
 	{
-		add_rule_details_messsage(i, CLASSIFIERSYSTEM.ruletable[i].parameters, 1.0, 0.0, 0.0, 0.0);
+		add_rule_details_messsage(i, PUBLIC_CLASSIFIERSYSTEM.ruletable[i].parameters, 1.0, 0.0, 0.0, 0.0);
 	}
         
     return 0;
@@ -293,15 +293,23 @@ int FinancialAgent_reset_public_classifiersystem()
 	int i;
 	
     //total number of rules:
-    int nr_rules=CLASSIFIERSYSTEM.nr_rules;
+    int nr_rules=PUBLIC_CLASSIFIERSYSTEM.nr_rules;
     
     //Resetting and storing values to memory:
     for (i=0; i<nr_rules; i++)
     {
-        CLASSIFIERSYSTEM.ruletable[i].counter=0;
-        CLASSIFIERSYSTEM.ruletable[i].performance=log(pow(10,-5));
-        CLASSIFIERSYSTEM.ruletable[i].avg_performance=log(pow(10,-5));
+        PUBLIC_CLASSIFIERSYSTEM.ruletable[i].counter=0;
+        PUBLIC_CLASSIFIERSYSTEM.ruletable[i].performance=log(pow(10,-5));
+        PUBLIC_CLASSIFIERSYSTEM.ruletable[i].avg_performance=log(pow(10,-5));
     }
 
     return 0;
 } 
+
+/* \fn int Every_100_periods()
+ * \brief Dummy function for conditional function dependency.
+ */
+int Every_100_periods()
+{
+    return 0;
+}

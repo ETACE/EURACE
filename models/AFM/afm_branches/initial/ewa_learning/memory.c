@@ -553,7 +553,7 @@ xmachine_memory_Household * init_Household_agent()
 	
 	current->id = 0;
 	init_EWAParameterStruct(&current->EWA_parameters);
-	init_SimplePrivateClassifierSystem(&current->classifiersystem);
+	init_SimplePrivateClassifierSystem(&current->private_classifiersystem);
 	current->posx = 0.0;
 	current->posy = 0.0;
 	current->posz = 0.0;
@@ -565,7 +565,7 @@ xmachine_memory_Household * init_Household_agent()
 void free_Household_agent(xmachine_memory_Household * tmp)
 {
 	free_EWAParameterStruct(&tmp->EWA_parameters);
-	free_SimplePrivateClassifierSystem(&tmp->classifiersystem);
+	free_SimplePrivateClassifierSystem(&tmp->private_classifiersystem);
 	
 }
 
@@ -575,17 +575,17 @@ void add_Household_agent_internal(xmachine_memory_Household * current)
 	new_xmachine->xmachine_Household = current;
 }
 
-/** \fn void add_Household_agent(int id, EWAParameterStruct * EWA_parameters, SimplePrivateClassifierSystem * classifiersystem, double posx, double posy, double posz, double range)
+/** \fn void add_Household_agent(int id, EWAParameterStruct * EWA_parameters, SimplePrivateClassifierSystem * private_classifiersystem, double posx, double posy, double posz, double range)
  * \brief Add Household X-machine to the current being used X-machine list.
  * \param id Variable for the X-machine memory.
  * \param EWA_parameters Variable for the X-machine memory.
- * \param classifiersystem Variable for the X-machine memory.
+ * \param private_classifiersystem Variable for the X-machine memory.
  * \param posx Variable for the X-machine memory.
  * \param posy Variable for the X-machine memory.
  * \param posz Variable for the X-machine memory.
  * \param range Variable for the X-machine memory.
  */
-void add_Household_agent(int id, EWAParameterStruct EWA_parameters, SimplePrivateClassifierSystem classifiersystem, double posx, double posy, double posz, double range)
+void add_Household_agent(int id, EWAParameterStruct EWA_parameters, SimplePrivateClassifierSystem private_classifiersystem, double posx, double posy, double posz, double range)
 {
 	xmachine * new_xmachine = add_xmachine();
 	xmachine_memory_Household * current;
@@ -595,7 +595,7 @@ void add_Household_agent(int id, EWAParameterStruct EWA_parameters, SimplePrivat
 	
 	current->id = id;
 	copy_EWAParameterStruct(&EWA_parameters, &current->EWA_parameters);
-	copy_SimplePrivateClassifierSystem(&classifiersystem, &current->classifiersystem);
+	copy_SimplePrivateClassifierSystem(&private_classifiersystem, &current->private_classifiersystem);
 	current->posx = posx;
 	current->posy = posy;
 	current->posz = posz;
@@ -612,7 +612,7 @@ xmachine_memory_FinancialAgent * init_FinancialAgent_agent()
 	current->day = 0;
 	current->month = 0;
 	init_EWAParameterStruct(&current->EWA_parameters);
-	init_SimplePublicClassifierSystem(&current->classifiersystem);
+	init_SimplePublicClassifierSystem(&current->public_classifiersystem);
 	init_GAParameterStruct(&current->GA_parameters);
 	current->posx = 0.0;
 	current->posy = 0.0;
@@ -625,7 +625,7 @@ xmachine_memory_FinancialAgent * init_FinancialAgent_agent()
 void free_FinancialAgent_agent(xmachine_memory_FinancialAgent * tmp)
 {
 	free_EWAParameterStruct(&tmp->EWA_parameters);
-	free_SimplePublicClassifierSystem(&tmp->classifiersystem);
+	free_SimplePublicClassifierSystem(&tmp->public_classifiersystem);
 	free_GAParameterStruct(&tmp->GA_parameters);
 	
 }
@@ -636,21 +636,21 @@ void add_FinancialAgent_agent_internal(xmachine_memory_FinancialAgent * current)
 	new_xmachine->xmachine_FinancialAgent = current;
 }
 
-/** \fn void add_FinancialAgent_agent(int id, int day_of_month_to_act, int day, int month, EWAParameterStruct * EWA_parameters, SimplePublicClassifierSystem * classifiersystem, GAParameterStruct * GA_parameters, double posx, double posy, double posz, double range)
+/** \fn void add_FinancialAgent_agent(int id, int day_of_month_to_act, int day, int month, EWAParameterStruct * EWA_parameters, SimplePublicClassifierSystem * public_classifiersystem, GAParameterStruct * GA_parameters, double posx, double posy, double posz, double range)
  * \brief Add FinancialAgent X-machine to the current being used X-machine list.
  * \param id Variable for the X-machine memory.
  * \param day_of_month_to_act Variable for the X-machine memory.
  * \param day Variable for the X-machine memory.
  * \param month Variable for the X-machine memory.
  * \param EWA_parameters Variable for the X-machine memory.
- * \param classifiersystem Variable for the X-machine memory.
+ * \param public_classifiersystem Variable for the X-machine memory.
  * \param GA_parameters Variable for the X-machine memory.
  * \param posx Variable for the X-machine memory.
  * \param posy Variable for the X-machine memory.
  * \param posz Variable for the X-machine memory.
  * \param range Variable for the X-machine memory.
  */
-void add_FinancialAgent_agent(int id, int day_of_month_to_act, int day, int month, EWAParameterStruct EWA_parameters, SimplePublicClassifierSystem classifiersystem, GAParameterStruct GA_parameters, double posx, double posy, double posz, double range)
+void add_FinancialAgent_agent(int id, int day_of_month_to_act, int day, int month, EWAParameterStruct EWA_parameters, SimplePublicClassifierSystem public_classifiersystem, GAParameterStruct GA_parameters, double posx, double posy, double posz, double range)
 {
 	xmachine * new_xmachine = add_xmachine();
 	xmachine_memory_FinancialAgent * current;
@@ -663,7 +663,7 @@ void add_FinancialAgent_agent(int id, int day_of_month_to_act, int day, int mont
 	current->day = day;
 	current->month = month;
 	copy_EWAParameterStruct(&EWA_parameters, &current->EWA_parameters);
-	copy_SimplePublicClassifierSystem(&classifiersystem, &current->classifiersystem);
+	copy_SimplePublicClassifierSystem(&public_classifiersystem, &current->public_classifiersystem);
 	copy_GAParameterStruct(&GA_parameters, &current->GA_parameters);
 	current->posx = posx;
 	current->posy = posy;
@@ -777,14 +777,13 @@ EWAParameterStruct * get_EWA_parameters()
     return NULL;
 }
 
-/** \fn SimplePrivateClassifierSystem get_classifiersystem()
- * \brief Get classifiersystem memory variable from current X-machine.
+/** \fn SimplePrivateClassifierSystem get_private_classifiersystem()
+ * \brief Get private_classifiersystem memory variable from current X-machine.
  * \return Value for variable.
  */
-SimplePrivateClassifierSystem * get_classifiersystem()
+SimplePrivateClassifierSystem * get_private_classifiersystem()
 {
-	if(current_xmachine->xmachine_Household) return &(*current_xmachine->xmachine_Household).classifiersystem;
-	if(current_xmachine->xmachine_FinancialAgent) return &(*current_xmachine->xmachine_FinancialAgent).classifiersystem;
+	if(current_xmachine->xmachine_Household) return &(*current_xmachine->xmachine_Household).private_classifiersystem;
 
     // suppress compiler warning by returning dummy value /
     // this statement should rightfully NEVER be reached /
@@ -951,6 +950,19 @@ int get_month()
     // suppress compiler warning by returning dummy value /
     // this statement should rightfully NEVER be reached /
     return (int)0;
+}
+
+/** \fn SimplePublicClassifierSystem get_public_classifiersystem()
+ * \brief Get public_classifiersystem memory variable from current X-machine.
+ * \return Value for variable.
+ */
+SimplePublicClassifierSystem * get_public_classifiersystem()
+{
+	if(current_xmachine->xmachine_FinancialAgent) return &(*current_xmachine->xmachine_FinancialAgent).public_classifiersystem;
+
+    // suppress compiler warning by returning dummy value /
+    // this statement should rightfully NEVER be reached /
+    return NULL;
 }
 
 /** \fn GAParameterStruct get_GA_parameters()
