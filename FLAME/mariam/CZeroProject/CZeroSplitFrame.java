@@ -52,6 +52,7 @@ public class CZeroSplitFrame extends JFrame implements ListSelectionListener, Ac
 	Element xagentElement[];
 	Element xagentNameElement[];
 	Element xagentIDVarElement[];                      
+	String nameofFile=null;
 	
 	public CZeroSplitFrame()
 	{
@@ -67,7 +68,16 @@ public class CZeroSplitFrame extends JFrame implements ListSelectionListener, Ac
 		
 	itsContainer=this.getContentPane();
 	
-	getXmlRootElement("xmlFile/model" + ".XML");
+	//getting input file name for model.xml
+	openFile();
+	
+	if ((nameofFile.equals(""))|| (nameofFile==null))
+	{
+		JOptionPane.showMessageDialog(this,"File Not Found","File Not Found",JOptionPane.ERROR_MESSAGE);
+		return;
+	}
+	
+	getXmlRootElement(nameofFile);
 	itsAgentMap = new HashMap();
 	itsDatatypeMap=new HashMap();
 	gatherXMLData();
@@ -443,5 +453,30 @@ public class CZeroSplitFrame extends JFrame implements ListSelectionListener, Ac
 		return temparray.equals("id");
 	}//close:checking_IDs()
 	
-
+	public void openFile()
+	{
+		JFileChooser fc=new JFileChooser();
+		fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
+		
+		int result= fc.showOpenDialog(this);
+		//if cancelled
+		if(result==JFileChooser.CANCEL_OPTION) 
+		return; 
+		
+		File fn = fc.getSelectedFile();
+		
+		//if filename wrong
+		if(fn==null|| fn.getName().equals(""))
+			JOptionPane.showMessageDialog(this,"Invalid file name", "Invalid File Name", JOptionPane.ERROR_MESSAGE);
+		else
+		{
+			//openfile
+			nameofFile=fn.getAbsolutePath();
+			
+			System.out.println("File found " + nameofFile);
+			
+			
+		}//end else
+	}
+	
 }//close:CZeroSplitFrame
