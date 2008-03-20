@@ -1,0 +1,1 @@
+jar cvfm CZero.jar mymanifest *.class lib/jdom.jar
