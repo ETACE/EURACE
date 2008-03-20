@@ -78,3 +78,18 @@ this would reduce the created of small windows
 added the inputing values for arrays bit
 have to get column names for data structures in a vector class. to send across
 
+18/03/08
+added data structure and array entering in a seperate list
+TODO-have to add nested ds
+
+19/03/08
+*added nested data types
+*corrected problem for one row entering of data structures
+*added file input through dialog box
+*added for nested arrays.
+* corrected the looping array problem
+
+20/03/08
+make jar file
+put up on the wiki
+
