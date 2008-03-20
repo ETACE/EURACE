@@ -154,7 +154,6 @@ public class DataPanel extends JPanel implements TableModelListener{
 		
 		if (tableMod.isCellEditable(itsAgentTable.getSelectedColumn(), itsAgentTable.getSelectedRow()))
 		{
-			//System.out.println("Table cell selected:");// check value
 			//System.out.println("column "+tableMod.getColumnName(itsAgentTable.getSelectedColumn()));
 		    tempString=(String)tableMod.getColumnName(itsAgentTable.getSelectedColumn());
 			
@@ -185,7 +184,7 @@ public class DataPanel extends JPanel implements TableModelListener{
 				}
 				
 				//checking ids
-				if((tempString.equals("id"))&& (tempValue!="Auto"))//id
+				if(((tempString.equals("id"))|| (tempString.equals("ID")))&& (tempValue!="Auto"))//id
 				{
 				itsAgentTable.getModel().setValueAt("Auto",rowIndex,colIndex);
 				itsTextArea.setText( tempString + " will have auto generated values.");
@@ -195,24 +194,25 @@ public class DataPanel extends JPanel implements TableModelListener{
 				if ((checking_dynamicarrays(colIndex)==true)&&(tempValue!="Auto"))//dynamic arrays
 				{
 					itsAgentTable.getModel().setValueAt("Auto",rowIndex,colIndex);
-					
 				}
 				//checking arrays
-				if(arraybracket>0)
+				if((arraybracket>0)&&(checking_DS(colIndex)==false))
 				{
-					System.out.println("Array found");
-					JFrame arrayFrame=new ExtraFrame(arraybracket,whatisMyDataType(colIndex));
-					
+					itsTextArea.setText( tempString + " is an array of size ["+ arraybracket +"]");
+					JFrame arrayFrame=new ExtraFrame(arraybracket,whatisMyDataType(colIndex), tableMod,rowIndex,colIndex,itsDatatypeMap,0);
+																	
 				}
 				
-				if((checking_DS(colIndex)==true)&&((arraybracket==0)))//single ds and no array
+				if(checking_DS(colIndex)==true)//datastructure exists
 				{
 					for(i=0;i<itsDatatTypeListSize;i++)
 					{
 						if(varTypes[colIndex-1].equals(itsDataType[i].getItsName()))
-						{						
-							JFrame ds=new DataStructFrame(itsDataType[i], tableMod,rowIndex,colIndex,itsDatatypeMap,this,0);
-							ds.show(true);
+						{	//need to pass the datastructure map cause to handle nested ds					
+							//JFrame ds=new DataStructFrame(itsDataType[i], tableMod,rowIndex,colIndex,itsDatatypeMap,this,0);
+							//ds.show(true);
+							itsTextArea.setText( tempString + " is a data structure of size ["+ arraybracket +"]");
+							JFrame arrayFrame=new ExtraFrame(arraybracket,whatisMyDataType(colIndex), tableMod,rowIndex,colIndex,itsDatatypeMap,1);
 						
 						}
 					}
@@ -224,66 +224,9 @@ public class DataPanel extends JPanel implements TableModelListener{
 					itsAgentTable.getModel().setValueAt(checking_random(tempValue),rowIndex,colIndex);
 				}
 			
-				
-		//array commenting	
-				/*	if((arraybracket>0)&&(tempValue.charAt(0)!='{')&&((checking_DS(colIndex)==false)))//arrays single data
-				{
-					
-				
-					for(a=0;a<arraybracket;a++)//for default datatype
-					{
-						String question="Enter element " + a + " for " +tempString;
-						arrayValues=JOptionPane.showInputDialog(question);
-						compileAnswer= compileAnswer.concat(arrayValues);
-						if(a!=arraybracket-1)
-						{
-							compileAnswer=compileAnswer.concat(",");
-						}
-					}
-					compileAnswer=compileAnswer.concat("}");
-					itsAgentTable.getModel().setValueAt(compileAnswer,rowIndex,colIndex);
-					//input for ints,doubles
-					
-				}
-				*/
-				if(tempValue.length()>2)
-				{
-					twoBrackets=tempValue.substring(0, 2);
-				}
-				//System.out.println("2 brackets " + twoBrackets);
-		/*		if((checking_DS(colIndex)==true)&&(dataArrayCounter>0)&&(tempValue.equals(twoBrackets)==false))//ds array
-				{
-					for(i=0;i<itsDatatTypeListSize;i++)
-					{
-						if(varTypes[colIndex-1].equals(itsDataType[i].getItsName()))
-						{						
-							System.out.println("structure array");
-							arrayCollection=new String[arraybracket];
-							
-							for(a=0;a<arraybracket;a++)
-							{
-								a=0;
-								dataArrayCounter--;
-								arrayCollection[a]=new String("");
-								System.out.println("value of a " + a );
-						//		JFrame ds=new DataStructFrame(itsDataType[i], tableMod,rowIndex,colIndex,itsDatatypeMap,this,a);
-							//	ds.show(true);
-								//tempValue=itsAgentTable.getValueAt(itsAgentTable.getSelectedRow(),itsAgentTable.getSelectedColumn()).toString();
-								//compileAnswer= compileAnswer.concat(tempValue);
-							//	System.out.println("compileanswer " + compileAnswer);
-								if(a!=arraybracket-1)
-								{
-								//	compileAnswer=compileAnswer.concat(",");
-									
-								}
-							}
-						//	compileAnswer=compileAnswer.concat("}");
-							itsAgentTable.getModel().setValueAt(compileAnswer,rowIndex,colIndex);
-							
-						
-						}
-					}
-				}*/
+				itsTextArea.setText("Table value updated: " + itsAgentTable.getValueAt(rowIndex,colIndex));
+		
+	
 			
 				break;
 			
@@ -414,6 +357,8 @@ public class DataPanel extends JPanel implements TableModelListener{
 		Vector typeVector=new Vector();
 		System.out.println("Datatype "+ varTypes[colIndex-1]);
 		typeVector.addElement((String)varTypes[colIndex-1]);
+		//add the name of the variable to the second element in vector
+		typeVector.addElement((String)columnNames[colIndex-1]);
 		return typeVector;
 	}//close:whatismydatatype
 	
