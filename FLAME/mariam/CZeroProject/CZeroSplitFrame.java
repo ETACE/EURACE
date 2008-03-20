@@ -382,16 +382,28 @@ public class CZeroSplitFrame extends JFrame implements ListSelectionListener, Ac
 						//check for arrays
 						elementName=checking_arrays(itsAgents[i].getItsAgentTypeData(b).getIndVariable(c).getItsAgentVarName());
 						Element xagentVarNameElement=new Element(elementName);
-				
+						//System.out.println("element NAme is: " +elementName);
 						if(checking_IDs(elementName)==true)
 						{
 							xagentVarNameElement.addContent(idvalue.toString());
 						}
+						//add check for everyrandomvalue
 						else
 						{
-							xagentVarNameElement.addContent(itsAgents[i].getItsAgentTypeData(b).getIndVariable(c).getItsAgentVarValue());
+							if(checkRandomEveryAgent(itsAgents[i].getItsAgentTypeData(b).getIndVariable(c).getItsAgentVarValue())==true) 
+							{
+								String randomValue;
+								System.out.println("Value before assignment =" +itsAgents[i].getItsAgentTypeData(b).getIndVariable(c).getItsAgentVarValue());
+								randomValue=calRandomNumber(itsAgents[i].getItsAgentTypeData(b).getIndVariable(c).getItsAgentVarValue());
+								System.out.println("Value after assignment =" +itsAgents[i].getItsAgentTypeData(b).getIndVariable(c).getItsAgentVarValue());
+								xagentVarNameElement.addContent(randomValue);
+								
+							}
+							else
+							{
+								xagentVarNameElement.addContent(itsAgents[i].getItsAgentTypeData(b).getIndVariable(c).getItsAgentVarValue());
+							}
 						}
-						
 						xagentElement[a].addContent(xagentVarNameElement);
 					}
 				a++;	
@@ -432,7 +444,7 @@ public class CZeroSplitFrame extends JFrame implements ListSelectionListener, Ac
 		catch(java.io.IOException e)
 		{
 			e.printStackTrace();
-			}//close:catch
+		}//close:catch
 		
 	} //close:createNewDomXml()
 	
@@ -452,6 +464,107 @@ public class CZeroSplitFrame extends JFrame implements ListSelectionListener, Ac
 	{
 		return temparray.equals("id");
 	}//close:checking_IDs()
+	
+	public boolean checkRandomEveryAgent(String tempValue)
+	{
+		//return true if random is required
+		String temp_randomIntEvery="EveryRandInt";
+		String temp_randomDoubleEvery="EveryRandDouble";
+		
+		
+		if(tempValue.indexOf(temp_randomIntEvery)>-1)
+		{
+			return true;
+		}
+		else if(tempValue.indexOf(temp_randomDoubleEvery)>-1)
+		{
+			return true;
+		}
+		else
+			return false;
+	}//close:checkRandomnumberevery
+	
+	//calculate new number
+	public String calRandomNumber(String tempValue)
+	{
+		String temp_randomIntEvery="EveryRandInt";
+		String temp_randomDoubleEvery="EveryRandDouble";
+		
+		int limitOne, limitTwo;
+		String temp_first;
+		int numberOne, numberTwo;
+		Integer newvalue;
+		String returnString;
+		Long newOne;
+		Double newTwo;
+		
+		if(tempValue.indexOf(temp_randomIntEvery)>-1)//if true
+		{
+			//first number
+			limitOne=tempValue.lastIndexOf("(")+1;
+			limitTwo=tempValue.lastIndexOf(",");
+			temp_first=tempValue.substring(limitOne, limitTwo);
+			System.out.println(limitOne + " " +  temp_first);
+			numberOne=Integer.parseInt(temp_first);
+			System.out.println("number="+temp_first);
+			//second number
+			limitOne=tempValue.lastIndexOf(",")+1;
+			limitTwo=tempValue.lastIndexOf(")");
+			temp_first=tempValue.substring(limitOne, limitTwo);
+			System.out.println(limitOne + " " +  temp_first);
+			numberTwo=Integer.parseInt(temp_first);
+			System.out.println("number="+temp_first);
+			
+			if(numberTwo>=numberOne)
+			{
+				newOne=Math.round(numberOne + (Math.random()* (numberTwo-numberOne)));
+				System.out.println("newOne = " + newOne);
+				newvalue=newOne.intValue();
+				returnString=newvalue.toString();
+				System.out.println("returnString " + returnString);
+				return returnString;
+			}
+			else
+			{
+				JOptionPane.showMessageDialog(null,"The second number should be bigger than the first!");
+			}
+		}//close int
+		
+		//double
+		if(tempValue.indexOf(temp_randomDoubleEvery)>-1)//if true
+		{
+			//first number
+			limitOne=tempValue.lastIndexOf("(")+1;
+			limitTwo=tempValue.lastIndexOf(",");
+			temp_first=tempValue.substring(limitOne, limitTwo);
+			numberOne=Integer.parseInt(temp_first);
+			System.out.println("number="+temp_first);
+			//second number
+			limitOne=tempValue.lastIndexOf(",")+1;
+			limitTwo=tempValue.lastIndexOf(")");
+			temp_first=tempValue.substring(limitOne, limitTwo);
+			numberTwo=Integer.parseInt(temp_first);
+			System.out.println("number="+temp_first);
+			
+			if(numberTwo>=numberOne)
+			{
+				//System.out.println("random number");
+				newTwo=numberOne + (Math.random()* (numberTwo-numberOne));
+				System.out.println("random Double= " + newTwo);
+				//System.out.println("here");
+			//	System.out.println("rounded = " + Math.round(newvalue));
+				//System.out.println("here2");
+				returnString=newTwo.toString();
+				System.out.println("retrunString Double " + returnString);
+				return returnString;
+			}
+			else
+			{
+				JOptionPane.showMessageDialog(null,"The second number should be bigger than the first!");
+			}
+		}//close double
+		return null;
+	}
 	
 	public void openFile()
 	{
