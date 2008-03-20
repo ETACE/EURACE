@@ -92,4 +92,5 @@ TODO-have to add nested ds
 20/03/08
 make jar file
 put up on the wiki
+added new functions for producing random values for every agent on the same row
 

@@ -1,0 +1,15 @@
+The file contains a list of the functions provided by the CZero
+==================================================================
+
+
+* randomInt(int a,int b)
+produces a random Int number between the range of the two a and b.
+
+* randomDouble(int a,int b)
+produces a random Double number between the range of the two a and b.
+
+* EveryRandInt(int a,int b)
+produces a random Int number for every single agent within the same type. (Defined on the same row)
+
+* EveryRandDouble(int a,int b)
+produces a random Double number for every single agent within the same type. (Defined on the same row)

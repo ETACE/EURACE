@@ -171,7 +171,7 @@ public class DataPanel extends JPanel implements TableModelListener{
 				
 			
 				//System.out.println("column: "+ itsAgentTable.getSelectedColumn()+"row: "+itsAgentTable.getSelectedRow()+" value" + itsAgentTable.getValueAt(itsAgentTable.getSelectedRow(),itsAgentTable.getSelectedColumn()).toString());//<----MARY: value of cell
-				tempValue=itsAgentTable.getValueAt(itsAgentTable.getSelectedRow(),itsAgentTable.getSelectedColumn()).toString();
+				tempValue=itsAgentTable.getModel().getValueAt(itsAgentTable.getSelectedRow(),itsAgentTable.getSelectedColumn()).toString();
 				
 				//checking numeric value for number of agents
 				if(tempString.equals("Number of Agents"))
@@ -482,7 +482,10 @@ public class DataPanel extends JPanel implements TableModelListener{
 				JOptionPane.showMessageDialog(null,"The second number should be bigger than the first!");
 			}
 		}//close double
+		
+		System.out.println("null printing");
 		return null;
+		
 				
 	}//close:checking_Random
 	
