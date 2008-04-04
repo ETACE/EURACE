@@ -37,11 +37,17 @@ struct Household
 int sendOrders(void);
 
 int updateTrader(void);
+
 CDouble *assetUtilitiesToDesiredWeights();
+
 Order *computeLimitOrder( Asset *anAsset, double weight, double resource,Belief *belief);
+
 int  distribuite(double cash, double totalwealth);
+
 void generatePendingOrders(CAsset *assetsowned,COrder *pending, Belief *belief,Portfolio *port);
+
 int totalassetsowned();
+
 double cashowned();
 #endif
 
