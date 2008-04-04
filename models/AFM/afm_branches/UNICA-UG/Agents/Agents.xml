@@ -135,6 +135,36 @@
 			</function>
 		</functions>
 	</xmachine>
+	<!--******************** X-machine Agent -Firm ***************************-->
+	<xmachine>
+		<name>Firm</name>
+		<!--      Variables for the ClearingHouse     -->
+		<memory>
+			<var><type>int</type><name>id</name></var>
+			<var><type>int</type><name>current_shares_outstanding</name></var>
+			<var><type>double</type><name>total_dividend_payment</name></var>
+			<var><type>double</type><name>bank_account</name></var>
+			<var><type>double</type><name>equity</name></var>
+			<var><type>double</type><name>posx</name></var>
+			<var><type>double</type><name>posy</name></var>
+		</memory>
+		<!--        Defining functions                -->
+		<functions>
+			<function>
+				<name>receiveAssetInformation</name>
+				<depends><name>sendAssetInformationEURO</name><type>asset</type></depends>
+			</function>
+			<function>
+				<name>receiveOrdersAndRun</name>
+				<depends><name>selectStrategy</name><type>order</type></depends>
+				<depends><name>receiveAssetInformation</name><type>internal</type></depends>
+			</function>
+			<function>
+				<name>sendAssetInformation</name>
+				<depends><name>receiveOrdersAndRun</name><type>internal</type></depends>
+			</function>
+		</functions>
+	</xmachine>
 	<!--******** Messages being posted by the agents to communicate *************-->
 	<messages>
 		<!--          Message posted to load a new value        -->
