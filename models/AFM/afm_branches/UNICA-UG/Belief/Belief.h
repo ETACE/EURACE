@@ -14,17 +14,17 @@
 typedef struct Belief Belief;
 struct Belief 
 {
-       double assetsExpectedPriceReturns;//dinamic array;
-       double assetsExpectedTotalReturns;
-       double assetsExpectedCashFlowYield;
+       double expectedPriceReturns;//dinamic array;
+       double expectedTotalReturns;
+       double expectedCashFlowYield;
        double volatility;
-       int forwardWindow;
-       int backwordWindow;
-       int binsNumber;
-       double randomReturnWeigth;
-       double fundametalReturnWeigth;
-       double chartistReturnWeigth;
-       int holdingPeriodToForwardW;
+       //int forwardWindow;
+       //int backwordWindow;
+       //int binsNumber;
+       //double randomReturnWeigth;
+       //double fundametalReturnWeigth;
+       //double chartistReturnWeigth;
+       //int holdingPeriodToForwardW;
        
 };
 #endif
