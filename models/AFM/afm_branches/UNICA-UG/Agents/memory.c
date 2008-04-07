@@ -49,7 +49,7 @@ void add_location(double point, location ** p_location)
 	}
 	
 	newlocation = (location *)malloc(sizeof(location));
-	
+	CHECK_POINTER(newlocation);	
 	if(tmp)
 	{
 		tmp->next = newlocation;
@@ -91,35 +91,46 @@ void freelocations(location ** p_location)
 xmachine * add_xmachine()
 {
 	xmachine * current = (xmachine *)malloc(sizeof(xmachine));
+	CHECK_POINTER(current);
+
 	current->xmachine_Eurostat = NULL;
 	current->xmachine_Household = NULL;
 	current->xmachine_ClearingHouse = NULL;
+	current->xmachine_Firm = NULL;
 	current->next = *p_xmachine;
 	*p_xmachine = current;
 	
 	current_node->agent_total++;
+
+/* add by cg for round-robin so that set_ has something to point at */
+	current_xmachine = current;
 	
 	return current;
 }
 
-/** \fn void add_Eurostat_agent(Asset_array * assets, double posx, double posy)
+/** \fn void add_Eurostat_agent(int id, Asset_array * assets, double range, double posx, double posy)
  * \brief Add Eurostat X-machine to the current being used X-machine list.
+ * \param id Variable for the X-machine memory.
  * \param assets Variable for the X-machine memory.
+ * \param range Variable for the X-machine memory.
  * \param posx Variable for the X-machine memory.
  * \param posy Variable for the X-machine memory.
  */
-void add_Eurostat_agent(Asset_array * assets, double posx, double posy)
+void add_Eurostat_agent(int id, Asset_array * assets, double range, double posx, double posy)
 {
 	xmachine * new_xmachine = add_xmachine();
 	xmachine_memory_Eurostat * current = (xmachine_memory_Eurostat *)malloc(sizeof(xmachine_memory_Eurostat));
-	
+		CHECK_POINTER(current);
+
 	new_xmachine->xmachine_Eurostat = current;
+	current->id = id;
 	current->assets = assets;
+	current->range = range;
 	current->posx = posx;
 	current->posy = posy;
 }
 
-/** \fn void add_Household_agent(int id, double wealth, Belief * belief, Portfolio * portfolio, Order_array * pendingOrders, Asset_array * assetsowned, double posx, double posy)
+/** \fn void add_Household_agent(int id, double wealth, Belief * belief, Portfolio * portfolio, Order_array * pendingOrders, Asset_array * assetsowned, int forwardWindow, int backwordWindow, int binsNumber, double randomReturnWeigth, double fundametalReturnWeigth, double chartistReturnWeigth, int holdingPeriodToForwardW, double range, double posx, double posy)
  * \brief Add Household X-machine to the current being used X-machine list.
  * \param id Variable for the X-machine memory.
  * \param wealth Variable for the X-machine memory.
@@ -127,14 +138,23 @@ void add_Eurostat_agent(Asset_array * assets, double posx, double posy)
  * \param portfolio Variable for the X-machine memory.
  * \param pendingOrders Variable for the X-machine memory.
  * \param assetsowned Variable for the X-machine memory.
+ * \param forwardWindow Variable for the X-machine memory.
+ * \param backwordWindow Variable for the X-machine memory.
+ * \param binsNumber Variable for the X-machine memory.
+ * \param randomReturnWeigth Variable for the X-machine memory.
+ * \param fundametalReturnWeigth Variable for the X-machine memory.
+ * \param chartistReturnWeigth Variable for the X-machine memory.
+ * \param holdingPeriodToForwardW Variable for the X-machine memory.
+ * \param range Variable for the X-machine memory.
  * \param posx Variable for the X-machine memory.
  * \param posy Variable for the X-machine memory.
  */
-void add_Household_agent(int id, double wealth, Belief * belief, Portfolio * portfolio, Order_array * pendingOrders, Asset_array * assetsowned, double posx, double posy)
+void add_Household_agent(int id, double wealth, Belief * belief, Portfolio * portfolio, Order_array * pendingOrders, Asset_array * assetsowned, int forwardWindow, int backwordWindow, int binsNumber, double randomReturnWeigth, double fundametalReturnWeigth, double chartistReturnWeigth, int holdingPeriodToForwardW, double range, double posx, double posy)
 {
 	xmachine * new_xmachine = add_xmachine();
 	xmachine_memory_Household * current = (xmachine_memory_Household *)malloc(sizeof(xmachine_memory_Household));
-	
+		CHECK_POINTER(current);
+
 	new_xmachine->xmachine_Household = current;
 	current->id = id;
 	current->wealth = wealth;
@@ -142,25 +162,64 @@ void add_Household_agent(int id, double wealth, Belief * belief, Portfolio * por
 	current->portfolio = portfolio;
 	current->pendingOrders = pendingOrders;
 	current->assetsowned = assetsowned;
+	current->forwardWindow = forwardWindow;
+	current->backwordWindow = backwordWindow;
+	current->binsNumber = binsNumber;
+	current->randomReturnWeigth = randomReturnWeigth;
+	current->fundametalReturnWeigth = fundametalReturnWeigth;
+	current->chartistReturnWeigth = chartistReturnWeigth;
+	current->holdingPeriodToForwardW = holdingPeriodToForwardW;
+	current->range = range;
 	current->posx = posx;
 	current->posy = posy;
 }
 
-/** \fn void add_ClearingHouse_agent(int id, Asset_array * assets, double posx, double posy)
+/** \fn void add_ClearingHouse_agent(int id, Asset_array * assets, double range, double posx, double posy)
  * \brief Add ClearingHouse X-machine to the current being used X-machine list.
  * \param id Variable for the X-machine memory.
  * \param assets Variable for the X-machine memory.
+ * \param range Variable for the X-machine memory.
  * \param posx Variable for the X-machine memory.
  * \param posy Variable for the X-machine memory.
  */
-void add_ClearingHouse_agent(int id, Asset_array * assets, double posx, double posy)
+void add_ClearingHouse_agent(int id, Asset_array * assets, double range, double posx, double posy)
 {
 	xmachine * new_xmachine = add_xmachine();
 	xmachine_memory_ClearingHouse * current = (xmachine_memory_ClearingHouse *)malloc(sizeof(xmachine_memory_ClearingHouse));
-	
+		CHECK_POINTER(current);
+
 	new_xmachine->xmachine_ClearingHouse = current;
 	current->id = id;
 	current->assets = assets;
+	current->range = range;
+	current->posx = posx;
+	current->posy = posy;
+}
+
+/** \fn void add_Firm_agent(int id, int current_shares_outstanding, double total_dividend_payment, double bank_account, double equity, double range, double posx, double posy)
+ * \brief Add Firm X-machine to the current being used X-machine list.
+ * \param id Variable for the X-machine memory.
+ * \param current_shares_outstanding Variable for the X-machine memory.
+ * \param total_dividend_payment Variable for the X-machine memory.
+ * \param bank_account Variable for the X-machine memory.
+ * \param equity Variable for the X-machine memory.
+ * \param range Variable for the X-machine memory.
+ * \param posx Variable for the X-machine memory.
+ * \param posy Variable for the X-machine memory.
+ */
+void add_Firm_agent(int id, int current_shares_outstanding, double total_dividend_payment, double bank_account, double equity, double range, double posx, double posy)
+{
+	xmachine * new_xmachine = add_xmachine();
+	xmachine_memory_Firm * current = (xmachine_memory_Firm *)malloc(sizeof(xmachine_memory_Firm));
+		CHECK_POINTER(current);
+
+	new_xmachine->xmachine_Firm = current;
+	current->id = id;
+	current->current_shares_outstanding = current_shares_outstanding;
+	current->total_dividend_payment = total_dividend_payment;
+	current->bank_account = bank_account;
+	current->equity = equity;
+	current->range = range;
 	current->posx = posx;
 	current->posy = posy;
 }
@@ -195,6 +254,10 @@ void free_agent()
 			{
 				free_Asset_array(head->xmachine_ClearingHouse->assets);
 				free(head->xmachine_ClearingHouse);
+			}
+			if(head->xmachine_Firm)
+			{
+				free(head->xmachine_Firm);
 			}
 
 		free(head);
@@ -240,6 +303,10 @@ void freexmachines()
 			free_Asset_array(head->xmachine_ClearingHouse->assets);
 			free(head->xmachine_ClearingHouse);
 		}
+		if(head->xmachine_Firm)
+		{
+			free(head->xmachine_Firm);
+		}
 		free(head);
 		head = tmp;
 	}
@@ -247,6 +314,34 @@ void freexmachines()
 	*p_xmachine = NULL;
 }
 
+
+/** \fn void set_id(int id) 
+ * \brief Set id memory variable for current X-machine.
+ * \param id New value for variable.
+ */
+void set_id(int id)
+{
+	if(current_xmachine->xmachine_Eurostat) current_xmachine->xmachine_Eurostat->id = id;
+	if(current_xmachine->xmachine_Household) current_xmachine->xmachine_Household->id = id;
+	if(current_xmachine->xmachine_ClearingHouse) current_xmachine->xmachine_ClearingHouse->id = id;
+	if(current_xmachine->xmachine_Firm) current_xmachine->xmachine_Firm->id = id;
+}
+
+/** \fn int get_id()
+ * \brief Get id memory variable from current X-machine.
+ * \return Value for variable.
+ */
+int get_id()
+{
+	if(current_xmachine->xmachine_Eurostat) return current_xmachine->xmachine_Eurostat->id;
+	if(current_xmachine->xmachine_Household) return current_xmachine->xmachine_Household->id;
+	if(current_xmachine->xmachine_ClearingHouse) return current_xmachine->xmachine_ClearingHouse->id;
+	if(current_xmachine->xmachine_Firm) return current_xmachine->xmachine_Firm->id;
+
+    /* suppress compiler warning by returning dummy value */
+    /* this statement should rightfully NEVER be reached */
+    return (int)0;
+}
 
 /** \fn Asset_array get_assets()
  * \brief Get assets memory variable from current X-machine.
@@ -262,6 +357,34 @@ Asset_array * get_assets()
     return NULL;
 }
 
+/** \fn void set_range(double range) 
+ * \brief Set range memory variable for current X-machine.
+ * \param range New value for variable.
+ */
+void set_range(double range)
+{
+	if(current_xmachine->xmachine_Eurostat) current_xmachine->xmachine_Eurostat->range = range;
+	if(current_xmachine->xmachine_Household) current_xmachine->xmachine_Household->range = range;
+	if(current_xmachine->xmachine_ClearingHouse) current_xmachine->xmachine_ClearingHouse->range = range;
+	if(current_xmachine->xmachine_Firm) current_xmachine->xmachine_Firm->range = range;
+}
+
+/** \fn double get_range()
+ * \brief Get range memory variable from current X-machine.
+ * \return Value for variable.
+ */
+double get_range()
+{
+	if(current_xmachine->xmachine_Eurostat) return current_xmachine->xmachine_Eurostat->range;
+	if(current_xmachine->xmachine_Household) return current_xmachine->xmachine_Household->range;
+	if(current_xmachine->xmachine_ClearingHouse) return current_xmachine->xmachine_ClearingHouse->range;
+	if(current_xmachine->xmachine_Firm) return current_xmachine->xmachine_Firm->range;
+
+    /* suppress compiler warning by returning dummy value */
+    /* this statement should rightfully NEVER be reached */
+    return (double)0;
+}
+
 /** \fn void set_posx(double posx) 
  * \brief Set posx memory variable for current X-machine.
  * \param posx New value for variable.
@@ -271,6 +394,7 @@ void set_posx(double posx)
 	if(current_xmachine->xmachine_Eurostat) current_xmachine->xmachine_Eurostat->posx = posx;
 	if(current_xmachine->xmachine_Household) current_xmachine->xmachine_Household->posx = posx;
 	if(current_xmachine->xmachine_ClearingHouse) current_xmachine->xmachine_ClearingHouse->posx = posx;
+	if(current_xmachine->xmachine_Firm) current_xmachine->xmachine_Firm->posx = posx;
 }
 
 /** \fn double get_posx()
@@ -282,6 +406,7 @@ double get_posx()
 	if(current_xmachine->xmachine_Eurostat) return current_xmachine->xmachine_Eurostat->posx;
 	if(current_xmachine->xmachine_Household) return current_xmachine->xmachine_Household->posx;
 	if(current_xmachine->xmachine_ClearingHouse) return current_xmachine->xmachine_ClearingHouse->posx;
+	if(current_xmachine->xmachine_Firm) return current_xmachine->xmachine_Firm->posx;
 
     /* suppress compiler warning by returning dummy value */
     /* this statement should rightfully NEVER be reached */
@@ -297,6 +422,7 @@ void set_posy(double posy)
 	if(current_xmachine->xmachine_Eurostat) current_xmachine->xmachine_Eurostat->posy = posy;
 	if(current_xmachine->xmachine_Household) current_xmachine->xmachine_Household->posy = posy;
 	if(current_xmachine->xmachine_ClearingHouse) current_xmachine->xmachine_ClearingHouse->posy = posy;
+	if(current_xmachine->xmachine_Firm) current_xmachine->xmachine_Firm->posy = posy;
 }
 
 /** \fn double get_posy()
@@ -308,34 +434,11 @@ double get_posy()
 	if(current_xmachine->xmachine_Eurostat) return current_xmachine->xmachine_Eurostat->posy;
 	if(current_xmachine->xmachine_Household) return current_xmachine->xmachine_Household->posy;
 	if(current_xmachine->xmachine_ClearingHouse) return current_xmachine->xmachine_ClearingHouse->posy;
+	if(current_xmachine->xmachine_Firm) return current_xmachine->xmachine_Firm->posy;
 
     /* suppress compiler warning by returning dummy value */
     /* this statement should rightfully NEVER be reached */
     return (double)0;
-}
-
-/** \fn void set_id(int id) 
- * \brief Set id memory variable for current X-machine.
- * \param id New value for variable.
- */
-void set_id(int id)
-{
-	if(current_xmachine->xmachine_Household) current_xmachine->xmachine_Household->id = id;
-	if(current_xmachine->xmachine_ClearingHouse) current_xmachine->xmachine_ClearingHouse->id = id;
-}
-
-/** \fn int get_id()
- * \brief Get id memory variable from current X-machine.
- * \return Value for variable.
- */
-int get_id()
-{
-	if(current_xmachine->xmachine_Household) return current_xmachine->xmachine_Household->id;
-	if(current_xmachine->xmachine_ClearingHouse) return current_xmachine->xmachine_ClearingHouse->id;
-
-    /* suppress compiler warning by returning dummy value */
-    /* this statement should rightfully NEVER be reached */
-    return (int)0;
 }
 
 /** \fn void set_wealth(double wealth) 
@@ -412,6 +515,278 @@ Asset_array * get_assetsowned()
     return NULL;
 }
 
+/** \fn void set_forwardWindow(int forwardWindow) 
+ * \brief Set forwardWindow memory variable for current X-machine.
+ * \param forwardWindow New value for variable.
+ */
+void set_forwardWindow(int forwardWindow)
+{
+	if(current_xmachine->xmachine_Household) current_xmachine->xmachine_Household->forwardWindow = forwardWindow;
+}
+
+/** \fn int get_forwardWindow()
+ * \brief Get forwardWindow memory variable from current X-machine.
+ * \return Value for variable.
+ */
+int get_forwardWindow()
+{
+	if(current_xmachine->xmachine_Household) return current_xmachine->xmachine_Household->forwardWindow;
+
+    /* suppress compiler warning by returning dummy value */
+    /* this statement should rightfully NEVER be reached */
+    return (int)0;
+}
+
+/** \fn void set_backwordWindow(int backwordWindow) 
+ * \brief Set backwordWindow memory variable for current X-machine.
+ * \param backwordWindow New value for variable.
+ */
+void set_backwordWindow(int backwordWindow)
+{
+	if(current_xmachine->xmachine_Household) current_xmachine->xmachine_Household->backwordWindow = backwordWindow;
+}
+
+/** \fn int get_backwordWindow()
+ * \brief Get backwordWindow memory variable from current X-machine.
+ * \return Value for variable.
+ */
+int get_backwordWindow()
+{
+	if(current_xmachine->xmachine_Household) return current_xmachine->xmachine_Household->backwordWindow;
+
+    /* suppress compiler warning by returning dummy value */
+    /* this statement should rightfully NEVER be reached */
+    return (int)0;
+}
+
+/** \fn void set_binsNumber(int binsNumber) 
+ * \brief Set binsNumber memory variable for current X-machine.
+ * \param binsNumber New value for variable.
+ */
+void set_binsNumber(int binsNumber)
+{
+	if(current_xmachine->xmachine_Household) current_xmachine->xmachine_Household->binsNumber = binsNumber;
+}
+
+/** \fn int get_binsNumber()
+ * \brief Get binsNumber memory variable from current X-machine.
+ * \return Value for variable.
+ */
+int get_binsNumber()
+{
+	if(current_xmachine->xmachine_Household) return current_xmachine->xmachine_Household->binsNumber;
+
+    /* suppress compiler warning by returning dummy value */
+    /* this statement should rightfully NEVER be reached */
+    return (int)0;
+}
+
+/** \fn void set_randomReturnWeigth(double randomReturnWeigth) 
+ * \brief Set randomReturnWeigth memory variable for current X-machine.
+ * \param randomReturnWeigth New value for variable.
+ */
+void set_randomReturnWeigth(double randomReturnWeigth)
+{
+	if(current_xmachine->xmachine_Household) current_xmachine->xmachine_Household->randomReturnWeigth = randomReturnWeigth;
+}
+
+/** \fn double get_randomReturnWeigth()
+ * \brief Get randomReturnWeigth memory variable from current X-machine.
+ * \return Value for variable.
+ */
+double get_randomReturnWeigth()
+{
+	if(current_xmachine->xmachine_Household) return current_xmachine->xmachine_Household->randomReturnWeigth;
+
+    /* suppress compiler warning by returning dummy value */
+    /* this statement should rightfully NEVER be reached */
+    return (double)0;
+}
+
+/** \fn void set_fundametalReturnWeigth(double fundametalReturnWeigth) 
+ * \brief Set fundametalReturnWeigth memory variable for current X-machine.
+ * \param fundametalReturnWeigth New value for variable.
+ */
+void set_fundametalReturnWeigth(double fundametalReturnWeigth)
+{
+	if(current_xmachine->xmachine_Household) current_xmachine->xmachine_Household->fundametalReturnWeigth = fundametalReturnWeigth;
+}
+
+/** \fn double get_fundametalReturnWeigth()
+ * \brief Get fundametalReturnWeigth memory variable from current X-machine.
+ * \return Value for variable.
+ */
+double get_fundametalReturnWeigth()
+{
+	if(current_xmachine->xmachine_Household) return current_xmachine->xmachine_Household->fundametalReturnWeigth;
+
+    /* suppress compiler warning by returning dummy value */
+    /* this statement should rightfully NEVER be reached */
+    return (double)0;
+}
+
+/** \fn void set_chartistReturnWeigth(double chartistReturnWeigth) 
+ * \brief Set chartistReturnWeigth memory variable for current X-machine.
+ * \param chartistReturnWeigth New value for variable.
+ */
+void set_chartistReturnWeigth(double chartistReturnWeigth)
+{
+	if(current_xmachine->xmachine_Household) current_xmachine->xmachine_Household->chartistReturnWeigth = chartistReturnWeigth;
+}
+
+/** \fn double get_chartistReturnWeigth()
+ * \brief Get chartistReturnWeigth memory variable from current X-machine.
+ * \return Value for variable.
+ */
+double get_chartistReturnWeigth()
+{
+	if(current_xmachine->xmachine_Household) return current_xmachine->xmachine_Household->chartistReturnWeigth;
+
+    /* suppress compiler warning by returning dummy value */
+    /* this statement should rightfully NEVER be reached */
+    return (double)0;
+}
+
+/** \fn void set_holdingPeriodToForwardW(int holdingPeriodToForwardW) 
+ * \brief Set holdingPeriodToForwardW memory variable for current X-machine.
+ * \param holdingPeriodToForwardW New value for variable.
+ */
+void set_holdingPeriodToForwardW(int holdingPeriodToForwardW)
+{
+	if(current_xmachine->xmachine_Household) current_xmachine->xmachine_Household->holdingPeriodToForwardW = holdingPeriodToForwardW;
+}
+
+/** \fn int get_holdingPeriodToForwardW()
+ * \brief Get holdingPeriodToForwardW memory variable from current X-machine.
+ * \return Value for variable.
+ */
+int get_holdingPeriodToForwardW()
+{
+	if(current_xmachine->xmachine_Household) return current_xmachine->xmachine_Household->holdingPeriodToForwardW;
+
+    /* suppress compiler warning by returning dummy value */
+    /* this statement should rightfully NEVER be reached */
+    return (int)0;
+}
+
+/** \fn void set_current_shares_outstanding(int current_shares_outstanding) 
+ * \brief Set current_shares_outstanding memory variable for current X-machine.
+ * \param current_shares_outstanding New value for variable.
+ */
+void set_current_shares_outstanding(int current_shares_outstanding)
+{
+	if(current_xmachine->xmachine_Firm) current_xmachine->xmachine_Firm->current_shares_outstanding = current_shares_outstanding;
+}
+
+/** \fn int get_current_shares_outstanding()
+ * \brief Get current_shares_outstanding memory variable from current X-machine.
+ * \return Value for variable.
+ */
+int get_current_shares_outstanding()
+{
+	if(current_xmachine->xmachine_Firm) return current_xmachine->xmachine_Firm->current_shares_outstanding;
+
+    /* suppress compiler warning by returning dummy value */
+    /* this statement should rightfully NEVER be reached */
+    return (int)0;
+}
+
+/** \fn void set_total_dividend_payment(double total_dividend_payment) 
+ * \brief Set total_dividend_payment memory variable for current X-machine.
+ * \param total_dividend_payment New value for variable.
+ */
+void set_total_dividend_payment(double total_dividend_payment)
+{
+	if(current_xmachine->xmachine_Firm) current_xmachine->xmachine_Firm->total_dividend_payment = total_dividend_payment;
+}
+
+/** \fn double get_total_dividend_payment()
+ * \brief Get total_dividend_payment memory variable from current X-machine.
+ * \return Value for variable.
+ */
+double get_total_dividend_payment()
+{
+	if(current_xmachine->xmachine_Firm) return current_xmachine->xmachine_Firm->total_dividend_payment;
+
+    /* suppress compiler warning by returning dummy value */
+    /* this statement should rightfully NEVER be reached */
+    return (double)0;
+}
+
+/** \fn void set_bank_account(double bank_account) 
+ * \brief Set bank_account memory variable for current X-machine.
+ * \param bank_account New value for variable.
+ */
+void set_bank_account(double bank_account)
+{
+	if(current_xmachine->xmachine_Firm) current_xmachine->xmachine_Firm->bank_account = bank_account;
+}
+
+/** \fn double get_bank_account()
+ * \brief Get bank_account memory variable from current X-machine.
+ * \return Value for variable.
+ */
+double get_bank_account()
+{
+	if(current_xmachine->xmachine_Firm) return current_xmachine->xmachine_Firm->bank_account;
+
+    /* suppress compiler warning by returning dummy value */
+    /* this statement should rightfully NEVER be reached */
+    return (double)0;
+}
+
+/** \fn void set_equity(double equity) 
+ * \brief Set equity memory variable for current X-machine.
+ * \param equity New value for variable.
+ */
+void set_equity(double equity)
+{
+	if(current_xmachine->xmachine_Firm) current_xmachine->xmachine_Firm->equity = equity;
+}
+
+/** \fn double get_equity()
+ * \brief Get equity memory variable from current X-machine.
+ * \return Value for variable.
+ */
+double get_equity()
+{
+	if(current_xmachine->xmachine_Firm) return current_xmachine->xmachine_Firm->equity;
+
+    /* suppress compiler warning by returning dummy value */
+    /* this statement should rightfully NEVER be reached */
+    return (double)0;
+}
+
+
+/** \fn double agent_get_range()
+ * \brief Fixed routine to get the range from current X-machine
+  * \return Value of range
+  */
+double agent_get_range()
+{
+    double value = 0.0;
+    if (current_xmachine->xmachine_Eurostat) value = current_xmachine->xmachine_Eurostat->range;
+    if (current_xmachine->xmachine_Household) value = current_xmachine->xmachine_Household->range;
+    if (current_xmachine->xmachine_ClearingHouse) value = current_xmachine->xmachine_ClearingHouse->range;
+    if (current_xmachine->xmachine_Firm) value = current_xmachine->xmachine_Firm->range;
+
+    return value;
+}
+
+/** \fn int agent_get_id()
+ * \brief Fixed routine to get the id for the current X-machine
+  * \return Value of agent id
+  */
+int agent_get_id()
+{
+    int value = 0;
+    if (current_xmachine->xmachine_Eurostat) value = current_xmachine->xmachine_Eurostat->id;
+    if (current_xmachine->xmachine_Household) value = current_xmachine->xmachine_Household->id;
+    if (current_xmachine->xmachine_ClearingHouse) value = current_xmachine->xmachine_ClearingHouse->id;
+    if (current_xmachine->xmachine_Firm) value = current_xmachine->xmachine_Firm->id;
+
+    return value;
+}
 
 /** \fn double agent_get_x()
  * \brief Fixed routine to get the x coordinate from current X-machine
@@ -423,6 +798,7 @@ double agent_get_x()
     if (current_xmachine->xmachine_Eurostat) value = current_xmachine->xmachine_Eurostat->posx;
     if (current_xmachine->xmachine_Household) value = current_xmachine->xmachine_Household->posx;
     if (current_xmachine->xmachine_ClearingHouse) value = current_xmachine->xmachine_ClearingHouse->posx;
+    if (current_xmachine->xmachine_Firm) value = current_xmachine->xmachine_Firm->posx;
 
     return value;
 }
@@ -436,6 +812,7 @@ double agent_get_y()
     if (current_xmachine->xmachine_Eurostat) value = current_xmachine->xmachine_Eurostat->posy; 
     if (current_xmachine->xmachine_Household) value = current_xmachine->xmachine_Household->posy; 
     if (current_xmachine->xmachine_ClearingHouse) value = current_xmachine->xmachine_ClearingHouse->posy; 
+    if (current_xmachine->xmachine_Firm) value = current_xmachine->xmachine_Firm->posy; 
 
     return value;
 }
@@ -466,6 +843,7 @@ void randomisexagent() {
 
     /* allocate mem for dynamic temp array */
     address_list = (xmachine **)malloc(sizeof(xmachine *) * xm_count);
+	CHECK_POINTER(address_list);
 
     p_xmachine = &current_node->agents;
     
@@ -527,6 +905,7 @@ void add_node(int node_id, double minx, double maxx, double miny, double maxy, d
 	}
 	
 	current = (node_information *)malloc(sizeof(node_information));
+		CHECK_POINTER(current);
 
 	if(tmp)
 	{
@@ -659,6 +1038,12 @@ void propagate_agents()
 			y_xmachine = current_xmachine->xmachine_ClearingHouse->posy;
 			z_xmachine = 0.0;
 		}
+		else if(current_xmachine->xmachine_Firm != NULL)
+		{
+			x_xmachine = current_xmachine->xmachine_Firm->posx;
+			y_xmachine = current_xmachine->xmachine_Firm->posy;
+			z_xmachine = 0.0;
+		}
 		
 		if(x_xmachine < current_node->partition_data[0] ||
 		   x_xmachine > current_node->partition_data[1] ||
@@ -705,9 +1090,11 @@ void propagate_agents()
 int_array * init_int_array()
 {
 	int_array * new_array = (int_array *)malloc(sizeof(int_array));
+		CHECK_POINTER(new_array);
 	new_array->size = 0;
 	new_array->total_size = ARRAY_BLOCK_SIZE;
 	new_array->array = (int *)malloc(ARRAY_BLOCK_SIZE * sizeof(int));
+		CHECK_POINTER(new_array->array);
 	
 	return new_array;
 }
@@ -755,6 +1142,43 @@ void sort_int_array(int_array * array)
 	}
 }
 
+/** \fn int quicksort_int(int *array, int elements)
+ *  \brief Sorts the elements of the integer array in ascending order.
+ *  \param Pointer to integer array
+ *  \param Number of elements that must be sorted
+ *  \return integer value indicating success(0) or failure(1)
+ */
+int quicksort_int(int * array, int elements)
+{
+	#define  LEVEL  1000
+	int  pivot, begin[LEVEL], end[LEVEL], i=0, left, right ;
+	begin[0]=0; end[0]=elements;
+	while (i>=0)
+	{
+		left=begin[i]; right=end[i]-1;
+		if (left<right)
+		{
+			pivot=array[left]; if (i==LEVEL-1) return 1;
+			while (left<right)
+			{
+				while (array[right]>=pivot && left<right) right--;
+				if (left<right) array[left++]=array[right];
+				while (array[left]<=pivot && left<right) left++;
+				if (left<right) array[right--]=array[left];
+			}
+			array[left]=pivot;
+			begin[i+1]=left+1;
+			end[i+1]=end[i];
+			end[i++]=left;
+		}
+	    else 
+	    {
+	      i--;
+	    }
+	}
+	return 0;
+}
+
 /** \fn void add_int(int_array * array, int new_int)
 * \brief Add an integer to the dynamic integer array.
 * \param array Pointer to the dynamic integer array.
@@ -783,7 +1207,7 @@ void remove_int(int_array * array, int index)
 	if(index <= array->size)
 	{
 		/* memcopy?? */
-		for(i = index; i < array->size; i++)
+		for(i = index; i < array->size - 1; i++)
 		{
 			array->array[i] = array->array[i+1];
 		}
@@ -812,9 +1236,11 @@ void print_int_array(int_array * array)
 float_array * init_float_array()
 {
 	float_array * new_array = (float_array *)malloc(sizeof(float_array));
+		CHECK_POINTER(new_array);
 	new_array->size = 0;
 	new_array->total_size = ARRAY_BLOCK_SIZE;
 	new_array->array = (float *)malloc(ARRAY_BLOCK_SIZE * sizeof(float));
+		CHECK_POINTER(new_array->array);
 	
 	return new_array;
 }
@@ -863,6 +1289,44 @@ void sort_float_array(float_array * array)
 	}
 }
 
+/** \fn int quicksort_float(float *array, int elements)
+ *  \brief Sorts the elements of the float array in ascending order.
+ *  \param Pointer to float array
+ *  \param Number of elements that must be sorted
+ *  \return integer value indicating success(0) or failure(1)
+ */
+int quicksort_float(float * array, int elements)
+{
+	#define  LEVEL  1000
+	int i=0, left, right ;
+	float pivot, begin[LEVEL], end[LEVEL];
+	begin[0]=0; end[0]=elements;
+	while (i>=0)
+	{
+		left=begin[i]; right=end[i]-1;
+		if (left<right)
+		{
+			pivot=array[left]; if (i==LEVEL-1) return 1;
+			while (left<right)
+			{
+				while (array[right]>=pivot && left<right) right--;
+				if (left<right) array[left++]=array[right];
+				while (array[left]<=pivot && left<right) left++;
+				if (left<right) array[right--]=array[left];
+			}
+			array[left]=pivot;
+			begin[i+1]=left+1;
+			end[i+1]=end[i];
+			end[i++]=left;
+		}
+	    else 
+	    {
+	      i--;
+	    }
+	}
+	return 0;
+}
+
 /** \fn void add_float(float_array * array, float new_float)
 * \brief Add an floateger to the dynamic float array.
 * \param array Pointer to the dynamic float array.
@@ -891,7 +1355,7 @@ void remove_float(float_array * array, int index)
 	if(index <= array->size)
 	{
 		/* memcopy?? */
-		for(i = index; i < array->size; i++)
+		for(i = index; i < array->size - 1; i++)
 		{
 			array->array[i] = array->array[i+1];
 		}
@@ -920,9 +1384,11 @@ void print_float_array(float_array * array)
 double_array * init_double_array()
 {
 	double_array * new_array = (double_array *)malloc(sizeof(double_array));
+		CHECK_POINTER(new_array);
 	new_array->size = 0;
 	new_array->total_size = ARRAY_BLOCK_SIZE;
 	new_array->array = (double *)malloc(ARRAY_BLOCK_SIZE * sizeof(double));
+		CHECK_POINTER(new_array->array);
 	return new_array;
 }
 
@@ -971,6 +1437,44 @@ void sort_double_array(double_array * array)
 	}
 }
 
+/** \fn int quicksort_double(double *array, int elements)
+ *  \brief Sorts the elements of the double array in ascending order.
+ *  \param Pointer to double array
+ *  \param Number of elements that must be sorted
+ *  \return integer value indicating success(0) or failure(1)
+ */
+int quicksort_double(double * array, int elements)
+{
+	#define  LEVEL  1000
+	double pivot, begin[LEVEL], end[LEVEL];
+	int  i=0, left, right ; 
+	begin[0]=0; end[0]=elements;
+	while (i>=0)
+	{
+		left=begin[i]; right=end[i]-1;
+		if (left<right)
+		{
+			pivot=array[left]; if (i==LEVEL-1) return 1;
+			while (left<right)
+			{
+				while (array[right]>=pivot && left<right) right--;
+				if (left<right) array[left++]=array[right];
+				while (array[left]<=pivot && left<right) left++;
+				if (left<right) array[right--]=array[left];
+			}
+			array[left]=pivot;
+			begin[i+1]=left+1;
+			end[i+1]=end[i];
+			end[i++]=left;
+		}
+	    else 
+	    {
+	      i--;
+	    }
+	}
+	return 0;
+}
+
 /** \fn void add_double(double_array * array, double new_double)
  * \brief Add an double to the dynamic double array.
  * \param array Pointer to the dynamic double array.
@@ -998,7 +1502,7 @@ void remove_double(double_array * array, int index)
 	if(index <= array->size)
 	{
 		/* memcopy?? */
-		for(i = index; i < array->size; i++)
+		for(i = index; i < array->size - 1; i++)
 		{
 			array->array[i] = array->array[i+1];
 		}
@@ -1027,9 +1531,11 @@ void print_double_array(double_array * array)
 char_array * init_char_array()
 {
 	char_array * new_array = (char_array *)malloc(sizeof(char_array));
+		CHECK_POINTER(new_array);
 	new_array->size = 0;
 	new_array->total_size = ARRAY_BLOCK_SIZE;
 	new_array->array = (char *)malloc(ARRAY_BLOCK_SIZE * sizeof(char));
+		CHECK_POINTER(new_array->array);
 	new_array->array[0] = '\0';
 	return new_array;
 }
@@ -1081,7 +1587,7 @@ void remove_char(char_array * array, int index)
 	if(index <= array->size)
 	{
 		/* memcopy?? */
-		for(i = index; i < array->size; i++)
+		for(i = index; i < array->size - 1; i++)
 		{
 			array->array[i] = array->array[i+1];
 		}
@@ -1097,6 +1603,7 @@ void remove_char(char_array * array, int index)
 char * copy_array_to_str(char_array * array)
 {
 	char * new_string = (char *)malloc( (array->size + 1) * sizeof(char));
+		CHECK_POINTER(new_string);
 	return strcpy(new_string, array->array);
 }
 
@@ -1117,9 +1624,11 @@ void print_char_array(char_array * array)
 Portfolio_array * init_Portfolio_array()
 {
 	Portfolio_array * new_array = (Portfolio_array *)malloc(sizeof(Portfolio_array));
+		CHECK_POINTER(new_array);
 	new_array->size = 0;
 	new_array->total_size = ARRAY_BLOCK_SIZE;
 	new_array->array = (Portfolio **)malloc(ARRAY_BLOCK_SIZE * sizeof(Portfolio *));
+		CHECK_POINTER(new_array->array);
 	
 	return new_array;
 }
@@ -1162,6 +1671,8 @@ void add_Portfolio(Portfolio_array * array, double bankAccount)
 		array->array = (Portfolio **)realloc(array->array, (array->total_size * sizeof(Portfolio *)));
 	}
 	array->array[array->size] = (Portfolio *)malloc(sizeof(Portfolio));
+		CHECK_POINTER(array->array[array->size]);
+
 	array->array[array->size]->bankAccount = bankAccount;
 	
 	array->size++;
@@ -1179,7 +1690,7 @@ void remove_Portfolio(Portfolio_array * array, int index)
 	if(index <= array->size)
 	{
 		/* memcopy?? */
-		for(i = index; i < array->size; i++)
+		for(i = index; i < array->size - 1; i++)
 		{
 			array->array[i] = array->array[i+1];
 		}
@@ -1194,9 +1705,11 @@ void remove_Portfolio(Portfolio_array * array, int index)
 Asset_array * init_Asset_array()
 {
 	Asset_array * new_array = (Asset_array *)malloc(sizeof(Asset_array));
+		CHECK_POINTER(new_array);
 	new_array->size = 0;
 	new_array->total_size = ARRAY_BLOCK_SIZE;
 	new_array->array = (Asset **)malloc(ARRAY_BLOCK_SIZE * sizeof(Asset *));
+		CHECK_POINTER(new_array->array);
 	
 	return new_array;
 }
@@ -1239,6 +1752,8 @@ void add_Asset(Asset_array * array, int issuer, int quantity, double lastPrice)
 		array->array = (Asset **)realloc(array->array, (array->total_size * sizeof(Asset *)));
 	}
 	array->array[array->size] = (Asset *)malloc(sizeof(Asset));
+		CHECK_POINTER(array->array[array->size]);
+
 	array->array[array->size]->issuer = issuer;
 	array->array[array->size]->quantity = quantity;
 	array->array[array->size]->lastPrice = lastPrice;
@@ -1258,7 +1773,7 @@ void remove_Asset(Asset_array * array, int index)
 	if(index <= array->size)
 	{
 		/* memcopy?? */
-		for(i = index; i < array->size; i++)
+		for(i = index; i < array->size - 1; i++)
 		{
 			array->array[i] = array->array[i+1];
 		}
@@ -1273,9 +1788,11 @@ void remove_Asset(Asset_array * array, int index)
 Belief_array * init_Belief_array()
 {
 	Belief_array * new_array = (Belief_array *)malloc(sizeof(Belief_array));
+		CHECK_POINTER(new_array);
 	new_array->size = 0;
 	new_array->total_size = ARRAY_BLOCK_SIZE;
 	new_array->array = (Belief **)malloc(ARRAY_BLOCK_SIZE * sizeof(Belief *));
+		CHECK_POINTER(new_array->array);
 	
 	return new_array;
 }
@@ -1310,7 +1827,7 @@ void free_Belief_array(Belief_array * array)
 * \param array Pointer to the dynamic integer array.
 * \param new_int The integer to add
 */
-void add_Belief(Belief_array * array, double assetsExpectedPriceReturns, double assetsExpectedTotalReturns, double assetsExpectedCashFlowYield, double volatility, int forwardWindow, int backwordWindow, int binsNumber, double randomReturnWeigth, double fundametalReturnWeigth, double chartistReturnWeigth, int holdingPeriodToForwardW)
+void add_Belief(Belief_array * array, double expectedPriceReturns, double expectedTotalReturns, double expectedCashFlowYield, double volatility)
 {
 	if(array->size == array->total_size)
 	{
@@ -1318,17 +1835,12 @@ void add_Belief(Belief_array * array, double assetsExpectedPriceReturns, double 
 		array->array = (Belief **)realloc(array->array, (array->total_size * sizeof(Belief *)));
 	}
 	array->array[array->size] = (Belief *)malloc(sizeof(Belief));
-	array->array[array->size]->assetsExpectedPriceReturns = assetsExpectedPriceReturns;
-	array->array[array->size]->assetsExpectedTotalReturns = assetsExpectedTotalReturns;
-	array->array[array->size]->assetsExpectedCashFlowYield = assetsExpectedCashFlowYield;
+		CHECK_POINTER(array->array[array->size]);
+
+	array->array[array->size]->expectedPriceReturns = expectedPriceReturns;
+	array->array[array->size]->expectedTotalReturns = expectedTotalReturns;
+	array->array[array->size]->expectedCashFlowYield = expectedCashFlowYield;
 	array->array[array->size]->volatility = volatility;
-	array->array[array->size]->forwardWindow = forwardWindow;
-	array->array[array->size]->backwordWindow = backwordWindow;
-	array->array[array->size]->binsNumber = binsNumber;
-	array->array[array->size]->randomReturnWeigth = randomReturnWeigth;
-	array->array[array->size]->fundametalReturnWeigth = fundametalReturnWeigth;
-	array->array[array->size]->chartistReturnWeigth = chartistReturnWeigth;
-	array->array[array->size]->holdingPeriodToForwardW = holdingPeriodToForwardW;
 	
 	array->size++;
 }
@@ -1345,7 +1857,7 @@ void remove_Belief(Belief_array * array, int index)
 	if(index <= array->size)
 	{
 		/* memcopy?? */
-		for(i = index; i < array->size; i++)
+		for(i = index; i < array->size - 1; i++)
 		{
 			array->array[i] = array->array[i+1];
 		}
@@ -1360,9 +1872,11 @@ void remove_Belief(Belief_array * array, int index)
 Order_array * init_Order_array()
 {
 	Order_array * new_array = (Order_array *)malloc(sizeof(Order_array));
+		CHECK_POINTER(new_array);
 	new_array->size = 0;
 	new_array->total_size = ARRAY_BLOCK_SIZE;
 	new_array->array = (Order **)malloc(ARRAY_BLOCK_SIZE * sizeof(Order *));
+		CHECK_POINTER(new_array->array);
 	
 	return new_array;
 }
@@ -1405,6 +1919,8 @@ void add_Order(Order_array * array, int issuer, int quantity, double price, int 
 		array->array = (Order **)realloc(array->array, (array->total_size * sizeof(Order *)));
 	}
 	array->array[array->size] = (Order *)malloc(sizeof(Order));
+		CHECK_POINTER(array->array[array->size]);
+
 	array->array[array->size]->issuer = issuer;
 	array->array[array->size]->quantity = quantity;
 	array->array[array->size]->price = price;
@@ -1425,7 +1941,7 @@ void remove_Order(Order_array * array, int index)
 	if(index <= array->size)
 	{
 		/* memcopy?? */
-		for(i = index; i < array->size; i++)
+		for(i = index; i < array->size - 1; i++)
 		{
 			array->array[i] = array->array[i+1];
 		}

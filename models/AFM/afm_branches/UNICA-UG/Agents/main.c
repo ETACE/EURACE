@@ -5,12 +5,12 @@
 
 #include "header.h"
 
-/** \fn int main(int argc, char ** argv)
+/** \fn int main(int argc, char * argv[])
  * \brief Main program loop.
  * \param argc Argument count.
  * \param argv Pointer Pointer to Argument vector.
  */
-int main(int argc, char ** argv)
+int main(int argc, char * argv[])
 {
 	/* Timing variables */
 	clock_t start, stop, interval;
@@ -25,11 +25,6 @@ int main(int argc, char ** argv)
 	int * p_iteration_number;
 	xmachine * temp_free_xmachine;
 	xmachine **agent_list;
-	double totalwealth=0;
-	double precwealth=0;
-	int totalq;
-	double totalcash;
-	double preccash;
 	/* Ratio for calculating time in milliseconds */
     /* (lsc) changed from long to double
      * if "long", time_ratio == 0 when CLOCKS_PER_SEC > 1000
@@ -38,20 +33,37 @@ int main(int argc, char ** argv)
 	/* Particle cloud data */
 	double cloud_data[6];
 
-	rnd=newRandom();
+/* For partition method. Makes geometric (-g flag) the default but may be overridden with -r for round-robin */
+	int partition_method=1;
+
+
+	
 	/* Don't use binary output as default */
 	use_binary_output = 0;
 	/* Output frequency is 1 as default */
 	output_frequency = 1;
 	/* Set random seed */
-	srand(time(NULL));
+/*	srand(time(NULL)); */
 	
 	/* Initialise pointers */
 	initialise_pointers();
 	p_iteration_number = &iteration_number;
-		if(argc < 2)
+		
+
+
+	printf("FLAME Application: Financial Market \n");
+
+
+
+
+
+if(argc < 2)
 	{
-		printf("No arguments defined\n");
+
+		printf("Usage: %s <number of iterations> [<states_directory>]/<init_state> <partitions> [-r | -g ]\n",argv[0]);
+
+
+
 		exit(0);
 	}
 	iteration_total = atoi(argv[1]);
@@ -108,15 +120,18 @@ printf("Ouput dir: %s\n", outputpath);
 				exit(0);
 			}
 		}
+		/* Partitioning method: -g = geometric, -r = round-robin */
+		if(strcmp(argv[i],"-g") == 0) partition_method = 1;
+		if(strcmp(argv[i],"-r") == 0) partition_method = 2;
 		i++;
 	}
 	
 	/* Read initial data into p_xmachine  */
 
        agent_list = p_xmachine;
-       readinitialstates(inputpath, p_iteration_number, agent_list, cloud_data, 0);
+       readinitialstates(inputpath, p_iteration_number, agent_list, cloud_data, partition_method, 0);
        /* Generate partitions */
-       generate_partitions(cloud_data,totalnodes);
+       generate_partitions(cloud_data,totalnodes,partition_method);
        save_partition_data();
  
 
@@ -125,7 +140,7 @@ printf("Ouput dir: %s\n", outputpath);
 
 
     /* Partition data */
-    partition_data(totalnodes, agent_list, cloud_data);
+    partition_data(totalnodes, agent_list, cloud_data, partition_method);
 
 
 
@@ -167,38 +182,43 @@ printf("Ouput dir: %s\n", outputpath);
 
     /* pre-randomise agents for first iteration */
     randomisexagent();
-	 totalcash=0.0;
+	
 	for(iteration_loop=iteration_number+1; iteration_loop < iteration_number+iteration_total+1; iteration_loop++)
-	{   printf("differenza %f numassets=%d  cash  %f cash prec %f\n",totalwealth-precwealth,totalq,totalcash,preccash);
-	    totalq=0;
-	   if(totalcash<0) getchar();
-        precwealth=totalwealth;
-        //printf("differenza cash %f ",(totalcash-preccash));
-        preccash=totalcash;
-        totalcash=0.0;
+	{
 		interval = clock();
 		/* Print out iteration number */
 		printf("Iteration - %d\n", iteration_loop);
 		/* START OF ITERATION */
 
+/* Start of communications layer loop */
+	
 		current_node = *p_node_info;
 		while(current_node)
 		{
-		p_order_message = &current_node->order_messages;
-		p_orderStatus_message = &current_node->orderStatus_messages;
-		p_asset_message = &current_node->asset_messages;
-		p_infoAsset_message = &current_node->infoAsset_messages;
+				
+			p_order_message = &current_node->order_messages;
+				
+			p_orderStatus_message = &current_node->orderStatus_messages;
+				
+			p_asset_message = &current_node->asset_messages;
+				
+			p_infoAsset_message = &current_node->infoAsset_messages;
+				
 		p_xmachine = &current_node->agents;
-
+	
+	
+	
 		/* Loop through x-machines */
 		current_xmachine = *p_xmachine;
 		while(current_xmachine)
 		{
 			i = 0;
+		
 			if(current_xmachine->xmachine_Eurostat != NULL)
 			{
 				i = sendAssetInformationEURO();
-			}	
+			}
+			
 			/* If agent is freed */
 			if(i == 1)
 			{
@@ -211,32 +231,55 @@ printf("Ouput dir: %s\n", outputpath);
 				current_xmachine = current_xmachine->next;
 			}
 		}
-
+	
+	
         randomisexagent();  /* randomise x-agents while waiting for communication to complete */
-        		current_node = current_node->next;
-		}		
+        
+			
+		current_node = current_node->next;
+		}
+			
+/* End of communications layer loop */
+
+/* Start of communications layer loop */
+	
 		current_node = *p_node_info;
 		while(current_node)
 		{
-		p_order_message = &current_node->order_messages;
-		p_orderStatus_message = &current_node->orderStatus_messages;
-		p_asset_message = &current_node->asset_messages;
-		p_infoAsset_message = &current_node->infoAsset_messages;
+				
+			p_order_message = &current_node->order_messages;
+				
+			p_orderStatus_message = &current_node->orderStatus_messages;
+				
+			p_asset_message = &current_node->asset_messages;
+				
+			p_infoAsset_message = &current_node->infoAsset_messages;
+				
 		p_xmachine = &current_node->agents;
-
+	
+	
+	
 		/* Loop through x-machines */
 		current_xmachine = *p_xmachine;
 		while(current_xmachine)
 		{
 			i = 0;
+		
+			if(current_xmachine->xmachine_Firm != NULL)
+			{
+				i = receiveAssetInformation();
+			}
+		
 			if(current_xmachine->xmachine_ClearingHouse != NULL)
 			{
 				i = receiveAssetInformation();
 			}
+		
 			if(current_xmachine->xmachine_Household != NULL)
 			{
 				i = selectStrategy();
-			}	
+			}
+			
 			/* If agent is freed */
 			if(i == 1)
 			{
@@ -249,28 +292,50 @@ printf("Ouput dir: %s\n", outputpath);
 				current_xmachine = current_xmachine->next;
 			}
 		}
-
+	
+	
         randomisexagent();  /* randomise x-agents while waiting for communication to complete */
-        		current_node = current_node->next;
-		}		
+        
+			
+		current_node = current_node->next;
+		}
+			
+/* End of communications layer loop */
+
+/* Start of communications layer loop */
+	
 		current_node = *p_node_info;
 		while(current_node)
 		{
-		p_order_message = &current_node->order_messages;
-		p_orderStatus_message = &current_node->orderStatus_messages;
-		p_asset_message = &current_node->asset_messages;
-		p_infoAsset_message = &current_node->infoAsset_messages;
+				
+			p_order_message = &current_node->order_messages;
+				
+			p_orderStatus_message = &current_node->orderStatus_messages;
+				
+			p_asset_message = &current_node->asset_messages;
+				
+			p_infoAsset_message = &current_node->infoAsset_messages;
+				
 		p_xmachine = &current_node->agents;
-
+	
+	
+	
 		/* Loop through x-machines */
 		current_xmachine = *p_xmachine;
 		while(current_xmachine)
 		{
 			i = 0;
+		
+			if(current_xmachine->xmachine_Firm != NULL)
+			{
+				i = receiveOrdersAndRun();
+			}
+		
 			if(current_xmachine->xmachine_ClearingHouse != NULL)
 			{
 				i = receiveOrdersAndRun();
-			}	
+			}
+			
 			/* If agent is freed */
 			if(i == 1)
 			{
@@ -283,16 +348,23 @@ printf("Ouput dir: %s\n", outputpath);
 				current_xmachine = current_xmachine->next;
 			}
 		}
-
+	
 		/* Loop through x-machines */
 		current_xmachine = *p_xmachine;
 		while(current_xmachine)
 		{
 			i = 0;
+		
+			if(current_xmachine->xmachine_Firm != NULL)
+			{
+				i = sendAssetInformation();
+			}
+		
 			if(current_xmachine->xmachine_ClearingHouse != NULL)
 			{
 				i = sendAssetInformation();
-			}	
+			}
+			
 			/* If agent is freed */
 			if(i == 1)
 			{
@@ -305,41 +377,55 @@ printf("Ouput dir: %s\n", outputpath);
 				current_xmachine = current_xmachine->next;
 			}
 		}
-
+	
+	
         randomisexagent();  /* randomise x-agents while waiting for communication to complete */
-        		current_node = current_node->next;
-		}		
+        
+			
+		current_node = current_node->next;
+		}
+			
+/* End of communications layer loop */
+
+/* Start of communications layer loop */
+	
 		current_node = *p_node_info;
 		while(current_node)
 		{
-		p_order_message = &current_node->order_messages;
-		p_orderStatus_message = &current_node->orderStatus_messages;
-		p_asset_message = &current_node->asset_messages;
-		p_infoAsset_message = &current_node->infoAsset_messages;
+				
+			p_order_message = &current_node->order_messages;
+				
+			p_orderStatus_message = &current_node->orderStatus_messages;
+				
+			p_asset_message = &current_node->asset_messages;
+				
+			p_infoAsset_message = &current_node->infoAsset_messages;
+				
 		p_xmachine = &current_node->agents;
-
+	
+	
+	
 		/* Loop through x-machines */
 		current_xmachine = *p_xmachine;
 		while(current_xmachine)
 		{
 			i = 0;
+		
 			if(current_xmachine->xmachine_Household != NULL)
 			{
 				i = receiveAssetInformationHouse();
-				
 			}
+		
 			if(current_xmachine->xmachine_Household != NULL)
 			{
 				i = updateTrader();
-				totalwealth=totalwealth+get_wealth();
-				totalq=totalq+totalassetsowned();
-				totalcash=totalcash+cashowned();
 			}
+		
 			if(current_xmachine->xmachine_Eurostat != NULL)
 			{
 				i = receiveAssetInformationEURO();
+			}
 			
-			}	
 			/* If agent is freed */
 			if(i == 1)
 			{
@@ -352,10 +438,18 @@ printf("Ouput dir: %s\n", outputpath);
 				current_xmachine = current_xmachine->next;
 			}
 		}
-
+	
+	
         randomisexagent();  /* randomise x-agents while waiting for communication to complete */
-        		current_node = current_node->next;
-		}		
+        
+			
+		current_node = current_node->next;
+		}
+			
+/* End of communications layer loop */
+
+
+
 		if(iteration_loop%output_frequency == 0)
 		{
 			if(use_binary_output) saveiterationdata_binary(iteration_loop);

@@ -13,6 +13,8 @@
 xmachine_message_order * add_order_message_internal()
 {
 	xmachine_message_order * current = (xmachine_message_order *)malloc(sizeof(xmachine_message_order));
+	CHECK_POINTER(current);
+
 	current->next = *p_order_message;
 	*p_order_message = current;
 	
@@ -89,6 +91,8 @@ void process_order_message(xmachine_message_order * current)
  */
 void add_order_message(int issuer, int assetId, double limitPrice, int quantity, double range, double x, double y, double z)
 {
+
+	p_order_message = &current_node->order_messages;
 	xmachine_message_order * tmp = add_order_message_internal();
 	tmp->issuer = issuer;
 	tmp->assetId = assetId;
@@ -98,6 +102,7 @@ void add_order_message(int issuer, int assetId, double limitPrice, int quantity,
 	tmp->x = x;
 	tmp->y = y;
 	tmp->z = z;
+
 
 	/* Check if agent in halo region */
 	process_order_message(tmp);
@@ -124,6 +129,12 @@ xmachine_message_order * get_next_message_order_in_range(xmachine_message_order 
 	{
 		x = (double)current_xmachine->xmachine_ClearingHouse->posx;
 		y = (double)current_xmachine->xmachine_ClearingHouse->posy;
+		z = 0.0;
+	}
+	if(current_xmachine->xmachine_Firm)
+	{
+		x = (double)current_xmachine->xmachine_Firm->posx;
+		y = (double)current_xmachine->xmachine_Firm->posy;
 		z = 0.0;
 	}
 	
@@ -180,6 +191,8 @@ void freeordermessages()
 xmachine_message_orderStatus * add_orderStatus_message_internal()
 {
 	xmachine_message_orderStatus * current = (xmachine_message_orderStatus *)malloc(sizeof(xmachine_message_orderStatus));
+	CHECK_POINTER(current);
+
 	current->next = *p_orderStatus_message;
 	*p_orderStatus_message = current;
 	
@@ -256,6 +269,8 @@ void process_orderStatus_message(xmachine_message_orderStatus * current)
  */
 void add_orderStatus_message(int issuer, int assetId, double price, int quantity, double range, double x, double y, double z)
 {
+
+	p_orderStatus_message = &current_node->orderStatus_messages;
 	xmachine_message_orderStatus * tmp = add_orderStatus_message_internal();
 	tmp->issuer = issuer;
 	tmp->assetId = assetId;
@@ -265,6 +280,7 @@ void add_orderStatus_message(int issuer, int assetId, double price, int quantity
 	tmp->x = x;
 	tmp->y = y;
 	tmp->z = z;
+
 
 	/* Check if agent in halo region */
 	process_orderStatus_message(tmp);
@@ -291,6 +307,12 @@ xmachine_message_orderStatus * get_next_message_orderStatus_in_range(xmachine_me
 	{
 		x = (double)current_xmachine->xmachine_ClearingHouse->posx;
 		y = (double)current_xmachine->xmachine_ClearingHouse->posy;
+		z = 0.0;
+	}
+	if(current_xmachine->xmachine_Firm)
+	{
+		x = (double)current_xmachine->xmachine_Firm->posx;
+		y = (double)current_xmachine->xmachine_Firm->posy;
 		z = 0.0;
 	}
 	
@@ -347,6 +369,8 @@ void freeorderStatusmessages()
 xmachine_message_asset * add_asset_message_internal()
 {
 	xmachine_message_asset * current = (xmachine_message_asset *)malloc(sizeof(xmachine_message_asset));
+	CHECK_POINTER(current);
+
 	current->next = *p_asset_message;
 	*p_asset_message = current;
 	
@@ -421,6 +445,8 @@ void process_asset_message(xmachine_message_asset * current)
  */
 void add_asset_message(int issuer, double price, int quantity, double range, double x, double y, double z)
 {
+
+	p_asset_message = &current_node->asset_messages;
 	xmachine_message_asset * tmp = add_asset_message_internal();
 	tmp->issuer = issuer;
 	tmp->price = price;
@@ -429,6 +455,7 @@ void add_asset_message(int issuer, double price, int quantity, double range, dou
 	tmp->x = x;
 	tmp->y = y;
 	tmp->z = z;
+
 
 	/* Check if agent in halo region */
 	process_asset_message(tmp);
@@ -455,6 +482,12 @@ xmachine_message_asset * get_next_message_asset_in_range(xmachine_message_asset 
 	{
 		x = (double)current_xmachine->xmachine_ClearingHouse->posx;
 		y = (double)current_xmachine->xmachine_ClearingHouse->posy;
+		z = 0.0;
+	}
+	if(current_xmachine->xmachine_Firm)
+	{
+		x = (double)current_xmachine->xmachine_Firm->posx;
+		y = (double)current_xmachine->xmachine_Firm->posy;
 		z = 0.0;
 	}
 	
@@ -511,6 +544,8 @@ void freeassetmessages()
 xmachine_message_infoAsset * add_infoAsset_message_internal()
 {
 	xmachine_message_infoAsset * current = (xmachine_message_infoAsset *)malloc(sizeof(xmachine_message_infoAsset));
+	CHECK_POINTER(current);
+
 	current->next = *p_infoAsset_message;
 	*p_infoAsset_message = current;
 	
@@ -585,6 +620,8 @@ void process_infoAsset_message(xmachine_message_infoAsset * current)
  */
 void add_infoAsset_message(int issuer, double price, int quantity, double range, double x, double y, double z)
 {
+
+	p_infoAsset_message = &current_node->infoAsset_messages;
 	xmachine_message_infoAsset * tmp = add_infoAsset_message_internal();
 	tmp->issuer = issuer;
 	tmp->price = price;
@@ -593,6 +630,7 @@ void add_infoAsset_message(int issuer, double price, int quantity, double range,
 	tmp->x = x;
 	tmp->y = y;
 	tmp->z = z;
+
 
 	/* Check if agent in halo region */
 	process_infoAsset_message(tmp);
@@ -619,6 +657,12 @@ xmachine_message_infoAsset * get_next_message_infoAsset_in_range(xmachine_messag
 	{
 		x = (double)current_xmachine->xmachine_ClearingHouse->posx;
 		y = (double)current_xmachine->xmachine_ClearingHouse->posy;
+		z = 0.0;
+	}
+	if(current_xmachine->xmachine_Firm)
+	{
+		x = (double)current_xmachine->xmachine_Firm->posx;
+		y = (double)current_xmachine->xmachine_Firm->posy;
 		z = 0.0;
 	}
 	

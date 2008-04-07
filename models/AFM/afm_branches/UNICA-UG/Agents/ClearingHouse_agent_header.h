@@ -9,6 +9,9 @@
 /** \def ASSETS
  * \brief Direct access to assets of ClearingHouse agent memory variable. */
 #define ASSETS current_xmachine->xmachine_ClearingHouse->assets
+/** \def RANGE
+ * \brief Direct access to range of ClearingHouse agent memory variable. */
+#define RANGE current_xmachine->xmachine_ClearingHouse->range
 /** \def POSX
  * \brief Direct access to posx of ClearingHouse agent memory variable. */
 #define POSX current_xmachine->xmachine_ClearingHouse->posx

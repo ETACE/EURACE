@@ -2,16 +2,20 @@
  * \file  header.h
  * \brief Header for xmachine data structures and transition functions.
  */
-#ifndef HEAD_INCL
-#define HEAD_INCL
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
 #include <time.h>
 
-#include  "Random.h"
-#include "Household.h"
+
+/* Checking macros */
+#ifdef CHECK_MEMORY
+#define CHECK_POINTER(PT) if(PT==NULL){printf("**** ERROR in Memory check 1\n");exit(1);}
+#else
+#define CHECK_POINTER(PT) 
+#endif
 
 
 
@@ -48,13 +52,6 @@
  *
  * ADT  portfolio .
  */
-#ifndef Portfolio_dty
-#define Portfolio_dty
-typedef struct Portfolio Portfolio;
-/** \var typedef Portfolio_array Portfolio_array
- * \brief Typedef for Portfolio_array struct.
- */
-
 struct Portfolio
 {
 	double bankAccount;
@@ -63,9 +60,6 @@ struct Portfolio
 /** \struct Portfolio_array
  * \brief Dynamic array to hold Portfolios
  */
-#endif
-#ifndef CPortfolio_dty
-#define CPortfolio_dty
 struct Portfolio_array
 {
 	int size;
@@ -73,24 +67,12 @@ struct Portfolio_array
 	
 	struct Portfolio ** array;
 };
-/** \var typedef Portfolio Portfolio
- * \brief Typedef for Portfolio struct.
- */
 
-typedef struct Portfolio_array Portfolio_array;
-#endif
 /** \struct Asset
  * \brief ADT Asset .
  *
  * ADT Asset .
  */
-#ifndef Asset_dty
-#define Asset_dty
-typedef struct Asset Asset;
-/** \var typedef Asset_array Asset_array
- * \brief Typedef for Asset_array struct.
- */
-
 struct Asset
 {
 	int issuer;
@@ -101,9 +83,6 @@ struct Asset
 /** \struct Asset_array
  * \brief Dynamic array to hold Assets
  */
-#endif
-#ifndef CAsset_dty
-#define CAsset_dty
 struct Asset_array
 {
 	int size;
@@ -111,45 +90,23 @@ struct Asset_array
 	
 	struct Asset ** array;
 };
-/** \var typedef Asset Asset
- * \brief Typedef for Asset struct.
- */
 
-typedef struct Asset_array Asset_array;
-#endif
 /** \struct Belief
  * \brief ADT Belief .
  *
  * ADT Belief .
  */
-#ifndef Belief_dty
-#define Belief_dty
-typedef struct Belief Belief;
-/** \var typedef Belief_array Belief_array
- * \brief Typedef for Belief_array struct.
- */
-
 struct Belief
 {
-	double assetsExpectedPriceReturns;
-	double assetsExpectedTotalReturns;
-	double assetsExpectedCashFlowYield;
+	double expectedPriceReturns;
+	double expectedTotalReturns;
+	double expectedCashFlowYield;
 	double volatility;
-	int forwardWindow;
-	int backwordWindow;
-	int binsNumber;
-	double randomReturnWeigth;
-	double fundametalReturnWeigth;
-	double chartistReturnWeigth;
-	int holdingPeriodToForwardW;
 };
 
 /** \struct Belief_array
  * \brief Dynamic array to hold Beliefs
  */
-#endif
-#ifndef CBelief_dty
-#define CBelief_dty
 struct Belief_array
 {
 	int size;
@@ -157,24 +114,12 @@ struct Belief_array
 	
 	struct Belief ** array;
 };
-/** \var typedef Belief Belief
- * \brief Typedef for Belief struct.
- */
 
-typedef struct Belief_array Belief_array;
-#endif
 /** \struct Order
  * \brief ADT order .
  *
  * ADT order .
  */
-#ifndef Order_dty
-#define Order_dty
-typedef struct Order Order;
-/** \var typedef Order_array Order_array
- * \brief Typedef for Order_array struct.
- */
-
 struct Order
 {
 	int issuer;
@@ -186,9 +131,6 @@ struct Order
 /** \struct Order_array
  * \brief Dynamic array to hold Orders
  */
-#endif
-#ifndef COrder_dty
-#define COrder_dty
 struct Order_array
 {
 	int size;
@@ -196,12 +138,7 @@ struct Order_array
 	
 	struct Order ** array;
 };
-/** \var typedef Order Order
- * \brief Typedef for Order struct.
- */
 
-typedef struct Order_array Order_array;
-#endif
 /** \struct int_array
  * \brief Dynamic array to hold integers.
  *
@@ -271,13 +208,47 @@ typedef struct double_array double_array;
  */
 typedef struct char_array char_array;
 
+/** \var typedef Portfolio Portfolio
+ * \brief Typedef for Portfolio struct.
+ */
+typedef struct Portfolio Portfolio;
+/** \var typedef Portfolio_array Portfolio_array
+ * \brief Typedef for Portfolio_array struct.
+ */
+typedef struct Portfolio_array Portfolio_array;
+/** \var typedef Asset Asset
+ * \brief Typedef for Asset struct.
+ */
+typedef struct Asset Asset;
+/** \var typedef Asset_array Asset_array
+ * \brief Typedef for Asset_array struct.
+ */
+typedef struct Asset_array Asset_array;
+/** \var typedef Belief Belief
+ * \brief Typedef for Belief struct.
+ */
+typedef struct Belief Belief;
+/** \var typedef Belief_array Belief_array
+ * \brief Typedef for Belief_array struct.
+ */
+typedef struct Belief_array Belief_array;
+/** \var typedef Order Order
+ * \brief Typedef for Order struct.
+ */
+typedef struct Order Order;
+/** \var typedef Order_array Order_array
+ * \brief Typedef for Order_array struct.
+ */
+typedef struct Order_array Order_array;
 
 /** \struct xmachine_memory_Eurostat
  * \brief Holds memory of xmachine Eurostat.
  */
 struct xmachine_memory_Eurostat
 {
+	int id;	/**< X-machine memory variable id of type int. */
 	Asset_array * assets;	/**< X-machine memory variable assets of type Asset_array. */
+	double range;	/**< X-machine memory variable range of type double. */
 	double posx;	/**< X-machine memory variable posx of type double. */
 	double posy;	/**< X-machine memory variable posy of type double. */
 };
@@ -293,6 +264,14 @@ struct xmachine_memory_Household
 	Portfolio * portfolio;	/**< X-machine memory variable portfolio of type Portfolio. */
 	Order_array * pendingOrders;	/**< X-machine memory variable pendingOrders of type Order_array. */
 	Asset_array * assetsowned;	/**< X-machine memory variable assetsowned of type Asset_array. */
+	int forwardWindow;	/**< X-machine memory variable forwardWindow of type int. */
+	int backwordWindow;	/**< X-machine memory variable backwordWindow of type int. */
+	int binsNumber;	/**< X-machine memory variable binsNumber of type int. */
+	double randomReturnWeigth;	/**< X-machine memory variable randomReturnWeigth of type double. */
+	double fundametalReturnWeigth;	/**< X-machine memory variable fundametalReturnWeigth of type double. */
+	double chartistReturnWeigth;	/**< X-machine memory variable chartistReturnWeigth of type double. */
+	int holdingPeriodToForwardW;	/**< X-machine memory variable holdingPeriodToForwardW of type int. */
+	double range;	/**< X-machine memory variable range of type double. */
 	double posx;	/**< X-machine memory variable posx of type double. */
 	double posy;	/**< X-machine memory variable posy of type double. */
 };
@@ -304,6 +283,22 @@ struct xmachine_memory_ClearingHouse
 {
 	int id;	/**< X-machine memory variable id of type int. */
 	Asset_array * assets;	/**< X-machine memory variable assets of type Asset_array. */
+	double range;	/**< X-machine memory variable range of type double. */
+	double posx;	/**< X-machine memory variable posx of type double. */
+	double posy;	/**< X-machine memory variable posy of type double. */
+};
+
+/** \struct xmachine_memory_Firm
+ * \brief Holds memory of xmachine Firm.
+ */
+struct xmachine_memory_Firm
+{
+	int id;	/**< X-machine memory variable id of type int. */
+	int current_shares_outstanding;	/**< X-machine memory variable current_shares_outstanding of type int. */
+	double total_dividend_payment;	/**< X-machine memory variable total_dividend_payment of type double. */
+	double bank_account;	/**< X-machine memory variable bank_account of type double. */
+	double equity;	/**< X-machine memory variable equity of type double. */
+	double range;	/**< X-machine memory variable range of type double. */
 	double posx;	/**< X-machine memory variable posx of type double. */
 	double posy;	/**< X-machine memory variable posy of type double. */
 };
@@ -316,6 +311,7 @@ struct xmachine
 	struct xmachine_memory_Eurostat * xmachine_Eurostat;	/**< Pointer to X-machine memory of type Eurostat.  */
 	struct xmachine_memory_Household * xmachine_Household;	/**< Pointer to X-machine memory of type Household.  */
 	struct xmachine_memory_ClearingHouse * xmachine_ClearingHouse;	/**< Pointer to X-machine memory of type ClearingHouse.  */
+	struct xmachine_memory_Firm * xmachine_Firm;	/**< Pointer to X-machine memory of type Firm.  */
 	
 	struct xmachine * next;	/**< Pointer to next X-machine in the list.  */
 };
@@ -406,6 +402,10 @@ typedef struct xmachine_memory_Household xmachine_memory_Household;
  * \brief Typedef for xmachine_memory_ClearingHouse struct.
  */
 typedef struct xmachine_memory_ClearingHouse xmachine_memory_ClearingHouse;
+/** \var typedef xmachine_memory_Firm xmachine_memory_Firm
+ * \brief Typedef for xmachine_memory_Firm struct.
+ */
+typedef struct xmachine_memory_Firm xmachine_memory_Firm;
 /** \typedef xmachine_message_order xmachine_message_order
  * \brief Typedef for xmachine_message_order struct.
  */
@@ -432,6 +432,9 @@ int receiveAssetInformationEURO(void);
 int selectStrategy(void);
 int updateTrader(void);
 int receiveAssetInformationHouse(void);
+int receiveAssetInformation(void);
+int receiveOrdersAndRun(void);
+int sendAssetInformation(void);
 int receiveAssetInformation(void);
 int receiveOrdersAndRun(void);
 int sendAssetInformation(void);
@@ -597,7 +600,7 @@ void remove_Asset(Asset_array * array, int index);
 Belief_array * init_Belief_array();
 void reset_Belief_array(Belief_array * array);
 void free_Belief_array(Belief_array * array);
-void add_Belief(Belief_array * array, double assetsExpectedPriceReturns, double assetsExpectedTotalReturns, double assetsExpectedCashFlowYield, double volatility, int forwardWindow, int backwordWindow, int binsNumber, double randomReturnWeigth, double fundametalReturnWeigth, double chartistReturnWeigth, int holdingPeriodToForwardW);
+void add_Belief(Belief_array * array, double expectedPriceReturns, double expectedTotalReturns, double expectedCashFlowYield, double volatility);
 void remove_Belief(Belief_array * array, int index);
 
 Order_array * init_Order_array();
@@ -611,6 +614,7 @@ int_array * init_int_array(void);
 void reset_int_array(int_array * array);
 void free_int_array(int_array * array);
 void sort_int_array(int_array * array);
+int quicksort_int(int * array, int elements);
 void add_int(int_array * array, int new_int);
 void remove_int(int_array * array, int index);
 void print_int_array(int_array * array);
@@ -618,6 +622,7 @@ float_array * init_float_array(void);
 void reset_float_array(float_array * array);
 void free_float_array(float_array * array);
 void sort_float_array(float_array * array);
+int quicksort_float(float * array, int elements);
 void add_float(float_array * array, float new_float);
 void remove_float(float_array * array, int index);
 void print_float_array(float_array * array);
@@ -625,6 +630,7 @@ double_array * init_double_array(void);
 void reset_double_array(double_array * array);
 void free_double_array(double_array * array);
 void sort_double_array(double_array * array);
+int quicksort_double(double * array, int elements);
 void add_double(double_array * array, double new_double);
 void remove_double(double_array * array, int index);
 void print_double_array(double_array * array);
@@ -636,13 +642,15 @@ void remove_char(char_array * array, int index);
 char * copy_array_to_str(char_array * array);
 void print_char_array(char_array * array);
 /* xml.c */
-void readinitialstates(char * filename, int * itno, xmachine ** agent_list, double cloud_data[6], int flag);
+void readinitialstates(char * filename, int * itno, xmachine ** agent_list, double cloud_data[6], 
+                       int partition_method, int flag);
 void saveiterationdata_binary(int iteration_number);
 void saveiterationdata(int iteration_number);
 
-void add_Eurostat_agent(Asset_array * assets, double posx, double posy);
-void add_Household_agent(int id, double wealth, Belief * belief, Portfolio * portfolio, Order_array * pendingOrders, Asset_array * assetsowned, double posx, double posy);
-void add_ClearingHouse_agent(int id, Asset_array * assets, double posx, double posy);
+void add_Eurostat_agent(int id, Asset_array * assets, double range, double posx, double posy);
+void add_Household_agent(int id, double wealth, Belief * belief, Portfolio * portfolio, Order_array * pendingOrders, Asset_array * assetsowned, int forwardWindow, int backwordWindow, int binsNumber, double randomReturnWeigth, double fundametalReturnWeigth, double chartistReturnWeigth, int holdingPeriodToForwardW, double range, double posx, double posy);
+void add_ClearingHouse_agent(int id, Asset_array * assets, double range, double posx, double posy);
+void add_Firm_agent(int id, int current_shares_outstanding, double total_dividend_payment, double bank_account, double equity, double range, double posx, double posy);
 
 void add_order_message(int issuer, int assetId, double limitPrice, int quantity, double range, double x, double y, double z);
 xmachine_message_order * add_order_message_internal(void);
@@ -665,28 +673,53 @@ xmachine_message_infoAsset * get_first_infoAsset_message(void);
 xmachine_message_infoAsset * get_next_infoAsset_message(xmachine_message_infoAsset * current);
 void freeinfoAssetmessages(void);
 
+void set_id(int id);
+int get_id(void);
 Asset_array * get_assets(void);
+void set_range(double range);
+double get_range(void);
 void set_posx(double posx);
 double get_posx(void);
 void set_posy(double posy);
 double get_posy(void);
-void set_id(int id);
-int get_id(void);
 void set_wealth(double wealth);
 double get_wealth(void);
 Belief * get_belief(void);
 Portfolio * get_portfolio(void);
 Order_array * get_pendingOrders(void);
 Asset_array * get_assetsowned(void);
+void set_forwardWindow(int forwardWindow);
+int get_forwardWindow(void);
+void set_backwordWindow(int backwordWindow);
+int get_backwordWindow(void);
+void set_binsNumber(int binsNumber);
+int get_binsNumber(void);
+void set_randomReturnWeigth(double randomReturnWeigth);
+double get_randomReturnWeigth(void);
+void set_fundametalReturnWeigth(double fundametalReturnWeigth);
+double get_fundametalReturnWeigth(void);
+void set_chartistReturnWeigth(double chartistReturnWeigth);
+double get_chartistReturnWeigth(void);
+void set_holdingPeriodToForwardW(int holdingPeriodToForwardW);
+int get_holdingPeriodToForwardW(void);
+void set_current_shares_outstanding(int current_shares_outstanding);
+int get_current_shares_outstanding(void);
+void set_total_dividend_payment(double total_dividend_payment);
+double get_total_dividend_payment(void);
+void set_bank_account(double bank_account);
+double get_bank_account(void);
+void set_equity(double equity);
+double get_equity(void);
+int agent_get_id(void);
 double agent_get_x(void);
 double agent_get_y(void);
 double agent_get_z(void);
 /* partitioning.c */
-void partition_data(int totalnodes, xmachine ** agent_list, double cloud_data[6]);
+void partition_data(int totalnodes, xmachine ** agent_list, double cloud_data[6], int partition_method);
 
 
 void save_partition_data(void);
-void generate_partitions(double cloud_data[6], int partitions);
+void generate_partitions(double cloud_data[6], int partitions, int partition_method);
 
 /* messageboard.c */
 xmachine_message_order * get_next_message_order_in_range(xmachine_message_order * current);
@@ -696,5 +729,3 @@ xmachine_message_infoAsset * get_next_message_infoAsset_in_range(xmachine_messag
 
 /* memory.c */
 xmachine * add_xmachine(void);
-Random *rnd;
-#endif
