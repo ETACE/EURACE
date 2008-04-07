@@ -44,7 +44,9 @@
 	<xmachine>
 		<name>Eurostat</name>
 		<memory>
+			<var><type>int</type><name>id</name></var>
 			<var><type>Asset_array</type><name>assets</name></var>
+			<var><type>double</type><name>range</name></var>
 			<var><type>double</type><name>posx</name></var>
 			<var><type>double</type><name>posy</name></var>
 		</memory>
@@ -85,6 +87,7 @@
 			<var><type>double</type><name>fundametalReturnWeigth</name></var>
 			<var><type>double</type><name>chartistReturnWeigth</name></var>
 			<var><type>int</type><name>holdingPeriodToForwardW</name></var>
+			<var><type>double</type><name>range</name></var>
 			<var><type>double</type><name>posx</name></var>
 			<var><type>double</type><name>posy</name></var>
 		</memory>
@@ -109,12 +112,11 @@
 	<xmachine>
 		<name>ClearingHouse</name>
 		<!--      Variables for the ClearingHouse     -->
+		
 		<memory>
-			<var>
-				<type>int</type>
-				<name>id</name>
-			</var>
+			<var><type>int</type><name>id</name></var>
 			<var><type>Asset_array</type><name>assets</name></var>
+			<var><type>double</type><name>range</name></var>
 			<var><type>double</type><name>posx</name></var>
 			<var><type>double</type><name>posy</name></var>
 		</memory>
@@ -145,6 +147,7 @@
 			<var><type>double</type><name>total_dividend_payment</name></var>
 			<var><type>double</type><name>bank_account</name></var>
 			<var><type>double</type><name>equity</name></var>
+			<var><type>double</type><name>range</name></var>
 			<var><type>double</type><name>posx</name></var>
 			<var><type>double</type><name>posy</name></var>
 		</memory>
