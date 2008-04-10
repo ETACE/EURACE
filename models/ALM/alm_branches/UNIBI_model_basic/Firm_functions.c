@@ -1174,10 +1174,10 @@ int Firm_calc_input_demands()
 			}
 		}
 		/*This calculates the needed capital investments*/
-		INVESTMENTS =  NEEDED_CAPITAL_STOCK -CAPITAL_STOCK;
+		DEMAND_CAPITAL_STOCK=  NEEDED_CAPITAL_STOCK -CAPITAL_STOCK;
 		
 		/*This computes the financial needings for production*/
-		PRODUCTION_COSTS = EMPLOYEES_NEEDED*MEAN_WAGE + INVESTMENTS*ACTUAL_CAP_PRICE;
+		PRODUCTION_COSTS = EMPLOYEES_NEEDED*MEAN_WAGE + DEMAND_CAPITAL_STOCK*ACTUAL_CAP_PRICE;
 	}
 
 	return 0;
@@ -1220,7 +1220,7 @@ int Firm_recalc_capital_demand()
 
 			if(INVESTMENTS - CAPITAL_STOCK*DEPRICIATION_RATE > 0)
  			{/*Calculation of net investments*/
-				net_investments = INVESTMENTS - CAPITAL_STOCK*DEPRICIATION_RATE;
+				net_investments = DEMAND_CAPITAL_STOCK - CAPITAL_STOCK*DEPRICIATION_RATE;
 			}
 			else
 			{
@@ -1228,9 +1228,9 @@ int Firm_recalc_capital_demand()
 			}
 		
 			/*Calculate the share of net investments*/	
-			SHARE_NET_INVESTMENTS = net_investments/INVESTMENTS;
+			SHARE_NET_INVESTMENTS = net_investments/DEMAND_CAPITAL_STOCK;
 
-			add_capital_good_request_message(ID,INVESTMENTS,MSGDATA);		
+			add_capital_good_request_message(ID,DEMAND_CAPITAL_STOCK,MSGDATA);		
 		}
 		else
 		{
