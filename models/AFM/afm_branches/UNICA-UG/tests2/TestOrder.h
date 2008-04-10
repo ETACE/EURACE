@@ -1,7 +1,7 @@
 #ifndef TESTORD_INCL
 #include "Order.h"
-#include "CUnit\Basic.h"
-#include "CUnit\CUnit.h"
+#include "CUnit/Basic.h"
+#include "CUnit/CUnit.h"
 
  int suite_Order_init(void) ;
        

@@ -61,7 +61,6 @@ cp -R  Int/*.c   compiledTests/
   
 cp -R tests2/*.h   compiledTests/ 
 cp -R tests2/*.c   compiledTests/ 
-cp -R tests2/CUnit   compiledTests/ 
 
 cp -R tests2/Makefile   compiledTests/ 
 cd compiledTests
