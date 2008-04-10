@@ -1173,6 +1173,11 @@ int Firm_calc_input_demands()
  				(MEAN_SPECIFIC_SKILLS*pow(CAPITAL_STOCK,BETA)),1/ALPHA));
 			}
 		}
+		/*This calculates the needed capital investments*/
+		INVESTMENTS =  NEEDED_CAPITAL_STOCK -CAPITAL_STOCK;
+		
+		/*This computes the financial needings for production*/
+		PRODUCTION_COSTS = EMPLOYEES_NEEDED*MEAN_WAGE + INVESTMENTS*ACTUAL_CAP_PRICE;
 	}
 
 	return 0;
@@ -1207,7 +1212,7 @@ int Firm_recalc_capital_demand()
 	
 		if(NEEDED_CAPITAL_STOCK > 0 && NEEDED_CAPITAL_STOCK > CAPITAL_STOCK)
 		{		
-			double investments = NEEDED_CAPITAL_STOCK -CAPITAL_STOCK;
+			
 			double net_investments;
 
 
