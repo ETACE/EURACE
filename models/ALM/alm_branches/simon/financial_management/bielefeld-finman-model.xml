@@ -201,9 +201,10 @@
 
 <datatype>
 <name>capital_stock_item</name>
-<var><type>double</type><name>current_value</name></var>
+<var><type>double</type><name>units</name></var>
+<var><type>double</type><name>purchase_price</name></var>
+<var><type>double</type><name>productivity</name></var>
 <var><type>double</type><name>depreciation_value_per_period</name></var>
-<var><type>int</type><name>nr_periods_before_total_depreciation</name></var>
 </datatype>
 
 </environment>
@@ -237,13 +238,11 @@
 <var><type>double</type><name>planned_production_quantity</name></var>
 <var><type>double</type><name>production_quantity</name></var>
 <var><type>double</type><name>unit_costs</name></var>
-<var><type>double</type><name>costs</name></var>
+<var><type>double</type><name>production_costs</name></var>
+<var><type>double</type><name>planned_production_costs</name></var>
 <var><type>double</type><name>revenue_per_day</name></var>
 <var><type>double</type><name>technological_frontier</name></var>
 <var><type>double</type><name>cum_revenue</name></var>
-<var><type>double</type><name>earnings</name></var>
-<var><type>double</type><name>net_profit</name></var>
-<var><type>double</type><name>account</name></var>
 <var><type>double</type><name>out_of_stock_costs</name></var>
 <var><type>sales_statistics_array</type><name>malls_sales_statistics</name></var>
 <var><type>double</type><name>quality</name></var>
@@ -773,8 +772,8 @@
 <type>stock_order</type>
 </depends>
 <depends>
-	<name>Firm_compute_and_send_stock_orders</name>
-	<type>stock_order</type>
+    <name>Firm_compute_and_send_stock_orders</name>
+    <type>stock_order</type>
 </depends>
 </function>
 
@@ -795,8 +794,8 @@
 <type>bond_order</type>
 </depends>
 <depends>
-	<name>Firm_compute_and_send_bond_orders</name>
-	<type>bond_order</type>
+    <name>Firm_compute_and_send_bond_orders</name>
+    <type>bond_order</type>
 </depends>
 </function>
 
@@ -818,8 +817,8 @@
 <type>bond_order</type>
 </depends>
 <depends>
-	<name>Firm_compute_and_send_gov_bond_orders</name>
-	<type>bond_order</type>
+    <name>Firm_compute_and_send_gov_bond_orders</name>
+    <type>bond_order</type>
 </depends>
 </function>
 
@@ -863,10 +862,10 @@
 
 <function>
 <name>Bank_read_loan_request_send_offers</name>
-	<depends>
-	<name>Firm_apply_for_loans</name>
-	<type>loan_request</type>
-	</depends>
+    <depends>
+    <name>Firm_apply_for_loans</name>
+    <type>loan_request</type>
+    </depends>
 </function>
 
 </functions>
@@ -1126,16 +1125,6 @@
 <var><type>double</type><name>z</name></var>
 </message>
 
-<message>
-<name>dividend</name>
-<var><type>double</type><name>dividend</name></var>
-
-<var><type>double</type><name>range</name></var>
-<var><type>double</type><name>x</name></var>
-<var><type>double</type><name>y</name></var>
-<var><type>double</type><name>z</name></var>
-</message>
-
 <!-- consumption goods market context-->
 <message>
 <name>consumption_request_1</name>
@@ -1286,10 +1275,10 @@
 <note>Added by bank to offer credit</note>
 <var><type>int</type><name>bank_id</name></var>
 <var><type>int</type><name>firm_id</name></var>
-	<var>
-		<type>double</type><name>proposed_interest_rate</name>
-		</var>
-	<var><type>double</type><name>amount_credit_offer</name></var>
+    <var>
+        <type>double</type><name>proposed_interest_rate</name>
+        </var>
+    <var><type>double</type><name>amount_credit_offer</name></var>
 <var><type>double</type><name>range</name></var>
 <var><type>double</type><name>x</name></var>
 <var><type>double</type><name>y</name></var>
