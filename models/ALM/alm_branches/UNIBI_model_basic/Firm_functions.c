@@ -1218,9 +1218,9 @@ int Firm_recalc_capital_demand()
 
 
 
-			if(investments - CAPITAL_STOCK*DEPRICIATION_RATE > 0)
+			if(INVESTMENTS - CAPITAL_STOCK*DEPRICIATION_RATE > 0)
  			{/*Calculation of net investments*/
-				net_investments = investments - CAPITAL_STOCK*DEPRICIATION_RATE;
+				net_investments = INVESTMENTS - CAPITAL_STOCK*DEPRICIATION_RATE;
 			}
 			else
 			{
@@ -1228,9 +1228,9 @@ int Firm_recalc_capital_demand()
 			}
 		
 			/*Calculate the share of net investments*/	
-			SHARE_NET_INVESTMENTS = net_investments/investments;
+			SHARE_NET_INVESTMENTS = net_investments/INVESTMENTS;
 
-			add_capital_good_request_message(ID,investments,MSGDATA);		
+			add_capital_good_request_message(ID,INVESTMENTS,MSGDATA);		
 		}
 		else
 		{
