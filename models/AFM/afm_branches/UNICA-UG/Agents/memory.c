@@ -24,6 +24,22 @@ void initialise_pointers()
 	p_node_info = &temp_node_info;
 }
 
+/** \fn void initialise_unit_testing()
+ * \brief Initialises framework for unit testing.
+ */
+void initialise_unit_testing()
+{
+	initialise_pointers();
+	add_node(0, -SPINF, SPINF, -SPINF, SPINF, -SPINF, SPINF);
+	current_node = *p_node_info;
+	p_xmachine = &current_node->agents;
+	current_xmachine = *p_xmachine;
+	p_order_message = &current_node->order_messages;
+	p_orderStatus_message = &current_node->orderStatus_messages;
+	p_asset_message = &current_node->asset_messages;
+	p_infoAsset_message = &current_node->infoAsset_messages;
+}
+
 /* add_location */
 /** \fn void add_location(double point, location ** p_location)
  * \brief Adds a location in order into the location list.
@@ -103,9 +119,246 @@ xmachine * add_xmachine()
 	current_node->agent_total++;
 
 /* add by cg for round-robin so that set_ has something to point at */
-	current_xmachine = current;
+	//current_xmachine = current;
 	
 	return current;
+}
+
+void init_int_static_array(int * array, int size)
+{
+	int i;
+	
+	for(i = 0; i < size; i++) array[i] = 0;
+}
+
+void init_float_static_array(float * array, int size)
+{
+	int i;
+	
+	for(i = 0; i < size; i++) array[i] = 0.0;
+}
+
+void init_double_static_array(double* array, int size)
+{
+	int i;
+	
+	for(i = 0; i < size; i++) array[i] = 0.0;
+}
+
+void init_char_static_array(char * array, int size)
+{
+	int i;
+	
+	for(i = 0; i < size; i++) array[i] = '\0';
+}
+
+
+
+void init_Order(Order * temp)
+{
+	(*temp).issuer = 0;
+	(*temp).quantity = 0;
+	(*temp).price = 0.0;
+	(*temp).assetId = 0;
+
+}
+
+void init_Order_static_array(Order * array, int size)
+{
+	int i;
+	
+	for(i = 0; i < size; i++) init_Order(&array[i]);
+}
+
+void free_Order(Order * temp)
+{
+
+}
+
+void free_Order_static_array(Order * array, int size)
+{
+	int i;
+	
+	for(i = 0; i < size; i++) free_Order(&array[i]);
+}
+
+void copy_Order(Order * from, Order * to)
+{
+	(*to).issuer = (*from).issuer;
+	(*to).quantity = (*from).quantity;
+	(*to).price = (*from).price;
+	(*to).assetId = (*from).assetId;
+}
+
+void copy_Order_static_array(Order * from, Order * to, int size)
+{
+	int i;
+	
+	for(i = 0; i < size; i++)
+	{
+		copy_Order(&from[i], &to[i]);
+	}
+}
+
+
+void init_Belief(Belief * temp)
+{
+	(*temp).expectedPriceReturns = 0.0;
+	(*temp).expectedTotalReturns = 0.0;
+	(*temp).expectedCashFlowYield = 0.0;
+	(*temp).volatility = 0.0;
+
+}
+
+void init_Belief_static_array(Belief * array, int size)
+{
+	int i;
+	
+	for(i = 0; i < size; i++) init_Belief(&array[i]);
+}
+
+void free_Belief(Belief * temp)
+{
+
+}
+
+void free_Belief_static_array(Belief * array, int size)
+{
+	int i;
+	
+	for(i = 0; i < size; i++) free_Belief(&array[i]);
+}
+
+void copy_Belief(Belief * from, Belief * to)
+{
+	(*to).expectedPriceReturns = (*from).expectedPriceReturns;
+	(*to).expectedTotalReturns = (*from).expectedTotalReturns;
+	(*to).expectedCashFlowYield = (*from).expectedCashFlowYield;
+	(*to).volatility = (*from).volatility;
+}
+
+void copy_Belief_static_array(Belief * from, Belief * to, int size)
+{
+	int i;
+	
+	for(i = 0; i < size; i++)
+	{
+		copy_Belief(&from[i], &to[i]);
+	}
+}
+
+
+void init_Asset(Asset * temp)
+{
+	(*temp).issuer = 0;
+	(*temp).quantity = 0;
+	(*temp).lastPrice = 0.0;
+
+}
+
+void init_Asset_static_array(Asset * array, int size)
+{
+	int i;
+	
+	for(i = 0; i < size; i++) init_Asset(&array[i]);
+}
+
+void free_Asset(Asset * temp)
+{
+
+}
+
+void free_Asset_static_array(Asset * array, int size)
+{
+	int i;
+	
+	for(i = 0; i < size; i++) free_Asset(&array[i]);
+}
+
+void copy_Asset(Asset * from, Asset * to)
+{
+	(*to).issuer = (*from).issuer;
+	(*to).quantity = (*from).quantity;
+	(*to).lastPrice = (*from).lastPrice;
+}
+
+void copy_Asset_static_array(Asset * from, Asset * to, int size)
+{
+	int i;
+	
+	for(i = 0; i < size; i++)
+	{
+		copy_Asset(&from[i], &to[i]);
+	}
+}
+
+
+void init_Portfolio(Portfolio * temp)
+{
+	(*temp).bankAccount = 0.0;
+
+}
+
+void init_Portfolio_static_array(Portfolio * array, int size)
+{
+	int i;
+	
+	for(i = 0; i < size; i++) init_Portfolio(&array[i]);
+}
+
+void free_Portfolio(Portfolio * temp)
+{
+
+}
+
+void free_Portfolio_static_array(Portfolio * array, int size)
+{
+	int i;
+	
+	for(i = 0; i < size; i++) free_Portfolio(&array[i]);
+}
+
+void copy_Portfolio(Portfolio * from, Portfolio * to)
+{
+	(*to).bankAccount = (*from).bankAccount;
+}
+
+void copy_Portfolio_static_array(Portfolio * from, Portfolio * to, int size)
+{
+	int i;
+	
+	for(i = 0; i < size; i++)
+	{
+		copy_Portfolio(&from[i], &to[i]);
+	}
+}
+
+
+
+xmachine_memory_Eurostat * init_Eurostat_agent()
+{
+	xmachine_memory_Eurostat * current = (xmachine_memory_Eurostat *)malloc(sizeof(xmachine_memory_Eurostat));
+	CHECK_POINTER(current);
+	
+	current->id = 0;
+	init_Asset_array(&current->assets);
+	current->range = 0.0;
+	current->posx = 0.0;
+	current->posy = 0.0;
+	
+	return current;
+}
+
+void free_Eurostat_agent(xmachine_memory_Eurostat * tmp)
+{
+	free_Asset_array(&tmp->assets);
+	
+}
+
+void add_Eurostat_agent_internal(xmachine_memory_Eurostat * current)
+{
+	xmachine * new_xmachine = add_xmachine();
+	new_xmachine->xmachine_Eurostat = current;
 }
 
 /** \fn void add_Eurostat_agent(int id, Asset_array * assets, double range, double posx, double posy)
@@ -119,15 +372,56 @@ xmachine * add_xmachine()
 void add_Eurostat_agent(int id, Asset_array * assets, double range, double posx, double posy)
 {
 	xmachine * new_xmachine = add_xmachine();
-	xmachine_memory_Eurostat * current = (xmachine_memory_Eurostat *)malloc(sizeof(xmachine_memory_Eurostat));
-		CHECK_POINTER(current);
-
+	xmachine_memory_Eurostat * current;
+	
+	init_Eurostat_agent(current);
 	new_xmachine->xmachine_Eurostat = current;
+	
 	current->id = id;
-	current->assets = assets;
+	copy_Asset_array(assets, &current->assets);
 	current->range = range;
 	current->posx = posx;
 	current->posy = posy;
+}
+
+xmachine_memory_Household * init_Household_agent()
+{
+	xmachine_memory_Household * current = (xmachine_memory_Household *)malloc(sizeof(xmachine_memory_Household));
+	CHECK_POINTER(current);
+	
+	current->id = 0;
+	current->wealth = 0.0;
+	init_Belief(&current->belief);
+	init_Portfolio(&current->portfolio);
+	init_Order_array(&current->pendingOrders);
+	init_Asset_array(&current->assetsowned);
+	current->forwardWindow = 0;
+	current->backwordWindow = 0;
+	current->binsNumber = 0;
+	current->randomReturnWeigth = 0.0;
+	current->fundametalReturnWeigth = 0.0;
+	current->chartistReturnWeigth = 0.0;
+	current->holdingPeriodToForwardW = 0;
+	current->range = 0.0;
+	current->posx = 0.0;
+	current->posy = 0.0;
+	
+	return current;
+}
+
+void free_Household_agent(xmachine_memory_Household * tmp)
+{
+	free_Belief(&tmp->belief);
+	free_Portfolio(&tmp->portfolio);
+	free_Order_array(&tmp->pendingOrders);
+	free_Asset_array(&tmp->assetsowned);
+	
+}
+
+void add_Household_agent_internal(xmachine_memory_Household * current)
+{
+	xmachine * new_xmachine = add_xmachine();
+	new_xmachine->xmachine_Household = current;
 }
 
 /** \fn void add_Household_agent(int id, double wealth, Belief * belief, Portfolio * portfolio, Order_array * pendingOrders, Asset_array * assetsowned, int forwardWindow, int backwordWindow, int binsNumber, double randomReturnWeigth, double fundametalReturnWeigth, double chartistReturnWeigth, int holdingPeriodToForwardW, double range, double posx, double posy)
@@ -149,19 +443,20 @@ void add_Eurostat_agent(int id, Asset_array * assets, double range, double posx,
  * \param posx Variable for the X-machine memory.
  * \param posy Variable for the X-machine memory.
  */
-void add_Household_agent(int id, double wealth, Belief * belief, Portfolio * portfolio, Order_array * pendingOrders, Asset_array * assetsowned, int forwardWindow, int backwordWindow, int binsNumber, double randomReturnWeigth, double fundametalReturnWeigth, double chartistReturnWeigth, int holdingPeriodToForwardW, double range, double posx, double posy)
+void add_Household_agent(int id, double wealth, Belief belief, Portfolio portfolio, Order_array * pendingOrders, Asset_array * assetsowned, int forwardWindow, int backwordWindow, int binsNumber, double randomReturnWeigth, double fundametalReturnWeigth, double chartistReturnWeigth, int holdingPeriodToForwardW, double range, double posx, double posy)
 {
 	xmachine * new_xmachine = add_xmachine();
-	xmachine_memory_Household * current = (xmachine_memory_Household *)malloc(sizeof(xmachine_memory_Household));
-		CHECK_POINTER(current);
-
+	xmachine_memory_Household * current;
+	
+	init_Household_agent(current);
 	new_xmachine->xmachine_Household = current;
+	
 	current->id = id;
 	current->wealth = wealth;
-	current->belief = belief;
-	current->portfolio = portfolio;
-	current->pendingOrders = pendingOrders;
-	current->assetsowned = assetsowned;
+	copy_Belief(&belief, &current->belief);
+	copy_Portfolio(&portfolio, &current->portfolio);
+	copy_Order_array(pendingOrders, &current->pendingOrders);
+	copy_Asset_array(assetsowned, &current->assetsowned);
 	current->forwardWindow = forwardWindow;
 	current->backwordWindow = backwordWindow;
 	current->binsNumber = binsNumber;
@@ -172,6 +467,32 @@ void add_Household_agent(int id, double wealth, Belief * belief, Portfolio * por
 	current->range = range;
 	current->posx = posx;
 	current->posy = posy;
+}
+
+xmachine_memory_ClearingHouse * init_ClearingHouse_agent()
+{
+	xmachine_memory_ClearingHouse * current = (xmachine_memory_ClearingHouse *)malloc(sizeof(xmachine_memory_ClearingHouse));
+	CHECK_POINTER(current);
+	
+	current->id = 0;
+	init_Asset_array(&current->assets);
+	current->range = 0.0;
+	current->posx = 0.0;
+	current->posy = 0.0;
+	
+	return current;
+}
+
+void free_ClearingHouse_agent(xmachine_memory_ClearingHouse * tmp)
+{
+	free_Asset_array(&tmp->assets);
+	
+}
+
+void add_ClearingHouse_agent_internal(xmachine_memory_ClearingHouse * current)
+{
+	xmachine * new_xmachine = add_xmachine();
+	new_xmachine->xmachine_ClearingHouse = current;
 }
 
 /** \fn void add_ClearingHouse_agent(int id, Asset_array * assets, double range, double posx, double posy)
@@ -185,15 +506,44 @@ void add_Household_agent(int id, double wealth, Belief * belief, Portfolio * por
 void add_ClearingHouse_agent(int id, Asset_array * assets, double range, double posx, double posy)
 {
 	xmachine * new_xmachine = add_xmachine();
-	xmachine_memory_ClearingHouse * current = (xmachine_memory_ClearingHouse *)malloc(sizeof(xmachine_memory_ClearingHouse));
-		CHECK_POINTER(current);
-
+	xmachine_memory_ClearingHouse * current;
+	
+	init_ClearingHouse_agent(current);
 	new_xmachine->xmachine_ClearingHouse = current;
+	
 	current->id = id;
-	current->assets = assets;
+	copy_Asset_array(assets, &current->assets);
 	current->range = range;
 	current->posx = posx;
 	current->posy = posy;
+}
+
+xmachine_memory_Firm * init_Firm_agent()
+{
+	xmachine_memory_Firm * current = (xmachine_memory_Firm *)malloc(sizeof(xmachine_memory_Firm));
+	CHECK_POINTER(current);
+	
+	current->id = 0;
+	current->current_shares_outstanding = 0;
+	current->total_dividend_payment = 0.0;
+	current->bank_account = 0.0;
+	current->equity = 0.0;
+	current->range = 0.0;
+	current->posx = 0.0;
+	current->posy = 0.0;
+	
+	return current;
+}
+
+void free_Firm_agent(xmachine_memory_Firm * tmp)
+{
+	
+}
+
+void add_Firm_agent_internal(xmachine_memory_Firm * current)
+{
+	xmachine * new_xmachine = add_xmachine();
+	new_xmachine->xmachine_Firm = current;
 }
 
 /** \fn void add_Firm_agent(int id, int current_shares_outstanding, double total_dividend_payment, double bank_account, double equity, double range, double posx, double posy)
@@ -210,10 +560,11 @@ void add_ClearingHouse_agent(int id, Asset_array * assets, double range, double 
 void add_Firm_agent(int id, int current_shares_outstanding, double total_dividend_payment, double bank_account, double equity, double range, double posx, double posy)
 {
 	xmachine * new_xmachine = add_xmachine();
-	xmachine_memory_Firm * current = (xmachine_memory_Firm *)malloc(sizeof(xmachine_memory_Firm));
-		CHECK_POINTER(current);
-
+	xmachine_memory_Firm * current;
+	
+	init_Firm_agent(current);
 	new_xmachine->xmachine_Firm = current;
+	
 	current->id = id;
 	current->current_shares_outstanding = current_shares_outstanding;
 	current->total_dividend_payment = total_dividend_payment;
@@ -241,25 +592,24 @@ void free_agent()
 			else *p_xmachine = head->next;
 			if(head->xmachine_Eurostat)
 			{
-				free_Asset_array(head->xmachine_Eurostat->assets);
+				free_Eurostat_agent(head->xmachine_Eurostat);
 				free(head->xmachine_Eurostat);
 			}
 			if(head->xmachine_Household)
 			{
-				free_Order_array(head->xmachine_Household->pendingOrders);
-				free_Asset_array(head->xmachine_Household->assetsowned);
+				free_Household_agent(head->xmachine_Household);
 				free(head->xmachine_Household);
 			}
 			if(head->xmachine_ClearingHouse)
 			{
-				free_Asset_array(head->xmachine_ClearingHouse->assets);
+				free_ClearingHouse_agent(head->xmachine_ClearingHouse);
 				free(head->xmachine_ClearingHouse);
 			}
 			if(head->xmachine_Firm)
 			{
+				free_Firm_agent(head->xmachine_Firm);
 				free(head->xmachine_Firm);
 			}
-
 		free(head);
 		head = NULL;
 	}
@@ -287,24 +637,22 @@ void freexmachines()
 		tmp = head->next;
 		if(head->xmachine_Eurostat)
 		{
-			free_Asset_array(head->xmachine_Eurostat->assets);
+			free_Eurostat_agent(head->xmachine_Eurostat);
 			free(head->xmachine_Eurostat);
 		}
 		if(head->xmachine_Household)
 		{
-			free(head->xmachine_Household->belief);
-			free(head->xmachine_Household->portfolio);
-			free_Order_array(head->xmachine_Household->pendingOrders);
-			free_Asset_array(head->xmachine_Household->assetsowned);
+			free_Household_agent(head->xmachine_Household);
 			free(head->xmachine_Household);
 		}
 		if(head->xmachine_ClearingHouse)
 		{
-			free_Asset_array(head->xmachine_ClearingHouse->assets);
+			free_ClearingHouse_agent(head->xmachine_ClearingHouse);
 			free(head->xmachine_ClearingHouse);
 		}
 		if(head->xmachine_Firm)
 		{
+			free_Firm_agent(head->xmachine_Firm);
 			free(head->xmachine_Firm);
 		}
 		free(head);
@@ -321,10 +669,10 @@ void freexmachines()
  */
 void set_id(int id)
 {
-	if(current_xmachine->xmachine_Eurostat) current_xmachine->xmachine_Eurostat->id = id;
-	if(current_xmachine->xmachine_Household) current_xmachine->xmachine_Household->id = id;
-	if(current_xmachine->xmachine_ClearingHouse) current_xmachine->xmachine_ClearingHouse->id = id;
-	if(current_xmachine->xmachine_Firm) current_xmachine->xmachine_Firm->id = id;
+	if(current_xmachine->xmachine_Eurostat) (*current_xmachine->xmachine_Eurostat).id = id;
+	if(current_xmachine->xmachine_Household) (*current_xmachine->xmachine_Household).id = id;
+	if(current_xmachine->xmachine_ClearingHouse) (*current_xmachine->xmachine_ClearingHouse).id = id;
+	if(current_xmachine->xmachine_Firm) (*current_xmachine->xmachine_Firm).id = id;
 }
 
 /** \fn int get_id()
@@ -333,13 +681,13 @@ void set_id(int id)
  */
 int get_id()
 {
-	if(current_xmachine->xmachine_Eurostat) return current_xmachine->xmachine_Eurostat->id;
-	if(current_xmachine->xmachine_Household) return current_xmachine->xmachine_Household->id;
-	if(current_xmachine->xmachine_ClearingHouse) return current_xmachine->xmachine_ClearingHouse->id;
-	if(current_xmachine->xmachine_Firm) return current_xmachine->xmachine_Firm->id;
+	if(current_xmachine->xmachine_Eurostat) return (*current_xmachine->xmachine_Eurostat).id;
+	if(current_xmachine->xmachine_Household) return (*current_xmachine->xmachine_Household).id;
+	if(current_xmachine->xmachine_ClearingHouse) return (*current_xmachine->xmachine_ClearingHouse).id;
+	if(current_xmachine->xmachine_Firm) return (*current_xmachine->xmachine_Firm).id;
 
-    /* suppress compiler warning by returning dummy value */
-    /* this statement should rightfully NEVER be reached */
+    // suppress compiler warning by returning dummy value /
+    // this statement should rightfully NEVER be reached /
     return (int)0;
 }
 
@@ -349,11 +697,11 @@ int get_id()
  */
 Asset_array * get_assets()
 {
-	if(current_xmachine->xmachine_Eurostat) return current_xmachine->xmachine_Eurostat->assets;
-	if(current_xmachine->xmachine_ClearingHouse) return current_xmachine->xmachine_ClearingHouse->assets;
+	if(current_xmachine->xmachine_Eurostat) return &(*current_xmachine->xmachine_Eurostat).assets;
+	if(current_xmachine->xmachine_ClearingHouse) return &(*current_xmachine->xmachine_ClearingHouse).assets;
 
-    /* suppress compiler warning by returning dummy value */
-    /* this statement should rightfully NEVER be reached */
+    // suppress compiler warning by returning dummy value /
+    // this statement should rightfully NEVER be reached /
     return NULL;
 }
 
@@ -363,10 +711,10 @@ Asset_array * get_assets()
  */
 void set_range(double range)
 {
-	if(current_xmachine->xmachine_Eurostat) current_xmachine->xmachine_Eurostat->range = range;
-	if(current_xmachine->xmachine_Household) current_xmachine->xmachine_Household->range = range;
-	if(current_xmachine->xmachine_ClearingHouse) current_xmachine->xmachine_ClearingHouse->range = range;
-	if(current_xmachine->xmachine_Firm) current_xmachine->xmachine_Firm->range = range;
+	if(current_xmachine->xmachine_Eurostat) (*current_xmachine->xmachine_Eurostat).range = range;
+	if(current_xmachine->xmachine_Household) (*current_xmachine->xmachine_Household).range = range;
+	if(current_xmachine->xmachine_ClearingHouse) (*current_xmachine->xmachine_ClearingHouse).range = range;
+	if(current_xmachine->xmachine_Firm) (*current_xmachine->xmachine_Firm).range = range;
 }
 
 /** \fn double get_range()
@@ -375,13 +723,13 @@ void set_range(double range)
  */
 double get_range()
 {
-	if(current_xmachine->xmachine_Eurostat) return current_xmachine->xmachine_Eurostat->range;
-	if(current_xmachine->xmachine_Household) return current_xmachine->xmachine_Household->range;
-	if(current_xmachine->xmachine_ClearingHouse) return current_xmachine->xmachine_ClearingHouse->range;
-	if(current_xmachine->xmachine_Firm) return current_xmachine->xmachine_Firm->range;
+	if(current_xmachine->xmachine_Eurostat) return (*current_xmachine->xmachine_Eurostat).range;
+	if(current_xmachine->xmachine_Household) return (*current_xmachine->xmachine_Household).range;
+	if(current_xmachine->xmachine_ClearingHouse) return (*current_xmachine->xmachine_ClearingHouse).range;
+	if(current_xmachine->xmachine_Firm) return (*current_xmachine->xmachine_Firm).range;
 
-    /* suppress compiler warning by returning dummy value */
-    /* this statement should rightfully NEVER be reached */
+    // suppress compiler warning by returning dummy value /
+    // this statement should rightfully NEVER be reached /
     return (double)0;
 }
 
@@ -391,10 +739,10 @@ double get_range()
  */
 void set_posx(double posx)
 {
-	if(current_xmachine->xmachine_Eurostat) current_xmachine->xmachine_Eurostat->posx = posx;
-	if(current_xmachine->xmachine_Household) current_xmachine->xmachine_Household->posx = posx;
-	if(current_xmachine->xmachine_ClearingHouse) current_xmachine->xmachine_ClearingHouse->posx = posx;
-	if(current_xmachine->xmachine_Firm) current_xmachine->xmachine_Firm->posx = posx;
+	if(current_xmachine->xmachine_Eurostat) (*current_xmachine->xmachine_Eurostat).posx = posx;
+	if(current_xmachine->xmachine_Household) (*current_xmachine->xmachine_Household).posx = posx;
+	if(current_xmachine->xmachine_ClearingHouse) (*current_xmachine->xmachine_ClearingHouse).posx = posx;
+	if(current_xmachine->xmachine_Firm) (*current_xmachine->xmachine_Firm).posx = posx;
 }
 
 /** \fn double get_posx()
@@ -403,13 +751,13 @@ void set_posx(double posx)
  */
 double get_posx()
 {
-	if(current_xmachine->xmachine_Eurostat) return current_xmachine->xmachine_Eurostat->posx;
-	if(current_xmachine->xmachine_Household) return current_xmachine->xmachine_Household->posx;
-	if(current_xmachine->xmachine_ClearingHouse) return current_xmachine->xmachine_ClearingHouse->posx;
-	if(current_xmachine->xmachine_Firm) return current_xmachine->xmachine_Firm->posx;
+	if(current_xmachine->xmachine_Eurostat) return (*current_xmachine->xmachine_Eurostat).posx;
+	if(current_xmachine->xmachine_Household) return (*current_xmachine->xmachine_Household).posx;
+	if(current_xmachine->xmachine_ClearingHouse) return (*current_xmachine->xmachine_ClearingHouse).posx;
+	if(current_xmachine->xmachine_Firm) return (*current_xmachine->xmachine_Firm).posx;
 
-    /* suppress compiler warning by returning dummy value */
-    /* this statement should rightfully NEVER be reached */
+    // suppress compiler warning by returning dummy value /
+    // this statement should rightfully NEVER be reached /
     return (double)0;
 }
 
@@ -419,10 +767,10 @@ double get_posx()
  */
 void set_posy(double posy)
 {
-	if(current_xmachine->xmachine_Eurostat) current_xmachine->xmachine_Eurostat->posy = posy;
-	if(current_xmachine->xmachine_Household) current_xmachine->xmachine_Household->posy = posy;
-	if(current_xmachine->xmachine_ClearingHouse) current_xmachine->xmachine_ClearingHouse->posy = posy;
-	if(current_xmachine->xmachine_Firm) current_xmachine->xmachine_Firm->posy = posy;
+	if(current_xmachine->xmachine_Eurostat) (*current_xmachine->xmachine_Eurostat).posy = posy;
+	if(current_xmachine->xmachine_Household) (*current_xmachine->xmachine_Household).posy = posy;
+	if(current_xmachine->xmachine_ClearingHouse) (*current_xmachine->xmachine_ClearingHouse).posy = posy;
+	if(current_xmachine->xmachine_Firm) (*current_xmachine->xmachine_Firm).posy = posy;
 }
 
 /** \fn double get_posy()
@@ -431,13 +779,13 @@ void set_posy(double posy)
  */
 double get_posy()
 {
-	if(current_xmachine->xmachine_Eurostat) return current_xmachine->xmachine_Eurostat->posy;
-	if(current_xmachine->xmachine_Household) return current_xmachine->xmachine_Household->posy;
-	if(current_xmachine->xmachine_ClearingHouse) return current_xmachine->xmachine_ClearingHouse->posy;
-	if(current_xmachine->xmachine_Firm) return current_xmachine->xmachine_Firm->posy;
+	if(current_xmachine->xmachine_Eurostat) return (*current_xmachine->xmachine_Eurostat).posy;
+	if(current_xmachine->xmachine_Household) return (*current_xmachine->xmachine_Household).posy;
+	if(current_xmachine->xmachine_ClearingHouse) return (*current_xmachine->xmachine_ClearingHouse).posy;
+	if(current_xmachine->xmachine_Firm) return (*current_xmachine->xmachine_Firm).posy;
 
-    /* suppress compiler warning by returning dummy value */
-    /* this statement should rightfully NEVER be reached */
+    // suppress compiler warning by returning dummy value /
+    // this statement should rightfully NEVER be reached /
     return (double)0;
 }
 
@@ -447,7 +795,7 @@ double get_posy()
  */
 void set_wealth(double wealth)
 {
-	if(current_xmachine->xmachine_Household) current_xmachine->xmachine_Household->wealth = wealth;
+	if(current_xmachine->xmachine_Household) (*current_xmachine->xmachine_Household).wealth = wealth;
 }
 
 /** \fn double get_wealth()
@@ -456,10 +804,10 @@ void set_wealth(double wealth)
  */
 double get_wealth()
 {
-	if(current_xmachine->xmachine_Household) return current_xmachine->xmachine_Household->wealth;
+	if(current_xmachine->xmachine_Household) return (*current_xmachine->xmachine_Household).wealth;
 
-    /* suppress compiler warning by returning dummy value */
-    /* this statement should rightfully NEVER be reached */
+    // suppress compiler warning by returning dummy value /
+    // this statement should rightfully NEVER be reached /
     return (double)0;
 }
 
@@ -469,10 +817,10 @@ double get_wealth()
  */
 Belief * get_belief()
 {
-	if(current_xmachine->xmachine_Household) return current_xmachine->xmachine_Household->belief;
+	if(current_xmachine->xmachine_Household) return &(*current_xmachine->xmachine_Household).belief;
 
-    /* suppress compiler warning by returning dummy value */
-    /* this statement should rightfully NEVER be reached */
+    // suppress compiler warning by returning dummy value /
+    // this statement should rightfully NEVER be reached /
     return NULL;
 }
 
@@ -482,10 +830,10 @@ Belief * get_belief()
  */
 Portfolio * get_portfolio()
 {
-	if(current_xmachine->xmachine_Household) return current_xmachine->xmachine_Household->portfolio;
+	if(current_xmachine->xmachine_Household) return &(*current_xmachine->xmachine_Household).portfolio;
 
-    /* suppress compiler warning by returning dummy value */
-    /* this statement should rightfully NEVER be reached */
+    // suppress compiler warning by returning dummy value /
+    // this statement should rightfully NEVER be reached /
     return NULL;
 }
 
@@ -495,10 +843,10 @@ Portfolio * get_portfolio()
  */
 Order_array * get_pendingOrders()
 {
-	if(current_xmachine->xmachine_Household) return current_xmachine->xmachine_Household->pendingOrders;
+	if(current_xmachine->xmachine_Household) return &(*current_xmachine->xmachine_Household).pendingOrders;
 
-    /* suppress compiler warning by returning dummy value */
-    /* this statement should rightfully NEVER be reached */
+    // suppress compiler warning by returning dummy value /
+    // this statement should rightfully NEVER be reached /
     return NULL;
 }
 
@@ -508,10 +856,10 @@ Order_array * get_pendingOrders()
  */
 Asset_array * get_assetsowned()
 {
-	if(current_xmachine->xmachine_Household) return current_xmachine->xmachine_Household->assetsowned;
+	if(current_xmachine->xmachine_Household) return &(*current_xmachine->xmachine_Household).assetsowned;
 
-    /* suppress compiler warning by returning dummy value */
-    /* this statement should rightfully NEVER be reached */
+    // suppress compiler warning by returning dummy value /
+    // this statement should rightfully NEVER be reached /
     return NULL;
 }
 
@@ -521,7 +869,7 @@ Asset_array * get_assetsowned()
  */
 void set_forwardWindow(int forwardWindow)
 {
-	if(current_xmachine->xmachine_Household) current_xmachine->xmachine_Household->forwardWindow = forwardWindow;
+	if(current_xmachine->xmachine_Household) (*current_xmachine->xmachine_Household).forwardWindow = forwardWindow;
 }
 
 /** \fn int get_forwardWindow()
@@ -530,10 +878,10 @@ void set_forwardWindow(int forwardWindow)
  */
 int get_forwardWindow()
 {
-	if(current_xmachine->xmachine_Household) return current_xmachine->xmachine_Household->forwardWindow;
+	if(current_xmachine->xmachine_Household) return (*current_xmachine->xmachine_Household).forwardWindow;
 
-    /* suppress compiler warning by returning dummy value */
-    /* this statement should rightfully NEVER be reached */
+    // suppress compiler warning by returning dummy value /
+    // this statement should rightfully NEVER be reached /
     return (int)0;
 }
 
@@ -543,7 +891,7 @@ int get_forwardWindow()
  */
 void set_backwordWindow(int backwordWindow)
 {
-	if(current_xmachine->xmachine_Household) current_xmachine->xmachine_Household->backwordWindow = backwordWindow;
+	if(current_xmachine->xmachine_Household) (*current_xmachine->xmachine_Household).backwordWindow = backwordWindow;
 }
 
 /** \fn int get_backwordWindow()
@@ -552,10 +900,10 @@ void set_backwordWindow(int backwordWindow)
  */
 int get_backwordWindow()
 {
-	if(current_xmachine->xmachine_Household) return current_xmachine->xmachine_Household->backwordWindow;
+	if(current_xmachine->xmachine_Household) return (*current_xmachine->xmachine_Household).backwordWindow;
 
-    /* suppress compiler warning by returning dummy value */
-    /* this statement should rightfully NEVER be reached */
+    // suppress compiler warning by returning dummy value /
+    // this statement should rightfully NEVER be reached /
     return (int)0;
 }
 
@@ -565,7 +913,7 @@ int get_backwordWindow()
  */
 void set_binsNumber(int binsNumber)
 {
-	if(current_xmachine->xmachine_Household) current_xmachine->xmachine_Household->binsNumber = binsNumber;
+	if(current_xmachine->xmachine_Household) (*current_xmachine->xmachine_Household).binsNumber = binsNumber;
 }
 
 /** \fn int get_binsNumber()
@@ -574,10 +922,10 @@ void set_binsNumber(int binsNumber)
  */
 int get_binsNumber()
 {
-	if(current_xmachine->xmachine_Household) return current_xmachine->xmachine_Household->binsNumber;
+	if(current_xmachine->xmachine_Household) return (*current_xmachine->xmachine_Household).binsNumber;
 
-    /* suppress compiler warning by returning dummy value */
-    /* this statement should rightfully NEVER be reached */
+    // suppress compiler warning by returning dummy value /
+    // this statement should rightfully NEVER be reached /
     return (int)0;
 }
 
@@ -587,7 +935,7 @@ int get_binsNumber()
  */
 void set_randomReturnWeigth(double randomReturnWeigth)
 {
-	if(current_xmachine->xmachine_Household) current_xmachine->xmachine_Household->randomReturnWeigth = randomReturnWeigth;
+	if(current_xmachine->xmachine_Household) (*current_xmachine->xmachine_Household).randomReturnWeigth = randomReturnWeigth;
 }
 
 /** \fn double get_randomReturnWeigth()
@@ -596,10 +944,10 @@ void set_randomReturnWeigth(double randomReturnWeigth)
  */
 double get_randomReturnWeigth()
 {
-	if(current_xmachine->xmachine_Household) return current_xmachine->xmachine_Household->randomReturnWeigth;
+	if(current_xmachine->xmachine_Household) return (*current_xmachine->xmachine_Household).randomReturnWeigth;
 
-    /* suppress compiler warning by returning dummy value */
-    /* this statement should rightfully NEVER be reached */
+    // suppress compiler warning by returning dummy value /
+    // this statement should rightfully NEVER be reached /
     return (double)0;
 }
 
@@ -609,7 +957,7 @@ double get_randomReturnWeigth()
  */
 void set_fundametalReturnWeigth(double fundametalReturnWeigth)
 {
-	if(current_xmachine->xmachine_Household) current_xmachine->xmachine_Household->fundametalReturnWeigth = fundametalReturnWeigth;
+	if(current_xmachine->xmachine_Household) (*current_xmachine->xmachine_Household).fundametalReturnWeigth = fundametalReturnWeigth;
 }
 
 /** \fn double get_fundametalReturnWeigth()
@@ -618,10 +966,10 @@ void set_fundametalReturnWeigth(double fundametalReturnWeigth)
  */
 double get_fundametalReturnWeigth()
 {
-	if(current_xmachine->xmachine_Household) return current_xmachine->xmachine_Household->fundametalReturnWeigth;
+	if(current_xmachine->xmachine_Household) return (*current_xmachine->xmachine_Household).fundametalReturnWeigth;
 
-    /* suppress compiler warning by returning dummy value */
-    /* this statement should rightfully NEVER be reached */
+    // suppress compiler warning by returning dummy value /
+    // this statement should rightfully NEVER be reached /
     return (double)0;
 }
 
@@ -631,7 +979,7 @@ double get_fundametalReturnWeigth()
  */
 void set_chartistReturnWeigth(double chartistReturnWeigth)
 {
-	if(current_xmachine->xmachine_Household) current_xmachine->xmachine_Household->chartistReturnWeigth = chartistReturnWeigth;
+	if(current_xmachine->xmachine_Household) (*current_xmachine->xmachine_Household).chartistReturnWeigth = chartistReturnWeigth;
 }
 
 /** \fn double get_chartistReturnWeigth()
@@ -640,10 +988,10 @@ void set_chartistReturnWeigth(double chartistReturnWeigth)
  */
 double get_chartistReturnWeigth()
 {
-	if(current_xmachine->xmachine_Household) return current_xmachine->xmachine_Household->chartistReturnWeigth;
+	if(current_xmachine->xmachine_Household) return (*current_xmachine->xmachine_Household).chartistReturnWeigth;
 
-    /* suppress compiler warning by returning dummy value */
-    /* this statement should rightfully NEVER be reached */
+    // suppress compiler warning by returning dummy value /
+    // this statement should rightfully NEVER be reached /
     return (double)0;
 }
 
@@ -653,7 +1001,7 @@ double get_chartistReturnWeigth()
  */
 void set_holdingPeriodToForwardW(int holdingPeriodToForwardW)
 {
-	if(current_xmachine->xmachine_Household) current_xmachine->xmachine_Household->holdingPeriodToForwardW = holdingPeriodToForwardW;
+	if(current_xmachine->xmachine_Household) (*current_xmachine->xmachine_Household).holdingPeriodToForwardW = holdingPeriodToForwardW;
 }
 
 /** \fn int get_holdingPeriodToForwardW()
@@ -662,10 +1010,10 @@ void set_holdingPeriodToForwardW(int holdingPeriodToForwardW)
  */
 int get_holdingPeriodToForwardW()
 {
-	if(current_xmachine->xmachine_Household) return current_xmachine->xmachine_Household->holdingPeriodToForwardW;
+	if(current_xmachine->xmachine_Household) return (*current_xmachine->xmachine_Household).holdingPeriodToForwardW;
 
-    /* suppress compiler warning by returning dummy value */
-    /* this statement should rightfully NEVER be reached */
+    // suppress compiler warning by returning dummy value /
+    // this statement should rightfully NEVER be reached /
     return (int)0;
 }
 
@@ -675,7 +1023,7 @@ int get_holdingPeriodToForwardW()
  */
 void set_current_shares_outstanding(int current_shares_outstanding)
 {
-	if(current_xmachine->xmachine_Firm) current_xmachine->xmachine_Firm->current_shares_outstanding = current_shares_outstanding;
+	if(current_xmachine->xmachine_Firm) (*current_xmachine->xmachine_Firm).current_shares_outstanding = current_shares_outstanding;
 }
 
 /** \fn int get_current_shares_outstanding()
@@ -684,10 +1032,10 @@ void set_current_shares_outstanding(int current_shares_outstanding)
  */
 int get_current_shares_outstanding()
 {
-	if(current_xmachine->xmachine_Firm) return current_xmachine->xmachine_Firm->current_shares_outstanding;
+	if(current_xmachine->xmachine_Firm) return (*current_xmachine->xmachine_Firm).current_shares_outstanding;
 
-    /* suppress compiler warning by returning dummy value */
-    /* this statement should rightfully NEVER be reached */
+    // suppress compiler warning by returning dummy value /
+    // this statement should rightfully NEVER be reached /
     return (int)0;
 }
 
@@ -697,7 +1045,7 @@ int get_current_shares_outstanding()
  */
 void set_total_dividend_payment(double total_dividend_payment)
 {
-	if(current_xmachine->xmachine_Firm) current_xmachine->xmachine_Firm->total_dividend_payment = total_dividend_payment;
+	if(current_xmachine->xmachine_Firm) (*current_xmachine->xmachine_Firm).total_dividend_payment = total_dividend_payment;
 }
 
 /** \fn double get_total_dividend_payment()
@@ -706,10 +1054,10 @@ void set_total_dividend_payment(double total_dividend_payment)
  */
 double get_total_dividend_payment()
 {
-	if(current_xmachine->xmachine_Firm) return current_xmachine->xmachine_Firm->total_dividend_payment;
+	if(current_xmachine->xmachine_Firm) return (*current_xmachine->xmachine_Firm).total_dividend_payment;
 
-    /* suppress compiler warning by returning dummy value */
-    /* this statement should rightfully NEVER be reached */
+    // suppress compiler warning by returning dummy value /
+    // this statement should rightfully NEVER be reached /
     return (double)0;
 }
 
@@ -719,7 +1067,7 @@ double get_total_dividend_payment()
  */
 void set_bank_account(double bank_account)
 {
-	if(current_xmachine->xmachine_Firm) current_xmachine->xmachine_Firm->bank_account = bank_account;
+	if(current_xmachine->xmachine_Firm) (*current_xmachine->xmachine_Firm).bank_account = bank_account;
 }
 
 /** \fn double get_bank_account()
@@ -728,10 +1076,10 @@ void set_bank_account(double bank_account)
  */
 double get_bank_account()
 {
-	if(current_xmachine->xmachine_Firm) return current_xmachine->xmachine_Firm->bank_account;
+	if(current_xmachine->xmachine_Firm) return (*current_xmachine->xmachine_Firm).bank_account;
 
-    /* suppress compiler warning by returning dummy value */
-    /* this statement should rightfully NEVER be reached */
+    // suppress compiler warning by returning dummy value /
+    // this statement should rightfully NEVER be reached /
     return (double)0;
 }
 
@@ -741,7 +1089,7 @@ double get_bank_account()
  */
 void set_equity(double equity)
 {
-	if(current_xmachine->xmachine_Firm) current_xmachine->xmachine_Firm->equity = equity;
+	if(current_xmachine->xmachine_Firm) (*current_xmachine->xmachine_Firm).equity = equity;
 }
 
 /** \fn double get_equity()
@@ -750,10 +1098,10 @@ void set_equity(double equity)
  */
 double get_equity()
 {
-	if(current_xmachine->xmachine_Firm) return current_xmachine->xmachine_Firm->equity;
+	if(current_xmachine->xmachine_Firm) return (*current_xmachine->xmachine_Firm).equity;
 
-    /* suppress compiler warning by returning dummy value */
-    /* this statement should rightfully NEVER be reached */
+    // suppress compiler warning by returning dummy value /
+    // this statement should rightfully NEVER be reached /
     return (double)0;
 }
 
@@ -953,6 +1301,14 @@ void free_node_info()
 	*p_node_info = NULL;
 }
 
+/**\fn void free_messages()
+ * \brief Frees all the message lists (of the current node if in serial).
+ */
+void free_messages()
+{
+	freeordermessages();	freeorderStatusmessages();	freeassetmessages();	freeinfoAssetmessages();
+}
+
 /** \fn void clean_up(int code)
  * \brief Add a node to the node list.
  * \param code The error code (zero is no error).
@@ -1087,16 +1443,12 @@ void propagate_agents()
  * \brief Allocate memory for a dynamic integer array.
  * \return int_array Pointer to the new dynamic integer array.
  */
-int_array * init_int_array()
+void init_int_array(int_array * array)
 {
-	int_array * new_array = (int_array *)malloc(sizeof(int_array));
-		CHECK_POINTER(new_array);
-	new_array->size = 0;
-	new_array->total_size = ARRAY_BLOCK_SIZE;
-	new_array->array = (int *)malloc(ARRAY_BLOCK_SIZE * sizeof(int));
-		CHECK_POINTER(new_array->array);
-	
-	return new_array;
+	(*array).size = 0;
+	(*array).total_size = ARRAY_BLOCK_SIZE;
+	(*array).array = (int *)malloc(ARRAY_BLOCK_SIZE * sizeof(int));
+	CHECK_POINTER((*array).array);
 }
 
 /** \fn void reset_int_array(int_array * array)
@@ -1105,7 +1457,7 @@ int_array * init_int_array()
 */
 void reset_int_array(int_array * array)
 {
-	array->size = 0;
+	(*array).size = 0;
 }
 
 /** \fn void free_int_array(int_array * array)
@@ -1114,33 +1466,41 @@ void reset_int_array(int_array * array)
 */
 void free_int_array(int_array * array)
 {
-	free(array->array);
-	free(array);
+	free((*array).array);
+}
+
+void copy_int_array(int_array * from, int_array * to)
+{
+	int i;
+	//to = init_int_array();
+	
+	for (i = 0; i < (*from).size; i++)
+	{
+		add_int(to, (*from).array[i]);
+	}
 }
 
 /** \fn void sort_int_array(int_array * array)
 * \brief Sort the elements of a dynamic integer array with smallest first.
 * \param array Pointer to the dynamic integer array.
 */
-void sort_int_array(int_array * array)
+/*void sort_int_array(int_array * array)
 {
 	int i, j, temp;
-	/* Using bubble sorts nested loops */
-	for(i=0; i<(array->size-1); i++)
+	
+	for(i=0; i<((*array).size-1); i++)
 	{
-		for(j=0; j<(array->size-1)-i; j++) 
+		for(j=0; j<((*array).size-1)-i; j++) 
 		{
-			/* Comparing the values between neighbours */
-			if(*(array->array+j+1) < *(array->array+j))
+			if(*((*array).array+j+1) < *((*array).array+j))
 			{
-                /* Swap neighbours */
-                temp = *(array->array+j); 
-                *(array->array+j) = *(array->array+j+1);
-                *(array->array+j+1) = temp;
+                temp = *((*array).(*array)+j); 
+                *((*array).array+j) = *((*array).array+j+1);
+                *((*array).array+j+1) = temp;
 			}
 		}
 	}
-}
+}*/
 
 /** \fn int quicksort_int(int *array, int elements)
  *  \brief Sorts the elements of the integer array in ascending order.
@@ -1148,7 +1508,7 @@ void sort_int_array(int_array * array)
  *  \param Number of elements that must be sorted
  *  \return integer value indicating success(0) or failure(1)
  */
-int quicksort_int(int * array, int elements)
+/*int quicksort_int(int array, int elements)
 {
 	#define  LEVEL  1000
 	int  pivot, begin[LEVEL], end[LEVEL], i=0, left, right ;
@@ -1177,7 +1537,7 @@ int quicksort_int(int * array, int elements)
 	    }
 	}
 	return 0;
-}
+}*/
 
 /** \fn void add_int(int_array * array, int new_int)
 * \brief Add an integer to the dynamic integer array.
@@ -1186,13 +1546,13 @@ int quicksort_int(int * array, int elements)
 */
 void add_int(int_array * array, int new_int)
 {
-	if(array->size == array->total_size)
+	if((*array).size == (*array).total_size)
 	{
-		array->total_size = array->total_size + ARRAY_BLOCK_SIZE;
-		array->array = (int *)realloc(array->array, (array->total_size * sizeof(int)));
+		(*array).total_size = (*array).total_size + ARRAY_BLOCK_SIZE;
+		(*array).array = (int *)realloc((*array).array, ((*array).total_size * sizeof(int)));
 	}
-	array->array[array->size] = new_int;
-	array->size++;
+	(*array).array[(*array).size] = new_int;
+	(*array).size++;
 }
 
 /** \fn void remove_int(int_array * array, int index)
@@ -1204,14 +1564,14 @@ void remove_int(int_array * array, int index)
 {
 	int i;
 	
-	if(index <= array->size)
+	if(index <= (*array).size)
 	{
 		/* memcopy?? */
-		for(i = index; i < array->size - 1; i++)
+		for(i = index; i < (*array).size - 1; i++)
 		{
-			array->array[i] = array->array[i+1];
+			(*array).array[i] = (*array).array[i+1];
 		}
-		array->size--;
+		(*array).size--;
 	}
 }
 
@@ -1222,10 +1582,10 @@ void remove_int(int_array * array, int index)
 void print_int_array(int_array * array)
 {
 	int i;
-	/* printf(""); // compiler does not like empty prints */
-	for(i=0; i<array->size; i++)
+	
+	for(i=0; i<(*array).size; i++)
 	{
-		printf("%d> %d", i, array->array[i]);
+		printf("%d> %d", i, (*array).array[i]);
 	}
 }
 
@@ -1233,16 +1593,12 @@ void print_int_array(int_array * array)
  * \brief Allocate memory for a dynamic float array.
  * \return float_array Pointer to the new dynamic float array.
  */
-float_array * init_float_array()
+void init_float_array(float_array * array)
 {
-	float_array * new_array = (float_array *)malloc(sizeof(float_array));
-		CHECK_POINTER(new_array);
-	new_array->size = 0;
-	new_array->total_size = ARRAY_BLOCK_SIZE;
-	new_array->array = (float *)malloc(ARRAY_BLOCK_SIZE * sizeof(float));
-		CHECK_POINTER(new_array->array);
-	
-	return new_array;
+	(*array).size = 0;
+	(*array).total_size = ARRAY_BLOCK_SIZE;
+	(*array).array = (float *)malloc(ARRAY_BLOCK_SIZE * sizeof(float));
+	CHECK_POINTER((*array).array);
 }
 
 /** \fn void reset_float_array(float_array * array)
@@ -1251,7 +1607,7 @@ float_array * init_float_array()
 */
 void reset_float_array(float_array * array)
 {
-	array->size = 0;
+	(*array).size = 0;
 }
 
 /** \fn void free_float_array(float_array * array)
@@ -1260,34 +1616,44 @@ void reset_float_array(float_array * array)
 */
 void free_float_array(float_array * array)
 {
-	free(array->array);
-	free(array);
+	free((*array).array);
+}
+
+void copy_float_array(float_array * from, float_array * to)
+{
+	int i;
+	//to = init_float_array();
+	
+	for (i = 0; i < (*from).size; i++)
+	{
+		add_float(to, (*from).array[i]);
+	}
 }
 
 /** \fn void sort_float_array(float_array * array)
 * \brief Sort the elements of a dynamic float array with smallest first.
 * \param array Pointer to the dynamic float array.
 */
-void sort_float_array(float_array * array)
+/*void sort_float_array(float_array array)
 {
 	int i, j;
 	float temp;
-	/* Using bubble sorts nested loops */
-	for(i=0; i<(array->size-1); i++)
+	// Using bubble sorts nested loops //
+	for(i=0; i<(array.size-1); i++)
 	{
-		for(j=0; j<(array->size-1)-i; j++) 
+		for(j=0; j<(array.size-1)-i; j++) 
 		{
-			/* Comparing the values between neighbours */
-			if(*(array->array+j+1) < *(array->array+j))
+			// Comparing the values between neighbours //
+			if(*(array.array+j+1) < *(array.array+j))
 			{
-                /* Swap neighbours */
-                temp = *(array->array+j); 
-                *(array->array+j) = *(array->array+j+1);
-                *(array->array+j+1) = temp;
+                // Swap neighbours //
+                temp = *(array.array+j); 
+                *(array.array+j) = *(array.array+j+1);
+                *(array.array+j+1) = temp;
 			}
 		}
 	}
-}
+}*/
 
 /** \fn int quicksort_float(float *array, int elements)
  *  \brief Sorts the elements of the float array in ascending order.
@@ -1295,7 +1661,7 @@ void sort_float_array(float_array * array)
  *  \param Number of elements that must be sorted
  *  \return integer value indicating success(0) or failure(1)
  */
-int quicksort_float(float * array, int elements)
+/*int quicksort_float(float array, int elements)
 {
 	#define  LEVEL  1000
 	int i=0, left, right ;
@@ -1325,7 +1691,7 @@ int quicksort_float(float * array, int elements)
 	    }
 	}
 	return 0;
-}
+}*/
 
 /** \fn void add_float(float_array * array, float new_float)
 * \brief Add an floateger to the dynamic float array.
@@ -1334,13 +1700,13 @@ int quicksort_float(float * array, int elements)
 */
 void add_float(float_array * array, float new_float)
 {
-	if(array->size == array->total_size)
+	if((*array).size == (*array).total_size)
 	{
-		array->total_size = array->total_size + ARRAY_BLOCK_SIZE;
-		array->array = (float *)realloc(array->array, (array->total_size * sizeof(float)));
+		(*array).total_size = (*array).total_size + ARRAY_BLOCK_SIZE;
+		(*array).array = (float *)realloc((*array).array, ((*array).total_size * sizeof(float)));
 	}
-	array->array[array->size] = new_float;
-	array->size++;
+	(*array).array[(*array).size] = new_float;
+	(*array).size++;
 }
 
 /** \fn void remove_float(float_array * array, int index)
@@ -1352,14 +1718,14 @@ void remove_float(float_array * array, int index)
 {
 	int i;
 	
-	if(index <= array->size)
+	if(index <= (*array).size)
 	{
 		/* memcopy?? */
-		for(i = index; i < array->size - 1; i++)
+		for(i = index; i < (*array).size - 1; i++)
 		{
-			array->array[i] = array->array[i+1];
+			(*array).array[i] = (*array).array[i+1];
 		}
-		array->size--;
+		(*array).size--;
 	}
 }
 
@@ -1371,9 +1737,9 @@ void print_float_array(float_array * array)
 {
 	int i;
 	/* printf(""); // compiler does not like empty prfloats */
-	for(i=0; i<array->size; i++)
+	for(i=0; i<(*array).size; i++)
 	{
-		printf("%d> %f", i, array->array[i]);
+		printf("%d> %f", i, (*array).array[i]);
 	}
 }
 
@@ -1381,15 +1747,12 @@ void print_float_array(float_array * array)
  * \brief Allocate memory for a dynamic double array.
  * \return double_array Pointer to the new dynamic double array.
  */
-double_array * init_double_array()
+void init_double_array(double_array * array)
 {
-	double_array * new_array = (double_array *)malloc(sizeof(double_array));
-		CHECK_POINTER(new_array);
-	new_array->size = 0;
-	new_array->total_size = ARRAY_BLOCK_SIZE;
-	new_array->array = (double *)malloc(ARRAY_BLOCK_SIZE * sizeof(double));
-		CHECK_POINTER(new_array->array);
-	return new_array;
+	(*array).size = 0;
+	(*array).total_size = ARRAY_BLOCK_SIZE;
+	(*array).array = (double *)malloc(ARRAY_BLOCK_SIZE * sizeof(double));
+	CHECK_POINTER((*array).array);
 }
 
 /** \fn void reset_double_array(double_array * array)
@@ -1398,7 +1761,7 @@ double_array * init_double_array()
 */
 void reset_double_array(double_array * array)
 {
-	array->size = 0;
+	(*array).size = 0;
 }
 
 /** \fn void free_double_array(double_array * array)
@@ -1407,35 +1770,45 @@ void reset_double_array(double_array * array)
  */
 void free_double_array(double_array * array)
 {
-	free(array->array);
-	free(array);
+	free((*array).array);
+}
+
+void copy_double_array(double_array * from, double_array * to)
+{
+	int i;
+	//to = init_double_array();
+	
+	for (i = 0; i < (*from).size; i++)
+	{
+		add_double(to, (*from).array[i]);
+	}
 }
 
 /** \fn void sort_double_array(double_array * array)
  * \brief Sort the elements of a dynamic double array with smallest first.
  * \param array Pointer to the dynamic double array.
  */
-void sort_double_array(double_array * array)
+/*void sort_double_array(double_array array)
 {
 	int i, j;
 	double temp;
 	
-	/* Using bubble sorts nested loops */
-	for(i=0; i<(array->size-1); i++)
+	// Using bubble sorts nested loops //
+	for(i=0; i<(array.size-1); i++)
 	{
-		for(j=0; j<(array->size-1)-i; j++) 
+		for(j=0; j<(array.size-1)-i; j++) 
 		{
-			/* Comparing the values between neighbours */
-			if(*(array->array+j+1) < *(array->array+j))
+			// Comparing the values between neighbours //
+			if(*(array.array+j+1) < *(array.array+j))
 			{
-                /* Swap neighbours */
-                temp = *(array->array+j); 
-                *(array->array+j) = *(array->array+j+1);
-                *(array->array+j+1) = temp;
+                // Swap neighbours //
+                temp = *(array.array+j); 
+                *(array.array+j) = *(array.array+j+1);
+                *(array.array+j+1) = temp;
 			}
 		}
 	}
-}
+}*/
 
 /** \fn int quicksort_double(double *array, int elements)
  *  \brief Sorts the elements of the double array in ascending order.
@@ -1443,7 +1816,7 @@ void sort_double_array(double_array * array)
  *  \param Number of elements that must be sorted
  *  \return integer value indicating success(0) or failure(1)
  */
-int quicksort_double(double * array, int elements)
+/*int quicksort_double(double array, int elements)
 {
 	#define  LEVEL  1000
 	double pivot, begin[LEVEL], end[LEVEL];
@@ -1473,7 +1846,7 @@ int quicksort_double(double * array, int elements)
 	    }
 	}
 	return 0;
-}
+}*/
 
 /** \fn void add_double(double_array * array, double new_double)
  * \brief Add an double to the dynamic double array.
@@ -1482,13 +1855,13 @@ int quicksort_double(double * array, int elements)
  */
 void add_double(double_array * array, double new_double)
 {
-	if(array->size == array->total_size)
+	if((*array).size == (*array).total_size)
 	{
-		array->total_size = array->total_size + ARRAY_BLOCK_SIZE;
-		array->array = (double *)realloc(array->array, (array->total_size * sizeof(double)));
+		(*array).total_size = (*array).total_size + ARRAY_BLOCK_SIZE;
+		(*array).array = (double *)realloc((*array).array, ((*array).total_size * sizeof(double)));
 	}
-	array->array[array->size] = new_double;
-	array->size++;
+	(*array).array[(*array).size] = new_double;
+	(*array).size++;
 }
 
 /** \fn void remove_double(double_array * array, int index)
@@ -1499,14 +1872,14 @@ void add_double(double_array * array, double new_double)
 void remove_double(double_array * array, int index)
 {
 	int i;
-	if(index <= array->size)
+	if(index <= (*array).size)
 	{
 		/* memcopy?? */
-		for(i = index; i < array->size - 1; i++)
+		for(i = index; i < (*array).size - 1; i++)
 		{
-			array->array[i] = array->array[i+1];
+			(*array).array[i] = (*array).array[i+1];
 		}
-		array->size--;
+		(*array).size--;
 	}
 }
 
@@ -1517,10 +1890,10 @@ void remove_double(double_array * array, int index)
 void print_double_array(double_array * array)
 {
 	int i;
-	/* printf(""); // compiler does not like empty prints */
-	for(i=0; i<array->size; i++)
+	
+	for(i=0; i<(*array).size; i++)
 	{
-		printf("%d> %f", i, array->array[i]);
+		printf("%d> %f", i, (*array).array[i]);
 	}
 }
 
@@ -1528,16 +1901,13 @@ void print_double_array(double_array * array)
  * \brief Allocate memory for a dynamic char array.
  * \return char_array Pointer to the new dynamic char array.
  */
-char_array * init_char_array()
+void init_char_array(char_array * array)
 {
-	char_array * new_array = (char_array *)malloc(sizeof(char_array));
-		CHECK_POINTER(new_array);
-	new_array->size = 0;
-	new_array->total_size = ARRAY_BLOCK_SIZE;
-	new_array->array = (char *)malloc(ARRAY_BLOCK_SIZE * sizeof(char));
-		CHECK_POINTER(new_array->array);
-	new_array->array[0] = '\0';
-	return new_array;
+	(*array).size = 0;
+	(*array).total_size = ARRAY_BLOCK_SIZE;
+	(*array).array = (char *)malloc(ARRAY_BLOCK_SIZE * sizeof(char));
+	CHECK_POINTER((*array).array);
+	(*array).array[0] = '\0';
 }
 
 /** \fn void reset_char_array(char_array * array)
@@ -1546,7 +1916,7 @@ char_array * init_char_array()
 */
 void reset_char_array(char_array * array)
 {
-	array->size = 0;
+	(*array).size = 0;
 }
 
 /** \fn void free_char_array(char_array * array)
@@ -1555,8 +1925,17 @@ void reset_char_array(char_array * array)
  */
 void free_char_array(char_array * array)
 {
-	free(array->array);
-	free(array);
+	free((*array).array);
+}
+
+void copy_char_array(char_array * from, char_array * to)
+{
+	int i;
+	
+	for (i = 0; i < (*from).size; i++)
+	{
+		add_char(to, (*from).array[i]);
+	}
 }
 
 /** \fn void add_char(char_array * array, char new_char)
@@ -1566,14 +1945,14 @@ void free_char_array(char_array * array)
  */
 void add_char(char_array * array, char new_char)
 {
-	if(array->size + 1 == array->total_size)
+	if((*array).size + 1 == (*array).total_size)
 	{
-		array->total_size = array->total_size + ARRAY_BLOCK_SIZE;
-		array->array = (char *)realloc(array->array, (array->total_size * sizeof(char)));
+		(*array).total_size = (*array).total_size + ARRAY_BLOCK_SIZE;
+		(*array).array = (char *)realloc((*array).array, ((*array).total_size * sizeof(char)));
 	}
-	array->array[array->size] = new_char;
-	array->array[array->size + 1] = '\0';
-	array->size++;
+	(*array).array[(*array).size] = new_char;
+	(*array).array[(*array).size + 1] = '\0';
+	(*array).size++;
 }
 
 /** \fn void remove_char(char_array * array, int index)
@@ -1584,14 +1963,14 @@ void add_char(char_array * array, char new_char)
 void remove_char(char_array * array, int index)
 {
 	int i;
-	if(index <= array->size)
+	if(index <= (*array).size)
 	{
 		/* memcopy?? */
-		for(i = index; i < array->size - 1; i++)
+		for(i = index; i < (*array).size - 1; i++)
 		{
-			array->array[i] = array->array[i+1];
+			(*array).array[i] = (*array).array[i+1];
 		}
-		array->size--;
+		(*array).size--;
 	}
 }
 
@@ -1602,9 +1981,9 @@ void remove_char(char_array * array, int index)
  */
 char * copy_array_to_str(char_array * array)
 {
-	char * new_string = (char *)malloc( (array->size + 1) * sizeof(char));
-		CHECK_POINTER(new_string);
-	return strcpy(new_string, array->array);
+	char * new_string = (char *)malloc( ((*array).size + 1) * sizeof(char));
+	CHECK_POINTER(new_string);
+	return strcpy(new_string, (*array).array);
 }
 
 /** \fn void print_char_array(char_array * array)
@@ -1613,339 +1992,347 @@ char * copy_array_to_str(char_array * array)
  */
 void print_char_array(char_array * array)
 {
-	printf("%s", array->array);
+	printf("%s", (*array).array);
 }
 
-/* Functions for the Portfolio datatype */
-/** \fn int_array * init_int_array()
- * \brief Allocate memory for a dynamic integer array.
- * \return int_array Pointer to the new dynamic integer array.
- */
-Portfolio_array * init_Portfolio_array()
-{
-	Portfolio_array * new_array = (Portfolio_array *)malloc(sizeof(Portfolio_array));
-		CHECK_POINTER(new_array);
-	new_array->size = 0;
-	new_array->total_size = ARRAY_BLOCK_SIZE;
-	new_array->array = (Portfolio **)malloc(ARRAY_BLOCK_SIZE * sizeof(Portfolio *));
-		CHECK_POINTER(new_array->array);
-	
-	return new_array;
-}
-
-/** \fn void reset_int_array(int_array * array)
-* \brief Reset the int array to hold nothing.
-* \param array Pointer to the dynamic integer array.
-*/
-void reset_Portfolio_array(Portfolio_array * array)
-{
-	array->size = 0;
-}
-
-/** \fn void free_int_array(int_array * array)
-* \brief Free the memory of a dynamic integer array.
-* \param array Pointer to the dynamic integer array.
-*/
-void free_Portfolio_array(Portfolio_array * array)
-{
-	int i;
-	
-	for(i = 0; i < array->size; i++)
-	{
-		free(array->array[i]);
-	}
-	free(array->array);
-	free(array);
-}
-
-/** \fn void add_int(int_array * array, int new_int)
-* \brief Add an integer to the dynamic integer array.
-* \param array Pointer to the dynamic integer array.
-* \param new_int The integer to add
-*/
-void add_Portfolio(Portfolio_array * array, double bankAccount)
-{
-	if(array->size == array->total_size)
-	{
-		array->total_size = array->total_size + ARRAY_BLOCK_SIZE;
-		array->array = (Portfolio **)realloc(array->array, (array->total_size * sizeof(Portfolio *)));
-	}
-	array->array[array->size] = (Portfolio *)malloc(sizeof(Portfolio));
-		CHECK_POINTER(array->array[array->size]);
-
-	array->array[array->size]->bankAccount = bankAccount;
-	
-	array->size++;
-}
-
-/** \fn void remove_int(int_array * array, int index)
- * \brief Remove an integer from a dynamic integer array.
- * \param array Pointer to the dynamic integer array.
- * \param index The index of the integer to remove.
- */
-void remove_Portfolio(Portfolio_array * array, int index)
-{
-	int i;
-	
-	if(index <= array->size)
-	{
-		/* memcopy?? */
-		for(i = index; i < array->size - 1; i++)
-		{
-			array->array[i] = array->array[i+1];
-		}
-		array->size--;
-	}
-}
-/* Functions for the Asset datatype */
-/** \fn int_array * init_int_array()
- * \brief Allocate memory for a dynamic integer array.
- * \return int_array Pointer to the new dynamic integer array.
- */
-Asset_array * init_Asset_array()
-{
-	Asset_array * new_array = (Asset_array *)malloc(sizeof(Asset_array));
-		CHECK_POINTER(new_array);
-	new_array->size = 0;
-	new_array->total_size = ARRAY_BLOCK_SIZE;
-	new_array->array = (Asset **)malloc(ARRAY_BLOCK_SIZE * sizeof(Asset *));
-		CHECK_POINTER(new_array->array);
-	
-	return new_array;
-}
-
-/** \fn void reset_int_array(int_array * array)
-* \brief Reset the int array to hold nothing.
-* \param array Pointer to the dynamic integer array.
-*/
-void reset_Asset_array(Asset_array * array)
-{
-	array->size = 0;
-}
-
-/** \fn void free_int_array(int_array * array)
-* \brief Free the memory of a dynamic integer array.
-* \param array Pointer to the dynamic integer array.
-*/
-void free_Asset_array(Asset_array * array)
-{
-	int i;
-	
-	for(i = 0; i < array->size; i++)
-	{
-		free(array->array[i]);
-	}
-	free(array->array);
-	free(array);
-}
-
-/** \fn void add_int(int_array * array, int new_int)
-* \brief Add an integer to the dynamic integer array.
-* \param array Pointer to the dynamic integer array.
-* \param new_int The integer to add
-*/
-void add_Asset(Asset_array * array, int issuer, int quantity, double lastPrice)
-{
-	if(array->size == array->total_size)
-	{
-		array->total_size = array->total_size + ARRAY_BLOCK_SIZE;
-		array->array = (Asset **)realloc(array->array, (array->total_size * sizeof(Asset *)));
-	}
-	array->array[array->size] = (Asset *)malloc(sizeof(Asset));
-		CHECK_POINTER(array->array[array->size]);
-
-	array->array[array->size]->issuer = issuer;
-	array->array[array->size]->quantity = quantity;
-	array->array[array->size]->lastPrice = lastPrice;
-	
-	array->size++;
-}
-
-/** \fn void remove_int(int_array * array, int index)
- * \brief Remove an integer from a dynamic integer array.
- * \param array Pointer to the dynamic integer array.
- * \param index The index of the integer to remove.
- */
-void remove_Asset(Asset_array * array, int index)
-{
-	int i;
-	
-	if(index <= array->size)
-	{
-		/* memcopy?? */
-		for(i = index; i < array->size - 1; i++)
-		{
-			array->array[i] = array->array[i+1];
-		}
-		array->size--;
-	}
-}
-/* Functions for the Belief datatype */
-/** \fn int_array * init_int_array()
- * \brief Allocate memory for a dynamic integer array.
- * \return int_array Pointer to the new dynamic integer array.
- */
-Belief_array * init_Belief_array()
-{
-	Belief_array * new_array = (Belief_array *)malloc(sizeof(Belief_array));
-		CHECK_POINTER(new_array);
-	new_array->size = 0;
-	new_array->total_size = ARRAY_BLOCK_SIZE;
-	new_array->array = (Belief **)malloc(ARRAY_BLOCK_SIZE * sizeof(Belief *));
-		CHECK_POINTER(new_array->array);
-	
-	return new_array;
-}
-
-/** \fn void reset_int_array(int_array * array)
-* \brief Reset the int array to hold nothing.
-* \param array Pointer to the dynamic integer array.
-*/
-void reset_Belief_array(Belief_array * array)
-{
-	array->size = 0;
-}
-
-/** \fn void free_int_array(int_array * array)
-* \brief Free the memory of a dynamic integer array.
-* \param array Pointer to the dynamic integer array.
-*/
-void free_Belief_array(Belief_array * array)
-{
-	int i;
-	
-	for(i = 0; i < array->size; i++)
-	{
-		free(array->array[i]);
-	}
-	free(array->array);
-	free(array);
-}
-
-/** \fn void add_int(int_array * array, int new_int)
-* \brief Add an integer to the dynamic integer array.
-* \param array Pointer to the dynamic integer array.
-* \param new_int The integer to add
-*/
-void add_Belief(Belief_array * array, double expectedPriceReturns, double expectedTotalReturns, double expectedCashFlowYield, double volatility)
-{
-	if(array->size == array->total_size)
-	{
-		array->total_size = array->total_size + ARRAY_BLOCK_SIZE;
-		array->array = (Belief **)realloc(array->array, (array->total_size * sizeof(Belief *)));
-	}
-	array->array[array->size] = (Belief *)malloc(sizeof(Belief));
-		CHECK_POINTER(array->array[array->size]);
-
-	array->array[array->size]->expectedPriceReturns = expectedPriceReturns;
-	array->array[array->size]->expectedTotalReturns = expectedTotalReturns;
-	array->array[array->size]->expectedCashFlowYield = expectedCashFlowYield;
-	array->array[array->size]->volatility = volatility;
-	
-	array->size++;
-}
-
-/** \fn void remove_int(int_array * array, int index)
- * \brief Remove an integer from a dynamic integer array.
- * \param array Pointer to the dynamic integer array.
- * \param index The index of the integer to remove.
- */
-void remove_Belief(Belief_array * array, int index)
-{
-	int i;
-	
-	if(index <= array->size)
-	{
-		/* memcopy?? */
-		for(i = index; i < array->size - 1; i++)
-		{
-			array->array[i] = array->array[i+1];
-		}
-		array->size--;
-	}
-}
 /* Functions for the Order datatype */
-/** \fn int_array * init_int_array()
- * \brief Allocate memory for a dynamic integer array.
- * \return int_array Pointer to the new dynamic integer array.
+/** \fn Order_array * init_Order_array()
+ * \brief Allocate memory for a dynamic Order array.
+ * \return Order_array Pointer to the new dynamic Order array.
  */
-Order_array * init_Order_array()
+void init_Order_array(Order_array * array)
 {
-	Order_array * new_array = (Order_array *)malloc(sizeof(Order_array));
-		CHECK_POINTER(new_array);
-	new_array->size = 0;
-	new_array->total_size = ARRAY_BLOCK_SIZE;
-	new_array->array = (Order **)malloc(ARRAY_BLOCK_SIZE * sizeof(Order *));
-		CHECK_POINTER(new_array->array);
-	
-	return new_array;
+	(*array).size = 0;
+	(*array).total_size = ARRAY_BLOCK_SIZE;
+	(*array).array = (Order *)malloc(ARRAY_BLOCK_SIZE * sizeof(Order));
+	CHECK_POINTER((*array).array);
 }
 
-/** \fn void reset_int_array(int_array * array)
-* \brief Reset the int array to hold nothing.
-* \param array Pointer to the dynamic integer array.
+/** \fn void reset_Order_array(Order_array* array)
+* \brief Reset the Order array to hold nothing.
+* \param array Pointer to the dynamic Order array.
 */
 void reset_Order_array(Order_array * array)
 {
-	array->size = 0;
+	(*array).size = 0;
 }
 
-/** \fn void free_int_array(int_array * array)
-* \brief Free the memory of a dynamic integer array.
-* \param array Pointer to the dynamic integer array.
+/** \fn void free_Order_array(Order_array * array)
+* \brief Free the memory of a dynamic Order array.
+* \param array Pointer to the dynamic Order array.
 */
 void free_Order_array(Order_array * array)
 {
-	int i;
-	
-	for(i = 0; i < array->size; i++)
-	{
-		free(array->array[i]);
-	}
-	free(array->array);
-	free(array);
+	free((*array).array);
 }
 
-/** \fn void add_int(int_array * array, int new_int)
-* \brief Add an integer to the dynamic integer array.
-* \param array Pointer to the dynamic integer array.
-* \param new_int The integer to add
+void copy_Order_array(Order_array * from, Order_array * to)
+{
+	int i;
+	
+	//to = init_Order_array();
+	
+	for(i = 0; i < (*from).size; i++)
+	{
+		add_Order(to, (*from).array[i].issuer, (*from).array[i].quantity, (*from).array[i].price, (*from).array[i].assetId);
+	}
+}
+
+/** \fn void add_Order(Order_array * array, int issuer, int quantity, double price, int assetId)
+* \brief Add an Order to the dynamic Order array.
+* \param array Pointer to the dynamic Order array.
+* \param new_int The Order to add
 */
 void add_Order(Order_array * array, int issuer, int quantity, double price, int assetId)
 {
-	if(array->size == array->total_size)
+	if((*array).size == (*array).total_size)
 	{
-		array->total_size = array->total_size + ARRAY_BLOCK_SIZE;
-		array->array = (Order **)realloc(array->array, (array->total_size * sizeof(Order *)));
+		(*array).total_size = (*array).total_size + ARRAY_BLOCK_SIZE;
+		(*array).array = (Order *)realloc((*array).array, ((*array).total_size * sizeof(Order)));
 	}
-	array->array[array->size] = (Order *)malloc(sizeof(Order));
-		CHECK_POINTER(array->array[array->size]);
+	init_Order(&(*array).array[(*array).size]);
+	(*array).array[(*array).size].issuer = issuer;
+	(*array).array[(*array).size].quantity = quantity;
+	(*array).array[(*array).size].price = price;
+	(*array).array[(*array).size].assetId = assetId;
 
-	array->array[array->size]->issuer = issuer;
-	array->array[array->size]->quantity = quantity;
-	array->array[array->size]->price = price;
-	array->array[array->size]->assetId = assetId;
-	
-	array->size++;
+	(*array).size++;
 }
 
-/** \fn void remove_int(int_array * array, int index)
- * \brief Remove an integer from a dynamic integer array.
- * \param array Pointer to the dynamic integer array.
- * \param index The index of the integer to remove.
+/** \fn void remove_Order(Order_array * array, int index)
+ * \brief Remove an Order from a dynamic Order array.
+ * \param array Pointer to the dynamic Order array.
+ * \param index The index of the Order to remove.
  */
 void remove_Order(Order_array * array, int index)
 {
 	int i;
 	
-	if(index <= array->size)
+	/* Free element at index index */
+	free_Order(&(*array).array[index]);
+	
+	/* Copy all elements up by one */
+	if(index <= (*array).size)
 	{
-		/* memcopy?? */
-		for(i = index; i < array->size - 1; i++)
+		for(i = index; i < (*array).size - 1; i++)
 		{
-			array->array[i] = array->array[i+1];
+			copy_Order(&(*array).array[i+1], &(*array).array[i]);
 		}
-		array->size--;
+		(*array).size--;
+	}
+}
+/* Functions for the Belief datatype */
+/** \fn Belief_array * init_Belief_array()
+ * \brief Allocate memory for a dynamic Belief array.
+ * \return Belief_array Pointer to the new dynamic Belief array.
+ */
+void init_Belief_array(Belief_array * array)
+{
+	(*array).size = 0;
+	(*array).total_size = ARRAY_BLOCK_SIZE;
+	(*array).array = (Belief *)malloc(ARRAY_BLOCK_SIZE * sizeof(Belief));
+	CHECK_POINTER((*array).array);
+}
+
+/** \fn void reset_Belief_array(Belief_array* array)
+* \brief Reset the Belief array to hold nothing.
+* \param array Pointer to the dynamic Belief array.
+*/
+void reset_Belief_array(Belief_array * array)
+{
+	(*array).size = 0;
+}
+
+/** \fn void free_Belief_array(Belief_array * array)
+* \brief Free the memory of a dynamic Belief array.
+* \param array Pointer to the dynamic Belief array.
+*/
+void free_Belief_array(Belief_array * array)
+{
+	free((*array).array);
+}
+
+void copy_Belief_array(Belief_array * from, Belief_array * to)
+{
+	int i;
+	
+	//to = init_Belief_array();
+	
+	for(i = 0; i < (*from).size; i++)
+	{
+		add_Belief(to, (*from).array[i].expectedPriceReturns, (*from).array[i].expectedTotalReturns, (*from).array[i].expectedCashFlowYield, (*from).array[i].volatility);
+	}
+}
+
+/** \fn void add_Belief(Belief_array * array, double expectedPriceReturns, double expectedTotalReturns, double expectedCashFlowYield, double volatility)
+* \brief Add an Belief to the dynamic Belief array.
+* \param array Pointer to the dynamic Belief array.
+* \param new_int The Belief to add
+*/
+void add_Belief(Belief_array * array, double expectedPriceReturns, double expectedTotalReturns, double expectedCashFlowYield, double volatility)
+{
+	if((*array).size == (*array).total_size)
+	{
+		(*array).total_size = (*array).total_size + ARRAY_BLOCK_SIZE;
+		(*array).array = (Belief *)realloc((*array).array, ((*array).total_size * sizeof(Belief)));
+	}
+	init_Belief(&(*array).array[(*array).size]);
+	(*array).array[(*array).size].expectedPriceReturns = expectedPriceReturns;
+	(*array).array[(*array).size].expectedTotalReturns = expectedTotalReturns;
+	(*array).array[(*array).size].expectedCashFlowYield = expectedCashFlowYield;
+	(*array).array[(*array).size].volatility = volatility;
+
+	(*array).size++;
+}
+
+/** \fn void remove_Belief(Belief_array * array, int index)
+ * \brief Remove an Belief from a dynamic Belief array.
+ * \param array Pointer to the dynamic Belief array.
+ * \param index The index of the Belief to remove.
+ */
+void remove_Belief(Belief_array * array, int index)
+{
+	int i;
+	
+	/* Free element at index index */
+	free_Belief(&(*array).array[index]);
+	
+	/* Copy all elements up by one */
+	if(index <= (*array).size)
+	{
+		for(i = index; i < (*array).size - 1; i++)
+		{
+			copy_Belief(&(*array).array[i+1], &(*array).array[i]);
+		}
+		(*array).size--;
+	}
+}
+/* Functions for the Asset datatype */
+/** \fn Asset_array * init_Asset_array()
+ * \brief Allocate memory for a dynamic Asset array.
+ * \return Asset_array Pointer to the new dynamic Asset array.
+ */
+void init_Asset_array(Asset_array * array)
+{
+	(*array).size = 0;
+	(*array).total_size = ARRAY_BLOCK_SIZE;
+	(*array).array = (Asset *)malloc(ARRAY_BLOCK_SIZE * sizeof(Asset));
+	CHECK_POINTER((*array).array);
+}
+
+/** \fn void reset_Asset_array(Asset_array* array)
+* \brief Reset the Asset array to hold nothing.
+* \param array Pointer to the dynamic Asset array.
+*/
+void reset_Asset_array(Asset_array * array)
+{
+	(*array).size = 0;
+}
+
+/** \fn void free_Asset_array(Asset_array * array)
+* \brief Free the memory of a dynamic Asset array.
+* \param array Pointer to the dynamic Asset array.
+*/
+void free_Asset_array(Asset_array * array)
+{
+	free((*array).array);
+}
+
+void copy_Asset_array(Asset_array * from, Asset_array * to)
+{
+	int i;
+	
+	//to = init_Asset_array();
+	
+	for(i = 0; i < (*from).size; i++)
+	{
+		add_Asset(to, (*from).array[i].issuer, (*from).array[i].quantity, (*from).array[i].lastPrice);
+	}
+}
+
+/** \fn void add_Asset(Asset_array * array, int issuer, int quantity, double lastPrice)
+* \brief Add an Asset to the dynamic Asset array.
+* \param array Pointer to the dynamic Asset array.
+* \param new_int The Asset to add
+*/
+void add_Asset(Asset_array * array, int issuer, int quantity, double lastPrice)
+{
+	if((*array).size == (*array).total_size)
+	{
+		(*array).total_size = (*array).total_size + ARRAY_BLOCK_SIZE;
+		(*array).array = (Asset *)realloc((*array).array, ((*array).total_size * sizeof(Asset)));
+	}
+	init_Asset(&(*array).array[(*array).size]);
+	(*array).array[(*array).size].issuer = issuer;
+	(*array).array[(*array).size].quantity = quantity;
+	(*array).array[(*array).size].lastPrice = lastPrice;
+
+	(*array).size++;
+}
+
+/** \fn void remove_Asset(Asset_array * array, int index)
+ * \brief Remove an Asset from a dynamic Asset array.
+ * \param array Pointer to the dynamic Asset array.
+ * \param index The index of the Asset to remove.
+ */
+void remove_Asset(Asset_array * array, int index)
+{
+	int i;
+	
+	/* Free element at index index */
+	free_Asset(&(*array).array[index]);
+	
+	/* Copy all elements up by one */
+	if(index <= (*array).size)
+	{
+		for(i = index; i < (*array).size - 1; i++)
+		{
+			copy_Asset(&(*array).array[i+1], &(*array).array[i]);
+		}
+		(*array).size--;
+	}
+}
+/* Functions for the Portfolio datatype */
+/** \fn Portfolio_array * init_Portfolio_array()
+ * \brief Allocate memory for a dynamic Portfolio array.
+ * \return Portfolio_array Pointer to the new dynamic Portfolio array.
+ */
+void init_Portfolio_array(Portfolio_array * array)
+{
+	(*array).size = 0;
+	(*array).total_size = ARRAY_BLOCK_SIZE;
+	(*array).array = (Portfolio *)malloc(ARRAY_BLOCK_SIZE * sizeof(Portfolio));
+	CHECK_POINTER((*array).array);
+}
+
+/** \fn void reset_Portfolio_array(Portfolio_array* array)
+* \brief Reset the Portfolio array to hold nothing.
+* \param array Pointer to the dynamic Portfolio array.
+*/
+void reset_Portfolio_array(Portfolio_array * array)
+{
+	(*array).size = 0;
+}
+
+/** \fn void free_Portfolio_array(Portfolio_array * array)
+* \brief Free the memory of a dynamic Portfolio array.
+* \param array Pointer to the dynamic Portfolio array.
+*/
+void free_Portfolio_array(Portfolio_array * array)
+{
+	free((*array).array);
+}
+
+void copy_Portfolio_array(Portfolio_array * from, Portfolio_array * to)
+{
+	int i;
+	
+	//to = init_Portfolio_array();
+	
+	for(i = 0; i < (*from).size; i++)
+	{
+		add_Portfolio(to, (*from).array[i].bankAccount);
+	}
+}
+
+/** \fn void add_Portfolio(Portfolio_array * array, double bankAccount)
+* \brief Add an Portfolio to the dynamic Portfolio array.
+* \param array Pointer to the dynamic Portfolio array.
+* \param new_int The Portfolio to add
+*/
+void add_Portfolio(Portfolio_array * array, double bankAccount)
+{
+	if((*array).size == (*array).total_size)
+	{
+		(*array).total_size = (*array).total_size + ARRAY_BLOCK_SIZE;
+		(*array).array = (Portfolio *)realloc((*array).array, ((*array).total_size * sizeof(Portfolio)));
+	}
+	init_Portfolio(&(*array).array[(*array).size]);
+	(*array).array[(*array).size].bankAccount = bankAccount;
+
+	(*array).size++;
+}
+
+/** \fn void remove_Portfolio(Portfolio_array * array, int index)
+ * \brief Remove an Portfolio from a dynamic Portfolio array.
+ * \param array Pointer to the dynamic Portfolio array.
+ * \param index The index of the Portfolio to remove.
+ */
+void remove_Portfolio(Portfolio_array * array, int index)
+{
+	int i;
+	
+	/* Free element at index index */
+	free_Portfolio(&(*array).array[index]);
+	
+	/* Copy all elements up by one */
+	if(index <= (*array).size)
+	{
+		for(i = index; i < (*array).size - 1; i++)
+		{
+			copy_Portfolio(&(*array).array[i+1], &(*array).array[i]);
+		}
+		(*array).size--;
 	}
 }
 
