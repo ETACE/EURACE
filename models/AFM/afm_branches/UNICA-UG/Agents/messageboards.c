@@ -62,6 +62,7 @@ void process_order_message(xmachine_message_order * current)
 			{
 				p_order_message = &node_info->order_messages;
 				temp_send_message = add_order_message_internal();
+				
 				temp_send_message->issuer = current->issuer;
 				temp_send_message->assetId = current->assetId;
 				temp_send_message->limitPrice = current->limitPrice;
@@ -94,6 +95,7 @@ void add_order_message(int issuer, int assetId, double limitPrice, int quantity,
 
 	p_order_message = &current_node->order_messages;
 	xmachine_message_order * tmp = add_order_message_internal();
+	
 	tmp->issuer = issuer;
 	tmp->assetId = assetId;
 	tmp->limitPrice = limitPrice;
@@ -102,8 +104,7 @@ void add_order_message(int issuer, int assetId, double limitPrice, int quantity,
 	tmp->x = x;
 	tmp->y = y;
 	tmp->z = z;
-
-
+	
 	/* Check if agent in halo region */
 	process_order_message(tmp);
 }
@@ -177,6 +178,7 @@ void freeordermessages()
 	while(head)
 	{
 		tmp = head->next;
+		
 		free(head);
 		head = tmp;
 	}
@@ -240,6 +242,7 @@ void process_orderStatus_message(xmachine_message_orderStatus * current)
 			{
 				p_orderStatus_message = &node_info->orderStatus_messages;
 				temp_send_message = add_orderStatus_message_internal();
+				
 				temp_send_message->issuer = current->issuer;
 				temp_send_message->assetId = current->assetId;
 				temp_send_message->price = current->price;
@@ -272,6 +275,7 @@ void add_orderStatus_message(int issuer, int assetId, double price, int quantity
 
 	p_orderStatus_message = &current_node->orderStatus_messages;
 	xmachine_message_orderStatus * tmp = add_orderStatus_message_internal();
+	
 	tmp->issuer = issuer;
 	tmp->assetId = assetId;
 	tmp->price = price;
@@ -280,8 +284,7 @@ void add_orderStatus_message(int issuer, int assetId, double price, int quantity
 	tmp->x = x;
 	tmp->y = y;
 	tmp->z = z;
-
-
+	
 	/* Check if agent in halo region */
 	process_orderStatus_message(tmp);
 }
@@ -355,6 +358,7 @@ void freeorderStatusmessages()
 	while(head)
 	{
 		tmp = head->next;
+		
 		free(head);
 		head = tmp;
 	}
@@ -418,6 +422,7 @@ void process_asset_message(xmachine_message_asset * current)
 			{
 				p_asset_message = &node_info->asset_messages;
 				temp_send_message = add_asset_message_internal();
+				
 				temp_send_message->issuer = current->issuer;
 				temp_send_message->price = current->price;
 				temp_send_message->quantity = current->quantity;
@@ -448,6 +453,7 @@ void add_asset_message(int issuer, double price, int quantity, double range, dou
 
 	p_asset_message = &current_node->asset_messages;
 	xmachine_message_asset * tmp = add_asset_message_internal();
+	
 	tmp->issuer = issuer;
 	tmp->price = price;
 	tmp->quantity = quantity;
@@ -455,8 +461,7 @@ void add_asset_message(int issuer, double price, int quantity, double range, dou
 	tmp->x = x;
 	tmp->y = y;
 	tmp->z = z;
-
-
+	
 	/* Check if agent in halo region */
 	process_asset_message(tmp);
 }
@@ -530,6 +535,7 @@ void freeassetmessages()
 	while(head)
 	{
 		tmp = head->next;
+		
 		free(head);
 		head = tmp;
 	}
@@ -593,6 +599,7 @@ void process_infoAsset_message(xmachine_message_infoAsset * current)
 			{
 				p_infoAsset_message = &node_info->infoAsset_messages;
 				temp_send_message = add_infoAsset_message_internal();
+				
 				temp_send_message->issuer = current->issuer;
 				temp_send_message->price = current->price;
 				temp_send_message->quantity = current->quantity;
@@ -623,6 +630,7 @@ void add_infoAsset_message(int issuer, double price, int quantity, double range,
 
 	p_infoAsset_message = &current_node->infoAsset_messages;
 	xmachine_message_infoAsset * tmp = add_infoAsset_message_internal();
+	
 	tmp->issuer = issuer;
 	tmp->price = price;
 	tmp->quantity = quantity;
@@ -630,8 +638,7 @@ void add_infoAsset_message(int issuer, double price, int quantity, double range,
 	tmp->x = x;
 	tmp->y = y;
 	tmp->z = z;
-
-
+	
 	/* Check if agent in halo region */
 	process_infoAsset_message(tmp);
 }
@@ -705,6 +712,7 @@ void freeinfoAssetmessages()
 	while(head)
 	{
 		tmp = head->next;
+		
 		free(head);
 		head = tmp;
 	}
