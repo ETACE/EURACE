@@ -220,10 +220,9 @@ int Firm_compute_balance_sheet()
         
         //The capital stock is heterogeneous.
         //struct VALUE_CAPITAL_STOCK                : dynamic array of capital_stock_item; each item is a struct of a certain purchased quantity of capital stock
-        //double current_value                      : current value of the item
+        //double current_units                      : current units of capital in the item
         //double depreciation_value_per_period      : we assume that the capital stock depreciates with a fixed value in each period.
         //int nr_periods_before_total_depreciation  : after some periods the capital stock is completely depreciated
-
         
         //We loop over all capital stock items and update the current_value
         imax = VALUE_CAPITAL_STOCK.size;
@@ -231,11 +230,11 @@ int Firm_compute_balance_sheet()
         for (i=0;i<imax;i++)
         {
             //decrease the value of each installment of capital by its own depreciation value
-            VALUE_CAPITAL_STOCK.array[i].current_value -= VALUE_CAPITAL_STOCK.array[i].depreciation_value_per_period;
+            VALUE_CAPITAL_STOCK.array[i].current_units -= VALUE_CAPITAL_STOCK.array[i].depreciation_value_per_period;
             VALUE_CAPITAL_STOCK.array[i].nr_periods_before_total_depreciation -= 1;
             
             //update the current value of the capital stock:
-            TOTAL_VALUE_CAPITAL_STOCK += VALUE_CAPITAL_STOCK.array[i].current_value;
+            TOTAL_VALUE_CAPITAL_STOCK += VALUE_CAPITAL_STOCK.array[i].current_units;
 
             //if the period of full depreciation has been reached: remove the capital_stock_item
             if (VALUE_CAPITAL_STOCK.array[i].nr_periods_before_total_depreciation==0)
@@ -243,6 +242,13 @@ int Firm_compute_balance_sheet()
                 remove_capital_stock_item(&VALUE_CAPITAL_STOCK, i);
             }
         }
+        
+        /*Adding a new capital stock item*/
+        current_units=;
+        depreciation_value_per_period=;
+        nr_periods_before_total_depreciation=;
+        add_capital_stock_item(VALUE_CAPITAL_STOCK, current_units, depreciation_value_per_period, nr_periods_before_total_depreciation);
+        
         
         //TOTAL_VALUE_LOCAL_INVENTORY: estimated value of local inventory stocks at current mall prices
         //We loop over the malls and sum the value of all local inventory stocks
