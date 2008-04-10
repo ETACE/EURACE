@@ -1141,13 +1141,41 @@ int Firm_calc_input_demands()
 		(pow(NEEDED_CAPITAL_STOCK,BETA)*TECHNOLOGY),1/ALPHA);
 		}
 		
+		/*Compute new capital stock, in units and in value*/
+		
+        //The capital stock is heterogeneous.
+        //struct CAPITAL_STOCK               		: dynamic array of capital_stock_item; each item is a struct of a certain purchased quantity of capital stock
+        //double units                      		: current units of capital in the item
+		//double purchase_price                     : purchase_price of the units of capital in the item
+        //double depreciation_value_per_period      : the capital stock depreciates with a fixed value in each period (inn units of capital)
+        
+        //We loop over all capital stock items and update the current_value
+        imax = CAPITAL_STOCK.size;
+        TOTAL_VALUE_CAPITAL_STOCK=0;
+        TOTAL_UNITS_CAPITAL_STOCK=0;
+        for (i=0;i<imax;i++)
+        {
+            //decrease the value of each installment of capital by its own depreciation value
+            CAPITAL_STOCK.array[i].units -= CAPITAL_STOCK.array[i].depreciation_value_per_period;
+            
+            //update the current units of capital stock:
+            TOTAL_UNITS_CAPITAL_STOCK += CAPITAL_STOCK.array[i].units;
+
+            //update the current value of the capital stock:
+            TOTAL_VALUE_CAPITAL_STOCK += CAPITAL_STOCK.array[i].units*CAPITAL_STOCK.array[i].purchase_price;
+
+            //if the period of full depreciation has been reached: remove the capital_stock_item
+            if (CAPITAL_STOCK.array[i].units==0)
+            {
+                remove_capital_stock_item(&CAPITAL_STOCK, i);
+            }
+        }       
+        
 		/*Depriciation of the old capital stock.
 		If additional capital goods are needed...*/
-		if(NEEDED_CAPITAL_STOCK > (1-DEPRICIATION_RATE)*CAPITAL_STOCK)
-		{
-				
-			CAPITAL_STOCK = (1-DEPRICIATION_RATE)*CAPITAL_STOCK;
-			
+
+		if(NEEDED_CAPITAL_STOCK > TOTAL_UNITS_CAPITAL_STOCK)
+		{		
 			if(temp_labour_demand < 1 && temp_labour_demand > 0)
 			{
 				EMPLOYEES_NEEDED = 1;
@@ -1158,26 +1186,23 @@ int Firm_calc_input_demands()
 		}
 		else/*... if capital stock is higher than the needed one..*/
 		{
-
-			CAPITAL_STOCK = (1-DEPRICIATION_RATE)*CAPITAL_STOCK;
-			
 			/*Recalculation of the labor demand*/
 			if(MEAN_SPECIFIC_SKILLS > TECHNOLOGY)
 			{
 				EMPLOYEES_NEEDED = (int) (pow(PLANNED_PRODUCTION_QUANTITY/
-				(TECHNOLOGY*pow(CAPITAL_STOCK,BETA)),1/ALPHA));
+				(TECHNOLOGY*pow(TOTAL_UNITS_CAPITAL_STOCK,BETA)),1/ALPHA));
 			}
 			else
 			{
 				EMPLOYEES_NEEDED = (int) (pow(PLANNED_PRODUCTION_QUANTITY/
- 				(MEAN_SPECIFIC_SKILLS*pow(CAPITAL_STOCK,BETA)),1/ALPHA));
+ 				(MEAN_SPECIFIC_SKILLS*pow(TOTAL_UNITS_CAPITAL_STOCK,BETA)),1/ALPHA));
 			}
 		}
 		/*This calculates the needed capital investments*/
-		DEMAND_CAPITAL_STOCK=  NEEDED_CAPITAL_STOCK -CAPITAL_STOCK;
+		DEMAND_CAPITAL_STOCK=  NEEDED_CAPITAL_STOCK - TOTAL_UNITS_CAPITAL_STOCK;
 		
 		/*This computes the financial needings for production*/
-		PRODUCTION_COSTS = EMPLOYEES_NEEDED*MEAN_WAGE + DEMAND_CAPITAL_STOCK*ACTUAL_CAP_PRICE;
+		PLANNED_PRODUCTION_COSTS = EMPLOYEES_NEEDED*MEAN_WAGE + DEMAND_CAPITAL_STOCK*ACTUAL_CAP_PRICE;
 	}
 
 	return 0;
@@ -1249,7 +1274,14 @@ int Firm_calc_pay_costs()
 	
 	double capital_costs;
 	double labour_costs;
-
+    
+	double units;
+	double purchase_price;
+	double productivity;
+	double depreciation_value_per_period;
+	
+	double depreciation_value;
+	
 	if(DAY%MONTH==DAY_OF_MONTH_TO_ACT)
 	{
 		/*Calculate mean wage and mean specific skills:*/
@@ -1275,42 +1307,45 @@ int Firm_calc_pay_costs()
 		}
 		
 		/*Firm receives the investment goods*/
+		capital_costs=0;
 		
 		START_CAPITAL_GOOD_DELIVERY_MESSAGE_LOOP
 		
+		if (capital_good_delivery_message->productivity > TECHNOLOGICAL_FRONTIER)
+		{
 			TECHNOLOGICAL_FRONTIER = capital_good_delivery_message->productivity;
+		}
 
 			if(ID == capital_good_delivery_message->firm_id)
 			{
-
-				/*Update of productivity*/
-				TECHNOLOGY = CAPITAL_STOCK / (CAPITAL_STOCK +
- 				capital_good_delivery_message->capital_good_delivery_volume)
-				*TECHNOLOGY + 
-				capital_good_delivery_message->capital_good_delivery_volume/
-				(CAPITAL_STOCK + 
-				capital_good_delivery_message->capital_good_delivery_volume)
-				*capital_good_delivery_message->productivity;
-
-				/*Update of the capital stock*/
-				CAPITAL_STOCK += capital_good_delivery_message
-				->capital_good_delivery_volume;
-				
+		        /*Adding a new capital stock item*/
+		        units			= capital_good_delivery_message->capital_good_delivery_volume;
+		        purchase_price	= capital_good_delivery_message->capital_good_price;
+		        productivity	= capital_good_delivery_message->productivity;
+		        depreciation_value_per_period = DEPRECIATION_RATE*units;
+		        
+		        add_capital_stock_item(CAPITAL_STOCK, units, purchase_price, productivity, depreciation_value_per_period);
+		        
+		        /*Update the total units of capital*/
+		        TOTAL_UNITS_CAPITAL_STOCK += units;
+		        
+		        /*Determine the weighted average productivity of the total capital stock*/
+		        imax = CAPITAL_STOCK.size;
+		        TECHNOLOGY=0;
+		        for (i=0;i<imax;i++)
+		        {
+		            TECHNOLOGY += CAPITAL_STOCK.array[i].productivity*CAPITAL_STOCK.array[i].units/TOTAL_UNITS_CAPITAL_STOCK;
+		        }
+		 
 				/*Computing the capital bill*/
-				capital_costs = capital_good_delivery_message
+				capital_costs += capital_good_delivery_message
 				->capital_good_delivery_volume* capital_good_delivery_message
 				->capital_good_price;
 				
-				/*This is to keep the current price and best pratice technology in 					memory*/
-				ACTUAL_CAP_PRICE =capital_good_delivery_message
-				->capital_good_price;
-
-				TECHNOLOGICAL_FRONTIER = capital_good_delivery_message
-				->productivity;
+				/*This is to keep the current price and best pratice technology in memory*/
+				ACTUAL_CAP_PRICE =capital_good_delivery_message->capital_good_price;
 			}
-
 		FINISH_CAPITAL_GOOD_DELIVERY_MESSAGE_LOOP
-
 
 
 		/* This determines the realized production volume*/
@@ -1321,12 +1356,12 @@ int Firm_calc_pay_costs()
 			{	
 			
 				PRODUCTION_QUANTITY = MEAN_SPECIFIC_SKILLS * 
-				pow(NO_EMPLOYEES,ALPHA)*pow(CAPITAL_STOCK,BETA); 
+				pow(NO_EMPLOYEES,ALPHA)*pow(TOTAL_UNITS_CAPITAL_STOCK,BETA); 
 			}
 			else 
 			{
 				PRODUCTION_QUANTITY = TECHNOLOGY * 
-				pow(NO_EMPLOYEES,ALPHA)*pow(CAPITAL_STOCK,BETA); 
+				pow(NO_EMPLOYEES,ALPHA)*pow(TOTAL_UNITS_CAPITAL_STOCK,BETA); 
 			}
 
 			/*Pay the costs*/
@@ -1347,14 +1382,21 @@ int Firm_calc_pay_costs()
 		/*Calculate the unit costs and total costs*/
 			if(PRODUCTION_QUANTITY!=0 )
 			{
-				UNIT_COSTS=(labour_costs+CAPITAL_STOCK*DEPRICIATION_RATE
-				*ACTUAL_CAP_PRICE) / PRODUCTION_QUANTITY;
+				 
+				depreciation_value=0;
+		        for (i=0;i<imax;i++)
+		        {
+		            //sum the value of each depreciation value
+		        	depreciation_value += CAPITAL_STOCK.array[i].depreciation_value_per_period*CAPITAL_STOCK.array[i].purchase_price;       
+		        }
+		        
+				UNIT_COSTS=(labour_costs+depreciation_value) / PRODUCTION_QUANTITY;
 		
 				PRICE_LAST_MONTH=PRICE;
 				PRICE = UNIT_COSTS*(1 + MARK_UP);
 			}
 
-			COSTS = capital_costs + labour_costs;
+			PRODUCTION_COSTS = capital_costs + labour_costs;
 		
 
 		}
@@ -1480,42 +1522,11 @@ int Firm_calc_revenue()
 
 	FINISH_SALES_MESSAGE_LOOP
 
-	/*The onthly sales statistics*/
+	/*The monthly sales statistics*/
 	CUM_TOTAL_SOLD_QUANTITY+=TOTAL_SOLD_QUANTITY;	
 	
 	/*On a monthly base the earnings are computed and dividends distributed*/
-	if(DAY%MONTH==DAY_OF_MONTH_TO_ACT)
-	{
-		EARNINGS= CUM_TOTAL_SOLD_QUANTITY*PRICE - COSTS;
-		
-		if(EARNINGS >0)
-		{
-
-			if((ACCOUNT <0 &&(-1)*ACCOUNT<=CUM_TOTAL_SOLD_QUANTITY*PRICE)||
-			(ACCOUNT>0&&ACCOUNT <=CUM_TOTAL_SOLD_QUANTITY*PRICE))
-			{
-				NET_PROFIT = EARNINGS - DIVIDEND_RATE * EARNINGS;
-				dividend_per_household =DIVIDEND_RATE * EARNINGS / NO_HOUSEHOLDS ;
-
-				add_dividend_message(dividend_per_household,MSGDATA);
-			}
-			else
-			{
-				NET_PROFIT =0;
-				dividend_per_household =  EARNINGS / NO_HOUSEHOLDS ;
-
-				add_dividend_message(dividend_per_household,MSGDATA);
-			}
-		}
-		else
-		{
-			NET_PROFIT= EARNINGS;
-		}
-		 
-		ACCOUNT = ACCOUNT + NET_PROFIT;
-		CUM_TOTAL_SOLD_QUANTITY=0.0;
-		CUM_REVENUE =0.0;
-		
+	//See the functions for financial management
 		
 		/*The sales per mall must be stored for the inventory rule*/
 			
