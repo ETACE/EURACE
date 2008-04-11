@@ -87,16 +87,20 @@
 /*Planning horizon of firms*/
 #define FIRM_PLANNING_HORIZON 10
 
-
-
 #define INV_INERTIA 3
-
 
 #define ADAPTION_DELIVERY_VOLUME 0.02
 
 /*Probability for the delivery if the critical stock of one mall was zero for the last periods*/
 #define DELIVERY_PROB_IF_CRITICAL_STOCK_0 25
 
+/*Parameter for the adaptation of the production volume due to insufficient finances to pay for factor inputs*/
+#define ADAPTION_PRODUCTION_VOLUME_DUE_TO_INSUFFICIENT_FINANCES 0.01
+
+/* Fraction of the obtained external financial resources that is reserved for delayed payments
+ * (subtracted from the payment account when we compare production costs to finances available)
+ */
+#define FRACTION_RESERVED_FOR_DELAYED_PAYMENTS 0.5
 
 
 void sort_vacancy_list(vacancy_array * vacancy_list);
