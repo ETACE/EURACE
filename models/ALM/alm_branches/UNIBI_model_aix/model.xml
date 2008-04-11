@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 
 <xmachine_agent_model>
-<name>Bielefeld Labour and Goods Market, basic version</name>
+<name>Bielefeld Labour and Goods Market Model, basic version</name>
 <author>Eurace</author>
 <date>290507</date>
 <date>110408</date>
@@ -261,6 +261,8 @@
 <var><type>int</type><name>id</name></var>
 <var><type>int</type><name>region_id</name></var>
 
+<!---Role: Labor Market role-->
+
 <var><type>employee_array</type><name>employees</name></var>
 <var><type>double</type><name>wage_offer</name></var>
 <var><type>double</type><name>technology</name></var>
@@ -285,8 +287,10 @@
 <var><type>double</type><name>wage_offer_for_skill_3</name></var>
 <var><type>double</type><name>wage_offer_for_skill_4</name></var>
 <var><type>double</type><name>wage_offer_for_skill_5</name></var>
+<var><type>int</type><name>employees_needed</name></var>
+
+ <!---Role: Producer role-->
  
-<var><type>int</type><name>wage_update_was_made</name></var>
 <var><type>double</type><name>share_net_investments</name></var>
 <var><type>double</type><name>mean_wage</name></var>
 <var><type>double</type><name>needed_capital_stock</name></var>
@@ -304,7 +308,7 @@
 <var><type>double</type><name>quality</name></var>
 <var><type>double</type><name>price</name></var>
 <var><type>double</type><name>price_last_month</name></var>
-<var><type>int</type><name>employees_needed</name></var>
+
 <var><type>sold_quantities_per_mall_array</type><name>sold_quantities</name></var>
 <var><type>double</type><name>total_sold_quantity</name></var>
 <var><type>double</type><name>cum_total_sold_quantity</name></var>
@@ -314,20 +318,21 @@
 <var><type>double_array</type><name>last_planned_production_quantities</name></var>
 <var><type>int</type><name>day_of_month_to_act</name></var>
 
+ <!---Role: Capital market role-->
+ 
 <var><type>capital_stock_item_array</type><name>capital_stock</name></var>
 <var><type>double</type><name>total_units_capital_stock</name></var>
 <var><type>double</type><name>total_value_capital_stock</name></var>
 <var><type>double</type><name>total_capital_depreciation_value</name></var>
 <var><type>double</type><name>total_capital_depreciation_units</name></var>
 
-
 <!---Role: Financial management role-->
 <var><type>int</type><name>gov_id</name></var>
 <var><type>int</type><name>bank_id</name></var>
-<!----------------- Firm_compute_income_statement ---------------------------------------->
+<!-- Firm_compute_income_statement -->
 <var><type>double</type><name>ebit</name></var>
 <var><type>double</type><name>payment_account</name></var>
-<!----------------- Firm_compute_balance_sheet ---------------------------------------->
+<!-- Firm_compute_balance_sheet -->
 <var><type>double</type><name>earnings</name></var>
 <var><type>double</type><name>tax_rate_corporate</name></var>
 <var><type>double</type><name>tax_payment</name></var>
@@ -341,13 +346,13 @@
 <var><type>double</type><name>total_value_local_inventory</name></var>
 <var><type>double</type><name>total_assets</name></var>
 
-<!----------------- Firm_compute_payout_policy ---------------------------------------->
+<!-- Firm_compute_payout_policy -->
 <var><type>double</type><name>planned_cum_revenue</name></var>
 <var><type>double</type><name>planned_total_interest_payment</name></var>
 <var><type>double</type><name>planned_total_debt_installment_payment</name></var>
 <var><type>double</type><name>planned_total_dividend_payment</name></var>
 
-<!----------------- Financial needs ---------------------------------------->
+<!-- Financial needs -->
 <var><type>double</type><name>direct_financial_needs</name></var>
 <var><type>double</type><name>delayed_financial_needs</name></var>
 <var><type>double</type><name>total_financial_needs</name></var>
@@ -356,7 +361,6 @@
 <var><type>double</type><name>total_external_financing_obtained</name></var>
 <var><type>int</type><name>direct_financial_needs_require_external_financing</name></var>
 <var><type>int</type><name>delayed_financial_needs_require_external_financing</name></var>
-
 
 <!----------------- Financial variables ---------------------------------------->
 <var><type>double</type><name>current_share_price</name></var>
@@ -390,7 +394,7 @@
 <!--     Defining functions     -->
 <functions>
 
-<function><name>Firm_calculate_specific_skills_and_wage_offer</name>
+<function><name>Firm_receive_data</name>
 <current_state>start_Firm</current_state>
 <next_state>00</next_state>
 <condition>first_day_of_month</condition>
@@ -403,26 +407,115 @@
 <condition>not_first_day_of_month</condition>
 </function>
 
+<!--  Firm role Consumption Goods market ------>
+
+<function>
+<name>Firm_calc_production_quantity</name>
+<current_state>00</current_state>
+<next_state>01</next_state>
+<condition>day_of_month_to_act</condition>
+<input><messagetype>current_mall_stock_info</messagetype></input>
+</function>
+
+<!-- <function>
+<name>Firm_no_production</name>
+<current_state>start</current_state>
+<next_state>13</next_state>
+<condition>not_day_of_month_to_act</condition>
+</function> -->
+
+<function><name>Firm_calc_input_demands</name>
+<current_state>01</current_state>
+<next_state>02</next_state>
+<input><messagetype>productivity</messagetype></input>
+</function>
+
+<!--  Firm role Financial Management ------>
+<function>
+<name>Firm_compute_payout_policy</name>
+<current_state>02</current_state>
+<next_state>20</next_state>
+</function>
+
+<!-- Role: Credit Market Role -->
+
+<function>
+<name>Firm_apply_for_loans</name>
+<current_state>20</current_state>
+<next_state>21</next_state>
+<output><messagetype>loan_request</messagetype></output>
+</function>
+
+<function>
+<name>Firm_read_loan_offers_send_loan_acceptance</name>
+<current_state>21</current_state>
+<next_state>22</next_state>
+<input><messagetype>loan_conditions</messagetype></input>
+<output><messagetype>loan_acceptance</messagetype></output>
+</function>
+
+<!-- Role: Asset Market Role -->
+
+<function>
+<name>Firm_compute_and_send_bond_orders</name>
+<current_state>22</current_state>
+<next_state>23</next_state>
+<output><messagetype>bond_order</messagetype></output>
+</function>
+
+<function>
+<name>Firm_read_bond_transactions</name>
+<current_state>23</current_state>
+<next_state>24</next_state>
+<input><messagetype>bond_transaction</messagetype></input>
+</function>
+
+<function>
+<name>Firm_compute_and_send_stock_orders</name>
+<current_state>24</current_state>
+<next_state>25</next_state>
+<output><messagetype>stock_order</messagetype></output>
+</function>
+
+<function>
+<name>Firm_read_stock_transactions</name>
+<current_state>25</current_state>
+<next_state>26</next_state>
+<input><messagetype>stock_transaction</messagetype></input>
+</function>
+
+<!--  Firm role Consumption Goods market : Still to work out ------>
+
+<function><name>Firm_calc_production_quantity_2</name>
+<current_state>26</current_state>
+<next_state>27</next_state>
+</function>
+
 <!--  Firm role Labour market ------>
 
+<function><name>Firm_calculate_specific_skills_and_wage_offer</name>
+<current_state>27</current_state>
+<next_state>28</next_state>
+</function>
+
+<function><name>Firm_send_vacancies</name>
+<current_state>28</current_state>
+<next_state>03</next_state>
+<condition>more_workers_needed</condition>
+<output><messagetype>vacancies</messagetype></output>
+</function>
+
 <function><name>Firm_send_redundancies</name>
-<current_state>02</current_state>
+<current_state>28</current_state>
 <next_state>03c</next_state>
 <condition>less_workers_needed</condition>
 <output><messagetype>firing</messagetype></output>
 </function>
 
-<!--
-<function><name>Firm_send_redundancies</name>
-<depends><name>Firm_calc_production_quantity_2</name><type>internal</type></depends>
-</function>
------->
-
-<function><name>Firm_send_vacancies</name>
-<current_state>02</current_state>
-<next_state>03</next_state>
-<condition>more_workers_needed</condition>
-<output><messagetype>vacancies</messagetype></output>
+<function><name>Firm_idle</name>
+<current_state>28</current_state>
+<next_state>03c</next_state>
+<condition>same_workers</condition>
 </function>
 
 <function><name>Firm_read_job_applications_send_job_offer_or_rejection</name>
@@ -464,13 +557,13 @@
 <condition>more_workers_needed</condition>
 </function>
 
-<function><name>Firm_finish_labour_market</name>
+<function><name>Firm_finish_labour_market_first_round</name>
 <current_state>03d</current_state>
 <next_state>09a</next_state>
 <condition>same_workers</condition>
 </function>
 
-<function><name>Firm_finish_labour_market</name>
+<function><name>Firm_finish_labour_market_first_round</name>
 <current_state>05b</current_state>
 <next_state>09a</next_state>
 <condition>same_workers</condition>
@@ -526,100 +619,6 @@
 <condition>same_workers</condition>
 </function>
 
-<!--  Firm role Consumption Goods market ------>
-
-<function>
-<name>Firm_calc_production_quantity</name>
-<current_state>00</current_state>
-<next_state>01</next_state>
-<condition>day_of_month_to_act</condition>
-<input><messagetype>current_mall_stock_info</messagetype></input>
-</function>
-
-<!-- <function>
-<name>Firm_no_production</name>
-<current_state>start</current_state>
-<next_state>13</next_state>
-<condition>not_day_of_month_to_act</condition>
-</function> -->
-
-<function><name>Firm_calc_input_demands</name>
-<current_state>01</current_state>
-<next_state>02</next_state>
-<input><messagetype>productivity</messagetype></input>
-</function>
-
-
-<!--  Firm role Financial Management ------>
-
-<function>
-<name>Firm_compute_payout_policy</name>
-<depends>
-<name>Firm_calc_input_demands</name>
-<type>internal</type>
-</depends>
-</function>
-
-<!-- Role: Credit Market Role -->
-
-<function>
-<name>Firm_apply_for_loans</name>
-<depends>
-<name>Firm_compute_payout_policy</name>
-<type>internal</type></depends>
-</function>
-
-<function>
-<name>Firm_read_loan_offers_send_loan_acceptance</name>
-<depends><name>Bank_read_loan_request_send_offers</name><type>loan_conditions</type></depends>
-</function>
-
-<!-- Role: Asset Market Role -->
-
-<function>
-<name>Firm_compute_and_send_bond_orders</name>
-<depends><name>Firm_read_loan_offers_send_loan_acceptance</name><type>internal</type></depends>
-</function>
-
-<function>
-<name>Firm_read_bond_transactions</name>
-<depends><name>Clearinghouse_send_bond_transactions</name><type>bond_transaction</type></depends>
-</function>
-
-<function>
-<name>Firm_compute_and_send_stock_orders</name>
-<depends><name>Firm_read_bond_transactions</name><type>internal</type></depends>
-</function>
-
-<function>
-<name>Firm_read_stock_transactions</name>
-<depends><name>Clearinghouse_send_stock_transactions</name><type>stock_transaction</type></depends>
-</function>
-
-<function>
-<name>Firm_compute_and_send_gov_bond_orders</name>
-</function>
-
-<function>
-<name>Firm_read_gov_bond_transactions</name>
-<depends>
-<name>Clearinghouse_send_gov_bond_transactions</name>
-<type>gov_bond_transaction</type></depends>
-</function>
-
-<!--  Firm role Consumption Goods market : Still to work out ------>
-
-<function><name>Firm_calc_production_quantity_2</name>
-<depends><name>Firm_read_stock_transactions</name><type>internal</type></depends>
-</function>
-
-<function><name>Firm_calculate_specific_skills_and_wage_offer</name>
-<depends><name>Firm_calc_production_quantity_2</name><type>internal</type></depends>
-<depends><name>Market_Research_send_data</name><type>market_research_send_specific_skills</type></depends>
-</function>
-
-<!-- Role: Capital Goods Market Role -->
-
 <function><name>Firm_send_capital_demand</name>
 <current_state>10</current_state>
 <next_state>11</next_state>
@@ -634,8 +633,6 @@
 <output><messagetype>pay_capital_goods</messagetype></output>
 </function>
 
-<!-- Role: Consumption Goods Market Role -->
-
 <function><name>Firm_send_goods_to_mall</name>
 <current_state>12</current_state>
 <next_state>13</next_state>
@@ -648,27 +645,28 @@
 <input><messagetype>sales</messagetype></input>
 </function>
 
-<function><name>Firm_send_data_to_Market_Research</name>
-<current_state>14</current_state>
-<next_state>end</next_state>
-<output><messagetype>firm_send_data</messagetype></output>
-</function>
-
 <!--  Firm role Financial Management ------>
 
 <function>
 <name>Firm_compute_income_statement</name>
-<depends>
-<name>Firm_calc_revenue</name>
-<type>internal</type>
-</depends>
+<current_state>14</current_state>
+<next_state>15</next_state>
 </function>
 
 <function>
 <name>Firm_compute_balance_sheet</name>
-<depends>
-<name>Firm_compute_income_statement</name>
-<type>internal</type></depends>
+<current_state>15</current_state>
+<next_state>16</next_state>
+<output><messagetype>tax_payment</messagetype></output>
+<output><messagetype>interest_payment</messagetype></output>
+<output><messagetype>debt_installment_payment</messagetype></output>
+<output><messagetype>dividend_payment</messagetype></output>
+</function>
+
+<function><name>Firm_send_data_to_Market_Research</name>
+<current_state>16</current_state>
+<next_state>end</next_state>
+<output><messagetype>firm_send_data</messagetype></output>
 </function>
 
 </functions>
@@ -873,13 +871,8 @@
 <next_state>end</next_state>
 <output><messagetype>household_send_data</messagetype></output>
 </function>
-
-
 </functions>
 </xmachine>
-
-
-
 <!--********************** End of Agent - Household ****************************-->
 
 
@@ -949,8 +942,6 @@
 
 
 <!--********************** X- Machine Agent - IG Producer ****************************-->
-
-
 <xmachine>
 <name>IGFirm</name>
 <memory>
@@ -991,7 +982,10 @@
 </function>
 </functions>
 </xmachine>
+<!--********************** End of Agent - IG Producer  ****************************-->
 
+
+<!--********************* X-machine Agent - Market_Research ****************************-->
 <xmachine>
 <name>Market_Research</name>
 <memory>
@@ -1080,7 +1074,40 @@
 
 </functions>
 </xmachine>
+<!--*********************** End of Agent - Market_Research *****************************-->
 
+<!--********************* X-machine Agent - Bank ****************************-->
+<xmachine>
+<name>Bank</name>
+<!-- Variables -->
+<!-- All variables used by Bank are declared here to allocate them in memory -->
+<memory>
+<var><type>int</type><name>id</name></var>
+<var><type>double</type><name>proposed_interest_rate</name></var>
+<var><type>double</type><name>amount_credit_offer</name></var>
+<var><type>double</type><name>range</name></var>
+<var><type>double</type><name>posx</name></var>
+<var><type>double</type><name>posy</name></var>
+</memory>
+
+<!-- Defining functions -->
+
+<!--- credit market role-->
+<functions>
+
+<function>
+<name>Bank_read_loan_request_send_offers</name>
+<current_state>start_Bank</current_state>
+<next_state>01</next_state>
+<input><messagetype>loan_request</messagetype></input>
+<output><messagetype>loan_conditions</messagetype></output>
+</function>
+
+
+
+</functions>
+</xmachine>
+<!--*********************** End of Agent - Bank *****************************-->
 
 <!--********************* X-machine Agent - Clearinghouse ****************************-->
 <xmachine>
@@ -1107,124 +1134,53 @@
 
 <function>
 <name>Clearinghouse_read_stock_orders</name>
-
-<!--
-<depends>
-<name>Household_compute_and_send_stock_orders</name>
-<type>stock_order</type>
-</depends>
--->
-
-<depends>
-    <name>Firm_compute_and_send_stock_orders</name>
-    <type>stock_order</type>
-</depends>
+<current_state>start_Clearinghouse</current_state>
+<next_state>01</next_state>
+<input><messagetype>stock_order</messagetype></input>
 </function>
 
 <function>
 <name>Clearinghouse_compute_stock_transactions</name>
-<depends><name>Clearinghouse_read_stock_orders</name><type>internal</type></depends>
+<current_state>01</current_state>
+<next_state>02</next_state>
 </function>
 
 <function>
 <name>Clearinghouse_send_stock_transactions</name>
-<depends><name>Clearinghouse_compute_stock_transactions</name><type>internal</type></depends>
+<current_state>02</current_state>
+<next_state>03</next_state>
+<output><messagetype>stock_transaction</messagetype></output>
 </function>
 
 <function>
 <name>Clearinghouse_read_bond_orders</name>
-
-<!--
-<depends>
-<name>Household_compute_and_send_bond_orders</name>
-<type>bond_order</type>
-</depends>
--->
-<depends>
-    <name>Firm_compute_and_send_bond_orders</name>
-    <type>bond_order</type>
-</depends>
+<current_state>03</current_state>
+<next_state>04</next_state>
+<input><messagetype>bond_order</messagetype></input>
 </function>
 
 <function>
 <name>Clearinghouse_compute_bond_transactions</name>
-<depends><name>Clearinghouse_read_bond_orders</name>
-<type>internal</type></depends>
+<current_state>04</current_state>
+<next_state>05</next_state>
 </function>
 
 <function>
 <name>Clearinghouse_send_bond_transactions</name>
-<depends><name>Clearinghouse_compute_bond_transactions</name><type>internal</type></depends>
-</function>
-
-<function>
-<name>Clearinghouse_read_gov_bond_orders</name>
-
-<!--
-<depends>
-<name>Household_compute_and_send_gov_bond_orders</name>
-<type>bond_order</type>
-</depends>
--->
-<depends>
-    <name>Firm_compute_and_send_gov_bond_orders</name>
-    <type>bond_order</type>
-</depends>
-</function>
-
-<function>
-<name>Clearinghouse_compute_gov_bond_transactions</name>
-<depends><name>Clearinghouse_read_gov_bond_orders</name>
-<type>internal</type></depends>
-</function>
-
-<function>
-<name>Clearinghouse_send_gov_bond_transactions</name>
-<depends><name>Clearinghouse_compute_gov_bond_transactions</name><type>internal</type></depends>
+<current_state>05</current_state>
+<next_state>06</next_state>
+<output><messagetype>bond_transaction</messagetype></output>
 </function>
 
 </functions>
 </xmachine>
 <!--*********************** End of Agent - Clearinghouse *****************************-->
 
-<!--********************* X-machine Agent - Bank ****************************-->
-<xmachine>
-<name>Bank</name>
-<!-- Variables -->
-<!-- All variables used by Bank are declared here to allocate them in memory -->
-<memory>
-<var><type>int</type><name>id</name></var>
-<var>
-<type>double</type><name>proposed_interest_rate</name>
-</var>
-<var>
-<type>double</type>
-<name>amount_credit_offer</name></var>
-<var><type>double</type><name>range</name></var>
-<var><type>double</type><name>posx</name></var>
-<var><type>double</type><name>posy</name></var>
-
-</memory>
-<!-- Defining functions -->
-
-<!--- credit market role-->
-<functions>
-
-<function>
-<name>Bank_read_loan_request_send_offers</name>
-    <depends>
-    <name>Firm_apply_for_loans</name>
-    <type>loan_request</type>
-    </depends>
-</function>
-
-</functions>
-</xmachine>
-<!--*********************** End of Agent - Bank *****************************-->
 
 
 <!--******** Messages being posted by the agents to communicate *************-->
 <messages>
+
 
 <message>
 <name>vacancies</name>
@@ -1475,6 +1431,17 @@
 <var><type>double</type><name>y</name></var>
 <var><type>double</type><name>z</name></var>
 </message>
+
+<message>
+<name>dividend</name>
+<var><type>double</type><name>dividend</name></var>
+
+<var><type>double</type><name>range</name></var>
+<var><type>double</type><name>x</name></var>
+<var><type>double</type><name>y</name></var>
+<var><type>double</type><name>z</name></var>
+</message>
+
 
 <message>
 <name>consumption_request_1</name>
@@ -1792,6 +1759,7 @@
 <var><type>double</type><name>y</name></var>
 <var><type>double</type><name>z</name></var>
 </message>
+
 </messages>
 <!--********************** End of Messages **********************************-->
 

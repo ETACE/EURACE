@@ -320,64 +320,15 @@ int Firm_compute_payout_policy()
     //Check if additional external financing is required for total financial needs (direct payable and delayed payable)    
     TOTAL_FINANCIAL_NEEDS =  DIRECT_FINANCIAL_NEEDS + DELAYED_FINANCIAL_NEEDS;
 
-/*
     //step 12D:
-    //Check if external financing is needed
-    //We use external financing only if it is needed to pay DIRECT_FINANCIAL_NEEDS or DELAYED_FINANCIAL_NEEDS  
-    if (PAYMENT_ACCOUNT>=0)
-    {
-        //printf("\n Checking: TOTAL_FINANCIAL_NEEDS < PAYMENT_ACCOUNT \n", TOTAL_FINANCIAL_NEEDS, PAYMENT_ACCOUNT);
-        if (PAYMENT_ACCOUNT >= DIRECT_FINANCIAL_NEEDS)
-        {
-            //The payment_account is sufficient to finance direct payments:
-            //INTERNAL_FINANCIAL_NEEDS = DIRECT_FINANCIAL_NEEDS;
-            //EXTERNAL_FINANCIAL_NEEDS = 0;
-
-            //Check the delayed payments:
-            if (DELAYED_FINANCIAL_NEEDS >  (PAYMENT_ACCOUNT+PLANNED_CUM_REVENUE-DIRECT_FINANCIAL_NEEDS))
-            {
-            	INTERNAL_FINANCIAL_NEEDS = DIRECT_FINANCIAL_NEEDS;
-                EXTERNAL_FINANCIAL_NEEDS = DELAYED_FINANCIAL_NEEDS - (PAYMENT_ACCOUNT+PLANNED_CUM_REVENUE-DIRECT_FINANCIAL_NEEDS);
-            }
-            else //Delayed payments do not need to be financed
-            {   
-            	INTERNAL_FINANCIAL_NEEDS = DIRECT_FINANCIAL_NEEDS + DELAYED_FINANCIAL_NEEDS;
-                EXTERNAL_FINANCIAL_NEEDS = 0;                   
-            }
-
-        }
-        else //Direct payments need to be financed
-        {
-            //Use up all of the payment_account and try to obtain the rest externally:
-            INTERNAL_FINANCIAL_NEEDS = PAYMENT_ACCOUNT;
-            
-            //Check the delayed payments:
-            if (DELAYED_FINANCIAL_NEEDS >  (PAYMENT_ACCOUNT+PLANNED_CUM_REVENUE-DIRECT_FINANCIAL_NEEDS))
-            {
-                EXTERNAL_FINANCIAL_NEEDS = DIRECT_FINANCIAL_NEEDS + DELAYED_FINANCIAL_NEEDS - (PAYMENT_ACCOUNT + PLANNED_CUM_REVENUE);
-            }
-            else //Delayed payments do not need to be financed, only direct payments financed
-            {                   
-                EXTERNAL_FINANCIAL_NEEDS = DIRECT_FINANCIAL_NEEDS - PAYMENT_ACCOUNT;                    
-            }
-        }
-    }
-    else
-    {
-         //Here: Code should never be executed. It would mean the firm prints its own money, spending more than its cash holdings and credit lines! 
-         //Negative payment_account needs to be financed as well as direct and delayed financial needs:
-         printf("\n Checking: payment_account is negative, this needs to be financed by credit or equity.\n");
-         printf("\n PAYMENT_ACCOUNT=%f, DIRECT_FINANCIAL_NEEDS = %f\n", PAYMENT_ACCOUNT, DIRECT_FINANCIAL_NEEDS);
-         EXTERNAL_FINANCIAL_NEEDS = DIRECT_FINANCIAL_NEEDS + DELAYED_FINANCIAL_NEEDS - PAYMENT_ACCOUNT;
-    }
-*/    
-
-    //step 12D: Equivalent to code above
     //Check if external financing is needed
 
     //CASE 1: No external financing needed
         if (PAYMENT_ACCOUNT >= (DIRECT_FINANCIAL_NEEDS + DELAYED_FINANCIAL_NEEDS))
         {
+        	DIRECT_FINANCIAL_NEEDS_REQUIRE_EXTERNAL_FINANCING=0;
+        	DELAYED_FINANCIAL_NEEDS_REQUIRE_EXTERNAL_FINANCING=0;
+        	
             //printf("Firm_compute_payout_policy, External financing: case 1.");
         	INTERNAL_FINANCIAL_NEEDS = DIRECT_FINANCIAL_NEEDS + DELAYED_FINANCIAL_NEEDS;
             EXTERNAL_FINANCIAL_NEEDS = 0;                   
@@ -388,6 +339,9 @@ int Firm_compute_payout_policy()
             &&((PAYMENT_ACCOUNT - DIRECT_FINANCIAL_NEEDS + PLANNED_CUM_REVENUE) >= DELAYED_FINANCIAL_NEEDS)
             &&(PAYMENT_ACCOUNT < (DIRECT_FINANCIAL_NEEDS + DELAYED_FINANCIAL_NEEDS)) )
         {
+           	DIRECT_FINANCIAL_NEEDS_REQUIRE_EXTERNAL_FINANCING=0;
+            DELAYED_FINANCIAL_NEEDS_REQUIRE_EXTERNAL_FINANCING=0;
+
             //printf("Firm_compute_payout_policy, External financing: case 2.");
         	INTERNAL_FINANCIAL_NEEDS = DIRECT_FINANCIAL_NEEDS + DELAYED_FINANCIAL_NEEDS;
             EXTERNAL_FINANCIAL_NEEDS = 0;            
@@ -397,6 +351,9 @@ int Firm_compute_payout_policy()
         if ( (PAYMENT_ACCOUNT < DIRECT_FINANCIAL_NEEDS) &&
              ((PAYMENT_ACCOUNT - DIRECT_FINANCIAL_NEEDS + PLANNED_CUM_REVENUE) >= DELAYED_FINANCIAL_NEEDS))
         {
+           	DIRECT_FINANCIAL_NEEDS_REQUIRE_EXTERNAL_FINANCING=1;
+            DELAYED_FINANCIAL_NEEDS_REQUIRE_EXTERNAL_FINANCING=0;
+
             //printf("Firm_compute_payout_policy, External financing: case 3.");
             INTERNAL_FINANCIAL_NEEDS = PAYMENT_ACCOUNT;
             EXTERNAL_FINANCIAL_NEEDS = DIRECT_FINANCIAL_NEEDS - PAYMENT_ACCOUNT;
@@ -406,6 +363,9 @@ int Firm_compute_payout_policy()
         if ( (PAYMENT_ACCOUNT >= DIRECT_FINANCIAL_NEEDS) &&
              ((PAYMENT_ACCOUNT - DIRECT_FINANCIAL_NEEDS + PLANNED_CUM_REVENUE) < DELAYED_FINANCIAL_NEEDS))
         {
+           	DIRECT_FINANCIAL_NEEDS_REQUIRE_EXTERNAL_FINANCING=0;
+            DELAYED_FINANCIAL_NEEDS_REQUIRE_EXTERNAL_FINANCING=1;
+
             //printf("Firm_compute_payout_policy, External financing: case 4.");
         	INTERNAL_FINANCIAL_NEEDS = DIRECT_FINANCIAL_NEEDS;
             EXTERNAL_FINANCIAL_NEEDS = DELAYED_FINANCIAL_NEEDS - (PAYMENT_ACCOUNT+PLANNED_CUM_REVENUE-DIRECT_FINANCIAL_NEEDS);
@@ -415,6 +375,9 @@ int Firm_compute_payout_policy()
         if ( (PAYMENT_ACCOUNT < DIRECT_FINANCIAL_NEEDS) &&
              ((PAYMENT_ACCOUNT - DIRECT_FINANCIAL_NEEDS + PLANNED_CUM_REVENUE) < DELAYED_FINANCIAL_NEEDS))
         {
+           	DIRECT_FINANCIAL_NEEDS_REQUIRE_EXTERNAL_FINANCING=1;
+            DELAYED_FINANCIAL_NEEDS_REQUIRE_EXTERNAL_FINANCING=1;
+
             //printf("Firm_compute_payout_policy, External financing: case 5.");
             INTERNAL_FINANCIAL_NEEDS = PAYMENT_ACCOUNT;
             EXTERNAL_FINANCIAL_NEEDS = DIRECT_FINANCIAL_NEEDS + DELAYED_FINANCIAL_NEEDS - (PAYMENT_ACCOUNT + PLANNED_CUM_REVENUE);            
