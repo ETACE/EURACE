@@ -335,6 +335,7 @@
 <var><type>double</type><name>quality</name></var>
 <var><type>double</type><name>price</name></var>
 <var><type>double</type><name>price_last_month</name></var>
+
 <var><type>capital_stock_item_array</type><name>capital_stock</name></var>
 <var><type>double</type><name>total_units_capital_stock</name></var>
 <var><type>double</type><name>total_value_capital_stock</name></var>
@@ -475,8 +476,6 @@
 
 
 <!--  Firm role Consumption Goods market ------>
-
-
 <function><name>Firm_calc_production_quantity</name>
 <depends><name>Mall_send_current_stocks</name><type>current_mall_stock_info</type></depends>
 
