@@ -10,8 +10,10 @@
 <!--***************** Environment values and functions **********************-->
 <environment>
 <functions>
-<file>Firm_functions.c</file>
-<file>Household_functions.c</file>
+<file>Firm_Employer_Functions.c</file>
+<file>Firm_Producer_Functions.c</file>
+<file>Household_Employee_Functions.c</file>
+<file>Household_Consumer_Functions.c</file>
 <file>Mall_functions.c</file>
 <file>IGfirm_functions.c</file>
 <file>Market_Research_functions.c</file>
