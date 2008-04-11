@@ -327,7 +327,8 @@
 <var><type>double</type><name>revenue_per_day</name></var>
 <var><type>double</type><name>technological_frontier</name></var>
 <var><type>double</type><name>cum_revenue</name></var>
-
+<var><type>double</type><name>total_capital_depreciation_value/name></var>
+<var><type>double</type><name>cum_capital_depreciation_units</name></var>
 <var><type>double</type><name>out_of_stock_costs</name></var>
 
 <var><type>sales_statistics_array</type><name>malls_sales_statistics</name></var>
@@ -380,6 +381,10 @@
 <var><type>double</type><name>total_financial_needs</name></var>
 <var><type>double</type><name>internal_financial_needs</name></var>
 <var><type>double</type><name>external_financial_needs</name></var>
+<var><type>double</type><name>total_external_financing_obtained</name></var>
+<var><type>int</type><name>direct_financial_needs_require_external_financing</name></var>
+<var><type>int</type><name>delayed_financial_needs_require_external_financing</name></var>
+
 
 <!----------------- Financial variables ---------------------------------------->
 <var><type>double</type><name>current_share_price</name></var>
@@ -417,7 +422,7 @@
 
 <!--  Firm role Labour market ------>
 <function><name>Firm_calculate_specific_skills_and_wage_offer</name>
-<depends><name>Firm_calc_input_demands</name><type>internal</type></depends>
+<depends><name>Firm_calc_production_quantity_2</name><type>internal</type></depends>
 <depends><name>Market_Research_send_data</name><type>market_research_send_specific_skills</type></depends>
 </function>
 
@@ -426,7 +431,7 @@
 </function>
 
 <function><name>Firm_send_redundancies</name>
-<depends><name>Firm_calc_input_demands</name><type>internal</type></depends>
+<depends><name>Firm_calc_production_quantity_2</name><type>internal</type></depends>
 </function>
 
 <function><name>Firm_read_job_applications_send_job_offer_or_rejection</name>
@@ -483,7 +488,7 @@
 </function>
 
 
-<function><name>Firm_recalc_capital_demand</name>
+<function><name>Firm_send_capital_demand</name>
 <depends><name>Firm_read_job_responses_2</name><type>internal</type></depends>
 </function>
 
@@ -500,6 +505,15 @@
 
 <function><name>Firm_calc_revenue</name>
 <depends><name>Mall_pay_firm</name><type>sales</type></depends>
+</function>
+
+
+<function><name>Firm_calc_production_quantity_2</name>
+<depends><name>Firm_read_stock_transactions</name><type>internal</type></depends>
+</function>
+
+<function><name>Firm_calc_input_demands_2</name>
+
 </function>
 
 
@@ -766,7 +780,7 @@
 </function>
 
 <function><name>IGFirm_send_capital_good</name>
-<depends><name>Firm_recalc_capital_demand</name><type>capital_good_request</type></depends>
+<depends><name>Firm_send_capital_demand</name><type>capital_good_request</type></depends>
 </function>
 
 <function><name>IGFirm_receive_payment</name>
