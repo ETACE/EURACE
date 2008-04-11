@@ -549,51 +549,6 @@
 <input><messagetype>productivity</messagetype></input>
 </function>
 
-<function><name>Firm_send_capital_demand</name>
-<current_state>10</current_state>
-<next_state>11</next_state>
-<output><messagetype>capital_good_request</messagetype></output>
-</function>
-
-<function><name>Firm_calc_pay_costs</name>
-<current_state>11</current_state>
-<next_state>12</next_state>
-<input><messagetype>capital_good_delivery</messagetype></input>
-<output><messagetype>wage_payment</messagetype></output>
-<output><messagetype>pay_capital_goods</messagetype></output>
-</function>
-
-
-<function><name>Firm_send_goods_to_mall</name>
-<current_state>12</current_state>
-<next_state>13</next_state>
-<output><messagetype>update_mall_stock</messagetype></output>
-</function>
-
-<function><name>Firm_calc_revenue</name>
-<current_state>13</current_state>
-<next_state>14</next_state>
-<input><messagetype>sales</messagetype></input>
-<output><messagetype>dividend</messagetype></output>
-</function>
-
-<function><name>Firm_send_data_to_Market_Research</name>
-<current_state>14</current_state>
-<next_state>end</next_state>
-<output><messagetype>firm_send_data</messagetype></output>
-</function>
-
-
-<!--  Firm role Consumption Goods market : Still to work out ------>
-
-<function><name>Firm_calc_production_quantity_2</name>
-<depends><name>Firm_read_stock_transactions</name><type>internal</type></depends>
-</function>
-
-<function><name>Firm_calculate_specific_skills_and_wage_offer</name>
-<depends><name>Firm_calc_production_quantity_2</name><type>internal</type></depends>
-<depends><name>Market_Research_send_data</name><type>market_research_send_specific_skills</type></depends>
-</function>
 
 <!--  Firm role Financial Management ------>
 
@@ -604,22 +559,6 @@
 <type>internal</type>
 </depends>
 </function>
-
-<function>
-<name>Firm_compute_income_statement</name>
-<depends>
-<name>Firm_calc_revenue</name>
-<type>internal</type>
-</depends>
-</function>
-
-<function>
-<name>Firm_compute_balance_sheet</name>
-<depends>
-<name>Firm_compute_income_statement</name>
-<type>internal</type></depends>
-</function>
-
 
 <!-- Role: Credit Market Role -->
 
@@ -666,6 +605,70 @@
 <depends>
 <name>Clearinghouse_send_gov_bond_transactions</name>
 <type>gov_bond_transaction</type></depends>
+</function>
+
+<!--  Firm role Consumption Goods market : Still to work out ------>
+
+<function><name>Firm_calc_production_quantity_2</name>
+<depends><name>Firm_read_stock_transactions</name><type>internal</type></depends>
+</function>
+
+<function><name>Firm_calculate_specific_skills_and_wage_offer</name>
+<depends><name>Firm_calc_production_quantity_2</name><type>internal</type></depends>
+<depends><name>Market_Research_send_data</name><type>market_research_send_specific_skills</type></depends>
+</function>
+
+<!-- Role: Capital Goods Market Role -->
+
+<function><name>Firm_send_capital_demand</name>
+<current_state>10</current_state>
+<next_state>11</next_state>
+<output><messagetype>capital_good_request</messagetype></output>
+</function>
+
+<function><name>Firm_calc_pay_costs</name>
+<current_state>11</current_state>
+<next_state>12</next_state>
+<input><messagetype>capital_good_delivery</messagetype></input>
+<output><messagetype>wage_payment</messagetype></output>
+<output><messagetype>pay_capital_goods</messagetype></output>
+</function>
+
+<!-- Role: Consumption Goods Market Role -->
+
+<function><name>Firm_send_goods_to_mall</name>
+<current_state>12</current_state>
+<next_state>13</next_state>
+<output><messagetype>update_mall_stock</messagetype></output>
+</function>
+
+<function><name>Firm_calc_revenue</name>
+<current_state>13</current_state>
+<next_state>14</next_state>
+<input><messagetype>sales</messagetype></input>
+</function>
+
+<function><name>Firm_send_data_to_Market_Research</name>
+<current_state>14</current_state>
+<next_state>end</next_state>
+<output><messagetype>firm_send_data</messagetype></output>
+</function>
+
+<!--  Firm role Financial Management ------>
+
+<function>
+<name>Firm_compute_income_statement</name>
+<depends>
+<name>Firm_calc_revenue</name>
+<type>internal</type>
+</depends>
+</function>
+
+<function>
+<name>Firm_compute_balance_sheet</name>
+<depends>
+<name>Firm_compute_income_statement</name>
+<type>internal</type></depends>
 </function>
 
 </functions>
