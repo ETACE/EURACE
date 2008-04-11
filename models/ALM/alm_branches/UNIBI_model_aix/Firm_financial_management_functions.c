@@ -11,9 +11,7 @@
  */
 int Firm_compute_income_statement()
 {
-    if(DAY%MONTH==DAY_OF_MONTH_TO_ACT)
-    {
-        //In the future: if we want to include sales_costs
+		//In the future: if we want to include sales_costs
         //SALES_COSTS = 0;
         //EBIT = CUM_REVENUE - SALES_COSTS
         EBIT = CUM_REVENUE; //net revenues = receipts - sales_costs;       
@@ -24,7 +22,6 @@ int Firm_compute_income_statement()
         //Reset the counters
         CUM_TOTAL_SOLD_QUANTITY = 0.0;
         CUM_REVENUE = 0.0;        
-    }
 
     return 0;
 }
@@ -50,9 +47,7 @@ int Firm_compute_balance_sheet()
     int imax;
     int i;
 
-    if(DAY%MONTH==DAY_OF_MONTH_TO_ACT)
-    {
-        //double PAYMENT_ACCOUNT: account out of which payments are made, to be separated from the income_account on which current sale receipts are incoming
+    	//double PAYMENT_ACCOUNT: account out of which payments are made, to be separated from the income_account on which current sale receipts are incoming
         //CASH_HOLDINGS: equal to payment_account???? Cash holdings is an ambiguous term.
 
         //double_array LOANS                : dynamic array of structs with each struct a loan_item
@@ -236,7 +231,6 @@ int Firm_compute_balance_sheet()
 
         TOTAL_ASSETS = PAYMENT_ACCOUNT + TOTAL_VALUE_CAPITAL_STOCK + TOTAL_VALUE_LOCAL_INVENTORY;
         //printf("\nTOTAL_ASSETS in functions.c file: %f\n", TOTAL_ASSETS);
-    }
 
     return 0;
 }
