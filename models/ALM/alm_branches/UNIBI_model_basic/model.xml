@@ -327,7 +327,7 @@
 <var><type>double</type><name>revenue_per_day</name></var>
 <var><type>double</type><name>technological_frontier</name></var>
 <var><type>double</type><name>cum_revenue</name></var>
-<var><type>double</type><name>total_capital_depreciation_value/name></var>
+<var><type>double</type><name>total_capital_depreciation_value</name></var>
 <var><type>double</type><name>cum_capital_depreciation_units</name></var>
 <var><type>double</type><name>out_of_stock_costs</name></var>
 
