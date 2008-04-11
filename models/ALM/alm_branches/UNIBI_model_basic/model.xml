@@ -512,9 +512,6 @@
 <depends><name>Firm_read_stock_transactions</name><type>internal</type></depends>
 </function>
 
-<function><name>Firm_calc_input_demands_2</name>
-
-</function>
 
 
 <!--  Firm role Financial Management ------>
