@@ -27,11 +27,6 @@ int Firm_idle()
 }
 
 
-
-
-
-
-
 /********************************Firm Role Consumption Goods marke*******************************/
 
 
@@ -55,7 +50,7 @@ int Firm_calc_production_quantity()
 					CURRENT_MALL_STOCKS.array[j].mall_id)
 					{
 						/*Firms update the stock level in one mall*/
-						CURRENT_MALL_STOCKS.array[j].current_stock= 							current_mall_stock_info_message->stock;
+						CURRENT_MALL_STOCKS.array[j].current_stock= current_mall_stock_info_message->stock;
 					}		
 				}
 			}
@@ -72,7 +67,7 @@ int Firm_calc_production_quantity()
 		mean_critical_stocks = mean_critical_stocks/CURRENT_MALL_STOCKS.size;
 
 		/*Computing of out-of-stock costs*/
-		OUT_OF_STOCK_COSTS = (PRICE - DISCONT_RATE*UNIT_COSTS)/
+		OUT_OF_STOCK_COSTS = (PRICE - DISCOUNT_RATE*UNIT_COSTS)/
 		(PRICE+INVENTORY_COSTS_PER_UNIT);
 
 		/*Creating a temporary array of the last X sales per mall*/
@@ -113,7 +108,8 @@ int Firm_calc_production_quantity()
 				}
 			}
 
-			/*If the critical level for a mall is zero then the firm sets (with a 				certain prob )the critical level equal the average CL in order to keep 				this mall on the delivery list */
+			/*If the critical level for a mall is zero then the firm sets (with a certain prob )the 
+			 * critical level equal the average CL in order to keep this mall on the delivery list */
 			if(CURRENT_MALL_STOCKS.array[i].critical_stock==0)
 			{
 				int random_nummer = random_int(0,100);
@@ -129,19 +125,20 @@ int Firm_calc_production_quantity()
 		}
 
 
-		/*checking whether or not the current mall stocks are below the critical values 		(sS-Rule) If this is the case refill the stock up to the max stock */
+		/*checking whether or not the current mall stocks are below the critical values 		
+		 * (sS-Rule) If this is the case refill the stock up to the max stock */
 		for(int i = 0; i < CURRENT_MALL_STOCKS.size; i++)
 		{
 			
 			if(CURRENT_MALL_STOCKS.array[i].current_stock <= 
 			CURRENT_MALL_STOCKS.array[i].critical_stock)	
 			{
-				/*If stocks are left at the beginning of a new production cycle
-				then firms produce the difference between these stocks and the
-				critical stock for this mall*/
+				/*If stocks are left at the beginning of a new production cycle 
+				 * then firms produce the difference between these stocks and the 
+				 * critical stock for this mall*/
 				if(CURRENT_MALL_STOCKS.array[i].current_stock > 0)
 				{
-					prod_vol = CURRENT_MALL_STOCKS.array[i].critical_stock - 						CURRENT_MALL_STOCKS.array[i].current_stock;
+					prod_vol = CURRENT_MALL_STOCKS.array[i].critical_stock - CURRENT_MALL_STOCKS.array[i].current_stock;
 	
 					PLANNED_DELIVERY_VOLUME.array[i].mall_id = 
 					CURRENT_MALL_STOCKS.array[i].mall_id;
@@ -149,8 +146,10 @@ int Firm_calc_production_quantity()
 					PLANNED_DELIVERY_VOLUME.array[i].quantity  = prod_vol;
 					production_volume = production_volume + prod_vol;
 				}
-				else/*If no stocks are left then the firms want to produce more
-				    units than the period before. They increase the production 					    volume for one mall by a certain fraction of the last delivery 					    volume*/
+				else
+				/*If no stocks are left then the firms want to produce more 
+				 * units than the period before. They increase the production 
+				 * volume for one mall by a certain fraction of the last delivery volume*/
 				{
 					for(int j = 0; j < DELIVERY_VOLUME.size; j++)
 					{
@@ -171,7 +170,7 @@ int Firm_calc_production_quantity()
 				production_volume = production_volume + prod_vol;
 				
 			}
-			else/*If  stocks are higher than the critical value no production takes 			    place for this mall*/
+			else/*If  stocks are higher than the critical value no production takes place for this mall*/
 			{
 				PLANNED_DELIVERY_VOLUME.array[i].mall_id= 
 				CURRENT_MALL_STOCKS.array[i].mall_id;
@@ -190,8 +189,7 @@ int Firm_calc_production_quantity()
 		mean_production_quantity = mean_production_quantity/
 		LAST_PLANNED_PRODUCTION_QUANTITIES.size;
 	
-		PLANNED_PRODUCTION_QUANTITY = LAMBDA*production_volume + 
-		(1-LAMBDA)*mean_production_quantity;
+		PLANNED_PRODUCTION_QUANTITY = LAMBDA*production_volume + (1-LAMBDA)*mean_production_quantity;
 
 	}
 	else 
@@ -203,9 +201,180 @@ int Firm_calc_production_quantity()
 
 }
 
+	
 /** \fn Firm_calc_input_demands()
  * \brief Firms calculate the labor demand and the demand for capital goods*/
 int Firm_calc_input_demands()
+{
+	int i,imax;
+	double temp_labour_demand;
+	double temp_capital_demand;
+	
+	if(DAY%MONTH==DAY_OF_MONTH_TO_ACT)
+	{
+		
+		START_PRODUCTIVITY_MESSAGE_LOOP
+			/*Update of the actual capital good information*/
+			TECHNOLOGICAL_FRONTIER = productivity_message->cap_productivity;
+			ACTUAL_CAP_PRICE = productivity_message->cap_good_price;
+		
+		FINISH_PRODUCTIVITY_MESSAGE_LOOP
+		
+		/*Calculate labor demand and needed capital goods. 
+		 * Complementarity between specific skills and productivity*/
+		
+
+
+		/*Specific skills are limiting factor*/
+		if(MEAN_SPECIFIC_SKILLS < TECHNOLOGY)
+		{
+	
+			temp_capital_demand = PLANNED_PRODUCTION_QUANTITY * 
+			(pow((BETA*MEAN_WAGE)/(DEPRECIATION_RATE*ACTUAL_CAP_PRICE*ALPHA),ALPHA)/
+			MEAN_SPECIFIC_SKILLS);
+			
+
+			/*Smoothing of capital good demand*/
+			if(temp_capital_demand > TOTAL_UNITS_CAPITAL_STOCK + (INV_INERTIA-1)*TOTAL_CAPITAL_DEPRECIATION_UNITS)
+			{
+				NEEDED_CAPITAL_STOCK = TOTAL_UNITS_CAPITAL_STOCK + (INV_INERTIA-1)*TOTAL_CAPITAL_DEPRECIATION_UNITS;
+			}else
+			{
+				NEEDED_CAPITAL_STOCK = temp_capital_demand;
+			}
+				
+		temp_labour_demand = pow(PLANNED_PRODUCTION_QUANTITY /
+		(pow(NEEDED_CAPITAL_STOCK,BETA)*MEAN_SPECIFIC_SKILLS),1/ALPHA);
+ 
+		}
+		/*Technological productivity is limiting factor*/
+		else
+		{
+			temp_capital_demand = PLANNED_PRODUCTION_QUANTITY * 
+			(pow((BETA*MEAN_WAGE)/	(DEPRECIATION_RATE*ACTUAL_CAP_PRICE*ALPHA),ALPHA)/
+			TECHNOLOGY);
+			
+			/*Smoothing of capital good demand*/
+			if(temp_capital_demand > TOTAL_UNITS_CAPITAL_STOCK + (INV_INERTIA-1)*TOTAL_CAPITAL_DEPRECIATION_UNITS)
+			{
+				NEEDED_CAPITAL_STOCK = TOTAL_UNITS_CAPITAL_STOCK + (INV_INERTIA-1)*TOTAL_CAPITAL_DEPRECIATION_UNITS;
+			}else
+			{
+				NEEDED_CAPITAL_STOCK = temp_capital_demand;
+			}
+
+		temp_labour_demand = pow(PLANNED_PRODUCTION_QUANTITY /
+		(pow(NEEDED_CAPITAL_STOCK,BETA)*TECHNOLOGY),1/ALPHA);
+		}
+		
+		/*Compute new capital stock, in units and in value*/
+		
+        //The capital stock is heterogeneous.
+        //struct CAPITAL_STOCK               		: dynamic array of capital_stock_item; each item is a struct of a certain purchased quantity of capital stock
+        //double units                      		: current units of capital in the item
+		//double purchase_price                     : purchase_price of the units of capital in the item
+        //double depreciation_units_per_period      : the capital stock depreciates with a fixed value in each period (inn units of capital)
+        
+        //We loop over all capital stock items and update the current_value
+        imax = CAPITAL_STOCK.size;
+        TOTAL_VALUE_CAPITAL_STOCK=0;
+        TOTAL_UNITS_CAPITAL_STOCK=0;
+        for (i=0;i<imax;i++)
+        {
+            //decrease the value of each installment of capital by its own depreciation value
+            CAPITAL_STOCK.array[i].units -= CAPITAL_STOCK.array[i].depreciation_units_per_period;
+            
+            //update the current units of capital stock:
+            TOTAL_UNITS_CAPITAL_STOCK += CAPITAL_STOCK.array[i].units;
+
+            //update the current value of the capital stock:
+            TOTAL_VALUE_CAPITAL_STOCK += CAPITAL_STOCK.array[i].units*CAPITAL_STOCK.array[i].purchase_price;
+
+            //if the period of full depreciation has been reached: remove the capital_stock_item
+            if (CAPITAL_STOCK.array[i].units==0)
+            {
+                remove_capital_stock_item(&CAPITAL_STOCK, i);
+            }
+        }       
+        
+		/*Depriciation of the old capital stock.
+		If additional capital goods are needed...*/
+
+		if(NEEDED_CAPITAL_STOCK > TOTAL_UNITS_CAPITAL_STOCK)
+		{		
+			if(temp_labour_demand < 1 && temp_labour_demand > 0)
+			{
+				EMPLOYEES_NEEDED = 1;
+			}else
+			{
+				EMPLOYEES_NEEDED = (int) temp_labour_demand;
+			}
+		}
+		else/*... if capital stock is higher than the needed one..*/
+		{
+			/*Recalculation of the labor demand*/
+			if(MEAN_SPECIFIC_SKILLS > TECHNOLOGY)
+			{
+				EMPLOYEES_NEEDED = (int) (pow(PLANNED_PRODUCTION_QUANTITY/
+				(TECHNOLOGY*pow(TOTAL_UNITS_CAPITAL_STOCK,BETA)),1/ALPHA));
+			}
+			else
+			{
+				EMPLOYEES_NEEDED = (int) (pow(PLANNED_PRODUCTION_QUANTITY/
+ 				(MEAN_SPECIFIC_SKILLS*pow(TOTAL_UNITS_CAPITAL_STOCK,BETA)),1/ALPHA));
+			}
+		}
+		/*This calculates the needed capital investments*/
+		DEMAND_CAPITAL_STOCK=  NEEDED_CAPITAL_STOCK - TOTAL_UNITS_CAPITAL_STOCK;
+		
+		/*This computes the financial needings for production*/
+		PLANNED_PRODUCTION_COSTS = EMPLOYEES_NEEDED*MEAN_WAGE + DEMAND_CAPITAL_STOCK*ACTUAL_CAP_PRICE;
+	}
+
+	return 0;
+}
+
+
+/** \fn Firm_calc_production_quantity_2()
+ * \brief Firms iterate over the planned production quantity decreasing it incrementally,
+ * such that the corresponding labor demand and capital demand can be financed by the actually obtained financial resources.*/
+int Firm_calc_production_quantity_2()
+{
+	//Here we set a fraction of the planned production quantity
+	double decrement;
+	decrement = ADAPTION_PRODUCTION_VOLUME_DUE_TO_INSUFFICIENT_FINANCES*PLANNED_PRODUCTION_QUANTITY;
+	
+	//Only direct payments need to be financed
+	if (DIRECT_FINANCIAL_NEEDS_REQUIRE_EXTERNAL_FINANCING==1 && DELAYED_FINANCIAL_NEEDS_REQUIRE_EXTERNAL_FINANCING==0)
+	{
+		while (PLANNED_PRODUCTION_COSTS > PAYMENT_ACCOUNT)
+		{
+			PLANNED_PRODUCTION_QUANTITY -= decrement;
+			Firm_calc_input_demands_2();
+		}
+	}
+
+	//Direct and delayed payments need to be financed
+	if (DIRECT_FINANCIAL_NEEDS_REQUIRE_EXTERNAL_FINANCING==1 && DELAYED_FINANCIAL_NEEDS_REQUIRE_EXTERNAL_FINANCING==1)
+	{
+		while (PLANNED_PRODUCTION_COSTS > PAYMENT_ACCOUNT - FRACTION_RESERVED_FOR_DELAYED_PAYMENTS*TOTAL_EXTERNAL_FINANCING_OBTAINED)
+		{
+			PLANNED_PRODUCTION_QUANTITY -= decrement;
+			Firm_calc_input_demands_2();
+		}
+	}
+
+	return 0;
+}
+
+
+/** \fn Firm_calc_input_demands_2(), auxiliary function
+ * \brief Firms recalculate the labor demand and the demand for capital goods
+ * such that these can be financed with the external finances obtained.
+ * This function is iterated multiple times by the function Firm_calc_production_quantity_2
+ * in order to find the maximal possible production_quantity that can be financed.
+ */
+int Firm_calc_input_demands_2()
 {
 	double temp_labour_demand;
 	double temp_capital_demand;
@@ -223,24 +392,20 @@ int Firm_calc_input_demands()
 		/*Calculate labor demand and needed capital goods.
 		Complementarity between specific skills and productivity*/
 		
-
-
+		
 		/*Specific skills are limiting factor*/
 		if(MEAN_SPECIFIC_SKILLS < TECHNOLOGY)
 		{
 	
 			temp_capital_demand = PLANNED_PRODUCTION_QUANTITY * 
-			(pow((BETA*MEAN_WAGE)/(DEPRICIATION_RATE*ACTUAL_CAP_PRICE*ALPHA),ALPHA)/
+			(pow((BETA*MEAN_WAGE)/(DEPRECIATION_RATE*ACTUAL_CAP_PRICE*ALPHA),ALPHA)/
 			MEAN_SPECIFIC_SKILLS);
 			
 
 			/*Smoothing of capital good demand*/
-			if(temp_capital_demand > 
-			(1+(INV_INERTIA-1)*DEPRICIATION_RATE)*CAPITAL_STOCK)
+			if(temp_capital_demand > TOTAL_UNITS_CAPITAL_STOCK + (INV_INERTIA-1)*TOTAL_CAPITAL_DEPRECIATION_UNITS)
 			{
-				NEEDED_CAPITAL_STOCK = 
-				(1+(INV_INERTIA-1)*DEPRICIATION_RATE)*CAPITAL_STOCK;
-
+				NEEDED_CAPITAL_STOCK = TOTAL_UNITS_CAPITAL_STOCK + (INV_INERTIA-1)*TOTAL_CAPITAL_DEPRECIATION_UNITS;
 			}else
 			{
 				NEEDED_CAPITAL_STOCK = temp_capital_demand;
@@ -254,33 +419,27 @@ int Firm_calc_input_demands()
 		else
 		{
 			temp_capital_demand = PLANNED_PRODUCTION_QUANTITY * 
-			(pow((BETA*MEAN_WAGE)/	(DEPRICIATION_RATE*ACTUAL_CAP_PRICE*ALPHA),ALPHA)/
+			(pow((BETA*MEAN_WAGE)/	(DEPRECIATION_RATE*ACTUAL_CAP_PRICE*ALPHA),ALPHA)/
 			TECHNOLOGY);
 			
 			/*Smoothing of capital good demand*/
-			if(temp_capital_demand > 
-			(1+(INV_INERTIA-1)*DEPRICIATION_RATE)*CAPITAL_STOCK)
+			if(temp_capital_demand > TOTAL_UNITS_CAPITAL_STOCK + (INV_INERTIA-1)*TOTAL_CAPITAL_DEPRECIATION_UNITS)
 			{
-				NEEDED_CAPITAL_STOCK = 
-				(1+(INV_INERTIA-1)*DEPRICIATION_RATE)*CAPITAL_STOCK;
-
+				NEEDED_CAPITAL_STOCK = TOTAL_UNITS_CAPITAL_STOCK + (INV_INERTIA-1)*TOTAL_CAPITAL_DEPRECIATION_UNITS;
 			}else
 			{
-				NEEDED_CAPITAL_STOCK=temp_capital_demand;
-
+				NEEDED_CAPITAL_STOCK = temp_capital_demand;
 			}
 
 		temp_labour_demand = pow(PLANNED_PRODUCTION_QUANTITY /
 		(pow(NEEDED_CAPITAL_STOCK,BETA)*TECHNOLOGY),1/ALPHA);
 		}
-		
+   
 		/*Depriciation of the old capital stock.
 		If additional capital goods are needed...*/
-		if(NEEDED_CAPITAL_STOCK > (1-DEPRICIATION_RATE)*CAPITAL_STOCK)
-		{
-				
-			CAPITAL_STOCK = (1-DEPRICIATION_RATE)*CAPITAL_STOCK;
-			
+
+		if(NEEDED_CAPITAL_STOCK > TOTAL_UNITS_CAPITAL_STOCK)
+		{		
 			if(temp_labour_demand < 1 && temp_labour_demand > 0)
 			{
 				EMPLOYEES_NEEDED = 1;
@@ -291,64 +450,53 @@ int Firm_calc_input_demands()
 		}
 		else/*... if capital stock is higher than the needed one..*/
 		{
-
-			CAPITAL_STOCK = (1-DEPRICIATION_RATE)*CAPITAL_STOCK;
-			
 			/*Recalculation of the labor demand*/
 			if(MEAN_SPECIFIC_SKILLS > TECHNOLOGY)
 			{
 				EMPLOYEES_NEEDED = (int) (pow(PLANNED_PRODUCTION_QUANTITY/
-				(TECHNOLOGY*pow(CAPITAL_STOCK,BETA)),1/ALPHA));
+				(TECHNOLOGY*pow(TOTAL_UNITS_CAPITAL_STOCK,BETA)),1/ALPHA));
 			}
 			else
 			{
 				EMPLOYEES_NEEDED = (int) (pow(PLANNED_PRODUCTION_QUANTITY/
- 				(MEAN_SPECIFIC_SKILLS*pow(CAPITAL_STOCK,BETA)),1/ALPHA));
+ 				(MEAN_SPECIFIC_SKILLS*pow(TOTAL_UNITS_CAPITAL_STOCK,BETA)),1/ALPHA));
 			}
 		}
+		/*This calculates the needed capital investments*/
+		DEMAND_CAPITAL_STOCK=  NEEDED_CAPITAL_STOCK - TOTAL_UNITS_CAPITAL_STOCK;
+		
+		/*This computes the financial needings for production*/
+		PLANNED_PRODUCTION_COSTS = EMPLOYEES_NEEDED*MEAN_WAGE + DEMAND_CAPITAL_STOCK*ACTUAL_CAP_PRICE;
 	}
 
 	return 0;
+}	
 
-}
-
-
-
-/** \fn Firm_recalc_capital_demand()
- * \brief Depending on LM rationing firms substitute labor with capital */
-int Firm_recalc_capital_demand()
+/** \fn Firm_send_capital_demand()
+ * \brief Firm sends demand for capital to the capital goods market. */
+int Firm_send_capital_demand()
 {
+	int i, imax;
+	
 	if(DAY%MONTH==DAY_OF_MONTH_TO_ACT)
 	{
-		double optimal_capital_input;
-		/*If rationed on the LM*/
-		if(NO_EMPLOYEES < EMPLOYEES_NEEDED)
-		{
-			if(NO_EMPLOYEES > 0 )
-			{
-		 		optimal_capital_input = pow(PLANNED_PRODUCTION_QUANTITY/
-				(TECHNOLOGY* pow(NO_EMPLOYEES,ALPHA)),1/BETA) ; 
-	
-				NEEDED_CAPITAL_STOCK = (1-TETA)*NEEDED_CAPITAL_STOCK +
-				 TETA*optimal_capital_input;	
-			}
-			else
-			{
-				NEEDED_CAPITAL_STOCK = 0;
-			}
-		}
-	
-		if(NEEDED_CAPITAL_STOCK > 0 && NEEDED_CAPITAL_STOCK > CAPITAL_STOCK)
-		{		
-			double investments = NEEDED_CAPITAL_STOCK -CAPITAL_STOCK;
+		TOTAL_CAPITAL_DEPRECIATION_VALUE=0;
+		TOTAL_CAPITAL_DEPRECIATION_UNITS=0;
+		
+        for (i=0;i<imax;i++)
+        {
+            //sum the depreciation values of each item in the capital stock 
+        	TOTAL_CAPITAL_DEPRECIATION_VALUE += CAPITAL_STOCK.array[i].depreciation_units_per_period*CAPITAL_STOCK.array[i].purchase_price;
+        	TOTAL_CAPITAL_DEPRECIATION_UNITS += CAPITAL_STOCK.array[i].depreciation_units_per_period;
+        }
+        
+		if ( (NEEDED_CAPITAL_STOCK > 0) && (NEEDED_CAPITAL_STOCK > TOTAL_UNITS_CAPITAL_STOCK))
+		{					
 			double net_investments;
 
-
-
-
-			if(investments - CAPITAL_STOCK*DEPRICIATION_RATE > 0)
+			if(DEMAND_CAPITAL_STOCK - TOTAL_CAPITAL_DEPRECIATION_UNITS > 0)
  			{/*Calculation of net investments*/
-				net_investments = investments - CAPITAL_STOCK*DEPRICIATION_RATE;
+				net_investments = DEMAND_CAPITAL_STOCK - TOTAL_CAPITAL_DEPRECIATION_UNITS;
 			}
 			else
 			{
@@ -356,9 +504,9 @@ int Firm_recalc_capital_demand()
 			}
 		
 			/*Calculate the share of net investments*/	
-			SHARE_NET_INVESTMENTS = net_investments/investments;
+			SHARE_NET_INVESTMENTS = net_investments/DEMAND_CAPITAL_STOCK;
 
-			add_capital_good_request_message(ID,investments,MSGDATA);		
+			add_capital_good_request_message(ID,DEMAND_CAPITAL_STOCK,MSGDATA);		
 		}
 		else
 		{
@@ -368,16 +516,19 @@ int Firm_recalc_capital_demand()
 	return 0;
 }
 
-
-
 /** \fn Firm_calc_pay_costs()
  * \brief In this function the firm receives the purchased investment goods and pays the goods and 	the wage bill. Additionally, the new mean wage and tthe new average specific skill level is 	computed. */
 int Firm_calc_pay_costs()
 {
-	
+	int i,imax;
 	double capital_costs;
 	double labour_costs;
-
+    
+	double units;
+	double purchase_price;
+	double productivity;
+	double depreciation_units_per_period;
+		
 	if(DAY%MONTH==DAY_OF_MONTH_TO_ACT)
 	{
 		/*Calculate mean wage and mean specific skills:*/
@@ -403,42 +554,45 @@ int Firm_calc_pay_costs()
 		}
 		
 		/*Firm receives the investment goods*/
+		capital_costs=0;
 		
 		START_CAPITAL_GOOD_DELIVERY_MESSAGE_LOOP
 		
+		if (capital_good_delivery_message->productivity > TECHNOLOGICAL_FRONTIER)
+		{
 			TECHNOLOGICAL_FRONTIER = capital_good_delivery_message->productivity;
+		}
 
 			if(ID == capital_good_delivery_message->firm_id)
 			{
-
-				/*Update of productivity*/
-				TECHNOLOGY = CAPITAL_STOCK / (CAPITAL_STOCK +
- 				capital_good_delivery_message->capital_good_delivery_volume)
-				*TECHNOLOGY + 
-				capital_good_delivery_message->capital_good_delivery_volume/
-				(CAPITAL_STOCK + 
-				capital_good_delivery_message->capital_good_delivery_volume)
-				*capital_good_delivery_message->productivity;
-
-				/*Update of the capital stock*/
-				CAPITAL_STOCK += capital_good_delivery_message
-				->capital_good_delivery_volume;
-				
+		        /*Adding a new capital stock item*/
+		        units			= capital_good_delivery_message->capital_good_delivery_volume;
+		        purchase_price	= capital_good_delivery_message->capital_good_price;
+		        productivity	= capital_good_delivery_message->productivity;
+		        depreciation_units_per_period = DEPRECIATION_RATE*units;
+		        
+		        add_capital_stock_item(&CAPITAL_STOCK, units, purchase_price, productivity, depreciation_units_per_period);
+		        
+		        /*Update the total units of capital*/
+		        TOTAL_UNITS_CAPITAL_STOCK += units;
+		        
+		        /*Determine the weighted average productivity of the total capital stock*/
+		        imax = CAPITAL_STOCK.size;
+		        TECHNOLOGY=0;
+		        for (i=0;i<imax;i++)
+		        {
+		            TECHNOLOGY += CAPITAL_STOCK.array[i].productivity*CAPITAL_STOCK.array[i].units/TOTAL_UNITS_CAPITAL_STOCK;
+		        }
+		 
 				/*Computing the capital bill*/
-				capital_costs = capital_good_delivery_message
+				capital_costs += capital_good_delivery_message
 				->capital_good_delivery_volume* capital_good_delivery_message
 				->capital_good_price;
 				
-				/*This is to keep the current price and best pratice technology in 					memory*/
-				ACTUAL_CAP_PRICE =capital_good_delivery_message
-				->capital_good_price;
-
-				TECHNOLOGICAL_FRONTIER = capital_good_delivery_message
-				->productivity;
+				/*This is to keep the current price and best pratice technology in memory*/
+				ACTUAL_CAP_PRICE =capital_good_delivery_message->capital_good_price;
 			}
-
 		FINISH_CAPITAL_GOOD_DELIVERY_MESSAGE_LOOP
-
 
 
 		/* This determines the realized production volume*/
@@ -449,12 +603,12 @@ int Firm_calc_pay_costs()
 			{	
 			
 				PRODUCTION_QUANTITY = MEAN_SPECIFIC_SKILLS * 
-				pow(NO_EMPLOYEES,ALPHA)*pow(CAPITAL_STOCK,BETA); 
+				pow(NO_EMPLOYEES,ALPHA)*pow(TOTAL_UNITS_CAPITAL_STOCK,BETA); 
 			}
 			else 
 			{
 				PRODUCTION_QUANTITY = TECHNOLOGY * 
-				pow(NO_EMPLOYEES,ALPHA)*pow(CAPITAL_STOCK,BETA); 
+				pow(NO_EMPLOYEES,ALPHA)*pow(TOTAL_UNITS_CAPITAL_STOCK,BETA); 
 			}
 
 			/*Pay the costs*/
@@ -474,17 +628,14 @@ int Firm_calc_pay_costs()
 			}
 		/*Calculate the unit costs and total costs*/
 			if(PRODUCTION_QUANTITY!=0 )
-			{
-				UNIT_COSTS=(labour_costs+CAPITAL_STOCK*DEPRICIATION_RATE
-				*ACTUAL_CAP_PRICE) / PRODUCTION_QUANTITY;
+			{	        
+				UNIT_COSTS=(labour_costs + TOTAL_CAPITAL_DEPRECIATION_VALUE) / PRODUCTION_QUANTITY;
 		
 				PRICE_LAST_MONTH=PRICE;
 				PRICE = UNIT_COSTS*(1 + MARK_UP);
 			}
 
-			COSTS = capital_costs + labour_costs;
-		
-
+			PRODUCTION_COSTS = capital_costs + labour_costs;
 		}
 
 		printf("Production Quantity : %f\n",PRODUCTION_QUANTITY);
@@ -527,19 +678,18 @@ int Firm_send_goods_to_mall()
 				if(DELIVERY_VOLUME.array[j].mall_id == 
 				PLANNED_DELIVERY_VOLUME.array[i].mall_id)
 				{
-					/*If planned prod vol > realized prod vol -> curtain the 						delivery vol*/
+					/*If planned prod vol > realized prod vol -> curtain the delivery vol*/
 					if(delivery_volume>PRODUCTION_QUANTITY)
 					{
 						DELIVERY_VOLUME.array[j].quantity =
- 						PRODUCTION_QUANTITY / delivery_volume * 						PLANNED_DELIVERY_VOLUME.array[i].quantity;
+ 						PRODUCTION_QUANTITY / delivery_volume * PLANNED_DELIVERY_VOLUME.array[i].quantity;
 					
 					}else /*otherwise planned = realized del vol*/
 					
 					if(PRODUCTION_QUANTITY > delivery_volume &&
  					delivery_volume !=0)
 					{
-						DELIVERY_VOLUME.array[j].quantity = 							PRODUCTION_QUANTITY / delivery_volume*
-						PLANNED_DELIVERY_VOLUME.array[i].quantity;
+						DELIVERY_VOLUME.array[j].quantity = PRODUCTION_QUANTITY / delivery_volume*PLANNED_DELIVERY_VOLUME.array[i].quantity;
 
 					}else 
 					if(PRODUCTION_QUANTITY > delivery_volume &&
@@ -575,14 +725,15 @@ int Firm_send_goods_to_mall()
 }
 
 /** \fn Firm_calc_revenue()
- * \brief Here the firms calc the revenues and profits and then distribute the dividends to 	    households 
+ * \brief Here the firms calc the revenues and profits and then distribute the dividends to households 
  */
 int Firm_calc_revenue()
 {
+	double mean_wage;
+	double no_employees;
+	
 	REVENUE_PER_DAY=0.0;
 	TOTAL_SOLD_QUANTITY=0.0;
-	double dividend_per_household;
-
 
 	/*calc the daily revenue and sum up the monthly revenue*/
 	START_SALES_MESSAGE_LOOP
@@ -608,42 +759,11 @@ int Firm_calc_revenue()
 
 	FINISH_SALES_MESSAGE_LOOP
 
-	/*The onthly sales statistics*/
+	/*The monthly sales statistics*/
 	CUM_TOTAL_SOLD_QUANTITY+=TOTAL_SOLD_QUANTITY;	
 	
 	/*On a monthly base the earnings are computed and dividends distributed*/
-	if(DAY%MONTH==DAY_OF_MONTH_TO_ACT)
-	{
-		EARNINGS= CUM_TOTAL_SOLD_QUANTITY*PRICE - COSTS;
-		
-		if(EARNINGS >0)
-		{
-
-			if((ACCOUNT <0 &&(-1)*ACCOUNT<=CUM_TOTAL_SOLD_QUANTITY*PRICE)||
-			(ACCOUNT>0&&ACCOUNT <=CUM_TOTAL_SOLD_QUANTITY*PRICE))
-			{
-				NET_PROFIT = EARNINGS - DIVIDEND_RATE * EARNINGS;
-				dividend_per_household =DIVIDEND_RATE * EARNINGS / NO_HOUSEHOLDS ;
-
-				add_dividend_message(dividend_per_household,MSGDATA);
-			}
-			else
-			{
-				NET_PROFIT =0;
-				dividend_per_household =  EARNINGS / NO_HOUSEHOLDS ;
-
-				add_dividend_message(dividend_per_household,MSGDATA);
-			}
-		}
-		else
-		{
-			NET_PROFIT= EARNINGS;
-		}
-		 
-		ACCOUNT = ACCOUNT + NET_PROFIT;
-		CUM_TOTAL_SOLD_QUANTITY=0.0;
-		CUM_REVENUE =0.0;
-		
+	//See the functions for financial management
 		
 		/*The sales per mall must be stored for the inventory rule*/
 			
@@ -679,31 +799,22 @@ int Firm_calc_revenue()
 		/*Calculate the mean wage*/
 		if(PLANNED_PRODUCTION_QUANTITY>PRODUCTION_QUANTITY  && DAY>20)
 		{
-			double mean_wage =0.0;
+			mean_wage =0.0;
 				
 			for( int i=0; i < EMPLOYEES.size; i++)
 			{
 				mean_wage+= EMPLOYEES.array[i].wage;
 			}
 
-			double no_employees = (int) NO_EMPLOYEES;
+			no_employees = (int) NO_EMPLOYEES;
 			MEAN_WAGE = mean_wage/no_employees; 
-		
-	
 		}		
-					
-	}
-		
 	return 0;
 }
 
 
-
-
-
-
 /** \fn Firm_update_specific_skills_of_workers()()
- * \brief 	Because the specific skills of workers have changed the firms update the specific 			skill levels of the workers.
+ * \brief 	Because the specific skills of workers have changed the firms update the specific skill levels of the workers.
  */
 int Firm_update_specific_skills_of_workers()
 {
