@@ -192,6 +192,7 @@
 <var><type>double</type><name>sales</name></var>
 </datatype>
 
+
 <datatype>
 <name>debt_item</name>
 <var><type>int</type><name>bank_id</name></var>
