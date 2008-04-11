@@ -557,10 +557,17 @@
 </function>
 
 <function>
-<name>Household_read_job_vacancies_and_send_applications</name>
+<name>Household_OTJS_read_job_vacancies_and_send_applications</name>
+<current_state>01e</current_state>
+<next_state>01</next_state>
+<input><messagetype>vacancies</messagetype></input>
+<output><messagetype>job_application</messagetype></output>
+</function>
+
+<function>
+<name>Household_UNEMPLOYED_read_job_vacancies_and_send_applications</name>
 <current_state>01a</current_state>
 <next_state>01</next_state>
-<condition>is_unemployed</condition>
 <input><messagetype>vacancies</messagetype></input>
 <output><messagetype>job_application</messagetype></output>
 </function>
@@ -575,7 +582,7 @@
 <function>
 <name>Household_on_the_job_search_yes</name>
 <current_state>01b</current_state>
-<next_state>01a</next_state>
+<next_state>01e</next_state>
 <condition>on_the_job_search_yes</condition>
 </function>
 
@@ -603,11 +610,19 @@
 <function><name>Household_read_application_rejection_update_wage_reservation</name>
 <current_state>02</current_state>
 <next_state>03</next_state>
-<condition>is_unemployed_or_on_the_job_search_yes</condition>
+<condition>is_unemployed</condition>
 <input><messagetype>application_rejection</messagetype></input>
 </function>
 
-<function><name>Household_read_job_vacancies_and_send_applications_2</name>
+<function><name>Household_OTJS_read_job_vacancies_and_send_applications_2</name>
+<current_state>02</current_state>
+<next_state>04</next_state>
+<condition>on_the_job_search_yes</condition>
+<input><messagetype>vacancies2</messagetype></input>
+<output><messagetype>job_application2</messagetype></output>
+</function>
+
+<function><name>Household_UNEMPLOYED_read_job_vacancies_and_send_applications_2</name>
 <current_state>03</current_state>
 <next_state>04</next_state>
 <input><messagetype>vacancies2</messagetype></input>

@@ -17,42 +17,7 @@ int is_unemployed()
 	else return 0;
 }
 
-int on_the_job_search_no()
-{
-	if(ON_THE_JOB_SEARCH == 0) return 1;
-	else return 0;
-}
 
-int on_the_job_search_yes()
-{
-	if(ON_THE_JOB_SEARCH == 1) return 1;
-	else return 0;
-}
-
-int is_employed_and_on_the_job_search_no()
-{
-	if(EMPLOYEE_FIRM_ID > -1 && ON_THE_JOB_SEARCH == 0) return 1;
-	else return 0;
-}
-
-int is_unemployed_or_on_the_job_search_yes()
-{
-	if(EMPLOYEE_FIRM_ID == -1 || ON_THE_JOB_SEARCH == 1) return 1;
-	else return 0;
-}
-
-
-
-
-int Household_finish_labour_market()
-{
-	return 0;
-}
-
-int Household_on_the_job_search_yes()
-{
-	return 0;
-}
 
 int Household_idle()
 {
@@ -64,10 +29,7 @@ int Household_on_the_job_search_no()
 	return 0;
 }
 
-int Household_made_unemployed()
-{
-	return 0;
-}
+
 
 
 /**********************************Household Role: Consumption Goods Market*********************/
