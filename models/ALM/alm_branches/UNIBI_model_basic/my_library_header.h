@@ -39,10 +39,10 @@
 #define DIVIDEND_RATE 1
 
 /*brief deprication rate. */
-#define DEPRICIATION_RATE 0.01
+#define DEPRECIATION_RATE 0.01
 
 /*brief Discount rate*/
-#define DISCONT_RATE 0.05
+#define DISCOUNT_RATE 0.05
 
 /*brief Strenght of adaption of the capital stock if firm is rationed on the labor market*/
 #define TETA 0.0
