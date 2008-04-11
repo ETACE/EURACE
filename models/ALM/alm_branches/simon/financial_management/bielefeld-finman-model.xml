@@ -286,9 +286,15 @@
 <var><type>double</type><name>planned_total_dividend_payment</name></var>
 
 <!----------------- Financial needs ---------------------------------------->
+<var><type>double</type><name>direct_financial_needs</name></var>
+<var><type>double</type><name>delayed_financial_needs</name></var>
 <var><type>double</type><name>total_financial_needs</name></var>
 <var><type>double</type><name>internal_financial_needs</name></var>
 <var><type>double</type><name>external_financial_needs</name></var>
+<var><type>double</type><name>total_external_financing_obtained</name></var>
+<var><type>int</type><name>direct_financial_needs_require_external_financing</name></var>
+<var><type>int</type><name>delayed_financial_needs_require_external_financing</name></var>
+
 
 <!----------------- Financial variables ---------------------------------------->
 <var><type>double</type><name>current_share_price</name></var>
