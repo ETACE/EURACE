@@ -1,7 +1,7 @@
 #ifndef TESTCLM_INCL
 #include "ClearingMechanism.h"
-#include "CUnit\Basic.h"
-#include "CUnit\CUnit.h"
+#include "CUnit/Basic.h"
+#include "CUnit/CUnit.h"
 #include <stdlib.h>
 #include <stdio.h>
 

@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include "COrder.h"
 #include <stdio.h>
-#include "CUnit\Basic.h"
-#include "CUnit\CUnit.h"
+#include "CUnit/Basic.h"
+#include "CUnit/CUnit.h"
 
  int suite_COrder_init(void) ;
        
