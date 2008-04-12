@@ -7,8 +7,8 @@
 #include "Order.h"
 #include "COrder.h"
 #include "Belief.h"
-#include "CUnit\Basic.h"
-#include "CUnit\CUnit.h"
+#include "CUnit/Basic.h"
+#include "CUnit/CUnit.h"
 #ifndef EPS 
 #define EPS 0.001
 #endif

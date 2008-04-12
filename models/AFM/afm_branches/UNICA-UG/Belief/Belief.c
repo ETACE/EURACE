@@ -25,7 +25,7 @@ void initializeBelief(Belief *belief)
 }
 
 void  assetBeliefFormation(Belief *belief, CAsset *assets,Random *rnd)
-{ belief->assetsExpectedPriceReturns=gauss(rnd,0,sigma);
+{ belief->expectedPriceReturns=gauss(rnd,0,sigma);
 }
 
 void computeStockExpectedPriceReturns(Belief *belief, Asset *asset)
@@ -36,23 +36,22 @@ void computeStockExpectedPriceReturns(Belief *belief, Asset *asset)
 double stockExpectedPriceReturns(Belief *belief,Asset *anAsset)
 {     double expectedPriceReturn;
       
-       expectedPriceReturn=belief->assetsExpectedPriceReturns;
+       expectedPriceReturn=belief->expectedPriceReturns;
        return expectedPriceReturn;
 }
 
-int forwardMonths(Belief *belief, int currentDay)
-{   int forwardWindow;
+int forwardMonths(Belief *belief, int currentDay, int forwardWindow, int dayInMonth)
+{   
     int nrForwardMonths;
-    forwardWindow=belief->forwardWindow;
     nrForwardMonths=quo(currentDay+forwardWindow,dayInMonth)-quo(forwardWindow,dayInMonth);
     return nrForwardMonths;
 }
     
-double horizonRetainedEarnings(Belief *belief,Stock *stock, int currentDay)
+double horizonRetainedEarnings(Belief *belief,Stock *stock, int currentDay,int forwardWindow)
 {
        int forwardmonths;
        double hRetainedEarnings;
-       forwardmonths=forwardMonths(belief,currentDay);
+       forwardmonths=forwardMonths(belief,currentDay,forwardWindow);
        hRetainedEarnings= forwardMonths*(stock->earningsExp-stock->earningsPayoutExp);  
        return hRetainedEarnings;
 }

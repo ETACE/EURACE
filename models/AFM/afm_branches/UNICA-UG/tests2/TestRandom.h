@@ -1,6 +1,6 @@
 #ifndef TESTRAND_INCL
-#include "CUnit\Basic.h"
-#include "CUnit\CUnit.h"
+#include "CUnit/Basic.h"
+#include "CUnit/CUnit.h"
 #include "Random.h"
 #include <stdio.h>
 #include <stdlib.h>

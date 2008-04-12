@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include "CDouble.h"
 #include <stdio.h>
-#include "CUnit\Basic.h"
-#include "CUnit\CUnit.h"
+#include "CUnit/Basic.h"
+#include "CUnit/CUnit.h"
 
 #ifndef EPS 
 #define EPS 0.000001
