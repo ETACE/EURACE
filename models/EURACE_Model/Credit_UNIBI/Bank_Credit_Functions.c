@@ -28,7 +28,7 @@ int Bank_read_loan_acceptance()
 		if(loan_acceptance_message->bank_id==ID)
 		{
 			//Update the firm's bankaccount with the demanded credit:
-			ACCOUNT[loan_acceptance_message->firm_id]=loan_acceptance_message->credit_taken;
+			ACCOUNT[loan_acceptance_message->firm_id]=loan_acceptance_message->credit_amount_taken;
 		}
 	FINISH_LOAN_ACCEPTANCE_MESSAGE_LOOP
 	
