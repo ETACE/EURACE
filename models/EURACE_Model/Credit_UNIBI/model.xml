@@ -9,6 +9,7 @@
 
 <functions>
 <file>Bank_Credit_Functions.c</file>
+<file>Firm_Credit_Functions.c</file>
 </functions>
 
 <datatypes>
