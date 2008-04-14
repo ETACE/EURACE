@@ -2,8 +2,6 @@
 #include "Firm_agent_header.h"
 #include "my_library_header.h"
 
-
-
 /************************************ Firm agent functions ************************************/
 
 /* Function condition functions */
@@ -238,51 +236,27 @@ int Firm_calc_input_demands()
 		FINISH_PRODUCTIVITY_MESSAGE_LOOP
 		
 		/*Calculate labor demand and needed capital goods. 
-		 * Complementarity between specific skills and productivity*/
+		 * Complementarity between specific skills and productivity
+		 */
 		
-
-
-		/*Specific skills are limiting factor*/
-		if(MEAN_SPECIFIC_SKILLS < TECHNOLOGY)
+		//if(MEAN_SPECIFIC_SKILLS < TECHNOLOGY): Specific skills are limiting factor
+		//else: Technological productivity is limiting factor*/
+		temp_capital_demand = PLANNED_PRODUCTION_QUANTITY * 
+		(pow((BETA*MEAN_WAGE)/(DEPRECIATION_RATE*ACTUAL_CAP_PRICE*ALPHA),ALPHA)/
+		min(MEAN_SPECIFIC_SKILLS, TECHNOLOGY));
+		
+		/*Smoothing of capital good demand*/
+		if(temp_capital_demand > TOTAL_UNITS_CAPITAL_STOCK + (INV_INERTIA-1)*TOTAL_CAPITAL_DEPRECIATION_UNITS)
 		{
-	
-			temp_capital_demand = PLANNED_PRODUCTION_QUANTITY * 
-			(pow((BETA*MEAN_WAGE)/(DEPRECIATION_RATE*ACTUAL_CAP_PRICE*ALPHA),ALPHA)/
-			MEAN_SPECIFIC_SKILLS);
-			
-
-			/*Smoothing of capital good demand*/
-			if(temp_capital_demand > TOTAL_UNITS_CAPITAL_STOCK + (INV_INERTIA-1)*TOTAL_CAPITAL_DEPRECIATION_UNITS)
-			{
-				NEEDED_CAPITAL_STOCK = TOTAL_UNITS_CAPITAL_STOCK + (INV_INERTIA-1)*TOTAL_CAPITAL_DEPRECIATION_UNITS;
-			}else
-			{
-				NEEDED_CAPITAL_STOCK = temp_capital_demand;
-			}
+			NEEDED_CAPITAL_STOCK = TOTAL_UNITS_CAPITAL_STOCK + (INV_INERTIA-1)*TOTAL_CAPITAL_DEPRECIATION_UNITS;
+		}else
+		{
+			NEEDED_CAPITAL_STOCK = temp_capital_demand;
+		}
 				
 		temp_labour_demand = pow(PLANNED_PRODUCTION_QUANTITY /
-		(pow(NEEDED_CAPITAL_STOCK,BETA)*MEAN_SPECIFIC_SKILLS),1/ALPHA);
+		(pow(NEEDED_CAPITAL_STOCK,BETA)*min(MEAN_SPECIFIC_SKILLS, TECHNOLOGY)),1/ALPHA);
  
-		}
-		/*Technological productivity is limiting factor*/
-		else
-		{
-			temp_capital_demand = PLANNED_PRODUCTION_QUANTITY * 
-			(pow((BETA*MEAN_WAGE)/	(DEPRECIATION_RATE*ACTUAL_CAP_PRICE*ALPHA),ALPHA)/
-			TECHNOLOGY);
-			
-			/*Smoothing of capital good demand*/
-			if(temp_capital_demand > TOTAL_UNITS_CAPITAL_STOCK + (INV_INERTIA-1)*TOTAL_CAPITAL_DEPRECIATION_UNITS)
-			{
-				NEEDED_CAPITAL_STOCK = TOTAL_UNITS_CAPITAL_STOCK + (INV_INERTIA-1)*TOTAL_CAPITAL_DEPRECIATION_UNITS;
-			}else
-			{
-				NEEDED_CAPITAL_STOCK = temp_capital_demand;
-			}
-
-		temp_labour_demand = pow(PLANNED_PRODUCTION_QUANTITY /
-		(pow(NEEDED_CAPITAL_STOCK,BETA)*TECHNOLOGY),1/ALPHA);
-		}
 		
 		/*Compute new capital stock, in units and in value*/
 		
@@ -330,17 +304,9 @@ int Firm_calc_input_demands()
 		else/*... if capital stock is higher than the needed one..*/
 		{
 			/*Recalculation of the labor demand*/
-			if(MEAN_SPECIFIC_SKILLS > TECHNOLOGY)
-			{
-				EMPLOYEES_NEEDED = (int) (pow(PLANNED_PRODUCTION_QUANTITY/
-				(TECHNOLOGY*pow(TOTAL_UNITS_CAPITAL_STOCK,BETA)),1/ALPHA));
-			}
-			else
-			{
-				EMPLOYEES_NEEDED = (int) (pow(PLANNED_PRODUCTION_QUANTITY/
- 				(MEAN_SPECIFIC_SKILLS*pow(TOTAL_UNITS_CAPITAL_STOCK,BETA)),1/ALPHA));
-			}
-		}
+			EMPLOYEES_NEEDED = (int) (pow(PLANNED_PRODUCTION_QUANTITY/
+			(min(MEAN_SPECIFIC_SKILLS,TECHNOLOGY)*pow(TOTAL_UNITS_CAPITAL_STOCK,BETA)),1/ALPHA));
+\		}
 		/*This calculates the needed capital investments*/
 		DEMAND_CAPITAL_STOCK=  NEEDED_CAPITAL_STOCK - TOTAL_UNITS_CAPITAL_STOCK;
 		
