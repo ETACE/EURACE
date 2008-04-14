@@ -21,31 +21,6 @@ void unittest_Firm_issue_equity();
 void unittest_Firm_compute_stock_orders();
 void unittest_Firm_compute_bond_orders();
 void unittest_Firm_update_outstanding_shares();
-
-void unittest_Household_financial_planning();
-void unittest_Household_compute_gross_income();
-void unittest_Household_compute_monthly_taxes();
-void unittest_Household_compute_net_income();
-void unittest_Household_compute_asset_wealth();
-void unittest_Household_compute_total_budget();
-void unittest_Household_compute_cash_on_hand();
-void unittest_Household_update_asset_portfolio();
-void unittest_Household_compute_cash_on_hands();
-void unittest_Household_compute_consumption_budget();
-void unittest_Household_compute_financial_needs_daily();
-void unittest_Household_compute_financial_needs_monthly();
-void unittest_Household_entry_decision();
-void unittest_Household_compute_asset_budget();
-void unittest_Household_compute_firm_stock_orders();
-void unittest_Household_read_transaction_message();
-void unittest_Household_compute_government_bond_orders();
-void unittest_Household_compute_firm_bond_orders();
-
-void unittest_Clearinghouse_read_stock_orders();
-void unittest_Clearinghouse_compute_stock_transactions();
-void unittest_Clearinghouse_send_stock_transactions();
-
-void unittest_Bank_read_loan_request_send_offers();
 /*************************** end prototypes ***************************/
 
 int init_suite1(void)
