@@ -8,9 +8,8 @@
 <environment>
 
 <functions>
-<file>Firm_financial_management_functions.c</file>
-<file>Bank_financial_management_functions.c</file>
-<file>Clearinghouse_financial_management_functions.c</file>
+<file>Firm_Financial_Management_Functions.c</file>
+<file>Clearinghouse_Financial_Management_Functions.c</file>
 </functions>
 
 <datatypes>
