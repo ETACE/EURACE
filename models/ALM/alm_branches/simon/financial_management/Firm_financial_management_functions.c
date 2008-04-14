@@ -5,27 +5,36 @@
 
 /************Firm Role: Financial Management Role ********************************/
 
+int is_external_financial_needs()
+{
+	if(EXTERNAL_FINANCIAL_NEEDS > pow(10,-5) ) return 1;
+	else return 0;
+}
+
+int no_external_financial_needs()
+{
+	if(EXTERNAL_FINANCIAL_NEEDS > pow(10,-5) ) return 0;
+	else return 1;
+}
+
 /*
  * \fn: int Firm_compute_income_statement()
  * \brief: This function computes the income statement of the firm.
  */
 int Firm_compute_income_statement()
 {
-    if(DAY%MONTH==DAY_OF_MONTH_TO_ACT)
-    {
-        //In the future: if we want to include sales_costs
-        //SALES_COSTS = 0;
-        //EBIT = CUM_REVENUE - SALES_COSTS
-        EBIT = CUM_REVENUE; //net revenues = receipts - sales_costs;       
-        
-        //update the cash holdings
-        PAYMENT_ACCOUNT += EBIT;
-        
-        //Reset the counters
-        CUM_TOTAL_SOLD_QUANTITY = 0.0;
-        CUM_REVENUE = 0.0;        
-    }
-
+    //In the future: if we want to include sales_costs
+    //SALES_COSTS = 0;
+    //EBIT = CUM_REVENUE - SALES_COSTS
+    EBIT = CUM_REVENUE; //net revenues = receipts - sales_costs;       
+    
+    //update the cash holdings
+    PAYMENT_ACCOUNT += EBIT;
+    
+    //Reset the counters
+    CUM_TOTAL_SOLD_QUANTITY = 0.0;
+    CUM_REVENUE = 0.0;        
+    
     return 0;
 }
 
@@ -50,133 +59,131 @@ int Firm_compute_balance_sheet()
     int imax;
     int i;
 
-    if(DAY%MONTH==DAY_OF_MONTH_TO_ACT)
+    //double PAYMENT_ACCOUNT: account out of which payments are made, to be separated from the income_account on which current sale receipts are incoming
+    //CASH_HOLDINGS: equal to payment_account???? Cash holdings is an ambiguous term.
+
+    //double_array LOANS                : dynamic array of structs with each struct a loan_item
+    //struct loan_item
+    //int bank_id                       : bank at which the loan was obtained
+    //double loan_value                 : total value of the loan remaining
+    //double interest_rate              : interest for this loan
+    //double interest_payment           : interest to be paid this period
+    //double debt_installment_payment   : installment payment per period
+    //int nr_periods_before_maturity    : nr of periods to go before the loan has to be fully repaid
+
+    //step 1: compute total interest payments
+    TOTAL_INTEREST_PAYMENT=0.0;
+    imax = LOANS.size;
+    for (i=0; i<imax;i++)
     {
-        //double PAYMENT_ACCOUNT: account out of which payments are made, to be separated from the income_account on which current sale receipts are incoming
-        //CASH_HOLDINGS: equal to payment_account???? Cash holdings is an ambiguous term.
+        LOANS.array[i].interest_payment = LOANS.array[i].interest_rate * LOANS.array[i].loan_value;                         
 
-        //double_array LOANS                : dynamic array of structs with each struct a loan_item
-        //struct loan_item
-        //int bank_id                       : bank at which the loan was obtained
-        //double loan_value                 : total value of the loan remaining
-        //double interest_rate              : interest for this loan
-        //double interest_payment           : interest to be paid this period
-        //double debt_installment_payment   : installment payment per period
-        //int nr_periods_before_maturity    : nr of periods to go before the loan has to be fully repaid
+        //add to total
+        TOTAL_INTEREST_PAYMENT += LOANS.array[i].interest_payment;
+    }
+    
+    //consistency check
+    if(PLANNED_TOTAL_INTEREST_PAYMENT != TOTAL_INTEREST_PAYMENT)
+    {
+        printf("\nError: planned total interest payment is not equal to total interest payment.\n Did you set the same option for the planned and actual payments?");
+    }
+    
+    //step 2: compute total debt installment payments
+    TOTAL_DEBT_INSTALLMENT_PAYMENT=0.0;
+    TOTAL_DEBT=0.0;
+    for (i=0; i<imax;i++)
+    {
+        //compute current total debt
+        TOTAL_DEBT += LOANS.array[i].loan_value;
+        
+        //add debt_installment_payment to total installment payment
+        TOTAL_DEBT_INSTALLMENT_PAYMENT += LOANS.array[i].debt_installment_payment;
+    }
+    //consistency check
+    if(PLANNED_TOTAL_DEBT_INSTALLMENT_PAYMENT != TOTAL_DEBT_INSTALLMENT_PAYMENT)
+    {
+        printf("\nError: planned total debt installment payment is not equal to total debt installment payment.\n Did you set the same option for the planned and actualpayments?");
+    }
+                    
+    //step 3: continue balance sheet (net earnings, earnings per share)
+    EARNINGS = EBIT - TOTAL_INTEREST_PAYMENT;
+    
+    //Here: should debt_installment_payments be subtracted from earnings before taxes are paid, or after?
+    //They are of course liabilities, but debt installment payments are one of many payouts.
+    
+    TAX_PAYMENT = TAX_RATE_CORPORATE * EARNINGS;
+    PREVIOUS_NET_EARNINGS = NET_EARNINGS;
+    NET_EARNINGS = EARNINGS - TAX_PAYMENT;
+    EARNINGS_PER_SHARE_RATIO = NET_EARNINGS/CURRENT_SHARES_OUTSTANDING;
 
-        //step 1: compute total interest payments
-        TOTAL_INTEREST_PAYMENT=0.0;
+    //step 4: actual tax_payment to government
+    add_tax_payment_message(ID, GOV_ID, TAX_PAYMENT, MSGDATA);
+
+    //step 5: actual interest_payments and debt_installment_payments
+    //printf("\n Checking: PAYMENT_ACCOUNT > TOTAL_DEBT_INSTALLMENT_PAYMENT: %f>%f \n", PAYMENT_ACCOUNT, TOTAL_DEBT_INSTALLMENT_PAYMENT);
+    if (PAYMENT_ACCOUNT < TOTAL_DEBT_INSTALLMENT_PAYMENT)
+    {
+        //Code: transform debt into equity
+        //Code: debt is repaid partially
+        //Code: compute debt remaining to be paid
+
+        PAYMENT_ACCOUNT = 0.0;
+    }
+    else
+    {
+        //Sending interest_payment_msg to all banks at which the firm has a loan 
         imax = LOANS.size;
         for (i=0; i<imax;i++)
         {
-            LOANS.array[i].interest_payment = LOANS.array[i].interest_rate * LOANS.array[i].loan_value;                         
+            //decrease payment_account with the interest_payment
+            PAYMENT_ACCOUNT -= LOANS.array[i].interest_payment;
 
-            //add to total
-            TOTAL_INTEREST_PAYMENT += LOANS.array[i].interest_payment;
+            //tell the bank I paid
+            add_interest_payment_message(ID, BANK_ID, LOANS.array[i].interest_payment,MSGDATA);
         }
         
-        //consistency check
-        if(PLANNED_TOTAL_INTEREST_PAYMENT != TOTAL_INTEREST_PAYMENT)
-        {
-            printf("\nError: planned total interest payment is not equal to total interest payment.\n Did you set the same option for the planned and actual payments?");
-        }
-        
-        //step 2: compute total debt installment payments
-        TOTAL_DEBT_INSTALLMENT_PAYMENT=0.0;
-        TOTAL_DEBT=0.0;
+        //Sending debt_installment_payment_msg to all banks at which the firm has a loan
         for (i=0; i<imax;i++)
         {
-            //compute current total debt
-            TOTAL_DEBT += LOANS.array[i].loan_value;
+            //decrease payment_account with the installment payment
+            PAYMENT_ACCOUNT -= LOANS.array[i].debt_installment_payment;
+
+            //decrease the value of the loan with the debt_installment_payment:
+            LOANS.array[i].loan_value -= LOANS.array[i].debt_installment_payment;
+            //printf("Now subtracted debt_installment_payment from loan_value: %f (new value:%f).\n", LOANS.array[i].debt_installment_payment, LOANS.array[i].loan_value);
             
-            //add debt_installment_payment to total installment payment
-            TOTAL_DEBT_INSTALLMENT_PAYMENT += LOANS.array[i].debt_installment_payment;
-        }
-        //consistency check
-        if(PLANNED_TOTAL_DEBT_INSTALLMENT_PAYMENT != TOTAL_DEBT_INSTALLMENT_PAYMENT)
-        {
-            printf("\nError: planned total debt installment payment is not equal to total debt installment payment.\n Did you set the same option for the planned and actualpayments?");
-        }
-                        
-        //step 3: continue balance sheet (net earnings, earnings per share)
-        EARNINGS = EBIT - TOTAL_INTEREST_PAYMENT;
-        
-        //Here: should debt_installment_payments be subtracted from earnings before taxes are paid, or after?
-        //They are of course liabilities, but debt installment payments are one of many payouts.
-        
-        TAX_PAYMENT = TAX_RATE_CORPORATE * EARNINGS;
-        PREVIOUS_NET_EARNINGS = NET_EARNINGS;
-        NET_EARNINGS = EARNINGS - TAX_PAYMENT;
-        EARNINGS_PER_SHARE_RATIO = NET_EARNINGS/CURRENT_SHARES_OUTSTANDING;
+            //decrease the value of the nr_periods_before_maturity
+            LOANS.array[i].nr_periods_before_maturity -= 1;
 
-        //step 4: actual tax_payment to government
-        add_tax_payment_message(ID, GOV_ID, TAX_PAYMENT, MSGDATA);
+            //tell the bank I paid
+            add_debt_installment_payment_message(ID, LOANS.array[i].bank_id, LOANS.array[i].debt_installment_payment, MSGDATA);
 
-        //step 5: actual interest_payments and debt_installment_payments
-        //printf("\n Checking: PAYMENT_ACCOUNT > TOTAL_DEBT_INSTALLMENT_PAYMENT: %f>%f \n", PAYMENT_ACCOUNT, TOTAL_DEBT_INSTALLMENT_PAYMENT);
-        if (PAYMENT_ACCOUNT < TOTAL_DEBT_INSTALLMENT_PAYMENT)
-        {
-            //Code: transform debt into equity
-            //Code: debt is repaid partially
-            //Code: compute debt remaining to be paid
-
-            PAYMENT_ACCOUNT = 0.0;
-        }
-        else
-        {
-            //Sending interest_payment_msg to all banks at which the firm has a loan 
-            imax = LOANS.size;
-            for (i=0; i<imax;i++)
+            //if nr_periods_before_maturity == 0, remove the loan item
+            if (LOANS.array[i].nr_periods_before_maturity==0)
             {
-                //decrease payment_account with the interest_payment
-                PAYMENT_ACCOUNT -= LOANS.array[i].interest_payment;
-
-                //tell the bank I paid
-                add_interest_payment_message(ID, BANK_ID, LOANS.array[i].interest_payment,MSGDATA);
-            }
-            
-            //Sending debt_installment_payment_msg to all banks at which the firm has a loan
-            for (i=0; i<imax;i++)
-            {
-                //decrease payment_account with the installment payment
-                PAYMENT_ACCOUNT -= LOANS.array[i].debt_installment_payment;
-
-                //decrease the value of the loan with the debt_installment_payment:
-                LOANS.array[i].loan_value -= LOANS.array[i].debt_installment_payment;
-                //printf("Now subtracted debt_installment_payment from loan_value: %f (new value:%f).\n", LOANS.array[i].debt_installment_payment, LOANS.array[i].loan_value);
-                
-                //decrease the value of the nr_periods_before_maturity
-                LOANS.array[i].nr_periods_before_maturity -= 1;
-
-                //tell the bank I paid
-                add_debt_installment_payment_message(ID, LOANS.array[i].bank_id, LOANS.array[i].debt_installment_payment, MSGDATA);
-
-                //if nr_periods_before_maturity == 0, remove the loan item
-                if (LOANS.array[i].nr_periods_before_maturity==0)
-                {
-                    remove_debt_item(&LOANS, i);
-                }
+                remove_debt_item(&LOANS, i);
             }
         }
+    }
 
-        //step 6: determine total_dividend_payment
-        //option 1: total divided payment remains constant
-        //TOTAL_DIVIDEND_PAYMENT *= 1;
-        
-        //option 2: total divided payment increases with same ratio as earnings
-        //this is very dangerous, since earnings may fluctuate violently
-        //TOTAL_DIVIDEND_PAYMENT *= NET_EARNINGS/PREVIOUS_NET_EARNINGS;
-        
-        //option 3: keep dividend per share constant
-        //total divided payment increases with same ratio as current_shares_outstanding
-        //TOTAL_DIVIDEND_PAYMENT *= CURRENT_SHARES_OUTSTANDING/PREVIOUS_SHARES_OUTSTANDING;
+    //step 6: determine total_dividend_payment
+    //option 1: total divided payment remains constant
+    //TOTAL_DIVIDEND_PAYMENT *= 1;
+    
+    //option 2: total divided payment increases with same ratio as earnings
+    //this is very dangerous, since earnings may fluctuate violently
+    //TOTAL_DIVIDEND_PAYMENT *= NET_EARNINGS/PREVIOUS_NET_EARNINGS;
+    
+    //option 3: keep dividend per share constant
+    //total divided payment increases with same ratio as current_shares_outstanding
+    //TOTAL_DIVIDEND_PAYMENT *= CURRENT_SHARES_OUTSTANDING/PREVIOUS_SHARES_OUTSTANDING;
 
-        //option 4: keep earnings per share constant
-        //total divided payment increases with same ratio as earnings per share
-        //if current_shares_outstanding remains constant, this keeps earnings per share constant
-        TOTAL_DIVIDEND_PAYMENT *= EARNINGS_PER_SHARE_RATIO;
+    //option 4: keep earnings per share constant
+    //total divided payment increases with same ratio as earnings per share
+    //if current_shares_outstanding remains constant, this keeps earnings per share constant
+    TOTAL_DIVIDEND_PAYMENT *= EARNINGS_PER_SHARE_RATIO;
 
-        //option 5: keep dividend to earnings ratio constant (dont let it fall), but do not decrease the dividend per share ratio.
+    //option 5: keep dividend to earnings ratio constant (dont let it fall), but do not decrease the dividend per share ratio.
 /*
         if (CURRENT_DIVIDEND_PER_EARNINGS < PREVIOUS_DIVIDEND_PER_EARNINGS)
         {
@@ -198,45 +205,44 @@ int Firm_compute_balance_sheet()
         }
 */
 
-        //consistency check
-        if(PLANNED_TOTAL_DIVIDEND_PAYMENT != TOTAL_DIVIDEND_PAYMENT)
-        {
-            printf("\nError: planned total dividend payment is not equal to total dividend payment.\n Did you set the same option for the planned and actual payments?");
-        }
-
-        //step 7: continue balance sheet (data pertaining to the period that just ended)
-        PREVIOUS_DIVIDEND_PER_SHARE = CURRENT_DIVIDEND_PER_SHARE;
-        CURRENT_DIVIDEND_PER_SHARE = TOTAL_DIVIDEND_PAYMENT/CURRENT_SHARES_OUTSTANDING;
-        PREVIOUS_DIVIDEND_PER_EARNINGS = CURRENT_DIVIDEND_PER_EARNINGS;
-        CURRENT_DIVIDEND_PER_EARNINGS = TOTAL_DIVIDEND_PAYMENT/EARNINGS;
-        
-        //add dividend_payment_msg to shareholders (dividend per share)     
-        add_dividend_payment_message(ID, CURRENT_DIVIDEND_PER_SHARE, MSGDATA);
-
-        //decrease payment_account with the total_dividend_payment
-        PAYMENT_ACCOUNT -= TOTAL_DIVIDEND_PAYMENT;
-
-        //step 8: compute the equity of the firm
-        //TOTAL_ASSETS=
-        //+ PAYMENT_ACCOUNT: remaining cash holdings of the firm
-        //+ TOTAL_VALUE_CAPITAL_STOCK: estimated value of the capital stock (this is determined in the capital goods market role)
-        //+ TOTAL_VALUE_LOCAL_INVENTORY: value of all the local inventory stocks held at the malls        
-        
-        //TOTAL_VALUE_LOCAL_INVENTORY: estimated value of local inventory stocks at current mall prices
-        //We loop over the malls and sum the value of all local inventory stocks
-        imax = CURRENT_MALL_STOCKS.size;
-        sum=0.0;
-        for (i=0;i<imax;i++)
-        {
-            sum += PRICE*CURRENT_MALL_STOCKS.array[i].current_stock;
-            //When malls have different current_price use this code:
-            //sum += CURRENT_MALL_STOCKS.array[i].current_price * CURRENT_MALL_STOCKS.array[i].current_stock;
-        }
-        TOTAL_VALUE_LOCAL_INVENTORY=sum;
-
-        TOTAL_ASSETS = PAYMENT_ACCOUNT + TOTAL_VALUE_CAPITAL_STOCK + TOTAL_VALUE_LOCAL_INVENTORY;
-        //printf("\nTOTAL_ASSETS in functions.c file: %f\n", TOTAL_ASSETS);
+    //consistency check
+    if(PLANNED_TOTAL_DIVIDEND_PAYMENT != TOTAL_DIVIDEND_PAYMENT)
+    {
+        printf("\nError: planned total dividend payment is not equal to total dividend payment.\n Did you set the same option for the planned and actual payments?");
     }
+
+    //step 7: continue balance sheet (data pertaining to the period that just ended)
+    PREVIOUS_DIVIDEND_PER_SHARE = CURRENT_DIVIDEND_PER_SHARE;
+    CURRENT_DIVIDEND_PER_SHARE = TOTAL_DIVIDEND_PAYMENT/CURRENT_SHARES_OUTSTANDING;
+    PREVIOUS_DIVIDEND_PER_EARNINGS = CURRENT_DIVIDEND_PER_EARNINGS;
+    CURRENT_DIVIDEND_PER_EARNINGS = TOTAL_DIVIDEND_PAYMENT/EARNINGS;
+    
+    //add dividend_payment_msg to shareholders (dividend per share)     
+    add_dividend_payment_message(ID, CURRENT_DIVIDEND_PER_SHARE, MSGDATA);
+
+    //decrease payment_account with the total_dividend_payment
+    PAYMENT_ACCOUNT -= TOTAL_DIVIDEND_PAYMENT;
+
+    //step 8: compute the equity of the firm
+    //TOTAL_ASSETS=
+    //+ PAYMENT_ACCOUNT: remaining cash holdings of the firm
+    //+ TOTAL_VALUE_CAPITAL_STOCK: estimated value of the capital stock (this is determined in the capital goods market role)
+    //+ TOTAL_VALUE_LOCAL_INVENTORY: value of all the local inventory stocks held at the malls        
+    
+    //TOTAL_VALUE_LOCAL_INVENTORY: estimated value of local inventory stocks at current mall prices
+    //We loop over the malls and sum the value of all local inventory stocks
+    imax = CURRENT_MALL_STOCKS.size;
+    sum=0.0;
+    for (i=0;i<imax;i++)
+    {
+        sum += PRICE*CURRENT_MALL_STOCKS.array[i].current_stock;
+        //When malls have different current_price use this code:
+        //sum += CURRENT_MALL_STOCKS.array[i].current_price * CURRENT_MALL_STOCKS.array[i].current_stock;
+    }
+    TOTAL_VALUE_LOCAL_INVENTORY=sum;
+
+    TOTAL_ASSETS = PAYMENT_ACCOUNT + TOTAL_VALUE_CAPITAL_STOCK + TOTAL_VALUE_LOCAL_INVENTORY;
+    //printf("\nTOTAL_ASSETS in functions.c file: %f\n", TOTAL_ASSETS);
 
     return 0;
 }
@@ -412,6 +418,8 @@ int Firm_apply_for_loans()
  */
 int Firm_read_loan_offers_send_loan_acceptance()
 {
+	double credit_amount_taken;
+	
     START_LOAN_CONDITIONS_MESSAGE_LOOP
         if(loan_conditions_message->firm_id==ID)
         {
@@ -421,7 +429,10 @@ int Firm_read_loan_offers_send_loan_acceptance()
             
             //Now send out an acceptance message: the firm always accepts the credit offered by bank 2
             //add_loan_acceptance_message(firm_id, bank_id, credit_amount_taken, MSGDATA);
-            add_loan_acceptance_message(ID, loan_conditions_message->bank_id, loan_conditions_message->amount_credit_offer, MSGDATA);
+        	credit_amount_taken = loan_conditions_message->amount_credit_offer;
+            add_loan_acceptance_message(ID, loan_conditions_message->bank_id, credit_amount_taken, MSGDATA);
+            
+            PAYMENT_ACCOUNT += credit_amount_taken;
         }
     FINISH_LOAN_CONDITIONS_MESSAGE_LOOP
 
@@ -454,8 +465,11 @@ int Firm_read_bond_transactions()
     if(bond_transaction_message->trader_id==ID)
     {
         //bond_transaction_message->bond_id
-        //bond_transaction_message->limit_price
-        //bond_transaction_message->limit_quantity
+        //bond_transaction_message->transaction_price
+        //bond_transaction_message->transaction_quantity
+    	
+    	//Convention: positive quantity is demand, negative quantity is selling
+    	PAYMENT_ACCOUNT -= bond_transaction_message->transaction_price * bond_transaction_message->transaction_quantity;
     }
     FINISH_BOND_TRANSACTION_MESSAGE_LOOP
     return 0;
@@ -490,8 +504,11 @@ int Firm_read_stock_transactions()
     if(stock_transaction_message->trader_id==ID)
     {
         //stock_transaction_message->stock_id
-        //stock_transaction_message->limit_price
-        //stock_transaction_message->limit_quantity
+        //stock_transaction_message->transaction_price
+        //stock_transaction_message->transaction_quantity
+    	
+       	//Convention: positive quantity is demand, negative quantity is selling
+        PAYMENT_ACCOUNT -= stock_transaction_message->transaction_price * stock_transaction_message->transaction_quantity;
     }
     FINISH_STOCK_TRANSACTION_MESSAGE_LOOP
     return 0;
@@ -523,8 +540,11 @@ int Firm_read_gov_bond_transactions()
     if(gov_bond_transaction_message->trader_id==ID)
     {
         //gov_bond_transaction_message->bond_id;
-        //gov_bond_transaction_message->limit_price;
-        //gov_bond_transaction_message->limit_quantity;
+        //gov_bond_transaction_message->transaction_price;
+        //gov_bond_transaction_message->transaction_quantity;
+    	
+      	//Convention: positive quantity is demand, negative quantity is selling
+        PAYMENT_ACCOUNT -= gov_bond_transaction_message->transaction_price * gov_bond_transaction_message->transaction_quantity;    	
     }
     FINISH_GOV_BOND_TRANSACTION_MESSAGE_LOOP
     return 0;
