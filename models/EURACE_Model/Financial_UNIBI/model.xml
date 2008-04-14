@@ -201,6 +201,23 @@
 </functions>
 </xmachine>
 
+<xmachine>
+<name>Government</name>
+<memory>
+<var><type>int</type><name>id</name></var>
+</memory>
+
+<functions>
+<function>
+<name>Government_read_tax_payment</name>
+<current_state>start_Government</current_state>
+<next_state>end</next_state>
+<input><messagetype>tax_payment</messagetype></input>
+</function>
+</functions>
+</xmachine>
+
+
 <messages>
 <message>
 <name>tax_payment</name>
