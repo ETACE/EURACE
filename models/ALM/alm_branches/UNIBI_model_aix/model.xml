@@ -162,6 +162,15 @@
 <var><type>double</type><name>sales</name></var>
 </datatype>
 
+
+<datatype>
+<name>portfolio</name>
+<desc>Used by households to hold shares</desc>
+<var><type>int</type><name>firm_id</name></var>
+<var><type>int</type><name>shares</name></var>
+</datatype>
+
+
 <!--Datatypes Market Research -->
 
 <datatype>
@@ -345,6 +354,10 @@
 <var><type>double</type><name>total_dividend_payment</name></var>
 <var><type>double</type><name>total_value_local_inventory</name></var>
 <var><type>double</type><name>total_assets</name></var>
+<var><type>double</type><name>total_debt</name></var>
+<var><type>double</type><name>total_assets</name></var>
+<var><type>double</type><name>current_shares_outstanding</name></var>
+<var><type>double</type><name>current_share_price</name></var>
 
 <!-- Firm_compute_payout_policy -->
 <var><type>double</type><name>planned_cum_revenue</name></var>
@@ -417,6 +430,14 @@
 <input><messagetype>current_mall_stock_info</messagetype></input>
 </function>
 
+
+<function>
+<name>Firm_set_quantities_zero</name>
+<current_state>00</current_state>
+<next_state>00b</next_state>
+<condition>not_day_of_month_to_act</condition>
+</function>
+
 <!-- <function>
 <name>Firm_no_production</name>
 <current_state>start</current_state>
@@ -443,6 +464,7 @@
 <name>Firm_apply_for_loans</name>
 <current_state>20</current_state>
 <next_state>21</next_state>
+<condition>is_external_financial_needs</condition>
 <output><messagetype>loan_request</messagetype></output>
 </function>
 
@@ -454,12 +476,20 @@
 <output><messagetype>loan_acceptance</messagetype></output>
 </function>
 
+<function>
+<name>Firm_idle</name>
+<current_state>22</current_state>
+<next_state>27</next_state>
+<condition>no_external_financial_needs</condition>
+</function>
+
 <!-- Role: Asset Market Role -->
 
 <function>
 <name>Firm_compute_and_send_bond_orders</name>
 <current_state>22</current_state>
 <next_state>23</next_state>
+<condition>is_external_financial_needs</condition>
 <output><messagetype>bond_order</messagetype></output>
 </function>
 
@@ -471,10 +501,18 @@
 </function>
 
 <function>
+<name>Firm_idle</name>
+<current_state>24</current_state>
+<next_state>27</next_state>
+<condition>no_external_financial_needs</condition>
+</function>
+
+<function>
 <name>Firm_compute_and_send_stock_orders</name>
 <current_state>24</current_state>
 <next_state>25</next_state>
 <output><messagetype>stock_order</messagetype></output>
+<condition>is_external_financial_needs</condition>
 </function>
 
 <function>
@@ -489,10 +527,26 @@
 <function><name>Firm_calc_production_quantity_2</name>
 <current_state>26</current_state>
 <next_state>27</next_state>
+<condition>is_external_financial_needs</condition>
 </function>
 
 <!--  Firm role Labour market ------>
 
+<!--Case 1: Firm_compute_payout_policy (external_financial_needs==0) -->
+<function><name>Firm_idle</name>
+<current_state>20</current_state>
+<next_state>27</next_state>
+<condition>no_external_financial_needs</condition>
+</function>
+
+<!--Case 2: Firm_compute_payout_policy (external_financial_needs==0) -->
+<function><name>Firm_idle</name>
+<current_state>26</current_state>
+<next_state>27</next_state>
+<condition>no_external_financial_needs</condition>
+</function>
+
+<!--Case 3: Firm_compute_payout_policy (external_financial_needs>0) -->
 <function><name>Firm_calculate_specific_skills_and_wage_offer</name>
 <current_state>27</current_state>
 <next_state>28</next_state>
@@ -539,9 +593,8 @@
 </function>
 
 <function><name>Firm_read_job_quitting</name>
-<current_state>00</current_state>
+<current_state>00b</current_state>
 <next_state>09c</next_state>
-<condition>not_day_of_month_to_act</condition>
 <input><messagetype>quitting</messagetype></input>
 </function>
 
@@ -666,7 +719,14 @@
 <function><name>Firm_send_data_to_Market_Research</name>
 <current_state>16</current_state>
 <next_state>end</next_state>
+<condition>last_day_of_month</condition>
 <output><messagetype>firm_send_data</messagetype></output>
+</function>
+
+<function><name>Firm_idle</name>
+<current_state>16</current_state>
+<next_state>end</next_state>
+<condition>not_last_day_of_month</condition>
 </function>
 
 </functions>
@@ -699,8 +759,10 @@
 <var><type>double_array</type><name>last_income</name></var>
 <var><type>int</type><name>rationed</name></var>
 <var><type>int</type><name>mall_completely_sold_out</name></var>
+<var><type>int</type><name>day_of_month_receive_imcome</name></var>
 <var><type>ordered_quantity</type><name>order_quantity[2]</name></var>
 <var><type>received_quantities</type><name>received_quantity[2]</name></var>
+<var><type>portfolio_array</type><name>household_portfolio</name></var>
 <var><type>int</type><name>day_of_month_to_act</name></var>
 <var><type>int</type><name>day_of_week_to_act</name></var>
 
@@ -832,45 +894,120 @@
 
 <!------------Household Role: Consumption Goods Market ------------>
 
+<function><name>Household_idle</name>
+<current_state>06</current_state>
+<next_state>09</next_state>
+<condition>not_day_of_month_receive_income</condition>
+</function>
+
+
+
+
 <function><name>Household_receive_wage</name>
 <current_state>06</current_state>
 <next_state>07</next_state>
+<condition>day_of_month_receive_income_employed</condition>
 <input><messagetype>wage_payment</messagetype></input>
 </function>
 
-<function><name>Household_rank_and_buy_goods_1</name>
+
+<function><name>Household_update_specific_skills</name>
 <current_state>07</current_state>
 <next_state>08</next_state>
-<input><messagetype>quality_price_info_1</messagetype></input>
-<output><messagetype>consumption_request_1</messagetype></output>
+<output><messagetype>specific_skill_update</messagetype></output>
 </function>
 
-<function><name>Household_rank_and_buy_goods_2</name>
+<function><name>Household_receive_unemployment_benefits</name>
+<current_state>06</current_state>
+<next_state>08</next_state>
+<condition>day_of_month_receive_income_unemployed</condition>
+<!--  <input><messagetype>unemployment_benefits</messagetype></input>-->
+</function>
+
+<function><name>Household_determine_consumption_budget</name>
 <current_state>08</current_state>
 <next_state>09</next_state>
+</function>
+
+
+
+
+<function><name>Household_receicve_dividends</name>
+<current_state>09</current_state>
+<next_state>15</next_state>
+<condition>not_day_of_week_to_act</condition>
+<input><messagetype>dividend_payment</messagetype></input>
+<input><messagetype>capital_good_profit_distribution</messagetype></input>
+</function>
+
+<function><name>Household_rank_and_buy_goods_1</name>
+<current_state>09</current_state>
+<next_state>10</next_state>
+<input><messagetype>quality_price_info_1</messagetype></input>
+<output><messagetype>consumption_request_1</messagetype></output>
+<condition>day_of_week_to_act</condition>
+</function>
+
+
+
+
+
+<function><name>Household__receive_goods_read_rationing</name>
+<current_state>10</current_state>
+<next_state>11</next_state>
 <input><messagetype>accepted_consumption_1</messagetype></input>
+</function>
+
+
+<function><name>Household_idle</name>
+<current_state>11</current_state>
+<next_state>13</next_state>
+<condition>household_not_rationed</condition>
+</function>
+
+
+<function><name>Household_rank_and_buy_goods_2</name>
+<current_state>11</current_state>
+<next_state>12</next_state>
+<condition>household_rationed</condition>
 <input><messagetype>quality_price_info_2</messagetype></input>
 <output><messagetype>consumption_request_2</messagetype></output>
 </function>
 
-<function><name>Household_read_rationing</name>
-<current_state>09</current_state>
-<next_state>10</next_state>
+<function><name>Household__receive_goods_read_rationing_2</name>
+<current_state>12</current_state>
+<next_state>13</next_state>
 <input><messagetype>accepted_consumption_2</messagetype></input>
 </function>
 
-<function><name>Household_handle_leftover_budget</name>
-<current_state>10</current_state>
-<next_state>11</next_state>
-<input><messagetype>dividend</messagetype></input>
+
+
+<function><name>Household_receicve_dividends</name>
+<current_state>13</current_state>
+<next_state>14</next_state>
+<input><messagetype>dividend_payment</messagetype></input>
 <input><messagetype>capital_good_profit_distribution</messagetype></input>
 </function>
 
+
+<function><name>Household_handle_leftover_budget</name>
+<current_state>14</current_state>
+<next_state>15</next_state>
+</function>
+
 <function><name>Household_send_data_to_Market_Research</name>
-<current_state>11</current_state>
+<current_state>15</current_state>
 <next_state>end</next_state>
+<condition>last_day_of_month</condition>
 <output><messagetype>household_send_data</messagetype></output>
 </function>
+
+<function><name>Household_idle</name>
+<current_state>15</current_state>
+<next_state>end</next_state>
+<condition>not_last_day_of_month</condition>
+</function>
+
 </functions>
 </xmachine>
 <!--********************** End of Agent - Household ****************************-->
@@ -961,21 +1098,39 @@
 <!--        Defining functions                -->
 <functions>
 
+
+
+
 <function><name>IGFirm_update_productivity_price</name>
 <current_state>start_IGFirm</current_state>
 <next_state>01</next_state>
+<condition>day_of_month_to_act</condition>
+</function>
+
+
+<function><name>IGFirm_idle</name>
+<current_state>start_IGFirm</current_state>
+<next_state>01</next_state>
+<condition>not_day_of_month_to_act</condition>
+</function>
+
+
+
+<function><name>IGFirm_send_quality_price_info</name>
+<current_state>01</current_state>
+<next_state>02</next_state>
 <output><messagetype>productivity</messagetype></output>
 </function>
 
 <function><name>IGFirm_send_capital_good</name>
-<current_state>01</current_state>
-<next_state>02</next_state>
+<current_state>02</current_state>
+<next_state>03</next_state>
 <input><messagetype>capital_good_request</messagetype></input>
 <output><messagetype>capital_good_delivery</messagetype></output>
 </function>
 
 <function><name>IGFirm_receive_payment</name>
-<current_state>02</current_state>
+<current_state>03</current_state>
 <next_state>end</next_state>
 <input><messagetype>pay_capital_goods</messagetype></input>
 <output><messagetype>capital_good_profit_distribution</messagetype></output>
@@ -1059,17 +1214,44 @@
 <!--        Defining functions                -->
 <functions>
 
-<function><name>Market_Research_send_data</name>
+<function><name>Market_Research_Initialization</name>
+<current_state>start_Market_Research</current_state>
+<condition>first_day</condition>
+<next_state>01</next_state>
+</function>
+
+<function><name>Market_Research_idle</name>
 <current_state>start_Market_Research</current_state>
 <next_state>01</next_state>
+<condition>not_first_day</condition>
+</function>
+
+
+<function><name>Market_Research_send_data</name>
+<current_state>01</current_state>
+<next_state>02</next_state>
+<condition>first_day_of_month</condition>
 <output><messagetype>market_research_send_specific_skills</messagetype></output>
 </function>
 
-<function><name>Market_Research_calculate_data</name>
+<function><name>Market_Research_idle</name>
 <current_state>01</current_state>
+<next_state>02</next_state>
+<condition>not_first_day_month</condition>
+</function>
+
+<function><name>Market_Research_calculate_data</name>
+<current_state>02</current_state>
 <next_state>end</next_state>
+<condition>day_of_month_to_act</condition>
 <input><messagetype>firm_send_data</messagetype></input>
 <input><messagetype>household_send_data</messagetype></input>
+</function>
+
+<function><name>Market_Research_idle</name>
+<current_state>02</current_state>
+<next_state>end</next_state>
+<condition>not_day_of_month_to_act</condition>
 </function>
 
 </functions>
@@ -1098,12 +1280,10 @@
 <function>
 <name>Bank_read_loan_request_send_offers</name>
 <current_state>start_Bank</current_state>
-<next_state>01</next_state>
+<next_state>end</next_state>
 <input><messagetype>loan_request</messagetype></input>
 <output><messagetype>loan_conditions</messagetype></output>
 </function>
-
-
 
 </functions>
 </xmachine>
@@ -1133,43 +1313,43 @@
 <functions>
 
 <function>
-<name>Clearinghouse_read_stock_orders</name>
+<name>Clearinghouse_read_bond_orders</name>
 <current_state>start_Clearinghouse</current_state>
 <next_state>01</next_state>
-<input><messagetype>stock_order</messagetype></input>
-</function>
-
-<function>
-<name>Clearinghouse_compute_stock_transactions</name>
-<current_state>01</current_state>
-<next_state>02</next_state>
-</function>
-
-<function>
-<name>Clearinghouse_send_stock_transactions</name>
-<current_state>02</current_state>
-<next_state>03</next_state>
-<output><messagetype>stock_transaction</messagetype></output>
-</function>
-
-<function>
-<name>Clearinghouse_read_bond_orders</name>
-<current_state>03</current_state>
-<next_state>04</next_state>
 <input><messagetype>bond_order</messagetype></input>
 </function>
 
 <function>
 <name>Clearinghouse_compute_bond_transactions</name>
+<current_state>01</current_state>
+<next_state>02</next_state>
+</function>
+
+<function>
+<name>Clearinghouse_send_bond_transactions</name>
+<current_state>02</current_state>
+<next_state>03</next_state>
+<output><messagetype>bond_transaction</messagetype></output>
+</function>
+
+<function>
+<name>Clearinghouse_read_stock_orders</name>
+<current_state>03</current_state>
+<next_state>04</next_state>
+<input><messagetype>stock_order</messagetype></input>
+</function>
+
+<function>
+<name>Clearinghouse_compute_stock_transactions</name>
 <current_state>04</current_state>
 <next_state>05</next_state>
 </function>
 
 <function>
-<name>Clearinghouse_send_bond_transactions</name>
+<name>Clearinghouse_send_stock_transactions</name>
 <current_state>05</current_state>
-<next_state>06</next_state>
-<output><messagetype>bond_transaction</messagetype></output>
+<next_state>end</next_state>
+<output><messagetype>stock_transaction</messagetype></output>
 </function>
 
 </functions>

@@ -90,8 +90,9 @@ int Household_read_firing_messages()
 		if(firing_message->worker_id == ID)
 		{
 			EMPLOYEE_FIRM_ID = -1;
-                            WAGE = 0;
-			ON_THE_JOB_SEARCH = 0;	
+            WAGE = 0;
+			ON_THE_JOB_SEARCH = 0;
+			DAY_OF_MONTH_RECEIVE_INCOME = 1;
 		}
 
 	FINISH_FIRING_MESSAGE_LOOP
@@ -103,7 +104,7 @@ int Household_read_firing_messages()
 
 
 /** \fn Household_on_the_job_search_decision()
- * \brief Households decide whether they search on the jon or not
+ * \brief Households decide whether they search on the job or not
  */
 int Household_on_the_job_search_decision()
 {
@@ -215,6 +216,10 @@ int Household_OTJS_read_job_vacancies_and_send_applications()
 	return 0;
 }
 
+
+/** \fn Household_UNEMPLOYED_read_job_offers_send_response()
+ * \brief Read job offers, rank, and send response
+ */
 int Household_UNEMPLOYED_read_job_vacancies_and_send_applications()
 {
 	/* Create a vacancy dynamic array to store vacancies*/
@@ -374,6 +379,7 @@ int Household_read_job_offers_send_response()
 		
 		EMPLOYEE_FIRM_ID = job_offer_list.array[0].firm_id;
 		EMPLOYER_REGION_ID = job_offer_list.array[0].region_id;
+		DAY_OF_MONTH_RECEIVE_INCOME = DAY%MONTH;
 		
 		/*update some memory variables because of the new job*/
 		if(REGION_ID == job_offer_list.array[0].region_id)
@@ -689,6 +695,7 @@ int Household_read_job_offers_send_response_2()
 
 		EMPLOYEE_FIRM_ID = job_offer_list.array[0].firm_id;
 		EMPLOYER_REGION_ID = job_offer_list.array[0].region_id;
+		DAY_OF_MONTH_RECEIVE_INCOME = DAY%MONTH;
 
 		/*Update some memory variables because of the new job*/
 		if(REGION_ID == job_offer_list.array[0].region_id)

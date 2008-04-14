@@ -17,6 +17,68 @@ int is_unemployed()
 	else return 0;
 }
 
+int day_of_month_receive_income_employed()
+{
+	if (DAY%MONTH==DAY_OF_MONTH_RECEIVE_INCOME&&EMPLOYEE_FIRM_ID=!-1)
+		return 1;
+	else
+		return 0;
+	
+}
+
+int household_rationed()
+{
+	if (RATIONED==1)
+		return 1;
+	else
+		return 0;
+	
+}
+
+int household_not_rationed()
+{
+	if (RATIONED!=1)
+		return 1;
+	else
+		return 0;
+	
+}
+
+
+int day_of_month_receive_income_unemployed()
+{
+	if (DAY%MONTH==DAY_OF_MONTH_RECEIVE_INCOME&&EMPLOYEE_FIRM_ID==-1)
+		return 1;
+	else
+		return 0;
+	
+}
+
+int not_day_of_month_receive_income()
+{
+	if (DAY%MONTH==DAY_OF_MONTH_RECEIVE_INCOME)
+		return 0;
+	else
+		return 1;
+	
+}
+
+int day_of_week_to_act()
+{
+	if (DAY%MONTH==DAY_OF_MONTH_TO_ACT)
+		return 1;
+	else
+		return 0;
+	
+}
+int not_day_of_week_to_act()
+{
+	if (DAY%MONTH==DAY_OF_MONTH_TO_ACT)
+		return 0;
+	else
+		return 1;
+	
+}
 
 
 int Household_idle()
@@ -29,6 +91,22 @@ int Household_on_the_job_search_no()
 	return 0;
 }
 
+int last_day_of_month()
+{
+	if (DAY%MONTH==0)
+		return 1;
+	else
+		return 0;
+	
+}
+int not_last_day_of_month()
+{
+	if (DAY%MONTH!=0)
+		return 1;
+	else
+		return 0;
+	
+}
 
 
 
@@ -36,7 +114,7 @@ int Household_on_the_job_search_no()
 
 
 /** \fn Household_receive_wage()
- * \brief Household receives wage, additionally the specific skills are updated, if the household is employed 
+ * \brief Household receives wage if the household is employed 
  */
 
 int Household_receive_wage()
@@ -63,9 +141,76 @@ int Household_receive_wage()
 			/*Add wage on account   */
 			SAVINGS += wage_payment_message->payment;
 			
+		}
+	CURRENT_PRODUCTIVITY_EMPLOYER = wage_payment_message-> productivity;
+	CURRENT_MEAN_SPECIFIC_SKILLS_EMPLOYER =wage_payment_message->average_specific_skills;
+	
+	FINISH_WAGE_PAYMENT_MESSAGE_LOOP
+	
+	return 0;
+	
+}
+
+/** \fn Household_receive_wage()
+ * \brief Household's specific skills are updated if the household is employed 
+ */
+
+int Household_update_specific_skills()
+{
+	
+
+	if(SPECIFIC_SKILL < wage_payment_message->productivity)
+	{
+		
+		
+		
+		
+		SPECIFIC_SKILL = SPECIFIC_SKILL + (CURRENT_PRODUCTIVITY_EMPLOYER - SPECIFIC_SKILL)*((1-pow(0.5,1/(20+0.25*(GENERAL_SKILL-1)*(4-20))))+ 0*CURRENT_MEAN_SPECIFIC_SKILLS_EMPLOYER);
 
 
-			/*Determing the consumption budget of the month*/
+		add_specific_skill_update_message(ID,EMPLOYEE_FIRM_ID,SPECIFIC_SKILL,MSGDATA);
+			
+	}
+	
+	return 0;
+	
+}
+
+
+int Household_receive_unemployment_benefits()
+{
+	
+/*Should be changed later*/
+double unemployment_benefit_payment = 0;
+
+			remove_double(&LAST_INCOME,0);
+			add_double(&LAST_INCOME,unemployment_benefit_payment);
+			
+			/*Compute a mean income of the last four month*/
+			for(int i = 0; i < 4;i++)
+			{
+				mean_income += LAST_INCOME.array[i];
+			}
+
+			mean_income = mean_income/4;
+			
+			/*Add wage on account   */
+			SAVINGS +=  unemployment_benefit_payment;
+	
+	
+return 0;	
+	
+}
+
+/*\fn Household_determine_consumption_budget()
+ * brief: If a household is unemployed then it receives an unemployment benefit payment
+ * 
+ * */
+
+int Household_determine_consumption_budget()
+{
+	
+	/*Determing the consumption budget of the month*/
 			if(SAVINGS > (INITIAL_CONSUMPTION_PROPENSITY*mean_income))
 			{
 				
@@ -80,44 +225,7 @@ int Household_receive_wage()
 			WEEKLY_BUDGET = BUDGET/4;
 			WEEK_OF_MONTH = 4;
 			
-			/*Update of specific skills   */ 
-			
-		
-			if(SPECIFIC_SKILL < wage_payment_message->productivity)
-			{
-				
-				SPECIFIC_SKILL = SPECIFIC_SKILL + (wage_payment_message-> 					productivity- SPECIFIC_SKILL)*
-				((1-pow(0.5,1/(20+0.25*(GENERAL_SKILL-1)*(4-20))))+ 
-				0*wage_payment_message->average_specific_skills);
-
-
-				add_specific_skill_update_message(ID,
-				EMPLOYEE_FIRM_ID,SPECIFIC_SKILL,MSGDATA);	
-			}
-		}	
-	
-	FINISH_WAGE_PAYMENT_MESSAGE_LOOP
-
-	/*If the worker is unemployed then he consumes his savings */
-	if(DAY%WEEK==DAY_OF_WEEK_TO_ACT && EMPLOYEE_FIRM_ID == -1 && WEEK_OF_MONTH == 0)
-	{
-		remove_double(&LAST_INCOME,0);
-		add_double(&LAST_INCOME,0);
-			
-		for(int i = 0; i < 4; i++)
-		{
-			mean_income+= LAST_INCOME.array[i];
-
-		}
-
-		mean_income = mean_income/4;	
-		BUDGET = CONSUMPTION_PROPENSITY*SAVINGS;
-		WEEKLY_BUDGET = BUDGET/4;
-		WEEK_OF_MONTH =4;		
-	}
-
-	return 0;
-
+return 0;	
 }
 
 
@@ -141,8 +249,7 @@ int Household_rank_and_buy_goods_1()
 	mall_quality_price_info_array mall_quality_price_info_list;
  	init_mall_quality_price_info_array(&mall_quality_price_info_list);
 
-	if(DAY%WEEK==DAY_OF_WEEK_TO_ACT)
-	{
+	
 
 		/*Household reads quality price info mesasges sent by malls   */
 		START_QUALITY_PRICE_INFO_1_MESSAGE_LOOP
@@ -151,7 +258,7 @@ int Household_rank_and_buy_goods_1()
 			{	
 		
 				
-				add_mall_quality_price_info(&mall_quality_price_info_list,  					quality_price_info_1_message->mall_id,  				quality_price_info_1_message->firm_id,  				quality_price_info_1_message->mall_region_id,  					quality_price_info_1_message->quality,  				quality_price_info_1_message->price, 
+				add_mall_quality_price_info(&mall_quality_price_info_list, 	quality_price_info_1_message->mall_id, quality_price_info_1_message->firm_id,  				quality_price_info_1_message->mall_region_id,  					quality_price_info_1_message->quality,  				quality_price_info_1_message->price, 
 				quality_price_info_1_message->available);
 				
 			}
@@ -242,7 +349,6 @@ int Household_rank_and_buy_goods_1()
 			ORDER_QUANTITY[0].price=0;
 			ORDER_QUANTITY[0].firm_id=0;
 		}
-	}	
 
 	free_mall_quality_price_info_array(&mall_quality_price_info_list);
 	free_logit_firm_id_array(&logit_firm_id_list);
@@ -251,27 +357,15 @@ int Household_rank_and_buy_goods_1()
 
 }
 
-/** \fn Household_rank_and_buy_goods_2()
- * \brief If the household was rationed in the first consumption step, this process is repeated once again 
+/** \fn Household_read_rationing()
+ * \brief The household gets information about the accepted amount of goods and, if the mall is completly sold out then the households set the order and delivery volumes forn the second step equal 0
 			
  */
-int Household_rank_and_buy_goods_2()
+
+int Household__receive_goods_read_rationing()
+
 {
-	//Logit parameters
-	
-	int j = 0;
-	int i = 0;
-	double logit;
-	double sum_weighted_qual_pric_ratios = 0; 
-
-	//Temporary arrays
-	logit_firm_id_array logit_firm_id_list;
-	init_logit_firm_id_array(&logit_firm_id_list);
-
-	mall_quality_price_info_array mall_quality_price_info_list;
-	init_mall_quality_price_info_array(&mall_quality_price_info_list);
-
-	if(DAY%WEEK == DAY_OF_WEEK_TO_ACT && MALL_COMPLETELY_SOLD_OUT == 0)
+	if(MALL_COMPLETELY_SOLD_OUT == 0)
 	{
 		EXPENDITURES = 0;
 
@@ -297,128 +391,139 @@ int Household_rank_and_buy_goods_2()
 
 		FINISH_ACCEPTED_CONSUMPTION_1_MESSAGE_LOOP
 
+	}else 
+		(MALL_COMPLETELY_SOLD_OUT == 1)
+		{
+			EXPENDITURES= 0;
+			RECEIVED_QUANTITY[0].quantity = 0;
+			RECEIVED_QUANTITY[0].firm_id = 0;
+			ORDER_QUANTITY[1].quantity = 0;
+			ORDER_QUANTITY[1].firm_id = 0;
+			ORDER_QUANTITY[1].price = 0;
+			RECEIVED_QUANTITY[1].quantity = 0;
+			RECEIVED_QUANTITY[1].firm_id = 0;
+			
+		}
+}
 
 		/*If rationed repeat ranking and request of goods: */
-		if(RATIONED == 1)
+int Household_rank_and_buy_goods_2()	
+{
+			
+			
+			int j = 0;
+			int i = 0;
+			double logit;
+			double sum_weighted_qual_pric_ratios = 0; 
+
+			//Temporary arrays
+			logit_firm_id_array logit_firm_id_list;
+			init_logit_firm_id_array(&logit_firm_id_list);
+
+			mall_quality_price_info_array mall_quality_price_info_list;
+			init_mall_quality_price_info_array(&mall_quality_price_info_list);
+
+		/*The updated quality price message is read  */
+		START_QUALITY_PRICE_INFO_2_MESSAGE_LOOP
+
+			if(quality_price_info_2_message->mall_region_id == REGION_ID)  
+			{
+
+				
+				add_mall_quality_price_info(&mall_quality_price_info_list, 						quality_price_info_2_message->mall_id, 
+				quality_price_info_2_message->firm_id, 
+				quality_price_info_2_message->mall_region_id, 
+				quality_price_info_2_message->quality, 
+				quality_price_info_2_message->price, 
+				quality_price_info_2_message->available);
+				
+			}
+
+		FINISH_QUALITY_PRICE_INFO_2_MESSAGE_LOOP
+
+
+
+		//+++++ Logit Model +++++++++:
+
+		/*Sum of weighted exponents of quality price ratios   */
+		for(i = 0;i < mall_quality_price_info_list.size; i++) 
 		{
+			sum_weighted_qual_pric_ratios +=(mall_quality_price_info_list
+			.array[i].available) * 
+			exp(log(mall_quality_price_info_list.array[i].price)*GAMMA); 
+		}
 
-			/*The updated quality price message is read  */
-			START_QUALITY_PRICE_INFO_2_MESSAGE_LOOP
+		/*This computes the logits  */
+		for(i = 0; i < mall_quality_price_info_list.size; i++) 
+		{
+			logit = (mall_quality_price_info_list.array[i].available) * 
+			exp(log(mall_quality_price_info_list.array[i].price)*GAMMA) / 
+			sum_weighted_qual_pric_ratios;
 
-				if(quality_price_info_2_message->mall_region_id == REGION_ID)  
+			logit = logit*100;
+
+			add_logit_firm_id(&logit_firm_id_list, logit,
+			mall_quality_price_info_list.array[i].firm_id);
+		}
+
+		if(sum_weighted_qual_pric_ratios>0)
+		{
+			int random_number = random_int(0,100);
+			j = 0;
+			int x = 0, index_selected_good=j;
+
+			for(j = 0; j < logit_firm_id_list.size;j++)
+			{
+				/*if randum number <= logit then select the corresponding 						good  */ 
+				if((random_number < logit_firm_id_list.array[j].logit)
+				&& (x!=1))
 				{
-
-					
-					add_mall_quality_price_info(&mall_quality_price_info_list, 						quality_price_info_2_message->mall_id, 
-					quality_price_info_2_message->firm_id, 
-					quality_price_info_2_message->mall_region_id, 
-					quality_price_info_2_message->quality, 
-					quality_price_info_2_message->price, 
-					quality_price_info_2_message->available);
-					
+					ORDER_QUANTITY[1].firm_id = logit_firm_id_list
+					.array[j].firm_id; //Seleced Good
+				
+					x =1;
+					index_selected_good= j;
 				}
-
-			FINISH_QUALITY_PRICE_INFO_2_MESSAGE_LOOP
-
-
-
-			//+++++ Logit Model +++++++++:
-
-			/*Sum of weighted exponents of quality price ratios   */
-			for(i = 0;i < mall_quality_price_info_list.size; i++) 
-			{
-				sum_weighted_qual_pric_ratios +=(mall_quality_price_info_list
-				.array[i].available) * 
-				exp(log(mall_quality_price_info_list.array[i].price)*GAMMA); 
-			}
-
-			/*This computes the logits  */
-			for(i = 0; i < mall_quality_price_info_list.size; i++) 
-			{
-				logit = (mall_quality_price_info_list.array[i].available) * 
-				exp(log(mall_quality_price_info_list.array[i].price)*GAMMA) / 
-				sum_weighted_qual_pric_ratios;
-
-				logit = logit*100;
-
-				add_logit_firm_id(&logit_firm_id_list, logit,
- 				mall_quality_price_info_list.array[i].firm_id);
-			}
-
-			if(sum_weighted_qual_pric_ratios>0)
-			{
-				int random_number = random_int(0,100);
-				j = 0;
-				int x = 0, index_selected_good=j;
-
-				for(j = 0; j < logit_firm_id_list.size;j++)
+				/*else sum logits and go to next iteration step */
+				else
 				{
-					/*if randum number <= logit then select the corresponding 						good  */ 
-					if((random_number < logit_firm_id_list.array[j].logit)
-					&& (x!=1))
+					if((j < logit_firm_id_list.size-1) )
 					{
-						ORDER_QUANTITY[1].firm_id = logit_firm_id_list
-						.array[j].firm_id; //Seleced Good
-					
-						x =1;
-						index_selected_good= j;
-					}
-					/*else sum logits and go to next iteration step */
-					else
-					{
-						if((j < logit_firm_id_list.size-1) )
-						{
-							logit_firm_id_list.array[j+1].logit = 								logit_firm_id_list.array[j+1].logit+ 
-							logit_firm_id_list.array[j].logit;
-						}
+						logit_firm_id_list.array[j+1].logit = 								logit_firm_id_list.array[j+1].logit+ 
+						logit_firm_id_list.array[j].logit;
 					}
 				}
-			
-				/*This computes the order quantity  and store the price */
-				ORDER_QUANTITY[1].quantity = WEEKLY_BUDGET/
-				mall_quality_price_info_list.array[index_selected_good].price;
-
-				ORDER_QUANTITY[1].price = mall_quality_price_info_list
-				.array[index_selected_good].price;
-
-				/*Sending the second consumption request message  */
-				add_consumption_request_2_message(
-				mall_quality_price_info_list.array[index_selected_good].mall_id,
-				ID,ORDER_QUANTITY[1].firm_id,
-				ORDER_QUANTITY[1].quantity,MSGDATA);
-			
-
-			
-
-			
 			}
-			else
-			{		
-				ORDER_QUANTITY[1].quantity = 0;
-				ORDER_QUANTITY[1].firm_id= 0;
-				ORDER_QUANTITY[1].price= 0;
-			}
+		
+			/*This computes the order quantity  and store the price */
+			ORDER_QUANTITY[1].quantity = WEEKLY_BUDGET/
+			mall_quality_price_info_list.array[index_selected_good].price;
+
+			ORDER_QUANTITY[1].price = mall_quality_price_info_list
+			.array[index_selected_good].price;
+
+			/*Sending the second consumption request message  */
+			add_consumption_request_2_message(
+			mall_quality_price_info_list.array[index_selected_good].mall_id,
+			ID,ORDER_QUANTITY[1].firm_id,
+			ORDER_QUANTITY[1].quantity,MSGDATA);
+		
+
+		
+
+		
 		}
 		else
-		{
-			ORDER_QUANTITY[1].quantity = 0.0;
-			ORDER_QUANTITY[1].firm_id = 0;
-			ORDER_QUANTITY[1].price = 0.0;
+		{		
+			ORDER_QUANTITY[1].quantity = 0;
+			ORDER_QUANTITY[1].firm_id= 0;
+			ORDER_QUANTITY[1].price= 0;
 		}
+	
 
-	}else 
-	if(DAY%MONTH == DAY_OF_MONTH_TO_ACT && MALL_COMPLETELY_SOLD_OUT == 1)
-	{
-		EXPENDITURES= 0;
-		RECEIVED_QUANTITY[0].quantity = 0;
-		RECEIVED_QUANTITY[0].firm_id = 0;
-		ORDER_QUANTITY[1].quantity = 0;
-		ORDER_QUANTITY[1].firm_id = 0;
-		ORDER_QUANTITY[1].price = 0;
-	}
-
-	free_mall_quality_price_info_array(&mall_quality_price_info_list);
-	free_logit_firm_id_array(&logit_firm_id_list);
+}
+free_mall_quality_price_info_array(&mall_quality_price_info_list);
+free_logit_firm_id_array(&logit_firm_id_list);
 
 	return 0;
 }
@@ -427,7 +532,7 @@ int Household_rank_and_buy_goods_2()
  * \brief This function stores in memory the realized consumption if HH was rationed in first round. 
 			
  */
-int Household_read_rationing()
+int Household__receive_goods_read_rationing_2()
 {
 
 	if(DAY%WEEK==DAY_OF_WEEK_TO_ACT)
@@ -467,38 +572,55 @@ int Household_read_rationing()
 	return 0;
 }
 
-/** \fn Household_rank_and_buy_goods_2()
+
+
+/** \fn Household_receicve_dividens()
+ * \brief Here the households get their dividends payments
+			
+ */
+int Household_receicve_dividends()
+{
+	
+	int imax;
+	
+RECEIVED_DIVIDEND_CONS = 0;
+RECEIVED_DIVIDEND_CAP = 0;
+		
+	/*Check if there are dividends form the capital goods producer*/
+		
+		START_CAPITAL_GOOD_PROFIT_DISTRIBUTION_MESSAGE_LOOP
+
+			RECEIVED_DIVIDEND_CAP += capital_good_profit_distribution_message->capital_good_profit_shares;
+
+		FINISH_CAPITAL_GOOD_PROFIT_DISTRIBUTION_MESSAGE_LOOP
+
+		/*Check if there are dividends form the consumption goods producer*/
+		START_DIVIDEND_PAYMENT_MESSAGE_LOOP
+		
+			for(imax=0; imax < HOUSEHOLD_PORTFOLIO.size;imax++)
+			{
+			if(HOUSEHOLD_PORTFOLIO.arry[i].firm_id==dividend_payment_message->firm_id)
+			{
+			RECEIVED_DIVIDEND_CONS += dividend_payment_message->current_dividend_per_share*HOUSEHOLD_PORTFOLIO.arry[i].shares;
+			}
+			}
+		FINISH_DIVIDEND_PAYMENT_MESSAGE_LOOP
+		
+
+		SAVINGS += RECEIVED_DIVIDEND_CONS+RECEIVED_DIVIDEND_CAP;	
+	
+	
+return 0;	
+}
+
+
+/** \fn Household_handle_leftover_budget()
  * \brief This function convert the remaining budget, that is not spent in both consumtion steps, into the savings 
 			
  */
 int Household_handle_leftover_budget()
 {
-
-	RECEIVED_DIVIDEND_CONS = 0;
-	RECEIVED_DIVIDEND_CAP = 0;
 	
-	/*Receive the dividens*/
-	
-	START_CAPITAL_GOOD_PROFIT_DISTRIBUTION_MESSAGE_LOOP
-
-		RECEIVED_DIVIDEND_CAP += capital_good_profit_distribution_message
-		->capital_good_profit_shares;
-
-	FINISH_CAPITAL_GOOD_PROFIT_DISTRIBUTION_MESSAGE_LOOP
-
-
-	START_DIVIDEND_MESSAGE_LOOP
-
-		RECEIVED_DIVIDEND_CONS += dividend_message->dividend;
-
-	FINISH_DIVIDEND_MESSAGE_LOOP
-	
-
-	SAVINGS += RECEIVED_DIVIDEND_CONS+RECEIVED_DIVIDEND_CAP;
-
-	if(DAY%WEEK == DAY_OF_WEEK_TO_ACT )
-	{
-		
 		BUDGET = BUDGET - EXPENDITURES;
 
 
@@ -513,12 +635,12 @@ int Household_handle_leftover_budget()
 		else
 		{
 			SAVINGS =SAVINGS - EXPENDITURES;
-			//WEEK_OF_MONTH =4;
+			
 			WEEK_OF_MONTH--;
 		}
 		//set rationed back to zero:
 		RATIONED = 0;
-	}
+	
 
 	return 0;
 }
