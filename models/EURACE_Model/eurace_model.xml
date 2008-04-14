@@ -110,4 +110,16 @@
 </memory>
 </xmachine>
 
+<xmachine>
+<name>Government</name>
+<memory>
+<var><type>int</type><name>id</name></var>
+<var><type>double</type><name>range</name></var>
+<var><type>double</type><name>posx</name></var>
+<var><type>double</type><name>posy</name></var>
+</memory>
+</xmachine>
+
+
+
 </xmachine_agent_model>
