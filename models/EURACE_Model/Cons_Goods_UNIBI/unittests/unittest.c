@@ -6,7 +6,8 @@
 #include <CUnit/Basic.h>
 
 /*************************** unittest prototypes ***************************/
-void unittest_Firm_calc_production_quantity();
+void unittest1_Firm_calc_production_quantity();
+void unittest2_Firm_calc_production_quantity();
 void unittest_Firm_calc_input_demands();
 void unittest_Firm_calc_production_quantity_2();
 void unittest_Firm_calc_input_demands_2();
@@ -56,7 +57,8 @@ int main(int argc, char * argv[])
     /* add extra tests using || */
     
     if(
-    	NULL == CU_add_test(pSuite, "Firm_calc_production_quantity", unittest_Firm_calc_production_quantity))
+    	NULL == CU_add_test(pSuite, "Firm_calc_production_quantity, Case 1", unittest1_Firm_calc_production_quantity) ||
+    	NULL == CU_add_test(pSuite, "Firm_calc_production_quantity, Case 2", unittest2_Firm_calc_production_quantity))
     	//NULL == CU_add_test(pSuite, "Firm_calc_input_demands", unittest_Firm_calc_input_demands)  ||
     	//NULL == CU_add_test(pSuite, "Firm_calc_production_quantity_2", unittest_Firm_calc_production_quantity_2)  ||
     	//NULL == CU_add_test(pSuite, "Firm_calc_input_demands_2", unittest_Firm_calc_input_demands_2)  ||
