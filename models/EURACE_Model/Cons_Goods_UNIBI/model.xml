@@ -208,10 +208,22 @@
 
 <function><name>Firm_calc_revenue</name>
 <current_state>13</current_state>
-<next_state>14</next_state>
+<next_state>13b</next_state>
 <input><messagetype>sales</messagetype></input>
 </function>
 
+<function><name>Firm_update_specific_skills_of_workers</name>
+<current_state>13b</current_state>
+<next_state>14</next_state>
+<condition>Firm_day_of_month_to_act</condition>
+<input><messagetype>specific_skill_update</messagetype></input>
+</function>
+
+<function><name>Firm_idle</name>
+<current_state>13b</current_state>
+<next_state>14</next_state>
+<condition>Firm_not_day_of_month_to_act</condition>
+</function>
 
 </functions>
 </xmachine>
