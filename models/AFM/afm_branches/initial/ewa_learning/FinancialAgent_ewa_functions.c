@@ -279,7 +279,7 @@ int FinancialAgent_send_rule_details()
 	//The message contains the static array parameters[10]
 	for (i=0;i<PUBLIC_CLASSIFIERSYSTEM.nr_rules;i++)
 	{
-		add_rule_details_messsage(i, PUBLIC_CLASSIFIERSYSTEM.ruletable[i].parameters, 1.0, 0.0, 0.0, 0.0);
+		add_rule_details_message(i, PUBLIC_CLASSIFIERSYSTEM.ruletable[i].parameters, 1.0, 0.0, 0.0, 0.0);
 	}
         
     return 0;

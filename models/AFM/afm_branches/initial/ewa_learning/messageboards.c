@@ -249,8 +249,8 @@ void process_new_performances_message(xmachine_message_new_performances * curren
 				p_new_performances_message = &node_info->new_performances_messages;
 				temp_send_message = add_new_performances_message_internal();
 				
-				temp_send_message->avg_performance = current->avg_performance;
 				temp_send_message->rule_id = current->rule_id;
+				temp_send_message->avg_performance = current->avg_performance;
 				temp_send_message->range = current->range;
 				temp_send_message->x = current->x;
 				temp_send_message->y = current->y;
@@ -263,23 +263,23 @@ void process_new_performances_message(xmachine_message_new_performances * curren
 	}
 }
 
-/** \fn void add_new_performances_message(double avg_performance, int rule_id, double range, double x, double y, double z)
+/** \fn void add_new_performances_message(int rule_id, double avg_performance, double range, double x, double y, double z)
  * \brief Add new_performances message by calling internal and processing.
- * \param avg_performance Message variable.
  * \param rule_id Message variable.
+ * \param avg_performance Message variable.
  * \param range Message variable.
  * \param x Message variable.
  * \param y Message variable.
  * \param z Message variable.
  */
-void add_new_performances_message(double avg_performance, int rule_id, double range, double x, double y, double z)
+void add_new_performances_message(int rule_id, double avg_performance, double range, double x, double y, double z)
 {
 
 	p_new_performances_message = &current_node->new_performances_messages;
 	xmachine_message_new_performances * tmp = add_new_performances_message_internal();
 	
-	tmp->avg_performance = avg_performance;
 	tmp->rule_id = rule_id;
+	tmp->avg_performance = avg_performance;
 	tmp->range = range;
 	tmp->x = x;
 	tmp->y = y;

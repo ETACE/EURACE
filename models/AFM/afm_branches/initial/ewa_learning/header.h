@@ -111,9 +111,9 @@ typedef struct double_array double_array;
 typedef struct char_array char_array;
 
 /** \struct EWAParameterStruct
- * \brief €=.
+ * \brief 0=.
  *
- * €=.
+ * 0=.
  */
 struct EWAParameterStruct
 {
@@ -143,9 +143,9 @@ typedef struct EWAParameterStruct EWAParameterStruct;
  */
 typedef struct EWAParameterStruct_array EWAParameterStruct_array;
 /** \struct GAParameterStruct
- * \brief °û=.
+ * \brief Èû=.
  *
- * °û=.
+ * Èû=.
  */
 struct GAParameterStruct
 {
@@ -438,8 +438,8 @@ struct xmachine_message_rule_performance
  */
 struct xmachine_message_new_performances
 {
-	double avg_performance;	/**< Message memory variable avg_performance of type double. */
 	int rule_id;	/**< Message memory variable rule_id of type int. */
+	double avg_performance;	/**< Message memory variable avg_performance of type double. */
 	double range;	/**< Message memory variable range of type double. */
 	double x;	/**< Message memory variable x of type double. */
 	double y;	/**< Message memory variable y of type double. */
@@ -861,7 +861,7 @@ xmachine_message_rule_performance * add_rule_performance_message_internal(void);
 xmachine_message_rule_performance * get_first_rule_performance_message(void);
 xmachine_message_rule_performance * get_next_rule_performance_message(xmachine_message_rule_performance * current);
 void freerule_performancemessages(void);
-void add_new_performances_message(double avg_performance, int rule_id, double range, double x, double y, double z);
+void add_new_performances_message(int rule_id, double avg_performance, double range, double x, double y, double z);
 xmachine_message_new_performances * add_new_performances_message_internal(void);
 xmachine_message_new_performances * get_first_new_performances_message(void);
 xmachine_message_new_performances * get_next_new_performances_message(xmachine_message_new_performances * current);

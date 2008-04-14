@@ -399,11 +399,11 @@
 <message>
 <name>new_performances</name>
 <note>Message sent by FA and read by all households. There will be a single message per rule.</note>
-<var><type>double</type><name>avg_performance</name></var>
+
 	<var>
 		<type>int</type><name>rule_id</name>
 		</var>
-	<var><type>double</type><name>range</name></var>
+	<var><type>double</type><name>avg_performance</name></var><var><type>double</type><name>range</name></var>
 <var><type>double</type><name>x</name></var>
 <var><type>double</type><name>y</name></var>
 <var><type>double</type><name>z</name></var>

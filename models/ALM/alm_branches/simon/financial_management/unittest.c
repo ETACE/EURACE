@@ -93,9 +93,9 @@ int main(int argc, char * argv[])
     	NULL == CU_add_test(pSuite, "Firm_compute_payout_policy, External financing: case 3", unittest3_Firm_compute_payout_policy)  ||
     	NULL == CU_add_test(pSuite, "Firm_compute_payout_policy, External financing: case 4", unittest4_Firm_compute_payout_policy)  ||
     	NULL == CU_add_test(pSuite, "Firm_compute_payout_policy, External financing: case 5", unittest5_Firm_compute_payout_policy)  ||
-    	NULL == CU_add_test(pSuite, "Firm_apply_for_loans", unittest_Firm_apply_for_loans) ||
-        NULL == CU_add_test(pSuite, "Firm_read_loan_offers_send_loan_acceptance", unittest_Firm_read_loan_offers_send_loan_acceptance) ||
-    	NULL == CU_add_test(pSuite, "Bank_read_loan_request_send_offers", unittest_Bank_read_loan_request_send_offers))
+    	NULL == CU_add_test(pSuite, "Firm_apply_for_loans", unittest_Firm_apply_for_loans))
+        //NULL == CU_add_test(pSuite, "Firm_read_loan_offers_send_loan_acceptance", unittest_Firm_read_loan_offers_send_loan_acceptance) ||
+    	//NULL == CU_add_test(pSuite, "Bank_read_loan_request_send_offers", unittest_Bank_read_loan_request_send_offers))
     	//NULL == CU_add_test(pSuite, "Firm_issue_equity", unittest_Firm_issue_equity) ||
         //NULL == CU_add_test(pSuite, "Firm_compute_stock_orders", unittest_Firm_compute_stock_orders) ||
         //NULL == CU_add_test(pSuite, "Firm_compute_bond_orders", unittest_Firm_compute_bond_orders) ||
