@@ -168,7 +168,6 @@
 <name>Firm_calc_production_quantity</name>
 <current_state>002</current_state>
 <next_state>01</next_state>
-<condition>Firm_day_of_month_to_act</condition>
 <input><messagetype>current_mall_stock_info</messagetype></input>
 </function>
 
