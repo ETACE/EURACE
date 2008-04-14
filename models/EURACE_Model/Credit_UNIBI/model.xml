@@ -65,16 +65,23 @@
 </function>
 
 <function>
-<name>Bank_read_interest_payments</name>
+<name>Bank_read_loan_acceptance</name>
 <current_state>01</current_state>
 <next_state>02</next_state>
+<input><messagetype>loan_acceptance</messagetype></input>
+</function>
+
+<function>
+<name>Bank_read_interest_payments</name>
+<current_state>02</current_state>
+<next_state>03</next_state>
 <input><messagetype>interest_payment</messagetype></input>
 </function>
 
 <function>
 <name>Bank_read_debt_installment_payments</name>
-<current_state>02</current_state>
-<next_state>03</next_state>
+<current_state>03</current_state>
+<next_state>04</next_state>
 <input><messagetype>debt_installment_payment</messagetype></input>
 </function>
 
