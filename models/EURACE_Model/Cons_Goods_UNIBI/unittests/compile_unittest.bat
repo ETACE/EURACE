@@ -1,0 +1,1 @@
+gcc -g unittest.c memory.c messageboards.c Firm_Producer_functions.c Firm_Producer_unittests.c -lm -lcunit 
