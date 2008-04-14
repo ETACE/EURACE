@@ -106,22 +106,12 @@
 <output><messagetype>debt_installment_payment</messagetype></output>
 <output><messagetype>dividend_payment</messagetype></output>
 </function>
-
-</functions>
-</xmachine>
-
-<xmachine>
-<name>Clearinghouse</name>
-<memory>
-<var><type>double</type><name>transaction_price</name></var>
-<var><type>double</type><name>transaction_quantity</name></var>
-</memory>
-<functions>
 </functions>
 </xmachine>
 
 
 <messages>
+
 </messages>
 
 

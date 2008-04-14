@@ -153,6 +153,8 @@
 <var><type>int</type><name>gov_bond_id</name></var>
 <var><type>double</type><name>limit_price</name></var>
 <var><type>double</type><name>limit_quantity</name></var>
+<var><type>double</type><name>transaction_price</name></var>
+<var><type>double</type><name>transaction_quantity</name></var>
 </memory>
 <functions>
 
@@ -199,7 +201,6 @@
 </functions>
 </xmachine>
 
-
 <messages>
 <message>
 <name>tax_payment</name>
@@ -207,30 +208,6 @@
 <var><type>int</type><name>firm_id</name></var>
 <var><type>int</type><name>gov_id</name></var>
 <var><type>double</type><name>tax_payment</name></var>
-<var><type>double</type><name>range</name></var>
-<var><type>double</type><name>x</name></var>
-<var><type>double</type><name>y</name></var>
-<var><type>double</type><name>z</name></var>
-</message>
-
-<message>
-<name>interest_payment</name>
-<note>Added by firm to pay interest on debt</note>
-<var><type>int</type><name>firm_id</name></var>
-<var><type>int</type><name>bank_id</name></var>
-<var><type>double</type><name>interest_payment</name></var>
-<var><type>double</type><name>range</name></var>
-<var><type>double</type><name>x</name></var>
-<var><type>double</type><name>y</name></var>
-<var><type>double</type><name>z</name></var>
-</message>
-
-<message>
-<name>debt_installment_payment</name>
-<note>Added by firm to pay debt installments</note>
-<var><type>int</type><name>firm_id</name></var>
-<var><type>int</type><name>bank_id</name></var>
-<var><type>double</type><name>debt_installment_payment</name></var>
 <var><type>double</type><name>range</name></var>
 <var><type>double</type><name>x</name></var>
 <var><type>double</type><name>y</name></var>
@@ -272,7 +249,9 @@
 <var><type>double</type><name>x</name></var>
 <var><type>double</type><name>y</name></var>
 <var><type>double</type><name>z</name></var>
-</message><message>
+</message>
+
+<message>
 <name>bond_order</name>
 <note>Added by trader</note>
 <var><type>int</type><name>trader_id</name></var>
