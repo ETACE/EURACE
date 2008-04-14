@@ -103,7 +103,7 @@ void unittest1_Firm_calc_input_demands()
     TOTAL_UNITS_CAPITAL_STOCK = 100.0;//also test when this is 99.0
     INV_INERTIA = 1.0;
    
-    DELIVERY_PROB_IF_CRITICAL_STOCK_0 = 1.0;
+    DELIVERY_PROB_IF_CRITICAL_STOCK_0 = 100;
     
     /***** Messages: pre-conditions **********************************/
     //add_productivity_message(IGfirm_id, cap_productivity, cap_good_price, MSGDATA);
@@ -152,7 +152,7 @@ void unittest2_Firm_calc_input_demands()
     TOTAL_UNITS_CAPITAL_STOCK = 99.0;//also test when this is 99.0
     INV_INERTIA = 1.0;
  
-    DELIVERY_PROB_IF_CRITICAL_STOCK_0 = 1.0;
+    DELIVERY_PROB_IF_CRITICAL_STOCK_0 = 100;
     
     /***** Messages: pre-conditions **********************************/
     //add_productivity_message(IGfirm_id, cap_productivity, cap_good_price, MSGDATA);
