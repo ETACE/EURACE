@@ -41,118 +41,6 @@ void unittest_Firm_compute_income_statement()
 }
 
 /*
- * \fn: void unittest_Firm_compute_payout_policy()
- * \brief: Unit tests for: Firm_compute_payout_policy
- */
-void unittest_Firm_compute_payout_policy()
-{
-    /************* At start of unit test, add one agent **************/
-	add_Firm_agent_internal(init_Firm_agent());
-	current_xmachine = *p_xmachine;
-
-    /***** Variables: Memory pre-conditions **************************/
-	DAY_OF_MONTH_TO_ACT=0;
-    CURRENT_SHARE_PRICE=1.0;
-    PRODUCTION_COSTS=100.0;
-    PAYMENT_ACCOUNT=0.0;
-    
-    NET_EARNINGS=100.0;
-    PREVIOUS_NET_EARNINGS=90.0;
-    EARNINGS_PER_SHARE_RATIO=100.0;
-    
-/*
-    LOANS[0].bank_id=1;
-    LOANS[0].loan_value=100.0;
-    LOANS[0].interest_rate=0.01;
-    LOANS[0].interest_payment=0.0;
-    LOANS[0].debt_installment_payment=20.0;
-    LOANS[0].nr_periods_before_maturity=5;
-
-    LOANS[1].bank_id=2;
-    LOANS[1].loan_value=200.0;
-    LOANS[1].interest_rate=0.02;
-    LOANS[1].interest_payment=0.0;
-    LOANS[1].debt_installment_payment=50.0;
-    LOANS[1].nr_periods_before_maturity=4;
-*/
-    reset_debt_item_array(&LOANS);
-    add_debt_item(&LOANS, 1, 100.0, 0.01, 0.0, 20.0, 5);
-    add_debt_item(&LOANS, 2, 200.0, 0.02, 0.0, 50.0, 4);
-//    printf("\n init loan_value: %f\n", LOANS.array[0].loan_value);
-//    printf("\n init loan_value: %f\n", LOANS.array[1].loan_value);
-    
-    PLANNED_TOTAL_INTEREST_PAYMENT=0.0;
-    PLANNED_TOTAL_DEBT_INSTALLMENT_PAYMENT=0.0;
-    PLANNED_TOTAL_DIVIDEND_PAYMENT=100.0;
-    CURRENT_SHARES_OUTSTANDING=5;
-
-    TOTAL_FINANCIAL_NEEDS=0.0;
-    INTERNAL_FINANCIAL_NEEDS=0.0;
-    EXTERNAL_FINANCIAL_NEEDS=0.0;
-
-	/***** Messages: pre-conditions **********************************/
-
-    /***** Function evaluation ***************************************/
-     Firm_compute_payout_policy();
-
-    /***** Variables: Memory post-conditions *************************/
-    
-    CU_ASSERT_DOUBLE_EQUAL(CURRENT_SHARE_PRICE, 1.0, 1e-3);
-    CU_ASSERT_DOUBLE_EQUAL(PRODUCTION_COSTS, 100.0, 1e-3);
-
-    CU_ASSERT_DOUBLE_EQUAL(NET_EARNINGS, 100.0, 1e-3);
-    CU_ASSERT_DOUBLE_EQUAL(PREVIOUS_NET_EARNINGS, 90.0, 1e-3);
-
-    /*
-        loans[0]
-        {
-            int bank_id=1;
-            double loan_value=80.0;
-            double interest_rate=0.01;
-            double interest_payment=1.0; //this value is updated the next time, at start of function to: interest_payment=0.8;
-            double debt_installment_payment=20.0;
-            int nr_periods_before_maturity=4;
-        }
-    */
-
-        CU_ASSERT_EQUAL(LOANS.array[0].bank_id, 1);
-        CU_ASSERT_DOUBLE_EQUAL(LOANS.array[0].loan_value, 100.0, 1e-3);
-        CU_ASSERT_DOUBLE_EQUAL(LOANS.array[0].interest_rate, 0.01, 1e-3);
-        CU_ASSERT_DOUBLE_EQUAL(LOANS.array[0].interest_payment, 1.0, 1e-3);
-        CU_ASSERT_DOUBLE_EQUAL(LOANS.array[0].debt_installment_payment, 20.0, 1e-3);
-        CU_ASSERT_EQUAL(LOANS.array[0].nr_periods_before_maturity, 5);
-       
-    /*
-        loans[1]
-        {
-            int bank_id=2;
-            double loan_value=150.0;
-            double interest_rate=0.02;
-            double interest_payment=4.0; //this value is updated the next time, at start of function to: interest_payment=0.75;
-            double debt_installment_payment=50.0;
-            int nr_periods_before_maturity=3;
-        }
-    */
-
-        CU_ASSERT_EQUAL(LOANS.array[1].bank_id, 2);
-        CU_ASSERT_DOUBLE_EQUAL(LOANS.array[1].loan_value, 200.0, 1e-3);
-        CU_ASSERT_DOUBLE_EQUAL(LOANS.array[1].interest_rate, 0.02, 1e-3);
-        CU_ASSERT_DOUBLE_EQUAL(LOANS.array[1].interest_payment, 4.0, 1e-3);
-        CU_ASSERT_DOUBLE_EQUAL(LOANS.array[1].debt_installment_payment, 50.0, 1e-3);
-        CU_ASSERT_EQUAL(LOANS.array[1].nr_periods_before_maturity, 4);
-        
-    CU_ASSERT_DOUBLE_EQUAL(PLANNED_TOTAL_INTEREST_PAYMENT, 5.0, 1e-3);
-    CU_ASSERT_DOUBLE_EQUAL(PLANNED_TOTAL_DEBT_INSTALLMENT_PAYMENT, 70.0, 1e-3);
-    CU_ASSERT_DOUBLE_EQUAL(PLANNED_TOTAL_DIVIDEND_PAYMENT, 100.0*EARNINGS_PER_SHARE_RATIO, 1e-3);
-    CU_ASSERT_DOUBLE_EQUAL(PAYMENT_ACCOUNT, 0.0, 1e-3);
-    
-    /************* At end of unit test, free the agent **************/
-    free_agent();
-    /************* At end of unit tests, free all Messages **********/
-    free_messages();
-}
-
-/*
  * \fn: void unittest_Firm_compute_balance_sheet()
  * \brief: Unit tests for: Firm_compute_balance_sheet
  */
@@ -327,6 +215,118 @@ void unittest_Firm_compute_balance_sheet()
 }
 
 /*
+ * \fn: void unittest_Firm_compute_payout_policy()
+ * \brief: Unit tests for: Firm_compute_payout_policy
+ */
+void unittest_Firm_compute_payout_policy()
+{
+    /************* At start of unit test, add one agent **************/
+	add_Firm_agent_internal(init_Firm_agent());
+	current_xmachine = *p_xmachine;
+
+    /***** Variables: Memory pre-conditions **************************/
+	DAY_OF_MONTH_TO_ACT=0;
+    CURRENT_SHARE_PRICE=1.0;
+    PLANNED_PRODUCTION_COSTS=100.0;
+    PAYMENT_ACCOUNT=0.0;
+    
+    NET_EARNINGS=100.0;
+    PREVIOUS_NET_EARNINGS=90.0;
+    EARNINGS_PER_SHARE_RATIO=100.0;
+    
+/*
+    LOANS[0].bank_id=1;
+    LOANS[0].loan_value=100.0;
+    LOANS[0].interest_rate=0.01;
+    LOANS[0].interest_payment=0.0;
+    LOANS[0].debt_installment_payment=20.0;
+    LOANS[0].nr_periods_before_maturity=5;
+
+    LOANS[1].bank_id=2;
+    LOANS[1].loan_value=200.0;
+    LOANS[1].interest_rate=0.02;
+    LOANS[1].interest_payment=0.0;
+    LOANS[1].debt_installment_payment=50.0;
+    LOANS[1].nr_periods_before_maturity=4;
+*/
+    reset_debt_item_array(&LOANS);
+    add_debt_item(&LOANS, 1, 100.0, 0.01, 0.0, 20.0, 5);
+    add_debt_item(&LOANS, 2, 200.0, 0.02, 0.0, 50.0, 4);
+//    printf("\n init loan_value: %f\n", LOANS.array[0].loan_value);
+//    printf("\n init loan_value: %f\n", LOANS.array[1].loan_value);
+    
+    PLANNED_TOTAL_INTEREST_PAYMENT=0.0;
+    PLANNED_TOTAL_DEBT_INSTALLMENT_PAYMENT=0.0;
+    PLANNED_TOTAL_DIVIDEND_PAYMENT=100.0;
+    CURRENT_SHARES_OUTSTANDING=5;
+
+    TOTAL_FINANCIAL_NEEDS=0.0;
+    INTERNAL_FINANCIAL_NEEDS=0.0;
+    EXTERNAL_FINANCIAL_NEEDS=0.0;
+
+	/***** Messages: pre-conditions **********************************/
+
+    /***** Function evaluation ***************************************/
+     Firm_compute_payout_policy();
+
+    /***** Variables: Memory post-conditions *************************/
+    
+    CU_ASSERT_DOUBLE_EQUAL(CURRENT_SHARE_PRICE, 1.0, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(PLANNED_PRODUCTION_COSTS, 100.0, 1e-3);
+
+    CU_ASSERT_DOUBLE_EQUAL(NET_EARNINGS, 100.0, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(PREVIOUS_NET_EARNINGS, 90.0, 1e-3);
+
+    /*
+        loans[0]
+        {
+            int bank_id=1;
+            double loan_value=80.0;
+            double interest_rate=0.01;
+            double interest_payment=1.0; //this value is updated the next time, at start of function to: interest_payment=0.8;
+            double debt_installment_payment=20.0;
+            int nr_periods_before_maturity=4;
+        }
+    */
+
+        CU_ASSERT_EQUAL(LOANS.array[0].bank_id, 1);
+        CU_ASSERT_DOUBLE_EQUAL(LOANS.array[0].loan_value, 100.0, 1e-3);
+        CU_ASSERT_DOUBLE_EQUAL(LOANS.array[0].interest_rate, 0.01, 1e-3);
+        CU_ASSERT_DOUBLE_EQUAL(LOANS.array[0].interest_payment, 1.0, 1e-3);
+        CU_ASSERT_DOUBLE_EQUAL(LOANS.array[0].debt_installment_payment, 20.0, 1e-3);
+        CU_ASSERT_EQUAL(LOANS.array[0].nr_periods_before_maturity, 5);
+       
+    /*
+        loans[1]
+        {
+            int bank_id=2;
+            double loan_value=150.0;
+            double interest_rate=0.02;
+            double interest_payment=4.0; //this value is updated the next time, at start of function to: interest_payment=0.75;
+            double debt_installment_payment=50.0;
+            int nr_periods_before_maturity=3;
+        }
+    */
+
+        CU_ASSERT_EQUAL(LOANS.array[1].bank_id, 2);
+        CU_ASSERT_DOUBLE_EQUAL(LOANS.array[1].loan_value, 200.0, 1e-3);
+        CU_ASSERT_DOUBLE_EQUAL(LOANS.array[1].interest_rate, 0.02, 1e-3);
+        CU_ASSERT_DOUBLE_EQUAL(LOANS.array[1].interest_payment, 4.0, 1e-3);
+        CU_ASSERT_DOUBLE_EQUAL(LOANS.array[1].debt_installment_payment, 50.0, 1e-3);
+        CU_ASSERT_EQUAL(LOANS.array[1].nr_periods_before_maturity, 4);
+        
+    CU_ASSERT_DOUBLE_EQUAL(PLANNED_TOTAL_INTEREST_PAYMENT, 5.0, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(PLANNED_TOTAL_DEBT_INSTALLMENT_PAYMENT, 70.0, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(PLANNED_TOTAL_DIVIDEND_PAYMENT, 100.0*EARNINGS_PER_SHARE_RATIO, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(PAYMENT_ACCOUNT, 0.0, 1e-3);
+    
+    /************* At end of unit test, free the agent **************/
+    free_agent();
+    /************* At end of unit tests, free all Messages **********/
+    free_messages();
+}
+
+/*
  * UNIT TEST 1: No external financing needed:
  * payment_account >= direct_financial_needs + delayed_financial_needs
  */ 
@@ -341,9 +341,14 @@ void unittest1_Firm_compute_payout_policy()
 	BANK_ID=2;
 	EARNINGS_PER_SHARE_RATIO=0.0; //This sets the PLANNED_TOTAL_DIVIDEND_PAYMENT=0
 	
+	DIRECT_FINANCIAL_NEEDS=0.0;
+	DELAYED_FINANCIAL_NEEDS=0.0;
+	
 	TOTAL_FINANCIAL_NEEDS=0.0;
 	EXTERNAL_FINANCIAL_NEEDS=0.0;
 	INTERNAL_FINANCIAL_NEEDS=0.0;
+   	DIRECT_FINANCIAL_NEEDS_REQUIRE_EXTERNAL_FINANCING=-1;
+    DELAYED_FINANCIAL_NEEDS_REQUIRE_EXTERNAL_FINANCING=-1;
 
 	//PLANNED_CUM_REVENUE=0.0;
 	//PLANNED_CUM_REVENUE = PRICE*PLANNED_PRODUCTION_QUANTITY;
@@ -352,7 +357,7 @@ void unittest1_Firm_compute_payout_policy()
 	
 	PAYMENT_ACCOUNT=30.0;
 	//DIRECT_FINANCIAL_NEEDS=10.0:
-	PRODUCTION_COSTS=10.0;
+	PLANNED_PRODUCTION_COSTS=10.0;
 	
 	//DELAYED_FINANCIAL_NEEDS=20.0:
 	/*
@@ -372,11 +377,16 @@ void unittest1_Firm_compute_payout_policy()
 	Firm_compute_payout_policy();
     
     /***** Variables: Memory post-conditions *************************/
+	CU_ASSERT_DOUBLE_EQUAL(DIRECT_FINANCIAL_NEEDS, 10.0, 1e-3);
+	CU_ASSERT_DOUBLE_EQUAL(DELAYED_FINANCIAL_NEEDS, 20.0, 1e-3);
+	
     CU_ASSERT_DOUBLE_EQUAL(TOTAL_FINANCIAL_NEEDS, 30.0, 1e-3);
-    CU_ASSERT_DOUBLE_EQUAL(EXTERNAL_FINANCIAL_NEEDS, 0.0, 1e-3);
     CU_ASSERT_DOUBLE_EQUAL(INTERNAL_FINANCIAL_NEEDS, 30.0, 1e-3);
-
+    CU_ASSERT_DOUBLE_EQUAL(EXTERNAL_FINANCIAL_NEEDS, 0.0, 1e-3);
     CU_ASSERT_DOUBLE_EQUAL(PLANNED_CUM_REVENUE, 0.0, 1e-3);
+    
+    CU_ASSERT_EQUAL(DIRECT_FINANCIAL_NEEDS_REQUIRE_EXTERNAL_FINANCING,0);
+    CU_ASSERT_EQUAL(DELAYED_FINANCIAL_NEEDS_REQUIRE_EXTERNAL_FINANCING,0);
 
     //    printf("TOTAL_FINANCIAL_NEEDS: %f", TOTAL_FINANCIAL_NEEDS);
     //    printf("DIRECT_FINANCIAL_NEEDS: %f", DIRECT_FINANCIAL_NEEDS);
@@ -409,9 +419,14 @@ void unittest2_Firm_compute_payout_policy()
 	BANK_ID=2;
 	EARNINGS_PER_SHARE_RATIO=0.0; //This sets the PLANNED_TOTAL_DIVIDEND_PAYMENT=0
 	
+	DIRECT_FINANCIAL_NEEDS=0.0;
+	DELAYED_FINANCIAL_NEEDS=0.0;
+
 	TOTAL_FINANCIAL_NEEDS=0.0;
 	EXTERNAL_FINANCIAL_NEEDS=0.0;
 	INTERNAL_FINANCIAL_NEEDS=0.0;
+   	DIRECT_FINANCIAL_NEEDS_REQUIRE_EXTERNAL_FINANCING=-1;
+    DELAYED_FINANCIAL_NEEDS_REQUIRE_EXTERNAL_FINANCING=-1;
 
 	//PLANNED_CUM_REVENUE=15.0;
 	//PLANNED_CUM_REVENUE = PRICE*PLANNED_PRODUCTION_QUANTITY;
@@ -420,7 +435,7 @@ void unittest2_Firm_compute_payout_policy()
 	
 	PAYMENT_ACCOUNT=15.0;
 	//DIRECT_FINANCIAL_NEEDS=10.0:
-	PRODUCTION_COSTS=10.0;
+	PLANNED_PRODUCTION_COSTS=10.0;
 	
 	//DELAYED_FINANCIAL_NEEDS=20.0:    
 	/*
@@ -440,11 +455,15 @@ void unittest2_Firm_compute_payout_policy()
 	Firm_compute_payout_policy();
     
     /***** Variables: Memory post-conditions *************************/
-    CU_ASSERT_DOUBLE_EQUAL(TOTAL_FINANCIAL_NEEDS, 30.0, 1e-3);
-    CU_ASSERT_DOUBLE_EQUAL(EXTERNAL_FINANCIAL_NEEDS, 0.0, 1e-3);
-    CU_ASSERT_DOUBLE_EQUAL(INTERNAL_FINANCIAL_NEEDS, 30.0, 1e-3);
+	CU_ASSERT_DOUBLE_EQUAL(DIRECT_FINANCIAL_NEEDS, 10.0, 1e-3);
+	CU_ASSERT_DOUBLE_EQUAL(DELAYED_FINANCIAL_NEEDS, 20.0, 1e-3);
 
+    CU_ASSERT_DOUBLE_EQUAL(TOTAL_FINANCIAL_NEEDS, 30.0, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(INTERNAL_FINANCIAL_NEEDS, 30.0, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(EXTERNAL_FINANCIAL_NEEDS, 0.0, 1e-3);
     CU_ASSERT_DOUBLE_EQUAL(PLANNED_CUM_REVENUE, 15.0, 1e-3);
+    CU_ASSERT_EQUAL(DIRECT_FINANCIAL_NEEDS_REQUIRE_EXTERNAL_FINANCING,0);
+    CU_ASSERT_EQUAL(DELAYED_FINANCIAL_NEEDS_REQUIRE_EXTERNAL_FINANCING,0);
 
     //    printf("TOTAL_FINANCIAL_NEEDS: %f", TOTAL_FINANCIAL_NEEDS);
     //    printf("DIRECT_FINANCIAL_NEEDS: %f", DIRECT_FINANCIAL_NEEDS);
@@ -476,9 +495,14 @@ void unittest3_Firm_compute_payout_policy()
 	BANK_ID=2;
 	EARNINGS_PER_SHARE_RATIO=0.0; //This sets the PLANNED_TOTAL_DIVIDEND_PAYMENT=0
 	
+	DIRECT_FINANCIAL_NEEDS=0.0;
+	DELAYED_FINANCIAL_NEEDS=0.0;
+
 	TOTAL_FINANCIAL_NEEDS=0.0;
 	EXTERNAL_FINANCIAL_NEEDS=0.0;
 	INTERNAL_FINANCIAL_NEEDS=0.0;
+   	DIRECT_FINANCIAL_NEEDS_REQUIRE_EXTERNAL_FINANCING=-1;
+    DELAYED_FINANCIAL_NEEDS_REQUIRE_EXTERNAL_FINANCING=-1;
 
 	//PLANNED_CUM_REVENUE=20.0;
 	//PLANNED_CUM_REVENUE = PRICE*PLANNED_PRODUCTION_QUANTITY;
@@ -487,7 +511,7 @@ void unittest3_Firm_compute_payout_policy()
 	
 	PAYMENT_ACCOUNT=5.0;
 	//DIRECT_FINANCIAL_NEEDS=10.0:
-	PRODUCTION_COSTS=10.0;
+	PLANNED_PRODUCTION_COSTS=10.0;
 	
 	//DELAYED_FINANCIAL_NEEDS=15.0:
 	/*
@@ -507,11 +531,15 @@ void unittest3_Firm_compute_payout_policy()
 	Firm_compute_payout_policy();
     
     /***** Variables: Memory post-conditions *************************/
-    CU_ASSERT_DOUBLE_EQUAL(TOTAL_FINANCIAL_NEEDS, 25.0, 1e-3);
-    CU_ASSERT_DOUBLE_EQUAL(EXTERNAL_FINANCIAL_NEEDS, 5.0, 1e-3);
-    CU_ASSERT_DOUBLE_EQUAL(INTERNAL_FINANCIAL_NEEDS, 5.0, 1e-3);
+	CU_ASSERT_DOUBLE_EQUAL(DIRECT_FINANCIAL_NEEDS, 10.0, 1e-3);
+	CU_ASSERT_DOUBLE_EQUAL(DELAYED_FINANCIAL_NEEDS, 15.0, 1e-3);
 
+    CU_ASSERT_DOUBLE_EQUAL(TOTAL_FINANCIAL_NEEDS, 25.0, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(INTERNAL_FINANCIAL_NEEDS, 5.0, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(EXTERNAL_FINANCIAL_NEEDS, 5.0, 1e-3);
     CU_ASSERT_DOUBLE_EQUAL(PLANNED_CUM_REVENUE, 20.0, 1e-3);
+    CU_ASSERT_EQUAL(DIRECT_FINANCIAL_NEEDS_REQUIRE_EXTERNAL_FINANCING,1);
+    CU_ASSERT_EQUAL(DELAYED_FINANCIAL_NEEDS_REQUIRE_EXTERNAL_FINANCING,0);
 
     //    printf("TOTAL_FINANCIAL_NEEDS: %f", TOTAL_FINANCIAL_NEEDS);
     //    printf("DIRECT_FINANCIAL_NEEDS: %f", DIRECT_FINANCIAL_NEEDS);
@@ -543,9 +571,14 @@ void unittest4_Firm_compute_payout_policy()
 	BANK_ID=2;
 	EARNINGS_PER_SHARE_RATIO=0.0; //This sets the PLANNED_TOTAL_DIVIDEND_PAYMENT=0
 	
+	DIRECT_FINANCIAL_NEEDS=0.0;
+	DELAYED_FINANCIAL_NEEDS=0.0;
+
 	TOTAL_FINANCIAL_NEEDS=0.0;
 	EXTERNAL_FINANCIAL_NEEDS=0.0;
 	INTERNAL_FINANCIAL_NEEDS=0.0;
+   	DIRECT_FINANCIAL_NEEDS_REQUIRE_EXTERNAL_FINANCING=-1;
+    DELAYED_FINANCIAL_NEEDS_REQUIRE_EXTERNAL_FINANCING=-1;
 
 	//PLANNED_CUM_REVENUE=0.0;
 	//PLANNED_CUM_REVENUE = PRICE*PLANNED_PRODUCTION_QUANTITY;
@@ -554,7 +587,7 @@ void unittest4_Firm_compute_payout_policy()
 	
 	PAYMENT_ACCOUNT=10.0;
 	//DIRECT_FINANCIAL_NEEDS=10.0:
-	PRODUCTION_COSTS=10.0;
+	PLANNED_PRODUCTION_COSTS=10.0;
 	
 	//DELAYED_FINANCIAL_NEEDS=20.0:
 	/*
@@ -574,11 +607,15 @@ void unittest4_Firm_compute_payout_policy()
 	Firm_compute_payout_policy();
     
     /***** Variables: Memory post-conditions *************************/
-    CU_ASSERT_DOUBLE_EQUAL(TOTAL_FINANCIAL_NEEDS, 30.0, 1e-3);
-    CU_ASSERT_DOUBLE_EQUAL(EXTERNAL_FINANCIAL_NEEDS, 20.0, 1e-3);
-    CU_ASSERT_DOUBLE_EQUAL(INTERNAL_FINANCIAL_NEEDS, 10.0, 1e-3);
+	CU_ASSERT_DOUBLE_EQUAL(DIRECT_FINANCIAL_NEEDS, 10.0, 1e-3);
+	CU_ASSERT_DOUBLE_EQUAL(DELAYED_FINANCIAL_NEEDS, 20.0, 1e-3);
 
+    CU_ASSERT_DOUBLE_EQUAL(TOTAL_FINANCIAL_NEEDS, 30.0, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(INTERNAL_FINANCIAL_NEEDS, 10.0, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(EXTERNAL_FINANCIAL_NEEDS, 20.0, 1e-3);
     CU_ASSERT_DOUBLE_EQUAL(PLANNED_CUM_REVENUE, 0.0, 1e-3);
+    CU_ASSERT_EQUAL(DIRECT_FINANCIAL_NEEDS_REQUIRE_EXTERNAL_FINANCING,0);
+    CU_ASSERT_EQUAL(DELAYED_FINANCIAL_NEEDS_REQUIRE_EXTERNAL_FINANCING,1);
 
     //    printf("TOTAL_FINANCIAL_NEEDS: %f", TOTAL_FINANCIAL_NEEDS);
     //    printf("DIRECT_FINANCIAL_NEEDS: %f", DIRECT_FINANCIAL_NEEDS);
@@ -610,9 +647,14 @@ void unittest5_Firm_compute_payout_policy()
 	BANK_ID=2;
 	EARNINGS_PER_SHARE_RATIO=0.0; //This sets the PLANNED_TOTAL_DIVIDEND_PAYMENT=0
 	
+	DIRECT_FINANCIAL_NEEDS=0.0;
+	DELAYED_FINANCIAL_NEEDS=0.0;
+
 	TOTAL_FINANCIAL_NEEDS=0.0;
 	EXTERNAL_FINANCIAL_NEEDS=0.0;
 	INTERNAL_FINANCIAL_NEEDS=0.0;
+   	DIRECT_FINANCIAL_NEEDS_REQUIRE_EXTERNAL_FINANCING=-1;
+    DELAYED_FINANCIAL_NEEDS_REQUIRE_EXTERNAL_FINANCING=-1;
 
 	//PLANNED_CUM_REVENUE=24.0;
 	//PLANNED_CUM_REVENUE = PRICE*PLANNED_PRODUCTION_QUANTITY;
@@ -621,7 +663,7 @@ void unittest5_Firm_compute_payout_policy()
 	
 	PAYMENT_ACCOUNT=5.0;
 	//DIRECT_FINANCIAL_NEEDS=10.0:
-	PRODUCTION_COSTS=10.0;
+	PLANNED_PRODUCTION_COSTS=10.0;
 	
 	//DELAYED_FINANCIAL_NEEDS=20.0:
 	/*
@@ -641,11 +683,15 @@ void unittest5_Firm_compute_payout_policy()
 	Firm_compute_payout_policy();
     
     /***** Variables: Memory post-conditions *************************/
-    CU_ASSERT_DOUBLE_EQUAL(TOTAL_FINANCIAL_NEEDS, 30.0, 1e-3);
-    CU_ASSERT_DOUBLE_EQUAL(EXTERNAL_FINANCIAL_NEEDS, 1.0, 1e-3);
-    CU_ASSERT_DOUBLE_EQUAL(INTERNAL_FINANCIAL_NEEDS, 5.0, 1e-3);
+	CU_ASSERT_DOUBLE_EQUAL(DIRECT_FINANCIAL_NEEDS, 10.0, 1e-3);
+	CU_ASSERT_DOUBLE_EQUAL(DELAYED_FINANCIAL_NEEDS, 20.0, 1e-3);
 
+    CU_ASSERT_DOUBLE_EQUAL(TOTAL_FINANCIAL_NEEDS, 30.0, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(INTERNAL_FINANCIAL_NEEDS, 5.0, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(EXTERNAL_FINANCIAL_NEEDS, 1.0, 1e-3);
     CU_ASSERT_DOUBLE_EQUAL(PLANNED_CUM_REVENUE, 24.0, 1e-3);
+    CU_ASSERT_EQUAL(DIRECT_FINANCIAL_NEEDS_REQUIRE_EXTERNAL_FINANCING,1);
+    CU_ASSERT_EQUAL(DELAYED_FINANCIAL_NEEDS_REQUIRE_EXTERNAL_FINANCING,1);
 
     //    printf("TOTAL_FINANCIAL_NEEDS: %f", TOTAL_FINANCIAL_NEEDS);
     //    printf("DIRECT_FINANCIAL_NEEDS: %f", DIRECT_FINANCIAL_NEEDS);
