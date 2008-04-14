@@ -83,6 +83,9 @@ struct char_array
 struct input_file
 {
 	char * file;
+	char * fullfilepath;
+	char * fulldirectory;
+	char * localdirectory;
 	
 	struct input_file * next;
 };
@@ -216,6 +219,8 @@ struct xmachine_function
 	
 	struct adj_function * dependson;	/**< Node list of dependencies. */
 	struct adj_function * dependants;	/**< Node list of dependants. */
+	
+	struct adj_function * alldepends;
 	
 	struct xmachine_function * next;	/**< Pointer to next function in list. */
 };
@@ -470,7 +475,7 @@ void addxstate(char * name, xmachine_state ** p_xstates);
 void freexstates(xmachine_state ** p_xstates);
 xmachine_function * addxfunction(xmachine_function ** p_xfunctions);
 void freexfunctions(xmachine_function ** p_xfunctions);
-xmachine * addxmachine(xmachine ** p_xmachines);
+xmachine * addxmachine(xmachine ** p_xmachines, char * name);
 void freexmachines(xmachine ** p_xmachines);
 layer * addlayer(layer ** p_layer);
 void freelayers(layer ** p_layers);
@@ -480,6 +485,8 @@ model_datatype * adddatatype(model_datatype ** p_datatypes);
 void freedatatypes(model_datatype ** p_datatypes);
 void add_flame_communication(char * messagetype, xmachine_function * function1, xmachine_function * function2, flame_communication ** communications);
 void free_flame_communications(flame_communication ** communications);
+void add_adj_function_simple(xmachine_function * function1, xmachine_function * function2);
+void remove_adj_function_simple(xmachine_function * function1);
 void add_adj_function(xmachine_function * function1, xmachine_function * function2, char * type);
 void free_adj_function(adj_function ** p_adj_functions);
 /* charlist.c */
@@ -511,7 +518,8 @@ void print_double_array(double_array * array);
 void add_double(double_array * array, double new_double);
 void remove_double(double_array * array, int index);
 /* readmodel.c */
-void readModel(char * inputfile, char * directory, model_data * modeldata, input_file ** p_files);
+void readModel(input_file * inputfile, char * directory, model_data * modeldata, input_file ** p_files);
+void checkmodel(model_data * modeldata);
 /* dependencygraph.c */
 char * copystr(char * string);
 void create_dependency_graph(char * filepath, model_data * modeldata);

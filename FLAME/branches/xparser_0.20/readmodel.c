@@ -164,7 +164,7 @@ void handleVariableName(char_array * current_string, variable * current_variable
  * \param directory Pointer to the xmml file path and name.
  * \param modeldata Data from the model.
  */
-void readModel(char * inputfile, char * directory, model_data * modeldata, input_file ** p_files)
+void readModel(input_file * inputfile, char * directory, model_data * modeldata, input_file ** p_files)
 {
 	xmachine * current_xmachine;
 	/* Pointer to file */
@@ -188,6 +188,7 @@ void readModel(char * inputfile, char * directory, model_data * modeldata, input
 	int dynamic_array_found;
 	int linenumber = 1;
 	int variable_count;
+	int lastd;
 	/* Variable to keep reading file */
 	int reading;
 	/* Variable for buffer position */
@@ -208,7 +209,6 @@ void readModel(char * inputfile, char * directory, model_data * modeldata, input
 	xmachine_message * current_message;
 	xmachine_state * current_state;
 	xmachine_function * current_function;
-	variable * allvar;
 	variable * current_envvar;
 	variable * current_envdefine;
 	env_func * current_envfunc;
@@ -243,12 +243,12 @@ void readModel(char * inputfile, char * directory, model_data * modeldata, input
 	int period_int;
 	
 	/* Open config file to read-only */
-	if((file = fopen(inputfile, "r"))==NULL)
+	if((file = fopen(inputfile->fullfilepath, "r"))==NULL)
 	{
-		printf("*** ERROR: Cannot read file: %s\n", inputfile);
+		printf("*** ERROR: Cannot read file: %s\n", inputfile->fullfilepath);
 		exit(1);
 	}
-	else { printf("reading xmml: %s\n", inputfile); }
+	else { printf("reading xmml: %s\n", inputfile->fullfilepath); }
 	
 	/* Initialise variables */
 	/*p_charlist = &charlist;*/
@@ -308,7 +308,7 @@ void readModel(char * inputfile, char * directory, model_data * modeldata, input
 	/* Read characters until the end of the file */
 	/*while(c != EOF)*/
 	/* Read characters until end of xml found */
-	while(reading == 1)
+	while(reading == 1 && c != (char)EOF)
 	{
 		/* Get the next char from the file */
 		c = (char)fgetc(file);
@@ -452,72 +452,10 @@ void readModel(char * inputfile, char * directory, model_data * modeldata, input
 			if(strcmp(current_string->array, "xmachine") == 0)
 			{
 				xmachine = 1;
-				current_xmachine = addxmachine(modeldata->p_xmachines);
 			}
 			if(strcmp(current_string->array, "/xmachine") == 0)
 			{
 				xmachine = 0;
-				/* Compute x,y,z location variables in memory */
-				/* Check for x-axis component as 'posx' or 'px' or 'x' */
-				strcpy(current_xmachine->zvar, "0.0");
-				variable_count = 0;
-				current_memory = current_xmachine->memory;
-				while(current_memory)
-				{
-					current_variable = current_memory->vars;
-					while(current_variable)
-					{
-						if(current_variable->arraylength != 0) modeldata->agents_include_array_variables = 1;
-						
-						/*copycharlist(&current_variable->name, &chardata[0]);*/
-						if(strcmp(current_variable->name, "x") == 0)    strcpy(current_xmachine->xvar, "x");
-						if(strcmp(current_variable->name, "px") == 0)   strcpy(current_xmachine->xvar, "px");
-						if(strcmp(current_variable->name, "posx") == 0) strcpy(current_xmachine->xvar, "posx");
-						if(strcmp(current_variable->name, "y") == 0)    strcpy(current_xmachine->yvar, "y");
-						if(strcmp(current_variable->name, "py") == 0)   strcpy(current_xmachine->yvar, "py");
-						if(strcmp(current_variable->name, "posy") == 0) strcpy(current_xmachine->yvar, "posy");
-						if(strcmp(current_variable->name, "z") == 0)    strcpy(current_xmachine->zvar, "z");
-						if(strcmp(current_variable->name, "pz") == 0)   strcpy(current_xmachine->zvar, "pz");
-						if(strcmp(current_variable->name, "posz") == 0) strcpy(current_xmachine->zvar, "posz");
-						if(strcmp(current_variable->name, "range") == 0) strcpy(current_xmachine->rangevar, "range");
-						if(strcmp(current_variable->name, "radius") == 0) strcpy(current_xmachine->rangevar, "radius");
-						
-						if(strcmp(current_variable->name, "id") == 0) strcpy(current_xmachine->idvar, "id");
-						if(strcmp(current_variable->name, "agent_id") == 0) strcpy(current_xmachine->idvar, "agent_id");
-						
-						found = 0;
-						allvar = * modeldata->p_allvars;
-						while(allvar)
-						{
-							/*copycharlist(&allvar->name, &chardata2[0]);*/
-							if(strcmp(current_variable->name, allvar->name) == 0) found = 1;
-							
-							allvar = allvar->next;
-						}
-						if(found == 0)
-						{
-							allvar = addvariable(modeldata->p_allvars);
-							allvar->name = current_variable->name;
-							allvar->type = current_variable->type;
-							allvar->arraylength = current_variable->arraylength;
-							allvar->ismodeldatatype = current_variable->ismodeldatatype;
-							allvar->datatype = current_variable->datatype;
-							allvar->typenotarray = current_variable->typenotarray;
-							strcpy(allvar->defaultvalue, current_variable->defaultvalue);
-							strcpy(allvar->c_type, current_variable->c_type);
-						}
-						
-						variable_count++;
-						
-						current_variable = current_variable->next;
-					}
-					
-					current_memory = current_memory->next;
-				}
-				
-				current_xmachine->var_number = variable_count;
-				
-				modeldata->number_xmachines++;
 			}
 			if(strcmp(current_string->array, "memory") == 0)
 			{
@@ -764,8 +702,50 @@ void readModel(char * inputfile, char * directory, model_data * modeldata, input
 				temp_char2 = (char *)malloc( (strlen(temp_char) + strlen(directory) + 1) * sizeof(char));
 				strcat(temp_char2, directory);
 				strcat(temp_char2, temp_char);
-				current_input_file->file = copystr(temp_char2);
+				current_input_file->file = copy_array_to_str(current_string);
+				current_input_file->fullfilepath = copystr(temp_char2);
+				current_input_file->fulldirectory = copystr(temp_char2);
+				current_input_file->localdirectory = copystr(temp_char);
+				temp_char2[0] = 0;
 				free(temp_char2);
+				
+				/* calculate directory of file */
+				/* Calculate directory where xparser and template files are */
+				i = 0;
+				lastd = 0;
+				while(current_input_file->fulldirectory[i] != '\0')
+				{
+					/* For windows directories */
+					if(current_input_file->fulldirectory[i] == '\\') lastd=i;
+					/* For unix directories */
+					if(current_input_file->fulldirectory[i] == '/') lastd=i;
+					i++;
+				}
+				/* If a directory is in the path */
+				if(lastd != 0)
+				{
+					current_input_file->fulldirectory[lastd+1] = '\0';
+				}
+				else current_input_file->fulldirectory[0] = '\0';
+				
+				i = 0;
+				lastd = 0;
+				while(current_input_file->localdirectory[i] != '\0')
+				{
+					/* For windows directories */
+					if(current_input_file->localdirectory[i] == '\\') lastd=i;
+					/* For unix directories */
+					if(current_input_file->localdirectory[i] == '/') lastd=i;
+					i++;
+				}
+				/* If a directory is in the path */
+				if(lastd != 0)
+				{
+					current_input_file->localdirectory[lastd+1] = '\0';
+				}
+				else current_input_file->localdirectory[0] = '\0';
+				
+				printf("Input model file: %s\n", current_input_file->fullfilepath);
 			}
 			if(environment)
 			{
@@ -789,6 +769,7 @@ void readModel(char * inputfile, char * directory, model_data * modeldata, input
 					else if(name)
 					{
 						current_datatype->name = copy_array_to_str(current_string);
+						printf("Reading data type named: %s\n", current_datatype->name);
 					}
 				}
 				else if(var)
@@ -846,24 +827,46 @@ void readModel(char * inputfile, char * directory, model_data * modeldata, input
 						current_envfunc->header = 2;
 					}
 					
+					
 					/* Place directory at start of chardata */
 					j = 0;
-					while(*directory != 0)
+					while(*inputfile->localdirectory != 0)
 					{
-						chardata[j] = *directory;
-						(directory)++;
+						chardata[j] = *inputfile->localdirectory;
+						(inputfile->localdirectory)++;
 						j++;
 					}
 					/* Make directory pointer point to start of chars again */
 					for(k = 0; k < j; k++)
 					{
-						(directory)--;
+						(inputfile->localdirectory)--;
+					}
+					
+					chardata[j] = '\0';
+					strcat(chardata, copy_array_to_str(current_string));
+					
+					current_envfunc->filepath = copystr(chardata);
+					printf("inputfile->directory: %s\n", inputfile->localdirectory);
+					printf("current_envfunc->filepath: %s\n", current_envfunc->filepath);
+					
+					
+					/* Place directory at start of chardata */
+					j = 0;
+					while(*inputfile->fulldirectory != 0)
+					{
+						chardata[j] = *inputfile->fulldirectory;
+						(inputfile->fulldirectory)++;
+						j++;
+					}
+					/* Make directory pointer point to start of chars again */
+					for(k = 0; k < j; k++)
+					{
+						(inputfile->fulldirectory)--;
 					}
 					
 					chardata[j] = '\0';
 					
-					current_envfunc->filepath = copy_array_to_str(current_string);
-					/*printf("file: %s\n", current_envfunc->filepath);*/
+					
 					
 					/* Add file name to chardata on end of directory */
 					/*current_charlist = *p_charlist;
@@ -875,7 +878,7 @@ void readModel(char * inputfile, char * directory, model_data * modeldata, input
 						current_charlist = current_charlist->next;
 					}
 					chardata[j] = 0;*/
-					strcat(chardata, current_envfunc->filepath);
+					strcat(chardata, copy_array_to_str(current_string));
 					/*printf("01\t%s\n", chardata);*/
 					
 					/* Open code file read-only */
@@ -1032,7 +1035,8 @@ void readModel(char * inputfile, char * directory, model_data * modeldata, input
 			{
 				if(name)
 				{
-					current_xmachine->name = copy_array_to_str(current_string);
+					current_xmachine = addxmachine(modeldata->p_xmachines, copy_array_to_str(current_string));
+					current_memory = current_xmachine->memory;
 					printf("Reading xagent named : ");
 					printf(current_xmachine->name);
 					printf("\n");
@@ -1104,4 +1108,119 @@ void readModel(char * inputfile, char * directory, model_data * modeldata, input
 	
 	/* Close the file */
 	fclose(file);
+}
+
+void checkmodel(model_data * modeldata)
+{
+	xmachine * current_xmachine;
+	xmachine_memory * current_memory;
+	variable * current_variable;
+	model_datatype * current_datatype;
+	variable * allvar;
+	char buffer[100];
+	int variable_count;
+	int found;
+	
+	
+	/* Check agent memory variables for being a model data type and update variable attributes */
+	current_xmachine = *modeldata->p_xmachines;
+	while(current_xmachine)
+	{
+		current_memory = current_xmachine->memory;
+		current_variable = current_memory->vars;
+		while(current_variable)
+		{
+			/* Handle model defined data types */
+		current_datatype = * modeldata->p_datatypes;
+		while(current_datatype)
+		{
+			if(strcmp(current_variable->type, current_datatype->name) == 0)
+			{
+				current_variable->ismodeldatatype = 1;
+				current_variable->datatype = current_datatype;
+			}
+			
+			strcpy(buffer, current_datatype->name);
+			strcat(buffer, "_array");
+			
+			if(strcmp(current_variable->type, buffer) == 0)
+			{
+				current_variable->ismodeldatatype = 1;
+				current_variable->datatype = current_datatype;
+				current_variable->arraylength = -1;
+			}
+			
+			current_datatype = current_datatype->next;
+		}
+			
+			current_variable = current_variable->next;
+		}
+		
+		
+		
+		
+		/* Compute x,y,z location variables in memory */
+				/* Check for x-axis component as 'posx' or 'px' or 'x' */
+				strcpy(current_xmachine->zvar, "0.0");
+				variable_count = 0;
+				
+				while(current_memory)
+				{
+					current_variable = current_memory->vars;
+					while(current_variable)
+					{
+						if(current_variable->arraylength != 0) modeldata->agents_include_array_variables = 1;
+						
+						/*copycharlist(&current_variable->name, &chardata[0]);*/
+						if(strcmp(current_variable->name, "x") == 0)    strcpy(current_xmachine->xvar, "x");
+						if(strcmp(current_variable->name, "px") == 0)   strcpy(current_xmachine->xvar, "px");
+						if(strcmp(current_variable->name, "posx") == 0) strcpy(current_xmachine->xvar, "posx");
+						if(strcmp(current_variable->name, "y") == 0)    strcpy(current_xmachine->yvar, "y");
+						if(strcmp(current_variable->name, "py") == 0)   strcpy(current_xmachine->yvar, "py");
+						if(strcmp(current_variable->name, "posy") == 0) strcpy(current_xmachine->yvar, "posy");
+						if(strcmp(current_variable->name, "z") == 0)    strcpy(current_xmachine->zvar, "z");
+						if(strcmp(current_variable->name, "pz") == 0)   strcpy(current_xmachine->zvar, "pz");
+						if(strcmp(current_variable->name, "posz") == 0) strcpy(current_xmachine->zvar, "posz");
+						if(strcmp(current_variable->name, "range") == 0) strcpy(current_xmachine->rangevar, "range");
+						if(strcmp(current_variable->name, "radius") == 0) strcpy(current_xmachine->rangevar, "radius");
+						
+						if(strcmp(current_variable->name, "id") == 0) strcpy(current_xmachine->idvar, "id");
+						if(strcmp(current_variable->name, "agent_id") == 0) strcpy(current_xmachine->idvar, "agent_id");
+						
+						found = 0;
+						allvar = * modeldata->p_allvars;
+						while(allvar)
+						{
+							/*copycharlist(&allvar->name, &chardata2[0]);*/
+							if(strcmp(current_variable->name, allvar->name) == 0) found = 1;
+							
+							allvar = allvar->next;
+						}
+						if(found == 0)
+						{
+							allvar = addvariable(modeldata->p_allvars);
+							allvar->name = current_variable->name;
+							allvar->type = current_variable->type;
+							allvar->arraylength = current_variable->arraylength;
+							allvar->ismodeldatatype = current_variable->ismodeldatatype;
+							allvar->datatype = current_variable->datatype;
+							allvar->typenotarray = current_variable->typenotarray;
+							strcpy(allvar->defaultvalue, current_variable->defaultvalue);
+							strcpy(allvar->c_type, current_variable->c_type);
+						}
+						
+						variable_count++;
+						
+						current_variable = current_variable->next;
+					}
+					
+					current_memory = current_memory->next;
+				}
+				
+				current_xmachine->var_number = variable_count;
+				
+				modeldata->number_xmachines++;
+		
+		current_xmachine = current_xmachine->next;
+	}
 }
