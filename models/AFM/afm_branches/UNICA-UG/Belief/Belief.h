@@ -7,6 +7,7 @@
 //#include "Histogram.h"
 #include "Asset.h"
 #include "CAsset.h"
+#include "Stock.h"
 #include <stdlib.h>
 #include "Random.h"
 #ifndef Belief_dty

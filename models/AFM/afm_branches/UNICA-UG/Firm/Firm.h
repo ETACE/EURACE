@@ -1,16 +1,15 @@
 
 
-#define PriceDecisionGridNr 
 
 typedef struct Firm  Firm;
 struct Firm 
 {
 
-   Matrix *Qd_est; 
-   Matrix *P_grid; 
-   Matrix *Nd_grid; 
-   Matrix *Profits_real_grid; 
-   CollectionDouble *technology;
+ int id;
+ int current_shares_outstanding;
+ double total_dividend_payment;
+ double bank_account;
+ double equity;
 }
  
 Firm *newFirm();
