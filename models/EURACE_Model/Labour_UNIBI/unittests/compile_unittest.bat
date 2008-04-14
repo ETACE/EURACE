@@ -1,1 +1,1 @@
-gcc -g unittest.c memory.c messageboards.c my_library_functions.c Firm_Producer_functions.c Firm_Producer_unittests.c -lm -lcunit 
+gcc -g unittest.c ../../memory.c ../../messageboards.c ../../my_library_functions.c ../Firm_Employer_functions.c Firm_Employer_unittests.c -lm -lcunit 
