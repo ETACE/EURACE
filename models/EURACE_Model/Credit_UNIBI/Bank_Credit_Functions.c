@@ -22,6 +22,19 @@ int Bank_read_loan_request_send_offers()
 	return 0;
 }
 
+int Bank_read_loan_acceptance()
+{
+	START_LOAN_ACCEPTANCE_MESSAGE_LOOP
+		if(loan_acceptance_message->bank_id==ID)
+		{
+			//Update the firm's bankaccount with the demanded credit:
+			ACCOUNT[loan_acceptance_message->firm_id]=loan_acceptance_message->credit_taken;
+		}
+	FINISH_LOAN_ACCEPTANCE_MESSAGE_LOOP
+	
+	return 0;
+}
+
 int Bank_read_interest_payments()
 {
 	int firm_id;
