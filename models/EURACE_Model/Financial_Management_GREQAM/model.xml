@@ -91,14 +91,14 @@
 
 <function>
 <name>Firm_compute_income_statement</name>
-<current_state>14</current_state>
-<next_state>15</next_state>
+<current_state>00</current_state>
+<next_state>001</next_state>
 </function>
 
 <function>
 <name>Firm_compute_balance_sheet</name>
-<current_state>15</current_state>
-<next_state>16</next_state>
+<current_state>001</current_state>
+<next_state>002</next_state>
 <output><messagetype>tax_payment</messagetype></output>
 <output><messagetype>interest_payment</messagetype></output>
 <output><messagetype>debt_installment_payment</messagetype></output>
