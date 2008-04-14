@@ -8,7 +8,6 @@
 <environment>
 
 <functions>
-<file>Firm_Credit_Functions.c</file>
 <file>Bank_Credit_Functions.c</file>
 </functions>
 
@@ -51,6 +50,7 @@
 <xmachine>
 <name>Bank</name>
 <memory>
+<var><type>double_array</type><name>account</name></var>
 <var><type>double</type><name>proposed_interest_rate</name></var>
 <var><type>double</type><name>amount_credit_offer</name></var>
 </memory>
@@ -59,9 +59,23 @@
 <function>
 <name>Bank_read_loan_request_send_offers</name>
 <current_state>start_Bank</current_state>
-<next_state>end</next_state>
+<next_state>01</next_state>
 <input><messagetype>loan_request</messagetype></input>
 <output><messagetype>loan_conditions</messagetype></output>
+</function>
+
+<function>
+<name>Bank_read_interest_payments</name>
+<current_state>01</current_state>
+<next_state>02</next_state>
+<input><messagetype>interest_payment</messagetype></input>
+</function>
+
+<function>
+<name>Bank_read_debt_installment_payment</name>
+<current_state>02</current_state>
+<next_state>03</next_state>
+<input><messagetype>debt_installment_payment</messagetype></input>
 </function>
 
 </functions>
@@ -104,6 +118,30 @@
 <var><type>int</type><name>firm_id</name></var>
 <var><type>int</type><name>bank_id</name></var>
 <var><type>double</type><name>credit_amount_taken</name></var>
+<var><type>double</type><name>range</name></var>
+<var><type>double</type><name>x</name></var>
+<var><type>double</type><name>y</name></var>
+<var><type>double</type><name>z</name></var>
+</message>
+
+<message>
+<name>interest_payment</name>
+<note>Added by firm to pay interest on debt</note>
+<var><type>int</type><name>firm_id</name></var>
+<var><type>int</type><name>bank_id</name></var>
+<var><type>double</type><name>interest_payment</name></var>
+<var><type>double</type><name>range</name></var>
+<var><type>double</type><name>x</name></var>
+<var><type>double</type><name>y</name></var>
+<var><type>double</type><name>z</name></var>
+</message>
+
+<message>
+<name>debt_installment_payment</name>
+<note>Added by firm to pay debt installments</note>
+<var><type>int</type><name>firm_id</name></var>
+<var><type>int</type><name>bank_id</name></var>
+<var><type>double</type><name>debt_installment_payment</name></var>
 <var><type>double</type><name>range</name></var>
 <var><type>double</type><name>x</name></var>
 <var><type>double</type><name>y</name></var>
