@@ -1,11 +1,12 @@
 #ifndef STOCK_INCL
 #define STOCK_INCL
 #include "Double.h"
-
+#include "math.h"
 
 #ifndef Stock_dty
 #define Stock_dty
 #define MAXPRICES 1000
+#define MAXRETURNS MAXPRICES-1
 
 typedef struct Stock Stock;
 struct Stock 
@@ -13,9 +14,11 @@ struct Stock
 {
       int issuer;
       int quantity;
-      double history[MAXPRICES];
-      int head;
-      int queue;
+      double dividend_yield;
+      
+      double prices[MAXPRICES];
+      double returns[MAXRETURNS];
+      int index;
 
       
 };

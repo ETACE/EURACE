@@ -69,16 +69,17 @@ double randomReturn(Belief *belief, Stock *stock,int forwardWindow, Random *rnd)
 {  double rndReturn;
    double volatility;
    double randn;
-   volatility=stock->volatility;
+   volatility=volatilityStock(stock,backwordWindow);
    randn=gauss(rnd,0,1);
    rndRetun = sqrt(forwardWindow)*volatility*randn;
    return rndReturn;
 }
-void  stockBeliefFormation(Belief *belief, Stock *stock,int backwardWindow, Random *rnd)
+void  stockBeliefFormation(Belief *belief, Stock *stock,int backwardWindow,double randomWeigth,double  fundametalWeigth, double chartistWeigth, Random *rnd)
 { double fundamentalReturn;
   double rndReturn;
-  CDouble *historicalReturn;
-  historicalReturn=newCDouble(historicalReturn,backwardWindow-1);
+  rnd=randomReturn(belief, Stock *stock,forwardWindow, rnd);
+  fundamentalReturn=futureFundamentalReturn(belief,stock,currentDay);
+  priceReturns = randomWeight*rndReturn + chartistWeights*PTReturns + fundamentalWeigth*FundamentalReturn; 
   //prendo una finestra computo i ritorni da fare...
   
   
