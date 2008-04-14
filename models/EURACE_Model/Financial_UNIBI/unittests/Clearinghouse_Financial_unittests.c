@@ -4,7 +4,7 @@
 #include "Clearinghouse_agent_header.h"
 #include "my_library_header.h"
 
-/************Clearinghouse Role: Financial Management Role ********************************/
+/************Clearinghouse Role: Financial Role ********************************/
 
 /************ Unit tests ********************************/
 void unittest_Clearinghouse_read_stock_orders()
@@ -19,8 +19,6 @@ void unittest_Clearinghouse_read_stock_orders()
 	Clearinghouse_read_stock_orders();
     
     /***** Variables: Memory post-conditions *************************/
-	CU_ASSERT_DOUBLE_EQUAL(<var_name1>, <value>, 1e-3);
-	CU_ASSERT_EQUAL(<var_name2>, <value>);
 	
     /***** Messages: post-conditions *********************************/
  	START_STOCK_ORDER_MESSAGE_LOOP 
