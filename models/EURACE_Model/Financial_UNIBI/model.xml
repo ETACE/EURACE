@@ -205,7 +205,6 @@
 <xmachine>
 <name>Government</name>
 <memory>
-<var><type>int</type><name>id</name></var>
 </memory>
 
 <functions>
