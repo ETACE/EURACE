@@ -93,6 +93,7 @@
 <name>Firm_compute_income_statement</name>
 <current_state>00</current_state>
 <next_state>001</next_state>
+<condition>Firm_day_of_month_to_act</condition>
 </function>
 
 <function>
