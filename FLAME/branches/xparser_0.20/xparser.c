@@ -210,16 +210,19 @@ int main(int argc, char * argv[])
 	printf("templates: %s\n", templatedirectory);
 	
 	current_input_file = add_input_file(p_files);
-	current_input_file->file = copystr(inputfile);
+	current_input_file->fullfilepath = copystr(inputfile);
+	current_input_file->fulldirectory = copystr(directory);
+	current_input_file->localdirectory = copystr("");
 	
 	/* Read model from model xml file */
 	current_input_file = * p_files;
 	while(current_input_file)
 	{
-		readModel(current_input_file->file, directory, modeldata, p_files);
+		readModel(current_input_file, directory, modeldata, p_files);
 		
 		current_input_file = current_input_file->next;
 	}
+	checkmodel(modeldata);
 	
 	/* Calculate dependency graph for model functions */
 	create_dependency_graph(directory, modeldata);

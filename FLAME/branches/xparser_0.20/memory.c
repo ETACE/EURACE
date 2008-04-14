@@ -568,6 +568,28 @@ char * copystr(char * string)
 	return strcpy(new_string, string);
 }
 
+void add_adj_function_simple(xmachine_function * function1, xmachine_function * function2)
+{
+	adj_function * current;
+	
+	current = (adj_function *)malloc(sizeof(adj_function));
+	current->function = function2;
+	current->next = function1->alldepends;
+	function1->alldepends = current;
+}
+
+void remove_adj_function_simple(xmachine_function * function1)
+{
+	adj_function * current;
+	
+	if(function1->alldepends != NULL)
+	{
+		current = function1->alldepends->next;
+		free(function1->alldepends);
+		function1->alldepends = current;
+	}
+}
+
 void add_adj_function(xmachine_function * function1, xmachine_function * function2, char * type)
 {
 	adj_function * current;
@@ -691,6 +713,7 @@ xmachine_function * addxfunction(xmachine_function ** p_xfunctions)
 	current->last_outputs = NULL;
 	current->dependson = NULL;
 	current->dependants = NULL;
+	current->alldepends = NULL;
 	current->agent_name = NULL;
 	current->next = NULL;
 	current->x = 0.0;
@@ -725,6 +748,7 @@ void freexfunctions(xmachine_function ** p_xfunctions)
 		free_ioput(&head->last_outputs);
 		free_adj_function(&head->dependson);
 		free_adj_function(&head->dependants);
+		free_adj_function(&head->alldepends);
 		free(head->condition); //free_rule_data(&head->condition);
 		free(head);
 		head = temp;
@@ -738,7 +762,7 @@ void freexfunctions(xmachine_function ** p_xfunctions)
  * \param p_xmachines Pointer Pointer to the xmachines list.
  * \return Pointer to the added xmachine.
  */
-xmachine * addxmachine(xmachine ** p_xmachines)
+xmachine * addxmachine(xmachine ** p_xmachines, char * name)
 {
 	int number = 0;
 	xmachine * current = *p_xmachines;
@@ -746,6 +770,9 @@ xmachine * addxmachine(xmachine ** p_xmachines)
 	
 	while(current)
 	{
+		/* If agent name already exists */
+		if(strcmp(current->name, name) == 0) return current;
+		
 		temp = current;
 		current = current->next;
 		number++;
@@ -764,7 +791,7 @@ xmachine * addxmachine(xmachine ** p_xmachines)
 	}
 	/* Make current->next point to NULL */
 	current->number = number;
-	current->name = NULL;
+	current->name = name;
 	current->memory = NULL;
 	current->states = NULL;
 	current->functions = NULL;

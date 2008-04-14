@@ -201,7 +201,7 @@ void output_dot_graph3(char * filename, char * filepath, model_data * modeldata,
 		current_xmachine = * modeldata->p_xmachines;
 		while(current_xmachine)
 		{
-			/* For each function */
+			// For each function
 			current_function = current_xmachine->functions;
 			while(current_function)
 			{
@@ -230,6 +230,48 @@ void output_dot_graph3(char * filename, char * filepath, model_data * modeldata,
 	
 	/* Close the file */
 	fclose(file);
+}
+
+void find_loop(xmachine_function * current, xmachine_function * depends)
+{
+	adj_function * current_adj_function;
+	int flag = 0;
+	
+	//printf("FUNCTION: %s\n", current->name);
+	
+	//add_adj_function_simple(current, depends);
+	
+	current_adj_function = current->alldepends;
+	while(current_adj_function)
+	{
+		//printf("\t%s\n", current_adj_function->function->name);
+		
+		if(strcmp(depends->name, current_adj_function->function->name) == 0)
+		{
+			flag = 1;
+			current_adj_function = NULL;
+		}
+		else current_adj_function = current_adj_function->next;
+	}
+	
+	if(flag == 1)
+	{
+		printf("*** ERROR: Function %s has loop with %s\n", current->name, depends->name);
+		//exit(1);
+	}
+	else
+	{
+		add_adj_function_simple(current, depends);
+		
+		current_adj_function = depends->dependson;
+		while(current_adj_function)
+		{
+			find_loop(current, current_adj_function->function);
+			remove_adj_function_simple(current);
+			
+			current_adj_function = current_adj_function->next;
+		}
+	}
 }
 
 /** \fn void create_dependency_graph(char * filepath, model_data * modeldata)
@@ -387,6 +429,30 @@ void create_dependency_graph(char * filepath, model_data * modeldata)
 	/* This is achieved by finding functions with no dependencies */
 	/* giving them a layer no, taking those functions away and do the operation again */
 	
+	//check loops in dependencies
+	/* For each agent */
+	current_xmachine = * modeldata->p_xmachines;
+	while(current_xmachine)
+	{
+		/* For each function */
+		current_function = current_xmachine->functions;
+		while(current_function)
+		{
+			/* Search dependencies on the current function */
+			current_adj_function = current_function->dependson;
+			while(current_adj_function)
+			{
+				find_loop(current_function, current_adj_function->function);
+				
+				current_adj_function = current_adj_function->next;
+			}
+			
+			current_function = current_function->next;
+		}
+		
+		current_xmachine = current_xmachine->next;
+	}
+	
 	/* For a set amount of times for each layer (cannot be more layers than functions?) */
 	/* WARNING: there is no check for depencency loops that can cause an infinite loop */	
 	current_layer = addlayer(modeldata->p_layers);
@@ -405,14 +471,14 @@ void create_dependency_graph(char * filepath, model_data * modeldata)
 				/* If rank_in is unknown */
 				if(current_function->rank_in == -1)
 				{
-					//printf("%s-%s rank = %d\n", current_function->agent_name, current_function->name, current_function->rank_in);
+					//printf("%s rank = %d\n", current_function->name, current_function->rank_in);
 					
 					k = 0;
 					/* Search dependencies on the current function */
 					current_adj_function = current_function->dependson;
 					while(current_adj_function)
 					{
-						//printf("\tdependson %s-%s\n", current_adj_function->function->agent_name, current_adj_function->function->name);
+						//printf("\tdependson %s\n", current_adj_function->function->name);
 						/* Check if the function has a dependency on it (and not from itself) */
 						/* Check to see if the dependency is a function and not be assigned a layer in last layers */
 						if(current_adj_function->function->rank_in == -1 || current_adj_function->function->rank_in == newlayer)
@@ -429,6 +495,9 @@ void create_dependency_graph(char * filepath, model_data * modeldata)
 						current_function->rank_in = newlayer;
 						
 						addfunction_pointer(&current_layer->functions, current_function);
+						
+						printf("layer %d: %s  %s->%s\n", newlayer, current_function->name,
+						current_function->current_state, current_function->next_state);
 						
 						//current_function2 = addxfunction(&current_layer->functions);
 						//current_function2->name = copystr(current_function->name);
