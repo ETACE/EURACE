@@ -50,7 +50,7 @@
 <xmachine>
 <name>Bank</name>
 <memory>
-<var><type>double_array</type><name>account</name></var>
+<var><type>double</type><name>account[10]</name></var>
 <var><type>double</type><name>proposed_interest_rate</name></var>
 <var><type>double</type><name>amount_credit_offer</name></var>
 </memory>
