@@ -11,6 +11,7 @@
 <file>Firm_Financial_Functions.c</file>
 <file>Household_Financial_Functions.c</file>
 <file>Clearinghouse_Financial_Functions.c</file>
+<file>Government_Financial_Functions.c</file>
 </functions>
 
 <datatypes>

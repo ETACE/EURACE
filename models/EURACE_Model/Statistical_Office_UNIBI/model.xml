@@ -102,7 +102,7 @@
 </function>
 
 <function><name>Firm_send_data_to_Market_Research</name>
-<current_state>16</current_state>
+<current_state>14</current_state>
 <next_state>end</next_state>
 <condition>last_day_of_month</condition>
 <output><messagetype>firm_send_data</messagetype></output>
