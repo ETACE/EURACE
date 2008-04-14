@@ -61,7 +61,7 @@ double futureFundamentalReturn(Belief *belief,Stock *stock,int currentDay)
   double fundamentalReturn;
   hRetainedEarnings=horizonRetainedEarnings(belief,stock,currentDay);
   futureFundlPrice = (stock->equity+hRetainedEarnings)/stock->nrOutStandingShares;
-  fundamentalReturn = (FutureFundamentalPrice-lastMarketPrice(stock))/lastMarketPrice(stock);
+  fundamentalReturn = (FutureFundamentalPrice-lastPriceStock(stock))/lastPriceStock(stock);
   return fundamentalReturn;
        }
 
@@ -77,9 +77,14 @@ double randomReturn(Belief *belief, Stock *stock,int forwardWindow, Random *rnd)
 void  stockBeliefFormation(Belief *belief, Stock *stock,int backwardWindow,double randomWeigth,double  fundametalWeigth, double chartistWeigth, Random *rnd)
 { double fundamentalReturn;
   double rndReturn;
+  double total_return_avg;
   rnd=randomReturn(belief, Stock *stock,forwardWindow, rnd);
   fundamentalReturn=futureFundamentalReturn(belief,stock,currentDay);
-  priceReturns = randomWeight*rndReturn + chartistWeights*PTReturns + fundamentalWeigth*FundamentalReturn; 
+  returns=expectedReturns(stock,backwordWindow);
+  price_returns_avg = randomWeight*rndReturn + chartistWeights*returns + fundamentalWeigth*FundamentalReturn; 
+  total_return_avg=price_returns+stock->dividend_yield;
+  belief->expectedPriceReturn=price_returns_avg;
+  belief->
   //prendo una finestra computo i ritorni da fare...
   
   
