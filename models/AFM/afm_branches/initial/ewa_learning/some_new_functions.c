@@ -22,14 +22,15 @@
 double sum(double * p, int size)
 {
 	int i;
-	double sum=0.0;
+	double sum_val= 0.0;
 	
 	for (i=0;i<size;i++)
 	{
-		sum+=p[i];
+		sum_val += p[i];
 	}	
+	printf("\n sum: %f", sum_val);
 	
-    return sum;
+    return sum_val;
 }
 
 //\brief: Cumulative sum of elements of a vector p.
@@ -180,7 +181,8 @@ double draw(int size, double * cpdf)
 }
 
 //int ismember(int i, int * xvec, int size)
-//Check if i is a member of the array "x", with length "size".
+//Checks if i is a member of the array "xvec" with length "size".
+//is a double, we check whether: (i-eps) < xvec[k] < (i+eps)
 //Returns 1 if i is a member, 0 else.
 //
 //USAGE:
@@ -199,10 +201,11 @@ int ismember(double i, double * xvec, int size)
 
 	int k;
 	int ans=0;
+	double eps=0.0001;
 	
 	for (k=0;k<size;k++)
 	{
-		if (i==xvec[k])
+		if ((i-eps<xvec[k])&&(xvec[k]<i+eps))
 		{
 			ans=1;
 			break;

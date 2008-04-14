@@ -13,7 +13,6 @@ void unittest_draw();
 void unittest_ismember();
 void unittest_draw_without_replacement();
 void unittest_draw_with_replacement();
-
 void unittest_single_point_cross_over();
 void unittest_two_point_cross_over();
 void unittest_mutation();
@@ -60,10 +59,10 @@ int main(int argc, char * argv[])
        	NULL == CU_add_test(pSuite, "some_new_functions, sum", unittest_sum))
     	//NULL == CU_add_test(pSuite, "some_new_functions, cumsum", unittest_cumsum) ||
     	//NULL == CU_add_test(pSuite, "some_new_functions, cumpdf", unittest_cumpdf) ||
-    	//NULL == CU_add_test(pSuite, "some_new_functions, draw", unittest_draw) ||
-    	//NULL == CU_add_test(pSuite, "some_new_functions, ismember", unittest_ismember) ||
+    	//NULL == CU_add_test(pSuite, "some_new_functions, draw", unittest_draw))
+    	//NULL == CU_add_test(pSuite, "some_new_functions, ismember", unittest_ismember))
     	//NULL == CU_add_test(pSuite, "some_new_functions, draw_without_replacement", unittest_draw_without_replacement) ||
-    	//NULL == CU_add_test(pSuite, "some_new_functions, draw_with_replacement", unittest_draw_with_replacement)      ||
+    	//NULL == CU_add_test(pSuite, "some_new_functions, draw_with_replacement", unittest_draw_with_replacement))
     	//NULL == CU_add_test(pSuite, "some_new_functions, single_point_cross_over", unittest_single_point_cross_over) ||
     	//NULL == CU_add_test(pSuite, "some_new_functions, two_point_cross_over", unittest_two_point_cross_over) ||
     	//NULL == CU_add_test(pSuite, "some_new_functions, mutation", unittest_mutation))

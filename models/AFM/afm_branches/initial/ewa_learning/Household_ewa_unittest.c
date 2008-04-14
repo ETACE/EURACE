@@ -2,6 +2,7 @@
 #include "header.h"
 #include "Household_agent_header.h"
 #include "mylibraryheader.h"
+#include "some_new_functions.h"
 
 #define NR_PARAMS 10;
 
@@ -74,8 +75,8 @@ void unittest_Household_read_all_performances()
      
      /***** Messages: pre-conditions **********************************/
      //add_new_performances_message(rule_id, avg_performance, 1.0, 0.0, 0.0, 0.0);
-     add_new_performances_message(0, 11.0, 0.0, 0.0, 0.0, 0.0);
-     add_new_performances_message(1, 21.0, 0.0, 0.0, 0.0, 0.0);
+     add_new_performances_message(0, 10.0, 1.0, 0.0, 0.0, 0.0);
+     add_new_performances_message(1, 20.0, 1.0, 0.0, 0.0, 0.0);
 
      /***** Function evaluation ***************************************/
      Household_read_all_performances();
@@ -104,7 +105,7 @@ void unittest1_Household_select_rule()
      EWA_PARAMETERS.EWA_delta=1.0;
      EWA_PARAMETERS.EWA_beta=1.0;
      
-     PRIVATE_CLASSIFIERSYSTEM.nr_rules =1;
+     PRIVATE_CLASSIFIERSYSTEM.nr_rules =2;
      PRIVATE_CLASSIFIERSYSTEM.experience=1.0;
      PRIVATE_CLASSIFIERSYSTEM.current_rule=1;
      
@@ -130,7 +131,7 @@ void unittest1_Household_select_rule()
      //CU_ASSERT_DOUBLE_EQUAL(<var_name1>, <value>, 1e-3);
      //CU_ASSERT_EQUAL(<var_name2>, <value>);
      
-     CU_ASSERT_EQUAL(PRIVATE_CLASSIFIERSYSTEM.nr_rules, 1);
+     CU_ASSERT_EQUAL(PRIVATE_CLASSIFIERSYSTEM.nr_rules, 2);
      CU_ASSERT_DOUBLE_EQUAL(PRIVATE_CLASSIFIERSYSTEM.experience, 2.0, 1e-3);
      CU_ASSERT_EQUAL(PRIVATE_CLASSIFIERSYSTEM.current_rule, 1);
      
@@ -147,7 +148,7 @@ void unittest1_Household_select_rule()
      CU_ASSERT_DOUBLE_EQUAL(PRIVATE_CLASSIFIERSYSTEM.ruletable[1].attraction, 4.0, 1e-3);
      CU_ASSERT_DOUBLE_EQUAL(PRIVATE_CLASSIFIERSYSTEM.ruletable[1].choiceprob, 0.0, 1e-3);
  
-     CU_ASSERT_TRUE((PRIVATE_CLASSIFIERSYSTEM.current_rule==0 || PRIVATE_CLASSIFIERSYSTEM.current_rule==1));
+     //CU_ASSERT_TRUE((PRIVATE_CLASSIFIERSYSTEM.current_rule==0 || PRIVATE_CLASSIFIERSYSTEM.current_rule==1));
      
      /***** Messages: post-conditions **********************************/
 
@@ -170,7 +171,7 @@ void unittest2_Household_select_rule()
      EWA_PARAMETERS.EWA_delta=1.0;
      EWA_PARAMETERS.EWA_beta=1.0;
      
-     PRIVATE_CLASSIFIERSYSTEM.nr_rules =1;
+     PRIVATE_CLASSIFIERSYSTEM.nr_rules =2;
      PRIVATE_CLASSIFIERSYSTEM.experience=1.0;
      PRIVATE_CLASSIFIERSYSTEM.current_rule=1;
      
@@ -196,7 +197,7 @@ void unittest2_Household_select_rule()
      //CU_ASSERT_DOUBLE_EQUAL(<var_name1>, <value>, 1e-3);
      //CU_ASSERT_EQUAL(<var_name2>, <value>);
      
-     CU_ASSERT_EQUAL(PRIVATE_CLASSIFIERSYSTEM.nr_rules, 1);
+     CU_ASSERT_EQUAL(PRIVATE_CLASSIFIERSYSTEM.nr_rules, 2);
      CU_ASSERT_DOUBLE_EQUAL(PRIVATE_CLASSIFIERSYSTEM.experience, 2.0, 1e-3);
      CU_ASSERT_EQUAL(PRIVATE_CLASSIFIERSYSTEM.current_rule, 1);
      
@@ -261,11 +262,11 @@ void unittest_Household_read_and_update_rule_details()
      }
 
      /***** Messages: pre-conditions **********************************/
-     //add_rule_details_messsage(i, PRIVATE_CLASSIFIERSYSTEM.ruletable[i].parameters, 1.0, 0.0, 0.0, 0.0);
+     //add_rule_details_message(i, PRIVATE_CLASSIFIERSYSTEM.ruletable[i].parameters, 1.0, 0.0, 0.0, 0.0);
      double paramters_1[10]={1.0,2.0,3.0,4.0,5.0,6.0,7.0,8.0,9.0,10.0};
      double paramters_2[10]={11.0,12.0,13.0,14.0,15.0,16.0,17.0,18.0,19.0,20.0};
-     add_rule_details_messsage(0, paramters_1, 1.0, 0.0, 0.0, 0.0);
-     add_rule_details_messsage(1, paramters_2, 1.0, 0.0, 0.0, 0.0);
+     add_rule_details_message(0, paramters_1, 1.0, 0.0, 0.0, 0.0);
+     add_rule_details_message(1, paramters_2, 1.0, 0.0, 0.0, 0.0);
      
      /***** Function evaluation ***************************************/
      Household_read_and_update_rule_details();

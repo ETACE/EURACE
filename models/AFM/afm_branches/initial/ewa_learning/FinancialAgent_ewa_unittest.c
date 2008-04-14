@@ -2,6 +2,7 @@
 #include "header.h"
 #include "FinancialAgent_agent_header.h"
 #include "mylibraryheader.h"
+#include "some_new_functions.h"
 
 #define NR_PARAMS 10;
 
@@ -226,15 +227,15 @@ void unittest_FinancialAgent_send_rule_details()
     /***** Messages: post-conditions **********************************/
 
      START_RULE_DETAILS_MESSAGE_LOOP
-     	if (rule_details_messsage->rule_id == 0)
+     	if (rule_details_message->rule_id == 0)
      	{
-     		CU_ASSERT_DOUBLE_EQUAL(rule_details_messsage->parameters[0], 1.0, 1e-3);
-     		CU_ASSERT_DOUBLE_EQUAL(rule_details_messsage->parameters[9], 10.0, 1e-3);     		
+     		CU_ASSERT_DOUBLE_EQUAL(rule_details_message->parameters[0], 1.0, 1e-3);
+     		CU_ASSERT_DOUBLE_EQUAL(rule_details_message->parameters[9], 10.0, 1e-3);     		
      	}
-	  	if (rule_details_messsage->rule_id == 1)
+	  	if (rule_details_message->rule_id == 1)
 	  	{
-	  		CU_ASSERT_DOUBLE_EQUAL(rule_details_messsage->parameters[0], 11.0, 1e-3);
-	  		CU_ASSERT_DOUBLE_EQUAL(rule_details_messsage->parameters[9], 20.0, 1e-3);     		
+	  		CU_ASSERT_DOUBLE_EQUAL(rule_details_message->parameters[0], 11.0, 1e-3);
+	  		CU_ASSERT_DOUBLE_EQUAL(rule_details_message->parameters[9], 20.0, 1e-3);     		
 	  	}
      FINISH_RULE_DETAILS_MESSAGE_LOOP
  

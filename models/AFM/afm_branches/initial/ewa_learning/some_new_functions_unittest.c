@@ -1,6 +1,7 @@
 #include <CUnit/Basic.h>
 #include "header.h"
 #include "mylibraryheader.h"
+#include "FinancialAgent_agent_header.h"
 
 /************ Unit tests ********************************/
 void unittest_sum()
@@ -9,18 +10,18 @@ void unittest_sum()
 	  double outcome;
 	  double * p;
 	  int size;
-	  
-	  outcome = 0.0;
-	  size = 4;
-	  
+	  	  
 	  //Input: p={0.6 0.2 0.8 0.4}
 	  p = malloc(size * sizeof(double));
-	  p[0]=0.6; p[1]=0.2; p[0]=0.8; p[1]=0.4;
+	  p[0]=0.6; p[1]=0.2; p[2]=0.8; p[3]=0.4;
 
      /***** Function evaluation ***************************************/
 	  //double sum(double * p, int size)
+	  outcome = 0.0;
+	  size=4;
 	  outcome = sum(p, size);
-	 
+	  printf("\n outcome : %f", outcome);
+	  
      /***** Variables: Memory post-conditions *************************/
      CU_ASSERT_DOUBLE_EQUAL(outcome, 2.0, 1e-3);
      
@@ -42,7 +43,7 @@ void unittest_cumsum()
 	  size = 4;
 	  //Input: p={0.6 0.2 0.8 0.4}
 	  p = malloc(sizeof(double)*size);
-	  p[0]=0.6; p[1]=0.2; p[0]=0.8; p[1]=0.4;
+	  p[0]=0.6; p[1]=0.2; p[2]=0.8; p[3]=0.4;
 	  cumsum_p = malloc(sizeof(double)*size);
 	  
      /***** Function evaluation ***************************************/
@@ -75,7 +76,7 @@ void unittest_cumpdf()
 	  size = 4;
 	  //Input: p={0.6 0.2 0.8 0.4}
 	  p = malloc(sizeof(double)*size);
-	  p[0]=0.6; p[1]=0.2; p[0]=0.8; p[1]=0.4;
+	  p[0]=0.6; p[1]=0.2; p[2]=0.8; p[3]=0.4;
 	  cpdf = malloc(sizeof(double)*size);
 	  
      /***** Function evaluation ***************************************/
@@ -102,7 +103,7 @@ void unittest_draw()
 	  
 	  size=4;
 	  cpdf = malloc(sizeof(double)*size);
-	  cpdf[0]=0.3; cpdf[1]=0.4; cpdf[0]=0.8; cpdf[1]=1.0;
+	  cpdf[0]=0.3; cpdf[1]=0.4; cpdf[2]=0.8; cpdf[3]=1.0;
 	  
      /***** Function evaluation ***************************************/
 	  //int draw(int size, double * cpdf)
@@ -124,7 +125,7 @@ void unittest_ismember()
 	  
 	  size=4;
 	  xvec = malloc(sizeof(double)*size);
-	  xvec[0]=0.3; xvec[1]=0.4; xvec[0]=0.8; xvec[1]=1.0;
+	  xvec[0]=0.3; xvec[1]=0.4; xvec[2]=0.8; xvec[3]=1.0;
 	  i=0.3;
 	
      /***** Function evaluation ***************************************/
@@ -148,7 +149,7 @@ void unittest_draw_without_replacement()
 	  
 	  size=4; nr_draws=4;
 	  xvec = malloc(sizeof(double)*size);
-	  xvec[0]=0.3; xvec[1]=0.4; xvec[0]=0.8; xvec[1]=1.0;
+	  xvec[0]=0.3; xvec[1]=0.4; xvec[2]=0.8; xvec[3]=1.0;
 	  draws = malloc(nr_draws*sizeof(double));
 	  
      /***** Function evaluation ***************************************/
@@ -181,7 +182,7 @@ void unittest_draw_with_replacement()
 	  
 	  size=4; nr_draws=4;
 	  xvec = malloc(sizeof(double)*size);
-	  xvec[0]=0.3; xvec[1]=0.4; xvec[0]=0.8; xvec[1]=1.0;
+	  xvec[0]=0.3; xvec[1]=0.4; xvec[2]=0.8; xvec[3]=1.0;
 	  draws = malloc(sizeof(double)*nr_draws);
 	  
      /***** Function evaluation ***************************************/
