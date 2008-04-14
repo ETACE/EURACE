@@ -72,7 +72,7 @@
 </function>
 
 <function>
-<name>Bank_read_debt_installment_payment</name>
+<name>Bank_read_debt_installment_payments</name>
 <current_state>02</current_state>
 <next_state>03</next_state>
 <input><messagetype>debt_installment_payment</messagetype></input>
