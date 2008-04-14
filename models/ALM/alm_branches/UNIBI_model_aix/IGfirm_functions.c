@@ -3,6 +3,23 @@
 #include "my_library_header.h"
 
 
+int day_of_month_to_act()
+{
+	if(DAY%MONTH == DAY_OF_MONTH_TO_ACT) return 1;
+	else return 0;
+}
+
+int not_day_of_month_to_act()
+{
+	if(DAY%MONTH == DAY_OF_MONTH_TO_ACT) return 0;
+	else return 1;
+}
+
+
+int IGFirm_idle()
+{
+	return 0;
+}
 
 
 /***************************** Investment Goods producer function********************************/
@@ -13,8 +30,7 @@ int IGFirm_update_productivity_price()
 
 	int i;
 
-	if(DAY%MONTH==DAY_OF_MONTH_TO_ACT)
-	{	
+	
 		i = random_int( 0 ,100);
 		
 		if(i < INNOVATION_PROBABILITY)
@@ -23,15 +39,21 @@ int IGFirm_update_productivity_price()
 			CAPITAL_GOOD_PRICE = CAPITAL_GOOD_PRICE*(1 +.5* PRODUCTIVITY_PROGRESS);	
 		}
 
-	}
 	
-	add_productivity_message(ID,PRODUCTIVITY,CAPITAL_GOOD_PRICE,MSGDATA);
+	
 
 
 
 	return 0;
 }
 
+/** \fn IGFirm_update_productivity_price()
+ * \brief IGFirm send quality and price information */
+int IGFirm_send_quality_price_info()
+{
+	add_productivity_message(ID,PRODUCTIVITY,CAPITAL_GOOD_PRICE,MSGDATA);
+	return 0;
+}
 
 /** \fn IGFirm_send_capital_good()
  * \brief IGFirm sends capital goods to firms

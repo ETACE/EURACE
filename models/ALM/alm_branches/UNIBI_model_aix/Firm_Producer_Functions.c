@@ -26,6 +26,30 @@ int Firm_idle()
 	return 0;
 }
 
+int Firm_set_quantities_zero()
+{
+	PLANNED_PRODUCTION_QUANTITY = 0;
+	PRODUCTION_QUANTITY = 0;
+	
+	return 0;
+}
+
+int last_day_of_month()
+{
+	if (DAY%MONTH==0)
+		return 1;
+	else
+		return 0;
+	
+}
+int not_last_day_of_month()
+{
+	if (DAY%MONTH!=0)
+		return 1;
+	else
+		return 0;
+	
+}
 
 /********************************Firm Role Consumption Goods marke*******************************/
 
@@ -37,8 +61,7 @@ int Firm_calc_production_quantity()
 	double production_volume = 0;
 	double prod_vol;
 
-	if(DAY%MONTH==DAY_OF_MONTH_TO_ACT)
-	{
+
 		/*reading current mall stocks   */
 		START_CURRENT_MALL_STOCK_INFO_MESSAGE_LOOP
 
@@ -191,11 +214,8 @@ int Firm_calc_production_quantity()
 	
 		PLANNED_PRODUCTION_QUANTITY = LAMBDA*production_volume + (1-LAMBDA)*mean_production_quantity;
 
-	}
-	else 
-	{
-		PLANNED_PRODUCTION_QUANTITY = 0;
-	}
+	
+	
 
 	return 0;
 
@@ -210,9 +230,6 @@ int Firm_calc_input_demands()
 	double temp_labour_demand;
 	double temp_capital_demand;
 	
-	if(DAY%MONTH==DAY_OF_MONTH_TO_ACT)
-	{
-		
 		START_PRODUCTIVITY_MESSAGE_LOOP
 			/*Update of the actual capital good information*/
 			TECHNOLOGICAL_FRONTIER = productivity_message->cap_productivity;
@@ -329,7 +346,6 @@ int Firm_calc_input_demands()
 		
 		/*This computes the financial needings for production*/
 		PLANNED_PRODUCTION_COSTS = EMPLOYEES_NEEDED*MEAN_WAGE + DEMAND_CAPITAL_STOCK*ACTUAL_CAP_PRICE;
-	}
 
 	return 0;
 }
@@ -379,8 +395,7 @@ int Firm_calc_input_demands_2()
 	double temp_labour_demand;
 	double temp_capital_demand;
 	
-	if(DAY%MONTH==DAY_OF_MONTH_TO_ACT)
-	{
+
 		
 		START_PRODUCTIVITY_MESSAGE_LOOP
 			/*Update of the actual capital good information*/
@@ -467,7 +482,7 @@ int Firm_calc_input_demands_2()
 		
 		/*This computes the financial needings for production*/
 		PLANNED_PRODUCTION_COSTS = EMPLOYEES_NEEDED*MEAN_WAGE + DEMAND_CAPITAL_STOCK*ACTUAL_CAP_PRICE;
-	}
+	
 
 	return 0;
 }	
@@ -478,8 +493,6 @@ int Firm_send_capital_demand()
 {
 	int i, imax;
 	
-	if(DAY%MONTH==DAY_OF_MONTH_TO_ACT)
-	{
 		TOTAL_CAPITAL_DEPRECIATION_VALUE=0;
 		TOTAL_CAPITAL_DEPRECIATION_UNITS=0;
 		
@@ -512,7 +525,7 @@ int Firm_send_capital_demand()
 		{
 			SHARE_NET_INVESTMENTS=0;
 		}
-	}
+
 	return 0;
 }
 
@@ -529,8 +542,6 @@ int Firm_calc_pay_costs()
 	double productivity;
 	double depreciation_units_per_period;
 		
-	if(DAY%MONTH==DAY_OF_MONTH_TO_ACT)
-	{
 		/*Calculate mean wage and mean specific skills:*/
 		double ave_wage =0.0;
 		double ave_spec_skills =0.0;
@@ -644,10 +655,7 @@ int Firm_calc_pay_costs()
 		add_double(&LAST_PLANNED_PRODUCTION_QUANTITIES,PLANNED_PRODUCTION_QUANTITY);
 
 	}
-	else 
-	{
-		PRODUCTION_QUANTITY =0;
-	}
+	
 
 	return 0;
 }
@@ -659,8 +667,7 @@ int Firm_calc_pay_costs()
 int Firm_send_goods_to_mall()
 { 
 
-	if(DAY%MONTH==DAY_OF_MONTH_TO_ACT)
-	{
+	
 		double delivery_volume=0;
 
 		for(int i=0; i<PLANNED_DELIVERY_VOLUME.size; i++)
@@ -719,7 +726,7 @@ int Firm_send_goods_to_mall()
 				}
 			}
 		}
-	}
+	
 
 	return 0;
 }
@@ -844,17 +851,16 @@ int Firm_update_specific_skills_of_workers()
  */
 int Firm_send_data_to_Market_Research()
 {
-	if(DAY%MONTH == 0)
-	{
-		add_firm_send_data_message(ID, REGION_ID, VACANCIES, 
-		NO_EMPLOYEES, NO_EMPLOYEES_SKILL_1, 
-		NO_EMPLOYEES_SKILL_2, NO_EMPLOYEES_SKILL_3, NO_EMPLOYEES_SKILL_4,
- 		NO_EMPLOYEES_SKILL_5, 
-		MEAN_WAGE, MEAN_SPECIFIC_SKILLS, AVERAGE_S_SKILL_OF_1, 
-		AVERAGE_S_SKILL_OF_2, AVERAGE_S_SKILL_OF_3,
-		AVERAGE_S_SKILL_OF_4, AVERAGE_S_SKILL_OF_5, 
-		MSGDATA);
-	}	
+	
+	add_firm_send_data_message(ID, REGION_ID, VACANCIES, 
+	NO_EMPLOYEES, NO_EMPLOYEES_SKILL_1, 
+	NO_EMPLOYEES_SKILL_2, NO_EMPLOYEES_SKILL_3, NO_EMPLOYEES_SKILL_4,
+	NO_EMPLOYEES_SKILL_5, 
+	MEAN_WAGE, MEAN_SPECIFIC_SKILLS, AVERAGE_S_SKILL_OF_1, 
+	AVERAGE_S_SKILL_OF_2, AVERAGE_S_SKILL_OF_3,
+	AVERAGE_S_SKILL_OF_4, AVERAGE_S_SKILL_OF_5, 
+	MSGDATA);
+		
 
 	return 0;
 }
