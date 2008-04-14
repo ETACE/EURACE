@@ -465,11 +465,11 @@ int Firm_read_bond_transactions()
     if(bond_transaction_message->trader_id==ID)
     {
         //bond_transaction_message->bond_id
-        //bond_transaction_message->limit_price
-        //bond_transaction_message->limit_quantity
+        //bond_transaction_message->transaction_price
+        //bond_transaction_message->transaction_quantity
     	
     	//Convention: positive quantity is demand, negative quantity is selling
-    	PAYMENT_ACCOUNT -= bond_transaction_message->limit_price * bond_transaction_message->limit_quantity;
+    	PAYMENT_ACCOUNT -= bond_transaction_message->transaction_price * bond_transaction_message->transaction_quantity;
     }
     FINISH_BOND_TRANSACTION_MESSAGE_LOOP
     return 0;
@@ -504,11 +504,11 @@ int Firm_read_stock_transactions()
     if(stock_transaction_message->trader_id==ID)
     {
         //stock_transaction_message->stock_id
-        //stock_transaction_message->limit_price
-        //stock_transaction_message->limit_quantity
+        //stock_transaction_message->transaction_price
+        //stock_transaction_message->transaction_quantity
     	
        	//Convention: positive quantity is demand, negative quantity is selling
-        PAYMENT_ACCOUNT -= stock_transaction_message->limit_price * stock_transaction_message->limit_quantity;
+        PAYMENT_ACCOUNT -= stock_transaction_message->transaction_price * stock_transaction_message->transaction_quantity;
     }
     FINISH_STOCK_TRANSACTION_MESSAGE_LOOP
     return 0;
@@ -540,11 +540,11 @@ int Firm_read_gov_bond_transactions()
     if(gov_bond_transaction_message->trader_id==ID)
     {
         //gov_bond_transaction_message->bond_id;
-        //gov_bond_transaction_message->limit_price;
-        //gov_bond_transaction_message->limit_quantity;
+        //gov_bond_transaction_message->transaction_price;
+        //gov_bond_transaction_message->transaction_quantity;
     	
       	//Convention: positive quantity is demand, negative quantity is selling
-        PAYMENT_ACCOUNT -= gov_bond_transaction_message->limit_price * gov_bond_transaction_message->limit_quantity;    	
+        PAYMENT_ACCOUNT -= gov_bond_transaction_message->transaction_price * gov_bond_transaction_message->transaction_quantity;    	
     }
     FINISH_GOV_BOND_TRANSACTION_MESSAGE_LOOP
     return 0;
