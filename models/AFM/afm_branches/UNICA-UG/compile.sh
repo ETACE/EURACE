@@ -58,7 +58,10 @@ cp -R   Int/*.c   project/
 
 cp -R   Eurostat/*.h   project/ 
 cp -R   Eurostat/*.c   project/ 
-
+cp -R   Stock/*.h   project/  
+cp -R   Stock/*.c   project/  
+cp -R   Histogram/*.h   project/  
+cp -R   Histogram/*.c   project/  
 cd project
 make
 rm -f *.o

@@ -25,8 +25,8 @@ cp -R  Stream/*.c   compiledTests/
 cp -R  Portfolio/*.h   compiledTests/  
 cp -R  Portfolio/*.c   compiledTests/ 
 
-cp -R   *.h   compiledTests/  
-cp -R   *.c   compiledTests/ 
+#cp -R   *.h   compiledTests/  
+#cp -R   *.c   compiledTests/ 
 
 cp -R  Household/*.h   compiledTests/  
 cp -R  Household/*.c   compiledTests/ 
@@ -56,7 +56,10 @@ cp -R  Belief/*.c   compiledTests/
 cp -R  Int/*.h   compiledTests/  
 cp -R  Int/*.c   compiledTests/  
 
-
+cp -R   Stock/*.h   compiledTests/  
+cp -R   Stock/*.c   compiledTests/  
+cp -R   Histogram/*.h   compiledTests/  
+cp -R   Histogram/*.c  compiledTests/   
 
   
 cp -R tests2/*.h   compiledTests/ 

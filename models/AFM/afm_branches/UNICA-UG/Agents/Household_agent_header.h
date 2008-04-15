@@ -30,15 +30,15 @@
 /** \def BINSNUMBER
  * \brief Direct access to binsNumber of Household agent memory variable. */
 #define BINSNUMBER current_xmachine->xmachine_Household->binsNumber
-/** \def RANDOMRETURNWEIGTH
- * \brief Direct access to randomReturnWeigth of Household agent memory variable. */
-#define RANDOMRETURNWEIGTH current_xmachine->xmachine_Household->randomReturnWeigth
-/** \def FUNDAMETALRETURNWEIGTH
- * \brief Direct access to fundametalReturnWeigth of Household agent memory variable. */
-#define FUNDAMETALRETURNWEIGTH current_xmachine->xmachine_Household->fundametalReturnWeigth
-/** \def CHARTISTRETURNWEIGTH
- * \brief Direct access to chartistReturnWeigth of Household agent memory variable. */
-#define CHARTISTRETURNWEIGTH current_xmachine->xmachine_Household->chartistReturnWeigth
+/** \def RANDOMWEIGTH
+ * \brief Direct access to randomWeigth of Household agent memory variable. */
+#define RANDOMWEIGTH current_xmachine->xmachine_Household->randomWeigth
+/** \def FUNDAMETALWEIGTH
+ * \brief Direct access to fundametalWeigth of Household agent memory variable. */
+#define FUNDAMETALWEIGTH current_xmachine->xmachine_Household->fundametalWeigth
+/** \def CHARTISTWEIGTH
+ * \brief Direct access to chartistWeigth of Household agent memory variable. */
+#define CHARTISTWEIGTH current_xmachine->xmachine_Household->chartistWeigth
 /** \def HOLDINGPERIODTOFORWARDW
  * \brief Direct access to holdingPeriodToForwardW of Household agent memory variable. */
 #define HOLDINGPERIODTOFORWARDW current_xmachine->xmachine_Household->holdingPeriodToForwardW

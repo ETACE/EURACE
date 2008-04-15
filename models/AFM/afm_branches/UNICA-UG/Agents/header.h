@@ -267,9 +267,9 @@ struct xmachine_memory_Household
 	int forwardWindow;	/**< X-machine memory variable forwardWindow of type int. */
 	int backwordWindow;	/**< X-machine memory variable backwordWindow of type int. */
 	int binsNumber;	/**< X-machine memory variable binsNumber of type int. */
-	double randomReturnWeigth;	/**< X-machine memory variable randomReturnWeigth of type double. */
-	double fundametalReturnWeigth;	/**< X-machine memory variable fundametalReturnWeigth of type double. */
-	double chartistReturnWeigth;	/**< X-machine memory variable chartistReturnWeigth of type double. */
+	double randomWeigth;	/**< X-machine memory variable randomWeigth of type double. */
+	double fundametalWeigth;	/**< X-machine memory variable fundametalWeigth of type double. */
+	double chartistWeigth;	/**< X-machine memory variable chartistWeigth of type double. */
 	int holdingPeriodToForwardW;	/**< X-machine memory variable holdingPeriodToForwardW of type int. */
 	double range;	/**< X-machine memory variable range of type double. */
 	double posx;	/**< X-machine memory variable posx of type double. */
@@ -295,9 +295,18 @@ struct xmachine_memory_Firm
 {
 	int id;	/**< X-machine memory variable id of type int. */
 	int current_shares_outstanding;	/**< X-machine memory variable current_shares_outstanding of type int. */
-	double total_dividend_payment;	/**< X-machine memory variable total_dividend_payment of type double. */
 	double bank_account;	/**< X-machine memory variable bank_account of type double. */
+	double revenues;	/**< X-machine memory variable revenues of type double. */
+	double labor_costs;	/**< X-machine memory variable labor_costs of type double. */
+	double capital_costs;	/**< X-machine memory variable capital_costs of type double. */
+	double total_interest_payment;	/**< X-machine memory variable total_interest_payment of type double. */
+	double total_debt_installment;	/**< X-machine memory variable total_debt_installment of type double. */
+	double total_dividend_payment;	/**< X-machine memory variable total_dividend_payment of type double. */
+	double net_ernings;	/**< X-machine memory variable net_ernings of type double. */
+	double total_value_capital_stock;	/**< X-machine memory variable total_value_capital_stock of type double. */
+	double total_value_local_inventary_stock;	/**< X-machine memory variable total_value_local_inventary_stock of type double. */
 	double equity;	/**< X-machine memory variable equity of type double. */
+	double external_financial_need;	/**< X-machine memory variable external_financial_need of type double. */
 	double range;	/**< X-machine memory variable range of type double. */
 	double posx;	/**< X-machine memory variable posx of type double. */
 	double posy;	/**< X-machine memory variable posy of type double. */
@@ -435,9 +444,7 @@ int receiveAssetInformationHouse(void);
 int receiveAssetInformation(void);
 int receiveOrdersAndRun(void);
 int sendAssetInformation(void);
-int receiveAssetInformation(void);
-int receiveOrdersAndRun(void);
-int sendAssetInformation(void);
+int functions(void);
 
 /** \struct location
  * \brief Holds location for calculating space partitioning .
@@ -719,13 +726,13 @@ void add_Eurostat_agent_internal(xmachine_memory_Eurostat * current);
 void add_Eurostat_agent(int id, Asset_array * assets, double range, double posx, double posy);
 xmachine_memory_Household * init_Household_agent();
 void add_Household_agent_internal(xmachine_memory_Household * current);
-void add_Household_agent(int id, double wealth, Belief belief, Portfolio portfolio, Order_array * pendingOrders, Asset_array * assetsowned, int forwardWindow, int backwordWindow, int binsNumber, double randomReturnWeigth, double fundametalReturnWeigth, double chartistReturnWeigth, int holdingPeriodToForwardW, double range, double posx, double posy);
+void add_Household_agent(int id, double wealth, Belief belief, Portfolio portfolio, Order_array * pendingOrders, Asset_array * assetsowned, int forwardWindow, int backwordWindow, int binsNumber, double randomWeigth, double fundametalWeigth, double chartistWeigth, int holdingPeriodToForwardW, double range, double posx, double posy);
 xmachine_memory_ClearingHouse * init_ClearingHouse_agent();
 void add_ClearingHouse_agent_internal(xmachine_memory_ClearingHouse * current);
 void add_ClearingHouse_agent(int id, Asset_array * assets, double range, double posx, double posy);
 xmachine_memory_Firm * init_Firm_agent();
 void add_Firm_agent_internal(xmachine_memory_Firm * current);
-void add_Firm_agent(int id, int current_shares_outstanding, double total_dividend_payment, double bank_account, double equity, double range, double posx, double posy);
+void add_Firm_agent(int id, int current_shares_outstanding, double bank_account, double revenues, double labor_costs, double capital_costs, double total_interest_payment, double total_debt_installment, double total_dividend_payment, double net_ernings, double total_value_capital_stock, double total_value_local_inventary_stock, double equity, double external_financial_need, double range, double posx, double posy);
 
 void add_order_message(int issuer, int assetId, double limitPrice, int quantity, double range, double x, double y, double z);
 xmachine_message_order * add_order_message_internal(void);
@@ -769,22 +776,40 @@ void set_backwordWindow(int backwordWindow);
 int get_backwordWindow();
 void set_binsNumber(int binsNumber);
 int get_binsNumber();
-void set_randomReturnWeigth(double randomReturnWeigth);
-double get_randomReturnWeigth();
-void set_fundametalReturnWeigth(double fundametalReturnWeigth);
-double get_fundametalReturnWeigth();
-void set_chartistReturnWeigth(double chartistReturnWeigth);
-double get_chartistReturnWeigth();
+void set_randomWeigth(double randomWeigth);
+double get_randomWeigth();
+void set_fundametalWeigth(double fundametalWeigth);
+double get_fundametalWeigth();
+void set_chartistWeigth(double chartistWeigth);
+double get_chartistWeigth();
 void set_holdingPeriodToForwardW(int holdingPeriodToForwardW);
 int get_holdingPeriodToForwardW();
 void set_current_shares_outstanding(int current_shares_outstanding);
 int get_current_shares_outstanding();
-void set_total_dividend_payment(double total_dividend_payment);
-double get_total_dividend_payment();
 void set_bank_account(double bank_account);
 double get_bank_account();
+void set_revenues(double revenues);
+double get_revenues();
+void set_labor_costs(double labor_costs);
+double get_labor_costs();
+void set_capital_costs(double capital_costs);
+double get_capital_costs();
+void set_total_interest_payment(double total_interest_payment);
+double get_total_interest_payment();
+void set_total_debt_installment(double total_debt_installment);
+double get_total_debt_installment();
+void set_total_dividend_payment(double total_dividend_payment);
+double get_total_dividend_payment();
+void set_net_ernings(double net_ernings);
+double get_net_ernings();
+void set_total_value_capital_stock(double total_value_capital_stock);
+double get_total_value_capital_stock();
+void set_total_value_local_inventary_stock(double total_value_local_inventary_stock);
+double get_total_value_local_inventary_stock();
 void set_equity(double equity);
 double get_equity();
+void set_external_financial_need(double external_financial_need);
+double get_external_financial_need();
 int agent_get_id(void);
 double agent_get_x(void);
 double agent_get_y(void);

@@ -398,9 +398,9 @@ xmachine_memory_Household * init_Household_agent()
 	current->forwardWindow = 0;
 	current->backwordWindow = 0;
 	current->binsNumber = 0;
-	current->randomReturnWeigth = 0.0;
-	current->fundametalReturnWeigth = 0.0;
-	current->chartistReturnWeigth = 0.0;
+	current->randomWeigth = 0.0;
+	current->fundametalWeigth = 0.0;
+	current->chartistWeigth = 0.0;
 	current->holdingPeriodToForwardW = 0;
 	current->range = 0.0;
 	current->posx = 0.0;
@@ -424,7 +424,7 @@ void add_Household_agent_internal(xmachine_memory_Household * current)
 	new_xmachine->xmachine_Household = current;
 }
 
-/** \fn void add_Household_agent(int id, double wealth, Belief * belief, Portfolio * portfolio, Order_array * pendingOrders, Asset_array * assetsowned, int forwardWindow, int backwordWindow, int binsNumber, double randomReturnWeigth, double fundametalReturnWeigth, double chartistReturnWeigth, int holdingPeriodToForwardW, double range, double posx, double posy)
+/** \fn void add_Household_agent(int id, double wealth, Belief * belief, Portfolio * portfolio, Order_array * pendingOrders, Asset_array * assetsowned, int forwardWindow, int backwordWindow, int binsNumber, double randomWeigth, double fundametalWeigth, double chartistWeigth, int holdingPeriodToForwardW, double range, double posx, double posy)
  * \brief Add Household X-machine to the current being used X-machine list.
  * \param id Variable for the X-machine memory.
  * \param wealth Variable for the X-machine memory.
@@ -435,15 +435,15 @@ void add_Household_agent_internal(xmachine_memory_Household * current)
  * \param forwardWindow Variable for the X-machine memory.
  * \param backwordWindow Variable for the X-machine memory.
  * \param binsNumber Variable for the X-machine memory.
- * \param randomReturnWeigth Variable for the X-machine memory.
- * \param fundametalReturnWeigth Variable for the X-machine memory.
- * \param chartistReturnWeigth Variable for the X-machine memory.
+ * \param randomWeigth Variable for the X-machine memory.
+ * \param fundametalWeigth Variable for the X-machine memory.
+ * \param chartistWeigth Variable for the X-machine memory.
  * \param holdingPeriodToForwardW Variable for the X-machine memory.
  * \param range Variable for the X-machine memory.
  * \param posx Variable for the X-machine memory.
  * \param posy Variable for the X-machine memory.
  */
-void add_Household_agent(int id, double wealth, Belief belief, Portfolio portfolio, Order_array * pendingOrders, Asset_array * assetsowned, int forwardWindow, int backwordWindow, int binsNumber, double randomReturnWeigth, double fundametalReturnWeigth, double chartistReturnWeigth, int holdingPeriodToForwardW, double range, double posx, double posy)
+void add_Household_agent(int id, double wealth, Belief belief, Portfolio portfolio, Order_array * pendingOrders, Asset_array * assetsowned, int forwardWindow, int backwordWindow, int binsNumber, double randomWeigth, double fundametalWeigth, double chartistWeigth, int holdingPeriodToForwardW, double range, double posx, double posy)
 {
 	xmachine * new_xmachine = add_xmachine();
 	xmachine_memory_Household * current;
@@ -460,9 +460,9 @@ void add_Household_agent(int id, double wealth, Belief belief, Portfolio portfol
 	current->forwardWindow = forwardWindow;
 	current->backwordWindow = backwordWindow;
 	current->binsNumber = binsNumber;
-	current->randomReturnWeigth = randomReturnWeigth;
-	current->fundametalReturnWeigth = fundametalReturnWeigth;
-	current->chartistReturnWeigth = chartistReturnWeigth;
+	current->randomWeigth = randomWeigth;
+	current->fundametalWeigth = fundametalWeigth;
+	current->chartistWeigth = chartistWeigth;
 	current->holdingPeriodToForwardW = holdingPeriodToForwardW;
 	current->range = range;
 	current->posx = posx;
@@ -525,9 +525,18 @@ xmachine_memory_Firm * init_Firm_agent()
 	
 	current->id = 0;
 	current->current_shares_outstanding = 0;
-	current->total_dividend_payment = 0.0;
 	current->bank_account = 0.0;
+	current->revenues = 0.0;
+	current->labor_costs = 0.0;
+	current->capital_costs = 0.0;
+	current->total_interest_payment = 0.0;
+	current->total_debt_installment = 0.0;
+	current->total_dividend_payment = 0.0;
+	current->net_ernings = 0.0;
+	current->total_value_capital_stock = 0.0;
+	current->total_value_local_inventary_stock = 0.0;
 	current->equity = 0.0;
+	current->external_financial_need = 0.0;
 	current->range = 0.0;
 	current->posx = 0.0;
 	current->posy = 0.0;
@@ -546,18 +555,27 @@ void add_Firm_agent_internal(xmachine_memory_Firm * current)
 	new_xmachine->xmachine_Firm = current;
 }
 
-/** \fn void add_Firm_agent(int id, int current_shares_outstanding, double total_dividend_payment, double bank_account, double equity, double range, double posx, double posy)
+/** \fn void add_Firm_agent(int id, int current_shares_outstanding, double bank_account, double revenues, double labor_costs, double capital_costs, double total_interest_payment, double total_debt_installment, double total_dividend_payment, double net_ernings, double total_value_capital_stock, double total_value_local_inventary_stock, double equity, double external_financial_need, double range, double posx, double posy)
  * \brief Add Firm X-machine to the current being used X-machine list.
  * \param id Variable for the X-machine memory.
  * \param current_shares_outstanding Variable for the X-machine memory.
- * \param total_dividend_payment Variable for the X-machine memory.
  * \param bank_account Variable for the X-machine memory.
+ * \param revenues Variable for the X-machine memory.
+ * \param labor_costs Variable for the X-machine memory.
+ * \param capital_costs Variable for the X-machine memory.
+ * \param total_interest_payment Variable for the X-machine memory.
+ * \param total_debt_installment Variable for the X-machine memory.
+ * \param total_dividend_payment Variable for the X-machine memory.
+ * \param net_ernings Variable for the X-machine memory.
+ * \param total_value_capital_stock Variable for the X-machine memory.
+ * \param total_value_local_inventary_stock Variable for the X-machine memory.
  * \param equity Variable for the X-machine memory.
+ * \param external_financial_need Variable for the X-machine memory.
  * \param range Variable for the X-machine memory.
  * \param posx Variable for the X-machine memory.
  * \param posy Variable for the X-machine memory.
  */
-void add_Firm_agent(int id, int current_shares_outstanding, double total_dividend_payment, double bank_account, double equity, double range, double posx, double posy)
+void add_Firm_agent(int id, int current_shares_outstanding, double bank_account, double revenues, double labor_costs, double capital_costs, double total_interest_payment, double total_debt_installment, double total_dividend_payment, double net_ernings, double total_value_capital_stock, double total_value_local_inventary_stock, double equity, double external_financial_need, double range, double posx, double posy)
 {
 	xmachine * new_xmachine = add_xmachine();
 	xmachine_memory_Firm * current;
@@ -567,9 +585,18 @@ void add_Firm_agent(int id, int current_shares_outstanding, double total_dividen
 	
 	current->id = id;
 	current->current_shares_outstanding = current_shares_outstanding;
-	current->total_dividend_payment = total_dividend_payment;
 	current->bank_account = bank_account;
+	current->revenues = revenues;
+	current->labor_costs = labor_costs;
+	current->capital_costs = capital_costs;
+	current->total_interest_payment = total_interest_payment;
+	current->total_debt_installment = total_debt_installment;
+	current->total_dividend_payment = total_dividend_payment;
+	current->net_ernings = net_ernings;
+	current->total_value_capital_stock = total_value_capital_stock;
+	current->total_value_local_inventary_stock = total_value_local_inventary_stock;
 	current->equity = equity;
+	current->external_financial_need = external_financial_need;
 	current->range = range;
 	current->posx = posx;
 	current->posy = posy;
@@ -929,66 +956,66 @@ int get_binsNumber()
     return (int)0;
 }
 
-/** \fn void set_randomReturnWeigth(double randomReturnWeigth) 
- * \brief Set randomReturnWeigth memory variable for current X-machine.
- * \param randomReturnWeigth New value for variable.
+/** \fn void set_randomWeigth(double randomWeigth) 
+ * \brief Set randomWeigth memory variable for current X-machine.
+ * \param randomWeigth New value for variable.
  */
-void set_randomReturnWeigth(double randomReturnWeigth)
+void set_randomWeigth(double randomWeigth)
 {
-	if(current_xmachine->xmachine_Household) (*current_xmachine->xmachine_Household).randomReturnWeigth = randomReturnWeigth;
+	if(current_xmachine->xmachine_Household) (*current_xmachine->xmachine_Household).randomWeigth = randomWeigth;
 }
 
-/** \fn double get_randomReturnWeigth()
- * \brief Get randomReturnWeigth memory variable from current X-machine.
+/** \fn double get_randomWeigth()
+ * \brief Get randomWeigth memory variable from current X-machine.
  * \return Value for variable.
  */
-double get_randomReturnWeigth()
+double get_randomWeigth()
 {
-	if(current_xmachine->xmachine_Household) return (*current_xmachine->xmachine_Household).randomReturnWeigth;
+	if(current_xmachine->xmachine_Household) return (*current_xmachine->xmachine_Household).randomWeigth;
 
     // suppress compiler warning by returning dummy value /
     // this statement should rightfully NEVER be reached /
     return (double)0;
 }
 
-/** \fn void set_fundametalReturnWeigth(double fundametalReturnWeigth) 
- * \brief Set fundametalReturnWeigth memory variable for current X-machine.
- * \param fundametalReturnWeigth New value for variable.
+/** \fn void set_fundametalWeigth(double fundametalWeigth) 
+ * \brief Set fundametalWeigth memory variable for current X-machine.
+ * \param fundametalWeigth New value for variable.
  */
-void set_fundametalReturnWeigth(double fundametalReturnWeigth)
+void set_fundametalWeigth(double fundametalWeigth)
 {
-	if(current_xmachine->xmachine_Household) (*current_xmachine->xmachine_Household).fundametalReturnWeigth = fundametalReturnWeigth;
+	if(current_xmachine->xmachine_Household) (*current_xmachine->xmachine_Household).fundametalWeigth = fundametalWeigth;
 }
 
-/** \fn double get_fundametalReturnWeigth()
- * \brief Get fundametalReturnWeigth memory variable from current X-machine.
+/** \fn double get_fundametalWeigth()
+ * \brief Get fundametalWeigth memory variable from current X-machine.
  * \return Value for variable.
  */
-double get_fundametalReturnWeigth()
+double get_fundametalWeigth()
 {
-	if(current_xmachine->xmachine_Household) return (*current_xmachine->xmachine_Household).fundametalReturnWeigth;
+	if(current_xmachine->xmachine_Household) return (*current_xmachine->xmachine_Household).fundametalWeigth;
 
     // suppress compiler warning by returning dummy value /
     // this statement should rightfully NEVER be reached /
     return (double)0;
 }
 
-/** \fn void set_chartistReturnWeigth(double chartistReturnWeigth) 
- * \brief Set chartistReturnWeigth memory variable for current X-machine.
- * \param chartistReturnWeigth New value for variable.
+/** \fn void set_chartistWeigth(double chartistWeigth) 
+ * \brief Set chartistWeigth memory variable for current X-machine.
+ * \param chartistWeigth New value for variable.
  */
-void set_chartistReturnWeigth(double chartistReturnWeigth)
+void set_chartistWeigth(double chartistWeigth)
 {
-	if(current_xmachine->xmachine_Household) (*current_xmachine->xmachine_Household).chartistReturnWeigth = chartistReturnWeigth;
+	if(current_xmachine->xmachine_Household) (*current_xmachine->xmachine_Household).chartistWeigth = chartistWeigth;
 }
 
-/** \fn double get_chartistReturnWeigth()
- * \brief Get chartistReturnWeigth memory variable from current X-machine.
+/** \fn double get_chartistWeigth()
+ * \brief Get chartistWeigth memory variable from current X-machine.
  * \return Value for variable.
  */
-double get_chartistReturnWeigth()
+double get_chartistWeigth()
 {
-	if(current_xmachine->xmachine_Household) return (*current_xmachine->xmachine_Household).chartistReturnWeigth;
+	if(current_xmachine->xmachine_Household) return (*current_xmachine->xmachine_Household).chartistWeigth;
 
     // suppress compiler warning by returning dummy value /
     // this statement should rightfully NEVER be reached /
@@ -1039,28 +1066,6 @@ int get_current_shares_outstanding()
     return (int)0;
 }
 
-/** \fn void set_total_dividend_payment(double total_dividend_payment) 
- * \brief Set total_dividend_payment memory variable for current X-machine.
- * \param total_dividend_payment New value for variable.
- */
-void set_total_dividend_payment(double total_dividend_payment)
-{
-	if(current_xmachine->xmachine_Firm) (*current_xmachine->xmachine_Firm).total_dividend_payment = total_dividend_payment;
-}
-
-/** \fn double get_total_dividend_payment()
- * \brief Get total_dividend_payment memory variable from current X-machine.
- * \return Value for variable.
- */
-double get_total_dividend_payment()
-{
-	if(current_xmachine->xmachine_Firm) return (*current_xmachine->xmachine_Firm).total_dividend_payment;
-
-    // suppress compiler warning by returning dummy value /
-    // this statement should rightfully NEVER be reached /
-    return (double)0;
-}
-
 /** \fn void set_bank_account(double bank_account) 
  * \brief Set bank_account memory variable for current X-machine.
  * \param bank_account New value for variable.
@@ -1083,6 +1088,204 @@ double get_bank_account()
     return (double)0;
 }
 
+/** \fn void set_revenues(double revenues) 
+ * \brief Set revenues memory variable for current X-machine.
+ * \param revenues New value for variable.
+ */
+void set_revenues(double revenues)
+{
+	if(current_xmachine->xmachine_Firm) (*current_xmachine->xmachine_Firm).revenues = revenues;
+}
+
+/** \fn double get_revenues()
+ * \brief Get revenues memory variable from current X-machine.
+ * \return Value for variable.
+ */
+double get_revenues()
+{
+	if(current_xmachine->xmachine_Firm) return (*current_xmachine->xmachine_Firm).revenues;
+
+    // suppress compiler warning by returning dummy value /
+    // this statement should rightfully NEVER be reached /
+    return (double)0;
+}
+
+/** \fn void set_labor_costs(double labor_costs) 
+ * \brief Set labor_costs memory variable for current X-machine.
+ * \param labor_costs New value for variable.
+ */
+void set_labor_costs(double labor_costs)
+{
+	if(current_xmachine->xmachine_Firm) (*current_xmachine->xmachine_Firm).labor_costs = labor_costs;
+}
+
+/** \fn double get_labor_costs()
+ * \brief Get labor_costs memory variable from current X-machine.
+ * \return Value for variable.
+ */
+double get_labor_costs()
+{
+	if(current_xmachine->xmachine_Firm) return (*current_xmachine->xmachine_Firm).labor_costs;
+
+    // suppress compiler warning by returning dummy value /
+    // this statement should rightfully NEVER be reached /
+    return (double)0;
+}
+
+/** \fn void set_capital_costs(double capital_costs) 
+ * \brief Set capital_costs memory variable for current X-machine.
+ * \param capital_costs New value for variable.
+ */
+void set_capital_costs(double capital_costs)
+{
+	if(current_xmachine->xmachine_Firm) (*current_xmachine->xmachine_Firm).capital_costs = capital_costs;
+}
+
+/** \fn double get_capital_costs()
+ * \brief Get capital_costs memory variable from current X-machine.
+ * \return Value for variable.
+ */
+double get_capital_costs()
+{
+	if(current_xmachine->xmachine_Firm) return (*current_xmachine->xmachine_Firm).capital_costs;
+
+    // suppress compiler warning by returning dummy value /
+    // this statement should rightfully NEVER be reached /
+    return (double)0;
+}
+
+/** \fn void set_total_interest_payment(double total_interest_payment) 
+ * \brief Set total_interest_payment memory variable for current X-machine.
+ * \param total_interest_payment New value for variable.
+ */
+void set_total_interest_payment(double total_interest_payment)
+{
+	if(current_xmachine->xmachine_Firm) (*current_xmachine->xmachine_Firm).total_interest_payment = total_interest_payment;
+}
+
+/** \fn double get_total_interest_payment()
+ * \brief Get total_interest_payment memory variable from current X-machine.
+ * \return Value for variable.
+ */
+double get_total_interest_payment()
+{
+	if(current_xmachine->xmachine_Firm) return (*current_xmachine->xmachine_Firm).total_interest_payment;
+
+    // suppress compiler warning by returning dummy value /
+    // this statement should rightfully NEVER be reached /
+    return (double)0;
+}
+
+/** \fn void set_total_debt_installment(double total_debt_installment) 
+ * \brief Set total_debt_installment memory variable for current X-machine.
+ * \param total_debt_installment New value for variable.
+ */
+void set_total_debt_installment(double total_debt_installment)
+{
+	if(current_xmachine->xmachine_Firm) (*current_xmachine->xmachine_Firm).total_debt_installment = total_debt_installment;
+}
+
+/** \fn double get_total_debt_installment()
+ * \brief Get total_debt_installment memory variable from current X-machine.
+ * \return Value for variable.
+ */
+double get_total_debt_installment()
+{
+	if(current_xmachine->xmachine_Firm) return (*current_xmachine->xmachine_Firm).total_debt_installment;
+
+    // suppress compiler warning by returning dummy value /
+    // this statement should rightfully NEVER be reached /
+    return (double)0;
+}
+
+/** \fn void set_total_dividend_payment(double total_dividend_payment) 
+ * \brief Set total_dividend_payment memory variable for current X-machine.
+ * \param total_dividend_payment New value for variable.
+ */
+void set_total_dividend_payment(double total_dividend_payment)
+{
+	if(current_xmachine->xmachine_Firm) (*current_xmachine->xmachine_Firm).total_dividend_payment = total_dividend_payment;
+}
+
+/** \fn double get_total_dividend_payment()
+ * \brief Get total_dividend_payment memory variable from current X-machine.
+ * \return Value for variable.
+ */
+double get_total_dividend_payment()
+{
+	if(current_xmachine->xmachine_Firm) return (*current_xmachine->xmachine_Firm).total_dividend_payment;
+
+    // suppress compiler warning by returning dummy value /
+    // this statement should rightfully NEVER be reached /
+    return (double)0;
+}
+
+/** \fn void set_net_ernings(double net_ernings) 
+ * \brief Set net_ernings memory variable for current X-machine.
+ * \param net_ernings New value for variable.
+ */
+void set_net_ernings(double net_ernings)
+{
+	if(current_xmachine->xmachine_Firm) (*current_xmachine->xmachine_Firm).net_ernings = net_ernings;
+}
+
+/** \fn double get_net_ernings()
+ * \brief Get net_ernings memory variable from current X-machine.
+ * \return Value for variable.
+ */
+double get_net_ernings()
+{
+	if(current_xmachine->xmachine_Firm) return (*current_xmachine->xmachine_Firm).net_ernings;
+
+    // suppress compiler warning by returning dummy value /
+    // this statement should rightfully NEVER be reached /
+    return (double)0;
+}
+
+/** \fn void set_total_value_capital_stock(double total_value_capital_stock) 
+ * \brief Set total_value_capital_stock memory variable for current X-machine.
+ * \param total_value_capital_stock New value for variable.
+ */
+void set_total_value_capital_stock(double total_value_capital_stock)
+{
+	if(current_xmachine->xmachine_Firm) (*current_xmachine->xmachine_Firm).total_value_capital_stock = total_value_capital_stock;
+}
+
+/** \fn double get_total_value_capital_stock()
+ * \brief Get total_value_capital_stock memory variable from current X-machine.
+ * \return Value for variable.
+ */
+double get_total_value_capital_stock()
+{
+	if(current_xmachine->xmachine_Firm) return (*current_xmachine->xmachine_Firm).total_value_capital_stock;
+
+    // suppress compiler warning by returning dummy value /
+    // this statement should rightfully NEVER be reached /
+    return (double)0;
+}
+
+/** \fn void set_total_value_local_inventary_stock(double total_value_local_inventary_stock) 
+ * \brief Set total_value_local_inventary_stock memory variable for current X-machine.
+ * \param total_value_local_inventary_stock New value for variable.
+ */
+void set_total_value_local_inventary_stock(double total_value_local_inventary_stock)
+{
+	if(current_xmachine->xmachine_Firm) (*current_xmachine->xmachine_Firm).total_value_local_inventary_stock = total_value_local_inventary_stock;
+}
+
+/** \fn double get_total_value_local_inventary_stock()
+ * \brief Get total_value_local_inventary_stock memory variable from current X-machine.
+ * \return Value for variable.
+ */
+double get_total_value_local_inventary_stock()
+{
+	if(current_xmachine->xmachine_Firm) return (*current_xmachine->xmachine_Firm).total_value_local_inventary_stock;
+
+    // suppress compiler warning by returning dummy value /
+    // this statement should rightfully NEVER be reached /
+    return (double)0;
+}
+
 /** \fn void set_equity(double equity) 
  * \brief Set equity memory variable for current X-machine.
  * \param equity New value for variable.
@@ -1099,6 +1302,28 @@ void set_equity(double equity)
 double get_equity()
 {
 	if(current_xmachine->xmachine_Firm) return (*current_xmachine->xmachine_Firm).equity;
+
+    // suppress compiler warning by returning dummy value /
+    // this statement should rightfully NEVER be reached /
+    return (double)0;
+}
+
+/** \fn void set_external_financial_need(double external_financial_need) 
+ * \brief Set external_financial_need memory variable for current X-machine.
+ * \param external_financial_need New value for variable.
+ */
+void set_external_financial_need(double external_financial_need)
+{
+	if(current_xmachine->xmachine_Firm) (*current_xmachine->xmachine_Firm).external_financial_need = external_financial_need;
+}
+
+/** \fn double get_external_financial_need()
+ * \brief Get external_financial_need memory variable from current X-machine.
+ * \return Value for variable.
+ */
+double get_external_financial_need()
+{
+	if(current_xmachine->xmachine_Firm) return (*current_xmachine->xmachine_Firm).external_financial_need;
 
     // suppress compiler warning by returning dummy value /
     // this statement should rightfully NEVER be reached /
