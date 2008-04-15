@@ -50,7 +50,6 @@ int Firm_compute_balance_sheet()
     int i;
 
     //double PAYMENT_ACCOUNT: account out of which payments are made, to be separated from the income_account on which current sale receipts are incoming
-    //CASH_HOLDINGS: equal to payment_account???? Cash holdings is an ambiguous term.
 
     //double_array LOANS                : dynamic array of structs with each struct a loan_item
     //struct loan_item

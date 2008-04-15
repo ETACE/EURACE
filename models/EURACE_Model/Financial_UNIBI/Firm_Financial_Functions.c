@@ -28,6 +28,8 @@ int Firm_compute_and_send_bond_orders()
  */
 int Firm_read_bond_transactions()
 {
+	double finances;
+	
     START_BOND_TRANSACTION_MESSAGE_LOOP
     if(bond_transaction_message->trader_id==ID)
     {
@@ -35,8 +37,14 @@ int Firm_read_bond_transactions()
         //bond_transaction_message->transaction_price
         //bond_transaction_message->transaction_quantity
     	
-    	//Convention: positive quantity is demand, negative quantity is selling
-    	PAYMENT_ACCOUNT -= bond_transaction_message->transaction_price * bond_transaction_message->transaction_quantity;
+    	//Finances obtained: positive quantity is demand, negative quantity is selling
+    	finances = (-1)*bond_transaction_message->transaction_price * bond_transaction_message->transaction_quantity;
+    	
+    	//Increase payment account with the finances obtained
+    	PAYMENT_ACCOUNT += finances;
+    	
+    	//Decrease external financial needs with the finances obtained
+    	EXTERNAL_FINANCIAL_NEEDS -= finances;
     }
     FINISH_BOND_TRANSACTION_MESSAGE_LOOP
     return 0;
@@ -67,15 +75,23 @@ int Firm_compute_and_send_stock_orders()
  */
 int Firm_read_stock_transactions()
 {
+	double finances;
+	
     START_STOCK_TRANSACTION_MESSAGE_LOOP
     if(stock_transaction_message->trader_id==ID)
     {
         //stock_transaction_message->stock_id
         //stock_transaction_message->transaction_price
         //stock_transaction_message->transaction_quantity
+    	    	
+    	//Finances obtained: positive quantity is demand, negative quantity is selling
+    	finances = (-1)*stock_transaction_message->transaction_price * stock_transaction_message->transaction_quantity;
     	
-       	//Convention: positive quantity is demand, negative quantity is selling
-        PAYMENT_ACCOUNT -= stock_transaction_message->transaction_price * stock_transaction_message->transaction_quantity;
+    	//Increase payment account with the finances obtained
+    	PAYMENT_ACCOUNT += finances;
+    	
+    	//Decrease external financial needs with the finances obtained
+    	EXTERNAL_FINANCIAL_NEEDS -= finances;
     }
     FINISH_STOCK_TRANSACTION_MESSAGE_LOOP
     return 0;
@@ -111,7 +127,7 @@ int Firm_read_gov_bond_transactions()
         //gov_bond_transaction_message->transaction_quantity;
     	
       	//Convention: positive quantity is demand, negative quantity is selling
-        PAYMENT_ACCOUNT -= gov_bond_transaction_message->transaction_price * gov_bond_transaction_message->transaction_quantity;    	
+        //PAYMENT_ACCOUNT -= gov_bond_transaction_message->transaction_price * gov_bond_transaction_message->transaction_quantity;    	
     }
     FINISH_GOV_BOND_TRANSACTION_MESSAGE_LOOP
     return 0;
