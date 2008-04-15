@@ -43,5 +43,24 @@ double stockExpectedPriceReturns(Belief *belief, Asset *asset);
 /*restituisce un istogramma delle frequenze dei expectedTotalReturn degli asset);*/
 
 //Histogram *computePTHistogram(Belief *belief); 
+
+
+
+
+void  assetBeliefFormation(Belief *belief, CAsset *assets,Random *rnd);
+
+void computeStockExpectedPriceReturns(Belief *belief, Asset *asset);
+
+double stockExpectedPriceReturns(Belief *belief,Asset *anAsset);
+
+int forwardMonths(Belief *belief, int currentDay, int forwardWindow, int dayInMonth);
+    
+double horizonRetainedEarnings(Belief *belief,Stock *stock, int currentDay,int forwardWindow);
+
+double futureFundamentalReturn(Belief *belief,Stock *stock,int currentDay);
+
+double randomReturn(Belief *belief, Stock *stock,int forwardWindow, Random *rnd);
+void  stockBeliefFormation(Belief *belief, Stock *stock,int backwardWindow,double randomWeigth,double  fundametalWeigth, double chartistWeigth, , int bins ,Random *rnd);
+
  
 #endif

@@ -265,11 +265,6 @@ printf("Ouput dir: %s\n", outputpath);
 		{
 			i = 0;
 		
-			if(current_xmachine->xmachine_Firm != NULL)
-			{
-				i = receiveAssetInformation();
-			}
-		
 			if(current_xmachine->xmachine_ClearingHouse != NULL)
 			{
 				i = receiveAssetInformation();
@@ -326,11 +321,6 @@ printf("Ouput dir: %s\n", outputpath);
 		{
 			i = 0;
 		
-			if(current_xmachine->xmachine_Firm != NULL)
-			{
-				i = receiveOrdersAndRun();
-			}
-		
 			if(current_xmachine->xmachine_ClearingHouse != NULL)
 			{
 				i = receiveOrdersAndRun();
@@ -354,11 +344,6 @@ printf("Ouput dir: %s\n", outputpath);
 		while(current_xmachine)
 		{
 			i = 0;
-		
-			if(current_xmachine->xmachine_Firm != NULL)
-			{
-				i = sendAssetInformation();
-			}
 		
 			if(current_xmachine->xmachine_ClearingHouse != NULL)
 			{
@@ -410,6 +395,11 @@ printf("Ouput dir: %s\n", outputpath);
 		while(current_xmachine)
 		{
 			i = 0;
+		
+			if(current_xmachine->xmachine_Firm != NULL)
+			{
+				i = functions();
+			}
 		
 			if(current_xmachine->xmachine_Household != NULL)
 			{

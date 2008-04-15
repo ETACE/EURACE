@@ -23,4 +23,4 @@ void histogram(Histogram *histogram, double *data, int len, int bins);
 
 /* a partire dalle frequenze dei ritorni e da una funzione lineare a tratti calcola la funzione di utilita, 
 la funzione di utilita e una funzione discreta calcolata per integrazione U*/
-double *computeAssetUtilityFunction(Histogram *hist,lossAversion)
+double *computeAssetUtilityFunction(Histogram *hist,double lossAversion);

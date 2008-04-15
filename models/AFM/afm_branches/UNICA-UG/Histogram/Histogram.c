@@ -53,3 +53,7 @@ void evaluateMaxMin(Histogram* hist, double data[], int len) {
 	hist->max = tempMax;
 	hist->min = tempMin;
 }
+double *computeAssetUtilityFunction(Histogram *hist,double lossAversion)
+{ double *result;
+  return resutl;
+}

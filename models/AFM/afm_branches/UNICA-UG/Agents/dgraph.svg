@@ -9,35 +9,29 @@
 <rect x="20" y="70" width="178" height="40" stroke="black" stroke-width="2" fill="white"/>
 <text x="25" y="85" style="font-family: Lucida Console, monospace; font-size: 12px">receiveAssetInformation</text>
 <text x="25" y="102" style="font-family: Lucida Console, monospace; font-size: 12px">(40 lines)</text>
-<rect x="208" y="70" width="178" height="40" stroke="black" stroke-width="2" fill="white"/>
-<text x="213" y="85" style="font-family: Lucida Console, monospace; font-size: 12px">receiveAssetInformation</text>
+<rect x="208" y="70" width="115" height="40" stroke="black" stroke-width="2" fill="white"/>
+<text x="213" y="85" style="font-family: Lucida Console, monospace; font-size: 12px">selectStrategy</text>
 <text x="213" y="102" style="font-family: Lucida Console, monospace; font-size: 12px">(40 lines)</text>
-<rect x="396" y="70" width="115" height="40" stroke="black" stroke-width="2" fill="white"/>
-<text x="401" y="85" style="font-family: Lucida Console, monospace; font-size: 12px">selectStrategy</text>
-<text x="401" y="102" style="font-family: Lucida Console, monospace; font-size: 12px">(40 lines)</text>
 <line x1="0" y1="115" x2="120" y2="115" style="stroke:rgb(256,0,0);stroke-width:2"/>
 <rect x="20" y="120" width="150" height="40" stroke="black" stroke-width="2" fill="white"/>
 <text x="25" y="135" style="font-family: Lucida Console, monospace; font-size: 12px">receiveOrdersAndRun</text>
 <text x="25" y="152" style="font-family: Lucida Console, monospace; font-size: 12px">(40 lines)</text>
-<rect x="180" y="120" width="150" height="40" stroke="black" stroke-width="2" fill="white"/>
-<text x="185" y="135" style="font-family: Lucida Console, monospace; font-size: 12px">receiveOrdersAndRun</text>
-<text x="185" y="152" style="font-family: Lucida Console, monospace; font-size: 12px">(40 lines)</text>
 <rect x="20" y="170" width="157" height="40" stroke="black" stroke-width="2" fill="white"/>
 <text x="25" y="185" style="font-family: Lucida Console, monospace; font-size: 12px">sendAssetInformation</text>
 <text x="25" y="202" style="font-family: Lucida Console, monospace; font-size: 12px">(40 lines)</text>
-<rect x="187" y="170" width="157" height="40" stroke="black" stroke-width="2" fill="white"/>
-<text x="192" y="185" style="font-family: Lucida Console, monospace; font-size: 12px">sendAssetInformation</text>
-<text x="192" y="202" style="font-family: Lucida Console, monospace; font-size: 12px">(40 lines)</text>
 <line x1="0" y1="215" x2="120" y2="215" style="stroke:rgb(256,0,0);stroke-width:2"/>
-<rect x="20" y="220" width="213" height="40" stroke="black" stroke-width="2" fill="white"/>
-<text x="25" y="235" style="font-family: Lucida Console, monospace; font-size: 12px">receiveAssetInformationHouse</text>
+<rect x="20" y="220" width="100" height="40" stroke="black" stroke-width="2" fill="white"/>
+<text x="25" y="235" style="font-family: Lucida Console, monospace; font-size: 12px">functions</text>
 <text x="25" y="252" style="font-family: Lucida Console, monospace; font-size: 12px">(40 lines)</text>
-<rect x="243" y="220" width="101" height="40" stroke="black" stroke-width="2" fill="white"/>
-<text x="248" y="235" style="font-family: Lucida Console, monospace; font-size: 12px">updateTrader</text>
-<text x="248" y="252" style="font-family: Lucida Console, monospace; font-size: 12px">(40 lines)</text>
-<rect x="354" y="220" width="206" height="40" stroke="black" stroke-width="2" fill="white"/>
-<text x="359" y="235" style="font-family: Lucida Console, monospace; font-size: 12px">receiveAssetInformationEURO</text>
-<text x="359" y="252" style="font-family: Lucida Console, monospace; font-size: 12px">(40 lines)</text>
+<rect x="130" y="220" width="213" height="40" stroke="black" stroke-width="2" fill="white"/>
+<text x="135" y="235" style="font-family: Lucida Console, monospace; font-size: 12px">receiveAssetInformationHouse</text>
+<text x="135" y="252" style="font-family: Lucida Console, monospace; font-size: 12px">(40 lines)</text>
+<rect x="353" y="220" width="101" height="40" stroke="black" stroke-width="2" fill="white"/>
+<text x="358" y="235" style="font-family: Lucida Console, monospace; font-size: 12px">updateTrader</text>
+<text x="358" y="252" style="font-family: Lucida Console, monospace; font-size: 12px">(40 lines)</text>
+<rect x="464" y="220" width="206" height="40" stroke="black" stroke-width="2" fill="white"/>
+<text x="469" y="235" style="font-family: Lucida Console, monospace; font-size: 12px">receiveAssetInformationEURO</text>
+<text x="469" y="252" style="font-family: Lucida Console, monospace; font-size: 12px">(40 lines)</text>
 <line x1="0" y1="265" x2="120" y2="265" style="stroke:rgb(256,0,0);stroke-width:2"/>
 
 </svg>

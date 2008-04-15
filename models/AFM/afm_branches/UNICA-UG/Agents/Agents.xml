@@ -144,7 +144,6 @@
 		<memory>
 			<var><type>int</type><name>id</name></var>
 			<var><type>int</type><name>current_shares_outstanding</name></var>
-			<var><type>double</type><name>total_dividend_payment</name></var>
 			<var><type>double</type><name>bank_account</name></var>
 			<var><type>double</type><name>revenues</name></var>
 			<var><type>double</type><name>labor_costs</name></var>

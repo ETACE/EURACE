@@ -588,14 +588,23 @@ void readinitialstates(char * filename, int * itno, xmachine ** agent_list, doub
 	int in_forwardWindow;
 	int in_backwordWindow;
 	int in_binsNumber;
-	int in_randomReturnWeigth;
-	int in_fundametalReturnWeigth;
-	int in_chartistReturnWeigth;
+	int in_randomWeigth;
+	int in_fundametalWeigth;
+	int in_chartistWeigth;
 	int in_holdingPeriodToForwardW;
 	int in_current_shares_outstanding;
-	int in_total_dividend_payment;
 	int in_bank_account;
+	int in_revenues;
+	int in_labor_costs;
+	int in_capital_costs;
+	int in_total_interest_payment;
+	int in_total_debt_installment;
+	int in_total_dividend_payment;
+	int in_net_ernings;
+	int in_total_value_capital_stock;
+	int in_total_value_local_inventary_stock;
 	int in_equity;
+	int in_external_financial_need;
 
 
 	/* Variables for initial state data */
@@ -612,14 +621,23 @@ void readinitialstates(char * filename, int * itno, xmachine ** agent_list, doub
 //	int forwardWindow;
 //	int backwordWindow;
 //	int binsNumber;
-//	double randomReturnWeigth;
-//	double fundametalReturnWeigth;
-//	double chartistReturnWeigth;
+//	double randomWeigth;
+//	double fundametalWeigth;
+//	double chartistWeigth;
 //	int holdingPeriodToForwardW;
 //	int current_shares_outstanding;
-//	double total_dividend_payment;
 //	double bank_account;
+//	double revenues;
+//	double labor_costs;
+//	double capital_costs;
+//	double total_interest_payment;
+//	double total_debt_installment;
+//	double total_dividend_payment;
+//	double net_ernings;
+//	double total_value_capital_stock;
+//	double total_value_local_inventary_stock;
 //	double equity;
+//	double external_financial_need;
 
 
 	xmachine_memory_Eurostat * current_Eurostat_agent;
@@ -663,14 +681,23 @@ void readinitialstates(char * filename, int * itno, xmachine ** agent_list, doub
 	in_forwardWindow = 0;
 	in_backwordWindow = 0;
 	in_binsNumber = 0;
-	in_randomReturnWeigth = 0;
-	in_fundametalReturnWeigth = 0;
-	in_chartistReturnWeigth = 0;
+	in_randomWeigth = 0;
+	in_fundametalWeigth = 0;
+	in_chartistWeigth = 0;
 	in_holdingPeriodToForwardW = 0;
 	in_current_shares_outstanding = 0;
-	in_total_dividend_payment = 0;
 	in_bank_account = 0;
+	in_revenues = 0;
+	in_labor_costs = 0;
+	in_capital_costs = 0;
+	in_total_interest_payment = 0;
+	in_total_debt_installment = 0;
+	in_total_dividend_payment = 0;
+	in_net_ernings = 0;
+	in_total_value_capital_stock = 0;
+	in_total_value_local_inventary_stock = 0;
 	in_equity = 0;
+	in_external_financial_need = 0;
 
 	/* Default variables for memory */
 	/* Not implemented static arrays */
@@ -687,14 +714,23 @@ void readinitialstates(char * filename, int * itno, xmachine ** agent_list, doub
 //	forwardWindow = 0;
 //	backwordWindow = 0;
 //	binsNumber = 0;
-//	randomReturnWeigth = 0.0;
-//	fundametalReturnWeigth = 0.0;
-//	chartistReturnWeigth = 0.0;
+//	randomWeigth = 0.0;
+//	fundametalWeigth = 0.0;
+//	chartistWeigth = 0.0;
 //	holdingPeriodToForwardW = 0;
 //	current_shares_outstanding = 0;
-//	total_dividend_payment = 0.0;
 //	bank_account = 0.0;
+//	revenues = 0.0;
+//	labor_costs = 0.0;
+//	capital_costs = 0.0;
+//	total_interest_payment = 0.0;
+//	total_debt_installment = 0.0;
+//	total_dividend_payment = 0.0;
+//	net_ernings = 0.0;
+//	total_value_capital_stock = 0.0;
+//	total_value_local_inventary_stock = 0.0;
 //	equity = 0.0;
+//	external_financial_need = 0.0;
 
 
 
@@ -856,7 +892,7 @@ in_Firm_agent = 0;
 					 * If flag is not zero we aleady have partition data so can read and distribute to the current node.*/
 					if( flag == 0 )
 					{
-						//add_Household_agent(id, wealth, belief, portfolio, pendingOrders, assetsowned, forwardWindow, backwordWindow, binsNumber, randomReturnWeigth, fundametalReturnWeigth, chartistReturnWeigth, holdingPeriodToForwardW, range, posx, posy);
+						//add_Household_agent(id, wealth, belief, portfolio, pendingOrders, assetsowned, forwardWindow, backwordWindow, binsNumber, randomWeigth, fundametalWeigth, chartistWeigth, holdingPeriodToForwardW, range, posx, posy);
 						add_Household_agent_internal(current_Household_agent);
 						
 						/* Update the cloud data */
@@ -882,7 +918,7 @@ in_Firm_agent = 0;
 							)
 							{
 								p_xmachine = &(current_node->agents);
-								//add_Household_agent(id, wealth, belief, portfolio, pendingOrders, assetsowned, forwardWindow, backwordWindow, binsNumber, randomReturnWeigth, fundametalReturnWeigth, chartistReturnWeigth, holdingPeriodToForwardW, range, posx, posy);
+								//add_Household_agent(id, wealth, belief, portfolio, pendingOrders, assetsowned, forwardWindow, backwordWindow, binsNumber, randomWeigth, fundametalWeigth, chartistWeigth, holdingPeriodToForwardW, range, posx, posy);
 								add_Household_agent_internal(current_Household_agent);
 							} 
 						}
@@ -901,7 +937,7 @@ in_Firm_agent = 0;
 								rrange=1.5;
 
 								p_xmachine = &(current_node->agents);
-								//add_Household_agent(id, wealth, belief, portfolio, pendingOrders, assetsowned, forwardWindow, backwordWindow, binsNumber, randomReturnWeigth, fundametalReturnWeigth, chartistReturnWeigth, holdingPeriodToForwardW, range, posx, posy);
+								//add_Household_agent(id, wealth, belief, portfolio, pendingOrders, assetsowned, forwardWindow, backwordWindow, binsNumber, randomWeigth, fundametalWeigth, chartistWeigth, holdingPeriodToForwardW, range, posx, posy);
 								add_Household_agent_internal(current_Household_agent);
 
 								current_Household_agent->posx = xcentre;
@@ -994,7 +1030,7 @@ in_Firm_agent = 0;
 					 * If flag is not zero we aleady have partition data so can read and distribute to the current node.*/
 					if( flag == 0 )
 					{
-						//add_Firm_agent(id, current_shares_outstanding, total_dividend_payment, bank_account, equity, range, posx, posy);
+						//add_Firm_agent(id, current_shares_outstanding, bank_account, revenues, labor_costs, capital_costs, total_interest_payment, total_debt_installment, total_dividend_payment, net_ernings, total_value_capital_stock, total_value_local_inventary_stock, equity, external_financial_need, range, posx, posy);
 						add_Firm_agent_internal(current_Firm_agent);
 						
 						/* Update the cloud data */
@@ -1020,7 +1056,7 @@ in_Firm_agent = 0;
 							)
 							{
 								p_xmachine = &(current_node->agents);
-								//add_Firm_agent(id, current_shares_outstanding, total_dividend_payment, bank_account, equity, range, posx, posy);
+								//add_Firm_agent(id, current_shares_outstanding, bank_account, revenues, labor_costs, capital_costs, total_interest_payment, total_debt_installment, total_dividend_payment, net_ernings, total_value_capital_stock, total_value_local_inventary_stock, equity, external_financial_need, range, posx, posy);
 								add_Firm_agent_internal(current_Firm_agent);
 							} 
 						}
@@ -1039,7 +1075,7 @@ in_Firm_agent = 0;
 								rrange=1.5;
 
 								p_xmachine = &(current_node->agents);
-								//add_Firm_agent(id, current_shares_outstanding, total_dividend_payment, bank_account, equity, range, posx, posy);
+								//add_Firm_agent(id, current_shares_outstanding, bank_account, revenues, labor_costs, capital_costs, total_interest_payment, total_debt_installment, total_dividend_payment, net_ernings, total_value_capital_stock, total_value_local_inventary_stock, equity, external_financial_need, range, posx, posy);
 								add_Firm_agent_internal(current_Firm_agent);
 
 								current_Firm_agent->posx = xcentre;
@@ -1070,14 +1106,23 @@ in_Firm_agent = 0;
 //////////				forwardWindow = 0;
 //				backwordWindow = 0;
 //				binsNumber = 0;
-//				randomReturnWeigth = 0.0;
-//				fundametalReturnWeigth = 0.0;
-//				chartistReturnWeigth = 0.0;
+//				randomWeigth = 0.0;
+//				fundametalWeigth = 0.0;
+//				chartistWeigth = 0.0;
 //				holdingPeriodToForwardW = 0;
 //				current_shares_outstanding = 0;
-//				total_dividend_payment = 0.0;
 //				bank_account = 0.0;
+//				revenues = 0.0;
+//				labor_costs = 0.0;
+//				capital_costs = 0.0;
+//				total_interest_payment = 0.0;
+//				total_debt_installment = 0.0;
+//				total_dividend_payment = 0.0;
+//				net_ernings = 0.0;
+//				total_value_capital_stock = 0.0;
+//				total_value_local_inventary_stock = 0.0;
 //				equity = 0.0;
+//				external_financial_need = 0.0;
 
 	}
 			if(strcmp(buffer, "id") == 0) in_id = 1;
@@ -1106,22 +1151,40 @@ in_Firm_agent = 0;
 			if(strcmp(buffer, "/backwordWindow") == 0) in_backwordWindow = 0;
 			if(strcmp(buffer, "binsNumber") == 0) in_binsNumber = 1;
 			if(strcmp(buffer, "/binsNumber") == 0) in_binsNumber = 0;
-			if(strcmp(buffer, "randomReturnWeigth") == 0) in_randomReturnWeigth = 1;
-			if(strcmp(buffer, "/randomReturnWeigth") == 0) in_randomReturnWeigth = 0;
-			if(strcmp(buffer, "fundametalReturnWeigth") == 0) in_fundametalReturnWeigth = 1;
-			if(strcmp(buffer, "/fundametalReturnWeigth") == 0) in_fundametalReturnWeigth = 0;
-			if(strcmp(buffer, "chartistReturnWeigth") == 0) in_chartistReturnWeigth = 1;
-			if(strcmp(buffer, "/chartistReturnWeigth") == 0) in_chartistReturnWeigth = 0;
+			if(strcmp(buffer, "randomWeigth") == 0) in_randomWeigth = 1;
+			if(strcmp(buffer, "/randomWeigth") == 0) in_randomWeigth = 0;
+			if(strcmp(buffer, "fundametalWeigth") == 0) in_fundametalWeigth = 1;
+			if(strcmp(buffer, "/fundametalWeigth") == 0) in_fundametalWeigth = 0;
+			if(strcmp(buffer, "chartistWeigth") == 0) in_chartistWeigth = 1;
+			if(strcmp(buffer, "/chartistWeigth") == 0) in_chartistWeigth = 0;
 			if(strcmp(buffer, "holdingPeriodToForwardW") == 0) in_holdingPeriodToForwardW = 1;
 			if(strcmp(buffer, "/holdingPeriodToForwardW") == 0) in_holdingPeriodToForwardW = 0;
 			if(strcmp(buffer, "current_shares_outstanding") == 0) in_current_shares_outstanding = 1;
 			if(strcmp(buffer, "/current_shares_outstanding") == 0) in_current_shares_outstanding = 0;
-			if(strcmp(buffer, "total_dividend_payment") == 0) in_total_dividend_payment = 1;
-			if(strcmp(buffer, "/total_dividend_payment") == 0) in_total_dividend_payment = 0;
 			if(strcmp(buffer, "bank_account") == 0) in_bank_account = 1;
 			if(strcmp(buffer, "/bank_account") == 0) in_bank_account = 0;
+			if(strcmp(buffer, "revenues") == 0) in_revenues = 1;
+			if(strcmp(buffer, "/revenues") == 0) in_revenues = 0;
+			if(strcmp(buffer, "labor_costs") == 0) in_labor_costs = 1;
+			if(strcmp(buffer, "/labor_costs") == 0) in_labor_costs = 0;
+			if(strcmp(buffer, "capital_costs") == 0) in_capital_costs = 1;
+			if(strcmp(buffer, "/capital_costs") == 0) in_capital_costs = 0;
+			if(strcmp(buffer, "total_interest_payment") == 0) in_total_interest_payment = 1;
+			if(strcmp(buffer, "/total_interest_payment") == 0) in_total_interest_payment = 0;
+			if(strcmp(buffer, "total_debt_installment") == 0) in_total_debt_installment = 1;
+			if(strcmp(buffer, "/total_debt_installment") == 0) in_total_debt_installment = 0;
+			if(strcmp(buffer, "total_dividend_payment") == 0) in_total_dividend_payment = 1;
+			if(strcmp(buffer, "/total_dividend_payment") == 0) in_total_dividend_payment = 0;
+			if(strcmp(buffer, "net_ernings") == 0) in_net_ernings = 1;
+			if(strcmp(buffer, "/net_ernings") == 0) in_net_ernings = 0;
+			if(strcmp(buffer, "total_value_capital_stock") == 0) in_total_value_capital_stock = 1;
+			if(strcmp(buffer, "/total_value_capital_stock") == 0) in_total_value_capital_stock = 0;
+			if(strcmp(buffer, "total_value_local_inventary_stock") == 0) in_total_value_local_inventary_stock = 1;
+			if(strcmp(buffer, "/total_value_local_inventary_stock") == 0) in_total_value_local_inventary_stock = 0;
 			if(strcmp(buffer, "equity") == 0) in_equity = 1;
 			if(strcmp(buffer, "/equity") == 0) in_equity = 0;
+			if(strcmp(buffer, "external_financial_need") == 0) in_external_financial_need = 1;
+			if(strcmp(buffer, "/external_financial_need") == 0) in_external_financial_need = 0;
 
 
 			
@@ -1180,9 +1243,9 @@ in_Firm_agent = 0;
 				if(in_forwardWindow) current_Household_agent->forwardWindow = atoi(buffer);
 				if(in_backwordWindow) current_Household_agent->backwordWindow = atoi(buffer);
 				if(in_binsNumber) current_Household_agent->binsNumber = atoi(buffer);
-				if(in_randomReturnWeigth) current_Household_agent->randomReturnWeigth = atof(buffer);
-				if(in_fundametalReturnWeigth) current_Household_agent->fundametalReturnWeigth = atof(buffer);
-				if(in_chartistReturnWeigth) current_Household_agent->chartistReturnWeigth = atof(buffer);
+				if(in_randomWeigth) current_Household_agent->randomWeigth = atof(buffer);
+				if(in_fundametalWeigth) current_Household_agent->fundametalWeigth = atof(buffer);
+				if(in_chartistWeigth) current_Household_agent->chartistWeigth = atof(buffer);
 				if(in_holdingPeriodToForwardW) current_Household_agent->holdingPeriodToForwardW = atoi(buffer);
 				if(in_range) current_Household_agent->range = atof(buffer);
 				if(in_posx) current_Household_agent->posx = atof(buffer);
@@ -1202,9 +1265,18 @@ in_Firm_agent = 0;
 			{
 				if(in_id) current_Firm_agent->id = atoi(buffer);
 				if(in_current_shares_outstanding) current_Firm_agent->current_shares_outstanding = atoi(buffer);
-				if(in_total_dividend_payment) current_Firm_agent->total_dividend_payment = atof(buffer);
 				if(in_bank_account) current_Firm_agent->bank_account = atof(buffer);
+				if(in_revenues) current_Firm_agent->revenues = atof(buffer);
+				if(in_labor_costs) current_Firm_agent->labor_costs = atof(buffer);
+				if(in_capital_costs) current_Firm_agent->capital_costs = atof(buffer);
+				if(in_total_interest_payment) current_Firm_agent->total_interest_payment = atof(buffer);
+				if(in_total_debt_installment) current_Firm_agent->total_debt_installment = atof(buffer);
+				if(in_total_dividend_payment) current_Firm_agent->total_dividend_payment = atof(buffer);
+				if(in_net_ernings) current_Firm_agent->net_ernings = atof(buffer);
+				if(in_total_value_capital_stock) current_Firm_agent->total_value_capital_stock = atof(buffer);
+				if(in_total_value_local_inventary_stock) current_Firm_agent->total_value_local_inventary_stock = atof(buffer);
 				if(in_equity) current_Firm_agent->equity = atof(buffer);
+				if(in_external_financial_need) current_Firm_agent->external_financial_need = atof(buffer);
 				if(in_range) current_Firm_agent->range = atof(buffer);
 				if(in_posx) current_Firm_agent->posx = atof(buffer);
 				if(in_posy) current_Firm_agent->posy = atof(buffer);
@@ -1250,7 +1322,7 @@ in_Firm_agent = 0;
 //	free_Portfolio_datatype(portfolio);
 //	free_Order_array(pendingOrders);
 //	free_Asset_array(assetsowned);
-//////////////////////
+////////////////////////////////////////
 }
 
 /** \fn void saveiterationdata_binary(int iteration_number)
@@ -1731,18 +1803,18 @@ void saveiterationdata(int iteration_number)
 			sprintf(data, "%i", current_Household->binsNumber);
 			fputs(data, file);
 			fputs("</binsNumber>\n", file);
-			fputs("<randomReturnWeigth>", file);
-			sprintf(data, "%f", current_Household->randomReturnWeigth);
+			fputs("<randomWeigth>", file);
+			sprintf(data, "%f", current_Household->randomWeigth);
 			fputs(data, file);
-			fputs("</randomReturnWeigth>\n", file);
-			fputs("<fundametalReturnWeigth>", file);
-			sprintf(data, "%f", current_Household->fundametalReturnWeigth);
+			fputs("</randomWeigth>\n", file);
+			fputs("<fundametalWeigth>", file);
+			sprintf(data, "%f", current_Household->fundametalWeigth);
 			fputs(data, file);
-			fputs("</fundametalReturnWeigth>\n", file);
-			fputs("<chartistReturnWeigth>", file);
-			sprintf(data, "%f", current_Household->chartistReturnWeigth);
+			fputs("</fundametalWeigth>\n", file);
+			fputs("<chartistWeigth>", file);
+			sprintf(data, "%f", current_Household->chartistWeigth);
 			fputs(data, file);
-			fputs("</chartistReturnWeigth>\n", file);
+			fputs("</chartistWeigth>\n", file);
 			fputs("<holdingPeriodToForwardW>", file);
 			sprintf(data, "%i", current_Household->holdingPeriodToForwardW);
 			fputs(data, file);
@@ -1796,18 +1868,54 @@ void saveiterationdata(int iteration_number)
 			sprintf(data, "%i", current_Firm->current_shares_outstanding);
 			fputs(data, file);
 			fputs("</current_shares_outstanding>\n", file);
-			fputs("<total_dividend_payment>", file);
-			sprintf(data, "%f", current_Firm->total_dividend_payment);
-			fputs(data, file);
-			fputs("</total_dividend_payment>\n", file);
 			fputs("<bank_account>", file);
 			sprintf(data, "%f", current_Firm->bank_account);
 			fputs(data, file);
 			fputs("</bank_account>\n", file);
+			fputs("<revenues>", file);
+			sprintf(data, "%f", current_Firm->revenues);
+			fputs(data, file);
+			fputs("</revenues>\n", file);
+			fputs("<labor_costs>", file);
+			sprintf(data, "%f", current_Firm->labor_costs);
+			fputs(data, file);
+			fputs("</labor_costs>\n", file);
+			fputs("<capital_costs>", file);
+			sprintf(data, "%f", current_Firm->capital_costs);
+			fputs(data, file);
+			fputs("</capital_costs>\n", file);
+			fputs("<total_interest_payment>", file);
+			sprintf(data, "%f", current_Firm->total_interest_payment);
+			fputs(data, file);
+			fputs("</total_interest_payment>\n", file);
+			fputs("<total_debt_installment>", file);
+			sprintf(data, "%f", current_Firm->total_debt_installment);
+			fputs(data, file);
+			fputs("</total_debt_installment>\n", file);
+			fputs("<total_dividend_payment>", file);
+			sprintf(data, "%f", current_Firm->total_dividend_payment);
+			fputs(data, file);
+			fputs("</total_dividend_payment>\n", file);
+			fputs("<net_ernings>", file);
+			sprintf(data, "%f", current_Firm->net_ernings);
+			fputs(data, file);
+			fputs("</net_ernings>\n", file);
+			fputs("<total_value_capital_stock>", file);
+			sprintf(data, "%f", current_Firm->total_value_capital_stock);
+			fputs(data, file);
+			fputs("</total_value_capital_stock>\n", file);
+			fputs("<total_value_local_inventary_stock>", file);
+			sprintf(data, "%f", current_Firm->total_value_local_inventary_stock);
+			fputs(data, file);
+			fputs("</total_value_local_inventary_stock>\n", file);
 			fputs("<equity>", file);
 			sprintf(data, "%f", current_Firm->equity);
 			fputs(data, file);
 			fputs("</equity>\n", file);
+			fputs("<external_financial_need>", file);
+			sprintf(data, "%f", current_Firm->external_financial_need);
+			fputs(data, file);
+			fputs("</external_financial_need>\n", file);
 			fputs("<range>", file);
 			sprintf(data, "%f", current_Firm->range);
 			fputs(data, file);
