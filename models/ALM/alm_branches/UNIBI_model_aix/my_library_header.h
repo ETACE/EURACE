@@ -115,4 +115,4 @@ int job_application_list_rank_general_skill_function(const void *x, const void *
 int sales_statistics_list_rank_sales_function(const void *x, const void *y);
 int random_int(int min,int max);
 double max(double a, double b);
-double min(double a, double b)
+double min(double a, double b);
