@@ -10,6 +10,7 @@
 #include "Stock.h"
 #include <stdlib.h>
 #include "Random.h"
+#include "Histogram.h"
 #ifndef Belief_dty
 #define Belief_dty
 typedef struct Belief Belief;
@@ -19,6 +20,7 @@ struct Belief
        double expectedTotalReturns;
        double expectedCashFlowYield;
        double volatility;
+       Histogram hist;
        //int forwardWindow;
        //int backwordWindow;
        //int binsNumber;

@@ -63,7 +63,13 @@ double expectedReturnStock(Stock *aStock,int backwordWindow)
          mean=mean/(backwordWindow-1);
          return mean;
        }
-             
+double  backreturnsAt(Stock *stock,int ind)
+    { int index;
+      index=stock->index-ind;
+      if(index<0) index=MAXRETURNS+index;
+       return stock->returns[index];
+   }
+     
 double volatilityStock(Stock *aStock,int backwordWindow)
      { double expectedreturn;
        double volatility;
@@ -79,6 +85,25 @@ double volatilityStock(Stock *aStock,int backwordWindow)
        volatility=sqrt(volatility)/(backwordWindow-1);
       return volatility;
      }
+void copyWindowReturn(Stock *stock, double *vect, int backwordWindow)
+  {  int index,i;
+     double *returns;
+     index=stock->index;
+     returns=stock->returns;
+     for(i=0;i<(backwordWindow-1);i++)
+     temp[i]=backreturnsAt(stock,i);
+  }
+Histogram *frequencyReturns(Stock *stock, int backwordWindow,int bins)
+ { double temp[MAXRETURNS];
+   Histogram *hist;
+   hist=newHistogram();
+   copyWindowReturn(stock,temp,backwordWindow);
+   histogram(hist,temp,backwordWindow-1,bins);
+   return hist;
+   
+  
+ }
+     
 /*aswer the variance of the prices with a time window.
  if the window is less than 2 the answer is zero because the array of the returns has a size equal to 1
 
