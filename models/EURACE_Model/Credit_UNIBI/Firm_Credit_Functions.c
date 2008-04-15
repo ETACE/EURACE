@@ -28,7 +28,13 @@ int Firm_apply_for_loans()
 int Firm_read_loan_offers_send_loan_acceptance()
 {
 	double credit_amount_taken;
-	
+    int bank_id;
+    double loan_value;
+    double interest_rate;
+    double interest_payment;
+    double debt_installment_payment;
+   	int nr_periods_before_maturity;
+
     START_LOAN_CONDITIONS_MESSAGE_LOOP
         if(loan_conditions_message->firm_id==ID)
         {
@@ -41,10 +47,32 @@ int Firm_read_loan_offers_send_loan_acceptance()
         	credit_amount_taken = loan_conditions_message->amount_credit_offer;
             add_loan_acceptance_message(ID, loan_conditions_message->bank_id, credit_amount_taken, MSGDATA);
             
+            //Increase payment_account with the credit_amount_taken
             PAYMENT_ACCOUNT += credit_amount_taken;
+            
+            //Decrease external_financial_needs with the credit_amount_taken
+            EXTERNAL_FINANCIAL_NEEDS -= credit_amount_taken;
+            
+            //double_array LOANS                : dynamic array of structs with each struct a loan_item
+            //struct loan_item
+            //int bank_id                       : bank at which the loan was obtained
+            //double loan_value                 : total value of the loan remaining
+            //double interest_rate              : interest for this loan
+            //double interest_payment           : interest to be paid this period
+            //double debt_installment_payment   : installment payment per period
+            //int nr_periods_before_maturity    : nr of periods to go before the loan has to be fully repaid
+
+            //add_loan_item(&LOANS,(bank_id, loan_value, interest_rate, interest_payment, debt_installment_payment, nr_periods_before_maturity)
+            bank_id = loan_conditions_message->bank_id;
+            loan_value = credit_amount_taken;
+           	interest_rate = loan_conditions_message->proposed_interest_rate;
+           	interest_payment = interest_rate * loan_value;
+           	debt_installment_payment = loan_value/4;
+           	nr_periods_before_maturity = 4; //Standard 4 periods to repay debt
+           	
+            add_loan_item(&LOANS,(bank_id, loan_value, interest_rate, interest_payment, debt_installment_payment, nr_periods_before_maturity);            
         }
     FINISH_LOAN_CONDITIONS_MESSAGE_LOOP
 
     return 0;
 }
-
