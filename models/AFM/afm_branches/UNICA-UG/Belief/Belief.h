@@ -11,6 +11,9 @@
 #include <stdlib.h>
 #include "Random.h"
 #include "Histogram.h"
+#ifndef  DAYINMONTH 
+#define  DAYINMONTH 20
+#endif
 #ifndef Belief_dty
 #define Belief_dty
 typedef struct Belief Belief;
@@ -53,14 +56,14 @@ void computeStockExpectedPriceReturns(Belief *belief, Asset *asset);
 
 double stockExpectedPriceReturns(Belief *belief,Asset *anAsset);
 
-int forwardMonths(Belief *belief, int currentDay, int forwardWindow, int dayInMonth);
+int forwardMonths(Belief *belief, int currentDay, int forwardWindow);
     
 double horizonRetainedEarnings(Belief *belief,Stock *stock, int currentDay,int forwardWindow);
 
 double futureFundamentalReturn(Belief *belief,Stock *stock,int currentDay);
 
 double randomReturn(Belief *belief, Stock *stock,int forwardWindow, Random *rnd);
-void  stockBeliefFormation(Belief *belief, Stock *stock,int backwardWindow,double randomWeigth,double  fundametalWeigth, double chartistWeigth, , int bins ,Random *rnd);
+void  stockBeliefFormation(Belief *belief, Stock *stock,int backwardWindow,double randomWeigth,double  fundametalWeigth, double chartistWeigth, int bins ,Random *rnd);
 
  
 #endif

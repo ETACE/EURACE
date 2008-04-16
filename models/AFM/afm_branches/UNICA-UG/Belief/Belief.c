@@ -40,10 +40,10 @@ double stockExpectedPriceReturns(Belief *belief,Asset *anAsset)
        return expectedPriceReturn;
 }
 
-int forwardMonths(Belief *belief, int currentDay, int forwardWindow, int dayInMonth)
+int forwardMonths(Belief *belief, int currentDay, int forwardWindow)
 {   
     int nrForwardMonths;
-    nrForwardMonths=quo(currentDay+forwardWindow,dayInMonth)-quo(forwardWindow,dayInMonth);
+    nrForwardMonths=quo(currentDay+forwardWindow, DAYINMONTH)-quo(forwardWindow, DAYINMONTH);
     return nrForwardMonths;
 }
     
