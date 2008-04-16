@@ -57,4 +57,4 @@ void copyWindowReturn(Stock *stock, double *vect, int backwordWindow);
 
 Histogram *frequencyReturns(Stock *stock, int backwordWindow,int bins);
 
-        
+#endif
