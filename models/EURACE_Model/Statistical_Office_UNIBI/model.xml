@@ -109,7 +109,7 @@
 </function>
 
 <function><name>Firm_idle</name>
-<current_state>16</current_state>
+<current_state>14</current_state>
 <next_state>end</next_state>
 <condition>not_last_day_of_month</condition>
 </function>
