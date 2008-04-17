@@ -5,525 +5,6 @@
 
 #include "header.h"
 
-/** \fn void read_int_static_array(char * buffer, int * j, int ** int_static_array)
- * \brief Reads integer static array.
- */
-void read_int_static_array(char * buffer, int * j, int * int_static_array, int size)
-{
-	int arraycount = 0;
-	int array_k;
-	char arraydata[10000];
-	
-	(*j)++;
-	
-	while(buffer[(*j)] != '}')
-	{
-		array_k = 0;
-		while(buffer[(*j)] != ',' && buffer[(*j)] != '}')
-		{
-			arraydata[array_k] = buffer[(*j)];
-			array_k++;
-			(*j)++;
-		}
-		arraydata[array_k] = 0;
-		int_static_array[arraycount] = atoi(arraydata);
-		arraycount++;
-		if(buffer[(*j)] != '}') (*j)++;
-	}
-	
-	(*j)++;
-}
-
-/** \fn void read_float_static_array(char * buffer, int * (*j), int ** float_static_array)
- * \brief Reads float static array.
- */
-void read_float_static_array(char * buffer, int * j, float * float_static_array, int size)
-{
-	int arraycount = 0;
-	int array_k;
-	char arraydata[10000];
-	
-	(*j)++;
-	
-	while(buffer[(*j)] != '}')
-	{
-		array_k = 0;
-		while(buffer[(*j)] != ',' && buffer[(*j)] != '}')
-		{
-			arraydata[array_k] = buffer[(*j)];
-			array_k++;
-			(*j)++;
-		}
-		arraydata[array_k] = 0;
-		float_static_array[arraycount] = atof(arraydata);
-		arraycount++;
-		if(buffer[(*j)] != '}') (*j)++;
-	}
-	
-	(*j)++;
-}
-
-/** \fn void read_double_static_array(char * buffer, int * (*j), int ** double_static_array)
- * \brief Reads double static array.
- */
-void read_double_static_array(char * buffer, int * j, double * double_static_array, int size)
-{
-	int arraycount = 0;
-	int array_k;
-	char arraydata[10000];
-	
-	(*j)++;
-	
-	while(buffer[(*j)] != '}')
-	{
-		array_k = 0;
-		while(buffer[(*j)] != ',' && buffer[(*j)] != '}')
-		{
-			arraydata[array_k] = buffer[(*j)];
-			array_k++;
-			(*j)++;
-		}
-		arraydata[array_k] = 0;
-		double_static_array[arraycount] = atof(arraydata);
-		arraycount++;
-		if(buffer[(*j)] != '}') (*j)++;
-	}
-	
-	(*j)++;
-}
-
-/** \fn void read_char_static_array(char * buffer, int * (*j), int ** char_static_array)
- * \brief Reads char static array.
- */
-void read_char_static_array(char * buffer, int * j, char * char_static_array, int size)
-{
-	while(buffer[(*j)] != '\0')
-	{
-		/* Add check here for buffer overrun */
-		char_static_array[(*j)] = buffer[(*j)];
-		
-		(*j)++;
-	}
-	
-	(*j)++;
-}
-
-/** \fn void read_int_dynamic_array(char * buffer, int * (*j), int ** int_dynamic_array)
- * \brief Reads integer dynamic array.
- */
-void read_int_dynamic_array(char * buffer, int * j, int_array * int_dynamic_array)
-{
-	int arraycount = 0;
-	int array_k;
-	char arraydata[10000];
-	
-	(*j)++;
-	
-	while(buffer[(*j)] != '}')
-	{
-		array_k = 0;
-		while(buffer[(*j)] != ',' && buffer[(*j)] != '}')
-		{
-			arraydata[array_k] = buffer[(*j)];
-			array_k++;
-			(*j)++;
-		}
-		arraydata[array_k] = 0;
-		add_int(int_dynamic_array, atoi(arraydata));
-		arraycount++;
-		if(buffer[(*j)] != '}') (*j)++;
-	}
-	
-	(*j)++;
-}
-
-/** \fn void read_float_dynamic_array(char * buffer, int * (*j), int ** float_dynamic_array)
- * \brief Reads float dynamic array.
- */
-void read_float_dynamic_array(char * buffer, int * j, float_array * float_dynamic_array)
-{
-	int arraycount = 0;
-	int array_k;
-	char arraydata[10000];
-	
-	(*j)++;
-	
-	while(buffer[(*j)] != '}')
-	{
-		array_k = 0;
-		while(buffer[(*j)] != ',' && buffer[(*j)] != '}')
-		{
-			arraydata[array_k] = buffer[(*j)];
-			array_k++;
-			(*j)++;
-		}
-		arraydata[array_k] = 0;
-		add_float(float_dynamic_array, atof(arraydata));
-		arraycount++;
-		if(buffer[(*j)] != '}') (*j)++;
-	}
-	
-	(*j)++;
-}
-
-/** \fn void read_double_dynamic_array(char * buffer, int * (*j), int ** double_dynamic_array)
- * \brief Reads double dynamic array.
- */
-void read_double_dynamic_array(char * buffer, int * j, double_array * double_dynamic_array)
-{
-	int arraycount = 0;
-	int array_k;
-	char arraydata[10000];
-	
-	(*j)++;
-	
-	while(buffer[(*j)] != '}')
-	{
-		array_k = 0;
-		while(buffer[(*j)] != ',' && buffer[(*j)] != '}')
-		{
-			arraydata[array_k] = buffer[(*j)];
-			array_k++;
-			(*j)++;
-		}
-		arraydata[array_k] = 0;
-		add_double(double_dynamic_array, atof(arraydata));
-		arraycount++;
-		if(buffer[(*j)] != '}') (*j)++;
-	}
-	
-	(*j)++;
-}
-
-/** \fn void read_char_dynamic_array(char * buffer, int * (*j), int ** char_dynamic_array)
- * \brief Reads char dynamic array.
- */
-void read_char_dynamic_array(char * buffer, int * j, char_array * char_dynamic_array)
-{
-	while(buffer[(*j)] != '\0' && buffer[(*j)] != ',' && buffer[(*j)] != '}')
-	{
-		add_char(char_dynamic_array, buffer[(*j)]);
-		(*j)++;
-	}
-}
-
-
-/** \fn void read_Order(char * buffer, int * j, Order * temp_datatype)
- * \brief Reads Order datatype.
- */
-void read_Order(char * buffer, int * j, Order * temp_datatype)
-{
-	int array_k;
-	char arraydata[10000];
-	(*j)++;
-	
-	(*temp_datatype).issuer = 0;
-	array_k = 0;
-	while(buffer[*j] != ',')
-	{
-		arraydata[array_k] = buffer[*j];
-		array_k++;
-		(*j)++;
-	}
-	arraydata[array_k] = 0;
-	(*temp_datatype).issuer = atoi(arraydata);
-	(*j)++;
-	(*temp_datatype).quantity = 0;
-	array_k = 0;
-	while(buffer[*j] != ',')
-	{
-		arraydata[array_k] = buffer[*j];
-		array_k++;
-		(*j)++;
-	}
-	arraydata[array_k] = 0;
-	(*temp_datatype).quantity = atoi(arraydata);
-	(*j)++;
-	(*temp_datatype).price = 0.0;
-	array_k = 0;
-	while(buffer[*j] != ',')
-	{
-		arraydata[array_k] = buffer[*j];
-		array_k++;
-		(*j)++;
-	}
-	arraydata[array_k] = 0;
-	(*temp_datatype).price = atof(arraydata);
-	(*j)++;
-	(*temp_datatype).assetId = 0;
-	array_k = 0;
-	while(buffer[*j] != '}')
-	{
-		arraydata[array_k] = buffer[*j];
-		array_k++;
-		(*j)++;
-	}
-	arraydata[array_k] = 0;
-	(*temp_datatype).assetId = atoi(arraydata);
-	(*j)++;
-}
-
-void read_Order_dynamic_array(char * buffer, int * j, Order_array * temp_datatype_array)
-{
-	int arraycount = 0;
-	
-	(*j)++;
-	
-	while(buffer[(*j)] != '\0' && buffer[(*j)] != '}')
-	{
-		if(buffer[(*j)] == '{')
-		{
-			add_Order(temp_datatype_array, 0, 0, 0.0, 0);
-			read_Order(buffer, j, &(*temp_datatype_array).array[arraycount]);
-			arraycount++;
-		}
-		while(buffer[(*j)] != '{' && buffer[(*j)] != '\0') { (*j)++; }
-	}
-	
-	(*j)++;
-}
-
-void read_Order_static_array(char * buffer, int * j, Order * temp_datatype_array, int size)
-{
-	int arraycount;
-	
-	(*j)++;
-	
-	for(arraycount = 0; arraycount < size; arraycount++)
-	{
-		read_Order(buffer, j, &temp_datatype_array[arraycount]);
-		if(arraycount < (size-1)) while(buffer[(*j)] != '{') { (*j)++; }
-	}
-	
-	(*j)++;
-}
-
-/** \fn void read_Belief(char * buffer, int * j, Belief * temp_datatype)
- * \brief Reads Belief datatype.
- */
-void read_Belief(char * buffer, int * j, Belief * temp_datatype)
-{
-	int array_k;
-	char arraydata[10000];
-	(*j)++;
-	
-	(*temp_datatype).expectedPriceReturns = 0.0;
-	array_k = 0;
-	while(buffer[*j] != ',')
-	{
-		arraydata[array_k] = buffer[*j];
-		array_k++;
-		(*j)++;
-	}
-	arraydata[array_k] = 0;
-	(*temp_datatype).expectedPriceReturns = atof(arraydata);
-	(*j)++;
-	(*temp_datatype).expectedTotalReturns = 0.0;
-	array_k = 0;
-	while(buffer[*j] != ',')
-	{
-		arraydata[array_k] = buffer[*j];
-		array_k++;
-		(*j)++;
-	}
-	arraydata[array_k] = 0;
-	(*temp_datatype).expectedTotalReturns = atof(arraydata);
-	(*j)++;
-	(*temp_datatype).expectedCashFlowYield = 0.0;
-	array_k = 0;
-	while(buffer[*j] != ',')
-	{
-		arraydata[array_k] = buffer[*j];
-		array_k++;
-		(*j)++;
-	}
-	arraydata[array_k] = 0;
-	(*temp_datatype).expectedCashFlowYield = atof(arraydata);
-	(*j)++;
-	(*temp_datatype).volatility = 0.0;
-	array_k = 0;
-	while(buffer[*j] != '}')
-	{
-		arraydata[array_k] = buffer[*j];
-		array_k++;
-		(*j)++;
-	}
-	arraydata[array_k] = 0;
-	(*temp_datatype).volatility = atof(arraydata);
-	(*j)++;
-}
-
-void read_Belief_dynamic_array(char * buffer, int * j, Belief_array * temp_datatype_array)
-{
-	int arraycount = 0;
-	
-	(*j)++;
-	
-	while(buffer[(*j)] != '\0' && buffer[(*j)] != '}')
-	{
-		if(buffer[(*j)] == '{')
-		{
-			add_Belief(temp_datatype_array, 0.0, 0.0, 0.0, 0.0);
-			read_Belief(buffer, j, &(*temp_datatype_array).array[arraycount]);
-			arraycount++;
-		}
-		while(buffer[(*j)] != '{' && buffer[(*j)] != '\0') { (*j)++; }
-	}
-	
-	(*j)++;
-}
-
-void read_Belief_static_array(char * buffer, int * j, Belief * temp_datatype_array, int size)
-{
-	int arraycount;
-	
-	(*j)++;
-	
-	for(arraycount = 0; arraycount < size; arraycount++)
-	{
-		read_Belief(buffer, j, &temp_datatype_array[arraycount]);
-		if(arraycount < (size-1)) while(buffer[(*j)] != '{') { (*j)++; }
-	}
-	
-	(*j)++;
-}
-
-/** \fn void read_Asset(char * buffer, int * j, Asset * temp_datatype)
- * \brief Reads Asset datatype.
- */
-void read_Asset(char * buffer, int * j, Asset * temp_datatype)
-{
-	int array_k;
-	char arraydata[10000];
-	(*j)++;
-	
-	(*temp_datatype).issuer = 0;
-	array_k = 0;
-	while(buffer[*j] != ',')
-	{
-		arraydata[array_k] = buffer[*j];
-		array_k++;
-		(*j)++;
-	}
-	arraydata[array_k] = 0;
-	(*temp_datatype).issuer = atoi(arraydata);
-	(*j)++;
-	(*temp_datatype).quantity = 0;
-	array_k = 0;
-	while(buffer[*j] != ',')
-	{
-		arraydata[array_k] = buffer[*j];
-		array_k++;
-		(*j)++;
-	}
-	arraydata[array_k] = 0;
-	(*temp_datatype).quantity = atoi(arraydata);
-	(*j)++;
-	(*temp_datatype).lastPrice = 0.0;
-	array_k = 0;
-	while(buffer[*j] != '}')
-	{
-		arraydata[array_k] = buffer[*j];
-		array_k++;
-		(*j)++;
-	}
-	arraydata[array_k] = 0;
-	(*temp_datatype).lastPrice = atof(arraydata);
-	(*j)++;
-}
-
-void read_Asset_dynamic_array(char * buffer, int * j, Asset_array * temp_datatype_array)
-{
-	int arraycount = 0;
-	
-	(*j)++;
-	
-	while(buffer[(*j)] != '\0' && buffer[(*j)] != '}')
-	{
-		if(buffer[(*j)] == '{')
-		{
-			add_Asset(temp_datatype_array, 0, 0, 0.0);
-			read_Asset(buffer, j, &(*temp_datatype_array).array[arraycount]);
-			arraycount++;
-		}
-		while(buffer[(*j)] != '{' && buffer[(*j)] != '\0') { (*j)++; }
-	}
-	
-	(*j)++;
-}
-
-void read_Asset_static_array(char * buffer, int * j, Asset * temp_datatype_array, int size)
-{
-	int arraycount;
-	
-	(*j)++;
-	
-	for(arraycount = 0; arraycount < size; arraycount++)
-	{
-		read_Asset(buffer, j, &temp_datatype_array[arraycount]);
-		if(arraycount < (size-1)) while(buffer[(*j)] != '{') { (*j)++; }
-	}
-	
-	(*j)++;
-}
-
-/** \fn void read_Portfolio(char * buffer, int * j, Portfolio * temp_datatype)
- * \brief Reads Portfolio datatype.
- */
-void read_Portfolio(char * buffer, int * j, Portfolio * temp_datatype)
-{
-	int array_k;
-	char arraydata[10000];
-	(*j)++;
-	
-	(*temp_datatype).bankAccount = 0.0;
-	array_k = 0;
-	while(buffer[*j] != '}')
-	{
-		arraydata[array_k] = buffer[*j];
-		array_k++;
-		(*j)++;
-	}
-	arraydata[array_k] = 0;
-	(*temp_datatype).bankAccount = atof(arraydata);
-	(*j)++;
-}
-
-void read_Portfolio_dynamic_array(char * buffer, int * j, Portfolio_array * temp_datatype_array)
-{
-	int arraycount = 0;
-	
-	(*j)++;
-	
-	while(buffer[(*j)] != '\0' && buffer[(*j)] != '}')
-	{
-		if(buffer[(*j)] == '{')
-		{
-			add_Portfolio(temp_datatype_array, 0.0);
-			read_Portfolio(buffer, j, &(*temp_datatype_array).array[arraycount]);
-			arraycount++;
-		}
-		while(buffer[(*j)] != '{' && buffer[(*j)] != '\0') { (*j)++; }
-	}
-	
-	(*j)++;
-}
-
-void read_Portfolio_static_array(char * buffer, int * j, Portfolio * temp_datatype_array, int size)
-{
-	int arraycount;
-	
-	(*j)++;
-	
-	for(arraycount = 0; arraycount < size; arraycount++)
-	{
-		read_Portfolio(buffer, j, &temp_datatype_array[arraycount]);
-		if(arraycount < (size-1)) while(buffer[(*j)] != '{') { (*j)++; }
-	}
-	
-	(*j)++;
-}
-
 /** \fn void readinitialstates(char * filename, int * itno, xmachine ** agent_list, double cloud_data[6], int flag)
  * \brief Read initial X-machine memory starting values from a file.
  * \param filename The path to the file.
@@ -534,7 +15,7 @@ void read_Portfolio_static_array(char * buffer, int * j, Portfolio * temp_dataty
  * \param flag Flag for whether to check space partitions.
  */
 void readinitialstates(char * filename, int * itno, xmachine ** agent_list, double cloud_data[6], 
-					   int partition_method, int flag)
+                       int partition_method, int flag)
 {
 	/* Pointer to file */
 	FILE *file;
@@ -542,9 +23,10 @@ void readinitialstates(char * filename, int * itno, xmachine ** agent_list, doub
 	char c = ' ';
 	char buffer[10000];
 	char agentname[1000];
-	//char arraydata[10000];
-	//int array_k=0, arraycount=0;
-	int j=0;
+	
+	/* Variables for dealing with variables which are arrays */
+	char arraydata[10000];
+	int array_k=0, j=0, arraycount=0;
 
 /* Things for round-robin partitioning */
 	int agent_count;
@@ -554,7 +36,6 @@ void readinitialstates(char * filename, int * itno, xmachine ** agent_list, doub
 	double 	xmax=0,xmin=0,ymax=0,ymin=0,
 		xcentre=0,ycentre=0,
 		rrange=1.5;
-	double posx, posy, posz;
 	
 	
 	/* Cloud data array initialisation */
@@ -569,12 +50,7 @@ void readinitialstates(char * filename, int * itno, xmachine ** agent_list, doub
 	/*xmachine * current_xmachine;*/
 	/* Variables for checking tags */
 	int reading, i;
-	int in_tag, in_itno, in_agent, in_name, in_environment, in_memory, in_functions;
-	int in_Eurostat_agent;
-	int in_Household_agent;
-	int in_ClearingHouse_agent;
-	int in_Firm_agent;
-
+	int in_tag, in_itno, in_agent, in_name, in_environment;
 	int in_id;
 	int in_assets;
 	int in_range;
@@ -608,43 +84,40 @@ void readinitialstates(char * filename, int * itno, xmachine ** agent_list, doub
 
 
 	/* Variables for initial state data */
-//	int id;
-//	Asset_array * assets;
-//	double range;
-//	double posx;
-//	double posy;
-//	double wealth;
-//	Belief * belief;
-//	Portfolio * portfolio;
-//	Order_array * pendingOrders;
-//	Asset_array * assetsowned;
-//	int forwardWindow;
-//	int backwordWindow;
-//	int binsNumber;
-//	double randomWeigth;
-//	double fundametalWeigth;
-//	double chartistWeigth;
-//	int holdingPeriodToForwardW;
-//	int current_shares_outstanding;
-//	double bank_account;
-//	double revenues;
-//	double labor_costs;
-//	double capital_costs;
-//	double total_interest_payment;
-//	double total_debt_installment;
-//	double total_dividend_payment;
-//	double net_ernings;
-//	double total_value_capital_stock;
-//	double total_value_local_inventary_stock;
-//	double equity;
-//	double external_financial_need;
+	int id;
+	Asset_array * assets;
+	double range;
+	double posx;
+	double posy;
+	double wealth;
+	Belief * belief;
+	Portfolio * portfolio;
+	Order_array * pendingOrders;
+	Asset_array * assetsowned;
+	int forwardWindow;
+	int backwordWindow;
+	int binsNumber;
+	double randomWeigth;
+	double fundametalWeigth;
+	double chartistWeigth;
+	int holdingPeriodToForwardW;
+	int current_shares_outstanding;
+	double bank_account;
+	double revenues;
+	double labor_costs;
+	double capital_costs;
+	double total_interest_payment;
+	double total_debt_installment;
+	double total_dividend_payment;
+	double net_ernings;
+	double total_value_capital_stock;
+	double total_value_local_inventary_stock;
+	double equity;
+	double external_financial_need;
 
-
-	xmachine_memory_Eurostat * current_Eurostat_agent;
-	xmachine_memory_Household * current_Household_agent;
-	xmachine_memory_ClearingHouse * current_ClearingHouse_agent;
-	xmachine_memory_Firm * current_Firm_agent;
-
+	//Asset * current_assets;
+	//Order * current_pendingOrders;
+	//Asset * current_assetsowned;
 
 	/* Open config file to read-only */
 	if((file = fopen(filename, "r"))==NULL)
@@ -662,12 +135,6 @@ void readinitialstates(char * filename, int * itno, xmachine ** agent_list, doub
 	in_agent = 0;
 	in_name = 0;
 	in_environment = 0;
-	in_memory = 0;
-	in_functions = 0;
-	in_Eurostat_agent = 0;
-	in_Household_agent = 0;
-	in_ClearingHouse_agent = 0;
-	in_Firm_agent = 0;
 	in_id = 0;
 	in_assets = 0;
 	in_range = 0;
@@ -699,38 +166,43 @@ void readinitialstates(char * filename, int * itno, xmachine ** agent_list, doub
 	in_equity = 0;
 	in_external_financial_need = 0;
 
+
 	/* Default variables for memory */
 	/* Not implemented static arrays */
-//	id = 0;
-//	assets = init_Asset_array();
-//	range = 0.0;
-//	posx = 0.0;
-//	posy = 0.0;
-//	wealth = 0.0;
-//	belief = init_Belief();
-//	portfolio = init_Portfolio();
-//	pendingOrders = init_Order_array();
-//	assetsowned = init_Asset_array();
-//	forwardWindow = 0;
-//	backwordWindow = 0;
-//	binsNumber = 0;
-//	randomWeigth = 0.0;
-//	fundametalWeigth = 0.0;
-//	chartistWeigth = 0.0;
-//	holdingPeriodToForwardW = 0;
-//	current_shares_outstanding = 0;
-//	bank_account = 0.0;
-//	revenues = 0.0;
-//	labor_costs = 0.0;
-//	capital_costs = 0.0;
-//	total_interest_payment = 0.0;
-//	total_debt_installment = 0.0;
-//	total_dividend_payment = 0.0;
-//	net_ernings = 0.0;
-//	total_value_capital_stock = 0.0;
-//	total_value_local_inventary_stock = 0.0;
-//	equity = 0.0;
-//	external_financial_need = 0.0;
+	id = 0;
+
+//current_assets = (Asset *)malloc(sizeof(Asset));
+//CHECK_POINTER(current_assets);
+	range = 0.0;
+	posx = 0.0;
+	posy = 0.0;
+	wealth = 0.0;
+
+//current_pendingOrders = (Order *)malloc(sizeof(Order));
+//CHECK_POINTER(current_pendingOrders);
+
+//current_assetsowned = (Asset *)malloc(sizeof(Asset));
+//CHECK_POINTER(current_assetsowned);
+	forwardWindow = 0;
+	backwordWindow = 0;
+	binsNumber = 0;
+	randomWeigth = 0.0;
+	fundametalWeigth = 0.0;
+	chartistWeigth = 0.0;
+	holdingPeriodToForwardW = 0;
+	current_shares_outstanding = 0;
+	bank_account = 0.0;
+	revenues = 0.0;
+	labor_costs = 0.0;
+	capital_costs = 0.0;
+	total_interest_payment = 0.0;
+	total_debt_installment = 0.0;
+	total_dividend_payment = 0.0;
+	net_ernings = 0.0;
+	total_value_capital_stock = 0.0;
+	total_value_local_inventary_stock = 0.0;
+	equity = 0.0;
+	external_financial_need = 0.0;
 
 
 
@@ -743,13 +215,13 @@ void readinitialstates(char * filename, int * itno, xmachine ** agent_list, doub
 	else printf("xml: Error - invalid partitioning method\n");
 
 
-	/* Set p_xmachine to the agent list passed in then new agents are added to this list 
-	 * Will be set to agent list for specific node is space partitions are already known (flag=1)
-	 */ 
-	p_xmachine = agent_list;
-	/* If we're reading without knowing partitions already then use the dummy current node (it's not in the list of nodes)*/
-	if (flag == 0) current_node = &temp_node;
-	
+    /* Set p_xmachine to the agent list passed in then new agents are added to this list 
+     * Will be set to agent list for specific node is space partitions are already known (flag=1)
+     */ 
+    p_xmachine = agent_list;
+    /* If we're reading without knowing partitions already then use the dummy current node (it's not in the list of nodes)*/
+    if (flag == 0) current_node = &temp_node;
+    
 	/* Read file until end of xml */
 	while(reading==1)
 	{
@@ -767,324 +239,242 @@ void readinitialstates(char * filename, int * itno, xmachine ** agent_list, doub
 			if(strcmp(buffer, "itno") == 0) in_itno = 1;
 			if(strcmp(buffer, "/itno") == 0) in_itno = 0;
 			if(strcmp(buffer, "name") == 0) in_name = 1;
-			if(strcmp(buffer, "/name") == 0)
-			{
-				in_name = 0;
-				
-				if(in_agent && !in_memory && !in_functions)
-				{
-					/*printf("in agent: %s\n", agentname);*/
-					if(strcmp(agentname, "Eurostat") == 0)
-					{
-						current_Eurostat_agent = init_Eurostat_agent();
-						in_Eurostat_agent = 1;
-					}
-					else if(strcmp(agentname, "Household") == 0)
-					{
-						current_Household_agent = init_Household_agent();
-						in_Household_agent = 1;
-					}
-					else if(strcmp(agentname, "ClearingHouse") == 0)
-					{
-						current_ClearingHouse_agent = init_ClearingHouse_agent();
-						in_ClearingHouse_agent = 1;
-					}
-					else if(strcmp(agentname, "Firm") == 0)
-					{
-						current_Firm_agent = init_Firm_agent();
-						in_Firm_agent = 1;
-					}
-
-				}
-			}
+			if(strcmp(buffer, "/name") == 0) in_name = 0;
 			if(strcmp(buffer, "environment") == 0) in_environment = 1;
 			if(strcmp(buffer, "/environment") == 0) in_environment = 0;
-			if(strcmp(buffer, "memory") == 0) in_memory = 1;
-			if(strcmp(buffer, "/memory") == 0) in_memory = 0;
-			if(strcmp(buffer, "functions") == 0) in_functions = 1;
-			if(strcmp(buffer, "/functions") == 0) in_functions = 0;
 			if(strcmp(buffer, "xagent") == 0) in_agent = 1;
 			if(strcmp(buffer, "/xagent") == 0)
 			{
 				in_agent = 0;
-				in_Eurostat_agent = 0;
-in_Household_agent = 0;
-in_ClearingHouse_agent = 0;
-in_Firm_agent = 0;
-
 				
 				if(strcmp(agentname, "Eurostat") == 0)
 				{
-					posx = current_Eurostat_agent->posx;
-					posy = current_Eurostat_agent->posy;
-					posz = 0.0;
-					
 					/* If flag is zero just read the data. We'll partition later.
 					 * If flag is not zero we aleady have partition data so can read and distribute to the current node.*/
 					if( flag == 0 )
 					{
-						//add_Eurostat_agent(id, assets, range, posx, posy);
-						add_Eurostat_agent_internal(current_Eurostat_agent);
-						
-						/* Update the cloud data */
-						if ( posx < cloud_data[0] ) cloud_data[0] = posx;
-						if ( posx > cloud_data[1] ) cloud_data[1] = posx;
-						if ( posy < cloud_data[2] ) cloud_data[2] = posy;
-						if ( posy > cloud_data[3] ) cloud_data[3] = posy;
-						if ( posz < cloud_data[2] ) cloud_data[4] = posz;
-						if ( posz > cloud_data[3] ) cloud_data[5] = posz ;
+						add_Eurostat_agent(id, assets, range, posx, posy);
+        				/* Update the cloud data */
+                        if ( posx < cloud_data[0]) cloud_data[0] = posx ;
+                        if ( posx > cloud_data[1]) cloud_data[1] = posx ;
+                        if ( posy < cloud_data[2]) cloud_data[2] = posy ;
+                        if ( posy > cloud_data[3]) cloud_data[3] = posy ;
+                        if ( 0.0 < cloud_data[2]) cloud_data[4] = 0.0 ;
+                        if ( 0.0 > cloud_data[3]) cloud_data[5] = 0.0 ;
 					}
 
 					else if (flag != 0)
 					{
-						if(partition_method == geometric)
-						{
-							if (
-								((current_node->partition_data[0] == SPINF) || (current_node->partition_data[0] != SPINF && posx >= current_node->partition_data[0])) &&
-								((current_node->partition_data[1] == SPINF) || (current_node->partition_data[1] != SPINF && posx < current_node->partition_data[1])) &&
-								((current_node->partition_data[2] == SPINF) || (current_node->partition_data[2] != SPINF && posy >= current_node->partition_data[2])) &&
-								((current_node->partition_data[3] == SPINF) || (current_node->partition_data[3] != SPINF && posy < current_node->partition_data[3])) &&
-								((current_node->partition_data[4] == SPINF) || (current_node->partition_data[4] != SPINF && posz >= current_node->partition_data[4])) &&
-								((current_node->partition_data[5] == SPINF) || (current_node->partition_data[5] != SPINF && posz < current_node->partition_data[5]))
-							)
-							{
-								p_xmachine = &(current_node->agents);
-								//add_Eurostat_agent(id, assets, range, posx, posy);
-								add_Eurostat_agent_internal(current_Eurostat_agent);
-							} 
-						}
-						else if (partition_method == other)
-						{
-							if (agent_count % number_partitions == 0)
-							{
-								/* Compute centre of partition */
-								xmin=current_node->partition_data[0];
-								xmax=current_node->partition_data[1];
-								ymin=current_node->partition_data[2];
-								ymax=current_node->partition_data[3];
+					    if(partition_method == geometric) {
+					        if (
+    				    	    ((current_node->partition_data[0] == SPINF) || (current_node->partition_data[0] != SPINF && posx >= current_node->partition_data[0])) &&
+    					        ((current_node->partition_data[1] == SPINF) || (current_node->partition_data[1] != SPINF && posx < current_node->partition_data[1])) &&
+        					    ((current_node->partition_data[2] == SPINF) || (current_node->partition_data[2] != SPINF && posy >= current_node->partition_data[2])) &&
+        					    ((current_node->partition_data[3] == SPINF) || (current_node->partition_data[3] != SPINF && posy < current_node->partition_data[3])) &&
+        					    ((current_node->partition_data[4] == SPINF) || (current_node->partition_data[4] != SPINF && 0.0 >= current_node->partition_data[4])) &&
+        					    ((current_node->partition_data[5] == SPINF) || (current_node->partition_data[5] != SPINF && 0.0 < current_node->partition_data[5]))
+        					)
+        					{
+        					    p_xmachine = &(current_node->agents);
+        					    add_Eurostat_agent(id, assets, range, posx, posy);
+        					} 
+	    				}
+	    				else if (partition_method == other){
+	    				    if (agent_count % number_partitions == 0) {
+                    			/* Compute centre of partition */
+		                       	xmin=current_node->partition_data[0];
+                        		xmax=current_node->partition_data[1];
+                       			ymin=current_node->partition_data[2];
+                       			ymax=current_node->partition_data[3];
 
-								xcentre=xmin+(xmax-xmin)/2.0;
-								ycentre=ymin+(ymax-ymin)/2.0;
-								rrange=1.5;
+			                    xcentre=xmin+(xmax-xmin)/2.0;
+                    			ycentre=ymin+(ymax-ymin)/2.0;
+                    			rrange=1.5;
 
-								p_xmachine = &(current_node->agents);
-								//add_Eurostat_agent(id, assets, range, posx, posy);
-								add_Eurostat_agent_internal(current_Eurostat_agent);
+                    			p_xmachine = &(current_node->agents);
+                    			add_Eurostat_agent(id, assets, range, posx, posy);
 
-								current_Eurostat_agent->posx = xcentre;
-								current_Eurostat_agent->posy = ycentre;
-								current_Eurostat_agent->range = rrange;
+                    			set_posx(xcentre);
+                    			set_posy(ycentre);
+                    			set_range(rrange);
 
-							}
-							++agent_count;
-						} /* if partition */
+					        }
+    					    ++agent_count;
+					    } /* if partition */
 
 					} /* if flag */
 
 				}
 				else if(strcmp(agentname, "Household") == 0)
 				{
-					posx = current_Household_agent->posx;
-					posy = current_Household_agent->posy;
-					posz = 0.0;
-					
 					/* If flag is zero just read the data. We'll partition later.
 					 * If flag is not zero we aleady have partition data so can read and distribute to the current node.*/
 					if( flag == 0 )
 					{
-						//add_Household_agent(id, wealth, belief, portfolio, pendingOrders, assetsowned, forwardWindow, backwordWindow, binsNumber, randomWeigth, fundametalWeigth, chartistWeigth, holdingPeriodToForwardW, range, posx, posy);
-						add_Household_agent_internal(current_Household_agent);
-						
-						/* Update the cloud data */
-						if ( posx < cloud_data[0] ) cloud_data[0] = posx;
-						if ( posx > cloud_data[1] ) cloud_data[1] = posx;
-						if ( posy < cloud_data[2] ) cloud_data[2] = posy;
-						if ( posy > cloud_data[3] ) cloud_data[3] = posy;
-						if ( posz < cloud_data[2] ) cloud_data[4] = posz;
-						if ( posz > cloud_data[3] ) cloud_data[5] = posz ;
+						add_Household_agent(id, wealth, belief, portfolio, pendingOrders, assetsowned, forwardWindow, backwordWindow, binsNumber, randomWeigth, fundametalWeigth, chartistWeigth, holdingPeriodToForwardW, range, posx, posy);
+        				/* Update the cloud data */
+                        if ( posx < cloud_data[0]) cloud_data[0] = posx ;
+                        if ( posx > cloud_data[1]) cloud_data[1] = posx ;
+                        if ( posy < cloud_data[2]) cloud_data[2] = posy ;
+                        if ( posy > cloud_data[3]) cloud_data[3] = posy ;
+                        if ( 0.0 < cloud_data[2]) cloud_data[4] = 0.0 ;
+                        if ( 0.0 > cloud_data[3]) cloud_data[5] = 0.0 ;
 					}
 
 					else if (flag != 0)
 					{
-						if(partition_method == geometric)
-						{
-							if (
-								((current_node->partition_data[0] == SPINF) || (current_node->partition_data[0] != SPINF && posx >= current_node->partition_data[0])) &&
-								((current_node->partition_data[1] == SPINF) || (current_node->partition_data[1] != SPINF && posx < current_node->partition_data[1])) &&
-								((current_node->partition_data[2] == SPINF) || (current_node->partition_data[2] != SPINF && posy >= current_node->partition_data[2])) &&
-								((current_node->partition_data[3] == SPINF) || (current_node->partition_data[3] != SPINF && posy < current_node->partition_data[3])) &&
-								((current_node->partition_data[4] == SPINF) || (current_node->partition_data[4] != SPINF && posz >= current_node->partition_data[4])) &&
-								((current_node->partition_data[5] == SPINF) || (current_node->partition_data[5] != SPINF && posz < current_node->partition_data[5]))
-							)
-							{
-								p_xmachine = &(current_node->agents);
-								//add_Household_agent(id, wealth, belief, portfolio, pendingOrders, assetsowned, forwardWindow, backwordWindow, binsNumber, randomWeigth, fundametalWeigth, chartistWeigth, holdingPeriodToForwardW, range, posx, posy);
-								add_Household_agent_internal(current_Household_agent);
-							} 
-						}
-						else if (partition_method == other)
-						{
-							if (agent_count % number_partitions == 0)
-							{
-								/* Compute centre of partition */
-								xmin=current_node->partition_data[0];
-								xmax=current_node->partition_data[1];
-								ymin=current_node->partition_data[2];
-								ymax=current_node->partition_data[3];
+					    if(partition_method == geometric) {
+					        if (
+    				    	    ((current_node->partition_data[0] == SPINF) || (current_node->partition_data[0] != SPINF && posx >= current_node->partition_data[0])) &&
+    					        ((current_node->partition_data[1] == SPINF) || (current_node->partition_data[1] != SPINF && posx < current_node->partition_data[1])) &&
+        					    ((current_node->partition_data[2] == SPINF) || (current_node->partition_data[2] != SPINF && posy >= current_node->partition_data[2])) &&
+        					    ((current_node->partition_data[3] == SPINF) || (current_node->partition_data[3] != SPINF && posy < current_node->partition_data[3])) &&
+        					    ((current_node->partition_data[4] == SPINF) || (current_node->partition_data[4] != SPINF && 0.0 >= current_node->partition_data[4])) &&
+        					    ((current_node->partition_data[5] == SPINF) || (current_node->partition_data[5] != SPINF && 0.0 < current_node->partition_data[5]))
+        					)
+        					{
+        					    p_xmachine = &(current_node->agents);
+        					    add_Household_agent(id, wealth, belief, portfolio, pendingOrders, assetsowned, forwardWindow, backwordWindow, binsNumber, randomWeigth, fundametalWeigth, chartistWeigth, holdingPeriodToForwardW, range, posx, posy);
+        					} 
+	    				}
+	    				else if (partition_method == other){
+	    				    if (agent_count % number_partitions == 0) {
+                    			/* Compute centre of partition */
+		                       	xmin=current_node->partition_data[0];
+                        		xmax=current_node->partition_data[1];
+                       			ymin=current_node->partition_data[2];
+                       			ymax=current_node->partition_data[3];
 
-								xcentre=xmin+(xmax-xmin)/2.0;
-								ycentre=ymin+(ymax-ymin)/2.0;
-								rrange=1.5;
+			                    xcentre=xmin+(xmax-xmin)/2.0;
+                    			ycentre=ymin+(ymax-ymin)/2.0;
+                    			rrange=1.5;
 
-								p_xmachine = &(current_node->agents);
-								//add_Household_agent(id, wealth, belief, portfolio, pendingOrders, assetsowned, forwardWindow, backwordWindow, binsNumber, randomWeigth, fundametalWeigth, chartistWeigth, holdingPeriodToForwardW, range, posx, posy);
-								add_Household_agent_internal(current_Household_agent);
+                    			p_xmachine = &(current_node->agents);
+                    			add_Household_agent(id, wealth, belief, portfolio, pendingOrders, assetsowned, forwardWindow, backwordWindow, binsNumber, randomWeigth, fundametalWeigth, chartistWeigth, holdingPeriodToForwardW, range, posx, posy);
 
-								current_Household_agent->posx = xcentre;
-								current_Household_agent->posy = ycentre;
-								current_Household_agent->range = rrange;
+                    			set_posx(xcentre);
+                    			set_posy(ycentre);
+                    			set_range(rrange);
 
-							}
-							++agent_count;
-						} /* if partition */
+					        }
+    					    ++agent_count;
+					    } /* if partition */
 
 					} /* if flag */
 
 				}
 				else if(strcmp(agentname, "ClearingHouse") == 0)
 				{
-					posx = current_ClearingHouse_agent->posx;
-					posy = current_ClearingHouse_agent->posy;
-					posz = 0.0;
-					
 					/* If flag is zero just read the data. We'll partition later.
 					 * If flag is not zero we aleady have partition data so can read and distribute to the current node.*/
 					if( flag == 0 )
 					{
-						//add_ClearingHouse_agent(id, assets, range, posx, posy);
-						add_ClearingHouse_agent_internal(current_ClearingHouse_agent);
-						
-						/* Update the cloud data */
-						if ( posx < cloud_data[0] ) cloud_data[0] = posx;
-						if ( posx > cloud_data[1] ) cloud_data[1] = posx;
-						if ( posy < cloud_data[2] ) cloud_data[2] = posy;
-						if ( posy > cloud_data[3] ) cloud_data[3] = posy;
-						if ( posz < cloud_data[2] ) cloud_data[4] = posz;
-						if ( posz > cloud_data[3] ) cloud_data[5] = posz ;
+						add_ClearingHouse_agent(id, assets, range, posx, posy);
+        				/* Update the cloud data */
+                        if ( posx < cloud_data[0]) cloud_data[0] = posx ;
+                        if ( posx > cloud_data[1]) cloud_data[1] = posx ;
+                        if ( posy < cloud_data[2]) cloud_data[2] = posy ;
+                        if ( posy > cloud_data[3]) cloud_data[3] = posy ;
+                        if ( 0.0 < cloud_data[2]) cloud_data[4] = 0.0 ;
+                        if ( 0.0 > cloud_data[3]) cloud_data[5] = 0.0 ;
 					}
 
 					else if (flag != 0)
 					{
-						if(partition_method == geometric)
-						{
-							if (
-								((current_node->partition_data[0] == SPINF) || (current_node->partition_data[0] != SPINF && posx >= current_node->partition_data[0])) &&
-								((current_node->partition_data[1] == SPINF) || (current_node->partition_data[1] != SPINF && posx < current_node->partition_data[1])) &&
-								((current_node->partition_data[2] == SPINF) || (current_node->partition_data[2] != SPINF && posy >= current_node->partition_data[2])) &&
-								((current_node->partition_data[3] == SPINF) || (current_node->partition_data[3] != SPINF && posy < current_node->partition_data[3])) &&
-								((current_node->partition_data[4] == SPINF) || (current_node->partition_data[4] != SPINF && posz >= current_node->partition_data[4])) &&
-								((current_node->partition_data[5] == SPINF) || (current_node->partition_data[5] != SPINF && posz < current_node->partition_data[5]))
-							)
-							{
-								p_xmachine = &(current_node->agents);
-								//add_ClearingHouse_agent(id, assets, range, posx, posy);
-								add_ClearingHouse_agent_internal(current_ClearingHouse_agent);
-							} 
-						}
-						else if (partition_method == other)
-						{
-							if (agent_count % number_partitions == 0)
-							{
-								/* Compute centre of partition */
-								xmin=current_node->partition_data[0];
-								xmax=current_node->partition_data[1];
-								ymin=current_node->partition_data[2];
-								ymax=current_node->partition_data[3];
+					    if(partition_method == geometric) {
+					        if (
+    				    	    ((current_node->partition_data[0] == SPINF) || (current_node->partition_data[0] != SPINF && posx >= current_node->partition_data[0])) &&
+    					        ((current_node->partition_data[1] == SPINF) || (current_node->partition_data[1] != SPINF && posx < current_node->partition_data[1])) &&
+        					    ((current_node->partition_data[2] == SPINF) || (current_node->partition_data[2] != SPINF && posy >= current_node->partition_data[2])) &&
+        					    ((current_node->partition_data[3] == SPINF) || (current_node->partition_data[3] != SPINF && posy < current_node->partition_data[3])) &&
+        					    ((current_node->partition_data[4] == SPINF) || (current_node->partition_data[4] != SPINF && 0.0 >= current_node->partition_data[4])) &&
+        					    ((current_node->partition_data[5] == SPINF) || (current_node->partition_data[5] != SPINF && 0.0 < current_node->partition_data[5]))
+        					)
+        					{
+        					    p_xmachine = &(current_node->agents);
+        					    add_ClearingHouse_agent(id, assets, range, posx, posy);
+        					} 
+	    				}
+	    				else if (partition_method == other){
+	    				    if (agent_count % number_partitions == 0) {
+                    			/* Compute centre of partition */
+		                       	xmin=current_node->partition_data[0];
+                        		xmax=current_node->partition_data[1];
+                       			ymin=current_node->partition_data[2];
+                       			ymax=current_node->partition_data[3];
 
-								xcentre=xmin+(xmax-xmin)/2.0;
-								ycentre=ymin+(ymax-ymin)/2.0;
-								rrange=1.5;
+			                    xcentre=xmin+(xmax-xmin)/2.0;
+                    			ycentre=ymin+(ymax-ymin)/2.0;
+                    			rrange=1.5;
 
-								p_xmachine = &(current_node->agents);
-								//add_ClearingHouse_agent(id, assets, range, posx, posy);
-								add_ClearingHouse_agent_internal(current_ClearingHouse_agent);
+                    			p_xmachine = &(current_node->agents);
+                    			add_ClearingHouse_agent(id, assets, range, posx, posy);
 
-								current_ClearingHouse_agent->posx = xcentre;
-								current_ClearingHouse_agent->posy = ycentre;
-								current_ClearingHouse_agent->range = rrange;
+                    			set_posx(xcentre);
+                    			set_posy(ycentre);
+                    			set_range(rrange);
 
-							}
-							++agent_count;
-						} /* if partition */
+					        }
+    					    ++agent_count;
+					    } /* if partition */
 
 					} /* if flag */
 
 				}
 				else if(strcmp(agentname, "Firm") == 0)
 				{
-					posx = current_Firm_agent->posx;
-					posy = current_Firm_agent->posy;
-					posz = 0.0;
-					
 					/* If flag is zero just read the data. We'll partition later.
 					 * If flag is not zero we aleady have partition data so can read and distribute to the current node.*/
 					if( flag == 0 )
 					{
-						//add_Firm_agent(id, current_shares_outstanding, bank_account, revenues, labor_costs, capital_costs, total_interest_payment, total_debt_installment, total_dividend_payment, net_ernings, total_value_capital_stock, total_value_local_inventary_stock, equity, external_financial_need, range, posx, posy);
-						add_Firm_agent_internal(current_Firm_agent);
-						
-						/* Update the cloud data */
-						if ( posx < cloud_data[0] ) cloud_data[0] = posx;
-						if ( posx > cloud_data[1] ) cloud_data[1] = posx;
-						if ( posy < cloud_data[2] ) cloud_data[2] = posy;
-						if ( posy > cloud_data[3] ) cloud_data[3] = posy;
-						if ( posz < cloud_data[2] ) cloud_data[4] = posz;
-						if ( posz > cloud_data[3] ) cloud_data[5] = posz ;
+						add_Firm_agent(id, current_shares_outstanding, bank_account, revenues, labor_costs, capital_costs, total_interest_payment, total_debt_installment, total_dividend_payment, net_ernings, total_value_capital_stock, total_value_local_inventary_stock, equity, external_financial_need, range, posx, posy);
+        				/* Update the cloud data */
+                        if ( posx < cloud_data[0]) cloud_data[0] = posx ;
+                        if ( posx > cloud_data[1]) cloud_data[1] = posx ;
+                        if ( posy < cloud_data[2]) cloud_data[2] = posy ;
+                        if ( posy > cloud_data[3]) cloud_data[3] = posy ;
+                        if ( 0.0 < cloud_data[2]) cloud_data[4] = 0.0 ;
+                        if ( 0.0 > cloud_data[3]) cloud_data[5] = 0.0 ;
 					}
 
 					else if (flag != 0)
 					{
-						if(partition_method == geometric)
-						{
-							if (
-								((current_node->partition_data[0] == SPINF) || (current_node->partition_data[0] != SPINF && posx >= current_node->partition_data[0])) &&
-								((current_node->partition_data[1] == SPINF) || (current_node->partition_data[1] != SPINF && posx < current_node->partition_data[1])) &&
-								((current_node->partition_data[2] == SPINF) || (current_node->partition_data[2] != SPINF && posy >= current_node->partition_data[2])) &&
-								((current_node->partition_data[3] == SPINF) || (current_node->partition_data[3] != SPINF && posy < current_node->partition_data[3])) &&
-								((current_node->partition_data[4] == SPINF) || (current_node->partition_data[4] != SPINF && posz >= current_node->partition_data[4])) &&
-								((current_node->partition_data[5] == SPINF) || (current_node->partition_data[5] != SPINF && posz < current_node->partition_data[5]))
-							)
-							{
-								p_xmachine = &(current_node->agents);
-								//add_Firm_agent(id, current_shares_outstanding, bank_account, revenues, labor_costs, capital_costs, total_interest_payment, total_debt_installment, total_dividend_payment, net_ernings, total_value_capital_stock, total_value_local_inventary_stock, equity, external_financial_need, range, posx, posy);
-								add_Firm_agent_internal(current_Firm_agent);
-							} 
-						}
-						else if (partition_method == other)
-						{
-							if (agent_count % number_partitions == 0)
-							{
-								/* Compute centre of partition */
-								xmin=current_node->partition_data[0];
-								xmax=current_node->partition_data[1];
-								ymin=current_node->partition_data[2];
-								ymax=current_node->partition_data[3];
+					    if(partition_method == geometric) {
+					        if (
+    				    	    ((current_node->partition_data[0] == SPINF) || (current_node->partition_data[0] != SPINF && posx >= current_node->partition_data[0])) &&
+    					        ((current_node->partition_data[1] == SPINF) || (current_node->partition_data[1] != SPINF && posx < current_node->partition_data[1])) &&
+        					    ((current_node->partition_data[2] == SPINF) || (current_node->partition_data[2] != SPINF && posy >= current_node->partition_data[2])) &&
+        					    ((current_node->partition_data[3] == SPINF) || (current_node->partition_data[3] != SPINF && posy < current_node->partition_data[3])) &&
+        					    ((current_node->partition_data[4] == SPINF) || (current_node->partition_data[4] != SPINF && 0.0 >= current_node->partition_data[4])) &&
+        					    ((current_node->partition_data[5] == SPINF) || (current_node->partition_data[5] != SPINF && 0.0 < current_node->partition_data[5]))
+        					)
+        					{
+        					    p_xmachine = &(current_node->agents);
+        					    add_Firm_agent(id, current_shares_outstanding, bank_account, revenues, labor_costs, capital_costs, total_interest_payment, total_debt_installment, total_dividend_payment, net_ernings, total_value_capital_stock, total_value_local_inventary_stock, equity, external_financial_need, range, posx, posy);
+        					} 
+	    				}
+	    				else if (partition_method == other){
+	    				    if (agent_count % number_partitions == 0) {
+                    			/* Compute centre of partition */
+		                       	xmin=current_node->partition_data[0];
+                        		xmax=current_node->partition_data[1];
+                       			ymin=current_node->partition_data[2];
+                       			ymax=current_node->partition_data[3];
 
-								xcentre=xmin+(xmax-xmin)/2.0;
-								ycentre=ymin+(ymax-ymin)/2.0;
-								rrange=1.5;
+			                    xcentre=xmin+(xmax-xmin)/2.0;
+                    			ycentre=ymin+(ymax-ymin)/2.0;
+                    			rrange=1.5;
 
-								p_xmachine = &(current_node->agents);
-								//add_Firm_agent(id, current_shares_outstanding, bank_account, revenues, labor_costs, capital_costs, total_interest_payment, total_debt_installment, total_dividend_payment, net_ernings, total_value_capital_stock, total_value_local_inventary_stock, equity, external_financial_need, range, posx, posy);
-								add_Firm_agent_internal(current_Firm_agent);
+                    			p_xmachine = &(current_node->agents);
+                    			add_Firm_agent(id, current_shares_outstanding, bank_account, revenues, labor_costs, capital_costs, total_interest_payment, total_debt_installment, total_dividend_payment, net_ernings, total_value_capital_stock, total_value_local_inventary_stock, equity, external_financial_need, range, posx, posy);
 
-								current_Firm_agent->posx = xcentre;
-								current_Firm_agent->posy = ycentre;
-								current_Firm_agent->range = rrange;
+                    			set_posx(xcentre);
+                    			set_posy(ycentre);
+                    			set_range(rrange);
 
-							}
-							++agent_count;
-						} /* if partition */
+					        }
+    					    ++agent_count;
+					    } /* if partition */
 
 					} /* if flag */
 
@@ -1098,33 +488,32 @@ in_Firm_agent = 0;
 				
 				/* Reset xagent variables */
 				/* Not implemented static arrays */
-//				id = 0;
-////				range = 0.0;
-//				posx = 0.0;
-//				posy = 0.0;
-//				wealth = 0.0;
-//////////				forwardWindow = 0;
-//				backwordWindow = 0;
-//				binsNumber = 0;
-//				randomWeigth = 0.0;
-//				fundametalWeigth = 0.0;
-//				chartistWeigth = 0.0;
-//				holdingPeriodToForwardW = 0;
-//				current_shares_outstanding = 0;
-//				bank_account = 0.0;
-//				revenues = 0.0;
-//				labor_costs = 0.0;
-//				capital_costs = 0.0;
-//				total_interest_payment = 0.0;
-//				total_debt_installment = 0.0;
-//				total_dividend_payment = 0.0;
-//				net_ernings = 0.0;
-//				total_value_capital_stock = 0.0;
-//				total_value_local_inventary_stock = 0.0;
-//				equity = 0.0;
-//				external_financial_need = 0.0;
-
-	}
+				id = 0;
+				range = 0.0;
+				posx = 0.0;
+				posy = 0.0;
+				wealth = 0.0;
+				forwardWindow = 0;
+				backwordWindow = 0;
+				binsNumber = 0;
+				randomWeigth = 0.0;
+				fundametalWeigth = 0.0;
+				chartistWeigth = 0.0;
+				holdingPeriodToForwardW = 0;
+				current_shares_outstanding = 0;
+				bank_account = 0.0;
+				revenues = 0.0;
+				labor_costs = 0.0;
+				capital_costs = 0.0;
+				total_interest_payment = 0.0;
+				total_debt_installment = 0.0;
+				total_dividend_payment = 0.0;
+				net_ernings = 0.0;
+				total_value_capital_stock = 0.0;
+				total_value_local_inventary_stock = 0.0;
+				equity = 0.0;
+				external_financial_need = 0.0;
+			}
 			if(strcmp(buffer, "id") == 0) in_id = 1;
 			if(strcmp(buffer, "/id") == 0) in_id = 0;
 			if(strcmp(buffer, "assets") == 0) in_assets = 1;
@@ -1205,81 +594,257 @@ in_Firm_agent = 0;
 			if(in_environment)
 			{
 			}
-			else if(in_Eurostat_agent == 1)
+			else
 			{
-				if(in_id) current_Eurostat_agent->id = atoi(buffer);
+				if(in_id) id = atoi(buffer);
 				if(in_assets)
 				{
-					j = 0;
-					read_Asset_dynamic_array(buffer, &j, &current_Eurostat_agent->assets);
+					assets = init_Asset_array();
+					
+                    CHECK_POINTER(assets);
+					j = 1;
+					arraycount = 0;
+					
+					while(buffer[j] == '{')
+					{
+						
+						add_Asset(assets, 0, 0, 0.0);
+						
+						array_k = 0;
+						j++;
+						while(buffer[j] != ',')
+						{
+							arraydata[array_k] = buffer[j];
+							array_k++;
+							j++;
+						}
+						arraydata[array_k] = 0;
+						assets->array[arraycount]->issuer = atoi(arraydata);
+						array_k = 0;
+						j++;
+						while(buffer[j] != ',')
+						{
+							arraydata[array_k] = buffer[j];
+							array_k++;
+							j++;
+						}
+						arraydata[array_k] = 0;
+						assets->array[arraycount]->quantity = atoi(arraydata);
+						array_k = 0;
+						j++;
+						while(buffer[j] != '}')
+						{
+							arraydata[array_k] = buffer[j];
+							array_k++;
+							j++;
+						}
+						arraydata[array_k] = 0;
+						assets->array[arraycount]->lastPrice = atof(arraydata);
+						arraycount++;
+						j++;
+						if(buffer[j] == ',') j += 2;
+					}
 				}
-				if(in_range) current_Eurostat_agent->range = atof(buffer);
-				if(in_posx) current_Eurostat_agent->posx = atof(buffer);
-				if(in_posy) current_Eurostat_agent->posy = atof(buffer);
-			}else if(in_Household_agent == 1)
-			{
-				if(in_id) current_Household_agent->id = atoi(buffer);
-				if(in_wealth) current_Household_agent->wealth = atof(buffer);
+				if(in_range) range = atof(buffer);
+				if(in_posx) posx = atof(buffer);
+				if(in_posy) posy = atof(buffer);
+				if(in_wealth) wealth = atof(buffer);
 				if(in_belief)
 				{
 					j = 0;
-					read_Belief(buffer, &j, &current_Household_agent->belief);
+					belief = (Belief *)malloc(sizeof(Belief));
+					CHECK_POINTER(expectedPriceReturns);
+					belief->expectedPriceReturns = 0.0;
+					array_k = 0;
+					j++;
+					while(buffer[j] != ',')
+					{
+						arraydata[array_k] = buffer[j];
+						array_k++;
+						j++;
+					}
+					arraydata[array_k] = 0;
+					belief->expectedPriceReturns = atof(arraydata);
+					CHECK_POINTER(expectedTotalReturns);
+					belief->expectedTotalReturns = 0.0;
+					array_k = 0;
+					j++;
+					while(buffer[j] != ',')
+					{
+						arraydata[array_k] = buffer[j];
+						array_k++;
+						j++;
+					}
+					arraydata[array_k] = 0;
+					belief->expectedTotalReturns = atof(arraydata);
+					CHECK_POINTER(expectedCashFlowYield);
+					belief->expectedCashFlowYield = 0.0;
+					array_k = 0;
+					j++;
+					while(buffer[j] != ',')
+					{
+						arraydata[array_k] = buffer[j];
+						array_k++;
+						j++;
+					}
+					arraydata[array_k] = 0;
+					belief->expectedCashFlowYield = atof(arraydata);
+					CHECK_POINTER(volatility);
+					belief->volatility = 0.0;
+					array_k = 0;
+					j++;
+					while(buffer[j] != '}')
+					{
+						arraydata[array_k] = buffer[j];
+						array_k++;
+						j++;
+					}
+					arraydata[array_k] = 0;
+					belief->volatility = atof(arraydata);
 				}
 				if(in_portfolio)
 				{
 					j = 0;
-					read_Portfolio(buffer, &j, &current_Household_agent->portfolio);
+					portfolio = (Portfolio *)malloc(sizeof(Portfolio));
+					CHECK_POINTER(bankAccount);
+					portfolio->bankAccount = 0.0;
+					array_k = 0;
+					j++;
+					while(buffer[j] != '}')
+					{
+						arraydata[array_k] = buffer[j];
+						array_k++;
+						j++;
+					}
+					arraydata[array_k] = 0;
+					portfolio->bankAccount = atof(arraydata);
 				}
 				if(in_pendingOrders)
 				{
-					j = 0;
-					read_Order_dynamic_array(buffer, &j, &current_Household_agent->pendingOrders);
+					pendingOrders = init_Order_array();
+					
+                    CHECK_POINTER(pendingOrders);
+					j = 1;
+					arraycount = 0;
+					
+					while(buffer[j] == '{')
+					{
+						
+						add_Order(pendingOrders, 0, 0, 0.0, 0);
+						
+						array_k = 0;
+						j++;
+						while(buffer[j] != ',')
+						{
+							arraydata[array_k] = buffer[j];
+							array_k++;
+							j++;
+						}
+						arraydata[array_k] = 0;
+						pendingOrders->array[arraycount]->issuer = atoi(arraydata);
+						array_k = 0;
+						j++;
+						while(buffer[j] != ',')
+						{
+							arraydata[array_k] = buffer[j];
+							array_k++;
+							j++;
+						}
+						arraydata[array_k] = 0;
+						pendingOrders->array[arraycount]->quantity = atoi(arraydata);
+						array_k = 0;
+						j++;
+						while(buffer[j] != ',')
+						{
+							arraydata[array_k] = buffer[j];
+							array_k++;
+							j++;
+						}
+						arraydata[array_k] = 0;
+						pendingOrders->array[arraycount]->price = atof(arraydata);
+						array_k = 0;
+						j++;
+						while(buffer[j] != '}')
+						{
+							arraydata[array_k] = buffer[j];
+							array_k++;
+							j++;
+						}
+						arraydata[array_k] = 0;
+						pendingOrders->array[arraycount]->assetId = atoi(arraydata);
+						arraycount++;
+						j++;
+						if(buffer[j] == ',') j += 2;
+					}
 				}
 				if(in_assetsowned)
 				{
-					j = 0;
-					read_Asset_dynamic_array(buffer, &j, &current_Household_agent->assetsowned);
+					assetsowned = init_Asset_array();
+					
+                    CHECK_POINTER(assetsowned);
+					j = 1;
+					arraycount = 0;
+					
+					while(buffer[j] == '{')
+					{
+						
+						add_Asset(assetsowned, 0, 0, 0.0);
+						
+						array_k = 0;
+						j++;
+						while(buffer[j] != ',')
+						{
+							arraydata[array_k] = buffer[j];
+							array_k++;
+							j++;
+						}
+						arraydata[array_k] = 0;
+						assetsowned->array[arraycount]->issuer = atoi(arraydata);
+						array_k = 0;
+						j++;
+						while(buffer[j] != ',')
+						{
+							arraydata[array_k] = buffer[j];
+							array_k++;
+							j++;
+						}
+						arraydata[array_k] = 0;
+						assetsowned->array[arraycount]->quantity = atoi(arraydata);
+						array_k = 0;
+						j++;
+						while(buffer[j] != '}')
+						{
+							arraydata[array_k] = buffer[j];
+							array_k++;
+							j++;
+						}
+						arraydata[array_k] = 0;
+						assetsowned->array[arraycount]->lastPrice = atof(arraydata);
+						arraycount++;
+						j++;
+						if(buffer[j] == ',') j += 2;
+					}
 				}
-				if(in_forwardWindow) current_Household_agent->forwardWindow = atoi(buffer);
-				if(in_backwordWindow) current_Household_agent->backwordWindow = atoi(buffer);
-				if(in_binsNumber) current_Household_agent->binsNumber = atoi(buffer);
-				if(in_randomWeigth) current_Household_agent->randomWeigth = atof(buffer);
-				if(in_fundametalWeigth) current_Household_agent->fundametalWeigth = atof(buffer);
-				if(in_chartistWeigth) current_Household_agent->chartistWeigth = atof(buffer);
-				if(in_holdingPeriodToForwardW) current_Household_agent->holdingPeriodToForwardW = atoi(buffer);
-				if(in_range) current_Household_agent->range = atof(buffer);
-				if(in_posx) current_Household_agent->posx = atof(buffer);
-				if(in_posy) current_Household_agent->posy = atof(buffer);
-			}else if(in_ClearingHouse_agent == 1)
-			{
-				if(in_id) current_ClearingHouse_agent->id = atoi(buffer);
-				if(in_assets)
-				{
-					j = 0;
-					read_Asset_dynamic_array(buffer, &j, &current_ClearingHouse_agent->assets);
-				}
-				if(in_range) current_ClearingHouse_agent->range = atof(buffer);
-				if(in_posx) current_ClearingHouse_agent->posx = atof(buffer);
-				if(in_posy) current_ClearingHouse_agent->posy = atof(buffer);
-			}else if(in_Firm_agent == 1)
-			{
-				if(in_id) current_Firm_agent->id = atoi(buffer);
-				if(in_current_shares_outstanding) current_Firm_agent->current_shares_outstanding = atoi(buffer);
-				if(in_bank_account) current_Firm_agent->bank_account = atof(buffer);
-				if(in_revenues) current_Firm_agent->revenues = atof(buffer);
-				if(in_labor_costs) current_Firm_agent->labor_costs = atof(buffer);
-				if(in_capital_costs) current_Firm_agent->capital_costs = atof(buffer);
-				if(in_total_interest_payment) current_Firm_agent->total_interest_payment = atof(buffer);
-				if(in_total_debt_installment) current_Firm_agent->total_debt_installment = atof(buffer);
-				if(in_total_dividend_payment) current_Firm_agent->total_dividend_payment = atof(buffer);
-				if(in_net_ernings) current_Firm_agent->net_ernings = atof(buffer);
-				if(in_total_value_capital_stock) current_Firm_agent->total_value_capital_stock = atof(buffer);
-				if(in_total_value_local_inventary_stock) current_Firm_agent->total_value_local_inventary_stock = atof(buffer);
-				if(in_equity) current_Firm_agent->equity = atof(buffer);
-				if(in_external_financial_need) current_Firm_agent->external_financial_need = atof(buffer);
-				if(in_range) current_Firm_agent->range = atof(buffer);
-				if(in_posx) current_Firm_agent->posx = atof(buffer);
-				if(in_posy) current_Firm_agent->posy = atof(buffer);
+				if(in_forwardWindow) forwardWindow = atoi(buffer);
+				if(in_backwordWindow) backwordWindow = atoi(buffer);
+				if(in_binsNumber) binsNumber = atoi(buffer);
+				if(in_randomWeigth) randomWeigth = atof(buffer);
+				if(in_fundametalWeigth) fundametalWeigth = atof(buffer);
+				if(in_chartistWeigth) chartistWeigth = atof(buffer);
+				if(in_holdingPeriodToForwardW) holdingPeriodToForwardW = atoi(buffer);
+				if(in_current_shares_outstanding) current_shares_outstanding = atoi(buffer);
+				if(in_bank_account) bank_account = atof(buffer);
+				if(in_revenues) revenues = atof(buffer);
+				if(in_labor_costs) labor_costs = atof(buffer);
+				if(in_capital_costs) capital_costs = atof(buffer);
+				if(in_total_interest_payment) total_interest_payment = atof(buffer);
+				if(in_total_debt_installment) total_debt_installment = atof(buffer);
+				if(in_total_dividend_payment) total_dividend_payment = atof(buffer);
+				if(in_net_ernings) net_ernings = atof(buffer);
+				if(in_total_value_capital_stock) total_value_capital_stock = atof(buffer);
+				if(in_total_value_local_inventary_stock) total_value_local_inventary_stock = atof(buffer);
+				if(in_equity) equity = atof(buffer);
+				if(in_external_financial_need) external_financial_need = atof(buffer);
 			}
 			
 			/* Reset buffer */
@@ -1298,31 +863,29 @@ in_Firm_agent = 0;
 			i++;
 		}
 	}
-	/* Make sure cloud data makes sense if any of x,y,z coords were all the same */
-	if ( partition_method == geometric ) {
-		if ( cloud_data[0] == cloud_data[1] ) {
-			cloud_data[0] = -SPINF;
-			cloud_data[1] = SPINF;
-		}
-		if ( cloud_data[2] == cloud_data[3] ) {
-			cloud_data[2] = -SPINF;
-			cloud_data[3] = SPINF;
-		}
-		if ( cloud_data[4] == cloud_data[5] ) {
-			cloud_data[4] = -SPINF;
-			cloud_data[5] = SPINF;
-		}
-	}
+    /* Make sure cloud data makes sense if any of x,y,z coords were all the same */
+    if ( partition_method == geometric ) {
+        if ( cloud_data[0] == cloud_data[1] ) {
+            cloud_data[0] = -SPINF;
+            cloud_data[1] = SPINF;
+        }
+        if ( cloud_data[2] == cloud_data[3] ) {
+            cloud_data[2] = -SPINF;
+            cloud_data[3] = SPINF;
+        }
+        if ( cloud_data[4] == cloud_data[5] ) {
+            cloud_data[4] = -SPINF;
+            cloud_data[5] = SPINF;
+        }
+    }
 
 	/* Close the file */
 	fclose(file);
 	/* Free temp data structures */
-////	free_Asset_array(assets);
-//////////	free_Belief_datatype(belief);
-//	free_Portfolio_datatype(portfolio);
-//	free_Order_array(pendingOrders);
-//	free_Asset_array(assetsowned);
-////////////////////////////////////////
+	//free(current_assets);
+//free(current_pendingOrders);
+//free(current_assetsowned);
+
 }
 
 /** \fn void saveiterationdata_binary(int iteration_number)
@@ -1333,8 +896,8 @@ void saveiterationdata_binary(int iteration_number)
 {
 	/* Pointer to file */
 	FILE *file;
-	char data[1000];
-	int i;
+	char data[100];
+    int i;
 	int agentcount = 0;
 	xmachine_memory_Eurostat * current_Eurostat;
 	xmachine_memory_Household * current_Household;
@@ -1389,328 +952,6 @@ void saveiterationdata_binary(int iteration_number)
 	fclose(file);
 }
 
-/** \fn void write_int_static_array(FILE *file, $name * temp)
- * \brief Writes int.
- */
-void write_int_static_array(FILE *file, int * temp, int size)
-{
-	int i;
-	char data[1000];
-	
-	fputs("{", file);
-	for(i=0; i<size; i++)
-	{
-		sprintf(data, "%i", temp[i]);
-		fputs(data, file);
-		if(i < size-1) fputs(", ", file);
-	}
-	fputs("}", file);
-}
-
-/** \fn void write_float_static_array(FILE *file, float * temp)
- * \brief Writes float.
- */
-void write_float_static_array(FILE *file, float * temp, int size)
-{
-	int i;
-	char data[1000];
-	
-	fputs("{", file);
-	for(i=0; i<size; i++)
-	{
-		sprintf(data, "%f", temp[i]);
-		fputs(data, file);
-		if(i < size-1) fputs(", ", file);
-	}
-	fputs("}", file);
-}
-
-/** \fn void write_double_static_array(FILE *file, double * temp)
- * \brief Writes double.
- */
-void write_double_static_array(FILE *file, double * temp, int size)
-{
-	int i;
-	char data[1000];
-	
-	for(i=0; i<size; i++)
-	{
-		sprintf(data, "%f", temp[i]);
-		fputs(data, file);
-		if(i < size-1) fputs(", ", file);
-	}
-	fputs("}", file);
-}
-
-/** \fn void write_char_static_array(FILE *file, char * temp)
- * \brief Writes char.
- */
-void write_char_static_array(FILE *file, char * temp, int size)
-{
-	int i;
-	char data[1000];
-	
-	//fputs("{", file);
-	for(i=0; i<size; i++)
-	{
-		sprintf(data, "%c", temp[i]);
-		fputs(data, file);
-		//if(i < size-1) fputs(", ", file);
-	}
-	//fputs("}", file);
-}
-
-/** \fn void write_int_dynamic_array(FILE *file, int_array* temp)
- * \brief Writes int.
- */
-void write_int_dynamic_array(FILE *file, int_array * temp)
-{
-	int i;
-	char data[1000];
-	
-	fputs("{", file);
-	for(i=0; i<(*temp).size; i++)
-	{
-		sprintf(data, "%i", (*temp).array[i]);
-		fputs(data, file);
-		if(i < ((*temp).size-1)) fputs(", ", file);
-	}
-	fputs("}", file);
-}
-
-/** \fn void write_float_dynamic_array(FILE *file, float_array* temp)
- * \brief Writes float.
- */
-void write_float_dynamic_array(FILE *file, float_array * temp)
-{
-	int i;
-	char data[1000];
-	
-	fputs("{", file);
-	for(i=0; i<(*temp).size; i++)
-	{
-		sprintf(data, "%f", (*temp).array[i]);
-		fputs(data, file);
-		if(i < ((*temp).size-1)) fputs(", ", file);
-	}
-	fputs("}", file);
-}
-
-/** \fn void write_double_dynamic_array(FILE *file, double_array* temp)
- * \brief Writes double.
- */
-void write_double_dynamic_array(FILE *file, double_array * temp)
-{
-	int i;
-	char data[1000];
-	
-	fputs("{", file);
-	for(i=0; i<(*temp).size; i++)
-	{
-		sprintf(data, "%f", (*temp).array[i]);
-		fputs(data, file);
-		if(i < ((*temp).size-1)) fputs(", ", file);
-	}
-	fputs("}", file);
-}
-
-/** \fn void write_char_dynamic_array(FILE *file, char_array* temp)
- * \brief Writes char.
- */
-void write_char_dynamic_array(FILE *file, char_array * temp)
-{
-	int i;
-	char data[1000];
-	
-	for(i=0; i<(*temp).size; i++)
-	{
-		sprintf(data, "%c", (*temp).array[i]);
-		fputs(data, file);
-	}
-}
-
-/** \fn void write_Order(FILE *file, Order * temp_datatype)
- * \brief Writes Order datatype.
- */
-void write_Order(FILE *file, Order * temp_datatype)
-{
-	char data[1000];
-	
-	fputs("{", file);
-	sprintf(data, "%i", (*temp_datatype).issuer);
-	fputs(data, file);
-	fputs(", ", file);	sprintf(data, "%i", (*temp_datatype).quantity);
-	fputs(data, file);
-	fputs(", ", file);	sprintf(data, "%f", (*temp_datatype).price);
-	fputs(data, file);
-	fputs(", ", file);	sprintf(data, "%i", (*temp_datatype).assetId);
-	fputs(data, file);
-	fputs("}", file);
-}
-
-void write_Order_static_array(FILE *file, Order * temp_datatype, int size)
-{
-	int i;
-	
-	fputs("{", file);
-	for(i = 0; i < size; i++)
-	{
-		write_Order(file, &temp_datatype[i]);
-		
-		if(i < size - 1) fputs(", ", file);
-	}
-	fputs("}", file);
-}
-
-void write_Order_dynamic_array(FILE *file, Order_array * temp_datatype)
-{
-	int i;
-	
-	fputs("{", file);
-	for(i = 0; i < (*temp_datatype).size; i++)
-	{
-		write_Order(file, &(*temp_datatype).array[i]);
-		
-		if(i < (*temp_datatype).size - 1) fputs(", ", file);
-	}
-	fputs("}", file);
-}
-
-/** \fn void write_Belief(FILE *file, Belief * temp_datatype)
- * \brief Writes Belief datatype.
- */
-void write_Belief(FILE *file, Belief * temp_datatype)
-{
-	char data[1000];
-	
-	fputs("{", file);
-	sprintf(data, "%f", (*temp_datatype).expectedPriceReturns);
-	fputs(data, file);
-	fputs(", ", file);	sprintf(data, "%f", (*temp_datatype).expectedTotalReturns);
-	fputs(data, file);
-	fputs(", ", file);	sprintf(data, "%f", (*temp_datatype).expectedCashFlowYield);
-	fputs(data, file);
-	fputs(", ", file);	sprintf(data, "%f", (*temp_datatype).volatility);
-	fputs(data, file);
-	fputs("}", file);
-}
-
-void write_Belief_static_array(FILE *file, Belief * temp_datatype, int size)
-{
-	int i;
-	
-	fputs("{", file);
-	for(i = 0; i < size; i++)
-	{
-		write_Belief(file, &temp_datatype[i]);
-		
-		if(i < size - 1) fputs(", ", file);
-	}
-	fputs("}", file);
-}
-
-void write_Belief_dynamic_array(FILE *file, Belief_array * temp_datatype)
-{
-	int i;
-	
-	fputs("{", file);
-	for(i = 0; i < (*temp_datatype).size; i++)
-	{
-		write_Belief(file, &(*temp_datatype).array[i]);
-		
-		if(i < (*temp_datatype).size - 1) fputs(", ", file);
-	}
-	fputs("}", file);
-}
-
-/** \fn void write_Asset(FILE *file, Asset * temp_datatype)
- * \brief Writes Asset datatype.
- */
-void write_Asset(FILE *file, Asset * temp_datatype)
-{
-	char data[1000];
-	
-	fputs("{", file);
-	sprintf(data, "%i", (*temp_datatype).issuer);
-	fputs(data, file);
-	fputs(", ", file);	sprintf(data, "%i", (*temp_datatype).quantity);
-	fputs(data, file);
-	fputs(", ", file);	sprintf(data, "%f", (*temp_datatype).lastPrice);
-	fputs(data, file);
-	fputs("}", file);
-}
-
-void write_Asset_static_array(FILE *file, Asset * temp_datatype, int size)
-{
-	int i;
-	
-	fputs("{", file);
-	for(i = 0; i < size; i++)
-	{
-		write_Asset(file, &temp_datatype[i]);
-		
-		if(i < size - 1) fputs(", ", file);
-	}
-	fputs("}", file);
-}
-
-void write_Asset_dynamic_array(FILE *file, Asset_array * temp_datatype)
-{
-	int i;
-	
-	fputs("{", file);
-	for(i = 0; i < (*temp_datatype).size; i++)
-	{
-		write_Asset(file, &(*temp_datatype).array[i]);
-		
-		if(i < (*temp_datatype).size - 1) fputs(", ", file);
-	}
-	fputs("}", file);
-}
-
-/** \fn void write_Portfolio(FILE *file, Portfolio * temp_datatype)
- * \brief Writes Portfolio datatype.
- */
-void write_Portfolio(FILE *file, Portfolio * temp_datatype)
-{
-	char data[1000];
-	
-	fputs("{", file);
-	sprintf(data, "%f", (*temp_datatype).bankAccount);
-	fputs(data, file);
-	fputs("}", file);
-}
-
-void write_Portfolio_static_array(FILE *file, Portfolio * temp_datatype, int size)
-{
-	int i;
-	
-	fputs("{", file);
-	for(i = 0; i < size; i++)
-	{
-		write_Portfolio(file, &temp_datatype[i]);
-		
-		if(i < size - 1) fputs(", ", file);
-	}
-	fputs("}", file);
-}
-
-void write_Portfolio_dynamic_array(FILE *file, Portfolio_array * temp_datatype)
-{
-	int i;
-	
-	fputs("{", file);
-	for(i = 0; i < (*temp_datatype).size; i++)
-	{
-		write_Portfolio(file, &(*temp_datatype).array[i]);
-		
-		if(i < (*temp_datatype).size - 1) fputs(", ", file);
-	}
-	fputs("}", file);
-}
-
-
-
 /** \fn void saveiterationdata(int iteration_number)
  * \brief Save X-machine memory to a file.
  * \param iteration_number The current iteration number.
@@ -1719,7 +960,8 @@ void saveiterationdata(int iteration_number)
 {
 	/* Pointer to file */
 	FILE *file;
-	char data[1000];
+	char data[100];
+	int i;
 	xmachine_memory_Eurostat * current_Eurostat;
 	xmachine_memory_Household * current_Household;
 	xmachine_memory_ClearingHouse * current_ClearingHouse;
@@ -1739,6 +981,7 @@ void saveiterationdata(int iteration_number)
 	while(current_node)
 	{
 		p_xmachine = &current_node->agents;
+
 		current_xmachine = *p_xmachine;
 	while(current_xmachine)
 	{
@@ -1752,7 +995,22 @@ void saveiterationdata(int iteration_number)
 			fputs(data, file);
 			fputs("</id>\n", file);
 			fputs("<assets>", file);
-			write_Asset_dynamic_array(file, &current_Eurostat->assets);
+			fputs("{", file);
+			for(i = 0; i < current_Eurostat->assets->size; i++)
+			{
+				fputs("{", file);
+				sprintf(data, "%i", current_Eurostat->assets->array[i]->issuer);
+				fputs(data, file);
+				fputs(", ", file);
+				sprintf(data, "%i", current_Eurostat->assets->array[i]->quantity);
+				fputs(data, file);
+				fputs(", ", file);
+				sprintf(data, "%f", current_Eurostat->assets->array[i]->lastPrice);
+				fputs(data, file);
+				fputs("}", file);
+				if(i < current_Eurostat->assets->size - 1) fputs(", ", file);
+			}
+			fputs("}", file);
 			fputs("</assets>\n", file);
 			fputs("<range>", file);
 			sprintf(data, "%f", current_Eurostat->range);
@@ -1780,16 +1038,64 @@ void saveiterationdata(int iteration_number)
 			fputs(data, file);
 			fputs("</wealth>\n", file);
 			fputs("<belief>", file);
-			write_Belief(file, &current_Household->belief);
+			fputs("{", file);
+			sprintf(data, "%f", current_Household->belief->expectedPriceReturns);
+			fputs(data, file);
+			fputs(", ", file);
+			sprintf(data, "%f", current_Household->belief->expectedTotalReturns);
+			fputs(data, file);
+			fputs(", ", file);
+			sprintf(data, "%f", current_Household->belief->expectedCashFlowYield);
+			fputs(data, file);
+			fputs(", ", file);
+			sprintf(data, "%f", current_Household->belief->volatility);
+			fputs(data, file);
+			fputs("}", file);
 			fputs("</belief>\n", file);
 			fputs("<portfolio>", file);
-			write_Portfolio(file, &current_Household->portfolio);
+			fputs("{", file);
+			sprintf(data, "%f", current_Household->portfolio->bankAccount);
+			fputs(data, file);
+			fputs("}", file);
 			fputs("</portfolio>\n", file);
 			fputs("<pendingOrders>", file);
-			write_Order_dynamic_array(file, &current_Household->pendingOrders);
+			fputs("{", file);
+			for(i = 0; i < current_Household->pendingOrders->size; i++)
+			{
+				fputs("{", file);
+				sprintf(data, "%i", current_Household->pendingOrders->array[i]->issuer);
+				fputs(data, file);
+				fputs(", ", file);
+				sprintf(data, "%i", current_Household->pendingOrders->array[i]->quantity);
+				fputs(data, file);
+				fputs(", ", file);
+				sprintf(data, "%f", current_Household->pendingOrders->array[i]->price);
+				fputs(data, file);
+				fputs(", ", file);
+				sprintf(data, "%i", current_Household->pendingOrders->array[i]->assetId);
+				fputs(data, file);
+				fputs("}", file);
+				if(i < current_Household->pendingOrders->size - 1) fputs(", ", file);
+			}
+			fputs("}", file);
 			fputs("</pendingOrders>\n", file);
 			fputs("<assetsowned>", file);
-			write_Asset_dynamic_array(file, &current_Household->assetsowned);
+			fputs("{", file);
+			for(i = 0; i < current_Household->assetsowned->size; i++)
+			{
+				fputs("{", file);
+				sprintf(data, "%i", current_Household->assetsowned->array[i]->issuer);
+				fputs(data, file);
+				fputs(", ", file);
+				sprintf(data, "%i", current_Household->assetsowned->array[i]->quantity);
+				fputs(data, file);
+				fputs(", ", file);
+				sprintf(data, "%f", current_Household->assetsowned->array[i]->lastPrice);
+				fputs(data, file);
+				fputs("}", file);
+				if(i < current_Household->assetsowned->size - 1) fputs(", ", file);
+			}
+			fputs("}", file);
 			fputs("</assetsowned>\n", file);
 			fputs("<forwardWindow>", file);
 			sprintf(data, "%i", current_Household->forwardWindow);
@@ -1841,7 +1147,22 @@ void saveiterationdata(int iteration_number)
 			fputs(data, file);
 			fputs("</id>\n", file);
 			fputs("<assets>", file);
-			write_Asset_dynamic_array(file, &current_ClearingHouse->assets);
+			fputs("{", file);
+			for(i = 0; i < current_ClearingHouse->assets->size; i++)
+			{
+				fputs("{", file);
+				sprintf(data, "%i", current_ClearingHouse->assets->array[i]->issuer);
+				fputs(data, file);
+				fputs(", ", file);
+				sprintf(data, "%i", current_ClearingHouse->assets->array[i]->quantity);
+				fputs(data, file);
+				fputs(", ", file);
+				sprintf(data, "%f", current_ClearingHouse->assets->array[i]->lastPrice);
+				fputs(data, file);
+				fputs("}", file);
+				if(i < current_ClearingHouse->assets->size - 1) fputs(", ", file);
+			}
+			fputs("}", file);
 			fputs("</assets>\n", file);
 			fputs("<range>", file);
 			sprintf(data, "%f", current_ClearingHouse->range);

@@ -19,7 +19,11 @@ struct Stock
       double prices[MAXPRICES];
       double returns[MAXRETURNS];
       int index;
-
+      double earningExp;
+      double earningPayoutExp;
+      double nrOutStandingShares;
+      double equity;
+    
       
 };
 
@@ -55,6 +59,6 @@ double volatilityStock(Stock *aStock,int backwordWindow);
    
 void copyWindowReturn(Stock *stock, double *vect, int backwordWindow);
 
-Histogram *frequencyReturns(Stock *stock, int backwordWindow,int bins);
+void frequencyReturns(Stock *stock,Histogram *hist, int backwardWindow,int bins);
 
 #endif
