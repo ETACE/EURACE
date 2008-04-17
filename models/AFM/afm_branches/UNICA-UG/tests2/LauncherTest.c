@@ -21,7 +21,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "Suites.h"
-#include "CUnit\Console.h"
+#include "Console.h"
 
 
 int main(int argc, char* argv[])

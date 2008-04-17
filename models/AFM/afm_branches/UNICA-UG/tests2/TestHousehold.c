@@ -38,8 +38,11 @@ void initializePopulation(void)
 	assetsowned=newAssetsOwned();
 	posx = 0.0;
 	posy = 0.0;
+ forwardWindow=
+ backwordWindow
+ binsNumber=  randomWeigth= fundametalWeigth= chartistWeigth=  holdingPeriodToForwardW=
 	
-   add_Household_agent(id, wealth,  belief,  portfolio,   pendingOrders, assetsowned,posx,  posy);  
+ void add_Household_agent(id,  wealth,  belief,  portfolio, pendingOrders,  assetsowned, forwardWindow, backwordWindow,  binsNumber,  randomWeigth, fundametalWeigth, chartistWeigth,  holdingPeriodToForwardW,  range,  posx,  posy);
 }
 
 

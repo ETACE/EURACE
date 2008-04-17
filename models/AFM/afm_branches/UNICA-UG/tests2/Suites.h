@@ -7,8 +7,8 @@
 #include "TestClearingHouse.h"
 #include "TestClearingMechanism.h"
 #include "TestOrder.h"
-#include "CUnit/Basic.h"
-#include "CUnit/CUnit.h"
+#include "Basic.h"
+#include "CUnit.h"
 #include <stdio.h>
 #include <assert.h>
 
