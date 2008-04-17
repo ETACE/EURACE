@@ -25,7 +25,7 @@ struct Belief
        double volatility;
        Histogram hist;
        //int forwardWindow;
-       //int backwordWindow;
+       //int backwardWindow;
        //int binsNumber;
        //double randomReturnWeigth;
        //double fundametalReturnWeigth;
@@ -60,10 +60,11 @@ int forwardMonths(Belief *belief, int currentDay, int forwardWindow);
     
 double horizonRetainedEarnings(Belief *belief,Stock *stock, int currentDay,int forwardWindow);
 
-double futureFundamentalReturn(Belief *belief,Stock *stock,int currentDay);
+double futureFundamentalReturn(Belief *belief,Stock *stock,int currentDay,int forwardWindow);
 
-double randomReturn(Belief *belief, Stock *stock,int forwardWindow, Random *rnd);
-void  stockBeliefFormation(Belief *belief, Stock *stock,int backwardWindow,double randomWeigth,double  fundametalWeigth, double chartistWeigth, int bins ,Random *rnd);
+double randomReturn(Belief *belief, Stock *stock,int backwardWindow,int forwardWindow, Random *rnd);
+
+void  stockBeliefFormation(Belief *belief, Stock *stock,int backwardWindow,int forwardWindow, double randomWeigth,double  fundametalWeigth,double chartistWeigth, int bins ,int currentDay, Random *rnd);
 
  
 #endif

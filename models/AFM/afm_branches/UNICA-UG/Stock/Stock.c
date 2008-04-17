@@ -52,15 +52,15 @@ double lastPriceStock(Stock *aStock)
         answer=anStock->prices[index];
         return answer;
 }
-double expectedReturnStock(Stock *aStock,int backwordWindow)
+double expectedReturnStock(Stock *aStock,int backwardWindow)
        { double mean;
          double *returns;
          int i;
          mean=0;
          returns=aStock->returns;
-         for(i=backwordWindow-1;i>=0;i++)
+         for(i=backwardWindow-1;i>=0;i++)
              mean=mean+returns[i];
-         mean=mean/(backwordWindow-1);
+         mean=mean/(backwardWindow-1);
          return mean;
        }
 double  backreturnsAt(Stock *stock,int ind)
@@ -70,35 +70,34 @@ double  backreturnsAt(Stock *stock,int ind)
        return stock->returns[index];
    }
      
-double volatilityStock(Stock *aStock,int backwordWindow)
+double volatilityStock(Stock *aStock,int backwardWindow)
      { double expectedreturn;
        double volatility;
        double returns;
        double aux;
        volatility=0;
        returns=aStock->returns;
-       expectedreturn=expectedReturnStock(aStock,backwordWindow);
-        for(i=backwordWindow-1;i>=0;i++)
+       expectedreturn=expectedReturnStock(aStock,backwardWindow);
+        for(i=backwardWindow-1;i>=0;i++)
             {  aux=(returns[i]-expectedreturn);
                volatility=volatility+aux*aux;
             }
-       volatility=sqrt(volatility)/(backwordWindow-1);
+       volatility=sqrt(volatility)/(backwardWindow-1);
       return volatility;
      }
-void copyWindowReturn(Stock *stock, double *vect, int backwordWindow)
+void copyWindowReturn(Stock *stock, double *vect, int backwardWindow)
   {  int index,i;
      double *returns;
      index=stock->index;
      returns=stock->returns;
-     for(i=0;i<(backwordWindow-1);i++)
+     for(i=0;i<(backwardWindow-1);i++)
      temp[i]=backreturnsAt(stock,i);
   }
-Histogram *frequencyReturns(Stock *stock, int backwordWindow,int bins)
+void frequencyReturns(Stock *stock,Histogram *hist, int backwardWindow,int bins)
  { double temp[MAXRETURNS];
-   Histogram *hist;
-   hist=newHistogram();
-   copyWindowReturn(stock,temp,backwordWindow);
-   histogram(hist,temp,backwordWindow-1,bins);
+  
+   copyWindowReturn(stock,temp,backwardWindow);
+   histogram(hist,temp,backwardWindow-1,bins);
    return hist;
    
   

@@ -16,11 +16,11 @@ void initializeBelief(Belief *belief)
       belief->expectedCashFlowYield=0.0;
       belief->volatility=0.0;
       //belief->forwardWindow=0;
-      //belief->backwordWindow=0;
+      //belief->backwardWindow=0;
       //belief->binsNumber=0;
-      //belief->randomReturnWeigth=0.0;
-      //belief->fundametalReturnWeigth=0.0;
-      //belief->chartistReturnWeigth=0.0;
+      //belief->randomReturnWeight=0.0;
+      //belief->fundametalReturnWeight=0.0;
+      //belief->chartistReturnWeight=0.0;
       //belief->holdingPeriodToForwardW=0;
 }
 
@@ -52,43 +52,46 @@ double horizonRetainedEarnings(Belief *belief,Stock *stock, int currentDay,int f
        int forwardmonths;
        double hRetainedEarnings;
        forwardmonths=forwardMonths(belief,currentDay,forwardWindow);
-       hRetainedEarnings= forwardMonths*(stock->earningsExp-stock->earningsPayoutExp);  
+       hRetainedEarnings= forwardmonths*(stock->earningExp-stock->earningPayoutExp);  
        return hRetainedEarnings;
 }
 
-double futureFundamentalReturn(Belief *belief,Stock *stock,int currentDay)
+double futureFundamentalReturn(Belief *belief,Stock *stock,int currentDay,int forwardWindow)
 { double futureFundPrice;
   double fundamentalReturn;
-  hRetainedEarnings=horizonRetainedEarnings(belief,stock,currentDay);
-  futureFundlPrice = (stock->equity+hRetainedEarnings)/stock->nrOutStandingShares;
-  fundamentalReturn = (FutureFundamentalPrice-lastPriceStock(stock))/lastPriceStock(stock);
+  int hRetainedEarnings;
+  hRetainedEarnings=horizonRetainedEarnings(belief,stock,currentDay,forwardWindow);
+  futureFundPrice = (stock->equity+hRetainedEarnings)/stock->nrOutStandingShares;
+  fundamentalReturn = (futureFundPrice-lastPriceStock(stock))/lastPriceStock(stock);
   return fundamentalReturn;
        }
 
-double randomReturn(Belief *belief, Stock *stock,int forwardWindow, Random *rnd)
+double randomReturn(Belief *belief, Stock *stock,int backwardWindow,int forwardWindow, Random *rnd)
 {  double rndReturn;
    double volatility;
    double randn;
-   volatility=volatilityStock(stock,backwordWindow);
+   volatility=volatilityStock(stock,backwardWindow);
    randn=gauss(rnd,0,1);
-   rndRetun = sqrt(forwardWindow)*volatility*randn;
+   rndReturn = sqrt(forwardWindow)*volatility*randn;
    return rndReturn;
 }
-void  stockBeliefFormation(Belief *belief, Stock *stock,int backwardWindow,double randomWeigth,double  fundametalWeigth, double chartistWeigth, , int bins ,Random *rnd)
+void  stockBeliefFormation(Belief *belief, Stock *stock,int backwardWindow,int forwardWindow, double randomWeight,double  fundamentalWeight,double chartistWeight, int bins ,int currentDay, Random *rnd)
 { 
-  double fundamentalReturn;
-  double rndReturn;
-  double total_return_avg;
+  double fundreturn;
+  double rndreturn;
+  double total_returns_avg;
+  double price_returns_avg;
+  double expreturn;
   int binsnumber;
   Histogram *hist;
-
-  rnd=randomReturn(belief, Stock *stock,forwardWindow, rnd);
-  fundamentalReturn=futureFundamentalReturn(belief,stock,currentDay);
-  returns=expectedReturns(stock,backwordWindow);
-  price_returns_avg = randomWeight*rndReturn + chartistWeights*returns + fundamentalWeigth*FundamentalReturn; 
-  total_return_avg=price_returns+stock->dividend_yield;
+    hist=&(belief->hist);
+  rndreturn=randomReturn(belief, stock,forwardWindow,backwardWindow, rnd);
+  fundreturn=futureFundamentalReturn(belief,stock,currentDay,forwardWindow);
+  expreturn=expectedReturnStock(stock,backwardWindow);
+  price_returns_avg = randomWeight*rndreturn + chartistWeight*expreturn + fundamentalWeight*fundreturn; 
+  total_returns_avg=price_returns_avg+stock->dividend_yield;
   binsnumber = min(bins,backwardWindow);
-  hist=frequencyReturns(stock,backwordWindow, bins);
-  belief->hist=hist;
+  frequencyReturns(stock,hist,backwardWindow,binsnumber);
+
   //prendo una finestra computo i ritorni da fare...
 }
