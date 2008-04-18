@@ -461,19 +461,25 @@ void readModel(input_file * inputfile, char * directory, model_data * modeldata,
 			{
 				memory = 1;
 				/*current_memory = addxmemory(p_xmemory);*/
-				current_memory = addxmemory(&current_xmachine->memory);
+				
+				if(current_xmachine->memory == NULL)
+				{
+					current_memory = addxmemory(&current_xmachine->memory);
+				}
+				
 				tvariable = NULL;
 			}
 			if(strcmp(current_string->array, "/memory") == 0)
 			{
 				memory = 0;
-				current_memory->vars = *p_variable;
+				//current_memory->vars = *p_variable;
 			}
 			if(strcmp(current_string->array, "var") == 0)
 			{
 				var = 1;
 				if(datatype == 1) current_variable = addvariable(p_variable);
 				else if(environment == 1) current_envvar = addvariable(modeldata->p_envvars);
+				else if(memory == 1) current_variable = addvariable(&current_memory->vars);
 				else current_variable = addvariable(p_variable);
 			}
 			if(strcmp(current_string->array, "/var") == 0) { var = 0; }
