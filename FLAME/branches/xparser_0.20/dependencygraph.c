@@ -431,14 +431,12 @@ void create_dependency_graph(char * filepath, model_data * modeldata)
 	
 	//check loops in dependencies
 	/* For each agent */
-	current_xmachine = * modeldata->p_xmachines;
+/*	current_xmachine = * modeldata->p_xmachines;
 	while(current_xmachine)
 	{
-		/* For each function */
 		current_function = current_xmachine->functions;
 		while(current_function)
 		{
-			/* Search dependencies on the current function */
 			current_adj_function = current_function->dependson;
 			while(current_adj_function)
 			{
@@ -451,7 +449,7 @@ void create_dependency_graph(char * filepath, model_data * modeldata)
 		}
 		
 		current_xmachine = current_xmachine->next;
-	}
+	}*/
 	
 	/* For a set amount of times for each layer (cannot be more layers than functions?) */
 	/* WARNING: there is no check for depencency loops that can cause an infinite loop */	
@@ -496,8 +494,8 @@ void create_dependency_graph(char * filepath, model_data * modeldata)
 						
 						addfunction_pointer(&current_layer->functions, current_function);
 						
-						printf("layer %d: %s  %s->%s\n", newlayer, current_function->name,
-						current_function->current_state, current_function->next_state);
+						//printf("layer %d: %s  %s->%s\n", newlayer, current_function->name,
+						//current_function->current_state, current_function->next_state);
 						
 						//current_function2 = addxfunction(&current_layer->functions);
 						//current_function2->name = copystr(current_function->name);
