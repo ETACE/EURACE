@@ -70,7 +70,7 @@ int Firm_read_loan_offers_send_loan_acceptance()
            	debt_installment_payment = loan_value/4;
            	nr_periods_before_maturity = 4; //Standard 4 periods to repay debt
            	
-            add_loan_item(&LOANS,(bank_id, loan_value, interest_rate, interest_payment, debt_installment_payment, nr_periods_before_maturity);            
+            add_loan_item(&LOANS, bank_id, loan_value, interest_rate, interest_payment, debt_installment_payment, nr_periods_before_maturity);            
         }
     FINISH_LOAN_CONDITIONS_MESSAGE_LOOP
 
