@@ -184,7 +184,6 @@ void readModel(input_file * inputfile, char * directory, model_data * modeldata,
 	int tagline[10];
 	char chardata[100];
 	/*char chardata2[100];*/
-	int found;
 	int dynamic_array_found;
 	int linenumber = 1;
 	int variable_count;
@@ -605,14 +604,12 @@ void readModel(input_file * inputfile, char * directory, model_data * modeldata,
 				
 				/* Count number of variables */
 				variable_count = 0;
-				/* Find 'range' variable and unallowed dynamic arrays */
-				found = 0;
+				/* Find unallowed dynamic arrays */
 				dynamic_array_found = 0;
 				current_variable = current_message->vars;
 				while(current_variable)
 				{
 					variable_count++;
-					if(strcmp(current_variable->name, "range") == 0) found = 1;
 					if(current_variable->arraylength == -1 || (current_variable->ismodeldatatype == 1 && current_variable->datatype->has_dynamic_arrays == 1))
 					{
 						printf("Error: %s - dyamic array found in message\n", current_variable->name);
@@ -622,11 +619,6 @@ void readModel(input_file * inputfile, char * directory, model_data * modeldata,
 					current_variable = current_variable->next;
 				}
 				
-				if(found == 0)
-				{
-					printf("Error: No 'range' variable in %s message\n", current_message->name);
-					exit(1);
-				}
 				if(dynamic_array_found == 1)
 				{
 					printf("Error: Dynamic array found in %s message\n", current_message->name);
