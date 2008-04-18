@@ -37,7 +37,7 @@ int Bank_read_loan_acceptance()
 
 int Bank_read_interest_payments()
 {
-	int firm_id;
+	//int firm_id;
 	
 	START_INTEREST_PAYMENT_MESSAGE_LOOP
 		if(interest_payment_message->bank_id==ID)
