@@ -435,9 +435,9 @@ void readinitialstates(char * filename, int * itno, double cloud_data[6],
 				
 <?foreach xagent?>				<?if notfirst?>else <?end if?>if(strcmp(agentname, "$name") == 0)
 				{
-					posx = current_$name_agent->$xvar;
+					/*posx = current_$name_agent->$xvar;
 					posy = current_$name_agent->$yvar;
-					posz = <?if use_zvar?>current_$name_agent->$zvar<?end if?><?if no_zvar?>0.0<?end if?>;
+					posz = <?if use_zvar?>current_$name_agent->$zvar<?end if?><?if no_zvar?>0.0<?end if?>;*/
 					
 					/* If flag is zero just read the data. We'll partition later.
 					 * If flag is not zero we aleady have partition data so can read and distribute to the current node.*/
@@ -491,9 +491,9 @@ void readinitialstates(char * filename, int * itno, double cloud_data[6],
 								//add_$name_agent(<?foreach xagentvar?>$name<?if notlast?>, <?end if?><?end foreach?>);
 								add_$name_agent_internal(current_$name_agent, $name_$start_state_state);
 
-								current_$name_agent->$xvar = xcentre;
+								/*current_$name_agent->$xvar = xcentre;
 								current_$name_agent->$yvar = ycentre;
-								current_$name_agent->$rangevar = rrange;
+								current_$name_agent->$rangevar = rrange;*/
 
 							}
 							++agent_count;
