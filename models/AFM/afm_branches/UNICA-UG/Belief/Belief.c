@@ -84,7 +84,7 @@ void  stockBeliefFormation(Belief *belief, Stock *stock,int backwardWindow,int f
   double expreturn;
   int binsnumber;
   Histogram *hist;
-    hist=&(belief->hist);
+   hist=&(belief->hist);
   rndreturn=randomReturn(belief, stock,forwardWindow,backwardWindow, rnd);
   fundreturn=futureFundamentalReturn(belief,stock,currentDay,forwardWindow);
   expreturn=expectedReturnStock(stock,backwardWindow);
