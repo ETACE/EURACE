@@ -82,16 +82,17 @@ void  stockBeliefFormation(Belief *belief, Stock *stock,int backwardWindow,int f
   double total_returns_avg;
   double price_returns_avg;
   double expreturn;
+  double ptreturns
   int binsnumber;
   Histogram *hist;
    hist=&(belief->hist);
   rndreturn=randomReturn(belief, stock,forwardWindow,backwardWindow, rnd);
   fundreturn=futureFundamentalReturn(belief,stock,currentDay,forwardWindow);
-  expreturn=expectedReturnStock(stock,backwardWindow);
+  ptreturn=expectedReturnStock(stock,backwardWindow);
   price_returns_avg = randomWeight*rndreturn + chartistWeight*expreturn + fundamentalWeight*fundreturn; 
   total_returns_avg=price_returns_avg+stock->dividend_yield;
   binsnumber = min(bins,backwardWindow);
-  frequencyReturns(stock,hist,backwardWindow,binsnumber);
+  frequencyReturns(stock,hist,backwardWindow,binsnumber,offset);
 
   //prendo una finestra computo i ritorni da fare...
 }
