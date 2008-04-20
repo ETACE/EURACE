@@ -85,18 +85,18 @@ double volatilityStock(Stock *aStock,int backwardWindow)
        volatility=sqrt(volatility)/(backwardWindow-1);
       return volatility;
      }
-void copyWindowReturn(Stock *stock, double *vect, int backwardWindow)
+void totalReturnsStock(Stock *stock, double *vect, int backwardWindow,double value)
   {  int index,i;
      double *returns;
      index=stock->index;
      returns=stock->returns;
      for(i=0;i<(backwardWindow-1);i++)
-     temp[i]=backreturnsAt(stock,i);
+     temp[i]=backreturnsAt(stock,i)+value;
   }
-void frequencyReturns(Stock *stock,Histogram *hist, int backwardWindow,int bins)
+void frequencyTotalReturns(Stock *stock,Histogram *hist, int backwardWindow,int bins,double value)
  { double temp[MAXRETURNS];
   
-   copyWindowReturn(stock,temp,backwardWindow);
+   totalReturnsStock(stock,temp,backwardWindow,value);
    histogram(hist,temp,backwardWindow-1,bins);
    return hist;
    
