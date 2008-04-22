@@ -1,6 +1,68 @@
 #include "header.h"
 
-void output_dot_graph3(char * filename, char * filepath, model_data * modeldata, int flag)
+void output_dgraph(char * filename, char * filepath, model_data * modeldata)
+{
+	/* File to write to */
+	FILE *file;
+	/* Buffer for concatenating strings */
+	char buffer[1000];
+	xmachine * current_xmachine;
+	xmachine_function * current_function;
+	adj_function * current_adj_function;
+	
+	/* place in 'data' the file to write to */
+	sprintf(buffer, "%s%s", filepath, filename);
+	/* print out the location of the source file */
+	printf("writing file: %s\n", buffer);
+	/* open the file to write to */
+	file = fopen(buffer, "w");
+	
+	fputs("digraph dependency_graph {\n", file);
+	fputs("\trankdir=BT;\n", file);
+	fputs("\tsize=\"8,5;\"\n", file); /* cg 9/8/07 - bug - ; missing */
+	fputs("\tnode [shape = rect];\n", file);
+	
+	fputs("\t\n\t/* Functions */\n", file);
+	/* For every function */
+	current_xmachine = * modeldata->p_xmachines;
+	while(current_xmachine)
+	{
+		current_function = current_xmachine->functions;
+		while(current_function)
+		{
+			fputs("\t", file);
+			fputs(current_function->name, file);
+			fputs("[label = \"", file);
+			fputs(current_function->name, file);
+			fputs("\"]\n", file);
+			
+			/* For every dependency */
+			current_adj_function = current_function->depends;
+			while(current_adj_function)
+			{
+				fputs("\t", file);
+				fputs(current_function->name, file);
+				fputs(" -> ", file);
+				fputs(current_adj_function->function->name, file);
+				fputs(" [ label = \"<depends on ", file);
+				fputs(current_adj_function->type, file);
+				fputs(">\" ];\n", file);
+				
+				current_adj_function = current_adj_function->next;
+			}
+			
+			current_function = current_function->next;
+		}
+		
+		current_xmachine = current_xmachine->next;
+	}
+	fputs("}", file);
+	
+	/* Close the file */
+	fclose(file);
+}
+
+void output_stategraph(char * filename, char * filepath, model_data * modeldata, int flag)
 {
 	/* File to write to */
 	FILE *file;
@@ -540,7 +602,8 @@ void create_dependency_graph(char * filepath, model_data * modeldata)
 	
 	modeldata->layer_total = newlayer;
 	
-	output_dot_graph3("stategraph.dot", filepath, modeldata, 1);
+	if(modeldata->depends_style == 0) output_stategraph("stategraph.dot", filepath, modeldata, 1);
+	if(modeldata->depends_style == 1) output_dgraph("dgraph.dot", filepath, modeldata);
 	
 	/* Calculate points to start sync and end sync communication */
 	/* and points where states have more than one leading edge */

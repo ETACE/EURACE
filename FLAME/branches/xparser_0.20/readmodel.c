@@ -208,6 +208,7 @@ void readModel(input_file * inputfile, char * directory, model_data * modeldata,
 	xmachine_message * current_message;
 	xmachine_state * current_state;
 	xmachine_function * current_function;
+	adj_function * current_adj_function;
 	variable * current_envvar;
 	variable * current_envdefine;
 	env_func * current_envfunc;
@@ -577,8 +578,8 @@ void readModel(input_file * inputfile, char * directory, model_data * modeldata,
 			{
 				function = 0;
 				
-				addxstate(current_function->current_state, &current_xmachine->states);
-				addxstate(current_function->next_state, &current_xmachine->states);
+				if(current_function->current_state != NULL) addxstate(current_function->current_state, &current_xmachine->states);
+				if(current_function->next_state != NULL) addxstate(current_function->next_state, &current_xmachine->states);
 				
 				current_function->agent_name = current_xmachine->name;
 			}
@@ -676,6 +677,30 @@ void readModel(input_file * inputfile, char * directory, model_data * modeldata,
 			}
 			if(strcmp(current_string->array, "include") == 0) { include = 1; }
 			if(strcmp(current_string->array, "/include") == 0) { include = 0; }
+			if(strcmp(current_string->array, "depends") == 0)
+			{
+				depends = 1;
+				/*charlist = NULL;*/
+				current_adj_function = add_depends_adj_function(current_function);
+				
+				modeldata->depends_style = 1;
+			}
+			if(strcmp(current_string->array, "/depends") == 0)
+			{
+				depends = 0;
+				
+				//add_adj_function(current_function2, current_function, "internal");
+				
+				//printf("depends: %s %s %s\n", current_function->name, current_adj_function->name, current_adj_function->type);
+				
+				
+				/*printf("depends: ");
+				printcharlist(&current_trans->func);
+				printf(" ");
+				printcharlist(&current_trans->dest);
+				printf("\n");*/
+				
+			}
 			
 			/* End of tag and reset buffer */
 			intag = 0;
@@ -1028,6 +1053,11 @@ void readModel(input_file * inputfile, char * directory, model_data * modeldata,
 					//if(op) current_rule_data->op = copy_array_to_str(current_string);
 					//if(rhs) current_rule_data->rhs = copy_array_to_str(current_string);
 				}
+				if(depends)
+				{
+					if(name) { current_adj_function->name = copy_array_to_str(current_string); }/*charlist = NULL; }*/
+					if(type) { current_adj_function->type = copy_array_to_str(current_string); }/*charlist = NULL; }*/
+				}
 			}
 			else if(xmachine)
 			{
@@ -1111,14 +1141,25 @@ void readModel(input_file * inputfile, char * directory, model_data * modeldata,
 void checkmodel(model_data * modeldata)
 {
 	xmachine * current_xmachine;
+	xmachine * current_xmachine2;
 	xmachine_memory * current_memory;
 	variable * current_variable;
 	model_datatype * current_datatype;
+	xmachine_function * current_function;
+	xmachine_function * current_function2;
+	adj_function * current_adj_function;
+	xmachine_ioput * current_ioput;
 	variable * allvar;
 	char buffer[100];
 	int variable_count;
 	int found;
+	int state_number;
 	
+	/* Check model for:
+	 * agent/message variables are only known data types
+	 * agent/message variables only appear once, show warning for duplicates and show from which files
+	 * try and parse functions files for implementations of functions defined in model xml
+	 * */
 	
 	/* Check agent memory variables for being a model data type and update variable attributes */
 	current_xmachine = *modeldata->p_xmachines;
@@ -1129,96 +1170,188 @@ void checkmodel(model_data * modeldata)
 		while(current_variable)
 		{
 			/* Handle model defined data types */
-		current_datatype = * modeldata->p_datatypes;
-		while(current_datatype)
-		{
-			if(strcmp(current_variable->type, current_datatype->name) == 0)
+			current_datatype = * modeldata->p_datatypes;
+			while(current_datatype)
 			{
-				current_variable->ismodeldatatype = 1;
-				current_variable->datatype = current_datatype;
+				if(strcmp(current_variable->type, current_datatype->name) == 0)
+				{
+					current_variable->ismodeldatatype = 1;
+					current_variable->datatype = current_datatype;
+				}
+				
+				strcpy(buffer, current_datatype->name);
+				strcat(buffer, "_array");
+				
+				if(strcmp(current_variable->type, buffer) == 0)
+				{
+					current_variable->ismodeldatatype = 1;
+					current_variable->datatype = current_datatype;
+					current_variable->arraylength = -1;
+				}
+				
+				current_datatype = current_datatype->next;
 			}
-			
-			strcpy(buffer, current_datatype->name);
-			strcat(buffer, "_array");
-			
-			if(strcmp(current_variable->type, buffer) == 0)
-			{
-				current_variable->ismodeldatatype = 1;
-				current_variable->datatype = current_datatype;
-				current_variable->arraylength = -1;
-			}
-			
-			current_datatype = current_datatype->next;
-		}
-			
+				
 			current_variable = current_variable->next;
 		}
 		
-		
-		
-		
 		/* Compute x,y,z location variables in memory */
-				/* Check for x-axis component as 'posx' or 'px' or 'x' */
-				strcpy(current_xmachine->zvar, "0.0");
-				variable_count = 0;
+		/* Check for x-axis component as 'posx' or 'px' or 'x' */
+		strcpy(current_xmachine->zvar, "0.0");
+		variable_count = 0;
+		
+		while(current_memory)
+		{
+			current_variable = current_memory->vars;
+			while(current_variable)
+			{
+				if(current_variable->arraylength != 0) modeldata->agents_include_array_variables = 1;
 				
-				while(current_memory)
+				/*copycharlist(&current_variable->name, &chardata[0]);*/
+				if(strcmp(current_variable->name, "x") == 0)    strcpy(current_xmachine->xvar, "x");
+				if(strcmp(current_variable->name, "px") == 0)   strcpy(current_xmachine->xvar, "px");
+				if(strcmp(current_variable->name, "posx") == 0) strcpy(current_xmachine->xvar, "posx");
+				if(strcmp(current_variable->name, "y") == 0)    strcpy(current_xmachine->yvar, "y");
+				if(strcmp(current_variable->name, "py") == 0)   strcpy(current_xmachine->yvar, "py");
+				if(strcmp(current_variable->name, "posy") == 0) strcpy(current_xmachine->yvar, "posy");
+				if(strcmp(current_variable->name, "z") == 0)    strcpy(current_xmachine->zvar, "z");
+				if(strcmp(current_variable->name, "pz") == 0)   strcpy(current_xmachine->zvar, "pz");
+				if(strcmp(current_variable->name, "posz") == 0) strcpy(current_xmachine->zvar, "posz");
+				if(strcmp(current_variable->name, "range") == 0) strcpy(current_xmachine->rangevar, "range");
+				if(strcmp(current_variable->name, "radius") == 0) strcpy(current_xmachine->rangevar, "radius");
+				
+				if(strcmp(current_variable->name, "id") == 0) strcpy(current_xmachine->idvar, "id");
+				if(strcmp(current_variable->name, "agent_id") == 0) strcpy(current_xmachine->idvar, "agent_id");
+				
+				found = 0;
+				allvar = * modeldata->p_allvars;
+				while(allvar)
 				{
-					current_variable = current_memory->vars;
-					while(current_variable)
-					{
-						if(current_variable->arraylength != 0) modeldata->agents_include_array_variables = 1;
-						
-						/*copycharlist(&current_variable->name, &chardata[0]);*/
-						if(strcmp(current_variable->name, "x") == 0)    strcpy(current_xmachine->xvar, "x");
-						if(strcmp(current_variable->name, "px") == 0)   strcpy(current_xmachine->xvar, "px");
-						if(strcmp(current_variable->name, "posx") == 0) strcpy(current_xmachine->xvar, "posx");
-						if(strcmp(current_variable->name, "y") == 0)    strcpy(current_xmachine->yvar, "y");
-						if(strcmp(current_variable->name, "py") == 0)   strcpy(current_xmachine->yvar, "py");
-						if(strcmp(current_variable->name, "posy") == 0) strcpy(current_xmachine->yvar, "posy");
-						if(strcmp(current_variable->name, "z") == 0)    strcpy(current_xmachine->zvar, "z");
-						if(strcmp(current_variable->name, "pz") == 0)   strcpy(current_xmachine->zvar, "pz");
-						if(strcmp(current_variable->name, "posz") == 0) strcpy(current_xmachine->zvar, "posz");
-						if(strcmp(current_variable->name, "range") == 0) strcpy(current_xmachine->rangevar, "range");
-						if(strcmp(current_variable->name, "radius") == 0) strcpy(current_xmachine->rangevar, "radius");
-						
-						if(strcmp(current_variable->name, "id") == 0) strcpy(current_xmachine->idvar, "id");
-						if(strcmp(current_variable->name, "agent_id") == 0) strcpy(current_xmachine->idvar, "agent_id");
-						
-						found = 0;
-						allvar = * modeldata->p_allvars;
-						while(allvar)
-						{
-							/*copycharlist(&allvar->name, &chardata2[0]);*/
-							if(strcmp(current_variable->name, allvar->name) == 0) found = 1;
-							
-							allvar = allvar->next;
-						}
-						if(found == 0)
-						{
-							allvar = addvariable(modeldata->p_allvars);
-							allvar->name = current_variable->name;
-							allvar->type = current_variable->type;
-							allvar->arraylength = current_variable->arraylength;
-							allvar->ismodeldatatype = current_variable->ismodeldatatype;
-							allvar->datatype = current_variable->datatype;
-							allvar->typenotarray = current_variable->typenotarray;
-							strcpy(allvar->defaultvalue, current_variable->defaultvalue);
-							strcpy(allvar->c_type, current_variable->c_type);
-						}
-						
-						variable_count++;
-						
-						current_variable = current_variable->next;
-					}
+					/*copycharlist(&allvar->name, &chardata2[0]);*/
+					if(strcmp(current_variable->name, allvar->name) == 0) found = 1;
 					
-					current_memory = current_memory->next;
+					allvar = allvar->next;
+				}
+				if(found == 0)
+				{
+					allvar = addvariable(modeldata->p_allvars);
+					allvar->name = current_variable->name;
+					allvar->type = current_variable->type;
+					allvar->arraylength = current_variable->arraylength;
+					allvar->ismodeldatatype = current_variable->ismodeldatatype;
+					allvar->datatype = current_variable->datatype;
+					allvar->typenotarray = current_variable->typenotarray;
+					strcpy(allvar->defaultvalue, current_variable->defaultvalue);
+					strcpy(allvar->c_type, current_variable->c_type);
 				}
 				
-				current_xmachine->var_number = variable_count;
+				variable_count++;
 				
-				modeldata->number_xmachines++;
+				current_variable = current_variable->next;
+			}
+			
+			current_memory = current_memory->next;
+		}
+		
+		current_xmachine->var_number = variable_count;
+		
+		modeldata->number_xmachines++;
 		
 		current_xmachine = current_xmachine->next;
+	}
+	
+	/* If functions have old style depends tags create states */
+	if(modeldata->depends_style == 1)
+	{
+		current_xmachine = *modeldata->p_xmachines;
+		while(current_xmachine)
+		{
+			state_number = 0;
+			
+			current_function = current_xmachine->functions;
+			while(current_function)
+			{
+				current_adj_function = current_function->depends;
+				while(current_adj_function)
+				{
+					/* Find pointers to functions for function names */
+					current_xmachine2 = *modeldata->p_xmachines;
+					while(current_xmachine2)
+					{
+						current_function2 = current_xmachine2->functions;
+						while(current_function2)
+						{
+							if(strcmp(current_adj_function->name, current_function2->name) == 0)
+							{
+								current_adj_function->function = current_function2;
+							}
+							
+							current_function2 = current_function2->next;
+						}
+						
+						current_xmachine2 = current_xmachine2->next;
+					}
+					
+					if(current_adj_function->function == NULL)
+					{
+						printf("ERROR: depends function '%s' does not exist\n",
+						current_adj_function->name);
+						exit(0);
+					}
+					
+					//printf("depends: %s %s [%s]\n", current_function->name,
+					//	current_adj_function->name, current_adj_function->type);
+					
+					if(strcmp(current_adj_function->type, "internal") == 0)
+					{
+						/* If internal dependency */
+						/* Add new state between functions */
+						sprintf(buffer, "%i", state_number);
+						current_function->current_state = copystr(buffer);
+						current_adj_function->function->next_state = copystr(buffer);
+						addxstate(current_function->current_state, &current_xmachine->states);
+						state_number++;
+					}
+					else
+					{
+						/* If communication dependency */
+						/* Add input to current function */
+						current_ioput = addioput(&current_function->inputs);
+						current_ioput->messagetype = copystr(current_adj_function->type);
+						/* Add output to depends on function */
+						current_ioput = addioput(&current_adj_function->function->outputs);
+						current_ioput->messagetype = copystr(current_adj_function->type);
+					}
+					
+					current_adj_function = current_adj_function->next;
+				}
+				
+				current_function = current_function->next;
+			}
+			
+			/* Handle functions that have no current state or next state */
+			current_function = current_xmachine->functions;
+			while(current_function)
+			{
+				if(current_function->current_state == NULL)
+				{
+					sprintf(buffer, "%i", state_number);
+					current_function->current_state = copystr(buffer);
+					addxstate(current_function->current_state, &current_xmachine->states);
+					state_number++;
+				}
+				if(current_function->next_state == NULL)
+				{
+					sprintf(buffer, "%i", state_number);
+					current_function->next_state = copystr(buffer);
+					addxstate(current_function->next_state, &current_xmachine->states);
+					state_number++;
+				}
+				
+				current_function = current_function->next;
+			}
+			
+			current_xmachine = current_xmachine->next;
+		}
 	}
 }

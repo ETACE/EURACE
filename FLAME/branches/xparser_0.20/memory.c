@@ -568,6 +568,19 @@ char * copystr(char * string)
 	return strcpy(new_string, string);
 }
 
+adj_function * add_depends_adj_function(xmachine_function * current_function)
+{
+	adj_function * current;
+	
+	current = (adj_function *)malloc(sizeof(adj_function));
+	current->next = current_function->depends;
+	current_function->depends = current;
+	
+	current->function = NULL;
+	
+	return current;
+}
+
 void add_adj_function_simple(xmachine_function * function1, xmachine_function * function2)
 {
 	adj_function * current;
@@ -617,6 +630,9 @@ void free_adj_function(adj_function ** p_adj_functions)
 		temp = head->next;
 		
 		free(head->type);
+		
+		free(head->name);
+		
 		free(head);
 		head = temp;
 	}
@@ -709,11 +725,14 @@ xmachine_function * addxfunction(xmachine_function ** p_xfunctions)
 	current->code = NULL;
 	current->inputs = NULL;
 	current->outputs = NULL;
+	current->current_state = NULL;
+	current->next_state = NULL;
 	current->first_inputs = NULL;
 	current->last_outputs = NULL;
 	current->dependson = NULL;
 	current->dependants = NULL;
 	current->alldepends = NULL;
+	current->depends = NULL;
 	current->agent_name = NULL;
 	current->next = NULL;
 	current->x = 0.0;
@@ -749,6 +768,7 @@ void freexfunctions(xmachine_function ** p_xfunctions)
 		free_adj_function(&head->dependson);
 		free_adj_function(&head->dependants);
 		free_adj_function(&head->alldepends);
+		free_adj_function(&head->depends);
 		free(head->condition); //free_rule_data(&head->condition);
 		free(head);
 		head = temp;
