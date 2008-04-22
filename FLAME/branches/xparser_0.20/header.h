@@ -222,6 +222,9 @@ struct xmachine_function
 	
 	struct adj_function * alldepends;
 	
+	/* To hold depends tag info */
+	struct adj_function * depends;		/**< Pointer to function note. */
+	
 	struct xmachine_function * next;	/**< Pointer to next function in list. */
 };
 
@@ -229,6 +232,8 @@ struct adj_function
 {
 	struct xmachine_function * function;
 	char * type;
+	
+	char * name;
 	
 	struct adj_function * next;
 };
@@ -370,6 +375,7 @@ struct model_data
 	int agents_include_array_variables;
 	int layer_total;
 	struct time_data ** p_time_units;
+	int depends_style;
 };
 
 /* explicit define datatypes so dont need to use struct anymore */
@@ -485,6 +491,7 @@ model_datatype * adddatatype(model_datatype ** p_datatypes);
 void freedatatypes(model_datatype ** p_datatypes);
 void add_flame_communication(char * messagetype, xmachine_function * function1, xmachine_function * function2, flame_communication ** communications);
 void free_flame_communications(flame_communication ** communications);
+adj_function * add_depends_adj_function(xmachine_function * current_function);
 void add_adj_function_simple(xmachine_function * function1, xmachine_function * function2);
 void remove_adj_function_simple(xmachine_function * function1);
 void add_adj_function(xmachine_function * function1, xmachine_function * function2, char * type);

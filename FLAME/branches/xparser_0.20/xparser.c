@@ -94,6 +94,8 @@ int main(int argc, char * argv[])
 	/* Variable for code type */
 	/* 0=serial(default) 1=parallel 2=grid */
 	modeldata->code_type = 0;
+	/* 0=dgraph.dot 1=stategraph.dot */
+	modeldata->depends_style = 0;
 
 	inputfile[1]='\0';
 	
