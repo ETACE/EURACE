@@ -64,7 +64,7 @@ double futureFundamentalReturn(Belief *belief,Stock *stock,int currentDay,int fo
 
 double randomReturn(Belief *belief, Stock *stock,int backwardWindow,int forwardWindow, Random *rnd);
 
-void  stockBeliefFormation(Belief *belief, Stock *stock,int backwardWindow,int forwardWindow, double randomWeigth,double  fundametalWeigth,double chartistWeigth, int bins ,int currentDay, Random *rnd);
+void  stockBeliefFormation(Belief *belief, Stock *stock,int backwardWindow,int forwardWindow, double randomWeight,double  fundamentalWeight,double chartistWeight, int bins ,int currentDay, Random *rnd);
 
  
 #endif
