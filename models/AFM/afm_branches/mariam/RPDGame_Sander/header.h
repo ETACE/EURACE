@@ -2,12 +2,21 @@
  * \file  header.h
  * \brief Header for xmachine data structures and transition functions.
  */
+ 
+#ifdef _DEBUG_MODE
+    #define ERRCHECK
+#else
+    #define NDEBUG
+#endif
 
-#include <stdio.h>
+#include <assert.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 #include <math.h>
 #include <time.h>
+#include "mboard.h"
+
 
 
 /* Checking macros */
@@ -17,12 +26,12 @@
 #define CHECK_POINTER(PT) 
 #endif
 
-
-
 /** \def ARRAY_BLOCK_SIZE
  * \brief The block size to allocate to dynamic arrays. */
 #define ARRAY_BLOCK_SIZE 5
-/** \def e START_STRATEGY_I_USE_MESSAGE_LOOP
+#define ITERATION iteration_loop
+
+/** \def START_STRATEGY_I_USE_MESSAGE_LOOP
  * \brief Start of loop to process strategy_i_use messages. */
 #define START_STRATEGY_I_USE_MESSAGE_LOOP  strategy_i_use_message = get_first_strategy_i_use_message(); while(strategy_i_use_message) {
 /** \def FINISH_STRATEGY_I_USE_MESSAGE_LOOP
@@ -99,16 +108,16 @@ typedef struct double_array double_array;
 typedef struct char_array char_array;
 
 /** \struct strategy_state
- * \brief à>.
+ * \brief .
  *
- * à>.
+ * .
  */
 struct strategy_state
 {
-	int starting_state[4];	/**< Datatype memory variable starting_state of type int. */
+	int starting_state;	/**< Datatype memory variable starting_state of type int. */
 	int state_name;	/**< Datatype memory variable state_name of type int. */
-	int state_ifcooperate[4];	/**< Datatype memory variable state_ifcooperate of type int. */
-	int state_ifdefect[4];	/**< Datatype memory variable state_ifdefect of type int. */
+	int state_ifcooperate;	/**< Datatype memory variable state_ifcooperate of type int. */
+	int state_ifdefect;	/**< Datatype memory variable state_ifdefect of type int. */
 };
 
 /** \struct strategy_state_array
@@ -131,9 +140,9 @@ typedef struct strategy_state strategy_state;
  */
 typedef struct strategy_state_array strategy_state_array;
 /** \struct payoff_elements
- * \brief 0>.
+ * \brief ¸Ÿ>.
  *
- * 0>.
+ * ¸Ÿ>.
  */
 struct payoff_elements
 {
@@ -160,9 +169,9 @@ typedef struct payoff_elements payoff_elements;
  */
 typedef struct payoff_elements_array payoff_elements_array;
 /** \struct strategy_data
- * \brief èjI.
+ * \brief ¸Ÿ>.
  *
- * èjI.
+ * ¸Ÿ>.
  */
 struct strategy_data
 {
@@ -190,13 +199,15 @@ typedef struct strategy_data strategy_data;
  */
 typedef struct strategy_data_array strategy_data_array;
 /** \struct complete_strategy
- * \brief èjI.
+ * \brief ¸Ÿ>.
  *
- * èjI.
+ * ¸Ÿ>.
  */
 struct complete_strategy
 {
+	int strategy_unique_id;	/**< Datatype memory variable strategy_unique_id of type int. */
 	strategy_state_array strategy_path;	/**< Datatype memory variable strategy_path of type strategy_state_array. */
+	double strategy_performance;	/**< Datatype memory variable strategy_performance of type double. */
 };
 
 /** \struct complete_strategy_array
@@ -219,9 +230,9 @@ typedef struct complete_strategy complete_strategy;
  */
 typedef struct complete_strategy_array complete_strategy_array;
 /** \struct columns
- * \brief èjI.
+ * \brief ¸Ÿ>.
  *
- * èjI.
+ * ¸Ÿ>.
  */
 struct columns
 {
@@ -248,9 +259,9 @@ typedef struct columns columns;
  */
 typedef struct columns_array columns_array;
 /** \struct player_list_element
- * \brief èjI.
+ * \brief ¸Ÿ>.
  *
- * èjI.
+ * ¸Ÿ>.
  */
 struct player_list_element
 {
@@ -292,6 +303,9 @@ struct xmachine_memory_GamePlayer
 	double iradius;	/**< X-machine memory variable iradius of type double. */
 	double posx;	/**< X-machine memory variable posx of type double. */
 	double posy;	/**< X-machine memory variable posy of type double. */
+
+	struct xmachine_memory_GamePlayer * prev;	/**< Pointer to previous GamePlayer agent in the list.  */
+	struct xmachine_memory_GamePlayer * next;	/**< Pointer to next GamePlayer agent in the list.  */
 };
 
 /** \struct xmachine_memory_GameSolver
@@ -315,6 +329,9 @@ struct xmachine_memory_GameSolver
 	double iradius;	/**< X-machine memory variable iradius of type double. */
 	double posx;	/**< X-machine memory variable posx of type double. */
 	double posy;	/**< X-machine memory variable posy of type double. */
+
+	struct xmachine_memory_GameSolver * prev;	/**< Pointer to previous GameSolver agent in the list.  */
+	struct xmachine_memory_GameSolver * next;	/**< Pointer to next GameSolver agent in the list.  */
 };
 
 /** \struct xmachine
@@ -325,13 +342,14 @@ struct xmachine
 	struct xmachine_memory_GamePlayer * xmachine_GamePlayer;	/**< Pointer to X-machine memory of type GamePlayer.  */
 	struct xmachine_memory_GameSolver * xmachine_GameSolver;	/**< Pointer to X-machine memory of type GameSolver.  */
 	
+	struct xmachine * prev;	/**< Pointer to previous X-machine in the list.  */
 	struct xmachine * next;	/**< Pointer to next X-machine in the list.  */
 };
 
-/** \struct xmachine_message_strategy_i_use
+/** \struct m_strategy_i_use
  * \brief Holds message of type strategy_i_use_message.
  */
-struct xmachine_message_strategy_i_use
+struct m_strategy_i_use
 {
 	int player_id;	/**< Message memory variable player_id of type int. */
 	int strategy_id;	/**< Message memory variable strategy_id of type int. */
@@ -341,10 +359,7 @@ struct xmachine_message_strategy_i_use
 	double x;	/**< Message memory variable x of type double. */
 	double y;	/**< Message memory variable y of type double. */
 	double z;	/**< Message memory variable z of type double. */
-	
-	struct xmachine_message_strategy_i_use * next;	/**< Pointer to next message in the list. */
 };
-
 
 /** \typedef struct xmachine xmachine
  * \brief Typedef for xmachine struct.
@@ -358,10 +373,10 @@ typedef struct xmachine_memory_GamePlayer xmachine_memory_GamePlayer;
  * \brief Typedef for xmachine_memory_GameSolver struct.
  */
 typedef struct xmachine_memory_GameSolver xmachine_memory_GameSolver;
-/** \typedef xmachine_message_strategy_i_use xmachine_message_strategy_i_use
- * \brief Typedef for xmachine_message_strategy_i_use struct.
+/** \typedef m_strategy_i_use m_strategy_i_use
+ * \brief Typedef for m_strategy_i_use struct.
  */
-typedef struct xmachine_message_strategy_i_use xmachine_message_strategy_i_use;
+typedef struct m_strategy_i_use m_strategy_i_use;
 
 
 int post_my_strategy(void);
@@ -391,7 +406,7 @@ struct node_information
 	int agents_in_halo;	/**< Number of agents in the halo region. */
 	int agent_total;	/**< Total number of agents on the node. */
 	struct xmachine * agents;	/**< Pointer to list of X-machines. */
-	struct xmachine_message_strategy_i_use * strategy_i_use_messages;	/**< Pointer to strategy_i_use message list. */
+	struct m_strategy_i_use * strategy_i_use_messages;	/**< Pointer to strategy_i_use message list. */
 	
 	struct node_information * next;	/**< Pointer to next node on the list. */
 };
@@ -410,9 +425,9 @@ typedef struct node_information node_information;
 * \brief Pointer to xmachine to initialise linked list. */
 xmachine * temp_xmachine;
 
-/** \var xmachine_message_strategy_i_use * temp_strategy_i_use_message
-* \brief Pointer to xmachine_message_strategy_i_use to initialise linked list. */
-xmachine_message_strategy_i_use * temp_strategy_i_use_message;
+/** \var m_strategy_i_use * temp_strategy_i_use_message
+* \brief Pointer to m_strategy_i_use to initialise linked list. */
+m_strategy_i_use * temp_strategy_i_use_message;
 /** \var node_information * temp_node_info
 * \brief Pointer to node_information to initialise linked list. */
 node_information * temp_node_info;
@@ -430,18 +445,49 @@ int total_messages;
 int totalnodes;
 /** \var xmachine ** p_xmachine
 * \brief Pointer to first pointer of x-machine memory list */
-xmachine ** p_xmachine;
+//xmachine ** p_xmachine;
 /** \var xmachine * current_xmachine
 * \brief Pointer to current x-machine memory that is being processed */
-xmachine * current_xmachine;
+//xmachine * current_xmachine;
+/* Pointer to current $agent_name agent */
+xmachine_memory_GamePlayer * current_xmachine_GamePlayer;
+xmachine_memory_GamePlayer * temp_xmachine_GamePlayer;
+/* Pointer to list of GamePlayer agents in state 02 state */
+xmachine_memory_GamePlayer * temp_xmachine_GamePlayer_02;
+xmachine_memory_GamePlayer ** GamePlayer_02_state;
+/* Pointer to list of GamePlayer agents in state 01 state */
+xmachine_memory_GamePlayer * temp_xmachine_GamePlayer_01;
+xmachine_memory_GamePlayer ** GamePlayer_01_state;
+/* Pointer to current $agent_name agent */
+xmachine_memory_GameSolver * current_xmachine_GameSolver;
+xmachine_memory_GameSolver * temp_xmachine_GameSolver;
+/* Pointer to list of GameSolver agents in state 06 state */
+xmachine_memory_GameSolver * temp_xmachine_GameSolver_06;
+xmachine_memory_GameSolver ** GameSolver_06_state;
+/* Pointer to list of GameSolver agents in state 05 state */
+xmachine_memory_GameSolver * temp_xmachine_GameSolver_05;
+xmachine_memory_GameSolver ** GameSolver_05_state;
+/* Pointer to list of GameSolver agents in state 04 state */
+xmachine_memory_GameSolver * temp_xmachine_GameSolver_04;
+xmachine_memory_GameSolver ** GameSolver_04_state;
+/* Pointer to list of GameSolver agents in state 03 state */
+xmachine_memory_GameSolver * temp_xmachine_GameSolver_03;
+xmachine_memory_GameSolver ** GameSolver_03_state;
+/* Pointer to list of GameSolver agents in state 02 state */
+xmachine_memory_GameSolver * temp_xmachine_GameSolver_02;
+xmachine_memory_GameSolver ** GameSolver_02_state;
+/* Pointer to list of GameSolver agents in state 01 state */
+xmachine_memory_GameSolver * temp_xmachine_GameSolver_01;
+xmachine_memory_GameSolver ** GameSolver_01_state;
 
-/** \var xmachine_message_strategy_i_use ** p_strategy_i_use_message
-* \brief Pointer to first pointer of strategy_i_use message list */
-xmachine_message_strategy_i_use ** p_strategy_i_use_message;
 
-/** \var xmachine_message_strategy_i_use * strategy_i_use_message
+MBt_Board b_strategy_i_use;
+MBt_Iterator i_strategy_i_use;
+
+
+/** \var m_strategy_i_use * strategy_i_use_message
 * \brief Pointer to message struct for looping through strategy_i_use message list */
-xmachine_message_strategy_i_use * strategy_i_use_message;
+m_strategy_i_use * strategy_i_use_message;
 /** \var node_information ** p_node_info
 * \brief Pointer to first pointer of node list */
 node_information ** p_node_info;
@@ -455,9 +501,6 @@ int iteration_loop;
 /** \var int output_frequency
 * \brief Frequency to output results */
 int output_frequency;
-/** \var int use_binary_output
-* \brief Tag to save results in a binary file */
-int use_binary_output;
 /** \var int next_avaliable_id
 * \brief Next avaliable id number for a new agent */
 int next_avaliable_id;
@@ -483,7 +526,6 @@ void propagate_messages_init(void);
 void propagate_messages_complete(void);
 void create_partitions(char * filename, int * itno);
 void free_node_info(void);
-void randomisexagent(void);
 void free_agent(void);
 void freexmachines(void);
 /* model datatypes */
@@ -492,7 +534,7 @@ void init_strategy_state_array(strategy_state_array * array);
 void reset_strategy_state_array(strategy_state_array * array);
 void free_strategy_state_array(strategy_state_array * array);
 void copy_strategy_state_array(strategy_state_array * from, strategy_state_array * to);
-void add_strategy_state(strategy_state_array * array, int * starting_state, int state_name, int * state_ifcooperate, int * state_ifdefect);
+void add_strategy_state(strategy_state_array * array, int starting_state, int state_name, int state_ifcooperate, int state_ifdefect);
 void remove_strategy_state(strategy_state_array * array, int index);
 
 void init_payoff_elements_array(payoff_elements_array * array);
@@ -513,7 +555,7 @@ void init_complete_strategy_array(complete_strategy_array * array);
 void reset_complete_strategy_array(complete_strategy_array * array);
 void free_complete_strategy_array(complete_strategy_array * array);
 void copy_complete_strategy_array(complete_strategy_array * from, complete_strategy_array * to);
-void add_complete_strategy(complete_strategy_array * array, strategy_state_array * strategy_path);
+void add_complete_strategy(complete_strategy_array * array, int strategy_unique_id, strategy_state_array * strategy_path, double strategy_performance);
 void remove_complete_strategy(complete_strategy_array * array, int index);
 
 void init_columns_array(columns_array * array);
@@ -624,9 +666,8 @@ void read_player_list_element_static_array(char * buffer, int * j, player_list_e
 void write_player_list_element(FILE *file, player_list_element * temp_datatype);
 void write_player_list_element_static_array(FILE *file, player_list_element * temp_datatype, int size);
 void write_player_list_element_dynamic_array(FILE *file, player_list_element_array * temp_datatype);
-void readinitialstates(char * filename, int * itno, xmachine ** agent_list, double cloud_data[6], 
+void readinitialstates(char * filename, int * itno, double cloud_data[6], 
                        int partition_method, int flag);
-void saveiterationdata_binary(int iteration_number);
 void saveiterationdata(int iteration_number);
 
 void free_strategy_state(strategy_state * temp);
@@ -655,16 +696,20 @@ void copy_player_list_element(player_list_element * from, player_list_element * 
 void copy_player_list_element_static_array(player_list_element * from, player_list_element * to, int size);
 
 xmachine_memory_GamePlayer * init_GamePlayer_agent();
-void add_GamePlayer_agent_internal(xmachine_memory_GamePlayer * current);
+void free_GamePlayer_agent(xmachine_memory_GamePlayer * tmp, xmachine_memory_GamePlayer ** state);
+void transition_GamePlayer_agent(xmachine_memory_GamePlayer * tmp, xmachine_memory_GamePlayer ** from_state, xmachine_memory_GamePlayer ** to_state);
+void add_GamePlayer_agent_internal(xmachine_memory_GamePlayer * current, xmachine_memory_GamePlayer ** state);
 void add_GamePlayer_agent(int id, int strategy_used, int previous_performance, int present_state, double iradius, double posx, double posy);
 xmachine_memory_GameSolver * init_GameSolver_agent();
-void add_GameSolver_agent_internal(xmachine_memory_GameSolver * current);
+void free_GameSolver_agent(xmachine_memory_GameSolver * tmp, xmachine_memory_GameSolver ** state);
+void transition_GameSolver_agent(xmachine_memory_GameSolver * tmp, xmachine_memory_GameSolver ** from_state, xmachine_memory_GameSolver ** to_state);
+void add_GameSolver_agent_internal(xmachine_memory_GameSolver * current, xmachine_memory_GameSolver ** state);
 void add_GameSolver_agent(complete_strategy strategy_list[], complete_strategy new_children[], int nragents, int_array * automata_id, int_array * players, int player_one_state[], int player_two_state[], int player_one_move, int player_two_move, strategy_data strategy_performance[], complete_strategy offspring[], columns_array * rows, player_list_element_array * player_list, double iradius, double posx, double posy);
 
 void add_strategy_i_use_message(int player_id, int strategy_id, int previous_move, int present_state, double range, double x, double y, double z);
-xmachine_message_strategy_i_use * add_strategy_i_use_message_internal(void);
-xmachine_message_strategy_i_use * get_first_strategy_i_use_message(void);
-xmachine_message_strategy_i_use * get_next_strategy_i_use_message(xmachine_message_strategy_i_use * current);
+m_strategy_i_use * add_strategy_i_use_message_internal(void);
+m_strategy_i_use * get_first_strategy_i_use_message(void);
+m_strategy_i_use * get_next_strategy_i_use_message(m_strategy_i_use * current);
 void freestrategy_i_usemessages(void);
 
 void set_id(int id);
@@ -709,7 +754,7 @@ void save_partition_data(void);
 void generate_partitions(double cloud_data[6], int partitions, int partition_method);
 
 /* messageboard.c */
-xmachine_message_strategy_i_use * get_next_message_strategy_i_use_in_range(xmachine_message_strategy_i_use * current);
+m_strategy_i_use * get_next_message_strategy_i_use_in_range(m_strategy_i_use * current);
 
 /* memory.c */
 xmachine * add_xmachine(void);

@@ -64,9 +64,9 @@ int actual_game()
 		player_one_strategy=PLAYER_LIST.array[i].strategy_id;
 		prev_move_player_one=PLAYER_LIST.array[i].previous_move;
 		present_state_player_one=PLAYER_LIST.array[i].present_state;
-		//iterate through the list of startegies to find the strategy using the id
+		//iterate through the list of strategies to find the strategy using the id
 		
-		//MARIAM: Dont do this we may use the startegy id as the array identifier... only 30 startegies!
+		//MARIAM: Dont do this we may use the strategy id as the array identifier... only 30 strategies!
 				
 		payoff_one_total=0;
 		
@@ -79,7 +79,7 @@ int actual_game()
 			payoff_two_total=0;
 			
 			//find the stratgey details of both players
-			for(s=0,s<30,s++)
+			for(s=0;s<30;s++)
 			{
 				if(strategy_list[s].strategy_unique_id==player_one_strategy)
 				{
@@ -234,8 +234,8 @@ int actual_game()
 
 int find_optimum_strategies()
 {
-	//identify the first 20 startegies....
-	//find last 10 startegies...
+	//identify the first 20 strategies....
+	//find last 10 strategies...
 	int i,j;
 	double sum_row=0.0;
 	int playerlistsize=player_list->size;
@@ -257,12 +257,12 @@ int apply_GA()
 	int maxsize;
 	int population=0;
 	double probability_crossover;
-	//copy first 20 parents into new startegies...
+	//copy first 20 parents into new strategies...
 	
 	//apply ga on last 10 parents
 	while(population<10)
 	{
-		parent_one=random_unif_dist(20,30);
+		parent_one=random_unif_dist(20,30);//randomly choosing parents
 		parent_two=random_unif_dist(20,30);
 		while(parent_two==parent_one)
 		{

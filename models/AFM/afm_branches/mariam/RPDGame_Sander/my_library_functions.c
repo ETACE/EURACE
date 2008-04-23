@@ -34,3 +34,9 @@ int random_unif_dist(int a,int b)
 	number=(rand()%b)+a;
 	return number;
 }
+
+//function for sorting strategy performance
+int sort_array()
+{
+	//return array
+}

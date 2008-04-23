@@ -20,11 +20,15 @@ int main(int argc, char * argv[])
 	char inputpath[100];
 	int lastd = 0;
 	int i;
+	int rc;
 	int iteration_number;
 	int iteration_total;
 	int * p_iteration_number;
-	xmachine * temp_free_xmachine;
-	xmachine **agent_list;
+	//xmachine * temp_free_xmachine;
+	//xmachine **agent_list;
+	xmachine_memory_GamePlayer * temp_xmachine_GamePlayer;
+	xmachine_memory_GameSolver * temp_xmachine_GameSolver;
+	
 	/* Ratio for calculating time in milliseconds */
     /* (lsc) changed from long to double
      * if "long", time_ratio == 0 when CLOCKS_PER_SEC > 1000
@@ -38,17 +42,34 @@ int main(int argc, char * argv[])
 
 
 	
-	/* Don't use binary output as default */
-	use_binary_output = 0;
 	/* Output frequency is 1 as default */
 	output_frequency = 1;
 	/* Set random seed */
 /*	srand(time(NULL)); */
 	
+	
+    
+	rc = MB_Env_Init();
+	#ifdef ERRCHECK
+	if (rc != MB_SUCCESS)
+	{
+	   fprintf(stderr, "ERROR: Failed to initialise Message Board environment\n");
+	   switch(rc) {
+	       case MB_ERR_MPI:
+	           fprintf(stderr, "\t reason: MPI library not initialised\n");
+	           break;
+	       case MB_ERR_MEMALLOC:
+	           fprintf(stderr, "\t reason: out of memory\n");
+	           break;
+            default: break;
+	   }
+	   
+	}
+	#endif
+	
 	/* Initialise pointers */
 	initialise_pointers();
 	p_iteration_number = &iteration_number;
-		
 
 
 	printf("FLAME Application: Iterated Prisoners Dilemma Game \n");
@@ -103,9 +124,6 @@ printf("Ouput dir: %s\n", outputpath);
 	i = 3;
 	while(argc > i)
 	{
-		/* Use binary format for results */
-		if(strcmp(argv[i],"-b") == 0) use_binary_output = 1;
-		if(use_binary_output) printf("Using binary output for results\n");
 		if(strcmp(argv[i],"-f") == 0)
 		{
 			if(argc > (i+1))
@@ -128,11 +146,11 @@ printf("Ouput dir: %s\n", outputpath);
 	
 	/* Read initial data into p_xmachine  */
 
-       agent_list = p_xmachine;
-       readinitialstates(inputpath, p_iteration_number, agent_list, cloud_data, partition_method, 0);
+       //agent_list = p_xmachine;
+       readinitialstates(inputpath, p_iteration_number, cloud_data, partition_method, 0);
        /* Generate partitions */
-       generate_partitions(cloud_data,totalnodes,partition_method);
-       save_partition_data();
+//       generate_partitions(cloud_data,totalnodes,partition_method);
+//       save_partition_data();
  
 
 
@@ -140,12 +158,13 @@ printf("Ouput dir: %s\n", outputpath);
 
 
     /* Partition data */
-    partition_data(totalnodes, agent_list, cloud_data, partition_method);
+    /* stc: no partitions in serial */
+	//partition_data(totalnodes, agent_list, cloud_data, partition_method);
 
 
 
 
-		i = 0;
+		/*i = 0;
 		current_node = *p_node_info;
 		while(current_node)
 		{
@@ -153,10 +172,10 @@ printf("Ouput dir: %s\n", outputpath);
 			i += current_node->agent_total;
 			current_node = current_node->next;
 		}
-		printf("Agent total check: %d\n", i);
+		printf("Agent total check: %d\n", i);*/
 
         /* restore current_node pointer */
-		current_node = *p_node_info;
+		//current_node = *p_node_info;
 
 
 	
@@ -181,7 +200,7 @@ printf("Ouput dir: %s\n", outputpath);
 	start = clock();
 
     /* pre-randomise agents for first iteration */
-    randomisexagent();
+    //randomisexagent();
 	
 	for(iteration_loop=iteration_number+1; iteration_loop < iteration_number+iteration_total+1; iteration_loop++)
 	{
@@ -190,208 +209,282 @@ printf("Ouput dir: %s\n", outputpath);
 		printf("Iteration - %d\n", iteration_loop);
 		/* START OF ITERATION */
 
-/* Start of communications layer loop */
 	
-		current_node = *p_node_info;
-		while(current_node)
-		{
-				
-			p_strategy_i_use_message = &current_node->strategy_i_use_messages;
-				
-		p_xmachine = &current_node->agents;
-	
-	
-	
-		/* Loop through x-machines */
-		current_xmachine = *p_xmachine;
-		while(current_xmachine)
-		{
-			i = 0;
+	current_xmachine_GamePlayer = *GamePlayer_01_state;
+	while(current_xmachine_GamePlayer)
+	{
+		temp_xmachine_GamePlayer = current_xmachine_GamePlayer->next;
 		
-			if(current_xmachine->xmachine_GamePlayer != NULL)
-			{
-				i = post_my_strategy();
-			}
+		
+			i = post_my_strategy();
 			
-			/* If agent is freed */
 			if(i == 1)
 			{
-				temp_free_xmachine = current_xmachine->next;
-				free_agent();
-				current_xmachine = temp_free_xmachine;
+				free_GamePlayer_agent(current_xmachine_GamePlayer, GamePlayer_01_state);
 			}
 			else
 			{
-				current_xmachine = current_xmachine->next;
+				transition_GamePlayer_agent(current_xmachine_GamePlayer, GamePlayer_01_state, GamePlayer_02_state);
 			}
-		}
-	
-	
-        randomisexagent();  /* randomise x-agents while waiting for communication to complete */
-        
-			
-		current_node = current_node->next;
-		}
-			
-/* End of communications layer loop */
+		
+		
+		current_xmachine_GamePlayer = temp_xmachine_GamePlayer;
+	}
 
-/* Start of communications layer loop */
-	
-		current_node = *p_node_info;
-		while(current_node)
-		{
-				
-			p_strategy_i_use_message = &current_node->strategy_i_use_messages;
-				
-		p_xmachine = &current_node->agents;
-	
-	
-	
-		/* Loop through x-machines */
-		current_xmachine = *p_xmachine;
-		while(current_xmachine)
-		{
-			i = 0;
-		
-			if(current_xmachine->xmachine_GameSolver != NULL)
-			{
-				i = ipd_game_within_players();
-			}
-			
-			/* If agent is freed */
-			if(i == 1)
-			{
-				temp_free_xmachine = current_xmachine->next;
-				free_agent();
-				current_xmachine = temp_free_xmachine;
-			}
-			else
-			{
-				current_xmachine = current_xmachine->next;
-			}
-		}
-	
-		/* Loop through x-machines */
-		current_xmachine = *p_xmachine;
-		while(current_xmachine)
-		{
-			i = 0;
-		
-			if(current_xmachine->xmachine_GameSolver != NULL)
-			{
-				i = actual_game();
-			}
-			
-			/* If agent is freed */
-			if(i == 1)
-			{
-				temp_free_xmachine = current_xmachine->next;
-				free_agent();
-				current_xmachine = temp_free_xmachine;
-			}
-			else
-			{
-				current_xmachine = current_xmachine->next;
-			}
-		}
-	
-		/* Loop through x-machines */
-		current_xmachine = *p_xmachine;
-		while(current_xmachine)
-		{
-			i = 0;
-		
-			if(current_xmachine->xmachine_GameSolver != NULL)
-			{
-				i = find_optimum_strategies();
-			}
-			
-			/* If agent is freed */
-			if(i == 1)
-			{
-				temp_free_xmachine = current_xmachine->next;
-				free_agent();
-				current_xmachine = temp_free_xmachine;
-			}
-			else
-			{
-				current_xmachine = current_xmachine->next;
-			}
-		}
-	
-		/* Loop through x-machines */
-		current_xmachine = *p_xmachine;
-		while(current_xmachine)
-		{
-			i = 0;
-		
-			if(current_xmachine->xmachine_GameSolver != NULL)
-			{
-				i = applyGA();
-			}
-			
-			/* If agent is freed */
-			if(i == 1)
-			{
-				temp_free_xmachine = current_xmachine->next;
-				free_agent();
-				current_xmachine = temp_free_xmachine;
-			}
-			else
-			{
-				current_xmachine = current_xmachine->next;
-			}
-		}
-	
-		/* Loop through x-machines */
-		current_xmachine = *p_xmachine;
-		while(current_xmachine)
-		{
-			i = 0;
-		
-			if(current_xmachine->xmachine_GameSolver != NULL)
-			{
-				i = update_strategies();
-			}
-			
-			/* If agent is freed */
-			if(i == 1)
-			{
-				temp_free_xmachine = current_xmachine->next;
-				free_agent();
-				current_xmachine = temp_free_xmachine;
-			}
-			else
-			{
-				current_xmachine = current_xmachine->next;
-			}
-		}
-	
-	
-        randomisexagent();  /* randomise x-agents while waiting for communication to complete */
-        
-			
-		current_node = current_node->next;
-		}
-			
-/* End of communications layer loop */
+    rc = MB_SyncStart(b_strategy_i_use);
+    #ifdef ERRCHECK
+    if (rc != MB_SUCCESS)
+    {
+       fprintf(stderr, "ERROR: Could not start sync of 'strategy_i_use' board\n");
+       switch(rc) {
+           case MB_ERR_INVALID:
+               fprintf(stderr, "\t reason: 'strategy_i_use' board is invalid\n");
+               break;
+           case MB_ERR_LOCKED:
+               fprintf(stderr, "\t reason: 'strategy_i_use' board is locked\n");
+               break;
+           case MB_ERR_MEMALLOC:
+               fprintf(stderr, "\t reason: out of memory\n");
+               break;
+           case MB_ERR_INTERNAL:
+               fprintf(stderr, "\t reason: internal error. Recompile libmoard in debug mode for more info \n");
+               break;
+       }
+    }
+    #endif
 
 
 
-		if(iteration_loop%output_frequency == 0)
-		{
-			if(use_binary_output) saveiterationdata_binary(iteration_loop);
-			else saveiterationdata(iteration_loop);
-		}		current_node = *p_node_info;
-		while(current_node)
-		{
-		p_strategy_i_use_message = &current_node->strategy_i_use_messages;
-		freestrategy_i_usemessages();
-		p_xmachine = &current_node->agents;
+
+	rc = MB_SyncComplete(b_strategy_i_use);
+	#ifdef ERRCHECK
+    if (rc != MB_SUCCESS)
+    {
+       fprintf(stderr, "ERROR: Could not complete sync of 'strategy_i_use' board\n");
+       switch(rc) {
+            case MB_ERR_INVALID:
+               fprintf(stderr, "\t reason: 'strategy_i_use' board is invalid\n");
+               break;
+           case MB_ERR_MEMALLOC:
+               fprintf(stderr, "\t reason: out of memory\n");
+               break;
+           case MB_ERR_INTERNAL:
+               fprintf(stderr, "\t reason: internal error. Recompile libmoard in debug mode for more info \n");
+               break;
+       }
+    }
+    #endif
+	
+	
+	rc = MB_Iterator_Create(b_strategy_i_use, &i_strategy_i_use);
+	#ifdef ERRCHECK
+	if (rc != MB_SUCCESS)
+	{
+	   fprintf(stderr, "ERROR: Could not create Iterator for 'strategy_i_use'\n");
+	   switch(rc) {
+	       case MB_ERR_INVALID:
+	           fprintf(stderr, "\t reason: 'strategy_i_use' board is invalid\n");
+	           break;
+	       case MB_ERR_LOCKED:
+               fprintf(stderr, "\t reason: 'strategy_i_use' board is locked\n");
+               break;
+           case MB_ERR_MEMALLOC:
+               fprintf(stderr, "\t reason: out of memory\n");
+               break;
+           case MB_ERR_INTERNAL:
+               fprintf(stderr, "\t reason: internal error. Recompile libmoard in debug mode for more info \n");
+               break;
+	   }
+	}
+	#endif
+	
+	current_xmachine_GameSolver = *GameSolver_01_state;
+	while(current_xmachine_GameSolver)
+	{
+		temp_xmachine_GameSolver = current_xmachine_GameSolver->next;
+		
+		
+			i = ipd_game_within_players();
+			
+			if(i == 1)
+			{
+				free_GameSolver_agent(current_xmachine_GameSolver, GameSolver_01_state);
+			}
+			else
+			{
+				transition_GameSolver_agent(current_xmachine_GameSolver, GameSolver_01_state, GameSolver_02_state);
+			}
+		
+		
+		current_xmachine_GameSolver = temp_xmachine_GameSolver;
+	}
+
+
+    rc = MB_Iterator_Delete(&i_strategy_i_use);
+    #ifdef ERRCHECK
+    if (rc != MB_SUCCESS)
+    {
+       fprintf(stderr, "ERROR: Could not delete 'strategy_i_use' iterator\n");
+       switch(rc) {
+           case MB_ERR_INVALID:
+               fprintf(stderr, "\t reason: 'strategy_i_use' iterator is invalid\n");
+               break;
+           case MB_ERR_INTERNAL:
+               fprintf(stderr, "\t reason: internal error. Recompile libmoard in debug mode for more info \n");
+               break;
+       }
+    }
+    #endif
+
+
+
+	
+	current_xmachine_GameSolver = *GameSolver_02_state;
+	while(current_xmachine_GameSolver)
+	{
+		temp_xmachine_GameSolver = current_xmachine_GameSolver->next;
+		
+		
+			i = actual_game();
+			
+			if(i == 1)
+			{
+				free_GameSolver_agent(current_xmachine_GameSolver, GameSolver_02_state);
+			}
+			else
+			{
+				transition_GameSolver_agent(current_xmachine_GameSolver, GameSolver_02_state, GameSolver_03_state);
+			}
+		
+		
+		current_xmachine_GameSolver = temp_xmachine_GameSolver;
+	}
+
+
+
+
+	
+	current_xmachine_GameSolver = *GameSolver_03_state;
+	while(current_xmachine_GameSolver)
+	{
+		temp_xmachine_GameSolver = current_xmachine_GameSolver->next;
+		
+		
+			i = find_optimum_strategies();
+			
+			if(i == 1)
+			{
+				free_GameSolver_agent(current_xmachine_GameSolver, GameSolver_03_state);
+			}
+			else
+			{
+				transition_GameSolver_agent(current_xmachine_GameSolver, GameSolver_03_state, GameSolver_04_state);
+			}
+		
+		
+		current_xmachine_GameSolver = temp_xmachine_GameSolver;
+	}
+
+
+
+
+	
+	current_xmachine_GameSolver = *GameSolver_04_state;
+	while(current_xmachine_GameSolver)
+	{
+		temp_xmachine_GameSolver = current_xmachine_GameSolver->next;
+		
+		
+			i = applyGA();
+			
+			if(i == 1)
+			{
+				free_GameSolver_agent(current_xmachine_GameSolver, GameSolver_04_state);
+			}
+			else
+			{
+				transition_GameSolver_agent(current_xmachine_GameSolver, GameSolver_04_state, GameSolver_05_state);
+			}
+		
+		
+		current_xmachine_GameSolver = temp_xmachine_GameSolver;
+	}
+
+
+
+
+	
+	current_xmachine_GameSolver = *GameSolver_05_state;
+	while(current_xmachine_GameSolver)
+	{
+		temp_xmachine_GameSolver = current_xmachine_GameSolver->next;
+		
+		
+			i = update_strategies();
+			
+			if(i == 1)
+			{
+				free_GameSolver_agent(current_xmachine_GameSolver, GameSolver_05_state);
+			}
+			else
+			{
+				transition_GameSolver_agent(current_xmachine_GameSolver, GameSolver_05_state, GameSolver_06_state);
+			}
+		
+		
+		current_xmachine_GameSolver = temp_xmachine_GameSolver;
+	}
+
+
+
+
+
+    rc = MB_Clear(b_strategy_i_use);
+    #ifdef ERRCHECK
+    if (rc != MB_SUCCESS)
+    {
+       fprintf(stderr, "ERROR: Could not clear 'strategy_i_use' board\n");
+       switch(rc) {
+           case MB_ERR_INVALID:
+               fprintf(stderr, "\t reason: 'strategy_i_use' board is invalid\n");
+               break;
+           case MB_ERR_LOCKED:
+               fprintf(stderr, "\t reason: 'strategy_i_use' board is locked\n");
+               break;
+           case MB_ERR_INTERNAL:
+               fprintf(stderr, "\t reason: internal error. Recompile libmoard in debug mode for more info \n");
+               break;
+       }
+    }
+    #endif
+
+	if(iteration_loop%output_frequency == 0)
+	{
+		saveiterationdata(iteration_loop);
+	}
+	/* Move agents to their start states */
+
+	current_xmachine_GamePlayer = *GamePlayer_02_state;
+	while(current_xmachine_GamePlayer)
+	{
+		temp_xmachine_GamePlayer = current_xmachine_GamePlayer->next;
+		transition_GamePlayer_agent(current_xmachine_GamePlayer, GamePlayer_02_state, GamePlayer_01_state);
+	
+		current_xmachine_GamePlayer = temp_xmachine_GamePlayer;
+	}
+
+	current_xmachine_GameSolver = *GameSolver_06_state;
+	while(current_xmachine_GameSolver)
+	{
+		temp_xmachine_GameSolver = current_xmachine_GameSolver->next;
+		transition_GameSolver_agent(current_xmachine_GameSolver, GameSolver_06_state, GameSolver_01_state);
+	
+		current_xmachine_GameSolver = temp_xmachine_GameSolver;
+	}
+
+
 		/* Calculate if any agents need to jump S.P. */
 		propagate_agents();
-		current_node = current_node->next;
-		}
 	/* Save iteration time to log file */
 
 		file = fopen(logfilepath, "a");
@@ -422,7 +515,19 @@ printf("Ouput dir: %s\n", outputpath);
 	printf("Execution time - %ld:%02ld:%ld [mins:secs:msecs]\n", total_time/60000, ((total_time/1000)%60), total_time%1000);
 	
 	clean_up(0);
-	
+	rc = MB_Env_Finalise();
+	#ifdef ERRCHECK
+    if (rc != MB_SUCCESS)
+    {
+       fprintf(stderr, "ERROR: Could not finalise MB environment\n");
+       switch(rc) {
+           case MB_ERR_ENV:
+               fprintf(stderr, "\t reason: MB environment not yet started?\n");
+               break;
+       }
+    }
+    #endif
+    
 	/* Exit successfully by returning zero to Operating System */
 	return 0;
 }

@@ -12,9 +12,4 @@ digraph dependency_graph {
 	post_my_strategy[height = 0.000000, label = "post_my_strategy\n(0 lines)"]
 	
 	/* Dependencies */
-	update_strategies -> applyGA [ label = "<depends on internal>" ];
-	applyGA -> find_optimum_strategies [ label = "<depends on internal>" ];
-	find_optimum_strategies -> actual_game [ label = "<depends on internal>" ];
-	actual_game -> ipd_game_within_players [ label = "<depends on internal>" ];
-	ipd_game_within_players -> post_my_strategy [ label = "<depends on strategy_i_use>" ];
 }

@@ -144,9 +144,9 @@ void propagate_messages_init() {
                 {
                     
                     message_strategy_i_use_list[j].player_id = message_strategy_i_use_temp->player_id;
-                    message_strategy_i_use_list[j].strategy_used = message_strategy_i_use_temp->strategy_used;
+                    message_strategy_i_use_list[j].strategy_id = message_strategy_i_use_temp->strategy_id;
                     message_strategy_i_use_list[j].previous_move = message_strategy_i_use_temp->previous_move;
-                    message_strategy_i_use_list[j].previous_state = message_strategy_i_use_temp->previous_state;
+                    message_strategy_i_use_list[j].present_state = message_strategy_i_use_temp->present_state;
                     message_strategy_i_use_list[j].range = message_strategy_i_use_temp->range;
                     message_strategy_i_use_list[j].x = message_strategy_i_use_temp->x;
                     message_strategy_i_use_list[j].y = message_strategy_i_use_temp->y;
@@ -270,11 +270,11 @@ void propagate_messages_complete() {
 
             message_strategy_i_use_temp->player_id = message_strategy_i_use_list[i].player_id;
 
-            message_strategy_i_use_temp->strategy_used = message_strategy_i_use_list[i].strategy_used;
+            message_strategy_i_use_temp->strategy_id = message_strategy_i_use_list[i].strategy_id;
 
             message_strategy_i_use_temp->previous_move = message_strategy_i_use_list[i].previous_move;
 
-            message_strategy_i_use_temp->previous_state = message_strategy_i_use_list[i].previous_state;
+            message_strategy_i_use_temp->present_state = message_strategy_i_use_list[i].present_state;
 
             message_strategy_i_use_temp->range = message_strategy_i_use_list[i].range;
 
