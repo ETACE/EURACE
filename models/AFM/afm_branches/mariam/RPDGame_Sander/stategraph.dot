@@ -1,0 +1,54 @@
+digraph state_graph {
+	rankdir=TB;
+	size="8,5;"
+	layer_0 [shape=plaintext, label="layer 0"];
+	layer_1 [shape=plaintext, label="layer 1"];
+	layer_0 -> layer_1 [style=invis];
+	layer_2 [shape=plaintext, label="layer 2"];
+	layer_1 -> layer_2 [style=invis];
+	layer_3 [shape=plaintext, label="layer 3"];
+	layer_2 -> layer_3 [style=invis];
+	layer_4 [shape=plaintext, label="layer 4"];
+	layer_3 -> layer_4 [style=invis];
+	layer_5 [shape=plaintext, label="layer 5"];
+	layer_4 -> layer_5 [style=invis];
+	
+	/* States */
+	GamePlayer_02 [label = "02"]
+	GamePlayer_01 [label = "01"]
+	GameSolver_06 [label = "06"]
+	GameSolver_05 [label = "05"]
+	GameSolver_04 [label = "04"]
+	GameSolver_03 [label = "03"]
+	GameSolver_02 [label = "02"]
+	GameSolver_01 [label = "01"]
+	GamePlayer_post_my_strategy_01_02 [label = "post_my_strategy", shape = rect]
+	GameSolver_ipd_game_within_players_01_02 [label = "ipd_game_within_players", shape = rect]
+	GameSolver_actual_game_02_03 [label = "actual_game", shape = rect]
+	GameSolver_find_optimum_strategies_03_04 [label = "find_optimum_strategies", shape = rect]
+	GameSolver_applyGA_04_05 [label = "applyGA", shape = rect]
+	GameSolver_update_strategies_05_06 [label = "update_strategies", shape = rect]
+	
+	/* Transitions */
+	GamePlayer_01 -> GamePlayer_post_my_strategy_01_02;
+	GamePlayer_post_my_strategy_01_02 -> GamePlayer_02;
+	GameSolver_01 -> GameSolver_ipd_game_within_players_01_02;
+	GameSolver_ipd_game_within_players_01_02 -> GameSolver_02;
+	GameSolver_02 -> GameSolver_actual_game_02_03;
+	GameSolver_actual_game_02_03 -> GameSolver_03;
+	GameSolver_03 -> GameSolver_find_optimum_strategies_03_04;
+	GameSolver_find_optimum_strategies_03_04 -> GameSolver_04;
+	GameSolver_04 -> GameSolver_applyGA_04_05;
+	GameSolver_applyGA_04_05 -> GameSolver_05;
+	GameSolver_05 -> GameSolver_update_strategies_05_06;
+	GameSolver_update_strategies_05_06 -> GameSolver_06;
+	
+	/* Communications */
+	GamePlayer_post_my_strategy_01_02 -> GameSolver_ipd_game_within_players_01_02 [ label = "strategy_i_use" color="#00ff00" constraint=false];
+	{ rank=same; layer_0;  GamePlayer_post_my_strategy_01_02; }
+	{ rank=same; layer_1;  GameSolver_ipd_game_within_players_01_02; }
+	{ rank=same; layer_2;  GameSolver_actual_game_02_03; }
+	{ rank=same; layer_3;  GameSolver_find_optimum_strategies_03_04; }
+	{ rank=same; layer_4;  GameSolver_applyGA_04_05; }
+	{ rank=same; layer_5;  GameSolver_update_strategies_05_06; }
+}
