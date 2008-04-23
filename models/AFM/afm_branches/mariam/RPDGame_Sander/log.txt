@@ -48,3 +48,8 @@ all the strategy performance is recorded in the strategy list.
 the function optimum function is now only to sort the strategy list according to performance.
 
 write a sorting function which sorts the strategy_list according to performance. TODO
+
+23/4/08
+tried to modify model for parser0.2-doesnt work
+NOTE: do not need internal dependency in solver as there is only one agent
+

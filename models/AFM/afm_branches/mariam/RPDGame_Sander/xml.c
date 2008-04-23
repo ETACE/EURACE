@@ -217,13 +217,16 @@ void read_strategy_state(char * buffer, int * j, strategy_state * temp_datatype)
 	char arraydata[10000];
 	(*j)++;
 	
-
+	(*temp_datatype).starting_state = 0;
+	array_k = 0;
 	while(buffer[*j] != ',')
 	{
-		while(buffer[*j] != '{') (*j)++;
-		read_int_static_array(buffer, j, (*temp_datatype).starting_state, 4);
+		arraydata[array_k] = buffer[*j];
+		array_k++;
+		(*j)++;
 	}
-	
+	arraydata[array_k] = 0;
+	(*temp_datatype).starting_state = atoi(arraydata);
 	(*j)++;
 	(*temp_datatype).state_name = 0;
 	array_k = 0;
@@ -236,21 +239,27 @@ void read_strategy_state(char * buffer, int * j, strategy_state * temp_datatype)
 	arraydata[array_k] = 0;
 	(*temp_datatype).state_name = atoi(arraydata);
 	(*j)++;
-
+	(*temp_datatype).state_ifcooperate = 0;
+	array_k = 0;
 	while(buffer[*j] != ',')
 	{
-		while(buffer[*j] != '{') (*j)++;
-		read_int_static_array(buffer, j, (*temp_datatype).state_ifcooperate, 4);
+		arraydata[array_k] = buffer[*j];
+		array_k++;
+		(*j)++;
 	}
-	
+	arraydata[array_k] = 0;
+	(*temp_datatype).state_ifcooperate = atoi(arraydata);
 	(*j)++;
-
+	(*temp_datatype).state_ifdefect = 0;
+	array_k = 0;
 	while(buffer[*j] != '}')
 	{
-		while(buffer[*j] != '{') (*j)++;
-		read_int_static_array(buffer, j, (*temp_datatype).state_ifdefect, 4);
+		arraydata[array_k] = buffer[*j];
+		array_k++;
+		(*j)++;
 	}
-	
+	arraydata[array_k] = 0;
+	(*temp_datatype).state_ifdefect = atoi(arraydata);
 	(*j)++;
 }
 
@@ -264,7 +273,7 @@ void read_strategy_state_dynamic_array(char * buffer, int * j, strategy_state_ar
 	{
 		if(buffer[(*j)] == '{')
 		{
-			add_strategy_state(temp_datatype_array, NULL, 0, NULL, NULL);
+			add_strategy_state(temp_datatype_array, 0, 0, 0, 0);
 			read_strategy_state(buffer, j, &(*temp_datatype_array).array[arraycount]);
 			arraycount++;
 		}
@@ -415,13 +424,36 @@ void read_strategy_data_static_array(char * buffer, int * j, strategy_data * tem
  */
 void read_complete_strategy(char * buffer, int * j, complete_strategy * temp_datatype)
 {
-	
+	int array_k;
+	char arraydata[10000];
 	(*j)++;
 	
+	(*temp_datatype).strategy_unique_id = 0;
+	array_k = 0;
+	while(buffer[*j] != ',')
+	{
+		arraydata[array_k] = buffer[*j];
+		array_k++;
+		(*j)++;
+	}
+	arraydata[array_k] = 0;
+	(*temp_datatype).strategy_unique_id = atoi(arraydata);
+	(*j)++;
 	while(buffer[*j] != '{') (*j)++;
 
 	read_strategy_state_dynamic_array(buffer, j, &(*temp_datatype).strategy_path);
 	
+	(*j)++;
+	(*temp_datatype).strategy_performance = 0.0;
+	array_k = 0;
+	while(buffer[*j] != '}')
+	{
+		arraydata[array_k] = buffer[*j];
+		array_k++;
+		(*j)++;
+	}
+	arraydata[array_k] = 0;
+	(*temp_datatype).strategy_performance = atof(arraydata);
 	(*j)++;
 }
 
@@ -435,7 +467,7 @@ void read_complete_strategy_dynamic_array(char * buffer, int * j, complete_strat
 	{
 		if(buffer[(*j)] == '{')
 		{
-			add_complete_strategy(temp_datatype_array, NULL);
+			add_complete_strategy(temp_datatype_array, 0, NULL, 0.0);
 			read_complete_strategy(buffer, j, &(*temp_datatype_array).array[arraycount]);
 			arraycount++;
 		}
@@ -609,7 +641,7 @@ void read_player_list_element_static_array(char * buffer, int * j, player_list_e
  * \param partition_method Identifies partitioning method: 1 = geometric, 2 = round-robin
  * \param flag Flag for whether to check space partitions.
  */
-void readinitialstates(char * filename, int * itno, xmachine ** agent_list, double cloud_data[6], 
+void readinitialstates(char * filename, int * itno, double cloud_data[6], 
 					   int partition_method, int flag)
 {
 	/* Pointer to file */
@@ -620,7 +652,7 @@ void readinitialstates(char * filename, int * itno, xmachine ** agent_list, doub
 	char agentname[1000];
 	//char arraydata[10000];
 	//int array_k=0, arraycount=0;
-	int j=0;
+	int j;
 
 /* Things for round-robin partitioning */
 	int agent_count;
@@ -774,7 +806,7 @@ void readinitialstates(char * filename, int * itno, xmachine ** agent_list, doub
 	/* Set p_xmachine to the agent list passed in then new agents are added to this list 
 	 * Will be set to agent list for specific node is space partitions are already known (flag=1)
 	 */ 
-	p_xmachine = agent_list;
+	//p_xmachine = agent_list;
 	/* If we're reading without knowing partitions already then use the dummy current node (it's not in the list of nodes)*/
 	if (flag == 0) current_node = &temp_node;
 	
@@ -831,16 +863,16 @@ in_GameSolver_agent = 0;
 				
 				if(strcmp(agentname, "GamePlayer") == 0)
 				{
-					posx = current_GamePlayer_agent->posx;
+					/*posx = current_GamePlayer_agent->posx;
 					posy = current_GamePlayer_agent->posy;
-					posz = 0.0;
+					posz = 0.0;*/
 					
 					/* If flag is zero just read the data. We'll partition later.
 					 * If flag is not zero we aleady have partition data so can read and distribute to the current node.*/
 					if( flag == 0 )
 					{
 						//add_GamePlayer_agent(id, strategy_used, previous_performance, present_state, iradius, posx, posy);
-						add_GamePlayer_agent_internal(current_GamePlayer_agent);
+						add_GamePlayer_agent_internal(current_GamePlayer_agent, GamePlayer_01_state);
 						
 						/* Update the cloud data */
 						if ( posx < cloud_data[0] ) cloud_data[0] = posx;
@@ -848,7 +880,7 @@ in_GameSolver_agent = 0;
 						if ( posy < cloud_data[2] ) cloud_data[2] = posy;
 						if ( posy > cloud_data[3] ) cloud_data[3] = posy;
 						if ( posz < cloud_data[2] ) cloud_data[4] = posz;
-						if ( posz > cloud_data[3] ) cloud_data[5] = posz ;
+						if ( posz > cloud_data[3] ) cloud_data[5] = posz;
 					}
 
 					else if (flag != 0)
@@ -864,9 +896,9 @@ in_GameSolver_agent = 0;
 								((current_node->partition_data[5] == SPINF) || (current_node->partition_data[5] != SPINF && posz < current_node->partition_data[5]))
 							)
 							{
-								p_xmachine = &(current_node->agents);
+								//p_xmachine = &(current_node->agents);
 								//add_GamePlayer_agent(id, strategy_used, previous_performance, present_state, iradius, posx, posy);
-								add_GamePlayer_agent_internal(current_GamePlayer_agent);
+								add_GamePlayer_agent_internal(current_GamePlayer_agent, GamePlayer_01_state);
 							} 
 						}
 						else if (partition_method == other)
@@ -883,13 +915,13 @@ in_GameSolver_agent = 0;
 								ycentre=ymin+(ymax-ymin)/2.0;
 								rrange=1.5;
 
-								p_xmachine = &(current_node->agents);
+								//p_xmachine = &(current_node->agents);
 								//add_GamePlayer_agent(id, strategy_used, previous_performance, present_state, iradius, posx, posy);
-								add_GamePlayer_agent_internal(current_GamePlayer_agent);
+								add_GamePlayer_agent_internal(current_GamePlayer_agent, GamePlayer_01_state);
 
-								current_GamePlayer_agent->posx = xcentre;
+								/*current_GamePlayer_agent->posx = xcentre;
 								current_GamePlayer_agent->posy = ycentre;
-								current_GamePlayer_agent-> = rrange;
+								current_GamePlayer_agent-> = rrange;*/
 
 							}
 							++agent_count;
@@ -900,16 +932,16 @@ in_GameSolver_agent = 0;
 				}
 				else if(strcmp(agentname, "GameSolver") == 0)
 				{
-					posx = current_GameSolver_agent->posx;
+					/*posx = current_GameSolver_agent->posx;
 					posy = current_GameSolver_agent->posy;
-					posz = 0.0;
+					posz = 0.0;*/
 					
 					/* If flag is zero just read the data. We'll partition later.
 					 * If flag is not zero we aleady have partition data so can read and distribute to the current node.*/
 					if( flag == 0 )
 					{
 						//add_GameSolver_agent(strategy_list, new_children, nragents, automata_id, players, player_one_state, player_two_state, player_one_move, player_two_move, strategy_performance, offspring, rows, player_list, iradius, posx, posy);
-						add_GameSolver_agent_internal(current_GameSolver_agent);
+						add_GameSolver_agent_internal(current_GameSolver_agent, GameSolver_01_state);
 						
 						/* Update the cloud data */
 						if ( posx < cloud_data[0] ) cloud_data[0] = posx;
@@ -917,7 +949,7 @@ in_GameSolver_agent = 0;
 						if ( posy < cloud_data[2] ) cloud_data[2] = posy;
 						if ( posy > cloud_data[3] ) cloud_data[3] = posy;
 						if ( posz < cloud_data[2] ) cloud_data[4] = posz;
-						if ( posz > cloud_data[3] ) cloud_data[5] = posz ;
+						if ( posz > cloud_data[3] ) cloud_data[5] = posz;
 					}
 
 					else if (flag != 0)
@@ -933,9 +965,9 @@ in_GameSolver_agent = 0;
 								((current_node->partition_data[5] == SPINF) || (current_node->partition_data[5] != SPINF && posz < current_node->partition_data[5]))
 							)
 							{
-								p_xmachine = &(current_node->agents);
+								//p_xmachine = &(current_node->agents);
 								//add_GameSolver_agent(strategy_list, new_children, nragents, automata_id, players, player_one_state, player_two_state, player_one_move, player_two_move, strategy_performance, offspring, rows, player_list, iradius, posx, posy);
-								add_GameSolver_agent_internal(current_GameSolver_agent);
+								add_GameSolver_agent_internal(current_GameSolver_agent, GameSolver_01_state);
 							} 
 						}
 						else if (partition_method == other)
@@ -952,13 +984,13 @@ in_GameSolver_agent = 0;
 								ycentre=ymin+(ymax-ymin)/2.0;
 								rrange=1.5;
 
-								p_xmachine = &(current_node->agents);
+								//p_xmachine = &(current_node->agents);
 								//add_GameSolver_agent(strategy_list, new_children, nragents, automata_id, players, player_one_state, player_two_state, player_one_move, player_two_move, strategy_performance, offspring, rows, player_list, iradius, posx, posy);
-								add_GameSolver_agent_internal(current_GameSolver_agent);
+								add_GameSolver_agent_internal(current_GameSolver_agent, GameSolver_01_state);
 
-								current_GameSolver_agent->posx = xcentre;
+								/*current_GameSolver_agent->posx = xcentre;
 								current_GameSolver_agent->posy = ycentre;
-								current_GameSolver_agent-> = rrange;
+								current_GameSolver_agent-> = rrange;*/
 
 							}
 							++agent_count;
@@ -1042,6 +1074,7 @@ in_GameSolver_agent = 0;
 			buffer[i] = 0;
 			/* Flag in tag */
 			in_tag = 1;
+			j = 0;
 			
 			if(in_itno) *itno = atoi(buffer);
 			if(in_name) strcpy(agentname, buffer);
@@ -1057,61 +1090,22 @@ in_GameSolver_agent = 0;
 				if(in_iradius) current_GamePlayer_agent->iradius = atof(buffer);
 				if(in_posx) current_GamePlayer_agent->posx = atof(buffer);
 				if(in_posy) current_GamePlayer_agent->posy = atof(buffer);
-			}else if(in_GameSolver_agent == 1)
+			}
+			else if(in_GameSolver_agent == 1)
 			{
-				if(in_strategy_list)
-				{
-					j = 0;
-					read_complete_strategy_static_array(buffer, &j, current_GameSolver_agent->strategy_list, 30);
-				}
-				if(in_new_children)
-				{
-					j = 0;
-					read_complete_strategy_static_array(buffer, &j, current_GameSolver_agent->new_children, 10);
-				}
+				if(in_strategy_list) read_complete_strategy_static_array(buffer, &j, current_GameSolver_agent->strategy_list, 30);
+				if(in_new_children) read_complete_strategy_static_array(buffer, &j, current_GameSolver_agent->new_children, 10);
 				if(in_nragents) current_GameSolver_agent->nragents = atoi(buffer);
-				if(in_automata_id)
-				{
-					j = 0;
-					read_int_dynamic_array(buffer, &j, &current_GameSolver_agent->automata_id);
-				}
-				if(in_players)
-				{
-					j = 0;
-					read_int_dynamic_array(buffer, &j, &current_GameSolver_agent->players);
-				}
-				if(in_player_one_state)
-				{
-					j = 0;
-					read_int_static_array(buffer, &j, current_GameSolver_agent->player_one_state, 4);
-				}
-				if(in_player_two_state)
-				{
-					j = 0;
-					read_int_static_array(buffer, &j, current_GameSolver_agent->player_two_state, 4);
-				}
+				if(in_automata_id) read_int_dynamic_array(buffer, &j, &current_GameSolver_agent->automata_id);
+				if(in_players) read_int_dynamic_array(buffer, &j, &current_GameSolver_agent->players);
+				if(in_player_one_state) read_int_static_array(buffer, &j, current_GameSolver_agent->player_one_state, 4);
+				if(in_player_two_state) read_int_static_array(buffer, &j, current_GameSolver_agent->player_two_state, 4);
 				if(in_player_one_move) current_GameSolver_agent->player_one_move = atoi(buffer);
 				if(in_player_two_move) current_GameSolver_agent->player_two_move = atoi(buffer);
-				if(in_strategy_performance)
-				{
-					j = 0;
-					read_strategy_data_static_array(buffer, &j, current_GameSolver_agent->strategy_performance, 30);
-				}
-				if(in_offspring)
-				{
-					j = 0;
-					read_complete_strategy_static_array(buffer, &j, current_GameSolver_agent->offspring, 2);
-				}
-				if(in_rows)
-				{
-					j = 0;
-					read_columns_dynamic_array(buffer, &j, &current_GameSolver_agent->rows);
-				}
-				if(in_player_list)
-				{
-					j = 0;
-					read_player_list_element_dynamic_array(buffer, &j, &current_GameSolver_agent->player_list);
-				}
+				if(in_strategy_performance) read_strategy_data_static_array(buffer, &j, current_GameSolver_agent->strategy_performance, 30);
+				if(in_offspring) read_complete_strategy_static_array(buffer, &j, current_GameSolver_agent->offspring, 2);
+				if(in_rows) read_columns_dynamic_array(buffer, &j, &current_GameSolver_agent->rows);
+				if(in_player_list) read_player_list_element_dynamic_array(buffer, &j, &current_GameSolver_agent->player_list);
 				if(in_iradius) current_GameSolver_agent->iradius = atof(buffer);
 				if(in_posx) current_GameSolver_agent->posx = atof(buffer);
 				if(in_posy) current_GameSolver_agent->posy = atof(buffer);
@@ -1161,64 +1155,6 @@ in_GameSolver_agent = 0;
 //	free_columns_array(rows);
 //	free_player_list_element_array(player_list);
 
-}
-
-/** \fn void saveiterationdata_binary(int iteration_number)
- * \brief Save X-machine memory to a binary file.
- * \param iteration_number The current iteration number.
- */
-void saveiterationdata_binary(int iteration_number)
-{
-	/* Pointer to file */
-	FILE *file;
-	char data[1000];
-	int i;
-	int agentcount = 0;
-	xmachine_memory_GamePlayer * current_GamePlayer;
-	xmachine_memory_GameSolver * current_GameSolver;
-	/*complete_strategy * strategy_list;*/
-	/*complete_strategy * new_children;*/
-	/*int * player_one_state;*/
-	/*int * player_two_state;*/
-	/*strategy_data * strategy_performance;*/
-	/*complete_strategy * offspring;*/
-
-	sprintf(data, "%s%i.binary", outputpath, iteration_number);
-	file = fopen(data, "wb");
-	/* iteration number*/
-	fwrite(&iteration_number ,sizeof(int), 1, file);
-	/* number of xagent memories written (update at end)*/
-	fwrite(&i ,sizeof(int), 1, file);
-	
-	current_node = *p_node_info;
-	while(current_node)
-	{
-	p_xmachine = &current_node->agents;
-	current_xmachine = *p_xmachine;
-	while(current_xmachine)
-	{
-		if(current_xmachine->xmachine_GamePlayer != NULL)
-		{
-			current_GamePlayer = current_xmachine->xmachine_GamePlayer;
-			agentcount++;
-		}
-		else if(current_xmachine->xmachine_GameSolver != NULL)
-		{
-			current_GameSolver = current_xmachine->xmachine_GameSolver;
-			agentcount++;
-		}
-		
-		current_xmachine = current_xmachine->next;
-	}
-		current_node = current_node->next;
-	}
-	
-	/* update agent count\n", file);*/
-	fseek(file,sizeof(int)*1,SEEK_SET);
-	fwrite(&agentcount,sizeof(int),1,file);
-	
-	/* Close the file */
-	fclose(file);
 }
 
 /** \fn void write_int_static_array(FILE *file, $name * temp)
@@ -1369,11 +1305,14 @@ void write_strategy_state(FILE *file, strategy_state * temp_datatype)
 	char data[1000];
 	
 	fputs("{", file);
-	write_int_static_array(file, (*temp_datatype).starting_state, 4);
+	sprintf(data, "%i", (*temp_datatype).starting_state);
+	fputs(data, file);
 	fputs(", ", file);	sprintf(data, "%i", (*temp_datatype).state_name);
 	fputs(data, file);
-	fputs(", ", file);	write_int_static_array(file, (*temp_datatype).state_ifcooperate, 4);
-	fputs(", ", file);	write_int_static_array(file, (*temp_datatype).state_ifdefect, 4);
+	fputs(", ", file);	sprintf(data, "%i", (*temp_datatype).state_ifcooperate);
+	fputs(data, file);
+	fputs(", ", file);	sprintf(data, "%i", (*temp_datatype).state_ifdefect);
+	fputs(data, file);
 	fputs("}", file);
 }
 
@@ -1493,10 +1432,14 @@ void write_strategy_data_dynamic_array(FILE *file, strategy_data_array * temp_da
  */
 void write_complete_strategy(FILE *file, complete_strategy * temp_datatype)
 {
-	
+	char data[1000];
 	
 	fputs("{", file);
-	write_strategy_state_dynamic_array(file, &(*temp_datatype).strategy_path);
+	sprintf(data, "%i", (*temp_datatype).strategy_unique_id);
+	fputs(data, file);
+	fputs(", ", file);	write_strategy_state_dynamic_array(file, &(*temp_datatype).strategy_path);
+	fputs(", ", file);	sprintf(data, "%f", (*temp_datatype).strategy_performance);
+	fputs(data, file);
 	fputs("}", file);
 }
 
@@ -1617,6 +1560,107 @@ void write_player_list_element_dynamic_array(FILE *file, player_list_element_arr
 
 
 
+void write_GamePlayer_agent(FILE *file, xmachine_memory_GamePlayer * current)
+{
+	char data[1000];
+	fputs("<xagent>\n" , file);
+	fputs("<name>GamePlayer</name>\n", file);
+		fputs("<id>", file);
+	sprintf(data, "%i", current_xmachine_GamePlayer->id);
+	fputs(data, file);
+	fputs("</id>\n", file);
+		fputs("<strategy_used>", file);
+	sprintf(data, "%i", current_xmachine_GamePlayer->strategy_used);
+	fputs(data, file);
+	fputs("</strategy_used>\n", file);
+		fputs("<previous_performance>", file);
+	sprintf(data, "%i", current_xmachine_GamePlayer->previous_performance);
+	fputs(data, file);
+	fputs("</previous_performance>\n", file);
+		fputs("<present_state>", file);
+	sprintf(data, "%i", current_xmachine_GamePlayer->present_state);
+	fputs(data, file);
+	fputs("</present_state>\n", file);
+		fputs("<iradius>", file);
+	sprintf(data, "%f", current_xmachine_GamePlayer->iradius);
+	fputs(data, file);
+	fputs("</iradius>\n", file);
+		fputs("<posx>", file);
+	sprintf(data, "%f", current_xmachine_GamePlayer->posx);
+	fputs(data, file);
+	fputs("</posx>\n", file);
+		fputs("<posy>", file);
+	sprintf(data, "%f", current_xmachine_GamePlayer->posy);
+	fputs(data, file);
+	fputs("</posy>\n", file);
+		
+	fputs("</xagent>\n", file);
+}
+
+void write_GameSolver_agent(FILE *file, xmachine_memory_GameSolver * current)
+{
+	char data[1000];
+	fputs("<xagent>\n" , file);
+	fputs("<name>GameSolver</name>\n", file);
+		fputs("<strategy_list>", file);
+	write_complete_strategy_static_array(file, current_xmachine_GameSolver->strategy_list, 30);
+	fputs("</strategy_list>\n", file);
+		fputs("<new_children>", file);
+	write_complete_strategy_static_array(file, current_xmachine_GameSolver->new_children, 10);
+	fputs("</new_children>\n", file);
+		fputs("<nragents>", file);
+	sprintf(data, "%i", current_xmachine_GameSolver->nragents);
+	fputs(data, file);
+	fputs("</nragents>\n", file);
+		fputs("<automata_id>", file);
+	write_int_dynamic_array(file, &current_xmachine_GameSolver->automata_id);
+	fputs("</automata_id>\n", file);
+		fputs("<players>", file);
+	write_int_dynamic_array(file, &current_xmachine_GameSolver->players);
+	fputs("</players>\n", file);
+		fputs("<player_one_state>", file);
+	write_int_static_array(file, current_xmachine_GameSolver->player_one_state, 4);
+	fputs("</player_one_state>\n", file);
+		fputs("<player_two_state>", file);
+	write_int_static_array(file, current_xmachine_GameSolver->player_two_state, 4);
+	fputs("</player_two_state>\n", file);
+		fputs("<player_one_move>", file);
+	sprintf(data, "%i", current_xmachine_GameSolver->player_one_move);
+	fputs(data, file);
+	fputs("</player_one_move>\n", file);
+		fputs("<player_two_move>", file);
+	sprintf(data, "%i", current_xmachine_GameSolver->player_two_move);
+	fputs(data, file);
+	fputs("</player_two_move>\n", file);
+		fputs("<strategy_performance>", file);
+	write_strategy_data_static_array(file, current_xmachine_GameSolver->strategy_performance, 30);
+	fputs("</strategy_performance>\n", file);
+		fputs("<offspring>", file);
+	write_complete_strategy_static_array(file, current_xmachine_GameSolver->offspring, 2);
+	fputs("</offspring>\n", file);
+		fputs("<rows>", file);
+	write_columns_dynamic_array(file, &current_xmachine_GameSolver->rows);
+	fputs("</rows>\n", file);
+		fputs("<player_list>", file);
+	write_player_list_element_dynamic_array(file, &current_xmachine_GameSolver->player_list);
+	fputs("</player_list>\n", file);
+		fputs("<iradius>", file);
+	sprintf(data, "%f", current_xmachine_GameSolver->iradius);
+	fputs(data, file);
+	fputs("</iradius>\n", file);
+		fputs("<posx>", file);
+	sprintf(data, "%f", current_xmachine_GameSolver->posx);
+	fputs(data, file);
+	fputs("</posx>\n", file);
+		fputs("<posy>", file);
+	sprintf(data, "%f", current_xmachine_GameSolver->posy);
+	fputs(data, file);
+	fputs("</posy>\n", file);
+		
+	fputs("</xagent>\n", file);
+}
+
+
 /** \fn void saveiterationdata(int iteration_number)
  * \brief Save X-machine memory to a file.
  * \param iteration_number The current iteration number.
@@ -1626,8 +1670,6 @@ void saveiterationdata(int iteration_number)
 	/* Pointer to file */
 	FILE *file;
 	char data[1000];
-	xmachine_memory_GamePlayer * current_GamePlayer;
-	xmachine_memory_GameSolver * current_GameSolver;
 	//int_array * automata_id;
 	//int_array * players;
 	
@@ -1640,114 +1682,25 @@ void saveiterationdata(int iteration_number)
 	fputs("<environment>\n" , file);
 	fputs("</environment>\n" , file);
 
+//	current_xmachine = *p_xmachine;
+// todo loop through all agent types
 
-	current_node = *p_node_info;
-	while(current_node)
+current_xmachine_GamePlayer = *GamePlayer_02_state;
+	while(current_xmachine_GamePlayer)
 	{
-		p_xmachine = &current_node->agents;
-		current_xmachine = *p_xmachine;
-	while(current_xmachine)
-	{
-		fputs("<xagent>\n" , file);
-		if(current_xmachine->xmachine_GamePlayer != NULL)
-		{
-			current_GamePlayer = current_xmachine->xmachine_GamePlayer;
-			fputs("<name>GamePlayer</name>\n", file);
-			fputs("<id>", file);
-			sprintf(data, "%i", current_GamePlayer->id);
-			fputs(data, file);
-			fputs("</id>\n", file);
-			fputs("<strategy_used>", file);
-			sprintf(data, "%i", current_GamePlayer->strategy_used);
-			fputs(data, file);
-			fputs("</strategy_used>\n", file);
-			fputs("<previous_performance>", file);
-			sprintf(data, "%i", current_GamePlayer->previous_performance);
-			fputs(data, file);
-			fputs("</previous_performance>\n", file);
-			fputs("<present_state>", file);
-			sprintf(data, "%i", current_GamePlayer->present_state);
-			fputs(data, file);
-			fputs("</present_state>\n", file);
-			fputs("<iradius>", file);
-			sprintf(data, "%f", current_GamePlayer->iradius);
-			fputs(data, file);
-			fputs("</iradius>\n", file);
-			fputs("<posx>", file);
-			sprintf(data, "%f", current_GamePlayer->posx);
-			fputs(data, file);
-			fputs("</posx>\n", file);
-			fputs("<posy>", file);
-			sprintf(data, "%f", current_GamePlayer->posy);
-			fputs(data, file);
-			fputs("</posy>\n", file);
-		}
-		else if(current_xmachine->xmachine_GameSolver != NULL)
-		{
-			current_GameSolver = current_xmachine->xmachine_GameSolver;
-			fputs("<name>GameSolver</name>\n", file);
-			fputs("<strategy_list>", file);
-			write_complete_strategy_static_array(file, current_GameSolver->strategy_list, 30);
-			fputs("</strategy_list>\n", file);
-			fputs("<new_children>", file);
-			write_complete_strategy_static_array(file, current_GameSolver->new_children, 10);
-			fputs("</new_children>\n", file);
-			fputs("<nragents>", file);
-			sprintf(data, "%i", current_GameSolver->nragents);
-			fputs(data, file);
-			fputs("</nragents>\n", file);
-			fputs("<automata_id>", file);
-			write_int_dynamic_array(file, &current_GameSolver->automata_id);
-			fputs("</automata_id>\n", file);
-			fputs("<players>", file);
-			write_int_dynamic_array(file, &current_GameSolver->players);
-			fputs("</players>\n", file);
-			fputs("<player_one_state>", file);
-			write_int_static_array(file, current_GameSolver->player_one_state, 4);
-			fputs("</player_one_state>\n", file);
-			fputs("<player_two_state>", file);
-			write_int_static_array(file, current_GameSolver->player_two_state, 4);
-			fputs("</player_two_state>\n", file);
-			fputs("<player_one_move>", file);
-			sprintf(data, "%i", current_GameSolver->player_one_move);
-			fputs(data, file);
-			fputs("</player_one_move>\n", file);
-			fputs("<player_two_move>", file);
-			sprintf(data, "%i", current_GameSolver->player_two_move);
-			fputs(data, file);
-			fputs("</player_two_move>\n", file);
-			fputs("<strategy_performance>", file);
-			write_strategy_data_static_array(file, current_GameSolver->strategy_performance, 30);
-			fputs("</strategy_performance>\n", file);
-			fputs("<offspring>", file);
-			write_complete_strategy_static_array(file, current_GameSolver->offspring, 2);
-			fputs("</offspring>\n", file);
-			fputs("<rows>", file);
-			write_columns_dynamic_array(file, &current_GameSolver->rows);
-			fputs("</rows>\n", file);
-			fputs("<player_list>", file);
-			write_player_list_element_dynamic_array(file, &current_GameSolver->player_list);
-			fputs("</player_list>\n", file);
-			fputs("<iradius>", file);
-			sprintf(data, "%f", current_GameSolver->iradius);
-			fputs(data, file);
-			fputs("</iradius>\n", file);
-			fputs("<posx>", file);
-			sprintf(data, "%f", current_GameSolver->posx);
-			fputs(data, file);
-			fputs("</posx>\n", file);
-			fputs("<posy>", file);
-			sprintf(data, "%f", current_GameSolver->posy);
-			fputs(data, file);
-			fputs("</posy>\n", file);
-		}
-	
-		fputs("</xagent>\n", file);
+		write_GamePlayer_agent(file, current_xmachine_GamePlayer);
 		
-		current_xmachine = current_xmachine->next;
+		current_xmachine_GamePlayer = current_xmachine_GamePlayer->next;
 	}
-			current_node = current_node->next;
+
+current_xmachine_GameSolver = *GameSolver_06_state;
+	while(current_xmachine_GameSolver)
+	{
+		write_GameSolver_agent(file, current_xmachine_GameSolver);
+		
+		current_xmachine_GameSolver = current_xmachine_GameSolver->next;
 	}
+	
 fputs("</states>\n" , file);
 	
 	/* Close the file */

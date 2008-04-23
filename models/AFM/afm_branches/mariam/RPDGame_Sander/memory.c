@@ -10,10 +10,45 @@
  */
 void initialise_pointers()
 {
-	temp_xmachine = NULL;
-	p_xmachine = &temp_xmachine;
-	temp_strategy_i_use_message = NULL;
-	p_strategy_i_use_message = &temp_strategy_i_use_message;
+    int rc;
+	//temp_xmachine = NULL;
+	//p_xmachine = &temp_xmachine;
+	temp_xmachine_GamePlayer_02 = NULL;
+	GamePlayer_02_state = &temp_xmachine_GamePlayer_02;
+	temp_xmachine_GamePlayer_01 = NULL;
+	GamePlayer_01_state = &temp_xmachine_GamePlayer_01;
+	temp_xmachine_GameSolver_06 = NULL;
+	GameSolver_06_state = &temp_xmachine_GameSolver_06;
+	temp_xmachine_GameSolver_05 = NULL;
+	GameSolver_05_state = &temp_xmachine_GameSolver_05;
+	temp_xmachine_GameSolver_04 = NULL;
+	GameSolver_04_state = &temp_xmachine_GameSolver_04;
+	temp_xmachine_GameSolver_03 = NULL;
+	GameSolver_03_state = &temp_xmachine_GameSolver_03;
+	temp_xmachine_GameSolver_02 = NULL;
+	GameSolver_02_state = &temp_xmachine_GameSolver_02;
+	temp_xmachine_GameSolver_01 = NULL;
+	GameSolver_01_state = &temp_xmachine_GameSolver_01;
+	
+
+    rc = MB_Create(&b_strategy_i_use, sizeof(m_strategy_i_use));
+    #ifdef ERRCHECK
+    if (rc != MB_SUCCESS)
+    {
+       fprintf(stderr, "ERROR: Could not create 'strategy_i_use' board\n");
+       switch(rc) {
+           case MB_ERR_INVALID:
+               fprintf(stderr, "\t reason: Invalid message size\n");
+               break;
+           case MB_ERR_MEMALLOC:
+               fprintf(stderr, "\t reason: out of memory\n");
+               break;
+           case MB_ERR_INTERNAL:
+               fprintf(stderr, "\t reason: internal error. Recompile libmoard in debug mode for more info \n");
+               break;
+       }
+    }
+    #endif
 	temp_node_info = NULL;
 	p_node_info = &temp_node_info;
 }
@@ -24,11 +59,12 @@ void initialise_pointers()
 void initialise_unit_testing()
 {
 	initialise_pointers();
-	add_node(0, -SPINF, SPINF, -SPINF, SPINF, -SPINF, SPINF);
-	current_node = *p_node_info;
-	p_xmachine = &current_node->agents;
-	current_xmachine = *p_xmachine;
-	p_strategy_i_use_message = &current_node->strategy_i_use_messages;
+	//add_node(0, -SPINF, SPINF, -SPINF, SPINF, -SPINF, SPINF);
+	//current_node = *p_node_info;
+	//p_xmachine = &current_node->agents;
+	//current_xmachine = *p_xmachine;
+	// todo fix pointer to current agent types
+	//p_strategy_i_use_message = &current_node->strategy_i_use_messages;
 }
 
 /* add_location */
@@ -90,29 +126,6 @@ void freelocations(location ** p_location)
 	*p_location = NULL;
 }
 
-/* add_xmachine */
-/** \fn xmachine * add_xmachine()
- * \brief Add an X-machine to the current being used X-machine list.
- * \return Pointer to the added X-machine.
- */
-xmachine * add_xmachine()
-{
-	xmachine * current = (xmachine *)malloc(sizeof(xmachine));
-	CHECK_POINTER(current);
-
-	current->xmachine_GamePlayer = NULL;
-	current->xmachine_GameSolver = NULL;
-	current->next = *p_xmachine;
-	*p_xmachine = current;
-	
-	current_node->agent_total++;
-
-/* add by cg for round-robin so that set_ has something to point at */
-	//current_xmachine = current;
-	
-	return current;
-}
-
 void init_int_static_array(int * array, int size)
 {
 	int i;
@@ -145,10 +158,10 @@ void init_char_static_array(char * array, int size)
 
 void init_strategy_state(strategy_state * temp)
 {
-	init_int_static_array((*temp).starting_state, 4);
+	(*temp).starting_state = 0;
 	(*temp).state_name = 0;
-	init_int_static_array((*temp).state_ifcooperate, 4);
-	init_int_static_array((*temp).state_ifdefect, 4);
+	(*temp).state_ifcooperate = 0;
+	(*temp).state_ifdefect = 0;
 
 }
 
@@ -173,10 +186,10 @@ void free_strategy_state_static_array(strategy_state * array, int size)
 
 void copy_strategy_state(strategy_state * from, strategy_state * to)
 {
-	memcpy((*to).starting_state, (*from).starting_state, 4*sizeof(int));
+	(*to).starting_state = (*from).starting_state;
 	(*to).state_name = (*from).state_name;
-	memcpy((*to).state_ifcooperate, (*from).state_ifcooperate, 4*sizeof(int));
-	memcpy((*to).state_ifdefect, (*from).state_ifdefect, 4*sizeof(int));
+	(*to).state_ifcooperate = (*from).state_ifcooperate;
+	(*to).state_ifdefect = (*from).state_ifdefect;
 }
 
 void copy_strategy_state_static_array(strategy_state * from, strategy_state * to, int size)
@@ -276,7 +289,9 @@ void copy_strategy_data_static_array(strategy_data * from, strategy_data * to, i
 
 void init_complete_strategy(complete_strategy * temp)
 {
+	(*temp).strategy_unique_id = 0;
 	init_strategy_state_array(&(*temp).strategy_path);
+	(*temp).strategy_performance = 0.0;
 
 }
 
@@ -302,7 +317,9 @@ void free_complete_strategy_static_array(complete_strategy * array, int size)
 
 void copy_complete_strategy(complete_strategy * from, complete_strategy * to)
 {
+	(*to).strategy_unique_id = (*from).strategy_unique_id;
 	copy_strategy_state_array(&(*from).strategy_path, &(*to).strategy_path);
+	(*to).strategy_performance = (*from).strategy_performance;
 }
 
 void copy_complete_strategy_static_array(complete_strategy * from, complete_strategy * to, int size)
@@ -422,15 +439,48 @@ xmachine_memory_GamePlayer * init_GamePlayer_agent()
 	return current;
 }
 
-void free_GamePlayer_agent(xmachine_memory_GamePlayer * tmp)
+void free_GamePlayer_agent(xmachine_memory_GamePlayer * tmp, xmachine_memory_GamePlayer ** state)
 {
+	if(tmp->prev == NULL) *state = tmp->next;
+	else tmp->prev->next = tmp->next;
+	
 	
 }
 
-void add_GamePlayer_agent_internal(xmachine_memory_GamePlayer * current)
+void free_GamePlayer_agents()
 {
-	xmachine * new_xmachine = add_xmachine();
-	new_xmachine->xmachine_GamePlayer = current;
+	while(*GamePlayer_02_state)
+	{
+		free_GamePlayer_agent(*GamePlayer_02_state, GamePlayer_02_state);
+	}
+	while(*GamePlayer_01_state)
+	{
+		free_GamePlayer_agent(*GamePlayer_01_state, GamePlayer_01_state);
+	}
+}
+
+void transition_GamePlayer_agent(xmachine_memory_GamePlayer * tmp, xmachine_memory_GamePlayer ** from_state, xmachine_memory_GamePlayer ** to_state)
+{
+	if(tmp->prev == NULL)
+	{
+		*from_state = tmp->next;
+		if(tmp->next != NULL) tmp->next->prev = NULL;
+	}
+	else
+	{
+		tmp->prev->next = tmp->next;
+		tmp->next->prev = tmp->prev;	
+	}
+	
+	add_GamePlayer_agent_internal(tmp, to_state);
+}
+
+void add_GamePlayer_agent_internal(xmachine_memory_GamePlayer * current, xmachine_memory_GamePlayer ** state)
+{
+	current->next = *state;
+	current->prev = NULL;
+	*state = current;
+	if(current->next != NULL) current->next->prev = current;
 }
 
 /** \fn void add_GamePlayer_agent(int id, int strategy_used, int previous_performance, int present_state, double iradius, double posx, double posy)
@@ -448,7 +498,7 @@ void add_GamePlayer_agent(int id, int strategy_used, int previous_performance, i
 	xmachine * new_xmachine = add_xmachine();
 	xmachine_memory_GamePlayer * current;
 	
-	init_GamePlayer_agent(current);
+	current = init_GamePlayer_agent();
 	new_xmachine->xmachine_GamePlayer = current;
 	
 	current->id = id;
@@ -485,8 +535,11 @@ xmachine_memory_GameSolver * init_GameSolver_agent()
 	return current;
 }
 
-void free_GameSolver_agent(xmachine_memory_GameSolver * tmp)
+void free_GameSolver_agent(xmachine_memory_GameSolver * tmp, xmachine_memory_GameSolver ** state)
 {
+	if(tmp->prev == NULL) *state = tmp->next;
+	else tmp->prev->next = tmp->next;
+	
 	free_complete_strategy_static_array(tmp->strategy_list, 30);
 	free_complete_strategy_static_array(tmp->new_children, 10);
 	free_int_array(&tmp->automata_id);
@@ -498,10 +551,56 @@ void free_GameSolver_agent(xmachine_memory_GameSolver * tmp)
 	
 }
 
-void add_GameSolver_agent_internal(xmachine_memory_GameSolver * current)
+void free_GameSolver_agents()
 {
-	xmachine * new_xmachine = add_xmachine();
-	new_xmachine->xmachine_GameSolver = current;
+	while(*GameSolver_06_state)
+	{
+		free_GameSolver_agent(*GameSolver_06_state, GameSolver_06_state);
+	}
+	while(*GameSolver_05_state)
+	{
+		free_GameSolver_agent(*GameSolver_05_state, GameSolver_05_state);
+	}
+	while(*GameSolver_04_state)
+	{
+		free_GameSolver_agent(*GameSolver_04_state, GameSolver_04_state);
+	}
+	while(*GameSolver_03_state)
+	{
+		free_GameSolver_agent(*GameSolver_03_state, GameSolver_03_state);
+	}
+	while(*GameSolver_02_state)
+	{
+		free_GameSolver_agent(*GameSolver_02_state, GameSolver_02_state);
+	}
+	while(*GameSolver_01_state)
+	{
+		free_GameSolver_agent(*GameSolver_01_state, GameSolver_01_state);
+	}
+}
+
+void transition_GameSolver_agent(xmachine_memory_GameSolver * tmp, xmachine_memory_GameSolver ** from_state, xmachine_memory_GameSolver ** to_state)
+{
+	if(tmp->prev == NULL)
+	{
+		*from_state = tmp->next;
+		if(tmp->next != NULL) tmp->next->prev = NULL;
+	}
+	else
+	{
+		tmp->prev->next = tmp->next;
+		tmp->next->prev = tmp->prev;	
+	}
+	
+	add_GameSolver_agent_internal(tmp, to_state);
+}
+
+void add_GameSolver_agent_internal(xmachine_memory_GameSolver * current, xmachine_memory_GameSolver ** state)
+{
+	current->next = *state;
+	current->prev = NULL;
+	*state = current;
+	if(current->next != NULL) current->next->prev = current;
 }
 
 /** \fn void add_GameSolver_agent(complete_strategy ** strategy_list, complete_strategy ** new_children, int nragents, int_array * automata_id, int_array * players, int player_one_state[], int player_two_state[], int player_one_move, int player_two_move, strategy_data ** strategy_performance, complete_strategy ** offspring, columns_array * rows, player_list_element_array * player_list, double iradius, double posx, double posy)
@@ -528,7 +627,7 @@ void add_GameSolver_agent(complete_strategy strategy_list[], complete_strategy n
 	xmachine * new_xmachine = add_xmachine();
 	xmachine_memory_GameSolver * current;
 	
-	init_GameSolver_agent(current);
+	current = init_GameSolver_agent();
 	new_xmachine->xmachine_GameSolver = current;
 	
 	copy_complete_strategy_static_array(strategy_list, current->strategy_list, 30);
@@ -549,13 +648,36 @@ void add_GameSolver_agent(complete_strategy strategy_list[], complete_strategy n
 	current->posy = posy;
 }
 
+/** \fn xmachine * add_xmachine()
+ * \brief Add an X-machine to the current being used X-machine list.
+ * \return Pointer to the added X-machine.
+ */
+xmachine * add_xmachine()
+{
+	/*xmachine * current = (xmachine *)malloc(sizeof(xmachine));
+	CHECK_POINTER(current);
+
+	current->xmachine_GamePlayer = NULL;
+	current->xmachine_GameSolver = NULL;
+	current->next = *p_xmachine;
+	*p_xmachine = current;
+	
+	current_node->agent_total++;*/
+
+/* add by cg for round-robin so that set_ has something to point at */
+	//current_xmachine = current;
+	
+	/*return current;*/
+		return NULL;
+}
+
 /** \fn void free_agent()
  * \brief Free the currently being used X-machine.
  */
 /* free_agent */
 void free_agent()
 {
-	xmachine * head = *p_xmachine;
+/*	xmachine * head = *p_xmachine;
 	xmachine * tmp = NULL;
 	
 	while(head)
@@ -584,7 +706,7 @@ void free_agent()
 	}
 }
 	
-	current_node->agent_total--;
+	current_node->agent_total--;*/
 }
 
 /* freexmachines */
@@ -593,27 +715,7 @@ void free_agent()
  */
 void freexmachines()
 {
-	xmachine * head = *p_xmachine;
-	xmachine * tmp = NULL;
 	
-	while(head)
-	{
-		tmp = head->next;
-		if(head->xmachine_GamePlayer)
-		{
-			free_GamePlayer_agent(head->xmachine_GamePlayer);
-			free(head->xmachine_GamePlayer);
-		}
-		if(head->xmachine_GameSolver)
-		{
-			free_GameSolver_agent(head->xmachine_GameSolver);
-			free(head->xmachine_GameSolver);
-		}
-		free(head);
-		head = tmp;
-	}
-	
-	*p_xmachine = NULL;
 }
 
 
@@ -621,105 +723,105 @@ void freexmachines()
  * \brief Set id memory variable for current X-machine.
  * \param id New value for variable.
  */
-void set_id(int id)
+/*void set_id(int id)
 {
 	if(current_xmachine->xmachine_GamePlayer) (*current_xmachine->xmachine_GamePlayer).id = id;
-}
+}*/
 
 /** \fn int get_id()
  * \brief Get id memory variable from current X-machine.
  * \return Value for variable.
  */
-int get_id()
+/*int get_id()
 {
 	if(current_xmachine->xmachine_GamePlayer) return (*current_xmachine->xmachine_GamePlayer).id;
 
     // suppress compiler warning by returning dummy value /
     // this statement should rightfully NEVER be reached /
     return (int)0;
-}
+}*/
 
 /** \fn void set_strategy_used(int strategy_used) 
  * \brief Set strategy_used memory variable for current X-machine.
  * \param strategy_used New value for variable.
  */
-void set_strategy_used(int strategy_used)
+/*void set_strategy_used(int strategy_used)
 {
 	if(current_xmachine->xmachine_GamePlayer) (*current_xmachine->xmachine_GamePlayer).strategy_used = strategy_used;
-}
+}*/
 
 /** \fn int get_strategy_used()
  * \brief Get strategy_used memory variable from current X-machine.
  * \return Value for variable.
  */
-int get_strategy_used()
+/*int get_strategy_used()
 {
 	if(current_xmachine->xmachine_GamePlayer) return (*current_xmachine->xmachine_GamePlayer).strategy_used;
 
     // suppress compiler warning by returning dummy value /
     // this statement should rightfully NEVER be reached /
     return (int)0;
-}
+}*/
 
 /** \fn void set_previous_performance(int previous_performance) 
  * \brief Set previous_performance memory variable for current X-machine.
  * \param previous_performance New value for variable.
  */
-void set_previous_performance(int previous_performance)
+/*void set_previous_performance(int previous_performance)
 {
 	if(current_xmachine->xmachine_GamePlayer) (*current_xmachine->xmachine_GamePlayer).previous_performance = previous_performance;
-}
+}*/
 
 /** \fn int get_previous_performance()
  * \brief Get previous_performance memory variable from current X-machine.
  * \return Value for variable.
  */
-int get_previous_performance()
+/*int get_previous_performance()
 {
 	if(current_xmachine->xmachine_GamePlayer) return (*current_xmachine->xmachine_GamePlayer).previous_performance;
 
     // suppress compiler warning by returning dummy value /
     // this statement should rightfully NEVER be reached /
     return (int)0;
-}
+}*/
 
 /** \fn void set_present_state(int present_state) 
  * \brief Set present_state memory variable for current X-machine.
  * \param present_state New value for variable.
  */
-void set_present_state(int present_state)
+/*void set_present_state(int present_state)
 {
 	if(current_xmachine->xmachine_GamePlayer) (*current_xmachine->xmachine_GamePlayer).present_state = present_state;
-}
+}*/
 
 /** \fn int get_present_state()
  * \brief Get present_state memory variable from current X-machine.
  * \return Value for variable.
  */
-int get_present_state()
+/*int get_present_state()
 {
 	if(current_xmachine->xmachine_GamePlayer) return (*current_xmachine->xmachine_GamePlayer).present_state;
 
     // suppress compiler warning by returning dummy value /
     // this statement should rightfully NEVER be reached /
     return (int)0;
-}
+}*/
 
 /** \fn void set_iradius(double iradius) 
  * \brief Set iradius memory variable for current X-machine.
  * \param iradius New value for variable.
  */
-void set_iradius(double iradius)
+/*void set_iradius(double iradius)
 {
 	if(current_xmachine->xmachine_GamePlayer) (*current_xmachine->xmachine_GamePlayer).iradius = iradius;
 	if(current_xmachine->xmachine_GameSolver) (*current_xmachine->xmachine_GameSolver).iradius = iradius;
-}
+}*/
 
 /** \fn double get_iradius()
  * \brief Get iradius memory variable from current X-machine.
  * \return Value for variable.
  */
-double get_iradius()
+/*double get_iradius()
 {
 	if(current_xmachine->xmachine_GamePlayer) return (*current_xmachine->xmachine_GamePlayer).iradius;
 	if(current_xmachine->xmachine_GameSolver) return (*current_xmachine->xmachine_GameSolver).iradius;
@@ -727,23 +829,23 @@ double get_iradius()
     // suppress compiler warning by returning dummy value /
     // this statement should rightfully NEVER be reached /
     return (double)0;
-}
+}*/
 
 /** \fn void set_posx(double posx) 
  * \brief Set posx memory variable for current X-machine.
  * \param posx New value for variable.
  */
-void set_posx(double posx)
+/*void set_posx(double posx)
 {
 	if(current_xmachine->xmachine_GamePlayer) (*current_xmachine->xmachine_GamePlayer).posx = posx;
 	if(current_xmachine->xmachine_GameSolver) (*current_xmachine->xmachine_GameSolver).posx = posx;
-}
+}*/
 
 /** \fn double get_posx()
  * \brief Get posx memory variable from current X-machine.
  * \return Value for variable.
  */
-double get_posx()
+/*double get_posx()
 {
 	if(current_xmachine->xmachine_GamePlayer) return (*current_xmachine->xmachine_GamePlayer).posx;
 	if(current_xmachine->xmachine_GameSolver) return (*current_xmachine->xmachine_GameSolver).posx;
@@ -751,23 +853,23 @@ double get_posx()
     // suppress compiler warning by returning dummy value /
     // this statement should rightfully NEVER be reached /
     return (double)0;
-}
+}*/
 
 /** \fn void set_posy(double posy) 
  * \brief Set posy memory variable for current X-machine.
  * \param posy New value for variable.
  */
-void set_posy(double posy)
+/*void set_posy(double posy)
 {
 	if(current_xmachine->xmachine_GamePlayer) (*current_xmachine->xmachine_GamePlayer).posy = posy;
 	if(current_xmachine->xmachine_GameSolver) (*current_xmachine->xmachine_GameSolver).posy = posy;
-}
+}*/
 
 /** \fn double get_posy()
  * \brief Get posy memory variable from current X-machine.
  * \return Value for variable.
  */
-double get_posy()
+/*double get_posy()
 {
 	if(current_xmachine->xmachine_GamePlayer) return (*current_xmachine->xmachine_GamePlayer).posy;
 	if(current_xmachine->xmachine_GameSolver) return (*current_xmachine->xmachine_GameSolver).posy;
@@ -775,203 +877,203 @@ double get_posy()
     // suppress compiler warning by returning dummy value /
     // this statement should rightfully NEVER be reached /
     return (double)0;
-}
+}*/
 
 /** \fn complete_strategy get_strategy_list()
  * \brief Get strategy_list memory variable from current X-machine.
  * \return Value for variable.
  */
-complete_strategy * get_strategy_list()
+/*complete_strategy * get_strategy_list()
 {
 	if(current_xmachine->xmachine_GameSolver) return (*current_xmachine->xmachine_GameSolver).strategy_list;
 
     // suppress compiler warning by returning dummy value /
     // this statement should rightfully NEVER be reached /
     return NULL;
-}
+}*/
 
 /** \fn complete_strategy get_new_children()
  * \brief Get new_children memory variable from current X-machine.
  * \return Value for variable.
  */
-complete_strategy * get_new_children()
+/*complete_strategy * get_new_children()
 {
 	if(current_xmachine->xmachine_GameSolver) return (*current_xmachine->xmachine_GameSolver).new_children;
 
     // suppress compiler warning by returning dummy value /
     // this statement should rightfully NEVER be reached /
     return NULL;
-}
+}*/
 
 /** \fn void set_nragents(int nragents) 
  * \brief Set nragents memory variable for current X-machine.
  * \param nragents New value for variable.
  */
-void set_nragents(int nragents)
+/*void set_nragents(int nragents)
 {
 	if(current_xmachine->xmachine_GameSolver) (*current_xmachine->xmachine_GameSolver).nragents = nragents;
-}
+}*/
 
 /** \fn int get_nragents()
  * \brief Get nragents memory variable from current X-machine.
  * \return Value for variable.
  */
-int get_nragents()
+/*int get_nragents()
 {
 	if(current_xmachine->xmachine_GameSolver) return (*current_xmachine->xmachine_GameSolver).nragents;
 
     // suppress compiler warning by returning dummy value /
     // this statement should rightfully NEVER be reached /
     return (int)0;
-}
+}*/
 
 /** \fn int_array get_automata_id()
  * \brief Get automata_id memory variable from current X-machine.
  * \return Value for variable.
  */
-int_array * get_automata_id()
+/*int_array * get_automata_id()
 {
 	if(current_xmachine->xmachine_GameSolver) return &(*current_xmachine->xmachine_GameSolver).automata_id;
 
     // suppress compiler warning by returning dummy value /
     // this statement should rightfully NEVER be reached /
     return NULL;
-}
+}*/
 
 /** \fn int_array get_players()
  * \brief Get players memory variable from current X-machine.
  * \return Value for variable.
  */
-int_array * get_players()
+/*int_array * get_players()
 {
 	if(current_xmachine->xmachine_GameSolver) return &(*current_xmachine->xmachine_GameSolver).players;
 
     // suppress compiler warning by returning dummy value /
     // this statement should rightfully NEVER be reached /
     return NULL;
-}
+}*/
 
 /** \fn int get_player_one_state()
  * \brief Get player_one_state memory variable from current X-machine.
  * \return Value for variable.
  */
-int * get_player_one_state()
+/*int * get_player_one_state()
 {
 	if(current_xmachine->xmachine_GameSolver) return (*current_xmachine->xmachine_GameSolver).player_one_state;
 
     // suppress compiler warning by returning dummy value /
     // this statement should rightfully NEVER be reached /
     return NULL;
-}
+}*/
 
 /** \fn int get_player_two_state()
  * \brief Get player_two_state memory variable from current X-machine.
  * \return Value for variable.
  */
-int * get_player_two_state()
+/*int * get_player_two_state()
 {
 	if(current_xmachine->xmachine_GameSolver) return (*current_xmachine->xmachine_GameSolver).player_two_state;
 
     // suppress compiler warning by returning dummy value /
     // this statement should rightfully NEVER be reached /
     return NULL;
-}
+}*/
 
 /** \fn void set_player_one_move(int player_one_move) 
  * \brief Set player_one_move memory variable for current X-machine.
  * \param player_one_move New value for variable.
  */
-void set_player_one_move(int player_one_move)
+/*void set_player_one_move(int player_one_move)
 {
 	if(current_xmachine->xmachine_GameSolver) (*current_xmachine->xmachine_GameSolver).player_one_move = player_one_move;
-}
+}*/
 
 /** \fn int get_player_one_move()
  * \brief Get player_one_move memory variable from current X-machine.
  * \return Value for variable.
  */
-int get_player_one_move()
+/*int get_player_one_move()
 {
 	if(current_xmachine->xmachine_GameSolver) return (*current_xmachine->xmachine_GameSolver).player_one_move;
 
     // suppress compiler warning by returning dummy value /
     // this statement should rightfully NEVER be reached /
     return (int)0;
-}
+}*/
 
 /** \fn void set_player_two_move(int player_two_move) 
  * \brief Set player_two_move memory variable for current X-machine.
  * \param player_two_move New value for variable.
  */
-void set_player_two_move(int player_two_move)
+/*void set_player_two_move(int player_two_move)
 {
 	if(current_xmachine->xmachine_GameSolver) (*current_xmachine->xmachine_GameSolver).player_two_move = player_two_move;
-}
+}*/
 
 /** \fn int get_player_two_move()
  * \brief Get player_two_move memory variable from current X-machine.
  * \return Value for variable.
  */
-int get_player_two_move()
+/*int get_player_two_move()
 {
 	if(current_xmachine->xmachine_GameSolver) return (*current_xmachine->xmachine_GameSolver).player_two_move;
 
     // suppress compiler warning by returning dummy value /
     // this statement should rightfully NEVER be reached /
     return (int)0;
-}
+}*/
 
 /** \fn strategy_data get_strategy_performance()
  * \brief Get strategy_performance memory variable from current X-machine.
  * \return Value for variable.
  */
-strategy_data * get_strategy_performance()
+/*strategy_data * get_strategy_performance()
 {
 	if(current_xmachine->xmachine_GameSolver) return (*current_xmachine->xmachine_GameSolver).strategy_performance;
 
     // suppress compiler warning by returning dummy value /
     // this statement should rightfully NEVER be reached /
     return NULL;
-}
+}*/
 
 /** \fn complete_strategy get_offspring()
  * \brief Get offspring memory variable from current X-machine.
  * \return Value for variable.
  */
-complete_strategy * get_offspring()
+/*complete_strategy * get_offspring()
 {
 	if(current_xmachine->xmachine_GameSolver) return (*current_xmachine->xmachine_GameSolver).offspring;
 
     // suppress compiler warning by returning dummy value /
     // this statement should rightfully NEVER be reached /
     return NULL;
-}
+}*/
 
 /** \fn columns_array get_rows()
  * \brief Get rows memory variable from current X-machine.
  * \return Value for variable.
  */
-columns_array * get_rows()
+/*columns_array * get_rows()
 {
 	if(current_xmachine->xmachine_GameSolver) return &(*current_xmachine->xmachine_GameSolver).rows;
 
     // suppress compiler warning by returning dummy value /
     // this statement should rightfully NEVER be reached /
     return NULL;
-}
+}*/
 
 /** \fn player_list_element_array get_player_list()
  * \brief Get player_list memory variable from current X-machine.
  * \return Value for variable.
  */
-player_list_element_array * get_player_list()
+/*player_list_element_array * get_player_list()
 {
 	if(current_xmachine->xmachine_GameSolver) return &(*current_xmachine->xmachine_GameSolver).player_list;
 
     // suppress compiler warning by returning dummy value /
     // this statement should rightfully NEVER be reached /
     return NULL;
-}
+}*/
 
 
 /** \fn double agent_get_range()
@@ -981,8 +1083,8 @@ player_list_element_array * get_player_list()
 double agent_get_range()
 {
     double value = 0.0;
-    if (current_xmachine->xmachine_GamePlayer) value = current_xmachine->xmachine_GamePlayer->;
-    if (current_xmachine->xmachine_GameSolver) value = current_xmachine->xmachine_GameSolver->;
+    //if (current_xmachine->xmachine_GamePlayer) value = current_xmachine->xmachine_GamePlayer->;
+    //if (current_xmachine->xmachine_GameSolver) value = current_xmachine->xmachine_GameSolver->;
 
     return value;
 }
@@ -994,8 +1096,8 @@ double agent_get_range()
 int agent_get_id()
 {
     int value = 0;
-    if (current_xmachine->xmachine_GamePlayer) value = current_xmachine->xmachine_GamePlayer->id;
-    if (current_xmachine->xmachine_GameSolver) value = current_xmachine->xmachine_GameSolver->;
+    //if (current_xmachine->xmachine_GamePlayer) value = current_xmachine->xmachine_GamePlayer->id;
+    //if (current_xmachine->xmachine_GameSolver) value = current_xmachine->xmachine_GameSolver->;
 
     return value;
 }
@@ -1007,8 +1109,8 @@ int agent_get_id()
 double agent_get_x()
 {
     double value = 0.0;
-    if (current_xmachine->xmachine_GamePlayer) value = current_xmachine->xmachine_GamePlayer->posx;
-    if (current_xmachine->xmachine_GameSolver) value = current_xmachine->xmachine_GameSolver->posx;
+    //if (current_xmachine->xmachine_GamePlayer) value = current_xmachine->xmachine_GamePlayer->posx;
+    //if (current_xmachine->xmachine_GameSolver) value = current_xmachine->xmachine_GameSolver->posx;
 
     return value;
 }
@@ -1019,8 +1121,8 @@ double agent_get_x()
 double agent_get_y()
 {
     double value = 0.0;
-    if (current_xmachine->xmachine_GamePlayer) value = current_xmachine->xmachine_GamePlayer->posy; 
-    if (current_xmachine->xmachine_GameSolver) value = current_xmachine->xmachine_GameSolver->posy; 
+    //if (current_xmachine->xmachine_GamePlayer) value = current_xmachine->xmachine_GamePlayer->posy; 
+    //if (current_xmachine->xmachine_GameSolver) value = current_xmachine->xmachine_GameSolver->posy; 
 
     return value;
 }
@@ -1034,62 +1136,6 @@ double agent_get_z()
 
     return value;
 }
-/** \fn void randomisexagent()
- * \brief Randomise the current X-machine list.
- * 
- * \author LS Chin (CCLRC)
- * \date March 2007
- */
-void randomisexagent() {
-
-    int i, rnd;
-    int xm_count;
-    xmachine *current;
-    xmachine **address_list;
-    
-    xm_count = current_node->agent_total;
-
-    /* allocate mem for dynamic temp array */
-    address_list = (xmachine **)malloc(sizeof(xmachine *) * xm_count);
-	CHECK_POINTER(address_list);
-
-    p_xmachine = &current_node->agents;
-    
-    /* populate address list */
-    i = 0;
-    current = *p_xmachine;
-    while(current)
-    {
-        address_list[i] = current;
-        current = current->next;
-        i++;
-    }
-
-    /* randomise address list */
-    for (i = xm_count - 1; i > 0; i--)
-    {
-        /* get random number */
-        rnd = (int)((double)i * rand() / (RAND_MAX + 1.0));
-
-        if (rnd == i) continue;
-
-        /* use 'current' as temp var to swap addresses */
-        current = address_list[i];
-        address_list[i] = address_list[rnd];
-        address_list[rnd] = current;
-    }
-
-    /* build new xmachine list from randomised address list */
-    *p_xmachine = NULL;
-    for (i = 0; i < xm_count; i++)
-    {
-        address_list[i]->next = *p_xmachine;
-        *p_xmachine = address_list[i];
-    }
-
-    free(address_list);
-}
-
 
 /** \fn void add_node(int node_id, double minx, double maxx, double miny, double maxy, double minz, double maxz)
  * \brief Add a node to the node list.
@@ -1158,39 +1204,44 @@ void free_node_info()
 	*p_node_info = NULL;
 }
 
-/**\fn void free_messages()
- * \brief Frees all the message lists (of the current node if in serial).
- */
-void free_messages()
-{
-	freestrategy_i_usemessages();
-}
-
 /** \fn void clean_up(int code)
  * \brief Add a node to the node list.
  * \param code The error code (zero is no error).
  */
 void clean_up(int code)
 {
+    int rc;
 	FILE *file;
 	char data[100];
 	
 	
 	/* Free x-machine memory */
-
-	current_node = *p_node_info;
-	while(current_node)
-	{
-		p_xmachine = &current_node->agents;
-
-	freexmachines();
+	freexmachines(); //todo
 	current_node->agent_total = 0;
-
-		current_node = current_node->next;
-	}
-
 	/* Free space partitions linked list */
 	free_node_info();
+	
+	/* Free message boards */
+
+	rc = MB_Delete(&b_strategy_i_use);
+	#ifdef ERRCHECK
+    if (rc != MB_SUCCESS)
+    {
+       fprintf(stderr, "ERROR: Could not delete 'strategy_i_use' board\n");
+       switch(rc) {
+           case MB_ERR_INVALID:
+               fprintf(stderr, "\t reason: 'strategy_i_use' board has not been created?\n");
+               break;
+           case MB_ERR_LOCKED:
+               fprintf(stderr, "\t reason: 'strategy_i_use' board is locked\n");
+               break;
+           case MB_ERR_INTERNAL:
+               fprintf(stderr, "\t reason: internal error. Recompile libmoard in debug mode for more info \n");
+               break;
+       }
+    }
+    #endif
+
 	
 
 	/* Write log file */
@@ -1225,7 +1276,7 @@ void clean_up(int code)
  */
 void propagate_agents()
 {
-	node_information * node_info;
+/*	node_information * node_info;
 	xmachine * before_xmachine, * temp_xmachine;
 	xmachine ** p_temp_xmachine;
 	double x_xmachine, y_xmachine, z_xmachine;
@@ -1261,11 +1312,11 @@ void propagate_agents()
 				node_info->partition_data[2] < y_xmachine && node_info->partition_data[3] > y_xmachine &&
 				node_info->partition_data[4] < z_xmachine && node_info->partition_data[5] > z_xmachine)
 				{
-                    /* Remove agent */
+                    // Remove agent
                     if(before_xmachine) before_xmachine->next = current_xmachine->next;
                     else *p_xmachine = current_xmachine->next;
                     current_node->agent_total--;
-                    /* Add agent */
+                    // Add agent
                     p_temp_xmachine = &node_info->agents;
                     temp_xmachine = *p_temp_xmachine;
                     current_xmachine->next = temp_xmachine;
@@ -1280,7 +1331,7 @@ void propagate_agents()
 			
 			if(before_xmachine) current_xmachine = before_xmachine->next;
 			else current_xmachine = NULL;
-		}
+		}*/
 }
 
 
@@ -1888,7 +1939,7 @@ void copy_strategy_state_array(strategy_state_array * from, strategy_state_array
 * \param array Pointer to the dynamic strategy_state array.
 * \param new_int The strategy_state to add
 */
-void add_strategy_state(strategy_state_array * array, int * starting_state, int state_name, int * state_ifcooperate, int * state_ifdefect)
+void add_strategy_state(strategy_state_array * array, int starting_state, int state_name, int state_ifcooperate, int state_ifdefect)
 {
 	if((*array).size == (*array).total_size)
 	{
@@ -1896,10 +1947,10 @@ void add_strategy_state(strategy_state_array * array, int * starting_state, int 
 		(*array).array = (strategy_state *)realloc((*array).array, ((*array).total_size * sizeof(strategy_state)));
 	}
 	init_strategy_state(&(*array).array[(*array).size]);
-	if(starting_state != NULL) memcpy((*array).array[(*array).size].starting_state, starting_state, 4*sizeof(int));
+	(*array).array[(*array).size].starting_state = starting_state;
 	(*array).array[(*array).size].state_name = state_name;
-	if(state_ifcooperate != NULL) memcpy((*array).array[(*array).size].state_ifcooperate, state_ifcooperate, 4*sizeof(int));
-	if(state_ifdefect != NULL) memcpy((*array).array[(*array).size].state_ifdefect, state_ifdefect, 4*sizeof(int));
+	(*array).array[(*array).size].state_ifcooperate = state_ifcooperate;
+	(*array).array[(*array).size].state_ifdefect = state_ifdefect;
 
 	(*array).size++;
 }
@@ -2132,16 +2183,16 @@ void copy_complete_strategy_array(complete_strategy_array * from, complete_strat
 	
 	for(i = 0; i < (*from).size; i++)
 	{
-		add_complete_strategy(to, &(*from).array[i].strategy_path);
+		add_complete_strategy(to, (*from).array[i].strategy_unique_id, &(*from).array[i].strategy_path, (*from).array[i].strategy_performance);
 	}
 }
 
-/** \fn void add_complete_strategy(complete_strategy_array * array, strategy_state_array * strategy_path)
+/** \fn void add_complete_strategy(complete_strategy_array * array, int strategy_unique_id, strategy_state_array * strategy_path, double strategy_performance)
 * \brief Add an complete_strategy to the dynamic complete_strategy array.
 * \param array Pointer to the dynamic complete_strategy array.
 * \param new_int The complete_strategy to add
 */
-void add_complete_strategy(complete_strategy_array * array, strategy_state_array * strategy_path)
+void add_complete_strategy(complete_strategy_array * array, int strategy_unique_id, strategy_state_array * strategy_path, double strategy_performance)
 {
 	if((*array).size == (*array).total_size)
 	{
@@ -2149,7 +2200,9 @@ void add_complete_strategy(complete_strategy_array * array, strategy_state_array
 		(*array).array = (complete_strategy *)realloc((*array).array, ((*array).total_size * sizeof(complete_strategy)));
 	}
 	init_complete_strategy(&(*array).array[(*array).size]);
+	(*array).array[(*array).size].strategy_unique_id = strategy_unique_id;
 	if(strategy_path != NULL) copy_strategy_state_array(strategy_path, &(*array).array[(*array).size].strategy_path);
+	(*array).array[(*array).size].strategy_performance = strategy_performance;
 
 	(*array).size++;
 }
