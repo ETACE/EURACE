@@ -1,0 +1,168 @@
+
+<xmachine_agent_model>
+<name>Iterated Prisoners Dilemma Game</name>
+<author>Mariam Kiran-Testing new parser changes</author>
+<date>230408</date>
+
+<environment>
+<functions>
+<file>GamePlayer_functions.c</file>
+<file>GameSolver_functions.c</file>
+<file>my_library_functions.c</file>
+</functions>
+
+<!--Structures-->
+
+
+
+<datatype>
+<name>strategy_state</name>
+<var><type>int</type><name>starting_state</name></var>
+<var><type>int</type><name>state_name</name></var>
+<var><type>int</type><name>state_ifcooperate</name></var>
+<var><type>int</type><name>state_ifdefect</name></var>
+</datatype>
+
+<datatype>
+<name>payoff_elements</name>
+<var><type>int</type><name>payoffs[2]</name></var>
+</datatype>
+
+<datatype>
+<name>strategy_data</name>
+<var><type>int</type><name>strategy_id</name></var>
+<var><type>double</type><name>strategy_perf</name></var>
+</datatype>
+
+<datatype>
+<name>complete_strategy</name>
+<var><type>int</type><name>strategy_unique_id</name></var>
+<var><type>strategy_state_array</type><name>strategy_path</name></var>
+<var><type>double</type><name>strategy_performance</name></var>
+</datatype>
+
+<datatype>
+<name>columns</name>
+<var><type>payoff_elements_array</type><name>opponents</name></var>
+</datatype>
+
+
+<datatype>
+<name>player_list_element</name>
+<var><type>int</type><name>player_id</name></var>
+<var><type>int</type><name>strategy_id</name></var>
+<var><type>int</type><name>previous_move</name></var>
+<var><type>int</type><name>present_state</name></var>
+</datatype>
+
+</environment>
+
+
+<!--********************* X-machine Agent - GamePlayer ****************************-->
+<xmachine>
+<name>GamePlayer</name>
+<!----------------- Variables-------------------------------------------------->
+<!-- All variables used by GamePlayer are declared here to allocate them in memory -->
+
+<memory>
+<var><type>int</type><name>id</name></var>
+<var><type>int</type><name>strategy_used</name></var>
+<var><type>int</type><name>previous_performance</name></var>
+<var><type>int</type><name>present_state</name></var>
+<var><type>double</type><name>iradius</name></var>
+<var><type>double</type><name>posx</name></var>
+<var><type>double</type><name>posy</name></var>
+</memory>
+
+<!----------------- Defining functions ---------------------------------------->
+<functions>
+<function><name>post_my_strategy</name>
+<current_state>01</current_state>
+<next_state>02</next_state>
+<output><messagetype>strategy_i_use</messagetype></output>
+</function>
+</functions>
+</xmachine>
+<!--*********************** End of Agent - GamePlayer *****************************-->
+
+<!--********************* X-machine Agent - GameSolver ****************************-->
+<xmachine>
+<name>GameSolver</name>
+<!----------------- Variables-------------------------------------------------->
+<!-- All variables used by GameSolver are declared here to allocate them in memory -->
+<memory>
+<var><type>complete_strategy</type><name>strategy_list[30]</name></var>
+<var><type>complete_strategy</type><name>new_children[10]</name></var>
+<var><type>int</type><name>nragents</name>	</var>
+<var><type>int_array</type><name>automata_id</name></var>
+<var><type>int_array</type><name>players</name></var>
+<var><type>int</type><name>player_one_state[4]</name></var>
+<var><type>int</type><name>player_two_state[4]</name></var>
+<var><type>int</type><name>player_one_move</name></var>
+<var><type>int</type><name>player_two_move</name></var>
+<var><type>strategy_data</type><name>strategy_performance[30]</name></var>
+<var><type>complete_strategy</type><name>offspring[2]</name></var>
+
+<var><type>columns_array</type><name>rows</name></var>
+<var><type>player_list_element_array</type><name>player_list</name></var>
+<var><type>double</type><name>iradius</name></var>
+<var><type>double</type><name>posx</name></var>
+<var><type>double</type><name>posy</name></var>
+	
+</memory>
+<!----------------- Defining functions ---------------------------------------->
+
+<functions>
+<function><name>ipd_game_within_players</name>
+<current_state>01</current_state>
+<next_state>02</next_state>
+<input><messagetype>strategy_i_use</messagetype></input>
+</function>
+
+	
+<function><name>actual_game</name>
+<current_state>02</current_state>
+<next_state>03</next_state>
+</function>
+
+<function>
+<name>find_optimum_strategies</name>
+<current_state>03</current_state>
+<next_state>04</next_state>
+</function>
+	
+
+<function><name>applyGA</name>
+<current_state>04</current_state>
+<next_state>05</next_state>
+</function>
+
+<function><name>update_strategies</name>
+<current_state>05</current_state>
+<next_state>06</next_state>
+</function>
+
+
+</functions>
+
+</xmachine><!--*********************** End of Agent - GameSolver ****************************-->
+
+<messages>
+  <message>
+    <name>strategy_i_use</name>
+    <note>This message is posted all agents so that all agents can play the game against each other</note>
+    <var><type>int</type><name>player_id</name></var>
+    <var><type>int</type><name>strategy_id</name></var>
+    <var><type>int</type><name>previous_move</name></var>
+    <var><type>int</type><name>present_state</name></var>
+      <var><type>double</type><name>range</name></var>
+    <var><type>double</type><name>x</name></var>
+    <var><type>double</type><name>y</name></var>
+    <var><type>double</type><name>z</name></var>
+  </message>
+</messages>
+<!--********************** End of Messages **********************************-->
+
+</xmachine_agent_model>
+
+
