@@ -54,7 +54,7 @@ int Firm_read_loan_offers_send_loan_acceptance()
             EXTERNAL_FINANCIAL_NEEDS -= credit_amount_taken;
             
             //double_array LOANS                : dynamic array of structs with each struct a loan_item
-            //struct loan_item
+            //struct debt_item
             //int bank_id                       : bank at which the loan was obtained
             //double loan_value                 : total value of the loan remaining
             //double interest_rate              : interest for this loan
@@ -62,7 +62,7 @@ int Firm_read_loan_offers_send_loan_acceptance()
             //double debt_installment_payment   : installment payment per period
             //int nr_periods_before_maturity    : nr of periods to go before the loan has to be fully repaid
 
-            //add_loan_item(&LOANS,(bank_id, loan_value, interest_rate, interest_payment, debt_installment_payment, nr_periods_before_maturity)
+            //add_debt_item(&LOANS, bank_id, loan_value, interest_rate, interest_payment, debt_installment_payment, nr_periods_before_maturity)
             bank_id = loan_conditions_message->bank_id;
             loan_value = credit_amount_taken;
            	interest_rate = loan_conditions_message->proposed_interest_rate;
