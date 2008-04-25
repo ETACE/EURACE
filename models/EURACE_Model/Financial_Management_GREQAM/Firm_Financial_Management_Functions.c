@@ -52,7 +52,7 @@ int Firm_compute_balance_sheet()
     //double PAYMENT_ACCOUNT: account out of which payments are made, to be separated from the income_account on which current sale receipts are incoming
 
     //double_array LOANS                : dynamic array of structs with each struct a loan_item
-    //struct loan_item
+    //struct debt_item
     //int bank_id                       : bank at which the loan was obtained
     //double loan_value                 : total value of the loan remaining
     //double interest_rate              : interest for this loan
@@ -99,10 +99,14 @@ int Firm_compute_balance_sheet()
     
     //Here: should debt_installment_payments be subtracted from earnings before taxes are paid, or after?
     //They are of course liabilities, but debt installment payments are one of many payouts.
-    
+    //EARNINGS -= TOTAL_DEBT_INSTALLMENT_PAYMENT;
+    	
     TAX_PAYMENT = TAX_RATE_CORPORATE * EARNINGS;
     PREVIOUS_NET_EARNINGS = NET_EARNINGS;
     NET_EARNINGS = EARNINGS - TAX_PAYMENT;
+    
+    //debt_installment_payments subtracted from earnings after taxes
+    NET_EARNINGS -= TOTAL_DEBT_INSTALLMENT_PAYMENT;
     EARNINGS_PER_SHARE_RATIO = NET_EARNINGS/CURRENT_SHARES_OUTSTANDING;
 
     //step 4: actual tax_payment to government
@@ -159,7 +163,7 @@ int Firm_compute_balance_sheet()
     //option 1: total divided payment remains constant
     //TOTAL_DIVIDEND_PAYMENT *= 1;
     
-    //option 2: total divided payment increases with same ratio as earnings
+    //option 2: total dividend payment increases with same ratio as earnings
     //this is very dangerous, since earnings may fluctuate violently
     //TOTAL_DIVIDEND_PAYMENT *= NET_EARNINGS/PREVIOUS_NET_EARNINGS;
     
