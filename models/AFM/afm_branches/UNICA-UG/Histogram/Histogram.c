@@ -8,6 +8,7 @@ Histogram * newHistogram() {
 	temp = malloc(sizeof(Histogram));
 	for(x=0; x<MAX_DIM; x++) {
 		temp->values[x] = 0;
+                temp->prob[x] = 0;
 	}
 	return temp;
 }
@@ -22,20 +23,29 @@ Histogram * newHistogram() {
  * e così via...
  */
 
-void histogram(Histogram *histogram, double data[], int len, int bins) { 
+void histogram(Histogram *hist, double data[], int len, int bins) { 
 	int x=0;
 	int index = 0;
-	evaluateMaxMin(histogram, data, len);
-	histogram->delta = (histogram->max - histogram->min)/bins; 
+	evaluateMaxMin(hist, data, len);
+	hist->delta = (hist->max - hist->min)/bins; 
 	while(x<len) {
-		index = (data[x]-histogram->min)/histogram->delta;
+		index = (data[x]-hist->min)/hist->delta;
 		//printf("Indice: %d - valore: %f - delta: %f\n", index, data[x], histogram->delta);
-		histogram->values[index]++;
+		hist->prob[index]++;
+                hist->values[index]= histogram->values[index]+data[x];
 		x++;
-		index = 0;
 	}
-}
+ normalize(hist, realization);
 
+}
+void normalize(Histogram *hist, int realization)
+    { int i;
+      for(i=0;i<hist->bins;i++)
+        {if(hist->prob[i]) hist->values[i]=hist->values[i]/hist->prob[i]; //it computes the mean value on the bin
+         hist->prob[i]=hist->prob[i]/len;
+        }
+   }
+         
 void evaluateMaxMin(Histogram* hist, double data[], int len) {
 	int x = 0;
 	double tempMax=0, tempMin=0;
@@ -53,6 +63,15 @@ void evaluateMaxMin(Histogram* hist, double data[], int len) {
 	hist->max = tempMax;
 	hist->min = tempMin;
 }
+void multipleBet(Histogram *dest, Histogram *source, int numIter)
+{ int iter;
+  for(i=0;i<numIter;i++)
+    {
+     
+    }
+
+}
+  
 double *computeAssetUtilityFunction(Histogram *hist,double lossAversion)
 { double *result;
   return resutl;
