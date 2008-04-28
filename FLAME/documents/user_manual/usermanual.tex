@@ -1,0 +1,43 @@
+\documentclass[12pt,a4paper]{report}
+\usepackage{t1enc}
+\usepackage[latin1]{inputenc}
+\usepackage[english]{babel}
+\usepackage{url,graphics,lscape}
+\usepackage{a4wide}
+\usepackage{graphicx}
+\usepackage{color}
+%\usepackage{fancyheadings}
+
+
+\parskip 6pt         % sets spacing between paragraphs
+\parindent 0pt       % sets leading space for paragraphs
+%\pagestyle{fancy}
+\begin{document}
+
+
+
+\title{User Manual
+\\Using the xParser 0.15}
+\author{Simon Coakley\\Mariam Kiran
+\\
+\\ Unit - USFD}
+%\date{17 May 2006}
+
+\maketitle
+
+
+\begin{abstract}
+The report presents a manual for using the xparser v0.15. It
+summarises how functions can be written in C and then executed using
+FLAME.
+\end{abstract}
+
+\section{Introduction}
+\include{simple_C_tut}
+\include{parser_functions}
+
+
+\bibliographystyle{alpha}
+\bibliography{euracebib}
+
+\end{document}

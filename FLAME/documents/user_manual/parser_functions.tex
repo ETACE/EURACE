@@ -1,0 +1,35 @@
+\section{DataTypes}
+\subsection{Universal Datatypes}
+\begin{center}
+\begin{tabular}{|l|l|}
+\hline Type & Description\\
+\hline int & Integer\\
+char & Character \\
+float & Float \\
+double & Double \\
+\hline
+\end{tabular}
+\end{center}
+\subsection{User-defined Datatypes}
+\section{How to Access Agent Memory?}
+\section{How to Use Messages?}
+\begin{center}
+\begin{tabular}{|l|}
+\hline
+ START\_JOB\_APPLICATION\_MESSAGE\_LOOP\\
+  if(ID == job\_application\_message->firm\_id)\\
+  \{ \\
+   /$\ast$ Handle job application to this Firm $\ast$/ \\
+  \} \\
+FINISH\_JOB\_APPLICATION\_MESSAGE\_LOOP \\
+\hline
+\end{tabular}\end{center}
+\section{Files Created by Parser}
+The xParser produces a set of files which can later be used to study
+the models and their results.
+\subsection{.dot Files}
+These files can be accessed by installing the Graphviz package. They
+produce a graph of the functions and their dependencies. Figure
+\subsection{.svg Files}
+These files can be accessed using mozilla firefox. This basically
+gives a layout of how the functions would run and in which order.
