@@ -462,7 +462,7 @@ int Firm_send_capital_demand()
 		TOTAL_CAPITAL_DEPRECIATION_VALUE=0;
 		TOTAL_CAPITAL_DEPRECIATION_UNITS=0;
 		
-        for (i=0;i<imax;i++)
+        for (i=0;i<CAPITAL_STOCK.size;i++)
         {
             //sum the depreciation values of each item in the capital stock 
         	TOTAL_CAPITAL_DEPRECIATION_VALUE += CAPITAL_STOCK.array[i].depreciation_units_per_period*CAPITAL_STOCK.array[i].purchase_price;
