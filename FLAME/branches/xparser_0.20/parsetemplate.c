@@ -1662,7 +1662,7 @@ void parseTemplate(char * filename, char * templatename, model_data * modeldata)
 					if (strcmp(buffer3->array, "$name") == 0)
 						fputs(current_datatype->name, file);
 					else if (strcmp(buffer3->array, "$desc") == 0)
-						fputs(current_datatype->desc, file);
+						if(current_datatype->desc != NULL) fputs(current_datatype->desc, file);
 				}
 				else if (strcmp("foreach datatypevar", lastloop) == 0)
 				{
