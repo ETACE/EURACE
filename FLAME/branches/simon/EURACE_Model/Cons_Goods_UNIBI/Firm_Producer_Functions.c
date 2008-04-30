@@ -255,7 +255,7 @@ int Firm_calc_production_quantity()
 							PLANNED_DELIVERY_VOLUME.
 							array[i].quantity = prod_vol;
 
-							printf("Prod-Vol %f\n",prod_vol);
+							/*printf("Prod-Vol %f\n",prod_vol);*/
 						}
 					}
 				}
@@ -457,7 +457,7 @@ int Firm_calc_production_quantity_2()
  * \brief Firm sends demand for capital to the capital goods market. */
 int Firm_send_capital_demand()
 {
-	int i, imax;
+	int i;
 	
 		TOTAL_CAPITAL_DEPRECIATION_VALUE=0;
 		TOTAL_CAPITAL_DEPRECIATION_UNITS=0;
@@ -485,7 +485,7 @@ int Firm_send_capital_demand()
 			/*Calculate the share of net investments*/	
 			SHARE_NET_INVESTMENTS = net_investments/DEMAND_CAPITAL_STOCK;
 
-			add_capital_good_request_message(ID,DEMAND_CAPITAL_STOCK,MSGDATA);		
+			add_capital_good_request_message(ID,DEMAND_CAPITAL_STOCK);		
 		}
 		else
 		{
@@ -591,7 +591,7 @@ int Firm_calc_pay_costs()
 		/*Pay the costs*/
 
 		add_pay_capital_goods_message(ID,capital_costs,
-		SHARE_NET_INVESTMENTS,MSGDATA );
+		SHARE_NET_INVESTMENTS);
 
 		labour_costs=0;
 
@@ -601,7 +601,7 @@ int Firm_calc_pay_costs()
 
 			add_wage_payment_message(ID,
 			EMPLOYEES.array[i].id,EMPLOYEES.array[i].wage,
-			TECHNOLOGY,MEAN_SPECIFIC_SKILLS,MSGDATA);
+			TECHNOLOGY,MEAN_SPECIFIC_SKILLS);
 		}
 	/*Calculate the unit costs and total costs*/
 		if(PRODUCTION_QUANTITY!=0 )
@@ -615,7 +615,7 @@ int Firm_calc_pay_costs()
 		PRODUCTION_COSTS = capital_costs + labour_costs;
 	}
 
-	printf("Production Quantity : %f\n",PRODUCTION_QUANTITY);
+	/*printf("Production Quantity : %f\n",PRODUCTION_QUANTITY);*/
 
 	remove_double(&LAST_PLANNED_PRODUCTION_QUANTITIES,0);
 	add_double(&LAST_PLANNED_PRODUCTION_QUANTITIES,PLANNED_PRODUCTION_QUANTITY);	
@@ -684,7 +684,7 @@ int Firm_send_goods_to_mall()
 			
 					add_update_mall_stock_message(
 					DELIVERY_VOLUME.array[j].mall_id,ID,
-					DELIVERY_VOLUME.array[j].quantity,QUALITY,PRICE,MSGDATA);
+					DELIVERY_VOLUME.array[j].quantity,QUALITY,PRICE);
 			
 				}
 			}
@@ -821,8 +821,7 @@ int Firm_send_data_to_Market_Research()
 	NO_EMPLOYEES_SKILL_5, 
 	MEAN_WAGE, MEAN_SPECIFIC_SKILLS, AVERAGE_S_SKILL_OF_1, 
 	AVERAGE_S_SKILL_OF_2, AVERAGE_S_SKILL_OF_3,
-	AVERAGE_S_SKILL_OF_4, AVERAGE_S_SKILL_OF_5, 
-	MSGDATA);
+	AVERAGE_S_SKILL_OF_4, AVERAGE_S_SKILL_OF_5);
 		
 
 	return 0;

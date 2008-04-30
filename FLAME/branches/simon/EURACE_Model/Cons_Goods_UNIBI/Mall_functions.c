@@ -14,7 +14,7 @@ int Mall_send_current_stocks()
 	for(int i = 0; i< CURRENT_STOCK.size;i++)
 	{
 		add_current_mall_stock_info_message(ID, CURRENT_STOCK.array[i].firm_id,
- 		CURRENT_STOCK.array[i].stock,MSGDATA );
+ 		CURRENT_STOCK.array[i].stock);
 	}
 
 	return 0;
@@ -79,7 +79,7 @@ int Mall_send_quality_price_info_1()
 		add_quality_price_info_1_message(ID,REGION_ID,
 		CURRENT_STOCK.array[i].firm_id, 		
 		CURRENT_STOCK.array[i].quality, 
-		CURRENT_STOCK.array[i].price,available,MSGDATA);
+		CURRENT_STOCK.array[i].price,available);
 
 	}
 	
@@ -137,7 +137,7 @@ int Mall_update_mall_stocks_sales_rationing_1()
 					add_accepted_consumption_1_message(ID,
 		 			consumption_request_list.array[k].worker_id, 
 					consumption_request_list.array[k].quantity*
-					rationing_rate, 1, MSGDATA);
+					rationing_rate, 1);
 				}
 			}
 			/*Calc and store revenues per firm*/
@@ -165,7 +165,7 @@ int Mall_update_mall_stocks_sales_rationing_1()
 				{	/*Send accepted consumption volume*/
 					add_accepted_consumption_1_message(ID,
 					consumption_request_list.array[k].worker_id,
-					consumption_request_list.array[k].quantity, 0,MSGDATA);
+					consumption_request_list.array[k].quantity, 0);
 				}	
 			}
 	
@@ -204,7 +204,7 @@ int Mall_update_mall_stocks_sales_rationing_1()
 		add_quality_price_info_2_message(ID,REGION_ID,
 		CURRENT_STOCK.array[i].firm_id, 		
 		CURRENT_STOCK.array[i].quality, 
-		CURRENT_STOCK.array[i].price,available,MSGDATA);
+		CURRENT_STOCK.array[i].price,available);
 
 	}
 
@@ -266,7 +266,7 @@ int Mall_update_mall_stocks_sales_rationing_2()
 					add_accepted_consumption_2_message(ID,
 					consumption_request_list.array[k].worker_id,
 					consumption_request_list.array[k].quantity*
-					rationing_rate, 1,MSGDATA);
+					rationing_rate, 1);
 				}
 			}
 			/*Revenues and final mall stock*/
@@ -292,7 +292,7 @@ int Mall_update_mall_stocks_sales_rationing_2()
 				{
 					add_accepted_consumption_2_message(ID,
 					consumption_request_list.array[k].worker_id, 
-					consumption_request_list.array[k].quantity, 0,MSGDATA);
+					consumption_request_list.array[k].quantity, 0);
 				}	
 			}
 			/*revenues and final stocks*/
@@ -348,7 +348,8 @@ int Mall_pay_firm()
 					stock_empty =0;
 				}
 			
-				add_sales_message(ID, FIRM_REVENUES.array[i].firm_id, 				FIRM_REVENUES.array[i].sales,stock_empty,MSGDATA );
+				add_sales_message(ID, FIRM_REVENUES.array[i].firm_id,
+						FIRM_REVENUES.array[i].sales,stock_empty);
 			}
 		}
 	}

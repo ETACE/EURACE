@@ -1,29 +1,29 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE xmodel SYSTEM "../dtd/XMML.dtd">
+<xmodel version="2">
 
-<xmachine_agent_model>
 <name>Investment_Goods_Market</name>
-<author>Eurace</author>
-<date></date>
+<version>pre-Genoa</version>
+<description></description>
 
 <environment>
 
-<functions>
+<functionFiles>
 <file>IGfirm_functions.c</file>
-</functions>
-
-<datatypes>
-</datatypes>
+</functionFiles>
 </environment>
 
-<xmachine>
+<agents>
+
+<xagent>
 <name>IGFirm</name>
 <memory>
-<var><type>double</type><name>productivity</name></var>
-<var><type>int</type><name>innovation_probability</name></var>
-<var><type>double</type><name>productivity_progress</name></var>
-<var><type>double</type><name>capital_good_price</name></var>
-<var><type>double</type><name>revenue_per_day</name></var>
-<var><type>int</type><name>day_of_month_to_act</name></var>
+<variable><type>double</type><name>productivity</name></variable>
+<variable><type>int</type><name>innovation_probability</name></variable>
+<variable><type>double</type><name>productivity_progress</name></variable>
+<variable><type>double</type><name>capital_good_price</name></variable>
+<variable><type>double</type><name>revenue_per_day</name></variable>
+<variable><type>int</type><name>day_of_month_to_act</name></variable>
 </memory>
 <functions>
 
@@ -33,14 +33,11 @@
 <condition>day_of_month_to_act</condition>
 </function>
 
-
 <function><name>IGFirm_idle</name>
 <current_state>start_IGFirm</current_state>
 <next_state>01</next_state>
 <condition>not_day_of_month_to_act</condition>
 </function>
-
-
 
 <function><name>IGFirm_send_quality_price_info</name>
 <current_state>01</current_state>
@@ -62,80 +59,53 @@
 <output><messagetype>capital_good_profit_distribution</messagetype></output>
 </function>
 
+</functions>
+</xagent>
+
+</agents>
+
+<messages>
 
 <message>
 <name>productivity</name>
-<var><type>int</type><name>IGfirm_id</name></var>
-<var><type>double</type><name>cap_productivity</name></var>
-<var><type>double</type><name>cap_good_price</name></var>
-<var><type>double</type><name>range</name></var>
-<var><type>double</type><name>x</name></var>
-<var><type>double</type><name>y</name></var>
-<var><type>double</type><name>z</name></var>
+<variable><type>int</type><name>IGfirm_id</name></variable>
+<variable><type>double</type><name>cap_productivity</name></variable>
+<variable><type>double</type><name>cap_good_price</name></variable>
 </message>
 
 <message>
 <name>capital_good_request</name>
-<var><type>int</type><name>firm_id</name></var>
-<var><type>double</type><name>capital_good_demand</name></var>
-<var><type>double</type><name>range</name></var>
-<var><type>double</type><name>x</name></var>
-<var><type>double</type><name>y</name></var>
-<var><type>double</type><name>z</name></var>
+<variable><type>int</type><name>firm_id</name></variable>
+<variable><type>double</type><name>capital_good_demand</name></variable>
 </message>
 
 <message>
 <name>capital_good_profit_distribution</name>
-<var><type>double</type><name>capital_good_profit_shares</name></var>
-<var><type>double</type><name>range</name></var>
-<var><type>double</type><name>x</name></var>
-<var><type>double</type><name>y</name></var>
-<var><type>double</type><name>z</name></var>
+<variable><type>double</type><name>capital_good_profit_shares</name></variable>
 </message>
 
 <message>
 <name>capital_good_delivery</name>
-<var><type>int</type><name>firm_id</name></var>
-<var><type>double</type><name>capital_good_delivery_volume</name></var>
-<var><type>double</type><name>productivity</name></var>
-<var><type>double</type><name>capital_good_price</name></var>
-<var><type>double</type><name>range</name></var>
-<var><type>double</type><name>x</name></var>
-<var><type>double</type><name>y</name></var>
-<var><type>double</type><name>z</name></var>
+<variable><type>int</type><name>firm_id</name></variable>
+<variable><type>double</type><name>capital_good_delivery_volume</name></variable>
+<variable><type>double</type><name>productivity</name></variable>
+<variable><type>double</type><name>capital_good_price</name></variable>
 </message>
 
 
 <message>
 <name>dividend</name>
-<var><type>double</type><name>dividend</name></var>
-<var><type>double</type><name>range</name></var>
-<var><type>double</type><name>x</name></var>
-<var><type>double</type><name>y</name></var>
-<var><type>double</type><name>z</name></var>
+<variable><type>double</type><name>dividend</name></variable>
 </message>
 
 
 <message>
 <name>pay_capital_goods</name>
-<var><type>int</type><name>firm_id</name></var>
-<var><type>double</type><name>capital_bill</name></var>
-<var><type>double</type><name>share_net_investments</name></var>
-<var><type>double</type><name>range</name></var>
-<var><type>double</type><name>x</name></var>
-<var><type>double</type><name>y</name></var>
-<var><type>double</type><name>z</name></var>
+<variable><type>int</type><name>firm_id</name></variable>
+<variable><type>double</type><name>capital_bill</name></variable>
+<variable><type>double</type><name>share_net_investments</name></variable>
 </message>
-
-
-</functions>
-</xmachine>
-
-<messages>
-
-
 
 </messages>
 
-
-</xmachine_agent_model>
+</xmodel>

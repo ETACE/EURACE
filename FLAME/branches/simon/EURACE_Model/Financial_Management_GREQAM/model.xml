@@ -1,85 +1,82 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE xmodel SYSTEM "../dtd/XMML.dtd">
+<xmodel version="2">
 
-<xmachine_agent_model>
 <name>Financial_Management</name>
-<author>Eurace</author>
-<date></date>
+<version>pre-Genoa</version>
+<description></description>
 
 <environment>
 
-<functions>
+<functionFiles>
 <file>Firm_Financial_Management_Functions.c</file>
-</functions>
+</functionFiles>
 
-<datatypes>
+<dataTypes>
 
-<datatype>
+<dataType>
 <name>debt_item</name>
-<var><type>int</type><name>bank_id</name></var>
-<var><type>double</type><name>loan_value</name></var>
-<var><type>double</type><name>interest_rate</name></var>
-<var><type>double</type><name>interest_payment</name></var>
-<var><type>double</type><name>debt_installment_payment</name></var>
-<var><type>int</type><name>nr_periods_before_maturity</name></var>
-</datatype>
+<variable><type>int</type><name>bank_id</name></variable>
+<variable><type>double</type><name>loan_value</name></variable>
+<variable><type>double</type><name>interest_rate</name></variable>
+<variable><type>double</type><name>interest_payment</name></variable>
+<variable><type>double</type><name>debt_installment_payment</name></variable>
+<variable><type>int</type><name>nr_periods_before_maturity</name></variable>
+</dataType>
 
-<datatype>
+<dataType>
 <name>capital_stock_item</name>
-<var><type>double</type><name>units</name></var>
-<var><type>double</type><name>purchase_price</name></var>
-<var><type>double</type><name>productivity</name></var>
-<var><type>double</type><name>depreciation_units_per_period</name></var>
-</datatype>
+<variable><type>double</type><name>units</name></variable>
+<variable><type>double</type><name>purchase_price</name></variable>
+<variable><type>double</type><name>productivity</name></variable>
+<variable><type>double</type><name>depreciation_units_per_period</name></variable>
+</dataType>
 
-</datatypes>
+</dataTypes>
 </environment>
 
-<xmachine>
+<agents>
+
+<xagent>
 <name>Firm</name>
 <memory>
-
-
-<var><type>int</type><name>gov_id</name></var>
-<var><type>int</type><name>bank_id</name></var>
+<variable><type>int</type><name>gov_id</name></variable>
+<variable><type>int</type><name>bank_id</name></variable>
 <!-- Firm_compute_income_statement -->
-<var><type>double</type><name>ebit</name></var>
-<var><type>double</type><name>payment_account</name></var>
+<variable><type>double</type><name>ebit</name></variable>
+<variable><type>double</type><name>payment_account</name></variable>
 <!-- Firm_compute_balance_sheet -->
-<var><type>double</type><name>earnings</name></var>
-<var><type>double</type><name>tax_rate_corporate</name></var>
-<var><type>double</type><name>tax_payment</name></var>
-<var><type>double</type><name>net_earnings</name></var>
-<var><type>double</type><name>previous_net_earnings</name></var>
-<var><type>debt_item_array</type><name>loans</name></var>
-<var><type>double</type><name>total_interest_payment</name></var>
-<var><type>double</type><name>total_debt_installment_payment</name></var>
-<var><type>double</type><name>total_debt</name></var>
-<var><type>double</type><name>total_dividend_payment</name></var>
-<var><type>double</type><name>total_value_local_inventory</name></var>
-
-<var><type>capital_stock_item_array</type><name>capital_stock</name></var>
-<var><type>double</type><name>total_units_capital_stock</name></var>
-<var><type>double</type><name>total_value_capital_stock</name></var>
-<var><type>double</type><name>total_capital_depreciation_value</name></var>
-<var><type>double</type><name>total_capital_depreciation_units</name></var>
-
-<var><type>double</type><name>total_assets</name></var>
-
+<variable><type>double</type><name>earnings</name></variable>
+<variable><type>double</type><name>tax_rate_corporate</name></variable>
+<variable><type>double</type><name>tax_payment</name></variable>
+<variable><type>double</type><name>net_earnings</name></variable>
+<variable><type>double</type><name>previous_net_earnings</name></variable>
+<variable><type>debt_item_array</type><name>loans</name></variable>
+<variable><type>double</type><name>total_interest_payment</name></variable>
+<variable><type>double</type><name>total_debt_installment_payment</name></variable>
+<variable><type>double</type><name>total_debt</name></variable>
+<variable><type>double</type><name>total_dividend_payment</name></variable>
+<variable><type>double</type><name>total_value_local_inventory</name></variable>
+<variable><type>capital_stock_item_array</type><name>capital_stock</name></variable>
+<variable><type>double</type><name>total_units_capital_stock</name></variable>
+<variable><type>double</type><name>total_value_capital_stock</name></variable>
+<variable><type>double</type><name>total_capital_depreciation_value</name></variable>
+<variable><type>double</type><name>total_capital_depreciation_units</name></variable>
+<variable><type>double</type><name>total_assets</name></variable>
 <!-- Firm_compute_payout_policy -->
-<var><type>double</type><name>planned_cum_revenue</name></var>
-<var><type>double</type><name>planned_total_interest_payment</name></var>
-<var><type>double</type><name>planned_total_debt_installment_payment</name></var>
-<var><type>double</type><name>planned_total_dividend_payment</name></var>
-
+<variable><type>double</type><name>planned_cum_revenue</name></variable>
+<variable><type>double</type><name>planned_total_interest_payment</name></variable>
+<variable><type>double</type><name>planned_total_debt_installment_payment</name></variable>
+<variable><type>double</type><name>planned_total_dividend_payment</name></variable>
 <!-- Financial needs -->
-<var><type>double</type><name>direct_financial_needs</name></var>
-<var><type>double</type><name>delayed_financial_needs</name></var>
-<var><type>double</type><name>total_financial_needs</name></var>
-<var><type>double</type><name>internal_financial_needs</name></var>
-<var><type>double</type><name>external_financial_needs</name></var>
-<var><type>double</type><name>total_external_financing_obtained</name></var>
-<var><type>int</type><name>direct_financial_needs_require_external_financing</name></var>
-<var><type>int</type><name>delayed_financial_needs_require_external_financing</name></var>
+<variable><type>double</type><name>direct_financial_needs</name></variable>
+<variable><type>double</type><name>delayed_financial_needs</name></variable>
+<variable><type>double</type><name>total_financial_needs</name></variable>
+<variable><type>double</type><name>internal_financial_needs</name></variable>
+<variable><type>double</type><name>external_financial_needs</name></variable>
+<variable><type>double</type><name>total_external_financing_obtained</name></variable>
+<variable><type>int</type><name>direct_financial_needs_require_external_financing</name></variable>
+<variable><type>int</type><name>delayed_financial_needs_require_external_financing</name></variable>
 </memory>
 <functions>
 
@@ -106,12 +103,8 @@
 <output><messagetype>dividend_payment</messagetype></output>
 </function>
 </functions>
-</xmachine>
+</xagent>
 
+</agents>
 
-<messages>
-
-</messages>
-
-
-</xmachine_agent_model>
+</xmodel>
