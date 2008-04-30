@@ -172,8 +172,8 @@ struct xmachine
 {<?foreach xagent?>
 	struct xmachine_memory_$name * xmachine_$name;	/**< Pointer to X-machine memory of type $name.  */<?end foreach?>
 	
-	struct xmachine * prev;	/**< Pointer to previous X-machine in the list.  */
-	struct xmachine * next;	/**< Pointer to next X-machine in the list.  */
+	//struct xmachine * prev;	/**< Pointer to previous X-machine in the list.  */
+	//struct xmachine * next;	/**< Pointer to next X-machine in the list.  */
 };
 <?foreach message?>
 /** \struct m_$name
@@ -286,7 +286,7 @@ int totalnodes;
 //xmachine ** p_xmachine;
 /** \var xmachine * current_xmachine
 * \brief Pointer to current x-machine memory that is being processed */
-//xmachine * current_xmachine;
+xmachine * current_xmachine;
 <?foreach xagent?>/* Pointer to current $agent_name agent */
 xmachine_memory_$name * current_xmachine_$name;
 xmachine_memory_$name_holder * temp_xmachine_$name_holder;

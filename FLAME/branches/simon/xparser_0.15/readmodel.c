@@ -1421,7 +1421,17 @@ void checkmodel(model_data * modeldata)
 				while(allvar)
 				{
 					/*copycharlist(&allvar->name, &chardata2[0]);*/
-					if(strcmp(current_variable->name, allvar->name) == 0) found = 1;
+					if(strcmp(current_variable->name, allvar->name) == 0)
+					{
+						found = 1;
+					
+						/* If same variable name but different type, this breaks get_ and set_ methods */
+						if(strcmp(current_variable->type, allvar->type) != 0)
+						{
+							printf("ERROR: variable '%s' defined twice but with different types\n", current_variable->name);
+							exit(0);
+						}
+					}
 					
 					allvar = allvar->next;
 				}
