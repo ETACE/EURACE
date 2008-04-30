@@ -262,41 +262,163 @@ void unittest3_Firm_calc_input_demands()
 
 
 /*
- * \fn: void unittest_Firm_calc_production_quantity_2()
- * \brief: Unit tests for: Firm_calc_production_quantity_2
+ * \fn: void unittest1_Firm_calc_production_quantity_2()
+ * \brief: Unit tests for: Firm_calc_production_quantity_2 
+ *  Conditions: direct financal needs require external finance and 
+ *  delayed finance needs don't require external finance 
+ *  The production volume is decremented 1x. 
  */
-//  void unittest_Firm_calc_production_quantity_2()
-//  {
-//      /************* At start of unit test, add one agent **************/
-//      add_Firm_agent_internal(init_Firm_agent());
-//      current_xmachine = *p_xmachine;
-//
-//      /***** Variables: Memory pre-conditions **************************/
-//      <var_name1>=0.0;
-//      <var_name2>=0;
-//
-//      /***** Messages: pre-conditions **********************************/
-//      add_<message_name>_message(<msg_var>, MSGDATA);
-//
-//      /***** Function evaluation ***************************************/
-//      Firm_calc_production_quantity_2();
-//      
-//      /***** Variables: Memory post-conditions *************************/
-//      CU_ASSERT_DOUBLE_EQUAL(<var_name1>, <value>, 1e-3);
-//      CU_ASSERT_EQUAL(<var_name2>, <value>);
-//      
-//     /***** Messages: post-conditions **********************************/
-//      START_<MSG_NAME>_MESSAGE_LOOP 
-//          CU_ASSERT_DOUBLE_EQUAL(<msg_name>_message-><var_name>, <value>, 1e-3);
-//          CU_ASSERT_EQUAL(<msg_name>_message-><var_name>, <value>);
-//      FINISH_<MSG_NAME>_MESSAGE_LOOP
-//  
-//      /************* At end of unit test, free the agent **************/
-//      free_agent();
-//     /************* At end of unit tests, free all Messages **********/
-//      free_messages();
-//  }
+  void unittest1_Firm_calc_production_quantity_2()
+ {
+      add_Firm_agent_internal(init_Firm_agent());
+      current_xmachine = *p_xmachine;
 
+      /***** Variables: Memory pre-conditions **************************/
+      ADAPTION_PRODUCTION_VOLUME_DUE_TO_INSUFFICIENT_FINANCES=0.01;
+      PLANNED_PRODUCTION_QUANTITY=100;
+      PAYMENT_ACCOUNT = 950;
+      DIRECT_FINANCIAL_NEEDS_REQUIRE_EXTERNAL_FINANCING = 1; 
+      DELAYED_FINANCIAL_NEEDS_REQUIRE_EXTERNAL_FINANCING = 0;
+      BETA = 1,
+      MEAN_WAGE = 1;
+      DEPRECIATION_RATE = 0.01;
+      ACTUAL_CAP_PRICE = 100;
+      ALPHA = 1;
+      TECHNOLOGY = 1;
+      MEAN_SPECIFIC_SKILLS = 1;
+      TOTAL_UNITS_CAPITAL_STOCK = 90;
+      INV_INERTIA = 100;
+      TOTAL_CAPITAL_DEPRECIATION_UNIT =1;
+
+      /***** Messages: pre-conditions **********************************/
+      //add_<message_name>_message(<msg_var>, MSGDATA);
+
+      /***** Function evaluation ***************************************/
+      Firm_calc_production_quantity_2();
+      
+      /***** Variables: Memory post-conditions *************************/
+      CU_ASSERT_DOUBLE_EQUAL(NEEDED_CAPITAL_STOCK, 99.0, 1e-3);
+      CU_ASSERT_EQUAL(EMPLOYEES_NEEDED, 1);
+      CU_ASSERT_DOUBLE_EQUAL(DEMAND_CAPITAL_STOCK, 9.0, 1e-3);
+      CU_ASSERT_DOUBLE_EQUAL(PLANNED_PRODUCTION_COSTS, 901.0, 1e-3);
+      CU_ASSERT_DOUBLE_EQUAL(PLANNED_PRODUCTION_QUANTITY, 99.0, 1e-3);
+      
+      
+     /***** Messages: post-conditions **********************************/
+    
+  
+      /************* At end of unit test, free the agent **************/
+      free_agent();
+     /************* At end of unit tests, free all Messages **********/
+      free_messages();
+  }
+  
+  
+  /*
+   * \fn: void unittest2_Firm_calc_production_quantity_2()
+   * \brief: Unit tests for: Firm_calc_production_quantity_2 
+   *  Conditions: direct financal needs require external finance and 
+   *  delayed finance needs require external finance 
+   *  The production volume is decremented 1x. 
+   */
+    void unittest2_Firm_calc_production_quantity_2()
+   {
+        add_Firm_agent_internal(init_Firm_agent());
+        current_xmachine = *p_xmachine;
+
+        /***** Variables: Memory pre-conditions **************************/
+        ADAPTION_PRODUCTION_VOLUME_DUE_TO_INSUFFICIENT_FINANCES=0.01;
+        PLANNED_PRODUCTION_QUANTITY=100;
+        PAYMENT_ACCOUNT = 950;
+        DIRECT_FINANCIAL_NEEDS_REQUIRE_EXTERNAL_FINANCING = 1; 
+        DELAYED_FINANCIAL_NEEDS_REQUIRE_EXTERNAL_FINANCING = 0;
+        BETA = 1,
+        MEAN_WAGE = 1;
+        DEPRECIATION_RATE = 0.01;
+        ACTUAL_CAP_PRICE = 100;
+        ALPHA = 1;
+        TECHNOLOGY = 1;
+        MEAN_SPECIFIC_SKILLS = 1;
+        TOTAL_UNITS_CAPITAL_STOCK = 90;
+        INV_INERTIA = 100;
+        TOTAL_CAPITAL_DEPRECIATION_UNIT =1;
+        FRACTION_RESERVED_FOR_DELAYED_PAYMENTS = 0.01;
+        TOTAL_EXTERNAL_FINANCING_OBTAINED 10;
+
+        /***** Messages: pre-conditions **********************************/
+        //add_<message_name>_message(<msg_var>, MSGDATA);
+
+        /***** Function evaluation ***************************************/
+        Firm_calc_production_quantity_2();
+        
+        /***** Variables: Memory post-conditions *************************/
+        CU_ASSERT_DOUBLE_EQUAL(NEEDED_CAPITAL_STOCK, 99.0, 1e-3);
+        CU_ASSERT_EQUAL(EMPLOYEES_NEEDED, 1);
+        CU_ASSERT_DOUBLE_EQUAL(DEMAND_CAPITAL_STOCK, 9.0, 1e-3);
+        CU_ASSERT_DOUBLE_EQUAL(PLANNED_PRODUCTION_COSTS, 901.0, 1e-3);
+        CU_ASSERT_DOUBLE_EQUAL(PLANNED_PRODUCTION_QUANTITY, 99.0, 1e-3);
+        
+        
+       /***** Messages: post-conditions **********************************/
+      
+    
+        /************* At end of unit test, free the agent **************/
+        free_agent();
+       /************* At end of unit tests, free all Messages **********/
+        free_messages();
+    }
+    
+    /*
+     * \fn: void unittest3_Firm_calc_production_quantity_2()
+     * \brief: Unit tests for: Firm_calc_production_quantity_2 
+     *  Conditions: direct financal needs require external finance and 
+     *  delayed finance needs don't require external finance 
+     *  The production volume is decremented 2x. 
+    void unittest1_Firm_calc_production_quantity_2()
+   {
+        add_Firm_agent_internal(init_Firm_agent());
+        current_xmachine = *p_xmachine;
+
+        /***** Variables: Memory pre-conditions **************************/
+        ADAPTION_PRODUCTION_VOLUME_DUE_TO_INSUFFICIENT_FINANCES=0.01;
+        PLANNED_PRODUCTION_QUANTITY=100;
+        PAYMENT_ACCOUNT = 850;
+        DIRECT_FINANCIAL_NEEDS_REQUIRE_EXTERNAL_FINANCING = 1; 
+        DELAYED_FINANCIAL_NEEDS_REQUIRE_EXTERNAL_FINANCING = 0;
+        BETA = 1,
+        MEAN_WAGE = 1;
+        DEPRECIATION_RATE = 0.01;
+        ACTUAL_CAP_PRICE = 100;
+        ALPHA = 1;
+        TECHNOLOGY = 1;
+        MEAN_SPECIFIC_SKILLS = 1;
+        TOTAL_UNITS_CAPITAL_STOCK = 90;
+        INV_INERTIA = 100;
+        TOTAL_CAPITAL_DEPRECIATION_UNIT =1;
+
+        /***** Messages: pre-conditions **********************************/
+        //add_<message_name>_message(<msg_var>, MSGDATA);
+
+        /***** Function evaluation ***************************************/
+        Firm_calc_production_quantity_2();
+        
+        /***** Variables: Memory post-conditions *************************/
+        CU_ASSERT_DOUBLE_EQUAL(NEEDED_CAPITAL_STOCK, 99.0, 1e-3);
+        CU_ASSERT_EQUAL(EMPLOYEES_NEEDED, 1);
+        CU_ASSERT_DOUBLE_EQUAL(DEMAND_CAPITAL_STOCK, 8.1, 1e-3);
+        CU_ASSERT_DOUBLE_EQUAL(PLANNED_PRODUCTION_COSTS, 802.0, 1e-3);
+        CU_ASSERT_DOUBLE_EQUAL(PLANNED_PRODUCTION_QUANTITY, 98.1, 1e-3);
+        
+        
+       /***** Messages: post-conditions **********************************/
+      
+    
+        /************* At end of unit test, free the agent **************/
+        free_agent();
+       /************* At end of unit tests, free all Messages **********/
+        free_messages();
+    }
+    
 /*
  * \fn: void unittest_Firm_calc_input_demands_2()
  * \brief: Unit tests for: Firm_calc_input_demands_2
