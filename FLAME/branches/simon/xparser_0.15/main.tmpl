@@ -24,8 +24,9 @@ int main(int argc, char * argv[])
 	int iteration_number;
 	int iteration_total;
 	int * p_iteration_number;
-	//xmachine * temp_free_xmachine;
-	//xmachine **agent_list;
+	/* For backwards compatabilty allocate current_xmachine */
+	current_xmachine = (xmachine *)malloc(sizeof(xmachine));
+	CHECK_POINTER(current_xmachine);
 <?foreach xagent?>	//xmachine_memory_$name * temp_xmachine_$name;
 <?end foreach?>	
 	/* Ratio for calculating time in milliseconds */
@@ -303,6 +304,9 @@ if(argc < 2)
 		temp_xmachine_$agent_name_holder = current_xmachine_$agent_name_holder->next;
 		current_xmachine_$agent_name = current_xmachine_$agent_name_holder->agent;
 		current_xmachine_$agent_name_next_state = $agent_name_$next_state_state;
+		/* For backwards compatability set current_xmachine */
+		<?foreach xagent?>current_xmachine->xmachine_$name = NULL;
+		<?end foreach?>current_xmachine->xmachine_$agent_name = current_xmachine_$agent_name;
 		
 		<?if condition?>if($condition(current_xmachine_$agent_name))
 		{<?end if?>
