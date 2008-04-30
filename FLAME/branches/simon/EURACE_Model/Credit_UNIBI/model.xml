@@ -1,22 +1,23 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE xmodel SYSTEM "../dtd/XMML.dtd">
+<xmodel version="2">
 
-<xmachine_agent_model>
 <name>Credit_Market</name>
-<author>Eurace</author>
-<date></date>
+<version>pre-Genoa</version>
+<description></description>
 
 <environment>
 
-<functions>
+<functionFiles>
 <file>Bank_Credit_Functions.c</file>
 <file>Firm_Credit_Functions.c</file>
-</functions>
+</functionFiles>
 
-<datatypes>
-</datatypes>
 </environment>
 
-<xmachine>
+<agents>
+
+<xagent>
 <name>Firm</name>
 <memory>
 </memory>
@@ -46,14 +47,14 @@
 </function>
 
 </functions>
-</xmachine>
+</xagent>
 
-<xmachine>
+<xagent>
 <name>Bank</name>
 <memory>
-<var><type>double</type><name>account[10]</name></var>
-<var><type>double</type><name>proposed_interest_rate</name></var>
-<var><type>double</type><name>amount_credit_offer</name></var>
+<variable><type>double</type><name>account[10]</name></variable>
+<variable><type>double</type><name>proposed_interest_rate</name></variable>
+<variable><type>double</type><name>amount_credit_offer</name></variable>
 </memory>
 <functions>
 
@@ -88,76 +89,57 @@
 </function>
 
 </functions>
-</xmachine>
+</xagent>
 
+</agents>
 
 
 <messages>
 
 <message>
 <name>loan_request</name>
-<note>Added by firm to demand credit</note>
-<var><type>int</type><name>firm_id</name></var>
-<var><type>int</type><name>bank_id</name></var>
-<var><type>double</type><name>credit_amount</name></var>
-<var><type>double</type><name>total_assets</name></var>
-<var><type>double</type><name>total_debt</name></var>
-<var><type>double</type><name>range</name></var>
-<var><type>double</type><name>x</name></var>
-<var><type>double</type><name>y</name></var>
-<var><type>double</type><name>z</name></var>
+<description>Added by firm to demand credit</description>
+<variable><type>int</type><name>firm_id</name></variable>
+<variable><type>int</type><name>bank_id</name></variable>
+<variable><type>double</type><name>credit_amount</name></variable>
+<variable><type>double</type><name>total_assets</name></variable>
+<variable><type>double</type><name>total_debt</name></variable>
 </message>
 
 <message>
 <name>loan_conditions</name>
-<note>Added by bank to offer credit</note>
-<var><type>int</type><name>bank_id</name></var>
-<var><type>int</type><name>firm_id</name></var>
-<var><type>double</type><name>proposed_interest_rate</name></var>
-<var><type>double</type><name>amount_credit_offer</name></var>
-<var><type>double</type><name>range</name></var>
-<var><type>double</type><name>x</name></var>
-<var><type>double</type><name>y</name></var>
-<var><type>double</type><name>z</name></var>
+<description>Added by bank to offer credit</description>
+<variable><type>int</type><name>bank_id</name></variable>
+<variable><type>int</type><name>firm_id</name></variable>
+<variable><type>double</type><name>proposed_interest_rate</name></variable>
+<variable><type>double</type><name>amount_credit_offer</name></variable>
 </message>
 
 <message>
 <name>loan_acceptance</name>
-<note>Added by firm to demand credit</note>
-<var><type>int</type><name>firm_id</name></var>
-<var><type>int</type><name>bank_id</name></var>
-<var><type>double</type><name>credit_amount_taken</name></var>
-<var><type>double</type><name>range</name></var>
-<var><type>double</type><name>x</name></var>
-<var><type>double</type><name>y</name></var>
-<var><type>double</type><name>z</name></var>
+<description>Added by firm to demand credit</description>
+<variable><type>int</type><name>firm_id</name></variable>
+<variable><type>int</type><name>bank_id</name></variable>
+<variable><type>double</type><name>credit_amount_taken</name></variable>
 </message>
 
 <message>
 <name>interest_payment</name>
-<note>Added by firm to pay interest on debt</note>
-<var><type>int</type><name>firm_id</name></var>
-<var><type>int</type><name>bank_id</name></var>
-<var><type>double</type><name>interest_payment</name></var>
-<var><type>double</type><name>range</name></var>
-<var><type>double</type><name>x</name></var>
-<var><type>double</type><name>y</name></var>
-<var><type>double</type><name>z</name></var>
+<description>Added by firm to pay interest on debt</description>
+<variable><type>int</type><name>firm_id</name></variable>
+<variable><type>int</type><name>bank_id</name></variable>
+<variable><type>double</type><name>interest_payment</name></variable>
 </message>
 
 <message>
 <name>debt_installment_payment</name>
-<note>Added by firm to pay debt installments</note>
-<var><type>int</type><name>firm_id</name></var>
-<var><type>int</type><name>bank_id</name></var>
-<var><type>double</type><name>debt_installment_payment</name></var>
-<var><type>double</type><name>range</name></var>
-<var><type>double</type><name>x</name></var>
-<var><type>double</type><name>y</name></var>
-<var><type>double</type><name>z</name></var>
+<description>Added by firm to pay debt installments</description>
+<variable><type>int</type><name>firm_id</name></variable>
+<variable><type>int</type><name>bank_id</name></variable>
+<variable><type>double</type><name>debt_installment_payment</name></variable>
 </message>
 
 </messages>
 
 
-</xmachine_agent_model>
+</xmodel>

@@ -1,87 +1,90 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE xmodel SYSTEM "../dtd/XMML.dtd">
+<xmodel version="2">
 
-<xmachine_agent_model>
 <name>Labour_Market</name>
-<author>Eurace</author>
-<date></date>
+<version>pre-Genoa</version>
+<description></description>
 
 <environment>
 
-<functions>
+<functionFiles>
 <file>Firm_Employer_Functions.c</file>
 <file>Household_Employee_Functions.c</file>
-</functions>
+</functionFiles>
 
-<datatypes>
+<dataTypes>
 
-<datatype>
+<dataType>
 <name>employee</name>
 <desc>Used to hold employee information in firms</desc>
-<var><type>int</type><name>id</name></var>
-<var><type>int</type><name>region_id</name></var>
-<var><type>double</type><name>wage</name></var>
-<var><type>int</type><name>general_skill</name></var>
-<var><type>double</type><name>specific_skill</name></var>
-</datatype>
+<variable><type>int</type><name>id</name></variable>
+<variable><type>int</type><name>region_id</name></variable>
+<variable><type>double</type><name>wage</name></variable>
+<variable><type>int</type><name>general_skill</name></variable>
+<variable><type>double</type><name>specific_skill</name></variable>
+</dataType>
 
-<datatype>
+<dataType>
 <name>vacancy</name>
 <desc>Used by households to hold vacancy information</desc>
-<var><type>int</type><name>firm_id</name></var>
-<var><type>int</type><name>region_id</name></var>
-<var><type>double</type><name>wage_offer</name></var>
-</datatype>
+<variable><type>int</type><name>firm_id</name></variable>
+<variable><type>int</type><name>region_id</name></variable>
+<variable><type>double</type><name>wage_offer</name></variable>
+</dataType>
 
-<datatype>
+<dataType>
 <name>job_application</name>
 <desc>Used by firms to hold job applications</desc>
-<var><type>int</type><name>worker_id</name></var>
-<var><type>int</type><name>region_id</name></var>
-<var><type>int</type><name>general_skill</name></var>
-<var><type>double</type><name>specific_skill</name></var>
-</datatype>
+<variable><type>int</type><name>worker_id</name></variable>
+<variable><type>int</type><name>region_id</name></variable>
+<variable><type>int</type><name>general_skill</name></variable>
+<variable><type>double</type><name>specific_skill</name></variable>
+</dataType>
 
-<datatype>
+<dataType>
 <name>job_offer</name>
 <desc>Used by households and firms to hold job offers</desc>
-<var><type>int</type><name>firm_id</name></var>
-<var><type>int</type><name>region_id</name></var>
-<var><type>double</type><name>wage_offer</name></var>
-</datatype>
+<variable><type>int</type><name>firm_id</name></variable>
+<variable><type>int</type><name>region_id</name></variable>
+<variable><type>double</type><name>wage_offer</name></variable>
+</dataType>
 
-</datatypes>
+</dataTypes>
 
 </environment>
 
-<xmachine>
+<agents>
+
+<xagent>
 <name>Firm</name>
 
 <memory>
-<var><type>employee_array</type><name>employees</name></var>
-<var><type>double</type><name>wage_offer</name></var>
-<var><type>double</type><name>technology</name></var>
-<var><type>int</type><name>no_employees</name></var>
+<variable><type>employee_array</type><name>employees</name></variable>
+<variable><type>double</type><name>wage_offer</name></variable>
+<variable><type>double</type><name>technology</name></variable>
+<variable><type>int</type><name>no_employees</name></variable>
 
-<var><type>int</type><name>no_employees_skill_1</name></var>
-<var><type>int</type><name>no_employees_skill_2</name></var>
-<var><type>int</type><name>no_employees_skill_3</name></var>
-<var><type>int</type><name>no_employees_skill_4</name></var>
-<var><type>int</type><name>no_employees_skill_5</name></var>
+<variable><type>int</type><name>no_employees_skill_1</name></variable>
+<variable><type>int</type><name>no_employees_skill_2</name></variable>
+<variable><type>int</type><name>no_employees_skill_3</name></variable>
+<variable><type>int</type><name>no_employees_skill_4</name></variable>
+<variable><type>int</type><name>no_employees_skill_5</name></variable>
 
-<var><type>int</type><name>vacancies</name></var>
-<var><type>double</type><name>average_g_skill</name></var>
+<variable><type>int</type><name>vacancies</name></variable>
+<variable><type>double</type><name>average_g_skill</name></variable>
 
-<var><type>double</type><name>average_s_skill_of_1</name></var>
-<var><type>double</type><name>average_s_skill_of_2</name></var>
-<var><type>double</type><name>average_s_skill_of_3</name></var>
-<var><type>double</type><name>average_s_skill_of_4</name></var>
-<var><type>double</type><name>average_s_skill_of_5</name></var>
-<var><type>double</type><name>wage_offer_for_skill_1</name></var>
-<var><type>double</type><name>wage_offer_for_skill_2</name></var>
-<var><type>double</type><name>wage_offer_for_skill_3</name></var>
-<var><type>double</type><name>wage_offer_for_skill_4</name></var>
-<var><type>double</type><name>wage_offer_for_skill_5</name></var>
-<var><type>int</type><name>employees_needed</name></var>
+<variable><type>double</type><name>average_s_skill_of_1</name></variable>
+<variable><type>double</type><name>average_s_skill_of_2</name></variable>
+<variable><type>double</type><name>average_s_skill_of_3</name></variable>
+<variable><type>double</type><name>average_s_skill_of_4</name></variable>
+<variable><type>double</type><name>average_s_skill_of_5</name></variable>
+<variable><type>double</type><name>wage_offer_for_skill_1</name></variable>
+<variable><type>double</type><name>wage_offer_for_skill_2</name></variable>
+<variable><type>double</type><name>wage_offer_for_skill_3</name></variable>
+<variable><type>double</type><name>wage_offer_for_skill_4</name></variable>
+<variable><type>double</type><name>wage_offer_for_skill_5</name></variable>
+<variable><type>int</type><name>employees_needed</name></variable>
 </memory>
 
 <functions>
@@ -209,19 +212,19 @@
 
 </functions>
 
-</xmachine>
+</xagent>
 
-<xmachine>
+<xagent>
 <name>Household</name>
 <memory>
-<var><type>double</type><name>wage</name></var>
-<var><type>double</type><name>wage_reservation</name></var>
-<var><type>int</type><name>general_skill</name></var>
-<var><type>int</type><name>on_the_job_search</name></var>
-<var><type>int</type><name>number_applications</name></var>
-<var><type>double</type><name>specific_skill</name></var>
-<var><type>int</type><name>employee_firm_id</name></var>
-<var><type>int</type><name>employer_region_id</name></var>
+<variable><type>double</type><name>wage</name></variable>
+<variable><type>double</type><name>wage_reservation</name></variable>
+<variable><type>int</type><name>general_skill</name></variable>
+<variable><type>int</type><name>on_the_job_search</name></variable>
+<variable><type>int</type><name>number_applications</name></variable>
+<variable><type>double</type><name>specific_skill</name></variable>
+<variable><type>int</type><name>employee_firm_id</name></variable>
+<variable><type>int</type><name>employer_region_id</name></variable>
 </memory>
 
 <functions>
@@ -346,163 +349,165 @@
 
 </functions>
 
-</xmachine>
+</xagent>
+
+</agents>
 
 <messages>
 
 
 <message>
 <name>vacancies</name>
-<var><type>int</type><name>firm_id</name></var>
-<var><type>int</type><name>region_id</name></var>
-<var><type>int</type><name>firm_vacancies</name></var>
-<var><type>int</type><name>skill_group</name></var>
-<var><type>double</type><name>firm_wage_offer</name></var>
-<var><type>double</type><name>range</name></var>
-<var><type>double</type><name>x</name></var>
-<var><type>double</type><name>y</name></var>
-<var><type>double</type><name>z</name></var>
+<variable><type>int</type><name>firm_id</name></variable>
+<variable><type>int</type><name>region_id</name></variable>
+<variable><type>int</type><name>firm_vacancies</name></variable>
+<variable><type>int</type><name>skill_group</name></variable>
+<variable><type>double</type><name>firm_wage_offer</name></variable>
+<variable><type>double</type><name>range</name></variable>
+<variable><type>double</type><name>x</name></variable>
+<variable><type>double</type><name>y</name></variable>
+<variable><type>double</type><name>z</name></variable>
 </message>
 
 <message>
 <name>vacancies2</name>
-<var><type>int</type><name>firm_id</name></var>
-<var><type>int</type><name>region_id</name></var>
-<var><type>int</type><name>firm_vacancies</name></var>
-<var><type>int</type><name>skill_group</name></var>
-<var><type>double</type><name>firm_wage_offer</name></var>
-<var><type>double</type><name>range</name></var>
-<var><type>double</type><name>x</name></var>
-<var><type>double</type><name>y</name></var>
-<var><type>double</type><name>z</name></var>
+<variable><type>int</type><name>firm_id</name></variable>
+<variable><type>int</type><name>region_id</name></variable>
+<variable><type>int</type><name>firm_vacancies</name></variable>
+<variable><type>int</type><name>skill_group</name></variable>
+<variable><type>double</type><name>firm_wage_offer</name></variable>
+<variable><type>double</type><name>range</name></variable>
+<variable><type>double</type><name>x</name></variable>
+<variable><type>double</type><name>y</name></variable>
+<variable><type>double</type><name>z</name></variable>
 </message>
 
 <message>
 <name>firing</name>
-<var><type>int</type><name>firm_id</name></var>
-<var><type>int</type><name>worker_id</name></var>
-<var><type>double</type><name>range</name></var>
-<var><type>double</type><name>x</name></var>
-<var><type>double</type><name>y</name></var>
-<var><type>double</type><name>z</name></var>
+<variable><type>int</type><name>firm_id</name></variable>
+<variable><type>int</type><name>worker_id</name></variable>
+<variable><type>double</type><name>range</name></variable>
+<variable><type>double</type><name>x</name></variable>
+<variable><type>double</type><name>y</name></variable>
+<variable><type>double</type><name>z</name></variable>
 </message>
 
 <message>
 <name>job_application</name>
-<var><type>int</type><name>worker_id</name></var>
-<var><type>int</type><name>firm_id</name></var>
-<var><type>int</type><name>region_id</name></var>
-<var><type>int</type><name>general_skill</name></var>
-<var><type>double</type><name>specific_skill</name></var>
-<var><type>double</type><name>range</name></var>
-<var><type>double</type><name>x</name></var>
-<var><type>double</type><name>y</name></var>
-<var><type>double</type><name>z</name></var>
+<variable><type>int</type><name>worker_id</name></variable>
+<variable><type>int</type><name>firm_id</name></variable>
+<variable><type>int</type><name>region_id</name></variable>
+<variable><type>int</type><name>general_skill</name></variable>
+<variable><type>double</type><name>specific_skill</name></variable>
+<variable><type>double</type><name>range</name></variable>
+<variable><type>double</type><name>x</name></variable>
+<variable><type>double</type><name>y</name></variable>
+<variable><type>double</type><name>z</name></variable>
 </message>
 
 <message>
 <name>job_application2</name>
-<var><type>int</type><name>worker_id</name></var>
-<var><type>int</type><name>firm_id</name></var>
-<var><type>int</type><name>region_id</name></var>
-<var><type>int</type><name>general_skill</name></var>
-<var><type>double</type><name>specific_skill</name></var>
-<var><type>double</type><name>range</name></var>
-<var><type>double</type><name>x</name></var>
-<var><type>double</type><name>y</name></var>
-<var><type>double</type><name>z</name></var>
+<variable><type>int</type><name>worker_id</name></variable>
+<variable><type>int</type><name>firm_id</name></variable>
+<variable><type>int</type><name>region_id</name></variable>
+<variable><type>int</type><name>general_skill</name></variable>
+<variable><type>double</type><name>specific_skill</name></variable>
+<variable><type>double</type><name>range</name></variable>
+<variable><type>double</type><name>x</name></variable>
+<variable><type>double</type><name>y</name></variable>
+<variable><type>double</type><name>z</name></variable>
 </message>
 
 <message>
 <name>job_offer</name>
-<var><type>int</type><name>firm_id</name></var>
-<var><type>int</type><name>worker_id</name></var>
-<var><type>int</type><name>region_id</name></var>
-<var><type>double</type><name>wage_offer</name></var>
-<var><type>double</type><name>range</name></var>
-<var><type>double</type><name>x</name></var>
-<var><type>double</type><name>y</name></var>
-<var><type>double</type><name>z</name></var>
+<variable><type>int</type><name>firm_id</name></variable>
+<variable><type>int</type><name>worker_id</name></variable>
+<variable><type>int</type><name>region_id</name></variable>
+<variable><type>double</type><name>wage_offer</name></variable>
+<variable><type>double</type><name>range</name></variable>
+<variable><type>double</type><name>x</name></variable>
+<variable><type>double</type><name>y</name></variable>
+<variable><type>double</type><name>z</name></variable>
 </message>
 
 <message>
 <name>job_offer2</name>
-<var><type>int</type><name>firm_id</name></var>
-<var><type>int</type><name>worker_id</name></var>
-<var><type>int</type><name>region_id</name></var>
-<var><type>double</type><name>wage_offer</name></var>
-<var><type>double</type><name>range</name></var>
-<var><type>double</type><name>x</name></var>
-<var><type>double</type><name>y</name></var>
-<var><type>double</type><name>z</name></var>
+<variable><type>int</type><name>firm_id</name></variable>
+<variable><type>int</type><name>worker_id</name></variable>
+<variable><type>int</type><name>region_id</name></variable>
+<variable><type>double</type><name>wage_offer</name></variable>
+<variable><type>double</type><name>range</name></variable>
+<variable><type>double</type><name>x</name></variable>
+<variable><type>double</type><name>y</name></variable>
+<variable><type>double</type><name>z</name></variable>
 </message>
 
 <message>
 <name>job_acceptance</name>
-<var><type>int</type><name>worker_id</name></var>
-<var><type>int</type><name>firm_id</name></var>
-<var><type>int</type><name>region_id</name></var>
-<var><type>int</type><name>general_skill</name></var>
-<var><type>double</type><name>specific_skill</name></var>
-<var><type>double</type><name>range</name></var>
-<var><type>double</type><name>x</name></var>
-<var><type>double</type><name>y</name></var>
-<var><type>double</type><name>z</name></var>
+<variable><type>int</type><name>worker_id</name></variable>
+<variable><type>int</type><name>firm_id</name></variable>
+<variable><type>int</type><name>region_id</name></variable>
+<variable><type>int</type><name>general_skill</name></variable>
+<variable><type>double</type><name>specific_skill</name></variable>
+<variable><type>double</type><name>range</name></variable>
+<variable><type>double</type><name>x</name></variable>
+<variable><type>double</type><name>y</name></variable>
+<variable><type>double</type><name>z</name></variable>
 </message>
 
 <message>
 <name>job_acceptance2</name>
-<var><type>int</type><name>worker_id</name></var>
-<var><type>int</type><name>firm_id</name></var>
-<var><type>int</type><name>region_id</name></var>
-<var><type>int</type><name>general_skill</name></var>
-<var><type>double</type><name>specific_skill</name></var>
-<var><type>double</type><name>range</name></var>
-<var><type>double</type><name>x</name></var>
-<var><type>double</type><name>y</name></var>
-<var><type>double</type><name>z</name></var>
+<variable><type>int</type><name>worker_id</name></variable>
+<variable><type>int</type><name>firm_id</name></variable>
+<variable><type>int</type><name>region_id</name></variable>
+<variable><type>int</type><name>general_skill</name></variable>
+<variable><type>double</type><name>specific_skill</name></variable>
+<variable><type>double</type><name>range</name></variable>
+<variable><type>double</type><name>x</name></variable>
+<variable><type>double</type><name>y</name></variable>
+<variable><type>double</type><name>z</name></variable>
 </message>
 
 <message>
 <name>application_rejection</name>
-<var><type>int</type><name>firm_id</name></var>
-<var><type>int</type><name>worker_id</name></var>
-<var><type>double</type><name>range</name></var>
-<var><type>double</type><name>x</name></var>
-<var><type>double</type><name>y</name></var>
-<var><type>double</type><name>z</name></var>
+<variable><type>int</type><name>firm_id</name></variable>
+<variable><type>int</type><name>worker_id</name></variable>
+<variable><type>double</type><name>range</name></variable>
+<variable><type>double</type><name>x</name></variable>
+<variable><type>double</type><name>y</name></variable>
+<variable><type>double</type><name>z</name></variable>
 </message>
 
 <message>
 <name>application_rejection2</name>
-<var><type>int</type><name>firm_id</name></var>
-<var><type>int</type><name>worker_id</name></var>
-<var><type>double</type><name>range</name></var>
-<var><type>double</type><name>x</name></var>
-<var><type>double</type><name>y</name></var>
-<var><type>double</type><name>z</name></var>
+<variable><type>int</type><name>firm_id</name></variable>
+<variable><type>int</type><name>worker_id</name></variable>
+<variable><type>double</type><name>range</name></variable>
+<variable><type>double</type><name>x</name></variable>
+<variable><type>double</type><name>y</name></variable>
+<variable><type>double</type><name>z</name></variable>
 </message>
 
 <message>
 <name>quitting</name>
-<var><type>int</type><name>worker_id</name></var>
-<var><type>int</type><name>firm_id</name></var>
-<var><type>double</type><name>range</name></var>
-<var><type>double</type><name>x</name></var>
-<var><type>double</type><name>y</name></var>
-<var><type>double</type><name>z</name></var>
+<variable><type>int</type><name>worker_id</name></variable>
+<variable><type>int</type><name>firm_id</name></variable>
+<variable><type>double</type><name>range</name></variable>
+<variable><type>double</type><name>x</name></variable>
+<variable><type>double</type><name>y</name></variable>
+<variable><type>double</type><name>z</name></variable>
 </message>
 
 <message>
 <name>quitting2</name>
-<var><type>int</type><name>worker_id</name></var>
-<var><type>int</type><name>firm_id</name></var>
-<var><type>double</type><name>range</name></var>
-<var><type>double</type><name>x</name></var>
-<var><type>double</type><name>y</name></var>
-<var><type>double</type><name>z</name></var>
+<variable><type>int</type><name>worker_id</name></variable>
+<variable><type>int</type><name>firm_id</name></variable>
+<variable><type>double</type><name>range</name></variable>
+<variable><type>double</type><name>x</name></variable>
+<variable><type>double</type><name>y</name></variable>
+<variable><type>double</type><name>z</name></variable>
 </message>
 
 </messages>
 
-</xmachine_agent_model>
+</xmodel>

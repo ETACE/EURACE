@@ -51,7 +51,7 @@ int IGFirm_update_productivity_price()
  * \brief IGFirm send quality and price information */
 int IGFirm_send_quality_price_info()
 {
-	add_productivity_message(ID,PRODUCTIVITY,CAPITAL_GOOD_PRICE,MSGDATA);
+	add_productivity_message(ID,PRODUCTIVITY,CAPITAL_GOOD_PRICE);
 	return 0;
 }
 
@@ -62,7 +62,8 @@ int IGFirm_send_capital_good()
 {
 	START_CAPITAL_GOOD_REQUEST_MESSAGE_LOOP
 
-		add_capital_good_delivery_message(capital_good_request_message->firm_id, 			capital_good_request_message->capital_good_demand, PRODUCTIVITY, 			CAPITAL_GOOD_PRICE, MSGDATA );
+		add_capital_good_delivery_message(capital_good_request_message->firm_id,
+				capital_good_request_message->capital_good_demand, PRODUCTIVITY, CAPITAL_GOOD_PRICE);
 
 	FINISH_CAPITAL_GOOD_REQUEST_MESSAGE_LOOP
 
@@ -94,7 +95,7 @@ int IGFirm_receive_payment()
 	double distributed_payment = distributed_revenue/NO_HOUSEHOLDS; 
 	//double distributed_payment = REVENUE_PER_DAY/NO_HOUSEHOLDS; 
 	
-	add_capital_good_profit_distribution_message(distributed_payment,MSGDATA);
+	add_capital_good_profit_distribution_message(distributed_payment);
 
 	
 	return 0;
