@@ -220,7 +220,8 @@ int main(int argc, char * argv[])
 	current_input_file = * p_files;
 	while(current_input_file)
 	{
-		readModel(current_input_file, directory, modeldata, p_files);
+		if(current_input_file->enabled == 1)
+			readModel(current_input_file, directory, modeldata, p_files);
 		
 		current_input_file = current_input_file->next;
 	}

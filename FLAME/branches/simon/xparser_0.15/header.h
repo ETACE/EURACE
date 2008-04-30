@@ -86,6 +86,7 @@ struct input_file
 	char * fullfilepath;
 	char * fulldirectory;
 	char * localdirectory;
+	int enabled;
 	
 	struct input_file * next;
 };

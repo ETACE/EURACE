@@ -403,6 +403,13 @@ void create_dependency_graph(char * filepath, model_data * modeldata)
 			current_state = current_state->next;
 		}
 		
+		/* if no start state then error */
+		if(current_xmachine->start_state == NULL)
+		{
+			printf("ERROR: no start state found in '%s' agent\n", current_xmachine->name);
+			exit(0);
+		}
+		
 		current_xmachine = current_xmachine->next;
 	}
 	

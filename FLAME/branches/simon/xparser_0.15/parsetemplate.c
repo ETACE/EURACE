@@ -141,7 +141,7 @@ void parseTemplate(char * filename, char * templatename, model_data * modeldata)
 						if (allvar->arraylength != -1)
 							write = 0;
 					}
-					else if (inxagentvar || inmessagevar)
+					else if ((inxagentvar || inmessagevar) && current_variable != NULL)
 						if (current_variable->arraylength != -1)
 							write = 0;
 				}
@@ -156,7 +156,7 @@ void parseTemplate(char * filename, char * templatename, model_data * modeldata)
 					if (inallvar)
 						if (allvar->arraylength < 1)
 							write = 0;
-					if (inxagentvar || inmessagevar)
+					if ((inxagentvar || inmessagevar) && current_variable != NULL)
 						if (current_variable->arraylength < 1)
 							write = 0;
 					if (indatatypevar)
@@ -176,7 +176,7 @@ void parseTemplate(char * filename, char * templatename, model_data * modeldata)
 					if (inallvar)
 						if (allvar->arraylength > 0)
 							write = 0;
-					if (inxagentvar || inmessagevar)
+					if ((inxagentvar || inmessagevar) && current_variable != NULL)
 						if (current_variable->arraylength > 0)
 							write = 0;
 					if (indatatypevar)
@@ -196,7 +196,7 @@ void parseTemplate(char * filename, char * templatename, model_data * modeldata)
 					if (inallvar)
 						if (allvar->arraylength != 0)
 							write = 0;
-					if (inxagentvar || inmessagevar)
+					if ((inxagentvar || inmessagevar) && current_variable != NULL)
 						if (current_variable->arraylength != 0)
 							write = 0;
 					if (indatatypevar)
@@ -216,7 +216,7 @@ void parseTemplate(char * filename, char * templatename, model_data * modeldata)
 					if (inallvar)
 						if (allvar->arraylength == 0)
 							write = 0;
-					if (inxagentvar || inmessagevar)
+					if ((inxagentvar || inmessagevar) && current_variable != NULL)
 						if (current_variable->arraylength == 0)
 							write = 0;
 					if (indatatypevar)
@@ -237,7 +237,7 @@ void parseTemplate(char * filename, char * templatename, model_data * modeldata)
 					{
 						if (allvar->ismodeldatatype == 0) write = 0;
 					}
-					if (inxagentvar || inmessagevar)
+					if ((inxagentvar || inmessagevar) && current_variable != NULL)
 					{
 						if (current_variable->ismodeldatatype == 0) write = 0;
 					}
@@ -258,7 +258,7 @@ void parseTemplate(char * filename, char * templatename, model_data * modeldata)
 						if (allvar->ismodeldatatype == 1)
 							write = 0;
 					if (inxagentvar || inmessagevar)
-						if (current_variable->ismodeldatatype == 1)
+						if(current_variable != NULL) if (current_variable->ismodeldatatype == 1)
 							write = 0;
 					if (indatatypevar)
 						if (current_datatypevariable->ismodeldatatype == 1)
@@ -283,7 +283,7 @@ void parseTemplate(char * filename, char * templatename, model_data * modeldata)
 						if (inallvar)
 							if (strcmp(allvar->type, "char") != 0 && strcmp(allvar->type, "char_array") != 0)
 								write = 0;
-						if (inxagentvar || inmessagevar)
+						if ((inxagentvar || inmessagevar) && current_variable != NULL)
 							if (strcmp(current_variable->type, "char") != 0 && strcmp(current_variable->type, "char_array") != 0)
 								write = 0;
 					}
@@ -307,7 +307,7 @@ void parseTemplate(char * filename, char * templatename, model_data * modeldata)
 						if (inallvar)
 							if (strcmp(allvar->type, "char") == 0 || strcmp(allvar->type, "char_array") == 0)
 								write = 0;
-						if (inxagentvar || inmessagevar)
+						if ((inxagentvar || inmessagevar) && current_variable != NULL)
 							if (strcmp(current_variable->type, "char") == 0 || strcmp(current_variable->type, "char_array") == 0)
 								write = 0;
 					}
@@ -323,7 +323,7 @@ void parseTemplate(char * filename, char * templatename, model_data * modeldata)
 					if (inallvar)
 						if (strcmp(allvar->type, "char_array") != 0)
 							write = 0;
-					if (inxagentvar || inmessagevar)
+					if ((inxagentvar || inmessagevar) && current_variable != NULL)
 						if (strcmp(current_variable->type, "char_array") != 0)
 							write = 0;
 					if (indatatypevar)
@@ -341,7 +341,7 @@ void parseTemplate(char * filename, char * templatename, model_data * modeldata)
 					if (inallvar)
 						if (strcmp(allvar->type, "char_array") == 0)
 							write = 0;
-					if (inxagentvar || inmessagevar)
+					if ((inxagentvar || inmessagevar) && current_variable != NULL)
 						if (strcmp(current_variable->type, "char_array") == 0)
 							write = 0;
 					if (indatatypevar)
@@ -423,14 +423,25 @@ void parseTemplate(char * filename, char * templatename, model_data * modeldata)
 						if (current_xmachine->next == NULL)
 							write = 0;
 					if (strcmp(lastloop, "foreach xagentvar") == 0)
-						if (current_variable->next == NULL)
-							write = 0;
+					{
+						if(current_variable != NULL)
+						{
+							if (current_variable->next == NULL) write = 0;
+						}
+						else write = 0;
+					}
 					if (strcmp(lastloop, "foreach message") == 0)
 						if (current_message->next == NULL)
 							write = 0;
 					if (strcmp(lastloop, "foreach messagevar") == 0)
-						if (current_variable->next == NULL)
+					{
+						if(current_variable != NULL)
+						{
+							if (current_variable->next == NULL)
 							write = 0;
+						}
+						else write = 0;
+					}
 					if (strcmp(lastloop, "foreach function") == 0)
 						if (current_function->next == NULL && current_xmachine->next == NULL)
 							write = 0;
