@@ -63,7 +63,7 @@ int main(int argc, char * argv[])
     	//NULL == CU_add_test(pSuite, "Firm_calc_input_demands, Case 1", unittest1_Firm_calc_input_demands)  ||
     	//NULL == CU_add_test(pSuite, "Firm_calc_input_demands, Case 2", unittest2_Firm_calc_input_demands)  ||
     	//NULL == CU_add_test(pSuite, "Firm_calc_input_demands, Case 3", unittest3_Firm_calc_input_demands)  ||
-    	//NULL == CU_add_test(pSuite, "Firm_calc_input_demands_2", unittest_Firm_calc_input_demands_2)  ||
+    	NULL == CU_add_test(pSuite, "Firm_calc_input_demands_2", unittest1_Firm_calc_input_demands_2)  )
     	//NULL == CU_add_test(pSuite, "Firm_send_capital_demand", unittest_Firm_send_capital_demand)  ||
     	//NULL == CU_add_test(pSuite, "Firm_calc_pay_costs", unittest_Firm_calc_pay_costs)  ||
     	//NULL == CU_add_test(pSuite, "Firm_send_goods_to_mall", unittest_Firm_send_goods_to_mall)  ||
