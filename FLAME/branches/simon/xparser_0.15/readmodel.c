@@ -203,7 +203,7 @@ void readModel(input_file * inputfile, char * directory, model_data * modeldata,
 	int note, messages, message, code, cdata, environment, define, value, codefile;
 	int header, iteration_end_code, depends, datatype, desc, cur_state, next_state;
 	int input, output, messagetype, timetag, unit, period, lhs, op, rhs, condition;
-	int include, filter, phase;
+	int model, filter, phase, enabled;
 	/* Pointer to new structs */
 	xmachine_memory * current_memory;
 	xmachine_message * current_message;
@@ -303,10 +303,11 @@ void readModel(input_file * inputfile, char * directory, model_data * modeldata,
 	rhs = 0;
 	op = 0;
 	condition = 0;
-	include = 0;
+	model = 0;
 	filter = 0;
 	period = 0;
 	phase = 0;
+	enabled = 0;
 	
 	/*printf("%i> ", linenumber);*/
 	
@@ -425,7 +426,7 @@ void readModel(input_file * inputfile, char * directory, model_data * modeldata,
 				/* Look at last tag */
 				numtag--;
 				/* If different then exit */
-				if(strcmp(&current_string->array[1], &chartag[numtag][0]) != 0)
+				if(strcmp(&current_string->array[1], &chartag[numtag][0]) != 0 && strcmp(current_string->array, "/xmodel") != 0)
 				{
 					printf("ERROR: The tag <%s> on line number %i\n", current_string->array, linenumber);
 					printf("ERROR: doesn't close the tag <%s> on line number %i\n", &chartag[numtag][0], tagline[numtag]);
@@ -434,8 +435,8 @@ void readModel(input_file * inputfile, char * directory, model_data * modeldata,
 				}
 			}
 			
-			if(strcmp(current_string->array, "xmachine_agent_model") == 0) { xagentmodel = 1; }
-			if(strcmp(current_string->array, "/xmachine_agent_model") == 0) { xagentmodel = 0; reading = 0; printf("End of xagent model.\n"); }
+			if(strcmp(current_string->array, "xmachine_agent_model") == 0 || strcmp(current_string->array, "xmodel") == 0) { xagentmodel = 1; }
+			if(strcmp(current_string->array, "/xmachine_agent_model") == 0 || strcmp(current_string->array, "/xmodel") == 0) { xagentmodel = 0; reading = 0; printf("End of xagent model.\n"); }
 			if(strcmp(current_string->array, "date") == 0) { date = 1; }
 			if(strcmp(current_string->array, "/date") == 0) { date = 0; }
 			if(strcmp(current_string->array, "author") == 0) { author = 1; }
@@ -461,12 +462,6 @@ void readModel(input_file * inputfile, char * directory, model_data * modeldata,
 			if(strcmp(current_string->array, "memory") == 0)
 			{
 				memory = 1;
-				/*current_memory = addxmemory(p_xmemory);*/
-				
-				if(current_xmachine->memory == NULL)
-				{
-					current_memory = addxmemory(&current_xmachine->memory);
-				}
 				
 				tvariable = NULL;
 			}
@@ -475,7 +470,7 @@ void readModel(input_file * inputfile, char * directory, model_data * modeldata,
 				memory = 0;
 				//current_memory->vars = *p_variable;
 			}
-			if(strcmp(current_string->array, "var") == 0)
+			if(strcmp(current_string->array, "var") == 0 || strcmp(current_string->array, "variable") == 0)
 			{
 				var = 1;
 				if(datatype == 1) current_variable = addvariable(p_variable);
@@ -483,7 +478,7 @@ void readModel(input_file * inputfile, char * directory, model_data * modeldata,
 				else if(memory == 1) current_variable = addvariable(&current_memory->vars);
 				else current_variable = addvariable(p_variable);
 			}
-			if(strcmp(current_string->array, "/var") == 0) { var = 0; }
+			if(strcmp(current_string->array, "/var") == 0 || strcmp(current_string->array, "/variable") == 0) { var = 0; }
 			if(strcmp(current_string->array, "type") == 0) { type = 1; }/*charlist = NULL; }*/
 			if(strcmp(current_string->array, "/type") == 0) { type = 0; }
 			if(strcmp(current_string->array, "states") == 0) { states = 1; }
@@ -503,8 +498,8 @@ void readModel(input_file * inputfile, char * directory, model_data * modeldata,
 			}*/
 			if(strcmp(current_string->array, "func") == 0) { func = 1; }/*charlist = NULL; }*/
 			if(strcmp(current_string->array, "/func") == 0) { func = 0; }
-			if(strcmp(current_string->array, "dest") == 0) { dest = 1; }/*charlist = NULL; }*/
-			if(strcmp(current_string->array, "/dest") == 0) { dest = 0; }
+			if(strcmp(current_string->array, "dest") == 0 || strcmp(current_string->array, "description") == 0) { dest = 1; }/*charlist = NULL; }*/
+			if(strcmp(current_string->array, "/dest") == 0 || strcmp(current_string->array, "description") == 0) { dest = 0; }
 			if(strcmp(current_string->array, "datatype") == 0 || strcmp(current_string->array, "dataType") == 0)
 			{
 				datatype = 1;
@@ -717,8 +712,19 @@ void readModel(input_file * inputfile, char * directory, model_data * modeldata,
 			{
 				condition = 0;
 			}
-			if(strcmp(current_string->array, "include") == 0) { include = 1; }
-			if(strcmp(current_string->array, "/include") == 0) { include = 0; }
+			if(strcmp(current_string->array, "model") == 0)
+			{
+				model = 1;
+				current_input_file = add_input_file(p_files);
+			}
+			if(strcmp(current_string->array, "/model") == 0)
+			{
+				model = 0;
+				
+				printf("Input model file: %s ", current_input_file->fullfilepath);
+				if(current_input_file->enabled == 1) printf("enabled\n");
+				else printf("disabled\n");
+			}
 			if(strcmp(current_string->array, "depends") == 0)
 			{
 				depends = 1;
@@ -754,6 +760,8 @@ void readModel(input_file * inputfile, char * directory, model_data * modeldata,
 			}
 			if(strcmp(current_string->array, "value") == 0) { value = 1; }
 			if(strcmp(current_string->array, "/value") == 0) { value = 0; }
+			if(strcmp(current_string->array, "enabled") == 0) { enabled = 1; }
+			if(strcmp(current_string->array, "/enabled") == 0) { enabled = 0; }
 			
 			/* End of tag and reset buffer */
 			intag = 0;
@@ -771,57 +779,63 @@ void readModel(input_file * inputfile, char * directory, model_data * modeldata,
 			intag = 1;
 			xmlcomment = 1;
 			
-			if(include)
+			if(model)
 			{
-				current_input_file = add_input_file(p_files);
-				temp_char = copy_array_to_str(current_string);
-				temp_char2 = (char *)malloc( (strlen(temp_char) + strlen(directory) + 1) * sizeof(char));
-				strcat(temp_char2, directory);
-				strcat(temp_char2, temp_char);
-				current_input_file->file = copy_array_to_str(current_string);
-				current_input_file->fullfilepath = copystr(temp_char2);
-				current_input_file->fulldirectory = copystr(temp_char2);
-				current_input_file->localdirectory = copystr(temp_char);
-				temp_char2[0] = 0;
-				free(temp_char2);
-				
-				/* calculate directory of file */
-				/* Calculate directory where xparser and template files are */
-				i = 0;
-				lastd = 0;
-				while(current_input_file->fulldirectory[i] != '\0')
+				if(enabled)
 				{
-					/* For windows directories */
-					if(current_input_file->fulldirectory[i] == '\\') lastd=i;
-					/* For unix directories */
-					if(current_input_file->fulldirectory[i] == '/') lastd=i;
-					i++;
+					temp_char = copy_array_to_str(current_string);
+					if(strcmp(temp_char, "true") == 0) current_input_file->enabled = 1;
+					if(strcmp(temp_char, "false") == 0) current_input_file->enabled = 0;
 				}
-				/* If a directory is in the path */
-				if(lastd != 0)
+				if(codefile)
 				{
-					current_input_file->fulldirectory[lastd+1] = '\0';
+					temp_char = copy_array_to_str(current_string);
+					temp_char2 = (char *)malloc( (strlen(temp_char) + strlen(directory) + 1) * sizeof(char));
+					strcat(temp_char2, directory);
+					strcat(temp_char2, temp_char);
+					current_input_file->file = copy_array_to_str(current_string);
+					current_input_file->fullfilepath = copystr(temp_char2);
+					current_input_file->fulldirectory = copystr(temp_char2);
+					current_input_file->localdirectory = copystr(temp_char);
+					temp_char2[0] = 0;
+					free(temp_char2);
+					
+					/* calculate directory of file */
+					/* Calculate directory where xparser and template files are */
+					i = 0;
+					lastd = 0;
+					while(current_input_file->fulldirectory[i] != '\0')
+					{
+						/* For windows directories */
+						if(current_input_file->fulldirectory[i] == '\\') lastd=i;
+						/* For unix directories */
+						if(current_input_file->fulldirectory[i] == '/') lastd=i;
+						i++;
+					}
+					/* If a directory is in the path */
+					if(lastd != 0)
+					{
+						current_input_file->fulldirectory[lastd+1] = '\0';
+					}
+					else current_input_file->fulldirectory[0] = '\0';
+					
+					i = 0;
+					lastd = 0;
+					while(current_input_file->localdirectory[i] != '\0')
+					{
+						/* For windows directories */
+						if(current_input_file->localdirectory[i] == '\\') lastd=i;
+						/* For unix directories */
+						if(current_input_file->localdirectory[i] == '/') lastd=i;
+						i++;
+					}
+					/* If a directory is in the path */
+					if(lastd != 0)
+					{
+						current_input_file->localdirectory[lastd+1] = '\0';
+					}
+					else current_input_file->localdirectory[0] = '\0';
 				}
-				else current_input_file->fulldirectory[0] = '\0';
-				
-				i = 0;
-				lastd = 0;
-				while(current_input_file->localdirectory[i] != '\0')
-				{
-					/* For windows directories */
-					if(current_input_file->localdirectory[i] == '\\') lastd=i;
-					/* For unix directories */
-					if(current_input_file->localdirectory[i] == '/') lastd=i;
-					i++;
-				}
-				/* If a directory is in the path */
-				if(lastd != 0)
-				{
-					current_input_file->localdirectory[lastd+1] = '\0';
-				}
-				else current_input_file->localdirectory[0] = '\0';
-				
-				printf("Input model file: %s\n", current_input_file->fullfilepath);
 			}
 			if(environment)
 			{
@@ -1120,7 +1134,7 @@ void readModel(input_file * inputfile, char * directory, model_data * modeldata,
 					if(type) { current_adj_function->type = copy_array_to_str(current_string); }/*charlist = NULL; }*/
 				}
 			}
-			else if(xmachine)
+			else if(xmachine && !memory && !function)
 			{
 				if(name)
 				{
@@ -1180,7 +1194,7 @@ void readModel(input_file * inputfile, char * directory, model_data * modeldata,
 			}
 		}
 		/* If in data read char into buffer */
-		else if(include || ((iteration_end_code && code) || codefile || name || type || desc || (memory && (var && (type || name)))) ||
+		else if(model || enabled || codefile || ((iteration_end_code && code) || codefile || name || type || desc || (memory && (var && (type || name)))) ||
 					(message && (name || (var && (type || name))))
 					|| (state && (name || attribute || (transition && (func || dest))))
 						|| (function && (name || note || code || depends || type || cur_state || next_state || input || output || messagetype || value || period || phase))
@@ -1360,6 +1374,14 @@ void checkmodel(model_data * modeldata)
 	{
 		current_memory = current_xmachine->memory;
 		current_variable = current_memory->vars;
+		
+		/* Error if no variables */
+		if(current_memory->vars == NULL)
+		{
+			printf("ERROR: agent '%s' has no memory variables\n", current_xmachine->name);
+			exit(0);
+		}
+		
 		while(current_variable)
 		{
 			/* Handle model defined data types */

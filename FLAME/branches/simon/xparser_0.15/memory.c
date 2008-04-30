@@ -25,6 +25,7 @@ input_file * add_input_file(input_file ** p_files)
 	}
 	/* Make current->next point to NULL */
 	current->next = NULL;
+	current->enabled = 1;
 	
 	/* Return new element */
 	return current;
@@ -830,7 +831,7 @@ xmachine * addxmachine(xmachine ** p_xmachines, char * name)
 	/* Make current->next point to NULL */
 	current->number = number;
 	current->name = name;
-	current->memory = NULL;
+	addxmemory(&current->memory);
 	current->states = NULL;
 	current->functions = NULL;
 	
