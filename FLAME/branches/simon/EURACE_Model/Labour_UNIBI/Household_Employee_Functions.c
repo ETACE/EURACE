@@ -145,7 +145,7 @@ int Household_OTJS_read_job_vacancies_and_send_applications()
 	for(i = 0; i < (vacancy_list.size); i++)
 	{
 		add_job_application_message(ID, vacancy_list.array[i].firm_id,
-		REGION_ID, GENERAL_SKILL, SPECIFIC_SKILL, MSGDATA);	
+		REGION_ID, GENERAL_SKILL, SPECIFIC_SKILL);	
 	}
 	
 	/* Free the vacancy dynamic array */
@@ -229,7 +229,7 @@ int Household_UNEMPLOYED_read_job_vacancies_and_send_applications()
 	/* If the vacancy list is bigger than zero then send a job application to every 		vacancy on the list */
 	for(i = 0; i < (vacancy_list.size); i++)
 	{	
-		add_job_application_message(ID, vacancy_list.array[i].firm_id, 				REGION_ID, GENERAL_SKILL, SPECIFIC_SKILL, MSGDATA);
+		add_job_application_message(ID, vacancy_list.array[i].firm_id, 				REGION_ID, GENERAL_SKILL, SPECIFIC_SKILL);
 	}
 		
 	
@@ -308,12 +308,12 @@ int Household_read_job_offers_send_response()
 	/* Accept best job: first on the list (array[0]) */
 	if(job_offer_list.size > 0)
 	{
-		add_job_acceptance_message(ID, job_offer_list.array[0].firm_id, 				REGION_ID, GENERAL_SKILL, SPECIFIC_SKILL, MSGDATA);
+		add_job_acceptance_message(ID, job_offer_list.array[0].firm_id, 				REGION_ID, GENERAL_SKILL, SPECIFIC_SKILL);
 
 		/*If on the job search: send quitting message*/
 		if(ON_THE_JOB_SEARCH == 1)
 		{
-			add_quitting_message(ID, EMPLOYEE_FIRM_ID, MSGDATA);
+			add_quitting_message(ID, EMPLOYEE_FIRM_ID);
 		}
 		
 		EMPLOYEE_FIRM_ID = job_offer_list.array[0].firm_id;
@@ -461,7 +461,7 @@ int Household_OTJS_read_job_vacancies_and_send_applications_2()
 		/* If the vacancy list is bigger than zero then send a job applications to every 			vacancy on the list */
 		for(int i = 0; i < (vacancy_list.size); i++)
 		{
-			add_job_application2_message(ID, vacancy_list.array[i].firm_id, 				REGION_ID, GENERAL_SKILL, SPECIFIC_SKILL, MSGDATA);
+			add_job_application2_message(ID, vacancy_list.array[i].firm_id, 				REGION_ID, GENERAL_SKILL, SPECIFIC_SKILL);
 		}
 	}
 
@@ -544,7 +544,7 @@ int Household_UNEMPLOYED_read_job_vacancies_and_send_applications_2()
 	/* If the vacancy list is bigger than zero then send  job applications to every 		vacancy on the list */
 	for(i = 0; i < (vacancy_list.size); i++)
 	{
-		add_job_application2_message(ID, vacancy_list.array[i].firm_id, 				REGION_ID, GENERAL_SKILL, SPECIFIC_SKILL, MSGDATA);
+		add_job_application2_message(ID, vacancy_list.array[i].firm_id, 				REGION_ID, GENERAL_SKILL, SPECIFIC_SKILL);
 	}
 		
 	
@@ -624,12 +624,12 @@ int Household_read_job_offers_send_response_2()
 	/* Accept best job: first on the list (array[0]) */
 	if(job_offer_list.size > 0)
 	{
-		add_job_acceptance2_message(ID, job_offer_list.array[0].firm_id, 				REGION_ID, GENERAL_SKILL, SPECIFIC_SKILL, MSGDATA);
+		add_job_acceptance2_message(ID, job_offer_list.array[0].firm_id, 				REGION_ID, GENERAL_SKILL, SPECIFIC_SKILL);
 		
 		/*If on the job search add quitting message*/
 		if(ON_THE_JOB_SEARCH == 1)
 		{
-			add_quitting2_message(ID, EMPLOYEE_FIRM_ID, MSGDATA);
+			add_quitting2_message(ID, EMPLOYEE_FIRM_ID);
 		}
 
 		EMPLOYEE_FIRM_ID = job_offer_list.array[0].firm_id;

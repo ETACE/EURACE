@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<!DOCTYPE xmodel SYSTEM "../dtd/XMML.dtd">
+<!DOCTYPE xmodel SYSTEM "XMML.dtd">
 <xmodel version="2">
 
 <name>Eurace</name>
@@ -38,6 +38,7 @@
 
 <xagent>
 <name>Household</name>
+<description></description>
 <memory>
 <variable><type>int</type><name>id</name><description></description></variable>
 <variable><type>int</type><name>region_id</name><description></description></variable>
@@ -47,6 +48,7 @@
 
 <xagent>
 <name>Mall</name>
+<description></description>
 <memory>
 <variable><type>int</type><name>id</name><description></description></variable>
 <variable><type>int</type><name>region_id</name><description></description></variable>
@@ -55,6 +57,7 @@
 
 <xagent>
 <name>IGFirm</name>
+<description></description>
 <memory>
 <variable><type>int</type><name>id</name><description></description></variable>
 <variable><type>int</type><name>region_id</name><description></description></variable>
@@ -63,6 +66,7 @@
 
 <xagent>
 <name>Eurostat</name>
+<description></description>
 <memory>
 <variable><type>int</type><name>id</name><description></description></variable>
 <variable><type>int</type><name>region_id</name><description></description></variable>
@@ -72,6 +76,7 @@
 
 <xagent>
 <name>Clearinghouse</name>
+<description></description>
 <memory>
 <variable><type>int</type><name>id</name><description></description></variable>
 <variable><type>int</type><name>region_id</name><description></description></variable>
@@ -80,6 +85,7 @@
 
 <xagent>
 <name>Bank</name>
+<description></description>
 <memory>
 <variable><type>int</type><name>id</name><description></description></variable>
 <variable><type>int</type><name>region_id</name><description></description></variable>
@@ -88,6 +94,7 @@
 
 <xagent>
 <name>Government</name>
+<description></description>
 <memory>
 <variable><type>int</type><name>id</name><description></description></variable>
 </memory>

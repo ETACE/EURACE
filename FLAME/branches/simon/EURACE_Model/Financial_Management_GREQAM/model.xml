@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<!DOCTYPE xmodel SYSTEM "../dtd/XMML.dtd">
+<!DOCTYPE xmodel SYSTEM "../XMML.dtd">
 <xmodel version="2">
 
 <name>Financial_Management</name>
@@ -16,20 +16,26 @@
 
 <dataType>
 <name>debt_item</name>
-<variable><type>int</type><name>bank_id</name></variable>
-<variable><type>double</type><name>loan_value</name></variable>
-<variable><type>double</type><name>interest_rate</name></variable>
-<variable><type>double</type><name>interest_payment</name></variable>
-<variable><type>double</type><name>debt_installment_payment</name></variable>
-<variable><type>int</type><name>nr_periods_before_maturity</name></variable>
+<description></description>
+<variables>
+<variable><type>int</type><name>bank_id</name><description></description></variable>
+<variable><type>double</type><name>loan_value</name><description></description></variable>
+<variable><type>double</type><name>interest_rate</name><description></description></variable>
+<variable><type>double</type><name>interest_payment</name><description></description></variable>
+<variable><type>double</type><name>debt_installment_payment</name><description></description></variable>
+<variable><type>int</type><name>nr_periods_before_maturity</name><description></description></variable>
+</variables>
 </dataType>
 
 <dataType>
 <name>capital_stock_item</name>
-<variable><type>double</type><name>units</name></variable>
-<variable><type>double</type><name>purchase_price</name></variable>
-<variable><type>double</type><name>productivity</name></variable>
-<variable><type>double</type><name>depreciation_units_per_period</name></variable>
+<description></description>
+<variables>
+<variable><type>double</type><name>units</name><description></description></variable>
+<variable><type>double</type><name>purchase_price</name><description></description></variable>
+<variable><type>double</type><name>productivity</name><description></description></variable>
+<variable><type>double</type><name>depreciation_units_per_period</name><description></description></variable>
+</variables>
 </dataType>
 
 </dataTypes>
@@ -39,68 +45,74 @@
 
 <xagent>
 <name>Firm</name>
+<description></description>
 <memory>
-<variable><type>int</type><name>gov_id</name></variable>
-<variable><type>int</type><name>bank_id</name></variable>
+<variable><type>int</type><name>gov_id</name><description></description></variable>
+<variable><type>int</type><name>bank_id</name><description></description></variable>
 <!-- Firm_compute_income_statement -->
-<variable><type>double</type><name>ebit</name></variable>
-<variable><type>double</type><name>payment_account</name></variable>
+<variable><type>double</type><name>ebit</name><description></description></variable>
+<variable><type>double</type><name>payment_account</name><description></description></variable>
 <!-- Firm_compute_balance_sheet -->
-<variable><type>double</type><name>earnings</name></variable>
-<variable><type>double</type><name>tax_rate_corporate</name></variable>
-<variable><type>double</type><name>tax_payment</name></variable>
-<variable><type>double</type><name>net_earnings</name></variable>
-<variable><type>double</type><name>previous_net_earnings</name></variable>
-<variable><type>debt_item_array</type><name>loans</name></variable>
-<variable><type>double</type><name>total_interest_payment</name></variable>
-<variable><type>double</type><name>total_debt_installment_payment</name></variable>
-<variable><type>double</type><name>total_debt</name></variable>
-<variable><type>double</type><name>total_dividend_payment</name></variable>
-<variable><type>double</type><name>total_value_local_inventory</name></variable>
-<variable><type>capital_stock_item_array</type><name>capital_stock</name></variable>
-<variable><type>double</type><name>total_units_capital_stock</name></variable>
-<variable><type>double</type><name>total_value_capital_stock</name></variable>
-<variable><type>double</type><name>total_capital_depreciation_value</name></variable>
-<variable><type>double</type><name>total_capital_depreciation_units</name></variable>
-<variable><type>double</type><name>total_assets</name></variable>
+<variable><type>double</type><name>earnings</name><description></description></variable>
+<variable><type>double</type><name>tax_rate_corporate</name><description></description></variable>
+<variable><type>double</type><name>tax_payment</name><description></description></variable>
+<variable><type>double</type><name>net_earnings</name><description></description></variable>
+<variable><type>double</type><name>previous_net_earnings</name><description></description></variable>
+<variable><type>debt_item_array</type><name>loans</name><description></description></variable>
+<variable><type>double</type><name>total_interest_payment</name><description></description></variable>
+<variable><type>double</type><name>total_debt_installment_payment</name><description></description></variable>
+<variable><type>double</type><name>total_debt</name><description></description></variable>
+<variable><type>double</type><name>total_dividend_payment</name><description></description></variable>
+<variable><type>double</type><name>total_value_local_inventory</name><description></description></variable>
+<variable><type>capital_stock_item_array</type><name>capital_stock</name><description></description></variable>
+<variable><type>double</type><name>total_units_capital_stock</name><description></description></variable>
+<variable><type>double</type><name>total_value_capital_stock</name><description></description></variable>
+<variable><type>double</type><name>total_capital_depreciation_value</name><description></description></variable>
+<variable><type>double</type><name>total_capital_depreciation_units</name><description></description></variable>
+<variable><type>double</type><name>total_assets</name><description></description></variable>
 <!-- Firm_compute_payout_policy -->
-<variable><type>double</type><name>planned_cum_revenue</name></variable>
-<variable><type>double</type><name>planned_total_interest_payment</name></variable>
-<variable><type>double</type><name>planned_total_debt_installment_payment</name></variable>
-<variable><type>double</type><name>planned_total_dividend_payment</name></variable>
+<variable><type>double</type><name>planned_cum_revenue</name><description></description></variable>
+<variable><type>double</type><name>planned_total_interest_payment</name><description></description></variable>
+<variable><type>double</type><name>planned_total_debt_installment_payment</name><description></description></variable>
+<variable><type>double</type><name>planned_total_dividend_payment</name><description></description></variable>
 <!-- Financial needs -->
-<variable><type>double</type><name>direct_financial_needs</name></variable>
-<variable><type>double</type><name>delayed_financial_needs</name></variable>
-<variable><type>double</type><name>total_financial_needs</name></variable>
-<variable><type>double</type><name>internal_financial_needs</name></variable>
-<variable><type>double</type><name>external_financial_needs</name></variable>
-<variable><type>double</type><name>total_external_financing_obtained</name></variable>
-<variable><type>int</type><name>direct_financial_needs_require_external_financing</name></variable>
-<variable><type>int</type><name>delayed_financial_needs_require_external_financing</name></variable>
+<variable><type>double</type><name>direct_financial_needs</name><description></description></variable>
+<variable><type>double</type><name>delayed_financial_needs</name><description></description></variable>
+<variable><type>double</type><name>total_financial_needs</name><description></description></variable>
+<variable><type>double</type><name>internal_financial_needs</name><description></description></variable>
+<variable><type>double</type><name>external_financial_needs</name><description></description></variable>
+<variable><type>double</type><name>total_external_financing_obtained</name><description></description></variable>
+<variable><type>int</type><name>direct_financial_needs_require_external_financing</name><description></description></variable>
+<variable><type>int</type><name>delayed_financial_needs_require_external_financing</name><description></description></variable>
 </memory>
 <functions>
 
 <function>
 <name>Firm_compute_payout_policy</name>
-<current_state>02</current_state>
-<next_state>20</next_state>
+<description></description>
+<currentState>02</currentState>
+<nextState>20</nextState>
 </function>
 
 <function>
 <name>Firm_compute_income_statement</name>
-<current_state>00</current_state>
-<next_state>001</next_state>
+<description></description>
+<currentState>00</currentState>
+<nextState>001</nextState>
 <condition>Firm_day_of_month_to_act</condition>
 </function>
 
 <function>
 <name>Firm_compute_balance_sheet</name>
-<current_state>001</current_state>
-<next_state>002</next_state>
-<output><messagetype>tax_payment</messagetype></output>
-<output><messagetype>interest_payment</messagetype></output>
-<output><messagetype>debt_installment_payment</messagetype></output>
-<output><messagetype>dividend_payment</messagetype></output>
+<description></description>
+<currentState>001</currentState>
+<nextState>002</nextState>
+<outputs>
+<output><messageName>tax_payment</messageName></output>
+<output><messageName>interest_payment</messageName></output>
+<output><messageName>debt_installment_payment</messageName></output>
+<output><messageName>dividend_payment</messageName></output>
+</outputs>
 </function>
 </functions>
 </xagent>
