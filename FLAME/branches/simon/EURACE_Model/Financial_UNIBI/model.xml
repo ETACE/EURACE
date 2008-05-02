@@ -54,7 +54,7 @@
 <description></description>
 <currentState>22</currentState>
 <nextState>23</nextState>
-<condition>Firm_is_external_financial_needs</condition>
+<condition><lhs><value>a.external_financial_needs</value></lhs><op>GT</op><rhs><value>0.0</value></rhs></condition>
 <outputs>
 <output><messageName>bond_order</messageName></output>
 </outputs>
@@ -75,7 +75,7 @@
 <description></description>
 <currentState>24</currentState>
 <nextState>27</nextState>
-<condition>Firm_no_external_financial_needs</condition>
+<condition><not><lhs><value>a.external_financial_needs</value></lhs><op>GT</op><rhs><value>0.0</value></rhs></not></condition>
 </function>
 
 <function>
@@ -83,7 +83,7 @@
 <description></description>
 <currentState>24</currentState>
 <nextState>25</nextState>
-<condition>Firm_is_external_financial_needs</condition>
+<condition><lhs><value>a.external_financial_needs</value></lhs><op>GT</op><rhs><value>0.0</value></rhs></condition>
 <outputs>
 <output><messageName>stock_order</messageName></output>
 </outputs>
@@ -110,7 +110,7 @@
 <description></description>
 <currentState>20</currentState>
 <nextState>27</nextState>
-<condition>Firm_no_external_financial_needs</condition>
+<condition><not><lhs><value>a.external_financial_needs</value></lhs><op>GT</op><rhs><value>0.0</value></rhs></not></condition>
 </function>
 
 <!--Case 2: Firm_compute_payout_policy (external_financial_needs==0) -->
@@ -118,7 +118,7 @@
 <description></description>
 <currentState>26</currentState>
 <nextState>27</nextState>
-<condition>Firm_no_external_financial_needs</condition>
+<condition><not><lhs><value>a.external_financial_needs</value></lhs><op>GT</op><rhs><value>0.0</value></rhs></not></condition>
 </function>
 
 <!--Case 3: Firm_compute_payout_policy (external_financial_needs>0) -->
