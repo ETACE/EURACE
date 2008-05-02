@@ -99,7 +99,7 @@
 <description></description>
 <currentState>start_Firm</currentState>
 <nextState>00</nextState>
-<condition>first_day_of_month</condition>
+<condition><time><period>monthly</period><phase>0</phase></time></condition>
 <inputs>
 <input><messageName>market_research_send_specific_skills</messageName></input>
 </inputs>
@@ -109,14 +109,14 @@
 <description></description>
 <currentState>start_Firm</currentState>
 <nextState>00</nextState>
-<condition>not_first_day_of_month</condition>
+<condition><not><time><period>monthly</period><phase>0</phase></time></not></condition>
 </function>
 
 <function><name>Firm_send_data_to_Market_Research</name>
 <description></description>
 <currentState>14</currentState>
 <nextState>end</nextState>
-<condition>last_day_of_month</condition>
+<condition><time><period>monthly</period><phase>19</phase></time></condition>
 <outputs>
 <output><messageName>firm_send_data</messageName></output>
 </outputs>
@@ -126,7 +126,7 @@
 <description></description>
 <currentState>14</currentState>
 <nextState>end</nextState>
-<condition>not_last_day_of_month</condition>
+<condition><not><time><period>monthly</period><phase>0</phase></time></not></condition>
 </function>
 
 </functions>
@@ -142,7 +142,7 @@
 <description></description>
 <currentState>15</currentState>
 <nextState>end</nextState>
-<condition>last_day_of_month</condition>
+<condition><time><period>monthly</period><phase>19</phase></time></condition>
 <outputs>
 <output><messageName>household_send_data</messageName></output>
 </outputs>
@@ -152,7 +152,7 @@
 <description></description>
 <currentState>15</currentState>
 <nextState>end</nextState>
-<condition>not_last_day_of_month</condition>
+<condition><not><time><period>monthly</period><phase>0</phase></time></not></condition>
 </function>
 
 </functions>
@@ -225,21 +225,21 @@
 <description></description>
 <currentState>start_Market_Research</currentState>
 <nextState>01</nextState>
-<condition>first_day</condition>
+<condition><time><period>iteration</period><phase>1</phase></time></condition>
 </function>
 
 <function><name>Market_Research_idle</name>
 <description></description>
 <currentState>start_Market_Research</currentState>
 <nextState>01</nextState>
-<condition>not_first_day</condition>
+<condition><not><time><period>iteration</period><phase>1</phase></time></not></condition>
 </function>
 
 <function><name>Market_Research_send_data</name>
 <description></description>
 <currentState>01</currentState>
 <nextState>02</nextState>
-<condition>first_day_of_month</condition>
+<condition><time><period>monthly</period><phase>0</phase></time></condition>
 <outputs>
 <output><messageName>market_research_send_specific_skills</messageName></output>
 </outputs>
@@ -249,7 +249,7 @@
 <description></description>
 <currentState>01</currentState>
 <nextState>02</nextState>
-<condition>not_first_day_of_month</condition>
+<condition><not><time><period>monthly</period><phase>19</phase></time></not></condition>
 </function>
 
 <function><name>Market_Research_calculate_data</name>

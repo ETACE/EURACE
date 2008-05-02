@@ -99,7 +99,7 @@
 <description></description>
 <currentState>00</currentState>
 <nextState>001</nextState>
-<condition>Firm_day_of_month_to_act</condition>
+<condition><time><period>monthly</period><phase>a.day_of_month_to_act</phase></time></condition>
 </function>
 
 <function>

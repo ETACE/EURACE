@@ -1618,6 +1618,10 @@ void checkmodel(model_data * modeldata)
 				strcpy(buffer, current_xmachine->name);
 				strcat(buffer, "_");
 				strcat(buffer, current_function->name);
+				strcat(buffer, "_");
+				strcat(buffer, current_function->current_state);
+				strcat(buffer, "_");
+				strcat(buffer, current_function->next_state);
 				strcat(buffer, "_condition");
 				current_function->condition_function = copystr(buffer);
 				
