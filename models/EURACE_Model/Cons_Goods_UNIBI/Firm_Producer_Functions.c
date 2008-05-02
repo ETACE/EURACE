@@ -40,7 +40,7 @@ int Firm_calc_input_demands_2()
 		temp_labour_demand = pow(PLANNED_PRODUCTION_QUANTITY /
 		(pow(NEEDED_CAPITAL_STOCK,BETA)*min(TECHNOLOGY,MEAN_SPECIFIC_SKILLS)),1/ALPHA);
  
-		}
+		
 		
    
 		/*Depriciation of the old capital stock.
