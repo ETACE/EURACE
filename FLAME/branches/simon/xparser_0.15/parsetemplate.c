@@ -1843,7 +1843,7 @@ void writeRule(rule_data * current_rule_data, FILE *file)
 	{
 		if(current_rule_data->not == 1) fputs("!", file);
 		fputs("(", file);
-		fputs("iteration_loop%", file);
+		fputs("iteration_loop", file);
 		fputs(current_rule_data->op, file);
 		fputs(" == ", file);
 		fputs(current_rule_data->rhs, file);

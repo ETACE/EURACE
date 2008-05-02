@@ -1325,11 +1325,15 @@ void handleRule(rule_data * current_rule_data, xmachine * current_xmachine, char
 			{
 				if(strcmp(current_rule_data->lhs, current_time_unit->name) == 0)
 				{
-					sprintf(buffer, "%d", current_time_unit->iterations);
+					sprintf(buffer, "%%%d", current_time_unit->iterations);
 					current_rule_data->op = copystr(buffer);
 				}
 				
 				current_time_unit = current_time_unit->next;
+			}
+			if(strcmp(current_rule_data->lhs, "iteration") == 0)
+			{
+				current_rule_data->op = copystr("");
 			}
 			if(current_rule_data->op == NULL)
 			{

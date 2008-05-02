@@ -256,7 +256,7 @@
 <description></description>
 <currentState>02</currentState>
 <nextState>end</nextState>
-<condition>Eurostat_day_of_month_to_act</condition>
+<condition><time><period>monthly</period><phase>a.day_of_month_to_act</phase></time></condition>
 <inputs>
 <input><messageName>firm_send_data</messageName></input>
 <input><messageName>household_send_data</messageName></input>
@@ -267,7 +267,7 @@
 <description></description>
 <currentState>02</currentState>
 <nextState>end</nextState>
-<condition>Eurostat_not_day_of_month_to_act</condition>
+<condition><not><time><period>monthly</period><phase>a.day_of_month_to_act</phase></time></not></condition>
 </function>
 
 </functions>
