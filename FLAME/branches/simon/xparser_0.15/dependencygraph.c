@@ -62,6 +62,31 @@ void output_dgraph(char * filename, char * filepath, model_data * modeldata)
 	fclose(file);
 }
 
+void printRule(rule_data * current_rule_data, FILE *file)
+{
+	/* If current_rule_data is NULL */
+	if(current_rule_data != NULL)
+	{
+		if(current_rule_data->not == 1) fputs("not ", file);
+		
+		if(current_rule_data->time_rule == 1)
+		{
+			fputs(current_rule_data->lhs, file);
+			fputs("\\n", file);
+			fputs(current_rule_data->rhs, file);
+		}
+		else
+		{
+			/* Handle values */
+			if(current_rule_data->lhs == NULL) fputs(current_rule_data->lhs, file);
+			else printRule(current_rule_data->lhs_rule, file);
+			
+			if(current_rule_data->rhs == NULL) fputs(current_rule_data->rhs, file);
+			else printRule(current_rule_data->rhs_rule, file);
+		}
+	}
+}
+
 void output_stategraph(char * filename, char * filepath, model_data * modeldata, int flag)
 {
 	/* File to write to */
@@ -198,6 +223,7 @@ void output_stategraph(char * filename, char * filepath, model_data * modeldata,
 				fputs(" [ label = \"", file);
 				// TODO
 				//fputs(current_function->condition, file);
+				printRule(current_function->condition_rule, file);
 				fputs("\"];\n", file);
 			}
 			

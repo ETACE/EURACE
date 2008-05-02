@@ -206,7 +206,7 @@
 <description></description>
 <currentState>00</currentState>
 <nextState>00b</nextState>
-<condition><time><not>true</not><period>monthly</period><phase>a.day_of_month_to_act</phase></time></condition>
+<condition><not><time><period>monthly</period><phase>a.day_of_month_to_act</phase></time></not></condition>
 </function>
 
 <function><name>Firm_calc_input_demands</name>
@@ -257,7 +257,7 @@
 <description></description>
 <currentState>13b</currentState>
 <nextState>14</nextState>
-<condition><time><not>true</not><period>monthly</period><phase>a.day_of_month_to_act</phase></time></condition>
+<condition><not><time><period>monthly</period><phase>a.day_of_month_to_act</phase></time></not></condition>
 </function>
 
 </functions>
@@ -286,14 +286,18 @@
 <description></description>
 <currentState>06</currentState>
 <nextState>09</nextState>
-<condition><time><not>true</not><period>monthly</period><phase>a.day_of_month_receive_income</phase></time></condition>
+<condition><not><time><period>monthly</period><phase>a.day_of_month_receive_income</phase></time></not></condition>
 </function>
 
 <function><name>Household_receive_wage</name>
 <description></description>
 <currentState>06</currentState>
 <nextState>07</nextState>
-<condition><lhs><time><period>monthly</period><phase>a.day_of_month_receive_income</phase></time></lhs><op>AND</op><rhs><lhs><value>a.employee_firm_id</value></lhs><op>NEQ</op><rhs><value>-1</value></rhs></rhs></condition>
+<condition>
+	<lhs><time><period>monthly</period><phase>a.day_of_month_receive_income</phase></time></lhs>
+	<op>AND</op>
+	<rhs><lhs><value>a.employee_firm_id</value></lhs><op>NEQ</op><rhs><value>-1</value></rhs></rhs>
+</condition>
 <inputs>
 <input><messageName>wage_payment</messageName></input>
 </inputs>
@@ -312,7 +316,11 @@
 <description></description>
 <currentState>06</currentState>
 <nextState>08</nextState>
-<condition>Household_day_of_month_receive_income_unemployed</condition>
+<condition>
+	<lhs><time><period>monthly</period><phase>a.day_of_month_receive_income</phase></time></lhs>
+	<op>AND</op>
+	<rhs><lhs><value>a.employee_firm_id</value></lhs><op>EQ</op><rhs><value>-1</value></rhs></rhs>
+</condition>
 <!--<input><messageName>unemployment_benefits</messageName></input>-->
 </function>
 
@@ -326,7 +334,7 @@
 <description></description>
 <currentState>09</currentState>
 <nextState>15</nextState>
-<condition>Household_not_day_of_week_to_act</condition>
+<condition><not><time><period>monthly</period><phase>a.day_of_month_to_act</phase></time></not></condition>
 <inputs>
 <input><messageName>dividend_payment</messageName></input>
 <input><messageName>capital_good_profit_distribution</messageName></input>
@@ -337,13 +345,13 @@
 <description></description>
 <currentState>09</currentState>
 <nextState>10</nextState>
+<condition><time><period>monthly</period><phase>a.day_of_month_to_act</phase></time></condition>
 <inputs>
 <input><messageName>quality_price_info_1</messageName></input>
 </inputs>
 <outputs>
 <output><messageName>consumption_request_1</messageName></output>
 </outputs>
-<condition>Household_day_of_week_to_act</condition>
 </function>
 
 <function><name>Household_receive_goods_read_rationing</name>
@@ -359,14 +367,14 @@
 <description></description>
 <currentState>11</currentState>
 <nextState>13</nextState>
-<condition>Household_not_rationed</condition>
+<condition><lhs><value>a.rationed</value></lhs><op>NEQ</op><rhs><value>1</value></rhs></condition>
 </function>
 
 <function><name>Household_rank_and_buy_goods_2</name>
 <description></description>
 <currentState>11</currentState>
 <nextState>12</nextState>
-<condition>Household_rationed</condition>
+<condition><lhs><value>a.rationed</value></lhs><op>EQ</op><rhs><value>1</value></rhs></condition>
 <inputs>
 <input><messageName>quality_price_info_2</messageName></input>
 </inputs>

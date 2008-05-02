@@ -179,6 +179,7 @@ struct rule_data
 	struct rule_data * lhs_rule; /* If rule==NULL then use lhs,op,rhs data */
 	struct rule_data * rhs_rule; /* If rule==NULL then use lhs,op,rhs data */
 	int time_rule;
+	int not;
 	
 	struct rule_data * next;
 };

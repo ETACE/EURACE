@@ -180,8 +180,8 @@ void readModel(input_file * inputfile, char * directory, model_data * modeldata,
 	/* Char and char buffer for reading file to */
 	char c = ' ';
 	int numtag = 0;
-	char chartag[10][100];
-	int tagline[10];
+	char chartag[100][100];
+	int tagline[100];
 	char chardata[100];
 	/*char chardata2[100];*/
 	int dynamic_array_found;
@@ -203,7 +203,8 @@ void readModel(input_file * inputfile, char * directory, model_data * modeldata,
 	int note, messages, message, code, cdata, environment, define, value, codefile;
 	int header, iteration_end_code, depends, datatype, desc, cur_state, next_state;
 	int input, output, messagetype, timetag, unit, period, lhs, op, rhs, condition;
-	int model, filter, phase, enabled;
+	int model, filter, phase, enabled, not, time;
+	int not_value;
 	/* Pointer to new structs */
 	xmachine_memory * current_memory;
 	xmachine_message * current_message;
@@ -308,6 +309,8 @@ void readModel(input_file * inputfile, char * directory, model_data * modeldata,
 	period = 0;
 	phase = 0;
 	enabled = 0;
+	not = 0;
+	time = 0;
 	
 	/*printf("%i> ", linenumber);*/
 	
@@ -534,10 +537,10 @@ void readModel(input_file * inputfile, char * directory, model_data * modeldata,
 			if(strcmp(current_string->array, "/functions") == 0) { functions = 0; }
 			if(strcmp(current_string->array, "functionFiles") == 0) { functions = 1; }
 			if(strcmp(current_string->array, "/functionFiles") == 0) { functions = 0; }
-			if(strcmp(current_string->array, "current_state") == 0) { cur_state = 1; }
-			if(strcmp(current_string->array, "/current_state") == 0) { cur_state = 0; }
-			if(strcmp(current_string->array, "next_state") == 0) { next_state = 1; }
-			if(strcmp(current_string->array, "/next_state") == 0) { next_state = 0; }
+			if(strcmp(current_string->array, "current_state") == 0 || strcmp(current_string->array, "currentState") == 0) { cur_state = 1; }
+			if(strcmp(current_string->array, "/current_state") == 0 || strcmp(current_string->array, "/currentState") == 0) { cur_state = 0; }
+			if(strcmp(current_string->array, "next_state") == 0 || strcmp(current_string->array, "nextState") == 0) { next_state = 1; }
+			if(strcmp(current_string->array, "/next_state") == 0 || strcmp(current_string->array, "/nextState") == 0) { next_state = 0; }
 			if(strcmp(current_string->array, "currentState") == 0) { cur_state = 1; }
 			if(strcmp(current_string->array, "/currentState") == 0) { cur_state = 0; }
 			if(strcmp(current_string->array, "nextState") == 0) { next_state = 1; }
@@ -556,8 +559,8 @@ void readModel(input_file * inputfile, char * directory, model_data * modeldata,
 				current_ioput = addioput(&current_function->outputs);
 			}
 			if(strcmp(current_string->array, "/output") == 0) { output = 0; }
-			if(strcmp(current_string->array, "messagetype") == 0) { messagetype = 1; }
-			if(strcmp(current_string->array, "/messagetype") == 0) { messagetype = 0; }
+			if(strcmp(current_string->array, "messagetype") == 0 || strcmp(current_string->array, "messageName") == 0) { messagetype = 1; }
+			if(strcmp(current_string->array, "/messagetype") == 0 || strcmp(current_string->array, "/messageName") == 0) { messagetype = 0; }
 			if(strcmp(current_string->array, "function") == 0)
 			{
 				function = 1;
@@ -648,29 +651,45 @@ void readModel(input_file * inputfile, char * directory, model_data * modeldata,
 			if(strcmp(current_string->array, "/file") == 0) { codefile = 0; }
 			if(strcmp(current_string->array, "iteration_end_code") == 0) { iteration_end_code = 1; }
 			if(strcmp(current_string->array, "/iteration_end_code") == 0) { iteration_end_code = 0; }
-			if(strcmp(current_string->array, "time") == 0)
+			if(strcmp(current_string->array, "timeunit") == 0)
 			{
 				timetag = 1;
 			}
-			if(strcmp(current_string->array, "/time") == 0)
+			if(strcmp(current_string->array, "/timeunit") == 0)
 			{
 				timetag = 0;
 				add_time_unit(time_name, unit_name, period_int, modeldata->p_time_units);
 			}
 			if(strcmp(current_string->array, "unit") == 0) { unit = 1; }
 			if(strcmp(current_string->array, "/unit") == 0) { unit = 0; }
-			if(strcmp(current_string->array, "period") == 0)
+			if(strcmp(current_string->array, "time") == 0)
 			{
-				period = 1;
-				if(condition)
+				time = 1;
+				if(lhs || rhs)
+				{
+					last_rule_data = current_rule_data;
+					if(lhs_last) { current_rule_data = add_rule_data(&current_rule_data->lhs_rule); }
+					else { current_rule_data = add_rule_data(&current_rule_data->rhs_rule); }
+				}
+				else //if(condition)
 				{
 					current_rule_data = add_rule_data(&current_function->condition_rule);
-					current_rule_data->time_rule = 1;
 				}
+				
+				current_rule_data->time_rule = 1;
+				if(not == 1) current_rule_data->not = 1;
 			}
+			if(strcmp(current_string->array, "/time") == 0)
+			{
+				time = 0;
+				current_rule_data = last_rule_data;
+			}
+			if(strcmp(current_string->array, "period") == 0) { period = 1; }
 			if(strcmp(current_string->array, "/period") == 0) { period = 0; }
 			if(strcmp(current_string->array, "phase") == 0) { phase = 1; }
 			if(strcmp(current_string->array, "/phase") == 0) { phase = 0; }
+			if(strcmp(current_string->array, "not") == 0) { not = 1; }
+			if(strcmp(current_string->array, "/not") == 0) { not = 0; }
 			if(strcmp(current_string->array, "lhs") == 0)
 			{
 				lhs = 1;
@@ -687,6 +706,8 @@ void readModel(input_file * inputfile, char * directory, model_data * modeldata,
 					if(lhs_last) { current_rule_data = add_rule_data(&current_rule_data->lhs_rule); }
 					else { current_rule_data = add_rule_data(&current_rule_data->rhs_rule); }
 				}
+				
+				if(not == 1) current_rule_data->not = 1;
 				
 				lhs_last = 1;
 			}
@@ -707,10 +728,12 @@ void readModel(input_file * inputfile, char * directory, model_data * modeldata,
 			{
 				condition = 1;
 				current_rule_data = NULL;
+				not_value = 0;
 			}
 			if(strcmp(current_string->array, "/condition") == 0)
 			{
 				condition = 0;
+				if(not_value == 1) { current_rule_data->not = 1; printf("*********** condition is not\n"); }
 			}
 			if(strcmp(current_string->array, "model") == 0)
 			{
@@ -1197,7 +1220,7 @@ void readModel(input_file * inputfile, char * directory, model_data * modeldata,
 		else if(model || enabled || codefile || ((iteration_end_code && code) || codefile || name || type || desc || (memory && (var && (type || name)))) ||
 					(message && (name || (var && (type || name))))
 					|| (state && (name || attribute || (transition && (func || dest))))
-						|| (function && (name || note || code || depends || type || cur_state || next_state || input || output || messagetype || value || period || phase))
+						|| (function && (not || name || note || code || depends || type || cur_state || next_state || input || output || messagetype || value || period || phase))
 							|| (define && (name || value)) || (timetag && (name || unit || period)) || condition )
 		{
 			/*current_charlist = addchar(p_charlist);*/
