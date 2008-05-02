@@ -78,10 +78,12 @@ void printRule(rule_data * current_rule_data, FILE *file)
 		else
 		{
 			/* Handle values */
-			if(current_rule_data->lhs == NULL) fputs(current_rule_data->lhs, file);
+			if(current_rule_data->lhs != NULL) fputs(current_rule_data->lhs, file);
 			else printRule(current_rule_data->lhs_rule, file);
 			
-			if(current_rule_data->rhs == NULL) fputs(current_rule_data->rhs, file);
+			if(current_rule_data->op != NULL) fputs(current_rule_data->op, file);
+			
+			if(current_rule_data->rhs != NULL) fputs(current_rule_data->rhs, file);
 			else printRule(current_rule_data->rhs_rule, file);
 		}
 	}
