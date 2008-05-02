@@ -32,14 +32,14 @@
 <description></description>
 <currentState>start_IGFirm</currentState>
 <nextState>01</nextState>
-<condition>day_of_month_to_act</condition>
+<condition><time><period>monthly</period><phase>a.day_of_month_to_act</phase></time></condition>
 </function>
 
 <function><name>IGFirm_idle</name>
 <description></description>
 <currentState>start_IGFirm</currentState>
 <nextState>01</nextState>
-<condition>not_day_of_month_to_act</condition>
+<condition><not><time><period>monthly</period><phase>a.day_of_month_to_act</phase></time></not></condition>
 </function>
 
 <function><name>IGFirm_send_quality_price_info</name>

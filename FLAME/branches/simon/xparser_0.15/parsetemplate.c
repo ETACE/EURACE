@@ -1839,15 +1839,29 @@ void parseAgentHeaderTemplate(char * directory, model_data * modeldata)
 
 void writeRule(rule_data * current_rule_data, FILE *file)
 {
-	fputs("(", file);
-	if(current_rule_data->lhs == NULL) writeRule(current_rule_data->lhs_rule, file);
-	else fputs(current_rule_data->lhs, file);
-	fputs(" ", file);
-	fputs(current_rule_data->op, file);
-	fputs(" ", file);
-	if(current_rule_data->rhs == NULL) writeRule(current_rule_data->rhs_rule, file);
-	else fputs(current_rule_data->rhs, file);
-	fputs(")", file);
+	if(current_rule_data->time_rule == 1)
+	{
+		if(current_rule_data->not == 1) fputs("!", file);
+		fputs("(", file);
+		fputs("iteration_loop%", file);
+		fputs(current_rule_data->op, file);
+		fputs(" == ", file);
+		fputs(current_rule_data->rhs, file);
+		fputs(")", file);
+	}
+	else
+	{
+		if(current_rule_data->not == 1) fputs("!", file);
+		fputs("(", file);
+		if(current_rule_data->lhs == NULL) writeRule(current_rule_data->lhs_rule, file);
+		else fputs(current_rule_data->lhs, file);
+		fputs(" ", file);
+		fputs(current_rule_data->op, file);
+		fputs(" ", file);
+		if(current_rule_data->rhs == NULL) writeRule(current_rule_data->rhs_rule, file);
+		else fputs(current_rule_data->rhs, file);
+		fputs(")", file);
+	}
 }
 
 /** \fn parseRuleFunctionsTemplate(char * directory, model_data * modeldata)
@@ -1902,22 +1916,10 @@ void parseRuleFunctionsTemplate(char * directory, model_data * modeldata)
 				fputs(" *a)\n", file);
 				fputs("{\n", file);
 				
-				if(current_function->condition_rule->time_rule == 1)
-				{
-					fputs("\tif(iteration_loop%", file);
-					fputs(current_function->condition_rule->op, file);
-					fputs(" == ", file);
-					fputs(current_function->condition_rule->rhs, file);
-					fputs(") return 1;\n", file);
-					fputs("\telse return 0;\n", file);
-				}
-				else
-				{
-					fputs("\tif", file);
-					writeRule(current_function->condition_rule, file);
-					fputs(" return 1;\n", file);
-					fputs("\telse return 0;\n", file);
-				}
+				fputs("\tif(", file);
+				writeRule(current_function->condition_rule, file);
+				fputs(") return 1;\n", file);
+				fputs("\telse return 0;\n", file);
 				
 				fputs("}\n", file);
 			}
@@ -1944,9 +1946,9 @@ void parseRuleFunctionsTemplate(char * directory, model_data * modeldata)
 					fputs(current_xmachine->name, file);
 					fputs(" *)params;\n\n", file);
 					
-					fputs("\tif", file);
+					fputs("\tif(", file);
 					writeRule(current_ioput->filter_rule, file);
-					fputs(" return 1;\n", file);
+					fputs(") return 1;\n", file);
 					fputs("\telse return 0;\n", file);
 					
 					fputs("}\n", file);

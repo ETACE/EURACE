@@ -18,11 +18,31 @@
 </models>
 
 <environment>
+
 <functionFiles>
 <file>my_library_functions.c</file>
 <file>Firm_Library_Functions.c</file>
 <file>Household_Library_Functions.c</file>
 </functionFiles>
+
+<timeunit>
+ <name>daily</name>
+ <unit>iteration</unit>
+ <period>1</period>
+</timeunit>
+
+<timeunit>
+ <name>weekly</name>
+ <unit>daily</unit>
+ <period>5</period>
+</timeunit>
+
+<timeunit>
+ <name>monthly</name>
+ <unit>weekly</unit>
+ <period>4</period>
+</timeunit>
+
 </environment>
 
 <!-- General agent memory -->
