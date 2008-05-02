@@ -206,7 +206,7 @@
 <description></description>
 <currentState>00</currentState>
 <nextState>00b</nextState>
-<condition>Firm_not_day_of_month_to_act</condition>
+<condition><time><not>true</not><period>monthly</period><phase>a.day_of_month_to_act</phase></time></condition>
 </function>
 
 <function><name>Firm_calc_input_demands</name>
@@ -222,7 +222,7 @@
 <description></description>
 <currentState>26</currentState>
 <nextState>27</nextState>
-<condition>Firm_is_external_financial_needs</condition>
+<condition><lhs><value>a.external_financial_needs</value></lhs><op>GT</op><rhs><value>0.0</value></rhs></condition>
 </function>
 
 <function><name>Firm_send_goods_to_mall</name>
@@ -247,7 +247,7 @@
 <description></description>
 <currentState>13b</currentState>
 <nextState>14</nextState>
-<condition>Firm_day_of_month_to_act</condition>
+<condition><time><period>monthly</period><phase>a.day_of_month_to_act</phase></time></condition>
 <inputs>
 <input><messageName>specific_skill_update</messageName></input>
 </inputs>
@@ -257,7 +257,7 @@
 <description></description>
 <currentState>13b</currentState>
 <nextState>14</nextState>
-<condition>Firm_not_day_of_month_to_act</condition>
+<condition><time><not>true</not><period>monthly</period><phase>a.day_of_month_to_act</phase></time></condition>
 </function>
 
 </functions>
@@ -286,14 +286,14 @@
 <description></description>
 <currentState>06</currentState>
 <nextState>09</nextState>
-<condition>Household_not_day_of_month_receive_income</condition>
+<condition><time><not>true</not><period>monthly</period><phase>a.day_of_month_receive_income</phase></time></condition>
 </function>
 
 <function><name>Household_receive_wage</name>
 <description></description>
 <currentState>06</currentState>
 <nextState>07</nextState>
-<condition>Household_day_of_month_receive_income_employed</condition>
+<condition><lhs><time><period>monthly</period><phase>a.day_of_month_receive_income</phase></time></lhs><op>AND</op><rhs><lhs><value>a.employee_firm_id</value></lhs><op>NEQ</op><rhs><value>-1</value></rhs></rhs></condition>
 <inputs>
 <input><messageName>wage_payment</messageName></input>
 </inputs>
@@ -313,7 +313,7 @@
 <currentState>06</currentState>
 <nextState>08</nextState>
 <condition>Household_day_of_month_receive_income_unemployed</condition>
-<!--  <input><messageName>unemployment_benefits</messageName></input>-->
+<!--<input><messageName>unemployment_benefits</messageName></input>-->
 </function>
 
 <function><name>Household_determine_consumption_budget</name>
