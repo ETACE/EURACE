@@ -268,7 +268,7 @@ void unittest3_Firm_calc_input_demands()
  *  delayed finance needs don't require external finance 
  *  The production volume is decremented 1x. 
  */
-  void unittest1_Firm_calc_production_quantity_2()
+ void unittest1_Firm_calc_production_quantity_2()
  {
       add_Firm_agent_internal(init_Firm_agent());
       current_xmachine = *p_xmachine;
@@ -321,8 +321,8 @@ void unittest3_Firm_calc_input_demands()
    *  delayed finance needs require external finance 
    *  The production volume is decremented 1x. 
    */
-    void unittest2_Firm_calc_production_quantity_2()
-   {
+ void unittest2_Firm_calc_production_quantity_2()
+ {
         add_Firm_agent_internal(init_Firm_agent());
         current_xmachine = *p_xmachine;
 
@@ -374,8 +374,9 @@ void unittest3_Firm_calc_input_demands()
      *  Conditions: direct financal needs require external finance and 
      *  delayed finance needs don't require external finance 
      *  The production volume is decremented 2x. 
-    void unittest1_Firm_calc_production_quantity_2()
-   {
+     */
+ void unittest1_Firm_calc_production_quantity_2()
+ {
         add_Firm_agent_internal(init_Firm_agent());
         current_xmachine = *p_xmachine;
 
