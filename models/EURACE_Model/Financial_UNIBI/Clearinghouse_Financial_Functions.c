@@ -10,7 +10,7 @@
 int Clearinghouse_read_stock_orders()
 {
 	START_STOCK_ORDER_MESSAGE_LOOP 
-		//stock_order_message(trader_id, bond_id, limit_price, limit_quantity, MSGDATA);
+		//stock_order_message(trader_id, bond_id, limit_price, limit_quantity);
 		TRADER_ID = stock_order_message->trader_id;
 		STOCK_ID = stock_order_message->stock_id;
 		LIMIT_PRICE = stock_order_message->limit_price;
@@ -37,8 +37,8 @@ int Clearinghouse_compute_stock_transactions()
  */
 int Clearinghouse_send_stock_transactions()
 {
-	//stock_transaction_message(trader_id, stock_id, transaction_price, transaction_quantity, MSGDATA);
-	add_stock_transaction_message(TRADER_ID, STOCK_ID, TRANSACTION_PRICE, TRANSACTION_QUANTITY, MSGDATA);
+	//stock_transaction_message(trader_id, stock_id, transaction_price, transaction_quantity);
+	add_stock_transaction_message(TRADER_ID, STOCK_ID, TRANSACTION_PRICE, TRANSACTION_QUANTITY);
 
 	return 0;
 }
@@ -52,7 +52,7 @@ int Clearinghouse_send_stock_transactions()
 int Clearinghouse_read_bond_orders()
 {
 	START_BOND_ORDER_MESSAGE_LOOP 
-		//bond_order_message(trader_id, bond_id, limit_price, limit_quantity, MSGDATA);
+		//bond_order_message(trader_id, bond_id, limit_price, limit_quantity);
 		TRADER_ID = bond_order_message->trader_id;
 		BOND_ID = bond_order_message->bond_id;
 		LIMIT_PRICE = bond_order_message->limit_price;
@@ -79,8 +79,8 @@ int Clearinghouse_compute_bond_transactions()
  */
 int Clearinghouse_send_bond_transactions()
 {
-	//bond_transaction_message(trader_id, bond_id, transaction_price, transaction_quantity, MSGDATA);
-	add_bond_transaction_message(TRADER_ID, BOND_ID, TRANSACTION_PRICE, TRANSACTION_QUANTITY, MSGDATA);
+	//bond_transaction_message(trader_id, bond_id, transaction_price, transaction_quantity);
+	add_bond_transaction_message(TRADER_ID, BOND_ID, TRANSACTION_PRICE, TRANSACTION_QUANTITY);
 
 	return 0;
 }
@@ -93,7 +93,7 @@ int Clearinghouse_send_bond_transactions()
 int Clearinghouse_read_gov_bond_orders()
 {
 	START_GOV_BOND_ORDER_MESSAGE_LOOP 
-		//gov_bond_order_message(trader_id, gov_bond_id, limit_price, limit_quantity, MSGDATA);
+		//gov_bond_order_message(trader_id, gov_bond_id, limit_price, limit_quantity);
 		TRADER_ID = gov_bond_order_message->trader_id;
 		GOV_BOND_ID = gov_bond_order_message->gov_bond_id;
 		LIMIT_PRICE = gov_bond_order_message->limit_price;
@@ -120,8 +120,8 @@ int Clearinghouse_compute_gov_bond_transactions()
  */
 int Clearinghouse_send_gov_bond_transactions()
 {
-	//gov_bond_transaction_message(trader_id, gov_bond_id, transaction_price, transaction_quantity, MSGDATA);
-	add_gov_bond_transaction_message(TRADER_ID, GOV_BOND_ID, TRANSACTION_PRICE, TRANSACTION_QUANTITY, MSGDATA);
+	//gov_bond_transaction_message(trader_id, gov_bond_id, transaction_price, transaction_quantity);
+	add_gov_bond_transaction_message(TRADER_ID, GOV_BOND_ID, TRANSACTION_PRICE, TRANSACTION_QUANTITY);
 
 	return 0;
 }

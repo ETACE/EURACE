@@ -15,7 +15,7 @@ int Bank_read_loan_request_send_offers()
 			
 			//Send loan conditions: the bank always accepts the loan request
 		    //add_loan_conditions_message(bank_id, firm_id, proposed_interest_rate, amount_credit_offer, MSGDATA);
-			add_loan_conditions_message(ID, loan_request_message->firm_id, PROPOSED_INTEREST_RATE, loan_request_message->credit_amount, MSGDATA);
+			add_loan_conditions_message(ID, loan_request_message->firm_id, PROPOSED_INTEREST_RATE, loan_request_message->credit_amount);
 		}
 	FINISH_LOAN_REQUEST_MESSAGE_LOOP
 	

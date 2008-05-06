@@ -74,7 +74,7 @@ int Firm_compute_balance_sheet()
     //consistency check
     if(PLANNED_TOTAL_INTEREST_PAYMENT != TOTAL_INTEREST_PAYMENT)
     {
-        printf("\nError: planned total interest payment is not equal to total interest payment.\n Did you set the same option for the planned and actual payments?");
+        /*printf("\nError: planned total interest payment is not equal to total interest payment.\n Did you set the same option for the planned and actual payments?");*/
     }
     
     //step 2: compute total debt installment payments
@@ -91,7 +91,7 @@ int Firm_compute_balance_sheet()
     //consistency check
     if(PLANNED_TOTAL_DEBT_INSTALLMENT_PAYMENT != TOTAL_DEBT_INSTALLMENT_PAYMENT)
     {
-        printf("\nError: planned total debt installment payment is not equal to total debt installment payment.\n Did you set the same option for the planned and actualpayments?");
+        /*printf("\nError: planned total debt installment payment is not equal to total debt installment payment.\n Did you set the same option for the planned and actualpayments?");*/
     }
                     
     //step 3: continue balance sheet (net earnings, earnings per share)
@@ -110,7 +110,7 @@ int Firm_compute_balance_sheet()
     EARNINGS_PER_SHARE_RATIO = NET_EARNINGS/CURRENT_SHARES_OUTSTANDING;
 
     //step 4: actual tax_payment to government
-    add_tax_payment_message(ID, GOV_ID, TAX_PAYMENT, MSGDATA);
+    add_tax_payment_message(ID, GOV_ID, TAX_PAYMENT);
 
     //step 5: actual interest_payments and debt_installment_payments
     //printf("\n Checking: PAYMENT_ACCOUNT > TOTAL_DEBT_INSTALLMENT_PAYMENT: %f>%f \n", PAYMENT_ACCOUNT, TOTAL_DEBT_INSTALLMENT_PAYMENT);
@@ -132,7 +132,7 @@ int Firm_compute_balance_sheet()
             PAYMENT_ACCOUNT -= LOANS.array[i].interest_payment;
 
             //tell the bank I paid
-            add_interest_payment_message(ID, BANK_ID, LOANS.array[i].interest_payment,MSGDATA);
+            add_interest_payment_message(ID, BANK_ID, LOANS.array[i].interest_payment);
         }
         
         //Sending debt_installment_payment_msg to all banks at which the firm has a loan
@@ -149,7 +149,7 @@ int Firm_compute_balance_sheet()
             LOANS.array[i].nr_periods_before_maturity -= 1;
 
             //tell the bank I paid
-            add_debt_installment_payment_message(ID, LOANS.array[i].bank_id, LOANS.array[i].debt_installment_payment, MSGDATA);
+            add_debt_installment_payment_message(ID, LOANS.array[i].bank_id, LOANS.array[i].debt_installment_payment);
 
             //if nr_periods_before_maturity == 0, remove the loan item
             if (LOANS.array[i].nr_periods_before_maturity==0)
@@ -201,7 +201,7 @@ int Firm_compute_balance_sheet()
     //consistency check
     if(PLANNED_TOTAL_DIVIDEND_PAYMENT != TOTAL_DIVIDEND_PAYMENT)
     {
-        printf("\nError: planned total dividend payment is not equal to total dividend payment.\n Did you set the same option for the planned and actual payments?");
+        /*printf("\nError: planned total dividend payment is not equal to total dividend payment.\n Did you set the same option for the planned and actual payments?");*/
     }
 
     //step 7: continue balance sheet (data pertaining to the period that just ended)
@@ -211,7 +211,7 @@ int Firm_compute_balance_sheet()
     CURRENT_DIVIDEND_PER_EARNINGS = TOTAL_DIVIDEND_PAYMENT/EARNINGS;
     
     //add dividend_payment_msg to shareholders (dividend per share)     
-    add_dividend_payment_message(ID, CURRENT_DIVIDEND_PER_SHARE, MSGDATA);
+    add_dividend_payment_message(ID, CURRENT_DIVIDEND_PER_SHARE);
 
     //decrease payment_account with the total_dividend_payment
     PAYMENT_ACCOUNT -= TOTAL_DIVIDEND_PAYMENT;

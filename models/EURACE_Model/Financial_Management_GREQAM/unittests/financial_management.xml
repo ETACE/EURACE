@@ -537,9 +537,9 @@
 <var><type>double_array</type><name>last_planned_production_quantities</name></var>
 <var><type>int</type><name>day_of_month_to_act</name></var>
 
-<!------------------------------------- Role: Financial management role ------------------------------------->
+<!-- Role: Financial management role -->
 
-<!------------------------------------- Firm_compute_income_statement ------------------------------------->
+<!-- Firm_compute_income_statement -->
 <var><type>double</type><name>ebit</name></var>
 <var><type>double</type><name>payment_account</name></var>
 
@@ -574,7 +574,7 @@
 <var><type>double</type><name>planned_total_dividend_payment</name></var>
 <var><type>double</type><name>planned_cum_revenue</name></var>
 
-	<!------------------------------------- Financial needs ------------------------------------->
+<!-- Financial needs -->
 <!--total_financial_needs includes direct and delayed financial needs -->
 <var><type>double</type><name>total_financial_needs</name></var>
 <!--direct_financial_needs only includes payments that are directly payable: production costs -->
@@ -594,20 +594,20 @@
 <var><type>double</type><name>critical_price_earnings_ratio</name></var>
 <var><type>double</type><name>critical_earnings_per_share_ratio</name></var>
 
-<!------------------------------------- Misc variables (not yet used) ------------------------------------->
+<!-- Misc variables (not yet used) -->
 <var><type>double</type><name>target_loans</name></var>
 <var><type>double</type><name>target_equity</name></var>
 <var><type>double</type><name>bonds_issue_target</name></var>
 <var><type>double</type><name>stocks_issue_target</name></var>
 
-<!------------------------------------- Standard variables ------------------------------------->
+<!-- Standard variables -->
 <var><type>double</type><name>range</name></var>
 <var><type>double</type><name>posx</name></var>
 <var><type>double</type><name>posy</name></var>
 </memory>
-<!------------------------------------- Defining functions ------------------------------------->
+<!-- Defining functions -->
 <functions>
-<!------------------------------------- Role: Financial management role ------------------------------------->
+<!-- Role: Financial management role -->
 <function>
 <name>Firm_compute_income_statement</name>
 </function>
@@ -622,7 +622,7 @@
 <depends><name>Firm_compute_balance_sheet</name><type>internal</type></depends>
 </function>
 
-<!------------------------------------- Role: Credit Market Role ------------------------------------->
+<!-- Role: Credit Market Role -->
 <function>
 <name>Firm_apply_for_loans</name>
 <depends><name>Firm_compute_payout_policy</name><type>internal</type></depends>
@@ -633,7 +633,7 @@
 <depends><name>Bank_read_loan_request_send_offers</name><type>loan_conditions</type></depends>
 </function>
 
-<!------------------------------------- Role: Asset Market Role ------------------------------------->
+<!-- Role: Asset Market Role -->
 
 <function>
 <name>Firm_compute_and_send_bond_orders</name>

@@ -66,8 +66,7 @@ int Market_Research_send_data()
 		REGION_HOUSEHOLD_DATA.array[i].average_s_skill_2,
 		REGION_HOUSEHOLD_DATA.array[i].average_s_skill_3, 
 		REGION_HOUSEHOLD_DATA.array[i].average_s_skill_4, 
-		REGION_HOUSEHOLD_DATA.array[i].average_s_skill_5,
-		MSGDATA);
+		REGION_HOUSEHOLD_DATA.array[i].average_s_skill_5);
 
 	//printf("SEND %f \n",REGION_HOUSEHOLD_DATA.array[i].average_s_skill_5);
 	}
