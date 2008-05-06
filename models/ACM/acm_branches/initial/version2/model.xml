@@ -1,5 +1,5 @@
 
-<model>
+<xmodel version ="2">
 <name>Credit_Market</name>
 <author>Eurace</author>
 <date>060508</date>
@@ -7,15 +7,17 @@
 <environment>
 
 
-<functionFiles>Bank_functions.c</functionFiles>
-<functionFiles>Firm_functions.c</functionFiles>
-<functionFiles>Household_functions.c</functionFiles>
-
+<functionFiles>
+<file>Bank_functions.c</file>
+<file>Firm_functions.c</file>
+<file>HH_functions.c</file>
+</functionFiles>
 
 <datatypes>
 </datatypes>
 
 </environment>
+<agents>
 
 <xagent>
 <name>Firm</name>
@@ -70,6 +72,7 @@
 <nextState>03</nextState>
 <outputs>
 <output><messageName>loan_accept</messageName></output>
+</outputs>
 </function>
 
 <function>
@@ -101,6 +104,8 @@
 <variable><type>double</type><name>bce_interest</name></variable>
 <variable><type>double</type><name>debt_period</name></variable>
 <variable><type>int</type><name>loan_request_message_found</name></variable>
+<variable><type>int</type><name>day_of_month_to_act</name></variable>
+
 </variables>
 </memory>
 <functions>
@@ -108,19 +113,19 @@
 
 <function>
 <name>Bank_update_HH_Firm_accounts</name>
-<currenState>Bank_start</currentState>
+<currentState>Bank_start</currentState>
 <nextState>01</nextState>
 <inputs>
 <input><messageName>firm_deposit</messageName></input>
 <input><messageName>HH_deposit</messageName></input>
-<inputs>
+</inputs>
 </function>
 
 <function>
 <name>Bank_decide_credit_conditions</name>
 <currentState>01</currentState>
 <nextState>02</nextState>
-</inputs>
+<inputs>
 <input><messageName>loan_request</messageName></input>
 </inputs>
 <outputs>
@@ -150,17 +155,28 @@
 <name>Bank_accounting</name>
 <currentState>04</currentState>
 <nextState>05</nextState>
-<condition>time</condition>
+<condition>
+    <time>
+    <period>monthly</period>
+    <phase>a.day_of_month_to_act</phase>
+    </time>
+</condition>
 </function>
 
 <function>
 <name>Bank_idle</name>
 <currentState>04</currentState>
 <nextState>05</nextState>
-<condition></condition>
+<condition>not
+    <time>
+    <period>monthly</period>
+    <phase>a.day_of_month_to_act</phase>
+    </time>
+</condition>
 </function>
 
 </functions>
+
 </xagent>
 
 
@@ -172,7 +188,7 @@
 <variable><type>int</type><name>id</name></variable>
 <variable><type>double</type><name>total_deposit</name></variable>
 <variable><type>int</type><name>bank_account</name></variable>
-variables
+</variables>
 </memory>
 <functions>
 
@@ -192,7 +208,7 @@ variables
 
 </xagent>
 
-
+</agents>
 <messages>
 
 <message>
@@ -269,4 +285,4 @@ variables
 </messages>
 
 
-</xagent_agent_model>
+</xmodel>
