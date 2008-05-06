@@ -1,0 +1,9 @@
+To convert models specified in the old XMML specification according to
+the new XMML specification.
+
+On Unix platform, you may use the xmlstarlet suite to do the
+transformation:
+
+$ xmlstarlet tr old2new.xsl model_old_xmml.xml | xmlstarlet fo - | less
+
+-- Vehbi Sinan Tunalioglu <vst@cs.bilgi.edu.tr>
