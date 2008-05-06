@@ -11,7 +11,7 @@
 <functionFiles>
 <file>Firm_Statistics_Functions.c</file>
 <file>Household_Statistics_Functions.c</file>
-<file>Eurostat_functions.c</file>
+<file>Eurostat_Functions.c</file>
 </functionFiles>
 
 <dataTypes>
