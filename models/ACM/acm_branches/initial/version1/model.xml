@@ -86,16 +86,18 @@
 <var><type>double</type><name>lambda</name></var>
 <var><type>double</type><name>bce_interest</name></var>
 <var><type>double</type><name>debt_period</name></var>
+<var><type>int</type><name>loan_request_message_found</name></var>
 </memory>
 <functions>
 
 
 <function>
 <name>Bank_decide_credit_conditions</name>
-<current_state>01</current_state>
-<next_state>02</next_state>
+<current_state>Bank_start</current_state>
+<next_state>01</next_state>
 <input><messagetype>loan_request</messagetype></input>
 <output><messagetype>loan_conditions</messagetype></output>
+<condition>loan_request==0</condition>
 </function>
 
 <function>
