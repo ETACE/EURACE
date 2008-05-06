@@ -25,23 +25,27 @@
 <file>Household_Library_Functions.c</file>
 </functionFiles>
 
-<timeunit>
+<timeUnits>
+
+<timeUnit>
  <name>daily</name>
  <unit>iteration</unit>
  <period>1</period>
-</timeunit>
+</timeUnit>
 
-<timeunit>
+<timeUnit>
  <name>weekly</name>
  <unit>daily</unit>
  <period>5</period>
-</timeunit>
+</timeUnit>
 
-<timeunit>
+<timeUnit>
  <name>monthly</name>
  <unit>weekly</unit>
  <period>4</period>
-</timeunit>
+</timeUnit>
+
+</timeUnits>
 
 </environment>
 
