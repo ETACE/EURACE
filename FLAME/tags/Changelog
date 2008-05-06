@@ -1,0 +1,10 @@
+xparser 0.15.1
+	* add compatibility with 'timeUnit' tags
+
+xparser 0.15.0
+	* integration of message board library from STFC
+	* addition of message board filters
+	* function order described using current/next states
+	* addition of function conditions
+	* addition of time units
+	* removal of requirements for x,y,z,range in agent/message memories
