@@ -292,6 +292,7 @@ void readinitialstates(char * filename, int * itno, double cloud_data[6],
 	int in_bce_interest;
 	int in_debt_period;
 	int in_loan_request_message_found;
+	int in_day_of_month_to_act;
 	int in_total_deposit;
 	int in_bank_account;
 
@@ -331,6 +332,7 @@ void readinitialstates(char * filename, int * itno, double cloud_data[6],
 //	double bce_interest;
 //	double debt_period;
 //	int loan_request_message_found;
+//	int day_of_month_to_act;
 //	double total_deposit;
 //	int bank_account;
 
@@ -395,6 +397,7 @@ void readinitialstates(char * filename, int * itno, double cloud_data[6],
 	in_bce_interest = 0;
 	in_debt_period = 0;
 	in_loan_request_message_found = 0;
+	in_day_of_month_to_act = 0;
 	in_total_deposit = 0;
 	in_bank_account = 0;
 
@@ -432,6 +435,7 @@ void readinitialstates(char * filename, int * itno, double cloud_data[6],
 //	bce_interest = 0.0;
 //	debt_period = 0.0;
 //	loan_request_message_found = 0;
+//	day_of_month_to_act = 0;
 //	total_deposit = 0.0;
 //	bank_account = 0;
 
@@ -589,7 +593,7 @@ in_Household_agent = 0;
 					 * If flag is not zero we aleady have partition data so can read and distribute to the current node.*/
 					if( flag == 0 )
 					{
-						//add_Bank_agent(id, cash, total_credit, equity, bce_debt, alfa, variable, min_interest, gamma, profits, lambda, bce_interest, debt_period, loan_request_message_found);
+						//add_Bank_agent(id, cash, total_credit, equity, bce_debt, alfa, variable, min_interest, gamma, profits, lambda, bce_interest, debt_period, loan_request_message_found, day_of_month_to_act);
 						add_Bank_agent_internal(current_Bank_agent, Bank_Bank_start_state);
 						
 						/* Update the cloud data */
@@ -615,7 +619,7 @@ in_Household_agent = 0;
 							)
 							{
 								//p_xmachine = &(current_node->agents);
-								//add_Bank_agent(id, cash, total_credit, equity, bce_debt, alfa, variable, min_interest, gamma, profits, lambda, bce_interest, debt_period, loan_request_message_found);
+								//add_Bank_agent(id, cash, total_credit, equity, bce_debt, alfa, variable, min_interest, gamma, profits, lambda, bce_interest, debt_period, loan_request_message_found, day_of_month_to_act);
 								add_Bank_agent_internal(current_Bank_agent, Bank_Bank_start_state);
 							} 
 						}
@@ -634,7 +638,7 @@ in_Household_agent = 0;
 								rrange=1.5;
 
 								//p_xmachine = &(current_node->agents);
-								//add_Bank_agent(id, cash, total_credit, equity, bce_debt, alfa, variable, min_interest, gamma, profits, lambda, bce_interest, debt_period, loan_request_message_found);
+								//add_Bank_agent(id, cash, total_credit, equity, bce_debt, alfa, variable, min_interest, gamma, profits, lambda, bce_interest, debt_period, loan_request_message_found, day_of_month_to_act);
 								add_Bank_agent_internal(current_Bank_agent, Bank_Bank_start_state);
 
 								/*current_Bank_agent-> = xcentre;
@@ -747,6 +751,7 @@ in_Household_agent = 0;
 //				bce_interest = 0.0;
 //				debt_period = 0.0;
 //				loan_request_message_found = 0;
+//				day_of_month_to_act = 0;
 //				total_deposit = 0.0;
 //				bank_account = 0;
 
@@ -819,6 +824,8 @@ in_Household_agent = 0;
 			if(strcmp(buffer, "/debt_period") == 0) in_debt_period = 0;
 			if(strcmp(buffer, "loan_request_message_found") == 0) in_loan_request_message_found = 1;
 			if(strcmp(buffer, "/loan_request_message_found") == 0) in_loan_request_message_found = 0;
+			if(strcmp(buffer, "day_of_month_to_act") == 0) in_day_of_month_to_act = 1;
+			if(strcmp(buffer, "/day_of_month_to_act") == 0) in_day_of_month_to_act = 0;
 			if(strcmp(buffer, "total_deposit") == 0) in_total_deposit = 1;
 			if(strcmp(buffer, "/total_deposit") == 0) in_total_deposit = 0;
 			if(strcmp(buffer, "bank_account") == 0) in_bank_account = 1;
@@ -884,6 +891,7 @@ in_Household_agent = 0;
 				if(in_bce_interest) current_Bank_agent->bce_interest = atof(buffer);
 				if(in_debt_period) current_Bank_agent->debt_period = atof(buffer);
 				if(in_loan_request_message_found) current_Bank_agent->loan_request_message_found = atoi(buffer);
+				if(in_day_of_month_to_act) current_Bank_agent->day_of_month_to_act = atoi(buffer);
 			}
 			else if(in_Household_agent == 1)
 			{
@@ -938,7 +946,7 @@ in_Household_agent = 0;
 //	free_double_array(variable_per_installment);
 //	free_double_array(value_at_risk);
 //	free_double_array(interest_left);
-//////////////////////////////////
+////////////////////////////////////
 }
 
 /** \fn void write_int_static_array(FILE *file, $name * temp)
@@ -1224,6 +1232,10 @@ void write_Bank_agent(FILE *file, xmachine_memory_Bank * current)
 	sprintf(data, "%i", current->loan_request_message_found);
 	fputs(data, file);
 	fputs("</loan_request_message_found>\n", file);
+		fputs("<day_of_month_to_act>", file);
+	sprintf(data, "%i", current->day_of_month_to_act);
+	fputs(data, file);
+	fputs("</day_of_month_to_act>\n", file);
 		
 	fputs("</xagent>\n", file);
 }
