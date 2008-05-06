@@ -110,7 +110,7 @@
 <function>
 <name>Firm_compute_balance_sheet</name>
 <description></description>
-<currentState>002</currentState>
+<currentState>02</currentState>
 <nextState>003</nextState>
 </function>
 
@@ -118,7 +118,14 @@
 <name>Firm_check_solvency</name>
 <description></description>
 <currentState>003</currentState>
-<nextState>004</nextState>
+<nextState>004</nextState><!--Change this to end state of firm-->
+</function>
+
+<function>
+<name>Firm_idle</name>
+<currentState>004</currentState>
+<nextState>Firm_end</nextState>
+<condition><lhs><value>a.bankruptcy</value></lhs><op>EQ</op><rhs><value>0</value></rhs></condition>
 </function>
 
 <function>
@@ -126,7 +133,7 @@
 <description></description>
 <currentState>004</currentState>
 <nextState>20</nextState>
-<!-- <condition><lhs><value>a.bankruptcy</value></lhs><op>EQ</op><rhs><value>1</value></rhs></condition>  -->
+<condition><lhs><value>a.bankruptcy</value></lhs><op>EQ</op><rhs><value>1</value></rhs></condition>  
 </function>
 
 <function>
@@ -135,10 +142,10 @@
 <currentState>261</currentState>
 <nextState>27</nextState>
 <outputs>
-<output><messageName>tax_payment</messageName></output>
-<output><messageName>interest_payment</messageName></output>
-<output><messageName>debt_installment_payment</messageName></output>
-<output><messageName>dividend_payment</messageName></output>
+<!--<output><messageName>tax_payment</messageName></output>-->
+<!--<output><messageName>interest_payment</messageName></output>-->
+<!--<output><messageName>debt_installment_payment</messageName></output>-->
+<!--<output><messageName>dividend_payment</messageName></output>-->
 </outputs>
 </function>
 
