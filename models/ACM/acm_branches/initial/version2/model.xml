@@ -13,6 +13,28 @@
 <file>HH_functions.c</file>
 </functionFiles>
 
+
+<timeUnits>
+
+<timeUnit>
+ <name>daily</name>
+ <unit>iteration</unit>
+ <period>1</period>
+</timeUnit>
+
+<timeUnit>
+ <name>weekly</name>
+ <unit>daily</unit>
+ <period>5</period>
+</timeUnit>
+
+<timeUnit>
+ <name>monthly</name>
+ <unit>weekly</unit>
+ <period>4</period>
+</timeUnit>
+
+</timeUnits>
 <datatypes>
 </datatypes>
 
@@ -53,7 +75,7 @@
 <currentState>firm_start</currentState>
 <nextState>01</nextState>
 <outputs>
-<output><messageName>deposit</messageName></output>
+<output><messageName>firm_deposit</messageName></output>
 </outputs>
 </function>
 
@@ -70,6 +92,9 @@
 <name>Firm_choose_bank</name>
 <currentState>02</currentState>
 <nextState>03</nextState>
+<inputs>
+<input><messageName>loan_conditions</messageName></input>
+</inputs>
 <outputs>
 <output><messageName>loan_accept</messageName></output>
 </outputs>
@@ -198,7 +223,7 @@
 <currentState>HH_start</currentState>
 <nextState>01</nextState>
 <outputs>
-<output><messageName>household_deposit</messageName></output>
+<output><messageName>HH_deposit</messageName></output>
 </outputs>
 </function>
 

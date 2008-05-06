@@ -12,6 +12,8 @@ digraph state_graph {
 	layer_3 -> layer_4 [style=invis];
 	layer_5 [shape=plaintext, label="layer 5"];
 	layer_4 -> layer_5 [style=invis];
+	layer_6 [shape=plaintext, label="layer 6"];
+	layer_5 -> layer_6 [style=invis];
 	
 	/* States */
 	Firm_04 [label = "04"]
@@ -56,9 +58,9 @@ digraph state_graph {
 	Bank_Bank_give_loans_02_03 -> Bank_03;
 	Bank_03 -> Bank_Bank_check_debt_payments_03_04;
 	Bank_Bank_check_debt_payments_03_04 -> Bank_04;
-	Bank_04 -> Bank_Bank_accounting_04_05;
+	Bank_04 -> Bank_Bank_accounting_04_05 [ label = "monthly\na->day_of_month_to_act"];
 	Bank_Bank_accounting_04_05 -> Bank_05;
-	Bank_04 -> Bank_Bank_idle_04_05;
+	Bank_04 -> Bank_Bank_idle_04_05 [ label = "monthly\na->day_of_month_to_act"];
 	Bank_Bank_idle_04_05 -> Bank_05;
 	Household_HH_start -> Household_Household_savings_decision_HH_start_01;
 	Household_Household_savings_decision_HH_start_01 -> Household_01;
@@ -67,10 +69,14 @@ digraph state_graph {
 	Firm_Firm_pay_debt_03_04 -> Bank_Bank_check_debt_payments_03_04 [ label = "debt" color="#00ff00" constraint=false];
 	Firm_Firm_choose_bank_02_03 -> Bank_Bank_give_loans_02_03 [ label = "loan_accept" color="#00ff00" constraint=false];
 	Firm_Firm_ask_for_loan_01_02 -> Bank_Bank_decide_credit_conditions_01_02 [ label = "loan_request" color="#00ff00" constraint=false];
-	{ rank=same; layer_0;  Firm_Firm_savings_firm_start_01;  Bank_Bank_update_HH_Firm_accounts_Bank_start_01;  Household_Household_savings_decision_HH_start_01; }
-	{ rank=same; layer_1;  Firm_Firm_ask_for_loan_01_02; }
-	{ rank=same; layer_2;  Firm_Firm_choose_bank_02_03;  Bank_Bank_decide_credit_conditions_01_02; }
-	{ rank=same; layer_3;  Firm_Firm_pay_debt_03_04;  Bank_Bank_give_loans_02_03; }
-	{ rank=same; layer_4;  Bank_Bank_check_debt_payments_03_04; }
-	{ rank=same; layer_5;  Bank_Bank_accounting_04_05;  Bank_Bank_idle_04_05; }
+	Household_Household_savings_decision_HH_start_01 -> Bank_Bank_update_HH_Firm_accounts_Bank_start_01 [ label = "HH_deposit" color="#00ff00" constraint=false];
+	Firm_Firm_savings_firm_start_01 -> Bank_Bank_update_HH_Firm_accounts_Bank_start_01 [ label = "firm_deposit" color="#00ff00" constraint=false];
+	Bank_Bank_decide_credit_conditions_01_02 -> Firm_Firm_choose_bank_02_03 [ label = "loan_conditions" color="#00ff00" constraint=false];
+	{ rank=same; layer_0;  Firm_Firm_savings_firm_start_01;  Household_Household_savings_decision_HH_start_01; }
+	{ rank=same; layer_1;  Firm_Firm_ask_for_loan_01_02;  Bank_Bank_update_HH_Firm_accounts_Bank_start_01; }
+	{ rank=same; layer_2;  Bank_Bank_decide_credit_conditions_01_02; }
+	{ rank=same; layer_3;  Firm_Firm_choose_bank_02_03; }
+	{ rank=same; layer_4;  Firm_Firm_pay_debt_03_04;  Bank_Bank_give_loans_02_03; }
+	{ rank=same; layer_5;  Bank_Bank_check_debt_payments_03_04; }
+	{ rank=same; layer_6;  Bank_Bank_accounting_04_05;  Bank_Bank_idle_04_05; }
 }

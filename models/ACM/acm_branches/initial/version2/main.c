@@ -248,27 +248,44 @@ printf("Ouput dir: %s\n", outputpath);
 	}
 
 
-    rc = MB_SyncStart(b_household_deposit);
-    #ifdef ERRCHECK
-    if (rc != MB_SUCCESS)
-    {
-       fprintf(stderr, "ERROR: Could not start sync of 'household_deposit' board\n");
-       switch(rc) {
-           case MB_ERR_INVALID:
-               fprintf(stderr, "\t reason: 'household_deposit' board is invalid\n");
-               break;
-           case MB_ERR_LOCKED:
-               fprintf(stderr, "\t reason: 'household_deposit' board is locked\n");
-               break;
-           case MB_ERR_MEMALLOC:
-               fprintf(stderr, "\t reason: out of memory\n");
-               break;
-           case MB_ERR_INTERNAL:
-               fprintf(stderr, "\t reason: internal error. Recompile libmoard in debug mode for more info \n");
-               break;
-       }
-    }
-    #endif
+
+	
+	current_xmachine_Firm_holder = Firm_firm_start_state->agents;
+	while(current_xmachine_Firm_holder)
+	{
+		temp_xmachine_Firm_holder = current_xmachine_Firm_holder->next;
+		current_xmachine_Firm = current_xmachine_Firm_holder->agent;
+		current_xmachine_Firm_next_state = Firm_01_state;
+		/* For backwards compatability set current_xmachine */
+		current_xmachine->xmachine_Firm = NULL;
+		current_xmachine->xmachine_Bank = NULL;
+		current_xmachine->xmachine_Household = NULL;
+		current_xmachine->xmachine_Firm = current_xmachine_Firm;
+		
+		
+		
+		
+		
+			i = Firm_savings();
+			
+		
+		
+			if(i == 1)
+			{
+				free_Firm_agent(current_xmachine_Firm_holder, Firm_firm_start_state);
+			}
+			else
+			{
+				transition_Firm_agent(current_xmachine_Firm_holder, Firm_firm_start_state, Firm_01_state);
+			}
+		
+		
+		current_xmachine_Firm = NULL;
+		
+		current_xmachine_Firm_holder = temp_xmachine_Firm_holder;
+	}
+
+
 
 
 	
@@ -384,45 +401,6 @@ printf("Ouput dir: %s\n", outputpath);
 		
 		current_xmachine_Bank_holder = temp_xmachine_Bank_holder;
 	}
-
-
-
-	
-	current_xmachine_Firm_holder = Firm_firm_start_state->agents;
-	while(current_xmachine_Firm_holder)
-	{
-		temp_xmachine_Firm_holder = current_xmachine_Firm_holder->next;
-		current_xmachine_Firm = current_xmachine_Firm_holder->agent;
-		current_xmachine_Firm_next_state = Firm_01_state;
-		/* For backwards compatability set current_xmachine */
-		current_xmachine->xmachine_Firm = NULL;
-		current_xmachine->xmachine_Bank = NULL;
-		current_xmachine->xmachine_Household = NULL;
-		current_xmachine->xmachine_Firm = current_xmachine_Firm;
-		
-		
-		
-		
-		
-			i = Firm_savings();
-			
-		
-		
-			if(i == 1)
-			{
-				free_Firm_agent(current_xmachine_Firm_holder, Firm_firm_start_state);
-			}
-			else
-			{
-				transition_Firm_agent(current_xmachine_Firm_holder, Firm_firm_start_state, Firm_01_state);
-			}
-		
-		
-		current_xmachine_Firm = NULL;
-		
-		current_xmachine_Firm_holder = temp_xmachine_Firm_holder;
-	}
-
 
 
 
@@ -605,6 +583,26 @@ printf("Ouput dir: %s\n", outputpath);
     #endif
 
 
+
+	rc = MB_SyncComplete(b_loan_conditions);
+	#ifdef ERRCHECK
+    if (rc != MB_SUCCESS)
+    {
+       fprintf(stderr, "ERROR: Could not complete sync of 'loan_conditions' board\n");
+       switch(rc) {
+            case MB_ERR_INVALID:
+               fprintf(stderr, "\t reason: 'loan_conditions' board is invalid\n");
+               break;
+           case MB_ERR_MEMALLOC:
+               fprintf(stderr, "\t reason: out of memory\n");
+               break;
+           case MB_ERR_INTERNAL:
+               fprintf(stderr, "\t reason: internal error. Recompile libmoard in debug mode for more info \n");
+               break;
+       }
+    }
+    #endif
+	
 	
 	current_xmachine_Firm_holder = Firm_02_state->agents;
 	while(current_xmachine_Firm_holder)
@@ -622,8 +620,47 @@ printf("Ouput dir: %s\n", outputpath);
 		
 		
 		
+		rc = MB_Iterator_Create(b_loan_conditions, &i_loan_conditions);
+		#ifdef ERRCHECK
+		if (rc != MB_SUCCESS)
+		{
+		   fprintf(stderr, "ERROR: Could not create Iterator for 'loan_conditions'\n");
+		   switch(rc) {
+		       case MB_ERR_INVALID:
+		           fprintf(stderr, "\t reason: 'loan_conditions' board is invalid\n");
+		           break;
+		       case MB_ERR_LOCKED:
+	               fprintf(stderr, "\t reason: 'loan_conditions' board is locked\n");
+	               break;
+	           case MB_ERR_MEMALLOC:
+	               fprintf(stderr, "\t reason: out of memory\n");
+	               break;
+	           case MB_ERR_INTERNAL:
+	               fprintf(stderr, "\t reason: internal error. Recompile libmoard in debug mode for more info \n");
+	               break;
+		   }
+		}
+		#endif
+		
+		
 			i = Firm_choose_bank();
 			
+		
+		    rc = MB_Iterator_Delete(&i_loan_conditions);
+		    #ifdef ERRCHECK
+		    if (rc != MB_SUCCESS)
+		    {
+		       fprintf(stderr, "ERROR: Could not delete 'loan_conditions' iterator\n");
+		       switch(rc) {
+		           case MB_ERR_INVALID:
+		               fprintf(stderr, "\t reason: 'loan_conditions' iterator is invalid\n");
+		               break;
+		           case MB_ERR_INTERNAL:
+		               fprintf(stderr, "\t reason: internal error. Recompile libmoard in debug mode for more info \n");
+		               break;
+		       }
+		    }
+		    #endif
 		
 		
 			if(i == 1)
@@ -851,7 +888,8 @@ printf("Ouput dir: %s\n", outputpath);
 		current_xmachine->xmachine_Household = NULL;
 		current_xmachine->xmachine_Bank = current_xmachine_Bank;
 		
-		
+		if(Bank_Bank_idle_04_05_condition(current_xmachine_Bank))
+		{
 		
 		
 		
@@ -867,7 +905,7 @@ printf("Ouput dir: %s\n", outputpath);
 			{
 				transition_Bank_agent(current_xmachine_Bank_holder, Bank_04_state, Bank_05_state);
 			}
-		
+		}
 		
 		current_xmachine_Bank = NULL;
 		
@@ -889,7 +927,8 @@ printf("Ouput dir: %s\n", outputpath);
 		current_xmachine->xmachine_Household = NULL;
 		current_xmachine->xmachine_Bank = current_xmachine_Bank;
 		
-		
+		if(Bank_Bank_accounting_04_05_condition(current_xmachine_Bank))
+		{
 		
 		
 		
@@ -905,7 +944,7 @@ printf("Ouput dir: %s\n", outputpath);
 			{
 				transition_Bank_agent(current_xmachine_Bank_holder, Bank_04_state, Bank_05_state);
 			}
-		
+		}
 		
 		current_xmachine_Bank = NULL;
 		

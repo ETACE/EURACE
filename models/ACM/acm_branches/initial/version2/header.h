@@ -216,6 +216,7 @@ struct xmachine_memory_Bank
 	double bce_interest;	/**< X-machine memory variable bce_interest of type double. */
 	double debt_period;	/**< X-machine memory variable debt_period of type double. */
 	int loan_request_message_found;	/**< X-machine memory variable loan_request_message_found of type int. */
+	int day_of_month_to_act;	/**< X-machine memory variable day_of_month_to_act of type int. */
 };
 
 /** \struct xmachine_memory_Bank_holder
@@ -457,7 +458,9 @@ int Bank_decide_credit_conditions(void);
 int Bank_give_loans(void);
 int Bank_check_debt_payments(void);
 int Bank_accounting(void);
+int Bank_Bank_accounting_04_05_condition(xmachine_memory_Bank *a);
 int Bank_idle(void);
+int Bank_Bank_idle_04_05_condition(xmachine_memory_Bank *a);
 int Household_savings_decision(void);
 
 /** \struct location
@@ -760,7 +763,7 @@ xmachine_memory_Bank * init_Bank_agent();
 void free_Bank_agent(xmachine_memory_Bank_holder * tmp, xmachine_memory_Bank_state * state);
 void transition_Bank_agent(xmachine_memory_Bank_holder * tmp, xmachine_memory_Bank_state * from_state, xmachine_memory_Bank_state * to_state);
 void add_Bank_agent_internal(xmachine_memory_Bank * agent, xmachine_memory_Bank_state * state);
-void add_Bank_agent(int id, double cash, double total_credit, double equity, double bce_debt, double alfa, double variable, double min_interest, double gamma[], double profits[], double lambda, double bce_interest, double debt_period, int loan_request_message_found);
+void add_Bank_agent(int id, double cash, double total_credit, double equity, double bce_debt, double alfa, double variable, double min_interest, double gamma[], double profits[], double lambda, double bce_interest, double debt_period, int loan_request_message_found, int day_of_month_to_act);
 xmachine_memory_Household_state * init_Household_state();
 xmachine_memory_Household * init_Household_agent();
 void free_Household_agent(xmachine_memory_Household_holder * tmp, xmachine_memory_Household_state * state);
@@ -864,6 +867,8 @@ void set_debt_period(double debt_period);
 double get_debt_period();
 void set_loan_request_message_found(int loan_request_message_found);
 int get_loan_request_message_found();
+void set_day_of_month_to_act(int day_of_month_to_act);
+int get_day_of_month_to_act();
 void set_total_deposit(double total_deposit);
 double get_total_deposit();
 void set_bank_account(int bank_account);

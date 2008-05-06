@@ -512,6 +512,7 @@ xmachine_memory_Bank * init_Bank_agent()
 	current->bce_interest = 0.0;
 	current->debt_period = 0.0;
 	current->loan_request_message_found = 0;
+	current->day_of_month_to_act = 0;
 	
 	return current;
 }
@@ -590,7 +591,7 @@ void add_Bank_agent_internal(xmachine_memory_Bank * agent, xmachine_memory_Bank_
 	state->count++;
 }
 
-/** \fn void add_Bank_agent(int id, double cash, double total_credit, double equity, double bce_debt, double alfa, double variable, double min_interest, double gamma[], double profits[], double lambda, double bce_interest, double debt_period, int loan_request_message_found)
+/** \fn void add_Bank_agent(int id, double cash, double total_credit, double equity, double bce_debt, double alfa, double variable, double min_interest, double gamma[], double profits[], double lambda, double bce_interest, double debt_period, int loan_request_message_found, int day_of_month_to_act)
  * \brief Add Bank X-machine to the current being used X-machine list.
  * \param id Variable for the X-machine memory.
  * \param cash Variable for the X-machine memory.
@@ -606,8 +607,9 @@ void add_Bank_agent_internal(xmachine_memory_Bank * agent, xmachine_memory_Bank_
  * \param bce_interest Variable for the X-machine memory.
  * \param debt_period Variable for the X-machine memory.
  * \param loan_request_message_found Variable for the X-machine memory.
+ * \param day_of_month_to_act Variable for the X-machine memory.
  */
-void add_Bank_agent(int id, double cash, double total_credit, double equity, double bce_debt, double alfa, double variable, double min_interest, double gamma[], double profits[], double lambda, double bce_interest, double debt_period, int loan_request_message_found)
+void add_Bank_agent(int id, double cash, double total_credit, double equity, double bce_debt, double alfa, double variable, double min_interest, double gamma[], double profits[], double lambda, double bce_interest, double debt_period, int loan_request_message_found, int day_of_month_to_act)
 {
 	xmachine_memory_Bank * current;
 	
@@ -628,6 +630,7 @@ void add_Bank_agent(int id, double cash, double total_credit, double equity, dou
 	current->bce_interest = bce_interest;
 	current->debt_period = debt_period;
 	current->loan_request_message_found = loan_request_message_found;
+	current->day_of_month_to_act = day_of_month_to_act;
 }
 
 xmachine_memory_Household_state * init_Household_state()
@@ -1365,6 +1368,28 @@ void set_loan_request_message_found(int loan_request_message_found)
 int get_loan_request_message_found()
 {
 	if(current_xmachine->xmachine_Bank) return (*current_xmachine->xmachine_Bank).loan_request_message_found;
+
+    // suppress compiler warning by returning dummy value /
+    // this statement should rightfully NEVER be reached /
+    return (int)0;
+}
+
+/** \fn void set_day_of_month_to_act(int day_of_month_to_act) 
+ * \brief Set day_of_month_to_act memory variable for current X-machine.
+ * \param day_of_month_to_act New value for variable.
+ */
+void set_day_of_month_to_act(int day_of_month_to_act)
+{
+	if(current_xmachine->xmachine_Bank) (*current_xmachine->xmachine_Bank).day_of_month_to_act = day_of_month_to_act;
+}
+
+/** \fn int get_day_of_month_to_act()
+ * \brief Get day_of_month_to_act memory variable from current X-machine.
+ * \return Value for variable.
+ */
+int get_day_of_month_to_act()
+{
+	if(current_xmachine->xmachine_Bank) return (*current_xmachine->xmachine_Bank).day_of_month_to_act;
 
     // suppress compiler warning by returning dummy value /
     // this statement should rightfully NEVER be reached /

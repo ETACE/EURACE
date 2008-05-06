@@ -45,3 +45,6 @@
 /** \def LOAN_REQUEST_MESSAGE_FOUND
  * \brief Direct access to loan_request_message_found of Bank agent memory variable. */
 #define LOAN_REQUEST_MESSAGE_FOUND (current_xmachine_Bank->loan_request_message_found)
+/** \def DAY_OF_MONTH_TO_ACT
+ * \brief Direct access to day_of_month_to_act of Bank agent memory variable. */
+#define DAY_OF_MONTH_TO_ACT (current_xmachine_Bank->day_of_month_to_act)
