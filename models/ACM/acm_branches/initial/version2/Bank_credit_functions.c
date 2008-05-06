@@ -29,6 +29,8 @@ int Bank_decide_credit_conditions()
 				credit_allowed = (ALFA*EQUITY - VAR)/bankruptcy_prob;
 			}
 			i = MIN_INTEREST + GAMMA[0]*r;
+			
+			//add_loan_conditions_message(interest_rate, credit_allowed, firm_id, ID, r*(c/credit_allowed));
 			add_loan_conditions_message(i, credit_allowed, loan_request_message->firm_id, ID, r*(c/credit_allowed));
 		}
 		FINISH_LOAN_REQUEST_MESSAGE_LOOP

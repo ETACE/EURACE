@@ -11,6 +11,7 @@ int Firm_ask_loan()
 	{
 		bank_name[1] = rand()%NUMBER_OF_BANKS;
 	} while ( bank_name[1] == bank_name[0] );
+	
 	/*WARNING: CREDIT_DEMAND is also an agent memory variable*/
 	double credit_demand = rand()/((double)RAND_MAX+1);  /* generate random credit demand */
 	add_loan_request_message(CURRENT_EQUITY, CURRENT_DEBT, credit_demand, bank_name[0], ID);
