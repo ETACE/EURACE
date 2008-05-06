@@ -126,7 +126,7 @@
 <description></description>
 <currentState>02</currentState>
 <nextState>20</nextState>
-<condition><lhs><value>a.BANKRUPTCY</value></lhs><op>EQ</op><rhs><value>1</value></rhs></condition>
+<condition><lhs><value>a.bankruptcy</value></lhs><op>EQ</op><rhs><value>1</value></rhs></condition>
 </function>
 
 <function>
