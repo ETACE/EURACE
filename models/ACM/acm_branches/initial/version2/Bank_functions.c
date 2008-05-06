@@ -10,7 +10,7 @@ int Bank_update_HH_Firm_accounts()
 int Bank_decide_credit_conditions()
 {
 	return 0;
-	}
+}
 
 int Bank_give_loans()
 {
@@ -19,9 +19,16 @@ int Bank_give_loans()
 
 
 int Bank_check_debt_payments()
-{return 0;}
+{
+	return 0;
+}
 
 int Bank_accounting()
-{return 0;}
+{
+	return 0;
+}
 
-int Bank_idle(){return 0;}
+int Bank_idle()
+{
+	return 0;
+}

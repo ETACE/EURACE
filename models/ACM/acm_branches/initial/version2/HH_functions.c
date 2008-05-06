@@ -3,5 +3,6 @@
 
 
 int Household_savings_decision()
-{ return 0;
+{ 
+	return 0;
 }
