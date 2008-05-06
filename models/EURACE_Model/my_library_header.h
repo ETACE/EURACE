@@ -87,9 +87,7 @@
 /*Planning horizon of firms*/
 #define FIRM_PLANNING_HORIZON 10
 
-/*If a firm needs external financing and planned production costs exceed the obtained finacial resources 
- * then the production volume is reduced by this fraction*/
-#define ADAPTION_PRODUCTION_VOLUME_DUE_TO_INSUFFICIENT_FINANCES 0.01
+
 
 #define INV_INERTIA 3
 

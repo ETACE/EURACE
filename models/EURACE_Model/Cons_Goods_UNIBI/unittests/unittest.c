@@ -7,12 +7,11 @@
 
 /*************************** unittest prototypes ***************************/
 void unittest_Firm_calc_production_quantity();
+void unittest_Firm_calc_production_quantity();
 void unittest1_Firm_calc_input_demands();
 void unittest2_Firm_calc_input_demands();
 void unittest3_Firm_calc_input_demands();
-void unittest1_Firm_calc_production_quantity_2();
-void unittest2_Firm_calc_production_quantity_2();
-void unittest3_Firm_calc_production_quantity_2();
+void unittest_Firm_calc_production_quantity_2();
 void unittest_Firm_calc_input_demands_2();
 void unittest_Firm_send_capital_demand();
 void unittest_Firm_calc_pay_costs();
@@ -61,12 +60,10 @@ int main(int argc, char * argv[])
     
     if(
     	NULL == CU_add_test(pSuite, "Firm_calc_production_quantity", unittest_Firm_calc_production_quantity) ||
-    	NULL == CU_add_test(pSuite, "Firm_calc_input_demands, Case 1", unittest1_Firm_calc_input_demands)  ||
+    	//NULL == CU_add_test(pSuite, "Firm_calc_input_demands, Case 1", unittest1_Firm_calc_input_demands)  ||
     	//NULL == CU_add_test(pSuite, "Firm_calc_input_demands, Case 2", unittest2_Firm_calc_input_demands)  ||
     	//NULL == CU_add_test(pSuite, "Firm_calc_input_demands, Case 3", unittest3_Firm_calc_input_demands)  ||
-    	//NULL == CU_add_test(pSuite, "Firm_calc_production_quantity_2, Case 1", unittest1_Firm_calc_production_quantity_2)  ||
-    	//NULL == CU_add_test(pSuite, "Firm_calc_production_quantity_2, Case 2", unittest2_Firm_calc_production_quantity_2)  ||
-    	//NULL == CU_add_test(pSuite, "Firm_calc_production_quantity_2, Case 3", unittest3_Firm_calc_production_quantity_2)  ||
+    	//NULL == CU_add_test(pSuite, "Firm_calc_input_demands_2", unittest_Firm_calc_input_demands_2)  ||
     	//NULL == CU_add_test(pSuite, "Firm_send_capital_demand", unittest_Firm_send_capital_demand)  ||
     	//NULL == CU_add_test(pSuite, "Firm_calc_pay_costs", unittest_Firm_calc_pay_costs)  ||
     	//NULL == CU_add_test(pSuite, "Firm_send_goods_to_mall", unittest_Firm_send_goods_to_mall)  ||

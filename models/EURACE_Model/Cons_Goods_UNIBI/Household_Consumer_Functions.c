@@ -70,7 +70,7 @@ int Household_update_specific_skills()
 		SPECIFIC_SKILL = SPECIFIC_SKILL + (CURRENT_PRODUCTIVITY_EMPLOYER - SPECIFIC_SKILL)*((1-pow(0.5,1/(20+0.25*(GENERAL_SKILL-1)*(4-20))))+ 0*CURRENT_MEAN_SPECIFIC_SKILLS_EMPLOYER);
 
 
-		add_specific_skill_update_message(ID,EMPLOYEE_FIRM_ID,SPECIFIC_SKILL,MSGDATA);
+		add_specific_skill_update_message(ID,EMPLOYEE_FIRM_ID,SPECIFIC_SKILL);
 			
 	}
 	
@@ -242,7 +242,7 @@ int Household_rank_and_buy_goods_1()
 			add_consumption_request_1_message(
 			mall_quality_price_info_list.array[index_selected_good].mall_id,ID,
 			ORDER_QUANTITY[0].firm_id,
-			ORDER_QUANTITY[0].quantity,MSGDATA);
+			ORDER_QUANTITY[0].quantity);
 
 		}
 		else
@@ -411,7 +411,7 @@ int Household_rank_and_buy_goods_2()
 			add_consumption_request_2_message(
 			mall_quality_price_info_list.array[index_selected_good].mall_id,
 			ID,ORDER_QUANTITY[1].firm_id,
-			ORDER_QUANTITY[1].quantity,MSGDATA);
+			ORDER_QUANTITY[1].quantity);
 		
 
 		
@@ -555,7 +555,7 @@ int Household_send_data_to_Market_Research()
 	if(DAY%MONTH == 0)
 	{
 		add_household_send_data_message(ID, REGION_ID, GENERAL_SKILL,EMPLOYEE_FIRM_ID,
-		WAGE, SPECIFIC_SKILL,MSGDATA);
+		WAGE, SPECIFIC_SKILL);
 	}	
 
 

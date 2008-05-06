@@ -17,7 +17,7 @@ int Firm_compute_and_send_bond_orders()
     double limit_price=1.0;
     double limit_quantity=1.0;
     
-    add_bond_order_message(ID, bond_id, limit_price, limit_quantity, MSGDATA);
+    add_bond_order_message(ID, bond_id, limit_price, limit_quantity);
     
     return 0;
 }
@@ -64,7 +64,7 @@ int Firm_compute_and_send_stock_orders()
     double limit_quantity=1.0;
     
     //Firm tries to sell stock_units shares:
-    add_stock_order_message(ID, stock_id, limit_price, limit_quantity, MSGDATA);
+    add_stock_order_message(ID, stock_id, limit_price, limit_quantity);
 
     return 0;
 }
@@ -108,7 +108,7 @@ int Firm_compute_and_send_gov_bond_orders()
     double limit_price=1.0;
     double limit_quantity=1.0;
     
-    add_gov_bond_order_message(ID, gov_bond_id, limit_price, limit_quantity, MSGDATA);
+    add_gov_bond_order_message(ID, gov_bond_id, limit_price, limit_quantity);
     
     return 0;
 }
