@@ -814,7 +814,7 @@ void readModel(input_file * inputfile, char * directory, model_data * modeldata,
 				{
 					temp_char = copy_array_to_str(current_string);
 					temp_char2 = (char *)malloc( (strlen(temp_char) + strlen(directory) + 1) * sizeof(char));
-					strcat(temp_char2, directory);
+					strcpy(temp_char2, directory);
 					strcat(temp_char2, temp_char);
 					current_input_file->file = copy_array_to_str(current_string);
 					current_input_file->fullfilepath = copystr(temp_char2);
