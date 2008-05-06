@@ -126,7 +126,7 @@
 <description></description>
 <currentState>14</currentState>
 <nextState>end</nextState>
-<condition><not><time><period>monthly</period><phase>0</phase></time></not></condition>
+<condition><not><time><period>monthly</period><phase>19</phase></time></not></condition>
 </function>
 
 </functions>
@@ -152,7 +152,7 @@
 <description></description>
 <currentState>15</currentState>
 <nextState>end</nextState>
-<condition><not><time><period>monthly</period><phase>0</phase></time></not></condition>
+<condition><not><time><period>monthly</period><phase>19</phase></time></not></condition>
 </function>
 
 </functions>
