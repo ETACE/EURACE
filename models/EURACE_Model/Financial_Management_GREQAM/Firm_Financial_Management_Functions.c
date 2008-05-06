@@ -45,6 +45,9 @@ int Firm_compute_income_statement()
 }
 
 /*
+ * \fn: int Firm_financial_payments()
+ * \brief: This function computes the income statement of the firm.
+ * 
  * The firm computes the actual payments by setting these values:
  *  - total_debt_installment_payment
  *  - total_interest_payments
@@ -170,6 +173,8 @@ int Firm_compute_balance_sheet()
     TOTAL_VALUE_LOCAL_INVENTORY=sum;
 
     TOTAL_ASSETS = PAYMENT_ACCOUNT + TOTAL_VALUE_CAPITAL_STOCK + TOTAL_VALUE_LOCAL_INVENTORY;
+    TOTAL_LIABILITIES = TOTAL_DEBT;
+    
     //printf("\nTOTAL_ASSETS in functions.c file: %f\n", TOTAL_ASSETS);
 
     return 0;
@@ -182,7 +187,7 @@ int Firm_check_solvency()
 	if(TOTAL_ASSETS - TOTAL_LIABILITIES<0)
 	{
 		BANKRUPTCY=1;
-	};
+	}
 	
     return 0;
 }
