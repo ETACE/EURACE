@@ -182,7 +182,7 @@
 <description></description>
 <currentState>03d</currentState>
 <nextState>09a</nextState>
-<condition><lhs><value>a.no_employees</value></lhs><op>EQ</op><rhs><value>a.employees_needed</value></rhs></condition>
+<condition><not><lhs><value>a.no_employees</value></lhs><op>LT</op><rhs><value>a.employees_needed</value></rhs></not></condition>
 </function>
 
 <function><name>Firm_finish_labour_market_first_round</name>
@@ -259,7 +259,7 @@
 <description></description>
 <currentState>09b</currentState>
 <nextState>10</nextState>
-<condition><lhs><value>a.no_employees</value></lhs><op>EQ</op><rhs><value>a.employees_needed</value></rhs></condition>
+<condition><not><lhs><value>a.no_employees</value></lhs><op>LT</op><rhs><value>a.employees_needed</value></rhs></not></condition>
 </function>
 
 </functions>
