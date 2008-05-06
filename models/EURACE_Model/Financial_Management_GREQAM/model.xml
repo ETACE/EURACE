@@ -124,9 +124,9 @@
 <function>
 <name>Firm_compute_financial_needs</name>
 <description></description>
-<currentState>02</currentState>
+<currentState>004</currentState>
 <nextState>20</nextState>
-<condition><lhs><value>a.bankruptcy</value></lhs><op>EQ</op><rhs><value>1</value></rhs></condition>
+<!-- <condition><lhs><value>a.bankruptcy</value></lhs><op>EQ</op><rhs><value>1</value></rhs></condition>  -->
 </function>
 
 <function>
