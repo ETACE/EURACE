@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<!DOCTYPE xmodel SYSTEM "../XMML.dtd">
+<!DOCTYPE xmodel SYSTEM "http://eurace.cs.bilgi.edu.tr/XMML.dtd">
 <xmodel version="2">
 
 <name>Consumption_Goods_Market</name>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<!DOCTYPE xmodel SYSTEM "../XMML.dtd">
+<!DOCTYPE xmodel SYSTEM "http://eurace.cs.bilgi.edu.tr/XMML.dtd">
 <xmodel version="2">
 
 <name>Financial_Management</name>
@@ -51,39 +51,41 @@
 <variable><type>int</type><name>bank_id</name><description></description></variable>
 
 <!-- Firm_compute_income_statement -->
-<var><type>double</type><name>ebit</name></var>
-<var><type>double</type><name>payment_account</name></var>
+<variable><type>double</type><name>ebit</name><description></description></variable>
+<variable><type>double</type><name>payment_account</name><description></description></variable>
 
 <!-- Firm_compute_financial_payments -->
-<var><type>double</type><name>total_interest_payment</name></var>
-<var><type>double</type><name>total_debt_installment_payment</name></var>
-<var><type>double</type><name>total_dividend_payment</name></var>
+<variable><type>double</type><name>total_interest_payment</name><description></description></variable>
+<variable><type>double</type><name>total_debt_installment_payment</name><description></description></variable>
+<variable><type>double</type><name>total_dividend_payment</name><description></description></variable>
 
 <!-- Firm_compute_balance_sheet -->
-<var><type>double</type><name>earnings</name></var>
-<var><type>double</type><name>tax_rate_corporate</name></var>
-<var><type>double</type><name>tax_payment</name></var>
-<var><type>double</type><name>net_earnings</name></var>
-<var><type>double</type><name>previous_net_earnings</name></var>
-<var><type>debt_item_array</type><name>loans</name></var>
-<var><type>double</type><name>total_debt</name></var>
-<var><type>double</type><name>total_value_local_inventory</name></var>
-<var><type>capital_stock_item_array</type><name>capital_stock</name></var>
-<var><type>double</type><name>total_units_capital_stock</name></var>
-<var><type>double</type><name>total_value_capital_stock</name></var>
-<var><type>double</type><name>total_capital_depreciation_value</name></var>
-<var><type>double</type><name>total_capital_depreciation_units</name></var>
-<var><type>double</type><name>total_assets</name></var>
+<variable><type>double</type><name>earnings</name><description></description></variable>
+<variable><type>double</type><name>tax_rate_corporate</name><description></description></variable>
+<variable><type>double</type><name>tax_payment</name><description></description></variable>
+<variable><type>double</type><name>net_earnings</name><description></description></variable>
+<variable><type>double</type><name>previous_net_earnings</name><description></description></variable>
+<variable><type>debt_item_array</type><name>loans</name><description></description></variable>
+<variable><type>double</type><name>total_debt</name><description></description></variable>
+<variable><type>double</type><name>total_value_local_inventory</name><description></description></variable>
+<variable><type>capital_stock_item_array</type><name>capital_stock</name><description></description></variable>
+<variable><type>double</type><name>total_units_capital_stock</name><description></description></variable>
+<variable><type>double</type><name>total_value_capital_stock</name><description></description></variable>
+<variable><type>double</type><name>total_capital_depreciation_value</name><description></description></variable>
+<variable><type>double</type><name>total_capital_depreciation_units</name><description></description></variable>
+<variable><type>double</type><name>total_assets</name><description></description></variable>
+<variable><type>double</type><name>total_liabilities</name><description></description></variable>
+<variable><type>int</type><name>bankruptcy</name><description></description></variable>
 
 <!-- Firm_compute_financial_needs -->
-<var><type>double</type><name>production_liquidity_needs</name></var>
-<var><type>double</type><name>financial_liquidity_needs</name></var>
-<var><type>double</type><name>total_financial_needs</name></var>
-<var><type>double</type><name>internal_financial_needs</name></var>
-<var><type>double</type><name>external_financial_needs</name></var>
-<var><type>double</type><name>total_external_financing_obtained</name></var>
-<var><type>int</type><name>production_liquidity_needs_require_external_financing</name></var>
-<var><type>int</type><name>financial_liquidity_needs_require_external_financing</name></var>
+<variable><type>double</type><name>production_liquidity_needs</name><description></description></variable>
+<variable><type>double</type><name>financial_liquidity_needs</name><description></description></variable>
+<variable><type>double</type><name>total_financial_needs</name><description></description></variable>
+<variable><type>double</type><name>internal_financial_needs</name><description></description></variable>
+<variable><type>double</type><name>external_financial_needs</name><description></description></variable>
+<variable><type>double</type><name>total_external_financing_obtained</name><description></description></variable>
+<variable><type>int</type><name>production_liquidity_needs_require_external_financing</name><description></description></variable>
+<variable><type>int</type><name>financial_liquidity_needs_require_external_financing</name><description></description></variable>
 
 <!-- Firm_execute_financial_payments -->
 
@@ -100,38 +102,43 @@
 
 <function>
 <name>Firm_compute_financial_payments</name>
-<current_state>001</current_state>
-<next_state>002</next_state>
+<description></description>
+<currentState>001</currentState>
+<nextState>002</nextState>
 </function>
 
 <function>
 <name>Firm_compute_balance_sheet</name>
-<current_state>002</current_state>
-<next_state>003</next_state>
+<description></description>
+<currentState>002</currentState>
+<nextState>003</nextState>
 </function>
 
 <function>
 <name>Firm_check_solvency</name>
-<current_state>003</current_state>
-<next_state>004</next_state>
+<description></description>
+<currentState>003</currentState>
+<nextState>004</nextState>
 </function>
 
 <function>
 <name>Firm_compute_financial_needs</name>
-<current_state>02</current_state>
-<next_state>20</next_state>
+<description></description>
+<currentState>02</currentState>
+<nextState>20</nextState>
 <condition><lhs><value>a.BANKRUPTCY</value></lhs><op>EQ</op><rhs><value>1</value></rhs></condition>
 </function>
 
 <function>
 <name>Firm_execute_financial_payments</name>
-<current_state>261</current_state>
-<next_state>27</next_state>
+<description></description>
+<currentState>261</currentState>
+<nextState>27</nextState>
 <outputs>
-<output><messagetype>tax_payment</messagetype></output>
-<output><messagetype>interest_payment</messagetype></output>
-<output><messagetype>debt_installment_payment</messagetype></output>
-<output><messagetype>dividend_payment</messagetype></output>
+<output><messageName>tax_payment</messageName></output>
+<output><messageName>interest_payment</messageName></output>
+<output><messageName>debt_installment_payment</messageName></output>
+<output><messageName>dividend_payment</messageName></output>
 </outputs>
 </function>
 
