@@ -651,11 +651,11 @@ void readModel(input_file * inputfile, char * directory, model_data * modeldata,
 			if(strcmp(current_string->array, "/file") == 0) { codefile = 0; }
 			if(strcmp(current_string->array, "iteration_end_code") == 0) { iteration_end_code = 1; }
 			if(strcmp(current_string->array, "/iteration_end_code") == 0) { iteration_end_code = 0; }
-			if(strcmp(current_string->array, "timeunit") == 0)
+			if(strcmp(current_string->array, "timeunit") == 0 || strcmp(current_string->array, "timeUnit") == 0)
 			{
 				timetag = 1;
 			}
-			if(strcmp(current_string->array, "/timeunit") == 0)
+			if(strcmp(current_string->array, "/timeunit") == 0 || strcmp(current_string->array, "/timeUnit") == 0)
 			{
 				timetag = 0;
 				add_time_unit(time_name, unit_name, period_int, modeldata->p_time_units);
