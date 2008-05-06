@@ -10,13 +10,13 @@
 
 int first_day_of_month()
 {
-	if(DAY%MONTH == 0) return 1;
+	if(DAY%MONTH == 1) return 1;
 	else return 0;
 }
 
 int not_first_day_of_month()
 {
-	if(DAY%MONTH == 0) return 0;
+	if(DAY%MONTH == 1) return 0;
 	else return 1;
 }
 
