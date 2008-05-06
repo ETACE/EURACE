@@ -1,24 +1,26 @@
 
-<xmachine_agent_model>
+<model>
 <name>Credit_Market</name>
 <author>Eurace</author>
 <date>060508</date>
 
 <environment>
 
-<functions>
-<file>Bank_credit_functions.c</file>
-<file>Firm_credit_functions.c</file>
-<file>Household_credit_functions.c</file>
-</functions>
+
+<functionFiles>Bank_functions.c</functionFiles>
+<functionFiles>Firm_functions.c</functionFiles>
+<functionFiles>Household_functions.c</functionFiles>
+
 
 <datatypes>
 </datatypes>
+
 </environment>
 
-<xmachine>
+<xagent>
 <name>Firm</name>
 <memory>
+<variables>
 <variable><type>int</type><name>id</name></variable>
 <variable><type>double_array</type><name>interest</name></variable>
 <variable><type>double_array</type><name>credit_offer</name></variable>
@@ -40,39 +42,51 @@
 <variable><type>double_array</type><name>interest_left</name></variable>
 <variable><type>double</type><name>current_equity</name></variable>
 <variable><type>double</type><name>current_debt</name></variable>
-
+</variables>
 </memory>
 <functions>
 
 <function>
-<name>Firm_ask_loan</name>
-<current_state>01</current_state>
-<next_state>02</next_state>
-<output><messagetype>loan_request</messagetype></output>
+<name>Firm_savings</name>
+<currentState>firm_start</currentState>
+<nextState>01</nextState>
+<outputs>
+<output><messageName>deposit</messageName></output>
+</outputs>
 </function>
 
 <function>
-<name>Firm_get_loan</name>
-<current_state>02</current_state>
-<next_state>03</next_state>
-<input><messagetype>loan_conditions</messagetype></input>
-<output><messagetype>loan_acceptance</messagetype></output>
+<name>Firm_ask_for_loan</name>
+<currentState>01</currentState>
+<nextState>02</nextState>
+<outputs>
+<output><messageName>loan_request</messageName></output>
+</outputs>
 </function>
 
 <function>
-<name>Firm_pay_interest_installment</name>
-<current_state>03</current_state>
-<next_state>04</next_state>
-<output><messagetype>installment</messagetype></output>
-<output><messagetype>bankruptcy</messagetype></output>
+<name>Firm_choose_bank</name>
+<currentState>02</currentState>
+<nextState>03</nextState>
+<outputs>
+<output><messageName>loan_accept</messageName></output>
 </function>
 
+<function>
+<name>Firm_pay_debt</name>
+<currentState>03</currentState>
+<nextState>04</nextState>
+<outputs>
+<output><messageName>debt</messageName></output>
+</outputs>
+</function>
 </functions>
-</xmachine>
+</xagent>
 
-<xmachine>
+<xagent>
 <name>Bank</name>
 <memory>
+<variables>
 <variable><type>int</type><name>id</name></variable>
 <variable><type>double</type><name>cash</name></variable>
 <variable><type>double</type><name>total_credit</name></variable>
@@ -87,102 +101,96 @@
 <variable><type>double</type><name>bce_interest</name></variable>
 <variable><type>double</type><name>debt_period</name></variable>
 <variable><type>int</type><name>loan_request_message_found</name></variable>
+</variables>
 </memory>
 <functions>
 
 
 <function>
 <name>Bank_update_HH_Firm_accounts</name>
-<current_state>Bank_start</current_state>
-<next_state>01</next_state>
-<input><messagetype>firm_deposit</messagetype></input>
-<input><messagetype>HH_deposit</messagetype></input>
+<currenState>Bank_start</currentState>
+<nextState>01</nextState>
+<inputs>
+<input><messageName>firm_deposit</messageName></input>
+<input><messageName>HH_deposit</messageName></input>
+<inputs>
 </function>
 
 <function>
 <name>Bank_decide_credit_conditions</name>
-<current_state>Bank_start</current_state>
-<next_state>01</next_state>
-<input><messagetype>loan_request</messagetype></input>
-<output><messagetype>loan_conditions</messagetype></output>
-<condition>loan_request==0</condition>
+<currentState>01</currentState>
+<nextState>02</nextState>
+</inputs>
+<input><messageName>loan_request</messageName></input>
+</inputs>
+<outputs>
+<output><messageName>loan_conditions</messageName></output>
+</outputs>
 </function>
 
 <function>
-<name>Bank_receive_deposits</name>
-<current_state>02</current_state>
-<next_state>03</next_state>
-<input><messagetype>household_deposit</messagetype></input>
+<name>Bank_give_loans</name>
+<currentState>02</currentState>
+<nextState>03</nextState>
+<inputs>
+<input><messageName>loan_accept</messageName></input>
+</inputs>
 </function>
 
 <function>
-<name>Bank_return_deposits</name>
-<current_state>03</current_state>
-<next_state>04</next_state>
-<input><messagetype>money_withdraw_request</messagetype></input>
-<output><messagetype>withdrawal_allowed</messagetype></output>
+<name>Bank_check_debt_payments</name>
+<currentState>03</currentState>
+<nextState>04</nextState>
+<inputs>
+<input><messageName>debt</messageName></input>
+</inputs>
 </function>
 
 <function>
-<name>Bank_receive_installment</name>
-<current_state>04</current_state>
-<next_state>05</next_state>
-<input><messagetype>installment</messagetype></input>
-<input><messagetype>bankruptcy</messagetype></input>
+<name>Bank_accounting</name>
+<currentState>04</currentState>
+<nextState>05</nextState>
+<condition>time</condition>
 </function>
 
 <function>
-<name>Bank_give_loan</name>
-<current_state>05</current_state>
-<next_state>06</next_state>
-<input><messagetype>loan_acceptance</messagetype></input>
+<name>Bank_idle</name>
+<currentState>04</currentState>
+<nextState>05</nextState>
+<condition></condition>
 </function>
 
 </functions>
-</xmachine>
+</xagent>
 
 
 
-<xmachine>
+<xagent>
 <name>Household</name>
 <memory>
+<variables>
 <variable><type>int</type><name>id</name></variable>
 <variable><type>double</type><name>total_deposit</name></variable>
 <variable><type>int</type><name>bank_account</name></variable>
+variables
 </memory>
 <functions>
 
 
 <function>
-<name>Household_put_money</name>
-<current_state>01</current_state>
-<next_state>02</next_state>
-<output><messagetype>household_deposit</messagetype></output>
+<name>Household_savings_decision</name>
+<currentState>HH_start</currentState>
+<nextState>01</nextState>
+<outputs>
+<output><messageName>household_deposit</messageName></output>
+</outputs>
 </function>
 
-<function>
-<name>Household_choose_bank</name>
-<current_state>02</current_state>
-<next_state>03</next_state>
-</function>
-
-<function>
-<name>Household_withdraw</name>
-<current_state>04</current_state>
-<next_state>05</next_state>
-<input><messagetype>withdrawal_allowed</messagetype></input>
-</function>
-
-<function>
-<name>Household_withdraw_request</name>
-<current_state>03</current_state>
-<next_state>04</next_state>
-<output><messagetype>money_withdraw_request</messagetype></output>
-</function>
 
 
 </functions>
-</xmachine>
+
+</xagent>
 
 
 <messages>
@@ -261,4 +269,4 @@
 </messages>
 
 
-</xmachine_agent_model>
+</xagent_agent_model>
