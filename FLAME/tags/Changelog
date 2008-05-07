@@ -1,3 +1,6 @@
+xparser 0.15.4
+	* fix null pointer bugs
+
 xparser 0.15.3
 	* fix bug when adding input/output data to agent functions
 
