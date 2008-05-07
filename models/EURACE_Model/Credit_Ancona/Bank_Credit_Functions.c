@@ -122,6 +122,22 @@ int Bank_return_deposits()
 	return 0;
 }
 
+int Bank_receive_dividend_payment()
+{
+	START_TOTAL_DIVIDEND_MESSAGE_LOOP
+	if (ID == total_dividend_message->bank_id) 
+	{
+		//update the bank account of firm:
+		//total_dividend_message->firm_id
+		//bank decreases bank account with:
+		//total_dividend_message->total_dividend_payment
+	}	
+	FINISH_TOTAL_DIVIDEND_MESSAGE_LOOP
+		
+	return 0;
+}
+	
+		
 int Bank_receive_instalment()
 {
 	START_INSTALMENT_MESSAGE_LOOP

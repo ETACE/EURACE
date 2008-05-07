@@ -510,15 +510,19 @@ int Household_receive_dividends()
 	FINISH_CAPITAL_GOOD_PROFIT_DISTRIBUTION_MESSAGE_LOOP
 
 	/*Check if there are dividends form the consumption goods producer*/
-	START_DIVIDEND_PAYMENT_MESSAGE_LOOP
+	//total_dividend_payment_msg(firm_id, bank_id, total_dividend_payment)
+	//dividend_per_share_msg(firm_id, current_dividend_per_share) to shareholders (dividend per share)
+
+	START_DIVIDEND_PER_SHARE_MESSAGE_LOOP
 		for(imax=0; imax < HOUSEHOLD_PORTFOLIO.size;imax++)
 		{
-			if(HOUSEHOLD_PORTFOLIO.array[imax].firm_id==dividend_payment_message->firm_id)
+			if(HOUSEHOLD_PORTFOLIO.array[imax].firm_id==dividend_per_share_message->firm_id)
 			{
-				RECEIVED_DIVIDEND_CONS += dividend_payment_message->current_dividend_per_share*HOUSEHOLD_PORTFOLIO.array[imax].shares;
+				//Compute the total dividend
+				RECEIVED_DIVIDEND_CONS += dividend_per_share_message->current_dividend_per_share*HOUSEHOLD_PORTFOLIO.array[imax].shares;
 			}
 		}
-	FINISH_DIVIDEND_PAYMENT_MESSAGE_LOOP
+	FINISH_DIVIDEND_PER_SHARE_MESSAGE_LOOP
 	
 
 	SAVINGS += RECEIVED_DIVIDEND_CONS+RECEIVED_DIVIDEND_CAP;	

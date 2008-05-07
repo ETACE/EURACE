@@ -53,18 +53,41 @@
 <!-- Firm_compute_income_statement -->
 <variable><type>double</type><name>ebit</name><description></description></variable>
 <variable><type>double</type><name>payment_account</name><description></description></variable>
+<variable><type>double</type><name>earnings</name><description></description></variable>
+<variable><type>double</type><name>tax_rate_corporate</name><description></description></variable>
+<variable><type>double</type><name>tax_payment</name><description></description></variable>
+<variable><type>double</type><name>net_earnings</name><description></description></variable>
+<variable><type>double</type><name>previous_net_earnings</name><description></description></variable>
 
 <!-- Firm_compute_financial_payments -->
 <variable><type>double</type><name>total_interest_payment</name><description></description></variable>
 <variable><type>double</type><name>total_debt_installment_payment</name><description></description></variable>
 <variable><type>double</type><name>total_dividend_payment</name><description></description></variable>
 
+<!-- Financial variables -->
+
+<variable><type>double</type><name>current_dividend_per_share</name><description></description></variable>
+<variable><type>double</type><name>previous_earnings_per_share</name><description></description></variable>
+<variable><type>double</type><name>earnings_per_share</name><description></description></variable>
+<variable><type>double</type><name>previous_dividend_per_share</name><description></description></variable>
+<variable><type>double</type><name>dividend_per_share</name><description></description></variable>
+<variable><type>double</type><name>previous_dividend_per_earnings</name><description></description></variable>
+<variable><type>double</type><name>dividend_per_earnings</name><description></description></variable>
+
+<variable><type>double</type><name>current_share_price</name><description></description></variable>
+<variable><type>double</type><name>current_shares_outstanding</name><description></description></variable>
+
+<!-- Ratios -->
+<variable><type>double</type><name>earnings_per_share_ratio</name><description></description></variable>
+<variable><type>double</type><name>debt_earnings_ratio</name><description></description></variable>
+<variable><type>double</type><name>price_earnings_ratio</name><description></description></variable>
+<variable><type>double</type><name>retained_earnings_ratio</name><description></description></variable>
+<variable><type>double</type><name>earnings_per_share_ratio_growth</name><description></description></variable>
+<variable><type>double</type><name>critical_price_earnings_ratio</name><description></description></variable>
+<variable><type>double</type><name>critical_earnings_per_share_ratio</name><description></description></variable>
+
 <!-- Firm_compute_balance_sheet -->
-<variable><type>double</type><name>earnings</name><description></description></variable>
-<variable><type>double</type><name>tax_rate_corporate</name><description></description></variable>
-<variable><type>double</type><name>tax_payment</name><description></description></variable>
-<variable><type>double</type><name>net_earnings</name><description></description></variable>
-<variable><type>double</type><name>previous_net_earnings</name><description></description></variable>
+
 <variable><type>debt_item_array</type><name>loans</name><description></description></variable>
 <variable><type>double</type><name>total_debt</name><description></description></variable>
 <variable><type>double</type><name>total_value_local_inventory</name><description></description></variable>
@@ -74,8 +97,7 @@
 <variable><type>double</type><name>total_capital_depreciation_value</name><description></description></variable>
 <variable><type>double</type><name>total_capital_depreciation_units</name><description></description></variable>
 <variable><type>double</type><name>total_assets</name><description></description></variable>
-<variable><type>double</type><name>total_liabilities</name><description></description></variable>
-<variable><type>int</type><name>bankruptcy</name><description></description></variable>
+<variable><type>double</type><name>equity</name><description></description></variable>
 
 <!-- Firm_compute_financial_needs -->
 <variable><type>double</type><name>production_liquidity_needs</name><description></description></variable>
@@ -92,8 +114,9 @@
 </memory>
 <functions>
 
+
 <function>
-<name>Firm_compute_income_statement</name>
+<name>Firm_compute_financial_payments</name>
 <description></description>
 <currentState>00</currentState>
 <nextState>001</nextState>
@@ -101,52 +124,81 @@
 </function>
 
 <function>
-<name>Firm_compute_financial_payments</name>
+<name>Firm_compute_income_statement</name>
 <description></description>
 <currentState>001</currentState>
 <nextState>002</nextState>
 </function>
 
 <function>
-<name>Firm_compute_balance_sheet</name>
+<name>Firm_compute_dividends</name>
 <description></description>
-<currentState>02</currentState>
+<currentState>002</currentState>
 <nextState>003</nextState>
 </function>
 
 <function>
-<name>Firm_check_solvency</name>
+<name>Firm_compute_total_financial_payments</name>
 <description></description>
 <currentState>003</currentState>
 <nextState>004</nextState>
 </function>
 
+
+<function>
+<name>Firm_compute_balance_sheet</name>
+<description></description>
+<currentState>004</currentState>
+<nextState>005</nextState>
+</function>
+
 <function>
 <name>Firm_idle</name>
-<currentState>004</currentState>
+<currentState>005</currentState>
 <nextState>Firm_end</nextState>
-<condition><lhs><value>a.bankruptcy</value></lhs><op>EQ</op><rhs><value>0</value></rhs></condition>
+<condition><lhs><value>a.equity</value></lhs><op>LT</op><rhs><value>0.0</value></rhs></condition>
 </function>
 
 <function>
 <name>Firm_compute_financial_needs</name>
 <description></description>
-<currentState>004</currentState>
+<currentState>005</currentState>
 <nextState>Start_Firm_Credit_Role</nextState>
-<condition><lhs><value>a.bankruptcy</value></lhs><op>EQ</op><rhs><value>1</value></rhs></condition>  
+<condition><lhs><value>a.equity</value></lhs><op>GT</op><rhs><value>0.0</value></rhs></condition>  
+</function>
+
+<function>
+<name>Firm_compute_and_send_stock_orders</name>
+<description></description>
+<currentState>End_Firm_Credit_Role</currentState>
+<nextState>0003</nextState>
+<outputs>
+<output><messageName>order</messageName></output>
+</outputs>
+</function>
+
+<function>
+<name>Firm_reads_stock_transactions</name>
+<description></description>
+<currentState>0003</currentState>
+<nextState>End_Firm_Financial_Role</nextState>
+<inputs>
+<input><messageName>order_status</messageName></input>
+</inputs>
 </function>
 
 
 <function>
 <name>Firm_execute_financial_payments</name>
 <description></description>
-<currentState>End_Firm_Credit_Role</currentState>
+<currentState>End_Firm_Financial_Role</currentState>
 <nextState>27</nextState>
 <outputs>
 <!--<output><messageName>tax_payment</messageName></output>-->
 <!--<output><messageName>interest_payment</messageName></output>-->
 <!--<output><messageName>debt_installment_payment</messageName></output>-->
-<!--<output><messageName>dividend_payment</messageName></output>-->
+<!--<output><messageName>total_dividend_payment</messageName></output>-->
+<!--<output><messageName>dividend_per_share</messageName></output>-->
 </outputs>
 </function>
 
@@ -155,4 +207,35 @@
 
 </agents>
 
+<messages>
+<message>
+<name>tax_payment</name>
+<description>Added by firm to pay taxes</description>
+<variables>
+<variable><type>int</type><name>firm_id</name><description></description></variable>
+<variable><type>int</type><name>gov_id</name><description></description></variable>
+<variable><type>double</type><name>tax_payment</name><description></description></variable>
+</variables>
+</message>
+
+<message>
+<name>total_dividend</name>
+<description>Added by firm to send msg to bank with total dividends</description>
+<variables>
+<variable><type>int</type><name>firm_id</name><description></description></variable>
+<variable><type>int</type><name>bank_id</name><description></description></variable>
+<variable><type>double</type><name>total_dividend_payment</name><description></description></variable>
+</variables>
+</message>
+
+<message>
+<name>dividend_per_share</name>
+<description>Added by firm to send msg to shareholders with dividends per share</description>
+<variables>
+<variable><type>int</type><name>firm_id</name><description></description></variable>
+<variable><type>double</type><name>current_dividend_per_share</name><description></description></variable>
+</variables>
+</message>
+
+</messages>
 </xmodel>

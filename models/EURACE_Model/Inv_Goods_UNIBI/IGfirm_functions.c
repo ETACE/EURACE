@@ -100,3 +100,25 @@ int IGFirm_receive_payment()
 	
 	return 0;
 }
+
+/** \fn IGFirm_dividend_payment()
+ * \brief IGFirm distributes dividends to the households, and sends total_dividend payment to the bank
+ */
+int IGFirm_dividend_payment()
+{
+
+	//actual dividend_payments
+	//add total_dividend_msg(firm_id, bank_id, total_dividend_payment) to bank
+	add_total_dividend_message(ID, MY_BANK_ID, TOTAL_DIVIDEND_PAYMENT);
+	
+	//add dividend_per_share_msg(firm_id, current_dividend_per_share) to shareholders (dividend per share)     
+	add_dividend_per_share_message(ID, CURRENT_DIVIDEND_PER_SHARE);
+	
+	//decrease payment_account with the total_dividend_payment
+	PAYMENT_ACCOUNT -= TOTAL_DIVIDEND_PAYMENT;
+	
+	return 0;
+}
+
+
+
