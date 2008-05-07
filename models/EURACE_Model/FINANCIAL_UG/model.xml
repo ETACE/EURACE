@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE xmodel SYSTEM "http://eurace.cs.bilgi.edu.tr/XMML.dtd">
+<xmodel version="2">
+	
+	<name>Financial Market</name>
+	<author>Mario Locci</author>
+	<date>010807</date>
+	
+	<!--***************** Environment values and functions **********************-->
+	<environment>
+		<datatypes>
+			<datatype>
+				<name>Order</name>
+				<desc>ADT order </desc>
+				<variables>
+					<variable><type>int</type><name>issuer</name></variable>
+					<variable><type>int</type><name>quantity</name></variable>
+					<variable><type>double</type><name>price</name></variable>
+					<variable><type>int</type><name>assetId</name></variable>
+				</variables>
+			</datatype>
+			<datatype>
+				<name>Belief</name>
+				<desc>ADT Belief </desc>
+				<variables>
+					<variable><type>double</type><name>expectedPriceReturns</name></variable>
+					<variable><type>double</type><name>expectedTotalReturns</name></variable>
+					<variable><type>double</type><name>expectedCashFlowYield</name></variable>
+					<variable><type>double</type><name>volatility</name></variable>
+					<variable><type>Histogram</type><name>hist</name></variable>
+				</variables>
+			</datatype>
+			<datatype>
+				<name>Histogram</name>
+				<desc>ADT Histogram</desc>
+				<variables>
+					<variable><type>double</type><name>prob[30]</name></variable>
+					<variable><type>double</type><name>value[30]</name></variable>
+					<variable><type>double</type><name>max</name></variable>
+					<variable><type>double</type><name>min</name></variable>
+					<variable><type>double</type><name>delta</name></variable>
+					<variable><type>int</type><name>bins</name></variable>
+				</variables>
+			</datatype>
+			<datatype>
+				<name>Stock</name>
+				<desc>ADT Stock</desc>
+				<variables>
+					<variable><type>int</type><name>nrOutStandingShares</name></variable>
+					<variable><type>int</type><name>issuer</name></variable>
+					<variable><type>double</type><name>dividendExp</name></variable>
+					<variable><type>double</type><name>prices[100]</name></variable>
+					<variable><type>double</type><name>returns[100]</name></variable>
+				</variables>
+			</datatype>
+			<datatype>
+				<name>Asset</name>
+				<desc>ADT Asset </desc>
+				<variables>
+					<variable><type>int</type><name>issuer</name></variable>
+					<variable><type>int</type><name>quantity</name></variable>
+					<variable><type>double</type><name>lastPrice</name></variable>
+				</variables>
+			</datatype>
+			<datatype>
+				<name>Portfolio</name>
+				<desc>ADT  portfolio </desc>
+				<variables>
+					<!--<variable><type>Asset</type><name>assets</name></variable>-->
+					<variable><type>double</type><name>bankAccount</name></variable>
+				</variables>
+			</datatype>
+		</datatypes>
+	</environment>
+	
+	<!--********************* X-machine Agent - Trader ****************************-->
+	<xagent>
+		<name>Eurostat</name>
+		<memory>
+			<variable><type>int</type><name>id</name></variable>
+			<variable><type>Asset_array</type><name>assets</name></variable>
+			<variable><type>Stock_array</type><name>stocks</name></variable>
+			<variable><type>double</type><name>range</name></variable>
+			<variable><type>double</type><name>posx</name></variable>
+			<variable><type>double</type><name>posy</name></variable>
+		</memory>
+		<functions>
+			<function>
+				<name>sendAssetInformationEURO</name>
+				<currentState>INITFINMARKET</currentState>
+				<nextState>WAITENDMARKET</nextState>
+				<output><messagetype>infoAssetEURO</messagetype></output>
+			</function>
+			<function>
+				<name>receiveAssetInformationEURO</name>
+				<!--<depends><name>sendAssetInformation</name><type>infoAsset</type></depends>-->
+				<currentState>WAITENDMARKET</currentState>
+				<nextState>INITFINMARKET1</nextState>
+				<input><messagetype>infoAssetCH</messagetype></input>
+			</function>
+		</functions>
+	</xagent>
+	<xagent>
+		<name>Household</name>
+		<!--             Variables                -->
+		<!-- All variableiables used by Producer are declared here to allocate them in memory -->
+		<memory>
+			<variable><type>int</type><name>id</name></variable>
+			<variable><type>double</type><name>wealth</name></variable>
+			<variable><type>Belief_array</type><name>belief</name></variable>
+			<variable>
+				<type>Portfolio</type>
+				<name>portfolio</name>
+			</variable>
+			<variable>
+				<type>Order_array</type>
+				<name>pendingOrders</name>
+			</variable>
+			<variable>
+				<type>Asset_array</type>
+				<name>assetsowned</name>
+			</variable>
+			<variable>
+				<type>double_array</type>
+				<name>assetWeigths</name>
+				
+			</variable>
+			<variable>
+				<type>double_array</type>
+				<name>assetUtilities</name>
+				
+			</variable>
+			<variable><type>int</type><name>forwardWindow</name></variable>
+			<variable><type>int</type><name>backwordWindow</name></variable>
+			<variable><type>int</type><name>binsNumber</name></variable>
+			<variable><type>double</type><name>randomWeigth</name></variable>
+			<variable><type>double</type><name>fundametalWeigth</name></variable>
+			<variable><type>double</type><name>chartistWeigth</name></variable>
+			<variable><type>int</type><name>holdingPeriodToForwardW</name></variable>
+			
+		</memory>
+		<!--     Defining functions     -->
+		<functions>
+			<function>
+				<name>receiveAssetInformationEUROSTAT</name>
+				<currentState>START_FINANCIAL_MARKET</currentState>
+				<nextState>SELECTSTRATEGY</nextState>
+				<inputs>
+					<input><messagetype>infoAssetEURO</messagetype></input>
+				</inputs>
+			</function>
+			<function>
+				<name>selectStrategy</name>
+				<currentState>SELECTSTRATEGY</currentState>
+				<nextState>WAITORDERSTATUS</nextState>
+				<outputs>
+					<output><messagetype>order</messagetype></output>
+				</outputs>
+			</function>
+			<function>
+				<name>updateTrader</name>
+				<currentState>WAITORDERSTATUS</currentState>
+				<nextState>EXIT_FINANCIAL_MARKET</nextState>
+				<input><messagetype>orderStatus</messagetype></input>
+				<output><messagetype>bankAccountUpdate</messagetype></output>
+			</function>
+		</functions>
+	</xagent>
+	<!--******************** X-machine Agent - ClearingHouse ***************************-->
+	<xagent>
+		<name>ClearingHouse</name>
+		<!--      Variables for the ClearingHouse     -->
+		
+		<memory>
+			<variable><type>int</type><name>id</name></variable>
+			<variable><type>Asset_array</type><name>assets</name></variable>
+			<variable><type>double</type><name>range</name></variable>
+			<variable><type>double</type><name>posx</name></variable>
+			<variable><type>double</type><name>posy</name></variable>
+		</memory>
+		<!--        Defining functions                -->
+		<functions>
+			<function>
+				<name>receiveAssetInformation</name>
+				<currentState>RECOVERINFO</currentState>
+				<nextState>RECEIVEORDERS</nextState>
+				<input><messagetype>infoAssetEURO</messagetype></input>
+			</function>
+			<function>
+				<name>receiveOrdersAndRun</name>
+				<currentState>RECEIVEORDERS</currentState>
+				<nextState>COMPUTEDPRICES</nextState>
+				<input><messagetype>order</messagetype></input>
+				<output><messagetype>orderStatus</messagetype></output>
+			</function>
+			<function>
+				<name>sendAssetInformation</name>
+				<currentState>COMPUTEDPRICE</currentState>
+				<nextState>RECOVERINFO1</nextState>
+				<output>
+					<messagetype>infoAssetCH</messagetype>
+					
+				</output>
+			</function>
+		</functions>
+	</xagent>
+	<!--******************** X-machine Agent -Firm ***************************-->
+	<xagent>
+		<name>Bank</name>
+		<!--      Variables for the ClearingHouse     -->
+		
+		<memory>
+			
+			<variable><type>double</type><name>range</name></variable>
+			<variable><type>double</type><name>posx</name></variable>
+			<variable><type>double</type><name>posy</name></variable>
+		</memory>
+		<!--        Defining functions                -->
+		<functions>
+			<function>
+				<name>receiveAccountUpdate</name>
+				<currentState>RECEIVEMESS</currentState>
+				<nextState>RECEIVEMESS1</nextState>
+				<input>
+					<messagetype>bankAccountUpdate</messagetype>
+				</input>
+			</function>
+		</functions>
+	</xagent>
+	
+	<!--******** Messages being posted by the agents to communicate *************-->
+	<messages>
+		<!--          Message posted to load a new value        -->
+		<message>
+			<name>order</name>
+			<note>order posted by the Trader</note>
+			<variables>
+				<variable><type>int</type><name>issuer</name></variable>
+				<variable><type>int</type><name>assetId</name></variable>
+				<variable><type>double</type><name>limitPrice</name></variable>
+				<variable><type>int</type><name>quantity</name></variable>
+				<variable><type>double</type><name>range</name></variable>
+				
+			</variables>
+		</message>
+		
+		<message>
+			<name>orderStatus</name>
+			<note>The market is closed</note>
+			<variables>
+				<variable><type>int</type><name>issuer</name></variable>
+				<variable><type>int</type><name>assetId</name></variable>
+				<variable><type>double</type><name>price</name></variable>
+				<variable><type>int</type><name>quantity</name></variable>
+				<variable><type>double</type><name>range</name></variable>
+				
+			</variables>
+		</message>
+		
+		<message>
+			<name>infoAssetEURO</name>
+			<variables>
+				<variable><type>int</type><name>issuer</name></variable>
+				<variable><type>double</type><name>price</name></variable>
+				<variable><type>int</type><name>quantity</name></variable>
+				<variable><type>double</type><name>range</name></variable>
+				
+			</variables>
+		</message>
+		
+		<message>
+			<name>infoAssetCH</name>
+			<variables>
+				<variable><type>int</type><name>issuer</name></variable>
+				<variable><type>double</type><name>price</name></variable>
+				<variable><type>int</type><name>quantity</name></variable>
+				<variable><type>double</type><name>range</name></variable>
+				
+			</variables>
+		</message>
+		
+		<message>
+			<name>infoFirm</name>
+			<note>message posted by the Firm </note>
+			<variables>
+				<variable><type>int</type><name>id</name></variable>
+				<variable><type>double</type><name>earningExp</name></variable>
+				<variable><type>double</type><name>earningPayoutExp</name></variable>
+				<variable><type>double</type><name>equity</name></variable>
+				<variable><type>double</type><name>range</name></variable>
+				
+			</variables>
+		</message>
+		
+		<message>
+			<name>infoStock</name>
+			<note>message posted by the Eurostat </note>
+			<variables>
+				<variable><type>int</type><name>issuer</name></variable>
+				<variable><type>int</type><name>nrOutStandingShares</name></variable>
+				<variable><type>double</type><name>dividendExp</name></variable>
+				<variable><type>Stock</type><name>stock</name></variable>
+				<variable><type>double</type><name>range</name></variable>
+				
+			</variables>
+		</message>
+		
+		<message>
+			<name>bankAccountUpdate</name>
+			<note>message posted by the Household </note>
+			<variables>
+				<variable><type>double</type><name>account</name></variable>
+				
+			</variables>
+		</message>
+		
+	</messages>
+	<!--********************** End of Messages **********************************-->
+	
+</xmodel>
