@@ -483,7 +483,7 @@ int Household__receive_goods_read_rationing_2()
  * \brief Here the households get their dividends payments
 			
  */
-int Household_receicve_dividends()
+int Household_receive_dividends()
 {
 	int imax;
 	
