@@ -358,7 +358,7 @@
 <nextState>09</nextState>
 </function>
 
-function><name>Household_idle</name>
+<function><name>Household_idle</name>
 <description></description>
 <currentState>11</currentState>
 <nextState>13</nextState>
