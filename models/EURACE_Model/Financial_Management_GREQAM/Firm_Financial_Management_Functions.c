@@ -28,9 +28,7 @@ int Firm_compute_income_statement()
     PREVIOUS_NET_EARNINGS = NET_EARNINGS;
     NET_EARNINGS = EARNINGS - TAX_PAYMENT;
 
-    
-        
-    //step 7: continue balance sheet (data pertaining to the period that just ended)
+    //continue balance sheet (data pertaining to the period that just ended)
     EARNINGS_PER_SHARE_RATIO = NET_EARNINGS/CURRENT_SHARES_OUTSTANDING;
     PREVIOUS_DIVIDEND_PER_SHARE = CURRENT_DIVIDEND_PER_SHARE;
     CURRENT_DIVIDEND_PER_SHARE = TOTAL_DIVIDEND_PAYMENT/CURRENT_SHARES_OUTSTANDING;
@@ -154,7 +152,7 @@ int Firm_compute_balance_sheet()
     int imax;
     int i;
 
-    //step 8: compute the equity of the firm
+    //compute the equity of the firm
     //TOTAL_ASSETS=
     //+ PAYMENT_ACCOUNT: remaining cash holdings of the firm
     //+ TOTAL_VALUE_CAPITAL_STOCK: estimated value of the capital stock (this is determined in the capital goods market role)
@@ -185,7 +183,7 @@ int Firm_check_solvency()
 {
 	BANKRUPTCY=0;
 	
-	if(TOTAL_ASSETS - TOTAL_LIABILITIES<0)
+	if(EQUITY<0)
 	{
 		BANKRUPTCY=1;
 	}
@@ -197,8 +195,7 @@ int Firm_check_solvency()
  * \fn: int Firm_compute_financial_needs()
  * \brief: This function computes the financial needs for executing the payments.
  * The values computed in this function refer to:
- *  - the payouts from the previous prodcution period
- *  - 
+ *  - the payouts from the previous production period
  * The payout policy can be subject to revision if it turns out to be unsupportable by the obtained financial resources.
  */
 int Firm_compute_financial_needs()
@@ -333,7 +330,7 @@ int Firm_execute_financial_payments()
 
 	//actual dividend_payments
     //add dividend_payment_msg to shareholders (dividend per share)     
-    add_dividend_payment_message(ID, CURRENT_DIVIDEND_PER_SHARE);
+    add_dividend_payment_message(ID, MY_BANK_ACCOUNT_ID, CURRENT_DIVIDEND_PER_SHARE);
 
     //decrease payment_account with the total_dividend_payment
     PAYMENT_ACCOUNT -= TOTAL_DIVIDEND_PAYMENT;
