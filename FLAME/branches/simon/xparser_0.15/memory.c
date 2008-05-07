@@ -212,10 +212,13 @@ xmachine_memory * addxmemory(xmachine_memory ** p_xmemory)
 	xmachine_memory * current, * temp = NULL;
 	current = *p_xmemory;
 	
-	while(current)
+	if(p_xmemory != NULL)
 	{
-		temp = current;
-		current = current->next;
+		while(current)
+		{
+			temp = current;
+			current = current->next;
+		}
 	}
 	/* And current is the new element */
 	if((current = (xmachine_memory *)malloc(sizeof(xmachine_memory))) == NULL)
@@ -591,6 +594,7 @@ adj_function * add_depends_adj_function(xmachine_function * current_function)
 	current_function->depends = current;
 	
 	current->function = NULL;
+	current->name = NULL;
 	
 	return current;
 }
@@ -603,6 +607,7 @@ void add_adj_function_simple(xmachine_function * function1, xmachine_function * 
 	current->function = function2;
 	current->next = function1->alldepends;
 	function1->alldepends = current;
+	current->name = NULL;
 }
 
 void remove_adj_function_simple(xmachine_function * function1)
@@ -625,19 +630,21 @@ void add_adj_function(xmachine_function * function1, xmachine_function * functio
 	current->function = function1;
 	current->type = copystr(type);
 	current->next = function2->dependson;
+	current->name = NULL;
 	function2->dependson = current;
 	
 	current = (adj_function *)malloc(sizeof(adj_function));
 	current->function = function2;
 	current->type = copystr(type);
 	current->next = function1->dependants;
+	current->name = NULL;
 	function1->dependants = current;
 }
 
-void free_adj_function(adj_function ** p_adj_functions)
+void free_adj_function(adj_function * adj_functions)
 {
 	adj_function * temp, * head;
-	head = *p_adj_functions;
+	head = adj_functions;
 	/* Loop until new elements of cells left */
 	while(head)
 	{
@@ -650,8 +657,6 @@ void free_adj_function(adj_function ** p_adj_functions)
 		free(head);
 		head = temp;
 	}
-	
-	*p_adj_functions = NULL;
 }
 
 rule_data * add_rule_data(rule_data ** p_data)
@@ -785,10 +790,10 @@ void freexfunctions(xmachine_function ** p_xfunctions)
 		free_ioput(&head->outputs);
 		free_ioput(&head->first_inputs);
 		free_ioput(&head->last_outputs);
-		free_adj_function(&head->dependson);
-		free_adj_function(&head->dependants);
-		free_adj_function(&head->alldepends);
-		free_adj_function(&head->depends);
+		free_adj_function(head->dependson);
+		free_adj_function(head->dependants);
+		free_adj_function(head->alldepends);
+		free_adj_function(head->depends);
 		free_rule_data(&head->condition_rule);
 		free(head->condition_function);
 		free(head);
@@ -833,6 +838,7 @@ xmachine * addxmachine(xmachine ** p_xmachines, char * name)
 	/* Make current->next point to NULL */
 	current->number = number;
 	current->name = name;
+	current->memory = NULL;
 	addxmemory(&current->memory);
 	current->states = NULL;
 	current->functions = NULL;
@@ -998,6 +1004,8 @@ model_datatype * adddatatype(model_datatype ** p_datatypes)
 	}
 	current->vars = NULL;
 	current->next = NULL;
+	current->desc = NULL;
+	current->name = NULL;
 	/* Find end of list */
 	if(* p_datatypes == NULL)
 	{
