@@ -1,3 +1,6 @@
+xparser 0.15.5
+	* fix buffer overflow bug
+
 xparser 0.15.4
 	* fix null pointer bugs
 
