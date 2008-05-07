@@ -3,17 +3,15 @@
 #include "my_library_header.h"
 
 
-int Bank_check_loan_request_message ()
+int Bank_check_loan_request_message()
 {
-START_LOAN_REQUEST_MESSAGE_LOOP
-if (ID == loan_request_message->bank_id)
-  loan_request_message_found=1;
-FINISH_LOAN_REQUEST_MESSAGE_LOOP
-
+	START_LOAN_REQUEST_MESSAGE_LOOP
+	if (ID == loan_request_message->bank_id)
+	{
+		  loan_request_message_found=1;
+	}
+	FINISH_LOAN_REQUEST_MESSAGE_LOOP
 }
-
-
-
 
 int Bank_decide_credit_conditions()
 {
@@ -25,8 +23,8 @@ int Bank_decide_credit_conditions()
 		START_LOAN_REQUEST_MESSAGE_LOOP
 		if (ID == loan_request_message->bank_id) 
 		{
-			e = loan_request_message->current_equity;
-			d = loan_request_message->current_debt;
+			e = loan_request_message->equity;
+			d = loan_request_message->total_debt;
 			c = loan_request_message->credit_demand;
 			bankruptcy_prob = 1-exp(-(d+c)/e);
 			r = bankruptcy_prob*c/e;
@@ -39,7 +37,9 @@ int Bank_decide_credit_conditions()
 				credit_allowed = (ALFA*EQUITY - VAR)/bankruptcy_prob;
 			}
 			i = MIN_INTEREST + OMEGA[0]*r;
-			add_loan_conditions_message(i, credit_allowed, loan_request_message->firm_id, ID, r*(c/credit_allowed));
+			
+			//loan_conditions_message(firm_id, bank_id, proposed_interest_rate, amount_offered_credit, value_at_risk);
+			add_loan_conditions_message(loan_request_message->firm_id, ID, i, credit_allowed,  r*(c/credit_allowed));
 		}
 		FINISH_LOAN_REQUEST_MESSAGE_LOOP
 	}
@@ -160,7 +160,7 @@ int Bank_give_loan()
 	return 0;
 }
 
-int Bank_bank_accounting()
+int Bank_accounting()
 {
 
      double q, c, gro;   

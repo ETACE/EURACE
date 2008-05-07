@@ -19,19 +19,26 @@
 <xmachine>
 <name>Firm</name>
 <memory>
+
 <var><type>int</type><name>id</name></var>
+
+<!--  Firm Credit Role -->
 <var><type>double_array</type><name>interest</name></var>
 <var><type>double_array</type><name>credit_offer</name></var>
 <var><type>int_array</type><name>dmarketmatrix</name></var>
+
 <var><type>double</type><name>total_debt</name></var>
-<var><type>double</type><name>asset</name></var>
-<var><type>double</type><name>d_loan</name></var>
+<var><type>double</type><name>equity</name></var>
+<var><type>double</type><name>external_financial_needs</name></var>
+
 <var><type>double_array</type><name>installment_amount</name></var>
 <var><type>double_array</type><name>rateorder</name></var>
 <var><type>int</type><name>installment_number</name></var>
 <var><type>int</type><name>link</name></var>
 <var><type>int</type><name>number_of_banks</name></var>
-<var><type>double_array</type><name>outstanding_debt</name></var>
+
+<var><type>double_array</type><name>total_debt</name></var>  <!-- outstanding_debt -->
+
 <var><type>double_array</type><name>interest_amount</name></var>
 <var><type>double</type><name>total_resources</name></var>
 <var><type>double_array</type><name>residual_var</name></var>
