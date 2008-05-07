@@ -69,6 +69,7 @@ xmachine_ioput * addioput(xmachine_ioput ** p_ioput)
 	/* Make current->next point to NULL */
 	current->next = NULL;
 	current->filter_function = NULL;
+	current->filter_rule = NULL;
 	
 	/* Return new element */
 	return current;
