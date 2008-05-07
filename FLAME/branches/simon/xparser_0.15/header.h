@@ -504,7 +504,7 @@ adj_function * add_depends_adj_function(xmachine_function * current_function);
 void add_adj_function_simple(xmachine_function * function1, xmachine_function * function2);
 void remove_adj_function_simple(xmachine_function * function1);
 void add_adj_function(xmachine_function * function1, xmachine_function * function2, char * type);
-void free_adj_function(adj_function ** p_adj_functions);
+void free_adj_function(adj_function *adj_functions);
 /* charlist.c */
 void ws(int tabcount, char * string);
 void printcharlist(char_list ** p_charlist);
