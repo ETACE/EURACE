@@ -182,7 +182,7 @@ void readModel(input_file * inputfile, char * directory, model_data * modeldata,
 	int numtag = 0;
 	char chartag[100][100];
 	int tagline[100];
-	char chardata[100];
+	char chardata[1000];
 	/*char chardata2[100];*/
 	int dynamic_array_found;
 	int linenumber = 1;
