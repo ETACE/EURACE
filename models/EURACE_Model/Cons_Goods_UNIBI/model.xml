@@ -419,7 +419,7 @@
 </inputs>
 
 <outputs>
-<output><messageName>household_pay_goods_2_message</messageName></output>
+<output><messageName>household_pay_goods_2</messageName></output>
 </outputs>
 
 </function>
