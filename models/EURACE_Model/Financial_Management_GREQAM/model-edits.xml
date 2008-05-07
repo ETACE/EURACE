@@ -65,7 +65,6 @@
 <variable><type>double</type><name>total_dividend_payment</name><description></description></variable>
 
 <!-- Financial variables -->
-
 <variable><type>double</type><name>current_dividend_per_share</name><description></description></variable>
 <variable><type>double</type><name>previous_earnings_per_share</name><description></description></variable>
 <variable><type>double</type><name>earnings_per_share</name><description></description></variable>
@@ -197,7 +196,7 @@
 <!--<output><messageName>tax_payment</messageName></output>-->
 <!--<output><messageName>interest_payment</messageName></output>-->
 <!--<output><messageName>debt_installment_payment</messageName></output>-->
-<!--<output><messageName>total_dividend_payment</messageName></output>-->
+<!--<output><messageName>total_dividend</messageName></output>-->
 <!--<output><messageName>dividend_per_share</messageName></output>-->
 </outputs>
 </function>
