@@ -15,7 +15,7 @@
 <model><file>Labour_UNIBI/model.xml</file><enabled>true</enabled></model>
 <model><file>Statistical_Office_UNIBI/model.xml</file><enabled>true</enabled></model>
 <model><file>FINANCIAL_UG/model.xml</file><enabled>true</enabled></model>
-<model><file>Financial_UNIBI/model.xml</file><enabled>true</enabled></model>
+<model><file>Financial_UNIBI/model.xml</file><enabled>false</enabled></model>
 
 </models>
 

@@ -8,41 +8,6 @@
 
 
 /*
- * \fn: int Firm_compute_income_statement()
- * \brief: This function computes the income statement of the firm.
- */
-int Firm_compute_income_statement()
-{
-    //In the future: if we want to include sales_costs
-    //SALES_COSTS = 0;
-    //EBIT = CUM_REVENUE - SALES_COSTS
-    EBIT = CUM_REVENUE; //net revenues = receipts - sales_costs;       
-    
-    //update the cash holdings
-    PAYMENT_ACCOUNT += EBIT;
-    
-    //step 6: continue balance sheet (net earnings, earnings per share)
-    EARNINGS = EBIT - TOTAL_INTEREST_PAYMENT - PRODUCTION_COSTS;
-    	
-    TAX_PAYMENT = TAX_RATE_CORPORATE * EARNINGS;
-    PREVIOUS_NET_EARNINGS = NET_EARNINGS;
-    NET_EARNINGS = EARNINGS - TAX_PAYMENT;
-
-    //continue balance sheet (data pertaining to the period that just ended)
-    EARNINGS_PER_SHARE_RATIO = NET_EARNINGS/CURRENT_SHARES_OUTSTANDING;
-    PREVIOUS_DIVIDEND_PER_SHARE = CURRENT_DIVIDEND_PER_SHARE;
-    CURRENT_DIVIDEND_PER_SHARE = TOTAL_DIVIDEND_PAYMENT/CURRENT_SHARES_OUTSTANDING;
-    PREVIOUS_DIVIDEND_PER_EARNINGS = CURRENT_DIVIDEND_PER_EARNINGS;
-    CURRENT_DIVIDEND_PER_EARNINGS = TOTAL_DIVIDEND_PAYMENT/EARNINGS;
-
-    //Reset the counters
-    CUM_TOTAL_SOLD_QUANTITY = 0.0;
-    CUM_REVENUE = 0.0;        
-    
-    return 0;
-}
-
-/*
  * \fn: int Firm_financial_payments()
  * \brief: This function computes the income statement of the firm.
  * 
@@ -93,48 +58,97 @@ int Firm_compute_financial_payments()
         TOTAL_DEBT_INSTALLMENT_PAYMENT += LOANS.array[i].debt_installment_payment;
     }
 
-    //step 6: determine total_dividend_payment
-    //option 1: total divided payment remains constant
-    //TOTAL_DIVIDEND_PAYMENT *= 1;
-    
-    //option 2: total dividend payment increases with same ratio as earnings
-    //this is very dangerous, since earnings may fluctuate violently
-    //TOTAL_DIVIDEND_PAYMENT *= NET_EARNINGS/PREVIOUS_NET_EARNINGS;
-    
-    //option 3: keep dividend per share constant
-    //total divided payment increases with same ratio as current_shares_outstanding
-    //TOTAL_DIVIDEND_PAYMENT *= CURRENT_SHARES_OUTSTANDING/PREVIOUS_SHARES_OUTSTANDING;
+    return 0;
+}
 
-    //option 4: keep earnings per share constant
-    //total divided payment increases with same ratio as earnings per share
-    //if current_shares_outstanding remains constant, this keeps earnings per share constant
-    TOTAL_DIVIDEND_PAYMENT *= EARNINGS_PER_SHARE_RATIO;
-
-    //option 5: keep dividend to earnings ratio constant (dont let it fall), but do not decrease the dividend per share ratio.
 /*
-        if (CURRENT_DIVIDEND_PER_EARNINGS < PREVIOUS_DIVIDEND_PER_EARNINGS)
-        {
-            //Maintain the dividend to earnings ratio
-            //D_{t} = (D_{t-1}/E_{t-1})*E_{t}
-            TOTAL_DIVIDEND_PAYMENT = PREVIOUS_DIVIDEND_PER_EARNINGS * NET_EARNINGS;
-            
-            //But do not decrease the dividend per share ratio
-            if (TOTAL_DIVIDEND_PAYMENT/CURRENT_SHARES_OUTSTANDING < CURRENT_DIVIDEND_PER_SHARE)
-            {
-                TOTAL_DIVIDEND_PAYMENT = CURRENT_DIVIDEND_PER_SHARE * CURRENT_SHARES_OUTSTANDING;
-            }
-        }
-        else
-        {
-            //the dividend to earnings ratio did not decrease
-            //else keep the dividend per share ratio constant
-            TOTAL_DIVIDEND_PAYMENT = PREVIOUS_DIVIDEND_PER_SHARE*CURRENT_SHARES_OUTSTANDING;
-        }
-*/
+ * \fn: int Firm_compute_income_statement()
+ * \brief: This function computes the income statement of the firm.
+ */
+int Firm_compute_income_statement()
+{
+    //In the future: if we want to include sales_costs
+    //SALES_COSTS = 0;
+    //EBIT = CUM_REVENUE - SALES_COSTS
+    EBIT = CUM_REVENUE; //net revenues = receipts - sales_costs;       
+    
+    //update the cash holdings
+    PAYMENT_ACCOUNT += EBIT;
+    
+    //step 6: continue balance sheet (net earnings, earnings per share)
+    EARNINGS = EBIT - TOTAL_INTEREST_PAYMENT - PRODUCTION_COSTS;
+    	
+    TAX_PAYMENT = TAX_RATE_CORPORATE * EARNINGS;
+    PREVIOUS_NET_EARNINGS = NET_EARNINGS;
+    NET_EARNINGS = EARNINGS - TAX_PAYMENT;
 
-    TOTAL_PAYMENTS = TOTAL_INTEREST_PAYMENT + TOTAL_DEBT_INSTALLMENT_PAYMENT + TOTAL_DIVIDEND_PAYMENT + TAX_PAYMENT + PRODUCTION_COSTS;
+    //continue balance sheet (data pertaining to the period that just ended)
+    PREVIOUS_EARNINGS_PER_SHARE = EARNINGS_PER_SHARE;
+    EARNINGS_PER_SHARE = NET_EARNINGS/CURRENT_SHARES_OUTSTANDING;
+    
+    PREVIOUS_DIVIDEND_PER_SHARE = CURRENT_DIVIDEND_PER_SHARE;
+    CURRENT_DIVIDEND_PER_SHARE = TOTAL_DIVIDEND_PAYMENT/CURRENT_SHARES_OUTSTANDING;
+    PREVIOUS_DIVIDEND_PER_EARNINGS = CURRENT_DIVIDEND_PER_EARNINGS;
+    CURRENT_DIVIDEND_PER_EARNINGS = TOTAL_DIVIDEND_PAYMENT/EARNINGS;
+
+    //Reset the counters
+    CUM_TOTAL_SOLD_QUANTITY = 0.0;
+    CUM_REVENUE = 0.0;        
+    
+    return 0;
+}
+
+
+int Firm_compute_dividends()
+{
+	//Determine total_dividend_payment
+	//option 1: total divided payment remains constant
+	//TOTAL_DIVIDEND_PAYMENT *= 1;
+	
+	//option 2: total dividend payment increases with same ratio as net earnings
+	//This is very dangerous, since earnings may fluctuate violently
+	//TOTAL_DIVIDEND_PAYMENT *= NET_EARNINGS/PREVIOUS_NET_EARNINGS;
+	
+	//option 3: keep dividend per share constant
+	//total divided payment increases with same ratio as current_shares_outstanding
+	//TOTAL_DIVIDEND_PAYMENT *= CURRENT_SHARES_OUTSTANDING/PREVIOUS_SHARES_OUTSTANDING;
+	
+	//option 4: keep earnings per share constant
+	//total divided payment increases with same ratio as earnings per share
+	//if current_shares_outstanding remains constant, this keeps earnings per share constant
+	
+	TOTAL_DIVIDEND_PAYMENT = TOTAL_DIVIDEND_PAYMENT * (EARNINGS_PER_SHARE/PREVIOUS_EARNINGS_PER_SHARE);
+	
+	//option 5: keep dividend to earnings ratio constant (dont let it fall), but do not decrease the dividend per share ratio.
+	/*
+	    if (CURRENT_DIVIDEND_PER_EARNINGS < PREVIOUS_DIVIDEND_PER_EARNINGS)
+	    {
+	        //Maintain the dividend to earnings ratio
+	        //D_{t} = (D_{t-1}/E_{t-1})*E_{t}
+	        TOTAL_DIVIDEND_PAYMENT = PREVIOUS_DIVIDEND_PER_EARNINGS * NET_EARNINGS;
+	        
+	        //But do not decrease the dividend per share ratio
+	        if (TOTAL_DIVIDEND_PAYMENT/CURRENT_SHARES_OUTSTANDING < CURRENT_DIVIDEND_PER_SHARE)
+	        {
+	            TOTAL_DIVIDEND_PAYMENT = CURRENT_DIVIDEND_PER_SHARE * CURRENT_SHARES_OUTSTANDING;
+	        }
+	    }
+	    else
+	    {
+	        //the dividend to earnings ratio did not decrease
+	        //else keep the dividend per share ratio constant
+	        TOTAL_DIVIDEND_PAYMENT = PREVIOUS_DIVIDEND_PER_SHARE*CURRENT_SHARES_OUTSTANDING;
+	    }
+	*/
 
     return 0;
+}
+
+int Firm_compute_total_financial_payments()
+{
+
+	TOTAL_PAYMENTS = TOTAL_INTEREST_PAYMENT + TOTAL_DEBT_INSTALLMENT_PAYMENT + TOTAL_DIVIDEND_PAYMENT + TAX_PAYMENT + PRODUCTION_COSTS;
+	return 0;
 }
 
 /*
@@ -176,18 +190,6 @@ int Firm_compute_balance_sheet()
     
     //printf("\nTOTAL_ASSETS in functions.c file: %f\n", TOTAL_ASSETS);
 
-    return 0;
-}
-
-int Firm_check_solvency()
-{
-	BANKRUPTCY=0;
-	
-	if(EQUITY<0)
-	{
-		BANKRUPTCY=1;
-	}
-	
     return 0;
 }
 
@@ -327,13 +329,64 @@ int Firm_execute_financial_payments()
 	        }
 	    }
 	}
-
+	
 	//actual dividend_payments
-    //add dividend_payment_msg to shareholders (dividend per share)     
-    add_dividend_payment_message(ID, MY_BANK_ACCOUNT_ID, CURRENT_DIVIDEND_PER_SHARE);
+    //add total_dividend_msg(firm_id, bank_id, total_dividend_payment) to bank
+    add_total_dividend_message(ID, MY_BANK_ID, TOTAL_DIVIDEND_PAYMENT);
+	
+    //add dividend_per_share_msg(firm_id, current_dividend_per_share) to shareholders (dividend per share)     
+    add_dividend_per_share_message(ID, CURRENT_DIVIDEND_PER_SHARE);
 
     //decrease payment_account with the total_dividend_payment
     PAYMENT_ACCOUNT -= TOTAL_DIVIDEND_PAYMENT;
 
+    return 0;
+}
+
+
+
+/*
+ * \fn: Firm_compute_and_send_stock_orders()
+ * \brief: This function computes the firm's stock orders (share emmision) and sends a stock_order_message to the clearinghouse.
+ */
+int Firm_compute_and_send_stock_orders()
+{
+	double limit_price=CURRENT_SHARE_PRICE*0.99;
+    int quantity = -1*(1+EXTERNAL_FINANCIAL_NEEDS/limit_price);
+    
+    
+    //Firm tries to sell stock_units shares:
+    //add_order_message(trader_id, asset_id, limit_price, quantity)
+    add_order_message(ID, ID, limit_price, quantity);
+
+    return 0;
+}
+
+
+/*
+ * \fn: Firm_read_stock_transactions()
+ * \brief: This function reads a stock_transaction_message from the clearinghouse, and updates the firm's trading account.
+ */
+int Firm_read_stock_transactions()
+{
+	double finances;
+	
+    START_ORDER_STATUS_MESSAGE_LOOP
+    if(order_status_message->trader_id==ID)
+    {
+        //order_status_message->asset_id
+        //order_status_message->price
+        //order_status_message->quantity
+    	    	
+    	//Finances obtained: positive quantity is demand, negative quantity is selling
+    	finances = (-1)*order_status_message->price * order_status_message->quantity;
+    	
+    	//Increase payment account with the finances obtained
+    	PAYMENT_ACCOUNT += finances;
+    	
+    	//Decrease external financial needs with the finances obtained
+    	EXTERNAL_FINANCIAL_NEEDS -= finances;
+    }
+    FINISH_ORDER_STATUS_MESSAGE_LOOP
     return 0;
 }

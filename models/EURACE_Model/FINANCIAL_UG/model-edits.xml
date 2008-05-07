@@ -204,7 +204,7 @@
 			</function>
 		</functions>
 	</xagent>
-	<!--******************** X-machine Agent -Firm ***************************-->
+	<!--******************** X-machine Agent - Bank ***************************-->
 	<xagent>
 		<name>Bank</name>
 		<!--      Variables for the ClearingHouse     -->
@@ -232,28 +232,24 @@
 	<messages>
 		<!--          Message posted to load a new value        -->
 		<message>
-			<name>order</name>
+			<name>order</name> 
 			<note>order posted by the Trader</note>
 			<variables>
-				<variable><type>int</type><name>issuer</name></variable>
-				<variable><type>int</type><name>assetId</name></variable>
-				<variable><type>double</type><name>limitPrice</name></variable>
+				<variable><type>int</type><name>trader_id</name></variable>
+				<variable><type>int</type><name>asset_id</name></variable>
+				<variable><type>double</type><name>limit_price</name></variable>
 				<variable><type>int</type><name>quantity</name></variable>
-				<variable><type>double</type><name>range</name></variable>
-				
 			</variables>
 		</message>
 		
 		<message>
-			<name>orderStatus</name>
+			<name>order_status</name>
 			<note>The market is closed</note>
 			<variables>
-				<variable><type>int</type><name>issuer</name></variable>
-				<variable><type>int</type><name>assetId</name></variable>
+				<variable><type>int</type><name>trader_id</name></variable>
+				<variable><type>int</type><name>asset_id</name></variable>
 				<variable><type>double</type><name>price</name></variable>
 				<variable><type>int</type><name>quantity</name></variable>
-				<variable><type>double</type><name>range</name></variable>
-				
 			</variables>
 		</message>
 		

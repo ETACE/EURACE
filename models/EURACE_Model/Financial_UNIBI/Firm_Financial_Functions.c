@@ -56,15 +56,13 @@ int Firm_read_bond_transactions()
  */
 int Firm_compute_and_send_stock_orders()
 {
-//    double limit_quantity = (int) -1*EXTERNAL_FINANCIAL_NEEDS/CURRENT_SHARE_PRICE;
-
-    /*TESTING*/
-    int stock_id=1;
-    double limit_price=1.0;
-    double limit_quantity=1.0;
+	double limit_price=CURRENT_SHARE_PRICE*0.99;
+    int quantity = -1*(1+EXTERNAL_FINANCIAL_NEEDS/limit_price);
+    
     
     //Firm tries to sell stock_units shares:
-    add_stock_order_message(ID, stock_id, limit_price, limit_quantity);
+    //add_order_message(trader_id, asset_id, limit_price, quantity)
+    add_order_message(ID, ID, limit_price, quantity);
 
     return 0;
 }
@@ -77,15 +75,15 @@ int Firm_read_stock_transactions()
 {
 	double finances;
 	
-    START_STOCK_TRANSACTION_MESSAGE_LOOP
-    if(stock_transaction_message->trader_id==ID)
+    START_ORDER_STATUS_MESSAGE_LOOP
+    if(order_status_message->trader_id==ID)
     {
-        //stock_transaction_message->stock_id
-        //stock_transaction_message->transaction_price
-        //stock_transaction_message->transaction_quantity
+        //order_status_message->asset_id
+        //order_status_message->price
+        //order_status_message->quantity
     	    	
     	//Finances obtained: positive quantity is demand, negative quantity is selling
-    	finances = (-1)*stock_transaction_message->transaction_price * stock_transaction_message->transaction_quantity;
+    	finances = (-1)*order_status_message->price * order_status_message->quantity;
     	
     	//Increase payment account with the finances obtained
     	PAYMENT_ACCOUNT += finances;
@@ -93,7 +91,7 @@ int Firm_read_stock_transactions()
     	//Decrease external financial needs with the finances obtained
     	EXTERNAL_FINANCIAL_NEEDS -= finances;
     }
-    FINISH_STOCK_TRANSACTION_MESSAGE_LOOP
+    FINISH_ORDER_STATUS_MESSAGE_LOOP
     return 0;
 }
 
