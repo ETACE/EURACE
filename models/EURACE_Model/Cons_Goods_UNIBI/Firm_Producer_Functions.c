@@ -728,6 +728,9 @@ int Firm_calc_revenue()
 		}
 
 	FINISH_SALES_MESSAGE_LOOP
+	
+	/*GENUA*/
+	/*add_daily_revenue_to_bank_message(ID, BANK_ID, REVENUE_PER_DAY);*/
 
 	/*The monthly sales statistics*/
 	CUM_TOTAL_SOLD_QUANTITY+=TOTAL_SOLD_QUANTITY;	
