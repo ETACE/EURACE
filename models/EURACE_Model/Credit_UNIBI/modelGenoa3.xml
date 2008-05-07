@@ -70,19 +70,20 @@
 </memory>
 <functions>
 
-<function>
-<name>Firm_savings</name>
-<currentState>firm_start</currentState>
-<nextState>01</nextState>
-<outputs>
-<output><messageName>firm_deposit</messageName></output>
-</outputs>
-</function>
+
+<!--<function>-->
+<!--<name>Firm_savings</name>-->
+<!--<currentState>20</currentState>-->
+<!--<nextState>0001</nextState>-->
+<!--<outputs>-->
+<!--<output><messageName>firm_deposit</messageName></output>-->
+<!--</outputs>-->
+<!--</function>-->
 
 <function>
 <name>Firm_ask_for_loan</name>
-<currentState>01</currentState>
-<nextState>02</nextState>
+<currentState>Start_Firm_Credit_Role</currentState>
+<nextState>0002</nextState>
 <outputs>
 <output><messageName>loan_request</messageName></output>
 </outputs>
@@ -90,8 +91,8 @@
 
 <function>
 <name>Firm_choose_bank</name>
-<currentState>02</currentState>
-<nextState>03</nextState>
+<currentState>0002</currentState>
+<nextState>End_Firm_Credit_Role</nextState>
 <inputs>
 <input><messageName>loan_conditions</messageName></input>
 </inputs>
@@ -173,7 +174,7 @@
 <currentState>02</currentState>
 <nextState>03</nextState>
 <inputs>
-<input><messageName>loan_accept</messageName></input>
+<input><messageName>loan_acceptance</messageName></input>
 </inputs>
 </function>
 

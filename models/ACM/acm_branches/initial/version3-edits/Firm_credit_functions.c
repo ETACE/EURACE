@@ -13,14 +13,14 @@ int Firm_ask_loan()
 	{
 	    DMARKETMATRIX.array[j]=0;
 	} 
-	/*WARNING: CREDIT_DEMAND is also an agent memory variable*/
-	
+
       while (connected<LINK)
       {
 
             j=(int)((rand()/RAND_MAX)*NUMBER_OF_BANKS);// choose 'LINK' banks
             DMARKETMATRIX.array[j]=1;
-            D_LOAN = 100*(rand()/RAND_MAX);  /* generate random credit demand */
+            
+            //D_LOAN = 100*(rand()/RAND_MAX);  /* generate random credit demand */
             
             //add_loan_request_message(firm_id, bank_id, equity, total_debt, credit_demand);
             add_loan_request_message(ID, j, EQUITY, TOTAL_DEBT, EXTERNAL_FINANCIAL_NEEDS);
@@ -85,6 +85,8 @@ int Firm_get_loan()
             }
             EXTERNAL_FINANCIAL_NEEDS -= credit_accepted;
             interest = credit_accepted*INTEREST.array[RATEORDER.array[primo]];
+            
+            //This still needs to be merged with FinMan Code
             OUTSTANDING_DEBT.array[RATEORDER.array[primo]][INSTALLMENT_NUMBER-1] = credit_accepted+interest;		          
             INSTALLMENT_AMOUNT.array[RATEORDER.array[primo]][INSTALLMENT_NUMBER-1] = (credit_accepted+interest)/INSTALLMENT_NUMBER;
             INTEREST_AMOUNT.array[RATEORDER.array[primo]][INSTALLMENT_NUMBER-1] = interest/INSTALLMENT_NUMBER;
@@ -100,7 +102,7 @@ int Firm_get_loan()
       return 0;
 }
 
-
+//Sander: This function needs to be reviewed and merged into FinMan code
 int Firm_pay_interest_installment()
 {
 	double bad_debt, credit_refunded;
@@ -135,7 +137,7 @@ int Firm_pay_interest_installment()
 			  OUTSTANDING_DEBT.array[i][j] -= c;
 			  INTEREST_LEFT.array[i] -= r;
 			  RESIDUAL_VAR.array[i] -= v;
-			  ASSET-=r; 
+			  EQUITY -= r; //Sander: was ASSET -=r
 			  bad_debt=0; 
 			  credit_refunded=0; 
               individual_var=0; 
@@ -162,20 +164,25 @@ int Firm_pay_interest_installment()
             {
                 for (j=0; j<INSTALLMENT_NUMBER; j++)
                 {
-		        individual_debt+=OUTSTANDING_DEBT.array[i][j];
+                	individual_debt+=OUTSTANDING_DEBT.array[i][j];
                     individual_var+=VAR_PER_INSTALLMENT.array[i][j];
-                    a=ASSET*(individual_debt/TOTAL_DEBT);
-                    bad=individual_debt-a;
+                    a=EQUITY*(individual_debt/TOTAL_DEBT); //Sander: was ASSET
+                    bad_debt=individual_debt-a;
                     c=0;
                     r=0;
                     v=0;
-                    add_installment_message(c, r, i, v,bad, a, individual_var); 
+                    
+                    //add_installment_message(c, r, i, v, bad, a, individual_var);      
+                    //add_installment_message(bank_id, installment_amount_paid, interest, var_per_installment, bad_debt, credit_refunded, residual_var);
+                     add_installment_message(bank_id, INSTALLMENT_AMOUNT.array[i][j], INTEREST_AMOUNT.array[i][j], VAR_PER_INSTALLMENT.array[i][j], bad_debt, credit_refunded, individual_var);
+
                     individual_debt=0;
                     individual_var=0;                 
                 }
             }
 	 	
-            ASSET=0;	
+		//Sander: why do we need these lines?
+            EQUITY=0;	
             TOTAL_DEBT=0;
 	}
 
