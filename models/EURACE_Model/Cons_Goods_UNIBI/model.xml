@@ -360,8 +360,8 @@
 
 <function><name>Household_idle</name>
 <description></description>
-<currentState>11</currentState>
-<nextState>13</nextState>
+<currentState>09</currentState>
+<nextState>15</nextState>
 <condition><not><time><period>monthly</period><phase>a.day_of_month_to_act</phase></time></not></condition>
 </function>
 
@@ -395,7 +395,7 @@
 <function><name>Household_idle</name>
 <description></description>
 <currentState>11</currentState>
-<nextState>13</nextState>
+<nextState>14</nextState>
 <condition><lhs><value>a.rationed</value></lhs><op>NEQ</op><rhs><value>1</value></rhs></condition>
 </function>
 
@@ -415,7 +415,7 @@
 <function><name>Household_receive_goods_read_rationing_2</name>
 <description></description>
 <currentState>12</currentState>
-<nextState>13</nextState>
+<nextState>14</nextState>
 <inputs>
 <input><messageName>accepted_consumption_2</messageName></input>
 </inputs>
@@ -426,15 +426,7 @@
 -->
 </function>
 
-<function><name>Household_receicve_dividends</name>
-<description></description>
-<currentState>13</currentState>
-<nextState>15</nextState>
-<inputs>
-<input><messageName>dividend_payment</messageName></input>
-<input><messageName>capital_good_profit_distribution</messageName></input>
-</inputs>
-</function>
+
 
 <function><name>Household_handle_leftover_budget</name>
 <description></description>
