@@ -286,7 +286,7 @@
 <function>
 <name>Household_read_firing_messages</name>
 <description></description>
-<currentState>start_Household</currentState>
+<currentState>EXIT_FINANCIAL_MARKET</currentState>
 <nextState>01d</nextState>
 <condition><lhs><value>a.employee_firm_id</value></lhs><op>NEQ</op><rhs><value>-1</value></rhs></condition>
 <inputs>
