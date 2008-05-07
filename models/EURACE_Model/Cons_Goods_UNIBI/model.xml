@@ -241,11 +241,11 @@
 <inputs>
 <input><messageName>sales</messageName></input>
 </inputs>
-<!--  GENUA
+
 <outputs>
 <output><messageName>daily_revenue_to_bank</messageName></output>
 </outputs>
--->
+
 </function>
 
 <function><name>Firm_update_specific_skills_of_workers</name>
@@ -319,11 +319,9 @@
 <inputs>
 <input><messageName>wage_payment</messageName></input>
 </inputs>
-<!--  GENUA
 <outputs>
 <output><messageName>wage_to_bank</messageName></output>
 </outputs>
--->
 </function>
 
 <function><name>Household_update_specific_skills</name>
@@ -345,11 +343,11 @@
 	<rhs><lhs><value>a.employee_firm_id</value></lhs><op>EQ</op><rhs><value>-1</value></rhs></rhs>
 </condition>
 <!--<input><messageName>unemployment_benefits</messageName></input>-->
-<!--  GENUA
+
 <outputs>
 <output><messageName>unemployment_benefit_to_bank</messageName></output>
 </outputs>
--->
+
 </function>
 
 <function><name>Household_determine_consumption_budget</name>
@@ -385,11 +383,11 @@
 <inputs>
 <input><messageName>accepted_consumption_1</messageName></input>
 </inputs>
-<!--  GENUA
+
 <outputs>
 <output><messageName>household_pay_goods</messageName></output>
 </outputs>
--->
+
 </function>
 
 <function><name>Household_idle</name>
@@ -419,11 +417,11 @@
 <inputs>
 <input><messageName>accepted_consumption_2</messageName></input>
 </inputs>
-<!--  GENUA
+
 <outputs>
 <output><messageName>household_pay_goods_2_message</messageName></output>
 </outputs>
--->
+
 </function>
 
 
@@ -640,7 +638,7 @@
 </variables>
 </message>
 
-<!-- GENUA -->
+
 <message>
 <name>wage_to_bank</name>
 <description></description>
