@@ -330,7 +330,7 @@
 <nextState>09</nextState>
 </function>
 
-<function><name>Household_receicve_dividends</name>
+<function><name>Household_receive_dividends</name>
 <description></description>
 <currentState>09</currentState>
 <nextState>15</nextState>
