@@ -1,3 +1,6 @@
+xparser 0.15.3
+	* fix bug when adding input/output data to agent functions
+
 xparser 0.15.2
 	* fix bug when handling model file paths
 
