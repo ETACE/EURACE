@@ -143,25 +143,28 @@
 <nextState>004</nextState>
 </function>
 
-
 <function>
 <name>Firm_compute_balance_sheet</name>
 <description></description>
 <currentState>004</currentState>
 <nextState>005</nextState>
+<inputs>
+<input><messageName>current_mall_stock_info</messageName></input>
+</inputs>
 </function>
 
 <function>
 <name>Firm_idle</name>
+<description></description>
 <currentState>005</currentState>
 <nextState>Firm_end</nextState>
 <condition><lhs><value>a.equity</value></lhs><op>LT</op><rhs><value>0.0</value></rhs></condition>
 </function>
 
 <function>
-<name>Firm_compute_financial_needs</name>
+<name>Firm_compute_total_liquidity_needs</name>
 <description></description>
-<currentState>005</currentState>
+<currentState>02</currentState>
 <nextState>Start_Firm_Credit_Role</nextState>
 <condition><lhs><value>a.equity</value></lhs><op>GT</op><rhs><value>0.0</value></rhs></condition>  
 </function>

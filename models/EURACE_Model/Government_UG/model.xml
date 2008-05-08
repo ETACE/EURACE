@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE xmodel SYSTEM "http://eurace.cs.bilgi.edu.tr/XMML.dtd">
+<xmodel version="2">
+
+<name>Government</name>
+<version>Genoa 08/05/2008</version>
+<description></description>
+
+<environment>
+
+<functionFiles>
+<file>Government_Functions.c</file>
+</functionFiles>
+
+</environment>
+
+<agents>
+
+<xagent>
+<name>Government</name>
+<description></description>
+<memory>
+</memory>
+
+<functions>
+<function>
+<name>Government_read_tax_payment</name>
+<description></description>
+<currentState>start_Government</currentState>
+<nextState>end_Government</nextState>
+<inputs>
+<input><messageName>tax_payment</messageName></input>
+</inputs>
+</function>
+</functions>
+
+</xagent>
+
+</agents>
+
+<messages>
+
+</messages>
+
+</xmodel>

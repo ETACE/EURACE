@@ -72,7 +72,7 @@
 
 <function>
 <name>Firm_savings</name>
-<currentState>firm_start</currentState>
+<currentState>Start_Firm_Credit_Role</currentState>
 <nextState>01</nextState>
 <outputs>
 <output><messageName>firm_deposit</messageName></output>

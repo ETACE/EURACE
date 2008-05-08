@@ -25,7 +25,7 @@
 <function>
 <name>Firm_apply_for_loans</name>
 <description></description>
-<currentState>20</currentState>
+<currentState>Start_Firm_Credit_Role</currentState>
 <nextState>21</nextState>
 <condition><lhs><value>a.external_financial_needs</value></lhs><op>GT</op><rhs><value>0.0</value></rhs></condition>
 <outputs>

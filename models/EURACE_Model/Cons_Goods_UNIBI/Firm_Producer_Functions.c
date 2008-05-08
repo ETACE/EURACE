@@ -131,25 +131,6 @@ int Firm_calc_production_quantity()
 	double production_volume = 0;
 	double prod_vol;
 
-
-		/*reading current mall stocks   */
-		START_CURRENT_MALL_STOCK_INFO_MESSAGE_LOOP
-
-			if(current_mall_stock_info_message->firm_id == ID)
-			{
-				for(int j=0; j< CURRENT_MALL_STOCKS.size;j++)
-				{
-					if(current_mall_stock_info_message->mall_id==
-					CURRENT_MALL_STOCKS.array[j].mall_id)
-					{
-						/*Firms update the stock level in one mall*/
-						CURRENT_MALL_STOCKS.array[j].current_stock= current_mall_stock_info_message->stock;
-					}		
-				}
-			}
-	
-		FINISH_CURRENT_MALL_STOCK_INFO_MESSAGE_LOOP
-
 		/*Computing of mean critical stock levels*/
 		double mean_critical_stocks=0;
 		for (int j = 0; j < CURRENT_MALL_STOCKS.size;j++)
