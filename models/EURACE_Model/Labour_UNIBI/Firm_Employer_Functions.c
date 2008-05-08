@@ -45,51 +45,51 @@ int Firm_start_labour_market()
 /*************************************Firm Role: Labour Market*********************************/
 
 /** \fn Firm_receive_data()
- * \brief Firms receive the data messages from the Market Research*/
+ * \brief Firms receive the data messages from the Eurostat*/
 int Firm_receive_data()
 {
 					
 	/* If day of month to act... */
 	
 		
-	START_MARKET_RESEARCH_SEND_SPECIFIC_SKILLS_MESSAGE_LOOP
+	START_EUROSTAT_SEND_SPECIFIC_SKILLS_MESSAGE_LOOP
 		
 		/*Specific skills of the domestic region*/
-		if(market_research_send_specific_skills_message->region_id == REGION_ID)
+		if(eurostat_send_specific_skills_message->region_id == REGION_ID)
 		{
 			/*If there is no employee with general skill level 1 resp. 2-5*/
 			if(NO_EMPLOYEES_SKILL_1 == 0)
 			{
-				AVERAGE_S_SKILL_OF_1 = 						market_research_send_specific_skills_message->
+				AVERAGE_S_SKILL_OF_1 = 						eurostat_send_specific_skills_message->
 				specific_skill_1;
 			}
 
 			if(NO_EMPLOYEES_SKILL_2 == 0)
 			{
-				AVERAGE_S_SKILL_OF_2 = 						market_research_send_specific_skills_message->
+				AVERAGE_S_SKILL_OF_2 = 						eurostat_send_specific_skills_message->
 				specific_skill_2;
 			}
 
 			if(NO_EMPLOYEES_SKILL_3 == 0)
 			{
-				AVERAGE_S_SKILL_OF_3 = 						market_research_send_specific_skills_message->
+				AVERAGE_S_SKILL_OF_3 = 						eurostat_send_specific_skills_message->
 				specific_skill_3;
 			}
 
 			if(NO_EMPLOYEES_SKILL_4 == 0)
 			{
-				AVERAGE_S_SKILL_OF_4 = 						market_research_send_specific_skills_message->
+				AVERAGE_S_SKILL_OF_4 = 						eurostat_send_specific_skills_message->
 				specific_skill_4;
 			}
 
 			if(NO_EMPLOYEES_SKILL_5 == 0)
 			{
-				AVERAGE_S_SKILL_OF_5 = 						market_research_send_specific_skills_message->
+				AVERAGE_S_SKILL_OF_5 = 						eurostat_send_specific_skills_message->
 				specific_skill_5;
 			}
 		}
 
-		FINISH_MARKET_RESEARCH_SEND_SPECIFIC_SKILLS_MESSAGE_LOOP
+		FINISH_EUROSTAT_SEND_SPECIFIC_SKILLS_MESSAGE_LOOP
 
 		return 0;
 

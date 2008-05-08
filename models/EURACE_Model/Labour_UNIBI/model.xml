@@ -97,7 +97,7 @@
 
 <function><name>Firm_send_vacancies</name>
 <description></description>
-<currentState>28</currentState>
+<currentState>Start_Firm_Labour_Role</currentState>
 <nextState>03</nextState>
 <condition><lhs><value>a.no_employees</value></lhs><op>LT</op><rhs><value>a.employees_needed</value></rhs></condition>
 <outputs>
@@ -107,7 +107,7 @@
 
 <function><name>Firm_send_redundancies</name>
 <description></description>
-<currentState>28</currentState>
+<currentState>Start_Firm_Labour_Role</currentState>
 <nextState>03c</nextState>
 <condition><lhs><value>a.no_employees</value></lhs><op>GT</op><rhs><value>a.employees_needed</value></rhs></condition>
 <outputs>
@@ -117,7 +117,7 @@
 
 <function><name>Firm_idle</name>
 <description></description>
-<currentState>28</currentState>
+<currentState>Start_Firm_Labour_Role</currentState>
 <nextState>03c</nextState>
 <condition><lhs><value>a.no_employees</value></lhs><op>EQ</op><rhs><value>a.employees_needed</value></rhs></condition>
 </function>
@@ -242,7 +242,7 @@
 <function><name>Firm_read_job_quitting_2</name>
 <description></description>
 <currentState>09c</currentState>
-<nextState>13</nextState>
+<nextState>Start_Firm_Seller_Role</nextState>
 <inputs>
 <input><messageName>quitting2</messageName></input>
 </inputs>
@@ -251,14 +251,14 @@
 <function><name>Firm_update_wage_offer_2</name>
 <description></description>
 <currentState>09b</currentState>
-<nextState>10</nextState>
+<nextState>End_Firm_Labour_Role</nextState>
 <condition><lhs><value>a.no_employees</value></lhs><op>LT</op><rhs><value>a.employees_needed</value></rhs></condition>
 </function>
 
 <function><name>Firm_idle</name>
 <description></description>
 <currentState>09b</currentState>
-<nextState>10</nextState>
+<nextState>End_Firm_Labour_Role</nextState>
 <condition><not><lhs><value>a.no_employees</value></lhs><op>LT</op><rhs><value>a.employees_needed</value></rhs></not></condition>
 </function>
 
@@ -295,14 +295,11 @@
 </function>
 
 <function>
-<name>Household_made_unemployed</name>
+<name>Household_idle</name>
 <description></description>
 <currentState>01d</currentState>
 <nextState>01a</nextState>
 <condition><lhs><value>a.employee_firm_id</value></lhs><op>EQ</op><rhs><value>-1</value></rhs></condition>
-<inputs>
-<input><messageName>firing</messageName></input>
-</inputs>
 </function>
 
 <function>

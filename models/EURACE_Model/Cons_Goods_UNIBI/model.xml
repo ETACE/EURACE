@@ -196,6 +196,7 @@
 <description></description>
 <currentState>005</currentState>
 <nextState>01</nextState>
+<condition><lhs><value>a.equity</value></lhs><op>GT</op><rhs><value>0.0</value></rhs></condition>
 </function>
 
 <function>
@@ -217,15 +218,45 @@
 
 <function><name>Firm_calc_production_quantity_2</name>
 <description></description>
-<currentState>26</currentState>
-<nextState>261</nextState>
-<condition><lhs><value>a.external_financial_needs</value></lhs><op>GT</op><rhs><value>0.0</value></rhs></condition>
+<currentState>End_Firm_Financial_Management_Role</currentState>
+<nextState>Start_Firm_Labour_Role</nextState>
+<condition><not><lhs><value>a.payment_account</value></lhs><op>GEQ</op><rhs><value>a.production_liquidity_needs</value></rhs></not></condition>
+</function>
+
+<function><name>Firm_idle</name>
+<description></description>
+<currentState>End_Firm_Financial_Management_Role</currentState>
+<nextState>Start_Firm_Labour_Role</nextState>
+<condition><lhs><value>a.payment_account</value></lhs><op>GEQ</op><rhs><value>a.production_liquidity_needs</value></rhs></condition>
+</function>
+
+<function><name>Firm_send_capital_demand</name>
+<description></description>
+<currentState>End_Firm_Labour_Role</currentState>
+<nextState>11</nextState>
+<outputs>
+<output><messageName>capital_good_request</messageName></output>
+</outputs>
+</function>
+
+
+<function><name>Firm_calc_pay_costs</name>
+<description></description>
+<currentState>11</currentState>
+<nextState>12</nextState>
+<inputs>
+<input><messageName>capital_good_delivery</messageName></input>
+</inputs>
+<outputs>
+<output><messageName>wage_payment</messageName></output>
+<output><messageName>pay_capital_goods</messageName></output>
+</outputs>
 </function>
 
 <function><name>Firm_send_goods_to_mall</name>
 <description></description>
 <currentState>12</currentState>
-<nextState>13</nextState>
+<nextState>Start_Firm_Seller_Role</nextState>
 <outputs>
 <output><messageName>update_mall_stock</messageName></output>
 </outputs>
@@ -233,12 +264,11 @@
 
 <function><name>Firm_calc_revenue</name>
 <description></description>
-<currentState>13</currentState>
+<currentState>Start_Firm_Seller_Role</currentState>
 <nextState>13b</nextState>
 <inputs>
 <input><messageName>sales</messageName></input>
 </inputs>
-
 <outputs>
 <output><messageName>daily_revenue_to_bank</messageName></output>
 </outputs>
@@ -497,7 +527,7 @@
 <function><name>Mall_pay_firm</name>
 <description></description>
 <currentState>05</currentState>
-<nextState>end</nextState>
+<nextState>end_Mall</nextState>
 <outputs>
 <output><messageName>sales</messageName></output>
 </outputs>

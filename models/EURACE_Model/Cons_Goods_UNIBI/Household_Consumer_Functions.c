@@ -100,12 +100,14 @@ int Household_receive_unemployment_benefits()
 
 	mean_income = mean_income/4;
 			
-	/*Add wage on account   */
-	SAVINGS +=  unemployment_benefit_payment;
 	
 	/*GENUA*/
-	//add_unemployment_benefit_to_bank_message(ID, BANK_ID, unemployment_benefit_payment);
-	
+	START_UNEMPLOYMENT_BENEFIT_MESSAGE_LOOP
+		/*Read unemployment_benefit and add to account */
+		PAYMENT_ACCOUNT +=  unemployment_benefit_message->unemployment_benefit_payment;
+		add_unemployment_benefit_to_bank_message(ID, BANK_ID, unemployment_benefit_message->unemployment_benefit_payment);
+	FINISH_UNEMPLOYMENT_BENEFIT_MESSAGE_LOOP
+		
 return 0;	
 	
 }

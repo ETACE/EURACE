@@ -126,6 +126,15 @@
 </memory>
 </xagent>
 
+
+<xagent>
+<name>Central_Bank</name>
+<description></description>
+<memory>
+<variable><type>int</type><name>id</name><description></description></variable>
+</memory>
+</xagent>
+
 </agents>
 
 </xmodel>

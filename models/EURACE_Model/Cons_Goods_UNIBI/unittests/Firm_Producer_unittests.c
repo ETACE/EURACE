@@ -514,10 +514,10 @@ void unittest3_Firm_calc_input_demands()
 //  }
 
 /*
- * \fn: void unittest_Firm_send_data_to_Market_Research()
- * \brief: Unit tests for: Firm_send_data_to_Market_Research
+ * \fn: void unittest_Firm_send_data_to_Eurostat()
+ * \brief: Unit tests for: Firm_send_data_to_Eurostat
  */
-//  void unittest_Firm_send_data_to_Market_Research()
+//  void unittest_Firm_send_data_to_Eurostat()
 //  {
 //      /************* At start of unit test, add one agent **************/
 //      add_Firm_agent_internal(init_Firm_agent());
@@ -531,7 +531,7 @@ void unittest3_Firm_calc_input_demands()
 //      add_<message_name>_message(<msg_var>, MSGDATA);
 //
 //      /***** Function evaluation ***************************************/
-//      Firm_send_data_to_Market_Research();
+//      Firm_send_data_to_Eurostat();
 //      
 //      /***** Variables: Memory post-conditions *************************/
 //      CU_ASSERT_DOUBLE_EQUAL(<var_name1>, <value>, 1e-3);
