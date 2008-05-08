@@ -311,6 +311,7 @@
 <variable><type>int</type><name>day_of_month_receive_income</name><description></description></variable>
 <variable><type>double</type><name>current_productivity_employer</name><description></description></variable>
 <variable><type>double</type><name>current_mean_specific_skills_employer</name><description></description></variable>
+<variable><type>double</type><name>payment_account</name><description></description></variable>
 </memory>
 <functions>
 	
@@ -346,9 +347,6 @@
 <inputs>
 <input><messageName>wage_payment</messageName></input>
 </inputs>
-<outputs>
-<output><messageName>wage_to_bank</messageName></output>
-</outputs>
 </function>
 
 <function><name>Household_update_specific_skills</name>
@@ -370,11 +368,6 @@
 	<rhs><lhs><value>a.employee_firm_id</value></lhs><op>EQ</op><rhs><value>-1</value></rhs></rhs>
 </condition>
 <!--<input><messageName>unemployment_benefits</messageName></input>-->
-
-<outputs>
-<output><messageName>unemployment_benefit_to_bank</messageName></output>
-</outputs>
-
 </function>
 
 <function><name>Household_determine_consumption_budget</name>
@@ -410,11 +403,6 @@
 <inputs>
 <input><messageName>accepted_consumption_1</messageName></input>
 </inputs>
-
-<outputs>
-<output><messageName>household_pay_goods</messageName></output>
-</outputs>
-
 </function>
 
 <function><name>Household_idle</name>
@@ -444,11 +432,6 @@
 <inputs>
 <input><messageName>accepted_consumption_2</messageName></input>
 </inputs>
-
-<outputs>
-<output><messageName>household_pay_goods_2</messageName></output>
-</outputs>
-
 </function>
 
 
@@ -457,6 +440,9 @@
 <description></description>
 <currentState>14</currentState>
 <nextState>15</nextState>
+<outputs>
+<output><messageName>bank_account_update</messageName></output>
+</outputs>
 </function>
 
 </functions>
@@ -667,58 +653,26 @@
 
 
 <message>
-<name>wage_to_bank</name>
+<name>bank_account_update</name>
 <description></description>
 <variables>
 <variable><type>int</type><name>id</name><description></description></variable>
 <variable><type>int</type><name>bank_id</name><description></description></variable>
-<variable><type>double</type><name>wage</name><description></description></variable>
+<variable><type>double</type><name>payment_account</name><description></description></variable>
 </variables>
 </message>
 
-<!-- GENUA -->
-<message>
-<name>unemployment_benefit_to_bank</name>
-<description></description>
-<variables>
-<variable><type>int</type><name>id</name><description></description></variable>
-<variable><type>int</type><name>bank_id</name><description></description></variable>
-<variable><type>double</type><name>unemployment_benefit</name><description></description></variable>
-</variables>
-</message>
-
-<!-- GENUA -->
-<message>
-<name>household_pay_goods</name>
-<description></description>
-<variables>
-<variable><type>int</type><name>id</name><description></description></variable>
-<variable><type>int</type><name>bank_id</name><description></description></variable>
-<variable><type>double</type><name>expenditures</name><description></description></variable>
-</variables>
-</message>
-
-<!-- GENUA -->
-<message>
-<name>household_pay_goods_2</name>
-<description></description>
-<variables>
-<variable><type>int</type><name>id</name><description></description></variable>
-<variable><type>int</type><name>bank_id</name><description></description></variable>
-<variable><type>double</type><name>expenditures</name><description></description></variable>
-</variables>
-</message>
-
-<!-- GENUA -->
 <message>
 <name>daily_revenue_to_bank</name>
 <description></description>
 <variables>
 <variable><type>int</type><name>id</name><description></description></variable>
 <variable><type>int</type><name>bank_id</name><description></description></variable>
-<variable><type>double</type><name>revenue_per_day</name><description></description></variable>
+<variable><type>double</type><name>payment_account</name><description></description></variable>
 </variables>
 </message>
+
+
 
 </messages>
 
