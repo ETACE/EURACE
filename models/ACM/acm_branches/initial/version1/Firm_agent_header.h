@@ -12,9 +12,9 @@
 /** \def CREDIT_OFFER
  * \brief Direct access to credit_offer of Firm agent memory variable. */
 #define CREDIT_OFFER (current_xmachine_Firm->credit_offer)
-/** \def CONTACTED_BANK
- * \brief Direct access to contacted_bank of Firm agent memory variable. */
-#define CONTACTED_BANK (current_xmachine_Firm->contacted_bank)
+/** \def DMARKETMATRIX
+ * \brief Direct access to dmarketmatrix of Firm agent memory variable. */
+#define DMARKETMATRIX (current_xmachine_Firm->dmarketmatrix)
 /** \def TOTAL_DEBT
  * \brief Direct access to total_debt of Firm agent memory variable. */
 #define TOTAL_DEBT (current_xmachine_Firm->total_debt)
@@ -24,12 +24,12 @@
 /** \def CREDIT_DEMAND
  * \brief Direct access to credit_demand of Firm agent memory variable. */
 #define CREDIT_DEMAND (current_xmachine_Firm->credit_demand)
-/** \def INSTALLMENT_AMOUNT
- * \brief Direct access to installment_amount of Firm agent memory variable. */
-#define INSTALLMENT_AMOUNT (current_xmachine_Firm->installment_amount)
-/** \def INSTALLMENT_NUMBER
- * \brief Direct access to installment_number of Firm agent memory variable. */
-#define INSTALLMENT_NUMBER (current_xmachine_Firm->installment_number)
+/** \def INSTALMENT_AMOUNT
+ * \brief Direct access to instalment_amount of Firm agent memory variable. */
+#define INSTALMENT_AMOUNT (current_xmachine_Firm->instalment_amount)
+/** \def INSTALMENT_NUMBER
+ * \brief Direct access to instalment_number of Firm agent memory variable. */
+#define INSTALMENT_NUMBER (current_xmachine_Firm->instalment_number)
 /** \def LOANS_NUMBER
  * \brief Direct access to loans_number of Firm agent memory variable. */
 #define LOANS_NUMBER (current_xmachine_Firm->loans_number)

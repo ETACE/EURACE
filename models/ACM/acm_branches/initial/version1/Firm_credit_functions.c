@@ -5,160 +5,173 @@
 
 int Firm_ask_loan()
 {
-	int bank_name[2];
-	bank_name[0] = rand()%NUMBER_OF_BANKS;
-	do 
+	int i, connected, j;
+	
+      connected=0; 
+
+	for (j=0; j< NUMBER_OF_BANKS; j++) 
 	{
-		bank_name[1] = rand()%NUMBER_OF_BANKS;
-	} while ( bank_name[1] == bank_name[0] );
+	    DMARKETMATRIX.array[j]=0;
+	} 
 	
 	/*WARNING: CREDIT_DEMAND is also an agent memory variable*/
-	double credit_demand = rand()/((double)RAND_MAX+1);  /* generate random credit demand */
-	add_loan_request_message(CURRENT_EQUITY, CURRENT_DEBT, credit_demand, bank_name[0], ID);
-	add_loan_request_message(CURRENT_EQUITY, CURRENT_DEBT, credit_demand, bank_name[1], ID);
+	
+      while (connected<LINK)
+      {
+
+            j=(int)((rand()/RAND_MAX)*NUMBER_OF_BANKS);// choose 'LINK' banks
+            DMARKETMATRIX.array[j]=1;
+            D_LOAN = 100*(rand()/RAND_MAX);  /* generate random credit demand */
+            add_loan_request_message(ASSET, TOTAL_DEBT, D_LOAN, ID, j);
+            connected+=1;
+      }  
+      
 	return 0;
 }
 
 int Firm_get_loan()
 {
-	int n = 0;
-	double interest;
-	double tempi;
-	int tempn; /*WARNING : All declarations should be done on top of function*/
+	int n, n1, k, i, j, primo;
+      int bk = -1;
+	double interest, aux;
+	double totalcredit_taken=0;
+	      
+      for (i=0; i<NUMBER_OF_BANKS;i++)
+ 	{
+ 	    RATEORDER.array[i]=-1;   //vettore lunghezza number_of_banks
+ 	} 
 
 	START_LOAN_CONDITIONS_MESSAGE_LOOP
 	if (ID == loan_conditions_message->firm_id) 
 	{
-		INTEREST.array[n] = loan_conditions_message->proposed_interest_rate;
-		CREDIT_OFFER.array[n] = loan_conditions_message->amount_offered_credit;
-		CONTACTED_BANK.array[n] = loan_conditions_message->bank_id;
-		VALUE_AT_RISK.array[n] = loan_conditions_message->var;
+            bk = loan_conditions_message->bank_id;
+        INTEREST.array[bk] = loan_conditions_message->proposed_interest_rate;
+		CREDIT_OFFER.array[bk] = loan_conditions_message->amount_offered_credit;
+		RATEORDER.array[bk] = loan_conditions_message->bank_id;
+		VALUE_AT_RISK.array[bk] = loan_conditions_message->var;
 		n += 1;
 	}
 	FINISH_LOAN_CONDITIONS_MESSAGE_LOOP
-	//double tempi;
-//	int tempn; /*WARNING : All declarations should be done on top of function*/
-	if (INTEREST.array[0] > INTEREST.array[1] ) 
-	{
-		tempi = INTEREST.array[0];
-		INTEREST.array[0] = INTEREST.array[1];
-		INTEREST.array[1] = tempi;
-		tempi = CREDIT_OFFER.array[0];
-		CREDIT_OFFER.array[0] = CREDIT_OFFER.array[1];
-		CREDIT_OFFER.array[1] = tempi;
-		tempi = VALUE_AT_RISK.array[0];
-		VALUE_AT_RISK.array[0] = VALUE_AT_RISK.array[1];
-		VALUE_AT_RISK.array[1] = tempi;
-		tempn = CONTACTED_BANK.array[0];
-		CONTACTED_BANK.array[0] = CONTACTED_BANK.array[1];
-		CONTACTED_BANK.array[1] = tempn;
-	}
-	if ( CREDIT_OFFER.array[0] > 0 ) 
-	{
-		interest = CREDIT_OFFER.array[0]*INTEREST.array[0];
-		OUTSTANDING_DEBT.array[LOANS_NUMBER] = CREDIT_OFFER.array[0]+interest;
-		INSTALLMENT_AMOUNT.array[LOANS_NUMBER] = (CREDIT_OFFER.array[0]+interest)/INSTALLMENT_NUMBER;
-		INTEREST_AMOUNT.array[LOANS_NUMBER] = interest/INSTALLMENT_NUMBER;
-		RESIDUAL_VAR.array[LOANS_NUMBER] = VALUE_AT_RISK.array[0];
-		VAR_PER_INSTALLMENT.array[LOANS_NUMBER] = VALUE_AT_RISK.array[0]/INSTALLMENT_NUMBER;
-		INTEREST_LEFT.array[LOANS_NUMBER] = interest;
-		LENDING_BANK_ID.array[LOANS_NUMBER] = CONTACTED_BANK.array[0];
-		add_loan_acceptance_message(CREDIT_OFFER.array[0], CONTACTED_BANK.array[0]);
-		LOANS_NUMBER += 1;
-	}
-	if ( CREDIT_OFFER.array[0] < CREDIT_DEMAND && CREDIT_OFFER.array[1] > 0) 
-	{
-		double residual_credit_demand = CREDIT_DEMAND-CREDIT_OFFER.array[0];
-		if ( residual_credit_demand < CREDIT_OFFER.array[1] ) 
-		{
-			interest = residual_credit_demand*INTEREST.array[1];
-			OUTSTANDING_DEBT.array[LOANS_NUMBER] = residual_credit_demand+interest;
-			INSTALLMENT_AMOUNT.array[LOANS_NUMBER] = (residual_credit_demand+interest)/INSTALLMENT_NUMBER;
-			INTEREST_AMOUNT.array[LOANS_NUMBER] = interest/INSTALLMENT_NUMBER;
-			RESIDUAL_VAR.array[LOANS_NUMBER] = VALUE_AT_RISK.array[1]*(residual_credit_demand/CREDIT_DEMAND);
-			VAR_PER_INSTALLMENT.array[LOANS_NUMBER] = RESIDUAL_VAR.array[LOANS_NUMBER]/INSTALLMENT_NUMBER;
-			INTEREST_LEFT.array[LOANS_NUMBER] = interest;
-			LENDING_BANK_ID.array[LOANS_NUMBER] = CONTACTED_BANK.array[1];
-			add_loan_acceptance_message(residual_credit_demand, CONTACTED_BANK.array[1]);
-			LOANS_NUMBER += 1;
-		}
-		else 
-		{
-			interest = CREDIT_OFFER.array[1]*INTEREST.array[1];
-			OUTSTANDING_DEBT.array[LOANS_NUMBER] = CREDIT_OFFER.array[1]+interest;
-			INSTALLMENT_AMOUNT.array[LOANS_NUMBER] = (CREDIT_OFFER.array[1]+interest)/INSTALLMENT_NUMBER;
-			INTEREST_AMOUNT.array[LOANS_NUMBER] = interest/INSTALLMENT_NUMBER;
-			RESIDUAL_VAR.array[LOANS_NUMBER] = VALUE_AT_RISK.array[1];
-			VAR_PER_INSTALLMENT.array[LOANS_NUMBER] = VALUE_AT_RISK.array[1]/INSTALLMENT_NUMBER;
-			INTEREST_LEFT.array[LOANS_NUMBER] = interest;
-			LENDING_BANK_ID.array[LOANS_NUMBER] = CONTACTED_BANK.array[1];
-			add_loan_acceptance_message(CREDIT_OFFER.array[1], CONTACTED_BANK.array[1]);
-			LOANS_NUMBER += 1;
-			/*WARNING: Not a correct was to add to a dynamic array. Refer to manual or wiki notes*/
-		}
-	}
+       
+      n1=0;
+
+	for(i=0;i<NUMBER_OF_BANKS-1;i++)
+      {
+            for(k=i+1; k<NUMBER_OF_BANKS; k++)
+            {
+      	    if (INTEREST.array[i]>INTEREST.array[k]) 
+	          {
+		       aux=INTEREST.array[i];
+ 			 INTEREST.array[i]=INTEREST.array[k];
+ 			 INTEREST.array[k]=aux;
+ 			 n1=RATEORDER.array[i];
+ 			 RATEORDER.array[i]=RATEORDER.array[k];
+ 			 RATEORDER.array[k]=n1;
+                }
+            }
+      }
 	
-	return 0;
+      for(primo=0; primo<NUMBER_OF_BANKS; primo++)
+      {
+         if (DMARKETMATRIX.array[RATEORDER.array[primo]]==1)
+         {
+            credit_accepted = D_LOAN - totalcredit_taken;
+            if (credit_accepted>=CREDIT_OFFER.array[RATEORDER.array[primo]])
+            {
+               credit_accepted=CREDIT_OFFER.array[RATEORDER.array[primo]];
+            }
+
+            totalcredit_taken+= credit_accepted;
+            interest = credit_accepted*INTEREST.array[RATEORDER.array[primo]];
+            OUTSTANDING_DEBT.array[RATEORDER.array[primo]][INSTALMENT_NUMBER-1] = credit_accepted+interest;		          
+            INSTALMENT_AMOUNT.array[RATEORDER.array[primo]][INSTALMENT_NUMBER-1] = (credit_accepted+interest)/INSTALMENT_NUMBER;
+            INTEREST_AMOUNT.array[RATEORDER.array[primo]][INSTALMENT_NUMBER-1] = interest/INSTALMENT_NUMBER;
+            RESIDUAL_VAR.array[RATEORDER.array[primo]][INSTALMENT_NUMBER-1] = VALUE_AT_RISK.array[RATEORDER.array[primo]]*(CREDIT_OFFER.array[RATEORDER.array[primo]]/credit_accepted);
+            VAR_PER_INSTALMENT.array[RATEORDER.array[primo]][INSTALMENT_NUMBER-1] =RESIDUAL_VAR.array[RATEORDER.array[primo]][INSTALMENT_NUMBER-1]/INSTALMENT_NUMBER;
+            add_loan_acceptance_message(credit_accepted, RATEORDER.array[primo]);
+
+         }
+      }
+
+
+      return 0;
 }
 
 
-int Firm_pay_interest_installment()
+int Firm_pay_interest_instalment()
 {
-	double c, r, v;
-	int a;
-	int i;
-	double total_debt = 0;
-	double total_installments = 0;
-	double debt_share;
-	double refunded_debt;
-	double bad_debt;
-	for ( i = 0; i < LOANS_NUMBER; i++ ) 
+	double c, r, v, bad;
+	int a, i, j, k;
+	double total_instalments = 0;
+	double individual_var;
+	double individual_debt;
+	
+      TOTAL_DEBT=0;
+
+	for ( i = 0; i < NUMBER_OF_BANKS; i++ ) 
 	{
-		total_debt += OUTSTANDING_DEBT.array[i];
-		total_installments += INSTALLMENT_AMOUNT.array[i];
+            for (j=0; j<INSTALMENT_NUMBER; j++)
+            {
+                total_instalments+=(INSTALMENT_AMOUNT.array[i][j]+INTEREST_AMOUNT.array[i][j]);
+                TOTAL_DEBT += OUTSTANDING_DEBT.array[i][j];
+            }
+
 	}
-	if ( TOTAL_RESOURCES >= total_installments ) 
+
+
+	if ( TOTAL_RESOURCES >= total_instalments ) 
 	{
-		for ( i = 0; i < LOANS_NUMBER; i++ ) 
-		{
-			c = INSTALLMENT_AMOUNT.array[i];
-			r = INTEREST_AMOUNT.array[i];
-			a = LENDING_BANK_ID.array[i];
-			v = VAR_PER_INSTALLMENT.array[i];
-			TOTAL_RESOURCES -= c;
-			OUTSTANDING_DEBT.array[i] -= c;
-			INTEREST_LEFT.array[i] -= r;
-			RESIDUAL_VAR.array[i] -= v;
-			if ( OUTSTANDING_DEBT.array[i] <= 0 ) 
-			{
-				for ( int j = i; j<LOANS_NUMBER-1; j++ ) 
-				{
-					OUTSTANDING_DEBT.array[j] = OUTSTANDING_DEBT.array[j+1];
-					INSTALLMENT_AMOUNT.array[j] = INSTALLMENT_AMOUNT.array[j+1];
-					INTEREST_AMOUNT.array[j] = INTEREST_AMOUNT.array[j+1];
-					INTEREST_LEFT.array[j] = INTEREST_LEFT.array[j+1];
-					LENDING_BANK_ID.array[j] = LENDING_BANK_ID.array[j+1];
-					RESIDUAL_VAR.array[j] = RESIDUAL_VAR.array[j+1];
-					VAR_PER_INSTALLMENT.array[j] = VAR_PER_INSTALLMENT.array[j+1];
-				}
-				LOANS_NUMBER -= 1;
-			}
-			add_installment_message(c, r, a, v);
-		}
-	}
+		for ( i = 0; i < NUMBER_OF_BANKS; i++ ) 
+            {
+                for (j=0; j<INSTALMENT_NUMBER; j++)
+                {
+			  c = INSTALMENT_AMOUNT.array[i][j];
+			  r = INTEREST_AMOUNT.array[i][j];
+			  v = VAR_PER_INSTALMENT.array[i][j];
+			  TOTAL_RESOURCES -= (c+r);
+			  OUTSTANDING_DEBT.array[i][j] -= c;
+			  INTEREST_LEFT.array[i] -= r;
+			  RESIDUAL_VAR.array[i] -= v;
+			  ASSET-=r; 
+                    bad=0; 
+                    a=0; 
+                    individual_var=0; 
+                    add_instalment_message(c, r, i, v,bad, a, individual_var);
+		    }
+
+	          for (k=1; k<INSTALMENT_NUMBER; k++)//sposta di un periodo
+                {       
+                    OUTSTANDING_DEBT.array[i][k-1]=OUTSTANDING_DEBT.array[i][k]; 
+                    VAR_PER_INSTALMENT.array[i][k-1]=VAR_PER_INSTALMENT.array[i][k]; 
+                    INTEREST_AMOUNT.array[i][k-1]=INTEREST_AMOUNT.array[i][k];
+                }
+            }
+      }				
+			
+
 	else 
 	{
-		BANKRUPTCY_STATE = 1;
-		for ( i = 0; i < LOANS_NUMBER; i++ ) 
-		{
-			a = LENDING_BANK_ID.array[i];
-			debt_share = OUTSTANDING_DEBT.array[i]/total_debt;
-			refunded_debt = TOTAL_RESOURCES*debt_share;
-			bad_debt = (OUTSTANDING_DEBT.array[i]-INTEREST_LEFT.array[i]) - refunded_debt;
-			add_bankruptcy_message(a, bad_debt, refunded_debt, RESIDUAL_VAR.array[i]);
-		}
-		LOANS_NUMBER = 0;
+		for ( i = 0; i < NUMBER_OF_BANKS; i++ )
+            {
+                for (j=0; j<INSTALMENT_NUMBER; j++)
+                {
+		        individual_debt+=OUTSTANDING_DEBT.array[i][j];
+                    individual_var+=VAR_PER_INSTALMENT.array[i][j];
+                    a=ASSET*(individual_debt/TOTAL_DEBT);
+                    bad=individual_debt-a;
+                    c=0;
+                    r=0;
+                    v=0;
+                    add_instalment_message(c, r, i, v,bad, a, individual_var); 
+                    individual_debt=0;
+                    individual_var=0;                 
+                }
+            }
+	 	
+            ASSET=0;	
+            TOTAL_DEBT=0;
 	}
+
 	return 0;
 }
 

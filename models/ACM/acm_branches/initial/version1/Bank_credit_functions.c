@@ -3,6 +3,16 @@
 #include "my_library_header.h"
 
 
+int Bank_check_loan_request_message ()
+{
+START_LOAN_REQUEST_MESSAGE_LOOP
+if (ID == loan_request_message->bank_id)
+  loan_request_message_found=1;
+FINISH_LOAN_REQUEST_MESSAGE_LOOP
+
+}
+
+
 
 
 int Bank_decide_credit_conditions()
@@ -15,11 +25,11 @@ int Bank_decide_credit_conditions()
 		START_LOAN_REQUEST_MESSAGE_LOOP
 		if (ID == loan_request_message->bank_id) 
 		{
-			e = loan_request_message->current_equity;
-			d = loan_request_message->current_debt;
+			e = loan_request_message->equity;
+			d = loan_request_message->total_debt;
 			c = loan_request_message->credit_demand;
 			bankruptcy_prob = 1-exp(-(d+c)/e);
-			r = bankruptcy_prob*c;
+			r = bankruptcy_prob*c/e;
 			if ( VAR+r <= ALFA*EQUITY ) 
 			{
 				credit_allowed = c;
@@ -28,91 +38,153 @@ int Bank_decide_credit_conditions()
 			{
 				credit_allowed = (ALFA*EQUITY - VAR)/bankruptcy_prob;
 			}
-			i = MIN_INTEREST + GAMMA[0]*r;
-			add_loan_conditions_message(i, credit_allowed, loan_request_message->firm_id, ID, r*(c/credit_allowed));
+			i = MIN_INTEREST + OMEGA[0]*r;
+			add_loan_conditions_message(loan_request_message->firm_id, ID, i, credit_allowed,  r*(c/credit_allowed));
 		}
 		FINISH_LOAN_REQUEST_MESSAGE_LOOP
 	}
 	return 0;
 }
 
+
 int Bank_receive_deposits()
 {
-	double passive_interest; 
-	START_HOUSEHOLD_DEPOSIT_MESSAGE_LOOP
-	if (ID == household_deposit_message->bank_id) 
+	 	
+      START_BANK_ACCOUNT_UPDATE_MESSAGE_LOOP
+	if (ID == bank_account_update_message->bank_id) 
 	{
-		if ( BCE_DEBT == 0 ) 
-		{
-			CASH += household_deposit_message->money_deposited;
-		}
-		else 
-		{
-			passive_interest = household_deposit_message->money_deposited*pow(MIN_INTEREST, DEBT_PERIOD);
-			if ( BCE_DEBT > household_deposit_message->money_deposited- passive_interest) 
-			{
-				BCE_DEBT -= household_deposit_message->money_deposited;
-				PROFITS[0] -= passive_interest;
-			}
-			else 
-			{
-				CASH += (household_deposit_message->money_deposited - passive_interest) - BCE_DEBT;
-				PROFITS[0] -= BCE_DEBT*pow(MIN_INTEREST, DEBT_PERIOD);
-				BCE_DEBT = 0;
-			}
-		}
+         CASH += bank_account_update_message->payment_account;
+         
 	}
-	FINISH_HOUSEHOLD_DEPOSIT_MESSAGE_LOOP
-	
+
+      FINISH_BANK_ACCOUNT_UPDATE_MESSAGE_LOOP
+		
+      
+
+            if ( BCE_DEBT != 0 ) 
+		{
+			
+                          if(CASH>=fabs(BCE_DEBT))
+                          {
+                                CASH-=fabs(BCE_DEBT);
+                                BCE_DEBT=0.;
+                          }
+ 
+                          if(CASH<fabs(BCE_DEBT))
+                          {
+                               BCE_DEBT-=CASH;
+                               CASH=0.;
+                          }
+
+                          add_BCE_return_message(BCE_DEBT, ID);
+
+		}
+      
 	return 0;
 }
 
-int Bank_return_deposits()
+
+
+
+
+/*int Bank_receive_deposits_firm()  //AGGIORNARE I NOMI!!!!
 {
-	double wr; 
-	if ( BCE_DEBT == 0 ) 
+	double passive_interest; 
+	START_DAILY_REVENUE_TO_BANK_MESSAGE_LOOP
+	if (ID == daily_revenue_to_bank_message->bank_id) 
 	{
+         CASH += daily_revenue_to_bank_message->revenue_per_day;
+      }
+		
+
+       FINISH_DAILY_REVENUE_TO_BANK_MESSAGE_LOOP
+	
+            if ( BCE_DEBT != 0 ) 
+		{
+			
+                          if(CASH>=fabs(BCE_DEBT))
+                          {
+                                CASH-=fabs(BCE_DEBT);
+                                BCE_DEBT=0.;
+                          }
+ 
+                          if(CASH<fabs(BCE_DEBT))
+                          {
+                               BCE_DEBT-=CASH;
+                               CASH=0.;
+                          }
+
+                          add_BCE_return_message(BCE_DEBT, ID);
+
+
+
+		}	
+      
+	return 0;
+}
+*/
+
+/*int Bank_return_deposits()
+{
+	double wr, q;  
+	
 		START_MONEY_WITHDRAW_REQUEST_MESSAGE_LOOP
 		if (ID == money_withdraw_request_message->bank_id) 
 		{
-			wr = money_withdraw_request_message->money_withdraw_request;
-			CASH -= wr;
-			if ( CASH < 0 ) 
-			{
-				/*    BCE_INTEREST += -CASH*min_interest;  */
-				BCE_DEBT += -CASH;    /*  *(1+min_interest);  */
-				DEBT_PERIOD = 1;
-				CASH = 0;
-			}
-			add_withdrawal_allowed_message(wr, money_withdraw_request_message->household_id);
+			wr = money_withdraw_request_message->money_request;
+                  if ( EQUITY >= 0 )
+                  {
+                      if ( CASH >=wr ) 
+                      {
+                           CASH -= wr;
+                      }
+
+                      if (CASH<wr)
+                      {  
+                         add_BCE_request_message(wr-CASH, ID);
+                         BCE_DEBT+=wr-CASH; 
+                         CASH=0;  
+                      }
+
+                   add_withdrawal_allowed_message(wr, money_withdraw_request_message->household_id);
+
+                  }			
+
+                  if ( EQUITY<0)
+                  {
+                     add_withdrawal_allowed_message(0, money_withdraw_request_message->household_id); 
+                     q=fabs(EQUITY)*(1+(rand()/RAND_MAX))*10; 
+                     add_BCE_request_message(q, ID); 
+                     BCE_DEBT+=q; 
+                  }
+
+			
 		}
 		FINISH_MONEY_WITHDRAW_REQUEST_MESSAGE_LOOP
-	}
+	
 	return 0;
 }
+*/
+
 
 int Bank_receive_installment()
 {
-	START_INSTALLMENT_MESSAGE_LOOP
-	if (ID == installment_message->bank_id) 
+	START_DEBT_INSTALLMENT_MESSAGE_LOOP
+	if (ID == debt_installment_message->bank_id) 
 	{
-		CASH +=installment_message->installment;
-		PROFITS[0] += installment_message->interest;
-		EQUITY += installment_message->interest;
-		VAR -= installment_message->var_per_installment;
+		CASH +=debt_installment_message->installment_amount;
+        CASH +=debt_installment_message->credit_refunded;
+        PROFITS[0] += debt_installment_message->interest;
+        PROFITS[0] -= debt_installment_message->bad_debt;
+        EQUITY += debt_installment_message->interest_amount;
+        EQUITY -= debt_installment_message->bad_debt;
+        VAR -= debt_installment_message->var_per_installment;
+        VAR -= debt_installment_message->residual_var;
 	}
-	FINISH_INSTALLMENT_MESSAGE_LOOP
-	//next message
-	START_BANKRUPTCY_MESSAGE_LOOP
-	if (ID == bankruptcy_message->bank_id) 
-	{
-		CASH +=bankruptcy_message->credit_refunded;
-		PROFITS[0] -= bankruptcy_message->bad_debt;
-		EQUITY -= bankruptcy_message->bad_debt;
-		VAR -= bankruptcy_message->residual_var;
-	}
-	FINISH_BANKRUPTCY_MESSAGE_LOOP
-	return 0;
+	
+      FINISH_DEBT_INSTALLMENT_MESSAGE_LOOP
+	
+      return 0;
 }
 
 int Bank_give_loan()
@@ -123,12 +195,42 @@ int Bank_give_loan()
 		CASH -= loan_acceptance_message->credit_amount_taken;
 		if ( CASH < 0 ) 
 		{
-			/*    BCE_INTEREST += -CASH*min_interest;  */
-			BCE_DEBT += -CASH;    /*  *(1+min_interest);  */
-			DEBT_PERIOD = 1;
+			BCE_DEBT += fabs(CASH);    
+                  add_BCE_request_message(BCE_DEBT,ID);
 			CASH = 0;
 		}
 	}
+
 	FINISH_LOAN_ACCEPTANCE_MESSAGE_LOOP
 	return 0;
 }
+
+int Bank_bank_accounting()
+{
+
+     double q, c, gro;   
+
+     if (PROFIT[1]!=0)
+     {
+        gro=(PROFIT[0]-PROFIT[1])/PROFIT[1]);
+     }
+
+     else  
+     gro=0;
+  
+     PROFIT[1]=PROFIT[0]; 
+     PROFIT[0]=0; 
+     q=OMEGA[0]; 
+     c=OMEGA[1];
+     OMEGA[0]=q+lambda*(q-c)*gro+(rand()/RAND_MAX)*0.01;
+ 
+     if (OMEGA[0]<0.02)
+     {
+        OMEGA[0]=0.02;
+     }
+
+
+      return 0;
+}
+
+
