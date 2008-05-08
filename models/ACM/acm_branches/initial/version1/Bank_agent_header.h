@@ -27,18 +27,12 @@
 /** \def MIN_INTEREST
  * \brief Direct access to min_interest of Bank agent memory variable. */
 #define MIN_INTEREST (current_xmachine_Bank->min_interest)
-/** \def GAMMA
- * \brief Direct access to gamma of Bank agent memory variable. */
-#define GAMMA (current_xmachine_Bank->gamma)
+/** \def OMEGA
+ * \brief Direct access to omega of Bank agent memory variable. */
+#define OMEGA (current_xmachine_Bank->omega)
 /** \def PROFITS
  * \brief Direct access to profits of Bank agent memory variable. */
 #define PROFITS (current_xmachine_Bank->profits)
 /** \def LAMBDA
  * \brief Direct access to lambda of Bank agent memory variable. */
 #define LAMBDA (current_xmachine_Bank->lambda)
-/** \def BCE_INTEREST
- * \brief Direct access to bce_interest of Bank agent memory variable. */
-#define BCE_INTEREST (current_xmachine_Bank->bce_interest)
-/** \def DEBT_PERIOD
- * \brief Direct access to debt_period of Bank agent memory variable. */
-#define DEBT_PERIOD (current_xmachine_Bank->debt_period)

@@ -22,24 +22,21 @@
 <var><type>int</type><name>id</name></var>
 <var><type>double_array</type><name>interest</name></var>
 <var><type>double_array</type><name>credit_offer</name></var>
-<var><type>int_array</type><name>contacted_bank</name></var>
+<var><type>int_array</type><name>dmarketmatrix</name></var>
 <var><type>double</type><name>total_debt</name></var>
 <var><type>double</type><name>asset</name></var>
-<var><type>double</type><name>credit_demand</name></var>
-<var><type>double_array</type><name>installment_amount</name></var>
-<var><type>int</type><name>installment_number</name></var>
-<var><type>int</type><name>loans_number</name></var>
+<var><type>double</type><name>d_loan</name></var>
+<var><type>double_array</type><name>instalment_amount</name></var>
+<var><type>double_array</type><name>rateorder</name></var>
+<var><type>int</type><name>instalment_number</name></var>
+<var><type>int</type><name>link</name></var>
+<var><type>int</type><name>number_of_banks</name></var>
 <var><type>double_array</type><name>outstanding_debt</name></var>
-<var><type>int_array</type><name>lending_bank_id</name></var>
 <var><type>double_array</type><name>interest_amount</name></var>
-<var><type>int</type><name>bankruptcy_state</name></var>
 <var><type>double</type><name>total_resources</name></var>
 <var><type>double_array</type><name>residual_var</name></var>
-<var><type>double_array</type><name>var_per_installment</name></var>
+<var><type>double_array</type><name>var_per_instalment</name></var>
 <var><type>double_array</type><name>value_at_risk</name></var>
-<var><type>double_array</type><name>interest_left</name></var>
-<var><type>double</type><name>current_equity</name></var>
-<var><type>double</type><name>current_debt</name></var>
 
 </memory>
 <functions>
@@ -60,11 +57,10 @@
 </function>
 
 <function>
-<name>Firm_pay_interest_installment</name>
+<name>Firm_pay_interest_instalment</name>
 <current_state>03</current_state>
 <next_state>04</next_state>
-<output><messagetype>installment</messagetype></output>
-<output><messagetype>bankruptcy</messagetype></output>
+<output><messagetype>instalment</messagetype></output>
 </function>
 
 </functions>
@@ -75,59 +71,67 @@
 <memory>
 <var><type>int</type><name>id</name></var>
 <var><type>double</type><name>cash</name></var>
-<var><type>double</type><name>total_credit</name></var>
 <var><type>double</type><name>equity</name></var>
 <var><type>double</type><name>bce_debt</name></var>
 <var><type>double</type><name>alfa</name></var>
 <var><type>double</type><name>var</name></var>
 <var><type>double</type><name>min_interest</name></var>
-<var><type>double</type><name>gamma[2]</name></var>
-<var><type>double</type><name>profits[2]</name></var>
+<var><type>double_array</type><name>omega</name></var>
+<var><type>double_array</type><name>profits</name></var>
 <var><type>double</type><name>lambda</name></var>
-<var><type>double</type><name>bce_interest</name></var>
-<var><type>double</type><name>debt_period</name></var>
+<var><type>int</type><name>accounting_day</name></var>
+<var><type>int</type><name>loan_request_message_found</name></var>
 <var><type>int</type><name>loan_request_message_found</name></var>
 </memory>
 <functions>
 
-
 <function>
-<name>Bank_decide_credit_conditions</name>
+<name>Bank_receive_deposits</name>
 <current_state>Bank_start</current_state>
 <next_state>01</next_state>
-<input><messagetype>loan_request</messagetype></input>
-<output><messagetype>loan_conditions</messagetype></output>
+<input><messagetype>household_deposit</messagetype></input>
 <condition>loan_request==0</condition>
 </function>
 
 <function>
-<name>Bank_receive_deposits</name>
+<name>Bank_return_deposits</name>
 <current_state>02</current_state>
 <next_state>03</next_state>
-<input><messagetype>household_deposit</messagetype></input>
-</function>
-
-<function>
-<name>Bank_return_deposits</name>
-<current_state>03</current_state>
-<next_state>04</next_state>
 <input><messagetype>money_withdraw_request</messagetype></input>
 <output><messagetype>withdrawal_allowed</messagetype></output>
 </function>
 
+
 <function>
-<name>Bank_receive_installment</name>
-<current_state>04</current_state>
-<next_state>05</next_state>
-<input><messagetype>installment</messagetype></input>
-<input><messagetype>bankruptcy</messagetype></input>
+<name>Bank_decide_credit_conditions</name>
+<current_state>03</current_state>
+<next_state>04</next_state>
+<input><messagetype>loan_request</messagetype></input>
+<output><messagetype>loan_conditions</messagetype></output>
 </function>
 
 <function>
 <name>Bank_give_loan</name>
+<current_state>04</current_state>
+<next_state>05</next_state>
+<input><messagetype>loan_acceptance</messagetype></input>
+</function>
+
+
+<function>
+<name>Bank_receive_instalment</name>
 <current_state>05</current_state>
 <next_state>06</next_state>
-<input><messagetype>loan_acceptance</messagetype></input>
+<input><messagetype>instalment</messagetype></input>
+<input><messagetype>bankruptcy</messagetype></input>
+</function>
+
+
+<function>
+<name>Bank_bank_accounting</name>
+<current_state>06</current_state>
+<next_state>07</next_state>
+<condition>first_day_of_month</condition>
 </function>
 
 </functions>
@@ -144,25 +148,18 @@
 </memory>
 <functions>
 
+<function>
+<name>Household_choose_bank</name>
+<current_state>01</current_state>
+<next_state>02</next_state>
+</function>
+
 
 <function>
 <name>Household_put_money</name>
-<current_state>01</current_state>
-<next_state>02</next_state>
-<output><messagetype>household_deposit</messagetype></output>
-</function>
-
-<function>
-<name>Household_choose_bank</name>
 <current_state>02</current_state>
 <next_state>03</next_state>
-</function>
-
-<function>
-<name>Household_withdraw</name>
-<current_state>04</current_state>
-<next_state>05</next_state>
-<input><messagetype>withdrawal_allowed</messagetype></input>
+<output><messagetype>household_deposit</messagetype></output>
 </function>
 
 <function>
@@ -171,6 +168,15 @@
 <next_state>04</next_state>
 <output><messagetype>money_withdraw_request</messagetype></output>
 </function>
+
+
+<function>
+<name>Household_withdraw</name>
+<current_state>04</current_state>
+<next_state>05</next_state>
+<input><messagetype>withdrawal_allowed</messagetype></input>
+</function>
+
 
 
 </functions>
@@ -210,7 +216,7 @@
 <message>
 <name>money_withdraw_request</name>
 <note>how much household wants to withdraw and names</note>
-<var><type>double</type><name>money_withdraw_request</name></var>
+<var><type>double</type><name>money_request</name></var>
 <var><type>int</type><name>bank_id</name></var>
 <var><type>int</type><name>household_id</name></var>
 </message>
@@ -224,29 +230,38 @@
 
 
 <message>
-<name>installment</name>
+<name>instalment</name>
 <note>firm pays instalment and interest of period</note>
-<var><type>double</type><name>installment</name></var>
+<var><type>double</type><name>instalment_amount_paid</name></var>
 <var><type>double</type><name>interest</name></var>
 <var><type>int</type><name>bank_id</name></var>
-<var><type>double</type><name>var_per_installment</name></var>
+<var><type>double</type><name>var_per_instalment</name></var>
+<var><type>double</type><name>bad_debt</name></var>
+<var><type>double</type><name>credit_refunded</name></var>
+<var><type>double</type><name>residual_var</name></var>
 </message>
 
 
 <message>
 <name>withdrawal_allowed</name>
 <note>allowed withdrawal</note>
-<var><type>double</type><name>withdrawal_allowed</name></var>
+<var><type>double</type><name>money_allowed</name></var>
 <var><type>int</type><name>household_id</name></var>
 </message>
 
 <message>
-<name>bankruptcy</name>
+<name>BCE_return</name>
 <note></note>
+<var><type>double</type><name>loan_return</name></var>
 <var><type>int</type><name>bank_id</name></var>
-<var><type>double</type><name>bad_debt</name></var>
-<var><type>double</type><name>credit_refunded</name></var>
-<var><type>double</type><name>residual_var</name></var>
+</message>
+
+
+<message>
+<name>BCE_request</name>
+<note></note>
+<var><type>double</type><name>money_asked</name></var>
+<var><type>int</type><name>bank_id</name></var>
 </message>
 
 
