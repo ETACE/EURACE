@@ -86,7 +86,7 @@
 		</memory>
 		<functions>
 			<function>
-				<name>sendAssetInformationEURO</name>
+				<name>Eurastat_send_asset_information</name>
 				<description></description>
 				<currentState>Start_Eurostat_Financial_Data</currentState>
 				<nextState>WAITENDMARKET</nextState>
@@ -95,7 +95,7 @@
 				</outputs>
 			</function>
 			<function>
-				<name>receiveAssetInformationEURO</name>
+				<name>Eurostat_receive_asset_information</name>
 				<description></description>
 				<!--<depends><name>sendAssetInformation</name><type>infoAsset</type></depends>-->
 				<currentState>WAITENDMARKET</currentState>
@@ -147,7 +147,7 @@
 		<!--     Defining functions     -->
 		<functions>
 			<function>
-				<name>receiveAssetInformationEUROSTAT</name>
+				<name>Household_receive_info_asset_to_eurostat</name>
 				<description></description>
 				<currentState>START_HOUSEHOLD</currentState>
 				<nextState>SELECTSTRATEGY</nextState>
@@ -156,7 +156,7 @@
 				</inputs>
 			</function>
 			<function>
-				<name>selectStrategy</name>
+				<name>Household_select_strategy</name>
 				<description></description>
 				<currentState>SELECTSTRATEGY</currentState>
 				<nextState>WAITORDERSTATUS</nextState>
@@ -165,7 +165,7 @@
 				</outputs>
 			</function>
 			<function>
-				<name>updateTrader</name>
+				<name>Household_update_its_portfolio</name>
 				<description></description>
 				<currentState>WAITORDERSTATUS</currentState>
 				<nextState>EXIT_FINANCIAL_MARKET</nextState>
@@ -191,7 +191,7 @@
 		<!--        Defining functions                -->
 		<functions>
 			<function>
-				<name>receiveOrdersAndRun</name>
+				<name>ClearingHouse_receive_orders_and_run</name>
 				<description></description>
 				<currentState>start_Clearinghouse</currentState>
 				<nextState>COMPUTEDPRICES</nextState>
@@ -201,7 +201,7 @@
 				</outputs>
 			</function>
 			<function>
-				<name>sendAssetInformation</name>
+				<name>ClearingHouse_send_asset_information</name>
 				<description></description>
 				<currentState>COMPUTEDPRICES</currentState>
 				<nextState>end_Clearinghouse</nextState>
@@ -227,7 +227,7 @@
 		<!--        Defining functions                -->
 		<functions>
 			<function>
-				<name>receiveAccountUpdate</name>
+				<name>Bank_receive_account_update</name>
 				<description></description>
 				<currentState>RECEIVEMESS</currentState>
 				<nextState>RECEIVEMESS1</nextState>
@@ -246,7 +246,7 @@
 		<!--          Message posted to load a new value        -->
 		<message>
 			<name>order</name> 
-			<description>order posted by the Trader</description>
+			<description>order posted by the Household</description>
 			<variables>
 				<variable><type>int</type><name>trader_id</name><description></description></variable>
 				<variable><type>int</type><name>asset_id</name><description></description></variable>
@@ -257,7 +257,7 @@
 		
 		<message>
 			<name>order_status</name>
-			<description>The market is closed</description>
+			<description>order status posted by clearing house</description>
 			<variables>
 				<variable><type>int</type><name>trader_id</name><description></description></variable>
 				<variable><type>int</type><name>asset_id</name>	<description></description></variable>
