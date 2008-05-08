@@ -41,7 +41,7 @@ int Household_receive_wage()
 			mean_income = mean_income/4;
 			
 			/*Add wage on account   */
-			SAVINGS += wage_payment_message->payment;
+			PAYMENT_ACCOUNT += wage_payment_message->payment;
 			
 		}
 	CURRENT_PRODUCTIVITY_EMPLOYER = wage_payment_message-> productivity;
@@ -49,8 +49,7 @@ int Household_receive_wage()
 	
 	FINISH_WAGE_PAYMENT_MESSAGE_LOOP
 	
-	/*GENUA*/
-	//add_wage_to_bank_message(ID, BANK_ID, WAGE);
+	
 	
 	return 0;
 	
@@ -100,14 +99,13 @@ int Household_receive_unemployment_benefits()
 
 	mean_income = mean_income/4;
 			
-	
 	/*GENUA*/
 	START_UNEMPLOYMENT_BENEFIT_MESSAGE_LOOP
 		/*Read unemployment_benefit and add to account */
 		PAYMENT_ACCOUNT +=  unemployment_benefit_message->unemployment_benefit_payment;
-		add_unemployment_benefit_to_bank_message(ID, BANK_ID, unemployment_benefit_message->unemployment_benefit_payment);
-	FINISH_UNEMPLOYMENT_BENEFIT_MESSAGE_LOOP
 		
+	FINISH_UNEMPLOYMENT_BENEFIT_MESSAGE_LOOP
+			
 return 0;	
 	
 }
@@ -122,15 +120,15 @@ int Household_determine_consumption_budget()
 	double mean_income = 0.0;
 	
 	/*Determing the consumption budget of the month*/
-			if(SAVINGS > (INITIAL_CONSUMPTION_PROPENSITY*mean_income))
+			if(PAYMENT_ACCOUNT > (INITIAL_CONSUMPTION_PROPENSITY*mean_income))
 			{
 				
-				BUDGET=CONSUMPTION_PROPENSITY*SAVINGS+(1-CONSUMPTION_PROPENSITY)
+				BUDGET=CONSUMPTION_PROPENSITY*PAYMENT_ACCOUNT+(1-CONSUMPTION_PROPENSITY)
 				*INITIAL_CONSUMPTION_PROPENSITY*mean_income;
 			}
 			else
 			{
-				BUDGET = SAVINGS;
+				BUDGET = PAYMENT_ACCOUNT;
 			}
 
 			WEEKLY_BUDGET = BUDGET/4;
@@ -301,8 +299,7 @@ int Household_receive_goods_read_rationing()
 
 		FINISH_ACCEPTED_CONSUMPTION_1_MESSAGE_LOOP
 		
-		/*GENUA*/
-		//add_household_pay_goods_message(ID, BANK_ID, EXPENDITURES);
+		
 
 	}
 	else if(MALL_COMPLETELY_SOLD_OUT == 1)
@@ -450,42 +447,40 @@ free_logit_firm_id_array(&logit_firm_id_list);
 int Household__receive_goods_read_rationing_2()
 {
 
-	if(DAY%WEEK==DAY_OF_WEEK_TO_ACT)
+	
+
+	if(RATIONED ==1)
 	{
+		/*Read the message about accepted consumption */
+		START_ACCEPTED_CONSUMPTION_2_MESSAGE_LOOP
 
-		if(RATIONED ==1)
-		{
-			/*Read the message about accepted consumption */
-			START_ACCEPTED_CONSUMPTION_2_MESSAGE_LOOP
+			if(accepted_consumption_2_message->worker_id == ID)
+			{
+				RATIONED = accepted_consumption_2_message->rationed;
 
-				if(accepted_consumption_2_message->worker_id == ID)
-				{
-					RATIONED = accepted_consumption_2_message->rationed;
+				RECEIVED_QUANTITY[1].quantity=
+				accepted_consumption_2_message->offered_consumption_volume;
+				
+				RECEIVED_QUANTITY[1].firm_id = 
+				ORDER_QUANTITY[1].firm_id; 
+			}
 
-					RECEIVED_QUANTITY[1].quantity=
-					accepted_consumption_2_message->offered_consumption_volume;
-					
-					RECEIVED_QUANTITY[1].firm_id = 
-					ORDER_QUANTITY[1].firm_id; 
-				}
-
-			FINISH_ACCEPTED_CONSUMPTION_2_MESSAGE_LOOP
-			
-			/*GENUA*/
-			//addhousehold_pay_goods_2_message(ID, BANK_ID, EXPENDITURES);
-
-		}
-		else
-		{
-			RECEIVED_QUANTITY[1].quantity=0.0;
-			RECEIVED_QUANTITY[1].firm_id =0; 
-		}
-
-		WEEKLY_BUDGET = WEEKLY_BUDGET - RECEIVED_QUANTITY[1].quantity 
-		*ORDER_QUANTITY[1].price ;
+		FINISH_ACCEPTED_CONSUMPTION_2_MESSAGE_LOOP
 		
-		EXPENDITURES += RECEIVED_QUANTITY[1].quantity * ORDER_QUANTITY[1].price ;
+		
+
 	}
+	else
+	{
+		RECEIVED_QUANTITY[1].quantity=0.0;
+		RECEIVED_QUANTITY[1].firm_id =0; 
+	}
+
+	WEEKLY_BUDGET = WEEKLY_BUDGET - RECEIVED_QUANTITY[1].quantity 
+	*ORDER_QUANTITY[1].price ;
+	
+	EXPENDITURES += RECEIVED_QUANTITY[1].quantity * ORDER_QUANTITY[1].price ;
+	
 
 	return 0;
 }
@@ -527,14 +522,14 @@ int Household_receive_dividends()
 	FINISH_DIVIDEND_PER_SHARE_MESSAGE_LOOP
 	
 
-	SAVINGS += RECEIVED_DIVIDEND_CONS+RECEIVED_DIVIDEND_CAP;	
+	PAYMENT_ACCOUNT += RECEIVED_DIVIDEND_CONS+RECEIVED_DIVIDEND_CAP;	
 	
 	return 0;	
 }
 
 
 /** \fn Household_handle_leftover_budget()
- * \brief This function convert the remaining budget, that is not spent in both consumtion steps, into the savings 
+ * \brief This function convert the remaining budget, that is not spent in both consumtion steps, into the PAYMENT_ACCOUNT 
 			
  */
 int Household_handle_leftover_budget()
@@ -546,19 +541,22 @@ int Household_handle_leftover_budget()
 		if(WEEK_OF_MONTH !=1)
 		{	
 			
-			SAVINGS -= EXPENDITURES;
+			PAYMENT_ACCOUNT -= EXPENDITURES;
 			WEEKLY_BUDGET = BUDGET / WEEK_OF_MONTH;
 			
 			WEEK_OF_MONTH--; 
 		}
 		else
 		{
-			SAVINGS =SAVINGS - EXPENDITURES;
+			PAYMENT_ACCOUNT =PAYMENT_ACCOUNT - EXPENDITURES;
 			
 			WEEK_OF_MONTH--;
 		}
 		//set rationed back to zero:
 		RATIONED = 0;
+		
+		/*GENUA*/
+		add_bank_account_message(ID, BANK_ID, PAYMENT_ACCOUNT);
 	
 
 	return 0;
@@ -568,15 +566,10 @@ int Household_handle_leftover_budget()
  * \brief Firms send data to Market Research: controlling results and creating macro data
  */
 int Household_send_data_to_Market_Research()
-{
-	if(DAY%MONTH == 0)
-	{
-		add_household_send_data_message(ID, REGION_ID, GENERAL_SKILL,EMPLOYEE_FIRM_ID,
-		WAGE, SPECIFIC_SKILL);
-	}	
-
-
-
+{	
+	add_household_send_data_message(ID, REGION_ID, GENERAL_SKILL,EMPLOYEE_FIRM_ID,
+	WAGE, SPECIFIC_SKILL);
+		
 	return 0;
 }
 
