@@ -127,7 +127,7 @@
 				<description></description></variable>
 			<variable>
 				<type>double_array</type>
-				<name>assetWeigths</name>
+				<name>assetWeights</name>
 				
 				<description></description></variable>
 			<variable>
