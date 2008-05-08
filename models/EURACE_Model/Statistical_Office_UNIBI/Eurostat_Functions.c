@@ -28,12 +28,12 @@ int Eurostat_not_day_of_month_to_act()
 	else return 1;
 }
 
-int Market_Research_idle()
+int Eurostat_idle()
 {
 	return 0;
 }
 
-int Market_Research_Initialization()
+int Eurostat_Initialization()
 {
 	/*Create data content of REGION_FIRM/HOUSEHOLD_DATA at the beginning of the first day. 		The first firms will send the data at the end of the first day and the other firms at the 		end of their activation days*/	
 		
@@ -50,10 +50,10 @@ int Market_Research_Initialization()
 	return 0;
 		
 }
-/** \Market_Research_send_data()
- * \brief Market_Research send data: specific skills ...
+/** \Eurostat_send_data()
+ * \brief Eurostat send data: specific skills ...
  */
-int Market_Research_send_data()
+int Eurostat_send_data()
 {
 	/*First of every month*/
 	
@@ -75,10 +75,10 @@ int Market_Research_send_data()
 }
 
 
-/** \Market_Research_calculate_data
- * \brief Market_Research receive micro data and calculates macro data
+/** \Eurostat_calculate_data
+ * \brief Eurostat receive micro data and calculates macro data
  */
-int Market_Research_calculate_data()
+int Eurostat_calculate_data()
 {
 		
 	/*delete the content of the memmory variables in order to store the data for the 			new month*/
@@ -803,6 +803,23 @@ int Market_Research_calculate_data()
 	return 0;
 }
 
+int Eurostat_read_tax_rates()
+{
+	START_TAX_RATES_MESSAGE_LOOP
+		
+	for (i=0; i<GOVERNMENT_TAX_RATES.size-1; i++)
+	{
+		if(tax_rates_message->gov_id == GOVERNMENT_TAX_RATES.array[i].id)
+		{
+			GOVERNMENT_TAX_RATES.array[i].tax_rate_corporate = tax_rates_message->tax_rate_corporate;
+			GOVERNMENT_TAX_RATES.array[i].tax_rate_hh_labour = tax_rates_message->tax_rate_hh_labour;
+			GOVERNMENT_TAX_RATES.array[i].tax_rate_hh_capital = tax_rates_message->tax_rate_hh_capital;
+			GOVERNMENT_TAX_RATES.array[i].tax_rate_vat = tax_rates_message->tax_rate_vat;
+			break;
+		}
+	}
 
-
-
+	FINISH_TAX_RATES_MESSAGE_LOOP
+	
+	return 0;
+}

@@ -14,7 +14,6 @@
 </environment>
 
 <agents>
-
 <xagent>
 <name>IGFirm</name>
 <description></description>
@@ -66,7 +65,7 @@
 <function><name>IGFirm_receive_payment</name>
 <description></description>
 <currentState>03</currentState>
-<nextState>end</nextState>
+<nextState>end_IGFirm</nextState>
 <inputs>
 <input><messageName>pay_capital_goods</messageName></input>
 </inputs>

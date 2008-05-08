@@ -88,7 +88,7 @@
 			<function>
 				<name>sendAssetInformationEURO</name>
 				<description></description>
-				<currentState>INITFINMARKET</currentState>
+				<currentState>Start_Eurostat_Financial_Data</currentState>
 				<nextState>WAITENDMARKET</nextState>
 				<outputs>
 					<output><messageName>infoAssetEURO</messageName></output>
@@ -99,7 +99,7 @@
 				<description></description>
 				<!--<depends><name>sendAssetInformation</name><type>infoAsset</type></depends>-->
 				<currentState>WAITENDMARKET</currentState>
-				<nextState>INITFINMARKET1</nextState>
+				<nextState>End_Eurostat_Financial_Data</nextState>
 				<inputs><input><messageName>infoAssetCH</messageName></input></inputs>
 			</function>
 		</functions>
@@ -191,18 +191,9 @@
 		<!--        Defining functions                -->
 		<functions>
 			<function>
-				<name>receiveAssetInformation</name>
-				<description></description>
-				<currentState>start_Clearinghouse</currentState>
-				<nextState>RECEIVEORDERS</nextState>
-				<inputs>
-					<input><messageName>infoAssetEURO</messageName></input>
-				</inputs>
-			</function>
-			<function>
 				<name>receiveOrdersAndRun</name>
 				<description></description>
-				<currentState>RECEIVEORDERS</currentState>
+				<currentState>start_Clearinghouse</currentState>
 				<nextState>COMPUTEDPRICES</nextState>
 				<inputs><input><messageName>order</messageName></input></inputs>
 				<outputs>
@@ -213,7 +204,7 @@
 				<name>sendAssetInformation</name>
 				<description></description>
 				<currentState>COMPUTEDPRICES</currentState>
-				<nextState>RECOVERINFO1</nextState>
+				<nextState>end_Clearinghouse</nextState>
 				<outputs>
 					<output><messageName>infoAssetCH</messageName></output>
 					

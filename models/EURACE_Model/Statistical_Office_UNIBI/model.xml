@@ -84,6 +84,18 @@
 </variables>
 </dataType>
 
+<dataType>
+<name>tax_rates_item</name>
+<description>Used by Eurostat to store data from different Government agents</description>
+<variables>
+<variable><type>int</type><name>gov_id</name><description></description></variable>
+<variable><type>double</type><name>tax_rate_corporate</name><description></description></variable>
+<variable><type>double</type><name>tax_rate_hh_labour</name><description></description></variable>
+<variable><type>double</type><name>tax_rate_hh_capital</name><description></description></variable>
+<variable><type>double</type><name>tax_rate_vat</name><description></description></variable>
+</variables>
+</dataType>
+
 </dataTypes>
 
 </environment>
@@ -101,7 +113,7 @@
 <nextState>00</nextState>
 <condition><time><period>monthly</period><phase>0</phase></time></condition>
 <inputs>
-<input><messageName>market_research_send_specific_skills</messageName></input>
+<input><messageName>eurostat_send_specific_skills</messageName></input>
 </inputs>
 </function>
 
@@ -112,10 +124,10 @@
 <condition><not><time><period>monthly</period><phase>0</phase></time></not></condition>
 </function>
 
-<function><name>Firm_send_data_to_Market_Research</name>
+<function><name>Firm_send_data_to_Eurostat</name>
 <description></description>
 <currentState>14</currentState>
-<nextState>end</nextState>
+<nextState>end_Firm</nextState>
 <condition><time><period>monthly</period><phase>19</phase></time></condition>
 <outputs>
 <output><messageName>firm_send_data</messageName></output>
@@ -125,7 +137,7 @@
 <function><name>Firm_idle</name>
 <description></description>
 <currentState>14</currentState>
-<nextState>end</nextState>
+<nextState>end_Firm</nextState>
 <condition><not><time><period>monthly</period><phase>19</phase></time></not></condition>
 </function>
 
@@ -138,10 +150,10 @@
 <description></description>
 <functions>
 
-<function><name>Household_send_data_to_Market_Research</name>
+<function><name>Household_send_data_to_Eurostat</name>
 <description></description>
 <currentState>15</currentState>
-<nextState>end</nextState>
+<nextState>end_Household</nextState>
 <condition><time><period>monthly</period><phase>19</phase></time></condition>
 <outputs>
 <output><messageName>household_send_data</messageName></output>
@@ -151,7 +163,7 @@
 <function><name>Household_idle</name>
 <description></description>
 <currentState>15</currentState>
-<nextState>end</nextState>
+<nextState>end_Household</nextState>
 <condition><not><time><period>monthly</period><phase>19</phase></time></not></condition>
 </function>
 
@@ -164,6 +176,7 @@
 <name>Eurostat</name>
 <description></description>
 <memory>
+<!-- Data for Firms -->
 <variable><type>int</type><name>num_households</name><description></description></variable>
 <variable><type>int</type><name>no_households_skill_1</name><description></description></variable>
 <variable><type>int</type><name>no_households_skill_2</name><description></description></variable>
@@ -218,44 +231,47 @@
 <variable><type>firm_data_array</type><name>region_firm_data</name><description></description></variable>
 <variable><type>household_data_array</type><name>region_household_data</name><description></description></variable>
 <variable><type>int</type><name>day_of_month_to_act</name><description></description></variable>
+
+<!-- Data for governments -->
+<variable><type>tax_rates_item[27]</type><name>government_tax_rates</name><description></description></variable>
 </memory>
 <functions>
 
-<function><name>Market_Research_Initialization</name>
+<function><name>Eurostat_Initialization</name>
 <description></description>
-<currentState>start_Market_Research</currentState>
-<nextState>01</nextState>
+<currentState>start_Eurostat</currentState>
+<nextState>Start_Eurostat_Firm_Data</nextState>
 <condition><time><period>iteration</period><phase>1</phase></time></condition>
 </function>
 
-<function><name>Market_Research_idle</name>
+<function><name>Eurostat_idle</name>
 <description></description>
-<currentState>start_Market_Research</currentState>
-<nextState>01</nextState>
+<currentState>start_Eurostat</currentState>
+<nextState>Start_Eurostat_Firm_Data</nextState>
 <condition><not><time><period>iteration</period><phase>1</phase></time></not></condition>
 </function>
 
-<function><name>Market_Research_send_data</name>
+<function><name>Eurostat_send_data</name>
 <description></description>
-<currentState>01</currentState>
-<nextState>02</nextState>
+<currentState>Start_Eurostat_Firm_Data</currentState>
+<nextState>Start_Eurostat_Financial_Data</nextState>
 <condition><time><period>monthly</period><phase>0</phase></time></condition>
 <outputs>
-<output><messageName>market_research_send_specific_skills</messageName></output>
+<output><messageName>eurostat_send_specific_skills</messageName></output>
 </outputs>
 </function>
 
-<function><name>Market_Research_idle</name>
+<function><name>Eurostat_idle</name>
 <description></description>
-<currentState>01</currentState>
-<nextState>02</nextState>
+<currentState>Start_Eurostat_Firm_Data</currentState>
+<nextState>Start_Eurostat_Financial_Data</nextState>
 <condition><not><time><period>monthly</period><phase>19</phase></time></not></condition>
 </function>
 
-<function><name>Market_Research_calculate_data</name>
+<function><name>Eurostat_calculate_data</name>
 <description></description>
-<currentState>02</currentState>
-<nextState>end</nextState>
+<currentState>End_Eurostat_Financial_Data</currentState>
+<nextState>end_Eurostat</nextState>
 <condition><time><period>monthly</period><phase>a.day_of_month_to_act</phase></time></condition>
 <inputs>
 <input><messageName>firm_send_data</messageName></input>
@@ -263,10 +279,10 @@
 </inputs>
 </function>
 
-<function><name>Market_Research_idle</name>
+<function><name>Eurostat_idle</name>
 <description></description>
-<currentState>02</currentState>
-<nextState>end</nextState>
+<currentState>End_Eurostat_Financial_Data</currentState>
+<nextState>end_Eurostat</nextState>
 <condition><not><time><period>monthly</period><phase>a.day_of_month_to_act</phase></time></not></condition>
 </function>
 
@@ -314,7 +330,7 @@
 </message>
 
 <message>
-<name>market_research_send_specific_skills</name>
+<name>eurostat_send_specific_skills</name>
 <description></description>
 <variables>
 <variable><type>int</type><name>region_id</name><description></description></variable>
