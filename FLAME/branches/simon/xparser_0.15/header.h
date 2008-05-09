@@ -388,6 +388,7 @@ struct model_data
 	int layer_total;
 	struct time_data ** p_time_units;
 	int depends_style;
+	input_file ** p_files;
 };
 
 /* explicit define datatypes so dont need to use struct anymore */
@@ -469,6 +470,7 @@ typedef struct function_pointer function_pointer;
 typedef struct model_datatype model_datatype;
 
 /* memory.c */
+void free_modeldata(model_data * modeldata);
 input_file * add_input_file(input_file ** p_files);
 void free_input_files(input_file ** p_files);
 void addstateholder(xmachine_state * state, xmachine_state_holder ** p_list);
@@ -537,8 +539,8 @@ void print_double_array(double_array * array);
 void add_double(double_array * array, double new_double);
 void remove_double(double_array * array, int index);
 /* readmodel.c */
-void readModel(input_file * inputfile, char * directory, model_data * modeldata, input_file ** p_files);
-void checkmodel(model_data * modeldata);
+void readModel(input_file * inputfile, char * directory, model_data * modeldata);
+int checkmodel(model_data * modeldata);
 /* dependencygraph.c */
 char * copystr(char * string);
 void create_dependency_graph(char * filepath, model_data * modeldata);
