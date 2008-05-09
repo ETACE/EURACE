@@ -234,6 +234,27 @@ void free_$name_agent(xmachine_memory_$name_holder * tmp, xmachine_memory_$name_
 	free(tmp);
 }
 
+void unittest_init_$name_agent()
+{
+	current_xmachine_$name = (xmachine_memory_$name *)malloc(sizeof(xmachine_memory_$name));
+	CHECK_POINTER(current);
+	
+	<?foreach xagentvar?><?if modeldatatype?><?if not_array?>	init_$type(&current_xmachine_$agent_name->$name);
+	<?end if?><?end if?><?if static_array?>	init_$type_static_array(current_xmachine_$agent_name->$name, $arraylength);
+	<?end if?><?if dynamic_array?>	init_$type(&current_xmachine_$agent_name->$name);
+	<?end if?><?if not_modeldatatype?><?if not_array?>	current_xmachine_$agent_name->$name = $default_value;
+	<?end if?><?end if?><?end foreach?>	
+}
+
+void unittest_free_$name_agent()
+{
+	<?foreach xagentvar?><?if modeldatatype?><?if not_array?>free_$type(&current_xmachine_$agent_name->$name);
+	<?end if?><?if static_array?>free_$type_static_array(current_xmachine_$agent_name->$name, $arraylength);
+	<?end if?><?end if?><?if dynamic_array?>free_$type(&current_xmachine_$agent_name->$name);
+	<?end if?><?end foreach?>
+	free(current_xmachine_$name);
+}
+
 void free_$name_agents()
 {
 /*<?foreach state?>	while(*$agent_name_$name_state)

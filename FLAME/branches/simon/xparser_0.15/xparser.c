@@ -268,6 +268,7 @@ int main(int argc, char * argv[])
 	parseTemplate(filename, templatename, modeldata);
 	parseAgentHeaderTemplate(directory, modeldata);
 	parseRuleFunctionsTemplate(directory, modeldata);
+	/*parseUnittest(directory, modeldata);*/
 	
 	freexmachines(modeldata->p_xmachines);
 	freexmessages(modeldata->p_xmessages);

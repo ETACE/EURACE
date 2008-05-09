@@ -172,6 +172,7 @@ variable * addvariable(variable ** p_vars)
 	current->name = NULL;
 	current->value = NULL;
 	current->datatype = NULL;
+	current->file = NULL;
 	current->next = NULL;
 	
 	/* Return new element */
@@ -195,6 +196,7 @@ void freevariables(variable ** p_vars)
 		/*freechars(&head->name);*/
 		/*freechars(&head->type);*/
 		/*freechars(&head->value);*/
+		free(head->file);
 		free(head);
 		head = temp;
 	}
@@ -746,6 +748,7 @@ xmachine_function * addxfunction(xmachine_function ** p_xfunctions)
 	/* Make current->next point to NULL */
 	current->name = NULL;
 	current->note = NULL;
+	current->file = NULL;
 	current->code = NULL;
 	current->inputs = NULL;
 	current->outputs = NULL;
@@ -785,6 +788,7 @@ void freexfunctions(xmachine_function ** p_xfunctions)
 		/* Free the cell memory */
 		/*freechars(&head->name);*/
 		/*freechars(&head->note);*/
+		free(head->file);
 		freefcode(&head->code);
 		free_ioput(&head->inputs);
 		free_ioput(&head->outputs);

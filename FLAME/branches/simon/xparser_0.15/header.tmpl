@@ -441,7 +441,9 @@ xmachine_memory_$name * init_$name_agent();
 void free_$name_agent(xmachine_memory_$name_holder * tmp, xmachine_memory_$name_state * state);
 void transition_$name_agent(xmachine_memory_$name_holder * tmp, xmachine_memory_$name_state * from_state, xmachine_memory_$name_state * to_state);
 void add_$name_agent_internal(xmachine_memory_$name * agent, xmachine_memory_$name_state * state);
-void add_$name_agent(<?foreach xagentvar?>$type <?if dynamic_array?>* <?end if?>$name<?if static_array?>[]<?end if?><?if notlast?>, <?end if?><?end foreach?>);<?end foreach?>
+void add_$name_agent(<?foreach xagentvar?>$type <?if dynamic_array?>* <?end if?>$name<?if static_array?>[]<?end if?><?if notlast?>, <?end if?><?end foreach?>);
+void unittest_init_$name_agent();
+void unittest_free_$name_agent();<?end foreach?>
 <?foreach message?>
 void add_$name_message(<?foreach messagevar?>$type $name<?if static_array?>[]<?end if?><?if notlast?>, <?end if?><?end foreach?>);
 m_$name * add_$name_message_internal(void);

@@ -67,12 +67,13 @@ void printRule(rule_data * current_rule_data, FILE *file)
 	/* If current_rule_data is NULL */
 	if(current_rule_data != NULL)
 	{
-		if(current_rule_data->not == 1) fputs("not ", file);
+		if(current_rule_data->not == 1) fputs("not ( ", file);
 		
 		if(current_rule_data->time_rule == 1)
 		{
+			fputs("Periodicity: ", file);
 			fputs(current_rule_data->lhs, file);
-			fputs("\\n", file);
+			fputs("\\nPhase: ", file);
 			fputs(current_rule_data->rhs, file);
 		}
 		else
@@ -81,11 +82,19 @@ void printRule(rule_data * current_rule_data, FILE *file)
 			if(current_rule_data->lhs != NULL) fputs(current_rule_data->lhs, file);
 			else printRule(current_rule_data->lhs_rule, file);
 			
-			if(current_rule_data->op != NULL) fputs(current_rule_data->op, file);
+			if(current_rule_data->op != NULL)
+			{
+				fputs(" ", file);
+				fputs(current_rule_data->op, file);
+				if(strcmp(current_rule_data->op, "&&") == 0 || strcmp(current_rule_data->op, "||") == 0) fputs("\\n", file);
+				else fputs(" ", file);
+			}
 			
 			if(current_rule_data->rhs != NULL) fputs(current_rule_data->rhs, file);
 			else printRule(current_rule_data->rhs_rule, file);
 		}
+		
+		if(current_rule_data->not == 1) fputs(" )", file);
 	}
 }
 
