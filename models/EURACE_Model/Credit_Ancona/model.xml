@@ -1,18 +1,16 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE xmodel SYSTEM "http://eurace.cs.bilgi.edu.tr/XMML.dtd">
+<xmodel version="2">
 
-
-<xmodel version ="2">
 <name>Credit_Market</name>
-<author>Eurace</author>
-<date>060508</date>
-
+<version>Genoa 09/05/2008</version>
+<description></description>
 
 
 <environment>
 
 
 <functionFiles>
-<file>Bank_Credit_Functions_Dummy.c</file>
-<file>Firm_Credit_Functions_Dummy.c</file>
 <file>Bank_Credit_Functions.c</file>
 <file>Firm_Credit_Functions.c</file>
 <file>Household_Credit_Functions.c</file>
@@ -54,27 +52,12 @@
 <name>Firm</name>
 <memory>
 <variables>
-<variable><type>int</type><name>id</name><description></description></variable>
 <variable><type>double_array</type><name>interest</name><description></description></variable>
 <variable><type>double_array</type><name>credit_offer</name><description></description></variable>
-<variable><type>int_array</type><name>contacted_bank</name><description></description></variable>
-<variable><type>double</type><name>total_debt</name><description></description></variable>
-<variable><type>double</type><name>asset</name><description></description></variable>
-<variable><type>double</type><name>credit_demand</name><description></description></variable>
-<variable><type>double_array</type><name>installment_amount</name><description></description></variable>
-<variable><type>int</type><name>installment_number</name><description></description></variable>
-<variable><type>int</type><name>loans_number</name><description></description></variable>
-<variable><type>double_array</type><name>outstanding_debt</name><description></description></variable>
-<variable><type>int_array</type><name>lending_bank_id</name><description></description></variable>
-<variable><type>double_array</type><name>interest_amount</name><description></description></variable>
-<variable><type>int</type><name>bankruptcy_state</name><description></description></variable>
-<variable><type>double</type><name>total_resources</name><description></description></variable>
-<variable><type>double_array</type><name>residual_variable</name><description></description></variable>
-<variable><type>double_array</type><name>variable_per_installment</name><description></description></variable>
+<variable><type>double_array</type><name>rateorder</name><description></description></variable>
 <variable><type>double_array</type><name>value_at_risk</name><description></description></variable>
-<variable><type>double_array</type><name>interest_left</name><description></description></variable>
-<variable><type>double</type><name>current_equity</name><description></description></variable>
-<variable><type>double</type><name>current_debt</name><description></description></variable>
+<variable><type>double[NUMBER_OF_BANKS]</type><name>dmarketmatrix</name><description></description></variable>
+<variable><type>int</type><name>installment_number</name><description></description></variable>
 </variables>
 </memory>
 
@@ -163,7 +146,7 @@
 <currentState>03</currentState>
 <nextState>04</nextState>
 <inputs>
-<input><messageName>debt_installment_payment</messageName></input>
+<input><messageName>installment_payment</messageName></input>
 </inputs>
 </function>
 
@@ -182,7 +165,7 @@
 
 
 <function>
-<name>Bank_bank_accounting</name>
+<name>Bank_accounting</name>
 <currentState>05</currentState>
 <nextState>06</nextState>
 <condition>
@@ -247,31 +230,14 @@
 <variable><type>double</type><name>credit_amount_taken</name><description></description></variable>
 </message>
 
-
-
 <message>
-<name>debt_installment</name>
-<note>firm pays installment and interest of period</note>
+<name>installment</name>
+<note>firm pays installment and interest to the bank (these payments are not included in the total_payment variable)</note>
 <variable><type>int</type><name>bank_id</name><description></description></variable>
 <variable><type>double</type><name>installment_amount</name><description>installment_amount is 0 in case of bankruptcy, positive in case of No_bankruptcy</description></variable>
-<variable><type>double</type><name>credit_refunded</name><description>credit_refunded is 0 in case of No_bankruptcy, positive in case of bankruptcy</description></variable>
 <variable><type>double</type><name>interest_amount</name><description></description></variable>
 <variable><type>double</type><name>var_per_installment</name><description></description></variable>
-<variable><type>double</type><name>bad_debt</name><description>bad_debt is 0 in case of No_bankruptcy, positive in case of bankruptcy</description></variable>
-<variable><type>double</type><name>residual_var</name><description>residual_var is 0 in case of No_bankruptcy, positive in case of bankruptcy</description></variable>
 </message>
-
-<message>
-<name>interest_payment</name>
-<description>Added by firm to pay interest on debt</description>
-<variables>
-<variable><type>int</type><name>firm_id</name><description></description></variable>
-<variable><type>int</type><name>bank_id</name><description></description></variable>
-<variable><type>double</type><name>interest_payment</name><description></description></variable>
-</variables>
-</message>
-
-
 
 <message>
 <name>bankruptcy</name>
@@ -279,7 +245,7 @@
 <variable><type>int</type><name>bank_id</name><description></description></variable>
 <variable><type>double</type><name>bad_debt</name><description></description></variable>
 <variable><type>double</type><name>credit_refunded</name><description></description></variable>
-<variable><type>double</type><name>residual_variable</name><description></description></variable>
+<variable><type>double</type><name>residual_var</name><description></description></variable>
 </message>
 
 

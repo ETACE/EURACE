@@ -146,7 +146,8 @@ int Firm_compute_dividends()
 
 int Firm_compute_total_financial_payments()
 {
-
+	//This variable is not used anywhere: it is the sum of financial_liquidity_needs and production_liquidity_needs
+	//but excluding the tax_payments. The tax_payments do not need to be financed since we assume they can always be paid out of earnings. 
 	TOTAL_PAYMENTS = TOTAL_INTEREST_PAYMENT + TOTAL_DEBT_INSTALLMENT_PAYMENT + TOTAL_DIVIDEND_PAYMENT + TAX_PAYMENT + PRODUCTION_COSTS;
 	return 0;
 }
@@ -301,55 +302,51 @@ int Firm_execute_financial_payments()
 {	
 	//step 1: actual tax_payment to government
 	add_tax_payment_message(ID, GOV_ID, TAX_PAYMENT);
-	
+	PAYMENT_ACCOUNT -= TAX_PAYMENT;
+		
 	//step 2: actual interest_payments and debt_installment_payments
-	//printf("\n Checking: PAYMENT_ACCOUNT > TOTAL_DEBT_INSTALLMENT_PAYMENT: %f>%f \n", PAYMENT_ACCOUNT, TOTAL_DEBT_INSTALLMENT_PAYMENT);
-	if (PAYMENT_ACCOUNT < TOTAL_DEBT_INSTALLMENT_PAYMENT)
-	{
-	    //Code: transform debt into equity
-	    //Code: debt is repaid partially
-	    //Code: compute debt remaining to be paid
-	
-	    PAYMENT_ACCOUNT = 0.0;
-	}
-	else
-	{
-	    //Sending debt and interest_payment_msg to all banks at which the firm has a loan 
-	    imax = LOANS.size;
-	    for (i=0; i<imax;i++)
-	    {
-	        //decrease payment_account with the interest_payment
-	        PAYMENT_ACCOUNT -= LOANS.array[i].interest_amount;
-		    
-		    //Sending debt_installment_payment_msg to all banks at which the firm has a loan
-	        //decrease payment_account with the installment payment
-	        PAYMENT_ACCOUNT -= LOANS.array[i].installment_amount;
-	
-	        //decrease the value of the loan with the debt_installment_payment:
-	        LOANS.array[i].loan_value -= LOANS.array[i].installment_amount;
-	        //printf("Now subtracted debt_installment_payment from loan_value: %f (new value:%f).\n", LOANS.array[i].debt_installment_payment, LOANS.array[i].loan_value);
-	        
-	        //decrease the value of the nr_periods_before_payment
-	        LOANS.array[i].nr_periods_before_repayment -= 1;
-	
-	        //tell the bank I paid:
-	        //add_debt_installment_message()
-	        //bank_id
-	        //installment_amount
-	        //credit_refunded
-	        //interest_amount
-	        //var_per_installment
-	        //bad_debt
-	        //residual_var
-	        add_debt_installment_message(LOANS.array[i].bank_id, LOANS.array[i].installment_amount, LOANS.array[i].credit_refunded, LOANS.array[i].interest_amount, LOANS.array[i].var_per_installment, LOANS.array[i].bad_debt, LOANS.array[i].residual_var);
-	
-	        //if nr_periods_before_maturity == 0, remove the loan item
-	        if (LOANS.array[i].nr_periods_before_repayment==0)
-	        {
-	            remove_debt_item(&LOANS, i);
-	        }
-	    }
-	}
+
+	//Sending debt and interest_payment_msg to all banks at which the firm has a loan 
+    imax = LOANS.size;
+    for (i=0; i<imax;i++)
+    {
+        //decrease payment_account with the interest_payment
+        PAYMENT_ACCOUNT -= LOANS.array[i].interest_amount;
+	    
+        //decrease payment_account with the installment payment
+        PAYMENT_ACCOUNT -= LOANS.array[i].installment_amount;
+
+        //decrease the value of the loan with the debt_installment_payment:
+        LOANS.array[i].loan_value -= LOANS.array[i].installment_amount;
+        //printf("Now subtracted debt_installment_payment from loan_value: %f (new value:%f).\n", LOANS.array[i].debt_installment_payment, LOANS.array[i].loan_value);
+
+        //decrease the residual_var of the loan with the var_per_installment:
+        LOANS.array[i].residual_var -= LOANS.array[i].var_per_installment;
+        
+        //decrease the value of the nr_periods_before_payment
+        LOANS.array[i].nr_periods_before_repayment -= 1;
+
+        //tell the bank I paid:
+        //add_debt_installment_message()
+        //bank_id
+        //installment_amount
+        //credit_refunded
+        //interest_amount
+        //var_per_installment
+        //bad_debt
+        //residual_var
+
+        //Sending debt_installment_payment_msg to all banks at which the firm has a loan
+        //Note: this message is to be separated from the general bank_account_update_message send at the end of the period
+        //to the firm's deposit bank (the banks at which the firm has loans is a different one than the bank at which the firm has deposits).
+        add_installment_message(LOANS.array[i].bank_id, LOANS.array[i].installment_amount, LOANS.array[i].interest_amount, LOANS.array[i].var_per_installment)
+
+        //If nr_periods_before_maturity == 0, remove the loan item
+        if (LOANS.array[i].nr_periods_before_repayment==0)
+        {
+            remove_debt_item(&LOANS, i);
+        }
+    }
 		
     //add dividend_per_share_msg(firm_id, current_dividend_per_share) to shareholders (dividend per share)     
     add_dividend_per_share_message(ID, CURRENT_DIVIDEND_PER_SHARE);
@@ -357,8 +354,8 @@ int Firm_execute_financial_payments()
     //decrease payment_account with the total_dividend_payment
     PAYMENT_ACCOUNT -= TOTAL_DIVIDEND_PAYMENT;
 
-    //actual payments to the bank
-    //These are paid at end of day when the firm send out its add_bank_account_update_message(PAYMENT_ACCOUNT) 
+    //Actual payments to the bank: these are paid at end of day when the firm send out this message: 
+    //add_bank_account_update_message(PAYMENT_ACCOUNT) 
     
     return 0;
 }

@@ -11,6 +11,8 @@
 <functionFiles>
 <file>Bank_Credit_Functions_Dummy.c</file>
 <file>Firm_Credit_Functions_Dummy.c</file>
+<!-- <file>Bank_credit_functions_empty.c</file>  -->
+<!-- <file>Firm_credit_functions_empty.c</file> -->
 </functionFiles>
 
 </environment>
