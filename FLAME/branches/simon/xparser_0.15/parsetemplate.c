@@ -61,6 +61,9 @@ void parseTemplate(char * filename, char * templatename, model_data * modeldata)
 	model_datatype * current_datatype = NULL;
 	xmachine_state_holder * current_end_state = NULL;
 	
+	/* Initialise variables */
+	lastloop[0] = '\0';
+	
 	/* Open the output file */
 	printf("writing file: %s\t", filename);
 	file = fopen(filename, "w");

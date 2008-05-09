@@ -35,6 +35,10 @@ input_file * add_input_file(input_file ** p_files)
 	}
 	/* Make current->next point to NULL */
 	current->next = NULL;
+	current->file = NULL;
+	current->fullfilepath = NULL;
+	current->fulldirectory = NULL;
+	current->localdirectory = NULL;
 	current->enabled = 1;
 	
 	/* Return new element */
@@ -49,8 +53,10 @@ void free_input_files(input_file ** p_files)
 	while(head)
 	{
 		temp = head->next;
-		/* Free the cell memory */
-		/*freechars(&head->code);*/
+		free(head->file);
+		free(head->fullfilepath);
+		free(head->fulldirectory);
+		free(head->localdirectory);
 		free(head);
 		head = temp;
 	}
@@ -594,7 +600,8 @@ void free_time_units(time_data ** p_time_units)
 char * copystr(char * string)
 {
 	char * new_string = (char *)malloc( (strlen(string) + 1) * sizeof(char));
-	return strcpy(new_string, string);
+	strcpy(new_string, string);
+	return new_string;
 }
 
 adj_function * add_depends_adj_function(xmachine_function * current_function)
