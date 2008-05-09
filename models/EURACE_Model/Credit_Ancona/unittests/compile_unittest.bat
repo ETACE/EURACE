@@ -1,1 +1,1 @@
-gcc -g unittest.c ../../memory.c ../../messageboards.c ../Bank_Credit_functions.c Bank_Credit_unittests.c ../Firm_Credit_functions.c Firm_Credit_unittests.c ../Household_Credit_functions.c Household_Credit_unittests.c -lm -lcunit 
+gcc -g unittest.c ../memory.c ../messageboards.c ../Bank_Credit_functions.c Bank_Credit_unittests.c  -lm -lcunit
