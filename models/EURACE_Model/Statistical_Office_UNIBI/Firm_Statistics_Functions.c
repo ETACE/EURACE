@@ -16,3 +16,8 @@ int Firm_send_data_to_Eurostat()
 	return 0;
 }
 
+int Firm_send_payments_to_bank()
+{
+	add_bank_account_update_message(PAYMENT_ACCOUNT);
+	return 0;
+}

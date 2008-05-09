@@ -12,6 +12,26 @@
 <file>Firm_Financial_Management_Functions.c</file>
 </functionFiles>
 
+<timeUnits>
+<timeUnit>
+ <name>daily</name>
+ <unit>iteration</unit>
+ <period>1</period>
+</timeUnit>
+
+<timeUnit>
+ <name>weekly</name>
+ <unit>daily</unit>
+ <period>5</period>
+</timeUnit>
+
+<timeUnit>
+ <name>monthly</name>
+ <unit>weekly</unit>
+ <period>4</period>
+</timeUnit>
+</timeUnits>
+
 <dataTypes>
 
 <dataType>
@@ -21,9 +41,11 @@
 <variable><type>int</type><name>bank_id</name><description></description></variable>
 <variable><type>double</type><name>loan_value</name><description></description></variable>
 <variable><type>double</type><name>interest_rate</name><description></description></variable>
-<variable><type>double</type><name>interest_payment</name><description></description></variable>
-<variable><type>double</type><name>debt_installment_payment</name><description></description></variable>
-<variable><type>int</type><name>nr_periods_before_maturity</name><description></description></variable>
+<variable><type>double</type><name>installment_amount</name><description></description></variable>
+<variable><type>double</type><name>var_per_installment</name><description></description></variable>
+<variable><type>double</type><name>residual_var</name><description></description></variable>
+<variable><type>double</type><name>bad_debt</name><description></description></variable>
+<variable><type>int</type><name>nr_periods_before_repayment</name><description></description></variable>
 </variables>
 </dataType>
 
@@ -47,8 +69,7 @@
 <name>Firm</name>
 <description></description>
 <memory>
-<variable><type>int</type><name>gov_id</name><description></description></variable>
-<variable><type>int</type><name>bank_id</name><description></description></variable>
+<variable><type>int</type><name>day_of_month_to_act</name><description></description></variable>
 
 <!-- Firm_compute_income_statement -->
 <variable><type>double</type><name>ebit</name><description></description></variable>
@@ -198,9 +219,6 @@
 <nextState>End_Firm_Financial_Management_Role</nextState>
 <outputs>
 <output><messageName>tax_payment</messageName></output>
-<!--<output><messageName>interest_payment</messageName></output>-->
-<!--<output><messageName>debt_installment_payment</messageName></output>-->
-<output><messageName>total_dividend</messageName></output>
 <output><messageName>dividend_per_share</messageName></output>
 </outputs>
 </function>
