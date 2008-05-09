@@ -13,7 +13,9 @@
 <functionFiles>
 <file>Bank_Credit_Functions_Dummy.c</file>
 <file>Firm_Credit_Functions_Dummy.c</file>
-
+<file>Bank_Credit_Functions.c</file>
+<file>Firm_Credit_Functions.c</file>
+<file>Household_Credit_Functions.c</file>
 </functionFiles>
 
 
