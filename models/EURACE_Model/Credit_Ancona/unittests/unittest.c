@@ -5,11 +5,13 @@
 #include "header.h"
 #include <CUnit/Basic.h>
 
-/*************************** unittest prototypes ***************************/
+/*************************** unittest prototypes ***************************
 void unittest_Bank_read_loan_request_send_offers();
 void unittest_Bank_read_interest_payments();
 void unittest_Bank_read_debt_installment_payments();
 /*************************** end prototypes ***************************/
+
+void unittest_Bank_decide_credit_conditions();
 
 int init_suite1(void)
 {
@@ -48,10 +50,7 @@ int main(int argc, char * argv[])
     /* add the tests to the suite */
     /* add extra tests using || */
     
-    if(
-    	NULL == CU_add_test(pSuite, "Bank_read_loan_request_send_offers", unittest_Bank_read_loan_request_send_offers) ||
-    	NULL == CU_add_test(pSuite, "Bank_read_interest_payments", unittest_Bank_read_interest_payments) ||
-    	NULL == CU_add_test(pSuite, "Bank_read_debt_installment_payments", unittest_Bank_read_debt_installment_payments))
+    if(CU_add_test(pSuite, "Bank_decide_credit_conditions", unittest_Bank_decide_credit_conditions) == NULL)
     {
         CU_cleanup_registry();
         return CU_get_error();
