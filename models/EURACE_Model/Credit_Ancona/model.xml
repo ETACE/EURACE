@@ -13,7 +13,6 @@
 <functionFiles>
 <file>Bank_Credit_Functions.c</file>
 <file>Firm_Credit_Functions.c</file>
-<file>Household_Credit_Functions.c</file>
 </functionFiles>
 
 
@@ -52,7 +51,7 @@
 <variable><type>double_array</type><name>credit_offer</name><description></description></variable>
 <variable><type>double_array</type><name>rateorder</name><description></description></variable>
 <variable><type>double_array</type><name>value_at_risk</name><description></description></variable>
-<variable><type>double[10]</type><name>dmarketmatrix</name><description></description></variable>
+<variable><type>double</type><name>dmarketmatrix[10]</name><description></description></variable>
 <variable><type>int</type><name>installment_number</name><description></description></variable>
 </memory>
 
@@ -62,7 +61,8 @@
 <name>Firm_ask_for_loan</name>
 <description></description>
 <currentState>Start_Firm_Credit_Role</currentState>
-<nextState>02</nextState>
+<nextState>Firm_Credit_02</nextState>
+<condition><lhs><value>a.external_financial_needs</value></lhs><op>GT</op><rhs><value>0.0</value></rhs></condition>
 <outputs>
 <output><messageName>loan_request</messageName></output>
 </outputs>
@@ -73,7 +73,7 @@
 <function>
 <name>Firm_choose_bank</name>
 <description></description>
-<currentState>02</currentState>
+<currentState>Firm_Credit_02</currentState>
 <nextState>End_Firm_Credit_Role</nextState>
 <inputs>
 <input><messageName>loan_conditions</messageName></input>
@@ -115,8 +115,8 @@
 <function>
 <name>Bank_decide_credit_conditions</name>
 <description></description>
-<currentState>BANK_START</currentState>
-<nextState>02</nextState>
+<currentState>start_Bank</currentState>
+<nextState>Bank_02</nextState>
 <inputs>
 <input><messageName>loan_request</messageName></input>
 </inputs>
@@ -130,8 +130,8 @@
 <function>
 <name>Bank_give_loan</name>
 <description></description>
-<currentState>02</currentState>
-<nextState>03</nextState>
+<currentState>Bank_02</currentState>
+<nextState>Bank_03</nextState>
 <inputs>
 <input><messageName>loan_acceptance</messageName></input>
 </inputs>
@@ -142,8 +142,8 @@
 <function>
 <name>Bank_receive_installment</name>
 <description></description>
-<currentState>03</currentState>
-<nextState>04</nextState>
+<currentState>Bank_03</currentState>
+<nextState>Bank_04</nextState>
 <inputs>
 <input><messageName>installment</messageName></input>
 <input><messageName>bankruptcy</messageName></input>
@@ -155,8 +155,8 @@
 <function>
 <name>Bank_account_update_deposits</name>
 <description></description>
-<currentState>04</currentState>
-<nextState>05</nextState>
+<currentState>Bank_04</currentState>
+<nextState>Bank_05</nextState>
 <inputs>
 <input><messageName>bank_account_update</messageName></input>
 </inputs>
@@ -167,8 +167,8 @@
 <function>
 <name>Bank_accounting</name>
 <description></description>
-<currentState>05</currentState>
-<nextState>06</nextState>
+<currentState>Bank_05</currentState>
+<nextState>end_Bank</nextState>
 <condition>
     <time>
     <period>monthly</period>
@@ -182,8 +182,8 @@
 <function>
 <name>Bank_idle</name>
 <description></description>
-<currentState>05</currentState>
-<nextState>06</nextState>
+<currentState>Bank_05</currentState>
+<nextState>end_Bank</nextState>
 <condition>
 	<not>
     <time>

@@ -123,14 +123,11 @@
 <variable><type>double</type><name>production_liquidity_needs</name><description></description></variable>
 <variable><type>double</type><name>financial_liquidity_needs</name><description></description></variable>
 <variable><type>double</type><name>total_financial_needs</name><description></description></variable>
-<variable><type>double</type><name>internal_financial_needs</name><description></description></variable>
 <variable><type>double</type><name>external_financial_needs</name><description></description></variable>
-<variable><type>double</type><name>total_external_financing_obtained</name><description></description></variable>
-<variable><type>int</type><name>production_liquidity_needs_require_external_financing</name><description></description></variable>
-<variable><type>int</type><name>financial_liquidity_needs_require_external_financing</name><description></description></variable>
 
 <!-- Firm_execute_financial_payments -->
-
+<variable><type>int</type><name>bankruptcy_state</name><description></description></variable>
+<variable><type>int</type><name>financial_crisis_state</name><description></description></variable>
 </memory>
 <functions>
 
@@ -214,15 +211,69 @@
 </inputs>
 </function>
 
+<function>
+<name>Firm_check_financial_and_bankruptcy_state</name>
+<description></description>
+<currentState>End_Firm_Financial_Role</currentState>
+<nextState>Firm_bankruptcy_checked</nextState>
+</function>
+
+<function>
+<name>Firm_in_bankruptcy</name>
+<description></description>
+<currentState>Firm_bankruptcy_checked</currentState>
+<nextState>Firm_processed_bankruptcy</nextState>
+<condition>
+<condition><lhs><value>a.bankruptcy_state</value></lhs><op>EQ</op><rhs><value>1</value></rhs></condition>
+</condition>
+<outputs>
+</outputs>
+</function>
+
+<function>
+<name>Firm_in_financial_crisis</name>
+<description></description>
+<currentState>Firm_bankruptcy_checked</currentState>
+<nextState>Firm_out_of_financial_crisis</nextState>
+<condition>
+<condition><lhs><value>a.financial_crisis_state</value></lhs><op>EQ</op><rhs><value>1</value></rhs></condition>
+</condition>
+<outputs>
+</outputs>
+</function>
 
 <function>
 <name>Firm_execute_financial_payments</name>
 <description></description>
-<currentState>End_Firm_Financial_Role</currentState>
-<nextState>End_Firm_Financial_Management_Role</nextState>
+<currentState>Firm_out_of_financial_crisis</currentState>
+<nextState>End_Firm_Financial_Management</nextState>
 <outputs>
 <output><messageName>tax_payment</messageName></output>
 <output><messageName>dividend_per_share</messageName></output>
+<output><messageName>installment</messageName></output>
+</outputs>
+</function>
+
+
+
+<function>
+<name>Firm_execute_financial_payments</name>
+<description></description>
+<currentState>Firm_bankruptcy_checked</currentState>
+<nextState>Start_Firm_Labour_Role</nextState>
+<condition>
+<lhs>
+	<lhs><value>a.bankruptcy_state</value></lhs><op>EQ</op><rhs><value>0</value></rhs>
+</lhs>
+<op>AND</op>
+<rhs>
+	<lhs><value>a.financial_crisis_state</value></lhs><op>EQ</op><rhs><value>0</value></rhs>
+</rhs>
+</condition>
+<outputs>
+<output><messageName>tax_payment</messageName></output>
+<output><messageName>dividend_per_share</messageName></output>
+<output><messageName>installment</messageName></output>
 </outputs>
 </function>
 
@@ -248,16 +299,6 @@
 <variable><type>int</type><name>firm_id</name><description></description></variable>
 <variable><type>int</type><name>gov_id</name><description></description></variable>
 <variable><type>double</type><name>tax_payment</name><description></description></variable>
-</variables>
-</message>
-
-<message>
-<name>total_dividend</name>
-<description>Added by firm to send msg to bank with total dividends</description>
-<variables>
-<variable><type>int</type><name>firm_id</name><description></description></variable>
-<variable><type>int</type><name>bank_id</name><description></description></variable>
-<variable><type>double</type><name>total_dividend_payment</name><description></description></variable>
 </variables>
 </message>
 

@@ -218,16 +218,16 @@
 
 <function><name>Firm_calc_production_quantity_2</name>
 <description></description>
-<currentState>End_Firm_Financial_Management_Role</currentState>
+<currentState>End_Firm_Financial_Management</currentState>
 <nextState>Start_Firm_Labour_Role</nextState>
-<condition><not><lhs><value>a.payment_account</value></lhs><op>GEQ</op><rhs><value>a.production_liquidity_needs</value></rhs></not></condition>
+<condition><not><lhs><value>a.payment_account</value></lhs><op>GEQ</op><rhs><value>a.production_costs</value></rhs></not></condition>
 </function>
 
 <function><name>Firm_idle</name>
 <description></description>
-<currentState>End_Firm_Financial_Management_Role</currentState>
+<currentState>End_Firm_Financial_Management</currentState>
 <nextState>Start_Firm_Labour_Role</nextState>
-<condition><lhs><value>a.payment_account</value></lhs><op>GEQ</op><rhs><value>a.production_liquidity_needs</value></rhs></condition>
+<condition><lhs><value>a.payment_account</value></lhs><op>GEQ</op><rhs><value>a.production_costs</value></rhs></condition>
 </function>
 
 <function><name>Firm_send_capital_demand</name>
@@ -269,10 +269,6 @@
 <inputs>
 <input><messageName>sales</messageName></input>
 </inputs>
-<outputs>
-<output><messageName>bank_account_update</messageName></output>
-</outputs>
-
 </function>
 
 <function><name>Firm_update_specific_skills_of_workers</name>
@@ -323,7 +319,7 @@
 <currentState>06</currentState>
 <nextState>06b</nextState>
 <inputs>
-<input><messageName>dividend_payment</messageName></input>
+<input><messageName>dividend_per_share</messageName></input>
 <input><messageName>capital_good_profit_distribution</messageName></input>
 </inputs>
 </function>
@@ -367,7 +363,7 @@
 	<op>AND</op>
 	<rhs><lhs><value>a.employee_firm_id</value></lhs><op>EQ</op><rhs><value>-1</value></rhs></rhs>
 </condition>
-<!--<input><messageName>unemployment_benefits</messageName></input>-->
+<input><messageName>unemployment_benefits</messageName></input>
 </function>
 
 <function><name>Household_determine_consumption_budget</name>

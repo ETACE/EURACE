@@ -402,6 +402,10 @@ int Firm_calc_input_demands()
 }
 
 
+/* GENUA NOTE: This needs to be updated with the new style of checking FINANCIAL_NEEDS
+ * See file: Firm_Financial_Management
+ */
+
 /** \fn Firm_calc_production_quantity_2()
  * \brief Firms iterate over the planned production quantity decreasing it incrementally,
  * such that the corresponding labor demand and capital demand can be financed by the actually obtained financial resources.*/
@@ -707,12 +711,15 @@ int Firm_calc_revenue()
 				}	
 			}
 		}
-
+	
 	FINISH_SALES_MESSAGE_LOOP
 	
 	/*GENUA*/
-	/*add_daily_revenue_to_bank_message(ID, BANK_ID, REVENUE_PER_DAY);*/
-
+	/*add_bank_account_update_message(BANK_ID, PAYMENT_ACCOUNT);*/
+	//Not needed here: there is a function after this called Firm_send_payments_to_bank
+	
+	PAYMENT_ACCOUNT += REVENUE_PER_DAY;
+	
 	/*The monthly sales statistics*/
 	CUM_TOTAL_SOLD_QUANTITY+=TOTAL_SOLD_QUANTITY;	
 	

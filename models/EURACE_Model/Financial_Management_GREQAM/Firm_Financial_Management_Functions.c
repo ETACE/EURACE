@@ -69,14 +69,9 @@ int Firm_compute_income_statement()
 {
     //In the future: if we want to include sales_costs
     //SALES_COSTS = 0;
-    //EBIT = CUM_REVENUE - SALES_COSTS
-    EBIT = CUM_REVENUE; //net revenues = receipts - sales_costs;       
-    
-    //update the cash holdings
-    PAYMENT_ACCOUNT += EBIT;
-    
-    //step 6: continue balance sheet (net earnings, earnings per share)
-    EARNINGS = EBIT - TOTAL_INTEREST_PAYMENT - PRODUCTION_COSTS;
+   
+    // compute net earnings
+    EARNINGS = CUM_REVENUE - TOTAL_INTEREST_PAYMENT - PRODUCTION_COSTS;
     	
     TAX_PAYMENT = TAX_RATE_CORPORATE * EARNINGS;
     PREVIOUS_NET_EARNINGS = NET_EARNINGS;
@@ -227,7 +222,7 @@ int Firm_compute_total_liquidity_needs()
 
     //step 12B: set production and payout financial_needs
     PRODUCTION_LIQUIDITY_NEEDS = PRODUCTION_COSTS;
-    FINANCIAL_LIQUIDITY_NEEDS = TOTAL_INTEREST_PAYMENT + TOTAL_DEBT_INSTALLMENT_PAYMENT + TOTAL_DIVIDEND_PAYMENT;
+    FINANCIAL_LIQUIDITY_NEEDS = TOTAL_INTEREST_PAYMENT + TOTAL_DEBT_INSTALLMENT_PAYMENT + TOTAL_DIVIDEND_PAYMENT + TAX_PAYMENT;
 
     //step 12C:
     //Check if additional external financial needs are required for total financial needs (direct payable and delayed payable)    
@@ -237,59 +232,62 @@ int Firm_compute_total_liquidity_needs()
     //Check if external financing is needed
 
     //CASE 1: No external financing needed
-        if (PAYMENT_ACCOUNT >= (PRODUCTION_LIQUIDITY_NEEDS + FINANCIAL_LIQUIDITY_NEEDS))
-        {
-        	PRODUCTION_LIQUIDITY_NEEDS_REQUIRE_EXTERNAL_FINANCING=0;
-        	FINANCIAL_LIQUIDITY_NEEDS_REQUIRE_EXTERNAL_FINANCING=0;
-        	
+        if (PAYMENT_ACCOUNT >= TOTAL_FINANCIAL_NEEDS)
+        {        	
             //printf("Firm_financial_needs, External financing: case 1.");
-        	INTERNAL_FINANCIAL_NEEDS = PRODUCTION_LIQUIDITY_NEEDS + FINANCIAL_LIQUIDITY_NEEDS;
-            EXTERNAL_FINANCIAL_NEEDS = 0;                   
+            EXTERNAL_FINANCIAL_NEEDS = 0.0;                   
         }
-        
-    //CASE 2: External financing needed for direct payments, not for delayed payments
-        if ( (PAYMENT_ACCOUNT < PRODUCTION_LIQUIDITY_NEEDS) &&
-             ((PAYMENT_ACCOUNT - PRODUCTION_LIQUIDITY_NEEDS) >= FINANCIAL_LIQUIDITY_NEEDS))
+        else
         {
-           	PRODUCTION_LIQUIDITY_NEEDS_REQUIRE_EXTERNAL_FINANCING=1;
-            FINANCIAL_LIQUIDITY_NEEDS_REQUIRE_EXTERNAL_FINANCING=0;
-
-            //printf("Firm_financial_needs, External financing: case 2.");
-            INTERNAL_FINANCIAL_NEEDS = PAYMENT_ACCOUNT;
-            EXTERNAL_FINANCIAL_NEEDS = PRODUCTION_LIQUIDITY_NEEDS - PAYMENT_ACCOUNT;
+        	//external financing needed
+        	EXTERNAL_FINANCIAL_NEEDS = TOTAL_FINANCIAL_NEEDS - PAYMENT_ACCOUNT;
         }
-                
-    //CASE 3: External financing needed for delayed payments, not for direct payments
-        if ( (PAYMENT_ACCOUNT >= PRODUCTION_LIQUIDITY_NEEDS) &&
-             ((PAYMENT_ACCOUNT - PRODUCTION_LIQUIDITY_NEEDS) < FINANCIAL_LIQUIDITY_NEEDS))
-        {
-           	PRODUCTION_LIQUIDITY_NEEDS_REQUIRE_EXTERNAL_FINANCING=0;
-            FINANCIAL_LIQUIDITY_NEEDS_REQUIRE_EXTERNAL_FINANCING=1;
-
-            //printf("Firm_financial_needs, External financing: case 3.");
-        	INTERNAL_FINANCIAL_NEEDS = PRODUCTION_LIQUIDITY_NEEDS;
-            EXTERNAL_FINANCIAL_NEEDS = FINANCIAL_LIQUIDITY_NEEDS - (PAYMENT_ACCOUNT - PRODUCTION_LIQUIDITY_NEEDS);
-        }
-        
-    //CASE 4: External financing is needed to pay for both the direct and delayed payments
-        if ( (PAYMENT_ACCOUNT < PRODUCTION_LIQUIDITY_NEEDS) &&
-             ((PAYMENT_ACCOUNT - PRODUCTION_LIQUIDITY_NEEDS) < FINANCIAL_LIQUIDITY_NEEDS))
-        {
-           	PRODUCTION_LIQUIDITY_NEEDS_REQUIRE_EXTERNAL_FINANCING=1;
-            FINANCIAL_LIQUIDITY_NEEDS_REQUIRE_EXTERNAL_FINANCING=1;
-
-            //printf("Firm_financial_needs, External financing: case 4.");
-            INTERNAL_FINANCIAL_NEEDS = PAYMENT_ACCOUNT;
-            EXTERNAL_FINANCIAL_NEEDS = PRODUCTION_LIQUIDITY_NEEDS + FINANCIAL_LIQUIDITY_NEEDS - PAYMENT_ACCOUNT;            
-        }
-    
-    //printf("\n Checking: INTERNAL_FINANCIAL_NEEDS=%f\n", INTERNAL_FINANCIAL_NEEDS);
-    //printf("\n Checking: EXTERNAL_FINANCIAL_NEEDS=%f\n", EXTERNAL_FINANCIAL_NEEDS);
-    RETAINED_EARNINGS_RATIO = INTERNAL_FINANCIAL_NEEDS/NET_EARNINGS;
-    
+            
     return 0;
 }
 
+int Firm_check_financial_and_bankruptcy_state()
+{	
+
+	BANKRUPTCY_STATE=0;
+	FINANCIAL_CRISIS_STATE=0;
+		
+	//Check bankrupcy condition
+	if (PAYMENT_ACCOUNT < TOTAL_FINANCIAL_NEEDS)
+	{
+	    //Code: check if payment account is also less than financial payments
+		if (PAYMENT_ACCOUNT < TOTAL_INTEREST_PAYMENTS + TOTAL_DEBT_INSTALLMENT_PAYMENT + TAX_PAYMENT)
+		{
+			BANKRUPTCY_STATE=1;
+		}
+		if (PAYMENT_ACCOUNT >= TOTAL_INTEREST_PAYMENTS + TOTAL_DEBT_INSTALLMENT_PAYMENT+TAX_PAYMENT)
+		{
+			//Financial crisis condition
+			FINANCIAL_CRISIS_STATE=1;
+			
+			//Recompute dividend
+			//Recompute production
+		}
+	}
+	return 0;
+}
+
+int Firm_in_bankruptcy()
+{	
+	//Process
+	
+	return 0;
+}
+
+int Firm_in_financial_crisis()
+{	
+	//Resolve crisis
+	
+	//Set flag
+	FINANCIAL_CRISIS_STATE=0;
+
+	return 0;
+}
 
 /*
  * The firm executes the actual payments over the previous period's profits:
@@ -300,63 +298,57 @@ int Firm_compute_total_liquidity_needs()
  */
 int Firm_execute_financial_payments()
 {	
-	//step 1: actual tax_payment to government
-	add_tax_payment_message(ID, GOV_ID, TAX_PAYMENT);
-	PAYMENT_ACCOUNT -= TAX_PAYMENT;
+	
+		//No bankruptcy
 		
-	//step 2: actual interest_payments and debt_installment_payments
+		//step 1: actual tax_payment to government
+		add_tax_payment_message(ID, GOV_ID, TAX_PAYMENT);
+		PAYMENT_ACCOUNT -= TAX_PAYMENT;
 
-	//Sending debt and interest_payment_msg to all banks at which the firm has a loan 
-    imax = LOANS.size;
-    for (i=0; i<imax;i++)
-    {
-        //decrease payment_account with the interest_payment
-        PAYMENT_ACCOUNT -= LOANS.array[i].interest_amount;
-	    
-        //decrease payment_account with the installment payment
-        PAYMENT_ACCOUNT -= LOANS.array[i].installment_amount;
+		//step 2: actual interest_payments and installment_payments
+		//Sending installment_message to banks at which the firm has a loan 
+	    imax = LOANS.size;
+	    for (i=0; i<imax;i++)
+	    {
+	        //decrease payment_account with the interest_payment
+	        PAYMENT_ACCOUNT -= LOANS.array[i].interest_amount;
+		    
+	        //decrease payment_account with the installment payment
+	        PAYMENT_ACCOUNT -= LOANS.array[i].installment_amount;
+	
+	        //decrease the value of the loan with the debt_installment_payment:
+	        LOANS.array[i].loan_value -= LOANS.array[i].installment_amount;
+	        //printf("Now subtracted debt_installment_payment from loan_value: %f (new value:%f).\n", LOANS.array[i].debt_installment_payment, LOANS.array[i].loan_value);
+	
+	        //decrease the residual_var of the loan with the var_per_installment:
+	        LOANS.array[i].residual_var -= LOANS.array[i].var_per_installment;
+	        
+	        //decrease the value of the nr_periods_before_payment
+	        LOANS.array[i].nr_periods_before_repayment -= 1;
+	
+	        //Sending debt_installment_payment_msg to all banks at which the firm has a loan
+	        //Note: this message is to be separated from the general bank_account_update_message send at the end of the period
+	        //to the firm's deposit bank (the banks at which the firm has loans is a different one than the bank at which the firm has deposits).
 
-        //decrease the value of the loan with the debt_installment_payment:
-        LOANS.array[i].loan_value -= LOANS.array[i].installment_amount;
-        //printf("Now subtracted debt_installment_payment from loan_value: %f (new value:%f).\n", LOANS.array[i].debt_installment_payment, LOANS.array[i].loan_value);
+	        //add_debt_installment_message(bank_id, installment_amount, interest_amount, credit_refunded, var_per_installment)
+	        add_installment_message(LOANS.array[i].bank_id, LOANS.array[i].installment_amount, LOANS.array[i].interest_amount, LOANS.array[i].var_per_installment)
+	
+	        //If nr_periods_before_maturity == 0, remove the loan item
+	        if (LOANS.array[i].nr_periods_before_repayment==0)
+	        {
+	            remove_debt_item(&LOANS, i);
+	        }
+	        
+			//step 3: actual dividend payments
+	        //Actual payments to the bank are paid at end of day when the firm sends its bank_update message 
 
-        //decrease the residual_var of the loan with the var_per_installment:
-        LOANS.array[i].residual_var -= LOANS.array[i].var_per_installment;
-        
-        //decrease the value of the nr_periods_before_payment
-        LOANS.array[i].nr_periods_before_repayment -= 1;
+	        //add dividend_per_share_msg(firm_id, current_dividend_per_share) to shareholders (dividend per share)     
+	        add_dividend_per_share_message(ID, CURRENT_DIVIDEND_PER_SHARE);
 
-        //tell the bank I paid:
-        //add_debt_installment_message()
-        //bank_id
-        //installment_amount
-        //credit_refunded
-        //interest_amount
-        //var_per_installment
-        //bad_debt
-        //residual_var
+	        //decrease payment_account with the total_dividend_payment
+	        PAYMENT_ACCOUNT -= TOTAL_DIVIDEND_PAYMENT;
+	    }
 
-        //Sending debt_installment_payment_msg to all banks at which the firm has a loan
-        //Note: this message is to be separated from the general bank_account_update_message send at the end of the period
-        //to the firm's deposit bank (the banks at which the firm has loans is a different one than the bank at which the firm has deposits).
-        add_installment_message(LOANS.array[i].bank_id, LOANS.array[i].installment_amount, LOANS.array[i].interest_amount, LOANS.array[i].var_per_installment)
-
-        //If nr_periods_before_maturity == 0, remove the loan item
-        if (LOANS.array[i].nr_periods_before_repayment==0)
-        {
-            remove_debt_item(&LOANS, i);
-        }
-    }
-		
-    //add dividend_per_share_msg(firm_id, current_dividend_per_share) to shareholders (dividend per share)     
-    add_dividend_per_share_message(ID, CURRENT_DIVIDEND_PER_SHARE);
-
-    //decrease payment_account with the total_dividend_payment
-    PAYMENT_ACCOUNT -= TOTAL_DIVIDEND_PAYMENT;
-
-    //Actual payments to the bank: these are paid at end of day when the firm send out this message: 
-    //add_bank_account_update_message(PAYMENT_ACCOUNT) 
-    
     return 0;
 }
 
@@ -416,6 +408,7 @@ int Firm_read_stock_transactions()
 int Firm_send_bankruptcy()
 {
 	int i,imax;
+	double bad_debt, credit_refunded, residual_var;
 	
     imax = LOANS.size;
     for (i=0; i<imax;i++)
