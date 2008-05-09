@@ -57,6 +57,8 @@ int main(int argc, char * argv[])
 	/* Variables for parsing directories */
 	int lastd;
 	int i;
+	/* Error value */
+	int rc;
 	
 	/* Variable to read in command line input */
 	char inputfile[1000];
@@ -65,21 +67,14 @@ int main(int argc, char * argv[])
 	char templatename[1000];
 	char templatedirectory[1000];
 	
-	/* List of input files */
-	input_file ** p_files;
-	input_file * temp_input_file;
+	/* For reading input files */
 	input_file * current_input_file;
-	p_files = &temp_input_file;
-	temp_input_file = NULL;
-	
+	/* Structure to hold model data */
 	model_data * modeldata;
 	
-	/* Hold model data */
+	/* Hold modeldata data */
 	xmachine * xmachines;
-	/*xmachine_memory * xmemory;*/
 	xmachine_message * xmessage;
-	/*xmachine_state * xstates;*/
-	/*xmachine_function * xfunctions;*/
 	variable * envvar;
 	env_func * envfunc;
 	variable * envdefine;
@@ -89,9 +84,10 @@ int main(int argc, char * argv[])
 	flame_communication * communications;
 	model_datatype * datatypes;
 	time_data * time_units;
+	input_file * temp_input_file;
 	
+	/* Allocate memory for modeldata */
 	modeldata = (model_data *)malloc(sizeof(model_data));
-	/* Variable for code type */
 	/* 0=serial(default) 1=parallel 2=grid */
 	modeldata->code_type = 0;
 	/* 0=dgraph.dot 1=stategraph.dot */
@@ -102,14 +98,8 @@ int main(int argc, char * argv[])
 	/* Initialise pointers */
 	modeldata->p_xmachines = &xmachines;
 	xmachines = NULL;
-	/*modeldata->p_xmemory = &xmemory;*/
-	/*xmemory = NULL;*/
 	modeldata->p_xmessages = &xmessage;
 	xmessage = NULL;
-	/*modeldata->p_xstates = &xstates;*/
-	/*xstates = NULL;*/
-	/*modeldata->p_xfunctions = &xfunctions;*/
-	/*xfunctions = NULL;*/
 	modeldata->p_envvars = &envvar;
 	envvar = NULL;
 	modeldata->p_envfuncs = &envfunc;
@@ -128,11 +118,14 @@ int main(int argc, char * argv[])
 	datatypes = NULL;
 	modeldata->p_time_units = &time_units;
 	time_units = NULL;
+	modeldata->p_files = &temp_input_file;
+	temp_input_file = NULL;
 	
 	printf("xparser: Version %d.%d.%d\n", VERSIONMAJOR, VERSIONMINOR, VERSIONMICRO);
 	
 	/* Must be at least the input file name */
-	if(argc < 2) {
+	if(argc < 2)
+	{
 		printf("Usage: xparser [XMML file] [-s | -p]\n");
 		return 0;
 	}
@@ -211,21 +204,26 @@ int main(int argc, char * argv[])
 	printf("directory: %s\n", directory);
 	printf("templates: %s\n", templatedirectory);
 	
-	current_input_file = add_input_file(p_files);
+	current_input_file = add_input_file(modeldata->p_files);
 	current_input_file->fullfilepath = copystr(inputfile);
 	current_input_file->fulldirectory = copystr(directory);
 	current_input_file->localdirectory = copystr("");
 	
 	/* Read model from model xml file */
-	current_input_file = * p_files;
+	current_input_file = * modeldata->p_files;
 	while(current_input_file)
 	{
 		if(current_input_file->enabled == 1)
-			readModel(current_input_file, directory, modeldata, p_files);
+			readModel(current_input_file, directory, modeldata);
 		
 		current_input_file = current_input_file->next;
 	}
-	checkmodel(modeldata);
+	rc = checkmodel(modeldata);
+	if(rc == -1)
+	{
+		free_modeldata(modeldata);
+		return 0;
+	}
 	
 	/* Calculate dependency graph for model functions */
 	create_dependency_graph(directory, modeldata);
@@ -270,17 +268,7 @@ int main(int argc, char * argv[])
 	parseRuleFunctionsTemplate(directory, modeldata);
 	/*parseUnittest(directory, modeldata);*/
 	
-	freexmachines(modeldata->p_xmachines);
-	freexmessages(modeldata->p_xmessages);
-	freeenvfunc(modeldata->p_envfuncs);
-	freevariables(modeldata->p_envvars);
-	freevariables(modeldata->p_envdefines);
-	freelayers(modeldata->p_layers);
-	freedatatypes(modeldata->p_datatypes);
-	free_flame_communications(modeldata->p_communications);
-	free_time_units(modeldata->p_time_units);
-	free(modeldata);
-	free_input_files(p_files);
+	free_modeldata(modeldata);
 	
 	printf("xparser finished\n");
 	

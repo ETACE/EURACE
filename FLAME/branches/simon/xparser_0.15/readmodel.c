@@ -164,7 +164,7 @@ void handleVariableName(char_array * current_string, variable * current_variable
  * \param directory Pointer to the xmml file path and name.
  * \param modeldata Data from the model.
  */
-void readModel(input_file * inputfile, char * directory, model_data * modeldata, input_file ** p_files)
+void readModel(input_file * inputfile, char * directory, model_data * modeldata)
 {
 	xmachine * current_xmachine;
 	/* Pointer to file */
@@ -248,7 +248,7 @@ void readModel(input_file * inputfile, char * directory, model_data * modeldata,
 	/* Open config file to read-only */
 	if((file = fopen(inputfile->fullfilepath, "r"))==NULL)
 	{
-		printf("*** ERROR: Cannot read file: %s\n", inputfile->fullfilepath);
+		fprintf(stderr, "ERROR: Cannot read file: %s\n", inputfile->fullfilepath);
 		exit(1);
 	}
 	else { printf("reading xmml: %s\n", inputfile->fullfilepath); }
@@ -431,9 +431,8 @@ void readModel(input_file * inputfile, char * directory, model_data * modeldata,
 				/* If different then exit */
 				if(strcmp(&current_string->array[1], &chartag[numtag][0]) != 0 && strcmp(current_string->array, "/xmodel") != 0)
 				{
-					printf("ERROR: The tag <%s> on line number %i\n", current_string->array, linenumber);
-					printf("ERROR: doesn't close the tag <%s> on line number %i\n", &chartag[numtag][0], tagline[numtag]);
-					printf("Exit xparser\n\n");
+					fprintf(stderr, "ERROR: The tag <%s> on line number %i\n", current_string->array, linenumber);
+					fprintf(stderr, "ERROR: doesn't close the tag <%s> on line number %i\n", &chartag[numtag][0], tagline[numtag]);
 					exit(1);
 				}
 			}
@@ -621,7 +620,7 @@ void readModel(input_file * inputfile, char * directory, model_data * modeldata,
 					variable_count++;
 					if(current_variable->arraylength == -1 || (current_variable->ismodeldatatype == 1 && current_variable->datatype->has_dynamic_arrays == 1))
 					{
-						printf("Error: %s - dyamic array found in message\n", current_variable->name);
+						fprintf(stderr, "Error: %s - dyamic array found in message\n", current_variable->name);
 						dynamic_array_found = 1;
 					}
 					
@@ -630,7 +629,7 @@ void readModel(input_file * inputfile, char * directory, model_data * modeldata,
 				
 				if(dynamic_array_found == 1)
 				{
-					printf("Error: Dynamic array found in %s message\n", current_message->name);
+					fprintf(stderr, "Error: Dynamic array found in %s message\n", current_message->name);
 					exit(1);
 				}
 				
@@ -741,7 +740,7 @@ void readModel(input_file * inputfile, char * directory, model_data * modeldata,
 			if(strcmp(current_string->array, "model") == 0)
 			{
 				model = 1;
-				current_input_file = add_input_file(p_files);
+				current_input_file = add_input_file(modeldata->p_files);
 			}
 			if(strcmp(current_string->array, "/model") == 0)
 			{
@@ -1000,7 +999,7 @@ void readModel(input_file * inputfile, char * directory, model_data * modeldata,
 					/* Open code file read-only */
 					if((filecode = fopen(chardata, "r"))==NULL)
 					{
-						printf("ERROR - cannot read file: %s\n", chardata);
+						fprintf(stderr, "ERROR - cannot read file: %s\n", chardata);
 						printf("*** xparser aborted ***\n");
 						exit(0);
 					}
@@ -1095,7 +1094,7 @@ void readModel(input_file * inputfile, char * directory, model_data * modeldata,
 					/* Open code file read-only */
 					if((filecode = fopen(chardata, "r"))==NULL)
 					{
-						printf("ERROR - cannot read file: %s\n", chardata);
+						fprintf(stderr, "ERROR - cannot read file: %s\n", chardata);
 						printf("*** xparser aborted ***\n");
 						exit(0);
 					}
@@ -1261,7 +1260,7 @@ void handleRuleValue(char ** p_value, xmachine_function * current_function, xmac
 		}
 		if(found == 0)
 		{
-			printf("ERROR: value '%s' in filter rule not in agent memory\n", buffer);
+			fprintf(stderr, "ERROR: value '%s' in filter rule not in agent memory\n", buffer);
 			exit(0);
 		}
 		
@@ -1294,7 +1293,7 @@ void handleRuleValue(char ** p_value, xmachine_function * current_function, xmac
 		}
 		if(found == 0)
 		{
-			printf("ERROR: value '%s' in filter rule not in message variables\n", buffer);
+			fprintf(stderr, "ERROR: value '%s' in filter rule not in message variables\n", buffer);
 			exit(0);
 		}
 		
@@ -1340,7 +1339,7 @@ void handleRule(rule_data * current_rule_data, xmachine_function * current_funct
 			}
 			if(current_rule_data->op == NULL)
 			{
-				printf("ERROR: condition period '%s' is not a time unit\n", current_rule_data->lhs);
+				fprintf(stderr, "ERROR: condition period '%s' is not a time unit\n", current_rule_data->lhs);
 				exit(0);
 			}
 			
@@ -1366,16 +1365,16 @@ void handleRule(rule_data * current_rule_data, xmachine_function * current_funct
 			else if(strcmp(current_rule_data->op, "OR") == 0) { strcpy(current_rule_data->op, "||"); }
 			else
 			{
-				printf("ERROR: '%s' operator not one of EQ/NEQ/LEQ/GEQ/LT/GT/AND/OR\n", current_rule_data->op);
-				printf("       in function '%s' %s->%s in agent '%s'\n", current_function->name, current_function->current_state, current_function->next_state, current_xmachine->name);
-				printf("       in file: '%s'\n", current_function->file);
+				fprintf(stderr, "ERROR: '%s' operator not one of EQ/NEQ/LEQ/GEQ/LT/GT/AND/OR\n", current_rule_data->op);
+				fprintf(stderr, "       in function '%s' %s->%s in agent '%s'\n", current_function->name, current_function->current_state, current_function->next_state, current_xmachine->name);
+				fprintf(stderr, "       in file: '%s'\n", current_function->file);
 				exit(0);
 			}
 		}
 	}
 }
 
-void checkmodel(model_data * modeldata)
+int checkmodel(model_data * modeldata)
 {
 	xmachine * current_xmachine;
 	xmachine * current_xmachine2;
@@ -1411,8 +1410,8 @@ void checkmodel(model_data * modeldata)
 		/* Error if no variables */
 		if(current_memory->vars == NULL)
 		{
-			printf("ERROR: agent '%s' has no memory variables\n", current_xmachine->name);
-			exit(0);
+			fprintf(stderr, "ERROR: agent '%s' has no memory variables\n", current_xmachine->name);
+			return -1;
 		}
 		
 		/* Error if a variable name is defined twice in same agent */
@@ -1423,10 +1422,10 @@ void checkmodel(model_data * modeldata)
 			{
 				if(strcmp(current_variable->name, current_variable2->name) == 0 && current_variable != current_variable2)
 				{
-					printf("ERROR: multiple uses of variable '%s' in agent '%s'\n", current_variable->name, current_xmachine->name);
-					printf("       in file: '%s'\n", current_variable->file);
-					printf("       in file: '%s'\n", current_variable2->file);
-					exit(0);
+					fprintf(stderr, "ERROR: multiple uses of variable '%s' in agent '%s'\n", current_variable->name, current_xmachine->name);
+					fprintf(stderr, "       in file: '%s'\n", current_variable->file);
+					fprintf(stderr, "       in file: '%s'\n", current_variable2->file);
+					return -1;
 				}
 					
 				current_variable2 = current_variable2->next;
@@ -1504,8 +1503,8 @@ void checkmodel(model_data * modeldata)
 						/* If same variable name but different type, this breaks get_ and set_ methods */
 						if(strcmp(current_variable->type, allvar->type) != 0)
 						{
-							printf("ERROR: variable '%s' defined twice but with different types\n", current_variable->name);
-							exit(0);
+							fprintf(stderr, "ERROR: variable '%s' defined twice but with different types\n", current_variable->name);
+							return -1;
 						}
 					}
 					
@@ -1573,9 +1572,9 @@ void checkmodel(model_data * modeldata)
 					
 					if(current_adj_function->function == NULL)
 					{
-						printf("ERROR: depends function '%s' does not exist\n",
+						fprintf(stderr, "ERROR: depends function '%s' does not exist\n",
 						current_adj_function->name);
-						exit(0);
+						return -1;
 					}
 					
 					//printf("depends: %s %s [%s]\n", current_function->name,
@@ -1685,4 +1684,6 @@ void checkmodel(model_data * modeldata)
 		
 		current_xmachine = current_xmachine->next;
 	}
+	
+	return 0;
 }

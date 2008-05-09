@@ -1,9 +1,19 @@
 #include "header.h"
 
-/*****************************************************************
-* NAME:    struct datatype functions                             *
-* PURPOSE: used to allocate and free memory for datatypes        *
-*****************************************************************/
+void free_modeldata(model_data * modeldata)
+{
+	freexmachines(modeldata->p_xmachines);
+	freexmessages(modeldata->p_xmessages);
+	freeenvfunc(modeldata->p_envfuncs);
+	freevariables(modeldata->p_envvars);
+	freevariables(modeldata->p_envdefines);
+	freelayers(modeldata->p_layers);
+	freedatatypes(modeldata->p_datatypes);
+	free_flame_communications(modeldata->p_communications);
+	free_time_units(modeldata->p_time_units);
+	free_input_files(modeldata->p_files);
+	free(modeldata);
+}
 
 input_file * add_input_file(input_file ** p_files)
 {
