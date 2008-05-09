@@ -40,10 +40,10 @@ int Firm_compute_financial_payments()
     imax = LOANS.size;
     for (i=0; i<imax;i++)
     {
-        LOANS.array[i].interest_payment = LOANS.array[i].interest_rate * LOANS.array[i].loan_value;                         
+        interest_payment = LOANS.array[i].interest_rate * LOANS.array[i].loan_value;                         
 
         //add to total
-        TOTAL_INTEREST_PAYMENT += LOANS.array[i].interest_payment;
+        TOTAL_INTEREST_PAYMENT += interest_payment;
     }
     
     //step 2: compute total debt installment payments
@@ -55,7 +55,7 @@ int Firm_compute_financial_payments()
         TOTAL_DEBT += LOANS.array[i].loan_value;
         
         //add debt_installment_payment to total installment payment
-        TOTAL_DEBT_INSTALLMENT_PAYMENT += LOANS.array[i].debt_installment_payment;
+        TOTAL_DEBT_INSTALLMENT_PAYMENT += LOANS.array[i].installment_amount;
     }
 
     return 0;
@@ -314,51 +314,52 @@ int Firm_execute_financial_payments()
 	}
 	else
 	{
-	    //Sending interest_payment_msg to all banks at which the firm has a loan 
+	    //Sending debt and interest_payment_msg to all banks at which the firm has a loan 
 	    imax = LOANS.size;
 	    for (i=0; i<imax;i++)
 	    {
 	        //decrease payment_account with the interest_payment
-	        PAYMENT_ACCOUNT -= LOANS.array[i].interest_payment;
-	
-	        //tell the bank I paid
-	        add_interest_payment_message(ID, BANK_ID, LOANS.array[i].interest_payment,MSGDATA);
-	    }
-	    
-	    //Sending debt_installment_payment_msg to all banks at which the firm has a loan
-	    for (i=0; i<imax;i++)
-	    {
+	        PAYMENT_ACCOUNT -= LOANS.array[i].interest_amount;
+		    
+		    //Sending debt_installment_payment_msg to all banks at which the firm has a loan
 	        //decrease payment_account with the installment payment
-	        PAYMENT_ACCOUNT -= LOANS.array[i].debt_installment_payment;
+	        PAYMENT_ACCOUNT -= LOANS.array[i].installment_amount;
 	
 	        //decrease the value of the loan with the debt_installment_payment:
-	        LOANS.array[i].loan_value -= LOANS.array[i].debt_installment_payment;
+	        LOANS.array[i].loan_value -= LOANS.array[i].installment_amount;
 	        //printf("Now subtracted debt_installment_payment from loan_value: %f (new value:%f).\n", LOANS.array[i].debt_installment_payment, LOANS.array[i].loan_value);
 	        
-	        //decrease the value of the nr_periods_before_maturity
-	        LOANS.array[i].nr_periods_before_maturity -= 1;
+	        //decrease the value of the nr_periods_before_payment
+	        LOANS.array[i].nr_periods_before_repayment -= 1;
 	
-	        //tell the bank I paid
-	        add_debt_installment_payment_message(ID, LOANS.array[i].bank_id, LOANS.array[i].debt_installment_payment);
+	        //tell the bank I paid:
+	        //add_debt_installment_message()
+	        //bank_id
+	        //installment_amount
+	        //credit_refunded
+	        //interest_amount
+	        //var_per_installment
+	        //bad_debt
+	        //residual_var
+	        add_debt_installment_message(LOANS.array[i].bank_id, LOANS.array[i].installment_amount, LOANS.array[i].credit_refunded, LOANS.array[i].interest_amount, LOANS.array[i].var_per_installment, LOANS.array[i].bad_debt, LOANS.array[i].residual_var);
 	
 	        //if nr_periods_before_maturity == 0, remove the loan item
-	        if (LOANS.array[i].nr_periods_before_maturity==0)
+	        if (LOANS.array[i].nr_periods_before_repayment==0)
 	        {
 	            remove_debt_item(&LOANS, i);
 	        }
 	    }
 	}
-	
-	//actual dividend_payments
-    //add total_dividend_msg(firm_id, bank_id, total_dividend_payment) to bank
-    add_total_dividend_message(ID, MY_BANK_ID, TOTAL_DIVIDEND_PAYMENT);
-	
+		
     //add dividend_per_share_msg(firm_id, current_dividend_per_share) to shareholders (dividend per share)     
     add_dividend_per_share_message(ID, CURRENT_DIVIDEND_PER_SHARE);
 
     //decrease payment_account with the total_dividend_payment
     PAYMENT_ACCOUNT -= TOTAL_DIVIDEND_PAYMENT;
 
+    //actual payments to the bank
+    //These are paid at end of day when the firm send out its add_bank_account_update_message(PAYMENT_ACCOUNT) 
+    
     return 0;
 }
 

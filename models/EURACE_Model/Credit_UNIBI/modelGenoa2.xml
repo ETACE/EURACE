@@ -11,8 +11,9 @@
 
 
 <functionFiles>
-<file>Bank_functions.c</file>
-<file>Firm_functions.c</file>
+<file>Bank_Credit_Functions_Dummy.c</file>
+<file>Firm_Credit_Functions_Dummy.c</file>
+
 </functionFiles>
 
 
@@ -51,27 +52,27 @@
 <name>Firm</name>
 <memory>
 <variables>
-<variable><type>int</type><name>id</name></variable>
-<variable><type>double_array</type><name>interest</name></variable>
-<variable><type>double_array</type><name>credit_offer</name></variable>
-<variable><type>int_array</type><name>contacted_bank</name></variable>
-<variable><type>double</type><name>total_debt</name></variable>
-<variable><type>double</type><name>asset</name></variable>
-<variable><type>double</type><name>credit_demand</name></variable>
-<variable><type>double_array</type><name>installment_amount</name></variable>
-<variable><type>int</type><name>installment_number</name></variable>
-<variable><type>int</type><name>loans_number</name></variable>
-<variable><type>double_array</type><name>outstanding_debt</name></variable>
-<variable><type>int_array</type><name>lending_bank_id</name></variable>
-<variable><type>double_array</type><name>interest_amount</name></variable>
-<variable><type>int</type><name>bankruptcy_state</name></variable>
-<variable><type>double</type><name>total_resources</name></variable>
-<variable><type>double_array</type><name>residual_variable</name></variable>
-<variable><type>double_array</type><name>variable_per_installment</name></variable>
-<variable><type>double_array</type><name>value_at_risk</name></variable>
-<variable><type>double_array</type><name>interest_left</name></variable>
-<variable><type>double</type><name>current_equity</name></variable>
-<variable><type>double</type><name>current_debt</name></variable>
+<variable><type>int</type><name>id</name><description></description></variable>
+<variable><type>double_array</type><name>interest</name><description></description></variable>
+<variable><type>double_array</type><name>credit_offer</name><description></description></variable>
+<variable><type>int_array</type><name>contacted_bank</name><description></description></variable>
+<variable><type>double</type><name>total_debt</name><description></description></variable>
+<variable><type>double</type><name>asset</name><description></description></variable>
+<variable><type>double</type><name>credit_demand</name><description></description></variable>
+<variable><type>double_array</type><name>installment_amount</name><description></description></variable>
+<variable><type>int</type><name>installment_number</name><description></description></variable>
+<variable><type>int</type><name>loans_number</name><description></description></variable>
+<variable><type>double_array</type><name>outstanding_debt</name><description></description></variable>
+<variable><type>int_array</type><name>lending_bank_id</name><description></description></variable>
+<variable><type>double_array</type><name>interest_amount</name><description></description></variable>
+<variable><type>int</type><name>bankruptcy_state</name><description></description></variable>
+<variable><type>double</type><name>total_resources</name><description></description></variable>
+<variable><type>double_array</type><name>residual_variable</name><description></description></variable>
+<variable><type>double_array</type><name>variable_per_installment</name><description></description></variable>
+<variable><type>double_array</type><name>value_at_risk</name><description></description></variable>
+<variable><type>double_array</type><name>interest_left</name><description></description></variable>
+<variable><type>double</type><name>current_equity</name><description></description></variable>
+<variable><type>double</type><name>current_debt</name><description></description></variable>
 </variables>
 </memory>
 
@@ -109,21 +110,21 @@
 <name>Bank</name>
 <memory>
 <variables>
-<variable><type>int</type><name>id</name></variable>
-<variable><type>double</type><name>cash</name></variable>
-<variable><type>double</type><name>total_credit</name></variable>
-<variable><type>double</type><name>equity</name></variable>
-<variable><type>double</type><name>bce_debt</name></variable>
-<variable><type>double</type><name>alfa</name></variable>
-<variable><type>double</type><name>variable</name></variable>
-<variable><type>double</type><name>min_interest</name></variable>
-<variable><type>double</type><name>gamma[2]</name></variable>
-<variable><type>double</type><name>profits[2]</name></variable>
-<variable><type>double</type><name>lambda</name></variable>
-<variable><type>double</type><name>bce_interest</name></variable>
-<variable><type>double</type><name>debt_period</name></variable>
-<variable><type>int</type><name>loan_request_message_found</name></variable>
-<variable><type>int</type><name>day_of_month_to_act</name></variable>
+<variable><type>int</type><name>id</name><description></description></variable>
+<variable><type>double</type><name>cash</name><description></description></variable>
+<variable><type>double</type><name>total_credit</name><description></description></variable>
+<variable><type>double</type><name>equity</name><description></description></variable>
+<variable><type>double</type><name>bce_debt</name><description></description></variable>
+<variable><type>double</type><name>alfa</name><description></description></variable>
+<variable><type>double</type><name>variable</name><description></description></variable>
+<variable><type>double</type><name>min_interest</name><description></description></variable>
+<variable><type>double</type><name>gamma[2]</name><description></description></variable>
+<variable><type>double</type><name>profits[2]</name><description></description></variable>
+<variable><type>double</type><name>lambda</name><description></description></variable>
+<variable><type>double</type><name>bce_interest</name><description></description></variable>
+<variable><type>double</type><name>debt_period</name><description></description></variable>
+<variable><type>int</type><name>loan_request_message_found</name><description></description></variable>
+<variable><type>int</type><name>day_of_month_to_act</name><description></description></variable>
 </variables>
 </memory>
 
@@ -218,41 +219,44 @@
 <message>
 <name>loan_request</name>
 <note>Added by firm to demand credit; credit request and financial info of applying firm</note>
-<variable><type>int</type><name>firm_id</name></variable>
-<variable><type>int</type><name>bank_id</name></variable>
-<variable><type>double</type><name>equity</name></variable>
-<variable><type>double</type><name>total_debt</name></variable>
-<variable><type>double</type><name>credit_demand</name></variable>
+<variable><type>int</type><name>firm_id</name><description></description></variable>
+<variable><type>int</type><name>bank_id</name><description></description></variable>
+<variable><type>double</type><name>equity</name><description></description></variable>
+<variable><type>double</type><name>total_debt</name><description></description></variable>
+<variable><type>double</type><name>credit_demand</name><description></description></variable>
 </message>
 
 
 <message>
 <name>loan_conditions</name>
 <note>Added by bank to offer credit;amount of offered credit and interest rate</note>
-<variable><type>int</type><name>firm_id</name></variable>
-<variable><type>int</type><name>bank_id</name></variable>
-<variable><type>double</type><name>proposed_interest_rate</name></variable>
-<variable><type>double</type><name>amount_offered_credit</name></variable>
-<variable><type>double</type><name>value_at_risk</name></variable>
+<variable><type>int</type><name>firm_id</name><description></description></variable>
+<variable><type>int</type><name>bank_id</name><description></description></variable>
+<variable><type>double</type><name>proposed_interest_rate</name><description></description></variable>
+<variable><type>double</type><name>amount_offered_credit</name><description></description></variable>
+<variable><type>double</type><name>value_at_risk</name><description></description></variable>
 </message>
 
 
 <message>
 <name>loan_acceptance</name>
 <note>Added by firm to demand credit: the firm takes the credit offered</note>
-<variable><type>int</type><name>firm_id</name></variable>
-<variable><type>int</type><name>bank_id</name></variable>
-<variable><type>double</type><name>credit_amount_taken</name></variable>
+<variable><type>int</type><name>bank_id</name><description></description></variable>
+<variable><type>double</type><name>credit_amount_taken</name><description></description></variable>
 </message>
 
 
 
 <message>
-<name>debt_installment_payment</name>
+<name>debt_installment</name>
 <note>firm pays installment and interest of period</note>
-<variable><type>int</type><name>bank_id</name></variable>
-<variable><type>double</type><name>debt_installment</name></variable>
-<variable><type>double</type><name>var_per_installment</name></variable>
+<variable><type>int</type><name>bank_id</name><description></description></variable>
+<variable><type>double</type><name>installment_amount</name><description>installment_amount is 0 in case of bankruptcy, positive in case of No_bankruptcy</description></variable>
+<variable><type>double</type><name>credit_refunded</name><description>credit_refunded is 0 in case of No_bankruptcy, positive in case of bankruptcy</description></variable>
+<variable><type>double</type><name>interest_amount</name><description></description></variable>
+<variable><type>double</type><name>var_per_installment</name><description></description></variable>
+<variable><type>double</type><name>bad_debt</name><description>bad_debt is 0 in case of No_bankruptcy, positive in case of bankruptcy</description></variable>
+<variable><type>double</type><name>residual_var</name><description>residual_var is 0 in case of No_bankruptcy, positive in case of bankruptcy</description></variable>
 </message>
 
 <message>
@@ -270,10 +274,10 @@
 <message>
 <name>bankruptcy</name>
 <note></note>
-<variable><type>int</type><name>bank_id</name></variable>
-<variable><type>double</type><name>bad_debt</name></variable>
-<variable><type>double</type><name>credit_refunded</name></variable>
-<variable><type>double</type><name>residual_variable</name></variable>
+<variable><type>int</type><name>bank_id</name><description></description></variable>
+<variable><type>double</type><name>bad_debt</name><description></description></variable>
+<variable><type>double</type><name>credit_refunded</name><description></description></variable>
+<variable><type>double</type><name>residual_variable</name><description></description></variable>
 </message>
 
 
