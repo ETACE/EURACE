@@ -176,11 +176,14 @@
 
 <!-- Idle going to the end  -->
 <function>
-<name>Firm_idle</name>
+<name>Firm_send_bankruptcy</name>
 <description></description>
 <currentState>005</currentState>
 <nextState>end_Firm</nextState>
 <condition><not><lhs><value>a.equity</value></lhs><op>GT</op><rhs><value>0.0</value></rhs></not></condition>
+<outputs>
+<output><messageName>bankruptcy</messageName></output>
+</outputs>
 </function>
 
 <function>

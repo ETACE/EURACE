@@ -40,7 +40,7 @@
 </inputs>
 </function>
 
-
+<!-- 
 <function>
 <name>Government_send_unemployment_benefit_payment</name>
 <description></description>
@@ -50,7 +50,7 @@
 <output><messageName>unemployment_benefit</messageName></output>
 </outputs>
 </function>
-
+ -->
 
 <function>
 <name>Government_send_account_update</name>
