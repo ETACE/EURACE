@@ -127,6 +127,7 @@ int main(int argc, char * argv[])
 	if(argc < 2)
 	{
 		printf("Usage: xparser [XMML file] [-s | -p]\n");
+		free_modeldata(modeldata);
 		return 0;
 	}
 	
@@ -142,7 +143,8 @@ int main(int argc, char * argv[])
 			case 'p': modeldata->code_type = 1;
 				  break;
 			default:  printf("xparser: Error - unknown option %s\n",argv[1]);
-				  return 0;
+				free_modeldata(modeldata);
+				return 0;
 			}
 		}
 		else
@@ -156,6 +158,7 @@ int main(int argc, char * argv[])
 	
 	if(inputfile[1] == '\0') {
 		printf("xparser: Error - XMML must be specified\n");
+		free_modeldata(modeldata);
 		return 0;
 	}
 	
