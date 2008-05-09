@@ -1966,3 +1966,34 @@ void parseRuleFunctionsTemplate(char * directory, model_data * modeldata)
 	/* Close the files */
 	fclose(file);
 }
+
+void parseUnittest(char * directory, model_data * modeldata)
+{
+	FILE *file;
+	char filename[100];
+	/*xmachine * current_xmachine = * modeldata->p_xmachines;
+	xmachine_function * current_function;
+	xmachine_ioput * current_ioput;*/
+	
+	/* Open the output file */
+	strcpy(filename, directory);
+	strcat(filename, "unittest.c");
+	printf("writing file: %s\n", filename);
+	file = fopen(filename, "w");
+	
+	fputs("/**\n", file);
+	fputs(" * \\file unittest.c\n", file);
+	fputs(" * \\brief Unit test program.\n", file);
+	fputs(" */\n\n", file);
+	fputs("#include \"header.h\"\n", file);
+	fputs("#include <CUnit/Basic.h>\"\n\n", file);
+	fputs("int main(int argc, char * argv[])\n", file);
+	fputs("{\n", file);
+	fputs("\tprintf(\"unittest\\n\");\n", file);
+	fputs("\t/* Exit successfully by returning zero to Operating System */\n", file);
+	fputs("\treturn 0;\n", file);
+	fputs("}\n", file);
+	
+	/* Close the files */
+	fclose(file);
+}

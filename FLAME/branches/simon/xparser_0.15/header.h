@@ -110,6 +110,7 @@ struct variable
 	char defaultvalue[5];			/**< Default value for the type. */
 	char c_type[5];				/**< Variable C type, e.g 'i' or 'f'. */
 	int ismodeldatatype;			/**< Flag for model defined data type. */
+	char * file;			/**< File from where element read. */
 	
 	struct variable * next;		/**< Pointer to next variable in list. */
 };
@@ -207,6 +208,8 @@ struct xmachine_function
 	struct f_code * code;			/**< Pointer to function code. */
 	
 	char * agent_name;
+	
+	char * file;		/**< File from where element read from. */
 	
 	double x;
 	double y;
@@ -543,3 +546,4 @@ void create_dependency_graph(char * filepath, model_data * modeldata);
 void parseTemplate(char * filename, char * templatename, model_data * modeldata);
 void parseAgentHeaderTemplate(char * directory, model_data * modeldata);
 void parseRuleFunctionsTemplate(char * directory, model_data * modeldata);
+void parseUnittest(char * directory, model_data * modeldata);

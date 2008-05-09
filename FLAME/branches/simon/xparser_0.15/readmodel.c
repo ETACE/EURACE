@@ -480,6 +480,8 @@ void readModel(input_file * inputfile, char * directory, model_data * modeldata,
 				else if(environment == 1) current_envvar = addvariable(modeldata->p_envvars);
 				else if(memory == 1) current_variable = addvariable(&current_memory->vars);
 				else current_variable = addvariable(p_variable);
+				
+				current_variable->file = copystr(inputfile->fullfilepath);
 			}
 			if(strcmp(current_string->array, "/var") == 0 || strcmp(current_string->array, "/variable") == 0) { var = 0; }
 			if(strcmp(current_string->array, "type") == 0) { type = 1; }/*charlist = NULL; }*/
@@ -577,6 +579,7 @@ void readModel(input_file * inputfile, char * directory, model_data * modeldata,
 					current_function = addxfunction(&current_xmachine->functions);
 					fcode = NULL;
 					/*current_trans = addtrans(&current_function->depends);*/
+					current_function->file = copystr(inputfile->fullfilepath);
 				}
 			}
 			if(strcmp(current_string->array, "/function") == 0)
@@ -1236,7 +1239,7 @@ void readModel(input_file * inputfile, char * directory, model_data * modeldata,
 	fclose(file);
 }
 
-void handleRuleValue(char ** p_value, xmachine * current_xmachine, char * messagetype, model_data * modeldata)
+void handleRuleValue(char ** p_value, xmachine_function * current_function, xmachine * current_xmachine, char * messagetype, model_data * modeldata)
 {
 	variable * current_variable;
 	xmachine_message * current_message;
@@ -1309,7 +1312,7 @@ void handleRuleValue(char ** p_value, xmachine * current_xmachine, char * messag
 	
 }
 
-void handleRule(rule_data * current_rule_data, xmachine * current_xmachine, char * messagetype, model_data * modeldata)
+void handleRule(rule_data * current_rule_data, xmachine_function * current_function, xmachine * current_xmachine, char * messagetype, model_data * modeldata)
 {
 	time_data * current_time_unit;
 	char buffer[100];
@@ -1341,16 +1344,16 @@ void handleRule(rule_data * current_rule_data, xmachine * current_xmachine, char
 				exit(0);
 			}
 			
-			handleRuleValue(&current_rule_data->rhs, current_xmachine, messagetype, modeldata);
+			handleRuleValue(&current_rule_data->rhs, current_function, current_xmachine, messagetype, modeldata);
 		}
 		else
 		{
 			/* Handle values */
-			if(current_rule_data->lhs == NULL) handleRule(current_rule_data->lhs_rule, current_xmachine, messagetype, modeldata);
-			else handleRuleValue(&current_rule_data->lhs, current_xmachine, messagetype, modeldata);
+			if(current_rule_data->lhs == NULL) handleRule(current_rule_data->lhs_rule, current_function, current_xmachine, messagetype, modeldata);
+			else handleRuleValue(&current_rule_data->lhs, current_function, current_xmachine, messagetype, modeldata);
 			
-			if(current_rule_data->rhs == NULL) handleRule(current_rule_data->rhs_rule, current_xmachine, messagetype, modeldata);
-			else handleRuleValue(&current_rule_data->rhs, current_xmachine, messagetype, modeldata);
+			if(current_rule_data->rhs == NULL) handleRule(current_rule_data->rhs_rule, current_function, current_xmachine, messagetype, modeldata);
+			else handleRuleValue(&current_rule_data->rhs, current_function, current_xmachine, messagetype, modeldata);
 			
 			/* Handle op */
 			if(strcmp(current_rule_data->op, "EQ") == 0) { strcpy(current_rule_data->op, "=="); }
@@ -1364,6 +1367,8 @@ void handleRule(rule_data * current_rule_data, xmachine * current_xmachine, char
 			else
 			{
 				printf("ERROR: '%s' operator not one of EQ/NEQ/LEQ/GEQ/LT/GT/AND/OR\n", current_rule_data->op);
+				printf("       in function '%s' %s->%s in agent '%s'\n", current_function->name, current_function->current_state, current_function->next_state, current_xmachine->name);
+				printf("       in file: '%s'\n", current_function->file);
 				exit(0);
 			}
 		}
@@ -1376,6 +1381,7 @@ void checkmodel(model_data * modeldata)
 	xmachine * current_xmachine2;
 	xmachine_memory * current_memory;
 	variable * current_variable;
+	variable * current_variable2;
 	model_datatype * current_datatype;
 	xmachine_function * current_function;
 	xmachine_function * current_function2;
@@ -1409,6 +1415,27 @@ void checkmodel(model_data * modeldata)
 			exit(0);
 		}
 		
+		/* Error if a variable name is defined twice in same agent */
+		while(current_variable)
+		{
+			current_variable2 = current_memory->vars;
+			while(current_variable2)
+			{
+				if(strcmp(current_variable->name, current_variable2->name) == 0 && current_variable != current_variable2)
+				{
+					printf("ERROR: multiple uses of variable '%s' in agent '%s'\n", current_variable->name, current_xmachine->name);
+					printf("       in file: '%s'\n", current_variable->file);
+					printf("       in file: '%s'\n", current_variable2->file);
+					exit(0);
+				}
+					
+				current_variable2 = current_variable2->next;
+			}
+			
+			current_variable = current_variable->next;
+		}
+		
+		current_variable = current_memory->vars;
 		while(current_variable)
 		{
 			/* Handle model defined data types */
@@ -1629,7 +1656,7 @@ void checkmodel(model_data * modeldata)
 				strcat(buffer, "_condition");
 				current_function->condition_function = copystr(buffer);
 				
-				handleRule(current_function->condition_rule, current_xmachine, NULL, modeldata);
+				handleRule(current_function->condition_rule, current_function, current_xmachine, NULL, modeldata);
 			}
 			
 			current_ioput = current_function->inputs;
@@ -1647,7 +1674,7 @@ void checkmodel(model_data * modeldata)
 					strcat(buffer, "_filter");
 					current_ioput->filter_function = copystr(buffer);
 					
-					handleRule(current_ioput->filter_rule, current_xmachine, current_ioput->messagetype, modeldata);
+					handleRule(current_ioput->filter_rule, current_function, current_xmachine, current_ioput->messagetype, modeldata);
 				}
 				
 				current_ioput = current_ioput->next;
