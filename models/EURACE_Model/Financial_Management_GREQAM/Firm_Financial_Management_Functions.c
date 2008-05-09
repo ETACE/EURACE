@@ -407,3 +407,26 @@ int Firm_read_stock_transactions()
     FINISH_ORDER_STATUS_MESSAGE_LOOP
     return 0;
 }
+
+
+/*
+ * \fn: Firm_send_bankruptcy()
+ * \brief: This function sends a send_bankruptcy_message from the firm to all its banks
+ */
+int Firm_send_bankruptcy()
+{
+	int i,imax;
+	
+    imax = LOANS.size;
+    for (i=0; i<imax;i++)
+    {
+        residual_var    = LOANS.array[i].var_per_installment* LOANS.array[i].nr_periods_before_repayment;
+        credit_refunded = LOANS.array[i].loan_value * PAYMENT_ACCOUNT/TOTAL_DEBT;
+        bad_debt        = LOANS.array[i].loan_value - credit_refunded;
+
+        //add_bankruptcy_message(bank_id, bad_debt, credit_refunded, residual_var);
+    	add_bankruptcy_message(LOANS.array[i].bank_id, bad_debt, credit_refunded, residual_var);
+    }
+	
+    return 0;
+}

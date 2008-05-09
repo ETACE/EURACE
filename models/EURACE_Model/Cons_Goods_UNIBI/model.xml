@@ -270,7 +270,7 @@
 <input><messageName>sales</messageName></input>
 </inputs>
 <outputs>
-<output><messageName>daily_revenue_to_bank</messageName></output>
+<output><messageName>bank_account_update</messageName></output>
 </outputs>
 
 </function>
