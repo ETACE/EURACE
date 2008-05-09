@@ -47,7 +47,7 @@ int Bank_decide_credit_conditions()
 }
 
 
-int Bank_receive_deposits()
+int Bank_account_update_deposits()
 {
 	 	
       START_BANK_ACCOUNT_UPDATE_MESSAGE_LOOP
@@ -178,7 +178,7 @@ int Bank_receive_installment()
         VAR -= installment_message->var_per_instalment;
             
 	}
-	FINISH_INSTALMENT_MESSAGE_LOOP
+	FINISH_INSTALLMENT_MESSAGE_LOOP
 
     START_BANKRUPTCY_MESSAGE_LOOP
    	if (ID == bankruptcy_message->bank_id)
