@@ -7,11 +7,13 @@ void free_modeldata(model_data * modeldata)
 	freeenvfunc(modeldata->p_envfuncs);
 	freevariables(modeldata->p_envvars);
 	freevariables(modeldata->p_envdefines);
+	freevariables(modeldata->p_allvars);
 	freelayers(modeldata->p_layers);
 	freedatatypes(modeldata->p_datatypes);
 	free_flame_communications(modeldata->p_communications);
 	free_time_units(modeldata->p_time_units);
 	free_input_files(modeldata->p_files);
+	free(modeldata->name);
 	free(modeldata);
 }
 
@@ -101,6 +103,7 @@ void free_ioput(xmachine_ioput ** p_ioput)
 		temp = head->next;
 		free(head->filter_function);
 		free_rule_data(&head->filter_rule);
+		free(head->messagetype);
 		free(head);
 		head = temp;
 	}
@@ -190,6 +193,7 @@ variable * addvariable(variable ** p_vars)
 	current->datatype = NULL;
 	current->file = NULL;
 	current->next = NULL;
+	current->typenotarray = NULL;
 	
 	/* Return new element */
 	return current;
@@ -212,6 +216,10 @@ void freevariables(variable ** p_vars)
 		/*freechars(&head->name);*/
 		/*freechars(&head->type);*/
 		/*freechars(&head->value);*/
+		free(head->type);
+		free(head->name);
+		free(head->value);
+		free(head->typenotarray);
 		free(head->file);
 		free(head);
 		head = temp;
@@ -331,6 +339,7 @@ void freeenvfunc(env_func ** p_env_funcs)
 		temp = head->next;
 		/* Free the cell memory */
 		/*freechars(&head->code);*/
+		free(head->filepath);
 		free(head);
 		head = temp;
 	}
@@ -391,7 +400,7 @@ void freexmessages(xmachine_message ** p_xmessage)
 	{
 		temp = head->next;
 		/* Free the cell memory */
-		/*freechars(&head->name);*/
+		free(head->name);
 		freevariables(&head->vars);
 		freeenvfunc(&head->functions);
 		free(head);
@@ -481,7 +490,7 @@ void freexstates(xmachine_state ** p_xstates)
 	{
 		temp = head->next;
 		/* Free the cell memory */
-		/*freechars(&head->name);*/
+		free(head->name);
 		free(head);
 		head = temp;
 	}
@@ -513,6 +522,7 @@ void free_flame_communications(flame_communication ** communications)
 	while(head)
 	{
 		temp = head->next;
+		free(head->messagetype);
 		free(head);
 		
 		head = temp;
@@ -614,6 +624,7 @@ adj_function * add_depends_adj_function(xmachine_function * current_function)
 	
 	current->function = NULL;
 	current->name = NULL;
+	current->type = NULL;
 	
 	return current;
 }
@@ -627,6 +638,7 @@ void add_adj_function_simple(xmachine_function * function1, xmachine_function * 
 	current->next = function1->alldepends;
 	function1->alldepends = current;
 	current->name = NULL;
+	current->type = NULL;
 }
 
 void remove_adj_function_simple(xmachine_function * function1)
@@ -650,6 +662,7 @@ void add_adj_function_recent(xmachine_function * function1, xmachine_function * 
 	current->next = function1->recentdepends;
 	function1->recentdepends = current;
 	current->name = NULL;
+	current->type = NULL;
 }
 
 void remove_adj_function_recent(xmachine_function * function1)
@@ -659,6 +672,8 @@ void remove_adj_function_recent(xmachine_function * function1)
 	if(function1->recentdepends != NULL)
 	{
 		current = function1->recentdepends->next;
+		free(function1->recentdepends->name);
+		free(function1->recentdepends->type);
 		free(function1->recentdepends);
 		function1->recentdepends = current;
 	}
@@ -693,7 +708,6 @@ void free_adj_function(adj_function * adj_functions)
 		temp = head->next;
 		
 		free(head->type);
-		
 		free(head->name);
 		
 		free(head);
@@ -827,9 +841,13 @@ void freexfunctions(xmachine_function ** p_xfunctions)
 	{
 		temp = head->next;
 		/* Free the cell memory */
-		/*freechars(&head->name);*/
-		/*freechars(&head->note);*/
+		free(head->name);
+		free(head->note);
 		free(head->file);
+		free(head->current_state);
+		free(head->next_state);
+		free(head->agent_name);
+		free(head->condition_function);
 		freefcode(&head->code);
 		free_ioput(&head->inputs);
 		free_ioput(&head->outputs);
@@ -841,7 +859,6 @@ void freexfunctions(xmachine_function ** p_xfunctions)
 		free_adj_function(head->depends);
 		free_adj_function(head->recentdepends);
 		free_rule_data(&head->condition_rule);
-		free(head->condition_function);
 		free(head);
 		head = temp;
 	}
@@ -883,7 +900,7 @@ xmachine * addxmachine(xmachine ** p_xmachines, char * name)
 	}
 	/* Make current->next point to NULL */
 	current->number = number;
-	current->name = name;
+	current->name = copystr(name);
 	current->memory = NULL;
 	addxmemory(&current->memory);
 	current->states = NULL;
@@ -919,7 +936,7 @@ void freexmachines(xmachine ** p_xmachines)
 	{
 		temp = head->next;
 		/* Free the cell memory */
-		/*freechars(&head->name);*/
+		free(head->name);
 		freexmemory(&head->memory);
 		freexstates(&head->states);
 		freexfunctions(&head->functions);
@@ -1085,6 +1102,8 @@ void freedatatypes(model_datatype ** p_datatypes)
 		temp = head->next;
 		/* Free the cell memory */
 		freevariables(&head->vars);
+		free(head->name);
+		free(head->desc);
 		free(head);
 		head = temp;
 	}

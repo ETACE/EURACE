@@ -117,6 +117,7 @@ void handleVariableType(char_array * current_string, variable * current_variable
 			remove_char(current_string, i-4);
 			remove_char(current_string, i-5);
 			remove_char(current_string, i-6);
+			free(current_variable->typenotarray);
 			current_variable->typenotarray = copy_array_to_str(current_string);
 		}
 	}
@@ -183,7 +184,6 @@ void readModel(input_file * inputfile, char * directory, model_data * modeldata)
 	char chartag[100][100];
 	int tagline[100];
 	char chardata[1000];
-	/*char chardata2[100];*/
 	int dynamic_array_found;
 	int linenumber = 1;
 	int variable_count;
@@ -811,6 +811,7 @@ void readModel(input_file * inputfile, char * directory, model_data * modeldata)
 					temp_char = copy_array_to_str(current_string);
 					if(strcmp(temp_char, "true") == 0) current_input_file->enabled = 1;
 					if(strcmp(temp_char, "false") == 0) current_input_file->enabled = 0;
+					free(temp_char);
 				}
 				if(codefile)
 				{
@@ -824,6 +825,7 @@ void readModel(input_file * inputfile, char * directory, model_data * modeldata)
 					current_input_file->localdirectory = copystr(temp_char);
 					temp_char2[0] = 0;
 					free(temp_char2);
+					free(temp_char);
 					
 					/* calculate directory of file */
 					/* Calculate directory where xparser and template files are */
@@ -866,9 +868,20 @@ void readModel(input_file * inputfile, char * directory, model_data * modeldata)
 			{
 				if(timetag)
 				{
-					if(name) time_name = copy_array_to_str(current_string);
-					if(unit) unit_name = copy_array_to_str(current_string);
-					if(period) period_int = atoi(copy_array_to_str(current_string));
+					if(name)
+					{
+						free(time_name);
+						time_name = copy_array_to_str(current_string);
+					}
+					if(unit)
+					{
+						free(unit_name);
+						unit_name = copy_array_to_str(current_string);
+					}
+					if(period)
+					{
+						period_int = atoi(current_string->array);
+					}
 				}
 				else if(datatype)
 				{
@@ -958,7 +971,7 @@ void readModel(input_file * inputfile, char * directory, model_data * modeldata)
 					}
 					
 					chardata[j] = '\0';
-					strcat(chardata, copy_array_to_str(current_string));
+					strcat(chardata, current_string->array);
 					
 					current_envfunc->filepath = copystr(chardata);
 					//printf("inputfile->directory: %s\n", inputfile->localdirectory);
@@ -993,7 +1006,8 @@ void readModel(input_file * inputfile, char * directory, model_data * modeldata)
 						current_charlist = current_charlist->next;
 					}
 					chardata[j] = 0;*/
-					strcat(chardata, copy_array_to_str(current_string));
+					
+					strcat(chardata, current_string->array);
 					/*printf("01\t%s\n", chardata);*/
 					
 					/* Open code file read-only */
@@ -1163,7 +1177,7 @@ void readModel(input_file * inputfile, char * directory, model_data * modeldata)
 			{
 				if(name)
 				{
-					current_xmachine = addxmachine(modeldata->p_xmachines, copy_array_to_str(current_string));
+					current_xmachine = addxmachine(modeldata->p_xmachines, current_string->array);
 					current_memory = current_xmachine->memory;
 					printf("Reading xagent named : ");
 					printf(current_xmachine->name);
@@ -1180,7 +1194,7 @@ void readModel(input_file * inputfile, char * directory, model_data * modeldata)
 			}
 			else if(name)
 			{
-				modeldata->name = copy_array_to_str(current_string);
+				if(modeldata->name == NULL) modeldata->name = copy_array_to_str(current_string);
 				printf("Reading xagent model: ");
 				printf(modeldata->name);
 				printf("\n");
@@ -1233,6 +1247,8 @@ void readModel(input_file * inputfile, char * directory, model_data * modeldata)
 	
 	/* Free memory */
 	free_char_array(current_string);
+	free(time_name);
+	free(unit_name);
 	
 	/* Close the file */
 	fclose(file);
@@ -1585,7 +1601,9 @@ int checkmodel(model_data * modeldata)
 						/* If internal dependency */
 						/* Add new state between functions */
 						sprintf(buffer, "%i", state_number);
+						free(current_function->current_state);
 						current_function->current_state = copystr(buffer);
+						free(current_adj_function->function->next_state);
 						current_adj_function->function->next_state = copystr(buffer);
 						addxstate(current_function->current_state, &current_xmachine->states);
 						state_number++;
