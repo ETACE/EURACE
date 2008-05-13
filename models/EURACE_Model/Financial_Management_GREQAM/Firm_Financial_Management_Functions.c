@@ -260,13 +260,10 @@ int Firm_check_financial_and_bankruptcy_state()
 		{
 			BANKRUPTCY_STATE=1;
 		}
-		if (PAYMENT_ACCOUNT >= TOTAL_INTEREST_PAYMENTS + TOTAL_DEBT_INSTALLMENT_PAYMENT+TAX_PAYMENT)
+		if (PAYMENT_ACCOUNT >= TOTAL_INTEREST_PAYMENTS + TOTAL_DEBT_INSTALLMENT_PAYMENT + TAX_PAYMENT)
 		{
 			//Financial crisis condition
 			FINANCIAL_CRISIS_STATE=1;
-			
-			//Recompute dividend
-			//Recompute production
 		}
 	}
 	return 0;
@@ -281,11 +278,27 @@ int Firm_in_bankruptcy()
 
 int Firm_in_financial_crisis()
 {	
-	//Resolve crisis
+	//Try to resolve the crisis
 	
-	//Set flag
-	FINANCIAL_CRISIS_STATE=0;
-
+	//Recompute dividend
+	//Set TOTAL_DIVIDEND_PAYMENT
+	
+	//Recompute production
+	//Set PRODUCTION_COSTS
+	
+	//Set flag if resolved
+	if (PAYMENT_ACCOUNT >= TOTAL_INTEREST_PAYMENTS + TOTAL_DEBT_INSTALLMENT_PAYMENT + TAX_PAYMENT + TOTAL_DIVIDEND_PAYMENT)
+	{
+		FINANCIAL_CRISIS_STATE=0;
+		BANKRUPTCY_STATE=0;
+	}
+	
+	//Set flag if not resolved: payment account remains below total needs
+	if (PAYMENT_ACCOUNT < TOTAL_INTEREST_PAYMENTS + TOTAL_DEBT_INSTALLMENT_PAYMENT + TAX_PAYMENT + TOTAL_DIVIDEND_PAYMENT)
+	{
+		FINANCIAL_CRISIS_STATE=0;
+		BANKRUPTCY_STATE=1;
+	}
 	return 0;
 }
 
