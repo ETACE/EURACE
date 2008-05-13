@@ -335,18 +335,16 @@ void output_stategraph(char * filename, char * filepath, model_data * modeldata,
 void find_loop(xmachine_function * current, xmachine_function * depends)
 {
 	adj_function * current_adj_function;
+	adj_function * current_adj_function2;
 	int flag = 0;
+
+	printf("Function: %s - %s (%s-%s)\n", current->name, depends->name, depends->current_state, depends->next_state);
 	
-	//printf("FUNCTION: %s\n", current->name);
-	
-	//add_adj_function_simple(current, depends);
-	
+	/* Check if current function is dependent on itself */
 	current_adj_function = current->alldepends;
 	while(current_adj_function)
 	{
-		//printf("\t%s\n", current_adj_function->function->name);
-		
-		if(strcmp(depends->name, current_adj_function->function->name) == 0)
+		if((xmachine_function*)depends == (xmachine_function*)current)
 		{
 			flag = 1;
 			current_adj_function = NULL;
@@ -354,23 +352,52 @@ void find_loop(xmachine_function * current, xmachine_function * depends)
 		else current_adj_function = current_adj_function->next;
 	}
 	
+	/* If there is a self dependency then generate error */
 	if(flag == 1)
 	{
-		printf("*** ERROR: Function %s has loop with %s\n", current->name, depends->name);
-		//exit(1);
+		printf("ERROR: Function %s has loop:\n", depends->name);
+		
+		/*current_adj_function = current->alldepends;
+		while(current_adj_function)
+		{
+			printf("       %s\n", current_adj_function->function->name);
+			
+			if(depends == current_adj_function->function)
+			{
+				current_adj_function = NULL;
+			}
+			else current_adj_function = current_adj_function->next;
+		}*/
+		
+		exit(0);
 	}
+	/* If there is no self dependency (yet) then try next layer of dependencies */
 	else
 	{
+		/* Add current dependency to a list so we only check each dependency once */
 		add_adj_function_simple(current, depends);
 		
+		/* Check if function checked already */
 		current_adj_function = depends->dependson;
 		while(current_adj_function)
 		{
-			find_loop(current, current_adj_function->function);
-			remove_adj_function_simple(current);
+			/* If function not check yet */
+			flag = 0;
+			current_adj_function2 = current->alldepends;
+			while(current_adj_function2)
+			{
+				if(current_adj_function2->function == current_adj_function->function) flag = 1;
+				
+				current_adj_function2 = current_adj_function2->next;
+			}
+			
+			/* If function hasn't been checked then excute recursive algorithm */
+			if(flag == 0) find_loop(current, current_adj_function->function);
 			
 			current_adj_function = current_adj_function->next;
 		}
+		
+		//remove_adj_function_simple(current);
 	}
 }
 
@@ -388,7 +415,6 @@ void create_dependency_graph(char * filepath, model_data * modeldata)
 	xmachine_function * current_function2;
 	xmachine_ioput * current_input;
 	xmachine_ioput * current_output;
-	flame_communication * current_communication;
 	adj_function * current_adj_function;
 	layer * current_layer;
 	xmachine_state * current_state;
@@ -473,6 +499,8 @@ void create_dependency_graph(char * filepath, model_data * modeldata)
 							if(strcmp(current_input->messagetype, current_output->messagetype) == 0)
 							{
 								add_flame_communication(current_input->messagetype, current_function, current_function2, modeldata->p_communications);
+								
+								add_adj_function(current_function2, current_function, current_input->messagetype);
 							}
 							
 							current_output = current_output->next;
@@ -522,28 +550,27 @@ void create_dependency_graph(char * filepath, model_data * modeldata)
 		current_xmachine = current_xmachine->next;
 	}
 	
-	/* Look for communication dependencies */
-	/* For each communication */
-	current_communication = * modeldata->p_communications;
-	while(current_communication)
-	{
-		add_adj_function(current_communication->output_function, current_communication->input_function, current_communication->messagetype);
-		
-		current_communication = current_communication->next;
-	}
-	
 	/* Calculate layers of dgraph */
 	/* This is achieved by finding functions with no dependencies */
 	/* giving them a layer no, taking those functions away and do the operation again */
 	
 	//check loops in dependencies
 	/* For each agent */
-/*	current_xmachine = * modeldata->p_xmachines;
+	current_xmachine = * modeldata->p_xmachines;
 	while(current_xmachine)
 	{
 		current_function = current_xmachine->functions;
 		while(current_function)
 		{
+			/*printf("Func: %s\n", current_function->name);
+			current_adj_function = current_function->dependson;
+			while(current_adj_function)
+			{
+				printf("\t%s\n", current_adj_function->function->name);
+				
+				current_adj_function = current_adj_function->next;
+			}*/
+			
 			current_adj_function = current_function->dependson;
 			while(current_adj_function)
 			{
@@ -556,7 +583,8 @@ void create_dependency_graph(char * filepath, model_data * modeldata)
 		}
 		
 		current_xmachine = current_xmachine->next;
-	}*/
+	}
+	printf("end of check loops\n");
 	
 	/* For a set amount of times for each layer (cannot be more layers than functions?) */
 	/* WARNING: there is no check for depencency loops that can cause an infinite loop */	
