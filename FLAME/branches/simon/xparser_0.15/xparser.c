@@ -229,7 +229,12 @@ int main(int argc, char * argv[])
 	}
 	
 	/* Calculate dependency graph for model functions */
-	create_dependency_graph(directory, modeldata);
+	rc = create_dependency_graph(directory, modeldata);
+	if(rc == -1)
+	{
+		free_modeldata(modeldata);
+		return 0;
+	}
 	
 	strcpy(filename, directory); strcat(filename, "Makefile");
 	strcpy(templatename, templatedirectory); strcat(templatename, "Makefile.tmpl");

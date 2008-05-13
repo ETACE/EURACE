@@ -546,7 +546,7 @@ void readModel(input_file * inputfile, char * directory, model_data * modeldata)
 int checkmodel(model_data * modeldata);
 /* dependencygraph.c */
 char * copystr(char * string);
-void create_dependency_graph(char * filepath, model_data * modeldata);
+int create_dependency_graph(char * filepath, model_data * modeldata);
 /* parsetemplate.c */
 void parseTemplate(char * filename, char * templatename, model_data * modeldata);
 void parseAgentHeaderTemplate(char * directory, model_data * modeldata);

@@ -332,11 +332,11 @@ void output_stategraph(char * filename, char * filepath, model_data * modeldata,
 	fclose(file);
 }
 
-void find_loop(xmachine_function * current, xmachine_function * depends)
+int find_loop(xmachine_function * current, xmachine_function * depends)
 {
 	adj_function * current_adj_function;
 	adj_function * current_adj_function2;
-	int flag = 0;
+	int flag = 0, rc;
 
 	/*printf("Function: %s - %s (%s-%s)\n", current->name, depends->name, depends->current_state, depends->next_state);*/
 	
@@ -369,7 +369,7 @@ void find_loop(xmachine_function * current, xmachine_function * depends)
 			else current_adj_function = current_adj_function->next;
 		}
 		
-		exit(0);
+		return -1;
 	}
 	/* If there is no self dependency (yet) then try next layer of dependencies */
 	else
@@ -394,13 +394,19 @@ void find_loop(xmachine_function * current, xmachine_function * depends)
 			}
 			
 			/* If function hasn't been checked then excute recursive algorithm */
-			if(flag == 0) find_loop(current, current_adj_function->function);
+			if(flag == 0)
+			{
+				rc = find_loop(current, current_adj_function->function);
+				if(rc == -1) return -1;
+			}
 			
 			current_adj_function = current_adj_function->next;
 		}
 		
 		//remove_adj_function_recent(current);
 	}
+	
+	return 0;
 }
 
 /** \fn void create_dependency_graph(char * filepath, model_data * modeldata)
@@ -408,7 +414,7 @@ void find_loop(xmachine_function * current, xmachine_function * depends)
  * \param filepath Pointer to the file path and name.
  * \param modeldata Data from the model.
  */
-void create_dependency_graph(char * filepath, model_data * modeldata)
+int create_dependency_graph(char * filepath, model_data * modeldata)
 {
 	/* pointers to model datatypes */
 	xmachine * current_xmachine;
@@ -424,7 +430,7 @@ void create_dependency_graph(char * filepath, model_data * modeldata)
 	xmachine_message * current_message;
 	xmachine_ioput * current_ioput;
 	
-	int k, m;
+	int k, m, rc;
 	
 	/* Find start state of agents, find error if more than one? */
 	/* For each agent */
@@ -472,7 +478,7 @@ void create_dependency_graph(char * filepath, model_data * modeldata)
 		if(current_xmachine->start_state == NULL)
 		{
 			fprintf(stderr, "ERROR: no start state found in '%s' agent\n", current_xmachine->name);
-			exit(0);
+			return -1;
 		}
 		
 		current_xmachine = current_xmachine->next;
@@ -576,7 +582,8 @@ void create_dependency_graph(char * filepath, model_data * modeldata)
 			current_adj_function = current_function->dependson;
 			while(current_adj_function)
 			{
-				find_loop(current_function, current_adj_function->function);
+				rc = find_loop(current_function, current_adj_function->function);
+				if(rc == -1) return -1;
 				
 				current_adj_function = current_adj_function->next;
 			}
@@ -774,4 +781,6 @@ void create_dependency_graph(char * filepath, model_data * modeldata)
 	
 		current_layer = current_layer->next;
 	}*/
+	
+	return 0;
 }
