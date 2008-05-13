@@ -641,6 +641,29 @@ void remove_adj_function_simple(xmachine_function * function1)
 	}
 }
 
+void add_adj_function_recent(xmachine_function * function1, xmachine_function * function2)
+{
+	adj_function * current;
+	
+	current = (adj_function *)malloc(sizeof(adj_function));
+	current->function = function2;
+	current->next = function1->recentdepends;
+	function1->recentdepends = current;
+	current->name = NULL;
+}
+
+void remove_adj_function_recent(xmachine_function * function1)
+{
+	adj_function * current;
+	
+	if(function1->recentdepends != NULL)
+	{
+		current = function1->recentdepends->next;
+		free(function1->recentdepends);
+		function1->recentdepends = current;
+	}
+}
+
 void add_adj_function(xmachine_function * function1, xmachine_function * function2, char * type)
 {
 	adj_function * current;
@@ -777,6 +800,7 @@ xmachine_function * addxfunction(xmachine_function ** p_xfunctions)
 	current->dependants = NULL;
 	current->alldepends = NULL;
 	current->depends = NULL;
+	current->recentdepends = NULL;
 	current->agent_name = NULL;
 	current->next = NULL;
 	current->x = 0.0;
@@ -815,6 +839,7 @@ void freexfunctions(xmachine_function ** p_xfunctions)
 		free_adj_function(head->dependants);
 		free_adj_function(head->alldepends);
 		free_adj_function(head->depends);
+		free_adj_function(head->recentdepends);
 		free_rule_data(&head->condition_rule);
 		free(head->condition_function);
 		free(head);

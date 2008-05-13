@@ -232,6 +232,7 @@ struct xmachine_function
 	struct adj_function * dependants;	/**< Node list of dependants. */
 	
 	struct adj_function * alldepends;
+	struct adj_function * recentdepends;
 	
 	/* To hold depends tag info */
 	struct adj_function * depends;		/**< Pointer to function note. */
@@ -508,6 +509,8 @@ void free_flame_communications(flame_communication ** communications);
 adj_function * add_depends_adj_function(xmachine_function * current_function);
 void add_adj_function_simple(xmachine_function * function1, xmachine_function * function2);
 void remove_adj_function_simple(xmachine_function * function1);
+void add_adj_function_recent(xmachine_function * function1, xmachine_function * function2);
+void remove_adj_function_recent(xmachine_function * function1);
 void add_adj_function(xmachine_function * function1, xmachine_function * function2, char * type);
 void free_adj_function(adj_function *adj_functions);
 /* charlist.c */

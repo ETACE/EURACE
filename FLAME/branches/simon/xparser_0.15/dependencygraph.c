@@ -338,7 +338,7 @@ void find_loop(xmachine_function * current, xmachine_function * depends)
 	adj_function * current_adj_function2;
 	int flag = 0;
 
-	printf("Function: %s - %s (%s-%s)\n", current->name, depends->name, depends->current_state, depends->next_state);
+	/*printf("Function: %s - %s (%s-%s)\n", current->name, depends->name, depends->current_state, depends->next_state);*/
 	
 	/* Check if current function is dependent on itself */
 	current_adj_function = current->alldepends;
@@ -355,19 +355,19 @@ void find_loop(xmachine_function * current, xmachine_function * depends)
 	/* If there is a self dependency then generate error */
 	if(flag == 1)
 	{
-		printf("ERROR: Function %s has loop:\n", depends->name);
+		fprintf(stderr, "ERROR: Function %s has loop:\n", depends->name);
 		
-		/*current_adj_function = current->alldepends;
+		current_adj_function = current->recentdepends;
 		while(current_adj_function)
 		{
-			printf("       %s\n", current_adj_function->function->name);
+			fprintf(stderr, "       %s\n", current_adj_function->function->name);
 			
 			if(depends == current_adj_function->function)
 			{
 				current_adj_function = NULL;
 			}
 			else current_adj_function = current_adj_function->next;
-		}*/
+		}
 		
 		exit(0);
 	}
@@ -376,6 +376,8 @@ void find_loop(xmachine_function * current, xmachine_function * depends)
 	{
 		/* Add current dependency to a list so we only check each dependency once */
 		add_adj_function_simple(current, depends);
+		
+		add_adj_function_recent(current, depends);
 		
 		/* Check if function checked already */
 		current_adj_function = depends->dependson;
@@ -397,7 +399,7 @@ void find_loop(xmachine_function * current, xmachine_function * depends)
 			current_adj_function = current_adj_function->next;
 		}
 		
-		//remove_adj_function_simple(current);
+		//remove_adj_function_recent(current);
 	}
 }
 
@@ -469,7 +471,7 @@ void create_dependency_graph(char * filepath, model_data * modeldata)
 		/* if no start state then error */
 		if(current_xmachine->start_state == NULL)
 		{
-			printf("ERROR: no start state found in '%s' agent\n", current_xmachine->name);
+			fprintf(stderr, "ERROR: no start state found in '%s' agent\n", current_xmachine->name);
 			exit(0);
 		}
 		
@@ -584,7 +586,7 @@ void create_dependency_graph(char * filepath, model_data * modeldata)
 		
 		current_xmachine = current_xmachine->next;
 	}
-	printf("end of check loops\n");
+	printf("Finshed dependency loop check\n");
 	
 	/* For a set amount of times for each layer (cannot be more layers than functions?) */
 	/* WARNING: there is no check for depencency loops that can cause an infinite loop */	
