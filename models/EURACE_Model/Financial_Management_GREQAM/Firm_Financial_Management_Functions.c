@@ -269,12 +269,33 @@ int Firm_check_financial_and_bankruptcy_state()
 	return 0;
 }
 
+
+/*
+ * \fn: Firm_in_bankruptcy()
+ * \brief: This function sends a send_bankruptcy_message from the firm to all its banks
+ */
 int Firm_in_bankruptcy()
-{	
-	//Process
+{
+	int i,imax;
+	double bad_debt, credit_refunded, residual_var;
 	
-	return 0;
+    imax = LOANS.size;
+    for (i=0; i<imax;i++)
+    {
+        residual_var    = LOANS.array[i].var_per_installment* LOANS.array[i].nr_periods_before_repayment;
+        credit_refunded = LOANS.array[i].loan_value * PAYMENT_ACCOUNT/TOTAL_DEBT;
+        bad_debt        = LOANS.array[i].loan_value - credit_refunded;
+
+        //add_bankruptcy_message(bank_id, bad_debt, credit_refunded, residual_var);
+    	add_bankruptcy_message(LOANS.array[i].bank_id, bad_debt, credit_refunded, residual_var);
+    }
+	
+    return 0;
 }
+/*
+ * \fn: Firm_financial_crisis()
+ * \brief: This function tries to resolve the financial crisis by lowering dividends.
+ */
 
 int Firm_in_financial_crisis()
 {	
@@ -410,29 +431,5 @@ int Firm_read_stock_transactions()
     	EXTERNAL_FINANCIAL_NEEDS -= finances;
     }
     FINISH_ORDER_STATUS_MESSAGE_LOOP
-    return 0;
-}
-
-
-/*
- * \fn: Firm_send_bankruptcy()
- * \brief: This function sends a send_bankruptcy_message from the firm to all its banks
- */
-int Firm_send_bankruptcy()
-{
-	int i,imax;
-	double bad_debt, credit_refunded, residual_var;
-	
-    imax = LOANS.size;
-    for (i=0; i<imax;i++)
-    {
-        residual_var    = LOANS.array[i].var_per_installment* LOANS.array[i].nr_periods_before_repayment;
-        credit_refunded = LOANS.array[i].loan_value * PAYMENT_ACCOUNT/TOTAL_DEBT;
-        bad_debt        = LOANS.array[i].loan_value - credit_refunded;
-
-        //add_bankruptcy_message(bank_id, bad_debt, credit_refunded, residual_var);
-    	add_bankruptcy_message(LOANS.array[i].bank_id, bad_debt, credit_refunded, residual_var);
-    }
-	
     return 0;
 }
