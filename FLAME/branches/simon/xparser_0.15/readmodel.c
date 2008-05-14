@@ -1196,7 +1196,7 @@ void readModel(input_file * inputfile, char * directory, model_data * modeldata)
 			{
 				if(modeldata->name == NULL) modeldata->name = copy_array_to_str(current_string);
 				printf("Reading xagent model: ");
-				printf(modeldata->name);
+				printf(current_string->array);
 				printf("\n");
 			}
 			
