@@ -307,9 +307,6 @@ int Firm_in_financial_crisis()
 	//Set TOTAL_DIVIDEND_PAYMENT
 	payment_account_after_compulsory_payments = PAYMENT_ACCOUNT  - (TOTAL_INTEREST_PAYMENTS + TOTAL_DEBT_INSTALLMENT_PAYMENT + TAX_PAYMENT)
 	TOTAL_DIVIDEND_PAYMENT = max(0, payment_account_after_compulsory_payments - PRODUCTION_COSTS);
-
-	//Recompute production
-	//Set PRODUCTION_COSTS
 	
 	//Set flag if resolved:
 	if (PAYMENT_ACCOUNT >= TOTAL_INTEREST_PAYMENTS + TOTAL_DEBT_INSTALLMENT_PAYMENT + TAX_PAYMENT + TOTAL_DIVIDEND_PAYMENT)
