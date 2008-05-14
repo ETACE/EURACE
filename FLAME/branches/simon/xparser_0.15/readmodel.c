@@ -1529,12 +1529,12 @@ int checkmodel(model_data * modeldata)
 				if(found == 0)
 				{
 					allvar = addvariable(modeldata->p_allvars);
-					allvar->name = current_variable->name;
-					allvar->type = current_variable->type;
+					allvar->name = copystr(current_variable->name);
+					allvar->type = copystr(current_variable->type);
 					allvar->arraylength = current_variable->arraylength;
 					allvar->ismodeldatatype = current_variable->ismodeldatatype;
 					allvar->datatype = current_variable->datatype;
-					allvar->typenotarray = current_variable->typenotarray;
+					allvar->typenotarray = copystr(current_variable->typenotarray);
 					strcpy(allvar->defaultvalue, current_variable->defaultvalue);
 					strcpy(allvar->c_type, current_variable->c_type);
 				}
