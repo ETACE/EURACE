@@ -250,32 +250,10 @@
 </function>
 
 <function>
-<name>Firm_in_bankruptcy</name>
-<description></description>
-<currentState>Firm_tries_to_resolve_financial_crisis</currentState>
-<nextState>end_Firm</nextState>
-<condition>
-	<lhs><value>a.bankruptcy_state</value></lhs><op>EQ</op><rhs><value>1</value></rhs>
-</condition>
-<outputs>
-<output><messageName>bankruptcy</messageName></output>
-</outputs>
-</function>
-
-<function>
 <name>Firm_execute_financial_payments</name>
 <description></description>
 <currentState>Firm_tries_to_resolve_financial_crisis</currentState>
 <nextState>End_Firm_Financial_Management</nextState>
-<condition>
-<lhs>
-	<lhs><value>a.bankruptcy_state</value></lhs><op>EQ</op><rhs><value>0</value></rhs>
-</lhs>
-<op>AND</op>
-<rhs>
-	<lhs><value>a.financial_crisis_state</value></lhs><op>EQ</op><rhs><value>0</value></rhs>
-</rhs>
-</condition>
 <outputs>
 <output><messageName>tax_payment</messageName></output>
 <output><messageName>dividend_per_share</messageName></output>
