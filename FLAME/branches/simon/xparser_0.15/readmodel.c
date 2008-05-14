@@ -231,8 +231,8 @@ void readModel(input_file * inputfile, char * directory, model_data * modeldata)
 	rule_data * last_rule_data;
 	/* new use of char_array */
 	char_array * current_string;
-	char * temp_char;
-	char * temp_char2;
+	char * temp_char = NULL;
+	char * temp_char2 = NULL;
 	
 	/* check var name for array */
 	/*char_list * charcheck;*/
@@ -241,8 +241,8 @@ void readModel(input_file * inputfile, char * directory, model_data * modeldata)
 	modeldata->agents_include_array_variables = 0;
 	
 	/* variables in time_data */
-	char * time_name;
-	char * unit_name;
+	char * time_name = NULL;
+	char * unit_name = NULL;
 	int period_int;
 	
 	/* Open config file to read-only */
