@@ -1246,9 +1246,9 @@ void readModel(input_file * inputfile, char * directory, model_data * modeldata)
 	}
 	
 	/* Free memory */
-	free_char_array(current_string);
 	free(time_name);
 	free(unit_name);
+	free_char_array(current_string);
 	
 	/* Close the file */
 	fclose(file);
