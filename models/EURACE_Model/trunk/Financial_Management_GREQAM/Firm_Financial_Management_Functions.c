@@ -222,7 +222,7 @@ int Firm_compute_total_liquidity_needs()
 
     //step 12B: set production and payout financial_needs
     PRODUCTION_LIQUIDITY_NEEDS = PRODUCTION_COSTS;
-    FINANCIAL_LIQUIDITY_NEEDS = TOTAL_INTEREST_PAYMENT + TOTAL_DEBT_INSTALLMENT_PAYMENT + TOTAL_DIVIDEND_PAYMENT + TAX_PAYMENT;
+    FINANCIAL_LIQUIDITY_NEEDS = TOTAL_INTEREST_PAYMENT + TOTAL_DEBT_INSTALLMENT_PAYMENT + TAX_PAYMENT + TOTAL_DIVIDEND_PAYMENT_PLANNED;
 
     //step 12C:
     //Check if additional external financial needs are required for total financial needs (direct payable and delayed payable)    
@@ -299,15 +299,19 @@ int Firm_in_bankruptcy()
 
 int Firm_in_financial_crisis()
 {	
+	double payment_account_after_compulsory_payments;
+	
 	//Try to resolve the crisis
 	
 	//Recompute dividend
 	//Set TOTAL_DIVIDEND_PAYMENT
-	
+	payment_account_after_compulsory_payments = PAYMENT_ACCOUNT  - (TOTAL_INTEREST_PAYMENTS + TOTAL_DEBT_INSTALLMENT_PAYMENT + TAX_PAYMENT)
+	TOTAL_DIVIDEND_PAYMENT = max(0, payment_account_after_compulsory_payments - PRODUCTION_COSTS);
+
 	//Recompute production
 	//Set PRODUCTION_COSTS
 	
-	//Set flag if resolved
+	//Set flag if resolved:
 	if (PAYMENT_ACCOUNT >= TOTAL_INTEREST_PAYMENTS + TOTAL_DEBT_INSTALLMENT_PAYMENT + TAX_PAYMENT + TOTAL_DIVIDEND_PAYMENT)
 	{
 		FINANCIAL_CRISIS_STATE=0;
@@ -315,11 +319,14 @@ int Firm_in_financial_crisis()
 	}
 	
 	//Set flag if not resolved: payment account remains below total needs
-	if (PAYMENT_ACCOUNT < TOTAL_INTEREST_PAYMENTS + TOTAL_DEBT_INSTALLMENT_PAYMENT + TAX_PAYMENT + TOTAL_DIVIDEND_PAYMENT)
+/*
+	if (PAYMENT_ACCOUNT < TOTAL_INTEREST_PAYMENTS + TOTAL_DEBT_INSTALLMENT_PAYMENT + TAX_PAYMENT + TOTAL_DIVIDEND_PAYMENT_REALIZED)
 	{
 		FINANCIAL_CRISIS_STATE=0;
 		BANKRUPTCY_STATE=1;
 	}
+	
+*/
 	return 0;
 }
 
