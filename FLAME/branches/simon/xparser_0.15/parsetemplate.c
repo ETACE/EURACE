@@ -1284,7 +1284,10 @@ void parseTemplate(char * filename, char * templatename, model_data * modeldata)
 				reset_char_array(buffer3);
 				pos1 = pos;
 
-				while (strcmp(buffer3->array, "$number_messagesplusone") != 0 && strcmp(buffer3->array, "$number_xagentsplusone") != 0 && strcmp(buffer3->array, "$model_name") != 0&& pos <= (pos1 + 24))
+				while (strcmp(buffer3->array, "$number_messagesplusone") != 0 &&
+					strcmp(buffer3->array, "$number_xagentsplusone") != 0 &&
+					strcmp(buffer3->array, "$model_name") != 0 &&
+					pos <= (pos1 + 24) && pos <= filebuffer->size)
 				{
 					add_char(buffer3, c);
 					pos++;

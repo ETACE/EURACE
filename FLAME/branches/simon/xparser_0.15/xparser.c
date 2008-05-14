@@ -96,6 +96,7 @@ int main(int argc, char * argv[])
 	inputfile[1]='\0';
 	
 	/* Initialise pointers */
+	modeldata->name = NULL;
 	modeldata->p_xmachines = &xmachines;
 	xmachines = NULL;
 	modeldata->p_xmessages = &xmessage;
