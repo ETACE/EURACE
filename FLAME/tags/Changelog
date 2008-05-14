@@ -1,3 +1,8 @@
+xparser 0.15.7
+	* error messages now output using stderr
+	* memory leaks found and fixed using valgrind
+	* recursive dependencies found and informational error given
+
 xparser 0.15.6
 	* update to printing of conditions in statechart.dot
 	* update to error messages saying which model files errors are from
