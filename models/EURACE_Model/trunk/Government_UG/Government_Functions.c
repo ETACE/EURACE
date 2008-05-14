@@ -12,6 +12,14 @@ int Government_read_tax_payment()
 	START_TAX_PAYMENT_MESSAGE_LOOP
 		TAX_REVENUES += tax_payment_message->tax_payment;
 	FINISH_TAX_PAYMENT_MESSAGE_LOOP
+	
+	START__HOUSEHOLD_TAX_PAYMENT_MESSAGE_LOOP
+		if(ID == household_tax_payment_messag->gov_id)
+		{
+		TAX_REVENUES += household_tax_payment_message->tax_payment;
+		}
+	FINISH_HOUSEHOLD_TAX_PAYMENT_MESSAGE_LOOP
+	
 
 	PAYMENT_ACCOUNT += TAX_REVENUES;
 	
@@ -24,7 +32,7 @@ int Government_send_unemployment_benefit_payment()
 	//Compute TOTAL_UNEMPLOYMENT_BENEFIT_PAYMENT
 	PAYMENT_ACCOUNT -= TOTAL_UNEMPLOYMENT_BENEFIT_PAYMENT;
 	
-	add_unemployment_benefit_message(UNEMPLOYMENT_BENEFIT_PAYMENT);
+	add_unemployment_benefit_message(ID,UNEMPLOYMENT_BENEFIT_PAYMENT);
 	
 	return 0;
 }

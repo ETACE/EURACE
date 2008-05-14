@@ -85,11 +85,16 @@ int Household_receive_unemployment_benefits()
 {
 	double mean_income = 0.0;
 	
-	/*Should be changed later*/
-	double unemployment_benefit_payment = 0;
-
+	START_UNEMPLOYMENT_BENEFIT_MESSAGE_LOOP
+		if(GOV_ID==unemployment_benefit_message->gov_id)
+		{
+		/*Read unemployment_benefit and add to account */
+		PAYMENT_ACCOUNT +=  unemployment_benefit_message->unemployment_benefit_payment;
+		}
+	FINISH_UNEMPLOYMENT_BENEFIT_MESSAGE_LOOP
+	
 	remove_double(&LAST_INCOME,0);
-	add_double(&LAST_INCOME,unemployment_benefit_payment);
+	add_double(&LAST_INCOME,unemployment_benefit_message->unemployment_benefit_payment);
 			
 	/*Compute a mean income of the last four month*/
 	for(int i = 0; i < 4;i++)
@@ -97,17 +102,32 @@ int Household_receive_unemployment_benefits()
 		mean_income += LAST_INCOME.array[i];
 	}
 
-	mean_income = mean_income/4;
-			
-	/*GENUA*/
-	START_UNEMPLOYMENT_BENEFIT_MESSAGE_LOOP
-		/*Read unemployment_benefit and add to account */
-		PAYMENT_ACCOUNT +=  unemployment_benefit_message->unemployment_benefit_payment;
-		
-	FINISH_UNEMPLOYMENT_BENEFIT_MESSAGE_LOOP
+	MEAN_INCOME = mean_income/4;
 			
 return 0;	
 	
+}
+
+/** \fn Household_pay_taxes()
+ * \brief Household pays the income taxes 
+ */
+
+int Household_pay_taxes()
+{
+	
+	/*Compute the total taxes*/
+	TOTAL_TAXES = CUM_TOTAL_DIVIDENS*CURRENT_HH_CAPITAL_TAX_RATE + WAGE*CURRENT_HH_LABOUR_TAX_RATE;
+	/*Send a message to the government*/
+	add_household_tax_payment_message(ID,GOV_ID,TOTAL_TAXES);
+	/*reduce the payment account*/
+	PAYMENT_ACCOUT-=TOTAL_TAXES;
+	
+	/*Setting the counter of monthly dividends = 0*/
+	CUM_TOTAL_DIVIDENS=0;
+	
+	
+	
+
 }
 
 /*\fn Household_determine_consumption_budget()
@@ -117,19 +137,21 @@ return 0;
 
 int Household_determine_consumption_budget()
 {
-	double mean_income = 0.0;
+	double MEAN_INCOME = 0.0;
 	
 	/*Determing the consumption budget of the month*/
-			if(PAYMENT_ACCOUNT > (INITIAL_CONSUMPTION_PROPENSITY*mean_income))
+			if(PAYMENT_ACCOUNT > (INITIAL_CONSUMPTION_PROPENSITY*MEAN_INCOME))
 			{
 				
-				BUDGET=CONSUMPTION_PROPENSITY*PAYMENT_ACCOUNT+(1-CONSUMPTION_PROPENSITY)
-				*INITIAL_CONSUMPTION_PROPENSITY*mean_income;
+				CONSUMPTION_BUDGET=CONSUMPTION_PROPENSITY*PAYMENT_ACCOUNT+(1-CONSUMPTION_PROPENSITY)
+				*INITIAL_CONSUMPTION_PROPENSITY*MEAN_INCOME;
 			}
 			else
 			{
-				BUDGET = PAYMENT_ACCOUNT;
+				CONSUMPTION_BUDGET = PAYMENT_ACCOUNT;
 			}
+			
+			PORTFOLIO_BUDGET = PAYMENT_ACCOUNT - CONSUMPTION_BUDGET;
 
 			WEEKLY_BUDGET = BUDGET/4;
 			WEEK_OF_MONTH = 4;
@@ -522,7 +544,9 @@ int Household_receive_dividends()
 	FINISH_DIVIDEND_PER_SHARE_MESSAGE_LOOP
 	
 
-	PAYMENT_ACCOUNT += RECEIVED_DIVIDEND_CONS+RECEIVED_DIVIDEND_CAP;	
+	PAYMENT_ACCOUNT += RECEIVED_DIVIDEND_CONS+RECEIVED_DIVIDEND_CAP;
+	
+	CUM_TOTAL_DIVIDENS +=(RECEIVED_DIVIDEND_CONS+RECEIVED_DIVIDEND_CAP);
 	
 	return 0;	
 }
