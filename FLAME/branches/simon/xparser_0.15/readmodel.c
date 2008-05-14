@@ -588,7 +588,7 @@ void readModel(input_file * inputfile, char * directory, model_data * modeldata)
 				if(current_function->current_state != NULL) addxstate(current_function->current_state, &current_xmachine->states);
 				if(current_function->next_state != NULL) addxstate(current_function->next_state, &current_xmachine->states);
 				
-				current_function->agent_name = current_xmachine->name;
+				current_function->agent_name = copystr(current_xmachine->name);
 			}
 			if(strcmp(current_string->array, "header") == 0) { header = 1; current_envfunc = addenvfunc(modeldata->p_envfuncs); }
 			if(strcmp(current_string->array, "/header") == 0) { header = 0; }
