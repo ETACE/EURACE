@@ -403,7 +403,7 @@ int find_loop(xmachine_function * current, xmachine_function * depends)
 			current_adj_function = current_adj_function->next;
 		}
 		
-		//remove_adj_function_recent(current);
+		remove_adj_function_recent(current);
 	}
 	
 	return 0;
