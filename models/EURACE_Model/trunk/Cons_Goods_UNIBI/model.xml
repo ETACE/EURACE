@@ -295,7 +295,8 @@
 <name>Household</name>
 <description></description>
 <memory>
-<variable><type>double</type><name>budget</name><description></description></variable>
+<variable><type>double</type><name>consumption_budget</name><description></description></variable>
+<variable><type>double</type><name>mean_income</name><description>This holds the mean income of the last four periods</description></variable>
 <variable><type>int</type><name>week_of_month</name><description></description></variable>
 <variable><type>double</type><name>weekly_budget</name><description></description></variable>
 <variable><type>int</type><name>rationed</name><description></description></variable>
@@ -308,10 +309,13 @@
 <variable><type>double</type><name>current_productivity_employer</name><description></description></variable>
 <variable><type>double</type><name>current_mean_specific_skills_employer</name><description></description></variable>
 <variable><type>double</type><name>payment_account</name><description></description></variable>
+<variable><type>double</type><name>total_taxes</name><description>The total amount of taxes paid by household</description></variable>
+<variable><type>double</type><name>cum_total_dividends</name><description>Because dividends are paid daily and taxes monthly, the household has to cumulate dividens</description></variable>
+<variable><type>double</type><name>current_hh_capital_tax_rate</name><description>the current tax rates on capital income</description></variable>
+<variable><type>double</type><name>current_hh_labour_tax_rate</name><description>the current tax rates on labour income</description></variable>
+
 </memory>
 <functions>
-	
-	
 	
 	
 <function><name>Household_receive_dividends</name>
@@ -363,12 +367,19 @@
 	<op>AND</op>
 	<rhs><lhs><value>a.employee_firm_id</value></lhs><op>EQ</op><rhs><value>-1</value></rhs></rhs>
 </condition>
-<input><messageName>unemployment_benefits</messageName></input>
+<input><messageName>unemployment_benefit</messageName></input>
+</function>
+
+<function><name>Household_pay_taxes</name>
+<description></description>
+<currentState>08</currentState>
+<nextState>08b</nextState>
+<output><messageName>household_tax_payment</messageName></output>
 </function>
 
 <function><name>Household_determine_consumption_budget</name>
 <description></description>
-<currentState>08</currentState>
+<currentState>08b</currentState>
 <nextState>09</nextState>
 </function>
 
@@ -668,6 +679,15 @@
 </variables>
 </message>
 
+<message>
+<name>household_tax_payment</name>
+<description></description>
+<variables>
+<variable><type>int</type><name>id</name><description></description></variable>
+<variable><type>int</type><name>gov_id</name><description></description></variable>
+<variable><type>double</type><name>tax_payment</name><description></description></variable>
+</variables>
+</message>
 
 
 </messages>

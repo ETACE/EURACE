@@ -60,6 +60,7 @@
 <memory>
 <variable><type>int</type><name>id</name><description></description></variable>
 <variable><type>int</type><name>region_id</name><description></description></variable>
+<variable><type>int</type><name>gov_id</name><description></description></variable>
 </memory>
 </xagent>
 
@@ -70,6 +71,7 @@
 <variable><type>int</type><name>id</name><description></description></variable>
 <variable><type>int</type><name>region_id</name><description></description></variable>
 <variable><type>int_array</type><name>neighboring_region_ids</name><description></description></variable>
+<variable><type>int</type><name>gov_id</name><description></description></variable>
 </memory>
 </xagent>
 
@@ -79,6 +81,7 @@
 <memory>
 <variable><type>int</type><name>id</name><description></description></variable>
 <variable><type>int</type><name>region_id</name><description></description></variable>
+<variable><type>int</type><name>gov_id</name><description></description></variable>
 </memory>
 </xagent>
 
@@ -88,6 +91,7 @@
 <memory>
 <variable><type>int</type><name>id</name><description></description></variable>
 <variable><type>int</type><name>region_id</name><description></description></variable>
+<variable><type>int</type><name>gov_id</name><description></description></variable>
 </memory>
 </xagent>
 
@@ -116,6 +120,7 @@
 <memory>
 <variable><type>int</type><name>id</name><description></description></variable>
 <variable><type>int</type><name>region_id</name><description></description></variable>
+<variable><type>int</type><name>gov_id</name><description></description></variable>
 </memory>
 </xagent>
 
