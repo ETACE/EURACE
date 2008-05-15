@@ -309,7 +309,6 @@
 <variable><type>double</type><name>cum_total_dividends</name><description>Because dividends are paid daily and taxes monthly, the household has to cumulate dividens</description></variable>
 <variable><type>double</type><name>tax_rate_hh_capital</name><description>the current tax rates on capital income</description></variable>
 <variable><type>double</type><name>tax_rate_hh_labour</name><description>the current tax rates on labour income</description></variable>
-
 </memory>
 <functions>
 	

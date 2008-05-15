@@ -23,20 +23,21 @@
 <variable><type>double</type><name>productivity_progress</name><description></description></variable>
 <variable><type>double</type><name>capital_good_price</name><description></description></variable>
 <variable><type>double</type><name>revenue_per_day</name><description></description></variable>
-<variable><type>int</type><name>day_of_month_to_act</name><description></description></variable>
+<variable><type>double</type><name>tax_rate_corporate</name><description></description></variable>
+<variable><type>double</type><name>tax_rate_vat</name><description></description></variable>
 </memory>
 <functions>
 
 <function><name>IGFirm_update_productivity_price</name>
 <description></description>
-<currentState>start_IGFirm</currentState>
+<currentState>Start_IGFirm_Productivity</currentState>
 <nextState>01</nextState>
 <condition><time><period>monthly</period><phase>a.day_of_month_to_act</phase></time></condition>
 </function>
 
 <function><name>IGFirm_idle</name>
 <description></description>
-<currentState>start_IGFirm</currentState>
+<currentState>Start_IGFirm_Productivity</currentState>
 <nextState>01</nextState>
 <condition><not><time><period>monthly</period><phase>a.day_of_month_to_act</phase></time></not></condition>
 </function>

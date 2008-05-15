@@ -34,3 +34,12 @@ Sander, rev 941
 Added TimeUnits: Quarterly = 3 monthly, yearly = 12 monthly 
 Moved Eurostat_read_tax_data upwards to beginning, condition: Period: yearly, phase: 0
 -------------------------------------------------------------------------------------------
+Sander, rev 942
+
+- moved some vars top top xml
+- tax rates is now a yearly message from government
+- Firms read tax_rates message from gov in function Firm_read_tax_rates which is run yearly.
+- IGFirms read tax_rates message from gov in function IGFirm_read_tax_rates which is run yearly.
+- Households read tax_rates message from gov in function Household_read_tax_rates which is run yearly.
+
+-------------------------------------------------------------------------------------------

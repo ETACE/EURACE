@@ -73,10 +73,11 @@
 <!-- Firm_compute_income_statement -->
 <variable><type>double</type><name>ebit</name><description></description></variable>
 <variable><type>double</type><name>earnings</name><description></description></variable>
-<variable><type>double</type><name>tax_rate_corporate</name><description></description></variable>
 <variable><type>double</type><name>tax_payment</name><description></description></variable>
 <variable><type>double</type><name>net_earnings</name><description></description></variable>
 <variable><type>double</type><name>previous_net_earnings</name><description></description></variable>
+<variable><type>double</type><name>tax_rate_corporate</name><description></description></variable>
+<variable><type>double</type><name>tax_rate_vat</name><description></description></variable>
 
 <!-- Firm_compute_financial_payments -->
 <variable><type>double</type><name>total_interest_payment</name><description></description></variable>

@@ -28,11 +28,21 @@
 </memory>
 
 <functions>
+
+<function>
+<name>Government_idle</name>
+<description></description>
+<currentState>start_Government</currentState>
+<nextState>00</nextState>
+<condition><not><time><period>yearly</period><phase>0</phase></time></not></condition>
+</function>
+
 <function>
 <name>Government_send_tax_rates</name>
 <description></description>
 <currentState>start_Government</currentState>
 <nextState>00</nextState>
+<condition><time><period>yearly</period><phase>0</phase></time></condition>
 <outputs>
 <output><messageName>government_tax_rates</messageName></output>
 </outputs>
