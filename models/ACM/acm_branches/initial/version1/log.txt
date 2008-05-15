@@ -1,4 +1,0 @@
-30/04/08- Edited by Mariam
-**************************************************************
-This is the first version of the Ancona credit market to flame executable form.
-Written to run on xparser version 0.15.
