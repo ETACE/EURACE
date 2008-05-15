@@ -266,15 +266,32 @@
 <function><name>Eurostat_Initialization</name>
 <description></description>
 <currentState>start_Eurostat</currentState>
-<nextState>Start_Eurostat_Firm_Data</nextState>
+<nextState>Start_Eurostat_Tax_Data</nextState>
 <condition><time><period>iteration</period><phase>1</phase></time></condition>
 </function>
 
 <function><name>Eurostat_idle</name>
 <description></description>
 <currentState>start_Eurostat</currentState>
-<nextState>Start_Eurostat_Firm_Data</nextState>
+<nextState>Start_Eurostat_Tax_Data</nextState>
 <condition><not><time><period>iteration</period><phase>1</phase></time></not></condition>
+</function>
+
+<function><name>Eurostat_read_tax_rates</name>
+<description></description>
+<currentState>Start_Eurostat_Tax_Data</currentState>
+<nextState>Start_Eurostat_Firm_Data</nextState>
+<condition><time><period>yearly</period><phase>0</phase></time></condition>
+<inputs>
+<input><messageName>government_tax_rates</messageName></input>
+</inputs>
+</function>
+
+<function><name>Eurostat_idle</name>
+<description></description>
+<currentState>Start_Eurostat_Tax_Data</currentState>
+<nextState>Start_Eurostat_Firm_Data</nextState>
+<condition><not><time><period>yearly</period><phase>0</phase></time></not></condition>
 </function>
 
 <function><name>Eurostat_send_data</name>
@@ -297,29 +314,19 @@
 <function><name>Eurostat_calculate_data</name>
 <description></description>
 <currentState>End_Eurostat_Financial_Data</currentState>
-<nextState>End_Eurostat_Macro_Data</nextState>
-<condition><time><period>monthly</period><phase>a.day_of_month_to_act</phase></time></condition>
+<nextState>end_Eurostat</nextState>
+<condition><time><period>monthly</period><phase>19</phase></time></condition>
 <inputs>
 <input><messageName>firm_send_data</messageName></input>
 <input><messageName>household_send_data</messageName></input>
 </inputs>
 </function>
 
-<function><name>Eurostat_read_tax_rates</name>
-<description></description>
-<currentState>End_Eurostat_Macro_Data</currentState>
-<nextState>end_Eurostat</nextState>
-<inputs>
-<input><messageName>government_tax_rates</messageName></input>
-</inputs>
-</function>
-
-
 <function><name>Eurostat_idle</name>
 <description></description>
 <currentState>End_Eurostat_Financial_Data</currentState>
 <nextState>end_Eurostat</nextState>
-<condition><not><time><period>monthly</period><phase>a.day_of_month_to_act</phase></time></not></condition>
+<condition><not><time><period>monthly</period><phase>19</phase></time></not></condition>
 </function>
 
 </functions>

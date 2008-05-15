@@ -50,6 +50,18 @@
  <period>4</period>
 </timeUnit>
 
+<timeUnit>
+ <name>quarterly</name>
+ <unit>monthly</unit>
+ <period>3</period>
+</timeUnit>
+
+<timeUnit>
+ <name>yearly</name>
+ <unit>monthly</unit>
+ <period>12</period>
+</timeUnit>
+
 </timeUnits>
 
 </environment>
