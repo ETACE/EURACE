@@ -69,34 +69,35 @@
 <name>Firm</name>
 <description></description>
 <memory>
-<variable><type>employee_array</type><name>employees</name><description></description></variable>
-<variable><type>double</type><name>wage_offer</name><description></description></variable>
-<variable><type>double</type><name>technology</name><description></description></variable>
-<variable><type>int</type><name>no_employees</name><description></description></variable>
-<variable><type>int</type><name>no_employees_skill_1</name><description></description></variable>
-<variable><type>int</type><name>no_employees_skill_2</name><description></description></variable>
-<variable><type>int</type><name>no_employees_skill_3</name><description></description></variable>
-<variable><type>int</type><name>no_employees_skill_4</name><description></description></variable>
-<variable><type>int</type><name>no_employees_skill_5</name><description></description></variable>
-<variable><type>int</type><name>vacancies</name><description></description></variable>
-<variable><type>double</type><name>average_g_skill</name><description></description></variable>
-<variable><type>double</type><name>average_s_skill_of_1</name><description></description></variable>
-<variable><type>double</type><name>average_s_skill_of_2</name><description></description></variable>
-<variable><type>double</type><name>average_s_skill_of_3</name><description></description></variable>
-<variable><type>double</type><name>average_s_skill_of_4</name><description></description></variable>
-<variable><type>double</type><name>average_s_skill_of_5</name><description></description></variable>
-<variable><type>double</type><name>wage_offer_for_skill_1</name><description></description></variable>
-<variable><type>double</type><name>wage_offer_for_skill_2</name><description></description></variable>
-<variable><type>double</type><name>wage_offer_for_skill_3</name><description></description></variable>
-<variable><type>double</type><name>wage_offer_for_skill_4</name><description></description></variable>
-<variable><type>double</type><name>wage_offer_for_skill_5</name><description></description></variable>
-<variable><type>int</type><name>employees_needed</name><description></description></variable>
+<variable><type>employee_array</type><name>employees</name><description>Used to store the data-type Employee</description></variable>
+<variable><type>double</type><name>wage_offer</name><description></description>The basic wage offer</variable>
+<variable><type>double</type><name>technology</name><description></description>average technology/productivity of the capital</variable>
+<variable><type>int</type><name>no_employees</name><description></description>number of employees</variable>
+<variable><type>int</type><name>no_employees_skill_1</name><description>number of employees with general skills 1</description></variable>
+<variable><type>int</type><name>no_employees_skill_2</name><description>number of employees with general skills 2</description></variable>
+<variable><type>int</type><name>no_employees_skill_3</name><description>number of employees with general skills 3</description></variable>
+<variable><type>int</type><name>no_employees_skill_4</name><description>number of employees with general skills 4</description></variable>
+<variable><type>int</type><name>no_employees_skill_5</name><description>number of employees with general skills 5</description></variable>
+<variable><type>int</type><name>vacancies</name><description></description>number of vacancies</variable>
+<variable><type>double</type><name>average_g_skill</name><description>average general skills of the workforce</description></variable>
+<variable><type>double</type><name>average_s_skill_of_1</name><description>average specific skills of employees with general skills 1</description></variable>
+<variable><type>double</type><name>average_s_skill_of_2</name><description>average specific skills of employees with general skills 2</description></variable>
+<variable><type>double</type><name>average_s_skill_of_3</name><description>average specific skills of employees with general skills 3</description></variable>
+<variable><type>double</type><name>average_s_skill_of_4</name><description>average specific skills of employees with general skills 4</description></variable>
+<variable><type>double</type><name>average_s_skill_of_5</name><description>average specific skills of employees with general skills 5</description></variable>
+<variable><type>double</type><name>wage_offer_for_skill_1</name><description>wage offer for workers with skill level 1</description></variable>
+<variable><type>double</type><name>wage_offer_for_skill_2</name><description>wage offer for workers with skill level 2</description></variable>
+<variable><type>double</type><name>wage_offer_for_skill_3</name><description>wage offer for workers with skill level 3</description></variable>
+<variable><type>double</type><name>wage_offer_for_skill_4</name><description>wage offer for workers with skill level 4</description></variable>
+<variable><type>double</type><name>wage_offer_for_skill_5</name><description>wage offer for workers with skill level 5</description></variable>
+<variable><type>int</type><name>employees_needed</name><description>number of workers a firm needs for next production</description></variable>
 </memory>
 
 <functions>
 
 <function><name>Firm_send_vacancies</name>
-<description></description>
+<description>If additional workers are needed the firm sends vacancies messages
+ espacially the different wage offers for the different general skill groups</description>
 <currentState>Start_Firm_Labour_Role</currentState>
 <nextState>03</nextState>
 <condition><lhs><value>a.no_employees</value></lhs><op>LT</op><rhs><value>a.employees_needed</value></rhs></condition>
@@ -106,7 +107,7 @@
 </function>
 
 <function><name>Firm_send_redundancies</name>
-<description></description>
+<description>If the firm wants to decrease the workforce it sends redundancies</description>
 <currentState>Start_Firm_Labour_Role</currentState>
 <nextState>03c</nextState>
 <condition><lhs><value>a.no_employees</value></lhs><op>GT</op><rhs><value>a.employees_needed</value></rhs></condition>
@@ -116,14 +117,17 @@
 </function>
 
 <function><name>Firm_idle</name>
-<description></description>
+<description>Firm does nothing</description>
 <currentState>Start_Firm_Labour_Role</currentState>
 <nextState>03c</nextState>
 <condition><lhs><value>a.no_employees</value></lhs><op>EQ</op><rhs><value>a.employees_needed</value></rhs></condition>
 </function>
 
 <function><name>Firm_read_job_applications_send_job_offer_or_rejection</name>
-<description></description>
+<description>Firm reads the application, ranks the applicants according to 
+their general and specific skills and sends as many job offers to the 
+first ranked applicants as the firm has vacancies to fill. 
+The other applicants are refused.</description>
 <currentState>03</currentState>
 <nextState>04</nextState>
 <inputs>
@@ -136,7 +140,8 @@
 </function>
 
 <function><name>Firm_read_job_responses</name>
-<description></description>
+<description>The firm reads the responses to their job offers and updates the number of 
+employees and the number of vacancies</description>
 <currentState>04</currentState>
 <nextState>05a</nextState>
 <inputs>
@@ -145,7 +150,8 @@
 </function>
 
 <function><name>Firm_read_job_quitting</name>
-<description></description>
+<description>The firm reads quitting messages and updates the number 
+of employees and the number of vacancies</description>
 <currentState>05a</currentState>
 <nextState>05b</nextState>
 <inputs>
@@ -154,7 +160,8 @@
 </function>
 
 <function><name>Firm_read_job_quitting</name>
-<description></description>
+<description>The firm reads quitting messages and updates the number 
+of employees and the number of vacancies</description>
 <currentState>00b</currentState>
 <nextState>09c</nextState>
 <inputs>
@@ -163,7 +170,8 @@
 </function>
 
 <function><name>Firm_read_job_quitting</name>
-<description></description>
+<description>The firm reads quitting messages and updates the number 
+of employees and the number of vacancies</description>
 <currentState>03c</currentState>
 <nextState>03d</nextState>
 <inputs>
@@ -172,7 +180,8 @@
 </function>
 
 <function><name>Firm_start_labour_market</name>
-<description></description>
+<description>Dummy function if a firm has to enter the Labor Market 
+in the second round after receiving quittings</description>
 <currentState>03d</currentState>
 <nextState>06</nextState>
 <condition><lhs><value>a.no_employees</value></lhs><op>LT</op><rhs><value>a.employees_needed</value></rhs></condition>
@@ -193,14 +202,15 @@
 </function>
 
 <function><name>Firm_update_wage_offer</name>
-<description></description>
+<description>The firm increases the wage offer if there are vacancies left</description>
 <currentState>05b</currentState>
 <nextState>06</nextState>
 <condition><lhs><value>a.no_employees</value></lhs><op>LT</op><rhs><value>a.employees_needed</value></rhs></condition>
 </function>
 
 <function><name>Firm_send_vacancies_2</name>
-<description></description>
+<description>If additional workers are needed the firm sends vacancies messages
+ espacially the different wage offers for the different general skill groups</description>
 <currentState>06</currentState>
 <nextState>07</nextState>
 <outputs>
@@ -209,7 +219,10 @@
 </function>
 
 <function><name>Firm_read_job_applications_send_job_offer_or_rejection_2</name>
-<description></description>
+<description>Firm reads the application, ranks the applicants according to 
+their general and specific skills and sends as many job offers to the 
+first ranked applicants as the firm has vacancies to fill. 
+The other applicants are refused.</description>
 <currentState>07</currentState>
 <nextState>08</nextState>
 <inputs>
@@ -222,7 +235,8 @@
 </function>
 
 <function><name>Firm_read_job_responses_2</name>
-<description></description>
+<description>The firm reads the responses to their job offers and updates the number of 
+employees and the number of vacancies</description>
 <currentState>08</currentState>
 <nextState>09a</nextState>
 <inputs>
@@ -231,7 +245,8 @@
 </function>
 
 <function><name>Firm_read_job_quitting_2</name>
-<description></description>
+<description>The firm reads quitting messages and updates the number 
+of employees and the number of vacancies</description>
 <currentState>09a</currentState>
 <nextState>09b</nextState>
 <inputs>
@@ -240,7 +255,8 @@
 </function>
 
 <function><name>Firm_read_job_quitting_2</name>
-<description></description>
+<description>The firm reads quitting messages and updates the number 
+of employees and the number of vacancies</description>
 <currentState>09c</currentState>
 <nextState>Start_Firm_Seller_Role</nextState>
 <inputs>
@@ -249,14 +265,14 @@
 </function>
 
 <function><name>Firm_update_wage_offer_2</name>
-<description></description>
+<description>The firm increases the wage offer if there are vacancies left</description>
 <currentState>09b</currentState>
 <nextState>End_Firm_Labour_Role</nextState>
 <condition><lhs><value>a.no_employees</value></lhs><op>LT</op><rhs><value>a.employees_needed</value></rhs></condition>
 </function>
 
 <function><name>Firm_idle</name>
-<description></description>
+<description>Firm does nothing</description>
 <currentState>09b</currentState>
 <nextState>End_Firm_Labour_Role</nextState>
 <condition><not><lhs><value>a.no_employees</value></lhs><op>LT</op><rhs><value>a.employees_needed</value></rhs></not></condition>
@@ -270,14 +286,14 @@
 <name>Household</name>
 <description></description>
 <memory>
-<variable><type>double</type><name>wage</name><description></description></variable>
-<variable><type>double</type><name>wage_reservation</name><description></description></variable>
-<variable><type>int</type><name>general_skill</name><description></description></variable>
-<variable><type>int</type><name>on_the_job_search</name><description></description></variable>
-<variable><type>int</type><name>number_applications</name><description></description></variable>
-<variable><type>double</type><name>specific_skill</name><description></description></variable>
-<variable><type>int</type><name>employee_firm_id</name><description></description></variable>
-<variable><type>int</type><name>employer_region_id</name><description></description></variable>
+<variable><type>double</type><name>wage</name><description></description>The wage a household receives</variable>
+<variable><type>double</type><name>wage_reservation</name><description>Reservation wage</description></variable>
+<variable><type>int</type><name>general_skill</name><description>The general skill level</description></variable>
+<variable><type>int</type><name>on_the_job_search</name><description>Indicator variable: 1 on the job search; 0 no on the job search</description></variable>
+<variable><type>int</type><name>number_applications</name><description>Number of applications a household can sent</description></variable>
+<variable><type>double</type><name>specific_skill</name><description>The specific skills of a household</description></variable>
+<variable><type>int</type><name>employee_firm_id</name><description></description>The id of the employer</variable>
+<variable><type>int</type><name>employer_region_id</name><description>The id of the region</description></variable>
 </memory>
 
 <functions>
@@ -285,7 +301,7 @@
 
 <function>
 <name>Household_read_firing_messages</name>
-<description></description>
+<description>The household checks whether is is fired or not</description>
 <currentState>EXIT_FINANCIAL_MARKET</currentState>
 <nextState>01d</nextState>
 <condition><lhs><value>a.employee_firm_id</value></lhs><op>NEQ</op><rhs><value>-1</value></rhs></condition>
@@ -296,7 +312,7 @@
 
 <function>
 <name>Household_idle</name>
-<description></description>
+<description>Household does nothing</description>
 <currentState>01d</currentState>
 <nextState>01a</nextState>
 <condition><lhs><value>a.employee_firm_id</value></lhs><op>EQ</op><rhs><value>-1</value></rhs></condition>
@@ -304,7 +320,7 @@
 
 <function>
 <name>Household_idle</name>
-<description></description>
+<description>Household does nothing</description>
 <currentState>EXIT_FINANCIAL_MARKET</currentState>
 <nextState>01a</nextState>
 <condition><lhs><value>a.employee_firm_id</value></lhs><op>EQ</op><rhs><value>-1</value></rhs></condition>
@@ -312,7 +328,8 @@
 
 <function>
 <name>Household_OTJS_read_job_vacancies_and_send_applications</name>
-<description></description>
+<description>Household searches on the job. Reads vacancies messages 
+and send s applications</description>
 <currentState>01e</currentState>
 <nextState>01</nextState>
 <inputs>
@@ -325,7 +342,7 @@
 
 <function>
 <name>Household_UNEMPLOYED_read_job_vacancies_and_send_applications</name>
-<description></description>
+<description> Household reads vacancies messages and sends applications</description>
 <currentState>01a</currentState>
 <nextState>01</nextState>
 <inputs>
@@ -338,7 +355,7 @@
 
 <function>
 <name>Household_on_the_job_search_decision</name>
-<description></description>
+<description>Household decides whether to search on the job or not</description>
 <currentState>01d</currentState>
 <nextState>01b</nextState>
 <condition><lhs><value>a.employee_firm_id</value></lhs><op>NEQ</op><rhs><value>-1</value></rhs></condition>
@@ -346,7 +363,7 @@
 
 <function>
 <name>Household_on_the_job_search_yes</name>
-<description></description>
+<description>Dummy function: household decided to search on the job</description>
 <currentState>01b</currentState>
 <nextState>01e</nextState>
 <condition><lhs><value>a.on_the_job_search</value></lhs><op>EQ</op><rhs><value>1</value></rhs></condition>
@@ -354,14 +371,15 @@
 
 <function>
 <name>Household_on_the_job_search_no</name>
-<description></description>
+<description>Dummy function: household decided to search not on the job</description>
 <currentState>01b</currentState>
 <nextState>06</nextState>
 <condition><lhs><value>a.on_the_job_search</value></lhs><op>NEQ</op><rhs><value>1</value></rhs></condition>
 </function>
 
 <function><name>Household_read_job_offers_send_response</name>
-<description></description>
+<description>Household reads the job offers and ranks them 
+according to the wage offer</description>
 <currentState>01</currentState>
 <nextState>02</nextState>
 <inputs>
@@ -385,7 +403,8 @@
 </function>
 
 <function><name>Household_read_application_rejection_update_wage_reservation</name>
-<description></description>
+<description>Household reads the application rejections and decreases the 
+reservation wage</description>
 <currentState>02</currentState>
 <nextState>03</nextState>
 <condition><lhs><value>a.employee_firm_id</value></lhs><op>EQ</op><rhs><value>-1</value></rhs></condition>
@@ -395,7 +414,8 @@
 </function>
 
 <function><name>Household_OTJS_read_job_vacancies_and_send_applications_2</name>
-<description></description>
+<description>Household searches on the job. Reads vacancies messages 
+and send s applications</description>
 <currentState>02</currentState>
 <nextState>04</nextState>
 <condition><lhs><value>a.on_the_job_search</value></lhs><op>EQ</op><rhs><value>1</value></rhs></condition>
@@ -408,7 +428,7 @@
 </function>
 
 <function><name>Household_UNEMPLOYED_read_job_vacancies_and_send_applications_2</name>
-<description></description>
+<description>Household reads vacancies messages and sends applications</description>
 <currentState>03</currentState>
 <nextState>04</nextState>
 <inputs>
@@ -420,7 +440,8 @@
 </function>
 
 <function><name>Household_read_job_offers_send_response_2</name>
-<description></description>
+<description>Household reads the job offers and ranks them 
+according to the wage offer</description>
 <currentState>04</currentState>
 <nextState>05</nextState>
 <inputs>
@@ -433,7 +454,8 @@
 </function>
 
 <function><name>Household_read_application_rejection_update_wage_reservation_2</name>
-<description></description>
+<description>Household reads the application rejections and decreases 
+the reservation wage</description>
 <currentState>05</currentState>
 <nextState>06</nextState>
 <condition><lhs><value>a.employee_firm_id</value></lhs><op>EQ</op><rhs><value>-1</value></rhs></condition>
@@ -443,7 +465,7 @@
 </function>
 
 <function><name>Household_idle</name>
-<description></description>
+<description>Household does nothing</description>
 <currentState>05</currentState>
 <nextState>06</nextState>
 <condition><lhs><value>a.employee_firm_id</value></lhs><op>NEQ</op><rhs><value>-1</value></rhs></condition>
@@ -460,7 +482,8 @@
 
 <message>
 <name>vacancies</name>
-<description></description>
+<description>Send by firms. Includes the id, the region id the number of vacancies and the 
+wage offer for the according general skill level</description>
 <variables>
 <variable><type>int</type><name>firm_id</name><description></description></variable>
 <variable><type>int</type><name>region_id</name><description></description></variable>
@@ -472,7 +495,8 @@
 
 <message>
 <name>vacancies2</name>
-<description></description>
+<description>Send by firms. Includes the id, the region id the number of vacancies and the 
+wage offer for the according general skill level.</description>
 <variables>
 <variable><type>int</type><name>firm_id</name><description></description></variable>
 <variable><type>int</type><name>region_id</name><description></description></variable>
@@ -484,7 +508,7 @@
 
 <message>
 <name>firing</name>
-<description></description>
+<description>Send by firms. Includes the id and the id of the dismissed employee.</description>
 <variables>
 <variable><type>int</type><name>firm_id</name><description></description></variable>
 <variable><type>int</type><name>worker_id</name><description></description></variable>
@@ -493,7 +517,8 @@
 
 <message>
 <name>job_application</name>
-<description></description>
+<description>Send by households. Includes the id, firm id, region id the general 
+as well as the specific skills.</description>
 <variables>
 <variable><type>int</type><name>worker_id</name><description></description></variable>
 <variable><type>int</type><name>firm_id</name><description></description></variable>
@@ -505,7 +530,8 @@
 
 <message>
 <name>job_application2</name>
-<description></description>
+<description>Send by households. Includes the id, firm id, region id the general 
+as well as the specific skills.</description>
 <variables>
 <variable><type>int</type><name>worker_id</name><description></description></variable>
 <variable><type>int</type><name>firm_id</name><description></description></variable>
@@ -517,7 +543,8 @@
 
 <message>
 <name>job_offer</name>
-<description></description>
+<description>Send by firms. Includes the id, worker id and the 
+corresponding wage offer.</description>
 <variables>
 <variable><type>int</type><name>firm_id</name><description></description></variable>
 <variable><type>int</type><name>worker_id</name><description></description></variable>
@@ -528,7 +555,8 @@
 
 <message>
 <name>job_offer2</name>
-<description></description>
+<description>Send by firms. Includes the id, worker id and the 
+corresponding wage offer.</description>
 <variables>
 <variable><type>int</type><name>firm_id</name><description></description></variable>
 <variable><type>int</type><name>worker_id</name><description></description></variable>
@@ -539,7 +567,8 @@
 
 <message>
 <name>job_acceptance</name>
-<description></description>
+<description>Send by households. Includes the id, firm id, region id, the general 
+as well as the specific skills.</description>
 <variables>
 <variable><type>int</type><name>worker_id</name><description></description></variable>
 <variable><type>int</type><name>firm_id</name><description></description></variable>
@@ -551,7 +580,8 @@
 
 <message>
 <name>job_acceptance2</name>
-<description></description>
+<description>Send by households. Includes the id, firm id, region id the general 
+as well as the specific skills.</description>
 <variables>
 <variable><type>int</type><name>worker_id</name><description></description></variable>
 <variable><type>int</type><name>firm_id</name><description></description></variable>
@@ -563,7 +593,7 @@
 
 <message>
 <name>application_rejection</name>
-<description></description>
+<description>Send by firms. Includes the id and the id of the refused applicant.</description>
 <variables>
 <variable><type>int</type><name>firm_id</name><description></description></variable>
 <variable><type>int</type><name>worker_id</name><description></description></variable>
@@ -572,7 +602,7 @@
 
 <message>
 <name>application_rejection2</name>
-<description></description>
+<description>Send by firms. Includes the id and the id of the refused applicant.</description>
 <variables>
 <variable><type>int</type><name>firm_id</name><description></description></variable>
 <variable><type>int</type><name>worker_id</name><description></description></variable>
@@ -581,7 +611,7 @@
 
 <message>
 <name>quitting</name>
-<description></description>
+<description>Send by households. Includes the id, firm id.</description>
 <variables>
 <variable><type>int</type><name>worker_id</name><description></description></variable>
 <variable><type>int</type><name>firm_id</name><description></description></variable>
@@ -590,7 +620,7 @@
 
 <message>
 <name>quitting2</name>
-<description></description>
+<description>Send by households. Includes the id, firm id.</description>
 <variables>
 <variable><type>int</type><name>worker_id</name><description></description></variable>
 <variable><type>int</type><name>firm_id</name><description></description></variable>
