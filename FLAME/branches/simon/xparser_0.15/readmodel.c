@@ -604,6 +604,7 @@ void readModel(input_file * inputfile, char * directory, model_data * modeldata)
 				current_message = addxmessage(modeldata->p_xmessages);
 				tvariable = NULL;
 				modeldata->number_messages++;
+				current_message->file = copystr(inputfile->fullfilepath);
 			}
 			if(strcmp(current_string->array, "/message") == 0)
 			{
@@ -1403,7 +1404,8 @@ int checkmodel(model_data * modeldata)
 	adj_function * current_adj_function;
 	xmachine_ioput * current_ioput;
 	rule_data * current_rule_data;
-	/*xmachine_message * current_message;*/
+	xmachine_message * current_message;
+	xmachine_message * current_message2;
 	variable * allvar;
 	char buffer[1000];
 	int variable_count;
@@ -1415,6 +1417,29 @@ int checkmodel(model_data * modeldata)
 	 * agent/message variables only appear once, show warning for duplicates and show from which files
 	 * try and parse functions files for implementations of functions defined in model xml
 	 * */
+	
+	/* Check duplicate message names */
+	current_message = * modeldata->p_xmessages;
+	while(current_message)
+	{
+		current_message2 = * modeldata->p_xmessages;
+		{
+			if(current_message != current_message2)
+			{
+				if(strcmp(current_message->name, current_message2->name) == 0)
+				{
+					fprintf(stderr, "ERROR: multiple definitions of message '%s'\n", current_message->name);
+					fprintf(stderr, "       in file: '%s'\n", current_message->file);
+					fprintf(stderr, "       in file: '%s'\n", current_message2->file);
+					return -1;
+				}
+			}
+			
+			current_message2 = current_message2->next;
+		}
+		
+		current_message = current_message->next;
+	}
 	
 	/* Check agent memory variables for being a model data type and update variable attributes */
 	current_xmachine = *modeldata->p_xmachines;
