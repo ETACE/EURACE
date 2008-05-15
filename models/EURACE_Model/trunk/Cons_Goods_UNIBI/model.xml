@@ -186,8 +186,6 @@
 <variable><type>delivery_volume_per_mall_array</type><name>planned_delivery_volume</name><description></description></variable>
 <variable><type>mall_info_array</type><name>current_mall_stocks</name><description></description></variable>
 <variable><type>double_array</type><name>last_planned_production_quantities</name><description></description></variable>
-<variable><type>int</type><name>day_of_month_to_act</name><description></description></variable>
-
 </memory>
 <functions>
 
@@ -303,12 +301,10 @@
 <variable><type>int</type><name>mall_completely_sold_out</name><description></description></variable>
 <variable><type>ordered_quantity</type><name>order_quantity[2]</name><description></description></variable>
 <variable><type>received_quantities</type><name>received_quantity[2]</name><description></description></variable>
-<variable><type>int</type><name>day_of_month_to_act</name><description></description></variable>
 <variable><type>int</type><name>day_of_week_to_act</name><description></description></variable>
 <variable><type>int</type><name>day_of_month_receive_income</name><description></description></variable>
 <variable><type>double</type><name>current_productivity_employer</name><description></description></variable>
 <variable><type>double</type><name>current_mean_specific_skills_employer</name><description></description></variable>
-<variable><type>double</type><name>payment_account</name><description></description></variable>
 <variable><type>double</type><name>total_taxes</name><description>The total amount of taxes paid by household</description></variable>
 <variable><type>double</type><name>cum_total_dividends</name><description>Because dividends are paid daily and taxes monthly, the household has to cumulate dividens</description></variable>
 <variable><type>double</type><name>tax_rate_hh_capital</name><description>the current tax rates on capital income</description></variable>
