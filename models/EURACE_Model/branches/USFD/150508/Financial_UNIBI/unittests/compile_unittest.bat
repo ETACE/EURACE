@@ -1,0 +1,1 @@
+gcc -g unittest.c ../../memory.c ../../messageboards.c ../Clearinghouse_Financial_functions.c Clearinghouse_Financial_unittests.c -lm -lcunit 
