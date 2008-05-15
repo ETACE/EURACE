@@ -71,24 +71,6 @@ int Eurostat_send_data()
 	//printf("SEND %f \n",REGION_HOUSEHOLD_DATA.array[i].average_s_skill_5);
 	}
 	
-	/*Send the tax rate data*/
-	//Eurostat sends one message:
-	add_eurostat_tax_rates_message(GOVERNMENT_TAX_RATES);
-	
-	//Eurostat sends multiple messages
-	//THIS CODE IS REDUNDANT, SINCE GOVERNMENTS ALREADY SEND IT
-/*
-	for(int i = 0; i < GOVERNMENT_TAX_RATES.size; i++)
-	{
-		add_eurostat_tax_rates_message(
-		GOVERNMENT_TAX_RATES.array[i].gov_id, 	
-		GOVERNMENT_TAX_RATES.array[i].tax_rate_corporate,
-		GOVERNMENT_TAX_RATES.array[i].tax_rate_hh_labour,
-		GOVERNMENT_TAX_RATES.array[i].tax_rate_hh_capital,
-		GOVERNMENT_TAX_RATES.array[i].tax_rate_vat);
-	}
-*/
-
 	return 0;
 }
 

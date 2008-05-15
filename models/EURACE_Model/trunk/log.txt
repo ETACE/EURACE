@@ -24,3 +24,8 @@ Statistical_Office_UNIBI/model.xml
 - HH reads government_tax_rates_message and eurostat_tax_rates_message
 - Firm reads government_tax_rates_message and eurostat_tax_rates_message
 -------------------------------------------------------------------------------------------
+Sander, rev 940
+
+Moved id, payment_account to upper level xml.
+First successful parsing wit xParser 0.15.6
+-------------------------------------------------------------------------------------------

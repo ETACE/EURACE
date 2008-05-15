@@ -101,7 +101,7 @@
 			<name>Eurostat</name>
 			<description></description>
 			<memory>
-				<variable><type>int</type><name>id</name><description></description></variable>
+<!--				<variable><type>int</type><name>id</name><description></description></variable>-->
 				<variable><type>Asset_array</type><name>assets</name><description></description></variable>
 				<variable><type>Stock_array</type><name>stocks</name><description></description></variable>
 			</memory>
@@ -131,7 +131,7 @@
 			<!--             Variables                -->
 			<!-- All variableiables used by Producer are declared here to allocate them in memory -->
 			<memory>
-				<variable><type>int</type><name>id</name>	<description></description></variable>
+<!--				<variable><type>int</type><name>id</name>	<description></description></variable>-->
 				<variable><type>double</type><name>wealth</name>	<description></description></variable>
 				<variable><type>Belief_array</type><name>belief</name>	<description></description></variable>
 				<variable>
@@ -156,8 +156,7 @@
 					<name>assetUtilities</name>
 					
 					<description></description></variable>
-				<variable><type>double</type><name>payment_account</name><description></description></variable>
-				
+<!--				<variable><type>double</type><name>payment_account</name><description></description></variable>				-->
 				<variable><type>double</type><name>cash_on_hand</name><description></description></variable>
 				<variable><type>double</type><name>portfolio_budget</name><description></description></variable>
 				<variable><type>int</type><name>forwardWindow</name>	<description></description></variable>
@@ -214,7 +213,7 @@
 			<!--      Variables for the Clearinghouse     -->
 			
 			<memory>
-				<variable><type>int</type><name>id</name><description></description></variable>
+<!-- 			<variable><type>int</type><name>id</name><description></description></variable> -->
 				<variable><type>Asset_array</type><name>assets</name><description></description></variable>
 			</memory>
 			<!--        Defining functions                -->
@@ -248,8 +247,7 @@
 			<!--      Variables for the Bank     -->
 			
 			<memory>
-				
-				<variable><type>int</type><name>id</name>	<description></description></variable>
+<!-- 			<variable><type>int</type><name>id</name>	<description></description></variable> -->
 			</memory>
 			<!--        Defining functions                -->
 			<functions>
@@ -272,11 +270,11 @@
 			<!--      Variables for the Bank     -->
 			
 			<memory>
-				<variable><type>double</type><name>earnings</name><description></description></variable>
-				<variable><type>double</type><name>equity</name><description></description></variable>
-				<variable><type>double</type><name>current_shares_outstanding</name><description></description></variable>
-				<variable><type>int</type><name>id</name><description></description></variable>
-				<variable><type>double</type><name>current_dividend_per_share</name><description></description></variable>
+<!--				<variable><type>int</type><name>id</name><description></description></variable>-->
+<!--				<variable><type>double</type><name>earnings</name><description></description></variable>-->
+<!--				<variable><type>double</type><name>equity</name><description></description></variable>-->
+				<variable><type>double</type><name>current_shares_outstanding</name><description></description></variable>				
+<!--				<variable><type>double</type><name>current_dividend_per_share</name><description></description></variable>-->
 				<variable><type>Stock</type><name>stock</name>	<description></description></variable>
 			</memory>
 			<!--        Defining functions                -->
@@ -355,7 +353,7 @@
 			<name>info_firm</name>
 			<description>message posted by the Eurostat </description>
 			<variables>
-				<variable><type>int</type><name>id</name><description></description></variable>
+<!--				<variable><type>int</type><name>id</name><description></description></variable>-->
 				<variable><type>double</type><name>earnings</name><description></description></variable>
 				<variable><type>double</type><name>dividend_yield</name><description></description></variable>
 				<variable><type>double</type><name>earnings_payout</name><description></description></variable>
