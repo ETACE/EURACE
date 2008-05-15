@@ -381,6 +381,7 @@ xmachine_message * addxmessage(xmachine_message ** p_xmessage)
 	current->next = NULL;
 	current->first = 0;
 	current->last = 0;
+	current->file = NULL;
 
 	/* Return new element */
 	return current;
@@ -403,6 +404,7 @@ void freexmessages(xmachine_message ** p_xmessage)
 		free(head->name);
 		freevariables(&head->vars);
 		freeenvfunc(&head->functions);
+		free(head->file);
 		free(head);
 		head = temp;
 	}

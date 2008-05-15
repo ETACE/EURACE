@@ -277,6 +277,7 @@ struct xmachine_message
 	int var_number;						/**< Number of variables in memory. */
 	int first;
 	int last;
+	char * file;
 	
 	struct xmachine_message * next;	/**< Pointer to next message in list.*/
 };
