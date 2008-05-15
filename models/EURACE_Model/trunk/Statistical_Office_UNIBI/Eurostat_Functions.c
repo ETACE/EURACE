@@ -71,6 +71,24 @@ int Eurostat_send_data()
 	//printf("SEND %f \n",REGION_HOUSEHOLD_DATA.array[i].average_s_skill_5);
 	}
 	
+	/*Send the tax rate data*/
+	//Eurostat sends one message:
+	add_eurostat_tax_rates_message(GOVERNMENT_TAX_RATES);
+	
+	//Eurostat sends multiple messages
+	//THIS CODE IS REDUNDANT, SINCE GOVERNMENTS ALREADY SEND IT
+/*
+	for(int i = 0; i < GOVERNMENT_TAX_RATES.size; i++)
+	{
+		add_eurostat_tax_rates_message(
+		GOVERNMENT_TAX_RATES.array[i].gov_id, 	
+		GOVERNMENT_TAX_RATES.array[i].tax_rate_corporate,
+		GOVERNMENT_TAX_RATES.array[i].tax_rate_hh_labour,
+		GOVERNMENT_TAX_RATES.array[i].tax_rate_hh_capital,
+		GOVERNMENT_TAX_RATES.array[i].tax_rate_vat);
+	}
+*/
+
 	return 0;
 }
 
@@ -805,21 +823,19 @@ int Eurostat_calculate_data()
 
 int Eurostat_read_tax_rates()
 {
-	START_TAX_RATES_MESSAGE_LOOP
-		
-	for (i=0; i<GOVERNMENT_TAX_RATES.size-1; i++)
+	START_GOVERNMENT_TAX_RATES_MESSAGE_LOOP
+	for (i=0; i<GOVERNMENT_TAX_RATES.size; i++)
 	{
-		if(tax_rates_message->gov_id == GOVERNMENT_TAX_RATES.array[i].id)
+		if(government_tax_rates_message->gov_id == GOVERNMENT_TAX_RATES.array[i].id)
 		{
-			GOVERNMENT_TAX_RATES.array[i].tax_rate_corporate = tax_rates_message->tax_rate_corporate;
-			GOVERNMENT_TAX_RATES.array[i].tax_rate_hh_labour = tax_rates_message->tax_rate_hh_labour;
-			GOVERNMENT_TAX_RATES.array[i].tax_rate_hh_capital = tax_rates_message->tax_rate_hh_capital;
-			GOVERNMENT_TAX_RATES.array[i].tax_rate_vat = tax_rates_message->tax_rate_vat;
+			GOVERNMENT_TAX_RATES.array[i].tax_rate_corporate = government_tax_rates_message->tax_rate_corporate;
+			GOVERNMENT_TAX_RATES.array[i].tax_rate_hh_labour = government_tax_rates_message->tax_rate_hh_labour;
+			GOVERNMENT_TAX_RATES.array[i].tax_rate_hh_capital = government_tax_rates_message->tax_rate_hh_capital;
+			GOVERNMENT_TAX_RATES.array[i].tax_rate_vat = government_tax_rates_message->tax_rate_vat;
 			break;
 		}
 	}
-
-	FINISH_TAX_RATES_MESSAGE_LOOP
+	FINISH_GOVERNMENT_TAX_RATES_MESSAGE_LOOP
 	
 	return 0;
 }

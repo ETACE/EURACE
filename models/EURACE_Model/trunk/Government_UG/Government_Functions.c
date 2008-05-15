@@ -13,10 +13,10 @@ int Government_read_tax_payment()
 		TAX_REVENUES += tax_payment_message->tax_payment;
 	FINISH_TAX_PAYMENT_MESSAGE_LOOP
 	
-	START__HOUSEHOLD_TAX_PAYMENT_MESSAGE_LOOP
+	START_HOUSEHOLD_TAX_PAYMENT_MESSAGE_LOOP
 		if(ID == household_tax_payment_messag->gov_id)
 		{
-		TAX_REVENUES += household_tax_payment_message->tax_payment;
+			TAX_REVENUES += household_tax_payment_message->tax_payment;
 		}
 	FINISH_HOUSEHOLD_TAX_PAYMENT_MESSAGE_LOOP
 	
@@ -50,7 +50,7 @@ int Government_send_account_update()
 int Government_send_tax_rates()
 {
 
-	add_tax_rates_message(ID, TAX_RATE_CORPORATE, TAX_RATE_HH_LABOUR, TAX_RATE_HH_CAPITAL, TAX_RATE_VAT);
+	add_government_tax_rates_message(ID, TAX_RATE_CORPORATE, TAX_RATE_HH_LABOUR, TAX_RATE_HH_CAPITAL, TAX_RATE_VAT);
 	
 	return 0;	
 }

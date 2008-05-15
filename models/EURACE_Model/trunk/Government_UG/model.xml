@@ -30,11 +30,20 @@
 </memory>
 
 <functions>
+<function>
+<name>Government_send_tax_rates</name>
+<description></description>
+<currentState>start_Government</currentState>
+<nextState>00</nextState>
+<outputs>
+<output><messageName>government_tax_rates</messageName></output>
+</outputs>
+</function>
 
 <function>
 <name>Government_send_unemployment_benefit_payment</name>
 <description></description>
-<currentState>start_Government</currentState>
+<currentState>00</currentState>
 <nextState>01</nextState>
 <outputs>
 <output><messageName>unemployment_benefit</messageName></output>
@@ -52,9 +61,6 @@
 <input><messageName>household_tax_payment</messageName></input>
 </inputs>
 </function>
-
-
-
 
 <function>
 <name>Government_send_account_update</name>
@@ -113,7 +119,7 @@
 </message>
 
 <message>
-<name>tax_rates</name>
+<name>government_tax_rates</name>
 <description></description>
 <variables>
 <variable><type>int</type><name>gov_id</name><description></description></variable>
