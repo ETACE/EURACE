@@ -69,11 +69,9 @@
 <name>Firm</name>
 <description></description>
 <memory>
-<variable><type>int</type><name>day_of_month_to_act</name><description></description></variable>
 
 <!-- Firm_compute_income_statement -->
 <variable><type>double</type><name>ebit</name><description></description></variable>
-<variable><type>double</type><name>payment_account</name><description></description></variable>
 <variable><type>double</type><name>earnings</name><description></description></variable>
 <variable><type>double</type><name>tax_rate_corporate</name><description></description></variable>
 <variable><type>double</type><name>tax_payment</name><description></description></variable>
@@ -95,7 +93,7 @@
 <variable><type>double</type><name>dividend_per_earnings</name><description></description></variable>
 
 <variable><type>double</type><name>current_share_price</name><description></description></variable>
-<variable><type>double</type><name>current_shares_outstanding</name><description></description></variable>
+<!--<variable><type>double</type><name>current_shares_outstanding</name><description></description></variable>-->
 
 <!-- Ratios -->
 <variable><type>double</type><name>earnings_per_share_ratio</name><description></description></variable>

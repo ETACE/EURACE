@@ -92,7 +92,6 @@
 <name>Bank</name>
 <description></description>
 <memory>
-<variable><type>int</type><name>id</name><description></description></variable>
 <variable><type>double</type><name>cash</name><description></description></variable>
 <variable><type>double</type><name>total_credit</name><description></description></variable>
 <variable><type>double</type><name>equity</name><description></description></variable>

@@ -113,7 +113,6 @@
 <condition><time><period>monthly</period><phase>0</phase></time></condition>
 <inputs>
 <input><messageName>eurostat_send_specific_skills</messageName></input>
-<input><messageName>eurostat_tax_rates</messageName></input>
 <input><messageName>government_tax_rates</messageName></input>
 </inputs>
 </function>
@@ -166,7 +165,6 @@
 <nextState>Start_Household_Financial_Role</nextState>
 <condition><time><period>monthly</period><phase>0</phase></time></condition>
 <inputs>
-<input><messageName>eurostat_tax_rates</messageName></input>
 <input><messageName>government_tax_rates</messageName></input>
 </inputs>
 </function>
@@ -286,7 +284,6 @@
 <condition><time><period>monthly</period><phase>0</phase></time></condition>
 <outputs>
 <output><messageName>eurostat_send_specific_skills</messageName></output>
-<output><messageName>eurostat_tax_rates</messageName></output>
 </outputs>
 </function>
 
@@ -378,14 +375,6 @@
 <variable><type>double</type><name>specific_skill_3</name><description></description></variable>
 <variable><type>double</type><name>specific_skill_4</name><description></description></variable>
 <variable><type>double</type><name>specific_skill_5</name><description></description></variable>
-</variables>
-</message>
-
-<message>
-<name>eurostat_tax_rates</name>
-<description></description>
-<variables>
-<variable><type>tax_rates_item[27]</type><name>government_tax_rates</name><description></description></variable>
 </variables>
 </message>
 
