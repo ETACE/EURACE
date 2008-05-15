@@ -175,7 +175,7 @@
 				<function>
 					<name>Household_receive_info_asset_to_eurostat</name>
 					<description></description>
-					<currentState>START_HOUSEHOLD</currentState>
+					<currentState>Start_Household_Financial_Role</currentState>
 					<nextState>SELECTSTRATEGY</nextState>
 					<inputs>
 						<input><messageName>infoAssetEURO</messageName></input>

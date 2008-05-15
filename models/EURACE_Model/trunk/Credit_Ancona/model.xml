@@ -112,10 +112,16 @@
 
 <functions>
 
+<function><name>Bank_idle</name>
+<description></description>
+<currentState>start_Bank</currentState>
+<nextState>Bank_01</nextState>
+</function>
+
 <function>
 <name>Bank_decide_credit_conditions</name>
 <description></description>
-<currentState>start_Bank</currentState>
+<currentState>Bank_01</currentState>
 <nextState>Bank_02</nextState>
 <inputs>
 <input><messageName>loan_request</messageName></input>
