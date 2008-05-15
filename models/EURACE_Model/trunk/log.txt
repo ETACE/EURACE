@@ -29,3 +29,8 @@ Sander, rev 940
 Moved id, payment_account to upper level xml.
 First successful parsing wit xParser 0.15.6
 -------------------------------------------------------------------------------------------
+Sander, rev 941
+
+Added TimeUnits: Quarterly = 3 monthly, yearly = 12 monthly 
+Moved Eurostat_read_tax_data upwards to beginning, condition: Period: yearly, phase: 0
+-------------------------------------------------------------------------------------------
