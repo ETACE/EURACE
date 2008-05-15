@@ -1,0 +1,26 @@
+/***********************************
+Description: 
+This file contains details of various changes made to the different versions.
+15/05/2008: Start og logfile
+*************************************/
+
+------------------------------------------------------------------------------------------
+Sander, rev 925
+
+New functions:
+
+Government_UG/Government_Functions.c:	Government_send_tax_rates
+Statistical_Office_UNIBI/Eurostat_Functions.c: Eurostat_read_tax_rates
+Statistical_Office_UNIBI/Household_Statistics_Functions.c: Household_receive_data
+Labour_UNIBI/Firm_Employer_Functions.c: Firm_receive_data
+
+New tax rate messages:
+
+Government_UG/model.xml
+- Government sends government_tax_rates_message to Eurostat
+
+Statistical_Office_UNIBI/model.xml
+- Eurostat sends eurostat_tax_rates_message to Household, Firm
+- HH reads government_tax_rates_message and eurostat_tax_rates_message
+- Firm reads government_tax_rates_message and eurostat_tax_rates_message
+-------------------------------------------------------------------------------------------
