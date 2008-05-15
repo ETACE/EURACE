@@ -1704,6 +1704,26 @@ int checkmodel(model_data * modeldata)
 			current_ioput = current_function->inputs;
 			while(current_ioput)
 			{
+				/* Check if message type exists */
+				found = 0;
+				current_message = * modeldata->p_xmessages;
+				while(current_message)
+				{
+					if(strcmp(current_ioput->messagetype, current_message->name) == 0)
+					{
+						found = 1;
+					}
+					
+					current_message = current_message->next;
+				}
+				if(found == 0)
+				{
+					fprintf(stderr, "ERROR: input message type '%s' in function '%s' in agent '%s' in file '%s' doesn't exist\n",
+								current_ioput->messagetype, current_function->name, current_xmachine->name, current_function->file);
+					return -1;
+				}
+					
+				
 				/* If input message has a filter */
 				if(current_ioput->filter_rule != NULL)
 				{
@@ -1721,6 +1741,32 @@ int checkmodel(model_data * modeldata)
 				
 				current_ioput = current_ioput->next;
 			}
+			
+			current_ioput = current_function->outputs;
+			while(current_ioput)
+			{
+				/* Check if message type exists */
+				found = 0;
+				current_message = * modeldata->p_xmessages;
+				while(current_message)
+				{
+					if(strcmp(current_ioput->messagetype, current_message->name) == 0)
+					{
+						found = 1;
+					}
+					
+					current_message = current_message->next;
+				}
+				if(found == 0)
+				{
+					fprintf(stderr, "ERROR: output message type '%s' in function '%s' in agent '%s' in file '%s' doesn't exist\n",
+								current_ioput->messagetype, current_function->name, current_xmachine->name, current_function->file);
+					return -1;
+				}
+				
+				current_ioput = current_ioput->next;
+			}
+			
 			
 			current_function = current_function->next;
 		}
