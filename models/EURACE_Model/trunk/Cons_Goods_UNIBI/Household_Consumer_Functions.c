@@ -116,9 +116,9 @@ int Household_pay_taxes()
 {
 	
 	/*Compute the total taxes*/
-	TOTAL_TAXES = CUM_TOTAL_DIVIDENS*CURRENT_HH_CAPITAL_TAX_RATE + WAGE*CURRENT_HH_LABOUR_TAX_RATE;
+	TOTAL_TAXES = CUM_TOTAL_DIVIDENS*TAX_RATE_HH_CAPITAL + WAGE*TAX_RATE_HH_LABOUR;
 	/*Send a message to the government*/
-	add_household_tax_payment_message(ID,GOV_ID,TOTAL_TAXES);
+	add_tax_payment_message(ID,GOV_ID,TOTAL_TAXES);
 	/*reduce the payment account*/
 	PAYMENT_ACCOUT-=TOTAL_TAXES;
 	
