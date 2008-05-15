@@ -20,7 +20,6 @@
 <name>Government</name>
 <description></description>
 <memory>
-<variable><type>int</type><name>id</name><description></description></variable>
 <variable><type>double</type><name>payment_account</name><description></description></variable>
 <variable><type>double</type><name>tax_revenues</name><description></description></variable>
 <variable><type>double</type><name>unemployment_benefit_payment</name><description></description></variable>

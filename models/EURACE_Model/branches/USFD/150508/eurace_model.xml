@@ -145,16 +145,5 @@
 
 </agents>
 
-<messages>
-
-<message>
-<name>bank_account_update</name>
-<description>General payment message send by every agent at end of the day</description>
-<variables>
-<variable><type>double</type><name>payment_account</name><description></description></variable>
-</variables>
-</message>
-
-</messages>
 
 </xmodel>
