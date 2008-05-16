@@ -18,7 +18,7 @@
 
 <dataType>
 <name>household_data</name>
-<description>Used by Market Research to store data of the different regions</description>
+<description>Used by Eurostat to store data of the different regions</description>
 <variables>
 <variable><type>int</type><name>region_id</name><description></description></variable>
 <variable><type>int</type><name>no_households</name><description></description></variable>
@@ -58,7 +58,7 @@
 
 <dataType>
 <name>firm_data</name>
-<description>Used by Market Research to store data of the different regions</description>
+<description>Used by Eurostat to store data of the different regions</description>
 <variables>
 <variable><type>int</type><name>region_id</name><description></description></variable>
 <variable><type>int</type><name>firms</name><description></description></variable>
