@@ -171,9 +171,8 @@ int Firm_compute_balance_sheet()
     
 	/*reading current mall stocks   */
 	START_CURRENT_MALL_STOCK_INFO_MESSAGE_LOOP
-
-		if(current_mall_stock_info_message->firm_id == ID)
-		{
+//		if(current_mall_stock_info_message->firm_id == ID)
+//		{
 			for(int j=0; j< CURRENT_MALL_STOCKS.size;j++)
 			{
 				if(current_mall_stock_info_message->mall_id==
@@ -183,7 +182,7 @@ int Firm_compute_balance_sheet()
 					CURRENT_MALL_STOCKS.array[j].current_stock= current_mall_stock_info_message->stock;
 				}		
 			}
-		}
+//		}
 	FINISH_CURRENT_MALL_STOCK_INFO_MESSAGE_LOOP
 
     //TOTAL_VALUE_LOCAL_INVENTORY: estimated value of local inventory stocks at current mall prices
@@ -419,8 +418,8 @@ int Firm_read_stock_transactions()
 	double finances;
 	
     START_ORDER_STATUS_MESSAGE_LOOP
-    if(order_status_message->trader_id==ID)
-    {
+//    if(order_status_message->trader_id==ID)
+//    {
         //order_status_message->asset_id
         //order_status_message->price
         //order_status_message->quantity
@@ -433,7 +432,7 @@ int Firm_read_stock_transactions()
     	
     	//Decrease external financial needs with the finances obtained
     	EXTERNAL_FINANCIAL_NEEDS -= finances;
-    }
+//    }
     FINISH_ORDER_STATUS_MESSAGE_LOOP
     return 0;
 }

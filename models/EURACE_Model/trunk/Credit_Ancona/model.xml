@@ -97,7 +97,7 @@
 <variable><type>double</type><name>equity</name><description></description></variable>
 <variable><type>double</type><name>bce_debt</name><description></description></variable>
 <variable><type>double</type><name>alfa</name><description></description></variable>
-<variable><type>double</type><name>variable</name><description></description></variable>
+<variable><type>double</type><name>value_at_risk</name><description></description></variable>
 <variable><type>double</type><name>min_interest</name><description></description></variable>
 <variable><type>double</type><name>gamma[2]</name><description></description></variable>
 <variable><type>double</type><name>profits[2]</name><description></description></variable>
@@ -212,7 +212,7 @@
 
 <message>
 <name>loan_request</name>
-<description>Added by firm to demand credit; credit request and financial info of applying firm</description>
+<description>Message added by firm to demand credit with bank_id, with financial info of applying firm.</description>
 <variables>
 <variable><type>int</type><name>firm_id</name><description></description></variable>
 <variable><type>int</type><name>bank_id</name><description></description></variable>
@@ -225,7 +225,7 @@
 
 <message>
 <name>loan_conditions</name>
-<description>Added by bank to offer credit;amount of offered credit and interest rate</description>
+<description> Message added by bank to offer credit; contains the interest rate, the amount of offered credit, and the value_at_risk.</description>
 <variables>
 <variable><type>int</type><name>firm_id</name><description></description></variable>
 <variable><type>int</type><name>bank_id</name><description></description></variable>
@@ -238,7 +238,7 @@
 
 <message>
 <name>loan_acceptance</name>
-<description>Added by firm to demand credit: the firm takes the credit offered</description>
+<description>Message added by firm to accept a loan with bank_id, for the amount credit_taken. The bank does not need to know the firm_id.</description>
 <variables>
 <variable><type>int</type><name>bank_id</name><description></description></variable>
 <variable><type>double</type><name>credit_amount_taken</name><description></description></variable>
@@ -247,7 +247,7 @@
 
 <message>
 <name>installment</name>
-<description>firm pays installment and interest to the bank (these payments are not included in the total_payment variable)</description>
+<description>Message added by firm pays installment and interest to the bank.</description>
 <variables>
 <variable><type>int</type><name>bank_id</name><description></description></variable>
 <variable><type>double</type><name>installment_amount</name><description>installment_amount is 0 in case of bankruptcy, positive in case of No_bankruptcy</description></variable>
@@ -258,7 +258,7 @@
 
 <message>
 <name>bankruptcy</name>
-<description></description>
+<description>Message added by firm to bank to signal bankruptcy.</description>
 <variables>
 <variable><type>int</type><name>bank_id</name><description></description></variable>
 <variable><type>double</type><name>bad_debt</name><description></description></variable>

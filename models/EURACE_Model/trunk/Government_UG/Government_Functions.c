@@ -10,10 +10,7 @@ int Government_read_tax_payment()
 	TAX_REVENUES =0.0;
 
 	START_TAX_PAYMENT_MESSAGE_LOOP
-		if(ID == tax_payment_message->gov_id)
-		{
-			TAX_REVENUES += tax_payment_message->tax_payment;
-		}
+		TAX_REVENUES += tax_payment_message->tax_payment;
 	FINISH_TAX_PAYMENT_MESSAGE_LOOP	
 
 	PAYMENT_ACCOUNT += TAX_REVENUES;
