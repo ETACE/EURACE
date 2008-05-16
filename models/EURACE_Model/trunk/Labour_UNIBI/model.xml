@@ -483,7 +483,7 @@ the reservation wage</description>
 <message>
 <name>vacancies</name>
 <description>Send by firms. Includes the id, the region id the number of vacancies and the 
-wage offer for the according general skill level</description>
+wage offer for the according general skill level.</description>
 <variables>
 <variable><type>int</type><name>firm_id</name><description></description></variable>
 <variable><type>int</type><name>region_id</name><description></description></variable>
@@ -517,7 +517,7 @@ wage offer for the according general skill level.</description>
 
 <message>
 <name>job_application</name>
-<description>Send by households. Includes the id, firm id, region id the general 
+<description>Send by households to apply for a job. Includes the id, firm id, region id the general 
 as well as the specific skills.</description>
 <variables>
 <variable><type>int</type><name>worker_id</name><description></description></variable>
@@ -530,7 +530,7 @@ as well as the specific skills.</description>
 
 <message>
 <name>job_application2</name>
-<description>Send by households. Includes the id, firm id, region id the general 
+<description>Send by households to apply for a job. Includes the id, firm id, region id the general 
 as well as the specific skills.</description>
 <variables>
 <variable><type>int</type><name>worker_id</name><description></description></variable>
@@ -543,7 +543,7 @@ as well as the specific skills.</description>
 
 <message>
 <name>job_offer</name>
-<description>Send by firms. Includes the id, worker id and the 
+<description>Send by firms to make a job offer for a household. Includes the id, worker id and the 
 corresponding wage offer.</description>
 <variables>
 <variable><type>int</type><name>firm_id</name><description></description></variable>
@@ -555,7 +555,7 @@ corresponding wage offer.</description>
 
 <message>
 <name>job_offer2</name>
-<description>Send by firms. Includes the id, worker id and the 
+<description>Send by firms to make a job offer for a household. Includes the id, worker id and the 
 corresponding wage offer.</description>
 <variables>
 <variable><type>int</type><name>firm_id</name><description></description></variable>
@@ -567,7 +567,7 @@ corresponding wage offer.</description>
 
 <message>
 <name>job_acceptance</name>
-<description>Send by households. Includes the id, firm id, region id, the general 
+<description>Send by households to accept the job offer. Includes the id, firm id, region id, the general 
 as well as the specific skills.</description>
 <variables>
 <variable><type>int</type><name>worker_id</name><description></description></variable>
@@ -580,7 +580,7 @@ as well as the specific skills.</description>
 
 <message>
 <name>job_acceptance2</name>
-<description>Send by households. Includes the id, firm id, region id the general 
+<description>Send by households to accept the job offer. Includes the id, firm id, region id the general 
 as well as the specific skills.</description>
 <variables>
 <variable><type>int</type><name>worker_id</name><description></description></variable>
@@ -611,7 +611,7 @@ as well as the specific skills.</description>
 
 <message>
 <name>quitting</name>
-<description>Send by households. Includes the id, firm id.</description>
+<description>Send by households to quit the current job. Includes the id, firm id.</description>
 <variables>
 <variable><type>int</type><name>worker_id</name><description></description></variable>
 <variable><type>int</type><name>firm_id</name><description></description></variable>
@@ -620,7 +620,7 @@ as well as the specific skills.</description>
 
 <message>
 <name>quitting2</name>
-<description>Send by households. Includes the id, firm id.</description>
+<description>Send by households to quit the current job. Includes the id, firm id.</description>
 <variables>
 <variable><type>int</type><name>worker_id</name><description></description></variable>
 <variable><type>int</type><name>firm_id</name><description></description></variable>
