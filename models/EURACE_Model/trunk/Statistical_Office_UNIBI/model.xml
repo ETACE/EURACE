@@ -402,7 +402,7 @@ including several micro data.</description>
 
 <message>
 <name>firm_send_data</name>
-<description>Send by firms. Includes micro data.</description>
+<description>Send by firms to Eurostat. Includes micro data.</description>
 <variables>
 <variable><type>int</type><name>firm_id</name><description></description></variable>
 <variable><type>int</type><name>region_id</name><description></description></variable>
@@ -425,7 +425,7 @@ including several micro data.</description>
 
 <message>
 <name>household_send_data</name>
-<description>Sent by households. Includes micro data.</description>
+<description>Sent by households to eurostat. Includes micro data.</description>
 <variables>
 <variable><type>int</type><name>household_id</name><description></description></variable>
 <variable><type>int</type><name>region_id</name><description></description></variable>
