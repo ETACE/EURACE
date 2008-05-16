@@ -65,8 +65,14 @@
 <currentState>01</currentState>
 <nextState>02</nextState>
 <inputs>
-<input><messageName>tax_payment</messageName></input>
-<input><messageName>household_tax_payment</messageName></input>
+<input>
+<messageName>tax_payment</messageName>
+<filter>
+  <lhs><value>a.id</value></lhs>
+  <op>EQ</op>
+  <rhs><value>m.gov_id</value></rhs>
+ </filter>
+</input>
 </inputs>
 </function>
 
