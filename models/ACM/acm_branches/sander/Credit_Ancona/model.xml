@@ -47,18 +47,13 @@
 <name>Firm</name>
 <description></description>
 <memory>
-<variable><type>double_array</type><name>interest</name><description></description></variable>
-<variable><type>double_array</type><name>credit_offer</name><description></description></variable>
-<variable><type>double_array</type><name>rateorder</name><description></description></variable>
-<!--<variable><type>double_array</type><name>value_at_risk</name><description></description></variable>-->
-<variable><type>double</type><name>dmarketmatrix[10]</name><description></description></variable>
-<variable><type>int</type><name>installment_number</name><description></description></variable>
+<variable><type>double</type><name>dmarketmatrix[CONST_NUMBER_OF_BANKS]</name><description></description></variable>
 </memory>
 
 <functions>
 
 <function>
-<name>Firm_ask_for_loan</name>
+<name>Firm_ask_loan</name>
 <description></description>
 <currentState>Start_Firm_Credit_Role</currentState>
 <nextState>Firm_Credit_02</nextState>
@@ -68,15 +63,20 @@
 </outputs>
 </function>
 
-
-
 <function>
-<name>Firm_choose_bank</name>
+<name>Firm_get_loan</name>
 <description></description>
 <currentState>Firm_Credit_02</currentState>
 <nextState>End_Firm_Credit_Role</nextState>
 <inputs>
-<input><messageName>loan_conditions</messageName></input>
+<input>
+<messageName>loan_conditions</messageName>
+<filter>
+  <lhs><value>a.id</value></lhs>
+  <op>EQ</op>
+  <rhs><value>m.firm_id</value></rhs>
+ </filter>
+</input>
 </inputs>
 <outputs>
 <output><messageName>loan_acceptance</messageName></output>
@@ -105,7 +105,6 @@
 <variable><type>double</type><name>bce_interest</name><description></description></variable>
 <variable><type>double</type><name>debt_period</name><description></description></variable>
 <variable><type>int</type><name>loan_request_message_found</name><description></description></variable>
-<variable><type>int</type><name>day_of_month_to_act</name><description></description></variable>
 </memory>
 
 
