@@ -520,40 +520,31 @@ int Firm_calc_pay_costs()
 	
 	START_CAPITAL_GOOD_DELIVERY_MESSAGE_LOOP
 		
-		if (capital_good_delivery_message->productivity > TECHNOLOGICAL_FRONTIER)
-		{
-			TECHNOLOGICAL_FRONTIER = capital_good_delivery_message->productivity;
-		}
 
-		if(ID == capital_good_delivery_message->firm_id)
+		/*Adding a new capital stock item*/
+		units			= capital_good_delivery_message->capital_good_delivery_volume;
+		purchase_price	= capital_good_delivery_message->capital_good_price;
+		productivity	= capital_good_delivery_message->productivity;
+		depreciation_units_per_period = DEPRECIATION_RATE*units;
+		
+		add_capital_stock_item(&CAPITAL_STOCK, units, purchase_price, productivity, depreciation_units_per_period);
+		
+		/*Update the total units of capital*/
+		TOTAL_UNITS_CAPITAL_STOCK += units;
+		
+		/*Determine the weighted average productivity of the total capital stock*/
+		imax = CAPITAL_STOCK.size;
+		TECHNOLOGY=0;
+		for (i=0;i<imax;i++)
 		{
-			/*Adding a new capital stock item*/
-			units			= capital_good_delivery_message->capital_good_delivery_volume;
-			purchase_price	= capital_good_delivery_message->capital_good_price;
-			productivity	= capital_good_delivery_message->productivity;
-			depreciation_units_per_period = DEPRECIATION_RATE*units;
-			
-			add_capital_stock_item(&CAPITAL_STOCK, units, purchase_price, productivity, depreciation_units_per_period);
-			
-			/*Update the total units of capital*/
-			TOTAL_UNITS_CAPITAL_STOCK += units;
-			
-			/*Determine the weighted average productivity of the total capital stock*/
-			imax = CAPITAL_STOCK.size;
-			TECHNOLOGY=0;
-			for (i=0;i<imax;i++)
-			{
-				TECHNOLOGY += CAPITAL_STOCK.array[i].productivity*CAPITAL_STOCK.array[i].units/TOTAL_UNITS_CAPITAL_STOCK;
-			}
-	 
-			/*Computing the capital bill*/
-			capital_costs += capital_good_delivery_message
-			->capital_good_delivery_volume* capital_good_delivery_message
-			->capital_good_price;
-			
-			/*This is to keep the current price and best pratice technology in memory*/
-			ACTUAL_CAP_PRICE =capital_good_delivery_message->capital_good_price;
+			TECHNOLOGY += CAPITAL_STOCK.array[i].productivity*CAPITAL_STOCK.array[i].units/TOTAL_UNITS_CAPITAL_STOCK;
 		}
+ 
+		/*Computing the capital bill*/
+		capital_costs += capital_good_delivery_message
+		->capital_good_delivery_volume* capital_good_delivery_message
+		->capital_good_price;
+		
 	FINISH_CAPITAL_GOOD_DELIVERY_MESSAGE_LOOP
 
 
@@ -693,23 +684,19 @@ int Firm_calc_revenue()
 	/*calc the daily revenue and sum up the monthly revenue*/
 	START_SALES_MESSAGE_LOOP
 	
-		if(sales_message->firm_id==ID)
+		for(int i=0; i< SOLD_QUANTITIES.size; i++)
 		{
-		
-			for(int i=0; i< SOLD_QUANTITIES.size; i++)
+			if(sales_message->mall_id ==  SOLD_QUANTITIES.array[i].mall_id)
 			{
-				if(sales_message->mall_id ==  SOLD_QUANTITIES.array[i].mall_id)
-				{
-					SOLD_QUANTITIES.array[i].sold_quantity += 
-					sales_message->revenue/PRICE;
-				
-					REVENUE_PER_DAY += sales_message->revenue;
+				SOLD_QUANTITIES.array[i].sold_quantity += 
+				sales_message->revenue/PRICE;
 			
-					CUM_REVENUE += sales_message->revenue;
+				REVENUE_PER_DAY += sales_message->revenue;
 		
-					TOTAL_SOLD_QUANTITY+=sales_message->revenue/PRICE;
-				}	
-			}
+				CUM_REVENUE += sales_message->revenue;
+	
+				TOTAL_SOLD_QUANTITY+=sales_message->revenue/PRICE;
+			}	
 		}
 	
 	FINISH_SALES_MESSAGE_LOOP
@@ -779,21 +766,17 @@ int Firm_calc_revenue()
  */
 int Firm_update_specific_skills_of_workers()
 {
-
 	START_SPECIFIC_SKILL_UPDATE_MESSAGE_LOOP
 
-		if(specific_skill_update_message->firm_id==ID)
+		for(int i=0; i<EMPLOYEES.size;i++)
 		{
-			for(int i=0; i<EMPLOYEES.size;i++)
+			if(specific_skill_update_message->id==EMPLOYEES.array[i].id)
 			{
-				if(specific_skill_update_message->id==EMPLOYEES.array[i].id)
-				{
-					EMPLOYEES.array[i].specific_skill=
-					specific_skill_update_message->specific_skills;
-				}
+				EMPLOYEES.array[i].specific_skill=
+				specific_skill_update_message->specific_skills;
 			}
 		}
-
+		
 	FINISH_SPECIFIC_SKILL_UPDATE_MESSAGE_LOOP
 
 	return 0;

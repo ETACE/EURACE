@@ -249,6 +249,7 @@ on the current stocks in the malls</description>
 <nextState>12</nextState>
 <inputs>
 <input><messageName>capital_good_delivery</messageName></input>
+<filter><lhs><value>a.id</value></lhs><op>EQ</op><rhs><value>m.firm_id</value></rhs></filter>
 </inputs>
 <outputs>
 <output><messageName>wage_payment</messageName></output>
@@ -275,6 +276,7 @@ distribute the dividends to households.</description>
 <nextState>13b</nextState>
 <inputs>
 <input><messageName>sales</messageName></input>
+<filter><lhs><value>a.id</value></lhs><op>EQ</op><rhs><value>m.firm_id</value></rhs></filter>
 </inputs>
 </function>
 
@@ -286,6 +288,7 @@ firms update the specific skill levels of the workers.</description>
 <condition><time><period>monthly</period><phase>a.day_of_month_to_act</phase></time></condition>
 <inputs>
 <input><messageName>specific_skill_update</messageName></input>
+<filter><lhs><value>a.id</value></lhs><op>EQ</op><rhs><value>m.firm_id</value></rhs></filter>
 </inputs>
 </function>
 
@@ -350,7 +353,9 @@ firms update the specific skill levels of the workers.</description>
 	<rhs><lhs><value>a.employee_firm_id</value></lhs><op>NEQ</op><rhs><value>-1</value></rhs></rhs>
 </condition>
 <inputs>
-<input><messageName>wage_payment</messageName></input>
+<input><messageName>wage_payment</messageName>
+<filter><lhs><value>a.id</value></lhs><op>EQ</op><rhs><value>m.worker_id</value></rhs></filter>
+</input>
 </inputs>
 </function>
 
@@ -372,7 +377,11 @@ firms update the specific skill levels of the workers.</description>
 	<op>AND</op>
 	<rhs><lhs><value>a.employee_firm_id</value></lhs><op>EQ</op><rhs><value>-1</value></rhs></rhs>
 </condition>
-<input><messageName>unemployment_benefit</messageName></input>
+<inputs>
+<input><messageName>unemployment_benefit</messageName>
+<filter><lhs><value>a.gov_id</value></lhs><op>EQ</op><rhs><value>m.gov_id</value></rhs></filter>
+</input>
+</inputs>
 </function>
 
 <function><name>Household_pay_taxes</name>
@@ -403,7 +412,10 @@ sends its good request.</description>
 <nextState>10</nextState>
 <condition><time><period>monthly</period><phase>a.day_of_month_to_act</phase></time></condition>
 <inputs>
-<input><messageName>quality_price_info_1</messageName></input>
+<input><messageName>quality_price_info_1</messageName>
+<filter><lhs><value>a.region_id</value></lhs><op>EQ</op><rhs><value>m.mall_region_id</value></rhs></filter>
+</input>
+</input>
 </inputs>
 <outputs>
 <output><messageName>consumption_request_1</messageName></output>
@@ -417,7 +429,9 @@ order and delivery volumes befor the second step to zero.</description>
 <currentState>10</currentState>
 <nextState>11</nextState>
 <inputs>
-<input><messageName>accepted_consumption_1</messageName></input>
+<input><messageName>accepted_consumption_1</messageName>
+<filter><lhs><value>a.id</value></lhs><op>EQ</op><rhs><value>m.household_id</value></rhs></filter>
+</input>
 </inputs>
 </function>
 
@@ -436,7 +450,9 @@ sends its good request.</description>
 <nextState>12</nextState>
 <condition><lhs><value>a.rationed</value></lhs><op>EQ</op><rhs><value>1</value></rhs></condition>
 <inputs>
-<input><messageName>quality_price_info_2</messageName></input>
+<input><messageName>quality_price_info_2</messageName>
+<filter><lhs><value>a.region_id</value></lhs><op>EQ</op><rhs><value>m.mall_region_id</value></rhs></filter>
+</input>
 </inputs>
 <outputs>
 <output><messageName>consumption_request_2</messageName></output>
@@ -448,7 +464,8 @@ sends its good request.</description>
 <currentState>12</currentState>
 <nextState>14</nextState>
 <inputs>
-<input><messageName>accepted_consumption_2</messageName></input>
+<input><messageName>accepted_consumption_2</messageName>
+<filter><lhs><value>a.id</value></lhs><op>EQ</op><rhs><value>m.household_id</value></rhs></filter></input>
 </inputs>
 </function>
 
@@ -491,7 +508,8 @@ spent in both consumtion steps, into the PAYMENT_ACCOUNT.</description>
 <currentState>01</currentState>
 <nextState>02</nextState>
 <inputs>
-<input><messageName>update_mall_stock</messageName></input>
+<input><messageName>update_mall_stock</messageName>
+<filter><lhs><value>a.id</value></lhs><op>EQ</op><rhs><value>m.mall_id</value></rhs></filter></input>
 </inputs>
 </function>
 
@@ -510,7 +528,8 @@ if possible (otherwise rationing).</description>
 <currentState>03</currentState>
 <nextState>04</nextState>
 <inputs>
-<input><messageName>consumption_request_1</messageName></input>
+<input><messageName>consumption_request_1</messageName>
+<filter><lhs><value>a.id</value></lhs><op>EQ</op><rhs><value>m.mall_id</value></rhs></filter></input></input>
 </inputs>
 <outputs>
 <output><messageName>quality_price_info_2</messageName></output>
@@ -524,7 +543,8 @@ possible, otherwise rationing.</description>
 <currentState>04</currentState>
 <nextState>05</nextState>
 <inputs>
-<input><messageName>consumption_request_2</messageName></input>
+<input><messageName>consumption_request_2</messageName>
+<filter><lhs><value>a.id</value></lhs><op>EQ</op><rhs><value>m.mall_id</value></rhs></filter></input></input>
 </inputs>
 <outputs>
 <output><messageName>accepted_consumption_2</messageName></output>
@@ -630,7 +650,7 @@ supplier and the quantity of the good a household wants to have.</description>
 <description>Sent by mall. Quantity of the good which can be delivered by the mall.</description>
 <variables>
 <variable><type>int</type><name>mall_id</name><description></description></variable>
-<variable><type>int</type><name>worker_id</name><description></description></variable>
+<variable><type>int</type><name>household_id</name><description></description></variable>
 <variable><type>double</type><name>offered_consumption_volume</name><description></description></variable>
 <variable><type>int</type><name>rationed</name><description></description></variable>
 </variables>
@@ -641,7 +661,7 @@ supplier and the quantity of the good a household wants to have.</description>
 <description>Sent by mall. Quantity of the good which can be delivered by the mall.</description>
 <variables>
 <variable><type>int</type><name>mall_id</name><description></description></variable>
-<variable><type>int</type><name>worker_id</name><description></description></variable>
+<variable><type>int</type><name>household_id</name><description></description></variable>
 <variable><type>double</type><name>offered_consumption_volume</name><description></description></variable>
 <variable><type>int</type><name>rationed</name><description></description></variable>
 </variables>
