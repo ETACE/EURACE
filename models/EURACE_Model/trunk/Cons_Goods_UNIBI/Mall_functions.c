@@ -226,7 +226,7 @@ int Mall_update_mall_stocks_sales_rationing_2()
 
 		/*Read the request*/
 	START_CONSUMPTION_REQUEST_2_MESSAGE_LOOP
-
+	// Message filter used: if(a.id==m.mall_id)
 
 			add_consumption_request(&consumption_request_list, 				consumption_request_2_message->worker_id, 
 			consumption_request_2_message->firm_id, 
