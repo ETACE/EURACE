@@ -415,7 +415,6 @@ sends its good request.</description>
 <input><messageName>quality_price_info_1</messageName>
 <filter><lhs><value>a.region_id</value></lhs><op>EQ</op><rhs><value>m.mall_region_id</value></rhs></filter>
 </input>
-</input>
 </inputs>
 <outputs>
 <output><messageName>consumption_request_1</messageName></output>
@@ -529,7 +528,7 @@ if possible (otherwise rationing).</description>
 <nextState>04</nextState>
 <inputs>
 <input><messageName>consumption_request_1</messageName>
-<filter><lhs><value>a.id</value></lhs><op>EQ</op><rhs><value>m.mall_id</value></rhs></filter></input></input>
+<filter><lhs><value>a.id</value></lhs><op>EQ</op><rhs><value>m.mall_id</value></rhs></filter></input>
 </inputs>
 <outputs>
 <output><messageName>quality_price_info_2</messageName></output>
@@ -544,7 +543,7 @@ possible, otherwise rationing.</description>
 <nextState>05</nextState>
 <inputs>
 <input><messageName>consumption_request_2</messageName>
-<filter><lhs><value>a.id</value></lhs><op>EQ</op><rhs><value>m.mall_id</value></rhs></filter></input></input>
+<filter><lhs><value>a.id</value></lhs><op>EQ</op><rhs><value>m.mall_id</value></rhs></filter></input>
 </inputs>
 <outputs>
 <output><messageName>accepted_consumption_2</messageName></output>
