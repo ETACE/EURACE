@@ -8,15 +8,12 @@
 
 
 /*
- * \fn: int Firm_financial_payments()
- * \brief: This function computes the income statement of the firm.
+ * \fn: Firm_compute_financial_payments()
+ * \brief: Function to compute the prior financial commitments of the firm: interests, installments, taxes.
  * 
- * The firm computes the actual payments by setting these values:
+ * The firm computes the commitments by setting these values:
  *  - total_debt_installment_payment
  *  - total_interest_payments
- *  - tax_payment
- *  - total_dividend_payment
- * The payments are all subtracted from the payment account.
  */
 int Firm_compute_financial_payments()
 {
@@ -62,8 +59,8 @@ int Firm_compute_financial_payments()
 }
 
 /*
- * \fn: int Firm_compute_income_statement()
- * \brief: This function computes the income statement of the firm.
+ * \fn: Firm_compute_income_statement()
+ * \brief: Function to compute the income statement of the firm.
  */
 int Firm_compute_income_statement()
 {
@@ -93,7 +90,10 @@ int Firm_compute_income_statement()
     return 0;
 }
 
-
+/*
+ * \fn: Firm_compute_dividends()
+ * \brief: Function to compute the total dividend payout of the firm.
+ */
 int Firm_compute_dividends()
 {
 	//Determine total_dividend_payment
@@ -139,6 +139,16 @@ int Firm_compute_dividends()
     return 0;
 }
 
+/*
+ * \fn: Firm_compute_total_financial_payments()
+ * \brief: Function to compute the total financial payments of the firm: interest, installments, taxes, production costs, dividends.
+ * 
+ *  - total_interest_payment
+ *  - total_debt_installment_payment
+ *  - total_dividend_payment
+ *  - tax_payment
+ *  - production_costs
+ */
 int Firm_compute_total_financial_payments()
 {
 	//This variable is not used anywhere: it is the sum of financial_liquidity_needs and production_liquidity_needs
@@ -148,13 +158,13 @@ int Firm_compute_total_financial_payments()
 }
 
 /*
- * \fn: int Firm_compute_balance_sheet()
- * \brief: This function computes the balance sheet of the firm at the END of an accounting period,
- * (typically this is a month). The computation of the balance sheet occurs after all payments have been made.
- * In addition, we compute these values:
- *  - value_capital_stock
- *  - value_inventory_stock
- *  - total_asset_value
+ * \fn: Firm_compute_balance_sheet()
+ * \brief: Function to compute the balance sheet of the firm.
+ * We compute these values:
+ *  - total_value_capital_stock
+ *  - total_value_inventory_stock
+ *  - total_assets
+ *  - equity
  */ 
 int Firm_compute_balance_sheet()
 {
@@ -208,11 +218,12 @@ int Firm_compute_balance_sheet()
 }
 
 /*
- * \fn: int Firm_compute_financial_needs()
- * \brief: This function computes the financial needs for executing the payments.
- * The values computed in this function refer to:
- *  - the payouts from the previous production period
- * The payout policy can be subject to revision if it turns out to be unsupportable by the obtained financial resources.
+ * \fn: Firm_compute_total_liquidity_needs()
+ * \brief: Function to compute the total liquidity needs for executing payments.
+ * The values computed in this function:
+ *  - financial_liquidity_needs: to finance prior commitments + dividend payment
+ *  - production_liquidity_needs: to finance production costs
+ * The payout policy can be subject to revision if it turns out to be insupportable by the obtained financial resources.
  */
 int Firm_compute_total_liquidity_needs()
 {
@@ -245,6 +256,10 @@ int Firm_compute_total_liquidity_needs()
     return 0;
 }
 
+/*
+ * \fn: Firm_check_financial_and_bankruptcy_state()
+ * \brief: Function that checks the balance sheet and sets flags for the bankruptcy- or financial crisis state.
+ */
 int Firm_check_financial_and_bankruptcy_state()
 {	
 
@@ -271,7 +286,8 @@ int Firm_check_financial_and_bankruptcy_state()
 
 /*
  * \fn: Firm_in_bankruptcy()
- * \brief: This function sends a send_bankruptcy_message from the firm to all its banks
+ * \brief: Function to process the bankruptcy condition.
+ *  Sends a bankruptcy_message from the firm to all banks at which the firm has a loan.
  */
 int Firm_in_bankruptcy()
 {
@@ -293,9 +309,8 @@ int Firm_in_bankruptcy()
 }
 /*
  * \fn: Firm_financial_crisis()
- * \brief: This function tries to resolve the financial crisis by lowering dividends.
+ * \brief: Function to resolve the financial crisis by lowering dividends.
  */
-
 int Firm_in_financial_crisis()
 {	
 	double payment_account_after_compulsory_payments;
@@ -327,10 +342,12 @@ int Firm_in_financial_crisis()
 }
 
 /*
- * The firm executes the actual payments over the previous period's profits:
+ * \fn: Firm_execute_financial_payments()
+ * \brief: Function to execute financial payments:
+ *  - tax_payment
  *  - total_debt_installment_payment
  *  - total_interest_payments
- *  - tax_payment
+ *  - total_dividend_payment
  * The payments are all subtracted from the payment account.
  */
 int Firm_execute_financial_payments()
@@ -393,7 +410,7 @@ int Firm_execute_financial_payments()
 
 /*
  * \fn: Firm_compute_and_send_stock_orders()
- * \brief: This function computes the firm's stock orders (share emmision) and sends a stock_order_message to the clearinghouse.
+ * \brief: Function to send order_messages to the clearinghouse (share emission or repurchase).
  */
 int Firm_compute_and_send_stock_orders()
 {
@@ -411,7 +428,7 @@ int Firm_compute_and_send_stock_orders()
 
 /*
  * \fn: Firm_read_stock_transactions()
- * \brief: This function reads a stock_transaction_message from the clearinghouse, and updates the firm's trading account.
+ * \brief: Function to read order_status messages from the clearinghouse, and update the firm's trading account.
  */
 int Firm_read_stock_transactions()
 {
