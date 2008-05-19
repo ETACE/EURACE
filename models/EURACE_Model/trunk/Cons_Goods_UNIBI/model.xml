@@ -248,8 +248,9 @@ on the current stocks in the malls</description>
 <currentState>11</currentState>
 <nextState>12</nextState>
 <inputs>
-<input><messageName>capital_good_delivery</messageName></input>
+<input><messageName>capital_good_delivery</messageName>
 <filter><lhs><value>a.id</value></lhs><op>EQ</op><rhs><value>m.firm_id</value></rhs></filter>
+</input>
 </inputs>
 <outputs>
 <output><messageName>wage_payment</messageName></output>
@@ -275,8 +276,9 @@ distribute the dividends to households.</description>
 <currentState>Start_Firm_Seller_Role</currentState>
 <nextState>13b</nextState>
 <inputs>
-<input><messageName>sales</messageName></input>
+<input><messageName>sales</messageName>
 <filter><lhs><value>a.id</value></lhs><op>EQ</op><rhs><value>m.firm_id</value></rhs></filter>
+</input>
 </inputs>
 </function>
 
@@ -287,8 +289,9 @@ firms update the specific skill levels of the workers.</description>
 <nextState>14</nextState>
 <condition><time><period>monthly</period><phase>a.day_of_month_to_act</phase></time></condition>
 <inputs>
-<input><messageName>specific_skill_update</messageName></input>
+<input><messageName>specific_skill_update</messageName>
 <filter><lhs><value>a.id</value></lhs><op>EQ</op><rhs><value>m.firm_id</value></rhs></filter>
+</input>
 </inputs>
 </function>
 
