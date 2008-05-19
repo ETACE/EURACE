@@ -2,37 +2,9 @@
 #include "../Eurostat_agent_header.h"
 #include "../my_library_header.h"
 
-
-
-int first_day()
-{
-	if(DAY == 1) return 1;
-	else return 0;
-}
-
-int not_first_day()
-{
-	if(DAY == 1) return 0;
-	else return 1;
-}
-
-int Eurostat_day_of_month_to_act()
-{
-	if(DAY%MONTH == DAY_OF_MONTH_TO_ACT) return 1;
-	else return 0;
-}
-
-int Eurostat_not_day_of_month_to_act()
-{
-	if(DAY%MONTH == DAY_OF_MONTH_TO_ACT) return 0;
-	else return 1;
-}
-
-int Eurostat_idle()
-{
-	return 0;
-}
-
+/** \fn Eurostat_Initialization()
+ * \brief Eurostat initialization.
+ */
 int Eurostat_Initialization()
 {
 	/*Create data content of REGION_FIRM/HOUSEHOLD_DATA at the beginning of the first day. 		The first firms will send the data at the end of the first day and the other firms at the 		end of their activation days*/	
@@ -50,6 +22,7 @@ int Eurostat_Initialization()
 	return 0;
 		
 }
+
 /** \Eurostat_send_data()
  * \brief Eurostat send data: specific skills ...
  */

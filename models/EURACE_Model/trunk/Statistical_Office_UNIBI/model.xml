@@ -3,7 +3,7 @@
 <xmodel version="2">
 
 <name>Statistical_Office</name>
-<version>pre-Genoa</version>
+<version>Genoa</version>
 <description></description>
 
 <environment>
@@ -89,10 +89,10 @@
 <description>Used by Eurostat to store data from different Government agents</description>
 <variables>
 <variable><type>int</type><name>gov_id</name><description></description></variable>
-<variable><type>double</type><name>tax_rate_corporate</name><description></description></variable>
-<variable><type>double</type><name>tax_rate_hh_labour</name><description></description></variable>
-<variable><type>double</type><name>tax_rate_hh_capital</name><description></description></variable>
-<variable><type>double</type><name>tax_rate_vat</name><description></description></variable>
+<variable><type>double</type><name>tax_rate_corporate</name><description>Corporate tax rate.</description></variable>
+<variable><type>double</type><name>tax_rate_hh_labour</name><description>Labour income tax rate.</description></variable>
+<variable><type>double</type><name>tax_rate_hh_capital</name><description>Capital income tax rate.</description></variable>
+<variable><type>double</type><name>tax_rate_vat</name><description>Value-added-tax rate.</description></variable>
 </variables>
 </dataType>
 </dataTypes>
@@ -114,12 +114,19 @@
 </function>
 
 <function><name>Firm_read_tax_rates</name>
-<description></description>
+<description>Function to read the tax_rates_message from Government (msg has been filtered).</description>
 <currentState>start_Firm</currentState>
 <nextState>Start_Firm_Macro_Data</nextState>
 <condition><time><period>yearly</period><phase>0</phase></time></condition>
 <inputs>
-<input><messageName>government_tax_rates</messageName></input>
+<input>
+<messageName>government_tax_rates</messageName>
+<filter>
+  <lhs><value>a.gov_id</value></lhs>
+  <op>EQ</op>
+  <rhs><value>m.gov_id</value></rhs>
+</filter>
+</input>
 </inputs>
 </function>
 
@@ -130,7 +137,14 @@ and stores the needed data.</description>
 <nextState>00</nextState>
 <condition><time><period>monthly</period><phase>0</phase></time></condition>
 <inputs>
-<input><messageName>eurostat_send_specific_skills</messageName></input>
+<input>
+<messageName>eurostat_send_specific_skills</messageName>
+<filter>
+  <lhs><value>a.region_id</value></lhs>
+  <op>EQ</op>
+  <rhs><value>m.region_id</value></rhs>
+</filter>
+</input>
 <input><messageName>government_tax_rates</messageName></input>
 </inputs>
 </function>
@@ -161,7 +175,7 @@ including several micro data.</description>
 </function>
 
 <function><name>Firm_send_payments_to_bank</name>
-<description></description>
+<description>Daily payment account update.</description>
 <currentState>15</currentState>
 <nextState>end_Firm</nextState>
 <outputs>
@@ -179,19 +193,26 @@ including several micro data.</description>
 <functions>
 
 <function><name>idle</name>
-<description></description>
+<description>IGFirm does nothing</description>
 <currentState>start_IGFirm</currentState>
 <nextState>Start_IGFirm_Productivity</nextState>
 <condition><not><time><period>yearly</period><phase>0</phase></time></not></condition>
 </function>
 
 <function><name>IGFirm_read_tax_rates</name>
-<description></description>
+<description>Function to read the tax_rates_message from Government (msg has been filtered).</description>
 <currentState>start_IGFirm</currentState>
 <nextState>Start_IGFirm_Productivity</nextState>
 <condition><time><period>yearly</period><phase>0</phase></time></condition>
 <inputs>
-<input><messageName>government_tax_rates</messageName></input>
+<input>
+<messageName>government_tax_rates</messageName>
+<filter>
+  <lhs><value>a.gov_id</value></lhs>
+  <op>EQ</op>
+  <rhs><value>m.gov_id</value></rhs>
+</filter>
+</input>
 </inputs>
 </function>
 
@@ -205,19 +226,26 @@ including several micro data.</description>
 <functions>
 
 <function><name>idle</name>
-<description></description>
+<description>Household does nothing</description>
 <currentState>start_Household</currentState>
 <nextState>Start_Household_Tax_Data</nextState>
 <condition><not><time><period>yearly</period><phase>0</phase></time></not></condition>
 </function>
 
 <function><name>Household_read_tax_rates</name>
-<description></description>
+<description>Function to read the tax_rates_message from Government (msg has been filtered).</description>
 <currentState>start_Household</currentState>
 <nextState>Start_Household_Tax_Data</nextState>
 <condition><time><period>yearly</period><phase>0</phase></time></condition>
 <inputs>
-<input><messageName>government_tax_rates</messageName></input>
+<input>
+<messageName>government_tax_rates</messageName>
+<filter>
+  <lhs><value>a.gov_id</value></lhs>
+  <op>EQ</op>
+  <rhs><value>m.gov_id</value></rhs>
+</filter>
+</input>
 </inputs>
 </function>
 
@@ -342,7 +370,7 @@ including several micro data.</description>
 </function>
 
 <function><name>Eurostat_read_tax_rates</name>
-<description></description>
+<description>Function to read new tax rates.</description>
 <currentState>Start_Eurostat_Tax_Data</currentState>
 <nextState>Start_Eurostat_Firm_Data</nextState>
 <condition><time><period>yearly</period><phase>0</phase></time></condition>
