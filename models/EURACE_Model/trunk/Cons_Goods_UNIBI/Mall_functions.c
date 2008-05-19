@@ -25,30 +25,28 @@ int Mall_send_current_stocks()
  */
 int Mall_update_mall_stock()
 {
-	//printf("Mall_update_mall_stock() von Firm %d\n",ID);
+
 	START_UPDATE_MALL_STOCK_MESSAGE_LOOP
-		//printf("Messageinhalt für Mall %d: %d\n",ID, update_mall_stock_message.mall_id);
-		if(ID==update_mall_stock_message->mall_id)
-		{
-
-			for(int j=0; j < CURRENT_STOCK.size; j++)
-			{	
+	
+	// Message filter used: if(a.id==m.mall_id)
+	
+		for(int j=0; j < CURRENT_STOCK.size; j++)
+		{	
+			
+			if(update_mall_stock_message->firm_id==
+			CURRENT_STOCK.array[j].firm_id)
+			{
+				CURRENT_STOCK.array[j].stock=CURRENT_STOCK.array[j].
+				stock + update_mall_stock_message->quantity;
 				
-				if(update_mall_stock_message->firm_id==
-				CURRENT_STOCK.array[j].firm_id)
-				{
-					CURRENT_STOCK.array[j].stock=CURRENT_STOCK.array[j].
-					stock + update_mall_stock_message->quantity;
-					
-					CURRENT_STOCK.array[j].firm_id=
-					update_mall_stock_message->firm_id;
+				CURRENT_STOCK.array[j].firm_id=
+				update_mall_stock_message->firm_id;
 
-					CURRENT_STOCK.array[j].quality=
-					update_mall_stock_message->quality;
+				CURRENT_STOCK.array[j].quality=
+				update_mall_stock_message->quality;
 
-					CURRENT_STOCK.array[j].price=
-					update_mall_stock_message->price;	
-				}
+				CURRENT_STOCK.array[j].price=
+				update_mall_stock_message->price;	
 			}
 		}
 
@@ -100,13 +98,12 @@ int Mall_update_mall_stocks_sales_rationing_1()
 	/*Read the consumption request message*/
 	START_CONSUMPTION_REQUEST_1_MESSAGE_LOOP
 	
-		if(ID == consumption_request_1_message->mall_id)
-		{
-			add_consumption_request(&consumption_request_list, 				consumption_request_1_message->worker_id, 
+	// Message filter used: if(a.id==m.mall_id)
+	
+			add_consumption_request(&consumption_request_list,consumption_request_1_message->worker_id, 
 			consumption_request_1_message->firm_id, 
 			consumption_request_1_message->quantity );
-		}
-
+	
 	FINISH_CONSUMPTION_REQUEST_1_MESSAGE_LOOP
 
 
@@ -230,12 +227,10 @@ int Mall_update_mall_stocks_sales_rationing_2()
 		/*Read the request*/
 	START_CONSUMPTION_REQUEST_2_MESSAGE_LOOP
 
-		if(ID == consumption_request_2_message->mall_id)
-		{
+
 			add_consumption_request(&consumption_request_list, 				consumption_request_2_message->worker_id, 
 			consumption_request_2_message->firm_id, 
 			consumption_request_2_message->quantity );
-		}
 
 	FINISH_CONSUMPTION_REQUEST_2_MESSAGE_LOOP
 

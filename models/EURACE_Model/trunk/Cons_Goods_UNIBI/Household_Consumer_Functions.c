@@ -26,24 +26,22 @@ int Household_receive_wage()
 	/*Household reads the wage messages if employed*/
 	START_WAGE_PAYMENT_MESSAGE_LOOP
 
-		if(wage_payment_message->worker_id==ID)
+	
+		WAGE = wage_payment_message->payment;
+		remove_double(&LAST_INCOME,0);
+		add_double(&LAST_INCOME,wage_payment_message->payment);
+		
+		/*Compute a mean income of the last four month*/
+		for(int i = 0; i < 4;i++)
 		{
-			WAGE = wage_payment_message->payment;
-			remove_double(&LAST_INCOME,0);
-			add_double(&LAST_INCOME,wage_payment_message->payment);
-			
-			/*Compute a mean income of the last four month*/
-			for(int i = 0; i < 4;i++)
-			{
-				mean_income += LAST_INCOME.array[i];
-			}
-
-			mean_income = mean_income/4;
-			
-			/*Add wage on account   */
-			PAYMENT_ACCOUNT += wage_payment_message->payment;
-			
+			mean_income += LAST_INCOME.array[i];
 		}
+
+		mean_income = mean_income/4;
+		
+		/*Add wage on account   */
+		PAYMENT_ACCOUNT += wage_payment_message->payment;
+		
 	CURRENT_PRODUCTIVITY_EMPLOYER = wage_payment_message-> productivity;
 	CURRENT_MEAN_SPECIFIC_SKILLS_EMPLOYER =wage_payment_message->average_specific_skills;
 	
@@ -86,11 +84,9 @@ int Household_receive_unemployment_benefits()
 	double mean_income = 0.0;
 	
 	START_UNEMPLOYMENT_BENEFIT_MESSAGE_LOOP
-		if(GOV_ID==unemployment_benefit_message->gov_id)
-		{
 		/*Read unemployment_benefit and add to account */
 		PAYMENT_ACCOUNT +=  unemployment_benefit_message->unemployment_benefit_payment;
-		}
+	
 	FINISH_UNEMPLOYMENT_BENEFIT_MESSAGE_LOOP
 	
 	remove_double(&LAST_INCOME,0);
@@ -184,15 +180,10 @@ int Household_rank_and_buy_goods_1()
 
 		/*Household reads quality price info mesasges sent by malls   */
 		START_QUALITY_PRICE_INFO_1_MESSAGE_LOOP
-
-			if(quality_price_info_1_message->mall_region_id == REGION_ID)  
-			{	
-		
 				
-				add_mall_quality_price_info(&mall_quality_price_info_list, 	quality_price_info_1_message->mall_id, quality_price_info_1_message->firm_id,  				quality_price_info_1_message->mall_region_id,  					quality_price_info_1_message->quality,  				quality_price_info_1_message->price, 
-				quality_price_info_1_message->available);
+		add_mall_quality_price_info(&mall_quality_price_info_list, 	quality_price_info_1_message->mall_id, quality_price_info_1_message->firm_id,  				quality_price_info_1_message->mall_region_id,  					quality_price_info_1_message->quality,  				quality_price_info_1_message->price, 
+		quality_price_info_1_message->available);
 				
-			}
 
 		FINISH_QUALITY_PRICE_INFO_1_MESSAGE_LOOP
 
@@ -302,8 +293,6 @@ int Household_receive_goods_read_rationing()
 		/*Household reads messages containing the realized consumption of the first round*/
 		START_ACCEPTED_CONSUMPTION_1_MESSAGE_LOOP
 
-			if(accepted_consumption_1_message->worker_id == ID)
-			{
 				RATIONED = accepted_consumption_1_message->rationed;
 
 				/*Update of Budget  */
@@ -317,7 +306,6 @@ int Household_receive_goods_read_rationing()
 				->offered_consumption_volume;
 
 				RECEIVED_QUANTITY[0].firm_id = ORDER_QUANTITY[0].firm_id;
-			}
 
 		FINISH_ACCEPTED_CONSUMPTION_1_MESSAGE_LOOP
 		
@@ -360,19 +348,15 @@ int Household_rank_and_buy_goods_2()
 		/*The updated quality price message is read  */
 		START_QUALITY_PRICE_INFO_2_MESSAGE_LOOP
 
-			if(quality_price_info_2_message->mall_region_id == REGION_ID)  
-			{
 
 				
-				add_mall_quality_price_info(&mall_quality_price_info_list, 						quality_price_info_2_message->mall_id, 
+				add_mall_quality_price_info(&mall_quality_price_info_list,quality_price_info_2_message->mall_id, 
 				quality_price_info_2_message->firm_id, 
 				quality_price_info_2_message->mall_region_id, 
 				quality_price_info_2_message->quality, 
 				quality_price_info_2_message->price, 
 				quality_price_info_2_message->available);
 				
-			}
-
 		FINISH_QUALITY_PRICE_INFO_2_MESSAGE_LOOP
 
 
@@ -476,8 +460,6 @@ int Household__receive_goods_read_rationing_2()
 		/*Read the message about accepted consumption */
 		START_ACCEPTED_CONSUMPTION_2_MESSAGE_LOOP
 
-			if(accepted_consumption_2_message->worker_id == ID)
-			{
 				RATIONED = accepted_consumption_2_message->rationed;
 
 				RECEIVED_QUANTITY[1].quantity=
@@ -485,7 +467,6 @@ int Household__receive_goods_read_rationing_2()
 				
 				RECEIVED_QUANTITY[1].firm_id = 
 				ORDER_QUANTITY[1].firm_id; 
-			}
 
 		FINISH_ACCEPTED_CONSUMPTION_2_MESSAGE_LOOP
 		
