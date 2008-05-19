@@ -106,7 +106,7 @@
 <description></description>
 <functions>
 
-<function><name>Firm_idle</name>
+<function><name>idle</name>
 <description></description>
 <currentState>start_Firm</currentState>
 <nextState>Start_Firm_Macro_Data</nextState>
@@ -135,7 +135,7 @@ and stores the needed data.</description>
 </inputs>
 </function>
 
-<function><name>Firm_idle</name>
+<function><name>idle</name>
 <description>Firm does nothing</description>
 <currentState>Start_Firm_Macro_Data</currentState>
 <nextState>00</nextState>
@@ -153,7 +153,7 @@ including several micro data.</description>
 </outputs>
 </function>
 
-<function><name>Firm_idle</name>
+<function><name>idle</name>
 <description>Firm does nothing</description>
 <currentState>14</currentState>
 <nextState>15</nextState>
@@ -178,7 +178,7 @@ including several micro data.</description>
 <description></description>
 <functions>
 
-<function><name>IGFirm_idle</name>
+<function><name>idle</name>
 <description></description>
 <currentState>start_IGFirm</currentState>
 <nextState>Start_IGFirm_Productivity</nextState>
@@ -204,7 +204,7 @@ including several micro data.</description>
 <description></description>
 <functions>
 
-<function><name>Household_idle</name>
+<function><name>idle</name>
 <description></description>
 <currentState>start_Household</currentState>
 <nextState>Start_Household_Tax_Data</nextState>
@@ -232,7 +232,7 @@ and stores the needed data.</description>
 </inputs>
 </function>
 
-<function><name>Household_idle</name>
+<function><name>idle</name>
 <description>Household does nothing</description>
 <currentState>Start_Household_Tax_Data</currentState>
 <nextState>Start_Household_Financial_Role</nextState>
@@ -250,7 +250,7 @@ including several micro data.</description>
 </outputs>
 </function>
 
-<function><name>Household_idle</name>
+<function><name>idle</name>
 <description>Household does nothing</description>
 <currentState>15</currentState>
 <nextState>end_Household</nextState>
@@ -334,7 +334,7 @@ including several micro data.</description>
 <condition><time><period>iteration</period><phase>1</phase></time></condition>
 </function>
 
-<function><name>Eurostat_idle</name>
+<function><name>idle</name>
 <description>Eurostat does nothing</description>
 <currentState>start_Eurostat</currentState>
 <nextState>Start_Eurostat_Tax_Data</nextState>
@@ -351,7 +351,7 @@ including several micro data.</description>
 </inputs>
 </function>
 
-<function><name>Eurostat_idle</name>
+<function><name>idle</name>
 <description>Eurostat does nothing</description>
 <currentState>Start_Eurostat_Tax_Data</currentState>
 <nextState>Start_Eurostat_Firm_Data</nextState>
@@ -368,7 +368,7 @@ including several micro data.</description>
 </outputs>
 </function>
 
-<function><name>Eurostat_idle</name>
+<function><name>idle</name>
 <description>Eurostat does nothing</description>
 <currentState>Start_Eurostat_Firm_Data</currentState>
 <nextState>Start_Eurostat_Financial_Data</nextState>
@@ -386,7 +386,7 @@ including several micro data.</description>
 </inputs>
 </function>
 
-<function><name>Eurostat_idle</name>
+<function><name>idle</name>
 <description></description>
 <currentState>End_Eurostat_Financial_Data</currentState>
 <nextState>end_Eurostat</nextState>
