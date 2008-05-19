@@ -116,7 +116,7 @@
 </outputs>
 </function>
 
-<function><name>Firm_idle</name>
+<function><name>idle</name>
 <description>Firm does nothing</description>
 <currentState>Start_Firm_Labour_Role</currentState>
 <nextState>03c</nextState>
@@ -271,7 +271,7 @@ of employees and the number of vacancies</description>
 <condition><lhs><value>a.no_employees</value></lhs><op>LT</op><rhs><value>a.employees_needed</value></rhs></condition>
 </function>
 
-<function><name>Firm_idle</name>
+<function><name>idle</name>
 <description>Firm does nothing</description>
 <currentState>09b</currentState>
 <nextState>End_Firm_Labour_Role</nextState>
@@ -311,7 +311,7 @@ of employees and the number of vacancies</description>
 </function>
 
 <function>
-<name>Household_idle</name>
+<name>idle</name>
 <description>Household does nothing</description>
 <currentState>01d</currentState>
 <nextState>01a</nextState>
@@ -319,7 +319,7 @@ of employees and the number of vacancies</description>
 </function>
 
 <function>
-<name>Household_idle</name>
+<name>idle</name>
 <description>Household does nothing</description>
 <currentState>EXIT_FINANCIAL_MARKET</currentState>
 <nextState>01a</nextState>
@@ -464,7 +464,7 @@ the reservation wage</description>
 </inputs>
 </function>
 
-<function><name>Household_idle</name>
+<function><name>idle</name>
 <description>Household does nothing</description>
 <currentState>05</currentState>
 <nextState>06</nextState>

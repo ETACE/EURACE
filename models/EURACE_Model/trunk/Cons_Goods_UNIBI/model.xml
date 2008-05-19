@@ -224,7 +224,7 @@ on the current stocks in the malls</description>
 <condition><not><lhs><value>a.payment_account</value></lhs><op>GEQ</op><rhs><value>a.production_costs</value></rhs></not></condition>
 </function>
 
-<function><name>Firm_idle</name>
+<function><name>idle</name>
 <description>Firm does nothing</description>
 <currentState>End_Firm_Financial_Management</currentState>
 <nextState>Start_Firm_Labour_Role</nextState>
@@ -295,7 +295,7 @@ firms update the specific skill levels of the workers.</description>
 </inputs>
 </function>
 
-<function><name>Firm_idle</name>
+<function><name>idle</name>
 <description>Firm does nothing</description>
 <currentState>13b</currentState>
 <nextState>14</nextState>
@@ -339,7 +339,7 @@ firms update the specific skill levels of the workers.</description>
 </inputs>
 </function>
 
-<function><name>Household_idle</name>
+<function><name>idle</name>
 <description>Household does nothing</description>
 <currentState>06b</currentState>
 <nextState>09</nextState>
@@ -400,7 +400,7 @@ firms update the specific skill levels of the workers.</description>
 <nextState>09</nextState>
 </function>
 
-<function><name>Household_idle</name>
+<function><name>idle</name>
 <description>household does nothing</description>
 <currentState>09</currentState>
 <nextState>15</nextState>
@@ -437,7 +437,7 @@ order and delivery volumes befor the second step to zero.</description>
 </inputs>
 </function>
 
-<function><name>Household_idle</name>
+<function><name>idle</name>
 <description></description>
 <currentState>11</currentState>
 <nextState>14</nextState>

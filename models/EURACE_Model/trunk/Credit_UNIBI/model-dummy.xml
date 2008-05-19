@@ -49,7 +49,7 @@
 </function>
 
 <function>
-<name>Firm_idle</name>
+<name>idle</name>
 <description></description>
 <currentState>End_Firm_Credit_Role</currentState>
 <nextState>Start_Firm_Labour_Role</nextState>

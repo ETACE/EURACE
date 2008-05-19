@@ -30,7 +30,7 @@
 <functions>
 
 <function>
-<name>Government_idle</name>
+<name>idle</name>
 <description></description>
 <currentState>start_Government</currentState>
 <nextState>00</nextState>

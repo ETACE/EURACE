@@ -292,7 +292,7 @@
 
 <!-- Idle bypassing the credit and financial markets  -->
 <function>
-<name>Firm_idle</name>
+<name>idle</name>
 <description></description>
 <currentState>Start_Firm_Credit_Role</currentState>
 <nextState>Start_Firm_Labour_Role</nextState>
@@ -301,7 +301,7 @@
 
 <!-- Idle bypassing the financial market  -->
 <function>
-<name>Firm_idle</name>
+<name>idle</name>
 <description></description>
 <currentState>End_Firm_Credit_Role</currentState>
 <nextState>Start_Firm_Labour_Role</nextState>

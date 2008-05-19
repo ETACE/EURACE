@@ -111,7 +111,7 @@
 
 <functions>
 
-<function><name>Bank_idle</name>
+<function><name>idle</name>
 <description></description>
 <currentState>start_Bank</currentState>
 <nextState>Bank_01</nextState>
@@ -185,7 +185,7 @@
 
 
 <function>
-<name>Bank_idle</name>
+<name>idle</name>
 <description></description>
 <currentState>Bank_05</currentState>
 <nextState>end_Bank</nextState>

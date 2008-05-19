@@ -35,7 +35,7 @@
 <condition><time><period>monthly</period><phase>a.day_of_month_to_act</phase></time></condition>
 </function>
 
-<function><name>IGFirm_idle</name>
+<function><name>idle</name>
 <description></description>
 <currentState>Start_IGFirm_Productivity</currentState>
 <nextState>01</nextState>
