@@ -22,13 +22,11 @@
 
 <environment>
 
-<!-- 
 <functionFiles>
 <file>my_library_functions.c</file>
-<file>Firm_Library_Functions.c</file>
-<file>Household_Library_Functions.c</file>
+<!--<file>Firm_Library_Functions.c</file>-->
+<!--<file>Household_Library_Functions.c</file>-->
 </functionFiles>
- -->
  
 <timeUnits>
 
