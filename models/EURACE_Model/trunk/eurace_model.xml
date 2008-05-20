@@ -168,11 +168,15 @@
 
 <message>
 <name>bank_account_update</name>
-<description>General payment message send by every agent at end of the day</description>
+<description>Sent by household. Household informs the bank about the actual
+ payment account</description>
 <variables>
+<variable><type>int</type><name>id</name><description></description></variable>
+<variable><type>int</type><name>bank_id</name><description></description></variable>
 <variable><type>double</type><name>payment_account</name><description></description></variable>
 </variables>
 </message>
+
 
 </messages>
 
