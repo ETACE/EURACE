@@ -23,7 +23,7 @@ int Eurostat_Initialization()
 		
 }
 
-/** \Eurostat_send_data()
+/** \fn Eurostat_send_data()
  * \brief Eurostat send data: specific skills ...
  */
 int Eurostat_send_data()
@@ -48,7 +48,7 @@ int Eurostat_send_data()
 }
 
 
-/** \Eurostat_calculate_data
+/** \fn Eurostat_calculate_data
  * \brief Eurostat receive micro data and calculates macro data
  */
 int Eurostat_calculate_data()
@@ -776,6 +776,9 @@ int Eurostat_calculate_data()
 	return 0;
 }
 
+/** \fn Eurostat_read_tax_rates()
+ * \brief Eurostat reads tax_rates_msg from all governments and stores this data.
+ */
 int Eurostat_read_tax_rates()
 {
 	START_GOVERNMENT_TAX_RATES_MESSAGE_LOOP

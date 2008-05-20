@@ -16,6 +16,9 @@
 /** \def QUARTER
  * \brief The number of days in a quarter. */
 #define QUARTER 60
+/** \def YEAR
+ * \brief The number of days in a year. */
+#define YEAR 240
 /** \def MSGDATA
  * \brief The additional data that messages need when sent. */
 #define MSGDATA 1.0, 0.0, 0.0, 0.0
@@ -66,7 +69,7 @@
 #define DEATON_SAVING_RULE_TRUE 1
 
 		
-/*adaption of the reservation wage: prercent*/
+/*adaption of the reservation wage: percent*/
 #define wage_reservation_update 0.02
 
 /*Cost of working in a different region: for example travelling costs*/
@@ -96,12 +99,6 @@
 
 /*Probability for the delivery if the critical stock of one mall was zero for the last periods*/
 #define DELIVERY_PROB_IF_CRITICAL_STOCK_0 25
-
-
-int first_day_of_month();
-int not_first_day_of_month();
-int last_day_of_month();
-int not_last_day_of_month();
 
 void sort_vacancy_list(vacancy_array * vacancy_list);
 void sort_job_offer_list(job_offer_array * job_offer_list);

@@ -85,6 +85,8 @@
 <variable><type>double</type><name>total_dividend_payment</name><description>Total dividend payment</description></variable>
 
 <!-- Financial variables -->
+<!--CURRENT_SHARES_OUTSTANDING-->
+<!--PREVIOUS_SHARES_OUTSTANDING-->
 <variable><type>double</type><name>current_share_price</name><description>Current share price on the market</description></variable>
 <variable><type>double</type><name>previous_dividend_per_share</name><description>Dividend-per-share ratio (previous production cycle)</description></variable>
 <variable><type>double</type><name>current_dividend_per_share</name><description>Dividend-per-share ratio</description></variable>
@@ -92,6 +94,7 @@
 <variable><type>double</type><name>current_earnings_per_share</name><description>Earnings-per-Share ratio</description></variable>
 <variable><type>double</type><name>previous_dividend_per_earnings</name><description>Dividend-to-Earnings ratio (previous production cycle)</description></variable>
 <variable><type>double</type><name>current_dividend_per_earnings</name><description>Dividend-to-Earnings ratio</description></variable>
+
 
 <!-- Ratios -->
 <variable><type>double</type><name>debt_earnings_ratio</name><description>Debt-to-Earnings ratio</description></variable>
