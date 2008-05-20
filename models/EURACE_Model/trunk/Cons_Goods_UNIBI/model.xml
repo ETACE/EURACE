@@ -702,18 +702,6 @@ updates specific skills.</description>
 </variables>
 </message>
 
-
-<message>
-<name>bank_account_update</name>
-<description>Sent by household. Household informs the bank about the actual
- payment account</description>
-<variables>
-<variable><type>int</type><name>id</name><description></description></variable>
-<variable><type>int</type><name>bank_id</name><description></description></variable>
-<variable><type>double</type><name>payment_account</name><description></description></variable>
-</variables>
-</message>
-
 <message>
 <name>daily_revenue_to_bank</name>
 <description>Sent by firm. Firm informs the bank about the daily revenue.</description>
