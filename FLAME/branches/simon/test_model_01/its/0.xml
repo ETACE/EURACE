@@ -1,0 +1,14 @@
+<states>
+<itno>0</itno>
+
+<xagent>
+<name>agent_a</name>
+<id>1</id>
+</xagent>
+
+<xagent>
+<name>agent_b</name>
+<id>2</id>
+</xagent>
+
+</states>
