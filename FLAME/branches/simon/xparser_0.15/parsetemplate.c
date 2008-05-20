@@ -45,7 +45,7 @@ void parseTemplate(char * filename, char * templatename, model_data * modeldata)
 	
 	/* pointers to model datatypes */
 	xmachine * current_xmachine;
-	xmachine_message * current_message;
+	xmachine_message * current_message = NULL;
 	xmachine_function * current_function;
 	xmachine_state * current_state;
 	xmachine_ioput * current_ioput;
@@ -1119,7 +1119,8 @@ void parseTemplate(char * filename, char * templatename, model_data * modeldata)
 					var_count = 0;
 					lastwrite = write;
 					inmessagevar = 1;
-					current_variable = current_message->vars;
+					if(current_message != NULL) current_variable = current_message->vars;
+					else current_variable = NULL;
 					if(current_variable != NULL)
 					{
 						current_datatype = current_variable->datatype;
