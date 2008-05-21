@@ -232,11 +232,11 @@ int Firm_compute_total_liquidity_needs()
 
     //step 12B: set production and payout financial_needs
     PRODUCTION_LIQUIDITY_NEEDS = PRODUCTION_COSTS;
-    FINANCIAL_LIQUIDITY_NEEDS = TOTAL_INTEREST_PAYMENT + TOTAL_DEBT_INSTALLMENT_PAYMENT + TAX_PAYMENT + TOTAL_DIVIDEND_PAYMENT_PLANNED;
+    FINANCIAL_LIQUIDITY_NEEDS = TOTAL_INTEREST_PAYMENT + TOTAL_DEBT_INSTALLMENT_PAYMENT + TAX_PAYMENT;
 
     //step 12C:
     //Check if additional external financial needs are required for total financial needs (direct payable and delayed payable)    
-    TOTAL_FINANCIAL_NEEDS =  PRODUCTION_LIQUIDITY_NEEDS + FINANCIAL_LIQUIDITY_NEEDS;
+    TOTAL_FINANCIAL_NEEDS =  PRODUCTION_LIQUIDITY_NEEDS + FINANCIAL_LIQUIDITY_NEEDS + TOTAL_DIVIDEND_PAYMENT;
 
     //step 12D:
     //Check if external financing is needed
@@ -294,6 +294,8 @@ int Firm_in_bankruptcy()
 	int i,imax;
 	double bad_debt, credit_refunded, residual_var;
 	
+	//Effect on credit market
+	//Refunding credit, bad debt
     imax = LOANS.size;
     for (i=0; i<imax;i++)
     {
@@ -305,6 +307,21 @@ int Firm_in_bankruptcy()
     	add_bankruptcy_message(LOANS.array[i].bank_id, bad_debt, credit_refunded, residual_var);
     }
 	
+    //Effect on labour market
+    //Firing all employees
+    
+    
+    //Effect on financial market
+    //Cancelling all shares
+    
+    
+    //Effect on investment goods market
+    //Left-over capital
+    
+    
+    //Effect on consumption goods market
+    //Foreclosure sales at local outlet malls at discount prices
+    
     return 0;
 }
 /*
@@ -394,9 +411,10 @@ int Firm_execute_financial_payments()
 	        }
 	        
 			//step 3: actual dividend payments
-	        //Actual payments to the bank are paid at end of day when the firm sends its bank_update message 
+	        //Actual bank account updates are send to the bank at end of day when the firm sends its bank_update message 
 
 	        //add dividend_per_share_msg(firm_id, current_dividend_per_share) to shareholders (dividend per share)     
+	        CURRENT_DIVIDEND_PER_SHARE = TOTAL_DIVIDEND_PAYMENT/CURRENT_SHARES_OUTSTANDING;
 	        add_dividend_per_share_message(ID, CURRENT_DIVIDEND_PER_SHARE);
 
 	        //decrease payment_account with the total_dividend_payment
@@ -435,12 +453,6 @@ int Firm_read_stock_transactions()
 	double finances;
 	
     START_ORDER_STATUS_MESSAGE_LOOP
-//    if(order_status_message->trader_id==ID)
-//    {
-        //order_status_message->asset_id
-        //order_status_message->price
-        //order_status_message->quantity
-    	    	
     	//Finances obtained: positive quantity is demand, negative quantity is selling
     	finances = (-1)*order_status_message->price * order_status_message->quantity;
     	
@@ -449,7 +461,6 @@ int Firm_read_stock_transactions()
     	
     	//Decrease external financial needs with the finances obtained
     	EXTERNAL_FINANCIAL_NEEDS -= finances;
-//    }
     FINISH_ORDER_STATUS_MESSAGE_LOOP
     return 0;
 }

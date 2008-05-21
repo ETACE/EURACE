@@ -82,6 +82,16 @@
 <type>double</type>
 <name>stepsize[10]</name>
 </var>
+<var>
+<!--Minimum values for each parameter-->
+<type>double</type>
+<name>min_values[10]</name>
+</var>
+<var>
+<!--Maximum values for each parameter-->
+<type>double</type>
+<name>max_values[10]</name>
+</var>
 
 </datatype>
 
@@ -114,9 +124,9 @@
 	<type>int</type><name>id</name>
 	</var>
 <!--------------------------------------- Rule measures --------------------------------------->
-<var><!--Agent's performance of current_rule--><type>double</type><name>my_performance</name>
+<var><!--Agent's performance of current_rule (0.0 if this rule is not currently used)--><type>double</type><name>my_performance</name>
 </var>
-<var><!--Agent average performance-->
+<var><!--Average performance for this rule across population (inherited from Central CS)-->
 <type>double</type><name>avg_performance</name>
 </var>
 <var><!--Agent attractions-->
@@ -133,7 +143,7 @@
 <datatype>
 <!--***************************** Struct for the Simple Public Classifier System *****************************-->
 <name>SimplePublicClassifierSystem</name>
-<desc>Datatype for the central classifier system. !Subject to change!</desc>
+<desc>Datatype for the central classifier system. Simple version allows for rules of the same strategy type (all rules use the same function). !Subject to change!</desc>
 <!-------------------Metadata for the rule system---------------------->
 	<var>
 		<!--Total nr of rules-->
@@ -150,7 +160,7 @@
 <datatype>
 <!--***************************** Struct for the Simple Private Classifier System *****************************-->
 <name>SimplePrivateClassifierSystem</name>
-<desc>Datatype for the private classifier system inside each agent.  !Subject to change!</desc>
+<desc>Datatype for the private classifier system inside each agent. Simple version allows for rules of the same strategy type (all rules use the same function). !Subject to change!</desc>
 <!-------------------Metadata for the rule system---------------------->
 	<var>
 		<!--Total nr of rules-->
@@ -177,8 +187,8 @@
 </datatype>
 
 <datatype>
-<!--***************************** Struct for the Public Classifier System *****************************--><name>ComplexPublicClassifierSystem</name>
-<desc>Datatype for the central classifier system. !Subject to change!</desc>
+<!--***************************** Struct for the Complex Public Classifier System *****************************--><name>ComplexPublicClassifierSystem</name>
+<desc>Datatype for the central classifier system. This complex version allows for heterogeneous rule sets. !Subject to change!</desc>
 <!-------------------Metadata for the rule system---------------------->
 	<var>
 	<!--Nr of subpopulations-->
@@ -195,16 +205,16 @@
 		<type>int</type>
 		<name>nr_rules</name>
 	</var><!-------------------The rule system---------------------->
-	<var><!--Static array of 100 public classifier rules: this array contains rules of heterogenous types-->
+	<var><!--Static array of 100 public classifier rules: this array contains rules of heterogenous type-->
 		<type>PublicClassifierRule</type>
 		<name>ruletable[100]</name>
 	</var>
 </datatype>
 
 <datatype>
-<!--***************************** Struct for the Private Classifier System *****************************-->
+<!--***************************** Struct for the Complex Private Classifier System *****************************-->
 <name>ComplexPrivateClassifierSystem</name>
-<desc>Datatype for the private classifier system inside each agent.  !Subject to change!</desc>
+<desc>Datatype for the private classifier system inside each agent. This complex version allows for heterogeneous rule sets. !Subject to change!</desc>
 <!-------------------Metadata for the rule system---------------------->
 	<var>
 	<!--Nr of subpopulations--><type>int</type>
