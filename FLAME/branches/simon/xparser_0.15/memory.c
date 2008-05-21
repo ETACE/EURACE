@@ -748,6 +748,8 @@ rule_data * add_rule_data(rule_data ** p_data)
 	current->next = NULL;
 	current->time_rule = 0;
 	current->not = 0;
+	current->has_agent_var = 0;
+	current->has_message_var = 0;
 
 	/* Return new element */
 	return current;

@@ -1871,6 +1871,42 @@ void writeRule(rule_data * current_rule_data, FILE *file)
 	}
 }
 
+/** \fn checkRule(rule_data * current_rule_data)
+ * \brief Checks the rule to see if it contains agent variables.
+ * \param current_rule_data The rule to check.
+ */
+int checkRuleAgentVar(rule_data * current_rule_data)
+{
+	int flag = 0;
+	
+	if(current_rule_data->time_rule == 1)
+	{
+		if(strncmp(current_rule_data->rhs, "a->", 3) == 0) flag = 1;
+	}
+	else
+	{
+		if(current_rule_data->lhs == NULL)
+		{
+			if(checkRuleAgentVar(current_rule_data->lhs_rule) == 1) flag = 1;
+		}
+		else
+		{
+			if(strncmp(current_rule_data->lhs, "a->", 3) == 0) flag = 1;
+		}
+		
+		if(current_rule_data->rhs == NULL)
+		{
+			if(checkRuleAgentVar(current_rule_data->rhs_rule) == 1) flag = 1;
+		}
+		else
+		{
+			if(strncmp(current_rule_data->rhs, "a->", 3) == 0) flag = 1;
+		}
+	}
+	
+	return flag;
+}
+
 /** \fn parseRuleFunctionsTemplate(char * directory, model_data * modeldata)
  * \brief Produces rule functions for function conditions and message filters.
  * \param directory The directory to write the files to.
@@ -1915,7 +1951,7 @@ void parseRuleFunctionsTemplate(char * directory, model_data * modeldata)
 		{
 			/* If function has a condition... */
 			if(current_function->condition_function != NULL)
-			{
+			{	
 				fputs("\nint ", file);
 				fputs(current_function->condition_function, file);
 				fputs("(xmachine_memory_", file);
@@ -1937,6 +1973,9 @@ void parseRuleFunctionsTemplate(char * directory, model_data * modeldata)
 				/* If input message has a filter */
 				if(current_ioput->filter_function != NULL)
 				{
+					/* Check if an agent variable used in the filter */
+					current_ioput->filter_rule->has_agent_var = checkRuleAgentVar(current_ioput->filter_rule);
+					
 					fputs("\nint ", file);
 					fputs(current_ioput->filter_function, file);
 					fputs("(const void *msg, const void *params)\n", file);
@@ -1947,13 +1986,17 @@ void parseRuleFunctionsTemplate(char * directory, model_data * modeldata)
 					fputs(" *m = (m_", file);
 					fputs(current_ioput->messagetype, file);
 					fputs("*)msg;\n", file);
-					fputs("\txmachine_memory_", file);
-					fputs(current_xmachine->name, file);
-					fputs(" *a = (xmachine_memory_", file);
-					fputs(current_xmachine->name, file);
-					fputs(" *)params;\n\n", file);
+					/* If agent variable used in the filter then declare and assign varaible a to agent memory */
+					if(current_ioput->filter_rule->has_agent_var)
+					{
+						fputs("\txmachine_memory_", file);
+						fputs(current_xmachine->name, file);
+						fputs(" *a = (xmachine_memory_", file);
+						fputs(current_xmachine->name, file);
+						fputs(" *)params;\n", file);
+					}
 					
-					fputs("\tif(", file);
+					fputs("\n\tif(", file);
 					writeRule(current_ioput->filter_rule, file);
 					fputs(") return 1;\n", file);
 					fputs("\telse return 0;\n", file);

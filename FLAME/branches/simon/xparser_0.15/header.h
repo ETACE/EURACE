@@ -181,6 +181,8 @@ struct rule_data
 	struct rule_data * rhs_rule; /* If rule==NULL then use lhs,op,rhs data */
 	int time_rule;
 	int not;
+	int has_agent_var;
+	int has_message_var;
 	
 	struct rule_data * next;
 };
