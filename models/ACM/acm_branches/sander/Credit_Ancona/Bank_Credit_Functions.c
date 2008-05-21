@@ -173,7 +173,7 @@ int Bank_receive_installment()
 	if (ID == installment_message->bank_id) 
 	{
 		CASH +=installment_message->installment_amount_paid;
-        PROFITS.array[0] += installment_message->interest;
+        PROFITS[0] += installment_message->interest;
         EQUITY += installment_message->interest;
         VAR -= installment_message->var_per_instalment;
             
@@ -185,6 +185,7 @@ int Bank_receive_installment()
     {
        CASH +=bankruptcy_message->credit_refunded;
        EQUITY -= bankruptcy_message->bad_debt;
+       PROFITS[0] -= bankruptcy_message->bad_debt;
        VAR -= bankruptcy_message->residual_var;
     }
     FINISH_BANKRUPTCY_MESSAGE_LOOP
@@ -213,7 +214,7 @@ int Bank_give_loan()
 int Bank_accounting()
 {
 
-     double q, c, gro;   
+     double q, c, gro, tax_bank, total_dividends, dividend_per_share;   
 
      if (PROFIT[1]!=0)
      {
@@ -222,18 +223,40 @@ int Bank_accounting()
 
      else  
      gro=0;
-  
-     PROFIT[1]=PROFIT[0]; 
-     PROFIT[0]=0; 
+ 
+     PROFIT[1]=PROFIT[0]; //update
      q=OMEGA[0]; 
      c=OMEGA[1];
      OMEGA[0]=q+lambda*(q-c)*gro+(rand()/RAND_MAX)*0.01;
  
      if (OMEGA[0]<0.02)
      {
-        OMEGA[0]=0.02;
+         OMEGA[0]=0.02;
      }
 
+     // tax and dividends payment
+     if (PROFIT[0]>0)
+     {
+         tax_bank = TAX_RATE_CORPORATE*PROFIT[0];
+         PROFIT[0] -= tax_bank;
+         EQUITY -= tax_bank;
+         CASH -= tax_bank;
+         add_tax_payment_message(ID, GOV_ID, tax_bank);  
+         total_dividends = DIVIDEND_RATE*PROFIT[0];
+         dividend_per_share = total_dividends/NUMBER_OF_SHARES; 
+         PROFIT[0] -= total_dividends;
+         EQUITY -= total_dividends;
+         CASH -= total_dividends;
+         add_dividend_per_share_message(ID, dividend_per_share);                  
+     }
+ 
+     if (CASH < 0) //if money is not enough, increase BCE debt
+     {
+         BCE_DEBT -= CASH;
+         CASH = 0;
+     }
+     
+     PROFIT[0]=0;  //update
 
       return 0;
 }
