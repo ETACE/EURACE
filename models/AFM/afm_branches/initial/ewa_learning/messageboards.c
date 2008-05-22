@@ -6,149 +6,99 @@
 #include "header.h"
 
 
-/** \fn xmachine_message_rule_performance * add_rule_performance_message_internal()
- * \brief Add rule_performance message to the local message list.
- * \return The added message.
- */
-xmachine_message_rule_performance * add_rule_performance_message_internal()
-{
-	xmachine_message_rule_performance * current = (xmachine_message_rule_performance *)malloc(sizeof(xmachine_message_rule_performance));
-	CHECK_POINTER(current);
-
-	current->next = *p_rule_performance_message;
-	*p_rule_performance_message = current;
-	
-	return current;
-}
-
-/** \fn void process_rule_performance_message(xmachine_message_rule_performance * current)
- * \brief Process rule_performance message to calculate if it needs to be sent to another node.
- * \param current The message to be processed.
- */
-void process_rule_performance_message(xmachine_message_rule_performance * current)
-{
-	double x = 0.0;
-	double y = 0.0;
-	double z = 0.0;
-	double max_mess_dist;
-	int in_halo_region = 0;
-	node_information * node_info;
-	xmachine_message_rule_performance * temp_send_message;
-	
-	max_mess_dist = (double)current->range;
-	x = current->x;
-	y = current->y;
-	z = current->z;
-	
-	/* Check x-axis halo region */
-	if((current_node->partition_data[0] != -SPINF && x <= (current_node->partition_data[0]+max_mess_dist)) ||
-	   (current_node->partition_data[1] !=  SPINF && x >= (current_node->partition_data[1]-max_mess_dist)))
-	{ in_halo_region = 1; }
-	/* Check y-axis halo region */
-	if((current_node->partition_data[2] != -SPINF && y <= (current_node->partition_data[2]+max_mess_dist)) ||
-	   (current_node->partition_data[3] !=  SPINF && y >= (current_node->partition_data[3]-max_mess_dist)))
-	{ in_halo_region = 1; }
-	/* Check z-axis halo region (if used) */
-	if(current_xmachine->xmachine_Household)
-	{
-		if(current_node->partition_data[4] != -SPINF && z <= current_node->partition_data[4]+max_mess_dist)
-		{ in_halo_region = 1; }
-		if(current_node->partition_data[5] != SPINF && z >= current_node->partition_data[5]-max_mess_dist)
-		{ in_halo_region = 1; }
-	}if(current_xmachine->xmachine_FinancialAgent)
-	{
-		if(current_node->partition_data[4] != -SPINF && z <= current_node->partition_data[4]+max_mess_dist)
-		{ in_halo_region = 1; }
-		if(current_node->partition_data[5] != SPINF && z >= current_node->partition_data[5]-max_mess_dist)
-		{ in_halo_region = 1; }
-	}
-	
-	if(in_halo_region)
-	{
-		node_info = *p_node_info;
-		while(node_info)
-		{
-			if(node_info->node_id != current_node->node_id &&
-			node_info->partition_data[0]-max_mess_dist < x && node_info->partition_data[1]+max_mess_dist > x &&
-			node_info->partition_data[2]-max_mess_dist < y && node_info->partition_data[3]+max_mess_dist > y)
-			{
-				p_rule_performance_message = &node_info->rule_performance_messages;
-				temp_send_message = add_rule_performance_message_internal();
-				
-				temp_send_message->rule_id = current->rule_id;
-				temp_send_message->rule_performance = current->rule_performance;
-				temp_send_message->range = current->range;
-				temp_send_message->x = current->x;
-				temp_send_message->y = current->y;
-				temp_send_message->z = current->z;
-			}
-			node_info = node_info->next;
-		}
-		
-		p_rule_performance_message = &current_node->rule_performance_messages;
-	}
-}
-
-/** \fn void add_rule_performance_message(int rule_id, double rule_performance, double range, double x, double y, double z)
+/** \fn void add_rule_performance_message(int rule_id, double rule_performance)
  * \brief Add rule_performance message by calling internal and processing.
  * \param rule_id Message variable.
  * \param rule_performance Message variable.
- * \param range Message variable.
- * \param x Message variable.
- * \param y Message variable.
- * \param z Message variable.
  */
-void add_rule_performance_message(int rule_id, double rule_performance, double range, double x, double y, double z)
+void add_rule_performance_message(int rule_id, double rule_performance)
 {
-
-	p_rule_performance_message = &current_node->rule_performance_messages;
-	xmachine_message_rule_performance * tmp = add_rule_performance_message_internal();
-	
-	tmp->rule_id = rule_id;
-	tmp->rule_performance = rule_performance;
-	tmp->range = range;
-	tmp->x = x;
-	tmp->y = y;
-	tmp->z = z;
-	
-	/* Check if agent in halo region */
-	process_rule_performance_message(tmp);
+    int rc;
+	m_rule_performance msg;
+    
+    msg.rule_id = rule_id;
+    msg.rule_performance = rule_performance;
+    
+    rc = MB_AddMessage(b_rule_performance, &msg);
+    #ifdef ERRCHECK
+    if (rc != MB_SUCCESS)
+    {
+       fprintf(stderr, "ERROR: Could not add message to 'rule_performance' board\n");
+       switch(rc) {
+           case MB_ERR_INVALID:
+               fprintf(stderr, "\t reason: 'rule_performance' board has not been created?\n");
+               break;
+           case MB_ERR_MEMALLOC:
+               fprintf(stderr, "\t reason: out of memory\n");
+               break;
+           case MB_ERR_LOCKED:
+               fprintf(stderr, "\t reason: 'rule_performance' board is locked\n");
+               break;
+           case MB_ERR_INTERNAL:
+               fprintf(stderr, "\t reason: internal error. Recompile libmoard in debug mode for more info \n");
+               break;
+       }
+    }
+    #endif
 }
 
-xmachine_message_rule_performance * get_next_message_rule_performance_in_range(xmachine_message_rule_performance * current)
+inline static m_rule_performance* getInternalMessage_rule_performance(void)
 {
-	double x = 0.0, y = 0.0, z = 0.0;
-	
-	
-	if(current_xmachine->xmachine_Household)
-	{
-		x = (double)current_xmachine->xmachine_Household->posx;
-		y = (double)current_xmachine->xmachine_Household->posy;
-		z = (double)current_xmachine->xmachine_Household->posz;
-	}
-	if(current_xmachine->xmachine_FinancialAgent)
-	{
-		x = (double)current_xmachine->xmachine_FinancialAgent->posx;
-		y = (double)current_xmachine->xmachine_FinancialAgent->posy;
-		z = (double)current_xmachine->xmachine_FinancialAgent->posz;
-	}
-	
-	while(current)
-	{
-		if( ((x - current->x)*(x - current->x)+(y - current->y)*(y - current->y)) <= current->range*current->range ) return current;
-		else current = current->next;
-	}
-	
-	return current;
+    static m_rule_performance *msg_prev = NULL;
+    m_rule_performance *msg;
+    int rc;
+    
+    /* deallocate previously returned message */
+    if (msg_prev != NULL) 
+    {
+        free(msg_prev);
+    }
+    else 
+    {
+        rc = MB_Iterator_Rewind(i_rule_performance); 
+        #ifdef ERRCHECK
+        if (rc != MB_SUCCESS)
+        {
+            fprintf(stderr, "ERROR: Could not rewind 'rule_performance' Iterator\n");
+            switch(rc) {
+                case MB_ERR_INVALID:
+                    fprintf(stderr, "\t reason: 'rule_performance' Iterator has not been created?\n");
+                    break;
+            }
+        }
+        #endif
+    }
+    
+    /* get next message from iterator */
+    rc = MB_Iterator_GetMessage(i_rule_performance, (void **)&msg);
+    #ifdef ERRCHECK
+    if (rc != MB_SUCCESS)
+    {
+       fprintf(stderr, "ERROR: Could not get message from 'rule_performance' Iterator\n");
+       switch(rc) {
+           case MB_ERR_INVALID:
+               fprintf(stderr, "\t reason: 'rule_performance' Iterator has not been created?\n");
+               break;
+           case MB_ERR_MEMALLOC:
+               fprintf(stderr, "\t reason: out of memory\n");
+               break;
+       }
+    }
+    #endif
+    
+    /* store pointer so memory can be deallocated later */
+    msg_prev = msg;
+    
+    return msg;
 }
 
 /** \fn xmachine_message_rule_performance * get_first_rule_performance_message()
  * \brief Get the first rule_performance message in the rule_performance message list.
  * \return The first message in the list.
  */
-xmachine_message_rule_performance * get_first_rule_performance_message()
+m_rule_performance * get_first_rule_performance_message()
 {
-	return get_next_message_rule_performance_in_range(*p_rule_performance_message);
+	return getInternalMessage_rule_performance();
 }
 
 /** \fn xmachine_message_rule_performance * get_next_rule_performance_message(xmachine_message_rule_performance * current)
@@ -156,173 +106,104 @@ xmachine_message_rule_performance * get_first_rule_performance_message()
  * \param current The current message in the list.
  * \return The next message in the list.
  */
-xmachine_message_rule_performance * get_next_rule_performance_message(xmachine_message_rule_performance * current)
+m_rule_performance * get_next_rule_performance_message(m_rule_performance * current)
 {
-	return get_next_message_rule_performance_in_range(current->next);
+	return getInternalMessage_rule_performance();
 }
 
-/** \fn void freerule_performancemessages()
- * \brief Free the rule_performance message list.
- */
-void freerule_performancemessages()
-{
-	xmachine_message_rule_performance * tmp, * head;
-	head = *p_rule_performance_message;
-	
-	while(head)
-	{
-		tmp = head->next;
-		
-		free(head);
-		head = tmp;
-	}
-	
-	*p_rule_performance_message = NULL;
-}
-
-/** \fn xmachine_message_new_performances * add_new_performances_message_internal()
- * \brief Add new_performances message to the local message list.
- * \return The added message.
- */
-xmachine_message_new_performances * add_new_performances_message_internal()
-{
-	xmachine_message_new_performances * current = (xmachine_message_new_performances *)malloc(sizeof(xmachine_message_new_performances));
-	CHECK_POINTER(current);
-
-	current->next = *p_new_performances_message;
-	*p_new_performances_message = current;
-	
-	return current;
-}
-
-/** \fn void process_new_performances_message(xmachine_message_new_performances * current)
- * \brief Process new_performances message to calculate if it needs to be sent to another node.
- * \param current The message to be processed.
- */
-void process_new_performances_message(xmachine_message_new_performances * current)
-{
-	double x = 0.0;
-	double y = 0.0;
-	double z = 0.0;
-	double max_mess_dist;
-	int in_halo_region = 0;
-	node_information * node_info;
-	xmachine_message_new_performances * temp_send_message;
-	
-	max_mess_dist = (double)current->range;
-	x = current->x;
-	y = current->y;
-	z = current->z;
-	
-	/* Check x-axis halo region */
-	if((current_node->partition_data[0] != -SPINF && x <= (current_node->partition_data[0]+max_mess_dist)) ||
-	   (current_node->partition_data[1] !=  SPINF && x >= (current_node->partition_data[1]-max_mess_dist)))
-	{ in_halo_region = 1; }
-	/* Check y-axis halo region */
-	if((current_node->partition_data[2] != -SPINF && y <= (current_node->partition_data[2]+max_mess_dist)) ||
-	   (current_node->partition_data[3] !=  SPINF && y >= (current_node->partition_data[3]-max_mess_dist)))
-	{ in_halo_region = 1; }
-	/* Check z-axis halo region (if used) */
-	if(current_xmachine->xmachine_Household)
-	{
-		if(current_node->partition_data[4] != -SPINF && z <= current_node->partition_data[4]+max_mess_dist)
-		{ in_halo_region = 1; }
-		if(current_node->partition_data[5] != SPINF && z >= current_node->partition_data[5]-max_mess_dist)
-		{ in_halo_region = 1; }
-	}if(current_xmachine->xmachine_FinancialAgent)
-	{
-		if(current_node->partition_data[4] != -SPINF && z <= current_node->partition_data[4]+max_mess_dist)
-		{ in_halo_region = 1; }
-		if(current_node->partition_data[5] != SPINF && z >= current_node->partition_data[5]-max_mess_dist)
-		{ in_halo_region = 1; }
-	}
-	
-	if(in_halo_region)
-	{
-		node_info = *p_node_info;
-		while(node_info)
-		{
-			if(node_info->node_id != current_node->node_id &&
-			node_info->partition_data[0]-max_mess_dist < x && node_info->partition_data[1]+max_mess_dist > x &&
-			node_info->partition_data[2]-max_mess_dist < y && node_info->partition_data[3]+max_mess_dist > y)
-			{
-				p_new_performances_message = &node_info->new_performances_messages;
-				temp_send_message = add_new_performances_message_internal();
-				
-				temp_send_message->rule_id = current->rule_id;
-				temp_send_message->avg_performance = current->avg_performance;
-				temp_send_message->range = current->range;
-				temp_send_message->x = current->x;
-				temp_send_message->y = current->y;
-				temp_send_message->z = current->z;
-			}
-			node_info = node_info->next;
-		}
-		
-		p_new_performances_message = &current_node->new_performances_messages;
-	}
-}
-
-/** \fn void add_new_performances_message(int rule_id, double avg_performance, double range, double x, double y, double z)
+/** \fn void add_new_performances_message(int rule_id, double avg_performance)
  * \brief Add new_performances message by calling internal and processing.
  * \param rule_id Message variable.
  * \param avg_performance Message variable.
- * \param range Message variable.
- * \param x Message variable.
- * \param y Message variable.
- * \param z Message variable.
  */
-void add_new_performances_message(int rule_id, double avg_performance, double range, double x, double y, double z)
+void add_new_performances_message(int rule_id, double avg_performance)
 {
-
-	p_new_performances_message = &current_node->new_performances_messages;
-	xmachine_message_new_performances * tmp = add_new_performances_message_internal();
-	
-	tmp->rule_id = rule_id;
-	tmp->avg_performance = avg_performance;
-	tmp->range = range;
-	tmp->x = x;
-	tmp->y = y;
-	tmp->z = z;
-	
-	/* Check if agent in halo region */
-	process_new_performances_message(tmp);
+    int rc;
+	m_new_performances msg;
+    
+    msg.rule_id = rule_id;
+    msg.avg_performance = avg_performance;
+    
+    rc = MB_AddMessage(b_new_performances, &msg);
+    #ifdef ERRCHECK
+    if (rc != MB_SUCCESS)
+    {
+       fprintf(stderr, "ERROR: Could not add message to 'new_performances' board\n");
+       switch(rc) {
+           case MB_ERR_INVALID:
+               fprintf(stderr, "\t reason: 'new_performances' board has not been created?\n");
+               break;
+           case MB_ERR_MEMALLOC:
+               fprintf(stderr, "\t reason: out of memory\n");
+               break;
+           case MB_ERR_LOCKED:
+               fprintf(stderr, "\t reason: 'new_performances' board is locked\n");
+               break;
+           case MB_ERR_INTERNAL:
+               fprintf(stderr, "\t reason: internal error. Recompile libmoard in debug mode for more info \n");
+               break;
+       }
+    }
+    #endif
 }
 
-xmachine_message_new_performances * get_next_message_new_performances_in_range(xmachine_message_new_performances * current)
+inline static m_new_performances* getInternalMessage_new_performances(void)
 {
-	double x = 0.0, y = 0.0, z = 0.0;
-	
-	
-	if(current_xmachine->xmachine_Household)
-	{
-		x = (double)current_xmachine->xmachine_Household->posx;
-		y = (double)current_xmachine->xmachine_Household->posy;
-		z = (double)current_xmachine->xmachine_Household->posz;
-	}
-	if(current_xmachine->xmachine_FinancialAgent)
-	{
-		x = (double)current_xmachine->xmachine_FinancialAgent->posx;
-		y = (double)current_xmachine->xmachine_FinancialAgent->posy;
-		z = (double)current_xmachine->xmachine_FinancialAgent->posz;
-	}
-	
-	while(current)
-	{
-		if( ((x - current->x)*(x - current->x)+(y - current->y)*(y - current->y)) <= current->range*current->range ) return current;
-		else current = current->next;
-	}
-	
-	return current;
+    static m_new_performances *msg_prev = NULL;
+    m_new_performances *msg;
+    int rc;
+    
+    /* deallocate previously returned message */
+    if (msg_prev != NULL) 
+    {
+        free(msg_prev);
+    }
+    else 
+    {
+        rc = MB_Iterator_Rewind(i_new_performances); 
+        #ifdef ERRCHECK
+        if (rc != MB_SUCCESS)
+        {
+            fprintf(stderr, "ERROR: Could not rewind 'new_performances' Iterator\n");
+            switch(rc) {
+                case MB_ERR_INVALID:
+                    fprintf(stderr, "\t reason: 'new_performances' Iterator has not been created?\n");
+                    break;
+            }
+        }
+        #endif
+    }
+    
+    /* get next message from iterator */
+    rc = MB_Iterator_GetMessage(i_new_performances, (void **)&msg);
+    #ifdef ERRCHECK
+    if (rc != MB_SUCCESS)
+    {
+       fprintf(stderr, "ERROR: Could not get message from 'new_performances' Iterator\n");
+       switch(rc) {
+           case MB_ERR_INVALID:
+               fprintf(stderr, "\t reason: 'new_performances' Iterator has not been created?\n");
+               break;
+           case MB_ERR_MEMALLOC:
+               fprintf(stderr, "\t reason: out of memory\n");
+               break;
+       }
+    }
+    #endif
+    
+    /* store pointer so memory can be deallocated later */
+    msg_prev = msg;
+    
+    return msg;
 }
 
 /** \fn xmachine_message_new_performances * get_first_new_performances_message()
  * \brief Get the first new_performances message in the new_performances message list.
  * \return The first message in the list.
  */
-xmachine_message_new_performances * get_first_new_performances_message()
+m_new_performances * get_first_new_performances_message()
 {
-	return get_next_message_new_performances_in_range(*p_new_performances_message);
+	return getInternalMessage_new_performances();
 }
 
 /** \fn xmachine_message_new_performances * get_next_new_performances_message(xmachine_message_new_performances * current)
@@ -330,173 +211,104 @@ xmachine_message_new_performances * get_first_new_performances_message()
  * \param current The current message in the list.
  * \return The next message in the list.
  */
-xmachine_message_new_performances * get_next_new_performances_message(xmachine_message_new_performances * current)
+m_new_performances * get_next_new_performances_message(m_new_performances * current)
 {
-	return get_next_message_new_performances_in_range(current->next);
+	return getInternalMessage_new_performances();
 }
 
-/** \fn void freenew_performancesmessages()
- * \brief Free the new_performances message list.
- */
-void freenew_performancesmessages()
-{
-	xmachine_message_new_performances * tmp, * head;
-	head = *p_new_performances_message;
-	
-	while(head)
-	{
-		tmp = head->next;
-		
-		free(head);
-		head = tmp;
-	}
-	
-	*p_new_performances_message = NULL;
-}
-
-/** \fn xmachine_message_rule_details * add_rule_details_message_internal()
- * \brief Add rule_details message to the local message list.
- * \return The added message.
- */
-xmachine_message_rule_details * add_rule_details_message_internal()
-{
-	xmachine_message_rule_details * current = (xmachine_message_rule_details *)malloc(sizeof(xmachine_message_rule_details));
-	CHECK_POINTER(current);
-
-	current->next = *p_rule_details_message;
-	*p_rule_details_message = current;
-	
-	return current;
-}
-
-/** \fn void process_rule_details_message(xmachine_message_rule_details * current)
- * \brief Process rule_details message to calculate if it needs to be sent to another node.
- * \param current The message to be processed.
- */
-void process_rule_details_message(xmachine_message_rule_details * current)
-{
-	double x = 0.0;
-	double y = 0.0;
-	double z = 0.0;
-	double max_mess_dist;
-	int in_halo_region = 0;
-	node_information * node_info;
-	xmachine_message_rule_details * temp_send_message;
-	
-	max_mess_dist = (double)current->range;
-	x = current->x;
-	y = current->y;
-	z = current->z;
-	
-	/* Check x-axis halo region */
-	if((current_node->partition_data[0] != -SPINF && x <= (current_node->partition_data[0]+max_mess_dist)) ||
-	   (current_node->partition_data[1] !=  SPINF && x >= (current_node->partition_data[1]-max_mess_dist)))
-	{ in_halo_region = 1; }
-	/* Check y-axis halo region */
-	if((current_node->partition_data[2] != -SPINF && y <= (current_node->partition_data[2]+max_mess_dist)) ||
-	   (current_node->partition_data[3] !=  SPINF && y >= (current_node->partition_data[3]-max_mess_dist)))
-	{ in_halo_region = 1; }
-	/* Check z-axis halo region (if used) */
-	if(current_xmachine->xmachine_Household)
-	{
-		if(current_node->partition_data[4] != -SPINF && z <= current_node->partition_data[4]+max_mess_dist)
-		{ in_halo_region = 1; }
-		if(current_node->partition_data[5] != SPINF && z >= current_node->partition_data[5]-max_mess_dist)
-		{ in_halo_region = 1; }
-	}if(current_xmachine->xmachine_FinancialAgent)
-	{
-		if(current_node->partition_data[4] != -SPINF && z <= current_node->partition_data[4]+max_mess_dist)
-		{ in_halo_region = 1; }
-		if(current_node->partition_data[5] != SPINF && z >= current_node->partition_data[5]-max_mess_dist)
-		{ in_halo_region = 1; }
-	}
-	
-	if(in_halo_region)
-	{
-		node_info = *p_node_info;
-		while(node_info)
-		{
-			if(node_info->node_id != current_node->node_id &&
-			node_info->partition_data[0]-max_mess_dist < x && node_info->partition_data[1]+max_mess_dist > x &&
-			node_info->partition_data[2]-max_mess_dist < y && node_info->partition_data[3]+max_mess_dist > y)
-			{
-				p_rule_details_message = &node_info->rule_details_messages;
-				temp_send_message = add_rule_details_message_internal();
-				
-				temp_send_message->rule_id = current->rule_id;
-				memcpy(temp_send_message->parameters, current->parameters, 10*sizeof(double));
-				temp_send_message->range = current->range;
-				temp_send_message->x = current->x;
-				temp_send_message->y = current->y;
-				temp_send_message->z = current->z;
-			}
-			node_info = node_info->next;
-		}
-		
-		p_rule_details_message = &current_node->rule_details_messages;
-	}
-}
-
-/** \fn void add_rule_details_message(int rule_id, double parameters, double range, double x, double y, double z)
+/** \fn void add_rule_details_message(int rule_id, double parameters)
  * \brief Add rule_details message by calling internal and processing.
  * \param rule_id Message variable.
  * \param parameters Message variable.
- * \param range Message variable.
- * \param x Message variable.
- * \param y Message variable.
- * \param z Message variable.
  */
-void add_rule_details_message(int rule_id, double parameters[], double range, double x, double y, double z)
+void add_rule_details_message(int rule_id, double parameters[])
 {
-
-	p_rule_details_message = &current_node->rule_details_messages;
-	xmachine_message_rule_details * tmp = add_rule_details_message_internal();
-	
-	tmp->rule_id = rule_id;
-	memcpy(tmp->parameters, parameters, 10*sizeof(double));
-	tmp->range = range;
-	tmp->x = x;
-	tmp->y = y;
-	tmp->z = z;
-	
-	/* Check if agent in halo region */
-	process_rule_details_message(tmp);
+    int rc;
+	m_rule_details msg;
+    
+    msg.rule_id = rule_id;
+    msg.parameters = parameters;
+    
+    rc = MB_AddMessage(b_rule_details, &msg);
+    #ifdef ERRCHECK
+    if (rc != MB_SUCCESS)
+    {
+       fprintf(stderr, "ERROR: Could not add message to 'rule_details' board\n");
+       switch(rc) {
+           case MB_ERR_INVALID:
+               fprintf(stderr, "\t reason: 'rule_details' board has not been created?\n");
+               break;
+           case MB_ERR_MEMALLOC:
+               fprintf(stderr, "\t reason: out of memory\n");
+               break;
+           case MB_ERR_LOCKED:
+               fprintf(stderr, "\t reason: 'rule_details' board is locked\n");
+               break;
+           case MB_ERR_INTERNAL:
+               fprintf(stderr, "\t reason: internal error. Recompile libmoard in debug mode for more info \n");
+               break;
+       }
+    }
+    #endif
 }
 
-xmachine_message_rule_details * get_next_message_rule_details_in_range(xmachine_message_rule_details * current)
+inline static m_rule_details* getInternalMessage_rule_details(void)
 {
-	double x = 0.0, y = 0.0, z = 0.0;
-	
-	
-	if(current_xmachine->xmachine_Household)
-	{
-		x = (double)current_xmachine->xmachine_Household->posx;
-		y = (double)current_xmachine->xmachine_Household->posy;
-		z = (double)current_xmachine->xmachine_Household->posz;
-	}
-	if(current_xmachine->xmachine_FinancialAgent)
-	{
-		x = (double)current_xmachine->xmachine_FinancialAgent->posx;
-		y = (double)current_xmachine->xmachine_FinancialAgent->posy;
-		z = (double)current_xmachine->xmachine_FinancialAgent->posz;
-	}
-	
-	while(current)
-	{
-		if( ((x - current->x)*(x - current->x)+(y - current->y)*(y - current->y)) <= current->range*current->range ) return current;
-		else current = current->next;
-	}
-	
-	return current;
+    static m_rule_details *msg_prev = NULL;
+    m_rule_details *msg;
+    int rc;
+    
+    /* deallocate previously returned message */
+    if (msg_prev != NULL) 
+    {
+        free(msg_prev);
+    }
+    else 
+    {
+        rc = MB_Iterator_Rewind(i_rule_details); 
+        #ifdef ERRCHECK
+        if (rc != MB_SUCCESS)
+        {
+            fprintf(stderr, "ERROR: Could not rewind 'rule_details' Iterator\n");
+            switch(rc) {
+                case MB_ERR_INVALID:
+                    fprintf(stderr, "\t reason: 'rule_details' Iterator has not been created?\n");
+                    break;
+            }
+        }
+        #endif
+    }
+    
+    /* get next message from iterator */
+    rc = MB_Iterator_GetMessage(i_rule_details, (void **)&msg);
+    #ifdef ERRCHECK
+    if (rc != MB_SUCCESS)
+    {
+       fprintf(stderr, "ERROR: Could not get message from 'rule_details' Iterator\n");
+       switch(rc) {
+           case MB_ERR_INVALID:
+               fprintf(stderr, "\t reason: 'rule_details' Iterator has not been created?\n");
+               break;
+           case MB_ERR_MEMALLOC:
+               fprintf(stderr, "\t reason: out of memory\n");
+               break;
+       }
+    }
+    #endif
+    
+    /* store pointer so memory can be deallocated later */
+    msg_prev = msg;
+    
+    return msg;
 }
 
 /** \fn xmachine_message_rule_details * get_first_rule_details_message()
  * \brief Get the first rule_details message in the rule_details message list.
  * \return The first message in the list.
  */
-xmachine_message_rule_details * get_first_rule_details_message()
+m_rule_details * get_first_rule_details_message()
 {
-	return get_next_message_rule_details_in_range(*p_rule_details_message);
+	return getInternalMessage_rule_details();
 }
 
 /** \fn xmachine_message_rule_details * get_next_rule_details_message(xmachine_message_rule_details * current)
@@ -504,27 +316,8 @@ xmachine_message_rule_details * get_first_rule_details_message()
  * \param current The current message in the list.
  * \return The next message in the list.
  */
-xmachine_message_rule_details * get_next_rule_details_message(xmachine_message_rule_details * current)
+m_rule_details * get_next_rule_details_message(m_rule_details * current)
 {
-	return get_next_message_rule_details_in_range(current->next);
-}
-
-/** \fn void freerule_detailsmessages()
- * \brief Free the rule_details message list.
- */
-void freerule_detailsmessages()
-{
-	xmachine_message_rule_details * tmp, * head;
-	head = *p_rule_details_message;
-	
-	while(head)
-	{
-		tmp = head->next;
-		
-		free(head);
-		head = tmp;
-	}
-	
-	*p_rule_details_message = NULL;
+	return getInternalMessage_rule_details();
 }
 

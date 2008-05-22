@@ -20,11 +20,16 @@ int main(int argc, char * argv[])
 	char inputpath[100];
 	int lastd = 0;
 	int i;
+	int rc;
 	int iteration_number;
 	int iteration_total;
 	int * p_iteration_number;
-	xmachine * temp_free_xmachine;
-	xmachine **agent_list;
+	/* For backwards compatabilty allocate current_xmachine */
+	current_xmachine = (xmachine *)malloc(sizeof(xmachine));
+	CHECK_POINTER(current_xmachine);
+	//xmachine_memory_Household * temp_xmachine_Household;
+	//xmachine_memory_FinancialAgent * temp_xmachine_FinancialAgent;
+	
 	/* Ratio for calculating time in milliseconds */
     /* (lsc) changed from long to double
      * if "long", time_ratio == 0 when CLOCKS_PER_SEC > 1000
@@ -38,20 +43,37 @@ int main(int argc, char * argv[])
 
 
 	
-	/* Don't use binary output as default */
-	use_binary_output = 0;
 	/* Output frequency is 1 as default */
 	output_frequency = 1;
 	/* Set random seed */
 /*	srand(time(NULL)); */
 	
+	
+    
+	rc = MB_Env_Init();
+	#ifdef ERRCHECK
+	if (rc != MB_SUCCESS)
+	{
+	   fprintf(stderr, "ERROR: Failed to initialise Message Board environment\n");
+	   switch(rc) {
+	       case MB_ERR_MPI:
+	           fprintf(stderr, "\t reason: MPI library not initialised\n");
+	           break;
+	       case MB_ERR_MEMALLOC:
+	           fprintf(stderr, "\t reason: out of memory\n");
+	           break;
+            default: break;
+	   }
+	   
+	}
+	#endif
+	
 	/* Initialise pointers */
 	initialise_pointers();
 	p_iteration_number = &iteration_number;
-		
 
 
-	printf("FLAME Application: Financial Market Model \n");
+	printf("FLAME Application: Financial Market Model - EWA \n");
 
 
 
@@ -103,9 +125,6 @@ printf("Ouput dir: %s\n", outputpath);
 	i = 3;
 	while(argc > i)
 	{
-		/* Use binary format for results */
-		if(strcmp(argv[i],"-b") == 0) use_binary_output = 1;
-		if(use_binary_output) printf("Using binary output for results\n");
 		if(strcmp(argv[i],"-f") == 0)
 		{
 			if(argc > (i+1))
@@ -128,11 +147,11 @@ printf("Ouput dir: %s\n", outputpath);
 	
 	/* Read initial data into p_xmachine  */
 
-       agent_list = p_xmachine;
-       readinitialstates(inputpath, p_iteration_number, agent_list, cloud_data, partition_method, 0);
+       //agent_list = p_xmachine;
+       readinitialstates(inputpath, p_iteration_number, cloud_data, partition_method, 0);
        /* Generate partitions */
-       generate_partitions(cloud_data,totalnodes,partition_method);
-       save_partition_data();
+//       generate_partitions(cloud_data,totalnodes,partition_method);
+//       save_partition_data();
  
 
 
@@ -140,12 +159,13 @@ printf("Ouput dir: %s\n", outputpath);
 
 
     /* Partition data */
-    partition_data(totalnodes, agent_list, cloud_data, partition_method);
+    /* stc: no partitions in serial */
+	//partition_data(totalnodes, agent_list, cloud_data, partition_method);
 
 
 
 
-		i = 0;
+		/*i = 0;
 		current_node = *p_node_info;
 		while(current_node)
 		{
@@ -153,10 +173,10 @@ printf("Ouput dir: %s\n", outputpath);
 			i += current_node->agent_total;
 			current_node = current_node->next;
 		}
-		printf("Agent total check: %d\n", i);
+		printf("Agent total check: %d\n", i);*/
 
         /* restore current_node pointer */
-		current_node = *p_node_info;
+		//current_node = *p_node_info;
 
 
 	
@@ -181,7 +201,7 @@ printf("Ouput dir: %s\n", outputpath);
 	start = clock();
 
     /* pre-randomise agents for first iteration */
-    randomisexagent();
+    //randomisexagent();
 	
 	for(iteration_loop=iteration_number+1; iteration_loop < iteration_number+iteration_total+1; iteration_loop++)
 	{
@@ -190,424 +210,904 @@ printf("Ouput dir: %s\n", outputpath);
 		printf("Iteration - %d\n", iteration_loop);
 		/* START OF ITERATION */
 
-/* Start of communications layer loop */
 	
-		current_node = *p_node_info;
-		while(current_node)
-		{
-				
-			p_rule_performance_message = &current_node->rule_performance_messages;
-				
-			p_new_performances_message = &current_node->new_performances_messages;
-				
-			p_rule_details_message = &current_node->rule_details_messages;
-				
-		p_xmachine = &current_node->agents;
-	
-	
-	
-		/* Loop through x-machines */
-		current_xmachine = *p_xmachine;
-		while(current_xmachine)
-		{
-			i = 0;
+	current_xmachine_FinancialAgent_holder = FinancialAgent_start_FinancialAgent_state->agents;
+	while(current_xmachine_FinancialAgent_holder)
+	{
+		temp_xmachine_FinancialAgent_holder = current_xmachine_FinancialAgent_holder->next;
+		current_xmachine_FinancialAgent = current_xmachine_FinancialAgent_holder->agent;
+		current_xmachine_FinancialAgent_next_state = FinancialAgent_01_state;
+		/* For backwards compatability set current_xmachine */
+		current_xmachine->xmachine_Household = NULL;
+		current_xmachine->xmachine_FinancialAgent = NULL;
+		current_xmachine->xmachine_FinancialAgent = current_xmachine_FinancialAgent;
 		
-			if(current_xmachine->xmachine_FinancialAgent != NULL)
-			{
-				i = Every_100_periods();
-			}
+		if(FinancialAgent_FinancialAgent_apply_GA_start_FinancialAgent_01_condition(current_xmachine_FinancialAgent))
+		{
+		
+		
+		
+			i = FinancialAgent_apply_GA();
 			
-			/* If agent is freed */
+		
+		
 			if(i == 1)
 			{
-				temp_free_xmachine = current_xmachine->next;
-				free_agent();
-				current_xmachine = temp_free_xmachine;
+				free_FinancialAgent_agent(current_xmachine_FinancialAgent_holder, FinancialAgent_start_FinancialAgent_state);
 			}
 			else
 			{
-				current_xmachine = current_xmachine->next;
+				transition_FinancialAgent_agent(current_xmachine_FinancialAgent_holder, FinancialAgent_start_FinancialAgent_state, FinancialAgent_01_state);
 			}
 		}
-	
-		/* Loop through x-machines */
-		current_xmachine = *p_xmachine;
-		while(current_xmachine)
-		{
-			i = 0;
 		
-			if(current_xmachine->xmachine_FinancialAgent != NULL)
-			{
-				i = FinancialAgent_apply_GA();
-			}
-			
-			/* If agent is freed */
-			if(i == 1)
-			{
-				temp_free_xmachine = current_xmachine->next;
-				free_agent();
-				current_xmachine = temp_free_xmachine;
-			}
-			else
-			{
-				current_xmachine = current_xmachine->next;
-			}
-		}
-	
-		/* Loop through x-machines */
-		current_xmachine = *p_xmachine;
-		while(current_xmachine)
-		{
-			i = 0;
+		current_xmachine_FinancialAgent = NULL;
 		
-			if(current_xmachine->xmachine_FinancialAgent != NULL)
-			{
-				i = FinancialAgent_send_rule_details();
-			}
-			
-			/* If agent is freed */
-			if(i == 1)
-			{
-				temp_free_xmachine = current_xmachine->next;
-				free_agent();
-				current_xmachine = temp_free_xmachine;
-			}
-			else
-			{
-				current_xmachine = current_xmachine->next;
-			}
-		}
-	
-	
-        randomisexagent();  /* randomise x-agents while waiting for communication to complete */
-        
-			
-		current_node = current_node->next;
-		}
-			
-/* End of communications layer loop */
-
-/* Start of communications layer loop */
-	
-		current_node = *p_node_info;
-		while(current_node)
-		{
-				
-			p_rule_performance_message = &current_node->rule_performance_messages;
-				
-			p_new_performances_message = &current_node->new_performances_messages;
-				
-			p_rule_details_message = &current_node->rule_details_messages;
-				
-		p_xmachine = &current_node->agents;
-	
-	
-	
-		/* Loop through x-machines */
-		current_xmachine = *p_xmachine;
-		while(current_xmachine)
-		{
-			i = 0;
-		
-			if(current_xmachine->xmachine_Household != NULL)
-			{
-				i = Household_read_and_update_rule_details();
-			}
-			
-			/* If agent is freed */
-			if(i == 1)
-			{
-				temp_free_xmachine = current_xmachine->next;
-				free_agent();
-				current_xmachine = temp_free_xmachine;
-			}
-			else
-			{
-				current_xmachine = current_xmachine->next;
-			}
-		}
-	
-		/* Loop through x-machines */
-		current_xmachine = *p_xmachine;
-		while(current_xmachine)
-		{
-			i = 0;
-		
-			if(current_xmachine->xmachine_Household != NULL)
-			{
-				i = Household_reset_private_classifiersystem();
-			}
-			
-			/* If agent is freed */
-			if(i == 1)
-			{
-				temp_free_xmachine = current_xmachine->next;
-				free_agent();
-				current_xmachine = temp_free_xmachine;
-			}
-			else
-			{
-				current_xmachine = current_xmachine->next;
-			}
-		}
-	
-		/* Loop through x-machines */
-		current_xmachine = *p_xmachine;
-		while(current_xmachine)
-		{
-			i = 0;
-		
-			if(current_xmachine->xmachine_Household != NULL)
-			{
-				i = Every_period();
-			}
-			
-			/* If agent is freed */
-			if(i == 1)
-			{
-				temp_free_xmachine = current_xmachine->next;
-				free_agent();
-				current_xmachine = temp_free_xmachine;
-			}
-			else
-			{
-				current_xmachine = current_xmachine->next;
-			}
-		}
-	
-		/* Loop through x-machines */
-		current_xmachine = *p_xmachine;
-		while(current_xmachine)
-		{
-			i = 0;
-		
-			if(current_xmachine->xmachine_Household != NULL)
-			{
-				i = Household_send_rule_performance();
-			}
-			
-			/* If agent is freed */
-			if(i == 1)
-			{
-				temp_free_xmachine = current_xmachine->next;
-				free_agent();
-				current_xmachine = temp_free_xmachine;
-			}
-			else
-			{
-				current_xmachine = current_xmachine->next;
-			}
-		}
-	
-	
-        randomisexagent();  /* randomise x-agents while waiting for communication to complete */
-        
-			
-		current_node = current_node->next;
-		}
-			
-/* End of communications layer loop */
-
-/* Start of communications layer loop */
-	
-		current_node = *p_node_info;
-		while(current_node)
-		{
-				
-			p_rule_performance_message = &current_node->rule_performance_messages;
-				
-			p_new_performances_message = &current_node->new_performances_messages;
-				
-			p_rule_details_message = &current_node->rule_details_messages;
-				
-		p_xmachine = &current_node->agents;
-	
-	
-	
-		/* Loop through x-machines */
-		current_xmachine = *p_xmachine;
-		while(current_xmachine)
-		{
-			i = 0;
-		
-			if(current_xmachine->xmachine_FinancialAgent != NULL)
-			{
-				i = FinancialAgent_read_rule_performance_and_update_classifiersystem();
-			}
-			
-			/* If agent is freed */
-			if(i == 1)
-			{
-				temp_free_xmachine = current_xmachine->next;
-				free_agent();
-				current_xmachine = temp_free_xmachine;
-			}
-			else
-			{
-				current_xmachine = current_xmachine->next;
-			}
-		}
-	
-		/* Loop through x-machines */
-		current_xmachine = *p_xmachine;
-		while(current_xmachine)
-		{
-			i = 0;
-		
-			if(current_xmachine->xmachine_FinancialAgent != NULL)
-			{
-				i = FinancialAgent_send_all_performances();
-			}
-			
-			/* If agent is freed */
-			if(i == 1)
-			{
-				temp_free_xmachine = current_xmachine->next;
-				free_agent();
-				current_xmachine = temp_free_xmachine;
-			}
-			else
-			{
-				current_xmachine = current_xmachine->next;
-			}
-		}
-	
-	
-        randomisexagent();  /* randomise x-agents while waiting for communication to complete */
-        
-			
-		current_node = current_node->next;
-		}
-			
-/* End of communications layer loop */
-
-/* Start of communications layer loop */
-	
-		current_node = *p_node_info;
-		while(current_node)
-		{
-				
-			p_rule_performance_message = &current_node->rule_performance_messages;
-				
-			p_new_performances_message = &current_node->new_performances_messages;
-				
-			p_rule_details_message = &current_node->rule_details_messages;
-				
-		p_xmachine = &current_node->agents;
-	
-	
-	
-		/* Loop through x-machines */
-		current_xmachine = *p_xmachine;
-		while(current_xmachine)
-		{
-			i = 0;
-		
-			if(current_xmachine->xmachine_Household != NULL)
-			{
-				i = Household_read_all_performances();
-			}
-			
-			/* If agent is freed */
-			if(i == 1)
-			{
-				temp_free_xmachine = current_xmachine->next;
-				free_agent();
-				current_xmachine = temp_free_xmachine;
-			}
-			else
-			{
-				current_xmachine = current_xmachine->next;
-			}
-		}
-	
-		/* Loop through x-machines */
-		current_xmachine = *p_xmachine;
-		while(current_xmachine)
-		{
-			i = 0;
-		
-			if(current_xmachine->xmachine_Household != NULL)
-			{
-				i = Household_select_rule();
-			}
-			
-			/* If agent is freed */
-			if(i == 1)
-			{
-				temp_free_xmachine = current_xmachine->next;
-				free_agent();
-				current_xmachine = temp_free_xmachine;
-			}
-			else
-			{
-				current_xmachine = current_xmachine->next;
-			}
-		}
-	
-		/* Loop through x-machines */
-		current_xmachine = *p_xmachine;
-		while(current_xmachine)
-		{
-			i = 0;
-		
-			if(current_xmachine->xmachine_FinancialAgent != NULL)
-			{
-				i = FinancialAgent_reset_public_classifiersystem();
-			}
-		
-			if(current_xmachine->xmachine_FinancialAgent != NULL)
-			{
-				i = FinancialAgent_daily_reset_public_classifiersystem();
-			}
-		
-			if(current_xmachine->xmachine_Household != NULL)
-			{
-				i = Household_apply_rule();
-			}
-			
-			/* If agent is freed */
-			if(i == 1)
-			{
-				temp_free_xmachine = current_xmachine->next;
-				free_agent();
-				current_xmachine = temp_free_xmachine;
-			}
-			else
-			{
-				current_xmachine = current_xmachine->next;
-			}
-		}
-	
-	
-        randomisexagent();  /* randomise x-agents while waiting for communication to complete */
-        
-			
-		current_node = current_node->next;
-		}
-			
-/* End of communications layer loop */
+		current_xmachine_FinancialAgent_holder = temp_xmachine_FinancialAgent_holder;
+	}
 
 
 
-		if(iteration_loop%output_frequency == 0)
+	
+	current_xmachine_FinancialAgent_holder = FinancialAgent_start_FinancialAgent_state->agents;
+	while(current_xmachine_FinancialAgent_holder)
+	{
+		temp_xmachine_FinancialAgent_holder = current_xmachine_FinancialAgent_holder->next;
+		current_xmachine_FinancialAgent = current_xmachine_FinancialAgent_holder->agent;
+		current_xmachine_FinancialAgent_next_state = FinancialAgent_end_GA_state;
+		/* For backwards compatability set current_xmachine */
+		current_xmachine->xmachine_Household = NULL;
+		current_xmachine->xmachine_FinancialAgent = NULL;
+		current_xmachine->xmachine_FinancialAgent = current_xmachine_FinancialAgent;
+		
+		if(FinancialAgent_idle_start_FinancialAgent_end_GA_condition(current_xmachine_FinancialAgent))
 		{
-			if(use_binary_output) saveiterationdata_binary(iteration_loop);
-			else saveiterationdata(iteration_loop);
-		}		current_node = *p_node_info;
-		while(current_node)
+		
+		
+		
+			i = idle();
+			
+		
+		
+			if(i == 1)
+			{
+				free_FinancialAgent_agent(current_xmachine_FinancialAgent_holder, FinancialAgent_start_FinancialAgent_state);
+			}
+			else
+			{
+				transition_FinancialAgent_agent(current_xmachine_FinancialAgent_holder, FinancialAgent_start_FinancialAgent_state, FinancialAgent_end_GA_state);
+			}
+		}
+		
+		current_xmachine_FinancialAgent = NULL;
+		
+		current_xmachine_FinancialAgent_holder = temp_xmachine_FinancialAgent_holder;
+	}
+
+
+
+	
+	current_xmachine_Household_holder = Household_start_Household_EWA_Learning_state->agents;
+	while(current_xmachine_Household_holder)
+	{
+		temp_xmachine_Household_holder = current_xmachine_Household_holder->next;
+		current_xmachine_Household = current_xmachine_Household_holder->agent;
+		current_xmachine_Household_next_state = Household_01_state;
+		/* For backwards compatability set current_xmachine */
+		current_xmachine->xmachine_Household = NULL;
+		current_xmachine->xmachine_FinancialAgent = NULL;
+		current_xmachine->xmachine_Household = current_xmachine_Household;
+		
+		if(Household_Household_reset_private_classifiersystem_start_Household_EWA_Learning_01_condition(current_xmachine_Household))
 		{
-		p_rule_performance_message = &current_node->rule_performance_messages;
-		freerule_performancemessages();
-		p_new_performances_message = &current_node->new_performances_messages;
-		freenew_performancesmessages();
-		p_rule_details_message = &current_node->rule_details_messages;
-		freerule_detailsmessages();
-		p_xmachine = &current_node->agents;
+		
+		
+		
+			i = Household_reset_private_classifiersystem();
+			
+		
+		
+			if(i == 1)
+			{
+				free_Household_agent(current_xmachine_Household_holder, Household_start_Household_EWA_Learning_state);
+			}
+			else
+			{
+				transition_Household_agent(current_xmachine_Household_holder, Household_start_Household_EWA_Learning_state, Household_01_state);
+			}
+		}
+		
+		current_xmachine_Household = NULL;
+		
+		current_xmachine_Household_holder = temp_xmachine_Household_holder;
+	}
+
+
+
+	
+	current_xmachine_Household_holder = Household_start_Household_EWA_Learning_state->agents;
+	while(current_xmachine_Household_holder)
+	{
+		temp_xmachine_Household_holder = current_xmachine_Household_holder->next;
+		current_xmachine_Household = current_xmachine_Household_holder->agent;
+		current_xmachine_Household_next_state = Household_end_GA_state;
+		/* For backwards compatability set current_xmachine */
+		current_xmachine->xmachine_Household = NULL;
+		current_xmachine->xmachine_FinancialAgent = NULL;
+		current_xmachine->xmachine_Household = current_xmachine_Household;
+		
+		if(Household_idle_start_Household_EWA_Learning_end_GA_condition(current_xmachine_Household))
+		{
+		
+		
+		
+			i = idle();
+			
+		
+		
+			if(i == 1)
+			{
+				free_Household_agent(current_xmachine_Household_holder, Household_start_Household_EWA_Learning_state);
+			}
+			else
+			{
+				transition_Household_agent(current_xmachine_Household_holder, Household_start_Household_EWA_Learning_state, Household_end_GA_state);
+			}
+		}
+		
+		current_xmachine_Household = NULL;
+		
+		current_xmachine_Household_holder = temp_xmachine_Household_holder;
+	}
+
+
+
+
+	
+	current_xmachine_FinancialAgent_holder = FinancialAgent_01_state->agents;
+	while(current_xmachine_FinancialAgent_holder)
+	{
+		temp_xmachine_FinancialAgent_holder = current_xmachine_FinancialAgent_holder->next;
+		current_xmachine_FinancialAgent = current_xmachine_FinancialAgent_holder->agent;
+		current_xmachine_FinancialAgent_next_state = FinancialAgent_02_state;
+		/* For backwards compatability set current_xmachine */
+		current_xmachine->xmachine_Household = NULL;
+		current_xmachine->xmachine_FinancialAgent = NULL;
+		current_xmachine->xmachine_FinancialAgent = current_xmachine_FinancialAgent;
+		
+		
+		
+		
+		
+			i = FinancialAgent_reset_public_classifiersystem();
+			
+		
+		
+			if(i == 1)
+			{
+				free_FinancialAgent_agent(current_xmachine_FinancialAgent_holder, FinancialAgent_01_state);
+			}
+			else
+			{
+				transition_FinancialAgent_agent(current_xmachine_FinancialAgent_holder, FinancialAgent_01_state, FinancialAgent_02_state);
+			}
+		
+		
+		current_xmachine_FinancialAgent = NULL;
+		
+		current_xmachine_FinancialAgent_holder = temp_xmachine_FinancialAgent_holder;
+	}
+
+
+
+
+	
+	current_xmachine_FinancialAgent_holder = FinancialAgent_02_state->agents;
+	while(current_xmachine_FinancialAgent_holder)
+	{
+		temp_xmachine_FinancialAgent_holder = current_xmachine_FinancialAgent_holder->next;
+		current_xmachine_FinancialAgent = current_xmachine_FinancialAgent_holder->agent;
+		current_xmachine_FinancialAgent_next_state = FinancialAgent_end_GA_state;
+		/* For backwards compatability set current_xmachine */
+		current_xmachine->xmachine_Household = NULL;
+		current_xmachine->xmachine_FinancialAgent = NULL;
+		current_xmachine->xmachine_FinancialAgent = current_xmachine_FinancialAgent;
+		
+		
+		
+		
+		
+			i = FinancialAgent_send_rule_details();
+			
+		
+		
+			if(i == 1)
+			{
+				free_FinancialAgent_agent(current_xmachine_FinancialAgent_holder, FinancialAgent_02_state);
+			}
+			else
+			{
+				transition_FinancialAgent_agent(current_xmachine_FinancialAgent_holder, FinancialAgent_02_state, FinancialAgent_end_GA_state);
+			}
+		
+		
+		current_xmachine_FinancialAgent = NULL;
+		
+		current_xmachine_FinancialAgent_holder = temp_xmachine_FinancialAgent_holder;
+	}
+
+
+    rc = MB_SyncStart(b_rule_details);
+    #ifdef ERRCHECK
+    if (rc != MB_SUCCESS)
+    {
+       fprintf(stderr, "ERROR: Could not start sync of 'rule_details' board\n");
+       switch(rc) {
+           case MB_ERR_INVALID:
+               fprintf(stderr, "\t reason: 'rule_details' board is invalid\n");
+               break;
+           case MB_ERR_LOCKED:
+               fprintf(stderr, "\t reason: 'rule_details' board is locked\n");
+               break;
+           case MB_ERR_MEMALLOC:
+               fprintf(stderr, "\t reason: out of memory\n");
+               break;
+           case MB_ERR_INTERNAL:
+               fprintf(stderr, "\t reason: internal error. Recompile libmoard in debug mode for more info \n");
+               break;
+       }
+    }
+    #endif
+
+
+
+	
+	current_xmachine_FinancialAgent_holder = FinancialAgent_end_GA_state->agents;
+	while(current_xmachine_FinancialAgent_holder)
+	{
+		temp_xmachine_FinancialAgent_holder = current_xmachine_FinancialAgent_holder->next;
+		current_xmachine_FinancialAgent = current_xmachine_FinancialAgent_holder->agent;
+		current_xmachine_FinancialAgent_next_state = FinancialAgent_03_state;
+		/* For backwards compatability set current_xmachine */
+		current_xmachine->xmachine_Household = NULL;
+		current_xmachine->xmachine_FinancialAgent = NULL;
+		current_xmachine->xmachine_FinancialAgent = current_xmachine_FinancialAgent;
+		
+		
+		
+		
+		
+			i = FinancialAgent_reset_public_classifiersystem();
+			
+		
+		
+			if(i == 1)
+			{
+				free_FinancialAgent_agent(current_xmachine_FinancialAgent_holder, FinancialAgent_end_GA_state);
+			}
+			else
+			{
+				transition_FinancialAgent_agent(current_xmachine_FinancialAgent_holder, FinancialAgent_end_GA_state, FinancialAgent_03_state);
+			}
+		
+		
+		current_xmachine_FinancialAgent = NULL;
+		
+		current_xmachine_FinancialAgent_holder = temp_xmachine_FinancialAgent_holder;
+	}
+
+
+
+	rc = MB_SyncComplete(b_rule_details);
+	#ifdef ERRCHECK
+    if (rc != MB_SUCCESS)
+    {
+       fprintf(stderr, "ERROR: Could not complete sync of 'rule_details' board\n");
+       switch(rc) {
+            case MB_ERR_INVALID:
+               fprintf(stderr, "\t reason: 'rule_details' board is invalid\n");
+               break;
+           case MB_ERR_MEMALLOC:
+               fprintf(stderr, "\t reason: out of memory\n");
+               break;
+           case MB_ERR_INTERNAL:
+               fprintf(stderr, "\t reason: internal error. Recompile libmoard in debug mode for more info \n");
+               break;
+       }
+    }
+    #endif
+	
+	
+	current_xmachine_Household_holder = Household_01_state->agents;
+	while(current_xmachine_Household_holder)
+	{
+		temp_xmachine_Household_holder = current_xmachine_Household_holder->next;
+		current_xmachine_Household = current_xmachine_Household_holder->agent;
+		current_xmachine_Household_next_state = Household_end_GA_state;
+		/* For backwards compatability set current_xmachine */
+		current_xmachine->xmachine_Household = NULL;
+		current_xmachine->xmachine_FinancialAgent = NULL;
+		current_xmachine->xmachine_Household = current_xmachine_Household;
+		
+		
+		
+		
+		
+		rc = MB_Iterator_Create(b_rule_details, &i_rule_details);
+		#ifdef ERRCHECK
+		if (rc != MB_SUCCESS)
+		{
+		   fprintf(stderr, "ERROR: Could not create Iterator for 'rule_details'\n");
+		   switch(rc) {
+		       case MB_ERR_INVALID:
+		           fprintf(stderr, "\t reason: 'rule_details' board is invalid\n");
+		           break;
+		       case MB_ERR_LOCKED:
+	               fprintf(stderr, "\t reason: 'rule_details' board is locked\n");
+	               break;
+	           case MB_ERR_MEMALLOC:
+	               fprintf(stderr, "\t reason: out of memory\n");
+	               break;
+	           case MB_ERR_INTERNAL:
+	               fprintf(stderr, "\t reason: internal error. Recompile libmoard in debug mode for more info \n");
+	               break;
+		   }
+		}
+		#endif
+		
+		
+			i = Household_read_and_update_rule_details();
+			
+		
+		    rc = MB_Iterator_Delete(&i_rule_details);
+		    #ifdef ERRCHECK
+		    if (rc != MB_SUCCESS)
+		    {
+		       fprintf(stderr, "ERROR: Could not delete 'rule_details' iterator\n");
+		       switch(rc) {
+		           case MB_ERR_INVALID:
+		               fprintf(stderr, "\t reason: 'rule_details' iterator is invalid\n");
+		               break;
+		           case MB_ERR_INTERNAL:
+		               fprintf(stderr, "\t reason: internal error. Recompile libmoard in debug mode for more info \n");
+		               break;
+		       }
+		    }
+		    #endif
+		
+		
+			if(i == 1)
+			{
+				free_Household_agent(current_xmachine_Household_holder, Household_01_state);
+			}
+			else
+			{
+				transition_Household_agent(current_xmachine_Household_holder, Household_01_state, Household_end_GA_state);
+			}
+		
+		
+		current_xmachine_Household = NULL;
+		
+		current_xmachine_Household_holder = temp_xmachine_Household_holder;
+	}
+
+
+
+
+	
+	current_xmachine_Household_holder = Household_end_GA_state->agents;
+	while(current_xmachine_Household_holder)
+	{
+		temp_xmachine_Household_holder = current_xmachine_Household_holder->next;
+		current_xmachine_Household = current_xmachine_Household_holder->agent;
+		current_xmachine_Household_next_state = Household_02_state;
+		/* For backwards compatability set current_xmachine */
+		current_xmachine->xmachine_Household = NULL;
+		current_xmachine->xmachine_FinancialAgent = NULL;
+		current_xmachine->xmachine_Household = current_xmachine_Household;
+		
+		if(Household_Household_send_rule_performance_end_GA_02_condition(current_xmachine_Household))
+		{
+		
+		
+		
+			i = Household_send_rule_performance();
+			
+		
+		
+			if(i == 1)
+			{
+				free_Household_agent(current_xmachine_Household_holder, Household_end_GA_state);
+			}
+			else
+			{
+				transition_Household_agent(current_xmachine_Household_holder, Household_end_GA_state, Household_02_state);
+			}
+		}
+		
+		current_xmachine_Household = NULL;
+		
+		current_xmachine_Household_holder = temp_xmachine_Household_holder;
+	}
+
+
+    rc = MB_SyncStart(b_rule_performance);
+    #ifdef ERRCHECK
+    if (rc != MB_SUCCESS)
+    {
+       fprintf(stderr, "ERROR: Could not start sync of 'rule_performance' board\n");
+       switch(rc) {
+           case MB_ERR_INVALID:
+               fprintf(stderr, "\t reason: 'rule_performance' board is invalid\n");
+               break;
+           case MB_ERR_LOCKED:
+               fprintf(stderr, "\t reason: 'rule_performance' board is locked\n");
+               break;
+           case MB_ERR_MEMALLOC:
+               fprintf(stderr, "\t reason: out of memory\n");
+               break;
+           case MB_ERR_INTERNAL:
+               fprintf(stderr, "\t reason: internal error. Recompile libmoard in debug mode for more info \n");
+               break;
+       }
+    }
+    #endif
+
+
+	
+	current_xmachine_Household_holder = Household_end_GA_state->agents;
+	while(current_xmachine_Household_holder)
+	{
+		temp_xmachine_Household_holder = current_xmachine_Household_holder->next;
+		current_xmachine_Household = current_xmachine_Household_holder->agent;
+		current_xmachine_Household_next_state = Household_end_Household_EWA_Learning_state;
+		/* For backwards compatability set current_xmachine */
+		current_xmachine->xmachine_Household = NULL;
+		current_xmachine->xmachine_FinancialAgent = NULL;
+		current_xmachine->xmachine_Household = current_xmachine_Household;
+		
+		if(Household_idle_end_GA_end_Household_EWA_Learning_condition(current_xmachine_Household))
+		{
+		
+		
+		
+			i = idle();
+			
+		
+		
+			if(i == 1)
+			{
+				free_Household_agent(current_xmachine_Household_holder, Household_end_GA_state);
+			}
+			else
+			{
+				transition_Household_agent(current_xmachine_Household_holder, Household_end_GA_state, Household_end_Household_EWA_Learning_state);
+			}
+		}
+		
+		current_xmachine_Household = NULL;
+		
+		current_xmachine_Household_holder = temp_xmachine_Household_holder;
+	}
+
+
+
+
+	rc = MB_SyncComplete(b_rule_performance);
+	#ifdef ERRCHECK
+    if (rc != MB_SUCCESS)
+    {
+       fprintf(stderr, "ERROR: Could not complete sync of 'rule_performance' board\n");
+       switch(rc) {
+            case MB_ERR_INVALID:
+               fprintf(stderr, "\t reason: 'rule_performance' board is invalid\n");
+               break;
+           case MB_ERR_MEMALLOC:
+               fprintf(stderr, "\t reason: out of memory\n");
+               break;
+           case MB_ERR_INTERNAL:
+               fprintf(stderr, "\t reason: internal error. Recompile libmoard in debug mode for more info \n");
+               break;
+       }
+    }
+    #endif
+	
+	
+	current_xmachine_FinancialAgent_holder = FinancialAgent_03_state->agents;
+	while(current_xmachine_FinancialAgent_holder)
+	{
+		temp_xmachine_FinancialAgent_holder = current_xmachine_FinancialAgent_holder->next;
+		current_xmachine_FinancialAgent = current_xmachine_FinancialAgent_holder->agent;
+		current_xmachine_FinancialAgent_next_state = FinancialAgent_04_state;
+		/* For backwards compatability set current_xmachine */
+		current_xmachine->xmachine_Household = NULL;
+		current_xmachine->xmachine_FinancialAgent = NULL;
+		current_xmachine->xmachine_FinancialAgent = current_xmachine_FinancialAgent;
+		
+		
+		
+		
+		
+		rc = MB_Iterator_Create(b_rule_performance, &i_rule_performance);
+		#ifdef ERRCHECK
+		if (rc != MB_SUCCESS)
+		{
+		   fprintf(stderr, "ERROR: Could not create Iterator for 'rule_performance'\n");
+		   switch(rc) {
+		       case MB_ERR_INVALID:
+		           fprintf(stderr, "\t reason: 'rule_performance' board is invalid\n");
+		           break;
+		       case MB_ERR_LOCKED:
+	               fprintf(stderr, "\t reason: 'rule_performance' board is locked\n");
+	               break;
+	           case MB_ERR_MEMALLOC:
+	               fprintf(stderr, "\t reason: out of memory\n");
+	               break;
+	           case MB_ERR_INTERNAL:
+	               fprintf(stderr, "\t reason: internal error. Recompile libmoard in debug mode for more info \n");
+	               break;
+		   }
+		}
+		#endif
+		
+		
+			i = FinancialAgent_read_rule_performance_and_update_classifiersystem();
+			
+		
+		    rc = MB_Iterator_Delete(&i_rule_performance);
+		    #ifdef ERRCHECK
+		    if (rc != MB_SUCCESS)
+		    {
+		       fprintf(stderr, "ERROR: Could not delete 'rule_performance' iterator\n");
+		       switch(rc) {
+		           case MB_ERR_INVALID:
+		               fprintf(stderr, "\t reason: 'rule_performance' iterator is invalid\n");
+		               break;
+		           case MB_ERR_INTERNAL:
+		               fprintf(stderr, "\t reason: internal error. Recompile libmoard in debug mode for more info \n");
+		               break;
+		       }
+		    }
+		    #endif
+		
+		
+			if(i == 1)
+			{
+				free_FinancialAgent_agent(current_xmachine_FinancialAgent_holder, FinancialAgent_03_state);
+			}
+			else
+			{
+				transition_FinancialAgent_agent(current_xmachine_FinancialAgent_holder, FinancialAgent_03_state, FinancialAgent_04_state);
+			}
+		
+		
+		current_xmachine_FinancialAgent = NULL;
+		
+		current_xmachine_FinancialAgent_holder = temp_xmachine_FinancialAgent_holder;
+	}
+
+
+
+
+	
+	current_xmachine_FinancialAgent_holder = FinancialAgent_04_state->agents;
+	while(current_xmachine_FinancialAgent_holder)
+	{
+		temp_xmachine_FinancialAgent_holder = current_xmachine_FinancialAgent_holder->next;
+		current_xmachine_FinancialAgent = current_xmachine_FinancialAgent_holder->agent;
+		current_xmachine_FinancialAgent_next_state = FinancialAgent_end_FinancialAgent_state;
+		/* For backwards compatability set current_xmachine */
+		current_xmachine->xmachine_Household = NULL;
+		current_xmachine->xmachine_FinancialAgent = NULL;
+		current_xmachine->xmachine_FinancialAgent = current_xmachine_FinancialAgent;
+		
+		
+		
+		
+		
+			i = FinancialAgent_send_all_performances();
+			
+		
+		
+			if(i == 1)
+			{
+				free_FinancialAgent_agent(current_xmachine_FinancialAgent_holder, FinancialAgent_04_state);
+			}
+			else
+			{
+				transition_FinancialAgent_agent(current_xmachine_FinancialAgent_holder, FinancialAgent_04_state, FinancialAgent_end_FinancialAgent_state);
+			}
+		
+		
+		current_xmachine_FinancialAgent = NULL;
+		
+		current_xmachine_FinancialAgent_holder = temp_xmachine_FinancialAgent_holder;
+	}
+
+
+    rc = MB_SyncStart(b_new_performances);
+    #ifdef ERRCHECK
+    if (rc != MB_SUCCESS)
+    {
+       fprintf(stderr, "ERROR: Could not start sync of 'new_performances' board\n");
+       switch(rc) {
+           case MB_ERR_INVALID:
+               fprintf(stderr, "\t reason: 'new_performances' board is invalid\n");
+               break;
+           case MB_ERR_LOCKED:
+               fprintf(stderr, "\t reason: 'new_performances' board is locked\n");
+               break;
+           case MB_ERR_MEMALLOC:
+               fprintf(stderr, "\t reason: out of memory\n");
+               break;
+           case MB_ERR_INTERNAL:
+               fprintf(stderr, "\t reason: internal error. Recompile libmoard in debug mode for more info \n");
+               break;
+       }
+    }
+    #endif
+
+
+
+	rc = MB_SyncComplete(b_new_performances);
+	#ifdef ERRCHECK
+    if (rc != MB_SUCCESS)
+    {
+       fprintf(stderr, "ERROR: Could not complete sync of 'new_performances' board\n");
+       switch(rc) {
+            case MB_ERR_INVALID:
+               fprintf(stderr, "\t reason: 'new_performances' board is invalid\n");
+               break;
+           case MB_ERR_MEMALLOC:
+               fprintf(stderr, "\t reason: out of memory\n");
+               break;
+           case MB_ERR_INTERNAL:
+               fprintf(stderr, "\t reason: internal error. Recompile libmoard in debug mode for more info \n");
+               break;
+       }
+    }
+    #endif
+	
+	
+	current_xmachine_Household_holder = Household_02_state->agents;
+	while(current_xmachine_Household_holder)
+	{
+		temp_xmachine_Household_holder = current_xmachine_Household_holder->next;
+		current_xmachine_Household = current_xmachine_Household_holder->agent;
+		current_xmachine_Household_next_state = Household_03_state;
+		/* For backwards compatability set current_xmachine */
+		current_xmachine->xmachine_Household = NULL;
+		current_xmachine->xmachine_FinancialAgent = NULL;
+		current_xmachine->xmachine_Household = current_xmachine_Household;
+		
+		
+		
+		
+		
+		rc = MB_Iterator_Create(b_new_performances, &i_new_performances);
+		#ifdef ERRCHECK
+		if (rc != MB_SUCCESS)
+		{
+		   fprintf(stderr, "ERROR: Could not create Iterator for 'new_performances'\n");
+		   switch(rc) {
+		       case MB_ERR_INVALID:
+		           fprintf(stderr, "\t reason: 'new_performances' board is invalid\n");
+		           break;
+		       case MB_ERR_LOCKED:
+	               fprintf(stderr, "\t reason: 'new_performances' board is locked\n");
+	               break;
+	           case MB_ERR_MEMALLOC:
+	               fprintf(stderr, "\t reason: out of memory\n");
+	               break;
+	           case MB_ERR_INTERNAL:
+	               fprintf(stderr, "\t reason: internal error. Recompile libmoard in debug mode for more info \n");
+	               break;
+		   }
+		}
+		#endif
+		
+		
+			i = Household_read_all_performances();
+			
+		
+		    rc = MB_Iterator_Delete(&i_new_performances);
+		    #ifdef ERRCHECK
+		    if (rc != MB_SUCCESS)
+		    {
+		       fprintf(stderr, "ERROR: Could not delete 'new_performances' iterator\n");
+		       switch(rc) {
+		           case MB_ERR_INVALID:
+		               fprintf(stderr, "\t reason: 'new_performances' iterator is invalid\n");
+		               break;
+		           case MB_ERR_INTERNAL:
+		               fprintf(stderr, "\t reason: internal error. Recompile libmoard in debug mode for more info \n");
+		               break;
+		       }
+		    }
+		    #endif
+		
+		
+			if(i == 1)
+			{
+				free_Household_agent(current_xmachine_Household_holder, Household_02_state);
+			}
+			else
+			{
+				transition_Household_agent(current_xmachine_Household_holder, Household_02_state, Household_03_state);
+			}
+		
+		
+		current_xmachine_Household = NULL;
+		
+		current_xmachine_Household_holder = temp_xmachine_Household_holder;
+	}
+
+
+
+
+	
+	current_xmachine_Household_holder = Household_03_state->agents;
+	while(current_xmachine_Household_holder)
+	{
+		temp_xmachine_Household_holder = current_xmachine_Household_holder->next;
+		current_xmachine_Household = current_xmachine_Household_holder->agent;
+		current_xmachine_Household_next_state = Household_end_Household_EWA_Learning_state;
+		/* For backwards compatability set current_xmachine */
+		current_xmachine->xmachine_Household = NULL;
+		current_xmachine->xmachine_FinancialAgent = NULL;
+		current_xmachine->xmachine_Household = current_xmachine_Household;
+		
+		
+		
+		
+		
+			i = Household_select_rule();
+			
+		
+		
+			if(i == 1)
+			{
+				free_Household_agent(current_xmachine_Household_holder, Household_03_state);
+			}
+			else
+			{
+				transition_Household_agent(current_xmachine_Household_holder, Household_03_state, Household_end_Household_EWA_Learning_state);
+			}
+		
+		
+		current_xmachine_Household = NULL;
+		
+		current_xmachine_Household_holder = temp_xmachine_Household_holder;
+	}
+
+
+
+
+
+    rc = MB_Clear(b_rule_performance);
+    #ifdef ERRCHECK
+    if (rc != MB_SUCCESS)
+    {
+       fprintf(stderr, "ERROR: Could not clear 'rule_performance' board\n");
+       switch(rc) {
+           case MB_ERR_INVALID:
+               fprintf(stderr, "\t reason: 'rule_performance' board is invalid\n");
+               break;
+           case MB_ERR_LOCKED:
+               fprintf(stderr, "\t reason: 'rule_performance' board is locked\n");
+               break;
+           case MB_ERR_INTERNAL:
+               fprintf(stderr, "\t reason: internal error. Recompile libmoard in debug mode for more info \n");
+               break;
+       }
+    }
+    #endif
+
+    rc = MB_Clear(b_new_performances);
+    #ifdef ERRCHECK
+    if (rc != MB_SUCCESS)
+    {
+       fprintf(stderr, "ERROR: Could not clear 'new_performances' board\n");
+       switch(rc) {
+           case MB_ERR_INVALID:
+               fprintf(stderr, "\t reason: 'new_performances' board is invalid\n");
+               break;
+           case MB_ERR_LOCKED:
+               fprintf(stderr, "\t reason: 'new_performances' board is locked\n");
+               break;
+           case MB_ERR_INTERNAL:
+               fprintf(stderr, "\t reason: internal error. Recompile libmoard in debug mode for more info \n");
+               break;
+       }
+    }
+    #endif
+
+    rc = MB_Clear(b_rule_details);
+    #ifdef ERRCHECK
+    if (rc != MB_SUCCESS)
+    {
+       fprintf(stderr, "ERROR: Could not clear 'rule_details' board\n");
+       switch(rc) {
+           case MB_ERR_INVALID:
+               fprintf(stderr, "\t reason: 'rule_details' board is invalid\n");
+               break;
+           case MB_ERR_LOCKED:
+               fprintf(stderr, "\t reason: 'rule_details' board is locked\n");
+               break;
+           case MB_ERR_INTERNAL:
+               fprintf(stderr, "\t reason: internal error. Recompile libmoard in debug mode for more info \n");
+               break;
+       }
+    }
+    #endif
+
+	if(iteration_loop%output_frequency == 0)
+	{
+		saveiterationdata(iteration_loop);
+	}
+
+	/*printf("Household_03_state->count = %d\n", Household_03_state->count);*/
+	Household_03_state->count = 0;
+
+	/*printf("Household_02_state->count = %d\n", Household_02_state->count);*/
+	Household_02_state->count = 0;
+
+	/*printf("Household_end_Household_EWA_Learning_state->count = %d\n", Household_end_Household_EWA_Learning_state->count);*/
+	Household_end_Household_EWA_Learning_state->count = 0;
+
+	/*printf("Household_01_state->count = %d\n", Household_01_state->count);*/
+	Household_01_state->count = 0;
+
+	/*printf("Household_end_GA_state->count = %d\n", Household_end_GA_state->count);*/
+	Household_end_GA_state->count = 0;
+
+	/*printf("Household_start_Household_EWA_Learning_state->count = %d\n", Household_start_Household_EWA_Learning_state->count);*/
+	Household_start_Household_EWA_Learning_state->count = 0;
+
+	/*printf("FinancialAgent_end_FinancialAgent_state->count = %d\n", FinancialAgent_end_FinancialAgent_state->count);*/
+	FinancialAgent_end_FinancialAgent_state->count = 0;
+
+	/*printf("FinancialAgent_04_state->count = %d\n", FinancialAgent_04_state->count);*/
+	FinancialAgent_04_state->count = 0;
+
+	/*printf("FinancialAgent_03_state->count = %d\n", FinancialAgent_03_state->count);*/
+	FinancialAgent_03_state->count = 0;
+
+	/*printf("FinancialAgent_02_state->count = %d\n", FinancialAgent_02_state->count);*/
+	FinancialAgent_02_state->count = 0;
+
+	/*printf("FinancialAgent_01_state->count = %d\n", FinancialAgent_01_state->count);*/
+	FinancialAgent_01_state->count = 0;
+
+	/*printf("FinancialAgent_end_GA_state->count = %d\n", FinancialAgent_end_GA_state->count);*/
+	FinancialAgent_end_GA_state->count = 0;
+
+	/*printf("FinancialAgent_start_FinancialAgent_state->count = %d\n", FinancialAgent_start_FinancialAgent_state->count);*/
+	FinancialAgent_start_FinancialAgent_state->count = 0;
+
+	/* Move agents to their start states */
+
+	current_xmachine_Household_holder = Household_end_Household_EWA_Learning_state->agents;
+	while(current_xmachine_Household_holder)
+	{
+		temp_xmachine_Household_holder = current_xmachine_Household_holder->next;
+		transition_Household_agent(current_xmachine_Household_holder, Household_end_Household_EWA_Learning_state, Household_start_Household_EWA_Learning_state);
+	
+		current_xmachine_Household_holder = temp_xmachine_Household_holder;
+	}
+
+	current_xmachine_FinancialAgent_holder = FinancialAgent_end_FinancialAgent_state->agents;
+	while(current_xmachine_FinancialAgent_holder)
+	{
+		temp_xmachine_FinancialAgent_holder = current_xmachine_FinancialAgent_holder->next;
+		transition_FinancialAgent_agent(current_xmachine_FinancialAgent_holder, FinancialAgent_end_FinancialAgent_state, FinancialAgent_start_FinancialAgent_state);
+	
+		current_xmachine_FinancialAgent_holder = temp_xmachine_FinancialAgent_holder;
+	}
+
+
 		/* Calculate if any agents need to jump S.P. */
 		propagate_agents();
-		current_node = current_node->next;
-		}
 	/* Save iteration time to log file */
 
 		file = fopen(logfilepath, "a");
@@ -638,7 +1138,19 @@ printf("Ouput dir: %s\n", outputpath);
 	printf("Execution time - %ld:%02ld:%ld [mins:secs:msecs]\n", total_time/60000, ((total_time/1000)%60), total_time%1000);
 	
 	clean_up(0);
-	
+	rc = MB_Env_Finalise();
+	#ifdef ERRCHECK
+    if (rc != MB_SUCCESS)
+    {
+       fprintf(stderr, "ERROR: Could not finalise MB environment\n");
+       switch(rc) {
+           case MB_ERR_ENV:
+               fprintf(stderr, "\t reason: MB environment not yet started?\n");
+               break;
+       }
+    }
+    #endif
+    
 	/* Exit successfully by returning zero to Operating System */
 	return 0;
 }
