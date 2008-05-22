@@ -1,3 +1,10 @@
+xparser 0.15.8
+	* catch error: multiple definitions of message names
+	* catch error: function input/output not defined messages
+	* catch error: agent memory variable not valid
+	* addition of general 'idle' function for use by agents
+	* fix memory and initialisation bugs
+
 xparser 0.15.7
 	* error messages now output using stderr
 	* memory leaks found and fixed using valgrind
