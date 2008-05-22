@@ -10,14 +10,93 @@
  */
 void initialise_pointers()
 {
-	temp_xmachine = NULL;
-	p_xmachine = &temp_xmachine;
-	temp_rule_performance_message = NULL;
-	p_rule_performance_message = &temp_rule_performance_message;
-	temp_new_performances_message = NULL;
-	p_new_performances_message = &temp_new_performances_message;
-	temp_rule_details_message = NULL;
-	p_rule_details_message = &temp_rule_details_message;
+    int rc;
+	//temp_xmachine = NULL;
+	//p_xmachine = &temp_xmachine;
+	//temp_xmachine_Household_03 = NULL;
+	Household_03_state = init_Household_state();//&temp_xmachine_Household_03;
+	//temp_xmachine_Household_02 = NULL;
+	Household_02_state = init_Household_state();//&temp_xmachine_Household_02;
+	//temp_xmachine_Household_end_Household_EWA_Learning = NULL;
+	Household_end_Household_EWA_Learning_state = init_Household_state();//&temp_xmachine_Household_end_Household_EWA_Learning;
+	//temp_xmachine_Household_01 = NULL;
+	Household_01_state = init_Household_state();//&temp_xmachine_Household_01;
+	//temp_xmachine_Household_end_GA = NULL;
+	Household_end_GA_state = init_Household_state();//&temp_xmachine_Household_end_GA;
+	//temp_xmachine_Household_start_Household_EWA_Learning = NULL;
+	Household_start_Household_EWA_Learning_state = init_Household_state();//&temp_xmachine_Household_start_Household_EWA_Learning;
+	//temp_xmachine_FinancialAgent_end_FinancialAgent = NULL;
+	FinancialAgent_end_FinancialAgent_state = init_FinancialAgent_state();//&temp_xmachine_FinancialAgent_end_FinancialAgent;
+	//temp_xmachine_FinancialAgent_04 = NULL;
+	FinancialAgent_04_state = init_FinancialAgent_state();//&temp_xmachine_FinancialAgent_04;
+	//temp_xmachine_FinancialAgent_03 = NULL;
+	FinancialAgent_03_state = init_FinancialAgent_state();//&temp_xmachine_FinancialAgent_03;
+	//temp_xmachine_FinancialAgent_02 = NULL;
+	FinancialAgent_02_state = init_FinancialAgent_state();//&temp_xmachine_FinancialAgent_02;
+	//temp_xmachine_FinancialAgent_01 = NULL;
+	FinancialAgent_01_state = init_FinancialAgent_state();//&temp_xmachine_FinancialAgent_01;
+	//temp_xmachine_FinancialAgent_end_GA = NULL;
+	FinancialAgent_end_GA_state = init_FinancialAgent_state();//&temp_xmachine_FinancialAgent_end_GA;
+	//temp_xmachine_FinancialAgent_start_FinancialAgent = NULL;
+	FinancialAgent_start_FinancialAgent_state = init_FinancialAgent_state();//&temp_xmachine_FinancialAgent_start_FinancialAgent;
+	
+
+    rc = MB_Create(&b_rule_performance, sizeof(m_rule_performance));
+    #ifdef ERRCHECK
+    if (rc != MB_SUCCESS)
+    {
+       fprintf(stderr, "ERROR: Could not create 'rule_performance' board\n");
+       switch(rc) {
+           case MB_ERR_INVALID:
+               fprintf(stderr, "\t reason: Invalid message size\n");
+               break;
+           case MB_ERR_MEMALLOC:
+               fprintf(stderr, "\t reason: out of memory\n");
+               break;
+           case MB_ERR_INTERNAL:
+               fprintf(stderr, "\t reason: internal error. Recompile libmoard in debug mode for more info \n");
+               break;
+       }
+    }
+    #endif
+
+    rc = MB_Create(&b_new_performances, sizeof(m_new_performances));
+    #ifdef ERRCHECK
+    if (rc != MB_SUCCESS)
+    {
+       fprintf(stderr, "ERROR: Could not create 'new_performances' board\n");
+       switch(rc) {
+           case MB_ERR_INVALID:
+               fprintf(stderr, "\t reason: Invalid message size\n");
+               break;
+           case MB_ERR_MEMALLOC:
+               fprintf(stderr, "\t reason: out of memory\n");
+               break;
+           case MB_ERR_INTERNAL:
+               fprintf(stderr, "\t reason: internal error. Recompile libmoard in debug mode for more info \n");
+               break;
+       }
+    }
+    #endif
+
+    rc = MB_Create(&b_rule_details, sizeof(m_rule_details));
+    #ifdef ERRCHECK
+    if (rc != MB_SUCCESS)
+    {
+       fprintf(stderr, "ERROR: Could not create 'rule_details' board\n");
+       switch(rc) {
+           case MB_ERR_INVALID:
+               fprintf(stderr, "\t reason: Invalid message size\n");
+               break;
+           case MB_ERR_MEMALLOC:
+               fprintf(stderr, "\t reason: out of memory\n");
+               break;
+           case MB_ERR_INTERNAL:
+               fprintf(stderr, "\t reason: internal error. Recompile libmoard in debug mode for more info \n");
+               break;
+       }
+    }
+    #endif
 	temp_node_info = NULL;
 	p_node_info = &temp_node_info;
 }
@@ -28,13 +107,14 @@ void initialise_pointers()
 void initialise_unit_testing()
 {
 	initialise_pointers();
-	add_node(0, -SPINF, SPINF, -SPINF, SPINF, -SPINF, SPINF);
-	current_node = *p_node_info;
-	p_xmachine = &current_node->agents;
-	current_xmachine = *p_xmachine;
-	p_rule_performance_message = &current_node->rule_performance_messages;
-	p_new_performances_message = &current_node->new_performances_messages;
-	p_rule_details_message = &current_node->rule_details_messages;
+	//add_node(0, -SPINF, SPINF, -SPINF, SPINF, -SPINF, SPINF);
+	//current_node = *p_node_info;
+	//p_xmachine = &current_node->agents;
+	//current_xmachine = *p_xmachine;
+	// todo fix pointer to current agent types
+	//p_rule_performance_message = &current_node->rule_performance_messages;
+	//p_new_performances_message = &current_node->new_performances_messages;
+	//p_rule_details_message = &current_node->rule_details_messages;
 }
 
 /* add_location */
@@ -94,29 +174,6 @@ void freelocations(location ** p_location)
 	}
 	
 	*p_location = NULL;
-}
-
-/* add_xmachine */
-/** \fn xmachine * add_xmachine()
- * \brief Add an X-machine to the current being used X-machine list.
- * \return Pointer to the added X-machine.
- */
-xmachine * add_xmachine()
-{
-	xmachine * current = (xmachine *)malloc(sizeof(xmachine));
-	CHECK_POINTER(current);
-
-	current->xmachine_Household = NULL;
-	current->xmachine_FinancialAgent = NULL;
-	current->next = *p_xmachine;
-	*p_xmachine = current;
-	
-	current_node->agent_total++;
-
-/* add by cg for round-robin so that set_ has something to point at */
-	//current_xmachine = current;
-	
-	return current;
 }
 
 void init_int_static_array(int * array, int size)
@@ -206,6 +263,8 @@ void init_GAParameterStruct(GAParameterStruct * temp)
 	(*temp).single_point_cross_over = 0;
 	(*temp).election = 0;
 	init_double_static_array((*temp).stepsize, 10);
+	init_double_static_array((*temp).min_values, 10);
+	init_double_static_array((*temp).max_values, 10);
 
 }
 
@@ -238,6 +297,8 @@ void copy_GAParameterStruct(GAParameterStruct * from, GAParameterStruct * to)
 	(*to).single_point_cross_over = (*from).single_point_cross_over;
 	(*to).election = (*from).election;
 	memcpy((*to).stepsize, (*from).stepsize, 10*sizeof(double));
+	memcpy((*to).min_values, (*from).min_values, 10*sizeof(double));
+	memcpy((*to).max_values, (*from).max_values, 10*sizeof(double));
 }
 
 void copy_GAParameterStruct_static_array(GAParameterStruct * from, GAParameterStruct * to, int size)
@@ -492,59 +553,17 @@ void copy_ComplexPublicClassifierSystem_static_array(ComplexPublicClassifierSyst
 }
 
 
-void init_ComplexPrivateClassifierSystem(ComplexPrivateClassifierSystem * temp)
-{
-	(*temp).nr_types = 0;
-	init_int_array(&(*temp).nr_rules_per_type);
-	(*temp).nr_rules = 0;
-	(*temp).experience = 0.0;
-	(*temp).current_rule = 0;
-	init_PrivateClassifierRule_static_array((*temp).ruletable, 100);
 
-}
-
-void init_ComplexPrivateClassifierSystem_static_array(ComplexPrivateClassifierSystem * array, int size)
+xmachine_memory_Household_state * init_Household_state()
 {
-	int i;
+	xmachine_memory_Household_state * current = (xmachine_memory_Household_state *)malloc(sizeof(xmachine_memory_Household_state));
+	CHECK_POINTER(current);
 	
-	for(i = 0; i < size; i++) init_ComplexPrivateClassifierSystem(&array[i]);
-}
-
-void free_ComplexPrivateClassifierSystem(ComplexPrivateClassifierSystem * temp)
-{
-	free_int_array(&(*temp).nr_rules_per_type);
-	free_PrivateClassifierRule_static_array((*temp).ruletable, 100);
-
-}
-
-void free_ComplexPrivateClassifierSystem_static_array(ComplexPrivateClassifierSystem * array, int size)
-{
-	int i;
+	current->agents = NULL;
+	current->count = 0;
 	
-	for(i = 0; i < size; i++) free_ComplexPrivateClassifierSystem(&array[i]);
+	return current;
 }
-
-void copy_ComplexPrivateClassifierSystem(ComplexPrivateClassifierSystem * from, ComplexPrivateClassifierSystem * to)
-{
-	(*to).nr_types = (*from).nr_types;
-	copy_int_array(&(*from).nr_rules_per_type, &(*to).nr_rules_per_type);
-	(*to).nr_rules = (*from).nr_rules;
-	(*to).experience = (*from).experience;
-	(*to).current_rule = (*from).current_rule;
-	copy_PrivateClassifierRule_static_array((*from).ruletable, (*to).ruletable, 100);
-}
-
-void copy_ComplexPrivateClassifierSystem_static_array(ComplexPrivateClassifierSystem * from, ComplexPrivateClassifierSystem * to, int size)
-{
-	int i;
-	
-	for(i = 0; i < size; i++)
-	{
-		copy_ComplexPrivateClassifierSystem(&from[i], &to[i]);
-	}
-}
-
-
 
 xmachine_memory_Household * init_Household_agent()
 {
@@ -552,54 +571,138 @@ xmachine_memory_Household * init_Household_agent()
 	CHECK_POINTER(current);
 	
 	current->id = 0;
+	current->day_of_month_to_act = 0;
 	init_EWAParameterStruct(&current->EWA_parameters);
 	init_SimplePrivateClassifierSystem(&current->private_classifiersystem);
-	current->posx = 0.0;
-	current->posy = 0.0;
-	current->posz = 0.0;
-	current->range = 0.0;
 	
 	return current;
 }
 
-void free_Household_agent(xmachine_memory_Household * tmp)
+void free_Household_agent(xmachine_memory_Household_holder * tmp, xmachine_memory_Household_state * state)
 {
-	free_EWAParameterStruct(&tmp->EWA_parameters);
-	free_SimplePrivateClassifierSystem(&tmp->private_classifiersystem);
+	if(tmp->prev == NULL) state->agents = tmp->next;
+	else tmp->prev->next = tmp->next;
+	if(tmp->next != NULL) tmp->next->prev = tmp->prev;
 	
+	free_EWAParameterStruct(&tmp->agent->EWA_parameters);
+	free_SimplePrivateClassifierSystem(&tmp->agent->private_classifiersystem);
+	
+	
+	free(tmp->agent);
+	free(tmp);
 }
 
-void add_Household_agent_internal(xmachine_memory_Household * current)
+void unittest_init_Household_agent()
 {
-	xmachine * new_xmachine = add_xmachine();
-	new_xmachine->xmachine_Household = current;
+	current_xmachine_Household = (xmachine_memory_Household *)malloc(sizeof(xmachine_memory_Household));
+	CHECK_POINTER(current);
+	
+		current_xmachine_Household->id = 0;
+		current_xmachine_Household->day_of_month_to_act = 0;
+		init_EWAParameterStruct(&current_xmachine_Household->EWA_parameters);
+		init_SimplePrivateClassifierSystem(&current_xmachine_Household->private_classifiersystem);
+		
 }
 
-/** \fn void add_Household_agent(int id, EWAParameterStruct * EWA_parameters, SimplePrivateClassifierSystem * private_classifiersystem, double posx, double posy, double posz, double range)
+void unittest_free_Household_agent()
+{
+	free_EWAParameterStruct(&current_xmachine_Household->EWA_parameters);
+	free_SimplePrivateClassifierSystem(&current_xmachine_Household->private_classifiersystem);
+	
+	free(current_xmachine_Household);
+}
+
+void free_Household_agents()
+{
+/*	while(*Household_03_state)
+	{
+		free_Household_agent(*Household_03_state, Household_03_state);
+	}
+	while(*Household_02_state)
+	{
+		free_Household_agent(*Household_02_state, Household_02_state);
+	}
+	while(*Household_end_Household_EWA_Learning_state)
+	{
+		free_Household_agent(*Household_end_Household_EWA_Learning_state, Household_end_Household_EWA_Learning_state);
+	}
+	while(*Household_01_state)
+	{
+		free_Household_agent(*Household_01_state, Household_01_state);
+	}
+	while(*Household_end_GA_state)
+	{
+		free_Household_agent(*Household_end_GA_state, Household_end_GA_state);
+	}
+	while(*Household_start_Household_EWA_Learning_state)
+	{
+		free_Household_agent(*Household_start_Household_EWA_Learning_state, Household_start_Household_EWA_Learning_state);
+	}
+*/}
+
+void free_Household_states()
+{
+	free(Household_03_state);
+	free(Household_02_state);
+	free(Household_end_Household_EWA_Learning_state);
+	free(Household_01_state);
+	free(Household_end_GA_state);
+	free(Household_start_Household_EWA_Learning_state);
+}
+
+void transition_Household_agent(xmachine_memory_Household_holder * tmp, xmachine_memory_Household_state * from_state, xmachine_memory_Household_state * to_state)
+{
+	if(tmp->prev == NULL) from_state->agents = tmp->next;
+	else tmp->prev->next = tmp->next;
+	if(tmp->next != NULL) tmp->next->prev = tmp->prev;	
+	
+	add_Household_agent_internal(tmp->agent, to_state);
+	free(tmp);
+}
+
+void add_Household_agent_internal(xmachine_memory_Household * agent, xmachine_memory_Household_state * state)
+{
+	xmachine_memory_Household_holder * current = (xmachine_memory_Household_holder *)malloc(sizeof(xmachine_memory_Household_holder));
+	CHECK_POINTER(current);
+	
+	current->next = state->agents;
+	current->prev = NULL;
+	state->agents = current;
+	if(current->next != NULL) current->next->prev = current;
+	current->agent = agent;
+	
+	state->count++;
+}
+
+/** \fn void add_Household_agent(int id, int day_of_month_to_act, EWAParameterStruct * EWA_parameters, SimplePrivateClassifierSystem * private_classifiersystem)
  * \brief Add Household X-machine to the current being used X-machine list.
  * \param id Variable for the X-machine memory.
+ * \param day_of_month_to_act Variable for the X-machine memory.
  * \param EWA_parameters Variable for the X-machine memory.
  * \param private_classifiersystem Variable for the X-machine memory.
- * \param posx Variable for the X-machine memory.
- * \param posy Variable for the X-machine memory.
- * \param posz Variable for the X-machine memory.
- * \param range Variable for the X-machine memory.
  */
-void add_Household_agent(int id, EWAParameterStruct EWA_parameters, SimplePrivateClassifierSystem private_classifiersystem, double posx, double posy, double posz, double range)
+void add_Household_agent(int id, int day_of_month_to_act, EWAParameterStruct EWA_parameters, SimplePrivateClassifierSystem private_classifiersystem)
 {
-	xmachine * new_xmachine = add_xmachine();
 	xmachine_memory_Household * current;
 	
-	init_Household_agent(current);
-	new_xmachine->xmachine_Household = current;
+	current = init_Household_agent();
+	add_Household_agent_internal(current, current_xmachine_Household_next_state);
 	
 	current->id = id;
+	current->day_of_month_to_act = day_of_month_to_act;
 	copy_EWAParameterStruct(&EWA_parameters, &current->EWA_parameters);
 	copy_SimplePrivateClassifierSystem(&private_classifiersystem, &current->private_classifiersystem);
-	current->posx = posx;
-	current->posy = posy;
-	current->posz = posz;
-	current->range = range;
+}
+
+xmachine_memory_FinancialAgent_state * init_FinancialAgent_state()
+{
+	xmachine_memory_FinancialAgent_state * current = (xmachine_memory_FinancialAgent_state *)malloc(sizeof(xmachine_memory_FinancialAgent_state));
+	CHECK_POINTER(current);
+	
+	current->agents = NULL;
+	current->count = 0;
+	
+	return current;
 }
 
 xmachine_memory_FinancialAgent * init_FinancialAgent_agent()
@@ -608,106 +711,136 @@ xmachine_memory_FinancialAgent * init_FinancialAgent_agent()
 	CHECK_POINTER(current);
 	
 	current->id = 0;
-	current->day_of_month_to_act = 0;
-	current->day = 0;
-	current->month = 0;
 	init_EWAParameterStruct(&current->EWA_parameters);
 	init_SimplePublicClassifierSystem(&current->public_classifiersystem);
 	init_GAParameterStruct(&current->GA_parameters);
-	current->posx = 0.0;
-	current->posy = 0.0;
-	current->posz = 0.0;
-	current->range = 0.0;
 	
 	return current;
 }
 
-void free_FinancialAgent_agent(xmachine_memory_FinancialAgent * tmp)
+void free_FinancialAgent_agent(xmachine_memory_FinancialAgent_holder * tmp, xmachine_memory_FinancialAgent_state * state)
 {
-	free_EWAParameterStruct(&tmp->EWA_parameters);
-	free_SimplePublicClassifierSystem(&tmp->public_classifiersystem);
-	free_GAParameterStruct(&tmp->GA_parameters);
+	if(tmp->prev == NULL) state->agents = tmp->next;
+	else tmp->prev->next = tmp->next;
+	if(tmp->next != NULL) tmp->next->prev = tmp->prev;
 	
+	free_EWAParameterStruct(&tmp->agent->EWA_parameters);
+	free_SimplePublicClassifierSystem(&tmp->agent->public_classifiersystem);
+	free_GAParameterStruct(&tmp->agent->GA_parameters);
+	
+	
+	free(tmp->agent);
+	free(tmp);
 }
 
-void add_FinancialAgent_agent_internal(xmachine_memory_FinancialAgent * current)
+void unittest_init_FinancialAgent_agent()
 {
-	xmachine * new_xmachine = add_xmachine();
-	new_xmachine->xmachine_FinancialAgent = current;
+	current_xmachine_FinancialAgent = (xmachine_memory_FinancialAgent *)malloc(sizeof(xmachine_memory_FinancialAgent));
+	CHECK_POINTER(current);
+	
+		current_xmachine_FinancialAgent->id = 0;
+		init_EWAParameterStruct(&current_xmachine_FinancialAgent->EWA_parameters);
+		init_SimplePublicClassifierSystem(&current_xmachine_FinancialAgent->public_classifiersystem);
+		init_GAParameterStruct(&current_xmachine_FinancialAgent->GA_parameters);
+		
 }
 
-/** \fn void add_FinancialAgent_agent(int id, int day_of_month_to_act, int day, int month, EWAParameterStruct * EWA_parameters, SimplePublicClassifierSystem * public_classifiersystem, GAParameterStruct * GA_parameters, double posx, double posy, double posz, double range)
+void unittest_free_FinancialAgent_agent()
+{
+	free_EWAParameterStruct(&current_xmachine_FinancialAgent->EWA_parameters);
+	free_SimplePublicClassifierSystem(&current_xmachine_FinancialAgent->public_classifiersystem);
+	free_GAParameterStruct(&current_xmachine_FinancialAgent->GA_parameters);
+	
+	free(current_xmachine_FinancialAgent);
+}
+
+void free_FinancialAgent_agents()
+{
+/*	while(*FinancialAgent_end_FinancialAgent_state)
+	{
+		free_FinancialAgent_agent(*FinancialAgent_end_FinancialAgent_state, FinancialAgent_end_FinancialAgent_state);
+	}
+	while(*FinancialAgent_04_state)
+	{
+		free_FinancialAgent_agent(*FinancialAgent_04_state, FinancialAgent_04_state);
+	}
+	while(*FinancialAgent_03_state)
+	{
+		free_FinancialAgent_agent(*FinancialAgent_03_state, FinancialAgent_03_state);
+	}
+	while(*FinancialAgent_02_state)
+	{
+		free_FinancialAgent_agent(*FinancialAgent_02_state, FinancialAgent_02_state);
+	}
+	while(*FinancialAgent_01_state)
+	{
+		free_FinancialAgent_agent(*FinancialAgent_01_state, FinancialAgent_01_state);
+	}
+	while(*FinancialAgent_end_GA_state)
+	{
+		free_FinancialAgent_agent(*FinancialAgent_end_GA_state, FinancialAgent_end_GA_state);
+	}
+	while(*FinancialAgent_start_FinancialAgent_state)
+	{
+		free_FinancialAgent_agent(*FinancialAgent_start_FinancialAgent_state, FinancialAgent_start_FinancialAgent_state);
+	}
+*/}
+
+void free_FinancialAgent_states()
+{
+	free(FinancialAgent_end_FinancialAgent_state);
+	free(FinancialAgent_04_state);
+	free(FinancialAgent_03_state);
+	free(FinancialAgent_02_state);
+	free(FinancialAgent_01_state);
+	free(FinancialAgent_end_GA_state);
+	free(FinancialAgent_start_FinancialAgent_state);
+}
+
+void transition_FinancialAgent_agent(xmachine_memory_FinancialAgent_holder * tmp, xmachine_memory_FinancialAgent_state * from_state, xmachine_memory_FinancialAgent_state * to_state)
+{
+	if(tmp->prev == NULL) from_state->agents = tmp->next;
+	else tmp->prev->next = tmp->next;
+	if(tmp->next != NULL) tmp->next->prev = tmp->prev;	
+	
+	add_FinancialAgent_agent_internal(tmp->agent, to_state);
+	free(tmp);
+}
+
+void add_FinancialAgent_agent_internal(xmachine_memory_FinancialAgent * agent, xmachine_memory_FinancialAgent_state * state)
+{
+	xmachine_memory_FinancialAgent_holder * current = (xmachine_memory_FinancialAgent_holder *)malloc(sizeof(xmachine_memory_FinancialAgent_holder));
+	CHECK_POINTER(current);
+	
+	current->next = state->agents;
+	current->prev = NULL;
+	state->agents = current;
+	if(current->next != NULL) current->next->prev = current;
+	current->agent = agent;
+	
+	state->count++;
+}
+
+/** \fn void add_FinancialAgent_agent(int id, EWAParameterStruct * EWA_parameters, SimplePublicClassifierSystem * public_classifiersystem, GAParameterStruct * GA_parameters)
  * \brief Add FinancialAgent X-machine to the current being used X-machine list.
  * \param id Variable for the X-machine memory.
- * \param day_of_month_to_act Variable for the X-machine memory.
- * \param day Variable for the X-machine memory.
- * \param month Variable for the X-machine memory.
  * \param EWA_parameters Variable for the X-machine memory.
  * \param public_classifiersystem Variable for the X-machine memory.
  * \param GA_parameters Variable for the X-machine memory.
- * \param posx Variable for the X-machine memory.
- * \param posy Variable for the X-machine memory.
- * \param posz Variable for the X-machine memory.
- * \param range Variable for the X-machine memory.
  */
-void add_FinancialAgent_agent(int id, int day_of_month_to_act, int day, int month, EWAParameterStruct EWA_parameters, SimplePublicClassifierSystem public_classifiersystem, GAParameterStruct GA_parameters, double posx, double posy, double posz, double range)
+void add_FinancialAgent_agent(int id, EWAParameterStruct EWA_parameters, SimplePublicClassifierSystem public_classifiersystem, GAParameterStruct GA_parameters)
 {
-	xmachine * new_xmachine = add_xmachine();
 	xmachine_memory_FinancialAgent * current;
 	
-	init_FinancialAgent_agent(current);
-	new_xmachine->xmachine_FinancialAgent = current;
+	current = init_FinancialAgent_agent();
+	add_FinancialAgent_agent_internal(current, current_xmachine_FinancialAgent_next_state);
 	
 	current->id = id;
-	current->day_of_month_to_act = day_of_month_to_act;
-	current->day = day;
-	current->month = month;
 	copy_EWAParameterStruct(&EWA_parameters, &current->EWA_parameters);
 	copy_SimplePublicClassifierSystem(&public_classifiersystem, &current->public_classifiersystem);
 	copy_GAParameterStruct(&GA_parameters, &current->GA_parameters);
-	current->posx = posx;
-	current->posy = posy;
-	current->posz = posz;
-	current->range = range;
 }
 
-/** \fn void free_agent()
- * \brief Free the currently being used X-machine.
- */
-/* free_agent */
-void free_agent()
-{
-	xmachine * head = *p_xmachine;
-	xmachine * tmp = NULL;
-	
-	while(head)
-	{
-		if(head == current_xmachine)
-		{
-			if(tmp) tmp->next = head->next;
-			else *p_xmachine = head->next;
-			if(head->xmachine_Household)
-			{
-				free_Household_agent(head->xmachine_Household);
-				free(head->xmachine_Household);
-			}
-			if(head->xmachine_FinancialAgent)
-			{
-				free_FinancialAgent_agent(head->xmachine_FinancialAgent);
-				free(head->xmachine_FinancialAgent);
-			}
-		free(head);
-		head = NULL;
-	}
-	else
-	{
-		tmp = head;
-		head = tmp->next;
-	}
-}
-	
-	current_node->agent_total--;
-}
 
 /* freexmachines */
 /** \fn void freexmachines()
@@ -715,27 +848,7 @@ void free_agent()
  */
 void freexmachines()
 {
-	xmachine * head = *p_xmachine;
-	xmachine * tmp = NULL;
 	
-	while(head)
-	{
-		tmp = head->next;
-		if(head->xmachine_Household)
-		{
-			free_Household_agent(head->xmachine_Household);
-			free(head->xmachine_Household);
-		}
-		if(head->xmachine_FinancialAgent)
-		{
-			free_FinancialAgent_agent(head->xmachine_FinancialAgent);
-			free(head->xmachine_FinancialAgent);
-		}
-		free(head);
-		head = tmp;
-	}
-	
-	*p_xmachine = NULL;
 }
 
 
@@ -757,6 +870,28 @@ int get_id()
 {
 	if(current_xmachine->xmachine_Household) return (*current_xmachine->xmachine_Household).id;
 	if(current_xmachine->xmachine_FinancialAgent) return (*current_xmachine->xmachine_FinancialAgent).id;
+
+    // suppress compiler warning by returning dummy value /
+    // this statement should rightfully NEVER be reached /
+    return (int)0;
+}
+
+/** \fn void set_day_of_month_to_act(int day_of_month_to_act) 
+ * \brief Set day_of_month_to_act memory variable for current X-machine.
+ * \param day_of_month_to_act New value for variable.
+ */
+void set_day_of_month_to_act(int day_of_month_to_act)
+{
+	if(current_xmachine->xmachine_Household) (*current_xmachine->xmachine_Household).day_of_month_to_act = day_of_month_to_act;
+}
+
+/** \fn int get_day_of_month_to_act()
+ * \brief Get day_of_month_to_act memory variable from current X-machine.
+ * \return Value for variable.
+ */
+int get_day_of_month_to_act()
+{
+	if(current_xmachine->xmachine_Household) return (*current_xmachine->xmachine_Household).day_of_month_to_act;
 
     // suppress compiler warning by returning dummy value /
     // this statement should rightfully NEVER be reached /
@@ -788,168 +923,6 @@ SimplePrivateClassifierSystem * get_private_classifiersystem()
     // suppress compiler warning by returning dummy value /
     // this statement should rightfully NEVER be reached /
     return NULL;
-}
-
-/** \fn void set_posx(double posx) 
- * \brief Set posx memory variable for current X-machine.
- * \param posx New value for variable.
- */
-void set_posx(double posx)
-{
-	if(current_xmachine->xmachine_Household) (*current_xmachine->xmachine_Household).posx = posx;
-	if(current_xmachine->xmachine_FinancialAgent) (*current_xmachine->xmachine_FinancialAgent).posx = posx;
-}
-
-/** \fn double get_posx()
- * \brief Get posx memory variable from current X-machine.
- * \return Value for variable.
- */
-double get_posx()
-{
-	if(current_xmachine->xmachine_Household) return (*current_xmachine->xmachine_Household).posx;
-	if(current_xmachine->xmachine_FinancialAgent) return (*current_xmachine->xmachine_FinancialAgent).posx;
-
-    // suppress compiler warning by returning dummy value /
-    // this statement should rightfully NEVER be reached /
-    return (double)0;
-}
-
-/** \fn void set_posy(double posy) 
- * \brief Set posy memory variable for current X-machine.
- * \param posy New value for variable.
- */
-void set_posy(double posy)
-{
-	if(current_xmachine->xmachine_Household) (*current_xmachine->xmachine_Household).posy = posy;
-	if(current_xmachine->xmachine_FinancialAgent) (*current_xmachine->xmachine_FinancialAgent).posy = posy;
-}
-
-/** \fn double get_posy()
- * \brief Get posy memory variable from current X-machine.
- * \return Value for variable.
- */
-double get_posy()
-{
-	if(current_xmachine->xmachine_Household) return (*current_xmachine->xmachine_Household).posy;
-	if(current_xmachine->xmachine_FinancialAgent) return (*current_xmachine->xmachine_FinancialAgent).posy;
-
-    // suppress compiler warning by returning dummy value /
-    // this statement should rightfully NEVER be reached /
-    return (double)0;
-}
-
-/** \fn void set_posz(double posz) 
- * \brief Set posz memory variable for current X-machine.
- * \param posz New value for variable.
- */
-void set_posz(double posz)
-{
-	if(current_xmachine->xmachine_Household) (*current_xmachine->xmachine_Household).posz = posz;
-	if(current_xmachine->xmachine_FinancialAgent) (*current_xmachine->xmachine_FinancialAgent).posz = posz;
-}
-
-/** \fn double get_posz()
- * \brief Get posz memory variable from current X-machine.
- * \return Value for variable.
- */
-double get_posz()
-{
-	if(current_xmachine->xmachine_Household) return (*current_xmachine->xmachine_Household).posz;
-	if(current_xmachine->xmachine_FinancialAgent) return (*current_xmachine->xmachine_FinancialAgent).posz;
-
-    // suppress compiler warning by returning dummy value /
-    // this statement should rightfully NEVER be reached /
-    return (double)0;
-}
-
-/** \fn void set_range(double range) 
- * \brief Set range memory variable for current X-machine.
- * \param range New value for variable.
- */
-void set_range(double range)
-{
-	if(current_xmachine->xmachine_Household) (*current_xmachine->xmachine_Household).range = range;
-	if(current_xmachine->xmachine_FinancialAgent) (*current_xmachine->xmachine_FinancialAgent).range = range;
-}
-
-/** \fn double get_range()
- * \brief Get range memory variable from current X-machine.
- * \return Value for variable.
- */
-double get_range()
-{
-	if(current_xmachine->xmachine_Household) return (*current_xmachine->xmachine_Household).range;
-	if(current_xmachine->xmachine_FinancialAgent) return (*current_xmachine->xmachine_FinancialAgent).range;
-
-    // suppress compiler warning by returning dummy value /
-    // this statement should rightfully NEVER be reached /
-    return (double)0;
-}
-
-/** \fn void set_day_of_month_to_act(int day_of_month_to_act) 
- * \brief Set day_of_month_to_act memory variable for current X-machine.
- * \param day_of_month_to_act New value for variable.
- */
-void set_day_of_month_to_act(int day_of_month_to_act)
-{
-	if(current_xmachine->xmachine_FinancialAgent) (*current_xmachine->xmachine_FinancialAgent).day_of_month_to_act = day_of_month_to_act;
-}
-
-/** \fn int get_day_of_month_to_act()
- * \brief Get day_of_month_to_act memory variable from current X-machine.
- * \return Value for variable.
- */
-int get_day_of_month_to_act()
-{
-	if(current_xmachine->xmachine_FinancialAgent) return (*current_xmachine->xmachine_FinancialAgent).day_of_month_to_act;
-
-    // suppress compiler warning by returning dummy value /
-    // this statement should rightfully NEVER be reached /
-    return (int)0;
-}
-
-/** \fn void set_day(int day) 
- * \brief Set day memory variable for current X-machine.
- * \param day New value for variable.
- */
-void set_day(int day)
-{
-	if(current_xmachine->xmachine_FinancialAgent) (*current_xmachine->xmachine_FinancialAgent).day = day;
-}
-
-/** \fn int get_day()
- * \brief Get day memory variable from current X-machine.
- * \return Value for variable.
- */
-int get_day()
-{
-	if(current_xmachine->xmachine_FinancialAgent) return (*current_xmachine->xmachine_FinancialAgent).day;
-
-    // suppress compiler warning by returning dummy value /
-    // this statement should rightfully NEVER be reached /
-    return (int)0;
-}
-
-/** \fn void set_month(int month) 
- * \brief Set month memory variable for current X-machine.
- * \param month New value for variable.
- */
-void set_month(int month)
-{
-	if(current_xmachine->xmachine_FinancialAgent) (*current_xmachine->xmachine_FinancialAgent).month = month;
-}
-
-/** \fn int get_month()
- * \brief Get month memory variable from current X-machine.
- * \return Value for variable.
- */
-int get_month()
-{
-	if(current_xmachine->xmachine_FinancialAgent) return (*current_xmachine->xmachine_FinancialAgent).month;
-
-    // suppress compiler warning by returning dummy value /
-    // this statement should rightfully NEVER be reached /
-    return (int)0;
 }
 
 /** \fn SimplePublicClassifierSystem get_public_classifiersystem()
@@ -986,8 +959,8 @@ GAParameterStruct * get_GA_parameters()
 double agent_get_range()
 {
     double value = 0.0;
-    if (current_xmachine->xmachine_Household) value = current_xmachine->xmachine_Household->range;
-    if (current_xmachine->xmachine_FinancialAgent) value = current_xmachine->xmachine_FinancialAgent->range;
+    /*if (current_xmachine->xmachine_Household) value = current_xmachine->xmachine_Household->;*/
+    /*if (current_xmachine->xmachine_FinancialAgent) value = current_xmachine->xmachine_FinancialAgent->;*/
 
     return value;
 }
@@ -999,8 +972,8 @@ double agent_get_range()
 int agent_get_id()
 {
     int value = 0;
-    if (current_xmachine->xmachine_Household) value = current_xmachine->xmachine_Household->id;
-    if (current_xmachine->xmachine_FinancialAgent) value = current_xmachine->xmachine_FinancialAgent->id;
+    /*if (current_xmachine->xmachine_Household) value = current_xmachine->xmachine_Household->id;*/
+    /*if (current_xmachine->xmachine_FinancialAgent) value = current_xmachine->xmachine_FinancialAgent->id;*/
 
     return value;
 }
@@ -1012,8 +985,8 @@ int agent_get_id()
 double agent_get_x()
 {
     double value = 0.0;
-    if (current_xmachine->xmachine_Household) value = current_xmachine->xmachine_Household->posx;
-    if (current_xmachine->xmachine_FinancialAgent) value = current_xmachine->xmachine_FinancialAgent->posx;
+    /*if (current_xmachine->xmachine_Household) value = current_xmachine->xmachine_Household->;*/
+    /*if (current_xmachine->xmachine_FinancialAgent) value = current_xmachine->xmachine_FinancialAgent->;*/
 
     return value;
 }
@@ -1024,8 +997,8 @@ double agent_get_x()
 double agent_get_y()
 {
     double value = 0.0;
-    if (current_xmachine->xmachine_Household) value = current_xmachine->xmachine_Household->posy; 
-    if (current_xmachine->xmachine_FinancialAgent) value = current_xmachine->xmachine_FinancialAgent->posy; 
+    /*if (current_xmachine->xmachine_Household) value = current_xmachine->xmachine_Household->;*/ 
+    /*if (current_xmachine->xmachine_FinancialAgent) value = current_xmachine->xmachine_FinancialAgent->;*/ 
 
     return value;
 }
@@ -1036,67 +1009,9 @@ double agent_get_y()
 double agent_get_z()
 {
     double value = 0.0;
-    if (current_xmachine->xmachine_Household) value = current_xmachine->xmachine_Household->posz; 
-    if (current_xmachine->xmachine_FinancialAgent) value = current_xmachine->xmachine_FinancialAgent->posz; 
 
     return value;
 }
-/** \fn void randomisexagent()
- * \brief Randomise the current X-machine list.
- * 
- * \author LS Chin (CCLRC)
- * \date March 2007
- */
-void randomisexagent() {
-
-    int i, rnd;
-    int xm_count;
-    xmachine *current;
-    xmachine **address_list;
-    
-    xm_count = current_node->agent_total;
-
-    /* allocate mem for dynamic temp array */
-    address_list = (xmachine **)malloc(sizeof(xmachine *) * xm_count);
-	CHECK_POINTER(address_list);
-
-    p_xmachine = &current_node->agents;
-    
-    /* populate address list */
-    i = 0;
-    current = *p_xmachine;
-    while(current)
-    {
-        address_list[i] = current;
-        current = current->next;
-        i++;
-    }
-
-    /* randomise address list */
-    for (i = xm_count - 1; i > 0; i--)
-    {
-        /* get random number */
-        rnd = (int)((double)i * rand() / (RAND_MAX + 1.0));
-
-        if (rnd == i) continue;
-
-        /* use 'current' as temp var to swap addresses */
-        current = address_list[i];
-        address_list[i] = address_list[rnd];
-        address_list[rnd] = current;
-    }
-
-    /* build new xmachine list from randomised address list */
-    *p_xmachine = NULL;
-    for (i = 0; i < xm_count; i++)
-    {
-        address_list[i]->next = *p_xmachine;
-        *p_xmachine = address_list[i];
-    }
-
-    free(address_list);
-}
-
 
 /** \fn void add_node(int node_id, double minx, double maxx, double miny, double maxy, double minz, double maxz)
  * \brief Add a node to the node list.
@@ -1167,39 +1082,86 @@ void free_node_info()
 	*p_node_info = NULL;
 }
 
-/**\fn void free_messages()
- * \brief Frees all the message lists (of the current node if in serial).
- */
-void free_messages()
-{
-	freerule_performancemessages();	freenew_performancesmessages();	freerule_detailsmessages();
-}
-
 /** \fn void clean_up(int code)
  * \brief Add a node to the node list.
  * \param code The error code (zero is no error).
  */
 void clean_up(int code)
 {
+    int rc;
 	FILE *file;
 	char data[100];
 	
-	
+	free(current_xmachine);
 	/* Free x-machine memory */
-
-	current_node = *p_node_info;
-	while(current_node)
-	{
-		p_xmachine = &current_node->agents;
-
-	freexmachines();
+	freexmachines(); //TODO
 	current_node->agent_total = 0;
-
-		current_node = current_node->next;
-	}
-
 	/* Free space partitions linked list */
 	free_node_info();
+	/* Free agent states */
+	free_Household_states();
+	free_FinancialAgent_states();
+	
+	
+	/* Free message boards */
+
+	rc = MB_Delete(&b_rule_performance);
+	#ifdef ERRCHECK
+    if (rc != MB_SUCCESS)
+    {
+       fprintf(stderr, "ERROR: Could not delete 'rule_performance' board\n");
+       switch(rc) {
+           case MB_ERR_INVALID:
+               fprintf(stderr, "\t reason: 'rule_performance' board has not been created?\n");
+               break;
+           case MB_ERR_LOCKED:
+               fprintf(stderr, "\t reason: 'rule_performance' board is locked\n");
+               break;
+           case MB_ERR_INTERNAL:
+               fprintf(stderr, "\t reason: internal error. Recompile libmoard in debug mode for more info \n");
+               break;
+       }
+    }
+    #endif
+
+	rc = MB_Delete(&b_new_performances);
+	#ifdef ERRCHECK
+    if (rc != MB_SUCCESS)
+    {
+       fprintf(stderr, "ERROR: Could not delete 'new_performances' board\n");
+       switch(rc) {
+           case MB_ERR_INVALID:
+               fprintf(stderr, "\t reason: 'new_performances' board has not been created?\n");
+               break;
+           case MB_ERR_LOCKED:
+               fprintf(stderr, "\t reason: 'new_performances' board is locked\n");
+               break;
+           case MB_ERR_INTERNAL:
+               fprintf(stderr, "\t reason: internal error. Recompile libmoard in debug mode for more info \n");
+               break;
+       }
+    }
+    #endif
+
+	rc = MB_Delete(&b_rule_details);
+	#ifdef ERRCHECK
+    if (rc != MB_SUCCESS)
+    {
+       fprintf(stderr, "ERROR: Could not delete 'rule_details' board\n");
+       switch(rc) {
+           case MB_ERR_INVALID:
+               fprintf(stderr, "\t reason: 'rule_details' board has not been created?\n");
+               break;
+           case MB_ERR_LOCKED:
+               fprintf(stderr, "\t reason: 'rule_details' board is locked\n");
+               break;
+           case MB_ERR_INTERNAL:
+               fprintf(stderr, "\t reason: internal error. Recompile libmoard in debug mode for more info \n");
+               break;
+       }
+    }
+    #endif
+
 	
 
 	/* Write log file */
@@ -1234,7 +1196,7 @@ void clean_up(int code)
  */
 void propagate_agents()
 {
-	node_information * node_info;
+/*	node_information * node_info;
 	xmachine * before_xmachine, * temp_xmachine;
 	xmachine ** p_temp_xmachine;
 	double x_xmachine, y_xmachine, z_xmachine;
@@ -1244,15 +1206,15 @@ void propagate_agents()
 	{
 		if(current_xmachine->xmachine_Household != NULL)
 		{
-			x_xmachine = current_xmachine->xmachine_Household->posx;
-			y_xmachine = current_xmachine->xmachine_Household->posy;
-			z_xmachine = current_xmachine->xmachine_Household->posz;
+			x_xmachine = current_xmachine->xmachine_Household->;
+			y_xmachine = current_xmachine->xmachine_Household->;
+			z_xmachine = 0.0;
 		}
 		else if(current_xmachine->xmachine_FinancialAgent != NULL)
 		{
-			x_xmachine = current_xmachine->xmachine_FinancialAgent->posx;
-			y_xmachine = current_xmachine->xmachine_FinancialAgent->posy;
-			z_xmachine = current_xmachine->xmachine_FinancialAgent->posz;
+			x_xmachine = current_xmachine->xmachine_FinancialAgent->;
+			y_xmachine = current_xmachine->xmachine_FinancialAgent->;
+			z_xmachine = 0.0;
 		}
 		
 		if(x_xmachine < current_node->partition_data[0] ||
@@ -1270,11 +1232,11 @@ void propagate_agents()
 				node_info->partition_data[2] < y_xmachine && node_info->partition_data[3] > y_xmachine &&
 				node_info->partition_data[4] < z_xmachine && node_info->partition_data[5] > z_xmachine)
 				{
-                    /* Remove agent */
+                    // Remove agent
                     if(before_xmachine) before_xmachine->next = current_xmachine->next;
                     else *p_xmachine = current_xmachine->next;
                     current_node->agent_total--;
-                    /* Add agent */
+                    // Add agent
                     p_temp_xmachine = &node_info->agents;
                     temp_xmachine = *p_temp_xmachine;
                     current_xmachine->next = temp_xmachine;
@@ -1289,7 +1251,7 @@ void propagate_agents()
 			
 			if(before_xmachine) current_xmachine = before_xmachine->next;
 			else current_xmachine = NULL;
-		}
+		}*/
 }
 
 
@@ -1974,16 +1936,16 @@ void copy_GAParameterStruct_array(GAParameterStruct_array * from, GAParameterStr
 	
 	for(i = 0; i < (*from).size; i++)
 	{
-		add_GAParameterStruct(to, (*from).array[i].prob_cross, (*from).array[i].prob_mut, (*from).array[i].string_size, (*from).array[i].pop_size, (*from).array[i].reproduction_proportion, (*from).array[i].single_point_cross_over, (*from).array[i].election, (*from).array[i].stepsize);
+		add_GAParameterStruct(to, (*from).array[i].prob_cross, (*from).array[i].prob_mut, (*from).array[i].string_size, (*from).array[i].pop_size, (*from).array[i].reproduction_proportion, (*from).array[i].single_point_cross_over, (*from).array[i].election, (*from).array[i].stepsize, (*from).array[i].min_values, (*from).array[i].max_values);
 	}
 }
 
-/** \fn void add_GAParameterStruct(GAParameterStruct_array * array, double prob_cross, double prob_mut, int string_size, int pop_size, double reproduction_proportion, int single_point_cross_over, int election, double stepsize)
+/** \fn void add_GAParameterStruct(GAParameterStruct_array * array, double prob_cross, double prob_mut, int string_size, int pop_size, double reproduction_proportion, int single_point_cross_over, int election, double stepsize, double min_values, double max_values)
 * \brief Add an GAParameterStruct to the dynamic GAParameterStruct array.
 * \param array Pointer to the dynamic GAParameterStruct array.
 * \param new_int The GAParameterStruct to add
 */
-void add_GAParameterStruct(GAParameterStruct_array * array, double prob_cross, double prob_mut, int string_size, int pop_size, double reproduction_proportion, int single_point_cross_over, int election, double * stepsize)
+void add_GAParameterStruct(GAParameterStruct_array * array, double prob_cross, double prob_mut, int string_size, int pop_size, double reproduction_proportion, int single_point_cross_over, int election, double * stepsize, double * min_values, double * max_values)
 {
 	if((*array).size == (*array).total_size)
 	{
@@ -1999,6 +1961,8 @@ void add_GAParameterStruct(GAParameterStruct_array * array, double prob_cross, d
 	(*array).array[(*array).size].single_point_cross_over = single_point_cross_over;
 	(*array).array[(*array).size].election = election;
 	if(stepsize != NULL) memcpy((*array).array[(*array).size].stepsize, stepsize, 10*sizeof(double));
+	if(min_values != NULL) memcpy((*array).array[(*array).size].min_values, min_values, 10*sizeof(double));
+	if(max_values != NULL) memcpy((*array).array[(*array).size].max_values, max_values, 10*sizeof(double));
 
 	(*array).size++;
 }
@@ -2452,94 +2416,6 @@ void remove_ComplexPublicClassifierSystem(ComplexPublicClassifierSystem_array * 
 		for(i = index; i < (*array).size - 1; i++)
 		{
 			copy_ComplexPublicClassifierSystem(&(*array).array[i+1], &(*array).array[i]);
-		}
-		(*array).size--;
-	}
-}
-/* Functions for the ComplexPrivateClassifierSystem datatype */
-/** \fn ComplexPrivateClassifierSystem_array * init_ComplexPrivateClassifierSystem_array()
- * \brief Allocate memory for a dynamic ComplexPrivateClassifierSystem array.
- * \return ComplexPrivateClassifierSystem_array Pointer to the new dynamic ComplexPrivateClassifierSystem array.
- */
-void init_ComplexPrivateClassifierSystem_array(ComplexPrivateClassifierSystem_array * array)
-{
-	(*array).size = 0;
-	(*array).total_size = ARRAY_BLOCK_SIZE;
-	(*array).array = (ComplexPrivateClassifierSystem *)malloc(ARRAY_BLOCK_SIZE * sizeof(ComplexPrivateClassifierSystem));
-	CHECK_POINTER((*array).array);
-}
-
-/** \fn void reset_ComplexPrivateClassifierSystem_array(ComplexPrivateClassifierSystem_array* array)
-* \brief Reset the ComplexPrivateClassifierSystem array to hold nothing.
-* \param array Pointer to the dynamic ComplexPrivateClassifierSystem array.
-*/
-void reset_ComplexPrivateClassifierSystem_array(ComplexPrivateClassifierSystem_array * array)
-{
-	(*array).size = 0;
-}
-
-/** \fn void free_ComplexPrivateClassifierSystem_array(ComplexPrivateClassifierSystem_array * array)
-* \brief Free the memory of a dynamic ComplexPrivateClassifierSystem array.
-* \param array Pointer to the dynamic ComplexPrivateClassifierSystem array.
-*/
-void free_ComplexPrivateClassifierSystem_array(ComplexPrivateClassifierSystem_array * array)
-{
-	free((*array).array);
-}
-
-void copy_ComplexPrivateClassifierSystem_array(ComplexPrivateClassifierSystem_array * from, ComplexPrivateClassifierSystem_array * to)
-{
-	int i;
-	
-	//to = init_ComplexPrivateClassifierSystem_array();
-	
-	for(i = 0; i < (*from).size; i++)
-	{
-		add_ComplexPrivateClassifierSystem(to, (*from).array[i].nr_types, &(*from).array[i].nr_rules_per_type, (*from).array[i].nr_rules, (*from).array[i].experience, (*from).array[i].current_rule, (*from).array[i].ruletable);
-	}
-}
-
-/** \fn void add_ComplexPrivateClassifierSystem(ComplexPrivateClassifierSystem_array * array, int nr_types, int_array nr_rules_per_type, int nr_rules, double experience, int current_rule, PrivateClassifierRule * ruletable)
-* \brief Add an ComplexPrivateClassifierSystem to the dynamic ComplexPrivateClassifierSystem array.
-* \param array Pointer to the dynamic ComplexPrivateClassifierSystem array.
-* \param new_int The ComplexPrivateClassifierSystem to add
-*/
-void add_ComplexPrivateClassifierSystem(ComplexPrivateClassifierSystem_array * array, int nr_types, int_array * nr_rules_per_type, int nr_rules, double experience, int current_rule, PrivateClassifierRule * ruletable)
-{
-	if((*array).size == (*array).total_size)
-	{
-		(*array).total_size = (*array).total_size + ARRAY_BLOCK_SIZE;
-		(*array).array = (ComplexPrivateClassifierSystem *)realloc((*array).array, ((*array).total_size * sizeof(ComplexPrivateClassifierSystem)));
-	}
-	init_ComplexPrivateClassifierSystem(&(*array).array[(*array).size]);
-	(*array).array[(*array).size].nr_types = nr_types;
-	if(nr_rules_per_type != NULL) copy_int_array(nr_rules_per_type, &(*array).array[(*array).size].nr_rules_per_type);
-	(*array).array[(*array).size].nr_rules = nr_rules;
-	(*array).array[(*array).size].experience = experience;
-	(*array).array[(*array).size].current_rule = current_rule;
-	if(ruletable != NULL) copy_PrivateClassifierRule_static_array(ruletable, (*array).array[(*array).size].ruletable, 100);
-
-	(*array).size++;
-}
-
-/** \fn void remove_ComplexPrivateClassifierSystem(ComplexPrivateClassifierSystem_array * array, int index)
- * \brief Remove an ComplexPrivateClassifierSystem from a dynamic ComplexPrivateClassifierSystem array.
- * \param array Pointer to the dynamic ComplexPrivateClassifierSystem array.
- * \param index The index of the ComplexPrivateClassifierSystem to remove.
- */
-void remove_ComplexPrivateClassifierSystem(ComplexPrivateClassifierSystem_array * array, int index)
-{
-	int i;
-	
-	/* Free element at index index */
-	free_ComplexPrivateClassifierSystem(&(*array).array[index]);
-	
-	/* Copy all elements up by one */
-	if(index <= (*array).size)
-	{
-		for(i = index; i < (*array).size - 1; i++)
-		{
-			copy_ComplexPrivateClassifierSystem(&(*array).array[i+1], &(*array).array[i]);
 		}
 		(*array).size--;
 	}

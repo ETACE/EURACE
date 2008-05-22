@@ -101,7 +101,7 @@
 	<var><!--id for the rule-->
 	<type>int</type><name>id</name>
 	</var>
-<!--------------------------------------- Rule measures --------------------------------------->
+<!-- ------------------------------------- Rule measures ------------------------------------- -->
 <var><!--This is the user counter for each rule-->
 <type>int</type><name>counter</name>
 </var>
@@ -111,7 +111,7 @@
 <var><!--This is the average performance for each rule-->
 <type>double</type><name>avg_performance</name>
 </var>
-<!--------------------------------------- Rule details --------------------------------------->
+<!-- ------------------------------------- Rule details ------------------------------------- -->
 <!--Here are parameters for the execution function for each rule. We allow a rule to have 10 parameters that are all doubles.-->
 <var><type>double</type>
 <name>parameters[10]</name>
@@ -123,7 +123,7 @@
 	<var><!--id for each rule-->
 	<type>int</type><name>id</name>
 	</var>
-<!--------------------------------------- Rule measures --------------------------------------->
+<!-- ------------------------------------- Rule measures ------------------------------------- -->
 <var><!--Agent's performance of current_rule (0.0 if this rule is not currently used)--><type>double</type><name>my_performance</name>
 </var>
 <var><!--Average performance for this rule across population (inherited from Central CS)-->
@@ -133,7 +133,7 @@
 <type>double</type><name>attraction</name></var>
 <var><!--Agent choice probabilities-->
 <type>double</type><name>choiceprob</name></var>
-<!--------------------------------------- Rule details --------------------------------------->
+<!-- ------------------------------------- Rule details ------------------------------------- -->
 <!--Here are parameters for the execution function for each rule. We allow a rule to have 10 parameters that are all doubles.-->
 <var><type>double</type>
 <name>parameters[10]</name>
@@ -144,13 +144,13 @@
 <!--***************************** Struct for the Simple Public Classifier System *****************************-->
 <name>SimplePublicClassifierSystem</name>
 <desc>Datatype for the central classifier system. Simple version allows for rules of the same strategy type (all rules use the same function). !Subject to change!</desc>
-<!-------------------Metadata for the rule system---------------------->
+<!-- -----------------Metadata for the rule system-------------------- -->
 	<var>
 		<!--Total nr of rules-->
 		<type>int</type>
 		<name>nr_rules</name>
 	</var>
-<!-------------------The rule system---------------------->
+<!-- -----------------The rule system-------------------- -->
 	<var><!--Static array of 100 public classifier rules: this array contains rules of only one type-->
 		<type>PublicClassifierRule</type>
 		<name>ruletable[100]</name>
@@ -161,13 +161,13 @@
 <!--***************************** Struct for the Simple Private Classifier System *****************************-->
 <name>SimplePrivateClassifierSystem</name>
 <desc>Datatype for the private classifier system inside each agent. Simple version allows for rules of the same strategy type (all rules use the same function). !Subject to change!</desc>
-<!-------------------Metadata for the rule system---------------------->
+<!-- -----------------Metadata for the rule system-------------------- -->
 	<var>
 		<!--Total nr of rules-->
 		<type>int</type>
 		<name>nr_rules</name>
 	</var>
-<!-------------------Metadata for the agent---------------------->
+<!-- -----------------Metadata for the agent-------------------- -->
 	<var>
 	<!--Experience variable for EWA learning-->
 	<type>double</type><name>experience</name>
@@ -178,7 +178,7 @@
 	<type>int</type>
 	<name>current_rule</name>
 	</var>
-<!-------------------The rule system---------------------->
+<!-- -----------------The rule system-------------------- -->
 	<var>
 	<!--Static array of 100 private classifier rules: this array contains rules of only one type-->
 		<type>PrivateClassifierRule</type>
@@ -189,7 +189,7 @@
 <datatype>
 <!--***************************** Struct for the Complex Public Classifier System *****************************--><name>ComplexPublicClassifierSystem</name>
 <desc>Datatype for the central classifier system. This complex version allows for heterogeneous rule sets. !Subject to change!</desc>
-<!-------------------Metadata for the rule system---------------------->
+<!-- -----------------Metadata for the rule system-------------------- -->
 	<var>
 	<!--Nr of subpopulations-->
 	<type>int</type>
@@ -204,7 +204,7 @@
 		<!--Total nr of rules-->
 		<type>int</type>
 		<name>nr_rules</name>
-	</var><!-------------------The rule system---------------------->
+	</var><!-- -----------------The rule system-------------------- -->
 	<var><!--Static array of 100 public classifier rules: this array contains rules of heterogenous type-->
 		<type>PublicClassifierRule</type>
 		<name>ruletable[100]</name>
@@ -215,7 +215,7 @@
 <!--***************************** Struct for the Complex Private Classifier System *****************************-->
 <name>ComplexPrivateClassifierSystem</name>
 <desc>Datatype for the private classifier system inside each agent. This complex version allows for heterogeneous rule sets. !Subject to change!</desc>
-<!-------------------Metadata for the rule system---------------------->
+<!-- -----------------Metadata for the rule system-------------------- -->
 	<var>
 	<!--Nr of subpopulations--><type>int</type>
 	<name>nr_types</name>
@@ -230,13 +230,13 @@
 		<type>int</type>
 		<name>nr_rules</name>
 	</var>
-<!-------------------Metadata for the agent---------------------->
+<!-- -----------------Metadata for the agent-------------------- -->
 	<var><!--Experience variable for EWA learning-->
 	<type>double</type><name>experience</name>
 	</var><var><!--Current rule in use by the agent-->
 	<type>int</type><name>current_rule</name>
 	</var>
-<!-------------------The rule system---------------------->
+<!-- -----------------The rule system-------------------- -->
 	<var>
 	<!--Static array of 100 private classifier rules: this array contains rules of heterogenous types-->
 		<type>PrivateClassifierRule</type>
@@ -249,7 +249,7 @@
 <!--********************* X-machine Agent - Household ****************************-->
 <xmachine>
 <name>Household</name>
-<!----------------- Variables-------------------------------------------------->
+<!-- --------------- Variables------------------------------------------------ -->
 <!-- All variables used by household are declared here to allocate them in memory -->
 
 <memory>
@@ -263,7 +263,7 @@
 <var><type>double</type><name>posz</name></var>
 <var><type>double</type><name>range</name></var>
 </memory>
-<!----------------- Defining functions ---------------------------------------->
+<!-- --------------- Defining functions -------------------------------------- -->
 <functions>
 <!---Role: Financial Management Role-->
 <!---Role: Consumption Market Role-->
@@ -329,7 +329,7 @@
 <!--********************* X-machine Agent - FinancialAgent ****************************-->
 <xmachine>
 <name>FinancialAgent</name>
-<!----------------- Variables-------------------------------------------------->
+<!-- --------------- Variables------------------------------------------------ -->
 <!-- All variables used by FinancialAgent are declared here to allocate them in memory -->
 <memory>
 <var><type>int</type><name>id</name></var>
@@ -357,7 +357,7 @@
 <var><type>double</type><name>posz</name></var>
 <var><type>double</type><name>range</name></var>
 </memory>
-<!----------------- Defining functions ---------------------------------------->
+<!-- --------------- Defining functions -------------------------------------- -->
 <functions>
 <!--EWA Functions-->
 <function>

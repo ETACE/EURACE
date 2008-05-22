@@ -3,6 +3,7 @@
  * Adapted code from  Functions_Financial_market_PortfolioSelectionAlgorithm_Sander_v0.3.c
  * *********************************
  * History:
+ * 22/05/08 Sander: Checked to conform to xPaser 0.15.7
  * 29/02/08 Sander: Converted code to use . instead of -> for structs.
  * 13/11/07 Mariam: Converting the code into separate agent functions files. 
  *********************************/
@@ -34,8 +35,8 @@ int Household_send_rule_performance()
     rule_performance = random_unif()*100;
     
     //Note: rule_id = current_rule-1 because of 0-indexing in C
-    //add_rule_performance_message(rule_id, rule_performance, MSGDATA);
-    add_rule_performance_message(current_rule-1, rule_performance, 1.0, 0.0, 0.0, 0.0);
+    //add_rule_performance_message(rule_id, rule_performance);
+    add_rule_performance_message(current_rule-1, rule_performance);
 
     return 0;
 }
@@ -60,8 +61,8 @@ int Household_read_all_performances()
 
 /* STEP 3. Select a rule.*/
 /*
- *\fn: int Household_select_rule()
- *\brief: updates attractions
+ *\fn Household_select_rule()
+ *\brief updates attractions
  * updates choice probabilities
  * selects a new rule
  * outputs the selected rule to memory
@@ -175,18 +176,18 @@ int Household_select_rule()
  */
 
 /* \fn: Household_apply_rule()
- * \brief: Apply a rule. To compute actual limit_orders we need to apply the rule to be able to obtain a prescribed_asset_portfolio.
+ * \brief Apply a rule. To compute actual limit_orders we need to apply the rule to be able to obtain a prescribed_asset_portfolio.
  */
 int Household_apply_rule()
 {
-
+	//THIS CODE SHOULD BE PART OF THE AFM
     return 0;
 }
 
 
 /*
  * \fn: Household_read_and_update_rule_details()
- * \brief: Function to download new rule details. Used by agents to refresh their rule detail system.
+ * \brief Function to download new rule details. Used by agents to refresh their rule detail system.
  * We allow for changes in the rule parameters that occur due to crossover, mutation.
 */
 int Household_read_and_update_rule_details()
@@ -216,7 +217,7 @@ int Household_read_and_update_rule_details()
 }
 
 /* \fn: Household_reset_private_classifiersystem()
- * \brief:
+ * \brief
  */
 int Household_reset_private_classifiersystem()
 {
@@ -251,7 +252,7 @@ int Household_reset_private_classifiersystem()
 } 
 
 /* \fn: Household_initialize_ruledetails()
- * \brief: Initialization of all rule details to zero: parameters[10]=0.
+ * \brief Initialization of all rule details to zero: parameters[10]=0.
  */
 
 //HERE: function to initialize the rule_detail_system.
@@ -390,11 +391,3 @@ int Household_initialize_ruledetailsystem()
     return 0;
 }
 */
-
-/* \fn int Every_period()
- * \brief Dummy function for conditional function dependency.
- */
-int Every_period()
-{
-    return 0;
-}

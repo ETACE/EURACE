@@ -385,10 +385,26 @@ void read_GAParameterStruct(char * buffer, int * j, GAParameterStruct * temp_dat
 	(*temp_datatype).election = atoi(arraydata);
 	(*j)++;
 
-	while(buffer[*j] != '}')
+	while(buffer[*j] != ',')
 	{
 		while(buffer[*j] != '{') (*j)++;
 		read_double_static_array(buffer, j, (*temp_datatype).stepsize, 10);
+	}
+	
+	(*j)++;
+
+	while(buffer[*j] != ',')
+	{
+		while(buffer[*j] != '{') (*j)++;
+		read_double_static_array(buffer, j, (*temp_datatype).min_values, 10);
+	}
+	
+	(*j)++;
+
+	while(buffer[*j] != '}')
+	{
+		while(buffer[*j] != '{') (*j)++;
+		read_double_static_array(buffer, j, (*temp_datatype).max_values, 10);
 	}
 	
 	(*j)++;
@@ -404,7 +420,7 @@ void read_GAParameterStruct_dynamic_array(char * buffer, int * j, GAParameterStr
 	{
 		if(buffer[(*j)] == '{')
 		{
-			add_GAParameterStruct(temp_datatype_array, 0.0, 0.0, 0, 0, 0.0, 0, 0, NULL);
+			add_GAParameterStruct(temp_datatype_array, 0.0, 0.0, 0, 0, 0.0, 0, 0, NULL, NULL, NULL);
 			read_GAParameterStruct(buffer, j, &(*temp_datatype_array).array[arraycount]);
 			arraycount++;
 		}
@@ -864,110 +880,6 @@ void read_ComplexPublicClassifierSystem_static_array(char * buffer, int * j, Com
 	(*j)++;
 }
 
-/** \fn void read_ComplexPrivateClassifierSystem(char * buffer, int * j, ComplexPrivateClassifierSystem * temp_datatype)
- * \brief Reads ComplexPrivateClassifierSystem datatype.
- */
-void read_ComplexPrivateClassifierSystem(char * buffer, int * j, ComplexPrivateClassifierSystem * temp_datatype)
-{
-	int array_k;
-	char arraydata[10000];
-	(*j)++;
-	
-	(*temp_datatype).nr_types = 0;
-	array_k = 0;
-	while(buffer[*j] != ',')
-	{
-		arraydata[array_k] = buffer[*j];
-		array_k++;
-		(*j)++;
-	}
-	arraydata[array_k] = 0;
-	(*temp_datatype).nr_types = atoi(arraydata);
-	(*j)++;
-
-	while(buffer[*j] != ',')
-	{
-		while(buffer[*j] != '{') (*j)++;
-		
-		read_int_dynamic_array(buffer, j, &(*temp_datatype).nr_rules_per_type);
-	}
-	
-	(*j)++;
-	(*temp_datatype).nr_rules = 0;
-	array_k = 0;
-	while(buffer[*j] != ',')
-	{
-		arraydata[array_k] = buffer[*j];
-		array_k++;
-		(*j)++;
-	}
-	arraydata[array_k] = 0;
-	(*temp_datatype).nr_rules = atoi(arraydata);
-	(*j)++;
-	(*temp_datatype).experience = 0.0;
-	array_k = 0;
-	while(buffer[*j] != ',')
-	{
-		arraydata[array_k] = buffer[*j];
-		array_k++;
-		(*j)++;
-	}
-	arraydata[array_k] = 0;
-	(*temp_datatype).experience = atof(arraydata);
-	(*j)++;
-	(*temp_datatype).current_rule = 0;
-	array_k = 0;
-	while(buffer[*j] != ',')
-	{
-		arraydata[array_k] = buffer[*j];
-		array_k++;
-		(*j)++;
-	}
-	arraydata[array_k] = 0;
-	(*temp_datatype).current_rule = atoi(arraydata);
-	(*j)++;
-	while(buffer[*j] != '{') (*j)++;
-
-	read_PrivateClassifierRule_static_array(buffer, j, (*temp_datatype).ruletable, 100);
-	
-	(*j)++;
-}
-
-void read_ComplexPrivateClassifierSystem_dynamic_array(char * buffer, int * j, ComplexPrivateClassifierSystem_array * temp_datatype_array)
-{
-	int arraycount = 0;
-	
-	(*j)++;
-	
-	while(buffer[(*j)] != '\0' && buffer[(*j)] != '}')
-	{
-		if(buffer[(*j)] == '{')
-		{
-			add_ComplexPrivateClassifierSystem(temp_datatype_array, 0, NULL, 0, 0.0, 0, NULL);
-			read_ComplexPrivateClassifierSystem(buffer, j, &(*temp_datatype_array).array[arraycount]);
-			arraycount++;
-		}
-		while(buffer[(*j)] != '{' && buffer[(*j)] != '\0') { (*j)++; }
-	}
-	
-	(*j)++;
-}
-
-void read_ComplexPrivateClassifierSystem_static_array(char * buffer, int * j, ComplexPrivateClassifierSystem * temp_datatype_array, int size)
-{
-	int arraycount;
-	
-	(*j)++;
-	
-	for(arraycount = 0; arraycount < size; arraycount++)
-	{
-		read_ComplexPrivateClassifierSystem(buffer, j, &temp_datatype_array[arraycount]);
-		if(arraycount < (size-1)) while(buffer[(*j)] != '{') { (*j)++; }
-	}
-	
-	(*j)++;
-}
-
 /** \fn void readinitialstates(char * filename, int * itno, xmachine ** agent_list, double cloud_data[6], int flag)
  * \brief Read initial X-machine memory starting values from a file.
  * \param filename The path to the file.
@@ -977,7 +889,7 @@ void read_ComplexPrivateClassifierSystem_static_array(char * buffer, int * j, Co
  * \param partition_method Identifies partitioning method: 1 = geometric, 2 = round-robin
  * \param flag Flag for whether to check space partitions.
  */
-void readinitialstates(char * filename, int * itno, xmachine ** agent_list, double cloud_data[6], 
+void readinitialstates(char * filename, int * itno, double cloud_data[6], 
 					   int partition_method, int flag)
 {
 	/* Pointer to file */
@@ -988,7 +900,7 @@ void readinitialstates(char * filename, int * itno, xmachine ** agent_list, doub
 	char agentname[1000];
 	//char arraydata[10000];
 	//int array_k=0, arraycount=0;
-	int j=0;
+	int j;
 
 /* Things for round-robin partitioning */
 	int agent_count;
@@ -1018,30 +930,18 @@ void readinitialstates(char * filename, int * itno, xmachine ** agent_list, doub
 	int in_FinancialAgent_agent;
 
 	int in_id;
+	int in_day_of_month_to_act;
 	int in_EWA_parameters;
 	int in_private_classifiersystem;
-	int in_posx;
-	int in_posy;
-	int in_posz;
-	int in_range;
-	int in_day_of_month_to_act;
-	int in_day;
-	int in_month;
 	int in_public_classifiersystem;
 	int in_GA_parameters;
 
 
 	/* Variables for initial state data */
 //	int id;
+//	int day_of_month_to_act;
 //	EWAParameterStruct * EWA_parameters;
 //	SimplePrivateClassifierSystem * private_classifiersystem;
-//	double posx;
-//	double posy;
-//	double posz;
-//	double range;
-//	int day_of_month_to_act;
-//	int day;
-//	int month;
 //	SimplePublicClassifierSystem * public_classifiersystem;
 //	GAParameterStruct * GA_parameters;
 
@@ -1071,30 +971,18 @@ void readinitialstates(char * filename, int * itno, xmachine ** agent_list, doub
 	in_Household_agent = 0;
 	in_FinancialAgent_agent = 0;
 	in_id = 0;
+	in_day_of_month_to_act = 0;
 	in_EWA_parameters = 0;
 	in_private_classifiersystem = 0;
-	in_posx = 0;
-	in_posy = 0;
-	in_posz = 0;
-	in_range = 0;
-	in_day_of_month_to_act = 0;
-	in_day = 0;
-	in_month = 0;
 	in_public_classifiersystem = 0;
 	in_GA_parameters = 0;
 
 	/* Default variables for memory */
 	/* Not implemented static arrays */
 //	id = 0;
+//	day_of_month_to_act = 0;
 //	EWA_parameters = init_EWAParameterStruct();
 //	private_classifiersystem = init_SimplePrivateClassifierSystem();
-//	posx = 0.0;
-//	posy = 0.0;
-//	posz = 0.0;
-//	range = 0.0;
-//	day_of_month_to_act = 0;
-//	day = 0;
-//	month = 0;
 //	public_classifiersystem = init_SimplePublicClassifierSystem();
 //	GA_parameters = init_GAParameterStruct();
 
@@ -1112,7 +1000,7 @@ void readinitialstates(char * filename, int * itno, xmachine ** agent_list, doub
 	/* Set p_xmachine to the agent list passed in then new agents are added to this list 
 	 * Will be set to agent list for specific node is space partitions are already known (flag=1)
 	 */ 
-	p_xmachine = agent_list;
+	//p_xmachine = agent_list;
 	/* If we're reading without knowing partitions already then use the dummy current node (it's not in the list of nodes)*/
 	if (flag == 0) current_node = &temp_node;
 	
@@ -1169,16 +1057,16 @@ in_FinancialAgent_agent = 0;
 				
 				if(strcmp(agentname, "Household") == 0)
 				{
-					posx = current_Household_agent->posx;
-					posy = current_Household_agent->posy;
-					posz = current_Household_agent->posz;
+					/*posx = current_Household_agent->;
+					posy = current_Household_agent->;
+					posz = 0.0;*/
 					
 					/* If flag is zero just read the data. We'll partition later.
 					 * If flag is not zero we aleady have partition data so can read and distribute to the current node.*/
 					if( flag == 0 )
 					{
-						//add_Household_agent(id, EWA_parameters, private_classifiersystem, posx, posy, posz, range);
-						add_Household_agent_internal(current_Household_agent);
+						//add_Household_agent(id, day_of_month_to_act, EWA_parameters, private_classifiersystem);
+						add_Household_agent_internal(current_Household_agent, Household_start_Household_EWA_Learning_state);
 						
 						/* Update the cloud data */
 						if ( posx < cloud_data[0] ) cloud_data[0] = posx;
@@ -1186,7 +1074,7 @@ in_FinancialAgent_agent = 0;
 						if ( posy < cloud_data[2] ) cloud_data[2] = posy;
 						if ( posy > cloud_data[3] ) cloud_data[3] = posy;
 						if ( posz < cloud_data[2] ) cloud_data[4] = posz;
-						if ( posz > cloud_data[3] ) cloud_data[5] = posz ;
+						if ( posz > cloud_data[3] ) cloud_data[5] = posz;
 					}
 
 					else if (flag != 0)
@@ -1202,9 +1090,9 @@ in_FinancialAgent_agent = 0;
 								((current_node->partition_data[5] == SPINF) || (current_node->partition_data[5] != SPINF && posz < current_node->partition_data[5]))
 							)
 							{
-								p_xmachine = &(current_node->agents);
-								//add_Household_agent(id, EWA_parameters, private_classifiersystem, posx, posy, posz, range);
-								add_Household_agent_internal(current_Household_agent);
+								//p_xmachine = &(current_node->agents);
+								//add_Household_agent(id, day_of_month_to_act, EWA_parameters, private_classifiersystem);
+								add_Household_agent_internal(current_Household_agent, Household_start_Household_EWA_Learning_state);
 							} 
 						}
 						else if (partition_method == other)
@@ -1221,13 +1109,13 @@ in_FinancialAgent_agent = 0;
 								ycentre=ymin+(ymax-ymin)/2.0;
 								rrange=1.5;
 
-								p_xmachine = &(current_node->agents);
-								//add_Household_agent(id, EWA_parameters, private_classifiersystem, posx, posy, posz, range);
-								add_Household_agent_internal(current_Household_agent);
+								//p_xmachine = &(current_node->agents);
+								//add_Household_agent(id, day_of_month_to_act, EWA_parameters, private_classifiersystem);
+								add_Household_agent_internal(current_Household_agent, Household_start_Household_EWA_Learning_state);
 
-								current_Household_agent->posx = xcentre;
-								current_Household_agent->posy = ycentre;
-								current_Household_agent->range = rrange;
+								/*current_Household_agent-> = xcentre;
+								current_Household_agent-> = ycentre;
+								current_Household_agent-> = rrange;*/
 
 							}
 							++agent_count;
@@ -1238,16 +1126,16 @@ in_FinancialAgent_agent = 0;
 				}
 				else if(strcmp(agentname, "FinancialAgent") == 0)
 				{
-					posx = current_FinancialAgent_agent->posx;
-					posy = current_FinancialAgent_agent->posy;
-					posz = current_FinancialAgent_agent->posz;
+					/*posx = current_FinancialAgent_agent->;
+					posy = current_FinancialAgent_agent->;
+					posz = 0.0;*/
 					
 					/* If flag is zero just read the data. We'll partition later.
 					 * If flag is not zero we aleady have partition data so can read and distribute to the current node.*/
 					if( flag == 0 )
 					{
-						//add_FinancialAgent_agent(id, day_of_month_to_act, day, month, EWA_parameters, public_classifiersystem, GA_parameters, posx, posy, posz, range);
-						add_FinancialAgent_agent_internal(current_FinancialAgent_agent);
+						//add_FinancialAgent_agent(id, EWA_parameters, public_classifiersystem, GA_parameters);
+						add_FinancialAgent_agent_internal(current_FinancialAgent_agent, FinancialAgent_start_FinancialAgent_state);
 						
 						/* Update the cloud data */
 						if ( posx < cloud_data[0] ) cloud_data[0] = posx;
@@ -1255,7 +1143,7 @@ in_FinancialAgent_agent = 0;
 						if ( posy < cloud_data[2] ) cloud_data[2] = posy;
 						if ( posy > cloud_data[3] ) cloud_data[3] = posy;
 						if ( posz < cloud_data[2] ) cloud_data[4] = posz;
-						if ( posz > cloud_data[3] ) cloud_data[5] = posz ;
+						if ( posz > cloud_data[3] ) cloud_data[5] = posz;
 					}
 
 					else if (flag != 0)
@@ -1271,9 +1159,9 @@ in_FinancialAgent_agent = 0;
 								((current_node->partition_data[5] == SPINF) || (current_node->partition_data[5] != SPINF && posz < current_node->partition_data[5]))
 							)
 							{
-								p_xmachine = &(current_node->agents);
-								//add_FinancialAgent_agent(id, day_of_month_to_act, day, month, EWA_parameters, public_classifiersystem, GA_parameters, posx, posy, posz, range);
-								add_FinancialAgent_agent_internal(current_FinancialAgent_agent);
+								//p_xmachine = &(current_node->agents);
+								//add_FinancialAgent_agent(id, EWA_parameters, public_classifiersystem, GA_parameters);
+								add_FinancialAgent_agent_internal(current_FinancialAgent_agent, FinancialAgent_start_FinancialAgent_state);
 							} 
 						}
 						else if (partition_method == other)
@@ -1290,13 +1178,13 @@ in_FinancialAgent_agent = 0;
 								ycentre=ymin+(ymax-ymin)/2.0;
 								rrange=1.5;
 
-								p_xmachine = &(current_node->agents);
-								//add_FinancialAgent_agent(id, day_of_month_to_act, day, month, EWA_parameters, public_classifiersystem, GA_parameters, posx, posy, posz, range);
-								add_FinancialAgent_agent_internal(current_FinancialAgent_agent);
+								//p_xmachine = &(current_node->agents);
+								//add_FinancialAgent_agent(id, EWA_parameters, public_classifiersystem, GA_parameters);
+								add_FinancialAgent_agent_internal(current_FinancialAgent_agent, FinancialAgent_start_FinancialAgent_state);
 
-								current_FinancialAgent_agent->posx = xcentre;
-								current_FinancialAgent_agent->posy = ycentre;
-								current_FinancialAgent_agent->range = rrange;
+								/*current_FinancialAgent_agent-> = xcentre;
+								current_FinancialAgent_agent-> = ycentre;
+								current_FinancialAgent_agent-> = rrange;*/
 
 							}
 							++agent_count;
@@ -1315,35 +1203,17 @@ in_FinancialAgent_agent = 0;
 				/* Reset xagent variables */
 				/* Not implemented static arrays */
 //				id = 0;
-//////				posx = 0.0;
-//				posy = 0.0;
-//				posz = 0.0;
-//				range = 0.0;
 //				day_of_month_to_act = 0;
-//				day = 0;
-//				month = 0;
-////
+////////
 	}
 			if(strcmp(buffer, "id") == 0) in_id = 1;
 			if(strcmp(buffer, "/id") == 0) in_id = 0;
+			if(strcmp(buffer, "day_of_month_to_act") == 0) in_day_of_month_to_act = 1;
+			if(strcmp(buffer, "/day_of_month_to_act") == 0) in_day_of_month_to_act = 0;
 			if(strcmp(buffer, "EWA_parameters") == 0) in_EWA_parameters = 1;
 			if(strcmp(buffer, "/EWA_parameters") == 0) in_EWA_parameters = 0;
 			if(strcmp(buffer, "private_classifiersystem") == 0) in_private_classifiersystem = 1;
 			if(strcmp(buffer, "/private_classifiersystem") == 0) in_private_classifiersystem = 0;
-			if(strcmp(buffer, "posx") == 0) in_posx = 1;
-			if(strcmp(buffer, "/posx") == 0) in_posx = 0;
-			if(strcmp(buffer, "posy") == 0) in_posy = 1;
-			if(strcmp(buffer, "/posy") == 0) in_posy = 0;
-			if(strcmp(buffer, "posz") == 0) in_posz = 1;
-			if(strcmp(buffer, "/posz") == 0) in_posz = 0;
-			if(strcmp(buffer, "range") == 0) in_range = 1;
-			if(strcmp(buffer, "/range") == 0) in_range = 0;
-			if(strcmp(buffer, "day_of_month_to_act") == 0) in_day_of_month_to_act = 1;
-			if(strcmp(buffer, "/day_of_month_to_act") == 0) in_day_of_month_to_act = 0;
-			if(strcmp(buffer, "day") == 0) in_day = 1;
-			if(strcmp(buffer, "/day") == 0) in_day = 0;
-			if(strcmp(buffer, "month") == 0) in_month = 1;
-			if(strcmp(buffer, "/month") == 0) in_month = 0;
 			if(strcmp(buffer, "public_classifiersystem") == 0) in_public_classifiersystem = 1;
 			if(strcmp(buffer, "/public_classifiersystem") == 0) in_public_classifiersystem = 0;
 			if(strcmp(buffer, "GA_parameters") == 0) in_GA_parameters = 1;
@@ -1362,6 +1232,7 @@ in_FinancialAgent_agent = 0;
 			buffer[i] = 0;
 			/* Flag in tag */
 			in_tag = 1;
+			j = 0;
 			
 			if(in_itno) *itno = atoi(buffer);
 			if(in_name) strcpy(agentname, buffer);
@@ -1371,45 +1242,16 @@ in_FinancialAgent_agent = 0;
 			else if(in_Household_agent == 1)
 			{
 				if(in_id) current_Household_agent->id = atoi(buffer);
-				if(in_EWA_parameters)
-				{
-					j = 0;
-					read_EWAParameterStruct(buffer, &j, &current_Household_agent->EWA_parameters);
-				}
-				if(in_private_classifiersystem)
-				{
-					j = 0;
-					read_SimplePrivateClassifierSystem(buffer, &j, &current_Household_agent->private_classifiersystem);
-				}
-				if(in_posx) current_Household_agent->posx = atof(buffer);
-				if(in_posy) current_Household_agent->posy = atof(buffer);
-				if(in_posz) current_Household_agent->posz = atof(buffer);
-				if(in_range) current_Household_agent->range = atof(buffer);
-			}else if(in_FinancialAgent_agent == 1)
+				if(in_day_of_month_to_act) current_Household_agent->day_of_month_to_act = atoi(buffer);
+				if(in_EWA_parameters) read_EWAParameterStruct(buffer, &j, &current_Household_agent->EWA_parameters);
+				if(in_private_classifiersystem) read_SimplePrivateClassifierSystem(buffer, &j, &current_Household_agent->private_classifiersystem);
+			}
+			else if(in_FinancialAgent_agent == 1)
 			{
 				if(in_id) current_FinancialAgent_agent->id = atoi(buffer);
-				if(in_day_of_month_to_act) current_FinancialAgent_agent->day_of_month_to_act = atoi(buffer);
-				if(in_day) current_FinancialAgent_agent->day = atoi(buffer);
-				if(in_month) current_FinancialAgent_agent->month = atoi(buffer);
-				if(in_EWA_parameters)
-				{
-					j = 0;
-					read_EWAParameterStruct(buffer, &j, &current_FinancialAgent_agent->EWA_parameters);
-				}
-				if(in_public_classifiersystem)
-				{
-					j = 0;
-					read_SimplePublicClassifierSystem(buffer, &j, &current_FinancialAgent_agent->public_classifiersystem);
-				}
-				if(in_GA_parameters)
-				{
-					j = 0;
-					read_GAParameterStruct(buffer, &j, &current_FinancialAgent_agent->GA_parameters);
-				}
-				if(in_posx) current_FinancialAgent_agent->posx = atof(buffer);
-				if(in_posy) current_FinancialAgent_agent->posy = atof(buffer);
-				if(in_posz) current_FinancialAgent_agent->posz = atof(buffer);
-				if(in_range) current_FinancialAgent_agent->range = atof(buffer);
+				if(in_EWA_parameters) read_EWAParameterStruct(buffer, &j, &current_FinancialAgent_agent->EWA_parameters);
+				if(in_public_classifiersystem) read_SimplePublicClassifierSystem(buffer, &j, &current_FinancialAgent_agent->public_classifiersystem);
+				if(in_GA_parameters) read_GAParameterStruct(buffer, &j, &current_FinancialAgent_agent->GA_parameters);
 			}
 			
 			/* Reset buffer */
@@ -1447,63 +1289,11 @@ in_FinancialAgent_agent = 0;
 	/* Close the file */
 	fclose(file);
 	/* Free temp data structures */
-////	free_EWAParameterStruct_datatype(EWA_parameters);
+//////	free_EWAParameterStruct_datatype(EWA_parameters);
 //	free_SimplePrivateClassifierSystem_datatype(private_classifiersystem);
-////////////////	free_SimplePublicClassifierSystem_datatype(public_classifiersystem);
+//	free_SimplePublicClassifierSystem_datatype(public_classifiersystem);
 //	free_GAParameterStruct_datatype(GA_parameters);
 
-}
-
-/** \fn void saveiterationdata_binary(int iteration_number)
- * \brief Save X-machine memory to a binary file.
- * \param iteration_number The current iteration number.
- */
-void saveiterationdata_binary(int iteration_number)
-{
-	/* Pointer to file */
-	FILE *file;
-	char data[1000];
-	int i;
-	int agentcount = 0;
-	xmachine_memory_Household * current_Household;
-	xmachine_memory_FinancialAgent * current_FinancialAgent;
-
-	sprintf(data, "%s%i.binary", outputpath, iteration_number);
-	file = fopen(data, "wb");
-	/* iteration number*/
-	fwrite(&iteration_number ,sizeof(int), 1, file);
-	/* number of xagent memories written (update at end)*/
-	fwrite(&i ,sizeof(int), 1, file);
-	
-	current_node = *p_node_info;
-	while(current_node)
-	{
-	p_xmachine = &current_node->agents;
-	current_xmachine = *p_xmachine;
-	while(current_xmachine)
-	{
-		if(current_xmachine->xmachine_Household != NULL)
-		{
-			current_Household = current_xmachine->xmachine_Household;
-			agentcount++;
-		}
-		else if(current_xmachine->xmachine_FinancialAgent != NULL)
-		{
-			current_FinancialAgent = current_xmachine->xmachine_FinancialAgent;
-			agentcount++;
-		}
-		
-		current_xmachine = current_xmachine->next;
-	}
-		current_node = current_node->next;
-	}
-	
-	/* update agent count\n", file);*/
-	fseek(file,sizeof(int)*1,SEEK_SET);
-	fwrite(&agentcount,sizeof(int),1,file);
-	
-	/* Close the file */
-	fclose(file);
 }
 
 /** \fn void write_int_static_array(FILE *file, $name * temp)
@@ -1716,6 +1506,8 @@ void write_GAParameterStruct(FILE *file, GAParameterStruct * temp_datatype)
 	fputs(", ", file);	sprintf(data, "%i", (*temp_datatype).election);
 	fputs(data, file);
 	fputs(", ", file);	write_double_static_array(file, (*temp_datatype).stepsize, 10);
+	fputs(", ", file);	write_double_static_array(file, (*temp_datatype).min_values, 10);
+	fputs(", ", file);	write_double_static_array(file, (*temp_datatype).max_values, 10);
 	fputs("}", file);
 }
 
@@ -1978,55 +1770,52 @@ void write_ComplexPublicClassifierSystem_dynamic_array(FILE *file, ComplexPublic
 	fputs("}", file);
 }
 
-/** \fn void write_ComplexPrivateClassifierSystem(FILE *file, ComplexPrivateClassifierSystem * temp_datatype)
- * \brief Writes ComplexPrivateClassifierSystem datatype.
- */
-void write_ComplexPrivateClassifierSystem(FILE *file, ComplexPrivateClassifierSystem * temp_datatype)
+
+
+void write_Household_agent(FILE *file, xmachine_memory_Household * current)
 {
 	char data[1000];
-	
-	fputs("{", file);
-	sprintf(data, "%i", (*temp_datatype).nr_types);
+	fputs("<xagent>\n" , file);
+	fputs("<name>Household</name>\n", file);
+		fputs("<id>", file);
+	sprintf(data, "%i", current->id);
 	fputs(data, file);
-	fputs(", ", file);	write_int_dynamic_array(file, &(*temp_datatype).nr_rules_per_type);
-	fputs(", ", file);	sprintf(data, "%i", (*temp_datatype).nr_rules);
+	fputs("</id>\n", file);
+		fputs("<day_of_month_to_act>", file);
+	sprintf(data, "%i", current->day_of_month_to_act);
 	fputs(data, file);
-	fputs(", ", file);	sprintf(data, "%f", (*temp_datatype).experience);
-	fputs(data, file);
-	fputs(", ", file);	sprintf(data, "%i", (*temp_datatype).current_rule);
-	fputs(data, file);
-	fputs(", ", file);	write_PrivateClassifierRule_static_array(file, (*temp_datatype).ruletable, 100);
-	fputs("}", file);
-}
-
-void write_ComplexPrivateClassifierSystem_static_array(FILE *file, ComplexPrivateClassifierSystem * temp_datatype, int size)
-{
-	int i;
-	
-	fputs("{", file);
-	for(i = 0; i < size; i++)
-	{
-		write_ComplexPrivateClassifierSystem(file, &temp_datatype[i]);
+	fputs("</day_of_month_to_act>\n", file);
+		fputs("<EWA_parameters>", file);
+	write_EWAParameterStruct(file, &current->EWA_parameters);
+	fputs("</EWA_parameters>\n", file);
+		fputs("<private_classifiersystem>", file);
+	write_SimplePrivateClassifierSystem(file, &current->private_classifiersystem);
+	fputs("</private_classifiersystem>\n", file);
 		
-		if(i < size - 1) fputs(", ", file);
-	}
-	fputs("}", file);
+	fputs("</xagent>\n", file);
 }
 
-void write_ComplexPrivateClassifierSystem_dynamic_array(FILE *file, ComplexPrivateClassifierSystem_array * temp_datatype)
+void write_FinancialAgent_agent(FILE *file, xmachine_memory_FinancialAgent * current)
 {
-	int i;
-	
-	fputs("{", file);
-	for(i = 0; i < (*temp_datatype).size; i++)
-	{
-		write_ComplexPrivateClassifierSystem(file, &(*temp_datatype).array[i]);
+	char data[1000];
+	fputs("<xagent>\n" , file);
+	fputs("<name>FinancialAgent</name>\n", file);
+		fputs("<id>", file);
+	sprintf(data, "%i", current->id);
+	fputs(data, file);
+	fputs("</id>\n", file);
+		fputs("<EWA_parameters>", file);
+	write_EWAParameterStruct(file, &current->EWA_parameters);
+	fputs("</EWA_parameters>\n", file);
+		fputs("<public_classifiersystem>", file);
+	write_SimplePublicClassifierSystem(file, &current->public_classifiersystem);
+	fputs("</public_classifiersystem>\n", file);
+		fputs("<GA_parameters>", file);
+	write_GAParameterStruct(file, &current->GA_parameters);
+	fputs("</GA_parameters>\n", file);
 		
-		if(i < (*temp_datatype).size - 1) fputs(", ", file);
-	}
-	fputs("}", file);
+	fputs("</xagent>\n", file);
 }
-
 
 
 /** \fn void saveiterationdata(int iteration_number)
@@ -2038,8 +1827,6 @@ void saveiterationdata(int iteration_number)
 	/* Pointer to file */
 	FILE *file;
 	char data[1000];
-	xmachine_memory_Household * current_Household;
-	xmachine_memory_FinancialAgent * current_FinancialAgent;
 	
 	sprintf(data, "%s%i.xml", outputpath, iteration_number);
 	file = fopen(data, "w");
@@ -2050,99 +1837,25 @@ void saveiterationdata(int iteration_number)
 	fputs("<environment>\n" , file);
 	fputs("</environment>\n" , file);
 
+//	current_xmachine = *p_xmachine;
+// todo loop through all agent types
 
-	current_node = *p_node_info;
-	while(current_node)
+current_xmachine_Household_holder = Household_end_Household_EWA_Learning_state->agents;
+	while(current_xmachine_Household_holder)
 	{
-		p_xmachine = &current_node->agents;
-		current_xmachine = *p_xmachine;
-	while(current_xmachine)
-	{
-		fputs("<xagent>\n" , file);
-		if(current_xmachine->xmachine_Household != NULL)
-		{
-			current_Household = current_xmachine->xmachine_Household;
-			fputs("<name>Household</name>\n", file);
-			fputs("<id>", file);
-			sprintf(data, "%i", current_Household->id);
-			fputs(data, file);
-			fputs("</id>\n", file);
-			fputs("<EWA_parameters>", file);
-			write_EWAParameterStruct(file, &current_Household->EWA_parameters);
-			fputs("</EWA_parameters>\n", file);
-			fputs("<private_classifiersystem>", file);
-			write_SimplePrivateClassifierSystem(file, &current_Household->private_classifiersystem);
-			fputs("</private_classifiersystem>\n", file);
-			fputs("<posx>", file);
-			sprintf(data, "%f", current_Household->posx);
-			fputs(data, file);
-			fputs("</posx>\n", file);
-			fputs("<posy>", file);
-			sprintf(data, "%f", current_Household->posy);
-			fputs(data, file);
-			fputs("</posy>\n", file);
-			fputs("<posz>", file);
-			sprintf(data, "%f", current_Household->posz);
-			fputs(data, file);
-			fputs("</posz>\n", file);
-			fputs("<range>", file);
-			sprintf(data, "%f", current_Household->range);
-			fputs(data, file);
-			fputs("</range>\n", file);
-		}
-		else if(current_xmachine->xmachine_FinancialAgent != NULL)
-		{
-			current_FinancialAgent = current_xmachine->xmachine_FinancialAgent;
-			fputs("<name>FinancialAgent</name>\n", file);
-			fputs("<id>", file);
-			sprintf(data, "%i", current_FinancialAgent->id);
-			fputs(data, file);
-			fputs("</id>\n", file);
-			fputs("<day_of_month_to_act>", file);
-			sprintf(data, "%i", current_FinancialAgent->day_of_month_to_act);
-			fputs(data, file);
-			fputs("</day_of_month_to_act>\n", file);
-			fputs("<day>", file);
-			sprintf(data, "%i", current_FinancialAgent->day);
-			fputs(data, file);
-			fputs("</day>\n", file);
-			fputs("<month>", file);
-			sprintf(data, "%i", current_FinancialAgent->month);
-			fputs(data, file);
-			fputs("</month>\n", file);
-			fputs("<EWA_parameters>", file);
-			write_EWAParameterStruct(file, &current_FinancialAgent->EWA_parameters);
-			fputs("</EWA_parameters>\n", file);
-			fputs("<public_classifiersystem>", file);
-			write_SimplePublicClassifierSystem(file, &current_FinancialAgent->public_classifiersystem);
-			fputs("</public_classifiersystem>\n", file);
-			fputs("<GA_parameters>", file);
-			write_GAParameterStruct(file, &current_FinancialAgent->GA_parameters);
-			fputs("</GA_parameters>\n", file);
-			fputs("<posx>", file);
-			sprintf(data, "%f", current_FinancialAgent->posx);
-			fputs(data, file);
-			fputs("</posx>\n", file);
-			fputs("<posy>", file);
-			sprintf(data, "%f", current_FinancialAgent->posy);
-			fputs(data, file);
-			fputs("</posy>\n", file);
-			fputs("<posz>", file);
-			sprintf(data, "%f", current_FinancialAgent->posz);
-			fputs(data, file);
-			fputs("</posz>\n", file);
-			fputs("<range>", file);
-			sprintf(data, "%f", current_FinancialAgent->range);
-			fputs(data, file);
-			fputs("</range>\n", file);
-		}
-	
-		fputs("</xagent>\n", file);
+		write_Household_agent(file, current_xmachine_Household_holder->agent);
 		
-		current_xmachine = current_xmachine->next;
+		current_xmachine_Household_holder = current_xmachine_Household_holder->next;
 	}
-			current_node = current_node->next;
+
+current_xmachine_FinancialAgent_holder = FinancialAgent_end_FinancialAgent_state->agents;
+	while(current_xmachine_FinancialAgent_holder)
+	{
+		write_FinancialAgent_agent(file, current_xmachine_FinancialAgent_holder->agent);
+		
+		current_xmachine_FinancialAgent_holder = current_xmachine_FinancialAgent_holder->next;
 	}
+	
 fputs("</states>\n" , file);
 	
 	/* Close the file */
