@@ -257,11 +257,14 @@ void unittest_free_$name_agent()
 
 void free_$name_agents()
 {
-/*<?foreach state?>	while(*$agent_name_$name_state)
+<?foreach state?>	current_xmachine_$agent_name_holder = $agent_name_$name_state->agents;
+	while(current_xmachine_$agent_name_holder)
 	{
-		free_$agent_name_agent(*$agent_name_$name_state, $agent_name_$name_state);
+		temp_xmachine_$agent_name_holder = current_xmachine_$agent_name_holder->next;
+		free_$agent_name_agent(current_xmachine_$agent_name_holder, $agent_name_$name_state);
+		current_xmachine_$agent_name_holder = temp_xmachine_$agent_name_holder;
 	}
-<?end foreach?>*/}
+<?end foreach?>}
 
 void free_$name_states()
 {
@@ -318,7 +321,8 @@ void add_$name_agent(<?foreach xagentvar?>$type <?if dynamic_array?>* <?end if?>
  */
 void freexmachines()
 {
-	
+	<?foreach xagent?>free_$name_agents();
+	<?end foreach?>
 }
 
 <?foreach allvar?><?if not_modeldatatype?><?if not_array?>

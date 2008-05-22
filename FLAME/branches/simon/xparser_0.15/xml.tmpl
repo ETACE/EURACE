@@ -301,7 +301,7 @@ void readinitialstates(char * filename, int * itno, double cloud_data[6],
 	double 	xmax=0,xmin=0,ymax=0,ymin=0,
 		xcentre=0,ycentre=0,
 		rrange=1.5;
-	double posx, posy, posz;
+	double posx=0.0, posy=0.0, posz=0.0;
 	<?if parallel?>int node_number;<?end if?>
 	
 	/* Cloud data array initialisation */
