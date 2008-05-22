@@ -490,8 +490,7 @@ void clean_up(int code)
 	
 	free(current_xmachine);
 	/* Free x-machine memory */
-	freexmachines(); //TODO
-	current_node->agent_total = 0;
+	freexmachines();
 	/* Free space partitions linked list */
 	free_node_info();
 	/* Free agent states */
