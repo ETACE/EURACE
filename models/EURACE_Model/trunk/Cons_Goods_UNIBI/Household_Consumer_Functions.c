@@ -10,10 +10,7 @@
 
 /**********************************Household Role: Consumption Goods Market*********************/
 
-int Household_receive_goods_read_rationing_2()
-{
-	return 0;
-}
+
 
 /** \fn Household_receive_wage()
  * \brief Household receives wage if the household is employed 
@@ -61,7 +58,7 @@ int Household_update_specific_skills()
 {
 	
 
-	if(SPECIFIC_SKILL < wage_payment_message->productivity)
+	if(SPECIFIC_SKILL < CURRENT_PRODUCTIVITY_EMPLOYER)
 	{
 		
 		
@@ -85,12 +82,12 @@ int Household_receive_unemployment_benefits()
 	
 	START_UNEMPLOYMENT_BENEFIT_MESSAGE_LOOP
 		/*Read unemployment_benefit and add to account */
-		PAYMENT_ACCOUNT +=  unemployment_benefit_message->unemployment_benefit_payment;
+		PAYMENT_ACCOUNT +=  unemployment_benefit_message->unemployment_benefit;
 	
 	FINISH_UNEMPLOYMENT_BENEFIT_MESSAGE_LOOP
 	
 	remove_double(&LAST_INCOME,0);
-	add_double(&LAST_INCOME,unemployment_benefit_message->unemployment_benefit_payment);
+	add_double(&LAST_INCOME,unemployment_benefit_message->unemployment_benefit);
 			
 	/*Compute a mean income of the last four month*/
 	for(int i = 0; i < 4;i++)
@@ -112,16 +109,16 @@ int Household_pay_taxes()
 {
 	
 	/*Compute the total taxes*/
-	TOTAL_TAXES = CUM_TOTAL_DIVIDENS*TAX_RATE_HH_CAPITAL + WAGE*TAX_RATE_HH_LABOUR;
+	TOTAL_TAXES = CUM_TOTAL_DIVIDENDS*TAX_RATE_HH_CAPITAL + WAGE*TAX_RATE_HH_LABOUR;
 	/*Send a message to the government*/
 	add_tax_payment_message(ID,GOV_ID,TOTAL_TAXES);
 	/*reduce the payment account*/
-	PAYMENT_ACCOUT-=TOTAL_TAXES;
+	PAYMENT_ACCOUNT-=TOTAL_TAXES;
 	
 	/*Setting the counter of monthly dividends = 0*/
-	CUM_TOTAL_DIVIDENS=0;
+	CUM_TOTAL_DIVIDENDS=0;
 	
-	
+	return 0;
 	
 
 }
@@ -133,7 +130,6 @@ int Household_pay_taxes()
 
 int Household_determine_consumption_budget()
 {
-	double MEAN_INCOME = 0.0;
 	
 	/*Determing the consumption budget of the month*/
 			if(PAYMENT_ACCOUNT > (INITIAL_CONSUMPTION_PROPENSITY*MEAN_INCOME))
@@ -149,7 +145,7 @@ int Household_determine_consumption_budget()
 			
 			PORTFOLIO_BUDGET = PAYMENT_ACCOUNT - CONSUMPTION_BUDGET;
 
-			WEEKLY_BUDGET = BUDGET/4;
+			WEEKLY_BUDGET = CONSUMPTION_BUDGET/4;
 			WEEK_OF_MONTH = 4;
 			
 return 0;	
@@ -527,7 +523,7 @@ int Household_receive_dividends()
 
 	PAYMENT_ACCOUNT += RECEIVED_DIVIDEND_CONS+RECEIVED_DIVIDEND_CAP;
 	
-	CUM_TOTAL_DIVIDENS +=(RECEIVED_DIVIDEND_CONS+RECEIVED_DIVIDEND_CAP);
+	CUM_TOTAL_DIVIDENDS +=(RECEIVED_DIVIDEND_CONS+RECEIVED_DIVIDEND_CAP);
 	
 	return 0;	
 }
@@ -540,14 +536,14 @@ int Household_receive_dividends()
 int Household_handle_leftover_budget()
 {
 	
-		BUDGET = BUDGET - EXPENDITURES;
+	CONSUMPTION_BUDGET = CONSUMPTION_BUDGET - EXPENDITURES;
 
 
 		if(WEEK_OF_MONTH !=1)
 		{	
 			
 			PAYMENT_ACCOUNT -= EXPENDITURES;
-			WEEKLY_BUDGET = BUDGET / WEEK_OF_MONTH;
+			WEEKLY_BUDGET = CONSUMPTION_BUDGET / WEEK_OF_MONTH;
 			
 			WEEK_OF_MONTH--; 
 		}
@@ -567,16 +563,6 @@ int Household_handle_leftover_budget()
 	return 0;
 }
 
-/** \fn Household_send_data_to_Market_Research()
- * \brief Firms send data to Market Research: controlling results and creating macro data
- */
-int Household_send_data_to_Market_Research()
-{	
-	add_household_send_data_message(ID, REGION_ID, GENERAL_SKILL,EMPLOYEE_FIRM_ID,
-	WAGE, SPECIFIC_SKILL);
-		
-	return 0;
-}
 
 
 
