@@ -125,7 +125,13 @@
 <currentState>Bank_01</currentState>
 <nextState>Bank_02</nextState>
 <inputs>
-<input><messageName>loan_request</messageName></input>
+<input><messageName>loan_request</messageName>
+<filter>
+  <lhs><value>a.id</value></lhs>
+  <op>EQ</op>
+  <rhs><value>m.bank_id</value></rhs>
+ </filter>
+</input>
 </inputs>
 <outputs>
 <output><messageName>loan_conditions</messageName></output>
@@ -140,7 +146,14 @@
 <currentState>Bank_02</currentState>
 <nextState>Bank_03</nextState>
 <inputs>
-<input><messageName>loan_acceptance</messageName></input>
+<input>
+<messageName>loan_acceptance</messageName>
+<filter>
+  <lhs><value>a.id</value></lhs>
+  <op>EQ</op>
+  <rhs><value>m.bank_id</value></rhs>
+</filter>
+</input>
 </inputs>
 </function>
 
@@ -152,8 +165,22 @@
 <currentState>Bank_03</currentState>
 <nextState>Bank_04</nextState>
 <inputs>
-<input><messageName>installment</messageName></input>
-<input><messageName>bankruptcy</messageName></input>
+<input>
+<messageName>installment</messageName>
+<filter>
+  <lhs><value>a.id</value></lhs>
+  <op>EQ</op>
+  <rhs><value>m.bank_id</value></rhs>
+</filter>
+</input>
+<input>
+<messageName>bankruptcy</messageName>
+<filter>
+  <lhs><value>a.id</value></lhs>
+  <op>EQ</op>
+  <rhs><value>m.bank_id</value></rhs>
+</filter>
+</input>
 </inputs>
 </function>
 
@@ -165,7 +192,14 @@
 <currentState>Bank_04</currentState>
 <nextState>Bank_05</nextState>
 <inputs>
-<input><messageName>bank_account_update</messageName></input>
+<input>
+<messageName>bank_account_update</messageName>
+<filter>
+  <lhs><value>a.id</value></lhs>
+  <op>EQ</op>
+  <rhs><value>m.bank_id</value></rhs>
+</filter>
+</input>
 </inputs>
 </function>
 

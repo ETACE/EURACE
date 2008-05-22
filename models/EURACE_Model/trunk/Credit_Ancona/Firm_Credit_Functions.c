@@ -95,13 +95,6 @@ int Firm_get_loan()
 	        totalcredit_taken += credit_accepted;
 	        interest = credit_accepted*INTEREST.array[RATEORDER.array[primo]];
 	        
-		    //Old code, now merged
-		    //OUTSTANDING_DEBT.array[RATEORDER.array[primo]][INSTALMENT_NUMBER-1] = credit_accepted+interest;		          
-		    //INSTALMENT_AMOUNT.array[RATEORDER.array[primo]][INSTALMENT_NUMBER-1] = (credit_accepted+interest)/INSTALMENT_NUMBER;
-		    //INTEREST_AMOUNT.array[RATEORDER.array[primo]][INSTALMENT_NUMBER-1] = interest/INSTALMENT_NUMBER;
-		    //RESIDUAL_VAR.array[RATEORDER.array[primo]][INSTALMENT_NUMBER-1] = VALUE_AT_RISK.array[RATEORDER.array[primo]]*(CREDIT_OFFER.array[RATEORDER.array[primo]]/credit_accepted);
-		    //VAR_PER_INSTALMENT.array[RATEORDER.array[primo]][INSTALMENT_NUMBER-1] =RESIDUAL_VAR.array[RATEORDER.array[primo]][INSTALMENT_NUMBER-1]/INSTALMENT_NUMBER;
-		    
 		    bank_id = RATEORDER.array[primo];
 		    loan_value = credit_accepted;
 		    interest_rate = INTEREST.array[RATEORDER.array[primo]];
@@ -121,46 +114,3 @@ int Firm_get_loan()
 
 	  return 0;
 }
-
-/*
-// This functions is no longer needed, the debt installments are splitted into 2 messages:
-// installment_message() and bankruptcy_message()
-int Firm_pay_interest_instalment()
-{
-	int i;
-
-	if ( TOTAL_RESOURCES >= total_instalments ) 
-	{
-		for (i = 0; i < LOANS.size; i++ ) 
-        {
-              add_installment_message(LOANS.array[i].bank_id, LOANS.array[i].installment_amount, LOANS.array[i].interest_amount, LOANS.array[i].var_per_installment)
-         }
-      }				
-			
-
-	else 
-	{
-		for ( i = 0; i < NUMBER_OF_BANKS; i++ )
-            {
-                for (j=0; j<INSTALMENT_NUMBER; j++)
-                {
-		        individual_debt+=OUTSTANDING_DEBT.array[i][j];
-                    individual_var+=VAR_PER_INSTALMENT.array[i][j];
-                    a=ASSET*(individual_debt/TOTAL_DEBT);
-                    bad=individual_debt-a;
-                    c=0;
-                    r=0;
-                    v=0;
-                    add_instalment_message(c, r, i, v,bad, a, individual_var); 
-                    individual_debt=0;
-                    individual_var=0;                 
-                }
-            }
-	 	
-            ASSET=0;	
-            TOTAL_DEBT=0;
-	}
-
-	return 0;
-}
-*/
