@@ -1,0 +1,157 @@
+digraph state_graph {
+	rankdir=TB;
+	size="8,5;"
+	layer_0 [shape=plaintext, label="layer 0"];
+	layer_1 [shape=plaintext, label="layer 1"];
+	layer_0 -> layer_1 [style=invis];
+	layer_2 [shape=plaintext, label="layer 2"];
+	layer_1 -> layer_2 [style=invis];
+	layer_3 [shape=plaintext, label="layer 3"];
+	layer_2 -> layer_3 [style=invis];
+	layer_4 [shape=plaintext, label="layer 4"];
+	layer_3 -> layer_4 [style=invis];
+	layer_5 [shape=plaintext, label="layer 5"];
+	layer_4 -> layer_5 [style=invis];
+	layer_6 [shape=plaintext, label="layer 6"];
+	layer_5 -> layer_6 [style=invis];
+	layer_7 [shape=plaintext, label="layer 7"];
+	layer_6 -> layer_7 [style=invis];
+	layer_8 [shape=plaintext, label="layer 8"];
+	layer_7 -> layer_8 [style=invis];
+	layer_9 [shape=plaintext, label="layer 9"];
+	layer_8 -> layer_9 [style=invis];
+	layer_10 [shape=plaintext, label="layer 10"];
+	layer_9 -> layer_10 [style=invis];
+	layer_11 [shape=plaintext, label="layer 11"];
+	layer_10 -> layer_11 [style=invis];
+	layer_12 [shape=plaintext, label="layer 12"];
+	layer_11 -> layer_12 [style=invis];
+	
+	/* States */
+	FinancialAgent_end_FinancialAgent [label = "end_FinancialAgent"]
+	FinancialAgent_04 [label = "04"]
+	FinancialAgent_03 [label = "03"]
+	FinancialAgent_02 [label = "02"]
+	FinancialAgent_01 [label = "01"]
+	FinancialAgent_end_GA [label = "end_GA"]
+	FinancialAgent_start_FinancialAgent [label = "start_FinancialAgent"]
+	Household_03 [label = "03"]
+	Household_02 [label = "02"]
+	Household_01 [label = "01"]
+	Household_end_GA [label = "end_GA"]
+	Household_EXIT_FINANCIAL_MARKET [label = "EXIT_FINANCIAL_MARKET"]
+	Household_WAITORDERSTATUS [label = "WAITORDERSTATUS"]
+	Household_end_Household_EWA_Learning [label = "end_Household_EWA_Learning"]
+	Household_start_Household_EWA_Learning [label = "start_Household_EWA_Learning"]
+	Household_Start_Household_Financial_Role [label = "Start_Household_Financial_Role"]
+	Eurostat_End_Eurostat_Financial_Data [label = "End_Eurostat_Financial_Data"]
+	Eurostat_WAITENDMARKET [label = "WAITENDMARKET"]
+	Eurostat_Start_Eurostat_Financial_Data [label = "Start_Eurostat_Financial_Data"]
+	Clearinghouse_end_Clearinghouse [label = "end_Clearinghouse"]
+	Clearinghouse_COMPUTEDPRICES [label = "COMPUTEDPRICES"]
+	Clearinghouse_start_Clearinghouse [label = "start_Clearinghouse"]
+	Bank_BB1 [label = "BB1"]
+	Bank_BB [label = "BB"]
+	Firm_XXX2 [label = "XXX2"]
+	Firm_UPDATE [label = "UPDATE"]
+	Firm_XXX [label = "XXX"]
+	FinancialAgent_idle_start_FinancialAgent_end_GA [label = "idle", shape = rect]
+	FinancialAgent_FinancialAgent_apply_GA_start_FinancialAgent_01 [label = "FinancialAgent_apply_GA", shape = rect]
+	FinancialAgent_FinancialAgent_reset_public_classifiersystem_01_02 [label = "FinancialAgent_reset_public_classifiersystem", shape = rect]
+	FinancialAgent_FinancialAgent_send_rule_details_02_end_GA [label = "FinancialAgent_send_rule_details", shape = rect]
+	FinancialAgent_FinancialAgent_reset_public_classifiersystem_end_GA_03 [label = "FinancialAgent_reset_public_classifiersystem", shape = rect]
+	FinancialAgent_FinancialAgent_read_rule_performance_and_update_classifiersystem_03_04 [label = "FinancialAgent_read_rule_performance_and_update_classifiersystem", shape = rect]
+	FinancialAgent_FinancialAgent_send_all_performances_04_end_FinancialAgent [label = "FinancialAgent_send_all_performances", shape = rect]
+	Household_Household_receive_info_asset_to_eurostat_Start_Household_Financial_Role_start_Household_EWA_Learning [label = "Household_receive_info_asset_to_eurostat", shape = rect]
+	Household_Household_select_strategy_end_Household_EWA_Learning_WAITORDERSTATUS [label = "Household_select_strategy", shape = rect]
+	Household_Household_update_its_portfolio_WAITORDERSTATUS_EXIT_FINANCIAL_MARKET [label = "Household_update_its_portfolio", shape = rect]
+	Household_idle_start_Household_EWA_Learning_end_GA [label = "idle", shape = rect]
+	Household_Household_reset_private_classifiersystem_start_Household_EWA_Learning_01 [label = "Household_reset_private_classifiersystem", shape = rect]
+	Household_Household_read_and_update_rule_details_01_end_GA [label = "Household_read_and_update_rule_details", shape = rect]
+	Household_idle_end_GA_end_Household_EWA_Learning [label = "idle", shape = rect]
+	Household_Household_send_rule_performance_end_GA_02 [label = "Household_send_rule_performance", shape = rect]
+	Household_Household_read_all_performances_02_03 [label = "Household_read_all_performances", shape = rect]
+	Household_Household_select_rule_03_end_Household_EWA_Learning [label = "Household_select_rule", shape = rect]
+	Eurostat_Eurastat_send_asset_information_Start_Eurostat_Financial_Data_WAITENDMARKET [label = "Eurastat_send_asset_information", shape = rect]
+	Eurostat_Eurostat_receive_asset_information_WAITENDMARKET_End_Eurostat_Financial_Data [label = "Eurostat_receive_asset_information", shape = rect]
+	Clearinghouse_ClearingHouse_receive_orders_and_run_start_Clearinghouse_COMPUTEDPRICES [label = "ClearingHouse_receive_orders_and_run", shape = rect]
+	Clearinghouse_ClearingHouse_send_asset_information_COMPUTEDPRICES_end_Clearinghouse [label = "ClearingHouse_send_asset_information", shape = rect]
+	Bank_Bank_receive_account_update_BB_BB1 [label = "Bank_receive_account_update", shape = rect]
+	Firm_Firm_send_stock_info_XXX_UPDATE [label = "Firm_send_stock_info", shape = rect]
+	Firm_Firm_receive_stock_info_UPDATE_XXX2 [label = "Firm_receive_stock_info", shape = rect]
+	
+	/* Transitions */
+	FinancialAgent_start_FinancialAgent -> FinancialAgent_idle_start_FinancialAgent_end_GA [ label = "not ( Periodicity: daily\nPhase: 100 )"];
+	FinancialAgent_idle_start_FinancialAgent_end_GA -> FinancialAgent_end_GA;
+	FinancialAgent_start_FinancialAgent -> FinancialAgent_FinancialAgent_apply_GA_start_FinancialAgent_01 [ label = "Periodicity: daily\nPhase: 100"];
+	FinancialAgent_FinancialAgent_apply_GA_start_FinancialAgent_01 -> FinancialAgent_01;
+	FinancialAgent_01 -> FinancialAgent_FinancialAgent_reset_public_classifiersystem_01_02;
+	FinancialAgent_FinancialAgent_reset_public_classifiersystem_01_02 -> FinancialAgent_02;
+	FinancialAgent_02 -> FinancialAgent_FinancialAgent_send_rule_details_02_end_GA;
+	FinancialAgent_FinancialAgent_send_rule_details_02_end_GA -> FinancialAgent_end_GA;
+	FinancialAgent_end_GA -> FinancialAgent_FinancialAgent_reset_public_classifiersystem_end_GA_03;
+	FinancialAgent_FinancialAgent_reset_public_classifiersystem_end_GA_03 -> FinancialAgent_03;
+	FinancialAgent_03 -> FinancialAgent_FinancialAgent_read_rule_performance_and_update_classifiersystem_03_04;
+	FinancialAgent_FinancialAgent_read_rule_performance_and_update_classifiersystem_03_04 -> FinancialAgent_04;
+	FinancialAgent_04 -> FinancialAgent_FinancialAgent_send_all_performances_04_end_FinancialAgent;
+	FinancialAgent_FinancialAgent_send_all_performances_04_end_FinancialAgent -> FinancialAgent_end_FinancialAgent;
+	Household_Start_Household_Financial_Role -> Household_Household_receive_info_asset_to_eurostat_Start_Household_Financial_Role_start_Household_EWA_Learning;
+	Household_Household_receive_info_asset_to_eurostat_Start_Household_Financial_Role_start_Household_EWA_Learning -> Household_start_Household_EWA_Learning;
+	Household_end_Household_EWA_Learning -> Household_Household_select_strategy_end_Household_EWA_Learning_WAITORDERSTATUS;
+	Household_Household_select_strategy_end_Household_EWA_Learning_WAITORDERSTATUS -> Household_WAITORDERSTATUS;
+	Household_WAITORDERSTATUS -> Household_Household_update_its_portfolio_WAITORDERSTATUS_EXIT_FINANCIAL_MARKET;
+	Household_Household_update_its_portfolio_WAITORDERSTATUS_EXIT_FINANCIAL_MARKET -> Household_EXIT_FINANCIAL_MARKET;
+	Household_start_Household_EWA_Learning -> Household_idle_start_Household_EWA_Learning_end_GA [ label = "not ( Periodicity: daily\nPhase: 100 )"];
+	Household_idle_start_Household_EWA_Learning_end_GA -> Household_end_GA;
+	Household_start_Household_EWA_Learning -> Household_Household_reset_private_classifiersystem_start_Household_EWA_Learning_01 [ label = "Periodicity: daily\nPhase: 100"];
+	Household_Household_reset_private_classifiersystem_start_Household_EWA_Learning_01 -> Household_01;
+	Household_01 -> Household_Household_read_and_update_rule_details_01_end_GA;
+	Household_Household_read_and_update_rule_details_01_end_GA -> Household_end_GA;
+	Household_end_GA -> Household_idle_end_GA_end_Household_EWA_Learning [ label = "not ( Periodicity: monthly\nPhase: a->day_of_month_to_act )"];
+	Household_idle_end_GA_end_Household_EWA_Learning -> Household_end_Household_EWA_Learning;
+	Household_end_GA -> Household_Household_send_rule_performance_end_GA_02 [ label = "Periodicity: monthly\nPhase: a->day_of_month_to_act"];
+	Household_Household_send_rule_performance_end_GA_02 -> Household_02;
+	Household_02 -> Household_Household_read_all_performances_02_03;
+	Household_Household_read_all_performances_02_03 -> Household_03;
+	Household_03 -> Household_Household_select_rule_03_end_Household_EWA_Learning;
+	Household_Household_select_rule_03_end_Household_EWA_Learning -> Household_end_Household_EWA_Learning;
+	Eurostat_Start_Eurostat_Financial_Data -> Eurostat_Eurastat_send_asset_information_Start_Eurostat_Financial_Data_WAITENDMARKET;
+	Eurostat_Eurastat_send_asset_information_Start_Eurostat_Financial_Data_WAITENDMARKET -> Eurostat_WAITENDMARKET;
+	Eurostat_WAITENDMARKET -> Eurostat_Eurostat_receive_asset_information_WAITENDMARKET_End_Eurostat_Financial_Data;
+	Eurostat_Eurostat_receive_asset_information_WAITENDMARKET_End_Eurostat_Financial_Data -> Eurostat_End_Eurostat_Financial_Data;
+	Clearinghouse_start_Clearinghouse -> Clearinghouse_ClearingHouse_receive_orders_and_run_start_Clearinghouse_COMPUTEDPRICES;
+	Clearinghouse_ClearingHouse_receive_orders_and_run_start_Clearinghouse_COMPUTEDPRICES -> Clearinghouse_COMPUTEDPRICES;
+	Clearinghouse_COMPUTEDPRICES -> Clearinghouse_ClearingHouse_send_asset_information_COMPUTEDPRICES_end_Clearinghouse;
+	Clearinghouse_ClearingHouse_send_asset_information_COMPUTEDPRICES_end_Clearinghouse -> Clearinghouse_end_Clearinghouse;
+	Bank_BB -> Bank_Bank_receive_account_update_BB_BB1;
+	Bank_Bank_receive_account_update_BB_BB1 -> Bank_BB1;
+	Firm_XXX -> Firm_Firm_send_stock_info_XXX_UPDATE;
+	Firm_Firm_send_stock_info_XXX_UPDATE -> Firm_UPDATE;
+	Firm_UPDATE -> Firm_Firm_receive_stock_info_UPDATE_XXX2;
+	Firm_Firm_receive_stock_info_UPDATE_XXX2 -> Firm_XXX2;
+	
+	/* Communications */
+	Clearinghouse_ClearingHouse_send_asset_information_COMPUTEDPRICES_end_Clearinghouse -> Firm_Firm_receive_stock_info_UPDATE_XXX2 [ label = "infoAssetCH" color="#00ff00" constraint=false];
+	Household_Household_update_its_portfolio_WAITORDERSTATUS_EXIT_FINANCIAL_MARKET -> Bank_Bank_receive_account_update_BB_BB1 [ label = "bankAccountUpdate" color="#00ff00" constraint=false];
+	Household_Household_select_strategy_end_Household_EWA_Learning_WAITORDERSTATUS -> Clearinghouse_ClearingHouse_receive_orders_and_run_start_Clearinghouse_COMPUTEDPRICES [ label = "order" color="#00ff00" constraint=false];
+	Clearinghouse_ClearingHouse_send_asset_information_COMPUTEDPRICES_end_Clearinghouse -> Eurostat_Eurostat_receive_asset_information_WAITENDMARKET_End_Eurostat_Financial_Data [ label = "infoAssetCH" color="#00ff00" constraint=false];
+	FinancialAgent_FinancialAgent_send_all_performances_04_end_FinancialAgent -> Household_Household_read_all_performances_02_03 [ label = "new_performances" color="#00ff00" constraint=false];
+	FinancialAgent_FinancialAgent_send_rule_details_02_end_GA -> Household_Household_read_and_update_rule_details_01_end_GA [ label = "rule_details" color="#00ff00" constraint=false];
+	Clearinghouse_ClearingHouse_receive_orders_and_run_start_Clearinghouse_COMPUTEDPRICES -> Household_Household_update_its_portfolio_WAITORDERSTATUS_EXIT_FINANCIAL_MARKET [ label = "order_status" color="#00ff00" constraint=false];
+	Firm_Firm_send_stock_info_XXX_UPDATE -> Household_Household_select_strategy_end_Household_EWA_Learning_WAITORDERSTATUS [ label = "info_firm" color="#00ff00" constraint=false];
+	Eurostat_Eurastat_send_asset_information_Start_Eurostat_Financial_Data_WAITENDMARKET -> Household_Household_receive_info_asset_to_eurostat_Start_Household_Financial_Role_start_Household_EWA_Learning [ label = "infoAssetEURO" color="#00ff00" constraint=false];
+	Household_Household_send_rule_performance_end_GA_02 -> FinancialAgent_FinancialAgent_read_rule_performance_and_update_classifiersystem_03_04 [ label = "rule_performance" color="#00ff00" constraint=false];
+	{ rank=same; layer_0;  FinancialAgent_idle_start_FinancialAgent_end_GA;  FinancialAgent_FinancialAgent_apply_GA_start_FinancialAgent_01;  Eurostat_Eurastat_send_asset_information_Start_Eurostat_Financial_Data_WAITENDMARKET;  Firm_Firm_send_stock_info_XXX_UPDATE; }
+	{ rank=same; layer_1;  FinancialAgent_FinancialAgent_reset_public_classifiersystem_01_02;  Household_Household_receive_info_asset_to_eurostat_Start_Household_Financial_Role_start_Household_EWA_Learning; }
+	{ rank=same; layer_2;  FinancialAgent_FinancialAgent_send_rule_details_02_end_GA;  Household_idle_start_Household_EWA_Learning_end_GA;  Household_Household_reset_private_classifiersystem_start_Household_EWA_Learning_01; }
+	{ rank=same; layer_3;  FinancialAgent_FinancialAgent_reset_public_classifiersystem_end_GA_03;  Household_Household_read_and_update_rule_details_01_end_GA; }
+	{ rank=same; layer_4;  Household_idle_end_GA_end_Household_EWA_Learning;  Household_Household_send_rule_performance_end_GA_02; }
+	{ rank=same; layer_5;  FinancialAgent_FinancialAgent_read_rule_performance_and_update_classifiersystem_03_04; }
+	{ rank=same; layer_6;  FinancialAgent_FinancialAgent_send_all_performances_04_end_FinancialAgent; }
+	{ rank=same; layer_7;  Household_Household_read_all_performances_02_03; }
+	{ rank=same; layer_8;  Household_Household_select_rule_03_end_Household_EWA_Learning; }
+	{ rank=same; layer_9;  Household_Household_select_strategy_end_Household_EWA_Learning_WAITORDERSTATUS; }
+	{ rank=same; layer_10;  Clearinghouse_ClearingHouse_receive_orders_and_run_start_Clearinghouse_COMPUTEDPRICES; }
+	{ rank=same; layer_11;  Household_Household_update_its_portfolio_WAITORDERSTATUS_EXIT_FINANCIAL_MARKET;  Clearinghouse_ClearingHouse_send_asset_information_COMPUTEDPRICES_end_Clearinghouse; }
+	{ rank=same; layer_12;  Eurostat_Eurostat_receive_asset_information_WAITENDMARKET_End_Eurostat_Financial_Data;  Bank_Bank_receive_account_update_BB_BB1;  Firm_Firm_receive_stock_info_UPDATE_XXX2; }
+}

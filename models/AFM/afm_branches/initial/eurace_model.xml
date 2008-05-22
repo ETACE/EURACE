@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE xmodel SYSTEM "http://eurace.cs.bilgi.edu.tr/XMML.dtd">
+<xmodel version="2">
+
+<name>Eurace</name>
+<version>0.1</version>
+<description>Integration of AFM + EWA</description>
+
+<!-- Models to include in Eurace model -->
+<models>
+
+<model><file>FINANCIAL_UG/model.xml</file><enabled>true</enabled></model>
+<model><file>ewa_learning/model.xml</file><enabled>true</enabled></model>
+</models>
+
+<environment>
+
+<functionFiles>
+</functionFiles>
+ 
+<timeUnits>
+
+<timeUnit>
+ <name>daily</name>
+ <unit>iteration</unit>
+ <period>1</period>
+</timeUnit>
+
+<timeUnit>
+ <name>weekly</name>
+ <unit>daily</unit>
+ <period>5</period>
+</timeUnit>
+
+<timeUnit>
+ <name>monthly</name>
+ <unit>weekly</unit>
+ <period>4</period>
+</timeUnit>
+
+<timeUnit>
+ <name>quarterly</name>
+ <unit>monthly</unit>
+ <period>3</period>
+</timeUnit>
+
+<timeUnit>
+ <name>yearly</name>
+ <unit>monthly</unit>
+ <period>12</period>
+</timeUnit>
+
+</timeUnits>
+
+</environment>
+
+<!-- General agent memory -->
+<agents>
+<xagent>
+<name>FinancialAgent</name>
+<description></description>
+<memory>
+</memory>
+</xagent>
+
+<xagent>
+<name>Household</name>
+<description></description>
+<memory>
+</memory>
+</xagent>
+</agents>
+
+<messages>
+</messages>
+
+</xmodel>
