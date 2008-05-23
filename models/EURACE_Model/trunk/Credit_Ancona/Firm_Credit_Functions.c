@@ -2,31 +2,32 @@
 #include "Firm_agent_header.h"
 #include "my_library_header.h"
 
-#define NUMBER_OF_BANKS 10
+#define CONST_NUMBER_OF_BANKS 10
+#define NUMBER_OF_BANKS_TO_APPLY 10
+#define CONST_INSTALLMENT_PERIODS 12
+
 
 int Firm_ask_loan()
 {
 	int i, connected, j;
-	
-      connected=0; 
 
-	for (j=0; j< NUMBER_OF_BANKS; j++) 
+    connected=0; 
+
+    //This line not needed: we fill the array anyway...
+	for (j=0; j< NUMBER_OF_BANKS_TO_APPLY; j++) 
 	{
-	    DMARKETMATRIX.array[j]=0;
+		DMARKETMATRIX[j]=0;
 	} 
 	
-      while (connected<LINK)
-      {
-
-            j=(int)((rand()/RAND_MAX)*NUMBER_OF_BANKS);// choose 'LINK' banks
-            DMARKETMATRIX.array[j]=1;
-            
-            //old code: generate random credit demand 
-            //D_LOAN = 100*(rand()/RAND_MAX);
-            
-            add_loan_request_message(ID, j, EQUITY, TOTAL_DEBT, EXTERNAL_FINANCIAL_NEEDS);
-            connected+=1;
-      }  
+	//Create bank network for this firm
+	while (connected<LINK)
+	{
+	      j=(int)((rand()/RAND_MAX)*CONST_NUMBER_OF_BANKS);// choose 'LINK' banks
+	      DMARKETMATRIX[j]=1;
+	                    
+	      add_loan_request_message(ID, j, EQUITY, TOTAL_DEBT, EXTERNAL_FINANCIAL_NEEDS);
+	      connected+=1;
+	}  
       
 	return 0;
 }
@@ -35,8 +36,16 @@ int Firm_get_loan()
 {
 	int n, n1, k, i, j, primo;
     int bk = -1;
-	double interest, aux;
-	double totalcredit_taken=0;
+
+    double rate_order_array[CONST_NUMBER_OF_BANKS]; //constant size static array
+    double interest_array[CONST_NUMBER_OF_BANKS]; //constant size static array
+    double credit_offer_array[CONST_NUMBER_OF_BANKS]; //constant size static array
+    double value_at_risk_array[CONST_NUMBER_OF_BANKS]; //constant size static array
+    
+    double aux;
+    double credit_demand;
+    double credit_accepted;
+    double total_credit_taken=0;
 
 	int bank_id;
     double loan_value;
@@ -47,62 +56,67 @@ int Firm_get_loan()
     double bad_debt;
     int nr_periods_before_repayment;
 	
-      for (i=0; i<NUMBER_OF_BANKS;i++)
+    //This is not needed, we fill the array anyway, so why need to set it to -1? 
+    for (i=0; i<NUMBER_OF_BANKS_TO_APPLY;i++)
  	{
- 	    RATEORDER.array[i]=-1;   //vettore lunghezza number_of_banks
+ 	    rate_order_array[i]=-1;   //vettore lunghezza number_of_banks
  	} 
 
+    //Read messages
+    n=0;
 	START_LOAN_CONDITIONS_MESSAGE_LOOP
-	if (ID == loan_conditions_message->firm_id) 
-	{
+
         bk = loan_conditions_message->bank_id;
-        INTEREST.array[bk] = loan_conditions_message->proposed_interest_rate;
-		CREDIT_OFFER.array[bk] = loan_conditions_message->amount_offered_credit;
-		RATEORDER.array[bk] = loan_conditions_message->bank_id;
-		VALUE_AT_RISK.array[bk] = loan_conditions_message->value_at_risk;
+        interest_array[bk] = loan_conditions_message->proposed_interest_rate;
+		credit_offer_array[bk] = loan_conditions_message->amount_offered_credit;
+		rate_order_array[bk] = loan_conditions_message->bank_id;
+		value_at_risk_array[bk] = loan_conditions_message->value_at_risk;
 		n += 1;
-	}
+
 	FINISH_LOAN_CONDITIONS_MESSAGE_LOOP
        
+	//Sorting of the rate_order_array
     n1=0;
-
-	for(i=0;i<NUMBER_OF_BANKS-1;i++)
+	for(i=0;i<NUMBER_OF_BANKS_TO_APPLY-1;i++)
     {
-            for(k=i+1; k<NUMBER_OF_BANKS; k++)
+            for(k=i+1; k<NUMBER_OF_BANKS_TO_APPLY; k++)
             {
-            	if (INTEREST.array[i]>INTEREST.array[k]) 
+            	if (interest_array[i]>interest_array[k]) 
             	{
-			     aux=INTEREST.array[i];
-	 			 INTEREST.array[i]=INTEREST.array[k];
-	 			 INTEREST.array[k]=aux;
-	 			 n1=RATEORDER.array[i];
-	 			 RATEORDER.array[i]=RATEORDER.array[k];
-	 			 RATEORDER.array[k]=n1;
+			     aux=interest_array[i];
+	 			 interest_array[i]=interest_array[k];
+	 			 interest_array[k]=aux;
+	 			 n1=rate_order_array[i];
+	 			 rate_order_array[i]=rate_order_array[k];
+	 			 rate_order_array[k]=n1;
                 }
             }
     }
 	
-	  for(primo=0; primo<NUMBER_OF_BANKS; primo++)
-	  {
-	     if (DMARKETMATRIX.array[RATEORDER.array[primo]]==1)
+	//Travers the banks according to the order in the rate_order_array,
+	//check if bank in DMARKETMATRIX==1
+	//obtain a loan if credit_demand >= credit_offer
+	for(primo=0; primo<NUMBER_OF_BANKS_TO_APPLY; primo++)
+	{
+		//Why is there this check ? Is not each bank in rate_order_array also in DMARKETMATRIX?
+	     if (DMARKETMATRIX[rate_order_array[primo]]==1)
 	     {
-	        credit_accepted = D_LOAN - totalcredit_taken;
-	        if (credit_accepted>=CREDIT_OFFER.array[RATEORDER.array[primo]])
+	        credit_demand = EXTERNAL_FINANCIAL_NEEDS - total_credit_taken;
+	        if (credit_demand >= credit_offer_array[rate_order_array[primo]])
 	        {
-	           credit_accepted=CREDIT_OFFER.array[RATEORDER.array[primo]];
+	           credit_accepted = credit_offer_array[rate_order_array[primo]];
 	        }
 	
-	        totalcredit_taken += credit_accepted;
-	        interest = credit_accepted*INTEREST.array[RATEORDER.array[primo]];
-	        
-		    bank_id = RATEORDER.array[primo];
+	        total_credit_taken += credit_accepted;
+	        		    
+		    bank_id = rate_order_array[primo];
 		    loan_value = credit_accepted;
-		    interest_rate = INTEREST.array[RATEORDER.array[primo]];
-		    installment_amount = (credit_accepted+interest)/INSTALMENT_NUMBER;
-		    var_per_installment = RESIDUAL_VAR.array[RATEORDER.array[primo]][INSTALMENT_NUMBER-1]/INSTALMENT_NUMBER;
-		    residual_var = VALUE_AT_RISK.array[RATEORDER.array[primo]]*(CREDIT_OFFER.array[RATEORDER.array[primo]]/credit_accepted);
+		    interest_rate = interest_array[rate_order_array[primo]];
+		    installment_amount = credit_accepted/CONST_INSTALLMENT_PERIODS;
+		    var_per_installment = residual_var_array[rate_order_array[primo]][CONST_INSTALLMENT_PERIODS-1]/CONST_INSTALLMENT_PERIODS;
+		    residual_var = value_at_risk_array[rate_order_array[primo]]*(credit_offer_array[rate_order_array[primo]]/credit_accepted);
 		    bad_debt = 0.0;
-		    nr_periods_before_repayment=INSTALMENT_NUMBER;
+		    nr_periods_before_repayment=CONST_INSTALLMENT_PERIODS;
 		    	
 		    add_debt_item(&LOANS, bank_id, loan_value, interest_rate, installment_amount, var_per_installment, residual_var, bad_debt, nr_periods_before_repayment);
 		    add_loan_acceptance_message(bank_id, credit_accepted);
@@ -112,5 +126,6 @@ int Firm_get_loan()
 	     }
 	}
 
-	  return 0;
+	return 0;
 }
+
