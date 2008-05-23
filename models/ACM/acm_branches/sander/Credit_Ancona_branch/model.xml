@@ -47,18 +47,13 @@
 <name>Firm</name>
 <description></description>
 <memory>
-<variable><type>double_array</type><name>interest</name><description></description></variable>
-<variable><type>double_array</type><name>credit_offer</name><description></description></variable>
-<variable><type>double_array</type><name>rateorder</name><description></description></variable>
-<!--<variable><type>double_array</type><name>value_at_risk</name><description></description></variable>-->
-<variable><type>double</type><name>dmarketmatrix[10]</name><description></description></variable>
-<variable><type>int</type><name>installment_number</name><description></description></variable>
+<variable><type>double</type><name>dmarketmatrix[CONST_NUMBER_OF_BANKS]</name><description></description></variable>
 </memory>
 
 <functions>
 
 <function>
-<name>Firm_ask_for_loan</name>
+<name>Firm_ask_loan</name>
 <description></description>
 <currentState>Start_Firm_Credit_Role</currentState>
 <nextState>Firm_Credit_02</nextState>
@@ -68,15 +63,20 @@
 </outputs>
 </function>
 
-
-
 <function>
-<name>Firm_choose_bank</name>
+<name>Firm_get_loan</name>
 <description></description>
 <currentState>Firm_Credit_02</currentState>
 <nextState>End_Firm_Credit_Role</nextState>
 <inputs>
-<input><messageName>loan_conditions</messageName></input>
+<input>
+<messageName>loan_conditions</messageName>
+<filter>
+  <lhs><value>a.id</value></lhs>
+  <op>EQ</op>
+  <rhs><value>m.firm_id</value></rhs>
+ </filter>
+</input>
 </inputs>
 <outputs>
 <output><messageName>loan_acceptance</messageName></output>
@@ -99,19 +99,21 @@
 <variable><type>double</type><name>alfa</name><description></description></variable>
 <variable><type>double</type><name>value_at_risk</name><description></description></variable>
 <variable><type>double</type><name>min_interest</name><description></description></variable>
-<variable><type>double</type><name>gamma[2]</name><description></description></variable>
-<variable><type>double</type><name>profits[2]</name><description></description></variable>
+<variable><type>double array</type><name>gamma[2]</name><description></description></variable>
+<variable><type>double array</type><name>profits[2]</name><description></description></variable>
 <variable><type>double</type><name>lambda</name><description></description></variable>
 <variable><type>double</type><name>bce_interest</name><description></description></variable>
+<variable><type>double</type><name>dividend_rate</name><description></description></variable>
+<variable><type>double</type><name>tax_rate_corporate</name><description></description></variable>
+<variable><type>int</type><name>number_of_shares</name><description></description></variable>
 <variable><type>double</type><name>debt_period</name><description></description></variable>
 <variable><type>int</type><name>loan_request_message_found</name><description></description></variable>
-<variable><type>int</type><name>day_of_month_to_act</name><description></description></variable>
 </memory>
 
 
 <functions>
 
-<function><name>idle</name>
+<function><name>Bank_idle</name>
 <description></description>
 <currentState>start_Bank</currentState>
 <nextState>Bank_01</nextState>
@@ -123,7 +125,13 @@
 <currentState>Bank_01</currentState>
 <nextState>Bank_02</nextState>
 <inputs>
-<input><messageName>loan_request</messageName></input>
+<input><messageName>loan_request</messageName>
+<filter>
+  <lhs><value>a.id</value></lhs>
+  <op>EQ</op>
+  <rhs><value>m.bank_id</value></rhs>
+ </filter>
+</input>
 </inputs>
 <outputs>
 <output><messageName>loan_conditions</messageName></output>
@@ -138,7 +146,14 @@
 <currentState>Bank_02</currentState>
 <nextState>Bank_03</nextState>
 <inputs>
-<input><messageName>loan_acceptance</messageName></input>
+<input>
+<messageName>loan_acceptance</messageName>
+<filter>
+  <lhs><value>a.id</value></lhs>
+  <op>EQ</op>
+  <rhs><value>m.bank_id</value></rhs>
+</filter>
+</input>
 </inputs>
 </function>
 
@@ -150,8 +165,22 @@
 <currentState>Bank_03</currentState>
 <nextState>Bank_04</nextState>
 <inputs>
-<input><messageName>installment</messageName></input>
-<input><messageName>bankruptcy</messageName></input>
+<input>
+<messageName>installment</messageName>
+<filter>
+  <lhs><value>a.id</value></lhs>
+  <op>EQ</op>
+  <rhs><value>m.bank_id</value></rhs>
+</filter>
+</input>
+<input>
+<messageName>bankruptcy</messageName>
+<filter>
+  <lhs><value>a.id</value></lhs>
+  <op>EQ</op>
+  <rhs><value>m.bank_id</value></rhs>
+</filter>
+</input>
 </inputs>
 </function>
 
@@ -163,7 +192,14 @@
 <currentState>Bank_04</currentState>
 <nextState>Bank_05</nextState>
 <inputs>
-<input><messageName>bank_account_update</messageName></input>
+<input>
+<messageName>bank_account_update</messageName>
+<filter>
+  <lhs><value>a.id</value></lhs>
+  <op>EQ</op>
+  <rhs><value>m.bank_id</value></rhs>
+</filter>
+</input>
 </inputs>
 </function>
 
@@ -185,7 +221,7 @@
 
 
 <function>
-<name>idle</name>
+<name>Bank_idle</name>
 <description></description>
 <currentState>Bank_05</currentState>
 <nextState>end_Bank</nextState>
