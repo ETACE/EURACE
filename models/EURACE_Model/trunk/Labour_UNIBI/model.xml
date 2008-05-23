@@ -326,12 +326,23 @@ of employees and the number of vacancies</description>
 <condition><lhs><value>a.employee_firm_id</value></lhs><op>EQ</op><rhs><value>-1</value></rhs></condition>
 </function>
 
+
+
+<function>
+<name>Household_on_the_job_search_decision</name>
+<description>Household decides whether to search on the job or not</description>
+<currentState>01d</currentState>
+<nextState>01b</nextState>
+<condition><lhs><value>a.employee_firm_id</value></lhs><op>NEQ</op><rhs><value>-1</value></rhs></condition>
+</function>
+
 <function>
 <name>Household_OTJS_read_job_vacancies_and_send_applications</name>
 <description>Household searches on the job. Reads vacancies messages 
 and send s applications</description>
-<currentState>01e</currentState>
+<currentState>01b</currentState>
 <nextState>01</nextState>
+<condition><lhs><value>a.on_the_job_search</value></lhs><op>EQ</op><rhs><value>1</value></rhs></condition>
 <inputs>
 <input><messageName>vacancies</messageName></input>
 </inputs>
@@ -339,6 +350,16 @@ and send s applications</description>
 <output><messageName>job_application</messageName></output>
 </outputs>
 </function>
+<function>
+
+<name>Household_idle</name>
+<description>Household does nothing</description>
+<currentState>01b</currentState>
+<nextState>06</nextState>
+<condition><lhs><value>a.on_the_job_search</value></lhs><op>NEQ</op><rhs><value>1</value></rhs></condition>
+</function>
+
+
 
 <function>
 <name>Household_UNEMPLOYED_read_job_vacancies_and_send_applications</name>
@@ -353,29 +374,8 @@ and send s applications</description>
 </outputs>
 </function>
 
-<function>
-<name>Household_on_the_job_search_decision</name>
-<description>Household decides whether to search on the job or not</description>
-<currentState>01d</currentState>
-<nextState>01b</nextState>
-<condition><lhs><value>a.employee_firm_id</value></lhs><op>NEQ</op><rhs><value>-1</value></rhs></condition>
-</function>
 
-<function>
-<name>Household_on_the_job_search_yes</name>
-<description>Dummy function: household decided to search on the job</description>
-<currentState>01b</currentState>
-<nextState>01e</nextState>
-<condition><lhs><value>a.on_the_job_search</value></lhs><op>EQ</op><rhs><value>1</value></rhs></condition>
-</function>
 
-<function>
-<name>Household_on_the_job_search_no</name>
-<description>Dummy function: household decided to search not on the job</description>
-<currentState>01b</currentState>
-<nextState>06</nextState>
-<condition><lhs><value>a.on_the_job_search</value></lhs><op>NEQ</op><rhs><value>1</value></rhs></condition>
-</function>
 
 <function><name>Household_read_job_offers_send_response</name>
 <description>Household reads the job offers and ranks them 
