@@ -1417,6 +1417,13 @@ int checkmodel(model_data * modeldata)
 	 * try and parse functions files for implementations of functions defined in model xml
 	 * */
 	
+	/* Check for no agents */
+	if(*modeldata->p_xmachines == NULL)
+	{
+		fprintf(stderr, "ERROR: no agents defined\n");
+		return -1;
+	}
+	
 	/* Check duplicate message names */
 	current_message = * modeldata->p_xmessages;
 	while(current_message)
