@@ -103,7 +103,14 @@ int Eurostat_calculate_data()
 	FIRM_AVERAGE_S_SKILL_5 = 0.0;
 
 
-	/*delete the content of the data arrays in order to store the data for the new 			month*/
+	GDP = 0.0;
+	TOTAL_EARNINGS = 0.0;
+	TOTAL_DEBT = 0.0;
+	TOTAL_ASSETS = 0.0;
+	TOTAL_EQUITY = 0.0;
+	
+	
+	/*delete the content of the data arrays in order to store the data for the new month*/
 	//free(REGION_HOUSEHOLD_DATA);
 	//free(REGION_FIRM_DATA);
 	
@@ -123,7 +130,7 @@ int Eurostat_calculate_data()
 	for(int i = 1; i <= NO_REGIONS; i++)
 	{
 		add_firm_data(&REGION_FIRM_DATA,
-		i,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
+		i,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
 		
 		add_household_data(&REGION_HOUSEHOLD_DATA,
 		i,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
@@ -231,6 +238,33 @@ int Eurostat_calculate_data()
 					firm_send_data_message->average_s_skill_5*
 					firm_send_data_message->employees_skill_5;
 
+
+				/********sum of total consumption and investment costs++++++++*/
+				REGION_FIRM_DATA.array[i].gdp += firm_balance_sheet_data_message->cum_revenue
+												+ firm_balance_sheet_data_message->investment_costs;
+				GDP += firm_balance_sheet_data_message->cum_revenue
+												+ firm_balance_sheet_data_message->investment_costs;
+
+				
+				/********sum of net earnings of the firms++++++++*/
+				REGION_FIRM_DATA.array[i].total_earnings += firm_balance_sheet_data_message->net_earnings;
+				TOTAL_EARNINGS += firm_balance_sheet_data_message->net_earnings;
+				
+				
+				/********sum of total debt of the firms++++++++*/
+				REGION_FIRM_DATA.array[i].total_debt += firm_balance_sheet_data_message->total_debt;
+				TOTAL_DEBT += firm_balance_sheet_data_message->total_debt;
+				
+				
+				/********sum of total assets of the firms++++++++*/
+				REGION_FIRM_DATA.array[i].total_assets += firm_balance_sheet_data_message->total_assets;
+				TOTAL_ASSETS += firm_balance_sheet_data_message->total_assets;
+				
+				
+				/********sum of total equity of the firms++++++++*/
+				REGION_FIRM_DATA.array[i].total_equity += firm_balance_sheet_data_message->equity;
+				TOTAL_EQUITY += firm_balance_sheet_data_message->equity;
+				
 			}
 		}	
 
@@ -294,6 +328,17 @@ int Eurostat_calculate_data()
 			REGION_FIRM_DATA.array[i].employees_skill_5;
 		}
 
+		/*****************AVERAGE DEBT/EARNINGS RATIO *********************/
+		REGION_FIRM_DATA.array[i].average_debt_earnings_ratio =
+			REGION_FIRM_DATA.array[i].TOTAL_DEBT/
+			REGION_FIRM_DATA.array[i].TOTAL_EARNINGS;
+
+		
+		/*****************AVERAGE DEBT/EQUITY RATIO *********************/
+		REGION_FIRM_DATA.array[i].average_debt_equity_ratio =
+			REGION_FIRM_DATA.array[i].TOTAL_DEBT/
+			REGION_FIRM_DATA.array[i].TOTAL_EQUITY;
+		
    	}
 
 	
@@ -342,9 +387,12 @@ int Eurostat_calculate_data()
 					(double)NO_EMPLOYEES_SKILL_5;
 	}
 
-	
-	
+	/*****************AVERAGE DEBT/EARNINGS RATIO *********************/
+	AVERAGE_DEBT_EARNINGS_RATIO = TOTAL_DEBT/TOTAL_EARNINGS;
 
+	
+	/*****************AVERAGE DEBT/EQUITY RATIO *********************/
+	AVERAGE_DEBT_EQUITY_RATIO = TOTAL_DEBT/TOTAL_EQUITY;
 
 
 	START_HOUSEHOLD_SEND_DATA_MESSAGE_LOOP
@@ -692,7 +740,9 @@ int Eurostat_calculate_data()
 
 
 
-	/*Create the GLOBAL data which is needed for controlling the results or sending 		back to the Households*/
+	/* Create the GLOBAL data which is needed for controlling the results or sending
+	 * back to the Households
+	 */
 
 	/*******************UNEMPLOYMENT RATE**********************/
 	UNEMPLOYMENT_RATE = 1 - (double)EMPLOYED/(double)NUM_HOUSEHOLDS;

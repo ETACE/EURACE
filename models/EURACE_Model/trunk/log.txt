@@ -41,5 +41,37 @@ Sander, rev 942
 - Firms read tax_rates message from gov in function Firm_read_tax_rates which is run yearly.
 - IGFirms read tax_rates message from gov in function IGFirm_read_tax_rates which is run yearly.
 - Households read tax_rates message from gov in function Household_read_tax_rates which is run yearly.
+-------------------------------------------------------------------------------------------
+Sander, rev 984
 
+Firm_fin_management.c:
+- Firm_in_bankruptcy returns 1 to remove the agent from simulation
+- Added debt_equity_ratio, debt_earnings_ratio to firm memory
+
+Statistical_Office_UNIBI/model.xml:
+
+- added a new message that contains data from the firm's balance sheet:
+firm_balance_sheet_data_message(cum_revenue, investment_costs, net_earnings, total_debt, total_assets, equity).
+
+This message is send in the function Firm_send_data_to_Eurostat, together with the firm_send_data_message.
+
+- added memory variables to Eurostat agent:
+gdp
+total_earnings
+total_debt
+total_assets
+total_equity
+
+- added those elements to the struct FIRM_DATA
+
+Statistical_Office_UNIBI/Eurostat_Functions.c:
+
+- initialized the elements to 0 in the Eurostat memory at start of each iteration
+
+- added 5 zeros to the line add_firm_data(&REGION_FIRM_DATA,...)
+
+- constructed two macrovariables, both regional and global in the Eurostat memory:
+
+average_debt_earnings_ratio: total_debt/total_earnings
+average_debt_equity_ratio: total_debt/total_equity
 -------------------------------------------------------------------------------------------

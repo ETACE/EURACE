@@ -98,6 +98,7 @@
 
 <!-- Ratios -->
 <variable><type>double</type><name>debt_earnings_ratio</name><description>Debt-to-Earnings ratio</description></variable>
+<variable><type>double</type><name>debt_equity_ratio</name><description>Debt-to-Equity ratio</description></variable>
 <variable><type>double</type><name>price_earnings_ratio</name><description>Price-to-Earnings ratio</description></variable>
 <variable><type>double</type><name>retained_earnings_ratio</name><description>Retained earnings-to-Earnings ratio</description></variable>
 <variable><type>double</type><name>earnings_per_share_ratio_growth</name><description>Target growth of the Earnings-per-Share ratio</description></variable>

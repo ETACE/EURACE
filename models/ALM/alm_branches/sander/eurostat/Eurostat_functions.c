@@ -13,13 +13,21 @@ int Eurostat_collect_data()
 {	
 	//reset current value in memory
 	GDP=0;
-	TOTAL_NR_EMPLOYED =0;
-	TOTAL_NR_UNEMPLOYED=0;
+	NR_EMPLOYED =0;
+	NR_UNEMPLOYED=0;
 	
 	/* Read GDP messages */
-	START_FIRM_STATISTICS_MESSAGE_LOOP
-		GDP += firm_statistics_to_eurostat_message->net_revenue;
-	FINISH_FIRM_STATISTICS_MESSAGE_LOOP
+	//cum_revenue, investment_costs, net_earnings, total_debt, total_assets, equity
+	START_FIRM_BALANCE_SHEET_DATA_MESSAGE_LOOP
+		GDP += firm_balance_sheet_data_message->cum_revenue;
+		GDP += firm_balance_sheet_data_message->investment_costs;
+/*
+  		firm_balance_sheet_data_message->net_earnings;
+		firm_balance_sheet_data_message->total_debt;
+		firm_balance_sheet_data_message->total_assets;
+		firm_balance_sheet_data_message->equity;
+*/		
+	FINISH_FIRM_BALANCE_SHEET_DATA_MESSAGE_LOOP
 	
 	/* Read EMPLOYED messages */
 	START_FIRM_STATISTICS_MESSAGE_LOOP
@@ -27,11 +35,12 @@ int Eurostat_collect_data()
 	FINISH_FIRM_STATISTICS_MESSAGE_LOOP
 	
 	/* Read regional UNEMPLOYED messages */
+/*
 	START_REGIONAL_EUROSTAT_MESSAGE_LOOP
 		TOTAL_NR_UNEMPLOYED += statistics_from_regional_eurostat_message->nr_unemployed; //change this to nr_employees?
 		TOTAL_POPULATION_HOUSEHOLDS += statistics_from_regional_eurostat_message->population_households;
 	FINISH_REGIONAL_EUROSTAT_MESSAGE_LOOP
-	
+*/	
     return 0;
 }
 
@@ -111,7 +120,7 @@ int Eurostat_communicate_statistics()
 	//nr_unemployed: unemployed households in the region
 	//population_households: current population of households in the region
 	
-	add_regional_eurostat_message(ID, GDP, GDP_GROWTH_RATE, NR_UNEMPLOYED, POPULATION_HOUSEHOLDS, MSGDATA);	
+	add_regional_eurostat_message(ID, GDP, GDP_GROWTH_RATE, NR_UNEMPLOYED, POPULATION_HOUSEHOLDS);	
 
 	return 0;
 }
