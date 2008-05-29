@@ -13,7 +13,7 @@ int Eurostat_Initialization()
 	for(int i = 1; i <= NO_REGIONS; i++)
 	{
 		add_firm_data(&REGION_FIRM_DATA,
-		i,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
+		i,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
 		
 		add_household_data(&REGION_HOUSEHOLD_DATA,
 		i,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1);
@@ -108,7 +108,9 @@ int Eurostat_calculate_data()
 	TOTAL_DEBT = 0.0;
 	TOTAL_ASSETS = 0.0;
 	TOTAL_EQUITY = 0.0;
-	
+	AVERAGE_DEBT_EARNINGS_RATIO = 0.0;
+	AVERAGE_DEBT_EQUITY_RATIO = 0.0;
+	WAGE_PROFIT_RATIO = 0.0;
 	
 	/*delete the content of the data arrays in order to store the data for the new month*/
 	//free(REGION_HOUSEHOLD_DATA);
@@ -130,7 +132,7 @@ int Eurostat_calculate_data()
 	for(int i = 1; i <= NO_REGIONS; i++)
 	{
 		add_firm_data(&REGION_FIRM_DATA,
-		i,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
+		i,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
 		
 		add_household_data(&REGION_HOUSEHOLD_DATA,
 		i,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
@@ -265,6 +267,27 @@ int Eurostat_calculate_data()
 				REGION_FIRM_DATA.array[i].total_equity += firm_balance_sheet_data_message->equity;
 				TOTAL_EQUITY += firm_balance_sheet_data_message->equity;
 				
+				
+				/***************** average debt/earnings ratio *********************/
+				REGION_FIRM_DATA.array[i].average_debt_earnings_ratio =
+					REGION_FIRM_DATA.array[i].TOTAL_DEBT/
+					REGION_FIRM_DATA.array[i].TOTAL_EARNINGS;
+				AVERAGE_DEBT_EARNINGS_RATIO = TOTAL_DEBT/TOTAL_EARNINGS;
+				
+
+				/***************** average debt/equity ratio *********************/
+				REGION_FIRM_DATA.array[i].average_debt_equity_ratio =
+					REGION_FIRM_DATA.array[i].TOTAL_DEBT/
+					REGION_FIRM_DATA.array[i].TOTAL_EQUITY;
+				AVERAGE_DEBT_EQUITY_RATIO = TOTAL_DEBT/TOTAL_EQUITY;
+				
+				
+				/***************** average labour share *********************/
+				REGION_FIRM_DATA.array[i].wage_profit_ratio =
+					REGION_FIRM_DATA.array[i].average_wage/
+					REGION_FIRM_DATA.array[i].total_earnings;
+				WAGE_PROFIT_RATIO = FIRM_AVERAGE_WAGE/TOTAL_EARNINGS;
+
 			}
 		}	
 
@@ -327,17 +350,6 @@ int Eurostat_calculate_data()
 			REGION_FIRM_DATA.array[i].average_s_skill_5/
 			REGION_FIRM_DATA.array[i].employees_skill_5;
 		}
-
-		/*****************AVERAGE DEBT/EARNINGS RATIO *********************/
-		REGION_FIRM_DATA.array[i].average_debt_earnings_ratio =
-			REGION_FIRM_DATA.array[i].TOTAL_DEBT/
-			REGION_FIRM_DATA.array[i].TOTAL_EARNINGS;
-
-		
-		/*****************AVERAGE DEBT/EQUITY RATIO *********************/
-		REGION_FIRM_DATA.array[i].average_debt_equity_ratio =
-			REGION_FIRM_DATA.array[i].TOTAL_DEBT/
-			REGION_FIRM_DATA.array[i].TOTAL_EQUITY;
 		
    	}
 
@@ -386,13 +398,6 @@ int Eurostat_calculate_data()
 		FIRM_AVERAGE_S_SKILL_5 = FIRM_AVERAGE_S_SKILL_5/
 					(double)NO_EMPLOYEES_SKILL_5;
 	}
-
-	/*****************AVERAGE DEBT/EARNINGS RATIO *********************/
-	AVERAGE_DEBT_EARNINGS_RATIO = TOTAL_DEBT/TOTAL_EARNINGS;
-
-	
-	/*****************AVERAGE DEBT/EQUITY RATIO *********************/
-	AVERAGE_DEBT_EQUITY_RATIO = TOTAL_DEBT/TOTAL_EQUITY;
 
 
 	START_HOUSEHOLD_SEND_DATA_MESSAGE_LOOP
