@@ -12,7 +12,9 @@ int Firm_send_data_to_Eurostat()
 	AVERAGE_S_SKILL_OF_2, AVERAGE_S_SKILL_OF_3,
 	AVERAGE_S_SKILL_OF_4, AVERAGE_S_SKILL_OF_5);
 		
-
+	add_firm_balance_sheet_data_message(CUM_REVENUE, INVESTMENT_COSTS,
+			NET_EARNINGS, TOTAL_DEBT, TOTAL_ASSETS, EQUITY);
+	
 	return 0;
 }
 
@@ -51,8 +53,7 @@ int Firm_receive_data()
 	START_EUROSTAT_SEND_SPECIFIC_SKILLS_MESSAGE_LOOP
 		
 		/*Specific skills of the domestic region*/
-//		if(eurostat_send_specific_skills_message->region_id == REGION_ID)
-//		{
+
 			/*If there is no employee with general skill level 1 resp. 2-5*/
 			if(NO_EMPLOYEES_SKILL_1 == 0)
 			{
@@ -83,7 +84,7 @@ int Firm_receive_data()
 				AVERAGE_S_SKILL_OF_5 = 						eurostat_send_specific_skills_message->
 				specific_skill_5;
 			}
-//		}
+
 		FINISH_EUROSTAT_SEND_SPECIFIC_SKILLS_MESSAGE_LOOP
 
 		return 0;

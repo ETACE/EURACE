@@ -211,8 +211,8 @@ int Firm_compute_balance_sheet()
     
     EQUITY = TOTAL_ASSETS - TOTAL_DEBT;
     
-    //printf("\nTOTAL_ASSETS in functions.c file: %f\n", TOTAL_ASSETS);
-
+    DEBT_EQUITY_RATIO = TOTAL_DEBT/EQUITY;
+    DEBT_EARNINGS_RATIO = TOTAL_DEBT/NET_EARNINGS;
     
     return 0;
 }
@@ -322,7 +322,7 @@ int Firm_in_bankruptcy()
     //Effect on consumption goods market
     //Foreclosure sales at local outlet malls at discount prices
     
-    return 0;
+    return 1;
 }
 /*
  * \fn Firm_financial_crisis()
