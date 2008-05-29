@@ -242,30 +242,30 @@ int Eurostat_calculate_data()
 
 
 				/********sum of total consumption and investment costs++++++++*/
-				REGION_FIRM_DATA.array[i].gdp += firm_balance_sheet_data_message->cum_revenue
-												+ firm_balance_sheet_data_message->investment_costs;
-				GDP += firm_balance_sheet_data_message->cum_revenue
-												+ firm_balance_sheet_data_message->investment_costs;
+				REGION_FIRM_DATA.array[i].gdp += firm_send_data_message->cum_revenue
+												+ firm_send_data_message->investment_costs;
+				GDP += firm_send_data_message->cum_revenue
+												+ firm_send_data_message->investment_costs;
 
 				
 				/********sum of net earnings of the firms++++++++*/
-				REGION_FIRM_DATA.array[i].total_earnings += firm_balance_sheet_data_message->net_earnings;
-				TOTAL_EARNINGS += firm_balance_sheet_data_message->net_earnings;
+				REGION_FIRM_DATA.array[i].total_earnings += firm_send_data_message->net_earnings;
+				TOTAL_EARNINGS += firm_send_data_message->net_earnings;
 				
 				
 				/********sum of total debt of the firms++++++++*/
-				REGION_FIRM_DATA.array[i].total_debt += firm_balance_sheet_data_message->total_debt;
-				TOTAL_DEBT += firm_balance_sheet_data_message->total_debt;
+				REGION_FIRM_DATA.array[i].total_debt += firm_send_data_message->total_debt;
+				TOTAL_DEBT += firm_send_data_message->total_debt;
 				
 				
 				/********sum of total assets of the firms++++++++*/
-				REGION_FIRM_DATA.array[i].total_assets += firm_balance_sheet_data_message->total_assets;
-				TOTAL_ASSETS += firm_balance_sheet_data_message->total_assets;
+				REGION_FIRM_DATA.array[i].total_assets += firm_send_data_message->total_assets;
+				TOTAL_ASSETS += firm_send_data_message->total_assets;
 				
 				
 				/********sum of total equity of the firms++++++++*/
-				REGION_FIRM_DATA.array[i].total_equity += firm_balance_sheet_data_message->equity;
-				TOTAL_EQUITY += firm_balance_sheet_data_message->equity;
+				REGION_FIRM_DATA.array[i].total_equity += firm_send_data_message->equity;
+				TOTAL_EQUITY += firm_send_data_message->equity;
 				
 				
 				/***************** average debt/earnings ratio *********************/

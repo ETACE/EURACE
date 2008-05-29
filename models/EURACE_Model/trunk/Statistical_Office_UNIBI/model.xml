@@ -83,12 +83,12 @@
 <variable><type>double</type><name>average_s_skill_5</name><description></description></variable>
 <variable><type>double</type><name>gdp</name><description>GDP of the region (regional consumption + investments)</description></variable>
 <variable><type>double</type><name>total_earnings</name><description>The sum of profits across all firms in the region</description></variable>
-<variable><type>double</type><name>total_debt</name><description>The sum of debt across all firms in the region</description></variable>
-<variable><type>double</type><name>total_assets</name><description>The sum of assets across all firms in the region</description></variable>
-<variable><type>double</type><name>total_equity</name><description>The sum of equity across all firms in the region</description></variable>
-<variable><type>double</type><name>average_debt_earnings_ratio</name><description>Constructed macrovariable: the average debt/earnings ratio across all firms in the region</description></variable>
-<variable><type>double</type><name>average_debt_equity_ratio</name><description>Constructed macrovariable: the average debt/equity ratio across all firms in the region</description></variable>
-<variable><type>double</type><name>wage_profit_ratio</name><description>Constructed macrovariable: the average labour share (defined as total wages divided by total profits) across all firms in the region</description></variable>
+<variable><type>double</type><name>total_debt</name><description>The sum of debt across firms in the region</description></variable>
+<variable><type>double</type><name>total_assets</name><description>The sum of assets across firms in the region</description></variable>
+<variable><type>double</type><name>total_equity</name><description>The sum of equity across firms in the region</description></variable>
+<variable><type>double</type><name>average_debt_earnings_ratio</name><description>Constructed macrovariable: regional average debt/earnings ratio across all firms in the region</description></variable>
+<variable><type>double</type><name>average_debt_equity_ratio</name><description>Constructed macrovariable: regional average debt/equity ratio across all firms in the region</description></variable>
+<variable><type>double</type><name>wage_profit_ratio</name><description>Constructed macrovariable: regional average labour share across all firms in the region (defined as total wages divided by total profits)</description></variable>
 </variables>
 </dataType>
 
@@ -342,7 +342,7 @@ including several micro data.</description>
 <variable><type>int</type><name>no_employees_skill_3</name><description>Number of employees in the economy with general skill level 3 (in firms)</description></variable>
 <variable><type>int</type><name>no_employees_skill_4</name><description>Number of employees in the economy with general skill level 4 (in firms)</description></variable>
 <variable><type>int</type><name>no_employees_skill_5</name><description>Number of employees in the economy with general skill level 5 (in firms)</description></variable>
-<variable><type>double</type><name>firm_average_wage</name><description>verage wage in the economy paid by firms</description></variable>
+<variable><type>double</type><name>firm_average_wage</name><description>Average wage in the economy paid by firms</description></variable>
 <variable><type>double</type><name>firm_average_wage_skill_1</name><description>Average wage in the economy paid by firms for general skill level 1</description></variable>
 <variable><type>double</type><name>firm_average_wage_skill_2</name><description>Average wage in the economy paid by firms for general skill level 2</description></variable>
 <variable><type>double</type><name>firm_average_wage_skill_3</name><description>Average wage in the economy paid by firms for general skill level 3</description></variable>
@@ -359,17 +359,17 @@ including several micro data.</description>
 <variable><type>int</type><name>day_of_month_to_act</name><description></description></variable>
 
 <!-- Data for governments -->
-<variable><type>tax_rates_item[27]</type><name>government_tax_rates</name><description></description></variable>
+<variable><type>tax_rates_item[27]</type><name>government_tax_rates</name><description>Static array of the tax rates of 27 governments</description></variable>
 
 <!-- Data for firm balance sheets -->
-<variable><type>double</type><name>gdp</name><description>GDP = Consumption + Investments (measures at firms)</description></variable>
-<variable><type>double</type><name>total_earnings</name><description>Total profits across firms (sum of net earnings)</description></variable>
-<variable><type>double</type><name>total_debt</name><description></description></variable>
-<variable><type>double</type><name>total_assets</name><description>Total value of assets across all firms</description></variable>
-<variable><type>double</type><name>total_equity</name><description>Total value of equity across all firms</description></variable>
-<variable><type>double</type><name>average_debt_earnings_ratio</name><description>Constructed macrovariable: average debt/earnings ratio across all firms</description></variable>
-<variable><type>double</type><name>average_debt_equity_ratio</name><description>Constructed macrovariable: average debt/equity ratio across all firms</description></variable>
-<variable><type>double</type><name>wage_profit_ratio</name><description>Constructed macrovariable: the labour share, defined as total wages/total profits</description></variable>
+<variable><type>double</type><name>gdp</name><description>GDP = Consumption + Investments (measured at firms, sum of cum_revenues + investment_costs)</description></variable>
+<variable><type>double</type><name>total_earnings</name><description>Total profits across firms (sum of net_earnings)</description></variable>
+<variable><type>double</type><name>total_debt</name><description>Total debts across firms (sum of total_debt)</description></variable>
+<variable><type>double</type><name>total_assets</name><description>Total value of assets across firms</description></variable>
+<variable><type>double</type><name>total_equity</name><description>Total value of equity across firms</description></variable>
+<variable><type>double</type><name>average_debt_earnings_ratio</name><description>Constructed macrovariable: average debt/earnings ratio across firms (total debt divided by total earnings)</description></variable>
+<variable><type>double</type><name>average_debt_equity_ratio</name><description>Constructed macrovariable: average debt/equity ratio across firms (total debt divided by total equity)</description></variable>
+<variable><type>double</type><name>wage_profit_ratio</name><description>Constructed macrovariable: average labour share across firms (defined as total wages divided by total profits)</description></variable>
 </memory>
 
 <functions>
@@ -467,13 +467,6 @@ including several micro data.</description>
 <variable><type>double</type><name>average_s_skill_3</name><description></description></variable>
 <variable><type>double</type><name>average_s_skill_4</name><description></description></variable>
 <variable><type>double</type><name>average_s_skill_5</name><description></description></variable>
-</variables>
-</message>
-
-<message>
-<name>firm_balance_sheet_data</name>
-<description>Send by firms to Eurostat. Includes micro data about the firm's balance sheet.</description>
-<variables>
 <variable><type>double</type><name>cum_revenue</name><description></description></variable>
 <variable><type>double</type><name>investment_costs</name><description></description></variable>
 <variable><type>double</type><name>net_earnings</name><description></description></variable>
