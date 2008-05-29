@@ -80,3 +80,7 @@ fn: Eurostat_calculate_data()
 	AVERAGE_DEBT_EQUITY_RATIO = TOTAL_DEBT/TOTAL_EQUITY;
 	WAGE_PROFIT_RATIO = FIRM_AVERAGE_WAGE/TOTAL_EARNINGS;
 -------------------------------------------------------------------------------------------
+Sander, rev 987
+
+- moved data from firm_balance_sheet_data_message to firm_send_data_message.
+-------------------------------------------------------------------------------------------
