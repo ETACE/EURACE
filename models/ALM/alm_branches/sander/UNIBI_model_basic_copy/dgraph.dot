@@ -1,0 +1,150 @@
+digraph dependency_graph {
+	rankdir=BT;
+	size="8,5;"
+	node [shape = rect];
+	
+	/* Functions */
+	Bank_read_loan_request_send_offers[height = 0.000000, label = "Bank_read_loan_request_send_offers\n(0 lines)"]
+	Clearinghouse_send_gov_bond_transactions[height = 0.000000, label = "Clearinghouse_send_gov_bond_transactions\n(0 lines)"]
+	Clearinghouse_compute_gov_bond_transactions[height = 0.000000, label = "Clearinghouse_compute_gov_bond_transactions\n(0 lines)"]
+	Clearinghouse_read_gov_bond_orders[height = 0.000000, label = "Clearinghouse_read_gov_bond_orders\n(0 lines)"]
+	Clearinghouse_send_bond_transactions[height = 0.000000, label = "Clearinghouse_send_bond_transactions\n(0 lines)"]
+	Clearinghouse_compute_bond_transactions[height = 0.000000, label = "Clearinghouse_compute_bond_transactions\n(0 lines)"]
+	Clearinghouse_read_bond_orders[height = 0.000000, label = "Clearinghouse_read_bond_orders\n(0 lines)"]
+	Clearinghouse_send_stock_transactions[height = 0.000000, label = "Clearinghouse_send_stock_transactions\n(0 lines)"]
+	Clearinghouse_compute_stock_transactions[height = 0.000000, label = "Clearinghouse_compute_stock_transactions\n(0 lines)"]
+	Clearinghouse_read_stock_orders[height = 0.000000, label = "Clearinghouse_read_stock_orders\n(0 lines)"]
+	Market_Research_send_data[height = 0.000000, label = "Market_Research_send_data\n(0 lines)"]
+	Market_Research_calculate_data[height = 0.000000, label = "Market_Research_calculate_data\n(0 lines)"]
+	IGFirm_receive_payment[height = 0.000000, label = "IGFirm_receive_payment\n(0 lines)"]
+	IGFirm_send_capital_good[height = 0.000000, label = "IGFirm_send_capital_good\n(0 lines)"]
+	IGFirm_update_productivity_price[height = 0.000000, label = "IGFirm_update_productivity_price\n(0 lines)"]
+	Mall_pay_firm[height = 0.000000, label = "Mall_pay_firm\n(0 lines)"]
+	Mall_update_mall_stocks_sales_rationing_2[height = 0.000000, label = "Mall_update_mall_stocks_sales_rationing_2\n(0 lines)"]
+	Mall_update_mall_stocks_sales_rationing_1[height = 0.000000, label = "Mall_update_mall_stocks_sales_rationing_1\n(0 lines)"]
+	Mall_send_quality_price_info_1[height = 0.000000, label = "Mall_send_quality_price_info_1\n(0 lines)"]
+	Mall_update_mall_stock[height = 0.000000, label = "Mall_update_mall_stock\n(0 lines)"]
+	Mall_send_current_stocks[height = 0.000000, label = "Mall_send_current_stocks\n(0 lines)"]
+	Household_send_data_to_Market_Research[height = 0.000000, label = "Household_send_data_to_Market_Research\n(0 lines)"]
+	Household_handle_leftover_budget[height = 0.000000, label = "Household_handle_leftover_budget\n(0 lines)"]
+	Household_read_rationing[height = 0.000000, label = "Household_read_rationing\n(0 lines)"]
+	Household_rank_and_buy_goods_2[height = 0.000000, label = "Household_rank_and_buy_goods_2\n(0 lines)"]
+	Household_rank_and_buy_goods_1[height = 0.000000, label = "Household_rank_and_buy_goods_1\n(0 lines)"]
+	Household_receive_wage[height = 0.000000, label = "Household_receive_wage\n(0 lines)"]
+	Household_read_application_rejection_update_wage_reservation_2[height = 0.000000, label = "Household_read_application_rejection_update_wage_reservation_2\n(0 lines)"]
+	Household_read_job_offers_send_response_2[height = 0.000000, label = "Household_read_job_offers_send_response_2\n(0 lines)"]
+	Household_read_job_vacancies_and_send_applications_2[height = 0.000000, label = "Household_read_job_vacancies_and_send_applications_2\n(0 lines)"]
+	Household_read_application_rejection_update_wage_reservation[height = 0.000000, label = "Household_read_application_rejection_update_wage_reservation\n(0 lines)"]
+	Household_read_job_offers_send_response[height = 0.000000, label = "Household_read_job_offers_send_response\n(0 lines)"]
+	Household_read_job_vacancies_and_send_applications[height = 0.000000, label = "Household_read_job_vacancies_and_send_applications\n(0 lines)"]
+	Household_on_the_job_search_Yes_or_No[height = 0.000000, label = "Household_on_the_job_search_Yes_or_No\n(0 lines)"]
+	Household_read_firing_messages[height = 0.000000, label = "Household_read_firing_messages\n(0 lines)"]
+	Firm_read_gov_bond_transactions[height = 0.000000, label = "Firm_read_gov_bond_transactions\n(0 lines)"]
+	Firm_compute_and_send_gov_bond_orders[height = 0.000000, label = "Firm_compute_and_send_gov_bond_orders\n(0 lines)"]
+	Firm_read_stock_transactions[height = 0.000000, label = "Firm_read_stock_transactions\n(0 lines)"]
+	Firm_compute_and_send_stock_orders[height = 0.000000, label = "Firm_compute_and_send_stock_orders\n(0 lines)"]
+	Firm_read_bond_transactions[height = 0.000000, label = "Firm_read_bond_transactions\n(0 lines)"]
+	Firm_compute_and_send_bond_orders[height = 0.000000, label = "Firm_compute_and_send_bond_orders\n(0 lines)"]
+	Firm_read_loan_offers_send_loan_acceptance[height = 0.000000, label = "Firm_read_loan_offers_send_loan_acceptance\n(0 lines)"]
+	Firm_apply_for_loans[height = 0.000000, label = "Firm_apply_for_loans\n(0 lines)"]
+	Firm_compute_balance_sheet[height = 0.000000, label = "Firm_compute_balance_sheet\n(0 lines)"]
+	Firm_compute_income_statement[height = 0.000000, label = "Firm_compute_income_statement\n(0 lines)"]
+	Firm_compute_payout_policy[height = 0.000000, label = "Firm_compute_payout_policy\n(0 lines)"]
+	Firm_calc_input_demands_2[height = 0.000000, label = "Firm_calc_input_demands_2\n(0 lines)"]
+	Firm_calc_production_quantity_2[height = 0.000000, label = "Firm_calc_production_quantity_2\n(0 lines)"]
+	Firm_calc_revenue[height = 0.000000, label = "Firm_calc_revenue\n(0 lines)"]
+	Firm_send_goods_to_mall[height = 0.000000, label = "Firm_send_goods_to_mall\n(0 lines)"]
+	Firm_calc_pay_costs[height = 0.000000, label = "Firm_calc_pay_costs\n(0 lines)"]
+	Firm_send_capital_demand[height = 0.000000, label = "Firm_send_capital_demand\n(0 lines)"]
+	Firm_calc_input_demands[height = 0.000000, label = "Firm_calc_input_demands\n(0 lines)"]
+	Firm_calc_production_quantity[height = 0.000000, label = "Firm_calc_production_quantity\n(0 lines)"]
+	Firm_send_data_to_Market_Research[height = 0.000000, label = "Firm_send_data_to_Market_Research\n(0 lines)"]
+	Firm_update_specific_skills_of_workers[height = 0.000000, label = "Firm_update_specific_skills_of_workers\n(0 lines)"]
+	Firm_update_wage_offer_2[height = 0.000000, label = "Firm_update_wage_offer_2\n(0 lines)"]
+	Firm_read_job_responses_2[height = 0.000000, label = "Firm_read_job_responses_2\n(0 lines)"]
+	Firm_read_job_applications_send_job_offer_or_rejection_2[height = 0.000000, label = "Firm_read_job_applications_send_job_offer_or_rejection_2\n(0 lines)"]
+	Firm_send_vacancies_2[height = 0.000000, label = "Firm_send_vacancies_2\n(0 lines)"]
+	Firm_update_wage_offer[height = 0.000000, label = "Firm_update_wage_offer\n(0 lines)"]
+	Firm_read_job_responses[height = 0.000000, label = "Firm_read_job_responses\n(0 lines)"]
+	Firm_read_job_applications_send_job_offer_or_rejection[height = 0.000000, label = "Firm_read_job_applications_send_job_offer_or_rejection\n(0 lines)"]
+	Firm_send_redundancies[height = 0.000000, label = "Firm_send_redundancies\n(0 lines)"]
+	Firm_send_vacancies[height = 0.000000, label = "Firm_send_vacancies\n(0 lines)"]
+	Firm_calculate_specific_skills_and_wage_offer[height = 0.000000, label = "Firm_calculate_specific_skills_and_wage_offer\n(0 lines)"]
+	
+	/* Dependencies */
+	Bank_read_loan_request_send_offers -> Firm_apply_for_loans [ label = "<depends on loan_request>" ];
+	Clearinghouse_send_gov_bond_transactions -> Clearinghouse_compute_gov_bond_transactions [ label = "<depends on internal>" ];
+	Clearinghouse_compute_gov_bond_transactions -> Clearinghouse_read_gov_bond_orders [ label = "<depends on internal>" ];
+	Clearinghouse_read_gov_bond_orders -> Firm_compute_and_send_gov_bond_orders [ label = "<depends on bond_order>" ];
+	Clearinghouse_send_bond_transactions -> Clearinghouse_compute_bond_transactions [ label = "<depends on internal>" ];
+	Clearinghouse_compute_bond_transactions -> Clearinghouse_read_bond_orders [ label = "<depends on internal>" ];
+	Clearinghouse_read_bond_orders -> Firm_compute_and_send_bond_orders [ label = "<depends on bond_order>" ];
+	Clearinghouse_send_stock_transactions -> Clearinghouse_compute_stock_transactions [ label = "<depends on internal>" ];
+	Clearinghouse_compute_stock_transactions -> Clearinghouse_read_stock_orders [ label = "<depends on internal>" ];
+	Clearinghouse_read_stock_orders -> Firm_compute_and_send_stock_orders [ label = "<depends on stock_order>" ];
+	Market_Research_calculate_data -> Household_send_data_to_Market_Research [ label = "<depends on household_send_data>" ];
+	Market_Research_calculate_data -> Firm_send_data_to_Market_Research [ label = "<depends on firm_send_data>" ];
+	IGFirm_receive_payment -> Firm_calc_pay_costs [ label = "<depends on pay_capital_goods>" ];
+	IGFirm_send_capital_good -> Firm_send_capital_demand [ label = "<depends on capital_good_request>" ];
+	Mall_pay_firm -> Mall_update_mall_stocks_sales_rationing_2 [ label = "<depends on internal>" ];
+	Mall_update_mall_stocks_sales_rationing_2 -> Household_rank_and_buy_goods_2 [ label = "<depends on consumption_request_2>" ];
+	Mall_update_mall_stocks_sales_rationing_1 -> Household_rank_and_buy_goods_1 [ label = "<depends on consumption_request_1>" ];
+	Mall_send_quality_price_info_1 -> Mall_update_mall_stock [ label = "<depends on internal>" ];
+	Mall_update_mall_stock -> Firm_send_goods_to_mall [ label = "<depends on update_mall_stock>" ];
+	Household_send_data_to_Market_Research -> Household_handle_leftover_budget [ label = "<depends on internal>" ];
+	Household_handle_leftover_budget -> IGFirm_receive_payment [ label = "<depends on capital_good_profit_distribution>" ];
+	Household_handle_leftover_budget -> Firm_calc_revenue [ label = "<depends on dividend_payment>" ];
+	Household_handle_leftover_budget -> Household_read_rationing [ label = "<depends on internal>" ];
+	Household_read_rationing -> Mall_update_mall_stocks_sales_rationing_2 [ label = "<depends on accepted_consumption_2>" ];
+	Household_rank_and_buy_goods_2 -> Mall_update_mall_stocks_sales_rationing_1 [ label = "<depends on quality_price_info_2>" ];
+	Household_rank_and_buy_goods_2 -> Mall_update_mall_stocks_sales_rationing_1 [ label = "<depends on accepted_consumption_1>" ];
+	Household_rank_and_buy_goods_1 -> Mall_send_quality_price_info_1 [ label = "<depends on quality_price_info_1>" ];
+	Household_rank_and_buy_goods_1 -> Household_receive_wage [ label = "<depends on internal>" ];
+	Household_receive_wage -> Firm_calc_pay_costs [ label = "<depends on wage_payment>" ];
+	Household_read_application_rejection_update_wage_reservation_2 -> Household_read_job_offers_send_response_2 [ label = "<depends on internal>" ];
+	Household_read_application_rejection_update_wage_reservation_2 -> Firm_read_job_applications_send_job_offer_or_rejection_2 [ label = "<depends on application_rejection2>" ];
+	Household_read_job_offers_send_response_2 -> Firm_read_job_applications_send_job_offer_or_rejection_2 [ label = "<depends on job_offer2>" ];
+	Household_read_job_vacancies_and_send_applications_2 -> Household_read_application_rejection_update_wage_reservation [ label = "<depends on internal>" ];
+	Household_read_job_vacancies_and_send_applications_2 -> Firm_send_vacancies_2 [ label = "<depends on vacancies2>" ];
+	Household_read_application_rejection_update_wage_reservation -> Household_read_job_offers_send_response [ label = "<depends on internal>" ];
+	Household_read_application_rejection_update_wage_reservation -> Firm_read_job_applications_send_job_offer_or_rejection [ label = "<depends on application_rejection>" ];
+	Household_read_job_offers_send_response -> Firm_read_job_applications_send_job_offer_or_rejection [ label = "<depends on job_offer>" ];
+	Household_read_job_vacancies_and_send_applications -> Household_read_firing_messages [ label = "<depends on internal>" ];
+	Household_read_job_vacancies_and_send_applications -> Household_on_the_job_search_Yes_or_No [ label = "<depends on internal>" ];
+	Household_read_job_vacancies_and_send_applications -> Firm_send_vacancies [ label = "<depends on vacancies>" ];
+	Household_on_the_job_search_Yes_or_No -> Household_read_firing_messages [ label = "<depends on internal>" ];
+	Household_read_firing_messages -> Firm_send_redundancies [ label = "<depends on firing>" ];
+	Firm_read_gov_bond_transactions -> Clearinghouse_send_gov_bond_transactions [ label = "<depends on gov_bond_transaction>" ];
+	Firm_read_stock_transactions -> Clearinghouse_send_stock_transactions [ label = "<depends on stock_transaction>" ];
+	Firm_compute_and_send_stock_orders -> Firm_read_bond_transactions [ label = "<depends on internal>" ];
+	Firm_read_bond_transactions -> Clearinghouse_send_bond_transactions [ label = "<depends on bond_transaction>" ];
+	Firm_compute_and_send_bond_orders -> Firm_read_loan_offers_send_loan_acceptance [ label = "<depends on internal>" ];
+	Firm_read_loan_offers_send_loan_acceptance -> Bank_read_loan_request_send_offers [ label = "<depends on loan_conditions>" ];
+	Firm_apply_for_loans -> Firm_compute_payout_policy [ label = "<depends on internal>" ];
+	Firm_compute_balance_sheet -> Firm_compute_income_statement [ label = "<depends on internal>" ];
+	Firm_compute_income_statement -> Firm_calc_revenue [ label = "<depends on internal>" ];
+	Firm_compute_payout_policy -> Firm_calc_input_demands [ label = "<depends on internal>" ];
+	Firm_calc_production_quantity_2 -> Firm_read_stock_transactions [ label = "<depends on internal>" ];
+	Firm_calc_revenue -> Mall_pay_firm [ label = "<depends on sales>" ];
+	Firm_send_goods_to_mall -> Firm_calc_pay_costs [ label = "<depends on internal>" ];
+	Firm_calc_pay_costs -> IGFirm_send_capital_good [ label = "<depends on capital_good_delivery>" ];
+	Firm_send_capital_demand -> Firm_read_job_responses_2 [ label = "<depends on internal>" ];
+	Firm_calc_input_demands -> IGFirm_update_productivity_price [ label = "<depends on productivity>" ];
+	Firm_calc_input_demands -> Firm_calc_production_quantity [ label = "<depends on internal>" ];
+	Firm_calc_production_quantity -> Mall_send_current_stocks [ label = "<depends on current_mall_stock_info>" ];
+	Firm_send_data_to_Market_Research -> Firm_update_specific_skills_of_workers [ label = "<depends on internal>" ];
+	Firm_update_specific_skills_of_workers -> Household_receive_wage [ label = "<depends on specific_skill_update>" ];
+	Firm_update_wage_offer_2 -> Firm_read_job_responses_2 [ label = "<depends on internal>" ];
+	Firm_read_job_responses_2 -> Household_read_job_offers_send_response_2 [ label = "<depends on quitting2>" ];
+	Firm_read_job_responses_2 -> Household_read_job_offers_send_response_2 [ label = "<depends on job_acceptance2>" ];
+	Firm_read_job_applications_send_job_offer_or_rejection_2 -> Household_read_job_vacancies_and_send_applications_2 [ label = "<depends on job_application2>" ];
+	Firm_send_vacancies_2 -> Firm_update_wage_offer [ label = "<depends on internal>" ];
+	Firm_update_wage_offer -> Firm_read_job_responses [ label = "<depends on internal>" ];
+	Firm_read_job_responses -> Household_read_job_offers_send_response [ label = "<depends on quitting>" ];
+	Firm_read_job_responses -> Household_read_job_offers_send_response [ label = "<depends on job_acceptance>" ];
+	Firm_read_job_applications_send_job_offer_or_rejection -> Household_read_job_vacancies_and_send_applications [ label = "<depends on job_application>" ];
+	Firm_send_redundancies -> Firm_calc_production_quantity_2 [ label = "<depends on internal>" ];
+	Firm_send_vacancies -> Firm_calculate_specific_skills_and_wage_offer [ label = "<depends on internal>" ];
+	Firm_calculate_specific_skills_and_wage_offer -> Market_Research_send_data [ label = "<depends on market_research_send_specific_skills>" ];
+	Firm_calculate_specific_skills_and_wage_offer -> Firm_calc_production_quantity_2 [ label = "<depends on internal>" ];
+}
