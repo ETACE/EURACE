@@ -196,7 +196,7 @@
 <variable><type>double</type><name>interest_rate</name><description></description></variable>
 </variables>
 </message>
-credit_id
+
 <message>
 <name>interest_payment</name>
 <description>Added by firm to pay interest on debt</description>
