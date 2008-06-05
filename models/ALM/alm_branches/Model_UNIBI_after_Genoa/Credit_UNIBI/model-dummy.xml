@@ -41,7 +41,7 @@
 
 <dataType>
 <name>outstanding_loans</name>
-<description>Used by households to hold shares</description>
+<description>Used by banks to record outstanding loans to firms</description>
 <variables>
 <variable><type>int</type><name>firm_id</name><description></description></variable>
 <variable><type>double</type><name>total_amount</name><description></description></variable>

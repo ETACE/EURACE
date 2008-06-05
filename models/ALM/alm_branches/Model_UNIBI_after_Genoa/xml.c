@@ -2685,7 +2685,7 @@ void read_firm_data(char * buffer, int * j, firm_data * temp_datatype)
 	(*j)++;
 	(*temp_datatype).average_s_skill_5 = 0.0;
 	array_k = 0;
-	while(buffer[*j] != '}')
+	while(buffer[*j] != ',')
 	{
 		arraydata[array_k] = buffer[*j];
 		array_k++;
@@ -2693,6 +2693,94 @@ void read_firm_data(char * buffer, int * j, firm_data * temp_datatype)
 	}
 	arraydata[array_k] = 0;
 	(*temp_datatype).average_s_skill_5 = atof(arraydata);
+	(*j)++;
+	(*temp_datatype).gdp = 0.0;
+	array_k = 0;
+	while(buffer[*j] != ',')
+	{
+		arraydata[array_k] = buffer[*j];
+		array_k++;
+		(*j)++;
+	}
+	arraydata[array_k] = 0;
+	(*temp_datatype).gdp = atof(arraydata);
+	(*j)++;
+	(*temp_datatype).total_earnings = 0.0;
+	array_k = 0;
+	while(buffer[*j] != ',')
+	{
+		arraydata[array_k] = buffer[*j];
+		array_k++;
+		(*j)++;
+	}
+	arraydata[array_k] = 0;
+	(*temp_datatype).total_earnings = atof(arraydata);
+	(*j)++;
+	(*temp_datatype).total_debt = 0.0;
+	array_k = 0;
+	while(buffer[*j] != ',')
+	{
+		arraydata[array_k] = buffer[*j];
+		array_k++;
+		(*j)++;
+	}
+	arraydata[array_k] = 0;
+	(*temp_datatype).total_debt = atof(arraydata);
+	(*j)++;
+	(*temp_datatype).total_assets = 0.0;
+	array_k = 0;
+	while(buffer[*j] != ',')
+	{
+		arraydata[array_k] = buffer[*j];
+		array_k++;
+		(*j)++;
+	}
+	arraydata[array_k] = 0;
+	(*temp_datatype).total_assets = atof(arraydata);
+	(*j)++;
+	(*temp_datatype).total_equity = 0.0;
+	array_k = 0;
+	while(buffer[*j] != ',')
+	{
+		arraydata[array_k] = buffer[*j];
+		array_k++;
+		(*j)++;
+	}
+	arraydata[array_k] = 0;
+	(*temp_datatype).total_equity = atof(arraydata);
+	(*j)++;
+	(*temp_datatype).average_debt_earnings_ratio = 0.0;
+	array_k = 0;
+	while(buffer[*j] != ',')
+	{
+		arraydata[array_k] = buffer[*j];
+		array_k++;
+		(*j)++;
+	}
+	arraydata[array_k] = 0;
+	(*temp_datatype).average_debt_earnings_ratio = atof(arraydata);
+	(*j)++;
+	(*temp_datatype).average_debt_equity_ratio = 0.0;
+	array_k = 0;
+	while(buffer[*j] != ',')
+	{
+		arraydata[array_k] = buffer[*j];
+		array_k++;
+		(*j)++;
+	}
+	arraydata[array_k] = 0;
+	(*temp_datatype).average_debt_equity_ratio = atof(arraydata);
+	(*j)++;
+	(*temp_datatype).labour_share_ratio = 0.0;
+	array_k = 0;
+	while(buffer[*j] != '}')
+	{
+		arraydata[array_k] = buffer[*j];
+		array_k++;
+		(*j)++;
+	}
+	arraydata[array_k] = 0;
+	(*temp_datatype).labour_share_ratio = atof(arraydata);
 	(*j)++;
 }
 
@@ -2706,7 +2794,7 @@ void read_firm_data_dynamic_array(char * buffer, int * j, firm_data_array * temp
 	{
 		if(buffer[(*j)] == '{')
 		{
-			add_firm_data(temp_datatype_array, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+			add_firm_data(temp_datatype_array, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
 			read_firm_data(buffer, j, &(*temp_datatype_array).array[arraycount]);
 			arraycount++;
 		}
@@ -3071,6 +3159,12 @@ void readinitialstates(char * filename, int * itno, double cloud_data[6],
 	int in_region_firm_data;
 	int in_region_household_data;
 	int in_government_tax_rates;
+	int in_gdp;
+	int in_total_earnings;
+	int in_total_equity;
+	int in_average_debt_earnings_ratio;
+	int in_average_debt_equity_ratio;
+	int in_labour_share_ratio;
 	int in_accounts;
 	int in_loans_outstanding;
 	int in_last_credit_id;
@@ -3270,6 +3364,12 @@ void readinitialstates(char * filename, int * itno, double cloud_data[6],
 //	firm_data_array * region_firm_data;
 //	household_data_array * region_household_data;
 //	tax_rates_item_array * government_tax_rates;
+//	double gdp;
+//	double total_earnings;
+//	double total_equity;
+//	double average_debt_earnings_ratio;
+//	double average_debt_equity_ratio;
+//	double labour_share_ratio;
 //	account_array * accounts;
 //	outstanding_loans_array * loans_outstanding;
 //	int last_credit_id;
@@ -3502,6 +3602,12 @@ void readinitialstates(char * filename, int * itno, double cloud_data[6],
 	in_region_firm_data = 0;
 	in_region_household_data = 0;
 	in_government_tax_rates = 0;
+	in_gdp = 0;
+	in_total_earnings = 0;
+	in_total_equity = 0;
+	in_average_debt_earnings_ratio = 0;
+	in_average_debt_equity_ratio = 0;
+	in_labour_share_ratio = 0;
 	in_accounts = 0;
 	in_loans_outstanding = 0;
 	in_last_credit_id = 0;
@@ -3701,6 +3807,12 @@ void readinitialstates(char * filename, int * itno, double cloud_data[6],
 //	region_firm_data = init_firm_data_array();
 //	region_household_data = init_household_data_array();
 //	government_tax_rates = init_tax_rates_item_array();
+//	gdp = 0.0;
+//	total_earnings = 0.0;
+//	total_equity = 0.0;
+//	average_debt_earnings_ratio = 0.0;
+//	average_debt_equity_ratio = 0.0;
+//	labour_share_ratio = 0.0;
 //	accounts = init_account_array();
 //	loans_outstanding = init_outstanding_loans_array();
 //	last_credit_id = 0;
@@ -4098,7 +4210,7 @@ in_Government_agent = 0;
 					 * If flag is not zero we aleady have partition data so can read and distribute to the current node.*/
 					if( flag == 0 )
 					{
-						//add_Eurostat_agent(id, region_id, no_regions, num_households, no_households_skill_1, no_households_skill_2, no_households_skill_3, no_households_skill_4, no_households_skill_5, employed, employed_skill_1, employed_skill_2, employed_skill_3, employed_skill_4, employed_skill_5, unemployed, unemployment_rate, unemployment_rate_skill_1, unemployment_rate_skill_2, unemployment_rate_skill_3, unemployment_rate_skill_4, unemployment_rate_skill_5, average_wage, average_wage_skill_1, average_wage_skill_2, average_wage_skill_3, average_wage_skill_4, average_wage_skill_5, average_s_skill, average_s_skill_1, average_s_skill_2, average_s_skill_3, average_s_skill_4, average_s_skill_5, no_firms, no_vacancies, no_employees, no_employees_skill_1, no_employees_skill_2, no_employees_skill_3, no_employees_skill_4, no_employees_skill_5, firm_average_wage, firm_average_wage_skill_1, firm_average_wage_skill_2, firm_average_wage_skill_3, firm_average_wage_skill_4, firm_average_wage_skill_5, firm_average_s_skill, firm_average_s_skill_1, firm_average_s_skill_2, firm_average_s_skill_3, firm_average_s_skill_4, firm_average_s_skill_5, region_firm_data, region_household_data, day_of_month_to_act, government_tax_rates);
+						//add_Eurostat_agent(id, region_id, no_regions, num_households, no_households_skill_1, no_households_skill_2, no_households_skill_3, no_households_skill_4, no_households_skill_5, employed, employed_skill_1, employed_skill_2, employed_skill_3, employed_skill_4, employed_skill_5, unemployed, unemployment_rate, unemployment_rate_skill_1, unemployment_rate_skill_2, unemployment_rate_skill_3, unemployment_rate_skill_4, unemployment_rate_skill_5, average_wage, average_wage_skill_1, average_wage_skill_2, average_wage_skill_3, average_wage_skill_4, average_wage_skill_5, average_s_skill, average_s_skill_1, average_s_skill_2, average_s_skill_3, average_s_skill_4, average_s_skill_5, no_firms, no_vacancies, no_employees, no_employees_skill_1, no_employees_skill_2, no_employees_skill_3, no_employees_skill_4, no_employees_skill_5, firm_average_wage, firm_average_wage_skill_1, firm_average_wage_skill_2, firm_average_wage_skill_3, firm_average_wage_skill_4, firm_average_wage_skill_5, firm_average_s_skill, firm_average_s_skill_1, firm_average_s_skill_2, firm_average_s_skill_3, firm_average_s_skill_4, firm_average_s_skill_5, region_firm_data, region_household_data, day_of_month_to_act, government_tax_rates, gdp, total_earnings, total_debt, total_assets, total_equity, average_debt_earnings_ratio, average_debt_equity_ratio, labour_share_ratio);
 						add_Eurostat_agent_internal(current_Eurostat_agent, Eurostat_start_Eurostat_state);
 						
 						/* Update the cloud data */
@@ -4124,7 +4236,7 @@ in_Government_agent = 0;
 							)
 							{
 								//p_xmachine = &(current_node->agents);
-								//add_Eurostat_agent(id, region_id, no_regions, num_households, no_households_skill_1, no_households_skill_2, no_households_skill_3, no_households_skill_4, no_households_skill_5, employed, employed_skill_1, employed_skill_2, employed_skill_3, employed_skill_4, employed_skill_5, unemployed, unemployment_rate, unemployment_rate_skill_1, unemployment_rate_skill_2, unemployment_rate_skill_3, unemployment_rate_skill_4, unemployment_rate_skill_5, average_wage, average_wage_skill_1, average_wage_skill_2, average_wage_skill_3, average_wage_skill_4, average_wage_skill_5, average_s_skill, average_s_skill_1, average_s_skill_2, average_s_skill_3, average_s_skill_4, average_s_skill_5, no_firms, no_vacancies, no_employees, no_employees_skill_1, no_employees_skill_2, no_employees_skill_3, no_employees_skill_4, no_employees_skill_5, firm_average_wage, firm_average_wage_skill_1, firm_average_wage_skill_2, firm_average_wage_skill_3, firm_average_wage_skill_4, firm_average_wage_skill_5, firm_average_s_skill, firm_average_s_skill_1, firm_average_s_skill_2, firm_average_s_skill_3, firm_average_s_skill_4, firm_average_s_skill_5, region_firm_data, region_household_data, day_of_month_to_act, government_tax_rates);
+								//add_Eurostat_agent(id, region_id, no_regions, num_households, no_households_skill_1, no_households_skill_2, no_households_skill_3, no_households_skill_4, no_households_skill_5, employed, employed_skill_1, employed_skill_2, employed_skill_3, employed_skill_4, employed_skill_5, unemployed, unemployment_rate, unemployment_rate_skill_1, unemployment_rate_skill_2, unemployment_rate_skill_3, unemployment_rate_skill_4, unemployment_rate_skill_5, average_wage, average_wage_skill_1, average_wage_skill_2, average_wage_skill_3, average_wage_skill_4, average_wage_skill_5, average_s_skill, average_s_skill_1, average_s_skill_2, average_s_skill_3, average_s_skill_4, average_s_skill_5, no_firms, no_vacancies, no_employees, no_employees_skill_1, no_employees_skill_2, no_employees_skill_3, no_employees_skill_4, no_employees_skill_5, firm_average_wage, firm_average_wage_skill_1, firm_average_wage_skill_2, firm_average_wage_skill_3, firm_average_wage_skill_4, firm_average_wage_skill_5, firm_average_s_skill, firm_average_s_skill_1, firm_average_s_skill_2, firm_average_s_skill_3, firm_average_s_skill_4, firm_average_s_skill_5, region_firm_data, region_household_data, day_of_month_to_act, government_tax_rates, gdp, total_earnings, total_debt, total_assets, total_equity, average_debt_earnings_ratio, average_debt_equity_ratio, labour_share_ratio);
 								add_Eurostat_agent_internal(current_Eurostat_agent, Eurostat_start_Eurostat_state);
 							} 
 						}
@@ -4143,7 +4255,7 @@ in_Government_agent = 0;
 								rrange=1.5;
 
 								//p_xmachine = &(current_node->agents);
-								//add_Eurostat_agent(id, region_id, no_regions, num_households, no_households_skill_1, no_households_skill_2, no_households_skill_3, no_households_skill_4, no_households_skill_5, employed, employed_skill_1, employed_skill_2, employed_skill_3, employed_skill_4, employed_skill_5, unemployed, unemployment_rate, unemployment_rate_skill_1, unemployment_rate_skill_2, unemployment_rate_skill_3, unemployment_rate_skill_4, unemployment_rate_skill_5, average_wage, average_wage_skill_1, average_wage_skill_2, average_wage_skill_3, average_wage_skill_4, average_wage_skill_5, average_s_skill, average_s_skill_1, average_s_skill_2, average_s_skill_3, average_s_skill_4, average_s_skill_5, no_firms, no_vacancies, no_employees, no_employees_skill_1, no_employees_skill_2, no_employees_skill_3, no_employees_skill_4, no_employees_skill_5, firm_average_wage, firm_average_wage_skill_1, firm_average_wage_skill_2, firm_average_wage_skill_3, firm_average_wage_skill_4, firm_average_wage_skill_5, firm_average_s_skill, firm_average_s_skill_1, firm_average_s_skill_2, firm_average_s_skill_3, firm_average_s_skill_4, firm_average_s_skill_5, region_firm_data, region_household_data, day_of_month_to_act, government_tax_rates);
+								//add_Eurostat_agent(id, region_id, no_regions, num_households, no_households_skill_1, no_households_skill_2, no_households_skill_3, no_households_skill_4, no_households_skill_5, employed, employed_skill_1, employed_skill_2, employed_skill_3, employed_skill_4, employed_skill_5, unemployed, unemployment_rate, unemployment_rate_skill_1, unemployment_rate_skill_2, unemployment_rate_skill_3, unemployment_rate_skill_4, unemployment_rate_skill_5, average_wage, average_wage_skill_1, average_wage_skill_2, average_wage_skill_3, average_wage_skill_4, average_wage_skill_5, average_s_skill, average_s_skill_1, average_s_skill_2, average_s_skill_3, average_s_skill_4, average_s_skill_5, no_firms, no_vacancies, no_employees, no_employees_skill_1, no_employees_skill_2, no_employees_skill_3, no_employees_skill_4, no_employees_skill_5, firm_average_wage, firm_average_wage_skill_1, firm_average_wage_skill_2, firm_average_wage_skill_3, firm_average_wage_skill_4, firm_average_wage_skill_5, firm_average_s_skill, firm_average_s_skill_1, firm_average_s_skill_2, firm_average_s_skill_3, firm_average_s_skill_4, firm_average_s_skill_5, region_firm_data, region_household_data, day_of_month_to_act, government_tax_rates, gdp, total_earnings, total_debt, total_assets, total_equity, average_debt_earnings_ratio, average_debt_equity_ratio, labour_share_ratio);
 								add_Eurostat_agent_internal(current_Eurostat_agent, Eurostat_start_Eurostat_state);
 
 								/*current_Eurostat_agent-> = xcentre;
@@ -4470,7 +4582,13 @@ in_Government_agent = 0;
 //				firm_average_s_skill_3 = 0.0;
 //				firm_average_s_skill_4 = 0.0;
 //				firm_average_s_skill_5 = 0.0;
-////////////				last_credit_id = 0;
+////////				gdp = 0.0;
+//				total_earnings = 0.0;
+//				total_equity = 0.0;
+//				average_debt_earnings_ratio = 0.0;
+//				average_debt_equity_ratio = 0.0;
+//				labour_share_ratio = 0.0;
+//////				last_credit_id = 0;
 //				amount_credit_offer = 0.0;
 //				total_deposits = 0.0;
 //				total_loan_supply = 0.0;
@@ -4851,6 +4969,18 @@ in_Government_agent = 0;
 			if(strcmp(buffer, "/region_household_data") == 0) in_region_household_data = 0;
 			if(strcmp(buffer, "government_tax_rates") == 0) in_government_tax_rates = 1;
 			if(strcmp(buffer, "/government_tax_rates") == 0) in_government_tax_rates = 0;
+			if(strcmp(buffer, "gdp") == 0) in_gdp = 1;
+			if(strcmp(buffer, "/gdp") == 0) in_gdp = 0;
+			if(strcmp(buffer, "total_earnings") == 0) in_total_earnings = 1;
+			if(strcmp(buffer, "/total_earnings") == 0) in_total_earnings = 0;
+			if(strcmp(buffer, "total_equity") == 0) in_total_equity = 1;
+			if(strcmp(buffer, "/total_equity") == 0) in_total_equity = 0;
+			if(strcmp(buffer, "average_debt_earnings_ratio") == 0) in_average_debt_earnings_ratio = 1;
+			if(strcmp(buffer, "/average_debt_earnings_ratio") == 0) in_average_debt_earnings_ratio = 0;
+			if(strcmp(buffer, "average_debt_equity_ratio") == 0) in_average_debt_equity_ratio = 1;
+			if(strcmp(buffer, "/average_debt_equity_ratio") == 0) in_average_debt_equity_ratio = 0;
+			if(strcmp(buffer, "labour_share_ratio") == 0) in_labour_share_ratio = 1;
+			if(strcmp(buffer, "/labour_share_ratio") == 0) in_labour_share_ratio = 0;
 			if(strcmp(buffer, "accounts") == 0) in_accounts = 1;
 			if(strcmp(buffer, "/accounts") == 0) in_accounts = 0;
 			if(strcmp(buffer, "loans_outstanding") == 0) in_loans_outstanding = 1;
@@ -5122,6 +5252,14 @@ in_Government_agent = 0;
 				if(in_region_household_data) read_household_data_dynamic_array(buffer, &j, &current_Eurostat_agent->region_household_data);
 				if(in_day_of_month_to_act) current_Eurostat_agent->day_of_month_to_act = atoi(buffer);
 				if(in_government_tax_rates) read_tax_rates_item_dynamic_array(buffer, &j, &current_Eurostat_agent->government_tax_rates);
+				if(in_gdp) current_Eurostat_agent->gdp = atof(buffer);
+				if(in_total_earnings) current_Eurostat_agent->total_earnings = atof(buffer);
+				if(in_total_debt) current_Eurostat_agent->total_debt = atof(buffer);
+				if(in_total_assets) current_Eurostat_agent->total_assets = atof(buffer);
+				if(in_total_equity) current_Eurostat_agent->total_equity = atof(buffer);
+				if(in_average_debt_earnings_ratio) current_Eurostat_agent->average_debt_earnings_ratio = atof(buffer);
+				if(in_average_debt_equity_ratio) current_Eurostat_agent->average_debt_equity_ratio = atof(buffer);
+				if(in_labour_share_ratio) current_Eurostat_agent->labour_share_ratio = atof(buffer);
 			}
 			else if(in_Bank_agent == 1)
 			{
@@ -5208,7 +5346,7 @@ in_Government_agent = 0;
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////	free_firm_data_array(region_firm_data);
 //	free_household_data_array(region_household_data);
 //	free_tax_rates_item_array(government_tax_rates);
-//	free_account_array(accounts);
+//////////////	free_account_array(accounts);
 //	free_outstanding_loans_array(loans_outstanding);
 //////////////////
 }
@@ -6516,6 +6654,22 @@ void write_firm_data(FILE *file, firm_data * temp_datatype)
 	fputs(data, file);
 	fputs(", ", file);	sprintf(data, "%f", (*temp_datatype).average_s_skill_5);
 	fputs(data, file);
+	fputs(", ", file);	sprintf(data, "%f", (*temp_datatype).gdp);
+	fputs(data, file);
+	fputs(", ", file);	sprintf(data, "%f", (*temp_datatype).total_earnings);
+	fputs(data, file);
+	fputs(", ", file);	sprintf(data, "%f", (*temp_datatype).total_debt);
+	fputs(data, file);
+	fputs(", ", file);	sprintf(data, "%f", (*temp_datatype).total_assets);
+	fputs(data, file);
+	fputs(", ", file);	sprintf(data, "%f", (*temp_datatype).total_equity);
+	fputs(data, file);
+	fputs(", ", file);	sprintf(data, "%f", (*temp_datatype).average_debt_earnings_ratio);
+	fputs(data, file);
+	fputs(", ", file);	sprintf(data, "%f", (*temp_datatype).average_debt_equity_ratio);
+	fputs(data, file);
+	fputs(", ", file);	sprintf(data, "%f", (*temp_datatype).labour_share_ratio);
+	fputs(data, file);
 	fputs("}", file);
 }
 
@@ -7476,6 +7630,38 @@ void write_Eurostat_agent(FILE *file, xmachine_memory_Eurostat * current)
 		fputs("<government_tax_rates>", file);
 	write_tax_rates_item_dynamic_array(file, &current->government_tax_rates);
 	fputs("</government_tax_rates>\n", file);
+		fputs("<gdp>", file);
+	sprintf(data, "%f", current->gdp);
+	fputs(data, file);
+	fputs("</gdp>\n", file);
+		fputs("<total_earnings>", file);
+	sprintf(data, "%f", current->total_earnings);
+	fputs(data, file);
+	fputs("</total_earnings>\n", file);
+		fputs("<total_debt>", file);
+	sprintf(data, "%f", current->total_debt);
+	fputs(data, file);
+	fputs("</total_debt>\n", file);
+		fputs("<total_assets>", file);
+	sprintf(data, "%f", current->total_assets);
+	fputs(data, file);
+	fputs("</total_assets>\n", file);
+		fputs("<total_equity>", file);
+	sprintf(data, "%f", current->total_equity);
+	fputs(data, file);
+	fputs("</total_equity>\n", file);
+		fputs("<average_debt_earnings_ratio>", file);
+	sprintf(data, "%f", current->average_debt_earnings_ratio);
+	fputs(data, file);
+	fputs("</average_debt_earnings_ratio>\n", file);
+		fputs("<average_debt_equity_ratio>", file);
+	sprintf(data, "%f", current->average_debt_equity_ratio);
+	fputs(data, file);
+	fputs("</average_debt_equity_ratio>\n", file);
+		fputs("<labour_share_ratio>", file);
+	sprintf(data, "%f", current->labour_share_ratio);
+	fputs(data, file);
+	fputs("</labour_share_ratio>\n", file);
 		
 	fputs("</xagent>\n", file);
 }
