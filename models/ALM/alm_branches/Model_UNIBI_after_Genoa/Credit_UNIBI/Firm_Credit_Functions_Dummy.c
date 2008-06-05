@@ -12,15 +12,11 @@
  */
 int Firm_apply_for_loans()
 {
-    /*TESTING*/
-   
-	
-	
 	
     //add_loan_request_message(firm_id, bank_id, external_financial_needs, total_assets, total_debt);
      // add_loan_request_message(ID, BANK_ID, EXTERNAL_FINANCIAL_NEEDS, PLANNED_TOTAL_ASSETS, TOTAL_DEBT);
 
-add_loan_request_message(ID, BANK_ID, EXTERNAL_FINANCIAL_NEEDS,TOTAL_ASSETS, TOTAL_DEBT);
+	add_loan_request_message(ID, BANK_ID, EXTERNAL_FINANCIAL_NEEDS,TOTAL_ASSETS, TOTAL_DEBT);
 	
    return 0;
 }
@@ -41,7 +37,7 @@ int Firm_read_loan_acceptance()
 
 	START_LOAN_ACCEPTANCE_MESSAGE_LOOP
 
-	TOTAL_EXTERNAL_FINANCING_OBTAINED = loan_acceptance_message->credit_amount_taken;
+		TOTAL_EXTERNAL_FINANCING_OBTAINED = loan_acceptance_message->credit_amount_taken;
 		
             
         //Increase payment_account with the credit_amount_taken
@@ -50,9 +46,9 @@ int Firm_read_loan_acceptance()
         //Decrease external_financial_needs with the credit_amount_taken
         EXTERNAL_FINANCIAL_NEEDS -= TOTAL_EXTERNAL_FINANCING_OBTAINED;
 
-	if(TOTAL_EXTERNAL_FINANCING_OBTAINED!=0.0)
-	{
-	//double_array LOANS              	  : dynamic array of structs with each struct a loan_item
+		if(TOTAL_EXTERNAL_FINANCING_OBTAINED > 0.0)
+		{
+			//double_array LOANS              	  : dynamic array of structs with each struct a loan_item
             //struct debt_item
             //int bank_id                       : bank at which the loan was obtained
             //double loan_value                 : total value of the loan remaining
@@ -62,17 +58,19 @@ int Firm_read_loan_acceptance()
             //int nr_periods_before_maturity    : nr of periods to go before the loan has to be fully repaid
 
 	        bank_id = loan_acceptance_message->bank_id;
-		credit_id = loan_acceptance_message-> credit_id;
+	        credit_id = loan_acceptance_message-> credit_id;
 	        loan_value = TOTAL_EXTERNAL_FINANCING_OBTAINED;
-		interest_rate = loan_acceptance_message->interest_rate;
+	        interest_rate = loan_acceptance_message->interest_rate;
            	interest_payment = interest_rate * loan_value;
            	debt_installment_payment = loan_value/PERIODS_TO_REPAY_LOANS;
            	nr_periods_before_maturity = PERIODS_TO_REPAY_LOANS+1; //Standard 4 periods to repay debt
            	
+           	//printf("Firm_Credit_Function, line 68: Adding a loan\n");
             add_debt_item(&LOANS, bank_id, credit_id, loan_value, interest_rate, interest_payment, debt_installment_payment, nr_periods_before_maturity);            
-        }
+		}
+	    //printf("Firm_Credit_Function, line 71: LOANS.size=%d\n", LOANS.size);
 
-	if(EXTERNAL_FINANCIAL_NEEDS!=0.0)
+	if(EXTERNAL_FINANCIAL_NEEDS > 0.0)
 	{
 		//printf("EXTERNAL_FINANCIAL_NEEDS==0.0\n");
 	//Check if obtained financing is sufficent to satisfy financial obligations
