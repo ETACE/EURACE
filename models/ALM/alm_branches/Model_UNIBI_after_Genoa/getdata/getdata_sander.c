@@ -58,7 +58,8 @@ struct mall
 
 
 };
- struct IGfirm
+
+struct IGfirm
 {
 	int id;
 	int region_id;
@@ -66,6 +67,22 @@ struct mall
 	double revenue_per_day;	
 
 	struct IGfirm * next;
+
+};
+
+struct Eurostat
+{
+	int id;
+	double gdp;
+	double total_earnings;
+	double total_debt;
+	double total_assets;
+	double total_equity;
+	double average_debt_earnings_ratio;
+	double average_debt_equity_ratio;
+	double labour_share_ratio;
+	
+	struct Eurostat * next;
 
 };
 
@@ -100,7 +117,8 @@ typedef struct household household;
 
 typedef struct mall mall;
 typedef struct IGfirm IGfirm;
-	
+typedef struct Eurostat Eurostat;
+
 /*****************************************************************
 * FUNCTIONS: linked list functions                               *
 * PURPOSE: to allocate and free memory in linked lists           *
@@ -160,6 +178,23 @@ void freeIGfirms(IGfirm * head)
 {
 	/* Tempory element needed for loop */
 	IGfirm * tmp;
+
+	/* Loop while head is not NULL */
+	while(head)
+	{
+		/* Make next in list tmp */
+		tmp = head->next;
+		/* Free memory of head */
+		free(head);
+		/* Make head the next in the list */
+		head = tmp;
+	}
+}
+
+void freeEurostats(Eurostat * head)
+{
+	/* Tempory element needed for loop */
+	Eurostat * tmp;
 
 	/* Loop while head is not NULL */
 	while(head)
@@ -277,8 +312,31 @@ IGfirm * addIGfirm(IGfirm ** pointer_to_IGfirms, IGfirm * current)
 	return tail;
 }
 
+Eurostat * addEurostat(Eurostat ** pointer_to_Eurostats, Eurostat * current)
+{
+	/* The new tail of the linked list */
+	Eurostat * tail;
 
+	/* Allocate memory for new neighbour data */
 
+	tail = (Eurostat *)malloc(sizeof(Eurostat));
+
+	/* Check if current is not NULL */
+	if(current)
+	{
+		/* Current exists therefore make its next point to tail */
+		current->next = tail;
+	}
+	else
+	{
+		/* Current is NULL therefore make the cell neighbour_head point to tail */
+		*pointer_to_Eurostats = tail;
+	}
+	/* Point next to NULL */
+	tail->next = NULL;
+	/* Return new neighbour data */
+	return tail;
+}
 
 /* Print all cell data */
 /*void printagentdata(xmachine ** pointer_to_cells)
@@ -301,7 +359,7 @@ IGfirm * addIGfirm(IGfirm ** pointer_to_IGfirms, IGfirm * current)
 * FUNCTION: getIteration                                         *
 * PURPOSE: read iteration xml file                               *
 *****************************************************************/
-int getiteration(char * filepath, int itno, firm ** pointer_to_firms, household ** pointer_to_households,IGfirm ** pointer_to_IGfirms,mall ** pointer_to_malls)
+int getiteration(char * filepath, int itno, firm ** pointer_to_firms, household ** pointer_to_households, IGfirm ** pointer_to_IGfirms, mall ** pointer_to_malls, Eurostat ** pointer_to_Eurostats)
 {
 	/* Pointer to file */
 	FILE *file;
@@ -327,6 +385,10 @@ int getiteration(char * filepath, int itno, firm ** pointer_to_firms, household 
 	/*IGFirm*/
 	int inproductivity, inrevenue_per_day;
 
+	/*Eurostat*/
+	int	ingdp, intotal_earnings, intotal_debt, intotal_assets, intotal_equity;
+	int inaverage_debt_earnings_ratio, inaverage_debt_equity_ratio, inlabour_share_ratio;
+	
 	/* Variables for model data */
 	int state, id, region_id;
 
@@ -345,6 +407,11 @@ int getiteration(char * filepath, int itno, firm ** pointer_to_firms, household 
 
 	/*IGFirm*/
 	double productivity, revenue_per_day;
+
+	/*Eurostat*/
+	double gdp, total_earnings, total_debt, total_assets, total_equity;
+	double average_debt_earnings_ratio, average_debt_equity_ratio, labour_share_ratio;
+
 	
 	char name[100];
 	
@@ -360,11 +427,14 @@ int getiteration(char * filepath, int itno, firm ** pointer_to_firms, household 
 	tail_mall = *pointer_to_malls;
 	current_mall = NULL;
 
-
 	IGfirm * current_IGfirm, * tail_IGfirm;
 	tail_IGfirm = *pointer_to_IGfirms;
 	current_IGfirm = NULL;
 	
+	Eurostat * current_Eurostat, * tail_Eurostat;
+	tail_Eurostat = *pointer_to_Eurostats;
+	current_Eurostat = NULL;
+
 	/* Open config file to read-only */
 	char data[200];
 	sprintf(data, "%s%i%s", filepath, itno, ".xml");
@@ -419,7 +489,17 @@ int getiteration(char * filepath, int itno, firm ** pointer_to_firms, household 
 	/*IGFirm*/
 	inproductivity=0;
 	inrevenue_per_day=0;
+	/*Eurostat*/
+	ingdp =0;
+	intotal_earnings =0;
+	intotal_debt =0;
+	intotal_assets =0;
+	intotal_equity =0;
+	inaverage_debt_earnings_ratio =0;
+	inaverage_debt_equity_ratio =0;
+	inlabour_share_ratio =0;
 
+	
 	state = 0;
 	id = 0;
 	region_id = 0;
@@ -455,6 +535,17 @@ int getiteration(char * filepath, int itno, firm ** pointer_to_firms, household 
 	inproductivity=0;
 	revenue_per_day=0;
 		
+	/*Eurostat*/
+    gdp =0.0;
+    total_earnings =0.0;
+    total_debt =0.0;
+    total_assets =0.0;
+    total_equity =0.0;
+    average_debt_earnings_ratio =0.0;
+    average_debt_equity_ratio =0.0;
+    labour_share_ratio =0.0;
+
+	
 	/* Read characters until the end of the file */
 	/*while(c != EOF)*/
 	/* Read characters until end of xml found */
@@ -509,7 +600,7 @@ int getiteration(char * filepath, int itno, firm ** pointer_to_firms, household 
 					current_firm->mean_wage = mean_wage;
 					current_firm->price = price;
 					current_firm->total_sold_quantity = total_sold_quantity;
-			current_firm->planned_production_quantity = planned_production_quantity;
+					current_firm->planned_production_quantity = planned_production_quantity;
 					current_firm->account = account;
 					current_firm->price_last_month=price_last_month;
 					current_firm->mean_specific_skills=mean_specific_skills;
@@ -546,7 +637,7 @@ int getiteration(char * filepath, int itno, firm ** pointer_to_firms, household 
 					current_household->general_skill = general_skill;
 					current_household->specific_skill = specific_skill;
 					current_household->employee_firm_id = employee_firm_id;
-				     current_household->employer_region_id = employer_region_id;
+				    current_household->employer_region_id = employer_region_id;
 					current_household->savings = savings;
 					
 					//printf("Household %d, ", id);
@@ -618,7 +709,42 @@ int getiteration(char * filepath, int itno, firm ** pointer_to_firms, household 
 					/* Make tail the next element in the linked list */
 					tail_IGfirm = current_IGfirm->next;
 				}
-						//else printf("Not adding agent\n");
+			if(strcmp(name, "Eurostat") == 0)
+				{
+					//printf("Adding agent\n");
+					
+					/* check if tail is NULL */
+					if(tail_Eurostat == NULL)
+					{
+						//printf("tail is null allocate more memory\n");
+						/* Allocate memory */
+						tail_Eurostat = addEurostat(pointer_to_Eurostats, current_Eurostat);
+					}
+					//else printf("tail exisits\n");
+					
+					/* Make tail the current element to add to */
+					current_Eurostat = tail_Eurostat;
+					
+					current_Eurostat->id                         = id;
+				    current_Eurostat->gdp                        = gdp;
+				    current_Eurostat->total_earnings             = total_earnings;
+				    current_Eurostat->total_debt                 = total_debt;
+				    current_Eurostat->total_assets               = total_assets;
+				    current_Eurostat->total_equity               = total_equity;
+				    current_Eurostat->average_debt_earnings_ratio= average_debt_earnings_ratio;
+				    current_Eurostat->average_debt_equity_ratio  = average_debt_equity_ratio;
+				    current_Eurostat->labour_share_ratio          = labour_share_ratio;
+
+					
+					//printf("Eurostat %d, ", id);
+					
+					/* Make tail the next element in the linked list */
+					tail_Eurostat = current_Eurostat->next;
+				}
+
+			
+			
+			//else printf("Not adding agent\n");
 			}
 			if(strcmp(buffer, "name") == 0) { inname = 1; }
 			if(strcmp(buffer, "/name") == 0) { inname = 0; }
@@ -644,8 +770,8 @@ int getiteration(char * filepath, int itno, firm ** pointer_to_firms, household 
 
 			if(strcmp(buffer, "mean_specific_skills") == 0) { inmean_specific_skills = 1; }
 			if(strcmp(buffer, "/mean_specific_skills") == 0) { inmean_specific_skills = 0; }
-			if(strcmp(buffer, "total_units_capital_stock") == 0) { incapital_stock = 1; }
-			if(strcmp(buffer, "/total_units_capital_stock") == 0) { incapital_stock = 0; }
+			if(strcmp(buffer, "capital_stock") == 0) { incapital_stock = 1; }
+			if(strcmp(buffer, "/capital_stock") == 0) { incapital_stock = 0; }
 			if(strcmp(buffer, "revenue") == 0) { inrevenue = 1; }
 			if(strcmp(buffer, "/revenue") == 0) { inrevenue = 0; }
 			if(strcmp(buffer, "earnings") == 0) { inearnings = 1; }
@@ -688,6 +814,23 @@ int getiteration(char * filepath, int itno, firm ** pointer_to_firms, household 
 			if(strcmp(buffer, "revenue_per_day") == 0) { inrevenue_per_day = 1; }
 		       if(strcmp(buffer, "/revenue_per_day") == 0) { inrevenue_per_day= 0; }	
 			
+			if(strcmp(buffer, "gdp") == 0) { ingdp = 1; }
+		       if(strcmp(buffer, "/gdp") == 0) { ingdp= 0; }	
+			if(strcmp(buffer, "total_earnings") == 0) { intotal_earnings = 1; }
+		       if(strcmp(buffer, "/total_earnings") == 0) { intotal_earnings= 0; }	
+			if(strcmp(buffer, "total_debt") == 0) { intotal_debt = 1; }
+		       if(strcmp(buffer, "/total_debt") == 0) { intotal_debt= 0; }	
+			if(strcmp(buffer, "total_assets") == 0) { intotal_assets = 1; }
+		       if(strcmp(buffer, "/total_assets") == 0) { intotal_assets= 0; }	
+			if(strcmp(buffer, "total_equity") == 0) { intotal_equity = 1; }
+		       if(strcmp(buffer, "/total_equity") == 0) { intotal_equity= 0; }	
+			if(strcmp(buffer, "average_debt_earnings_ratio") == 0) { inaverage_debt_earnings_ratio = 1; }
+		       if(strcmp(buffer, "/average_debt_earnings_ratio") == 0) { inaverage_debt_earnings_ratio= 0; }	
+			if(strcmp(buffer, "average_debt_equity_ratio") == 0) { inaverage_debt_equity_ratio = 1; }
+		       if(strcmp(buffer, "/average_debt_equity_ratio") == 0) { inaverage_debt_equity_ratio= 0; }	
+			if(strcmp(buffer, "labour_share_ratio") == 0) { inlabour_share_ratio = 1; }
+		       if(strcmp(buffer, "/labour_share_ratio") == 0) { inlabour_share_ratio= 0; }	
+		       
 			/* End of tag and reset buffer */
 			intag = 0;
 			i = 0;
@@ -718,7 +861,7 @@ int getiteration(char * filepath, int itno, firm ** pointer_to_firms, household 
 			if(inagent && inearnings)  { earnings  = atof(buffer); }
 			if(inagent && inprice)  { price  = atof(buffer); }
 			if(inagent && intotal_sold_quantity)  { total_sold_quantity  = atof(buffer); }
-if(inagent && inplanned_production_quantity)  { planned_production_quantity  = atof(buffer); }
+			if(inagent && inplanned_production_quantity)  { planned_production_quantity  = atof(buffer); }
 			if(inagent && inaccount)  { account  = atof(buffer); }
 			if(inagent && inprice_last_month)  { price_last_month  = atof(buffer); }
 			if(inagent && inmean_specific_skills)  { mean_specific_skills  = atof(buffer); }
@@ -735,7 +878,14 @@ if(inagent && inplanned_production_quantity)  { planned_production_quantity  = a
 			if(inagent && inproductivity)  { productivity  = atof(buffer); }
 			if(inagent && intotal_supply)  { total_supply  = atof(buffer); }
 				
-			
+			if(inagent && ingdp)  { gdp  = atof(buffer); }
+			if(inagent && intotal_earnings)  { total_earnings  = atof(buffer); }
+			if(inagent && intotal_debt)  { total_debt  = atof(buffer); }
+			if(inagent && intotal_assets)  { total_assets  = atof(buffer); }
+			if(inagent && intotal_equity)  { total_equity  = atof(buffer); }
+			if(inagent && inaverage_debt_earnings_ratio)  { average_debt_earnings_ratio  = atof(buffer); }
+			if(inagent && inaverage_debt_equity_ratio)  { average_debt_equity_ratio  = atof(buffer); }
+			if(inagent && inlabour_share_ratio)  { labour_share_ratio  = atof(buffer); }
 			
 			/* Reset buffer */
 			i = 0;
@@ -783,7 +933,14 @@ if(inagent && inplanned_production_quantity)  { planned_production_quantity  = a
 		/* Make pointer to tail equal NULL */
 		if(current_IGfirm) { current_IGfirm->next = NULL; }
 	}
-	
+
+	if(tail_Eurostat)
+	{
+		freeEurostats(tail_Eurostat);
+		/* Make pointer to tail equal NULL */
+		if(current_Eurostat) { current_Eurostat->next = NULL; }
+	}
+
 	/* Close the file */
 	fclose(file);
 	
@@ -793,19 +950,21 @@ if(inagent && inplanned_production_quantity)  { planned_production_quantity  = a
 	}
 }
 
-void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_households,IGfirm ** pointer_to_IGfirms,mall ** pointer_to_malls)
+void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_households,IGfirm ** pointer_to_IGfirms, mall ** pointer_to_malls, Eurostat ** pointer_to_Eurostats)
 {
 	FILE *file;
-	char data[100];
+	char data[200];
 	firm * current_firm;
 	household * current_household;
 	IGfirm * current_IGfirm;
 	mall* current_mall;
+	Eurostat* current_Eurostat;
+	
 	current_firm = *pointer_to_firms;
 	current_household = *pointer_to_households;
 	current_mall = *pointer_to_malls;
 	current_IGfirm = *pointer_to_IGfirms;
-
+	current_Eurostat = *pointer_to_Eurostats;
 
 	double ave_wage = 0.0;
 	double ave_wage_region_1 = 0.0;
@@ -953,6 +1112,14 @@ void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_
 	double technology[10];
 	
 	
+	double gdp;
+	double total_earnings;
+	double total_debt;
+	double total_assets;
+	double total_equity;
+	double average_debt_earnings_ratio;
+	double average_debt_equity_ratio;
+	double labour_share_ratio;
 
 
 /*+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/	
@@ -1523,7 +1690,7 @@ void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_
 		if(current_firm->no_employees >0)
 		ave_technology += current_firm->technology*current_firm->production_quantity;
 		
-		
+
 		if(1== current_firm->region_id)
 		{
 			no_firms_region_1++;
@@ -1628,7 +1795,7 @@ void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_
 		
 		//printf("A = %f \n", monthly_account);
 		
-		if(itno%20 == 0)
+		if(itno%20 == 1)
 		{
 			file = fopen("data-monthly-output.csv", "a");
 
@@ -2085,9 +2252,38 @@ void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_
 	fclose(file);
 
 
+	file = fopen("data-eurostat.csv", "a");
 
+	sprintf(data, "%i", itno);
+	fputs(data, file);
 	
+	fputs("\t", file);
+	sprintf(data, "%f", gdp);
+	fputs(data, file);
+	fputs("\t", file);
+	sprintf(data, "%f", total_earnings);
+	fputs(data, file);
+	fputs("\t", file);
+	sprintf(data, "%f", total_debt);
+	fputs(data, file);
+	fputs("\t", file);
+	sprintf(data, "%f", total_assets);
+	fputs(data, file);
+	fputs("\t", file);
+	sprintf(data, "%f", total_equity);
+	fputs(data, file);
+	fputs("\t", file);
+	sprintf(data, "%f", average_debt_earnings_ratio);
+	fputs(data, file);
+	fputs("\t", file);
+	sprintf(data, "%f", average_debt_equity_ratio);
+	fputs(data, file);
+	fputs("\t", file);
+	sprintf(data, "%f", labour_share_ratio);
+	fputs(data, file);
+	fputs("\n", file);
 
+	fclose(file);
 
 }
 
@@ -2101,10 +2297,14 @@ int main( int argc, char **argv )
 	household * households, * current_household;
 	IGfirm * IGfirms, * current_IGfirm;
 	mall * malls, * current_mall;
+	Eurostat * Eurostats, * current_Eurostat;
+	
 	firm ** p_firms;
-	household ** p_household;
+	household ** p_households;
 	IGfirm ** p_IGfirms;
 	mall ** p_malls;
+	Eurostat ** p_Eurostats;
+	
 	int iteration_number = 0;
 	int stilldata = 1;
 	
@@ -2212,6 +2412,9 @@ int main( int argc, char **argv )
 	file = fopen("data-firm-employees.csv", "w");
 	fclose(file);
 	
+	file = fopen("data-eurostat.csv", "w");
+	fclose(file);
+
 	/* Read initial states of x-machines */
 	/* advance argument pointer to next argument */
 	*argv++;
@@ -2244,7 +2447,7 @@ int main( int argc, char **argv )
 	p_firms = &firms;
 	
 	households = NULL;
-	p_household = &households;
+	p_households = &households;
 
 	IGfirms = NULL;
 	p_IGfirms = &IGfirms;
@@ -2252,11 +2455,14 @@ int main( int argc, char **argv )
 	malls = NULL;
 	p_malls = &malls;
 	
+	Eurostats = NULL;
+	p_Eurostats = &Eurostats;
+
 	while(stilldata)
 	{
-		stilldata = getiteration(filepath, iteration_number, p_firms, p_household,p_IGfirms, p_malls );
+		stilldata = getiteration(filepath, iteration_number, p_firms, p_households, p_IGfirms, p_malls, p_Eurostats);
 		
-		if(stilldata) savedatatofile(iteration_number, p_firms, p_household,p_IGfirms, p_malls);
+		if(stilldata) savedatatofile(iteration_number, p_firms, p_households, p_IGfirms, p_malls, p_Eurostats);
 		
 		iteration_number++;
 		
