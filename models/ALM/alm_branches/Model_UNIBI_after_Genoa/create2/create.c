@@ -37,44 +37,24 @@ int main(int argc, char ** argv)
 	char data1[10000];
 	int num;  /*used as an index to cycle through each agent*/
 	int num_start;
+	
+	
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ * 
+ * Parameter setting
+ * 
+ * 
+ * +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/	
+	
+	
+	
+	
 	/*Defining the geographical space as a rectangular grid  */	
 	
-	int num_regions_X=2;/*spalten*/
-	int num_regions_Y=1;/*zeile*/
+	int num_regions_X=2;/*Number of columns*/
+	int num_regions_Y=1;/*Number of regions*/
 	int num_regions = num_regions_X*num_regions_Y; /*number of regions*/
 	
-	/*defining skill distributions in regions*/
-
-	double skilldistribution_1[5]={0.6,0.1,0.1,0.1,0.1};
-	double skilldistribution_2[5]={0.1,0.1,0.6,0.1,0.1};
-	double skilldistribution_3[5]={0.1,0.1,0.1,0.1,0.6};
-	double skilldistribution_4[5]={0.2,0.2,0.2,0.2,0.2};
-
-	
-
-	/*This determines the local skill distribution. Use numbers 1 .. 4 (see above, skill distribution_X) to give a region a skill distribution. */
-	int skills_in_regions[2][1]=
-				{4,4}	;
-	
-
-	int count=1;
-	int region_grid[num_regions_X][num_regions_Y];
-	int i1,j1;
-	for ( i1=0;i1<num_regions_Y;i1++)
-	{
-		for(j1=0;j1<num_regions_X;j1++)
-		{
-		region_grid[j1][i1] = count;
-		count++;
-				
-	}
-	}	
-
-
-		
-	
-
-
 	
 	int total_households = 400;/*number of households in the economy*/
 	int households_per_region = total_households/num_regions; 
@@ -86,24 +66,98 @@ int main(int argc, char ** argv)
 	int num_app =  0.5*total_firms; /*number of applications per agent*/
 	int total_Governments =1;
 	int total_banks = 1;
+	
 
-
-	double k = 7.0;//planned production volume per mall for a single firm
-	double total_units_capital=2; //total capital stock of a single firm
-	double payment_account= 60.0; //financial resources of firm at the beginning of a simulation
-
-	double tax_rate_corporate = 0.25;
+	double 	tax_rate_corporate = 0.25;
 	double	tax_rate_hh_labour = 0.25;
 	double	tax_rate_hh_capital =0.25;
 	double	unemployment_benefit_payment = 0.8;
 	double	payment_account_government =100.0;
 
 	double	capital_good_price = 100.0;
+	int years_statistics = 10;/*number of years used to smooth the production*/
+
+	/*Defining skill distributions in regions*/
+
+	double skilldistribution_1[5]={0.6,0.1,0.1,0.1,0.1};
+	double skilldistribution_2[5]={0.1,0.1,0.6,0.1,0.1};
+	double skilldistribution_3[5]={0.1,0.1,0.1,0.1,0.6};
+	double skilldistribution_4[5]={0.2,0.2,0.2,0.2,0.2};
+
+	
+	
+	
+	/*++++++++++++++++++++++++++++++++++++++++++++++++++
+	 +++Initialization of region depending variables.
+	 For the following variables you can assign region specific initial values. The regions are arranged on a rectangular grid (num_regions_X x num_regions_Y), 
+	 so use the following template for the initalization( Example for a 3x3 region grid):
+	 
+	 region 1, 4, 9 ->x
+	 region 3, 5, 6, 7, 8 -> y
+	
+				{{x,y,y}{x,y,y}{y,y,x}};
+	 
+	 												++ 
+	 ++++++++++++++++++++++++++++++++++++++++++++++++/*
+
+	/*This determines the local skill distribution. Use numbers 1 .. 4 (see above, skill distribution_X) to give a region a skill distribution. */
+	int skills_in_regions[2][1]=
+				{4,4};
+	
+	
+	//region specific initial value of households specific skills
+	double specific_skills_of_household[2][1]=
+					{1.0,0.8};
+	
+
+	//Total production volume for a single firm
+	double total_production_quantity[2][1]=
+	{8.0,7.0};
+	
+	
+	//This defines the initial capital stock of firm depending on the region.
+	double total_units_capital[2][1]=
+	                              {2.0,1.5};
+	//Firm's starting value of productivity of the capital stock
+	double technology[2][1]=
+	{1.0,0.8};
+	//This defines the financial resources of firm at the beginning of a simulation
+	double payment_account[2][1]= 
+	{60.0,50.0};
+	
+	
+	/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+	
+	
+
+
+
+
+
+
+
+	
+
 
 	int gov_id  = total_firms+total_households+total_IGfirms+1;
 	int bank_id = total_firms+total_households+total_IGfirms+total_Governments+1;
 
-	int years_statistics = 10;/*number of years used to smooth the production*/
+	
+	
+	
+	int count=1;
+		int region_grid[num_regions_X][num_regions_Y];
+		int i1,j1;
+		for ( i1=0;i1<num_regions_Y;i1++)
+		{
+			for(j1=0;j1<num_regions_X;j1++)
+			{
+			region_grid[j1][i1] = count;
+			count++;
+					
+		}
+		}	
+	
 	
 	
 	/* Set changing seed */
@@ -127,7 +181,12 @@ int main(int argc, char ** argv)
 				region = num_regions; // because there is no region 0;
 			}
 		
+		int row = (region-1) / num_regions_X;
+				int column = (region-1) % num_regions_X; 
 		
+				
+				
+				
 		double wage_offer = random_double(1,1);
 		fputs("<xagent>\n", file);
 		fputs("<name>Firm</name>\n", file);
@@ -152,7 +211,7 @@ int main(int argc, char ** argv)
 		sprintf(data, "%f",1.0);	print_tag("average_s_skill_of_4", data, file);
 		sprintf(data, "%f",1.0);	print_tag("average_s_skill_of_5", data, file);
 
-		sprintf(data, "%f", 1.0);		print_tag("technology", data, file);
+		sprintf(data, "%f",technology[column][row]);		print_tag("technology", data, file);
 		sprintf(data, "%d", 0);			print_tag("no_employees", data, file);
 
 		sprintf(data, "%d", 0);		print_tag("no_employees_skill_1", data, file);
@@ -174,7 +233,17 @@ int main(int argc, char ** argv)
 		char data1[10000];
 		int m;
 		
-		sprintf(data, "%f", payment_account);	print_tag("payment_account", data, file);
+		
+		sprintf(data, "%f", total_units_capital[column][row]);	print_tag("total_units_capital_stock", data, file);
+		sprintf(data, "%f", total_units_capital[column][row]*capital_good_price);	print_tag("total_value_capital_stock", data, file);
+		sprintf(data, "%f", total_units_capital[column][row]);	print_tag("planned_value_capital_stock", data, file);
+		
+		
+		
+		double k = total_production_quantity[column][row]/total_malls;
+		
+		
+		sprintf(data, "%f", payment_account[column][row]);	print_tag("payment_account", data, file);
 		//financial resources of firm at the beginning of a simulation
 		int first_mall_id = total_firms + total_households +total_Governments+total_IGfirms+total_banks;
 		
@@ -358,9 +427,7 @@ int main(int argc, char ** argv)
 		sprintf(data, "%f", 0.0);	print_tag("total_debt", data, file);
 		sprintf(data, "%f", 0.0);	print_tag("total_value_local_inventory", data, file);
 		
-		sprintf(data, "%f", total_units_capital);	print_tag("total_units_capital_stock", data, file);
-		sprintf(data, "%f", total_units_capital*capital_good_price);	print_tag("total_value_capital_stock", data, file);
-		sprintf(data, "%f", total_units_capital);	print_tag("planned_value_capital_stock", data, file);
+		
 		sprintf(data, "%f", 0.0);	print_tag("total_capital_depreciation_value", data, file);
 		sprintf(data, "%f", 0.0);	print_tag("total_capital_depreciation_units", data, file);
 		sprintf(data, "%f", 0.0);	print_tag("total_assets", data, file);
@@ -562,7 +629,7 @@ int main(int argc, char ** argv)
 		sprintf(data, "%f", 1.0); 	print_tag("wage_reservation", data, file);
 		sprintf(data, "%d", -1);       	print_tag("employee_firm_id", data, file);
 		sprintf(data, "%d", g_skill_level);   print_tag("general_skill", data, file);
-		sprintf(data, "%f", 0.8);       print_tag("specific_skill", data, file);
+		sprintf(data, "%f", specific_skills_of_household[column][row]);       print_tag("specific_skill", data, file);
 		sprintf(data, "%d", 0);     	print_tag("on_the_job_search", data, file);
 		sprintf(data, "%d", num_app);   print_tag("number_applications", data, file);
 		sprintf(data, "%d", 0);       	print_tag("rationed", data, file);
