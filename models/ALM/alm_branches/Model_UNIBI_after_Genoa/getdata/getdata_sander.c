@@ -441,7 +441,7 @@ int getiteration(char * filepath, int itno, firm ** pointer_to_firms, household 
 	printf("%s", data);
 	if((file = fopen(data, "r"))==NULL)
 	{
-		printf(" Getdata.c reached line 444 ... nent\n");
+		printf(" Getdata.c reached last xml file in sequence \n");
 		return 0;
 		/*exit(0);*/
 	}
@@ -1670,7 +1670,6 @@ void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_
 /*+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /*----------------------------FIRMS DAILY AND REGIONAL DATA-------------------------------------*/
 	current_firm = *pointer_to_firms;
-
 	while(current_firm)
 	{
 		no_firms++;
@@ -1770,58 +1769,9 @@ void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_
 		}
 		
 		current_firm = current_firm->next;
-		
 	}
 
-	current_Eurostat = *pointer_to_Eurostats;
-	
-	file = fopen("data-eurostat.csv", "a");
 
-				sprintf(data, "%i", itno);
-				fputs(data, file);
-				fputs("\t", file);
-				
-				sprintf(data, "%f", current_Eurostat->gdp);
-				fputs(data, file);
-
-				fputs("\t", file);
-				sprintf(data, "%f", current_Eurostat->total_earnings);
-				fputs(data, file);
-
-				fputs("\t", file);
-				sprintf(data, "%f", current_Eurostat->total_debt);
-				fputs(data, file);
-
-				fputs("\t", file);
-				sprintf(data, "%f", current_Eurostat->total_assets);
-				fputs(data, file);
-
-				fputs("\t", file);
-				sprintf(data, "%f", current_Eurostat->total_equity);
-				fputs(data, file);
-
-				fputs("\t", file);
-				sprintf(data, "%f", current_Eurostat->average_debt_earnings_ratio);
-				fputs(data, file);
-	/*			
-
-				fputs("\t", file);
-				sprintf(data, "%f", average_debt_equity_ratio);
-				fputs(data, file);
-	*/
-				fputs("\t", file);
-				sprintf(data, "%f", current_Eurostat->labour_share_ratio);
-				fputs(data, file);
-
-				fputs("\n", file);
-				fclose(file);
-				
-				current_Eurostat = current_Eurostat->next;
-						
-					
-	
-	
-	
 /*+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/	
 /*+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /*----------------------------FIRM MONTHLY AND REGIONAL DATA---------------------------------------*/
@@ -1905,8 +1855,6 @@ void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_
 			fputs(data, file);
 			fputs("\n", file);
 			fclose(file);
-			
-
 			
 			}
 			
@@ -2299,7 +2247,74 @@ void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_
 
 	fclose(file);
 
-	
+
+	/*+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/	
+	/*+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+	/*----------------------------EUROSTAT MONTHLY AND REGIONAL DATA---------------------------------------*/
+
+	current_Eurostat = *pointer_to_Eurostats;
+
+	while(current_Eurostat)
+	{
+		//Set local variables
+	    gdp = current_Eurostat->gdp;
+	    total_earnings = current_Eurostat->total_earnings;
+	    total_debt =  current_Eurostat->total_debt;
+	    total_assets = current_Eurostat->total_assets;
+	    total_equity = current_Eurostat->total_equity;
+	    average_debt_earnings_ratio = current_Eurostat->average_debt_earnings_ratio;
+	    average_debt_equity_ratio = current_Eurostat->average_debt_equity_ratio;
+	    labour_share_ratio = current_Eurostat->labour_share_ratio;
+		
+		//Go to the next in linked list
+		current_Eurostat = current_Eurostat->next;
+		
+	}
+	//Write data to file
+		if(itno%20 == 1)
+		{
+
+			file = fopen("data-eurostat.csv", "a");
+
+			sprintf(data, "%i", itno);
+			fputs(data, file);
+			fputs("\t", file);
+			
+			sprintf(data, "%f", gdp);
+			fputs(data, file);
+
+			fputs("\t", file);
+			sprintf(data, "%f", total_earnings);
+			fputs(data, file);
+
+			fputs("\t", file);
+			sprintf(data, "%f", total_debt);
+			fputs(data, file);
+
+			fputs("\t", file);
+			sprintf(data, "%f", total_assets);
+			fputs(data, file);
+
+			fputs("\t", file);
+			sprintf(data, "%f", total_equity);
+			fputs(data, file);
+
+			fputs("\t", file);
+			sprintf(data, "%f", average_debt_earnings_ratio);
+			fputs(data, file);
+
+			fputs("\t", file);
+			sprintf(data, "%f", average_debt_equity_ratio);
+			fputs(data, file);
+
+			fputs("\t", file);
+			sprintf(data, "%f", labour_share_ratio);
+			fputs(data, file);
+
+			fputs("\n", file);
+			fclose(file);
+		}
+			
 }
 
 int main( int argc, char **argv )
