@@ -441,7 +441,7 @@ int getiteration(char * filepath, int itno, firm ** pointer_to_firms, household 
 	printf("%s", data);
 	if((file = fopen(data, "r"))==NULL)
 	{
-		printf(" nent\n");
+		printf(" Getdata.c reached line 444 ... nent\n");
 		return 0;
 		/*exit(0);*/
 	}
@@ -953,7 +953,7 @@ int getiteration(char * filepath, int itno, firm ** pointer_to_firms, household 
 void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_households,IGfirm ** pointer_to_IGfirms, mall ** pointer_to_malls, Eurostat ** pointer_to_Eurostats)
 {
 	FILE *file;
-	char data[200];
+	char data[100];
 	firm * current_firm;
 	household * current_household;
 	IGfirm * current_IGfirm;
@@ -1813,6 +1813,7 @@ void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_
 			fputs("\n", file);
 
 			fclose(file);
+
 			if(itno>20)
 			{
 			file = fopen("data-growthrate-output.csv", "a");
@@ -1823,8 +1824,6 @@ void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_
 			fputs(data, file);
 			fputs("\n", file);
 			fclose(file);
-
-
 			
 			file = fopen("data-regional-price.csv", "a");
 			sprintf(data, "%i", itno);
@@ -1859,7 +1858,50 @@ void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_
 			fputs("\n", file);
 			fclose(file);
 			
+
+			file = fopen("data-eurostat.csv", "a");
+
+			sprintf(data, "%i", itno);
+			fputs(data, file);
+			fputs("\t", file);
+			
+			sprintf(data, "%f", gdp);
+			fputs(data, file);
+
+			fputs("\t", file);
+			sprintf(data, "%f", total_earnings);
+			fputs(data, file);
+
+			fputs("\t", file);
+			sprintf(data, "%f", total_debt);
+			fputs(data, file);
+
+			fputs("\t", file);
+			sprintf(data, "%f", total_assets);
+			fputs(data, file);
+
+			fputs("\t", file);
+			sprintf(data, "%f", total_equity);
+			fputs(data, file);
+
+			fputs("\t", file);
+			sprintf(data, "%f", average_debt_earnings_ratio);
+			fputs(data, file);
+/*			
+
+			fputs("\t", file);
+			sprintf(data, "%f", average_debt_equity_ratio);
+			fputs(data, file);
+*/
+			fputs("\t", file);
+			sprintf(data, "%f", labour_share_ratio);
+			fputs(data, file);
+
+			fputs("\n", file);
+			fclose(file);
+			
 			}
+			
 			mean_technology_last_month = ave_technology;
 			monthly_output_last_month=monthly_output;
 			file = fopen("data-region-monthly-output.csv", "a");
@@ -2079,38 +2121,38 @@ void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_
 
 			file = fopen("mean_specific_skills_region.csv", "a");
 
-	sprintf(data, "%i", itno);
-	fputs(data, file);
-	fputs("\t", file);
-	sprintf(data, "%f", ave_mean_specific_skills_region_1/prod_vol_reg1);
-	fputs(data, file);
-	fputs("\t", file);
-	sprintf(data, "%f",ave_mean_specific_skills_region_2/prod_vol_reg2);
-	fputs(data, file);
-	fputs("\n", file);
-
-	fclose(file);
-
-			
-	file = fopen("data-technology.csv", "a");
-
-	sprintf(data, "%i", itno);
-	fputs(data, file);
-	fputs("\t", file);
-	sprintf(data, "%f", ave_technology/prod_vol);
-	fputs(data, file);
-	fputs("\t", file);
-	sprintf(data, "%f", ave_technology_region_1/prod_vol_reg1);
-	fputs(data, file);
-	fputs("\t", file);
-	sprintf(data, "%f", ave_technology_region_2/prod_vol_reg2);
-	fputs(data, file);
-	fputs("\t", file);
-	sprintf(data, "%f", technological_frontier);
-	fputs(data, file);
-	fputs("\n", file);
-
-	fclose(file);
+			sprintf(data, "%i", itno);
+			fputs(data, file);
+			fputs("\t", file);
+			sprintf(data, "%f", ave_mean_specific_skills_region_1/prod_vol_reg1);
+			fputs(data, file);
+			fputs("\t", file);
+			sprintf(data, "%f",ave_mean_specific_skills_region_2/prod_vol_reg2);
+			fputs(data, file);
+			fputs("\n", file);
+		
+			fclose(file);
+		
+					
+			file = fopen("data-technology.csv", "a");
+		
+			sprintf(data, "%i", itno);
+			fputs(data, file);
+			fputs("\t", file);
+			sprintf(data, "%f", ave_technology/prod_vol);
+			fputs(data, file);
+			fputs("\t", file);
+			sprintf(data, "%f", ave_technology_region_1/prod_vol_reg1);
+			fputs(data, file);
+			fputs("\t", file);
+			sprintf(data, "%f", ave_technology_region_2/prod_vol_reg2);
+			fputs(data, file);
+			fputs("\t", file);
+			sprintf(data, "%f", technological_frontier);
+			fputs(data, file);
+			fputs("\n", file);
+		
+			fclose(file);
 			monthly_sold_quantity = 0.0;
 			monthly_sold_quantity_region_1 = 0.0;
 			monthly_sold_quantity_region_2 = 0.0;
@@ -2155,8 +2197,6 @@ void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_
 	sprintf(data, "%f", ave_no_employees_region_2/no_employer_region_2);
 	fputs(data, file);
 	fputs("\n", file);
-
-	
 
 	fclose(file);
 
@@ -2251,40 +2291,7 @@ void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_
 
 	fclose(file);
 
-
-	file = fopen("data-eurostat.csv", "a");
-
-	sprintf(data, "%i", itno);
-	fputs(data, file);
 	
-	fputs("\t", file);
-	sprintf(data, "%f", gdp);
-	fputs(data, file);
-	fputs("\t", file);
-	sprintf(data, "%f", total_earnings);
-	fputs(data, file);
-	fputs("\t", file);
-	sprintf(data, "%f", total_debt);
-	fputs(data, file);
-	fputs("\t", file);
-	sprintf(data, "%f", total_assets);
-	fputs(data, file);
-	fputs("\t", file);
-	sprintf(data, "%f", total_equity);
-	fputs(data, file);
-	fputs("\t", file);
-	sprintf(data, "%f", average_debt_earnings_ratio);
-	fputs(data, file);
-	fputs("\t", file);
-	sprintf(data, "%f", average_debt_equity_ratio);
-	fputs(data, file);
-	fputs("\t", file);
-	sprintf(data, "%f", labour_share_ratio);
-	fputs(data, file);
-	fputs("\n", file);
-
-	fclose(file);
-
 }
 
 int main( int argc, char **argv )

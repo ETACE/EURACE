@@ -292,10 +292,8 @@ int Eurostat_calculate_data()
 				
 				
 				/********sum of total consumption and investment costs++++++++*/
-				REGION_FIRM_DATA.array[i].gdp += firm_send_data_message->cum_revenue
-												+ firm_send_data_message->capital_costs;
-				GDP += firm_send_data_message->cum_revenue
-												+ firm_send_data_message->capital_costs;
+				REGION_FIRM_DATA.array[i].gdp += firm_send_data_message->cum_revenue + firm_send_data_message->capital_costs;
+				GDP += firm_send_data_message->cum_revenue + firm_send_data_message->capital_costs;
 
 				
 				/********sum of net earnings of the firms++++++++*/
@@ -536,8 +534,7 @@ int Eurostat_calculate_data()
 				if(household_send_data_message->employment_status != -1)
 				{
 					REGION_HOUSEHOLD_DATA.array[i].employed++;
-					REGION_HOUSEHOLD_DATA.array[i]
-					.employed_skill_2++;
+					REGION_HOUSEHOLD_DATA.array[i].employed_skill_2++;
 					EMPLOYED_SKILL_2++;
 					EMPLOYED++;
 				}
@@ -573,8 +570,7 @@ int Eurostat_calculate_data()
 				if(household_send_data_message->employment_status != -1)
 				{
 					REGION_HOUSEHOLD_DATA.array[i].employed++;
-					REGION_HOUSEHOLD_DATA.array[i]
-					.employed_skill_3++;
+					REGION_HOUSEHOLD_DATA.array[i].employed_skill_3++;
 					EMPLOYED_SKILL_3++;
 					EMPLOYED++;
 				}
@@ -610,8 +606,7 @@ int Eurostat_calculate_data()
 				if(household_send_data_message->employment_status != -1)
 				{
 					REGION_HOUSEHOLD_DATA.array[i].employed++;
-					REGION_HOUSEHOLD_DATA.array[i]
-					.employed_skill_4++;
+					REGION_HOUSEHOLD_DATA.array[i].employed_skill_4++;
 					EMPLOYED_SKILL_4++;
 					EMPLOYED++;
 				}
@@ -647,8 +642,7 @@ int Eurostat_calculate_data()
 				if(household_send_data_message->employment_status != -1)
 				{
 					REGION_HOUSEHOLD_DATA.array[i].employed++;
-					REGION_HOUSEHOLD_DATA.array[i]
-					.employed_skill_5++;
+					REGION_HOUSEHOLD_DATA.array[i].employed_skill_5++;
 					EMPLOYED_SKILL_5++;
 					EMPLOYED++;
 				}

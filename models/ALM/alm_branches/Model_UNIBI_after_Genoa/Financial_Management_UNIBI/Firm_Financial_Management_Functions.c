@@ -49,7 +49,7 @@ int Firm_compute_financial_payments()
         //add to total
         TOTAL_INTEREST_PAYMENT += interest_payment;
 
-	LOANS.array[i].interest_payment = interest_payment; 
+        LOANS.array[i].interest_payment = interest_payment; 
     }
     
     //step 2: compute total debt installment payments
@@ -93,14 +93,17 @@ int Firm_compute_income_statement()
     NET_EARNINGS = EARNINGS - TAX_PAYMENT;
 
     //continue balance sheet (data pertaining to the period that just ended)
-    PREVIOUS_EARNINGS_PER_SHARE = EARNINGS_PER_SHARE;
-    EARNINGS_PER_SHARE = NET_EARNINGS/CURRENT_SHARES_OUTSTANDING;
+    if (CURRENT_SHARES_OUTSTANDING>0)
+    {
+	    PREVIOUS_EARNINGS_PER_SHARE = EARNINGS_PER_SHARE;
+	    EARNINGS_PER_SHARE = NET_EARNINGS/CURRENT_SHARES_OUTSTANDING;
+	    
+	    PREVIOUS_DIVIDEND_PER_SHARE = CURRENT_DIVIDEND_PER_SHARE;
+	    CURRENT_DIVIDEND_PER_SHARE = TOTAL_DIVIDEND_PAYMENT/CURRENT_SHARES_OUTSTANDING;
+	    PREVIOUS_DIVIDEND_PER_EARNINGS = CURRENT_DIVIDEND_PER_EARNINGS;
+	    CURRENT_DIVIDEND_PER_EARNINGS = TOTAL_DIVIDEND_PAYMENT/EARNINGS;
+    }
     
-    PREVIOUS_DIVIDEND_PER_SHARE = CURRENT_DIVIDEND_PER_SHARE;
-    CURRENT_DIVIDEND_PER_SHARE = TOTAL_DIVIDEND_PAYMENT/CURRENT_SHARES_OUTSTANDING;
-    PREVIOUS_DIVIDEND_PER_EARNINGS = CURRENT_DIVIDEND_PER_EARNINGS;
-    CURRENT_DIVIDEND_PER_EARNINGS = TOTAL_DIVIDEND_PAYMENT/EARNINGS;
-
     //Reset the counters
     CUM_TOTAL_SOLD_QUANTITY = 0.0;
     CUM_REVENUE = 0.0;        
@@ -133,7 +136,7 @@ int Firm_compute_dividends()
 	//TOTAL_DIVIDEND_PAYMENT = TOTAL_DIVIDEND_PAYMENT * (EARNINGS_PER_SHARE/PREVIOUS_EARNINGS_PER_SHARE);
 
 
-	if(NET_EARNINGS> 0 )
+	if (NET_EARNINGS > 0.0 )
 		TOTAL_DIVIDEND_PAYMENT =  DIVIDEND_RATE*NET_EARNINGS; 
 	else
 	TOTAL_DIVIDEND_PAYMENT=0;
@@ -206,7 +209,7 @@ int Firm_compute_balance_sheet()
     for (i=0;i<imax;i++)
     {
         sum += PRICE*CURRENT_MALL_STOCKS.array[i].current_stock;
-	sum_1+=CURRENT_MALL_STOCKS.array[i].current_stock;
+        sum_1+=CURRENT_MALL_STOCKS.array[i].current_stock;
         //When malls have different current_price use this code:
         //sum += CURRENT_MALL_STOCKS.array[i].current_price * CURRENT_MALL_STOCKS.array[i].current_stock;
     }
@@ -257,10 +260,7 @@ int Firm_compute_total_liquidity_needs()
         	//external financing needed
         	EXTERNAL_FINANCIAL_NEEDS = TOTAL_FINANCIAL_NEEDS - PAYMENT_ACCOUNT;
         }
-
-
-
-      
+ 
     return 0;
 }
 
@@ -274,89 +274,76 @@ int Firm_compute_total_liquidity_needs()
  */
 int Firm_execute_financial_payments()
 {	
-	
-		int imax;
-    		int i;		//printf("PAYMENT_ACCOUNT firm %d %f\n",ID,PAYMENT_ACCOUNT);
 
-		
-		double debt_installment = 0.0;
-		double interest_payment = 0.0;
-		
-		//step 1: actual tax_payment to government
-		
-		if(TAX_PAYMENT>0)
-		{
+	int imax;
+	int i;	//printf("PAYMENT_ACCOUNT firm %d %f\n",ID,PAYMENT_ACCOUNT);
+
+	
+	double debt_installment = 0.0;
+	double interest_payment = 0.0;
+	
+	//step 1: actual tax_payment to government
+	
+	if (TAX_PAYMENT>0.0)
+	{
 		add_tax_payment_message(ID, GOV_ID, TAX_PAYMENT,2);
 		PAYMENT_ACCOUNT -= TAX_PAYMENT;
-		}
-		//step 2: actual interest_payments and installment_payments
-	
-		
-		//Sending installment_message to banks at which the firm has a loan 
-	
-		
-	   	 imax = LOANS.size;
-	  for (i=0; i<imax;i++)
-	  {
-	        //decrease payment_account with the interest_payment
-		if(LOANS.array[i].nr_periods_before_repayment!=PERIODS_TO_REPAY_LOANS+1)
-	        {
-		 
-			if(TOTAL_INTEREST_PAYMENT>0)
-			{
-			PAYMENT_ACCOUNT -= LOANS.array[i].interest_payment;
-			add_interest_payment_message(ID,LOANS.array[i].bank_id,LOANS.array[i].interest_payment);
-			interest_payment+=LOANS.array[i].interest_payment;
-			
-			}
-		
-			if(TOTAL_DEBT_INSTALLMENT_PAYMENT>0)	
-			{	
-
-	 
-	        	//decrease payment_account with the installment payment
-	        	PAYMENT_ACCOUNT -= LOANS.array[i].installment_amount;
-			debt_installment+=LOANS.array[i].installment_amount;
-		
-	        	//decrease the value of the loan with the debt_installment_payment:
-	        	LOANS.array[i].loan_value -= LOANS.array[i].installment_amount;
-	       
-			//decrease the value of the nr_periods_before_payment
-	   	
-		
-	        	//Sending debt_installment_payment_msg to all banks at which the firm has a loan
-	       
-	        	add_debt_installment_payment_message(ID,LOANS.array[i].bank_id,LOANS.array[i].credit_id, LOANS.array[i].installment_amount);
-			}	
-		}
-	        //If nr_periods_before_maturity == 0, remove the loan item
-	        if (LOANS.array[i].nr_periods_before_repayment==0)
-	        {
-	            remove_debt_item(&LOANS, i);
-	        }
-	        else
-		{
-
-		LOANS.array[i].nr_periods_before_repayment -= 1;
-		}
 	}
+	//step 2: actual interest_payments and installment_payments
+
 	
-	        
+	//Sending installment_message to banks at which the firm has a loan 
 
-
-
-		
-
-			//step 3: actual dividend payments
-	 	    //Actual payments to the bank are paid at end of day when the firm sends its bank_update message 
-
-	        //add dividend_per_share_msg(firm_id, current_dividend_per_share) to shareholders (dividend per share)     
-	        
-		
 	
+   	 imax = LOANS.size;
+   	 for (i=0; i<imax;i++)
+	 {
+		    //decrease payment_account with the interest_payment
+			if(LOANS.array[i].nr_periods_before_repayment!=PERIODS_TO_REPAY_LOANS+1)
+		    {
+			 
+				if(TOTAL_INTEREST_PAYMENT>0)
+				{
+					PAYMENT_ACCOUNT -= LOANS.array[i].interest_payment;
+					add_interest_payment_message(ID,LOANS.array[i].bank_id,LOANS.array[i].interest_payment);
+					interest_payment+=LOANS.array[i].interest_payment;
+				}
+			
+				if(TOTAL_DEBT_INSTALLMENT_PAYMENT>0)	
+				{	
+		        	//decrease payment_account with the installment payment
+		        	PAYMENT_ACCOUNT -= LOANS.array[i].installment_amount;
+		        	debt_installment+=LOANS.array[i].installment_amount;
+			
+		        	//decrease the value of the loan with the debt_installment_payment:
+		        	LOANS.array[i].loan_value -= LOANS.array[i].installment_amount;
+		       
+		        	//decrease the value of the nr_periods_before_repayment
+		   	
+			
+		        	//Sending debt_installment_payment_msg to all banks at which the firm has a loan
+		       
+		        	add_debt_installment_payment_message(ID,LOANS.array[i].bank_id,LOANS.array[i].credit_id, LOANS.array[i].installment_amount);
+				}	
+			}
+		        //If nr_periods_before_maturity == 0, remove the loan item
+		        if (LOANS.array[i].nr_periods_before_repayment==0)
+		        {
+		            remove_debt_item(&LOANS, i);
+		        }
+			    else
+				{
+			    	LOANS.array[i].nr_periods_before_repayment -= 1;
+				}
+	  }
+
+		//step 3: actual dividend payments
+ 	    //Actual payments to the bank are paid at end of day when the firm sends its bank_update message 
+
+        //add dividend_per_share_msg(firm_id, current_dividend_per_share) to shareholders (dividend per share)     
 		if(TOTAL_DIVIDEND_PAYMENT>0)
 		{
-		add_dividend_per_share_message(ID, CURRENT_DIVIDEND_PER_SHARE);
+			add_dividend_per_share_message(ID, CURRENT_DIVIDEND_PER_SHARE);
 
 	        //decrease payment_account with the total_dividend_payment
 	        PAYMENT_ACCOUNT -= TOTAL_DIVIDEND_PAYMENT;
