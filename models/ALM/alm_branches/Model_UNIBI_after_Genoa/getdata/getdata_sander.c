@@ -1773,7 +1773,55 @@ void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_
 		
 	}
 
+	current_Eurostat = *pointer_to_Eurostats;
+	
+	file = fopen("data-eurostat.csv", "a");
 
+				sprintf(data, "%i", itno);
+				fputs(data, file);
+				fputs("\t", file);
+				
+				sprintf(data, "%f", current_Eurostat->gdp);
+				fputs(data, file);
+
+				fputs("\t", file);
+				sprintf(data, "%f", current_Eurostat->total_earnings);
+				fputs(data, file);
+
+				fputs("\t", file);
+				sprintf(data, "%f", current_Eurostat->total_debt);
+				fputs(data, file);
+
+				fputs("\t", file);
+				sprintf(data, "%f", current_Eurostat->total_assets);
+				fputs(data, file);
+
+				fputs("\t", file);
+				sprintf(data, "%f", current_Eurostat->total_equity);
+				fputs(data, file);
+
+				fputs("\t", file);
+				sprintf(data, "%f", current_Eurostat->average_debt_earnings_ratio);
+				fputs(data, file);
+	/*			
+
+				fputs("\t", file);
+				sprintf(data, "%f", average_debt_equity_ratio);
+				fputs(data, file);
+	*/
+				fputs("\t", file);
+				sprintf(data, "%f", current_Eurostat->labour_share_ratio);
+				fputs(data, file);
+
+				fputs("\n", file);
+				fclose(file);
+				
+				current_Eurostat = current_Eurostat->next;
+						
+					
+	
+	
+	
 /*+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/	
 /*+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /*----------------------------FIRM MONTHLY AND REGIONAL DATA---------------------------------------*/
@@ -1859,46 +1907,6 @@ void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_
 			fclose(file);
 			
 
-			file = fopen("data-eurostat.csv", "a");
-
-			sprintf(data, "%i", itno);
-			fputs(data, file);
-			fputs("\t", file);
-			
-			sprintf(data, "%f", gdp);
-			fputs(data, file);
-
-			fputs("\t", file);
-			sprintf(data, "%f", total_earnings);
-			fputs(data, file);
-
-			fputs("\t", file);
-			sprintf(data, "%f", total_debt);
-			fputs(data, file);
-
-			fputs("\t", file);
-			sprintf(data, "%f", total_assets);
-			fputs(data, file);
-
-			fputs("\t", file);
-			sprintf(data, "%f", total_equity);
-			fputs(data, file);
-
-			fputs("\t", file);
-			sprintf(data, "%f", average_debt_earnings_ratio);
-			fputs(data, file);
-/*			
-
-			fputs("\t", file);
-			sprintf(data, "%f", average_debt_equity_ratio);
-			fputs(data, file);
-*/
-			fputs("\t", file);
-			sprintf(data, "%f", labour_share_ratio);
-			fputs(data, file);
-
-			fputs("\n", file);
-			fclose(file);
 			
 			}
 			
