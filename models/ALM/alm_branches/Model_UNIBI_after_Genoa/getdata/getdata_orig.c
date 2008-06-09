@@ -2260,7 +2260,8 @@ int main( int argc, char **argv )
 		
 		iteration_number++;
 		
-		/*current = *p_agents;
+		/*
+		current = *p_agents;
 		
 		printf("Cell Data\n");
 		while(current)
@@ -2269,7 +2270,8 @@ int main( int argc, char **argv )
 			current = current->next;
 		}
 		
-		printf("\n");*/
+		printf("\n");
+		*/
 	}
 	
 	/* Should never get here */
