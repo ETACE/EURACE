@@ -33,8 +33,8 @@ int main(int argc, char ** argv)
 	/* Pointer to file */
 	FILE *file;
 	char data[10000000];
-	char data2[10000];
-	char data1[10000];
+	char data2[1000000];
+	char data1[1000000];
 	int num;  /*used as an index to cycle through each agent*/
 	int num_start;
 	
@@ -51,15 +51,15 @@ int main(int argc, char ** argv)
 	
 	/*Defining the geographical space as a rectangular grid  */	
 	
-	int num_regions_X=2;/*Number of columns*/
-	int num_regions_Y=1;/*Number of regions*/
+	int num_regions_X=3;/*Number of columns*/
+	int num_regions_Y=3;/*Number of regions*/
 	int num_regions = num_regions_X*num_regions_Y; /*number of regions*/
 	
 	
-	int total_households = 400;/*number of households in the economy*/
+	int total_households = 1200;/*number of households in the economy*/
 	int households_per_region = total_households/num_regions; 
 
-	int total_firms  = 10; /*total_firms modulo num_regions should be 0*/
+	int total_firms  = 30; /*total_firms modulo num_regions should be 0*/
 	int total_IGfirms = 1;
 	int total_market_research = 1;
 	int total_malls = num_regions;  /*one mall per region*/
@@ -95,35 +95,35 @@ int main(int argc, char ** argv)
 	 region 1, 4, 9 ->x
 	 region 3, 5, 6, 7, 8 -> y
 	
-				{{x,y,y}{x,y,y}{y,y,x}};
+				{{x,y,y},{x,y,y},{y,y,x}};
 	 
 	 												++ 
 	 ++++++++++++++++++++++++++++++++++++++++++++++++/*
 
 	/*This determines the local skill distribution. Use numbers 1 .. 4 (see above, skill distribution_X) to give a region a skill distribution. */
-	int skills_in_regions[2][1]=
-				{4,4};
+	int skills_in_regions[3][3]=
+				{{1,1,1},{1,3,1},{1,1,1}};
 	
 	
 	//region specific initial value of households specific skills
-	double specific_skills_of_household[2][1]=
-					{1.0,0.8};
+	double specific_skills_of_household[3][3]=
+					{{0.8,0.8,0.8},{0.8,1.0,0.8},{0.8,0.8,0.8}};
 	
 
 	//Total production volume for a single firm
-	double total_production_quantity[2][1]=
-	{8.0,7.0};
+	double total_production_quantity[3][3]=
+	{{30.0,30.0,30.0},{30.0,30.0,30.0},{30.0,30.0,30.0}};
 	
 	
 	//This defines the initial capital stock of firm depending on the region.
-	double total_units_capital[2][1]=
-	                              {2.0,1.5};
+	double total_units_capital[3][3]=
+	                              {{2.0,2.0,2.0}, {2.0,2.0,2.0}, {2.0,2.0,2.0}};
 	//Firm's starting value of productivity of the capital stock
-	double technology[2][1]=
-	{1.0,0.8};
+	double technology[3][3]=
+	{{1.0,1.0,1.0},{1.0,1.0,1.0},{1.0,1.0,1.0}};
 	//This defines the financial resources of firm at the beginning of a simulation
-	double payment_account[2][1]= 
-	{60.0,50.0};
+	double payment_account[3][3]= 
+	{{50.0,50.0,50.0},{50.0,50.0,50.0},{50.0,50.0,50.0}};
 	
 	
 	/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
@@ -723,6 +723,8 @@ num_start = num;
 
 
 num_start = num;
+
+	
 	for(num=num_start; num<total_banks+num_start; num++)
 	{
 		fputs("<xagent>\n", file);
@@ -744,9 +746,12 @@ num_start = num;
 			{
 			sprintf(data1, "%s{%d, 0.0}",data2,l);
 			sprintf(data2,"%s",data1);
+			
 			}
 		}
-		sprintf(data, "{%s}",data1);	print_tag("accounts", data, file);
+		
+		
+		sprintf(data, "{%s}",data2);	print_tag("accounts", data, file);
 		sprintf(data, "{}");			print_tag("loans_outstanding", data, file);
 
 		sprintf(data, "%f",0.0);	print_tag("total_deposits", data, file);
