@@ -165,8 +165,7 @@ and stores the needed data.</description>
 </function>
 
 <function><name>Firm_send_data_to_Eurostat</name>
-<description>Firm sends message to the eurostat agent 
-including several micro data.</description>
+<description>Firm sends message to the eurostat agent including several micro data.</description>
 <currentState>14</currentState>
 <nextState>15</nextState>
 <condition><time><period>monthly</period><phase>19</phase></time></condition>
