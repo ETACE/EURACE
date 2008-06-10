@@ -9,14 +9,23 @@ int Eurostat_Initialization()
 {
 	/*Create data content of REGION_FIRM/HOUSEHOLD_DATA at the beginning of the first day. 		The first firms will send the data at the end of the first day and the other firms at the 		end of their activation days*/	
 		
-		
 	for(int i = 1; i <= NO_REGIONS; i++)
 	{
 		add_firm_data(&REGION_FIRM_DATA,
-		i,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
+			i,0,0,0,0,0,0,0,0,
+			0.0,0.0,0.0,0.0,0.0,
+			0.0,0.0,0.0,0.0,0.0,
+			0.0,0.0,0.0,0.0,0.0,
+			0.0,0.0,0.0,0.0,0.0);
 		
 		add_household_data(&REGION_HOUSEHOLD_DATA,
-		i,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1);
+			i,
+			0,0,0,0,0,0,
+			0,0,0,0,0,0,
+			0,
+			0.0,0.0,0.0,0.0,0.0,0.0,
+			0.0,0.0,0.0,0.0,0.0,0.0,
+			0.0,1.0,1.0,1.0,1.0,1.0);
 	}
 	
 	return 0;
@@ -132,10 +141,20 @@ int Eurostat_calculate_data()
 	for(int i = 1; i <= NO_REGIONS; i++)
 	{
 		add_firm_data(&REGION_FIRM_DATA,
-		i,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
+				i,0,0,0,0,0,0,0,0,
+				0.0,0.0,0.0,0.0,0.0,
+				0.0,0.0,0.0,0.0,0.0,
+				0.0,0.0,0.0,0.0,0.0,
+				0.0,0.0,0.0,0.0,0.0);
 		
 		add_household_data(&REGION_HOUSEHOLD_DATA,
-		i,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
+				i,
+				0,0,0,0,0,0,
+				0,0,0,0,0,0,
+				0,
+				0.0,0.0,0.0,0.0,0.0,0.0,
+				0.0,0.0,0.0,0.0,0.0,0.0,
+				0.0,1.0,1.0,1.0,1.0,1.0);
 	}
 	
 
@@ -243,9 +262,9 @@ int Eurostat_calculate_data()
 
 				/********sum of total consumption and investment costs++++++++*/
 				REGION_FIRM_DATA.array[i].gdp += firm_send_data_message->cum_revenue
-												+ firm_send_data_message->investment_costs;
+												+ firm_send_data_message->capital_costs;
 				GDP += firm_send_data_message->cum_revenue
-												+ firm_send_data_message->investment_costs;
+												+ firm_send_data_message->capital_costs;
 
 				
 				/********sum of net earnings of the firms++++++++*/
@@ -544,8 +563,7 @@ int Eurostat_calculate_data()
 				if(household_send_data_message->employment_status != -1)
 				{
 					REGION_HOUSEHOLD_DATA.array[i].employed++;
-					REGION_HOUSEHOLD_DATA.array[i]
-					.employed_skill_4++;
+					REGION_HOUSEHOLD_DATA.array[i].employed_skill_4++;
 					EMPLOYED_SKILL_4++;
 					EMPLOYED++;
 				}

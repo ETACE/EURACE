@@ -94,6 +94,13 @@ int Eurostat_send_data()
  */
 int Eurostat_calculate_data()
 {
+	//Auxiliary sums:
+	double sum_total_debt_earnings_ratios;
+	double sum_total_debt_equity_ratios;
+	double sum_total_labour_share_ratios;
+	double sum_region_debt_earnings_ratios;
+	double sum_region_debt_equity_ratios;
+	double sum_region_labour_share_ratios;
 	
 	/*delete the content of the memmory variables in order to store the data for the 			new month*/
 	
@@ -188,12 +195,21 @@ int Eurostat_calculate_data()
 				0.0,1.0,1.0,1.0,1.0,1.0);
 	}
 	
+		//Reset total economy sums: these are updated inside the message loop to add up all ratios across all firms
+		sum_total_debt_earnings_ratios = 0.0;
+		sum_total_debt_equity_ratios   = 0.0;
+		sum_total_labour_share_ratios  = 0.0;
 
-	START_FIRM_SEND_DATA_MESSAGE_LOOP
-	
 		/*Store the region data of the firms*/
 		for(int i = 0; i < REGION_FIRM_DATA.size; i++)
 		{
+			//Reset region sums: these are updated to sum the ratios over all regional firms
+			sum_region_debt_earnings_ratios = 0.0;
+			sum_region_debt_equity_ratios   = 0.0;
+			sum_region_labour_share_ratios  = 0.0;
+
+			START_FIRM_SEND_DATA_MESSAGE_LOOP
+			
 			if(firm_send_data_message->region_id == 
 		   	REGION_FIRM_DATA.array[i].region_id)
 			{
@@ -291,7 +307,7 @@ int Eurostat_calculate_data()
 					firm_send_data_message->employees_skill_5;
 				
 				
-				/********sum of total consumption and investment costs++++++++*/
+				/********sum of GDP: total consumption and investment costs++++++++*/
 				REGION_FIRM_DATA.array[i].gdp += firm_send_data_message->cum_revenue + firm_send_data_message->capital_costs;
 				GDP += firm_send_data_message->cum_revenue + firm_send_data_message->capital_costs;
 
@@ -315,46 +331,42 @@ int Eurostat_calculate_data()
 				REGION_FIRM_DATA.array[i].total_equity += firm_send_data_message->equity;
 				TOTAL_EQUITY += firm_send_data_message->equity;
 				
-				
 				/***************** average debt/earnings ratio *********************/
-				if (REGION_FIRM_DATA.array[i].total_earnings>0.0)
+				if (firm_send_data_message->net_earnings>0.0)
 				{
-					REGION_FIRM_DATA.array[i].average_debt_earnings_ratio =
-						REGION_FIRM_DATA.array[i].total_debt/REGION_FIRM_DATA.array[i].total_earnings;
-				}
-				if (TOTAL_EARNINGS>0.0)
-				{
-					AVERAGE_DEBT_EARNINGS_RATIO = TOTAL_DEBT/TOTAL_EARNINGS;
+					sum_region_debt_earnings_ratios += firm_send_data_message->total_debt/firm_send_data_message->net_earnings;
+					sum_total_debt_earnings_ratios += firm_send_data_message->total_debt/firm_send_data_message->net_earnings;
 				}
 				
 				/***************** average debt/equity ratio *********************/
-				if (REGION_FIRM_DATA.array[i].total_equity>0.0)
+				if (firm_send_data_message->equity>0.0)
 				{
-					REGION_FIRM_DATA.array[i].average_debt_equity_ratio =
-						REGION_FIRM_DATA.array[i].total_debt/REGION_FIRM_DATA.array[i].total_equity;
-				}
-				if (TOTAL_EQUITY>0.0)
-				{
-					AVERAGE_DEBT_EQUITY_RATIO = TOTAL_DEBT/TOTAL_EQUITY;
+					sum_region_debt_equity_ratios += firm_send_data_message->total_debt/firm_send_data_message->equity;
+					sum_total_debt_equity_ratios += firm_send_data_message->total_debt/firm_send_data_message->equity;
 				}
 				
 				/***************** average labour share *********************/
-				if (REGION_FIRM_DATA.array[i].total_earnings>0.0)
+				if (firm_send_data_message->net_earnings>0.0)
 				{				
-					REGION_FIRM_DATA.array[i].labour_share_ratio =
-						REGION_FIRM_DATA.array[i].average_wage/REGION_FIRM_DATA.array[i].total_earnings;
-				}
-				if (TOTAL_EARNINGS>0.0)
-				{
-					LABOUR_SHARE_RATIO = FIRM_AVERAGE_WAGE/TOTAL_EARNINGS;
+					sum_region_labour_share_ratios += firm_send_data_message->average_wage*firm_send_data_message->employees/firm_send_data_message->net_earnings;
+					sum_total_labour_share_ratios += firm_send_data_message->average_wage*firm_send_data_message->employees/firm_send_data_message->net_earnings;
 				}
 			}
-		}	
-
-	FINISH_FIRM_SEND_DATA_MESSAGE_LOOP
-
+			
+			FINISH_FIRM_SEND_DATA_MESSAGE_LOOP
+			
+			//Compute regional averages after the regional-specific message loop
+			REGION_FIRM_DATA.array[i].average_debt_earnings_ratio = sum_region_debt_earnings_ratios/NO_FIRMS;
+			REGION_FIRM_DATA.array[i].average_debt_equity_ratio = sum_region_debt_equity_ratios/NO_FIRMS;
+			REGION_FIRM_DATA.array[i].labour_share_ratio = sum_region_labour_share_ratios/NO_FIRMS;
+		}
+		
+		//Compute total averages after the region for-loop
+		AVERAGE_DEBT_EARNINGS_RATIO = sum_total_debt_earnings_ratios/NO_FIRMS;
+		AVERAGE_DEBT_EQUITY_RATIO = sum_total_debt_equity_ratios/NO_FIRMS;
+		LABOUR_SHARE_RATIO  = sum_total_labour_share_ratios/NO_FIRMS;
+			
    	/*Create the REGIONAL data which is needed for controlling the results or sending 			back to the Firms*/
-
 	for(int i = 0; i < REGION_FIRM_DATA.size; i++)
 	{
 		/*********************WAGES************************/

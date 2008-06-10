@@ -485,7 +485,7 @@ int main(int argc, char ** argv)
 	int r_id = 1;
 	int g_skill_level;
 	int a_id=num_start;
-	int a;
+	int a,l;
 	for( a=0; a<num_regions; a++)
 	{
 		
@@ -645,7 +645,7 @@ int main(int argc, char ** argv)
 		sprintf(data, "%f", 0.0);	print_tag("received_dividends", data, file);
 		
 
-		for( int l=1; l<=total_firms+1;l++)
+		for(l=1; l<=total_firms+1;l++)
 		{
 			
 			if(l==1)
@@ -734,7 +734,7 @@ num_start = num;
 		sprintf(data, "%d",gov_id);	print_tag("gov_id", data, file);
 		
 		
-		for( int l=1; l<num_start;l++)
+		for(l=1; l<num_start;l++)
 		{
 			
 			if(l==1)
