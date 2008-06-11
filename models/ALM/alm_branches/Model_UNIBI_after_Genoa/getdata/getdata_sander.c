@@ -2337,7 +2337,7 @@ int main( int argc, char **argv )
 	
 	int iteration_number = 0;
 	int stilldata = 1;
-	
+	int lastread = 0;
 
 
 
@@ -2488,15 +2488,19 @@ int main( int argc, char **argv )
 	Eurostats = NULL;
 	p_Eurostats = &Eurostats;
 
-	while(stilldata)
+	while(iteration_number - lastread < 241) //frequency+1
 	{
 		stilldata = getiteration(filepath, iteration_number, p_firms, p_households, p_IGfirms, p_malls, p_Eurostats);
 		
-		if(stilldata) savedatatofile(iteration_number, p_firms, p_households, p_IGfirms, p_malls, p_Eurostats);
-		
+		if(stilldata)
+		{
+		 savedatatofile(iteration_number, p_firms, p_households, p_IGfirms, p_malls, p_Eurostats);
+		 lastread = iteration_number;
+		}
 		iteration_number++;
 		
-		/*current = *p_agents;
+		/*
+		current = *p_agents;
 		
 		printf("Cell Data\n");
 		while(current)
@@ -2505,7 +2509,8 @@ int main( int argc, char **argv )
 			current = current->next;
 		}
 		
-		printf("\n");*/
+		printf("\n");
+		*/
 	}
 	
 	/* Should never get here */
