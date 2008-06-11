@@ -34,8 +34,8 @@ spell:
 
 dvi:
 	latex usermanual
-	#bibtex usermanual
-	#latex usermanual
+	bibtex usermanual
+	latex usermanual
 	latex usermanual
 
 ps: dvi
