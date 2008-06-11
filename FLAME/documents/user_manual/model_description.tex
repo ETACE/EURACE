@@ -1,10 +1,13 @@
 \section{Model Description}
 
-The DTD (Document Type Definition) of the XML document is located here:
+Models descriptions are formated in XML to be human and computer readable.
+
+The DTD (Document Type Definition) of the XML document is currently located
+here:
 
 http://eurace.cs.bilgi.edu.tr/XMML.dtd
 
-The start and end of a model file should look this this:
+The start and end of a model file should be formatted thus:
 
 \begin{mylisting}
 \begin{verbatim}
@@ -12,8 +15,8 @@ The start and end of a model file should look this this:
  <!DOCTYPE xmodel SYSTEM "http://eurace.cs.bilgi.edu.tr/XMML.dtd">
  <xmodel version="2">
  <name>Model_name</name>
- <version>the_version</version>
- <description>a_description</description>
+ <version>the version</version>
+ <description>a description</description>
  ...
  </xmodel>
 \end{verbatim}
@@ -64,13 +67,15 @@ Models can contain:
 \end{itemize}
 
 \subsection{Environment}
-The environment tag in the model.xml file hosts additional tags for information that may be required by the parser for efficient simulation of the model.
+The environment tag in the model.xml file hosts additional tags for information that may be required by
+the parser for efficient simulation of the model.
 Following are the tags that can be defined in it.
 
 
 \subsubsection{Constant Variables}
 
-Constant Variables refers to the global values used in the model. These can me defined in a separate header file which can then be included in one of the functions file.
+Constant Variables refers to the global values used in the model.
+These can me defined in a separate header file which can then be included in one of the functions file.
 
 The header file would look as follows:
 
@@ -259,3 +264,4 @@ the operator NOT is used by placing `not' tags around a rule:
 \end{mylisting}
 
 \subsection{Messages}
+
