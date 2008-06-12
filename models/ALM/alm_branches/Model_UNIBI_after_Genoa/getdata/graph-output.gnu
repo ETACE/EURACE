@@ -33,12 +33,12 @@ set key top right
 set terminal postscript eps color "Helvetica" 16
 #set terminal postscript eps monochrome "Helvetica" 16
 set output 'graph-output.eps'
-plot 'data-output.csv' using 1:2 title "actual output", 'data-output.csv' using 1:3 title "actual sales"
+plot 'data-output.csv' using 1:2 title "actual output" #, 'data-output.csv' using 1:3 title "actual sales"
 set output
 
 set terminal png
 set output 'graph-output.png'
-plot 'data-output.csv' using 1:2 title "actual output", 'data-output.csv' using 1:3 title "actual sales"
+plot 'data-output.csv' using 1:2 title "actual output" #, 'data-output.csv' using 1:3 title "actual sales"
 set output
 
 # Call external epstopdf to transform the eps file to pdf.
