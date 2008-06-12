@@ -16,7 +16,7 @@ int Firm_apply_for_loans()
     //add_loan_request_message(firm_id, bank_id, external_financial_needs, total_assets, total_debt);
      // add_loan_request_message(ID, BANK_ID, EXTERNAL_FINANCIAL_NEEDS, PLANNED_TOTAL_ASSETS, TOTAL_DEBT);
 
-	add_loan_request_message(ID, BANK_ID, EXTERNAL_FINANCIAL_NEEDS,TOTAL_ASSETS, TOTAL_DEBT);
+	add_loan_request_message(ID, REGION_ID, BANK_ID, EXTERNAL_FINANCIAL_NEEDS,TOTAL_ASSETS, TOTAL_DEBT);
 	
    return 0;
 }

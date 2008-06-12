@@ -9,7 +9,8 @@
 <!-- Models to include in Eurace model -->
 <models>
 <model><file>Cons_Goods_UNIBI/model.xml</file><enabled>true</enabled></model>
-<model><file>Credit_UNIBI/model-dummy.xml</file><enabled>true</enabled></model>
+<model><file>Credit_UNIBI/model-dummy.xml</file><enabled>false</enabled></model>
+<model><file>Credit_UNIBI/model-dummy-sander.xml</file><enabled>true</enabled></model>
 <model><file>Credit_Ancona/model.xml</file><enabled>false</enabled></model>
 <model><file>Financial_Management_UNIBI/model.xml</file><enabled>true</enabled></model>
 <model><file>Inv_Goods_UNIBI/model.xml</file><enabled>true</enabled></model>
