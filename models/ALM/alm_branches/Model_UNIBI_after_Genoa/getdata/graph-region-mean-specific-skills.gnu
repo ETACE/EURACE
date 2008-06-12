@@ -15,7 +15,7 @@ set xlabel "Days"
 
 #Set legenda:
 #set nokey
-set key below
+set key top right
 
 #Set ranges:
 #set xrange [1:8]
@@ -32,7 +32,7 @@ set key below
 
 #Plotting
 
-set terminal postscript eps "Helvetica" 30
+set terminal postscript eps color "Helvetica" 30
 set output "graph-mean-spec-skills.eps"
 plot 'mean_specific_skills_region.csv' using 1:2 title "mean specific skills region 1", 'mean_specific_skills_region.csv' using 1:3 title "mean specific skills region 2" 
 set output

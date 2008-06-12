@@ -15,7 +15,7 @@ set xlabel "Days"
 
 #Set legenda:
 #set nokey
-set key below
+set key top right
 
 #Set ranges:
 #set xrange [1:8]
@@ -32,8 +32,8 @@ set key below
 
 #Plotting
 
-#set terminal postscript eps color "Helvetica" 16
-set terminal postscript eps monochrome "Helvetica" 16
+set terminal postscript eps color "Helvetica" 16
+#set terminal postscript eps monochrome "Helvetica" 16
 set output 'graph-planned-output.eps'
 plot 'data-planned-output.csv' using 1:2 title "monthly-output",'data-planned-output.csv' using 1:3 title "planned-monthly-quantity", 'data-planned-output.csv' using 1:4 title "monthly-output-region-1",'data-planned-output.csv' using 1:5 title "planned-monthly-quantity-region-1",'data-planned-output.csv' using 1:6 title "monthly-output-region-1",'data-planned-output.csv' using 1:7 title "planned-monthly-quantity-region-1"
 set output

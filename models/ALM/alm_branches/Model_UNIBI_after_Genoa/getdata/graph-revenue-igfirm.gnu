@@ -15,7 +15,7 @@ set xlabel "Days"
 
 #Set legenda:
 #set nokey
-set key below
+set key top right
 
 #Set ranges:
 #set xrange [1:8]
@@ -32,8 +32,8 @@ set key below
 
 #Plotting
 
-#set terminal postscript eps color "Helvetica" 16
-set terminal postscript eps monochrome "Helvetica" 16
+set terminal postscript eps color "Helvetica" 16
+#set terminal postscript eps monochrome "Helvetica" 16
 set output 'graph-revenue-igfirm.eps'
 plot 'data-IGfirm-revenues.csv' using 1:2 title "Revenue IG firm"
 set output

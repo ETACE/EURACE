@@ -15,7 +15,7 @@ set xlabel "Days"
 
 #Set legenda:
 #set nokey
-set key below
+set key top right
 
 #Set ranges:
 #set xrange [1:8]
@@ -33,11 +33,6 @@ set key below
 #Plotting
 
 set terminal postscript eps color "Helvetica" 16
-set output 'graph-debt_earnings_ratio-color.eps'
-plot 'data-eurostat.csv' using 1:7 title "avg. debt earnings ratio", 'data-eurostat.csv' using 1:9 title "avg. labour share ratio"
-set output
-
-set terminal postscript eps monochrome "Helvetica" 16
 set output 'graph-debt_earnings_ratio.eps'
 plot 'data-eurostat.csv' using 1:7 title "avg. debt earnings ratio", 'data-eurostat.csv' using 1:9 title "avg. labour share ratio"
 set output

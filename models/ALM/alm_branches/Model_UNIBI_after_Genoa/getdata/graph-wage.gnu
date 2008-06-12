@@ -15,7 +15,7 @@ set xlabel "Days"
 
 #Set legenda:
 #set nokey
-set key below
+set key top right
 
 #Set ranges:
 #set xrange [1:8]
@@ -32,8 +32,8 @@ set yrange [1:1.3]
 
 #Plotting
 
-#set terminal postscript eps color "Helvetica" 16
-set terminal postscript eps monochrome "Helvetica" 16
+set terminal postscript eps color "Helvetica" 16
+#set terminal postscript eps monochrome "Helvetica" 16
 set output 'graph-wage.eps'
 plot 'data-wage.csv' using 1:2 title "ave-wage", 'data-wage.csv' using 1:3 title "wage-skill-1", 'data-wage.csv' using 1:4 title "ave-skill-2", 'data-wage.csv' using 1:5 title "ave-skill-3", 'data-wage.csv' using 1:6 title "wage-skill-4", 'data-wage.csv' using 1:7 title "ave-skill-5"
 set output

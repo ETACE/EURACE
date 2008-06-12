@@ -15,7 +15,7 @@ set xlabel "Days"
 
 #Set legenda:
 #set nokey
-set key below
+set key top right
 
 #Set ranges:
 #set xrange [1:8]
@@ -33,12 +33,8 @@ set key below
 #Plotting
 
 set terminal postscript eps color "Helvetica" 16
+#set terminal postscript eps monochrome "Helvetica" 16
 set output 'graph-gdp-color.eps'
-plot 'data-eurostat.csv' using 1:2 title "gdp"
-set output
-
-set terminal postscript eps monochrome "Helvetica" 16
-set output 'graph-gdp.eps'
 plot 'data-eurostat.csv' using 1:2 title "gdp"
 set output
 
