@@ -399,7 +399,7 @@ int Firm_calc_input_demands()
 		
 		PLANNED_PRODUCTION_COSTS = EMPLOYEES_NEEDED*(1.04)*MEAN_WAGE + DEMAND_CAPITAL_STOCK*ACTUAL_CAP_PRICE;
 
-		printf("Firm: %d  Labour: %d  Capital: %f  PLANNED_PROD_COSTS: %f\n", ID,EMPLOYEES_NEEDED,NEEDED_CAPITAL_STOCK,PLANNED_PRODUCTION_COSTS);
+		//printf("Firm: %d  Labour: %d  Capital: %f  PLANNED_PROD_COSTS: %f\n", ID,EMPLOYEES_NEEDED,NEEDED_CAPITAL_STOCK,PLANNED_PRODUCTION_COSTS);
 	
 	return 0;
 }
@@ -414,7 +414,7 @@ int Firm_calc_input_demands()
  * such that the corresponding labor demand and capital demand can be financed by the actually obtained financial resources.*/
 int Firm_calc_production_quantity_2()
 {
-	printf("Firm_calc_production_quantity_2() ID: %d\n",ID);
+	//printf("Firm_calc_production_quantity_2() ID: %d\n",ID);
 	
 	//Here we set a fraction of the planned production quantity
 	double decrement;
@@ -436,7 +436,7 @@ int Firm_calc_production_quantity_2()
 
 		}
 	
-	printf("Labour: %d  Capital: %f  PLANNED_PROD_COSTS: %f\n", EMPLOYEES_NEEDED,NEEDED_CAPITAL_STOCK,PLANNED_PRODUCTION_COSTS);
+	//printf("Labour: %d  Capital: %f  PLANNED_PROD_COSTS: %f\n", EMPLOYEES_NEEDED,NEEDED_CAPITAL_STOCK,PLANNED_PRODUCTION_COSTS);
 	
 	return 0;
 }
@@ -538,7 +538,7 @@ int Firm_execute_production()
 	}
 
 	
-	printf("PRODUCTION_QUANTITY: %f  \n", PRODUCTION_QUANTITY);
+	//printf("PRODUCTION_QUANTITY: %f  \n", PRODUCTION_QUANTITY);
 return 0;
 }
 
@@ -597,7 +597,7 @@ int Firm_calc_pay_costs()
 	PAYMENT_ACCOUNT -= PRODUCTION_COSTS;
 
 	if(PLANNED_PRODUCTION_COSTS<PRODUCTION_COSTS)
-		printf("XXXX PLANNED_PRODUCTION_COSTS: %f  PRODUCTION_COSTS %f XXXXX\n",PLANNED_PRODUCTION_COSTS,PRODUCTION_COSTS);
+		//printf("XXXX PLANNED_PRODUCTION_COSTS: %f  PRODUCTION_COSTS %f XXXXX\n",PLANNED_PRODUCTION_COSTS,PRODUCTION_COSTS);
 
 	remove_double(&LAST_PLANNED_PRODUCTION_QUANTITIES,0);
 	add_double(&LAST_PLANNED_PRODUCTION_QUANTITIES,PLANNED_PRODUCTION_QUANTITY);	

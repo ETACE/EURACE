@@ -52,8 +52,8 @@ int main(int argc, char ** argv)
 	
 	/*Defining the geographical space as a rectangular grid  */	
 	
-	int num_regions_X=3;/*Number of columns*/
-	int num_regions_Y=3;/*Number of regions*/
+	int num_regions_X=2;/*Number of columns*/
+	int num_regions_Y=2;/*Number of regions*/
 	int num_regions = num_regions_X*num_regions_Y; /*number of regions*/
 	
 	
@@ -102,9 +102,47 @@ int main(int argc, char ** argv)
 	 ++++++++++++++++++++++++++++++++++++++++++++++++/*
 
 	/*This determines the local skill distribution. Use numbers 1 .. 4 (see above, skill distribution_X) to give a region a skill distribution. */
+
+	//Scenario 0: 2 regions, LOW, LOW
+	int skills_in_regions[2][2]=
+				{{1,1},{1,1}};
+
+
+/*
+	//Scenario 1: core has HIGH, periphery has LOW
 	int skills_in_regions[3][3]=
 				{{1,1,1},{1,3,1},{1,1,1}};
-	
+*/
+/*	
+	//Scenario 2: core has HIGH, periphery has MEDIUM
+	int skills_in_regions[3][3]=
+				{{2,2,2},{2,3,2},{2,2,2}};
+*/
+/*
+	//Scenario 3: core has MEDIUM, periphery has LOW
+	int skills_in_regions[3][3]=
+				{{1,1,1},{1,2,1},{1,1,1}};
+*/
+/*
+	//Scenario 4: core has MEDIUM, periphery has MEDIUM
+	int skills_in_regions[3][3]=
+				{{2,2,2},{2,2,2},{2,2,2}};
+*/
+/*	
+	//Scenario 5: core has MEDIUM, periphery has HIGH
+	int skills_in_regions[3][3]=
+				{{3,3,3},{3,2,3},{3,3,3}};
+*/
+/*	
+	//Scenario 6: core has LOW, periphery has MEDIUM
+	int skills_in_regions[3][3]=
+				{{2,2,2},{2,1,2},{2,2,2}};
+*/
+/*	
+	//Scenario 7: core has LOW, periphery has HIGH
+	int skills_in_regions[3][3]=
+				{{3,3,3},{3,1,3},{3,3,3}};
+*/	
 	
 	//region specific initial value of households specific skills
 	double specific_skills_of_household[3][3]=

@@ -40,7 +40,7 @@ int Firm_compute_financial_payments()
     //step 1: compute total interest payments
     TOTAL_INTEREST_PAYMENT=0.0;
     imax = LOANS.size;
-    printf("Firm_Financial_Management_Function, line 42: LOANS.size=%d\n", imax);
+    //printf("Firm_Financial_Management_Function, line 42: LOANS.size=%d\n", imax);
     
     for (i=0; i<imax;i++)
     {
@@ -57,7 +57,7 @@ int Firm_compute_financial_payments()
     TOTAL_DEBT=0.0;
     for (i=0; i<imax;i++)
     {
-       	printf("Firm_Financial_Management_Function, line 58: Adding loan values to total debt\n");
+       	//printf("Firm_Financial_Management_Function, line 58: Adding loan values to total debt\n");
         //compute current total debt
         TOTAL_DEBT += LOANS.array[i].loan_value;
         

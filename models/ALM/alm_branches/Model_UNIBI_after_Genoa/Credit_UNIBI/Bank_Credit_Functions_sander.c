@@ -9,6 +9,7 @@
 
 int Bank_read_loan_request_send_acceptance()
 {
+	double proposed_interest_rate;
 	
 // Computes the total deposits
 
@@ -29,7 +30,7 @@ TOTAL_LOAN_SUPPLY= 0.90*(TOTAL_DEPOSITS+PAYMENT_ACCOUNT);
 TOTAL_LOAN_SUPPLY=0;
 
 	
-credit_request_array  credit_requests;
+	credit_request_array  credit_requests;
 	init_credit_request_array (&credit_requests);
 
 	START_LOAN_REQUEST_MESSAGE_LOOP
@@ -41,10 +42,25 @@ credit_request_array  credit_requests;
 	
 	//printf("ID: %d Risk TA:%f,   TD%f  CA:%f +++ Prof %f\n",loan_request_message->firm_id,loan_request_message->total_assets,loan_request_message->total_debt,loan_request_message->credit_amount,ratio_debt_assets);
 	
+	//ADDED by Sander:
+	//Scenario: there are different interest rates per region: 
+	//filter on the firm's region_id and assign a proposed_interest_rate to the credit_request
 
+		proposed_interest_rate = INTEREST_RATE;
+/*
+		if (loan_request_message->region_id%2==0)
+		{
+			proposed_interest_rate = INTEREST_RATE;
+		}
+		else
+		{
+			proposed_interest_rate = 2*INTEREST_RATE;
+		}
+		//printf("region_id: %d proposed_interest_rate: %f", loan_request_message->region_id, proposed_interest_rate);
+*/		
 	//Add credit request on a temporary array	
-	add_credit_request(&credit_requests,loan_request_message->firm_id,loan_request_message->credit_amount , loan_request_message->total_assets,loan_request_message->total_debt,ratio_debt_assets);
-	
+	//add_credit_request(&credit_requests,loan_request_message->firm_id,loan_request_message->credit_amount, INTEREST_RATE, loan_request_message->total_assets,loan_request_message->total_debt,ratio_debt_assets);	
+	add_credit_request(&credit_requests,loan_request_message->firm_id,loan_request_message->credit_amount, proposed_interest_rate, loan_request_message->total_assets,loan_request_message->total_debt,ratio_debt_assets);	
 	FINISH_LOAN_REQUEST_MESSAGE_LOOP
 
 
@@ -77,11 +93,13 @@ credit_request_array  credit_requests;
 	double accepted_credit_volume = credit_requests.array[i].credit_amount;
 
 	LAST_CREDIT_ID++;
-		
-	add_loan_acceptance_message(credit_requests.array[i].firm_id,ID,LAST_CREDIT_ID,accepted_credit_volume,INTEREST_RATE);
+	
+	//ADDED by Sander: proposed interest rate differs per region	
+	//add_loan_acceptance_message(credit_requests.array[i].firm_id,ID,LAST_CREDIT_ID,accepted_credit_volume, INTEREST_RATE);
+	add_loan_acceptance_message(credit_requests.array[i].firm_id,ID,LAST_CREDIT_ID,accepted_credit_volume, credit_requests.array[i].proposed_interest_rate);
 	
 	
-	add_outstanding_loans(&LOANS_OUTSTANDING,credit_requests.array[i].firm_id,credit_requests.array[i].credit_amount,INTEREST_RATE,LAST_CREDIT_ID);
+	add_outstanding_loans(&LOANS_OUTSTANDING,credit_requests.array[i].firm_id,credit_requests.array[i].credit_amount, credit_requests.array[i].proposed_interest_rate,LAST_CREDIT_ID);
 	
 
 	TOTAL_LOAN_SUPPLY -= credit_requests.array[i].credit_amount;

@@ -691,7 +691,7 @@ int Eurostat_calculate_data()
 
 	FINISH_HOUSEHOLD_SEND_DATA_MESSAGE_LOOP
 
-	printf("NUM_HOUSEHOLDS %d\n",NUM_HOUSEHOLDS);
+	//printf("Eurostat_Functions: NUM_HOUSEHOLDS %d\n",NUM_HOUSEHOLDS);
 	/*Create the REGIONAL data which is needed for controlling the results or sending 			back to the Households*/
 	for(int i = 0; i < REGION_HOUSEHOLD_DATA.size; i++)
 	{
