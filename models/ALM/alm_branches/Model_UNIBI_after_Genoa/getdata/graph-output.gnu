@@ -14,7 +14,7 @@ set ylabel "actual output, sales"
 
 #Set legenda:
 #set nokey
-set key below
+set key top right
 
 #Set ranges:
 #set xrange [1:8]
@@ -30,8 +30,8 @@ set key below
 
 #Plotting
 
-#set terminal postscript eps color "Helvetica" 16
-set terminal postscript eps monochrome "Helvetica" 16
+set terminal postscript eps color "Helvetica" 16
+#set terminal postscript eps monochrome "Helvetica" 16
 set output 'graph-output.eps'
 plot 'data-output.csv' using 1:2 title "actual output", 'data-output.csv' using 1:3 title "actual sales"
 set output

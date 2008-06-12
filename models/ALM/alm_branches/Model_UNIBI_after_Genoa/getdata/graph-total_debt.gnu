@@ -15,7 +15,7 @@ set xlabel "Days"
 
 #Set legenda:
 #set nokey
-set key below
+set key top right
 
 #Set ranges:
 #set xrange [1:8]
@@ -33,11 +33,7 @@ set key below
 #Plotting
 
 set terminal postscript eps color "Helvetica" 16
-set output 'graph-total-debt-color.eps'
-plot 'data-eurostat.csv' using 1:4 title "total debt", 'data-eurostat.csv' using 1:5 title "total assets", 'data-eurostat.csv' using 1:6 title "total equity"
-set output
-
-set terminal postscript eps monochrome "Helvetica" 16
+#set terminal postscript eps monochrome "Helvetica" 16
 set output 'graph-total-debt.eps'
 plot 'data-eurostat.csv' using 1:4 title "total debt", 'data-eurostat.csv' using 1:5 title "total assets", 'data-eurostat.csv' using 1:6 title "total equity"
 set output

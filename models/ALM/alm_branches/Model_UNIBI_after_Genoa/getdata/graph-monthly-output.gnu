@@ -15,7 +15,7 @@ set xlabel "Days"
 
 #Set legenda:
 #set nokey
-set key below
+set key top right
 
 #Set ranges:
 #set xrange [1:8]
@@ -33,11 +33,6 @@ set key below
 #Plotting
 
 set terminal postscript eps color "Helvetica" 16
-set output 'graph-monthly-output-color.eps'
-plot 'data-monthly-output.csv' using 1:2 title "monthly-output",'data-monthly-output.csv' using 1:3 title "monthly-sold-quantity",'data-monthly-output.csv' using 1:4 title "total_stock"
-set output
-
-set terminal postscript eps monochrome "Helvetica" 16
 set output 'graph-monthly-output.eps'
 plot 'data-monthly-output.csv' using 1:2 title "monthly-output",'data-monthly-output.csv' using 1:3 title "monthly-sold-quantity",'data-monthly-output.csv' using 1:4 title "total_stock"
 set output
