@@ -9,9 +9,9 @@
 <environment>
 
 <functionFiles>
-<file>Firm_Statistics_Functions.c</file>
+<file>Firm_Statistics_Functions-new.c</file>
 <file>Household_Statistics_Functions.c</file>
-<file>Eurostat_Functions.c</file>
+<file>Eurostat_Functions-new.c</file>
 <file>IGFirm_Statistics_Functions.c</file>
 </functionFiles>
 
@@ -123,14 +123,14 @@
 <description></description>
 <currentState>start_Firm</currentState>
 <nextState>Start_Firm_Macro_Data</nextState>
-<condition><not><time><period>yearly</period><phase>0</phase></time></not></condition>
+<condition><not><time><period>yearly</period><phase>1</phase></time></not></condition>
 </function>
 
 <function><name>Firm_read_tax_rates</name>
 <description></description>
 <currentState>start_Firm</currentState>
 <nextState>Start_Firm_Macro_Data</nextState>
-<condition><time><period>yearly</period><phase>0</phase></time></condition>
+<condition><time><period>yearly</period><phase>1</phase></time></condition>
 <inputs>
 <input><messageName>government_tax_rates</messageName></input>
 </inputs>
@@ -141,7 +141,7 @@
 and stores the needed data.</description>
 <currentState>Start_Firm_Macro_Data</currentState>
 <nextState>00</nextState>
-<condition><time><period>monthly</period><phase>0</phase></time></condition>
+<condition><time><period>monthly</period><phase>1</phase></time></condition>
 <inputs>
 <input><messageName>eurostat_send_specific_skills</messageName></input>
 </inputs>
@@ -151,7 +151,7 @@ and stores the needed data.</description>
 <description>Firm does nothing</description>
 <currentState>Start_Firm_Macro_Data</currentState>
 <nextState>00</nextState>
-<condition><not><time><period>monthly</period><phase>0</phase></time></not></condition>
+<condition><not><time><period>monthly</period><phase>1</phase></time></not></condition>
 </function>
 
 <function><name>Firm_send_data_to_Eurostat</name>
@@ -159,7 +159,7 @@ and stores the needed data.</description>
 including several micro data.</description>
 <currentState>14</currentState>
 <nextState>15</nextState>
-<condition><time><period>monthly</period><phase>19</phase></time></condition>
+<condition><time><period>monthly</period><phase>0</phase></time></condition>
 <outputs>
 <output><messageName>firm_send_data</messageName></output>
 </outputs>
@@ -169,7 +169,7 @@ including several micro data.</description>
 <description>Firm does nothing</description>
 <currentState>14</currentState>
 <nextState>15</nextState>
-<condition><not><time><period>monthly</period><phase>19</phase></time></not></condition>
+<condition><not><time><period>monthly</period><phase>0</phase></time></not></condition>
 </function>
 
 <function><name>Firm_send_payments_to_bank</name>
@@ -194,14 +194,14 @@ including several micro data.</description>
 <description></description>
 <currentState>start_IGFirm</currentState>
 <nextState>Start_IGFirm_Productivity</nextState>
-<condition><not><time><period>yearly</period><phase>0</phase></time></not></condition>
+<condition><not><time><period>yearly</period><phase>1</phase></time></not></condition>
 </function>
 
 <function><name>IGFirm_read_tax_rates</name>
 <description></description>
 <currentState>start_IGFirm</currentState>
 <nextState>Start_IGFirm_Productivity</nextState>
-<condition><time><period>yearly</period><phase>0</phase></time></condition>
+<condition><time><period>yearly</period><phase>1</phase></time></condition>
 <inputs>
 <input><messageName>government_tax_rates</messageName></input>
 </inputs>
@@ -220,14 +220,14 @@ including several micro data.</description>
 <description></description>
 <currentState>start_Household</currentState>
 <nextState>Start_Household_Tax_Data</nextState>
-<condition><not><time><period>yearly</period><phase>0</phase></time></not></condition>
+<condition><not><time><period>yearly</period><phase>1</phase></time></not></condition>
 </function>
 
 <function><name>Household_read_tax_rates</name>
 <description></description>
 <currentState>start_Household</currentState>
 <nextState>Start_Household_Tax_Data</nextState>
-<condition><time><period>yearly</period><phase>0</phase></time></condition>
+<condition><time><period>yearly</period><phase>1</phase></time></condition>
 <inputs>
 <input><messageName>government_tax_rates</messageName></input>
 </inputs>
@@ -238,14 +238,14 @@ including several micro data.</description>
 and stores the needed data.</description>
 <currentState>Start_Household_Tax_Data</currentState>
 <nextState>Start_Household_Labour_Role</nextState>
-<condition><time><period>monthly</period><phase>0</phase></time></condition>
+<condition><time><period>monthly</period><phase>1</phase></time></condition>
 </function>
 
 <function><name>Household_idle</name>
 <description>Household does nothing</description>
 <currentState>Start_Household_Tax_Data</currentState>
 <nextState>Start_Household_Labour_Role</nextState>
-<condition><not><time><period>monthly</period><phase>0</phase></time></not></condition>
+<condition><not><time><period>monthly</period><phase>1</phase></time></not></condition>
 </function>
 
 <function><name>Household_send_data_to_Eurostat</name>
@@ -253,7 +253,7 @@ and stores the needed data.</description>
 including several micro data.</description>
 <currentState>15</currentState>
 <nextState>end_Household</nextState>
-<condition><time><period>monthly</period><phase>19</phase></time></condition>
+<condition><time><period>monthly</period><phase>0</phase></time></condition>
 <outputs>
 <output><messageName>household_send_data</messageName></output>
 </outputs>
@@ -263,7 +263,7 @@ including several micro data.</description>
 <description>Household does nothing</description>
 <currentState>15</currentState>
 <nextState>end_Household</nextState>
-<condition><not><time><period>monthly</period><phase>19</phase></time></not></condition>
+<condition><not><time><period>monthly</period><phase>0</phase></time></not></condition>
 </function>
 
 </functions>
@@ -346,6 +346,7 @@ including several micro data.</description>
 
 <!-- Data for macrovariables -->
 <variable><type>double</type><name>monthly_sold_quantity</name><description>Constructed macrovariable: regional sum of sold quantity</description></variable>
+<variable><type>double</type><name>monthly_output_last_month</name><description>Constructed macrovariable: regional sum of output, previous month</description></variable>
 <variable><type>double</type><name>monthly_output</name><description>Constructed macrovariable: regional sum of output</description></variable>
 <variable><type>double</type><name>monthly_revenue</name><description>Constructed macrovariable: regional sum of cum_revenue</description></variable>
 <variable><type>double</type><name>monthly_planned_output</name><description>Constructed macrovariable: regional sum of planned output</description></variable>
@@ -356,21 +357,21 @@ including several micro data.</description>
 <description>Initializes the firm and household data arrays</description>
 <currentState>start_Eurostat</currentState>
 <nextState>Start_Eurostat_Tax_Data</nextState>
-<condition><time><period>iteration</period><phase>0</phase></time></condition>
+<condition><time><period>iteration</period><phase>1</phase></time></condition>
 </function>
 
 <function><name>Eurostat_idle</name>
 <description>Eurostat does nothing</description>
 <currentState>start_Eurostat</currentState>
 <nextState>Start_Eurostat_Tax_Data</nextState>
-<condition><not><time><period>iteration</period><phase>0</phase></time></not></condition>
+<condition><not><time><period>iteration</period><phase>1</phase></time></not></condition>
 </function>
 
 <function><name>Eurostat_read_tax_rates</name>
 <description></description>
 <currentState>Start_Eurostat_Tax_Data</currentState>
 <nextState>Start_Eurostat_Firm_Data</nextState>
-<condition><time><period>yearly</period><phase>0</phase></time></condition>
+<condition><time><period>yearly</period><phase>1</phase></time></condition>
 <inputs>
 <input><messageName>government_tax_rates</messageName></input>
 </inputs>
@@ -380,14 +381,14 @@ including several micro data.</description>
 <description>Eurostat does nothing</description>
 <currentState>Start_Eurostat_Tax_Data</currentState>
 <nextState>Start_Eurostat_Firm_Data</nextState>
-<condition><not><time><period>yearly</period><phase>0</phase></time></not></condition>
+<condition><not><time><period>yearly</period><phase>1</phase></time></not></condition>
 </function>
 
 <function><name>Eurostat_send_data</name>
 <description>Eurostat sends the data to the other agents</description>
 <currentState>Start_Eurostat_Firm_Data</currentState>
 <nextState>01</nextState>
-<condition><time><period>monthly</period><phase>0</phase></time></condition>
+<condition><time><period>monthly</period><phase>1</phase></time></condition>
 <outputs>
 <output><messageName>eurostat_send_specific_skills</messageName></output>
 </outputs>
@@ -397,14 +398,14 @@ including several micro data.</description>
 <description>Eurostat does nothing</description>
 <currentState>Start_Eurostat_Firm_Data</currentState>
 <nextState>01</nextState>
-<condition><not><time><period>monthly</period><phase>0</phase></time></not></condition>
+<condition><not><time><period>monthly</period><phase>1</phase></time></not></condition>
 </function>
 
 <function><name>Eurostat_calculate_data</name>
 <description>Eurostat calculates the global and regional macro data based on the received micro data</description>
 <currentState>01</currentState>
 <nextState>end_Eurostat</nextState>
-<condition><time><period>monthly</period><phase>19</phase></time></condition>
+<condition><time><period>monthly</period><phase>0</phase></time></condition>
 <inputs>
 <input><messageName>firm_send_data</messageName></input>
 <input><messageName>household_send_data</messageName></input>
@@ -415,7 +416,7 @@ including several micro data.</description>
 <description></description>
 <currentState>01</currentState>
 <nextState>end_Eurostat</nextState>
-<condition><not><time><period>monthly</period><phase>19</phase></time></not></condition>
+<condition><not><time><period>monthly</period><phase>0</phase></time></not></condition>
 </function>
 
 </functions>

@@ -35,12 +35,14 @@ set key top right
 set terminal postscript eps color "Helvetica" 16
 #set terminal postscript eps monochrome "Helvetica" 16
 set output 'graph-growthrate-output.eps'
-plot 'data-growthrate-output.csv' using 1:2 title "growth rate: output"
+plot 'data-eurostat.csv' using 1:14 title "growth rate: output"
+#plot 'data-growthrate-output.csv' using 1:2 title "growth rate: output"
 set output
 
 set terminal png
 set output 'graph-growthrate-output.png'
-plot 'data-growthrate-output.csv' using 1:2 title "growth rate: output"
+plot 'data-eurostat.csv' using 1:14 title "growth rate: output"
+#plot 'data-growthrate-output.csv' using 1:2 title "growth rate: output"
 set output
 
 # Call external epstopdf to transform the eps file to pdf.

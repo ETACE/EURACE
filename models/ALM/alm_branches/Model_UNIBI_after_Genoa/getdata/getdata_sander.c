@@ -81,6 +81,11 @@ struct Eurostat
     double average_debt_earnings_ratio;
     double average_debt_equity_ratio;
     double labour_share_ratio;
+  
+	double monthly_sold_quantity;
+    double monthly_output;
+	double monthly_revenue;
+	double monthly_planned_output;
     
     struct Eurostat * next;
 
@@ -388,6 +393,7 @@ int getiteration(char * filepath, int itno, firm ** pointer_to_firms, household 
     /*Eurostat*/
     int ingdp, intotal_earnings, intotal_debt, intotal_assets, intotal_equity;
     int inaverage_debt_earnings_ratio, inaverage_debt_equity_ratio, inlabour_share_ratio;
+    int inmonthly_sold_quantity, inmonthly_output, inmonthly_revenue, inmonthly_planned_output;
     
     /* Variables for model data */
     int state, id, region_id;
@@ -411,7 +417,7 @@ int getiteration(char * filepath, int itno, firm ** pointer_to_firms, household 
     /*Eurostat*/
     double gdp, total_earnings, total_debt, total_assets, total_equity;
     double average_debt_earnings_ratio, average_debt_equity_ratio, labour_share_ratio;
-
+    double monthly_sold_quantity, monthly_output, monthly_revenue, monthly_planned_output;
     
     char name[100];
     
@@ -498,7 +504,10 @@ int getiteration(char * filepath, int itno, firm ** pointer_to_firms, household 
     inaverage_debt_earnings_ratio =0;
     inaverage_debt_equity_ratio =0;
     inlabour_share_ratio =0;
-
+    inmonthly_sold_quantity =0;
+    inmonthly_output =0;
+    inmonthly_revenue =0;
+    inmonthly_planned_output =0;
     
     state = 0;
     id = 0;
@@ -544,7 +553,10 @@ int getiteration(char * filepath, int itno, firm ** pointer_to_firms, household 
     average_debt_earnings_ratio =0.0;
     average_debt_equity_ratio =0.0;
     labour_share_ratio =0.0;
-
+    monthly_sold_quantity =0.0;
+    monthly_output =0.0;
+    monthly_revenue =0.0;
+    monthly_planned_output =0.0;
     
     /* Read characters until the end of the file */
     /*while(c != EOF)*/
@@ -733,9 +745,13 @@ int getiteration(char * filepath, int itno, firm ** pointer_to_firms, household 
                     current_Eurostat->total_equity               = total_equity;
                     current_Eurostat->average_debt_earnings_ratio= average_debt_earnings_ratio;
                     current_Eurostat->average_debt_equity_ratio  = average_debt_equity_ratio;
-                    current_Eurostat->labour_share_ratio          = labour_share_ratio;
+                    current_Eurostat->labour_share_ratio         = labour_share_ratio;
 
-                    
+                    current_Eurostat->monthly_sold_quantity      = monthly_sold_quantity;
+                    current_Eurostat->monthly_output             = monthly_output;
+                    current_Eurostat->monthly_revenue            = monthly_revenue;
+                    current_Eurostat->monthly_planned_output     = monthly_planned_output;
+
                     //printf("Eurostat %d, ", id);
                     
                     /* Make tail the next element in the linked list */
@@ -784,8 +800,8 @@ int getiteration(char * filepath, int itno, firm ** pointer_to_firms, household 
             if(strcmp(buffer, "/price") == 0) { inprice = 0; }
              if(strcmp(buffer, "total_sold_quantity") == 0) { intotal_sold_quantity = 1; }
              if(strcmp(buffer, "/total_sold_quantity") == 0) { intotal_sold_quantity = 0; }
-    if(strcmp(buffer, "planned_production_quantity") == 0) { inplanned_production_quantity = 1; }
-    if(strcmp(buffer, "/planned_production_quantity") == 0) { inplanned_production_quantity = 0; }
+             if(strcmp(buffer, "planned_production_quantity") == 0) { inplanned_production_quantity = 1; }
+             if(strcmp(buffer, "/planned_production_quantity") == 0) { inplanned_production_quantity = 0; }
             if(strcmp(buffer, "account") == 0) { inaccount = 1; }
             if(strcmp(buffer, "/account") == 0) { inaccount = 0; }
 
@@ -831,6 +847,15 @@ int getiteration(char * filepath, int itno, firm ** pointer_to_firms, household 
             if(strcmp(buffer, "labour_share_ratio") == 0) { inlabour_share_ratio = 1; }
                if(strcmp(buffer, "/labour_share_ratio") == 0) { inlabour_share_ratio= 0; }  
                
+           if(strcmp(buffer, "monthly_sold_quantity") == 0) { inmonthly_sold_quantity = 1; }
+              if(strcmp(buffer, "/monthly_sold_quantity") == 0) { inmonthly_sold_quantity= 0; }  
+           if(strcmp(buffer, "monthly_output") == 0) { inmonthly_output = 1; }
+              if(strcmp(buffer, "/monthly_output") == 0) { inmonthly_output= 0; }    
+           if(strcmp(buffer, "monthly_revenue") == 0) { inmonthly_revenue = 1; }
+              if(strcmp(buffer, "/monthly_revenue") == 0) { inmonthly_revenue= 0; }    
+           if(strcmp(buffer, "monthly_planned_output") == 0) { inmonthly_planned_output = 1; }
+              if(strcmp(buffer, "/monthly_planned_output") == 0) { inmonthly_planned_output= 0; }  
+                             
             /* End of tag and reset buffer */
             intag = 0;
             i = 0;
@@ -887,6 +912,11 @@ int getiteration(char * filepath, int itno, firm ** pointer_to_firms, household 
             if(inagent && inaverage_debt_equity_ratio)  { average_debt_equity_ratio  = atof(buffer); }
             if(inagent && inlabour_share_ratio)  { labour_share_ratio  = atof(buffer); }
             
+            if(inagent && inmonthly_sold_quantity)  { monthly_sold_quantity  = atof(buffer); }
+            if(inagent && inmonthly_output)  { monthly_output  = atof(buffer); }
+            if(inagent && inmonthly_revenue)  { monthly_revenue  = atof(buffer); }
+            if(inagent && inmonthly_planned_output)  { monthly_planned_output  = atof(buffer); }
+                        
             /* Reset buffer */
             i = 0;
         }
@@ -1111,7 +1141,7 @@ void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_
 
     double technology[10];
     
-    
+    //Eurostat:
     double gdp;
     double total_earnings;
     double total_debt;
@@ -1121,7 +1151,11 @@ void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_
     double average_debt_equity_ratio;
     double labour_share_ratio;
 
-
+    double monthly_sold_quantity;
+    double monthly_output;
+    double monthly_revenue;
+    double monthly_planned_output;
+    
 /*+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/ 
 /*+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /*----------------------------HOUSEHOLDS------DAILY DATA---------------------------------------*/
@@ -1771,7 +1805,6 @@ void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_
         current_firm = current_firm->next;
     }
 
-
 /*+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/ 
 /*+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /*----------------------------FIRM MONTHLY AND REGIONAL DATA---------------------------------------*/
@@ -1793,7 +1826,8 @@ void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_
         
         //printf("A = %f \n", monthly_account);
         
-        if(itno%20 == 1)
+        //Changed from 1 into 0: monthly data is now send at end of month, on days 20, 40, etc.
+        if(itno%20 == 0)
         {
             file = fopen("data-monthly-output.csv", "a");
 
@@ -2266,12 +2300,20 @@ void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_
         average_debt_equity_ratio = current_Eurostat->average_debt_equity_ratio;
         labour_share_ratio = current_Eurostat->labour_share_ratio;
         
+        monthly_sold_quantity = current_Eurostat->monthly_sold_quantity;
+        monthly_output = current_Eurostat->monthly_output;
+        monthly_revenue = current_Eurostat->monthly_revenue;
+        monthly_planned_output = current_Eurostat->monthly_planned_output;
+        
+
         //Go to the next in linked list
         current_Eurostat = current_Eurostat->next;
         
     }
     //Write data to file
-        if(itno%20 == 1)
+    //1: in case firms determine their new balance sheet on day 21 
+    //01: in case firms determine their new balance sheet on day 20
+    if(itno%20 == 0)
         {
 
             file = fopen("data-eurostat.csv", "a");
@@ -2309,6 +2351,22 @@ void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_
 
             fputs("\t", file);
             sprintf(data, "%f", labour_share_ratio);
+            fputs(data, file);
+
+            fputs("\t", file);
+            sprintf(data, "%f", monthly_sold_quantity);
+            fputs(data, file);
+
+            fputs("\t", file);
+            sprintf(data, "%f", monthly_output);
+            fputs(data, file);
+
+            fputs("\t", file);
+            sprintf(data, "%f", monthly_revenue);
+            fputs(data, file);
+
+            fputs("\t", file);
+            sprintf(data, "%f", monthly_planned_output);
             fputs(data, file);
 
             fputs("\n", file);

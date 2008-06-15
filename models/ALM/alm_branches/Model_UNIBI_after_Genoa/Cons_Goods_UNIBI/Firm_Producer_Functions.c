@@ -114,11 +114,10 @@ int Firm_calc_input_demands_2()
 
 int Firm_set_quantities_zero()
 {
-
-		
+	
 	PLANNED_PRODUCTION_QUANTITY = 0;
 	PRODUCTION_QUANTITY = 0;
-	
+
 	return 0;
 }
 
@@ -130,10 +129,15 @@ int Firm_set_quantities_zero()
  * \brief Firm calculate the intended production volume depending on the current stocks in the malls*/
 int Firm_calc_production_quantity()
 {
-	
+
 	double production_volume = 0;
 	double prod_vol;
 
+    //Reset the counters at the start of month
+    CUM_TOTAL_SOLD_QUANTITY = 0.0;
+    CUM_REVENUE = 0.0;        
+
+	
 		/*Computing of mean critical stock levels*/
 		double mean_critical_stocks=0;
 		for (int j = 0; j < CURRENT_MALL_STOCKS.size;j++)
@@ -266,10 +270,13 @@ int Firm_calc_production_quantity()
 		LAST_PLANNED_PRODUCTION_QUANTITIES.size;
 	
 		PLANNED_PRODUCTION_QUANTITY = LAMBDA*production_volume + (1-LAMBDA)*mean_production_quantity;
-
-	
-		//printf("PLANNED_PRODUCTION_QUANTITY %f\n",PLANNED_PRODUCTION_QUANTITY);
-	
+		
+		//Set planned production value that is retained in memory during the month:
+		PLANNED_OUTPUT = PLANNED_PRODUCTION_QUANTITY; 
+	    
+	    //printf("In calculate production: Firm %d PLANNED_PRODUCTION_QUANTITY %f\n", ID, PLANNED_PRODUCTION_QUANTITY);
+	    //printf("In calculate production: Firm %d PLANNED_OUTPUT %f\n", ID, PLANNED_OUTPUT);
+	    
 	return 0;
 
 }
@@ -415,9 +422,12 @@ int Firm_calc_input_demands()
 int Firm_calc_production_quantity_2()
 {
 	//printf("Firm_calc_production_quantity_2() ID: %d\n",ID);
-	
-	//Here we set a fraction of the planned production quantity
+
 	double decrement;
+	double diff;
+	diff = PLANNED_PRODUCTION_QUANTITY;
+
+	//Here we set a fraction of the planned production quantity
 	decrement = ADAPTION_PRODUCTION_VOLUME_DUE_TO_INSUFFICIENT_FINANCES*PLANNED_PRODUCTION_QUANTITY;
 	
 		
@@ -438,6 +448,15 @@ int Firm_calc_production_quantity_2()
 	
 	//printf("Labour: %d  Capital: %f  PLANNED_PROD_COSTS: %f\n", EMPLOYEES_NEEDED,NEEDED_CAPITAL_STOCK,PLANNED_PRODUCTION_COSTS);
 	
+		//Compute the diff
+		diff -= PLANNED_PRODUCTION_QUANTITY;
+		
+		//Set planned production value that is retained in memory during the month:
+		PLANNED_OUTPUT = PLANNED_PRODUCTION_QUANTITY;
+
+	    //printf("In calculate production 2: Firm %d PLANNED_PRODUCTION_QUANTITY %.2f (-%.2f)\n", ID, PLANNED_PRODUCTION_QUANTITY, diff);
+	    //printf("In calculate production 2: Firm %d PLANNED_OUTPUT %.2f (-%.2f)\n", ID, PLANNED_OUTPUT, diff);
+
 	return 0;
 }
 
@@ -509,6 +528,8 @@ return 0;
 
 int Firm_execute_production()
 {
+	double diff;
+	
 	/* This determines the realized production volume*/
 	if(PLANNED_PRODUCTION_QUANTITY != 0)
 	{
@@ -532,13 +553,21 @@ int Firm_execute_production()
 		
 
 		}
-	}else
-	{
-	PRODUCTION_QUANTITY=0.0;
 	}
-
+	else
+	{
+		PRODUCTION_QUANTITY=0.0;
+	}
 	
-	//printf("PRODUCTION_QUANTITY: %f  \n", PRODUCTION_QUANTITY);
+	//compute diff between actual and planned
+	diff = PRODUCTION_QUANTITY - PLANNED_PRODUCTION_QUANTITY;
+	
+	//Set actual production value that is retained  in memory during the month:
+	OUTPUT = PRODUCTION_QUANTITY;
+	
+	//printf("In Execute production: Firm %d PRODUCTION_QUANTITY: %.2f (%.2f) \n", ID, PRODUCTION_QUANTITY, diff);
+	//printf("In Execute production: Firm %d OUTPUT: %.2f (%.2f)\n", ID, OUTPUT, diff);
+
 return 0;
 }
 
@@ -680,8 +709,6 @@ int Firm_send_goods_to_mall()
  */
 int Firm_calc_revenue()
 {
-
-
 	
 	REVENUE_PER_DAY=0.0;
 	TOTAL_SOLD_QUANTITY=0.0;
@@ -723,14 +750,14 @@ int Firm_calc_revenue()
 	PAYMENT_ACCOUNT += REVENUE_PER_DAY;
 	
 	/*The monthly sales statistics*/
-	CUM_TOTAL_SOLD_QUANTITY+=TOTAL_SOLD_QUANTITY;	
-	
+	CUM_TOTAL_SOLD_QUANTITY += TOTAL_SOLD_QUANTITY;	
+		
 	/*On a monthly base the earnings are computed and dividends distributed*/
 	//See the functions for financial management
 	return 0;		
 	
 }
-int Firm_compute_sales_statitics()
+int Firm_compute_sales_statistics()
 {
 
 

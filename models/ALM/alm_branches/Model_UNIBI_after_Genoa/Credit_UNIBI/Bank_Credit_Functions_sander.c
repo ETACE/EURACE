@@ -50,14 +50,14 @@ TOTAL_LOAN_SUPPLY=0;
 
 		if (loan_request_message->region_id%2==0)
 		{
-			proposed_interest_rate = INTEREST_RATE;
+			proposed_interest_rate = 4*INTEREST_RATE;
 		}
 		else
 		{
 			proposed_interest_rate = 4*INTEREST_RATE;
 		}
 		//printf("region_id: %d proposed_interest_rate: %f", loan_request_message->region_id, proposed_interest_rate);
-		
+
 	//Add credit request on a temporary array	
 	//add_credit_request(&credit_requests,loan_request_message->firm_id,loan_request_message->credit_amount, INTEREST_RATE, loan_request_message->total_assets,loan_request_message->total_debt,ratio_debt_assets);	
 	add_credit_request(&credit_requests,loan_request_message->firm_id,loan_request_message->credit_amount, proposed_interest_rate, loan_request_message->total_assets,loan_request_message->total_debt,ratio_debt_assets);	
