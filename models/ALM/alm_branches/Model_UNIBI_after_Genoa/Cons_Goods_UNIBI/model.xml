@@ -172,8 +172,10 @@
 <variable><type>double</type><name>needed_capital_stock</name><description>The overall capital stock a firm wants to have</description></variable>
 <variable><type>double</type><name>actual_cap_price</name><description>Price of the latest capital good</description></variable>
 <variable><type>double</type><name>mean_specific_skills</name><description>Average specific skills of the workforce</description></variable>
-<variable><type>double</type><name>planned_production_quantity</name>Planne dproduction quantity<description></description></variable>
-<variable><type>double</type><name>production_quantity</name>Actual production quantity<description></description></variable>
+<variable><type>double</type><name>planned_production_quantity</name>Planned production quantity, has a value on production day, but is reset on other days.<description></description></variable>
+<variable><type>double</type><name>production_quantity</name>Actual production quantity, has a value on production day, but is reset on other days.<description></description></variable>
+<variable><type>double</type><name>planned_output</name>Planned output is the same as planned production quantity, but retains its value during the month.<description></description></variable>
+<variable><type>double</type><name>output</name>Actual output is the same as production quantity, but retains its value during the month.<description></description></variable>
 <variable><type>double</type><name>unit_costs</name><description>Cost per unit of the consumption good</description></variable>
 <variable><type>double</type><name>production_costs</name><description>Actual production costs, labor and capital</description></variable>
 <variable><type>double</type><name>revenue_per_day</name><description>Daily revenue</description></variable>
@@ -208,9 +210,9 @@
 <name>Firm_calc_production_quantity</name>
 <description>Firm calculate the intended production volume depending 
 on the current stocks in the malls</description>
-<currentState>005</currentState>
+<currentState>00</currentState>
 <nextState>01</nextState>
-
+<condition><time><period>monthly</period><phase>a.day_of_month_to_act</phase></time></condition>
 </function>
 
 <function>
@@ -300,7 +302,7 @@ share of their plannded delivery volumes.</description>
 <description>Here the firms calc the revenues and profits and then 
 distribute the dividends to households.</description>
 <currentState>Start_Firm_Seller_Role</currentState>
-<nextState>13b</nextState>
+<nextState>13a</nextState>
 <inputs>
 <input><messageName>sales</messageName>
 <filter><lhs><value>a.id</value></lhs><op>EQ</op><rhs><value>m.firm_id</value></rhs></filter>
@@ -309,10 +311,10 @@ distribute the dividends to households.</description>
 </function>
 
 
-<function><name>Firm_compute_sales_statitics</name>
+<function><name>Firm_compute_sales_statistics</name>
 <description></description>
-<currentState>13b</currentState>
-<nextState>13c</nextState>
+<currentState>13a</currentState>
+<nextState>13b</nextState>
 <condition><time><period>monthly</period><phase>a.day_of_month_to_act</phase></time></condition>
 </function>
 
@@ -321,9 +323,9 @@ distribute the dividends to households.</description>
 <function><name>Firm_update_specific_skills_of_workers</name>
 <description>Because the specific skills of workers have changed the 
 firms update the specific skill levels of the workers.</description>
-<currentState>13c</currentState>
+<currentState>005</currentState>
 <nextState>14</nextState>
-<condition><time><period>monthly</period><phase>a.day_of_month_to_act</phase></time></condition>
+<!--<condition><time><period>monthly</period><phase>a.day_of_month_to_act</phase></time></condition>-->
 <inputs>
 <input><messageName>specific_skill_update</messageName>
 <filter><lhs><value>a.id</value></lhs><op>EQ</op><rhs><value>m.firm_id</value></rhs></filter>
@@ -333,7 +335,7 @@ firms update the specific skill levels of the workers.</description>
 
 <function><name>Firm_idle</name>
 <description>Firm does nothing</description>
-<currentState>13b</currentState>
+<currentState>13a</currentState>
 <nextState>14</nextState>
 <condition><not><time><period>monthly</period><phase>a.day_of_month_to_act</phase></time></not></condition>
 </function>

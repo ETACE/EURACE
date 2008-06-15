@@ -109,9 +109,8 @@
 <function>
 <name>Firm_compute_financial_payments</name>
 <description>Computation of prior financial commitments: interests, installments, taxes</description>
-<currentState>00</currentState>
+<currentState>13b</currentState>
 <nextState>001</nextState>
-<condition><time><period>monthly</period><phase>a.day_of_month_to_act</phase></time></condition>
 </function>
 
 <function>

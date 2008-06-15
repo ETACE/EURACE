@@ -19,6 +19,12 @@ struct Eurostat
 	double average_debt_equity_ratio;
 	double labour_share_ratio;
 	
+	double monthly_sold_quantity;
+	double monthly_output_last_month;
+	double monthly_output;
+	double monthly_revenue;
+	double monthly_planned_output;
+
 	struct Eurostat * next;
 
 };
@@ -110,14 +116,15 @@ int getiteration(char * filepath, int itno, Eurostat ** pointer_to_Eurostats)
 	/*Eurostat*/
 	int	ingdp, intotal_earnings, intotal_debt, intotal_assets, intotal_equity;
 	int inaverage_debt_earnings_ratio, inaverage_debt_equity_ratio, inlabour_share_ratio;
-	
+    int inmonthly_sold_quantity, inmonthly_output_last_month, inmonthly_output, inmonthly_revenue, inmonthly_planned_output;
+    
 	/* Variables for model data */
 	int state, id, region_id;
 
 	/*Eurostat*/
 	double gdp, total_earnings, total_debt, total_assets, total_equity;
 	double average_debt_earnings_ratio, average_debt_equity_ratio, labour_share_ratio;
-
+    double monthly_sold_quantity, monthly_output_last_month, monthly_output, monthly_revenue, monthly_planned_output;
 	
 	char name[100];
 
@@ -131,7 +138,7 @@ int getiteration(char * filepath, int itno, Eurostat ** pointer_to_Eurostats)
 	printf("%s", data);
 	if((file = fopen(data, "r"))==NULL)
 	{
-		printf(" Getdata.c reached last xml file in sequence \n");
+		printf("No data in file\n");
 		return 0;
 		/*exit(0);*/
 	}
@@ -158,6 +165,11 @@ int getiteration(char * filepath, int itno, Eurostat ** pointer_to_Eurostats)
 	inaverage_debt_earnings_ratio =0;
 	inaverage_debt_equity_ratio =0;
 	inlabour_share_ratio =0;
+    inmonthly_sold_quantity =0;
+    inmonthly_output_last_month =0;
+    inmonthly_output =0;
+    inmonthly_revenue =0;
+    inmonthly_planned_output =0;
 
 	state = 0;
 	id = 0;
@@ -172,6 +184,11 @@ int getiteration(char * filepath, int itno, Eurostat ** pointer_to_Eurostats)
     average_debt_earnings_ratio =0.0;
     average_debt_equity_ratio =0.0;
     labour_share_ratio =0.0;
+    monthly_sold_quantity =0.0;
+    monthly_output_last_month =0.0;
+    monthly_output =0.0;
+    monthly_revenue =0.0;
+    monthly_planned_output =0.0;
 
 	
 	/* Read characters until the end of the file */
@@ -224,6 +241,11 @@ int getiteration(char * filepath, int itno, Eurostat ** pointer_to_Eurostats)
 				    current_Eurostat->average_debt_equity_ratio  = average_debt_equity_ratio;
 				    current_Eurostat->labour_share_ratio          = labour_share_ratio;
 
+                    current_Eurostat->monthly_sold_quantity      = monthly_sold_quantity;
+                    current_Eurostat->monthly_output_last_month  = monthly_output_last_month;
+                    current_Eurostat->monthly_output             = monthly_output;
+                    current_Eurostat->monthly_revenue            = monthly_revenue;
+                    current_Eurostat->monthly_planned_output     = monthly_planned_output;
 					
 					//printf("Eurostat %d, ", id);
 					
@@ -255,6 +277,16 @@ int getiteration(char * filepath, int itno, Eurostat ** pointer_to_Eurostats)
 		       if(strcmp(buffer, "/average_debt_equity_ratio") == 0) { inaverage_debt_equity_ratio= 0; }	
 			if(strcmp(buffer, "labour_share_ratio") == 0) { inlabour_share_ratio = 1; }
 		       if(strcmp(buffer, "/labour_share_ratio") == 0) { inlabour_share_ratio= 0; }	
+           if(strcmp(buffer, "monthly_sold_quantity") == 0) { inmonthly_sold_quantity = 1; }
+              if(strcmp(buffer, "/monthly_sold_quantity") == 0) { inmonthly_sold_quantity= 0; }  
+           if(strcmp(buffer, "monthly_output_last_month") == 0) { inmonthly_output_last_month = 1; }
+              if(strcmp(buffer, "/monthly_output_last_month") == 0) { inmonthly_output_last_month= 0; }    
+           if(strcmp(buffer, "monthly_output") == 0) { inmonthly_output = 1; }
+              if(strcmp(buffer, "/monthly_output") == 0) { inmonthly_output= 0; }    
+           if(strcmp(buffer, "monthly_revenue") == 0) { inmonthly_revenue = 1; }
+              if(strcmp(buffer, "/monthly_revenue") == 0) { inmonthly_revenue= 0; }    
+           if(strcmp(buffer, "monthly_planned_output") == 0) { inmonthly_planned_output = 1; }
+              if(strcmp(buffer, "/monthly_planned_output") == 0) { inmonthly_planned_output= 0; }  
 		       
 			/* End of tag and reset buffer */
 			intag = 0;
@@ -280,6 +312,12 @@ int getiteration(char * filepath, int itno, Eurostat ** pointer_to_Eurostats)
 			if(inagent && inaverage_debt_earnings_ratio)  { average_debt_earnings_ratio  = atof(buffer); }
 			if(inagent && inaverage_debt_equity_ratio)  { average_debt_equity_ratio  = atof(buffer); }
 			if(inagent && inlabour_share_ratio)  { labour_share_ratio  = atof(buffer); }
+
+            if(inagent && inmonthly_sold_quantity)  { monthly_sold_quantity  = atof(buffer); }
+            if(inagent && inmonthly_output_last_month)  { monthly_output_last_month  = atof(buffer); }
+            if(inagent && inmonthly_output)  { monthly_output  = atof(buffer); }
+            if(inagent && inmonthly_revenue)  { monthly_revenue  = atof(buffer); }
+            if(inagent && inmonthly_planned_output)  { monthly_planned_output  = atof(buffer); }
 			
 			/* Reset buffer */
 			i = 0;
@@ -333,6 +371,11 @@ void savedatatofile(int itno, Eurostat ** pointer_to_Eurostats)
 	double average_debt_equity_ratio;
 	double labour_share_ratio;
 
+	double monthly_sold_quantity;
+	double monthly_output_last_month;
+	double monthly_output;
+    double monthly_revenue;
+    double monthly_planned_output;
 
 
 	/*+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/	
@@ -352,52 +395,102 @@ void savedatatofile(int itno, Eurostat ** pointer_to_Eurostats)
 	    average_debt_earnings_ratio = current_Eurostat->average_debt_earnings_ratio;
 	    average_debt_equity_ratio = current_Eurostat->average_debt_equity_ratio;
 	    labour_share_ratio = current_Eurostat->labour_share_ratio;
-		
+
+        monthly_sold_quantity = current_Eurostat->monthly_sold_quantity;
+        monthly_output_last_month = current_Eurostat->monthly_output_last_month;
+        monthly_output = current_Eurostat->monthly_output;
+        monthly_revenue = current_Eurostat->monthly_revenue;
+        monthly_planned_output = current_Eurostat->monthly_planned_output;
+	    
 		//Go to the next in linked list
 		current_Eurostat = current_Eurostat->next;
 		
 	}
 	//Write data to file
-		if(itno%20 == 1)
+		if(itno%20 == 0)
 		{
 
 			file = fopen("data-eurostat.csv", "a");
-
+			
+			//1
 			sprintf(data, "%i", itno);
 			fputs(data, file);
 			fputs("\t", file);
 			
+			//2
 			sprintf(data, "%f", gdp);
 			fputs(data, file);
 
+			//3
 			fputs("\t", file);
 			sprintf(data, "%f", total_earnings);
 			fputs(data, file);
 
+			//4
 			fputs("\t", file);
 			sprintf(data, "%f", total_debt);
 			fputs(data, file);
 
+			//5
 			fputs("\t", file);
 			sprintf(data, "%f", total_assets);
 			fputs(data, file);
 
+			//6
 			fputs("\t", file);
 			sprintf(data, "%f", total_equity);
 			fputs(data, file);
 
+			//7
 			fputs("\t", file);
 			sprintf(data, "%f", average_debt_earnings_ratio);
 			fputs(data, file);
 
+			//8
 			fputs("\t", file);
 			sprintf(data, "%f", average_debt_equity_ratio);
 			fputs(data, file);
 
+			//9
 			fputs("\t", file);
 			sprintf(data, "%f", labour_share_ratio);
 			fputs(data, file);
 
+			//10
+            fputs("\t", file);
+            sprintf(data, "%f", monthly_sold_quantity);
+            fputs(data, file);
+            
+            //11
+            fputs("\t", file);
+            sprintf(data, "%f", monthly_output);
+            fputs(data, file);
+            
+            //12
+            fputs("\t", file);
+            sprintf(data, "%f", monthly_revenue);
+            fputs(data, file);
+
+            //13
+            fputs("\t", file);
+            sprintf(data, "%f", monthly_planned_output);
+            fputs(data, file);
+
+            //14: monthly growthrate output
+            if(itno>20)
+            {
+	            fputs("\t", file);
+	            sprintf(data, "%f", (monthly_output - monthly_output_last_month)/monthly_output_last_month);
+	            fputs(data, file);
+            }
+            else
+            {
+	            fputs("\t", file);
+	            sprintf(data, "%f", 0.0);
+	            fputs(data, file);            	
+            }
+            
+            
 			fputs("\n", file);
 			fclose(file);
 		}

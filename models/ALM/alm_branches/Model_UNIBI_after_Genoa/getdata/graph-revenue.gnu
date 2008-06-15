@@ -35,12 +35,14 @@ set key top right
 set terminal postscript eps color "Helvetica" 16
 #set terminal postscript eps monochrome "Helvetica" 16
 set output 'graph-revenue.eps'
-plot 'data-revenue.csv' using 1:2 title "revenue", 'data-revenue.csv' using 1:3 title "earnings",'data-revenue.csv' using 1:4 title "revenue-region-1", 'data-revenue.csv' using 1:5 title "earnings-region-1",'data-revenue.csv' using 1:6 title "revenue-region-2", 'data-revenue.csv' using 1:7 title "earnings-region-2"
+plot 'data-eurostat.csv' using 1:12 title "revenue"
+#plot 'data-revenue.csv' using 1:2 title "revenue", 'data-revenue.csv' using 1:3 title "earnings",'data-revenue.csv' using 1:4 title "revenue-region-1", 'data-revenue.csv' using 1:5 title "earnings-region-1",'data-revenue.csv' using 1:6 title "revenue-region-2", 'data-revenue.csv' using 1:7 title "earnings-region-2"
 set output
 
 set terminal png
 set output 'graph-revenue.png'
-plot 'data-revenue.csv' using 1:2 title "revenue", 'data-revenue.csv' using 1:3 title "earnings",'data-revenue.csv' using 1:4 title "revenue-region-1", 'data-revenue.csv' using 1:5 title "earnings-region-1",'data-revenue.csv' using 1:6 title "revenue-region-2", 'data-revenue.csv' using 1:7 title "earnings-region-2"
+plot 'data-eurostat.csv' using 1:12 title "revenue"
+#plot 'data-revenue.csv' using 1:2 title "revenue", 'data-revenue.csv' using 1:3 title "earnings",'data-revenue.csv' using 1:4 title "revenue-region-1", 'data-revenue.csv' using 1:5 title "earnings-region-1",'data-revenue.csv' using 1:6 title "revenue-region-2", 'data-revenue.csv' using 1:7 title "earnings-region-2"
 set output
 
 # Call external epstopdf to transform the eps file to pdf.

@@ -106,11 +106,7 @@ int Firm_compute_income_statement()
 	    PREVIOUS_DIVIDEND_PER_EARNINGS = CURRENT_DIVIDEND_PER_EARNINGS;
 	    CURRENT_DIVIDEND_PER_EARNINGS = TOTAL_DIVIDEND_PAYMENT/EARNINGS;
     }
-    
-    //Reset the counters
-    CUM_TOTAL_SOLD_QUANTITY = 0.0;
-    CUM_REVENUE = 0.0;        
-    
+        
 	
     return 0;
 }
