@@ -1,4 +1,4 @@
-=================================================
+----------------------------------------------------------------------
 Sander, rev 1023
 14/6/08
 
@@ -84,4 +84,45 @@ In order to get the production quantities correctly in the monthly statistics, w
     OUTPUT        = PRODUCTION_QUANTITY : set in Firm_execute_production
 
 These values can now be send at the end of the month to Eurostat in the send_data_message.
+----------------------------------------------------------------------
+Sander, rev 1024
 
+Feature: history storage in Eurostat
+
+- The memory of the Eurostat agent now contains a running history of monthly and quarterly data,
+being overwritten using a rolling horizon.
+- All data is stored at the end of the last day of the month or quarter.
+- All growth rates are stored as percentages. For example, 0.25 means 25% growth.
+
+Added files:
+	model-sander.xml
+	Eurostat_Functions-sander.c
+
+Datatype for storage of selected macroeconomic statistics
+
+	  struct history_item
+	  {
+	  		double gdp;
+	  		double output;
+	  		double employment;
+	  		double unemployment_rate;
+	  		double wages;	 
+	   }
+
+Static arrays for history:
+
+	 history_item history_monthly[13];
+	 history_item history_quarterly[5];
+	
+	- For monthly history: we store the current month in [0] and the history in [1]...[12].
+	
+	- For quarterly history: we store the current quarter in [0] and the history in [1]...[4].
+	
+Single history_items for storing monthly and quarterly growth rates of each variable:
+
+	history_item monthly_growth_rates: 			month-to-month growth rate statistics
+	history_item quarterly__growth_rates: 		quarter-to-quarter growth rate statistics
+	history_item annual_growth_rates_monthly: 	annual growth rates (per month), measured as the percentage change over the same month in the previous year.
+	history_item annual_growth_rates_quarterly: annual growth rates (per quarter), measured as the percentage change over the same quarter in the previous year.
+
+----------------------------------------------------------------------
