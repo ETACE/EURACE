@@ -85,7 +85,7 @@ In order to get the production quantities correctly in the monthly statistics, w
 
 These values can now be send at the end of the month to Eurostat in the send_data_message.
 ----------------------------------------------------------------------
-Sander, rev 1024
+Sander, rev 1025
 
 Feature: history storage in Eurostat
 
