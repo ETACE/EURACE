@@ -6,6 +6,16 @@
 * Struct Type Definitions            *
 *************************************/
 
+struct history_item 
+{
+	double gdp;
+	double output;
+	double employment;
+	double unemployment_rate;
+	double wages;
+};
+typedef struct history_item history_item;
+
 
 struct Eurostat
 {
@@ -20,11 +30,17 @@ struct Eurostat
 	double labour_share_ratio;
 	
 	double monthly_sold_quantity;
-	double monthly_output_last_month;
+	double monthly_output_growth;
 	double monthly_output;
 	double monthly_revenue;
 	double monthly_planned_output;
 
+	history_item history_monthly[13];
+	history_item monthly_growth_rates;
+	history_item quarterly_growth_rates;
+	history_item annual_growth_rates_monthly;
+	history_item annual_growth_rates_quarterly;
+	
 	struct Eurostat * next;
 
 };
@@ -116,7 +132,8 @@ int getiteration(char * filepath, int itno, Eurostat ** pointer_to_Eurostats)
 	/*Eurostat*/
 	int	ingdp, intotal_earnings, intotal_debt, intotal_assets, intotal_equity;
 	int inaverage_debt_earnings_ratio, inaverage_debt_equity_ratio, inlabour_share_ratio;
-    int inmonthly_sold_quantity, inmonthly_output_last_month, inmonthly_output, inmonthly_revenue, inmonthly_planned_output;
+    int inmonthly_sold_quantity, inmonthly_output_growth, inmonthly_output, inmonthly_revenue, inmonthly_planned_output;
+    int inmonthly_growth_rate;
     
 	/* Variables for model data */
 	int state, id, region_id;
@@ -124,7 +141,8 @@ int getiteration(char * filepath, int itno, Eurostat ** pointer_to_Eurostats)
 	/*Eurostat*/
 	double gdp, total_earnings, total_debt, total_assets, total_equity;
 	double average_debt_earnings_ratio, average_debt_equity_ratio, labour_share_ratio;
-    double monthly_sold_quantity, monthly_output_last_month, monthly_output, monthly_revenue, monthly_planned_output;
+    double monthly_sold_quantity, monthly_output_growth, monthly_output, monthly_revenue, monthly_planned_output;
+	double monthly_growth_rate;
 	
 	char name[100];
 
@@ -166,11 +184,13 @@ int getiteration(char * filepath, int itno, Eurostat ** pointer_to_Eurostats)
 	inaverage_debt_equity_ratio =0;
 	inlabour_share_ratio =0;
     inmonthly_sold_quantity =0;
-    inmonthly_output_last_month =0;
+    inmonthly_output_growth =0;
     inmonthly_output =0;
     inmonthly_revenue =0;
     inmonthly_planned_output =0;
 
+    inmonthly_growth_rate =0;
+    
 	state = 0;
 	id = 0;
 	region_id = 0;
@@ -185,12 +205,14 @@ int getiteration(char * filepath, int itno, Eurostat ** pointer_to_Eurostats)
     average_debt_equity_ratio =0.0;
     labour_share_ratio =0.0;
     monthly_sold_quantity =0.0;
-    monthly_output_last_month =0.0;
+    monthly_output_growth =0.0;
     monthly_output =0.0;
     monthly_revenue =0.0;
     monthly_planned_output =0.0;
 
-	
+    monthly_growth_rate =0.0;
+    
+    
 	/* Read characters until the end of the file */
 	/*while(c != EOF)*/
 	/* Read characters until end of xml found */
@@ -242,12 +264,13 @@ int getiteration(char * filepath, int itno, Eurostat ** pointer_to_Eurostats)
 				    current_Eurostat->labour_share_ratio          = labour_share_ratio;
 
                     current_Eurostat->monthly_sold_quantity      = monthly_sold_quantity;
-                    current_Eurostat->monthly_output_last_month  = monthly_output_last_month;
-                    current_Eurostat->monthly_output             = monthly_output;
+                    current_Eurostat->monthly_output_growth		 = monthly_output_growth;
+                    current_Eurostat->history_monthly[1].output  = monthly_output;
                     current_Eurostat->monthly_revenue            = monthly_revenue;
                     current_Eurostat->monthly_planned_output     = monthly_planned_output;
 					
-					//printf("Eurostat %d, ", id);
+                    current_Eurostat->monthly_growth_rates.output= monthly_growth_rate;
+                    //printf("Eurostat %d, ", id);
 					
 					/* Make tail the next element in the linked list */
 					tail_Eurostat = current_Eurostat->next;
@@ -279,15 +302,18 @@ int getiteration(char * filepath, int itno, Eurostat ** pointer_to_Eurostats)
 		       if(strcmp(buffer, "/labour_share_ratio") == 0) { inlabour_share_ratio= 0; }	
            if(strcmp(buffer, "monthly_sold_quantity") == 0) { inmonthly_sold_quantity = 1; }
               if(strcmp(buffer, "/monthly_sold_quantity") == 0) { inmonthly_sold_quantity= 0; }  
-           if(strcmp(buffer, "monthly_output_last_month") == 0) { inmonthly_output_last_month = 1; }
-              if(strcmp(buffer, "/monthly_output_last_month") == 0) { inmonthly_output_last_month= 0; }    
+           if(strcmp(buffer, "monthly_output_growth") == 0) { inmonthly_output_growth = 1; }
+              if(strcmp(buffer, "/monthly_output_growth") == 0) { inmonthly_output_growth= 0; }    
            if(strcmp(buffer, "monthly_output") == 0) { inmonthly_output = 1; }
               if(strcmp(buffer, "/monthly_output") == 0) { inmonthly_output= 0; }    
            if(strcmp(buffer, "monthly_revenue") == 0) { inmonthly_revenue = 1; }
               if(strcmp(buffer, "/monthly_revenue") == 0) { inmonthly_revenue= 0; }    
            if(strcmp(buffer, "monthly_planned_output") == 0) { inmonthly_planned_output = 1; }
               if(strcmp(buffer, "/monthly_planned_output") == 0) { inmonthly_planned_output= 0; }  
-		       
+
+          if(strcmp(buffer, "monthly_growth_rates") == 0) { inmonthly_growth_rate = 1; }
+             if(strcmp(buffer, "/monthly_growth_rates") == 0) { inmonthly_growth_rate= 0; }    
+              
 			/* End of tag and reset buffer */
 			intag = 0;
 			i = 0;
@@ -314,11 +340,14 @@ int getiteration(char * filepath, int itno, Eurostat ** pointer_to_Eurostats)
 			if(inagent && inlabour_share_ratio)  { labour_share_ratio  = atof(buffer); }
 
             if(inagent && inmonthly_sold_quantity)  { monthly_sold_quantity  = atof(buffer); }
-            if(inagent && inmonthly_output_last_month)  { monthly_output_last_month  = atof(buffer); }
+            if(inagent && inmonthly_output_growth)  { monthly_output_growth  = atof(buffer); }
             if(inagent && inmonthly_output)  { monthly_output  = atof(buffer); }
             if(inagent && inmonthly_revenue)  { monthly_revenue  = atof(buffer); }
             if(inagent && inmonthly_planned_output)  { monthly_planned_output  = atof(buffer); }
 			
+            /*History items*/
+            if(inagent && inmonthly_growth_rate)  { monthly_growth_rate  = atof(buffer); }
+            
 			/* Reset buffer */
 			i = 0;
 		}
@@ -372,12 +401,21 @@ void savedatatofile(int itno, Eurostat ** pointer_to_Eurostats)
 	double labour_share_ratio;
 
 	double monthly_sold_quantity;
-	double monthly_output_last_month;
+	double monthly_output_growth;
 	double monthly_output;
     double monthly_revenue;
     double monthly_planned_output;
-
-
+    
+    /*For simplifing the code, this is a double*/
+    double monthly_growth_rate;
+/*
+	history_item history_monthly[13];
+	history_item monthly_growth_rates;
+	history_item quarterly_growth_rates;
+	history_item annual_growth_rates_monthly;
+	history_item annual_growth_rates_quarterly;
+*/
+    
 	/*+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/	
 	/*+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 	/*----------------------------EUROSTAT MONTHLY AND REGIONAL DATA---------------------------------------*/
@@ -397,11 +435,15 @@ void savedatatofile(int itno, Eurostat ** pointer_to_Eurostats)
 	    labour_share_ratio = current_Eurostat->labour_share_ratio;
 
         monthly_sold_quantity = current_Eurostat->monthly_sold_quantity;
-        monthly_output_last_month = current_Eurostat->monthly_output_last_month;
-        monthly_output = current_Eurostat->monthly_output;
+        monthly_output_growth = current_Eurostat->monthly_output_growth;
+        monthly_output = current_Eurostat->history_monthly[1].output;
         monthly_revenue = current_Eurostat->monthly_revenue;
         monthly_planned_output = current_Eurostat->monthly_planned_output;
 	    
+        /*Add history items here*/
+        monthly_growth_rate = current_Eurostat->monthly_growth_rates.output;
+        
+        
 		//Go to the next in linked list
 		current_Eurostat = current_Eurostat->next;
 		
@@ -476,22 +518,34 @@ void savedatatofile(int itno, Eurostat ** pointer_to_Eurostats)
             sprintf(data, "%f", monthly_planned_output);
             fputs(data, file);
 
-            //14: monthly growthrate output
-            if(itno>20)
-            {
-	            fputs("\t", file);
-	            sprintf(data, "%f", (monthly_output - monthly_output_last_month)/monthly_output_last_month);
-	            fputs(data, file);
-            }
-            else
-            {
-	            fputs("\t", file);
-	            sprintf(data, "%f", 0.0);
-	            fputs(data, file);            	
-            }
+            //14: monthly growthrate output, direct from Eurostat memory
+            fputs("\t", file);
+            sprintf(data, "%f", monthly_output_growth);
+            fputs(data, file);
+
+            //15: monthly growthrate output, indirect from Eurostat history_monthly
+            fputs("\t", file);
+            sprintf(data, "%f", monthly_growth_rate);
+            fputs(data, file);
             
+/*            
+            //15: monthly growthrate output
+            fputs("\t", file);
+            sprintf(data, "%f", quarterly_output_growth);
+            fputs(data, file);
+
+            //16: monthly growthrate output
+            fputs("\t", file);
+            sprintf(data, "%f", annual_quarterly_output_growth);
+            fputs(data, file);
+
+            //17: monthly growthrate output
+            fputs("\t", file);
+            sprintf(data, "%f", annual_monthly_output_growth);
+            fputs(data, file);
+*/
             
-			fputs("\n", file);
+            fputs("\n", file);
 			fclose(file);
 		}
 			

@@ -86,12 +86,12 @@ struct Eurostat
     double monthly_output;
 	double monthly_revenue;
 	double monthly_planned_output;
-    
+
     struct Eurostat * next;
 
 };
 
-double monthly_output=0.0;
+//double monthly_output=0.0;
 double monthly_output_region_1 = 0.0;
 double monthly_output_region_2 = 0.0;
 double monthly_sold_quantity = 0.0;
@@ -504,11 +504,12 @@ int getiteration(char * filepath, int itno, firm ** pointer_to_firms, household 
     inaverage_debt_earnings_ratio =0;
     inaverage_debt_equity_ratio =0;
     inlabour_share_ratio =0;
+    
     inmonthly_sold_quantity =0;
     inmonthly_output =0;
     inmonthly_revenue =0;
     inmonthly_planned_output =0;
-    
+
     state = 0;
     id = 0;
     region_id = 0;
@@ -552,12 +553,13 @@ int getiteration(char * filepath, int itno, firm ** pointer_to_firms, household 
     total_equity =0.0;
     average_debt_earnings_ratio =0.0;
     average_debt_equity_ratio =0.0;
-    labour_share_ratio =0.0;
+    labour_share_ratio =0.0;    
+    
     monthly_sold_quantity =0.0;
     monthly_output =0.0;
     monthly_revenue =0.0;
     monthly_planned_output =0.0;
-    
+
     /* Read characters until the end of the file */
     /*while(c != EOF)*/
     /* Read characters until end of xml found */
@@ -1155,6 +1157,7 @@ void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_
     double monthly_output;
     double monthly_revenue;
     double monthly_planned_output;
+
     
 /*+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/ 
 /*+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
@@ -1811,7 +1814,7 @@ void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_
         monthly_sold_quantity += ave_total_sold_quantity;
         monthly_sold_quantity_region_1 += ave_total_sold_quantity_region_1;
         monthly_sold_quantity_region_2 += ave_total_sold_quantity_region_2;
-        monthly_output += ave_production_quantity;
+//        monthly_output += ave_production_quantity;
         monthly_output_region_1 += ave_production_quantity_region_1;
         monthly_output_region_2 += ave_production_quantity_region_2;
         monthly_revenue += ave_revenue;
@@ -1833,9 +1836,9 @@ void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_
 
             sprintf(data, "%i", itno);
             fputs(data, file);
-            fputs("\t", file);
-            sprintf(data, "%f", monthly_output);
-            fputs(data, file);
+//            fputs("\t", file);
+//            sprintf(data, "%f", monthly_output);
+//            fputs(data, file);
             fputs("\t", file);
             sprintf(data, "%f", monthly_sold_quantity);
             fputs(data, file);
@@ -2104,7 +2107,7 @@ void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_
             prod_vol_reg1=monthly_output_region_1;
             prod_vol_reg2=monthly_output_region_2;
         
-            monthly_output = 0.0;
+//            monthly_output = 0.0;
             monthly_output_region_1 = 0.0;
             monthly_output_region_2 = 0.0;
 
@@ -2304,7 +2307,6 @@ void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_
         monthly_output = current_Eurostat->monthly_output;
         monthly_revenue = current_Eurostat->monthly_revenue;
         monthly_planned_output = current_Eurostat->monthly_planned_output;
-        
 
         //Go to the next in linked list
         current_Eurostat = current_Eurostat->next;

@@ -35,13 +35,21 @@ set key top right
 set terminal postscript eps color "Helvetica" 16
 #set terminal postscript eps monochrome "Helvetica" 16
 set output 'graph-growthrate-output.eps'
-plot 'data-eurostat.csv' using 1:14 title "growth rate: output"
+plot 'data-eurostat.csv' using 1:14 title "growth rate: output, monthly (direct)"
+plot 'data-eurostat.csv' using 1:15 title "growth rate: output, monthly (2)"
+#plot 'data-eurostat.csv' using 1:15 title "growth rate: output, quarterly"
+#plot 'data-eurostat.csv' using 1:16 title "growth rate: output, annual monthly"
+#plot 'data-eurostat.csv' using 1:17 title "growth rate: output, annual quarterly"
 #plot 'data-growthrate-output.csv' using 1:2 title "growth rate: output"
 set output
 
 set terminal png
 set output 'graph-growthrate-output.png'
-plot 'data-eurostat.csv' using 1:14 title "growth rate: output"
+plot 'data-eurostat.csv' using 1:14 title "growth rate: output, monthly (direct)"
+plot 'data-eurostat.csv' using 1:15 title "growth rate: output, monthly (2)"
+#plot 'data-eurostat.csv' using 1:15 title "growth rate: output, quarterly"
+#plot 'data-eurostat.csv' using 1:16 title "growth rate: output, annual monthly"
+#plot 'data-eurostat.csv' using 1:17 title "growth rate: output, annual quarterly"
 #plot 'data-growthrate-output.csv' using 1:2 title "growth rate: output"
 set output
 
