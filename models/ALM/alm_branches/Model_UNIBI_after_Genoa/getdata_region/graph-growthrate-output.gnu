@@ -40,7 +40,7 @@ set output 'graph-growthrate-output.eps'
 #plot 'data-eurostat.csv' using 1:15 title "growth rate: output, quarterly"
 #plot 'data-eurostat.csv' using 1:16 title "growth rate: output, annual monthly"
 #plot 'data-eurostat.csv' using 1:17 title "growth rate: output, annual quarterly"
-plot 'data-growthrate-output-region.csv' using 1:2 title "growth rate: output"
+plot 'data-growthrate-output-region.csv' using 1:2 title "growth rate output"
 set output
 
 set terminal png
@@ -50,7 +50,7 @@ set output 'graph-growthrate-output.png'
 #plot 'data-eurostat.csv' using 1:15 title "growth rate: output, quarterly"
 #plot 'data-eurostat.csv' using 1:16 title "growth rate: output, annual monthly"
 #plot 'data-eurostat.csv' using 1:17 title "growth rate: output, annual quarterly"
-plot 'data-growthrate-output-region.csv' using 1:2 title "growth rate: output"
+plot 'data-growthrate-output-region.csv' using 1:2 title "growth rate output"
 set output
 
 # Call external epstopdf to transform the eps file to pdf.
