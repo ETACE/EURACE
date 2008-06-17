@@ -100,23 +100,30 @@ int main(int argc, char ** argv)
 				{{x,y,y},{x,y,y},{y,y,x}};
 	 
 	 												++ 
-	 ++++++++++++++++++++++++++++++++++++++++++++++++/*
+	 ++++++++++++++++++++++++++++++++++++++++++++++++*/
 
-	/*This determines the local skill distribution. Use numbers 1 .. 4 (see above, skill distribution_X) to give a region a skill distribution. */
+	
+	
+	/*+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	 * ++++++++++++++++   3  x 3 grid +++++++++++++++++++++++++++++++++*/	
+	
+	/*
+	
+	
+	//This determines the local skill distribution. Use numbers 1 .. 4 (see above, skill distribution_X) to give a region a skill distribution. 
+	  
 	int skills_in_regions[3][3]=
 				{{4,4,4},{4,4,4},{4,4,4}};
+	
 	
 	
 	//region specific initial value of households specific skills
 	
 	
-	//For 3x3
+	
 	double specific_skills_of_household[3][3]=
-				
-	{{0.8,0.8,0.8},{0.8,0.8,0.8},{0.8,0.8,0.8}};
-	//For 2x1
-	double specific_skills_of_household[2][1]=
-						{0.8,0.8};
+				{{0.8,0.8,0.8},{0.8,0.8,0.8},{0.8,0.8,0.8}};
+	
 	
 	
 
@@ -124,54 +131,61 @@ int main(int argc, char ** argv)
 	double total_production_quantity[3][3]=
 	{{10,10,10},{10,10,10},{10,10,10}};
 	
-	
-	//For 2x1
-		double total_production_quantity[2][1]=
-					{10.0,10.0};
-		
-	
-	
 	//This defines the initial capital stock of firm depending on the region.
-	//For 3x3
 	double total_units_capital[3][3]=
-	                            
-	{{2,2,2},{2,2,2},{2,2,2}};
-	//For 2x1
-	double total_units_capital[2][1]=
-		                            {2.0,2.0};
+	            {{2,2,2},{2,2,2},{2,2,2}};
+	
+
 		
 	//Firm's starting value of productivity of the capital stock
-	//For 3x3
+	
 	double technology[3][3]=
-		
-		
-	{{1,1,1},{1,1,1},{1,1,1}};
-	//For 2x1
-	double technology[2][1]=
-		
-		{1.0,1.0};
+		{{1,1,1},{1,1,1},{1,1,1}};
+
 
 	
 	//This defines the financial resources of firm at the beginning of a simulation
-	//For 3x3
 	double payment_account[3][3]= 
-	
 	{{50.0,50.0,50.0},{50.0,50.0,50.0},{50.0,50.0,50.0}};
-	//For 2x1
-	double payment_account[2][1]= 
-	{50.0,50.0};
-	
-	
+
 	//Initital wage offer of the firms
-	//For 3x3
 	double wage_offer[3][3]= 
 		{{1.0,1.0,1.0},{1.0,1.0,1.0},{1.0,1.0,1.0}};
-	//For 2x1
-	double wage_offer[2][1]= 
-	{50.0,50.0};
+	
+	
+	*/
+	
+	
+/*+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ * ++++++++++++++++   2  x 1 grid +++++++++++++++++++++++++++++++++*/		
+	
+	//This determines the local skill distribution. Use numbers 1 .. 4 (see above, skill distribution_X) to give a region a skill distribution. 
+		int skills_in_regions[2][1]=
+					{4,4};
+	
+	
+		//region specific initial value of households specific skills
+		double specific_skills_of_household[2][1]=
+							{0.8,0.8};
 		
-	
-	
+
+		//Total production volume for a single firm
+			double total_production_quantity[2][1]=
+						{10.0,10.0};
+			//This defines the initial capital stock of firm depending on the region.
+			double total_units_capital[2][1]=
+				                            {2.0,2.0};
+			//Firm's starting value of productivity of the capital stock
+			double technology[2][1]=
+							{1.0,1.0};
+			//This defines the financial resources of firm at the beginning of a simulation
+			double payment_account[2][1]= 
+			{50.0,50.0};
+			
+			//Initital wage offer of the firms
+			double wage_offer[2][1]= 
+				{1.0,1.0};
+
 	
 	/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 	
