@@ -56,10 +56,10 @@ int main(int argc, char ** argv)
 	int num_regions = num_regions_X*num_regions_Y; /*number of regions*/
 	
 	
-	int total_households = 1200;/*number of households in the economy*/
+	int total_households = 450;/*number of households in the economy*/
 	int households_per_region = total_households/num_regions; 
 
-	int total_firms  = 30; /*total_firms modulo num_regions should be 0*/
+	int total_firms  = 10; /*total_firms modulo num_regions should be 0*/
 	int total_IGfirms = 1;
 	int total_market_research = 1;
 	int total_malls = num_regions;  /*one mall per region*/
@@ -73,8 +73,10 @@ int main(int argc, char ** argv)
 	double	tax_rate_hh_capital =0.25;
 	double	unemployment_benefit_payment = 0.8;
 	double	payment_account_government =100.0;
+	double 	payment_account_household = 1;
 
 	double	capital_good_price = 100.0;
+	double productivity_best_practice = 1.0;  //Productivity of the technology offered ba the IG firm
 	int years_statistics = 10;/*number of years used to smooth the production*/
 
 	/*Defining skill distributions in regions*/
@@ -102,28 +104,42 @@ int main(int argc, char ** argv)
 
 	/*This determines the local skill distribution. Use numbers 1 .. 4 (see above, skill distribution_X) to give a region a skill distribution. */
 	int skills_in_regions[3][3]=
-				{{1,1,1},{1,3,1},{1,1,1}};
+				{{4,4,4},{4,4,4},{4,4,4}};
 	
 	
 	//region specific initial value of households specific skills
 	double specific_skills_of_household[3][3]=
-					{{0.8,0.8,0.8},{0.8,1.0,0.8},{0.8,0.8,0.8}};
+				//	{0.8,0.8};
+	{{0.8,0.8,0.8},{0.8,0.8,0.8},{0.8,0.8,0.8}};
 	
 
 	//Total production volume for a single firm
 	double total_production_quantity[3][3]=
-	{{30.0,30.0,30.0},{30.0,30.0,30.0},{30.0,30.0,30.0}};
+//	{10.0,10.0};
+	{{10,10,10},{10,10,10},{10,10,10}};
 	
 	
 	//This defines the initial capital stock of firm depending on the region.
 	double total_units_capital[3][3]=
-	                              {{2.0,2.0,2.0}, {2.0,2.0,2.0}, {2.0,2.0,2.0}};
+	                             // {2.0,2.0};
+	{{2,2,2},{2,2,2},{2,2,2}};
 	//Firm's starting value of productivity of the capital stock
 	double technology[3][3]=
-	{{1.0,1.0,1.0},{1.0,1.0,1.0},{1.0,1.0,1.0}};
+		
+		//{1.0,1.0};
+	{{1,1,1},{1,1,1},{1,1,1}};
 	//This defines the financial resources of firm at the beginning of a simulation
 	double payment_account[3][3]= 
+	//{50.0,50.0};
 	{{50.0,50.0,50.0},{50.0,50.0,50.0},{50.0,50.0,50.0}};
+	
+	
+	double wage_offer[3][3]= 
+		//{50.0,50.0};
+		{{1.0,1.0,1.0},{1.0,1.0,1.0},{1.0,1.0,1.0}};
+	
+	
+	
 	
 	
 	/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
@@ -195,13 +211,13 @@ int main(int argc, char ** argv)
 		sprintf(data, "%d",bank_id);    print_tag("bank_id", data, file);
 		sprintf(data, "%d",gov_id);    print_tag("gov_id", data, file);
 		sprintf(data, "{}");			print_tag("employees", data, file);	
-		sprintf(data, "%f",wage_offer);		print_tag("wage_offer", data, file);
+		sprintf(data, "%f",wage_offer[column][row]);		print_tag("wage_offer", data, file);
 
-		sprintf(data, "%f",wage_offer);	print_tag("wage_offer_for_skill_1", data, file);
-		sprintf(data, "%f",wage_offer);	print_tag("wage_offer_for_skill_2", data, file);
-		sprintf(data, "%f",wage_offer);	print_tag("wage_offer_for_skill_3", data, file);
-		sprintf(data, "%f",wage_offer);	print_tag("wage_offer_for_skill_4", data, file);
-		sprintf(data, "%f",wage_offer);	print_tag("wage_offer_for_skill_5", data, file);
+		sprintf(data, "%f",wage_offer[column][row]);	print_tag("wage_offer_for_skill_1", data, file);
+		sprintf(data, "%f",wage_offer[column][row]);	print_tag("wage_offer_for_skill_2", data, file);
+		sprintf(data, "%f",wage_offer[column][row]);	print_tag("wage_offer_for_skill_3", data, file);
+		sprintf(data, "%f",wage_offer[column][row]);	print_tag("wage_offer_for_skill_4", data, file);
+		sprintf(data, "%f",wage_offer[column][row]);	print_tag("wage_offer_for_skill_5", data, file);
 
 		sprintf(data, "%d",0);	print_tag("wage_update_was_made", data, file);
 
@@ -457,9 +473,7 @@ int main(int argc, char ** argv)
 		sprintf(data, "%d",gov_id);	print_tag("gov_id", data, file);
 		sprintf(data, "%d",bank_id);		print_tag("bank_id", data, file);
 		sprintf(data, "%f",.0);	print_tag("payment_account", data, file);
-		sprintf(data, "%f",1.0);	print_tag("productivity", data, file);
-		sprintf(data, "%d",10);		print_tag("innovation_probability", data, file);
-		sprintf(data, "%f",0.05);	print_tag("productivity_progress", data, file);
+		sprintf(data, "%f",productivity_best_practice);	print_tag("productivity", data, file);
 		sprintf(data, "%f", capital_good_price);	print_tag("capital_good_price", data, file);
 		sprintf(data, "%d",0);		print_tag("day_of_month_to_act", data, file);
 		sprintf(data, "%f", 0.0);	print_tag("revenue_per_day", data, file);
@@ -635,7 +649,7 @@ int main(int argc, char ** argv)
 		sprintf(data, "%d", 0);       	print_tag("rationed", data, file);
 		sprintf(data, "%f", 0.0);       print_tag("consumption_budget", data, file);
 		sprintf(data, "%f", 0.0);       print_tag("weekly_budget", data, file);
-		sprintf(data, "%f", 0.8);	print_tag("payment_account", data, file);
+		sprintf(data, "%f", payment_account_household);	print_tag("payment_account", data, file);
 		sprintf(data, "%f", 0.0);	print_tag("mean_income", data, file);
 		sprintf(data, "%f", 0.0);	print_tag("total_taxes", data, file);
 		sprintf(data, "%f", 0.0);	print_tag("cum_total_dividends", data, file);
