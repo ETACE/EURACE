@@ -9,7 +9,7 @@ set line 5.0
 
 #Set labels:
 set xlabel "Days" 
-set ylabel "actual output, sales"
+set ylabel "actual output"
 #set y2label ""
 
 #Set legenda:
@@ -33,12 +33,14 @@ set key top right
 set terminal postscript eps color "Helvetica" 16
 #set terminal postscript eps monochrome "Helvetica" 16
 set output 'graph-output.eps'
-plot 'data-eurostat.csv' using 1:11 title "actual output", 'data-eurostat.csv' using 1:10 title "actual sales"
+#plot 'data-eurostat.csv' using 1:11 title "actual output", 'data-eurostat.csv' using 1:10 title "actual sales"
+plot 'data-monthly-output.csv' using 1:4 title "output"
 set output
 
 set terminal png
 set output 'graph-output.png'
-plot 'data-eurostat.csv' using 1:11 title "actual output" , 'data-eurostat.csv' using 1:10 title "actual sales"
+#plot 'data-eurostat.csv' using 1:11 title "actual output" , 'data-eurostat.csv' using 1:10 title "actual sales"
+plot 'data-monthly-output.csv' using 1:4 title "output"
 set output
 
 # Call external epstopdf to transform the eps file to pdf.

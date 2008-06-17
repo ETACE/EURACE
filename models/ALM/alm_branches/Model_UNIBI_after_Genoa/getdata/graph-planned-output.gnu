@@ -35,12 +35,14 @@ set key top right
 set terminal postscript eps color "Helvetica" 16
 #set terminal postscript eps monochrome "Helvetica" 16
 set output 'graph-planned-output.eps'
-plot 'data-eurostat.csv' using 1:11 title "actual output", 'data-eurostat.csv' using 1:13 title "planned output"
+#plot 'data-eurostat.csv' using 1:11 title "actual output", 'data-eurostat.csv' using 1:13 title "planned output"
+plot 'data-planned-output.csv' using 1:2 title "monthly-output",'data-planned-output.csv' using 1:3 title "planned-monthly-quantity"
 set output
 
 set terminal png
 set output 'graph-planned-output.png'
-plot 'data-eurostat.csv' using 1:11 title "actual output", 'data-eurostat.csv' using 1:13 title "planned output"
+#plot 'data-eurostat.csv' using 1:11 title "actual output", 'data-eurostat.csv' using 1:13 title "planned output"
+plot 'data-planned-output.csv' using 1:2 title "monthly-output",'data-planned-output.csv' using 1:3 title "planned-monthly-quantity"
 set output
 
 # Call external epstopdf to transform the eps file to pdf.
