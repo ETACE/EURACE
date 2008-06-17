@@ -19,8 +19,6 @@
 <description></description>
 <memory>
 <variable><type>double</type><name>productivity</name><description></description></variable>
-<variable><type>int</type><name>innovation_probability</name><description></description></variable>
-<variable><type>double</type><name>productivity_progress</name><description></description></variable>
 <variable><type>double</type><name>capital_good_price</name><description></description></variable>
 <variable><type>double</type><name>revenue_per_day</name><description></description></variable>
 <variable><type>double</type><name>tax_rate_corporate</name><description></description></variable>
