@@ -94,3 +94,7 @@ make jar file
 put up on the wiki
 added new functions for producing random values for every agent on the same row
 
+18/06/08
+add ask frame to ask if its new or old version of flame
+
+
