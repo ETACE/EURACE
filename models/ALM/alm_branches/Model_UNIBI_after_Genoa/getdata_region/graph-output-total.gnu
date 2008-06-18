@@ -30,7 +30,7 @@ set key top right
 
 #Plotting
 
-set terminal postscript eps color "Helvetica" 16
+set terminal postscript eps color solid rounded "Helvetica" 16
 #set terminal postscript eps monochrome "Helvetica" 16
 set output 'graph-output.eps'
 plot 'data-output-region.csv' using 1:2 title "output"
