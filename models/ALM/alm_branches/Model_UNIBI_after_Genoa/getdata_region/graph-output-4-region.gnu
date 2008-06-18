@@ -30,7 +30,7 @@ set key top right
 
 #Plotting
 
-set terminal postscript eps color "Helvetica" 16
+set terminal postscript eps color solid rounded "Helvetica" 16
 #set terminal postscript eps monochrome "Helvetica" 16
 set output 'graph-output-4-region.eps'
 #plot 'data-eurostat.csv' using 1:11 title "actual output", 'data-eurostat.csv' using 1:10 title "actual sales"

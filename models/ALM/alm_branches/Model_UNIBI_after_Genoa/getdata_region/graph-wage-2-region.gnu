@@ -15,7 +15,7 @@ set ylabel "wages"
 
 #Set legenda:
 #set nokey
-set key top right
+set key top left
 
 #Set ranges:
 #set xrange [1:8]
@@ -32,15 +32,15 @@ set key top right
 
 #Plotting
 
-set terminal postscript eps color "Helvetica" 16
+set terminal postscript eps color solid rounded "Helvetica" 16
 #set terminal postscript eps monochrome "Helvetica" 16
 set output 'graph-wage-2-region.eps'
-plot 'data-wage-region.csv' using 1:3 title "wage",'data-wage-region.csv' using 1:5 title "wage-reg-1",'data-wage-region.csv' using 1:7 title "wage-reg-2"
+plot 'data-wage-region.csv' using 1:2 title "wage",'data-wage-region.csv' using 1:8 title "wage-reg-1",'data-wage-region.csv' using 1:14 title "wage-reg-2"
 set output
 
 set terminal png
 set output 'graph-wage-2-region.png'
-plot 'data-wage-region.csv' using 1:3 title "wage",'data-wage-region.csv' using 1:5 title "wage-reg-1",'data-wage-region.csv' using 1:7 title "wage-reg-2"
+plot 'data-wage-region.csv' using 1:2 title "wage",'data-wage-region.csv' using 1:8 title "wage-reg-1",'data-wage-region.csv' using 1:14 title "wage-reg-2"
 set output
 
 # Call external epstopdf to transform the eps file to pdf.

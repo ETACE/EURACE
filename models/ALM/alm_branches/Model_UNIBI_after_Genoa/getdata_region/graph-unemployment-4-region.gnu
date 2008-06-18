@@ -32,7 +32,7 @@ set key top right
 
 #Plotting
 
-set terminal postscript eps color "Helvetica" 16
+set terminal postscript eps color solid rounded "Helvetica" 16
 #set terminal postscript eps "Helvetica" 16
 set output "graph-unemployment-4-region.eps"
 plot 'data-unemployment-region.csv' using 1:2 title "unemployment-rate", 'data-unemployment-region.csv' using 1:8 title "unemployment-rate-reg-1",'data-unemployment-region.csv' using 1:14 title "unemployment-rate-reg-2",'data-unemployment-region.csv' using 1:20 title "unemployment-rate-reg-3",'data-unemployment-region.csv' using 1:26 title "unemployment-rate-reg-4"
