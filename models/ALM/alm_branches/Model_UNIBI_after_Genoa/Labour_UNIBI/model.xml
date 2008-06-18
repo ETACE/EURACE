@@ -95,10 +95,16 @@
 
 <functions>
 
+<function><name>Firm_calculate_specific_skills_and_wage_offer</name>
+<description></description>
+<currentState>Start_Firm_Labour_Role</currentState>
+<nextState>011</nextState>
+</function>
+
 <function><name>Firm_send_vacancies</name>
 <description>If additional workers are needed the firm sends vacancies messages
  espacially the different wage offers for the different general skill groups</description>
-<currentState>Start_Firm_Labour_Role</currentState>
+<currentState>011</currentState>
 <nextState>03</nextState>
 <condition><lhs><value>a.no_employees</value></lhs><op>LT</op><rhs><value>a.employees_needed</value></rhs></condition>
 <outputs>
@@ -108,7 +114,7 @@
 
 <function><name>Firm_send_redundancies</name>
 <description>If the firm wants to decrease the workforce it sends redundancies</description>
-<currentState>Start_Firm_Labour_Role</currentState>
+<currentState>011</currentState>
 <nextState>03c</nextState>
 <condition><lhs><value>a.no_employees</value></lhs><op>GT</op><rhs><value>a.employees_needed</value></rhs></condition>
 <outputs>
@@ -118,7 +124,7 @@
 
 <function><name>Firm_idle</name>
 <description>Firm does nothing</description>
-<currentState>Start_Firm_Labour_Role</currentState>
+<currentState>011</currentState>
 <nextState>03c</nextState>
 <condition><lhs><value>a.no_employees</value></lhs><op>EQ</op><rhs><value>a.employees_needed</value></rhs></condition>
 </function>
