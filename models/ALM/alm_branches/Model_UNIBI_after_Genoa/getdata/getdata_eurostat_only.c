@@ -133,7 +133,7 @@ int getiteration(char * filepath, int itno, Eurostat ** pointer_to_Eurostats)
 	int	ingdp, intotal_earnings, intotal_debt, intotal_assets, intotal_equity;
 	int inaverage_debt_earnings_ratio, inaverage_debt_equity_ratio, inlabour_share_ratio;
     int inmonthly_sold_quantity, inmonthly_output_growth, inmonthly_output, inmonthly_revenue, inmonthly_planned_output;
-    int inmonthly_growth_rate;
+    int inmonthly_growth_rates;
     
 	/* Variables for model data */
 	int state, id, region_id;
@@ -189,7 +189,7 @@ int getiteration(char * filepath, int itno, Eurostat ** pointer_to_Eurostats)
     inmonthly_revenue =0;
     inmonthly_planned_output =0;
 
-    inmonthly_growth_rate =0;
+    inmonthly_growth_rates =0;
     
 	state = 0;
 	id = 0;
@@ -270,6 +270,8 @@ int getiteration(char * filepath, int itno, Eurostat ** pointer_to_Eurostats)
                     current_Eurostat->monthly_planned_output     = monthly_planned_output;
 					
                     current_Eurostat->monthly_growth_rates.output= monthly_growth_rate;
+                    printf("Eurostat monthly_growth_rates.output, monthly_growth_rate: %.2f %.2f\n", current_Eurostat->monthly_growth_rates.output, monthly_growth_rate);
+                    
                     //printf("Eurostat %d, ", id);
 					
 					/* Make tail the next element in the linked list */
@@ -311,8 +313,8 @@ int getiteration(char * filepath, int itno, Eurostat ** pointer_to_Eurostats)
            if(strcmp(buffer, "monthly_planned_output") == 0) { inmonthly_planned_output = 1; }
               if(strcmp(buffer, "/monthly_planned_output") == 0) { inmonthly_planned_output= 0; }  
 
-          if(strcmp(buffer, "monthly_growth_rates") == 0) { inmonthly_growth_rate = 1; }
-             if(strcmp(buffer, "/monthly_growth_rates") == 0) { inmonthly_growth_rate= 0; }    
+          if(strcmp(buffer, "monthly_growth_rates") == 0) { inmonthly_growth_rates = 1; }
+             if(strcmp(buffer, "/monthly_growth_rates") == 0) { inmonthly_growth_rates= 0; }    
               
 			/* End of tag and reset buffer */
 			intag = 0;
@@ -346,7 +348,7 @@ int getiteration(char * filepath, int itno, Eurostat ** pointer_to_Eurostats)
             if(inagent && inmonthly_planned_output)  { monthly_planned_output  = atof(buffer); }
 			
             /*History items*/
-            if(inagent && inmonthly_growth_rate)  { monthly_growth_rate  = atof(buffer); }
+            if(inagent && inmonthly_growth_rates)  { monthly_growth_rate  = atof(buffer); }
             
 			/* Reset buffer */
 			i = 0;
@@ -407,7 +409,7 @@ void savedatatofile(int itno, Eurostat ** pointer_to_Eurostats)
     double monthly_planned_output;
     
     /*For simplifing the code, this is a double*/
-    double monthly_growth_rate;
+    //double monthly_growth_rate;
 /*
 	history_item history_monthly[13];
 	history_item monthly_growth_rates;
@@ -436,13 +438,15 @@ void savedatatofile(int itno, Eurostat ** pointer_to_Eurostats)
 
         monthly_sold_quantity = current_Eurostat->monthly_sold_quantity;
         monthly_output_growth = current_Eurostat->monthly_output_growth;
+        printf("Eurostat monthly_output_growth: %.2f\n", monthly_output_growth);        
+        
         monthly_output = current_Eurostat->history_monthly[1].output;
         monthly_revenue = current_Eurostat->monthly_revenue;
         monthly_planned_output = current_Eurostat->monthly_planned_output;
 	    
         /*Add history items here*/
-        monthly_growth_rate = current_Eurostat->monthly_growth_rates.output;
-        
+//        monthly_growth_rate = current_Eurostat->monthly_growth_rates.output;
+//        printf("Eurostat monthly_growth_rates.output, monthly_growth_rate: %.2f %.2f\n", current_Eurostat->monthly_growth_rates.output, monthly_growth_rate);
         
 		//Go to the next in linked list
 		current_Eurostat = current_Eurostat->next;
@@ -522,13 +526,15 @@ void savedatatofile(int itno, Eurostat ** pointer_to_Eurostats)
             fputs("\t", file);
             sprintf(data, "%f", monthly_output_growth);
             fputs(data, file);
+            printf("Eurostat monthly_output_growth (scalar): %.2f\n",  monthly_output_growth);
 
             //15: monthly growthrate output, indirect from Eurostat history_monthly
             fputs("\t", file);
-            sprintf(data, "%f", monthly_growth_rate);
+            sprintf(data, "%f", current_Eurostat->monthly_growth_rates.output);
             fputs(data, file);
-            
-/*            
+            printf("Eurostat monthly_growth_rate (vector): %.2f\n", current_Eurostat->monthly_growth_rates.output);
+
+/*
             //15: monthly growthrate output
             fputs("\t", file);
             sprintf(data, "%f", quarterly_output_growth);
