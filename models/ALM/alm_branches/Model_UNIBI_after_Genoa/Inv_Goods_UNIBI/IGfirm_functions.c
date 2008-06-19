@@ -23,6 +23,29 @@ int IGFirm_idle()
 
 
 /***************************** Investment Goods producer function********************************/
+
+int IGFirm_set_quantities_zero()
+{
+	return 0;
+}
+
+
+/** \fn IGFirm_calc_production_quantity()
+ * \brief IGFirm calculate the intended production volume depending on the current stocks in the malls*/
+int IGFirm_calc_production_quantity()
+{
+	return 0;
+}
+
+
+/** \fn IGFirm_calc_input_demands()
+ * \brief IGFirms calculate the labor demand and the demand for energy*/
+int IGFirm_calc_input_demands()
+{
+	return 0;
+}
+
+
 /** \fn IGFirm_update_productivity_price()
  * \brief IGFirm inceases productivity via a stochastic process and the according price */
 int IGFirm_update_productivity_price()

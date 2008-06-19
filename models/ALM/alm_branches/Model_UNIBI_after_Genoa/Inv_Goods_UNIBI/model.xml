@@ -18,6 +18,8 @@
 <name>IGFirm</name>
 <description></description>
 <memory>
+<variable><type>double</type><name>productivity_progress</name><description></description></variable>
+<variable><type>double</type><name>innovation_probability</name><description></description></variable>
 <variable><type>double</type><name>productivity</name><description></description></variable>
 <variable><type>double</type><name>capital_good_price</name><description></description></variable>
 <variable><type>double</type><name>revenue_per_day</name><description></description></variable>
@@ -31,24 +33,52 @@
 </memory>
 <functions>
 
-<function><name>IGFirm_update_productivity_price</name>
-<description></description>
-<currentState>Start_IGFirm_Productivity</currentState>
-<nextState>01</nextState>
+
+<function>
+<name>IGFirm_calc_production_quantity</name>
+<description>IGFirm calculate the intended production volume depending 
+on the current stocks in the malls</description>
+<currentState>011c</currentState>
+<nextState>01a</nextState>
 <condition><time><period>monthly</period><phase>a.day_of_month_to_act</phase></time></condition>
 </function>
 
+<function>
+<name>IGFirm_set_quantities_zero</name>
+<description>Dummy: no production on not_day_of_month_to_act</description>
+<currentState>Start_IGFirm_Productivity</currentState>
+<nextState>0122</nextState>
+<condition><not><time><period>monthly</period><phase>a.day_of_month_to_act</phase></time></not></condition>
+</function>
+
+<function><name>IGFirm_calc_input_demands</name>
+<description>IGFirms calculate the labor demand and the demand for energy</description>
+<currentState>01a</currentState>
+<nextState>Start_IGFirm_Employer_Role</nextState>
+</function>
+
+
+
+<function><name>IGFirm_update_productivity_price</name>
+<description></description>
+<currentState>Start_IGFirm_Productivity</currentState>
+<nextState>011a</nextState>
+<condition><time><period>monthly</period><phase>a.day_of_month_to_act</phase></time></condition>
+</function>
+
+<!--  
 <function><name>IGFirm_idle</name>
 <description></description>
 <currentState>Start_IGFirm_Productivity</currentState>
 <nextState>01</nextState>
 <condition><not><time><period>monthly</period><phase>a.day_of_month_to_act</phase></time></not></condition>
 </function>
+-->
 
 <function><name>IGFirm_send_quality_price_info</name>
 <description></description>
-<currentState>01</currentState>
-<nextState>02</nextState>
+<currentState>011a</currentState>
+<nextState>011c</nextState>
 <outputs>
 <output><messageName>productivity</messageName></output>
 </outputs>
@@ -56,8 +86,8 @@
 
 <function><name>IGFirm_send_capital_good</name>
 <description></description>
-<currentState>02</currentState>
-<nextState>03</nextState>
+<currentState>End_IGFirm_Employer_Role</currentState>
+<nextState>011b</nextState>
 <inputs>
 <input><messageName>capital_good_request</messageName></input>
 </inputs>
@@ -68,7 +98,7 @@
 
 <function><name>IGFirm_receive_payment</name>
 <description></description>
-<currentState>03</currentState>
+<currentState>011b</currentState>
 <nextState>04</nextState>
 <inputs>
 <input><messageName>pay_capital_goods</messageName></input>
@@ -88,7 +118,7 @@
 <function><name>IGFirm_dividend_payment</name>
 <description></description>
 <currentState>04b</currentState>
-<nextState>end_IGFirm</nextState>
+<nextState>04c</nextState>
 <condition><time><period>monthly</period><phase>a.day_of_month_to_act</phase></time></condition>
 <outputs>
 <output><messageName>dividend_per_share</messageName></output>
@@ -98,7 +128,7 @@
 <function><name>IGFirm_idle</name>
 <description></description>
 <currentState>04</currentState>
-<nextState>end_IGFirm</nextState>
+<nextState>04c</nextState>
 <condition><not><time><period>monthly</period><phase>a.day_of_month_to_act</phase></time></not></condition>
 </function>
 
