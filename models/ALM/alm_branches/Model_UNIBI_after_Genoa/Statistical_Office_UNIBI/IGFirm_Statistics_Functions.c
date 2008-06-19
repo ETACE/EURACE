@@ -3,6 +3,17 @@
 #include "../my_library_header.h"
 
 
+
+
+/** \fn IGFirm_send_data_to_Eurostat()
+ * \brief IGFirms send data to Market Research: controlling results and creating macro data
+ */
+int IGFirm_send_data_to_Eurostat()
+{
+	return 0;
+}
+
+
 /** \fn IGFirm_read_tax_rates()
  * \brief IGFirms reads the tax_rates_messages from Governments
  */
@@ -17,5 +28,13 @@ int IGFirm_read_tax_rates()
 		}
 	FINISH_GOVERNMENT_TAX_RATES_MESSAGE_LOOP
 
+	return 0;
+}
+
+
+/** \fn IGFirm_receive_data()
+ * \brief IGFirms receive the data messages from the Eurostat*/
+int IGFirm_receive_data()
+{
 	return 0;
 }

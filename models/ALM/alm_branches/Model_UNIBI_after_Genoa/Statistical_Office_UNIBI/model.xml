@@ -94,6 +94,7 @@
 <variable><type>double</type><name>monthly_output</name><description>Constructed macrovariable: regional sum of output</description></variable>
 <variable><type>double</type><name>monthly_revenue</name><description>Constructed macrovariable: regional sum of cum_revenue</description></variable>
 <variable><type>double</type><name>monthly_planned_output</name><description>Constructed macrovariable: regional sum of planned output</description></variable>
+
 </variables>
 </dataType>
 
@@ -193,18 +194,54 @@ including several micro data.</description>
 <function><name>IGFirm_idle</name>
 <description></description>
 <currentState>start_IGFirm</currentState>
-<nextState>Start_IGFirm_Productivity</nextState>
+<nextState>Start_IGFirm_Macro_Data</nextState>
 <condition><not><time><period>yearly</period><phase>0</phase></time></not></condition>
 </function>
 
 <function><name>IGFirm_read_tax_rates</name>
 <description></description>
 <currentState>start_IGFirm</currentState>
-<nextState>Start_IGFirm_Productivity</nextState>
+<nextState>Start_IGFirm_Macro_Data</nextState>
 <condition><time><period>yearly</period><phase>0</phase></time></condition>
 <inputs>
 <input><messageName>government_tax_rates</messageName></input>
 </inputs>
+</function>
+
+<function><name>IGFirm_receive_data</name>
+<description>The firm reads the messages from the eurostat agent 
+and stores the needed data.</description>
+<currentState>Start_IGFirm_Macro_Data</currentState>
+<nextState>Start_IGFirm_Productivity</nextState>
+<condition><time><period>monthly</period><phase>0</phase></time></condition>
+<inputs>
+<input><messageName>eurostat_send_specific_skills</messageName></input>
+</inputs>
+</function>
+
+<function><name>IGFirm_idle</name>
+<description>IGFirm does nothing</description>
+<currentState>Start_IGFirm_Macro_Data</currentState>
+<nextState>Start_IGFirm_Productivity</nextState>
+<condition><not><time><period>monthly</period><phase>0</phase></time></not></condition>
+</function>
+
+<function><name>IGFirm_send_data_to_Eurostat</name>
+<description>IGFirm sends message to the eurostat agent 
+including several micro data.</description>
+<currentState>04c</currentState>
+<nextState>End_IGFirm</nextState>
+<condition><time><period>monthly</period><phase>19</phase></time></condition>
+<outputs>
+<output><messageName>firm_send_data</messageName></output>
+</outputs>
+</function>
+
+<function><name>IGFirm_idle</name>
+<description>IGFirm does nothing</description>
+<currentState>04c</currentState>
+<nextState>End_IGFirm</nextState>
+<condition><not><time><period>monthly</period><phase>19</phase></time></not></condition>
 </function>
 
 </functions>
@@ -330,6 +367,7 @@ including several micro data.</description>
 <variable><type>firm_data_array</type><name>region_firm_data</name><description></description>Stores the eurostat memory variables concerning the firms for the different regions</variable>
 <variable><type>household_data_array</type><name>region_household_data</name><description>Stores the eurostat memory variables concerning the households for the different regions</description></variable>
 <variable><type>int</type><name>day_of_month_to_act</name><description></description></variable>
+<variable><type>double</type><name>monthly_output_last_month</name><description></description></variable>
 
 <!-- Data for governments -->
 <variable><type>tax_rates_item_array</type><name>government_tax_rates</name><description></description></variable>
