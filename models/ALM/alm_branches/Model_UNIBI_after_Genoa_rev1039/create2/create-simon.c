@@ -102,10 +102,21 @@ int main(int argc, char ** argv)
 	 ++++++++++++++++++++++++++++++++++++++++++++++++/*
 
 	/*This determines the local skill distribution. Use numbers 1 .. 4 (see above, skill distribution_X) to give a region a skill distribution. */
-
+/*
 	//Scenario 0: 2 regions, LOW, LOW
 	int skills_in_regions[1][2]=
 				{{1,1}};
+*/
+/*
+	//Scenario 0: 2 regions, HIGH, HIGH
+	int skills_in_regions[1][2]=
+				{{3,3}};
+*/				
+
+	//Scenario 0: 2 regions, UNIF, UNIF
+	int skills_in_regions[1][2]=
+				{{4,4}};
+				
 /*
 	//Scenario 0: 4 regions, LOW, LOW
 	int skills_in_regions[2][2]=
@@ -232,6 +243,7 @@ int main(int argc, char ** argv)
 		fputs("<xagent>\n", file);
 		fputs("<name>Firm</name>\n", file);
 		sprintf(data, "%d", num);		print_tag("id", data, file);
+	//  sprintf(data, "%d", 0);			print_tag("age", data, file);
 		sprintf(data, "%d",region);    print_tag("region_id", data, file);
 		sprintf(data, "%d",bank_id);    print_tag("bank_id", data, file);
 		sprintf(data, "%d",gov_id);    print_tag("gov_id", data, file);

@@ -46,8 +46,7 @@ int Eurostat_Initialization()
                 0.0,0.0,0.0,0.0,0.0,0.0,
                 0.0,0.0,0.0,0.0,0.0,0.0,
                 0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,
-                0.0,0.0,0.0,0.0,
-                0);
+                0.0,0.0,0.0,0.0);
         
         add_household_data(&REGION_HOUSEHOLD_DATA,
                 i,
@@ -95,6 +94,8 @@ int Eurostat_send_data()
  */
 int Eurostat_calculate_data()
 {
+	int i,j,m;
+
     //Auxiliary sums:
     double sum_total_debt_earnings_ratios;
     double sum_total_debt_equity_ratios;
@@ -185,20 +186,20 @@ int Eurostat_calculate_data()
     //free(REGION_HOUSEHOLD_DATA);
     //free(REGION_FIRM_DATA);
     
-    for(int j = 0; j < REGION_FIRM_DATA.size; j++)
+    for(j = 0; j < REGION_FIRM_DATA.size; j++)
     {
         remove_firm_data(&REGION_FIRM_DATA, j);
         j--;
     }
     
-    for(int m = 0; m < REGION_HOUSEHOLD_DATA.size; m++)
+    for(m = 0; m < REGION_HOUSEHOLD_DATA.size; m++)
     {
         remove_household_data(&REGION_HOUSEHOLD_DATA, m);
         m--;
     }
 
 
-    for(int i = 1; i <= NO_REGIONS; i++)
+    for(i = 1; i <= NO_REGIONS; i++)
     {
         add_firm_data(&REGION_FIRM_DATA,
                 i,0,0,
@@ -206,8 +207,7 @@ int Eurostat_calculate_data()
                 0.0,0.0,0.0,0.0,0.0,0.0,
                 0.0,0.0,0.0,0.0,0.0,0.0,
                 0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,
-                0.0,0.0,0.0,0.0,
-                0);
+                0.0,0.0,0.0,0.0);
         
         add_household_data(&REGION_HOUSEHOLD_DATA,
                 i,
@@ -228,8 +228,14 @@ int Eurostat_calculate_data()
         sum_total_cum_revenue		   = 0.0;
         sum_total_planned_output 	   = 0.0;
 
+        //Reset the age distribution
+        for (i=0;i<60;i++)
+        {
+           	FIRM_AGE_DISTRIBUTION[i]=0;
+        }
+
         /*Store the region data of the firms*/
-        for(int i = 0; i < REGION_FIRM_DATA.size; i++)
+        for(i = 0; i < REGION_FIRM_DATA.size; i++)
         {
         	counter_firms_in_region =0;
         	REGION_FIRM_DATA.array[i].firms = 0;
@@ -407,26 +413,23 @@ int Eurostat_calculate_data()
                 sum_total_planned_output  += firm_send_data_message->planned_output;
                 
                 /***************** Sum of: no_firm_births *********************/
-                if (AGE==1)
+                if (firm_send_data_message->age==1)
                 {
-                	REGION_FIRM_DATA.array[i].no_firm_births++;
-                	NO_FIRM_BIRTHS++
+                	//REGION_FIRM_DATA.array[i].no_firm_births++;
+                	NO_FIRM_BIRTHS++;
                 }
-                //Reset the age distribution
-                for (i=0;i<60;i++)
-                {
-                	FIRM_AGE_DISTRIBUTION[i]=0;
-                }
+                
+                /***************** Firm age distribution *********************/
+                
                 //add the firm's age to correct bin
-                if (AGE<60)
+                if (firm_send_data_message->age<60)
                 {
-                	FIRM_AGE_DISTRIBUTION[AGE-1]++;
+                	FIRM_AGE_DISTRIBUTION[firm_send_data_message->age -1]++;
                 }
                 else
                 {
                 	FIRM_AGE_DISTRIBUTION[59]++;
                 }
-                
             }
             
             FINISH_FIRM_SEND_DATA_MESSAGE_LOOP
@@ -454,11 +457,24 @@ int Eurostat_calculate_data()
         MONTHLY_PLANNED_OUTPUT = sum_total_planned_output/NO_FIRMS;
 
         /***************** Sum of: no_firm_deaths *********************/
-        NO_FIRM_DEATHS = (NO_FIRMS - HISTORY_MONTLHY[0].no_firms - NO_FIRM_BIRTHS);        
+        NO_FIRM_DEATHS = (NO_FIRMS - HISTORY_MONTHLY[0].no_firms - NO_FIRM_BIRTHS);        
 
+		/***************** Firm birth rate *********************/
+        //Def: nr of newborn firms in period x / nr of firms in period x
+        FIRM_BIRTH_RATE = NO_FIRM_BIRTHS / NO_FIRMS;
+        	
+        /***************** Firm death rate *********************/
+        //Def: nr of firm demises in period x / nr of firms in period x
+        FIRM_DEATH_RATE = NO_FIRM_DEATHS / NO_FIRMS;
+        
+        /***************** Firm survival rate *********************/
+        //Def: The survival rate after x years is the percentage of all enterprise births of year n which are still active in year n+x.
+        //This is related to the age=x
+        //we need information on: the age of all firms in all periods
+        
         
     /*Create the REGIONAL data which is needed for controlling the results or sending           back to the Firms*/
-    for(int i = 0; i < REGION_FIRM_DATA.size; i++)
+    for(i = 0; i < REGION_FIRM_DATA.size; i++)
     {
         /*********************WAGES************************/
         if(REGION_FIRM_DATA.array[i].employees > 0)
@@ -570,7 +586,7 @@ int Eurostat_calculate_data()
     START_HOUSEHOLD_SEND_DATA_MESSAGE_LOOP
 
         /*Store the global/region data of the households*/
-        for(int i = 0; i < REGION_HOUSEHOLD_DATA.size; i++)
+        for(i = 0; i < REGION_HOUSEHOLD_DATA.size; i++)
         {
             if(household_send_data_message->region_id == 
             REGION_HOUSEHOLD_DATA.array[i].region_id)
@@ -784,7 +800,7 @@ int Eurostat_calculate_data()
 
     //printf("Eurostat_Functions: NUM_HOUSEHOLDS %d\n",NUM_HOUSEHOLDS);
     /*Create the REGIONAL data which is needed for controlling the results or sending           back to the Households*/
-    for(int i = 0; i < REGION_HOUSEHOLD_DATA.size; i++)
+    for(i = 0; i < REGION_HOUSEHOLD_DATA.size; i++)
     {
 
         /**************UNEMPLOYMENT-RATE******************/
@@ -995,8 +1011,10 @@ int Eurostat_calculate_data()
 
 int Eurostat_read_tax_rates()
 {
+	int i;
+	
     START_GOVERNMENT_TAX_RATES_MESSAGE_LOOP
-    for (int i=0; i<GOVERNMENT_TAX_RATES.size; i++)
+    for (i=0; i<GOVERNMENT_TAX_RATES.size; i++)
     {
         if(government_tax_rates_message->gov_id == GOVERNMENT_TAX_RATES.array[i].gov_id)
         {
@@ -1044,6 +1062,7 @@ int Eurostat_read_tax_rates()
 int Eurostat_store_history_monthly()
 {	
 	int i;
+	
 	//Shift history backwards
 	/*
 	 * history_monthly[4].GDP = history_monthly[3].GDP; 	//t-4 gets filled with value from t-3
@@ -1143,7 +1162,7 @@ int Eurostat_compute_growth_rates_monthly()
 	MONTHLY_GROWTH_RATES.no_firms   		= HISTORY_MONTHLY[0].no_firms / HISTORY_MONTHLY[1].no_firms  -1;
 	MONTHLY_GROWTH_RATES.no_firm_births		= HISTORY_MONTHLY[0].no_firm_births / HISTORY_MONTHLY[1].no_firm_births  -1;
 	MONTHLY_GROWTH_RATES.no_firm_deaths		= HISTORY_MONTHLY[0].no_firm_deaths / HISTORY_MONTHLY[1].no_firm_deaths  -1;	
-\
+
 	//compute annual growth rates over the previous 12 months
 	ANNUAL_GROWTH_RATES_MONTHLY.gdp 		= HISTORY_MONTHLY[0].gdp / HISTORY_MONTHLY[12].gdp  -1;
 	ANNUAL_GROWTH_RATES_MONTHLY.output 		= HISTORY_MONTHLY[0].output / HISTORY_MONTHLY[12].output  -1;
@@ -1154,7 +1173,7 @@ int Eurostat_compute_growth_rates_monthly()
 	ANNUAL_GROWTH_RATES_MONTHLY.no_firm_births 	= HISTORY_MONTHLY[0].no_firm_births / HISTORY_MONTHLY[12].no_firm_births  -1;
 	ANNUAL_GROWTH_RATES_MONTHLY.no_firm_deaths 	= HISTORY_MONTHLY[0].no_firm_deaths / HISTORY_MONTHLY[12].no_firm_deaths  -1;
 
-return 0;
+	return 0;
 }
 
 /* \fn: int Eurostat_compute_growth_rates_quarterly()

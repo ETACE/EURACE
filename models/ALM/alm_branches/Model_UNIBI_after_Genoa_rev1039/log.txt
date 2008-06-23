@@ -87,6 +87,7 @@ In order to get the production quantities correctly in the monthly statistics, w
 These values can now be send at the end of the month to Eurostat in the send_data_message.
 ----------------------------------------------------------------------
 Sander, rev 1025
+NOTE: New features are still experimental and have been turned off in the model.xml
 
 Feature: history storage in Eurostat
 
@@ -128,9 +129,12 @@ Single history_items for storing monthly and quarterly growth rates of each vari
 
 ----------------------------------------------------------------------
 Sander, rev 1046
+NOTE: New features are still experimental and have been turned off in the model.xml
 
 New feature: Eurostat collects data on firm demises and firm births (related to bankruptcy process and firm creation process)
+New feature: Firms now have an age!! This is necessary to measure the average firm survival rate.
 
+			
 CHANGES
 Affects files:
 	model-sander.xml
@@ -149,13 +153,21 @@ Added to datatype history_item for storing monthly and quarterly:
  no_firm_births
  no_firm_deaths
  
+Added to Firm memory:
+  age
+  
 Added to Eurostat memory:
  no_firms
  no_firm_births
  no_firm_deaths
  firm_age_distribution[60]
+ firm_birth_rate
+ firm_death_rate
  
  
 Eurostat_Functions-sander.c
 	Added no_firm_births, no_firm_deaths to monthly/quarterly data+growth rates
+----------------------------------------------------------------------
+Sander, rev 1046
+
 ----------------------------------------------------------------------
