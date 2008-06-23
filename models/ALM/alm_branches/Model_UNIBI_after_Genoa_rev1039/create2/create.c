@@ -56,7 +56,7 @@ int main(int argc, char ** argv)
 	int num_regions = num_regions_X*num_regions_Y; /*number of regions*/
 	
 	
-	int total_households = 450;/*number of households in the economy*/
+	int total_households = 400;/*number of households in the economy*/
 	int households_per_region = total_households/num_regions; 
 
 	int total_firms  = 10; /*total_firms modulo num_regions should be 0*/
@@ -71,11 +71,11 @@ int main(int argc, char ** argv)
 	double 	tax_rate_corporate = 0.25;
 	double	tax_rate_hh_labour = 0.25;
 	double	tax_rate_hh_capital =0.25;
-	double	unemployment_benefit_payment = 0.8;
+	double	unemployment_benefit_payment = 0.6;
 	double	payment_account_government =100.0;
 	double 	payment_account_household = 1;
 
-	double	capital_good_price = 100.0;
+	double	capital_good_price = 17.0;
 	double productivity_best_practice = 1.0;  //Productivity of the technology offered ba the IG firm
 	int years_statistics = 10;/*number of years used to smooth the production*/
 
@@ -171,7 +171,7 @@ int main(int argc, char ** argv)
 
 		//Total production volume for a single firm
 			double total_production_quantity[2][1]=
-						{10.0,10.0};
+						{58.0,58.0};
 			//This defines the initial capital stock of firm depending on the region.
 			double total_units_capital[2][1]=
 				                            {2.0,2.0};
@@ -248,7 +248,7 @@ int main(int argc, char ** argv)
 				
 				
 				
-		double wage_offer = random_double(1,1);
+	
 		fputs("<xagent>\n", file);
 		fputs("<name>Firm</name>\n", file);
 		sprintf(data, "%d", num);		print_tag("id", data, file);
@@ -289,7 +289,7 @@ int main(int argc, char ** argv)
 		
 		int i = total_firms + total_households;
 		int m_id = i;
-		double estimated_demand = wage_offer*total_households/(total_firms*total_malls);
+		
 		char data2[10000];
 		char data1[10000];
 		int m;
@@ -686,6 +686,7 @@ int main(int argc, char ** argv)
 		
 		sprintf(data, "%f", 0);     	print_tag("wage", data, file);
 		sprintf(data, "%f", 1.0); 	print_tag("wage_reservation", data, file);
+		sprintf(data, "%f", 1.0); 	print_tag("last_labour_income", data, file);
 		sprintf(data, "%d", -1);       	print_tag("employee_firm_id", data, file);
 		sprintf(data, "%d", g_skill_level);   print_tag("general_skill", data, file);
 		sprintf(data, "%f", specific_skills_of_household[column][row]);       print_tag("specific_skill", data, file);
@@ -732,7 +733,7 @@ int main(int argc, char ** argv)
 
 		sprintf(data, "%d", random_int(0,4));	
 		print_tag("day_of_week_to_act", data, file);
-
+		sprintf(data, "%f", 1.0);		print_tag("last_labour_income", data, file);
 		sprintf(data, "%d", 4);		print_tag("week_of_month", data, file);
 		sprintf(data, "%d", 0);		print_tag("day_of_month_to_act", data, file);
 		sprintf(data, "%d", 0);		print_tag("day_of_month_receive_income", data, file);

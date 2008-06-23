@@ -13,20 +13,14 @@ int Government_read_tax_payment()
 	
 
 	NUM_UNEMPLOYED = 0;
-	int num_employed=0;
+	
 	TAX_REVENUES =0.0;
 
 	START_TAX_PAYMENT_MESSAGE_LOOP
 		
 		TAX_REVENUES += tax_payment_message->tax_payment;
 
-		if(tax_payment_message->agent_status==0)
-		{		
-		NUM_UNEMPLOYED++; 
-		}else if(tax_payment_message->agent_status==1)
-		{
-		num_employed++;
-		}
+		
 	FINISH_TAX_PAYMENT_MESSAGE_LOOP	
 
 	PAYMENT_ACCOUNT += TAX_REVENUES;
@@ -37,22 +31,34 @@ int Government_read_tax_payment()
 int Government_send_unemployment_benefit_payment()
 {
 	
+	double unemployment_payment;
+	NUM_UNEMPLOYED = 0;
 	
+	TOTAL_UNEMPLOYMENT_BENEFIT_PAYMENT=0.0;
 
-	//Compute UNEMPLOYMENT_BENEFIT_PAYMENT
-	//Compute TOTAL_UNEMPLOYMENT_BENEFIT_PAYMENT
+	//Start message loop 
+	START_UNEMPLOYMENT_NOTIFICATION_MESSAGE_LOOP
 	
-	add_unemployment_benefit_message(ID,UNEMPLOYMENT_BENEFIT_PAYMENT);
 	
-	//Update of payment account follows when the current num of unemploymed households is known
+	NUM_UNEMPLOYED++;
+	//Compute the individual unemployment benefit payment as a fraction of the last labour income
+	unemployment_payment = unemployment_notification_message->last_labour_income*UNEMPLOYMENT_BENEFIT_PAYMENT;
+		//Send message to household
+		add_unemployment_benefit_message(ID,unemployment_notification_message->id,unemployment_payment);
+		printf("add_unemployment_benefit_message %d, %f\n",unemployment_notification_message->id,unemployment_payment);
+	TOTAL_UNEMPLOYMENT_BENEFIT_PAYMENT+=unemployment_payment; 	
+		
+	FINISH_UNEMPLOYMENT_NOTIFICATION_MESSAGE_LOOP
+	// Update the paymment account
+	PAYMENT_ACCOUNT -= TOTAL_UNEMPLOYMENT_BENEFIT_PAYMENT;
+	
 	return 0;
 }
 
 int Government_send_account_update()
 {
 	// Update of payment account due to the realized unemployment benefits
-	TOTAL_UNEMPLOYMENT_BENEFIT_PAYMENT = NUM_UNEMPLOYED*UNEMPLOYMENT_BENEFIT_PAYMENT;
-	PAYMENT_ACCOUNT -= TOTAL_UNEMPLOYMENT_BENEFIT_PAYMENT;
+	
 
 
 	// At the very end of agent government: update the bank account
@@ -67,7 +73,7 @@ int Government_send_account_update()
 	{
 	TOTAL_DEBT=0;
 	}	
-	add_bank_account_update_message(ID, BANK_ID, 0);
+	add_bank_account_update_message(ID, BANK_ID, PAYMENT_ACCOUNT);
 	
 	return 0;
 }

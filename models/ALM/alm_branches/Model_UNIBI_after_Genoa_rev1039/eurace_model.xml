@@ -173,7 +173,6 @@
 <variable><type>int</type><name>id</name><description></description></variable>
 <variable><type>int</type><name>gov_id</name><description></description></variable>
 <variable><type>double</type><name>tax_payment</name><description></description></variable>
-<variable><type>int</type><name>agent_status</name><description>Indicator variable: 2: firm 1: employed hh 0: unemployed hh</description></variable>
 </variables>
 </message>
 

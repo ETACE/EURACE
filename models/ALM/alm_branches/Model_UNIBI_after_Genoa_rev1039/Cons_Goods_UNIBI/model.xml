@@ -419,16 +419,31 @@ firms update the specific skill levels of the workers.</description>
 </outputs>
 </function>
 
-<function><name>Household_receive_unemployment_benefits</name>
+
+
+
+<function><name>Household_send_unemployment_notification_to_Government</name>
 <description>Household receives the unemployment benefit.</description>
 <currentState>06c</currentState>
-<nextState>08</nextState>
+<nextState>06d</nextState>
 <condition>
 	<lhs><value>a.employee_firm_id</value></lhs><op>EQ</op><rhs><value>-1</value></rhs>
 </condition>
+<outputs>
+<output><messageName>unemployment_notification</messageName>
+
+</output>
+</outputs>
+</function>
+
+
+<function><name>Household_receive_unemployment_benefits</name>
+<description>Household receives the unemployment benefit.</description>
+<currentState>06d</currentState>
+<nextState>08</nextState>
 <inputs>
 <input><messageName>unemployment_benefit</messageName>
-<filter><lhs><value>a.gov_id</value></lhs><op>EQ</op><rhs><value>m.gov_id</value></rhs></filter>
+<filter><lhs><value>a.id</value></lhs><op>EQ</op><rhs><value>m.hh_id</value></rhs></filter>
 </input>
 </inputs>
 </function>
@@ -747,7 +762,15 @@ updates specific skills.</description>
 </variables>
 </message>
 
-
+<message>
+<name>unemployment_notification</name>
+<description>Sent by unemployed hh to inform the government about the last income</description>
+<variables>
+<variable><type>int</type><name>id</name><description></description></variable>
+<variable><type>int</type><name>gov_id</name><description></description></variable>
+<variable><type>double</type><name>last_labour_income</name><description></description></variable>
+</variables>
+</message>
 
 </messages>
 
