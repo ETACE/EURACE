@@ -133,6 +133,10 @@
 <xagent>
 <name>Firm</name>
 <description></description>
+<memory>
+<variable><type>int</type><name>age</name><description>Age of the firm in months</description></variable>
+</memory>
+
 <functions>
 
 <function><name>Firm_idle</name>
@@ -378,7 +382,9 @@ including several micro data.</description>
 <!-- Data for storing firm demographics -->
 <variable><type>int</type><name>no_firm_births</name><description>Number of new firms in the economy this month</description></variable>
 <variable><type>int</type><name>no_firm_deaths</name><description>Number of firm demises in the economy this month</description></variable>
-<variable><type>int</type><name>firm_age_distribution[60]</name><description>Distribution of firm ages (in months, max age >60 months)</description></variable>
+<variable><type>int</type><name>firm_age_distribution[60]</name><description>Distribution of firm ages (in months, max age 60 months)</description></variable>
+<variable><type>double</type><name>firm_birth_rate</name><description>Firm birth rate: Number of new firms in the economy this month, divided by the total number of firms that are active this month</description></variable>
+<variable><type>double</type><name>firm_death_rate</name><description>Firm death rate: Number of firm demises in the economy this month, divided by the total number of firms that are active this month</description></variable>
 </memory>
 <functions>
 
@@ -437,14 +443,16 @@ including several micro data.</description>
 <function><name>Eurostat_idle</name>
 <description></description>
 <currentState>01</currentState>
-<nextState>Start_Eurostat_Monthly_Datastorage</nextState>
+<nextState>end_Eurostat</nextState>
+<!-- <nextState>Start_Eurostat_Monthly_Datastorage</nextState> -->
 <condition><not><time><period>monthly</period><phase>0</phase></time></not></condition>
 </function>
 
 <function><name>Eurostat_calculate_data</name>
 <description>Eurostat calculates the global and regional macro data based on the received micro data</description>
 <currentState>01</currentState>
-<nextState>Start_Eurostat_Monthly_Datastorage</nextState>
+<nextState>end_Eurostat</nextState>
+<!-- <nextState>Start_Eurostat_Monthly_Datastorage</nextState> -->
 <condition><time><period>monthly</period><phase>0</phase></time></condition>
 <inputs>
 <input><messageName>firm_send_data</messageName></input>
@@ -453,6 +461,7 @@ including several micro data.</description>
 </function>
 
 <!-- new loop: Monthly_Datastorage -->
+<!--
 <function><name>Eurostat_store_history_monthly</name>
 <description>Eurostat stores monthly macro data in its history struct</description>
 <currentState>Start_Eurostat_Monthly_Datastorage</currentState>
@@ -472,8 +481,10 @@ including several micro data.</description>
 <nextState>Start_Eurostat_Quarterly_Datastorage</nextState>
 <condition><not><time><period>monthly</period><phase>1</phase></time></not></condition>
 </function>
+-->
 
 <!-- new loop: Quarterly_Datastorage -->
+<!-- 
 <function><name>Eurostat_store_history_quarterly</name>
 <description>Eurostat stores quarterly macro data in its history struct</description>
 <currentState>Start_Eurostat_Quarterly_Datastorage</currentState>
@@ -493,6 +504,7 @@ including several micro data.</description>
 <nextState>end_Eurostat</nextState>
 <condition><not><time><period>quarterly</period><phase>1</phase></time></not></condition>
 </function>
+-->
 
 </functions>
 </xagent>

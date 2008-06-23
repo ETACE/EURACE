@@ -50,11 +50,11 @@ TOTAL_LOAN_SUPPLY=0;
 
 		if (loan_request_message->region_id%2==0)
 		{
-			proposed_interest_rate = 4*INTEREST_RATE;
+			proposed_interest_rate = INTEREST_RATE;
 		}
 		else
 		{
-			proposed_interest_rate = 4*INTEREST_RATE;
+			proposed_interest_rate = INTEREST_RATE;
 		}
 		//printf("region_id: %d proposed_interest_rate: %f", loan_request_message->region_id, proposed_interest_rate);
 
