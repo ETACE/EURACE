@@ -45,7 +45,7 @@ int Government_send_unemployment_benefit_payment()
 	unemployment_payment = unemployment_notification_message->last_labour_income*UNEMPLOYMENT_BENEFIT_PAYMENT;
 		//Send message to household
 		add_unemployment_benefit_message(ID,unemployment_notification_message->id,unemployment_payment);
-		printf("add_unemployment_benefit_message %d, %f\n",unemployment_notification_message->id,unemployment_payment);
+		
 	TOTAL_UNEMPLOYMENT_BENEFIT_PAYMENT+=unemployment_payment; 	
 		
 	FINISH_UNEMPLOYMENT_NOTIFICATION_MESSAGE_LOOP
