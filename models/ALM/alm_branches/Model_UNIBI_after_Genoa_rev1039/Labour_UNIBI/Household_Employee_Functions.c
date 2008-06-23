@@ -29,6 +29,7 @@ int Household_read_firing_messages()
 		if(firing_message->worker_id == ID)
 		{
 			EMPLOYEE_FIRM_ID = -1;
+			LAST_LABOUR_INCOME = WAGE;
             WAGE = 0;
 			ON_THE_JOB_SEARCH = 0;
 			DAY_OF_MONTH_RECEIVE_INCOME = 0;

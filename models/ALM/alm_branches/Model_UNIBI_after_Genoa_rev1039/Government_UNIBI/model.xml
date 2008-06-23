@@ -59,6 +59,11 @@
 <description></description>
 <currentState>00</currentState>
 <nextState>01</nextState>
+<inputs>
+<input><messageName>unemployment_notification</messageName>
+<filter><lhs><value>a.id</value></lhs><op>EQ</op><rhs><value>m.gov_id</value></rhs></filter>
+</input>
+</inputs>
 <outputs>
 <output><messageName>unemployment_benefit</messageName></output>
 </outputs>
@@ -109,6 +114,7 @@
 <description></description>
 <variables>
 <variable><type>int</type><name>gov_id</name><description></description></variable>
+<variable><type>int</type><name>hh_id</name><description></description></variable>
 <variable><type>double</type><name>unemployment_benefit</name><description></description></variable>
 </variables>
 </message>

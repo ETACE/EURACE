@@ -73,6 +73,18 @@ int Household_update_specific_skills()
 }
 
 
+/** \fn Household_send_unemployment_notification_to_Government()
+ * \brief This function sends a message to the government in case of being unemployed cpntaining the last earned labour income
+ * The government then can calculate the unemployment benefit payment based on the last labour income
+ */
+int Household_send_unemployment_notification_to_Government()
+{
+		add_unemployment_notification_message(ID,GOV_ID,LAST_LABOUR_INCOME);
+		return 0;
+		
+}
+
+
 int Household_receive_unemployment_benefits()
 {
 
@@ -112,14 +124,9 @@ int Household_pay_taxes()
 	/*Compute the total taxes*/
 	TOTAL_TAXES = CUM_TOTAL_DIVIDENDS*TAX_RATE_HH_CAPITAL + WAGE*TAX_RATE_HH_LABOUR;
 	/*Send a message to the government*/
-	if(WAGE==0)
-	{
-	add_tax_payment_message(ID,GOV_ID,TOTAL_TAXES,0);
-	}else
-	{
-	add_tax_payment_message(ID,GOV_ID,TOTAL_TAXES,1);
-	}	
-
+	
+	add_tax_payment_message(ID,GOV_ID,TOTAL_TAXES);
+	
 	/*reduce the payment account*/
 	PAYMENT_ACCOUNT-=TOTAL_TAXES;
 	

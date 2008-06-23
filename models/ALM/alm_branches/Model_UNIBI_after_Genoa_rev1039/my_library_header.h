@@ -97,6 +97,11 @@
 #define DELIVERY_PROB_IF_CRITICAL_STOCK_0 25
 
 
+#define INNOVATION_PROBABILITY 10  
+
+#define PRODUCTIVITY_PROGRESS 0.05
+
+
 int first_day_of_month();
 int not_first_day_of_month();
 int last_day_of_month();

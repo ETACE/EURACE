@@ -111,7 +111,7 @@ int IGFirm_pay_taxes()
 
 	NET_PROFIT = CUM_REVENUES - TAX_PAYMENT;
 	CUM_REVENUES=0.0;
-	add_tax_payment_message(ID,GOV_ID,TAX_PAYMENT,2);
+	add_tax_payment_message(ID,GOV_ID,TAX_PAYMENT);
 	
 	return 0;
 }
