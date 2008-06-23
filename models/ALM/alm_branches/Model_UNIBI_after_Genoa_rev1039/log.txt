@@ -127,3 +127,35 @@ Single history_items for storing monthly and quarterly growth rates of each vari
 	history_item annual_growth_rates_quarterly: annual growth rates (per quarter), measured as the percentage change over the same quarter in the previous year.
 
 ----------------------------------------------------------------------
+Sander, rev 1046
+
+New feature: Eurostat collects data on firm demises and firm births (related to bankruptcy process and firm creation process)
+
+CHANGES
+Affects files:
+	model-sander.xml
+	Eurostat_Functions-sander.c
+	Firm_Stat_Functions-sander.c
+
+Firm memory
+ AGE: age of the firm (in months)
+
+Firm_Stat_Functions-sander.c:
+	Firm_send_data_to_Eurostat: AGE in Firm_send_data_msg
+
+model-sander.xml:
+Added to datatype history_item for storing monthly and quarterly:
+ no_firms
+ no_firm_births
+ no_firm_deaths
+ 
+Added to Eurostat memory:
+ no_firms
+ no_firm_births
+ no_firm_deaths
+ firm_age_distribution[60]
+ 
+ 
+Eurostat_Functions-sander.c
+	Added no_firm_births, no_firm_deaths to monthly/quarterly data+growth rates
+----------------------------------------------------------------------
