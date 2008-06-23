@@ -11,7 +11,7 @@
 
 <functionFiles>
 <file>Bank_Credit_Functions_sander.c</file>
-<file>Firm_Credit_Functions_Dummy.c</file>
+<file>Firm_Credit_Functions_sander.c</file>
 </functionFiles>
 
 <dataTypes>
