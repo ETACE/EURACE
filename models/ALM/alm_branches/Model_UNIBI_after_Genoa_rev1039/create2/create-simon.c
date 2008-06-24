@@ -243,7 +243,7 @@ int main(int argc, char ** argv)
 		fputs("<xagent>\n", file);
 		fputs("<name>Firm</name>\n", file);
 		sprintf(data, "%d", num);		print_tag("id", data, file);
-	//  sprintf(data, "%d", 0);			print_tag("age", data, file);
+	    sprintf(data, "%d", 0);			print_tag("age", data, file);
 		sprintf(data, "%d",region);    print_tag("region_id", data, file);
 		sprintf(data, "%d",bank_id);    print_tag("bank_id", data, file);
 		sprintf(data, "%d",gov_id);    print_tag("gov_id", data, file);
@@ -956,6 +956,12 @@ num_start = num;
 		sprintf(data, "{}");		print_tag("region_household_data", data, file);
 
 		sprintf(data, "%d", 0);		print_tag("day_of_month_to_act", data, file);
+
+		sprintf(data, "%d", 0);		print_tag("no_firm_births", data, file);
+		sprintf(data, "%d", 0);		print_tag("no_firm_deaths", data, file);
+		sprintf(data, "%f", 0.0);	print_tag("firm_birth_rate", data, file);
+		sprintf(data, "%f", 0.0);	print_tag("firm_death_rate", data, file);
+
 
 		sprintf(data, "%f", 0.0);       print_tag("posx", data, file);
 		sprintf(data, "%f", 0.0);       print_tag("posy", data, file);

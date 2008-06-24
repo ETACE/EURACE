@@ -8,8 +8,6 @@ set pointsize 1.0
 set grid
 set line 5.0
 
-set style line 6 lc rgb "black"
-
 #Set labels:
 set xlabel "Days" 
 #set ylabel ""
@@ -37,12 +35,12 @@ set key top left
 set terminal postscript eps color solid rounded "Helvetica" 16
 #set terminal postscript eps "Helvetica" 16
 set output "graph-unemployment-2-region.eps"
-plot 'data-unemployment-region.csv' using 1:2 title "unemployment-rate", 'data-unemployment-region.csv' using 1:8 title "unemployment-rate-reg-1",'data-unemployment-region.csv' using 1:14 title "unemployment-rate-reg-2" with lines ls 6
+plot 'data-unemployment-region.csv' using 1:2 title "unemployment-rate", 'data-unemployment-region.csv' using 1:8 title "unemployment-rate-reg-1",'data-unemployment-region.csv' using 1:14 title "unemployment-rate-reg-2"
 set output
 
 set terminal png
 set output "graph-unemployment-2-region.png"
-plot 'data-unemployment-region.csv' using 1:2 title "unemployment-rate", 'data-unemployment-region.csv' using 1:8 title "unemployment-rate-reg-1",'data-unemployment-region.csv' using 1:14 title "unemployment-rate-reg-2" with lines ls 6
+plot 'data-unemployment-region.csv' using 1:2 title "unemployment-rate", 'data-unemployment-region.csv' using 1:8 title "unemployment-rate-reg-1",'data-unemployment-region.csv' using 1:14 title "unemployment-rate-reg-2"
 set output
 
 # Call external epstopdf to transform the eps file to pdf.

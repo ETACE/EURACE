@@ -22,7 +22,7 @@ set key top left
 
 #Set ranges:
 #set xrange [1:8]
-set yrange [1:3]
+#set yrange [1:3]
 #set y2range [-1:5]
 
 #Set a tick marks:
