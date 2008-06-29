@@ -8,14 +8,30 @@
 
 <!-- Models to include in Eurace model -->
 <models>
+
+<!-- Old style naming -->
+<model><file>Cons_Goods_UNIBI/model.xml</file><enabled>false</enabled></model>
+<model><file>Credit_Ancona/model.xml</file><enabled>false</enabled></model>
+<model><file>Inv_Goods_UNIBI/model.xml</file><enabled>false</enabled></model>
+<model><file>Labour_UNIBI/model.xml</file><enabled>false</enabled></model>
+<model><file>Statistical_Office_UNIBI/model.xml</file><enabled>false</enabled></model>
+<model><file>Statistical_Office_UNIBI/model-sander.xml</file><enabled>false</enabled></model>
+<model><file>AFM_UG/model.xml</file><enabled>false</enabled></model>
+<model><file>Government_UNIBI/model.xml</file><enabled>false</enabled></model>
+<model><file>Government_UG/model.xml</file><enabled>false</enabled></model>
+
+<!-- New style naming -->
 <model><file>CGM_UNIBI/model.xml</file><enabled>true</enabled></model>
-<model><file>CM_Ancona/model.xml</file><enabled>true</enabled></model>
+<model><file>Credit_Ancona/model.xml</file><enabled>true</enabled></model>
+<!--<model><file>CM_Ancona/model.xml</file><enabled>true</enabled></model>-->
 <model><file>FM_GREQAM/model.xml</file><enabled>true</enabled></model>
 <model><file>IGM_UNIBI/model.xml</file><enabled>true</enabled></model>
 <model><file>LM_UNIBI/model.xml</file><enabled>true</enabled></model>
-<model><file>Statistical_Office_UNIBI/model.xml</file><enabled>true</enabled></model>
+<model><file>Eurostat_UNIBI/model.xml</file><enabled>true</enabled></model>
 <model><file>AFM_UG/model.xml</file><enabled>true</enabled></model>
-<model><file>Government_GREQAM/model.xml</file><enabled>true</enabled></model>
+<model><file>Government_UG/model.xml</file><enabled>true</enabled></model>
+<!--<model><file>Government_GREQAM/model.xml</file><enabled>true</enabled></model>-->
+
 </models>
 
 <environment>
