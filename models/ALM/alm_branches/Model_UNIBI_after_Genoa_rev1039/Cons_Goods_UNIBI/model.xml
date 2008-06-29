@@ -237,14 +237,14 @@ on the current stocks in the malls</description>
  such that the corresponding labor demand and capital demand can be financed by 
  the actually obtained financial resources</description>
 <currentState>End_Firm_Credit_Role</currentState>
-<nextState>Firm_Finish_Finacial_Management</nextState>
+<nextState>Firm_Finish_Financial_Management</nextState>
 <condition><not><lhs><value>a.financial_resources_for_production</value></lhs><op>GEQ</op><rhs><value>a.planned_production_costs</value></rhs></not></condition>
 </function>
 
 <function><name>Firm_idle</name>
 <description>Firm does nothing</description>
 <currentState>End_Firm_Credit_Role</currentState>
-<nextState>Firm_Finish_Finacial_Management</nextState>
+<nextState>Firm_Finish_Financial_Management</nextState>
 <condition><lhs><value>a.financial_resources_for_production</value></lhs><op>GEQ</op><rhs><value>a.planned_production_costs</value></rhs></condition>
 </function>
 

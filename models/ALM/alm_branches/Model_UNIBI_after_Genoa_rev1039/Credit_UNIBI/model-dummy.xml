@@ -96,7 +96,7 @@
 <name>Firm_idle</name>
 <description></description>
 <currentState>Start_Firm_Credit_Role</currentState>
-<nextState>Firm_Finish_Finacial_Management</nextState>
+<nextState>Firm_Finish_Financial_Management</nextState>
 <condition><not><lhs><value>a.external_financial_needs</value></lhs><op>GT</op><rhs><value>0.0</value></rhs></not></condition>
 </function>
 

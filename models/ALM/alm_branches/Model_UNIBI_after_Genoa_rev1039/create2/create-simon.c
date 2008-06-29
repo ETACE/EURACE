@@ -107,16 +107,22 @@ int main(int argc, char ** argv)
 	int skills_in_regions[1][2]=
 				{{1,1}};
 */
+
+		//Scenario 0: 2 regions, MED, MED
+		int skills_in_regions[1][2]=
+					{{2,2}};
+
+
 /*
 	//Scenario 0: 2 regions, HIGH, HIGH
 	int skills_in_regions[1][2]=
 				{{3,3}};
 */				
-
+/*
 	//Scenario 0: 2 regions, UNIF, UNIF
 	int skills_in_regions[1][2]=
 				{{4,4}};
-				
+*/				
 /*
 	//Scenario 0: 4 regions, LOW, LOW
 	int skills_in_regions[2][2]=
