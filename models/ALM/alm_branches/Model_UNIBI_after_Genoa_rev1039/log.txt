@@ -97,35 +97,35 @@ being overwritten using a rolling horizon.
 - All growth rates are stored as percentages. For example, 0.25 means 25% growth.
 
 Added files:
-	model-sander.xml
-	Eurostat_Functions-sander.c
+    model-sander.xml
+    Eurostat_Functions-sander.c
 
 Datatype for storage of selected macroeconomic statistics
 
-	  struct history_item
-	  {
-	  		double gdp;
-	  		double output;
-	  		double employment;
-	  		double unemployment_rate;
-	  		double wages;	 
-	   }
+      struct history_item
+      {
+            double gdp;
+            double output;
+            double employment;
+            double unemployment_rate;
+            double wages;    
+       }
 
 Static arrays for history:
 
-	 history_item history_monthly[13];
-	 history_item history_quarterly[5];
-	
-	- For monthly history: we store the current month in [0] and the history in [1]...[12].
-	
-	- For quarterly history: we store the current quarter in [0] and the history in [1]...[4].
-	
+     history_item history_monthly[13];
+     history_item history_quarterly[5];
+    
+    - For monthly history: we store the current month in [0] and the history in [1]...[12].
+    
+    - For quarterly history: we store the current quarter in [0] and the history in [1]...[4].
+    
 Single history_items for storing monthly and quarterly growth rates of each variable:
 
-	history_item monthly_growth_rates: 			month-to-month growth rate statistics
-	history_item quarterly__growth_rates: 		quarter-to-quarter growth rate statistics
-	history_item annual_growth_rates_monthly: 	annual growth rates (per month), measured as the percentage change over the same month in the previous year.
-	history_item annual_growth_rates_quarterly: annual growth rates (per quarter), measured as the percentage change over the same quarter in the previous year.
+    history_item monthly_growth_rates:          month-to-month growth rate statistics
+    history_item quarterly__growth_rates:       quarter-to-quarter growth rate statistics
+    history_item annual_growth_rates_monthly:   annual growth rates (per month), measured as the percentage change over the same month in the previous year.
+    history_item annual_growth_rates_quarterly: annual growth rates (per quarter), measured as the percentage change over the same quarter in the previous year.
 
 ----------------------------------------------------------------------
 Sander, rev 1046
@@ -134,18 +134,18 @@ NOTE: New features are still experimental and have been turned off in the model.
 New feature: Eurostat collects data on firm demises and firm births (related to bankruptcy process and firm creation process)
 New feature: Firms now have an age!! This is necessary to measure the average firm survival rate.
 
-			
+            
 CHANGES
 Affects files:
-	model-sander.xml
-	Eurostat_Functions-sander.c
-	Firm_Stat_Functions-sander.c
+    model-sander.xml
+    Eurostat_Functions-sander.c
+    Firm_Stat_Functions-sander.c
 
 Firm memory
  AGE: age of the firm (in months)
 
 Firm_Stat_Functions-sander.c:
-	Firm_send_data_to_Eurostat: AGE in Firm_send_data_msg
+    Firm_send_data_to_Eurostat: AGE in Firm_send_data_msg
 
 model-sander.xml:
 Added to datatype history_item for storing monthly and quarterly:
@@ -166,8 +166,17 @@ Added to Eurostat memory:
  
  
 Eurostat_Functions-sander.c
-	Added no_firm_births, no_firm_deaths to monthly/quarterly data+growth rates
+    Added no_firm_births, no_firm_deaths to monthly/quarterly data+growth rates
 ----------------------------------------------------------------------
 Sander, rev 1046
-	Firm_credit_functions_sander.c: only difference is the apply_for_loans msg: added the region_id
+    Firm_credit_functions_sander.c: only difference is the apply_for_loans msg: added the region_id
 ----------------------------------------------------------------------
+Differences between the FM_UNIBI and FM_GREQAM:
+
+Changes to the credit functions:
+
+- different credit item
+
+changes to capital stock:
+
+capital_stock_item_array 
