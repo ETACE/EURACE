@@ -1,0 +1,25 @@
+Sander, Created folder: 29 June 2008
+==========================================
+This folder contains copies from folders:
+
+- copied eurace_model.xml@967 from trunk/
+- copied model.xml@985 from trunk/FM_GREQAM: incorrect function order, but correct credit parts
+- copied .c@985 from trunk/FM_GREQAM (correct c functions for Ancona credit market)
+
+Changes to be made to model.xml:
+- use changes in model.xml@1023 from ALM/alm_branches/FM_UNIBI: correct function order, but incorrect credit parts
+
+
+List of differences between the FM_UNIBI and FM_GREQAM:
+
+Changes in the order of Firm functions: 
+- use model.xml version in FM_UNIBI
+
+Changes to the credit functions:
+
+- differences in debt item: use version in FM_GREQAM/model.xml
+ 
+Changes to capital stock: 
+- use version in FM_UNIBI/model.xml
+- capital_stock_item removed
+- capital_stock_item_array removed
