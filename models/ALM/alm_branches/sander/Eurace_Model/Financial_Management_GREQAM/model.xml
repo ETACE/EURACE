@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE xmodel SYSTEM "http://eurace.cs.bilgi.edu.tr/XMML.dtd">
+<xmodel version="2">
+
+<name>Financial_Management</name>
+<version>Genoa</version>
+<description>Author: Sander van der Hoog, last modified: May, 2008</description>
+
+<environment>
+
+<functionFiles>
+<file>Firm_Financial_Management_Functions.c</file>
+</functionFiles>
+
+<timeUnits>
+<timeUnit>
+ <name>daily</name>
+ <unit>iteration</unit>
+ <period>1</period>
+</timeUnit>
+
+<timeUnit>
+ <name>weekly</name>
+ <unit>daily</unit>
+ <period>5</period>
+</timeUnit>
+
+<timeUnit>
+ <name>monthly</name>
+ <unit>weekly</unit>
+ <period>4</period>
+</timeUnit>
+</timeUnits>
+
+<dataTypes>
+
+<dataType>
+<name>debt_item</name>
+<description></description>
+<variables>
+<variable><type>int</type><name>bank_id</name><description>Bank providing the loan</description></variable>
+<variable><type>double</type><name>loan_value</name><description>Current value of the loan</description></variable>
+<variable><type>double</type><name>interest_rate</name><description>Fixed interest rate per month</description></variable>
+<variable><type>double</type><name>installment_amount</name><description>Fixed installment payment due per month</description></variable>
+<variable><type>double</type><name>var_per_installment</name><description>Value-at-risk subtracted from the residual value-at-risk at each installment</description></variable>
+<variable><type>double</type><name>residual_var</name><description>Residual value-at-risk, decreases gradually</description></variable>
+<variable><type>double</type><name>bad_debt</name><description>Bad debt that is not refunded to bank in case of a firm bankruptcy</description></variable>
+<variable><type>int</type><name>nr_periods_before_repayment</name><description>The number of periods before full repayment of the loan is due</description></variable>
+</variables>
+</dataType>
+
+<dataType>
+<name>capital_stock_item</name>
+<description></description>
+<variables>
+<variable><type>double</type><name>units</name><description>Units of capital</description></variable>
+<variable><type>double</type><name>purchase_price</name><description>Original purchasing price, used to determine the value</description></variable>
+<variable><type>double</type><name>productivity</name><description>The productivity of the capital</description></variable>
+<variable><type>double</type><name>depreciation_units_per_period</name><description>Discrete depreciation in units of capital per period</description></variable>
+</variables>
+</dataType>
+
+</dataTypes>
+</environment>
+
+<agents>
+
+<xagent>
+<name>Firm</name>
+<description></description>
+<memory>
+
+<!-- Firm_compute_income_statement -->
+<variable><type>double</type><name>ebit</name><description></description>Earnings-before-interest-and-taxes: total revenue - sales_costs</variable>
+<variable><type>double</type><name>earnings</name><description>Earnings after interest payments (= ebit - interest)</description></variable>
+<variable><type>double</type><name>tax_rate_corporate</name><description>Tax rate on corporate profits (kept in memory)</description></variable>
+<variable><type>double</type><name>tax_rate_vat</name><description>VAT tax rate</description></variable>
+<variable><type>double</type><name>tax_payment</name><description></description>Tax payment over earnings after interest payments (tax_corporate*earnings)</variable>
+<variable><type>double</type><name>net_earnings</name><description>Net earnings after tax payments (= ebit - interest - tax)</description></variable>
+<variable><type>double</type><name>previous_net_earnings</name><description>Net earnings from previous production period</description></variable>
+
+<!-- Firm_compute_financial_payments -->
+<variable><type>double</type><name>total_interest_payment</name><description>Total interest payments on outstanding debts</description></variable>
+<variable><type>double</type><name>total_debt_installment_payment</name><description>Total debt installment payments on outstanding debts</description></variable>
+<variable><type>double</type><name>total_dividend_payment</name><description>Total dividend payment</description></variable>
+
+<!-- Financial variables -->
+<!--CURRENT_SHARES_OUTSTANDING-->
+<!--PREVIOUS_SHARES_OUTSTANDING-->
+<variable><type>double</type><name>current_share_price</name><description>Current share price on the market</description></variable>
+<variable><type>double</type><name>previous_dividend_per_share</name><description>Dividend-per-share ratio (previous production cycle)</description></variable>
+<variable><type>double</type><name>current_dividend_per_share</name><description>Dividend-per-share ratio</description></variable>
+<variable><type>double</type><name>previous_earnings_per_share</name><description>Earnings-per-Share ratio (previous production cycle)</description></variable>
+<variable><type>double</type><name>current_earnings_per_share</name><description>Earnings-per-Share ratio</description></variable>
+<variable><type>double</type><name>previous_dividend_per_earnings</name><description>Dividend-to-Earnings ratio (previous production cycle)</description></variable>
+<variable><type>double</type><name>current_dividend_per_earnings</name><description>Dividend-to-Earnings ratio</description></variable>
+
+
+<!-- Ratios -->
+<variable><type>double</type><name>debt_earnings_ratio</name><description>Debt-to-Earnings ratio</description></variable>
+<variable><type>double</type><name>debt_equity_ratio</name><description>Debt-to-Equity ratio</description></variable>
+<variable><type>double</type><name>price_earnings_ratio</name><description>Price-to-Earnings ratio</description></variable>
+<variable><type>double</type><name>retained_earnings_ratio</name><description>Retained earnings-to-Earnings ratio</description></variable>
+<variable><type>double</type><name>earnings_per_share_ratio_growth</name><description>Target growth of the Earnings-per-Share ratio</description></variable>
+<variable><type>double</type><name>critical_price_earnings_ratio</name><description>Critical (target) value for the Price-Earnings ratio (can be set by the firm)</description></variable>
+<variable><type>double</type><name>critical_earnings_per_share_ratio</name><description>Critical (target) value for the Earnings-per-Share ratio (derived from the growth level)</description></variable>
+
+<!-- Firm_compute_balance_sheet -->
+<variable><type>debt_item_array</type><name>loans</name><description>Array of structs holding all loans of the firm</description></variable>
+<variable><type>double</type><name>total_debt</name><description>Total value of all loans outstanding</description></variable>
+<variable><type>double</type><name>total_value_local_inventory</name><description>Total value of all local inventory stocks held at malls</description></variable>
+<variable><type>capital_stock_item_array</type><name>capital_stock</name><description>Array of structs holding items of capital stock</description></variable>
+<variable><type>double</type><name>total_units_capital_stock</name><description>Units of capital stock</description></variable>
+<variable><type>double</type><name>total_value_capital_stock</name><description>Value of the capital stock</description></variable>
+<variable><type>double</type><name>total_capital_depreciation_value</name><description>Sum over all units of capital of the depreciation value</description></variable>
+<variable><type>double</type><name>total_capital_depreciation_units</name><description>Sum over all units of capital of the depreciation in units</description></variable>
+<variable><type>double</type><name>total_assets</name><description>Value of total assets</description></variable>
+<variable><type>double</type><name>equity</name><description>equity = total assets - total liabilities</description></variable>
+
+<!-- Firm_compute_financial_needs -->
+<variable><type>double</type><name>production_liquidity_needs</name><description>Production liquidity needs are production costs (labour costs and investments)</description></variable>
+<variable><type>double</type><name>financial_liquidity_needs</name><description>Financial liquidity needs are prior financial commitments (interests, installments, taxes)</description></variable>
+<variable><type>double</type><name>total_financial_needs</name><description>Total financial needs = Production liquidity needs + Financial liquidity needs + dividends</description></variable>
+<variable><type>double</type><name>external_financial_needs</name><description>External financing</description></variable>
+
+<!-- Firm_execute_financial_payments -->
+<variable><type>int</type><name>bankruptcy_state</name><description>Flag to indicate the firm is in the bankruptcy state</description></variable>
+<variable><type>int</type><name>financial_crisis_state</name><description>Flag to indicate the firm is in the financial crisis state</description></variable>
+</memory>
+<functions>
+
+
+<function>
+<name>Firm_compute_financial_payments</name>
+<description>Function to compute the prior financial commitments of the firm: interests, installments, taxes.</description>
+<currentState>00</currentState>
+<nextState>001</nextState>
+<condition><time><period>monthly</period><phase>a.day_of_month_to_act</phase></time></condition>
+</function>
+
+<function>
+<name>Firm_compute_income_statement</name>
+<description>Function to compute the income statement of the firm.</description>
+<currentState>001</currentState>
+<nextState>002</nextState>
+</function>
+
+<function>
+<name>Firm_compute_dividends</name>
+<description>Function to compute the total dividend payout of the firm.</description>
+<currentState>002</currentState>
+<nextState>003</nextState>
+</function>
+
+<function>
+<name>Firm_compute_total_financial_payments</name>
+<description>Function to compute the total financial payments of the firm: interest, installments, taxes, production costs, dividends.</description>
+<currentState>003</currentState>
+<nextState>004</nextState>
+</function>
+
+<function>
+<name>Firm_compute_balance_sheet</name>
+<description>Function to compute the balance sheet of the firm.</description>
+<currentState>004</currentState>
+<nextState>005</nextState>
+<inputs>
+<input>
+<messageName>current_mall_stock_info</messageName>
+<filter>
+  <lhs><value>a.id</value></lhs>
+  <op>EQ</op>
+  <rhs><value>m.firm_id</value></rhs>
+ </filter>
+</input>
+</inputs>
+</function>
+
+<!-- Bankruptcy going to end_Firm  -->
+<function>
+<name>Firm_in_bankruptcy</name>
+<description>Function to process the bankruptcy condition.</description>
+<currentState>005</currentState>
+<nextState>end_Firm</nextState>
+<condition><not><lhs><value>a.equity</value></lhs><op>GT</op><rhs><value>0.0</value></rhs></not></condition>
+<outputs>
+<output><messageName>bankruptcy</messageName></output>
+</outputs>
+</function>
+
+<function>
+<name>Firm_compute_total_liquidity_needs</name>
+<description>Function to compute the total liquidity needs for executing payments.</description>
+<currentState>02</currentState>
+<nextState>Start_Firm_Credit_Role</nextState>  
+</function>
+
+<function>
+<name>Firm_compute_and_send_stock_orders</name>
+<description>Function to send order_messages to the clearinghouse (share emission or repurchase).</description>
+<currentState>End_Firm_Credit_Role</currentState>
+<nextState>0003</nextState>
+<condition><lhs><value>a.external_financial_needs</value></lhs><op>GT</op><rhs><value>0.0</value></rhs></condition>
+<outputs>
+<output><messageName>order</messageName></output>
+</outputs>
+</function>
+
+<function>
+<name>Firm_read_stock_transactions</name>
+<description>Function to read order_status messages from the clearinghouse, and update the firm's trading account.</description>
+<currentState>0003</currentState>
+<nextState>End_Firm_Financial_Role</nextState>
+<inputs>
+<input>
+<messageName>order_status</messageName>
+<filter>
+  <lhs><value>a.id</value></lhs>
+  <op>EQ</op>
+  <rhs><value>m.trader_id</value></rhs>
+ </filter>
+</input>
+</inputs>
+</function>
+
+<function>
+<name>Firm_check_financial_and_bankruptcy_state</name>
+<description>Function that checks the balance sheet and sets flags for the bankruptcy- or financial crisis state.</description>
+<currentState>End_Firm_Financial_Role</currentState>
+<nextState>Firm_bankruptcy_checked</nextState>
+</function>
+
+<function>
+<name>Firm_in_bankruptcy</name>
+<description>Function to process the bankruptcy condition.</description>
+<currentState>Firm_bankruptcy_checked</currentState>
+<nextState>end_Firm</nextState>
+<condition>
+<condition><lhs><value>a.bankruptcy_state</value></lhs><op>EQ</op><rhs><value>1</value></rhs></condition>
+</condition>
+<outputs>
+<output><messageName>bankruptcy</messageName></output>
+</outputs>
+</function>
+
+<function>
+<name>Firm_in_financial_crisis</name>
+<description>Function to resolve the financial crisis by lowering dividends.</description>
+<currentState>Firm_bankruptcy_checked</currentState>
+<nextState>Firm_tries_to_resolve_financial_crisis</nextState>
+<condition>
+<lhs>
+	<lhs><value>a.bankruptcy_state</value></lhs><op>EQ</op><rhs><value>0</value></rhs>
+</lhs>
+<op>AND</op>
+<rhs>
+	<lhs><value>a.financial_crisis_state</value></lhs><op>EQ</op><rhs><value>1</value></rhs>
+</rhs>
+</condition>
+<outputs>
+</outputs>
+</function>
+
+<function>
+<name>Firm_execute_financial_payments</name>
+<description>Function to execute financial payments.</description>
+<currentState>Firm_tries_to_resolve_financial_crisis</currentState>
+<nextState>End_Firm_Financial_Management</nextState>
+<outputs>
+<output><messageName>tax_payment</messageName></output>
+<output><messageName>dividend_per_share</messageName></output>
+<output><messageName>installment</messageName></output>
+</outputs>
+</function>
+
+<function>
+<name>Firm_execute_financial_payments</name>
+<description>Function to execute financial payments.</description>
+<currentState>Firm_bankruptcy_checked</currentState>
+<nextState>Start_Firm_Labour_Role</nextState>
+<condition>
+<lhs>
+	<lhs><value>a.bankruptcy_state</value></lhs><op>EQ</op><rhs><value>0</value></rhs>
+</lhs>
+<op>AND</op>
+<rhs>
+	<lhs><value>a.financial_crisis_state</value></lhs><op>EQ</op><rhs><value>0</value></rhs>
+</rhs>
+</condition>
+<outputs>
+<output><messageName>tax_payment</messageName></output>
+<output><messageName>dividend_per_share</messageName></output>
+<output><messageName>installment</messageName></output>
+</outputs>
+</function>
+
+<!-- Idle bypassing the credit and financial markets  -->
+<function>
+<name>idle</name>
+<description></description>
+<currentState>Start_Firm_Credit_Role</currentState>
+<nextState>Start_Firm_Labour_Role</nextState>
+<condition><not><lhs><value>a.external_financial_needs</value></lhs><op>GT</op><rhs><value>0.0</value></rhs></not></condition>
+</function>
+
+<!-- Idle bypassing the financial market  -->
+<function>
+<name>idle</name>
+<description></description>
+<currentState>End_Firm_Credit_Role</currentState>
+<nextState>Start_Firm_Labour_Role</nextState>
+<condition><not><lhs><value>a.external_financial_needs</value></lhs><op>GT</op><rhs><value>0.0</value></rhs></not></condition>
+</function>
+
+</functions>
+</xagent>
+
+</agents>
+
+<messages>
+<message>
+<name>tax_payment</name>
+<description>Added by firm to pay taxes</description>
+<variables>
+<variable><type>int</type><name>firm_id</name><description></description></variable>
+<variable><type>int</type><name>gov_id</name><description></description></variable>
+<variable><type>double</type><name>tax_payment</name><description></description></variable>
+</variables>
+</message>
+
+<message>
+<name>dividend_per_share</name>
+<description>Added by firm to send msg to shareholders with dividends per share</description>
+<variables>
+<variable><type>int</type><name>firm_id</name><description></description></variable>
+<variable><type>double</type><name>current_dividend_per_share</name><description></description></variable>
+</variables>
+</message>
+
+</messages>
+</xmodel>
