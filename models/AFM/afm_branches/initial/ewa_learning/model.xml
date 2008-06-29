@@ -321,7 +321,7 @@
 		  <description>Idle bypassing the GA</description>
 		  <currentState>start_Household_EWA_Learning</currentState>
 		  <nextState>end_GA</nextState>
-          <condition><not><time><period>daily</period><phase>100</phase></time></not></condition>
+          <condition><not><time><period>yearly</period><phase>1</phase></time></not></condition>
 		</function>
       
         <function>
@@ -329,7 +329,7 @@
           <description></description>
           <currentState>start_Household_EWA_Learning</currentState>
           <nextState>01</nextState>
-          <condition><time><period>daily</period><phase>100</phase></time></condition>
+          <condition><time><period>yearly</period><phase>1</phase></time></condition>
           <inputs></inputs>
           <outputs></outputs>
         </function>
@@ -403,11 +403,6 @@
           <description></description>
         </variable>
         <variable>
-          <type>EWAParameterStruct</type>
-          <name>EWA_parameters</name>
-          <description></description>
-        </variable>
-        <variable>
           <type>SimplePublicClassifierSystem</type>
           <name>public_classifiersystem</name>
           <description></description>
@@ -426,7 +421,7 @@
 		  <description>Idle bypassing the GA</description>
 		  <currentState>start_FinancialAgent</currentState>
 		  <nextState>end_GA</nextState>
-          <condition><not><time><period>daily</period><phase>100</phase></time></not></condition>
+          <condition><not><time><period>yearly</period><phase>1</phase></time></not></condition>
 		  </function>
       
           <function>
@@ -434,7 +429,7 @@
           <description></description>
           <currentState>start_FinancialAgent</currentState>
           <nextState>01</nextState>
-          <condition><time><period>daily</period><phase>100</phase></time></condition>
+          <condition><time><period>yearly</period><phase>1</phase></time></condition>
           <inputs></inputs>
           <outputs></outputs>
         </function>

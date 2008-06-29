@@ -1,0 +1,6 @@
+Sander, Folder created: 29 June 2008
+=====================================
+- copied eurace_model.xml  from trunk/eurace_model.xml@967
+
+Changes:
+- tax_payment_msg is now in eurace_model.xml
