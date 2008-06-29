@@ -1,0 +1,86 @@
+/***********************************
+Description: 
+This file contains details of various changes made to the different versions.
+15/05/2008: Start og logfile
+*************************************/
+
+------------------------------------------------------------------------------------------
+Sander, rev 925
+
+New functions:
+
+Government_UG/Government_Functions.c:	Government_send_tax_rates
+Statistical_Office_UNIBI/Eurostat_Functions.c: Eurostat_read_tax_rates
+Statistical_Office_UNIBI/Household_Statistics_Functions.c: Household_receive_data
+Labour_UNIBI/Firm_Employer_Functions.c: Firm_receive_data
+
+New tax rate messages:
+
+Government_UG/model.xml
+- Government sends government_tax_rates_message to Eurostat
+
+Statistical_Office_UNIBI/model.xml
+- Eurostat sends eurostat_tax_rates_message to Household, Firm
+- HH reads government_tax_rates_message and eurostat_tax_rates_message
+- Firm reads government_tax_rates_message and eurostat_tax_rates_message
+-------------------------------------------------------------------------------------------
+Sander, rev 940
+
+Moved id, payment_account to upper level xml.
+First successful parsing wit xParser 0.15.6
+-------------------------------------------------------------------------------------------
+Sander, rev 941
+
+Added TimeUnits: Quarterly = 3 monthly, yearly = 12 monthly 
+Moved Eurostat_read_tax_data upwards to beginning, condition: Period: yearly, phase: 0
+-------------------------------------------------------------------------------------------
+Sander, rev 942
+
+- moved some vars top top xml
+- tax rates is now a yearly message from government
+- Firms read tax_rates message from gov in function Firm_read_tax_rates which is run yearly.
+- IGFirms read tax_rates message from gov in function IGFirm_read_tax_rates which is run yearly.
+- Households read tax_rates message from gov in function Household_read_tax_rates which is run yearly.
+-------------------------------------------------------------------------------------------
+Sander, rev 985, 986 
+
+Firm_fin_management.c:
+- Firm_in_bankruptcy returns 1 to remove the agent from simulation
+- Added debt_equity_ratio, debt_earnings_ratio to firm memory
+
+Statistical_Office_UNIBI/model.xml:
+- added a new message that contains data from the firm's balance sheet:
+	
+	firm_balance_sheet_data_message(cum_revenue, investment_costs, net_earnings, total_debt, total_assets, equity).
+
+This message is send in the function Firm_send_data_to_Eurostat, together with the firm_send_data_message.
+
+- added 8 new memory variables to Eurostat agent:
+	gdp
+	total_earnings
+	total_debt
+	total_assets
+	total_equity
+	average_debt_earnings_ratio
+	average_debt_equity_ratio  
+	wage_profit_ratio
+
+- added those elements to the struct FIRM_DATA as well
+
+Statistical_Office_UNIBI/Eurostat_Functions.c:
+
+fn Eurostat_Initialization():
+- added 8 zeros to the line add_firm_data(&REGION_FIRM_DATA,...)
+
+fn: Eurostat_calculate_data()
+- initialized the elements to 0 in the Eurostat memory at start of each iteration
+- added 8 zeros to the line add_firm_data(&REGION_FIRM_DATA,...)
+- constructed 3 macrovariables, both regional and global, in the Eurostat memory:
+	AVERAGE_DEBT_EARNINGS_RATIO = TOTAL_DEBT/TOTAL_EARNINGS;
+	AVERAGE_DEBT_EQUITY_RATIO = TOTAL_DEBT/TOTAL_EQUITY;
+	WAGE_PROFIT_RATIO = FIRM_AVERAGE_WAGE/TOTAL_EARNINGS;
+-------------------------------------------------------------------------------------------
+Sander, rev 987
+
+- moved data from firm_balance_sheet_data_message to firm_send_data_message.
+-------------------------------------------------------------------------------------------
