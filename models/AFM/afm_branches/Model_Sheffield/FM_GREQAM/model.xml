@@ -49,17 +49,6 @@
 </variables>
 </dataType>
 
-<dataType>
-<name>capital_stock_item</name>
-<description></description>
-<variables>
-<variable><type>double</type><name>units</name><description>Units of capital</description></variable>
-<variable><type>double</type><name>purchase_price</name><description>Original purchasing price, used to determine the value</description></variable>
-<variable><type>double</type><name>productivity</name><description>The productivity of the capital</description></variable>
-<variable><type>double</type><name>depreciation_units_per_period</name><description>Discrete depreciation in units of capital per period</description></variable>
-</variables>
-</dataType>
-
 </dataTypes>
 </environment>
 
@@ -85,8 +74,6 @@
 <variable><type>double</type><name>total_dividend_payment</name><description>Total dividend payment</description></variable>
 
 <!-- Financial variables -->
-<!--CURRENT_SHARES_OUTSTANDING-->
-<!--PREVIOUS_SHARES_OUTSTANDING-->
 <variable><type>double</type><name>current_share_price</name><description>Current share price on the market</description></variable>
 <variable><type>double</type><name>previous_dividend_per_share</name><description>Dividend-per-share ratio (previous production cycle)</description></variable>
 <variable><type>double</type><name>current_dividend_per_share</name><description>Dividend-per-share ratio</description></variable>
@@ -95,6 +82,11 @@
 <variable><type>double</type><name>previous_dividend_per_earnings</name><description>Dividend-to-Earnings ratio (previous production cycle)</description></variable>
 <variable><type>double</type><name>current_dividend_per_earnings</name><description>Dividend-to-Earnings ratio</description></variable>
 
+<!--CURRENT_SHARES_OUTSTANDING-->
+<!--PREVIOUS_SHARES_OUTSTANDING-->
+<variable><type>double</type><name>earnings_per_share</name><description></description></variable>
+<variable><type>int</type><name>current_shares_outstanding</name><description></description></variable>
+<variable><type>int</type><name>previous_shares_outstanding</name><description></description></variable>
 
 <!-- Ratios -->
 <variable><type>double</type><name>debt_earnings_ratio</name><description>Debt-to-Earnings ratio</description></variable>
@@ -109,12 +101,13 @@
 <variable><type>debt_item_array</type><name>loans</name><description>Array of structs holding all loans of the firm</description></variable>
 <variable><type>double</type><name>total_debt</name><description>Total value of all loans outstanding</description></variable>
 <variable><type>double</type><name>total_value_local_inventory</name><description>Total value of all local inventory stocks held at malls</description></variable>
-<variable><type>capital_stock_item_array</type><name>capital_stock</name><description>Array of structs holding items of capital stock</description></variable>
-<variable><type>double</type><name>total_units_capital_stock</name><description>Units of capital stock</description></variable>
+<variable><type>double</type><name>total_units_local_inventory</name><description>Total units of all local inventory stocks held at malls</description></variable>
 <variable><type>double</type><name>total_value_capital_stock</name><description>Value of the capital stock</description></variable>
+<variable><type>double</type><name>planned_value_capital_stock</name><description>Value of the capital stock</description></variable>
 <variable><type>double</type><name>total_capital_depreciation_value</name><description>Sum over all units of capital of the depreciation value</description></variable>
 <variable><type>double</type><name>total_capital_depreciation_units</name><description>Sum over all units of capital of the depreciation in units</description></variable>
 <variable><type>double</type><name>total_assets</name><description>Value of total assets</description></variable>
+<variable><type>double</type><name>planned_total_assets</name><description></description></variable>
 <variable><type>double</type><name>equity</name><description>equity = total assets - total liabilities</description></variable>
 
 <!-- Firm_compute_financial_needs -->
@@ -122,65 +115,30 @@
 <variable><type>double</type><name>financial_liquidity_needs</name><description>Financial liquidity needs are prior financial commitments (interests, installments, taxes)</description></variable>
 <variable><type>double</type><name>total_financial_needs</name><description>Total financial needs = Production liquidity needs + Financial liquidity needs + dividends</description></variable>
 <variable><type>double</type><name>external_financial_needs</name><description>External financing</description></variable>
+<variable><type>double</type><name>financial_resources_for_production</name><description></description>Earnings-before-interest-and-taxes: total revenue - sales_costs</variable>
+<variable><type>double</type><name>total_payments</name><description></description></variable>
 
 <!-- Firm_execute_financial_payments -->
 <variable><type>int</type><name>bankruptcy_state</name><description>Flag to indicate the firm is in the bankruptcy state</description></variable>
 <variable><type>int</type><name>financial_crisis_state</name><description>Flag to indicate the firm is in the financial crisis state</description></variable>
 </memory>
+
 <functions>
 
-
+<!-- Start here -->
 <function>
-<name>Firm_compute_financial_payments</name>
-<description>Function to compute the prior financial commitments of the firm: interests, installments, taxes.</description>
+<name>Firm_idle</name>
+<description>Idle just to connect two states 00 and 00c</description>
 <currentState>00</currentState>
-<nextState>001</nextState>
+<nextState>00c</nextState>
 <condition><time><period>monthly</period><phase>a.day_of_month_to_act</phase></time></condition>
-</function>
-
-<function>
-<name>Firm_compute_income_statement</name>
-<description>Function to compute the income statement of the firm.</description>
-<currentState>001</currentState>
-<nextState>002</nextState>
-</function>
-
-<function>
-<name>Firm_compute_dividends</name>
-<description>Function to compute the total dividend payout of the firm.</description>
-<currentState>002</currentState>
-<nextState>003</nextState>
-</function>
-
-<function>
-<name>Firm_compute_total_financial_payments</name>
-<description>Function to compute the total financial payments of the firm: interest, installments, taxes, production costs, dividends.</description>
-<currentState>003</currentState>
-<nextState>004</nextState>
-</function>
-
-<function>
-<name>Firm_compute_balance_sheet</name>
-<description>Function to compute the balance sheet of the firm.</description>
-<currentState>004</currentState>
-<nextState>005</nextState>
-<inputs>
-<input>
-<messageName>current_mall_stock_info</messageName>
-<filter>
-  <lhs><value>a.id</value></lhs>
-  <op>EQ</op>
-  <rhs><value>m.firm_id</value></rhs>
- </filter>
-</input>
-</inputs>
 </function>
 
 <!-- Bankruptcy going to end_Firm  -->
 <function>
 <name>Firm_in_bankruptcy</name>
 <description>Function to process the bankruptcy condition.</description>
-<currentState>005</currentState>
+<currentState>00c</currentState>
 <nextState>end_Firm</nextState>
 <condition><not><lhs><value>a.equity</value></lhs><op>GT</op><rhs><value>0.0</value></rhs></not></condition>
 <outputs>
@@ -188,6 +146,8 @@
 </outputs>
 </function>
 
+
+<!-- Starting from Firm_calc_input_demands  -->
 <function>
 <name>Firm_compute_total_liquidity_needs</name>
 <description>Function to compute the total liquidity needs for executing payments.</description>
@@ -310,6 +270,44 @@
 <currentState>End_Firm_Credit_Role</currentState>
 <nextState>Start_Firm_Labour_Role</nextState>
 <condition><not><lhs><value>a.external_financial_needs</value></lhs><op>GT</op><rhs><value>0.0</value></rhs></not></condition>
+</function>
+
+
+<!-- All the following sequence is at the end of the month -->
+<!-- Start after Firm_calc_revenue -->
+<function>
+<name>Firm_compute_financial_payments</name>
+<description>Function to compute the prior financial commitments of the firm: interests, installments, taxes.</description>
+<currentState>13b</currentState>
+<nextState>001</nextState>
+</function>
+
+<function>
+<name>Firm_compute_income_statement</name>
+<description>Function to compute the income statement of the firm.</description>
+<currentState>001</currentState>
+<nextState>002</nextState>
+</function>
+
+<function>
+<name>Firm_compute_dividends</name>
+<description>Function to compute the total dividend payout of the firm.</description>
+<currentState>002</currentState>
+<nextState>003</nextState>
+</function>
+
+<function>
+<name>Firm_compute_total_financial_payments</name>
+<description>Function to compute the total financial payments of the firm: interest, installments, taxes, production costs, dividends.</description>
+<currentState>003</currentState>
+<nextState>004</nextState>
+</function>
+
+<function>
+<name>Firm_compute_balance_sheet</name>
+<description>Function to compute the balance sheet of the firm.</description>
+<currentState>004</currentState>
+<nextState>005</nextState>
 </function>
 
 </functions>
