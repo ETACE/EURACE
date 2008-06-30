@@ -353,7 +353,7 @@ including several micro data.</description>
 <variable><type>int</type><name>day_of_month_to_act</name><description></description></variable>
 
 <!-- Data for governments -->
-<variable><type>tax_rates_item_array</type><name>government_tax_rates</name><description></description></variable>
+<variable><type>tax_rates_item</type><name>government_tax_rates[27]</name><description></description></variable>
 
 <!-- Data for firm balance sheets -->
 <variable><type>double</type><name>gdp</name><description>GDP = Consumption + Investments (measured at firms, sum of cum_revenues + investment_costs)</description></variable>
