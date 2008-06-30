@@ -81,8 +81,11 @@ In Firm_set_quantities_zero:
 This is run every day, except on the first day of the month. The reason we need this is that otherwise the same PRODUCTION_QUANTITY is added daily, while it is only a monthly quantity.
 In order to get the production quantities correctly in the monthly statistics, we need 2 variables that stay in memory during the month:
 
-    PLANNED_OUTPUT=PLANNED_PRODUCTION_QUANTITY: set in Firm_calculate_production_quantity
-    OUTPUT        = PRODUCTION_QUANTITY : set in Firm_execute_production
+    In Firm_calc_production_quantity and Firm_calc_production_quantity_2:
+    PLANNED_OUTPUT=PLANNED_PRODUCTION_QUANTITY; 
+    
+    In Firm_execute_production:
+    OUTPUT        = PRODUCTION_QUANTITY; 
 
 These values can now be send at the end of the month to Eurostat in the send_data_message.
 ----------------------------------------------------------------------
@@ -171,12 +174,25 @@ Eurostat_Functions-sander.c
 Sander, rev 1046
     Firm_credit_functions_sander.c: only difference is the apply_for_loans msg: added the region_id
 ----------------------------------------------------------------------
+Sander, rev 1063
+
+Added FM_GREQAM to: afm_branches/Model_Sheffield
+
 Differences between the FM_UNIBI and FM_GREQAM:
 
-Changes to the credit functions:
+1. Removed variables in FM_GREQAM:
+- different credit items
+ used old version from trunk, includes bad_debt and var
 
-- different credit item
+- related to capital depreciation:
+dataype capital_stock_item: removed 
+capital_stock_item_array  capital_stock: removed
+total_units_capital_stock: removed
 
-changes to capital stock:
+2. Added variables to FM_GREQAM:
 
-capital_stock_item_array 
+financial_resources_for_production
+planned_value_capital_stock
+planned_total_assets
+total payments
+----------------------------------------------------------------------

@@ -139,6 +139,14 @@
 <description>Computation of the balance sheet</description>
 <currentState>004</currentState>
 <nextState>005</nextState>
+<input>
+<messageName>current_mall_stock_info</messageName>
+<filter>
+ <lhs><value>a.id</value></lhs>
+ <op>EQ</op>
+ <rhs><value>m.firm_id</value></rhs>
+ </filter>
+</input>
 </function>
 
 
