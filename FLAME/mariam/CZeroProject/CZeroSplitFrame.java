@@ -22,6 +22,7 @@ import org.jdom.output.*;
 public class CZeroSplitFrame extends JFrame implements ListSelectionListener, ActionListener{
 	private Container itsContainer;
 	private Element itsRootElement = null;
+	private Element itsModelRootElement = null;
 	private Map itsAgentMap = null;
 	private Map itsDatatypeMap = null;
 	int agentCounter, datatypeCounter;
@@ -31,6 +32,9 @@ public class CZeroSplitFrame extends JFrame implements ListSelectionListener, Ac
 	List datatypeVars;
 	List datatypes;
 	List env_elements;
+	List model_elements;
+	List modelnames;
+	Iterator model_iterator,modelnames_iterator;
 	Iterator env_iterator,varIterator, datatype_iterator,iterator_parent, xmachine_iterator;
 	Iterator datatypeVar_iterator;
 	int itsAgentListSize=0;	
@@ -53,25 +57,27 @@ public class CZeroSplitFrame extends JFrame implements ListSelectionListener, Ac
 	Element xagentNameElement[];
 	Element xagentIDVarElement[];                      
 	String nameofFile=null;
+	int version;
 	
-	public CZeroSplitFrame()
+	public CZeroSplitFrame(int ver)
 	{
-	setTitle("CZero Application");
-	int i;
-	addWindowListener(new WindowAdapter()
-	{
-		public void windowClosing (WindowEvent e)
+		setTitle("CZero Application");
+		int i;
+		version =ver;
+		addWindowListener(new WindowAdapter()
 		{
-			System.exit(0);
-		}
-	});
+			public void windowClosing (WindowEvent e)
+			{
+				System.exit(0);
+			}
+		});
 		
-	itsContainer=this.getContentPane();
+		itsContainer=this.getContentPane();
 	
 	//getting input file name for model.xml
-	openFile();
+		openFile();
 	
-	if ((nameofFile.equals(""))|| (nameofFile==null))
+		if ((nameofFile.equals(""))|| (nameofFile==null))
 	{
 		JOptionPane.showMessageDialog(this,"File Not Found","File Not Found",JOptionPane.ERROR_MESSAGE);
 		return;
@@ -80,7 +86,13 @@ public class CZeroSplitFrame extends JFrame implements ListSelectionListener, Ac
 	getXmlRootElement(nameofFile);
 	itsAgentMap = new HashMap();
 	itsDatatypeMap=new HashMap();
-	gatherXMLData();
+	if(version==1)
+	{	gatherXMLDataVer1();
+	}
+	if(version==2)
+	{
+		gatherXMLDataVer2();
+	}
 	// set up cardlayout
 	
 	itsAgentListSize=itsAgentMap.size();
@@ -227,6 +239,7 @@ public class CZeroSplitFrame extends JFrame implements ListSelectionListener, Ac
 			SAXBuilder saxBuilder = new SAXBuilder();
 			Document document = saxBuilder.build(fileInput);
 			itsRootElement = document.getRootElement();
+			System.out.println("Version " +itsRootElement.getName());
 			//System.out.println("read file");
 	    } catch (Exception anExceptionFirst) {
 	    	anExceptionFirst.printStackTrace();
@@ -242,7 +255,32 @@ public class CZeroSplitFrame extends JFrame implements ListSelectionListener, Ac
 	    }
 	}//close:getXmlRootElement()
 	
-	public void gatherXMLData()
+	public void getXmlModelRootElement(String aFileName) {
+		FileInputStream fileInput = null;
+		//System.out.println(aFileName);
+		//System.out.println("startreadfile");
+		try {
+			fileInput = new FileInputStream(aFileName);
+			SAXBuilder saxBuilder = new SAXBuilder();
+			Document document = saxBuilder.build(fileInput);
+			itsModelRootElement = document.getRootElement();
+			System.out.println("Version " +itsModelRootElement.getName());
+			//System.out.println("read file");
+	    } catch (Exception anExceptionFirst) {
+	    	anExceptionFirst.printStackTrace();
+	    	//System.out.println("problem1");
+	    } finally {
+	        try {
+				fileInput.close();
+				//System.out.println("closefile");
+	        } catch (IOException anExceptionSecond) {
+	        	anExceptionSecond.printStackTrace();
+	        	//System.out.println("problem2");
+	        }
+	    }
+	}//close:getXmlRootElement()
+	
+	public void gatherXMLDataVer1()
 	{
 		//datatypes
 	env_elements=itsRootElement.getChildren("environment"); //list of datatypes
@@ -315,8 +353,116 @@ public class CZeroSplitFrame extends JFrame implements ListSelectionListener, Ac
 			itsAgentMap.put(agentCounter, agentObject);
 			agentCounter++;
 		}//xmachines
-	}//close:gatherXMLData()
+	}//close:gatherXMLDataVer1()
 	
+	
+	public void gatherXMLDataVer2()
+	{
+		//models
+		model_elements=itsRootElement.getChildren("models"); //list of models
+		model_iterator=model_elements.iterator();
+		
+		//datatypes
+	/*env_elements=itsRootElement.getChildren("environment"); //list of datatypes
+	env_iterator=env_elements.iterator();
+
+		//agents
+	xmachines=itsRootElement.getChildren("xmachine"); //list of xmachines
+	xmachine_iterator=xmachines.iterator();
+	*/
+	Element model=null;
+	Element modelVar=null;
+	Element modelfilename=null;
+/*	
+	Element xmachine = null;
+	Element xmachineVar=null;
+	Element datatype=null;
+	Element environment=null;
+	Element datatypeVar=null;
+	
+	agentObject = null;
+	datatypeObject=null;
+	agentCounter=0;
+	datatypeCounter=0;
+	*/
+	while(model_iterator.hasNext())
+	{
+		model=(Element)model_iterator.next();
+		modelnames=model.getChildren("model");
+		modelnames_iterator=modelnames.iterator();
+		System.out.println("Line 123");
+		while(modelnames_iterator.hasNext())
+		{
+			System.out.println("Line 122");
+			modelfilename=(Element)modelnames_iterator.next();
+			if(("true".equals(modelfilename.getChild("enabled").getText()))||("True".equals(modelfilename.getChild("enabled").getText())))
+			{
+				String modelName=modelfilename.getChild("file").getText();
+				System.out.println("model name" + modelName);
+				getXmlModelRootElement(modelName);
+				
+			}
+			
+		}
+	}
+	/*
+	while(env_iterator.hasNext())
+	{
+		environment=(Element)env_iterator.next();
+		
+		datatypes=environment.getChildren("datatype");
+		
+		datatype_iterator=datatypes.iterator();
+		while(datatype_iterator.hasNext())
+		{
+			datatype=(Element)datatype_iterator.next();
+			String datatypeName=datatype.getChild("name").getText();
+			datatypeObject=new DataStructureObject();
+			datatypeObject.setItsName(datatypeName);
+		
+			//	get vars
+			datatypeVars=datatype.getChildren("var");
+			datatypeVar_iterator=datatypeVars.iterator();
+			while(datatypeVar_iterator.hasNext())
+			{
+				datatypeVar=(Element)datatypeVar_iterator.next();
+				memVarType= datatypeVar.getChild("type").getText();
+				memVarName= datatypeVar.getChild("name").getText();
+				datatypeObject.additsVars(memVarType, memVarName);
+				
+			}
+						
+			itsDatatypeMap.put(datatypeCounter,datatypeObject);
+		
+			datatypeCounter++;
+			
+		}
+	}// structures
+
+	//gather xml data for xmachines
+	while(xmachine_iterator.hasNext())
+	{
+			xmachine=(Element)xmachine_iterator.next();
+			String xAgentName=xmachine.getChild("name").getText();
+			agentObject=new AgentData();
+			agentObject.setItsAgentName(xAgentName);
+			xmachineVars=xmachine.getChild("memory").getChildren();
+			varIterator=xmachineVars.iterator();
+			while(varIterator.hasNext())
+			{		
+				xmachineVar=(Element)varIterator.next();
+				memVarType= xmachineVar.getChild("type").getText();
+				memVarName= xmachineVar.getChild("name").getText();
+				agentObject.getItsAgentTypeData(0).addVars(memVarType, memVarName);
+			}
+			itsAgentMap.put(agentCounter, agentObject);
+			agentCounter++;
+		}//xmachines
+		*/
+	}//close:gatherXMLDataver2()
+	
+	
+
 	
 	
 	public void createNewDomXml()
