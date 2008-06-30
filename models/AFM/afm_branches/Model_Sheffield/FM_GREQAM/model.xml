@@ -84,9 +84,10 @@
 
 <!--CURRENT_SHARES_OUTSTANDING-->
 <!--PREVIOUS_SHARES_OUTSTANDING-->
-<variable><type>double</type><name>earnings_per_share</name><description></description></variable>
-<variable><type>int</type><name>current_shares_outstanding</name><description></description></variable>
+<!--<variable><type>int</type><name>current_shares_outstanding</name><description></description></variable>-->
 <variable><type>int</type><name>previous_shares_outstanding</name><description></description></variable>
+
+<variable><type>double</type><name>earnings_per_share</name><description></description></variable>
 
 <!-- Ratios -->
 <variable><type>double</type><name>debt_earnings_ratio</name><description>Debt-to-Earnings ratio</description></variable>

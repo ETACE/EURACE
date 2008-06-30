@@ -17,19 +17,19 @@
 <model><file>Statistical_Office_UNIBI/model.xml</file><enabled>false</enabled></model>
 <model><file>Statistical_Office_UNIBI/model-sander.xml</file><enabled>false</enabled></model>
 <model><file>AFM_UG/model.xml</file><enabled>false</enabled></model>
-<model><file>Government_UNIBI/model.xml</file><enabled>false</enabled></model>
-<model><file>Government_UG/model.xml</file><enabled>false</enabled></model>
+<model><file>Government_UNIBI/model.xml</file><enabled>true</enabled></model>
 
 <!-- New style naming -->
 <model><file>CGM_UNIBI/model.xml</file><enabled>true</enabled></model>
-<model><file>Credit_Ancona/model.xml</file><enabled>true</enabled></model>
+<model><file>Credit_UNIBI/model-dummy.xml</file><enabled>true</enabled></model>
+<model><file>Credit_Ancona/model.xml</file><enabled>false</enabled></model>
 <!--<model><file>CM_Ancona/model.xml</file><enabled>true</enabled></model>-->
 <model><file>FM_GREQAM/model.xml</file><enabled>true</enabled></model>
 <model><file>IGM_UNIBI/model.xml</file><enabled>true</enabled></model>
 <model><file>LM_UNIBI/model.xml</file><enabled>true</enabled></model>
 <model><file>Eurostat_UNIBI/model.xml</file><enabled>true</enabled></model>
 <model><file>AFM_UG/model.xml</file><enabled>true</enabled></model>
-<model><file>Government_UG/model.xml</file><enabled>true</enabled></model>
+<model><file>Government_UG/model.xml</file><enabled>false</enabled></model>
 <!--<model><file>Government_GREQAM/model.xml</file><enabled>true</enabled></model>-->
 
 </models>
@@ -112,6 +112,7 @@
 <variable><type>int</type><name>id</name><description></description></variable>
 <variable><type>int</type><name>region_id</name><description></description></variable>
 <variable><type>int</type><name>gov_id</name><description></description></variable>
+<variable><type>int</type><name>day_of_month_to_act</name><description></description></variable>
 </memory>
 </xagent>
 
@@ -143,6 +144,7 @@
 <memory>
 <variable><type>int</type><name>id</name><description></description></variable>
 <variable><type>int</type><name>region_id</name><description></description></variable>
+<variable><type>int</type><name>day_of_month_to_act</name><description></description></variable>
 </memory>
 </xagent>
 
@@ -153,6 +155,7 @@
 <variable><type>int</type><name>id</name><description></description></variable>
 <variable><type>int</type><name>region_id</name><description></description></variable>
 <variable><type>int</type><name>gov_id</name><description></description></variable>
+<variable><type>int</type><name>day_of_month_to_act</name><description></description></variable>
 </memory>
 </xagent>
 
@@ -162,6 +165,7 @@
 <memory>
 <variable><type>int</type><name>id</name><description></description></variable>
 <variable><type>double</type><name>payment_account</name><description></description></variable>
+<variable><type>int</type><name>day_of_month_to_act</name><description></description></variable>
 </memory>
 </xagent>
 
@@ -171,6 +175,7 @@
 <description></description>
 <memory>
 <variable><type>int</type><name>id</name><description></description></variable>
+<variable><type>int</type><name>day_of_month_to_act</name><description></description></variable>
 </memory>
 </xagent>
 
