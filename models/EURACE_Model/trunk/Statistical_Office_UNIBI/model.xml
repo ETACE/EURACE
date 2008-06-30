@@ -355,10 +355,10 @@ including several micro data.</description>
 <variable><type>double</type><name>firm_average_s_skill_5</name><description></description>Average specific skills of general skill level 5 in firms in the economy</variable>
 <variable><type>firm_data_array</type><name>region_firm_data</name><description></description>Stores the eurostat memory variables concerning the firms for the different regions</variable>
 <variable><type>household_data_array</type><name>region_household_data</name><description>Stores the eurostat memory variables concerning the households for the different regions</description></variable>
-<variable><type>int</type><name>day_of_month_to_act</name><description></description></variable>
+<!--<variable><type>int</type><name>day_of_month_to_act</name><description></description></variable>-->
 
 <!-- Data for governments -->
-<variable><type>tax_rates_item[27]</type><name>government_tax_rates</name><description>Static array of the tax rates of 27 governments</description></variable>
+<variable><type>tax_rates_item</type><name>government_tax_rates[27]</name><description>Static array of the tax rates of 27 governments</description></variable>
 
 <!-- Data for firm balance sheets -->
 <variable><type>double</type><name>gdp</name><description>GDP = Consumption + Investments (measured at firms, sum of cum_revenues + investment_costs)</description></variable>
