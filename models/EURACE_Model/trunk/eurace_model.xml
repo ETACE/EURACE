@@ -120,6 +120,7 @@
 <variable><type>int</type><name>id</name><description></description></variable>
 <variable><type>int</type><name>region_id</name><description></description></variable>
 <variable><type>int</type><name>no_regions</name><description></description></variable>
+<variable><type>int</type><name>day_of_month_to_act</name><description></description></variable>
 </memory>
 </xagent>
 
@@ -148,6 +149,7 @@
 <memory>
 <variable><type>int</type><name>id</name><description></description></variable>
 <variable><type>double</type><name>payment_account</name><description></description></variable>
+<variable><type>int</type><name>day_of_month_to_act</name><description></description></variable>
 </memory>
 </xagent>
 
