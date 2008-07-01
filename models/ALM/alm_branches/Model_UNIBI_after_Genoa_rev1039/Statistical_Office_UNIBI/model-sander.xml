@@ -443,16 +443,16 @@ including several micro data.</description>
 <function><name>Eurostat_idle</name>
 <description></description>
 <currentState>01</currentState>
-<nextState>end_Eurostat</nextState>
-<!-- <nextState>Start_Eurostat_Monthly_Datastorage</nextState> -->
+<!--<nextState>end_Eurostat</nextState>--> 							<!--Toggle this if you want to turn OFF datastorage functionality --> 
+<nextState>Start_Eurostat_Monthly_Datastorage</nextState>  			<!--Toggle this if you want to turn ON datastorage functionality -->
 <condition><not><time><period>monthly</period><phase>0</phase></time></not></condition>
 </function>
 
 <function><name>Eurostat_calculate_data</name>
 <description>Eurostat calculates the global and regional macro data based on the received micro data</description>
 <currentState>01</currentState>
-<nextState>end_Eurostat</nextState>
-<!-- <nextState>Start_Eurostat_Monthly_Datastorage</nextState> -->
+<!--<nextState>end_Eurostat</nextState>-->					<!--Toggle this if you want to turn OFF datastorage functionality -->
+<nextState>Start_Eurostat_Monthly_Datastorage</nextState>   <!--Toggle this if you want to turn ON datastorage functionality -->
 <condition><time><period>monthly</period><phase>0</phase></time></condition>
 <inputs>
 <input><messageName>firm_send_data</messageName></input>
@@ -461,12 +461,21 @@ including several micro data.</description>
 </function>
 
 <!-- new loop: Monthly_Datastorage -->
-<!--
+
 <function><name>Eurostat_store_history_monthly</name>
 <description>Eurostat stores monthly macro data in its history struct</description>
 <currentState>Start_Eurostat_Monthly_Datastorage</currentState>
-<nextState>02</nextState>
-<condition><time><period>monthly</period><phase>1</phase></time></condition>
+<nextState>02</nextState>							<!--Toggle this if you want to turn ON growthrates functionality -->
+<!--<nextState>Start_Eurostat_Quarterly_Datastorage</nextState> Toggle this if you want to turn OFF growthrates functionality -->
+<condition>
+	<lhs>
+		<time><period>monthly</period><phase>0</phase></time>
+	</lhs>
+	<op>AND</op>
+	<rhs>
+		<not><time><period>iteration</period><phase>1</phase></time></not>
+	</rhs>
+</condition>
 </function>
 
 <function><name>Eurostat_compute_growth_rates_monthly</name>
@@ -479,17 +488,33 @@ including several micro data.</description>
 <description>Eurostat does nothing</description>
 <currentState>Start_Eurostat_Monthly_Datastorage</currentState>
 <nextState>Start_Eurostat_Quarterly_Datastorage</nextState>
-<condition><not><time><period>monthly</period><phase>1</phase></time></not></condition>
+<condition>
+	<lhs>
+		<not><time><period>monthly</period><phase>0</phase></time></not>
+	</lhs>
+	<op>OR</op>
+	<rhs>
+		<time><period>iteration</period><phase>1</phase></time>
+	</rhs>
+</condition>
 </function>
--->
 
 <!-- new loop: Quarterly_Datastorage -->
-<!-- 
+
 <function><name>Eurostat_store_history_quarterly</name>
 <description>Eurostat stores quarterly macro data in its history struct</description>
 <currentState>Start_Eurostat_Quarterly_Datastorage</currentState>
-<nextState>03</nextState>
-<condition><time><period>quarterly</period><phase>1</phase></time></condition>
+<nextState>03</nextState>					<!--Toggle this if you want to turn ON growthrates functionality -->
+<!--<nextState>end_Eurostat</nextState>					Toggle this if you want to turn OFF growthrates functionality -->
+<condition>
+	<lhs>
+		<time><period>quarterly</period><phase>0</phase></time>
+	</lhs>
+	<op>AND</op>
+	<rhs>
+		<not><time><period>iteration</period><phase>1</phase></time></not>
+	</rhs>
+</condition>
 </function>
 
 <function><name>Eurostat_compute_growth_rates_quarterly</name>
@@ -502,9 +527,17 @@ including several micro data.</description>
 <description>Eurostat does nothing</description>
 <currentState>Start_Eurostat_Quarterly_Datastorage</currentState>
 <nextState>end_Eurostat</nextState>
-<condition><not><time><period>quarterly</period><phase>1</phase></time></not></condition>
+<condition>
+	<lhs>
+		<not><time><period>quarterly</period><phase>0</phase></time></not>
+	</lhs>
+	<op>OR</op>
+	<rhs>
+		<time><period>iteration</period><phase>1</phase></time>
+	</rhs>
+</condition>
 </function>
--->
+
 
 </functions>
 </xagent>
