@@ -37,12 +37,12 @@ int Eurostat_Initialization()
         
 }
 
-/** \Eurostat_send_data()
+/** \Eurostat_send_data_to_government()
  * \brief Eurostat send data: mean wage  ...
- */
+ */   
 int Eurostat_send_data_to_government()
 {
-	
+    printf("AVERAGE_WAGE %f\n",AVERAGE_WAGE);
 add_mean_wage_for_government_message(1,AVERAGE_WAGE);
 
 return 0;
@@ -81,7 +81,7 @@ int Eurostat_send_data()
  */
 int Eurostat_calculate_data()
 {
-	int i,j,m;
+    int i,j,m;
 
     //Auxiliary sums:
     double sum_total_debt_earnings_ratios;
@@ -210,31 +210,31 @@ int Eurostat_calculate_data()
         sum_total_debt_earnings_ratios = 0.0;
         sum_total_debt_equity_ratios   = 0.0;
         sum_total_labour_share_ratios  = 0.0;
-        sum_total_sold_quantity		   = 0.0;
-        sum_total_output 			   = 0.0;
-        sum_total_cum_revenue		   = 0.0;
-        sum_total_planned_output 	   = 0.0;
+        sum_total_sold_quantity        = 0.0;
+        sum_total_output               = 0.0;
+        sum_total_cum_revenue          = 0.0;
+        sum_total_planned_output       = 0.0;
 
         //Reset the age distribution
         for (i=0;i<60;i++)
         {
-           	FIRM_AGE_DISTRIBUTION[i]=0;
+            FIRM_AGE_DISTRIBUTION[i]=0;
         }
 
         /*Store the region data of the firms*/
         for(i = 0; i < REGION_FIRM_DATA.size; i++)
         {
-        	counter_firms_in_region =0;
-        	REGION_FIRM_DATA.array[i].firms = 0;
-        	
+            counter_firms_in_region =0;
+            REGION_FIRM_DATA.array[i].firms = 0;
+            
             //Reset region sums: these are updated to sum across all firms in the region
             sum_region_debt_earnings_ratios = 0.0;
             sum_region_debt_equity_ratios   = 0.0;
             sum_region_labour_share_ratios  = 0.0;
-            sum_region_sold_quantity		= 0.0;
-            sum_region_output  				= 0.0;
-            sum_region_cum_revenue  		= 0.0;
-            sum_region_planned_output  		= 0.0;
+            sum_region_sold_quantity        = 0.0;
+            sum_region_output               = 0.0;
+            sum_region_cum_revenue          = 0.0;
+            sum_region_planned_output       = 0.0;
             
             START_FIRM_SEND_DATA_MESSAGE_LOOP
             
@@ -402,8 +402,8 @@ int Eurostat_calculate_data()
                 /***************** Sum of: no_firm_births *********************/
                 if (firm_send_data_message->age==1)
                 {
-                	//REGION_FIRM_DATA.array[i].no_firm_births++;
-                	NO_FIRM_BIRTHS++;
+                    //REGION_FIRM_DATA.array[i].no_firm_births++;
+                    NO_FIRM_BIRTHS++;
                 }
                 
                 /***************** Firm age distribution *********************/
@@ -411,11 +411,11 @@ int Eurostat_calculate_data()
                 //add the firm's age to correct bin (we assume max. age is 60 months, all firms older than 60 are in the last bin)
                 if (firm_send_data_message->age<60)
                 {
-                	FIRM_AGE_DISTRIBUTION[firm_send_data_message->age -1]++;
+                    FIRM_AGE_DISTRIBUTION[firm_send_data_message->age -1]++;
                 }
                 else
                 {
-                	FIRM_AGE_DISTRIBUTION[59]++;
+                    FIRM_AGE_DISTRIBUTION[59]++;
                 }
             }
             
@@ -446,10 +446,10 @@ int Eurostat_calculate_data()
         /***************** Sum of: no_firm_deaths *********************/
         NO_FIRM_DEATHS = (NO_FIRMS - HISTORY_MONTHLY[0].no_firms - NO_FIRM_BIRTHS);        
 
-		/***************** Firm birth rate *********************/
+        /***************** Firm birth rate *********************/
         //Def: nr of newborn firms in period x / nr of firms in period x
         FIRM_BIRTH_RATE = NO_FIRM_BIRTHS / NO_FIRMS;
-        	
+            
         /***************** Firm death rate *********************/
         //Def: nr of firm demises in period x / nr of firms in period x
         FIRM_DEATH_RATE = NO_FIRM_DEATHS / NO_FIRMS;
@@ -998,8 +998,8 @@ int Eurostat_calculate_data()
 
 int Eurostat_read_tax_rates()
 {
-	int i;
-	
+    int i;
+    
     START_GOVERNMENT_TAX_RATES_MESSAGE_LOOP
     for (i=0; i<27; i++)
     {
@@ -1023,75 +1023,75 @@ int Eurostat_read_tax_rates()
 /******************************* STORING MONTHLY DATA **************************************/
 /* Datatype:
 
-	  struct history_item
-	  {
-	  		double gdp;
-	  		double output;
-	  		double employment;
-	  		double unemployment_rate;
-	  		double wages;	 
-	   }
+      struct history_item
+      {
+            double gdp;
+            double output;
+            double employment;
+            double unemployment_rate;
+            double wages;    
+       }
 
-	//Static array of history items:
-	 history_item history_monthly[13];
-	 history_item history_quarterly[5];
-	
-	//Single history_items for storing the growth rates: 
-	history_item monthly_growth_rates: month to month growth rate statistics
-	history_item quarterly__growth_rates: quarter to quarter growth rate statistics
-	history_item annual_growth_rates_monthly: annual growth rates (per month), measured as the percentage change over the same month in the previous year.
-	history_item annual_growth_rates_quarterly: annual growth rates (per quarter), measured as the percentage change over the same quarter in the previous year.
+    //Static array of history items:
+     history_item history_monthly[13];
+     history_item history_quarterly[5];
+    
+    //Single history_items for storing the growth rates: 
+    history_item monthly_growth_rates: month to month growth rate statistics
+    history_item quarterly__growth_rates: quarter to quarter growth rate statistics
+    history_item annual_growth_rates_monthly: annual growth rates (per month), measured as the percentage change over the same month in the previous year.
+    history_item annual_growth_rates_quarterly: annual growth rates (per quarter), measured as the percentage change over the same quarter in the previous year.
 */
 
 /* \fn: int Eurostat_store_history_monthly()
  * \brief: Central_Eurostat agent stores statistics to monthly history structure. 
  */
 int Eurostat_store_history_monthly()
-{	
-	int i;
-	
-	//Shift history backwards
-	/*
-	 * history_monthly[4].GDP = history_monthly[3].GDP; 	//t-4 gets filled with value from t-3
-	 * history_monthly[3].GDP = history_monthly[2].GDP; 	//t-3 gets filled with value from t-3
-	 * history_monthly[2].GDP = history_monthly[1].GDP; 	//t-2 gets filled with value from t-2
-	 * history_monthly[1].GDP = history_monthly[0].GDP; 	//t-1 gets filled with value from t-1
-	 * history_monthly[0].GDP = GDP;         				//t gets filled with value from t
-	 */
-	for (i=12; i>0; i--)
-	{
-	  HISTORY_MONTHLY[i].gdp = HISTORY_MONTHLY[i-1].gdp; 	//t-i-1 gets filled with value from t-i
-	  HISTORY_MONTHLY[i].output = HISTORY_MONTHLY[i-1].output;
-	  HISTORY_MONTHLY[i].employment = HISTORY_MONTHLY[i-1].employment;
-	  HISTORY_MONTHLY[i].unemployment_rate = HISTORY_MONTHLY[i-1].unemployment_rate;
-	  HISTORY_MONTHLY[i].wages = HISTORY_MONTHLY[i-1].wages;
-	  HISTORY_MONTHLY[i].no_firms = HISTORY_MONTHLY[i-1].no_firms;
-	  HISTORY_MONTHLY[i].no_firm_births = HISTORY_MONTHLY[i-1].no_firm_births;
-	  HISTORY_MONTHLY[i].no_firm_deaths = HISTORY_MONTHLY[i-1].no_firm_deaths;
-	}
-	
-	//Store first value of history: [0] gets filled with value from t
-	HISTORY_MONTHLY[0].gdp = GDP; 					
-	HISTORY_MONTHLY[0].output = MONTHLY_OUTPUT; 	
-	HISTORY_MONTHLY[0].employment = EMPLOYED;		
-	HISTORY_MONTHLY[0].unemployment_rate = UNEMPLOYMENT_RATE; 
-	HISTORY_MONTHLY[0].wages = AVERAGE_WAGE; 		
-	HISTORY_MONTHLY[0].no_firms = NO_FIRMS;			
-	HISTORY_MONTHLY[0].no_firm_births = NO_FIRM_BIRTHS;	
-	HISTORY_MONTHLY[0].no_firm_deaths = NO_FIRM_DEATHS; 
+{   
+    int i;
+    
+    //Shift history backwards
+    /*
+     * history_monthly[4].GDP = history_monthly[3].GDP;     //t-4 gets filled with value from t-3
+     * history_monthly[3].GDP = history_monthly[2].GDP;     //t-3 gets filled with value from t-3
+     * history_monthly[2].GDP = history_monthly[1].GDP;     //t-2 gets filled with value from t-2
+     * history_monthly[1].GDP = history_monthly[0].GDP;     //t-1 gets filled with value from t-1
+     * history_monthly[0].GDP = GDP;                        //t gets filled with value from t
+     */
+    for (i=12; i>0; i--)
+    {
+      HISTORY_MONTHLY[i].gdp = HISTORY_MONTHLY[i-1].gdp;    //t-i-1 gets filled with value from t-i
+      HISTORY_MONTHLY[i].output = HISTORY_MONTHLY[i-1].output;
+      HISTORY_MONTHLY[i].employment = HISTORY_MONTHLY[i-1].employment;
+      HISTORY_MONTHLY[i].unemployment_rate = HISTORY_MONTHLY[i-1].unemployment_rate;
+      HISTORY_MONTHLY[i].wages = HISTORY_MONTHLY[i-1].wages;
+      HISTORY_MONTHLY[i].no_firms = HISTORY_MONTHLY[i-1].no_firms;
+      HISTORY_MONTHLY[i].no_firm_births = HISTORY_MONTHLY[i-1].no_firm_births;
+      HISTORY_MONTHLY[i].no_firm_deaths = HISTORY_MONTHLY[i-1].no_firm_deaths;
+    }
+    
+    //Store first value of history: [0] gets filled with value from t
+    HISTORY_MONTHLY[0].gdp = GDP;                   
+    HISTORY_MONTHLY[0].output = MONTHLY_OUTPUT;     
+    HISTORY_MONTHLY[0].employment = EMPLOYED;       
+    HISTORY_MONTHLY[0].unemployment_rate = UNEMPLOYMENT_RATE; 
+    HISTORY_MONTHLY[0].wages = AVERAGE_WAGE;        
+    HISTORY_MONTHLY[0].no_firms = NO_FIRMS;         
+    HISTORY_MONTHLY[0].no_firm_births = NO_FIRM_BIRTHS; 
+    HISTORY_MONTHLY[0].no_firm_deaths = NO_FIRM_DEATHS; 
 
-	printf("Monthly data recorded by Eurostat:\n");
-	printf(" - monthly GDP: %f\n", HISTORY_MONTHLY[0].gdp);
-	printf(" - monthly output: %f\n", HISTORY_MONTHLY[0].output);
-	printf(" - monthly average employment: %d\n", HISTORY_MONTHLY[0].employment);
-	printf(" - monthly average unemployment rate: %f\n", HISTORY_MONTHLY[0].unemployment_rate);
-	printf(" - monthly average wage: %f\n", HISTORY_MONTHLY[0].wages);
-	printf(" - monthly average number of firms: %d\n", HISTORY_MONTHLY[0].no_firms);
-	printf(" - monthly total number of firm births: %d\n", HISTORY_MONTHLY[0].no_firm_births);
-	printf(" - monthly total number of firm deaths: %d\n", HISTORY_MONTHLY[0].no_firm_deaths);
-	
-	
-	return 0;
+    printf("Monthly data recorded by Eurostat:\n");
+    printf(" - monthly GDP: %f\n", HISTORY_MONTHLY[0].gdp);
+    printf(" - monthly output: %f\n", HISTORY_MONTHLY[0].output);
+    printf(" - monthly average employment: %d\n", HISTORY_MONTHLY[0].employment);
+    printf(" - monthly average unemployment rate: %f\n", HISTORY_MONTHLY[0].unemployment_rate);
+    printf(" - monthly average wage: %f\n", HISTORY_MONTHLY[0].wages);
+    printf(" - monthly average number of firms: %d\n", HISTORY_MONTHLY[0].no_firms);
+    printf(" - monthly total number of firm births: %d\n", HISTORY_MONTHLY[0].no_firm_births);
+    printf(" - monthly total number of firm deaths: %d\n", HISTORY_MONTHLY[0].no_firm_deaths);
+    
+    
+    return 0;
 }
 
 /******************************* STORING QUARTERLY DATA **************************************/
@@ -1100,61 +1100,61 @@ int Eurostat_store_history_monthly()
  */
 int Eurostat_store_history_quarterly()
 {
-	int i;
-	
-	//Shift history backwards
-	for (i=4; i>0; i--)
-	{
-	  //t-i-1 gets filled with value from t-i
-	  HISTORY_QUARTERLY[i].gdp = HISTORY_QUARTERLY[i-1].gdp;
-	  HISTORY_QUARTERLY[i].output = HISTORY_QUARTERLY[i-1].output;
-	  HISTORY_QUARTERLY[i].employment = HISTORY_QUARTERLY[i-1].employment;
-	  HISTORY_QUARTERLY[i].unemployment_rate = HISTORY_QUARTERLY[i-1].unemployment_rate;
-	  HISTORY_QUARTERLY[i].wages = HISTORY_QUARTERLY[i-1].wages;
-	  HISTORY_QUARTERLY[i].no_firms = HISTORY_QUARTERLY[i-1].no_firms;
-	  HISTORY_QUARTERLY[i].no_firm_births = HISTORY_QUARTERLY[i-1].no_firm_births;
-	  HISTORY_QUARTERLY[i].no_firm_deaths = HISTORY_QUARTERLY[i-1].no_firm_deaths;
-	}
-	
-	//Reset first elements for sum
-	HISTORY_QUARTERLY[0].gdp=0.0;
-	HISTORY_QUARTERLY[0].output=0.0;
-	HISTORY_QUARTERLY[0].employment=0.0;
-	HISTORY_QUARTERLY[0].unemployment_rate=0.0;
-	HISTORY_QUARTERLY[0].wages=0.0;
-	HISTORY_QUARTERLY[0].no_firms=0;
-	HISTORY_QUARTERLY[0].no_firm_births=0;
-	HISTORY_QUARTERLY[0].no_firm_deaths=0;
+    int i;
+    
+    //Shift history backwards
+    for (i=4; i>0; i--)
+    {
+      //t-i-1 gets filled with value from t-i
+      HISTORY_QUARTERLY[i].gdp = HISTORY_QUARTERLY[i-1].gdp;
+      HISTORY_QUARTERLY[i].output = HISTORY_QUARTERLY[i-1].output;
+      HISTORY_QUARTERLY[i].employment = HISTORY_QUARTERLY[i-1].employment;
+      HISTORY_QUARTERLY[i].unemployment_rate = HISTORY_QUARTERLY[i-1].unemployment_rate;
+      HISTORY_QUARTERLY[i].wages = HISTORY_QUARTERLY[i-1].wages;
+      HISTORY_QUARTERLY[i].no_firms = HISTORY_QUARTERLY[i-1].no_firms;
+      HISTORY_QUARTERLY[i].no_firm_births = HISTORY_QUARTERLY[i-1].no_firm_births;
+      HISTORY_QUARTERLY[i].no_firm_deaths = HISTORY_QUARTERLY[i-1].no_firm_deaths;
+    }
+    
+    //Reset first elements for sum
+    HISTORY_QUARTERLY[0].gdp=0.0;
+    HISTORY_QUARTERLY[0].output=0.0;
+    HISTORY_QUARTERLY[0].employment=0.0;
+    HISTORY_QUARTERLY[0].unemployment_rate=0.0;
+    HISTORY_QUARTERLY[0].wages=0.0;
+    HISTORY_QUARTERLY[0].no_firms=0;
+    HISTORY_QUARTERLY[0].no_firm_births=0;
+    HISTORY_QUARTERLY[0].no_firm_deaths=0;
 
-	//Store first value: construct quarterly sums from monthly history
-	for (i=0; i<4; i++)
-	{
-		HISTORY_QUARTERLY[0].gdp 				+= HISTORY_MONTHLY[i].gdp;
-		HISTORY_QUARTERLY[0].output 			+= HISTORY_MONTHLY[i].output;
-		HISTORY_QUARTERLY[0].employment 		+= HISTORY_MONTHLY[i].employment;
-		HISTORY_QUARTERLY[0].unemployment_rate  += HISTORY_MONTHLY[i].unemployment_rate;
-		HISTORY_QUARTERLY[0].wages 				+= HISTORY_MONTHLY[i].wages;
-		HISTORY_QUARTERLY[0].no_firms 			+= HISTORY_MONTHLY[i].no_firms;
-		HISTORY_QUARTERLY[0].no_firm_births 	+= HISTORY_MONTHLY[i].no_firm_births;
-		HISTORY_QUARTERLY[0].no_firm_deaths		+= HISTORY_MONTHLY[i].no_firm_deaths;
-	}
-	//The following quarterly statistics are averages of monthly statistics
-	HISTORY_QUARTERLY[0].employment				= HISTORY_QUARTERLY[0].employment/4,
-	HISTORY_QUARTERLY[0].unemployment_rate		= HISTORY_QUARTERLY[0].unemployment_rate/4;
-	HISTORY_QUARTERLY[0].wages					= HISTORY_QUARTERLY[0].wages/4;
-	HISTORY_QUARTERLY[0].no_firms 				= HISTORY_QUARTERLY[0].no_firms/4;
-	
-	printf("Quarterly data recorded by Eurostat:\n");	
-	printf(" - quarterly GDP: %f\n", HISTORY_QUARTERLY[0].gdp);
-	printf(" - quarterly output: %f\n", HISTORY_QUARTERLY[0].output);
-	printf(" - quarterly average employment: %d\n", HISTORY_QUARTERLY[0].employment);
-	printf(" - quarterly average unemployment rate: %f\n", HISTORY_QUARTERLY[0].unemployment_rate);
-	printf(" - quarterly average wage: %f\n", HISTORY_QUARTERLY[0].wages);
-	printf(" - quarterly average number of firms: %d\n", HISTORY_QUARTERLY[0].no_firms);
-	printf(" - quarterly total number of firm births: %d\n", HISTORY_QUARTERLY[0].no_firm_births);
-	printf(" - quarterly total number of firm deaths: %d\n", HISTORY_QUARTERLY[0].no_firm_deaths);
-	
-	return 0;
+    //Store first value: construct quarterly sums from monthly history
+    for (i=0; i<4; i++)
+    {
+        HISTORY_QUARTERLY[0].gdp                += HISTORY_MONTHLY[i].gdp;
+        HISTORY_QUARTERLY[0].output             += HISTORY_MONTHLY[i].output;
+        HISTORY_QUARTERLY[0].employment         += HISTORY_MONTHLY[i].employment;
+        HISTORY_QUARTERLY[0].unemployment_rate  += HISTORY_MONTHLY[i].unemployment_rate;
+        HISTORY_QUARTERLY[0].wages              += HISTORY_MONTHLY[i].wages;
+        HISTORY_QUARTERLY[0].no_firms           += HISTORY_MONTHLY[i].no_firms;
+        HISTORY_QUARTERLY[0].no_firm_births     += HISTORY_MONTHLY[i].no_firm_births;
+        HISTORY_QUARTERLY[0].no_firm_deaths     += HISTORY_MONTHLY[i].no_firm_deaths;
+    }
+    //The following quarterly statistics are averages of monthly statistics
+    HISTORY_QUARTERLY[0].employment             = HISTORY_QUARTERLY[0].employment/4,
+    HISTORY_QUARTERLY[0].unemployment_rate      = HISTORY_QUARTERLY[0].unemployment_rate/4;
+    HISTORY_QUARTERLY[0].wages                  = HISTORY_QUARTERLY[0].wages/4;
+    HISTORY_QUARTERLY[0].no_firms               = HISTORY_QUARTERLY[0].no_firms/4;
+    
+    printf("Quarterly data recorded by Eurostat:\n");   
+    printf(" - quarterly GDP: %f\n", HISTORY_QUARTERLY[0].gdp);
+    printf(" - quarterly output: %f\n", HISTORY_QUARTERLY[0].output);
+    printf(" - quarterly average employment: %d\n", HISTORY_QUARTERLY[0].employment);
+    printf(" - quarterly average unemployment rate: %f\n", HISTORY_QUARTERLY[0].unemployment_rate);
+    printf(" - quarterly average wage: %f\n", HISTORY_QUARTERLY[0].wages);
+    printf(" - quarterly average number of firms: %d\n", HISTORY_QUARTERLY[0].no_firms);
+    printf(" - quarterly total number of firm births: %d\n", HISTORY_QUARTERLY[0].no_firm_births);
+    printf(" - quarterly total number of firm deaths: %d\n", HISTORY_QUARTERLY[0].no_firm_deaths);
+    
+    return 0;
 }
 
 
@@ -1164,27 +1164,27 @@ int Eurostat_store_history_quarterly()
  */
 int Eurostat_compute_growth_rates_monthly()
 {
-	//compute monthly growth rates: change over the previous month
-	if(HISTORY_MONTHLY[1].gdp>0.0) 				{MONTHLY_GROWTH_RATES.gdp 						= HISTORY_MONTHLY[0].gdp / HISTORY_MONTHLY[1].gdp -1;}
-	if(HISTORY_MONTHLY[1].output>0.0) 			{MONTHLY_GROWTH_RATES.output 					= HISTORY_MONTHLY[0].output / HISTORY_MONTHLY[1].output  -1;}
-	if(HISTORY_MONTHLY[1].employment>0) 		{MONTHLY_GROWTH_RATES.employment  				= HISTORY_MONTHLY[0].employment / HISTORY_MONTHLY[1].employment  -1;}
-	if(HISTORY_MONTHLY[1].unemployment_rate>0.0){MONTHLY_GROWTH_RATES.unemployment_rate  		= HISTORY_MONTHLY[0].unemployment_rate / HISTORY_MONTHLY[1].unemployment_rate  -1;}
-	if(HISTORY_MONTHLY[1].wages>0.0) 			{MONTHLY_GROWTH_RATES.wages 					= HISTORY_MONTHLY[0].wages / HISTORY_MONTHLY[1].wages  -1;}
-	if(HISTORY_MONTHLY[1].no_firms>0) 			{MONTHLY_GROWTH_RATES.no_firms   				= HISTORY_MONTHLY[0].no_firms / HISTORY_MONTHLY[1].no_firms  -1;}
-	if(HISTORY_MONTHLY[1].no_firm_births>0) 	{MONTHLY_GROWTH_RATES.no_firm_births			= HISTORY_MONTHLY[0].no_firm_births / HISTORY_MONTHLY[1].no_firm_births  -1;}
-	if(HISTORY_MONTHLY[1].no_firm_deaths>0) 	{MONTHLY_GROWTH_RATES.no_firm_deaths			= HISTORY_MONTHLY[0].no_firm_deaths / HISTORY_MONTHLY[1].no_firm_deaths  -1;}	
+    //compute monthly growth rates: change over the previous month
+    if(HISTORY_MONTHLY[1].gdp>0.0)              {MONTHLY_GROWTH_RATES.gdp                       = HISTORY_MONTHLY[0].gdp / HISTORY_MONTHLY[1].gdp -1;}
+    if(HISTORY_MONTHLY[1].output>0.0)           {MONTHLY_GROWTH_RATES.output                    = HISTORY_MONTHLY[0].output / HISTORY_MONTHLY[1].output  -1;}
+    if(HISTORY_MONTHLY[1].employment>0)         {MONTHLY_GROWTH_RATES.employment                = HISTORY_MONTHLY[0].employment / HISTORY_MONTHLY[1].employment  -1;}
+    if(HISTORY_MONTHLY[1].unemployment_rate>0.0){MONTHLY_GROWTH_RATES.unemployment_rate         = HISTORY_MONTHLY[0].unemployment_rate / HISTORY_MONTHLY[1].unemployment_rate  -1;}
+    if(HISTORY_MONTHLY[1].wages>0.0)            {MONTHLY_GROWTH_RATES.wages                     = HISTORY_MONTHLY[0].wages / HISTORY_MONTHLY[1].wages  -1;}
+    if(HISTORY_MONTHLY[1].no_firms>0)           {MONTHLY_GROWTH_RATES.no_firms                  = HISTORY_MONTHLY[0].no_firms / HISTORY_MONTHLY[1].no_firms  -1;}
+    if(HISTORY_MONTHLY[1].no_firm_births>0)     {MONTHLY_GROWTH_RATES.no_firm_births            = HISTORY_MONTHLY[0].no_firm_births / HISTORY_MONTHLY[1].no_firm_births  -1;}
+    if(HISTORY_MONTHLY[1].no_firm_deaths>0)     {MONTHLY_GROWTH_RATES.no_firm_deaths            = HISTORY_MONTHLY[0].no_firm_deaths / HISTORY_MONTHLY[1].no_firm_deaths  -1;}   
 
-	//compute annual growth rates over the previous 12 months
-	if(HISTORY_MONTHLY[12].gdp>0.0) 			{ANNUAL_GROWTH_RATES_MONTHLY.gdp 				= HISTORY_MONTHLY[0].gdp / HISTORY_MONTHLY[12].gdp  -1;}
-	if(HISTORY_MONTHLY[12].output>0.0) 			{ANNUAL_GROWTH_RATES_MONTHLY.output 			= HISTORY_MONTHLY[0].output / HISTORY_MONTHLY[12].output  -1;}
-	if(HISTORY_MONTHLY[12].employment>0) 		{ANNUAL_GROWTH_RATES_MONTHLY.employment  		= HISTORY_MONTHLY[0].employment / HISTORY_MONTHLY[12].employment  -1;}
-	if(HISTORY_MONTHLY[12].unemployment_rate>0) {ANNUAL_GROWTH_RATES_MONTHLY.unemployment_rate 	= HISTORY_MONTHLY[0].unemployment_rate / HISTORY_MONTHLY[12].unemployment_rate  -1;}
-	if(HISTORY_MONTHLY[12].wages>0) 			{ANNUAL_GROWTH_RATES_MONTHLY.wages 				= HISTORY_MONTHLY[0].wages / HISTORY_MONTHLY[12].wages  -1;}
-	if(HISTORY_MONTHLY[12].no_firms>0) 			{ANNUAL_GROWTH_RATES_MONTHLY.no_firms 			= HISTORY_MONTHLY[0].no_firms / HISTORY_MONTHLY[12].no_firms  -1;}
-	if(HISTORY_MONTHLY[12].no_firm_births>0) 	{ANNUAL_GROWTH_RATES_MONTHLY.no_firm_births 	= HISTORY_MONTHLY[0].no_firm_births / HISTORY_MONTHLY[12].no_firm_births  -1;}
-	if(HISTORY_MONTHLY[12].no_firm_deaths>0) 	{ANNUAL_GROWTH_RATES_MONTHLY.no_firm_deaths 	= HISTORY_MONTHLY[0].no_firm_deaths / HISTORY_MONTHLY[12].no_firm_deaths  -1;}
+    //compute annual growth rates over the previous 12 months
+    if(HISTORY_MONTHLY[12].gdp>0.0)             {ANNUAL_GROWTH_RATES_MONTHLY.gdp                = HISTORY_MONTHLY[0].gdp / HISTORY_MONTHLY[12].gdp  -1;}
+    if(HISTORY_MONTHLY[12].output>0.0)          {ANNUAL_GROWTH_RATES_MONTHLY.output             = HISTORY_MONTHLY[0].output / HISTORY_MONTHLY[12].output  -1;}
+    if(HISTORY_MONTHLY[12].employment>0)        {ANNUAL_GROWTH_RATES_MONTHLY.employment         = HISTORY_MONTHLY[0].employment / HISTORY_MONTHLY[12].employment  -1;}
+    if(HISTORY_MONTHLY[12].unemployment_rate>0) {ANNUAL_GROWTH_RATES_MONTHLY.unemployment_rate  = HISTORY_MONTHLY[0].unemployment_rate / HISTORY_MONTHLY[12].unemployment_rate  -1;}
+    if(HISTORY_MONTHLY[12].wages>0)             {ANNUAL_GROWTH_RATES_MONTHLY.wages              = HISTORY_MONTHLY[0].wages / HISTORY_MONTHLY[12].wages  -1;}
+    if(HISTORY_MONTHLY[12].no_firms>0)          {ANNUAL_GROWTH_RATES_MONTHLY.no_firms           = HISTORY_MONTHLY[0].no_firms / HISTORY_MONTHLY[12].no_firms  -1;}
+    if(HISTORY_MONTHLY[12].no_firm_births>0)    {ANNUAL_GROWTH_RATES_MONTHLY.no_firm_births     = HISTORY_MONTHLY[0].no_firm_births / HISTORY_MONTHLY[12].no_firm_births  -1;}
+    if(HISTORY_MONTHLY[12].no_firm_deaths>0)    {ANNUAL_GROWTH_RATES_MONTHLY.no_firm_deaths     = HISTORY_MONTHLY[0].no_firm_deaths / HISTORY_MONTHLY[12].no_firm_deaths  -1;}
 
-	return 0;
+    return 0;
 }
 
 /* \fn: int Eurostat_compute_growth_rates_quarterly()
@@ -1193,25 +1193,25 @@ int Eurostat_compute_growth_rates_monthly()
 int Eurostat_compute_growth_rates_quarterly()
 {
 
-	//compute quarterly growth rates: change over the previous quarter
-	if(HISTORY_QUARTERLY[1].gdp>0.0) 				{QUARTERLY_GROWTH_RATES.gdp 				= HISTORY_QUARTERLY[0].gdp / HISTORY_QUARTERLY[1].gdp  -1;}
-	if(HISTORY_QUARTERLY[1].output>0.0) 			{QUARTERLY_GROWTH_RATES.output 				= HISTORY_QUARTERLY[0].output / HISTORY_QUARTERLY[1].output  -1;}
-	if(HISTORY_QUARTERLY[1].employment>0) 			{QUARTERLY_GROWTH_RATES.employment  		= HISTORY_QUARTERLY[0].employment / HISTORY_QUARTERLY[1].employment  -1;}
-	if(HISTORY_QUARTERLY[1].unemployment_rate>0.0)	{QUARTERLY_GROWTH_RATES.unemployment_rate	= HISTORY_QUARTERLY[0].unemployment_rate / HISTORY_QUARTERLY[1].unemployment_rate  -1;}
-	if(HISTORY_QUARTERLY[1].wages>0.0) 				{QUARTERLY_GROWTH_RATES.wages 				= HISTORY_QUARTERLY[0].wages / HISTORY_QUARTERLY[1].wages  -1;}
-	if(HISTORY_QUARTERLY[1].no_firms>0) 			{QUARTERLY_GROWTH_RATES.no_firms 			= HISTORY_QUARTERLY[0].no_firms / HISTORY_QUARTERLY[1].no_firms  -1;}
-	if(HISTORY_QUARTERLY[1].no_firm_births>0) 		{QUARTERLY_GROWTH_RATES.no_firm_births		= HISTORY_QUARTERLY[0].no_firm_births / HISTORY_QUARTERLY[1].no_firm_births  -1;}
-	if(HISTORY_QUARTERLY[1].no_firm_deaths>0) 		{QUARTERLY_GROWTH_RATES.no_firm_deaths		= HISTORY_QUARTERLY[0].no_firm_deaths / HISTORY_QUARTERLY[1].no_firm_deaths  -1;}
-	
-	//compute annual growth rates over the previous 4 quarters
-	if(HISTORY_QUARTERLY[4].gdp>0.0) 				{ANNUAL_GROWTH_RATES_QUARTERLY.gdp 					= HISTORY_QUARTERLY[0].gdp / HISTORY_QUARTERLY[4].gdp  -1;}
-	if(HISTORY_QUARTERLY[4].output>0.0) 			{ANNUAL_GROWTH_RATES_QUARTERLY.output 				= HISTORY_QUARTERLY[0].output / HISTORY_QUARTERLY[4].output  -1;}
-	if(HISTORY_QUARTERLY[4].employment>0) 			{ANNUAL_GROWTH_RATES_QUARTERLY.employment			= HISTORY_QUARTERLY[0].employment / HISTORY_QUARTERLY[4].employment  -1;}
-	if(HISTORY_QUARTERLY[4].unemployment_rate>0.0)	{ANNUAL_GROWTH_RATES_QUARTERLY.unemployment_rate 	= HISTORY_QUARTERLY[0].unemployment_rate / HISTORY_QUARTERLY[4].unemployment_rate  -1;}
-	if(HISTORY_QUARTERLY[4].wages>0.0) 				{ANNUAL_GROWTH_RATES_QUARTERLY.wages 				= HISTORY_QUARTERLY[0].wages / HISTORY_QUARTERLY[4].wages  -1;}
-	if(HISTORY_QUARTERLY[4].no_firms>0) 			{ANNUAL_GROWTH_RATES_QUARTERLY.no_firms 			= HISTORY_QUARTERLY[0].no_firms / HISTORY_QUARTERLY[4].no_firms  -1;}
-	if(HISTORY_QUARTERLY[4].no_firm_births>0) 		{ANNUAL_GROWTH_RATES_QUARTERLY.no_firm_births 		= HISTORY_QUARTERLY[0].no_firm_births / HISTORY_QUARTERLY[4].no_firm_births  -1;}
-	if(HISTORY_QUARTERLY[4].no_firm_deaths>0) 		{ANNUAL_GROWTH_RATES_QUARTERLY.no_firm_deaths 		= HISTORY_QUARTERLY[0].no_firm_deaths / HISTORY_QUARTERLY[4].no_firm_deaths  -1;}
-	
-	return 0;
+    //compute quarterly growth rates: change over the previous quarter
+    if(HISTORY_QUARTERLY[1].gdp>0.0)                {QUARTERLY_GROWTH_RATES.gdp                 = HISTORY_QUARTERLY[0].gdp / HISTORY_QUARTERLY[1].gdp  -1;}
+    if(HISTORY_QUARTERLY[1].output>0.0)             {QUARTERLY_GROWTH_RATES.output              = HISTORY_QUARTERLY[0].output / HISTORY_QUARTERLY[1].output  -1;}
+    if(HISTORY_QUARTERLY[1].employment>0)           {QUARTERLY_GROWTH_RATES.employment          = HISTORY_QUARTERLY[0].employment / HISTORY_QUARTERLY[1].employment  -1;}
+    if(HISTORY_QUARTERLY[1].unemployment_rate>0.0)  {QUARTERLY_GROWTH_RATES.unemployment_rate   = HISTORY_QUARTERLY[0].unemployment_rate / HISTORY_QUARTERLY[1].unemployment_rate  -1;}
+    if(HISTORY_QUARTERLY[1].wages>0.0)              {QUARTERLY_GROWTH_RATES.wages               = HISTORY_QUARTERLY[0].wages / HISTORY_QUARTERLY[1].wages  -1;}
+    if(HISTORY_QUARTERLY[1].no_firms>0)             {QUARTERLY_GROWTH_RATES.no_firms            = HISTORY_QUARTERLY[0].no_firms / HISTORY_QUARTERLY[1].no_firms  -1;}
+    if(HISTORY_QUARTERLY[1].no_firm_births>0)       {QUARTERLY_GROWTH_RATES.no_firm_births      = HISTORY_QUARTERLY[0].no_firm_births / HISTORY_QUARTERLY[1].no_firm_births  -1;}
+    if(HISTORY_QUARTERLY[1].no_firm_deaths>0)       {QUARTERLY_GROWTH_RATES.no_firm_deaths      = HISTORY_QUARTERLY[0].no_firm_deaths / HISTORY_QUARTERLY[1].no_firm_deaths  -1;}
+    
+    //compute annual growth rates over the previous 4 quarters
+    if(HISTORY_QUARTERLY[4].gdp>0.0)                {ANNUAL_GROWTH_RATES_QUARTERLY.gdp                  = HISTORY_QUARTERLY[0].gdp / HISTORY_QUARTERLY[4].gdp  -1;}
+    if(HISTORY_QUARTERLY[4].output>0.0)             {ANNUAL_GROWTH_RATES_QUARTERLY.output               = HISTORY_QUARTERLY[0].output / HISTORY_QUARTERLY[4].output  -1;}
+    if(HISTORY_QUARTERLY[4].employment>0)           {ANNUAL_GROWTH_RATES_QUARTERLY.employment           = HISTORY_QUARTERLY[0].employment / HISTORY_QUARTERLY[4].employment  -1;}
+    if(HISTORY_QUARTERLY[4].unemployment_rate>0.0)  {ANNUAL_GROWTH_RATES_QUARTERLY.unemployment_rate    = HISTORY_QUARTERLY[0].unemployment_rate / HISTORY_QUARTERLY[4].unemployment_rate  -1;}
+    if(HISTORY_QUARTERLY[4].wages>0.0)              {ANNUAL_GROWTH_RATES_QUARTERLY.wages                = HISTORY_QUARTERLY[0].wages / HISTORY_QUARTERLY[4].wages  -1;}
+    if(HISTORY_QUARTERLY[4].no_firms>0)             {ANNUAL_GROWTH_RATES_QUARTERLY.no_firms             = HISTORY_QUARTERLY[0].no_firms / HISTORY_QUARTERLY[4].no_firms  -1;}
+    if(HISTORY_QUARTERLY[4].no_firm_births>0)       {ANNUAL_GROWTH_RATES_QUARTERLY.no_firm_births       = HISTORY_QUARTERLY[0].no_firm_births / HISTORY_QUARTERLY[4].no_firm_births  -1;}
+    if(HISTORY_QUARTERLY[4].no_firm_deaths>0)       {ANNUAL_GROWTH_RATES_QUARTERLY.no_firm_deaths       = HISTORY_QUARTERLY[0].no_firm_deaths / HISTORY_QUARTERLY[4].no_firm_deaths  -1;}
+    
+    return 0;
 }
