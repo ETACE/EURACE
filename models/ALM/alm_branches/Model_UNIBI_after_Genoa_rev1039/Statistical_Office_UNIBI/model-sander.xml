@@ -414,11 +414,21 @@ including several micro data.</description>
 <function><name>Eurostat_read_tax_rates</name>
 <description></description>
 <currentState>Start_Eurostat_Tax_Data</currentState>
-<nextState>Start_Eurostat_Firm_Data</nextState>
-<condition><time><period>yearly</period><phase>1</phase></time></condition>
+<nextState>AA</nextState>
+<condition><time><period>yearly</period><phase>0</phase></time></condition>
 <inputs>
 <input><messageName>government_tax_rates</messageName></input>
 </inputs>
+</function>
+
+				
+<function><name>Eurostat_send_data_to_government</name>
+<description>Eurostat sends the data to the government</description>
+<currentState>AA</currentState>
+<nextState>Start_Eurostat_Firm_Data</nextState>
+<outputs>
+<output><messageName>mean_wage_for_government</messageName></output>
+</outputs>
 </function>
 
 <!-- new loop: send_data -->

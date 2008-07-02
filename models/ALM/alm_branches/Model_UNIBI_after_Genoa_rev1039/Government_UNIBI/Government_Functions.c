@@ -8,6 +8,19 @@
 
 
 
+int Government_read_data_from_Eurostat()
+{
+START_MEAN_WAGE_FOR_GOVERNMENT_MESSAGE_LOOP
+
+COUNTRY_WIDE_MEAN_WAGE = mean_wage_for_government_message->mean_wage;
+
+
+FINISH_MEAN_WAGE_FOR_GOVERNMENT_MESSAGE_LOOP
+
+return 0;	
+}
+
+
 int Government_read_tax_payment()
 {
 	
@@ -42,8 +55,19 @@ int Government_send_unemployment_benefit_payment()
 	
 	NUM_UNEMPLOYED++;
 	//Compute the individual unemployment benefit payment as a fraction of the last labour income
+	
+	
+	if(unemployment_notification_message->last_labour_income*UNEMPLOYMENT_BENEFIT_PAYMENT > COUNTRY_WIDE_MEAN_WAGE*0.5 )
+	{
 	unemployment_payment = unemployment_notification_message->last_labour_income*UNEMPLOYMENT_BENEFIT_PAYMENT;
 		//Send message to household
+	}else
+		
+	{
+		
+		unemployment_payment =  COUNTRY_WIDE_MEAN_WAGE*0.5;	
+		
+	}
 		add_unemployment_benefit_message(ID,unemployment_notification_message->id,unemployment_payment);
 		
 	TOTAL_UNEMPLOYMENT_BENEFIT_PAYMENT+=unemployment_payment; 	

@@ -24,7 +24,7 @@
 #define PRINT_LOG 1
 
 /*Number of Households*/
-#define NO_HOUSEHOLDS 400
+#define NO_HOUSEHOLDS 1600
 
 /*Strenght of logit*/
 #define GAMMA -2
@@ -36,7 +36,7 @@
 #define BETA 0.338
 
 /*brief Dividend rate of consumption goods producers. */
-#define DIVIDEND_RATE 0.3
+#define DIVIDEND_RATE 0.4
 
 /*brief deprication rate. */
 #define DEPRECIATION_RATE 0.01
@@ -68,7 +68,7 @@
 #define region_cost 0.2
 
 /*calculatory cost of storing one unit over one period*/
-#define INVENTORY_COSTS_PER_UNIT 0
+#define INVENTORY_COSTS_PER_UNIT 2
 
 /*percent of employees who are searching for a new job*/
 #define ON_THE_JOB_SEARCH_RATE 10

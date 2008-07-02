@@ -51,15 +51,15 @@ int main(int argc, char ** argv)
 	
 	/*Defining the geographical space as a rectangular grid  */	
 	
-	int num_regions_X=3;/*Number of columns*/
-	int num_regions_Y=3;/*Number of regions*/
+	int num_regions_X=2;/*Number of columns*/
+	int num_regions_Y=1;/*Number of regions*/
 	int num_regions = num_regions_X*num_regions_Y; /*number of regions*/
 	
 	
-	int total_households = 400;/*number of households in the economy*/
+	int total_households = 1600;/*number of households in the economy*/
 	int households_per_region = total_households/num_regions; 
 
-	int total_firms  = 10; /*total_firms modulo num_regions should be 0*/
+	int total_firms  = 40; /*total_firms modulo num_regions should be 0*/
 	int total_IGfirms = 1;
 	int total_market_research = 1;
 	int total_malls = num_regions;  /*one mall per region*/
@@ -71,9 +71,9 @@ int main(int argc, char ** argv)
 	double 	tax_rate_corporate = 0.25;
 	double	tax_rate_hh_labour = 0.25;
 	double	tax_rate_hh_capital =0.25;
-	double	unemployment_benefit_payment = 0.6;
+	double	unemployment_benefit_payment = 0.8;
 	double	payment_account_government =100.0;
-	double 	payment_account_household = 1;
+	double 	payment_account_household = 10;
 
 	double	capital_good_price = 17.0;
 	double productivity_best_practice = 1.0;  //Productivity of the technology offered ba the IG firm
@@ -171,10 +171,10 @@ int main(int argc, char ** argv)
 
 		//Total production volume for a single firm
 			double total_production_quantity[2][1]=
-						{58.0,58.0};
+						{54.0,54.0};
 			//This defines the initial capital stock of firm depending on the region.
 			double total_units_capital[2][1]=
-				                            {2.0,2.0};
+				                            {109.0,109.0};
 			//Firm's starting value of productivity of the capital stock
 			double technology[2][1]=
 							{1.0,1.0};
@@ -770,6 +770,7 @@ num_start = num;
 		sprintf(data, "%f",0.0);		print_tag("total_unemployment_benefit_payment", data, file);
 		sprintf(data, "%f",0.0);	print_tag("total_interest_payment", data, file);
 		sprintf(data, "%f", 0.0);	print_tag("total_debt", data, file);
+		sprintf(data, "%f", 1.0);	print_tag("country_wide_mean_wage", data, file);
 		sprintf(data, "%f", tax_rate_corporate);	print_tag("tax_rate_corporate", data, file);
 		sprintf(data, "%f",tax_rate_hh_labour);	print_tag("tax_rate_hh_labour", data, file);
 		sprintf(data, "%f",tax_rate_hh_capital);	print_tag("tax_rate_hh_capital", data, file);
