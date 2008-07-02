@@ -196,3 +196,21 @@ planned_value_capital_stock
 planned_total_assets
 total payments
 ----------------------------------------------------------------------
+Sander, rev 10
+
+Merged:
+
+ - Government:
+   model.xml from Philipp (include )
+ 
+ - Eurostat:
+   model-sander.xml from Sander (includes history items)
+   replaces model.xml
+   Eurostat_Functions-sander.c replaces Eurostat_Functions.c
+   
+ - Statistical_Office:
+   Firm_Statistics_Functions-sander.c replaces Firm_Statistics_Functions.c
+   includes AGE in firm message
+   
+ Updated: model.xml headers: pre-Sheffield, date, authors
+----------------------------------------------------------------------

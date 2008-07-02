@@ -3,16 +3,14 @@
 <xmodel version="2">
 
 <name>Credit_Market</name>
-<version>after-Genoa</version>
-<description></description>
+<version>pre-Sheffield, merged UNIBI model, 02/07/2008</version>
+<description>Authors: Philipp Harting, Simon Gemkow</description>
 
 <environment>
 
 <functionFiles>
 <file>Bank_Credit_Functions_Dummy.c</file>
 <file>Firm_Credit_Functions_Dummy.c</file>
-<!-- <file>Bank_credit_functions_empty.c</file>  -->
-<!-- <file>Firm_credit_functions_empty.c</file> -->
 </functionFiles>
 
 <dataTypes>
