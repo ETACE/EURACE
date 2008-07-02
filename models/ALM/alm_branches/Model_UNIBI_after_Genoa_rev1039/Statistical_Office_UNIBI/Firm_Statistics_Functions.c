@@ -2,21 +2,20 @@
 #include "../Firm_agent_header.h"
 #include "../my_library_header.h"
 
-
-
-
 /** \fn Firm_send_data_to_Eurostat()
  * \brief Firms send data to Market Research: controlling results and creating macro data
  */
 int Firm_send_data_to_Eurostat()
 {
+	//Increase the age of the firm in months
+	AGE++;
 	
 	add_firm_send_data_message(ID, REGION_ID, VACANCIES, NO_EMPLOYEES,
 	NO_EMPLOYEES_SKILL_1, NO_EMPLOYEES_SKILL_2, NO_EMPLOYEES_SKILL_3, NO_EMPLOYEES_SKILL_4,	NO_EMPLOYEES_SKILL_5, 
 	MEAN_WAGE, MEAN_SPECIFIC_SKILLS,
 	AVERAGE_S_SKILL_OF_1, AVERAGE_S_SKILL_OF_2, AVERAGE_S_SKILL_OF_3, AVERAGE_S_SKILL_OF_4, AVERAGE_S_SKILL_OF_5,
 	CUM_REVENUE, CAPITAL_COSTS,	NET_EARNINGS, TOTAL_DEBT, TOTAL_ASSETS, EQUITY,
-	CUM_TOTAL_SOLD_QUANTITY, OUTPUT, PLANNED_OUTPUT);
+	CUM_TOTAL_SOLD_QUANTITY, OUTPUT, PLANNED_OUTPUT, AGE);
 
 	//printf("In Firm_send_data: Firm %d OUTPUT: %.2f\n", ID, OUTPUT);
 	//printf("In Firm_send_data: Firm %d PLANNED_OUTPUT: %.2f\n", ID, PLANNED_OUTPUT);
