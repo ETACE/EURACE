@@ -415,13 +415,13 @@ including several micro data.</description>
 <description></description>
 <currentState>Start_Eurostat_Tax_Data</currentState>
 <nextState>AA</nextState>
-<condition><time><period>yearly</period><phase>0</phase></time></condition>
+<condition><time><period>yearly</period><phase>1</phase></time></condition>
 <inputs>
 <input><messageName>government_tax_rates</messageName></input>
 </inputs>
 </function>
 
-				
+                
 <function><name>Eurostat_send_data_to_government</name>
 <description>Eurostat sends the data to the government</description>
 <currentState>AA</currentState>
@@ -453,15 +453,15 @@ including several micro data.</description>
 <function><name>Eurostat_idle</name>
 <description></description>
 <currentState>01</currentState>
-<!--<nextState>end_Eurostat</nextState>--> 							<!--Toggle this if you want to turn OFF datastorage functionality --> 
-<nextState>Start_Eurostat_Monthly_Datastorage</nextState>  			<!--Toggle this if you want to turn ON datastorage functionality -->
+<!--<nextState>end_Eurostat</nextState>-->                          <!--Toggle this if you want to turn OFF datastorage functionality --> 
+<nextState>Start_Eurostat_Monthly_Datastorage</nextState>           <!--Toggle this if you want to turn ON datastorage functionality -->
 <condition><not><time><period>monthly</period><phase>0</phase></time></not></condition>
 </function>
 
 <function><name>Eurostat_calculate_data</name>
 <description>Eurostat calculates the global and regional macro data based on the received micro data</description>
 <currentState>01</currentState>
-<!--<nextState>end_Eurostat</nextState>-->					<!--Toggle this if you want to turn OFF datastorage functionality -->
+<!--<nextState>end_Eurostat</nextState>-->                  <!--Toggle this if you want to turn OFF datastorage functionality -->
 <nextState>Start_Eurostat_Monthly_Datastorage</nextState>   <!--Toggle this if you want to turn ON datastorage functionality -->
 <condition><time><period>monthly</period><phase>0</phase></time></condition>
 <inputs>
@@ -475,16 +475,16 @@ including several micro data.</description>
 <function><name>Eurostat_store_history_monthly</name>
 <description>Eurostat stores monthly macro data in its history struct</description>
 <currentState>Start_Eurostat_Monthly_Datastorage</currentState>
-<nextState>02</nextState>							<!--Toggle this if you want to turn ON growthrates functionality -->
+<nextState>02</nextState>                           <!--Toggle this if you want to turn ON growthrates functionality -->
 <!--<nextState>Start_Eurostat_Quarterly_Datastorage</nextState> Toggle this if you want to turn OFF growthrates functionality -->
 <condition>
-	<lhs>
-		<time><period>monthly</period><phase>0</phase></time>
-	</lhs>
-	<op>AND</op>
-	<rhs>
-		<not><time><period>iteration</period><phase>1</phase></time></not>
-	</rhs>
+    <lhs>
+        <time><period>monthly</period><phase>0</phase></time>
+    </lhs>
+    <op>AND</op>
+    <rhs>
+        <not><time><period>iteration</period><phase>1</phase></time></not>
+    </rhs>
 </condition>
 </function>
 
@@ -499,13 +499,13 @@ including several micro data.</description>
 <currentState>Start_Eurostat_Monthly_Datastorage</currentState>
 <nextState>Start_Eurostat_Quarterly_Datastorage</nextState>
 <condition>
-	<lhs>
-		<not><time><period>monthly</period><phase>0</phase></time></not>
-	</lhs>
-	<op>OR</op>
-	<rhs>
-		<time><period>iteration</period><phase>1</phase></time>
-	</rhs>
+    <lhs>
+        <not><time><period>monthly</period><phase>0</phase></time></not>
+    </lhs>
+    <op>OR</op>
+    <rhs>
+        <time><period>iteration</period><phase>1</phase></time>
+    </rhs>
 </condition>
 </function>
 
@@ -514,16 +514,16 @@ including several micro data.</description>
 <function><name>Eurostat_store_history_quarterly</name>
 <description>Eurostat stores quarterly macro data in its history struct</description>
 <currentState>Start_Eurostat_Quarterly_Datastorage</currentState>
-<nextState>03</nextState>					<!--Toggle this if you want to turn ON growthrates functionality -->
-<!--<nextState>end_Eurostat</nextState>					Toggle this if you want to turn OFF growthrates functionality -->
+<nextState>03</nextState>                   <!--Toggle this if you want to turn ON growthrates functionality -->
+<!--<nextState>end_Eurostat</nextState>                 Toggle this if you want to turn OFF growthrates functionality -->
 <condition>
-	<lhs>
-		<time><period>quarterly</period><phase>0</phase></time>
-	</lhs>
-	<op>AND</op>
-	<rhs>
-		<not><time><period>iteration</period><phase>1</phase></time></not>
-	</rhs>
+    <lhs>
+        <time><period>quarterly</period><phase>0</phase></time>
+    </lhs>
+    <op>AND</op>
+    <rhs>
+        <not><time><period>iteration</period><phase>1</phase></time></not>
+    </rhs>
 </condition>
 </function>
 
@@ -538,13 +538,13 @@ including several micro data.</description>
 <currentState>Start_Eurostat_Quarterly_Datastorage</currentState>
 <nextState>end_Eurostat</nextState>
 <condition>
-	<lhs>
-		<not><time><period>quarterly</period><phase>0</phase></time></not>
-	</lhs>
-	<op>OR</op>
-	<rhs>
-		<time><period>iteration</period><phase>1</phase></time>
-	</rhs>
+    <lhs>
+        <not><time><period>quarterly</period><phase>0</phase></time></not>
+    </lhs>
+    <op>OR</op>
+    <rhs>
+        <time><period>iteration</period><phase>1</phase></time>
+    </rhs>
 </condition>
 </function>
 

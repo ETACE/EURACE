@@ -40,7 +40,7 @@
 <description></description>
 <currentState>start_Government</currentState>
 <nextState>00</nextState>
-<condition><not><time><period>yearly</period><phase>0</phase></time></not></condition>
+<condition><not><time><period>yearly</period><phase>1</phase></time></not></condition>
 </function>
 
 <function>
@@ -48,7 +48,7 @@
 <description></description>
 <currentState>start_Government</currentState>
 <nextState>00A</nextState>
-<condition><time><period>yearly</period><phase>0</phase></time></condition>
+<condition><time><period>yearly</period><phase>1</phase></time></condition>
 <outputs>
 <output><messageName>government_tax_rates</messageName></output>
 </outputs>
@@ -71,6 +71,7 @@
 <description></description>
 <currentState>00</currentState>
 <nextState>01</nextState>
+<condition><time><period>monthly</period><phase>1</phase></time></condition>
 <inputs>
 <input><messageName>unemployment_notification</messageName>
 <filter><lhs><value>a.id</value></lhs><op>EQ</op><rhs><value>m.gov_id</value></rhs></filter>
@@ -86,7 +87,7 @@
 <description></description>
 <currentState>00</currentState>
 <nextState>01</nextState>
-<condition><not><time><period>monthly</period><phase>0</phase></time></not></condition>
+<condition><not><time><period>monthly</period><phase>1</phase></time></not></condition>
 </function>
 <function>
 <name>Government_read_tax_payment</name>

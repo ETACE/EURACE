@@ -19,8 +19,8 @@
 <model><file>Statistical_Office_UNIBI/model-sander.xml</file><enabled>true</enabled></model> 	<!-- Uses Phase:1 and Phase:0  -->
 <model><file>FINANCIAL_UG/model.xml</file><enabled>false</enabled></model>
 <model><file>Financial_UNIBI/model-dummy.xml</file><enabled>false</enabled></model>
-<model><file>Government_UNIBI/model.xml</file><enabled>false</enabled></model>					<!-- Uses Phase:0 -->
-<model><file>Government_UNIBI/model-sander.xml</file><enabled>true</enabled></model>			<!-- Uses Phase:1 -->
+<model><file>Government_UNIBI/model.xml</file><enabled>true</enabled></model>					<!-- Uses Phase:0 -->
+<model><file>Government_UNIBI/model-sander.xml</file><enabled>false</enabled></model>			<!-- Uses Phase:1 -->
 </models>
 
 <environment>

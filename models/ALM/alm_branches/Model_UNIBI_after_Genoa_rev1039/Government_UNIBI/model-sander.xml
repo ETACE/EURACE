@@ -59,6 +59,7 @@
 <description></description>
 <currentState>00</currentState>
 <nextState>01</nextState>
+<condition><time><period>monthly</period><phase>1</phase></time></condition>
 <inputs>
 <input><messageName>unemployment_notification</messageName>
 <filter><lhs><value>a.id</value></lhs><op>EQ</op><rhs><value>m.gov_id</value></rhs></filter>
