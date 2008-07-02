@@ -1,6 +1,8 @@
 <states>
 <itno>0</itno>
+<environment>
 <INNOVATION_PROBABILITY>10</INNOVATION_PROBABILITY>
+</environment>
 <xagent>
 <name>Firm</name>
 <id>1</id>
