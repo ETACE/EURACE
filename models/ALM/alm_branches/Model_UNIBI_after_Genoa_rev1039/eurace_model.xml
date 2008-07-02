@@ -3,8 +3,8 @@
 <xmodel version="2">
 
 <name>Eurace</name>
-<version>pre-Genoa</version>
-<description></description>
+<version>pre-Sheffield</version>
+<description>Authors: Simon Coakley, Simon Gemkow, Philipp Harting, Sander van der Hoog</description>
 
 <!-- Models to include in Eurace model -->
 <models>
@@ -25,13 +25,21 @@
 
 <environment>
 
+<constants>
+<variable>
+<type>int</type>
+<name>INNOVATION_PROBABILITY</name>
+<description></description>
+</variable>
+</constants>
+ 
+
 <functionFiles>
 <file>my_library_functions.c</file>
 <file>Firm_Library_Functions.c</file>
 <file>Household_Library_Functions.c</file>
 </functionFiles>
- 
- 
+  
 <timeUnits>
 
 <timeUnit>
