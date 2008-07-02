@@ -62,6 +62,15 @@ int Eurostat_Initialization()
     return 0;
         
 }
+   
+int Eurostat_send_data_to_government()
+{
+	printf("AVERAGE_WAGE %f\n",AVERAGE_WAGE);
+add_mean_wage_for_government_message(1,AVERAGE_WAGE);
+
+return 0;
+}
+
 /** \Eurostat_send_data()
  * \brief Eurostat send data: specific skills ...
  */
@@ -83,6 +92,9 @@ int Eurostat_send_data()
 
     
     }
+    
+    
+    
 
     
 

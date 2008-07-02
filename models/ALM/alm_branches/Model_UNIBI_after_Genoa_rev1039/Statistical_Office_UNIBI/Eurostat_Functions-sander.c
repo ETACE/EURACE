@@ -36,6 +36,18 @@ int Eurostat_Initialization()
     return 0;
         
 }
+
+/** \Eurostat_send_data()
+ * \brief Eurostat send data: mean wage  ...
+ */
+int Eurostat_send_data_to_government()
+{
+	
+add_mean_wage_for_government_message(1,AVERAGE_WAGE);
+
+return 0;
+}
+
 /** \Eurostat_send_data()
  * \brief Eurostat send data: specific skills ...
  */
