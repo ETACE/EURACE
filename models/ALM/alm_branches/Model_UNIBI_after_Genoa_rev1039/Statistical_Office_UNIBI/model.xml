@@ -618,15 +618,7 @@ including several micro data.</description>
 </variables>
 </message>
 
-<message>
-<name>num_unemployed</name>
-<description></description>
-<variables>
-<variable><type>int</type><name>gov_id</name><description></description></variable>
-<variable><type>int</type><name>num_unemployed</name><description></description></variable>
 
-</variables>
-</message>
 </messages>
 
 </xmodel>
