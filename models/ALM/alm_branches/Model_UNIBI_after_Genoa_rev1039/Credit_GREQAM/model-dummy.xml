@@ -3,14 +3,14 @@
 <xmodel version="2">
 
 <name>Credit_Market</name>
-<version>after-Genoa</version>
-<description></description>
+<version>pre-Sheffield, merged UNIBI model, 02/07/2008</version>
+<description>Authors: Philipp Harting, Simon Gemkow, Sander van der Hoog</description>
 
 <environment>
 
 <functionFiles>
-<file>Bank_Credit_Functions_sander.c</file>
-<file>Firm_Credit_Functions_sander.c</file>
+<file>Bank_Credit_Functions_GREQAM.c</file>
+<file>Firm_Credit_Functions_GREQAM.c</file>
 </functionFiles>
 
 <dataTypes>
