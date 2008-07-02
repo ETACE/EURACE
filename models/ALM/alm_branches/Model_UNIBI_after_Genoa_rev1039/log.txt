@@ -196,9 +196,9 @@ planned_value_capital_stock
 planned_total_assets
 total payments
 ----------------------------------------------------------------------
-Sander, rev 10
+Sander, rev 1087-1090
 
-Merged:
+* Merged:
 
  - Government:
    model.xml from Philipp (include )
@@ -212,5 +212,7 @@ Merged:
    Firm_Statistics_Functions-sander.c replaces Firm_Statistics_Functions.c
    includes AGE in firm message
    
- Updated: model.xml headers: pre-Sheffield, date, authors
+* Updated: model.xml headers: pre-Sheffield, date, authors
+
+* Dummy Credit_GREQAM is now separate from Credit_UNIBI
 ----------------------------------------------------------------------
