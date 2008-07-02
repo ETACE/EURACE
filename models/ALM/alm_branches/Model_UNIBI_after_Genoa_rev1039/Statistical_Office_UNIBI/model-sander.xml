@@ -3,15 +3,15 @@
 <xmodel version="2">
 
 <name>Statistical_Office</name>
-<version>pre-Genoa</version>
-<description></description>
+<version>pre-Sheffield</version>
+<description>Authors: Simon Gemkow, Philipp Harting, Sander van der Hoog</description>
 
 <environment>
 
 <functionFiles>
 <file>Firm_Statistics_Functions-sander.c</file>
 <file>Household_Statistics_Functions.c</file>
-<file>Eurostat_Functions-sander.c</file>
+<file>Eurostat_Functions.c</file>
 <file>IGFirm_Statistics_Functions.c</file>
 </functionFiles>
 
