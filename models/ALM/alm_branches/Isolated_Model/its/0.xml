@@ -1,7 +1,6 @@
 <states>
 <itno>0</itno>
 <environment>
-<!--<msgdata>{1.0,0.0,0.0,0.0}<msgdata>-->
 <!--<print_log>1</print_log>-->
 
 <!--<day>iteration_loop</day>-->
@@ -35,7 +34,7 @@
 <!--<innovation_probability>10</innovation_probability>-->
 <!--<productivity_progress>0.05</productivity_progress>-->
 
-<!--<MSGDATA>{1.0,0.0,0.0,0.0}<MSGDATA> -->
+
 <PRINT_LOG>0</PRINT_LOG>
 
 <DAY>iteration_loop</DAY>
