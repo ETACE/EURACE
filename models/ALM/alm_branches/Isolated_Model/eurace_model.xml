@@ -23,7 +23,6 @@
 
 <environment>
 <constants>
-<!-- <variable><type>char</type><name>MSGDATA[15]</name><description>String "1.0,0.0,0.0,0.0", The additional data that messages need when sent.</description></variable> -->
 <variable><type>int</type><name>PRINT_LOG</name><description>1, A flag to print log to terminal.</description></variable>
 
 <variable><type>int</type><name>DAY</name><description>iteration_loop, The day count.</description></variable>
@@ -31,6 +30,8 @@
 <variable><type>int</type><name>MONTH</name><description>20, Number of days in a month.</description></variable>
 <variable><type>int</type><name>QUARTER</name><description>60, The number of days in a quarter.</description></variable>
 <variable><type>int</type><name>YEAR</name><description>240, The number of days in a year.</description></variable>
+
+<variable><type>int</type><name>CONST_NUMBER_OF_BANKS</name><description>Number of banks, used by PopGUI to initialize arrays</description></variable>
 
 <variable><type>int</type><name>GAMMA</name><description>-2, Strength of logit rule for consumption</description></variable>
 <variable><type>double</type><name>ALPHA</name><description>0.662, Parameter for production function.</description></variable>

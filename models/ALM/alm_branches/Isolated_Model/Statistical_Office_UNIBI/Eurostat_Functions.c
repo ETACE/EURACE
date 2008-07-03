@@ -1080,16 +1080,18 @@ int Eurostat_store_history_monthly()
     HISTORY_MONTHLY[0].no_firm_births = NO_FIRM_BIRTHS; 
     HISTORY_MONTHLY[0].no_firm_deaths = NO_FIRM_DEATHS; 
 
-    printf("Monthly data recorded by Eurostat:\n");
-    printf(" - monthly GDP: %f\n", HISTORY_MONTHLY[0].gdp);
-    printf(" - monthly output: %f\n", HISTORY_MONTHLY[0].output);
-    printf(" - monthly average employment: %d\n", HISTORY_MONTHLY[0].employment);
-    printf(" - monthly average unemployment rate: %f\n", HISTORY_MONTHLY[0].unemployment_rate);
-    printf(" - monthly average wage: %f\n", HISTORY_MONTHLY[0].wages);
-    printf(" - monthly average number of firms: %d\n", HISTORY_MONTHLY[0].no_firms);
-    printf(" - monthly total number of firm births: %d\n", HISTORY_MONTHLY[0].no_firm_births);
-    printf(" - monthly total number of firm deaths: %d\n", HISTORY_MONTHLY[0].no_firm_deaths);
-    
+    if (PRINT_LOG)
+    {
+	    printf("Monthly data recorded by Eurostat:\n");
+	    printf(" - monthly GDP: %f\n", HISTORY_MONTHLY[0].gdp);
+	    printf(" - monthly output: %f\n", HISTORY_MONTHLY[0].output);
+	    printf(" - monthly average employment: %d\n", HISTORY_MONTHLY[0].employment);
+	    printf(" - monthly average unemployment rate: %f\n", HISTORY_MONTHLY[0].unemployment_rate);
+	    printf(" - monthly average wage: %f\n", HISTORY_MONTHLY[0].wages);
+	    printf(" - monthly average number of firms: %d\n", HISTORY_MONTHLY[0].no_firms);
+	    printf(" - monthly total number of firm births: %d\n", HISTORY_MONTHLY[0].no_firm_births);
+	    printf(" - monthly total number of firm deaths: %d\n", HISTORY_MONTHLY[0].no_firm_deaths);
+    }    
     
     return 0;
 }
@@ -1144,15 +1146,18 @@ int Eurostat_store_history_quarterly()
     HISTORY_QUARTERLY[0].wages                  = HISTORY_QUARTERLY[0].wages/4;
     HISTORY_QUARTERLY[0].no_firms               = HISTORY_QUARTERLY[0].no_firms/4;
     
-    printf("Quarterly data recorded by Eurostat:\n");   
-    printf(" - quarterly GDP: %f\n", HISTORY_QUARTERLY[0].gdp);
-    printf(" - quarterly output: %f\n", HISTORY_QUARTERLY[0].output);
-    printf(" - quarterly average employment: %d\n", HISTORY_QUARTERLY[0].employment);
-    printf(" - quarterly average unemployment rate: %f\n", HISTORY_QUARTERLY[0].unemployment_rate);
-    printf(" - quarterly average wage: %f\n", HISTORY_QUARTERLY[0].wages);
-    printf(" - quarterly average number of firms: %d\n", HISTORY_QUARTERLY[0].no_firms);
-    printf(" - quarterly total number of firm births: %d\n", HISTORY_QUARTERLY[0].no_firm_births);
-    printf(" - quarterly total number of firm deaths: %d\n", HISTORY_QUARTERLY[0].no_firm_deaths);
+    if (PRINT_LOG)
+    {
+	    printf("Quarterly data recorded by Eurostat:\n");   
+	    printf(" - quarterly GDP: %f\n", HISTORY_QUARTERLY[0].gdp);
+	    printf(" - quarterly output: %f\n", HISTORY_QUARTERLY[0].output);
+	    printf(" - quarterly average employment: %d\n", HISTORY_QUARTERLY[0].employment);
+	    printf(" - quarterly average unemployment rate: %f\n", HISTORY_QUARTERLY[0].unemployment_rate);
+	    printf(" - quarterly average wage: %f\n", HISTORY_QUARTERLY[0].wages);
+	    printf(" - quarterly average number of firms: %d\n", HISTORY_QUARTERLY[0].no_firms);
+	    printf(" - quarterly total number of firm births: %d\n", HISTORY_QUARTERLY[0].no_firm_births);
+	    printf(" - quarterly total number of firm deaths: %d\n", HISTORY_QUARTERLY[0].no_firm_deaths);
+    }
     
     return 0;
 }

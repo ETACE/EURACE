@@ -1,5 +1,4 @@
 //FLAME
-msgdata 1.0, 0.0, 0.0, 0.0
 print_log 1
 
 day iteration_loop
@@ -36,7 +35,6 @@ delivery_prob_if_critical_stock_0 25
 innovation_probability 10
 productivity_progress 0.05
 
-MSGDATA 1.0, 0.0, 0.0, 0.0
 PRINT_LOG 1
 
 DAY iteration_loop
@@ -73,8 +71,6 @@ PRODUCTIVITY_PROGRESS 0.05
 
 MODEL.XML
 =========
-
-<!--<variable><type>char[15]</type><name>msgdata</name><description>String "1.0,0.0,0.0,0.0", The additional data that messages need when sent.</description></variable>-->
 <!--<variable><type>int</type><name>print_log</name><description>1, A flag to print log to terminal.</description></variable>-->
 
 <!--<variable><type>int</type><name>day</name><description>iteration_loop, The day count.</description></variable>-->
@@ -110,7 +106,6 @@ MODEL.XML
 <!--<variable><type>int</type><name>innovation_probability</name><description>10</description></variable>-->
 <!--<variable><type>double</type><name>productivity_progress</name><description>0.05</description></variable>-->
 
-<!--<variable><type>char[15]</type><name>MSGDATA</name><description>String "1.0,0.0,0.0,0.0", The additional data that messages need when sent.</description></variable>-->
 <variable><type>int</type><name>PRINT_LOG</name><description>1, A flag to print log to terminal.</description></variable>
 
 <variable><type>int</type><name>DAY</name><description>iteration_loop, The day count.</description></variable>
@@ -149,7 +144,6 @@ MODEL.XML
 
 0.XML
 ======
-<!--<MSGDATA>{1.0,0.0,0.0,0.0}<MSGDATA>-->
 <PRINT_LOG>1</PRINT_LOG>
 
 <DAY>iteration_loop</DAY>
@@ -185,7 +179,6 @@ MODEL.XML
 <INNOVATION_PROBABILITY>10</INNOVATION_PROBABILITY>
 <PRODUCTIVITY_PROGRESS>0.05</PRODUCTIVITY_PROGRESS>
 
-<!--<msgdata>{1.0,0.0,0.0,0.0}<msgdata>-->
 <!--<print_log>1</print_log>-->
 
 <!--<day>iteration_loop</day>-->

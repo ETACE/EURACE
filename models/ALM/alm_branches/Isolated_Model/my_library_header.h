@@ -3,14 +3,6 @@
  * \brief Header for user created library functions.
  */
 
-/** \def MSGDATA
- * \brief The additional data that messages need when sent. */
-#define MSGDATA 1.0, 0.0, 0.0, 0.0
-
-/** \def PRINT_LOG
- * \brief A flag to print log to terminal. */
-//#define PRINT_LOG 1
-
 int first_day_of_month();
 int not_first_day_of_month();
 int last_day_of_month();
