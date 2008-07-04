@@ -113,6 +113,7 @@
 <name>history_item</name>
 <description>Used by Eurostat to store history data</description>
 <variables>
+<variable><type>double</type><name>inflation_rate</name><description></description></variable>
 <variable><type>double</type><name>gdp</name><description></description></variable>
 <variable><type>double</type><name>output</name><description></description></variable>
 <variable><type>int</type><name>employment</name><description></description></variable>
@@ -356,6 +357,7 @@ including several micro data.</description>
 <variable><type>tax_rates_item</type><name>government_tax_rates[27]</name><description></description></variable>
 
 <!-- Data for firm balance sheets -->
+<variable><type>double</type><name>inflation_rate</name><description>Inflation_rate: percentage change in a price index (that is measured as the weighted price across all firms, all malls, using as weights the firms' market shares).</description></variable>
 <variable><type>double</type><name>gdp</name><description>GDP = Consumption + Investments (measured at firms, sum of cum_revenues + investment_costs)</description></variable>
 <variable><type>double</type><name>total_earnings</name><description>Total profits across firms (sum of net_earnings)</description></variable>
 <variable><type>double</type><name>total_debt</name><description>Total debts across firms (sum of total_debt)</description></variable>

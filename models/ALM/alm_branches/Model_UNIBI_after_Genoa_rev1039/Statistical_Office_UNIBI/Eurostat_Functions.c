@@ -1025,6 +1025,7 @@ int Eurostat_read_tax_rates()
 
       struct history_item
       {
+      		double inflation_rate;
             double gdp;
             double output;
             double employment;
@@ -1060,7 +1061,9 @@ int Eurostat_store_history_monthly()
      */
     for (i=12; i>0; i--)
     {
-      HISTORY_MONTHLY[i].gdp = HISTORY_MONTHLY[i-1].gdp;    //t-i-1 gets filled with value from t-i
+  	//t-i-1 gets filled with value from t-i
+      HISTORY_MONTHLY[i].inflation_rate = HISTORY_MONTHLY[i-1].inflation_rate;
+      HISTORY_MONTHLY[i].gdp = HISTORY_MONTHLY[i-1].gdp;
       HISTORY_MONTHLY[i].output = HISTORY_MONTHLY[i-1].output;
       HISTORY_MONTHLY[i].employment = HISTORY_MONTHLY[i-1].employment;
       HISTORY_MONTHLY[i].unemployment_rate = HISTORY_MONTHLY[i-1].unemployment_rate;
@@ -1071,6 +1074,7 @@ int Eurostat_store_history_monthly()
     }
     
     //Store first value of history: [0] gets filled with value from t
+    HISTORY_MONTHLY[0].inflation_rate = INFLATION_RATE;
     HISTORY_MONTHLY[0].gdp = GDP;                   
     HISTORY_MONTHLY[0].output = MONTHLY_OUTPUT;     
     HISTORY_MONTHLY[0].employment = EMPLOYED;       
@@ -1081,6 +1085,7 @@ int Eurostat_store_history_monthly()
     HISTORY_MONTHLY[0].no_firm_deaths = NO_FIRM_DEATHS; 
 
     printf("Monthly data recorded by Eurostat:\n");
+    printf(" - monthly GDP: %f\n", HISTORY_MONTHLY[0].inflation_rate);
     printf(" - monthly GDP: %f\n", HISTORY_MONTHLY[0].gdp);
     printf(" - monthly output: %f\n", HISTORY_MONTHLY[0].output);
     printf(" - monthly average employment: %d\n", HISTORY_MONTHLY[0].employment);
@@ -1106,6 +1111,7 @@ int Eurostat_store_history_quarterly()
     for (i=4; i>0; i--)
     {
       //t-i-1 gets filled with value from t-i
+      HISTORY_QUARTERLY[i].inflation_rate = HISTORY_QUARTERLY[i-1].inflation_rate;
       HISTORY_QUARTERLY[i].gdp = HISTORY_QUARTERLY[i-1].gdp;
       HISTORY_QUARTERLY[i].output = HISTORY_QUARTERLY[i-1].output;
       HISTORY_QUARTERLY[i].employment = HISTORY_QUARTERLY[i-1].employment;
@@ -1117,6 +1123,7 @@ int Eurostat_store_history_quarterly()
     }
     
     //Reset first elements for sum
+    HISTORY_QUARTERLY[0].inflation_rate=0.0;
     HISTORY_QUARTERLY[0].gdp=0.0;
     HISTORY_QUARTERLY[0].output=0.0;
     HISTORY_QUARTERLY[0].employment=0.0;
@@ -1129,6 +1136,7 @@ int Eurostat_store_history_quarterly()
     //Store first value: construct quarterly sums from monthly history
     for (i=0; i<4; i++)
     {
+    	HISTORY_QUARTERLY[0].inflation_rate     += HISTORY_MONTHLY[i].inflation_rate;
         HISTORY_QUARTERLY[0].gdp                += HISTORY_MONTHLY[i].gdp;
         HISTORY_QUARTERLY[0].output             += HISTORY_MONTHLY[i].output;
         HISTORY_QUARTERLY[0].employment         += HISTORY_MONTHLY[i].employment;
@@ -1139,12 +1147,14 @@ int Eurostat_store_history_quarterly()
         HISTORY_QUARTERLY[0].no_firm_deaths     += HISTORY_MONTHLY[i].no_firm_deaths;
     }
     //The following quarterly statistics are averages of monthly statistics
-    HISTORY_QUARTERLY[0].employment             = HISTORY_QUARTERLY[0].employment/4,
+    HISTORY_QUARTERLY[0].inflation_rate         = HISTORY_QUARTERLY[0].inflation_rate/4,
+    HISTORY_QUARTERLY[0].employment             = HISTORY_QUARTERLY[0].employment/4;
     HISTORY_QUARTERLY[0].unemployment_rate      = HISTORY_QUARTERLY[0].unemployment_rate/4;
     HISTORY_QUARTERLY[0].wages                  = HISTORY_QUARTERLY[0].wages/4;
     HISTORY_QUARTERLY[0].no_firms               = HISTORY_QUARTERLY[0].no_firms/4;
     
-    printf("Quarterly data recorded by Eurostat:\n");   
+    printf("Quarterly data recorded by Eurostat:\n");
+    printf(" - quarterly inflation_rate: %f\n", HISTORY_QUARTERLY[0].inflation_rate);
     printf(" - quarterly GDP: %f\n", HISTORY_QUARTERLY[0].gdp);
     printf(" - quarterly output: %f\n", HISTORY_QUARTERLY[0].output);
     printf(" - quarterly average employment: %d\n", HISTORY_QUARTERLY[0].employment);
@@ -1165,6 +1175,7 @@ int Eurostat_store_history_quarterly()
 int Eurostat_compute_growth_rates_monthly()
 {
     //compute monthly growth rates: change over the previous month
+	if((HISTORY_MONTHLY[1].inflation_rate>0.0) && (HISTORY_MONTHLY[0].inflation_rate>0.0))   {MONTHLY_GROWTH_RATES.inflation_rate = HISTORY_MONTHLY[0].inflation_rate / HISTORY_MONTHLY[1].inflation_rate -1;}
     if(HISTORY_MONTHLY[1].gdp>0.0)              {MONTHLY_GROWTH_RATES.gdp                       = HISTORY_MONTHLY[0].gdp / HISTORY_MONTHLY[1].gdp -1;}
     if(HISTORY_MONTHLY[1].output>0.0)           {MONTHLY_GROWTH_RATES.output                    = HISTORY_MONTHLY[0].output / HISTORY_MONTHLY[1].output  -1;}
     if(HISTORY_MONTHLY[1].employment>0)         {MONTHLY_GROWTH_RATES.employment                = HISTORY_MONTHLY[0].employment / HISTORY_MONTHLY[1].employment  -1;}
@@ -1175,6 +1186,7 @@ int Eurostat_compute_growth_rates_monthly()
     if(HISTORY_MONTHLY[1].no_firm_deaths>0)     {MONTHLY_GROWTH_RATES.no_firm_deaths            = HISTORY_MONTHLY[0].no_firm_deaths / HISTORY_MONTHLY[1].no_firm_deaths  -1;}   
 
     //compute annual growth rates over the previous 12 months
+	if((HISTORY_MONTHLY[12].inflation_rate>0.0) && (HISTORY_MONTHLY[0].inflation_rate>0.0))   {ANNUAL_GROWTH_RATES_MONTHLY.inflation_rate = HISTORY_MONTHLY[0].inflation_rate / HISTORY_MONTHLY[12].inflation_rate -1;}
     if(HISTORY_MONTHLY[12].gdp>0.0)             {ANNUAL_GROWTH_RATES_MONTHLY.gdp                = HISTORY_MONTHLY[0].gdp / HISTORY_MONTHLY[12].gdp  -1;}
     if(HISTORY_MONTHLY[12].output>0.0)          {ANNUAL_GROWTH_RATES_MONTHLY.output             = HISTORY_MONTHLY[0].output / HISTORY_MONTHLY[12].output  -1;}
     if(HISTORY_MONTHLY[12].employment>0)        {ANNUAL_GROWTH_RATES_MONTHLY.employment         = HISTORY_MONTHLY[0].employment / HISTORY_MONTHLY[12].employment  -1;}
@@ -1194,7 +1206,8 @@ int Eurostat_compute_growth_rates_quarterly()
 {
 
     //compute quarterly growth rates: change over the previous quarter
-    if(HISTORY_QUARTERLY[1].gdp>0.0)                {QUARTERLY_GROWTH_RATES.gdp                 = HISTORY_QUARTERLY[0].gdp / HISTORY_QUARTERLY[1].gdp  -1;}
+	if((HISTORY_QUARTERLY[1].inflation_rate>0.0) && (HISTORY_QUARTERLY[0].inflation_rate>0.0))   {QUARTERLY_GROWTH_RATES.inflation_rate = HISTORY_QUARTERLY[0].inflation_rate / HISTORY_QUARTERLY[1].inflation_rate -1;}
+	if(HISTORY_QUARTERLY[1].gdp>0.0)                {QUARTERLY_GROWTH_RATES.gdp                 = HISTORY_QUARTERLY[0].gdp / HISTORY_QUARTERLY[1].gdp  -1;}
     if(HISTORY_QUARTERLY[1].output>0.0)             {QUARTERLY_GROWTH_RATES.output              = HISTORY_QUARTERLY[0].output / HISTORY_QUARTERLY[1].output  -1;}
     if(HISTORY_QUARTERLY[1].employment>0)           {QUARTERLY_GROWTH_RATES.employment          = HISTORY_QUARTERLY[0].employment / HISTORY_QUARTERLY[1].employment  -1;}
     if(HISTORY_QUARTERLY[1].unemployment_rate>0.0)  {QUARTERLY_GROWTH_RATES.unemployment_rate   = HISTORY_QUARTERLY[0].unemployment_rate / HISTORY_QUARTERLY[1].unemployment_rate  -1;}
@@ -1204,6 +1217,7 @@ int Eurostat_compute_growth_rates_quarterly()
     if(HISTORY_QUARTERLY[1].no_firm_deaths>0)       {QUARTERLY_GROWTH_RATES.no_firm_deaths      = HISTORY_QUARTERLY[0].no_firm_deaths / HISTORY_QUARTERLY[1].no_firm_deaths  -1;}
     
     //compute annual growth rates over the previous 4 quarters
+	if((HISTORY_QUARTERLY[4].inflation_rate>0.0) && (HISTORY_QUARTERLY[0].inflation_rate>0.0))   {ANNUAL_GROWTH_RATES_QUARTERLY.inflation_rate = HISTORY_QUARTERLY[0].inflation_rate / HISTORY_QUARTERLY[4].inflation_rate -1;}    
     if(HISTORY_QUARTERLY[4].gdp>0.0)                {ANNUAL_GROWTH_RATES_QUARTERLY.gdp                  = HISTORY_QUARTERLY[0].gdp / HISTORY_QUARTERLY[4].gdp  -1;}
     if(HISTORY_QUARTERLY[4].output>0.0)             {ANNUAL_GROWTH_RATES_QUARTERLY.output               = HISTORY_QUARTERLY[0].output / HISTORY_QUARTERLY[4].output  -1;}
     if(HISTORY_QUARTERLY[4].employment>0)           {ANNUAL_GROWTH_RATES_QUARTERLY.employment           = HISTORY_QUARTERLY[0].employment / HISTORY_QUARTERLY[4].employment  -1;}
