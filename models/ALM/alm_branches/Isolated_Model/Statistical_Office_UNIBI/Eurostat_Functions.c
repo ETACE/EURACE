@@ -42,7 +42,7 @@ int Eurostat_Initialization()
  */   
 int Eurostat_send_data_to_government()
 {
-    printf("AVERAGE_WAGE %f\n",AVERAGE_WAGE);
+    //printf("AVERAGE_WAGE %f\n",AVERAGE_WAGE);
 add_mean_wage_for_government_message(1,AVERAGE_WAGE);
 
 return 0;
@@ -155,6 +155,7 @@ int Eurostat_calculate_data()
     FIRM_AVERAGE_S_SKILL_4 = 0.0;
     FIRM_AVERAGE_S_SKILL_5 = 0.0;
 
+    INFLATION_RATE=0.0;
     GDP = 0.0;
     TOTAL_EARNINGS = 0.0;
     TOTAL_DEBT = 0.0;
@@ -1125,7 +1126,7 @@ int Eurostat_store_history_monthly()
     HISTORY_MONTHLY[0].no_firm_deaths = NO_FIRM_DEATHS; 
 
     printf("Monthly data recorded by Eurostat:\n");
-    printf(" - monthly GDP: %f\n", HISTORY_MONTHLY[0].inflation_rate);
+    printf(" - monthly inflation: %f\n", HISTORY_MONTHLY[0].inflation_rate);
     printf(" - monthly GDP: %f\n", HISTORY_MONTHLY[0].gdp);
     printf(" - monthly output: %f\n", HISTORY_MONTHLY[0].output);
     printf(" - monthly average employment: %d\n", HISTORY_MONTHLY[0].employment);
@@ -1194,7 +1195,7 @@ int Eurostat_store_history_quarterly()
     HISTORY_QUARTERLY[0].no_firms               = HISTORY_QUARTERLY[0].no_firms/4;
     
     printf("Quarterly data recorded by Eurostat:\n");
-    printf(" - quarterly inflation_rate: %f\n", HISTORY_QUARTERLY[0].inflation_rate);
+    printf(" - quarterly inflation: %f\n", HISTORY_QUARTERLY[0].inflation_rate);
     printf(" - quarterly GDP: %f\n", HISTORY_QUARTERLY[0].gdp);
     printf(" - quarterly output: %f\n", HISTORY_QUARTERLY[0].output);
     printf(" - quarterly average employment: %d\n", HISTORY_QUARTERLY[0].employment);
