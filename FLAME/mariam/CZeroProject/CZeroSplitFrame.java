@@ -280,6 +280,8 @@ public class CZeroSplitFrame extends JFrame implements ListSelectionListener, Ac
 	    }
 	}//close:getXmlRootElement()
 	
+	
+	
 	public void gatherXMLDataVer1()
 	{
 		//datatypes
@@ -400,7 +402,114 @@ public class CZeroSplitFrame extends JFrame implements ListSelectionListener, Ac
 				String modelName=modelfilename.getChild("file").getText();
 				System.out.println("model name" + modelName);
 				getXmlModelRootElement(modelName);
+				gatherInternalXmlData();
+			}
+			
+		}
+	}
+	/*
+	while(env_iterator.hasNext())
+	{
+		environment=(Element)env_iterator.next();
+		
+		datatypes=environment.getChildren("datatype");
+		
+		datatype_iterator=datatypes.iterator();
+		while(datatype_iterator.hasNext())
+		{
+			datatype=(Element)datatype_iterator.next();
+			String datatypeName=datatype.getChild("name").getText();
+			datatypeObject=new DataStructureObject();
+			datatypeObject.setItsName(datatypeName);
+		
+			//	get vars
+			datatypeVars=datatype.getChildren("var");
+			datatypeVar_iterator=datatypeVars.iterator();
+			while(datatypeVar_iterator.hasNext())
+			{
+				datatypeVar=(Element)datatypeVar_iterator.next();
+				memVarType= datatypeVar.getChild("type").getText();
+				memVarName= datatypeVar.getChild("name").getText();
+				datatypeObject.additsVars(memVarType, memVarName);
 				
+			}
+						
+			itsDatatypeMap.put(datatypeCounter,datatypeObject);
+		
+			datatypeCounter++;
+			
+		}
+	}// structures
+
+	//gather xml data for xmachines
+	while(xmachine_iterator.hasNext())
+	{
+			xmachine=(Element)xmachine_iterator.next();
+			String xAgentName=xmachine.getChild("name").getText();
+			agentObject=new AgentData();
+			agentObject.setItsAgentName(xAgentName);
+			xmachineVars=xmachine.getChild("memory").getChildren();
+			varIterator=xmachineVars.iterator();
+			while(varIterator.hasNext())
+			{		
+				xmachineVar=(Element)varIterator.next();
+				memVarType= xmachineVar.getChild("type").getText();
+				memVarName= xmachineVar.getChild("name").getText();
+				agentObject.getItsAgentTypeData(0).addVars(memVarType, memVarName);
+			}
+			itsAgentMap.put(agentCounter, agentObject);
+			agentCounter++;
+		}//xmachines
+		*/
+	}//close:gatherXMLDataver2()
+	
+	
+
+	public void gatherInternalXmlData()
+	{
+		//models
+		//model_elements=itsRootElement.getChildren("models"); //list of models
+		//model_iterator=model_elements.iterator();
+		
+		//datatypes
+	env_elements=itsModelRootElement.getChildren("environment"); //list of datatypes
+	env_iterator=env_elements.iterator();
+
+		//agents
+	xagents=itsModelRootElement.getChildren("xagent"); //list of xmachines
+	xagent_iterator=xmachines.iterator();
+	
+	Element model=null;
+	Element modelVar=null;
+	Element modelfilename=null;
+/*	
+	Element xmachine = null;
+	Element xmachineVar=null;
+	Element datatype=null;
+	Element environment=null;
+	Element datatypeVar=null;
+	
+	agentObject = null;
+	datatypeObject=null;
+	agentCounter=0;
+	datatypeCounter=0;
+	*/
+	while(model_iterator.hasNext())
+	{
+		model=(Element)model_iterator.next();
+		modelnames=model.getChildren("model");
+		modelnames_iterator=modelnames.iterator();
+		System.out.println("Line 123");
+		while(modelnames_iterator.hasNext())
+		{
+			System.out.println("Line 122");
+			modelfilename=(Element)modelnames_iterator.next();
+			if(("true".equals(modelfilename.getChild("enabled").getText()))||("True".equals(modelfilename.getChild("enabled").getText())))
+			{
+				String modelName=modelfilename.getChild("file").getText();
+				System.out.println("model name" + modelName);
+				getXmlModelRootElement(modelName);
+				gatherInternalXmlData();
 			}
 			
 		}
