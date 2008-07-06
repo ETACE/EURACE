@@ -215,9 +215,10 @@ int Eurostat_calculate_data()
         sum_total_cum_revenue          = 0.0;
         sum_total_planned_output       = 0.0;
 
-        //Reset the age distribution
+        //Reset the age distribution, and store the previous distribution (needed to compute the 1-period survival rates)
         for (i=0;i<60;i++)
         {
+        	FIRM_AGE_DISTRIBUTION_PREVIOUS[i]=FIRM_AGE_DISTRIBUTION[i];
             FIRM_AGE_DISTRIBUTION[i]=0;
         }
 
@@ -407,7 +408,6 @@ int Eurostat_calculate_data()
                 }
                 
                 /***************** Firm age distribution *********************/
-                
                 //add the firm's age to correct bin (we assume max. age is 60 months, all firms older than 60 are in the last bin)
                 if (firm_send_data_message->age<60)
                 {
@@ -455,9 +455,19 @@ int Eurostat_calculate_data()
         FIRM_DEATH_RATE = NO_FIRM_DEATHS / NO_FIRMS;
         
         /***************** Firm survival rate *********************/
-        //Def: The survival rate after x years is the percentage of all enterprise births of year n which are still active in year n+x.
-        //This is related to the age=x
-        //we need information on: the age of all firms in all periods
+        //Def: The survival rate after x years (or months) is the percentage of all enterprise births of year n which are still active in year n+x.
+        //This is related to the age. We measure the age in months.
+        //We need information on: the age distribution in the current period, and the age distribution in the previous period
+        //Then we take into account that the demographics moves along the distribution from left to right.
+        //For each age, we then define the survival rate as the percentage.
+
+        //1-period survival rate
+        //The survival rate for firms that in the previous period had an age in the range [0,59] months:
+        for (i=0; i<60; i++)
+        {
+        	SURVIVAL_RATE[i]=
+        			(FIRM_AGE_DISTRIBUTION[i]-FIRM_AGE_DISTRIBUTION_PREVIOUS[i-1])/FIRM_AGE_DISTRIBUTION_PREVIOUS[i-1];
+        }
         
         
     /*Create the REGIONAL data which is needed for controlling the results or sending           back to the Firms*/

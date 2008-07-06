@@ -81,7 +81,7 @@ int Eurostat_send_data()
  */
 int Eurostat_calculate_data()
 {
-    int i,j,m;
+    int i,j,m, x;
 
     //Auxiliary sums:
     double sum_total_debt_earnings_ratios;
@@ -221,6 +221,7 @@ int Eurostat_calculate_data()
         {
         	FIRM_AGE_DISTRIBUTION_PREVIOUS[i]=FIRM_AGE_DISTRIBUTION[i];
             FIRM_AGE_DISTRIBUTION[i]=0;
+            SURVIVAL_RATE[i]=0;
         }
 
         /*Store the region data of the firms*/
@@ -466,10 +467,10 @@ int Eurostat_calculate_data()
         //The survival rate for firms that in the previous period had an age in the range [0,59] months:
         for (i=0; i<60; i++)
         {
-        	if(FIRM_AGE_DISTRIBUTION_PREVIOUS[i-1]>0)
+        	if(FIRM_AGE_DISTRIBUTION_PREVIOUS[i]>0)
         	{
         		SURVIVAL_RATE[i]=
-        			(FIRM_AGE_DISTRIBUTION[i]-FIRM_AGE_DISTRIBUTION_PREVIOUS[i-1])/FIRM_AGE_DISTRIBUTION_PREVIOUS[i-1];
+        			FIRM_AGE_DISTRIBUTION[i+1]/FIRM_AGE_DISTRIBUTION_PREVIOUS[i];
         	}
         	else
         	{
@@ -481,24 +482,31 @@ int Eurostat_calculate_data()
 		 * NEW FEATURE: Multi-period survival rates
 		 *********************************************/
         //Generalized code for any x-period survival rate:
-        //For each period x, we need bins i = 0...60
- /*
-        for (i=0; i<60; i++)
+        //For each period x, we need bins i = 0...59
+        //SURVIVAL_RATE_MULTIPERIOD[0][]: 1-period survival rate
+        //SURVIVAL_RATE_MULTIPERIOD[1][]: 2-period survival rate
+        //SURVIVAL_RATE_MULTIPERIOD[x][]: x+1-period survival rate
+        //SURVIVAL_RATE_MULTIPERIOD[59][]: 59+1=60-period survival rate
+/*
+        for (x=0; x<4; x++)
         {
-        	for (x=0;x<i;x++)
+        	for (i=0; i<60-x-1; i++)
         	{
-	        	if(FIRM_AGE_DISTRIBUTION_PREVIOUS[i-x]>0)
+	        	if(FIRM_AGE_DISTRIBUTION_PREVIOUS[i]>0)
 	        	{
-	        		SURVIVAL_RATE_MULTIPERIOD[x][i]=
-	        			(FIRM_AGE_DISTRIBUTION[i]-FIRM_AGE_DISTRIBUTION_PREVIOUS[i-x])/FIRM_AGE_DISTRIBUTION_PREVIOUS[i-x];
+	        		//SURVIVAL_RATE_MULTIPERIOD[x][i]=
+	        		//	FIRM_AGE_DISTRIBUTION[i+x+1]/FIRM_AGE_DISTRIBUTION_PREVIOUS[i];
+	        		*(SURVIVAL_RATE_MULTIPERIOD+x*60+i)=
+	        			FIRM_AGE_DISTRIBUTION[i+x+1]/FIRM_AGE_DISTRIBUTION_PREVIOUS[i];
 	        	}
 	        	else
 	        	{
-	        		SURVIVAL_RATE_MULTIPERIOD[x][i]=0.0;
+	        		//SURVIVAL_RATE_MULTIPERIOD[x][i]=0.0;
+	        		*(SURVIVAL_RATE_MULTIPERIOD+x*60+i)=0.0;
 	        	}
         	}
         }
-*/        
+*/       
         
         
     /*Create the REGIONAL data which is needed for controlling the results or sending           back to the Firms*/
