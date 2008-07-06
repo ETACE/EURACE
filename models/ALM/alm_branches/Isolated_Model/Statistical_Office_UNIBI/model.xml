@@ -388,8 +388,8 @@ including several micro data.</description>
 <variable><type>int</type><name>firm_age_distribution_previous[60]</name><description>Copy of firm_age_distribution[60], needed for the computation of survival rates.</description></variable>
 <variable><type>double</type><name>firm_birth_rate</name><description>Firm birth rate: Number of new firms in the economy this month, divided by the total number of firms that are active this month</description></variable>
 <variable><type>double</type><name>firm_death_rate</name><description>Firm death rate: Number of firm demises in the economy this month, divided by the total number of firms that are active this month</description></variable>
-<variable><type>double</type><name>survival_rate[60]</name><description>Firm survival rate in 60 bins: Definition "The survival rate after x years is the percentage of all enterprise births of year n which are still active in year n+x." We only measure the 1-month survival rate: the percentage of firms age 0-59 months that are still alive the next month, thus having age 1-60 months.</description></variable>
-</memory>
+<variable><type>double</type><name>survival_rate[60]</name><description>Firm survival rates in 60 age bins: Definition "The survival rate after 1 year is the percentage of all enterprise births of year n which are still active in year n+1." We only measure the 1-month survival rate: the percentage of firms age 0-59 months that are still active in the next month, thus having age 1-60 months.</description></variable>
+<variable><type>double</type><name>survival_rate_multiperiod[4][60]</name><description>Multi-period survival rates. Definition: "The survival rate after x years is the percentage of all enterprise births of year n which are still active in year n+x." The 1st row survival_rate_multiperiod[0][.] equals survival_rate[], and contains the 1-period survival rates (for all age bins 0-59). The 2nd row survival_rate_multiperiod[1][.] contains the 2-period survival rates (for all age bins 0-59), etc.</description></variable></memory>
 <functions>
 
 <!-- new loop: Initialization -->
