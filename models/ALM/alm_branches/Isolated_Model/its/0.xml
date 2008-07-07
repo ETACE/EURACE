@@ -35,7 +35,7 @@
 <!--<productivity_progress>0.05</productivity_progress>-->
 
 
-<PRINT_LOG>0</PRINT_LOG>
+<PRINT_LOG>1</PRINT_LOG>
 
 <DAY>iteration_loop</DAY>
 <WEEK>5</WEEK>
