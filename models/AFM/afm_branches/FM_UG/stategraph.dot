@@ -1,0 +1,78 @@
+digraph state_graph {
+	rankdir=TB;
+	size="8,5;"
+	layer_0 [shape=plaintext, label="layer 0"];
+	layer_1 [shape=plaintext, label="layer 1"];
+	layer_0 -> layer_1 [style=invis];
+	layer_2 [shape=plaintext, label="layer 2"];
+	layer_1 -> layer_2 [style=invis];
+	layer_3 [shape=plaintext, label="layer 3"];
+	layer_2 -> layer_3 [style=invis];
+	layer_4 [shape=plaintext, label="layer 4"];
+	layer_3 -> layer_4 [style=invis];
+	layer_5 [shape=plaintext, label="layer 5"];
+	layer_4 -> layer_5 [style=invis];
+	
+	/* States */
+	Household_EXIT_FINANCIAL_MARKET [label = "EXIT_FINANCIAL_MARKET"]
+	Household_WAITORDERSTATUS [label = "WAITORDERSTATUS"]
+	Household_SELECTSTRATEGY [label = "SELECTSTRATEGY"]
+	Household_START_HOUSEHOLD [label = "START_HOUSEHOLD"]
+	Clearinghouse_end_Clearinghouse [label = "end_Clearinghouse"]
+	Clearinghouse_COMPUTEDPRICES [label = "COMPUTEDPRICES"]
+	Clearinghouse_RECEIVEDINFOSTOCK [label = "RECEIVEDINFOSTOCK"]
+	Clearinghouse_start_Clearinghouse [label = "start_Clearinghouse"]
+	Bank_BB1 [label = "BB1"]
+	Bank_BB [label = "BB"]
+	Bank_START_BANK_FINANCIAL [label = "START_BANK_FINANCIAL"]
+	Firm_XXX2 [label = "XXX2"]
+	Firm_UPDATE [label = "UPDATE"]
+	Firm_XXX [label = "XXX"]
+	Household_Household_receive_info_interest_from_bank_START_HOUSEHOLD_SELECTSTRATEGY [label = "Household_receive_info_interest_from_bank", shape = rect]
+	Household_Household_select_strategy_SELECTSTRATEGY_WAITORDERSTATUS [label = "Household_select_strategy", shape = rect]
+	Household_Household_update_its_portfolio_WAITORDERSTATUS_EXIT_FINANCIAL_MARKET [label = "Household_update_its_portfolio", shape = rect]
+	Clearinghouse_ClearingHouse_receive_info_stock_start_Clearinghouse_RECEIVEDINFOSTOCK [label = "ClearingHouse_receive_info_stock", shape = rect]
+	Clearinghouse_ClearingHouse_receive_orders_and_run_RECEIVEDINFOSTOCK_COMPUTEDPRICES [label = "ClearingHouse_receive_orders_and_run", shape = rect]
+	Clearinghouse_ClearingHouse_send_asset_information_COMPUTEDPRICES_end_Clearinghouse [label = "ClearingHouse_send_asset_information", shape = rect]
+	Bank_Bank_send_accountInterest_START_BANK_FINANCIAL_BB [label = "Bank_send_accountInterest", shape = rect]
+	Bank_Bank_receive_account_update_BB_BB1 [label = "Bank_receive_account_update", shape = rect]
+	Firm_Firm_send_info_XXX_UPDATE [label = "Firm_send_info", shape = rect]
+	Firm_Firm_receive_stock_info_UPDATE_XXX2 [label = "Firm_receive_stock_info", shape = rect]
+	
+	/* Transitions */
+	Household_START_HOUSEHOLD -> Household_Household_receive_info_interest_from_bank_START_HOUSEHOLD_SELECTSTRATEGY;
+	Household_Household_receive_info_interest_from_bank_START_HOUSEHOLD_SELECTSTRATEGY -> Household_SELECTSTRATEGY;
+	Household_SELECTSTRATEGY -> Household_Household_select_strategy_SELECTSTRATEGY_WAITORDERSTATUS;
+	Household_Household_select_strategy_SELECTSTRATEGY_WAITORDERSTATUS -> Household_WAITORDERSTATUS;
+	Household_WAITORDERSTATUS -> Household_Household_update_its_portfolio_WAITORDERSTATUS_EXIT_FINANCIAL_MARKET;
+	Household_Household_update_its_portfolio_WAITORDERSTATUS_EXIT_FINANCIAL_MARKET -> Household_EXIT_FINANCIAL_MARKET;
+	Clearinghouse_start_Clearinghouse -> Clearinghouse_ClearingHouse_receive_info_stock_start_Clearinghouse_RECEIVEDINFOSTOCK;
+	Clearinghouse_ClearingHouse_receive_info_stock_start_Clearinghouse_RECEIVEDINFOSTOCK -> Clearinghouse_RECEIVEDINFOSTOCK;
+	Clearinghouse_RECEIVEDINFOSTOCK -> Clearinghouse_ClearingHouse_receive_orders_and_run_RECEIVEDINFOSTOCK_COMPUTEDPRICES;
+	Clearinghouse_ClearingHouse_receive_orders_and_run_RECEIVEDINFOSTOCK_COMPUTEDPRICES -> Clearinghouse_COMPUTEDPRICES;
+	Clearinghouse_COMPUTEDPRICES -> Clearinghouse_ClearingHouse_send_asset_information_COMPUTEDPRICES_end_Clearinghouse;
+	Clearinghouse_ClearingHouse_send_asset_information_COMPUTEDPRICES_end_Clearinghouse -> Clearinghouse_end_Clearinghouse;
+	Bank_START_BANK_FINANCIAL -> Bank_Bank_send_accountInterest_START_BANK_FINANCIAL_BB;
+	Bank_Bank_send_accountInterest_START_BANK_FINANCIAL_BB -> Bank_BB;
+	Bank_BB -> Bank_Bank_receive_account_update_BB_BB1;
+	Bank_Bank_receive_account_update_BB_BB1 -> Bank_BB1;
+	Firm_XXX -> Firm_Firm_send_info_XXX_UPDATE;
+	Firm_Firm_send_info_XXX_UPDATE -> Firm_UPDATE;
+	Firm_UPDATE -> Firm_Firm_receive_stock_info_UPDATE_XXX2;
+	Firm_Firm_receive_stock_info_UPDATE_XXX2 -> Firm_XXX2;
+	
+	/* Communications */
+	Clearinghouse_ClearingHouse_send_asset_information_COMPUTEDPRICES_end_Clearinghouse -> Firm_Firm_receive_stock_info_UPDATE_XXX2 [ label = "infoAssetCH" color="#00ff00" constraint=false];
+	Household_Household_update_its_portfolio_WAITORDERSTATUS_EXIT_FINANCIAL_MARKET -> Bank_Bank_receive_account_update_BB_BB1 [ label = "bankAccountUpdate" color="#00ff00" constraint=false];
+	Household_Household_select_strategy_SELECTSTRATEGY_WAITORDERSTATUS -> Clearinghouse_ClearingHouse_receive_orders_and_run_RECEIVEDINFOSTOCK_COMPUTEDPRICES [ label = "order" color="#00ff00" constraint=false];
+	Firm_Firm_send_info_XXX_UPDATE -> Clearinghouse_ClearingHouse_receive_info_stock_start_Clearinghouse_RECEIVEDINFOSTOCK [ label = "info_firm" color="#00ff00" constraint=false];
+	Clearinghouse_ClearingHouse_receive_orders_and_run_RECEIVEDINFOSTOCK_COMPUTEDPRICES -> Household_Household_update_its_portfolio_WAITORDERSTATUS_EXIT_FINANCIAL_MARKET [ label = "order_status" color="#00ff00" constraint=false];
+	Firm_Firm_send_info_XXX_UPDATE -> Household_Household_select_strategy_SELECTSTRATEGY_WAITORDERSTATUS [ label = "info_firm" color="#00ff00" constraint=false];
+	Bank_Bank_send_accountInterest_START_BANK_FINANCIAL_BB -> Household_Household_receive_info_interest_from_bank_START_HOUSEHOLD_SELECTSTRATEGY [ label = "accountInterest" color="#00ff00" constraint=false];
+	{ rank=same; layer_0;  Bank_Bank_send_accountInterest_START_BANK_FINANCIAL_BB;  Firm_Firm_send_info_XXX_UPDATE; }
+	{ rank=same; layer_1;  Household_Household_receive_info_interest_from_bank_START_HOUSEHOLD_SELECTSTRATEGY;  Clearinghouse_ClearingHouse_receive_info_stock_start_Clearinghouse_RECEIVEDINFOSTOCK; }
+	{ rank=same; layer_2;  Household_Household_select_strategy_SELECTSTRATEGY_WAITORDERSTATUS; }
+	{ rank=same; layer_3;  Clearinghouse_ClearingHouse_receive_orders_and_run_RECEIVEDINFOSTOCK_COMPUTEDPRICES; }
+	{ rank=same; layer_4;  Household_Household_update_its_portfolio_WAITORDERSTATUS_EXIT_FINANCIAL_MARKET;  Clearinghouse_ClearingHouse_send_asset_information_COMPUTEDPRICES_end_Clearinghouse; }
+	{ rank=same; layer_5;  Bank_Bank_receive_account_update_BB_BB1;  Firm_Firm_receive_stock_info_UPDATE_XXX2; }
+}
