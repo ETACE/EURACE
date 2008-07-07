@@ -219,9 +219,10 @@ int Eurostat_calculate_data()
         //Reset the age distribution, and store the previous distribution (needed to compute the 1-period survival rates)
         for (i=0;i<60;i++)
         {
-        	FIRM_AGE_DISTRIBUTION_PREVIOUS[i]=FIRM_AGE_DISTRIBUTION[i];
+        	FIRM_AGE_DISTRIBUTION_2_PERIOD_LAG[i]=FIRM_AGE_DISTRIBUTION_1_PERIOD_LAG[i];
+        	FIRM_AGE_DISTRIBUTION_1_PERIOD_LAG[i]=FIRM_AGE_DISTRIBUTION[i];
             FIRM_AGE_DISTRIBUTION[i]=0;
-            SURVIVAL_RATE[i]=0;
+            SURVIVAL_RATE[i]=0.0;
         }
 
         /*Store the region data of the firms*/
@@ -467,10 +468,10 @@ int Eurostat_calculate_data()
         //The survival rate for firms that in the previous period had an age in the range [0,59] months:
         for (i=0; i<60; i++)
         {
-        	if(FIRM_AGE_DISTRIBUTION_PREVIOUS[i]>0)
+        	if(FIRM_AGE_DISTRIBUTION_1_PERIOD_LAG[i]>0)
         	{
         		SURVIVAL_RATE[i]=
-        			FIRM_AGE_DISTRIBUTION[i+1]/FIRM_AGE_DISTRIBUTION_PREVIOUS[i];
+        			FIRM_AGE_DISTRIBUTION[i+1]/FIRM_AGE_DISTRIBUTION_1_PERIOD_LAG[i];
         	}
         	else
         	{
@@ -481,43 +482,111 @@ int Eurostat_calculate_data()
         /*********************************************
 		 * NEW FEATURE: Multi-period survival rates
 		 *********************************************/
+        
+        //Temporary code: should be double-indexed array
+        //SURVIVAL_RATE_MULTIPERIOD_1[60]: 1-period survival rate
+        //SURVIVAL_RATE_MULTIPERIOD_2[60]: 2-period survival rate
+        /******************************* 1-period survival rate code *******************************/
+        if (PRINT_LOG)
+        {
+        	fprintf(stdout,"Entering 1-period ahead survival rate: SURVIVAL_RATE_MULTIPERIOD_1\n");
+        }
+        x=0;
+        for (i=0; i<60-x-1; i++)
+    	{
+            if (PRINT_LOG){fprintf(stdout,"Entering element %d, using element %d of FIRM_AGE_DISTRIBUTION[%d] and comparing it to FIRM_AGE_DISTRIBUTION_1_PERIOD_LAG[%d]\n", i, i+x+1, i+x+1, i);}
+    		
+        	if(FIRM_AGE_DISTRIBUTION_1_PERIOD_LAG[i]>0)
+        	{
+        		SURVIVAL_RATE_MULTIPERIOD_1[i]=
+        			FIRM_AGE_DISTRIBUTION[i+x+1]/FIRM_AGE_DISTRIBUTION_1_PERIOD_LAG[i];
+        	}
+        	else
+        	{
+        		SURVIVAL_RATE_MULTIPERIOD_1[i]=0.0;
+        	}
+    	}
+    	for (i=60-x-1; i<60; i++)
+    	{
+    		if (PRINT_LOG){fprintf(stdout,"Entering element %d, padding element %d of SURVIVAL_RATE_MULTIPERIOD with 0.0\n", i, i);}
+        	//padding
+    		SURVIVAL_RATE_MULTIPERIOD_1[i]=0.0;
+    	}
+
+    	/******************************* 2-period survival rate code *******************************/
+    	if (PRINT_LOG){fprintf(stdout,"Entering 2-period ahead survival rate: SURVIVAL_RATE_MULTIPERIOD_2\n");}
+        x=1;
+        for (i=0; i<60-x-1; i++)
+    	{
+        	if (PRINT_LOG){fprintf(stdout,"Entering element %d, using element %d of FIRM_AGE_DISTRIBUTION[%d] and comparing it to FIRM_AGE_DISTRIBUTION_2_PERIOD_LAG[%d]\n", i, i+x+1, i+x+1, i);}
+    		
+        	if(FIRM_AGE_DISTRIBUTION_2_PERIOD_LAG[i]>0)
+        	{
+        		SURVIVAL_RATE_MULTIPERIOD_2[i]=
+        			FIRM_AGE_DISTRIBUTION[i+x+1]/FIRM_AGE_DISTRIBUTION_2_PERIOD_LAG[i];
+        	}
+        	else
+        	{
+        		SURVIVAL_RATE_MULTIPERIOD_2[i]=0.0;
+        	}
+    	}
+    	for (i=60-x-1; i<60; i++)
+    	{
+    		if (PRINT_LOG){fprintf(stdout,"Entering element %d, padding element %d of SURVIVAL_RATE_MULTIPERIOD with 0.0\n", i, i);}
+        	//padding
+    		SURVIVAL_RATE_MULTIPERIOD_2[i]=0.0;
+    	}
+
+    	/******************************* General survival rate code *******************************/
         //Generalized code for any x-period survival rate:
         //For each period x, we need bins i = 0...59
         //SURVIVAL_RATE_MULTIPERIOD[0][]: 1-period survival rate
         //SURVIVAL_RATE_MULTIPERIOD[1][]: 2-period survival rate
         //SURVIVAL_RATE_MULTIPERIOD[x][]: x+1-period survival rate
-        //SURVIVAL_RATE_MULTIPERIOD[59][]: 59+1=60-period survival rate
+        //SURVIVAL_RATE_MULTIPERIOD[11][]: 11+1=12-period survival rate
 
-        for (x=0; x<4; x++)
+    	//In model.xml add these variables:
+    	// <variable><type>int</type><name>firm_age_distribution_multiperiod[12][60]</name><description>Multi-period firm_age_distributions.</description></variable>
+    	// <variable><type>double</type><name>survival_rate_multiperiod[12][60]</name><description>Multi-period survival rates. Definition: "The survival rate after x years is the percentage of all enterprise births of year n which are still active in year n+x." The 1st row survival_rate_multiperiod[0][.] equals survival_rate[], and contains the 1-period survival rates (for all age bins 0-59). The 2nd row survival_rate_multiperiod[1][.] contains the 2-period survival rates (for all age bins 0-59), etc.</description></variable>
+
+    	/* SURVIVAL_RATE |	AGE_DISTRIBUTION	| Compare to old AGE_DISTRIBUTION
+    	 *      [x][i]   | [x+1][i+x+1]			| [0][i]
+    	 * ----------------------------------------------------------------------
+    	 * x=0: [0][i]	 | 	 [1][i+1] 			| [0][i]  | 1-period
+    	 * x=1: [1][i]	 |	 [2][i+2] 			| [0][i]  | 2-period
+    	 * x=2: [2][i]	 |	 [3][i+3] 			| [0][i]  | 3-period
+    	 * x=3: [3][i]	 |	 [4][i+4] 			| [0][i]  | 4-period
+    	 */
+
+    	for (x=0; x<12; x++)
         {
-        	printf("Entering row %d: %d-period ahead survival rate\n", x, x+1);
+        	if (PRINT_LOG){fprintf(stdout,"Entering row %d: %d-period ahead survival rate\n", x, x+1);}
         	
         	for (i=0; i<60-x-1; i++)
         	{
-        		printf("Entering element %d, using element %d of FIRM_AGE_DISTRIBUTION\n", i, i+x+1);
-        		
-	        	if(FIRM_AGE_DISTRIBUTION_PREVIOUS[i]>0)
+        		if (PRINT_LOG){fprintf(stdout,"Entering element [%d][%d], using element %d of FIRM_AGE_DISTRIBUTION_MULTIPERIOD[%d][%d] and comparing it to FIRM_AGE_DISTRIBUTION_MULTIPERIOD[0][%d]\n", x, i, i+x+1, x+1, i+x+1, i);}
+/*        		
+	        	if(FIRM_AGE_DISTRIBUTION_MULTIPERIOD[0][i]>0)
 	        	{
-	        		//SURVIVAL_RATE_MULTIPERIOD[x][i]=
-	        		//	FIRM_AGE_DISTRIBUTION[i+x+1]/FIRM_AGE_DISTRIBUTION_PREVIOUS[i];
-	        		*(SURVIVAL_RATE_MULTIPERIOD+x*60+i)=
-	        			FIRM_AGE_DISTRIBUTION[i+x+1]/FIRM_AGE_DISTRIBUTION_PREVIOUS[i];
+	        		SURVIVAL_RATE_MULTIPERIOD[x][i]=
+	        			FIRM_AGE_DISTRIBUTION_MULTIPERIOD[x+1][i+x+1]/FIRM_AGE_DISTRIBUTION_MULTIPERIOD[0][i];
 	        	}
 	        	else
 	        	{
-	        		//SURVIVAL_RATE_MULTIPERIOD[x][i]=0.0;
-	        		*(SURVIVAL_RATE_MULTIPERIOD+x*60+i)=0.0;
+	        		SURVIVAL_RATE_MULTIPERIOD[x][i]=0.0;
 	        	}
+*/
         	}
         	for (i=60-x-1; i<60; i++)
         	{
-        		printf("Entering element %d, padding element %d of SURVIVAL_RATE_MULTIPERIOD with 0.0\n", i, i);
+        		if (PRINT_LOG){fprintf(stdout,"Entering element [%d][%d], padding element %d of SURVIVAL_RATE_MULTIPERIOD[%d][%d] with 0.0\n", x, i, i, x, i);}
 	        	//padding
-	        	*(SURVIVAL_RATE_MULTIPERIOD+x*60+i)=0.0;
+/*
+        		SURVIVAL_RATE_MULTIPERIOD[x][i]=0.0;
+*/
         	}
         }
-       
-        
+        /******************************* end of general survival rate code *******************************/
         
     /*Create the REGIONAL data which is needed for controlling the results or sending           back to the Firms*/
     for(i = 0; i < REGION_FIRM_DATA.size; i++)
@@ -1143,17 +1212,19 @@ int Eurostat_store_history_monthly()
     HISTORY_MONTHLY[0].no_firm_births = NO_FIRM_BIRTHS; 
     HISTORY_MONTHLY[0].no_firm_deaths = NO_FIRM_DEATHS; 
 
-    printf("Monthly data recorded by Eurostat:\n");
-    printf(" - monthly inflation: %f\n", HISTORY_MONTHLY[0].inflation_rate);
-    printf(" - monthly GDP: %f\n", HISTORY_MONTHLY[0].gdp);
-    printf(" - monthly output: %f\n", HISTORY_MONTHLY[0].output);
-    printf(" - monthly average employment: %d\n", HISTORY_MONTHLY[0].employment);
-    printf(" - monthly average unemployment rate: %f\n", HISTORY_MONTHLY[0].unemployment_rate);
-    printf(" - monthly average wage: %f\n", HISTORY_MONTHLY[0].wages);
-    printf(" - monthly average number of firms: %d\n", HISTORY_MONTHLY[0].no_firms);
-    printf(" - monthly total number of firm births: %d\n", HISTORY_MONTHLY[0].no_firm_births);
-    printf(" - monthly total number of firm deaths: %d\n", HISTORY_MONTHLY[0].no_firm_deaths);
-    
+    if (PRINT_LOG)
+    {
+	    printf("Monthly data recorded by Eurostat:\n");
+	    printf(" - monthly inflation: %f\n", HISTORY_MONTHLY[0].inflation_rate);
+	    printf(" - monthly GDP: %f\n", HISTORY_MONTHLY[0].gdp);
+	    printf(" - monthly output: %f\n", HISTORY_MONTHLY[0].output);
+	    printf(" - monthly average employment: %d\n", HISTORY_MONTHLY[0].employment);
+	    printf(" - monthly average unemployment rate: %f\n", HISTORY_MONTHLY[0].unemployment_rate);
+	    printf(" - monthly average wage: %f\n", HISTORY_MONTHLY[0].wages);
+	    printf(" - monthly average number of firms: %d\n", HISTORY_MONTHLY[0].no_firms);
+	    printf(" - monthly total number of firm births: %d\n", HISTORY_MONTHLY[0].no_firm_births);
+	    printf(" - monthly total number of firm deaths: %d\n", HISTORY_MONTHLY[0].no_firm_deaths);
+    }    
     
     return 0;
 }
@@ -1212,16 +1283,19 @@ int Eurostat_store_history_quarterly()
     HISTORY_QUARTERLY[0].wages                  = HISTORY_QUARTERLY[0].wages/3;
     HISTORY_QUARTERLY[0].no_firms               = HISTORY_QUARTERLY[0].no_firms/3;
     
-    printf("Quarterly data recorded by Eurostat:\n");
-    printf(" - quarterly inflation: %f\n", HISTORY_QUARTERLY[0].inflation_rate);
-    printf(" - quarterly GDP: %f\n", HISTORY_QUARTERLY[0].gdp);
-    printf(" - quarterly output: %f\n", HISTORY_QUARTERLY[0].output);
-    printf(" - quarterly average employment: %d\n", HISTORY_QUARTERLY[0].employment);
-    printf(" - quarterly average unemployment rate: %f\n", HISTORY_QUARTERLY[0].unemployment_rate);
-    printf(" - quarterly average wage: %f\n", HISTORY_QUARTERLY[0].wages);
-    printf(" - quarterly average number of firms: %d\n", HISTORY_QUARTERLY[0].no_firms);
-    printf(" - quarterly total number of firm births: %d\n", HISTORY_QUARTERLY[0].no_firm_births);
-    printf(" - quarterly total number of firm deaths: %d\n", HISTORY_QUARTERLY[0].no_firm_deaths);
+    if (PRINT_LOG)
+    {
+	    printf("Quarterly data recorded by Eurostat:\n");
+	    printf(" - quarterly inflation: %f\n", HISTORY_QUARTERLY[0].inflation_rate);
+	    printf(" - quarterly GDP: %f\n", HISTORY_QUARTERLY[0].gdp);
+	    printf(" - quarterly output: %f\n", HISTORY_QUARTERLY[0].output);
+	    printf(" - quarterly average employment: %d\n", HISTORY_QUARTERLY[0].employment);
+	    printf(" - quarterly average unemployment rate: %f\n", HISTORY_QUARTERLY[0].unemployment_rate);
+	    printf(" - quarterly average wage: %f\n", HISTORY_QUARTERLY[0].wages);
+	    printf(" - quarterly average number of firms: %d\n", HISTORY_QUARTERLY[0].no_firms);
+	    printf(" - quarterly total number of firm births: %d\n", HISTORY_QUARTERLY[0].no_firm_births);
+	    printf(" - quarterly total number of firm deaths: %d\n", HISTORY_QUARTERLY[0].no_firm_deaths);
+    }
     
     return 0;
 }
