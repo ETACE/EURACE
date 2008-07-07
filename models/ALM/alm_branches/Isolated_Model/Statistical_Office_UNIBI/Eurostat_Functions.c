@@ -487,11 +487,15 @@ int Eurostat_calculate_data()
         //SURVIVAL_RATE_MULTIPERIOD[1][]: 2-period survival rate
         //SURVIVAL_RATE_MULTIPERIOD[x][]: x+1-period survival rate
         //SURVIVAL_RATE_MULTIPERIOD[59][]: 59+1=60-period survival rate
-/*
+
         for (x=0; x<4; x++)
         {
+        	printf("Entering row %d: %d-period ahead survival rate\n", x, x+1);
+        	
         	for (i=0; i<60-x-1; i++)
         	{
+        		printf("Entering element %d, using element %d of FIRM_AGE_DISTRIBUTION\n", i, i+x+1);
+        		
 	        	if(FIRM_AGE_DISTRIBUTION_PREVIOUS[i]>0)
 	        	{
 	        		//SURVIVAL_RATE_MULTIPERIOD[x][i]=
@@ -505,8 +509,14 @@ int Eurostat_calculate_data()
 	        		*(SURVIVAL_RATE_MULTIPERIOD+x*60+i)=0.0;
 	        	}
         	}
+        	for (i=60-x-1; i<60; i++)
+        	{
+        		printf("Entering element %d, padding element %d of SURVIVAL_RATE_MULTIPERIOD with 0.0\n", i, i);
+	        	//padding
+	        	*(SURVIVAL_RATE_MULTIPERIOD+x*60+i)=0.0;
+        	}
         }
-*/       
+       
         
         
     /*Create the REGIONAL data which is needed for controlling the results or sending           back to the Firms*/
@@ -1183,7 +1193,7 @@ int Eurostat_store_history_quarterly()
     HISTORY_QUARTERLY[0].no_firm_deaths=0;
 
     //Store first value: construct quarterly sums from monthly history
-    for (i=0; i<4; i++)
+    for (i=0; i<3; i++)
     {
     	HISTORY_QUARTERLY[0].inflation_rate     += HISTORY_MONTHLY[i].inflation_rate;
         HISTORY_QUARTERLY[0].gdp                += HISTORY_MONTHLY[i].gdp;
@@ -1196,11 +1206,11 @@ int Eurostat_store_history_quarterly()
         HISTORY_QUARTERLY[0].no_firm_deaths     += HISTORY_MONTHLY[i].no_firm_deaths;
     }
     //The following quarterly statistics are averages of monthly statistics
-    HISTORY_QUARTERLY[0].inflation_rate         = HISTORY_QUARTERLY[0].inflation_rate/4,
-    HISTORY_QUARTERLY[0].employment             = HISTORY_QUARTERLY[0].employment/4;
-    HISTORY_QUARTERLY[0].unemployment_rate      = HISTORY_QUARTERLY[0].unemployment_rate/4;
-    HISTORY_QUARTERLY[0].wages                  = HISTORY_QUARTERLY[0].wages/4;
-    HISTORY_QUARTERLY[0].no_firms               = HISTORY_QUARTERLY[0].no_firms/4;
+    HISTORY_QUARTERLY[0].inflation_rate         = HISTORY_QUARTERLY[0].inflation_rate/3;
+    HISTORY_QUARTERLY[0].employment             = HISTORY_QUARTERLY[0].employment/3;
+    HISTORY_QUARTERLY[0].unemployment_rate      = HISTORY_QUARTERLY[0].unemployment_rate/3;
+    HISTORY_QUARTERLY[0].wages                  = HISTORY_QUARTERLY[0].wages/3;
+    HISTORY_QUARTERLY[0].no_firms               = HISTORY_QUARTERLY[0].no_firms/3;
     
     printf("Quarterly data recorded by Eurostat:\n");
     printf(" - quarterly inflation: %f\n", HISTORY_QUARTERLY[0].inflation_rate);
