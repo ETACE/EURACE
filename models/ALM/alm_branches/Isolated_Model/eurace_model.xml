@@ -23,77 +23,40 @@
 
 <environment>
 <constants>
-<!--<variable><type>int</type><name>print_log</name><description>1, A flag to print log to terminal.</description></variable>-->
+<variable><type>int</type><name>print_log</name><description>1, A flag to print log to terminal.</description></variable>
 
-<!--<variable><type>int</type><name>day</name><description>iteration_loop, The day count.</description></variable>-->
-<!--<variable><type>int</type><name>week</name><description>5, Number of days in a week.</description></variable>-->
-<!--<variable><type>int</type><name>month</name><description>20, Number of days in a month.</description></variable>-->
-<!--<variable><type>int</type><name>quarter</name><description>60, The number of days in a quarter.</description></variable>-->
-<!--<variable><type>int</type><name>year</name><description>240, The number of days in a year.</description></variable>-->
+<variable><type>int</type><name>day</name><description>iteration_loop, The day count.</description></variable>
+<variable><type>int</type><name>week</name><description>5, Number of days in a week.</description></variable>
+<variable><type>int</type><name>month</name><description>20, Number of days in a month.</description></variable>
+<variable><type>int</type><name>quarter</name><description>60, The number of days in a quarter.</description></variable>
+<variable><type>int</type><name>year</name><description>240, The number of days in a year.</description></variable>
 
-<!--<variable><type>int</type><name>gamma</name><description> -2, Strength of logit rule for consumption</description></variable>-->
-<!--<variable><type>double</type><name>alpha</name><description>0.662, Parameter for production function.</description></variable>-->
-<!--<variable><type>double</type><name>beta</name><description>0.338, Parameter for production function.</description></variable>-->
-<!--<variable><type>double</type><name>dividend_rate</name><description>0.4, Dividend rate of consumption goods producers.</description></variable>-->
-<!--<variable><type>double</type><name>depreciation_rate</name><description>0.01, Capital depreciation rate.</description></variable>-->
-<!--<variable><type>double</type><name>discount_rate</name><description>0.05, Discount rate.</description></variable>-->
-<!--<variable><type>double</type><name>teta</name><description>0.0, Strength of adaption of the capital stock if firm is rationed on the labor market.</description></variable>-->
-<!--<variable><type>double</type><name>mark_up</name><description>0.2, Pricing rule: mark up on unit costs.</description></variable>-->
-<!--<variable><type>double</type><name>lambda</name><description>0.5, Strength of the influence of the actual demand on the next production quantity: if LAMBDA = 0 then the planned production quantities of the last periods are recognized. If LAMBDA = 1 then only the actual demand is recognized.</description></variable>-->
-<!--<variable><type>double</type><name>wage_update</name><description>0.02, Parameter for adaption of the wage offer: percentage</description></variable>-->
-<!--<variable><type>int</type><name>min_vacancy</name><description>2, minimum number of vacancies to trigger vacancy counter</description></variable>-->
-<!--<variable><type>double</type><name>wage_reservation_update</name><description>0.02, Parameter adaption of the reservation wage: percentage.</description></variable>-->
-<!--<variable><type>double</type><name>region_cost</name><description>0.2, Cost of working in a different region: commuting costs.</description></variable>-->
-<!--<variable><type>int</type><name>inventory_costs_per_unit</name><description>2, Administrative cost of storing one unit for one period.</description></variable>-->
-<!--<variable><type>double</type><name>on_the_job_search_rate</name><description>10.0, Percentage of employees who are searching for a new job.</description></variable>-->
-<!--<variable><type>double</type><name>initial_consumption_propensity</name><description>0.95, The initial_consumption_propensity times the mean income is the upper limit of the consumption during the first five periods: this smoothes the consumption expenditures because of high dividend payments of the capital goods producer.</description></variable>-->
-<!--<variable><type>double</type><name>consumption_propensity</name><description>0.95, Percentage of savings allocated to consumption.</description></variable>-->
-<!--<variable><type>int</type><name>firm_planning_horizon</name><description>10, Planning horizon of firms</description></variable>-->
-<!--<variable><type>double</type><name>debt_assets_ratio_threshold</name><description>0.8</description></variable>-->
-<!--<variable><type>double</type><name>interest_rate</name><description>0.005</description></variable>-->
-<!--<variable><type>int</type><name>inv_inertia</name><description>3</description></variable>-->
-<!--<variable><type>double</type><name>adaption_delivery_volume</name><description>0.05</description></variable>-->
-<!--<variable><type>int</type><name>periods_to_repay_loans</name><description>12</description></variable>-->
-<!--<variable><type>int</type><name>delivery_prob_if_critical_stock_0</name><description>25, Probability for the delivery if the critical stock of one mall was zero for the last periods.</description></variable>-->
-<!--<variable><type>int</type><name>innovation_probability</name><description>10</description></variable>-->
-<!--<variable><type>double</type><name>productivity_progress</name><description>0.05</description></variable>-->
-
-<variable><type>int</type><name>PRINT_LOG</name><description>1, A flag to print log to terminal.</description></variable>
-
-<variable><type>int</type><name>DAY</name><description>iteration_loop, The day count.</description></variable>
-<variable><type>int</type><name>WEEK</name><description>5, Number of days in a week.</description></variable>
-<variable><type>int</type><name>MONTH</name><description>20, Number of days in a month.</description></variable>
-<variable><type>int</type><name>QUARTER</name><description>60, The number of days in a quarter.</description></variable>
-<variable><type>int</type><name>YEAR</name><description>240, The number of days in a year.</description></variable>
-
-<variable><type>int</type><name>CONST_NUMBER_OF_BANKS</name><description>Number of banks, used by PopGUI to initialize arrays</description></variable>
-
-<variable><type>int</type><name>GAMMA</name><description>-2, Strength of logit rule for consumption</description></variable>
-<variable><type>double</type><name>ALPHA</name><description>0.662, Parameter for production function.</description></variable>
-<variable><type>double</type><name>BETA</name><description>0.338, Parameter for production function.</description></variable>
-<variable><type>double</type><name>DIVIDEND_RATE</name><description>0.4, Dividend rate of consumption goods producers.</description></variable>
-<variable><type>double</type><name>DEPRECIATION_RATE</name><description>0.01, Capital depreciation rate.</description></variable>
-<variable><type>double</type><name>DISCOUNT_RATE</name><description>0.05, Discount rate.</description></variable>
-<variable><type>double</type><name>TETA</name><description>0.0, Strength of adaption of the capital stock if firm is rationed on the labor market.</description></variable>
-<variable><type>double</type><name>MARK_UP</name><description>0.2, Pricing rule: mark up on unit costs.</description></variable>
-<variable><type>double</type><name>LAMBDA</name><description>0.5, Strength of the influence of the actual demand on the next production quantity: if LAMBDA = 0 then the planned production quantities of the last periods are recognized. If LAMBDA = 1 then only the actual demand is recognized.</description></variable>
+<variable><type>int</type><name>gamma</name><description> -2, Strength of logit rule for consumption</description></variable>
+<variable><type>double</type><name>alpha</name><description>0.662, Parameter for production function.</description></variable>
+<variable><type>double</type><name>beta</name><description>0.338, Parameter for production function.</description></variable>
+<variable><type>double</type><name>dividend_rate</name><description>0.4, Dividend rate of consumption goods producers.</description></variable>
+<variable><type>double</type><name>depreciation_rate</name><description>0.01, Capital depreciation rate.</description></variable>
+<variable><type>double</type><name>discount_rate</name><description>0.05, Discount rate.</description></variable>
+<variable><type>double</type><name>teta</name><description>0.0, Strength of adaption of the capital stock if firm is rationed on the labor market.</description></variable>
+<variable><type>double</type><name>mark_up</name><description>0.2, Pricing rule: mark up on unit costs.</description></variable>
+<variable><type>double</type><name>lambda</name><description>0.5, Strength of the influence of the actual demand on the next production quantity: if LAMBDA = 0 then the planned production quantities of the last periods are recognized. If LAMBDA = 1 then only the actual demand is recognized.</description></variable>
 <variable><type>double</type><name>wage_update</name><description>0.02, Parameter for adaption of the wage offer: percentage</description></variable>
-<variable><type>int</type><name>MIN_VACANCY</name><description>2, minimum number of vacancies to trigger vacancy counter</description></variable>
+<variable><type>int</type><name>min_vacancy</name><description>2, minimum number of vacancies to trigger vacancy counter</description></variable>
 <variable><type>double</type><name>wage_reservation_update</name><description>0.02, Parameter adaption of the reservation wage: percentage.</description></variable>
 <variable><type>double</type><name>region_cost</name><description>0.2, Cost of working in a different region: commuting costs.</description></variable>
-<variable><type>int</type><name>INVENTORY_COSTS_PER_UNIT</name><description>2, Administrative cost of storing one unit for one period.</description></variable>
-<variable><type>double</type><name>ON_THE_JOB_SEARCH_RATE</name><description>10.0, Percentage of employees who are searching for a new job.</description></variable>
-<variable><type>double</type><name>INITIAL_CONSUMPTION_PROPENSITY</name><description>0.95, The initial_consumption_propensity times the mean income is the upper limit of the consumption during the first five periods: this smoothes the consumption expenditures because of high dividend payments of the capital goods producer.</description></variable>
-<variable><type>double</type><name>CONSUMPTION_PROPENSITY</name><description>0.95, Percentage of savings allocated to consumption.</description></variable>
-<variable><type>int</type><name>FIRM_PLANNING_HORIZON</name><description>10, Planning horizon of firms</description></variable>
-<variable><type>double</type><name>DEBT_ASSETS_RATIO_THRESHOLD</name><description>0.8</description></variable>
-<variable><type>double</type><name>INTEREST_RATE</name><description>0.005</description></variable>
-<variable><type>int</type><name>INV_INERTIA</name><description>3</description></variable>
-<variable><type>double</type><name>ADAPTION_DELIVERY_VOLUME</name><description>0.05</description></variable>
-<variable><type>int</type><name>PERIODS_TO_REPAY_LOANS</name><description>12</description></variable>
-<variable><type>int</type><name>DELIVERY_PROB_IF_CRITICAL_STOCK_0</name><description>25, Probability for the delivery if the critical stock of one mall was zero for the last periods.</description></variable>
-<variable><type>int</type><name>INNOVATION_PROBABILITY</name><description>10</description></variable>
-<variable><type>double</type><name>PRODUCTIVITY_PROGRESS</name><description>0.05</description></variable>
+<variable><type>int</type><name>inventory_costs_per_unit</name><description>2, Administrative cost of storing one unit for one period.</description></variable>
+<variable><type>double</type><name>on_the_job_search_rate</name><description>10.0, Percentage of employees who are searching for a new job.</description></variable>
+<variable><type>double</type><name>initial_consumption_propensity</name><description>0.95, The initial_consumption_propensity times the mean income is the upper limit of the consumption during the first five periods: this smoothes the consumption expenditures because of high dividend payments of the capital goods producer.</description></variable>
+<variable><type>double</type><name>consumption_propensity</name><description>0.95, Percentage of savings allocated to consumption.</description></variable>
+<variable><type>int</type><name>firm_planning_horizon</name><description>10, Planning horizon of firms</description></variable>
+<variable><type>double</type><name>debt_assets_ratio_threshold</name><description>0.8</description></variable>
+<variable><type>double</type><name>interest_rate</name><description>0.005</description></variable>
+<variable><type>int</type><name>inv_inertia</name><description>3</description></variable>
+<variable><type>double</type><name>adaption_delivery_volume</name><description>0.05</description></variable>
+<variable><type>int</type><name>periods_to_repay_loans</name><description>12</description></variable>
+<variable><type>int</type><name>delivery_prob_if_critical_stock_0</name><description>25, Probability for the delivery if the critical stock of one mall was zero for the last periods.</description></variable>
+<variable><type>int</type><name>innovation_probability</name><description>10</description></variable>
+<variable><type>double</type><name>productivity_progress</name><description>0.05</description></variable>
 </constants>
  
 
