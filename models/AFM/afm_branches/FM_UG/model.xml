@@ -18,12 +18,12 @@
 			<file>Asset.c</file>
 			<file>CAsset.c</file>
 			<file>Belief.c</file>
-			<file>Bank.c</file>
-			<file>Firm.c</file>
+			<file>Bank_Financial_Market.c</file>
+			<file>Firm_Financial_Market.c</file>
 			<file>Random.c</file>
-			<file>ClearingHouse.c</file>
+			<file>ClearingHouse_Financial_Market.c</file>
 			<file>ClearingMechanism.c</file>
-			<file>Household.c</file>
+			<file>Household_Financial_Market.c</file>
                 </functionFiles>
 		<dataTypes>
 			<dataType>
