@@ -31,7 +31,6 @@
 <variable><type>int</type><name>quarter</name><description>60, The number of days in a quarter.</description></variable>
 <variable><type>int</type><name>year</name><description>240, The number of days in a year.</description></variable>
 
-<!--<variable><type>int</type><name>gamma</name><description> -2, Strength of logit rule for consumption</description></variable>-->
 <variable><type>int</type><name>gamma</name><description> -2, Strength of logit rule for consumption</description></variable>
 <variable><type>double</type><name>alpha</name><description>0.662, Parameter for production function.</description></variable>
 <variable><type>double</type><name>beta</name><description>0.338, Parameter for production function.</description></variable>
