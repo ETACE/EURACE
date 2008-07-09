@@ -6,38 +6,7 @@
 #include "header.h"
 #include "my_library_header.h"
 
-/* Function condition functions */
-
-int first_day_of_month()
-{
-	if(DAY%MONTH == 1) return 1;
-	else return 0;
-}
-
-int not_first_day_of_month()
-{
-	if(DAY%MONTH == 1) return 0;
-	else return 1;
-}
-
-int last_day_of_month()
-{
-	if (DAY%MONTH==0)
-		return 1;
-	else
-		return 0;
-	
-}
-int not_last_day_of_month()
-{
-	if (DAY%MONTH!=0)
-		return 1;
-	else
-		return 0;
-}
-
 /*New sorting algorithm from Simon C 3.4.2008*/
-
 
 int credit_request_function(const void *x, const void *y)
 {
