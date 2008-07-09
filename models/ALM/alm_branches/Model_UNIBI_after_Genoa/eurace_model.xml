@@ -124,7 +124,6 @@
 <description></description>
 <memory>
 <variable><type>int</type><name>id</name><description></description></variable>
-<variable><type>int</type><name>id</name><description></description></variable>
 <variable><type>int</type><name>region_id</name><description></description></variable>
 <variable><type>int</type><name>no_regions</name><description></description></variable>
 </memory>
