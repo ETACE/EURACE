@@ -1,7 +1,7 @@
 <states>
 <itno>0</itno>
 <environment>
-<print_log>0</print_log>
+<print_log>1</print_log>
 <day>iteration_loop</day>
 <week>5</week>
 <month>20</month>
