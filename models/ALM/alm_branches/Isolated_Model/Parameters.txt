@@ -1,7 +1,7 @@
 //FLAME
 print_log 1
 
-day iteration_loop
+day ITERATION_LOOP
 week 5
 month 20
 quarter 60

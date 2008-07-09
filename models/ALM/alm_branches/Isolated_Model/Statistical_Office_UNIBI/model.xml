@@ -135,7 +135,6 @@
 <name>Firm</name>
 <description></description>
 <memory>
-<variable><type>int</type><name>age</name><description>Age of the firm in months</description></variable>
 </memory>
 
 <functions>
