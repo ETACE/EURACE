@@ -487,14 +487,14 @@ int Eurostat_calculate_data()
         //SURVIVAL_RATE_MULTIPERIOD_1[60]: 1-period survival rate
         //SURVIVAL_RATE_MULTIPERIOD_2[60]: 2-period survival rate
         /******************************* 1-period survival rate code *******************************/
-        if (PRINT_LOG)
+        if (PRINT_DEBUG)
         {
         	fprintf(stdout,"Entering 1-period ahead survival rate: SURVIVAL_RATE_MULTIPERIOD_1\n");
         }
         x=0;
         for (i=0; i<60-x-1; i++)
     	{
-            if (PRINT_LOG){fprintf(stdout,"Entering element %d, using element %d of FIRM_AGE_DISTRIBUTION[%d] and comparing it to FIRM_AGE_DISTRIBUTION_1_PERIOD_LAG[%d]\n", i, i+x+1, i+x+1, i);}
+            if (PRINT_DEBUG){fprintf(stdout,"Entering element %d, using element %d of FIRM_AGE_DISTRIBUTION[%d] and comparing it to FIRM_AGE_DISTRIBUTION_1_PERIOD_LAG[%d]\n", i, i+x+1, i+x+1, i);}
     		
         	if(FIRM_AGE_DISTRIBUTION_1_PERIOD_LAG[i]>0)
         	{
@@ -508,17 +508,17 @@ int Eurostat_calculate_data()
     	}
     	for (i=60-x-1; i<60; i++)
     	{
-    		if (PRINT_LOG){fprintf(stdout,"Entering element %d, padding element %d of SURVIVAL_RATE_MULTIPERIOD with 0.0\n", i, i);}
+    		if (PRINT_DEBUG){fprintf(stdout,"Entering element %d, padding element %d of SURVIVAL_RATE_MULTIPERIOD with 0.0\n", i, i);}
         	//padding
     		SURVIVAL_RATE_MULTIPERIOD_1[i]=0.0;
     	}
 
     	/******************************* 2-period survival rate code *******************************/
-    	if (PRINT_LOG){fprintf(stdout,"Entering 2-period ahead survival rate: SURVIVAL_RATE_MULTIPERIOD_2\n");}
+    	if (PRINT_DEBUG){fprintf(stdout,"Entering 2-period ahead survival rate: SURVIVAL_RATE_MULTIPERIOD_2\n");}
         x=1;
         for (i=0; i<60-x-1; i++)
     	{
-        	if (PRINT_LOG){fprintf(stdout,"Entering element %d, using element %d of FIRM_AGE_DISTRIBUTION[%d] and comparing it to FIRM_AGE_DISTRIBUTION_2_PERIOD_LAG[%d]\n", i, i+x+1, i+x+1, i);}
+        	if (PRINT_DEBUG){fprintf(stdout,"Entering element %d, using element %d of FIRM_AGE_DISTRIBUTION[%d] and comparing it to FIRM_AGE_DISTRIBUTION_2_PERIOD_LAG[%d]\n", i, i+x+1, i+x+1, i);}
     		
         	if(FIRM_AGE_DISTRIBUTION_2_PERIOD_LAG[i]>0)
         	{
@@ -532,7 +532,7 @@ int Eurostat_calculate_data()
     	}
     	for (i=60-x-1; i<60; i++)
     	{
-    		if (PRINT_LOG){fprintf(stdout,"Entering element %d, padding element %d of SURVIVAL_RATE_MULTIPERIOD with 0.0\n", i, i);}
+    		if (PRINT_DEBUG){fprintf(stdout,"Entering element %d, padding element %d of SURVIVAL_RATE_MULTIPERIOD with 0.0\n", i, i);}
         	//padding
     		SURVIVAL_RATE_MULTIPERIOD_2[i]=0.0;
     	}
@@ -560,11 +560,11 @@ int Eurostat_calculate_data()
 
     	for (x=0; x<12; x++)
         {
-        	if (PRINT_LOG){fprintf(stdout,"Entering row %d: %d-period ahead survival rate\n", x, x+1);}
+        	if (PRINT_DEBUG){fprintf(stdout,"Entering row %d: %d-period ahead survival rate\n", x, x+1);}
         	
         	for (i=0; i<60-x-1; i++)
         	{
-        		if (PRINT_LOG){fprintf(stdout,"Entering element [%d][%d], using element %d of FIRM_AGE_DISTRIBUTION_MULTIPERIOD[%d][%d] and comparing it to FIRM_AGE_DISTRIBUTION_MULTIPERIOD[0][%d]\n", x, i, i+x+1, x+1, i+x+1, i);}
+        		if (PRINT_DEBUG){fprintf(stdout,"Entering element [%d][%d], using element %d of FIRM_AGE_DISTRIBUTION_MULTIPERIOD[%d][%d] and comparing it to FIRM_AGE_DISTRIBUTION_MULTIPERIOD[0][%d]\n", x, i, i+x+1, x+1, i+x+1, i);}
 /*        		
 	        	if(FIRM_AGE_DISTRIBUTION_MULTIPERIOD[0][i]>0)
 	        	{
@@ -579,7 +579,7 @@ int Eurostat_calculate_data()
         	}
         	for (i=60-x-1; i<60; i++)
         	{
-        		if (PRINT_LOG){fprintf(stdout,"Entering element [%d][%d], padding element %d of SURVIVAL_RATE_MULTIPERIOD[%d][%d] with 0.0\n", x, i, i, x, i);}
+        		if (PRINT_DEBUG){fprintf(stdout,"Entering element [%d][%d], padding element %d of SURVIVAL_RATE_MULTIPERIOD[%d][%d] with 0.0\n", x, i, i, x, i);}
 	        	//padding
 /*
         		SURVIVAL_RATE_MULTIPERIOD[x][i]=0.0;

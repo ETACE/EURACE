@@ -2,6 +2,7 @@
 <itno>0</itno>
 <environment>
 <print_log>1</print_log>
+<print_debug>0</print_debug>
 <day>iteration_loop</day>
 <week>5</week>
 <month>20</month>
