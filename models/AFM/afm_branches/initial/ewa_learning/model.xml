@@ -293,16 +293,6 @@
       <description></description>
       <memory>
         <variable>
-          <type>int</type>
-          <name>id</name>
-          <description></description>
-        </variable>
-        <variable>
-          <type>int</type>
-          <name>day_of_month_to_act</name>
-          <description></description>
-        </variable>
-        <variable>
           <type>EWAParameterStruct</type>
           <name>EWA_parameters</name>
           <description></description>
@@ -397,11 +387,6 @@
       <name>FinancialAgent</name>
       <description></description>
       <memory>
-        <variable>
-          <type>int</type>
-          <name>id</name>
-          <description></description>
-        </variable>
         <variable>
           <type>SimplePublicClassifierSystem</type>
           <name>public_classifiersystem</name>

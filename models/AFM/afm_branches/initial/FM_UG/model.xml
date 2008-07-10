@@ -119,7 +119,7 @@
 		<!--             Variables                -->
 		<!-- All variableiables used by Producer are declared here to allocate them in memory -->
 		<memory>
-			<variable><type>int</type><name>id</name>	<description></description></variable>
+<!--			<variable><type>int</type><name>id</name>	<description></description></variable>-->
 			<variable><type>double</type><name>wealth</name>	<description></description></variable>
 			<variable><type>Belief_array</type><name>beliefs</name>	<description></description></variable>
 			<variable>

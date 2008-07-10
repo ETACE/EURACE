@@ -22,11 +22,12 @@ LIBS    = -lm -lmboard_s
 
 #FLAME source files
 FLAME   = main.c memory.c xml.c messageboards.c partitioning.c rules.c 
+# 
 #FLAME auxilary files
 AUX 	= stategraph.dot Doxyfile
 
 # FLAME generated model files
-SOURCES =  Order.c  COrder.c  Portfolio.c  Stock.c  Double.c  CDouble.c  Asset.c  CAsset.c  Belief.c  Bank.c  Firm.c  Random.c  ClearingHouse.c  ClearingMechanism.c  Household.c 
+SOURCES =  Order.c  COrder.c  Portfolio.c  Stock.c  Double.c  CDouble.c  Asset.c  CAsset.c  Belief.c  Bank_Financial_Market.c  Firm_Financial_Market.c  Random.c  ClearingHouse_Financial_Market.c  ClearingMechanism.c  Household_Financial_Market.c 
 HEADERS = header.h low_primes.h mboard.h  Household_agent_header.h  Clearinghouse_agent_header.h  Bank_agent_header.h  Firm_agent_header.h  
 
 DEPS    = Makefile header.h low_primes.h
