@@ -12,8 +12,6 @@
 #include "mylibraryheader.h"
 #include "some_new_functions.h"
 
-#define NR_PARAMS 10
-
 /* \fn FinancialAgent_read_rule_performance_and_update_classifiersystem()
  * \brief Financial Agent reads the rule_performance_messages and updates the average rule performance in its classifiersystem.
  */
