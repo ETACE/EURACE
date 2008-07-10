@@ -8,9 +8,8 @@
 
 <!-- Models to include in Eurace model -->
 <models>
-
-<model><file>FINANCIAL_UG/model.xml</file><enabled>true</enabled></model>
-<model><file>ewa_learning/model.xml</file><enabled>true</enabled></model>
+<model><file>ewa_learning/model.xml</file><enabled>false</enabled></model>
+<model><file>FM_UG/model.xml</file><enabled>true</enabled></model>
 </models>
 
 <environment>
