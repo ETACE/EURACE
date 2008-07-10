@@ -12,8 +12,6 @@
 #include "mylibraryheader.h"
 #include "some_new_functions.h"
 
-#define NR_PARAMS 10
-
 /************ Household : Asset market role ************/
 
 /* STEP 1. Updating performance.*/

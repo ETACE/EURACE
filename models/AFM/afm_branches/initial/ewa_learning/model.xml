@@ -15,6 +15,7 @@
   <!--***************** Environment values and functions **********************-->
   <environment>
     <constants>
+	<variable><type>int</type><name>nr_params</name><description>10, Number of parameters in a portfolio rule.</description></variable>
     </constants>
     
     <functionFiles>
