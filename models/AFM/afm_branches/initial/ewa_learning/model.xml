@@ -5,7 +5,7 @@
 	<!--This is the main description file for EWA learning in the financial market model-->
 	<!-- Agents involved: Household, FinancialAgent-->
 	
-  <name>Financial Market Model - EWA</name>
+  <name>Financial Market Model - EWA learning module</name>
   <version>3</version>
   <description>Author: Sander van der Hoog, 01/06/2007, 05/03/2008, 22/05/2008, Converted from old XMML 1.0</description>
 
@@ -412,6 +412,11 @@
           <name>GA_parameters</name>
           <description></description>
         </variable>
+        <variable>
+          <type>EWAParameterStruct</type>
+          <name>EWA_parameters</name>
+          <description></description>
+        </variable>
       </memory>
       <roles></roles>
       <functions>
@@ -423,10 +428,9 @@
 		  <nextState>end_GA</nextState>
           <condition><not><time><period>yearly</period><phase>1</phase></time></not></condition>
 		  </function>
-      
-          <function>
-          <name>FinancialAgent_apply_GA</name>
-          <description></description>
+        <function>
+          <name>FinancialAgent_reset_public_classifiersystem</name>
+          <description>Resetting user counter, performance sum, avg_performance</description>
           <currentState>start_FinancialAgent</currentState>
           <nextState>01</nextState>
           <condition><time><period>yearly</period><phase>1</phase></time></condition>
@@ -434,8 +438,8 @@
           <outputs></outputs>
         </function>
         <function>
-          <name>FinancialAgent_reset_public_classifiersystem</name>
-          <description>Resetting user counter, performance sum, avg_performance</description>
+          <name>FinancialAgent_apply_GA</name>
+          <description></description>
           <currentState>01</currentState>
           <nextState>02</nextState>
           <inputs></inputs>
@@ -454,18 +458,10 @@
           </outputs>
         </function>
         <function>
-          <name>FinancialAgent_reset_public_classifiersystem</name>
-          <description>Resetting user counter, performance sum, avg_performance</description>
-          <currentState>end_GA</currentState>
-          <nextState>03</nextState>
-          <inputs></inputs>
-          <outputs></outputs>
-        </function>
-        <function>
           <name>FinancialAgent_read_rule_performance_and_update_classifiersystem</name>
           <description></description>
-          <currentState>03</currentState>
-          <nextState>04</nextState>
+          <currentState>end_GA</currentState>
+          <nextState>03</nextState>
           <inputs>
           <input>
           	<messageName>rule_performance</messageName>
@@ -476,7 +472,7 @@
         <function>
           <name>FinancialAgent_send_all_performances</name>
           <description></description>
-          <currentState>04</currentState>
+          <currentState>03</currentState>
           <nextState>end_FinancialAgent</nextState>
           <inputs></inputs>
           <outputs>

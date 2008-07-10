@@ -158,7 +158,7 @@ double draw(int size, double * cpdf)
     if (size>1)
     {
     	//Case 2: Travers the cpdf until u >= F(j-1)
-	    for (j=2;j++;j<size)
+	    for (j=2;j<size;j++)
 	    {
 	        if (cpdf[j-1]<=u && u<cpdf[j])
 	        {
