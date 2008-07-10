@@ -1,7 +1,7 @@
 #include <CUnit/Basic.h>
-#include "header.h"
-#include "mylibraryheader.h"
-#include "FinancialAgent_agent_header.h"
+#include "../header.h"
+#include "../mylibraryheader.h"
+#include "../FinancialAgent_agent_header.h"
 
 /************ Unit tests ********************************/
 void unittest_sum()
@@ -228,12 +228,14 @@ void unittest_two_point_cross_over()
 	// free();
 }
 
+/*
 void unittest_mutation()
-{    /************* At start of unit test, add one agent **************/
+{   
+ 	// At start of unit test, add one agent
     add_FinancialAgent_agent_internal(init_FinancialAgent_agent());
     current_xmachine = *p_xmachine;
 
-    /***** Variables: Memory pre-conditions **************************/
+    // Variables: Memory pre-conditions 
 	int j;
 	double string[4] = {1.0, 2.0, 3.0, 4.0};
 	
@@ -243,7 +245,7 @@ void unittest_mutation()
 	GA_PARAMETERS.stepsize[2]=0.01;
 	GA_PARAMETERS.stepsize[3]=0.01;
 	
-    /***** Function evaluation ***************************************/
+    // Function evaluation  
 	//void mutation(int size, double * string);
 	mutation(4, string);
 	
@@ -251,8 +253,9 @@ void unittest_mutation()
     for (j=0;j<4;j++){printf("%2.2f ", string[j]);}
     printf("]\n");
 
-    /***** Variables: Memory post-conditions *************************/
+    // Variables: Memory post-conditions 
 	//CU_ASSERT_EQUAL(<var_name2>, <value>);
 
 	// free();
 }
+*/

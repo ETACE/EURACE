@@ -2,8 +2,9 @@
  * \file  unittest.c
  * \brief Holds main function of the unittest program.
  */
-#include "header.h"
 #include <CUnit/Basic.h>
+#include "header.h"
+
 
 /*************************** unittest prototypes ***************************/
 void unittest_sum();

@@ -1,8 +1,8 @@
 #include <CUnit/Basic.h>
-#include "header.h"
-#include "Household_agent_header.h"
-#include "mylibraryheader.h"
-#include "some_new_functions.h"
+#include "../header.h"
+#include "../Household_agent_header.h"
+#include "../mylibraryheader.h"
+#include "../some_new_functions.h"
 
 #define NR_PARAMS 10;
 
