@@ -366,7 +366,7 @@ int Household_read_application_rejection_update_wage_reservation()
 	/* Update wage reservation */
 	if(rejection_count > 0 )
 	{
-		WAGE_RESERVATION = WAGE_RESERVATION - WAGE_RESERVATION*wage_reservation_update;
+		WAGE_RESERVATION = WAGE_RESERVATION - WAGE_RESERVATION*WAGE_RESERVATION_UPDATE;
 		rejection_count = 0;
 		
 		/* Don't let wage reservation be below 1 */
@@ -682,7 +682,7 @@ int Household_read_application_rejection_update_wage_reservation_2()
 	/* Update wage reservation */
 	if(rejection_count > 0)
 	{
-		WAGE_RESERVATION = WAGE_RESERVATION-WAGE_RESERVATION* 				wage_reservation_update;
+		WAGE_RESERVATION = WAGE_RESERVATION-WAGE_RESERVATION*WAGE_RESERVATION_UPDATE;
 		rejection_count = 0;
 		/* Don't let wage reservation be below 1 */
 		if(WAGE_RESERVATION < 1) 
