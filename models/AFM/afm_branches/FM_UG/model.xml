@@ -3,8 +3,8 @@
 <xmodel version="2">
 	
 	<name>Financial Market</name>
-	<version>Genova</version>
-	<description>Mario Locci 010807</description>
+	<version>7/07/08</version>
+	<description>UNICA</description>
 	
 	<!--***************** Environment values and functions **********************-->
 	<environment>
