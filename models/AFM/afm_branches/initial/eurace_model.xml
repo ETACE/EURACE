@@ -3,12 +3,12 @@
 <xmodel version="2">
 
 <name>Eurace</name>
-<version>0.1</version>
+<version>0.01</version>
 <description>Integration of AFM + EWA</description>
 
 <!-- Models to include in Eurace model -->
 <models>
-<model><file>ewa_learning/model.xml</file><enabled>false</enabled></model>
+<model><file>ewa_learning/model.xml</file><enabled>true</enabled></model>
 <model><file>FM_UG/model.xml</file><enabled>true</enabled></model>
 </models>
 
@@ -59,6 +59,7 @@
 <name>FinancialAgent</name>
 <description></description>
 <memory>
+<variable><type>int</type><name>id</name><description></description></variable>
 </memory>
 </xagent>
 
@@ -66,6 +67,8 @@
 <name>Household</name>
 <description></description>
 <memory>
+<variable><type>int</type><name>id</name><description></description></variable>
+<variable><type>int</type><name>day_of_month_to_act</name><description></description></variable>
 </memory>
 </xagent>
 </agents>
