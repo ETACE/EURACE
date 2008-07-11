@@ -1362,3 +1362,38 @@ int Eurostat_compute_growth_rates_quarterly()
     
     return 0;
 }
+
+/* \fn: int Eurostat_firm_creation()
+ * \brief: The firm creation process
+ */
+int Eurostat_firm_creation()
+{
+	int i;
+	double sum;
+	int nr_new_firms;
+	
+	//The average 1-period survival rate of firms age 0-12 months: 
+	sum=0.0;
+	for (i=0; i<12; i++)
+	{
+		//sum += SURVIVAL_RATE_MULTIPERIOD[0][i];
+		sum += SURVIVAL_RATE[i];
+	}
+	
+	//Total number of new firms created is between 0 and MAX_FIRM_CREATION
+	nr_new_firms = int(MAX_FIRM_CREATION*sum/12);
+	
+    //add new firms
+	printf("Adding new firms: %d", nr_new_firms);
+	for (i=0; i<nr_new_firms; i++)
+	{
+		//new unique id
+		//random activation day
+		//some payment account?
+		//some capital?
+		
+		//add_firm_agent();
+	}
+	
+    return 0;
+}

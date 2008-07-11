@@ -8,19 +8,22 @@ void unittest_sum()
 {	
      /***** Variables: Memory pre-conditions **************************/
 	  double outcome;
-	  double * p;
+	  double* p;
 	  int size;
 	  	  
+	  size=4;
+	  
 	  //Input: p={0.6 0.2 0.8 0.4}
 	  p = malloc(size * sizeof(double));
 	  p[0]=0.6; p[1]=0.2; p[2]=0.8; p[3]=0.4;
+	  printf("\n In sum: p=[%1.1f, %1.1f, %1.1f, %1.1f]\n", p[0], p[1], p[2], p[3]);
 
-     /***** Function evaluation ***************************************/
+	  /***** Function evaluation ***************************************/
 	  //double sum(double * p, int size)
 	  outcome = 0.0;
-	  size=4;
 	  outcome = sum(p, size);
-	  printf("\n outcome : %f", outcome);
+	  
+	  printf("\n In function sum_unittest: outcome : %2.1f\n", outcome);
 	  
      /***** Variables: Memory post-conditions *************************/
      CU_ASSERT_DOUBLE_EQUAL(outcome, 2.0, 1e-3);

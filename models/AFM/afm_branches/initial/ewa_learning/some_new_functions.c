@@ -19,18 +19,21 @@
 //Input: p={0.6 0.2 0.8 0.4}
 //sum = sum(p,4);
 //Outcome: sum=2.0;
-double sum(double * p, int size)
+double sum(double* p, int size)
 {
 	int i;
-	double sum_val= 0.0;
-	
+	double sum_val;
+
+	printf("\n In sum_unittest: p=[%1.1f, %1.1f, %1.1f, %1.1f]\n", p[0], p[1], p[2], p[3]);
+
+	sum_val=0.0;
 	for (i=0;i<size;i++)
 	{
 		sum_val += p[i];
 	}	
-	printf("\n sum: %f", sum_val);
+	printf("\n In function sum: sum_val=%f", sum_val);
 	
-    return sum_val;
+    return(sum_val);
 }
 
 //\brief: Cumulative sum of elements of a vector p.

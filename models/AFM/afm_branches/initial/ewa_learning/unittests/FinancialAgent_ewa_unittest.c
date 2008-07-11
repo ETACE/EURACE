@@ -4,8 +4,6 @@
 #include "../mylibraryheader.h"
 #include "../some_new_functions.h"
 
-#define NR_PARAMS 10;
-
 /************FinancialAgent: Financial Advisor Role ********************************/
 
 /************ Unit tests ********************************/

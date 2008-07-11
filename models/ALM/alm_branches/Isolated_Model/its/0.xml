@@ -34,6 +34,7 @@
 <delivery_prob_if_critical_stock_0>25</delivery_prob_if_critical_stock_0>
 <innovation_probability>10</innovation_probability>
 <productivity_progress>0.05</productivity_progress>
+<max_firm_creation>10</max_firm_creation>
 </environment>
 
 <xagent>

@@ -4,8 +4,6 @@
 #include "../mylibraryheader.h"
 #include "../some_new_functions.h"
 
-#define NR_PARAMS 10;
-
 /************Household: EWA learning Role ********************************/
 
 /************ Unit tests ********************************/
