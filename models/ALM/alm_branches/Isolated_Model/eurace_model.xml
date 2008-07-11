@@ -25,13 +25,13 @@
 <constants>
 <variable><type>int</type><name>print_log</name><description>1, A flag to print logging output to terminal.</description></variable>
 <variable><type>int</type><name>print_debug</name><description>1, A flag to print debugging output to terminal.</description></variable>
-
+<!--General parameters-->
 <variable><type>int</type><name>day</name><description>iteration_loop, The day count.</description></variable>
 <variable><type>int</type><name>week</name><description>5, Number of days in a week.</description></variable>
 <variable><type>int</type><name>month</name><description>20, Number of days in a month.</description></variable>
 <variable><type>int</type><name>quarter</name><description>60, The number of days in a quarter.</description></variable>
 <variable><type>int</type><name>year</name><description>240, The number of days in a year.</description></variable>
-
+<!--Firm parameters-->
 <variable><type>int</type><name>gamma</name><description> -2, Strength of logit rule for consumption</description></variable>
 <variable><type>double</type><name>alpha</name><description>0.662, Parameter for production function.</description></variable>
 <variable><type>double</type><name>beta</name><description>0.338, Parameter for production function.</description></variable>
@@ -58,6 +58,8 @@
 <variable><type>int</type><name>delivery_prob_if_critical_stock_0</name><description>25, Probability for the delivery if the critical stock of one mall was zero for the last periods.</description></variable>
 <variable><type>int</type><name>innovation_probability</name><description>10</description></variable>
 <variable><type>double</type><name>productivity_progress</name><description>0.05</description></variable>
+<!--Eurostat parameters-->
+<variable><type>int</type><name>max_firm_creation</name><description>10, maximum number of new firms created if survival rate of young firms is 1.</description></variable>
 </constants>
  
 
