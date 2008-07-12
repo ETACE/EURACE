@@ -1,6 +1,6 @@
 #include "header.h"
 #include "mylibraryheader.h"
-
+#include "my_library_header.h"
 //*********** BEGIN AUXILIARY FUNCTIONS ****************************
 
 //double sum(double * p, int size)
@@ -19,7 +19,7 @@
 //Input: p={0.6 0.2 0.8 0.4}
 //sum = sum(p,4);
 //Outcome: sum=2.0;
-double sum(double* p, int size)
+double sum(double * p, int size)
 {
 	int i;
 	double sum_val;
@@ -143,20 +143,22 @@ double draw(int size, double * cpdf)
 	//Before calling this function you need to have done:
 	//cpdf = malloc(sizeof(double)*size);
 
-	int j,u, nr_selected_bin;
-	double nr_drawn;
+	int j, nr_selected_bin;
+	double u,nr_drawn;
 	
-    //Random number generator:
-    u=random_unif();
+    //Random number:
+	u=random_unif();
+    printf("\n Random draw: %f\n", u);
+    
     
     nr_selected_bin=0;
     
     //Case 1: u<F(1)
-        if (0<=u && u<cpdf[0])
-        {
-            nr_selected_bin=1;
-            nr_drawn = cpdf[0];
-        }
+    if (0<=u && u<cpdf[0])
+    {
+        nr_selected_bin=1;
+        nr_drawn = cpdf[0];
+    }
         
     if (size>1)
     {
@@ -237,23 +239,35 @@ int ismember(double i, double * xvec, int size)
 //free(cpdf);
 //free(draws);
 
-void draw_without_replacement(int size, double * cpdf, int Nr_draws, double * draws)
+void draw_without_replacement(int size, double * cpdf, int nr_draws, double * draws)
 {
+	//TO FIX: in draw we do not set the random seed correctly, so all random draws are equal!!
+	
 	//Before calling this function you need to have done:
 	//cpdf = malloc(sizeof(double)*size);
-	//draws = malloc(sizeof(double)*Nr_draws);
+	//draws = malloc(sizeof(double)*nr_draws);
 	
 	double i;
-	int k,count=0;
+	int k;
+	int count, count_2, safety_count;
 	
-	for (k=0;k<size;k++)
+	
+	//printf("\n Setting drawns to -1\n");
+	for (k=0; k<size; k++)
 	{
 		draws[k]=-1;
 	}
 	
-	//Continue drawing until N different numbers have been drawn
-	while(count!=size)
+	//printf("\n Continuing with drawing\n");
+	//Continue drawing until nr_draws different elements have been drawn
+	count=0;
+	count_2=0;
+	safety_count = 10*nr_draws;
+	while(count != nr_draws && count_2<safety_count)
 	{
+		//printf("\n count %d != %d:\n", count, nr_draws);
+
+		//printf("\n A draw:\n");
 		i = draw(size, cpdf);
 		
 		//Check membership, only add if not yet a member
@@ -262,6 +276,9 @@ void draw_without_replacement(int size, double * cpdf, int Nr_draws, double * dr
 			draws[count]=i;
 			count += 1;
 		}
+		
+		//Stop after 10*nr_drawns:
+		count_2 +=1;
 	}
 }
 
@@ -294,24 +311,24 @@ void draw_without_replacement(int size, double * cpdf, int Nr_draws, double * dr
 //free(cpdf);
 //free(draws);
 
-void draw_with_replacement(int size, double * cpdf, int Nr_draws, double * draws)
+void draw_with_replacement(int size, double * cpdf, int nr_draws, double * draws)
 {
 	//Before calling this function you need to have done:
 	//cpdf = malloc(sizeof(double)*size);
-	//draws = malloc(sizeof(double)*Nr_draws);
+	//draws = malloc(sizeof(double)*nr_draws);
 
 	int k=0;
 
-	for (k=0;k<Nr_draws;k++)
+	for (k=0; k<nr_draws; k++)
 	{
 		draws[k]=draw(size, cpdf);
 	}
 }
 
-/* \fn void single_point_cross_over(int size, double * string1, double * string2, int cross_point)
+/* \fn void single_point_cross_over(int size, double * string_a, double * string_b, int cross_point)
  * \brief Genetic operator: single_point_cross_over
  */
-void single_point_cross_over(int size, double * string1, double * string2, int cross_point)
+void single_point_cross_over(int size, double * string_a, double * string_b, int cross_point)
 {
 	int k;
 	double tmp;
@@ -321,31 +338,32 @@ void single_point_cross_over(int size, double * string1, double * string2, int c
 		printf("Error in single_point_cross_over: cross_point > size of string");
 		return;
 	}
-	// perform single-point cross-over between two strings
-	for (k=0; k<cross_point; k++)
-	{
-		tmp = string1[k];
-		string1[k]=string2[k];
-		string2[k]=tmp;	
-	}
+
+    //Crossover the bitstrings using single-point cross-over from the cross_point
+    for (k=cross_point;k<size;k++)
+    {
+        tmp = string_a[k];
+        string_a[k]= string_b[k];
+        string_b[k]= tmp;
+    }
 }
 
-/* \fn void two_point_cross_over(int size, double * string1, double * string2, int cross_point, int cross_length)
+/* \fn void two_point_cross_over(int size, double * string_a, double * string_b, int cross_point, int cross_length)
  * \brief Genetic operator: two_point_cross_over
  */
-void two_point_cross_over(int size, double * string1, double * string2, int cross_point, int cross_length)
+void two_point_cross_over(int size, double * string_a, double * string_b, int cross_point, int cross_length)
 {
 	int k, count;
 	double tmp;
-
+	
 	if ((cross_point+cross_length)<size)
 	{
 	    // perform normal cross-over between parent pair
 		for (k=cross_point; k<(cross_point+cross_length); k++)
 		{
-			tmp = string1[k];
-			string1[k]=string2[k];
-			string2[k]=tmp;	
+			tmp = string_a[k];
+			string_a[k]=string_b[k];
+			string_b[k]=tmp;	
 		}
 	}
 	else
@@ -356,9 +374,9 @@ void two_point_cross_over(int size, double * string1, double * string2, int cros
 		count=0;
 		for (k=cross_point; k<size; k++)
 		{
-			tmp = string1[k];
-			string1[k]=string2[k];
-			string2[k]=tmp;
+			tmp = string_a[k];
+			string_a[k]=string_b[k];
+			string_b[k]=tmp;
 			count++;
 		}
 	    //2. perform cross-over at beginning of string until count reaches cross_length
@@ -366,12 +384,51 @@ void two_point_cross_over(int size, double * string1, double * string2, int cros
 		k=0;
 		while (count!=cross_length)
 		{
-			tmp = string1[k];
-			string1[k]=string2[k];
-			string2[k]=tmp;
+			tmp = string_a[k];
+			string_a[k]=string_b[k];
+			string_b[k]=tmp;
 			count++;
 		}
 	}
+}
+
+/* \fn void two_point_cross_over_alt(int size, double * string_a, double * string_b, int cross_point, int cross_length)
+ * \brief Genetic operator: two_point_cross_over
+ */
+void two_point_cross_over_alt(int size, double * string_a, double * string_b, int cross_point, int cross_length)
+{
+	int k, start, end;
+	double tmp;
+	
+	//Set start and end bits
+	if (cross_point+cross_length<=size)
+	{
+		start = cross_point;
+		end   = cross_point+cross_length;
+	}
+	//Prevent overrun on right-hand side and cut to length
+	/*
+	if (cross_point+cross_length>size)
+	{
+	    start=cross_point;
+	    end=size;            	
+	}
+	*/
+	//Prevent overrun on right-hand side by making strings circular          
+	if (cross_point+cross_length>size)
+	{
+		start=(cross_point+cross_length)%size;
+		end=cross_point;
+	}
+
+	//Crossover the bitstrings
+    for (k=start;k<end;k++)
+    {
+        tmp = string_a[k];
+        string_a[k]=string_b[k];
+        string_b[k]=tmp;
+    }
+
 }
 
 /* \fn void mutation(int size, double * offspring_1, double * offspring_2);
