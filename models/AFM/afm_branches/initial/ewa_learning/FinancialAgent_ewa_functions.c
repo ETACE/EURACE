@@ -89,12 +89,10 @@ int FinancialAgent_apply_GA()
 	
 	int cross_point, cross_length;
 		
-	//Date-event triggered: every 100 days run the GA (condition in xml)
+	//Date-event triggered: every 240 days run the GA (condition in xml)
 	//GA CODE HERE
 
-	// read current generation of bitstrings from LCS
-	// read current fitness of bitstrings from LCS
-
+    /*********************** Start of Selection for reproduction **************************************/
 	// 1. Selection/Reproduction
 			
 	// N_rep is some fixed percentage of the population size pop_size, and should be even.
@@ -128,7 +126,8 @@ int FinancialAgent_apply_GA()
     //print cpdf:
      printf("\n cpdf: [");
      for (j=0;j<nr_rules;j++){printf("%2.2f ", cpdf[j]);}
-     printf("]\n");
+     printf("]\n"); 
+     
      
     // Drawing N_rep random copies (without replacement) from the entire population
     // using the fitness-based probabilities ('draws' contains indices of drawn rules)
@@ -146,7 +145,9 @@ int FinancialAgent_apply_GA()
     	 parent_index_1[j] = (int)((N_pairs+0.999)*random_unif());
     	 parent_index_2[j] = (int)((N_pairs+0.999)*random_unif());
      }
-	
+     /*********************** End of Selection for reproduction **************************************/
+     
+     /*********************** Start of Reproduction **************************************************/
 	//2. Genetic operators
      for (j=0; j<N_pairs; j++)
      {
@@ -195,12 +196,17 @@ int FinancialAgent_apply_GA()
 		}
         // add 2 offspings to potential new generation (this step is only needed if election operator is on)  
 		// else: add offspring directly, replacing the original strings
-
+	    
+		/*********************** End of Reproduction **************************************************/
+		
+	    /*********************** Start of Mutation ****************************************************/
 		// 3. Mutation: each bit has a probability of mutating
 		//void mutation(int size, double * offspring_1, double * offspring_2);
 		mutation(NR_PARAMS, offspring_1, GA_PARAMETERS.stepsize, GA_PARAMETERS.prob_mut);
 		mutation(NR_PARAMS, offspring_2, GA_PARAMETERS.stepsize, GA_PARAMETERS.prob_mut);
+	    /*********************** End of Mutation ****************************************************/
 		
+	    /*********************** Start of Election ****************************************************/		
 		// 4. Election
 		if (GA_PARAMETERS.election)
 		{
@@ -221,7 +227,9 @@ int FinancialAgent_apply_GA()
 			// void election(int size, double * offspring_1, double * offspring_2, double * parent_1, double * parent_2)
 			// election(NR_PARAMS, offspring_1, offspring_2, parent_1, parent_2);
 		}
-
+	    /*********************** End of Election ****************************************************/
+		
+	    /*********************** Start of Replacement ****************************************************/
 		//5. Finally, add the new strings to the population to replace the old ones
 		//This means: copy the parameters into the classifier system
 		for (k=0; k<NR_PARAMS; k++)
@@ -229,6 +237,7 @@ int FinancialAgent_apply_GA()
 			PUBLIC_CLASSIFIERSYSTEM.ruletable[id1].parameters[k] = offspring_1[k];
     		PUBLIC_CLASSIFIERSYSTEM.ruletable[id2].parameters[k] = offspring_2[k];
 		}
+		/*********************** End of Replacement ****************************************************/
      }		
 
 	free(p);
