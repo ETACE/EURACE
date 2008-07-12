@@ -263,22 +263,26 @@ void draw_without_replacement(int size, double * cpdf, int nr_draws, double * dr
 	count=0;
 	count_2=0;
 	safety_count = 10*nr_draws;
-	while(count != nr_draws && count_2<safety_count)
+	while(count != nr_draws)
 	{
 		//printf("\n count %d != %d:\n", count, nr_draws);
 
 		//printf("\n A draw:\n");
 		i = draw(size, cpdf);
 		
-		//Check membership, only add if not yet a member
+		//Check membership, only add if new draw not already a member
 		if (ismember(i,draws,size)==0)
 		{
 			draws[count]=i;
 			count += 1;
 		}
-		
 		//Stop after 10*nr_drawns:
 		count_2 +=1;
+		if (count_2==safety_count) break;
+	}
+	if (count_2==safety_count)
+	{
+		printf("\n Function draw_without_replacement: reached safety count %d, while nr_draws = %d\n", count_2, nr_draws);
 	}
 }
 
