@@ -90,9 +90,15 @@ int FinancialAgent_apply_GA()
 	int cross_point, cross_length;
 		
 	//Date-event triggered: every 240 days run the GA (condition in xml)
-	//GA CODE HERE
-
-    /*********************** Start of Selection for reproduction **************************************/
+	//GA CODE HERE:
+	//void GA_selection();
+	//void GA_reproduction();
+	//void GA_mutation();
+	//void GA_election();
+	//void GA_reinsertion();	
+	
+    /*********************** Start of Selection function **************************************/
+	//void GA_selection()
 	// 1. Selection/Reproduction
 			
 	// N_rep is some fixed percentage of the population size pop_size, and should be even.
@@ -145,13 +151,14 @@ int FinancialAgent_apply_GA()
     	 parent_index_1[j] = (int)((N_pairs+0.999)*random_unif());
     	 parent_index_2[j] = (int)((N_pairs+0.999)*random_unif());
      }
-     /*********************** End of Selection for reproduction **************************************/
+     /*********************** End of Selection function **************************************/
      
-     /*********************** Start of Reproduction **************************************************/
-	//2. Genetic operators
+     /*********************** Start of Reproduction function **************************************************/
+ 	 //void GA_reproduction()
+     //2. Genetic operators: cross-over
      for (j=0; j<N_pairs; j++)
      {
-    	//rule indices id1, id2 are in the vector 'draws':
+    	//rule indices id1, id2 are stored in the vector 'draws':
 		index=parent_index_1[j];
     	id1=draws[index];
     	
@@ -192,28 +199,25 @@ int FinancialAgent_apply_GA()
 		}
 		else
 		{
-	        //No cross-over: 2 offspring bitstrings are identical copies of parents
+	        //No cross-over occurs: 2 offspring remain identical copies of the parents
 		}
-        // add 2 offspings to potential new generation (this step is only needed if election operator is on)  
-		// else: add offspring directly, replacing the original strings
-	    
-		/*********************** End of Reproduction **************************************************/
+		/*********************** End of Reproduction function **************************************************/
 		
-	    /*********************** Start of Mutation ****************************************************/
-		// 3. Mutation: each bit has a probability of mutating
+	    /*********************** Start of Mutation function ****************************************************/
+		//void GA_mutation()
+		// 3. Mutation: each bit has a probability of mutating by a stepsize
 		//void mutation(int size, double * offspring_1, double * offspring_2);
 		mutation(NR_PARAMS, offspring_1, GA_PARAMETERS.stepsize, GA_PARAMETERS.prob_mut);
 		mutation(NR_PARAMS, offspring_2, GA_PARAMETERS.stepsize, GA_PARAMETERS.prob_mut);
-	    /*********************** End of Mutation ****************************************************/
+	    /*********************** End of Mutation function ****************************************************/
 		
-	    /*********************** Start of Election ****************************************************/		
-		// 4. Election
+	    /*********************** Start of Election function ****************************************************/		
+		//void GA_election() 
+		// 4. Election: before 2 offsprings are added to the gene pool, they are tested against their parents.
+		// Out ot the 4 candidates (2 parents, 2 offsprings) the best 4 are retained.
 		if (GA_PARAMETERS.election)
 		{
-		    // test for higher fitness between 2 offspring and 2 parents
-			// add 2 out of 4 best bitstrings to new generation
-			
-			//Make extra copies of the parents
+			//1. Make 2 local copies of the parents
     		/*
     		 parent_1 = malloc(sizeof(double)*NR_PARAMS);
 			 parent_2 = malloc(sizeof(double)*NR_PARAMS);
@@ -224,12 +228,18 @@ int FinancialAgent_apply_GA()
      		    parent_2[k]=PUBLIC_CLASSIFIERSYSTEM.ruletable[id2].parameters[k];
     		}
     		*/
+			
+			//2. Compare the 2 offspring to their 2 parents: test for higher fitness between 2 offspring and 2 parents
 			// void election(int size, double * offspring_1, double * offspring_2, double * parent_1, double * parent_2)
 			// election(NR_PARAMS, offspring_1, offspring_2, parent_1, parent_2);
+			
+			//3. Add 2 out of 4 best bitstrings to new generation
+			
 		}
-	    /*********************** End of Election ****************************************************/
+	    /*********************** End of Election function ****************************************************/
 		
-	    /*********************** Start of Replacement ****************************************************/
+	    /*********************** Start of Replacement function ****************************************************/
+		//void GA_reinsertion()
 		//5. Finally, add the new strings to the population to replace the old ones
 		//This means: copy the parameters into the classifier system
 		for (k=0; k<NR_PARAMS; k++)
@@ -237,7 +247,7 @@ int FinancialAgent_apply_GA()
 			PUBLIC_CLASSIFIERSYSTEM.ruletable[id1].parameters[k] = offspring_1[k];
     		PUBLIC_CLASSIFIERSYSTEM.ruletable[id2].parameters[k] = offspring_2[k];
 		}
-		/*********************** End of Replacement ****************************************************/
+		/*********************** End of Replacement function ****************************************************/
      }		
 
 	free(p);
