@@ -293,6 +293,9 @@
       <name>Household</name>
       <description></description>
       <memory>
+      	<variable><type>int</type><name>id</name><description></description></variable>
+		<variable><type>int</type><name>day_of_month_to_act</name><description></description></variable>
+      
         <variable>
           <type>EWAParameterStruct</type>
           <name>EWA_parameters</name>
@@ -312,30 +315,30 @@
 		  <description>Idle bypassing the GA</description>
 		  <currentState>start_Household_EWA_Learning</currentState>
 		  <nextState>end_GA</nextState>
-          <condition><not><time><period>yearly</period><phase>1</phase></time></not></condition>
+<!--          <condition><not><time><period>yearly</period><phase>1</phase></time></not></condition>-->
 		</function>
       
-        <function>
-          <name>Household_reset_private_classifiersystem</name>
-          <description></description>
-          <currentState>start_Household_EWA_Learning</currentState>
-          <nextState>01</nextState>
-          <condition><time><period>yearly</period><phase>1</phase></time></condition>
-          <inputs></inputs>
-          <outputs></outputs>
-        </function>
-          <function>
-          <name>Household_read_and_update_rule_details</name>
-          <description></description>
-          <currentState>01</currentState>
-          <nextState>end_GA</nextState>
-          <inputs>
-          <input>
-          	<messageName>rule_details</messageName>
-          </input>
-          </inputs>
-          <outputs></outputs>
-        </function>
+<!--        <function>-->
+<!--          <name>Household_reset_private_classifiersystem</name>-->
+<!--          <description></description>-->
+<!--          <currentState>start_Household_EWA_Learning</currentState>-->
+<!--          <nextState>01</nextState>-->
+<!--          <condition><time><period>yearly</period><phase>1</phase></time></condition>-->
+<!--          <inputs></inputs>-->
+<!--          <outputs></outputs>-->
+<!--        </function>-->
+<!--          <function>-->
+<!--          <name>Household_read_and_update_rule_details</name>-->
+<!--          <description></description>-->
+<!--          <currentState>01</currentState>-->
+<!--          <nextState>end_GA</nextState>-->
+<!--          <inputs>-->
+<!--          <input>-->
+<!--          	<messageName>rule_details</messageName>-->
+<!--          </input>-->
+<!--          </inputs>-->
+<!--          <outputs></outputs>-->
+<!--        </function>-->
         
       	<!-- Idle bypassing the EWA -->
  	 	<function>
@@ -388,6 +391,8 @@
       <name>FinancialAgent</name>
       <description></description>
       <memory>
+        <variable><type>int</type><name>id</name><description></description></variable>
+      
         <variable>
           <type>SimplePublicClassifierSystem</type>
           <name>public_classifiersystem</name>
@@ -412,37 +417,37 @@
 		  <description>Idle bypassing the GA</description>
 		  <currentState>start_FinancialAgent</currentState>
 		  <nextState>end_GA</nextState>
-          <condition><not><time><period>yearly</period><phase>1</phase></time></not></condition>
+<!--          <condition><not><time><period>yearly</period><phase>1</phase></time></not></condition>-->
 		  </function>
-        <function>
-          <name>FinancialAgent_reset_public_classifiersystem</name>
-          <description>Resetting user counter, performance sum, avg_performance</description>
-          <currentState>start_FinancialAgent</currentState>
-          <nextState>01</nextState>
-          <condition><time><period>yearly</period><phase>1</phase></time></condition>
-          <inputs></inputs>
-          <outputs></outputs>
-        </function>
-        <function>
-          <name>FinancialAgent_apply_GA</name>
-          <description></description>
-          <currentState>01</currentState>
-          <nextState>02</nextState>
-          <inputs></inputs>
-          <outputs></outputs>
-        </function>
-        <function>
-          <name>FinancialAgent_send_rule_details</name>
-          <description></description>
-          <currentState>02</currentState>
-          <nextState>end_GA</nextState>
-          <inputs></inputs>
-          <outputs>
-          <output>
-          	<messageName>rule_details</messageName>
-          </output>
-          </outputs>
-        </function>
+<!--        <function>-->
+<!--          <name>FinancialAgent_reset_public_classifiersystem</name>-->
+<!--          <description>Resetting user counter, performance sum, avg_performance</description>-->
+<!--          <currentState>start_FinancialAgent</currentState>-->
+<!--          <nextState>01</nextState>-->
+<!--          <condition><time><period>yearly</period><phase>1</phase></time></condition>-->
+<!--          <inputs></inputs>-->
+<!--          <outputs></outputs>-->
+<!--        </function>-->
+<!--        <function>-->
+<!--          <name>FinancialAgent_apply_GA</name>-->
+<!--          <description></description>-->
+<!--          <currentState>01</currentState>-->
+<!--          <nextState>02</nextState>-->
+<!--          <inputs></inputs>-->
+<!--          <outputs></outputs>-->
+<!--        </function>-->
+<!--        <function>-->
+<!--          <name>FinancialAgent_send_rule_details</name>-->
+<!--          <description></description>-->
+<!--          <currentState>02</currentState>-->
+<!--          <nextState>end_GA</nextState>-->
+<!--          <inputs></inputs>-->
+<!--          <outputs>-->
+<!--          <output>-->
+<!--          	<messageName>rule_details</messageName>-->
+<!--          </output>-->
+<!--          </outputs>-->
+<!--        </function>-->
         <function>
           <name>FinancialAgent_read_rule_performance_and_update_classifiersystem</name>
           <description></description>
