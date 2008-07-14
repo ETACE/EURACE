@@ -32,6 +32,10 @@ int Household_send_rule_performance()
     //Random performance (uses the function random_unif())
     rule_performance = random_unif()*100;
     
+    
+    printf("\n current_rule: %d\n", current_rule);
+    printf("\n rule_performance: %f\n", rule_performance);
+    
     //Note: rule_id = current_rule-1 because of 0-indexing in C
     //add_rule_performance_message(rule_id, rule_performance);
     add_rule_performance_message(current_rule-1, rule_performance);

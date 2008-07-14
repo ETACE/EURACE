@@ -36,14 +36,14 @@ void unittest_sum()
 	  //Input: p={0.6 0.2 0.8 0.4}
 	  p = malloc(sizeof(double)*size);
 	  p[0]=0.6; p[1]=0.2; p[2]=0.8; p[3]=0.4;
-	  printf("\n In sum: p=[%1.1f, %1.1f, %1.1f, %1.1f]\n", p[0], p[1], p[2], p[3]);
+	  //printf("\n In sum: p=[%1.1f, %1.1f, %1.1f, %1.1f]\n", p[0], p[1], p[2], p[3]);
 
 	  /***** Function evaluation ***************************************/
 	  //double sum(double * p, int size)
 	  sum_p = 0.0;
 	  sum_p = sum(p, size);
 	  
-	  printf("\n In function sum_unittest: sum_p : %2.1f\n", sum_p);
+	  //printf("\n In function sum_unittest: sum_p : %2.1f\n", sum_p);
 	  
      /***** Variables: Memory post-conditions *************************/
      CU_ASSERT_DOUBLE_EQUAL(sum_p, 2.0, 1e-3);
