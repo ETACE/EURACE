@@ -1,10 +1,11 @@
-#include "header.h"
-#include "Firm_agent_header.h"
-#include "my_library_header.h"
+#include "../header.h"
+#include "../Firm_agent_header.h"
+#include "../my_library_header.h"
 
 #define CONST_NUMBER_OF_BANKS 10
-#define NUMBER_OF_BANKS_TO_APPLY 10
+#define NUMBER_OF_BANKS_TO_APPLY 3
 #define CONST_INSTALLMENT_PERIODS 12
+#define LINK 3
 
 
 int Firm_ask_loan()
@@ -37,7 +38,7 @@ int Firm_get_loan()
 	int n, n1, k, i, j, primo;
     int bk = -1;
 
-    double rate_order_array[CONST_NUMBER_OF_BANKS]; //constant size static array
+    int rate_order_array[CONST_NUMBER_OF_BANKS]; //constant size static array
     double interest_array[CONST_NUMBER_OF_BANKS]; //constant size static array
     double credit_offer_array[CONST_NUMBER_OF_BANKS]; //constant size static array
     double value_at_risk_array[CONST_NUMBER_OF_BANKS]; //constant size static array
@@ -113,7 +114,8 @@ int Firm_get_loan()
 		    loan_value = credit_accepted;
 		    interest_rate = interest_array[rate_order_array[primo]];
 		    installment_amount = credit_accepted/CONST_INSTALLMENT_PERIODS;
-		    var_per_installment = residual_var_array[rate_order_array[primo]][CONST_INSTALLMENT_PERIODS-1]/CONST_INSTALLMENT_PERIODS;
+		    var_per_installment = RESIDUAL_VAR[rate_order_array[primo]].value[CONST_INSTALLMENT_PERIODS-1]/CONST_INSTALLMENT_PERIODS; //rate_order_array[primo]][CONST_INSTALLMENT_PERIODS-1]/CONST_INSTALLMENT_PERIODS;
+		    
 		    residual_var = value_at_risk_array[rate_order_array[primo]]*(credit_offer_array[rate_order_array[primo]]/credit_accepted);
 		    bad_debt = 0.0;
 		    nr_periods_before_repayment=CONST_INSTALLMENT_PERIODS;
