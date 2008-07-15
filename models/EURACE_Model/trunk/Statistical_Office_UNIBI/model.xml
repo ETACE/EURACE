@@ -347,13 +347,13 @@ including several micro data.</description>
 <variable><type>double</type><name>firm_average_wage_skill_3</name><description>Average wage in the economy paid by firms for general skill level 3</description></variable>
 <variable><type>double</type><name>firm_average_wage_skill_4</name><description>Average wage in the economy paid by firms for general skill level 4</description></variable>
 <variable><type>double</type><name>firm_average_wage_skill_5</name><description>Average wage in the economy paid by firms for general skill level 5</description></variable>
-<variable><type>double</type><name>firm_average_s_skill</name><description></description>Average specific skills in firm in the economy</variable>
-<variable><type>double</type><name>firm_average_s_skill_1</name><description></description>Average specific skills of general skill level 1 in firms in the economy</variable>
-<variable><type>double</type><name>firm_average_s_skill_2</name><description></description>Average specific skills of general skill level 2 in firms in the economy</variable>
-<variable><type>double</type><name>firm_average_s_skill_3</name><description></description>Average specific skills of general skill level 3 in firms in the economy</variable>
-<variable><type>double</type><name>firm_average_s_skill_4</name><description></description>Average specific skills of general skill level 4 in firms in the economy</variable>
-<variable><type>double</type><name>firm_average_s_skill_5</name><description></description>Average specific skills of general skill level 5 in firms in the economy</variable>
-<variable><type>firm_data_array</type><name>region_firm_data</name><description></description>Stores the eurostat memory variables concerning the firms for the different regions</variable>
+<variable><type>double</type><name>firm_average_s_skill</name><description>Average specific skills in firm in the economy</description></variable>
+<variable><type>double</type><name>firm_average_s_skill_1</name><description>Average specific skills of general skill level 1 in firms in the economy</description></variable>
+<variable><type>double</type><name>firm_average_s_skill_2</name><description>Average specific skills of general skill level 2 in firms in the economy</description></variable>
+<variable><type>double</type><name>firm_average_s_skill_3</name><description>Average specific skills of general skill level 3 in firms in the economy</description></variable>
+<variable><type>double</type><name>firm_average_s_skill_4</name><description>Average specific skills of general skill level 4 in firms in the economy</description></variable>
+<variable><type>double</type><name>firm_average_s_skill_5</name><description>Average specific skills of general skill level 5 in firms in the economy</description></variable>
+<variable><type>firm_data_array</type><name>region_firm_data</name><description>Stores the eurostat memory variables concerning the firms for the different regions</description></variable>
 <variable><type>household_data_array</type><name>region_household_data</name><description>Stores the eurostat memory variables concerning the households for the different regions</description></variable>
 <!--<variable><type>int</type><name>day_of_month_to_act</name><description></description></variable>-->
 
