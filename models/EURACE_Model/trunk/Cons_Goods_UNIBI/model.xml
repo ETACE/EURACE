@@ -163,8 +163,8 @@
 <variable><type>double</type><name>needed_capital_stock</name><description>The overall capital stock a firm wants to have</description></variable>
 <variable><type>double</type><name>actual_cap_price</name><description>Price of the latest capital good</description></variable>
 <variable><type>double</type><name>mean_specific_skills</name><description>Average specific skills of the workforce</description></variable>
-<variable><type>double</type><name>planned_production_quantity</name>Planne dproduction quantity<description></description></variable>
-<variable><type>double</type><name>production_quantity</name>Actual production quantity<description></description></variable>
+<variable><type>double</type><name>planned_production_quantity</name><description>Planne dproduction quantity</description></variable>
+<variable><type>double</type><name>production_quantity</name><description>Actual production quantity</description></variable>
 <variable><type>double</type><name>unit_costs</name><description>Cost per unit of the consumption good</description></variable>
 <variable><type>double</type><name>production_costs</name><description>Actual production costs, labor and capital</description></variable>
 <variable><type>double</type><name>revenue_per_day</name><description>Daily revenue</description></variable>
@@ -183,7 +183,7 @@
 <variable><type>double</type><name>total_sold_quantity</name><description>Daily sum of sold quantities in the different malls</description></variable>
 <variable><type>double</type><name>cum_total_sold_quantity</name><description>Monthly sum of sold quantities in the different malls</description></variable>
 <variable><type>delivery_volume_per_mall_array</type><name>delivery_volume</name><description>Delivery volume for each mall</description></variable>
-<variable><type>delivery_volume_per_mall_array</type><name>planned_delivery_volume</name>Planned delivery volume for each  mall<description></description></variable>
+<variable><type>delivery_volume_per_mall_array</type><name>planned_delivery_volume</name><description>Planned delivery volume for each  mall</description></variable>
 <variable><type>mall_info_array</type><name>current_mall_stocks</name><description>Current stock in each mall</description></variable>
 <variable><type>double_array</type><name>last_planned_production_quantities</name><description>Array of the planned production quantities in the past</description></variable>
 </memory>
@@ -391,7 +391,9 @@ firms update the specific skill levels of the workers.</description>
 <description>Household pays the income taxes</description>
 <currentState>08</currentState>
 <nextState>08b</nextState>
+<outputs>
 <output><messageName>household_tax_payment</messageName></output>
+</outputs>
 </function>
 
 <function><name>Household_determine_consumption_budget</name>
