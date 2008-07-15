@@ -12,7 +12,8 @@ int Eurostat_idle()
 int Eurostat_Initialization()
 {
     /*Create data content of REGION_FIRM/HOUSEHOLD_DATA at the beginning of the first day.      The first firms will send the data at the end of the first day and the other firms at the       end of their activation days*/  
-        
+
+	
     for(int i = 1; i <= NO_REGIONS; i++)
     {
         add_firm_data(&REGION_FIRM_DATA,
@@ -54,7 +55,6 @@ return 0;
 int Eurostat_send_data()
 {
     
-    
     /*First of every month*/
     /*Send the data*/
     for(int i = 0; i < REGION_HOUSEHOLD_DATA.size; i++)
@@ -70,7 +70,7 @@ int Eurostat_send_data()
     
     }
 
-    
+    add_eurostat_send_price_index_message(PRICE_INDEX);
 
     return 0;
 }
@@ -80,9 +80,9 @@ int Eurostat_send_data()
  * \brief Eurostat receive micro data and calculates macro data
  */
 int Eurostat_calculate_data()
-{
-    int i,j,m;
-
+{	
+	int i,j,m;
+	 
     //Auxiliary sums:
     double sum_total_debt_earnings_ratios;
     double sum_total_debt_equity_ratios;
@@ -101,6 +101,8 @@ int Eurostat_calculate_data()
     double sum_region_output;
     double sum_region_cum_revenue;
     double sum_region_planned_output;
+    
+    double sum_consumption_good_supply;
     
     int counter_firms_in_region;
     
@@ -169,6 +171,8 @@ int Eurostat_calculate_data()
     MONTHLY_REVENUE = 0.0;
     MONTHLY_PLANNED_OUTPUT = 0.0;
     
+    PRICE_INDEX = 0.0;
+    
     /*delete the content of the data arrays in order to store the data for the new          month*/
     //free(REGION_HOUSEHOLD_DATA);
     //free(REGION_FIRM_DATA);
@@ -222,6 +226,24 @@ int Eurostat_calculate_data()
             FIRM_AGE_DISTRIBUTION[i]=0;
         }
 
+      
+      
+        sum_consumption_good_supply = 0.0;
+        /*Compute a weighted mean price*/
+        
+        START_FIRM_SEND_DATA_MESSAGE_LOOP
+        
+        sum_consumption_good_supply+= firm_send_data_message->total_supply;
+        
+        FINISH_FIRM_SEND_DATA_MESSAGE_LOOP
+        
+        START_FIRM_SEND_DATA_MESSAGE_LOOP
+        
+        PRICE_INDEX += (firm_send_data_message->price*firm_send_data_message->total_supply)/ sum_consumption_good_supply;
+        
+        FINISH_FIRM_SEND_DATA_MESSAGE_LOOP
+         
+        
         /*Store the region data of the firms*/
         for(i = 0; i < REGION_FIRM_DATA.size; i++)
         {
@@ -237,7 +259,14 @@ int Eurostat_calculate_data()
             sum_region_cum_revenue          = 0.0;
             sum_region_planned_output       = 0.0;
             
-            START_FIRM_SEND_DATA_MESSAGE_LOOP
+            
+   
+             START_FIRM_SEND_DATA_MESSAGE_LOOP
+            
+            
+            
+            
+            
             
             if(firm_send_data_message->region_id == 
             REGION_FIRM_DATA.array[i].region_id)
@@ -433,16 +462,18 @@ int Eurostat_calculate_data()
         
         }
         
+     
+        
         //Compute total averages after the region for-loop
         AVERAGE_DEBT_EARNINGS_RATIO = sum_total_debt_earnings_ratios/NO_FIRMS;
         AVERAGE_DEBT_EQUITY_RATIO = sum_total_debt_equity_ratios/NO_FIRMS;
         LABOUR_SHARE_RATIO  = sum_total_labour_share_ratios/NO_FIRMS;
-
+        
         MONTHLY_SOLD_QUANTITY = sum_total_sold_quantity/NO_FIRMS;
         MONTHLY_OUTPUT = sum_total_output/NO_FIRMS;
         MONTHLY_REVENUE = sum_total_cum_revenue/NO_FIRMS;
         MONTHLY_PLANNED_OUTPUT = sum_total_planned_output/NO_FIRMS;
-
+       
         /***************** Sum of: no_firm_deaths *********************/
         NO_FIRM_DEATHS = (NO_FIRMS - HISTORY_MONTHLY[0].no_firms - NO_FIRM_BIRTHS);        
 
@@ -463,13 +494,13 @@ int Eurostat_calculate_data()
 
         //1-period survival rate
         //The survival rate for firms that in the previous period had an age in the range [0,59] months:
-        for (i=0; i<60; i++)
+      /*  for (i=0; i<60; i++)
         {
         	SURVIVAL_RATE[i]=
         			(FIRM_AGE_DISTRIBUTION[i]-FIRM_AGE_DISTRIBUTION_PREVIOUS[i-1])/FIRM_AGE_DISTRIBUTION_PREVIOUS[i-1];
         }
         
-        
+      
     /*Create the REGIONAL data which is needed for controlling the results or sending           back to the Firms*/
     for(i = 0; i < REGION_FIRM_DATA.size; i++)
     {
@@ -529,9 +560,10 @@ int Eurostat_calculate_data()
 
     }
 
-    
+  
+   
     /*Create the GLOBAL data which is needed for controlling the results or sending         back to the Households*/
-    
+
     /*********************WAGES****************/
     if(NO_EMPLOYEES > 0)
     {
@@ -579,7 +611,7 @@ int Eurostat_calculate_data()
     
 
     NUM_HOUSEHOLDS=0;
-
+    
     START_HOUSEHOLD_SEND_DATA_MESSAGE_LOOP
 
         /*Store the global/region data of the households*/
@@ -794,7 +826,7 @@ int Eurostat_calculate_data()
         }
 
     FINISH_HOUSEHOLD_SEND_DATA_MESSAGE_LOOP
-
+    
     //printf("Eurostat_Functions: NUM_HOUSEHOLDS %d\n",NUM_HOUSEHOLDS);
     /*Create the REGIONAL data which is needed for controlling the results or sending           back to the Households*/
     for(i = 0; i < REGION_HOUSEHOLD_DATA.size; i++)
@@ -994,7 +1026,7 @@ int Eurostat_calculate_data()
         AVERAGE_WAGE_SKILL_5 = 0;
     }
 
-
+  
     /*******************SPECIFIC SKILLS**********************/
     AVERAGE_S_SKILL = AVERAGE_S_SKILL/(double)NUM_HOUSEHOLDS;
     AVERAGE_S_SKILL_1 = AVERAGE_S_SKILL_1/(double)NO_HOUSEHOLDS_SKILL_1;

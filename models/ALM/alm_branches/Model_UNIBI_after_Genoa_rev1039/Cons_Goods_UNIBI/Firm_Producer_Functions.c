@@ -31,7 +31,7 @@ int Firm_calc_input_demands_2()
 		{
 	
 			temp_capital_demand = PLANNED_PRODUCTION_QUANTITY * 
-			(pow((BETA*MEAN_WAGE*(1.04))/((DEPRECIATION_RATE*ACTUAL_CAP_PRICE+ACTUAL_CAP_PRICE/PERIODS_TO_REPAY_LOANS)*ALPHA),ALPHA)/
+			(pow((BETA*MEAN_WAGE*(1.04))/((DEPRECIATION_RATE*ACTUAL_CAP_PRICE)*ALPHA),ALPHA)/
 			MEAN_SPECIFIC_SKILLS);
 			
 			/*Smoothing of capital good demand*/
@@ -53,7 +53,7 @@ int Firm_calc_input_demands_2()
 		else
 		{
 			temp_capital_demand = PLANNED_PRODUCTION_QUANTITY * 
-			(pow((BETA*MEAN_WAGE*(1.04))/	((DEPRECIATION_RATE*ACTUAL_CAP_PRICE+ACTUAL_CAP_PRICE/PERIODS_TO_REPAY_LOANS)*ALPHA),ALPHA)/
+			(pow((BETA*MEAN_WAGE*(1.04))/	((DEPRECIATION_RATE*ACTUAL_CAP_PRICE)*ALPHA),ALPHA)/
 			TECHNOLOGY);
 
 			/*Smoothing of capital good demand*/
@@ -308,7 +308,7 @@ int Firm_calc_input_demands()
 		{
 	
 			temp_capital_demand = PLANNED_PRODUCTION_QUANTITY * 
-			(pow((BETA*MEAN_WAGE*(1.04))/((DEPRECIATION_RATE*ACTUAL_CAP_PRICE+ACTUAL_CAP_PRICE/PERIODS_TO_REPAY_LOANS)*ALPHA),ALPHA)/
+			(pow((BETA*MEAN_WAGE*(1.04))/((DEPRECIATION_RATE*ACTUAL_CAP_PRICE)*ALPHA),ALPHA)/
 			MEAN_SPECIFIC_SKILLS);
 			
 			/*Smoothing of capital good demand*/
@@ -331,7 +331,7 @@ int Firm_calc_input_demands()
 		else
 		{
 			temp_capital_demand = PLANNED_PRODUCTION_QUANTITY * 
-			(pow((BETA*MEAN_WAGE*(1.04))/	((DEPRECIATION_RATE*ACTUAL_CAP_PRICE+ACTUAL_CAP_PRICE/PERIODS_TO_REPAY_LOANS)*ALPHA),ALPHA)/
+			(pow((BETA*MEAN_WAGE*(1.04))/	((DEPRECIATION_RATE*ACTUAL_CAP_PRICE)*ALPHA),ALPHA)/
 			TECHNOLOGY);
 			
 				/*Smoothing of capital good demand*/
@@ -564,6 +564,8 @@ int Firm_execute_production()
 	
 	//Set actual production value that is retained  in memory during the month:
 	OUTPUT = PRODUCTION_QUANTITY;
+	
+	TOTAL_SUPPLY = TOTAL_UNITS_LOCAL_INVENTORY + OUTPUT;
 	
 	//printf("In Execute production: Firm %d PRODUCTION_QUANTITY: %.2f (%.2f) \n", ID, PRODUCTION_QUANTITY, diff);
 	//printf("In Execute production: Firm %d OUTPUT: %.2f (%.2f)\n", ID, OUTPUT, diff);

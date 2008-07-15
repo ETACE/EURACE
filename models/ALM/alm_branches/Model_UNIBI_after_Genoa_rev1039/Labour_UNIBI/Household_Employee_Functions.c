@@ -108,11 +108,11 @@ int Household_OTJS_read_job_vacancies_and_send_applications()
 					{
 					
 				 		if((vacancies_message->firm_wage_offer - 
-						region_cost) > WAGE_RESERVATION)
+						region_cost*COMMUTING_COSTS_PRICE_LEVEL_WEIGHT) > WAGE_RESERVATION)
 				  		{
 				  			add_vacancy(&vacancy_list, 									vacancies_message->firm_id, 					  				vacancies_message->region_id,
 				  			(vacancies_message->
-							firm_wage_offer - region_cost));
+							firm_wage_offer - region_cost*COMMUTING_COSTS_PRICE_LEVEL_WEIGHT));
 						}
 						break;
 
@@ -194,11 +194,11 @@ int Household_UNEMPLOYED_read_job_vacancies_and_send_applications()
 					==NEIGHBORING_REGION_IDS.array[i])
 					{
 				 		if((vacancies_message->firm_wage_offer -
-						 region_cost) >= WAGE_RESERVATION)
+						 region_cost*COMMUTING_COSTS_PRICE_LEVEL_WEIGHT) >= WAGE_RESERVATION)
 				  		{
 				  			add_vacancy(&vacancy_list, 									vacancies_message->firm_id, 					  				vacancies_message->region_id,
 				  			(vacancies_message->
-							firm_wage_offer - region_cost));
+							firm_wage_offer - region_cost*COMMUTING_COSTS_PRICE_LEVEL_WEIGHT));
 						}
 						break;
 					}
@@ -268,7 +268,7 @@ int Household_read_job_offers_send_response()
 			{
 				add_job_offer(&job_offer_list, 
 				job_offer_message->firm_id, job_offer_message->region_id, 
-				(job_offer_message->wage_offer - region_cost));
+				(job_offer_message->wage_offer - region_cost*COMMUTING_COSTS_PRICE_LEVEL_WEIGHT));
 			}	
 		}
 
@@ -330,8 +330,8 @@ int Household_read_job_offers_send_response()
 		}
 		else
 		{	/*Have to add the region cost: region costs are important for 					ranking but are part of the wage*/
-			WAGE = (job_offer_list.array[0].wage_offer + region_cost);
-			WAGE_RESERVATION = WAGE - region_cost;
+			WAGE = (job_offer_list.array[0].wage_offer + region_cost*COMMUTING_COSTS_PRICE_LEVEL_WEIGHT);
+			WAGE_RESERVATION = WAGE - region_cost*COMMUTING_COSTS_PRICE_LEVEL_WEIGHT;
 			ON_THE_JOB_SEARCH = 0;	
 		}
 	}
@@ -424,12 +424,12 @@ int Household_OTJS_read_job_vacancies_and_send_applications_2()
 						==NEIGHBORING_REGION_IDS.array[i])
 						{
 					 		if((vacancies2_message->firm_wage_offer -
-							 region_cost) >= WAGE_RESERVATION)
+							 region_cost*COMMUTING_COSTS_PRICE_LEVEL_WEIGHT) >= WAGE_RESERVATION)
 					 		{
 								add_vacancy(&vacancy_list,
  								vacancies2_message->firm_id, 					 				vacancies2_message->region_id,
 					 			(vacancies2_message->
-								firm_wage_offer - region_cost));
+								firm_wage_offer - region_cost*COMMUTING_COSTS_PRICE_LEVEL_WEIGHT));
 					 		}
 							break;
 
@@ -508,12 +508,12 @@ int Household_UNEMPLOYED_read_job_vacancies_and_send_applications_2()
 					==NEIGHBORING_REGION_IDS.array[i])
 					{
 				 		if((vacancies2_message->firm_wage_offer -
-					 	region_cost) >= WAGE_RESERVATION)
+					 	region_cost*COMMUTING_COSTS_PRICE_LEVEL_WEIGHT) >= WAGE_RESERVATION)
 				 		{
 							add_vacancy(&vacancy_list,
 							vacancies2_message->firm_id, 					 				vacancies2_message->region_id,
 				 			(vacancies2_message->
-							firm_wage_offer - region_cost));
+							firm_wage_offer - region_cost*COMMUTING_COSTS_PRICE_LEVEL_WEIGHT));
 				 		}
 						break;
 
@@ -583,7 +583,7 @@ int Household_read_job_offers_send_response_2()
 			{
 				add_job_offer(&job_offer_list, 
 				job_offer2_message->firm_id,job_offer2_message->region_id, 
-				(job_offer2_message->wage_offer - region_cost));
+				(job_offer2_message->wage_offer - region_cost*COMMUTING_COSTS_PRICE_LEVEL_WEIGHT));
 			}
 		}
 
@@ -646,8 +646,8 @@ int Household_read_job_offers_send_response_2()
 		}
 		else
 		{	/*Have to add the region cost: region costs are important for 					ranking but are part of the wage*/
-			WAGE = (job_offer_list.array[0].wage_offer + region_cost);
-			WAGE_RESERVATION = WAGE - region_cost;
+			WAGE = (job_offer_list.array[0].wage_offer + region_cost*COMMUTING_COSTS_PRICE_LEVEL_WEIGHT);
+			WAGE_RESERVATION = WAGE - region_cost*COMMUTING_COSTS_PRICE_LEVEL_WEIGHT;
 			ON_THE_JOB_SEARCH = 0;	
 		}
 	}	

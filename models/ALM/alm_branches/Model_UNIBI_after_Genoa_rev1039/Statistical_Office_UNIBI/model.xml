@@ -260,7 +260,9 @@ and stores the needed data.</description>
 <currentState>Start_Household_Tax_Data</currentState>
 <nextState>Start_Household_Labour_Role</nextState>
 <condition><time><period>monthly</period><phase>1</phase></time></condition>
-
+<inputs>
+<input><messageName>eurostat_send_price_index</messageName></input>
+</inputs>
 </function>
 
 <function><name>Household_idle</name>
@@ -372,6 +374,7 @@ including several micro data.</description>
 <variable><type>double</type><name>monthly_output</name><description>Constructed macrovariable: regional sum of output</description></variable>
 <variable><type>double</type><name>monthly_revenue</name><description>Constructed macrovariable: regional sum of cum_revenue</description></variable>
 <variable><type>double</type><name>monthly_planned_output</name><description>Constructed macrovariable: regional sum of planned output</description></variable>
+<variable><type>double</type><name>price_index</name><description>Constructed macrovariable: weighted mean prices</description></variable>
 
 <!-- Data for storing history of macrovariables -->
 <variable><type>history_item</type><name>history_monthly[13]</name><description>History: monthly data</description></variable>
@@ -443,6 +446,7 @@ including several micro data.</description>
 <condition><time><period>monthly</period><phase>1</phase></time></condition>
 <outputs>
 <output><messageName>eurostat_send_specific_skills</messageName></output>
+<output><messageName>eurostat_send_price_index</messageName></output>
 </outputs>
 </function>
 
@@ -588,6 +592,8 @@ including several micro data.</description>
 <variable><type>double</type><name>total_assets</name><description></description></variable>
 <variable><type>double</type><name>equity</name><description></description></variable>
 <!--Variables related to production-->
+<variable><type>double</type><name>price</name><description></description></variable>
+<variable><type>double</type><name>total_supply</name><description></description></variable>
 <variable><type>double</type><name>cum_total_sold_quantity</name><description></description></variable>
 <variable><type>double</type><name>output</name><description></description></variable>
 <variable><type>double</type><name>planned_output</name><description></description></variable>
@@ -621,6 +627,15 @@ including several micro data.</description>
 <variable><type>double</type><name>specific_skill_5</name><description></description></variable>
 </variables>
 </message>
+
+<message>
+<name>eurostat_send_price_index</name>
+<description>Sent by eurostat. Includes information about the price level</description>
+<variables>
+<variable><type>double</type><name>price_index</name><description></description></variable>
+</variables>
+</message>
+
 
 
 </messages>
