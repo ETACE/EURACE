@@ -8,6 +8,26 @@
 	
 	<!--***************** Environment values and functions **********************-->
 	<environment>
+			<timeUnits>
+			
+			<timeUnit>
+				<name>daily</name>
+				<unit>iteration</unit>
+				<period>1</period>
+			</timeUnit>
+			
+			<timeUnit>
+				<name>weekly</name>
+				<unit>daily</unit>
+				<period>5</period>
+			</timeUnit>
+			
+			<timeUnit>
+				<name>monthly</name>
+				<unit>weekly</unit>
+				<period>4</period>
+			</timeUnit>			
+		</timeUnits>
 		<dataTypes>
 			<dataType>
 				<name>Order</name>
@@ -71,28 +91,7 @@
 					<variable><type>double</type><name>bankAccount</name>	<description></description></variable>
 				</variables>
 			</dataType>
-		</dataTypes>
-		<timeUnits>
-			
-			<timeUnit>
-				<name>daily</name>
-				<unit>iteration</unit>
-				<period>1</period>
-			</timeUnit>
-			
-			<timeUnit>
-				<name>weekly</name>
-				<unit>daily</unit>
-				<period>5</period>
-			</timeUnit>
-			
-			<timeUnit>
-				<name>monthly</name>
-				<unit>weekly</unit>
-				<period>4</period>
-			</timeUnit>			
-		</timeUnits>
-		
+		</dataTypes>		
 	</environment>
 	
 	<!--********************* X-machine Agent - Trader ****************************-->
