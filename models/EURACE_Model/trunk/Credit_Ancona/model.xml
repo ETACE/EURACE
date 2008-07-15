@@ -108,6 +108,7 @@
 <variable><type>int</type><name>number_of_shares</name><description></description></variable>
 <variable><type>double</type><name>debt_period</name><description></description></variable>
 <variable><type>int</type><name>loan_request_message_found</name><description></description></variable>
+<variable><type>int</type><name>day_of_month_to_act</name><description>Day of the month to act for bank accounting function</description></variable>
 </memory>
 
 
