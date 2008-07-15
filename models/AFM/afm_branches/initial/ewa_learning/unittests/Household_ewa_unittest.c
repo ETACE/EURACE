@@ -1,8 +1,15 @@
+ /*********************************
+ * Household_ewa_functions.c 
+ * Functions Household EWA learning module.
+ **********************************
+ * History:
+ * 15/07/08 Sander van der Hoog 
+ *********************************/
 #include <CUnit/Basic.h>
 #include "../header.h"
-#include "../Household_agent_header.h"
-#include "../mylibraryheader.h"
 #include "../some_new_functions.h"
+#include "../Household_agent_header.h"
+//#include "../mylibraryheader.h"
 
 /************Household: EWA learning Role ********************************/
 

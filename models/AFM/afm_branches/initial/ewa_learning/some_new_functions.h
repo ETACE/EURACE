@@ -1,9 +1,17 @@
-/**
+/************************************
  * \file  some_new_functions.h
  * \brief Header file for auxiliary functions.
- */
+ * *********************************
+ * History:
+ * 15/07/08 Sander: General library functions. 
+ *********************************/
 
 /* Statistic auxiliary functions */
+double random_unif();
+double random_unif_interval(double a, double b);
+double max(double a, double b);
+double min(double a, double b);
+
 double sum(double * p, int size);
 void cumsum(double * p, int size, double * cumsum);
 void cumpdf(double * p, int size, double * cpdf);
