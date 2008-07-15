@@ -1,7 +1,8 @@
 #include <CUnit/Basic.h>
 #include "../header.h"
-#include "../mylibraryheader.h"
-#include "../my_library_header.h"
+#include "../some_new_functions.h"
+//#include "../mylibraryheader.h"
+//#include "../my_library_header.h"
 #include "../FinancialAgent_agent_header.h"
 
 /************ Unit tests ********************************/
@@ -36,14 +37,14 @@ void unittest_sum()
 	  //Input: p={0.6 0.2 0.8 0.4}
 	  p = malloc(sizeof(double)*size);
 	  p[0]=0.6; p[1]=0.2; p[2]=0.8; p[3]=0.4;
-	  //printf("\n In sum: p=[%1.1f, %1.1f, %1.1f, %1.1f]\n", p[0], p[1], p[2], p[3]);
+	  printf("\n In unittest_sum: p=[%1.1f, %1.1f, %1.1f, %1.1f]\n", p[0], p[1], p[2], p[3]);
 
 	  /***** Function evaluation ***************************************/
 	  //double sum(double * p, int size)
 	  sum_p = 0.0;
 	  sum_p = sum(p, size);
 	  
-	  //printf("\n In function sum_unittest: sum_p : %2.1f\n", sum_p);
+	  printf("\n In function unittest_sum: sum_p = %f \n", sum_p);
 	  
      /***** Variables: Memory post-conditions *************************/
      CU_ASSERT_DOUBLE_EQUAL(sum_p, 2.0, 1e-3);
@@ -230,14 +231,14 @@ void unittest_single_point_cross_over()
 	// Variables: Memory pre-conditions **************************
 	int c;
 	int size;
-	double * x;
-	double * y;
+	double * xvec;
+	double * yvec;
 
 	size=4;
-	x = malloc(size*sizeof(double));
-	y = malloc(size*sizeof(double));
-	x[0]=0.1; x[1]=0.1; x[2]=0.1; x[3]=0.1;
-	y[0]=0.2; y[1]=0.2; y[2]=0.2; y[3]=0.2;
+	xvec = malloc(size*sizeof(double));
+	yvec = malloc(size*sizeof(double));
+	xvec[0]=0.1; xvec[1]=0.1; xvec[2]=0.1; xvec[3]=0.1;
+	yvec[0]=0.2; yvec[1]=0.2; yvec[2]=0.2; yvec[3]=0.2;
 
 	//Random cross-over point
 	//c = (int)(size*random_unif());
@@ -245,42 +246,42 @@ void unittest_single_point_cross_over()
 		
 	// Function evaluation ***************************************
 	//void single_point_cross_over(int size, double * string_a, double * string_b, int cross_point)
-	printf("\n Before single_point_cross_over: x=[%1.1f, %1.1f, %1.1f, %1.1f]\n", x[0], x[1], x[2], x[3]);
-	printf("\n Before single_point_cross_over: y=[%1.1f, %1.1f, %1.1f, %1.1f]\n", y[0], y[1], y[2], y[3]);
+	printf("\n Before single_point_cross_over: xvec=[%1.1f, %1.1f, %1.1f, %1.1f]\n", xvec[0], xvec[1], xvec[2], xvec[3]);
+	printf("\n Before single_point_cross_over: yvec=[%1.1f, %1.1f, %1.1f, %1.1f]\n", yvec[0], yvec[1], yvec[2], yvec[3]);
 
-	single_point_cross_over(size, x, y, c);
+	single_point_cross_over(size, xvec, yvec, c);
 
-	printf("\n After single_point_cross_over: x=[%1.1f, %1.1f, %1.1f, %1.1f]\n", x[0], x[1], x[2], x[3]);
-	printf("\n After single_point_cross_over: y=[%1.1f, %1.1f, %1.1f, %1.1f]\n", y[0], y[1], y[2], y[3]);
+	printf("\n After single_point_cross_over: xvec=[%1.1f, %1.1f, %1.1f, %1.1f]\n", xvec[0], xvec[1], xvec[2], xvec[3]);
+	printf("\n After single_point_cross_over: yvec=[%1.1f, %1.1f, %1.1f, %1.1f]\n", yvec[0], yvec[1], yvec[2], yvec[3]);
 
-    // Variables: Memory post-conditions *************************
-    CU_ASSERT_DOUBLE_EQUAL(x[0], 0.1, 1e-3);
-    CU_ASSERT_DOUBLE_EQUAL(x[1], 0.1, 1e-3);
-    CU_ASSERT_DOUBLE_EQUAL(x[2], 0.2, 1e-3);
-    CU_ASSERT_DOUBLE_EQUAL(x[3], 0.2, 1e-3);
-    CU_ASSERT_DOUBLE_EQUAL(y[0], 0.2, 1e-3);
-    CU_ASSERT_DOUBLE_EQUAL(y[1], 0.2, 1e-3);
-    CU_ASSERT_DOUBLE_EQUAL(y[2], 0.1, 1e-3);
-    CU_ASSERT_DOUBLE_EQUAL(y[3], 0.1, 1e-3);
+    // Variables: Memoryvec post-conditions *************************
+    CU_ASSERT_DOUBLE_EQUAL(xvec[0], 0.1, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(xvec[1], 0.1, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(xvec[2], 0.2, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(xvec[3], 0.2, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(yvec[0], 0.2, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(yvec[1], 0.2, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(yvec[2], 0.1, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(yvec[3], 0.1, 1e-3);
 
-	free(x);
-	free(y);
+	free(xvec);
+	free(yvec);
 }
 
 
-/*
+
 void unittest_two_point_cross_over()
 {
 	int c, ell, size;
-	double * x;
-	double * y;
+	double * xvec;
+	double * yvec;
 	
-    // ***** Variables: Memory pre-conditions **************************
+    // ***** Variables: Memoryvec pre-conditions **************************
 	size=4;
-    x = malloc(size*sizeof(double));
-    y = malloc(size*sizeof(double));
-	x[0]=0.1; x[1]=0.1; x[2]=0.1; x[3]=0.1;
-	y[0]=0.2; y[1]=0.2; y[2]=0.2; y[3]=0.2;
+    xvec = malloc(size*sizeof(double));
+    yvec = malloc(size*sizeof(double));
+	xvec[0]=0.1; xvec[1]=0.1; xvec[2]=0.1; xvec[3]=0.1;
+	yvec[0]=0.2; yvec[1]=0.2; yvec[2]=0.2; yvec[3]=0.2;
 	
 	//Random cross-over point
 	//c = (int)(size*random_unif());
@@ -289,45 +290,46 @@ void unittest_two_point_cross_over()
 	//Random cross-over length
 	//ell = (int)(size*random_unif());
 	ell=1;
-
+	printf("\n point c=%d, length ell=%d",c, ell);
+	
     // ***** Function evaluation ***************************************
 	//void two_point_cross_over(int size, double * string_a, double * string_b, int cross_point, int cross_length)
-	printf("\n Before two_point_cross_over: x=[%1.1f, %1.1f, %1.1f, %1.1f]\n", x[0], x[1], x[2], x[3]);
-	printf("\n Before two_point_cross_over: y=[%1.1f, %1.1f, %1.1f, %1.1f]\n", y[0], y[1], y[2], y[3]);
+	printf("\n Before two_point_cross_over: xvec=[%1.1f, %1.1f, %1.1f, %1.1f]\n", xvec[0], xvec[1], xvec[2], xvec[3]);
+	printf("\n Before two_point_cross_over: yvec=[%1.1f, %1.1f, %1.1f, %1.1f]\n", yvec[0], yvec[1], yvec[2], yvec[3]);
 
-	two_point_cross_over(size, x, y, c, ell);
+	two_point_cross_over(size, xvec, yvec, c, ell);
 
-	printf("\n After two_point_cross_over: x=[%1.1f, %1.1f, %1.1f, %1.1f]\n", x[0], x[1], x[2], x[3]);
-	printf("\n After two_point_cross_over: y=[%1.1f, %1.1f, %1.1f, %1.1f]\n", y[0], y[1], y[2], y[3]);
+	printf("\n After two_point_cross_over: xvec=[%1.1f, %1.1f, %1.1f, %1.1f]\n", xvec[0], xvec[1], xvec[2], xvec[3]);
+	printf("\n After two_point_cross_over: yvec=[%1.1f, %1.1f, %1.1f, %1.1f]\n", yvec[0], yvec[1], yvec[2], yvec[3]);
 
     // ***** Variables: Memory post-conditions *************************
-    CU_ASSERT_DOUBLE_EQUAL(x[0], 0.1, 1e-3);
-    CU_ASSERT_DOUBLE_EQUAL(x[1], 0.1, 1e-3);
-    CU_ASSERT_DOUBLE_EQUAL(x[2], 0.2, 1e-3);
-    CU_ASSERT_DOUBLE_EQUAL(x[3], 0.1, 1e-3);
-    CU_ASSERT_DOUBLE_EQUAL(y[0], 0.2, 1e-3);
-    CU_ASSERT_DOUBLE_EQUAL(y[1], 0.2, 1e-3);
-    CU_ASSERT_DOUBLE_EQUAL(y[2], 0.1, 1e-3);
-    CU_ASSERT_DOUBLE_EQUAL(y[3], 0.2, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(xvec[0], 0.1, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(xvec[1], 0.1, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(xvec[2], 0.2, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(xvec[3], 0.1, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(yvec[0], 0.2, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(yvec[1], 0.2, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(yvec[2], 0.1, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(yvec[3], 0.2, 1e-3);
 
-	free(x);
-	free(y);
+	free(xvec);
+	free(yvec);
 }
-*/
-/*
+
+
 void unittest_two_point_cross_over_alt()
 {
 	int c, ell, size;
-	double * x;
-	double * y;
+	double * xvec;
+	double * yvec;
 
 	
     // ***** Variables: Memory pre-conditions **************************
 	size=4;
-    x = malloc(size*sizeof(double));
-    y = malloc(size*sizeof(double));
-	x[0]=0.1; x[1]=0.1; x[2]=0.1; x[3]=0.1;
-	y[0]=0.2; y[1]=0.2; y[2]=0.2; y[3]=0.2;
+    xvec = malloc(size*sizeof(double));
+    yvec = malloc(size*sizeof(double));
+	xvec[0]=0.1; xvec[1]=0.1; xvec[2]=0.1; xvec[3]=0.1;
+	yvec[0]=0.2; yvec[1]=0.2; yvec[2]=0.2; yvec[3]=0.2;
 	
 	//Random cross-over point
 	//c = (int)(size*random_unif());
@@ -336,31 +338,32 @@ void unittest_two_point_cross_over_alt()
 	//Random cross-over length
 	//ell = (int)(size*random_unif());
 	ell=1;
-
+	printf("\n point c=%d, length ell=%d",c, ell);
+	
     // ***** Function evaluation ***************************************
 	//void two_point_cross_over(int size, double * string_a, double * string_b, int cross_point, int cross_length)
-	printf("\n Before two_point_cross_over: x=[%1.1f, %1.1f, %1.1f, %1.1f]\n", x[0], x[1], x[2], x[3]);
-	printf("\n Before two_point_cross_over: y=[%1.1f, %1.1f, %1.1f, %1.1f]\n", y[0], y[1], y[2], y[3]);
+	printf("\n Before two_point_cross_over: xvec=[%1.1f, %1.1f, %1.1f, %1.1f]\n", xvec[0], xvec[1], xvec[2], xvec[3]);
+	printf("\n Before two_point_cross_over: yvec=[%1.1f, %1.1f, %1.1f, %1.1f]\n", yvec[0], yvec[1], yvec[2], yvec[3]);
 
-	two_point_cross_over_alt(size, x, y, c, ell);
+	two_point_cross_over_alt(size, xvec, yvec, c, ell);
 
-	printf("\n After two_point_cross_over: x=[%1.1f, %1.1f, %1.1f, %1.1f]\n", x[0], x[1], x[2], x[3]);
-	printf("\n After two_point_cross_over: y=[%1.1f, %1.1f, %1.1f, %1.1f]\n", y[0], y[1], y[2], y[3]);
+	printf("\n After two_point_cross_over: xvec=[%1.1f, %1.1f, %1.1f, %1.1f]\n", xvec[0], xvec[1], xvec[2], xvec[3]);
+	printf("\n After two_point_cross_over: yvec=[%1.1f, %1.1f, %1.1f, %1.1f]\n", yvec[0], yvec[1], yvec[2], yvec[3]);
 
-    // ***** Variables: Memory post-conditions *************************
-    CU_ASSERT_DOUBLE_EQUAL(x[0], 0.1, 1e-3);
-    CU_ASSERT_DOUBLE_EQUAL(x[1], 0.1, 1e-3);
-    CU_ASSERT_DOUBLE_EQUAL(x[2], 0.2, 1e-3);
-    CU_ASSERT_DOUBLE_EQUAL(x[3], 0.1, 1e-3);
-    CU_ASSERT_DOUBLE_EQUAL(y[0], 0.2, 1e-3);
-    CU_ASSERT_DOUBLE_EQUAL(y[1], 0.2, 1e-3);
-    CU_ASSERT_DOUBLE_EQUAL(y[2], 0.1, 1e-3);
-    CU_ASSERT_DOUBLE_EQUAL(y[3], 0.2, 1e-3);
+    // ***** Variables: Memoryvec post-conditions *************************
+    CU_ASSERT_DOUBLE_EQUAL(xvec[0], 0.1, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(xvec[1], 0.1, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(xvec[2], 0.2, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(xvec[3], 0.1, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(yvec[0], 0.2, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(yvec[1], 0.2, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(yvec[2], 0.1, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(yvec[3], 0.2, 1e-3);
 
-	free(x);
-	free(y);
+	free(xvec);
+	free(yvec);
 }
-*/
+
 
 /*
 void unittest_mutation()

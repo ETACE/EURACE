@@ -1,1 +1,1 @@
-gcc -g -I../libmboard/include -L../libmboard/lib unittest_aux.c ../memory.c ../messageboards.c ../mylibraryfunctions.c ../some_new_functions.c  some_new_functions_unittest.c -lm -lcunit -lmboard_s 
+gcc -g -I../libmboard/include -L../libmboard/lib unittest_aux.c ../memory.c ../messageboards.c ../FinancialAgent_ewa_functions.c ../some_new_functions.c  some_new_functions_unittest.c -lm -lcunit -lmboard_s 

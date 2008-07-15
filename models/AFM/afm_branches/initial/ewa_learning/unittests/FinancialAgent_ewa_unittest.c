@@ -1,8 +1,15 @@
+ /*********************************
+ * FinancialAgent_ewa_functions.c 
+ * Functions FinancialAgent EWA learning module.
+ **********************************
+ * History:
+ * 15/07/08 Sander van der Hoog 
+ *********************************/
 #include <CUnit/Basic.h>
 #include "../header.h"
-#include "../FinancialAgent_agent_header.h"
-#include "../mylibraryheader.h"
 #include "../some_new_functions.h"
+#include "../FinancialAgent_agent_header.h"
+//#include "../mylibraryheader.h"
 
 /************FinancialAgent: Financial Advisor Role ********************************/
 
