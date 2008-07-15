@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<xmachine_agent_model>
+<name>C@S Bis Model</name>
+<author>Simon Coakley and Mariam Kiran</author>
+<date>011006</date>
+
+<!--*****Environment values and functions *******-->
+<environment>
+<functions>
+<file>functions.c</file>
+</functions>
+</environment>
+
+<!--******* X-machine Agent - Firm ******-->
+<xmachine>
+<name>Firm</name>
+<!--             Variables                -->
+<!-- All variables used by Firm are declared here
+to allocate them in memory -->
+<memory>
+<var><type>int</type><name>id</name></var>
+<var><type>double</type><name>value</name></var>
+<var><type>double</type><name>a</name></var>
+<var><type>double</type><name>productivity</name></var>
+<var><type>double</type><name>profits</name></var>
+<var><type>double</type><name>f</name></var>
+<var><type>double</type><name>production</name></var>
+<var><type>int</type><name>goodsproduced</name></var>
+<var><type>int</type><name>stock</name></var>
+<var><type>int</type><name>sold</name></var>
+<var><type>int</type><name>labour</name></var>
+<var><type>int</type><name>numberofworkers</name></var>
+<var><type>double</type><name>price</name></var>
+<var><type>double</type><name>oldprice</name></var>
+<var><type>double</type><name>priceinflation</name></var>
+<var><type>double</type><name>sprice</name></var>
+<var><type>double</type><name>lprice</name></var>
+<var><type>int_array</type><name>workerid</name></var>
+<var><type>double_array</type><name>workerwage</name></var>
+<var><type>double</type><name>avewage</name></var>
+<var><type>int_array</type><name>mall_id</name></var>
+<var><type>int</type><name>mall_vacancy</name></var>
+<var><type>int</type><name>mall_goods</name></var>
+<var><type>double</type><name>posx</name></var>
+<var><type>double</type><name>posy</name></var>
+</memory>
+<!--     Defining functions     -->
+<functions>
+
+<function><name>Firm_1</name>
+<depends>
+<name>Spread_awareness</name><type>mall_location</type>
+</depends>
+</function>
+
+<function><name>Firm_3</name>
+<depends>
+<name>Job_market</name><type>employed</type>
+</depends>
+</function>
+
+<function><name>Firm_4</name>
+<depends>
+<name>Goods_market</name><type>firm_stock</type>
+</depends>
+</function>
+
+</functions>
+</xmachine>
+<!--*********** End of Agent - Firm ***************-->
+
+<!--******* X-machine Agent - Person ************-->
+<xmachine>
+<name>Person</name>
+<!--      Variables for the Person        -->
+<memory>
+<var><type>int</type><name>id</name></var>
+<var><type>double</type><name>savings</name></var>
+<var><type>double</type><name>wage</name></var>
+<var><type>int</type><name>firmid</name></var>
+<var><type>int</type><name>mall_application</name></var>
+<var><type>int</type><name>mall_shopping</name></var>
+<var><type>int_array</type><name>mall_id</name></var>
+<var><type>double</type><name>posx</name></var>
+<var><type>double</type><name>posy</name></var>
+</memory>
+<!--        Defining functions                -->
+<functions>
+
+<function><name>Person_1</name>
+<depends>
+<name>Firm_1</name><type>priceinflation</type>
+</depends>
+<depends>
+<name>Spread_awareness</name><type>mall_location</type>
+</depends>
+</function>
+
+<function><name>Person_2</name>
+<depends>
+<name>Job_market</name><type>employed</type>
+</depends>
+</function>
+
+<function><name>Person_4</name>
+<depends>
+<name>Goods_market</name><type>consumer_spent</type>
+</depends>
+</function>
+
+</functions>
+</xmachine>
+<!--****** End of Agent - Person ************-->
+
+<!--******* X-machine Agent - Mall **********-->
+<xmachine>
+<name>Mall</name>
+<!--      Variables for the Mall        -->
+<memory>
+<var><type>int</type><name>id</name></var>
+<var><type>int_array</type><name>app_person_ids</name></var>
+<var><type>double_array</type><name>app_person_wages</name></var>
+<var><type>int_array</type><name>sell_firm_ids</name></var>
+<var><type>int_array</type><name>sell_firm_stocks</name></var>
+<var><type>double</type><name>posx</name></var>
+<var><type>double</type><name>posy</name></var>
+</memory>
+<!--        Defining functions                -->
+<functions>
+
+<function><name>Spread_awareness</name></function>
+
+<function><name>Job_market</name>
+<depends><name>Firm_1</name><type>vacancy</type></depends>
+<depends><name>Person_1</name><type>application</type></depends>
+</function>
+
+<function><name>Goods_market</name>
+<depends>
+<name>Firm_3</name><type>firm_stock_price</type>
+</depends>
+<depends>
+<name>Person_2</name><type>consumer_spending</type>
+</depends>
+</function>
+
+</functions>
+</xmachine>
+<!--********* End of Agent - Mall   *************-->
+
+<!--** Messages being posted by the agents to communicate **-->
+<messages>
+<!--  Message posted to record the price inflation    -->
+<message>
+<name>mall_location</name>
+<note>Mall location message</note>
+<var><type>int</type><name>mall_id</name></var>
+<var><type>double</type><name>range</name></var>
+<var><type>double</type><name>x</name></var>
+<var><type>double</type><name>y</name></var>
+<var><type>double</type><name>z</name></var>
+</message>
+<!--  Message posted to record the price inflation   -->
+<message>
+<name>priceinflation</name>
+<note>This message is posted by the firm when it calculates the next price
+of the goods. The message is read by the workers to help calculate their
+new wages because they consider the price inflation to do this</note>
+<var><type>int</type><name>firm_id</name></var>
+<var><type>double</type><name>priceinflation</name></var>
+<var><type>double</type><name>range</name></var>
+<var><type>double</type><name>x</name></var>
+<var><type>double</type><name>y</name></var>
+<var><type>double</type><name>z</name></var>
+</message>
+<!--     Message for applying to firm      -->
+<message>
+<name>application</name>
+<note>This message is posted by the worker that it is applying to this
+firm for work with what wage he wants and where he worked before</note>
+<var><type>int</type><name>person_id</name></var>
+<var><type>double</type><name>person_wage</name></var>
+<var><type>int</type><name>mall_id</name></var>
+<var><type>double</type><name>range</name></var>
+<var><type>double</type><name>x</name></var>
+<var><type>double</type><name>y</name></var>
+<var><type>double</type><name>z</name></var>
+</message>
+<!--     Message for firm vacancies      -->
+<message>
+<name>vacancy</name>
+<note>Message for firm vacancies</note>
+<var><type>int</type><name>firm_id</name></var>
+<var><type>int</type><name>vacancies</name></var>
+<var><type>int</type><name>mall_id</name></var>
+<var><type>double</type><name>range</name></var>
+<var><type>double</type><name>x</name></var>
+<var><type>double</type><name>y</name></var>
+<var><type>double</type><name>z</name></var>
+</message>
+<!--  Message that the person has been employed     -->
+<message>
+<name>employed</name>
+<note>This message is sent out by the firms to let the workers
+know who are employed and by whom</note>
+<var><type>int</type><name>person_id</name></var>
+<var><type>double</type><name>person_wage</name></var>
+<var><type>int</type><name>firm_id</name></var>
+<var><type>double</type><name>range</name></var>
+<var><type>double</type><name>x</name></var>
+<var><type>double</type><name>y</name></var>
+<var><type>double</type><name>z</name></var>
+</message>
+<!--   Message for consumer spending   -->
+<message>
+<name>consumer_spending</name>
+<note>Message to Mall outlet indicating how much to spend</note>
+<var><type>int</type><name>person_id</name></var>
+<var><type>double</type><name>spending</name></var>
+<var><type>int</type><name>mall_id</name></var>
+<var><type>double</type><name>range</name></var>
+<var><type>double</type><name>x</name></var>
+<var><type>double</type><name>y</name></var>
+<var><type>double</type><name>z</name></var>
+</message>
+<!--  Message for consumer spent   -->
+<message>
+<name>consumer_spent</name>
+<note>Message from Mall outlet indicating how much has been spent</note>
+<var><type>int</type><name>person_id</name></var>
+<var><type>double</type><name>spent</name></var>
+<var><type>double</type><name>range</name></var>
+<var><type>double</type><name>x</name></var>
+<var><type>double</type><name>y</name></var>
+<var><type>double</type><name>z</name></var>
+</message>
+<!--  Message for stock of the firm  -->
+<message>
+<name>firm_stock</name>
+<note>This message lets the people know how much stock the firm
+they are buying from has left.</note>
+<var><type>int</type><name>firm_id</name></var>
+<var><type>int</type><name>stock</name></var>
+<var><type>double</type><name>range</name></var>
+<var><type>double</type><name>x</name></var>
+<var><type>double</type><name>y</name></var>
+<var><type>double</type><name>z</name></var>
+</message>
+<!-- Message of stock and price from firm to mall  -->
+<message>
+<name>firm_stock_price</name>
+<note>This message lets the people know how much stock the firm
+they are buying from has left.</note>
+<var><type>int</type><name>firm_id</name></var>
+<var><type>int</type><name>stock</name></var>
+<var><type>double</type><name>price</name></var>
+<var><type>int</type><name>mall_id</name></var>
+<var><type>double</type><name>range</name></var>
+<var><type>double</type><name>x</name></var>
+<var><type>double</type><name>y</name></var>
+<var><type>double</type><name>z</name></var>
+</message>
+</messages>
+<!--**** End of Messages ******-->
+
+</xmachine_agent_model>
