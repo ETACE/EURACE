@@ -1,0 +1,174 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+<xs:element name="xmachine_agent_model">
+<xs:complexType>
+ <xs:sequence>
+
+  <xs:element name="name" type="xs:string"/>
+  <xs:element name="author" type="xs:string"/>
+  <xs:element name="date" type="xs:string"/>
+  <xs:element name="notes" type="xs:string"/>
+
+  <xs:element name="environment" minOccurs="0" maxOccurs="1">
+   <xs:complexType>
+    <xs:sequence>
+
+     <xs:element name="constants" minOccurs="0" maxOccurs="1">
+      <xs:complexType>
+       <xs:sequence>
+
+        <xs:element name="var" minOccurs="0">
+         <xs:complexType>
+          <xs:sequence>
+           <xs:element name="type" type="xs:string"/>
+           <xs:element name="name" type="xs:string"/>
+          </xs:sequence>
+         </xs:complexType>
+        </xs:element>
+
+       </xs:sequence>
+      </xs:complexType>
+     </xs:element>
+
+     <xs:element name="functions" minOccurs="0" maxOccurs="1">
+      <xs:complexType>
+       <xs:sequence>
+
+        <xs:element name="file" type="xs:string" minOccurs="1">
+        </xs:element>
+
+       </xs:sequence>
+      </xs:complexType>
+     </xs:element>
+
+     <xs:element name="datatypes" minOccurs="0" maxOccurs="1">
+      <xs:complexType>
+       <xs:sequence>
+
+        <xs:element name="datatype" minOccurs="1">
+         <xs:complexType>
+          <xs:sequence>
+           <xs:element name="name" type="xs:string"/>
+           <xs:element name="desc" type="xs:string"/>
+
+           <xs:element name="var" minOccurs="1">
+            <xs:complexType>
+             <xs:sequence>
+              <xs:element name="type" type="xs:string"/>
+              <xs:element name="name" type="xs:string"/>
+             </xs:sequence>
+            </xs:complexType>
+           </xs:element>
+
+          </xs:sequence>
+         </xs:complexType>
+        </xs:element>
+
+        </xs:element>
+       </xs:sequence>
+      </xs:complexType>
+     </xs:element>
+
+    </xs:sequence>
+   </xs:complexType>
+  </xs:element>
+
+  <xs:element name="xmachine" minOccurs="1">
+   <xs:complexType>
+    <xs:sequence>
+
+     <xs:element name="name" type="xs:string"/>
+
+     <xs:element name="memory">
+      <xs:complexType>
+       <xs:sequence>
+
+        <xs:element name="var" minOccurs="1">
+         <xs:complexType>
+          <xs:sequence>
+
+           <xs:element name="type" type="xs:string"/>
+           <xs:element name="name" type="xs:string"/>
+
+          </xs:sequence>
+         </xs:complexType>
+        </xs:element>
+
+       </xs:sequence>
+      </xs:complexType>
+     </xs:element>
+
+     <xs:element name="functions" minOccurs="0" maxOccurs="1">
+      <xs:complexType>
+       <xs:sequence>
+
+        <xs:element name="function" minOccurs="1">
+         <xs:complexType>
+          <xs:sequence>
+
+           <xs:element name="name" type="xs:string"/>
+           <xs:element name="depends" minOccurs="0">
+            <xs:complexType>
+             <xs:sequence>
+
+              <xs:element name="name" type="xs:string"/>
+              <xs:element name="type" type="xs:string"/>
+
+             </xs:sequence>
+            </xs:complexType>
+           </xs:element>
+
+          </xs:sequence>
+         </xs:complexType>
+        </xs:element>
+
+       </xs:sequence>
+      </xs:complexType>
+     </xs:element>
+
+    </xs:sequence>
+   </xs:complexType>
+  </xs:element>
+
+  <xs:element name="messages">
+   <xs:complexType>
+    <xs:sequence>
+
+     <xs:element name="message" minOccurs="1">
+      <xs:complexType>
+       <xs:sequence>
+
+        <xs:element name="name" type="xs:string"/>
+        <xs:element name="var" minOccurs="1">
+         <xs:complexType>
+          <xs:sequence>
+
+           <xs:element name="type" type="xs:string"/>
+           <xs:element name="name" type="xs:string"/>
+
+          </xs:sequence>
+         </xs:complexType>
+        </xs:element>
+
+       </xs:sequence>
+      </xs:complexType>
+     </xs:element>
+
+    </xs:sequence>
+   </xs:complexType>
+  </xs:element>
+
+  <xs:element name="iteration_end_code" minOccurs="0">
+   <xs:complexType>
+    <xs:sequence>
+     <xs:element name="code" type="xs:string"/>
+    </xs:sequence>
+   </xs:complexType>
+  </xs:element>
+
+ </xs:sequence>
+</xs:complexType>
+</xs:element>
+
+</xs:schema>
