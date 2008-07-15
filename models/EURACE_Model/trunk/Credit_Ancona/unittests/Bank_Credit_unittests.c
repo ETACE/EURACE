@@ -1,6 +1,6 @@
 #include <CUnit/Basic.h>
-#include "header.h"
-#include "../Bank_agent_header.h"
+#include "../../header.h"
+#include "../../Bank_agent_header.h"
 //#include "my_library_header.h"
 
 /************Bank Role: Credit Market********************************/
@@ -18,11 +18,11 @@
 //		<var_name2>=0;
         ID = 1;
         BCE_DEBT = 0;
-        VAR = 10;
+        VALUE_AT_RISK = 10;
         EQUITY = 30;
         MIN_INTEREST = 2;
-        OMEGA.array[0] = 0.05;
-        OMEGA.array[1] = 0.06;
+        BANK_GAMMA[0] = 0.05;
+        BANK_GAMMA[1] = 0.06;
 
 
 //
