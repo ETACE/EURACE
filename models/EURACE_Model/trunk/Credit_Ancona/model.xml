@@ -38,6 +38,13 @@
 </timeUnits>
 
 <dataTypes>
+<dataType>
+<name>residual_var_datatype</name>
+<description></description>
+<variables>
+<variable><type>double</type><name>value[10]</name><description>Bank providing the loan</description></variable>
+</variables>
+</dataType>
 </dataTypes>
 
 </environment>
@@ -47,7 +54,8 @@
 <name>Firm</name>
 <description></description>
 <memory>
-<variable><type>int</type><name>dmarketmatrix[3]</name><description></description></variable>
+<variable><type>int</type><name>dmarketmatrix[10]</name><description></description></variable>
+<variable><type>residual_var_datatype</type><name>residual_var[10]</name><description></description></variable>
 </memory>
 
 <functions>
@@ -304,6 +312,25 @@
 </variables>
 </message>
 
+
+<message>
+<name>BCE_request</name>
+<description></description>
+<variables>
+<variable><type>int</type><name>bce_debt</name><description></description></variable>
+<variable><type>int</type><name>id</name><description></description></variable>
+</variables>
+</message>
+
+
+<message>
+<name>BCE_return</name>
+<description></description>
+<variables>
+<variable><type>int</type><name>bce_debt</name><description></description></variable>
+<variable><type>int</type><name>id</name><description></description></variable>
+</variables>
+</message>
 
 </messages>
 
