@@ -71,11 +71,11 @@
 <memory>
 
 <!-- Firm_compute_income_statement -->
-<variable><type>double</type><name>ebit</name><description></description>Earnings-before-interest-and-taxes: total revenue - sales_costs</variable>
+<variable><type>double</type><name>ebit</name><description>Earnings-before-interest-and-taxes: total revenue - sales_costs</description></variable>
 <variable><type>double</type><name>earnings</name><description>Earnings after interest payments (= ebit - interest)</description></variable>
 <variable><type>double</type><name>tax_rate_corporate</name><description>Tax rate on corporate profits (kept in memory)</description></variable>
 <variable><type>double</type><name>tax_rate_vat</name><description>VAT tax rate</description></variable>
-<variable><type>double</type><name>tax_payment</name><description></description>Tax payment over earnings after interest payments (tax_corporate*earnings)</variable>
+<variable><type>double</type><name>tax_payment</name><description>Tax payment over earnings after interest payments (tax_corporate*earnings)</description></variable>
 <variable><type>double</type><name>net_earnings</name><description>Net earnings after tax payments (= ebit - interest - tax)</description></variable>
 <variable><type>double</type><name>previous_net_earnings</name><description>Net earnings from previous production period</description></variable>
 
@@ -235,9 +235,7 @@
 <description>Function to process the bankruptcy condition.</description>
 <currentState>Firm_bankruptcy_checked</currentState>
 <nextState>end_Firm</nextState>
-<condition>
 <condition><lhs><value>a.bankruptcy_state</value></lhs><op>EQ</op><rhs><value>1</value></rhs></condition>
-</condition>
 <outputs>
 <output><messageName>bankruptcy</messageName></output>
 </outputs>
