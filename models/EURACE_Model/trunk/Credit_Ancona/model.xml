@@ -99,8 +99,8 @@
 <variable><type>double</type><name>alfa</name><description></description></variable>
 <variable><type>double</type><name>value_at_risk</name><description></description></variable>
 <variable><type>double</type><name>min_interest</name><description></description></variable>
-<variable><type>double array</type><name>gamma[2]</name><description></description></variable>
-<variable><type>double array</type><name>profits[2]</name><description></description></variable>
+<variable><type>double_array</type><name>gamma[2]</name><description></description></variable>
+<variable><type>double_array</type><name>profits[2]</name><description></description></variable>
 <variable><type>double</type><name>lambda</name><description></description></variable>
 <variable><type>double</type><name>bce_interest</name><description></description></variable>
 <variable><type>double</type><name>dividend_rate</name><description></description></variable>
