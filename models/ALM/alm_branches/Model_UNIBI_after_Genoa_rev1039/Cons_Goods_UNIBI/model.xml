@@ -177,6 +177,7 @@
 <variable><type>double</type><name>planned_output</name>Planned output is the same as planned production quantity, but retains its value during the month.<description></description></variable>
 <variable><type>double</type><name>output</name>Actual output is the same as production quantity, but retains its value during the month.<description></description></variable>
 <variable><type>double</type><name>unit_costs</name><description>Cost per unit of the consumption good</description></variable>
+<variable><type>double</type><name>total_supply</name><description>The sum of local inventory and produced output gives the total supplied quantity</description></variable>
 <variable><type>double</type><name>production_costs</name><description>Actual production costs, labor and capital</description></variable>
 <variable><type>double</type><name>revenue_per_day</name><description>Daily revenue</description></variable>
 <variable><type>double</type><name>technological_frontier</name><description>Best available technology in the economy</description></variable>
@@ -363,6 +364,9 @@ firms update the specific skill levels of the workers.</description>
 <variable><type>double</type><name>cum_total_dividends</name><description>Because dividends are paid daily and taxes monthly, the household has to cumulate dividens</description></variable>
 <variable><type>double</type><name>tax_rate_hh_capital</name><description>The current tax rates on capital income</description></variable>
 <variable><type>double</type><name>tax_rate_hh_labour</name><description>The current tax rates on labour income</description></variable>
+<variable><type>double</type><name>price_index</name><description>The current mean prices sent by Eurostat</description></variable>
+<variable><type>double</type><name>price_index_base_period</name><description>The mean prices of a base period</description></variable>
+<variable><type>double</type><name>commuting_costs_price_level_weight</name><description>Weight of price level that influences the commuting costs</description></variable>
 <variable><type>double_array</type><name>last_income</name><description></description></variable>
 <variable><type>double</type><name>expenditures</name><description></description></variable>
 <variable><type>double</type><name>received_dividend</name><description></description></variable>
