@@ -42,6 +42,7 @@
 <variable><type>double</type><name>loan_value</name><description>Current value of the loan</description></variable>
 <variable><type>double</type><name>interest_rate</name><description>Fixed interest rate per month</description></variable>
 <variable><type>double</type><name>installment_amount</name><description>Fixed installment payment due per month</description></variable>
+<variable><type>double</type><name>interest_amount</name><description>Fixed interest  oayment send by bank</description></variable>
 <variable><type>double</type><name>var_per_installment</name><description>Value-at-risk subtracted from the residual value-at-risk at each installment</description></variable>
 <variable><type>double</type><name>residual_var</name><description>Residual value-at-risk, decreases gradually</description></variable>
 <variable><type>double</type><name>bad_debt</name><description>Bad debt that is not refunded to bank in case of a firm bankruptcy</description></variable>
@@ -59,6 +60,17 @@
 <variable><type>double</type><name>depreciation_units_per_period</name><description>Discrete depreciation in units of capital per period</description></variable>
 </variables>
 </dataType>
+
+<dataType>
+<name>mall_info</name>
+<description>Used by firm to hold information about sales in malls</description>
+<variables>
+<variable><type>int</type><name>mall_id</name><description></description></variable>
+<variable><type>double</type><name>critical_stock</name><description></description></variable>
+<variable><type>double</type><name>current_stock</name><description></description></variable>
+</variables>
+</dataType>
+
 
 </dataTypes>
 </environment>
@@ -78,6 +90,16 @@
 <variable><type>double</type><name>tax_payment</name><description>Tax payment over earnings after interest payments (tax_corporate*earnings)</description></variable>
 <variable><type>double</type><name>net_earnings</name><description>Net earnings after tax payments (= ebit - interest - tax)</description></variable>
 <variable><type>double</type><name>previous_net_earnings</name><description>Net earnings from previous production period</description></variable>
+<!--extra variables defined-->
+<variable><type>double</type><name>earnings_per_share</name><description></description></variable>
+<variable><type>double</type><name>cum_total_sold_quantity</name><description></description></variable>
+<variable><type>double</type><name>cum_revenue</name><description></description></variable>
+<variable><type>double</type><name>production_costs</name><description></description></variable>
+<variable><type>int</type><name>current_shares_outstanding</name><description></description></variable>
+<variable><type>int</type><name>total_payments</name><description></description></variable>
+<variable><type>mall_info_array</type><name>current_mall_stocks</name><description>Current stock in each mall</description></variable>
+<variable><type>double</type><name>price</name><description>Price of the consumption good</description></variable>
+<variable><type>double</type><name>total_interest_payments</name><description></description></variable>
 
 <!-- Firm_compute_financial_payments -->
 <variable><type>double</type><name>total_interest_payment</name><description>Total interest payments on outstanding debts</description></variable>
@@ -133,9 +155,9 @@
 <function>
 <name>Firm_compute_financial_payments</name>
 <description>Function to compute the prior financial commitments of the firm: interests, installments, taxes.</description>
-<currentState>00</currentState>
+<currentState>f1</currentState>
 <nextState>001</nextState>
-<condition><time><period>monthly</period><phase>a.day_of_month_to_act</phase></time></condition>
+
 </function>
 
 <function>
@@ -159,11 +181,21 @@
 <nextState>004</nextState>
 </function>
 
+
+<function>
+<name>Firm_idle</name>
+<description>Function to compute the total financial payments of the firm: interest, installments, taxes, production costs, dividends.</description>
+<currentState>End_Firm_Financial_Role</currentState>
+<nextState>Firm_bankruptcy_checked</nextState>
+<condition><not><time><period>monthly</period><phase>a.day_of_month_to_act</phase></time></not></condition>
+</function>
+
+
 <function>
 <name>Firm_compute_balance_sheet</name>
 <description>Function to compute the balance sheet of the firm.</description>
 <currentState>004</currentState>
-<nextState>005</nextState>
+<nextState>Firm_bankruptcy_checked</nextState>
 <inputs>
 <!-- <input>
 <messageName>current_mall_stock_info</messageName>
@@ -177,7 +209,7 @@
 </function>
 
 <!-- Bankruptcy going to end_Firm  -->
-<function>
+<!--<function>
 <name>Firm_in_bankruptcy</name>
 <description>Function to process the bankruptcy condition.</description>
 <currentState>005</currentState>
@@ -187,7 +219,7 @@
 <output><messageName>bankruptcy</messageName></output>
 </outputs>
 </function>
-
+-->
 <function>
 <name>Firm_compute_total_liquidity_needs</name>
 <description>Function to compute the total liquidity needs for executing payments.</description>
@@ -227,69 +259,67 @@
 <name>Firm_check_financial_and_bankruptcy_state</name>
 <description>Function that checks the balance sheet and sets flags for the bankruptcy- or financial crisis state.</description>
 <currentState>End_Firm_Financial_Role</currentState>
-<nextState>Firm_bankruptcy_checked</nextState>
+<nextState>f1</nextState>
+<condition><time><period>monthly</period><phase>a.day_of_month_to_act</phase></time></condition>
 </function>
 
 <function>
 <name>Firm_in_bankruptcy</name>
 <description>Function to process the bankruptcy condition.</description>
 <currentState>Firm_bankruptcy_checked</currentState>
-<nextState>end_Firm</nextState>
+<nextState>end_Firm_dies</nextState>
 <condition><lhs><value>a.bankruptcy_state</value></lhs><op>EQ</op><rhs><value>1</value></rhs></condition>
 <outputs>
 <output><messageName>bankruptcy</messageName></output>
 </outputs>
 </function>
 
+
+
 <function>
-<name>Firm_in_financial_crisis</name>
+<name>Firm_generate_new_firm</name>
+<description>Function to generate ne firm</description>
+<currentState>end_Firm_dies</currentState>
+<nextState>end_Firm_cycle</nextState>
+</function>
+
+
+<function>
+<name>Firm_not_in_bankruptcy</name>
+<description></description>
+<currentState>Firm_bankruptcy_checked</currentState>
+<nextState>Firm_not_in_bankruptcy_state_now_check_financial_crisis</nextState>
+<condition><lhs><value>a.bankruptcy_state</value></lhs><op>EQ</op><rhs><value>0</value></rhs></condition>
+</function>
+
+<function>
+<name>Firm_in_financial_crisis_function</name>
 <description>Function to resolve the financial crisis by lowering dividends.</description>
-<currentState>Firm_bankruptcy_checked</currentState>
-<nextState>Firm_tries_to_resolve_financial_crisis</nextState>
-<condition>
-<lhs>
-	<lhs><value>a.bankruptcy_state</value></lhs><op>EQ</op><rhs><value>0</value></rhs>
-</lhs>
-<op>AND</op>
-<rhs>
-	<lhs><value>a.financial_crisis_state</value></lhs><op>EQ</op><rhs><value>1</value></rhs>
-</rhs>
-</condition>
+<currentState>Firm_not_in_bankruptcy_state_now_check_financial_crisis</currentState>
+<nextState>Firm_financial_crisis_ok</nextState>
+<condition><lhs><value>a.financial_crisis_state</value></lhs><op>EQ</op><rhs><value>1</value></rhs></condition>
 <outputs>
 </outputs>
 </function>
 
 <function>
-<name>Firm_execute_financial_payments</name>
+<name>Firm_execute_financial_payments_function</name>
 <description>Function to execute financial payments.</description>
-<currentState>Firm_tries_to_resolve_financial_crisis</currentState>
-<nextState>End_Firm_Financial_Management</nextState>
-<outputs>
-<output><messageName>tax_payment</messageName></output>
-<output><messageName>dividend_per_share</messageName></output>
-<output><messageName>installment</messageName></output>
-</outputs>
-</function>
-
-<function>
-<name>Firm_execute_financial_payments</name>
-<description>Function to execute financial payments.</description>
-<currentState>Firm_bankruptcy_checked</currentState>
+<currentState>Firm_financial_crisis_ok</currentState>
 <nextState>Start_Firm_Labour_Role</nextState>
-<condition>
-<lhs>
-	<lhs><value>a.bankruptcy_state</value></lhs><op>EQ</op><rhs><value>0</value></rhs>
-</lhs>
-<op>AND</op>
-<rhs>
-	<lhs><value>a.financial_crisis_state</value></lhs><op>EQ</op><rhs><value>0</value></rhs>
-</rhs>
-</condition>
 <outputs>
 <output><messageName>tax_payment</messageName></output>
 <output><messageName>dividend_per_share</messageName></output>
 <output><messageName>installment</messageName></output>
 </outputs>
+</function>
+
+<function>
+<name>Firm_idle</name>
+<description>Function to execute financial payments.</description>
+<currentState>Firm_not_in_bankruptcy_state_now_check_financial_crisis</currentState>
+<nextState>Firm_financial_crisis_ok</nextState>
+<condition><lhs><value>a.financial_crisis_state</value></lhs><op>EQ</op><rhs><value>0</value></rhs></condition>
 </function>
 
 <!-- Idle bypassing the credit and financial markets  -->
@@ -332,6 +362,41 @@
 <variables>
 <variable><type>int</type><name>firm_id</name><description></description></variable>
 <variable><type>double</type><name>current_dividend_per_share</name><description></description></variable>
+</variables>
+</message>
+
+
+
+<!-- Extra msgs-->
+<message>
+<name>current_mall_stock_info</name>
+<description>Sent by mall. Mall informs the firms about the actual stocks.</description>
+<variables>
+<variable><type>int</type><name>mall_id</name><description></description></variable>
+<variable><type>int</type><name>firm_id</name><description></description></variable>
+<variable><type>double</type><name>stock</name><description></description></variable>
+</variables>
+</message>
+
+<message>
+<name>order</name> 
+<description>order posted by the Household</description>
+<variables>
+	<variable><type>int</type><name>trader_id</name><description></description></variable>
+	<variable><type>int</type><name>asset_id</name><description></description></variable>
+	<variable><type>double</type><name>limit_price</name>	<description></description></variable>
+	<variable><type>int</type><name>quantity</name>	<description></description></variable>
+</variables>
+</message>
+
+<message>
+<name>order_status</name>
+<description>order status posted by clearing house</description>
+<variables>
+	<variable><type>int</type><name>trader_id</name><description></description></variable>
+	<variable><type>int</type><name>asset_id</name>	<description></description></variable>
+	<variable><type>double</type><name>price</name>	<description></description></variable>
+	<variable><type>int</type><name>quantity</name>	<description></description></variable>
 </variables>
 </message>
 
