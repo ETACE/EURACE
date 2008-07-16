@@ -1,7 +1,7 @@
 #include "../header.h"
 #include "../Firm_agent_header.h"
 #include "../my_library_header.h"
-#include "../Firm_Library_Functions.h"
+#include "firm_library_header.h"
 
 
 /************Firm Role: Financial Management Role ********************************/
@@ -17,10 +17,10 @@
  */
 int Firm_compute_financial_payments()
 {
-    double sum;
+   // double sum;
     int imax;
     int i;
-
+	double interest_payment; 
     //double PAYMENT_ACCOUNT: account out of which payments are made, to be separated from the income_account on which current sale receipts are incoming
 
     //double_array LOANS                : dynamic array of structs with each struct a loan_item
@@ -68,6 +68,8 @@ int Firm_compute_income_statement()
     //SALES_COSTS = 0;
    
     // compute net earnings
+    
+    
     EARNINGS = CUM_REVENUE - TOTAL_INTEREST_PAYMENT - PRODUCTION_COSTS;
     	
     TAX_PAYMENT = TAX_RATE_CORPORATE * EARNINGS;
@@ -227,8 +229,8 @@ int Firm_compute_balance_sheet()
  */
 int Firm_compute_total_liquidity_needs()
 {
-    int imax;
-    int i;
+    //int imax;
+    //int i;
 
     //step 12B: set production and payout financial_needs
     PRODUCTION_LIQUIDITY_NEEDS = PRODUCTION_COSTS;
@@ -336,7 +338,7 @@ int Firm_in_financial_crisis()
 	
 	//Recompute dividend
 	//Set TOTAL_DIVIDEND_PAYMENT
-	payment_account_after_compulsory_payments = PAYMENT_ACCOUNT  - (TOTAL_INTEREST_PAYMENTS + TOTAL_DEBT_INSTALLMENT_PAYMENT + TAX_PAYMENT)
+	payment_account_after_compulsory_payments = PAYMENT_ACCOUNT  - (TOTAL_INTEREST_PAYMENTS + TOTAL_DEBT_INSTALLMENT_PAYMENT + TAX_PAYMENT);
 	TOTAL_DIVIDEND_PAYMENT = max(0, payment_account_after_compulsory_payments - PRODUCTION_COSTS);
 	
 	//Set flag if resolved:
@@ -367,10 +369,10 @@ int Firm_in_financial_crisis()
  *  - total_dividend_payment
  * The payments are all subtracted from the payment account.
  */
-int Firm_execute_financial_payments()
+int Firm_execute_financial_payments_function()
 {	
-	
-		//No bankruptcy
+	int imax,i;
+	//No bankruptcy
 		
 		//step 1: actual tax_payment to government
 		add_tax_payment_message(ID, GOV_ID, TAX_PAYMENT);
@@ -402,10 +404,10 @@ int Firm_execute_financial_payments()
 	        //to the firm's deposit bank (the banks at which the firm has loans is a different one than the bank at which the firm has deposits).
 
 	        //add_debt_installment_message(bank_id, installment_amount, interest_amount, credit_refunded, var_per_installment)
-	        add_installment_message(LOANS.array[i].bank_id, LOANS.array[i].installment_amount, LOANS.array[i].interest_amount, LOANS.array[i].var_per_installment)
+	        add_installment_message(LOANS.array[i].bank_id, LOANS.array[i].installment_amount, LOANS.array[i].interest_amount, LOANS.array[i].var_per_installment);
 	
 	        //If nr_periods_before_maturity == 0, remove the loan item
-	        if (LOANS.array[i].nr_periods_before_repayment==0)
+	        if(LOANS.array[i].nr_periods_before_repayment==0)
 	        {
 	            remove_debt_item(&LOANS, i);
 	        }
@@ -464,3 +466,28 @@ int Firm_read_stock_transactions()
     FINISH_ORDER_STATUS_MESSAGE_LOOP
     return 0;
 }
+
+int Firm_idle()
+{
+	return 0;
+}
+
+int Firm_not_in_bankruptcy()
+{
+	return 0;
+}
+
+int Firm_in_financial_crisis_function()
+{
+	return 0;
+}
+
+int Firm_generate_new_firm()
+{
+	return 0;
+}
+
+
+
+
+
