@@ -148,3 +148,10 @@ int Bank_accounting()
 
       return 0;
 }
+
+int Bank_idle()
+{
+	return 0;
+}
+
+

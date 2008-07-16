@@ -121,17 +121,17 @@
 
 
 <functions>
-
+<!--
 <function><name>Bank_idle</name>
 <description></description>
 <currentState>start_Bank</currentState>
 <nextState>Bank_01</nextState>
 </function>
-
+-->
 <function>
 <name>Bank_decide_credit_conditions</name>
 <description></description>
-<currentState>Bank_01</currentState>
+<currentState>start_Bank</currentState>
 <nextState>Bank_02</nextState>
 <inputs>
 <input><messageName>loan_request</messageName>
@@ -218,7 +218,7 @@
 <name>Bank_accounting</name>
 <description></description>
 <currentState>Bank_05</currentState>
-<nextState>end_Bank</nextState>
+<nextState>end_Bank_cycle</nextState>
 <condition>
     <time>
     <period>monthly</period>
@@ -233,7 +233,7 @@
 <name>Bank_idle</name>
 <description></description>
 <currentState>Bank_05</currentState>
-<nextState>end_Bank</nextState>
+<nextState>end_Bank_cycle</nextState>
 <condition>
 	<not>
     <time>

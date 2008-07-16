@@ -10,7 +10,7 @@
 
 int Firm_ask_loan()
 {
-	int i, connected, j;
+	int connected, j;
 
     connected=0; 
 
@@ -35,7 +35,7 @@ int Firm_ask_loan()
 
 int Firm_get_loan()
 {
-	int n, n1, k, i, j, primo;
+	int n, n1, k, i, primo;
     int bk = -1;
 
     int rate_order_array[CONST_NUMBER_OF_BANKS]; //constant size static array
@@ -51,6 +51,7 @@ int Firm_get_loan()
 	int bank_id;
     double loan_value;
     double interest_rate;
+    double interest_amount;
     double installment_amount;
     double var_per_installment;
     double residual_var;
@@ -113,14 +114,16 @@ int Firm_get_loan()
 		    bank_id = rate_order_array[primo];
 		    loan_value = credit_accepted;
 		    interest_rate = interest_array[rate_order_array[primo]];
+		    
 		    installment_amount = credit_accepted/CONST_INSTALLMENT_PERIODS;
+		    interest_amount=interest_rate*installment_amount;
 		    var_per_installment = RESIDUAL_VAR[rate_order_array[primo]].value[CONST_INSTALLMENT_PERIODS-1]/CONST_INSTALLMENT_PERIODS; //rate_order_array[primo]][CONST_INSTALLMENT_PERIODS-1]/CONST_INSTALLMENT_PERIODS;
 		    
 		    residual_var = value_at_risk_array[rate_order_array[primo]]*(credit_offer_array[rate_order_array[primo]]/credit_accepted);
 		    bad_debt = 0.0;
 		    nr_periods_before_repayment=CONST_INSTALLMENT_PERIODS;
 		    	
-		    add_debt_item(&LOANS, bank_id, loan_value, interest_rate, installment_amount, var_per_installment, residual_var, bad_debt, nr_periods_before_repayment);
+		    add_debt_item(&LOANS, bank_id, loan_value, interest_rate, installment_amount,interest_amount, var_per_installment, residual_var, bad_debt, nr_periods_before_repayment);
 		    add_loan_acceptance_message(bank_id, credit_accepted);
 		
 		    //update the payment_account with the amount of credit obtained
