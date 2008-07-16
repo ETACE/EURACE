@@ -2,7 +2,40 @@
 #include "../Firm_agent_header.h"
 #include "../my_library_header.h"
 
+int employee_list_rank_specific_skills_function(const void *x, const void *y)
+{
+	if( ((employee *)x)->specific_skill > ((employee *)y)->specific_skill) return -1;
+	else if( ((employee *)x)->specific_skill < ((employee *)y)->specific_skill) return 1;
+	else return 0;
+}
 
+/** \fn int job_application_list_rank_general_skill_function(const void *x, const void *y)
+ * \brief Returns an integer result of the comparision between the two elements
+ * \param x The first element to compare.
+ * \param y The second element to compare.
+ * \return The compare result.
+ */
+int job_application_list_rank_general_skill_function(const void *x, const void *y)
+{
+	if( ((job_application *)x)->general_skill > ((job_application *)y)->general_skill) 
+		return -1;
+	else if( ((job_application *)x)->general_skill < ((job_application *)y)->general_skill) 		return 1;
+	else
+	{
+		if( ((job_application *)x)->specific_skill > ((job_application *)y)
+		->specific_skill) return -1;
+
+		else if( ((job_application *)x)->specific_skill < ((job_application *)y)
+		->specific_skill) return 1;
+
+		else
+		{
+			/* If equal randomly sort */
+			if(rand()/((double)RAND_MAX + 1) <= 0.5) return -1;
+			else return 1;
+		}
+	}
+}
 
 /************************************ Firm agent functions ************************************/
 

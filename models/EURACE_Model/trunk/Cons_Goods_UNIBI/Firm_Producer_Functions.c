@@ -5,6 +5,13 @@
 
 /* Library functions */
 
+int sales_statistics_list_rank_sales_function(const void *x, const void *y)
+{
+	if( ((sales_statistics *)x)->sales < ((sales_statistics *)y)->sales) return -1;
+	else if( ((sales_statistics *)x)->sales > ((sales_statistics *)y)->sales) return 1;
+	else return 0;
+}
+
 /** \fn Firm_calc_input_demands_2(), auxiliary function
  * \brief Firms recalculate the labor demand and the demand for capital goods
  * such that these can be financed with the external finances obtained.
