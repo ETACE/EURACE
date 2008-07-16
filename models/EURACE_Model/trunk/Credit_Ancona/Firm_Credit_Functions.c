@@ -15,21 +15,37 @@ int Firm_ask_loan()
     connected=0; 
 
     //This line not needed: we fill the array anyway...
-	for (j=0; j< NUMBER_OF_BANKS_TO_APPLY; j++) 
+	for (j=0;j<CONST_NUMBER_OF_BANKS;j++) 
 	{
 		DMARKETMATRIX[j]=0;
 	} 
-	
-	//Create bank network for this firm
-	while (connected<LINK)
+	/*printf("\n");
+	for(j=0;j<NUMBER_OF_BANKS_TO_APPLY;j++) 
 	{
-	      j=(int)((rand()/RAND_MAX)*CONST_NUMBER_OF_BANKS);// choose 'LINK' banks
+		printf("%d,", DMARKETMATRIX[j]);
+	}
+	printf("\n");
+	*/
+	//Create bank network for this firm
+	while(connected<LINK)
+	{
+	      j=rand() % CONST_NUMBER_OF_BANKS ;// choose 'LINK' banks
 	      DMARKETMATRIX[j]=1;
 	                    
 	      add_loan_request_message(ID, j, EQUITY, TOTAL_DEBT, EXTERNAL_FINANCIAL_NEEDS);
-	      connected+=1;
+	     // printf("\nAsking for loan...............");
+	      connected++;
+	     
 	}  
-      
+      /* 
+      printf("printf connected %d",connected);
+      printf("\n");
+	for(j=0;j<NUMBER_OF_BANKS_TO_APPLY;j++) 
+	{
+		printf("%d,", DMARKETMATRIX[j]);
+	}
+	printf("\n");
+	*/
 	return 0;
 }
 
@@ -74,6 +90,7 @@ int Firm_get_loan()
 		rate_order_array[bk] = loan_conditions_message->bank_id;
 		value_at_risk_array[bk] = loan_conditions_message->value_at_risk;
 		n += 1;
+		printf("\nReceive loan ...............");
 
 	FINISH_LOAN_CONDITIONS_MESSAGE_LOOP
        

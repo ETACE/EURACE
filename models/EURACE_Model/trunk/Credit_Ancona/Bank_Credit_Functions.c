@@ -7,9 +7,20 @@ int Bank_decide_credit_conditions()
 	double e, c, d, r, i;
 	double bankruptcy_prob;
 	double credit_allowed;
-	if (BCE_DEBT == 0) 
+	if(BCE_DEBT==0.0) 
 	{
+		printf("\n enter if");
+		printf("\n my id %d ", ID);
+		loan_request_message=get_first_loan_request_message();
+		printf("\n message %p", loan_request_message);
+		while(loan_request_message)
+		{
+			printf("\n abc");
+			loan_request_message=get_next_loan_request_message(loan_request_message);
+		}
+		
 		START_LOAN_REQUEST_MESSAGE_LOOP
+				printf("\n enter loop");
 			e = loan_request_message->equity;
 			d = loan_request_message->total_debt;
 			c = loan_request_message->credit_demand;
@@ -24,6 +35,7 @@ int Bank_decide_credit_conditions()
 				credit_allowed = (ALFA*EQUITY - VALUE_AT_RISK)/bankruptcy_prob;
 			}
 			i = MIN_INTEREST + BANK_GAMMA[0]*r;
+			printf("\n bank adding loan message ");
 			add_loan_conditions_message(loan_request_message->firm_id, ID, i, credit_allowed,  r*(c/credit_allowed));
 		FINISH_LOAN_REQUEST_MESSAGE_LOOP
 	}
