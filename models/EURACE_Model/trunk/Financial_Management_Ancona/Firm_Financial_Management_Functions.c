@@ -72,7 +72,7 @@ int Firm_compute_income_statement()
     
     EARNINGS = CUM_REVENUE - TOTAL_INTEREST_PAYMENT - PRODUCTION_COSTS;
     	
-    TAX_PAYMENT = TAX_RATE_CORPORATE * EARNINGS;
+    TAX_PAYMENT =max(TAX_RATE_CORPORATE * EARNINGS,0);
     PREVIOUS_NET_EARNINGS = NET_EARNINGS;
     NET_EARNINGS = EARNINGS - TAX_PAYMENT;
 
@@ -156,6 +156,8 @@ int Firm_compute_total_financial_payments()
 	//This variable is not used anywhere: it is the sum of financial_liquidity_needs and production_liquidity_needs
 	//but excluding the tax_payments. The tax_payments do not need to be financed since we assume they can always be paid out of earnings. 
 	TOTAL_PAYMENTS = TOTAL_INTEREST_PAYMENT + TOTAL_DEBT_INSTALLMENT_PAYMENT + TOTAL_DIVIDEND_PAYMENT + TAX_PAYMENT + PRODUCTION_COSTS;
+	printf("\n TOTAL_INTEREST_PAYMENT %f , TOTAL_DEBT_INSTALLMENT_PAYMENT %f, TOTAL_DIVIDEND_PAYMENT %f, TAX_PAYMENT %f, PRODUCTION_COSTS %f",TOTAL_INTEREST_PAYMENT,TOTAL_DEBT_INSTALLMENT_PAYMENT, TOTAL_DIVIDEND_PAYMENT, TAX_PAYMENT ,PRODUCTION_COSTS);
+	printf("\n totalpayments %f", TOTAL_PAYMENTS);
 	return 0;
 }
 
@@ -231,6 +233,8 @@ int Firm_compute_total_liquidity_needs()
 {
     //int imax;
     //int i;
+    
+ //   printf("\n here");
 
     //step 12B: set production and payout financial_needs
     PRODUCTION_LIQUIDITY_NEEDS = PRODUCTION_COSTS;
@@ -272,11 +276,11 @@ int Firm_check_financial_and_bankruptcy_state()
 	if (PAYMENT_ACCOUNT < TOTAL_FINANCIAL_NEEDS)
 	{
 	    //Code: check if payment account is also less than financial payments
-		if (PAYMENT_ACCOUNT < TOTAL_INTEREST_PAYMENTS + TOTAL_DEBT_INSTALLMENT_PAYMENT + TAX_PAYMENT)
+		if (PAYMENT_ACCOUNT < TOTAL_INTEREST_PAYMENT + TOTAL_DEBT_INSTALLMENT_PAYMENT + TAX_PAYMENT)
 		{
 			BANKRUPTCY_STATE=1;
 		}
-		if (PAYMENT_ACCOUNT >= TOTAL_INTEREST_PAYMENTS + TOTAL_DEBT_INSTALLMENT_PAYMENT + TAX_PAYMENT)
+		if (PAYMENT_ACCOUNT >= TOTAL_INTEREST_PAYMENT + TOTAL_DEBT_INSTALLMENT_PAYMENT + TAX_PAYMENT)
 		{
 			//Financial crisis condition
 			FINANCIAL_CRISIS_STATE=1;
@@ -324,25 +328,27 @@ int Firm_in_bankruptcy()
     //Effect on consumption goods market
     //Foreclosure sales at local outlet malls at discount prices
     
-    return 1;
+    return 0;
 }
 /*
  * \fn Firm_financial_crisis()
  * \brief Function to resolve the financial crisis by lowering dividends.
  */
-int Firm_in_financial_crisis()
+int Firm_in_financial_crisis_function()
 {	
 	double payment_account_after_compulsory_payments;
 	
 	//Try to resolve the crisis
+	//printf("two");
 	
 	//Recompute dividend
 	//Set TOTAL_DIVIDEND_PAYMENT
-	payment_account_after_compulsory_payments = PAYMENT_ACCOUNT  - (TOTAL_INTEREST_PAYMENTS + TOTAL_DEBT_INSTALLMENT_PAYMENT + TAX_PAYMENT);
+	payment_account_after_compulsory_payments = PAYMENT_ACCOUNT  - (TOTAL_INTEREST_PAYMENT + TOTAL_DEBT_INSTALLMENT_PAYMENT + TAX_PAYMENT);
+	//printf("\n paymentaccnt %f ,PAYMENT_ACCOUNT %f, TOTAL_INTEREST_PAYMENT %f, TOTAL_DEBT_INSTALLMENT_PAYMENT %f, TAX_PAYMENT %f ",payment_account_after_compulsory_payments,PAYMENT_ACCOUNT,TOTAL_INTEREST_PAYMENT, TOTAL_DEBT_INSTALLMENT_PAYMENT, TAX_PAYMENT);
 	TOTAL_DIVIDEND_PAYMENT = max(0, payment_account_after_compulsory_payments - PRODUCTION_COSTS);
-	
+	//printf("\n totaldividend %f ",TOTAL_DIVIDEND_PAYMENT);
 	//Set flag if resolved:
-	if (PAYMENT_ACCOUNT >= TOTAL_INTEREST_PAYMENTS + TOTAL_DEBT_INSTALLMENT_PAYMENT + TAX_PAYMENT + TOTAL_DIVIDEND_PAYMENT)
+	if (PAYMENT_ACCOUNT >= TOTAL_INTEREST_PAYMENT + TOTAL_DEBT_INSTALLMENT_PAYMENT + TAX_PAYMENT + TOTAL_DIVIDEND_PAYMENT)
 	{
 		FINANCIAL_CRISIS_STATE=0;
 		BANKRUPTCY_STATE=0;
@@ -371,6 +377,7 @@ int Firm_in_financial_crisis()
  */
 int Firm_execute_financial_payments_function()
 {	
+	//printf("\n testing");
 	int imax,i;
 	//No bankruptcy
 		
@@ -477,10 +484,7 @@ int Firm_not_in_bankruptcy()
 	return 0;
 }
 
-int Firm_in_financial_crisis_function()
-{
-	return 0;
-}
+
 
 int Firm_generate_new_firm()
 {

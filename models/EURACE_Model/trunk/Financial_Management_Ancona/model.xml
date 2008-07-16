@@ -10,6 +10,7 @@
 
 <functionFiles>
 <file>Firm_Financial_Management_Functions.c</file>
+<file>Dummy_agent.c</file>
 </functionFiles>
 
 <timeUnits>
@@ -96,10 +97,10 @@
 <variable><type>double</type><name>cum_revenue</name><description></description></variable>
 <variable><type>double</type><name>production_costs</name><description></description></variable>
 <variable><type>int</type><name>current_shares_outstanding</name><description></description></variable>
-<variable><type>int</type><name>total_payments</name><description></description></variable>
+<variable><type>double</type><name>total_payments</name><description></description></variable>
 <variable><type>mall_info_array</type><name>current_mall_stocks</name><description>Current stock in each mall</description></variable>
 <variable><type>double</type><name>price</name><description>Price of the consumption good</description></variable>
-<variable><type>double</type><name>total_interest_payments</name><description></description></variable>
+
 
 <!-- Firm_compute_financial_payments -->
 <variable><type>double</type><name>total_interest_payment</name><description>Total interest payments on outstanding debts</description></variable>
@@ -197,14 +198,14 @@
 <currentState>004</currentState>
 <nextState>Firm_bankruptcy_checked</nextState>
 <inputs>
-<!-- <input>
+<input>
 <messageName>current_mall_stock_info</messageName>
 <filter>
   <lhs><value>a.id</value></lhs>
   <op>EQ</op>
   <rhs><value>m.firm_id</value></rhs>
  </filter>
-</input>-->
+</input>
 </inputs>
 </function>
 
@@ -234,7 +235,7 @@
 <nextState>0003</nextState>
 <condition><lhs><value>a.external_financial_needs</value></lhs><op>GT</op><rhs><value>0.0</value></rhs></condition>
 <outputs>
-<!-- <output><messageName>order</messageName></output>-->
+<output><messageName>order</messageName></output>
 </outputs>
 </function>
 
@@ -244,14 +245,14 @@
 <currentState>0003</currentState>
 <nextState>End_Firm_Financial_Role</nextState>
 <inputs>
-<!-- <input>
+<input>
 <messageName>order_status</messageName>
 <filter>
   <lhs><value>a.id</value></lhs>
   <op>EQ</op>
   <rhs><value>m.trader_id</value></rhs>
  </filter>
-</input>-->
+</input>
 </inputs>
 </function>
 
@@ -340,6 +341,43 @@
 <condition><not><lhs><value>a.external_financial_needs</value></lhs><op>GT</op><rhs><value>0.0</value></rhs></not></condition>
 </function>
 
+</functions>
+</xagent>
+
+<xagent>
+<name>Dummy</name>
+<description></description>
+<memory>
+<variable><type>int</type><name>id</name><description></description></variable>
+</memory>
+<functions>
+<function>
+<name>Function_read_send_order_messages</name>
+<description></description>
+<currentState>001</currentState>
+<nextState>002</nextState>
+<inputs>
+<input><messageName>order</messageName></input>
+</inputs>
+<outputs>
+<output><messageName>order_status</messageName></output>
+<output><messageName>current_mall_stock_info</messageName></output>
+</outputs>
+</function>
+
+<function>
+<name>Function_read_send_bank_messages</name>
+<description></description>
+<currentState>002</currentState>
+<nextState>003</nextState>
+<inputs>
+<input><messageName>tax_payment</messageName></input>
+<input><messageName>dividend_per_share</messageName></input>
+</inputs>
+<outputs>
+<output><messageName>bank_account_update</messageName></output>
+</outputs>
+</function>
 </functions>
 </xagent>
 
