@@ -263,7 +263,7 @@
 <variable><type>int</type><name>bank_id</name><description></description></variable>
 <variable><type>double</type><name>equity</name><description></description></variable>
 <variable><type>double</type><name>total_debt</name><description></description></variable>
-<variable><type>double</type><name>credit_demand</name><description></description></variable>
+<variable><type>double</type><name>external_financial_needs</name><description></description></variable>
 </variables>
 </message>
 
