@@ -1,6 +1,6 @@
  /*********************************
- * FinancialAgent_ewa_functions.c 
- * Functions FinancialAgent EWA learning module.
+ * FinancialAgent_ewa_unittest.c 
+ * Unit tests for EWA learning module.
  **********************************
  * History:
  * 15/07/08 Sander van der Hoog 
@@ -9,7 +9,7 @@
 #include "../header.h"
 #include "../some_new_functions.h"
 #include "../FinancialAgent_agent_header.h"
-//#include "../mylibraryheader.h"
+#include "../FinancialAgent_aux_header.h"
 
 /************FinancialAgent: Financial Advisor Role ********************************/
 
@@ -17,7 +17,9 @@
 void unittest_FinancialAgent_daily_reset_public_classifiersystem()
 {
     /************* At start of unit test, add one agent **************/
-     add_FinancialAgent_agent_internal(init_FinancialAgent_agent());
+	add_FinancialAgent_agent_internal(init_FinancialAgent_agent(), init_FinancialAgent_state());
+
+     //add_FinancialAgent_agent_internal(init_FinancialAgent_agent(), init_FinancialAgent_state());
      current_xmachine = *p_xmachine;
 
      /***** Variables: Memory pre-conditions **************************/
@@ -48,7 +50,7 @@ void unittest_FinancialAgent_daily_reset_public_classifiersystem()
 void unittest_FinancialAgent_read_rule_performance_and_update_classifiersystem()
 {
     /************* At start of unit test, add one agent **************/
-     add_FinancialAgent_agent_internal(init_FinancialAgent_agent());
+     add_FinancialAgent_agent_internal(init_FinancialAgent_agent(), init_FinancialAgent_state());
      current_xmachine = *p_xmachine;
 
      /***** Variables: Memory pre-conditions **************************/
@@ -93,7 +95,7 @@ void unittest_FinancialAgent_read_rule_performance_and_update_classifiersystem()
 void unittest_FinancialAgent_send_all_performances()
 {
     /************* At start of unit test, add one agent **************/
-     add_FinancialAgent_agent_internal(init_FinancialAgent_agent());
+     add_FinancialAgent_agent_internal(init_FinancialAgent_agent(), init_FinancialAgent_state());
      current_xmachine = *p_xmachine;
 
      /***** Variables: Memory pre-conditions **************************/
@@ -141,7 +143,7 @@ void unittest_FinancialAgent_apply_GA() /*NOT IMPLEMENTED*/
 	int i;
 	
     /************* At start of unit test, add one agent **************/
-     add_FinancialAgent_agent_internal(init_FinancialAgent_agent());
+     add_FinancialAgent_agent_internal(init_FinancialAgent_agent(), init_FinancialAgent_state());
      current_xmachine = *p_xmachine;
 
      /***** Variables: Memory pre-conditions **************************/
@@ -193,7 +195,7 @@ void unittest_FinancialAgent_send_rule_details()
 	int i;
 	
     /************* At start of unit test, add one agent **************/
-     add_FinancialAgent_agent_internal(init_FinancialAgent_agent());
+     add_FinancialAgent_agent_internal(init_FinancialAgent_agent(), init_FinancialAgent_state());
      current_xmachine = *p_xmachine;
 
      /***** Variables: Memory pre-conditions **************************/
@@ -253,7 +255,7 @@ void unittest_FinancialAgent_send_rule_details()
 void unittest_FinancialAgent_reset_public_classifiersystem()
 {
     /************* At start of unit test, add one agent **************/
-     add_FinancialAgent_agent_internal(init_FinancialAgent_agent());
+     add_FinancialAgent_agent_internal(init_FinancialAgent_agent(), init_FinancialAgent_state());
      current_xmachine = *p_xmachine;
 
      /***** Variables: Memory pre-conditions **************************/

@@ -9,7 +9,8 @@
 void unittest_FinancialAgent_daily_reset_public_classifiersystem();
 void unittest_FinancialAgent_read_rule_performance_and_update_classifiersystem();
 void unittest_FinancialAgent_send_all_performances();
-void unittest_FinancialAgent_apply_GA(); /*NOT IMPLEMENTED*/
+void unittest_FinancialAgent_apply_GA(); /*No unit test defined*/
+void unittest_FinancialAgent_apply_GA_refactored(); /*No unit test defined*/
 void unittest_FinancialAgent_send_rule_details();
 void unittest_FinancialAgent_reset_public_classifiersystem();
 
@@ -55,7 +56,8 @@ int main(int argc, char * argv[])
         NULL == CU_add_test(pSuite, "FinancialAgent_daily_reset_public_classifiersystem", unittest_FinancialAgent_daily_reset_public_classifiersystem) ||
         NULL == CU_add_test(pSuite, "FinancialAgent_read_rule_performance_and_update_classifiersystem", unittest_FinancialAgent_read_rule_performance_and_update_classifiersystem) ||
         NULL == CU_add_test(pSuite, "FinancialAgent_send_all_performances", unittest_FinancialAgent_send_all_performances) ||
-        //NULL == CU_add_test(pSuite, "FinancialAgent_updateGA", unittest_FinancialAgent_updateGA) ||
+        //NULL == CU_add_test(pSuite, "FinancialAgent_apply_GA", unittest_FinancialAgent_apply_GA) ||
+        //NULL == CU_add_test(pSuite, "FinancialAgent_apply_GA", unittest_FinancialAgent_apply_GA_refactored) ||
         NULL == CU_add_test(pSuite, "FinancialAgent_send_rule_details", unittest_FinancialAgent_send_rule_details) ||
         NULL == CU_add_test(pSuite, "FinancialAgent_reset_public_classifiersystem", unittest_FinancialAgent_reset_public_classifiersystem))
     {

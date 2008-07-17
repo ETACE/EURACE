@@ -3,16 +3,14 @@
  * General library functions.
  * *********************************
  * History:
- * 15/07/08 Sander: General library functions. 
+ * 15/07/08 Sander 
  *********************************/
-
-#include "header.h"
+#include <stdlib.h>
+#include <math.h>
+#include <time.h>
+//#include "header.h"
 #include "some_new_functions.h"
-//#include "mylibraryheader.h"
-//#include "my_library_header.h"
-#include "FinancialAgent_agent_header.h"
 
-//*********** BEGIN AUXILIARY FUNCTIONS ****************************
 /** \fn double random_unif()
  * \brief Uniformly distributed random numbers, chosen from
  *   a uniform distribution on the closed interval (0.0,1.0).
@@ -381,3 +379,4 @@ void draw_with_replacement(int size, double * cpdf, int nr_draws, double * draws
 		draws[k]=draw(size, cpdf);
 	}
 }
+

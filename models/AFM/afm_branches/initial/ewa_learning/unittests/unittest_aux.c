@@ -4,8 +4,13 @@
  */
 #include <CUnit/Basic.h>
 #include "../header.h"
+#include "../some_new_functions.h"
+#include "../FinancialAgent_agent_header.h"
+#include "../FinancialAgent_aux_header.h"
 
 /*************************** unittest prototypes ***************************/
+
+/* Unit tests for auxiliary functions */
 void unittest_random_unif();
 void unittest_random_unif_interval();
 void unittest_sum();
@@ -15,10 +20,19 @@ void unittest_draw();
 void unittest_ismember();
 void unittest_draw_without_replacement();
 void unittest_draw_with_replacement();
+
+/* Unit tests for GA auxiliary functions */
 void unittest_single_point_cross_over();
 void unittest_two_point_cross_over();
 void unittest_two_point_cross_over_alt();
 void unittest_mutation();
+
+/* Unit tests for GA functions */
+void unittest_GA_selection();
+void unittest_GA_reproduction();
+void unittest_GA_mutation();
+void unittest_GA_election();
+void unittest_GA_reinsertion();
 
 /*************************** end prototypes ***************************/
 
@@ -59,19 +73,24 @@ int main(int argc, char * argv[])
     /* add the tests to the suite */
     /* add extra tests using || */
     if(
-        NULL == CU_add_test(pSuite, "some_new_functions, random_unif(0.0,1.0)\n", unittest_random_unif) ||    		
-       	NULL == CU_add_test(pSuite, "some_new_functions, random_unif_interval(0.0,10.0)\n", unittest_random_unif_interval) ||
-       	NULL == CU_add_test(pSuite, "some_new_functions, sum", unittest_sum) ||
-    	NULL == CU_add_test(pSuite, "some_new_functions, cumsum", unittest_cumsum) ||
-    	NULL == CU_add_test(pSuite, "some_new_functions, cumpdf", unittest_cumpdf) ||
-    	NULL == CU_add_test(pSuite, "some_new_functions, draw", unittest_draw) ||
-    	NULL == CU_add_test(pSuite, "some_new_functions, ismember", unittest_ismember) ||
-    	NULL == CU_add_test(pSuite, "some_new_functions, draw_without_replacement", unittest_draw_without_replacement) ||
-    	NULL == CU_add_test(pSuite, "some_new_functions, draw_with_replacement", unittest_draw_with_replacement) ||
-    	NULL == CU_add_test(pSuite, "some_new_functions, single_point_cross_over", unittest_single_point_cross_over) ||
-    	NULL == CU_add_test(pSuite, "some_new_functions, two_point_cross_over", unittest_two_point_cross_over) ||
-    	NULL == CU_add_test(pSuite, "some_new_functions, two_point_cross_over_alt", unittest_two_point_cross_over_alt))
-    	//NULL == CU_add_test(pSuite, "some_new_functions, mutation", unittest_mutation))
+        //NULL == CU_add_test(pSuite, "some_new_functions, random_unif(0.0,1.0)\n", unittest_random_unif) ||    		
+       	//NULL == CU_add_test(pSuite, "some_new_functions, random_unif_interval(0.0,10.0)\n", unittest_random_unif_interval) ||
+       	//NULL == CU_add_test(pSuite, "some_new_functions, sum", unittest_sum) ||
+    	//NULL == CU_add_test(pSuite, "some_new_functions, cumsum", unittest_cumsum) ||
+    	//NULL == CU_add_test(pSuite, "some_new_functions, cumpdf", unittest_cumpdf) ||
+    	//NULL == CU_add_test(pSuite, "some_new_functions, draw", unittest_draw) ||
+    	//NULL == CU_add_test(pSuite, "some_new_functions, ismember", unittest_ismember) ||
+    	//NULL == CU_add_test(pSuite, "some_new_functions, draw_without_replacement", unittest_draw_without_replacement) ||
+    	//NULL == CU_add_test(pSuite, "some_new_functions, draw_with_replacement", unittest_draw_with_replacement) ||
+    	NULL == CU_add_test(pSuite, "FinancialAgent aux functions, single point cross over", unittest_single_point_cross_over) ||
+    	NULL == CU_add_test(pSuite, "FinancialAgent_aux_functions, two_point_cross_over", unittest_two_point_cross_over) ||
+    	NULL == CU_add_test(pSuite, "FinancialAgent_aux_functions, two_point_cross_over_alt", unittest_two_point_cross_over_alt) ||
+    	NULL == CU_add_test(pSuite, "FinancialAgent_aux_functions, mutation", unittest_mutation))
+    	//NULL == CU_add_test(pSuite, "FinancialAgent_aux_functions, mutation", unittest_GA_selection) ||
+    	//NULL == CU_add_test(pSuite, "FinancialAgent_aux_functions, mutation", unittest_GA_reproduction) ||
+    	//NULL == CU_add_test(pSuite, "FinancialAgent_aux_functions, mutation", unittest_GA_mutation) ||
+    	//NULL == CU_add_test(pSuite, "FinancialAgent_aux_functions, mutation", unittest_GA_election) ||
+    	//NULL == CU_add_test(pSuite, "FinancialAgent_aux_functions, mutation", unittest_GA_reinsertion))    	
     {
         CU_cleanup_registry();
         return CU_get_error();
