@@ -7,45 +7,58 @@ int Bank_decide_credit_conditions()
 	double e, c, d, r, i;
 	double bankruptcy_prob;
 	double credit_allowed;
+	
+	if(ID==2)
+	{
+		printf("third");
+	}
+	
+//	for(int j=0;j<2;j++)
+//	printf("\n gamma values %d, %f", ID, BANK_GAMMA[j]);
 	if(BCE_DEBT==0.0) 
 	{
-		printf("\n enter if");
-		printf("\n my id %d ", ID);
+	//	printf("\n enter if");
+	//	printf("\n my id %d ", ID);
 		loan_request_message=get_first_loan_request_message();
-		printf("\n message %p", loan_request_message);
+	//	printf("\n message %p", loan_request_message);
 		while(loan_request_message)
 		{
-			printf("\n abc");
+		//	printf("\n abc");
 			loan_request_message=get_next_loan_request_message(loan_request_message);
 		}
 		
 		START_LOAN_REQUEST_MESSAGE_LOOP
-				printf("\n enter loop");
+			//	printf("\n enter loop");
 			e = loan_request_message->equity;
 			d = loan_request_message->total_debt;
-			c = loan_request_message->credit_demand;
+			c = loan_request_message->external_financial_needs;
 			bankruptcy_prob = 1-exp(-(d+c)/e);
 			r = bankruptcy_prob*c/e;
+		//	printf("\n bankruptcy %f, r %f", bankruptcy_prob, r );
 			if ( VALUE_AT_RISK+r <= ALFA*EQUITY ) 
 			{
 				credit_allowed = c;
+			//	printf("\nvalue at risk %f",credit_allowed);
 			}
 			else 
 			{
 				credit_allowed = (ALFA*EQUITY - VALUE_AT_RISK)/bankruptcy_prob;
+				//printf("\else at risk %f",credit_allowed);
 			}
 			i = MIN_INTEREST + BANK_GAMMA[0]*r;
-			printf("\n bank adding loan message ");
+		//	printf("\n i %f, bank %f", i, BANK_GAMMA[0]);
+		//	printf("\n bank adding loan message ");
 			add_loan_conditions_message(loan_request_message->firm_id, ID, i, credit_allowed,  r*(c/credit_allowed));
 		FINISH_LOAN_REQUEST_MESSAGE_LOOP
 	}
+	
 	return 0;
 }
 
 
 int Bank_account_update_deposits()
 {
-	 	
+	 	/*
       START_BANK_ACCOUNT_UPDATE_MESSAGE_LOOP
          CASH += bank_account_update_message->payment_account;
       FINISH_BANK_ACCOUNT_UPDATE_MESSAGE_LOOP
@@ -56,24 +69,25 @@ int Bank_account_update_deposits()
                           if(CASH>=fabs(BCE_DEBT))
                           {
                                 CASH-=fabs(BCE_DEBT);
-                                BCE_DEBT=0.;
+                                BCE_DEBT=0.0;
                           }
  
                           if(CASH<fabs(BCE_DEBT))
                           {
                                BCE_DEBT-=CASH;
-                               CASH=0.;
+                               CASH=0.0;
                           }
 
                           add_BCE_return_message(BCE_DEBT, ID);
 
 		}
-      
+      */
 	return 0;
 }
 
 int Bank_receive_installment()
 {
+	/*
 	START_INSTALLMENT_MESSAGE_LOOP
 
 		CASH +=installment_message->installment_amount;
@@ -91,12 +105,13 @@ int Bank_receive_installment()
        VALUE_AT_RISK -= bankruptcy_message->residual_var;
 
     FINISH_BANKRUPTCY_MESSAGE_LOOP
-	
+	*/
       return 0;
 }
 
 int Bank_give_loan()
 {
+	
 	START_LOAN_ACCEPTANCE_MESSAGE_LOOP
 
 		CASH -= loan_acceptance_message->credit_amount_taken;
@@ -108,6 +123,8 @@ int Bank_give_loan()
 		}
 
 	FINISH_LOAN_ACCEPTANCE_MESSAGE_LOOP
+	//printf("\n %d bce_debt %f, cash %f", ID,BCE_DEBT,CASH);
+	
 	return 0;
 }
 
@@ -115,7 +132,7 @@ int Bank_accounting()
 {
 
      double q, c, gro, tax_bank, total_dividends, dividend_per_share;   
-
+/*
      if (PROFITS[1]!=0)
      {
         gro=( (PROFITS[0]-PROFITS[1])/PROFITS[1] );
@@ -157,7 +174,7 @@ int Bank_accounting()
      }
      
      PROFITS[0]=0;  //update
-
+*/
       return 0;
 }
 
