@@ -19,13 +19,7 @@ int Firm_ask_loan()
 	{
 		DMARKETMATRIX[j]=0;
 	} 
-	/*printf("\n");
-	for(j=0;j<NUMBER_OF_BANKS_TO_APPLY;j++) 
-	{
-		printf("%d,", DMARKETMATRIX[j]);
-	}
-	printf("\n");
-	*/
+	
 	//Create bank network for this firm
 	while(connected<LINK)
 	{
@@ -36,16 +30,16 @@ int Firm_ask_loan()
 	     // printf("\nAsking for loan...............");
 	      connected++;
 	     
-	}  
-      /* 
-      printf("printf connected %d",connected);
-      printf("\n");
-	for(j=0;j<NUMBER_OF_BANKS_TO_APPLY;j++) 
-	{
-		printf("%d,", DMARKETMATRIX[j]);
 	}
-	printf("\n");
-	*/
+	if(ID==2)
+	printf("second");
+	/*printf("\n dmatriricx ");
+	for(int i=0;i<10;i++)
+	{
+		printf("%d ",DMARKETMATRIX[i]);
+	}  
+    printf("\n");
+    */
 	return 0;
 }
 
@@ -78,6 +72,9 @@ int Firm_get_loan()
     for (i=0; i<NUMBER_OF_BANKS_TO_APPLY;i++)
  	{
  	    rate_order_array[i]=-1;   //vettore lunghezza number_of_banks
+ 	    interest_array[i]=0.0;
+ 	    credit_offer_array[i]=0.0; //constant size static array
+    	value_at_risk_array[i]=0.0; 
  	} 
 
     //Read messages
@@ -85,17 +82,32 @@ int Firm_get_loan()
 	START_LOAN_CONDITIONS_MESSAGE_LOOP
 
         bk = loan_conditions_message->bank_id;
+     //   printf("M1 %d", bk);
         interest_array[bk] = loan_conditions_message->proposed_interest_rate;
+        
 		credit_offer_array[bk] = loan_conditions_message->amount_offered_credit;
 		rate_order_array[bk] = loan_conditions_message->bank_id;
 		value_at_risk_array[bk] = loan_conditions_message->value_at_risk;
+		//printf("\nmsg %f,%d %f ",interest_array[bk],rate_order_array[bk],value_at_risk_array[bk] );
 		n += 1;
-		printf("\nReceive loan ...............");
+		//printf("\nReceive loan ...............");
 
 	FINISH_LOAN_CONDITIONS_MESSAGE_LOOP
        
 	//Sorting of the rate_order_array
     n1=0;
+    
+    if(ID==2)
+    {
+   	printf("/BeforePrintfing for %d ", ID);
+    
+    for(int j=0;j<NUMBER_OF_BANKS_TO_APPLY;j++)
+    {
+    	printf("\n %d, %f,%f ,%f", rate_order_array[j], interest_array[j], credit_offer_array[j], value_at_risk_array[j]); //constant size static array
+ 
+    }
+    }
+    
 	for(i=0;i<NUMBER_OF_BANKS_TO_APPLY-1;i++)
     {
             for(k=i+1; k<NUMBER_OF_BANKS_TO_APPLY; k++)
@@ -109,7 +121,19 @@ int Firm_get_loan()
 	 			 rate_order_array[i]=rate_order_array[k];
 	 			 rate_order_array[k]=n1;
                 }
+                
             }
+    }
+    
+    if(ID==2)
+    {
+    printf("Printfing for %d ", ID);
+    
+    for(int j=0;j<NUMBER_OF_BANKS_TO_APPLY;j++)
+    {
+    	printf("\n %d, %f,%f ,%f", rate_order_array[j], interest_array[j], credit_offer_array[j], value_at_risk_array[j]); //constant size static array
+ 
+    }
     }
 	
 	//Travers the banks according to the order in the rate_order_array,
@@ -120,6 +144,7 @@ int Firm_get_loan()
 		//Why is there this check ? Is not each bank in rate_order_array also in DMARKETMATRIX?
 	     if (DMARKETMATRIX[rate_order_array[primo]]==1)
 	     {
+	     	printf("\n MAtch found");
 	        credit_demand = EXTERNAL_FINANCIAL_NEEDS - total_credit_taken;
 	        if (credit_demand >= credit_offer_array[rate_order_array[primo]])
 	        {
@@ -145,9 +170,13 @@ int Firm_get_loan()
 		
 		    //update the payment_account with the amount of credit obtained
 		    PAYMENT_ACCOUNT += credit_accepted;
+		    //printf("\n %d payment account %f", ID, PAYMENT_ACCOUNT);
 	     }
+	     else 
+	     printf("\n NO");
 	}
-
+	if(ID==2)
+	printf("fourth");
 	return 0;
 }
 
