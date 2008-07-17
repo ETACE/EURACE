@@ -24,7 +24,7 @@ int Government_send_unemployment_benefit_payment()
 	//Compute TOTAL_UNEMPLOYMENT_BENEFIT_PAYMENT
 	PAYMENT_ACCOUNT -= TOTAL_UNEMPLOYMENT_BENEFIT_PAYMENT;
 	
-	add_unemployment_benefit_message(ID,UNEMPLOYMENT_BENEFIT_PAYMENT);
+	//add_unemployment_benefit_message(ID,UNEMPLOYMENT_BENEFIT_PAYMENT);
 	
 	return 0;
 }
@@ -32,7 +32,7 @@ int Government_send_unemployment_benefit_payment()
 int Government_send_account_update()
 {
 	
-	add_central_bank_account_update_message(ID, PAYMENT_ACCOUNT);
+	add_central_bank_account_update_message(PAYMENT_ACCOUNT,ID);
 	
 	return 0;
 }
@@ -42,7 +42,7 @@ int Government_send_account_update()
 int Government_send_tax_rates()
 {
 
-	add_government_tax_rates_message(ID, TAX_RATE_CORPORATE, TAX_RATE_HH_LABOUR, TAX_RATE_HH_CAPITAL, TAX_RATE_VAT);
+	//add_government_tax_rates_message(ID, TAX_RATE_CORPORATE, TAX_RATE_HH_LABOUR, TAX_RATE_HH_CAPITAL, TAX_RATE_VAT);
 	
 	return 0;	
 }

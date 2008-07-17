@@ -210,6 +210,9 @@
 </filter>
 </input>
 </inputs>
+<outputs>
+<output><messageName>central_bank_account_update</messageName></output>
+</outputs>
 </function>
 
 
@@ -314,11 +317,11 @@
 
 
 <message>
-<name>BCE_request</name>
-<description></description>
+<name>central_bank_account_update</name>
+<description>changed bce_request message to new name</description>
 <variables>
-<variable><type>int</type><name>bce_debt</name><description></description></variable>
-<variable><type>int</type><name>id</name><description></description></variable>
+<variable><type>double</type><name>payment_account</name><description></description></variable>
+<variable><type>int</type><name>bank_id</name><description></description></variable>
 </variables>
 </message>
 

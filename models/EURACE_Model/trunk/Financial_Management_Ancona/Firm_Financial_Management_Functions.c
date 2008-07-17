@@ -54,6 +54,8 @@ int Firm_compute_financial_payments()
         //add debt_installment_payment to total installment payment
         TOTAL_DEBT_INSTALLMENT_PAYMENT += LOANS.array[i].installment_amount;
     }
+    
+    //printf("\n TOTAL_DEBT_INSTALLMENT_PAYMENT %f ",TOTAL_DEBT_INSTALLMENT_PAYMENT);
 
     return 0;
 }
@@ -88,7 +90,7 @@ int Firm_compute_income_statement()
     //Reset the counters
     CUM_TOTAL_SOLD_QUANTITY = 0.0;
     CUM_REVENUE = 0.0;        
-    
+   // printf("\n EARNINGS_PER_SHARE %f",EARNINGS_PER_SHARE);
     return 0;
 }
 
@@ -98,6 +100,7 @@ int Firm_compute_income_statement()
  */
 int Firm_compute_dividends()
 {
+	
 	//Determine total_dividend_payment
 	//option 1: total divided payment remains constant
 	//TOTAL_DIVIDEND_PAYMENT *= 1;
@@ -117,7 +120,7 @@ int Firm_compute_dividends()
 	TOTAL_DIVIDEND_PAYMENT = TOTAL_DIVIDEND_PAYMENT * (EARNINGS_PER_SHARE/PREVIOUS_EARNINGS_PER_SHARE);
 	
 	//option 5: keep dividend to earnings ratio constant (dont let it fall), but do not decrease the dividend per share ratio.
-	/*
+	
 	    if (CURRENT_DIVIDEND_PER_EARNINGS < PREVIOUS_DIVIDEND_PER_EARNINGS)
 	    {
 	        //Maintain the dividend to earnings ratio
@@ -136,7 +139,9 @@ int Firm_compute_dividends()
 	        //else keep the dividend per share ratio constant
 	        TOTAL_DIVIDEND_PAYMENT = PREVIOUS_DIVIDEND_PER_SHARE*CURRENT_SHARES_OUTSTANDING;
 	    }
-	*/
+	    
+	   // printf("\n TOTAL_DIVIDEND_PAYMENT %f",TOTAL_DIVIDEND_PAYMENT);
+	
 
     return 0;
 }
@@ -153,11 +158,13 @@ int Firm_compute_dividends()
  */
 int Firm_compute_total_financial_payments()
 {
+	
 	//This variable is not used anywhere: it is the sum of financial_liquidity_needs and production_liquidity_needs
 	//but excluding the tax_payments. The tax_payments do not need to be financed since we assume they can always be paid out of earnings. 
 	TOTAL_PAYMENTS = TOTAL_INTEREST_PAYMENT + TOTAL_DEBT_INSTALLMENT_PAYMENT + TOTAL_DIVIDEND_PAYMENT + TAX_PAYMENT + PRODUCTION_COSTS;
-	printf("\n TOTAL_INTEREST_PAYMENT %f , TOTAL_DEBT_INSTALLMENT_PAYMENT %f, TOTAL_DIVIDEND_PAYMENT %f, TAX_PAYMENT %f, PRODUCTION_COSTS %f",TOTAL_INTEREST_PAYMENT,TOTAL_DEBT_INSTALLMENT_PAYMENT, TOTAL_DIVIDEND_PAYMENT, TAX_PAYMENT ,PRODUCTION_COSTS);
-	printf("\n totalpayments %f", TOTAL_PAYMENTS);
+	//printf("\n TOTAL_INTEREST_PAYMENT %f , TOTAL_DEBT_INSTALLMENT_PAYMENT %f, TOTAL_DIVIDEND_PAYMENT %f, TAX_PAYMENT %f, PRODUCTION_COSTS %f",TOTAL_INTEREST_PAYMENT,TOTAL_DEBT_INSTALLMENT_PAYMENT, TOTAL_DIVIDEND_PAYMENT, TAX_PAYMENT ,PRODUCTION_COSTS);
+	//printf("\n totalpayments %f", TOTAL_PAYMENTS);
+	 
 	return 0;
 }
 
@@ -184,6 +191,7 @@ int Firm_compute_balance_sheet()
     
     
 	/*reading current mall stocks   */
+	
 	START_CURRENT_MALL_STOCK_INFO_MESSAGE_LOOP
 //		if(current_mall_stock_info_message->firm_id == ID)
 //		{
@@ -217,7 +225,7 @@ int Firm_compute_balance_sheet()
     
     DEBT_EQUITY_RATIO = TOTAL_DEBT/EQUITY;
     DEBT_EARNINGS_RATIO = TOTAL_DEBT/NET_EARNINGS;
-    
+    //printf("\n equity %f", EQUITY);
     return 0;
 }
 
@@ -239,7 +247,12 @@ int Firm_compute_total_liquidity_needs()
     //step 12B: set production and payout financial_needs
     PRODUCTION_LIQUIDITY_NEEDS = PRODUCTION_COSTS;
     FINANCIAL_LIQUIDITY_NEEDS = TOTAL_INTEREST_PAYMENT + TOTAL_DEBT_INSTALLMENT_PAYMENT + TAX_PAYMENT;
-
+    if(ID==2)
+    printf("first%d  %f",ID,PRODUCTION_COSTS);
+    
+//	printf("\n %d production_l_n %f", ID, PRODUCTION_LIQUIDITY_NEEDS);
+//	printf("\n TOTAL_INTEREST_PAYMENT %f, TOTAL_DEBT_INSTALLMENT_PAYMENT %f, TAX_PAYMENT %f",TOTAL_INTEREST_PAYMENT,TOTAL_DEBT_INSTALLMENT_PAYMENT,TAX_PAYMENT);
+//	printf("\n %d financial_l_n %f",ID, FINANCIAL_LIQUIDITY_NEEDS);
     //step 12C:
     //Check if additional external financial needs are required for total financial needs (direct payable and delayed payable)    
     TOTAL_FINANCIAL_NEEDS =  PRODUCTION_LIQUIDITY_NEEDS + FINANCIAL_LIQUIDITY_NEEDS + TOTAL_DIVIDEND_PAYMENT;
@@ -251,14 +264,15 @@ int Firm_compute_total_liquidity_needs()
         if (PAYMENT_ACCOUNT >= TOTAL_FINANCIAL_NEEDS)
         {        	
             //printf("Firm_financial_needs, External financing: case 1.");
-            EXTERNAL_FINANCIAL_NEEDS = 0.0;                   
+            EXTERNAL_FINANCIAL_NEEDS = 0.0;
+                               
         }
         else
         {
         	//external financing needed
         	EXTERNAL_FINANCIAL_NEEDS = TOTAL_FINANCIAL_NEEDS - PAYMENT_ACCOUNT;
         }
-            
+          //  printf("\n extern %f ", EXTERNAL_FINANCIAL_NEEDS);
     return 0;
 }
 
@@ -286,6 +300,9 @@ int Firm_check_financial_and_bankruptcy_state()
 			FINANCIAL_CRISIS_STATE=1;
 		}
 	}
+	
+	//printf("\n bankrupt %d, finacial crisis %d",BANKRUPTCY_STATE,FINANCIAL_CRISIS_STATE);
+	
 	return 0;
 }
 
@@ -297,6 +314,7 @@ int Firm_check_financial_and_bankruptcy_state()
  */
 int Firm_in_bankruptcy()
 {
+	
 	int i,imax;
 	double bad_debt, credit_refunded, residual_var;
 	
@@ -312,7 +330,7 @@ int Firm_in_bankruptcy()
         //add_bankruptcy_message(bank_id, bad_debt, credit_refunded, residual_var);
     	add_bankruptcy_message(LOANS.array[i].bank_id, bad_debt, credit_refunded, residual_var);
     }
-	
+	printf("\nI am bankrupt");
     //Effect on labour market
     //Firing all employees
     
@@ -355,14 +373,16 @@ int Firm_in_financial_crisis_function()
 	}
 	
 	//Set flag if not resolved: payment account remains below total needs
-/*
-	if (PAYMENT_ACCOUNT < TOTAL_INTEREST_PAYMENTS + TOTAL_DEBT_INSTALLMENT_PAYMENT + TAX_PAYMENT + TOTAL_DIVIDEND_PAYMENT_REALIZED)
-	{
-		FINANCIAL_CRISIS_STATE=0;
-		BANKRUPTCY_STATE=1;
-	}
-	
-*/
+			/*
+			if (PAYMENT_ACCOUNT < TOTAL_INTEREST_PAYMENT + TOTAL_DEBT_INSTALLMENT_PAYMENT + TAX_PAYMENT + TOTAL_DIVIDEND_PAYMENT_REALIZED)
+			{
+				FINANCIAL_CRISIS_STATE=0;
+				BANKRUPTCY_STATE=1;
+			}
+			*/
+	printf("\n In FINANCIAl crisis %f ",TOTAL_DIVIDEND_PAYMENT);
+
+
 	return 0;
 }
 
@@ -388,6 +408,7 @@ int Firm_execute_financial_payments_function()
 		//step 2: actual interest_payments and installment_payments
 		//Sending installment_message to banks at which the firm has a loan 
 	    imax = LOANS.size;
+	 //   printf("\n loans size %d", imax);
 	    for (i=0; i<imax;i++)
 	    {
 	        //decrease payment_account with the interest_payment
@@ -412,7 +433,8 @@ int Firm_execute_financial_payments_function()
 
 	        //add_debt_installment_message(bank_id, installment_amount, interest_amount, credit_refunded, var_per_installment)
 	        add_installment_message(LOANS.array[i].bank_id, LOANS.array[i].installment_amount, LOANS.array[i].interest_amount, LOANS.array[i].var_per_installment);
-	
+		//	printf("\n msg aDDED for bank %d",LOANS.array[i].bank_id);
+			   printf("\n ------------ %f, %f ",LOANS.array[i].installment_amount, LOANS.array[i].interest_amount);
 	        //If nr_periods_before_maturity == 0, remove the loan item
 	        if(LOANS.array[i].nr_periods_before_repayment==0)
 	        {
@@ -429,6 +451,7 @@ int Firm_execute_financial_payments_function()
 	        //decrease payment_account with the total_dividend_payment
 	        PAYMENT_ACCOUNT -= TOTAL_DIVIDEND_PAYMENT;
 	    }
+	   // printf("\n payment account %f",PAYMENT_ACCOUNT);
 
     return 0;
 }
@@ -441,6 +464,7 @@ int Firm_execute_financial_payments_function()
  */
 int Firm_compute_and_send_stock_orders()
 {
+	
 	double limit_price=CURRENT_SHARE_PRICE*0.99;
     int quantity = -1*(1+EXTERNAL_FINANCIAL_NEEDS/limit_price);
     
@@ -460,17 +484,30 @@ int Firm_compute_and_send_stock_orders()
 int Firm_read_stock_transactions()
 {
 	double finances;
-	
+	/*
     START_ORDER_STATUS_MESSAGE_LOOP
     	//Finances obtained: positive quantity is demand, negative quantity is selling
     	finances = (-1)*order_status_message->price * order_status_message->quantity;
-    	
+    	finances=(rand()/RAND_MAX)*100;
     	//Increase payment account with the finances obtained
     	PAYMENT_ACCOUNT += finances;
     	
     	//Decrease external financial needs with the finances obtained
     	EXTERNAL_FINANCIAL_NEEDS -= finances;
+    	printf();
     FINISH_ORDER_STATUS_MESSAGE_LOOP
+    */
+    ///NOTE: commenting the loop
+    finances=((double)rand()/(double)RAND_MAX)*EXTERNAL_FINANCIAL_NEEDS;
+    
+    	//Increase payment account with the finances obtained
+    PAYMENT_ACCOUNT += finances;
+    	
+    	//Decrease external financial needs with the finances obtained
+    EXTERNAL_FINANCIAL_NEEDS -= finances;
+   // printf("\n finances %f",finances);
+  //  printf("\n payment account %f extrenalfinances need %f",PAYMENT_ACCOUNT, EXTERNAL_FINANCIAL_NEEDS);
+    
     return 0;
 }
 
