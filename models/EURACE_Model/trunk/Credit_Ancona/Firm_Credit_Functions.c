@@ -32,7 +32,7 @@ int Firm_ask_loan()
 	     
 	}
 	if(ID==2)
-	printf("second");
+	printf("second%d %f", ID,PRODUCTION_COSTS);
 	/*printf("\n dmatriricx ");
 	for(int i=0;i<10;i++)
 	{
@@ -67,9 +67,9 @@ int Firm_get_loan()
     double residual_var;
     double bad_debt;
     int nr_periods_before_repayment;
-	
+	//printf("\n //////////// 4payment account %f extrenalfinances need %f",PAYMENT_ACCOUNT, EXTERNAL_FINANCIAL_NEEDS);
     //This is not needed, we fill the array anyway, so why need to set it to -1? 
-    for (i=0; i<NUMBER_OF_BANKS_TO_APPLY;i++)
+    for (i=0; i<CONST_NUMBER_OF_BANKS;i++)
  	{
  	    rate_order_array[i]=-1;   //vettore lunghezza number_of_banks
  	    interest_array[i]=0.0;
@@ -99,18 +99,18 @@ int Firm_get_loan()
     
     if(ID==2)
     {
-   	printf("/BeforePrintfing for %d ", ID);
+  // 	printf("/BeforePrintfing for %d ", ID);
     
-    for(int j=0;j<NUMBER_OF_BANKS_TO_APPLY;j++)
+    for(int j=0;j<CONST_NUMBER_OF_BANKS;j++)
     {
-    	printf("\n %d, %f,%f ,%f", rate_order_array[j], interest_array[j], credit_offer_array[j], value_at_risk_array[j]); //constant size static array
+    //	printf("\n %d, %f,%f ,%f", rate_order_array[j], interest_array[j], credit_offer_array[j], value_at_risk_array[j]); //constant size static array
  
     }
     }
     
-	for(i=0;i<NUMBER_OF_BANKS_TO_APPLY-1;i++)
+	for(i=0;i<CONST_NUMBER_OF_BANKS-1;i++)
     {
-            for(k=i+1; k<NUMBER_OF_BANKS_TO_APPLY; k++)
+            for(k=i+1; k<CONST_NUMBER_OF_BANKS; k++)
             {
             	if (interest_array[i]>interest_array[k]) 
             	{
@@ -127,11 +127,11 @@ int Firm_get_loan()
     
     if(ID==2)
     {
-    printf("Printfing for %d ", ID);
+ //   printf("Printfing for %d ", ID);
     
-    for(int j=0;j<NUMBER_OF_BANKS_TO_APPLY;j++)
+    for(int j=0;j<CONST_NUMBER_OF_BANKS;j++)
     {
-    	printf("\n %d, %f,%f ,%f", rate_order_array[j], interest_array[j], credit_offer_array[j], value_at_risk_array[j]); //constant size static array
+    //	printf("\n %d, %f,%f ,%f", rate_order_array[j], interest_array[j], credit_offer_array[j], value_at_risk_array[j]); //constant size static array
  
     }
     }
@@ -139,17 +139,20 @@ int Firm_get_loan()
 	//Travers the banks according to the order in the rate_order_array,
 	//check if bank in DMARKETMATRIX==1
 	//obtain a loan if credit_demand >= credit_offer
-	for(primo=0; primo<NUMBER_OF_BANKS_TO_APPLY; primo++)
+	for(primo=0; primo<CONST_NUMBER_OF_BANKS; primo++)
 	{
+	//	printf("\n INLOPP");
 		//Why is there this check ? Is not each bank in rate_order_array also in DMARKETMATRIX?
 	     if (DMARKETMATRIX[rate_order_array[primo]]==1)
 	     {
-	     	printf("\n MAtch found");
+	    // 	printf("\n MAtch found");
 	        credit_demand = EXTERNAL_FINANCIAL_NEEDS - total_credit_taken;
 	        if (credit_demand >= credit_offer_array[rate_order_array[primo]])
 	        {
 	           credit_accepted = credit_offer_array[rate_order_array[primo]];
+	        //   printf("\n credit accepted %f", credit_accepted);
 	        }
+	     //   printf("\n************* %f", credit_accepted);
 	
 	        total_credit_taken += credit_accepted;
 	        		    
@@ -159,6 +162,7 @@ int Firm_get_loan()
 		    
 		    installment_amount = credit_accepted/CONST_INSTALLMENT_PERIODS;
 		    interest_amount=interest_rate*installment_amount;
+		    printf("\n interest amount %f", interest_amount);
 		    var_per_installment = RESIDUAL_VAR[rate_order_array[primo]].value[CONST_INSTALLMENT_PERIODS-1]/CONST_INSTALLMENT_PERIODS; //rate_order_array[primo]][CONST_INSTALLMENT_PERIODS-1]/CONST_INSTALLMENT_PERIODS;
 		    
 		    residual_var = value_at_risk_array[rate_order_array[primo]]*(credit_offer_array[rate_order_array[primo]]/credit_accepted);
@@ -166,17 +170,19 @@ int Firm_get_loan()
 		    nr_periods_before_repayment=CONST_INSTALLMENT_PERIODS;
 		    	
 		    add_debt_item(&LOANS, bank_id, loan_value, interest_rate, installment_amount,interest_amount, var_per_installment, residual_var, bad_debt, nr_periods_before_repayment);
+		 //  printf("\n here");
 		    add_loan_acceptance_message(bank_id, credit_accepted);
 		
 		    //update the payment_account with the amount of credit obtained
 		    PAYMENT_ACCOUNT += credit_accepted;
-		    //printf("\n %d payment account %f", ID, PAYMENT_ACCOUNT);
+		 //  printf("\n %d payment account %f", ID, PAYMENT_ACCOUNT);
 	     }
-	     else 
-	     printf("\n NO");
+	    // else 
+	    // printf("\n NO");
 	}
 	if(ID==2)
 	printf("fourth");
+//	printf("\n  4payment account %f extrenalfinances need %f",PAYMENT_ACCOUNT, EXTERNAL_FINANCIAL_NEEDS);
 	return 0;
 }
 

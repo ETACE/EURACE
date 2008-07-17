@@ -10,6 +10,7 @@
 
 <functionFiles>
 <file>Government_Functions.c</file>
+<file>Central_Bank_Functions.c</file>
 </functionFiles>
 
 </environment>
@@ -43,9 +44,9 @@
 <currentState>start_Government</currentState>
 <nextState>00</nextState>
 <condition><time><period>yearly</period><phase>0</phase></time></condition>
-<outputs>
+<!-- <outputs>
 <output><messageName>government_tax_rates</messageName></output>
-</outputs>
+</outputs>-->
 </function>
 
 <function>
@@ -53,9 +54,9 @@
 <description></description>
 <currentState>00</currentState>
 <nextState>01</nextState>
-<outputs>
+<!-- <outputs>
 <output><messageName>unemployment_benefit</messageName></output>
-</outputs>
+</outputs>-->
 </function>
 
 
@@ -122,7 +123,7 @@
 </variables>
 </message>
 
-
+<!--
 <message>
 <name>central_bank_account_update</name>
 <description></description>
@@ -131,7 +132,7 @@
 <variable><type>double</type><name>payment_account</name><description></description></variable>
 </variables>
 </message>
-
+-->
 <message>
 <name>government_tax_rates</name>
 <description></description>
