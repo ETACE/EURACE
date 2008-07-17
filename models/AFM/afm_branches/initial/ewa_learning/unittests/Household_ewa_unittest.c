@@ -1,6 +1,6 @@
  /*********************************
- * Household_ewa_functions.c 
- * Functions Household EWA learning module.
+ * Household_ewa_unittest.c 
+ * Unit tests for Household EWA learning module.
  **********************************
  * History:
  * 15/07/08 Sander van der Hoog 
@@ -101,8 +101,9 @@ void unittest_Household_read_all_performances()
 void unittest1_Household_select_rule()
 {
     /************* At start of unit test, add one agent **************/
-     add_Household_agent_internal(init_Household_agent());
-     current_xmachine = *p_xmachine;
+//     add_Household_agent_internal(init_Household_agent());
+//     current_xmachine = *p_xmachine;
+	unittest_init_Household_agent();
 
      /***** Variables: Memory pre-conditions **************************/
      EWA_PARAMETERS.EWA_rho=1.0;
@@ -158,7 +159,8 @@ void unittest1_Household_select_rule()
      /***** Messages: post-conditions **********************************/
 
      /************* At end of unit test, free the agent **************/
-     free_agent();
+     //free_agent();
+     unittest_free_Household_agent();
      /************* At end of unit tests, free all Messages **********/
      free_messages();
 }
@@ -383,4 +385,3 @@ void unittest_Household_reset_private_classifiersystem()
     /************* At end of unit tests, free all Messages **********/
      free_messages();
 }
-

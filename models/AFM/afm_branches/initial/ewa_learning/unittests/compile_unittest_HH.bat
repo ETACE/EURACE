@@ -1,1 +1,1 @@
-gcc -g -I../libmboard/include -L../libmboard/lib unittest_HH.c ../memory.c ../messageboards.c  ../Household_ewa_functions.c Household_ewa_unittest.c some_new_functions.c -lm -lcunit -lmboard_s 
+gcc -g -I../libmboard/include -L../libmboard/lib unittest_HH_new.c ../memory.c ../messageboards.c  ../Household_ewa_functions.c Household_ewa_unittest_new.c ../some_new_functions.c -lm -lcunit -lmboard_s 
