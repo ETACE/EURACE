@@ -154,7 +154,7 @@ void unittest_two_point_cross_over_alt()
 void unittest_mutation()
 {   
  	// At start of unit test, add one agent
-    //add_FinancialAgent_agent_internal(init_FinancialAgent_agent(), init_FinancialAgent_state());
+    //unittest_init_FinancialAgent_agent();
     //current_xmachine = *p_xmachine;
 
     // Variables: Memory pre-conditions 
@@ -196,7 +196,7 @@ void unittest_mutation()
 	// free();
 }
 
-/*
+
 //int GA_selection(int * parent_index_1, int * parent_index_2, int * rule_id_1, int * rule_id_2)
 void unittest_GA_selection()
 {
@@ -207,8 +207,8 @@ void unittest_GA_selection()
 	int * rule_id_2;
 
     //************* At start of unit test, add one agent **************
-     add_FinancialAgent_agent_internal(init_FinancialAgent_agent(), init_FinancialAgent_state());
-     current_xmachine = *p_xmachine;
+     unittest_init_FinancialAgent_agent();
+
 
     //***** Variables: Memory pre-conditions **************************
    	//Initializations:
@@ -289,7 +289,7 @@ void unittest_GA_selection()
      //***** Messages: post-conditions **********************************
 
      //************* At end of unit test, free the agent **************
-     free_agent();
+     unittest_free_FinancialAgent_agent();
      //************* At end of unit tests, free all Messages **********
      free_messages();
 
@@ -299,7 +299,7 @@ void unittest_GA_selection()
  	 free(rule_id_1);
  	 free(rule_id_2);
 }
-*/
+
 
 /*
 //GA_reproduction(rule_id_1[j], rule_id_2[j], offspring_1, offspring_2);
@@ -313,8 +313,8 @@ void unittest_GA_reproduction()
 	double * offspring_2; //copy from PUBLIC_CLASSIFIERSYSTEM.ruletable[id2]
 
     //************* At start of unit test, add one agent **************
-     add_FinancialAgent_agent_internal(init_FinancialAgent_agent(), init_FinancialAgent_state());
-     current_xmachine = *p_xmachine;
+     unittest_init_FinancialAgent_agent();
+
 
     //***** Variables: Memory pre-conditions **************************
   	//Initializations:
@@ -380,7 +380,7 @@ void unittest_GA_reproduction()
      //***** Messages: post-conditions **********************************
 
      //************* At end of unit test, free the agent **************
-     //free_agent();
+     unittest_free_FinancialAgent_agent();
      //************* At end of unit tests, free all Messages **********
      //free_messages();
 
@@ -402,8 +402,8 @@ void unittest_GA_mutation()
 	double * offspring_2; //copy from PUBLIC_CLASSIFIERSYSTEM.ruletable[id2]
 
     //************* At start of unit test, add one agent **************
-     add_FinancialAgent_agent_internal(init_FinancialAgent_agent(), init_FinancialAgent_state());
-     current_xmachine = *p_xmachine;
+     unittest_init_FinancialAgent_agent();
+
 
      //***** Variables: Memory pre-conditions **************************
  	//Initializations:
@@ -451,7 +451,7 @@ void unittest_GA_mutation()
      //***** Messages: post-conditions **********************************
 
      //************* At end of unit test, free the agent **************
-     //free_agent();
+     unittest_free_FinancialAgent_agent();
      //************* At end of unit tests, free all Messages **********
      //free_messages();
 
@@ -471,8 +471,8 @@ void unittest_GA_election()
 	double * offspring_2; //copy from PUBLIC_CLASSIFIERSYSTEM.ruletable[id2]
 
     ///************* At start of unit test, add one agent **************
-     add_FinancialAgent_agent_internal(init_FinancialAgent_agent(), init_FinancialAgent_state());
-     current_xmachine = *p_xmachine;
+     unittest_init_FinancialAgent_agent();
+
 
     //***** Variables: Memory pre-conditions **************************
   	size=2;
@@ -493,7 +493,7 @@ void unittest_GA_election()
      //***** Messages: post-conditions ********************************
 
      //************* At end of unit test, free the agent **************
-     free_agent();
+     unittest_free_FinancialAgent_agent();
      //************* At end of unit tests, free all Messages **********
      free_messages();
 
@@ -516,8 +516,8 @@ void unittest_GA_reinsertion()
 	double * offspring_2; //copy from PUBLIC_CLASSIFIERSYSTEM.ruletable[id2]
 
      //************* At start of unit test, add one agent **************
-     add_FinancialAgent_agent_internal(init_FinancialAgent_agent(), init_FinancialAgent_state());
-     current_xmachine = *p_xmachine;
+     unittest_init_FinancialAgent_agent();
+
 
      //***** Variables: Memory pre-conditions **************************
 	 size=2;
@@ -564,7 +564,7 @@ void unittest_GA_reinsertion()
      //***** Messages: post-conditions **********************************
 
      //************* At end of unit test, free the agent **************
-     //free_agent();
+     unittest_free_FinancialAgent_agent();
      //************* At end of unit tests, free all Messages **********
      //free_messages();
 
