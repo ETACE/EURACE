@@ -6,6 +6,8 @@
  * 16/07/08 Sander 
  *********************************/
 #include <CUnit/Basic.h>
+#include <string.h> //required for strcat, strcpy
+
 #include "../header.h"
 #include "../FinancialAgent_agent_header.h"
 #include "../FinancialAgent_aux_header.h"
@@ -54,8 +56,7 @@ void unittest_single_point_cross_over()
 }
 
 
-
-void unittest_two_point_cross_over()
+void unittest1_two_point_cross_over()
 {
 	int c, ell, size;
 	double * xvec;
@@ -101,8 +102,54 @@ void unittest_two_point_cross_over()
 	free(yvec);
 }
 
+void unittest2_two_point_cross_over()
+{
+	int c, ell, size;
+	double * xvec;
+	double * yvec;
+	
+    // ***** Variables: Memoryvec pre-conditions **************************
+	size=4;
+    xvec = malloc(size*sizeof(double));
+    yvec = malloc(size*sizeof(double));
+	xvec[0]=0.1; xvec[1]=0.1; xvec[2]=0.1; xvec[3]=0.1;
+	yvec[0]=0.2; yvec[1]=0.2; yvec[2]=0.2; yvec[3]=0.2;
+	
+	//Random cross-over point
+	//c = (int)(size*random_unif());
+	c=2;
+	
+	//Random cross-over length
+	//ell = (int)(size*random_unif());
+	ell=3;
+	printf("\n point c=%d, length ell=%d",c, ell);
+	
+    // ***** Function evaluation ***************************************
+	//void two_point_cross_over(int size, double * string_a, double * string_b, int cross_point, int cross_length)
+	printf("\n Before two_point_cross_over: xvec=[%1.1f, %1.1f, %1.1f, %1.1f]\n", xvec[0], xvec[1], xvec[2], xvec[3]);
+	printf("\n Before two_point_cross_over: yvec=[%1.1f, %1.1f, %1.1f, %1.1f]\n", yvec[0], yvec[1], yvec[2], yvec[3]);
 
-void unittest_two_point_cross_over_alt()
+	two_point_cross_over(size, xvec, yvec, c, ell);
+
+	printf("\n After two_point_cross_over: xvec=[%1.1f, %1.1f, %1.1f, %1.1f]\n", xvec[0], xvec[1], xvec[2], xvec[3]);
+	printf("\n After two_point_cross_over: yvec=[%1.1f, %1.1f, %1.1f, %1.1f]\n", yvec[0], yvec[1], yvec[2], yvec[3]);
+
+    // ***** Variables: Memory post-conditions *************************
+    CU_ASSERT_DOUBLE_EQUAL(xvec[0], 0.2, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(xvec[1], 0.1, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(xvec[2], 0.2, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(xvec[3], 0.2, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(yvec[0], 0.1, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(yvec[1], 0.2, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(yvec[2], 0.1, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(yvec[3], 0.1, 1e-3);
+
+	free(xvec);
+	free(yvec);
+}
+
+
+void unittest1_two_point_cross_over_alt()
 {
 	int c, ell, size;
 	double * xvec;
@@ -149,7 +196,108 @@ void unittest_two_point_cross_over_alt()
 	free(yvec);
 }
 
+void unittest2_two_point_cross_over_alt()
+{
+	int c, ell, size;
+	double * xvec;
+	double * yvec;
 
+	
+    // ***** Variables: Memory pre-conditions **************************
+	size=4;
+    xvec = malloc(size*sizeof(double));
+    yvec = malloc(size*sizeof(double));
+	xvec[0]=0.1; xvec[1]=0.1; xvec[2]=0.1; xvec[3]=0.1;
+	yvec[0]=0.2; yvec[1]=0.2; yvec[2]=0.2; yvec[3]=0.2;
+	
+	//Random cross-over point
+	//c = (int)(size*random_unif());
+	c=2;
+	
+	//Random cross-over length
+	//ell = (int)(size*random_unif());
+	ell=3;
+	printf("\n point c=%d, length ell=%d",c, ell);
+	
+    // ***** Function evaluation ***************************************
+	//void two_point_cross_over(int size, double * string_a, double * string_b, int cross_point, int cross_length)
+	printf("\n Before two_point_cross_over: xvec=[%1.1f, %1.1f, %1.1f, %1.1f]\n", xvec[0], xvec[1], xvec[2], xvec[3]);
+	printf("\n Before two_point_cross_over: yvec=[%1.1f, %1.1f, %1.1f, %1.1f]\n", yvec[0], yvec[1], yvec[2], yvec[3]);
+
+	two_point_cross_over_alt(size, xvec, yvec, c, ell);
+
+	printf("\n After two_point_cross_over: xvec=[%1.1f, %1.1f, %1.1f, %1.1f]\n", xvec[0], xvec[1], xvec[2], xvec[3]);
+	printf("\n After two_point_cross_over: yvec=[%1.1f, %1.1f, %1.1f, %1.1f]\n", yvec[0], yvec[1], yvec[2], yvec[3]);
+
+    // ***** Variables: Memoryvec post-conditions *************************
+    CU_ASSERT_DOUBLE_EQUAL(xvec[0], 0.1, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(xvec[1], 0.2, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(xvec[2], 0.1, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(xvec[3], 0.1, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(yvec[0], 0.2, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(yvec[1], 0.1, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(yvec[2], 0.2, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(yvec[3], 0.2, 1e-3);
+    
+	free(xvec);
+	free(yvec);
+}
+
+void unittest3_two_point_cross_over_alt()
+{
+	int c, ell, size;
+	double * xvec;
+	double * yvec;
+
+	
+    // ***** Variables: Memory pre-conditions **************************
+	size=8;
+    xvec = malloc(size*sizeof(double));
+    yvec = malloc(size*sizeof(double));
+	xvec[0]=0.0; xvec[1]=0.0; xvec[2]=0.0; xvec[3]=0.0; xvec[4]=0.0; xvec[5]=0.0; xvec[6]=0.0; xvec[7]=0.0;
+	yvec[0]=0.2; yvec[1]=0.2; yvec[2]=0.2; yvec[3]=0.2; yvec[4]=0.2; yvec[5]=0.2; yvec[6]=0.2; yvec[7]=0.2;
+	
+	//Random cross-over point
+	//c = (int)(size*random_unif());
+	c=7;
+	
+	//Random cross-over length
+	//ell = (int)(size*random_unif());
+	ell=3;
+	printf("\n point c=%d, length ell=%d",c, ell);
+	
+    // ***** Function evaluation ***************************************
+	//void two_point_cross_over(int size, double * string_a, double * string_b, int cross_point, int cross_length)
+	printf("\n Before two_point_cross_over: xvec=[%1.1f, %1.1f, %1.1f, %1.1f, %1.1f, %1.1f, %1.1f, %1.1f]\n", xvec[0], xvec[1], xvec[2], xvec[3], xvec[4], xvec[5], xvec[6], xvec[7]);
+	printf("\n Before two_point_cross_over: yvec=[%1.1f, %1.1f, %1.1f, %1.1f, %1.1f, %1.1f, %1.1f, %1.1f]\n", yvec[0], yvec[1], yvec[2], yvec[3], yvec[4], yvec[5], yvec[6], yvec[7]);
+
+	two_point_cross_over_alt(size, xvec, yvec, c, ell);
+
+	printf("\n After two_point_cross_over: xvec=[%1.1f, %1.1f, %1.1f, %1.1f, %1.1f, %1.1f, %1.1f, %1.1f]\n", xvec[0], xvec[1], xvec[2], xvec[3], xvec[4], xvec[5], xvec[6], xvec[7]);
+	printf("\n After two_point_cross_over: yvec=[%1.1f, %1.1f, %1.1f, %1.1f, %1.1f, %1.1f, %1.1f, %1.1f]\n", yvec[0], yvec[1], yvec[2], yvec[3], yvec[4], yvec[5], yvec[6], yvec[7]);
+
+    // ***** Variables: Memoryvec post-conditions *************************
+    CU_ASSERT_DOUBLE_EQUAL(xvec[0], 0.0, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(xvec[1], 0.0, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(xvec[2], 0.2, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(xvec[3], 0.2, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(xvec[4], 0.2, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(xvec[5], 0.2, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(xvec[6], 0.2, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(xvec[7], 0.0, 1e-3);
+    
+    CU_ASSERT_DOUBLE_EQUAL(yvec[0], 0.2, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(yvec[1], 0.2, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(yvec[2], 0.0, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(yvec[3], 0.0, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(yvec[4], 0.0, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(yvec[5], 0.0, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(yvec[6], 0.0, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(yvec[7], 0.2, 1e-3);
+    
+	free(xvec);
+	free(yvec);
+}
 
 void unittest_mutation()
 {   
@@ -286,6 +434,8 @@ void unittest_GA_selection()
      CU_ASSERT_EQUAL(rule_id_2[0], 3);
      CU_ASSERT_EQUAL(rule_id_2[1], 3);
      
+     //FinancialAgent_print_public_classifiersystem();
+     
      //***** Messages: post-conditions **********************************
 
      //************* At end of unit test, free the agent **************
@@ -301,7 +451,7 @@ void unittest_GA_selection()
 }
 
 
-/*
+
 //GA_reproduction(rule_id_1[j], rule_id_2[j], offspring_1, offspring_2);
 void unittest_GA_reproduction()
 {
@@ -390,9 +540,9 @@ void unittest_GA_reproduction()
  	 free(offspring_1);
  	 free(offspring_2);	
 }
-*/
 
-/*
+
+
 //GA_mutation(NR_PARAMS, offspring_1, offspring_2);
 void unittest_GA_mutation()
 {
@@ -459,9 +609,9 @@ void unittest_GA_mutation()
   	 free(offspring_1);
   	 free(offspring_2);	
 }
-*/
 
-/*
+
+
 //GA_election(NR_PARAMS, offspring_1, offspring_2);
 void unittest_GA_election()
 {
@@ -501,9 +651,9 @@ void unittest_GA_election()
    	 free(offspring_1);
    	 free(offspring_2);	
 }
-*/
 
-/*
+
+
 //GA_reinsertion(NR_PARAMS, offspring_1, offspring_2, rule_id_1[j], rule_id_2[j]);
 void unittest_GA_reinsertion()
 {
@@ -573,5 +723,113 @@ void unittest_GA_reinsertion()
    	 free(offspring_2);	
  	 free(rule_id_1);
  	 free(rule_id_2);
+}
+
+void test_print()
+{	
+	
+	char str[10];
+	char file[20];
+	int i, rule_id, counter;
+	double performance, avg_performance, my_performance, attraction, choiceprob;
+	int ERR, FILE;
+	
+	//Set the output file:
+	//i = sprintf(str, "%d", iteration_loop);
+	i = sprintf(str, "%d", 1);
+	printf("5 in sprintf is %s\n", str);
+	printf("sprintf returns: %d\n\n", i);
+	
+	//Set the null character terminator
+	//file='\0';
+	
+	//now concatenate
+	strcat(file, "../log/CS_");
+	strcat(file, str);
+	strcat(file, ".txt");
+	printf("File is now: %s\n\n", file);
+
+/*	
+	if (ERR)
+	{
+		printf("sscanff returns: %d\n\n", ERR);
+		printf("Error writing fileneame the char array");
+	}
+	else printf("File to write data to: %s", file);
+	
+	
+	//Open a file pointer: FILE *Fp 
+	printf("\n Appending data to file: %s. Starting to write...\n", file);
+	FILE = fopen(file,"w");
+*/
+}
+
+/*
+void FinancialAgent_print_public_classifiersystem()
+{	
+
+	//Print comments/notes:
+    fprintf(FILE,"Logfile: Print-out of all classifier systems. \n");
+    fprintf(FILE,"Note 1: The performance and counter columns for the households are copied from the FinancialAdvisors CS. \n");
+    fprintf(FILE,"Note 2: The avgperformance column can contain different values for two households, since it contains the copy from the FinancialAdvisors CS at the moment of the households most recent portfolio update. \n\n");
+
+    //Print FinancialAdvisor classifier system:
+    fprintf(FILE,"=============================================================================================\n");
+    fprintf(FILE,"FinancialAdvisor:\n");
+    fprintf(FILE,"rule\t performance\t counter\t avgperformance\t choice prob\n");
+    fprintf(FILE,"=============================================================================================\n"); 
+
+    for (i=0;i<PUBLIC_CLASSIFIERSYSTEM.nr_rules;i++)
+    {
+         rule_id 		= PUBLIC_CLASSIFIERSYSTEM.ruletable[i].id;
+		 counter 		= PUBLIC_CLASSIFIERSYSTEM.ruletable[i].counter;
+         performance 	= PUBLIC_CLASSIFIERSYSTEM.ruletable[i].performance;
+         avgperformance = PUBLIC_CLASSIFIERSYSTEM.ruletable[i].avg_performance;
+         choiceprob 	= PUBLIC_CLASSIFIERSYSTEM.ruletable[i].choiceprob;
+
+         fprintf(FILE,"%d\t %f\t %7d\t\t %f\t\t %f\n", rule_id, performance, counter, avgperformance, choiceprob);
+    }
+     fprintf(FILE,"=============================================================================================\n");
+
+    fprintf(FILE,"\n");
+	fclose(file);
+}
+*/
+/*
+void Household_print_private_classifiersystem()
+{
+	char file[100];
+	int i, rule_id, counter;
+	double performance, avg_performance, my_performance, attraction, choiceprob;
+
+	//Set the output file:
+	file = sprintf(file, "../log/CS_%d.txt", iteration_loop);
+	printf("%s", file);
+
+	printf("\n Appending data to file %s, starting to write...\n", file);
+	FILE = fopen(file,"w");
+
+
+	//Print per household classifier system:
+	 fprintf(FILE,"=============================================================================================\n");
+	 fprintf(FILE,"Household: %d Current rule: %d\n", ID, PRIVATE_CLASSIFIERSYSTEM.current_rule);
+	 fprintf(FILE,"rule\t performance\t counter\t avgperformance\t my_performance\t attraction\t choice prob\n");
+	 fprintf(FILE,"=============================================================================================\n"); 
+	
+	for (i=0;i<PRIVATE_CLASSIFIERSYSTEM.nr_rules;i++)
+	{
+		rule_id 		= PRIVATE_CLASSIFIERSYSTEM.ruletable[i].id;
+		performance 	= PRIVATE_CLASSIFIERSYSTEM.ruletable[i].performance;
+		counter 		= PRIVATE_CLASSIFIERSYSTEM.ruletable[i].counter;
+		avgperformance 	= PRIVATE_CLASSIFIERSYSTEM.ruletable[i].avg_performance;
+		my_performance 	= PRIVATE_CLASSIFIERSYSTEM.ruletable[i].my_performance;
+	    attraction 		= PRIVATE_CLASSIFIERSYSTEM.ruletable[i].attraction;
+	    choiceprob 		= PRIVATE_CLASSIFIERSYSTEM.ruletable[i].choiceprob;
+	    fprintf(FILE,"%d\t %f\t %7d\t\t %f\t\t %f\t\t %f\t %f\n", rule_id, performance, counter, avgperformance, my_performance, attraction, choiceprob);
+	}
+	fprintf(FILE,"=============================================================================================\n");
+
+	fprintf(FILE,"\n");
+	fclose(file);
 }
 */
