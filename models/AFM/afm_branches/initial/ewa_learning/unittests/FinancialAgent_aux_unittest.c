@@ -737,7 +737,7 @@ void test_print()
 	//Set the output file:
 	//i = sprintf(str, "%d", iteration_loop);
 	i = sprintf(str, "%d", 1);
-	printf("5 in sprintf is %s\n", str);
+	printf("1 in sprintf is %s\n", str);
 	printf("sprintf returns: %d\n\n", i);
 	
 	//Set the null character terminator
