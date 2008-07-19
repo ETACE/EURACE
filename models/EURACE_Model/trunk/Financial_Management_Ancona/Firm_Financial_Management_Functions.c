@@ -247,15 +247,15 @@ int Firm_compute_total_liquidity_needs()
     //step 12B: set production and payout financial_needs
     PRODUCTION_LIQUIDITY_NEEDS = PRODUCTION_COSTS;
     FINANCIAL_LIQUIDITY_NEEDS = TOTAL_INTEREST_PAYMENT + TOTAL_DEBT_INSTALLMENT_PAYMENT + TAX_PAYMENT;
-    if(ID==2)
-    printf("first%d  %f",ID,PRODUCTION_COSTS);
+  //  if(ID==2)
+//    printf("first%d  %f",ID,PRODUCTION_COSTS);
     
 //	printf("\n %d production_l_n %f", ID, PRODUCTION_LIQUIDITY_NEEDS);
 //	printf("\n TOTAL_INTEREST_PAYMENT %f, TOTAL_DEBT_INSTALLMENT_PAYMENT %f, TAX_PAYMENT %f",TOTAL_INTEREST_PAYMENT,TOTAL_DEBT_INSTALLMENT_PAYMENT,TAX_PAYMENT);
 //	printf("\n %d financial_l_n %f",ID, FINANCIAL_LIQUIDITY_NEEDS);
     //step 12C:
     //Check if additional external financial needs are required for total financial needs (direct payable and delayed payable)    
-    TOTAL_FINANCIAL_NEEDS =  PRODUCTION_LIQUIDITY_NEEDS + FINANCIAL_LIQUIDITY_NEEDS + TOTAL_DIVIDEND_PAYMENT;
+    TOTAL_FINANCIAL_NEEDS = PRODUCTION_LIQUIDITY_NEEDS + FINANCIAL_LIQUIDITY_NEEDS + TOTAL_DIVIDEND_PAYMENT;
 
     //step 12D:
     //Check if external financing is needed
@@ -263,14 +263,15 @@ int Firm_compute_total_liquidity_needs()
     //CASE 1: No external financing needed
         if (PAYMENT_ACCOUNT >= TOTAL_FINANCIAL_NEEDS)
         {        	
-            //printf("Firm_financial_needs, External financing: case 1.");
+            //printf(" External financing: case 1. id %d \n", ID);
             EXTERNAL_FINANCIAL_NEEDS = 0.0;
                                
         }
         else
         {
         	//external financing needed
-        	EXTERNAL_FINANCIAL_NEEDS = TOTAL_FINANCIAL_NEEDS - PAYMENT_ACCOUNT;
+        //	printf(" External financing: case 2. id %d \n", ID);
+            EXTERNAL_FINANCIAL_NEEDS = TOTAL_FINANCIAL_NEEDS - PAYMENT_ACCOUNT;
         }
           //  printf("\n extern %f ", EXTERNAL_FINANCIAL_NEEDS);
     return 0;
@@ -330,7 +331,7 @@ int Firm_in_bankruptcy()
         //add_bankruptcy_message(bank_id, bad_debt, credit_refunded, residual_var);
     	add_bankruptcy_message(LOANS.array[i].bank_id, bad_debt, credit_refunded, residual_var);
     }
-	printf("\nI am bankrupt");
+	//printf("\nI am bankrupt");
     //Effect on labour market
     //Firing all employees
     
@@ -380,7 +381,7 @@ int Firm_in_financial_crisis_function()
 				BANKRUPTCY_STATE=1;
 			}
 			*/
-	printf("\n In FINANCIAl crisis %f ",TOTAL_DIVIDEND_PAYMENT);
+//	printf("\n In FINANCIAl crisis %f ",TOTAL_DIVIDEND_PAYMENT);
 
 
 	return 0;
@@ -433,8 +434,8 @@ int Firm_execute_financial_payments_function()
 
 	        //add_debt_installment_message(bank_id, installment_amount, interest_amount, credit_refunded, var_per_installment)
 	        add_installment_message(LOANS.array[i].bank_id, LOANS.array[i].installment_amount, LOANS.array[i].interest_amount, LOANS.array[i].var_per_installment);
-		//	printf("\n msg aDDED for bank %d",LOANS.array[i].bank_id);
-			   printf("\n ------------ %f, %f ",LOANS.array[i].installment_amount, LOANS.array[i].interest_amount);
+			//printf("bank %d firm %d rata %f var %f \n", LOANS.array[i].bank_id, ID, LOANS.array[i].installment_amount, LOANS.array[i].var_per_installment);
+			  // printf(" inst.  %f interest %f bank %d \n",LOANS.array[i].installment_amount, LOANS.array[i].interest_amount, LOANS.array[i].bank_id);
 	        //If nr_periods_before_maturity == 0, remove the loan item
 	        if(LOANS.array[i].nr_periods_before_repayment==0)
 	        {
