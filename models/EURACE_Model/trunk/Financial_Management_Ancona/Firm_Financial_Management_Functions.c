@@ -434,7 +434,8 @@ int Firm_execute_financial_payments_function()
 
 	        //add_debt_installment_message(bank_id, installment_amount, interest_amount, credit_refunded, var_per_installment)
 	        add_installment_message(LOANS.array[i].bank_id, LOANS.array[i].installment_amount, LOANS.array[i].interest_amount, LOANS.array[i].var_per_installment);
-			//printf("bank %d firm %d rata %f var %f \n", LOANS.array[i].bank_id, ID, LOANS.array[i].installment_amount, LOANS.array[i].var_per_installment);
+			
+            printf("bank %d firm %d rata %f var %f \n", LOANS.array[i].bank_id, ID, LOANS.array[i].installment_amount, LOANS.array[i].var_per_installment);
 			  // printf(" inst.  %f interest %f bank %d \n",LOANS.array[i].installment_amount, LOANS.array[i].interest_amount, LOANS.array[i].bank_id);
 	        //If nr_periods_before_maturity == 0, remove the loan item
 	        if(LOANS.array[i].nr_periods_before_repayment==0)
