@@ -13,15 +13,14 @@ int Bank_decide_credit_conditions()
 //	printf("\n gamma values %d, %f", ID, BANK_GAMMA[j]);
 	if(BCE_DEBT==0.0) 
 	{
-	//	printf("\n enter if");
-	//	printf("\n my id %d ", ID);
-		loan_request_message=get_first_loan_request_message();
-	//	printf(" lending bank %d \n", ID);
-		while(loan_request_message)
-		{
+	
+	//	loan_request_message=get_first_loan_request_message();         WHAT DOES IT MEAN????
+		//printf(" lending bank %f \n", loan_request_message);
+		//while(loan_request_message)
+	//	{
 		//	printf("\n abc");
-			loan_request_message=get_next_loan_request_message(loan_request_message);
-		}
+		//	loan_request_message=get_next_loan_request_message(loan_request_message);
+	//	}
 		
 		START_LOAN_REQUEST_MESSAGE_LOOP
 	    	e = loan_request_message->equity;
@@ -129,7 +128,8 @@ int Bank_give_loan()
 		if(loan_acceptance_message->bank_id==ID)
 		{
 			CASH -= loan_acceptance_message->credit_amount_taken;
-			//printf(" my Id %d give cash %f  \n",ID, CASH);
+			VALUE_AT_RISK+=loan_acceptance_message->loan_total_var;
+           // printf("bank %d total var %f  \n", ID, loan_acceptance_message->loan_total_var);
 			if (CASH<0.0) 
 			{
 				BCE_DEBT += fabs(CASH);  
@@ -140,8 +140,7 @@ int Bank_give_loan()
 		}
 
 	FINISH_LOAN_ACCEPTANCE_MESSAGE_LOOP
-	//if(ID==9)
-	//printf("\n %d bce_debt %f, cash %f", ID,BCE_DEBT,CASH);
+	
 	
 	return 0;
 }
@@ -173,18 +172,18 @@ int Bank_accounting()
      // tax and dividends payment
      if (PROFITS[0]>0)
      {
-         tax_bank = TAX_RATE_CORPORATE*PROFITS[0];
-       //  printf("taxbano %f", tax_bank);
+        // printf("profitti %f \n", PROFITS[0]);             
+         tax_bank = TAX_RATE_CORPORATE*PROFITS[0]; 
          PROFITS[0] -= tax_bank;
          EQUITY -= tax_bank;  
          CASH -= tax_bank; 
          add_tax_payment_message(ID, GOV_ID, tax_bank);  
-         total_dividends = DIVIDEND_RATE*PROFITS[0];
+         total_dividends = BANK_DIVIDEND_RATE*PROFITS[0];  
          dividend_per_share = total_dividends/NUMBER_OF_SHARES; 
-     //    printf("total_dividednd %f", total_dividends);
-         //PROFITS[0] -= total_dividends;
-        // EQUITY -= total_dividends;     rimettere
-        // CASH -= total_dividends;      rimettteere
+        // printf("total_dividend %f tax bank %f \n", total_dividends, tax_bank);
+        // PROFITS[0] -= total_dividends;
+         EQUITY -= total_dividends;     
+         CASH -= total_dividends;      
          add_dividend_per_share_message(ID, dividend_per_share);                  
      }
  
@@ -193,17 +192,11 @@ int Bank_accounting()
          BCE_DEBT -= CASH;
          CASH = 0.0;
      }
-     //if (ID==8)
+    
      printf("bank %d equity %f cash %f bce %f \n", ID, EQUITY, CASH, BCE_DEBT);
-     //PROFITS[0]=0;  //update
+     PROFITS[0]=0;  //update
      
-	//printf("\n bank gamma  ");
-//	for(int i=0;i<2;i++)
-	//{
-
-	   // printf("cash %f \n", CASH);
-//	}
-	//printf("\n bank profit %f ", );
+	
       return 0;
 }
 

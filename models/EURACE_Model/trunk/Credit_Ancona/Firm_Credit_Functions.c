@@ -203,7 +203,7 @@ int Firm_get_loan()
 		 
 		 if (credit_accepted>0.0)
 		 {
-		    add_loan_acceptance_message(bank_id, credit_accepted);
+		    add_loan_acceptance_message(bank_id, credit_accepted, residual_var);
 		     printf("firm %d bank %d credito %f var %f \n", ID, bank_id, credit_accepted, var_per_installment); 
          }
 		    //update the payment_account with the amount of credit obtained

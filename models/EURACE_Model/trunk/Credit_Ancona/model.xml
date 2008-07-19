@@ -286,10 +286,11 @@
 
 <message>
 <name>loan_acceptance</name>
-<description>Message added by firm to accept a loan with bank_id, for the amount credit_taken. The bank does not need to know the firm_id.</description>
+<description>Message added by firm to accept a loan with bank_id, for the amount credit_taken and VAR. The bank does not need to know the firm_id.</description>
 <variables>
 <variable><type>int</type><name>bank_id</name><description></description></variable>
 <variable><type>double</type><name>credit_amount_taken</name><description></description></variable>
+<variable><type>double</type><name>loan_total_var</name><description></description></variable>
 </variables>
 </message>
 
