@@ -14,8 +14,6 @@
 #include "FinancialAgent_aux_header.h"
 #include "some_new_functions.h"
 
-//#include "FinancialAgent_aux_functions.c"
-
 /* \fn FinancialAgent_read_rule_performance_and_update_classifiersystem()
  * \brief Financial Agent reads the rule_performance_messages and updates the average rule performance in its classifiersystem.
  */
@@ -77,8 +75,9 @@ int FinancialAgent_apply_GA_refactored()
 	int * rule_id_1;      //contains the rule_ids from PUBLIC_CLASSIFIERSYSTEM.ruletable[id1]
 	int * rule_id_2;
 	
-	//uncomment this:
+	//Evolutionary operators:
 	N_pairs = GA_selection(parent_index_1, parent_index_2, rule_id_1, rule_id_2);
+	
 	for (j=0; j<N_pairs; j++)
 	{    
 		GA_reproduction(rule_id_1[j], rule_id_2[j], offspring_1, offspring_2);

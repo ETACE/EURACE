@@ -9,7 +9,6 @@
 #include "../header.h"
 #include "../some_new_functions.h"
 #include "../Household_agent_header.h"
-//#include "../mylibraryheader.h"
 
 /************Household: EWA learning Role ********************************/
 
@@ -17,8 +16,8 @@
 void unittest_Household_send_rule_performance()
 {
     /************* At start of unit test, add one agent **************/
-     add_Household_agent_internal(init_Household_agent());
-     current_xmachine = *p_xmachine;
+     unittest_init_Household_agent();
+     
 
      /***** Variables: Memory pre-conditions **************************/
      EWA_PARAMETERS.EWA_rho=1.0;
@@ -47,7 +46,7 @@ void unittest_Household_send_rule_performance()
      FINISH_RULE_PERFORMANCE_MESSAGE_LOOP
 
      /************* At end of unit test, free the agent **************/
-     free_agent();
+     unittest_free_Household_agent();
     /************* At end of unit tests, free all Messages **********/
      free_messages();
 }
@@ -57,8 +56,8 @@ void unittest_Household_read_all_performances()
 	int i;
 	
     /************* At start of unit test, add one agent **************/
-     add_Household_agent_internal(init_Household_agent());
-     current_xmachine = *p_xmachine;
+     unittest_init_Household_agent();
+     
 
      /***** Variables: Memory pre-conditions **************************/
      EWA_PARAMETERS.EWA_rho=1.0;
@@ -79,9 +78,9 @@ void unittest_Household_read_all_performances()
      PRIVATE_CLASSIFIERSYSTEM.ruletable[1].avg_performance=0.0;
      
      /***** Messages: pre-conditions **********************************/
-     //add_new_performances_message(rule_id, avg_performance, 1.0, 0.0, 0.0, 0.0);
-     add_new_performances_message(0, 10.0, 1.0, 0.0, 0.0, 0.0);
-     add_new_performances_message(1, 20.0, 1.0, 0.0, 0.0, 0.0);
+     //add_new_performances_message(rule_id, avg_performance);
+     add_new_performances_message(0, 10.0);
+     add_new_performances_message(1, 20.0);
 
      /***** Function evaluation ***************************************/
      Household_read_all_performances();
@@ -93,7 +92,7 @@ void unittest_Household_read_all_performances()
     /***** Messages: post-conditions **********************************/
  
      /************* At end of unit test, free the agent **************/
-     free_agent();
+     unittest_free_Household_agent();
     /************* At end of unit tests, free all Messages **********/
      free_messages();
 }
@@ -101,8 +100,8 @@ void unittest_Household_read_all_performances()
 void unittest1_Household_select_rule()
 {
     /************* At start of unit test, add one agent **************/
-//     add_Household_agent_internal(init_Household_agent());
-//     current_xmachine = *p_xmachine;
+//     unittest_init_Household_agent();
+//     
 	unittest_init_Household_agent();
 
      /***** Variables: Memory pre-conditions **************************/
@@ -159,7 +158,7 @@ void unittest1_Household_select_rule()
      /***** Messages: post-conditions **********************************/
 
      /************* At end of unit test, free the agent **************/
-     //free_agent();
+     //unittest_free_Household_agent();
      unittest_free_Household_agent();
      /************* At end of unit tests, free all Messages **********/
      free_messages();
@@ -169,8 +168,8 @@ void unittest1_Household_select_rule()
 void unittest2_Household_select_rule()
 {
     /************* At start of unit test, add one agent **************/
-     add_Household_agent_internal(init_Household_agent());
-     current_xmachine = *p_xmachine;
+     unittest_init_Household_agent();
+     
 
      /***** Variables: Memory pre-conditions **************************/
      EWA_PARAMETERS.EWA_rho=1.0;
@@ -225,7 +224,7 @@ void unittest2_Household_select_rule()
     /***** Messages: post-conditions **********************************/
 
     /************* At end of unit test, free the agent **************/
-     free_agent();
+     unittest_free_Household_agent();
     /************* At end of unit tests, free all Messages **********/
      free_messages();
 }
@@ -235,8 +234,8 @@ void unittest_Household_read_and_update_rule_details()
 	int i;
 	
     /************* At start of unit test, add one agent **************/
-     add_Household_agent_internal(init_Household_agent());
-     current_xmachine = *p_xmachine;
+     unittest_init_Household_agent();
+     
 
      /***** Variables: Memory pre-conditions **************************/
      EWA_PARAMETERS.EWA_rho=1.0;
@@ -269,11 +268,11 @@ void unittest_Household_read_and_update_rule_details()
      }
 
      /***** Messages: pre-conditions **********************************/
-     //add_rule_details_message(i, PRIVATE_CLASSIFIERSYSTEM.ruletable[i].parameters, 1.0, 0.0, 0.0, 0.0);
-     double paramters_1[10]={1.0,2.0,3.0,4.0,5.0,6.0,7.0,8.0,9.0,10.0};
-     double paramters_2[10]={11.0,12.0,13.0,14.0,15.0,16.0,17.0,18.0,19.0,20.0};
-     add_rule_details_message(0, paramters_1, 1.0, 0.0, 0.0, 0.0);
-     add_rule_details_message(1, paramters_2, 1.0, 0.0, 0.0, 0.0);
+     //add_rule_details_message(i, PRIVATE_CLASSIFIERSYSTEM.ruletable[i].parameters);
+     double parameters_1[10]={1.0,2.0,3.0,4.0,5.0,6.0,7.0,8.0,9.0,10.0};
+     double parameters_2[10]={11.0,12.0,13.0,14.0,15.0,16.0,17.0,18.0,19.0,20.0};
+     add_rule_details_message(0, parameters_1);
+     add_rule_details_message(1, parameters_2);
      
      /***** Function evaluation ***************************************/
      Household_read_and_update_rule_details();
@@ -288,7 +287,7 @@ void unittest_Household_read_and_update_rule_details()
     /***** Messages: post-conditions **********************************/
  
      /************* At end of unit test, free the agent **************/
-     free_agent();
+     unittest_free_Household_agent();
     /************* At end of unit tests, free all Messages **********/
      free_messages();
 }
@@ -299,8 +298,8 @@ void unittest_Household_apply_rule()
 	int i;
 	
     /************* At start of unit test, add one agent **************/
-     add_Household_agent_internal(init_Household_agent());
-     current_xmachine = *p_xmachine;
+     unittest_init_Household_agent();
+     
 
      /***** Variables: Memory pre-conditions **************************/
      EWA_PARAMETERS.EWA_rho=1.0;
@@ -339,7 +338,7 @@ void unittest_Household_apply_rule()
     // FINISH_<MSG_NAME>_MESSAGE_LOOP
  
      /************* At end of unit test, free the agent **************/
-     free_agent();
+     unittest_free_Household_agent();
     /************* At end of unit tests, free all Messages **********/
      free_messages();
 }
@@ -348,8 +347,8 @@ void unittest_Household_reset_private_classifiersystem()
 {
 	
     /************* At start of unit test, add one agent **************/
-     add_Household_agent_internal(init_Household_agent());
-     current_xmachine = *p_xmachine;
+     unittest_init_Household_agent();
+     
 
      /***** Variables: Memory pre-conditions **************************/
      EWA_PARAMETERS.EWA_rho=1.0;
@@ -381,7 +380,7 @@ void unittest_Household_reset_private_classifiersystem()
     /***** Messages: post-conditions **********************************/
  
     /************* At end of unit test, free the agent **************/
-     free_agent();
+     unittest_free_Household_agent();
     /************* At end of unit tests, free all Messages **********/
      free_messages();
 }

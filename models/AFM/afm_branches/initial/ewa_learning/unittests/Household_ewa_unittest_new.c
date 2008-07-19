@@ -17,8 +17,6 @@
 void unittest1_Household_select_rule()
 {
     /************* At start of unit test, add one agent **************/
-//     add_Household_agent_internal(init_Household_agent());
-//     current_xmachine = *p_xmachine;
 	unittest_init_Household_agent();
 
      /***** Variables: Memory pre-conditions **************************/
