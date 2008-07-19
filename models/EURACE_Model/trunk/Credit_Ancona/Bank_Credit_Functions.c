@@ -8,10 +8,6 @@ int Bank_decide_credit_conditions()
 	double bankruptcy_prob;
 	double credit_allowed;
 	
-	if(ID==2)
-	{
-		//printf("third");
-	}
 	
 //	for(int j=0;j<2;j++)
 //	printf("\n gamma values %d, %f", ID, BANK_GAMMA[j]);
@@ -20,7 +16,7 @@ int Bank_decide_credit_conditions()
 	//	printf("\n enter if");
 	//	printf("\n my id %d ", ID);
 		loan_request_message=get_first_loan_request_message();
-	//	printf("\n message %p", loan_request_message);
+	//	printf(" lending bank %d \n", ID);
 		while(loan_request_message)
 		{
 		//	printf("\n abc");
@@ -28,8 +24,7 @@ int Bank_decide_credit_conditions()
 		}
 		
 		START_LOAN_REQUEST_MESSAGE_LOOP
-			//	printf("\n enter loop");
-			e = loan_request_message->equity;
+	    	e = loan_request_message->equity;
 			d = loan_request_message->total_debt;
 			c = loan_request_message->external_financial_needs;
 			bankruptcy_prob = 1-exp(-(d+c)/e);
@@ -38,15 +33,15 @@ int Bank_decide_credit_conditions()
 			if ( VALUE_AT_RISK+r <= ALFA*EQUITY ) 
 			{
 				credit_allowed = c;
-			//	printf("\nvalue at risk %f",credit_allowed);
+				//printf("value at risk %f \n",credit_allowed);
 			}
 			else 
 			{
 				credit_allowed = (ALFA*EQUITY - VALUE_AT_RISK)/bankruptcy_prob;
-				//printf("\else at risk %f",credit_allowed);
+				//printf(" chi sfora %d var %f  \n",ID, VALUE_AT_RISK+r ;
 			}
-			i = MIN_INTEREST + BANK_GAMMA[0]*r;
-		//	printf("\n i %f, bank %f", i, BANK_GAMMA[0]);
+			i = MIN_INTEREST + BANK_GAMMA[0]*r*(((double)rand()/(double)RAND_MAX)*0.01);//VALUTARE IL RUMORE
+		//	printf(" interesse proposto %f, bank %d firm %d \n", i, ID, loan_request_message->firm_id);
 		//	printf("\n bank adding loan message ");
 			add_loan_conditions_message(loan_request_message->firm_id, ID, i, credit_allowed,  r*(c/credit_allowed));
 		FINISH_LOAN_REQUEST_MESSAGE_LOOP
@@ -60,7 +55,10 @@ int Bank_account_update_deposits()
 {
 	 	
       START_BANK_ACCOUNT_UPDATE_MESSAGE_LOOP
-         CASH += bank_account_update_message->payment_account;
+      if (bank_account_update_message->bank_id==ID)
+        {
+         CASH += bank_account_update_message->payment_account;  //CHECK DUMMY!!!!
+        }
       FINISH_BANK_ACCOUNT_UPDATE_MESSAGE_LOOP
 
       if ( BCE_DEBT != 0 ) 
@@ -94,10 +92,11 @@ int Bank_receive_installment()
 		//	printf("my msg");
 		CASH +=installment_message->installment_amount;
         PROFITS[0] += installment_message->interest_amount;
-       printf("\n profits ****** %f",PROFITS[0]);
+        //printf("%d - profits ****** %f\n", ID, PROFITS[0]);
         EQUITY += installment_message->interest_amount;
+      //  printf("%d equity %f int.amount %f\n", ID, EQUITY, installment_message->interest_amount);
         VALUE_AT_RISK -= installment_message->var_per_installment;
-    //    printf("\n %d cash %f after, equity %f", ID,CASH, EQUITY);
+        //printf("%d cash %f after, equity %f\n", ID,CASH, EQUITY);
 		}
 
 	FINISH_INSTALLMENT_MESSAGE_LOOP
@@ -105,7 +104,7 @@ int Bank_receive_installment()
     START_BANKRUPTCY_MESSAGE_LOOP
 		if(installment_message->bank_id==ID)
 		{
-			printf("bankrupt my msg");
+		//	printf("bankrupt my msg");
        CASH +=bankruptcy_message->credit_refunded;
        EQUITY -= bankruptcy_message->bad_debt;
        PROFITS[0] -= bankruptcy_message->bad_debt;
@@ -130,12 +129,13 @@ int Bank_give_loan()
 		if(loan_acceptance_message->bank_id==ID)
 		{
 			CASH -= loan_acceptance_message->credit_amount_taken;
-			//printf("\n my Id %d cash %f",ID, CASH);
-			if (CASH<0) 
+			//printf(" my Id %d give cash %f  \n",ID, CASH);
+			if (CASH<0.0) 
 			{
-				BCE_DEBT += fabs(CASH);    
+				BCE_DEBT += fabs(CASH);  
+              // printf("bank %d debito BCE %f CASH %f \n", ID, BCE_DEBT, CASH);   
                   add_central_bank_account_update_message(BCE_DEBT,ID);
-				CASH = 0;
+				CASH = 0.0;
 			}
 		}
 
@@ -174,34 +174,35 @@ int Bank_accounting()
      if (PROFITS[0]>0)
      {
          tax_bank = TAX_RATE_CORPORATE*PROFITS[0];
-         printf("taxbano %f", tax_bank);
-         PROFITS[0] -= tax_bank;
-         EQUITY -= tax_bank;
-         CASH -= tax_bank;
+       //  printf("taxbano %f", tax_bank);
+        // PROFITS[0] -= tax_bank;rim
+         //EQUITY -= tax_bank;  rim
+         //CASH -= tax_bank; rim
          add_tax_payment_message(ID, GOV_ID, tax_bank);  
          total_dividends = DIVIDEND_RATE*PROFITS[0];
          dividend_per_share = total_dividends/NUMBER_OF_SHARES; 
-         printf("total_dividednd %f", total_dividends);
-         PROFITS[0] -= total_dividends;
-         EQUITY -= total_dividends;
-         CASH -= total_dividends;
+     //    printf("total_dividednd %f", total_dividends);
+         //PROFITS[0] -= total_dividends;
+        // EQUITY -= total_dividends;     rimettere
+        // CASH -= total_dividends;      rimettteere
          add_dividend_per_share_message(ID, dividend_per_share);                  
      }
  
      if (CASH < 0) //if money is not enough, increase BCE debt
      {
          BCE_DEBT -= CASH;
-         CASH = 0;
+         CASH = 0.0;
      }
-     
+     //if (ID==8)
+     //printf("equity %f cash %f bce %f \n", EQUITY, CASH, BCE_DEBT);
      //PROFITS[0]=0;  //update
      
-	printf("\n bank gamma  ");
-	for(int i=0;i<2;i++)
-	{
-		printf("%f ", BANK_GAMMA[i]);
-	    printf("profits %f ", PROFITS[i]);
-	}
+	//printf("\n bank gamma  ");
+//	for(int i=0;i<2;i++)
+	//{
+
+	   // printf("cash %f \n", CASH);
+//	}
 	//printf("\n bank profit %f ", );
       return 0;
 }
