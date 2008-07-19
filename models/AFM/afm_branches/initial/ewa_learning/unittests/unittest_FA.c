@@ -3,16 +3,18 @@
  * \brief Holds main function of the unittest program.
  */
 #include <CUnit/Basic.h>
-#include "header.h"
+#include "../header.h"
+#include "../some_new_functions.h"
+#include "../FinancialAgent_agent_header.h"
+#include "../FinancialAgent_aux_header.h"
 
 /*************************** unittest prototypes ***************************/
-void unittest_FinancialAgent_daily_reset_public_classifiersystem();
+void unittest_FinancialAgent_reset_public_classifiersystem();
 void unittest_FinancialAgent_read_rule_performance_and_update_classifiersystem();
 void unittest_FinancialAgent_send_all_performances();
 void unittest_FinancialAgent_apply_GA(); /*No unit test defined*/
 void unittest_FinancialAgent_apply_GA_refactored(); /*No unit test defined*/
 void unittest_FinancialAgent_send_rule_details();
-void unittest_FinancialAgent_reset_public_classifiersystem();
 
 /*************************** end prototypes ***************************/
 
@@ -53,13 +55,12 @@ int main(int argc, char * argv[])
     /* add the tests to the suite */
     /* add extra tests using || */
     if(
-        NULL == CU_add_test(pSuite, "FinancialAgent_daily_reset_public_classifiersystem", unittest_FinancialAgent_daily_reset_public_classifiersystem) ||
+        NULL == CU_add_test(pSuite, "FinancialAgent_reset_public_classifiersystem", unittest_FinancialAgent_reset_public_classifiersystem) ||
         NULL == CU_add_test(pSuite, "FinancialAgent_read_rule_performance_and_update_classifiersystem", unittest_FinancialAgent_read_rule_performance_and_update_classifiersystem) ||
         NULL == CU_add_test(pSuite, "FinancialAgent_send_all_performances", unittest_FinancialAgent_send_all_performances) ||
         //NULL == CU_add_test(pSuite, "FinancialAgent_apply_GA", unittest_FinancialAgent_apply_GA) ||
-        //NULL == CU_add_test(pSuite, "FinancialAgent_apply_GA", unittest_FinancialAgent_apply_GA_refactored) ||
-        NULL == CU_add_test(pSuite, "FinancialAgent_send_rule_details", unittest_FinancialAgent_send_rule_details) ||
-        NULL == CU_add_test(pSuite, "FinancialAgent_reset_public_classifiersystem", unittest_FinancialAgent_reset_public_classifiersystem))
+        //NULL == CU_add_test(pSuite, "FinancialAgent_apply_GA_refactored", unittest_FinancialAgent_apply_GA_refactored) ||
+        NULL == CU_add_test(pSuite, "FinancialAgent_send_rule_details", unittest_FinancialAgent_send_rule_details))
     {
         CU_cleanup_registry();
         return CU_get_error();

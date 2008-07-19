@@ -5,6 +5,7 @@
  * History:
  * 16/07/08 Sander 
  *********************************/
+#include <stdio.h>
 #include <CUnit/Basic.h>
 #include <string.h> //required for strcat, strcpy
 
@@ -357,7 +358,6 @@ void unittest_GA_selection()
     //************* At start of unit test, add one agent **************
      unittest_init_FinancialAgent_agent();
 
-
     //***** Variables: Memory pre-conditions **************************
    	//Initializations:
    	//EWA_PARAMETERS.EWA_beta: used for the determination of fitness-proportional selection probabilities, exp(beta*performance)
@@ -434,7 +434,7 @@ void unittest_GA_selection()
      CU_ASSERT_EQUAL(rule_id_2[0], 3);
      CU_ASSERT_EQUAL(rule_id_2[1], 3);
      
-     //FinancialAgent_print_public_classifiersystem();
+     test_FinancialAgent_print_public_classifiersystem();
      
      //***** Messages: post-conditions **********************************
 
@@ -727,109 +727,147 @@ void unittest_GA_reinsertion()
 
 void test_print()
 {	
-	
 	char str[10];
-	char file[20];
-	int i, rule_id, counter;
-	double performance, avg_performance, my_performance, attraction, choiceprob;
-	int ERR, FILE;
+	char * filename;
+	FILE * file;
+	int i;
 	
 	//Set the output file:
-	//i = sprintf(str, "%d", iteration_loop);
-	i = sprintf(str, "%d", 1);
-	printf("1 in sprintf is %s\n", str);
+	i = sprintf(str, "%d", iteration_loop);
+
+	printf("iteration_loop in sprintf is %s\n", str);
 	printf("sprintf returns: %d\n\n", i);
-	
-	//Set the null character terminator
-	//file='\0';
+		
+	filename = malloc(20*sizeof(char));
+	filename[0]=0;
 	
 	//now concatenate
-	strcat(file, "../log/CS_");
-	strcat(file, str);
-	strcat(file, ".txt");
-	printf("File is now: %s\n\n", file);
+	strcpy(filename, "./log/CS_");
+	strcat(filename, str);
+	strcat(filename, ".txt");
+	printf("File to write data to: %s\n\n", filename);
 
-/*	
-	if (ERR)
-	{
-		printf("sscanff returns: %d\n\n", ERR);
-		printf("Error writing fileneame the char array");
-	}
-	else printf("File to write data to: %s", file);
-	
-	
 	//Open a file pointer: FILE *Fp 
-	printf("\n Appending data to file: %s. Starting to write...\n", file);
-	FILE = fopen(file,"w");
-*/
+	printf("\n Appending data to file: %s. Starting to write...\n", filename);
+	file = fopen(filename,"a");
+
+	fprintf(file, "\n Appending data to file\n");
+	
+	//Enter code here
+	
+	
+	fclose(file);
 }
 
-/*
-void FinancialAgent_print_public_classifiersystem()
+
+void test_FinancialAgent_print_public_classifiersystem()
 {	
+	char str[10];
+	char * filename;
+	FILE * file;
+
+	int i, rule_id, counter;
+	double performance, avg_performance, choiceprob;
+
+	//Set the output file:
+	i = sprintf(str, "%d", iteration_loop);
+	printf("iteration_loop in sprintf is %s\n", str);
+	printf("sprintf returns: %d\n\n", i);
+	
+	//Start an empty string for the filename
+	filename = malloc(20*sizeof(char));
+	filename[0]=0;
+	
+	//Concatenate
+	strcpy(filename, "./log/CS_");
+	strcat(filename, str);
+	strcat(filename, ".txt");
+	printf("File to write data to: %s\n\n", filename);
+
+	//Open a file pointer: FILE * file 
+	printf("\n Appending data to file: %s. Starting to write...\n", filename);
+	file = fopen(filename,"a");
+	fprintf(file, "\n Appending data to file\n");
+
 
 	//Print comments/notes:
-    fprintf(FILE,"Logfile: Print-out of all classifier systems. \n");
-    fprintf(FILE,"Note 1: The performance and counter columns for the households are copied from the FinancialAdvisors CS. \n");
-    fprintf(FILE,"Note 2: The avgperformance column can contain different values for two households, since it contains the copy from the FinancialAdvisors CS at the moment of the households most recent portfolio update. \n\n");
+    fprintf(file,"Logfile: Print-out of all classifier systems. \n");
+    fprintf(file,"Note 1: The performance and counter columns for the households are copied from the FinancialAdvisors CS. \n");
+    fprintf(file,"Note 2: The avgperformance column can contain different values for two households, since it contains the copy from the FinancialAdvisors CS at the moment of the households most recent portfolio update. \n\n");
 
     //Print FinancialAdvisor classifier system:
-    fprintf(FILE,"=============================================================================================\n");
-    fprintf(FILE,"FinancialAdvisor:\n");
-    fprintf(FILE,"rule\t performance\t counter\t avgperformance\t choice prob\n");
-    fprintf(FILE,"=============================================================================================\n"); 
+    fprintf(file,"=============================================================================================\n");
+    fprintf(file,"FinancialAdvisor:\n");
+    fprintf(file,"rule id\t performance\t counter\t avg_performance\n");
+    fprintf(file,"=============================================================================================\n"); 
 
     for (i=0;i<PUBLIC_CLASSIFIERSYSTEM.nr_rules;i++)
     {
          rule_id 		= PUBLIC_CLASSIFIERSYSTEM.ruletable[i].id;
-		 counter 		= PUBLIC_CLASSIFIERSYSTEM.ruletable[i].counter;
          performance 	= PUBLIC_CLASSIFIERSYSTEM.ruletable[i].performance;
-         avgperformance = PUBLIC_CLASSIFIERSYSTEM.ruletable[i].avg_performance;
-         choiceprob 	= PUBLIC_CLASSIFIERSYSTEM.ruletable[i].choiceprob;
+		 counter 		= PUBLIC_CLASSIFIERSYSTEM.ruletable[i].counter;         
+         avg_performance = PUBLIC_CLASSIFIERSYSTEM.ruletable[i].avg_performance;
 
-         fprintf(FILE,"%d\t %f\t %7d\t\t %f\t\t %f\n", rule_id, performance, counter, avgperformance, choiceprob);
+         fprintf(file,"%d\t %f\t %7d\t\t %f\t\t %f\n", rule_id, performance, counter, avg_performance);
     }
-     fprintf(FILE,"=============================================================================================\n");
+     fprintf(file,"=============================================================================================\n");
 
-    fprintf(FILE,"\n");
+    fprintf(file,"\n");
 	fclose(file);
 }
-*/
+
 /*
-void Household_print_private_classifiersystem()
+void test_Household_print_private_classifiersystem()
 {
-	char file[100];
+	char str[10];
+	char * filename;
+	FILE * file;
+
 	int i, rule_id, counter;
 	double performance, avg_performance, my_performance, attraction, choiceprob;
 
 	//Set the output file:
-	file = sprintf(file, "../log/CS_%d.txt", iteration_loop);
-	printf("%s", file);
+	i = sprintf(str, "%d", iteration_loop);
+	printf("iteration_loop in sprintf is %s\n", str);
+	printf("sprintf returns: %d\n\n", i);
+	
+	//Start an empty string for the filename
+	filename = malloc(20*sizeof(char));
+	filename[0]=0;
+	
+	//Concatenate
+	strcpy(filename, "./log/CS_");
+	strcat(filename, str);
+	strcat(filename, ".txt");
+	printf("File to write data to: %s\n\n", filename);
 
-	printf("\n Appending data to file %s, starting to write...\n", file);
-	FILE = fopen(file,"w");
+	//Open a file pointer: FILE * file 
+	printf("\n Appending data to file: %s. Starting to write...\n", filename);
+	file = fopen(filename,"a");
+	fprintf(file, "\n Appending data to file\n");
 
 
 	//Print per household classifier system:
-	 fprintf(FILE,"=============================================================================================\n");
-	 fprintf(FILE,"Household: %d Current rule: %d\n", ID, PRIVATE_CLASSIFIERSYSTEM.current_rule);
-	 fprintf(FILE,"rule\t performance\t counter\t avgperformance\t my_performance\t attraction\t choice prob\n");
-	 fprintf(FILE,"=============================================================================================\n"); 
+	 fprintf(file,"=============================================================================================\n");
+	 fprintf(file,"Household: %d Current rule: %d\n", ID, PRIVATE_CLASSIFIERSYSTEM.current_rule);
+	 fprintf(file,"rule id\t performance\t counter\t avg_performance\t my_performance\t attraction\t choice prob\n");
+	 fprintf(file,"=============================================================================================\n"); 
 	
 	for (i=0;i<PRIVATE_CLASSIFIERSYSTEM.nr_rules;i++)
 	{
 		rule_id 		= PRIVATE_CLASSIFIERSYSTEM.ruletable[i].id;
 		performance 	= PRIVATE_CLASSIFIERSYSTEM.ruletable[i].performance;
 		counter 		= PRIVATE_CLASSIFIERSYSTEM.ruletable[i].counter;
-		avgperformance 	= PRIVATE_CLASSIFIERSYSTEM.ruletable[i].avg_performance;
+		avg_performance 	= PRIVATE_CLASSIFIERSYSTEM.ruletable[i].avg_performance;
 		my_performance 	= PRIVATE_CLASSIFIERSYSTEM.ruletable[i].my_performance;
 	    attraction 		= PRIVATE_CLASSIFIERSYSTEM.ruletable[i].attraction;
 	    choiceprob 		= PRIVATE_CLASSIFIERSYSTEM.ruletable[i].choiceprob;
-	    fprintf(FILE,"%d\t %f\t %7d\t\t %f\t\t %f\t\t %f\t %f\n", rule_id, performance, counter, avgperformance, my_performance, attraction, choiceprob);
+	    
+	    fprintf(file,"%d\t %f\t %7d\t\t %f\t\t %f\t\t %f\t %f\n", rule_id, performance, counter, avg_performance, my_performance, attraction, choiceprob);
 	}
-	fprintf(FILE,"=============================================================================================\n");
+	fprintf(file,"=============================================================================================\n");
 
-	fprintf(FILE,"\n");
+	fprintf(file,"\n");
 	fclose(file);
 }
 */

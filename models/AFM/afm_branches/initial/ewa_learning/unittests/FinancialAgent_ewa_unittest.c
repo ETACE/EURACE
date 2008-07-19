@@ -14,13 +14,10 @@
 /************FinancialAgent: Financial Advisor Role ********************************/
 
 /************ Unit tests ********************************/
-void unittest_FinancialAgent_daily_reset_public_classifiersystem()
+void unittest_FinancialAgent_reset_public_classifiersystem()
 {
     /************* At start of unit test, add one agent **************/
-	add_FinancialAgent_agent_internal(init_FinancialAgent_agent(), init_FinancialAgent_state());
-
-     //add_FinancialAgent_agent_internal(init_FinancialAgent_agent(), init_FinancialAgent_state());
-     current_xmachine = *p_xmachine;
+	unittest_init_FinancialAgent_agent();
 
      /***** Variables: Memory pre-conditions **************************/
       PUBLIC_CLASSIFIERSYSTEM.nr_rules=1;
@@ -32,7 +29,7 @@ void unittest_FinancialAgent_daily_reset_public_classifiersystem()
       /***** Messages: pre-conditions **********************************/
 
      /***** Function evaluation ***************************************/
-     FinancialAgent_daily_reset_public_classifiersystem();
+     FinancialAgent_reset_public_classifiersystem();
      
      /***** Variables: Memory post-conditions *************************/
      CU_ASSERT_EQUAL(PUBLIC_CLASSIFIERSYSTEM.ruletable[0].counter, 0);
@@ -42,7 +39,7 @@ void unittest_FinancialAgent_daily_reset_public_classifiersystem()
     /***** Messages: post-conditions **********************************/
  
      /************* At end of unit test, free the agent **************/
-     free_agent();
+     unittest_free_FinancialAgent_agent();
     /************* At end of unit tests, free all Messages **********/
      free_messages();
 }
@@ -50,8 +47,8 @@ void unittest_FinancialAgent_daily_reset_public_classifiersystem()
 void unittest_FinancialAgent_read_rule_performance_and_update_classifiersystem()
 {
     /************* At start of unit test, add one agent **************/
-     add_FinancialAgent_agent_internal(init_FinancialAgent_agent(), init_FinancialAgent_state());
-     current_xmachine = *p_xmachine;
+     unittest_init_FinancialAgent_agent();
+     
 
      /***** Variables: Memory pre-conditions **************************/
      PUBLIC_CLASSIFIERSYSTEM.nr_rules =1;
@@ -66,11 +63,11 @@ void unittest_FinancialAgent_read_rule_performance_and_update_classifiersystem()
      PUBLIC_CLASSIFIERSYSTEM.ruletable[0].avg_performance=0.0;
 
      /***** Messages: pre-conditions **********************************/
-     //add_rule_performance_message(current_rule, rule_performance, 0.0, 0, 0, 0);
-     add_rule_performance_message(0, 10.0, 0.0,0.0,0.0,0.0);
-     add_rule_performance_message(0, 20.0, 0.0,0.0,0.0,0.0);
-     add_rule_performance_message(1, 30.0, 0.0,0.0,0.0,0.0);
-     add_rule_performance_message(1, 40.0, 0.0,0.0,0.0,0.0);
+     //add_rule_performance_message(current_rule, rule_performance);
+     add_rule_performance_message(0, 10.0);
+     add_rule_performance_message(0, 20.0);
+     add_rule_performance_message(1, 30.0);
+     add_rule_performance_message(1, 40.0);
      
      /***** Function evaluation ***************************************/
      FinancialAgent_read_rule_performance_and_update_classifiersystem();
@@ -87,7 +84,7 @@ void unittest_FinancialAgent_read_rule_performance_and_update_classifiersystem()
     /***** Messages: post-conditions **********************************/
  
      /************* At end of unit test, free the agent **************/
-     free_agent();
+     unittest_free_FinancialAgent_agent();
     /************* At end of unit tests, free all Messages **********/
      free_messages();
 }
@@ -95,8 +92,8 @@ void unittest_FinancialAgent_read_rule_performance_and_update_classifiersystem()
 void unittest_FinancialAgent_send_all_performances()
 {
     /************* At start of unit test, add one agent **************/
-     add_FinancialAgent_agent_internal(init_FinancialAgent_agent(), init_FinancialAgent_state());
-     current_xmachine = *p_xmachine;
+     unittest_init_FinancialAgent_agent();
+     
 
      /***** Variables: Memory pre-conditions **************************/
      PUBLIC_CLASSIFIERSYSTEM.nr_rules =2;
@@ -133,7 +130,7 @@ void unittest_FinancialAgent_send_all_performances()
      FINISH_NEW_PERFORMANCES_MESSAGE_LOOP
  
      /************* At end of unit test, free the agent **************/
-     free_agent();
+     unittest_free_FinancialAgent_agent();
     /************* At end of unit tests, free all Messages **********/
      free_messages();
 }
@@ -143,8 +140,8 @@ void unittest_FinancialAgent_apply_GA() /*NOT IMPLEMENTED*/
 	int i;
 	
     /************* At start of unit test, add one agent **************/
-     add_FinancialAgent_agent_internal(init_FinancialAgent_agent(), init_FinancialAgent_state());
-     current_xmachine = *p_xmachine;
+     unittest_init_FinancialAgent_agent();
+     
 
      /***** Variables: Memory pre-conditions **************************/
      PUBLIC_CLASSIFIERSYSTEM.ruletable[0].id=1;
@@ -168,7 +165,7 @@ void unittest_FinancialAgent_apply_GA() /*NOT IMPLEMENTED*/
       }
 
      /***** Messages: pre-conditions **********************************/
-     //add_<message_name>_message(<msg_var>, 0.0,0.0,0.0,0.0);
+     //add_<message_name>_message(<msg_var>);
 
      /***** Function evaluation ***************************************/
      FinancialAgent_apply_GA();
@@ -185,7 +182,7 @@ void unittest_FinancialAgent_apply_GA() /*NOT IMPLEMENTED*/
     // FINISH_<MSG_NAME>_MESSAGE_LOOP
  
      /************* At end of unit test, free the agent **************/
-     free_agent();
+     unittest_free_FinancialAgent_agent();
      /************* At end of unit tests, free all Messages **********/
      free_messages();
 }
@@ -195,8 +192,8 @@ void unittest_FinancialAgent_send_rule_details()
 	int i;
 	
     /************* At start of unit test, add one agent **************/
-     add_FinancialAgent_agent_internal(init_FinancialAgent_agent(), init_FinancialAgent_state());
-     current_xmachine = *p_xmachine;
+     unittest_init_FinancialAgent_agent();
+     
 
      /***** Variables: Memory pre-conditions **************************/
      PUBLIC_CLASSIFIERSYSTEM.nr_rules =1;
@@ -247,39 +244,7 @@ void unittest_FinancialAgent_send_rule_details()
      FINISH_RULE_DETAILS_MESSAGE_LOOP
  
      /************* At end of unit test, free the agent **************/
-     free_agent();
+     unittest_free_FinancialAgent_agent();
     /************* At end of unit tests, free all Messages **********/
      free_messages();
 }
-
-void unittest_FinancialAgent_reset_public_classifiersystem()
-{
-    /************* At start of unit test, add one agent **************/
-     add_FinancialAgent_agent_internal(init_FinancialAgent_agent(), init_FinancialAgent_state());
-     current_xmachine = *p_xmachine;
-
-     /***** Variables: Memory pre-conditions **************************/
-     PUBLIC_CLASSIFIERSYSTEM.nr_rules =1;
-     PUBLIC_CLASSIFIERSYSTEM.ruletable[0].id=1;
-     PUBLIC_CLASSIFIERSYSTEM.ruletable[0].counter=0;
-     PUBLIC_CLASSIFIERSYSTEM.ruletable[0].performance=0.0;
-     PUBLIC_CLASSIFIERSYSTEM.ruletable[0].avg_performance=0.0;
-
-     /***** Messages: pre-conditions **********************************/
-
-     /***** Function evaluation ***************************************/
-     FinancialAgent_reset_public_classifiersystem();
-     
-     /***** Variables: Memory post-conditions *************************/
-     CU_ASSERT_DOUBLE_EQUAL(PUBLIC_CLASSIFIERSYSTEM.ruletable[0].counter, 0.0, 1e-3);
-     CU_ASSERT_DOUBLE_EQUAL(PUBLIC_CLASSIFIERSYSTEM.ruletable[0].performance, log(pow(10,-5)), 1e-3);
-     CU_ASSERT_DOUBLE_EQUAL(PUBLIC_CLASSIFIERSYSTEM.ruletable[0].avg_performance, log(pow(10,-5)), 1e-3);
-
-    /***** Messages: post-conditions **********************************/
-
-     /************* At end of unit test, free the agent **************/
-     free_agent();
-    /************* At end of unit tests, free all Messages **********/
-     free_messages();
-}
-
