@@ -94,7 +94,7 @@ int Bank_receive_installment()
         PROFITS[0] += installment_message->interest_amount;
         //printf("%d - profits ****** %f\n", ID, PROFITS[0]);
         EQUITY += installment_message->interest_amount;
-      //  printf("%d equity %f int.amount %f\n", ID, EQUITY, installment_message->interest_amount);
+        printf("bank %d equity %f int.amount %f\n", ID, EQUITY, installment_message->interest_amount);
         VALUE_AT_RISK -= installment_message->var_per_installment;
         //printf("%d cash %f after, equity %f\n", ID,CASH, EQUITY);
 		}
@@ -175,9 +175,9 @@ int Bank_accounting()
      {
          tax_bank = TAX_RATE_CORPORATE*PROFITS[0];
        //  printf("taxbano %f", tax_bank);
-        // PROFITS[0] -= tax_bank;rim
-         //EQUITY -= tax_bank;  rim
-         //CASH -= tax_bank; rim
+         PROFITS[0] -= tax_bank;
+         EQUITY -= tax_bank;  
+         CASH -= tax_bank; 
          add_tax_payment_message(ID, GOV_ID, tax_bank);  
          total_dividends = DIVIDEND_RATE*PROFITS[0];
          dividend_per_share = total_dividends/NUMBER_OF_SHARES; 
@@ -194,7 +194,7 @@ int Bank_accounting()
          CASH = 0.0;
      }
      //if (ID==8)
-     //printf("equity %f cash %f bce %f \n", EQUITY, CASH, BCE_DEBT);
+     printf("bank %d equity %f cash %f bce %f \n", ID, EQUITY, CASH, BCE_DEBT);
      //PROFITS[0]=0;  //update
      
 	//printf("\n bank gamma  ");

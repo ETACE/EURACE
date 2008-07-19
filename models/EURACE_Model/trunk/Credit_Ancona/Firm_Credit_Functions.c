@@ -88,7 +88,7 @@ int Firm_get_loan()
       if (loan_conditions_message->firm_id==ID)
       {
         bk = loan_conditions_message->bank_id;
-        printf("\n bank %d \n", bk);
+       // printf("\n bank %d \n", bk);
         interest_array[bk] = loan_conditions_message->proposed_interest_rate;   //ATTENZIONE al meno 1!!!!!
         credit_offer_array[bk] = loan_conditions_message->amount_offered_credit;
 		rate_order_array[bk] = loan_conditions_message->bank_id;
@@ -133,10 +133,10 @@ int Firm_get_loan()
             }
     }
     
-    for(i=0;i<CONST_NUMBER_OF_BANKS;i++)
-    {
-       printf(" interesse proposto %f, firm %d bank %d \n", interest_array[i], ID, rate_order_array[i]);
-    }
+   // for(i=0;i<CONST_NUMBER_OF_BANKS;i++)
+    //{
+   //    printf(" interesse proposto %f, firm %d bank %d \n", interest_array[i], ID, rate_order_array[i]);
+   // }
    
    /* 
     if(ID==2)
@@ -181,7 +181,7 @@ int Firm_get_loan()
 	        		    
 		    bank_id = rate_order_array[primo];
 		    loan_value = credit_accepted;
-		    interest_rate = interest_array[rate_order_array[primo]];
+		    interest_rate = interest_array[primo];
 		    
 		    installment_amount = credit_accepted/CONST_INSTALLMENT_PERIODS;
 		    interest_amount=interest_rate*installment_amount;
@@ -196,14 +196,15 @@ int Firm_get_loan()
             residual_var =var_per_installment*CONST_INSTALLMENT_PERIODS;// value_at_risk_array[rate_order_array[primo]]*(credit_offer_array[rate_order_array[primo]]/credit_accepted);
 		    bad_debt = 0.0;
 		    nr_periods_before_repayment=CONST_INSTALLMENT_PERIODS;
-		    	
+	    	//ADD LOAN
+            if (credit_accepted>0.0)
 		    add_debt_item(&LOANS, bank_id, loan_value, interest_rate, installment_amount, interest_amount, var_per_installment, residual_var, bad_debt, nr_periods_before_repayment);
 		 
 		 
 		 if (credit_accepted>0.0)
 		 {
 		    add_loan_acceptance_message(bank_id, credit_accepted);
-		     printf(" bank %d credito %f var %f \n", bank_id, credit_accepted, var_per_installment); 
+		     printf("firm %d bank %d credito %f var %f \n", ID, bank_id, credit_accepted, var_per_installment); 
          }
 		    //update the payment_account with the amount of credit obtained
 		    PAYMENT_ACCOUNT += credit_accepted;
