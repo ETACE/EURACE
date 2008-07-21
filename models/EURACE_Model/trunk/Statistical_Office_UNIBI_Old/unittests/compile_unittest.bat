@@ -1,0 +1,1 @@
+gcc -g unittest.c ../../memory.c ../../messageboards.c ../../my_library_functions.c ../Eurostat_Functions.c ../Firm_Statistics_Functions.c ../Household_Statistics_Functions.c unittests.c -lm -lcunit 
