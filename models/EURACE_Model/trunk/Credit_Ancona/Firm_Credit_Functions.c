@@ -10,25 +10,27 @@
 
 int Firm_ask_loan()
 {
-	int connected, j;
+    if (EXTERNAL_FINANCIAL_NEEDS>0.0)
+    {
+	  int connected, j;
 
-    connected=0; 
+      connected=0; 
 
-	for (j=0;j<CONST_NUMBER_OF_BANKS;j++) 
-	{
-		DMARKETMATRIX[j]=0;
-	} 
+	  for (j=0;j<CONST_NUMBER_OF_BANKS;j++) 
+	  {
+	    	DMARKETMATRIX[j]=0;
+	  } 
 	
 	//Create bank network for this firm
-	while(connected<LINK)
-	{
-	      j= rand() % CONST_NUMBER_OF_BANKS ;// choose 'LINK' banks
+	  while(connected<LINK)
+	  {
+	        j= rand() % CONST_NUMBER_OF_BANKS ;// choose 'LINK' banks
 	      //printf("j %d \n", j);
-          DMARKETMATRIX[j]=1;
-	      add_loan_request_message(ID, j, EQUITY, TOTAL_DEBT, EXTERNAL_FINANCIAL_NEEDS);
-	      connected++;	     
-	}
-	
+            DMARKETMATRIX[j]=1;
+	        add_loan_request_message(ID, j, EQUITY, TOTAL_DEBT, EXTERNAL_FINANCIAL_NEEDS);
+	        connected++;	     
+	  }
+    }
 	
 
 	/*if(ID==2)
@@ -204,7 +206,7 @@ int Firm_get_loan()
 		 if (credit_accepted>0.0)
 		 {
 		    add_loan_acceptance_message(bank_id, credit_accepted, residual_var);
-		     printf("firm %d bank %d credito %f var %f \n", ID, bank_id, credit_accepted, var_per_installment); 
+	//	     printf("firm %d bank %d credito %f var %f \n", ID, bank_id, credit_accepted, var_per_installment); 
          }
 		    //update the payment_account with the amount of credit obtained
 		    PAYMENT_ACCOUNT += credit_accepted;
