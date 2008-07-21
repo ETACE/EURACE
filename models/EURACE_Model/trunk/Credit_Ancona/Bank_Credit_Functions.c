@@ -101,7 +101,7 @@ int Bank_receive_installment()
 	FINISH_INSTALLMENT_MESSAGE_LOOP
 
     START_BANKRUPTCY_MESSAGE_LOOP
-		if(installment_message->bank_id==ID)
+		if(bankruptcy_message->bank_id==ID)
 		{
 		//	printf("bankrupt my msg");
        CASH +=bankruptcy_message->credit_refunded;
@@ -129,6 +129,7 @@ int Bank_give_loan()
 		{
 			CASH -= loan_acceptance_message->credit_amount_taken;
 			VALUE_AT_RISK+=loan_acceptance_message->loan_total_var;
+            //  N.B.   AGGIORNARE IL TOTAL CREDIT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!           
            // printf("bank %d total var %f  \n", ID, loan_acceptance_message->loan_total_var);
 			if (CASH<0.0) 
 			{
