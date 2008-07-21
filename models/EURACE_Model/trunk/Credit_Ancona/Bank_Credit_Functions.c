@@ -91,9 +91,9 @@ int Bank_receive_installment()
 		//	printf("my msg");
 		CASH +=installment_message->installment_amount;
         PROFITS[0] += installment_message->interest_amount;
-        //printf("%d - profits ****** %f\n", ID, PROFITS[0]);
+        TOTAL_CREDIT-=installment_message->installment_amount;//printf("%d - profits ****** %f\n", ID, PROFITS[0]);
         EQUITY += installment_message->interest_amount;
-        printf("bank %d equity %f int.amount %f\n", ID, EQUITY, installment_message->interest_amount);
+      //  printf("bank %d equity %f int.amount %f\n", ID, EQUITY, installment_message->interest_amount);
         VALUE_AT_RISK -= installment_message->var_per_installment;
         //printf("%d cash %f after, equity %f\n", ID,CASH, EQUITY);
 		}
@@ -106,6 +106,7 @@ int Bank_receive_installment()
 		//	printf("bankrupt my msg");
        CASH +=bankruptcy_message->credit_refunded;
        EQUITY -= bankruptcy_message->bad_debt;
+       TOTAL_CREDIT-=(bankruptcy_message->credit_refunded+bankruptcy_message->bad_debt);
        PROFITS[0] -= bankruptcy_message->bad_debt;
        VALUE_AT_RISK -= bankruptcy_message->residual_var;
 		}
@@ -118,6 +119,10 @@ int Bank_receive_installment()
 		printf("\n--> %f", PROFITS[i]);
     }
     */
+   // if (TOTAL_CREDIT<0.0)
+    //printf("errore total credit negativo ++++*********** \n");
+    
+    
       return 0;
 }
 
@@ -129,8 +134,8 @@ int Bank_give_loan()
 		{
 			CASH -= loan_acceptance_message->credit_amount_taken;
 			VALUE_AT_RISK+=loan_acceptance_message->loan_total_var;
-            //  N.B.   AGGIORNARE IL TOTAL CREDIT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!           
-           // printf("bank %d total var %f  \n", ID, loan_acceptance_message->loan_total_var);
+            TOTAL_CREDIT+=loan_acceptance_message->credit_amount_taken;           
+        //    printf("bank %d total credit %f  \n", ID, TOTAL_CREDIT);
 			if (CASH<0.0) 
 			{
 				BCE_DEBT += fabs(CASH);  
@@ -194,7 +199,7 @@ int Bank_accounting()
          CASH = 0.0;
      }
     
-     printf("bank %d equity %f cash %f bce %f \n", ID, EQUITY, CASH, BCE_DEBT);
+    // printf("bank %d equity %f cash %f bce %f \n", ID, EQUITY, CASH, BCE_DEBT);
      PROFITS[0]=0;  //update
      
 	
