@@ -169,13 +169,13 @@ digraph state_graph {
 	Household_SELECTSTRATEGY [label = "SELECTSTRATEGY"]
 	Household_end_Household [label = "end_Household"]
 	Household_Start_Household_Tax_Data [label = "Start_Household_Tax_Data"]
+	Household_start_Household [label = "start_Household"]
 	Household_05 [label = "05"]
 	Household_04 [label = "04"]
 	Household_03 [label = "03"]
 	Household_02 [label = "02"]
 	Household_01b [label = "01b"]
 	Household_01 [label = "01"]
-	Household_start_Household [label = "start_Household"]
 	Household_01a [label = "01a"]
 	Household_01d [label = "01d"]
 	Household_Start_Household_Labour_Role [label = "Start_Household_Labour_Role"]
@@ -315,7 +315,7 @@ digraph state_graph {
 	Household_Household_handle_leftover_budget_14_15 [label = "Household_handle_leftover_budget", shape = rect]
 	Household_Household_read_firing_messages_Start_Household_Labour_Role_01d [label = "Household_read_firing_messages", shape = rect]
 	Household_Household_idle_01d_01a [label = "Household_idle", shape = rect]
-	Household_Household_idle_start_Household_01a [label = "Household_idle", shape = rect]
+	Household_Household_idle_Start_Household_Labour_Role_01a [label = "Household_idle", shape = rect]
 	Household_Household_UNEMPLOYED_read_job_vacancies_and_send_applications_01a_01 [label = "Household_UNEMPLOYED_read_job_vacancies_and_send_applications", shape = rect]
 	Household_Household_on_the_job_search_decision_01d_01b [label = "Household_on_the_job_search_decision", shape = rect]
 	Household_Household_OTJS_read_job_vacancies_and_send_applications_01b_01 [label = "Household_OTJS_read_job_vacancies_and_send_applications", shape = rect]
@@ -545,8 +545,8 @@ digraph state_graph {
 	Household_Household_read_firing_messages_Start_Household_Labour_Role_01d -> Household_01d;
 	Household_01d -> Household_Household_idle_01d_01a [ label = "a->employee_firm_id == -1"];
 	Household_Household_idle_01d_01a -> Household_01a;
-	Household_start_Household -> Household_Household_idle_start_Household_01a [ label = "a->employee_firm_id == -1"];
-	Household_Household_idle_start_Household_01a -> Household_01a;
+	Household_Start_Household_Labour_Role -> Household_Household_idle_Start_Household_Labour_Role_01a [ label = "a->employee_firm_id == -1"];
+	Household_Household_idle_Start_Household_Labour_Role_01a -> Household_01a;
 	Household_01a -> Household_Household_UNEMPLOYED_read_job_vacancies_and_send_applications_01a_01;
 	Household_Household_UNEMPLOYED_read_job_vacancies_and_send_applications_01a_01 -> Household_01;
 	Household_01d -> Household_Household_on_the_job_search_decision_01d_01b [ label = "a->employee_firm_id != -1"];
@@ -753,12 +753,12 @@ digraph state_graph {
 	Mall_Mall_pay_firm_05_end_Mall -> Firm_Firm_calc_revenue_Start_Firm_Seller_Role_13a [ label = "sales" color="#00ff00" constraint=false];
 	IGFirm_IGFirm_send_capital_good_02_03 -> Firm_Firm_receive_capital_goods_11a_11b [ label = "capital_good_delivery" color="#00ff00" constraint=false];
 	IGFirm_IGFirm_send_quality_price_info_01_02 -> Firm_Firm_calc_input_demands_01_02 [ label = "productivity" color="#00ff00" constraint=false];
-	{ rank=same; layer_0;  Firm_Firm_idle_start_Firm_Start_Firm_Macro_Data;  Firm_Firm_send_info_start_Firm_UPDATE;  Household_Household_idle_start_Household_01a;  Household_Household_idle_start_Household_Start_Household_Tax_Data;  IGFirm_IGFirm_idle_start_IGFirm_Start_IGFirm_Productivity;  Eurostat_Eurostat_Initialization_start_Eurostat_Start_Eurostat_Tax_Data;  Eurostat_Eurostat_idle_start_Eurostat_Start_Eurostat_Tax_Data;  Bank_Bank_send_accountInterest_START_BANK_FINANCIAL_BB;  Government_Government_idle_start_Government_00;  Government_Government_send_tax_rates_start_Government_00A; }
+	{ rank=same; layer_0;  Firm_Firm_idle_start_Firm_Start_Firm_Macro_Data;  Firm_Firm_send_info_start_Firm_UPDATE;  Household_Household_idle_start_Household_Start_Household_Tax_Data;  IGFirm_IGFirm_idle_start_IGFirm_Start_IGFirm_Productivity;  Eurostat_Eurostat_Initialization_start_Eurostat_Start_Eurostat_Tax_Data;  Eurostat_Eurostat_idle_start_Eurostat_Start_Eurostat_Tax_Data;  Bank_Bank_send_accountInterest_START_BANK_FINANCIAL_BB;  Government_Government_idle_start_Government_00;  Government_Government_send_tax_rates_start_Government_00A; }
 	{ rank=same; layer_1;  Firm_Firm_read_tax_rates_start_Firm_Start_Firm_Macro_Data;  Household_Household_read_tax_rates_start_Household_Start_Household_Tax_Data;  Household_Household_receive_info_interest_from_bank_start_Household_SELECTSTRATEGY;  IGFirm_IGFirm_read_tax_rates_start_IGFirm_Start_IGFirm_Productivity;  Eurostat_Eurostat_idle_Start_Eurostat_Tax_Data_Start_Eurostat_Firm_Data;  Eurostat_Eurostat_read_tax_rates_Start_Eurostat_Tax_Data_AA;  Clearinghouse_ClearingHouse_receive_info_stock_start_Clearinghouse_RECEIVEDINFOSTOCK; }
 	{ rank=same; layer_2;  Firm_Firm_idle_Start_Firm_Macro_Data_00;  Household_Household_idle_Start_Household_Tax_Data_Start_Household_Labour_Role;  Household_Household_select_strategy_SELECTSTRATEGY_WAITORDERSTATUS;  IGFirm_IGFirm_update_productivity_price_Start_IGFirm_Productivity_01;  IGFirm_idle_Start_IGFirm_Productivity_01;  Eurostat_Eurostat_send_data_to_government_AA_Start_Eurostat_Firm_Data; }
 	{ rank=same; layer_3;  IGFirm_IGFirm_send_quality_price_info_01_02;  Eurostat_Eurostat_send_data_Start_Eurostat_Firm_Data_01;  Eurostat_Eurostat_idle_Start_Eurostat_Firm_Data_01;  Government_Government_read_data_from_Eurostat_00A_00; }
 	{ rank=same; layer_4;  Firm_Firm_receive_data_Start_Firm_Macro_Data_00;  Household_Household_receive_data_Start_Household_Tax_Data_Start_Household_Labour_Role;  Eurostat_Eurostat_idle_01_Start_Eurostat_Monthly_Datastorage;  Government_Government_idle_00_01; }
-	{ rank=same; layer_5;  Firm_Firm_calc_production_quantity_00_01;  Firm_Firm_set_quantities_zero_00_00b;  Firm_Firm_compute_financial_payments_00_001; }
+	{ rank=same; layer_5;  Firm_Firm_calc_production_quantity_00_01;  Firm_Firm_set_quantities_zero_00_00b;  Firm_Firm_compute_financial_payments_00_001;  Household_Household_idle_Start_Household_Labour_Role_01a; }
 	{ rank=same; layer_6;  Firm_Firm_calc_input_demands_01_02;  Firm_Firm_compute_income_statement_001_002; }
 	{ rank=same; layer_7;  Firm_Firm_compute_dividends_002_003;  Firm_Firm_compute_total_liquidity_needs_02_Start_Firm_Credit_Role; }
 	{ rank=same; layer_8;  Firm_Firm_ask_loan_Start_Firm_Credit_Role_Firm_Credit_02;  Firm_Firm_compute_total_financial_payments_003_004;  Firm_idle_Start_Firm_Credit_Role_Start_Firm_Labour_Role; }
