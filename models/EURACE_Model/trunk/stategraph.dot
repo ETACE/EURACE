@@ -258,7 +258,6 @@ digraph state_graph {
 	Firm_Firm_set_quantities_zero_Firm_Start_Financial_Management_Role_00b [label = "Firm_set_quantities_zero", shape = rect]
 	Firm_Firm_calc_input_demands_01_02 [label = "Firm_calc_input_demands", shape = rect]
 	Firm_Firm_calc_production_quantity_2_End_Firm_Financial_Management_Start_Firm_Labour_Role [label = "Firm_calc_production_quantity_2", shape = rect]
-	Firm_Firm_idle_End_Firm_Financial_Management_Start_Firm_Labour_Role [label = "Firm_idle", shape = rect]
 	Firm_Firm_send_capital_demand_End_Firm_Labour_Role_11a [label = "Firm_send_capital_demand", shape = rect]
 	Firm_Firm_receive_capital_goods_11a_11b [label = "Firm_receive_capital_goods", shape = rect]
 	Firm_Firm_execute_production_11b_11 [label = "Firm_execute_production", shape = rect]
@@ -411,10 +410,8 @@ digraph state_graph {
 	Firm_Firm_set_quantities_zero_Firm_Start_Financial_Management_Role_00b -> Firm_00b;
 	Firm_01 -> Firm_Firm_calc_input_demands_01_02;
 	Firm_Firm_calc_input_demands_01_02 -> Firm_02;
-	Firm_End_Firm_Financial_Management -> Firm_Firm_calc_production_quantity_2_End_Firm_Financial_Management_Start_Firm_Labour_Role [ label = "not ( a->payment_account >= a->planned_production_costs )"];
+	Firm_End_Firm_Financial_Management -> Firm_Firm_calc_production_quantity_2_End_Firm_Financial_Management_Start_Firm_Labour_Role;
 	Firm_Firm_calc_production_quantity_2_End_Firm_Financial_Management_Start_Firm_Labour_Role -> Firm_Start_Firm_Labour_Role;
-	Firm_End_Firm_Financial_Management -> Firm_Firm_idle_End_Firm_Financial_Management_Start_Firm_Labour_Role [ label = "a->financial_resources_for_production >= a->planned_production_costs"];
-	Firm_Firm_idle_End_Firm_Financial_Management_Start_Firm_Labour_Role -> Firm_Start_Firm_Labour_Role;
 	Firm_End_Firm_Labour_Role -> Firm_Firm_send_capital_demand_End_Firm_Labour_Role_11a;
 	Firm_Firm_send_capital_demand_End_Firm_Labour_Role_11a -> Firm_11a;
 	Firm_11a -> Firm_Firm_receive_capital_goods_11a_11b;
@@ -799,7 +796,7 @@ digraph state_graph {
 	{ rank=same; layer_21;  Firm_Firm_in_bankruptcy_Firm_bankruptcy_checked_UPDATE;  Firm_Firm_not_in_bankruptcy_Firm_bankruptcy_checked_Firm_checks_financial_crisis; }
 	{ rank=same; layer_22;  Firm_Firm_in_financial_crisis_Firm_checks_financial_crisis_Firm_financial_crisis_state;  Firm_Firm_execute_financial_payments_Firm_checks_financial_crisis_Start_Firm_Labour_Role; }
 	{ rank=same; layer_23;  Firm_Firm_execute_financial_payments_Firm_financial_crisis_state_End_Firm_Financial_Management; }
-	{ rank=same; layer_24;  Firm_Firm_calc_production_quantity_2_End_Firm_Financial_Management_Start_Firm_Labour_Role;  Firm_Firm_idle_End_Firm_Financial_Management_Start_Firm_Labour_Role;  Bank_Bank_receive_installment_Bank_03_Bank_04; }
+	{ rank=same; layer_24;  Firm_Firm_calc_production_quantity_2_End_Firm_Financial_Management_Start_Firm_Labour_Role;  Bank_Bank_receive_installment_Bank_03_Bank_04; }
 	{ rank=same; layer_25;  Firm_Firm_calculate_specific_skills_and_wage_offer_Start_Firm_Labour_Role_011; }
 	{ rank=same; layer_26;  Firm_Firm_send_vacancies_011_03;  Firm_Firm_send_redundancies_011_03c;  Firm_Firm_idle_011_03c; }
 	{ rank=same; layer_27;  Household_Household_read_firing_messages_Start_Household_Labour_Role_01d; }
