@@ -244,25 +244,46 @@
 <function>
 <name>Firm_in_financial_crisis</name>
 <description>Function to resolve the financial crisis by lowering dividends.</description>
-<currentState>Firm_bankruptcy_checked</currentState>
-<nextState>Firm_tries_to_resolve_financial_crisis</nextState>
+<currentState>Firm_checks_financial_crisis</currentState>
+<nextState>Firm_financial_crisis_state</nextState>
 <condition>
-<lhs>
-	<lhs><value>a.bankruptcy_state</value></lhs><op>EQ</op><rhs><value>0</value></rhs>
-</lhs>
-<op>AND</op>
-<rhs>
 	<lhs><value>a.financial_crisis_state</value></lhs><op>EQ</op><rhs><value>1</value></rhs>
-</rhs>
+
 </condition>
 <outputs>
 </outputs>
 </function>
 
 <function>
+<name>Firm_not_in_bankruptcy</name>
+<description>Function to resolve the financial crisis by lowering dividends.</description>
+<currentState>Firm_bankruptcy_checked</currentState>
+<nextState>Firm_checks_financial_crisis</nextState>
+<condition>
+	<lhs><value>a.bankruptcy_state</value></lhs><op>EQ</op><rhs><value>0</value></rhs>
+</condition>
+<outputs>
+</outputs>
+</function>
+
+<!--
+<function>
+<name>Firm_not_in_financial_crisis</name>
+<description>Function to resolve the financial crisis by lowering dividends.</description>
+<currentState>Firm_checks_financial_crisis</currentState>
+<nextState>Start_Firm_Labour_Role</nextState>
+<condition>
+	<lhs><value>a.financial_crisis_state</value></lhs><op>EQ</op><rhs><value>0</value></rhs>
+
+</condition>
+<outputs>
+</outputs>
+</function>
+-->
+<function>
 <name>Firm_execute_financial_payments</name>
 <description>Function to execute financial payments.</description>
-<currentState>Firm_tries_to_resolve_financial_crisis</currentState>
+<currentState>Firm_financial_crisis_state</currentState>
 <nextState>End_Firm_Financial_Management</nextState>
 <outputs>
 <output><messageName>tax_payment</messageName></output>
@@ -274,16 +295,10 @@
 <function>
 <name>Firm_execute_financial_payments</name>
 <description>Function to execute financial payments.</description>
-<currentState>Firm_bankruptcy_checked</currentState>
+<currentState>Firm_checks_financial_crisis</currentState>
 <nextState>Start_Firm_Labour_Role</nextState>
 <condition>
-<lhs>
-	<lhs><value>a.bankruptcy_state</value></lhs><op>EQ</op><rhs><value>0</value></rhs>
-</lhs>
-<op>AND</op>
-<rhs>
 	<lhs><value>a.financial_crisis_state</value></lhs><op>EQ</op><rhs><value>0</value></rhs>
-</rhs>
 </condition>
 <outputs>
 <output><messageName>tax_payment</messageName></output>
@@ -291,6 +306,9 @@
 <output><messageName>installment</messageName></output>
 </outputs>
 </function>
+
+
+
 
 <!-- Idle bypassing the credit and financial markets  -->
 <function>
