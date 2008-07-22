@@ -289,15 +289,15 @@ void GA_reproduction(int size, int id1, int id2, double * offspring_1, double * 
 	 //void GA_reproduction() : applies to each parent pair, nr_pair=0,...,N_pairs
      //2. Genetic operators: cross-over
 		
-		printf("\n In GA_reproduction: copying rule id1=%d and rule id2=%d to offspring strings.\n", id1, id2);
-		printf("\n size=%d\n", size);
+		if(PRINT_DEBUG) printf("\n In GA_reproduction: copying rule id1=%d and rule id2=%d to offspring strings.\n", id1, id2);
+		if(PRINT_DEBUG) printf("\n size=%d\n", size);
 		for (k=0; k<size; k++)
 		{
 			offspring_1[k]=PUBLIC_CLASSIFIERSYSTEM.ruletable[id1].parameters[k];
 			offspring_2[k]=PUBLIC_CLASSIFIERSYSTEM.ruletable[id2].parameters[k];
 		}
-	     printf("\n In GA_reproduction: offspring_1=[%1.1f, %1.1f]\n", offspring_1[0], offspring_1[1]);
-	     printf("\n In GA_reproduction: offspring_2=[%1.1f, %1.1f]\n", offspring_2[0], offspring_2[1]);
+	     if(PRINT_DEBUG) printf("\n In GA_reproduction: offspring_1=[%1.1f, %1.1f]\n", offspring_1[0], offspring_1[1]);
+	     if(PRINT_DEBUG) printf("\n In GA_reproduction: offspring_2=[%1.1f, %1.1f]\n", offspring_2[0], offspring_2[1]);
 
 		//now cross-over the strings
 		if (random_unif() < GA_PARAMETERS.prob_cross)
@@ -406,8 +406,8 @@ void FinancialAgent_print_public_classifiersystem()
 
  	//Set the output file:
  	i = sprintf(str, "%d", iteration_loop);
- 	printf("iteration_loop in sprintf is %s\n", str);
- 	printf("sprintf returns: %d\n\n", i);
+ 	if(PRINT_DEBUG) printf("iteration_loop in sprintf is %s\n", str);
+ 	if(PRINT_DEBUG) printf("sprintf returns: %d\n\n", i);
  	
  	//Start an empty string for the filename
  	filename = malloc(20*sizeof(char));
@@ -417,10 +417,10 @@ void FinancialAgent_print_public_classifiersystem()
  	strcpy(filename, "./log/CS_");
  	strcat(filename, str);
  	strcat(filename, ".txt");
- 	printf("File to write data to: %s\n\n", filename);
+ 	if(PRINT_DEBUG) printf("File to write data to: %s\n\n", filename);
 
  	//Open a file pointer: FILE * file 
- 	printf("\n Appending data to file: %s. Starting to write...\n", filename);
+ 	if(PRINT_DEBUG) printf("\n Appending data to file: %s. Starting to write...\n", filename);
  	file = fopen(filename,"a");
  	fprintf(file, "\n Appending data to file\n");
 
@@ -462,8 +462,8 @@ void Household_print_private_classifiersystem()
 
 	//Set the output file:
 	i = sprintf(str, "%d", iteration_loop);
-	printf("iteration_loop in sprintf is %s\n", str);
-	printf("sprintf returns: %d\n\n", i);
+	if(PRINT_DEBUG) printf("iteration_loop in sprintf is %s\n", str);
+	if(PRINT_DEBUG) printf("sprintf returns: %d\n\n", i);
 	
 	//Start an empty string for the filename
 	filename = malloc(20*sizeof(char));
@@ -473,10 +473,10 @@ void Household_print_private_classifiersystem()
 	strcpy(filename, "./log/CS_");
 	strcat(filename, str);
 	strcat(filename, ".txt");
-	printf("File to write data to: %s\n\n", filename);
+	if(PRINT_DEBUG) printf("File to write data to: %s\n\n", filename);
 
 	//Open a file pointer: FILE * file 
-	printf("\n Appending data to file: %s. Starting to write...\n", filename);
+	if(PRINT_DEBUG) printf("\n Appending data to file: %s. Starting to write...\n", filename);
 	file = fopen(filename,"a");
 	fprintf(file, "\n Appending data to file\n");
 

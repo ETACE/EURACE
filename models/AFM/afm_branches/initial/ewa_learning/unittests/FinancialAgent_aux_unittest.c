@@ -41,13 +41,13 @@ void unittest_single_point_cross_over()
 		
 	// Function evaluation ***************************************
 	//void single_point_cross_over(int size, double * string_a, double * string_b, int cross_point)
-	printf("\n Before single_point_cross_over: xvec=[%1.1f, %1.1f, %1.1f, %1.1f]\n", xvec[0], xvec[1], xvec[2], xvec[3]);
-	printf("\n Before single_point_cross_over: yvec=[%1.1f, %1.1f, %1.1f, %1.1f]\n", yvec[0], yvec[1], yvec[2], yvec[3]);
+	if(PRINT_DEBUG) printf("\n Before single_point_cross_over: xvec=[%1.1f, %1.1f, %1.1f, %1.1f]\n", xvec[0], xvec[1], xvec[2], xvec[3]);
+	if(PRINT_DEBUG) printf("\n Before single_point_cross_over: yvec=[%1.1f, %1.1f, %1.1f, %1.1f]\n", yvec[0], yvec[1], yvec[2], yvec[3]);
 
 	single_point_cross_over(size, xvec, yvec, c);
 
-	printf("\n After single_point_cross_over: xvec=[%1.1f, %1.1f, %1.1f, %1.1f]\n", xvec[0], xvec[1], xvec[2], xvec[3]);
-	printf("\n After single_point_cross_over: yvec=[%1.1f, %1.1f, %1.1f, %1.1f]\n", yvec[0], yvec[1], yvec[2], yvec[3]);
+	if(PRINT_DEBUG) printf("\n After single_point_cross_over: xvec=[%1.1f, %1.1f, %1.1f, %1.1f]\n", xvec[0], xvec[1], xvec[2], xvec[3]);
+	if(PRINT_DEBUG) printf("\n After single_point_cross_over: yvec=[%1.1f, %1.1f, %1.1f, %1.1f]\n", yvec[0], yvec[1], yvec[2], yvec[3]);
 
     // Variables: Memoryvec post-conditions *************************
     CU_ASSERT_DOUBLE_EQUAL(xvec[0], 0.1, 1e-3);
@@ -89,17 +89,17 @@ void unittest1_two_point_cross_over()
 	//Random cross-over length
 	//ell = (int)(size*random_unif());
 	ell=1;
-	printf("\n point c=%d, length ell=%d",c, ell);
+	if(PRINT_DEBUG) printf("\n point c=%d, length ell=%d",c, ell);
 	
     // ***** Function evaluation ***************************************
 	//void two_point_cross_over(int size, double * string_a, double * string_b, int cross_point, int cross_length)
-	printf("\n Before two_point_cross_over: xvec=[%1.1f, %1.1f, %1.1f, %1.1f]\n", xvec[0], xvec[1], xvec[2], xvec[3]);
-	printf("\n Before two_point_cross_over: yvec=[%1.1f, %1.1f, %1.1f, %1.1f]\n", yvec[0], yvec[1], yvec[2], yvec[3]);
+	if(PRINT_DEBUG) printf("\n Before two_point_cross_over: xvec=[%1.1f, %1.1f, %1.1f, %1.1f]\n", xvec[0], xvec[1], xvec[2], xvec[3]);
+	if(PRINT_DEBUG) printf("\n Before two_point_cross_over: yvec=[%1.1f, %1.1f, %1.1f, %1.1f]\n", yvec[0], yvec[1], yvec[2], yvec[3]);
 
 	two_point_cross_over(size, xvec, yvec, c, ell);
 
-	printf("\n After two_point_cross_over: xvec=[%1.1f, %1.1f, %1.1f, %1.1f]\n", xvec[0], xvec[1], xvec[2], xvec[3]);
-	printf("\n After two_point_cross_over: yvec=[%1.1f, %1.1f, %1.1f, %1.1f]\n", yvec[0], yvec[1], yvec[2], yvec[3]);
+	if(PRINT_DEBUG) printf("\n After two_point_cross_over: xvec=[%1.1f, %1.1f, %1.1f, %1.1f]\n", xvec[0], xvec[1], xvec[2], xvec[3]);
+	if(PRINT_DEBUG) printf("\n After two_point_cross_over: yvec=[%1.1f, %1.1f, %1.1f, %1.1f]\n", yvec[0], yvec[1], yvec[2], yvec[3]);
 
     // ***** Variables: Memory post-conditions *************************
     CU_ASSERT_DOUBLE_EQUAL(xvec[0], 0.1, 1e-3);
@@ -141,17 +141,17 @@ void unittest2_two_point_cross_over()
 	//Random cross-over length
 	//ell = (int)(size*random_unif());
 	ell=3;
-	printf("\n point c=%d, length ell=%d",c, ell);
+	if(PRINT_DEBUG) printf("\n point c=%d, length ell=%d",c, ell);
 	
     // ***** Function evaluation ***************************************
 	//void two_point_cross_over(int size, double * string_a, double * string_b, int cross_point, int cross_length)
-	printf("\n Before two_point_cross_over: xvec=[%1.1f, %1.1f, %1.1f, %1.1f]\n", xvec[0], xvec[1], xvec[2], xvec[3]);
-	printf("\n Before two_point_cross_over: yvec=[%1.1f, %1.1f, %1.1f, %1.1f]\n", yvec[0], yvec[1], yvec[2], yvec[3]);
+	if(PRINT_DEBUG) printf("\n Before two_point_cross_over: xvec=[%1.1f, %1.1f, %1.1f, %1.1f]\n", xvec[0], xvec[1], xvec[2], xvec[3]);
+	if(PRINT_DEBUG) printf("\n Before two_point_cross_over: yvec=[%1.1f, %1.1f, %1.1f, %1.1f]\n", yvec[0], yvec[1], yvec[2], yvec[3]);
 
 	two_point_cross_over(size, xvec, yvec, c, ell);
 
-	printf("\n After two_point_cross_over: xvec=[%1.1f, %1.1f, %1.1f, %1.1f]\n", xvec[0], xvec[1], xvec[2], xvec[3]);
-	printf("\n After two_point_cross_over: yvec=[%1.1f, %1.1f, %1.1f, %1.1f]\n", yvec[0], yvec[1], yvec[2], yvec[3]);
+	if(PRINT_DEBUG) printf("\n After two_point_cross_over: xvec=[%1.1f, %1.1f, %1.1f, %1.1f]\n", xvec[0], xvec[1], xvec[2], xvec[3]);
+	if(PRINT_DEBUG) printf("\n After two_point_cross_over: yvec=[%1.1f, %1.1f, %1.1f, %1.1f]\n", yvec[0], yvec[1], yvec[2], yvec[3]);
 
     // ***** Variables: Memory post-conditions *************************
     CU_ASSERT_DOUBLE_EQUAL(xvec[0], 0.2, 1e-3);
@@ -194,17 +194,17 @@ void unittest1_two_point_cross_over_alt()
 	//Random cross-over length
 	//ell = (int)(size*random_unif());
 	ell=1;
-	printf("\n point c=%d, length ell=%d",c, ell);
+	if(PRINT_DEBUG) printf("\n point c=%d, length ell=%d",c, ell);
 	
     // ***** Function evaluation ***************************************
 	//void two_point_cross_over(int size, double * string_a, double * string_b, int cross_point, int cross_length)
-	printf("\n Before two_point_cross_over: xvec=[%1.1f, %1.1f, %1.1f, %1.1f]\n", xvec[0], xvec[1], xvec[2], xvec[3]);
-	printf("\n Before two_point_cross_over: yvec=[%1.1f, %1.1f, %1.1f, %1.1f]\n", yvec[0], yvec[1], yvec[2], yvec[3]);
+	if(PRINT_DEBUG) printf("\n Before two_point_cross_over: xvec=[%1.1f, %1.1f, %1.1f, %1.1f]\n", xvec[0], xvec[1], xvec[2], xvec[3]);
+	if(PRINT_DEBUG) printf("\n Before two_point_cross_over: yvec=[%1.1f, %1.1f, %1.1f, %1.1f]\n", yvec[0], yvec[1], yvec[2], yvec[3]);
 
 	two_point_cross_over_alt(size, xvec, yvec, c, ell);
 
-	printf("\n After two_point_cross_over: xvec=[%1.1f, %1.1f, %1.1f, %1.1f]\n", xvec[0], xvec[1], xvec[2], xvec[3]);
-	printf("\n After two_point_cross_over: yvec=[%1.1f, %1.1f, %1.1f, %1.1f]\n", yvec[0], yvec[1], yvec[2], yvec[3]);
+	if(PRINT_DEBUG) printf("\n After two_point_cross_over: xvec=[%1.1f, %1.1f, %1.1f, %1.1f]\n", xvec[0], xvec[1], xvec[2], xvec[3]);
+	if(PRINT_DEBUG) printf("\n After two_point_cross_over: yvec=[%1.1f, %1.1f, %1.1f, %1.1f]\n", yvec[0], yvec[1], yvec[2], yvec[3]);
 
     // ***** Variables: Memoryvec post-conditions *************************
     CU_ASSERT_DOUBLE_EQUAL(xvec[0], 0.1, 1e-3);
@@ -247,17 +247,17 @@ void unittest2_two_point_cross_over_alt()
 	//Random cross-over length
 	//ell = (int)(size*random_unif());
 	ell=3;
-	printf("\n point c=%d, length ell=%d",c, ell);
+	if(PRINT_DEBUG) printf("\n point c=%d, length ell=%d",c, ell);
 	
     // ***** Function evaluation ***************************************
 	//void two_point_cross_over(int size, double * string_a, double * string_b, int cross_point, int cross_length)
-	printf("\n Before two_point_cross_over: xvec=[%1.1f, %1.1f, %1.1f, %1.1f]\n", xvec[0], xvec[1], xvec[2], xvec[3]);
-	printf("\n Before two_point_cross_over: yvec=[%1.1f, %1.1f, %1.1f, %1.1f]\n", yvec[0], yvec[1], yvec[2], yvec[3]);
+	if(PRINT_DEBUG) printf("\n Before two_point_cross_over: xvec=[%1.1f, %1.1f, %1.1f, %1.1f]\n", xvec[0], xvec[1], xvec[2], xvec[3]);
+	if(PRINT_DEBUG) printf("\n Before two_point_cross_over: yvec=[%1.1f, %1.1f, %1.1f, %1.1f]\n", yvec[0], yvec[1], yvec[2], yvec[3]);
 
 	two_point_cross_over_alt(size, xvec, yvec, c, ell);
 
-	printf("\n After two_point_cross_over: xvec=[%1.1f, %1.1f, %1.1f, %1.1f]\n", xvec[0], xvec[1], xvec[2], xvec[3]);
-	printf("\n After two_point_cross_over: yvec=[%1.1f, %1.1f, %1.1f, %1.1f]\n", yvec[0], yvec[1], yvec[2], yvec[3]);
+	if(PRINT_DEBUG) printf("\n After two_point_cross_over: xvec=[%1.1f, %1.1f, %1.1f, %1.1f]\n", xvec[0], xvec[1], xvec[2], xvec[3]);
+	if(PRINT_DEBUG) printf("\n After two_point_cross_over: yvec=[%1.1f, %1.1f, %1.1f, %1.1f]\n", yvec[0], yvec[1], yvec[2], yvec[3]);
 
     // ***** Variables: Memoryvec post-conditions *************************
     CU_ASSERT_DOUBLE_EQUAL(xvec[0], 0.1, 1e-3);
@@ -300,17 +300,17 @@ void unittest3_two_point_cross_over_alt()
 	//Random cross-over length
 	//ell = (int)(size*random_unif());
 	ell=3;
-	printf("\n point c=%d, length ell=%d",c, ell);
+	if(PRINT_DEBUG) printf("\n point c=%d, length ell=%d",c, ell);
 	
     // ***** Function evaluation ***************************************
 	//void two_point_cross_over(int size, double * string_a, double * string_b, int cross_point, int cross_length)
-	printf("\n Before two_point_cross_over: xvec=[%1.1f, %1.1f, %1.1f, %1.1f, %1.1f, %1.1f, %1.1f, %1.1f]\n", xvec[0], xvec[1], xvec[2], xvec[3], xvec[4], xvec[5], xvec[6], xvec[7]);
-	printf("\n Before two_point_cross_over: yvec=[%1.1f, %1.1f, %1.1f, %1.1f, %1.1f, %1.1f, %1.1f, %1.1f]\n", yvec[0], yvec[1], yvec[2], yvec[3], yvec[4], yvec[5], yvec[6], yvec[7]);
+	if(PRINT_DEBUG) printf("\n Before two_point_cross_over: xvec=[%1.1f, %1.1f, %1.1f, %1.1f, %1.1f, %1.1f, %1.1f, %1.1f]\n", xvec[0], xvec[1], xvec[2], xvec[3], xvec[4], xvec[5], xvec[6], xvec[7]);
+	if(PRINT_DEBUG) printf("\n Before two_point_cross_over: yvec=[%1.1f, %1.1f, %1.1f, %1.1f, %1.1f, %1.1f, %1.1f, %1.1f]\n", yvec[0], yvec[1], yvec[2], yvec[3], yvec[4], yvec[5], yvec[6], yvec[7]);
 
 	two_point_cross_over_alt(size, xvec, yvec, c, ell);
 
-	printf("\n After two_point_cross_over: xvec=[%1.1f, %1.1f, %1.1f, %1.1f, %1.1f, %1.1f, %1.1f, %1.1f]\n", xvec[0], xvec[1], xvec[2], xvec[3], xvec[4], xvec[5], xvec[6], xvec[7]);
-	printf("\n After two_point_cross_over: yvec=[%1.1f, %1.1f, %1.1f, %1.1f, %1.1f, %1.1f, %1.1f, %1.1f]\n", yvec[0], yvec[1], yvec[2], yvec[3], yvec[4], yvec[5], yvec[6], yvec[7]);
+	if(PRINT_DEBUG) printf("\n After two_point_cross_over: xvec=[%1.1f, %1.1f, %1.1f, %1.1f, %1.1f, %1.1f, %1.1f, %1.1f]\n", xvec[0], xvec[1], xvec[2], xvec[3], xvec[4], xvec[5], xvec[6], xvec[7]);
+	if(PRINT_DEBUG) printf("\n After two_point_cross_over: yvec=[%1.1f, %1.1f, %1.1f, %1.1f, %1.1f, %1.1f, %1.1f, %1.1f]\n", yvec[0], yvec[1], yvec[2], yvec[3], yvec[4], yvec[5], yvec[6], yvec[7]);
 
     // ***** Variables: Memoryvec post-conditions *************************
     CU_ASSERT_DOUBLE_EQUAL(xvec[0], 0.0, 1e-3);
@@ -361,23 +361,23 @@ void unittest_mutation()
 	stepsize[0]=0.01; stepsize[1]=0.01; stepsize[2]=0.01; stepsize[3]=0.01;
 	prob_mut = 1.0;
 	
-    printf("\n Before mutation vec = [ ");
+    if(PRINT_DEBUG) printf("\n Before mutation vec = [ ");
     for (j=0;j<size;j++)
     {
-    	printf("%2.2f ", string[j]);
+    	if(PRINT_DEBUG) printf("%2.2f ", string[j]);
     }
-    printf("]\n");
+    if(PRINT_DEBUG) printf("]\n");
 
     // Function evaluation  
 	//void mutation(int size, double * string);
 	mutation(size, string, stepsize, prob_mut);
 	
-    printf("\n After mutation vec = [ ");
+    if(PRINT_DEBUG) printf("\n After mutation vec = [ ");
     for (j=0;j<size;j++)
     {
-    	printf("%2.2f ", string[j]);
+    	if(PRINT_DEBUG) printf("%2.2f ", string[j]);
     }
-    printf("]\n");
+    if(PRINT_DEBUG) printf("]\n");
 
     // Variables: Memory post-conditions 
 	//CU_ASSERT_EQUAL(<var_name2>, <value>);
@@ -566,12 +566,12 @@ void unittest_GA_reproduction()
 	 //Random draws of parents to match are all string_1
 	 //Expected result: offspring are direct copies of parent_1
   	 j=0;
-  	 printf("\n Entering GA_reproduction with: rule_id_1[j]=%d rule_id_2[j]=%d.\n", rule_id_1[j], rule_id_1[j]);
+  	 if(PRINT_DEBUG) printf("\n Entering GA_reproduction with: rule_id_1[j]=%d rule_id_2[j]=%d.\n", rule_id_1[j], rule_id_1[j]);
      GA_reproduction(size, rule_id_1[j], rule_id_2[j], offspring_1, offspring_2);
      
      //***** Variables: Memory post-conditions *************************
-     printf("\n In unittest_GA_reproduction: offspring_1=[%1.1f, %1.1f]\n", offspring_1[0], offspring_1[1]);
-     printf("\n In unittest_GA_reproduction: offspring_2=[%1.1f, %1.1f]\n", offspring_2[0], offspring_2[1]);
+     if(PRINT_DEBUG) printf("\n In unittest_GA_reproduction: offspring_1=[%1.1f, %1.1f]\n", offspring_1[0], offspring_1[1]);
+     if(PRINT_DEBUG) printf("\n In unittest_GA_reproduction: offspring_2=[%1.1f, %1.1f]\n", offspring_2[0], offspring_2[1]);
      CU_ASSERT_DOUBLE_EQUAL(offspring_1[0], 1.0, 1e-3);
      CU_ASSERT_DOUBLE_EQUAL(offspring_1[1], 2.0, 1e-3);
      CU_ASSERT_DOUBLE_EQUAL(offspring_2[0], 1.0, 1e-3);
@@ -644,8 +644,8 @@ void unittest_GA_mutation()
  	 GA_mutation(size, offspring_1, offspring_2);
      
      //***** Variables: Memory post-conditions *************************
-     printf("\n In unittest_GA_mutation: offspring_1=[%1.5f, %1.5f]\n", offspring_1[0], offspring_1[1]);
-     printf("\n In unittest_GA_mutation: offspring_2=[%1.5f, %1.5f]\n", offspring_2[0], offspring_2[1]);
+     if(PRINT_DEBUG) printf("\n In unittest_GA_mutation: offspring_1=[%1.5f, %1.5f]\n", offspring_1[0], offspring_1[1]);
+     if(PRINT_DEBUG) printf("\n In unittest_GA_mutation: offspring_2=[%1.5f, %1.5f]\n", offspring_2[0], offspring_2[1]);
      CU_ASSERT_DOUBLE_EQUAL(offspring_1[0], 0.01, 1e-3);
      CU_ASSERT_DOUBLE_EQUAL(offspring_1[1], 0.05, 1e-3);
      CU_ASSERT_DOUBLE_EQUAL(offspring_2[0], 0.01, 1e-3);
@@ -791,8 +791,8 @@ void test_print()
 	//Set the output file:
 	i = sprintf(str, "%d", iteration_loop);
 
-	printf("iteration_loop in sprintf is %s\n", str);
-	printf("sprintf returns: %d\n\n", i);
+	if(PRINT_DEBUG) printf("iteration_loop in sprintf is %s\n", str);
+	if(PRINT_DEBUG) printf("sprintf returns: %d\n\n", i);
 		
 	filename = malloc(20*sizeof(char));
 	filename[0]=0;
@@ -801,10 +801,10 @@ void test_print()
 	strcpy(filename, "./log/CS_");
 	strcat(filename, str);
 	strcat(filename, ".txt");
-	printf("File to write data to: %s\n\n", filename);
+	if(PRINT_DEBUG) printf("File to write data to: %s\n\n", filename);
 
 	//Open a file pointer: FILE *Fp 
-	printf("\n Appending data to file: %s. Starting to write...\n", filename);
+	if(PRINT_DEBUG) printf("\n Appending data to file: %s. Starting to write...\n", filename);
 	file = fopen(filename,"a");
 
 	fprintf(file, "\n Appending data to file\n");
@@ -832,8 +832,8 @@ void unittest_FinancialAgent_print_public_classifiersystem()
 
  	//Set the output file:
  	i = sprintf(str, "%d", iteration_loop);
- 	printf("\n iteration_loop in sprintf is %s\n", str);
- 	//printf("sprintf returns: %d\n\n", i);
+ 	if(PRINT_DEBUG) printf("\n iteration_loop in sprintf is %s\n", str);
+ 	//if(PRINT_DEBUG) printf("sprintf returns: %d\n\n", i);
  	
  	//Start an empty string for the filename
  	filename = malloc(20*sizeof(char));
@@ -843,10 +843,10 @@ void unittest_FinancialAgent_print_public_classifiersystem()
  	strcpy(filename, "./log/CS_");
  	strcat(filename, str);
  	strcat(filename, ".txt");
- 	printf(" File to write data to: %s\n", filename);
+ 	if(PRINT_DEBUG) printf(" File to write data to: %s\n", filename);
 
  	//Open a file pointer: FILE * file 
- 	printf("\nAppending data to file: %s. Starting to write...\n", filename);
+ 	if(PRINT_DEBUG) printf("\nAppending data to file: %s. Starting to write...\n", filename);
  	file = fopen(filename,"a");
  	fprintf(file, "\nAppending data to file\n");
 
@@ -919,6 +919,6 @@ void unittest_FinancialAgent_print_public_classifiersystem()
 
     fprintf(file,"\n");
 	fclose(file);
- 	printf("\n Finished writing and closed the file stream.\n");
+ 	if(PRINT_DEBUG) printf("\n Finished writing and closed the file stream.\n");
 
 }

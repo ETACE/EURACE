@@ -116,7 +116,7 @@ void unittest1_Household_select_rule()
      
      PRIVATE_CLASSIFIERSYSTEM.nr_rules =2;
      PRIVATE_CLASSIFIERSYSTEM.experience=1.0;
-     PRIVATE_CLASSIFIERSYSTEM.current_rule=1;
+     PRIVATE_CLASSIFIERSYSTEM.current_rule=-1;
      
      PRIVATE_CLASSIFIERSYSTEM.ruletable[0].id=1;
      PRIVATE_CLASSIFIERSYSTEM.ruletable[0].my_performance=0.0;
@@ -142,7 +142,6 @@ void unittest1_Household_select_rule()
      
      CU_ASSERT_EQUAL(PRIVATE_CLASSIFIERSYSTEM.nr_rules, 2);
      CU_ASSERT_DOUBLE_EQUAL(PRIVATE_CLASSIFIERSYSTEM.experience, 2.0, 1e-3);
-     CU_ASSERT_EQUAL(PRIVATE_CLASSIFIERSYSTEM.current_rule, 1);
      
      CU_ASSERT_EQUAL(PRIVATE_CLASSIFIERSYSTEM.ruletable[0].id, 1);
      CU_ASSERT_DOUBLE_EQUAL(PRIVATE_CLASSIFIERSYSTEM.ruletable[0].my_performance, 0.0, 1e-3);
@@ -157,7 +156,7 @@ void unittest1_Household_select_rule()
      CU_ASSERT_DOUBLE_EQUAL(PRIVATE_CLASSIFIERSYSTEM.ruletable[1].attraction, 4.0, 1e-3);
      CU_ASSERT_DOUBLE_EQUAL(PRIVATE_CLASSIFIERSYSTEM.ruletable[1].choiceprob, 0.0, 1e-3);
  
-     //CU_ASSERT_TRUE((PRIVATE_CLASSIFIERSYSTEM.current_rule==0 || PRIVATE_CLASSIFIERSYSTEM.current_rule==1));
+     CU_ASSERT_TRUE((PRIVATE_CLASSIFIERSYSTEM.current_rule==1 || PRIVATE_CLASSIFIERSYSTEM.current_rule==2));
      
      /***** Messages: post-conditions **********************************/
 
@@ -183,7 +182,7 @@ void unittest2_Household_select_rule()
      
      PRIVATE_CLASSIFIERSYSTEM.nr_rules =2;
      PRIVATE_CLASSIFIERSYSTEM.experience=1.0;
-     PRIVATE_CLASSIFIERSYSTEM.current_rule=1;
+     PRIVATE_CLASSIFIERSYSTEM.current_rule=-1;
      
      PRIVATE_CLASSIFIERSYSTEM.ruletable[0].id=1;
      PRIVATE_CLASSIFIERSYSTEM.ruletable[0].my_performance=0.0;
@@ -209,7 +208,6 @@ void unittest2_Household_select_rule()
      
      CU_ASSERT_EQUAL(PRIVATE_CLASSIFIERSYSTEM.nr_rules, 2);
      CU_ASSERT_DOUBLE_EQUAL(PRIVATE_CLASSIFIERSYSTEM.experience, 2.0, 1e-3);
-     CU_ASSERT_EQUAL(PRIVATE_CLASSIFIERSYSTEM.current_rule, 1);
      
      CU_ASSERT_EQUAL(PRIVATE_CLASSIFIERSYSTEM.ruletable[0].id, 1);
      CU_ASSERT_DOUBLE_EQUAL(PRIVATE_CLASSIFIERSYSTEM.ruletable[0].my_performance, 0.0, 1e-3);
@@ -223,7 +221,7 @@ void unittest2_Household_select_rule()
      CU_ASSERT_DOUBLE_EQUAL(PRIVATE_CLASSIFIERSYSTEM.ruletable[1].attraction, 9.0, 1e-3);
      CU_ASSERT_DOUBLE_EQUAL(PRIVATE_CLASSIFIERSYSTEM.ruletable[1].choiceprob, 0.0, 1e-3);
  
-     CU_ASSERT_TRUE((PRIVATE_CLASSIFIERSYSTEM.current_rule==0 || PRIVATE_CLASSIFIERSYSTEM.current_rule==1));
+     CU_ASSERT_TRUE((PRIVATE_CLASSIFIERSYSTEM.current_rule==1 || PRIVATE_CLASSIFIERSYSTEM.current_rule==2));
      
     /***** Messages: post-conditions **********************************/
 
