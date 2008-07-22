@@ -239,18 +239,18 @@ on the current stocks in the malls</description>
 <description>Firms iterate over the planned production quantity decreasing it incrementally,
  such that the corresponding labor demand and capital demand can be financed by 
  the actually obtained financial resources</description>
-<currentState>End_Firm_Credit_Role</currentState>
-<nextState>Firm_Finish_Financial_Management</nextState>
-<condition><not><lhs><value>a.financial_resources_for_production</value></lhs><op>GEQ</op><rhs><value>a.planned_production_costs</value></rhs></not></condition>
+<currentState>End_Firm_Financial_Management</currentState>
+<nextState>Start_Firm_Labour_Role</nextState>
+<!--<condition><not><lhs><value>a.payment_account</value></lhs><op>GEQ</op><rhs><value>a.planned_production_costs</value></rhs></not></condition>-->
 </function>
-
+<!--
 <function><name>Firm_idle</name>
 <description>Firm does nothing</description>
-<currentState>End_Firm_Credit_Role</currentState>
-<nextState>Firm_Finish_Financial_Management</nextState>
+<currentState>End_Firm_Financial_Management</currentState>
+<nextState>Start_Firm_Labour_Role</nextState>
 <condition><lhs><value>a.financial_resources_for_production</value></lhs><op>GEQ</op><rhs><value>a.planned_production_costs</value></rhs></condition>
 </function>
-
+-->
 <function><name>Firm_send_capital_demand</name>
 <description>Firm sends demand for capital to the capital goods market.</description>
 <currentState>End_Firm_Labour_Role</currentState>
@@ -326,7 +326,7 @@ distribute the dividends to households.</description>
 <function><name>Firm_update_specific_skills_of_workers</name>
 <description>Because the specific skills of workers have changed the 
 firms update the specific skill levels of the workers.</description>
-<currentState>005</currentState>
+<currentState>13b</currentState>
 <nextState>14</nextState>
 <!--<condition><time><period>monthly</period><phase>a.day_of_month_to_act</phase></time></condition>-->
 <inputs>
