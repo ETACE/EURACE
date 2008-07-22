@@ -75,8 +75,8 @@
 <name>Firm_get_loan</name>
 <description></description>
 <currentState>Firm_Credit_02</currentState>
-<nextState>Firm_compute_and_send_stock_orders</nextState>
-<condition><lhs><value>a.external_financial_needs</value></lhs><op>GT</op><rhs><value>0.0</value></rhs></condition>
+<nextState>Firm_End_Credit_Role</nextState>
+
 <inputs>
 <input>
 <messageName>loan_conditions</messageName>
