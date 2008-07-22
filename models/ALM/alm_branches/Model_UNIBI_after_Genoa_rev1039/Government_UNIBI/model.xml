@@ -156,6 +156,17 @@
 
 
 <message>
+<name>unemployment_notification</name>
+<description></description>
+<variables>
+<variable><type>int</type><name>gov_id</name><description></description></variable>
+<variable><type>int</type><name>hh_id</name><description></description></variable>
+<variable><type>double</type><name>unemployment_benefit</name><description></description></variable>
+</variables>
+</message>
+
+
+<message>
 <name>central_bank_account_update</name>
 <description></description>
 <variables>
