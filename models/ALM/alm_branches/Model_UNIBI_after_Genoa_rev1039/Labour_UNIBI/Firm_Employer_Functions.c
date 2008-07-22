@@ -4,6 +4,7 @@
 
 
 
+
 /************************************ Firm agent functions ************************************/
 
 /* Function condition functions */
