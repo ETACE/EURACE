@@ -59,11 +59,11 @@ int main(int argc, char * argv[])
     	//NULL == CU_add_test(pSuite, "Household_send_rule_performance", unittest_Household_send_rule_performance) ||
     	//NULL == CU_add_test(pSuite, "Household_read_all_performances", unittest_Household_read_all_performances) ||
     	//NULL == CU_add_test(pSuite, "Household_select_rule", unittest1_Household_select_rule))
-    	//NULL == CU_add_test(pSuite, "Household_select_rule", unittest2_Household_select_rule) ||
+    	NULL == CU_add_test(pSuite, "Household_select_rule", unittest2_Household_select_rule))
         //NULL == CU_add_test(pSuite, "Household_apply_rule", unittest_Household_apply_rule) ||
         //NULL == CU_add_test(pSuite, "Household_read_and_update_rule_details", unittest_Household_read_and_update_rule_details) ||
         //NULL == CU_add_test(pSuite, "Household_reset_private_classifiersystem", unittest_Household_reset_private_classifiersystem))
-    	NULL == CU_add_test(pSuite, "Household_print_private_classifiersystem\n", unittest_Household_print_private_classifiersystem))
+    	//NULL == CU_add_test(pSuite, "Household_print_private_classifiersystem\n", unittest_Household_print_private_classifiersystem))
     {
         CU_cleanup_registry();
         return CU_get_error();

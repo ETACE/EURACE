@@ -9,7 +9,7 @@ void unittest_random_unif()
 
 	for (i=0;i<5;i++)
 	{
-		printf("%f\n",	random_unif());		
+		if(PRINT_DEBUG) printf("%f\n",	random_unif());		
 	}
 }
 
@@ -19,7 +19,7 @@ void unittest_random_unif_interval()
 	
 	for (i=0;i<5;i++)
 	{
-		printf("%f\n",	random_unif_interval(0.0,10.0));		
+		if(PRINT_DEBUG) printf("%f\n",	random_unif_interval(0.0,10.0));		
 	}
 }
 
@@ -39,14 +39,14 @@ void unittest_sum()
 	  //Input: p={0.6 0.2 0.8 0.4}
 	  p = malloc(sizeof(double)*size);
 	  p[0]=0.6; p[1]=0.2; p[2]=0.8; p[3]=0.4;
-	  printf("\n In unittest_sum: p=[%1.1f, %1.1f, %1.1f, %1.1f]\n", p[0], p[1], p[2], p[3]);
+	  if(PRINT_DEBUG) printf("\n In unittest_sum: p=[%1.1f, %1.1f, %1.1f, %1.1f]\n", p[0], p[1], p[2], p[3]);
 
 	  /***** Function evaluation ***************************************/
 	  //double sum(double * p, int size)
 	  sum_p = 0.0;
 	  sum_p = sum(p, size);
 	  
-	  printf("\n In function unittest_sum: sum_p = %f \n", sum_p);
+	  if(PRINT_DEBUG) printf("\n In function unittest_sum: sum_p = %f \n", sum_p);
 	  
      /***** Variables: Memory post-conditions *************************/
      CU_ASSERT_DOUBLE_EQUAL(sum_p, 2.0, 1e-3);
@@ -237,14 +237,14 @@ void unittest_draw_without_replacement()
      /***** Function evaluation ***************************************/
 	//void draw_without_replacement(int size, double * cpdf, int nr_draws, double * draws)
 	 draw_without_replacement(size, xvec, nr_draws, draws);
-     printf("\n In unittest_draw_without_replacement: draws=[%d, %d, %d, %d]\n", draws[0], draws[1], draws[2], draws[3]);
+     if(PRINT_DEBUG) printf("\n In unittest_draw_without_replacement: draws=[%d, %d, %d, %d]\n", draws[0], draws[1], draws[2], draws[3]);
 
  	 for (i=0;i<nr_draws;i++)
  	 {
  	  index = draws[i];
 	  value_draws[i] = xvec[index];
  	 }
-     printf("\n value_draws=[%1.2f, %1.2f, %1.2f, %1.2f]\n", value_draws[0], value_draws[1], value_draws[2], value_draws[3]);
+     if(PRINT_DEBUG) printf("\n value_draws=[%1.2f, %1.2f, %1.2f, %1.2f]\n", value_draws[0], value_draws[1], value_draws[2], value_draws[3]);
 	 
      /***** Variables: Memory post-conditions *************************/
      ans1 = ismember_double(value_draws[0], xvec, size);
@@ -289,7 +289,7 @@ void unittest1_draw_with_replacement()
      /***** Function evaluation ***************************************/
 	//void draw_with_replacement(int size, double * cpdf, int nr_draws, double * draws)
  	 draw_with_replacement(size, xvec, nr_draws, draws);
-     printf("\n In unittest_draw_with_replacement: draws=[%d, %d, %d, %d]\n", draws[0], draws[1], draws[2], draws[3]);
+     if(PRINT_DEBUG) printf("\n In unittest_draw_with_replacement: draws=[%d, %d, %d, %d]\n", draws[0], draws[1], draws[2], draws[3]);
 
      /***** Variables: Memory post-conditions *************************/
  	 for (i=0;i<nr_draws;i++)
@@ -297,7 +297,7 @@ void unittest1_draw_with_replacement()
  	  index = draws[i];
 	  value_draws[i] = xvec[index];
  	 }
-     printf("\n value_draws=[%1.2f, %1.2f, %1.2f, %1.2f]\n", value_draws[0], value_draws[1], value_draws[2], value_draws[3]);
+     if(PRINT_DEBUG) printf("\n value_draws=[%1.2f, %1.2f, %1.2f, %1.2f]\n", value_draws[0], value_draws[1], value_draws[2], value_draws[3]);
 
       ans1 = ismember_double(value_draws[0], xvec, size);
       ans2 = ismember_double(value_draws[1], xvec, size);
@@ -365,12 +365,12 @@ void unittest2_draw_with_replacement()
 	    		if(draws[i]==j)
 	    			{
 	    				sum[j] += 1;
-	    				//printf("\n Encountered: %d (draw %d)\n", draws[i], i);
+	    				//if(PRINT_DEBUG) printf("\n Encountered: %d (draw %d)\n", draws[i], i);
 	    			}
 	    	}
 	    }
-	    printf("\n  In unittest_draw_with_replacement: sum=[%d, %d, %d, %d]\n", sum[0], sum[1], sum[2], sum[3]);
-	    printf("  Expected: sum=[%d, %d, %d, %d]\n", 300, 100, 400, 200);
+	    if(PRINT_DEBUG) printf("\n  In unittest_draw_with_replacement: sum=[%d, %d, %d, %d]\n", sum[0], sum[1], sum[2], sum[3]);
+	    if(PRINT_DEBUG) printf("  Expected: sum=[%d, %d, %d, %d]\n", 300, 100, 400, 200);
 /*	    
 	    //Construct a pdf from draws:
 	    prob = malloc(size*sizeof(double));
@@ -380,11 +380,11 @@ void unittest2_draw_with_replacement()
 	    for (j=0;j<size;j++)
     	{
 	    	prob[j] = sum[j]/nr_draws;
-    		printf("\n nr_draws=%d\n", nr_draws);
-    		printf("\n sum[%d]=%d\n", j, sum[j]);
-    		printf("\n prob[%d]=%1.2f\n", j, prob[j]);
+    		if(PRINT_DEBUG) printf("\n nr_draws=%d\n", nr_draws);
+    		if(PRINT_DEBUG) printf("\n sum[%d]=%d\n", j, sum[j]);
+    		if(PRINT_DEBUG) printf("\n prob[%d]=%1.2f\n", j, prob[j]);
     	}
-        printf("\n In unittest_draw_with_replacement: prob=[%1.2f, %1.2f, %1.2f, %1.2f]\n", prob[0], prob[1], prob[2], prob[3]);
+        if(PRINT_DEBUG) printf("\n In unittest_draw_with_replacement: prob=[%1.2f, %1.2f, %1.2f, %1.2f]\n", prob[0], prob[1], prob[2], prob[3]);
      
      //construct the cpdf
      cpdf = malloc(sizeof(double)*size);
@@ -392,7 +392,7 @@ void unittest2_draw_with_replacement()
      
      cumpdf(prob, size, cpdf);
 
-     printf("\n In unittest_draw_with_replacement: cpdf=[%1.2f, %1.2f, %1.2f, %1.2f]\n", cpdf[0], cpdf[1], cpdf[2], cpdf[3]);
+     if(PRINT_DEBUG) printf("\n In unittest_draw_with_replacement: cpdf=[%1.2f, %1.2f, %1.2f, %1.2f]\n", cpdf[0], cpdf[1], cpdf[2], cpdf[3]);
 */     
      /*
      CU_ASSERT_EQUAL(cpdf[0], 300);

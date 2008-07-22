@@ -84,7 +84,7 @@ int Household_select_rule()
     double sum_attr;
     double * p;
     double * cpdf;
-    double * draws;
+    int * draws;
     
     //EWA learning parameters:
     double EWA_rho	=	EWA_PARAMETERS.EWA_rho;
@@ -135,30 +135,37 @@ int Household_select_rule()
      cumpdf(p, nr_rules, cpdf);
      
      //print prob. vector:
-     printf("\n prob: [");
-     for (j=0;j<nr_rules;j++){printf("%2.2f ", p[j]);}
-     printf("]\n");
-          
-     //print cpdf:
-     printf("\n cpdf: [");
-     for (j=0;j<nr_rules;j++){printf("%2.2f ", cpdf[j]);}
-     printf("]\n");
+     if(PRINT_DEBUG) 
+     {
+	     printf("\n prob: [");
+	     for (j=0;j<nr_rules;j++){printf("%2.2f ", p[j]);}
+	     printf("]\n");
+     }
      
-    //Selecting a strategy according to the pdf:
-    //we draw just 1 time from the cpdf
-     draws = malloc(sizeof(double)*1);
+     //print cpdf:
+     if(PRINT_DEBUG)
+     {
+	     printf("\n cpdf: [");
+	     for (j=0;j<nr_rules;j++){printf("%2.2f ", cpdf[j]);}
+	     printf("]\n");
+     }
+     
+    //Selecting a strategy according to the pdf
+    //we just draw 1 time from the cpdf:
+     draws = malloc(sizeof(int)*1);
      draw_with_replacement(nr_rules, cpdf, 1, draws);
      
+     nr_selected_rule = -1;
      nr_selected_rule = draws[0];
      
     //Test if a rule has been selected:
-    if (nr_selected_rule==0)
+    if (nr_selected_rule==-1)
     {
         printf("Error in EWA learning: No rule selection from choice probabilities");
     }
     
-    //Set the selected rule in memory (0-indexed):
-    PRIVATE_CLASSIFIERSYSTEM.current_rule = nr_selected_rule - 1;
+    //Set the selected rule in memory (1-indexed):
+    PRIVATE_CLASSIFIERSYSTEM.current_rule = nr_selected_rule + 1;
 
     //Free allocated memory
     free(p);
