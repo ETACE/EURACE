@@ -5,6 +5,7 @@
  * History:
  * 16/07/08 Sander 
  *********************************/
+#include <limits.h> //required to test for max. double: LONG_MAX
 #include "header.h"
 #include "FinancialAgent_agent_header.h"
 #include "FinancialAgent_aux_header.h"
@@ -135,12 +136,12 @@ void mutation(int size, double * string, double * stepsize, double prob_mut)
 		// apply mutation to the bit of string 1
 		if (random_unif() < prob_mut)
 		{	
-			//Set units to mutate between -10% and +10%
+			//Set units to mutate between -10*stepsize and +10*stepsize
 			//delta = random_unif_interval(-10.0, 10.0);
-			  delta= 10.0;
+			  delta= 1.0;
 				  
 			//mutate the value at position k by a random percentage between -10% and +10% of the previous value
-			string[k] = string[k] + delta*stepsize[k]*string[k];
+			string[k] = string[k] + delta*stepsize[k];
 		}
 	}    
 }
@@ -156,32 +157,42 @@ void election(int size, double * offspring_1, double * offspring_2, double * par
 
 
 
-int GA_selection(int * parent_index_1, int * parent_index_2, int * rule_id_1, int * rule_id_2)
+void GA_selection(int N_pairs, int * parent_index_1, int * parent_index_2, int * rule_id_1, int * rule_id_2)
 {
 	int j, index;
-	int nr_rules, N_rep, N_pairs;
+	int nr_rules, N_rep;
 	double avg_performance, sum;
 	
 	double * p;
 	double * cpdf;
-	double * draws;
+	int * draws;
 		
 	// *********************** Start of Selection function **************************************
 	// 1. Selection/Reproduction
-			
-	// N_rep is some fixed percentage of the population size pop_size, and should be even.
-	N_rep = (int) 2*floor((GA_PARAMETERS.reproduction_proportion * GA_PARAMETERS.pop_size)/2);
-
-	// N_pairs is the number of parent pairs that are produced by random matching from the N_rep draws
-    N_pairs = (int) 0.5*N_rep;
-
+			    
     //Computing fitness-based probabilities using multi-logit probabilities
 	nr_rules = PUBLIC_CLASSIFIERSYSTEM.nr_rules;
 	sum=0.0;
     for (j=0;j<nr_rules;j++)
     {
     	avg_performance  = PUBLIC_CLASSIFIERSYSTEM.ruletable[j].avg_performance;
-        sum += exp(EWA_PARAMETERS.EWA_beta * avg_performance);
+    	if(PRINT_DEBUG) printf("\n In GA_selection: avg_performance=%f\n", avg_performance);
+
+    	if(PRINT_DEBUG) 
+    	{
+	    	if (EWA_PARAMETERS.EWA_beta*avg_performance > log(LONG_MAX))
+	    	{
+	    		printf("\n In GA_selection, line 188: error computing sum.\n", avg_performance);    		
+	    		printf("\n Maximum value exceeded: EWA_PARAMETERS.EWA_beta * avg_performance > log(LONG_MAX).\n");
+	    		printf("\n LONG_MAX = %f.\n", LONG_MAX);
+	    		printf("\n log(LONG_MAX) = %f.\n", log(LONG_MAX));
+	    		printf("\n avg_performance=%f\n", avg_performance);
+	    		printf("\n EWA_PARAMETERS.EWA_beta=%f\n", EWA_PARAMETERS.EWA_beta);
+	    		printf("\n EWA_PARAMETERS.EWA_beta*avg_performance=%f\n", EWA_PARAMETERS.EWA_beta*avg_performance);    		
+	    	}
+    	}
+        sum += exp(EWA_PARAMETERS.EWA_beta*avg_performance);
+        if(PRINT_DEBUG) printf("\n In GA_selection: sum=%f\n", sum);
     }
     
     p = malloc(sizeof(double)*nr_rules);
@@ -189,6 +200,7 @@ int GA_selection(int * parent_index_1, int * parent_index_2, int * rule_id_1, in
     {
     	avg_performance  = PUBLIC_CLASSIFIERSYSTEM.ruletable[j].avg_performance;
         p[j] = exp(EWA_PARAMETERS.EWA_beta * avg_performance)/sum;
+        if(PRINT_DEBUG) printf("\n In GA_selection: p[%d]=%f\n", j, p[j]);
     }
 
     // Construct cumulative probability density function: cpdf
@@ -196,38 +208,45 @@ int GA_selection(int * parent_index_1, int * parent_index_2, int * rule_id_1, in
      cumpdf(p, nr_rules, cpdf);
      
     //print prob. vector:
-     printf("\n prob: [");
-     for (j=0;j<nr_rules;j++){printf("%2.2f ", p[j]);}
-     printf("]\n");
-          
+     if(PRINT_DEBUG) 
+     {
+	     printf("\n In GA_selection: prob: [ ");
+	     for (j=0;j<nr_rules;j++){printf("%2.2f ", p[j]);}
+	     printf("]\n");
+     }
     //print cpdf:
-     printf("\n cpdf: [");
-     for (j=0;j<nr_rules;j++){printf("%2.2f ", cpdf[j]);}
-     printf("]\n"); 
-     
+     if(PRINT_DEBUG) 
+     {
+	     printf("\n In GA_selection: cpdf: [ ");
+	     for (j=0;j<nr_rules;j++){printf("%2.2f ", cpdf[j]);}
+	     printf("]\n"); 
+     }     
      
      // Drawing N_rep random copies (without replacement) from the entire population
-     // using the fitness-based probabilities ('draws' contains the indices of the selected rules)
-     //WARNING: draws contains indices (int), but draw_without_replacement() returns a double array.
-     //Is this correctly type-cast inside the function draw_without_replacement() when it fills in draws?
-     draws = malloc(sizeof(int)*N_rep);
-     draw_without_replacement(nr_rules, cpdf, N_rep, draws);
-	
-	 // Create N_pairs parent pairs by random matching from the N_rep draws (N_pairs = (int) 0.5*N_rep)
-     parent_index_1 = malloc(sizeof(int)*N_pairs);
-     parent_index_2 = malloc(sizeof(int)*N_pairs);
+     // using the fitness-based probabilities.
+     N_rep = (int) 2*floor((GA_PARAMETERS.reproduction_proportion * GA_PARAMETERS.pop_size)/2);
      
-     // For the random matching, drawing is WITH replacement using uniform probabilities from the discrete interval: [0, N_pairs+1]
+     //draws is an array containing indices for the selected rules
+     draws = malloc(sizeof(int)*N_rep);
+     
+     //draw N_rep times without_replacement from density cpdf, and store results in draws 
+     //draw_without_replacement(nr_rules, cpdf, N_rep, draws);
+     
+     //testing:
+     draw_with_replacement(nr_rules, cpdf, N_rep, draws);
+	     
+     // For the random matching, drawing is WITH replacement using uniform probabilities
+     // from the discrete interval [0, N_pairs+1].
      // Drawing with replacement allows for both parents to be a copy of the same bitstring.
      // We use (N_pairs+0.999) below to allow also the last string to be drawn (casting as int takes the floor of the double).
      for (j=0; j<N_pairs; j++)
      {
-    	 parent_index_1[j] = (int)((N_pairs+0.999)*random_unif());
-    	 parent_index_2[j] = (int)((N_pairs+0.999)*random_unif());
+    	 //parent_index_1[j] = (int)((N_pairs+0.999)*random_unif());
+    	 //parent_index_2[j] = (int)((N_pairs+0.999)*random_unif());
      
     	 //equivalent code:
-    	 // parent_index_1[j] = (int)(random_unif_interval(0.0, N_pairs+0.999));
-    	 // parent_index_2[j] = (int)(random_unif_interval(0.0, N_pairs+0.999));
+    	  parent_index_1[j] = (int)(random_unif_interval(0.0, N_pairs+0.999));
+    	  parent_index_2[j] = (int)(random_unif_interval(0.0, N_pairs+0.999));
 
      // Now we have selected the indices of N_pairs parent pairs that will undergo crossover and mutation.
      // To retrieve the 2 rule_ids associated to these two indices parent_index_1, parent_index_2
@@ -240,7 +259,17 @@ int GA_selection(int * parent_index_1, int * parent_index_2, int * rule_id_1, in
 		index=parent_index_2[j];
 		rule_id_2[j]=draws[index];
      }
-
+     
+     //Testing:
+     if (PRINT_DEBUG) 
+     {
+	     printf("\n In GA_selection: draws=[%d, %d, %d, %d]\n", draws[0], draws[1], draws[2], draws[3]);
+	     printf("\n In GA_selection: parent_index_1=[%d, %d]\n", parent_index_1[0], parent_index_1[1]);
+	     printf("\n In GA_selection: parent_index_2=[%d, %d]\n", parent_index_2[0], parent_index_2[1]);
+	     printf("\n In GA_selection: rule_id_1=[%d, %d]\n", rule_id_1[0], rule_id_1[1]);
+	     printf("\n In GA_selection: rule_id_2=[%d, %d]\n", rule_id_2[0], rule_id_2[1]);
+     }
+     
 	 //Now we have 2 arrays of rule_ids that are randomly matched, and these can be used in the next functions.
      // *********************** End of Selection function **************************************
 
@@ -248,11 +277,10 @@ int GA_selection(int * parent_index_1, int * parent_index_2, int * rule_id_1, in
  	free(cpdf);
  	free(draws);
  	
- 	return N_pairs;
 }
 
 
-void GA_reproduction(int id1, int id2, double * offspring_1, double * offspring_2)
+void GA_reproduction(int size, int id1, int id2, double * offspring_1, double * offspring_2)
 {
 	int k;
 	int cross_point, cross_length;
@@ -261,15 +289,15 @@ void GA_reproduction(int id1, int id2, double * offspring_1, double * offspring_
 	 //void GA_reproduction() : applies to each parent pair, nr_pair=0,...,N_pairs
      //2. Genetic operators: cross-over
 		
-		//make a copy of the parents
-		offspring_1 = malloc(sizeof(double)*NR_PARAMS);
-		offspring_2 = malloc(sizeof(double)*NR_PARAMS);
-	
-		for (k=0; k<NR_PARAMS; k++)
+		printf("\n In GA_reproduction: copying rule id1=%d and rule id2=%d to offspring strings.\n", id1, id2);
+		printf("\n size=%d\n", size);
+		for (k=0; k<size; k++)
 		{
 			offspring_1[k]=PUBLIC_CLASSIFIERSYSTEM.ruletable[id1].parameters[k];
 			offspring_2[k]=PUBLIC_CLASSIFIERSYSTEM.ruletable[id2].parameters[k];
 		}
+	     printf("\n In GA_reproduction: offspring_1=[%1.1f, %1.1f]\n", offspring_1[0], offspring_1[1]);
+	     printf("\n In GA_reproduction: offspring_2=[%1.1f, %1.1f]\n", offspring_2[0], offspring_2[1]);
 
 		//now cross-over the strings
 		if (random_unif() < GA_PARAMETERS.prob_cross)
@@ -278,19 +306,19 @@ void GA_reproduction(int id1, int id2, double * offspring_1, double * offspring_
 			if (GA_PARAMETERS.single_point_cross_over)
 			{
 	   			// draw random cross-over point between $[1,L-1]$
-	   			cross_point = (int)random_unif_interval(1, NR_PARAMS-1);	
-	   			single_point_cross_over(NR_PARAMS, offspring_1, offspring_2, cross_point);
+	   			cross_point = (int)random_unif_interval(1, size-1);	
+	   			single_point_cross_over(size, offspring_1, offspring_2, cross_point);
 			}
 			else
 			{
 			    // 2b. Cross-over: 2-point cross-over
 				// draw random cross-over point between $[1,L-1]$
-				cross_point = (int)random_unif_interval(1, NR_PARAMS-1);
+				cross_point = (int)random_unif_interval(1, size-1);
 				
 				// draw random cross-over length between $[1,L-1]$
-				cross_length = (int)random_unif_interval(1, NR_PARAMS-1);
+				cross_length = (int)random_unif_interval(1, size-1);
 				
-				two_point_cross_over(NR_PARAMS, offspring_1, offspring_2, cross_point, cross_length);
+				two_point_cross_over(size, offspring_1, offspring_2, cross_point, cross_length);
 			}
 		}
 		else
@@ -309,8 +337,8 @@ void GA_mutation(int size, double * offspring_1, double * offspring_2)
  	//For each of the strings offspring_1 and offspring_2 that have just undergone cross-over, now perform mutation
 
     //void mutation(int size, double * offspring_1, double * offspring_2);
-	mutation(NR_PARAMS, offspring_1, GA_PARAMETERS.stepsize, GA_PARAMETERS.prob_mut);
-	mutation(NR_PARAMS, offspring_2, GA_PARAMETERS.stepsize, GA_PARAMETERS.prob_mut);
+	mutation(size, offspring_1, GA_PARAMETERS.stepsize, GA_PARAMETERS.prob_mut);
+	mutation(size, offspring_2, GA_PARAMETERS.stepsize, GA_PARAMETERS.prob_mut);
 
 	/*********************** End of Mutation function ****************************************************/
 }
@@ -332,7 +360,7 @@ void GA_election(int size, double * offspring_1, double * offspring_2)
 		 parent_1 = malloc(sizeof(double)*NR_PARAMS);
 		 parent_2 = malloc(sizeof(double)*NR_PARAMS);
 
-		for (k=0; k<NR_PARAMS; k++)
+		for (k=0; k<size; k++)
 		{
  		    parent_1[k]=PUBLIC_CLASSIFIERSYSTEM.ruletable[id1].parameters[k];
  		    parent_2[k]=PUBLIC_CLASSIFIERSYSTEM.ruletable[id2].parameters[k];
@@ -359,11 +387,122 @@ void GA_reinsertion(int size, double * offspring_1, double * offspring_2, int id
 	//void GA_reinsertion() : applies to each pair
 	//5. Finally, add the new strings to the population to replace the old ones
 	//This means: copy the parameters into the classifier system
-	for (k=0; k<NR_PARAMS; k++)
+	for (k=0; k<size; k++)
 	{
 		PUBLIC_CLASSIFIERSYSTEM.ruletable[id1].parameters[k] = offspring_1[k];
 		PUBLIC_CLASSIFIERSYSTEM.ruletable[id2].parameters[k] = offspring_2[k];
 	}
 	/*********************** End of Reinsertion function ****************************************************/
 }
+
+void FinancialAgent_print_public_classifiersystem()
+{	
+	char str[10];
+	char * filename;
+	FILE * file;
+
+	int i, rule_id, counter;
+	double performance, avg_performance, choiceprob;
+
+ 	//Set the output file:
+ 	i = sprintf(str, "%d", iteration_loop);
+ 	printf("iteration_loop in sprintf is %s\n", str);
+ 	printf("sprintf returns: %d\n\n", i);
+ 	
+ 	//Start an empty string for the filename
+ 	filename = malloc(20*sizeof(char));
+ 	filename[0]=0;
+ 	
+ 	//Concatenate
+ 	strcpy(filename, "./log/CS_");
+ 	strcat(filename, str);
+ 	strcat(filename, ".txt");
+ 	printf("File to write data to: %s\n\n", filename);
+
+ 	//Open a file pointer: FILE * file 
+ 	printf("\n Appending data to file: %s. Starting to write...\n", filename);
+ 	file = fopen(filename,"a");
+ 	fprintf(file, "\n Appending data to file\n");
+
+	//Print comments/notes:
+    fprintf(file,"Logfile: Print-out of all classifier systems. \n");
+    fprintf(file,"Note 1: The performance and counter columns for the households are copied from the FinancialAdvisors CS. \n");
+    fprintf(file,"Note 2: The avgperformance column can contain different values for two households, since it contains the copy from the FinancialAdvisors CS at the moment of the households most recent portfolio update. \n\n");
+
+    //Print FinancialAdvisor classifier system:
+    fprintf(file,"=============================================================================================\n");
+    fprintf(file,"FinancialAdvisor:\n");
+    fprintf(file,"rule id\t performance\t counter\t avg_performance\n");
+    fprintf(file,"=============================================================================================\n"); 
+
+    for (i=0;i<PUBLIC_CLASSIFIERSYSTEM.nr_rules;i++)
+    {
+         rule_id 		= PUBLIC_CLASSIFIERSYSTEM.ruletable[i].id;
+         performance 	= PUBLIC_CLASSIFIERSYSTEM.ruletable[i].performance;
+		 counter 		= PUBLIC_CLASSIFIERSYSTEM.ruletable[i].counter;         
+         avg_performance = PUBLIC_CLASSIFIERSYSTEM.ruletable[i].avg_performance;
+
+         fprintf(file,"%d\t %f\t %7d\t\t %f\t\t %f\n", rule_id, performance, counter, avg_performance);
+    }
+     fprintf(file,"=============================================================================================\n");
+
+    fprintf(file,"\n");
+	fclose(file);
+}
+
+/*
+void Household_print_private_classifiersystem()
+{
+	char str[10];
+	char * filename;
+	FILE * file;
+
+	int i, rule_id, counter;
+	double performance, avg_performance, my_performance, attraction, choiceprob;
+
+	//Set the output file:
+	i = sprintf(str, "%d", iteration_loop);
+	printf("iteration_loop in sprintf is %s\n", str);
+	printf("sprintf returns: %d\n\n", i);
+	
+	//Start an empty string for the filename
+	filename = malloc(20*sizeof(char));
+	filename[0]=0;
+	
+	//Concatenate
+	strcpy(filename, "./log/CS_");
+	strcat(filename, str);
+	strcat(filename, ".txt");
+	printf("File to write data to: %s\n\n", filename);
+
+	//Open a file pointer: FILE * file 
+	printf("\n Appending data to file: %s. Starting to write...\n", filename);
+	file = fopen(filename,"a");
+	fprintf(file, "\n Appending data to file\n");
+
+
+	//Print per household classifier system:
+	 fprintf(file,"=============================================================================================\n");
+	 fprintf(file,"Household: %d Current rule: %d\n", ID, PRIVATE_CLASSIFIERSYSTEM.current_rule);
+	 fprintf(file,"rule id\t performance\t counter\t avg_performance\t my_performance\t attraction\t choice prob\n");
+	 fprintf(file,"=============================================================================================\n"); 
+	
+	for (i=0;i<PRIVATE_CLASSIFIERSYSTEM.nr_rules;i++)
+	{
+		rule_id 		= PRIVATE_CLASSIFIERSYSTEM.ruletable[i].id;
+		performance 	= PRIVATE_CLASSIFIERSYSTEM.ruletable[i].performance;
+		counter 		= PRIVATE_CLASSIFIERSYSTEM.ruletable[i].counter;
+		avg_performance 	= PRIVATE_CLASSIFIERSYSTEM.ruletable[i].avg_performance;
+		my_performance 	= PRIVATE_CLASSIFIERSYSTEM.ruletable[i].my_performance;
+	    attraction 		= PRIVATE_CLASSIFIERSYSTEM.ruletable[i].attraction;
+	    choiceprob 		= PRIVATE_CLASSIFIERSYSTEM.ruletable[i].choiceprob;
+	    
+	    fprintf(file,"%d\t %f\t %7d\t\t %f\t\t %f\t\t %f\t %f\n", rule_id, performance, counter, avg_performance, my_performance, attraction, choiceprob);
+	}
+	fprintf(file,"=============================================================================================\n");
+
+	fprintf(file,"\n");
+	fclose(file);
+}
+*/
 // *********** END GA AUXILIARY FUNCTIONS ****************************

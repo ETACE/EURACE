@@ -8,12 +8,19 @@
 #include <stdio.h>
 #include <CUnit/Basic.h>
 #include <string.h> //required for strcat, strcpy
+#include <limits.h> //required to test for max. double: ULONG_MAX
 
 #include "../header.h"
 #include "../FinancialAgent_agent_header.h"
 #include "../FinancialAgent_aux_header.h"
 #include "../some_new_functions.h"
 
+/*
+ * \fn: void unittest_single_point_cross_over()
+ * \brief: Unit test for single_point_cross_over()
+ * Test for 1-point cross-over: 2 bits crossed over.
+ * Status: Tested OK
+ */
 void unittest_single_point_cross_over()
 {
 	// Variables: Memory pre-conditions **************************
@@ -56,7 +63,12 @@ void unittest_single_point_cross_over()
 	free(yvec);
 }
 
-
+/*
+ * \fn: void unittest1_two_point_cross_over()
+ * \brief: Unit test for two_point_cross_over()
+ * Simple test for 2-point cross-over: 1 bit crossed over.
+ * Status: Tested OK
+ */
 void unittest1_two_point_cross_over()
 {
 	int c, ell, size;
@@ -103,6 +115,12 @@ void unittest1_two_point_cross_over()
 	free(yvec);
 }
 
+/*
+ * \fn: void unittest1_two_point_cross_over()
+ * \brief: Unit test for two_point_cross_over()
+ * Test 2-point cross-over for proper handling of wrap-around: string size=4, cross-over point=2, length=3.
+ * Status: Tested OK
+ */
 void unittest2_two_point_cross_over()
 {
 	int c, ell, size;
@@ -149,7 +167,12 @@ void unittest2_two_point_cross_over()
 	free(yvec);
 }
 
-
+/*
+ * \fn: void unittest1_two_point_cross_over_alt()
+ * \brief: Unit test for two_point_cross_over_alt()
+ * Simple test for 2-point cross-over: 1 bit crossed over.
+ * Status: Tested OK
+ */
 void unittest1_two_point_cross_over_alt()
 {
 	int c, ell, size;
@@ -197,6 +220,12 @@ void unittest1_two_point_cross_over_alt()
 	free(yvec);
 }
 
+/*
+ * \fn: void unittest2_two_point_cross_over_alt()
+ * \brief: Unit test for two_point_cross_over_alt()
+ * Test 2-point cross-over for proper handling of wrap-around: string size=4, cross-over point=2, length=3.
+ * Status: Tested OK
+ */
 void unittest2_two_point_cross_over_alt()
 {
 	int c, ell, size;
@@ -244,6 +273,12 @@ void unittest2_two_point_cross_over_alt()
 	free(yvec);
 }
 
+/*
+ * \fn: void unittest3_two_point_cross_over_alt()
+ * \brief: Unit test for two_point_cross_over_alt()
+ * Test 2-point cross-over for proper handling of wrap-around: string size=8, cross-over point=7, length=3.
+ * Status: Tested OK
+ */
 void unittest3_two_point_cross_over_alt()
 {
 	int c, ell, size;
@@ -300,6 +335,11 @@ void unittest3_two_point_cross_over_alt()
 	free(yvec);
 }
 
+/*
+ * \fn: void unittest_mutation()
+ * \brief: Unit test for 
+ * Status: Not tested
+ */
 void unittest_mutation()
 {   
  	// At start of unit test, add one agent
@@ -345,11 +385,15 @@ void unittest_mutation()
 	// free();
 }
 
-
-//int GA_selection(int * parent_index_1, int * parent_index_2, int * rule_id_1, int * rule_id_2)
+/*
+ * \fn: void unittest_GA_selection()
+ * \brief: Unit test for int GA_selection(int * parent_index_1, int * parent_index_2, int * rule_id_1, int * rule_id_2)
+ * Expected result: rule 3 is selected. 
+ * Status: Tested OK, using max value for (beta*performance)=709.0.
+ */
 void unittest_GA_selection()
 {
-	int size, N_pairs;
+	int N_rep, N_pairs;
 	int * parent_index_1; //contains random draws from interval [0, N_pairs], used for random matching
 	int * parent_index_2; //contains random draws from interval [0, N_pairs], used for random matching
 	int * rule_id_1;      //contains the rule_ids from PUBLIC_CLASSIFIERSYSTEM.ruletable[id1]
@@ -370,7 +414,7 @@ void unittest_GA_selection()
    	//GA_PARAMETERS.election: dummy for election operator
    	//GA_PARAMETERS.stepsize: vector of stepsizes for mutation of real-valued parameters
 
-     EWA_PARAMETERS.EWA_beta = 99;
+     EWA_PARAMETERS.EWA_beta = 1;
    	 GA_PARAMETERS.pop_size = 4;
    	 GA_PARAMETERS.reproduction_proportion = 1.0;
    	
@@ -383,59 +427,62 @@ void unittest_GA_selection()
      PUBLIC_CLASSIFIERSYSTEM.ruletable[1].id=10;
      PUBLIC_CLASSIFIERSYSTEM.ruletable[1].counter=0;
      PUBLIC_CLASSIFIERSYSTEM.ruletable[1].performance=0.0;
-     PUBLIC_CLASSIFIERSYSTEM.ruletable[1].avg_performance=1.0;
+     PUBLIC_CLASSIFIERSYSTEM.ruletable[1].avg_performance=0.0;
 
      PUBLIC_CLASSIFIERSYSTEM.ruletable[2].id=20;
      PUBLIC_CLASSIFIERSYSTEM.ruletable[2].counter=0;
      PUBLIC_CLASSIFIERSYSTEM.ruletable[2].performance=0.0;
-     PUBLIC_CLASSIFIERSYSTEM.ruletable[2].avg_performance=1.0;
+     PUBLIC_CLASSIFIERSYSTEM.ruletable[2].avg_performance=0.0;
 
      PUBLIC_CLASSIFIERSYSTEM.ruletable[3].id=30;
      PUBLIC_CLASSIFIERSYSTEM.ruletable[3].counter=0;
      PUBLIC_CLASSIFIERSYSTEM.ruletable[3].performance=0.0;
-     PUBLIC_CLASSIFIERSYSTEM.ruletable[3].avg_performance=1000.0;
+     PUBLIC_CLASSIFIERSYSTEM.ruletable[3].avg_performance=709.0;
 
-     size=4;
- 	 parent_index_1 = malloc(size*sizeof(int));
- 	 parent_index_2 = malloc(size*sizeof(int));
- 	 rule_id_1 = malloc(size*sizeof(int));
- 	 rule_id_2 = malloc(size*sizeof(int));
+     N_rep = (int) 2*floor((GA_PARAMETERS.reproduction_proportion * GA_PARAMETERS.pop_size)/2);
+     if(PRINT_DEBUG) printf("\n In unittest_GA_selection: N_rep=%d\n", N_rep);
+ 	
+ 	 // N_pairs is the number of parent pairs that are produced by random matching from the N_rep draws
+     N_pairs = (int) N_rep/2;
+     if(PRINT_DEBUG) printf("\n In unittest_GA_selection: N_pairs=%d\n", N_pairs);
+
+     //all mallocs are done inside the function GA_selection():
+     parent_index_1 = malloc(sizeof(int)*N_pairs);
+     parent_index_2 = malloc(sizeof(int)*N_pairs);
+     rule_id_1 = malloc(sizeof(int)*N_pairs);
+     rule_id_2 = malloc(sizeof(int)*N_pairs);
 
      //***** Messages: pre-conditions **********************************
 
      //***** Function evaluation ***************************************
-	 //Unittest 1: 4 rules, reproduction uses 100% of population
-	 //Expected result: N_pairs = 2
- 	 //EWA.beta=99, so the rule with the best performance gets selected with highest prob.
- 	 //Expected result: 
- 	 // parent_index_1 = [3,3], parent_index_2 = [3,3]  
- 	 // rule_id_1 = [3,3], rule_id_2 = [3,3]
-
+	 //Unittest 1:
+ 	 // - 4 rules, reproduction uses 100% of population
+ 	 // - EWA.beta=1, performance of rule 3 is highest.
+	 //Expected result:
+ 	 // - N_pairs = 2; 1st pair: (rule 3, rule 3); 2nd pair: (rule 3, rule 3)
+  	 // - parent_index_1 = [3,3], parent_index_2 = [3,3]  
+ 	 // - rule_id_1 = [3,3], rule_id_2 = [3,3]
+ 	 
  	 //If reproduction uses only a subset of the population, the size of 'draws' will be different,
  	 //so parent_index_i will differ in size from rule_id_i.
  	 //Then parent_index_i contains indices from 'draws'
  	 
-     N_pairs = GA_selection(parent_index_1, parent_index_2, rule_id_1, rule_id_2);
+     GA_selection(N_pairs, parent_index_1, parent_index_2, rule_id_1, rule_id_2);
      
      //***** Variables: Memory post-conditions *************************
      CU_ASSERT_EQUAL(N_pairs, 2);
      
-     printf("In unittest_GA_selection: parent_index_1[0]=%d, parent_index_1[1]=%d", parent_index_1[0], parent_index_1[1]);
-     printf("In unittest_GA_selection: parent_index_2[0]=%d, parent_index_2[1]=%d", parent_index_2[0], parent_index_2[1]);
-     CU_ASSERT_EQUAL(parent_index_1[0], 3);
-     CU_ASSERT_EQUAL(parent_index_1[1], 3);
-     CU_ASSERT_EQUAL(parent_index_2[0], 3);
-     CU_ASSERT_EQUAL(parent_index_2[1], 3);
-
-     printf("In unittest_GA_selection: rule_id_1[0]=%d, rule_id_1[1]=%d", rule_id_1[0], rule_id_1[1]);
-     printf("In unittest_GA_selection: rule_id_2[0]=%d, rule_id_2[1]=%d", rule_id_2[0], rule_id_2[1]);
+     if(PRINT_DEBUG) printf("\n In unittest_GA_selection: parent_index_1=[%d, %d]\n", parent_index_1[0], parent_index_1[1]);
+     if(PRINT_DEBUG) printf("\n In unittest_GA_selection: parent_index_2=[%d, %d]\n", parent_index_2[0], parent_index_2[1]);
+     
+     if(PRINT_DEBUG) printf("\n In unittest_GA_selection: rule_id_1=[%d, %d]\n", rule_id_1[0], rule_id_1[1]);
+     if(PRINT_DEBUG) printf("\n In unittest_GA_selection: rule_id_2=[%d, %d]\n", rule_id_2[0], rule_id_2[1]);
+     
      CU_ASSERT_EQUAL(rule_id_1[0], 3);
      CU_ASSERT_EQUAL(rule_id_1[1], 3);
      CU_ASSERT_EQUAL(rule_id_2[0], 3);
      CU_ASSERT_EQUAL(rule_id_2[1], 3);
-     
-     test_FinancialAgent_print_public_classifiersystem();
-     
+
      //***** Messages: post-conditions **********************************
 
      //************* At end of unit test, free the agent **************
@@ -450,9 +497,11 @@ void unittest_GA_selection()
  	 free(rule_id_2);
 }
 
-
-
-//GA_reproduction(rule_id_1[j], rule_id_2[j], offspring_1, offspring_2);
+/*
+ * \fn: void unittest_GA_reproduction()
+ * \brief: Unit test for GA_reproduction(rule_id_1[j], rule_id_2[j], offspring_1, offspring_2);
+ * Status: Tested OK
+ */
 void unittest_GA_reproduction()
 {
 	int j, size;
@@ -485,7 +534,7 @@ void unittest_GA_reproduction()
       //0.0 -> 0.50
 
   	EWA_PARAMETERS.EWA_beta = 1.0;
-  	GA_PARAMETERS.prob_cross = 0.0;
+  	GA_PARAMETERS.prob_cross = 0.0; //no cross-over
   	GA_PARAMETERS.pop_size = 2;
   	GA_PARAMETERS.reproduction_proportion = 1.00;
 
@@ -507,8 +556,8 @@ void unittest_GA_reproduction()
  	 offspring_1[0]=0.0; offspring_1[1]=0.0;
  	 offspring_2[0]=0.0; offspring_2[1]=0.0;
 
-	 rule_id_1[0]=1; rule_id_1[1]=1;
-	 rule_id_2[0]=1; rule_id_2[1]=1;
+	 rule_id_1[0]=0; rule_id_1[1]=0; //this should create: parent_1=[1.0, 2.0]
+	 rule_id_2[0]=0; rule_id_2[1]=0; //this should create: parent_2=[1.0, 2.0] as well.
 	 
   	 //***** Messages: pre-conditions **********************************
 
@@ -517,11 +566,12 @@ void unittest_GA_reproduction()
 	 //Random draws of parents to match are all string_1
 	 //Expected result: offspring are direct copies of parent_1
   	 j=0;
-     GA_reproduction(rule_id_1[j], rule_id_2[j], offspring_1, offspring_2);
+  	 printf("\n Entering GA_reproduction with: rule_id_1[j]=%d rule_id_2[j]=%d.\n", rule_id_1[j], rule_id_1[j]);
+     GA_reproduction(size, rule_id_1[j], rule_id_2[j], offspring_1, offspring_2);
      
      //***** Variables: Memory post-conditions *************************
-     printf("In unittest_GA_reproduction: offspring_1[0]=%d, offspring_1[1]=%d", offspring_1[0], offspring_1[1]);
-     printf("In unittest_GA_reproduction: offspring_2[0]=%d, offspring_2[1]=%d", offspring_2[0], offspring_2[1]);
+     printf("\n In unittest_GA_reproduction: offspring_1=[%1.1f, %1.1f]\n", offspring_1[0], offspring_1[1]);
+     printf("\n In unittest_GA_reproduction: offspring_2=[%1.1f, %1.1f]\n", offspring_2[0], offspring_2[1]);
      CU_ASSERT_DOUBLE_EQUAL(offspring_1[0], 1.0, 1e-3);
      CU_ASSERT_DOUBLE_EQUAL(offspring_1[1], 2.0, 1e-3);
      CU_ASSERT_DOUBLE_EQUAL(offspring_2[0], 1.0, 1e-3);
@@ -541,9 +591,11 @@ void unittest_GA_reproduction()
  	 free(offspring_2);	
 }
 
-
-
-//GA_mutation(NR_PARAMS, offspring_1, offspring_2);
+/*
+ * \fn: void unittest_GA_mutation()
+ * \brief: Unit test for GA_mutation(NR_PARAMS, offspring_1, offspring_2);
+ * Status: Tested OK
+ */
 void unittest_GA_mutation()
 {
 	int size;
@@ -592,6 +644,8 @@ void unittest_GA_mutation()
  	 GA_mutation(size, offspring_1, offspring_2);
      
      //***** Variables: Memory post-conditions *************************
+     printf("\n In unittest_GA_mutation: offspring_1=[%1.5f, %1.5f]\n", offspring_1[0], offspring_1[1]);
+     printf("\n In unittest_GA_mutation: offspring_2=[%1.5f, %1.5f]\n", offspring_2[0], offspring_2[1]);
      CU_ASSERT_DOUBLE_EQUAL(offspring_1[0], 0.01, 1e-3);
      CU_ASSERT_DOUBLE_EQUAL(offspring_1[1], 0.05, 1e-3);
      CU_ASSERT_DOUBLE_EQUAL(offspring_2[0], 0.01, 1e-3);
@@ -610,9 +664,11 @@ void unittest_GA_mutation()
   	 free(offspring_2);	
 }
 
-
-
-//GA_election(NR_PARAMS, offspring_1, offspring_2);
+/*
+ * \fn: void unittest_GA_election()
+ * \brief: Unit test for GA_election(NR_PARAMS, offspring_1, offspring_2);
+ * Status: Not tested
+ */
 void unittest_GA_election()
 {
 	int size;
@@ -635,7 +691,7 @@ void unittest_GA_election()
      //***** Messages: pre-conditions *********************************
 
      //***** Function evaluation **************************************
-     GA_election(2, offspring_1, offspring_2);
+     GA_election(size, offspring_1, offspring_2);
      
      //***** Variables: Memory post-conditions ************************
 //     CU_ASSERT_DOUBLE_EQUAL(PUBLIC_CLASSIFIERSYSTEM.ruletable[0].counter, 0.0, 1e-3);
@@ -652,12 +708,15 @@ void unittest_GA_election()
    	 free(offspring_2);	
 }
 
-
-
-//GA_reinsertion(NR_PARAMS, offspring_1, offspring_2, rule_id_1[j], rule_id_2[j]);
+/*
+ * \fn: void unittest_GA_reinsertion()
+ * \brief: Unit test for GA_reinsertion(NR_PARAMS, offspring_1, offspring_2, rule_id_1[j], rule_id_2[j]);
+ * \desc: Tests whether 2 strings are correctly inserted in the rule table.
+ * Status: Tested OK
+ */
 void unittest_GA_reinsertion()
 {
-	int j, size;
+	int j, size, Npairs;
 	
 	int * rule_id_1;      //contains rule_ids from PUBLIC_CLASSIFIERSYSTEM.ruletable[id1]
 	int * rule_id_2;      //contains rule_ids from PUBLIC_CLASSIFIERSYSTEM.ruletable[id2]
@@ -668,25 +727,20 @@ void unittest_GA_reinsertion()
      //************* At start of unit test, add one agent **************
      unittest_init_FinancialAgent_agent();
 
-
      //***** Variables: Memory pre-conditions **************************
 	 size=2;
 	 offspring_1 = malloc(size*sizeof(double));
 	 offspring_2 = malloc(size*sizeof(double));
-	 rule_id_1 = malloc(size*sizeof(int));
-	 rule_id_2 = malloc(size*sizeof(int));
 
-	 offspring_1[0]=1.0;
-	 offspring_1[1]=2.0;
+	 offspring_1[0]=1.0; offspring_1[1]=2.0;
+	 offspring_2[0]=3.0; offspring_2[1]=4.0;
 	 
-	 offspring_2[0]=3.0;
-	 offspring_2[1]=4.0;
+	 Npairs=1;
+	 rule_id_1 = malloc(Npairs*sizeof(int));
+	 rule_id_2 = malloc(Npairs*sizeof(int));
 	 
-	 rule_id_1[0]=1;
-	 rule_id_1[1]=2;
-	 
-	 rule_id_2[0]=1;
-	 rule_id_2[1]=2;
+	 rule_id_1[0]=0; //This gives the 1st index in the ruletable[id1]
+	 rule_id_2[0]=1; //This gives the 2nd index in the ruletable[id2]
 	 
 	 
      PUBLIC_CLASSIFIERSYSTEM.nr_rules =2;
@@ -703,7 +757,7 @@ void unittest_GA_reinsertion()
      //***** Function evaluation ***************************************
      //Unittest 1: copy offspring_1 -> ruletable[id1] and offspring_2 -> ruletable[id2] 
      j=0;
-	 GA_reinsertion(NR_PARAMS, offspring_1, offspring_2, rule_id_1[j], rule_id_2[j]);
+	 GA_reinsertion(size, offspring_1, offspring_2, rule_id_1[j], rule_id_2[j]);
      
      //***** Variables: Memory post-conditions *************************
      CU_ASSERT_DOUBLE_EQUAL(PUBLIC_CLASSIFIERSYSTEM.ruletable[0].parameters[0], 1.0, 1e-3);
@@ -725,6 +779,8 @@ void unittest_GA_reinsertion()
  	 free(rule_id_2);
 }
 
+
+//Status: Tested OK
 void test_print()
 {	
 	char str[10];
@@ -759,8 +815,12 @@ void test_print()
 	fclose(file);
 }
 
-
-void test_FinancialAgent_print_public_classifiersystem()
+/*
+ * \fn: void unittest_FinancialAgent_print_public_classifiersystem()
+ * \brief: Unit test for FinancialAgent_print_public_classifiersystem
+ * Status: Tested OK
+ */
+void unittest_FinancialAgent_print_public_classifiersystem()
 {	
 	char str[10];
 	char * filename;
@@ -768,28 +828,69 @@ void test_FinancialAgent_print_public_classifiersystem()
 
 	int i, rule_id, counter;
 	double performance, avg_performance, choiceprob;
+	double p0,p1,p2,p3;
 
-	//Set the output file:
-	i = sprintf(str, "%d", iteration_loop);
-	printf("iteration_loop in sprintf is %s\n", str);
-	printf("sprintf returns: %d\n\n", i);
-	
-	//Start an empty string for the filename
-	filename = malloc(20*sizeof(char));
-	filename[0]=0;
-	
-	//Concatenate
-	strcpy(filename, "./log/CS_");
-	strcat(filename, str);
-	strcat(filename, ".txt");
-	printf("File to write data to: %s\n\n", filename);
+ 	//Set the output file:
+ 	i = sprintf(str, "%d", iteration_loop);
+ 	printf("\n iteration_loop in sprintf is %s\n", str);
+ 	//printf("sprintf returns: %d\n\n", i);
+ 	
+ 	//Start an empty string for the filename
+ 	filename = malloc(20*sizeof(char));
+ 	filename[0]=0;
+ 	
+ 	//Concatenate
+ 	strcpy(filename, "./log/CS_");
+ 	strcat(filename, str);
+ 	strcat(filename, ".txt");
+ 	printf(" File to write data to: %s\n", filename);
 
-	//Open a file pointer: FILE * file 
-	printf("\n Appending data to file: %s. Starting to write...\n", filename);
-	file = fopen(filename,"a");
-	fprintf(file, "\n Appending data to file\n");
+ 	//Open a file pointer: FILE * file 
+ 	printf("\nAppending data to file: %s. Starting to write...\n", filename);
+ 	file = fopen(filename,"a");
+ 	fprintf(file, "\nAppending data to file\n");
 
+    //************* At start of unit test, add one agent **************
+     unittest_init_FinancialAgent_agent();
 
+    //***** Variables: Memory pre-conditions **************************    
+    //Initializations:
+   	//EWA_PARAMETERS.EWA_beta: used for the determination of fitness-proportional selection probabilities, exp(beta*performance)
+   	//GA_PARAMETERS.prob_cross: cross-over probability
+   	//GA_PARAMETERS.prob_mut: mutation  probability
+   	//GA_PARAMETERS.string_size: length of strings
+   	//GA_PARAMETERS.single_point_crossover: dummy for single_point_crossover (if 1: use single point cross-over, 0: use two point cross-over) 
+   	//GA_PARAMETERS.pop_size
+   	//GA_PARAMETERS.reproduction_proportion 
+   	//GA_PARAMETERS.election: dummy for election operator
+   	//GA_PARAMETERS.stepsize: vector of stepsizes for mutation of real-valued parameters
+
+     EWA_PARAMETERS.EWA_beta = 99;
+   	 GA_PARAMETERS.pop_size = 4;
+   	 GA_PARAMETERS.reproduction_proportion = 1.0;
+   	
+     PUBLIC_CLASSIFIERSYSTEM.nr_rules =4;
+     PUBLIC_CLASSIFIERSYSTEM.ruletable[0].id=0;
+     PUBLIC_CLASSIFIERSYSTEM.ruletable[0].counter=0;
+     PUBLIC_CLASSIFIERSYSTEM.ruletable[0].performance=0.0;
+     PUBLIC_CLASSIFIERSYSTEM.ruletable[0].avg_performance=0.0;
+
+     PUBLIC_CLASSIFIERSYSTEM.ruletable[1].id=10;
+     PUBLIC_CLASSIFIERSYSTEM.ruletable[1].counter=3;
+     PUBLIC_CLASSIFIERSYSTEM.ruletable[1].performance=0.0;
+     PUBLIC_CLASSIFIERSYSTEM.ruletable[1].avg_performance=1.0;
+
+     PUBLIC_CLASSIFIERSYSTEM.ruletable[2].id=20;
+     PUBLIC_CLASSIFIERSYSTEM.ruletable[2].counter=5;
+     PUBLIC_CLASSIFIERSYSTEM.ruletable[2].performance=0.0;
+     PUBLIC_CLASSIFIERSYSTEM.ruletable[2].avg_performance=1.0;
+
+     PUBLIC_CLASSIFIERSYSTEM.ruletable[3].id=30;
+     PUBLIC_CLASSIFIERSYSTEM.ruletable[3].counter=7;
+     PUBLIC_CLASSIFIERSYSTEM.ruletable[3].performance=0.0;
+     PUBLIC_CLASSIFIERSYSTEM.ruletable[3].avg_performance=1000.0;
+
+     
 	//Print comments/notes:
     fprintf(file,"Logfile: Print-out of all classifier systems. \n");
     fprintf(file,"Note 1: The performance and counter columns for the households are copied from the FinancialAdvisors CS. \n");
@@ -798,76 +899,26 @@ void test_FinancialAgent_print_public_classifiersystem()
     //Print FinancialAdvisor classifier system:
     fprintf(file,"=============================================================================================\n");
     fprintf(file,"FinancialAdvisor:\n");
-    fprintf(file,"rule id\t performance\t counter\t avg_performance\n");
+    fprintf(file,"rule id\t performance\t counter\t avg_performance\t rule details\n");
     fprintf(file,"=============================================================================================\n"); 
 
     for (i=0;i<PUBLIC_CLASSIFIERSYSTEM.nr_rules;i++)
     {
-         rule_id 		= PUBLIC_CLASSIFIERSYSTEM.ruletable[i].id;
-         performance 	= PUBLIC_CLASSIFIERSYSTEM.ruletable[i].performance;
-		 counter 		= PUBLIC_CLASSIFIERSYSTEM.ruletable[i].counter;         
-         avg_performance = PUBLIC_CLASSIFIERSYSTEM.ruletable[i].avg_performance;
+        rule_id 		= PUBLIC_CLASSIFIERSYSTEM.ruletable[i].id;
+        performance 	= PUBLIC_CLASSIFIERSYSTEM.ruletable[i].performance;
+		counter 		= PUBLIC_CLASSIFIERSYSTEM.ruletable[i].counter;         
+        avg_performance = PUBLIC_CLASSIFIERSYSTEM.ruletable[i].avg_performance;
+  	    p0		 		= PUBLIC_CLASSIFIERSYSTEM.ruletable[i].parameters[0];
+ 	    p1		 		= PUBLIC_CLASSIFIERSYSTEM.ruletable[i].parameters[1];
+ 	    p2		 		= PUBLIC_CLASSIFIERSYSTEM.ruletable[i].parameters[2];
+ 	    p3		 		= PUBLIC_CLASSIFIERSYSTEM.ruletable[i].parameters[3];
 
-         fprintf(file,"%d\t %f\t %7d\t\t %f\t\t %f\n", rule_id, performance, counter, avg_performance);
+        fprintf(file,"%8d\t %.4f\t %8d\t %.4f\t [%1.1f, %1.1f, %1.1f, %1.1f]\n", rule_id, performance, counter, avg_performance, p0, p1, p2, p3);
     }
      fprintf(file,"=============================================================================================\n");
 
     fprintf(file,"\n");
 	fclose(file);
+ 	printf("\n Finished writing and closed the file stream.\n");
+
 }
-
-/*
-void test_Household_print_private_classifiersystem()
-{
-	char str[10];
-	char * filename;
-	FILE * file;
-
-	int i, rule_id, counter;
-	double performance, avg_performance, my_performance, attraction, choiceprob;
-
-	//Set the output file:
-	i = sprintf(str, "%d", iteration_loop);
-	printf("iteration_loop in sprintf is %s\n", str);
-	printf("sprintf returns: %d\n\n", i);
-	
-	//Start an empty string for the filename
-	filename = malloc(20*sizeof(char));
-	filename[0]=0;
-	
-	//Concatenate
-	strcpy(filename, "./log/CS_");
-	strcat(filename, str);
-	strcat(filename, ".txt");
-	printf("File to write data to: %s\n\n", filename);
-
-	//Open a file pointer: FILE * file 
-	printf("\n Appending data to file: %s. Starting to write...\n", filename);
-	file = fopen(filename,"a");
-	fprintf(file, "\n Appending data to file\n");
-
-
-	//Print per household classifier system:
-	 fprintf(file,"=============================================================================================\n");
-	 fprintf(file,"Household: %d Current rule: %d\n", ID, PRIVATE_CLASSIFIERSYSTEM.current_rule);
-	 fprintf(file,"rule id\t performance\t counter\t avg_performance\t my_performance\t attraction\t choice prob\n");
-	 fprintf(file,"=============================================================================================\n"); 
-	
-	for (i=0;i<PRIVATE_CLASSIFIERSYSTEM.nr_rules;i++)
-	{
-		rule_id 		= PRIVATE_CLASSIFIERSYSTEM.ruletable[i].id;
-		performance 	= PRIVATE_CLASSIFIERSYSTEM.ruletable[i].performance;
-		counter 		= PRIVATE_CLASSIFIERSYSTEM.ruletable[i].counter;
-		avg_performance 	= PRIVATE_CLASSIFIERSYSTEM.ruletable[i].avg_performance;
-		my_performance 	= PRIVATE_CLASSIFIERSYSTEM.ruletable[i].my_performance;
-	    attraction 		= PRIVATE_CLASSIFIERSYSTEM.ruletable[i].attraction;
-	    choiceprob 		= PRIVATE_CLASSIFIERSYSTEM.ruletable[i].choiceprob;
-	    
-	    fprintf(file,"%d\t %f\t %7d\t\t %f\t\t %f\t\t %f\t %f\n", rule_id, performance, counter, avg_performance, my_performance, attraction, choiceprob);
-	}
-	fprintf(file,"=============================================================================================\n");
-
-	fprintf(file,"\n");
-	fclose(file);
-}
-*/

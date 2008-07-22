@@ -13,6 +13,8 @@
 /************Household: EWA learning Role ********************************/
 
 /************ Unit tests ********************************/
+
+//Status: Not tested
 void unittest_Household_send_rule_performance()
 {
     /************* At start of unit test, add one agent **************/
@@ -51,6 +53,7 @@ void unittest_Household_send_rule_performance()
      free_messages();
 }
 
+//Status: Not tested
 void unittest_Household_read_all_performances()
 {
 	int i;
@@ -97,6 +100,7 @@ void unittest_Household_read_all_performances()
      free_messages();
 }
 
+//Status: Not tested
 void unittest1_Household_select_rule()
 {
     /************* At start of unit test, add one agent **************/
@@ -164,7 +168,7 @@ void unittest1_Household_select_rule()
      free_messages();
 }
 
-
+//Status: Not tested
 void unittest2_Household_select_rule()
 {
     /************* At start of unit test, add one agent **************/
@@ -229,6 +233,7 @@ void unittest2_Household_select_rule()
      free_messages();
 }
 
+//Status: Not tested
 void unittest_Household_read_and_update_rule_details()
 {
 	int i;
@@ -293,6 +298,7 @@ void unittest_Household_read_and_update_rule_details()
 }
 
 //NOT IMPLEMENTED YET
+//Status: Not tested
 void unittest_Household_apply_rule()
 {
 	int i;
@@ -343,6 +349,7 @@ void unittest_Household_apply_rule()
      free_messages();
 }
 
+//Status: Not tested
 void unittest_Household_reset_private_classifiersystem()
 {
 	
@@ -383,4 +390,92 @@ void unittest_Household_reset_private_classifiersystem()
      unittest_free_Household_agent();
     /************* At end of unit tests, free all Messages **********/
      free_messages();
+}
+
+
+//Status: Tested OK
+void unittest_Household_print_private_classifiersystem()
+{
+	char str[10];
+	char * filename;
+	FILE * file;
+
+	int i, rule_id, counter;
+	double performance, avg_performance, my_performance, attraction, choiceprob;
+	double p0,p1,p2,p3;
+	
+	//Set the output file:
+	i = sprintf(str, "%d", iteration_loop);
+	printf("iteration_loop in sprintf is %s\n", str);
+	printf("sprintf returns: %d\n\n", i);
+	
+	//Start an empty string for the filename
+	filename = malloc(20*sizeof(char));
+	filename[0]=0;
+	
+	//Concatenate
+	strcpy(filename, "./log/CS_");
+	strcat(filename, str);
+	strcat(filename, ".txt");
+	printf("File to write data to: %s\n\n", filename);
+
+	//Open a file pointer: FILE * file 
+	printf("\n Appending data to file: %s. Starting to write...\n", filename);
+	file = fopen(filename,"a");
+	fprintf(file, "\nAppending data to file\n");
+
+    //************* At start of unit test, add one agent **************
+     unittest_init_Household_agent();
+     
+    //***** Variables: Memory pre-conditions **************************
+     PRIVATE_CLASSIFIERSYSTEM.nr_rules =4;
+     PRIVATE_CLASSIFIERSYSTEM.ruletable[0].id=0;
+ 	 PRIVATE_CLASSIFIERSYSTEM.ruletable[0].my_performance=0.0;
+     PRIVATE_CLASSIFIERSYSTEM.ruletable[0].avg_performance=0.0;
+	 PRIVATE_CLASSIFIERSYSTEM.ruletable[0].attraction=0.0;
+	 PRIVATE_CLASSIFIERSYSTEM.ruletable[0].choiceprob=0.0;
+
+     PRIVATE_CLASSIFIERSYSTEM.ruletable[1].id=10;
+ 	 PRIVATE_CLASSIFIERSYSTEM.ruletable[1].my_performance=0.0;
+     PRIVATE_CLASSIFIERSYSTEM.ruletable[1].avg_performance=1.0;
+ 	 PRIVATE_CLASSIFIERSYSTEM.ruletable[1].attraction=0.0;
+	 PRIVATE_CLASSIFIERSYSTEM.ruletable[1].choiceprob=0.0;
+
+     PRIVATE_CLASSIFIERSYSTEM.ruletable[2].id=20;
+ 	 PRIVATE_CLASSIFIERSYSTEM.ruletable[2].my_performance=0.0;
+     PRIVATE_CLASSIFIERSYSTEM.ruletable[2].avg_performance=1.0;
+	 PRIVATE_CLASSIFIERSYSTEM.ruletable[2].attraction=0.0;
+	 PRIVATE_CLASSIFIERSYSTEM.ruletable[2].choiceprob=0.0;
+
+     PRIVATE_CLASSIFIERSYSTEM.ruletable[3].id=30;
+ 	 PRIVATE_CLASSIFIERSYSTEM.ruletable[3].my_performance=0.0;
+     PRIVATE_CLASSIFIERSYSTEM.ruletable[3].avg_performance=1000.0;
+	 PRIVATE_CLASSIFIERSYSTEM.ruletable[3].attraction=0.0;
+	 PRIVATE_CLASSIFIERSYSTEM.ruletable[3].choiceprob=0.0;
+
+
+	//Print per household classifier system:
+	 fprintf(file,"============================================================================================================\n");
+	 fprintf(file,"Household: %d Current rule: %d\n", ID, PRIVATE_CLASSIFIERSYSTEM.current_rule);
+	 fprintf(file,"rule id\t my_performance\t avg_performance\t attraction\t choice prob\t rule details\n");
+	 fprintf(file,"============================================================================================================\n"); 
+	
+	for (i=0;i<PRIVATE_CLASSIFIERSYSTEM.nr_rules;i++)
+	{
+		rule_id 		= PRIVATE_CLASSIFIERSYSTEM.ruletable[i].id;
+		my_performance 	= PRIVATE_CLASSIFIERSYSTEM.ruletable[i].my_performance;
+		avg_performance	= PRIVATE_CLASSIFIERSYSTEM.ruletable[i].avg_performance;
+	    attraction 		= PRIVATE_CLASSIFIERSYSTEM.ruletable[i].attraction;
+	    choiceprob 		= PRIVATE_CLASSIFIERSYSTEM.ruletable[i].choiceprob;
+	    p0		 		= PRIVATE_CLASSIFIERSYSTEM.ruletable[i].parameters[0];
+	    p1		 		= PRIVATE_CLASSIFIERSYSTEM.ruletable[i].parameters[1];
+	    p2		 		= PRIVATE_CLASSIFIERSYSTEM.ruletable[i].parameters[2];
+	    p3		 		= PRIVATE_CLASSIFIERSYSTEM.ruletable[i].parameters[3];
+	    
+	    fprintf(file,"%8d\t|%.4f\t|%.4f\t|%.4f\t|%.4f\t|[%1.1f, %1.1f, %1.1f, %1.1f]\n", rule_id, my_performance, avg_performance, attraction, choiceprob, p0, p1, p2, p3);
+	}
+	fprintf(file,"============================================================================================================\n");
+
+	fprintf(file,"\n");
+	fclose(file);
 }

@@ -14,6 +14,7 @@
 /************FinancialAgent: Financial Advisor Role ********************************/
 
 /************ Unit tests ********************************/
+//Status: Tested OK
 void unittest_FinancialAgent_reset_public_classifiersystem()
 {
     /************* At start of unit test, add one agent **************/
@@ -44,6 +45,7 @@ void unittest_FinancialAgent_reset_public_classifiersystem()
      free_messages();
 }
 
+//Status: Tested OK
 void unittest_FinancialAgent_read_rule_performance_and_update_classifiersystem()
 {
     /************* At start of unit test, add one agent **************/
@@ -89,6 +91,7 @@ void unittest_FinancialAgent_read_rule_performance_and_update_classifiersystem()
      free_messages();
 }
 
+//Status: Tested OK
 void unittest_FinancialAgent_send_all_performances()
 {
     /************* At start of unit test, add one agent **************/
@@ -135,6 +138,7 @@ void unittest_FinancialAgent_send_all_performances()
      free_messages();
 }
 
+//Status: Not Tested
 void unittest_FinancialAgent_apply_GA() /*NOT IMPLEMENTED*/
 {
 	int i;
@@ -187,6 +191,7 @@ void unittest_FinancialAgent_apply_GA() /*NOT IMPLEMENTED*/
      free_messages();
 }
 
+//Status: Tested OK
 void unittest_FinancialAgent_send_rule_details()
 {
 	int i;
