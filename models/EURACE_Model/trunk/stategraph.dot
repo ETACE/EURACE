@@ -168,7 +168,6 @@ digraph state_graph {
 	Household_WAITORDERSTATUS [label = "WAITORDERSTATUS"]
 	Household_SELECTSTRATEGY [label = "SELECTSTRATEGY"]
 	Household_end_Household [label = "end_Household"]
-	Household_Start_Household_Labour_Role [label = "Start_Household_Labour_Role"]
 	Household_Start_Household_Tax_Data [label = "Start_Household_Tax_Data"]
 	Household_05 [label = "05"]
 	Household_04 [label = "04"]
@@ -176,9 +175,10 @@ digraph state_graph {
 	Household_02 [label = "02"]
 	Household_01b [label = "01b"]
 	Household_01 [label = "01"]
+	Household_start_Household [label = "start_Household"]
 	Household_01a [label = "01a"]
 	Household_01d [label = "01d"]
-	Household_start_Household [label = "start_Household"]
+	Household_Start_Household_Labour_Role [label = "Start_Household_Labour_Role"]
 	Household_12 [label = "12"]
 	Household_14 [label = "14"]
 	Household_11 [label = "11"]
@@ -313,7 +313,7 @@ digraph state_graph {
 	Household_Household_rank_and_buy_goods_2_11_12 [label = "Household_rank_and_buy_goods_2", shape = rect]
 	Household_Household_receive_goods_read_rationing_2_12_14 [label = "Household_receive_goods_read_rationing_2", shape = rect]
 	Household_Household_handle_leftover_budget_14_15 [label = "Household_handle_leftover_budget", shape = rect]
-	Household_Household_read_firing_messages_start_Household_01d [label = "Household_read_firing_messages", shape = rect]
+	Household_Household_read_firing_messages_Start_Household_Labour_Role_01d [label = "Household_read_firing_messages", shape = rect]
 	Household_Household_idle_01d_01a [label = "Household_idle", shape = rect]
 	Household_Household_idle_start_Household_01a [label = "Household_idle", shape = rect]
 	Household_Household_UNEMPLOYED_read_job_vacancies_and_send_applications_01a_01 [label = "Household_UNEMPLOYED_read_job_vacancies_and_send_applications", shape = rect]
@@ -541,8 +541,8 @@ digraph state_graph {
 	Household_Household_receive_goods_read_rationing_2_12_14 -> Household_14;
 	Household_14 -> Household_Household_handle_leftover_budget_14_15;
 	Household_Household_handle_leftover_budget_14_15 -> Household_15;
-	Household_start_Household -> Household_Household_read_firing_messages_start_Household_01d [ label = "a->employee_firm_id != -1"];
-	Household_Household_read_firing_messages_start_Household_01d -> Household_01d;
+	Household_Start_Household_Labour_Role -> Household_Household_read_firing_messages_Start_Household_Labour_Role_01d [ label = "a->employee_firm_id != -1"];
+	Household_Household_read_firing_messages_Start_Household_Labour_Role_01d -> Household_01d;
 	Household_01d -> Household_Household_idle_01d_01a [ label = "a->employee_firm_id == -1"];
 	Household_Household_idle_01d_01a -> Household_01a;
 	Household_start_Household -> Household_Household_idle_start_Household_01a [ label = "a->employee_firm_id == -1"];
@@ -724,7 +724,7 @@ digraph state_graph {
 	Firm_Firm_read_job_applications_send_job_offer_or_rejection_03_04 -> Household_Household_read_job_offers_send_response_01_02 [ label = "job_offer" color="#00ff00" constraint=false];
 	Firm_Firm_send_vacancies_011_03 -> Household_Household_OTJS_read_job_vacancies_and_send_applications_01b_01 [ label = "vacancies" color="#00ff00" constraint=false];
 	Firm_Firm_send_vacancies_011_03 -> Household_Household_UNEMPLOYED_read_job_vacancies_and_send_applications_01a_01 [ label = "vacancies" color="#00ff00" constraint=false];
-	Firm_Firm_send_redundancies_011_03c -> Household_Household_read_firing_messages_start_Household_01d [ label = "firing" color="#00ff00" constraint=false];
+	Firm_Firm_send_redundancies_011_03c -> Household_Household_read_firing_messages_Start_Household_Labour_Role_01d [ label = "firing" color="#00ff00" constraint=false];
 	Mall_Mall_update_mall_stocks_sales_rationing_2_04_05 -> Household_Household_receive_goods_read_rationing_2_12_14 [ label = "accepted_consumption_2" color="#00ff00" constraint=false];
 	Mall_Mall_update_mall_stocks_sales_rationing_1_03_04 -> Household_Household_rank_and_buy_goods_2_11_12 [ label = "quality_price_info_2" color="#00ff00" constraint=false];
 	Mall_Mall_update_mall_stocks_sales_rationing_1_03_04 -> Household_Household_receive_goods_read_rationing_10_11 [ label = "accepted_consumption_1" color="#00ff00" constraint=false];
@@ -771,7 +771,7 @@ digraph state_graph {
 	{ rank=same; layer_15;  Firm_Firm_in_bankruptcy_Firm_bankruptcy_checked_end_Firm;  Firm_Firm_in_financial_crisis_Firm_bankruptcy_checked_Firm_tries_to_resolve_financial_crisis;  Firm_Firm_execute_financial_payments_Firm_bankruptcy_checked_Start_Firm_Labour_Role; }
 	{ rank=same; layer_16;  Firm_Firm_execute_financial_payments_Firm_tries_to_resolve_financial_crisis_End_Firm_Financial_Management;  Firm_Firm_calculate_specific_skills_and_wage_offer_Start_Firm_Labour_Role_011; }
 	{ rank=same; layer_17;  Firm_Firm_send_vacancies_011_03;  Firm_Firm_send_redundancies_011_03c;  Firm_Firm_idle_011_03c;  Bank_Bank_receive_installment_Bank_03_Bank_04; }
-	{ rank=same; layer_18;  Household_Household_read_firing_messages_start_Household_01d; }
+	{ rank=same; layer_18;  Household_Household_read_firing_messages_Start_Household_Labour_Role_01d; }
 	{ rank=same; layer_19;  Household_Household_idle_01d_01a;  Household_Household_on_the_job_search_decision_01d_01b; }
 	{ rank=same; layer_20;  Household_Household_UNEMPLOYED_read_job_vacancies_and_send_applications_01a_01;  Household_Household_OTJS_read_job_vacancies_and_send_applications_01b_01;  Household_Household_idle_01b_06; }
 	{ rank=same; layer_21;  Firm_Firm_read_job_applications_send_job_offer_or_rejection_03_04; }
