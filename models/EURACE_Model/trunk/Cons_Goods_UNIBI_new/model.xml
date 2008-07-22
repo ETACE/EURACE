@@ -168,7 +168,7 @@
 <description></description>
 <memory>
 <variable><type>double</type><name>mean_wage</name><description>Average wage paid by a firm</description></variable>
-<variable><type>double</type><name>total_units_capital_stock</name><description>Units of capital stock</description></variable>
+<!--<variable><type>double</type><name>total_units_capital_stock</name><description>Units of capital stock</description></variable>-->
 <variable><type>double</type><name>needed_capital_stock</name><description>The overall capital stock a firm wants to have</description></variable>
 <variable><type>double</type><name>actual_cap_price</name><description>Price of the latest capital good</description></variable>
 <variable><type>double</type><name>mean_specific_skills</name><description>Average specific skills of the workforce</description></variable>
@@ -204,6 +204,8 @@
 <variable><type>double</type><name>capital_costs</name><description></description></variable>
 <variable><type>double</type><name>labour_costs</name><description></description></variable>
 <variable><type>financing_capital_array</type><name>capital_financing</name><description></description></variable>
+<variable><type>double</type><name>financial_resources_for_production</name><description></description></variable>
+
 </memory>
 <functions>
 
@@ -211,15 +213,15 @@
 <name>Firm_calc_production_quantity</name>
 <description>Firm calculate the intended production volume depending 
 on the current stocks in the malls</description>
-<currentState>00</currentState>
+<currentState>Firm_Bankruptcy_check</currentState>
 <nextState>01</nextState>
-<condition><time><period>monthly</period><phase>a.day_of_month_to_act</phase></time></condition>
+<condition><lhs><value>a.equity</value></lhs><op>GT</op><rhs><value>0.0</value></rhs></condition>
 </function>
 
 <function>
 <name>Firm_set_quantities_zero</name>
 <description>Dummy: no production on not_day_of_month_to_act</description>
-<currentState>00</currentState>
+<currentState>Firm_Start_Financial_Management_Role</currentState>
 <nextState>00b</nextState>
 <condition><not><time><period>monthly</period><phase>a.day_of_month_to_act</phase></time></not></condition>
 </function>
@@ -371,6 +373,7 @@ firms update the specific skill levels of the workers.</description>
 <variable><type>double</type><name>expenditures</name><description></description></variable>
 <variable><type>double</type><name>received_dividend</name><description></description></variable>
 <variable><type>portfolio_array</type><name>household_portfolio</name><description></description></variable>
+
 
 </memory>
 <functions>
