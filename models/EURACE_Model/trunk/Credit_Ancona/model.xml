@@ -132,7 +132,7 @@
 <function>
 <name>Bank_decide_credit_conditions</name>
 <description></description>
-<currentState>start_Bank</currentState>
+<currentState>Bank_start_credit_market_role</currentState>
 <nextState>Bank_02</nextState>
 <inputs>
 <input><messageName>loan_request</messageName>
