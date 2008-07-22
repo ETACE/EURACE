@@ -119,7 +119,7 @@
 		<!--             Variables                -->
 		<!-- All variableiables used by Producer are declared here to allocate them in memory -->
 		<memory>
-			<variable><type>int</type><name>id</name>	<description></description></variable>
+			
 			<variable><type>double</type><name>wealth</name>	<description></description></variable>
 			<variable><type>Belief_array</type><name>beliefs</name>	<description></description></variable>
 			<variable>
@@ -140,7 +140,7 @@
 				<name>assetUtilities</name>
 				
 				<description></description></variable>
-			<variable><type>double</type><name>payment_account</name><description></description></variable>
+			<!--<variable><type>double</type><name>payment_account</name><description></description></variable>-->
 			<variable><type>double</type><name>consumption_badget</name><description></description></variable>
 			<variable><type>double</type><name>cash_on_hand</name><description></description></variable>
 			<variable><type>double</type><name>portfolio_badget</name><description></description></variable>
@@ -159,7 +159,7 @@
 			<function>
 				<name>Household_receive_info_interest_from_bank</name>
 				<description></description>
-				<currentState>START_HOUSEHOLD</currentState>
+				<currentState>start_Household_financial_market_role</currentState>
 				<nextState>SELECTSTRATEGY</nextState>
 				<inputs>
 					<input><messageName>accountInterest</messageName></input>
@@ -181,7 +181,7 @@
 				<name>Household_update_its_portfolio</name>
 				<description></description>
 				<currentState>WAITORDERSTATUS</currentState>
-				<nextState>EXIT_FINANCIAL_MARKET</nextState>
+				<nextState>Start_Household_Labour_Role</nextState>
 				<inputs>
 					<input><messageName>order_status</messageName></input>
 				</inputs>
@@ -198,7 +198,7 @@
 		<!--      Variables for the Clearinghouse     -->
 		
 		<memory>
-			<variable><type>int</type><name>id</name><description></description></variable>
+			
 			<variable><type>Asset_array</type><name>assets</name><description></description></variable>
 			<variable><type>ClearingMechanism</type><name>clearingmechanism</name><description></description></variable>
 		</memory>
@@ -242,7 +242,7 @@
 		
 		<memory>
 			
-			<variable><type>int</type><name>id</name>	<description></description></variable>
+			
 		</memory>
 		<functions>
 			<function>
@@ -277,12 +277,12 @@
 		<!--      Variables for the Bank     -->
 		
 		<memory>
-			<variable><type>int</type><name>id</name><description></description></variable>
-			<variable><type>double</type><name>earnings</name><description></description></variable>
+			
+			<!--<variable><type>double</type><name>earnings</name><description></description></variable>-->
 			<variable><type>double</type><name>earnings_payout</name><description></description></variable>
-			<variable><type>double</type><name>equity</name><description></description></variable>
+			<!--<variable><type>double</type><name>equity</name><description></description></variable>-->
 			<variable><type>double</type><name>current_shares_outstanding</name><description></description></variable>
-			<variable><type>double</type><name>current_dividend_per_share</name><description></description></variable>
+			<!--<variable><type>double</type><name>current_dividend_per_share</name><description></description></variable>-->
 			<variable><type>Stock</type><name>stock</name>	<description></description></variable>
 		</memory>
 		<!--        Defining functions                -->
@@ -290,8 +290,8 @@
 			<function>
 				<name>Firm_send_info</name>
 				<description></description>
-				<currentState>XXX</currentState>
-				<nextState>UPDATE</nextState>
+				<currentState>Firm_new01</currentState>
+				<nextState>Firm_Start_Financial_Management_Role</nextState>
 				<outputs>
 					<output><messageName>info_firm</messageName></output>
 					
@@ -301,7 +301,7 @@
 				<name>Firm_receive_stock_info</name>
 				<description></description>
 				<currentState>UPDATE</currentState>
-				<nextState>XXX2</nextState>
+				<nextState>end_Firm</nextState>
 				<inputs>
 					<input><messageName>infoAssetCH</messageName></input>
 				</inputs>
