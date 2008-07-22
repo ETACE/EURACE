@@ -102,6 +102,8 @@ int Eurostat_calculate_data()
     double sum_region_cum_revenue;
     double sum_region_planned_output;
     
+    double sum_consumption_good_supply;
+    
     int counter_firms_in_region;
     
     /*delete the content of the memmory variables in order to store the data for the            new month*/
@@ -170,6 +172,8 @@ int Eurostat_calculate_data()
     MONTHLY_REVENUE = 0.0;
     MONTHLY_PLANNED_OUTPUT = 0.0;
     
+    PRICE_INDEX = 0.0;
+    
     /*delete the content of the data arrays in order to store the data for the new          month*/
     //free(REGION_HOUSEHOLD_DATA);
     //free(REGION_FIRM_DATA);
@@ -215,6 +219,7 @@ int Eurostat_calculate_data()
         sum_total_output               = 0.0;
         sum_total_cum_revenue          = 0.0;
         sum_total_planned_output       = 0.0;
+        sum_consumption_good_supply    = 0.0;
 
         //Reset the age distribution, and store the previous distribution (needed to compute the 1-period survival rates)
         for (i=0;i<60;i++)
@@ -225,6 +230,25 @@ int Eurostat_calculate_data()
             SURVIVAL_RATE[i]=0.0;
         }
 
+        
+        
+        /*Compute a weighted mean price*/
+                
+        START_FIRM_SEND_DATA_MESSAGE_LOOP
+                
+        sum_consumption_good_supply+= firm_send_data_message->total_supply;
+                
+        FINISH_FIRM_SEND_DATA_MESSAGE_LOOP
+                
+        START_FIRM_SEND_DATA_MESSAGE_LOOP
+                
+        PRICE_INDEX += (firm_send_data_message->price*firm_send_data_message->total_supply)/ sum_consumption_good_supply;
+                
+        FINISH_FIRM_SEND_DATA_MESSAGE_LOOP
+        
+        
+        
+        
         /*Store the region data of the firms*/
         for(i = 0; i < REGION_FIRM_DATA.size; i++)
         {
