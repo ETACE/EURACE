@@ -218,6 +218,20 @@ int Firm_get_loan()
 	    //printf(" firm %d %d bank %d \n", ID, DMARKETMATRIX[rate_order_array[primo]], rate_order_array[primo]);
 	        
 	}
+	
+	if (PAYMENT_ACCOUNT >= TOTAL_FINANCIAL_NEEDS)
+        {        	
+            //printf("Firm_financial_needs, External financing: case 1.");
+            EXTERNAL_FINANCIAL_NEEDS = 0.0;                   
+        }
+        else
+        {
+        	//external financing needed
+        	EXTERNAL_FINANCIAL_NEEDS = TOTAL_FINANCIAL_NEEDS - PAYMENT_ACCOUNT;
+        }
+	
+	
+	
 	//if(ID==2)
 	//printf("fourth");
 //	printf("\n  4payment account %f extrenalfinances need %f",PAYMENT_ACCOUNT, EXTERNAL_FINANCIAL_NEEDS);
