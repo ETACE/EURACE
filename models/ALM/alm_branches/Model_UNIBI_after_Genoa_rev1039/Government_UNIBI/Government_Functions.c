@@ -59,14 +59,17 @@ int Government_send_unemployment_benefit_payment()
 	
 	if(unemployment_notification_message->last_labour_income*UNEMPLOYMENT_BENEFIT_PAYMENT > COUNTRY_WIDE_MEAN_WAGE*0.5 )
 	{
-	unemployment_payment = unemployment_notification_message->last_labour_income*UNEMPLOYMENT_BENEFIT_PAYMENT;
+	//unemployment_payment = unemployment_notification_message->last_labour_income*UNEMPLOYMENT_BENEFIT_PAYMENT;
 		//Send message to household
+
+		unemployment_payment = 0.8;
 	}else
 		
 	{
 		
-		unemployment_payment =  COUNTRY_WIDE_MEAN_WAGE*0.5;	
-		
+		//unemployment_payment =  COUNTRY_WIDE_MEAN_WAGE*0.5;	
+		unemployment_payment = 0.8;
+
 	}
 		add_unemployment_benefit_message(ID,unemployment_notification_message->id,unemployment_payment);
 		
@@ -83,21 +86,25 @@ int Government_send_account_update()
 {
 	// Update of payment account due to the realized unemployment benefits
 	
+	
+	/ If bank account has a negative balance: pay interests
+		if(PAYMENT_ACCOUNT <0)
+		{
+		
+	
+		TOTAL_DEBT= -PAYMENT_ACCOUNT; 
+		}else
+		{
+		TOTAL_DEBT=0;
+		}	
 
 
 	// At the very end of agent government: update the bank account
+		
+		add_central_bank_account_update_message(PAYMENT_ACCOUNT,ID);
+		
+	
 
-	// If bank account has a negative balance: pay interests
-	if(PAYMENT_ACCOUNT <0)
-	{
-	TOTAL_INTEREST_PAYMENT=(-1)*PAYMENT_ACCOUNT*INTEREST_RATE;
-	PAYMENT_ACCOUNT-=TOTAL_INTEREST_PAYMENT;
-	TOTAL_DEBT= -PAYMENT_ACCOUNT; 
-	}else
-	{
-	TOTAL_DEBT=0;
-	}	
-	add_bank_account_update_message(ID, BANK_ID, PAYMENT_ACCOUNT);
 	
 	return 0;
 }
