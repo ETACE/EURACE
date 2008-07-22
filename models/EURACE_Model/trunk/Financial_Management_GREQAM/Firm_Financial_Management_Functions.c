@@ -231,7 +231,7 @@ int Firm_compute_total_liquidity_needs()
     int i;
 
     //step 12B: set production and payout financial_needs
-    PRODUCTION_LIQUIDITY_NEEDS = PRODUCTION_COSTS;
+    PRODUCTION_LIQUIDITY_NEEDS = PLANNED_PRODUCTION_COSTS;
     FINANCIAL_LIQUIDITY_NEEDS = TOTAL_INTEREST_PAYMENT + TOTAL_DEBT_INSTALLMENT_PAYMENT + TAX_PAYMENT;
 
     //step 12C:
@@ -430,7 +430,7 @@ int Firm_execute_financial_payments()
  * \fn Firm_compute_and_send_stock_orders()
  * \brief Function to send order_messages to the clearinghouse (share emission or repurchase).
  */
-int Firm_compute_and_send_stock_orders()
+int Firm_compute_and_send_stock_orders()  // NOTE: NEED TO CHECK EXTERNAL_FINANCIAL_NEEDS???
 {
 	double limit_price=CURRENT_SHARE_PRICE*0.99;
     int quantity = -1*(1+EXTERNAL_FINANCIAL_NEEDS/limit_price);
