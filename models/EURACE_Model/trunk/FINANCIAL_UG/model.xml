@@ -185,9 +185,9 @@
 				<inputs>
 					<input><messageName>order_status</messageName></input>
 				</inputs>
-				<outputs>
+				<!--<outputs>
 					<output><messageName>bankAccountUpdate</messageName></output>
-				</outputs>
+				</outputs>-->
 			</function>
 		</functions>
 	</xagent>
@@ -248,8 +248,8 @@
 			<function>
 				<name>Bank_send_accountInterest</name>
 				<description></description>
-				<currentState>START_BANK_FINANCIAL</currentState>
-				<nextState>BB</nextState>
+				<currentState>start_Bank</currentState>
+				<nextState>Bank_start_credit_market_role</nextState>
 				<outputs>
 					<output><messageName>accountInterest</messageName></output>
 					
@@ -257,7 +257,7 @@
 			</function>
 		</functions>
 		<!--        Defining functions                -->
-		<functions>
+		<!--<functions>
 			<function>
 				<name>Bank_receive_account_update</name>
 				<description></description>
@@ -269,7 +269,7 @@
 					</input>
 				</inputs>
 			</function>
-		</functions>
+		</functions>-->
 	</xagent>
 	<xagent>
 		<name>Firm</name>
