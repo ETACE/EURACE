@@ -200,7 +200,7 @@ int Firm_get_loan()
 		    nr_periods_before_repayment=CONST_INSTALLMENT_PERIODS;
 	    	//ADD LOAN
             if (credit_accepted>0.0)
-		    add_debt_item(&LOANS, bank_id, loan_value, interest_rate, installment_amount, interest_amount, var_per_installment, residual_var, bad_debt, nr_periods_before_repayment);
+		    add_debt_item(&LOANS, bank_id, loan_value, interest_rate, installment_amount, var_per_installment, residual_var, bad_debt, nr_periods_before_repayment);
 		 
 		 
 		 if (credit_accepted>0.0)
@@ -238,3 +238,11 @@ int Firm_get_loan()
 	return 0;
 }
 
+int Firm_not_in_bankruptcy()
+{return 0;
+}
+
+int Firm_idle()
+{
+	return 0;
+}
