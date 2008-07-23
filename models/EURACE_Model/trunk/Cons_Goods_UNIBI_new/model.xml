@@ -205,7 +205,9 @@
 <variable><type>double</type><name>labour_costs</name><description></description></variable>
 <variable><type>financing_capital_array</type><name>capital_financing</name><description></description></variable>
 <variable><type>double</type><name>financial_resources_for_production</name><description></description></variable>
+<variable><type>double</type><name>planned_value_capital_stock</name><description></description></variable>
 
+<variable><type>double</type><name>total_units_local_inventory</name><description></description></variable>
 </memory>
 <functions>
 
