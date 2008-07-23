@@ -8,14 +8,14 @@
 
 <!-- Models to include in Eurace model -->
 <models>
-<model><file>Cons_Goods_UNIBI_new/model.xml</file><enabled>true</enabled></model>
+<model><file>Cons_Goods_UNIBI/model.xml</file><enabled>true</enabled></model>
 <model><file>Credit_UNIBI/model-dummy.xml</file><enabled>false</enabled></model>
 <model><file>Credit_Ancona/model.xml</file><enabled>true</enabled></model>
 <model><file>Financial_Management_GREQAM/model.xml</file><enabled>true</enabled></model>
 <model><file>Financial_Management_Ancona/model.xml</file><enabled>false</enabled></model>
 <model><file>Inv_Goods_UNIBI/model.xml</file><enabled>true</enabled></model>
-<model><file>Labour_UNIBI_new/model.xml</file><enabled>true</enabled></model>
-<model><file>Statistical_Office_UNIBI_new/model.xml</file><enabled>true</enabled></model>
+<model><file>Labour_UNIBI/model.xml</file><enabled>true</enabled></model>
+<model><file>Statistical_Office_UNIBI/model.xml</file><enabled>true</enabled></model>
 <model><file>FINANCIAL_UG/model.xml</file><enabled>true</enabled></model>
 <model><file>Financial_UNIBI/model-dummy.xml</file><enabled>false</enabled></model>
 <model><file>Government_UNIBI/model.xml</file><enabled>true</enabled></model>
@@ -76,6 +76,7 @@
 <variable><type>int</type><name>gov_id</name><description></description></variable>
 <variable><type>int</type><name>day_of_month_to_act</name><description></description></variable>
 <variable><type>double</type><name>payment_account</name><description></description></variable>
+<variable><type>int</type><name>bank_id</name><description></description></variable>
 </memory>
 </xagent>
 
@@ -89,6 +90,7 @@
 <variable><type>int</type><name>gov_id</name><description></description></variable>
 <variable><type>int</type><name>day_of_month_to_act</name><description></description></variable>
 <variable><type>double</type><name>payment_account</name><description></description></variable>
+<variable><type>int</type><name>bank_id</name><description></description></variable>
 </memory>
 </xagent>
 
@@ -187,3 +189,4 @@
 </messages>
 
 </xmodel>
+
