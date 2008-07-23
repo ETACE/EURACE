@@ -89,7 +89,7 @@
 <description></description>
 <currentState>04b</currentState>
 <nextState>end_IGFirm</nextState>
-<condition><time><period>monthly</period><phase>a.day_of_month_to_act</phase></time></condition>
+
 <outputs>
 <output><messageName>dividend_per_share</messageName></output>
 </outputs>
