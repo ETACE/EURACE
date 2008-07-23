@@ -87,13 +87,14 @@ int Government_send_account_update()
 	// Update of payment account due to the realized unemployment benefits
 	
 	
-	/ If bank account has a negative balance: pay interests
+	// If bank account has a negative balance: pay interests
 		if(PAYMENT_ACCOUNT <0)
 		{
 		
 	
 		TOTAL_DEBT= -PAYMENT_ACCOUNT; 
-		}else
+		}
+		else
 		{
 		TOTAL_DEBT=0;
 		}	

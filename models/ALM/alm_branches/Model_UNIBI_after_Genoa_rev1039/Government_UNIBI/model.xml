@@ -10,6 +10,7 @@
 
 <functionFiles>
 <file>Government_Functions.c</file>
+<file>Central_Bank_Functions.c</file>
 </functionFiles>
 
 </environment>
@@ -154,7 +155,7 @@
 </variables>
 </message>
 
-
+<!--
 <message>
 <name>unemployment_notification</name>
 <description></description>
@@ -174,7 +175,7 @@
 <variable><type>double</type><name>payment_account</name><description></description></variable>
 </variables>
 </message>
-
+-->
 <message>
 <name>government_tax_rates</name>
 <description></description>
