@@ -375,9 +375,17 @@
           <outputs></outputs>
         </function>
         <function>
-          <name>Household_select_rule</name>
+          <name>Household_print_private_classifiersystem</name>
           <description></description>
           <currentState>03</currentState>
+          <nextState>04</nextState>
+          <inputs></inputs>
+          <outputs></outputs>
+        </function>
+        <function>
+          <name>Household_select_rule</name>
+          <description></description>
+          <currentState>04</currentState>
           <nextState>end_Household_EWA_Learning</nextState>
           <inputs></inputs>
           <outputs></outputs>
@@ -464,12 +472,21 @@
           <name>FinancialAgent_send_all_performances</name>
           <description></description>
           <currentState>03</currentState>
-          <nextState>end_FinancialAgent</nextState>
+          <nextState>04</nextState>
           <inputs></inputs>
           <outputs>
           <output>
           	<messageName>new_performances</messageName>
           </output>
+          </outputs>
+        </function>
+        <function>
+          <name>FinancialAgent_print_public_classifiersystem</name>
+          <description></description>
+          <currentState>04</currentState>
+          <nextState>end_FinancialAgent</nextState>
+          <inputs></inputs>
+          <outputs>
           </outputs>
         </function>
       </functions>

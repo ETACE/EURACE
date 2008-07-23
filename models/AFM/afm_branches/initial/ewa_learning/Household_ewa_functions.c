@@ -260,10 +260,64 @@ int Household_reset_private_classifiersystem()
     return 0;
 } 
 
+void Household_print_private_classifiersystem()
+{
+	char str[10];
+	char * filename;
+	FILE * file;
+
+	int i, rule_id, counter;
+	double performance, avg_performance, my_performance, attraction, choiceprob;
+
+	//Set the output file:
+	i = sprintf(str, "%d", iteration_loop);
+	if(PRINT_DEBUG) printf("iteration_loop in sprintf is %s\n", str);
+	if(PRINT_DEBUG) printf("sprintf returns: %d\n\n", i);
+	
+	//Start an empty string for the filename
+	filename = malloc(20*sizeof(char));
+	filename[0]=0;
+	
+	//Concatenate
+	strcpy(filename, "./log/CS_");
+	strcat(filename, str);
+	strcat(filename, ".txt");
+	if(PRINT_DEBUG) printf("File to write data to: %s\n\n", filename);
+
+	//Open a file pointer: FILE * file 
+	if(PRINT_DEBUG) printf("\n Appending data to file: %s. Starting to write...\n", filename);
+	file = fopen(filename,"a");
+	fprintf(file, "\n Appending data to file\n");
+
+
+	//Print per household classifier system:
+	 fprintf(file,"=============================================================================================\n");
+	 fprintf(file,"Household: %d Current rule: %d\n", ID, PRIVATE_CLASSIFIERSYSTEM.current_rule);
+	 fprintf(file,"rule id\t performance\t counter\t avg_performance\t my_performance\t attraction\t choice prob\n");
+	 fprintf(file,"=============================================================================================\n"); 
+	
+	for (i=0;i<PRIVATE_CLASSIFIERSYSTEM.nr_rules;i++)
+	{
+		rule_id 		= PRIVATE_CLASSIFIERSYSTEM.ruletable[i].id;
+		performance 	= PRIVATE_CLASSIFIERSYSTEM.ruletable[i].performance;
+		counter 		= PRIVATE_CLASSIFIERSYSTEM.ruletable[i].counter;
+		avg_performance 	= PRIVATE_CLASSIFIERSYSTEM.ruletable[i].avg_performance;
+		my_performance 	= PRIVATE_CLASSIFIERSYSTEM.ruletable[i].my_performance;
+	    attraction 		= PRIVATE_CLASSIFIERSYSTEM.ruletable[i].attraction;
+	    choiceprob 		= PRIVATE_CLASSIFIERSYSTEM.ruletable[i].choiceprob;
+	    
+	    fprintf(file,"%d\t %f\t %7d\t\t %f\t\t %f\t\t %f\t %f\n", rule_id, performance, counter, avg_performance, my_performance, attraction, choiceprob);
+	}
+	fprintf(file,"=============================================================================================\n");
+
+	fprintf(file,"\n");
+	fclose(file);
+}
+
 /* \fn: Household_initialize_ruledetails()
  * \brief Initialization of all rule details to zero: parameters[10]=0.
+ * This is old code, to be used with heterogeneous rules, if there are multiple functions that need to be called.
  */
-
 //HERE: function to initialize the rule_detail_system.
 //Contains arrays for:
 //NR_TYPES: number of different types of rules (typically NR_TYPES=3)

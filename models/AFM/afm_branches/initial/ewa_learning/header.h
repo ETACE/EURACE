@@ -506,10 +506,12 @@ int Household_idle_end_GA_end_Household_EWA_Learning_condition(xmachine_memory_H
 int Household_send_rule_performance(void);
 int Household_Household_send_rule_performance_end_GA_02_condition(xmachine_memory_Household *a);
 int Household_read_all_performances(void);
+int Household_print_private_classifiersystem(void);
 int Household_select_rule(void);
 int idle(void);
 int FinancialAgent_read_rule_performance_and_update_classifiersystem(void);
 int FinancialAgent_send_all_performances(void);
+int FinancialAgent_print_public_classifiersystem(void);
 
 /** \struct location
  * \brief Holds location for calculating space partitioning .
@@ -590,6 +592,9 @@ xmachine_memory_Household * current_xmachine_Household;
 xmachine_memory_Household_holder * temp_xmachine_Household_holder;
 xmachine_memory_Household_holder * current_xmachine_Household_holder;
 xmachine_memory_Household_state * current_xmachine_Household_next_state; /* New agents added to this state */
+/* Pointer to list of Household agents in state 04 state */
+//xmachine_memory_Household * temp_xmachine_Household_04;
+xmachine_memory_Household_state * Household_04_state;
 /* Pointer to list of Household agents in state 03 state */
 //xmachine_memory_Household * temp_xmachine_Household_03;
 xmachine_memory_Household_state * Household_03_state;
@@ -613,6 +618,9 @@ xmachine_memory_FinancialAgent_state * current_xmachine_FinancialAgent_next_stat
 /* Pointer to list of FinancialAgent agents in state end_FinancialAgent state */
 //xmachine_memory_FinancialAgent * temp_xmachine_FinancialAgent_end_FinancialAgent;
 xmachine_memory_FinancialAgent_state * FinancialAgent_end_FinancialAgent_state;
+/* Pointer to list of FinancialAgent agents in state 04 state */
+//xmachine_memory_FinancialAgent * temp_xmachine_FinancialAgent_04;
+xmachine_memory_FinancialAgent_state * FinancialAgent_04_state;
 /* Pointer to list of FinancialAgent agents in state 03 state */
 //xmachine_memory_FinancialAgent * temp_xmachine_FinancialAgent_03;
 xmachine_memory_FinancialAgent_state * FinancialAgent_03_state;

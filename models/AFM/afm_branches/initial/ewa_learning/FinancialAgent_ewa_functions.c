@@ -104,8 +104,8 @@ int FinancialAgent_apply_GA()
 	{    
 		GA_reproduction(NR_PARAMS, rule_id_1[j], rule_id_2[j], offspring_1, offspring_2);
 		GA_mutation(NR_PARAMS, offspring_1, offspring_2);
-		GA_election(NR_PARAMS, offspring_1, offspring_2);
-		GA_reinsertion(NR_PARAMS, offspring_1, offspring_2, rule_id_1[j], rule_id_2[j]);
+		GA_election(NR_PARAMS, rule_id_1[j], rule_id_2[j], offspring_1, offspring_2);
+		GA_reinsertion(NR_PARAMS, rule_id_1[j], rule_id_2[j], offspring_1, offspring_2);
 	}
 
 	// free all allocated memory

@@ -182,9 +182,9 @@ void GA_selection(int N_pairs, int * parent_index_1, int * parent_index_2, int *
     	{
 	    	if (EWA_PARAMETERS.EWA_beta*avg_performance > log(LONG_MAX))
 	    	{
-	    		printf("\n In GA_selection, line 188: error computing sum.\n", avg_performance);    		
+	    		printf("\n In GA_selection, line 188: error computing sum.\n");    		
 	    		printf("\n Maximum value exceeded: EWA_PARAMETERS.EWA_beta * avg_performance > log(LONG_MAX).\n");
-	    		printf("\n LONG_MAX = %f.\n", LONG_MAX);
+	    		//printf("\n LONG_MAX = %f.\n", LONG_MAX);
 	    		printf("\n log(LONG_MAX) = %f.\n", log(LONG_MAX));
 	    		printf("\n avg_performance=%f\n", avg_performance);
 	    		printf("\n EWA_PARAMETERS.EWA_beta=%f\n", EWA_PARAMETERS.EWA_beta);
@@ -343,7 +343,7 @@ void GA_mutation(int size, double * offspring_1, double * offspring_2)
 	/*********************** End of Mutation function ****************************************************/
 }
 
-void GA_election(int size, double * offspring_1, double * offspring_2)
+void GA_election(int size, int id1, int id2, double * offspring_1, double * offspring_2)
 {
 	int k;
 	double * parent_1;
@@ -356,7 +356,7 @@ void GA_election(int size, double * offspring_1, double * offspring_2)
 	if (GA_PARAMETERS.election)
 	{
 		//1. Make 2 local copies of the parents
-		/*
+		
 		 parent_1 = malloc(sizeof(double)*NR_PARAMS);
 		 parent_2 = malloc(sizeof(double)*NR_PARAMS);
 
@@ -365,11 +365,11 @@ void GA_election(int size, double * offspring_1, double * offspring_2)
  		    parent_1[k]=PUBLIC_CLASSIFIERSYSTEM.ruletable[id1].parameters[k];
  		    parent_2[k]=PUBLIC_CLASSIFIERSYSTEM.ruletable[id2].parameters[k];
 		}
-		*/
+		
 		
 		//2. Compare the 2 offspring to their 2 parents: test for higher fitness between 2 offspring and 2 parents
 		// void election(int size, double * offspring_1, double * offspring_2, double * parent_1, double * parent_2)
-		// election(NR_PARAMS, offspring_1, offspring_2, parent_1, parent_2);
+		 election(NR_PARAMS, offspring_1, offspring_2, parent_1, parent_2);
 		
 		//3. Add 2 out of 4 best bitstrings to new generation
 		
@@ -379,7 +379,7 @@ void GA_election(int size, double * offspring_1, double * offspring_2)
  	free(parent_2);
 }
 
-void GA_reinsertion(int size, double * offspring_1, double * offspring_2, int id1, int id2)
+void GA_reinsertion(int size, int id1, int id2, double * offspring_1, double * offspring_2)
 {
 	int k;
 	
@@ -402,7 +402,7 @@ void FinancialAgent_print_public_classifiersystem()
 	FILE * file;
 
 	int i, rule_id, counter;
-	double performance, avg_performance, choiceprob;
+	double performance, avg_performance;
 
  	//Set the output file:
  	i = sprintf(str, "%d", iteration_loop);
@@ -442,67 +442,11 @@ void FinancialAgent_print_public_classifiersystem()
 		 counter 		= PUBLIC_CLASSIFIERSYSTEM.ruletable[i].counter;         
          avg_performance = PUBLIC_CLASSIFIERSYSTEM.ruletable[i].avg_performance;
 
-         fprintf(file,"%d\t %f\t %7d\t\t %f\t\t %f\n", rule_id, performance, counter, avg_performance);
+         fprintf(file,"%d\t %f\t %7d\t\t %f\n", rule_id, performance, counter, avg_performance);
     }
      fprintf(file,"=============================================================================================\n");
 
     fprintf(file,"\n");
 	fclose(file);
 }
-
-/*
-void Household_print_private_classifiersystem()
-{
-	char str[10];
-	char * filename;
-	FILE * file;
-
-	int i, rule_id, counter;
-	double performance, avg_performance, my_performance, attraction, choiceprob;
-
-	//Set the output file:
-	i = sprintf(str, "%d", iteration_loop);
-	if(PRINT_DEBUG) printf("iteration_loop in sprintf is %s\n", str);
-	if(PRINT_DEBUG) printf("sprintf returns: %d\n\n", i);
-	
-	//Start an empty string for the filename
-	filename = malloc(20*sizeof(char));
-	filename[0]=0;
-	
-	//Concatenate
-	strcpy(filename, "./log/CS_");
-	strcat(filename, str);
-	strcat(filename, ".txt");
-	if(PRINT_DEBUG) printf("File to write data to: %s\n\n", filename);
-
-	//Open a file pointer: FILE * file 
-	if(PRINT_DEBUG) printf("\n Appending data to file: %s. Starting to write...\n", filename);
-	file = fopen(filename,"a");
-	fprintf(file, "\n Appending data to file\n");
-
-
-	//Print per household classifier system:
-	 fprintf(file,"=============================================================================================\n");
-	 fprintf(file,"Household: %d Current rule: %d\n", ID, PRIVATE_CLASSIFIERSYSTEM.current_rule);
-	 fprintf(file,"rule id\t performance\t counter\t avg_performance\t my_performance\t attraction\t choice prob\n");
-	 fprintf(file,"=============================================================================================\n"); 
-	
-	for (i=0;i<PRIVATE_CLASSIFIERSYSTEM.nr_rules;i++)
-	{
-		rule_id 		= PRIVATE_CLASSIFIERSYSTEM.ruletable[i].id;
-		performance 	= PRIVATE_CLASSIFIERSYSTEM.ruletable[i].performance;
-		counter 		= PRIVATE_CLASSIFIERSYSTEM.ruletable[i].counter;
-		avg_performance 	= PRIVATE_CLASSIFIERSYSTEM.ruletable[i].avg_performance;
-		my_performance 	= PRIVATE_CLASSIFIERSYSTEM.ruletable[i].my_performance;
-	    attraction 		= PRIVATE_CLASSIFIERSYSTEM.ruletable[i].attraction;
-	    choiceprob 		= PRIVATE_CLASSIFIERSYSTEM.ruletable[i].choiceprob;
-	    
-	    fprintf(file,"%d\t %f\t %7d\t\t %f\t\t %f\t\t %f\t %f\n", rule_id, performance, counter, avg_performance, my_performance, attraction, choiceprob);
-	}
-	fprintf(file,"=============================================================================================\n");
-
-	fprintf(file,"\n");
-	fclose(file);
-}
-*/
 // *********** END GA AUXILIARY FUNCTIONS ****************************
