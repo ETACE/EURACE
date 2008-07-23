@@ -10,6 +10,7 @@
 #include <math.h>
 #include <time.h>
 #include "some_new_functions.h"
+#include "header.h" //required to have access to PRINT_DEBUG (model environment parameter)
 
 /** \fn double random_unif()
  * \brief Uniformly distributed random numbers, chosen from
