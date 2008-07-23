@@ -73,15 +73,20 @@ double min(double a, double b)
 //Outcome: sum=2.0;
 double sum(double * p, int size)
 {
-	int i;
+	int j;
 	double sum_val;
 
-	if(PRINT_DEBUG) printf("\n In function sum: p=[%1.1f, %1.1f, %1.1f, %1.1f]\n", p[0], p[1], p[2], p[3]);
+	if(PRINT_DEBUG)
+	{
+	     printf("\n In function sum: p=[ ");
+	     for (j=0;j<size;j++){printf("%1.1f ", p[j]);}
+	     printf("]\n"); 
+	}
 
 	sum_val=0.0;
-	for (i=0;i<size;i++)
+	for (j=0;j<size;j++)
 	{
-		sum_val += p[i];
+		sum_val += p[j];
 	}	
 	if(PRINT_DEBUG) printf("\n In function sum: sum_val=%f\n", sum_val);
 	

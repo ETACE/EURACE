@@ -192,7 +192,7 @@ void GA_selection(int N_pairs, int * parent_index_1, int * parent_index_2, int *
 	    	}
     	}
         sum += exp(EWA_PARAMETERS.EWA_beta*avg_performance);
-        if(PRINT_DEBUG) printf("\n In GA_selection: sum=%f\n", sum);
+        //if(PRINT_DEBUG) printf("\n In GA_selection: sum=%f\n", sum);
     }
     
     p = malloc(sizeof(double)*nr_rules);
@@ -200,7 +200,7 @@ void GA_selection(int N_pairs, int * parent_index_1, int * parent_index_2, int *
     {
     	avg_performance  = PUBLIC_CLASSIFIERSYSTEM.ruletable[j].avg_performance;
         p[j] = exp(EWA_PARAMETERS.EWA_beta * avg_performance)/sum;
-        if(PRINT_DEBUG) printf("\n In GA_selection: p[%d]=%f\n", j, p[j]);
+        //if(PRINT_DEBUG) printf("\n In GA_selection: p[%d]=%f\n", j, p[j]);
     }
 
     // Construct cumulative probability density function: cpdf
@@ -230,10 +230,10 @@ void GA_selection(int N_pairs, int * parent_index_1, int * parent_index_2, int *
      draws = malloc(sizeof(int)*N_rep);
      
      //draw N_rep times without_replacement from density cpdf, and store results in draws 
-     //draw_without_replacement(nr_rules, cpdf, N_rep, draws);
+     draw_without_replacement(nr_rules, cpdf, N_rep, draws);
      
      //testing:
-     draw_with_replacement(nr_rules, cpdf, N_rep, draws);
+     //draw_with_replacement(nr_rules, cpdf, N_rep, draws);
 	     
      // For the random matching, drawing is WITH replacement using uniform probabilities
      // from the discrete interval [0, N_pairs+1].
@@ -263,11 +263,25 @@ void GA_selection(int N_pairs, int * parent_index_1, int * parent_index_2, int *
      //Testing:
      if (PRINT_DEBUG) 
      {
-	     printf("\n In GA_selection: draws=[%d, %d, %d, %d]\n", draws[0], draws[1], draws[2], draws[3]);
-	     printf("\n In GA_selection: parent_index_1=[%d, %d]\n", parent_index_1[0], parent_index_1[1]);
-	     printf("\n In GA_selection: parent_index_2=[%d, %d]\n", parent_index_2[0], parent_index_2[1]);
-	     printf("\n In GA_selection: rule_id_1=[%d, %d]\n", rule_id_1[0], rule_id_1[1]);
-	     printf("\n In GA_selection: rule_id_2=[%d, %d]\n", rule_id_2[0], rule_id_2[1]);
+	     printf("\n In GA_selection:\n draws=[ ");
+	     for (j=0;j<N_rep;j++){printf("%d ", draws[j]);}
+	     printf("]\n Completed drawing %d potential parents from population.\n", N_rep); 
+
+	     printf("\n In GA_selection:\n parent_index_1=[ ");
+	     for (j=0;j<N_pairs;j++){printf("%d ", parent_index_1[j]);}
+	     printf("]\n Completed drawing %d indices for parent_index_1 from potential parent subset.\n", N_pairs); 
+
+	     printf("\n In GA_selection:\n parent_index_2=[ ");
+	     for (j=0;j<N_pairs;j++){printf("%d ", parent_index_2[j]);}
+	     printf("]\n Completed drawing %d indices for parent_index_2 from potential parent subset.\n", N_pairs);  
+
+	     printf("\n In GA_selection:\n rule_id_1=[ ");
+	     for (j=0;j<N_pairs;j++){printf("%d ", rule_id_1[j]);}
+	     printf("]\n Completed associating %d rule_ids to parent_index_1.\n", N_pairs); 
+
+	     printf("\n In GA_selection:\n rule_id_2=[ ");
+	     for (j=0;j<N_pairs;j++){printf("%d ", rule_id_2[j]);}
+	     printf("]\n Completed associating %d rule_ids to parent_index_2.\n", N_pairs); 
      }
      
 	 //Now we have 2 arrays of rule_ids that are randomly matched, and these can be used in the next functions.
@@ -281,7 +295,7 @@ void GA_selection(int N_pairs, int * parent_index_1, int * parent_index_2, int *
 
 void GA_reproduction(int size, int id1, int id2, double * offspring_1, double * offspring_2)
 {
-	int k;
+	int k, j;
 	int cross_point, cross_length;
 
     /*********************** Start of Reproduction function **************************************************/
@@ -295,8 +309,17 @@ void GA_reproduction(int size, int id1, int id2, double * offspring_1, double * 
 			offspring_1[k]=PUBLIC_CLASSIFIERSYSTEM.ruletable[id1].parameters[k];
 			offspring_2[k]=PUBLIC_CLASSIFIERSYSTEM.ruletable[id2].parameters[k];
 		}
-	     if(PRINT_DEBUG) printf("\n In GA_reproduction: offspring_1=[%1.1f, %1.1f]\n", offspring_1[0], offspring_1[1]);
-	     if(PRINT_DEBUG) printf("\n In GA_reproduction: offspring_2=[%1.1f, %1.1f]\n", offspring_2[0], offspring_2[1]);
+	     if(PRINT_DEBUG)
+	     {
+		     printf("\n In GA_reproduction:\n offspring_1=[ ");
+		     for (j=0;j<size;j++){printf("%1.1f ", offspring_1[j]);}
+		     printf("]\n"); 
+
+		     printf("\n In GA_reproduction:\n offspring_2=[ ");
+		     for (j=0;j<size;j++){printf("%1.1f ", offspring_2[j]);}
+		     printf("]\n"); 
+	     }
+
 
 		//now cross-over the strings
 		if (random_unif() < GA_PARAMETERS.prob_cross)

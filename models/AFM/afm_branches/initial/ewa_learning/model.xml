@@ -16,6 +16,7 @@
   <environment>
     <constants>
 	<variable><type>int</type><name>nr_params</name><description>10, Number of parameters in a portfolio rule.</description></variable>
+    <variable><type>int</type><name>print_debug</name><description>0 or 1, Boolean for debugging print statements.</description></variable>
     </constants>
     
     <functionFiles>
