@@ -126,6 +126,9 @@
 <!-- Firm_execute_financial_payments -->
 <variable><type>int</type><name>bankruptcy_state</name><description>Flag to indicate the firm is in the bankruptcy state</description></variable>
 <variable><type>int</type><name>financial_crisis_state</name><description>Flag to indicate the firm is in the financial crisis state</description></variable>
+<variable><type>double</type><name>earnings_per_share</name><description></description></variable>
+<variable><type>double</type><name>total_payments</name><description></description></variable>
+<variable><type>double</type><name>total_interest_payments</name><description></description></variable>
 </memory>
 <functions>
 
@@ -164,7 +167,7 @@
 <description>Function to compute the balance sheet of the firm.</description>
 <currentState>004</currentState>
 <nextState>Firm_Bankruptcy_check</nextState>
-<inputs>
+<!--inputs>
 <input>
 <messageName>current_mall_stock_info</messageName>
 <filter>
@@ -173,7 +176,7 @@
   <rhs><value>m.firm_id</value></rhs>
  </filter>
 </input>
-</inputs>
+</inputs>-->
 </function>
 
 <!-- Bankruptcy going to end_Firm  -->
