@@ -8,7 +8,7 @@
 #define MAXPRICES 100
 #define MAXRETURNS MAXPRICES
 
-#include "header.h"
+#include "../header.h"
 #include <stdlib.h>
 #include <math.h>
 #include <time.h>

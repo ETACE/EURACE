@@ -1,6 +1,7 @@
 
 #include "my_library_header.h"
 
+
 double formedPrice(ClearingMechanism *clearm)
 {
        return clearm->lastPrice;
