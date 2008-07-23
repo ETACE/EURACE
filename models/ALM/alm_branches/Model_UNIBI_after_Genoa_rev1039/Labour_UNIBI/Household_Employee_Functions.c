@@ -1,7 +1,7 @@
 #include "../header.h"
 #include "../Household_agent_header.h"
 #include "../my_library_header.h"
-#include "../Household_Library_Functions.h"
+//#include "../Household_Library_Functions.h"
 
 
 /********************************* Household Condition/Dummy functions *************************************/
@@ -696,7 +696,13 @@ int Household_read_application_rejection_update_wage_reservation_2()
 	return 0;
 }
 
+int Household_idle()
+{return 0;}
 
+int Household_finish_labour_market()
+{
+	return 0;
+	}
 
 
 
