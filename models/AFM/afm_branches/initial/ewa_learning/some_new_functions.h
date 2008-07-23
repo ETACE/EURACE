@@ -7,7 +7,7 @@
  *********************************/
 
 //Set debug print outs
-#define PRINT_DEBUG 0
+//#define PRINT_DEBUG 0
 
 /* Statistic auxiliary functions */
 double random_unif();

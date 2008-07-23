@@ -21,6 +21,4 @@ void GA_election(int size, int id1, int id2, double * offspring_1, double * offs
 void GA_reinsertion(int size, int id1, int id2, double * offspring_1, double * offspring_2);
 
 /* Debugginhg functions */
-void test_FinancialAgent_print_public_classifiersystem();
-void test_Household_print_private_classifiersystem();
 void test_print();

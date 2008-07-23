@@ -276,7 +276,6 @@ void GA_selection(int N_pairs, int * parent_index_1, int * parent_index_2, int *
     free(p);
  	free(cpdf);
  	free(draws);
- 	
 }
 
 
@@ -395,7 +394,7 @@ void GA_reinsertion(int size, int id1, int id2, double * offspring_1, double * o
 	/*********************** End of Reinsertion function ****************************************************/
 }
 
-void FinancialAgent_print_public_classifiersystem()
+int FinancialAgent_print_public_classifiersystem()
 {	
 	char str[10];
 	char * filename;
@@ -448,5 +447,8 @@ void FinancialAgent_print_public_classifiersystem()
 
     fprintf(file,"\n");
 	fclose(file);
+	
+	free(filename);
+    return 0;
 }
 // *********** END GA AUXILIARY FUNCTIONS ****************************

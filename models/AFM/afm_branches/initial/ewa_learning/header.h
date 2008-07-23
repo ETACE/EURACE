@@ -30,6 +30,9 @@
 /** \def NR_PARAMS
  * \brief Provide access to environment variables in uppercase. */
 #define NR_PARAMS nr_params
+/** \def PRINT_DEBUG
+ * \brief Provide access to environment variables in uppercase. */
+#define PRINT_DEBUG print_debug
 /** \def ARRAY_BLOCK_SIZE
  * \brief The block size to allocate to dynamic arrays. */
 #define ARRAY_BLOCK_SIZE 5
@@ -501,6 +504,10 @@ typedef struct m_rule_details m_rule_details;
 
 
 int idle(void);
+int Household_idle_start_Household_EWA_Learning_end_GA_condition(xmachine_memory_Household *a);
+int Household_reset_private_classifiersystem(void);
+int Household_Household_reset_private_classifiersystem_start_Household_EWA_Learning_01_condition(xmachine_memory_Household *a);
+int Household_read_and_update_rule_details(void);
 int idle(void);
 int Household_idle_end_GA_end_Household_EWA_Learning_condition(xmachine_memory_Household *a);
 int Household_send_rule_performance(void);
@@ -509,6 +516,11 @@ int Household_read_all_performances(void);
 int Household_print_private_classifiersystem(void);
 int Household_select_rule(void);
 int idle(void);
+int FinancialAgent_idle_start_FinancialAgent_end_GA_condition(xmachine_memory_FinancialAgent *a);
+int FinancialAgent_reset_public_classifiersystem(void);
+int FinancialAgent_FinancialAgent_reset_public_classifiersystem_start_FinancialAgent_01_condition(xmachine_memory_FinancialAgent *a);
+int FinancialAgent_apply_GA(void);
+int FinancialAgent_send_rule_details(void);
 int FinancialAgent_read_rule_performance_and_update_classifiersystem(void);
 int FinancialAgent_send_all_performances(void);
 int FinancialAgent_print_public_classifiersystem(void);
@@ -553,6 +565,9 @@ typedef struct node_information node_information;
 /** \var int nr_params
 * \brief A constant variable from the environment. */
 int nr_params;
+/** \var int print_debug
+* \brief A constant variable from the environment. */
+int print_debug;
 /** \var xmachine * temp_xmachine
 * \brief Pointer to xmachine to initialise linked list. */
 xmachine * temp_xmachine;
@@ -604,6 +619,9 @@ xmachine_memory_Household_state * Household_02_state;
 /* Pointer to list of Household agents in state end_Household_EWA_Learning state */
 //xmachine_memory_Household * temp_xmachine_Household_end_Household_EWA_Learning;
 xmachine_memory_Household_state * Household_end_Household_EWA_Learning_state;
+/* Pointer to list of Household agents in state 01 state */
+//xmachine_memory_Household * temp_xmachine_Household_01;
+xmachine_memory_Household_state * Household_01_state;
 /* Pointer to list of Household agents in state end_GA state */
 //xmachine_memory_Household * temp_xmachine_Household_end_GA;
 xmachine_memory_Household_state * Household_end_GA_state;
@@ -624,6 +642,12 @@ xmachine_memory_FinancialAgent_state * FinancialAgent_04_state;
 /* Pointer to list of FinancialAgent agents in state 03 state */
 //xmachine_memory_FinancialAgent * temp_xmachine_FinancialAgent_03;
 xmachine_memory_FinancialAgent_state * FinancialAgent_03_state;
+/* Pointer to list of FinancialAgent agents in state 02 state */
+//xmachine_memory_FinancialAgent * temp_xmachine_FinancialAgent_02;
+xmachine_memory_FinancialAgent_state * FinancialAgent_02_state;
+/* Pointer to list of FinancialAgent agents in state 01 state */
+//xmachine_memory_FinancialAgent * temp_xmachine_FinancialAgent_01;
+xmachine_memory_FinancialAgent_state * FinancialAgent_01_state;
 /* Pointer to list of FinancialAgent agents in state end_GA state */
 //xmachine_memory_FinancialAgent * temp_xmachine_FinancialAgent_end_GA;
 xmachine_memory_FinancialAgent_state * FinancialAgent_end_GA_state;

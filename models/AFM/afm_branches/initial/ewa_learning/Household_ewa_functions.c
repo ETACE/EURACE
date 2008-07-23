@@ -260,14 +260,14 @@ int Household_reset_private_classifiersystem()
     return 0;
 } 
 
-void Household_print_private_classifiersystem()
+int Household_print_private_classifiersystem()
 {
 	char str[10];
 	char * filename;
 	FILE * file;
 
-	int i, rule_id, counter;
-	double performance, avg_performance, my_performance, attraction, choiceprob;
+	int i, rule_id;
+	double avg_performance, my_performance, attraction, choiceprob;
 
 	//Set the output file:
 	i = sprintf(str, "%d", iteration_loop);
@@ -299,19 +299,21 @@ void Household_print_private_classifiersystem()
 	for (i=0;i<PRIVATE_CLASSIFIERSYSTEM.nr_rules;i++)
 	{
 		rule_id 		= PRIVATE_CLASSIFIERSYSTEM.ruletable[i].id;
-		performance 	= PRIVATE_CLASSIFIERSYSTEM.ruletable[i].performance;
-		counter 		= PRIVATE_CLASSIFIERSYSTEM.ruletable[i].counter;
-		avg_performance 	= PRIVATE_CLASSIFIERSYSTEM.ruletable[i].avg_performance;
 		my_performance 	= PRIVATE_CLASSIFIERSYSTEM.ruletable[i].my_performance;
+		avg_performance = PRIVATE_CLASSIFIERSYSTEM.ruletable[i].avg_performance;
 	    attraction 		= PRIVATE_CLASSIFIERSYSTEM.ruletable[i].attraction;
 	    choiceprob 		= PRIVATE_CLASSIFIERSYSTEM.ruletable[i].choiceprob;
 	    
-	    fprintf(file,"%d\t %f\t %7d\t\t %f\t\t %f\t\t %f\t %f\n", rule_id, performance, counter, avg_performance, my_performance, attraction, choiceprob);
+	    fprintf(file,"%d\t %f\t %f\t\t %f\t %f\n", rule_id, my_performance, avg_performance, attraction, choiceprob);
 	}
 	fprintf(file,"=============================================================================================\n");
 
 	fprintf(file,"\n");
 	fclose(file);
+	
+	free(filename);
+	
+    return 0;
 }
 
 /* \fn: Household_initialize_ruledetails()
