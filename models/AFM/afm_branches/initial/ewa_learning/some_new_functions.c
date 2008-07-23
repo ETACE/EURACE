@@ -6,6 +6,7 @@
  * 15/07/08 Sander 
  *********************************/
 #include <stdlib.h>
+#include <stdio.h>
 #include <math.h>
 #include <time.h>
 #include "some_new_functions.h"
