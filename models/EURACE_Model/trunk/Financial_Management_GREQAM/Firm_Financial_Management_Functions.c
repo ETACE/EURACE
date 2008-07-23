@@ -1,7 +1,7 @@
 #include "../header.h"
 #include "../Firm_agent_header.h"
 #include "../my_library_header.h"
-#include "../Firm_Library_Functions.h"
+//#include "../Firm_Library_Functions.h"
 
 
 /************Firm Role: Financial Management Role ********************************/
@@ -28,7 +28,7 @@ int Firm_compute_financial_payments()
     //int bank_id                       : bank at which the loan was obtained
     //double loan_value                 : total value of the loan remaining
     //double interest_rate              : interest for this loan
-    //double interest_payment           : interest to be paid this period
+    double interest_payment =0.0;	//          : interest to be paid this period
     //double debt_installment_payment   : installment payment per period
     //int nr_periods_before_maturity    : nr of periods to go before the loan has to be fully repaid
 
@@ -180,7 +180,7 @@ int Firm_compute_balance_sheet()
     
     
 	/*reading current mall stocks   */
-	START_CURRENT_MALL_STOCK_INFO_MESSAGE_LOOP
+	/*START_CURRENT_MALL_STOCK_INFO_MESSAGE_LOOP
 //		if(current_mall_stock_info_message->firm_id == ID)
 //		{
 			for(int j=0; j< CURRENT_MALL_STOCKS.size;j++)
@@ -188,12 +188,12 @@ int Firm_compute_balance_sheet()
 				if(current_mall_stock_info_message->mall_id==
 				CURRENT_MALL_STOCKS.array[j].mall_id)
 				{
-					/*Firms update the stock level in one mall*/
+					/*Firms update the stock level in one mall
 					CURRENT_MALL_STOCKS.array[j].current_stock= current_mall_stock_info_message->stock;
 				}		
 			}
 //		}
-	FINISH_CURRENT_MALL_STOCK_INFO_MESSAGE_LOOP
+	FINISH_CURRENT_MALL_STOCK_INFO_MESSAGE_LOOP*/
 
     //TOTAL_VALUE_LOCAL_INVENTORY: estimated value of local inventory stocks at current mall prices
     //We loop over the malls and sum the value of all local inventory stocks
@@ -336,7 +336,7 @@ int Firm_in_financial_crisis()
 	
 	//Recompute dividend
 	//Set TOTAL_DIVIDEND_PAYMENT
-	payment_account_after_compulsory_payments = PAYMENT_ACCOUNT  - (TOTAL_INTEREST_PAYMENTS + TOTAL_DEBT_INSTALLMENT_PAYMENT + TAX_PAYMENT)
+	payment_account_after_compulsory_payments = PAYMENT_ACCOUNT  - (TOTAL_INTEREST_PAYMENTS + TOTAL_DEBT_INSTALLMENT_PAYMENT + TAX_PAYMENT);
 	TOTAL_DIVIDEND_PAYMENT = max(0, payment_account_after_compulsory_payments - PRODUCTION_COSTS);
 	
 	//Set flag if resolved:
@@ -371,7 +371,8 @@ int Firm_execute_financial_payments()
 {	
 	
 		//No bankruptcy
-		
+		int imax,i;
+		double temp_interest=0.0;
 		//step 1: actual tax_payment to government
 		add_tax_payment_message(ID, GOV_ID, TAX_PAYMENT);
 		PAYMENT_ACCOUNT -= TAX_PAYMENT;
@@ -382,7 +383,8 @@ int Firm_execute_financial_payments()
 	    for (i=0; i<imax;i++)
 	    {
 	        //decrease payment_account with the interest_payment
-	        PAYMENT_ACCOUNT -= LOANS.array[i].interest_amount;
+	    	temp_interest=LOANS.array[i].interest_rate*LOANS.array[i].installment_amount;
+	        PAYMENT_ACCOUNT -= temp_interest;
 		    
 	        //decrease payment_account with the installment payment
 	        PAYMENT_ACCOUNT -= LOANS.array[i].installment_amount;
@@ -402,7 +404,7 @@ int Firm_execute_financial_payments()
 	        //to the firm's deposit bank (the banks at which the firm has loans is a different one than the bank at which the firm has deposits).
 
 	        //add_debt_installment_message(bank_id, installment_amount, interest_amount, credit_refunded, var_per_installment)
-	        add_installment_message(LOANS.array[i].bank_id, LOANS.array[i].installment_amount, LOANS.array[i].interest_amount, LOANS.array[i].var_per_installment)
+	        add_installment_message(LOANS.array[i].bank_id, LOANS.array[i].installment_amount, temp_interest, LOANS.array[i].var_per_installment);
 	
 	        //If nr_periods_before_maturity == 0, remove the loan item
 	        if (LOANS.array[i].nr_periods_before_repayment==0)
