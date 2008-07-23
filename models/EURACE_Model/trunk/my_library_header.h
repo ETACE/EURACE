@@ -26,20 +26,16 @@
  * \brief A flag to print log to terminal. */
 #define PRINT_LOG 1
 
-/*Number of Households*/
-#define NO_HOUSEHOLDS 400
+
 
 /*Strenght of logit*/
-#define GAMMA -5
+#define GAMMA -2
 
 /*brief Paramater for production function. */
 #define ALPHA 0.662
 
 /*brief Paramater for production function. */
 #define BETA 0.338
-
-/*brief Dividend rate of consumption goods producers. */
-#define DIVIDEND_RATE 1
 
 /*brief deprication rate. */
 #define DEPRECIATION_RATE 0.01
@@ -49,9 +45,6 @@
 
 /*brief Strenght of adaption of the capital stock if firm is rationed on the labor market*/
 #define TETA 0.0
-
-/*additional production if stocks are empty*/
-#define ADDITIONAL_PRODUCTION 0.6
 
 /*brief Pricing rule: mark up on unit costs. */
 #define MARK_UP 0.2
@@ -64,9 +57,6 @@
 
 /*min number of vacancies to trigger vacancy counter*/
 #define MIN_VACANCY 2
-
-/*use of Deaton's saving rule (yes=1)*/
-#define DEATON_SAVING_RULE_TRUE 1
 
 		
 /*adaption of the reservation wage: percent*/
@@ -90,10 +80,14 @@
 /*Planning horizon of firms*/
 #define FIRM_PLANNING_HORIZON 10
 
+#define PERIODS_TO_REPAY_LOANS 12
 
+#define INNOVATION_PROBABILITY 10
+#define PRODUCTIVITY_PROGRESS 0.05
 
 #define INV_INERTIA 3
 
+#define PRINT_DEBUG 1
 
 #define ADAPTION_DELIVERY_VOLUME 0.02
 
@@ -103,3 +97,12 @@
 int random_int(int min,int max);
 double max(double a, double b);
 double min(double a, double b);
+
+
+int credit_request_function(const void *x, const void *y);
+int vacancy_list_rank_wage_offer_function(const void *x, const void *y);
+int job_offer_list_rank_wage_offer_function(const void *x, const void *y);
+int employee_list_rank_specific_skills_function(const void *x, const void *y);
+int job_application_list_rank_general_skill_function(const void *x, const void *y);
+int sales_statistics_list_rank_sales_function(const void *x, const void *y);
+
