@@ -25,29 +25,7 @@
 			<file>ClearingMechanism.c</file>
 			<file>Household_Financial_Market.c</file>
                 </functionFiles>
-		
-        <timeUnits>
-			
-	<timeUnit>
-		<name>daily</name>
-		<unit>iteration</unit>
-		<period>1</period>
-	</timeUnit>
-			
-	<timeUnit>
-		<name>weekly</name>
-		<unit>daily</unit>
-		<period>5</period>
-	</timeUnit>
-			
-	<timeUnit>
-	        <name>monthly</name>
-		<unit>weekly</unit>
-		<period>4</period>
-	</timeUnit>			
-        </timeUnits>
-
-<dataTypes>
+		<dataTypes>
 			<dataType>
 				<name>Order</name>
 				<description>ADT order </description>
@@ -109,6 +87,26 @@
 			</dataType>
 			
 		</dataTypes>
+        <timeUnits>
+			
+	<timeUnit>
+		<name>daily</name>
+		<unit>iteration</unit>
+		<period>1</period>
+	</timeUnit>
+			
+	<timeUnit>
+		<name>weekly</name>
+		<unit>daily</unit>
+		<period>5</period>
+	</timeUnit>
+			
+	<timeUnit>
+	        <name>monthly</name>
+		<unit>weekly</unit>
+		<period>4</period>
+	</timeUnit>			
+        </timeUnits>
 
 </environment>
 	
@@ -143,9 +141,8 @@
 				
 				<description></description></variable>
 			<!--<variable><type>double</type><name>payment_account</name><description></description></variable>-->
-			<variable><type>double</type><name>consumption_badget</name><description></description></variable>
 			<variable><type>double</type><name>cash_on_hand</name><description></description></variable>
-			<variable><type>double</type><name>portfolio_badget</name><description></description></variable>
+			<!--<variable><type>double</type><name>consumption_budget</name><description></description></variable>-->
 			<variable><type>int</type><name>forwardWindow</name>	<description></description></variable>
 			<variable><type>int</type><name>backwardWindow</name>	<description></description></variable>
 			<variable><type>int</type><name>bins</name>	<description></description></variable>
