@@ -7,7 +7,7 @@
  *********************************/
 
 //Set debug print outs
-//#define PRINT_DEBUG 0
+//#define print_debug 1 //now set in header.h as environment variable
 
 /* Statistic auxiliary functions */
 double random_unif();

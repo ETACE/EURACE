@@ -40,7 +40,7 @@ void unittest_GA_election();
 void unittest_GA_reinsertion();
 
 void unittest_FinancialAgent_print_public_classifiersystem();
-void unittest_Household_print_private_classifiersystem();
+
 
 /*************************** end prototypes ***************************/
 

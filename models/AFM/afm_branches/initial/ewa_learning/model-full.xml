@@ -138,6 +138,16 @@
 		</variable>
 		<variable>
 		<type>double</type>
+		<name>delta_min</name>
+		<description>Mutation lower range, delta_min*stepsize[i]</description>
+		</variable>
+		<variable>
+		<type>double</type>
+		<name>delta_max</name>
+		<description>Mutation upper range, delta_max*stepsize[i]</description>
+		</variable>
+		<variable>
+		<type>double</type>
 		<name>min_values[10]</name>
 		<description>Minimum values for each parameter</description>
 		</variable>
