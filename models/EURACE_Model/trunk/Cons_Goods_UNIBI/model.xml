@@ -375,7 +375,7 @@ firms update the specific skill levels of the workers.</description>
 <variable><type>double</type><name>expenditures</name><description></description></variable>
 <variable><type>double</type><name>received_dividend</name><description></description></variable>
 <variable><type>portfolio_array</type><name>household_portfolio</name><description></description></variable>
-
+<variable><type>double</type><name>portfolio_budget</name><description></description></variable>
 
 </memory>
 <functions>

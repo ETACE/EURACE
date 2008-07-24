@@ -162,7 +162,7 @@ int Household_determine_consumption_budget()
 			
 		
 
-			
+			PORTFOLIO_BUDGET=PAYMENT_ACCOUNT-CONSUMPTION_BUDGET;
 			WEEKLY_BUDGET = CONSUMPTION_BUDGET/4;
 			WEEK_OF_MONTH = 4;
 			
