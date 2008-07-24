@@ -14,7 +14,11 @@ TODO
 It is difficult to draw when items have low probabilities.
 - Solution: in draw_without_replacement reconstruct the cpdf, eliminating the items that have already been drawn.
 
+- check problem with mutation(): unittest when mutation exceeds min, max values
 
+File: Household_ewa_functions
+- Household_send_rule_performance(), line 42: send current_rule using 0-indexing
+- Household_select_rule(), line 169: set current_rule = nr_selected_rule using 0-indexing
 
 Main files:
 ===========

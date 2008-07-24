@@ -34,12 +34,12 @@ int Household_send_rule_performance()
     rule_performance = random_unif()*100;
     
     
-    printf("\n current_rule: %d\n", current_rule);
-    printf("\n rule_performance: %f\n", rule_performance);
+    if(PRINT_DEBUG) printf("\n current_rule: %d\n", current_rule);
+    if(PRINT_DEBUG) printf("\n rule_performance: %f\n", rule_performance);
     
-    //Note: rule_id = current_rule-1 because of 0-indexing in C
+    //Note: rule_id = current_rule uses 0-indexing
     //add_rule_performance_message(rule_id, rule_performance);
-    add_rule_performance_message(current_rule-1, rule_performance);
+    add_rule_performance_message(current_rule, rule_performance);
 
     return 0;
 }
@@ -165,8 +165,8 @@ int Household_select_rule()
         printf("Error in EWA learning: No rule selection from choice probabilities");
     }
     
-    //Set the selected rule in memory (1-indexed):
-    PRIVATE_CLASSIFIERSYSTEM.current_rule = nr_selected_rule + 1;
+    //Set the selected rule in memory (0-indexed):
+    PRIVATE_CLASSIFIERSYSTEM.current_rule = nr_selected_rule;
 
     //Free allocated memory
     free(p);
@@ -269,11 +269,9 @@ int Household_print_private_classifiersystem()
 
 	int i, rule_id;
 	double avg_performance, my_performance, attraction, choiceprob;
-
+	
 	//Set the output file:
 	i = sprintf(str, "%d", iteration_loop);
-	if(PRINT_DEBUG) printf("iteration_loop in sprintf is %s\n", str);
-	if(PRINT_DEBUG) printf("sprintf returns: %d\n\n", i);
 	
 	//Start an empty string for the filename
 	filename = malloc(40*sizeof(char));
@@ -283,31 +281,27 @@ int Household_print_private_classifiersystem()
 	strcpy(filename, "./log/CS_Household_");
 	strcat(filename, str);
 	strcat(filename, ".txt");
-	if(PRINT_DEBUG) printf("File to write data to: %s\n\n", filename);
 
 	//Open a file pointer: FILE * file 
-	if(PRINT_DEBUG) printf("\n Appending data to file: %s. Starting to write...\n", filename);
-	file = fopen(filename,"a");
-	fprintf(file, "\n Appending data to file\n");
-
+	file = fopen(filename,"w");
 
 	//Print per household classifier system:
-	 fprintf(file,"=============================================================================================\n");
+	 fprintf(file,"============================================================================================================\n");
 	 fprintf(file,"Household: %d Current rule: %d\n", ID, PRIVATE_CLASSIFIERSYSTEM.current_rule);
-	 fprintf(file,"rule id\t performance\t counter\t avg_performance\t my_performance\t attraction\t choice prob\n");
-	 fprintf(file,"=============================================================================================\n"); 
+	 fprintf(file,"rule\t my_performance\t avg_performance\t attraction\t choice prob\n");
+	 fprintf(file,"============================================================================================================\n"); 
 	
 	for (i=0;i<PRIVATE_CLASSIFIERSYSTEM.nr_rules;i++)
 	{
 		rule_id 		= PRIVATE_CLASSIFIERSYSTEM.ruletable[i].id;
 		my_performance 	= PRIVATE_CLASSIFIERSYSTEM.ruletable[i].my_performance;
-		avg_performance = PRIVATE_CLASSIFIERSYSTEM.ruletable[i].avg_performance;
+		avg_performance	= PRIVATE_CLASSIFIERSYSTEM.ruletable[i].avg_performance;
 	    attraction 		= PRIVATE_CLASSIFIERSYSTEM.ruletable[i].attraction;
 	    choiceprob 		= PRIVATE_CLASSIFIERSYSTEM.ruletable[i].choiceprob;
 	    
-	    fprintf(file,"%d\t %f\t %f\t\t %f\t %f\n", rule_id, my_performance, avg_performance, attraction, choiceprob);
+	    fprintf(file,"%8d\t|\t %.4f\t|\t %.4f\t|\t %.4f\t|\t %.4f\n", rule_id, my_performance, avg_performance, attraction, choiceprob);
 	}
-	fprintf(file,"=============================================================================================\n");
+	fprintf(file,"============================================================================================================\n");
 
 	fprintf(file,"\n");
 	fclose(file);

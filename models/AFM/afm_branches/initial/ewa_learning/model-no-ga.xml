@@ -436,9 +436,10 @@
 		  <nextState>end_GA</nextState>
 <!--          <condition><not><time><period>yearly</period><phase>1</phase></time></not></condition>-->
 		  </function>
+		  
 <!--        <function>-->
-<!--          <name>FinancialAgent_reset_public_classifiersystem</name>-->
-<!--          <description>Resetting user counter, performance sum, avg_performance</description>-->
+<!--          <name>FinancialAgent_apply_GA</name>-->
+<!--          <description></description>-->
 <!--          <currentState>start_FinancialAgent</currentState>-->
 <!--          <nextState>01</nextState>-->
 <!--          <condition><time><period>yearly</period><phase>1</phase></time></condition>-->
@@ -446,18 +447,10 @@
 <!--          <outputs></outputs>-->
 <!--        </function>-->
 <!--        <function>-->
-<!--          <name>FinancialAgent_apply_GA</name>-->
+<!--          <name>FinancialAgent_send_rule_details</name>-->
 <!--          <description></description>-->
 <!--          <currentState>01</currentState>-->
 <!--          <nextState>02</nextState>-->
-<!--          <inputs></inputs>-->
-<!--          <outputs></outputs>-->
-<!--        </function>-->
-<!--        <function>-->
-<!--          <name>FinancialAgent_send_rule_details</name>-->
-<!--          <description></description>-->
-<!--          <currentState>02</currentState>-->
-<!--          <nextState>end_GA</nextState>-->
 <!--          <inputs></inputs>-->
 <!--          <outputs>-->
 <!--          <output>-->
@@ -465,6 +458,15 @@
 <!--          </output>-->
 <!--          </outputs>-->
 <!--        </function>-->
+<!--        <function>-->
+<!--          <name>FinancialAgent_reset_public_classifiersystem</name>-->
+<!--          <description>Resetting user counter, performance sum, avg_performance</description>-->
+<!--          <currentState>02</currentState>-->
+<!--          <nextState>end_GA</nextState>-->
+<!--          <inputs></inputs>-->
+<!--          <outputs></outputs>-->
+<!--        </function>-->
+
         <function>
           <name>FinancialAgent_read_rule_performance_and_update_classifiersystem</name>
           <description></description>

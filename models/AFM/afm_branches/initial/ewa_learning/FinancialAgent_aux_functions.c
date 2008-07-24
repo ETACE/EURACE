@@ -121,16 +121,22 @@ void two_point_cross_over_alt(int size, double * string_a, double * string_b, in
 }
 
 /* \fn void mutation(int size, double * string, double * stepsize, double prob_mut)
- * 
  * \brief Genetic operator: Mutation of real-valued bitstrings.
- * The size of the mutation is delta*stepsize[k], where: 
- * delta: a random percentage between -10% and +10% (or: delta = {-10%, -5%, 0%, +5%, +10%} )
- * stepsize[k]: can be a parameter dependent gridsize
+ * size: size of the string
+ * string: pointer to the string
+ * min_value[k]: array of minimum values for each bit
+ * max_value[k]: array of maximum values for each bit
+ * stepsize[k]: array of stepsizes for each bit 
+ * delta_min: lower range for the mutation
+ * delta_max: upper range for the mutation 
+ * prob_mut: mutation probability
+ * The mutation is delta*stepsize[k], where: 
+ * delta: is a random number between (delta_min, delta_max)
  */
-void mutation(int size, double * string, double * stepsize, double delta_min, double delta_max, double prob_mut)
+void mutation(int size, double * string, double * stepsize, double delta_min, double delta_max, double * min_values, double * max_values, double prob_mut)
 {
 	int k;
-	double delta;
+	double delta, mutation_size;
 	
 	for (k=0; k<size; k++)
 	{
@@ -141,8 +147,22 @@ void mutation(int size, double * string, double * stepsize, double delta_min, do
 			 delta = random_unif_interval(delta_min, delta_max);
 				  
 			//mutate the value at position k by a random number between -10*stepsize and +10*stepsize from the previous value
-			string[k] = string[k] + delta*stepsize[k];
+			 mutation_size = delta*stepsize[k];
 		}
+		
+		// check that min_value and max_value are not being violated
+		if (string[k] + mutation_size >= min_values[k] && string[k] + mutation_size <= max_values[k])
+		{
+			string[k] = string[k] + mutation_size;
+		}
+		else if (string[k] + mutation_size < min_values[k])
+			 {
+				string[k] = min_values[k];
+		     }
+			 else if (string[k] + mutation_size > max_values[k])
+			 	  {
+				 		string[k] = max_values[k];
+			 	  }
 	}    
 }
 
@@ -359,8 +379,8 @@ void GA_mutation(int size, double * offspring_1, double * offspring_2)
  	//For each of the strings offspring_1 and offspring_2 that have just undergone cross-over, now perform mutation
 
     //void mutation(int size, double * offspring_1, double * offspring_2);
-	mutation(size, offspring_1, GA_PARAMETERS.stepsize, GA_PARAMETERS.delta_min, GA_PARAMETERS.delta_max, GA_PARAMETERS.prob_mut);
-	mutation(size, offspring_2, GA_PARAMETERS.stepsize, GA_PARAMETERS.delta_min, GA_PARAMETERS.delta_max, GA_PARAMETERS.prob_mut);
+	mutation(size, offspring_1, GA_PARAMETERS.stepsize, GA_PARAMETERS.delta_min, GA_PARAMETERS.delta_max, GA_PARAMETERS.min_values, GA_PARAMETERS.max_values, GA_PARAMETERS.prob_mut);
+	mutation(size, offspring_2, GA_PARAMETERS.stepsize, GA_PARAMETERS.delta_min, GA_PARAMETERS.delta_max, GA_PARAMETERS.min_values, GA_PARAMETERS.max_values, GA_PARAMETERS.prob_mut);
 
 	/*********************** End of Mutation function ****************************************************/
 }
@@ -423,13 +443,11 @@ int FinancialAgent_print_public_classifiersystem()
 	char * filename;
 	FILE * file;
 
-	int i, rule_id, counter;
+	int i, j, rule_id, counter;
 	double performance, avg_performance;
 
  	//Set the output file:
  	i = sprintf(str, "%d", iteration_loop);
- 	if(PRINT_DEBUG) printf("iteration_loop in sprintf is %s\n", str);
- 	if(PRINT_DEBUG) printf("sprintf returns: %d\n\n", i);
  	
  	//Start an empty string for the filename
  	filename = malloc(40*sizeof(char));
@@ -439,22 +457,15 @@ int FinancialAgent_print_public_classifiersystem()
  	strcpy(filename, "./log/CS_FinancialAgent_");
  	strcat(filename, str);
  	strcat(filename, ".txt");
- 	if(PRINT_DEBUG) printf("File to write data to: %s\n\n", filename);
 
  	//Open a file pointer: FILE * file 
- 	if(PRINT_DEBUG) printf("\n Appending data to file: %s. Starting to write...\n", filename);
- 	file = fopen(filename,"a");
- 	fprintf(file, "\n Appending data to file\n");
+ 	file = fopen(filename,"w");
 
-	//Print comments/notes:
-    fprintf(file,"Logfile: Print-out of all classifier systems. \n");
-    fprintf(file,"Note 1: The performance and counter columns for the households are copied from the FinancialAdvisors CS. \n");
-    fprintf(file,"Note 2: The avgperformance column can contain different values for two households, since it contains the copy from the FinancialAdvisors CS at the moment of the households most recent portfolio update. \n\n");
 
     //Print FinancialAdvisor classifier system:
     fprintf(file,"=============================================================================================\n");
     fprintf(file,"FinancialAdvisor:\n");
-    fprintf(file,"rule id\t performance\t counter\t avg_performance\n");
+    fprintf(file,"rule\t performance\t counter\t avg_performance\t rule details\n");
     fprintf(file,"=============================================================================================\n"); 
 
     for (i=0;i<PUBLIC_CLASSIFIERSYSTEM.nr_rules;i++)
@@ -464,7 +475,11 @@ int FinancialAgent_print_public_classifiersystem()
 		 counter 		= PUBLIC_CLASSIFIERSYSTEM.ruletable[i].counter;         
          avg_performance = PUBLIC_CLASSIFIERSYSTEM.ruletable[i].avg_performance;
 
-         fprintf(file,"%d\t %f\t %7d\t\t %f\n", rule_id, performance, counter, avg_performance);
+         fprintf(file,"%d\t|\t %f\t|\t %7d\t|\t %f\t | ", rule_id, performance, counter, avg_performance);
+
+         fprintf(file,"[ ");
+	     for (j=0;j<GA_PARAMETERS.string_size;j++){fprintf(file,"%1.1f ", PUBLIC_CLASSIFIERSYSTEM.ruletable[i].parameters[j]);}
+	     fprintf(file,"]\n"); 
     }
      fprintf(file,"=============================================================================================\n");
 

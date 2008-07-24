@@ -202,12 +202,11 @@ int draw(int size, double * cpdf)
 	//cpdf = malloc(sizeof(double)*size);
 
 	int j, nr_selected_bin;
-	double u, nr_drawn;
+	double u;
+	//double nr_drawn;
 	
     //Random number:
 	u=random_unif();
-    //printf("\n Random draw: %f\n", u);
-    
     
     nr_selected_bin=0;
     
@@ -215,7 +214,6 @@ int draw(int size, double * cpdf)
     if (0<=u && u<cpdf[0])
     {
         nr_selected_bin=1;
-        nr_drawn = cpdf[0];
     }
         
     if (size>1)
@@ -226,7 +224,6 @@ int draw(int size, double * cpdf)
 	        if (cpdf[j-1]<=u && u<cpdf[j])
 	        {
 	            nr_selected_bin=j;
-	            nr_drawn = cpdf[j];
 	            break;
 	    	}
 	    }
@@ -235,7 +232,6 @@ int draw(int size, double * cpdf)
         if (cpdf[size-1]<=u)
         {
             nr_selected_bin=size-1;
-            nr_drawn = cpdf[size-1];
         }
     }
     
