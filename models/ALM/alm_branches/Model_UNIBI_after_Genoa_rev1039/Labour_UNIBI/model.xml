@@ -71,15 +71,15 @@
 <description></description>
 <memory>
 <variable><type>employee_array</type><name>employees</name><description>Used to store the data-type Employee</description></variable>
-<variable><type>double</type><name>wage_offer</name><description></description>The basic wage offer</variable>
-<variable><type>double</type><name>technology</name><description></description>average technology/productivity of the capital</variable>
-<variable><type>int</type><name>no_employees</name><description></description>number of employees</variable>
+<variable><type>double</type><name>wage_offer</name><description>The basic wage offer</description></variable>
+<variable><type>double</type><name>technology</name><description>average technology/productivity of the capital</description></variable>
+<variable><type>int</type><name>no_employees</name><description>number of employees</description></variable>
 <variable><type>int</type><name>no_employees_skill_1</name><description>number of employees with general skills 1</description></variable>
 <variable><type>int</type><name>no_employees_skill_2</name><description>number of employees with general skills 2</description></variable>
 <variable><type>int</type><name>no_employees_skill_3</name><description>number of employees with general skills 3</description></variable>
 <variable><type>int</type><name>no_employees_skill_4</name><description>number of employees with general skills 4</description></variable>
 <variable><type>int</type><name>no_employees_skill_5</name><description>number of employees with general skills 5</description></variable>
-<variable><type>int</type><name>vacancies</name><description></description>number of vacancies</variable>
+<variable><type>int</type><name>vacancies</name><description>number of vacancies</description></variable>
 <variable><type>double</type><name>average_g_skill</name><description>average general skills of the workforce</description></variable>
 <variable><type>double</type><name>average_s_skill_of_1</name><description>average specific skills of employees with general skills 1</description></variable>
 <variable><type>double</type><name>average_s_skill_of_2</name><description>average specific skills of employees with general skills 2</description></variable>
@@ -300,14 +300,14 @@ of employees and the number of vacancies</description>
 <name>Household</name>
 <description></description>
 <memory>
-<variable><type>double</type><name>wage</name><description></description>The wage a household receives</variable>
+<variable><type>double</type><name>wage</name><description>The wage a household receives</description></variable>
 <variable><type>double</type><name>wage_reservation</name><description>Reservation wage</description></variable>
 <variable><type>int</type><name>general_skill</name><description>The general skill level</description></variable>
 <variable><type>int</type><name>on_the_job_search</name><description>Indicator variable: 1 on the job search; 0 no on the job search</description></variable>
 <variable><type>int</type><name>number_applications</name><description>Number of applications a household can sent</description></variable>
 <variable><type>double</type><name>last_labour_income</name><description>The last labour income earned by the household if hh is unemployed</description></variable>
 <variable><type>double</type><name>specific_skill</name><description>The specific skills of a household</description></variable>
-<variable><type>int</type><name>employee_firm_id</name><description></description>The id of the employer</variable>
+<variable><type>int</type><name>employee_firm_id</name><description>The id of the employer</description></variable>
 <variable><type>int</type><name>employer_region_id</name><description>The id of the region</description></variable>
 </memory>
 
