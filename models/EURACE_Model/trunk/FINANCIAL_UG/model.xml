@@ -25,7 +25,29 @@
 			<file>ClearingMechanism.c</file>
 			<file>Household_Financial_Market.c</file>
                 </functionFiles>
-		<dataTypes>
+		
+        <timeUnits>
+			
+	<timeUnit>
+		<name>daily</name>
+		<unit>iteration</unit>
+		<period>1</period>
+	</timeUnit>
+			
+	<timeUnit>
+		<name>weekly</name>
+		<unit>daily</unit>
+		<period>5</period>
+	</timeUnit>
+			
+	<timeUnit>
+	        <name>monthly</name>
+		<unit>weekly</unit>
+		<period>4</period>
+	</timeUnit>			
+        </timeUnits>
+
+<dataTypes>
 			<dataType>
 				<name>Order</name>
 				<description>ADT order </description>
@@ -87,26 +109,6 @@
 			</dataType>
 			
 		</dataTypes>
-        <timeUnits>
-			
-	<timeUnit>
-		<name>daily</name>
-		<unit>iteration</unit>
-		<period>1</period>
-	</timeUnit>
-			
-	<timeUnit>
-		<name>weekly</name>
-		<unit>daily</unit>
-		<period>5</period>
-	</timeUnit>
-			
-	<timeUnit>
-	        <name>monthly</name>
-		<unit>weekly</unit>
-		<period>4</period>
-	</timeUnit>			
-        </timeUnits>
 
 </environment>
 	
