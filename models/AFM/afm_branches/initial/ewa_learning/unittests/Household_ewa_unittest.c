@@ -420,8 +420,7 @@ void unittest_Household_print_private_classifiersystem()
 
 	//Open a file pointer: FILE * file 
 	printf("\n Appending data to file: %s. Starting to write...\n", filename);
-	file = fopen(filename,"a");
-	fprintf(file, "\nAppending data to file\n");
+	file = fopen(filename,"w");
 
     //************* At start of unit test, add one agent **************
      unittest_init_Household_agent();
@@ -456,7 +455,7 @@ void unittest_Household_print_private_classifiersystem()
 	//Print per household classifier system:
 	 fprintf(file,"============================================================================================================\n");
 	 fprintf(file,"Household: %d Current rule: %d\n", ID, PRIVATE_CLASSIFIERSYSTEM.current_rule);
-	 fprintf(file,"rule id\t my_performance\t avg_performance\t attraction\t choice prob\t rule details\n");
+	 fprintf(file,"rule\t my_performance\t avg_performance\t attraction\t choice prob\n");
 	 fprintf(file,"============================================================================================================\n"); 
 	
 	for (i=0;i<PRIVATE_CLASSIFIERSYSTEM.nr_rules;i++)
@@ -466,12 +465,8 @@ void unittest_Household_print_private_classifiersystem()
 		avg_performance	= PRIVATE_CLASSIFIERSYSTEM.ruletable[i].avg_performance;
 	    attraction 		= PRIVATE_CLASSIFIERSYSTEM.ruletable[i].attraction;
 	    choiceprob 		= PRIVATE_CLASSIFIERSYSTEM.ruletable[i].choiceprob;
-	    p0		 		= PRIVATE_CLASSIFIERSYSTEM.ruletable[i].parameters[0];
-	    p1		 		= PRIVATE_CLASSIFIERSYSTEM.ruletable[i].parameters[1];
-	    p2		 		= PRIVATE_CLASSIFIERSYSTEM.ruletable[i].parameters[2];
-	    p3		 		= PRIVATE_CLASSIFIERSYSTEM.ruletable[i].parameters[3];
 	    
-	    fprintf(file,"%8d\t|%.4f\t|%.4f\t|%.4f\t|%.4f\t|[%1.1f, %1.1f, %1.1f, %1.1f]\n", rule_id, my_performance, avg_performance, attraction, choiceprob, p0, p1, p2, p3);
+	    fprintf(file,"%8d\t|\t %.4f\t|\t %.4f\t|\t %.4f\t|\t %.4f\n", rule_id, my_performance, avg_performance, attraction, choiceprob);
 	}
 	fprintf(file,"============================================================================================================\n");
 

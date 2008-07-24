@@ -87,11 +87,11 @@ int FinancialAgent_apply_GA()
 	
 	// N_rep is some fixed percentage of the population size pop_size, and should be even.
 	N_rep = (int) 2*floor((GA_PARAMETERS.reproduction_proportion * GA_PARAMETERS.pop_size)/2);
-	printf("\n In FinancialAgent_apply_GA: N_rep=%d\n", N_rep);
+	if(PRINT_DEBUG) printf("\n In FinancialAgent_apply_GA: N_rep=%d\n", N_rep);
 	
 	// N_pairs is the number of parent pairs that are produced by random matching from the N_rep draws
     N_pairs = (int) N_rep/2;
-    printf("\n In FinancialAgent_apply_GA: N_pairs=%d\n", N_pairs);
+    if(PRINT_DEBUG) printf("\n In FinancialAgent_apply_GA: N_pairs=%d\n", N_pairs);
 
 	// Create N_pairs parent pairs by random matching from the N_rep draws (N_pairs = (int) 0.5*N_rep)
     parent_index_1 = malloc(sizeof(int)*N_pairs);

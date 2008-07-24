@@ -353,13 +353,20 @@ void unittest_mutation()
 	double * string;
 	double * stepsize;
 	double prob_mut, delta_min, delta_max;
+	double * min_values;
+	double * max_values;
 	
 	size = 4;
 	string = malloc(size*sizeof(double));
 	stepsize = malloc(size*sizeof(double));
+	min_values = malloc(size*sizeof(double));
+	max_values = malloc(size*sizeof(double));
 	
 	string[0]=1.0; string[1]=1.0; string[2]=1.0; string[3]=1.0;
 	stepsize[0]=0.01; stepsize[1]=0.01; stepsize[2]=0.01; stepsize[3]=0.01;
+	min_values[0]=0.0; min_values[1]=0.0; min_values[2]=0.0; min_values[3]=0.0;
+	max_values[0]=10.0; max_values[1]=10.0; max_values[2]=10.0; max_values[3]=10.0;
+	
 	prob_mut = 1.0;
 	delta_min = 1.0;
 	delta_max = 1.0; 
@@ -374,7 +381,7 @@ void unittest_mutation()
 
     // Function evaluation  
 	//void mutation(int size, double * string);
-	mutation(size, string, stepsize, delta_min, delta_max, prob_mut);
+	mutation(size, string, stepsize, delta_min, delta_max, min_values, max_values, prob_mut);
 	
     if(PRINT_DEBUG) printf("\n After mutation vec = [ ");
     for (j=0;j<size;j++)
@@ -597,11 +604,11 @@ void unittest_GA_reproduction()
 }
 
 /*
- * \fn: void unittest_GA_mutation()
+ * \fn: void unittest1_GA_mutation()
  * \brief: Unit test for GA_mutation(NR_PARAMS, offspring_1, offspring_2);
  * Status: Tested OK
  */
-void unittest_GA_mutation()
+void unittest1_GA_mutation()
 {
 	int size;
 	
@@ -634,9 +641,13 @@ void unittest_GA_mutation()
  	GA_PARAMETERS.prob_mut=1.00;
  	GA_PARAMETERS.stepsize[0]=0.01;
  	GA_PARAMETERS.stepsize[1]=0.05;
+  	GA_PARAMETERS.min_values[0]=0.0; //set min values for bits
+  	GA_PARAMETERS.min_values[1]=0.0;
+  	GA_PARAMETERS.max_values[0]=10.0;  //set max values for bits
+  	GA_PARAMETERS.max_values[1]=10.0;
   	GA_PARAMETERS.delta_min=1.0; //set min range delta to 1.0
   	GA_PARAMETERS.delta_max=1.0; //set max range delta to 1.0
-
+  	
  	size=2;
  	offspring_1 = malloc(size*sizeof(double));
  	offspring_2 = malloc(size*sizeof(double));
@@ -670,6 +681,92 @@ void unittest_GA_mutation()
   	 free(offspring_1);
   	 free(offspring_2);	
 }
+
+/*
+ * \fn: void unittest2_GA_mutation()
+ * \brief: Unit test for GA_mutation(NR_PARAMS, offspring_1, offspring_2);
+ * Test: if mutation exceeds the min_values, max_values then the mutation should end up on the boundary.
+ * Case:
+ * stepsize   =[1.1,1.1]
+ * delta_min  = 1.0
+ * delta_max  = 1.0
+ * min_values =[0.0,0.0]
+ * max_values =[1.0,2.0]
+ * string_1   =[0.0, 0.0] -> [1.0, 1.1] 
+ * string_2   =[1.0, 1.0] -> [1.0, 2.0]
+ * 
+ * Status: Tested OK
+ */
+void unittest2_GA_mutation()
+{
+	int size;
+	
+	double * offspring_1; //copy from PUBLIC_CLASSIFIERSYSTEM.ruletable[id1]
+	double * offspring_2; //copy from PUBLIC_CLASSIFIERSYSTEM.ruletable[id2]
+
+    //************* At start of unit test, add one agent **************
+     unittest_init_FinancialAgent_agent();
+
+
+     //***** Variables: Memory pre-conditions **************************
+ 	//Initializations:
+ 	//EWA_PARAMETERS.EWA_beta: used for the determination of fitness-proportional selection probabilities, exp(beta*performance)
+ 	//GA_PARAMETERS.prob_cross: cross-over probability
+ 	//GA_PARAMETERS.prob_mut: mutation  probability
+ 	//GA_PARAMETERS.string_size: length of strings
+ 	//GA_PARAMETERS.single_point_crossover: dummy for single_point_crossover (if 1: use single point cross-over, 0: use two point cross-over) 
+ 	//GA_PARAMETERS.pop_size: population size
+ 	//GA_PARAMETERS.reproduction_proportion: percentage of population
+ 	//GA_PARAMETERS.election: dummy for election operator
+ 	//GA_PARAMETERS.stepsize: vector of stepsizes for mutation of real-valued parameters
+
+ 	EWA_PARAMETERS.EWA_beta = 1.0;
+ 	GA_PARAMETERS.prob_mut=1.00;
+ 	GA_PARAMETERS.stepsize[0]=1.1;
+ 	GA_PARAMETERS.stepsize[1]=1.1;
+  	GA_PARAMETERS.min_values[0]=0.0; //set min values for bits
+  	GA_PARAMETERS.min_values[1]=0.0;
+  	GA_PARAMETERS.max_values[0]=1.0;  //set max values for bits
+  	GA_PARAMETERS.max_values[1]=2.0;
+  	GA_PARAMETERS.delta_min=1.0; //set min range delta to 1.0
+  	GA_PARAMETERS.delta_max=1.0; //set max range delta to 1.0
+  	
+ 	size=2;
+ 	offspring_1 = malloc(size*sizeof(double));
+	
+ 	offspring_1[0]=0.0; offspring_1[1]=0.0;
+ 	offspring_2[0]=1.0; offspring_2[1]=1.0;
+
+     //***** Messages: pre-conditions **********************************
+
+     //***** Function evaluation ***************************************
+    if(PRINT_DEBUG) printf("\n In unittest_GA_mutation: offspring_1=[%1.5f, %1.5f]\n", offspring_1[0], offspring_1[1]);
+    if(PRINT_DEBUG) printf("\n In unittest_GA_mutation: offspring_2=[%1.5f, %1.5f]\n", offspring_2[0], offspring_2[1]);
+
+ 	//Unittest 1: mutation is certain, mutate bits of both strings by certain stepsize
+ 	 GA_mutation(size, offspring_1, offspring_2);
+     
+     //***** Variables: Memory post-conditions *************************
+     if(PRINT_DEBUG) printf("\n In unittest_GA_mutation: offspring_1=[%1.5f, %1.5f]\n", offspring_1[0], offspring_1[1]);
+     if(PRINT_DEBUG) printf("\n In unittest_GA_mutation: offspring_2=[%1.5f, %1.5f]\n", offspring_2[0], offspring_2[1]);
+     CU_ASSERT_DOUBLE_EQUAL(offspring_1[0], 1.0, 1e-3);
+     CU_ASSERT_DOUBLE_EQUAL(offspring_1[1], 1.1, 1e-3);
+     CU_ASSERT_DOUBLE_EQUAL(offspring_2[0], 1.0, 1e-3);
+     CU_ASSERT_DOUBLE_EQUAL(offspring_2[1], 2.0, 1e-3);
+     
+     
+     //***** Messages: post-conditions **********************************
+
+     //************* At end of unit test, free the agent **************
+     unittest_free_FinancialAgent_agent();
+     //************* At end of unit tests, free all Messages **********
+     //free_messages();
+
+     //************* At end of unit tests, free all pointers **********
+  	 free(offspring_1);
+  	 free(offspring_2);	
+}
+
 
 /*
  * \fn: void unittest_GA_election()
@@ -836,9 +933,8 @@ void unittest_FinancialAgent_print_public_classifiersystem()
 	char * filename;
 	FILE * file;
 
-	int i, rule_id, counter;
+	int i, j, rule_id, counter;
 	double performance, avg_performance, choiceprob;
-	double p0,p1,p2,p3;
 
  	//Set the output file:
  	i = sprintf(str, "%d", iteration_loop);
@@ -857,8 +953,7 @@ void unittest_FinancialAgent_print_public_classifiersystem()
 
  	//Open a file pointer: FILE * file 
  	if(PRINT_DEBUG) printf("\nAppending data to file: %s. Starting to write...\n", filename);
- 	file = fopen(filename,"a");
- 	fprintf(file, "\nAppending data to file\n");
+ 	file = fopen(filename,"w");
 
     //************* At start of unit test, add one agent **************
      unittest_init_FinancialAgent_agent();
@@ -886,16 +981,10 @@ void unittest_FinancialAgent_print_public_classifiersystem()
      PUBLIC_CLASSIFIERSYSTEM.ruletable[3].performance=0.0;
      PUBLIC_CLASSIFIERSYSTEM.ruletable[3].avg_performance=1000.0;
 
-     
-	//Print comments/notes:
-    fprintf(file,"Logfile: Print-out of all classifier systems. \n");
-    fprintf(file,"Note 1: The performance and counter columns for the households are copied from the FinancialAdvisors CS. \n");
-    fprintf(file,"Note 2: The avgperformance column can contain different values for two households, since it contains the copy from the FinancialAdvisors CS at the moment of the households most recent portfolio update. \n\n");
-
     //Print FinancialAdvisor classifier system:
     fprintf(file,"=============================================================================================\n");
     fprintf(file,"FinancialAdvisor:\n");
-    fprintf(file,"rule id\t performance\t counter\t avg_performance\t rule details\n");
+    fprintf(file,"rule\t performance\t counter\t avg_performance\t rule details\n");
     fprintf(file,"=============================================================================================\n"); 
 
     for (i=0;i<PUBLIC_CLASSIFIERSYSTEM.nr_rules;i++)
@@ -904,12 +993,12 @@ void unittest_FinancialAgent_print_public_classifiersystem()
         performance 	= PUBLIC_CLASSIFIERSYSTEM.ruletable[i].performance;
 		counter 		= PUBLIC_CLASSIFIERSYSTEM.ruletable[i].counter;         
         avg_performance = PUBLIC_CLASSIFIERSYSTEM.ruletable[i].avg_performance;
-  	    p0		 		= PUBLIC_CLASSIFIERSYSTEM.ruletable[i].parameters[0];
- 	    p1		 		= PUBLIC_CLASSIFIERSYSTEM.ruletable[i].parameters[1];
- 	    p2		 		= PUBLIC_CLASSIFIERSYSTEM.ruletable[i].parameters[2];
- 	    p3		 		= PUBLIC_CLASSIFIERSYSTEM.ruletable[i].parameters[3];
+        
+        fprintf(file,"%d\t|\t %f\t|\t %7d\t|\t %f\t | ", rule_id, performance, counter, avg_performance);
 
-        fprintf(file,"%8d\t %.4f\t %8d\t %.4f\t [%1.1f, %1.1f, %1.1f, %1.1f]\n", rule_id, performance, counter, avg_performance, p0, p1, p2, p3);
+        fprintf(file,"[ ");
+	    for (j=0;j<GA_PARAMETERS.string_size;j++){fprintf(file,"%1.1f ", PUBLIC_CLASSIFIERSYSTEM.ruletable[i].parameters[j]);}
+	    fprintf(file,"]\n"); 
     }
      fprintf(file,"=============================================================================================\n");
 

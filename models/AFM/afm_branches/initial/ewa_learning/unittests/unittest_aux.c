@@ -35,7 +35,8 @@ void unittest_mutation();
 /* Unit tests for GA functions */
 void unittest_GA_selection();
 void unittest_GA_reproduction();
-void unittest_GA_mutation();
+void unittest1_GA_mutation();
+void unittest2_GA_mutation();
 void unittest_GA_election();
 void unittest_GA_reinsertion();
 
@@ -101,7 +102,8 @@ int main(int argc, char * argv[])
     	NULL == CU_add_test(pSuite, "FinancialAgent_aux_functions, mutation", unittest_mutation) ||
     	NULL == CU_add_test(pSuite, "FinancialAgent_aux_functions, GA_selection", unittest_GA_selection) ||
     	NULL == CU_add_test(pSuite, "FinancialAgent_aux_functions, GA_reproduction", unittest_GA_reproduction) ||
-    	NULL == CU_add_test(pSuite, "FinancialAgent_aux_functions, GA_mutation", unittest_GA_mutation) ||
+    	NULL == CU_add_test(pSuite, "FinancialAgent_aux_functions, GA_mutation, case 1", unittest1_GA_mutation) ||
+    	NULL == CU_add_test(pSuite, "FinancialAgent_aux_functions, GA_mutation, case 2", unittest2_GA_mutation) ||
     	//NULL == CU_add_test(pSuite, "FinancialAgent_aux_functions, GA_election", unittest_GA_election) ||
     	NULL == CU_add_test(pSuite, "FinancialAgent_aux_functions, GA_reinsertion", unittest_GA_reinsertion))
         //NULL == CU_add_test(pSuite, "test_print\n", test_print) ||
