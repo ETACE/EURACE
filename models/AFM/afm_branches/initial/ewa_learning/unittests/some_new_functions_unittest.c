@@ -1,3 +1,12 @@
+/***************************************************************************************************
+ * some_new_functions.c 
+ * Auxiliary functions for the EWA learning module.
+ **************************************************************************************************
+ * History:
+ * 24/07/08 Sander: Checked that all malloc pointers are freed at the end of functions. 
+ * 15/07/08 Sander
+ **************************************************************************************************/
+
 #include <CUnit/Basic.h>
 #include "../header.h"
 #include "../some_new_functions.h"
@@ -311,6 +320,7 @@ void unittest1_draw_with_replacement()
 
  	 free(xvec);
 	 free(draws);
+	 free(value_draws);
 }
 
 /*
@@ -401,9 +411,9 @@ void unittest2_draw_with_replacement()
      CU_ASSERT_EQUAL(cpdf[3], 200);
       */
      
-     free(sum);
- 	 free(prob);
  	 free(pdf);
+ 	 free(prob);
  	 free(cpdf);
 	 free(draws);
+     free(sum);
 }

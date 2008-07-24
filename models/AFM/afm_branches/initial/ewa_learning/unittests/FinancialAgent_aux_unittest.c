@@ -3,6 +3,7 @@
  * Unit tests for GA auxiliary functions. 
  * *********************************
  * History:
+ * 24/07/08 Sander: Checked that all malloc pointers are freed at the end of functions.
  * 16/07/08 Sander 
  *********************************/
 #include <stdio.h>
@@ -351,7 +352,7 @@ void unittest_mutation()
 	
 	double * string;
 	double * stepsize;
-	double prob_mut;
+	double prob_mut, delta_min, delta_max;
 	
 	size = 4;
 	string = malloc(size*sizeof(double));
@@ -360,6 +361,9 @@ void unittest_mutation()
 	string[0]=1.0; string[1]=1.0; string[2]=1.0; string[3]=1.0;
 	stepsize[0]=0.01; stepsize[1]=0.01; stepsize[2]=0.01; stepsize[3]=0.01;
 	prob_mut = 1.0;
+	delta_min = 1.0;
+	delta_max = 1.0; 
+	
 	
     if(PRINT_DEBUG) printf("\n Before mutation vec = [ ");
     for (j=0;j<size;j++)
@@ -370,7 +374,7 @@ void unittest_mutation()
 
     // Function evaluation  
 	//void mutation(int size, double * string);
-	mutation(size, string, stepsize, prob_mut);
+	mutation(size, string, stepsize, delta_min, delta_max, prob_mut);
 	
     if(PRINT_DEBUG) printf("\n After mutation vec = [ ");
     for (j=0;j<size;j++)
@@ -382,7 +386,8 @@ void unittest_mutation()
     // Variables: Memory post-conditions 
 	//CU_ASSERT_EQUAL(<var_name2>, <value>);
 
-	// free();
+	free(string);
+	free(stepsize);
 }
 
 /*
@@ -618,17 +623,19 @@ void unittest_GA_mutation()
  	//GA_PARAMETERS.reproduction_proportion: percentage of population
  	//GA_PARAMETERS.election: dummy for election operator
  	//GA_PARAMETERS.stepsize: vector of stepsizes for mutation of real-valued parameters
-     //mutation = value + delta*stepsize[k]*string[k] with delta = random_unif_interval(-10.0%, +10.0%);
+     //mutation = value + delta*stepsize[k] with delta = random_unif_interval(-10.0%, +10.0%);
      //for unittesting:
-     //prob_mut = 1.0, value = 0.0, delta = 10.0, stepsize = 0.01
+     //prob_mut = 1.0, value = 0.0, delta = 1.0, stepsize = 0.01
      //0.0 -> 0.10
-     //prob_mut = 1.0, value = 0.0, delta = 10.0, stepsize = 0.05
+     //prob_mut = 1.0, value = 0.0, delta = 1.0, stepsize = 0.05
      //0.0 -> 0.50
 
  	EWA_PARAMETERS.EWA_beta = 1.0;
  	GA_PARAMETERS.prob_mut=1.00;
  	GA_PARAMETERS.stepsize[0]=0.01;
  	GA_PARAMETERS.stepsize[1]=0.05;
+  	GA_PARAMETERS.delta_min=1.0; //set min range delta to 1.0
+  	GA_PARAMETERS.delta_max=1.0; //set max range delta to 1.0
 
  	size=2;
  	offspring_1 = malloc(size*sizeof(double));
@@ -672,6 +679,7 @@ void unittest_GA_mutation()
 void unittest_GA_election()
 {
 	int size;
+	int id1, id2;
 	
 	double * offspring_1; //copy from PUBLIC_CLASSIFIERSYSTEM.ruletable[id1]
 	double * offspring_2; //copy from PUBLIC_CLASSIFIERSYSTEM.ruletable[id2]
@@ -688,10 +696,12 @@ void unittest_GA_election()
   	offspring_1[0]=0.0; offspring_1[1]=0.0;
   	offspring_2[0]=0.0; offspring_2[1]=0.0;
 
+  	id1=0;
+  	id2=1;
      //***** Messages: pre-conditions *********************************
 
      //***** Function evaluation **************************************
-     GA_election(size, offspring_1, offspring_2);
+     GA_election(size, id1, id2, offspring_1, offspring_2);
      
      //***** Variables: Memory post-conditions ************************
 //     CU_ASSERT_DOUBLE_EQUAL(PUBLIC_CLASSIFIERSYSTEM.ruletable[0].counter, 0.0, 1e-3);
@@ -757,7 +767,7 @@ void unittest_GA_reinsertion()
      //***** Function evaluation ***************************************
      //Unittest 1: copy offspring_1 -> ruletable[id1] and offspring_2 -> ruletable[id2] 
      j=0;
-	 GA_reinsertion(size, offspring_1, offspring_2, rule_id_1[j], rule_id_2[j]);
+	 GA_reinsertion(size, rule_id_1[j], rule_id_2[j], offspring_1, offspring_2);
      
      //***** Variables: Memory post-conditions *************************
      CU_ASSERT_DOUBLE_EQUAL(PUBLIC_CLASSIFIERSYSTEM.ruletable[0].parameters[0], 1.0, 1e-3);
@@ -794,7 +804,7 @@ void test_print()
 	if(PRINT_DEBUG) printf("iteration_loop in sprintf is %s\n", str);
 	if(PRINT_DEBUG) printf("sprintf returns: %d\n\n", i);
 		
-	filename = malloc(20*sizeof(char));
+	filename = malloc(40*sizeof(char));
 	filename[0]=0;
 	
 	//now concatenate
@@ -811,8 +821,8 @@ void test_print()
 	
 	//Enter code here
 	
-	
 	fclose(file);
+	free(filename);
 }
 
 /*
@@ -836,11 +846,11 @@ void unittest_FinancialAgent_print_public_classifiersystem()
  	//if(PRINT_DEBUG) printf("sprintf returns: %d\n\n", i);
  	
  	//Start an empty string for the filename
- 	filename = malloc(20*sizeof(char));
+ 	filename = malloc(40*sizeof(char));
  	filename[0]=0;
  	
  	//Concatenate
- 	strcpy(filename, "./log/CS_");
+ 	strcpy(filename, "./log/CS_FinancialAgent_");
  	strcat(filename, str);
  	strcat(filename, ".txt");
  	if(PRINT_DEBUG) printf(" File to write data to: %s\n", filename);
@@ -854,20 +864,6 @@ void unittest_FinancialAgent_print_public_classifiersystem()
      unittest_init_FinancialAgent_agent();
 
     //***** Variables: Memory pre-conditions **************************    
-    //Initializations:
-   	//EWA_PARAMETERS.EWA_beta: used for the determination of fitness-proportional selection probabilities, exp(beta*performance)
-   	//GA_PARAMETERS.prob_cross: cross-over probability
-   	//GA_PARAMETERS.prob_mut: mutation  probability
-   	//GA_PARAMETERS.string_size: length of strings
-   	//GA_PARAMETERS.single_point_crossover: dummy for single_point_crossover (if 1: use single point cross-over, 0: use two point cross-over) 
-   	//GA_PARAMETERS.pop_size
-   	//GA_PARAMETERS.reproduction_proportion 
-   	//GA_PARAMETERS.election: dummy for election operator
-   	//GA_PARAMETERS.stepsize: vector of stepsizes for mutation of real-valued parameters
-
-     EWA_PARAMETERS.EWA_beta = 99;
-   	 GA_PARAMETERS.pop_size = 4;
-   	 GA_PARAMETERS.reproduction_proportion = 1.0;
    	
      PUBLIC_CLASSIFIERSYSTEM.nr_rules =4;
      PUBLIC_CLASSIFIERSYSTEM.ruletable[0].id=0;
@@ -920,5 +916,6 @@ void unittest_FinancialAgent_print_public_classifiersystem()
     fprintf(file,"\n");
 	fclose(file);
  	if(PRINT_DEBUG) printf("\n Finished writing and closed the file stream.\n");
-
+ 	free(filename);
+ 	if(PRINT_DEBUG) printf("\n Freed the filename pointer.\n");
 }

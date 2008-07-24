@@ -3,6 +3,7 @@
  * GA auxiliary functions.
  * *********************************
  * History:
+ * 24/07/08 Sander: Checked that all malloc pointers are freed at the end of functions. 
  * 16/07/08 Sander 
  *********************************/
 #include <limits.h> //required to test for max. double: LONG_MAX
@@ -126,21 +127,20 @@ void two_point_cross_over_alt(int size, double * string_a, double * string_b, in
  * delta: a random percentage between -10% and +10% (or: delta = {-10%, -5%, 0%, +5%, +10%} )
  * stepsize[k]: can be a parameter dependent gridsize
  */
-void mutation(int size, double * string, double * stepsize, double prob_mut)
+void mutation(int size, double * string, double * stepsize, double delta_min, double delta_max, double prob_mut)
 {
 	int k;
 	double delta;
 	
 	for (k=0; k<size; k++)
 	{
-		// apply mutation to the bit of string 1
+		// apply mutation to the bit of the string
 		if (random_unif() < prob_mut)
 		{	
-			//Set units to mutate between -10*stepsize and +10*stepsize
-			//delta = random_unif_interval(-10.0, 10.0);
-			  delta= 1.0;
+			//Set integer units to mutate in the interval delta_min*stepsize and delta_max*stepsize
+			 delta = random_unif_interval(delta_min, delta_max);
 				  
-			//mutate the value at position k by a random percentage between -10% and +10% of the previous value
+			//mutate the value at position k by a random number between -10*stepsize and +10*stepsize from the previous value
 			string[k] = string[k] + delta*stepsize[k];
 		}
 	}    
@@ -230,10 +230,10 @@ void GA_selection(int N_pairs, int * parent_index_1, int * parent_index_2, int *
      draws = malloc(sizeof(int)*N_rep);
      
      //draw N_rep times without_replacement from density cpdf, and store results in draws 
-     draw_without_replacement(nr_rules, cpdf, N_rep, draws);
+     //draw_without_replacement(nr_rules, cpdf, N_rep, draws);
      
      //testing:
-     //draw_with_replacement(nr_rules, cpdf, N_rep, draws);
+     draw_with_replacement(nr_rules, cpdf, N_rep, draws);
 	     
      // For the random matching, drawing is WITH replacement using uniform probabilities
      // from the discrete interval [0, N_pairs+1].
@@ -355,12 +355,12 @@ void GA_mutation(int size, double * offspring_1, double * offspring_2)
 	
 	/*********************** Start of Mutation function ****************************************************/
 	//void GA_mutation(int size, double * offspring_1, double * offspring_2): applies to each pair, nr_pair j=0,...,N_pairs
-	// 3. Mutation: each bit has a probability of mutating by a stepsize
+	// 3. Mutation: each bit has a probability of mutating by stepsize
  	//For each of the strings offspring_1 and offspring_2 that have just undergone cross-over, now perform mutation
 
     //void mutation(int size, double * offspring_1, double * offspring_2);
-	mutation(size, offspring_1, GA_PARAMETERS.stepsize, GA_PARAMETERS.prob_mut);
-	mutation(size, offspring_2, GA_PARAMETERS.stepsize, GA_PARAMETERS.prob_mut);
+	mutation(size, offspring_1, GA_PARAMETERS.stepsize, GA_PARAMETERS.delta_min, GA_PARAMETERS.delta_max, GA_PARAMETERS.prob_mut);
+	mutation(size, offspring_2, GA_PARAMETERS.stepsize, GA_PARAMETERS.delta_min, GA_PARAMETERS.delta_max, GA_PARAMETERS.prob_mut);
 
 	/*********************** End of Mutation function ****************************************************/
 }
@@ -432,11 +432,11 @@ int FinancialAgent_print_public_classifiersystem()
  	if(PRINT_DEBUG) printf("sprintf returns: %d\n\n", i);
  	
  	//Start an empty string for the filename
- 	filename = malloc(20*sizeof(char));
+ 	filename = malloc(40*sizeof(char));
  	filename[0]=0;
  	
  	//Concatenate
- 	strcpy(filename, "./log/CS_");
+ 	strcpy(filename, "./log/CS_FinancialAgent_");
  	strcat(filename, str);
  	strcat(filename, ".txt");
  	if(PRINT_DEBUG) printf("File to write data to: %s\n\n", filename);

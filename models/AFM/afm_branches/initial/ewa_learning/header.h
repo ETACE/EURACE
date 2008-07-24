@@ -171,6 +171,8 @@ struct GAParameterStruct
 	int single_point_cross_over;	/**< Datatype memory variable single_point_cross_over of type int. */
 	int election;	/**< Datatype memory variable election of type int. */
 	double stepsize[10];	/**< Datatype memory variable stepsize of type double. */
+	double delta_min;	/**< Datatype memory variable delta_min of type double. */
+	double delta_max;	/**< Datatype memory variable delta_max of type double. */
 	double min_values[10];	/**< Datatype memory variable min_values of type double. */
 	double max_values[10];	/**< Datatype memory variable max_values of type double. */
 };
@@ -504,6 +506,10 @@ typedef struct m_rule_details m_rule_details;
 
 
 int idle(void);
+int Household_idle_start_Household_EWA_Learning_end_GA_condition(xmachine_memory_Household *a);
+int Household_reset_private_classifiersystem(void);
+int Household_Household_reset_private_classifiersystem_start_Household_EWA_Learning_01_condition(xmachine_memory_Household *a);
+int Household_read_and_update_rule_details(void);
 int idle(void);
 int Household_idle_end_GA_end_Household_EWA_Learning_condition(xmachine_memory_Household *a);
 int Household_send_rule_performance(void);
@@ -512,6 +518,11 @@ int Household_read_all_performances(void);
 int Household_print_private_classifiersystem(void);
 int Household_select_rule(void);
 int idle(void);
+int FinancialAgent_idle_start_FinancialAgent_end_GA_condition(xmachine_memory_FinancialAgent *a);
+int FinancialAgent_reset_public_classifiersystem(void);
+int FinancialAgent_FinancialAgent_reset_public_classifiersystem_start_FinancialAgent_01_condition(xmachine_memory_FinancialAgent *a);
+int FinancialAgent_apply_GA(void);
+int FinancialAgent_send_rule_details(void);
 int FinancialAgent_read_rule_performance_and_update_classifiersystem(void);
 int FinancialAgent_send_all_performances(void);
 int FinancialAgent_print_public_classifiersystem(void);
@@ -610,6 +621,9 @@ xmachine_memory_Household_state * Household_02_state;
 /* Pointer to list of Household agents in state end_Household_EWA_Learning state */
 //xmachine_memory_Household * temp_xmachine_Household_end_Household_EWA_Learning;
 xmachine_memory_Household_state * Household_end_Household_EWA_Learning_state;
+/* Pointer to list of Household agents in state 01 state */
+//xmachine_memory_Household * temp_xmachine_Household_01;
+xmachine_memory_Household_state * Household_01_state;
 /* Pointer to list of Household agents in state end_GA state */
 //xmachine_memory_Household * temp_xmachine_Household_end_GA;
 xmachine_memory_Household_state * Household_end_GA_state;
@@ -630,6 +644,12 @@ xmachine_memory_FinancialAgent_state * FinancialAgent_04_state;
 /* Pointer to list of FinancialAgent agents in state 03 state */
 //xmachine_memory_FinancialAgent * temp_xmachine_FinancialAgent_03;
 xmachine_memory_FinancialAgent_state * FinancialAgent_03_state;
+/* Pointer to list of FinancialAgent agents in state 02 state */
+//xmachine_memory_FinancialAgent * temp_xmachine_FinancialAgent_02;
+xmachine_memory_FinancialAgent_state * FinancialAgent_02_state;
+/* Pointer to list of FinancialAgent agents in state 01 state */
+//xmachine_memory_FinancialAgent * temp_xmachine_FinancialAgent_01;
+xmachine_memory_FinancialAgent_state * FinancialAgent_01_state;
 /* Pointer to list of FinancialAgent agents in state end_GA state */
 //xmachine_memory_FinancialAgent * temp_xmachine_FinancialAgent_end_GA;
 xmachine_memory_FinancialAgent_state * FinancialAgent_end_GA_state;
@@ -713,7 +733,7 @@ void init_GAParameterStruct_array(GAParameterStruct_array * array);
 void reset_GAParameterStruct_array(GAParameterStruct_array * array);
 void free_GAParameterStruct_array(GAParameterStruct_array * array);
 void copy_GAParameterStruct_array(GAParameterStruct_array * from, GAParameterStruct_array * to);
-void add_GAParameterStruct(GAParameterStruct_array * array, double prob_cross, double prob_mut, int string_size, int pop_size, double reproduction_proportion, int single_point_cross_over, int election, double * stepsize, double * min_values, double * max_values);
+void add_GAParameterStruct(GAParameterStruct_array * array, double prob_cross, double prob_mut, int string_size, int pop_size, double reproduction_proportion, int single_point_cross_over, int election, double * stepsize, double delta_min, double delta_max, double * min_values, double * max_values);
 void remove_GAParameterStruct(GAParameterStruct_array * array, int index);
 
 void init_PublicClassifierRule_array(PublicClassifierRule_array * array);

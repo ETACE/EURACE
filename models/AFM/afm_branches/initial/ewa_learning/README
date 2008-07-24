@@ -1,0 +1,83 @@
+ /*********************************
+ * README file for EWA learning module
+ * History:
+ * 24/07/08 Sander: Checked that all malloc pointers are freed at the end of functions.
+ * 15/07/08 Sander van der Hoog 
+ *********************************/
+
+TODO
+====
+- In GA_selection, line 234: draw_without_replacement should be used to draw the N_rep strings from the population.
+(to be used for reproduction). For the random matching on line 239-263, drawing is with replacement using uniform probabilities.
+
+- Problem: draw_without_replacement:
+It is difficult to draw when items have low probabilities.
+- Solution: in draw_without_replacement reconstruct the cpdf, eliminating the items that have already been drawn.
+
+
+
+Main files:
+===========
+File for main functions that are mentioned in the XML:
+1. FinancialAgent_ewa_functions.c
+2. Household_ewa_functions.c
+
+File for auxiliary functions that are only used by the FinancialAgent for GA:
+3. FinancialAgent_aux_functions.c
+
+All other auxiliary functions:
+4. some_new_functions.c
+
+Header files:
+=============
+header.h
+FinancialAgent_agent_header.h	(main functions)
+FinancialAgent_aux_header.h 	(GA specific auxiliary functions, may refer to memory variables)
+some_new_functions.h			(general auxiliary functions)
+Household_agent_header.h		(main functions)
+
+
+./Unittests:
+============
+FinancialAgent_ewa_functions_unittests.c
+FinancialAgent_aux_functions_unittests.c
+some_new_functions_unittests.c
+Household_ewa_functions_unittests.c
+
+
+Header files:
+=============
+All headers of unit test functions are in these files:
+
+unittest_aux.c	(all auxiliary functions)
+unittest_FA.c	(FinancialAgent XML functions)
+unittest_HH.c	(Household  XML functions)
+
+
+Compiling the unit tests:
+=========================
+1. compile_unittest_aux.bat compiles the auxiliary functions (general and GA specific)
+
+unittest_aux.c
+../memory.c
+../messageboards.c
+../FinancialAgent_ewa_functions.c FinancialAgent_ewa_unittest.c
+../FinancialAgent_aux_functions.c FinancialAgent_aux_unittest.c
+../some_new_functions.c 		  some_new_functions_unittest.c
+
+2. compile_unittest_FA.bat compiles the functions in unittest_FA.c
+
+unittest_FA.c
+../memory.c
+../messageboards.c
+../FinancialAgent_ewa_functions.c FinancialAgent_ewa_unittest.c
+../FinancialAgent_aux_functions.c FinancialAgent_aux_unittest.c
+../some_new_functions.c
+
+3. compile_unittest_HH.bat compiles the functions in unittest_HH.c
+
+unittest_HH.c
+../memory.c
+../messageboards.c
+../Household_ewa_functions.c Household_ewa_unittest.c
+../some_new_functions.c

@@ -3,7 +3,8 @@
  * General library functions.
  * *********************************
  * History:
- * 15/07/08 Sander 
+ * 24/07/08 Sander: Checked that all malloc pointers are freed at the end of functions. 
+ * 15/07/08 Sander
  *********************************/
 #include <stdlib.h>
 #include <stdio.h>
@@ -414,4 +415,3 @@ void draw_with_replacement(int size, double * cpdf, int nr_draws, int * draws)
 		draws[k]=draw(size, cpdf);
 	}
 }
-

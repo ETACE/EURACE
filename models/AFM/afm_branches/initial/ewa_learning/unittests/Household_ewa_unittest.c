@@ -3,6 +3,7 @@
  * Unit tests for Household EWA learning module.
  **********************************
  * History:
+ * 24/07/08 Sander: Checked that all malloc pointers are freed at the end of functions.
  * 15/07/08 Sander van der Hoog 
  *********************************/
 #include <CUnit/Basic.h>
@@ -408,11 +409,11 @@ void unittest_Household_print_private_classifiersystem()
 	printf("sprintf returns: %d\n\n", i);
 	
 	//Start an empty string for the filename
-	filename = malloc(20*sizeof(char));
+	filename = malloc(40*sizeof(char));
 	filename[0]=0;
 	
 	//Concatenate
-	strcpy(filename, "./log/CS_");
+	strcpy(filename, "./log/CS_Household_");
 	strcat(filename, str);
 	strcat(filename, ".txt");
 	printf("File to write data to: %s\n\n", filename);
@@ -476,4 +477,8 @@ void unittest_Household_print_private_classifiersystem()
 
 	fprintf(file,"\n");
 	fclose(file);
+ 	if(PRINT_DEBUG) printf("\n Finished writing and closed the file stream.\n");
+
+ 	free(filename);
+ 	if(PRINT_DEBUG) printf("\n Freed the filename pointer.\n");
 }

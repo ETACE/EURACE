@@ -3,7 +3,8 @@
  * Adapted code from  Functions_Financial_market_PortfolioSelectionAlgorithm_Sander_v0.3.c
  * *********************************
  * History:
- * 22/05/08 Sander: Checked to conform to xPaser 0.15.7
+ * 24/07/08 Sander: Checked that all malloc pointers are freed at the end of functions. 
+ * 22/05/08 Sander: Checked to conform to Xparser 0.15.7
  * 29/02/08 Sander: Converted code to use . instead of -> for structs.
  * 13/11/07 Mariam: Converting the code into separate agent functions files. 
  *********************************/
@@ -275,11 +276,11 @@ int Household_print_private_classifiersystem()
 	if(PRINT_DEBUG) printf("sprintf returns: %d\n\n", i);
 	
 	//Start an empty string for the filename
-	filename = malloc(20*sizeof(char));
+	filename = malloc(40*sizeof(char));
 	filename[0]=0;
 	
 	//Concatenate
-	strcpy(filename, "./log/CS_");
+	strcpy(filename, "./log/CS_Household_");
 	strcat(filename, str);
 	strcat(filename, ".txt");
 	if(PRINT_DEBUG) printf("File to write data to: %s\n\n", filename);
