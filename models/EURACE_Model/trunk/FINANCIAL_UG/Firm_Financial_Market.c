@@ -45,7 +45,7 @@ int Firm_send_info(void)
      dividend=CURRENT_DIVIDEND_PER_SHARE;
      EQUITY=50+next();
   // CGP_income_statement_computing(EARNINGS,EARNINGS_PAYOUT, &earnings_exp,&earnings_payout_exp);
-     printf("earnings_exp=%f   earnings_payout_exp=%f\n",earnings_exp,earnings_payout_exp);
+     //("earnings_exp=%f   earnings_payout_exp=%f\n",earnings_exp,earnings_payout_exp);
      add_info_firm_message(ID, earnings_exp,  dividend, earnings_payout_exp,  EQUITY, STOCK);
      return 0;
 }
