@@ -240,7 +240,7 @@ void generatePendingOrders(Asset_array *assetsowned,Order_array *pending, Belief
   Belief *belief;
 
   double_array *weights;
-  resource=wealth(*payment_account,assetsowned);
+  resource=wealth(*payment_account-CONSUMPTION_BUDGET,assetsowned);
   set_wealth(resource);
   size=beliefs->size;
   reset_Order_array(pending);
