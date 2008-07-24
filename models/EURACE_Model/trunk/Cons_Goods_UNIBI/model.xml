@@ -16,14 +16,6 @@
 
 <dataTypes>
 
-<dataType>
-<name>portfolio</name>
-<description>Used by households to hold shares</description>
-<variables>
-<variable><type>int</type><name>firm_id</name><description></description></variable>
-<variable><type>int</type><name>shares</name><description></description></variable>
-</variables>
-</dataType>
 
 <dataType>
 <name>consumption_goods_offer</name>
@@ -374,7 +366,7 @@ firms update the specific skill levels of the workers.</description>
 <variable><type>double_array</type><name>last_income</name><description></description></variable>
 <variable><type>double</type><name>expenditures</name><description></description></variable>
 <variable><type>double</type><name>received_dividend</name><description></description></variable>
-<variable><type>portfolio_array</type><name>household_portfolio</name><description></description></variable>
+
 <!--<variable><type>double</type><name>portfolio_budget</name><description></description></variable>-->
 
 </memory>
