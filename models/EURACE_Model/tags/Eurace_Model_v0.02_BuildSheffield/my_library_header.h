@@ -87,7 +87,7 @@
 
 #define INV_INERTIA 3
 
-#define PRINT_DEBUG 1
+#define PRINT_DEBUG 0
 
 #define ADAPTION_DELIVERY_VOLUME 0.02
 
