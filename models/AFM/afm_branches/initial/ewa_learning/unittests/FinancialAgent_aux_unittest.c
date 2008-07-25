@@ -338,63 +338,65 @@ void unittest3_two_point_cross_over_alt()
 
 /*
  * \fn: void unittest_mutation()
- * \brief: Unit test for 
- * Status: Not tested
+ * \brief: Unit test for mutation(). See also unittest2_GA_mutation().
+ * This test tests whether the mutation operator obeys the min_value, max_value constraints that we set for each bit.
+ * Whenever a mutation exceeds these boundaries, the new bit value is set equal to the boundary.
+ * The mutation size is a random value in the interval (delta_min, delta_max)*stepsize.
+ * Status: Tested OK
  */
 void unittest_mutation()
 {   
- 	// At start of unit test, add one agent
-    //unittest_init_FinancialAgent_agent();
-    //current_xmachine = *p_xmachine;
 
     // Variables: Memory pre-conditions 
 	int j, size;
 	
-	double * string;
+	double * string_1;
+	double * string_2;
 	double * stepsize;
 	double prob_mut, delta_min, delta_max;
 	double * min_values;
 	double * max_values;
 	
-	size = 4;
-	string = malloc(size*sizeof(double));
+	size = 2;
+	string_1 = malloc(size*sizeof(double));
+	string_2 = malloc(size*sizeof(double));
 	stepsize = malloc(size*sizeof(double));
 	min_values = malloc(size*sizeof(double));
 	max_values = malloc(size*sizeof(double));
-	
-	string[0]=1.0; string[1]=1.0; string[2]=1.0; string[3]=1.0;
-	stepsize[0]=0.01; stepsize[1]=0.01; stepsize[2]=0.01; stepsize[3]=0.01;
-	min_values[0]=0.0; min_values[1]=0.0; min_values[2]=0.0; min_values[3]=0.0;
-	max_values[0]=10.0; max_values[1]=10.0; max_values[2]=10.0; max_values[3]=10.0;
-	
+
 	prob_mut = 1.0;
-	delta_min = 1.0;
-	delta_max = 1.0; 
+	stepsize[0]=1.1; stepsize[1]=1.1;
+	min_values[0]=0.0; min_values[1]=0.0; //set min values for bits
+	max_values[0]=1.0; max_values[1]=2.0; //set max values for bits
+	delta_min = 1.0; //set min range delta to 1.0
+	delta_max = 1.0; //set max range delta to 1.0
 	
+	string_1[0]=0.0; string_1[1]=0.0;
+	string_2[0]=1.0; string_2[1]=1.0;
 	
-    if(PRINT_DEBUG) printf("\n Before mutation vec = [ ");
-    for (j=0;j<size;j++)
-    {
-    	if(PRINT_DEBUG) printf("%2.2f ", string[j]);
-    }
-    if(PRINT_DEBUG) printf("]\n");
+    if(PRINT_DEBUG) printf("\n In unittest_mutation: string_1=[%1.5f, %1.5f]\n", string_1[0], string_1[1]);
+    if(PRINT_DEBUG) printf("\n In unittest_mutation: string_2=[%1.5f, %1.5f]\n", string_2[0], string_2[1]);
 
     // Function evaluation  
 	//void mutation(int size, double * string);
-	mutation(size, string, stepsize, delta_min, delta_max, min_values, max_values, prob_mut);
+	mutation(size, string_1, stepsize, delta_min, delta_max, min_values, max_values, prob_mut);
+	mutation(size, string_2, stepsize, delta_min, delta_max, min_values, max_values, prob_mut);
 	
-    if(PRINT_DEBUG) printf("\n After mutation vec = [ ");
-    for (j=0;j<size;j++)
-    {
-    	if(PRINT_DEBUG) printf("%2.2f ", string[j]);
-    }
-    if(PRINT_DEBUG) printf("]\n");
+    if(PRINT_DEBUG) printf("\n In unittest_mutation: string_1=[%1.5f, %1.5f]\n", string_1[0], string_1[1]);
+    if(PRINT_DEBUG) printf("\n In unittest_mutation: string_2=[%1.5f, %1.5f]\n", string_2[0], string_2[1]);
 
     // Variables: Memory post-conditions 
 	//CU_ASSERT_EQUAL(<var_name2>, <value>);
+    CU_ASSERT_DOUBLE_EQUAL(string_1[0], 1.0, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(string_1[1], 1.1, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(string_2[0], 1.0, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(string_2[1], 2.0, 1e-3);
 
-	free(string);
+	free(string_1);
+	free(string_2);
 	free(stepsize);
+	free(min_values);
+	free(max_values);
 }
 
 /*
@@ -490,10 +492,11 @@ void unittest_GA_selection()
      if(PRINT_DEBUG) printf("\n In unittest_GA_selection: rule_id_1=[%d, %d]\n", rule_id_1[0], rule_id_1[1]);
      if(PRINT_DEBUG) printf("\n In unittest_GA_selection: rule_id_2=[%d, %d]\n", rule_id_2[0], rule_id_2[1]);
      
-     CU_ASSERT_EQUAL(rule_id_1[0], 3);
-     CU_ASSERT_EQUAL(rule_id_1[1], 3);
-     CU_ASSERT_EQUAL(rule_id_2[0], 3);
-     CU_ASSERT_EQUAL(rule_id_2[1], 3);
+     /* These no longer hold since we use draw_without_replacement (which is a good thing) */
+     //CU_ASSERT_EQUAL(rule_id_1[0], 3);
+     //CU_ASSERT_EQUAL(rule_id_1[1], 3);
+     //CU_ASSERT_EQUAL(rule_id_2[0], 3);
+     //CU_ASSERT_EQUAL(rule_id_2[1], 3);
 
      //***** Messages: post-conditions **********************************
 
@@ -733,6 +736,7 @@ void unittest2_GA_mutation()
   	
  	size=2;
  	offspring_1 = malloc(size*sizeof(double));
+ 	offspring_2 = malloc(size*sizeof(double));
 	
  	offspring_1[0]=0.0; offspring_1[1]=0.0;
  	offspring_2[0]=1.0; offspring_2[1]=1.0;
@@ -771,7 +775,7 @@ void unittest2_GA_mutation()
 /*
  * \fn: void unittest_GA_election()
  * \brief: Unit test for GA_election(NR_PARAMS, offspring_1, offspring_2);
- * Status: Not tested
+ * Status: Tested OK
  */
 void unittest_GA_election()
 {

@@ -82,6 +82,7 @@ int main(int argc, char * argv[])
     /* add the tests to the suite */
     /* add extra tests using || */
     if(
+    	
         NULL == CU_add_test(pSuite, "some_new_functions, random_unif(0.0,1.0)\n", unittest_random_unif) ||    		
        	NULL == CU_add_test(pSuite, "some_new_functions, random_unif_interval(0.0,10.0)\n", unittest_random_unif_interval) ||
        	NULL == CU_add_test(pSuite, "some_new_functions, sum", unittest_sum) ||
@@ -90,9 +91,11 @@ int main(int argc, char * argv[])
     	NULL == CU_add_test(pSuite, "some_new_functions, draw", unittest_draw) ||
     	NULL == CU_add_test(pSuite, "some_new_functions, ismember", unittest_ismember) ||
     	NULL == CU_add_test(pSuite, "some_new_functions, ismember_double", unittest_ismember_double) ||
+    	
     	NULL == CU_add_test(pSuite, "some_new_functions, draw_without_replacement", unittest_draw_without_replacement) ||
     	NULL == CU_add_test(pSuite, "some_new_functions, draw_with_replacement, case 1", unittest1_draw_with_replacement) ||
     	NULL == CU_add_test(pSuite, "some_new_functions, draw_with_replacement, case 2", unittest2_draw_with_replacement) ||
+    	
     	NULL == CU_add_test(pSuite, "FinancialAgent aux functions, single point cross over", unittest_single_point_cross_over) ||
     	NULL == CU_add_test(pSuite, "FinancialAgent_aux_functions, two_point_cross_over, case 1", unittest1_two_point_cross_over) ||
     	NULL == CU_add_test(pSuite, "FinancialAgent_aux_functions, two_point_cross_over, case 2", unittest2_two_point_cross_over) ||
@@ -100,14 +103,17 @@ int main(int argc, char * argv[])
     	NULL == CU_add_test(pSuite, "FinancialAgent_aux_functions, two_point_cross_over_alt, case 2", unittest2_two_point_cross_over_alt) ||
     	NULL == CU_add_test(pSuite, "FinancialAgent_aux_functions, two_point_cross_over_alt, case 3", unittest3_two_point_cross_over_alt) ||
     	NULL == CU_add_test(pSuite, "FinancialAgent_aux_functions, mutation", unittest_mutation) ||
+    	
     	NULL == CU_add_test(pSuite, "FinancialAgent_aux_functions, GA_selection", unittest_GA_selection) ||
     	NULL == CU_add_test(pSuite, "FinancialAgent_aux_functions, GA_reproduction", unittest_GA_reproduction) ||
     	NULL == CU_add_test(pSuite, "FinancialAgent_aux_functions, GA_mutation, case 1", unittest1_GA_mutation) ||
-    	NULL == CU_add_test(pSuite, "FinancialAgent_aux_functions, GA_mutation, case 2", unittest2_GA_mutation) ||
+    	NULL == CU_add_test(pSuite, "FinancialAgent_aux_functions, GA_mutation, case 2", unittest2_GA_mutation) ||   	
     	//NULL == CU_add_test(pSuite, "FinancialAgent_aux_functions, GA_election", unittest_GA_election) ||
     	NULL == CU_add_test(pSuite, "FinancialAgent_aux_functions, GA_reinsertion", unittest_GA_reinsertion))
-        //NULL == CU_add_test(pSuite, "test_print\n", test_print) ||
+        
+    	//NULL == CU_add_test(pSuite, "test_print\n", test_print) ||
         //NULL == CU_add_test(pSuite, "FinancialAgent_print_public_classifiersystem\n", unittest_FinancialAgent_print_public_classifiersystem))
+        
     {
         CU_cleanup_registry();
         return CU_get_error();

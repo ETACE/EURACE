@@ -122,6 +122,11 @@ void two_point_cross_over_alt(int size, double * string_a, double * string_b, in
 
 /* \fn void mutation(int size, double * string, double * stepsize, double prob_mut)
  * \brief Genetic operator: Mutation of real-valued bitstrings.
+ * 
+ * The mutation range delta is a random value in the interval (delta_min, delta_max).
+ * This is uniform for all bits. The mutation size for bit k is delta*stepsize[k].
+ * stepsize[k] can differ for each bit.
+ * 
  * size: size of the string
  * string: pointer to the string
  * min_value[k]: array of minimum values for each bit
@@ -130,8 +135,6 @@ void two_point_cross_over_alt(int size, double * string_a, double * string_b, in
  * delta_min: lower range for the mutation
  * delta_max: upper range for the mutation 
  * prob_mut: mutation probability
- * The mutation is delta*stepsize[k], where: 
- * delta: is a random number between (delta_min, delta_max)
  */
 void mutation(int size, double * string, double * stepsize, double delta_min, double delta_max, double * min_values, double * max_values, double prob_mut)
 {
@@ -183,7 +186,7 @@ void GA_selection(int N_pairs, int * parent_index_1, int * parent_index_2, int *
 	int nr_rules, N_rep;
 	double avg_performance, sum;
 	
-	double * p;
+	double * pdf;
 	double * cpdf;
 	int * draws;
 		
@@ -215,32 +218,21 @@ void GA_selection(int N_pairs, int * parent_index_1, int * parent_index_2, int *
         //if(PRINT_DEBUG) printf("\n In GA_selection: sum=%f\n", sum);
     }
     
-    p = malloc(sizeof(double)*nr_rules);
+    pdf = malloc(sizeof(double)*nr_rules);
     for (j=0;j<nr_rules;j++)
     {
     	avg_performance  = PUBLIC_CLASSIFIERSYSTEM.ruletable[j].avg_performance;
-        p[j] = exp(EWA_PARAMETERS.EWA_beta * avg_performance)/sum;
+        pdf[j] = exp(EWA_PARAMETERS.EWA_beta * avg_performance)/sum;
         //if(PRINT_DEBUG) printf("\n In GA_selection: p[%d]=%f\n", j, p[j]);
     }
-
-    // Construct cumulative probability density function: cpdf
-     cpdf = malloc(sizeof(double)*nr_rules);
-     cumpdf(p, nr_rules, cpdf);
      
     //print prob. vector:
      if(PRINT_DEBUG) 
      {
-	     printf("\n In GA_selection: prob: [ ");
-	     for (j=0;j<nr_rules;j++){printf("%2.2f ", p[j]);}
+	     printf("\n In GA_selection: pdf: [ ");
+	     for (j=0;j<nr_rules;j++){printf("%2.2f ", pdf[j]);}
 	     printf("]\n");
      }
-    //print cpdf:
-     if(PRINT_DEBUG) 
-     {
-	     printf("\n In GA_selection: cpdf: [ ");
-	     for (j=0;j<nr_rules;j++){printf("%2.2f ", cpdf[j]);}
-	     printf("]\n"); 
-     }     
      
      // Drawing N_rep random copies (without replacement) from the entire population
      // using the fitness-based probabilities.
@@ -249,13 +241,14 @@ void GA_selection(int N_pairs, int * parent_index_1, int * parent_index_2, int *
      //draws is an array containing indices for the selected rules
      draws = malloc(sizeof(int)*N_rep);
      
-     //draw N_rep times without_replacement from density cpdf, and store results in draws 
-     //draw_without_replacement(nr_rules, cpdf, N_rep, draws);
-     
+     //draw N_rep times without_replacement 
+     //the function recursively draws from the density function pdf, and stores the results in draws
+     draw_without_replacement(nr_rules, pdf, N_rep, draws);
+
      //testing: draw_with_replacement
      //this most likely results in selecting the rule with the highest probability only, for all draws
-     draw_with_replacement(nr_rules, cpdf, N_rep, draws);
-	     
+     //draw_with_replacement(nr_rules, pdf, N_rep, draws);
+     	     
      // For the random matching, drawing is WITH replacement using uniform probabilities
      // from the discrete interval [0, N_pairs+1].
      // Drawing with replacement allows for both parents to be a copy of the same bitstring.
@@ -286,16 +279,19 @@ void GA_selection(int N_pairs, int * parent_index_1, int * parent_index_2, int *
      {
 	     printf("\n In GA_selection:\n draws=[ ");
 	     for (j=0;j<N_rep;j++){printf("%d ", draws[j]);}
-	     printf("]\n Completed drawing %d potential parents from population.\n", N_rep); 
+	     printf("]\n Completed drawing %d potential parents from population.", N_rep); 
+	     printf("\n Note that these are 0-indexed rule_ids.\n"); 
 
 	     printf("\n In GA_selection:\n parent_index_1=[ ");
 	     for (j=0;j<N_pairs;j++){printf("%d ", parent_index_1[j]);}
-	     printf("]\n Completed drawing %d indices for parent_index_1 from potential parent subset.\n", N_pairs); 
+	     printf("]\n Completed drawing %d indices for parent_index_1 from potential parent subset.", N_pairs); 
+	     printf("\n Note that these are 0-indexed indices from the array draw.\n"); 
 
 	     printf("\n In GA_selection:\n parent_index_2=[ ");
 	     for (j=0;j<N_pairs;j++){printf("%d ", parent_index_2[j]);}
-	     printf("]\n Completed drawing %d indices for parent_index_2 from potential parent subset.\n", N_pairs);  
-
+	     printf("]\n Completed drawing %d indices for parent_index_2 from potential parent subset.", N_pairs);  
+	     printf("\n Note that these are 0-indexed indices from the array draw.\n");
+	     
 	     printf("\n In GA_selection:\n rule_id_1=[ ");
 	     for (j=0;j<N_pairs;j++){printf("%d ", rule_id_1[j]);}
 	     printf("]\n Completed associating %d rule_ids to parent_index_1.\n", N_pairs); 
@@ -308,7 +304,7 @@ void GA_selection(int N_pairs, int * parent_index_1, int * parent_index_2, int *
 	 //Now we have 2 arrays of rule_ids that are randomly matched, and these can be used in the next functions.
      // *********************** End of Selection function **************************************
 
-    free(p);
+    free(pdf);
  	free(cpdf);
  	free(draws);
 }

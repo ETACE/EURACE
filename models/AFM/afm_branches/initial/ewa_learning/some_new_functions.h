@@ -21,5 +21,5 @@ void cumpdf(double * p, int size, double * cpdf);
 int draw(int size, double * cpdf);
 int ismember(int i, int * xvec, int size);
 int ismember_double(double i, double * xvec, int size);
-void draw_without_replacement(int size, double * cpdf, int nr_draws, int * draws);
-void draw_with_replacement(int size, double * cpdf, int nr_draws, int * draws);
+void draw_without_replacement(int size, double * pdf, int nr_draws, int * draws);
+void draw_with_replacement(int size, double * pdf, int nr_draws, int * draws);

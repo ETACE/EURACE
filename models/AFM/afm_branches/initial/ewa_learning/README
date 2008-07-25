@@ -1,24 +1,66 @@
  /*********************************
  * README file for EWA learning module
  * History:
+ * 25/07/08 Sander: Solved problem with  
  * 24/07/08 Sander: Checked that all malloc pointers are freed at the end of functions.
  * 15/07/08 Sander van der Hoog 
  *********************************/
 
 TODO
 ====
-- In GA_selection, line 234: draw_without_replacement should be used to draw the N_rep strings from the population.
+- GA_reinsertion is run after each reproduction between offspring_1/offspring_2.
+This is incorrect, since the reinserted offspring can then be sampled again in the next pair.
+Better to add the offspring to a copy of the population, a population of candidates, and then add all the newly created offsprings at the end of the N_pairs
+loop.
+
+Possible solutions:
+In the FA: setup a candidate rule population to hold the new offsprings before they enter the real population.
+In the FA: let each rule have extra space tp hold an array offspring_parameters[10] containing new values temporarily. 
+
+Both solutions have the same problem: if a single string is used multiple times for cross-over and mutation, then which temporary slot in the candidate population should we use?
+
+In general: should we determine a set of rules N_rep that are to be going extinct, and are replaced by the new offsprings?
+If each rule in N_rep is only used once for reproduction (sampling without replacement) there is no problem:
+the new offspring replaces their parents (2 offsprings, 2 parents per pair, and we do not use election).
+
+If a rule in N_rep can be used more than once for reproduction (sampling with replacement) then there is a problem:
+How large should the new population be?
+
+parent_1 + parent_2 -> offspring_1 + offspring_2  
+ 
+parent_1 + parent_3 -> offspring_3 + offspring_4
+
+3 parents and 4 offspring: 3 slots in population.  
+
+CHANGELOG
+=========
+24/07/08
+- In GA_selection, line 234: draw_without_replacement should be used to draw for reproduction the N_rep strings from the population.
 (to be used for reproduction). For the random matching on line 239-263, drawing is with replacement using uniform probabilities.
+Solved 25/07/08
 
+24/07/08
 - Problem: draw_without_replacement:
-It is difficult to draw when items have low probabilities.
+It is difficult to draw items that have low probability.
 - Solution: in draw_without_replacement reconstruct the cpdf, eliminating the items that have already been drawn.
+Solved 25/07/08, new implementation of draw_without_replacement, recursively reconstructs the cpdf by setting pdf[i]=0.
 
+24/07/08
+Possible bug in draw:
+- nr_selected_bin should start from 0 or from 1?
+- nr_selected_bin should end at size-1 or size?
+Solved 25/07/08: Corrected, bin is now 0-indexed.
+
+24/07/08
 - check problem with mutation(): unittest when mutation exceeds min, max values
+Solved 25/07/08: Correctly handled.
 
+24/07/08
 File: Household_ewa_functions
-- Household_send_rule_performance(), line 42: send current_rule using 0-indexing
-- Household_select_rule(), line 169: set current_rule = nr_selected_rule using 0-indexing
+- Household_send_rule_performance(), line 42: send current_rule now using 0-indexing
+- Household_select_rule(), line 169: set current_rule = nr_selected_rule now using 0-indexing
+
+
 
 Main files:
 ===========
