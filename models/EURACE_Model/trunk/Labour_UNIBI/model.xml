@@ -98,7 +98,7 @@
 
 <function><name>Firm_calculate_specific_skills_and_wage_offer</name>
 <description></description>
-<currentState>Start_Firm_Labour_Role</currentState>
+<currentState>Firm_Start_Labour_Role</currentState>
 <nextState>011</nextState>
 </function>
 
