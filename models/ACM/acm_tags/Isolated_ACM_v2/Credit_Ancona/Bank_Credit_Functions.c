@@ -75,7 +75,7 @@ int Bank_account_update_deposits()
                  CASH=0.0;
              }
 
-              add_central_bank_account_update_message(BCE_DEBT, ID);
+             // add_central_bank_account_update_message(BCE_DEBT, ID);
 		//	printf("\n %d cash %f, bce_debt %f", ID,CASH,BCE_DEBT);
 		}
       
@@ -140,7 +140,7 @@ int Bank_give_loan()
 			{
 				BCE_DEBT += fabs(CASH);  
               // printf("bank %d debito BCE %f CASH %f \n", ID, BCE_DEBT, CASH);   
-                  add_central_bank_account_update_message(BCE_DEBT,ID);
+                //  add_central_bank_account_update_message(BCE_DEBT,ID);
 				CASH = 0.0;
 			}
 		}
