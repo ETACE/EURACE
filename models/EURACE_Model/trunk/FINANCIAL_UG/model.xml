@@ -25,6 +25,27 @@
 			<file>ClearingMechanism.c</file>
 			<file>Household_Financial_Market.c</file>
                 </functionFiles>
+
+        <timeUnits>
+			
+	<timeUnit>
+		<name>daily</name>
+		<unit>iteration</unit>
+		<period>1</period>
+	</timeUnit>
+			
+	<timeUnit>
+		<name>weekly</name>
+		<unit>daily</unit>
+		<period>5</period>
+	</timeUnit>
+			
+	<timeUnit>
+	        <name>monthly</name>
+		<unit>weekly</unit>
+		<period>4</period>
+	</timeUnit>			
+        </timeUnits>
 		<dataTypes>
 			<dataType>
 				<name>Order</name>
@@ -87,27 +108,6 @@
 			</dataType>
 			
 		</dataTypes>
-        <timeUnits>
-			
-	<timeUnit>
-		<name>daily</name>
-		<unit>iteration</unit>
-		<period>1</period>
-	</timeUnit>
-			
-	<timeUnit>
-		<name>weekly</name>
-		<unit>daily</unit>
-		<period>5</period>
-	</timeUnit>
-			
-	<timeUnit>
-	        <name>monthly</name>
-		<unit>weekly</unit>
-		<period>4</period>
-	</timeUnit>			
-        </timeUnits>
-
 </environment>
 	
 	<!--********************* X-machine Agent - Trader ****************************-->
@@ -239,10 +239,7 @@
 		<description></description>
 		<!--      Variables for the Bank     -->
 		
-		<memory>
-			
-			
-		</memory>
+
 		<functions>
 			<function>
 				<name>Bank_send_accountInterest</name>
