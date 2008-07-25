@@ -302,6 +302,16 @@
 					<input><messageName>infoAssetCH</messageName></input>
 				</inputs>
 			</function>
+			
+			<function>
+				<name>Firm_receive_stock_info</name>
+				<description></description>
+				<currentState>Update_01</currentState>
+				<nextState>Firm_Start_Labour_Role</nextState>
+				<inputs>
+					<input><messageName>infoAssetCH</messageName></input>
+				</inputs>
+			</function>
 		</functions>
 	</xagent>
 	</agents>
