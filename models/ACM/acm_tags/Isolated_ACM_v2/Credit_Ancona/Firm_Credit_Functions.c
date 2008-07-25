@@ -237,7 +237,7 @@ int Firm_get_loan()
 //	printf("\n  4payment account %f extrenalfinances need %f",PAYMENT_ACCOUNT, EXTERNAL_FINANCIAL_NEEDS);
 	return 0;
 }
-
+/*
 int Firm_not_in_bankruptcy()
 {return 0;
 }
@@ -246,3 +246,4 @@ int Firm_idle()
 {
 	return 0;
 }
+*/

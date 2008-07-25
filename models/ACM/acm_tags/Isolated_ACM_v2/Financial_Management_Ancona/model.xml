@@ -43,7 +43,7 @@
 <variable><type>double</type><name>loan_value</name><description>Current value of the loan</description></variable>
 <variable><type>double</type><name>interest_rate</name><description>Fixed interest rate per month</description></variable>
 <variable><type>double</type><name>installment_amount</name><description>Fixed installment payment due per month</description></variable>
-<variable><type>double</type><name>interest_amount</name><description>Fixed interest  oayment send by bank</description></variable>
+<!--<variable><type>double</type><name>interest_amount</name><description>Fixed interest  oayment send by bank</description></variable>-->
 <variable><type>double</type><name>var_per_installment</name><description>Value-at-risk subtracted from the residual value-at-risk at each installment</description></variable>
 <variable><type>double</type><name>residual_var</name><description>Residual value-at-risk, decreases gradually</description></variable>
 <variable><type>double</type><name>bad_debt</name><description>Bad debt that is not refunded to bank in case of a firm bankruptcy</description></variable>
@@ -231,7 +231,7 @@
 <function>
 <name>Firm_compute_and_send_stock_orders</name>
 <description>Function to send order_messages to the clearinghouse (share emission or repurchase).</description>
-<currentState>End_Firm_Credit_Role</currentState>
+<currentState>Firm_End_Credit_Role</currentState>
 <nextState>0003</nextState>
 <condition><lhs><value>a.external_financial_needs</value></lhs><op>GT</op><rhs><value>0.0</value></rhs></condition>
 <outputs>
@@ -336,7 +336,7 @@
 <function>
 <name>idle</name>
 <description></description>
-<currentState>End_Firm_Credit_Role</currentState>
+<currentState>Firm_End_Credit_Role</currentState>
 <nextState>Start_Firm_Labour_Role</nextState>
 <condition><not><lhs><value>a.external_financial_needs</value></lhs><op>GT</op><rhs><value>0.0</value></rhs></not></condition>
 </function>
