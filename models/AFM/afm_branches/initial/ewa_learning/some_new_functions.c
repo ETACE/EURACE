@@ -130,7 +130,7 @@ void cumsum(double * p, int size, double * cumsum)
 
 //void cumpdf(double * p, int size, double * cpdf)
 //Cummulative probability density function.
-//p: probability vector (can be non-scaled, i.e. probabilities need not add to 1).
+//p: probability vector (can be non-scaled, i.e. probabilities need not add up to 1).
 //size: number of elements, size of array p, cpdf
 //Given a vector of probabilities p, the cumulative pdf is given by
 //the normalized values in the cummulative sum:
@@ -182,7 +182,8 @@ void cumpdf(double * p, int size, double * cpdf)
 /*
  * \fn: int draw(int size, double * cpdf)
  * \bief: Draws a random number according to the inversion method, using the cummulative probability density function cpdf.
- * Draw() returns the bin number associated to a uniform random u.
+ * Draw() returns the bin number associated to a uniform random u. Note that the bin index is 0-indexed.
+ * 
  * Given a cummulative pdf F(.), the random number u belongs to bin j if and only if F(j-1) <= u < F(j).
  * 
  * int size: size of the array cpdf
@@ -203,23 +204,24 @@ int draw(int size, double * cpdf)
 
 	int j, nr_selected_bin;
 	double u;
-	//double nr_drawn;
 	
     //Random number:
 	u=random_unif();
-    
-    nr_selected_bin=0;
+	//if(PRINT_DEBUG) printf("\n Draw: %f\n", u);
+	
+	//NOTE: the bin index is 0-indexed
+    nr_selected_bin=-1;
     
     //Case 1: u<F(1)
     if (0<=u && u<cpdf[0])
     {
-        nr_selected_bin=1;
+        nr_selected_bin=0;
     }
         
     if (size>1)
     {
     	//Case 2: Travers the cpdf until u >= F(j-1)
-	    for (j=2;j<size;j++)
+	    for (j=1;j<size;j++)
 	    {
 	        if (cpdf[j-1]<=u && u<cpdf[j])
 	        {
@@ -228,10 +230,12 @@ int draw(int size, double * cpdf)
 	    	}
 	    }
 	    
+	    //This should never be reached, since cpdf[size-1]=1 by definition
 	    //Case 3: u>=F(J)
         if (cpdf[size-1]<=u)
         {
-            nr_selected_bin=size-1;
+            nr_selected_bin=size;
+            printf("\n In draw, line 235: ERROR, prob u is larger than last element of pdf.");
         }
     }
     
@@ -304,77 +308,95 @@ int ismember_double(double i, double * xvec, int size)
 	return ans;
 }
 
-//void draw_without_replacement(int N, double * cpdf, double * draws)
-//Drawing N random numbers (integers) without replacement from the cummulative probability density function cpdf.
+//void draw_without_replacement(int size, double * pdf, int nr_draws, int * draws)
+//Drawing nr_draw random numbers (integers) without replacement from the probability density function cpdf.
+//This function reconstructs the cpdf recursively, setting the probability of already drawn numbers to zero.
 //UNIT TEST:
-//cpdf={0.1 0.2 0.3 0.4 0.5};
-//draw_without_replacement(5, cpdf)
+//pdf={0.1 0.2 0.3 0.4 0.5};
+//draw_without_replacement_alt(5, pdf, 5, draws)
 //Outcome: array 'draws' should contain all values 1-5
-//draw={0.1 0.2 0.3 0.4 0.5} in any order.
+//draws={1 2 3 4 5} in any order.
 //
 //USAGE:
 //Before calling:
-//double * cpdf;
+//double * pdf;
 //double * draws;
 //int size;
-//cpdf = malloc(sizeof(double)*size);
+//pdf = malloc(sizeof(double)*size);
 //draws = malloc(sizeof(double)*size);
-//Call: draw(size, cpdf);
+//Call: draw_without_replacement_alt(size, pdf, nr_draws, draws)
 //After calling:
-//free(cpdf);
+//free(pdf);
 //free(draws);
 
-void draw_without_replacement(int size, double * cpdf, int nr_draws, int * draws)
+void draw_without_replacement(int size, double * pdf, int nr_draws, int * draws)
 {
 	//Before calling this function you need to have done:
-	//cpdf = malloc(sizeof(double)*size);
+	//pdf = malloc(sizeof(double)*size);
 	//draws = malloc(sizeof(double)*nr_draws);
-	
-	double i;
-	int k;
-	int count, count_2, safety_count;
-	
-	
-	//printf("\n Setting drawns to -1\n");
-	for (k=0; k<size; k++)
-	{
-		draws[k]=-1;
-	}
-	
-	//printf("\n Continuing with drawing\n");
-	//Continue drawing until nr_draws different elements have been drawn
-	count=0;
-	count_2=0;
-	safety_count = 100*nr_draws;
-	while(count != nr_draws)
-	{
-		//printf("\n count %d != %d:\n", count, nr_draws);
 
-		//printf("\n A draw:\n");
-		i = draw(size, cpdf);
-		
-		//Check membership, only add if new draw not already a member
-		if (ismember(i,draws,size)==0)
+	double * cpdf;
+	int i,k;
+	int count, max_count;
+
+	// Construct cumulative probability density function: cpdf
+	 cpdf = malloc(sizeof(double)*size);
+
+	 //printf("\n Setting drawns to -1\n");
+		for (k=0; k<size; k++)
 		{
+			draws[k]=-1;
+		}
+		
+		//printf("\n Continue with drawing\n");
+		//Continue drawing until nr_draws different elements have been drawn
+		count=0;
+		max_count=10*nr_draws;
+		while(count != nr_draws && count<max_count)
+		{
+			if(PRINT_DEBUG) 
+			{
+				printf("\n In draw_without_replacement: count %d != %d:\n", count, nr_draws);
+				printf("\n In draw_without_replacement: count %d < %d:\n", count, max_count);
+			}
+
+			//reconstruct cumulative probability density function
+			cumpdf(pdf, size, cpdf);
+
+			 //print cpdf:
+		     if(PRINT_DEBUG) 
+		     {
+			     printf("\n In draw_without_replacement: cpdf=[ ");
+			     for (k=0;k<size;k++){printf("%2.2f ", cpdf[k]);}
+			     printf("]\n"); 
+		     }
+
+			i = draw(size, cpdf);
+			if(PRINT_DEBUG) printf("\n A draw: %d (0-indexed)\n", i);
+			
+			//Check membership, only add if new draw not already a member
+			if(PRINT_DEBUG)
+			{
+				if (ismember(i,draws,size)==0)
+				{
+					printf("\n New item found %d\n", i);				
+				}
+			}
 			draws[count]=i;
 			count += 1;
+			
+			//set probability of drawn element to zero
+			pdf[i]=0.0;		     
 		}
-		//Stop after 10*nr_drawns:
-		count_2 +=1;
-		if (count_2==safety_count) break;
-	}
-	if (count_2==safety_count)
-	{
-		printf("\n Function draw_without_replacement: reached safety count %d, while nr_draws = %d\n", count_2, nr_draws);
-	}
+		
+		free(cpdf);
 }
-
-
-//void draw_with_replacement(int size, double * cpdf, int nr_draws, double * draws)
+ 
+//void draw_with_replacement(int size, double * pdf, int nr_draws, double * draws)
 //Drawing nr_draws random numbers (integers) with replacement
 //from the cummulative probability density function cpdf.
 //size: size of cpdf
-//cpdf: cpdf to sample from
+//pdf: pdf to sample from
 //nr_draws: number of draws
 //draws: output
 //
@@ -388,24 +410,29 @@ void draw_without_replacement(int size, double * cpdf, int nr_draws, int * draws
 //
 //USAGE:
 //Before calling:
-//double * cpdf;
+//double * pdf;
 //double * draws;
 //int size;
-//cpdf = malloc(sizeof(double)*size);
+//pdf = malloc(sizeof(double)*size);
 //draws = malloc(sizeof(double)*nr_draws);
-//Call: draw(size, cpdf);
+//Call: draw_with_replacement(size, pdf);
 //After calling:
-//free(cpdf);
+//free(pdf);
 //free(draws);
 
-void draw_with_replacement(int size, double * cpdf, int nr_draws, int * draws)
+void draw_with_replacement(int size, double * pdf, int nr_draws, int * draws)
 {
 	//Before calling this function you need to have done:
-	//cpdf = malloc(sizeof(double)*size);
+	//pdf = malloc(sizeof(double)*size);
 	//draws = malloc(sizeof(double)*nr_draws);
 
 	int k=0;
+	double * cpdf;
 
+	// Construct cumulative probability density function: cpdf
+	 cpdf = malloc(sizeof(double)*size);
+ 	 cumpdf(pdf, size, cpdf);
+	 
 	for (k=0; k<nr_draws; k++)
 	{
 		draws[k]=draw(size, cpdf);

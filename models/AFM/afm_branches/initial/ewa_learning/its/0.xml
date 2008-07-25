@@ -2,7 +2,7 @@
 <itno>0</itno>
 <environment>
 <nr_params>10</nr_params>
-<print_debug>1</print_debug>
+<print_debug>0</print_debug>
 </environment>
 <xagent>
 <name>Household</name>

@@ -100,6 +100,8 @@ int FinancialAgent_apply_GA()
     rule_id_2 = malloc(sizeof(int)*N_pairs);
 
 	//Evolutionary operators:
+    // - select N_pairs by randomly matching N_rep individuals
+    // - fill in the rule_id arrays with rule indices.
 	GA_selection(N_pairs, parent_index_1, parent_index_2, rule_id_1, rule_id_2);
 	
 	for (j=0; j<N_pairs; j++)
@@ -110,6 +112,8 @@ int FinancialAgent_apply_GA()
 		GA_reinsertion(NR_PARAMS, rule_id_1[j], rule_id_2[j], offspring_1, offspring_2);
 	}
 
+	
+	
 	// free all allocated memory
 	free(offspring_1);
 	free(offspring_2);
