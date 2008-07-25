@@ -274,7 +274,7 @@
 <name>Firm_not_in_financial_crisis</name>
 <description>Function to resolve the financial crisis by lowering dividends.</description>
 <currentState>Firm_checks_financial_crisis</currentState>
-<nextState>Start_Firm_Labour_Role</nextState>
+<nextState>Update_01</nextState>
 <condition>
 	<lhs><value>a.financial_crisis_state</value></lhs><op>EQ</op><rhs><value>0</value></rhs>
 
@@ -299,7 +299,7 @@
 <name>Firm_execute_financial_payments</name>
 <description>Function to execute financial payments.</description>
 <currentState>Firm_checks_financial_crisis</currentState>
-<nextState>Start_Firm_Labour_Role</nextState>
+<nextState>Update_01</nextState>
 <condition>
 	<lhs><value>a.financial_crisis_state</value></lhs><op>EQ</op><rhs><value>0</value></rhs>
 </condition>
@@ -318,7 +318,7 @@
 <name>idle</name>
 <description></description>
 <currentState>Start_Firm_Credit_Role</currentState>
-<nextState>Start_Firm_Labour_Role</nextState>
+<nextState>Update_01</nextState>
 <condition><not><lhs><value>a.external_financial_needs</value></lhs><op>GT</op><rhs><value>0.0</value></rhs></not></condition>
 </function>
 
@@ -327,7 +327,7 @@
 <name>idle</name>
 <description></description>
 <currentState>Firm_End_Credit_Role</currentState>
-<nextState>Start_Firm_Labour_Role</nextState>
+<nextState>Update_01</nextState>
 <condition><not><lhs><value>a.external_financial_needs</value></lhs><op>GT</op><rhs><value>0.0</value></rhs></not></condition>
 </function>
 
