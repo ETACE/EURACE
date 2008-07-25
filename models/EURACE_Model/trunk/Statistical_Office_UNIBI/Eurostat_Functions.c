@@ -480,8 +480,10 @@ int Eurostat_calculate_data()
             
         /***************** Firm death rate *********************/
         //Def: nr of firm demises in period x / nr of firms in period x
-        if(NO_FIRMS == 0) FIRM_DEATH_RATE = 0.0;
-        FIRM_DEATH_RATE = NO_FIRM_DEATHS / NO_FIRMS;
+        if(NO_FIRMS == 0) 
+        	FIRM_DEATH_RATE = 0.0;
+        else
+        	FIRM_DEATH_RATE = NO_FIRM_DEATHS / NO_FIRMS;
         
         /***************** Firm survival rate *********************/
         //Def: The survival rate after x years (or months) is the percentage of all enterprise births of year n which are still active in year n+x.
