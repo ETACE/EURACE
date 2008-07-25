@@ -252,7 +252,8 @@ void GA_selection(int N_pairs, int * parent_index_1, int * parent_index_2, int *
      //draw N_rep times without_replacement from density cpdf, and store results in draws 
      //draw_without_replacement(nr_rules, cpdf, N_rep, draws);
      
-     //testing:
+     //testing: draw_with_replacement
+     //this most likely results in selecting the rule with the highest probability only, for all draws
      draw_with_replacement(nr_rules, cpdf, N_rep, draws);
 	     
      // For the random matching, drawing is WITH replacement using uniform probabilities
@@ -331,11 +332,11 @@ void GA_reproduction(int size, int id1, int id2, double * offspring_1, double * 
 		}
 	     if(PRINT_DEBUG)
 	     {
-		     printf("\n In GA_reproduction:\n offspring_1=[ ");
+		     printf("\n In GA_reproduction, before cross-over:\n offspring_1=[ ");
 		     for (j=0;j<size;j++){printf("%1.1f ", offspring_1[j]);}
 		     printf("]\n"); 
 
-		     printf("\n In GA_reproduction:\n offspring_2=[ ");
+		     printf("\n In GA_reproduction, before cross-over:\n offspring_2=[ ");
 		     for (j=0;j<size;j++){printf("%1.1f ", offspring_2[j]);}
 		     printf("]\n"); 
 	     }
@@ -350,6 +351,11 @@ void GA_reproduction(int size, int id1, int id2, double * offspring_1, double * 
 	   			// draw random cross-over point between $[1,L-1]$
 	   			cross_point = (int)random_unif_interval(1, size-1);	
 	   			single_point_cross_over(size, offspring_1, offspring_2, cross_point);
+	   			
+	   	     if(PRINT_DEBUG)
+	   	     {
+	   		     printf("\n In GA_reproduction: cross_point = %d\n", cross_point);
+	   	     }
 			}
 			else
 			{
@@ -359,7 +365,12 @@ void GA_reproduction(int size, int id1, int id2, double * offspring_1, double * 
 				
 				// draw random cross-over length between $[1,L-1]$
 				cross_length = (int)random_unif_interval(1, size-1);
-				
+
+		   	     if(PRINT_DEBUG)
+		   	     {
+		   		     printf("\n In GA_reproduction: cross_point = %d, cross_length = %d\n", cross_point, cross_length);
+		   	     }
+
 				two_point_cross_over(size, offspring_1, offspring_2, cross_point, cross_length);
 			}
 		}
@@ -367,11 +378,24 @@ void GA_reproduction(int size, int id1, int id2, double * offspring_1, double * 
 		{
 	        //No cross-over occurs: 2 offspring remain identical copies of the parents
 		}
+		
+	     if(PRINT_DEBUG)
+	     {
+		     printf("\n In GA_reproduction, after cross-over:\n offspring_1=[ ");
+		     for (j=0;j<size;j++){printf("%1.1f ", offspring_1[j]);}
+		     printf("]\n"); 
+
+		     printf("\n In GA_reproduction, after cross-over:\n offspring_2=[ ");
+		     for (j=0;j<size;j++){printf("%1.1f ", offspring_2[j]);}
+		     printf("]\n"); 
+	     }
+
 	/*********************** End of Reproduction function **************************************************/
 }
 
 void GA_mutation(int size, double * offspring_1, double * offspring_2)
 {
+	int j;
 	
 	/*********************** Start of Mutation function ****************************************************/
 	//void GA_mutation(int size, double * offspring_1, double * offspring_2): applies to each pair, nr_pair j=0,...,N_pairs
@@ -381,6 +405,17 @@ void GA_mutation(int size, double * offspring_1, double * offspring_2)
     //void mutation(int size, double * offspring_1, double * offspring_2);
 	mutation(size, offspring_1, GA_PARAMETERS.stepsize, GA_PARAMETERS.delta_min, GA_PARAMETERS.delta_max, GA_PARAMETERS.min_values, GA_PARAMETERS.max_values, GA_PARAMETERS.prob_mut);
 	mutation(size, offspring_2, GA_PARAMETERS.stepsize, GA_PARAMETERS.delta_min, GA_PARAMETERS.delta_max, GA_PARAMETERS.min_values, GA_PARAMETERS.max_values, GA_PARAMETERS.prob_mut);
+
+    if(PRINT_DEBUG)
+    {
+	     printf("\n In GA_mutation, after mutation:\n offspring_1=[ ");
+	     for (j=0;j<size;j++){printf("%1.1f ", offspring_1[j]);}
+	     printf("]\n"); 
+
+	     printf("\n In GA_mutation, after mutation:\n offspring_2=[ ");
+	     for (j=0;j<size;j++){printf("%1.1f ", offspring_2[j]);}
+	     printf("]\n"); 
+    }
 
 	/*********************** End of Mutation function ****************************************************/
 }
@@ -478,7 +513,7 @@ int FinancialAgent_print_public_classifiersystem()
          fprintf(file,"%d\t|\t %f\t|\t %7d\t|\t %f\t | ", rule_id, performance, counter, avg_performance);
 
          fprintf(file,"[ ");
-	     for (j=0;j<GA_PARAMETERS.string_size;j++){fprintf(file,"%1.1f ", PUBLIC_CLASSIFIERSYSTEM.ruletable[i].parameters[j]);}
+	     for (j=0;j<GA_PARAMETERS.string_size;j++){fprintf(file,"%02.1f ", PUBLIC_CLASSIFIERSYSTEM.ruletable[i].parameters[j]);}
 	     fprintf(file,"]\n"); 
     }
      fprintf(file,"=============================================================================================\n");
