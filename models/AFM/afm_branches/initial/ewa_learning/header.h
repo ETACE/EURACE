@@ -207,6 +207,7 @@ struct PublicClassifierRule
 	int counter;	/**< Datatype memory variable counter of type int. */
 	double performance;	/**< Datatype memory variable performance of type double. */
 	double avg_performance;	/**< Datatype memory variable avg_performance of type double. */
+	double selection_prob;	/**< Datatype memory variable selection_prob of type double. */
 	double parameters[10];	/**< Datatype memory variable parameters of type double. */
 };
 
@@ -507,25 +508,25 @@ typedef struct m_rule_details m_rule_details;
 
 int idle(void);
 int Household_idle_start_Household_EWA_Learning_end_GA_condition(xmachine_memory_Household *a);
+int Household_print_private_classifiersystem(void);
+int Household_Household_print_private_classifiersystem_start_Household_EWA_Learning_01_condition(xmachine_memory_Household *a);
 int Household_reset_private_classifiersystem(void);
-int Household_Household_reset_private_classifiersystem_start_Household_EWA_Learning_01_condition(xmachine_memory_Household *a);
 int Household_read_and_update_rule_details(void);
 int idle(void);
 int Household_idle_end_GA_end_Household_EWA_Learning_condition(xmachine_memory_Household *a);
 int Household_send_rule_performance(void);
-int Household_Household_send_rule_performance_end_GA_02_condition(xmachine_memory_Household *a);
+int Household_Household_send_rule_performance_end_GA_03_condition(xmachine_memory_Household *a);
 int Household_read_all_performances(void);
-int Household_print_private_classifiersystem(void);
 int Household_select_rule(void);
 int idle(void);
 int FinancialAgent_idle_start_FinancialAgent_end_GA_condition(xmachine_memory_FinancialAgent *a);
 int FinancialAgent_apply_GA(void);
 int FinancialAgent_FinancialAgent_apply_GA_start_FinancialAgent_01_condition(xmachine_memory_FinancialAgent *a);
 int FinancialAgent_send_rule_details(void);
+int FinancialAgent_print_public_classifiersystem(void);
 int FinancialAgent_reset_public_classifiersystem(void);
 int FinancialAgent_read_rule_performance_and_update_classifiersystem(void);
 int FinancialAgent_send_all_performances(void);
-int FinancialAgent_print_public_classifiersystem(void);
 
 /** \struct location
  * \brief Holds location for calculating space partitioning .
@@ -615,12 +616,12 @@ xmachine_memory_Household_state * Household_04_state;
 /* Pointer to list of Household agents in state 03 state */
 //xmachine_memory_Household * temp_xmachine_Household_03;
 xmachine_memory_Household_state * Household_03_state;
-/* Pointer to list of Household agents in state 02 state */
-//xmachine_memory_Household * temp_xmachine_Household_02;
-xmachine_memory_Household_state * Household_02_state;
 /* Pointer to list of Household agents in state end_Household_EWA_Learning state */
 //xmachine_memory_Household * temp_xmachine_Household_end_Household_EWA_Learning;
 xmachine_memory_Household_state * Household_end_Household_EWA_Learning_state;
+/* Pointer to list of Household agents in state 02 state */
+//xmachine_memory_Household * temp_xmachine_Household_02;
+xmachine_memory_Household_state * Household_02_state;
 /* Pointer to list of Household agents in state 01 state */
 //xmachine_memory_Household * temp_xmachine_Household_01;
 xmachine_memory_Household_state * Household_01_state;
@@ -740,7 +741,7 @@ void init_PublicClassifierRule_array(PublicClassifierRule_array * array);
 void reset_PublicClassifierRule_array(PublicClassifierRule_array * array);
 void free_PublicClassifierRule_array(PublicClassifierRule_array * array);
 void copy_PublicClassifierRule_array(PublicClassifierRule_array * from, PublicClassifierRule_array * to);
-void add_PublicClassifierRule(PublicClassifierRule_array * array, int id, int counter, double performance, double avg_performance, double * parameters);
+void add_PublicClassifierRule(PublicClassifierRule_array * array, int id, int counter, double performance, double avg_performance, double selection_prob, double * parameters);
 void remove_PublicClassifierRule(PublicClassifierRule_array * array, int index);
 
 void init_PrivateClassifierRule_array(PrivateClassifierRule_array * array);

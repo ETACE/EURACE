@@ -180,6 +180,10 @@
 		<type>double</type><name>avg_performance</name>
 		<description>Average performance for each rule (=total performance/counter)</description>
 		</variable>
+		<variable>
+		<type>double</type><name>selection_prob</name>
+		<description>Selection probability for the rule</description>
+		</variable>
 		<variable><type>double</type>
 		<name>parameters[10]</name>
 		<description>Parameter values encoding the rule</description>
@@ -330,7 +334,7 @@
 		</function>
       
         <function>
-          <name>Household_reset_private_classifiersystem</name>
+          <name>Household_print_private_classifiersystem</name>
           <description></description>
           <currentState>start_Household_EWA_Learning</currentState>
           <nextState>01</nextState>
@@ -338,10 +342,18 @@
           <inputs></inputs>
           <outputs></outputs>
         </function>
+        <function>
+          <name>Household_reset_private_classifiersystem</name>
+          <description></description>
+          <currentState>01</currentState>
+          <nextState>02</nextState>
+          <inputs></inputs>
+          <outputs></outputs>
+        </function>
           <function>
           <name>Household_read_and_update_rule_details</name>
           <description></description>
-          <currentState>01</currentState>
+          <currentState>02</currentState>
           <nextState>end_GA</nextState>
           <inputs>
           <input>
@@ -364,7 +376,7 @@
           <name>Household_send_rule_performance</name>
           <description></description>
           <currentState>end_GA</currentState>
-          <nextState>02</nextState>
+          <nextState>03</nextState>
           <condition><time><period>monthly</period><phase>a.day_of_month_to_act</phase></time></condition>
           <inputs></inputs>
           <outputs>
@@ -376,21 +388,13 @@
         <function>
           <name>Household_read_all_performances</name>
           <description></description>
-          <currentState>02</currentState>
-          <nextState>03</nextState>
+          <currentState>03</currentState>
+          <nextState>04</nextState>
           <inputs>
           <input>
           	<messageName>new_performances</messageName>
           </input>
           </inputs>
-          <outputs></outputs>
-        </function>
-        <function>
-          <name>Household_print_private_classifiersystem</name>
-          <description></description>
-          <currentState>03</currentState>
-          <nextState>04</nextState>
-          <inputs></inputs>
           <outputs></outputs>
         </function>
         <function>
@@ -431,13 +435,14 @@
       <roles></roles>
       <functions>
 	      <!-- Idle bypassing the GA -->
- 	 	  <function>
+ 	 	<function>
 		  <name>idle</name>
 		  <description>Idle bypassing the GA</description>
 		  <currentState>start_FinancialAgent</currentState>
 		  <nextState>end_GA</nextState>
           <condition><not><time><period>yearly</period><phase>1</phase></time></not></condition>
-		  </function>
+	    </function>
+		  
         <function>
           <name>FinancialAgent_apply_GA</name>
           <description></description>
@@ -460,9 +465,18 @@
           </outputs>
         </function>
         <function>
+          <name>FinancialAgent_print_public_classifiersystem</name>
+          <description></description>
+          <currentState>02</currentState>
+          <nextState>03</nextState>
+          <inputs></inputs>
+          <outputs>
+          </outputs>
+        </function>
+        <function>
           <name>FinancialAgent_reset_public_classifiersystem</name>
           <description>Resetting user counter, performance sum, avg_performance</description>
-          <currentState>02</currentState>
+          <currentState>03</currentState>
           <nextState>end_GA</nextState>
           <inputs></inputs>
           <outputs></outputs>
@@ -471,7 +485,7 @@
           <name>FinancialAgent_read_rule_performance_and_update_classifiersystem</name>
           <description></description>
           <currentState>end_GA</currentState>
-          <nextState>03</nextState>
+          <nextState>04</nextState>
           <inputs>
           <input>
           	<messageName>rule_performance</messageName>
@@ -482,22 +496,13 @@
         <function>
           <name>FinancialAgent_send_all_performances</name>
           <description></description>
-          <currentState>03</currentState>
-          <nextState>04</nextState>
+          <currentState>04</currentState>
+          <nextState>end_FinancialAgent</nextState>
           <inputs></inputs>
           <outputs>
           <output>
           	<messageName>new_performances</messageName>
           </output>
-          </outputs>
-        </function>
-        <function>
-          <name>FinancialAgent_print_public_classifiersystem</name>
-          <description></description>
-          <currentState>04</currentState>
-          <nextState>end_FinancialAgent</nextState>
-          <inputs></inputs>
-          <outputs>
           </outputs>
         </function>
       </functions>

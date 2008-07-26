@@ -437,22 +437,26 @@ void unittest_GA_selection()
      PUBLIC_CLASSIFIERSYSTEM.ruletable[0].counter=0;
      PUBLIC_CLASSIFIERSYSTEM.ruletable[0].performance=0.0;
      PUBLIC_CLASSIFIERSYSTEM.ruletable[0].avg_performance=0.0;
-
+     PUBLIC_CLASSIFIERSYSTEM.ruletable[0].selection_prob =0.0;
+     
      PUBLIC_CLASSIFIERSYSTEM.ruletable[1].id=10;
      PUBLIC_CLASSIFIERSYSTEM.ruletable[1].counter=0;
      PUBLIC_CLASSIFIERSYSTEM.ruletable[1].performance=0.0;
      PUBLIC_CLASSIFIERSYSTEM.ruletable[1].avg_performance=0.0;
-
+     PUBLIC_CLASSIFIERSYSTEM.ruletable[1].selection_prob =0.0;
+     
      PUBLIC_CLASSIFIERSYSTEM.ruletable[2].id=20;
      PUBLIC_CLASSIFIERSYSTEM.ruletable[2].counter=0;
      PUBLIC_CLASSIFIERSYSTEM.ruletable[2].performance=0.0;
      PUBLIC_CLASSIFIERSYSTEM.ruletable[2].avg_performance=0.0;
-
+     PUBLIC_CLASSIFIERSYSTEM.ruletable[2].selection_prob =0.0;
+     
      PUBLIC_CLASSIFIERSYSTEM.ruletable[3].id=30;
      PUBLIC_CLASSIFIERSYSTEM.ruletable[3].counter=0;
      PUBLIC_CLASSIFIERSYSTEM.ruletable[3].performance=0.0;
      PUBLIC_CLASSIFIERSYSTEM.ruletable[3].avg_performance=709.0;
-
+     PUBLIC_CLASSIFIERSYSTEM.ruletable[3].selection_prob =0.0;
+     
      N_rep = (int) 2*floor((GA_PARAMETERS.reproduction_proportion * GA_PARAMETERS.pop_size)/2);
      if(PRINT_DEBUG) printf("\n In unittest_GA_selection: N_rep=%d\n", N_rep);
  	
