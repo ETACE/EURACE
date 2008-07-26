@@ -223,7 +223,9 @@ void GA_selection(int N_pairs, int * parent_index_1, int * parent_index_2, int *
     {
     	avg_performance  = PUBLIC_CLASSIFIERSYSTEM.ruletable[j].avg_performance;
         pdf[j] = exp(EWA_PARAMETERS.EWA_beta * avg_performance)/sum;
-        //if(PRINT_DEBUG) printf("\n In GA_selection: p[%d]=%f\n", j, p[j]);
+        PUBLIC_CLASSIFIERSYSTEM.ruletable[j].selection_prob = exp(EWA_PARAMETERS.EWA_beta * avg_performance)/sum; 
+        //if(PRINT_DEBUG) printf("\n In GA_selection: pdf[%d]=%f\n", j, pdf[j]);
+        //if(PRINT_DEBUG) printf("\n In GA_selection: selection_prob = %f\n", PUBLIC_CLASSIFIERSYSTEM.ruletable[j].selection_prob);
     }
      
     //print prob. vector:
@@ -475,7 +477,7 @@ int FinancialAgent_print_public_classifiersystem()
 	FILE * file;
 
 	int i, j, rule_id, counter;
-	double performance, avg_performance;
+	double performance, avg_performance, selection_prob;
 
  	//Set the output file:
  	i = sprintf(str, "%d", iteration_loop);
@@ -496,7 +498,7 @@ int FinancialAgent_print_public_classifiersystem()
     //Print FinancialAdvisor classifier system:
     fprintf(file,"=============================================================================================\n");
     fprintf(file,"FinancialAdvisor:\n");
-    fprintf(file,"rule\t performance\t counter\t avg_performance\t rule details\n");
+    fprintf(file,"rule\t performance\t counter\t avg_performance\t selection prob \t rule details\n");
     fprintf(file,"=============================================================================================\n"); 
 
     for (i=0;i<PUBLIC_CLASSIFIERSYSTEM.nr_rules;i++)
@@ -505,8 +507,9 @@ int FinancialAgent_print_public_classifiersystem()
          performance 	= PUBLIC_CLASSIFIERSYSTEM.ruletable[i].performance;
 		 counter 		= PUBLIC_CLASSIFIERSYSTEM.ruletable[i].counter;         
          avg_performance = PUBLIC_CLASSIFIERSYSTEM.ruletable[i].avg_performance;
-
-         fprintf(file,"%d\t|\t %f\t|\t %7d\t|\t %f\t | ", rule_id, performance, counter, avg_performance);
+         selection_prob  = PUBLIC_CLASSIFIERSYSTEM.ruletable[i].selection_prob;
+         
+         fprintf(file,"%d\t|\t %f\t|\t %4d\t|\t %f\t|\t %f\t| ", rule_id, performance, counter, avg_performance, selection_prob);
 
          fprintf(file,"[ ");
 	     for (j=0;j<GA_PARAMETERS.string_size;j++){fprintf(file,"%02.1f ", PUBLIC_CLASSIFIERSYSTEM.ruletable[i].parameters[j]);}

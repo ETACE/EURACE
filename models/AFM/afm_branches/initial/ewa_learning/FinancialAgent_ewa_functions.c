@@ -159,6 +159,7 @@ int FinancialAgent_reset_public_classifiersystem()
         PUBLIC_CLASSIFIERSYSTEM.ruletable[i].counter=0;
         PUBLIC_CLASSIFIERSYSTEM.ruletable[i].performance=log(pow(10,-5));
         PUBLIC_CLASSIFIERSYSTEM.ruletable[i].avg_performance=log(pow(10,-5));
+        PUBLIC_CLASSIFIERSYSTEM.ruletable[i].selection_prob=pow(10,-5);
     }
 
     return 0;

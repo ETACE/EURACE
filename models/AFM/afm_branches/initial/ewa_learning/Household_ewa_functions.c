@@ -129,6 +129,7 @@ int Household_select_rule()
     {
     	attraction  = PRIVATE_CLASSIFIERSYSTEM.ruletable[j].attraction;
         p[j] = exp(EWA_beta * attraction)/sum_attr;
+        PRIVATE_CLASSIFIERSYSTEM.ruletable[j].choiceprob = p[j];
     }
 
     //Construct cumulative probability density function: cpdf
@@ -283,7 +284,7 @@ int Household_print_private_classifiersystem()
 	strcat(filename, ".txt");
 
 	//Open a file pointer: FILE * file 
-	file = fopen(filename,"w");
+	file = fopen(filename,"a");
 
 	//Print per household classifier system:
 	 fprintf(file,"============================================================================================================\n");
