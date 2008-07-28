@@ -63,7 +63,7 @@ int Firm_receive_stock_info(void)
     //printf(" receive info message");
    while(current)
   {
-  printf(" receive info message");
+  //printf(" receive info message");
    if(ID==current->asset_id) 
        {  price=current->price;
           addPriceStock(stock,price);
