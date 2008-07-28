@@ -359,4 +359,16 @@ So the resets were done twice in a row.
             temp_interest=LOANS.array[i].interest_rate*LOANS.array[i].installment_amount;
             PAYMENT_ACCOUNT -= temp_interest;
 
-This means the interest is computed not on the total debt still outstanding, but only on the installment payment. Who coded this?
+This means the interest is computed not on the total debt still outstanding, but only on the installment payment.
+Who coded this?
+
+
+----------------------------------------------------------------------
+Sander, rev 1285
+
+Changed time condition on accounting functions to run on the last day of the firms production cycle:
+
+<condition><time><period>monthly</period><phase><value>a.day_of_month_to_act-1</value></phase></time></condition>
+
+But this produced a bug. Reported to Simon on 28/07/08.
+----------------------------------------------------------------------
