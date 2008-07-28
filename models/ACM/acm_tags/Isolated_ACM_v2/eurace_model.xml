@@ -79,7 +79,7 @@
 <variable><type>int</type><name>bank_id</name><description></description></variable>
 </memory>
 </xagent>
-
+<!-- 
 <xagent>
 <name>Household</name>
 <description></description>
@@ -93,8 +93,8 @@
 <variable><type>int</type><name>bank_id</name><description></description></variable>
 </memory>
 </xagent>
-
-
+ -->
+<!-- 
 <xagent>
 <name>Mall</name>
 <description></description>
@@ -116,8 +116,8 @@
 <variable><type>double</type><name>payment_account</name><description></description></variable>
 </memory>
 </xagent>
-
-
+-->
+<!-- 
 <xagent>
 <name>Eurostat</name>
 <description></description>
@@ -128,9 +128,9 @@
 <variable><type>int</type><name>day_of_month_to_act</name><description></description></variable>
 </memory>
 </xagent>
+-->
 
-
-
+<!-- 
 <xagent>
 <name>Clearinghouse</name>
 <description></description>
@@ -140,7 +140,7 @@
 </memory>
 </xagent>
 
-
+-->
 <xagent>
 <name>Bank</name>
 <description></description>
@@ -150,7 +150,7 @@
 <variable><type>int</type><name>gov_id</name><description></description></variable>
 </memory>
 </xagent>
-
+<!-- 
 <xagent>
 <name>Government</name>
 <description></description>
@@ -161,6 +161,9 @@
 </memory>
 </xagent>
 
+-->
+<!-- 
+
 
 <xagent>
 <name>Central_Bank</name>
@@ -169,7 +172,7 @@
 <variable><type>int</type><name>id</name><description></description></variable>
 </memory>
 </xagent>
-
+-->
 </agents>
 
 <messages>
