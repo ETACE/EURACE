@@ -293,21 +293,12 @@
 					
 				</outputs>
 			</function>
-			<function>
-				<name>Firm_receive_stock_info</name>
-				<description></description>
-				<currentState>UPDATE</currentState>
-				<nextState>end_Firm</nextState>
-				<inputs>
-					<input><messageName>infoAssetCH</messageName></input>
-				</inputs>
-			</function>
 			
 			<function>
 				<name>Firm_receive_stock_info</name>
 				<description></description>
-				<currentState>Update_01</currentState>
-				<nextState>Firm_Start_Labour_Role</nextState>
+				<currentState>15</currentState>
+				<nextState>Update_01</nextState>
 				<inputs>
 					<input><messageName>infoAssetCH</messageName></input>
 				</inputs>

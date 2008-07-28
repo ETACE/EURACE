@@ -195,7 +195,7 @@ including several micro data.</description>
 
 <function><name>Firm_send_payments_to_bank</name>
 <description></description>
-<currentState>15</currentState>
+<currentState>Update_01</currentState>
 <nextState>end_Firm</nextState>
 <outputs>
 <output><messageName>bank_account_update</messageName></output>
