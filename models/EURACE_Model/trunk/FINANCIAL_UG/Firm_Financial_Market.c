@@ -43,9 +43,10 @@ int Firm_send_info(void)
      stock=get_stock();
      double dividend;
      dividend=CURRENT_DIVIDEND_PER_SHARE;
-     EQUITY=50+next();
+     //EQUITY=50+next();
   // CGP_income_statement_computing(EARNINGS,EARNINGS_PAYOUT, &earnings_exp,&earnings_payout_exp);
      //("earnings_exp=%f   earnings_payout_exp=%f\n",earnings_exp,earnings_payout_exp);
+     //STOCK.nrOutStandingShares=current_shares_outstanding;
      add_info_firm_message(ID, earnings_exp,  dividend, earnings_payout_exp,  EQUITY, STOCK);
      return 0;
 }
@@ -62,7 +63,7 @@ int Firm_receive_stock_info(void)
    
    while(current)
   {
-   
+  // printf(" receive info message");
    if(ID==current->asset_id) 
        {  price=current->price;
           addPriceStock(stock,price);
