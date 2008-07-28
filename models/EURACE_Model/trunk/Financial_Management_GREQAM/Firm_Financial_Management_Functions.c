@@ -17,7 +17,6 @@
  */
 int Firm_compute_financial_payments()
 {
-    double sum;
     int imax;
     int i;
 
@@ -178,23 +177,6 @@ int Firm_compute_balance_sheet()
     //+ TOTAL_VALUE_CAPITAL_STOCK: estimated value of the capital stock (this is determined in the capital goods market role)
     //+ TOTAL_VALUE_LOCAL_INVENTORY: value of all the local inventory stocks held at the malls        
     
-    
-	/*reading current mall stocks   */
-	/*START_CURRENT_MALL_STOCK_INFO_MESSAGE_LOOP
-//		if(current_mall_stock_info_message->firm_id == ID)
-//		{
-			for(int j=0; j< CURRENT_MALL_STOCKS.size;j++)
-			{
-				if(current_mall_stock_info_message->mall_id==
-				CURRENT_MALL_STOCKS.array[j].mall_id)
-				{
-					/*Firms update the stock level in one mall
-					CURRENT_MALL_STOCKS.array[j].current_stock= current_mall_stock_info_message->stock;
-				}		
-			}
-//		}
-	FINISH_CURRENT_MALL_STOCK_INFO_MESSAGE_LOOP*/
-
     //TOTAL_VALUE_LOCAL_INVENTORY: estimated value of local inventory stocks at current mall prices
     //We loop over the malls and sum the value of all local inventory stocks
     imax = CURRENT_MALL_STOCKS.size;
@@ -227,9 +209,6 @@ int Firm_compute_balance_sheet()
  */
 int Firm_compute_total_liquidity_needs()
 {
-    int imax;
-    int i;
-
     //step 12B: set production and payout financial_needs
     PRODUCTION_LIQUIDITY_NEEDS = PLANNED_PRODUCTION_COSTS;
     FINANCIAL_LIQUIDITY_NEEDS = TOTAL_INTEREST_PAYMENT + TOTAL_DEBT_INSTALLMENT_PAYMENT + TAX_PAYMENT;
