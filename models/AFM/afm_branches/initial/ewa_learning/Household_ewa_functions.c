@@ -312,6 +312,7 @@ int Household_print_private_classifiersystem()
     return 0;
 }
 
+
 /* \fn: Household_initialize_ruledetails()
  * \brief Initialization of all rule details to zero: parameters[10]=0.
  * This is old code, to be used with heterogeneous rules, if there are multiple functions that need to be called.
