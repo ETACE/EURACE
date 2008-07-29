@@ -207,15 +207,15 @@
 <name>Firm_calc_production_quantity</name>
 <description>Firm calculate the intended production volume depending 
 on the current stocks in the malls</description>
-<currentState>Firm_Bankruptcy_check</currentState>
+<currentState>Firm_Start_Producer_Role</currentState>
 <nextState>01</nextState>
-<condition><lhs><value>a.equity</value></lhs><op>GT</op><rhs><value>0.0</value></rhs></condition>
+<condition><time><period>monthly</period><phase>a.day_of_month_to_act</phase></time></condition>
 </function>
 
 <function>
 <name>Firm_set_quantities_zero</name>
 <description>Dummy: no production on not_day_of_month_to_act</description>
-<currentState>Firm_Start_Financial_Management_Role</currentState>
+<currentState>Firm_Start_Producer_Role</currentState>
 <nextState>00b</nextState>
 <condition><not><time><period>monthly</period><phase>a.day_of_month_to_act</phase></time></not></condition>
 </function>
@@ -233,15 +233,15 @@ on the current stocks in the malls</description>
 <description>Firms iterate over the planned production quantity decreasing it incrementally,
  such that the corresponding labor demand and capital demand can be financed by 
  the actually obtained financial resources</description>
-<currentState>End_Firm_Financial_Management</currentState>
-<nextState>Firm_Start_Labour_Role</nextState>
+<currentState>Firm_resolved_financial_crisis_state</currentState>
+<nextState>Update_01</nextState>
 <!--<condition><not><lhs><value>a.payment_account</value></lhs><op>GEQ</op><rhs><value>a.planned_production_costs</value></rhs></not></condition>-->
 </function>
 <!--
 <function><name>Firm_idle</name>
 <description>Firm does nothing</description>
 <currentState>End_Firm_Financial_Management</currentState>
-<nextState>Firm_Start_Labour_Role</nextState>
+<nextState>Update_01</nextState>
 <condition><lhs><value>a.financial_resources_for_production</value></lhs><op>GEQ</op><rhs><value>a.planned_production_costs</value></rhs></condition>
 </function>
 -->
@@ -299,7 +299,7 @@ share of their plannded delivery volumes.</description>
 <description>Here the firms calc the revenues and profits and then 
 distribute the dividends to households.</description>
 <currentState>Start_Firm_Seller_Role</currentState>
-<nextState>13a</nextState>
+<nextState>13</nextState>
 <inputs>
 <input><messageName>sales</messageName>
 <filter><lhs><value>a.id</value></lhs><op>EQ</op><rhs><value>m.firm_id</value></rhs></filter>
@@ -310,9 +310,11 @@ distribute the dividends to households.</description>
 
 <function><name>Firm_compute_sales_statistics</name>
 <description></description>
-<currentState>13a</currentState>
-<nextState>13b</nextState>
+<currentState>13</currentState>
+<nextState>14</nextState>
 <condition><time><period>monthly</period><phase>a.day_of_month_to_act</phase></time></condition>
+<!--THIS SHOULD BE REPLACED WITH: -->
+<!--<condition><time><period>monthly</period><phase><value>a.day_of_month_to_act-1</value></phase></time></condition>-->
 </function>
 
 
@@ -320,8 +322,8 @@ distribute the dividends to households.</description>
 <function><name>Firm_update_specific_skills_of_workers</name>
 <description>Because the specific skills of workers have changed the 
 firms update the specific skill levels of the workers.</description>
-<currentState>13b</currentState>
-<nextState>14</nextState>
+<currentState>14</currentState>
+<nextState>Firm_Start_Financial_Management_Role</nextState>
 <!--<condition><time><period>monthly</period><phase>a.day_of_month_to_act</phase></time></condition>-->
 <inputs>
 <input><messageName>specific_skill_update</messageName>
@@ -330,11 +332,13 @@ firms update the specific skill levels of the workers.</description>
 </inputs>
 </function>
 
-<function><name>Firm_idle</name>
+<function><name>idle</name>
 <description>Firm does nothing</description>
-<currentState>13a</currentState>
-<nextState>14</nextState>
+<currentState>13</currentState>
+<nextState>Firm_End_Financial_Management_Role</nextState>
 <condition><not><time><period>monthly</period><phase>a.day_of_month_to_act</phase></time></not></condition>
+<!--THIS SHOULD BE REPLACED WITH: -->
+<!--<condition><not><time><period>monthly</period><phase><value>a.day_of_month_to_act-1</value></phase></time></not></condition>-->
 </function>
 
 </functions>

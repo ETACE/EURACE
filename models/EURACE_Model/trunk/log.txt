@@ -372,3 +372,8 @@ Changed time condition on accounting functions to run on the last day of the fir
 
 But this produced a bug. Reported to Simon on 28/07/08.
 ----------------------------------------------------------------------
+Sander, rev 1288
+
+Merged changes of model_s.xml files into model.xml in the trunk.
+Note: also changes by Mario rev 1286 should be merged in this.
+----------------------------------------------------------------------

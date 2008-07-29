@@ -3,7 +3,7 @@
 <xmodel version="2">
 
 <name>Statistical_Office</name>
-<version>pre-Sheffield, merged UNIBI model, 02/07/2008</version>
+<version>Sheffield, 29/07/2008</version>
 <description>Authors: Simon Gemkow, Philipp Harting, Sander van der Hoog</description>
 
 <environment>
@@ -140,7 +140,7 @@
 
 <functions>
 
-<function><name>Firm_idle</name>
+<function><name>idle</name>
 <description></description>
 <currentState>start_Firm</currentState>
 <nextState>Start_Firm_Macro_Data</nextState>
@@ -168,7 +168,7 @@ and stores the needed data.</description>
 </inputs>
 </function>
 
-<function><name>Firm_idle</name>
+<function><name>idle</name>
 <description>Firm does nothing</description>
 <currentState>Start_Firm_Macro_Data</currentState>
 <nextState>Firm_new01</nextState>
@@ -178,7 +178,7 @@ and stores the needed data.</description>
 <function><name>Firm_send_data_to_Eurostat</name>
 <description>Firm sends message to the eurostat agent 
 including several micro data.</description>
-<currentState>14</currentState>
+<currentState>Firm_End_Financial_Management_Role</currentState>
 <nextState>15</nextState>
 <condition><time><period>monthly</period><phase>0</phase></time></condition>
 <outputs>
@@ -186,16 +186,16 @@ including several micro data.</description>
 </outputs>
 </function>
 
-<function><name>Firm_idle</name>
+<function><name>idle</name>
 <description>Firm does nothing</description>
-<currentState>14</currentState>
+<currentState>Firm_End_Financial_Management_Role</currentState>
 <nextState>15</nextState>
 <condition><not><time><period>monthly</period><phase>0</phase></time></not></condition>
 </function>
 
 <function><name>Firm_send_payments_to_bank</name>
 <description></description>
-<currentState>Update_01</currentState>
+<currentState>Update_02</currentState>
 <nextState>end_Firm</nextState>
 <outputs>
 <output><messageName>bank_account_update</messageName></output>

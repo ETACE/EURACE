@@ -3,8 +3,8 @@
 <xmodel version="2">
 
 <name>Financial_Management</name>
-<version>Genoa</version>
-<description>Author: Sander van der Hoog, last modified: May, 2008</description>
+<version>Sheffield</version>
+<description>Author: Sander van der Hoog, last modified: July, 2008</description>
 
 <environment>
 
@@ -138,7 +138,6 @@
 <description>Function to compute the prior financial commitments of the firm: interests, installments, taxes.</description>
 <currentState>Firm_Start_Financial_Management_Role</currentState>
 <nextState>001</nextState>
-<condition><time><period>monthly</period><phase>a.day_of_month_to_act</phase></time></condition>
 </function>
 
 <function>
@@ -167,16 +166,6 @@
 <description>Function to compute the balance sheet of the firm.</description>
 <currentState>004</currentState>
 <nextState>Firm_Bankruptcy_check</nextState>
-<!--inputs>
-<input>
-<messageName>current_mall_stock_info</messageName>
-<filter>
-  <lhs><value>a.id</value></lhs>
-  <op>EQ</op>
-  <rhs><value>m.firm_id</value></rhs>
- </filter>
-</input>
-</inputs>-->
 </function>
 
 <!-- Bankruptcy going to end_Firm  -->
@@ -184,13 +173,23 @@
 <name>Firm_in_bankruptcy</name>
 <description>Function to process the bankruptcy condition.</description>
 <currentState>Firm_Bankruptcy_check</currentState>
-<nextState>end_Firm</nextState>
+<nextState>Firm_End_Financial_Management_Role</nextState>
 <condition><not><lhs><value>a.equity</value></lhs><op>GT</op><rhs><value>0.0</value></rhs></not></condition>
 <outputs>
 <output><messageName>bankruptcy</messageName></output>
 </outputs>
 </function>
 
+<!-- Idle going from Bankruptcy_check to Firm_End_Financial_Management_Role  -->
+<function>
+<name>idle</name>
+<description></description>
+<currentState>Firm_Bankruptcy_check</currentState>
+<nextState>Firm_End_Financial_Management_Role</nextState>
+<condition><lhs><value>a.equity</value></lhs><op>GT</op><rhs><value>0.0</value></rhs></condition>
+</function>
+
+<!-- New Section: Credit role  -->
 <function>
 <name>Firm_compute_total_liquidity_needs</name>
 <description>Function to compute the total liquidity needs for executing payments.</description>
@@ -198,6 +197,7 @@
 <nextState>Start_Firm_Credit_Role</nextState>  
 </function>
 
+<!-- New Section: Financial Market role  -->
 <function>
 <name>Firm_compute_and_send_stock_orders</name>
 <description>Function to send order_messages to the clearinghouse (share emission or repurchase).</description>
@@ -226,6 +226,7 @@
 </inputs>
 </function>
 
+<!-- New Section: Financial Management role  -->
 <function>
 <name>Firm_check_financial_and_bankruptcy_state</name>
 <description>Function that checks the balance sheet and sets flags for the bankruptcy- or financial crisis state.</description>
@@ -237,7 +238,7 @@
 <name>Firm_in_bankruptcy</name>
 <description>Function to process the bankruptcy condition.</description>
 <currentState>Firm_bankruptcy_checked</currentState>
-<nextState>end_Firm</nextState>
+<nextState>Firm_End_Financial_Management_Role</nextState>
 <condition><lhs><value>a.bankruptcy_state</value></lhs><op>EQ</op><rhs><value>1</value></rhs></condition>
 <outputs>
 <output><messageName>bankruptcy</messageName></output>
@@ -248,7 +249,7 @@
 <name>Firm_in_financial_crisis</name>
 <description>Function to resolve the financial crisis by lowering dividends.</description>
 <currentState>Firm_checks_financial_crisis</currentState>
-<nextState>Firm_financial_crisis_state</nextState>
+<nextState>Firm_resolved_financial_crisis_state</nextState>
 <condition>
 	<lhs><value>a.financial_crisis_state</value></lhs><op>EQ</op><rhs><value>1</value></rhs>
 
@@ -274,7 +275,7 @@
 <name>Firm_not_in_financial_crisis</name>
 <description>Function to resolve the financial crisis by lowering dividends.</description>
 <currentState>Firm_checks_financial_crisis</currentState>
-<nextState>Firm_Start_Labour_Role</nextState>
+<nextState>Update_01</nextState>
 <condition>
 	<lhs><value>a.financial_crisis_state</value></lhs><op>EQ</op><rhs><value>0</value></rhs>
 
@@ -283,43 +284,71 @@
 </outputs>
 </function>
 -->
-<function>
-<name>Firm_execute_financial_payments</name>
-<description>Function to execute financial payments.</description>
-<currentState>Firm_financial_crisis_state</currentState>
-<nextState>End_Firm_Financial_Management</nextState>
-<outputs>
-<output><messageName>tax_payment</messageName></output>
-<output><messageName>dividend_per_share</messageName></output>
-<output><messageName>installment</messageName></output>
-</outputs>
-</function>
 
+<!--<function>-->
+<!--<name>Firm_execute_financial_payments</name>-->
+<!--<description>Function to execute financial payments.</description>-->
+<!--<currentState>Firm_financial_crisis_state</currentState>-->
+<!--<nextState>End_Firm_Financial_Management</nextState>-->
+<!--<outputs>-->
+<!--<output><messageName>tax_payment</messageName></output>-->
+<!--<output><messageName>dividend_per_share</messageName></output>-->
+<!--<output><messageName>installment</messageName></output>-->
+<!--</outputs>-->
+<!--</function>-->
+
+<!--<function>-->
+<!--<name>Firm_execute_financial_payments</name>-->
+<!--<description>Function to execute financial payments.</description>-->
+<!--<currentState>Firm_checks_financial_crisis</currentState>-->
+<!--<nextState>Update_01</nextState>-->
+<!--<condition>-->
+<!--	<lhs><value>a.financial_crisis_state</value></lhs><op>EQ</op><rhs><value>0</value></rhs>-->
+<!--</condition>-->
+<!--<outputs>-->
+<!--<output><messageName>tax_payment</messageName></output>-->
+<!--<output><messageName>dividend_per_share</messageName></output>-->
+<!--<output><messageName>installment</messageName></output>-->
+<!--</outputs>-->
+<!--</function>-->
+
+<!-- Idle bypassing the financial crisis state  -->
 <function>
-<name>Firm_execute_financial_payments</name>
-<description>Function to execute financial payments.</description>
+<name>idle</name>
+<description></description>
 <currentState>Firm_checks_financial_crisis</currentState>
-<nextState>Firm_Start_Labour_Role</nextState>
+<nextState>Update_01</nextState>
 <condition>
-	<lhs><value>a.financial_crisis_state</value></lhs><op>EQ</op><rhs><value>0</value></rhs>
+ <lhs><value>a.financial_crisis_state</value></lhs><op>EQ</op><rhs><value>0</value></rhs>
 </condition>
-<outputs>
-<output><messageName>tax_payment</messageName></output>
-<output><messageName>dividend_per_share</messageName></output>
-<output><messageName>installment</messageName></output>
-</outputs>
 </function>
 
 
-
-
-<!-- Bypassing the credit and financial markets  -->
+<!-- Idle bypassing the credit and financial markets  -->
 <function>
-<name>Firm_execute_financial_payments</name>
+<name>idle</name>
 <description></description>
 <currentState>Start_Firm_Credit_Role</currentState>
-<nextState>Firm_Start_Labour_Role</nextState>
+<nextState>Update_01</nextState>
 <condition><not><lhs><value>a.external_financial_needs</value></lhs><op>GT</op><rhs><value>0.0</value></rhs></not></condition>
+</function>
+
+<!-- Idle bypassing the financial market  -->
+<function>
+<name>idle</name>
+<description></description>
+<currentState>Firm_End_Credit_Role</currentState>
+<nextState>Update_01</nextState>
+<condition><not><lhs><value>a.external_financial_needs</value></lhs><op>GT</op><rhs><value>0.0</value></rhs></not></condition>
+</function>
+
+
+<!-- Firm_execute_financial_payments for all branches -->
+<function>
+<name>Firm_execute_financial_payments</name>
+<description>Function to execute financial payments.</description>
+<currentState>Update_01</currentState>
+<nextState>Firm_End_Financial_Management</nextState>
 <outputs>
 <output><messageName>tax_payment</messageName></output>
 <output><messageName>dividend_per_share</messageName></output>
@@ -327,18 +356,12 @@
 </outputs>
 </function>
 
-<!-- Bypassing the financial market  -->
+<!-- Idle between two states  -->
 <function>
-<name>Firm_execute_financial_payments</name>
+<name>idle</name>
 <description></description>
-<currentState>Firm_End_Credit_Role</currentState>
+<currentState>Firm_End_Financial_Management</currentState>
 <nextState>Firm_Start_Labour_Role</nextState>
-<condition><not><lhs><value>a.external_financial_needs</value></lhs><op>GT</op><rhs><value>0.0</value></rhs></not></condition>
-<outputs>
-<output><messageName>tax_payment</messageName></output>
-<output><messageName>dividend_per_share</messageName></output>
-<output><messageName>installment</messageName></output>
-</outputs>
 </function>
 
 </functions>
