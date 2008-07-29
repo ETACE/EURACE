@@ -287,7 +287,7 @@
 				<name>Firm_send_info</name>
 				<description></description>
 				<currentState>Firm_new01</currentState>
-				<nextState>Firm_Start_Financial_Management_Role</nextState>
+				<nextState>Firm_Start_Producer_Role</nextState>
 				<outputs>
 					<output><messageName>info_firm</messageName></output>
 					
@@ -298,7 +298,7 @@
 				<name>Firm_receive_stock_info</name>
 				<description></description>
 				<currentState>15</currentState>
-				<nextState>Update_01</nextState>
+				<nextState>Update_02</nextState>
 				<inputs>
 					<input><messageName>infoAssetCH</messageName></input>
 				</inputs>
