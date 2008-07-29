@@ -119,7 +119,7 @@
 		<!--             Variables                -->
 		<!-- All variableiables used by Producer are declared here to allocate them in memory -->
 		<memory>
-			<variable><type>int</type><name>id</name>	<description></description></variable>
+<!--			<variable><type>int</type><name>id</name>	<description></description></variable>-->
 			<variable><type>double</type><name>wealth</name>	<description></description></variable>
 			<variable><type>Belief_array</type><name>beliefs</name>	<description></description></variable>
 			<variable>
@@ -160,15 +160,15 @@
 				<name>Household_receive_info_interest_from_bank</name>
 				<description></description>
 				<currentState>START_HOUSEHOLD</currentState>
-				<nextState>SELECTSTRATEGY</nextState>
+				<nextState>Start_Household_EWA_Learning</nextState>
 				<inputs>
 					<input><messageName>accountInterest</messageName></input>
 				</inputs>
 			</function>
 			<function>
-				<name>Household_select_strategy</name>
+				<name>Household_apply_strategy</name>
 				<description></description>
-				<currentState>SELECTSTRATEGY</currentState>
+				<currentState>End_Household_EWA_Learning</currentState>
 				<nextState>WAITORDERSTATUS</nextState>
 				<inputs>
 					<input><messageName>info_firm</messageName></input>

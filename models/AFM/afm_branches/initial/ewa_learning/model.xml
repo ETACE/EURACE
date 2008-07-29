@@ -308,8 +308,8 @@
       <name>Household</name>
       <description></description>
       <memory>
-      	<variable><type>int</type><name>id</name><description></description></variable>
-		<variable><type>int</type><name>day_of_month_to_act</name><description></description></variable>
+<!--      	<variable><type>int</type><name>id</name><description></description></variable>-->
+<!--		<variable><type>int</type><name>day_of_month_to_act</name><description></description></variable>-->
       
         <variable>
           <type>EWAParameterStruct</type>
@@ -328,15 +328,15 @@
  	 	<function>
 		  <name>idle</name>
 		  <description>Idle bypassing the GA</description>
-		  <currentState>start_Household_EWA_Learning</currentState>
-		  <nextState>end_GA</nextState>
+		  <currentState>Start_Household_EWA_Learning</currentState>
+		  <nextState>End_GA</nextState>
           <condition><not><time><period>yearly</period><phase>1</phase></time></not></condition>
 		</function>
       
         <function>
           <name>Household_print_private_classifiersystem</name>
           <description></description>
-          <currentState>start_Household_EWA_Learning</currentState>
+          <currentState>Start_Household_EWA_Learning</currentState>
           <nextState>01</nextState>
           <condition><time><period>yearly</period><phase>1</phase></time></condition>
           <inputs></inputs>
@@ -354,7 +354,7 @@
           <name>Household_read_and_update_rule_details</name>
           <description></description>
           <currentState>02</currentState>
-          <nextState>end_GA</nextState>
+          <nextState>End_GA</nextState>
           <inputs>
           <input>
           	<messageName>rule_details</messageName>
@@ -367,15 +367,15 @@
  	 	<function>
 		  <name>idle</name>
 		  <description>Idle bypassing the EWA</description>
-		  <currentState>end_GA</currentState>
-		  <nextState>end_Household_EWA_Learning</nextState>
+		  <currentState>End_GA</currentState>
+		  <nextState>End_Household_EWA_Learning</nextState>
           <condition><not><time><period>monthly</period><phase>a.day_of_month_to_act</phase></time></not></condition>
 		</function>
         
         <function>
           <name>Household_send_rule_performance</name>
           <description></description>
-          <currentState>end_GA</currentState>
+          <currentState>End_GA</currentState>
           <nextState>03</nextState>
           <condition><time><period>monthly</period><phase>a.day_of_month_to_act</phase></time></condition>
           <inputs></inputs>
@@ -401,7 +401,7 @@
           <name>Household_select_rule</name>
           <description></description>
           <currentState>04</currentState>
-          <nextState>end_Household_EWA_Learning</nextState>
+          <nextState>End_Household_EWA_Learning</nextState>
           <inputs></inputs>
           <outputs></outputs>
         </function>
@@ -414,7 +414,7 @@
       <name>FinancialAgent</name>
       <description></description>
       <memory>
-        <variable><type>int</type><name>id</name><description></description></variable>
+<!--        <variable><type>int</type><name>id</name><description></description></variable>-->
       
         <variable>
           <type>SimplePublicClassifierSystem</type>
@@ -439,7 +439,7 @@
 		  <name>idle</name>
 		  <description>Idle bypassing the GA</description>
 		  <currentState>start_FinancialAgent</currentState>
-		  <nextState>end_GA</nextState>
+		  <nextState>End_GA</nextState>
           <condition><not><time><period>yearly</period><phase>1</phase></time></not></condition>
 	    </function>
 		  
@@ -477,14 +477,14 @@
           <name>FinancialAgent_reset_public_classifiersystem</name>
           <description>Resetting user counter, performance sum, avg_performance</description>
           <currentState>03</currentState>
-          <nextState>end_GA</nextState>
+          <nextState>End_GA</nextState>
           <inputs></inputs>
           <outputs></outputs>
         </function>
         <function>
           <name>FinancialAgent_read_rule_performance_and_update_classifiersystem</name>
           <description></description>
-          <currentState>end_GA</currentState>
+          <currentState>End_GA</currentState>
           <nextState>04</nextState>
           <inputs>
           <input>
