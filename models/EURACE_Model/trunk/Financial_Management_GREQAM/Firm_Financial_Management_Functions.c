@@ -75,16 +75,17 @@ int Firm_compute_income_statement()
 
     //continue balance sheet (data pertaining to the period that just ended)
     PREVIOUS_EARNINGS_PER_SHARE = EARNINGS_PER_SHARE;
-    EARNINGS_PER_SHARE = NET_EARNINGS/CURRENT_SHARES_OUTSTANDING;
+    if (CURRENT_SHARES_OUTSTANDING>0) EARNINGS_PER_SHARE = NET_EARNINGS/CURRENT_SHARES_OUTSTANDING;
     
     PREVIOUS_DIVIDEND_PER_SHARE = CURRENT_DIVIDEND_PER_SHARE;
-    CURRENT_DIVIDEND_PER_SHARE = TOTAL_DIVIDEND_PAYMENT/CURRENT_SHARES_OUTSTANDING;
+    if (CURRENT_SHARES_OUTSTANDING>0) CURRENT_DIVIDEND_PER_SHARE = TOTAL_DIVIDEND_PAYMENT/CURRENT_SHARES_OUTSTANDING;
     PREVIOUS_DIVIDEND_PER_EARNINGS = CURRENT_DIVIDEND_PER_EARNINGS;
-    CURRENT_DIVIDEND_PER_EARNINGS = TOTAL_DIVIDEND_PAYMENT/EARNINGS;
-
-    //Reset the counters
-    CUM_TOTAL_SOLD_QUANTITY = 0.0;
-    CUM_REVENUE = 0.0;        
+    if (EARNINGS>0.0)
+    	{
+    		CURRENT_DIVIDEND_PER_EARNINGS = TOTAL_DIVIDEND_PAYMENT/EARNINGS;
+    	}
+    else
+    	CURRENT_DIVIDEND_PER_EARNINGS = 0.0;
     
     return 0;
 }
@@ -110,9 +111,10 @@ int Firm_compute_dividends()
 	//option 4: keep earnings per share constant
 	//total divided payment increases with same ratio as earnings per share
 	//if current_shares_outstanding remains constant, this keeps earnings per share constant
-	
-	TOTAL_DIVIDEND_PAYMENT = TOTAL_DIVIDEND_PAYMENT * (EARNINGS_PER_SHARE/PREVIOUS_EARNINGS_PER_SHARE);
-	
+	if (PREVIOUS_EARNINGS_PER_SHARE>0.0)
+	{
+		TOTAL_DIVIDEND_PAYMENT = TOTAL_DIVIDEND_PAYMENT * (EARNINGS_PER_SHARE/PREVIOUS_EARNINGS_PER_SHARE);
+	}
 	//option 5: keep dividend to earnings ratio constant (dont let it fall), but do not decrease the dividend per share ratio.
 	/*
 	    if (CURRENT_DIVIDEND_PER_EARNINGS < PREVIOUS_DIVIDEND_PER_EARNINGS)
@@ -194,7 +196,7 @@ int Firm_compute_balance_sheet()
     EQUITY = TOTAL_ASSETS - TOTAL_DEBT;
     
     DEBT_EQUITY_RATIO = TOTAL_DEBT/EQUITY;
-    DEBT_EARNINGS_RATIO = TOTAL_DEBT/NET_EARNINGS;
+    if (NET_EARNINGS>0.0)  DEBT_EARNINGS_RATIO = TOTAL_DEBT/NET_EARNINGS;
     
     return 0;
 }
@@ -362,7 +364,7 @@ int Firm_execute_financial_payments()
 	    for (i=0; i<imax;i++)
 	    {
 	        //decrease payment_account with the interest_payment
-	    	temp_interest=LOANS.array[i].interest_rate*LOANS.array[i].installment_amount;
+	    	temp_interest=LOANS.array[i].interest_rate*LOANS.array[i].loan_value;
 	        PAYMENT_ACCOUNT -= temp_interest;
 		    
 	        //decrease payment_account with the installment payment
@@ -411,8 +413,10 @@ int Firm_execute_financial_payments()
  * \fn Firm_compute_and_send_stock_orders()
  * \brief Function to send order_messages to the clearinghouse (share emission or repurchase).
  */
-int Firm_compute_and_send_stock_orders()  // NOTE: NEED TO CHECK EXTERNAL_FINANCIAL_NEEDS???
+int Firm_compute_and_send_stock_orders()
 {
+	//Note: This function only runs if EXTERNAL_FINANCIAL_NEEDS>0.0
+	
 	double limit_price=CURRENT_SHARE_PRICE*0.99;
     int quantity = -1*(1+EXTERNAL_FINANCIAL_NEEDS/limit_price);
     

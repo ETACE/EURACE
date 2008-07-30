@@ -1,7 +1,7 @@
 /***********************************
 Description: 
 This file contains details of various changes made to the different versions.
-15/05/2008: Start og logfile
+15/05/2008: Start of logfile
 *************************************/
 
 ------------------------------------------------------------------------------------------
@@ -377,3 +377,56 @@ Sander, rev 1288
 Merged changes of model_s.xml files into model.xml in the trunk.
 Note: also changes by Mario rev 1286 should be merged in this.
 ----------------------------------------------------------------------
+Sander, rev 1291
+
+eurace_model.xml:
+	Added Firm variable: last_day_of_month_to_act
+	The function Firm_compute_sales_statistics now is active on this day.
+
+./its/0-eurace.pop: 
+	includes all environment variables
+	Firm: day_of_month_to_act should still be manually set to 1
+	
+./its/0-alt.xml: 
+	manually replace: day=1 --> day=iteration_loop
+	manually replace: day_of_month_to_act = 0 --> day_of_month_to_act = 1
+
+./Cons_Goods_UNIBI/model.xml
+
+	line 315: on Firm_compute_sales_statistics
+	- commented out condition (a.day_of_month_to_act)
+	- added condition (a.last_day_of_month_to_act)
+	
+	line 339: on idle
+	- commented out condition (not a.day_of_month_to_act)
+	- added condition (not a.last_day_of_month_to_act)
+ 
+----------------------------------------------------------------------
+Sander, rev 1291
+
+File: Firm_Financial_Management.c
+
+Function: Firm_compute_income_statement()
+Removed lines:
+
+    //Reset the counters
+    CUM_TOTAL_SOLD_QUANTITY = 0.0;
+    CUM_REVENUE = 0.0;        
+
+
+Function: Firm_compute_dividends()
+line 109: Added condition
+	if (PREVIOUS_EARNINGS_PER_SHARE>0.0)
+
+Function: Firm_execute_financial_payments
+line 361:
+	temp_interest=LOANS.array[i].interest_rate*LOANS.array[i].installment_amount;
+	-->temp_interest=LOANS.array[i].interest_rate*LOANS.array[i].loan_value;
+	
+File: Cons_Goods_UNIBI/model.xml
+
+Removed two old variables:
+	direct_financial_needs_require_external_financing
+	delayed_financial_needs_require_external_financing
+----------------------------------------------------------------------
+	

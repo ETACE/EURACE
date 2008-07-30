@@ -447,11 +447,11 @@ digraph state_graph {
 	Firm_Firm_send_goods_to_mall_12_Start_Firm_Seller_Role -> Firm_Start_Firm_Seller_Role;
 	Firm_Start_Firm_Seller_Role -> Firm_Firm_calc_revenue_Start_Firm_Seller_Role_13;
 	Firm_Firm_calc_revenue_Start_Firm_Seller_Role_13 -> Firm_13;
-	Firm_13 -> Firm_Firm_compute_sales_statistics_13_14 [ label = "Periodicity: monthly\nPhase: a->day_of_month_to_act"];
+	Firm_13 -> Firm_Firm_compute_sales_statistics_13_14 [ label = "Periodicity: monthly\nPhase: a->last_day_of_month_to_act"];
 	Firm_Firm_compute_sales_statistics_13_14 -> Firm_14;
 	Firm_14 -> Firm_Firm_update_specific_skills_of_workers_14_Firm_Start_Financial_Management_Role;
 	Firm_Firm_update_specific_skills_of_workers_14_Firm_Start_Financial_Management_Role -> Firm_Firm_Start_Financial_Management_Role;
-	Firm_13 -> Firm_idle_13_Firm_End_Financial_Management_Role [ label = "not ( Periodicity: monthly\nPhase: a->day_of_month_to_act )"];
+	Firm_13 -> Firm_idle_13_Firm_End_Financial_Management_Role [ label = "not ( Periodicity: monthly\nPhase: a->last_day_of_month_to_act )"];
 	Firm_idle_13_Firm_End_Financial_Management_Role -> Firm_Firm_End_Financial_Management_Role;
 	Firm_Start_Firm_Credit_Role -> Firm_Firm_ask_loan_Start_Firm_Credit_Role_Firm_Credit_02 [ label = "a->external_financial_needs > 0.0"];
 	Firm_Firm_ask_loan_Start_Firm_Credit_Role_Firm_Credit_02 -> Firm_Firm_Credit_02;
@@ -467,9 +467,9 @@ digraph state_graph {
 	Firm_Firm_compute_total_financial_payments_003_004 -> Firm_004;
 	Firm_004 -> Firm_Firm_compute_balance_sheet_004_Firm_Bankruptcy_check;
 	Firm_Firm_compute_balance_sheet_004_Firm_Bankruptcy_check -> Firm_Firm_Bankruptcy_check;
-	Firm_Firm_Bankruptcy_check -> Firm_Firm_in_bankruptcy_Firm_Bankruptcy_check_Firm_End_Financial_Management_Role [ label = "not ( a->equity > 0.0 )"];
+	Firm_Firm_Bankruptcy_check -> Firm_Firm_in_bankruptcy_Firm_Bankruptcy_check_Firm_End_Financial_Management_Role [ label = "not ( a->equity >= 0.0 )"];
 	Firm_Firm_in_bankruptcy_Firm_Bankruptcy_check_Firm_End_Financial_Management_Role -> Firm_Firm_End_Financial_Management_Role;
-	Firm_Firm_Bankruptcy_check -> Firm_idle_Firm_Bankruptcy_check_Firm_End_Financial_Management_Role [ label = "a->equity > 0.0"];
+	Firm_Firm_Bankruptcy_check -> Firm_idle_Firm_Bankruptcy_check_Firm_End_Financial_Management_Role [ label = "a->equity >= 0.0"];
 	Firm_idle_Firm_Bankruptcy_check_Firm_End_Financial_Management_Role -> Firm_Firm_End_Financial_Management_Role;
 	Firm_02 -> Firm_Firm_compute_total_liquidity_needs_02_Start_Firm_Credit_Role;
 	Firm_Firm_compute_total_liquidity_needs_02_Start_Firm_Credit_Role -> Firm_Start_Firm_Credit_Role;
