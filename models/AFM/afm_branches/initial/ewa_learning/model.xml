@@ -324,21 +324,70 @@
       </memory>
       <roles></roles>
       <functions>
+
+        <!-- Idle bypassing the Initialization phase -->
+ 	 	<function>
+		  <name>idle</name>
+		  <description>Idle bypassing Initialization phase</description>
+		  <currentState>Start_Household_EWA_Learning</currentState>
+		  <nextState>Start_GA</nextState>
+          <condition>
+          	<not><time><period>iteration</period><phase>1</phase></time></not>
+          </condition>
+		</function>
+        		
+       	<!-- Initialization phase -->      
+         <function>
+          <name>Household_initialize_rule_details</name>
+          <description></description>
+          <currentState>Start_Household_EWA_Learning</currentState>
+          <nextState>001</nextState>
+          <condition><time><period>iteration</period><phase>1</phase></time></condition>
+          <inputs>
+          <input>
+          	<messageName>initial_rule_details</messageName>
+          </input>
+          </inputs>
+          <outputs></outputs>
+        </function>
+         <function>
+          <name>Household_portfolio_strategy_interface</name>
+          <description></description>
+          <currentState>001</currentState>
+          <nextState>Start_GA</nextState>
+        </function>
+              
       	<!-- Idle bypassing the GA -->
  	 	<function>
 		  <name>idle</name>
 		  <description>Idle bypassing the GA</description>
-		  <currentState>Start_Household_EWA_Learning</currentState>
+		  <currentState>Start_GA</currentState>
 		  <nextState>End_GA</nextState>
-          <condition><not><time><period>yearly</period><phase>1</phase></time></not></condition>
+          <condition>
+          		<lhs>
+          			<not><time><period>yearly</period><phase>1</phase></time></not>
+          	  	</lhs>
+	          		<op>OR</op>
+	          	<rhs>
+		          	<time><period>iteration</period><phase>1</phase></time>
+	          	</rhs>
+          </condition>
 		</function>
       
         <function>
           <name>Household_print_private_classifiersystem</name>
           <description></description>
-          <currentState>Start_Household_EWA_Learning</currentState>
+          <currentState>Start_GA</currentState>
           <nextState>01</nextState>
-          <condition><time><period>yearly</period><phase>1</phase></time></condition>
+          <condition>
+	          <lhs>
+		          <time><period>yearly</period><phase>1</phase></time>
+	          </lhs>
+	          	 <op>AND</op>
+	          <rhs>
+		          <not><time><period>iteration</period><phase>1</phase></time></not>
+	          </rhs>
+          </condition>
           <inputs></inputs>
           <outputs></outputs>
         </function>
@@ -369,15 +418,30 @@
 		  <description>Idle bypassing the EWA</description>
 		  <currentState>End_GA</currentState>
 		  <nextState>End_Household_EWA_Learning</nextState>
-          <condition><not><time><period>monthly</period><phase>a.day_of_month_to_act</phase></time></not></condition>
+          <condition>
+              	<lhs>
+          			<not><time><period>monthly</period><phase>a.day_of_month_to_act</phase></time></not>
+    			</lhs>
+              		<op>OR</op>
+	          	<rhs>
+		          	<time><period>iteration</period><phase>1</phase></time>
+	          	</rhs>
+          </condition>
 		</function>
-        
         <function>
           <name>Household_send_rule_performance</name>
           <description></description>
           <currentState>End_GA</currentState>
           <nextState>03</nextState>
-          <condition><time><period>monthly</period><phase>a.day_of_month_to_act</phase></time></condition>
+          <condition>
+	          <lhs>
+		          <time><period>monthly</period><phase>a.day_of_month_to_act</phase></time>
+	          </lhs>
+	          	<op>AND</op>
+	          <rhs>
+		          <not><time><period>iteration</period><phase>1</phase></time></not>
+	          </rhs>
+          </condition>
           <inputs></inputs>
           <outputs>
           <output>
@@ -401,10 +465,20 @@
           <name>Household_select_rule</name>
           <description></description>
           <currentState>04</currentState>
+          <nextState>05</nextState>
+          <inputs></inputs>
+          <outputs></outputs>
+        </function>
+        
+        <function>
+          <name>Household_portfolio_strategy_interface</name>
+          <description></description>
+          <currentState>05</currentState>
           <nextState>End_Household_EWA_Learning</nextState>
           <inputs></inputs>
           <outputs></outputs>
         </function>
+        
       </functions>
     </xagent>
     <!--*********************** End of Agent - Household *****************************-->
@@ -434,21 +508,61 @@
       </memory>
       <roles></roles>
       <functions>
-	      <!-- Idle bypassing the GA -->
+
+        <!-- Idle bypassing the Initialization phase -->
+ 	 	<function>
+		  <name>idle</name>
+		  <description>Idle bypassing Initialization phase</description>
+		  <currentState>Start_FinancialAgent</currentState>
+		  <nextState>Start_GA</nextState>
+          <condition>
+          	<not><time><period>iteration</period><phase>1</phase></time></not>
+          </condition>
+		</function>
+      
+	    <!-- Initialisation phase of FA -->
+ 	 	<function>
+		  <name>FinancialAgent_initialize_rule_details</name>
+		  <description></description>
+		  <currentState>Start_FinancialAgent</currentState>
+		  <nextState>Start_GA</nextState>
+          <condition><time><period>iteration</period><phase>1</phase></time></condition>
+          <output>
+          	<messageName>initial_rule_details</messageName>
+          </output>
+	    </function>
+      
+	    <!-- Idle bypassing the GA -->
  	 	<function>
 		  <name>idle</name>
 		  <description>Idle bypassing the GA</description>
-		  <currentState>start_FinancialAgent</currentState>
+		  <currentState>Start_GA</currentState>
 		  <nextState>End_GA</nextState>
-          <condition><not><time><period>yearly</period><phase>1</phase></time></not></condition>
+          <condition>
+          	  <lhs>
+		          <not><time><period>yearly</period><phase>1</phase></time></not>
+	          </lhs>
+	          		<op>OR</op>
+	          <rhs>
+		          <time><period>iteration</period><phase>1</phase></time>
+	          </rhs>          
+          </condition>
 	    </function>
 		  
         <function>
           <name>FinancialAgent_apply_GA</name>
           <description></description>
-          <currentState>start_FinancialAgent</currentState>
+          <currentState>Start_GA</currentState>
           <nextState>01</nextState>
-          <condition><time><period>yearly</period><phase>1</phase></time></condition>
+          <condition>
+	          <lhs>
+		          <time><period>yearly</period><phase>1</phase></time>
+	          </lhs>
+	          		<op>AND</op>
+	          <rhs>
+		          <not><time><period>iteration</period><phase>1</phase></time></not>
+	          </rhs>
+          </condition>
           <inputs></inputs>
           <outputs></outputs>
         </function>
@@ -539,6 +653,22 @@
         <variable>
           <type>double</type>
           <name>avg_performance</name>
+          <description></description>
+        </variable>
+      </variables>
+    </message>
+    <message>
+      <name>initial_rule_details</name>
+      <description></description>
+      <variables>
+        <variable>
+          <type>int</type>
+          <name>rule_id</name>
+          <description></description>
+        </variable>
+        <variable>
+          <type>double</type>
+          <name>parameters[10]</name>
           <description></description>
         </variable>
       </variables>

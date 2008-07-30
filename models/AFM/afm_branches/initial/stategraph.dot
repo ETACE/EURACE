@@ -28,6 +28,12 @@ digraph state_graph {
 	layer_11 -> layer_12 [style=invis];
 	layer_13 [shape=plaintext, label="layer 13"];
 	layer_12 -> layer_13 [style=invis];
+	layer_14 [shape=plaintext, label="layer 14"];
+	layer_13 -> layer_14 [style=invis];
+	layer_15 [shape=plaintext, label="layer 15"];
+	layer_14 -> layer_15 [style=invis];
+	layer_16 [shape=plaintext, label="layer 16"];
+	layer_15 -> layer_16 [style=invis];
 	
 	/* States */
 	FinancialAgent_end_FinancialAgent [label = "end_FinancialAgent"]
@@ -36,16 +42,20 @@ digraph state_graph {
 	FinancialAgent_02 [label = "02"]
 	FinancialAgent_01 [label = "01"]
 	FinancialAgent_End_GA [label = "End_GA"]
-	FinancialAgent_start_FinancialAgent [label = "start_FinancialAgent"]
+	FinancialAgent_Start_GA [label = "Start_GA"]
+	FinancialAgent_Start_FinancialAgent [label = "Start_FinancialAgent"]
 	Household_EXIT_FINANCIAL_MARKET [label = "EXIT_FINANCIAL_MARKET"]
 	Household_WAITORDERSTATUS [label = "WAITORDERSTATUS"]
 	Household_START_HOUSEHOLD [label = "START_HOUSEHOLD"]
+	Household_05 [label = "05"]
 	Household_04 [label = "04"]
 	Household_03 [label = "03"]
 	Household_End_Household_EWA_Learning [label = "End_Household_EWA_Learning"]
 	Household_02 [label = "02"]
 	Household_01 [label = "01"]
 	Household_End_GA [label = "End_GA"]
+	Household_001 [label = "001"]
+	Household_Start_GA [label = "Start_GA"]
 	Household_Start_Household_EWA_Learning [label = "Start_Household_EWA_Learning"]
 	Clearinghouse_end_Clearinghouse [label = "end_Clearinghouse"]
 	Clearinghouse_COMPUTEDPRICES [label = "COMPUTEDPRICES"]
@@ -57,21 +67,27 @@ digraph state_graph {
 	Firm_XXX2 [label = "XXX2"]
 	Firm_UPDATE [label = "UPDATE"]
 	Firm_XXX [label = "XXX"]
-	FinancialAgent_idle_start_FinancialAgent_End_GA [label = "idle", shape = rect]
-	FinancialAgent_FinancialAgent_apply_GA_start_FinancialAgent_01 [label = "FinancialAgent_apply_GA", shape = rect]
+	FinancialAgent_idle_Start_FinancialAgent_Start_GA [label = "idle", shape = rect]
+	FinancialAgent_FinancialAgent_initialize_rule_details_Start_FinancialAgent_Start_GA [label = "FinancialAgent_initialize_rule_details", shape = rect]
+	FinancialAgent_idle_Start_GA_End_GA [label = "idle", shape = rect]
+	FinancialAgent_FinancialAgent_apply_GA_Start_GA_01 [label = "FinancialAgent_apply_GA", shape = rect]
 	FinancialAgent_FinancialAgent_send_rule_details_01_02 [label = "FinancialAgent_send_rule_details", shape = rect]
 	FinancialAgent_FinancialAgent_print_public_classifiersystem_02_03 [label = "FinancialAgent_print_public_classifiersystem", shape = rect]
 	FinancialAgent_FinancialAgent_reset_public_classifiersystem_03_End_GA [label = "FinancialAgent_reset_public_classifiersystem", shape = rect]
 	FinancialAgent_FinancialAgent_read_rule_performance_and_update_classifiersystem_End_GA_04 [label = "FinancialAgent_read_rule_performance_and_update_classifiersystem", shape = rect]
 	FinancialAgent_FinancialAgent_send_all_performances_04_end_FinancialAgent [label = "FinancialAgent_send_all_performances", shape = rect]
-	Household_idle_Start_Household_EWA_Learning_End_GA [label = "idle", shape = rect]
-	Household_Household_print_private_classifiersystem_Start_Household_EWA_Learning_01 [label = "Household_print_private_classifiersystem", shape = rect]
+	Household_idle_Start_Household_EWA_Learning_Start_GA [label = "idle", shape = rect]
+	Household_Household_initialize_rule_details_Start_Household_EWA_Learning_001 [label = "Household_initialize_rule_details", shape = rect]
+	Household_Household_portfolio_strategy_interface_001_Start_GA [label = "Household_portfolio_strategy_interface", shape = rect]
+	Household_idle_Start_GA_End_GA [label = "idle", shape = rect]
+	Household_Household_print_private_classifiersystem_Start_GA_01 [label = "Household_print_private_classifiersystem", shape = rect]
 	Household_Household_reset_private_classifiersystem_01_02 [label = "Household_reset_private_classifiersystem", shape = rect]
 	Household_Household_read_and_update_rule_details_02_End_GA [label = "Household_read_and_update_rule_details", shape = rect]
 	Household_idle_End_GA_End_Household_EWA_Learning [label = "idle", shape = rect]
 	Household_Household_send_rule_performance_End_GA_03 [label = "Household_send_rule_performance", shape = rect]
 	Household_Household_read_all_performances_03_04 [label = "Household_read_all_performances", shape = rect]
-	Household_Household_select_rule_04_End_Household_EWA_Learning [label = "Household_select_rule", shape = rect]
+	Household_Household_select_rule_04_05 [label = "Household_select_rule", shape = rect]
+	Household_Household_portfolio_strategy_interface_05_End_Household_EWA_Learning [label = "Household_portfolio_strategy_interface", shape = rect]
 	Household_Household_receive_info_interest_from_bank_START_HOUSEHOLD_Start_Household_EWA_Learning [label = "Household_receive_info_interest_from_bank", shape = rect]
 	Household_Household_apply_strategy_End_Household_EWA_Learning_WAITORDERSTATUS [label = "Household_apply_strategy", shape = rect]
 	Household_Household_update_its_portfolio_WAITORDERSTATUS_EXIT_FINANCIAL_MARKET [label = "Household_update_its_portfolio", shape = rect]
@@ -84,10 +100,14 @@ digraph state_graph {
 	Firm_Firm_receive_stock_info_UPDATE_XXX2 [label = "Firm_receive_stock_info", shape = rect]
 	
 	/* Transitions */
-	FinancialAgent_start_FinancialAgent -> FinancialAgent_idle_start_FinancialAgent_End_GA [ label = "not ( Periodicity: yearly\nPhase: 1 )"];
-	FinancialAgent_idle_start_FinancialAgent_End_GA -> FinancialAgent_End_GA;
-	FinancialAgent_start_FinancialAgent -> FinancialAgent_FinancialAgent_apply_GA_start_FinancialAgent_01 [ label = "Periodicity: yearly\nPhase: 1"];
-	FinancialAgent_FinancialAgent_apply_GA_start_FinancialAgent_01 -> FinancialAgent_01;
+	FinancialAgent_Start_FinancialAgent -> FinancialAgent_idle_Start_FinancialAgent_Start_GA [ label = "not ( Periodicity: iteration\nPhase: 1 )"];
+	FinancialAgent_idle_Start_FinancialAgent_Start_GA -> FinancialAgent_Start_GA;
+	FinancialAgent_Start_FinancialAgent -> FinancialAgent_FinancialAgent_initialize_rule_details_Start_FinancialAgent_Start_GA [ label = "Periodicity: iteration\nPhase: 1"];
+	FinancialAgent_FinancialAgent_initialize_rule_details_Start_FinancialAgent_Start_GA -> FinancialAgent_Start_GA;
+	FinancialAgent_Start_GA -> FinancialAgent_idle_Start_GA_End_GA [ label = "not ( Periodicity: yearly\nPhase: 1 ) ||\nPeriodicity: iteration\nPhase: 1"];
+	FinancialAgent_idle_Start_GA_End_GA -> FinancialAgent_End_GA;
+	FinancialAgent_Start_GA -> FinancialAgent_FinancialAgent_apply_GA_Start_GA_01 [ label = "Periodicity: yearly\nPhase: 1 &&\nnot ( Periodicity: iteration\nPhase: 1 )"];
+	FinancialAgent_FinancialAgent_apply_GA_Start_GA_01 -> FinancialAgent_01;
 	FinancialAgent_01 -> FinancialAgent_FinancialAgent_send_rule_details_01_02;
 	FinancialAgent_FinancialAgent_send_rule_details_01_02 -> FinancialAgent_02;
 	FinancialAgent_02 -> FinancialAgent_FinancialAgent_print_public_classifiersystem_02_03;
@@ -98,22 +118,30 @@ digraph state_graph {
 	FinancialAgent_FinancialAgent_read_rule_performance_and_update_classifiersystem_End_GA_04 -> FinancialAgent_04;
 	FinancialAgent_04 -> FinancialAgent_FinancialAgent_send_all_performances_04_end_FinancialAgent;
 	FinancialAgent_FinancialAgent_send_all_performances_04_end_FinancialAgent -> FinancialAgent_end_FinancialAgent;
-	Household_Start_Household_EWA_Learning -> Household_idle_Start_Household_EWA_Learning_End_GA [ label = "not ( Periodicity: yearly\nPhase: 1 )"];
-	Household_idle_Start_Household_EWA_Learning_End_GA -> Household_End_GA;
-	Household_Start_Household_EWA_Learning -> Household_Household_print_private_classifiersystem_Start_Household_EWA_Learning_01 [ label = "Periodicity: yearly\nPhase: 1"];
-	Household_Household_print_private_classifiersystem_Start_Household_EWA_Learning_01 -> Household_01;
+	Household_Start_Household_EWA_Learning -> Household_idle_Start_Household_EWA_Learning_Start_GA [ label = "not ( Periodicity: iteration\nPhase: 1 )"];
+	Household_idle_Start_Household_EWA_Learning_Start_GA -> Household_Start_GA;
+	Household_Start_Household_EWA_Learning -> Household_Household_initialize_rule_details_Start_Household_EWA_Learning_001 [ label = "Periodicity: iteration\nPhase: 1"];
+	Household_Household_initialize_rule_details_Start_Household_EWA_Learning_001 -> Household_001;
+	Household_001 -> Household_Household_portfolio_strategy_interface_001_Start_GA;
+	Household_Household_portfolio_strategy_interface_001_Start_GA -> Household_Start_GA;
+	Household_Start_GA -> Household_idle_Start_GA_End_GA [ label = "not ( Periodicity: yearly\nPhase: 1 ) ||\nPeriodicity: iteration\nPhase: 1"];
+	Household_idle_Start_GA_End_GA -> Household_End_GA;
+	Household_Start_GA -> Household_Household_print_private_classifiersystem_Start_GA_01 [ label = "Periodicity: yearly\nPhase: 1 &&\nnot ( Periodicity: iteration\nPhase: 1 )"];
+	Household_Household_print_private_classifiersystem_Start_GA_01 -> Household_01;
 	Household_01 -> Household_Household_reset_private_classifiersystem_01_02;
 	Household_Household_reset_private_classifiersystem_01_02 -> Household_02;
 	Household_02 -> Household_Household_read_and_update_rule_details_02_End_GA;
 	Household_Household_read_and_update_rule_details_02_End_GA -> Household_End_GA;
-	Household_End_GA -> Household_idle_End_GA_End_Household_EWA_Learning [ label = "not ( Periodicity: monthly\nPhase: a->day_of_month_to_act )"];
+	Household_End_GA -> Household_idle_End_GA_End_Household_EWA_Learning [ label = "not ( Periodicity: monthly\nPhase: a->day_of_month_to_act ) ||\nPeriodicity: iteration\nPhase: 1"];
 	Household_idle_End_GA_End_Household_EWA_Learning -> Household_End_Household_EWA_Learning;
-	Household_End_GA -> Household_Household_send_rule_performance_End_GA_03 [ label = "Periodicity: monthly\nPhase: a->day_of_month_to_act"];
+	Household_End_GA -> Household_Household_send_rule_performance_End_GA_03 [ label = "Periodicity: monthly\nPhase: a->day_of_month_to_act &&\nnot ( Periodicity: iteration\nPhase: 1 )"];
 	Household_Household_send_rule_performance_End_GA_03 -> Household_03;
 	Household_03 -> Household_Household_read_all_performances_03_04;
 	Household_Household_read_all_performances_03_04 -> Household_04;
-	Household_04 -> Household_Household_select_rule_04_End_Household_EWA_Learning;
-	Household_Household_select_rule_04_End_Household_EWA_Learning -> Household_End_Household_EWA_Learning;
+	Household_04 -> Household_Household_select_rule_04_05;
+	Household_Household_select_rule_04_05 -> Household_05;
+	Household_05 -> Household_Household_portfolio_strategy_interface_05_End_Household_EWA_Learning;
+	Household_Household_portfolio_strategy_interface_05_End_Household_EWA_Learning -> Household_End_Household_EWA_Learning;
 	Household_START_HOUSEHOLD -> Household_Household_receive_info_interest_from_bank_START_HOUSEHOLD_Start_Household_EWA_Learning;
 	Household_Household_receive_info_interest_from_bank_START_HOUSEHOLD_Start_Household_EWA_Learning -> Household_Start_Household_EWA_Learning;
 	Household_End_Household_EWA_Learning -> Household_Household_apply_strategy_End_Household_EWA_Learning_WAITORDERSTATUS;
@@ -145,19 +173,23 @@ digraph state_graph {
 	Bank_Bank_send_accountInterest_START_BANK_FINANCIAL_BB -> Household_Household_receive_info_interest_from_bank_START_HOUSEHOLD_Start_Household_EWA_Learning [ label = "accountInterest" color="#00ff00" constraint=false];
 	FinancialAgent_FinancialAgent_send_all_performances_04_end_FinancialAgent -> Household_Household_read_all_performances_03_04 [ label = "new_performances" color="#00ff00" constraint=false];
 	FinancialAgent_FinancialAgent_send_rule_details_01_02 -> Household_Household_read_and_update_rule_details_02_End_GA [ label = "rule_details" color="#00ff00" constraint=false];
+	FinancialAgent_FinancialAgent_initialize_rule_details_Start_FinancialAgent_Start_GA -> Household_Household_initialize_rule_details_Start_Household_EWA_Learning_001 [ label = "initial_rule_details" color="#00ff00" constraint=false];
 	Household_Household_send_rule_performance_End_GA_03 -> FinancialAgent_FinancialAgent_read_rule_performance_and_update_classifiersystem_End_GA_04 [ label = "rule_performance" color="#00ff00" constraint=false];
-	{ rank=same; layer_0;  FinancialAgent_idle_start_FinancialAgent_End_GA;  FinancialAgent_FinancialAgent_apply_GA_start_FinancialAgent_01;  Bank_Bank_send_accountInterest_START_BANK_FINANCIAL_BB;  Firm_Firm_send_info_XXX_UPDATE; }
-	{ rank=same; layer_1;  FinancialAgent_FinancialAgent_send_rule_details_01_02;  Household_Household_receive_info_interest_from_bank_START_HOUSEHOLD_Start_Household_EWA_Learning;  Clearinghouse_ClearingHouse_receive_info_stock_start_Clearinghouse_RECEIVEDINFOSTOCK; }
-	{ rank=same; layer_2;  FinancialAgent_FinancialAgent_print_public_classifiersystem_02_03;  Household_idle_Start_Household_EWA_Learning_End_GA;  Household_Household_print_private_classifiersystem_Start_Household_EWA_Learning_01; }
-	{ rank=same; layer_3;  FinancialAgent_FinancialAgent_reset_public_classifiersystem_03_End_GA;  Household_Household_reset_private_classifiersystem_01_02; }
-	{ rank=same; layer_4;  Household_Household_read_and_update_rule_details_02_End_GA; }
-	{ rank=same; layer_5;  Household_idle_End_GA_End_Household_EWA_Learning;  Household_Household_send_rule_performance_End_GA_03; }
-	{ rank=same; layer_6;  FinancialAgent_FinancialAgent_read_rule_performance_and_update_classifiersystem_End_GA_04; }
-	{ rank=same; layer_7;  FinancialAgent_FinancialAgent_send_all_performances_04_end_FinancialAgent; }
-	{ rank=same; layer_8;  Household_Household_read_all_performances_03_04; }
-	{ rank=same; layer_9;  Household_Household_select_rule_04_End_Household_EWA_Learning; }
-	{ rank=same; layer_10;  Household_Household_apply_strategy_End_Household_EWA_Learning_WAITORDERSTATUS; }
-	{ rank=same; layer_11;  Clearinghouse_ClearingHouse_receive_orders_and_run_RECEIVEDINFOSTOCK_COMPUTEDPRICES; }
-	{ rank=same; layer_12;  Household_Household_update_its_portfolio_WAITORDERSTATUS_EXIT_FINANCIAL_MARKET;  Clearinghouse_ClearingHouse_send_asset_information_COMPUTEDPRICES_end_Clearinghouse; }
-	{ rank=same; layer_13;  Bank_Bank_receive_account_update_BB_BB1;  Firm_Firm_receive_stock_info_UPDATE_XXX2; }
+	{ rank=same; layer_0;  FinancialAgent_idle_Start_FinancialAgent_Start_GA;  FinancialAgent_FinancialAgent_initialize_rule_details_Start_FinancialAgent_Start_GA;  Bank_Bank_send_accountInterest_START_BANK_FINANCIAL_BB;  Firm_Firm_send_info_XXX_UPDATE; }
+	{ rank=same; layer_1;  FinancialAgent_idle_Start_GA_End_GA;  FinancialAgent_FinancialAgent_apply_GA_Start_GA_01;  Household_Household_receive_info_interest_from_bank_START_HOUSEHOLD_Start_Household_EWA_Learning;  Clearinghouse_ClearingHouse_receive_info_stock_start_Clearinghouse_RECEIVEDINFOSTOCK; }
+	{ rank=same; layer_2;  FinancialAgent_FinancialAgent_send_rule_details_01_02;  Household_idle_Start_Household_EWA_Learning_Start_GA;  Household_Household_initialize_rule_details_Start_Household_EWA_Learning_001; }
+	{ rank=same; layer_3;  FinancialAgent_FinancialAgent_print_public_classifiersystem_02_03;  Household_Household_portfolio_strategy_interface_001_Start_GA; }
+	{ rank=same; layer_4;  FinancialAgent_FinancialAgent_reset_public_classifiersystem_03_End_GA;  Household_idle_Start_GA_End_GA;  Household_Household_print_private_classifiersystem_Start_GA_01; }
+	{ rank=same; layer_5;  Household_Household_reset_private_classifiersystem_01_02; }
+	{ rank=same; layer_6;  Household_Household_read_and_update_rule_details_02_End_GA; }
+	{ rank=same; layer_7;  Household_idle_End_GA_End_Household_EWA_Learning;  Household_Household_send_rule_performance_End_GA_03; }
+	{ rank=same; layer_8;  FinancialAgent_FinancialAgent_read_rule_performance_and_update_classifiersystem_End_GA_04; }
+	{ rank=same; layer_9;  FinancialAgent_FinancialAgent_send_all_performances_04_end_FinancialAgent; }
+	{ rank=same; layer_10;  Household_Household_read_all_performances_03_04; }
+	{ rank=same; layer_11;  Household_Household_select_rule_04_05; }
+	{ rank=same; layer_12;  Household_Household_portfolio_strategy_interface_05_End_Household_EWA_Learning; }
+	{ rank=same; layer_13;  Household_Household_apply_strategy_End_Household_EWA_Learning_WAITORDERSTATUS; }
+	{ rank=same; layer_14;  Clearinghouse_ClearingHouse_receive_orders_and_run_RECEIVEDINFOSTOCK_COMPUTEDPRICES; }
+	{ rank=same; layer_15;  Household_Household_update_its_portfolio_WAITORDERSTATUS_EXIT_FINANCIAL_MARKET;  Clearinghouse_ClearingHouse_send_asset_information_COMPUTEDPRICES_end_Clearinghouse; }
+	{ rank=same; layer_16;  Bank_Bank_receive_account_update_BB_BB1;  Firm_Firm_receive_stock_info_UPDATE_XXX2; }
 }
