@@ -164,7 +164,7 @@ double lessthan(double_array *coll)
        }
       return min;
      }
-double sum(double_array *coll)
+double sumdarray(double_array *coll)
     {
      int i;
      int size;

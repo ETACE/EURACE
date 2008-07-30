@@ -159,7 +159,7 @@
 			<function>
 				<name>Household_receive_info_interest_from_bank</name>
 				<description></description>
-				<currentState>START_HOUSEHOLD</currentState>
+				<currentState>End_Household_EWA_Learning</currentState>
 				<nextState>SELECTSTRATEGY</nextState>
 				<inputs>
 					<input><messageName>accountInterest</messageName></input>
