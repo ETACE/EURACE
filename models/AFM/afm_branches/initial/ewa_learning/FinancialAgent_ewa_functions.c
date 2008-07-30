@@ -164,3 +164,26 @@ int FinancialAgent_reset_public_classifiersystem()
 
     return 0;
 } 
+
+
+
+/* \fn: FinancialAgent_initialize_rule_details()
+ * \brief Function to initialize the rule details. This function is run only once at the start of simulation,
+ * in order to randomly initialize the parameters of the rules and propagate these rule details to all households.
+ */
+int FinancialAgent_initialize_rule_details()
+{
+	int i,j;
+	
+	//initialize the rules
+	for (i=0;i<PUBLIC_CLASSIFIERSYSTEM.nr_rules;i++)
+	{
+		for (j=0;i<NR_PARAMS;j++)
+		{
+			PUBLIC_CLASSIFIERSYSTEM.ruletable[i].parameters[j] =  random_unif_interval((double)GA_PARAMETERS.min_values[j], (double)GA_PARAMETERS.max_values[j]);			
+		}
+		add_initial_rule_details_message(i, PUBLIC_CLASSIFIERSYSTEM.ruletable[i].parameters);
+	}
+	
+	return 0;
+}

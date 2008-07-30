@@ -8,12 +8,37 @@
  * 29/02/08 Sander: Converted code to use . instead of -> for structs.
  * 13/11/07 Mariam: Converting the code into separate agent functions files. 
  *********************************/
-#include "header.h"
-#include "Household_agent_header.h"
-#include "mylibraryheader.h"
+#include "../header.h"
+#include "../Household_agent_header.h"
+//#include "mylibraryheader.h"
 #include "some_new_functions.h"
 
 /************ Household : Asset market role ************/
+
+/* STEP 0. Initializing the rule details.*/
+
+/*
+ * \fn: Household_initialize_rule_details()
+ * \brief Function to download the initial rule details.
+*/
+int Household_initialize_rule_details()
+{
+    int i,rule_id;
+   
+    //Reading the rule_details_message
+    START_INITIAL_RULE_DETAILS_MESSAGE_LOOP
+	    rule_id = initial_rule_details_message->rule_id;
+	    
+    	//Filling the static array parameters[10] with parameter values
+		for (i=0; i<NR_PARAMS; i++)
+		{
+			//Filling the fields of the rule with parameters[i]
+			PRIVATE_CLASSIFIERSYSTEM.ruletable[rule_id].parameters[i] = initial_rule_details_message->parameters[i];
+		}
+	FINISH_INITIAL_RULE_DETAILS_MESSAGE_LOOP
+    
+    return 0;
+}
 
 /* STEP 1. Updating performance.*/
 /* HERE: Household sends message to FA agent with the per-day performance of it's own current rule, */
@@ -310,6 +335,28 @@ int Household_print_private_classifiersystem()
 	free(filename);
 	
     return 0;
+}
+
+
+/* \fn int Household_portfolio_strategy_interface
+ * \brief Interface between the GA/EWA functions and the AFM_UG code.
+ */
+int Household_portfolio_strategy_interface()
+{
+	int j;
+	
+	j=PRIVATE_CLASSIFIERSYSTEM.current_rule;
+	
+	FORWARDWINDOW               = (int) PRIVATE_CLASSIFIERSYSTEM.ruletable[j].parameters[0];
+	BACKWARDWINDOW              = (int) PRIVATE_CLASSIFIERSYSTEM.ruletable[j].parameters[1];
+	BINS                        = (int) PRIVATE_CLASSIFIERSYSTEM.ruletable[j].parameters[2];
+	RANDOMWEIGHT                = PRIVATE_CLASSIFIERSYSTEM.ruletable[j].parameters[3];
+	FUNDAMENTALWEIGHT           = PRIVATE_CLASSIFIERSYSTEM.ruletable[j].parameters[4];
+	CHARTISTWEIGHT              = PRIVATE_CLASSIFIERSYSTEM.ruletable[j].parameters[5];
+	HOLDINGPERIODTOFORWARDW     = (int) PRIVATE_CLASSIFIERSYSTEM.ruletable[j].parameters[6];
+	LOSSAVERSION                = PRIVATE_CLASSIFIERSYSTEM.ruletable[j].parameters[7];
+
+	return 0;
 }
 
 

@@ -125,7 +125,7 @@ void assetUtilitiesToWeights(double_array *assetWeights,double_array *assetUtili
   divide(assetWeights,sum);
  return ;
 }  */
-int  Household_select_strategy()
+int  Household_apply_strategy()
   { double bankrate;
     Order_array *pending;
     Asset_array *assetsowned;
