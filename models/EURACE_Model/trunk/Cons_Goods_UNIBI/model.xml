@@ -3,7 +3,7 @@
 <xmodel version="2">
 
 <name>Consumption_Goods_Market</name>
-<version>pre-Genoa</version>
+<version>post-Sheffield</version>
 <description></description>
 
 <environment>
@@ -190,15 +190,14 @@
 <variable><type>delivery_volume_per_mall_array</type><name>planned_delivery_volume</name>Planned delivery volume for each  mall<description></description></variable>
 <variable><type>mall_info_array</type><name>current_mall_stocks</name><description>Current stock in each mall</description></variable>
 <variable><type>double_array</type><name>last_planned_production_quantities</name><description>Array of the planned production quantities in the past</description></variable>
-<variable><type>double</type><name>direct_financial_needs_require_external_financing</name><description></description></variable>
+<!--<variable><type>double</type><name>direct_financial_needs_require_external_financing</name><description></description></variable>-->
 <variable><type>double</type><name>total_external_financing_obtained</name><description></description></variable>
-<variable><type>double</type><name>delayed_financial_needs_require_external_financing</name><description></description></variable>
+<!--<variable><type>double</type><name>delayed_financial_needs_require_external_financing</name><description></description></variable>-->
 <variable><type>double</type><name>capital_costs</name><description></description></variable>
 <variable><type>double</type><name>labour_costs</name><description></description></variable>
 <variable><type>financing_capital_array</type><name>capital_financing</name><description></description></variable>
 <variable><type>double</type><name>financial_resources_for_production</name><description></description></variable>
 <variable><type>double</type><name>planned_value_capital_stock</name><description></description></variable>
-
 <variable><type>double</type><name>total_units_local_inventory</name><description></description></variable>
 </memory>
 <functions>
@@ -312,9 +311,9 @@ distribute the dividends to households.</description>
 <description></description>
 <currentState>13</currentState>
 <nextState>14</nextState>
-<condition><time><period>monthly</period><phase>a.day_of_month_to_act</phase></time></condition>
+<!--<condition><time><period>monthly</period><phase>a.day_of_month_to_act</phase></time></condition>-->
 <!--THIS SHOULD BE REPLACED WITH: -->
-<!--<condition><time><period>monthly</period><phase><value>a.day_of_month_to_act-1</value></phase></time></condition>-->
+<condition><time><period>monthly</period><phase>a.last_day_of_month_to_act</phase></time></condition>
 </function>
 
 
@@ -336,9 +335,9 @@ firms update the specific skill levels of the workers.</description>
 <description>Firm does nothing</description>
 <currentState>13</currentState>
 <nextState>Firm_End_Financial_Management_Role</nextState>
-<condition><not><time><period>monthly</period><phase>a.day_of_month_to_act</phase></time></not></condition>
+<!--<condition><not><time><period>monthly</period><phase>a.day_of_month_to_act</phase></time></not></condition>-->
 <!--THIS SHOULD BE REPLACED WITH: -->
-<!--<condition><not><time><period>monthly</period><phase><value>a.day_of_month_to_act-1</value></phase></time></not></condition>-->
+<condition><not><time><period>monthly</period><phase>a.last_day_of_month_to_act</phase></time></not></condition>
 </function>
 
 </functions>

@@ -174,7 +174,7 @@
 <description>Function to process the bankruptcy condition.</description>
 <currentState>Firm_Bankruptcy_check</currentState>
 <nextState>Firm_End_Financial_Management_Role</nextState>
-<condition><not><lhs><value>a.equity</value></lhs><op>GT</op><rhs><value>0.0</value></rhs></not></condition>
+<condition><not><lhs><value>a.equity</value></lhs><op>GEQ</op><rhs><value>0.0</value></rhs></not></condition>
 <outputs>
 <output><messageName>bankruptcy</messageName></output>
 </outputs>
@@ -186,7 +186,7 @@
 <description></description>
 <currentState>Firm_Bankruptcy_check</currentState>
 <nextState>Firm_End_Financial_Management_Role</nextState>
-<condition><lhs><value>a.equity</value></lhs><op>GT</op><rhs><value>0.0</value></rhs></condition>
+<condition><lhs><value>a.equity</value></lhs><op>GEQ</op><rhs><value>0.0</value></rhs></condition>
 </function>
 
 <!-- New Section: Credit role  -->
