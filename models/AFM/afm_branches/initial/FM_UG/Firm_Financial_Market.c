@@ -1,4 +1,4 @@
-#include "Firm_agent_header.h"
+#include "../Firm_agent_header.h"
 #include "my_library_header.h"
 
 void CGP_income_statement_computing(double earnings, double earnings_payout, double *earnings_exp,double *earnings_payout_exp)
