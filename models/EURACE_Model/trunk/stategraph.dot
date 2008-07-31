@@ -665,9 +665,9 @@ digraph state_graph {
 	IGFirm_IGFirm_idle_start_IGFirm_Start_IGFirm_Productivity -> IGFirm_Start_IGFirm_Productivity;
 	IGFirm_start_IGFirm -> IGFirm_IGFirm_read_tax_rates_start_IGFirm_Start_IGFirm_Productivity [ label = "Periodicity: yearly\nPhase: 1"];
 	IGFirm_IGFirm_read_tax_rates_start_IGFirm_Start_IGFirm_Productivity -> IGFirm_Start_IGFirm_Productivity;
-	Eurostat_start_Eurostat -> Eurostat_Eurostat_Initialization_start_Eurostat_Start_Eurostat_Tax_Data [ label = "Periodicity: iteration\nPhase: 1"];
+	Eurostat_start_Eurostat -> Eurostat_Eurostat_Initialization_start_Eurostat_Start_Eurostat_Tax_Data [ label = "Periodicity: millionyearly\nPhase: 1"];
 	Eurostat_Eurostat_Initialization_start_Eurostat_Start_Eurostat_Tax_Data -> Eurostat_Start_Eurostat_Tax_Data;
-	Eurostat_start_Eurostat -> Eurostat_Eurostat_idle_start_Eurostat_Start_Eurostat_Tax_Data [ label = "not ( Periodicity: iteration\nPhase: 1 )"];
+	Eurostat_start_Eurostat -> Eurostat_Eurostat_idle_start_Eurostat_Start_Eurostat_Tax_Data [ label = "not ( Periodicity: millionyearly\nPhase: 1 )"];
 	Eurostat_Eurostat_idle_start_Eurostat_Start_Eurostat_Tax_Data -> Eurostat_Start_Eurostat_Tax_Data;
 	Eurostat_Start_Eurostat_Tax_Data -> Eurostat_Eurostat_idle_Start_Eurostat_Tax_Data_Start_Eurostat_Firm_Data [ label = "not ( Periodicity: yearly\nPhase: 1 )"];
 	Eurostat_Eurostat_idle_Start_Eurostat_Tax_Data_Start_Eurostat_Firm_Data -> Eurostat_Start_Eurostat_Firm_Data;
