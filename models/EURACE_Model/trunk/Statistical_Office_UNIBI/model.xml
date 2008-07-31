@@ -404,14 +404,14 @@ including several micro data.</description>
 <description>Initializes the firm and household data arrays</description>
 <currentState>start_Eurostat</currentState>
 <nextState>Start_Eurostat_Tax_Data</nextState>
-<condition><time><period>iteration</period><phase>1</phase></time></condition>
+<condition><time><period>millionyearly</period><phase>1</phase></time></condition>
 </function>
 
 <function><name>Eurostat_idle</name>
 <description>Eurostat does nothing</description>
 <currentState>start_Eurostat</currentState>
 <nextState>Start_Eurostat_Tax_Data</nextState>
-<condition><not><time><period>iteration</period><phase>1</phase></time></not></condition>
+<condition><not><time><period>millionyearly</period><phase>1</phase></time></not></condition>
 </function>
 
 <!-- new loop: read_tax_rates -->
