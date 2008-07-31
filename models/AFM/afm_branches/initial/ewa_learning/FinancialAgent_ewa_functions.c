@@ -11,10 +11,38 @@
  * 15/07/08 Sander: Coded new function FinancialAgent_apply_GA_refactored() and auxiliary functions.
  ***************************************************************************************************/
 #include <math.h>
-#include "header.h"
-#include "FinancialAgent_agent_header.h"
+//For stand-alone model:
+//#include "header.h"
+//#include "FinancialAgent_agent_header.h"
+//For integrated model:
+#include "../header.h"
+#include "../FinancialAgent_agent_header.h"
+//Always:
 #include "FinancialAgent_aux_header.h"
 #include "some_new_functions.h"
+#include "mylibraryheader.h"
+
+/* \fn: FinancialAgent_initialize_rule_details()
+ * \brief Function to initialize the rule details. This function is run only once at the start of simulation,
+ * in order to randomly initialize the parameters of the rules and propagate these rule details to all households.
+ */
+int FinancialAgent_initialize_rule_details()
+{
+	int i,j;
+
+	//initialize the rules
+	for (i=0;i<PUBLIC_CLASSIFIERSYSTEM.nr_rules;i++)
+	{
+		for (j=0;j<NR_PARAMS;j++)
+		{
+			//printf("\n Now entering param %d.\n");
+			PUBLIC_CLASSIFIERSYSTEM.ruletable[i].parameters[j] =  random_unif_interval((double)GA_PARAMETERS.min_values[j], (double)GA_PARAMETERS.max_values[j]);			
+		}
+		add_initial_rule_details_message(i, PUBLIC_CLASSIFIERSYSTEM.ruletable[i].parameters);
+	}
+	
+	return 0;
+}
 
 /* \fn FinancialAgent_read_rule_performance_and_update_classifiersystem()
  * \brief Financial Agent reads the rule_performance_messages and updates the average rule performance in its classifiersystem.
@@ -165,25 +193,3 @@ int FinancialAgent_reset_public_classifiersystem()
     return 0;
 } 
 
-
-
-/* \fn: FinancialAgent_initialize_rule_details()
- * \brief Function to initialize the rule details. This function is run only once at the start of simulation,
- * in order to randomly initialize the parameters of the rules and propagate these rule details to all households.
- */
-int FinancialAgent_initialize_rule_details()
-{
-	int i,j;
-	
-	//initialize the rules
-	for (i=0;i<PUBLIC_CLASSIFIERSYSTEM.nr_rules;i++)
-	{
-		for (j=0;i<NR_PARAMS;j++)
-		{
-			PUBLIC_CLASSIFIERSYSTEM.ruletable[i].parameters[j] =  random_unif_interval((double)GA_PARAMETERS.min_values[j], (double)GA_PARAMETERS.max_values[j]);			
-		}
-		add_initial_rule_details_message(i, PUBLIC_CLASSIFIERSYSTEM.ruletable[i].parameters);
-	}
-	
-	return 0;
-}

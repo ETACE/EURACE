@@ -3,6 +3,7 @@
 <environment>
 <nr_params>10</nr_params>
 <print_debug>0</print_debug>
+<print_log>1</print_log>
 </environment>
 <xagent>
 <name>Household</name>

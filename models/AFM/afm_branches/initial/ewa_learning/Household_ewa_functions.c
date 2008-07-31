@@ -8,10 +8,15 @@
  * 29/02/08 Sander: Converted code to use . instead of -> for structs.
  * 13/11/07 Mariam: Converting the code into separate agent functions files. 
  *********************************/
+//For stand-alone model:
+//#include "header.h"
+//#include "Household_agent_header.h"
+//For integrated model:
 #include "../header.h"
 #include "../Household_agent_header.h"
-//#include "mylibraryheader.h"
+//Always:
 #include "some_new_functions.h"
+#include "mylibraryheader.h"
 
 /************ Household : Asset market role ************/
 
@@ -296,67 +301,48 @@ int Household_print_private_classifiersystem()
 	int i, rule_id;
 	double avg_performance, my_performance, attraction, choiceprob;
 	
-	//Set the output file:
-	i = sprintf(str, "%d", iteration_loop);
-	
-	//Start an empty string for the filename
-	filename = malloc(40*sizeof(char));
-	filename[0]=0;
-	
-	//Concatenate
-	strcpy(filename, "./log/CS_Household_");
-	strcat(filename, str);
-	strcat(filename, ".txt");
-
-	//Open a file pointer: FILE * file 
-	file = fopen(filename,"a");
-
-	//Print per household classifier system:
-	 fprintf(file,"============================================================================================================\n");
-	 fprintf(file,"Household: %d Current rule: %d\n", ID, PRIVATE_CLASSIFIERSYSTEM.current_rule);
-	 fprintf(file,"rule\t my_performance\t avg_performance\t attraction\t choice prob\n");
-	 fprintf(file,"============================================================================================================\n"); 
-	
-	for (i=0;i<PRIVATE_CLASSIFIERSYSTEM.nr_rules;i++)
+	if (PRINT_LOG)
 	{
-		rule_id 		= PRIVATE_CLASSIFIERSYSTEM.ruletable[i].id;
-		my_performance 	= PRIVATE_CLASSIFIERSYSTEM.ruletable[i].my_performance;
-		avg_performance	= PRIVATE_CLASSIFIERSYSTEM.ruletable[i].avg_performance;
-	    attraction 		= PRIVATE_CLASSIFIERSYSTEM.ruletable[i].attraction;
-	    choiceprob 		= PRIVATE_CLASSIFIERSYSTEM.ruletable[i].choiceprob;
-	    
-	    fprintf(file,"%8d\t|\t %.4f\t|\t %.4f\t|\t %.4f\t|\t %.4f\n", rule_id, my_performance, avg_performance, attraction, choiceprob);
+		//Set the output file:
+		i = sprintf(str, "%d", iteration_loop);
+		
+		//Start an empty string for the filename
+		filename = malloc(40*sizeof(char));
+		filename[0]=0;
+		
+		//Concatenate
+		strcpy(filename, "./log/CS_Household_");
+		strcat(filename, str);
+		strcat(filename, ".txt");
+	
+		//Open a file pointer: FILE * file 
+		file = fopen(filename,"a");
+	
+		//Print per household classifier system:
+		 fprintf(file,"============================================================================================================\n");
+		 fprintf(file,"Household: %d Current rule: %d\n", ID, PRIVATE_CLASSIFIERSYSTEM.current_rule);
+		 fprintf(file,"rule\t my_performance\t avg_performance\t attraction\t choice prob\n");
+		 fprintf(file,"============================================================================================================\n"); 
+		
+		for (i=0;i<PRIVATE_CLASSIFIERSYSTEM.nr_rules;i++)
+		{
+			rule_id 		= PRIVATE_CLASSIFIERSYSTEM.ruletable[i].id;
+			my_performance 	= PRIVATE_CLASSIFIERSYSTEM.ruletable[i].my_performance;
+			avg_performance	= PRIVATE_CLASSIFIERSYSTEM.ruletable[i].avg_performance;
+		    attraction 		= PRIVATE_CLASSIFIERSYSTEM.ruletable[i].attraction;
+		    choiceprob 		= PRIVATE_CLASSIFIERSYSTEM.ruletable[i].choiceprob;
+		    
+		    fprintf(file,"%8d\t|\t %.4f\t|\t %.4f\t|\t %.4f\t|\t %.4f\n", rule_id, my_performance, avg_performance, attraction, choiceprob);
+		}
+		fprintf(file,"============================================================================================================\n");
+	
+		fprintf(file,"\n");
+		fclose(file);
 	}
-	fprintf(file,"============================================================================================================\n");
-
-	fprintf(file,"\n");
-	fclose(file);
 	
 	free(filename);
 	
     return 0;
-}
-
-
-/* \fn int Household_portfolio_strategy_interface
- * \brief Interface between the GA/EWA functions and the AFM_UG code.
- */
-int Household_portfolio_strategy_interface()
-{
-	int j;
-	
-	j=PRIVATE_CLASSIFIERSYSTEM.current_rule;
-	
-	FORWARDWINDOW               = (int) PRIVATE_CLASSIFIERSYSTEM.ruletable[j].parameters[0];
-	BACKWARDWINDOW              = (int) PRIVATE_CLASSIFIERSYSTEM.ruletable[j].parameters[1];
-	BINS                        = (int) PRIVATE_CLASSIFIERSYSTEM.ruletable[j].parameters[2];
-	RANDOMWEIGHT                = PRIVATE_CLASSIFIERSYSTEM.ruletable[j].parameters[3];
-	FUNDAMENTALWEIGHT           = PRIVATE_CLASSIFIERSYSTEM.ruletable[j].parameters[4];
-	CHARTISTWEIGHT              = PRIVATE_CLASSIFIERSYSTEM.ruletable[j].parameters[5];
-	HOLDINGPERIODTOFORWARDW     = (int) PRIVATE_CLASSIFIERSYSTEM.ruletable[j].parameters[6];
-	LOSSAVERSION                = PRIVATE_CLASSIFIERSYSTEM.ruletable[j].parameters[7];
-
-	return 0;
 }
 
 
