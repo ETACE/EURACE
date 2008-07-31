@@ -402,14 +402,14 @@ including several micro data.</description>
 <description>Initializes the firm and household data arrays</description>
 <currentState>start_Eurostat</currentState>
 <nextState>Start_Eurostat_Tax_Data</nextState>
-<condition><time><period>iteration</period><phase>1</phase></time></condition>
+<condition><time><period>millionyearly</period><phase>1</phase></time></condition>
 </function>
 
 <function><name>Eurostat_idle</name>
 <description>Eurostat does nothing</description>
 <currentState>start_Eurostat</currentState>
 <nextState>Start_Eurostat_Tax_Data</nextState>
-<condition><not><time><period>iteration</period><phase>1</phase></time></not></condition>
+<condition><not><time><period>millionyearly</period><phase>1</phase></time></not></condition>
 </function>
 
 <!-- new loop: read_tax_rates -->
@@ -487,13 +487,7 @@ including several micro data.</description>
 <nextState>02</nextState>                           <!--Toggle this if you want to turn ON growthrates functionality -->
 <!--<nextState>Start_Eurostat_Quarterly_Datastorage</nextState> Toggle this if you want to turn OFF growthrates functionality -->
 <condition>
-    <lhs>
         <time><period>monthly</period><phase>0</phase></time>
-    </lhs>
-    <op>AND</op>
-    <rhs>
-        <not><time><period>iteration</period><phase>1</phase></time></not>
-    </rhs>
 </condition>
 </function>
 
@@ -508,13 +502,7 @@ including several micro data.</description>
 <currentState>Start_Eurostat_Monthly_Datastorage</currentState>
 <nextState>Start_Eurostat_Quarterly_Datastorage</nextState>
 <condition>
-    <lhs>
         <not><time><period>monthly</period><phase>0</phase></time></not>
-    </lhs>
-    <op>OR</op>
-    <rhs>
-        <time><period>iteration</period><phase>1</phase></time>
-    </rhs>
 </condition>
 </function>
 
@@ -526,13 +514,7 @@ including several micro data.</description>
 <nextState>03</nextState>                   <!--Toggle this if you want to turn ON growthrates functionality -->
 <!--<nextState>end_Eurostat</nextState>                 Toggle this if you want to turn OFF growthrates functionality -->
 <condition>
-    <lhs>
         <time><period>quarterly</period><phase>0</phase></time>
-    </lhs>
-    <op>AND</op>
-    <rhs>
-        <not><time><period>iteration</period><phase>1</phase></time></not>
-    </rhs>
 </condition>
 </function>
 
@@ -547,13 +529,7 @@ including several micro data.</description>
 <currentState>Start_Eurostat_Quarterly_Datastorage</currentState>
 <nextState>end_Eurostat</nextState>
 <condition>
-    <lhs>
         <not><time><period>quarterly</period><phase>0</phase></time></not>
-    </lhs>
-    <op>OR</op>
-    <rhs>
-        <time><period>iteration</period><phase>1</phase></time>
-    </rhs>
 </condition>
 </function>
 
@@ -593,6 +569,7 @@ including several micro data.</description>
 <variable><type>double</type><name>total_assets</name><description></description></variable>
 <variable><type>double</type><name>equity</name><description></description></variable>
 <!--Variables related to production-->
+<!--Temporarily turned off next 2 vars-->
 <variable><type>double</type><name>price</name><description></description></variable>
 <variable><type>double</type><name>total_supply</name><description></description></variable>
 <variable><type>double</type><name>cum_total_sold_quantity</name><description></description></variable>
