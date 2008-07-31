@@ -353,7 +353,8 @@ void unittest_mutation()
 	double * string_1;
 	double * string_2;
 	double * stepsize;
-	double prob_mut, delta_min, delta_max;
+	double prob_mut;
+	int delta_min, delta_max;
 	double * min_values;
 	double * max_values;
 	
@@ -368,8 +369,8 @@ void unittest_mutation()
 	stepsize[0]=1.1; stepsize[1]=1.1;
 	min_values[0]=0.0; min_values[1]=0.0; //set min values for bits
 	max_values[0]=1.0; max_values[1]=2.0; //set max values for bits
-	delta_min = 1.0; //set min range delta to 1.0
-	delta_max = 1.0; //set max range delta to 1.0
+	delta_min = 1; //set min range delta to 1
+	delta_max = 1; //set max range delta to 1
 	
 	string_1[0]=0.0; string_1[1]=0.0;
 	string_2[0]=1.0; string_2[1]=1.0;
@@ -652,8 +653,8 @@ void unittest1_GA_mutation()
   	GA_PARAMETERS.min_values[1]=0.0;
   	GA_PARAMETERS.max_values[0]=10.0;  //set max values for bits
   	GA_PARAMETERS.max_values[1]=10.0;
-  	GA_PARAMETERS.delta_min=1.0; //set min range delta to 1.0
-  	GA_PARAMETERS.delta_max=1.0; //set max range delta to 1.0
+  	GA_PARAMETERS.delta_min=1; //set min range delta to 1.0
+  	GA_PARAMETERS.delta_max=1; //set max range delta to 1.0
   	
  	size=2;
  	offspring_1 = malloc(size*sizeof(double));
@@ -735,8 +736,8 @@ void unittest2_GA_mutation()
   	GA_PARAMETERS.min_values[1]=0.0;
   	GA_PARAMETERS.max_values[0]=1.0;  //set max values for bits
   	GA_PARAMETERS.max_values[1]=2.0;
-  	GA_PARAMETERS.delta_min=1.0; //set min range delta to 1.0
-  	GA_PARAMETERS.delta_max=1.0; //set max range delta to 1.0
+  	GA_PARAMETERS.delta_min=1; //set min range delta to 1.0
+  	GA_PARAMETERS.delta_max=1; //set max range delta to 1.0
   	
  	size=2;
  	offspring_1 = malloc(size*sizeof(double));

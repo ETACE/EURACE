@@ -7,10 +7,16 @@
  * 16/07/08 Sander 
  *********************************/
 #include <limits.h> //required to test for max. double: LONG_MAX
-#include "header.h"
-#include "FinancialAgent_agent_header.h"
+//For stand-alone model:
+//#include "header.h"
+//#include "FinancialAgent_agent_header.h"
+//For integrated model:
+#include "../header.h"
+#include "../FinancialAgent_agent_header.h"
+//Always:
 #include "FinancialAgent_aux_header.h"
 #include "some_new_functions.h"
+#include "mylibraryheader.h"
 
 
 /* \fn void single_point_cross_over(int size, double * string_a, double * string_b, int cross_point)
@@ -136,10 +142,11 @@ void two_point_cross_over_alt(int size, double * string_a, double * string_b, in
  * delta_max: upper range for the mutation 
  * prob_mut: mutation probability
  */
-void mutation(int size, double * string, double * stepsize, double delta_min, double delta_max, double * min_values, double * max_values, double prob_mut)
+void mutation(int size, double * string, double * stepsize, int delta_min, int delta_max, double * min_values, double * max_values, double prob_mut)
 {
 	int k;
-	double delta, mutation_size;
+	int delta;
+	double mutation_size;
 	
 	for (k=0; k<size; k++)
 	{
@@ -147,7 +154,7 @@ void mutation(int size, double * string, double * stepsize, double delta_min, do
 		if (random_unif() < prob_mut)
 		{	
 			//Set integer units to mutate in the interval delta_min*stepsize and delta_max*stepsize
-			 delta = random_unif_interval(delta_min, delta_max);
+			 delta = (int) random_unif_interval(delta_min, delta_max+1);
 				  
 			//mutate the value at position k by a random number between -10*stepsize and +10*stepsize from the previous value
 			 mutation_size = delta*stepsize[k];
@@ -479,46 +486,50 @@ int FinancialAgent_print_public_classifiersystem()
 	int i, j, rule_id, counter;
 	double performance, avg_performance, selection_prob;
 
- 	//Set the output file:
- 	i = sprintf(str, "%d", iteration_loop);
- 	
- 	//Start an empty string for the filename
- 	filename = malloc(40*sizeof(char));
- 	filename[0]=0;
- 	
- 	//Concatenate
- 	strcpy(filename, "./log/CS_FinancialAgent_");
- 	strcat(filename, str);
- 	strcat(filename, ".txt");
-
- 	//Open a file pointer: FILE * file 
- 	file = fopen(filename,"w");
-
-
-    //Print FinancialAdvisor classifier system:
-    fprintf(file,"=============================================================================================\n");
-    fprintf(file,"FinancialAdvisor:\n");
-    fprintf(file,"rule\t performance\t counter\t avg_performance\t selection prob \t rule details\n");
-    fprintf(file,"=============================================================================================\n"); 
-
-    for (i=0;i<PUBLIC_CLASSIFIERSYSTEM.nr_rules;i++)
-    {
-         rule_id 		= PUBLIC_CLASSIFIERSYSTEM.ruletable[i].id;
-         performance 	= PUBLIC_CLASSIFIERSYSTEM.ruletable[i].performance;
-		 counter 		= PUBLIC_CLASSIFIERSYSTEM.ruletable[i].counter;         
-         avg_performance = PUBLIC_CLASSIFIERSYSTEM.ruletable[i].avg_performance;
-         selection_prob  = PUBLIC_CLASSIFIERSYSTEM.ruletable[i].selection_prob;
-         
-         fprintf(file,"%d\t|\t %f\t|\t %4d\t|\t %f\t|\t %f\t| ", rule_id, performance, counter, avg_performance, selection_prob);
-
-         fprintf(file,"[ ");
-	     for (j=0;j<GA_PARAMETERS.string_size;j++){fprintf(file,"%02.1f ", PUBLIC_CLASSIFIERSYSTEM.ruletable[i].parameters[j]);}
-	     fprintf(file,"]\n"); 
+	
+	if (PRINT_LOG)
+	{		
+	 	//Set the output file:
+	 	i = sprintf(str, "%d", iteration_loop);
+	 	
+	 	//Start an empty string for the filename
+	 	filename = malloc(40*sizeof(char));
+	 	filename[0]=0;
+	 	
+	 	//Concatenate
+	 	strcpy(filename, "./log/CS_FinancialAgent_");
+	 	strcat(filename, str);
+	 	strcat(filename, ".txt");
+	
+	 	//Open a file pointer: FILE * file 
+	 	file = fopen(filename,"w");
+	
+	
+	    //Print FinancialAdvisor classifier system:
+	    fprintf(file,"=============================================================================================\n");
+	    fprintf(file,"FinancialAdvisor:\n");
+	    fprintf(file,"rule\t performance\t counter\t avg_performance\t selection prob \t rule details\n");
+	    fprintf(file,"=============================================================================================\n"); 
+	
+	    for (i=0;i<PUBLIC_CLASSIFIERSYSTEM.nr_rules;i++)
+	    {
+	         rule_id 		= PUBLIC_CLASSIFIERSYSTEM.ruletable[i].id;
+	         performance 	= PUBLIC_CLASSIFIERSYSTEM.ruletable[i].performance;
+			 counter 		= PUBLIC_CLASSIFIERSYSTEM.ruletable[i].counter;         
+	         avg_performance = PUBLIC_CLASSIFIERSYSTEM.ruletable[i].avg_performance;
+	         selection_prob  = PUBLIC_CLASSIFIERSYSTEM.ruletable[i].selection_prob;
+	         
+	         fprintf(file,"%d\t|\t %f\t|\t %4d\t|\t %f\t|\t %f\t| ", rule_id, performance, counter, avg_performance, selection_prob);
+	
+	         fprintf(file,"[ ");
+		     for (j=0;j<GA_PARAMETERS.string_size;j++){fprintf(file,"%02.1f ", PUBLIC_CLASSIFIERSYSTEM.ruletable[i].parameters[j]);}
+		     fprintf(file,"]\n"); 
+	    }
+	     fprintf(file,"=============================================================================================\n");
+	
+	    fprintf(file,"\n");
+		fclose(file);
     }
-     fprintf(file,"=============================================================================================\n");
-
-    fprintf(file,"\n");
-	fclose(file);
 	
 	free(filename);
     return 0;

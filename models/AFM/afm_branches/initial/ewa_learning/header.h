@@ -33,6 +33,9 @@
 /** \def PRINT_DEBUG
  * \brief Provide access to environment variables in uppercase. */
 #define PRINT_DEBUG print_debug
+/** \def PRINT_LOG
+ * \brief Provide access to environment variables in uppercase. */
+#define PRINT_LOG print_log
 /** \def ARRAY_BLOCK_SIZE
  * \brief The block size to allocate to dynamic arrays. */
 #define ARRAY_BLOCK_SIZE 5
@@ -48,6 +51,12 @@
 /** \def FINISH_NEW_PERFORMANCES_MESSAGE_LOOP
  * \brief Finish of loop to process new_performances messages. */
 #define FINISH_NEW_PERFORMANCES_MESSAGE_LOOP new_performances_message = get_next_new_performances_message(new_performances_message); }
+/** \def START_INITIAL_RULE_DETAILS_MESSAGE_LOOP
+ * \brief Start of loop to process initial_rule_details messages. */
+#define START_INITIAL_RULE_DETAILS_MESSAGE_LOOP  initial_rule_details_message = get_first_initial_rule_details_message(); while(initial_rule_details_message) {
+/** \def FINISH_INITIAL_RULE_DETAILS_MESSAGE_LOOP
+ * \brief Finish of loop to process initial_rule_details messages. */
+#define FINISH_INITIAL_RULE_DETAILS_MESSAGE_LOOP initial_rule_details_message = get_next_initial_rule_details_message(initial_rule_details_message); }
 /** \def START_RULE_DETAILS_MESSAGE_LOOP
  * \brief Start of loop to process rule_details messages. */
 #define START_RULE_DETAILS_MESSAGE_LOOP  rule_details_message = get_first_rule_details_message(); while(rule_details_message) {
@@ -171,8 +180,8 @@ struct GAParameterStruct
 	int single_point_cross_over;	/**< Datatype memory variable single_point_cross_over of type int. */
 	int election;	/**< Datatype memory variable election of type int. */
 	double stepsize[10];	/**< Datatype memory variable stepsize of type double. */
-	double delta_min;	/**< Datatype memory variable delta_min of type double. */
-	double delta_max;	/**< Datatype memory variable delta_max of type double. */
+	int delta_min;	/**< Datatype memory variable delta_min of type int. */
+	int delta_max;	/**< Datatype memory variable delta_max of type int. */
 	double min_values[10];	/**< Datatype memory variable min_values of type double. */
 	double max_values[10];	/**< Datatype memory variable max_values of type double. */
 };
@@ -453,6 +462,15 @@ struct m_new_performances
 	double avg_performance;	/**< Message memory variable avg_performance of type double. */
 };
 
+/** \struct m_initial_rule_details
+ * \brief Holds message of type initial_rule_details_message.
+ */
+struct m_initial_rule_details
+{
+	int rule_id;	/**< Message memory variable rule_id of type int. */
+	double parameters[10];	/**< Message memory variable parameters of type double. */
+};
+
 /** \struct m_rule_details
  * \brief Holds message of type rule_details_message.
  */
@@ -500,6 +518,11 @@ typedef struct m_rule_performance m_rule_performance;
  */
 typedef struct m_new_performances m_new_performances;
 
+/** \typedef m_initial_rule_details m_initial_rule_details
+ * \brief Typedef for m_initial_rule_details struct.
+ */
+typedef struct m_initial_rule_details m_initial_rule_details;
+
 /** \typedef m_rule_details m_rule_details
  * \brief Typedef for m_rule_details struct.
  */
@@ -507,21 +530,29 @@ typedef struct m_rule_details m_rule_details;
 
 
 int idle(void);
-int Household_idle_start_Household_EWA_Learning_end_GA_condition(xmachine_memory_Household *a);
+int Household_idle_Start_Household_EWA_Learning_Start_GA_condition(xmachine_memory_Household *a);
+int Household_initialize_rule_details(void);
+int Household_Household_initialize_rule_details_Start_Household_EWA_Learning_Start_GA_condition(xmachine_memory_Household *a);
+int idle(void);
+int Household_idle_Start_GA_End_GA_condition(xmachine_memory_Household *a);
 int Household_print_private_classifiersystem(void);
-int Household_Household_print_private_classifiersystem_start_Household_EWA_Learning_01_condition(xmachine_memory_Household *a);
+int Household_Household_print_private_classifiersystem_Start_GA_01_condition(xmachine_memory_Household *a);
 int Household_reset_private_classifiersystem(void);
 int Household_read_and_update_rule_details(void);
 int idle(void);
-int Household_idle_end_GA_end_Household_EWA_Learning_condition(xmachine_memory_Household *a);
+int Household_idle_End_GA_End_Household_EWA_Learning_condition(xmachine_memory_Household *a);
 int Household_send_rule_performance(void);
-int Household_Household_send_rule_performance_end_GA_03_condition(xmachine_memory_Household *a);
+int Household_Household_send_rule_performance_End_GA_03_condition(xmachine_memory_Household *a);
 int Household_read_all_performances(void);
 int Household_select_rule(void);
 int idle(void);
-int FinancialAgent_idle_start_FinancialAgent_end_GA_condition(xmachine_memory_FinancialAgent *a);
+int FinancialAgent_idle_Start_FinancialAgent_Start_GA_condition(xmachine_memory_FinancialAgent *a);
+int FinancialAgent_initialize_rule_details(void);
+int FinancialAgent_FinancialAgent_initialize_rule_details_Start_FinancialAgent_Start_GA_condition(xmachine_memory_FinancialAgent *a);
+int idle(void);
+int FinancialAgent_idle_Start_GA_End_GA_condition(xmachine_memory_FinancialAgent *a);
 int FinancialAgent_apply_GA(void);
-int FinancialAgent_FinancialAgent_apply_GA_start_FinancialAgent_01_condition(xmachine_memory_FinancialAgent *a);
+int FinancialAgent_FinancialAgent_apply_GA_Start_GA_01_condition(xmachine_memory_FinancialAgent *a);
 int FinancialAgent_send_rule_details(void);
 int FinancialAgent_print_public_classifiersystem(void);
 int FinancialAgent_reset_public_classifiersystem(void);
@@ -550,6 +581,7 @@ struct node_information
 	struct xmachine * agents;	/**< Pointer to list of X-machines. */
 	struct m_rule_performance * rule_performance_messages;	/**< Pointer to rule_performance message list. */
 	struct m_new_performances * new_performances_messages;	/**< Pointer to new_performances message list. */
+	struct m_initial_rule_details * initial_rule_details_messages;	/**< Pointer to initial_rule_details message list. */
 	struct m_rule_details * rule_details_messages;	/**< Pointer to rule_details message list. */
 	
 	struct node_information * next;	/**< Pointer to next node on the list. */
@@ -571,6 +603,9 @@ int nr_params;
 /** \var int print_debug
 * \brief A constant variable from the environment. */
 int print_debug;
+/** \var int print_log
+* \brief A constant variable from the environment. */
+int print_log;
 /** \var xmachine * temp_xmachine
 * \brief Pointer to xmachine to initialise linked list. */
 xmachine * temp_xmachine;
@@ -581,6 +616,9 @@ m_rule_performance * temp_rule_performance_message;
 /** \var m_new_performances * temp_new_performances_message
 * \brief Pointer to m_new_performances to initialise linked list. */
 m_new_performances * temp_new_performances_message;
+/** \var m_initial_rule_details * temp_initial_rule_details_message
+* \brief Pointer to m_initial_rule_details to initialise linked list. */
+m_initial_rule_details * temp_initial_rule_details_message;
 /** \var m_rule_details * temp_rule_details_message
 * \brief Pointer to m_rule_details to initialise linked list. */
 m_rule_details * temp_rule_details_message;
@@ -616,21 +654,24 @@ xmachine_memory_Household_state * Household_04_state;
 /* Pointer to list of Household agents in state 03 state */
 //xmachine_memory_Household * temp_xmachine_Household_03;
 xmachine_memory_Household_state * Household_03_state;
-/* Pointer to list of Household agents in state end_Household_EWA_Learning state */
-//xmachine_memory_Household * temp_xmachine_Household_end_Household_EWA_Learning;
-xmachine_memory_Household_state * Household_end_Household_EWA_Learning_state;
+/* Pointer to list of Household agents in state End_Household_EWA_Learning state */
+//xmachine_memory_Household * temp_xmachine_Household_End_Household_EWA_Learning;
+xmachine_memory_Household_state * Household_End_Household_EWA_Learning_state;
 /* Pointer to list of Household agents in state 02 state */
 //xmachine_memory_Household * temp_xmachine_Household_02;
 xmachine_memory_Household_state * Household_02_state;
 /* Pointer to list of Household agents in state 01 state */
 //xmachine_memory_Household * temp_xmachine_Household_01;
 xmachine_memory_Household_state * Household_01_state;
-/* Pointer to list of Household agents in state end_GA state */
-//xmachine_memory_Household * temp_xmachine_Household_end_GA;
-xmachine_memory_Household_state * Household_end_GA_state;
-/* Pointer to list of Household agents in state start_Household_EWA_Learning state */
-//xmachine_memory_Household * temp_xmachine_Household_start_Household_EWA_Learning;
-xmachine_memory_Household_state * Household_start_Household_EWA_Learning_state;
+/* Pointer to list of Household agents in state End_GA state */
+//xmachine_memory_Household * temp_xmachine_Household_End_GA;
+xmachine_memory_Household_state * Household_End_GA_state;
+/* Pointer to list of Household agents in state Start_GA state */
+//xmachine_memory_Household * temp_xmachine_Household_Start_GA;
+xmachine_memory_Household_state * Household_Start_GA_state;
+/* Pointer to list of Household agents in state Start_Household_EWA_Learning state */
+//xmachine_memory_Household * temp_xmachine_Household_Start_Household_EWA_Learning;
+xmachine_memory_Household_state * Household_Start_Household_EWA_Learning_state;
 /* Pointer to current $agent_name agent */
 xmachine_memory_FinancialAgent * current_xmachine_FinancialAgent;
 xmachine_memory_FinancialAgent_holder * temp_xmachine_FinancialAgent_holder;
@@ -651,12 +692,15 @@ xmachine_memory_FinancialAgent_state * FinancialAgent_02_state;
 /* Pointer to list of FinancialAgent agents in state 01 state */
 //xmachine_memory_FinancialAgent * temp_xmachine_FinancialAgent_01;
 xmachine_memory_FinancialAgent_state * FinancialAgent_01_state;
-/* Pointer to list of FinancialAgent agents in state end_GA state */
-//xmachine_memory_FinancialAgent * temp_xmachine_FinancialAgent_end_GA;
-xmachine_memory_FinancialAgent_state * FinancialAgent_end_GA_state;
-/* Pointer to list of FinancialAgent agents in state start_FinancialAgent state */
-//xmachine_memory_FinancialAgent * temp_xmachine_FinancialAgent_start_FinancialAgent;
-xmachine_memory_FinancialAgent_state * FinancialAgent_start_FinancialAgent_state;
+/* Pointer to list of FinancialAgent agents in state End_GA state */
+//xmachine_memory_FinancialAgent * temp_xmachine_FinancialAgent_End_GA;
+xmachine_memory_FinancialAgent_state * FinancialAgent_End_GA_state;
+/* Pointer to list of FinancialAgent agents in state Start_GA state */
+//xmachine_memory_FinancialAgent * temp_xmachine_FinancialAgent_Start_GA;
+xmachine_memory_FinancialAgent_state * FinancialAgent_Start_GA_state;
+/* Pointer to list of FinancialAgent agents in state Start_FinancialAgent state */
+//xmachine_memory_FinancialAgent * temp_xmachine_FinancialAgent_Start_FinancialAgent;
+xmachine_memory_FinancialAgent_state * FinancialAgent_Start_FinancialAgent_state;
 
 
 MBt_Board b_rule_performance;
@@ -664,6 +708,9 @@ MBt_Iterator i_rule_performance;
 
 MBt_Board b_new_performances;
 MBt_Iterator i_new_performances;
+
+MBt_Board b_initial_rule_details;
+MBt_Iterator i_initial_rule_details;
 
 MBt_Board b_rule_details;
 MBt_Iterator i_rule_details;
@@ -675,6 +722,9 @@ m_rule_performance * rule_performance_message;
 /** \var m_new_performances * new_performances_message
 * \brief Pointer to message struct for looping through new_performances message list */
 m_new_performances * new_performances_message;
+/** \var m_initial_rule_details * initial_rule_details_message
+* \brief Pointer to message struct for looping through initial_rule_details message list */
+m_initial_rule_details * initial_rule_details_message;
 /** \var m_rule_details * rule_details_message
 * \brief Pointer to message struct for looping through rule_details message list */
 m_rule_details * rule_details_message;
@@ -734,7 +784,7 @@ void init_GAParameterStruct_array(GAParameterStruct_array * array);
 void reset_GAParameterStruct_array(GAParameterStruct_array * array);
 void free_GAParameterStruct_array(GAParameterStruct_array * array);
 void copy_GAParameterStruct_array(GAParameterStruct_array * from, GAParameterStruct_array * to);
-void add_GAParameterStruct(GAParameterStruct_array * array, double prob_cross, double prob_mut, int string_size, int pop_size, double reproduction_proportion, int single_point_cross_over, int election, double * stepsize, double delta_min, double delta_max, double * min_values, double * max_values);
+void add_GAParameterStruct(GAParameterStruct_array * array, double prob_cross, double prob_mut, int string_size, int pop_size, double reproduction_proportion, int single_point_cross_over, int election, double * stepsize, int delta_min, int delta_max, double * min_values, double * max_values);
 void remove_GAParameterStruct(GAParameterStruct_array * array, int index);
 
 void init_PublicClassifierRule_array(PublicClassifierRule_array * array);
@@ -935,6 +985,11 @@ m_new_performances * add_new_performances_message_internal(void);
 m_new_performances * get_first_new_performances_message(void);
 m_new_performances * get_next_new_performances_message(m_new_performances * current);
 void freenew_performancesmessages(void);
+void add_initial_rule_details_message(int rule_id, double parameters[]);
+m_initial_rule_details * add_initial_rule_details_message_internal(void);
+m_initial_rule_details * get_first_initial_rule_details_message(void);
+m_initial_rule_details * get_next_initial_rule_details_message(m_initial_rule_details * current);
+void freeinitial_rule_detailsmessages(void);
 void add_rule_details_message(int rule_id, double parameters[]);
 m_rule_details * add_rule_details_message_internal(void);
 m_rule_details * get_first_rule_details_message(void);
@@ -963,6 +1018,7 @@ void generate_partitions(double cloud_data[6], int partitions, int partition_met
 /* messageboard.c */
 m_rule_performance * get_next_message_rule_performance_in_range(m_rule_performance * current);
 m_new_performances * get_next_message_new_performances_in_range(m_new_performances * current);
+m_initial_rule_details * get_next_message_initial_rule_details_in_range(m_initial_rule_details * current);
 m_rule_details * get_next_message_rule_details_in_range(m_rule_details * current);
 
 /* memory.c */

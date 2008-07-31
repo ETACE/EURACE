@@ -10,7 +10,7 @@
 void single_point_cross_over(int size, double * string_a, double * string_b, int cross_point);
 void two_point_cross_over(int size, double * string_a, double * string_b, int cross_point, int cross_length);
 void two_point_cross_over_alt(int size, double * string_a, double * string_b, int cross_point, int cross_length);
-void mutation(int size, double * string, double * stepsize, double delta_min, double delta_max, double * min_values, double * max_values, double prob_mut);
+void mutation(int size, double * string, double * stepsize, int delta_min, int delta_max, double * min_values, double * max_values, double prob_mut);
 void election(int size, double * offspring_1, double * offspring_2, double * parent_1, double * parent_2);
 
 /* GA main functions */

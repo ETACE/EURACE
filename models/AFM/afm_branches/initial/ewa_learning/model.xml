@@ -17,11 +17,13 @@
     <constants>
 	<variable><type>int</type><name>nr_params</name><description>10, Number of parameters in a portfolio rule.</description></variable>
 	<variable><type>int</type><name>print_debug</name><description>0 or 1, Boolean for debugging print statements.</description></variable>
+	<variable><type>int</type><name>print_log</name><description>0 or 1, A flag to print logging output to terminal or to file.</description></variable>
     </constants>
     
     <functionFiles>
       <file>Household_ewa_functions.c</file>
       <file>FinancialAgent_ewa_functions.c</file>
+      <file>Household_aux_functions.c</file>
       <file>FinancialAgent_aux_functions.c</file>
       <file>some_new_functions.c</file>
     </functionFiles>
@@ -57,6 +59,12 @@
 	 <name>yearly</name>
 	 <unit>monthly</unit>
 	 <period>12</period>
+	</timeUnit>
+	
+	<timeUnit>
+	 <name>millionyearly</name>
+	 <unit>yearly</unit>
+	 <period>1000000</period>
 	</timeUnit>
 	
 	</timeUnits>
@@ -133,27 +141,27 @@
 		</variable>
 		<variable>
 		<type>double</type>
-		<name>stepsize[10]</name>
+		<name>stepsize[8]</name>
 		<description>Mutation stepsize for each parameter</description>
 		</variable>
 		<variable>
-		<type>double</type>
+		<type>int</type>
 		<name>delta_min</name>
-		<description>Mutation lower range, delta_min*stepsize[i]</description>
+		<description>Lower bound on number of units to mutate inside the mutation range: delta_min can be negative or positive. </description>
 		</variable>
 		<variable>
-		<type>double</type>
+		<type>int</type>
 		<name>delta_max</name>
-		<description>Mutation upper range, delta_max*stepsize[i]</description>
+		<description>Upper bound on number of units to mutate inside the mutation range: delta_max should be positive.</description>
 		</variable>
 		<variable>
 		<type>double</type>
-		<name>min_values[10]</name>
+		<name>min_values[8]</name>
 		<description>Minimum values for each parameter</description>
 		</variable>
 		<variable>
 		<type>double</type>
-		<name>max_values[10]</name>
+		<name>max_values[8]</name>
 		<description>Maximum values for each parameter</description>
 		</variable>
 	</variables>
@@ -185,7 +193,7 @@
 		<description>Selection probability for the rule</description>
 		</variable>
 		<variable><type>double</type>
-		<name>parameters[10]</name>
+		<name>parameters[8]</name>
 		<description>Parameter values encoding the rule</description>
 		</variable>
 	</variables>
@@ -216,7 +224,7 @@
 		<description>Agent choice probabilities</description>
 		</variable>
 		<variable><type>double</type>
-		<name>parameters[10]</name>
+		<name>parameters[8]</name>
 		<description>Parameter values encoding the rule</description>
 		</variable>
 	</variables>
@@ -332,7 +340,7 @@
 		  <currentState>Start_Household_EWA_Learning</currentState>
 		  <nextState>Start_GA</nextState>
           <condition>
-          	<not><time><period>iteration</period><phase>1</phase></time></not>
+          	<not><time><period>millionyearly</period><phase>1</phase></time></not>
           </condition>
 		</function>
         		
@@ -342,7 +350,7 @@
           <description></description>
           <currentState>Start_Household_EWA_Learning</currentState>
           <nextState>001</nextState>
-          <condition><time><period>iteration</period><phase>1</phase></time></condition>
+          <condition><time><period>millionyearly</period><phase>1</phase></time></condition>
           <inputs>
           <input>
           	<messageName>initial_rule_details</messageName>
@@ -369,7 +377,7 @@
           	  	</lhs>
 	          		<op>OR</op>
 	          	<rhs>
-		          	<time><period>iteration</period><phase>1</phase></time>
+		          	<time><period>millionyearly</period><phase>1</phase></time>
 	          	</rhs>
           </condition>
 		</function>
@@ -385,7 +393,7 @@
 	          </lhs>
 	          	 <op>AND</op>
 	          <rhs>
-		          <not><time><period>iteration</period><phase>1</phase></time></not>
+		          <not><time><period>millionyearly</period><phase>1</phase></time></not>
 	          </rhs>
           </condition>
           <inputs></inputs>
@@ -424,7 +432,7 @@
     			</lhs>
               		<op>OR</op>
 	          	<rhs>
-		          	<time><period>iteration</period><phase>1</phase></time>
+		          	<time><period>millionyearly</period><phase>1</phase></time>
 	          	</rhs>
           </condition>
 		</function>
@@ -439,7 +447,7 @@
 	          </lhs>
 	          	<op>AND</op>
 	          <rhs>
-		          <not><time><period>iteration</period><phase>1</phase></time></not>
+		          <not><time><period>millionyearly</period><phase>1</phase></time></not>
 	          </rhs>
           </condition>
           <inputs></inputs>
@@ -516,7 +524,7 @@
 		  <currentState>Start_FinancialAgent</currentState>
 		  <nextState>Start_GA</nextState>
           <condition>
-          	<not><time><period>iteration</period><phase>1</phase></time></not>
+          	<not><time><period>millionyearly</period><phase>1</phase></time></not>
           </condition>
 		</function>
       
@@ -526,10 +534,12 @@
 		  <description></description>
 		  <currentState>Start_FinancialAgent</currentState>
 		  <nextState>Start_GA</nextState>
-          <condition><time><period>iteration</period><phase>1</phase></time></condition>
+          <condition><time><period>millionyearly</period><phase>1</phase></time></condition>
+          <outputs>
           <output>
           	<messageName>initial_rule_details</messageName>
           </output>
+		  </outputs>
 	    </function>
       
 	    <!-- Idle bypassing the GA -->
@@ -544,7 +554,7 @@
 	          </lhs>
 	          		<op>OR</op>
 	          <rhs>
-		          <time><period>iteration</period><phase>1</phase></time>
+		          <time><period>millionyearly</period><phase>1</phase></time>
 	          </rhs>          
           </condition>
 	    </function>
@@ -560,7 +570,7 @@
 	          </lhs>
 	          		<op>AND</op>
 	          <rhs>
-		          <not><time><period>iteration</period><phase>1</phase></time></not>
+		          <not><time><period>millionyearly</period><phase>1</phase></time></not>
 	          </rhs>
           </condition>
           <inputs></inputs>
@@ -668,7 +678,7 @@
         </variable>
         <variable>
           <type>double</type>
-          <name>parameters[10]</name>
+          <name>parameters[8]</name>
           <description></description>
         </variable>
       </variables>
@@ -684,7 +694,7 @@
         </variable>
         <variable>
           <type>double</type>
-          <name>parameters[10]</name>
+          <name>parameters[8]</name>
           <description></description>
         </variable>
       </variables>

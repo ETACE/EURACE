@@ -49,6 +49,12 @@
  <period>12</period>
 </timeUnit>
 
+<timeUnit>
+ <name>millionyearly</name>
+ <unit>yearly</unit>
+ <period>1000000</period>
+</timeUnit>
+
 </timeUnits>
 
 </environment>
