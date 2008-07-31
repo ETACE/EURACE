@@ -90,6 +90,7 @@ These values can now be send at the end of the month to Eurostat in the send_dat
 ----------------------------------------------------------------------
 Sander, rev 1025
 NOTE: New features are still experimental and have been turned off in the model.xml
+28/07/08: After the Sheffield Meeting, the features have been turned on.
 
 Feature: history storage in Eurostat
 
@@ -132,6 +133,7 @@ Single history_items for storing monthly and quarterly growth rates of each vari
 ----------------------------------------------------------------------
 Sander, rev 1046
 NOTE: New features are still experimental and have been turned off in the model.xml
+28/07/08: After the Sheffield Meeting, the features have been turned on.
 
 New feature: Eurostat collects data on firm demises and firm births (related to bankruptcy process and firm creation process)
 New feature: Firms now have an age!! This is necessary to measure the average firm survival rate.

@@ -565,6 +565,8 @@ int Firm_execute_production()
 	//Set actual production value that is retained  in memory during the month:
 	OUTPUT = PRODUCTION_QUANTITY;
 	
+	TOTAL_SUPPLY = TOTAL_UNITS_LOCAL_INVENTORY + OUTPUT;
+
 	//printf("In Execute production: Firm %d PRODUCTION_QUANTITY: %.2f (%.2f) \n", ID, PRODUCTION_QUANTITY, diff);
 	//printf("In Execute production: Firm %d OUTPUT: %.2f (%.2f)\n", ID, OUTPUT, diff);
 

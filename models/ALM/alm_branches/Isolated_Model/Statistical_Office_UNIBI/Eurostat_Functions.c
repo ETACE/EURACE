@@ -1390,6 +1390,7 @@ int Eurostat_compute_growth_rates_quarterly()
 /* \fn: int Eurostat_firm_creation()
  * \brief: The firm creation process
  */
+/*
 int Eurostat_firm_creation()
 {
 	int i;
@@ -1421,3 +1422,4 @@ int Eurostat_firm_creation()
 	
     return 0;
 }
+*/
