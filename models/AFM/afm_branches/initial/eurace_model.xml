@@ -75,6 +75,9 @@
 <memory>
 <variable><type>int</type><name>id</name><description></description></variable>
 <variable><type>int</type><name>day_of_month_to_act</name><description></description></variable>
+<variable><type>double</type><name>global_rnd</name><description></description></variable>
+<variable><type>double</type><name>prob_random</name><description></description></variable>
+<variable><type>double</type><name>prob_fund</name><description></description></variable>
 </memory>
 </xagent>
 </agents>

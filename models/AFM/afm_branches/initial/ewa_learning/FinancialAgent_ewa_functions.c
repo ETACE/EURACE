@@ -40,7 +40,7 @@ int FinancialAgent_initialize_rule_details()
 		}
 		add_initial_rule_details_message(i, PUBLIC_CLASSIFIERSYSTEM.ruletable[i].parameters);
 	}
-	
+		
 	return 0;
 }
 

@@ -42,6 +42,31 @@ int Household_initialize_rule_details()
 		}
 	FINISH_INITIAL_RULE_DETAILS_MESSAGE_LOOP
     
+	//Special code for AFM weights init:
+	//RANDOMWEIGHT     
+	//FUNDAMENTALWEIGHT
+	//CHARTISTWEIGHT		
+	//We have included in agent memory: global_rnd, prob_random, prob_fund
+	
+	if(GLOBAL_RND <= PROB_RANDOM)
+	{
+		RANDOMWEIGHT  = 1.0;
+		FUNDAMENTALWEIGHT = 0.0;
+		CHARTISTWEIGHT = 0.0;
+	}
+	else if ( PROB_RANDOM < GLOBAL_RND && GLOBAL_RND <=	PROB_RANDOM + PROB_FUND)
+	{
+		RANDOMWEIGHT  = 0.0;
+		FUNDAMENTALWEIGHT = 1.0;
+		CHARTISTWEIGHT = 0.0;
+	}
+	else
+	{
+		RANDOMWEIGHT  = 0.0;
+		FUNDAMENTALWEIGHT = 0.0;
+		CHARTISTWEIGHT = 1.0;
+	}
+
     return 0;
 }
 

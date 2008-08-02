@@ -141,7 +141,7 @@
 		</variable>
 		<variable>
 		<type>double</type>
-		<name>stepsize[8]</name>
+		<name>stepsize[5]</name>
 		<description>Mutation stepsize for each parameter</description>
 		</variable>
 		<variable>
@@ -156,12 +156,12 @@
 		</variable>
 		<variable>
 		<type>double</type>
-		<name>min_values[8]</name>
+		<name>min_values[5]</name>
 		<description>Minimum values for each parameter</description>
 		</variable>
 		<variable>
 		<type>double</type>
-		<name>max_values[8]</name>
+		<name>max_values[5]</name>
 		<description>Maximum values for each parameter</description>
 		</variable>
 	</variables>
@@ -193,7 +193,7 @@
 		<description>Selection probability for the rule</description>
 		</variable>
 		<variable><type>double</type>
-		<name>parameters[8]</name>
+		<name>parameters[5]</name>
 		<description>Parameter values encoding the rule</description>
 		</variable>
 	</variables>
@@ -224,7 +224,7 @@
 		<description>Agent choice probabilities</description>
 		</variable>
 		<variable><type>double</type>
-		<name>parameters[8]</name>
+		<name>parameters[5]</name>
 		<description>Parameter values encoding the rule</description>
 		</variable>
 	</variables>
@@ -678,7 +678,7 @@
         </variable>
         <variable>
           <type>double</type>
-          <name>parameters[8]</name>
+          <name>parameters[5]</name>
           <description></description>
         </variable>
       </variables>
@@ -694,7 +694,7 @@
         </variable>
         <variable>
           <type>double</type>
-          <name>parameters[8]</name>
+          <name>parameters[5]</name>
           <description></description>
         </variable>
       </variables>
