@@ -490,7 +490,6 @@ including several micro data.</description>
 <!--<nextState>Start_Eurostat_Quarterly_Datastorage</nextState> Toggle this if you want to turn OFF growthrates functionality -->
 <condition>
         <time><period>monthly</period><phase>0</phase></time>
-    
 </condition>
 </function>
 
@@ -505,9 +504,7 @@ including several micro data.</description>
 <currentState>Start_Eurostat_Monthly_Datastorage</currentState>
 <nextState>Start_Eurostat_Quarterly_Datastorage</nextState>
 <condition>
-   
         <not><time><period>monthly</period><phase>0</phase></time></not>
-    
 </condition>
 </function>
 
@@ -519,9 +516,7 @@ including several micro data.</description>
 <nextState>03</nextState>                   <!--Toggle this if you want to turn ON growthrates functionality -->
 <!--<nextState>end_Eurostat</nextState>                 Toggle this if you want to turn OFF growthrates functionality -->
 <condition>
-    
         <time><period>quarterly</period><phase>0</phase></time>
-   
 </condition>
 </function>
 
@@ -536,9 +531,7 @@ including several micro data.</description>
 <currentState>Start_Eurostat_Quarterly_Datastorage</currentState>
 <nextState>end_Eurostat</nextState>
 <condition>
-   
         <not><time><period>quarterly</period><phase>0</phase></time></not>
-   
 </condition>
 </function>
 

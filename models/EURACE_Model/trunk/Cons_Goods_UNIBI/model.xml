@@ -231,19 +231,11 @@ on the current stocks in the malls</description>
 <function><name>Firm_calc_production_quantity_2</name>
 <description>Firms iterate over the planned production quantity decreasing it incrementally,
  such that the corresponding labor demand and capital demand can be financed by 
- the actually obtained financial resources</description>
-<currentState>Firm_resolved_financial_crisis_state</currentState>
-<nextState>Update_01</nextState>
-<!--<condition><not><lhs><value>a.payment_account</value></lhs><op>GEQ</op><rhs><value>a.planned_production_costs</value></rhs></not></condition>-->
+ the actually obtained financial resources, AFTER all prior financial commitments have been paid.</description>
+<currentState>Firm_End_Financial_Management</currentState>
+<nextState>Firm_Start_Labour_Role</nextState>
 </function>
-<!--
-<function><name>Firm_idle</name>
-<description>Firm does nothing</description>
-<currentState>End_Firm_Financial_Management</currentState>
-<nextState>Update_01</nextState>
-<condition><lhs><value>a.financial_resources_for_production</value></lhs><op>GEQ</op><rhs><value>a.planned_production_costs</value></rhs></condition>
-</function>
--->
+
 <function><name>Firm_send_capital_demand</name>
 <description>Firm sends demand for capital to the capital goods market.</description>
 <currentState>End_Firm_Labour_Role</currentState>

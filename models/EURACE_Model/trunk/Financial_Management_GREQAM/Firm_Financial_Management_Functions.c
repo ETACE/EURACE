@@ -347,6 +347,7 @@ int Firm_in_financial_crisis()
  *  - total_interest_payments
  *  - total_dividend_payment
  * The payments are all subtracted from the payment account.
+ * After this, all that is left over on the payment account can be used to pay for factor inputs for production.
  */
 int Firm_execute_financial_payments()
 {	
