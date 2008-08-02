@@ -418,7 +418,9 @@ int Firm_calc_input_demands()
 
 /** \fn Firm_calc_production_quantity_2()
  * \brief Firms iterate over the planned production quantity decreasing it incrementally,
- * such that the corresponding labor demand and capital demand can be financed by the actually obtained financial resources.*/
+ * such that the corresponding labor demand and capital demand can be financed by the actually obtained financial resources.
+ * If PLANNED_PRODUCTION_COSTS <= PAYMENT_ACCOUNT this function does nothing.
+ */
 int Firm_calc_production_quantity_2()
 {
 	//printf("Firm_calc_production_quantity_2() ID: %d\n",ID);
@@ -431,19 +433,19 @@ int Firm_calc_production_quantity_2()
 	decrement = ADAPTION_PRODUCTION_VOLUME_DUE_TO_INSUFFICIENT_FINANCES*PLANNED_PRODUCTION_QUANTITY;
 	
 		
-		if( FINANCIAL_RESOURCES_FOR_PRODUCTION>0.0)
+		//if( FINANCIAL_RESOURCES_FOR_PRODUCTION>0.0)
+		if( PAYMENT_ACCOUNT>0.0)
 		{
-		while (PLANNED_PRODUCTION_COSTS > FINANCIAL_RESOURCES_FOR_PRODUCTION)
-		{
-			
-			PLANNED_PRODUCTION_QUANTITY -= decrement;
-			Firm_calc_input_demands_2();
-		}
+			//while (PLANNED_PRODUCTION_COSTS > FINANCIAL_RESOURCES_FOR_PRODUCTION)
+			while (PLANNED_PRODUCTION_COSTS > PAYMENT_ACCOUNT)
+			{
+				PLANNED_PRODUCTION_QUANTITY -= decrement;
+				Firm_calc_input_demands_2();
+			}
 		}else
 		{
-		PLANNED_PRODUCTION_QUANTITY=0.0;
-		Firm_calc_input_demands_2();
-
+			PLANNED_PRODUCTION_QUANTITY=0.0;
+			Firm_calc_input_demands_2();
 		}
 	
 	//printf("Labour: %d  Capital: %f  PLANNED_PROD_COSTS: %f\n", EMPLOYEES_NEEDED,NEEDED_CAPITAL_STOCK,PLANNED_PRODUCTION_COSTS);

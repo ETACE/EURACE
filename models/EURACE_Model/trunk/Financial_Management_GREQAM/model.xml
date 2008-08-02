@@ -249,7 +249,7 @@
 <name>Firm_in_financial_crisis</name>
 <description>Function to resolve the financial crisis by lowering dividends.</description>
 <currentState>Firm_checks_financial_crisis</currentState>
-<nextState>Firm_resolved_financial_crisis_state</nextState>
+<nextState>Firm_Ends_External_Financing</nextState>
 <condition>
 	<lhs><value>a.financial_crisis_state</value></lhs><op>EQ</op><rhs><value>1</value></rhs>
 
@@ -270,54 +270,12 @@
 </outputs>
 </function>
 
-<!--
-<function>
-<name>Firm_not_in_financial_crisis</name>
-<description>Function to resolve the financial crisis by lowering dividends.</description>
-<currentState>Firm_checks_financial_crisis</currentState>
-<nextState>Update_01</nextState>
-<condition>
-	<lhs><value>a.financial_crisis_state</value></lhs><op>EQ</op><rhs><value>0</value></rhs>
-
-</condition>
-<outputs>
-</outputs>
-</function>
--->
-
-<!--<function>-->
-<!--<name>Firm_execute_financial_payments</name>-->
-<!--<description>Function to execute financial payments.</description>-->
-<!--<currentState>Firm_financial_crisis_state</currentState>-->
-<!--<nextState>End_Firm_Financial_Management</nextState>-->
-<!--<outputs>-->
-<!--<output><messageName>tax_payment</messageName></output>-->
-<!--<output><messageName>dividend_per_share</messageName></output>-->
-<!--<output><messageName>installment</messageName></output>-->
-<!--</outputs>-->
-<!--</function>-->
-
-<!--<function>-->
-<!--<name>Firm_execute_financial_payments</name>-->
-<!--<description>Function to execute financial payments.</description>-->
-<!--<currentState>Firm_checks_financial_crisis</currentState>-->
-<!--<nextState>Update_01</nextState>-->
-<!--<condition>-->
-<!--	<lhs><value>a.financial_crisis_state</value></lhs><op>EQ</op><rhs><value>0</value></rhs>-->
-<!--</condition>-->
-<!--<outputs>-->
-<!--<output><messageName>tax_payment</messageName></output>-->
-<!--<output><messageName>dividend_per_share</messageName></output>-->
-<!--<output><messageName>installment</messageName></output>-->
-<!--</outputs>-->
-<!--</function>-->
-
 <!-- Idle bypassing the financial crisis state  -->
 <function>
 <name>idle</name>
 <description></description>
 <currentState>Firm_checks_financial_crisis</currentState>
-<nextState>Update_01</nextState>
+<nextState>Firm_Ends_External_Financing</nextState>
 <condition>
  <lhs><value>a.financial_crisis_state</value></lhs><op>EQ</op><rhs><value>0</value></rhs>
 </condition>
@@ -329,7 +287,7 @@
 <name>idle</name>
 <description></description>
 <currentState>Start_Firm_Credit_Role</currentState>
-<nextState>Update_01</nextState>
+<nextState>Firm_Ends_External_Financing</nextState>
 <condition><not><lhs><value>a.external_financial_needs</value></lhs><op>GT</op><rhs><value>0.0</value></rhs></not></condition>
 </function>
 
@@ -338,30 +296,21 @@
 <name>idle</name>
 <description></description>
 <currentState>Firm_End_Credit_Role</currentState>
-<nextState>Update_01</nextState>
+<nextState>Firm_Ends_External_Financing</nextState>
 <condition><not><lhs><value>a.external_financial_needs</value></lhs><op>GT</op><rhs><value>0.0</value></rhs></not></condition>
 </function>
-
 
 <!-- Firm_execute_financial_payments for all branches -->
 <function>
 <name>Firm_execute_financial_payments</name>
 <description>Function to execute financial payments.</description>
-<currentState>Update_01</currentState>
+<currentState>Firm_Ends_External_Financing</currentState>
 <nextState>Firm_End_Financial_Management</nextState>
 <outputs>
 <output><messageName>tax_payment</messageName></output>
 <output><messageName>dividend_per_share</messageName></output>
 <output><messageName>installment</messageName></output>
 </outputs>
-</function>
-
-<!-- Idle between two states  -->
-<function>
-<name>idle</name>
-<description></description>
-<currentState>Firm_End_Financial_Management</currentState>
-<nextState>Firm_Start_Labour_Role</nextState>
 </function>
 
 </functions>

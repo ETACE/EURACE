@@ -429,4 +429,42 @@ Removed two old variables:
 	direct_financial_needs_require_external_financing
 	delayed_financial_needs_require_external_financing
 ----------------------------------------------------------------------
-	
+Sander, rev 1306
+
+File: Cons_Goods_UNIBI/Firm_Producer_Functions.c:
+line 424 - 463:
+
+I have changed the function Firm_calc_prod_quantity_2 to use the mem var
+PAYMENT_ACCOUNT instead of FINANCIAL_RESOURCES_FOR_PRODUCTION
+
+If PLANNED_PRODUCTION_COSTS <= PAYMENT_ACCOUNT this function does nothing, since the while loop does not get executed..
+
+File: Cons_Goods_UNIBI/model.xml:
+line 231 -236
+
+Firm_calc_prod_quantity_2 now goes from state Firm_End_Financial_Management  to state Firm_Start_Labour_Role. This puts the function Firm_calc_prod_quantity_2 
+between the end of the financial management and the beginning of the labour market role.
+It is after the function Firm_execute_financial_payments, which ensures that the financial payments are already subtracted from the PAYMENT_ACCOUNT.
+
+- Removed the condition (a.financial_resources_for_production >=a.planned_production_costs)
+- Removed the memvar financial_resources_for_production from the firm's memory.
+
+File: Financial_Management_GREQAM/Firm_Financial_Management_Functions.c
+
+In the function Firm_execute_financial_payments the firm pays the following:
+- taxes
+- installments
+- interest
+- dividends
+
+After this, all that is left over on the payment_account can be used to pay for factor inputs for production.
+
+So it is now no longer necessary to have this code:
+FINANCIAL_RESOURCES_FOR_PRODUCTION = 
+PAYMENT_ACCOUNT - TOTAL_INTEREST_PAYMENTS - TOTAL_DEBT_INSTALLMENT_PAYMENTS _ TOTAL_TAX_PAYMENTS - TOTAL_DIVIDEND_PAYMENT;
+
+The variable FINANCIAL_RESOURCES_FOR_PRODUCTION is redundant, since all payments have already been subtracted from the PAYMENT_ACCOUNT.
+
+File: Financial_Management_GREQAM/model.xml:
+- Changed state Update_01 into: Firm_Ends_External_Financing
+----------------------------------------------------------------------
