@@ -69,7 +69,7 @@ int Firm_compute_income_statement()
    
     // compute net earnings
     EARNINGS = CUM_REVENUE - TOTAL_INTEREST_PAYMENT - PRODUCTION_COSTS;
-    	
+        
     TAX_PAYMENT = TAX_RATE_CORPORATE * EARNINGS;
     PREVIOUS_NET_EARNINGS = NET_EARNINGS;
     NET_EARNINGS = EARNINGS - TAX_PAYMENT;
@@ -92,45 +92,45 @@ int Firm_compute_income_statement()
  */
 int Firm_compute_dividends()
 {
-	//Determine total_dividend_payment
-	//option 1: total divided payment remains constant
-	//TOTAL_DIVIDEND_PAYMENT *= 1;
-	
-	//option 2: total dividend payment increases with same ratio as net earnings
-	//This is very dangerous, since earnings may fluctuate violently
-	//TOTAL_DIVIDEND_PAYMENT *= NET_EARNINGS/PREVIOUS_NET_EARNINGS;
-	
-	//option 3: keep dividend per share constant
-	//total divided payment increases with same ratio as current_shares_outstanding
-	//TOTAL_DIVIDEND_PAYMENT *= CURRENT_SHARES_OUTSTANDING/PREVIOUS_SHARES_OUTSTANDING;
-	
-	//option 4: keep earnings per share constant
-	//total divided payment increases with same ratio as earnings per share
-	//if current_shares_outstanding remains constant, this keeps earnings per share constant
-	
-	TOTAL_DIVIDEND_PAYMENT = TOTAL_DIVIDEND_PAYMENT * (EARNINGS_PER_SHARE/PREVIOUS_EARNINGS_PER_SHARE);
-	
-	//option 5: keep dividend to earnings ratio constant (dont let it fall), but do not decrease the dividend per share ratio.
-	/*
-	    if (CURRENT_DIVIDEND_PER_EARNINGS < PREVIOUS_DIVIDEND_PER_EARNINGS)
-	    {
-	        //Maintain the dividend to earnings ratio
-	        //D_{t} = (D_{t-1}/E_{t-1})*E_{t}
-	        TOTAL_DIVIDEND_PAYMENT = PREVIOUS_DIVIDEND_PER_EARNINGS * NET_EARNINGS;
-	        
-	        //But do not decrease the dividend per share ratio
-	        if (TOTAL_DIVIDEND_PAYMENT/CURRENT_SHARES_OUTSTANDING < CURRENT_DIVIDEND_PER_SHARE)
-	        {
-	            TOTAL_DIVIDEND_PAYMENT = CURRENT_DIVIDEND_PER_SHARE * CURRENT_SHARES_OUTSTANDING;
-	        }
-	    }
-	    else
-	    {
-	        //the dividend to earnings ratio did not decrease
-	        //else keep the dividend per share ratio constant
-	        TOTAL_DIVIDEND_PAYMENT = PREVIOUS_DIVIDEND_PER_SHARE*CURRENT_SHARES_OUTSTANDING;
-	    }
-	*/
+    //Determine total_dividend_payment
+    //option 1: total divided payment remains constant
+    //TOTAL_DIVIDEND_PAYMENT *= 1;
+    
+    //option 2: total dividend payment increases with same ratio as net earnings
+    //This is very dangerous, since earnings may fluctuate violently
+    //TOTAL_DIVIDEND_PAYMENT *= NET_EARNINGS/PREVIOUS_NET_EARNINGS;
+    
+    //option 3: keep dividend per share constant
+    //total divided payment increases with same ratio as current_shares_outstanding
+    //TOTAL_DIVIDEND_PAYMENT *= CURRENT_SHARES_OUTSTANDING/PREVIOUS_SHARES_OUTSTANDING;
+    
+    //option 4: keep earnings per share constant
+    //total divided payment increases with same ratio as earnings per share
+    //if current_shares_outstanding remains constant, this keeps earnings per share constant
+    
+    TOTAL_DIVIDEND_PAYMENT = TOTAL_DIVIDEND_PAYMENT * (EARNINGS_PER_SHARE/PREVIOUS_EARNINGS_PER_SHARE);
+    
+    //option 5: keep dividend to earnings ratio constant (dont let it fall), but do not decrease the dividend per share ratio.
+    /*
+        if (CURRENT_DIVIDEND_PER_EARNINGS < PREVIOUS_DIVIDEND_PER_EARNINGS)
+        {
+            //Maintain the dividend to earnings ratio
+            //D_{t} = (D_{t-1}/E_{t-1})*E_{t}
+            TOTAL_DIVIDEND_PAYMENT = PREVIOUS_DIVIDEND_PER_EARNINGS * NET_EARNINGS;
+            
+            //But do not decrease the dividend per share ratio
+            if (TOTAL_DIVIDEND_PAYMENT/CURRENT_SHARES_OUTSTANDING < CURRENT_DIVIDEND_PER_SHARE)
+            {
+                TOTAL_DIVIDEND_PAYMENT = CURRENT_DIVIDEND_PER_SHARE * CURRENT_SHARES_OUTSTANDING;
+            }
+        }
+        else
+        {
+            //the dividend to earnings ratio did not decrease
+            //else keep the dividend per share ratio constant
+            TOTAL_DIVIDEND_PAYMENT = PREVIOUS_DIVIDEND_PER_SHARE*CURRENT_SHARES_OUTSTANDING;
+        }
+    */
 
     return 0;
 }
@@ -147,10 +147,10 @@ int Firm_compute_dividends()
  */
 int Firm_compute_total_financial_payments()
 {
-	//This variable is not used anywhere: it is the sum of financial_liquidity_needs and production_liquidity_needs
-	//but excluding the tax_payments. The tax_payments do not need to be financed since we assume they can always be paid out of earnings. 
-	TOTAL_PAYMENTS = TOTAL_INTEREST_PAYMENT + TOTAL_DEBT_INSTALLMENT_PAYMENT + TOTAL_DIVIDEND_PAYMENT + TAX_PAYMENT + PRODUCTION_COSTS;
-	return 0;
+    //This variable is not used anywhere: it is the sum of financial_liquidity_needs and production_liquidity_needs
+    //but excluding the tax_payments. The tax_payments do not need to be financed since we assume they can always be paid out of earnings. 
+    TOTAL_PAYMENTS = TOTAL_INTEREST_PAYMENT + TOTAL_DEBT_INSTALLMENT_PAYMENT + TOTAL_DIVIDEND_PAYMENT + TAX_PAYMENT + PRODUCTION_COSTS;
+    return 0;
 }
 
 /*
@@ -175,22 +175,6 @@ int Firm_compute_balance_sheet()
     //+ TOTAL_VALUE_LOCAL_INVENTORY: value of all the local inventory stocks held at the malls        
     
     
-	/*reading current mall stocks   */
-	START_CURRENT_MALL_STOCK_INFO_MESSAGE_LOOP
-//		if(current_mall_stock_info_message->firm_id == ID)
-//		{
-			for(int j=0; j< CURRENT_MALL_STOCKS.size;j++)
-			{
-				if(current_mall_stock_info_message->mall_id==
-				CURRENT_MALL_STOCKS.array[j].mall_id)
-				{
-					/*Firms update the stock level in one mall*/
-					CURRENT_MALL_STOCKS.array[j].current_stock= current_mall_stock_info_message->stock;
-				}		
-			}
-//		}
-	FINISH_CURRENT_MALL_STOCK_INFO_MESSAGE_LOOP
-
     //TOTAL_VALUE_LOCAL_INVENTORY: estimated value of local inventory stocks at current mall prices
     //We loop over the malls and sum the value of all local inventory stocks
     imax = CURRENT_MALL_STOCKS.size;
@@ -227,7 +211,7 @@ int Firm_compute_total_liquidity_needs()
     int i;
 
     //step 12B: set production and payout financial_needs
-    PRODUCTION_LIQUIDITY_NEEDS = PRODUCTION_COSTS;
+    PRODUCTION_LIQUIDITY_NEEDS = PLANNED_PRODUCTION_COSTS;
     FINANCIAL_LIQUIDITY_NEEDS = TOTAL_INTEREST_PAYMENT + TOTAL_DEBT_INSTALLMENT_PAYMENT + TAX_PAYMENT;
 
     //step 12C:
@@ -239,14 +223,14 @@ int Firm_compute_total_liquidity_needs()
 
     //CASE 1: No external financing needed
         if (PAYMENT_ACCOUNT >= TOTAL_FINANCIAL_NEEDS)
-        {        	
+        {           
             //printf("Firm_financial_needs, External financing: case 1.");
             EXTERNAL_FINANCIAL_NEEDS = 0.0;                   
         }
         else
         {
-        	//external financing needed
-        	EXTERNAL_FINANCIAL_NEEDS = TOTAL_FINANCIAL_NEEDS - PAYMENT_ACCOUNT;
+            //external financing needed
+            EXTERNAL_FINANCIAL_NEEDS = TOTAL_FINANCIAL_NEEDS - PAYMENT_ACCOUNT;
         }
             
     return 0;
@@ -257,26 +241,26 @@ int Firm_compute_total_liquidity_needs()
  * \brief Function that checks the balance sheet and sets flags for the bankruptcy- or financial crisis state.
  */
 int Firm_check_financial_and_bankruptcy_state()
-{	
+{   
 
-	BANKRUPTCY_STATE=0;
-	FINANCIAL_CRISIS_STATE=0;
-		
-	//Check bankrupcy condition
-	if (PAYMENT_ACCOUNT < TOTAL_FINANCIAL_NEEDS)
-	{
-	    //Code: check if payment account is also less than financial payments
-		if (PAYMENT_ACCOUNT < TOTAL_INTEREST_PAYMENTS + TOTAL_DEBT_INSTALLMENT_PAYMENT + TAX_PAYMENT)
-		{
-			BANKRUPTCY_STATE=1;
-		}
-		if (PAYMENT_ACCOUNT >= TOTAL_INTEREST_PAYMENTS + TOTAL_DEBT_INSTALLMENT_PAYMENT + TAX_PAYMENT)
-		{
-			//Financial crisis condition
-			FINANCIAL_CRISIS_STATE=1;
-		}
-	}
-	return 0;
+    BANKRUPTCY_STATE=0;
+    FINANCIAL_CRISIS_STATE=0;
+        
+    //Check bankrupcy condition
+    if (PAYMENT_ACCOUNT < TOTAL_FINANCIAL_NEEDS)
+    {
+        //Code: check if payment account is also less than financial payments
+        if (PAYMENT_ACCOUNT < TOTAL_INTEREST_PAYMENTS + TOTAL_DEBT_INSTALLMENT_PAYMENT + TAX_PAYMENT)
+        {
+            BANKRUPTCY_STATE=1;
+        }
+        if (PAYMENT_ACCOUNT >= TOTAL_INTEREST_PAYMENTS + TOTAL_DEBT_INSTALLMENT_PAYMENT + TAX_PAYMENT)
+        {
+            //Financial crisis condition
+            FINANCIAL_CRISIS_STATE=1;
+        }
+    }
+    return 0;
 }
 
 
@@ -287,11 +271,11 @@ int Firm_check_financial_and_bankruptcy_state()
  */
 int Firm_in_bankruptcy()
 {
-	int i,imax;
-	double bad_debt, credit_refunded, residual_var;
-	
-	//Effect on credit market
-	//Refunding credit, bad debt
+    int i,imax;
+    double bad_debt, credit_refunded, residual_var;
+    
+    //Effect on credit market
+    //Refunding credit, bad debt
     imax = LOANS.size;
     for (i=0; i<imax;i++)
     {
@@ -300,9 +284,9 @@ int Firm_in_bankruptcy()
         bad_debt        = LOANS.array[i].loan_value - credit_refunded;
 
         //add_bankruptcy_message(bank_id, bad_debt, credit_refunded, residual_var);
-    	add_bankruptcy_message(LOANS.array[i].bank_id, bad_debt, credit_refunded, residual_var);
+        add_bankruptcy_message(LOANS.array[i].bank_id, bad_debt, credit_refunded, residual_var);
     }
-	
+    
     //Effect on labour market
     //Firing all employees
     
@@ -325,33 +309,33 @@ int Firm_in_bankruptcy()
  * \brief Function to resolve the financial crisis by lowering dividends.
  */
 int Firm_in_financial_crisis()
-{	
-	double payment_account_after_compulsory_payments;
-	
-	//Try to resolve the crisis
-	
-	//Recompute dividend
-	//Set TOTAL_DIVIDEND_PAYMENT
-	payment_account_after_compulsory_payments = PAYMENT_ACCOUNT  - (TOTAL_INTEREST_PAYMENTS + TOTAL_DEBT_INSTALLMENT_PAYMENT + TAX_PAYMENT)
-	TOTAL_DIVIDEND_PAYMENT = max(0, payment_account_after_compulsory_payments - PRODUCTION_COSTS);
-	
-	//Set flag if resolved:
-	if (PAYMENT_ACCOUNT >= TOTAL_INTEREST_PAYMENTS + TOTAL_DEBT_INSTALLMENT_PAYMENT + TAX_PAYMENT + TOTAL_DIVIDEND_PAYMENT)
-	{
-		FINANCIAL_CRISIS_STATE=0;
-		BANKRUPTCY_STATE=0;
-	}
-	
-	//Set flag if not resolved: payment account remains below total needs
+{   
+    double payment_account_after_compulsory_payments;
+    
+    //Try to resolve the crisis
+    
+    //Recompute dividend
+    //Set TOTAL_DIVIDEND_PAYMENT
+    payment_account_after_compulsory_payments = PAYMENT_ACCOUNT  - (TOTAL_INTEREST_PAYMENTS + TOTAL_DEBT_INSTALLMENT_PAYMENT + TAX_PAYMENT);
+    TOTAL_DIVIDEND_PAYMENT = max(0, payment_account_after_compulsory_payments - PRODUCTION_COSTS);
+    
+    //Set flag if resolved:
+    if (PAYMENT_ACCOUNT >= TOTAL_INTEREST_PAYMENTS + TOTAL_DEBT_INSTALLMENT_PAYMENT + TAX_PAYMENT + TOTAL_DIVIDEND_PAYMENT)
+    {
+        FINANCIAL_CRISIS_STATE=0;
+        BANKRUPTCY_STATE=0;
+    }
+    
+    //Set flag if not resolved: payment account remains below total needs
 /*
-	if (PAYMENT_ACCOUNT < TOTAL_INTEREST_PAYMENTS + TOTAL_DEBT_INSTALLMENT_PAYMENT + TAX_PAYMENT + TOTAL_DIVIDEND_PAYMENT_REALIZED)
-	{
-		FINANCIAL_CRISIS_STATE=0;
-		BANKRUPTCY_STATE=1;
-	}
-	
+    if (PAYMENT_ACCOUNT < TOTAL_INTEREST_PAYMENTS + TOTAL_DEBT_INSTALLMENT_PAYMENT + TAX_PAYMENT + TOTAL_DIVIDEND_PAYMENT_REALIZED)
+    {
+        FINANCIAL_CRISIS_STATE=0;
+        BANKRUPTCY_STATE=1;
+    }
+    
 */
-	return 0;
+    return 0;
 }
 
 /*
@@ -364,58 +348,58 @@ int Firm_in_financial_crisis()
  * The payments are all subtracted from the payment account.
  */
 int Firm_execute_financial_payments()
-{	
-	
-		//No bankruptcy
-		
-		//step 1: actual tax_payment to government
-		add_tax_payment_message(ID, GOV_ID, TAX_PAYMENT);
-		PAYMENT_ACCOUNT -= TAX_PAYMENT;
+{   
+    
+        //No bankruptcy
+        
+        //step 1: actual tax_payment to government
+        add_tax_payment_message(ID, GOV_ID, TAX_PAYMENT);
+        PAYMENT_ACCOUNT -= TAX_PAYMENT;
 
-		//step 2: actual interest_payments and installment_payments
-		//Sending installment_message to banks at which the firm has a loan 
-	    imax = LOANS.size;
-	    for (i=0; i<imax;i++)
-	    {
-	        //decrease payment_account with the interest_payment
-	        PAYMENT_ACCOUNT -= LOANS.array[i].interest_amount;
-		    
-	        //decrease payment_account with the installment payment
-	        PAYMENT_ACCOUNT -= LOANS.array[i].installment_amount;
-	
-	        //decrease the value of the loan with the debt_installment_payment:
-	        LOANS.array[i].loan_value -= LOANS.array[i].installment_amount;
-	        //printf("Now subtracted debt_installment_payment from loan_value: %f (new value:%f).\n", LOANS.array[i].debt_installment_payment, LOANS.array[i].loan_value);
-	
-	        //decrease the residual_var of the loan with the var_per_installment:
-	        LOANS.array[i].residual_var -= LOANS.array[i].var_per_installment;
-	        
-	        //decrease the value of the nr_periods_before_payment
-	        LOANS.array[i].nr_periods_before_repayment -= 1;
-	
-	        //Sending debt_installment_payment_msg to all banks at which the firm has a loan
-	        //Note: this message is to be separated from the general bank_account_update_message send at the end of the period
-	        //to the firm's deposit bank (the banks at which the firm has loans is a different one than the bank at which the firm has deposits).
+        //step 2: actual interest_payments and installment_payments
+        //Sending installment_message to banks at which the firm has a loan 
+        imax = LOANS.size;
+        for (i=0; i<imax;i++)
+        {
+            //decrease payment_account with the interest_payment
+            PAYMENT_ACCOUNT -= LOANS.array[i].interest_amount;
+            
+            //decrease payment_account with the installment payment
+            PAYMENT_ACCOUNT -= LOANS.array[i].installment_amount;
+    
+            //decrease the value of the loan with the debt_installment_payment:
+            LOANS.array[i].loan_value -= LOANS.array[i].installment_amount;
+            //printf("Now subtracted debt_installment_payment from loan_value: %f (new value:%f).\n", LOANS.array[i].debt_installment_payment, LOANS.array[i].loan_value);
+    
+            //decrease the residual_var of the loan with the var_per_installment:
+            LOANS.array[i].residual_var -= LOANS.array[i].var_per_installment;
+            
+            //decrease the value of the nr_periods_before_payment
+            LOANS.array[i].nr_periods_before_repayment -= 1;
+    
+            //Sending debt_installment_payment_msg to all banks at which the firm has a loan
+            //Note: this message is to be separated from the general bank_account_update_message send at the end of the period
+            //to the firm's deposit bank (the banks at which the firm has loans is a different one than the bank at which the firm has deposits).
 
-	        //add_debt_installment_message(bank_id, installment_amount, interest_amount, credit_refunded, var_per_installment)
-	        add_installment_message(LOANS.array[i].bank_id, LOANS.array[i].installment_amount, LOANS.array[i].interest_amount, LOANS.array[i].var_per_installment)
-	
-	        //If nr_periods_before_maturity == 0, remove the loan item
-	        if (LOANS.array[i].nr_periods_before_repayment==0)
-	        {
-	            remove_debt_item(&LOANS, i);
-	        }
-	        
-			//step 3: actual dividend payments
-	        //Actual bank account updates are send to the bank at end of day when the firm sends its bank_update message 
+            //add_debt_installment_message(bank_id, installment_amount, interest_amount, credit_refunded, var_per_installment)
+            add_installment_message(LOANS.array[i].bank_id, LOANS.array[i].installment_amount, LOANS.array[i].interest_amount, LOANS.array[i].var_per_installment)
+    
+            //If nr_periods_before_maturity == 0, remove the loan item
+            if (LOANS.array[i].nr_periods_before_repayment==0)
+            {
+                remove_debt_item(&LOANS, i);
+            }
+            
+            //step 3: actual dividend payments
+            //Actual bank account updates are send to the bank at end of day when the firm sends its bank_update message 
 
-	        //add dividend_per_share_msg(firm_id, current_dividend_per_share) to shareholders (dividend per share)     
-	        CURRENT_DIVIDEND_PER_SHARE = TOTAL_DIVIDEND_PAYMENT/CURRENT_SHARES_OUTSTANDING;
-	        add_dividend_per_share_message(ID, CURRENT_DIVIDEND_PER_SHARE);
+            //add dividend_per_share_msg(firm_id, current_dividend_per_share) to shareholders (dividend per share)     
+            CURRENT_DIVIDEND_PER_SHARE = TOTAL_DIVIDEND_PAYMENT/CURRENT_SHARES_OUTSTANDING;
+            add_dividend_per_share_message(ID, CURRENT_DIVIDEND_PER_SHARE);
 
-	        //decrease payment_account with the total_dividend_payment
-	        PAYMENT_ACCOUNT -= TOTAL_DIVIDEND_PAYMENT;
-	    }
+            //decrease payment_account with the total_dividend_payment
+            PAYMENT_ACCOUNT -= TOTAL_DIVIDEND_PAYMENT;
+        }
 
     return 0;
 }
@@ -428,7 +412,7 @@ int Firm_execute_financial_payments()
  */
 int Firm_compute_and_send_stock_orders()
 {
-	double limit_price=CURRENT_SHARE_PRICE*0.99;
+    double limit_price=CURRENT_SHARE_PRICE*0.99;
     int quantity = -1*(1+EXTERNAL_FINANCIAL_NEEDS/limit_price);
     
     
@@ -446,17 +430,17 @@ int Firm_compute_and_send_stock_orders()
  */
 int Firm_read_stock_transactions()
 {
-	double finances;
-	
+    double finances;
+    
     START_ORDER_STATUS_MESSAGE_LOOP
-    	//Finances obtained: positive quantity is demand, negative quantity is selling
-    	finances = (-1)*order_status_message->price * order_status_message->quantity;
-    	
-    	//Increase payment account with the finances obtained
-    	PAYMENT_ACCOUNT += finances;
-    	
-    	//Decrease external financial needs with the finances obtained
-    	EXTERNAL_FINANCIAL_NEEDS -= finances;
+        //Finances obtained: positive quantity is demand, negative quantity is selling
+        finances = (-1)*order_status_message->price * order_status_message->quantity;
+        
+        //Increase payment account with the finances obtained
+        PAYMENT_ACCOUNT += finances;
+        
+        //Decrease external financial needs with the finances obtained
+        EXTERNAL_FINANCIAL_NEEDS -= finances;
     FINISH_ORDER_STATUS_MESSAGE_LOOP
     return 0;
 }
