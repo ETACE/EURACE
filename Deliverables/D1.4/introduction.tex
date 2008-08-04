@@ -1,1 +1,16 @@
 In this report we described the parallel implementation of the FLAME Framework \cite{Coakley}. We will cover not only the reason for parallelisation but also a detailed description of the approach being adopted coupled with some initial results from a set of benchmarks which hope to capture the computation and communications loads inherent in the EURACE application.
+
+Before considering the current parallelisation of FLAME it is worth considering the characteristics of a software system than make it worth taking the time and effort to parallelise. Some characteristics of when to parallelise:
+\begin{itemize}
+\item Code is practically incapable of running on one computer, memory requirements too great, run time too long
+\item Code will be reused frequently - parallelisation is a large investment
+\item Data structures are simple, calculations are local, easy to communicate and synchronize between processors
+\end{itemize}
+The converse should also be considered. When not to parallelise a code:
+\begin{itemize}
+\item Code will only be used once (or infrequently) - An efficient parallel code takes time to develop!
+\item Current performance is acceptable and execution time is short
+\item There will be frequent and significant code changes
+\end{itemize}
+It should also be remembered that some algorithms simply do not parallelise.
+
