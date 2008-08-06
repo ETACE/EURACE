@@ -1,4 +1,6 @@
-In this report we described the parallel implementation of the FLAME Framework \cite{Coakley}. We will cover not only the reason for parallelisation but also a detailed description of the approach being adopted coupled with some initial results from a set of benchmarks which hope to capture the computation and communications loads inherent in the EURACE application.
+In this report we described the parallel implementation of the FLAME Framework \cite{Coakley}. We will cover some of the reason for parallelisation but also a detailed description of the approach being adopted. Some initial results from a set of benchmarks which hope to capture the computation and communications loads inherent in the EURACE application.
+
+There are many agent-based modelling systems. A detailed survey of such programs, systems and frameworks in given by Mangina \cite{Mangina}. Many of these systems are based on Java as their implementation language. Although a good language for web-based and some communications applications it is not one often used in the area of high performance computing. Similarly there are relatively few agent systems that address the problem of scalable simulations.
 
 Before considering the current parallelisation of FLAME it is worth considering the characteristics of a software system than make it worth taking the time and effort to parallelise. Some characteristics of when to parallelise:
 \begin{itemize}
@@ -14,3 +16,6 @@ The converse should also be considered. When not to parallelise a code:
 \end{itemize}
 It should also be remembered that some algorithms simply do not parallelise.
 
+It is clear that developing a scalable agent-based framework will be difficult. As mentioned above there are few examples none of which attempt to utilise the power of high performance systems such the Cray XT4 or the IBM BlueGene or the multitude of Beowulf type systems being offered by vendors. Agent systems such as SAMAS \cite{SAMAS},JADE \cite {JADE}, SIMJADE \cite{SIMJADE}, MACE3J \cite{MACE3J}, JAMES \cite{JAMES} and SPADES \cite{SLADES} have been used to demonstrate scalable agent computing but these have been relatively small simulations.
+
+The starting point of FLAME is different from these systems - high performance computing was thought to be essential and thus the implementation language is C.
