@@ -1016,4 +1016,10 @@ void unittest_FinancialAgent_print_public_classifiersystem()
  	if(PRINT_DEBUG) printf("\n Finished writing and closed the file stream.\n");
  	free(filename);
  	if(PRINT_DEBUG) printf("\n Freed the filename pointer.\n");
+ 	
+    //************* At end of unit test, free the agent **************
+    unittest_free_FinancialAgent_agent();
+    //************* At end of unit tests, free all Messages **********
+    //free_messages();
+
 }
