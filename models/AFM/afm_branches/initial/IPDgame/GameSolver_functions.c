@@ -21,51 +21,7 @@
 #define TMAX 150	//iterations of IPD game
 #define NRAGENTS 100
 
-//GameSolver_daily_reset_public_classifiersystem()
-//Daily reset of the public classifiersystem
-//Resets user counter, performance sum, and avgperformance.
-//This should be run before any current_rule_messages are being read.
-int GameSolver_daily_reset_public_classifiersystem()
-{
-    //total number of rules:
-    int NRRULES=CLASSIFIERSYSTEM->nr_rules;
-    
-    //Resetting and storing values to memory:
-    for (i=0; i<NRRULES; i++)
-    {
-        CLASSIFIERSYSTEM->array[i]->counter=0;
-        CLASSIFIERSYSTEM->array[i]->performance=log(pow(10,-5));
-        CLASSIFIERSYSTEM->array[i]->avgperformance=log(pow(10,-5));
-    }
-    
-  return 0;
-}
 
-/* GameSolver_read_current_rule_message()
- *  GameSolver agent reads the current_rule_message
- */
-int GameSolver_read_current_rule_message()
-{
-    int current_rule;
-    int agent_id;
-    
-      current_rule_message = get_first_current_rule_message();
-      while(current_rule_message)
-      {
-        //Read contents  
-          agent_id     = current_rule_message->id;
-          current_rule = current_rule_message->current_rule;
-
-        //Store contents in memory array: automata[i].
-        //AUTOMATA is the list of rule ids currently used by the players.
-          AUTOMATA->array[agent_id]->current_rule = current_rule;
-        
-        //Go to next message:
-          current_rule_message = get_next_current_rule_message(current_rule_message)
-      }
-
-   return 0;
- }
  
 /* GameSolver_play_tournament()
  *  - retrieves rule details from RULEDETAILSYSTEM
@@ -169,7 +125,7 @@ int GameSolver_play_tournament()
     return 0;
 }
 
-/* int play_game(i,j)
+/* int GameSolver_play_game(i,j)
  * Data for 2-person game.
  * We program how the automata play:
  * - retrieve a copy of the automata bitstrings
@@ -180,7 +136,7 @@ int GameSolver_play_tournament()
  * - set payoffs fom game
  * - return payoff of player 1
  */
-int play_game(int * string_0, int * string_1)
+int GameSolver_play_game(int * string_0, int * string_1)
 {
     //Standard classification of games:
     // |---------------|
@@ -333,59 +289,6 @@ int play_game(int * string_0, int * string_1)
 }
 
 
-/* GameSolver_update_classifiersystem()
- * After running the tournament, update the public classifiersystem.
- */
-int GameSolver_update_classifiersystem()
-{
-    int current_rule;
-    int rule_performance;
-    
-    //For each agent, retrieve the automata used, and its performance:
-    for (i=0;i<NRAGENTS;i++)
-    {
-        current_rule = AUTOMATA->array[i]->current_rule;
-        rule_performance = AUTOMATA->array[i]->rule_performance;
-        
-      //Replace old performance adding new performance: ******CHECK WHEN RESET OCCURS: SHOULD BE DAILY? 
-      CLASSIFIERSYSTEM->array[current_rule]->performance += rule_performance;
-      
-      //Counter update: ******CHECK WHEN RESET OCCURS: SHOULD BE DAILY?
-      CLASSIFIERSYSTEM->array[current_rule]->counter +=1;
-    }
-
-    //Avgperformance update:
-    for (i=0;i<NRAGENTS;i++)
-    {    
-      CLASSIFIERSYSTEM->array[current_rule]->avgperformance = CLASSIFIERSYSTEM->array[current_rule]->avgperformance / CLASSIFIERSYSTEM->array[current_rule]->counter;       
-    }
-    
-  return 0;
-}
-
-/* int GameSolver_send_all_performances_message()
- * Send dynamic array all_performances.
- */
-int GameSolver_send_all_performances_message()
-{
-    double * all_performances;
-     
-    //Get size of performance array:
-    imax = CLASSIFIERSYSTEM->performance->size;
-
-    //Assign values to dynamic array all_performances to equal the average performances
-    for (i=0;i<imax;i++)
-    {
-        all_performances[i] = CLASSIFIERSYSTEM->array[i]->avgperformance;
-    }
-    
-    //Send the message containing the dynamic array
-    add_all_performances_message(all_performances, range, x, y, z);
-     
-  return 0;
-}
-
-//-Date-event triggered: every 100 days run the GA
 int GameSolver_apply_GA()
 {
     int i,n,c,ell;
@@ -533,11 +436,56 @@ int GameSolver_apply_GA()
     return 0;
 }
 
-//GameSolver_send_ruledetailsystem_message()
-//Function sends empty ruledetailsystem_message to signal to 
-//GamePlayer agents that there has been a change in rule details.
+/* GameSolver_read_rule_performance_update_classifiersystem()
+ * After running the tournament, update the public classifiersystem.
+ */
+int GameSolver_read_rule_performance_update_classifiersystem()
+{
+    int current_rule;
+    int rule_performance;
+    
+    //For each agent, retrieve the automata used, and its performance:
+    START_RULE_PERFORMANCE_MESSAGE_LOOP
+      CLASSIFIERSYSTEM.ruletable[rule_performance_message->current_rule].performance += rule_performance_message->rule_performance;
+      CLASSIFIERSYSTEM.ruletable[rule_performance_message->current_rule].counter +=1;    
+     FINISH_RULE_PERFORMANCE_MESSAGE_LOOP
+      
+    //Avgperformance update:
+    for (i=0;i<CLASSIFIERSYSTEM.nr_rules;i++)
+    {    
+      CLASSIFIERSYSTEM.ruletable[i].avgperformance = CLASSIFIERSYSTEM.ruletable[i].performance / CLASSIFIERSYSTEM.ruletable[i].counter;       
+    }
+    
+  return 0;
+}
+
+/* int GameSolver_send_all_performances()
+ * Send dynamic array all_performances.
+ */
+int GameSolver_send_all_performances()
+{
+    double * all_performances;
+     
+    //Get size of performance array:
+    imax = CLASSIFIERSYSTEM->performance->size;
+
+    //Assign values to dynamic array all_performances to equal the average performances
+    for (i=0;i<imax;i++)
+    {
+        all_performances[i] = CLASSIFIERSYSTEM->array[i]->avgperformance;
+    }
+    
+    //Send the message containing the dynamic array
+    add_all_performances_message(all_performances, range, x, y, z);
+     
+  return 0;
+}
+
+//GameSolver_send_rule_details()
+//Function to send new rule details_message to 
+//GamePlayer agents with changes in rule details.
 //(they then need to reset their private classifier to restart a learning round)
-int GameSolver_send_ruledetailsystem_message()
+int GameSolver_send_rule_details()
 {
     add_ruledetailsystem_message(range, x, y, z);
         
@@ -562,3 +510,61 @@ int GameSolver_reset_public_classifiersystem()
 
     return 0;
 } 
+
+int GameSolver_print_public_classifiersystem()
+{	
+	char str[10];
+	char * filename;
+	FILE * file;
+
+	int i, j, rule_id, counter;
+	double performance, avg_performance, selection_prob;
+
+	
+	if (PRINT_LOG)
+	{		
+	 	//Set the output file:
+	 	i = sprintf(str, "%d", iteration_loop);
+	 	
+	 	//Start an empty string for the filename
+	 	filename = malloc(40*sizeof(char));
+	 	filename[0]=0;
+	 	
+	 	//Concatenate
+	 	strcpy(filename, "./log/CS_FinancialAgent_");
+	 	strcat(filename, str);
+	 	strcat(filename, ".txt");
+	
+	 	//Open a file pointer: FILE * file 
+	 	file = fopen(filename,"w");
+	
+	
+	    //Print FinancialAdvisor classifier system:
+	    fprintf(file,"=============================================================================================\n");
+	    fprintf(file,"FinancialAdvisor:\n");
+	    fprintf(file,"rule\t performance\t counter\t avg_performance\t selection prob \t rule details\n");
+	    fprintf(file,"=============================================================================================\n"); 
+	
+	    for (i=0;i<PUBLIC_CLASSIFIERSYSTEM.nr_rules;i++)
+	    {
+	         rule_id 		= PUBLIC_CLASSIFIERSYSTEM.ruletable[i].id;
+	         performance 	= PUBLIC_CLASSIFIERSYSTEM.ruletable[i].performance;
+			 counter 		= PUBLIC_CLASSIFIERSYSTEM.ruletable[i].counter;         
+	         avg_performance = PUBLIC_CLASSIFIERSYSTEM.ruletable[i].avg_performance;
+	         selection_prob  = PUBLIC_CLASSIFIERSYSTEM.ruletable[i].selection_prob;
+	         
+	         fprintf(file,"%d\t|\t %f\t|\t %4d\t|\t %f\t|\t %f\t| ", rule_id, performance, counter, avg_performance, selection_prob);
+	
+	         fprintf(file,"[ ");
+		     for (j=0;j<GA_PARAMETERS.string_size;j++){fprintf(file,"%02.1f ", PUBLIC_CLASSIFIERSYSTEM.ruletable[i].parameters[j]);}
+		     fprintf(file,"]\n"); 
+	    }
+	     fprintf(file,"=============================================================================================\n");
+	
+	    fprintf(file,"\n");
+		fclose(file);
+    }
+	
+	free(filename);
+    return 0;
+}

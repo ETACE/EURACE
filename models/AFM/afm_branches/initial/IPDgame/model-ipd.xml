@@ -1,134 +1,303 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
-
-<xmachine_agent_model>
-<name>Iterated Prisoners Dilemma Game</name>
-<author>Sander van der Hoog</author>
-<date>291107</date>
+<?xml version="1.0"?>
+<!DOCTYPE xmodel SYSTEM "http://eurace.cs.bilgi.edu.tr/XMML.dtd">
+<xmodel version="2">
 
 <!--************************* NOTES ***************************************-->
 <!--This is the main description file for the IPD game-->
 <!-- Agents involved: GamePlayer, GameSolver-->
-<!--Ref.: Miller, J.H., 1996. The coevolution of automata in the repeated prisoner's dilemma. Journal of--><!--Journal of Economic Behavior and Organization 29, 87}112.-->
-	<!---->
+<!--Ref.: Miller, J.H., 1996. The coevolution of automata in the repeated prisoner's dilemma.-->
+<!--Journal of Economic Behavior and Organization 29, 87}112.-->
+
+<name>Iterated Prisoners Dilemma Game</name>
+<version>2</version>
+<description>Sander van der Hoog, 29/11/07, 09/08/08 (changed to conform to stategraph method)</description>
 
 <!--***************** Environment values and functions **********************-->
 <environment>
-<functions>
-<file>GamePlayer_functions.c</file>
-<file>GameSolver_functions.c</file>
-<file>mylibraryfunctions.c</file>
-</functions>
+    <constants>
+		<variable><type>int</type><name>nr_params</name><description>10, Number of parameters in a rule.</description></variable>
+		<variable><type>int</type><name>print_debug</name><description>0 or 1, Boolean for debugging print statements.</description></variable>
+		<variable><type>int</type><name>print_log</name><description>0 or 1, A flag to print logging output to terminal or to file.</description></variable>
+    </constants>
+
+    <functionFiles>
+  		<file>GamePlayer_functions.c</file>
+		<file>GameSolver_functions.c</file>
+		<file>mylibraryfunctions.c</file>
+    </functionFiles>
+    
+	<timeUnits>	
+	<timeUnit>
+	 <name>daily</name>
+	 <unit>iteration</unit>
+	 <period>1</period>
+	</timeUnit>
+	
+	<timeUnit>
+	 <name>weekly</name>
+	 <unit>daily</unit>
+	 <period>5</period>
+	</timeUnit>
+	
+	<timeUnit>
+	 <name>monthly</name>
+	 <unit>weekly</unit>
+	 <period>4</period>
+	</timeUnit>
+	
+	<timeUnit>
+	 <name>quarterly</name>
+	 <unit>monthly</unit>
+	 <period>3</period>
+	</timeUnit>
+	
+	<timeUnit>
+	 <name>yearly</name>
+	 <unit>monthly</unit>
+	 <period>12</period>
+	</timeUnit>
+	
+	<timeUnit>
+	 <name>millionyearly</name>
+	 <unit>yearly</unit>
+	 <period>1000000</period>
+	</timeUnit>
+	</timeUnits>
+
 <!--Structures-->
-
-
-<!--Auxiliary structs-->
-	<datatype>
-<name>string</name>
-<var><type>char_array</type><name>stringname</name></var>
-</datatype>
-
-<datatype>
- <name>stringlist</name>
- <var><type>string_array</type><name>stringlistname</name></var>
-</datatype>
-
-<datatype>
- <name>word</name>
- <var><type>char_array</type><name>wordname</name></var>
-</datatype>
-
-<datatype>
- <name>wordlist</name>
- <var><type>word_array</type><name>wordlistname</name></var>
-</datatype>
-
-<datatype>
-<name>int2D_array</name>
-<var><type>int**</type><name>int2Dname</name></var>
-</datatype>
-
-<datatype>
-<name>double2D_array</name>
-<var><type>double**</type><name>double2Dname</name></var>
-</datatype><!--EWA structs--><datatype>
-	<name>Automata</name>
-	<desc>Struct to hold a list of automata in use by GamePlayer agents.</desc><!--Holds for each agent: current_rule, performance.--><var>
-	<type>int</type><name>current_rule</name>
-	</var>
-	<var>
-		<type>double</type><name>rule_performance</name>
-		</var>
-</datatype>
-	<datatype>
-		<!--Struct holding the EWA parameters--><name>EWAParameterStruct</name>
-		<desc></desc><!--***************************** EWA Parameters *************************--><var><type>double</type><name>EWA_rho</name></var><var><type>double</type><name>EWA_phi</name></var><var><type>double</type><name>EWA_delta</name></var><var><type>double</type><name>EWA_beta</name></var><var><!--Experience variable for EWA learning--><type>double</type><name>experience</name>
-	</var><var><!--Current rule in use by the agent--><type>int</type><name>current_rule</name>
-</var>
-	</datatype>
-
-	<datatype>
-<name>PublicClassifierRule</name>
-<desc>Datatype for the central classifier system. The system is a dynamic array of PublicClassifierRules !Subject to change!</desc>
-	<var><!--id for the rule-->
-	<type>int</type><name>id</name>
-	</var>
-<!--***************************** Rule measures *****************************-->
-<var><!--This is the user counter for each rule-->
-<type>int</type><name>counter</name>
-</var>
-<var><!--This is the performance for each rule-->
-<type>double</type><name>performance</name>
-</var>
-<var><!--This is the average performance for each rule-->
-<type>double</type><name>avgperformance</name>
-</var><!--***************************** Rule details *****************************--><var><!--In this case, the rule details are just bitstrings-->
-		<!--A bitstring has length 148, so it is a binary coded decimal (BCD) in the range: [0,...,10^148-1]--><type>int_array</type>
-		<name>bitstring</name>
-	</var>
-</datatype>
-
-	<datatype>
-<name>PrivateClassifierRule</name>
-<desc>Datatype for the private classifier system inside each agent. The system is a dynamic array of PrivateClassifierRule.  !Subject to change!</desc>
-<!--General data for the rule system-->
-	<var><!--id for each rule-->
-	<type>int</type><name>id</name>
-	</var>
+<dataTypes>
+    <dataType>
+	<!--***************************** Struct for the EWA Parameters *****************************-->
+	<name>EWAParameterStruct</name>
+	<description>Struct for the EWA Parameters</description>
+	<variables>
+		<variable>
+		<type>double</type>
+		<name>EWA_rho</name>
+		<description></description>
+		</variable>
+		<variable>
+		<type>double</type>
+		<name>EWA_phi</name>
+		<description></description>
+		</variable>
+		<variable>
+		<type>double</type>
+		<name>EWA_delta</name>
+		<description></description>
+		</variable>
+		<variable>
+		<type>double</type>
+		<name>EWA_beta</name>
+		<description></description>
+		</variable>
+	</variables>
+	</dataType>
+	<!--***************************** GA Datastructure *****************************-->
+	<dataType>
+	<!--***************************** Struct for the GA Parameters *****************************-->
+	<name>GAParameterStruct</name>
+	<description>Struct for the GA Parameters</description>
+	<variables>
+		<variable>
+		<type>double</type>
+		<name>prob_cross</name>
+		<description>Crossover probability</description>
+		</variable>
+		<variable>
+		<type>double</type>
+		<name>prob_mut</name>
+		<description>Mutation probability</description>
+		</variable>
+		<variable>
+		<type>int</type>
+		<name>string_size</name>
+		<description></description>
+		</variable>
+		<variable>
+		<type>int</type>
+		<name>pop_size</name>
+		<description>Size of the rule population</description>
+		</variable>
+		<variable>
+		<type>double</type>
+		<name>reproduction_proportion</name>
+		<description>Proportion of population that reproduces</description>
+		</variable>
+		<variable>
+		<type>int</type>
+		<name>single_point_cross_over</name>
+		<description>Dummy for single-point crossover operator (1: use single-point; 0: use 2-point cross-over)</description>
+		</variable>
+		<variable>
+		<type>int</type>
+		<name>election</name>
+		<description>Dummy for election operator</description>
+		</variable>
+		<variable>
+		<type>double</type>
+		<name>stepsize[10]</name>
+		<description>Mutation stepsize for each parameter</description>
+		</variable>
+		<variable>
+		<type>int</type>
+		<name>delta_min</name>
+		<description>Lower bound on number of units to mutate inside the mutation range: delta_min can be negative or positive. </description>
+		</variable>
+		<variable>
+		<type>int</type>
+		<name>delta_max</name>
+		<description>Upper bound on number of units to mutate inside the mutation range: delta_max should be positive.</description>
+		</variable>
+		<variable>
+		<type>double</type>
+		<name>min_values[10]</name>
+		<description>Minimum values for each parameter</description>
+		</variable>
+		<variable>
+		<type>double</type>
+		<name>max_values[10]</name>
+		<description>Maximum values for each parameter</description>
+		</variable>
+	</variables>
+	</dataType>
 	
+	<dataType>
+	<!--***************************** Struct for the PublicClassifierRule *****************************-->
+	<name>PublicClassifierRule</name>
+	<description>Datatype for the central classifier system. The system is a dynamic array of PublicClassifierRules !Subject to change!</description>
+	<variables>
+		<variable>
+		<type>int</type><name>id</name>
+		<description>id for the rule</description>
+		</variable>
+		<variable>
+		<type>int</type><name>counter</name>
+		<description>User counter for each rule</description>
+		</variable>
+		<variable>
+		<type>double</type><name>performance</name>
+		<description>Total performance for each rule</description>
+		</variable>
+		<variable>
+		<type>double</type><name>avg_performance</name>
+		<description>Average performance for each rule (=total performance/counter)</description>
+		</variable>
+		<variable>
+		<type>double</type><name>selection_prob</name>
+		<description>Selection probability for the rule</description>
+		</variable>
+		<variable><type>double</type>
+		<name>parameters[10]</name>
+		<description>Parameter values encoding the rule</description>
+		</variable>
+	</variables>
+	</dataType>
+	<dataType>
+	<!--***************************** Struct for the Private Classifier Rule *****************************-->
+	<name>PrivateClassifierRule</name>
+	<description>Datatype for the private classifier system inside each agent. The system is a dynamic array of PrivateClassifierRule.  !Subject to change!</description>
+	<variables>
+		<variable>
+		<type>int</type><name>id</name>
+		<description>id for each rule</description>
+		</variable>
+		<variable>
+		<type>double</type><name>my_performance</name>
+		<description>Agent performance with current_rule (0.0 if this rule is not currently used)</description>
+		</variable>
+		<variable>
+		<type>double</type><name>avg_performance</name>
+		<description>Average performance for this rule across population (copied from Central CS)</description>
+		</variable>
+		<variable>
+		<type>double</type><name>attraction</name>
+		<description>Agent attractions</description>
+		</variable>
+		<variable>
+		<type>double</type><name>choiceprob</name>
+		<description>Agent choice probabilities</description>
+		</variable>
+		<variable><type>double</type>
+		<name>parameters[10]</name>
+		<description>Parameter values encoding the rule</description>
+		</variable>
+	</variables>
+	</dataType>
 	
+	<dataType>
+	<!--***************************** Struct for the Simple Public Classifier System *****************************-->
+	<name>SimplePublicClassifierSystem</name>
+	<description>Datatype for the central classifier system. Simple version allows for rules of the same strategy type (all rules use the same function). !Subject to change!</description>
+	<variables>
+		<variable>
+			<type>int</type>
+			<name>nr_rules</name>
+			<description>Total number of rules in the rule set</description>
+		</variable>
+	
+		<variable>
+			<type>PublicClassifierRule</type>
+			<name>ruletable[100]</name>
+			<description>Static array of 100 public classifier rules of homogeneous type</description>
+		</variable>
+	</variables>
+	</dataType>
 
-<!--***************************** Rule measures *****************************-->
-<var><!--Agent's performance of current_rule--><type>double</type><name>my_performance</name>
-</var>
-<var><!---->
-<type>double</type><name>avgperformance</name>
-</var>
-<var><!--Agent attractions-->
-<type>double</type><name>attraction</name></var>
-<var><!--choice probability-->
-<type>double</type><name>choiceprob</name></var>
-</datatype>	
+	<dataType>
+	<!--***************************** Struct for the Simple Private Classifier System *****************************-->
+	<name>SimplePrivateClassifierSystem</name>
+	<description>Datatype for the private classifier system inside each agent. Simple version allows for rules of the same strategy type (all rules use the same function). !Subject to change!</description>
+	<variables>
+		<variable>
+			<type>int</type>
+			<name>nr_rules</name>
+			<description>Total number of rules in the rule set</description>
+		</variable>
+	
+		<variable>
+		<type>double</type><name>experience</name>
+		<description>Experience variable for EWA learning</description>
+		</variable>
+		
+		<variable>
+		<type>int</type>
+		<name>current_rule</name>
+		<description>Current rule in use by the agent</description>
+		</variable>
+	
+		<variable>
+			<type>PrivateClassifierRule</type>
+			<name>ruletable[100]</name>
+			<description>Static array of 100 private classifier rules of homogeneous type</description>
+		</variable>
+	</variables>
+	</dataType>
+</dataTypes>
 </environment>
 
+<agents>
 <!--********************* X-machine Agent - GamePlayer ****************************-->
-<xmachine>
+<xagent>
 <name>GamePlayer</name>
-<!----------------- Variables-------------------------------------------------->
-<!-- All variables used by GamePlayer are declared here to allocate them in memory -->
-
+<description></description>
 <memory>
-<var><type>int</type><name>id</name></var><var>
-	<type>EWAParameterStruct</type>
-	<name>EWAParameters</name></var>
-<var>
-		<type>int</type><name>new_rules</name>
-		</var><var><type>PrivateClassifierRule_array</type><name>classifiersystem</name></var>
-<var><type>double</type><name>iradius</name></var>
-<var><type>double</type><name>posx</name></var>
-<var><type>double</type><name>posy</name></var>
-	
-
+      	<variable><type>int</type><name>id</name><description></description></variable>
+		<variable><type>int</type><name>day_of_month_to_act</name><description></description></variable>
+      
+        <variable>
+          <type>EWAParameterStruct</type>
+          <name>EWA_parameters</name>
+          <description></description>
+        </variable>
+        <variable>
+          <type>SimplePrivateClassifierSystem</type>
+          <name>private_classifiersystem</name>
+          <description></description>
+        </variable>
 </memory>
+<roles></roles>
+
 <!----------------- Defining functions ---------------------------------------->
 <functions>
 
@@ -179,33 +348,39 @@
 </function>
 
 </functions>
-</xmachine>
+</xagent>
 <!--*********************** End of Agent - GamePlayer *****************************-->
 
 <!--********************* X-machine Agent - GameSolver ****************************-->
-<xmachine>
+<xagent>
 <name>GameSolver</name>
-<!----------------- Variables-------------------------------------------------->
-<!-- All variables used by GameSolver are declared here to allocate them in memory -->
+<description></description>
 <memory>
-
-<var>
-	<type>int</type><name>nragents</name>
-	</var><var>
-		<type>Automata_array</type><name>automata</name>
-		</var><var><type>PublicClassifierRule_array</type>	<name>classifiersystem</name></var>
-<var><type>double</type><name>iradius</name></var>
-<var><type>double</type><name>posx</name></var>
-<var><type>double</type><name>posy</name></var>
-	
-
-
+        <variable><type>int</type><name>id</name><description></description></variable>
+      
+        <variable>
+          <type>SimplePublicClassifierSystem</type>
+          <name>public_classifiersystem</name>
+          <description></description>
+        </variable>
+        <variable>
+          <type>GAParameterStruct</type>
+          <name>GA_parameters</name>
+          <description></description>
+        </variable>
+        <variable>
+          <type>EWAParameterStruct</type>
+          <name>EWA_parameters</name>
+          <description></description>
+        </variable>
 </memory>
+<roles></roles>
 <!----------------- Defining functions ---------------------------------------->
 <functions>
 <!--EWA Functions-->
 <function>
-		<!--Resets performance and avgperformance for all rules. Daily.--><name>GameSolver_daily_reset_public_classifiersystem</name>
+		<!--Resets performance and avgperformance for all rules. Daily.-->
+		<name>GameSolver_daily_reset_public_classifiersystem</name>
 </function>
 <function><name>GameSolver_read_current_rule_message</name><depends>
 			<name>GameSolver_daily_reset_public_classifiersystem</name>
@@ -240,51 +415,63 @@
 
 
 </functions>
-</xmachine><!--*********************** End of Agent - GameSolver ****************************-->
-
-
-
-
-
-
+</xagent>
+<!--*********************** End of Agent - GameSolver ****************************-->
+</agents>
+<contexts></contexts>
 
 <!--******** Messages being posted by the agents to communicate *************-->
 <messages><!--EWA messages-->
 
-	<message>
-<name>current_rule_message</name>
-<note>Message sent by GamePlayer to tell the GameSolver which rule is currently used</note>
-		<var>
-			<type>int</type><name>id</name>
-			</var>
-		<var><type>int</type><name>current_rule</name></var>
-<var><type>double</type><name>range</name></var>
-<var><type>double</type><name>x</name></var>
-<var><type>double</type><name>y</name></var>
-<var><type>double</type><name>z</name></var>
-</message>
-
 <message>
-<name>all_performances_message</name>
-<note>Message sent by GameSolver to inform GamePlayers of all rule performances</note>
-<var><type>double_array</type><name>performances</name></var>
-<var><type>double</type><name>range</name></var>
-<var><type>double</type><name>x</name></var>
-<var><type>double</type><name>y</name></var>
-<var><type>double</type><name>z</name></var>
+<name>rule_performance</name>
+<description>Message sent by GamePlayer to tell the GameSolver which rule is currently used</description>
+      <variables>
+        <variable>
+          <type>int</type>
+          <name>rule_id</name>
+          <description></description>
+        </variable>
+        <variable>
+          <type>double</type>
+          <name>rule_performance</name>
+          <description></description>
+        </variable>
+      </variables>
 </message>
-
-<message>
-<name>ruledetailsystem_message</name>
-<note>GameSolver adds new rule details</note>
-<var><type>double2D_array</type><name>parameters</name></var><!--Mariam: I think parameters here should be a struct for rule details to be sent. !Subject to change!--><!--Sander: actually this should be a 2d-array-->
-	<var><type>double</type><name>range</name></var>
-<var><type>double</type><name>x</name></var>
-<var><type>double</type><name>y</name></var>
-<var><type>double</type><name>z</name></var>
-</message>
-
+    <message>
+      <name>new_performances</name>
+      <description>Message sent by GameSolver to inform GamePlayers of all rule performances</description>
+      <variables>
+        <variable>
+          <type>int</type>
+          <name>rule_id</name>
+          <description></description>
+        </variable>
+        <variable>
+          <type>double</type>
+          <name>avg_performance</name>
+          <description></description>
+        </variable>
+      </variables>
+    </message>
+    <message>
+      <name>rule_details</name>
+      <description>GameSolver adds new rule details</description>
+      <variables>
+        <variable>
+          <type>int</type>
+          <name>rule_id</name>
+          <description></description>
+        </variable>
+        <variable>
+          <type>double</type>
+          <name>parameters[10]</name>
+          <description></description>
+        </variable>
+      </variables>
+    </message>
 </messages>
 <!--********************** End of Messages **********************************-->
 
-</xmachine_agent_model>
+</xmodel>
