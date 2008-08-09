@@ -1,8 +1,8 @@
 #include <CUnit/Basic.h>
 
-#include "header.h"
-#include "Firm_agent_header.h"
-#include "my_library_header.h"
+#include "../../header.h"
+#include "../../Firm_agent_header.h"
+#include "../../my_library_header.h"
 
 /************Firm Role: Financial Management Role ********************************/
 
@@ -14,7 +14,7 @@
 void unittest_Firm_compute_income_statement()
 {
     /************* At start of unit test, add one agent **************/
-	add_Firm_agent_internal(init_Firm_agent());
+	unittest_init_Firm_agent();
 	current_xmachine = *p_xmachine;
 	
     /***** Variables: Memory pre-conditions **************************/
@@ -35,7 +35,7 @@ void unittest_Firm_compute_income_statement()
     CU_ASSERT_DOUBLE_EQUAL(PAYMENT_ACCOUNT, 100.0, 1e-3);
 
     /************* At end of unit test, free the agent **************/
-    free_agent();
+    unittest_free_Firm_agent();
     /************* At end of unit tests, free all Messages **********/
     free_messages();
 }
@@ -47,7 +47,7 @@ void unittest_Firm_compute_income_statement()
 void unittest_Firm_compute_balance_sheet()
 {
     /************* At start of unit test, add one agent **************/
-	add_Firm_agent_internal(init_Firm_agent());
+	unittest_init_Firm_agent();
 	current_xmachine = *p_xmachine;
 	
     /***** Variables: Memory pre-conditions **************************/
@@ -209,7 +209,7 @@ void unittest_Firm_compute_balance_sheet()
     FINISH_DIVIDEND_PAYMENT_MESSAGE_LOOP
 
     /************* At end of unit test, free the agent **************/
-    free_agent();
+    unittest_free_Firm_agent();
     /************* At end of unit tests, free all Messages **********/
     free_messages();
 }
@@ -221,7 +221,7 @@ void unittest_Firm_compute_balance_sheet()
 void unittest_Firm_compute_payout_policy()
 {
     /************* At start of unit test, add one agent **************/
-	add_Firm_agent_internal(init_Firm_agent());
+	unittest_init_Firm_agent();
 	current_xmachine = *p_xmachine;
 
     /***** Variables: Memory pre-conditions **************************/
@@ -321,7 +321,7 @@ void unittest_Firm_compute_payout_policy()
     CU_ASSERT_DOUBLE_EQUAL(PAYMENT_ACCOUNT, 0.0, 1e-3);
     
     /************* At end of unit test, free the agent **************/
-    free_agent();
+    unittest_free_Firm_agent();
     /************* At end of unit tests, free all Messages **********/
     free_messages();
 }
@@ -333,7 +333,7 @@ void unittest_Firm_compute_payout_policy()
 void unittest1_Firm_compute_payout_policy()
 {
     /************* At start of unit test, add one agent **************/
-	add_Firm_agent_internal(init_Firm_agent());
+	unittest_init_Firm_agent();
 	current_xmachine = *p_xmachine;
 	
     /***** Variables: Memory pre-conditions **************************/
@@ -397,7 +397,7 @@ void unittest1_Firm_compute_payout_policy()
     /***** Messages: post-conditions **********************************/
 
 	/************* At end of unit test, free the agent **************/
-    free_agent();
+    unittest_free_Firm_agent();
     /************* At end of unit tests, free all Messages **********/
     free_messages();
 }
@@ -411,7 +411,7 @@ void unittest1_Firm_compute_payout_policy()
 void unittest2_Firm_compute_payout_policy()
 {
     /************* At start of unit test, add one agent **************/
-	add_Firm_agent_internal(init_Firm_agent());
+	unittest_init_Firm_agent();
 	current_xmachine = *p_xmachine;
 	
     /***** Variables: Memory pre-conditions **************************/
@@ -474,7 +474,7 @@ void unittest2_Firm_compute_payout_policy()
     /***** Messages: post-conditions **********************************/
 
 	/************* At end of unit test, free the agent **************/
-    free_agent();
+    unittest_free_Firm_agent();
     /************* At end of unit tests, free all Messages **********/
     free_messages();
 }
@@ -487,7 +487,7 @@ void unittest2_Firm_compute_payout_policy()
 void unittest3_Firm_compute_payout_policy()
 {
     /************* At start of unit test, add one agent **************/
-	add_Firm_agent_internal(init_Firm_agent());
+	unittest_init_Firm_agent();
 	current_xmachine = *p_xmachine;
 	
     /***** Variables: Memory pre-conditions **************************/
@@ -550,7 +550,7 @@ void unittest3_Firm_compute_payout_policy()
     /***** Messages: post-conditions **********************************/
     
     /************* At end of unit test, free the agent **************/
-    free_agent();
+    unittest_free_Firm_agent();
     /************* At end of unit tests, free all Messages **********/
     free_messages();
 }
@@ -563,7 +563,7 @@ void unittest3_Firm_compute_payout_policy()
 void unittest4_Firm_compute_payout_policy()
 {
     /************* At start of unit test, add one agent **************/
-	add_Firm_agent_internal(init_Firm_agent());
+	unittest_init_Firm_agent();
 	current_xmachine = *p_xmachine;
 	
     /***** Variables: Memory pre-conditions **************************/
@@ -626,7 +626,7 @@ void unittest4_Firm_compute_payout_policy()
     /***** Messages: post-conditions **********************************/
 
 	/************* At end of unit test, free the agent **************/
-    free_agent();
+    unittest_free_Firm_agent();
     /************* At end of unit tests, free all Messages **********/
     free_messages();
 }
@@ -639,7 +639,7 @@ void unittest4_Firm_compute_payout_policy()
 void unittest5_Firm_compute_payout_policy()
 {
     /************* At start of unit test, add one agent **************/
-	add_Firm_agent_internal(init_Firm_agent());
+	unittest_init_Firm_agent();
 	current_xmachine = *p_xmachine;
 	
     /***** Variables: Memory pre-conditions **************************/
@@ -702,7 +702,7 @@ void unittest5_Firm_compute_payout_policy()
     /***** Messages: post-conditions **********************************/
 
 	/************* At end of unit test, free the agent **************/
-    free_agent();
+    unittest_free_Firm_agent();
     /************* At end of unit tests, free all Messages **********/
     free_messages();
 }
@@ -710,7 +710,7 @@ void unittest5_Firm_compute_payout_policy()
 void unittest_Firm_apply_for_loans()
 {
     /************* At start of unit test, add one agent **************/
-	add_Firm_agent_internal(init_Firm_agent());
+	unittest_init_Firm_agent();
 	current_xmachine = *p_xmachine;
 	
     /***** Variables: Memory pre-conditions **************************/
@@ -736,7 +736,7 @@ void unittest_Firm_apply_for_loans()
 	FINISH_LOAN_REQUEST_MESSAGE_LOOP
 
 	/************* At end of unit test, free the agent **************/
-    free_agent();
+    unittest_free_Firm_agent();
     /************* At end of unit tests, free all Messages **********/
     free_messages();
 }
@@ -744,7 +744,7 @@ void unittest_Firm_apply_for_loans()
 void unittest_Firm_read_loan_offers_send_loan_acceptance()
 {
     /************* At start of unit test, add one agent **************/
-	add_Firm_agent_internal(init_Firm_agent());
+	unittest_init_Firm_agent();
 	current_xmachine = *p_xmachine;
 	
     /***** Variables: Memory pre-conditions **************************/
@@ -769,7 +769,7 @@ void unittest_Firm_read_loan_offers_send_loan_acceptance()
 	FINISH_LOAN_ACCEPTANCE_MESSAGE_LOOP
 
 	/************* At end of unit test, free the agent **************/
-    free_agent();
+    unittest_free_Firm_agent();
     /************* At end of unit tests, free all Messages **********/
     free_messages();
 }
@@ -777,7 +777,7 @@ void unittest_Firm_read_loan_offers_send_loan_acceptance()
 void unittest_Firm_compute_and_send_bond_orders()
 {
     /************* At start of unit test, add one agent **************/
-	add_Firm_agent_internal(init_Firm_agent());
+	unittest_init_Firm_agent();
 	current_xmachine = *p_xmachine;
 	
 	/***** Variables: Memory pre-conditions **************************/
@@ -800,7 +800,7 @@ void unittest_Firm_compute_and_send_bond_orders()
 	FINISH_BOND_ORDER_MESSAGE_LOOP
 
     /************* At end of unit test, free the agent **************/
-    free_agent();
+    unittest_free_Firm_agent();
     /************* At end of unit tests, free all Messages **********/
     free_messages();
 }
@@ -808,7 +808,7 @@ void unittest_Firm_compute_and_send_bond_orders()
 void unittest_Firm_read_bond_transactions()
 {
     /************* At start of unit test, add one agent **************/
-	add_Firm_agent_internal(init_Firm_agent());
+	unittest_init_Firm_agent();
 	current_xmachine = *p_xmachine;
 	
 	/***** Variables: Memory pre-conditions **************************/
@@ -823,7 +823,7 @@ void unittest_Firm_read_bond_transactions()
     /***** Messages: post-conditions *********************************/
 
     /************* At end of unit test, free the agent **************/
-    free_agent();
+    unittest_free_Firm_agent();
     /************* At end of unit tests, free all Messages **********/
     free_messages();
 }
@@ -831,7 +831,7 @@ void unittest_Firm_read_bond_transactions()
 void unittest_Firm_compute_and_send_stock_orders()
 {
     /************* At start of unit test, add one agent **************/
-	add_Firm_agent_internal(init_Firm_agent());
+	unittest_init_Firm_agent();
 
 	/***** Variables: Memory pre-conditions **************************/
 	ID=1;
@@ -853,7 +853,7 @@ void unittest_Firm_compute_and_send_stock_orders()
 	FINISH_STOCK_ORDER_MESSAGE_LOOP
 
     /************* At end of unit test, free the agent **************/
-    free_agent();
+    unittest_free_Firm_agent();
     /************* At end of unit tests, free all Messages **********/
     free_messages();
 }
@@ -861,8 +861,8 @@ void unittest_Firm_compute_and_send_stock_orders()
 void unittest_Firm_read_stock_transactions()
 {
     /************* At start of unit test, add one agent **************/
-	add_Firm_agent_internal(init_Firm_agent());
-	current_xmachine = *p_xmachine;
+	unittest_init_Firm_agent();
+
 	
 	/***** Variables: Memory pre-conditions **************************/
     
@@ -876,7 +876,7 @@ void unittest_Firm_read_stock_transactions()
 	/***** Messages: post-conditions *********************************/
 	
     /************* At end of unit test, free the agent **************/
-    free_agent();
+    unittest_free_Firm_agent();
     /************* At end of unit tests, free all Messages **********/
     free_messages();
 }
@@ -885,8 +885,7 @@ void unittest_Firm_read_stock_transactions()
 //	void unittest_<function_name>()
 //	{
 //	    /************* At start of unit test, add one agent **************/
-//		add_<Agent_name>_agent_internal(init_<Agent_name>_agent());
-//		current_xmachine = *p_xmachine;
+//		unittest_init_<Agent_name>_agent();
 //
 //		/***** Variables: Memory pre-conditions **************************/
 //		<var_name1>=0.0;
@@ -909,7 +908,7 @@ void unittest_Firm_read_stock_transactions()
 //		FINISH_<MSG_NAME>_MESSAGE_LOOP
 //	
 //	    /************* At end of unit test, free the agent **************/
-//	    free_agent();
+//	    unittest_free_<Agent_name>_agent();
 //     /************* At end of unit tests, free all Messages **********/
 //	    free_messages();
 //	}
