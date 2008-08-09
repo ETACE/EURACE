@@ -362,7 +362,6 @@ So the resets were done twice in a row.
 This means the interest is computed not on the total debt still outstanding, but only on the installment payment.
 Who coded this?
 
-
 ----------------------------------------------------------------------
 Sander, rev 1285
 
@@ -435,9 +434,9 @@ File: Cons_Goods_UNIBI/Firm_Producer_Functions.c:
 line 424 - 463:
 
 I have changed the function Firm_calc_prod_quantity_2 to use the mem var
-PAYMENT_ACCOUNT instead of FINANCIAL_RESOURCES_FOR_PRODUCTION
+PAYMENT_ACCOUNT instead of FINANCIAL_RESOURCES_FOR_PRODUCTION.
 
-If PLANNED_PRODUCTION_COSTS <= PAYMENT_ACCOUNT this function does nothing, since the while loop does not get executed..
+If (PLANNED_PRODUCTION_COSTS <= PAYMENT_ACCOUNT) this function does nothing, since the while loop does not get executed..
 
 File: Cons_Goods_UNIBI/model.xml:
 line 231 -236
@@ -467,4 +466,46 @@ The variable FINANCIAL_RESOURCES_FOR_PRODUCTION is redundant, since all payments
 
 File: Financial_Management_GREQAM/model.xml:
 - Changed state Update_01 into: Firm_Ends_External_Financing
+----------------------------------------------------------------------
+Sander, rev 1310
+
+BUG FIXED:
+The debt installment and interest payments should not be executed for newly obtained loans,
+in the first period of a loan contract.
+This would mean that a loan is serviced on the same day it is acquired.
+The fix is that we service the loan for the first time in the following month. 
+
+File: Financial_Management_GREQAM/Firm_Financial_Management.c:
+Function: Firm_execute_financial_payments() 
+line: 367
+ 
+The  reason is that debt installment and interest payments aren't scheduled in the financial planning
+phase because the planned financial payments are calculated before a firm goes on the credit market,
+in the function Firm_compute_total_financial_payments.
+When a firm gets a credit it adds this credit in the loan array in the function Firm_Credit_Functions.c,
+and the initial value for the variable nr_periods_before_maturity is set to:
+
+nr_periods_before_repayment=CONST_INSTALLMENT_PERIODS+1;
+
+By using the condition
+
+if(LOANS.array[i].nr_periods_before_repayment!=CONST_INSTALLMENT_PERIODS+1)
+
+the debt installment and interest payments are not executed for a new loan item.
+Any other loan items that have nr_periods_before_repayment<13 do get serviced.
+
+To decrease the nr_periods_before_repayment immeditely in the first period of the contract,
+we should decrease it from 13 to 12. This is done at the end:
+
+	        if (LOANS.array[i].nr_periods_before_repayment==0)
+	        {
+	            remove_debt_item(&LOANS, i);
+	        }
+		    else
+			{
+		    	LOANS.array[i].nr_periods_before_repayment -= 1;
+			}
+----------------------------------------------------------------------
+Sander, rev 1311
+	Merged Isolated_Model/FFM_UNIBI code with trunk FFM_GREQAM code.
 ----------------------------------------------------------------------

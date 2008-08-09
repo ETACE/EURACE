@@ -2,7 +2,7 @@
  * \file  unittest.c
  * \brief Holds main function of the unittest program.
  */
-#include "../header.h"
+#include "../../header.h"
 #include <CUnit/Basic.h>
 
 /*************************** unittest prototypes ***************************/
