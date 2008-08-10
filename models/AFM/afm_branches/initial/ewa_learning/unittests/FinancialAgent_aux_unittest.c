@@ -868,6 +868,15 @@ void unittest_GA_reinsertion()
      PUBLIC_CLASSIFIERSYSTEM.ruletable[1].parameters[0]=0.0;
      PUBLIC_CLASSIFIERSYSTEM.ruletable[1].parameters[1]=0.0;
 
+     PUBLIC_CLASSIFIERSYSTEM_CANDIDATES.nr_rules =2;
+     PUBLIC_CLASSIFIERSYSTEM_CANDIDATES.ruletable[0].id=1;
+     PUBLIC_CLASSIFIERSYSTEM_CANDIDATES.ruletable[0].parameters[0]=0.0;
+     PUBLIC_CLASSIFIERSYSTEM_CANDIDATES.ruletable[0].parameters[1]=0.0;
+     
+     PUBLIC_CLASSIFIERSYSTEM_CANDIDATES.ruletable[1].id=2;
+     PUBLIC_CLASSIFIERSYSTEM_CANDIDATES.ruletable[1].parameters[0]=0.0;
+     PUBLIC_CLASSIFIERSYSTEM_CANDIDATES.ruletable[1].parameters[1]=0.0;
+     
      //***** Messages: pre-conditions **********************************
 
      //***** Function evaluation ***************************************
@@ -876,10 +885,10 @@ void unittest_GA_reinsertion()
 	 GA_reinsertion(size, rule_id_1[j], rule_id_2[j], offspring_1, offspring_2);
      
      //***** Variables: Memory post-conditions *************************
-     CU_ASSERT_DOUBLE_EQUAL(PUBLIC_CLASSIFIERSYSTEM.ruletable[0].parameters[0], 1.0, 1e-3);
-     CU_ASSERT_DOUBLE_EQUAL(PUBLIC_CLASSIFIERSYSTEM.ruletable[0].parameters[1], 2.0, 1e-3);
-     CU_ASSERT_DOUBLE_EQUAL(PUBLIC_CLASSIFIERSYSTEM.ruletable[1].parameters[0], 3.0, 1e-3);
-     CU_ASSERT_DOUBLE_EQUAL(PUBLIC_CLASSIFIERSYSTEM.ruletable[1].parameters[1], 4.0, 1e-3);
+     CU_ASSERT_DOUBLE_EQUAL(PUBLIC_CLASSIFIERSYSTEM_CANDIDATES.ruletable[0].parameters[0], 1.0, 1e-3);
+     CU_ASSERT_DOUBLE_EQUAL(PUBLIC_CLASSIFIERSYSTEM_CANDIDATES.ruletable[0].parameters[1], 2.0, 1e-3);
+     CU_ASSERT_DOUBLE_EQUAL(PUBLIC_CLASSIFIERSYSTEM_CANDIDATES.ruletable[1].parameters[0], 3.0, 1e-3);
+     CU_ASSERT_DOUBLE_EQUAL(PUBLIC_CLASSIFIERSYSTEM_CANDIDATES.ruletable[1].parameters[1], 4.0, 1e-3);
 
      //***** Messages: post-conditions **********************************
 

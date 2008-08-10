@@ -12,11 +12,11 @@
  ***************************************************************************************************/
 #include <math.h>
 //For stand-alone model:
-//#include "header.h"
-//#include "FinancialAgent_agent_header.h"
+#include "header.h"
+#include "FinancialAgent_agent_header.h"
 //For integrated model:
-#include "../header.h"
-#include "../FinancialAgent_agent_header.h"
+//#include "../header.h"
+//#include "../FinancialAgent_agent_header.h"
 //Always:
 #include "FinancialAgent_aux_header.h"
 #include "some_new_functions.h"
@@ -132,6 +132,9 @@ int FinancialAgent_apply_GA()
     // - fill in the rule_id arrays with rule indices.
 	GA_selection(N_pairs, parent_index_1, parent_index_2, rule_id_1, rule_id_2);
 	
+	//Make a copy of the parent population:
+	GA_copy_parents_to_candidates();
+	
 	for (j=0; j<N_pairs; j++)
 	{    
 		GA_reproduction(NR_PARAMS, rule_id_1[j], rule_id_2[j], offspring_1, offspring_2);
@@ -139,8 +142,8 @@ int FinancialAgent_apply_GA()
 		GA_election(NR_PARAMS, rule_id_1[j], rule_id_2[j], offspring_1, offspring_2);
 		GA_reinsertion(NR_PARAMS, rule_id_1[j], rule_id_2[j], offspring_1, offspring_2);
 	}
-
-	
+	//Copy the candidate population back into the real population, replacing the original parents 
+	GA_copy_candidates_to_parents();
 	
 	// free all allocated memory
 	free(offspring_1);
