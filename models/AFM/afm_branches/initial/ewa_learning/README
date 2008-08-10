@@ -9,15 +9,22 @@
 TODO
 ====
 - GA_reinsertion is run after each reproduction between offspring_1/offspring_2.
-This is incorrect, since the reinserted offspring can then be sampled again in the next pair.
+This is incorrect, since then the reinserted offspring (that has crossed over and  possibly mutated)
+can be sampled again for a next pair.
 Better to add the offspring to a copy of the population, a population of candidates, and then add all the newly created offsprings at the end of the N_pairs
 loop.
 
 Possible solutions:
 In the FA: setup a candidate rule population to hold the new offsprings before they enter the real population.
-In the FA: let each rule have extra space tp hold an array offspring_parameters[10] containing new values temporarily. 
+In the FA: let each rule have extra space to hold an array offspring_parameters[10] containing new values temporarily. 
 
-Both solutions have the same problem: if a single string is used multiple times for cross-over and mutation, then which temporary slot in the candidate population should we use?
+
+Both solutions have the some problems: 
+
+Problem 1: if a rule is selected multiple times for cross-over and mutation, then which temporary slot in the candidate population should we use?
+Problem 2: if a rule is selected multiple times, only the last result gets stored in the parent population.
+Problem 2: if a rule is selected to mate with itself (this is allowed to make sure that fitter rules have a higher probability of being selected for reproduction.)
+then only the 2nd result of the 2 offspring gets copied into the candidate population.
 
 In general: should we determine a set of rules N_rep that are to be going extinct, and are replaced by the new offsprings?
 If each rule in N_rep is only used once for reproduction (sampling without replacement) there is no problem:
@@ -34,6 +41,16 @@ parent_1 + parent_3 -> offspring_3 + offspring_4
 
 CHANGELOG
 =========
+10/08/08
+- Solved the issue with candidates being reinserted immediately into the parent population.
+In the FA memory: public_classifiersystem_candidate holds the population of new offsprings before entering the real population.
+
+New functions:
+
+GA_copy_parents_to_candidates(): Before the N_pairs loop, we copy the parameters from the parent population to the candidate population. 
+GA_copy_candidates_to_parents(): After the complete N_pairs loop has finished, we copy all candidate strings to the parent population, replacing the old parents with their offspring.
+
+
 24/07/08
 - In GA_selection, line 234: draw_without_replacement should be used to draw for reproduction the N_rep strings from the population.
 (to be used for reproduction). For the random matching on line 239-263, drawing is with replacement using uniform probabilities.

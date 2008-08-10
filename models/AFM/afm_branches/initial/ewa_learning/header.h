@@ -407,6 +407,7 @@ struct xmachine_memory_FinancialAgent
 {
 	int id;	/**< X-machine memory variable id of type int. */
 	SimplePublicClassifierSystem public_classifiersystem;	/**< X-machine memory variable public_classifiersystem of type SimplePublicClassifierSystem. */
+	SimplePublicClassifierSystem public_classifiersystem_candidates;	/**< X-machine memory variable public_classifiersystem_candidates of type SimplePublicClassifierSystem. */
 	GAParameterStruct GA_parameters;	/**< X-machine memory variable GA_parameters of type GAParameterStruct. */
 	EWAParameterStruct EWA_parameters;	/**< X-machine memory variable EWA_parameters of type EWAParameterStruct. */
 };
@@ -971,7 +972,7 @@ xmachine_memory_FinancialAgent * init_FinancialAgent_agent();
 void free_FinancialAgent_agent(xmachine_memory_FinancialAgent_holder * tmp, xmachine_memory_FinancialAgent_state * state);
 void transition_FinancialAgent_agent(xmachine_memory_FinancialAgent_holder * tmp, xmachine_memory_FinancialAgent_state * from_state, xmachine_memory_FinancialAgent_state * to_state);
 void add_FinancialAgent_agent_internal(xmachine_memory_FinancialAgent * agent, xmachine_memory_FinancialAgent_state * state);
-void add_FinancialAgent_agent(int id, SimplePublicClassifierSystem public_classifiersystem, GAParameterStruct GA_parameters, EWAParameterStruct EWA_parameters);
+void add_FinancialAgent_agent(int id, SimplePublicClassifierSystem public_classifiersystem, SimplePublicClassifierSystem public_classifiersystem_candidates, GAParameterStruct GA_parameters, EWAParameterStruct EWA_parameters);
 void unittest_init_FinancialAgent_agent();
 void unittest_free_FinancialAgent_agent();
 
@@ -1003,6 +1004,7 @@ int get_day_of_month_to_act();
 EWAParameterStruct * get_EWA_parameters();
 SimplePrivateClassifierSystem * get_private_classifiersystem();
 SimplePublicClassifierSystem * get_public_classifiersystem();
+SimplePublicClassifierSystem * get_public_classifiersystem_candidates();
 GAParameterStruct * get_GA_parameters();
 int agent_get_id(void);
 double agent_get_x(void);

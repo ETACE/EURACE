@@ -8,11 +8,11 @@
  *********************************/
 #include <limits.h> //required to test for max. double: LONG_MAX
 //For stand-alone model:
-//#include "header.h"
-//#include "FinancialAgent_agent_header.h"
+#include "header.h"
+#include "FinancialAgent_agent_header.h"
 //For integrated model:
-#include "../header.h"
-#include "../FinancialAgent_agent_header.h"
+//#include "../header.h"
+//#include "../FinancialAgent_agent_header.h"
 //Always:
 #include "FinancialAgent_aux_header.h"
 #include "some_new_functions.h"
@@ -471,10 +471,42 @@ void GA_reinsertion(int size, int id1, int id2, double * offspring_1, double * o
 	//This means: copy the parameters into the classifier system
 	for (k=0; k<size; k++)
 	{
-		PUBLIC_CLASSIFIERSYSTEM.ruletable[id1].parameters[k] = offspring_1[k];
-		PUBLIC_CLASSIFIERSYSTEM.ruletable[id2].parameters[k] = offspring_2[k];
+		PUBLIC_CLASSIFIERSYSTEM_CANDIDATES.ruletable[id1].parameters[k] = offspring_1[k];
+		PUBLIC_CLASSIFIERSYSTEM_CANDIDATES.ruletable[id2].parameters[k] = offspring_2[k];
 	}
 	/*********************** End of Reinsertion function ****************************************************/
+}
+
+/* \fn: void GA_copy_parents_to_candidates()
+ * \brief: Function to copy parent population into the candidate population, to be used as temporary storage for the offspring.
+ * All rule parameters from the classifier system PUBLIC_CLASSIFIERSYSTEM are copied into PUBLIC_CLASSIFIERSYSTEM_CANDIDATES.
+ */
+void GA_copy_parents_to_candidates()
+{
+	int i,k;
+	for (i=0; i<PUBLIC_CLASSIFIERSYSTEM.nr_rules; i++)
+	{
+		for (k=0; k<GA_PARAMETERS.string_size; k++)
+		{
+			PUBLIC_CLASSIFIERSYSTEM_CANDIDATES.ruletable[i].parameters[k] = PUBLIC_CLASSIFIERSYSTEM.ruletable[i].parameters[k];
+		}
+	}
+}
+
+/* \fn: void GA_copy_candidates_to_parents()
+ * \brief: Function to copy candidate population into the parent population, and replace the original parents.
+ * All rule parameters from the classifier system PUBLIC_CLASSIFIERSYSTEM_CANDIDATES are copied into PUBLIC_CLASSIFIERSYSTEM.
+ */
+void GA_copy_candidates_to_parents()
+{
+	int i,k;
+	for (i=0; i<PUBLIC_CLASSIFIERSYSTEM.nr_rules; i++)
+	{
+		for (k=0; k<GA_PARAMETERS.string_size; k++)
+		{
+			PUBLIC_CLASSIFIERSYSTEM.ruletable[i].parameters[k] = PUBLIC_CLASSIFIERSYSTEM_CANDIDATES.ruletable[i].parameters[k];
+		}
+	}
 }
 
 int FinancialAgent_print_public_classifiersystem()

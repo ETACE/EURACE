@@ -484,7 +484,12 @@
         <variable>
           <type>SimplePublicClassifierSystem</type>
           <name>public_classifiersystem</name>
-          <description></description>
+          <description>Public classifiersystem holding the rule table.</description>
+        </variable>
+        <variable>
+          <type>SimplePublicClassifierSystem</type>
+          <name>public_classifiersystem_candidates</name>
+          <description>Public classifiersystem to hold the candidate offspring bitstrings, before copying them into the parent population.</description>
         </variable>
         <variable>
           <type>GAParameterStruct</type>

@@ -19,6 +19,8 @@ void GA_reproduction(int size, int id1, int id2, double * offspring_1, double * 
 void GA_mutation(int size, double * offspring_1, double * offspring_2);
 void GA_election(int size, int id1, int id2, double * offspring_1, double * offspring_2);
 void GA_reinsertion(int size, int id1, int id2, double * offspring_1, double * offspring_2);
+void GA_copy_parents_to_candidates( void );
+void GA_copy_candidates_to_parents( void );
 
-/* Debugginhg functions */
+/* Debugging functions */
 void test_print();

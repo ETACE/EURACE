@@ -9,11 +9,11 @@
  * 13/11/07 Mariam: Converting the code into separate agent functions files. 
  *********************************/
 //For stand-alone model:
-//#include "header.h"
-//#include "Household_agent_header.h"
+#include "header.h"
+#include "Household_agent_header.h"
 //For integrated model:
-#include "../header.h"
-#include "../Household_agent_header.h"
+//#include "../header.h"
+//#include "../Household_agent_header.h"
 //Always:
 #include "some_new_functions.h"
 #include "mylibraryheader.h"
@@ -47,7 +47,8 @@ int Household_initialize_rule_details()
 	//FUNDAMENTALWEIGHT
 	//CHARTISTWEIGHT		
 	//We have included in agent memory: global_rnd, prob_random, prob_fund
-	
+
+	/*
 	if(GLOBAL_RND <= PROB_RANDOM)
 	{
 		RANDOMWEIGHT  = 1.0;
@@ -66,7 +67,7 @@ int Household_initialize_rule_details()
 		FUNDAMENTALWEIGHT = 0.0;
 		CHARTISTWEIGHT = 1.0;
 	}
-
+	 */
     return 0;
 }
 

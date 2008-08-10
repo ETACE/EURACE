@@ -82,7 +82,7 @@ int main(int argc, char * argv[])
     /* add the tests to the suite */
     /* add extra tests using || */
     if(
-    	
+    	/*
         NULL == CU_add_test(pSuite, "some_new_functions, random_unif(0.0,1.0)\n", unittest_random_unif) ||    		
        	NULL == CU_add_test(pSuite, "some_new_functions, random_unif_interval(0.0,10.0)\n", unittest_random_unif_interval) ||
        	NULL == CU_add_test(pSuite, "some_new_functions, sum", unittest_sum) ||
@@ -110,6 +110,7 @@ int main(int argc, char * argv[])
     	NULL == CU_add_test(pSuite, "FinancialAgent_aux_functions, GA_mutation, case 1", unittest1_GA_mutation) ||
     	NULL == CU_add_test(pSuite, "FinancialAgent_aux_functions, GA_mutation, case 2", unittest2_GA_mutation) ||   	
     	//NULL == CU_add_test(pSuite, "FinancialAgent_aux_functions, GA_election", unittest_GA_election) ||
+    	*/
     	NULL == CU_add_test(pSuite, "FinancialAgent_aux_functions, GA_reinsertion", unittest_GA_reinsertion))
         
     	//NULL == CU_add_test(pSuite, "test_print\n", test_print) ||
