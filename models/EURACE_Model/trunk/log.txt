@@ -475,6 +475,15 @@ in the first period of a loan contract.
 This would mean that a loan is serviced on the same day it is acquired.
 The fix is that we service the loan for the first time in the following month. 
 
+File: Credit_Ancona/Firm_Credit_Functions.c
+Function: Firm_get_loan
+Line: 203
+
+When a firm gets a credit it adds this credit in the loan array in the function Firm_Credit_Functions.c,
+and the initial value for the variable nr_periods_before_maturity is set to:
+
+nr_periods_before_repayment=CONST_INSTALLMENT_PERIODS+1;
+
 File: Financial_Management_GREQAM/Firm_Financial_Management.c:
 Function: Firm_execute_financial_payments() 
 line: 367
@@ -482,10 +491,7 @@ line: 367
 The  reason is that debt installment and interest payments aren't scheduled in the financial planning
 phase because the planned financial payments are calculated before a firm goes on the credit market,
 in the function Firm_compute_total_financial_payments.
-When a firm gets a credit it adds this credit in the loan array in the function Firm_Credit_Functions.c,
-and the initial value for the variable nr_periods_before_maturity is set to:
 
-nr_periods_before_repayment=CONST_INSTALLMENT_PERIODS+1;
 
 By using the condition
 
@@ -494,7 +500,7 @@ if(LOANS.array[i].nr_periods_before_repayment!=CONST_INSTALLMENT_PERIODS+1)
 the debt installment and interest payments are not executed for a new loan item.
 Any other loan items that have nr_periods_before_repayment<13 do get serviced.
 
-To decrease the nr_periods_before_repayment immeditely in the first period of the contract,
+To decrease the nr_periods_before_repayment immediately in the first period of the contract,
 we should decrease it from 13 to 12. This is done at the end:
 
 	        if (LOANS.array[i].nr_periods_before_repayment==0)

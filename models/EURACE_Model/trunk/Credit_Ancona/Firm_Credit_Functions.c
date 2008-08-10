@@ -197,7 +197,10 @@ int Firm_get_loan()
             
             residual_var =var_per_installment*CONST_INSTALLMENT_PERIODS;// value_at_risk_array[rate_order_array[primo]]*(credit_offer_array[rate_order_array[primo]]/credit_accepted);
 		    bad_debt = 0.0;
-		    nr_periods_before_repayment=CONST_INSTALLMENT_PERIODS;
+		    
+		    //Note: the initial value for nr_periods_before_maturity is set to CONST_INSTALLMENT_PERIODS+1
+		    //to prevent a new loan from being serviced immediately.
+		    nr_periods_before_repayment=CONST_INSTALLMENT_PERIODS+1;
 	    	//ADD LOAN
             if (credit_accepted>0.0)
 		    add_debt_item(&LOANS, bank_id, loan_value, interest_rate, installment_amount, var_per_installment, residual_var, bad_debt, nr_periods_before_repayment);

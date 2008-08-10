@@ -377,10 +377,7 @@ int Firm_execute_financial_payments()
 	
 	        //decrease the residual_var of the loan with the var_per_installment:
 	        LOANS.array[i].residual_var -= LOANS.array[i].var_per_installment;
-	        
-	        //decrease the value of the nr_periods_before_payment
-	        LOANS.array[i].nr_periods_before_repayment -= 1;
-	
+	        	
 	        //Sending debt_installment_payment_msg to all banks at which the firm has a loan
 	        //Note: this message is to be separated from the general bank_account_update_message send at the end of the period
 	        //to the firm's deposit bank (the banks at which the firm has loans is a different one than the bank at which the firm has deposits).
@@ -393,7 +390,11 @@ int Firm_execute_financial_payments()
 	        {
 	            remove_debt_item(&LOANS, i);
 	        }
-	        
+		    else
+			{
+		    	LOANS.array[i].nr_periods_before_repayment -= 1;
+			}
+
 			//step 3: actual dividend payments
 	        //Actual bank account updates are send to the bank at end of day when the firm sends its bank_update message 
 
