@@ -52,7 +52,7 @@ int main(int argc, char * argv[])
     if(
     	NULL == CU_add_test(pSuite, "Eurostat_store_history_monthly", unittest_Eurostat_store_history_monthly) ||
     	NULL == CU_add_test(pSuite, "Eurostat_store_history_quarterly", unittest_Eurostat_store_history_quarterly) ||
-    	NULL == CU_add_test(pSuite, "Eurostat_compute_growth_rates_monthly", unittest_Eurostat_compute_growth_rates_monthly)  ||
+    	NULL == CU_add_test(pSuite, "Eurostat_compute_growth_rates_monthly", unittest_Eurostat_compute_growth_rates_monthly) ||
     	NULL == CU_add_test(pSuite, "Eurostat_compute_growth_rates_quarterly", unittest_Eurostat_compute_growth_rates_quarterly))
     {
         CU_cleanup_registry();
