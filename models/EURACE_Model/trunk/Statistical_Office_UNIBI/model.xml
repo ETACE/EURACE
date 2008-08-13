@@ -396,6 +396,11 @@ including several micro data.</description>
 <variable><type>double</type><name>survival_rate_multiperiod_1[60]</name><description>Multi-period survival rates. Definition: "The survival rate after x years is the percentage of all enterprise births of year n which are still active in year n+x." The 1st row survival_rate_multiperiod[0][.] equals survival_rate[], and contains the 1-period survival rates (for all age bins 0-59). The 2nd row survival_rate_multiperiod[1][.] contains the 2-period survival rates (for all age bins 0-59), etc.</description></variable>
 <variable><type>double</type><name>survival_rate_multiperiod_2[60]</name><description>Multi-period survival rates. Definition: "The survival rate after x years is the percentage of all enterprise births of year n which are still active in year n+x." The 1st row survival_rate_multiperiod[0][.] equals survival_rate[], and contains the 1-period survival rates (for all age bins 0-59). The 2nd row survival_rate_multiperiod[1][.] contains the 2-period survival rates (for all age bins 0-59), etc.</description></variable>
 <variable><type>int</type><name>max_firm_creation</name><description></description></variable>
+
+<!-- Data for storing recession data -->
+<variable><type>int</type><name>recession_started</name><description>Indicator signalling the start of a recession. 0: no recession, 1: recession.</description></variable>
+<variable><type>int</type><name>recession_duration</name><description>Duration of a recession measured in quarters.</description></variable>
+
 </memory>
 
 
@@ -525,6 +530,12 @@ including several micro data.</description>
 <function><name>Eurostat_compute_growth_rates_quarterly</name>
 <description>Eurostat computes quarterly growth rates for macro data stored in its quarterly history struct</description>
 <currentState>03</currentState>
+<nextState>04</nextState>
+</function>
+
+<function><name>Eurostat_measure_recession</name>
+<description>Eurostat measures the start or end of recessions</description>
+<currentState>04</currentState>
 <nextState>end_Eurostat</nextState>
 </function>
 
