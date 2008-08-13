@@ -18,12 +18,13 @@ int Eurostat_Initialization()
     for(i = 1; i <= NO_REGIONS; i++)
     {
         add_firm_data(&REGION_FIRM_DATA,
-                i,0,0,
-                0,0,0,0,0,0,
-                0.0,0.0,0.0,0.0,0.0,0.0,
-                0.0,0.0,0.0,0.0,0.0,0.0,
-                0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,
-                0.0,0.0,0.0,0.0);
+                i,0,0,					 //region_id - vacancies
+                0,0,0,0,0,0,			 //employees_skill
+                0.0,0.0,0.0,0.0,0.0,0.0, //average_wage_skill
+                0.0,0.0,0.0,0.0,0.0,0.0, //average_s_skill
+                0.0,0.0,0.0,0.0,0.0,0.0, //gdp - average_debt_earnings_ratio
+                0.0,0.0,0.0,0.0,0.0,0.0, //average_debt_equity_ratio - monthly_planned_output
+                0.0,0.0);				 //cpi, cpi_last_month 
         
         add_household_data(&REGION_HOUSEHOLD_DATA,
                 i,
@@ -107,6 +108,7 @@ int Eurostat_calculate_data()
     double sum_consumption_good_supply;
     
     int counter_firms_in_region;
+    double weight, price, price_last_month, quantity, sum_1, sum_2;
     
     /*delete the content of the memmory variables in order to store the data for the            new month*/
     NO_FIRMS =0;
@@ -195,12 +197,13 @@ int Eurostat_calculate_data()
     for(i = 1; i <= NO_REGIONS; i++)
     {
         add_firm_data(&REGION_FIRM_DATA,
-                i,0,0,
-                0,0,0,0,0,0,
-                0.0,0.0,0.0,0.0,0.0,0.0,
-                0.0,0.0,0.0,0.0,0.0,0.0,
-                0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,
-                0.0,0.0,0.0,0.0);
+                i,0,0,					 //region_id - vacancies
+                0,0,0,0,0,0,			 //employees_skill
+                0.0,0.0,0.0,0.0,0.0,0.0, //average_wage_skill
+                0.0,0.0,0.0,0.0,0.0,0.0, //average_s_skill
+                0.0,0.0,0.0,0.0,0.0,0.0, //gdp - average_debt_earnings_ratio
+                0.0,0.0,0.0,0.0,0.0,0.0, //average_debt_equity_ratio - monthly_planned_output
+                0.0,0.0);				 //cpi, cpi_last_month 
         
         add_household_data(&REGION_HOUSEHOLD_DATA,
                 i,
@@ -454,11 +457,50 @@ int Eurostat_calculate_data()
             REGION_FIRM_DATA.array[i].average_debt_equity_ratio = sum_region_debt_equity_ratios/counter_firms_in_region;
             REGION_FIRM_DATA.array[i].labour_share_ratio = sum_region_labour_share_ratios/counter_firms_in_region;
             
-            REGION_FIRM_DATA.array[i].monthly_sold_quantity = sum_region_sold_quantity/counter_firms_in_region;
-            REGION_FIRM_DATA.array[i].monthly_output = sum_region_output/counter_firms_in_region;
-            REGION_FIRM_DATA.array[i].monthly_revenue = sum_region_cum_revenue/counter_firms_in_region;
-            REGION_FIRM_DATA.array[i].monthly_planned_output = sum_region_planned_output/counter_firms_in_region;
+            REGION_FIRM_DATA.array[i].monthly_sold_quantity = sum_region_sold_quantity;
+            REGION_FIRM_DATA.array[i].monthly_output = sum_region_output;
+            REGION_FIRM_DATA.array[i].monthly_revenue = sum_region_cum_revenue;
+            REGION_FIRM_DATA.array[i].monthly_planned_output = sum_region_planned_output;
         
+            //COMPUTE PRICE INDEX for regions
+            //Q: REGION_FIRM_DATA.array[i].monthly_sold_quantity: total quantity sold in region
+            //q: firm_send_data_message->cum_total_sold_quantity: Monthly sum of sold quantities in the different malls (= total quantity sold in all regions)             
+            //weight=q/Q
+            //p: firm_send_data_message->price
+            //p_previous: firm_send_data_message->price_previous
+            //sum_1= sum_firms(weight * p * q)
+            //sum_2= sum_firms(weight * p_previous * q)
+            //PRICE_INDEX =sum_1/sum2;
+            
+            
+            //Assumed: firm uses same price in all regions
+            //firm_send_data_message->cum_total_sold_quantity refers to the firms own region.
+            //TODO: Change this to use heterogenous prices for the regional sales
+            //firm_send_data_message->mall_sales_array[mall_id].quantity
+            //firm_send_data_message->mall_sales_array[mall_id].price
+            
+            //Start a new reading loop:
+            sum_1 = 0.0;
+            sum_2 = 0.0;
+            START_FIRM_SEND_DATA_MESSAGE_LOOP
+	            if(firm_send_data_message->region_id == REGION_FIRM_DATA.array[i].region_id)
+	            {
+	            	quantity = firm_send_data_message->cum_total_sold_quantity;
+	            	weight = quantity/REGION_FIRM_DATA.array[i].monthly_sold_quantity;
+		            price = firm_send_data_message->price;
+		            price_last_month = firm_send_data_message->price_last_month;
+		            sum_1 += weight * price * quantity;
+		            sum_2 += weight * price_last_month * quantity;
+	            }
+            FINISH_FIRM_SEND_DATA_MESSAGE_LOOP
+            REGION_FIRM_DATA.array[i].cpi_last_month = REGION_FIRM_DATA.array[i].cpi;
+            REGION_FIRM_DATA.array[i].cpi = sum_1/sum_2;
+            
+            if (PRINT_DEBUG)
+            {
+                fprintf(stdout,"CPI for region %d = %f\n", i, REGION_FIRM_DATA.array[i].cpi);
+            }
+
         }
         
         //Compute total averages after the region for-loop
@@ -470,6 +512,25 @@ int Eurostat_calculate_data()
         MONTHLY_OUTPUT = sum_total_output/NO_FIRMS;
         MONTHLY_REVENUE = sum_total_cum_revenue/NO_FIRMS;
         MONTHLY_PLANNED_OUTPUT = sum_total_planned_output/NO_FIRMS;
+
+        
+        //Compute overall economy-wide price index: loop over regions
+        sum_1 = 0.0;
+        sum_2 = 0.0;
+        for(j = 0; j < REGION_FIRM_DATA.size; j++)
+        {
+        	quantity = REGION_FIRM_DATA.array[i].monthly_sold_quantity;
+        	weight = quantity/sum_total_sold_quantity;
+	        price = REGION_FIRM_DATA.array[i].cpi;
+	        price_last_month = REGION_FIRM_DATA.array[i].cpi_last_month;
+	        sum_1 += weight * price * quantity;
+	        sum_2 += weight * price_last_month * quantity;
+        }
+        CPI = sum_1/sum_2;
+        if (PRINT_DEBUG)
+        {
+            fprintf(stdout,"CPI = %f\n", CPI);
+        }
 
         /***************** Sum of: no_firm_deaths *********************/
         NO_FIRM_DEATHS = (NO_FIRMS - HISTORY_MONTHLY[0].no_firms - NO_FIRM_BIRTHS);        

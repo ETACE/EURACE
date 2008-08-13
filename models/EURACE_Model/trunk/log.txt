@@ -515,3 +515,21 @@ we should decrease it from 13 to 12. This is done at the end:
 Sander, rev 1311
 	Merged Isolated_Model/FFM_UNIBI code with trunk FFM_GREQAM code.
 ----------------------------------------------------------------------
+Sander, rev 1321
+
+Added to firm_send_data_message:
+price_last_month
+
+Added to struct firm_data:
+cpi
+cpi_last_month
+
+Added to memory: region_firm_data now contains:
+REGION_FIRM_DATA.array[i].cpi
+REGION_FIRM_DATA.array[i].cpi_last_month
+
+Added code for price index computations:
+File: Eurostat_Functions.c
+Function: Eurostat_calculate_data
+Lines: 483-497 and 517-529
+----------------------------------------------------------------------
