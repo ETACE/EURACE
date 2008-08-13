@@ -184,8 +184,8 @@
 <variable><type>double</type><name>adaption_production_volume_due_to_insufficient_finances</name><description>Percentage of production by which the quantity is reduced</description></variable>
 <variable><type>double</type><name>fraction_reserved_for_delayed_payments</name><description></description></variable>
 <variable><type>sold_quantities_per_mall_array</type><name>sold_quantities</name><description>Sold quantities in the different malls</description></variable>
-<variable><type>double</type><name>total_sold_quantity</name><description>Daily sum of sold quantities in the different malls</description></variable>
-<variable><type>double</type><name>cum_total_sold_quantity</name><description>Monthly sum of sold quantities in the different malls</description></variable>
+<variable><type>double</type><name>total_sold_quantity</name><description>Daily sum of sold quantities in all malls. The sold quantity of one firm in all malls.</description></variable>
+<variable><type>double</type><name>cum_total_sold_quantity</name><description>Monthly sum of sold quantities in all malls. The monthly sold quantity of one firm in all malls.</description></variable>
 <variable><type>delivery_volume_per_mall_array</type><name>delivery_volume</name><description>Delivery volume for each mall</description></variable>
 <variable><type>delivery_volume_per_mall_array</type><name>planned_delivery_volume</name>Planned delivery volume for each  mall<description></description></variable>
 <variable><type>mall_info_array</type><name>current_mall_stocks</name><description>Current stock in each mall</description></variable>

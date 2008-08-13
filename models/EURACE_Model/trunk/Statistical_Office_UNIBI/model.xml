@@ -82,7 +82,7 @@
 <variable><type>double</type><name>average_s_skill_3</name><description></description></variable>
 <variable><type>double</type><name>average_s_skill_4</name><description></description></variable>
 <variable><type>double</type><name>average_s_skill_5</name><description></description></variable>
-<variable><type>double</type><name>gdp</name><description>GDP of the region (regional consumption + investments)</description></variable>
+<variable><type>double</type><name>gdp</name><description>GDP across all firms in the region (GDP= C+I). Refers to total value sold by firms in the region_id.</description></variable>
 <variable><type>double</type><name>total_earnings</name><description>The sum of profits across all firms in the region</description></variable>
 <variable><type>double</type><name>total_debt</name><description>The sum of debt across firms in the region</description></variable>
 <variable><type>double</type><name>total_assets</name><description>The sum of assets across firms in the region</description></variable>
@@ -90,10 +90,12 @@
 <variable><type>double</type><name>average_debt_earnings_ratio</name><description>Constructed macrovariable: regional average debt/earnings ratio across all firms in the region</description></variable>
 <variable><type>double</type><name>average_debt_equity_ratio</name><description>Constructed macrovariable: regional average debt/equity ratio across all firms in the region</description></variable>
 <variable><type>double</type><name>labour_share_ratio</name><description>Constructed macrovariable: regional average labour share across all firms in the region (defined as total wages divided by total profits)</description></variable>
-<variable><type>double</type><name>monthly_sold_quantity</name><description>Constructed macrovariable: regional sum of sold quantity</description></variable>
+<variable><type>double</type><name>monthly_sold_quantity</name><description>Constructed macrovariable: regional sum of sold quantity. Refers to the quantities sold by all firms located in the region (not necessarily equal to the total quantity sold in the region).</description></variable>
 <variable><type>double</type><name>monthly_output</name><description>Constructed macrovariable: regional sum of output</description></variable>
 <variable><type>double</type><name>monthly_revenue</name><description>Constructed macrovariable: regional sum of cum_revenue</description></variable>
 <variable><type>double</type><name>monthly_planned_output</name><description>Constructed macrovariable: regional sum of planned output</description></variable>
+<variable><type>double</type><name>cpi</name><description>Consumer price index</description></variable>
+<variable><type>double</type><name>cpi_last_month</name><description>Consumer price index of previous month</description></variable>
 </variables>
 </dataType>
 
@@ -572,8 +574,9 @@ including several micro data.</description>
 <variable><type>double</type><name>equity</name><description></description></variable>
 <!--Variables related to production-->
 <variable><type>double</type><name>price</name><description></description></variable>
+<variable><type>double</type><name>price_last_month</name><description>Price of the consumption good in the last month</description></variable>
 <variable><type>double</type><name>total_supply</name><description></description></variable>
-<variable><type>double</type><name>cum_total_sold_quantity</name><description></description></variable>
+	<variable><type>double</type><name>cum_total_sold_quantity</name><description>Monthly sum of sold quantities in the different malls</description></variable>
 <variable><type>double</type><name>output</name><description></description></variable>
 <variable><type>double</type><name>planned_output</name><description></description></variable>
 <!--Variables related to age-->
