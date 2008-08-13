@@ -1526,3 +1526,38 @@ int Eurostat_firm_creation()
     
     return 0;
 }
+
+/* \fn: int Eurostat_measure_recession()
+ * \brief: Function to measure the start, duration and end of a recession.
+ */
+int Eurostat_measure_recession()
+{
+	
+	//Signal start of recesson: 2 quarters of succesive negative growth of GDP
+	if (RECESSION_STARTED==0)
+	{
+		if ( (HISTORY_QUARTERLY[0].gdp < HISTORY_QUARTERLY[1].gdp) && (HISTORY_QUARTERLY[1].gdp < HISTORY_QUARTERLY[2].gdp))
+		{
+			RECESSION_STARTED=1;
+			RECESSION_DURATION = 0;
+		}	
+	}	
+	//Signal end of recesson: 1 quarter of positive growth of GDP after start of recession
+	if (RECESSION_STARTED==1)
+	{
+		RECESSION_DURATION++;
+
+		if (HISTORY_QUARTERLY[0].gdp >= HISTORY_QUARTERLY[1].gdp)
+			{
+				RECESSION_STARTED=0;
+			}
+	}
+
+	if (PRINT_LOG)
+    {
+		printf(" - recession started: %d\n", RECESSION_STARTED);
+        printf(" - duration of recession: %d\n", RECESSION_DURATION);
+    }
+	
+    return 0;
+}
