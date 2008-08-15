@@ -1,4 +1,6 @@
-\subsection{Overview}
+% BEGIN (PARALLELISATION)
+% ===========================================================================
+\subsection{Overview of the Message Board Library}
 
 Within a FLAME simulation, every agent only interacts with its environment via the reading and writing of messages to a collection of Message Boards. This makes the Message Board component the ideal candidate for enabling parallelism. With a distributable Message Boards, agents can be farmed out across multiple processing nodes and simulated in parallel, while a coherent simulation can be maintained through the unified view of the distributed Boards.
 
@@ -16,3 +18,72 @@ The Message Board Library (\textit{libmboard}) was designed as a static library 
 \textit{libmboard} uses MPI to communicate between processors, and POSIX threads (pthreads) to fork a separate thread for handling data management and inter-process communication. The use of threads enables the memory intensive operations of managing the Message Boards to be performed concurrently with the agent simulations. 
 
 Apart from potentially making better use of multi-core processors, delegating \textit{libmboard} operations to a separate thread also allows us to minimise the overheads by overlapping the Board synchronisation time with useful computation.
+
+% ===========================================================================
+\subsection{The \textit{libmboard} API}
+
+\begin{itemize}
+\item Quick desc of the API. Point to User Doc for details.
+\item Opaque objects
+\item return codes
+\end{itemize} 
+
+
+% ---------------------------------------------------------------------------
+\subsubsection{Library environment}
+
+\begin{itemize}
+\item Init and finalise
+\item MPI env
+\item fork/join comm thread thread
+\end{itemize} 
+
+% ---------------------------------------------------------------------------
+\subsubsection{Boards}
+
+\begin{itemize}
+\item create/clear/delete
+\item AddMessage.. clone mem vs storing ptr
+\end{itemize} 
+
+% ---------------------------------------------------------------------------
+\subsubsection{Iterators}
+
+\begin{itemize}
+\item isolate users from internal data representation
+\item normal/filtered/sorted
+\item returning cloned mem vs ptr.
+\item randomisation
+\item rewind
+\end{itemize} 
+
+% ---------------------------------------------------------------------------
+\subsubsection{Synchronisation}
+
+\begin{itemize}
+\item Message Tagging vs Filtered Iterators.
+\item Why important? Impact on solution time?
+\item Details on how messages are packed and distributed
+\end{itemize} 
+
+% ===========================================================================
+\subsection{The Communication Thread}
+
+\begin{itemize}
+\item motivation
+\item queues
+\item state diagram
+\end{itemize} 
+
+
+% ===========================================================================
+\subsection{Issues}
+
+\begin{itemize}
+\item MPI thread support
+\item MPI sends/receives requires contiguous buffers. Expensive (space and time) packing of messages.
+\item Comm stages not fully non-blocking
+\item Total tagged messages may be more than actual message. Gets works with more proc. Scaling issues.
+\end{itemize} 
+
+% ===========================================================================
