@@ -1,0 +1,2384 @@
+%!PS-Adobe-2.0
+%%Creator: Graphviz version 2.18 (Fri Mar 28 18:30:32 GMT 2008)
+%%For: Mariam
+%%Title: state_graph
+%%Pages: (atend)
+%%BoundingBox: (atend)
+%%EndComments
+save
+%%BeginProlog
+/DotDict 200 dict def
+DotDict begin
+
+/setupLatin1 {
+mark
+/EncodingVector 256 array def
+ EncodingVector 0
+
+ISOLatin1Encoding 0 255 getinterval putinterval
+EncodingVector 45 /hyphen put
+
+% Set up ISO Latin 1 character encoding
+/starnetISO {
+        dup dup findfont dup length dict begin
+        { 1 index /FID ne { def }{ pop pop } ifelse
+        } forall
+        /Encoding EncodingVector def
+        currentdict end definefont
+} def
+/Times-Roman starnetISO def
+/Times-Italic starnetISO def
+/Times-Bold starnetISO def
+/Times-BoldItalic starnetISO def
+/Helvetica starnetISO def
+/Helvetica-Oblique starnetISO def
+/Helvetica-Bold starnetISO def
+/Helvetica-BoldOblique starnetISO def
+/Courier starnetISO def
+/Courier-Oblique starnetISO def
+/Courier-Bold starnetISO def
+/Courier-BoldOblique starnetISO def
+cleartomark
+} bind def
+
+%%BeginResource: procset graphviz 0 0
+/coord-font-family /Times-Roman def
+/default-font-family /Times-Roman def
+/coordfont coord-font-family findfont 8 scalefont def
+
+/InvScaleFactor 1.0 def
+/set_scale {
+       dup 1 exch div /InvScaleFactor exch def
+       scale
+} bind def
+
+% styles
+/solid { [] 0 setdash } bind def
+/dashed { [9 InvScaleFactor mul dup ] 0 setdash } bind def
+/dotted { [1 InvScaleFactor mul 6 InvScaleFactor mul] 0 setdash } bind def
+/invis {/fill {newpath} def /stroke {newpath} def /show {pop newpath} def} bind def
+/bold { 2 setlinewidth } bind def
+/filled { } bind def
+/unfilled { } bind def
+/rounded { } bind def
+/diagonals { } bind def
+
+% hooks for setting color 
+/nodecolor { sethsbcolor } bind def
+/edgecolor { sethsbcolor } bind def
+/graphcolor { sethsbcolor } bind def
+/nopcolor {pop pop pop} bind def
+
+/beginpage {	% i j npages
+	/npages exch def
+	/j exch def
+	/i exch def
+	/str 10 string def
+	npages 1 gt {
+		gsave
+			coordfont setfont
+			0 0 moveto
+			(\() show i str cvs show (,) show j str cvs show (\)) show
+		grestore
+	} if
+} bind def
+
+/set_font {
+	findfont exch
+	scalefont setfont
+} def
+
+% draw text fitted to its expected width
+/alignedtext {			% width text
+	/text exch def
+	/width exch def
+	gsave
+		width 0 gt {
+			[] 0 setdash
+			text stringwidth pop width exch sub text length div 0 text ashow
+		} if
+	grestore
+} def
+
+/boxprim {				% xcorner ycorner xsize ysize
+		4 2 roll
+		moveto
+		2 copy
+		exch 0 rlineto
+		0 exch rlineto
+		pop neg 0 rlineto
+		closepath
+} bind def
+
+/ellipse_path {
+	/ry exch def
+	/rx exch def
+	/y exch def
+	/x exch def
+	matrix currentmatrix
+	newpath
+	x y translate
+	rx ry scale
+	0 0 1 0 360 arc
+	setmatrix
+} bind def
+
+/endpage { showpage } bind def
+/showpage { } def
+
+/layercolorseq
+	[	% layer color sequence - darkest to lightest
+		[0 0 0]
+		[.2 .8 .8]
+		[.4 .8 .8]
+		[.6 .8 .8]
+		[.8 .8 .8]
+	]
+def
+
+/layerlen layercolorseq length def
+
+/setlayer {/maxlayer exch def /curlayer exch def
+	layercolorseq curlayer 1 sub layerlen mod get
+	aload pop sethsbcolor
+	/nodecolor {nopcolor} def
+	/edgecolor {nopcolor} def
+	/graphcolor {nopcolor} def
+} bind def
+
+/onlayer { curlayer ne {invis} if } def
+
+/onlayers {
+	/myupper exch def
+	/mylower exch def
+	curlayer mylower lt
+	curlayer myupper gt
+	or
+	{invis} if
+} def
+
+/curlayer 0 def
+
+%%EndResource
+%%EndProlog
+%%BeginSetup
+14 default-font-family set_font
+1 setmiterlimit
+% /arrowlength 10 def
+% /arrowwidth 5 def
+
+% make sure pdfmark is harmless for PS-interpreters other than Distiller
+/pdfmark where {pop} {userdict /pdfmark /cleartomark load put} ifelse
+% make '<<' and '>>' safe on PS Level 1 devices
+/languagelevel where {pop languagelevel}{1} ifelse
+2 lt {
+    userdict (<<) cvn ([) cvn load put
+    userdict (>>) cvn ([) cvn load put
+} if
+
+%%EndSetup
+setupLatin1
+%%Page: 1 1
+%%PageBoundingBox: 36 36 212 396
+%%PageOrientation: Portrait
+0 0 1 beginpage
+gsave
+36 36 176 360 boxprim clip newpath
+0.129125 0.129125 set_scale 0 rotate 282.8 282.8 translate
+% layer_0
+gsave
+0.000 0.000 0.000 nodecolor
+14 /Times-Roman set_font
+11.5 2683.4 moveto 37 (layer 0) alignedtext
+grestore
+% layer_1
+gsave
+0.000 0.000 0.000 nodecolor
+14 /Times-Roman set_font
+11.5 2521.4 moveto 37 (layer 1) alignedtext
+grestore
+% layer_0->layer_1
+% layer_2
+gsave
+0.000 0.000 0.000 nodecolor
+14 /Times-Roman set_font
+11.5 2433.4 moveto 37 (layer 2) alignedtext
+grestore
+% layer_1->layer_2
+% layer_3
+gsave
+0.000 0.000 0.000 nodecolor
+14 /Times-Roman set_font
+11.5 2345.4 moveto 37 (layer 3) alignedtext
+grestore
+% layer_2->layer_3
+% layer_4
+gsave
+0.000 0.000 0.000 nodecolor
+14 /Times-Roman set_font
+11.5 2149.4 moveto 37 (layer 4) alignedtext
+grestore
+% layer_3->layer_4
+% layer_5
+gsave
+0.000 0.000 0.000 nodecolor
+14 /Times-Roman set_font
+11.5 2061.4 moveto 37 (layer 5) alignedtext
+grestore
+% layer_4->layer_5
+% layer_6
+gsave
+0.000 0.000 0.000 nodecolor
+14 /Times-Roman set_font
+11.5 1953.4 moveto 37 (layer 6) alignedtext
+grestore
+% layer_5->layer_6
+% layer_7
+gsave
+0.000 0.000 0.000 nodecolor
+14 /Times-Roman set_font
+11.5 1741.4 moveto 37 (layer 7) alignedtext
+grestore
+% layer_6->layer_7
+% layer_8
+gsave
+0.000 0.000 0.000 nodecolor
+14 /Times-Roman set_font
+11.5 1593.4 moveto 37 (layer 8) alignedtext
+grestore
+% layer_7->layer_8
+% layer_9
+gsave
+0.000 0.000 0.000 nodecolor
+14 /Times-Roman set_font
+11.5 1431.4 moveto 37 (layer 9) alignedtext
+grestore
+% layer_8->layer_9
+% layer_10
+gsave
+0.000 0.000 0.000 nodecolor
+14 /Times-Roman set_font
+8 1283.4 moveto 44 (layer 10) alignedtext
+grestore
+% layer_9->layer_10
+% layer_11
+gsave
+0.000 0.000 0.000 nodecolor
+14 /Times-Roman set_font
+8 1135.4 moveto 44 (layer 11) alignedtext
+grestore
+% layer_10->layer_11
+% layer_12
+gsave
+0.000 0.000 0.000 nodecolor
+14 /Times-Roman set_font
+8 987.4 moveto 44 (layer 12) alignedtext
+grestore
+% layer_11->layer_12
+% layer_13
+gsave
+0.000 0.000 0.000 nodecolor
+14 /Times-Roman set_font
+8 825.4 moveto 44 (layer 13) alignedtext
+grestore
+% layer_12->layer_13
+% layer_14
+gsave
+0.000 0.000 0.000 nodecolor
+14 /Times-Roman set_font
+8 663.4 moveto 44 (layer 14) alignedtext
+grestore
+% layer_13->layer_14
+% layer_15
+gsave
+0.000 0.000 0.000 nodecolor
+14 /Times-Roman set_font
+8 501.4 moveto 44 (layer 15) alignedtext
+grestore
+% layer_14->layer_15
+% layer_16
+gsave
+0.000 0.000 0.000 nodecolor
+14 /Times-Roman set_font
+8 413.4 moveto 44 (layer 16) alignedtext
+grestore
+% layer_15->layer_16
+% layer_17
+gsave
+0.000 0.000 0.000 nodecolor
+14 /Times-Roman set_font
+8 265.4 moveto 44 (layer 17) alignedtext
+grestore
+% layer_16->layer_17
+% layer_18
+gsave
+0.000 0.000 0.000 nodecolor
+14 /Times-Roman set_font
+8 87.4 moveto 44 (layer 18) alignedtext
+grestore
+% layer_17->layer_18
+% Firm_Start_Firm_Labour_Role
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+741 418 105.99 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14 /Times-Roman set_font
+670 413.4 moveto 142 (Start_Firm_Labour_Role) alignedtext
+grestore
+% Firm_Firm_financial_crisis_ok
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+741 580 102.81 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14 /Times-Roman set_font
+672 575.4 moveto 138 (Firm_financial_crisis_ok) alignedtext
+grestore
+% Firm_Firm_execute_financial_payments_function_Firm_financial_crisis_ok_Start_Firm_Labour_Role
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+newpath 870 524 moveto
+612 524 lineto
+612 488 lineto
+870 488 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+14 /Times-Roman set_font
+619.5 501.4 moveto 243 (Firm_execute_financial_payments_function) alignedtext
+grestore
+% Firm_Firm_financial_crisis_ok->Firm_Firm_execute_financial_payments_function_Firm_financial_crisis_ok_Start_Firm_Labour_Role
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 741 562 moveto
+741 553 741 544 741 534 curveto
+stroke
+0.000 0.000 0.000 edgecolor
+newpath 744.5 534 moveto
+741 524 lineto
+737.5 534 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 0.000 0.000 edgecolor
+newpath 744.5 534 moveto
+741 524 lineto
+737.5 534 lineto
+closepath stroke
+grestore
+% Firm_Firm_not_in_bankruptcy_state_now_check_financial_crisis
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+780 756 234.96 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14 /Times-Roman set_font
+612.5 751.4 moveto 335 (Firm_not_in_bankruptcy_state_now_check_financial_crisis) alignedtext
+grestore
+% Firm_Firm_in_financial_crisis_function_Firm_not_in_bankruptcy_state_now_check_financial_crisis_Firm_financial_crisis_ok
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+newpath 776 686 moveto
+574 686 lineto
+574 650 lineto
+776 650 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+14 /Times-Roman set_font
+581.5 663.4 moveto 187 (Firm_in_financial_crisis_function) alignedtext
+grestore
+% Firm_Firm_not_in_bankruptcy_state_now_check_financial_crisis->Firm_Firm_in_financial_crisis_function_Firm_not_in_bankruptcy_state_now_check_financial_crisis_Firm_financial_crisis_ok
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 697 739 moveto
+678 734 663 727 657 720 curveto
+651 713 652 704 656 695 curveto
+stroke
+0.000 0.000 0.000 edgecolor
+newpath 659.2 696.44 moveto
+661 686 lineto
+653.08 693.04 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 0.000 0.000 edgecolor
+newpath 659.2 696.44 moveto
+661 686 lineto
+653.08 693.04 lineto
+closepath stroke
+0.000 0.000 0.000 edgecolor
+14 /Times-Roman set_font
+657.5 707.4 moveto 165 (a->financial_crisis_state == 1) alignedtext
+grestore
+% Firm_Firm_idle_Firm_not_in_bankruptcy_state_now_check_financial_crisis_Firm_financial_crisis_ok
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+newpath 879 686 moveto
+811 686 lineto
+811 650 lineto
+879 650 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+14 /Times-Roman set_font
+818.5 663.4 moveto 53 (Firm_idle) alignedtext
+grestore
+% Firm_Firm_not_in_bankruptcy_state_now_check_financial_crisis->Firm_Firm_idle_Firm_not_in_bankruptcy_state_now_check_financial_crisis_Firm_financial_crisis_ok
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 811 738 moveto
+817 733 824 727 829 720 curveto
+834 713 837 704 840 696 curveto
+stroke
+0.000 0.000 0.000 edgecolor
+newpath 843.47 696.49 moveto
+842 686 lineto
+836.61 695.12 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 0.000 0.000 edgecolor
+newpath 843.47 696.49 moveto
+842 686 lineto
+836.61 695.12 lineto
+closepath stroke
+0.000 0.000 0.000 edgecolor
+14 /Times-Roman set_font
+834.5 707.4 moveto 165 (a->financial_crisis_state == 0) alignedtext
+grestore
+% Firm_end_Firm_cycle
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+471 580 71.78 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14 /Times-Roman set_font
+425.5 575.4 moveto 91 (end_Firm_cycle) alignedtext
+grestore
+% Firm_end_Firm_dies
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+460 756 67.08 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14 /Times-Roman set_font
+418 751.4 moveto 84 (end_Firm_dies) alignedtext
+grestore
+% Firm_Firm_generate_new_firm_end_Firm_dies_end_Firm_cycle
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+newpath 549 686 moveto
+393 686 lineto
+393 650 lineto
+549 650 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+14 /Times-Roman set_font
+401 663.4 moveto 140 (Firm_generate_new_firm) alignedtext
+grestore
+% Firm_end_Firm_dies->Firm_Firm_generate_new_firm_end_Firm_dies_end_Firm_cycle
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 462 738 moveto
+464 726 466 710 468 696 curveto
+stroke
+0.000 0.000 0.000 edgecolor
+newpath 471.49 696.3 moveto
+469 686 lineto
+464.52 695.6 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 0.000 0.000 edgecolor
+newpath 471.49 696.3 moveto
+469 686 lineto
+464.52 695.6 lineto
+closepath stroke
+grestore
+% Firm_0003
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+595 2066 28.85 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14 /Times-Roman set_font
+581.5 2061.4 moveto 27 (0003) alignedtext
+grestore
+% Firm_Firm_read_stock_transactions_0003_End_Firm_Financial_Role
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+newpath 688 1976 moveto
+502 1976 lineto
+502 1940 lineto
+688 1940 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+14 /Times-Roman set_font
+510 1953.4 moveto 170 (Firm_read_stock_transactions) alignedtext
+grestore
+% Firm_0003->Firm_Firm_read_stock_transactions_0003_End_Firm_Financial_Role
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 595 2048 moveto
+595 2031 595 2006 595 1986 curveto
+stroke
+0.000 0.000 0.000 edgecolor
+newpath 598.5 1986 moveto
+595 1976 lineto
+591.5 1986 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 0.000 0.000 edgecolor
+newpath 598.5 1986 moveto
+595 1976 lineto
+591.5 1986 lineto
+closepath stroke
+grestore
+% Firm_02
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+907 2762 27 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14 /Times-Roman set_font
+900 2757.4 moveto 14 (02) alignedtext
+grestore
+% Firm_Firm_compute_total_liquidity_needs_02_Start_Firm_Credit_Role
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+newpath 1018 2706 moveto
+796 2706 lineto
+796 2670 lineto
+1018 2670 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+14 /Times-Roman set_font
+804 2683.4 moveto 206 (Firm_compute_total_liquidity_needs) alignedtext
+grestore
+% Firm_02->Firm_Firm_compute_total_liquidity_needs_02_Start_Firm_Credit_Role
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 907 2744 moveto
+907 2735 907 2726 907 2716 curveto
+stroke
+0.000 0.000 0.000 edgecolor
+newpath 910.5 2716 moveto
+907 2706 lineto
+903.5 2716 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 0.000 0.000 edgecolor
+newpath 910.5 2716 moveto
+907 2706 lineto
+903.5 2716 lineto
+closepath stroke
+grestore
+% Firm_Firm_bankruptcy_checked
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+666 918 112.03 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14 /Times-Roman set_font
+590.5 913.4 moveto 151 (Firm_bankruptcy_checked) alignedtext
+grestore
+% Firm_Firm_in_bankruptcy_Firm_bankruptcy_checked_end_Firm_dies
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+newpath 575 848 moveto
+445 848 lineto
+445 812 lineto
+575 812 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+14 /Times-Roman set_font
+453 825.4 moveto 114 (Firm_in_bankruptcy) alignedtext
+grestore
+% Firm_Firm_bankruptcy_checked->Firm_Firm_in_bankruptcy_Firm_bankruptcy_checked_end_Firm_dies
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 595 904 moveto
+579 899 563 892 549 882 curveto
+539 875 531 866 525 857 curveto
+stroke
+0.000 0.000 0.000 edgecolor
+newpath 527.92 855.04 moveto
+520 848 lineto
+521.8 858.44 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 0.000 0.000 edgecolor
+newpath 527.92 855.04 moveto
+520 848 lineto
+521.8 858.44 lineto
+closepath stroke
+0.000 0.000 0.000 edgecolor
+14 /Times-Roman set_font
+549 869.4 moveto 146 (a->bankruptcy_state == 1) alignedtext
+grestore
+% Firm_Firm_not_in_bankruptcy_Firm_bankruptcy_checked_Firm_not_in_bankruptcy_state_now_check_financial_crisis
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+newpath 827 848 moveto
+671 848 lineto
+671 812 lineto
+827 812 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+14 /Times-Roman set_font
+679 825.4 moveto 140 (Firm_not_in_bankruptcy) alignedtext
+grestore
+% Firm_Firm_bankruptcy_checked->Firm_Firm_not_in_bankruptcy_Firm_bankruptcy_checked_Firm_not_in_bankruptcy_state_now_check_financial_crisis
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 683 900 moveto
+695 887 711 870 725 855 curveto
+stroke
+0.000 0.000 0.000 edgecolor
+newpath 727.4 857.55 moveto
+732 848 lineto
+722.45 852.6 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 0.000 0.000 edgecolor
+newpath 727.4 857.55 moveto
+732 848 lineto
+722.45 852.6 lineto
+closepath stroke
+0.000 0.000 0.000 edgecolor
+14 /Times-Roman set_font
+711 869.4 moveto 146 (a->bankruptcy_state == 0) alignedtext
+grestore
+% Firm_End_Firm_Financial_Role
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+595 1850 108.84 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14 /Times-Roman set_font
+521.5 1845.4 moveto 147 (End_Firm_Financial_Role) alignedtext
+grestore
+% Firm_Firm_idle_End_Firm_Financial_Role_Firm_bankruptcy_checked
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+newpath 807 1764 moveto
+739 1764 lineto
+739 1728 lineto
+807 1728 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+14 /Times-Roman set_font
+746.5 1741.4 moveto 53 (Firm_idle) alignedtext
+grestore
+% Firm_End_Firm_Financial_Role->Firm_Firm_idle_End_Firm_Financial_Role_Firm_bankruptcy_checked
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 678 1838 moveto
+709 1832 739 1824 751 1814 curveto
+762 1804 768 1788 770 1774 curveto
+stroke
+0.000 0.000 0.000 edgecolor
+newpath 773.47 1774.49 moveto
+772 1764 lineto
+766.61 1773.12 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 0.000 0.000 edgecolor
+newpath 773.47 1774.49 moveto
+772 1764 lineto
+766.61 1773.12 lineto
+closepath stroke
+0.000 0.000 0.000 edgecolor
+14 /Times-Roman set_font
+792 1801.4 moveto 142 (not \( Periodicity: monthly) alignedtext
+0.000 0.000 0.000 edgecolor
+14 /Times-Roman set_font
+767 1785.4 moveto 192 (Phase: a->day_of_month_to_act \)) alignedtext
+grestore
+% Firm_Firm_check_financial_and_bankruptcy_state_End_Firm_Financial_Role_f1
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+newpath 699 1764 moveto
+433 1764 lineto
+433 1728 lineto
+699 1728 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+14 /Times-Roman set_font
+440.5 1741.4 moveto 251 (Firm_check_financial_and_bankruptcy_state) alignedtext
+grestore
+% Firm_End_Firm_Financial_Role->Firm_Firm_check_financial_and_bankruptcy_state_End_Firm_Financial_Role_f1
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 577 1832 moveto
+573 1827 569 1820 567 1814 curveto
+562 1802 561 1787 562 1774 curveto
+stroke
+0.000 0.000 0.000 edgecolor
+newpath 565.49 1774.3 moveto
+563 1764 lineto
+558.52 1773.6 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 0.000 0.000 edgecolor
+newpath 565.49 1774.3 moveto
+563 1764 lineto
+558.52 1773.6 lineto
+closepath stroke
+0.000 0.000 0.000 edgecolor
+14 /Times-Roman set_font
+603 1801.4 moveto 112 (Periodicity: monthly) alignedtext
+0.000 0.000 0.000 edgecolor
+14 /Times-Roman set_font
+567 1785.4 moveto 184 (Phase: a->day_of_month_to_act) alignedtext
+grestore
+% Firm_004
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+601 1066 27 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14 /Times-Roman set_font
+591 1061.4 moveto 20 (004) alignedtext
+grestore
+% Firm_Firm_compute_balance_sheet_004_Firm_bankruptcy_checked
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+newpath 730 1010 moveto
+546 1010 lineto
+546 974 lineto
+730 974 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+14 /Times-Roman set_font
+554 987.4 moveto 168 (Firm_compute_balance_sheet) alignedtext
+grestore
+% Firm_004->Firm_Firm_compute_balance_sheet_004_Firm_bankruptcy_checked
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 610 1049 moveto
+615 1040 620 1029 624 1019 curveto
+stroke
+0.000 0.000 0.000 edgecolor
+newpath 627.2 1020.44 moveto
+629 1010 lineto
+621.08 1017.04 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 0.000 0.000 edgecolor
+newpath 627.2 1020.44 moveto
+629 1010 lineto
+621.08 1017.04 lineto
+closepath stroke
+grestore
+% Firm_003
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+580 1214 27 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14 /Times-Roman set_font
+570 1209.4 moveto 20 (003) alignedtext
+grestore
+% Firm_Firm_compute_total_financial_payments_003_004
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+newpath 717 1158 moveto
+473 1158 lineto
+473 1122 lineto
+717 1122 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+14 /Times-Roman set_font
+481 1135.4 moveto 228 (Firm_compute_total_financial_payments) alignedtext
+grestore
+% Firm_003->Firm_Firm_compute_total_financial_payments_003_004
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 584 1196 moveto
+585 1187 587 1177 589 1168 curveto
+stroke
+0.000 0.000 0.000 edgecolor
+newpath 592.47 1168.49 moveto
+591 1158 lineto
+585.61 1167.12 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 0.000 0.000 edgecolor
+newpath 592.47 1168.49 moveto
+591 1158 lineto
+585.61 1167.12 lineto
+closepath stroke
+grestore
+% Firm_002
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+567 1362 27 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14 /Times-Roman set_font
+557 1357.4 moveto 20 (002) alignedtext
+grestore
+% Firm_Firm_compute_dividends_002_003
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+newpath 649 1306 moveto
+489 1306 lineto
+489 1270 lineto
+649 1270 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+14 /Times-Roman set_font
+497 1283.4 moveto 144 (Firm_compute_dividends) alignedtext
+grestore
+% Firm_002->Firm_Firm_compute_dividends_002_003
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 567 1344 moveto
+568 1335 568 1326 568 1316 curveto
+stroke
+0.000 0.000 0.000 edgecolor
+newpath 571.5 1316 moveto
+568 1306 lineto
+564.5 1316 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 0.000 0.000 edgecolor
+newpath 571.5 1316 moveto
+568 1306 lineto
+564.5 1316 lineto
+closepath stroke
+grestore
+% Firm_001
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+567 1524 27 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14 /Times-Roman set_font
+557 1519.4 moveto 20 (001) alignedtext
+grestore
+% Firm_Firm_compute_income_statement_001_002
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+newpath 670 1454 moveto
+464 1454 lineto
+464 1418 lineto
+670 1418 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+14 /Times-Roman set_font
+471.5 1431.4 moveto 191 (Firm_compute_income_statement) alignedtext
+grestore
+% Firm_001->Firm_Firm_compute_income_statement_001_002
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 567 1506 moveto
+567 1494 567 1478 567 1464 curveto
+stroke
+0.000 0.000 0.000 edgecolor
+newpath 570.5 1464 moveto
+567 1454 lineto
+563.5 1464 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 0.000 0.000 edgecolor
+newpath 570.5 1464 moveto
+567 1454 lineto
+563.5 1464 lineto
+closepath stroke
+grestore
+% Firm_f1
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+566 1672 27 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14 /Times-Roman set_font
+560.5 1667.4 moveto 11 (f1) alignedtext
+grestore
+% Firm_Firm_compute_financial_payments_f1_001
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+newpath 672 1616 moveto
+460 1616 lineto
+460 1580 lineto
+672 1580 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+14 /Times-Roman set_font
+467.5 1593.4 moveto 197 (Firm_compute_financial_payments) alignedtext
+grestore
+% Firm_f1->Firm_Firm_compute_financial_payments_f1_001
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 566 1654 moveto
+566 1645 566 1636 566 1626 curveto
+stroke
+0.000 0.000 0.000 edgecolor
+newpath 569.5 1626 moveto
+566 1616 lineto
+562.5 1626 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 0.000 0.000 edgecolor
+newpath 569.5 1626 moveto
+566 1616 lineto
+562.5 1626 lineto
+closepath stroke
+grestore
+% Firm_Firm_End_Credit_Role
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+595 2242 98.78 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14 /Times-Roman set_font
+529 2237.4 moveto 132 (Firm_End_Credit_Role) alignedtext
+grestore
+% Firm_Firm_compute_and_send_stock_orders_Firm_End_Credit_Role_0003
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+newpath 716 2172 moveto
+474 2172 lineto
+474 2136 lineto
+716 2136 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+14 /Times-Roman set_font
+482 2149.4 moveto 226 (Firm_compute_and_send_stock_orders) alignedtext
+grestore
+% Firm_Firm_End_Credit_Role->Firm_Firm_compute_and_send_stock_orders_Firm_End_Credit_Role_0003
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 595 2224 moveto
+595 2212 595 2196 595 2182 curveto
+stroke
+0.000 0.000 0.000 edgecolor
+newpath 598.5 2182 moveto
+595 2172 lineto
+591.5 2182 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 0.000 0.000 edgecolor
+newpath 598.5 2182 moveto
+595 2172 lineto
+591.5 2182 lineto
+closepath stroke
+0.000 0.000 0.000 edgecolor
+14 /Times-Roman set_font
+595 2193.4 moveto 188 (a->external_financial_needs > 0.0) alignedtext
+grestore
+% Firm_idle_Firm_End_Credit_Role_Start_Firm_Labour_Role
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+newpath 362 2172 moveto
+308 2172 lineto
+308 2136 lineto
+362 2136 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+14 /Times-Roman set_font
+325 2149.4 moveto 20 (idle) alignedtext
+grestore
+% Firm_Firm_End_Credit_Role->Firm_idle_Firm_End_Credit_Role_Start_Firm_Labour_Role
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 503 2236 moveto
+449 2230 387 2221 365 2206 curveto
+356 2200 350 2191 345 2181 curveto
+stroke
+0.000 0.000 0.000 edgecolor
+newpath 348.26 2179.72 moveto
+341 2172 lineto
+341.86 2182.56 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 0.000 0.000 edgecolor
+newpath 348.26 2179.72 moveto
+341 2172 lineto
+341.86 2182.56 lineto
+closepath stroke
+0.000 0.000 0.000 edgecolor
+14 /Times-Roman set_font
+368 2193.4 moveto 226 (not \( a->external_financial_needs > 0.0 \)) alignedtext
+grestore
+% Firm_Firm_Credit_02
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+743 2438 69.94 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14 /Times-Roman set_font
+698.5 2433.4 moveto 89 (Firm_Credit_02) alignedtext
+grestore
+% Firm_Firm_get_loan_Firm_Credit_02_Firm_End_Credit_Role
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+newpath 746 2368 moveto
+650 2368 lineto
+650 2332 lineto
+746 2332 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+14 /Times-Roman set_font
+657.5 2345.4 moveto 81 (Firm_get_loan) alignedtext
+grestore
+% Firm_Firm_Credit_02->Firm_Firm_get_loan_Firm_Credit_02_Firm_End_Credit_Role
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 734 2420 moveto
+728 2408 719 2391 712 2377 curveto
+stroke
+0.000 0.000 0.000 edgecolor
+newpath 714.92 2375.04 moveto
+707 2368 lineto
+708.8 2378.44 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 0.000 0.000 edgecolor
+newpath 714.92 2375.04 moveto
+707 2368 lineto
+708.8 2378.44 lineto
+closepath stroke
+grestore
+% Firm_Start_Firm_Credit_Role
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+907 2614 101.96 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14 /Times-Roman set_font
+839 2609.4 moveto 136 (Start_Firm_Credit_Role) alignedtext
+grestore
+% Firm_Firm_ask_loan_Start_Firm_Credit_Role_Firm_Credit_02
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+newpath 841 2544 moveto
+743 2544 lineto
+743 2508 lineto
+841 2508 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+14 /Times-Roman set_font
+750.5 2521.4 moveto 83 (Firm_ask_loan) alignedtext
+grestore
+% Firm_Start_Firm_Credit_Role->Firm_Firm_ask_loan_Start_Firm_Credit_Role_Firm_Credit_02
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 857 2598 moveto
+845 2593 833 2586 823 2578 curveto
+815 2571 808 2562 803 2553 curveto
+stroke
+0.000 0.000 0.000 edgecolor
+newpath 806.26 2551.72 moveto
+799 2544 lineto
+799.86 2554.56 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 0.000 0.000 edgecolor
+newpath 806.26 2551.72 moveto
+799 2544 lineto
+799.86 2554.56 lineto
+closepath stroke
+0.000 0.000 0.000 edgecolor
+14 /Times-Roman set_font
+823 2565.4 moveto 188 (a->external_financial_needs > 0.0) alignedtext
+grestore
+% Firm_idle_Start_Firm_Credit_Role_Start_Firm_Labour_Role
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+newpath 1065 2544 moveto
+1011 2544 lineto
+1011 2508 lineto
+1065 2508 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+14 /Times-Roman set_font
+1028 2521.4 moveto 20 (idle) alignedtext
+grestore
+% Firm_Start_Firm_Credit_Role->Firm_idle_Start_Firm_Credit_Role_Start_Firm_Labour_Role
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 971 2600 moveto
+985 2595 999 2588 1011 2578 curveto
+1018 2571 1024 2562 1028 2553 curveto
+stroke
+0.000 0.000 0.000 edgecolor
+newpath 1031.14 2554.56 moveto
+1032 2544 lineto
+1024.74 2551.72 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 0.000 0.000 edgecolor
+newpath 1031.14 2554.56 moveto
+1032 2544 lineto
+1024.74 2551.72 lineto
+closepath stroke
+0.000 0.000 0.000 edgecolor
+14 /Times-Roman set_font
+1021 2565.4 moveto 226 (not \( a->external_financial_needs > 0.0 \)) alignedtext
+grestore
+% Bank_end_Bank_cycle
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+239 18 73.12 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14 /Times-Roman set_font
+192.5 13.4 moveto 93 (end_Bank_cycle) alignedtext
+grestore
+% Bank_Bank_05
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+236 196 43.78 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14 /Times-Roman set_font
+211 191.4 moveto 50 (Bank_05) alignedtext
+grestore
+% Bank_Bank_accounting_Bank_05_end_Bank_cycle
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+newpath 220 110 moveto
+108 110 lineto
+108 74 lineto
+220 74 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+14 /Times-Roman set_font
+115.5 87.4 moveto 97 (Bank_accounting) alignedtext
+grestore
+% Bank_Bank_05->Bank_Bank_accounting_Bank_05_end_Bank_cycle
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 194 191 moveto
+157 185 107 175 95 160 curveto
+87 148 88 140 95 128 curveto
+97 124 101 120 105 116 curveto
+stroke
+0.000 0.000 0.000 edgecolor
+newpath 107.1 118.8 moveto
+113 110 lineto
+102.9 113.2 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 0.000 0.000 edgecolor
+newpath 107.1 118.8 moveto
+113 110 lineto
+102.9 113.2 lineto
+closepath stroke
+0.000 0.000 0.000 edgecolor
+14 /Times-Roman set_font
+134 147.4 moveto 112 (Periodicity: monthly) alignedtext
+0.000 0.000 0.000 edgecolor
+14 /Times-Roman set_font
+98 131.4 moveto 184 (Phase: a->day_of_month_to_act) alignedtext
+grestore
+% Bank_Bank_idle_Bank_05_end_Bank_cycle
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+newpath 325 110 moveto
+253 110 lineto
+253 74 lineto
+325 74 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+14 /Times-Roman set_font
+261 87.4 moveto 56 (Bank_idle) alignedtext
+grestore
+% Bank_Bank_05->Bank_Bank_idle_Bank_05_end_Bank_cycle
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 263 181 moveto
+271 176 278 169 283 160 curveto
+290 148 292 133 291 120 curveto
+stroke
+0.000 0.000 0.000 edgecolor
+newpath 294.5 120 moveto
+291 110 lineto
+287.5 120 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 0.000 0.000 edgecolor
+newpath 294.5 120 moveto
+291 110 lineto
+287.5 120 lineto
+closepath stroke
+0.000 0.000 0.000 edgecolor
+14 /Times-Roman set_font
+318 147.4 moveto 142 (not \( Periodicity: monthly) alignedtext
+0.000 0.000 0.000 edgecolor
+14 /Times-Roman set_font
+293 131.4 moveto 192 (Phase: a->day_of_month_to_act \)) alignedtext
+grestore
+% Bank_Bank_04
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+236 344 43.78 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14 /Times-Roman set_font
+211 339.4 moveto 50 (Bank_04) alignedtext
+grestore
+% Bank_Bank_account_update_deposits_Bank_04_Bank_05
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+newpath 334 288 moveto
+138 288 lineto
+138 252 lineto
+334 252 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+14 /Times-Roman set_font
+146 265.4 moveto 180 (Bank_account_update_deposits) alignedtext
+grestore
+% Bank_Bank_04->Bank_Bank_account_update_deposits_Bank_04_Bank_05
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 236 326 moveto
+236 317 236 308 236 298 curveto
+stroke
+0.000 0.000 0.000 edgecolor
+newpath 239.5 298 moveto
+236 288 lineto
+232.5 298 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 0.000 0.000 edgecolor
+newpath 239.5 298 moveto
+236 288 lineto
+232.5 298 lineto
+closepath stroke
+grestore
+% Bank_Bank_03
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+236 2012 43.78 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14 /Times-Roman set_font
+211 2007.4 moveto 50 (Bank_03) alignedtext
+grestore
+% Bank_Bank_receive_installment_Bank_03_Bank_04
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+newpath 314 436 moveto
+158 436 lineto
+158 400 lineto
+314 400 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+14 /Times-Roman set_font
+165.5 413.4 moveto 141 (Bank_receive_installment) alignedtext
+grestore
+% Bank_Bank_03->Bank_Bank_receive_installment_Bank_03_Bank_04
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 236 1994 moveto
+236 1972 236 1936 236 1904 curveto
+236 1904 236 1904 236 506 curveto
+236 485 236 463 236 446 curveto
+stroke
+0.000 0.000 0.000 edgecolor
+newpath 239.5 446 moveto
+236 436 lineto
+232.5 446 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 0.000 0.000 edgecolor
+newpath 239.5 446 moveto
+236 436 lineto
+232.5 446 lineto
+closepath stroke
+grestore
+% Bank_Bank_02
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+236 2296 43.78 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14 /Times-Roman set_font
+211 2291.4 moveto 50 (Bank_02) alignedtext
+grestore
+% Bank_Bank_give_loan_Bank_02_Bank_03
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+newpath 288 2172 moveto
+184 2172 lineto
+184 2136 lineto
+288 2136 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+14 /Times-Roman set_font
+191.5 2149.4 moveto 89 (Bank_give_loan) alignedtext
+grestore
+% Bank_Bank_02->Bank_Bank_give_loan_Bank_02_Bank_03
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 236 2278 moveto
+236 2253 236 2210 236 2182 curveto
+stroke
+0.000 0.000 0.000 edgecolor
+newpath 239.5 2182 moveto
+236 2172 lineto
+232.5 2182 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 0.000 0.000 edgecolor
+newpath 239.5 2182 moveto
+236 2172 lineto
+232.5 2182 lineto
+closepath stroke
+grestore
+% Bank_Bank_start_credit_market_role
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+236 2526 126.79 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14 /Times-Roman set_font
+149.5 2521.4 moveto 173 (Bank_start_credit_market_role) alignedtext
+grestore
+% Bank_Bank_decide_credit_conditions_Bank_start_credit_market_role_Bank_02
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+newpath 333 2456 moveto
+139 2456 lineto
+139 2420 lineto
+333 2420 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+14 /Times-Roman set_font
+147 2433.4 moveto 178 (Bank_decide_credit_conditions) alignedtext
+grestore
+% Bank_Bank_start_credit_market_role->Bank_Bank_decide_credit_conditions_Bank_start_credit_market_role_Bank_02
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 236 2508 moveto
+236 2496 236 2480 236 2466 curveto
+stroke
+0.000 0.000 0.000 edgecolor
+newpath 239.5 2466 moveto
+236 2456 lineto
+232.5 2466 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 0.000 0.000 edgecolor
+newpath 239.5 2466 moveto
+236 2456 lineto
+232.5 2466 lineto
+closepath stroke
+grestore
+% Dummy_003
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+1185 344 27 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14 /Times-Roman set_font
+1175 339.4 moveto 20 (003) alignedtext
+grestore
+% Dummy_002
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+1185 1904 27 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14 /Times-Roman set_font
+1175 1899.4 moveto 20 (002) alignedtext
+grestore
+% Dummy_Function_read_send_bank_messages_002_003
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+newpath 1298 436 moveto
+1072 436 lineto
+1072 400 lineto
+1298 400 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+14 /Times-Roman set_font
+1080 413.4 moveto 210 (Function_read_send_bank_messages) alignedtext
+grestore
+% Dummy_002->Dummy_Function_read_send_bank_messages_002_003
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 1185 1886 moveto
+1185 1865 1185 1829 1185 1798 curveto
+1185 1798 1185 1798 1185 506 curveto
+1185 485 1185 463 1185 446 curveto
+stroke
+0.000 0.000 0.000 edgecolor
+newpath 1188.5 446 moveto
+1185 436 lineto
+1181.5 446 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 0.000 0.000 edgecolor
+newpath 1188.5 446 moveto
+1185 436 lineto
+1181.5 446 lineto
+closepath stroke
+grestore
+% Dummy_001
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+1185 2154 27 18 ellipse_path stroke
+0.000 0.000 0.000 nodecolor
+14 /Times-Roman set_font
+1175 2149.4 moveto 20 (001) alignedtext
+grestore
+% Dummy_Function_read_send_order_messages_001_002
+gsave
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+newpath 1299 2084 moveto
+1071 2084 lineto
+1071 2048 lineto
+1299 2048 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+14 /Times-Roman set_font
+1078.5 2061.4 moveto 213 (Function_read_send_order_messages) alignedtext
+grestore
+% Dummy_001->Dummy_Function_read_send_order_messages_001_002
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 1185 2136 moveto
+1185 2124 1185 2108 1185 2094 curveto
+stroke
+0.000 0.000 0.000 edgecolor
+newpath 1188.5 2094 moveto
+1185 2084 lineto
+1181.5 2094 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 0.000 0.000 edgecolor
+newpath 1188.5 2094 moveto
+1185 2084 lineto
+1181.5 2094 lineto
+closepath stroke
+grestore
+% Firm_Firm_ask_loan_Start_Firm_Credit_Role_Firm_Credit_02->Firm_Firm_Credit_02
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 782 2508 moveto
+775 2496 765 2479 758 2465 curveto
+stroke
+0.000 0.000 0.000 edgecolor
+newpath 760.92 2463.04 moveto
+753 2456 lineto
+754.8 2466.44 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 0.000 0.000 edgecolor
+newpath 760.92 2463.04 moveto
+753 2456 lineto
+754.8 2466.44 lineto
+closepath stroke
+grestore
+% Firm_Firm_ask_loan_Start_Firm_Credit_Role_Firm_Credit_02->Bank_Bank_decide_credit_conditions_Bank_start_credit_market_role_Bank_02
+gsave
+1 setlinewidth
+0.333 1.000 1.000 edgecolor
+newpath 743 2518 moveto
+654 2504 464 2474 343 2455 curveto
+stroke
+0.333 1.000 1.000 edgecolor
+newpath 343.49 2451.53 moveto
+333 2453 lineto
+342.12 2458.39 lineto
+closepath fill
+1 setlinewidth
+solid
+0.333 1.000 1.000 edgecolor
+newpath 343.49 2451.53 moveto
+333 2453 lineto
+342.12 2458.39 lineto
+closepath stroke
+0.000 0.000 0.000 edgecolor
+14 /Times-Roman set_font
+562.5 2477.4 moveto 71 (loan_request) alignedtext
+grestore
+% Firm_Firm_get_loan_Firm_Credit_02_Firm_End_Credit_Role->Firm_Firm_End_Credit_Role
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 681 2332 moveto
+663 2314 638 2287 619 2267 curveto
+stroke
+0.000 0.000 0.000 edgecolor
+newpath 621.55 2264.6 moveto
+612 2260 lineto
+616.6 2269.55 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 0.000 0.000 edgecolor
+newpath 621.55 2264.6 moveto
+612 2260 lineto
+616.6 2269.55 lineto
+closepath stroke
+grestore
+% Firm_Firm_get_loan_Firm_Credit_02_Firm_End_Credit_Role->Bank_Bank_give_loan_Bank_02_Bank_03
+gsave
+1 setlinewidth
+0.333 1.000 1.000 edgecolor
+newpath 721 2332 moveto
+760 2300 828 2233 787 2190 curveto
+768 2170 326 2176 299 2172 curveto
+299 2172 298 2172 298 2172 curveto
+stroke
+0.333 1.000 1.000 edgecolor
+newpath 298.49 2168.53 moveto
+288 2170 lineto
+297.12 2175.39 lineto
+closepath fill
+1 setlinewidth
+solid
+0.333 1.000 1.000 edgecolor
+newpath 298.49 2168.53 moveto
+288 2170 lineto
+297.12 2175.39 lineto
+closepath stroke
+0.000 0.000 0.000 edgecolor
+14 /Times-Roman set_font
+797.5 2237.4 moveto 93 (loan_acceptance) alignedtext
+grestore
+% Firm_Firm_compute_financial_payments_f1_001->Firm_001
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 566 1580 moveto
+567 1571 567 1562 567 1552 curveto
+stroke
+0.000 0.000 0.000 edgecolor
+newpath 570.5 1552 moveto
+567 1542 lineto
+563.5 1552 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 0.000 0.000 edgecolor
+newpath 570.5 1552 moveto
+567 1542 lineto
+563.5 1552 lineto
+closepath stroke
+grestore
+% Firm_Firm_compute_income_statement_001_002->Firm_002
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 567 1418 moveto
+567 1409 567 1400 567 1390 curveto
+stroke
+0.000 0.000 0.000 edgecolor
+newpath 570.5 1390 moveto
+567 1380 lineto
+563.5 1390 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 0.000 0.000 edgecolor
+newpath 570.5 1390 moveto
+567 1380 lineto
+563.5 1390 lineto
+closepath stroke
+grestore
+% Firm_Firm_compute_dividends_002_003->Firm_003
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 572 1270 moveto
+573 1261 575 1251 576 1242 curveto
+stroke
+0.000 0.000 0.000 edgecolor
+newpath 579.49 1242.3 moveto
+577 1232 lineto
+572.52 1241.6 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 0.000 0.000 edgecolor
+newpath 579.49 1242.3 moveto
+577 1232 lineto
+572.52 1241.6 lineto
+closepath stroke
+grestore
+% Firm_Firm_compute_total_financial_payments_003_004->Firm_004
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 596 1122 moveto
+597 1113 597 1104 598 1094 curveto
+stroke
+0.000 0.000 0.000 edgecolor
+newpath 601.49 1094.3 moveto
+599 1084 lineto
+594.52 1093.6 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 0.000 0.000 edgecolor
+newpath 601.49 1094.3 moveto
+599 1084 lineto
+594.52 1093.6 lineto
+closepath stroke
+grestore
+% Firm_Firm_idle_End_Firm_Financial_Role_Firm_bankruptcy_checked->Firm_Firm_bankruptcy_checked
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 773 1728 moveto
+773 1713 773 1691 773 1672 curveto
+773 1672 773 1672 773 992 curveto
+773 966 753 949 730 938 curveto
+stroke
+0.000 0.000 0.000 edgecolor
+newpath 731.56 934.86 moveto
+721 934 lineto
+728.72 941.26 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 0.000 0.000 edgecolor
+newpath 731.56 934.86 moveto
+721 934 lineto
+728.72 941.26 lineto
+closepath stroke
+grestore
+% Firm_Firm_compute_balance_sheet_004_Firm_bankruptcy_checked->Firm_Firm_bankruptcy_checked
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 645 974 moveto
+648 965 652 955 656 946 curveto
+stroke
+0.000 0.000 0.000 edgecolor
+newpath 659.48 946.58 moveto
+659 936 lineto
+652.77 944.57 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 0.000 0.000 edgecolor
+newpath 659.48 946.58 moveto
+659 936 lineto
+652.77 944.57 lineto
+closepath stroke
+grestore
+% Firm_Firm_compute_total_liquidity_needs_02_Start_Firm_Credit_Role->Firm_Start_Firm_Credit_Role
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 907 2670 moveto
+907 2661 907 2652 907 2642 curveto
+stroke
+0.000 0.000 0.000 edgecolor
+newpath 910.5 2642 moveto
+907 2632 lineto
+903.5 2642 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 0.000 0.000 edgecolor
+newpath 910.5 2642 moveto
+907 2632 lineto
+903.5 2642 lineto
+closepath stroke
+grestore
+% Firm_Firm_compute_and_send_stock_orders_Firm_End_Credit_Role_0003->Firm_0003
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 595 2136 moveto
+595 2124 595 2108 595 2094 curveto
+stroke
+0.000 0.000 0.000 edgecolor
+newpath 598.5 2094 moveto
+595 2084 lineto
+591.5 2094 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 0.000 0.000 edgecolor
+newpath 598.5 2094 moveto
+595 2084 lineto
+591.5 2094 lineto
+closepath stroke
+grestore
+% Firm_Firm_compute_and_send_stock_orders_Firm_End_Credit_Role_0003->Dummy_Function_read_send_order_messages_001_002
+gsave
+1 setlinewidth
+0.333 1.000 1.000 edgecolor
+newpath 716 2136 moveto
+817 2121 959 2099 1061 2084 curveto
+stroke
+0.333 1.000 1.000 edgecolor
+newpath 1061.4 2087.48 moveto
+1071 2083 lineto
+1060.7 2080.51 lineto
+closepath fill
+1 setlinewidth
+solid
+0.333 1.000 1.000 edgecolor
+newpath 1061.4 2087.48 moveto
+1071 2083 lineto
+1060.7 2080.51 lineto
+closepath stroke
+0.000 0.000 0.000 edgecolor
+14 /Times-Roman set_font
+924 2105.4 moveto 30 (order) alignedtext
+grestore
+% Firm_Firm_read_stock_transactions_0003_End_Firm_Financial_Role->Firm_End_Firm_Financial_Role
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 595 1940 moveto
+595 1923 595 1898 595 1878 curveto
+stroke
+0.000 0.000 0.000 edgecolor
+newpath 598.5 1878 moveto
+595 1868 lineto
+591.5 1878 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 0.000 0.000 edgecolor
+newpath 598.5 1878 moveto
+595 1868 lineto
+591.5 1878 lineto
+closepath stroke
+grestore
+% Firm_Firm_check_financial_and_bankruptcy_state_End_Firm_Financial_Role_f1->Firm_f1
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 566 1728 moveto
+566 1719 566 1710 566 1700 curveto
+stroke
+0.000 0.000 0.000 edgecolor
+newpath 569.5 1700 moveto
+566 1690 lineto
+562.5 1700 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 0.000 0.000 edgecolor
+newpath 569.5 1700 moveto
+566 1690 lineto
+562.5 1700 lineto
+closepath stroke
+grestore
+% Firm_Firm_in_bankruptcy_Firm_bankruptcy_checked_end_Firm_dies->Firm_end_Firm_dies
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 498 812 moveto
+492 803 485 792 478 782 curveto
+stroke
+0.000 0.000 0.000 edgecolor
+newpath 480.8 779.9 moveto
+472 774 lineto
+475.2 784.1 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 0.000 0.000 edgecolor
+newpath 480.8 779.9 moveto
+472 774 lineto
+475.2 784.1 lineto
+closepath stroke
+grestore
+% Firm_Firm_in_bankruptcy_Firm_bankruptcy_checked_end_Firm_dies->Bank_Bank_receive_installment_Bank_03_Bank_04
+gsave
+1 setlinewidth
+0.333 1.000 1.000 edgecolor
+newpath 445 813 moveto
+423 804 400 792 384 774 curveto
+345 731 363 704 341 650 curveto
+311 574 270 488 249 445 curveto
+stroke
+0.333 1.000 1.000 edgecolor
+newpath 252.26 443.72 moveto
+245 436 lineto
+245.86 446.56 lineto
+closepath fill
+1 setlinewidth
+solid
+0.333 1.000 1.000 edgecolor
+newpath 252.26 443.72 moveto
+245 436 lineto
+245.86 446.56 lineto
+closepath stroke
+0.000 0.000 0.000 edgecolor
+14 /Times-Roman set_font
+336.5 619.4 moveto 63 (bankruptcy) alignedtext
+grestore
+% Firm_Firm_generate_new_firm_end_Firm_dies_end_Firm_cycle->Firm_end_Firm_cycle
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 471 650 moveto
+471 638 471 622 471 608 curveto
+stroke
+0.000 0.000 0.000 edgecolor
+newpath 474.5 608 moveto
+471 598 lineto
+467.5 608 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 0.000 0.000 edgecolor
+newpath 474.5 608 moveto
+471 598 lineto
+467.5 608 lineto
+closepath stroke
+grestore
+% Firm_Firm_not_in_bankruptcy_Firm_bankruptcy_checked_Firm_not_in_bankruptcy_state_now_check_financial_crisis->Firm_Firm_not_in_bankruptcy_state_now_check_financial_crisis
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 757 812 moveto
+761 803 765 793 769 783 curveto
+stroke
+0.000 0.000 0.000 edgecolor
+newpath 772.14 784.56 moveto
+773 774 lineto
+765.74 781.72 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 0.000 0.000 edgecolor
+newpath 772.14 784.56 moveto
+773 774 lineto
+765.74 781.72 lineto
+closepath stroke
+grestore
+% Firm_Firm_in_financial_crisis_function_Firm_not_in_bankruptcy_state_now_check_financial_crisis_Firm_financial_crisis_ok->Firm_Firm_financial_crisis_ok
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 689 650 moveto
+698 637 711 620 722 606 curveto
+stroke
+0.000 0.000 0.000 edgecolor
+newpath 724.8 608.1 moveto
+728 598 lineto
+719.2 603.9 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 0.000 0.000 edgecolor
+newpath 724.8 608.1 moveto
+728 598 lineto
+719.2 603.9 lineto
+closepath stroke
+grestore
+% Firm_Firm_execute_financial_payments_function_Firm_financial_crisis_ok_Start_Firm_Labour_Role->Firm_Start_Firm_Labour_Role
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 741 488 moveto
+741 476 741 460 741 446 curveto
+stroke
+0.000 0.000 0.000 edgecolor
+newpath 744.5 446 moveto
+741 436 lineto
+737.5 446 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 0.000 0.000 edgecolor
+newpath 744.5 446 moveto
+741 436 lineto
+737.5 446 lineto
+closepath stroke
+grestore
+% Firm_Firm_execute_financial_payments_function_Firm_financial_crisis_ok_Start_Firm_Labour_Role->Bank_Bank_receive_installment_Bank_03_Bank_04
+gsave
+1 setlinewidth
+0.333 1.000 1.000 edgecolor
+newpath 612 497 moveto
+552 491 481 483 417 470 curveto
+378 462 335 449 301 439 curveto
+stroke
+0.333 1.000 1.000 edgecolor
+newpath 301.58 435.52 moveto
+291 436 lineto
+299.57 442.23 lineto
+closepath fill
+1 setlinewidth
+solid
+0.333 1.000 1.000 edgecolor
+newpath 301.58 435.52 moveto
+291 436 lineto
+299.57 442.23 lineto
+closepath stroke
+0.000 0.000 0.000 edgecolor
+14 /Times-Roman set_font
+425.5 457.4 moveto 59 (installment) alignedtext
+grestore
+% Firm_Firm_execute_financial_payments_function_Firm_financial_crisis_ok_Start_Firm_Labour_Role->Dummy_Function_read_send_bank_messages_002_003
+gsave
+1 setlinewidth
+0.333 1.000 1.000 edgecolor
+newpath 612 495 moveto
+553 489 494 480 485 470 curveto
+480 464 480 459 485 454 curveto
+499 439 835 437 856 436 curveto
+924 432 1000 428 1062 425 curveto
+stroke
+0.333 1.000 1.000 edgecolor
+newpath 1062.4 428.48 moveto
+1072 424 lineto
+1061.7 421.51 lineto
+closepath fill
+1 setlinewidth
+solid
+0.333 1.000 1.000 edgecolor
+newpath 1062.4 428.48 moveto
+1072 424 lineto
+1061.7 421.51 lineto
+closepath stroke
+0.000 0.000 0.000 edgecolor
+14 /Times-Roman set_font
+487 457.4 moveto 110 (dividend_per_share) alignedtext
+grestore
+% Firm_Firm_execute_financial_payments_function_Firm_financial_crisis_ok_Start_Firm_Labour_Role->Dummy_Function_read_send_bank_messages_002_003
+gsave
+1 setlinewidth
+0.333 1.000 1.000 edgecolor
+newpath 832 488 moveto
+906 474 1008 453 1084 438 curveto
+stroke
+0.333 1.000 1.000 edgecolor
+newpath 1084.88 441.39 moveto
+1094 436 lineto
+1083.51 434.53 lineto
+closepath fill
+1 setlinewidth
+solid
+0.333 1.000 1.000 edgecolor
+newpath 1084.88 441.39 moveto
+1094 436 lineto
+1083.51 434.53 lineto
+closepath stroke
+0.000 0.000 0.000 edgecolor
+14 /Times-Roman set_font
+987.5 457.4 moveto 71 (tax_payment) alignedtext
+grestore
+% Firm_Firm_idle_Firm_not_in_bankruptcy_state_now_check_financial_crisis_Firm_financial_crisis_ok->Firm_Firm_financial_crisis_ok
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 824 650 moveto
+809 637 787 619 770 605 curveto
+stroke
+0.000 0.000 0.000 edgecolor
+newpath 771.83 601.95 moveto
+762 598 lineto
+767.22 607.22 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 0.000 0.000 edgecolor
+newpath 771.83 601.95 moveto
+762 598 lineto
+767.22 607.22 lineto
+closepath stroke
+grestore
+% Firm_idle_Start_Firm_Credit_Role_Start_Firm_Labour_Role->Firm_Start_Firm_Labour_Role
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 1040 2508 moveto
+1041 2490 1043 2462 1043 2438 curveto
+1043 2438 1043 2438 1043 506 curveto
+1043 464 931 440 843 428 curveto
+stroke
+0.000 0.000 0.000 edgecolor
+newpath 843.3 424.51 moveto
+833 427 lineto
+842.6 431.48 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 0.000 0.000 edgecolor
+newpath 843.3 424.51 moveto
+833 427 lineto
+842.6 431.48 lineto
+closepath stroke
+grestore
+% Firm_idle_Firm_End_Credit_Role_Start_Firm_Labour_Role->Firm_Start_Firm_Labour_Role
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 332 2136 moveto
+330 2118 327 2090 327 2066 curveto
+327 2066 327 2066 327 506 curveto
+327 478 336 468 359 454 curveto
+382 439 524 430 629 424 curveto
+stroke
+0.000 0.000 0.000 edgecolor
+newpath 629.4 427.48 moveto
+639 423 lineto
+628.7 420.51 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 0.000 0.000 edgecolor
+newpath 629.4 427.48 moveto
+639 423 lineto
+628.7 420.51 lineto
+closepath stroke
+grestore
+% Bank_Bank_decide_credit_conditions_Bank_start_credit_market_role_Bank_02->Bank_Bank_02
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 236 2420 moveto
+236 2395 236 2352 236 2324 curveto
+stroke
+0.000 0.000 0.000 edgecolor
+newpath 239.5 2324 moveto
+236 2314 lineto
+232.5 2324 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 0.000 0.000 edgecolor
+newpath 239.5 2324 moveto
+236 2314 lineto
+232.5 2324 lineto
+closepath stroke
+grestore
+% Bank_Bank_decide_credit_conditions_Bank_start_credit_market_role_Bank_02->Firm_Firm_get_loan_Firm_Credit_02_Firm_End_Credit_Role
+gsave
+1 setlinewidth
+0.333 1.000 1.000 edgecolor
+newpath 331 2420 moveto
+424 2402 562 2375 640 2361 curveto
+stroke
+0.333 1.000 1.000 edgecolor
+newpath 640.88 2364.39 moveto
+650 2359 lineto
+639.51 2357.53 lineto
+closepath fill
+1 setlinewidth
+solid
+0.333 1.000 1.000 edgecolor
+newpath 640.88 2364.39 moveto
+650 2359 lineto
+639.51 2357.53 lineto
+closepath stroke
+0.000 0.000 0.000 edgecolor
+14 /Times-Roman set_font
+493.5 2389.4 moveto 89 (loan_conditions) alignedtext
+grestore
+% Bank_Bank_give_loan_Bank_02_Bank_03->Bank_Bank_03
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 236 2136 moveto
+236 2111 236 2068 236 2040 curveto
+stroke
+0.000 0.000 0.000 edgecolor
+newpath 239.5 2040 moveto
+236 2030 lineto
+232.5 2040 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 0.000 0.000 edgecolor
+newpath 239.5 2040 moveto
+236 2030 lineto
+232.5 2040 lineto
+closepath stroke
+grestore
+% Bank_Bank_receive_installment_Bank_03_Bank_04->Bank_Bank_04
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 236 400 moveto
+236 391 236 382 236 372 curveto
+stroke
+0.000 0.000 0.000 edgecolor
+newpath 239.5 372 moveto
+236 362 lineto
+232.5 372 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 0.000 0.000 edgecolor
+newpath 239.5 372 moveto
+236 362 lineto
+232.5 372 lineto
+closepath stroke
+grestore
+% Bank_Bank_account_update_deposits_Bank_04_Bank_05->Bank_Bank_05
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 236 252 moveto
+236 243 236 234 236 224 curveto
+stroke
+0.000 0.000 0.000 edgecolor
+newpath 239.5 224 moveto
+236 214 lineto
+232.5 224 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 0.000 0.000 edgecolor
+newpath 239.5 224 moveto
+236 214 lineto
+232.5 224 lineto
+closepath stroke
+grestore
+% Bank_Bank_accounting_Bank_05_end_Bank_cycle->Bank_end_Bank_cycle
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 183 74 moveto
+193 64 204 53 214 43 curveto
+stroke
+0.000 0.000 0.000 edgecolor
+newpath 216.4 45.55 moveto
+221 36 lineto
+211.45 40.6 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 0.000 0.000 edgecolor
+newpath 216.4 45.55 moveto
+221 36 lineto
+211.45 40.6 lineto
+closepath stroke
+grestore
+% Bank_Bank_idle_Bank_05_end_Bank_cycle->Bank_end_Bank_cycle
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 277 74 moveto
+271 65 264 54 257 44 curveto
+stroke
+0.000 0.000 0.000 edgecolor
+newpath 259.8 41.9 moveto
+251 36 lineto
+254.2 46.1 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 0.000 0.000 edgecolor
+newpath 259.8 41.9 moveto
+251 36 lineto
+254.2 46.1 lineto
+closepath stroke
+grestore
+% Dummy_Function_read_send_order_messages_001_002->Dummy_002
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 1185 2048 moveto
+1185 2019 1185 1966 1185 1932 curveto
+stroke
+0.000 0.000 0.000 edgecolor
+newpath 1188.5 1932 moveto
+1185 1922 lineto
+1181.5 1932 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 0.000 0.000 edgecolor
+newpath 1188.5 1932 moveto
+1185 1922 lineto
+1181.5 1932 lineto
+closepath stroke
+grestore
+% Dummy_Function_read_send_order_messages_001_002->Firm_Firm_compute_balance_sheet_004_Firm_bankruptcy_checked
+gsave
+1 setlinewidth
+0.333 1.000 1.000 edgecolor
+newpath 1071 2063 moveto
+963 2059 816 2049 798 2030 curveto
+787 2018 792 2008 798 1994 curveto
+841 1882 978 1900 963 1782 curveto
+960 1762 797 1118 787 1102 curveto
+760 1064 718 1034 685 1015 curveto
+stroke
+0.333 1.000 1.000 edgecolor
+newpath 686.44 1011.8 moveto
+676 1010 lineto
+683.04 1017.92 lineto
+closepath fill
+1 setlinewidth
+solid
+0.333 1.000 1.000 edgecolor
+newpath 686.44 1011.8 moveto
+676 1010 lineto
+683.04 1017.92 lineto
+closepath stroke
+0.000 0.000 0.000 edgecolor
+14 /Times-Roman set_font
+888.5 1475.4 moveto 137 (current_mall_stock_info) alignedtext
+grestore
+% Dummy_Function_read_send_order_messages_001_002->Firm_Firm_read_stock_transactions_0003_End_Firm_Financial_Role
+gsave
+1 setlinewidth
+0.333 1.000 1.000 edgecolor
+newpath 1087 2048 moveto
+979 2029 808 1997 698 1977 curveto
+stroke
+0.333 1.000 1.000 edgecolor
+newpath 698.49 1973.53 moveto
+688 1975 lineto
+697.12 1980.39 lineto
+closepath fill
+1 setlinewidth
+solid
+0.333 1.000 1.000 edgecolor
+newpath 698.49 1973.53 moveto
+688 1975 lineto
+697.12 1980.39 lineto
+closepath stroke
+0.000 0.000 0.000 edgecolor
+14 /Times-Roman set_font
+993 2007.4 moveto 70 (order_status) alignedtext
+grestore
+% Dummy_Function_read_send_bank_messages_002_003->Dummy_003
+gsave
+1 setlinewidth
+0.000 0.000 0.000 edgecolor
+newpath 1185 400 moveto
+1185 391 1185 382 1185 372 curveto
+stroke
+0.000 0.000 0.000 edgecolor
+newpath 1188.5 372 moveto
+1185 362 lineto
+1181.5 372 lineto
+closepath fill
+1 setlinewidth
+solid
+0.000 0.000 0.000 edgecolor
+newpath 1188.5 372 moveto
+1185 362 lineto
+1181.5 372 lineto
+closepath stroke
+grestore
+% Dummy_Function_read_send_bank_messages_002_003->Bank_Bank_account_update_deposits_Bank_04_Bank_05
+gsave
+1 setlinewidth
+0.333 1.000 1.000 edgecolor
+newpath 1202 400 moveto
+1219 379 1241 346 1221 326 curveto
+1191 294 594 277 344 272 curveto
+stroke
+0.333 1.000 1.000 edgecolor
+newpath 344 268.5 moveto
+334 272 lineto
+344 275.5 lineto
+closepath fill
+1 setlinewidth
+solid
+0.333 1.000 1.000 edgecolor
+newpath 344 268.5 moveto
+334 272 lineto
+344 275.5 lineto
+closepath stroke
+0.000 0.000 0.000 edgecolor
+14 /Times-Roman set_font
+1228 339.4 moveto 124 (bank_account_update) alignedtext
+grestore
+endpage
+showpage
+grestore
+%%PageTrailer
+%%EndPage: 1
+%%Trailer
+%%Pages: 1
+%%BoundingBox: 36 36 212 396
+end
+restore
+%%EOF
