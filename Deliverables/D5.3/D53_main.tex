@@ -1,11 +1,22 @@
-\documentclass[urop]{socreport}
-\usepackage{fullpage}
-\usepackage{fancyheadings}
-\usepackage{tabularx}
-\usepackage{graphics,lscape}
+%\documentclass[urop]{socreport}
+\documentclass[12pt,a4paper]{report}
+\usepackage{t1enc}
+\usepackage[latin1]{inputenc}
+\usepackage[english]{babel}
+\usepackage{url,graphics,lscape}
+\usepackage{a4wide}
 \usepackage{graphicx}
-\usepackage{url}
-\pagestyle{headings}
+\usepackage{color}
+%\usepackage{fancyheadings}
+\usepackage{verbatim}
+
+\newenvironment{mylisting}
+{\begin{list}{}{\setlength{\leftmargin}{1em}}\item\small\bfseries}
+{\end{list}}
+
+\parskip 6pt         % sets spacing between paragraphs
+\parindent 0pt       % sets leading space for paragraphs
+%\pagestyle{fancy}
 
 
 \begin{document}
@@ -13,24 +24,24 @@
 \title{Deliverable reference number and Title\\
 D5.3: Software module of the agent based models of goods,labour and credit markets}
 \author{Simon Coakley\\Mariam Kiran}
-\projyear{2007/08} \projnumber{035086} \advisor{Prof. Mike Holcombe}
-\deliverables{
-    \item Start Date: September 1st 2006
-   \item Duration: 36 months
-   \item Organisation name of lead contractor for this deliverable:
-University of Sheffield (\textbf{USFD})\\
-\begin{tabular}
-{|p{0.3in}|p{3.7in}|p{0.6in}|} \hline \multicolumn{3}{|p{5in}|}
-{\textbf{Project co-funded by the European
-Commission within the Sixth Framework Programme (2002-2006) }} \\
-\hline \multicolumn{3}{|p{3in}|}{\textbf{Dissemination Level }} \\
-\hline \textbf{PU } & Public  &  \\ \hline \textbf{PP } & Restricted
-to other programme participants (including the Commission Services)
-&  \\ \hline \textbf{RE } & Restricted to a group specified by the
-consortium (including the Commission Services)  &  \\ \hline
-\textbf{CO } & Confidential, only for members of the consortium
-(including the Commission Services)  &  \\ \hline
-\end{tabular}}
+%\projyear{2007/08} \projnumber{035086} \advisor{Prof. Mike Holcombe}
+%\deliverables{
+ %   \item Start Date: September 1st 2006
+ %  \item Duration: 36 months
+ %  \item Organisation name of lead contractor for this deliverable:
+%University of Sheffield (\textbf{USFD})\\
+%\begin{tabular}
+%{|p{0.3in}|p{3.7in}|p{0.6in}|} \hline \multicolumn{3}{|p{5in}|}
+%{\textbf{Project co-funded by the European
+%Commission within the Sixth Framework Programme (2002-2006) }} \\
+%\hline \multicolumn{3}{|p{3in}|}{\textbf{Dissemination Level }} \\
+%\hline \textbf{PU } & Public  &  \\ \hline \textbf{PP } & Restricted
+%to other programme participants (including the Commission Services)
+%&  \\ \hline \textbf{RE } & Restricted to a group specified by the
+%consortium (including the Commission Services)  &  \\ \hline
+%\textbf{CO } & Confidential, only for members of the consortium
+%(including the Commission Services)  &  \\ \hline
+%\end{tabular}}
 
 \maketitle
 \begin{abstract}
@@ -41,21 +52,9 @@ This report presents the deliverable D5.3 accounting for the software descriptio
 work package 5 which comprises of agent based computational models of goods, labour and credit markets required for the project EURACE.
 
 
-%\begin{descriptors}
- %   \item C5 Computer System Implementation
-  %  \item G2.2 Graph Algorithms
-%\end{descriptors}
-%\begin{keywords}
- %   Problem, algorithm, implementation
-%\end{keywords}
-%\begin{implement}
- %   Solaris 10, g++ 3.3, Tcl/Tk 8.4.7
-%\end{implement}
 \end{abstract}
 
 
-%\begin{acknowledgement}
-%\end{acknowledgement}
 
 \tableofcontents \listoffigures \listoftables
 \include{exec_summary}
@@ -67,12 +66,14 @@ work package 5 which comprises of agent based computational models of goods, lab
 %\part{Case Studies}
 
 
-\bibliographystyle{socreport}
+\bibliographystyle{alpha}
 %\bibliography{example}
 \bibliography{EURACE_refs}
 
 \appendix
 \include{xmml}
+\label{cha_xmldtd} \small{{\tt \verbatiminput{xmml.dtd}}}
+
 
 
 \end{document}
