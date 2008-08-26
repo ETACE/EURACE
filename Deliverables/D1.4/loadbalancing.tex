@@ -33,3 +33,20 @@ Timers will be used to measure the elapsed CPU time for portions of the running 
 We have implemented all the functionality for individual timers and a set of unit tests and an example program using the timers. Code is stored under Subversion source code control in the FLAME project on the CCPForge site. 
 
 User documentation is supplied in \cite{TimerAPI}.
+
+We have demonstrated the use of timers in the simple circles model by timing the work done by agents as the number of partitions over which the agents are distributed increases. The agents were not uniformly distributed in space and so, with geometric partitioning, some partitions will have more agents than others. The time taken by the agents on each node is plotted against the number of agents on the node in Figure \ref{fig:circle_timings} and we can see that the work done 
+
+\begin{figure}[h]
+ \centering
+  \includegraphics[scale=0.30]{circles-timings.png}
+ \caption{Timings results from Circles model}
+ \label{fig:circle_timings}
+\end{figure}
+
+\begin{figure}[h]
+ \centering
+  \includegraphics[scale=0.30]{timings-problems.png}
+ \caption{Illustration of problems with load balancing with Circles model}
+ \label{fig:timings_problems}
+\end{figure}
+

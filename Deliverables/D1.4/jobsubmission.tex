@@ -1,0 +1,17 @@
+%job submission
+\subsection{Job Submission}
+
+We have designed and implemented a job submission system for FLAME jobs so that it is easy to get runs going on remote (parallel) machines. The sequence of steps for job submission was drawn up in discussion with TUBITEK and is as follows:
+
+\begin{enumerate}
+	\item \textbf{Check authentication}. Does the user provided information allow log in to the target machine? Return code for success/failure.
+    \item \textbf{Check FLAME version}. Is the required version of FLAME available on the target machine? If not copy files onto target and install. Return code for success/failure of installation or success if installed. Could be some output text to say when FLAME has to be installed.
+    \item \textbf{Create a project}. Send the model XMML file and C code. Parse and compile the model. Return code for parse failure/compilation failure/success. Success return code is the project id.
+    \item \textbf{Submit job}. Send the 0.xml file(s) and project id. Submit the job according to data in <machine>.conf. Return code code for success/failure. Success return code is the job id.
+    \item \textbf{Query job status}. Send project and job id. Return code pending/done/running/failed.
+    \item \textbf{Query status of all jobs in project}. Send project id. Not sure about the return code. Return text could be {job id, status} for each job.
+    \item \textbf{Query status of all jobs in all projects}. Again not sure about return code. Return text could be {job id, status} for each job.
+    \item \textbf{Get results}. Send project and job id. Copy results back and gather if parallel. Return code for success/failure. 
+\end{enumerate}
+
+The details for each of these steps are given below.
