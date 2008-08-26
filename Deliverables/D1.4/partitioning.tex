@@ -5,3 +5,7 @@ As achieving some form of load balance - each processor performing a similar wor
 Although achieving a load balance over the processors is important in reducing elapsed time reducing inter-processor communication is equally if not more important in agent-based applications. Deriving information on the communications load of an agent population can only be achieved whilst the application is executing although some information can be derived from the XML and C code.
 
 Two basic methods of static partitioning have been developed: partitioning based on a separator and \textsl{round robin} partitioning.
+\subsection{Geometic Partitioning}
+In the field in which FLAME was initial used, that of biological systems, the position of an agent in two or three dimensional space was a basic attribute. The simulation space - two or three dimensional - was broken into subdomains ...
+\subsection{Round-Robin Partitioning}
+In situations where an appropriate separator can not be identified some simple methods of initial distribution is still required. In these case a simple round-robin allocation has been adopted. In this approach agents are allocated one by one to the processing nodes without considering their communications requirements. 
