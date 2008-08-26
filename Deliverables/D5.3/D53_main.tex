@@ -1,79 +1,109 @@
-%\documentclass[urop]{socreport}
-\documentclass[12pt,a4paper]{report}
-\usepackage{t1enc}
-\usepackage[latin1]{inputenc}
-\usepackage[english]{babel}
-\usepackage{url,graphics,lscape}
-\usepackage{a4wide}
-\usepackage{graphicx}
-\usepackage{color}
-%\usepackage{fancyheadings}
-\usepackage{verbatim}
+\documentclass[a4paper,11pt]{article}
+%\usepackage{amsfonts}
+%\usepackage{amssymb}
+%\usepackage{amsmath}
+%\usepackage{euscript}
+%\usepackage{boxedminipage}
+%\usepackage{lscape}
+%\usepackage{minitoc}
+%\usepackage{verbatim}
+\usepackage[pdftex]{graphicx}
+%\usepackage{algpseudocode}
+%\usepackage{url,natbib}
 
-\newenvironment{mylisting}
-{\begin{list}{}{\setlength{\leftmargin}{1em}}\item\small\bfseries}
-{\end{list}}
+\vfuzz2pt % Don't report over-full v-boxes if over-edge is small
+\hfuzz2pt % Don't report over-full h-boxes if over-edge is small
 
-\parskip 6pt         % sets spacing between paragraphs
-\parindent 0pt       % sets leading space for paragraphs
-%\pagestyle{fancy}
-
+\setlength{\oddsidemargin}{0cm}
+\setlength{\evensidemargin}{0cm}
+\setlength{\textwidth}{16cm}
+\setlength{\textheight}{24cm}
+\setlength{\topmargin}{-1cm}
 
 \begin{document}
+\thispagestyle{empty}
+
+% Common EURACE Title Page EURACE and FW6 logos
+\vspace{\baselineskip}
+\includegraphics[width=45mm]{EURACE-logo.png} \hfill
+\includegraphics[width=45mm]{FW6-logo.png}
+
+% Title
+\begin{center}
+Project no.\\
+035086\\
+Project acronym\\
+{\bf EURACE}\\
+Project title\\
+{\bf An Agent-Based software platform for European economic policy design with heterogeneous interacting agents: new insights from a bottom up approach to economic modelling and simulation}\\
+\end{center}
+
+\vspace*{\baselineskip}\noindent
+Instrument: STREP\\[\baselineskip]
+Thematic Priority: IST FET PROACTIVE INITIATIVE ``SIMULATING EMERGENT PROPERTIES IN COMPLEX SYSTEMS\\
+
+% Deliverable information: title & number
+\vspace*{2\baselineskip}
+\begin{center}
+{\bf
+Deliverable reference number and title\\
+D5.3: Software module for the agent based models of goods,\\
+labour and credit
+markets\\ }
+Due date of deliverable:\\
+31/08/2008\\
+Actual submission date:\\
+\end{center}
+
+
+% Project Info
+\vspace*{\baselineskip}\noindent
+{Start date of project: September 1$^{st}$} 2006 \hfill {Duration: 36 months}\\
+
+%Deliverable Info - partner
+\vspace{2\baselineskip}\noindent
+Organisation name of lead contractor for this deliverable\\
+{\bf University of Sheffield - USFD}
+\begin{flushright} 
+Revision 1
+\end{flushright}
+
+\vspace{\baselineskip}
+\begin{table}[hb]
+\begin{tabular}{||c|l|l||} \hline\hline
+\multicolumn{3}{||l||}{\small Project co-funded by the European Commission within the Sixth Framework Programme (2002-2006)}\\ \hline
+\multicolumn{3}{||l||}{\bf Dissemination Level}\\ \hline
+\bf PU &\small Public\hfill~& \bf X \\ \hline
+\bf PP &\small Restricted to other programme participants (including the Commission Services)& \\ \hline 
+\bf RE &\small Restricted to a group specified by the consortium (including the Commission Services)&  \\ \hline
+\bf CO &\small Confidential, only for members of the consortium (including the Commission Services)&  \\ \hline \hline
+\end{tabular}
+\end{table}
+\pagebreak
+% End of EURACE Title Page
+
 \pagenumbering{roman}
-\title{Deliverable reference number and Title\\
-D5.3: Software module of the agent based models of goods,labour and credit markets}
-\author{Simon Coakley\\Mariam Kiran}
-%\projyear{2007/08} \projnumber{035086} \advisor{Prof. Mike Holcombe}
-%\deliverables{
- %   \item Start Date: September 1st 2006
- %  \item Duration: 36 months
- %  \item Organisation name of lead contractor for this deliverable:
-%University of Sheffield (\textbf{USFD})\\
-%\begin{tabular}
-%{|p{0.3in}|p{3.7in}|p{0.6in}|} \hline \multicolumn{3}{|p{5in}|}
-%{\textbf{Project co-funded by the European
-%Commission within the Sixth Framework Programme (2002-2006) }} \\
-%\hline \multicolumn{3}{|p{3in}|}{\textbf{Dissemination Level }} \\
-%\hline \textbf{PU } & Public  &  \\ \hline \textbf{PP } & Restricted
-%to other programme participants (including the Commission Services)
-%&  \\ \hline \textbf{RE } & Restricted to a group specified by the
-%consortium (including the Commission Services)  &  \\ \hline
-%\textbf{CO } & Confidential, only for members of the consortium
-%(including the Commission Services)  &  \\ \hline
-%\end{tabular}}
+% Table of Contents
+\tableofcontents
+\pagebreak
 
-\maketitle
-\begin{abstract}
-
- %\vspace{2cm}
-
-This report presents the deliverable D5.3 accounting for the software descriptions of the models for the markets - goods and labour and credit markets. This deliverable acts as part of the
-work package 5 which comprises of agent based computational models of goods, labour and credit markets required for the project EURACE.
-
-
+% Abstract/SUmmary
+\begin{abstract}\noindentThis report presents the deliverable D5.3 accounting for the software
+descriptions of the models for the markets - goods and labour and credit markets.
+This deliverable acts as part of the work package 5 which comprises of agent
+based computational models of goods, labour and credit markets required for the
+project EURACE.
 \end{abstract}
+\pagebreak
+\pagenumbering{arabic}
 
-
-
-\tableofcontents \listoffigures \listoftables
-\include{exec_summary}
-%\part{Background}
-\include{labour}
-
-\include{credit}
-
-%\part{Case Studies}
-
-
-\bibliographystyle{alpha}
-%\bibliography{example}
+% Start of document
+\input{introduction}
+\input{general}
+\input{labour}
+\input{credit}
+\input{conclusions}
+%\bibliographystyle{alpha}
 \bibliography{EURACE_refs}
-
-\appendix
-\include{xmml}
-\label{cha_xmldtd} \small{{\tt \verbatiminput{xmml.dtd}}}
-
-
-
+% End of document
 \end{document}
