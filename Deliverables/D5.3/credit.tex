@@ -3,11 +3,11 @@
 % This model was adapted from the proposed model of the credit market
 % by the Ancona Unit \cite{?}. Here we present a description of how the
 % model was implemented.
-% 
+%
 % \section{Implementation Details}
 % The credit market involves the interaction of the credit function
 % with the financial management functions of the Firm Agent.
-% 
+%
 % \subsection{Agents}
 % The agents involved in the implementation are listed below:
 % \begin{itemize}
@@ -16,22 +16,162 @@
 % \item Dummy Agent - to handle message of orders and household
 % functions.
 % \end{itemize}
-% 
+%
 % \subsection{State dependency diagram}
-% 
+%
 % \begin{figure}[!htb]
 % \begin{center}
 %  \includegraphics*[scale=2.0]{stategraph.ps}
 % \caption{State Dependency Diagram.} \label{fig:statecredit}
 % \end{center}
 % \end{figure}
-% 
+%
 % The state dependency diagram \ref{fig:statecredit} shows the flow of
 % activity in the model. The details of the functions of the agents
 % can be found in the report presented by the Ancona Unit \cite{?}.
-% 
+%
 % The xmml file for the credit market can be found in the Chapter
 % \ref{appendix}.
-% 
+%
 % \section{Results}
 % Graphs
+\section{State dependency diagram}
+
+ \begin{figure}[!htb]
+ \begin{center}
+  %\includegraphics*[scale=2.0]{stategraph.ps}
+ \caption{State Dependency Diagram.} \label{fig:statecredit}
+ \end{center}
+ \end{figure}
+
+\section{State Transition Table}
+
+\subsection{Firm Agent}
+
+Function Descriptions:
+\begin{landscape}
+\begin{table}[!htb]\caption{Functions being performed by the Firm involved in Credit Market.}
+\begin{center}
+\begin{tabular}{|c|c|c|l|c|c|l|}
+\hline
+Function Name & State From & State to & Condition on Function & Inputs & Outputs & Description \\
+\hline
+{\parbox[l]{3cm}{Firm \_ask \_loan}}&
+{\parbox[l]{3cm}{Start \_Firm \_Credit \_Role}}&
+{\parbox[l]{3cm}{Firm \_Credit \_02}}&
+{\parbox[l]{3cm}{a.external \_financial \_needs GT 0.0}}
+&
+&loan \_request &
+\\
+\hline
+
+{\parbox[l]{3cm}{Firm \_get \_loan}}& {\parbox[l]{3cm}{Firm \_Credit
+\_02}}& {\parbox[l]{3cm}{Firm \_End \_Credit \_Role}}&
+&{\parbox[l]{3cm}{loan \_conditions ( a.id EQ m.firm\_id}} &
+{\parbox[l]{3cm}{loan \_acceptance}}&\\
+\hline
+
+
+\end{tabular}\end{center}\label{tab:creditbankfn}
+\end{table}
+\end{landscape}
+
+\subsection{Bank Agent}
+
+Bank functions:
+\begin{landscape}
+\begin{table}[!htb]\caption{Functions being performed by the Bank involved in Credit Market.}
+\begin{center}
+\begin{tabular}{|c|c|c|l|c|c|l|}
+\hline
+Function Name & State From & State to & Condition on Function & Inputs & Outputs & Description \\
+\hline
+
+{\parbox[l]{3cm}{Bank \_decide \_credit \_conditions}} &
+{\parbox[l]{3cm}{Bank \_start \_credit \_market \_role}} & Bank\_02
+& & {\parbox[l]{3cm}{loan\_request (a.id EQ m.bank\_id)}} &
+{\parbox[l]{3cm}{loan \_conditions}} &\\
+
+\hline
+
+{\parbox[l]{3cm}{Bank \_give \_loan}} & Bank\_02 & Bank\_03 & &
+{\parbox[l]{3cm}{loan \_acceptance (a.id EQ m.bank \_id)}} &  &\\
+
+\hline
+
+{\parbox[l]{3cm}{Bank \_receive \_installment}} & Bank\_03 &
+Bank\_04 & &
+{\parbox[l]{3cm}{installment (a.id EQ m.bank\_id)}} & & \\
+
+&&&&
+{\parbox[l]{3cm}{bankruptcy (a.id EQ m.bank\_id)}} &  &\\
+
+\hline
+
+
+{\parbox[l]{3cm}{Bank \_account \_update \_deposits}} & Bank\_04 &
+Bank\_05 & & {\parbox[l]{3cm}{bank\_account \_update (a.id EQ
+m.bank\_id)}} &
+{\parbox[l]{3cm}{central \_bank \_account \_update}} &\\
+
+\hline
+
+
+{\parbox[l]{3cm}{Bank \_accounting}} & Bank\_05 &
+{\parbox[l]{3cm}{end \_Bank \_cycle}} &
+{\parbox[l]{4cm}{monthly (a.day \_of \_month \_to \_act)}}&  &  &\\
+
+\hline
+
+
+{\parbox[l]{3cm}{Bank\_idle}} & Bank\_05 & {\parbox[l]{3cm}{end
+\_Bank \_cycle}} &
+{\parbox[l]{4cm}{not (monthly (a.day \_of \_month \_to \_act))}}&  &  &\\
+\hline
+
+
+\end{tabular}\end{center}\label{tab:creditbankfn}
+\end{table}
+\end{landscape}
+
+\section{Messages being Used}
+
+
+
+\begin{table}[!htb]\caption{Messages involved in the credit market implementation.}
+\begin{center}
+\begin{tabular}{|c|l|l|}
+\hline
+Name & Variables being sent & Description \\
+\hline loan\_request & {\parbox[l]{5cm}{firm\_id, bank\_id, equity,
+total\_debt, external\_financial\_needs}}& {\parbox[l]{5cm}{Message
+added by firm to demand credit with bank\_id,
+with financial info of applying firm.}} \\
+\hline loan\_conditions & {\parbox[l]{5cm}{firm\_id, bank\_id,
+proposed\_interest\_rate, amount\_offered\_credit, value\_at\_risk}}
+& {\parbox[l]{5cm}{Message added by bank to offer credit, contains
+the interest rate, the amount of
+offered credit, and the value\_at\_risk.}}  \\
+
+\hline loan\_acceptance & {\parbox[l]{5cm}{bank\_id,
+credit\_amount\_taken, loan\_total\_var}} & {\parbox[l]{5cm}{Message
+added by firm to accept a loan with bank\_id, for the amount credit
+taken and VAR. The bank
+does not need to know the firm\_id.}}   \\
+\hline
+
+installment & {\parbox[l]{5cm}{bank\_id, installment\_amount,
+interest\_amount, var\_per\_installment}} & {\parbox[l]{5cm}{Message
+added by firm pays
+installment and interest to the bank.}}    \\
+
+\hline bankruptcy & {\parbox[l]{5cm}{bank\_id, bad\_debt,
+credit\_refunded, residual\_var}} &{\parbox[l]{5cm}{Message added by
+firm to bank
+to signal bankruptcy.}}  \\
+\hline BCE\_return &
+{\parbox[l]{5cm}{bce\_debt, id}} & {\parbox[l]{5cm}{}}  \\
+\hline
+
+\end{tabular}\end{center}\label{tab:creditmarketmsg}
+\end{table}
