@@ -118,18 +118,9 @@ The sequence diagram in  Figure~\ref{fig:syncboard} depicts how a board synchron
 \subsection{The Communication Thread}
 \label{sec:commthread}
 
-During the initialisation of the Message Board environment, \textit{libmboard} forks a \textit{Communication Thread} to handle the synchronisation of distributed boards. 
+During the initialisation of the Message Board environment, \textit{libmboard} starts up a separate thread (the \textit{Communication Thread}) to handle the synchronisation of distributed boards. 
 
-Apart from potentially making better use of multi-core processors, delegating communication and memory intensive operations to a separate thread also allows us to minimise the effective overheads by performing them concurrently with the main simulation and thus overlapping the Board synchronisation time with that of useful computation.
-
-To simplify thread-safety, the \textit{Communication Thread} interacts with the main thread mainly through the \textit{Sync Queue} and the locking mechanism of each board. Access to these components are protected by mutex locks provided by \textit{pthreads} API. Boards that need to be synchronised are locked by the main thread and pushed into the \textit{Sync Queue}. The \textit{Communication Thread} indicate the completion of a synchronisation process by unlocking the board.
-
-\begin{itemize}
-\item motivation
-\item queues
-\end{itemize} 
-
-
+Apart from potentially making better use of multi-core processors, delegating communication and memory intensive operations to a separate thread allows us to minimise the effective overheads by performing them concurrently with the main simulation and thus overlapping the Board synchronisation time with that of useful computation.
 
 \begin{figure}[h]
  \centering
@@ -138,12 +129,51 @@ To simplify thread-safety, the \textit{Communication Thread} interacts with the 
  \label{fig:commloop}
 \end{figure}
 
+Once the \textit{Communication Thread} is started, it goes into a continuous loop of processing two control queues -- the Synchronisation Request Queue (\textit{Sync Queue}), and the Pending Communication Queue (\textit{Comm Queue}). 
+
+The loop is interrupted once both queues are empty, whereby the thread sleeps till it receives a signal from the parent thread, or quits when the termination flag is set. This is depicted by the Activity Diagram in Figure~\ref{fig:commloop}.
+
+
+%To simplify thread-safety, the \textit{Communication Thread} interacts with the parent thread mainly through regulated access to the Boards and the Board Synchronisation Request queue (\textit{Sync Queue}). Access to these components are protected by mutex locks provided by the \textit{pthreads} API.  When synchronisation is complete, the \textit{Communication Thread} indicate the completion of a synchronisation process by unlocking the Board. The newly synchronised Board would then be ready for access by processes within the parent thread.
+
+% ---------------------------------------------------------------------------
+\subsubsection{The Sync Queue}
+
+The \textit{Sync Queue} is the interface between the \textit{Communication Thread} and parent thread, and acts as a staging point for Boards synchronisation requests. Boards that need to be synchronised are locked by the main thread and pushed into the \textit{Sync Queue} for further action by the \textit{Communication Thread}. Access to the queue is protected by the mutex lock mechanism provided by the \textit{pthreads} API.
+
+When the \textit{Sync Queue} is processed, all Boards within the queue are placed in an appropriate state\footnote{depending on whether filter functions and parameters have been assigned to the Board} and moved into the \textit{Comm Queue}. The individual Board will remain locked until it has passed through the \textit{Comm Queue}.
+
+% ---------------------------------------------------------------------------
+\subsubsection{The Comm Queue}
+
+The \textit{Comm Queue} manages the list of Boards that are in the midst of synchronisation. Each Board within the \textit{Comm Queue} is assigned a state (corresponding to the syncronisation stage it is in). Whenever the \textit{Comm Queue} is processed, the \textit{Communication Thread} iterates through the list of Boards and runs the transition function of each Board. 
+
+Boards that reach their \texttt{END} state are remove from the \textit{Comm Queue} and unlocked to indicated that synchoinisation is complete. The unlocking of the board would be picked up by the parent thread when the appropriate libmboard API routines are called (refer back to Figure~\label{fig:syncboard} for futher clarification).
+
+% ---------------------------------------------------------------------------
+\subsubsection{Synchronisation states}
+
 \begin{figure}[h]
  \centering
   \includegraphics[scale=0.50]{CommNode.png}
- \caption{State diagram for processing Communication Node}
+ \caption{State diagram for processing Comm Queue nodes}
  \label{fig:commstate}
 \end{figure}
+
+The synchronisation process of a Board is split into stages such that inter-process communication (non-blocking MPI sends and receives) spans across at least two state transition functions -- one to initialise the non-blocking send/receive operation, and the others to test and complete the communication.
+
+For example, when a Board is in the \texttt{PRE\_PROPAGATION} state, the \texttt{InitPropagation()} transition function will prepare the necessary buffers, issue a series of non-blocking MPI sends and receives, and transitios the Board to the \texttt{PROPAGATION} state without waiting for the communication to complete. During the next iteration, the \textit{Communication Thread} would come back to the same board and either transition it to the next state if all communication has completed, or maintain the state if there are still pending communication. 
+
+By ensuring that transition functions never go idle in wait of an event, the \textit{Communication Thread} can continuously cycle through all pending synchronisations and perform the transition of each Board as they are ready.
+
+Refer to Figure~\ref{fig:commstate} for the full state diagram showing the different states a Board can be in and the associated transition functions.
+
+
+
+
+
+
+
 
 % ===========================================================================
 \subsection{Issues}
