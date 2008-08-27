@@ -9,5 +9,12 @@ A set of simple test models and problems have been developed based on the \texts
 \begin{description}
 	\item [Test 1]: Model: single \textsl{Circles} agent type; Initial population of no agents. Expected result:
 	\item [Test 2]: Model: single \textsl{Circles} agent type; Initial population of one agent at (0,0).
-\end{description}
+	\item [Test 3]: Model: Two \textsl{Circles} agent type; Initial population of agents at (-1,0) and (+,0).
+	\item [Test 4]: Model: Four \textsl{Circles} agent type; Initial population of one agent at ($\pm$1,$\pm$1).
+	\item [Test 5]: Model: Four \textsl{Circles} agent type; Initial population of one agent at (0,$\pm$1) and ($\pm$1,0).
+	\item [Test 6]: Model: Four \textsl{Circles} agent type; Initial population of one agent at random positions.
+	\end{description}
+In each of these models the expected results can be specified and therefore they provide a very simple check of the implementation.
+
+The \textsl{Circles} agent also provides a good mechanism to check the parallel implementation against the serial. Such is the nature of the model the positions on the agents at each iteration of the simulation is independent on the order of calculation. As the order of calculation can not be easily prescript in the parallel simulation we can use this characteristic to test the validity of the parallel implementation against the serial. We would expect to get the identical positions for each agent at very iteration of the simulation.
 
