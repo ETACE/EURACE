@@ -1,4 +1,20 @@
 \subsection{Approach to Benchmarking}
+Our approach to benchmarking has been incremental: starting from this simplest model and then gradually increasing complexity. The benchmarks run so far are part of the assessment of the current parallel implementation. They also serve as a useful way of ensuring that FLAME and its generate applications are portable over and wide range of hardware and operating systems. 
+
+\begin{table}[ht]
+	\centering
+		\begin{tabular}{l|ccc}
+		Model 				& Agents & Messages & Populations 		\\\hline
+		Circles  			&   1    &   1      &  2000 10$^5$   	\\
+		C@S  					&   3    &   9      &  12,400 124,000 \\
+		Labour Market &   4    &   10     &  11,011 110,101 \\ 
+		Bielefeld	    &   4    &   29     &  4130 43100     \\\hline
+		\end{tabular}
+\end{table}
+
+The starting populations have been generated using the initial population generator developed by STFC. The ratio of agents numbers in each population was retained from the original values.
+
+Each benchmark has been on a variety of HPC systems available to STFC using a range of process numbers: 4 9 16 32 49 64 81 and 100. The results presented show how the lapsed time per iteration varies with number of processors. In these experiments a round-robin initial distribution has been used.
 \subsection{The Circles Model}
 The Circles agent is very simple. It has a position in two-dimensional space and a radius of influence. Each agent will react to its neighbours within its interaction radius repulsively. So given a sufficient simulation time the initial distribution of agents will tend to a field of uniformly spaced agents.
 
