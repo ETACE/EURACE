@@ -54,10 +54,18 @@ The initial data file is copied to the remote machine and the run initiated for 
 
 It is possible to run jobs interactively, that is the script starts the job and waits until it is complete before returning.
 
-
-
 \subsection{Query Job Status}
+
+There are a number of variations for job status query, the simplest being querying the status of one job from one project. The information returned to the user will indicate whether the job has finished, is waiting to be started by the job scheduler, running or failed. The progress of a job can be monitored by comparing the names of output files (currently named \texttt{node$<$node-id$>$-$<$iteration$>$.xml}) against the number of iterations required for the job.
+
+This can be extended to retrieve the status for all jobs in a project and all jobs in all projects.
 
 \subsection{Get Results}
 
+When a job is complete the results will be left on the remote machine and will need to be copied to the local machine. For a parallel run each node writes its results to separate files, one for each iteration. Current analysis techniques require the results files from each node be amalgamated into one file for each iteration. There is a script to do this and further scripts based on XSLT (a language for transforming XML documents into other XML documents, see \verb+http://www.w3.org/TR/xslt.html+) can be written to extract information about particular variables of interest.
 
+\subsection{Implementation}
+
+Since the job submission ideas described above require a lot of work with ssh/scp and other command line utilities the job submission system has been implemented as a number of (bash) shell scripts each performing one of the tasks described above. Integration with a GUI which TUBITEK have indicated will be written in Python is simple using the \texttt{os.system} module. The script results can be redirected to a file and the file parsed by the GUI to extract useful information to display to the user.
+
+Data on projects and jobs will be stored in a file on the remote system so that project and job ids will be unique and details about the parameters for a particular job can be retrieved at a later time, e.g.\ for a job status query and retrieving the results. For simplicity this is a text file at present.
