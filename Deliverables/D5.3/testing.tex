@@ -1,0 +1,43 @@
+\section{Testing}
+
+
+
+\subsection{Unit Testing}
+
+The testing of individual modules of a piece of software, in the case of models
+these are the individual agent functions. Each function has an accompanying
+unit test function that sets the initial agent memory and any input, calls the
+function, and assets that the new agent memory and outputs are what is expected.
+
+FLAME provides procedures to help with unit testing:
+
+\begin{itemize}
+  \item initialise\_unit\_testing()
+  \item unittest\_init\_agentname\_agent()
+  \item \ldots update agent memory \ldots
+  \item \ldots create input messages \ldots
+  \item \ldots call function to test \ldots
+  \item \ldots call test assertions \ldots
+  \item unittest\_free\_agentname\_agent()
+  \item free\_messages()
+  \item clean\_up()
+\end{itemize}
+
+\subsection{Integration Testing}
+
+The testing of combinations of program modules up to the level of the whole
+system.
+
+Need coverage of testing combinations, a test set.
+
+The W-method proposed by T. Chow \cite{CHOW:1978} provides a complete test set
+of sequences through a state machine.
+
+Used an implementation called statechum (http://statechum.sourceforge.net/)
+that accepts graphml as input. Converted each agent into a separate state
+machine as graphml. 
+
+One way to analyse the output of runs is to use an invarient detector. This
+program reports any likely invariants, properties that hold at certain points.
+This could then be analysed by the modeller and possibly used as assertions in
+future test runs.
