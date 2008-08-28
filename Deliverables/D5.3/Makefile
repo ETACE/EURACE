@@ -19,7 +19,7 @@ spell:
 
 dvi: 
 	latex D53_main
-	#bibtex D53_main
+	bibtex D53_main
 	latex D53_main
 	latex D53_main
 
