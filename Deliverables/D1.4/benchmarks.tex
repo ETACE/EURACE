@@ -17,11 +17,18 @@ The initial population contained: 20000 firms, 100000 people and 4000 malls (124
 This model was first model based on the work of the EURACE project. The model represented a very simplified labour market. It contains four agent types and 10 message types.
 \subsection{Bielefeld Labour Market}
 This model was a refinement of the Initial Labour Market. Its also contained four agent types but with 27 message types.
-\subsection{Isolated Artificial Labour Market}
-This model contains seven agent types and 45 message types. Initial population of 1236 agents.
-\subsection{Isolated Artificial Financial Market}
-The AFM model contains four agent types and six message types. Initial population of 1104 agents.
-\subsection{Isolated Artificial Credit Market}
-This model contains three agent types and 12 message types. Initial population of 110 agents.
-\subsection{Initial Combined EURACE Model}
-This model contains nine agent types and 54 message types. Initial population of 2029 agents.
+\subsection{EURACE Models}
+During the development of the EURACE Model a number of domain specific models have been developed. These models were then integrated into the EURACE Model. Three domain specific models were developed: Credit Market, Labour Market and Financial Market. Each of these and the combine EURACE Model are the major economic models developed by EURACE. As part of the development of FLAME these models have been used to test the FLAME application generation and the framework infrastructure. In particular they have been very useful in testing the parallel implementation of FLAME. Although the initial agent populations is these models are very small they do encapsulate the full range and complexity of the EURACE model and to that end they are a very useful testing resource.
+
+\begin{table}[ht]
+	\centering
+		\begin{tabular}{l|ccc}
+		Model & Agents & Messages & Population \\\hline
+		Financial Market  &    4    &   6       &  1104          \\
+		Labour Market   &   7     &    45      &   1236         \\
+		Credit Market   &   3     &    12      &   110         \\ 
+		EURACE Model    &   9     &    54       &  2029         \\\hline
+		\end{tabular}
+\end{table}
+
+All these models have been successfully parsed, compile and executed in both serial and parallel on some of our target HPC machines.
