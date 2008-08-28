@@ -21,6 +21,36 @@ The Circles agent is very simple. It has a position in two-dimensional space and
 The description of the agent is given as a example of XMML in the sections above. Each agent has $x$, $y$, $fx$, $fy$ and $radius$ in its memory and has three states: outputdata, inputdata and move. The agents communicate via a single message board, $location$, which holds the agent $id$ and position.
 
 The Circles problem is very simple but allows us an initial assessment of the performance of the parallelisation within FLAME. The simulation was started with a populations of $10^6$  agents and experiments performed using from 4 to 100 processors. The averaged results are shown in Table~\ref{tab:ExecutionTimesForCircles} and Figure~\ref{fig:Circles-graph}.
+%Some place markers
+{
+\renewcommand{\arraystretch}{1.25}
+\begin{table}[ht]
+	\centering
+		\begin{tabular}{c|cccc}
+	Processors	&SCARF		&HAPU			&NW-GRID	&HPCx	\\ \hline
+	4						&2510.723	&1710.531	&2791.994	&-		\\
+	9						&1021.234	&277.672	&890.378	&-		\\
+	16					&321.057	&106.169	&388.098	&403.122 \\
+	25					&189.211	&67.646		&196.751	&161.757 \\	
+	36					&67.413		&52.912		&121.571	&78.468 \\
+	49					&37.080		&19.682		&58.068		&42.503	\\
+	64					&23.199		&16.482		&42.881		&25.122	\\
+	81					&14.826		&12.971		&38.033		&15.849	\\
+	100					&6.653		&6.641		&27.603		&10.322
+	\end{tabular}
+	\caption{Execution Times for $10^6$ Circles}
+	\label{tab:ExecutionTimesForCircles}
+\end{table}
+}
+\begin{figure}[ht]
+	\centering
+		\includegraphics[width=300pt]{Circles-graph.jpg}
+	\caption{Graph of iteration times}
+	\label{fig:Circles-graph}
+\end{figure}
+
+The results indicate that this simulation benefits from using 30 to 50 processors after which the performance benefits flatten. It is interesting to note that this is essentially similar across the range of systems used. The variations between systems being attributed to memory, architecture and communications hardware differences.
+
 \subsection{The C@S Model}
 The C@S model was the first economic model to be implemented in FLAME by the EURACE Project.  It is based on work detailed in Delli Gatti \textsl{et al.} \cite{Delli Gatti} where an economy is populated by a finite number of \textsl{firms}, \textsl{workers}/\textsl{consumers} and \textsl{banks}. The acronym C@S stands for \textsl{Complex Adaptive Trivial System}.
 
@@ -29,10 +59,98 @@ This provides an initial economic model for testing FLAME. The EURACE version of
 As the agents in the C@S Model have some positional/location data and the communication is localised, the initial distribution of agents to processors, as in the Circles Model, can be based on location. This helps reduce cross-processor communication.
 
 The initial population contained: 20000 firms, 100000 people and 4000 malls (124000 agents in total).
+{
+\renewcommand{\arraystretch}{1.25}
+\begin{table}[ht]
+	\centering
+		\begin{tabular}{c|cccc}
+		Processors	&HAPU		&NW-GRID	&HPCx		&MANO		\\ \hline
+		4 					&378.34	&572.23		&276.81	&918.20	\\
+		9 					&169.54	&295.81		&214.61	&664.81	\\
+		16 					&105.90	&147.67		&91.12	&307.92	\\
+		25 					&68.64	&89.97		&54.89	&210.33	\\
+		36 					&46.53	&60.06		&36.11	&142.35	\\
+		49 					&33.81	&45.39		&25.54	&107.70	\\
+		64 					&25.77	&-				&19.48	&86.74	\\
+		81 					&23.50	&30.95		&15.65	&78.51	\\
+		100 				&17.51	&-				&12.52	&67.28	\\
+	\end{tabular}
+	\caption{Execution Times for C@S Model}
+	\label{tab:ExecutionTimesForC@S}
+\end{table}
+}
+\bigskip
+\begin{figure}[ht]
+	\centering
+		\includegraphics[width=300pt]{C@S-graph.jpg}
+	\caption{Graph of C@S Model execution times}
+	\label{fig:C@S-graph}
+\end{figure}
+The results show a potential reduction of the elapsed time of the simulation when using up to 30 processors.
+
+
+
 \subsection{Initial Labour Market}
 This model was first model based on the work of the EURACE project. The model represented a very simplified labour market. It contains four agent types and 10 message types.
+
+{
+\renewcommand{\arraystretch}{1.25}
+\begin{table}[ht]
+	\centering
+		\begin{tabular}{c|cccc}
+		Processors		&HAPU		&NW-GRID		&HPCx		&MANO			\\ \hline
+		4							&280.49	&358.80 		&- 			&2420.93 	\\
+		9 						&134.32	&203.71			&-			&360.86		\\
+		16 						&67.23	&107.75			&-			&251.16		\\
+		25 						&59.28	&119.75			&104.70	&192.34		\\
+		36 						&46.92	&107.97			&86.411	&53.77		\\
+		49 						&40.19	&-					&85.10	&124.04		\\
+		64 						&38.17	&-					&83.81	&96.48	 	\\
+		81 						&36.56	&-					&91.30	&85.02		\\
+		100 					&36.21	&-					&83.97	&116.90		\\
+	\end{tabular}
+	\caption{Execution Times for Labour Market Model}
+	\label{tab:ExecutionTimesForLabour}
+\end{table}
+}
+\bigskip
+\begin{figure}[ht]
+	\centering
+		\includegraphics[width=300pt]{Labour-graph.jpg}
+	\caption{Graph of Labour Market Model iteraction times}
+	\label{fig:Labour-graph}
+\end{figure}
+
 \subsection{Bielefeld Labour Market}
 This model was a refinement of the Initial Labour Market. Its also contained four agent types but with 27 message types.
+{
+\renewcommand{\arraystretch}{1.25}
+\begin{table}[ht]
+	\centering
+		\begin{tabular}{c|cccc}
+		Processors		&HAPU		&NW-GRID		&HPCx		&MANO			\\ \hline
+		4							&280.49	&358.80 		&- 			&2420.93 	\\
+		9 						&134.32	&203.71			&-			&360.86		\\
+		16 						&67.23	&107.75			&-			&251.16		\\
+		25 						&59.28	&119.75			&104.70	&192.34		\\
+		36 						&46.92	&107.97			&86.411	&53.77		\\
+		49 						&40.19	&-					&85.10	&124.04		\\
+		64 						&38.17	&-					&83.81	&96.48	 	\\
+		81 						&36.56	&-					&91.30	&85.02		\\
+		100 					&36.21	&-					&83.97	&116.90		\\
+	\end{tabular}
+	\caption{Execution Times for Labour Market Model}
+	\label{tab:ExecutionTimesForLabour}
+\end{table}
+}
+\bigskip
+\begin{figure}[ht]
+	\centering
+		\includegraphics[width=300pt]{Labour-graph.jpg}
+	\caption{Graph of Labour Market Model iteraction times}
+	\label{fig:Labour-graph}
+\end{figure}
+
 \subsection{EURACE Models}
 During the development of the EURACE Model a number of domain specific models have been developed. These models were then integrated into the EURACE Model. Three domain specific models were developed: Credit Market, Labour Market and Financial Market. Each of these and the combine EURACE Model are the major economic models developed by EURACE. As part of the development of FLAME these models have been used to test the FLAME application generation and the framework infrastructure. In particular they have been very useful in testing the parallel implementation of FLAME. Although the initial agent populations is these models are very small they do encapsulate the full range and complexity of the EURACE model and to that end they are a very useful testing resource.
 
