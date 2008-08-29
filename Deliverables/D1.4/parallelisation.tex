@@ -72,7 +72,7 @@ The API provides further routines from emptying (\texttt{MB\_Clear()}) and delet
 \subsubsection{Iterators}
 \label{sec:mb_interators}
 
-Iterators are objects used for traversing Message Board content. They provide \textit{libmboard} users access to messages while isolating them from the internal data representation of the Boards. 
+Iterators are opaque objects used for traversing Message Board content. They provide \textit{libmboard} users access to messages while isolating them from the internal data representation of Boards. It also aids in enforcing the rule that Boards should be not modified in any way by a read access, and only by writes. With this rules in place, multiple Iterators can be created to traverse the Board idependently and with different access patterns.
 
 \begin{figure}[h]
  \centering
@@ -81,10 +81,14 @@ Iterators are objects used for traversing Message Board content. They provide \t
  \label{fig:mb_iterators}
 \end{figure}
 
-Iterators are created against a populated Board using the \texttt{MB\_Iterator\_Create()} routine. Upon creation, the Iterator generates a list of the available messages within the Board and places a cursor at the first entry. When \texttt{MB\_Iterator\_GetMessage()} is called, a copy of the message data is returned to the user and the cursor moves to the next item. Once the cursor moves beyond the last item, further calls to \texttt{MB\_Iterator\_GetMessage()} will return a \texttt{NULL} pointer indicating that iteration has ended. \texttt{MB\_Iterator\_Rewind()} can be used to move the cursor back to the first item to allow for a reuse of the Iterator.
+Iterators are created against a Board using the \texttt{MB\_Iterator\_Create()} routine. Upon creation, the Iterator generates a list of the available messages within the Board and places a cursor at the first entry. When an Iterator is created, it essentially creates a snapshot of the content of a local Board. Any data added to the Board after the creation of the Iterator will not be available, while emptying or deleing the Board will invalidate the Iterator.
 
-The \textit{libmboard} API also provides several routines for creating specialised Iterators which allow users to traverse subsets of the Board content in a customised order. These routines accept user-defined function and parameters used to control the message access pattern. 
+Data traversal is performed by repeatedly calling \texttt{MB\_Iterator\_GetMessage()}. This routine returns a copy of a single message data, then moves the cursor to the next item. Once the cursor moves beyond the last item, further calls to \texttt{MB\_Iterator\_GetMessage()} will return a \texttt{NULL} pointer indicating that iteration has ended. \texttt{MB\_Iterator\_Rewind()} can be used to move the cursor back to the first item to allow for a reuse of the Iterator.
 
+
+Entries within an Iterator can also be randomised using \texttt{MB\_Iterator\_Randomise()}. Apart from increasing the reusabily of Iterators, Iterator randomisation also plays well with our rule of not modifying the Board itself. It is also computationally cheaper to randomise Iterator entries than it is to randomise messages within a Board.
+
+The \textit{libmboard} API also provides several routines for creating specialised Iterators which allow users to traverse subsets of the Board content in a customised order. These routines accept user-defined sort and/or compare function that are used to control the which messages, and in what order, they appear in the Iterator. These specialised Iterators are traversed just like a standard Iterator, using \texttt{MB\_Iterator\_GetMessage()}.
 
 %\begin{itemize}
 %\item isolate users from internal data representation
@@ -144,7 +148,7 @@ Apart from potentially making better use of multi-core processors, delegating co
 
 \begin{figure}[h]
  \centering
-  \includegraphics[scale=0.70]{commloop.jpg}
+  \includegraphics[scale=0.60]{commloop.jpg}
  \caption{Activity diagram for Communication Thread}
  \label{fig:commloop}
 \end{figure}
@@ -171,7 +175,9 @@ The \textit{Comm Queue} manages the list of Boards that are in the midst of sync
 Boards that reach their \texttt{END} state are remove from the \textit{Comm Queue} and unlocked to indicated that synchoinisation is complete. The unlocking of the board would be picked up by the parent thread when the appropriate libmboard API routines are called (refer back to Figure~\label{fig:syncboard} for futher clarification).
 
 % ---------------------------------------------------------------------------
-\subsubsection{Synchronisation states}
+\subsubsection{Stages of synchronisation}
+
+The synchronisation process of a Board is split into stages such that inter-process communication (non-blocking MPI sends and receives) spans across at least two state transition functions -- one to initialise the non-blocking send/receive operation, and the others to test and complete the communication.
 
 \begin{figure}[h]
  \centering
@@ -180,13 +186,12 @@ Boards that reach their \texttt{END} state are remove from the \textit{Comm Queu
  \label{fig:commstate}
 \end{figure}
 
-The synchronisation process of a Board is split into stages such that inter-process communication (non-blocking MPI sends and receives) spans across at least two state transition functions -- one to initialise the non-blocking send/receive operation, and the others to test and complete the communication.
+Refer to Figure~\ref{fig:commstate} for the full state diagram showing the different states a Board can be in and the associated transition functions.
 
 For example, when a Board is in the \texttt{PRE\_PROPAGATION} state, the \texttt{InitPropagation()} transition function will prepare the necessary buffers, issue a series of non-blocking MPI sends and receives, and transitios the Board to the \texttt{PROPAGATION} state without waiting for the communication to complete. During the next iteration, the \textit{Communication Thread} would come back to the same board and either transition it to the next state if all communication has completed, or maintain the state if there are still pending communication. 
 
 By ensuring that transition functions never go idle in wait of an event, the \textit{Communication Thread} can continuously cycle through all pending synchronisations and perform the transition of each Board as they are ready.
 
-Refer to Figure~\ref{fig:commstate} for the full state diagram showing the different states a Board can be in and the associated transition functions.
 
 
 
