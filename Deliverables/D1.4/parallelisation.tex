@@ -72,7 +72,7 @@ The API provides further routines from emptying (\texttt{MB\_Clear()}) and delet
 \subsubsection{Iterators}
 \label{sec:mb_interators}
 
-Iterators are opaque objects used for traversing Message Board content. They provide \textit{libmboard} users access to messages while isolating them from the internal data representation of Boards. It also aids in enforcing the rule that Boards should be not modified in any way by a read access, and only by writes. With this rules in place, multiple Iterators can be created to traverse the Board idependently and with different access patterns.
+Iterators are opaque objects used for traversing Message Board content. They provide \textit{libmboard} users access to messages while isolating them from the internal data representation of Boards. It also aids in enforcing the rule that Boards should be not modified in any way by a read access. With this rules in place, multiple Iterators can be created to traverse the Board idependently using different access patterns.
 
 \begin{figure}[h]
  \centering
@@ -83,12 +83,11 @@ Iterators are opaque objects used for traversing Message Board content. They pro
 
 Iterators are created against a Board using the \texttt{MB\_Iterator\_Create()} routine. Upon creation, the Iterator generates a list of the available messages within the Board and places a cursor at the first entry. When an Iterator is created, it essentially creates a snapshot of the content of a local Board. Any data added to the Board after the creation of the Iterator will not be available, while emptying or deleing the Board will invalidate the Iterator.
 
-Data traversal is performed by repeatedly calling \texttt{MB\_Iterator\_GetMessage()}. This routine returns a copy of a single message data, then moves the cursor to the next item. Once the cursor moves beyond the last item, further calls to \texttt{MB\_Iterator\_GetMessage()} will return a \texttt{NULL} pointer indicating that iteration has ended. \texttt{MB\_Iterator\_Rewind()} can be used to move the cursor back to the first item to allow for a reuse of the Iterator.
-
-
-Entries within an Iterator can also be randomised using \texttt{MB\_Iterator\_Randomise()}. Apart from increasing the reusabily of Iterators, Iterator randomisation also plays well with our rule of not modifying the Board itself. It is also computationally cheaper to randomise Iterator entries than it is to randomise messages within a Board.
+Data traversal is performed by repeated calls to \texttt{MB\_Iterator\_GetMessage()}. This routine returns a copy of a single message data, then moves the cursor to the next item. Once the cursor moves beyond the last item, further calls to \texttt{MB\_Iterator\_GetMessage()} will return a \texttt{NULL} pointer indicating that iteration has ended. \texttt{MB\_Iterator\_Rewind()} can be used to move the cursor back to the first item to allow for a reuse of the Iterator.
 
 The \textit{libmboard} API also provides several routines for creating specialised Iterators which allow users to traverse subsets of the Board content in a customised order. These routines accept user-defined sort and/or compare function that are used to control the which messages, and in what order, they appear in the Iterator. These specialised Iterators are traversed just like a standard Iterator, using \texttt{MB\_Iterator\_GetMessage()}.
+
+Other Iterator routines include \texttt{MB\_Iterator\_Randomise()} for randomising Iterator entries, and \texttt{MB\_Iterator\_Delete()} for deleting Iterators.
 
 %\begin{itemize}
 %\item isolate users from internal data representation
@@ -102,41 +101,45 @@ The \textit{libmboard} API also provides several routines for creating specialis
 \subsubsection{Synchronisation}
 \label{sec:mb_sync}
 
-Synchronisation of Boards involve the propagation of message data between the distributed Boards such that agents farmed out across the different processing nodes have a unified view of the Board content through its local Board. This is vital in ensuring that the simulation is coherent even thought instances of the Board are distributed across different processing nodes.
+Synchronisation of Boards involve the propagation of message data such that agents farmed out across the different processing nodes have a unified view of the collective content through its local Board. This is vital to ensure that the simulation is coherent even thought instances of the Board are distributed across different processing nodes.
 
-Synchronisation of Boards are performed in two stages -- the initial Board synchronisation request, and the actual completeion of synchronisation.
+Synchronisation of Boards are performed in two stages -- the initial Board synchronisation request, and the actual completion of synchronisation.
 
-The initial Board synchronisation request is performed using the \texttt{MB\_SyncStart()}. This routine locks the Board, submits a synchronisation request, and immediately returns control back to the calling code. This calling code is then free to proceed with other tasks that does not require the Board in question. 
+The initial Board synchronisation request is performed using the \texttt{MB\_SyncStart()}. This routine locks the Board and adds it to the \textit{Synchronisation Request Queue} (discussed in Section~\ref{sec:syncqueue}). The calling code is then immediately given back control and is free to proceed with other tasks that does not require access to the Board in question. 
 
-When read access to the Board is required, the synchronisation process must first be completed using \texttt{MB\_SyncComplete()}. This routine will wait for the Board to be unlocked before returning control to the calling code. The actual synchronisation mechanism is discussed further in Section~\ref{sec:commthread}.
-
-Calls to \texttt{MB\_SyncStart()} should be placed as early as possible within the code (immediately after the final message has been written) so that more work can be scheduled before \texttt{MB\_SyncComplete()} is called. This will maximise the amount of overlap between useful computation and the synchronisation overheads.
-
-also synctest...
-
-\begin{itemize}
-\item Message Tagging vs Filtered Iterators.
-\item Why important? Impact on solution time?
-\item Details on how messages are packed and distributed
-\end{itemize} 
-
-\begin{figure}[h]
- \centering
-  \includegraphics[scale=0.70]{taggedboard.png}
- \caption{Lorem ipsum dolor sit}
- \label{fig:taggedboard}
-\end{figure}
-
-When synchronisation of a board is requested, the board is locked and added into the \textit{Sync Queue}. Control is then returned to the the calling code, allowing it to perform other tasks that does not require access to the board being synchronised. 
+When read access to the Board is required, the synchronisation process must first be completed using \texttt{MB\_SyncComplete()}. This routine is blocking, and will wait for the Board to be unlocked before returning control to the calling code. Alternatively, there is also the \texttt{MB\_SyncTest()} routine which is non-blocking and return immediately with a completion status of the synchronisation. The calling code can immediately access the Board if the returned status is \texttt{MB\_TRUE}, or, if the returned status is \texttt{MB\_FALSE}, proceed with other tasks and repeat the test at a later stage.
 
 The sequence diagram in  Figure~\ref{fig:syncboard} depicts how a board synchronisation request may take place. The process of actually synchronising and unlocking the board is performed concurrently in the background by the \textit{Communication Thread}. This is discussed further in Section~\ref{sec:commthread}.
 
 \begin{figure}[h]
  \centering
-  \includegraphics[scale=0.70]{syncboard.jpg}
+  \includegraphics[scale=0.60]{syncboard.jpg}
  \caption{Other work can be schedule during board synchronisation to shadow the overheads of communication}
  \label{fig:syncboard}
 \end{figure}
+
+To make the most of the concurrent nature of \textit{libmboard}, calls to \texttt{MB\_SyncStart()} should be placed as early as possible within the code (immediately after the final message has been written) such that more work can be scheduled before \texttt{MB\_SyncComplete()} is called. This will maximise the amount of overlap between useful computation and the synchronisation overheads.
+
+% ---------------------------------------------------------------------------
+\subsubsection{Sync optimisation based on Message Tagging}
+\label{sec:mb_tagging}
+
+In its simplest form, a Board synchronisation may be implemented as a full replication of all messages within each local Board. This method is rather straightforward to implement, and would indeed serve its purpose of providing every agent access to the collective Board content. Unfortunately, it is also extremely expensive in terms of communication and memory requirements, and would therefore defeats the purpose of running in parallel (considering the key reasons behind parallelisation are to reduce elapsed time and per-node memory usage).
+
+\textit{libmboard} overcomes this problem by tagging each message with the IDs of processing nodes that require read access to it (see Figure~\ref{fig:taggedboard}). With the tagging in place, full data replication is avoided by only propagating the relevant messages to each processing node.
+
+\begin{figure}[h]
+ \centering
+  \includegraphics[scale=0.70]{taggedboard.png}
+ \caption{Full data replication is avoided by only propagating tagged messages to the relevant nodes}
+ \label{fig:taggedboard}
+\end{figure}
+
+In order to tag messages, each processing node would need to indicate the selection of messages that it requires. This facility is provided by the  \texttt{MB\_Function\_Assign()} routine which assigns used-defined filter functions and its associated parametes to each Board . At the start of each synchronisation, the parameters are gathered from all remote nodes and message tagging is performed.
+
+Within the FLAME framework, the filter function are generated automatically based on the \texttt{<filter>} tag that modellers assign to the input of each agent function, while the function parameters are computed at run-time based on an analysis of agent memory. 
+
+Obvious, if the \texttt{<filter>} tags are not used, filter functions will not be assigned to Boards and the synchronisation process would fall back to a full data replication.
 
 % ===========================================================================
 \subsection{The Communication Thread}
@@ -155,13 +158,11 @@ Apart from potentially making better use of multi-core processors, delegating co
 
 Once the \textit{Communication Thread} is started, it goes into a continuous loop of processing two control queues -- the Synchronisation Request Queue (\textit{Sync Queue}), and the Pending Communication Queue (\textit{Comm Queue}). 
 
-The loop is interrupted once both queues are empty, whereby the thread sleeps till it receives a signal from the parent thread, or quits when the termination flag is set. This is depicted by the Activity Diagram in Figure~\ref{fig:commloop}.
-
-
-%To simplify thread-safety, the \textit{Communication Thread} interacts with the parent thread mainly through regulated access to the Boards and the Board Synchronisation Request queue (\textit{Sync Queue}). Access to these components are protected by mutex locks provided by the \textit{pthreads} API.  When synchronisation is complete, the \textit{Communication Thread} indicate the completion of a synchronisation process by unlocking the Board. The newly synchronised Board would then be ready for access by processes within the parent thread.
+The loop is interrupted whenever both queues are empty, whereby the thread sleeps till it receives a signal from the parent thread, or quits when the termination flag is set. This is depicted by the Activity Diagram in Figure~\ref{fig:commloop}.
 
 % ---------------------------------------------------------------------------
 \subsubsection{The Sync Queue}
+\label{sec:syncqueue}
 
 The \textit{Sync Queue} is the interface between the \textit{Communication Thread} and parent thread, and acts as a staging point for Boards synchronisation requests. Boards that need to be synchronised are locked by the main thread and pushed into the \textit{Sync Queue} for further action by the \textit{Communication Thread}. Access to the queue is protected by the mutex lock mechanism provided by the \textit{pthreads} API.
 
@@ -170,14 +171,16 @@ When the \textit{Sync Queue} is processed, all Boards within the queue are place
 % ---------------------------------------------------------------------------
 \subsubsection{The Comm Queue}
 
-The \textit{Comm Queue} manages the list of Boards that are in the midst of synchronisation. Each Board within the \textit{Comm Queue} is assigned a state (corresponding to the syncronisation stage it is in). Whenever the \textit{Comm Queue} is processed, the \textit{Communication Thread} iterates through the list of Boards and runs the transition function of each Board. 
+The \textit{Comm Queue} manages the list of Boards that are in the midst of synchronisation. Each Board within the \textit{Comm Queue} is assigned a state based on the syncronisation stage it is in. Whenever the \textit{Comm Queue} is processed, the \textit{Communication Thread} iterates through the list of Boards and executes the transition function associated to the state of each Board. 
 
-Boards that reach their \texttt{END} state are remove from the \textit{Comm Queue} and unlocked to indicated that synchoinisation is complete. The unlocking of the board would be picked up by the parent thread when the appropriate libmboard API routines are called (refer back to Figure~\label{fig:syncboard} for futher clarification).
+Boards that reach their \texttt{END} state are remove from the \textit{Comm Queue} and unlocked to indicated that synchoinisation is complete. The unlocking of the board would be picked up by the parent thread when the appropriate libmboard API routines are called (refer back to Figure~\ref{fig:syncboard} for futher clarification).
 
 % ---------------------------------------------------------------------------
 \subsubsection{Stages of synchronisation}
 
 The synchronisation process of a Board is split into stages such that inter-process communication (non-blocking MPI sends and receives) spans across at least two state transition functions -- one to initialise the non-blocking send/receive operation, and the others to test and complete the communication.
+
+For example, when a Board is in the \texttt{PRE\_PROPAGATION} state (see Board synchronisation state diagram in  Figure~\ref{fig:commstate}), the \texttt{InitPropagation()} transition function will prepare the necessary buffers, issue a series of non-blocking MPI sends and receives, and transitios the Board to the \texttt{PROPAGATION} state without waiting for the communication to complete. During the next iteration, the \textit{Communication Thread} would come back to the same board and either transitions it to the next state if all communication has completed, or maintains the state if there are still pending communication. 
 
 \begin{figure}[h]
  \centering
@@ -186,31 +189,37 @@ The synchronisation process of a Board is split into stages such that inter-proc
  \label{fig:commstate}
 \end{figure}
 
-Refer to Figure~\ref{fig:commstate} for the full state diagram showing the different states a Board can be in and the associated transition functions.
-
-For example, when a Board is in the \texttt{PRE\_PROPAGATION} state, the \texttt{InitPropagation()} transition function will prepare the necessary buffers, issue a series of non-blocking MPI sends and receives, and transitios the Board to the \texttt{PROPAGATION} state without waiting for the communication to complete. During the next iteration, the \textit{Communication Thread} would come back to the same board and either transition it to the next state if all communication has completed, or maintain the state if there are still pending communication. 
-
-By ensuring that transition functions never go idle in wait of an event, the \textit{Communication Thread} can continuously cycle through all pending synchronisations and perform the transition of each Board as they are ready.
-
-
-
-
-
-
-
-
+By ensuring that transition functions never involve idle waits for events or specific conditions, the \textit{Communication Thread} can continuously cycle through all pending synchronisations and perform the transition of each Board as they are ready.
 
 % ===========================================================================
 \subsection{Issues}
 
+\subsubsection{Use of \textit{pthreads}}
+
+During the design stage of developing \textit{libmboard}, several complications were identified when considering the use of  \textit{pthreads} for implementing the \textit{Communication Thread}. After some consideration, it was decided that the possibilities that the threaded model can provide outweights the drawbacks.
+
+Some of the issues that were identified are:
 \begin{itemize}
-\item Synchronising handles (boards, iterators, functions). Checking = Blocking operations = large overheads. Use debug v production.
-\item MPI thread support
-\item Job scheduling more complex if consider threads
-\item MPI sends/receives requires contiguous buffers. Expensive (space and time) packing of messages.
-\item Comm stages not fully non-blocking
-\item Total tagged messages may be more than actual message. Gets works with more proc. Scaling issues.
-\item Filters not widely used (or even fully implemented in FLAME)
+\item Portability -- some platforms do not natively support \textit{pthreads}. For example, \textit{pthreads} are not supported on the IBM Bluegene/L system. They are also not available natively on Microsoft Windows Operating Systems. However, \textit{pthreads} support has been introduced in the latest generation of Bluegene (Bluegene/P), and on Windows, \textit{pthreads} can be used through Cygwin or by using third-party libraries.
+\item Thread-safety -- Not all MPI Libraries currently available are thread-safe. This made the development of \textit{libmboard} much harder as this introduces an additional limitation that the parent thread (which includes the calling code and the API routines itesel) must not issue MPI call whenever the Communication Thread is also issuing a call or has any outstanding MPI communication communication. Extensive testing had to be performed using different compilers and MPI Libraries to ensure that \textit{libmboard} functions correctly.
+\item Process mapping -- Mixed-mode programming (Multi-threaded + MPI) makes the launching of jobs on multi-core SMP clusters more complicated. Choosing the most efficient mapping of threads and MPI tasks to the various cores of different affinity is not immediately obvious. Additionally, once a reasonable mapping is decided upon, conveying it in a request to the different job schedulers when launching jobs on shared clusters could prove to be a challenge.
 \end{itemize} 
+
+\subsubsection{Ensuring uniform assignment of Handles}
+Synchronising handles (boards, iterators, functions). Checking = Blocking operations = large overheads. Use debug v production.
+(more...)
+
+\subsubsection{Temporary buffers for MPI routines}
+
+MPI sends/receives requires contiguous buffers. Expensive (space and time) packing of messages.
+
+Total tagged messages may be more than actual message. Gets works with more proc. Scaling issues.
+
+(more ..)
+
+\subsubsection{Filter tags not widely used}
+Filters not widely used (or even fully implemented in FLAME). Full data replication. Slow! See benchmarks.
+
+(more ..)
 
 % ===========================================================================
