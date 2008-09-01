@@ -1,13 +1,15 @@
 \section{Credit Market Implementation}
 
-% This model was adapted from the proposed model of the credit market
-% by the Ancona Unit \cite{?}. Here we present a description of how the
-% model was implemented.
-%
-% \section{Implementation Details}
-% The credit market involves the interaction of the credit function
-% with the financial management functions of the Firm Agent.
-%
+This model was adapted from the proposed model of the credit market
+by the Ancona Unit \cite{?}. Here we present a description of how
+the model was implemented.
+
+\subsection{Description}
+The credit market involves the interaction of the credit function
+with the financial management functions of the Firm and Bank agent.
+The state dependency diagram \ref{fig:statecredit} shows the flow of
+activity in the model.
+
 % \subsection{Agents}
 % The agents involved in the implementation are listed below:
 % \begin{itemize}
@@ -35,20 +37,19 @@
 %
 % \section{Results}
 % Graphs
-\subsection{State dependency diagram}
+
 
  \begin{figure}[!htb]
  \begin{center}
-  %\includegraphics*[scale=2.0]{stategraph.ps}
+  \includegraphics*[scale=2.0]{stategraph.ps}
  \caption{State Dependency Diagram.} \label{fig:statecredit}
  \end{center}
  \end{figure}
 
-\subsection{State Transition Table}
 
-\subsubsection{Firm Agent}
+\subsubsection{Firm Agent in the Credit Market}
 
-Function Descriptions:
+
 \begin{landscape}
 \begin{table}[!htb]\caption{Functions being performed by the Firm involved in Credit Market.}
 \begin{center}
@@ -76,9 +77,10 @@ Function Name & State From & State to & Condition on Function & Inputs & Outputs
 \end{table}
 \end{landscape}
 
-\subsubsection{Bank Agent}
+\subsubsection{Bank Agent in the Credit Market}
 
-Bank functions:
+
+
 \begin{landscape}
 \begin{table}[!htb]\caption{Functions being performed by the Bank involved in Credit Market.}
 \begin{center}
