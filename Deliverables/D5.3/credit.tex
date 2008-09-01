@@ -53,23 +53,20 @@ activity in the model.
 \begin{landscape}
 \begin{table}[!htb]\caption{Functions being performed by the Firm involved in Credit Market.}
 \begin{center}
-\begin{tabular}{|c|c|c|l|c|c|l|}
+\begin{tabular}{|c|c|c|l|c|c|}
 \hline
-Function Name & State From & State to & Condition on Function & Inputs & Outputs & Description \\
-\hline
-{\parbox[l]{3cm}{Firm \_ask \_loan}}&
-{\parbox[l]{3cm}{Start \_Firm \_Credit \_Role}}&
-{\parbox[l]{3cm}{Firm \_Credit \_02}}&
-{\parbox[l]{3cm}{a.external \_financial \_needs GT 0.0}}
-&
-&loan \_request &
+Function Name & State From & State to & Condition on Function & Inputs & Outputs \\
+\hline {\parbox[l]{3cm}{Firm \_ask \_loan}}& {\parbox[l]{3cm}{Start
+\_Firm \_Credit \_Role}}& {\parbox[l]{3cm}{Firm \_Credit \_02}}&
+{\parbox[l]{3cm}{a.external \_financial \_needs GT 0.0}} & &loan
+\_request
 \\
 \hline
 
 {\parbox[l]{3cm}{Firm \_get \_loan}}& {\parbox[l]{3cm}{Firm \_Credit
 \_02}}& {\parbox[l]{3cm}{Firm \_End \_Credit \_Role}}&
 &{\parbox[l]{3cm}{loan \_conditions ( a.id EQ m.firm\_id}} &
-{\parbox[l]{3cm}{loan \_acceptance}}&\\
+{\parbox[l]{3cm}{loan \_acceptance}}\\
 \hline
 
 
@@ -84,29 +81,29 @@ Function Name & State From & State to & Condition on Function & Inputs & Outputs
 \begin{landscape}
 \begin{table}[!htb]\caption{Functions being performed by the Bank involved in Credit Market.}
 \begin{center}
-\begin{tabular}{|c|c|c|l|c|c|l|}
+\begin{tabular}{|c|c|c|l|c|c|}
 \hline
-Function Name & State From & State to & Condition on Function & Inputs & Outputs & Description \\
+Function Name & State From & State to & Condition on Function & Inputs & Outputs\\
 \hline
 
 {\parbox[l]{3cm}{Bank \_decide \_credit \_conditions}} &
 {\parbox[l]{3cm}{Bank \_start \_credit \_market \_role}} & Bank\_02
 & & {\parbox[l]{3cm}{loan\_request (a.id EQ m.bank\_id)}} &
-{\parbox[l]{3cm}{loan \_conditions}} &\\
+{\parbox[l]{3cm}{loan \_conditions}} \\
 
 \hline
 
 {\parbox[l]{3cm}{Bank \_give \_loan}} & Bank\_02 & Bank\_03 & &
-{\parbox[l]{3cm}{loan \_acceptance (a.id EQ m.bank \_id)}} &  &\\
+{\parbox[l]{3cm}{loan \_acceptance (a.id EQ m.bank \_id)}} & \\
 
 \hline
 
 {\parbox[l]{3cm}{Bank \_receive \_installment}} & Bank\_03 &
 Bank\_04 & &
-{\parbox[l]{3cm}{installment (a.id EQ m.bank\_id)}} & & \\
+{\parbox[l]{3cm}{installment (a.id EQ m.bank\_id)}} & \\
 
 &&&&
-{\parbox[l]{3cm}{bankruptcy (a.id EQ m.bank\_id)}} &  &\\
+{\parbox[l]{3cm}{bankruptcy (a.id EQ m.bank\_id)}} & \\
 
 \hline
 
@@ -114,21 +111,21 @@ Bank\_04 & &
 {\parbox[l]{3cm}{Bank \_account \_update \_deposits}} & Bank\_04 &
 Bank\_05 & & {\parbox[l]{3cm}{bank\_account \_update (a.id EQ
 m.bank\_id)}} &
-{\parbox[l]{3cm}{central \_bank \_account \_update}} &\\
+{\parbox[l]{3cm}{central \_bank \_account \_update}}\\
 
 \hline
 
 
 {\parbox[l]{3cm}{Bank \_accounting}} & Bank\_05 &
 {\parbox[l]{3cm}{end \_Bank \_cycle}} &
-{\parbox[l]{4cm}{monthly (a.day \_of \_month \_to \_act)}}&  &  &\\
+{\parbox[l]{4cm}{monthly (a.day \_of \_month \_to \_act)}}&  & \\
 
 \hline
 
 
 {\parbox[l]{3cm}{Bank\_idle}} & Bank\_05 & {\parbox[l]{3cm}{end
 \_Bank \_cycle}} &
-{\parbox[l]{4cm}{not (monthly (a.day \_of \_month \_to \_act))}}&  &  &\\
+{\parbox[l]{4cm}{not (monthly (a.day \_of \_month \_to \_act))}}&  & \\
 \hline
 
 
