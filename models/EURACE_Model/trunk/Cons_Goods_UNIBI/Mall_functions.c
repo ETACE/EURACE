@@ -341,3 +341,59 @@ int Mall_pay_firm()
 
 	return 0;
 }
+
+/*****************
+ * TODO: Integrate the functions below in the mall functions.
+ */
+
+
+/* \fn: void Mall_reset_export_data()
+ * \brief: Function to reset the export matrix (at start of month).
+ */
+void Mall_reset_export_data()
+{
+	int i,j;
+	
+	//reset export matrix
+	for (i=1; i<NO_REGIONS; i++)
+	{
+		for (j=1; j<NO_REGIONS; j++)
+		{
+			EXPORT_MATRIX[i][j]=0.0;
+		}
+	}
+}
+
+/* \fn: void Mall_add_export_data()
+ * \brief: Function to add data to the export matrix (every transaction).
+ */
+void Mall_add_export_data()
+{
+	int i,j;
+	
+	//ADD transaction value
+	//transaction_value
+	
+	//add to export matrix
+	EXPORT_MATRIX[firm_region][household_region]=transaction_value;
+}
+
+/* \fn: int Mall_send_export_data()
+ * \brief: Function to send the export matrix to Eurostat.
+ */
+void Mall_send_export_data()
+{
+	int firm_region, household_region, value;
+	
+	//mall sends a bunch of messages with export data (only the non-zero elements)
+	for (firm_region=1; firm_region<NO_REGIONS; firm_region++)
+	{
+		for (household_region=1; household_region<NO_REGIONS; household_region++)
+		{
+			value = EXPORT_MATRIX[firm_region][household_region];
+			if (value!=0.0)	add_mall_data_message(ID, firm_region, household_region, value);
+		}
+	}
+	
+}
+
