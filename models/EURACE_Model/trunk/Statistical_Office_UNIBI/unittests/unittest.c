@@ -10,6 +10,9 @@ void unittest_Eurostat_store_history_monthly();
 void unittest_Eurostat_store_history_quarterly();
 void unittest_Eurostat_compute_growth_rates_monthly();
 void unittest_Eurostat_compute_growth_rates_quarterly();
+void unittest_Eurostat_firm_creation();
+void unittest_Eurostat_measure_recession();
+void unittest_Eurostat_measure_export();
 /*************************** end prototypes ***************************/
 
 int init_suite1(void)

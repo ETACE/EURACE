@@ -2,6 +2,7 @@
 #include "../Eurostat_agent_header.h"
 #include "../my_library_header.h"
 
+#define NO_REGIONS 30 //number of regions (hard-coded in xml as 30 max)
 
 int Eurostat_idle()
 {
@@ -1570,11 +1571,11 @@ int Eurostat_measure_export()
 	int i,j,firm_region, household_region;
 	
 	//reset export matrix
-	for (i=1; i<NO_REGIONS; i++)
+	for (i=0; i<NO_REGIONS; i++)
 	{
 		EXPORTS[i]=0.0;
 		IMPORTS[i]=0.0;
-		for (j=1; j<NO_REGIONS; j++)
+		for (j=0; j<NO_REGIONS; j++)
 		{
 			EXPORT_MATRIX[i][j]=0.0;
 		}
@@ -1582,14 +1583,14 @@ int Eurostat_measure_export()
 	
 	//read in all data
 	START_MALL_DATA_MESSAGE_LOOP
-		EXPORT_MATRIX[mall_data_message->firm_region][mall_data_message->household_region]
+		EXPORT_MATRIX[mall_data_message->firm_region-1][mall_data_message->household_region-1]
                        += mall_data_message->value;
 	FINISH_MALL_DATA_MESSAGE_LOOP
 	
 	//sum total exports (row sum) and imports (column sum)
-	for (i=1; i<NO_REGIONS; i++)
+	for (i=0; i<NO_REGIONS; i++)
 	{
-		for (j=1; j<NO_REGIONS; j++)
+		for (j=0; j<NO_REGIONS; j++)
 		{
 			EXPORTS[i] += EXPORT_MATRIX[i][j];
 			IMPORTS[j] += EXPORT_MATRIX[i][j];

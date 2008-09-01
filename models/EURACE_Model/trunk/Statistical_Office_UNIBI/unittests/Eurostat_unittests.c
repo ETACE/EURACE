@@ -156,3 +156,103 @@ void unittest_Eurostat_compute_growth_rates_quarterly()
     /************* At end of unit tests, free all Messages **********/
     free_messages();
 }
+
+/*
+ * \fn: void unittest_Eurostat_firm_creation()
+ * \brief: Unit test for: Eurostat_firm_creation.
+ * Status: Not tested
+ */
+void unittest_Eurostat_firm_creation()
+{
+    /************* At start of unit test, add one agent **************/
+	unittest_init_Eurostat_agent();
+	
+    /***** Variables: Memory pre-conditions **************************/
+    
+	/***** Messages: pre-conditions **********************************/
+    
+    /***** Function evaluation ***************************************/
+	Eurostat_firm_creation();
+    
+    /***** Variables: Memory post-conditions *****/
+	//CU_ASSERT_DOUBLE_EQUAL(EXPORT_MATRIX[0][0], 100.0, 1e-3);
+    
+    /************* At end of unit test, free the agent **************/
+	unittest_free_Eurostat_agent();
+    /************* At end of unit tests, free all Messages **********/
+    free_messages();
+}
+
+
+/*
+ * \fn: void unittest_Eurostat_firm_creation()
+ * \brief: Unit test for: Eurostat_measure_recession.
+ * Status: Not tested
+ */
+void unittest_Eurostat_measure_recession()
+{
+    /************* At start of unit test, add one agent **************/
+	unittest_init_Eurostat_agent();
+	
+    /***** Variables: Memory pre-conditions **************************/
+    
+	/***** Messages: pre-conditions **********************************/
+    
+    /***** Function evaluation ***************************************/
+	Eurostat_measure_recession();
+    
+    /***** Variables: Memory post-conditions *****/
+	//CU_ASSERT_DOUBLE_EQUAL(EXPORT_MATRIX[0][0], 100.0, 1e-3);
+    
+    /************* At end of unit test, free the agent **************/
+	unittest_free_Eurostat_agent();
+    /************* At end of unit tests, free all Messages **********/
+    free_messages();
+}
+
+/*
+ * \fn: void unittest_Eurostat_measure_export()
+ * \brief: Unit test for: Eurostat_measure_export.
+ * Status: Not tested
+ */
+void unittest_Eurostat_measure_export()
+{
+    /************* At start of unit test, add one agent **************/
+	unittest_init_Eurostat_agent();
+	
+    /***** Variables: Memory pre-conditions **************************/
+	NO_REGIONS=2;
+    
+	/***** Messages: pre-conditions **********************************/
+    add_mall_data_message(1, 1, 1, 1.0);
+    add_mall_data_message(1, 1, 2, 100.0);
+    add_mall_data_message(1, 2, 1, 100.0);
+    add_mall_data_message(1, 2, 2, 1.0);
+    
+    add_mall_data_message(2, 1, 1, 1.0);
+    add_mall_data_message(2, 1, 2, 100.0);
+    add_mall_data_message(2, 2, 1, 100.0);
+    add_mall_data_message(2, 2, 2, 1.0);
+
+    /***** Function evaluation ***************************************/
+	Eurostat_measure_export();
+    
+    /***** Variables: Memory post-conditions *****/
+	CU_ASSERT_DOUBLE_EQUAL(EXPORT_MATRIX[0][0], 2.0, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(EXPORT_MATRIX[1][0], 200.0, 1e-3);
+	CU_ASSERT_DOUBLE_EQUAL(EXPORT_MATRIX[0][1], 200.0, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(EXPORT_MATRIX[1][1], 2.0, 1e-3);
+    
+    CU_ASSERT_DOUBLE_EQUAL(EXPORTS[0], 200.0, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(EXPORTS[1], 200.0, 1e-3);
+    
+    CU_ASSERT_DOUBLE_EQUAL(IMPORTS[0], 200.0, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(IMPORTS[1], 200.0, 1e-3);
+
+    /************* At end of unit test, free the agent **************/
+	unittest_free_Eurostat_agent();
+    /************* At end of unit tests, free all Messages **********/
+    free_messages();
+}
+
+
