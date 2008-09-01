@@ -1,5 +1,18 @@
-\subsection{Unit testing of the message board API}
-As mentioned above the message boards are accessed by the FLAME framework via a Application Program Interface - the Message Board Library (the libmboard API). This provides the FLAME developer with a uniform interface to the functionality of the libmboard.
+\subsection{Unit testing of the Message Board Library}
+
+%As mentioned above the message boards are accessed by the FLAME framework via the Message Board Library Application Program Interface (\textit{libmboard} API). This provides the FLAME developer with a uniform interface to the functionality of the libmboard.
+As the stability and correctness of the Message Board Library (\textit{libmboard}) is crucial for running FLAME models, extensive testing and validation steps have been incorporated into the development and maintenance workflow. 
+
+We adopted the Test Driven Development approach whereby unit tests for every API routine and supporting components are written (based on pre-determined specifications) before the actually code is written. The relevant code is then written and validated by the tests. 
+
+Tests used during development are also reused and package as test suites for:
+\begin{itemize}
+\item Regression Tests -- All tests are executed before each code is commited into the repository to ensure that nothing has been broken by the modification.
+\item Portability Tests -- All tests are executed on a wide range of platforms before each code release.
+\item Installation Tests -- The tests are provided along with the source code so user can validate the compilation on their platform before usage.
+\end{itemize}
+
+We also include an example simulation code which implements all features provided by the \textit{libmboard} API. This serves as a usage example, as well as an additional test was designed to exercises \textit{libmboard} routines in a more realisitic scenario. This test is executed frequently on different platforms, especially before each code release.
 
 \subsection{Unit testing of Timer Package}
 
