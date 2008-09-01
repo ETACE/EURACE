@@ -6,7 +6,7 @@ Within a FLAME simulation, every agent only interacts with its environment via t
 
 Using distributable Message Boards, agents can be farmed out across multiple processing nodes and simulated in parallel while coherency of the simulation is maintained through a unified view of the distributed Boards.
 
-\begin{figure}[h]
+\begin{figure}[ht]
  \centering
   \includegraphics[scale=0.60]{mboard_flame.jpg}
  \caption{Parallelisation of FLAME using distributed Message Boards}
@@ -16,7 +16,7 @@ Using distributable Message Boards, agents can be farmed out across multiple pro
 \subsection{The Message Board library}
 In the recent code release, the Message Board was decoupled from the FLAME framework and implemented as a separate library. This provided the flexibility to experiment with different parallelisation strategies while minimising the impact on current users of the FLAME framework.
 
-\begin{figure}[h]
+\begin{figure}[ht]
  \centering
   \includegraphics[scale=0.60]{mboard_overview.png}
  \caption{Users can create either serial or parallel executables by linking their object files to the appropriate \textit{libmboard} library}
@@ -29,7 +29,7 @@ All functionalities provided by the Message Board Library are accessible via the
 
 Within the FLAME framework, the \textit{libmboard} API is used only by the framework-generated routines and not directly by the modellers. Modellers are provided with model-specific routines that hide the complexity of managing boards and packaging data into suitable datatypes. Figure~\ref{fig:mb_api_flame} shows an example of this whereby an agent's message add request gets translated into a \textit{libmboard} API call.
 
-\begin{figure}[h]
+\begin{figure}[ht]
  \centering
   \includegraphics[scale=0.60]{mboard_codetranslate.png}
  \caption{Modellers use FLAME-generated routines which gets translated to the appropriate \textit{libmboard} API call}
@@ -74,7 +74,7 @@ The API provides further routines from emptying (\texttt{MB\_Clear()}) and delet
 
 Iterators are opaque objects used for traversing Message Board content. They provide \textit{libmboard} users access to messages while isolating them from the internal data representation of Boards. It also aids in enforcing the rule that Boards should be not modified in any way by a read access. With this rules in place, multiple Iterators can be created to traverse the Board idependently using different access patterns.
 
-\begin{figure}[h]
+\begin{figure}[ht]
  \centering
   \includegraphics[scale=0.8]{iterator.png}
  \caption{Using specialised Iterators to achieve different access patterns}
@@ -111,7 +111,7 @@ When read access to the Board is required, the synchronisation process must firs
 
 The sequence diagram in  Figure~\ref{fig:syncboard} depicts how a board synchronisation request may take place. The process of actually synchronising and unlocking the board is performed concurrently in the background by the \textit{Communication Thread}. This is discussed further in Section~\ref{sec:commthread}.
 
-\begin{figure}[h]
+\begin{figure}[ht]
  \centering
   \includegraphics[scale=0.60]{syncboard.jpg}
  \caption{Other work can be schedule during board synchronisation to shadow the overheads of communication}
@@ -128,7 +128,7 @@ In its simplest form, a Board synchronisation may be implemented as a full repli
 
 \textit{libmboard} overcomes this problem by tagging each message with the IDs of processing nodes that require read access to it (see Figure~\ref{fig:taggedboard}). With the tagging in place, full data replication is avoided by only propagating the relevant messages to each processing node.
 
-\begin{figure}[h]
+\begin{figure}[ht]
  \centering
   \includegraphics[scale=0.70]{taggedboard.png}
  \caption{Full data replication is avoided by only propagating tagged messages to the relevant nodes}
@@ -149,7 +149,7 @@ During the initialisation of the Message Board environment, \textit{libmboard} s
 
 Apart from potentially making better use of multi-core processors, delegating communication and memory intensive operations to a separate thread allows us to minimise the effective overheads by performing them concurrently with the main simulation and thus overlapping the Board synchronisation time with that of useful computation.
 
-\begin{figure}[h]
+\begin{figure}[ht]
  \centering
   \includegraphics[scale=0.60]{commloop.jpg}
  \caption{Activity diagram for Communication Thread}
@@ -182,7 +182,7 @@ The synchronisation process of a Board is split into stages such that inter-proc
 
 For example, when a Board is in the \texttt{PRE\_PROPAGATION} state (see Board synchronisation state diagram in  Figure~\ref{fig:commstate}), the \texttt{InitPropagation()} transition function will prepare the necessary buffers, issue a series of non-blocking MPI sends and receives, and transitios the Board to the \texttt{PROPAGATION} state without waiting for the communication to complete. During the next iteration, the \textit{Communication Thread} would come back to the same board and either transitions it to the next state if all communication has completed, or maintains the state if there are still pending communication. 
 
-\begin{figure}[h]
+\begin{figure}[ht]
  \centering
   \includegraphics[scale=0.50]{CommNode.png}
  \caption{State diagram for processing Comm Queue nodes}
