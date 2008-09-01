@@ -401,6 +401,10 @@ including several micro data.</description>
 <variable><type>int</type><name>recession_started</name><description>Indicator signalling the start of a recession. 0: no recession, 1: recession.</description></variable>
 <variable><type>int</type><name>recession_duration</name><description>Duration of a recession measured in quarters.</description></variable>
 
+<!-- Data for storing export data -->
+<variable><type>double</type><name>export_matrix[30][30]</name><description>Matrix holding data on exports between regions.</description></variable>
+<variable><type>double</type><name>exports[30]</name><description>Array holding data on total exports of each region.</description></variable>
+<variable><type>double</type><name>imports[30]</name><description>Array holding data on total imports of each region.</description></variable>
 </memory>
 
 

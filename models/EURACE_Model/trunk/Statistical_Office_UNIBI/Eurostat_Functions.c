@@ -1561,3 +1561,42 @@ int Eurostat_measure_recession()
 	
     return 0;
 }
+
+/* \fn: int Eurostat_measure_export()
+ * \brief: Function to measure exports between regions.
+ */
+int Eurostat_measure_export()
+{
+	int i,j,firm_region, household_region;
+	
+	//reset export matrix
+	for (i=1; i<NO_REGIONS; i++)
+	{
+		EXPORTS[i]=0.0;
+		IMPORTS[i]=0.0;
+		for (j=1; j<NO_REGIONS; j++)
+		{
+			EXPORT_MATRIX[i][j]=0.0;
+		}
+	}
+	
+	//read in all data
+	START_MALL_DATA_MESSAGE_LOOP
+		EXPORT_MATRIX[mall_data_message->firm_region][mall_data_message->household_region]
+                       += mall_data_message->value;
+	FINISH_MALL_DATA_MESSAGE_LOOP
+	
+	//sum total exports (row sum) and imports (column sum)
+	for (i=1; i<NO_REGIONS; i++)
+	{
+		for (j=1; j<NO_REGIONS; j++)
+		{
+			EXPORTS[i] += EXPORT_MATRIX[i][j];
+			IMPORTS[j] += EXPORT_MATRIX[i][j];
+		}
+	}
+	
+	
+    return 0;
+}
+

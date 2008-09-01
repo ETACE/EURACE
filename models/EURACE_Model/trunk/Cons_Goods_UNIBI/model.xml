@@ -552,6 +552,7 @@ spent in both consumtion steps, into the PAYMENT_ACCOUNT.</description>
 <variable><type>mall_stock_array</type><name>current_stock</name><description>Actual stock of the different firms</description></variable>
 <variable><type>sales_in_mall_array</type><name>firm_revenues</name><description>Actual revenue of the different firms</description></variable>
 <variable><type>double</type><name>total_supply</name><description>Total number of goods</description></variable>
+<variable><type>double</type><name>export_matrix[30][30]</name><description>Matrix holding data on exports between regions.</description></variable>
 </memory>
 <functions>
 
@@ -765,6 +766,18 @@ updates specific skills.</description>
 <variable><type>int</type><name>id</name><description></description></variable>
 <variable><type>int</type><name>gov_id</name><description></description></variable>
 <variable><type>double</type><name>last_labour_income</name><description></description></variable>
+</variables>
+</message>
+
+<message>
+<name>mall_data</name>
+<description>Sent by mall. Mall informs Eurostat about exports between regions. 
+</description>
+<variables>
+<variable><type>int</type><name>mall_id</name><description></description></variable>
+<variable><type>int</type><name>firm_region_id</name><description></description></variable>
+<variable><type>int</type><name>household_region_id</name><description></description></variable>
+<variable><type>double</type><name>value</name><description></description></variable>
 </variables>
 </message>
 
