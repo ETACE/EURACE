@@ -17,165 +17,133 @@ with each other.
 \begin{landscape}
 \begin{table}[!htb]\caption{State Transition Table of the Firm involved in Labour Market.}
 \begin{center}
-\begin{tabular}{|c|c|c|l|c|c|l|}
+\begin{tabular}{|c|c|c|l|c|c|}
 \hline
-Function Name & Current State & Next State & Condition & Inputs & Outputs & Description \\
-\hline
-{\parbox[l]{3cm}{Firm \_calculate \_specific \_skills \_and
-\_wage \_offer}}& {\parbox[l]{3cm}{Start \_Firm \_Labour \_Role}}&
-{\parbox[l]{3cm}{011}}&
- & & &
-\\
+Function Name & Current State & Next State & Condition & Inputs & Outputs \\
+\hline {\parbox[l]{5cm}{Firm \_calculate \_specific \_skills \_and
+\_wage \_offer}}& {\parbox[l]{4cm}{Start \_Firm \_Labour \_Role}}&
+{\parbox[l]{3cm}{011}}& & & \\
 \hline
 
-{\parbox[l]{3cm}{Firm \_send \_vacancies}}& {\parbox[l]{3cm}{011}}&
-{\parbox[l]{3cm}{03}}& {\parbox[l]{3cm}{a.no\_employees LT
-a.employees\_needed}}& & {\parbox[l]{3cm}{vacancies}}&
-{\parbox[l]{3cm}{If additional workers are needed the firm sends
-vacancies messages
- especially the different wage offers for the different general skill groups.}}\\
+{\parbox[l]{5cm}{Firm \_send \_vacancies}}& {\parbox[l]{3cm}{011}}&
+{\parbox[l]{3cm}{0}}& {\parbox[l]{4cm}{a.no\_employees LT
+a.employees\_needed}}& & {\parbox[l]{3cm}{vacancies}}\\
 \hline
 
-{\parbox[l]{3cm}{Firm \_send \_redundancies}}&
+{\parbox[l]{5cm}{Firm \_send \_redundancies}}&
 {\parbox[l]{3cm}{011}}& {\parbox[l]{3cm}{03c}}&
-{\parbox[l]{3cm}{a.no\_employees GT a.employees\_needed}} &
- &{\parbox[l]{3cm}{firing}} & {\parbox[l]{3cm}{If the firm wants to
-decrease the workforce it sends redundancies.}}
+{\parbox[l]{4cm}{a.no\_employees GT a.employees\_needed}} &
+ &{\parbox[l]{3cm}{firing}}
 \\
 \hline
 
-{\parbox[l]{3cm}{Firm \_idle}}& {\parbox[l]{3cm}{011}}&
-{\parbox[l]{3cm}{03c}}&{\parbox[l]{3cm}{a.no\_employees EQ
+{\parbox[l]{5cm}{Firm \_idle}}& {\parbox[l]{3cm}{011}}&
+{\parbox[l]{3cm}{03c}}&{\parbox[l]{4cm}{a.no\_employees EQ
 a.employees\_needed}}
- & & &{\parbox[l]{3cm}{Firm does nothing.}}
+ & &
 \\
 \hline
 
-{\parbox[l]{3cm}{Firm \_read \_job \_applications \_send \_job
+{\parbox[l]{5cm}{Firm \_read \_job \_applications \_send \_job
 \_offer \_or \_rejection}}& {\parbox[l]{3cm}{03}}&
 {\parbox[l]{3cm}{04}}& &{\parbox[l]{3cm}{job \_application}}&
-{\parbox[l]{3cm}{job\_offer,
-application\_rejection}}&{\parbox[l]{3cm}{Firm reads the
-application, ranks the applicants according to their general and
-specific skills and sends as many job offers to the first ranked
-applicants as the firm has vacancies to fill. The other applicants
-are refused.}}
+{\parbox[l]{3cm}{job\_offer, application\_rejection}}
 \\
 \hline
 
 
-{\parbox[l]{3cm}{Firm \_read \_job \_responses}}&
+{\parbox[l]{5cm}{Firm \_read \_job \_responses}}&
 {\parbox[l]{3cm}{04}}& {\parbox[l]{3cm}{05a}}& &
-{\parbox[l]{3cm}{job\_acceptance}}&&{\parbox[l]{3cm}{The firm reads
-the responses to their job offers and updates the number of
-employees and the number of vacancies.}}
+{\parbox[l]{3cm}{job\_acceptance}}&
 \\
 
 
 
-\hline {\parbox[l]{3cm}{Firm \_read \_job \_quitting}}&
+\hline {\parbox[l]{5cm}{Firm \_read \_job \_quitting}}&
 {\parbox[l]{3cm}{05a}}& {\parbox[l]{3cm}{05b}}&&
 {\parbox[l]{3cm}{quitting}}
- & &{\parbox[l]{3cm}{The firm reads quitting messages and updates the number
-of employees and the number of vacancies.}}
+ &
 \\
-\hline {\parbox[l]{3cm}{Firm \_read \_job \_quitting}}&
+\hline {\parbox[l]{5cm}{Firm \_read \_job \_quitting}}&
 {\parbox[l]{3cm}{00b}}& {\parbox[l]{3cm}{09c}}& &
-{\parbox[l]{3cm}{quitting}} & & {\parbox[l]{3cm}{The firm reads
-quitting messages and updates the number of employees and the number
-of vacancies.}}
+{\parbox[l]{3cm}{quitting}} &
 \\
-\hline  {\parbox[l]{3cm}{Firm \_read \_job \_quitting}}&
+\hline  {\parbox[l]{5cm}{Firm \_read \_job \_quitting}}&
 {\parbox[l]{3cm}{03c}}& {\parbox[l]{3cm}{03d}}& &
-{\parbox[l]{3cm}{quitting}} & & {\parbox[l]{3cm}{The firm reads
-quitting messages and updates the number of employees and
-the number of vacancies.}}\\
+{\parbox[l]{3cm}{quitting}} & \\
 \hline
 
 
 
-{\parbox[l]{3cm}{Firm \_start \_labour \_market}}&
+{\parbox[l]{5cm}{Firm \_start \_labour \_market}}&
 {\parbox[l]{3cm}{03d}}&
-{\parbox[l]{3cm}{06}}&{\parbox[l]{3cm}{a.no\_employees LT
+{\parbox[l]{3cm}{06}}&{\parbox[l]{4cm}{a.no\_employees LT
 a.employees\_needed}}
- & & &{\parbox[l]{3cm}{Dummy function if a firm has to enter the Labor Market
-in the second round after receiving quitting.}}
+ & &
 \\
-\hline {\parbox[l]{3cm}{Firm \_finish \_labour \_market \_first
+\hline {\parbox[l]{5cm}{Firm \_finish \_labour \_market \_first
 \_round}}& {\parbox[l]{3cm}{03d}}&
-{\parbox[l]{3cm}{09a}}&{\parbox[l]{3cm}{a.no\_employees LT
-a.employees\_needed}} & & &
+{\parbox[l]{3cm}{09a}}&{\parbox[l]{4cm}{a.no\_employees LT
+a.employees\_needed}} & &
 \\
-\hline {\parbox[l]{3cm}{Firm \_finish \_labour \_market \_first
+\hline {\parbox[l]{5cm}{Firm \_finish \_labour \_market \_first
 \_round}}& {\parbox[l]{3cm}{05b}}&
-{\parbox[l]{3cm}{09a}}&{\parbox[l]{3cm}{a.no\_employees EQ
+{\parbox[l]{3cm}{09a}}&{\parbox[l]{4cm}{a.no\_employees EQ
 a.employees\_needed}}
- & & &
+ & &
 \\
 
-\hline {\parbox[l]{3cm}{Firm \_update \_wage \_offer}}&
+\hline {\parbox[l]{5cm}{Firm \_update \_wage \_offer}}&
 {\parbox[l]{3cm}{05b}}&
-{\parbox[l]{3cm}{06}}&{\parbox[l]{3cm}{a.no\_employees LT
+{\parbox[l]{3cm}{06}}&{\parbox[l]{4cm}{a.no\_employees LT
 a.employees\_needed}}
- & & &{\parbox[l]{3cm}{The firm increases the wage offer if there are vacancies
- left.}}
+ & &
 \\
 
-\hline {\parbox[l]{3cm}{Firm \_send \_vacancies \_2}}&
+\hline {\parbox[l]{5cm}{Firm \_send \_vacancies \_2}}&
 {\parbox[l]{3cm}{06}}& {\parbox[l]{3cm}{07}}&
- & & {\parbox[l]{3cm}{vacancies2}} & {\parbox[l]{3cm}{If additional workers are needed the firm sends vacancies messages
- especially the different wage offers for the different general skill groups.}}
+ & & {\parbox[l]{3cm}{vacancies2}}
  \\
 
-\hline {\parbox[l]{3cm}{Firm \_read \_job \_applications \_send
+\hline {\parbox[l]{5cm}{Firm \_read \_job \_applications \_send
 \_job \_offer \_or \_rejection \_2}}& {\parbox[l]{3cm}{07}}&
 {\parbox[l]{3cm}{08}}& &{\parbox[l]{3cm}{job\_application2}} &
-{\parbox[l]{3cm}{application\_rejection2, job\_offer2}} &
-{\parbox[l]{3cm}{Firm reads the application, ranks the applicants
-according to their general and specific skills and sends as many job
-offers to the first ranked applicants as the firm has vacancies to
-fill. The other applicants are refused.}}
+{\parbox[l]{3cm}{application\_rejection2, job\_offer2}}
 \\
 
-\hline {\parbox[l]{3cm}{Firm \_read \_job \_responses \_2}}&
+\hline {\parbox[l]{5cm}{Firm \_read \_job \_responses \_2}}&
 {\parbox[l]{3cm}{08}}& {\parbox[l]{3cm}{09a}}& &
-{\parbox[l]{3cm}{job\_acceptance2}} & & {\parbox[l]{3cm}{The firm
-reads the responses to their job offers and updates the number of
-employees and the number of vacancies.}}
+{\parbox[l]{3cm}{job\_acceptance2}} &
 \\
 
-\hline {\parbox[l]{3cm}{Firm \_read \_job \_quitting \_2}}&
+\hline {\parbox[l]{5cm}{Firm \_read \_job \_quitting \_2}}&
 {\parbox[l]{3cm}{09a}}&
 {\parbox[l]{3cm}{09b}}&&{\parbox[l]{3cm}{quitting2}}
- & & {\parbox[l]{3cm}{The firm reads quitting messages and updates the number
-of employees and the number of vacancies.}}
+ &
 \\
-\hline {\parbox[l]{3cm}{Firm \_read \_job \_quitting \_2}}&
-{\parbox[l]{3cm}{09c}}& {\parbox[l]{3cm}{Start \_Firm \_Seller
+\hline {\parbox[l]{5cm}{Firm \_read \_job \_quitting \_2}}&
+{\parbox[l]{3cm}{09c}}& {\parbox[l]{4cm}{Start \_Firm \_Seller
 \_Role}}&& {\parbox[l]{3cm}{quitting2}}
- & & {\parbox[l]{3cm}{The firm reads quitting messages and updates the number
-of employees and the number of vacancies.}}
+ &
 \\
 
-\hline {\parbox[l]{3cm}{Firm \_update \_wage \_offer \_2}}&
+\hline {\parbox[l]{5cm}{Firm \_update \_wage \_offer \_2}}&
 {\parbox[l]{3cm}{09b}}&
-{\parbox[l]{3cm}{10}}&{\parbox[l]{3cm}{a.no\_employees LT
+{\parbox[l]{3cm}{10}}&{\parbox[l]{4cm}{a.no\_employees LT
 a.employees\_needed}}
- & & &{\parbox[l]{3cm}{The
-firm increases the wage offer if there are vacancies left.}}
+ & &
 \\
 
-\hline {\parbox[l]{3cm}{Firm \_idle}}& {\parbox[l]{3cm}{09b}}&
-{\parbox[l]{3cm}{10}}&{\parbox[l]{3cm}{a.no\_employees LT
+\hline {\parbox[l]{5cm}{Firm \_idle}}& {\parbox[l]{3cm}{09b}}&
+{\parbox[l]{3cm}{10}}&{\parbox[l]{4cm}{a.no\_employees LT
 a.employees\_needed}}
- & & &{\parbox[l]{3cm}{Firm does
-nothing.}}
+ & &
 \\
 
-\hline {\parbox[l]{3cm}{Firm \_compute \_mean \_wage \_specific
-\_skills}}& {\parbox[l]{3cm}{10}}& {\parbox[l]{3cm}{End \_Firm
+\hline {\parbox[l]{5cm}{Firm \_compute \_mean \_wage \_specific
+\_skills}}& {\parbox[l]{3cm}{10}}& {\parbox[l]{4cm}{End \_Firm
 \_Labour \_Role}}&
- & & &
+ & &
 \\
 \hline
 
@@ -184,127 +152,152 @@ nothing.}}
 \end{table}
 \end{landscape}
 
+The description of the functions is stated below:
+\begin{description}
+\item[Firm\_send\_vacancies.] If additional workers are needed the firm sends
+vacancies messages
+ especially the different wage offers for the different general skill groups.
+\item[Firm\_send\_redundancies.] If the firm wants to
+decrease the workforce it sends redundancies.
+\item[Firm\_idle.] Firm does nothing.
+\item[Firm\_read\_job\_applications\_send\_job\_offer\_or\_rejection.] Firm reads the application, ranks the
+applicants according to their general and specific skills and sends
+as many job offers to the first ranked applicants as the firm has
+vacancies to fill. The other applicants are refused.
+\item[Firm\_read\_job\_responses.] The firm reads
+the responses to their job offers and updates the number of
+employees and the number of vacancies.
+\item[Firm\_read\_job\_quitting.] The firm reads quitting messages and updates the number
+of employees and the number of vacancies.
+\item[Firm\_start\_labour\_market.] Dummy function if a firm has to enter the Labor Market
+in the second round after receiving quitting.
+\item[Firm\_update\_wage\_offer.] The firm increases the wage offer if there are vacancies
+ left.
+\item[Firm\_send\_vacancies\_2.] If additional workers are needed the firm sends vacancies messages
+ especially the different wage offers for the different general skill groups.
+\item[Firm\_read\_job\_applications\_send\_job\_offer\_or\_rejection\_2.]
+Firm reads the application, ranks the applicants according to their
+general and specific skills and sends as many job offers to the
+first ranked applicants as the firm has vacancies to fill. The other
+applicants are refused.
+\item[Firm\_read\_job\_responses\_2.] The firm
+reads the responses to their job offers and updates the number of
+employees and the number of vacancies.
+\item[Firm\_read\_job\_quitting\_2.] The firm reads quitting messages and updates the number
+of employees and the number of vacancies.
+\item[Firm\_update\_wage\_offer\_2.] The
+firm increases the wage offer if there are vacancies left.
 
+\end{description}
 
 \subsubsection{Household Agent in the Labour and Goods Market}
 
 \begin{landscape}
 \begin{table}[!htb]\caption{State Transition Table of the Household involved in Labour Market.}
 \begin{center}
-\begin{tabular}{|c|c|c|l|c|c|l|}
+\begin{tabular}{|c|c|c|l|c|c|}
 \hline
-Function Name & Current State & Next State & Condition & Inputs & Outputs & Description \\
+Function Name & Current State & Next State & Condition & Inputs & Outputs\\
 \hline
 
-{\parbox[l]{3cm}{Household \_read \_firing \_messages}}&
+{\parbox[l]{5cm}{Household \_read \_firing \_messages}}&
 {\parbox[l]{3cm}{Start \_Household \_Labour \_Role}}&
 {\parbox[l]{3cm}{01d}}&{\parbox[l]{3cm}{a.employee \_firm \_id NEQ
 -1}}
- & {\parbox[l]{3cm}{firing}}& &{\parbox[l]{3cm}{The household checks whether is is fired or
- not.}}
+ & {\parbox[l]{3cm}{firing}}&
 \\
 \hline
 
-{\parbox[l]{3cm}{Household \_idle}}& {\parbox[l]{3cm}{01d}}&
+{\parbox[l]{5cm}{Household \_idle}}& {\parbox[l]{3cm}{01d}}&
 {\parbox[l]{3cm}{01a}}& {\parbox[l]{3cm}{a.employee \_firm \_id EQ
--1}}& & &
-{\parbox[l]{3cm}{Household does nothing.}}\\
+-1}}& &\\
 \hline
 
 
-{\parbox[l]{3cm}{Household \_idle}}& {\parbox[l]{3cm}{Start
+{\parbox[l]{5cm}{Household \_idle}}& {\parbox[l]{3cm}{Start
 \_Household \_Labour \_Role}}& {\parbox[l]{3cm}{01a}}&
-{\parbox[l]{3cm}{a.employee \_firm \_id EQ -1}}& & &
-{\parbox[l]{3cm}{Household does nothing.}}\\
+{\parbox[l]{3cm}{a.employee \_firm \_id EQ -1}}& & \\
 \hline
 
 
 
-{\parbox[l]{3cm}{Household \_UNEMPLOYED \_read \_job \_vacancies
+{\parbox[l]{5cm}{Household \_UNEMPLOYED \_read \_job \_vacancies
 \_and \_send \_applications}}& {\parbox[l]{3cm}{01a}}&
 {\parbox[l]{3cm}{01}}& & {\parbox[l]{3cm}{vacancies}}
- &{\parbox[l]{3cm}{job \_application}} & {\parbox[l]{3cm}{Household reads vacancies messages and sends applications.}}
+ &{\parbox[l]{3cm}{job \_application}}
 \\
 \hline
 
-{\parbox[l]{3cm}{Household \_on \_the \_job \_search \_decision}}&
+{\parbox[l]{5cm}{Household \_on \_the \_job \_search \_decision}}&
 {\parbox[l]{3cm}{01d}}&
 {\parbox[l]{3cm}{01b}}&{\parbox[l]{3cm}{a.employee \_firm \_id NEQ
 -1}}
- & & &{\parbox[l]{3cm}{Household decides whether to search on the job or not.}}
+ & &
 \\
 \hline
 
-{\parbox[l]{3cm}{Household \_OTJS \_read \_job \_vacancies \_and
+{\parbox[l]{5cm}{Household \_OTJS \_read \_job \_vacancies \_and
 \_send \_applications}}& {\parbox[l]{3cm}{01b}}&
 {\parbox[l]{3cm}{01}}&{\parbox[l]{3cm}{a.on\_the\_job\_search EQ
 1}}&{\parbox[l]{3cm}{vacancies}}&
-{\parbox[l]{3cm}{job\_application}}&{\parbox[l]{3cm}{Household
-searches on the job. Reads vacancies messages and send s
-applications.}}
+{\parbox[l]{3cm}{job\_application}}
 \\
 \hline
 
 
-{\parbox[l]{3cm}{Household \_idle}}& {\parbox[l]{3cm}{01b}}&
+{\parbox[l]{5cm}{Household \_idle}}& {\parbox[l]{3cm}{01b}}&
 {\parbox[l]{3cm}{06}}& {\parbox[l]{3cm}{a.on\_the\_job\_search NEQ
-1}}&&&{\parbox[l]{3cm}{Household does nothing.}}
+1}}&&
 \\
 
 
 
-\hline {\parbox[l]{3cm}{Household \_read \_job \_offers \_send
+\hline {\parbox[l]{5cm}{Household \_read \_job \_offers \_send
 \_response}}& {\parbox[l]{3cm}{01}}& {\parbox[l]{3cm}{02}}&&
 {\parbox[l]{3cm}{job\_offer}}
- & {\parbox[l]{3cm}{quitting, job\_acceptance}}&{\parbox[l]{3cm}{Household reads the job offers and ranks them
-according to the wage offer.}}
+ & {\parbox[l]{3cm}{quitting, job\_acceptance}}
 \\
-\hline {\parbox[l]{3cm}{Household \_finish \_labour \_market}}&
+\hline {\parbox[l]{5cm}{Household \_finish \_labour \_market}}&
 {\parbox[l]{3cm}{02}}& {\parbox[l]{3cm}{06}}&
 {\parbox[l]{3cm}{(a.employee\_firm\_id NEQ -1) AND
-(a.on\_the\_job\_search NEQ 1)}}&  & &
+(a.on\_the\_job\_search NEQ 1)}}&  &
 \\
-\hline {\parbox[l]{3cm}{Household \_read \_application \_rejection
+\hline {\parbox[l]{5cm}{Household \_read \_application \_rejection
 \_update \_wage \_reservation}}& {\parbox[l]{3cm}{02}}&
 {\parbox[l]{3cm}{03}}& {\parbox[l]{3cm}{a.employee\_firm\_id EQ
--1}}& {\parbox[l]{3cm}{application \_rejection}} & &
+-1}}& {\parbox[l]{3cm}{application \_rejection}} &
 \\
 \hline
 
 
 
-{\parbox[l]{3cm}{Household \_OTJS \_read \_job \_vacancies \_and
+{\parbox[l]{5cm}{Household \_OTJS \_read \_job \_vacancies \_and
 \_send \_applications \_2}}& {\parbox[l]{3cm}{02}}&
 {\parbox[l]{3cm}{04}}&{\parbox[l]{3cm}{a.on\_the\_job\_search EQ 1}}
- & {\parbox[l]{3cm}{vacancies2}}&{\parbox[l]{3cm}{job\_application2}} &
- {\parbox[l]{3cm}{Household searches on the job. Reads vacancies messages
-and sends applications.}}
+ & {\parbox[l]{3cm}{vacancies2}}&{\parbox[l]{3cm}{job\_application2}}
 \\
 
 \hline
 
-{\parbox[l]{3cm}{Household \_UNEMPLOYED \_read \_job \_vacancies
+{\parbox[l]{5cm}{Household \_UNEMPLOYED \_read \_job \_vacancies
 \_and \_send \_applications \_2}}& {\parbox[l]{3cm}{03}}&
 {\parbox[l]{3cm}{04}}& & {\parbox[l]{3cm}{vacancies2}}&
-{\parbox[l]{3cm}{job\_application2}}&{\parbox[l]{3cm}{Household
-reads vacancies messages and sends applications.}}
+{\parbox[l]{3cm}{job\_application2}}
 \\
-\hline {\parbox[l]{3cm}{Household \_read \_job \_offers \_send
+\hline {\parbox[l]{5cm}{Household \_read \_job \_offers \_send
 \_response \_2}}& {\parbox[l]{3cm}{04}}& {\parbox[l]{3cm}{05}}&
- &{\parbox[l]{3cm}{job\_offer2}} &{\parbox[l]{3cm}{job\_acceptance2, quitting2}} &{\parbox[l]{3cm}{Household reads the job offers and ranks them
-according to the wage offer.}}
+ &{\parbox[l]{3cm}{job\_offer2}} &{\parbox[l]{3cm}{job\_acceptance2, quitting2}}
 \\
 
-\hline {\parbox[l]{3cm}{Household \_read \_application \_rejection
+\hline {\parbox[l]{5cm}{Household \_read \_application \_rejection
 \_update \_wage \_reservation \_2}}& {\parbox[l]{3cm}{05}}&
 {\parbox[l]{3cm}{06}}&{\parbox[l]{3cm}{a.employee\_firm\_id EQ -1}}
- & {\parbox[l]{3cm}{application \_rejection2}}& &{\parbox[l]{3cm}{Household reads the application rejections and decreases
-the reservation wage.}}
+ & {\parbox[l]{3cm}{application \_rejection2}}&
 \\
 
-\hline {\parbox[l]{3cm}{Household \_idle}}& {\parbox[l]{3cm}{05}}&
+\hline {\parbox[l]{5cm}{Household \_idle}}& {\parbox[l]{3cm}{05}}&
 {\parbox[l]{3cm}{06}}&{\parbox[l]{3cm}{a.employee\_firm\_id NEQ -1}}
- & & & {\parbox[l]{3cm}{Household does nothing.}}
+ & &
  \\
 \hline
 
@@ -314,8 +307,20 @@ the reservation wage.}}
 \end{table}
 \end{landscape}
 
-
-
+\begin{description}
+\item[Household\_read\_firing\_messages.] The household checks whether is is fired or
+ not.
+\item[Household\_idle.] Household does nothing.
+\item[Household\_UNEMPLOYED\_read\_job\_vacancies\_and\_send\_applications.] Household reads vacancies messages and sends applications.
+\item[Household\_on\_the\_job\_search\_decision.] Household decides whether to search on the job or not.
+\item[Household\_OTJS\_read\_job\_vacancies\_and\_send\_applications.] Household
+searches on the job. Reads vacancies messages and sends
+applications.
+\item[Household\_read\_job\_offers\_send\_response.] Household reads the job offers and ranks them
+according to the wage offer.
+\item[Household\_read\_application\_rejection\_update\_wage\_reservation\_2.] Household reads the application rejections and decreases the
+reservation wage.
+\end{description}
 
 
  \begin{figure}[!htb]
