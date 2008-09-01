@@ -5,26 +5,26 @@ As the stability and correctness of the Message Board Library (\textit{libmboard
 
 We adopted the Test Driven Development approach whereby unit tests for every API routine and supporting components are written (based on pre-determined specifications) before the actually code is written. The relevant code is then written and validated by the tests. 
 
-Tests used during development are also reused and package as test suites for:
+Tests used during development are also reused and packaged as test suites for:
 \begin{itemize}
 \item Regression Tests -- All tests are executed before each code is commited into the repository to ensure that nothing has been broken by the modification.
 \item Portability Tests -- All tests are executed on a wide range of platforms before each code release.
 \item Installation Tests -- The tests are provided along with the source code so user can validate the compilation on their platform before usage.
 \end{itemize}
 
-We also include an example simulation code which implements all features provided by the \textit{libmboard} API. This serves as a usage example, as well as an additional test was designed to exercises \textit{libmboard} routines in a more realisitic scenario. This test is executed frequently on different platforms, especially before each code release.
+We also include an example simulation code which implements all features provided by the \textit{libmboard} API. This serves as a usage example as well as an additional test designed to exercises \textit{libmboard} routines in a more realisitic scenario. This test is executed frequently on different platforms, especially before each code release.
 
 \subsection{Unit testing of Timer Package}
 
 During development of the timer package component of the dynamic load balancing library the functionality of the package has been tested using unit tests. CUnit, a unit testing framework for C code has been used for this task as recommended by the UNICA unit. The tests implemented are:
 
 \begin{itemize}
-	\item Single timer creation. Test that the first timer has correct handle and elapsed time.
-	\item Multiple timer creation. Create 3 timers and check the handles and elapsed time are correct.
-	\item Multiple timer start. Check that starting a timer while still running has no effect.
-	\item Timer stop. Check that stopping a timer really does stop it.
-	\item Timer reset. Check that resetting a timer sets its elapsed time to zero.
-	\item Multiple timer stop. Check that stopping an already stopped time has no effect.
+ \item Single timer creation. Test that the first timer has correct handle and elapsed time.
+ \item Multiple timer creation. Create 3 timers and check the handles and elapsed time are correct.
+ \item Multiple timer start. Check that starting a timer while still running has no effect.
+ \item Timer stop. Check that stopping a timer really does stop it.
+ \item Timer reset. Check that resetting a timer sets its elapsed time to zero.
+ \item Multiple timer stop. Check that stopping an already stopped time has no effect.
 \end{itemize}
 
 An example program to illustrate the use of a timer is also provided.
