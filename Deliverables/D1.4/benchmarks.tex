@@ -2,51 +2,52 @@
 Our approach to benchmarking has been incremental: starting from this simplest model and then gradually increasing complexity. The benchmarks run so far are part of the assessment of the current parallel implementation. They also serve as a useful way of ensuring that FLAME and its generate applications are portable over and wide range of hardware and operating systems. 
 
 \begin{table}[ht]
-	\centering
-		\begin{tabular}{l|ccc}
-		Model 				& Agents & Messages & Populations 		\\\hline
-		Circles  			&   1    &   1      &  2000 10$^5$   	\\
-		C@S  					&   3    &   9      &  12,400 124,000 \\
-		Labour Market &   4    &   10     &  11,011 110,101 \\ 
-		Bielefeld	    &   4    &   29     &  4130 43100     \\\hline
-		\end{tabular}
+ \centering
+  \begin{tabular}{l|ccc}
+  Model     & Agents & Messages & Population   \\\hline
+  Circles     &   1    &   1      &  10$^5$    \\
+  C@S       &   3    &   9      &  124,000 \\
+  Labour Market &   4    &   10     &  110,101 \\ 
+  Bielefeld     &   4    &   29     &  43100     \\\hline
+  \end{tabular}
 \end{table}
 
 The starting populations have been generated using the initial population generator developed by STFC. The ratio of agents numbers in each population was retained from the original values.
 
-Each benchmark has been on a variety of HPC systems available to STFC using a range of process numbers: 4 9 16 32 49 64 81 and 100. The results presented show how the lapsed time per iteration varies with number of processors. In these experiments a round-robin initial distribution has been used.
+Each benchmark has been on a variety of HPC systems available to STFC using a range of process numbers: 4 9 16 32 49 64 81 and 100. The results presented show how the lapsed time per iteration varies with number of processors. In these experiments a round-robin initial distribution has been used for the Labour Market and Bielefeld models, while geometric partitioning has been used for the Circles and C@S models.
+
 \subsection{The Circles Model}
 The Circles agent is very simple. It has a position in two-dimensional space and a radius of influence. Each agent will react to its neighbours within its interaction radius repulsively. So given a sufficient simulation time the initial distribution of agents will tend to a field of uniformly spaced agents.
 
 The description of the agent is given as a example of XMML in the sections above. Each agent has $x$, $y$, $fx$, $fy$ and $radius$ in its memory and has three states: outputdata, inputdata and move. The agents communicate via a single message board, $location$, which holds the agent $id$ and position.
 
-The Circles problem is very simple but allows us an initial assessment of the performance of the parallelisation within FLAME. The simulation was started with a populations of $10^6$  agents and experiments performed using from 4 to 100 processors. The averaged results are shown in Table~\ref{tab:ExecutionTimesForCircles} and Figure~\ref{fig:Circles-graph}.
+The Circles problem is very simple but allows us an initial assessment of the performance of the parallelisation within FLAME. The simulation was started with a populations of $10^5$  agents and experiments performed using from 4 to 100 processors. The averaged results are shown in Table~\ref{tab:ExecutionTimesForCircles} and Figure~\ref{fig:Circles-graph}.
 %Some place markers
 {
 \renewcommand{\arraystretch}{1.25}
 \begin{table}[ht]
-	\centering
-		\begin{tabular}{c|cccc}
-	Processors	&SCARF		&HAPU			&NW-GRID	&HPCx	\\ \hline
-	4						&2510.723	&1710.531	&2791.994	&-		\\
-	9						&1021.234	&277.672	&890.378	&-		\\
-	16					&321.057	&106.169	&388.098	&403.122 \\
-	25					&189.211	&67.646		&196.751	&161.757 \\	
-	36					&67.413		&52.912		&121.571	&78.468 \\
-	49					&37.080		&19.682		&58.068		&42.503	\\
-	64					&23.199		&16.482		&42.881		&25.122	\\
-	81					&14.826		&12.971		&38.033		&15.849	\\
-	100					&6.653		&6.641		&27.603		&10.322
-	\end{tabular}
-	\caption{Execution Times for $10^6$ Circles}
-	\label{tab:ExecutionTimesForCircles}
+ \centering
+  \begin{tabular}{c|ccccc}
+ Processors &SCARF  &HAPU  &NW-GRID &HPCx  &bglogin2 \\ \hline
+ 4   &-   &1581.15  & -   & -    &7339.35  \\
+ 9   &-   &992.35   &8818.49  &-   &4530.96  \\
+ 16   &443.07   &524.47   &4254.44  &1464.85  &2507.14  \\
+ 25   &281.30   &353.53   &1325.34  &-   &1595.62  \\
+ 36   &205.61   &242.17   &979.61   &687.37   &1082.74  \\
+ 49   &154.03   &173.25   &701.09   &299.22   &786.60   \\
+ 64   &116.13   &134.08   &-   &241.66   &605.77   \\
+ 81   &88.83   &105.35   &-   &-   &484.19   \\
+ 100   &75.20   &87.49   &-   &-   &386.71   \\
+ \end{tabular}
+ \caption{Execution Times for $10^5$ Circles}
+ \label{tab:ExecutionTimesForCircles}
 \end{table}
 }
 \begin{figure}[ht]
-	\centering
-		\includegraphics[width=300pt]{Circles-graph.jpg}
-	\caption{Graph of iteration times}
-	\label{fig:Circles-graph}
+ \centering
+  \includegraphics[width=300pt]{Circles-graph.jpg}
+ \caption{Graph of iteration times}
+ \label{fig:Circles-graph}
 \end{figure}
 
 The results indicate that this simulation benefits from using 30 to 50 processors after which the performance benefits flatten. It is interesting to note that this is essentially similar across the range of systems used. The variations between systems being attributed to memory, architecture and communications hardware differences.
@@ -62,29 +63,29 @@ The initial population contained: 20000 firms, 100000 people and 4000 malls (124
 {
 \renewcommand{\arraystretch}{1.25}
 \begin{table}[ht]
-	\centering
-		\begin{tabular}{c|cccc}
-		Processors	&HAPU		&NW-GRID	&HPCx		&MANO		\\ \hline
-		4 					&378.34	&572.23		&276.81	&918.20	\\
-		9 					&169.54	&295.81		&214.61	&664.81	\\
-		16 					&105.90	&147.67		&91.12	&307.92	\\
-		25 					&68.64	&89.97		&54.89	&210.33	\\
-		36 					&46.53	&60.06		&36.11	&142.35	\\
-		49 					&33.81	&45.39		&25.54	&107.70	\\
-		64 					&25.77	&-				&19.48	&86.74	\\
-		81 					&23.50	&30.95		&15.65	&78.51	\\
-		100 				&17.51	&-				&12.52	&67.28	\\
-	\end{tabular}
-	\caption{Execution Times for C@S Model}
-	\label{tab:ExecutionTimesForC@S}
+ \centering
+  \begin{tabular}{c|ccccc}
+ Processors &HAPU  &NW-GRID &HPCx  &MANO  &bglogin2 \\ \hline
+ 4   &2223.86  &3062.12  &7875.92  &-   & -  \\
+ 9   &1462.14  &2014.56  &2073.25  &-   &-  \\
+ 16   &913.52   &1159.32  &2010.72  &-   &4888.57  \\ 
+ 25   &592.44  &755.84   &803.58   &-   &3138.71  \\
+ 36   &416.84   &534.62   &553.51   &-   &2165.96  \\
+ 49   &307.15   &411.32   &-   &-   &1600.83  \\
+ 64   &260.53   &313.39   &-   &-   &1218.58  \\
+ 81   &207.25   &261.33   &-   &-   &992.43  \\
+ 100   &169.46   &207.52   &-   &-   &806.16   \\
+ \end{tabular}
+ \caption{Execution Times for C@S Model}
+ \label{tab:ExecutionTimesForC@S}
 \end{table}
 }
 \bigskip
 \begin{figure}[ht]
-	\centering
-		\includegraphics[width=300pt]{C@S-graph.jpg}
-	\caption{Graph of C@S Model execution times}
-	\label{fig:C@S-graph}
+ \centering
+  \includegraphics[width=300pt]{C@S2-graph.jpg}
+ \caption{Graph of C@S Model execution times}
+ \label{fig:C@S-graph}
 \end{figure}
 The results show a potential reduction of the elapsed time of the simulation when using up to 30 processors.
 
@@ -96,29 +97,29 @@ This model was first model based on the work of the EURACE project. The model re
 {
 \renewcommand{\arraystretch}{1.25}
 \begin{table}[ht]
-	\centering
-		\begin{tabular}{c|cccc}
-		Processors		&HAPU		&NW-GRID		&HPCx		&MANO			\\ \hline
-		4							&280.49	&358.80 		&- 			&2420.93 	\\
-		9 						&134.32	&203.71			&-			&360.86		\\
-		16 						&67.23	&107.75			&-			&251.16		\\
-		25 						&59.28	&119.75			&104.70	&192.34		\\
-		36 						&46.92	&107.97			&86.411	&53.77		\\
-		49 						&40.19	&-					&85.10	&124.04		\\
-		64 						&38.17	&-					&83.81	&96.48	 	\\
-		81 						&36.56	&-					&91.30	&85.02		\\
-		100 					&36.21	&-					&83.97	&116.90		\\
-	\end{tabular}
-	\caption{Execution Times for Labour Market Model}
-	\label{tab:ExecutionTimesForLabour}
+ \centering
+  \begin{tabular}{c|ccccc}
+ Processors &HAPU  &NW-GRID &HPCx  &MANO   &bglogin2 \\ \hline
+ 4   &1149.21   &1388.55  &-   &-   &7014.64  \\
+ 9   &585.19   &627.45   &-   &-   &3120.96  \\
+ 16   &334.17   &352.51   &-   &-   &1755.93  \\
+ 25   &198.85   &233.35   &-   &-   &1129.25   \\
+ 36   &291.00   &160.97   &-   &-   &782.70   \\
+ 49   &206.82   &119.66   &-   &-   &574.50   \\
+ 64   &90.67   &97.81   &-   &-   &440.36   \\
+ 81   &72.51   &74.81   &-   &-   &349.31   \\
+ 100   &60.79   &61.34   &-   &-   &284.29   \\
+ \end{tabular}
+ \caption{Execution Times for Labour Market Model}
+ \label{tab:ExecutionTimesForLabour}
 \end{table}
 }
 \bigskip
 \begin{figure}[ht]
-	\centering
-		\includegraphics[width=300pt]{Labour-graph.jpg}
-	\caption{Graph of Labour Market Model iteraction times}
-	\label{fig:Labour-graph}
+ \centering
+  \includegraphics[width=300pt]{Labour2-graph.jpg}
+ \caption{Graph of Labour Market Model iteraction times}
+ \label{fig:Labour-graph}
 \end{figure}
 
 \subsection{Bielefeld Labour Market}
@@ -126,43 +127,43 @@ This model was a refinement of the Initial Labour Market. Its also contained fou
 {
 \renewcommand{\arraystretch}{1.25}
 \begin{table}[ht]
-	\centering
-		\begin{tabular}{c|cccc}
-		Processors		&HAPU		&NW-GRID		&HPCx		&MANO			\\ \hline
-		4							&280.49	&358.80 		&- 			&2420.93 	\\
-		9 						&134.32	&203.71			&-			&360.86		\\
-		16 						&67.23	&107.75			&-			&251.16		\\
-		25 						&59.28	&119.75			&104.70	&192.34		\\
-		36 						&46.92	&107.97			&86.411	&53.77		\\
-		49 						&40.19	&-					&85.10	&124.04		\\
-		64 						&38.17	&-					&83.81	&96.48	 	\\
-		81 						&36.56	&-					&91.30	&85.02		\\
-		100 					&36.21	&-					&83.97	&116.90		\\
-	\end{tabular}
-	\caption{Execution Times for Labour Market Model}
-	\label{tab:ExecutionTimesForLabour}
+ \centering
+  \begin{tabular}{c|ccccc}
+ Processors &HAPU  &NW-GRID &HPCx  &MANO   &bglogin2 \\ \hline
+ 4   &1078.51  &-   &-   &-   &-   \\
+ 9   &542.11   &-   &-   &-   &-   \\
+ 16   &318.55   &-   &-   &-   &1173.15  \\
+ 25   &256.06   &-   &-   &-   &753.00   \\
+ 36   &178.75   &-   &-   &-   &525.79   \\
+ 49   &119.29   &-   &-   &-   &390.83   \\
+ 64   &93.39  &-   &-   &-   &299.56   \\
+ 81   &71.06   &-   &-   &-   &239.38   \\
+ 100   &65.59   &-   &-   &-   &194.95   \\
+ \end{tabular}
+ \caption{Execution Times for Bielefeld Model}
+ \label{tab:ExecutionTimesForBielefeld}
 \end{table}
 }
 \bigskip
 \begin{figure}[ht]
-	\centering
-		\includegraphics[width=300pt]{Labour-graph.jpg}
-	\caption{Graph of Labour Market Model iteraction times}
-	\label{fig:Labour-graph}
+ \centering
+  \includegraphics[width=300pt]{Bielefeld2-graph.jpg}
+ \caption{Graph of Bielefeld Model iteraction times}
+ \label{fig:Labour-graph}
 \end{figure}
 
 \subsection{EURACE Models}
 During the development of the EURACE Model a number of domain specific models have been developed. These models were then integrated into the EURACE Model. Three domain specific models were developed: Credit Market, Labour Market and Financial Market. Each of these and the combine EURACE Model are the major economic models developed by EURACE. As part of the development of FLAME these models have been used to test the FLAME application generation and the framework infrastructure. In particular they have been very useful in testing the parallel implementation of FLAME. Although the initial agent populations is these models are very small they do encapsulate the full range and complexity of the EURACE model and to that end they are a very useful testing resource.
 
 \begin{table}[ht]
-	\centering
-		\begin{tabular}{l|ccc}
-		Model & Agents & Messages & Population \\\hline
-		Financial Market  &    4    &   6       &  1104          \\
-		Labour Market   &   7     &    45      &   1236         \\
-		Credit Market   &   3     &    12      &   110         \\ 
-		EURACE Model    &   9     &    54       &  2029         \\\hline
-		\end{tabular}
+ \centering
+  \begin{tabular}{l|ccc}
+  Model & Agents & Messages & Population \\\hline
+  Financial Market  &    4    &   6       &  1104          \\
+  Labour Market   &   7     &    45      &   1236         \\
+  Credit Market   &   3     &    12      &   110         \\ 
+  EURACE Model    &   9     &    54       &  2029         \\\hline
+  \end{tabular}
 \end{table}
 
 All these models have been successfully parsed, compile and executed in both serial and parallel on some of our target HPC machines.
