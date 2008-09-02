@@ -69,7 +69,7 @@ future test runs.
 The Daikon invariant detector (http://groups.csail.mit.edu/pag/daikon/)
 \cite{DAIKON:2007}.
 
-{\tiny
+{\small
 \begin{verbatim}
 #1 [Firm_idle, Firm_receive_data, Firm_calc_production_quantity]
 #2 [Firm_idle, Firm_idle, Firm_calc_production_quantity, Firm_calc_input_demands, 
@@ -124,3 +124,16 @@ The Daikon invariant detector (http://groups.csail.mit.edu/pag/daikon/)
 #13 [Firm_read_tax_rates, Firm_idle]
 \end{verbatim}
 }
+
+For tagged ALM for run of 50 iterations:
+
+\begin{verbatim}
+Firm:::OBJECT
+day_of_month_to_act == 0
+mean_wage >= 1.0
+quality == 1.0
+price >= 2.0
+mean_wage >= quality
+mean_wage < price
+quality < price
+\end{verbatim}
