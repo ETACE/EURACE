@@ -1,1 +1,1 @@
-gcc -g -I../../libmboard/include -L../../libmboard/lib unittest.c ../../memory.c ../../messageboards.c ../Eurostat_Functions.c Eurostat_unittests.c -lm -lcunit -lmboard_s 
+gcc -D_DEBUG_MODE -g -I../../libmboard/include -L../../libmboard/lib unittest.c ../../memory.c ../../messageboards.c ../Eurostat_Functions.c Eurostat_unittests.c -lm -lcunit -lmboard_s 

@@ -2,7 +2,7 @@
 #include "../Eurostat_agent_header.h"
 #include "../my_library_header.h"
 
-#define NO_REGIONS 30 //number of regions (hard-coded in xml as 30 max)
+//#define NO_REGIONS 30 //number of regions (hard-coded in xml as 30 max)
 
 int Eurostat_idle()
 {
@@ -1568,23 +1568,32 @@ int Eurostat_measure_recession()
  */
 int Eurostat_measure_export()
 {
-	int i,j,firm_region, household_region;
+	printf("\n Entering Eurostat_measure_export");
+	int i,j,index;
 	
 	//reset export matrix
+	printf("\n NO_REGIONS=%d", NO_REGIONS);
+
 	for (i=0; i<NO_REGIONS; i++)
 	{
 		EXPORTS[i]=0.0;
 		IMPORTS[i]=0.0;
 		for (j=0; j<NO_REGIONS; j++)
 		{
-			EXPORT_MATRIX[i][j]=0.0;
+			index=i*NO_REGIONS+j;
+			EXPORT_MATRIX[index]=0.0;
 		}
 	}
 	
 	//read in all data
+	printf("\n Reading mall_data_msg");
 	START_MALL_DATA_MESSAGE_LOOP
-		EXPORT_MATRIX[mall_data_message->firm_region-1][mall_data_message->household_region-1]
-                       += mall_data_message->value;
+		printf("\n Processing mall_data_msg");
+		printf("\n In mall_data_msg: firm_region=%d", mall_data_message->firm_region);
+		printf("\n In mall_data_msg: household_region=%d", mall_data_message->household_region);
+		index = (mall_data_message->firm_region-1)*NO_REGIONS + (mall_data_message->household_region-1);
+		printf("\n Index=%d", index);
+		EXPORT_MATRIX[index] += mall_data_message->value;
 	FINISH_MALL_DATA_MESSAGE_LOOP
 	
 	//sum total exports (row sum) and imports (column sum)
@@ -1592,12 +1601,14 @@ int Eurostat_measure_export()
 	{
 		for (j=0; j<NO_REGIONS; j++)
 		{
-			EXPORTS[i] += EXPORT_MATRIX[i][j];
-			IMPORTS[j] += EXPORT_MATRIX[i][j];
+			index=i*NO_REGIONS+j;
+			EXPORTS[i] += EXPORT_MATRIX[index];
+			IMPORTS[j] += EXPORT_MATRIX[index];
 		}
 	}
 	
-	
+	printf("\n Exiting Eurostat_measure_export");
+
     return 0;
 }
 
