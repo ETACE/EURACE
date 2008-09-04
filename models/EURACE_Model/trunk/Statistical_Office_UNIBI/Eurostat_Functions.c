@@ -1568,12 +1568,9 @@ int Eurostat_measure_recession()
  */
 int Eurostat_measure_export()
 {
-	printf("\n Entering Eurostat_measure_export");
 	int i,j,index;
 	
 	//reset export matrix
-	printf("\n NO_REGIONS=%d", NO_REGIONS);
-
 	for (i=0; i<NO_REGIONS; i++)
 	{
 		EXPORTS[i]=0.0;
@@ -1586,13 +1583,8 @@ int Eurostat_measure_export()
 	}
 	
 	//read in all data
-	printf("\n Reading mall_data_msg");
 	START_MALL_DATA_MESSAGE_LOOP
-		printf("\n Processing mall_data_msg");
-		printf("\n In mall_data_msg: firm_region=%d", mall_data_message->firm_region);
-		printf("\n In mall_data_msg: household_region=%d", mall_data_message->household_region);
-		index = (mall_data_message->firm_region-1)*NO_REGIONS + (mall_data_message->household_region-1);
-		printf("\n Index=%d", index);
+		index = (mall_data_message->firm_region-1)*NO_REGIONS + (mall_data_message->household_region-1);		
 		EXPORT_MATRIX[index] += mall_data_message->value;
 	FINISH_MALL_DATA_MESSAGE_LOOP
 	
@@ -1601,14 +1593,15 @@ int Eurostat_measure_export()
 	{
 		for (j=0; j<NO_REGIONS; j++)
 		{
-			index=i*NO_REGIONS+j;
-			EXPORTS[i] += EXPORT_MATRIX[index];
-			IMPORTS[j] += EXPORT_MATRIX[index];
+			if(i!=j)
+			{
+				index=i*NO_REGIONS+j;
+				EXPORTS[i] += EXPORT_MATRIX[index];
+				IMPORTS[j] += EXPORT_MATRIX[index];
+			}
 		}
 	}
 	
-	printf("\n Exiting Eurostat_measure_export");
-
     return 0;
 }
 

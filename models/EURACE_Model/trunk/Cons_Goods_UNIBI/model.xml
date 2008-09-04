@@ -552,13 +552,32 @@ spent in both consumtion steps, into the PAYMENT_ACCOUNT.</description>
 <variable><type>mall_stock_array</type><name>current_stock</name><description>Actual stock of the different firms</description></variable>
 <variable><type>sales_in_mall_array</type><name>firm_revenues</name><description>Actual revenue of the different firms</description></variable>
 <variable><type>double</type><name>total_supply</name><description>Total number of goods</description></variable>
-<variable><type>double</type><name>export_matrix[30][30]</name><description>Matrix holding data on exports between regions.</description></variable>
+<variable><type>double</type><name>export_matrix[4]</name><description>Matrix holding data on exports between regions.</description></variable>
 </memory>
 <functions>
 
+<function><name>Mall_reset_export_data</name>
+<description>Mall resets the export data at start of month.</description>
+<currentState>start_Mall</currentState>
+<nextState>01</nextState>
+<condition>
+        <time><period>monthly</period><phase>1</phase></time>
+</condition>
+</function>
+
+<function><name>idle</name>
+<description></description>
+<currentState>start_Mall</currentState>
+<nextState>01</nextState>
+<condition>
+        <not><time><period>monthly</period><phase>0</phase></time></not>
+</condition>
+</function>
+
+
 <function><name>Mall_update_mall_stock</name>
 <description>Malls receive the goods deliveries.</description>
-<currentState>start_Mall</currentState>
+<currentState>01</currentState>
 <nextState>02</nextState>
 <inputs>
 <input><messageName>update_mall_stock</messageName>
@@ -607,11 +626,33 @@ possible, otherwise rationing.</description>
 <function><name>Mall_pay_firm</name>
 <description>Mall transfers the revenues to the firms.</description>
 <currentState>05</currentState>
-<nextState>end_Mall</nextState>
+<nextState>06</nextState>
 <outputs>
 <output><messageName>sales</messageName></output>
 </outputs>
 </function>
+
+<function><name>Mall_send_export_data</name>
+<description>Mall sends the export data to Eurostat at end of each month.</description>
+<currentState>06</currentState>
+<nextState>end_Mall</nextState>
+<condition>
+        <time><period>monthly</period><phase>0</phase></time>
+</condition>
+<outputs>
+<output><messageName>mall_data</messageName></output>
+</outputs>
+</function>
+
+<function><name>idle</name>
+<description></description>
+<currentState>06</currentState>
+<nextState>end_Mall</nextState>
+<condition>
+        <not><time><period>monthly</period><phase>0</phase></time></not>
+</condition>
+</function>
+
 
 </functions>
 </xagent>
@@ -769,17 +810,6 @@ updates specific skills.</description>
 </variables>
 </message>
 
-<message>
-<name>mall_data</name>
-<description>Sent by mall. Mall informs Eurostat about exports between regions. 
-</description>
-<variables>
-<variable><type>int</type><name>mall_id</name><description></description></variable>
-<variable><type>int</type><name>firm_region_id</name><description></description></variable>
-<variable><type>int</type><name>household_region_id</name><description></description></variable>
-<variable><type>double</type><name>value</name><description></description></variable>
-</variables>
-</message>
 
 </messages>
 

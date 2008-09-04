@@ -2,7 +2,7 @@
 #include "../Mall_agent_header.h"
 #include "../my_library_header.h"
 
-#define NO_REGIONS 30 //number of regions (hard-coded in xml as 30 max)
+#define NO_REGIONS 2 //number of regions (hard-coded in xml as 2)
 
 
 /********************Mall agent functions*****************/
@@ -354,7 +354,7 @@ int Mall_pay_firm()
 /* \fn: void Mall_reset_export_data()
  * \brief: Function to reset the export matrix (at start of month).
  */
-void Mall_reset_export_data()
+int Mall_reset_export_data()
 {
 	int i,j;
 	
@@ -363,54 +363,47 @@ void Mall_reset_export_data()
 	{
 		for (j=0; j<NO_REGIONS; j++)
 		{
-			EXPORT_MATRIX[i][j]=0.0;
+			EXPORT_MATRIX[i*NO_REGIONS+j]=0.0;
 		}
 	}
+	return 0;
 }
 
 /* \fn: void Mall_add_export_data()
- * \brief: Function to add data to the export matrix (every transaction).
+ * \brief: Function to add data to the export matrix (during every transaction).
  */
 void Mall_add_export_data(int firm_region, int household_region, double transaction_value)
 {
-	int i,j;
+	int index;
 	
-	//ADD transaction value
-	transaction_value=rand(0,1);
-	
-	//add to export matrix
-	EXPORT_MATRIX[firm_region-1][household_region-1]=transaction_value;
+	//add value to export matrix
+	index=(firm_region-1)*NO_REGIONS+(household_region-1);
+	EXPORT_MATRIX[index] = transaction_value;
 }
 
 /* \fn: int Mall_send_export_data()
  * \brief: Function to send the export matrix to Eurostat.
  */
-void Mall_send_export_data()
+int Mall_send_export_data()
 {
 	int firm_region, household_region;
 	double value;
 
-	//Testing:
-/*
-	EXPORT_MATRIX[0][0]=0.0;
-	EXPORT_MATRIX[0][1]=1.0;
-	EXPORT_MATRIX[1][0]=1.0;
-	EXPORT_MATRIX[1][1]=0.0;
-*/
 	//mall sends a bunch of messages with export data (only the non-zero elements)
 	for (firm_region=1; firm_region<=NO_REGIONS; firm_region++)
 	{
 		for (household_region=1; household_region<=NO_REGIONS; household_region++)
 		{
-			value = EXPORT_MATRIX[firm_region-1][household_region-1];
+			value = EXPORT_MATRIX[(firm_region-1)*NO_REGIONS+(household_region-1)];
 			if (value > 0.0)
 			{
 				add_mall_data_message(ID, firm_region, household_region, value);
-				printf("Sending export data: region %d to region %d, value %2.2f", firm_region, household_region, value);
+				printf("\n Sending export data: region %d to region %d, value %2.2f", firm_region, household_region, value);
 			}
 			
 		}
 	}
 	
+	return 0;
 }
 
