@@ -213,7 +213,7 @@ void unittest_Eurostat_measure_recession()
 /*
  * \fn: void unittest_Eurostat_measure_export()
  * \brief: Unit test for: Eurostat_measure_export.
- * Status: Not tested
+ * Status: Tested OK
  */
 void unittest_Eurostat_measure_export()
 {
@@ -245,19 +245,19 @@ void unittest_Eurostat_measure_export()
     	    }
     	    #endif
 
-    printf("\n Adding element mall 1");
+    //Adding mall 1 elements
 	add_mall_data_message(1, 1, 1, 1.0);
-//    add_mall_data_message(1, 1, 2, 100.0);
-//    add_mall_data_message(1, 2, 1, 100.0);
-//    add_mall_data_message(1, 2, 2, 1.0);
-    
-    printf("\n Adding element mall 2");
-    add_mall_data_message(2, 1, 1, 1.0);
-//    add_mall_data_message(2, 1, 2, 100.0);
-//    add_mall_data_message(2, 2, 1, 100.0);
-//    add_mall_data_message(2, 2, 2, 1.0);
+    add_mall_data_message(1, 1, 2, 100.0);
+    add_mall_data_message(1, 2, 1, 100.0);
+    add_mall_data_message(1, 2, 2, 1.0);
 
-	rc = MB_Iterator_CreateFiltered(b_mall_data, &i_mall_data, &Eurostat_Eurostat_measure_export_mall_data_filter, current_xmachine_Eurostat);
+    //Adding mall 2 elements
+    add_mall_data_message(2, 1, 1, 1.0);
+    add_mall_data_message(2, 1, 2, 100.0);
+    add_mall_data_message(2, 2, 1, 100.0);
+    add_mall_data_message(2, 2, 2, 1.0);
+
+	rc = MB_Iterator_Create(b_mall_data, &i_mall_data);
 			
 	if (rc != MB_SUCCESS)
 			{
@@ -279,11 +279,9 @@ void unittest_Eurostat_measure_export()
 			}
 	
     /***** Function evaluation ***************************************/
-    printf("\n Running Eurostat_measure_export");
 	Eurostat_measure_export();
     
     /***** Variables: Memory post-conditions *****/
-	printf("\n Checking asserts");
 	CU_ASSERT_DOUBLE_EQUAL(EXPORT_MATRIX[0], 2.0, 1e-3);
     CU_ASSERT_DOUBLE_EQUAL(EXPORT_MATRIX[1], 200.0, 1e-3);
 	CU_ASSERT_DOUBLE_EQUAL(EXPORT_MATRIX[2], 200.0, 1e-3);

@@ -150,6 +150,8 @@ digraph state_graph {
 	layer_72 -> layer_73 [style=invis];
 	layer_74 [shape=plaintext, label="layer 74"];
 	layer_73 -> layer_74 [style=invis];
+	layer_75 [shape=plaintext, label="layer 75"];
+	layer_74 -> layer_75 [style=invis];
 	
 	/* States */
 	Firm_end_Firm [label = "end_Firm"]
@@ -230,10 +232,12 @@ digraph state_graph {
 	Household_06b [label = "06b"]
 	Household_06 [label = "06"]
 	Mall_end_Mall [label = "end_Mall"]
+	Mall_06 [label = "06"]
 	Mall_05 [label = "05"]
 	Mall_04 [label = "04"]
 	Mall_03 [label = "03"]
 	Mall_02 [label = "02"]
+	Mall_01 [label = "01"]
 	Mall_start_Mall [label = "start_Mall"]
 	IGFirm_start_IGFirm [label = "start_IGFirm"]
 	IGFirm_end_IGFirm [label = "end_IGFirm"]
@@ -244,9 +248,10 @@ digraph state_graph {
 	IGFirm_01 [label = "01"]
 	IGFirm_Start_IGFirm_Productivity [label = "Start_IGFirm_Productivity"]
 	Eurostat_end_Eurostat [label = "end_Eurostat"]
+	Eurostat_05 [label = "05"]
 	Eurostat_04 [label = "04"]
-	Eurostat_03 [label = "03"]
 	Eurostat_Start_Eurostat_Quarterly_Datastorage [label = "Start_Eurostat_Quarterly_Datastorage"]
+	Eurostat_03 [label = "03"]
 	Eurostat_02 [label = "02"]
 	Eurostat_Start_Eurostat_Monthly_Datastorage [label = "Start_Eurostat_Monthly_Datastorage"]
 	Eurostat_01 [label = "01"]
@@ -376,11 +381,15 @@ digraph state_graph {
 	Household_Household_receive_info_interest_from_bank_start_Household_financial_market_role_SELECTSTRATEGY [label = "Household_receive_info_interest_from_bank", shape = rect]
 	Household_Household_select_strategy_SELECTSTRATEGY_WAITORDERSTATUS [label = "Household_select_strategy", shape = rect]
 	Household_Household_update_its_portfolio_WAITORDERSTATUS_Start_Household_Labour_Role [label = "Household_update_its_portfolio", shape = rect]
-	Mall_Mall_update_mall_stock_start_Mall_02 [label = "Mall_update_mall_stock", shape = rect]
+	Mall_Mall_reset_export_data_start_Mall_01 [label = "Mall_reset_export_data", shape = rect]
+	Mall_idle_start_Mall_01 [label = "idle", shape = rect]
+	Mall_Mall_update_mall_stock_01_02 [label = "Mall_update_mall_stock", shape = rect]
 	Mall_Mall_send_quality_price_info_1_02_03 [label = "Mall_send_quality_price_info_1", shape = rect]
 	Mall_Mall_update_mall_stocks_sales_rationing_1_03_04 [label = "Mall_update_mall_stocks_sales_rationing_1", shape = rect]
 	Mall_Mall_update_mall_stocks_sales_rationing_2_04_05 [label = "Mall_update_mall_stocks_sales_rationing_2", shape = rect]
-	Mall_Mall_pay_firm_05_end_Mall [label = "Mall_pay_firm", shape = rect]
+	Mall_Mall_pay_firm_05_06 [label = "Mall_pay_firm", shape = rect]
+	Mall_Mall_send_export_data_06_end_Mall [label = "Mall_send_export_data", shape = rect]
+	Mall_idle_06_end_Mall [label = "idle", shape = rect]
 	IGFirm_IGFirm_update_productivity_price_Start_IGFirm_Productivity_01 [label = "IGFirm_update_productivity_price", shape = rect]
 	IGFirm_IGFirm_idle_Start_IGFirm_Productivity_01 [label = "IGFirm_idle", shape = rect]
 	IGFirm_IGFirm_send_quality_price_info_01_02 [label = "IGFirm_send_quality_price_info", shape = rect]
@@ -401,11 +410,12 @@ digraph state_graph {
 	Eurostat_Eurostat_idle_01_Start_Eurostat_Monthly_Datastorage [label = "Eurostat_idle", shape = rect]
 	Eurostat_Eurostat_calculate_data_01_Start_Eurostat_Monthly_Datastorage [label = "Eurostat_calculate_data", shape = rect]
 	Eurostat_Eurostat_store_history_monthly_Start_Eurostat_Monthly_Datastorage_02 [label = "Eurostat_store_history_monthly", shape = rect]
-	Eurostat_Eurostat_compute_growth_rates_monthly_02_Start_Eurostat_Quarterly_Datastorage [label = "Eurostat_compute_growth_rates_monthly", shape = rect]
+	Eurostat_Eurostat_compute_growth_rates_monthly_02_03 [label = "Eurostat_compute_growth_rates_monthly", shape = rect]
+	Eurostat_Eurostat_measure_export_03_Start_Eurostat_Quarterly_Datastorage [label = "Eurostat_measure_export", shape = rect]
 	Eurostat_Eurostat_idle_Start_Eurostat_Monthly_Datastorage_Start_Eurostat_Quarterly_Datastorage [label = "Eurostat_idle", shape = rect]
-	Eurostat_Eurostat_store_history_quarterly_Start_Eurostat_Quarterly_Datastorage_03 [label = "Eurostat_store_history_quarterly", shape = rect]
-	Eurostat_Eurostat_compute_growth_rates_quarterly_03_04 [label = "Eurostat_compute_growth_rates_quarterly", shape = rect]
-	Eurostat_Eurostat_measure_recession_04_end_Eurostat [label = "Eurostat_measure_recession", shape = rect]
+	Eurostat_Eurostat_store_history_quarterly_Start_Eurostat_Quarterly_Datastorage_04 [label = "Eurostat_store_history_quarterly", shape = rect]
+	Eurostat_Eurostat_compute_growth_rates_quarterly_04_05 [label = "Eurostat_compute_growth_rates_quarterly", shape = rect]
+	Eurostat_Eurostat_measure_recession_05_end_Eurostat [label = "Eurostat_measure_recession", shape = rect]
 	Eurostat_Eurostat_idle_Start_Eurostat_Quarterly_Datastorage_end_Eurostat [label = "Eurostat_idle", shape = rect]
 	Clearinghouse_ClearingHouse_receive_info_stock_start_Clearinghouse_RECEIVEDINFOSTOCK [label = "ClearingHouse_receive_info_stock", shape = rect]
 	Clearinghouse_ClearingHouse_receive_orders_and_run_RECEIVEDINFOSTOCK_COMPUTEDPRICES [label = "ClearingHouse_receive_orders_and_run", shape = rect]
@@ -633,16 +643,24 @@ digraph state_graph {
 	Household_Household_select_strategy_SELECTSTRATEGY_WAITORDERSTATUS -> Household_WAITORDERSTATUS;
 	Household_WAITORDERSTATUS -> Household_Household_update_its_portfolio_WAITORDERSTATUS_Start_Household_Labour_Role;
 	Household_Household_update_its_portfolio_WAITORDERSTATUS_Start_Household_Labour_Role -> Household_Start_Household_Labour_Role;
-	Mall_start_Mall -> Mall_Mall_update_mall_stock_start_Mall_02;
-	Mall_Mall_update_mall_stock_start_Mall_02 -> Mall_02;
+	Mall_start_Mall -> Mall_Mall_reset_export_data_start_Mall_01 [ label = "Periodicity: monthly\nPhase: 1"];
+	Mall_Mall_reset_export_data_start_Mall_01 -> Mall_01;
+	Mall_start_Mall -> Mall_idle_start_Mall_01 [ label = "not ( Periodicity: monthly\nPhase: 0 )"];
+	Mall_idle_start_Mall_01 -> Mall_01;
+	Mall_01 -> Mall_Mall_update_mall_stock_01_02;
+	Mall_Mall_update_mall_stock_01_02 -> Mall_02;
 	Mall_02 -> Mall_Mall_send_quality_price_info_1_02_03;
 	Mall_Mall_send_quality_price_info_1_02_03 -> Mall_03;
 	Mall_03 -> Mall_Mall_update_mall_stocks_sales_rationing_1_03_04;
 	Mall_Mall_update_mall_stocks_sales_rationing_1_03_04 -> Mall_04;
 	Mall_04 -> Mall_Mall_update_mall_stocks_sales_rationing_2_04_05;
 	Mall_Mall_update_mall_stocks_sales_rationing_2_04_05 -> Mall_05;
-	Mall_05 -> Mall_Mall_pay_firm_05_end_Mall;
-	Mall_Mall_pay_firm_05_end_Mall -> Mall_end_Mall;
+	Mall_05 -> Mall_Mall_pay_firm_05_06;
+	Mall_Mall_pay_firm_05_06 -> Mall_06;
+	Mall_06 -> Mall_Mall_send_export_data_06_end_Mall [ label = "Periodicity: monthly\nPhase: 0"];
+	Mall_Mall_send_export_data_06_end_Mall -> Mall_end_Mall;
+	Mall_06 -> Mall_idle_06_end_Mall [ label = "not ( Periodicity: monthly\nPhase: 0 )"];
+	Mall_idle_06_end_Mall -> Mall_end_Mall;
 	IGFirm_Start_IGFirm_Productivity -> IGFirm_IGFirm_update_productivity_price_Start_IGFirm_Productivity_01 [ label = "Periodicity: monthly\nPhase: a->day_of_month_to_act"];
 	IGFirm_IGFirm_update_productivity_price_Start_IGFirm_Productivity_01 -> IGFirm_01;
 	IGFirm_Start_IGFirm_Productivity -> IGFirm_IGFirm_idle_Start_IGFirm_Productivity_01 [ label = "not ( Periodicity: monthly\nPhase: a->day_of_month_to_act )"];
@@ -683,16 +701,18 @@ digraph state_graph {
 	Eurostat_Eurostat_calculate_data_01_Start_Eurostat_Monthly_Datastorage -> Eurostat_Start_Eurostat_Monthly_Datastorage;
 	Eurostat_Start_Eurostat_Monthly_Datastorage -> Eurostat_Eurostat_store_history_monthly_Start_Eurostat_Monthly_Datastorage_02 [ label = "Periodicity: monthly\nPhase: 0"];
 	Eurostat_Eurostat_store_history_monthly_Start_Eurostat_Monthly_Datastorage_02 -> Eurostat_02;
-	Eurostat_02 -> Eurostat_Eurostat_compute_growth_rates_monthly_02_Start_Eurostat_Quarterly_Datastorage;
-	Eurostat_Eurostat_compute_growth_rates_monthly_02_Start_Eurostat_Quarterly_Datastorage -> Eurostat_Start_Eurostat_Quarterly_Datastorage;
+	Eurostat_02 -> Eurostat_Eurostat_compute_growth_rates_monthly_02_03;
+	Eurostat_Eurostat_compute_growth_rates_monthly_02_03 -> Eurostat_03;
+	Eurostat_03 -> Eurostat_Eurostat_measure_export_03_Start_Eurostat_Quarterly_Datastorage;
+	Eurostat_Eurostat_measure_export_03_Start_Eurostat_Quarterly_Datastorage -> Eurostat_Start_Eurostat_Quarterly_Datastorage;
 	Eurostat_Start_Eurostat_Monthly_Datastorage -> Eurostat_Eurostat_idle_Start_Eurostat_Monthly_Datastorage_Start_Eurostat_Quarterly_Datastorage [ label = "not ( Periodicity: monthly\nPhase: 0 )"];
 	Eurostat_Eurostat_idle_Start_Eurostat_Monthly_Datastorage_Start_Eurostat_Quarterly_Datastorage -> Eurostat_Start_Eurostat_Quarterly_Datastorage;
-	Eurostat_Start_Eurostat_Quarterly_Datastorage -> Eurostat_Eurostat_store_history_quarterly_Start_Eurostat_Quarterly_Datastorage_03 [ label = "Periodicity: quarterly\nPhase: 0"];
-	Eurostat_Eurostat_store_history_quarterly_Start_Eurostat_Quarterly_Datastorage_03 -> Eurostat_03;
-	Eurostat_03 -> Eurostat_Eurostat_compute_growth_rates_quarterly_03_04;
-	Eurostat_Eurostat_compute_growth_rates_quarterly_03_04 -> Eurostat_04;
-	Eurostat_04 -> Eurostat_Eurostat_measure_recession_04_end_Eurostat;
-	Eurostat_Eurostat_measure_recession_04_end_Eurostat -> Eurostat_end_Eurostat;
+	Eurostat_Start_Eurostat_Quarterly_Datastorage -> Eurostat_Eurostat_store_history_quarterly_Start_Eurostat_Quarterly_Datastorage_04 [ label = "Periodicity: quarterly\nPhase: 0"];
+	Eurostat_Eurostat_store_history_quarterly_Start_Eurostat_Quarterly_Datastorage_04 -> Eurostat_04;
+	Eurostat_04 -> Eurostat_Eurostat_compute_growth_rates_quarterly_04_05;
+	Eurostat_Eurostat_compute_growth_rates_quarterly_04_05 -> Eurostat_05;
+	Eurostat_05 -> Eurostat_Eurostat_measure_recession_05_end_Eurostat;
+	Eurostat_Eurostat_measure_recession_05_end_Eurostat -> Eurostat_end_Eurostat;
 	Eurostat_Start_Eurostat_Quarterly_Datastorage -> Eurostat_Eurostat_idle_Start_Eurostat_Quarterly_Datastorage_end_Eurostat [ label = "not ( Periodicity: quarterly\nPhase: 0 )"];
 	Eurostat_Eurostat_idle_Start_Eurostat_Quarterly_Datastorage_end_Eurostat -> Eurostat_end_Eurostat;
 	Clearinghouse_start_Clearinghouse -> Clearinghouse_ClearingHouse_receive_info_stock_start_Clearinghouse_RECEIVEDINFOSTOCK;
@@ -750,6 +770,7 @@ digraph state_graph {
 	Household_Household_select_strategy_SELECTSTRATEGY_WAITORDERSTATUS -> Clearinghouse_ClearingHouse_receive_orders_and_run_RECEIVEDINFOSTOCK_COMPUTEDPRICES [ label = "order" color="#00ff00" constraint=false];
 	Firm_Firm_compute_and_send_stock_orders_Firm_End_Credit_Role_0003 -> Clearinghouse_ClearingHouse_receive_orders_and_run_RECEIVEDINFOSTOCK_COMPUTEDPRICES [ label = "order" color="#00ff00" constraint=false];
 	Firm_Firm_send_info_Firm_new01_Firm_Start_Producer_Role -> Clearinghouse_ClearingHouse_receive_info_stock_start_Clearinghouse_RECEIVEDINFOSTOCK [ label = "info_firm" color="#00ff00" constraint=false];
+	Mall_Mall_send_export_data_06_end_Mall -> Eurostat_Eurostat_calculate_data_01_Start_Eurostat_Monthly_Datastorage [ label = "mall_data" color="#00ff00" constraint=false];
 	Household_Household_send_data_to_Eurostat_15_end_Household -> Eurostat_Eurostat_calculate_data_01_Start_Eurostat_Monthly_Datastorage [ label = "household_send_data" color="#00ff00" constraint=false];
 	Firm_Firm_send_data_to_Eurostat_Firm_End_Financial_Management_Role_15 -> Eurostat_Eurostat_calculate_data_01_Start_Eurostat_Monthly_Datastorage [ label = "firm_send_data" color="#00ff00" constraint=false];
 	Government_Government_send_tax_rates_start_Government_00A -> Eurostat_Eurostat_read_tax_rates_Start_Eurostat_Tax_Data_AA [ label = "government_tax_rates" color="#00ff00" constraint=false];
@@ -758,7 +779,7 @@ digraph state_graph {
 	Firm_Firm_send_capital_demand_End_Firm_Labour_Role_11a -> IGFirm_IGFirm_send_capital_good_02_03 [ label = "capital_good_request" color="#00ff00" constraint=false];
 	Household_Household_rank_and_buy_goods_2_11_12 -> Mall_Mall_update_mall_stocks_sales_rationing_2_04_05 [ label = "consumption_request_2" color="#00ff00" constraint=false];
 	Household_Household_rank_and_buy_goods_1_09_10 -> Mall_Mall_update_mall_stocks_sales_rationing_1_03_04 [ label = "consumption_request_1" color="#00ff00" constraint=false];
-	Firm_Firm_send_goods_to_mall_12_Start_Firm_Seller_Role -> Mall_Mall_update_mall_stock_start_Mall_02 [ label = "update_mall_stock" color="#00ff00" constraint=false];
+	Firm_Firm_send_goods_to_mall_12_Start_Firm_Seller_Role -> Mall_Mall_update_mall_stock_01_02 [ label = "update_mall_stock" color="#00ff00" constraint=false];
 	Clearinghouse_ClearingHouse_receive_orders_and_run_RECEIVEDINFOSTOCK_COMPUTEDPRICES -> Household_Household_update_its_portfolio_WAITORDERSTATUS_Start_Household_Labour_Role [ label = "order_status" color="#00ff00" constraint=false];
 	Firm_Firm_send_info_Firm_new01_Firm_Start_Producer_Role -> Household_Household_select_strategy_SELECTSTRATEGY_WAITORDERSTATUS [ label = "info_firm" color="#00ff00" constraint=false];
 	Bank_Bank_send_accountInterest_start_Bank_Bank_start_credit_market_role -> Household_Household_receive_info_interest_from_bank_start_Household_financial_market_role_SELECTSTRATEGY [ label = "accountInterest" color="#00ff00" constraint=false];
@@ -797,10 +818,10 @@ digraph state_graph {
 	Clearinghouse_ClearingHouse_receive_orders_and_run_RECEIVEDINFOSTOCK_COMPUTEDPRICES -> Firm_Firm_read_stock_transactions_0003_End_Firm_Financial_Role [ label = "order_status" color="#00ff00" constraint=false];
 	Bank_Bank_decide_credit_conditions_Bank_start_credit_market_role_Bank_02 -> Firm_Firm_get_loan_Firm_Credit_02_Firm_End_Credit_Role [ label = "loan_conditions" color="#00ff00" constraint=false];
 	Household_Household_update_specific_skills_07_08 -> Firm_Firm_update_specific_skills_of_workers_14_Firm_Start_Financial_Management_Role [ label = "specific_skill_update" color="#00ff00" constraint=false];
-	Mall_Mall_pay_firm_05_end_Mall -> Firm_Firm_calc_revenue_Start_Firm_Seller_Role_13 [ label = "sales" color="#00ff00" constraint=false];
+	Mall_Mall_pay_firm_05_06 -> Firm_Firm_calc_revenue_Start_Firm_Seller_Role_13 [ label = "sales" color="#00ff00" constraint=false];
 	IGFirm_IGFirm_send_capital_good_02_03 -> Firm_Firm_receive_capital_goods_11a_11b [ label = "capital_good_delivery" color="#00ff00" constraint=false];
 	IGFirm_IGFirm_send_quality_price_info_01_02 -> Firm_Firm_calc_input_demands_01_02 [ label = "productivity" color="#00ff00" constraint=false];
-	{ rank=same; layer_0;  Firm_idle_start_Firm_Start_Firm_Macro_Data;  Household_Household_idle_start_Household_Start_Household_Tax_Data;  IGFirm_IGFirm_idle_start_IGFirm_Start_IGFirm_Productivity;  Eurostat_Eurostat_Initialization_start_Eurostat_Start_Eurostat_Tax_Data;  Eurostat_Eurostat_idle_start_Eurostat_Start_Eurostat_Tax_Data;  Bank_Bank_send_accountInterest_start_Bank_Bank_start_credit_market_role;  Government_Government_idle_start_Government_00;  Government_Government_send_tax_rates_start_Government_00A; }
+	{ rank=same; layer_0;  Firm_idle_start_Firm_Start_Firm_Macro_Data;  Household_Household_idle_start_Household_Start_Household_Tax_Data;  Mall_Mall_reset_export_data_start_Mall_01;  Mall_idle_start_Mall_01;  IGFirm_IGFirm_idle_start_IGFirm_Start_IGFirm_Productivity;  Eurostat_Eurostat_Initialization_start_Eurostat_Start_Eurostat_Tax_Data;  Eurostat_Eurostat_idle_start_Eurostat_Start_Eurostat_Tax_Data;  Bank_Bank_send_accountInterest_start_Bank_Bank_start_credit_market_role;  Government_Government_idle_start_Government_00;  Government_Government_send_tax_rates_start_Government_00A; }
 	{ rank=same; layer_1;  Firm_Firm_read_tax_rates_start_Firm_Start_Firm_Macro_Data;  Household_Household_read_tax_rates_start_Household_Start_Household_Tax_Data;  IGFirm_IGFirm_read_tax_rates_start_IGFirm_Start_IGFirm_Productivity;  Eurostat_Eurostat_idle_Start_Eurostat_Tax_Data_Start_Eurostat_Firm_Data;  Eurostat_Eurostat_read_tax_rates_Start_Eurostat_Tax_Data_AA; }
 	{ rank=same; layer_2;  Firm_idle_Start_Firm_Macro_Data_Firm_new01;  Household_Household_receive_data_Start_Household_Tax_Data_start_Household_financial_market_role;  Household_Household_idle_Start_Household_Tax_Data_start_Household_financial_market_role;  IGFirm_IGFirm_update_productivity_price_Start_IGFirm_Productivity_01;  IGFirm_IGFirm_idle_Start_IGFirm_Productivity_01;  Eurostat_Eurostat_send_data_to_government_AA_Start_Eurostat_Firm_Data; }
 	{ rank=same; layer_3;  Household_Household_receive_info_interest_from_bank_start_Household_financial_market_role_SELECTSTRATEGY;  IGFirm_IGFirm_send_quality_price_info_01_02;  Eurostat_Eurostat_send_data_Start_Eurostat_Firm_Data_01;  Eurostat_Eurostat_idle_Start_Eurostat_Firm_Data_01;  Government_Government_read_data_from_Eurostat_00A_00; }
@@ -844,7 +865,7 @@ digraph state_graph {
 	{ rank=same; layer_41;  Firm_Firm_execute_production_11b_11; }
 	{ rank=same; layer_42;  Firm_Firm_calc_pay_costs_11_12; }
 	{ rank=same; layer_43;  Firm_Firm_send_goods_to_mall_12_Start_Firm_Seller_Role;  IGFirm_IGFirm_receive_payment_03_04; }
-	{ rank=same; layer_44;  Mall_Mall_update_mall_stock_start_Mall_02;  IGFirm_IGFirm_pay_taxes_04_04b;  IGFirm_IGFirm_idle_04_end_IGFirm; }
+	{ rank=same; layer_44;  Mall_Mall_update_mall_stock_01_02;  IGFirm_IGFirm_pay_taxes_04_04b;  IGFirm_IGFirm_idle_04_end_IGFirm; }
 	{ rank=same; layer_45;  Mall_Mall_send_quality_price_info_1_02_03;  IGFirm_IGFirm_dividend_payment_04b_end_IGFirm; }
 	{ rank=same; layer_46;  Household_Household_receive_dividends_06_06b; }
 	{ rank=same; layer_47;  Household_Household_idle_06b_09;  Household_Household_idle_06b_06c; }
@@ -858,8 +879,8 @@ digraph state_graph {
 	{ rank=same; layer_55;  Household_Household_receive_goods_read_rationing_10_11; }
 	{ rank=same; layer_56;  Household_Household_set_values_zero_11_14;  Household_Household_rank_and_buy_goods_2_11_12; }
 	{ rank=same; layer_57;  Mall_Mall_update_mall_stocks_sales_rationing_2_04_05; }
-	{ rank=same; layer_58;  Household_Household_receive_goods_read_rationing_2_12_14;  Mall_Mall_pay_firm_05_end_Mall; }
-	{ rank=same; layer_59;  Firm_Firm_calc_revenue_Start_Firm_Seller_Role_13;  Household_Household_handle_leftover_budget_14_15; }
+	{ rank=same; layer_58;  Household_Household_receive_goods_read_rationing_2_12_14;  Mall_Mall_pay_firm_05_06; }
+	{ rank=same; layer_59;  Firm_Firm_calc_revenue_Start_Firm_Seller_Role_13;  Household_Household_handle_leftover_budget_14_15;  Mall_Mall_send_export_data_06_end_Mall;  Mall_idle_06_end_Mall; }
 	{ rank=same; layer_60;  Firm_Firm_compute_sales_statistics_13_14;  Firm_idle_13_Firm_End_Financial_Management_Role;  Household_Household_send_data_to_Eurostat_15_end_Household;  Household_Household_idle_15_end_Household; }
 	{ rank=same; layer_61;  Firm_Firm_update_specific_skills_of_workers_14_Firm_Start_Financial_Management_Role; }
 	{ rank=same; layer_62;  Firm_Firm_compute_financial_payments_Firm_Start_Financial_Management_Role_001; }
@@ -871,8 +892,9 @@ digraph state_graph {
 	{ rank=same; layer_68;  Firm_Firm_send_data_to_Eurostat_Firm_End_Financial_Management_Role_15;  Firm_idle_Firm_End_Financial_Management_Role_15;  Bank_Bank_receive_installment_Bank_03_Bank_04; }
 	{ rank=same; layer_69;  Firm_Firm_receive_stock_info_15_Update_02;  Eurostat_Eurostat_calculate_data_01_Start_Eurostat_Monthly_Datastorage; }
 	{ rank=same; layer_70;  Firm_Firm_send_payments_to_bank_Update_02_end_Firm;  Eurostat_Eurostat_store_history_monthly_Start_Eurostat_Monthly_Datastorage_02;  Eurostat_Eurostat_idle_Start_Eurostat_Monthly_Datastorage_Start_Eurostat_Quarterly_Datastorage; }
-	{ rank=same; layer_71;  Eurostat_Eurostat_compute_growth_rates_monthly_02_Start_Eurostat_Quarterly_Datastorage;  Bank_Bank_account_update_deposits_Bank_04_Bank_05; }
-	{ rank=same; layer_72;  Eurostat_Eurostat_store_history_quarterly_Start_Eurostat_Quarterly_Datastorage_03;  Eurostat_Eurostat_idle_Start_Eurostat_Quarterly_Datastorage_end_Eurostat;  Bank_Bank_accounting_Bank_05_end_Bank_cycle;  Bank_Bank_idle_Bank_05_end_Bank_cycle;  Central_Bank_Central_Bank_read_account_update_start_Central_Bank_end_Central_Bank; }
-	{ rank=same; layer_73;  Eurostat_Eurostat_compute_growth_rates_quarterly_03_04; }
-	{ rank=same; layer_74;  Eurostat_Eurostat_measure_recession_04_end_Eurostat; }
+	{ rank=same; layer_71;  Eurostat_Eurostat_compute_growth_rates_monthly_02_03;  Bank_Bank_account_update_deposits_Bank_04_Bank_05; }
+	{ rank=same; layer_72;  Eurostat_Eurostat_measure_export_03_Start_Eurostat_Quarterly_Datastorage;  Bank_Bank_accounting_Bank_05_end_Bank_cycle;  Bank_Bank_idle_Bank_05_end_Bank_cycle;  Central_Bank_Central_Bank_read_account_update_start_Central_Bank_end_Central_Bank; }
+	{ rank=same; layer_73;  Eurostat_Eurostat_store_history_quarterly_Start_Eurostat_Quarterly_Datastorage_04;  Eurostat_Eurostat_idle_Start_Eurostat_Quarterly_Datastorage_end_Eurostat; }
+	{ rank=same; layer_74;  Eurostat_Eurostat_compute_growth_rates_quarterly_04_05; }
+	{ rank=same; layer_75;  Eurostat_Eurostat_measure_recession_05_end_Eurostat; }
 }

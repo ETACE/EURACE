@@ -489,6 +489,7 @@ including several micro data.</description>
 <inputs>
 <input><messageName>firm_send_data</messageName></input>
 <input><messageName>household_send_data</messageName></input>
+<input><messageName>mall_data</messageName></input>
 </inputs>
 </function>
 
@@ -507,8 +508,15 @@ including several micro data.</description>
 <function><name>Eurostat_compute_growth_rates_monthly</name>
 <description>Eurostat computes monthly growth rates for macro data stored in its monthly history struct</description>
 <currentState>02</currentState>
+<nextState>03</nextState>
+</function>
+
+<function><name>Eurostat_measure_export</name>
+<description>Eurostat measures the exports between regions.</description>
+<currentState>03</currentState>
 <nextState>Start_Eurostat_Quarterly_Datastorage</nextState>
 </function>
+
 
 <function><name>Eurostat_idle</name>
 <description>Eurostat does nothing</description>
@@ -524,7 +532,7 @@ including several micro data.</description>
 <function><name>Eurostat_store_history_quarterly</name>
 <description>Eurostat stores quarterly macro data in its history struct</description>
 <currentState>Start_Eurostat_Quarterly_Datastorage</currentState>
-<nextState>03</nextState>                   <!--Toggle this if you want to turn ON growthrates functionality -->
+<nextState>04</nextState>                   <!--Toggle this if you want to turn ON growthrates functionality -->
 <!--<nextState>end_Eurostat</nextState>                 Toggle this if you want to turn OFF growthrates functionality -->
 <condition>
         <time><period>quarterly</period><phase>0</phase></time>
@@ -533,13 +541,13 @@ including several micro data.</description>
 
 <function><name>Eurostat_compute_growth_rates_quarterly</name>
 <description>Eurostat computes quarterly growth rates for macro data stored in its quarterly history struct</description>
-<currentState>03</currentState>
-<nextState>04</nextState>
+<currentState>04</currentState>
+<nextState>05</nextState>
 </function>
 
 <function><name>Eurostat_measure_recession</name>
 <description>Eurostat measures the start or end of recessions</description>
-<currentState>04</currentState>
+<currentState>05</currentState>
 <nextState>end_Eurostat</nextState>
 </function>
 
@@ -609,6 +617,18 @@ including several micro data.</description>
 <variable><type>int</type><name>employment_status</name><description></description></variable>
 <variable><type>double</type><name>wage</name><description></description></variable>
 <variable><type>double</type><name>specific_skill</name><description></description></variable>
+</variables>
+</message>
+
+<message>
+<name>mall_data</name>
+<description>Sent by mall. Mall informs Eurostat about exports between regions. 
+</description>
+<variables>
+<variable><type>int</type><name>mall_id</name><description></description></variable>
+<variable><type>int</type><name>firm_region</name><description></description></variable>
+<variable><type>int</type><name>household_region</name><description></description></variable>
+<variable><type>double</type><name>value</name><description></description></variable>
 </variables>
 </message>
 
