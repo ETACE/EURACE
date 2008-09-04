@@ -53,10 +53,15 @@ int main(int argc, char * argv[])
     /* add extra tests using || */
     
     if(
+/*
     	NULL == CU_add_test(pSuite, "Eurostat_store_history_monthly", unittest_Eurostat_store_history_monthly) ||
     	NULL == CU_add_test(pSuite, "Eurostat_store_history_quarterly", unittest_Eurostat_store_history_quarterly) ||
     	NULL == CU_add_test(pSuite, "Eurostat_compute_growth_rates_monthly", unittest_Eurostat_compute_growth_rates_monthly) ||
-    	NULL == CU_add_test(pSuite, "Eurostat_compute_growth_rates_quarterly", unittest_Eurostat_compute_growth_rates_quarterly))
+    	NULL == CU_add_test(pSuite, "Eurostat_compute_growth_rates_quarterly", unittest_Eurostat_compute_growth_rates_quarterly) ||
+    	NULL == CU_add_test(pSuite, "Eurostat_firm_creation", unittest_Eurostat_firm_creation) ||
+    	NULL == CU_add_test(pSuite, "Eurostat_measure_recession", unittest_Eurostat_measure_recession) ||
+*/
+    	NULL == CU_add_test(pSuite, "Eurostat_measure_export", unittest_Eurostat_measure_export))
     {
         CU_cleanup_registry();
         return CU_get_error();

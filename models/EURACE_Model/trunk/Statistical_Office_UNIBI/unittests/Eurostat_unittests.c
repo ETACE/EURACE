@@ -217,6 +217,8 @@ void unittest_Eurostat_measure_recession()
  */
 void unittest_Eurostat_measure_export()
 {
+	int rc;
+	
     /************* At start of unit test, add one agent **************/
 	unittest_init_Eurostat_agent();
 	
@@ -224,24 +226,68 @@ void unittest_Eurostat_measure_export()
 	NO_REGIONS=2;
     
 	/***** Messages: pre-conditions **********************************/
-    add_mall_data_message(1, 1, 1, 1.0);
-    add_mall_data_message(1, 1, 2, 100.0);
-    add_mall_data_message(1, 2, 1, 100.0);
-    add_mall_data_message(1, 2, 2, 1.0);
-    
-    add_mall_data_message(2, 1, 1, 1.0);
-    add_mall_data_message(2, 1, 2, 100.0);
-    add_mall_data_message(2, 2, 1, 100.0);
-    add_mall_data_message(2, 2, 2, 1.0);
+    rc = MB_Create(&b_mall_data, sizeof(m_mall_data));
+    	    #ifdef ERRCHECK
+    	    if (rc != MB_SUCCESS)
+    	    {
+    	       fprintf(stderr, "ERROR: Could not create 'mall_data' board\n");
+    	       switch(rc) {
+    	           case MB_ERR_INVALID:
+    	               fprintf(stderr, "\t reason: Invalid message size\n");
+    	               break;
+    	           case MB_ERR_MEMALLOC:
+    	               fprintf(stderr, "\t reason: out of memory\n");
+    	               break;
+    	           case MB_ERR_INTERNAL:
+    	               fprintf(stderr, "\t reason: internal error. Recompile libmoard in debug mode for more info \n");
+    	               break;
+    	       }
+    	    }
+    	    #endif
 
+    printf("\n Adding element mall 1");
+	add_mall_data_message(1, 1, 1, 1.0);
+//    add_mall_data_message(1, 1, 2, 100.0);
+//    add_mall_data_message(1, 2, 1, 100.0);
+//    add_mall_data_message(1, 2, 2, 1.0);
+    
+    printf("\n Adding element mall 2");
+    add_mall_data_message(2, 1, 1, 1.0);
+//    add_mall_data_message(2, 1, 2, 100.0);
+//    add_mall_data_message(2, 2, 1, 100.0);
+//    add_mall_data_message(2, 2, 2, 1.0);
+
+	rc = MB_Iterator_CreateFiltered(b_mall_data, &i_mall_data, &Eurostat_Eurostat_measure_export_mall_data_filter, current_xmachine_Eurostat);
+			
+	if (rc != MB_SUCCESS)
+			{
+			   fprintf(stderr, "ERROR: Could not create Iterator for 'mall_data'\n");
+			   switch(rc) {
+			       case MB_ERR_INVALID:
+			           fprintf(stderr, "\t reason: 'mall_data' board is invalid\n");
+			           break;
+			       case MB_ERR_LOCKED:
+		               fprintf(stderr, "\t reason: 'mall_data' board is locked\n");
+		               break;
+		           case MB_ERR_MEMALLOC:
+		               fprintf(stderr, "\t reason: out of memory\n");
+		               break;
+		           case MB_ERR_INTERNAL:
+		               fprintf(stderr, "\t reason: internal error. Recompile libmoard in debug mode for more info \n");
+		               break;
+			   }
+			}
+	
     /***** Function evaluation ***************************************/
+    printf("\n Running Eurostat_measure_export");
 	Eurostat_measure_export();
     
     /***** Variables: Memory post-conditions *****/
-	CU_ASSERT_DOUBLE_EQUAL(EXPORT_MATRIX[0][0], 2.0, 1e-3);
-    CU_ASSERT_DOUBLE_EQUAL(EXPORT_MATRIX[1][0], 200.0, 1e-3);
-	CU_ASSERT_DOUBLE_EQUAL(EXPORT_MATRIX[0][1], 200.0, 1e-3);
-    CU_ASSERT_DOUBLE_EQUAL(EXPORT_MATRIX[1][1], 2.0, 1e-3);
+	printf("\n Checking asserts");
+	CU_ASSERT_DOUBLE_EQUAL(EXPORT_MATRIX[0], 2.0, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(EXPORT_MATRIX[1], 200.0, 1e-3);
+	CU_ASSERT_DOUBLE_EQUAL(EXPORT_MATRIX[2], 200.0, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(EXPORT_MATRIX[3], 2.0, 1e-3);
     
     CU_ASSERT_DOUBLE_EQUAL(EXPORTS[0], 200.0, 1e-3);
     CU_ASSERT_DOUBLE_EQUAL(EXPORTS[1], 200.0, 1e-3);
