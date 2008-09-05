@@ -63,6 +63,7 @@ void init_Assetsowned(Asset_array *assets)
     reset_Asset_array(assets);
     add_Asset(assets, 0, 1000, 50);
     add_Asset(assets, 1, 1000, 50);
+    add_Asset(assets, 2000, 1000, 100);
 }
 Asset_array *newAssetsTotal(int quantity)
 {   Asset_array *assets;
