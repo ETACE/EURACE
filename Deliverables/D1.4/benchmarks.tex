@@ -1,6 +1,6 @@
 \subsection{Approach to Benchmarking}
 \label{sec:benchmarks}
-Our approach to benchmarking has been incremental: starting from this simplest model and then gradually increasing complexity. The benchmarks run so far are part of the assessment of the current parallel implementation. They also serve as a useful way of ensuring that FLAME and its generate applications are portable over and wide range of hardware and operating systems. 
+Our approach to benchmarking has been incremental: starting from a very simple model and then gradually increasing the complexity. The benchmarks run so far are part of the assessment of the current parallel implementation. They also serve as a useful way of ensuring that FLAME and its generated applications are portable over a wide range of hardware and operating systems. 
 
 \begin{table}[ht]
  \centering
@@ -13,14 +13,14 @@ Our approach to benchmarking has been incremental: starting from this simplest m
   \end{tabular}
 \end{table}
 
-The starting populations have been generated using the initial population generator developed by STFC. The ratio of agents numbers in each population was retained from the original values.
+The starting populations have been generated using the initial population generator developed by STFC. The ratio of agent numbers in each population was retained from the original values.
 
-Each benchmark has been on a variety of HPC systems available to STFC using a range of process numbers: 4 9 16 32 49 64 81 and 100. The results presented show how the lapsed time per iteration varies with number of processors. In these experiments a round-robin initial distribution has been used for the Labour Market and Bielefeld models, while geometric partitioning has been used for the Circles and C@S models.
+Each benchmark has been run on a variety of HPC systems available to STFC using a range of process numbers: 4 9 16 32 49 64 81 and 100. The results presented show how the elapsed time per iteration varies with number of processors. In these experiments a round-robin initial distribution has been used for the Labour Market and Bielefeld models, while geometric partitioning has been used for the Circles and C@S models.
 
 \subsection{The Circles Model}
 The Circles agent is very simple. It has a position in two-dimensional space and a radius of influence. Each agent will react to its neighbours within its interaction radius repulsively. So given a sufficient simulation time the initial distribution of agents will tend to a field of uniformly spaced agents.
 
-The description of the agent is given as a example of XMML in the sections above. Each agent has $x$, $y$, $fx$, $fy$ and $radius$ in its memory and has three states: outputdata, inputdata and move. The agents communicate via a single message board, $location$, which holds the agent $id$ and position.
+Each agent has $x$, $y$, $fx$, $fy$ and $radius$ in its memory and has three states: outputdata, inputdata and move. The agents communicate via a single message board, $location$, which holds the agent $id$ and position.
 
 The Circles problem is very simple but allows us an initial assessment of the performance of the parallelisation within FLAME. The simulation was started with a populations of $10^5$  agents and experiments performed using from 4 to 100 processors. The averaged results are shown in Table~\ref{tab:ExecutionTimesForCircles} and Figure~\ref{fig:Circles-graph}.
 %Some place markers
@@ -122,7 +122,7 @@ This model was first model based on the work of the EURACE project. The model re
 \begin{figure}[ht]
  \centering
   \includegraphics[width=300pt]{Labour2-graph.jpg}
- \caption{Graph of Labour Market Model iteraction times}
+ \caption{Graph of Labour Market Model iteration times}
  \label{fig:Labour-graph1}
 \end{figure}
 
@@ -152,12 +152,12 @@ This model was a refinement of the Initial Labour Market. Its also contained fou
 \begin{figure}[ht]
  \centering
   \includegraphics[width=300pt]{Bielefeld2-graph.jpg}
- \caption{Graph of Bielefeld Model iteraction times}
+ \caption{Graph of Bielefeld Model iteration times}
  \label{fig:Labour-graph2}
 \end{figure}
 
 \subsection{EURACE Models}
-During the development of the EURACE Model a number of domain specific models have been developed. These models were then integrated into the EURACE Model. Three domain specific models were developed: Credit Market, Labour Market and Financial Market. Each of these and the combine EURACE Model are the major economic models developed by EURACE. As part of the development of FLAME these models have been used to test the FLAME application generation and the framework infrastructure. In particular they have been very useful in testing the parallel implementation of FLAME. Although the initial agent populations is these models are very small they do encapsulate the full range and complexity of the EURACE model and to that end they are a very useful testing resource.
+During the development of the EURACE Model a number of domain specific models have been developed. These models were then integrated into the EURACE Model. Three domain specific models were developed: Credit Market, Labour Market and Financial Market. Each of these and the combined EURACE Model are the major economic models developed by EURACE. As part of the development of FLAME these models have been used to test the FLAME application generation and the framework infrastructure. In particular they have been very useful in testing the parallel implementation of FLAME. Although the initial agent populations is these models are very small they do encapsulate the full range and complexity of the EURACE model and to that end they are a very useful testing resource.
 
 \begin{table}[ht]
  \centering
