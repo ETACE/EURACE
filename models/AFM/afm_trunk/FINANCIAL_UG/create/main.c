@@ -1,15 +1,15 @@
 //#include "../../header.h"
 #include "../my_library_header.h"
 #define NUMFIRM  2
-#define NUMHOUSE 1100
-#define NUMRANDOM 1000
-#define NUMFUND 50
-#define NUMCHAR 50
+#define NUMHOUSE 1000
+#define NUMRANDOM 900
+#define NUMFUND 100
+#define NUMCHAR 0
 
 void initFirm(struct xmachine_memory_Firm *firm,int id, double price)
 {  
-        //firm->earnings = 1001;
-	//firm->earnings_payout = 1000;
+        firm->earnings = 1001;
+	firm->earnings_payout = 1000;
 	firm->equity = NUMHOUSE*1000*price;
 	firm->current_shares_outstanding = NUMHOUSE*1000;
 	firm->id = id;
@@ -31,7 +31,7 @@ void initHousehold(struct xmachine_memory_Household *household,int id,double rW,
 	init_Asset_array(&household->assetsowned);
 	init_double_array(&household->assetWeights);
 	init_double_array(&household->assetUtilities);
-	household->payment_account = 100000;
+	household->payment_account = 50000;
 	//household->consumption_badget = 0.0;
 	//household->cash_on_hand = 0.0;
 	//household->payment_account = 50000;

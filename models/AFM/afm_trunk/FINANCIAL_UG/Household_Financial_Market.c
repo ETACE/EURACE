@@ -134,7 +134,7 @@ int  Household_select_strategy()
     double_array *assetUtilities;
 
       
-    bankrate=0.0001;
+    bankrate=0.001;
     assetsowned=get_assetsowned();
     pending=get_pendingOrders();
     assetWeights=get_assetWeights();

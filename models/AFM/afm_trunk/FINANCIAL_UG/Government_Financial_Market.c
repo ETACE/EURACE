@@ -16,7 +16,7 @@ int Government_BondIssuing_decision(double gov_deficit)
          last_market_price=lastPriceBond(bond);
 limit_price = (1-BONDS_NEWISSUE_DISCOUNT)*last_market_price;
 GovBondNewIssueAmount = (int) abs(gov_deficit)/limit_price;
-printf("sono qui%f\n",last_market_price);
+//printf("sono qui%f\n",last_market_price);
 return GovBondNewIssueAmount;
 
 }

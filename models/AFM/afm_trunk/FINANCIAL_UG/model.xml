@@ -300,7 +300,7 @@
 		
 		<memory>
 			
-			<!--<variable><type>double</type><name>earnings</name><description></description></variable>-->
+			<variable><type>double</type><name>earnings</name><description></description></variable>
 			<variable><type>double</type><name>earnings_payout</name><description></description></variable>
 			<variable><type>double</type><name>equity</name><description></description></variable>
 			<variable><type>double</type><name>current_shares_outstanding</name><description></description></variable>
