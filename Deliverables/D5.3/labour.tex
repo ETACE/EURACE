@@ -7,12 +7,14 @@ In order to parse the model and test it for results the labour and
 goods market has to be integrated with various models of the credit,
 government and financial management markets. Here we concentrate on
 the essence of the individual functions involved with the labour and
-goods market only. The two main agent involved in this process are
-namely - Firms and Households. The state dependency diagram
+goods market only. The two main agents involved in this process are
+namely - Firms and Households. The state graph in Figure
 \ref{fig:statelabour} describes how these functions are interacting
 with each other.
 
 \subsubsection{Firm Agent in the Labour and Goods Market}
+
+See Table \ref{tab:labourfirm}.
 
 \begin{landscape}
 \begin{table}[!htb]\caption{State Transition Table of the Firm involved in Labour Market.}
@@ -108,7 +110,7 @@ a.employees\_needed}}
 \hline {\parbox[l]{5cm}{Firm \_read \_job \_applications \_send
 \_job \_offer \_or \_rejection \_2}}& {\parbox[l]{3cm}{07}}&
 {\parbox[l]{3cm}{08}}& &{\parbox[l]{3cm}{job\_application2}} &
-{\parbox[l]{3cm}{application\_rejection2, job\_offer2}}
+{\parbox[l]{3cm}{job\_offer2, application\_rejection2}}
 \\
 
 \hline {\parbox[l]{5cm}{Firm \_read \_job \_responses \_2}}&
@@ -122,8 +124,7 @@ a.employees\_needed}}
  &
 \\
 \hline {\parbox[l]{5cm}{Firm \_read \_job \_quitting \_2}}&
-{\parbox[l]{3cm}{09c}}& {\parbox[l]{4cm}{Start \_Firm \_Seller
-\_Role}}&& {\parbox[l]{3cm}{quitting2}}
+{\parbox[l]{3cm}{09c}}& {\parbox[l]{4cm}{Start\_Firm\_Seller\_Role}}&& {\parbox[l]{3cm}{quitting2}}
  &
 \\
 
@@ -141,8 +142,7 @@ a.employees\_needed}}
 \\
 
 \hline {\parbox[l]{5cm}{Firm \_compute \_mean \_wage \_specific
-\_skills}}& {\parbox[l]{3cm}{10}}& {\parbox[l]{4cm}{End \_Firm
-\_Labour \_Role}}&
+\_skills}}& {\parbox[l]{3cm}{10}}& {\parbox[l]{4cm}{End\_Firm\_Labour\_Role}}&
  & &
 \\
 \hline
@@ -169,7 +169,7 @@ the responses to their job offers and updates the number of
 employees and the number of vacancies.
 \item[Firm\_read\_job\_quitting.] The firm reads quitting messages and updates the number
 of employees and the number of vacancies.
-\item[Firm\_start\_labour\_market.] Dummy function if a firm has to enter the Labor Market
+\item[Firm\_start\_labour\_market.] Dummy function if a firm has to enter the Labour Market
 in the second round after receiving quitting.
 \item[Firm\_update\_wage\_offer.] The firm increases the wage offer if there are vacancies
  left.
@@ -191,6 +191,8 @@ firm increases the wage offer if there are vacancies left.
 \end{description}
 
 \subsubsection{Household Agent in the Labour and Goods Market}
+
+See Table \ref{tab:labourhh}.
 
 \begin{landscape}
 \begin{table}[!htb]\caption{State Transition Table of the Household involved in Labour Market.}
@@ -327,7 +329,7 @@ reservation wage.
 
 \subsection{Messages being used}
 
-
+See Table \ref{tab:labourmarketmsg}.
 
 \begin{table}[!htb]\caption{Messages involved in the labour and goods market implementation.}
 \begin{center}
@@ -424,6 +426,6 @@ quitting2 & {\parbox[l]{5cm}{worker\_id, firm\_id}} &
  \begin{figure}[!htb]
  \begin{center}
  \includegraphics*[scale=2.0]{stategraph-labour.ps}
- \caption{State Dependency Diagram of the Labour Market Model.} \label{fig:statelabour}
+ \caption{State graph of the Labour Market Model.} \label{fig:statelabour}
  \end{center}
  \end{figure}
