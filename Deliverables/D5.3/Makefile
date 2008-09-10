@@ -27,4 +27,4 @@ ps: dvi
 	dvips -t a4 D53_main.dvi -o D53_main.ps
 
 clean:
-	rm -f D53_main.aux D53_main.bbl D53_main.blg D53_main.dvi D53_main.log D53_main.lof D53_main.lot D53_main.toc D53_main.ps 
+	rm -f *.aux D53_main.bbl D53_main.blg D53_main.dvi D53_main.log D53_main.lof D53_main.lot D53_main.toc D53_main.ps 
