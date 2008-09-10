@@ -2,18 +2,18 @@
 
 % Problem, context, solution
 
-Models are contructed from agents that have functions. These functions must be
+Models are constructed from agents that have functions. These functions must be
 executed in a correct order for the model to run correctly. Formerly this order
 was defined in the model definition XMML by dependencies between functions. These
 dependencies could be either internal, within individual agents, or
 communication, dependent on messages from other agents. This was enough
-information to be able to order functions and plan communication sychronisation
+information to be able to order functions and plan communication synchronisation
 points to work in parallel.
 
 The economic models eventually started to run only certain functions at
 certain times, for example, weekly or monthly. Because each function
 was still being executed this required a condition at the start of every
-function and soon became a hinderance. Even though a series of functions used
+function and soon became a hindrance. Even though a series of functions used
 the same time series they all had to include the same condition. This was also
 true of other conditions, for example only households that were unemployed need
 execute functions involved with the labour market.
@@ -45,9 +45,9 @@ and \ref{fig:state}.
 
 The model can now be recognised as a state machine but with the restriction
 that once a state has been entered by an agent it cannot reenter the same
-state. This provides sychronisation of agents in parallel during execution. Also
+state. This provides synchronisation of agents in parallel during execution. Also
 input to functions are sets of inputs (messages) which can be empty. This is
-the level of detail required by FLAME to plan the communication sychronisation
+the level of detail required by FLAME to plan the communication synchronisation
 in parallel.
 
 Each function can then be defined by the parameters as shown in Table
@@ -64,7 +64,7 @@ Current State&Input&$M_{pre}$&Function&$M_{post}$&Output&Next State\\
 \caption{Function parameters} \label{tab:funcparameters}
 \end{table}
 
-In XMML this is currenly written as below where $M_{pre}$ is defined as
+In XMML this is currently written as below where $M_{pre}$ is defined as
 \textit{condition} and $M_{post}$ is written as source code within a function
 with the same name as the function name.
 

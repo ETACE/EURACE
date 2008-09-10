@@ -15,7 +15,13 @@ function_dependence.ps:
 images: function_transition_v1.ps function_transition_v2.ps cycle_function.ps function_dependence.ps
 
 spell:
-	ispell D53_main.tex
+	aspell -c -t D53_main.tex
+	aspell -c -t credit.tex
+	aspell -c -t conclusions.tex
+	aspell -c -t general.tex
+	aspell -c -t introduction.tex
+	aspell -c -t labour.tex
+	aspell -c -t testing.tex
 
 dvi: 
 	latex D53_main

@@ -1,13 +1,13 @@
 \section{Credit Market Implementation}
 
 This model was adapted from the proposed model of the credit market
-by the Ancona Unit \cite{?}. Here we present a description of how
+by the Ancona Unit. Here we present a description of how
 the model was implemented.
 
 \subsection{Description}
 The credit market involves the interaction of the credit function
 with the financial management functions of the Firm and Bank agent.
-The state dependency diagram \ref{fig:statecredit} shows the flow of
+The state graph in Figure \ref{fig:statecredit} shows the flow of
 activity in the model.
 
 % \subsection{Agents}
@@ -43,6 +43,7 @@ activity in the model.
 
 \subsubsection{Firm Agent in the Credit Market}
 
+See Table \ref{tab:creditbankfn}.
 
 \begin{landscape}
 \begin{table}[!htb]\caption{Functions being performed by the Firm involved in Credit Market.}
@@ -70,7 +71,7 @@ Function Name & State From & State to & Condition on Function & Inputs & Outputs
 
 \subsubsection{Bank Agent in the Credit Market}
 
-
+See Table \ref{tab:creditbankmessages}.
 
 \begin{landscape}
 \begin{table}[!htb]\caption{Functions being performed by the Bank involved in Credit Market.}
@@ -92,9 +93,9 @@ Function Name & State From & State to & Condition on Function & Inputs & Outputs
 
 \hline
 
-{\parbox[l]{3cm}{Bank \_receive \_installment}} & Bank\_03 &
+{\parbox[l]{3cm}{Bank \_receive \_instalment}} & Bank\_03 &
 Bank\_04 & &
-{\parbox[l]{3cm}{installment (a.id EQ m.bank\_id)}} & \\
+{\parbox[l]{3cm}{instalment (a.id EQ m.bank\_id)}} & \\
 
 &&&&
 {\parbox[l]{3cm}{bankruptcy (a.id EQ m.bank\_id)}} & \\
@@ -123,13 +124,13 @@ m.bank\_id)}} &
 \hline
 
 
-\end{tabular}\end{center}\label{tab:creditbankfn}
+\end{tabular}\end{center}\label{tab:creditbankmessages}
 \end{table}
 \end{landscape}
 
 \subsection{Messages being Used}
 
-
+See Table \ref{tab:creditmarketmsg}.
 
 \begin{table}[!htb]\caption{Messages involved in the credit market implementation.}
 \begin{center}
@@ -153,10 +154,10 @@ taken and VAR. The bank
 does not need to know the firm\_id.}}   \\
 \hline
 
-installment & {\parbox[l]{5cm}{bank\_id, installment\_amount,
-interest\_amount, var\_per\_installment}} & {\parbox[l]{5cm}{Message
+instalment & {\parbox[l]{5cm}{bank\_id, instalment\_amount,
+interest\_amount, var\_per\_instalment}} & {\parbox[l]{5cm}{Message
 added by firm pays
-installment and interest to the bank.}}    \\
+instalment and interest to the bank.}}    \\
 
 \hline bankruptcy & {\parbox[l]{5cm}{bank\_id, bad\_debt,
 credit\_refunded, residual\_var}} &{\parbox[l]{5cm}{Message added by
@@ -173,6 +174,6 @@ to signal bankruptcy.}}  \\
  \begin{figure}[!htb]
  \begin{center}
   \includegraphics*[scale=2.0]{stategraph.ps}
- \caption{State Dependency Diagram of the Credit Market Model.} \label{fig:statecredit}
+ \caption{State graph of the Credit Market Model.} \label{fig:statecredit}
  \end{center}
  \end{figure}

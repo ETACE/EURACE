@@ -12,14 +12,14 @@ an unexpected solution. The invariants to a simulation, the relationship of
 variables that remain true, can be pre-written or detected during simulation
 runs and provide a dynamic way of testing agent-based models.
 
-For example during a simulation run assetions can be placed on variables to
+For example during a simulation run assertions can be placed on variables to
 make sure they fall within a certain range. If ranges are not known before hand
 they can be detected and the results viewed by the model creator for
 correctness.
 
 The testing of individual parts of a system can still achieved by unit testing
-but testing the interaction of these parts, interation testing, can use
-techniques designed for state machines, and the use of invarient detectors.
+but testing the interaction of these parts, iteration testing, can use
+techniques designed for state machines, and the use of invariant detectors.
 
 \subsection{Unit Testing}
 
@@ -46,7 +46,7 @@ FLAME provides procedures to help with unit testing:
 \end{itemize}
 
 Unit testing treats the function to be tested as a black box, inputs are given
-and only the outputs are tested, see Figure \ref{fig:unittesting}.
+and only the outputs are tested, as shown in Figure \ref{fig:unittesting}.
 
 \begin{figure}[hb]
 \centering
@@ -67,10 +67,10 @@ The W-method proposed by T. Chow \cite{CHOW:1978} provides a complete test set
 of sequences through a state machine. Because models have been defined as state
 machines this technique can be used.
 
-An implementation of the W-method is avaliable through a program called
+An implementation of the W-method is available through a program called
 statechum \cite{WALKINSHAW:2007,WALKINSHAW:2008}
-(http://statechum.sourceforge.net/) which accepts as input graphml
-(http://graphml.graphdrawing.org/), an XML stardard for describing graphs.
+(http://statechum.sourceforge.net/) which accepts as input graphml\\
+(http://graphml.graphdrawing.org/), an XML standard for describing graphs.
 Each agent as a separate state machine when fed into the W-method will
 produce a test set with a specified coverage. An example test set for the Firm
 agent in the labour and goods markets is as follows:
@@ -134,23 +134,23 @@ agent in the labour and goods markets is as follows:
 Anticipating the results of individual functions is straight forward. They are
 coded for their specific purpose with required results and are therefore easy to
 test. With the introduction of communication and interchange of information,
-anticipating the results from a group of functions is not so easy, and this is
-actually one of the arguments for using agent-based modelling. The consequence
-of not being able to predict the results is that first the results have to be created
-and then tested for what was roughly expected.
+anticipating the results from a group of functions is not so easy, this being
+one of the reasons for using agent-based modelling. The consequence of not being
+able to predict the results is that first the results have to be created and then
+tested for what was roughly expected.
 
-One way to analyse the output of groups of functions is to use an invarient
+One way to analyse the output of groups of functions is to use an invariant
 detector. A program of this type reports any likely invariants, properties that
 hold at certain points. This could then be analysed by the modeller and possibly
 used as assertions in future test runs.
 
 The Daikon program is an invariant detector \cite{DAIKON:2007}
 (http://groups.csail.mit.edu/pag/daikon/). After feeding Daikon the results
-from 50 iterations from the labour and goods market model, the invarients
-of each agents variables are produced. The examples given below show invarients
+from fifty iterations from the labour and goods market model, the invariants
+of each agents variables are produced. The examples given below show invariants
 of variables where: they keep a certain value; are one of a limited list of
 values; or are large or smaller than a certain value. These are only three
-types of invarients but Daikon can be told to search for many more, for example
+types of invariants but Daikon can be told to search for many more, for example
 the relationship between two or more variables.
 
 {\small
@@ -240,4 +240,6 @@ total_supply == 0.0
 \end{verbatim}
 }
 
-
+This technique can be utilised for tracking changes of variables between
+functions and not just between iterations giving more testing coverage of
+groups of functions.
