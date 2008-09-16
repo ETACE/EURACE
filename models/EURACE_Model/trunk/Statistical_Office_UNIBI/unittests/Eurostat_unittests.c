@@ -10,7 +10,7 @@
 /*
  * \fn: void unittest_Eurostat_store_history_monthly()
  * \brief: Unit test for: Eurostat_store_history_monthly.
- * Status: Not tested
+ * Status: Tested OK
  */
 void unittest_Eurostat_store_history_monthly()
 {
@@ -35,8 +35,6 @@ void unittest_Eurostat_store_history_monthly()
 	Eurostat_store_history_monthly();
     
     /***** Variables: Memory post-conditions *****/
-    //CU_ASSERT_DOUBLE_EQUAL(, 0.0, 1e-3);
-    //CU_ASSERT_EQUAL();
 	for (k=1;k<13;k++)
 	{
 		var = HISTORY_MONTHLY[k].cpi;
@@ -47,8 +45,6 @@ void unittest_Eurostat_store_history_monthly()
 		
 		CU_ASSERT_DOUBLE_EQUAL(var, result, 1e-3);
 	}
-//	CU_ASSERT_DOUBLE_EQUAL(HISTORY_MONTHLY[1].cpi, 0.0, 1e-3);
-	//CU_ASSERT_DOUBLE_EQUAL(HISTORY_MONTHLY[2].cpi, 1.0, 1e-3);
 	
     /************* At end of unit test, free the agent **************/
 	unittest_free_Eurostat_agent();
@@ -59,7 +55,7 @@ void unittest_Eurostat_store_history_monthly()
 /*
  * \fn: void unittest_Eurostat_store_history_quarterly()
  * \brief: Unit test for: Eurostat_store_history_quarterly.
- * Status: Not tested
+ * Status: Tested OK
  */
 void unittest_Eurostat_store_history_quarterly()
 {
@@ -101,7 +97,7 @@ void unittest_Eurostat_store_history_quarterly()
 /*
  * \fn: void unittest_Eurostat_compute_growth_rates_monthly()
  * \brief: Unit test for: Eurostat_compute_growth_rates_monthly.
- * Status: Not tested
+ * Status: Tested OK
  */
 void unittest_Eurostat_compute_growth_rates_monthly()
 {
@@ -130,7 +126,7 @@ void unittest_Eurostat_compute_growth_rates_monthly()
 /*
  * \fn: void unittest_Eurostat_compute_growth_rates_quarterly()
  * \brief: Unit test for: Eurostat_compute_growth_rates_quarterly.
- * Status: Not tested
+ * Status: Tested OK
  */
 void unittest_Eurostat_compute_growth_rates_quarterly()
 {
@@ -185,25 +181,124 @@ void unittest_Eurostat_firm_creation()
 
 
 /*
- * \fn: void unittest_Eurostat_firm_creation()
+ * \fn: void unittest1_Eurostat_measure_recession()
  * \brief: Unit test for: Eurostat_measure_recession.
  * Status: Not tested
  */
-void unittest_Eurostat_measure_recession()
+void unittest1_Eurostat_measure_recession()
 {
     /************* At start of unit test, add one agent **************/
 	unittest_init_Eurostat_agent();
 	
     /***** Variables: Memory pre-conditions **************************/
-    
+	RECESSION_STARTED=0;
+	HISTORY_QUARTERLY[0].gdp=90;
+	HISTORY_QUARTERLY[1].gdp=100;
+	HISTORY_QUARTERLY[2].gdp=110;
+	
 	/***** Messages: pre-conditions **********************************/
     
     /***** Function evaluation ***************************************/
 	Eurostat_measure_recession();
     
     /***** Variables: Memory post-conditions *****/
-	//CU_ASSERT_DOUBLE_EQUAL(EXPORT_MATRIX[0][0], 100.0, 1e-3);
+	CU_ASSERT_EQUAL(RECESSION_STARTED, 1);
+	
+    /************* At end of unit test, free the agent **************/
+	unittest_free_Eurostat_agent();
+    /************* At end of unit tests, free all Messages **********/
+    free_messages();
+}
+
+/*
+ * \fn: void unittest2_Eurostat_measure_recession()
+ * \brief: Unit test for: Eurostat_measure_recession.
+ * Case: RECESSION_STARTED=1 and after updating RECESSION_DURATION from 0 to 1, the recession continues: RECESSION_STARTED=1
+ * Status: Not tested
+ */
+void unittest2_Eurostat_measure_recession()
+{
+    /************* At start of unit test, add one agent **************/
+	unittest_init_Eurostat_agent();
+	
+    /***** Variables: Memory pre-conditions **************************/
+	RECESSION_STARTED=1;
+	RECESSION_DURATION=0;
+	HISTORY_QUARTERLY[0].gdp=90;
+	HISTORY_QUARTERLY[1].gdp=100;
+	
+	/***** Messages: pre-conditions **********************************/
     
+    /***** Function evaluation ***************************************/
+	Eurostat_measure_recession();
+    
+    /***** Variables: Memory post-conditions *****/
+	CU_ASSERT_EQUAL(RECESSION_STARTED, 1);
+	CU_ASSERT_EQUAL(RECESSION_DURATION, 1);	
+	
+    /************* At end of unit test, free the agent **************/
+	unittest_free_Eurostat_agent();
+    /************* At end of unit tests, free all Messages **********/
+    free_messages();
+}
+
+/*
+ * \fn: void unittest3_Eurostat_measure_recession()
+ * \brief: Unit test for: Eurostat_measure_recession.
+ * Case: RECESSION_STARTED=1 and after updating RECESSION_DURATION from 0 to 1, the recession is ended: RECESSION_STARTED=0.
+ * Status: Not tested
+ */
+void unittest3_Eurostat_measure_recession()
+{
+    /************* At start of unit test, add one agent **************/
+	unittest_init_Eurostat_agent();
+	
+    /***** Variables: Memory pre-conditions **************************/
+	RECESSION_STARTED=1;
+	RECESSION_DURATION=0;
+	HISTORY_QUARTERLY[0].gdp=110;
+	HISTORY_QUARTERLY[1].gdp=100;
+	
+	/***** Messages: pre-conditions **********************************/
+    
+    /***** Function evaluation ***************************************/
+	Eurostat_measure_recession();
+    
+    /***** Variables: Memory post-conditions *****/
+	CU_ASSERT_EQUAL(RECESSION_STARTED, 0);
+	CU_ASSERT_EQUAL(RECESSION_DURATION, 1);
+	
+    /************* At end of unit test, free the agent **************/
+	unittest_free_Eurostat_agent();
+    /************* At end of unit tests, free all Messages **********/
+    free_messages();
+}
+
+/*
+ * \fn: void unittest4_Eurostat_measure_recession()
+ * \brief: Unit test for: Eurostat_measure_recession.
+ * Case: Recession does not occur: before RECESSION_STARTED=0, and after RECESSION_STARTED=0.
+ * Status: Not tested
+ */
+void unittest4_Eurostat_measure_recession()
+{
+    /************* At start of unit test, add one agent **************/
+	unittest_init_Eurostat_agent();
+	
+    /***** Variables: Memory pre-conditions **************************/
+	RECESSION_STARTED=0;
+	HISTORY_QUARTERLY[0].gdp=90;
+	HISTORY_QUARTERLY[1].gdp=100;
+	HISTORY_QUARTERLY[2].gdp=90;
+	
+	/***** Messages: pre-conditions **********************************/
+    
+    /***** Function evaluation ***************************************/
+	Eurostat_measure_recession();
+    
+    /***** Variables: Memory post-conditions *****/
+	CU_ASSERT_EQUAL(RECESSION_STARTED, 0);
+	
     /************* At end of unit test, free the agent **************/
 	unittest_free_Eurostat_agent();
     /************* At end of unit tests, free all Messages **********/
