@@ -2,7 +2,7 @@
 #include "../Mall_agent_header.h"
 #include "../my_library_header.h"
 
-#define NO_REGIONS 2 //number of regions (hard-coded in xml as 2)
+#define NO_REGIONS 2 //number of regions (hard-coded here as 2)
 
 
 /********************Mall agent functions*****************/
