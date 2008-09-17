@@ -198,14 +198,14 @@ int Eurostat_calculate_data()
         /*Store the region data of the firms*/
         for(i = 0; i < REGION_FIRM_DATA.size; i++)
         {
-            REGION_FIRM_DATA.array[i].firms = 0;
+            REGION_FIRM_DATA.array[i].no_firms = 0;
                         
             START_FIRM_SEND_DATA_MESSAGE_LOOP
             
             if(firm_send_data_message->region_id == 
             REGION_FIRM_DATA.array[i].region_id)
             {
-                REGION_FIRM_DATA.array[i].firms += 1;
+                REGION_FIRM_DATA.array[i].no_firms += 1;
                 NO_FIRMS++;
                 
                 REGION_FIRM_DATA.array[i].vacancies += 
@@ -900,7 +900,7 @@ int Eurostat_read_tax_rates()
  */
 int Eurostat_store_history_monthly()
 {   
-    int i;
+    int i, region;
     
     //Shift history backwards
     /*
@@ -912,7 +912,7 @@ int Eurostat_store_history_monthly()
      */
     for (i=12; i>0; i--)
     {
-    //t-i-1 gets filled with value from t-i
+      //t-i-1 gets filled with value from t-i
       HISTORY_MONTHLY[i].cpi = HISTORY_MONTHLY[i-1].cpi;
       HISTORY_MONTHLY[i].gdp = HISTORY_MONTHLY[i-1].gdp;
       HISTORY_MONTHLY[i].output = HISTORY_MONTHLY[i-1].output;
@@ -923,13 +923,13 @@ int Eurostat_store_history_monthly()
       HISTORY_MONTHLY[i].unemployment_rate_skill_3 = HISTORY_MONTHLY[i-1].unemployment_rate_skill_3;
       HISTORY_MONTHLY[i].unemployment_rate_skill_4 = HISTORY_MONTHLY[i-1].unemployment_rate_skill_4;
       HISTORY_MONTHLY[i].unemployment_rate_skill_5 = HISTORY_MONTHLY[i-1].unemployment_rate_skill_5;
-      HISTORY_MONTHLY[i].wages = HISTORY_MONTHLY[i-1].wages;
+      HISTORY_MONTHLY[i].average_wage = HISTORY_MONTHLY[i-1].average_wage;
       HISTORY_MONTHLY[i].no_firms = HISTORY_MONTHLY[i-1].no_firms;
       HISTORY_MONTHLY[i].no_firm_births = HISTORY_MONTHLY[i-1].no_firm_births;
       HISTORY_MONTHLY[i].no_firm_deaths = HISTORY_MONTHLY[i-1].no_firm_deaths;
     }
     
-    //Store first value of history: [0] gets filled with value from t
+    //Store current value of history: [0] gets filled with current value
     HISTORY_MONTHLY[0].cpi = CPI;
     HISTORY_MONTHLY[0].gdp = GDP;                   
     HISTORY_MONTHLY[0].output = MONTHLY_OUTPUT;     
@@ -940,11 +940,50 @@ int Eurostat_store_history_monthly()
     HISTORY_MONTHLY[0].unemployment_rate_skill_3 = UNEMPLOYMENT_RATE_SKILL_3;
     HISTORY_MONTHLY[0].unemployment_rate_skill_4 = UNEMPLOYMENT_RATE_SKILL_4;
     HISTORY_MONTHLY[0].unemployment_rate_skill_5 = UNEMPLOYMENT_RATE_SKILL_5;
-    HISTORY_MONTHLY[0].wages = AVERAGE_WAGE;        
+    HISTORY_MONTHLY[0].average_wage = FIRM_AVERAGE_WAGE;        
     HISTORY_MONTHLY[0].no_firms = NO_FIRMS;         
     HISTORY_MONTHLY[0].no_firm_births = NO_FIRM_BIRTHS; 
     HISTORY_MONTHLY[0].no_firm_deaths = NO_FIRM_DEATHS; 
 
+    //Code to be tested: region data
+    for ( region=0; region<REGION_FIRM_DATA.size; region++)
+    {
+        //Shift history backwards
+        for (i=12; i>0; i--)
+        {
+	        HISTORY_MONTHLY[i].region_data.array[region].cpi = HISTORY_MONTHLY[i-1].region_data.array[region].cpi;
+	        HISTORY_MONTHLY[i].region_data.array[region].gdp = HISTORY_MONTHLY[i-1].region_data.array[region].gdp;
+	        HISTORY_MONTHLY[i].region_data.array[region].output = HISTORY_MONTHLY[i-1].region_data.array[region].output;
+	        HISTORY_MONTHLY[i].region_data.array[region].employment = HISTORY_MONTHLY[i-1].region_data.array[region].employment;
+	        HISTORY_MONTHLY[i].region_data.array[region].unemployment_rate = HISTORY_MONTHLY[i-1].region_data.array[region].unemployment_rate;
+	        HISTORY_MONTHLY[i].region_data.array[region].unemployment_rate_skill_1 = HISTORY_MONTHLY[i-1].region_data.array[region].unemployment_rate_skill_1;
+	        HISTORY_MONTHLY[i].region_data.array[region].unemployment_rate_skill_2 = HISTORY_MONTHLY[i-1].region_data.array[region].unemployment_rate_skill_2;
+	        HISTORY_MONTHLY[i].region_data.array[region].unemployment_rate_skill_3 = HISTORY_MONTHLY[i-1].region_data.array[region].unemployment_rate_skill_3;
+	        HISTORY_MONTHLY[i].region_data.array[region].unemployment_rate_skill_4 = HISTORY_MONTHLY[i-1].region_data.array[region].unemployment_rate_skill_4;
+	        HISTORY_MONTHLY[i].region_data.array[region].unemployment_rate_skill_5 = HISTORY_MONTHLY[i-1].region_data.array[region].unemployment_rate_skill_5;
+	        HISTORY_MONTHLY[i].region_data.array[region].average_wage = HISTORY_MONTHLY[i-1].region_data.array[region].average_wage;
+	        HISTORY_MONTHLY[i].region_data.array[region].no_firms = HISTORY_MONTHLY[i-1].region_data.array[region].no_firms;
+	        HISTORY_MONTHLY[i].region_data.array[region].no_firm_births = HISTORY_MONTHLY[i-1].region_data.array[region].no_firm_births;
+	        HISTORY_MONTHLY[i].region_data.array[region].no_firm_deaths = HISTORY_MONTHLY[i-1].region_data.array[region].no_firm_deaths;
+        }
+        
+        //Store current value of history
+        HISTORY_MONTHLY[0].region_data.array[region].cpi = REGION_FIRM_DATA.array[region].cpi;
+        HISTORY_MONTHLY[0].region_data.array[region].gdp = REGION_FIRM_DATA.array[region].gdp;                   
+        HISTORY_MONTHLY[0].region_data.array[region].output = REGION_FIRM_DATA.array[region].monthly_output;
+        HISTORY_MONTHLY[0].region_data.array[region].employment = REGION_FIRM_DATA.array[region].employed;
+        HISTORY_MONTHLY[0].region_data.array[region].unemployment_rate = REGION_HOUSEHOLD_DATA.array[region].unemployment_rate;
+        HISTORY_MONTHLY[0].region_data.array[region].unemployment_rate_skill_1 = REGION_HOUSEHOLD_DATA.array[region].unemployment_rate_skill_1;
+        HISTORY_MONTHLY[0].region_data.array[region].unemployment_rate_skill_2 = REGION_HOUSEHOLD_DATA.array[region].unemployment_rate_skill_2;
+        HISTORY_MONTHLY[0].region_data.array[region].unemployment_rate_skill_3 = REGION_HOUSEHOLD_DATA.array[region].unemployment_rate_skill_3;
+        HISTORY_MONTHLY[0].region_data.array[region].unemployment_rate_skill_4 = REGION_HOUSEHOLD_DATA.array[region].unemployment_rate_skill_4;
+        HISTORY_MONTHLY[0].region_data.array[region].unemployment_rate_skill_5 = REGION_HOUSEHOLD_DATA.array[region].unemployment_rate_skill_5;
+        HISTORY_MONTHLY[0].region_data.array[region].average_wage = REGION_HOUSEHOLD_DATA.array[region].average_wage;
+        HISTORY_MONTHLY[0].region_data.array[region].no_firms = REGION_FIRM_DATA.array[region].no_firms;
+        HISTORY_MONTHLY[0].region_data.array[region].no_firm_births = REGION_FIRM_DATA.array[region].no_firm_births; 
+        HISTORY_MONTHLY[0].region_data.array[region].no_firm_deaths = REGION_FIRM_DATA.array[region].no_firm_deaths;   
+    }
+    
     if (PRINT_LOG)
     {
         printf("Monthly data recorded by Eurostat:\n");
@@ -958,7 +997,7 @@ int Eurostat_store_history_monthly()
         printf(" - monthly average unemployment rate_skill_3: %f\n", HISTORY_MONTHLY[0].unemployment_rate_skill_3);
         printf(" - monthly average unemployment rate_skill_4: %f\n", HISTORY_MONTHLY[0].unemployment_rate_skill_4);
         printf(" - monthly average unemployment rate_skill_5: %f\n", HISTORY_MONTHLY[0].unemployment_rate_skill_5);        
-        printf(" - monthly average wage: %f\n", HISTORY_MONTHLY[0].wages);
+        printf(" - monthly average wage: %f\n", HISTORY_MONTHLY[0].average_wage);
         printf(" - monthly average number of firms: %d\n", HISTORY_MONTHLY[0].no_firms);
         printf(" - monthly total number of firm births: %d\n", HISTORY_MONTHLY[0].no_firm_births);
         printf(" - monthly total number of firm deaths: %d\n", HISTORY_MONTHLY[0].no_firm_deaths);
@@ -973,7 +1012,7 @@ int Eurostat_store_history_monthly()
  */
 int Eurostat_store_history_quarterly()
 {
-    int i;
+    int i, region;
     
     //Shift history backwards
     for (i=4; i>0; i--)
@@ -989,12 +1028,12 @@ int Eurostat_store_history_quarterly()
       HISTORY_QUARTERLY[i].unemployment_rate_skill_3 = HISTORY_QUARTERLY[i-1].unemployment_rate_skill_3;
       HISTORY_QUARTERLY[i].unemployment_rate_skill_4 = HISTORY_QUARTERLY[i-1].unemployment_rate_skill_4;
       HISTORY_QUARTERLY[i].unemployment_rate_skill_5 = HISTORY_QUARTERLY[i-1].unemployment_rate_skill_5;
-      HISTORY_QUARTERLY[i].wages = HISTORY_QUARTERLY[i-1].wages;
+      HISTORY_QUARTERLY[i].average_wage = HISTORY_QUARTERLY[i-1].average_wage;
       HISTORY_QUARTERLY[i].no_firms = HISTORY_QUARTERLY[i-1].no_firms;
       HISTORY_QUARTERLY[i].no_firm_births = HISTORY_QUARTERLY[i-1].no_firm_births;
       HISTORY_QUARTERLY[i].no_firm_deaths = HISTORY_QUARTERLY[i-1].no_firm_deaths;
     }
-    
+        
     //Reset first elements for sum
     HISTORY_QUARTERLY[0].cpi=0.0;
     HISTORY_QUARTERLY[0].gdp=0.0;
@@ -1006,11 +1045,11 @@ int Eurostat_store_history_quarterly()
     HISTORY_QUARTERLY[0].unemployment_rate_skill_3=0.0;
     HISTORY_QUARTERLY[0].unemployment_rate_skill_4=0.0;
     HISTORY_QUARTERLY[0].unemployment_rate_skill_5=0.0;    
-    HISTORY_QUARTERLY[0].wages=0.0;
+    HISTORY_QUARTERLY[0].average_wage=0.0;
     HISTORY_QUARTERLY[0].no_firms=0;
     HISTORY_QUARTERLY[0].no_firm_births=0;
     HISTORY_QUARTERLY[0].no_firm_deaths=0;
-
+    
     //Store first value: construct quarterly sums from monthly history
     for (i=0; i<3; i++)
     {
@@ -1024,7 +1063,7 @@ int Eurostat_store_history_quarterly()
         HISTORY_QUARTERLY[0].unemployment_rate  += HISTORY_MONTHLY[i].unemployment_rate_skill_3;
         HISTORY_QUARTERLY[0].unemployment_rate  += HISTORY_MONTHLY[i].unemployment_rate_skill_4;
         HISTORY_QUARTERLY[0].unemployment_rate  += HISTORY_MONTHLY[i].unemployment_rate_skill_5;
-        HISTORY_QUARTERLY[0].wages              += HISTORY_MONTHLY[i].wages;
+        HISTORY_QUARTERLY[0].average_wage       += HISTORY_MONTHLY[i].average_wage;
         HISTORY_QUARTERLY[0].no_firms           += HISTORY_MONTHLY[i].no_firms;
         HISTORY_QUARTERLY[0].no_firm_births     += HISTORY_MONTHLY[i].no_firm_births;
         HISTORY_QUARTERLY[0].no_firm_deaths     += HISTORY_MONTHLY[i].no_firm_deaths;
@@ -1038,9 +1077,80 @@ int Eurostat_store_history_quarterly()
     HISTORY_QUARTERLY[0].unemployment_rate_skill_3 = HISTORY_QUARTERLY[0].unemployment_rate_skill_3/3;
     HISTORY_QUARTERLY[0].unemployment_rate_skill_4 = HISTORY_QUARTERLY[0].unemployment_rate_skill_4/3;
     HISTORY_QUARTERLY[0].unemployment_rate_skill_5 = HISTORY_QUARTERLY[0].unemployment_rate_skill_5/3;
-    HISTORY_QUARTERLY[0].wages                  = HISTORY_QUARTERLY[0].wages/3;
+    HISTORY_QUARTERLY[0].average_wage           = HISTORY_QUARTERLY[0].average_wage/3;
     HISTORY_QUARTERLY[0].no_firms               = HISTORY_QUARTERLY[0].no_firms/3;
     
+    //*********************************** Code to be tested: region data
+    for ( region=0; region<REGION_FIRM_DATA.size; region++)
+    {
+        //Shift history backwards
+        for (i=4; i>0; i--)
+        {
+	    	HISTORY_QUARTERLY[i].region_data.array[region].cpi = HISTORY_QUARTERLY[i-1].region_data.array[region].cpi;
+	        HISTORY_QUARTERLY[i].region_data.array[region].gdp = HISTORY_QUARTERLY[i-1].region_data.array[region].gdp;
+	        HISTORY_QUARTERLY[i].region_data.array[region].output = HISTORY_QUARTERLY[i-1].region_data.array[region].output;
+	        HISTORY_QUARTERLY[i].region_data.array[region].employment = HISTORY_QUARTERLY[i-1].region_data.array[region].employment;      
+	        HISTORY_QUARTERLY[i].region_data.array[region].unemployment_rate = HISTORY_QUARTERLY[i-1].region_data.array[region].unemployment_rate;
+	        HISTORY_QUARTERLY[i].region_data.array[region].unemployment_rate_skill_1 = HISTORY_QUARTERLY[i-1].region_data.array[region].unemployment_rate_skill_1;
+	        HISTORY_QUARTERLY[i].region_data.array[region].unemployment_rate_skill_2 = HISTORY_QUARTERLY[i-1].region_data.array[region].unemployment_rate_skill_2;
+	        HISTORY_QUARTERLY[i].region_data.array[region].unemployment_rate_skill_3 = HISTORY_QUARTERLY[i-1].region_data.array[region].unemployment_rate_skill_3;
+	        HISTORY_QUARTERLY[i].region_data.array[region].unemployment_rate_skill_4 = HISTORY_QUARTERLY[i-1].region_data.array[region].unemployment_rate_skill_4;
+	        HISTORY_QUARTERLY[i].region_data.array[region].unemployment_rate_skill_5 = HISTORY_QUARTERLY[i-1].region_data.array[region].unemployment_rate_skill_5;
+	        HISTORY_QUARTERLY[i].region_data.array[region].average_wage = HISTORY_QUARTERLY[i-1].region_data.array[region].average_wage;
+	        HISTORY_QUARTERLY[i].region_data.array[region].no_firms = HISTORY_QUARTERLY[i-1].region_data.array[region].no_firms;
+	        HISTORY_QUARTERLY[i].region_data.array[region].no_firm_births = HISTORY_QUARTERLY[i-1].region_data.array[region].no_firm_births;
+	        HISTORY_QUARTERLY[i].region_data.array[region].no_firm_deaths = HISTORY_QUARTERLY[i-1].region_data.array[region].no_firm_deaths;
+        }
+
+        //Reset first elements for sum
+        HISTORY_QUARTERLY[0].region_data.array[region].cpi=0.0;
+        HISTORY_QUARTERLY[0].region_data.array[region].gdp=0.0;
+        HISTORY_QUARTERLY[0].region_data.array[region].output=0.0;
+        HISTORY_QUARTERLY[0].region_data.array[region].employment=0.0;
+        HISTORY_QUARTERLY[0].region_data.array[region].unemployment_rate=0.0;
+        HISTORY_QUARTERLY[0].region_data.array[region].unemployment_rate_skill_1=0.0;
+        HISTORY_QUARTERLY[0].region_data.array[region].unemployment_rate_skill_2=0.0;
+        HISTORY_QUARTERLY[0].region_data.array[region].unemployment_rate_skill_3=0.0;
+        HISTORY_QUARTERLY[0].region_data.array[region].unemployment_rate_skill_4=0.0;
+        HISTORY_QUARTERLY[0].region_data.array[region].unemployment_rate_skill_5=0.0;    
+        HISTORY_QUARTERLY[0].region_data.array[region].average_wage=0.0;
+        HISTORY_QUARTERLY[0].region_data.array[region].no_firms=0;
+        HISTORY_QUARTERLY[0].region_data.array[region].no_firm_births=0;
+        HISTORY_QUARTERLY[0].region_data.array[region].no_firm_deaths=0;
+
+        //Store first value: construct quarterly sums from monthly history
+	    for (i=0; i<3; i++)
+	    {
+	        HISTORY_QUARTERLY[0].region_data.array[region].cpi                += HISTORY_MONTHLY[i].region_data.array[region].cpi;
+	        HISTORY_QUARTERLY[0].region_data.array[region].gdp                += HISTORY_MONTHLY[i].region_data.array[region].gdp;
+	        HISTORY_QUARTERLY[0].region_data.array[region].output             += HISTORY_MONTHLY[i].region_data.array[region].output;
+	        HISTORY_QUARTERLY[0].region_data.array[region].employment         += HISTORY_MONTHLY[i].region_data.array[region].employment;        
+	        HISTORY_QUARTERLY[0].region_data.array[region].unemployment_rate  += HISTORY_MONTHLY[i].region_data.array[region].unemployment_rate;
+	        HISTORY_QUARTERLY[0].region_data.array[region].unemployment_rate  += HISTORY_MONTHLY[i].region_data.array[region].unemployment_rate_skill_1;
+	        HISTORY_QUARTERLY[0].region_data.array[region].unemployment_rate  += HISTORY_MONTHLY[i].region_data.array[region].unemployment_rate_skill_2;
+	        HISTORY_QUARTERLY[0].region_data.array[region].unemployment_rate  += HISTORY_MONTHLY[i].region_data.array[region].unemployment_rate_skill_3;
+	        HISTORY_QUARTERLY[0].region_data.array[region].unemployment_rate  += HISTORY_MONTHLY[i].region_data.array[region].unemployment_rate_skill_4;
+	        HISTORY_QUARTERLY[0].region_data.array[region].unemployment_rate  += HISTORY_MONTHLY[i].region_data.array[region].unemployment_rate_skill_5;
+	        HISTORY_QUARTERLY[0].region_data.array[region].average_wage       += HISTORY_MONTHLY[i].region_data.array[region].average_wage;
+	        HISTORY_QUARTERLY[0].region_data.array[region].no_firms           += HISTORY_MONTHLY[i].region_data.array[region].no_firms;
+	        HISTORY_QUARTERLY[0].region_data.array[region].no_firm_births     += HISTORY_MONTHLY[i].region_data.array[region].no_firm_births;
+	        HISTORY_QUARTERLY[0].region_data.array[region].no_firm_deaths     += HISTORY_MONTHLY[i].region_data.array[region].no_firm_deaths;	    	
+	    }
+	    
+	    //The following quarterly statistics are averages of monthly statistics
+	    HISTORY_QUARTERLY[0].region_data.array[region].cpi                    = HISTORY_QUARTERLY[0].region_data.array[region].cpi/3;
+	    HISTORY_QUARTERLY[0].region_data.array[region].employment             = HISTORY_QUARTERLY[0].region_data.array[region].employment/3;
+	    HISTORY_QUARTERLY[0].region_data.array[region].unemployment_rate      = HISTORY_QUARTERLY[0].region_data.array[region].unemployment_rate/3;
+	    HISTORY_QUARTERLY[0].region_data.array[region].unemployment_rate_skill_1 = HISTORY_QUARTERLY[0].region_data.array[region].unemployment_rate_skill_1/3;    
+	    HISTORY_QUARTERLY[0].region_data.array[region].unemployment_rate_skill_2 = HISTORY_QUARTERLY[0].region_data.array[region].unemployment_rate_skill_2/3;
+	    HISTORY_QUARTERLY[0].region_data.array[region].unemployment_rate_skill_3 = HISTORY_QUARTERLY[0].region_data.array[region].unemployment_rate_skill_3/3;
+	    HISTORY_QUARTERLY[0].region_data.array[region].unemployment_rate_skill_4 = HISTORY_QUARTERLY[0].region_data.array[region].unemployment_rate_skill_4/3;
+	    HISTORY_QUARTERLY[0].region_data.array[region].unemployment_rate_skill_5 = HISTORY_QUARTERLY[0].region_data.array[region].unemployment_rate_skill_5/3;
+	    HISTORY_QUARTERLY[0].region_data.array[region].average_wage           = HISTORY_QUARTERLY[0].region_data.array[region].average_wage/3;
+	    HISTORY_QUARTERLY[0].region_data.array[region].no_firms               = HISTORY_QUARTERLY[0].region_data.array[region].no_firms/3;
+    }
+    
+
     if (PRINT_LOG)
     {
         printf("Quarterly data recorded by Eurostat:\n");
@@ -1049,7 +1159,7 @@ int Eurostat_store_history_quarterly()
         printf(" - quarterly output: %f\n", HISTORY_QUARTERLY[0].output);
         printf(" - quarterly average employment: %d\n", HISTORY_QUARTERLY[0].employment);
         printf(" - quarterly average unemployment rate: %f\n", HISTORY_QUARTERLY[0].unemployment_rate);
-        printf(" - quarterly average wage: %f\n", HISTORY_QUARTERLY[0].wages);
+        printf(" - quarterly average wage: %f\n", HISTORY_QUARTERLY[0].average_wage);
         printf(" - quarterly average number of firms: %d\n", HISTORY_QUARTERLY[0].no_firms);
         printf(" - quarterly total number of firm births: %d\n", HISTORY_QUARTERLY[0].no_firm_births);
         printf(" - quarterly total number of firm deaths: %d\n", HISTORY_QUARTERLY[0].no_firm_deaths);
@@ -1065,6 +1175,8 @@ int Eurostat_store_history_quarterly()
  */
 int Eurostat_compute_growth_rates_monthly()
 {
+	int region;
+	
     MONTHLY_GROWTH_RATES.cpi                       = 0.0;
     MONTHLY_GROWTH_RATES.gdp                       = 0.0; 
     MONTHLY_GROWTH_RATES.output                    = 0.0;
@@ -1075,7 +1187,7 @@ int Eurostat_compute_growth_rates_monthly()
     MONTHLY_GROWTH_RATES.unemployment_rate_skill_3         = 0.0;
     MONTHLY_GROWTH_RATES.unemployment_rate_skill_4         = 0.0;
     MONTHLY_GROWTH_RATES.unemployment_rate_skill_5         = 0.0;
-    MONTHLY_GROWTH_RATES.wages                     = 0.0;
+    MONTHLY_GROWTH_RATES.average_wage                      = 0.0;
     MONTHLY_GROWTH_RATES.no_firms                  = 0.0;
     MONTHLY_GROWTH_RATES.no_firm_births            = 0.0;
     MONTHLY_GROWTH_RATES.no_firm_deaths            = 0.0;
@@ -1090,7 +1202,7 @@ int Eurostat_compute_growth_rates_monthly()
     ANNUAL_GROWTH_RATES_MONTHLY.unemployment_rate_skill_3  = 0.0;
     ANNUAL_GROWTH_RATES_MONTHLY.unemployment_rate_skill_4  = 0.0;
     ANNUAL_GROWTH_RATES_MONTHLY.unemployment_rate_skill_5  = 0.0;
-    ANNUAL_GROWTH_RATES_MONTHLY.wages              = 0.0;
+    ANNUAL_GROWTH_RATES_MONTHLY.average_wage               = 0.0;
     ANNUAL_GROWTH_RATES_MONTHLY.no_firms           = 0.0;
     ANNUAL_GROWTH_RATES_MONTHLY.no_firm_births     = 0.0;
     ANNUAL_GROWTH_RATES_MONTHLY.no_firm_deaths     = 0.0;
@@ -1106,7 +1218,7 @@ int Eurostat_compute_growth_rates_monthly()
     if(HISTORY_MONTHLY[1].unemployment_rate_skill_3>0.0){MONTHLY_GROWTH_RATES.unemployment_rate_skill_3         = (HISTORY_MONTHLY[0].unemployment_rate_skill_3 / HISTORY_MONTHLY[1].unemployment_rate_skill_3  -1)*100;}
     if(HISTORY_MONTHLY[1].unemployment_rate_skill_4>0.0){MONTHLY_GROWTH_RATES.unemployment_rate_skill_4         = (HISTORY_MONTHLY[0].unemployment_rate_skill_4 / HISTORY_MONTHLY[1].unemployment_rate_skill_4  -1)*100;}
     if(HISTORY_MONTHLY[1].unemployment_rate_skill_5>0.0){MONTHLY_GROWTH_RATES.unemployment_rate_skill_5         = (HISTORY_MONTHLY[0].unemployment_rate_skill_5 / HISTORY_MONTHLY[1].unemployment_rate_skill_5  -1)*100;}
-    if(HISTORY_MONTHLY[1].wages>0.0)            {MONTHLY_GROWTH_RATES.wages                     = (HISTORY_MONTHLY[0].wages / HISTORY_MONTHLY[1].wages  -1)*100;}
+    if(HISTORY_MONTHLY[1].average_wage>0.0)     {MONTHLY_GROWTH_RATES.average_wage              = (HISTORY_MONTHLY[0].average_wage / HISTORY_MONTHLY[1].average_wage  -1)*100;}
     if(HISTORY_MONTHLY[1].no_firms>0)           {MONTHLY_GROWTH_RATES.no_firms                  = (HISTORY_MONTHLY[0].no_firms / HISTORY_MONTHLY[1].no_firms  -1)*100;}
     if(HISTORY_MONTHLY[1].no_firm_births>0)     {MONTHLY_GROWTH_RATES.no_firm_births            = (HISTORY_MONTHLY[0].no_firm_births / HISTORY_MONTHLY[1].no_firm_births  -1)*100;}
     if(HISTORY_MONTHLY[1].no_firm_deaths>0)     {MONTHLY_GROWTH_RATES.no_firm_deaths            = (HISTORY_MONTHLY[0].no_firm_deaths / HISTORY_MONTHLY[1].no_firm_deaths  -1)*100;}   
@@ -1122,11 +1234,78 @@ int Eurostat_compute_growth_rates_monthly()
     if(HISTORY_MONTHLY[12].unemployment_rate_skill_3>0) {ANNUAL_GROWTH_RATES_MONTHLY.unemployment_rate_skill_3  = (HISTORY_MONTHLY[0].unemployment_rate_skill_3 / HISTORY_MONTHLY[12].unemployment_rate_skill_3  -1)*100;}
     if(HISTORY_MONTHLY[12].unemployment_rate_skill_4>0) {ANNUAL_GROWTH_RATES_MONTHLY.unemployment_rate_skill_4  = (HISTORY_MONTHLY[0].unemployment_rate_skill_4 / HISTORY_MONTHLY[12].unemployment_rate_skill_4  -1)*100;}
     if(HISTORY_MONTHLY[12].unemployment_rate_skill_5>0) {ANNUAL_GROWTH_RATES_MONTHLY.unemployment_rate_skill_5  = (HISTORY_MONTHLY[0].unemployment_rate_skill_5 / HISTORY_MONTHLY[12].unemployment_rate_skill_5  -1)*100;}
-    if(HISTORY_MONTHLY[12].wages>0)             {ANNUAL_GROWTH_RATES_MONTHLY.wages              = (HISTORY_MONTHLY[0].wages / HISTORY_MONTHLY[12].wages  -1)*100;}
+    if(HISTORY_MONTHLY[12].average_wage>0)      {ANNUAL_GROWTH_RATES_MONTHLY.average_wage       = (HISTORY_MONTHLY[0].average_wage / HISTORY_MONTHLY[12].average_wage  -1)*100;}
     if(HISTORY_MONTHLY[12].no_firms>0)          {ANNUAL_GROWTH_RATES_MONTHLY.no_firms           = (HISTORY_MONTHLY[0].no_firms / HISTORY_MONTHLY[12].no_firms  -1)*100;}
     if(HISTORY_MONTHLY[12].no_firm_births>0)    {ANNUAL_GROWTH_RATES_MONTHLY.no_firm_births     = (HISTORY_MONTHLY[0].no_firm_births / HISTORY_MONTHLY[12].no_firm_births  -1)*100;}
     if(HISTORY_MONTHLY[12].no_firm_deaths>0)    {ANNUAL_GROWTH_RATES_MONTHLY.no_firm_deaths     = (HISTORY_MONTHLY[0].no_firm_deaths / HISTORY_MONTHLY[12].no_firm_deaths  -1)*100;}
 
+    
+    //*********************************** Code to be tested: region data
+    for ( region=0; region<REGION_FIRM_DATA.size; region++)
+    {
+        MONTHLY_GROWTH_RATES.region_data.array[region].cpi                       = 0.0;
+        MONTHLY_GROWTH_RATES.region_data.array[region].gdp                       = 0.0; 
+        MONTHLY_GROWTH_RATES.region_data.array[region].output                    = 0.0;
+        MONTHLY_GROWTH_RATES.region_data.array[region].employment                = 0.0;
+        MONTHLY_GROWTH_RATES.region_data.array[region].unemployment_rate         = 0.0;
+        MONTHLY_GROWTH_RATES.region_data.array[region].unemployment_rate_skill_1         = 0.0;
+        MONTHLY_GROWTH_RATES.region_data.array[region].unemployment_rate_skill_2         = 0.0;
+        MONTHLY_GROWTH_RATES.region_data.array[region].unemployment_rate_skill_3         = 0.0;
+        MONTHLY_GROWTH_RATES.region_data.array[region].unemployment_rate_skill_4         = 0.0;
+        MONTHLY_GROWTH_RATES.region_data.array[region].unemployment_rate_skill_5         = 0.0;
+        MONTHLY_GROWTH_RATES.region_data.array[region].average_wage                      = 0.0;
+        MONTHLY_GROWTH_RATES.region_data.array[region].no_firms                  = 0.0;
+        MONTHLY_GROWTH_RATES.region_data.array[region].no_firm_births            = 0.0;
+        MONTHLY_GROWTH_RATES.region_data.array[region].no_firm_deaths            = 0.0;
+        
+        ANNUAL_GROWTH_RATES_MONTHLY.region_data.array[region].cpi                = 0.0;
+        ANNUAL_GROWTH_RATES_MONTHLY.region_data.array[region].gdp                = 0.0;
+        ANNUAL_GROWTH_RATES_MONTHLY.region_data.array[region].output             = 0.0;
+        ANNUAL_GROWTH_RATES_MONTHLY.region_data.array[region].employment         = 0.0;
+        ANNUAL_GROWTH_RATES_MONTHLY.region_data.array[region].unemployment_rate  = 0.0;
+        ANNUAL_GROWTH_RATES_MONTHLY.region_data.array[region].unemployment_rate_skill_1  = 0.0;
+        ANNUAL_GROWTH_RATES_MONTHLY.region_data.array[region].unemployment_rate_skill_2  = 0.0;
+        ANNUAL_GROWTH_RATES_MONTHLY.region_data.array[region].unemployment_rate_skill_3  = 0.0;
+        ANNUAL_GROWTH_RATES_MONTHLY.region_data.array[region].unemployment_rate_skill_4  = 0.0;
+        ANNUAL_GROWTH_RATES_MONTHLY.region_data.array[region].unemployment_rate_skill_5  = 0.0;
+        ANNUAL_GROWTH_RATES_MONTHLY.region_data.array[region].average_wage               = 0.0;
+        ANNUAL_GROWTH_RATES_MONTHLY.region_data.array[region].no_firms           = 0.0;
+        ANNUAL_GROWTH_RATES_MONTHLY.region_data.array[region].no_firm_births     = 0.0;
+        ANNUAL_GROWTH_RATES_MONTHLY.region_data.array[region].no_firm_deaths     = 0.0;
+        
+        //compute monthly rates of change: change over the previous month
+        if(HISTORY_MONTHLY[1].region_data.array[region].cpi>0.0)              {MONTHLY_GROWTH_RATES.region_data.array[region].cpi                       = (HISTORY_MONTHLY[0].region_data.array[region].cpi / HISTORY_MONTHLY[1].region_data.array[region].cpi -1)*100;}
+        if(HISTORY_MONTHLY[1].region_data.array[region].gdp>0.0)              {MONTHLY_GROWTH_RATES.region_data.array[region].gdp                       = (HISTORY_MONTHLY[0].region_data.array[region].gdp / HISTORY_MONTHLY[1].region_data.array[region].gdp -1)*100;}
+        if(HISTORY_MONTHLY[1].region_data.array[region].output>0.0)           {MONTHLY_GROWTH_RATES.region_data.array[region].output                    = (HISTORY_MONTHLY[0].region_data.array[region].output / HISTORY_MONTHLY[1].region_data.array[region].output  -1)*100;}
+        if(HISTORY_MONTHLY[1].region_data.array[region].employment>0)         {MONTHLY_GROWTH_RATES.region_data.array[region].employment                = (HISTORY_MONTHLY[0].region_data.array[region].employment / HISTORY_MONTHLY[1].region_data.array[region].employment  -1)*100;}
+        if(HISTORY_MONTHLY[1].region_data.array[region].unemployment_rate>0.0){MONTHLY_GROWTH_RATES.region_data.array[region].unemployment_rate         = (HISTORY_MONTHLY[0].region_data.array[region].unemployment_rate / HISTORY_MONTHLY[1].region_data.array[region].unemployment_rate  -1)*100;}
+        if(HISTORY_MONTHLY[1].region_data.array[region].unemployment_rate_skill_1>0.0){MONTHLY_GROWTH_RATES.region_data.array[region].unemployment_rate_skill_1         = (HISTORY_MONTHLY[0].region_data.array[region].unemployment_rate_skill_1 / HISTORY_MONTHLY[1].region_data.array[region].unemployment_rate_skill_1  -1)*100;}
+        if(HISTORY_MONTHLY[1].region_data.array[region].unemployment_rate_skill_2>0.0){MONTHLY_GROWTH_RATES.region_data.array[region].unemployment_rate_skill_2         = (HISTORY_MONTHLY[0].region_data.array[region].unemployment_rate_skill_2 / HISTORY_MONTHLY[1].region_data.array[region].unemployment_rate_skill_2  -1)*100;}
+        if(HISTORY_MONTHLY[1].region_data.array[region].unemployment_rate_skill_3>0.0){MONTHLY_GROWTH_RATES.region_data.array[region].unemployment_rate_skill_3         = (HISTORY_MONTHLY[0].region_data.array[region].unemployment_rate_skill_3 / HISTORY_MONTHLY[1].region_data.array[region].unemployment_rate_skill_3  -1)*100;}
+        if(HISTORY_MONTHLY[1].region_data.array[region].unemployment_rate_skill_4>0.0){MONTHLY_GROWTH_RATES.region_data.array[region].unemployment_rate_skill_4         = (HISTORY_MONTHLY[0].region_data.array[region].unemployment_rate_skill_4 / HISTORY_MONTHLY[1].region_data.array[region].unemployment_rate_skill_4  -1)*100;}
+        if(HISTORY_MONTHLY[1].region_data.array[region].unemployment_rate_skill_5>0.0){MONTHLY_GROWTH_RATES.region_data.array[region].unemployment_rate_skill_5         = (HISTORY_MONTHLY[0].region_data.array[region].unemployment_rate_skill_5 / HISTORY_MONTHLY[1].region_data.array[region].unemployment_rate_skill_5  -1)*100;}
+        if(HISTORY_MONTHLY[1].region_data.array[region].average_wage>0.0)     {MONTHLY_GROWTH_RATES.region_data.array[region].average_wage              = (HISTORY_MONTHLY[0].region_data.array[region].average_wage / HISTORY_MONTHLY[1].region_data.array[region].average_wage  -1)*100;}
+        if(HISTORY_MONTHLY[1].region_data.array[region].no_firms>0)           {MONTHLY_GROWTH_RATES.region_data.array[region].no_firms                  = (HISTORY_MONTHLY[0].region_data.array[region].no_firms / HISTORY_MONTHLY[1].region_data.array[region].no_firms  -1)*100;}
+        if(HISTORY_MONTHLY[1].region_data.array[region].no_firm_births>0)     {MONTHLY_GROWTH_RATES.region_data.array[region].no_firm_births            = (HISTORY_MONTHLY[0].region_data.array[region].no_firm_births / HISTORY_MONTHLY[1].region_data.array[region].no_firm_births  -1)*100;}
+        if(HISTORY_MONTHLY[1].region_data.array[region].no_firm_deaths>0)     {MONTHLY_GROWTH_RATES.region_data.array[region].no_firm_deaths            = (HISTORY_MONTHLY[0].region_data.array[region].no_firm_deaths / HISTORY_MONTHLY[1].region_data.array[region].no_firm_deaths  -1)*100;}   
+
+        //compute annual rates of change over the previous 12 months: respective to same month in previous year
+        if(HISTORY_MONTHLY[12].region_data.array[region].cpi>0.0)             {ANNUAL_GROWTH_RATES_MONTHLY.region_data.array[region].cpi                = (HISTORY_MONTHLY[0].region_data.array[region].cpi / HISTORY_MONTHLY[12].region_data.array[region].cpi -1)*100;}
+        if(HISTORY_MONTHLY[12].region_data.array[region].gdp>0.0)             {ANNUAL_GROWTH_RATES_MONTHLY.region_data.array[region].gdp                = (HISTORY_MONTHLY[0].region_data.array[region].gdp / HISTORY_MONTHLY[12].region_data.array[region].gdp  -1)*100;}
+        if(HISTORY_MONTHLY[12].region_data.array[region].output>0.0)          {ANNUAL_GROWTH_RATES_MONTHLY.region_data.array[region].output             = (HISTORY_MONTHLY[0].region_data.array[region].output / HISTORY_MONTHLY[12].region_data.array[region].output  -1)*100;}
+        if(HISTORY_MONTHLY[12].region_data.array[region].employment>0)        {ANNUAL_GROWTH_RATES_MONTHLY.region_data.array[region].employment         = (HISTORY_MONTHLY[0].region_data.array[region].employment / HISTORY_MONTHLY[12].region_data.array[region].employment  -1)*100;}
+        if(HISTORY_MONTHLY[12].region_data.array[region].unemployment_rate>0) {ANNUAL_GROWTH_RATES_MONTHLY.region_data.array[region].unemployment_rate  = (HISTORY_MONTHLY[0].region_data.array[region].unemployment_rate / HISTORY_MONTHLY[12].region_data.array[region].unemployment_rate  -1)*100;}
+        if(HISTORY_MONTHLY[12].region_data.array[region].unemployment_rate_skill_1>0) {ANNUAL_GROWTH_RATES_MONTHLY.region_data.array[region].unemployment_rate_skill_1  = (HISTORY_MONTHLY[0].region_data.array[region].unemployment_rate_skill_1 / HISTORY_MONTHLY[12].region_data.array[region].unemployment_rate_skill_1  -1)*100;}
+        if(HISTORY_MONTHLY[12].region_data.array[region].unemployment_rate_skill_2>0) {ANNUAL_GROWTH_RATES_MONTHLY.region_data.array[region].unemployment_rate_skill_2  = (HISTORY_MONTHLY[0].region_data.array[region].unemployment_rate_skill_2 / HISTORY_MONTHLY[12].region_data.array[region].unemployment_rate_skill_2  -1)*100;}
+        if(HISTORY_MONTHLY[12].region_data.array[region].unemployment_rate_skill_3>0) {ANNUAL_GROWTH_RATES_MONTHLY.region_data.array[region].unemployment_rate_skill_3  = (HISTORY_MONTHLY[0].region_data.array[region].unemployment_rate_skill_3 / HISTORY_MONTHLY[12].region_data.array[region].unemployment_rate_skill_3  -1)*100;}
+        if(HISTORY_MONTHLY[12].region_data.array[region].unemployment_rate_skill_4>0) {ANNUAL_GROWTH_RATES_MONTHLY.region_data.array[region].unemployment_rate_skill_4  = (HISTORY_MONTHLY[0].region_data.array[region].unemployment_rate_skill_4 / HISTORY_MONTHLY[12].region_data.array[region].unemployment_rate_skill_4  -1)*100;}
+        if(HISTORY_MONTHLY[12].region_data.array[region].unemployment_rate_skill_5>0) {ANNUAL_GROWTH_RATES_MONTHLY.region_data.array[region].unemployment_rate_skill_5  = (HISTORY_MONTHLY[0].region_data.array[region].unemployment_rate_skill_5 / HISTORY_MONTHLY[12].region_data.array[region].unemployment_rate_skill_5  -1)*100;}
+        if(HISTORY_MONTHLY[12].region_data.array[region].average_wage>0)      {ANNUAL_GROWTH_RATES_MONTHLY.region_data.array[region].average_wage       = (HISTORY_MONTHLY[0].region_data.array[region].average_wage / HISTORY_MONTHLY[12].region_data.array[region].average_wage  -1)*100;}
+        if(HISTORY_MONTHLY[12].region_data.array[region].no_firms>0)          {ANNUAL_GROWTH_RATES_MONTHLY.region_data.array[region].no_firms           = (HISTORY_MONTHLY[0].region_data.array[region].no_firms / HISTORY_MONTHLY[12].region_data.array[region].no_firms  -1)*100;}
+        if(HISTORY_MONTHLY[12].region_data.array[region].no_firm_births>0)    {ANNUAL_GROWTH_RATES_MONTHLY.region_data.array[region].no_firm_births     = (HISTORY_MONTHLY[0].region_data.array[region].no_firm_births / HISTORY_MONTHLY[12].region_data.array[region].no_firm_births  -1)*100;}
+        if(HISTORY_MONTHLY[12].region_data.array[region].no_firm_deaths>0)    {ANNUAL_GROWTH_RATES_MONTHLY.region_data.array[region].no_firm_deaths     = (HISTORY_MONTHLY[0].region_data.array[region].no_firm_deaths / HISTORY_MONTHLY[12].region_data.array[region].no_firm_deaths  -1)*100;}
+    }
+    
     return 0;
 }
 
@@ -1135,12 +1314,14 @@ int Eurostat_compute_growth_rates_monthly()
  */
 int Eurostat_compute_growth_rates_quarterly()
 {
+	int region;
+
     QUARTERLY_GROWTH_RATES.cpi                         = 0.0;
     QUARTERLY_GROWTH_RATES.gdp                         = 0.0;
     QUARTERLY_GROWTH_RATES.output                      = 0.0;
     QUARTERLY_GROWTH_RATES.employment                  = 0.0;
     QUARTERLY_GROWTH_RATES.unemployment_rate           = 0.0;
-    QUARTERLY_GROWTH_RATES.wages                       = 0.0;
+    QUARTERLY_GROWTH_RATES.average_wage                = 0.0;
     QUARTERLY_GROWTH_RATES.no_firms                    = 0.0;
     QUARTERLY_GROWTH_RATES.no_firm_births              = 0.0;
     QUARTERLY_GROWTH_RATES.no_firm_deaths              = 0.0;
@@ -1150,7 +1331,7 @@ int Eurostat_compute_growth_rates_quarterly()
     ANNUAL_GROWTH_RATES_QUARTERLY.output               = 0.0;
     ANNUAL_GROWTH_RATES_QUARTERLY.employment           = 0.0;
     ANNUAL_GROWTH_RATES_QUARTERLY.unemployment_rate    = 0.0;
-    ANNUAL_GROWTH_RATES_QUARTERLY.wages                = 0.0;
+    ANNUAL_GROWTH_RATES_QUARTERLY.average_wage         = 0.0;
     ANNUAL_GROWTH_RATES_QUARTERLY.no_firms             = 0.0;
     ANNUAL_GROWTH_RATES_QUARTERLY.no_firm_births       = 0.0;
     ANNUAL_GROWTH_RATES_QUARTERLY.no_firm_deaths       = 0.0;
@@ -1161,7 +1342,7 @@ int Eurostat_compute_growth_rates_quarterly()
     if(HISTORY_QUARTERLY[1].output>0.0)             {QUARTERLY_GROWTH_RATES.output                      = (HISTORY_QUARTERLY[0].output / HISTORY_QUARTERLY[1].output  -1)*100;}
     if(HISTORY_QUARTERLY[1].employment>0)           {QUARTERLY_GROWTH_RATES.employment                  = (HISTORY_QUARTERLY[0].employment / HISTORY_QUARTERLY[1].employment  -1)*100;}
     if(HISTORY_QUARTERLY[1].unemployment_rate>0.0)  {QUARTERLY_GROWTH_RATES.unemployment_rate           = (HISTORY_QUARTERLY[0].unemployment_rate / HISTORY_QUARTERLY[1].unemployment_rate  -1)*100;}
-    if(HISTORY_QUARTERLY[1].wages>0.0)              {QUARTERLY_GROWTH_RATES.wages                       = (HISTORY_QUARTERLY[0].wages / HISTORY_QUARTERLY[1].wages  -1)*100;}
+    if(HISTORY_QUARTERLY[1].average_wage>0.0)              {QUARTERLY_GROWTH_RATES.average_wage         = (HISTORY_QUARTERLY[0].average_wage / HISTORY_QUARTERLY[1].average_wage  -1)*100;}
     if(HISTORY_QUARTERLY[1].no_firms>0)             {QUARTERLY_GROWTH_RATES.no_firms                    = (HISTORY_QUARTERLY[0].no_firms / HISTORY_QUARTERLY[1].no_firms  -1)*100;}
     if(HISTORY_QUARTERLY[1].no_firm_births>0)       {QUARTERLY_GROWTH_RATES.no_firm_births              = (HISTORY_QUARTERLY[0].no_firm_births / HISTORY_QUARTERLY[1].no_firm_births  -1)*100;}
     if(HISTORY_QUARTERLY[1].no_firm_deaths>0)       {QUARTERLY_GROWTH_RATES.no_firm_deaths              = (HISTORY_QUARTERLY[0].no_firm_deaths / HISTORY_QUARTERLY[1].no_firm_deaths  -1)*100;}
@@ -1172,10 +1353,56 @@ int Eurostat_compute_growth_rates_quarterly()
     if(HISTORY_QUARTERLY[4].output>0.0)             {ANNUAL_GROWTH_RATES_QUARTERLY.output               = (HISTORY_QUARTERLY[0].output / HISTORY_QUARTERLY[4].output  -1)*100;}
     if(HISTORY_QUARTERLY[4].employment>0)           {ANNUAL_GROWTH_RATES_QUARTERLY.employment           = (HISTORY_QUARTERLY[0].employment / HISTORY_QUARTERLY[4].employment  -1)*100;}
     if(HISTORY_QUARTERLY[4].unemployment_rate>0.0)  {ANNUAL_GROWTH_RATES_QUARTERLY.unemployment_rate    = (HISTORY_QUARTERLY[0].unemployment_rate / HISTORY_QUARTERLY[4].unemployment_rate  -1)*100;}
-    if(HISTORY_QUARTERLY[4].wages>0.0)              {ANNUAL_GROWTH_RATES_QUARTERLY.wages                = (HISTORY_QUARTERLY[0].wages / HISTORY_QUARTERLY[4].wages  -1)*100;}
+    if(HISTORY_QUARTERLY[4].average_wage>0.0)              {ANNUAL_GROWTH_RATES_QUARTERLY.average_wage  = (HISTORY_QUARTERLY[0].average_wage / HISTORY_QUARTERLY[4].average_wage  -1)*100;}
     if(HISTORY_QUARTERLY[4].no_firms>0)             {ANNUAL_GROWTH_RATES_QUARTERLY.no_firms             = (HISTORY_QUARTERLY[0].no_firms / HISTORY_QUARTERLY[4].no_firms  -1)*100;}
     if(HISTORY_QUARTERLY[4].no_firm_births>0)       {ANNUAL_GROWTH_RATES_QUARTERLY.no_firm_births       = (HISTORY_QUARTERLY[0].no_firm_births / HISTORY_QUARTERLY[4].no_firm_births  -1)*100;}
     if(HISTORY_QUARTERLY[4].no_firm_deaths>0)       {ANNUAL_GROWTH_RATES_QUARTERLY.no_firm_deaths       = (HISTORY_QUARTERLY[0].no_firm_deaths / HISTORY_QUARTERLY[4].no_firm_deaths  -1)*100;}
+    
+    //*********************************** Code to be tested: region data
+    for ( region=0; region<REGION_FIRM_DATA.size; region++)
+    {
+	    QUARTERLY_GROWTH_RATES.region_data.array[region].cpi                         = 0.0;
+	    QUARTERLY_GROWTH_RATES.region_data.array[region].gdp                         = 0.0;
+	    QUARTERLY_GROWTH_RATES.region_data.array[region].output                      = 0.0;
+	    QUARTERLY_GROWTH_RATES.region_data.array[region].employment                  = 0.0;
+	    QUARTERLY_GROWTH_RATES.region_data.array[region].unemployment_rate           = 0.0;
+	    QUARTERLY_GROWTH_RATES.region_data.array[region].average_wage                = 0.0;
+	    QUARTERLY_GROWTH_RATES.region_data.array[region].no_firms                    = 0.0;
+	    QUARTERLY_GROWTH_RATES.region_data.array[region].no_firm_births              = 0.0;
+	    QUARTERLY_GROWTH_RATES.region_data.array[region].no_firm_deaths              = 0.0;
+	    
+	    ANNUAL_GROWTH_RATES_QUARTERLY.region_data.array[region].cpi                  = 0.0;
+	    ANNUAL_GROWTH_RATES_QUARTERLY.region_data.array[region].gdp                  = 0.0;
+	    ANNUAL_GROWTH_RATES_QUARTERLY.region_data.array[region].output               = 0.0;
+	    ANNUAL_GROWTH_RATES_QUARTERLY.region_data.array[region].employment           = 0.0;
+	    ANNUAL_GROWTH_RATES_QUARTERLY.region_data.array[region].unemployment_rate    = 0.0;
+	    ANNUAL_GROWTH_RATES_QUARTERLY.region_data.array[region].average_wage         = 0.0;
+	    ANNUAL_GROWTH_RATES_QUARTERLY.region_data.array[region].no_firms             = 0.0;
+	    ANNUAL_GROWTH_RATES_QUARTERLY.region_data.array[region].no_firm_births       = 0.0;
+	    ANNUAL_GROWTH_RATES_QUARTERLY.region_data.array[region].no_firm_deaths       = 0.0;
+	
+	    //compute quarterly rates of change: change over the previous quarter
+	    if(HISTORY_QUARTERLY[1].region_data.array[region].cpi>0.0)                {QUARTERLY_GROWTH_RATES.region_data.array[region].cpi                         = (HISTORY_QUARTERLY[0].region_data.array[region].cpi / HISTORY_QUARTERLY[1].region_data.array[region].cpi -1)*100;}
+	    if(HISTORY_QUARTERLY[1].region_data.array[region].gdp>0.0)                {QUARTERLY_GROWTH_RATES.region_data.array[region].gdp                         = (HISTORY_QUARTERLY[0].region_data.array[region].gdp / HISTORY_QUARTERLY[1].region_data.array[region].gdp  -1)*100;}
+	    if(HISTORY_QUARTERLY[1].region_data.array[region].output>0.0)             {QUARTERLY_GROWTH_RATES.region_data.array[region].output                      = (HISTORY_QUARTERLY[0].region_data.array[region].output / HISTORY_QUARTERLY[1].region_data.array[region].output  -1)*100;}
+	    if(HISTORY_QUARTERLY[1].region_data.array[region].employment>0)           {QUARTERLY_GROWTH_RATES.region_data.array[region].employment                  = (HISTORY_QUARTERLY[0].region_data.array[region].employment / HISTORY_QUARTERLY[1].region_data.array[region].employment  -1)*100;}
+	    if(HISTORY_QUARTERLY[1].region_data.array[region].unemployment_rate>0.0)  {QUARTERLY_GROWTH_RATES.region_data.array[region].unemployment_rate           = (HISTORY_QUARTERLY[0].region_data.array[region].unemployment_rate / HISTORY_QUARTERLY[1].region_data.array[region].unemployment_rate  -1)*100;}
+	    if(HISTORY_QUARTERLY[1].region_data.array[region].average_wage>0.0)       {QUARTERLY_GROWTH_RATES.region_data.array[region].average_wage         		= (HISTORY_QUARTERLY[0].region_data.array[region].average_wage / HISTORY_QUARTERLY[1].region_data.array[region].average_wage  -1)*100;}
+	    if(HISTORY_QUARTERLY[1].region_data.array[region].no_firms>0)             {QUARTERLY_GROWTH_RATES.region_data.array[region].no_firms                    = (HISTORY_QUARTERLY[0].region_data.array[region].no_firms / HISTORY_QUARTERLY[1].region_data.array[region].no_firms  -1)*100;}
+	    if(HISTORY_QUARTERLY[1].region_data.array[region].no_firm_births>0)       {QUARTERLY_GROWTH_RATES.region_data.array[region].no_firm_births              = (HISTORY_QUARTERLY[0].region_data.array[region].no_firm_births / HISTORY_QUARTERLY[1].region_data.array[region].no_firm_births  -1)*100;}
+	    if(HISTORY_QUARTERLY[1].region_data.array[region].no_firm_deaths>0)       {QUARTERLY_GROWTH_RATES.region_data.array[region].no_firm_deaths              = (HISTORY_QUARTERLY[0].region_data.array[region].no_firm_deaths / HISTORY_QUARTERLY[1].region_data.array[region].no_firm_deaths  -1)*100;}
+	    
+	    //compute annual rates of change over the previous 4 quarters: respective to same quarter in previous year
+	    if(HISTORY_QUARTERLY[4].region_data.array[region].cpi>0.0)                {ANNUAL_GROWTH_RATES_QUARTERLY.region_data.array[region].cpi                  = (HISTORY_QUARTERLY[0].region_data.array[region].cpi / HISTORY_QUARTERLY[4].region_data.array[region].cpi -1)*100;}    
+	    if(HISTORY_QUARTERLY[4].region_data.array[region].gdp>0.0)                {ANNUAL_GROWTH_RATES_QUARTERLY.region_data.array[region].gdp                  = (HISTORY_QUARTERLY[0].region_data.array[region].gdp / HISTORY_QUARTERLY[4].region_data.array[region].gdp  -1)*100;}
+	    if(HISTORY_QUARTERLY[4].region_data.array[region].output>0.0)             {ANNUAL_GROWTH_RATES_QUARTERLY.region_data.array[region].output               = (HISTORY_QUARTERLY[0].region_data.array[region].output / HISTORY_QUARTERLY[4].region_data.array[region].output  -1)*100;}
+	    if(HISTORY_QUARTERLY[4].region_data.array[region].employment>0)           {ANNUAL_GROWTH_RATES_QUARTERLY.region_data.array[region].employment           = (HISTORY_QUARTERLY[0].region_data.array[region].employment / HISTORY_QUARTERLY[4].region_data.array[region].employment  -1)*100;}
+	    if(HISTORY_QUARTERLY[4].region_data.array[region].unemployment_rate>0.0)  {ANNUAL_GROWTH_RATES_QUARTERLY.region_data.array[region].unemployment_rate    = (HISTORY_QUARTERLY[0].region_data.array[region].unemployment_rate / HISTORY_QUARTERLY[4].region_data.array[region].unemployment_rate  -1)*100;}
+	    if(HISTORY_QUARTERLY[4].region_data.array[region].average_wage>0.0)       {ANNUAL_GROWTH_RATES_QUARTERLY.region_data.array[region].average_wage  = (HISTORY_QUARTERLY[0].region_data.array[region].average_wage / HISTORY_QUARTERLY[4].region_data.array[region].average_wage  -1)*100;}
+	    if(HISTORY_QUARTERLY[4].region_data.array[region].no_firms>0)             {ANNUAL_GROWTH_RATES_QUARTERLY.region_data.array[region].no_firms             = (HISTORY_QUARTERLY[0].region_data.array[region].no_firms / HISTORY_QUARTERLY[4].region_data.array[region].no_firms  -1)*100;}
+	    if(HISTORY_QUARTERLY[4].region_data.array[region].no_firm_births>0)       {ANNUAL_GROWTH_RATES_QUARTERLY.region_data.array[region].no_firm_births       = (HISTORY_QUARTERLY[0].region_data.array[region].no_firm_births / HISTORY_QUARTERLY[4].region_data.array[region].no_firm_births  -1)*100;}
+	    if(HISTORY_QUARTERLY[4].region_data.array[region].no_firm_deaths>0)       {ANNUAL_GROWTH_RATES_QUARTERLY.region_data.array[region].no_firm_deaths       = (HISTORY_QUARTERLY[0].region_data.array[region].no_firm_deaths / HISTORY_QUARTERLY[4].region_data.array[region].no_firm_deaths  -1)*100;}
+    }
     
     return 0;
 }

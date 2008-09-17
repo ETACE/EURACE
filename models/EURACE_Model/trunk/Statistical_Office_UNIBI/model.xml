@@ -63,7 +63,7 @@
 <description>Used by Eurostat to store data of the different regions</description>
 <variables>
 <variable><type>int</type><name>region_id</name><description></description></variable>
-<variable><type>int</type><name>firms</name><description></description></variable>
+<variable><type>int</type><name>no_firms</name><description></description></variable>
 <variable><type>int</type><name>vacancies</name><description></description></variable>
 <variable><type>int</type><name>employees</name><description></description></variable>
 <variable><type>int</type><name>employees_skill_1</name><description></description></variable>
@@ -83,7 +83,6 @@
 <variable><type>double</type><name>average_s_skill_3</name><description></description></variable>
 <variable><type>double</type><name>average_s_skill_4</name><description></description></variable>
 <variable><type>double</type><name>average_s_skill_5</name><description></description></variable>
-<variable><type>double</type><name>gdp</name><description>GDP across all firms in the region (GDP= C+I). Refers to total value sold by firms in the region_id.</description></variable>
 <variable><type>double</type><name>total_earnings</name><description>The sum of profits across all firms in the region</description></variable>
 <variable><type>double</type><name>total_debt</name><description>The sum of debt across firms in the region</description></variable>
 <variable><type>double</type><name>total_assets</name><description>The sum of assets across firms in the region</description></variable>
@@ -95,10 +94,31 @@
 <variable><type>double</type><name>monthly_output</name><description>Constructed macrovariable: regional sum of output</description></variable>
 <variable><type>double</type><name>monthly_revenue</name><description>Constructed macrovariable: regional sum of cum_revenue</description></variable>
 <variable><type>double</type><name>monthly_planned_output</name><description>Constructed macrovariable: regional sum of planned output</description></variable>
-<variable><type>double</type><name>cpi</name><description>Consumer price index</description></variable>
-<variable><type>double</type><name>cpi_last_month</name><description>Consumer price index of previous month</description></variable>
 </variables>
 </dataType>
+
+<dataType>
+<name>region_data_item</name>
+<description>Used by Eurostat to store data from different regions</description>
+<variables>
+<variable><type>double</type><name>cpi</name><description>Consumer price index</description></variable>
+<variable><type>double</type><name>cpi_last_month</name><description>Consumer price index of previous month</description></variable>
+<variable><type>double</type><name>gdp</name><description>GDP across all firms in the region (GDP= C+I). Refers to total value sold by firms in the region_id.</description></variable>
+<variable><type>double</type><name>output</name><description></description></variable>
+<variable><type>int</type><name>employment</name><description>Same as employees in firm_data</description></variable>
+<variable><type>double</type><name>unemployment_rate</name><description>Copies the unemployment_rate in household_data</description></variable>
+<variable><type>double</type><name>unemployment_rate_skill_1</name><description></description></variable>
+<variable><type>double</type><name>unemployment_rate_skill_2</name><description></description></variable>
+<variable><type>double</type><name>unemployment_rate_skill_3</name><description></description></variable>
+<variable><type>double</type><name>unemployment_rate_skill_4</name><description></description></variable>
+<variable><type>double</type><name>unemployment_rate_skill_5</name><description></description></variable>
+<variable><type>double</type><name>average_wage</name><description>Same as average_wage in household_data</description></variable>
+<variable><type>int</type><name>no_firms</name><description>Number of firms</description></variable>
+<variable><type>int</type><name>no_firm_births</name><description>Number of firm births</description></variable>
+<variable><type>int</type><name>no_firm_deaths</name><description>Number of firm deaths</description></variable>
+</variables>
+</dataType>
+
 
 <dataType>
 <name>tax_rates_item</name>
@@ -130,6 +150,7 @@
 <variable><type>int</type><name>no_firms</name><description>Number of firms</description></variable>
 <variable><type>int</type><name>no_firm_births</name><description>Number of firm births</description></variable>
 <variable><type>int</type><name>no_firm_deaths</name><description>Number of firm deaths</description></variable>
+<variable><type>region_data_item_array</type><name>region_data</name><description>In the history item we store the current firm_data_array</description></variable>
 </variables>
 </dataType>
 
@@ -607,7 +628,7 @@ including several micro data.</description>
 <variable><type>double</type><name>price</name><description></description></variable>
 <variable><type>double</type><name>price_last_month</name><description>Price of the consumption good in the last month</description></variable>
 <variable><type>double</type><name>total_supply</name><description></description></variable>
-	<variable><type>double</type><name>cum_total_sold_quantity</name><description>Monthly sum of sold quantities in the different malls</description></variable>
+<variable><type>double</type><name>cum_total_sold_quantity</name><description>Monthly sum of sold quantities in the different malls</description></variable>
 <variable><type>double</type><name>output</name><description></description></variable>
 <variable><type>double</type><name>planned_output</name><description></description></variable>
 <!--Variables related to age-->
