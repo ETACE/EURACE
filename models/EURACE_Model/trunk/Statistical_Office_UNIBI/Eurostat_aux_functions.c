@@ -64,6 +64,8 @@ void Eurostat_calc_macro_data(void)
     /*Store the region data of the firms*/
     for(i = 0; i < REGION_FIRM_DATA.size; i++)
     {
+//    	printf("\n Entering region %d", i+1);
+    	
         counter_firms_in_region =0;
         
         //Reset region sums: these are updated to sum across all firms in the region
@@ -84,8 +86,7 @@ void Eurostat_calc_macro_data(void)
 	        /********sum of GDP: total consumption and investment costs++++++++*/
 	        REGION_FIRM_DATA.array[i].gdp += firm_send_data_message->cum_revenue + firm_send_data_message->capital_costs;
 	        GDP += firm_send_data_message->cum_revenue + firm_send_data_message->capital_costs;
-	
-	        
+
 	        /********sum of net earnings of the firms++++++++*/
 	        REGION_FIRM_DATA.array[i].total_earnings += firm_send_data_message->net_earnings;
 	        TOTAL_EARNINGS += firm_send_data_message->net_earnings;

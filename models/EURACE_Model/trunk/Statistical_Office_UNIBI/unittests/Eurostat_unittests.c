@@ -8,6 +8,276 @@
 
 /************ Unit tests ********************************/
 /*
+ * \fn: void unittest_Eurostat_calc_macro_data()
+ * \brief: Unit test for: Eurostat_calc_macro_data.
+ * Status: NOT Tested
+ */
+void unittest_Eurostat_calc_macro_data()
+{
+	int rc;
+	
+    /************* At start of unit test, add one agent **************/
+	unittest_init_Eurostat_agent();
+	
+    /***** Variables: Memory pre-conditions **************************/
+	MONTHLY_SOLD_QUANTITY=0.0;
+	MONTHLY_REVENUE=0.0;
+	LABOUR_SHARE_RATIO=0.0;
+	
+	//Allocate memory
+/*	firm_data(REGION_ID, FIRMS, VACANCIES, NO_EMPLOYEES,
+	NO_EMPLOYEES_SKILL_1, NO_EMPLOYEES_SKILL_2, NO_EMPLOYEES_SKILL_3, NO_EMPLOYEES_SKILL_4,	NO_EMPLOYEES_SKILL_5, 
+	AVERAGE_WAGE, AVERAGE_WAGE_SKILL_1, AVERAGE_WAGE_SKILL_2, AVERAGE_WAGE_SKILL_3, AVERAGE_WAGE_SKILL_4, AVERAGE_WAGE_SKILL_5, 
+	AVERAGE_S_SKILLS, AVERAGE_S_SKILL_1, AVERAGE_S_SKILL_2, AVERAGE_S_SKILL_3, AVERAGE_S_SKILL_4, AVERAGE_S_SKILL_5,
+	GDP, TOTAL_EARNINGS, TOTAL_DEBT, TOTAL_ASSETS, TOTAL_EQUITY,
+	AVERAGE_DEBT_EARNINGS_RATIO, AVERAGE_DEBT_EQUITY_RATIO, LABOR_SHARE_RATIO,
+	MONTHLY_SOLD_QUANTITY, MONTHLY_OUTPUT, MONTHLY_REVENUE, MONTHLY_PLANNED_OUTPUT,
+	CPI, CPI_LAST_MONTH	);
+*/	
+	add_firm_data(&REGION_FIRM_DATA,
+	1, 0, 0, 0,		
+	0,0,0,0,0,
+	0,0,0,0,0,0,
+	0,0,0,0,0,0,
+	0,0,0,0,0,
+	0,0,0,
+	0,0,0,0,
+	0,0	);
+
+	add_firm_data(&REGION_FIRM_DATA,
+	2, 0, 0, 0,		
+	0,0,0,0,0,
+	0,0,0,0,0,0,
+	0,0,0,0,0,0,
+	0,0,0,0,0,
+	0,0,0,
+	0,0,0,0,
+	0,0	);
+
+	/***** Messages: initialize message boards **********************************/
+    rc = MB_Create(&b_firm_send_data, sizeof(m_firm_send_data));
+    	    #ifdef ERRCHECK
+    	    if (rc != MB_SUCCESS)
+    	    {
+    	       fprintf(stderr, "ERROR: Could not create 'firm_send_data' board\n");
+    	       switch(rc) {
+    	           case MB_ERR_INVALID:
+    	               fprintf(stderr, "\t reason: Invalid message size\n");
+    	               break;
+    	           case MB_ERR_MEMALLOC:
+    	               fprintf(stderr, "\t reason: out of memory\n");
+    	               break;
+    	           case MB_ERR_INTERNAL:
+    	               fprintf(stderr, "\t reason: internal error. Recompile libmoard in debug mode for more info \n");
+    	               break;
+    	       }
+    	    }
+    	    #endif
+
+	/***** Messages: pre-conditions **********************************/
+	//Set 4 firms in 2 regions, using these vars:
+  	//	firm_send_data_message->region_id;
+   	//	firm_send_data_message->cum_revenue;
+   	//	firm_send_data_message->capital_costs;
+   	//	firm_send_data_message->cum_total_sold_quantity;
+
+/*	add_firm_send_data_message(ID, REGION_ID, VACANCIES, NO_EMPLOYEES,
+	NO_EMPLOYEES_SKILL_1, NO_EMPLOYEES_SKILL_2, NO_EMPLOYEES_SKILL_3, NO_EMPLOYEES_SKILL_4,	NO_EMPLOYEES_SKILL_5, 
+	MEAN_WAGE, MEAN_SPECIFIC_SKILLS,
+	AVERAGE_S_SKILL_OF_1, AVERAGE_S_SKILL_OF_2, AVERAGE_S_SKILL_OF_3, AVERAGE_S_SKILL_OF_4, AVERAGE_S_SKILL_OF_5,
+	CUM_REVENUE, CAPITAL_COSTS,	NET_EARNINGS, TOTAL_DEBT, TOTAL_ASSETS, EQUITY,
+	PRICE, PRICE_LAST_MONTH, TOTAL_SUPPLY, CUM_TOTAL_SOLD_QUANTITY, OUTPUT, PLANNED_OUTPUT, AGE);
+*/	
+	//Fixture:
+	//NO_EMPLOYEES=10
+	//MEAN_WAGE=1
+	//NET_EARNINGS=100
+	//labour_share=1*10/100 = 0.10
+
+	add_firm_send_data_message(1,1,0,10, 0,0,0,0,0, 0,0, 1,0,0,0,0, 100,100,100,0,0,0, 0,0,0,1000,0,0,0);
+	add_firm_send_data_message(2,1,0,10, 0,0,0,0,0, 0,0, 1,0,0,0,0, 100,100,100,0,0,0, 0,0,0,1000,0,0,0);
+	add_firm_send_data_message(3,2,0,10, 0,0,0,0,0, 0,0, 1,0,0,0,0, 10,10,100,0,0,0,   0,0,0,100, 0,0,0);
+	add_firm_send_data_message(4,2,0,10, 0,0,0,0,0, 0,0, 1,0,0,0,0, 10,10,100,0,0,0,   0,0,0,100, 0,0,0);
+
+    /***** Adding message iterators ***************************************/
+	rc = MB_Iterator_Create(b_firm_send_data, &i_firm_send_data);
+			
+	if (rc != MB_SUCCESS)
+			{
+			   fprintf(stderr, "ERROR: Could not create Iterator for '<message>'\n");
+			   switch(rc) {
+			       case MB_ERR_INVALID:
+			           fprintf(stderr, "\t reason: 'firm_send_data' board is invalid\n");
+			           break;
+			       case MB_ERR_LOCKED:
+		               fprintf(stderr, "\t reason: 'firm_send_data' board is locked\n");
+		               break;
+		           case MB_ERR_MEMALLOC:
+		               fprintf(stderr, "\t reason: out of memory\n");
+		               break;
+		           case MB_ERR_INTERNAL:
+		               fprintf(stderr, "\t reason: internal error. Recompile libmoard in debug mode for more info \n");
+		               break;
+			   }
+			}
+    		
+    /***** Function evaluation ***************************************/
+	Eurostat_calc_macro_data();
+    
+    /***** Variables: Memory post-conditions *****/
+	//CU_ASSERT_DOUBLE_EQUAL(, result, 1e-3);
+	
+	//After the message loop, check the aggregate in both regions
+	//GDP=cum_revenue+capital_costs
+	CU_ASSERT_DOUBLE_EQUAL(REGION_FIRM_DATA.array[0].gdp, 400.0, 1e-3);
+	CU_ASSERT_DOUBLE_EQUAL(REGION_FIRM_DATA.array[0].monthly_sold_quantity, 2000.0, 1e-3);
+	CU_ASSERT_DOUBLE_EQUAL(REGION_FIRM_DATA.array[0].monthly_revenue, 200.0, 1e-3);
+	
+	//GDP=cum_revenue+capital_costs
+	CU_ASSERT_DOUBLE_EQUAL(REGION_FIRM_DATA.array[1].gdp, 40.0, 1e-3);
+	CU_ASSERT_DOUBLE_EQUAL(REGION_FIRM_DATA.array[1].monthly_sold_quantity, 200.0, 1e-3);
+	CU_ASSERT_DOUBLE_EQUAL(REGION_FIRM_DATA.array[1].monthly_revenue, 20.0, 1e-3);
+	
+	//And the economy-wide totals
+	CU_ASSERT_DOUBLE_EQUAL(MONTHLY_SOLD_QUANTITY, 2200.0, 1e-3);
+	CU_ASSERT_DOUBLE_EQUAL(MONTHLY_REVENUE, 220.0, 1e-3);
+	
+    /************* At end of unit test, free the agent **************/
+	unittest_free_Eurostat_agent();
+    /************* At end of unit tests, free all Messages **********/
+    free_messages();
+}
+
+/*
+ * \fn: void unittest_Eurostat_calc_price_index()
+ * \brief: Unit test for: Eurostat_calc_price_index.
+ * Status: NOT Tested
+ */
+void unittest_Eurostat_calc_price_index()
+{
+	int rc;
+	
+    /************* At start of unit test, add one agent **************/
+	unittest_init_Eurostat_agent();
+	
+    /***** Variables: Memory pre-conditions **************************/
+
+	/***** Messages: initialize message boards **********************************/
+    rc = MB_Create(&b_firm_send_data, sizeof(m_firm_send_data));
+    	    #ifdef ERRCHECK
+    	    if (rc != MB_SUCCESS)
+    	    {
+    	       fprintf(stderr, "ERROR: Could not create 'firm_send_data' board\n");
+    	       switch(rc) {
+    	           case MB_ERR_INVALID:
+    	               fprintf(stderr, "\t reason: Invalid message size\n");
+    	               break;
+    	           case MB_ERR_MEMALLOC:
+    	               fprintf(stderr, "\t reason: out of memory\n");
+    	               break;
+    	           case MB_ERR_INTERNAL:
+    	               fprintf(stderr, "\t reason: internal error. Recompile libmoard in debug mode for more info \n");
+    	               break;
+    	       }
+    	    }
+    	    #endif
+	
+	/***** Messages: pre-conditions **********************************/
+//    add_<message_name>_message();
+    	    
+    /***** Adding message iterators ***************************************/
+	rc = MB_Iterator_Create(b_firm_send_data, &i_firm_send_data);
+			
+	if (rc != MB_SUCCESS)
+			{
+			   fprintf(stderr, "ERROR: Could not create Iterator for '<message>'\n");
+			   switch(rc) {
+			       case MB_ERR_INVALID:
+			           fprintf(stderr, "\t reason: 'firm_send_data' board is invalid\n");
+			           break;
+			       case MB_ERR_LOCKED:
+		               fprintf(stderr, "\t reason: 'firm_send_data' board is locked\n");
+		               break;
+		           case MB_ERR_MEMALLOC:
+		               fprintf(stderr, "\t reason: out of memory\n");
+		               break;
+		           case MB_ERR_INTERNAL:
+		               fprintf(stderr, "\t reason: internal error. Recompile libmoard in debug mode for more info \n");
+		               break;
+			   }
+			}
+	    	    
+    /***** Function evaluation ***************************************/
+	Eurostat_calc_price_index();
+    
+    /***** Variables: Memory post-conditions *****/
+//	CU_ASSERT_DOUBLE_EQUAL(var, result, 1e-3);
+	
+    /************* At end of unit test, free the agent **************/
+	unittest_free_Eurostat_agent();
+    /************* At end of unit tests, free all Messages **********/
+    free_messages();
+}
+
+/*
+ * \fn: void unittest_Eurostat_calc_firm_population()
+ * \brief: Unit test for: Eurostat_calc_firm_population.
+ * Status: NOT Tested
+ */
+void unittest_Eurostat_calc_firm_population()
+{
+
+	
+    /************* At start of unit test, add one agent **************/
+	unittest_init_Eurostat_agent();
+	
+    /***** Variables: Memory pre-conditions **************************/
+
+	
+	/***** Messages: pre-conditions **********************************/
+    
+    /***** Function evaluation ***************************************/
+	Eurostat_calc_firm_population();
+    
+    /***** Variables: Memory post-conditions *****/
+	//CU_ASSERT_DOUBLE_EQUAL(var, result, 1e-3);
+	
+    /************* At end of unit test, free the agent **************/
+	unittest_free_Eurostat_agent();
+    /************* At end of unit tests, free all Messages **********/
+    free_messages();
+}
+
+/*
+ * \fn: void unittest_Eurostat_calc_firm_survival_rates()
+ * \brief: Unit test for: Eurostat_calc_firm_survival_rates.
+ * Status: NOT Tested
+ */
+void unittest_Eurostat_calc_firm_survival_rates()
+{
+
+	
+    /************* At start of unit test, add one agent **************/
+	unittest_init_Eurostat_agent();
+	
+    /***** Variables: Memory pre-conditions **************************/
+
+	
+	/***** Messages: pre-conditions **********************************/
+    
+    /***** Function evaluation ***************************************/
+	Eurostat_calc_firm_survival_rates();
+    
+    /***** Variables: Memory post-conditions *****/
+//		CU_ASSERT_DOUBLE_EQUAL(var, result, 1e-3);
+	
+    /************* At end of unit test, free the agent **************/
+	unittest_free_Eurostat_agent();
+    /************* At end of unit tests, free all Messages **********/
+    free_messages();
+}
+
+/*
  * \fn: void unittest_Eurostat_store_history_monthly()
  * \brief: Unit test for: Eurostat_store_history_monthly.
  * Status: Tested OK
@@ -320,7 +590,7 @@ void unittest_Eurostat_measure_export()
     /***** Variables: Memory pre-conditions **************************/
 	NO_REGIONS=2;
     
-	/***** Messages: pre-conditions **********************************/
+	/***** Messages: initialize message boards **********************************/
     rc = MB_Create(&b_mall_data, sizeof(m_mall_data));
     	    #ifdef ERRCHECK
     	    if (rc != MB_SUCCESS)
@@ -340,6 +610,7 @@ void unittest_Eurostat_measure_export()
     	    }
     	    #endif
 
+	/***** Messages: pre-conditions **********************************/
     //Adding mall 1 elements
 	add_mall_data_message(1, 1, 1, 1.0);
     add_mall_data_message(1, 1, 2, 100.0);

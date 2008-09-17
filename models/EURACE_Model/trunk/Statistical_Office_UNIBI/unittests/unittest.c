@@ -6,6 +6,10 @@
 #include <CUnit/Basic.h>
 
 /*************************** unittest prototypes ***************************/
+void unittest_Eurostat_calc_macro_data();
+void unittest_Eurostat_calc_price_index();
+void unittest_Eurostat_calc_firm_population();
+void unittest_Eurostat_calc_firm_survival_rates();
 void unittest_Eurostat_store_history_monthly();
 void unittest_Eurostat_store_history_quarterly();
 void unittest_Eurostat_compute_growth_rates_monthly();
@@ -56,6 +60,12 @@ int main(int argc, char * argv[])
     /* add extra tests using || */
     
     if(
+     	NULL == CU_add_test(pSuite, "Eurostat_calc_macro_data", unittest_Eurostat_calc_macro_data))
+/*
+    	NULL == CU_add_test(pSuite, "Eurostat_calc_price_index", unittest_Eurostat_calc_price_index) ||
+    	NULL == CU_add_test(pSuite, "Eurostat_calc_firm_population", unittest_Eurostat_calc_firm_population) ||
+    	NULL == CU_add_test(pSuite, "Eurostat_calc_firm_survival_rates", unittest_Eurostat_calc_firm_survival_rates))
+*/   		
 /*
      	NULL == CU_add_test(pSuite, "Eurostat_store_history_monthly", unittest_Eurostat_store_history_monthly) ||
     	NULL == CU_add_test(pSuite, "Eurostat_store_history_quarterly", unittest_Eurostat_store_history_quarterly) ||
@@ -63,10 +73,10 @@ int main(int argc, char * argv[])
     	NULL == CU_add_test(pSuite, "Eurostat_compute_growth_rates_quarterly", unittest_Eurostat_compute_growth_rates_quarterly))
 */
 //    	NULL == CU_add_test(pSuite, "Eurostat_firm_creation", unittest_Eurostat_firm_creation) ||
-    	NULL == CU_add_test(pSuite, "Eurostat_measure_recession 1: Detect recession", unittest1_Eurostat_measure_recession) ||
-    	NULL == CU_add_test(pSuite, "Eurostat_measure_recession 2: Recession in progress, duration updated by 1, recession continues", unittest2_Eurostat_measure_recession) ||
-    	NULL == CU_add_test(pSuite, "Eurostat_measure_recession 3: Recession in progress, duration updated by 1, recession stops", unittest3_Eurostat_measure_recession) ||
-    	NULL == CU_add_test(pSuite, "Eurostat_measure_recession 4: No recession occurs", unittest4_Eurostat_measure_recession))
+//    	NULL == CU_add_test(pSuite, "Eurostat_measure_recession 1: Detect recession", unittest1_Eurostat_measure_recession) ||
+//   	NULL == CU_add_test(pSuite, "Eurostat_measure_recession 2: Recession in progress, duration updated by 1, recession continues", unittest2_Eurostat_measure_recession) ||
+//    	NULL == CU_add_test(pSuite, "Eurostat_measure_recession 3: Recession in progress, duration updated by 1, recession stops", unittest3_Eurostat_measure_recession) ||
+//    	NULL == CU_add_test(pSuite, "Eurostat_measure_recession 4: No recession occurs", unittest4_Eurostat_measure_recession))
 //    	NULL == CU_add_test(pSuite, "Eurostat_measure_export", unittest_Eurostat_measure_export))
     {
         CU_cleanup_registry();
