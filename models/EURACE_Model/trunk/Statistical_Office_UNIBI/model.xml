@@ -94,6 +94,11 @@
 <variable><type>double</type><name>monthly_output</name><description>Constructed macrovariable: regional sum of output</description></variable>
 <variable><type>double</type><name>monthly_revenue</name><description>Constructed macrovariable: regional sum of cum_revenue</description></variable>
 <variable><type>double</type><name>monthly_planned_output</name><description>Constructed macrovariable: regional sum of planned output</description></variable>
+<variable><type>double</type><name>gdp</name><description>GDP</description></variable>
+<variable><type>double</type><name>cpi</name><description>Consumer price index</description></variable>
+<variable><type>double</type><name>cpi_last_month</name><description>Consumer price index of previous month</description></variable>
+<variable><type>int</type><name>no_firm_births</name><description>Number of firm births</description></variable>
+<variable><type>int</type><name>no_firm_deaths</name><description>Number of firm deaths</description></variable>
 </variables>
 </dataType>
 
@@ -105,14 +110,14 @@
 <variable><type>double</type><name>cpi_last_month</name><description>Consumer price index of previous month</description></variable>
 <variable><type>double</type><name>gdp</name><description>GDP across all firms in the region (GDP= C+I). Refers to total value sold by firms in the region_id.</description></variable>
 <variable><type>double</type><name>output</name><description></description></variable>
-<variable><type>int</type><name>employment</name><description>Same as employees in firm_data</description></variable>
-<variable><type>double</type><name>unemployment_rate</name><description>Copies the unemployment_rate in household_data</description></variable>
+<variable><type>int</type><name>employment</name><description>employment in region</description></variable>
+<variable><type>double</type><name>unemployment_rate</name><description>unemployment_rate in region (from household_data)</description></variable>
 <variable><type>double</type><name>unemployment_rate_skill_1</name><description></description></variable>
 <variable><type>double</type><name>unemployment_rate_skill_2</name><description></description></variable>
 <variable><type>double</type><name>unemployment_rate_skill_3</name><description></description></variable>
 <variable><type>double</type><name>unemployment_rate_skill_4</name><description></description></variable>
 <variable><type>double</type><name>unemployment_rate_skill_5</name><description></description></variable>
-<variable><type>double</type><name>average_wage</name><description>Same as average_wage in household_data</description></variable>
+<variable><type>double</type><name>average_wage</name><description>average_wage in region</description></variable>
 <variable><type>int</type><name>no_firms</name><description>Number of firms</description></variable>
 <variable><type>int</type><name>no_firm_births</name><description>Number of firm births</description></variable>
 <variable><type>int</type><name>no_firm_deaths</name><description>Number of firm deaths</description></variable>
@@ -146,11 +151,11 @@
 <variable><type>double</type><name>unemployment_rate_skill_3</name><description></description></variable>
 <variable><type>double</type><name>unemployment_rate_skill_4</name><description></description></variable>
 <variable><type>double</type><name>unemployment_rate_skill_5</name><description></description></variable>
-<variable><type>double</type><name>wages</name><description></description></variable>
+<variable><type>double</type><name>average_wage</name><description></description></variable>
 <variable><type>int</type><name>no_firms</name><description>Number of firms</description></variable>
 <variable><type>int</type><name>no_firm_births</name><description>Number of firm births</description></variable>
 <variable><type>int</type><name>no_firm_deaths</name><description>Number of firm deaths</description></variable>
-<variable><type>region_data_item_array</type><name>region_data</name><description>In the history item we store the current firm_data_array</description></variable>
+<variable><type>region_data_item_array</type><name>region_data</name><description>In the history item we store the current region_data with data for all regions</description></variable>
 </variables>
 </dataType>
 
@@ -381,7 +386,6 @@ including several micro data.</description>
 <variable><type>firm_data_array</type><name>region_firm_data</name><description></description>Stores the eurostat memory variables concerning the firms for the different regions</variable>
 <variable><type>household_data_array</type><name>region_household_data</name><description>Stores the eurostat memory variables concerning the households for the different regions</description></variable>
 
-
 <!-- Data for governments -->
 <variable><type>tax_rates_item</type><name>government_tax_rates[27]</name><description></description></variable>
 
@@ -394,7 +398,7 @@ including several micro data.</description>
 <variable><type>double</type><name>average_debt_equity_ratio</name><description>Constructed macrovariable: average debt/equity ratio across firms (total debt divided by total equity)</description></variable>
 <variable><type>double</type><name>labour_share_ratio</name><description>Constructed macrovariable: average labour share across firms (defined as total wages divided by total profits)</description></variable>
 
-<!-- Data for macrovariables -->
+<!-- Data for macrovariables (see also contents of region_data_item)-->
 <variable><type>double</type><name>cpi</name><description>Consumer Price Index. Measured as a weighted price index across all firms, all malls, using as weights the firms' market shares.</description></variable>
 <variable><type>double</type><name>gdp</name><description>GDP = Consumption + Investments (measured at firms, sum of cum_revenues + investment_costs)</description></variable>
 <variable><type>double</type><name>monthly_sold_quantity</name><description>Constructed macrovariable: regional sum of sold quantity</description></variable>
