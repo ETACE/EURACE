@@ -32,27 +32,28 @@ void unittest_Eurostat_calc_macro_data()
 	GDP, TOTAL_EARNINGS, TOTAL_DEBT, TOTAL_ASSETS, TOTAL_EQUITY,
 	AVERAGE_DEBT_EARNINGS_RATIO, AVERAGE_DEBT_EQUITY_RATIO, LABOR_SHARE_RATIO,
 	MONTHLY_SOLD_QUANTITY, MONTHLY_OUTPUT, MONTHLY_REVENUE, MONTHLY_PLANNED_OUTPUT,
-	CPI, CPI_LAST_MONTH	);
+	GDP, CPI, CPI_LAST_MONTH
+	no_firm_births, no_firm_deaths);
 */	
 	add_firm_data(&REGION_FIRM_DATA,
-	1, 0, 0, 0,		
-	0,0,0,0,0,
-	0,0,0,0,0,0,
-	0,0,0,0,0,0,
-	0,0,0,0,0,
-	0,0,0,
-	0,0,0,0,
-	0,0	);
+		    1,0,0,                   //3 region_id -> vacancies 
+		    0,0,0,0,0,0,             //6 employees_skill
+		    0.0,0.0,0.0,0.0,0.0,0.0, //6 average_wage_skill
+		    0.0,0.0,0.0,0.0,0.0,0.0, //6 average_s_skill
+		    0.0,0.0,0.0,0.0,0.0, 	 //5 total_earnings -> average_debt_earnings_ratio
+		    0.0,0.0,0.0,0.0,0.0,0.0, //6 average_debt_equity_ratio -> monthly_planned_output
+		    0.0,0.0,0.0,             //3 gdp, cpi, cpi_last_month 
+		    0,0);                    //2 no_firm_births, no_firm_deaths
 
 	add_firm_data(&REGION_FIRM_DATA,
-	2, 0, 0, 0,		
-	0,0,0,0,0,
-	0,0,0,0,0,0,
-	0,0,0,0,0,0,
-	0,0,0,0,0,
-	0,0,0,
-	0,0,0,0,
-	0,0	);
+		    2,0,0,                   //3 region_id -> vacancies 
+		    0,0,0,0,0,0,             //6 employees_skill
+		    0.0,0.0,0.0,0.0,0.0,0.0, //6 average_wage_skill
+		    0.0,0.0,0.0,0.0,0.0,0.0, //6 average_s_skill
+		    0.0,0.0,0.0,0.0,0.0, 	 //5 total_earnings -> average_debt_earnings_ratio
+		    0.0,0.0,0.0,0.0,0.0,0.0, //6 average_debt_equity_ratio -> monthly_planned_output
+		    0.0,0.0,0.0,             //3 gdp, cpi, cpi_last_month 
+		    0,0);                    //2 no_firm_births, no_firm_deaths
 
 	/***** Messages: initialize message boards **********************************/
     rc = MB_Create(&b_firm_send_data, sizeof(m_firm_send_data));
@@ -94,10 +95,10 @@ void unittest_Eurostat_calc_macro_data()
 	//NET_EARNINGS=100
 	//labour_share=1*10/100 = 0.10
 
-	add_firm_send_data_message(1,1,0,10, 0,0,0,0,0, 0,0, 1,0,0,0,0, 100,100,100,0,0,0, 0,0,0,1000,0,0,0);
-	add_firm_send_data_message(2,1,0,10, 0,0,0,0,0, 0,0, 1,0,0,0,0, 100,100,100,0,0,0, 0,0,0,1000,0,0,0);
-	add_firm_send_data_message(3,2,0,10, 0,0,0,0,0, 0,0, 1,0,0,0,0, 10,10,100,0,0,0,   0,0,0,100, 0,0,0);
-	add_firm_send_data_message(4,2,0,10, 0,0,0,0,0, 0,0, 1,0,0,0,0, 10,10,100,0,0,0,   0,0,0,100, 0,0,0);
+	add_firm_send_data_message(1,1,0, 10, 0,0,0,0,0, 0,0, 1,0,0,0,0, 100,100,100,0,0,0, 0,0,0,1000,0,0,0);
+	add_firm_send_data_message(2,1,0, 10, 0,0,0,0,0, 0,0, 1,0,0,0,0, 100,100,100,0,0,0, 0,0,0,1000,0,0,0);
+	add_firm_send_data_message(3,2,0, 10, 0,0,0,0,0, 0,0, 1,0,0,0,0, 10,10,100,0,0,0,   0,0,0,100, 0,0,0);
+	add_firm_send_data_message(4,2,0, 10, 0,0,0,0,0, 0,0, 1,0,0,0,0, 10,10,100,0,0,0,   0,0,0,100, 0,0,0);
 
     /***** Adding message iterators ***************************************/
 	rc = MB_Iterator_Create(b_firm_send_data, &i_firm_send_data);
@@ -278,11 +279,12 @@ void unittest_Eurostat_calc_firm_survival_rates()
 }
 
 /*
- * \fn: void unittest_Eurostat_store_history_monthly()
+ * \fn: void unittest1_Eurostat_store_history_monthly()
  * \brief: Unit test for: Eurostat_store_history_monthly.
+ * Test: history storage and shifting of economy-wide macro data
  * Status: Tested OK
  */
-void unittest_Eurostat_store_history_monthly()
+void unittest1_Eurostat_store_history_monthly()
 {
 	int k;
 	double var, result;
@@ -323,11 +325,179 @@ void unittest_Eurostat_store_history_monthly()
 }
 
 /*
- * \fn: void unittest_Eurostat_store_history_quarterly()
- * \brief: Unit test for: Eurostat_store_history_quarterly.
+ * \fn: void unittest2_Eurostat_store_history_monthly()
+ * \brief: Unit test for: Eurostat_store_history_monthly.
+ * Test: history storage of region data
+ * Init: REGION_FIRM_DATA.array[region].cpi
+ * Out: HISTORY_MONTHLY[0].region_data.array[region].cpi
  * Status: Tested OK
  */
-void unittest_Eurostat_store_history_quarterly()
+void unittest2_Eurostat_store_history_monthly()
+{
+	int k,  region;
+	double var, result;
+	//PRINT_LOG =0;
+	
+    /************* At start of unit test, add one agent **************/
+	unittest_init_Eurostat_agent();
+	
+    /***** Variables: Memory pre-conditions **************************/
+	NO_REGIONS=2;
+	
+	//run initializing function to init the region data arrays:
+	Eurostat_Initialization();
+	
+    for ( region=0; region<REGION_FIRM_DATA.size; region++)
+    {
+    		//checking whether inputting new data works:
+			//init REGION_FIRM_DATA.array[region].cpi
+			REGION_FIRM_DATA.array[region].cpi = (double) region;
+			
+			//printf("\n REGION_FIRM_DATA.array[%d].cpi=%f\n", region, REGION_FIRM_DATA.array[region].cpi);
+    }
+	
+	/***** Messages: pre-conditions **********************************/
+    
+    /***** Function evaluation ***************************************/
+	Eurostat_store_history_monthly();
+    
+    /***** Variables: Memory post-conditions *****/
+    for ( region=0; region<REGION_FIRM_DATA.size; region++)
+    {
+    	
+		var = HISTORY_MONTHLY[0].region_data.array[region].cpi;
+
+		result = (double) region;
+
+		//printf("\n HISTORY_MONTHLY[%d].region_data.array[%d].cpi=%f\n", 0, region, HISTORY_MONTHLY[k].region_data.array[region].cpi);
+		//printf("\n k=%d, var=%f, result=%f\n", k, var, result);		
+		
+		CU_ASSERT_DOUBLE_EQUAL(var, result, 1e-3);
+    }
+    
+    /************* At end of unit test, free the agent **************/
+	unittest_free_Eurostat_agent();
+    /************* At end of unit tests, free all Messages **********/
+    free_messages();
+}
+
+
+/*
+ * \fn: void unittest3_Eurostat_store_history_monthly()
+ * \brief: Unit test for: Eurostat_store_history_monthly.
+ * Test: history shifting of region data
+ * Init: HISTORY_MONTHLY[k].array[region].cpi = (double) k;
+ * 		 REGION_FIRM_DATA.array[region].cpi =0.0;
+ * Out:  HISTORY_MONTHLY[k].array[region].cpi = (double) (k-1);
+ * Status: Tested OK
+ */
+void unittest3_Eurostat_store_history_monthly()
+{
+	int k,  region;
+	double var, result;
+	//PRINT_LOG =0;
+	
+    /************* At start of unit test, add one agent **************/
+	unittest_init_Eurostat_agent();
+	
+    /***** Variables: Memory pre-conditions **************************/
+	NO_REGIONS=2;
+	
+	//run initializing function to init the region data arrays:
+	Eurostat_Initialization();
+	
+    for ( region=0; region<REGION_FIRM_DATA.size; region++)
+    {
+			//checking whether shifting history works:
+			for (k=0;k<=13;k++)
+			{
+				HISTORY_MONTHLY[k].region_data.array[region].cpi = (double) k;
+				//printf("\n HISTORY_MONTHLY[%d].region_data.array[%d].cpi=%f\n", k, region, HISTORY_MONTHLY[k].region_data.array[region].cpi);
+			}
+			REGION_FIRM_DATA.array[region].cpi =0.0;
+    }
+	
+	/***** Messages: pre-conditions **********************************/
+    
+    /***** Function evaluation ***************************************/
+	Eurostat_store_history_monthly();
+    
+    /***** Variables: Memory post-conditions *****/
+    for ( region=0; region<REGION_FIRM_DATA.size; region++)
+    {
+		//printf("\n ================================================");
+		//printf("\n After Function evaluation: Shifting history");
+		//printf("\n ================================================");
+
+		for (k=1;k<13;k++)
+		{
+			var = HISTORY_MONTHLY[k].region_data.array[region].cpi;
+	
+			result = (double) (k-1);
+	
+			//printf("\n HISTORY_MONTHLY[%d].region_data.array[%d].cpi=%f\n", k, region, HISTORY_MONTHLY[k].region_data.array[region].cpi);
+			//printf("\n k=%d, var=%f, result=%f\n", k, var, result);		
+			
+			CU_ASSERT_DOUBLE_EQUAL(var, result, 1e-3);
+		}
+    }
+    
+    /************* At end of unit test, free the agent **************/
+	unittest_free_Eurostat_agent();
+    /************* At end of unit tests, free all Messages **********/
+    free_messages();
+}
+
+/*
+ * \fn: void unittest1_Eurostat_store_history_quarterly()
+ * \brief: Unit test for: Eurostat_store_history_quarterly.
+ * Test: history storage of economy-wide data
+ * Init: HISTORY_MONTHLY[k].cpi = 1.0;  for k=0..2
+ * Out:  HISTORY_QUARTERLY[0].cpi = 1.0; 
+ * Status: Tested OK
+ */
+void unittest1_Eurostat_store_history_quarterly()
+{
+	int k;
+	double var, result;
+	//PRINT_LOG =0;
+
+    /************* At start of unit test, add one agent **************/
+	unittest_init_Eurostat_agent();
+	
+    /***** Variables: Memory pre-conditions **************************/
+	for (k=0;k<3;k++)
+	{
+		HISTORY_MONTHLY[k].cpi = 1.0;
+	}
+    
+	/***** Messages: pre-conditions **********************************/
+    
+    /***** Function evaluation ***************************************/
+	Eurostat_store_history_quarterly();
+    
+    /***** Variables: Memory post-conditions *****/
+	var = HISTORY_QUARTERLY[0].cpi;
+	result = 1.0;
+
+	CU_ASSERT_DOUBLE_EQUAL(var, result, 1e-3);
+    		
+    /************* At end of unit test, free the agent **************/
+	unittest_free_Eurostat_agent();
+    /************* At end of unit tests, free all Messages **********/
+    free_messages();
+}
+
+/*
+ * \fn: void unittest2_Eurostat_store_history_quarterly()
+ * \brief: Unit test for: Eurostat_store_history_quarterly.
+ * Test: history shifting of economy-wide data
+ * Init: HISTORY_QUARTERLY[k].cpi = (double) k;
+ * 		 HISTORY_QUARTERLY[0].cpi = 0.0;
+ * Out:  HISTORY_QUARTERLY[k].cpi = (double) (k-1); 
+ * Status: Tested OK
+ */
+void unittest2_Eurostat_store_history_quarterly()
 {
 	int k;
 	double var, result;
@@ -341,7 +511,10 @@ void unittest_Eurostat_store_history_quarterly()
 	{
 		HISTORY_QUARTERLY[k].cpi = (double) k;
 	}
-	CPI=0.0;
+	for (k=0;k<3;k++)
+	{
+		HISTORY_MONTHLY[k].cpi = 0.0;
+	}
 
     
 	/***** Messages: pre-conditions **********************************/
@@ -363,6 +536,120 @@ void unittest_Eurostat_store_history_quarterly()
     /************* At end of unit tests, free all Messages **********/
     free_messages();
 }
+
+
+/*
+ * \fn: void unittest3_Eurostat_store_history_quarterly()
+ * \brief: Unit test for: Eurostat_store_history_quarterly.
+ * Test: history storage of region data: average of monthly data
+ * Init: HISTORY_MONTHLY[k].region_data.array[region].cpi for k=0..2
+ * Out:  HISTORY_QUARTERLY[0].region_data.array[region].cpi 
+ * Status: Tested OK
+ */
+void unittest3_Eurostat_store_history_quarterly()
+{
+	int k, region;
+	double var, result;
+	//PRINT_LOG =0;
+
+    /************* At start of unit test, add one agent **************/
+	unittest_init_Eurostat_agent();
+
+    /***** Variables: Memory pre-conditions **************************/
+	NO_REGIONS=2;
+	//run initializing function to init the region data arrays:
+	Eurostat_Initialization();
+
+	for ( region=0; region<REGION_FIRM_DATA.size; region++)
+    {
+		for (k=0;k<3;k++)
+		{
+			HISTORY_MONTHLY[k].region_data.array[region].cpi = 1.0;
+			//printf("\n HISTORY_MONTHLY[%d].region_data.array[%d].cpi=%f\n", k, region, HISTORY_MONTHLY[k].region_data.array[region].cpi);
+		}
+    }    
+	/***** Messages: pre-conditions **********************************/
+    
+    /***** Function evaluation ***************************************/
+	Eurostat_store_history_quarterly();
+    
+    /***** Variables: Memory post-conditions *****/	
+    for ( region=0; region<REGION_FIRM_DATA.size; region++)
+    {
+   		//checking whether storing data works:	
+		var = HISTORY_QUARTERLY[0].region_data.array[region].cpi;
+		result = 1.0;
+
+		//printf("\n var=%f, result=%f\n", var, result);		
+
+		CU_ASSERT_DOUBLE_EQUAL(var, result, 1e-3);
+    }    		
+    /************* At end of unit test, free the agent **************/
+	unittest_free_Eurostat_agent();
+    /************* At end of unit tests, free all Messages **********/
+    free_messages();
+}
+
+/*
+ * \fn: void unittest4_Eurostat_store_history_quarterly()
+ * \brief: Unit test for: Eurostat_store_history_quarterly.
+ * Test: history shifting of region data
+ * Init: HISTORY_QUARTERLY[k].array[region].cpi = (double) k;
+ * 		 HISTORY_QUARTERLY[0].array[region].cpi = 0.0;
+ * Out:  HISTORY_QUARTERLY[k].array[region].cpi = (double) (k-1); 
+ * Status: Tested OK
+ */
+void unittest4_Eurostat_store_history_quarterly()
+{
+	int k, region;
+	double var, result;
+	//PRINT_LOG =0;
+
+    /************* At start of unit test, add one agent **************/
+	unittest_init_Eurostat_agent();
+	
+    /***** Variables: Memory pre-conditions **************************/
+	NO_REGIONS=2;
+	//run initializing function to init the region data arrays:
+	Eurostat_Initialization();
+
+	for ( region=0; region<REGION_FIRM_DATA.size; region++)
+    {
+   		//checking whether shifting data works:	
+		for (k=0;k<=5;k++)
+		{
+			HISTORY_QUARTERLY[k].region_data.array[region].cpi = (double) k;
+		}
+		for (k=0;k<3;k++)
+		{
+			HISTORY_MONTHLY[k].region_data.array[region].cpi = 0.0;
+		}
+    }
+    
+	/***** Messages: pre-conditions **********************************/
+    
+    /***** Function evaluation ***************************************/
+	Eurostat_store_history_quarterly();
+    
+    /***** Variables: Memory post-conditions *****/
+    for ( region=0; region<REGION_FIRM_DATA.size; region++)
+    {
+		for (k=1;k<5;k++)
+		{
+			var = HISTORY_QUARTERLY[k].region_data.array[region].cpi;
+			result = (double) (k-1);
+		
+			CU_ASSERT_DOUBLE_EQUAL(var, result, 1e-3);
+		}
+    }    		
+    /************* At end of unit test, free the agent **************/
+	unittest_free_Eurostat_agent();
+    /************* At end of unit tests, free all Messages **********/
+    free_messages();
+}
+
+
+
 
 /*
  * \fn: void unittest_Eurostat_compute_growth_rates_monthly()

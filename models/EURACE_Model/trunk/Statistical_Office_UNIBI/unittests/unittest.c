@@ -10,8 +10,13 @@ void unittest_Eurostat_calc_macro_data();
 void unittest_Eurostat_calc_price_index();
 void unittest_Eurostat_calc_firm_population();
 void unittest_Eurostat_calc_firm_survival_rates();
-void unittest_Eurostat_store_history_monthly();
-void unittest_Eurostat_store_history_quarterly();
+void unittest1_Eurostat_store_history_monthly();
+void unittest2_Eurostat_store_history_monthly();
+void unittest3_Eurostat_store_history_monthly();
+void unittest1_Eurostat_store_history_quarterly();
+void unittest2_Eurostat_store_history_quarterly();
+void unittest3_Eurostat_store_history_quarterly();
+void unittest4_Eurostat_store_history_quarterly();
 void unittest_Eurostat_compute_growth_rates_monthly();
 void unittest_Eurostat_compute_growth_rates_quarterly();
 void unittest_Eurostat_firm_creation();
@@ -60,16 +65,20 @@ int main(int argc, char * argv[])
     /* add extra tests using || */
     
     if(
-     	NULL == CU_add_test(pSuite, "Eurostat_calc_macro_data", unittest_Eurostat_calc_macro_data))
+     	NULL == CU_add_test(pSuite, "Eurostat_calc_macro_data", unittest_Eurostat_calc_macro_data) ||
 /*
     	NULL == CU_add_test(pSuite, "Eurostat_calc_price_index", unittest_Eurostat_calc_price_index) ||
     	NULL == CU_add_test(pSuite, "Eurostat_calc_firm_population", unittest_Eurostat_calc_firm_population) ||
     	NULL == CU_add_test(pSuite, "Eurostat_calc_firm_survival_rates", unittest_Eurostat_calc_firm_survival_rates))
 */   		
-/*
-     	NULL == CU_add_test(pSuite, "Eurostat_store_history_monthly", unittest_Eurostat_store_history_monthly) ||
-    	NULL == CU_add_test(pSuite, "Eurostat_store_history_quarterly", unittest_Eurostat_store_history_quarterly) ||
-    	NULL == CU_add_test(pSuite, "Eurostat_compute_growth_rates_monthly", unittest_Eurostat_compute_growth_rates_monthly) ||
+   		NULL == CU_add_test(pSuite, "Eurostat_store_history_monthly 1: history storage and shifting of economy-wide data", unittest1_Eurostat_store_history_monthly) ||
+     	NULL == CU_add_test(pSuite, "Eurostat_store_history_monthly 2: history storage of region data", unittest2_Eurostat_store_history_monthly) ||
+     	NULL == CU_add_test(pSuite, "Eurostat_store_history_monthly 3: history shifting of region data", unittest3_Eurostat_store_history_monthly) ||
+     	NULL == CU_add_test(pSuite, "Eurostat_store_history_quarterly 1: history storage of economy-wide data", unittest1_Eurostat_store_history_quarterly) ||
+    	NULL == CU_add_test(pSuite, "Eurostat_store_history_quarterly 2: history shifting of economy-wide data", unittest2_Eurostat_store_history_quarterly) ||
+    	NULL == CU_add_test(pSuite, "Eurostat_store_history_quarterly 3: history storage of region data", unittest3_Eurostat_store_history_quarterly) ||
+		NULL == CU_add_test(pSuite, "Eurostat_store_history_quarterly 4: history shifting of region data", unittest4_Eurostat_store_history_quarterly))
+/*    	NULL == CU_add_test(pSuite, "Eurostat_compute_growth_rates_monthly", unittest_Eurostat_compute_growth_rates_monthly) ||
     	NULL == CU_add_test(pSuite, "Eurostat_compute_growth_rates_quarterly", unittest_Eurostat_compute_growth_rates_quarterly))
 */
 //    	NULL == CU_add_test(pSuite, "Eurostat_firm_creation", unittest_Eurostat_firm_creation) ||
