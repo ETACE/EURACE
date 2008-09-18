@@ -1,6 +1,6 @@
 In this report we describe the parallel implementation of the FLAME Framework \cite{Coakley}. We will cover some of the reasons for parallelisation but also a detailed description of the approach being adopted. We also present some initial results from a set of benchmarks which hope to capture the computation and communications loads inherent in the EURACE application.
 
-There are many agent-based modelling systems. A detailed survey of such programs, systems and frameworks in given by Mangina \cite{Mangina}. Many of these systems are based on Java as their implementation language. Although a good language for web-based and some communications applications it is not one often used in the area of high performance computing. Similarly there are relatively few agent systems that address the problem of scalable simulations.
+There are many agent-based modelling systems. A detailed survey of such programs, systems and frameworks is given by Mangina \cite{Mangina}. Many of these systems are based on Java as their implementation language. Although a good language for web-based and some communications applications it is not one often used in the area of high performance computing. Similarly there are relatively few agent systems that address the problem of scalable simulations.
 
 Before considering the current parallelisation of FLAME it is worth considering the characteristics of a software system than make it worth taking the time and effort to parallelise. Some characteristics of when to parallelise:
 \begin{itemize}
