@@ -50,8 +50,8 @@ int main(int argc, char * argv[])
     /* add extra tests using || */
     
     if(
-       	NULL == CU_add_test(pSuite, "Mall_reset_export_data", unittest_Mall_reset_export_data) ||
-       	NULL == CU_add_test(pSuite, "Mall_add_export_data", unittest_Mall_add_export_data) ||
+       	//NULL == CU_add_test(pSuite, "Mall_reset_export_data", unittest_Mall_reset_export_data) ||
+       	//NULL == CU_add_test(pSuite, "Mall_add_export_data", unittest_Mall_add_export_data) ||
     	NULL == CU_add_test(pSuite, "Mall_send_export_data", unittest_Mall_send_export_data))
     {
         CU_cleanup_registry();

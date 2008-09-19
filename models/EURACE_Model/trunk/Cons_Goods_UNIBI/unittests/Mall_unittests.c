@@ -90,8 +90,8 @@ void unittest_Mall_send_export_data()
 	ID=1;
 	EXPORT_MATRIX[0]=1.0;
 	EXPORT_MATRIX[1]=2.0;
-	EXPORT_MATRIX[2]=2.0;
-	EXPORT_MATRIX[3]=1.0;
+	EXPORT_MATRIX[2]=3.0;
+	EXPORT_MATRIX[3]=4.0;
 	
 	/***** Messages: pre-conditions **********************************/
     
@@ -99,9 +99,26 @@ void unittest_Mall_send_export_data()
 	Mall_send_export_data();
     
     /***** Variables: Memory post-conditions *****/
-    //CU_ASSERT_DOUBLE_EQUAL(, 0.0, 1e-3);
-    //CU_ASSERT_EQUAL();
+    START_MALL_DATA_MESSAGE_LOOP
+    //mall_data_message(ID, firm_region, household_region, value);
 
+    if (mall_data_message->firm_region==1 && mall_data_message->household_region==1)
+	{
+    	CU_ASSERT_DOUBLE_EQUAL(mall_data_message->value, 1.0, 1e-3);
+	}
+    if (mall_data_message->firm_region==1 && mall_data_message->household_region==2)
+	{
+    	CU_ASSERT_DOUBLE_EQUAL(mall_data_message->value, 2.0, 1e-3);
+	}
+	if (mall_data_message->firm_region==2 && mall_data_message->household_region==1)
+	{
+    	CU_ASSERT_DOUBLE_EQUAL(mall_data_message->value, 3.0, 1e-3);
+	}
+	if (mall_data_message->firm_region==2 && mall_data_message->household_region==2)
+	{
+    	CU_ASSERT_DOUBLE_EQUAL(mall_data_message->value, 4.0, 1e-3);
+	}
+	FINISH_MALL_DATA_MESSAGE_LOOP
 	
     /************* At end of unit test, free the agent **************/
 	unittest_free_Mall_agent();
