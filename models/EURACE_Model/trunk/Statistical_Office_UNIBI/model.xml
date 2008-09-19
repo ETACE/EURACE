@@ -541,15 +541,8 @@ including several micro data.</description>
 <function><name>Eurostat_compute_growth_rates_monthly</name>
 <description>Eurostat computes monthly growth rates for macro data stored in its monthly history struct</description>
 <currentState>02</currentState>
-<nextState>03</nextState>
-</function>
-
-<function><name>Eurostat_measure_export</name>
-<description>Eurostat measures the exports between regions.</description>
-<currentState>03</currentState>
 <nextState>Start_Eurostat_Quarterly_Datastorage</nextState>
 </function>
-
 
 <function><name>Eurostat_idle</name>
 <description>Eurostat does nothing</description>
@@ -565,7 +558,7 @@ including several micro data.</description>
 <function><name>Eurostat_store_history_quarterly</name>
 <description>Eurostat stores quarterly macro data in its history struct</description>
 <currentState>Start_Eurostat_Quarterly_Datastorage</currentState>
-<nextState>04</nextState>                   <!--Toggle this if you want to turn ON growthrates functionality -->
+<nextState>03</nextState>                   <!--Toggle this if you want to turn ON growthrates functionality -->
 <!--<nextState>end_Eurostat</nextState>                 Toggle this if you want to turn OFF growthrates functionality -->
 <condition>
         <time><period>quarterly</period><phase>0</phase></time>
@@ -574,13 +567,13 @@ including several micro data.</description>
 
 <function><name>Eurostat_compute_growth_rates_quarterly</name>
 <description>Eurostat computes quarterly growth rates for macro data stored in its quarterly history struct</description>
-<currentState>04</currentState>
-<nextState>05</nextState>
+<currentState>03</currentState>
+<nextState>04</nextState>
 </function>
 
 <function><name>Eurostat_measure_recession</name>
 <description>Eurostat measures the start or end of recessions</description>
-<currentState>05</currentState>
+<currentState>04</currentState>
 <nextState>end_Eurostat</nextState>
 </function>
 
