@@ -877,6 +877,9 @@ int Eurostat_calculate_data()
     Eurostat_calc_price_index();
     Eurostat_calc_firm_population();
     Eurostat_calc_firm_survival_rates();
+    Eurostat_measure_recession();
+    Eurostat_measure_export();
+    
     
     return 0;
 }
@@ -1488,114 +1491,3 @@ int Eurostat_compute_growth_rates_quarterly()
     
     return 0;
 }
-
-/* \fn: int Eurostat_firm_creation()
- * \brief: The firm creation process
- */
-int Eurostat_firm_creation()
-{
-    int i;
-    double sum;
-    int nr_new_firms;
-    
-    //The average 1-period survival rate of firms age 0-12 months: 
-    sum=0.0;
-    for (i=0; i<12; i++)
-    {
-        //sum += SURVIVAL_RATE_MULTIPERIOD[0][i];
-        sum += SURVIVAL_RATE[i];
-    }
-    
-    //Total number of new firms created is between 0 and MAX_FIRM_CREATION
-    nr_new_firms = (int)MAX_FIRM_CREATION*sum/12;
-    
-    //add new firms
-    printf("Adding new firms: %d", nr_new_firms);
-    for (i=0; i<nr_new_firms; i++)
-    {
-        //new unique id
-        //random activation day
-        //some payment account?
-        //some capital?
-        
-        //add_firm_agent();
-    }
-    
-    return 0;
-}
-
-/* \fn: int Eurostat_measure_recession()
- * \brief: Function to measure the start, duration and end of a recession.
- */
-int Eurostat_measure_recession()
-{
-    //Signal start of recesson: 2 quarters of succesive negative growth of GDP
-    if (RECESSION_STARTED==0)
-    {
-        if ( (HISTORY_QUARTERLY[0].gdp < HISTORY_QUARTERLY[1].gdp) && (HISTORY_QUARTERLY[1].gdp < HISTORY_QUARTERLY[2].gdp))
-        {
-            RECESSION_STARTED=1;
-            RECESSION_DURATION = 0;
-        }   
-    }   
-    //Signal end of recesson: 1 quarter of positive growth of GDP after start of recession
-    if (RECESSION_STARTED==1)
-    {
-        RECESSION_DURATION++;
-
-        if (HISTORY_QUARTERLY[0].gdp >= HISTORY_QUARTERLY[1].gdp)
-        {
-            RECESSION_STARTED=0;
-        }
-    }
-
-    if (PRINT_LOG)
-    {
-        printf(" - recession started: %d\n", RECESSION_STARTED);
-        printf(" - duration of recession: %d\n", RECESSION_DURATION);
-    }
-    return 0;
-}
-
-/* \fn: int Eurostat_measure_export()
- * \brief: Function to measure exports between regions.
- */
-int Eurostat_measure_export()
-{
-    int i,j,index;
-    
-    //reset export matrix
-    for (i=0; i<NO_REGIONS; i++)
-    {
-        EXPORTS[i]=0.0;
-        IMPORTS[i]=0.0;
-        for (j=0; j<NO_REGIONS; j++)
-        {
-            index=i*NO_REGIONS+j;
-            EXPORT_MATRIX[index]=0.0;
-        }
-    }
-    
-    //read in all data
-    START_MALL_DATA_MESSAGE_LOOP
-        index = (mall_data_message->firm_region-1)*NO_REGIONS + (mall_data_message->household_region-1);        
-        EXPORT_MATRIX[index] += mall_data_message->value;
-    FINISH_MALL_DATA_MESSAGE_LOOP
-    
-    //sum total exports (row sum) and imports (column sum)
-    for (i=0; i<NO_REGIONS; i++)
-    {
-        for (j=0; j<NO_REGIONS; j++)
-        {
-            if(i!=j)
-            {
-                index=i*NO_REGIONS+j;
-                EXPORTS[i] += EXPORT_MATRIX[index];
-                IMPORTS[j] += EXPORT_MATRIX[index];
-            }
-        }
-    }
-    
-    return 0;
-}
-
