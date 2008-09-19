@@ -83,6 +83,8 @@ void unittest_Mall_add_export_data()
  */
 void unittest_Mall_send_export_data()
 {
+	int rc;
+
     /************* At start of unit test, add one agent **************/
 	unittest_init_Mall_agent();
 	
@@ -95,13 +97,60 @@ void unittest_Mall_send_export_data()
 	
 	/***** Messages: pre-conditions **********************************/
     
+	/***** Messages: initialize message boards **********************************/
+	rc = MB_Create(&b_mall_data, sizeof(m_mall_data));
+    	    #ifdef ERRCHECK
+    	    if (rc != MB_SUCCESS)
+    	    {
+    	       fprintf(stderr, "ERROR: Could not create 'mall_data' board\n");
+    	       switch(rc) {
+    	           case MB_ERR_INVALID:
+    	               fprintf(stderr, "\t reason: Invalid message size\n");
+    	               break;
+    	           case MB_ERR_MEMALLOC:
+    	               fprintf(stderr, "\t reason: out of memory\n");
+    	               break;
+    	           case MB_ERR_INTERNAL:
+    	               fprintf(stderr, "\t reason: internal error. Recompile libmoard in debug mode for more info \n");
+    	               break;
+    	       }
+    	    }
+    	    #endif
+
+	/***** Messages: pre-conditions **********************************/
+//    add_<message_name>_message();
+    	    
+    /***** Adding message iterators ***************************************/
+    rc = MB_Iterator_Create(b_mall_data, &i_mall_data);
+			
+	if (rc != MB_SUCCESS)
+			{
+			   fprintf(stderr, "ERROR: Could not create Iterator for 'mall_data'\n");
+			   switch(rc) {
+			       case MB_ERR_INVALID:
+			           fprintf(stderr, "\t reason: 'mall_data' board is invalid\n");
+			           break;
+			       case MB_ERR_LOCKED:
+		               fprintf(stderr, "\t reason: 'mall_data' board is locked\n");
+		               break;
+		           case MB_ERR_MEMALLOC:
+		               fprintf(stderr, "\t reason: out of memory\n");
+		               break;
+		           case MB_ERR_INTERNAL:
+		               fprintf(stderr, "\t reason: internal error. Recompile libmoard in debug mode for more info \n");
+		               break;
+			   }
+			}
+
     /***** Function evaluation ***************************************/
 	Mall_send_export_data();
     
     /***** Variables: Memory post-conditions *****/
+    printf("\n Starting message loop");
     START_MALL_DATA_MESSAGE_LOOP
-    //mall_data_message(ID, firm_region, household_region, value);
-
+    //mall_data_message(ID, firm_region, household_region, value);    
+    printf("\n firm_region=%d, household_region=%d, value=%2.2f", mall_data_message->firm_region, mall_data_message->household_region, mall_data_message->value);
+    
     if (mall_data_message->firm_region==1 && mall_data_message->household_region==1)
 	{
     	CU_ASSERT_DOUBLE_EQUAL(mall_data_message->value, 1.0, 1e-3);
@@ -119,6 +168,7 @@ void unittest_Mall_send_export_data()
     	CU_ASSERT_DOUBLE_EQUAL(mall_data_message->value, 4.0, 1e-3);
 	}
 	FINISH_MALL_DATA_MESSAGE_LOOP
+	printf("\n Finished message loop");
 	
     /************* At end of unit test, free the agent **************/
 	unittest_free_Mall_agent();

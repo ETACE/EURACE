@@ -552,3 +552,37 @@ void Eurostat_calc_price_index(void);
 void Eurostat_calc_firm_population(void);
 void Eurostat_calc_firm_survival_rates(void);
 ----------------------------------------------------------------------
+Sander, rev 1397
+
+- Added a region_data_item to hold macro data for each region:
+(the data is a selection from region_firm_data and region_household_data)
+cpi
+cpi_last_month
+gdp
+output
+employment
+unemployment_rate
+unemployment_rate_skill_1
+unemployment_rate_skill_2
+unemployment_rate_skill_3
+unemployment_rate_skill_4
+unemployment_rate_skill_5
+average_wage
+no_firms
+no_firm_births
+no_firm_deaths
+
+
+- Added a region array to the history item:
+<type>region_data_item_array</type><name>region_data</name>
+
+- This allows us to refer also to the history of regional data.
+
+Reference to current data of region i:
+REGION_DATA.array[i].gdp
+
+Reference to historical data of region i:
+HISTORY_MONTHLY[0].region_data.array[i].gdp
+
+----------------------------------------------------------------------
+

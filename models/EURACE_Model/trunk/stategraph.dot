@@ -150,8 +150,6 @@ digraph state_graph {
 	layer_72 -> layer_73 [style=invis];
 	layer_74 [shape=plaintext, label="layer 74"];
 	layer_73 -> layer_74 [style=invis];
-	layer_75 [shape=plaintext, label="layer 75"];
-	layer_74 -> layer_75 [style=invis];
 	
 	/* States */
 	Firm_end_Firm [label = "end_Firm"]
@@ -248,10 +246,9 @@ digraph state_graph {
 	IGFirm_01 [label = "01"]
 	IGFirm_Start_IGFirm_Productivity [label = "Start_IGFirm_Productivity"]
 	Eurostat_end_Eurostat [label = "end_Eurostat"]
-	Eurostat_05 [label = "05"]
 	Eurostat_04 [label = "04"]
-	Eurostat_Start_Eurostat_Quarterly_Datastorage [label = "Start_Eurostat_Quarterly_Datastorage"]
 	Eurostat_03 [label = "03"]
+	Eurostat_Start_Eurostat_Quarterly_Datastorage [label = "Start_Eurostat_Quarterly_Datastorage"]
 	Eurostat_02 [label = "02"]
 	Eurostat_Start_Eurostat_Monthly_Datastorage [label = "Start_Eurostat_Monthly_Datastorage"]
 	Eurostat_01 [label = "01"]
@@ -410,12 +407,11 @@ digraph state_graph {
 	Eurostat_Eurostat_idle_01_Start_Eurostat_Monthly_Datastorage [label = "Eurostat_idle", shape = rect]
 	Eurostat_Eurostat_calculate_data_01_Start_Eurostat_Monthly_Datastorage [label = "Eurostat_calculate_data", shape = rect]
 	Eurostat_Eurostat_store_history_monthly_Start_Eurostat_Monthly_Datastorage_02 [label = "Eurostat_store_history_monthly", shape = rect]
-	Eurostat_Eurostat_compute_growth_rates_monthly_02_03 [label = "Eurostat_compute_growth_rates_monthly", shape = rect]
-	Eurostat_Eurostat_measure_export_03_Start_Eurostat_Quarterly_Datastorage [label = "Eurostat_measure_export", shape = rect]
+	Eurostat_Eurostat_compute_growth_rates_monthly_02_Start_Eurostat_Quarterly_Datastorage [label = "Eurostat_compute_growth_rates_monthly", shape = rect]
 	Eurostat_Eurostat_idle_Start_Eurostat_Monthly_Datastorage_Start_Eurostat_Quarterly_Datastorage [label = "Eurostat_idle", shape = rect]
-	Eurostat_Eurostat_store_history_quarterly_Start_Eurostat_Quarterly_Datastorage_04 [label = "Eurostat_store_history_quarterly", shape = rect]
-	Eurostat_Eurostat_compute_growth_rates_quarterly_04_05 [label = "Eurostat_compute_growth_rates_quarterly", shape = rect]
-	Eurostat_Eurostat_measure_recession_05_end_Eurostat [label = "Eurostat_measure_recession", shape = rect]
+	Eurostat_Eurostat_store_history_quarterly_Start_Eurostat_Quarterly_Datastorage_03 [label = "Eurostat_store_history_quarterly", shape = rect]
+	Eurostat_Eurostat_compute_growth_rates_quarterly_03_04 [label = "Eurostat_compute_growth_rates_quarterly", shape = rect]
+	Eurostat_Eurostat_measure_recession_04_end_Eurostat [label = "Eurostat_measure_recession", shape = rect]
 	Eurostat_Eurostat_idle_Start_Eurostat_Quarterly_Datastorage_end_Eurostat [label = "Eurostat_idle", shape = rect]
 	Clearinghouse_ClearingHouse_receive_info_stock_start_Clearinghouse_RECEIVEDINFOSTOCK [label = "ClearingHouse_receive_info_stock", shape = rect]
 	Clearinghouse_ClearingHouse_receive_orders_and_run_RECEIVEDINFOSTOCK_COMPUTEDPRICES [label = "ClearingHouse_receive_orders_and_run", shape = rect]
@@ -701,18 +697,16 @@ digraph state_graph {
 	Eurostat_Eurostat_calculate_data_01_Start_Eurostat_Monthly_Datastorage -> Eurostat_Start_Eurostat_Monthly_Datastorage;
 	Eurostat_Start_Eurostat_Monthly_Datastorage -> Eurostat_Eurostat_store_history_monthly_Start_Eurostat_Monthly_Datastorage_02 [ label = "Periodicity: monthly\nPhase: 0"];
 	Eurostat_Eurostat_store_history_monthly_Start_Eurostat_Monthly_Datastorage_02 -> Eurostat_02;
-	Eurostat_02 -> Eurostat_Eurostat_compute_growth_rates_monthly_02_03;
-	Eurostat_Eurostat_compute_growth_rates_monthly_02_03 -> Eurostat_03;
-	Eurostat_03 -> Eurostat_Eurostat_measure_export_03_Start_Eurostat_Quarterly_Datastorage;
-	Eurostat_Eurostat_measure_export_03_Start_Eurostat_Quarterly_Datastorage -> Eurostat_Start_Eurostat_Quarterly_Datastorage;
+	Eurostat_02 -> Eurostat_Eurostat_compute_growth_rates_monthly_02_Start_Eurostat_Quarterly_Datastorage;
+	Eurostat_Eurostat_compute_growth_rates_monthly_02_Start_Eurostat_Quarterly_Datastorage -> Eurostat_Start_Eurostat_Quarterly_Datastorage;
 	Eurostat_Start_Eurostat_Monthly_Datastorage -> Eurostat_Eurostat_idle_Start_Eurostat_Monthly_Datastorage_Start_Eurostat_Quarterly_Datastorage [ label = "not ( Periodicity: monthly\nPhase: 0 )"];
 	Eurostat_Eurostat_idle_Start_Eurostat_Monthly_Datastorage_Start_Eurostat_Quarterly_Datastorage -> Eurostat_Start_Eurostat_Quarterly_Datastorage;
-	Eurostat_Start_Eurostat_Quarterly_Datastorage -> Eurostat_Eurostat_store_history_quarterly_Start_Eurostat_Quarterly_Datastorage_04 [ label = "Periodicity: quarterly\nPhase: 0"];
-	Eurostat_Eurostat_store_history_quarterly_Start_Eurostat_Quarterly_Datastorage_04 -> Eurostat_04;
-	Eurostat_04 -> Eurostat_Eurostat_compute_growth_rates_quarterly_04_05;
-	Eurostat_Eurostat_compute_growth_rates_quarterly_04_05 -> Eurostat_05;
-	Eurostat_05 -> Eurostat_Eurostat_measure_recession_05_end_Eurostat;
-	Eurostat_Eurostat_measure_recession_05_end_Eurostat -> Eurostat_end_Eurostat;
+	Eurostat_Start_Eurostat_Quarterly_Datastorage -> Eurostat_Eurostat_store_history_quarterly_Start_Eurostat_Quarterly_Datastorage_03 [ label = "Periodicity: quarterly\nPhase: 0"];
+	Eurostat_Eurostat_store_history_quarterly_Start_Eurostat_Quarterly_Datastorage_03 -> Eurostat_03;
+	Eurostat_03 -> Eurostat_Eurostat_compute_growth_rates_quarterly_03_04;
+	Eurostat_Eurostat_compute_growth_rates_quarterly_03_04 -> Eurostat_04;
+	Eurostat_04 -> Eurostat_Eurostat_measure_recession_04_end_Eurostat;
+	Eurostat_Eurostat_measure_recession_04_end_Eurostat -> Eurostat_end_Eurostat;
 	Eurostat_Start_Eurostat_Quarterly_Datastorage -> Eurostat_Eurostat_idle_Start_Eurostat_Quarterly_Datastorage_end_Eurostat [ label = "not ( Periodicity: quarterly\nPhase: 0 )"];
 	Eurostat_Eurostat_idle_Start_Eurostat_Quarterly_Datastorage_end_Eurostat -> Eurostat_end_Eurostat;
 	Clearinghouse_start_Clearinghouse -> Clearinghouse_ClearingHouse_receive_info_stock_start_Clearinghouse_RECEIVEDINFOSTOCK;
@@ -892,9 +886,8 @@ digraph state_graph {
 	{ rank=same; layer_68;  Firm_Firm_send_data_to_Eurostat_Firm_End_Financial_Management_Role_15;  Firm_idle_Firm_End_Financial_Management_Role_15;  Bank_Bank_receive_installment_Bank_03_Bank_04; }
 	{ rank=same; layer_69;  Firm_Firm_receive_stock_info_15_Update_02;  Eurostat_Eurostat_calculate_data_01_Start_Eurostat_Monthly_Datastorage; }
 	{ rank=same; layer_70;  Firm_Firm_send_payments_to_bank_Update_02_end_Firm;  Eurostat_Eurostat_store_history_monthly_Start_Eurostat_Monthly_Datastorage_02;  Eurostat_Eurostat_idle_Start_Eurostat_Monthly_Datastorage_Start_Eurostat_Quarterly_Datastorage; }
-	{ rank=same; layer_71;  Eurostat_Eurostat_compute_growth_rates_monthly_02_03;  Bank_Bank_account_update_deposits_Bank_04_Bank_05; }
-	{ rank=same; layer_72;  Eurostat_Eurostat_measure_export_03_Start_Eurostat_Quarterly_Datastorage;  Bank_Bank_accounting_Bank_05_end_Bank_cycle;  Bank_Bank_idle_Bank_05_end_Bank_cycle;  Central_Bank_Central_Bank_read_account_update_start_Central_Bank_end_Central_Bank; }
-	{ rank=same; layer_73;  Eurostat_Eurostat_store_history_quarterly_Start_Eurostat_Quarterly_Datastorage_04;  Eurostat_Eurostat_idle_Start_Eurostat_Quarterly_Datastorage_end_Eurostat; }
-	{ rank=same; layer_74;  Eurostat_Eurostat_compute_growth_rates_quarterly_04_05; }
-	{ rank=same; layer_75;  Eurostat_Eurostat_measure_recession_05_end_Eurostat; }
+	{ rank=same; layer_71;  Eurostat_Eurostat_compute_growth_rates_monthly_02_Start_Eurostat_Quarterly_Datastorage;  Bank_Bank_account_update_deposits_Bank_04_Bank_05; }
+	{ rank=same; layer_72;  Eurostat_Eurostat_store_history_quarterly_Start_Eurostat_Quarterly_Datastorage_03;  Eurostat_Eurostat_idle_Start_Eurostat_Quarterly_Datastorage_end_Eurostat;  Bank_Bank_accounting_Bank_05_end_Bank_cycle;  Bank_Bank_idle_Bank_05_end_Bank_cycle;  Central_Bank_Central_Bank_read_account_update_start_Central_Bank_end_Central_Bank; }
+	{ rank=same; layer_73;  Eurostat_Eurostat_compute_growth_rates_quarterly_03_04; }
+	{ rank=same; layer_74;  Eurostat_Eurostat_measure_recession_04_end_Eurostat; }
 }
