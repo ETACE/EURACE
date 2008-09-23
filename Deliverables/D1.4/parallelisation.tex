@@ -72,7 +72,7 @@ The API provides further routines from emptying (\texttt{MB\_Clear()}) and delet
 \subsubsection{Iterators}
 \label{sec:mb_iterators}
 
-Iterators are opaque objects used for traversing Message Board content. They provide \textit{libmboard} users access to messages while isolating them from the internal data representation of Boards. It also aids in enforcing the rule that Boards should be not modified in any way by a read access. With this rules in place, multiple Iterators can be created to traverse the Board independently using different access patterns.
+Iterators are opaque objects used for traversing Message Board content. They provide \textit{libmboard} users access to messages while isolating them from the internal data representation of Boards. It also aids in enforcing the rule that Boards should be not modified in any way by a read access. With this rule in place, multiple Iterators can be created to traverse the Board independently using different access patterns.
 
 \begin{figure}[ht]
  \centering
@@ -206,7 +206,7 @@ During the design stage of \textit{libmboard}, several complications were identi
 % ---------------------------------------------------------------------------
 \subsubsection{Ensuring uniform assignment of Handles}
 
-All opaque objects (Boards, Iterators, and Registered Functions) are assigned integer-based Handles upon creation. For collective operations such as synchronisation to work, instances of the same object must be allocated identical Handles across all processing nodes. Coordinating the assignment of Handles to object instances across all nodes would therefore require additional communication, and possibly some form of processing barrier to ensure all nodes arrive at the same point in the code before proceeding. 
+All opaque objects (Boards, Iterators, and Registered Functions) are assigned integer-based Handles upon creation. To enable collective operations (such as board synchronisation), instances of the same object must be allocated the same Handle on all processing nodes. Coordinating the assignment of Handles to object instances across all nodes would therefore require additional communication and possibly some form of processing barrier to ensure all nodes arrive at the same point in the code before proceeding. 
 The overhead that this would incur is non-trivial, especially for more substantial simulations where numerous objects need to be created across large numbers of nodes. 
 
 In the interest of performance, we address this problem by delegating some of the responsibility to the FLAME framework. The framework is expected to generate  simulation code that issues object creation calls in the same order on all nodes, while \textit{libmboard} ensures that Handles are issued in the same sequence on all nodes. 
