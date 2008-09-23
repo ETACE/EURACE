@@ -88,9 +88,19 @@ int Eurostat_Initialization()
 int Eurostat_send_data_to_government()
 {
     //printf("AVERAGE_WAGE %f\n",AVERAGE_WAGE);
-add_mean_wage_for_government_message(1,AVERAGE_WAGE);
+	add_mean_wage_for_government_message(1,AVERAGE_WAGE);
 
-return 0;
+	//add message for each region
+	for (i=0; i<HISTORY_MONTHLY[0].region_data->size; i++)
+	{
+		region_id = i+1;
+		gdp = HISTORY_MONTHLY[0].region_data.gdp;
+		
+		printf("Region %d GDP=%2.2f\n", region_id, gdp);
+		add_region_gdp_for_government_message(region_id, gdp);
+	}
+	
+	return 0;
 }
 
 /** \Eurostat_send_data()

@@ -149,6 +149,7 @@ void unittest_Mall_send_export_data()
     printf("\n Starting message loop");
     START_MALL_DATA_MESSAGE_LOOP
     //mall_data_message(ID, firm_region, household_region, value);    
+    printf("\n Entering message loop");
     printf("\n firm_region=%d, household_region=%d, value=%2.2f", mall_data_message->firm_region, mall_data_message->household_region, mall_data_message->value);
     
     if (mall_data_message->firm_region==1 && mall_data_message->household_region==1)
