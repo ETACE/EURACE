@@ -469,23 +469,13 @@ including several micro data.</description>
 <function><name>Eurostat_read_tax_rates</name>
 <description></description>
 <currentState>Start_Eurostat_Tax_Data</currentState>
-<nextState>AA</nextState>
+<nextState>Start_Eurostat_Firm_Data</nextState>
 <condition><time><period>yearly</period><phase>1</phase></time></condition>
 <inputs>
 <input><messageName>government_tax_rates</messageName></input>
 </inputs>
 </function>
-
                 
-<function><name>Eurostat_send_data_to_government</name>
-<description>Eurostat sends the data to the government</description>
-<currentState>AA</currentState>
-<nextState>Start_Eurostat_Firm_Data</nextState>
-<outputs>
-<output><messageName>mean_wage_for_government</messageName></output>
-</outputs>
-</function>
-
 <!-- new loop: send_data -->
 <function><name>Eurostat_send_data</name>
 <description>Eurostat sends the data to the other agents</description>
@@ -526,11 +516,11 @@ including several micro data.</description>
 </inputs>
 </function>
 
-<!-- new loop: Monthly_Datastorage -->
+<!-- new loop: Monthly Loop -->
 
 <function><name>Eurostat_store_history_monthly</name>
-<description>Eurostat stores monthly macro data in its history struct</description>
-<currentState>Start_Eurostat_Monthly_Datastorage</currentState>
+<description>Eurostat stores monthly macro data in its history struct.</description>
+<currentState>Start_Eurostat_Monthly_Loop</currentState>
 <nextState>02</nextState>                           <!--Toggle this if you want to turn ON growthrates functionality -->
 <!--<nextState>Start_Eurostat_Quarterly_Datastorage</nextState> Toggle this if you want to turn OFF growthrates functionality -->
 <condition>
@@ -539,24 +529,23 @@ including several micro data.</description>
 </function>
 
 <function><name>Eurostat_compute_growth_rates_monthly</name>
-<description>Eurostat computes monthly growth rates for macro data stored in its monthly history struct</description>
+<description>Eurostat computes monthly growth rates for macro data stored in its monthly history struct.</description>
 <currentState>02</currentState>
-<nextState>Start_Eurostat_Quarterly_Datastorage</nextState>
+<nextState>Start_Eurostat_Quarterly_Loop</nextState>
 </function>
 
 <function><name>Eurostat_idle</name>
 <description>Eurostat does nothing</description>
-<currentState>Start_Eurostat_Monthly_Datastorage</currentState>
-<nextState>Start_Eurostat_Quarterly_Datastorage</nextState>
+<currentState>Start_Eurostat_Monthly_Loop</currentState>
+<nextState>Start_Eurostat_Quarterly_Loop</nextState>
 <condition>
         <not><time><period>monthly</period><phase>0</phase></time></not>
 </condition>
 </function>
 
-<!-- new loop: Quarterly_Datastorage -->
-
+<!-- new loop: Quarterly Loop -->
 <function><name>Eurostat_store_history_quarterly</name>
-<description>Eurostat stores quarterly macro data in its history struct</description>
+<description>Eurostat stores quarterly macro data in its history struct.</description>
 <currentState>Start_Eurostat_Quarterly_Datastorage</currentState>
 <nextState>03</nextState>                   <!--Toggle this if you want to turn ON growthrates functionality -->
 <!--<nextState>end_Eurostat</nextState>                 Toggle this if you want to turn OFF growthrates functionality -->
@@ -566,26 +555,36 @@ including several micro data.</description>
 </function>
 
 <function><name>Eurostat_compute_growth_rates_quarterly</name>
-<description>Eurostat computes quarterly growth rates for macro data stored in its quarterly history struct</description>
+<description>Eurostat computes quarterly growth rates for macro data stored in its quarterly history struct.</description>
 <currentState>03</currentState>
 <nextState>04</nextState>
 </function>
 
 <function><name>Eurostat_measure_recession</name>
-<description>Eurostat measures the start or end of recessions</description>
+<description>Eurostat measures the start or end of recessions.</description>
 <currentState>04</currentState>
 <nextState>end_Eurostat</nextState>
 </function>
 
 <function><name>Eurostat_idle</name>
 <description>Eurostat does nothing</description>
-<currentState>Start_Eurostat_Quarterly_Datastorage</currentState>
-<nextState>end_Eurostat</nextState>
+<currentState>Start_Eurostat_Quarterly_Loop</currentState>
+<nextState>Start_Eurostat_Yearly_Loop</nextState>
 <condition>
         <not><time><period>quarterly</period><phase>0</phase></time></not>
 </condition>
 </function>
 
+<!-- new loop: Yearly -->
+<function><name>Eurostat_send_data_to_government</name>
+<description>Eurostat sends the data to the governments for determining policies.</description>
+<currentState>Start_Eurostat_Yearly_Loop</currentState>
+<nextState>end_Eurostat</nextState>
+<outputs>
+<output><messageName>mean_wage_for_government</messageName></output>
+<output><messageName>region_gdp_for_government</messageName></output>
+</outputs>
+</function>
 
 </functions>
 </xagent>
@@ -671,6 +670,14 @@ including several micro data.</description>
 </variables>
 </message>
 
+<message>
+<name>region_gdp_for_government</name>
+<description>Sent by Eurostat. Includes the region_id and gdp for the region. Used by gov to compute its GDP.</description>
+<variables>
+<variable><type>int</type><name>region_id</name><description></description></variable>
+<variable><type>double</type><name>gdp</name><description></description></variable>
+</variables>
+</message>
 
 </messages>
 

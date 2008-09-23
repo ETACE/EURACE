@@ -585,4 +585,15 @@ Reference to historical data of region i:
 HISTORY_MONTHLY[0].region_data.array[i].gdp
 
 ----------------------------------------------------------------------
+Sander, rev 1405
 
+Added new government model
+
+To merge into main Eurace model
+- unemployment benefit announcement: yearly
+- unemployment benefit notification: monthly
+
+
+- Household_receive_unemployment_benefits: no longer needed, gov no longer needs to send payment, household computes own benefit payment.
+- Government_send_unemployment_benefit_payment: replace with Government_calc_unemployment_benefit_payment
+----------------------------------------------------------------------

@@ -406,4 +406,3 @@ int Mall_send_export_data()
 	
 	return 0;
 }
-

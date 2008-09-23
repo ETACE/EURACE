@@ -18,7 +18,8 @@
 <model><file>Statistical_Office_UNIBI/model.xml</file><enabled>true</enabled></model>
 <model><file>FINANCIAL_UG/model.xml</file><enabled>true</enabled></model>
 <model><file>Financial_UNIBI/model-dummy.xml</file><enabled>false</enabled></model>
-<model><file>Government_UNIBI/model.xml</file><enabled>true</enabled></model>
+<model><file>Government_UNIBI/model.xml</file><enabled>false</enabled></model>
+<model><file>Government_GREQAM/model.xml</file><enabled>true</enabled></model>
 </models>
 
 <environment>
@@ -199,6 +200,7 @@
 <description></description>
 <memory>
 <variable><type>int</type><name>id</name><description></description></variable>
+<variable><type>int</type><name>list_of_regions[1]</name><description>List of regions that are associated to the government.</description></variable>
 <variable><type>double</type><name>payment_account</name><description></description></variable>
 <variable><type>int</type><name>day_of_month_to_act</name><description></description></variable>
 </memory>
