@@ -177,3 +177,70 @@ to signal bankruptcy.}}  \\
  \caption{State graph of the Credit Market Model.} \label{fig:statecredit}
  \end{center}
  \end{figure}
+
+\subsection{Implementation Results}
+
+The implementation of the agents described above was then simulated
+to produce results which could later then be tested for verification
+of the model. The results and technical details of the credit market
+have also been discussed in D5.2.
+
+The simulation consists of fifty iterations, that is 50 days. The
+network is composted by $100$ firms and $10$ banks. Households are
+replaced by the Dummy Agent.
+
+Every month firms accomplish two main actions: they ask for loans
+and pay debt installments, inclusive of interests. The demand of
+credit occurs once per month. All firms, for sake of simplicity, are
+activated in the first day of each month. Interests are payed back
+every day after the loan has been taken out. The more relevant
+initial conditions of firms have been set as follows: $equity=100$,
+\emph{total debt=0}, $cash=100$ and \emph {total assets=0}.
+
+As far as banks are concerned, they have the task to lend money and
+fix interest rates whenever required by firms. Then, banks collect
+interests and installments payed back by firms increasing, so, their
+equity and cash. At the end of the month, banks with positive
+profits will pay taxes and dividends. \\Relevant bank variables have
+the following initial values:  \emph{cash=1000}, \emph{total
+credit=0}, \emph{equity=1000}, \emph{debts versus BCE=0},
+$\gamma_t$=0.2, $\gamma_{t-1}$=0.4, \emph{BCE's interest 2\%},
+$\alpha$=0.8 and $\pi_{t-1} = \pi_{t-2}$=500.
+
+Figure (\ref{fig:equity}) shows the average bank equity along the
+simulation time. In the first twenty days it increases thanks to
+interest payments. In the first day of the second month ($21^{st}$
+iteration), banks pay taxes and, so, the equity shrinks. Then, since
+banks grant new loans and, consequently, new interests are payed,
+the everage equity increases again and so on. It is worthwhile to
+note that in the second month equity grows less because banks are
+short of liquidity and lend less money. This is because we have not
+considered deposits from households (which are created in another
+\emph{EURACE} module); additional liquidity, disposable for new
+loans, comes only from firms' payment of installments relative to
+previously contracted debts.
+\begin{figure}[h!]
+ \vskip 2cm
+ \centerline{
+  \epsfxsize 7cm \epsffile{equity.pdf} \hskip .5cm}
+ \caption{Time series of average bank equity. Jumps occur when taxes are payed.}
+ \label{fig:equity}
+\end{figure}
+
+
+In figure (\ref{fig:data-bankave}) we can see the average bank cash.
+After the first period it decreases abruptly because of loan demands
+occurring in the same time. In the following days, banks receive
+installments and can build up their liquidity again. The same
+reasoning for equity applies: we do not have deposits, so cash can
+only re-establish slowly and is immediately absorbed by new credit
+demands: that is why the average cash shows along time only small
+increases.
+
+\begin{figure}[htb]
+ \vskip 2cm
+ \centerline{
+  \epsfxsize 7cm \epsffile{data-bankave.pdf} \hskip .5cm}
+ \caption{Time series of average bank liquidity supply.}
+ \label{fig:data-bankave}
+\end{figure}
