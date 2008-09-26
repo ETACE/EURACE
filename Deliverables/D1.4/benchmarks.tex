@@ -1,29 +1,33 @@
 \subsection{Approach to Benchmarking}
 \label{sec:benchmarks}
+
 Our approach to benchmarking has been incremental: starting from a very simple model and then gradually increasing the complexity. The benchmarks run so far are part of the assessment of the current parallel implementation. They also serve as a useful way of ensuring that FLAME and its generated applications are portable over a wide range of hardware and operating systems. 
 
 \begin{table}[ht]
  \centering
   \begin{tabular}{l|ccc}
   Model     & Agents & Messages & Population   \\\hline
-  Circles     &   1    &   1      &  10$^5$    \\
-  C@S       &   3    &   9      &  124,000 \\
-  Labour Market &   4    &   10     &  110,101 \\ 
-  Bielefeld     &   4    &   29     &  43100     \\\hline
-  \end{tabular}
-\end{table}
+   Circles     &   1    &   1      &  10$^5$    \\
+   C@S       &   3    &   9      &  124,000 \\
+   Labour Market &   4    &   10     &  110,101 \\ 
+   Bielefeld     &   4    &   29     &  43100     \\\hline
+   \end{tabular}
+   \caption{Details of Current Benchmark Models}
+ \end{table}
 
 The starting populations have been generated using the initial population generator developed by STFC. The ratio of agent numbers in each population was retained from the original values.
 
 Each benchmark has been run on a variety of HPC systems available to STFC using a range of process numbers: 4 9 16 32 49 64 81 and 100. The results presented show how the elapsed time per iteration varies with number of processors. In these experiments a round-robin initial distribution has been used for the Labour Market and Bielefeld models, while geometric partitioning has been used for the Circles and C@S models.
 
 \subsection{The Circles Model}
+
 The Circles agent is very simple. It has a position in two-dimensional space and a radius of influence. Each agent will react to its neighbours within its interaction radius repulsively. So given a sufficient simulation time the initial distribution of agents will tend to a field of uniformly spaced agents.
 
 Each agent has $x$, $y$, $fx$, $fy$ and $radius$ in its memory and has three states: outputdata, inputdata and move. The agents communicate via a single message board, $location$, which holds the agent $id$ and position.
 
 The Circles problem is very simple but allows us an initial assessment of the performance of the parallelisation within FLAME. The simulation was started with a populations of $10^5$  agents and experiments performed using from 4 to 100 processors. The averaged results are shown in Table~\ref{tab:ExecutionTimesForCircles} and Figure~\ref{fig:Circles-graph}.
 %Some place markers
+
 {
 \renewcommand{\arraystretch}{1.25}
 \begin{table}[ht]
@@ -39,12 +43,12 @@ The Circles problem is very simple but allows us an initial assessment of the pe
 64 &116.13 &134.08 &390.13 &605.77      \\
 81 &88.83 &105.35 &325.52 &484.19       \\
 100 &75.20 &87.49 &256.59 &386.71       \\
-
  \end{tabular}
  \caption{Execution Times for $10^5$ Circles}
  \label{tab:ExecutionTimesForCircles}
 \end{table}
 }
+
 \begin{figure}[ht]
  \centering
   \includegraphics[width=300pt]{Circles-graph.jpg}
@@ -62,6 +66,7 @@ This provides an initial economic model for testing FLAME. The EURACE version of
 As the agents in the C@S Model have some positional/location data and the communication is localised, the initial distribution of agents to processors, as in the Circles Model, can be based on location. This helps reduce cross-processor communication.
 
 The initial population contained: 20000 firms, 100000 people and 4000 malls (124000 agents in total).
+
 {
 \renewcommand{\arraystretch}{1.25}
 \begin{table}[ht]
@@ -77,25 +82,27 @@ The initial population contained: 20000 firms, 100000 people and 4000 malls (124
 64 &260.53 &313.39 &910.23 &1218.58     \\
 81 &207.25 &261.33 &723.87 &992.43      \\
 100 &169.46 &207.52 &601.24 &806.16     \\
-
  \end{tabular}
  \caption{Execution Times for C@S Model}
  \label{tab:ExecutionTimesForC@S}
 \end{table}
 }
-\bigskip
+
+%\bigskip
 \begin{figure}[ht]
  \centering
   \includegraphics[width=300pt]{C@S2-graph.jpg}
  \caption{Graph of C@S Model execution times}
  \label{fig:C@S-graph}
 \end{figure}
+
 The results show a potential reduction of the elapsed time of the simulation when using up to 30 processors.
 
 
 
 \subsection{Initial Labour Market}
-This model was first model based on the work of the EURACE project. The model represented a very simplified labour market. It contains four agent types and 10 message types.
+
+This model was first model based on the work of the EURACE project. The model represented a very simplified labour market. It contains four agent types: \textit{Firm}, \textit{Household}, \textit{Market Research} and \textit{Eurostat} and 10 message types.
 
 {
 \renewcommand{\arraystretch}{1.25}
@@ -112,13 +119,13 @@ This model was first model based on the work of the EURACE project. The model re
 64 &90.67 &97.81 &352.29 &440.36        \\
 81 &72.51 &74.81 &273.78 &349.31        \\
 100 &60.79 &61.34 &218.11 &284.29       \\
-
  \end{tabular}
  \caption{Execution Times for Labour Market Model}
  \label{tab:ExecutionTimesForLabour}
 \end{table}
 }
-\bigskip
+%\bigskip
+
 \begin{figure}[ht]
  \centering
   \includegraphics[width=300pt]{Labour2-graph.jpg}
@@ -127,7 +134,9 @@ This model was first model based on the work of the EURACE project. The model re
 \end{figure}
 
 \subsection{Bielefeld Labour Market}
-This model was a refinement of the Initial Labour Market. Its also contained four agent types but with 27 message types.
+
+This model is a refinement of the Initial Labour Market. It too contains four agent types, \textit{Firm}, \textit{Household}, \textit{Mall} and \textit{Investment Goods Producer} and has 27 message types.
+
 {
 \renewcommand{\arraystretch}{1.25}
 \begin{table}[ht]
@@ -143,13 +152,13 @@ This model was a refinement of the Initial Labour Market. Its also contained fou
 64 &93.39 &99.91 &222.95 &299.56        \\
 81 &71.06 &75.00 &179.58 &239.38        \\
 100 &65.59 &61.18 &144.97 &194.95       \\
-
  \end{tabular}
  \caption{Execution Times for Bielefeld Model}
  \label{tab:ExecutionTimesForBielefeld}
 \end{table}
 }
-\bigskip
+%\bigskip
+
 \begin{figure}[ht]
  \centering
   \includegraphics[width=300pt]{Bielefeld2-graph.jpg}
@@ -158,6 +167,7 @@ This model was a refinement of the Initial Labour Market. Its also contained fou
 \end{figure}
 
 \subsection{EURACE Models}
+
 During the development of the EURACE Model a number of domain specific models have been developed. These models were then integrated into the EURACE Model. Three domain specific models were developed: Credit Market, Labour Market and Financial Market. Each of these and the combined EURACE Model are the major economic models developed by EURACE. As part of the development of FLAME these models have been used to test the FLAME application generation and the framework infrastructure. In particular they have been very useful in testing the parallel implementation of FLAME. Although the initial agent populations is these models are very small they do encapsulate the full range and complexity of the EURACE model and to that end they are a very useful testing resource.
 
 \begin{table}[ht]
@@ -169,6 +179,10 @@ During the development of the EURACE Model a number of domain specific models ha
   Credit Market   &   3     &    12      &   110         \\ 
   EURACE Model    &   9     &    54       &  2029         \\\hline
   \end{tabular}
+  \caption{Details of Current EURACE Models}
 \end{table}
 
 All these models have been successfully parsed, compile and executed in both serial and parallel on some of our target HPC machines.
+
+\clearpage
+
