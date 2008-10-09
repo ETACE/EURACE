@@ -15,7 +15,7 @@ dvi:
 	latex coakley_aamas2009
 
 ps: dvi
-	dvips -t a4 coakley_aamas2009.dvi -o coakley_aamas2009.ps
+	dvips -t letter coakley_aamas2009.dvi -o coakley_aamas2009.ps
 
 clean:
 	rm -f *.aux coakley_aamas2009.bbl coakley_aamas2009.blg coakley_aamas2009.dvi coakley_aamas2009.log coakley_aamas2009.lof coakley_aamas2009.lot coakley_aamas2009.toc coakley_aamas2009.ps 
