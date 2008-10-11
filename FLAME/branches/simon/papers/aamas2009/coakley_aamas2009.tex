@@ -68,10 +68,10 @@
 
 \AuthorsForCitationInfo{Simon Coakley}
 
-\TitleForCitationInfo{Strategy for parallel agent communication and processing}
+\TitleForCitationInfo{Parallel agent communication and processing}
 
 
-\title{Strategy for parallel agent communication and processing}
+\title{Parallel agent communication and processing}
 
 % \subtitle{(Extended Abstract)}
 % Do NOT use any \subtitle command for EXTENDED ABSTRACT paper submissions.
@@ -146,7 +146,14 @@ Simon Coakley\\
 \maketitle
 \begin{abstract}
 
-
+Modern developments in fields such as biology and economics mean that we have to
+tackle the issue of extremely large amounts of data throughput. This is achieved
+by providing efficient data transfer mechanisms and filters that permit the
+operation of simulation environments featuring many thousands and millions of
+agents. Executing large agent-based models requires large amounts of processing
+power and memory which are not readily available on single computers. This paper
+presents a formal specification of agents in an agent-based model such that the
+description aids parallel execution.
 
 % Submit to special area: Description Level: Methodologies/ Languages
 % 
@@ -159,11 +166,11 @@ Simon Coakley\\
 % Managing massively multi agent systems to run on high performance computers eg
 % blue gene
 
-This paper describes on going research as part of the E.U. funded EURACE project,
-to built a large scale agent-based model of the European economy able to run
-efficiently on high performance computers. New processing and communication
-strategies for parallel execution are described that utilise the many
-communication networks present in economic models.
+% This paper describes on going research as part of the E.U. funded EURACE project,
+% to built a large scale agent-based model of the European economy able to run
+% efficiently on high performance computers. New processing and communication
+% strategies for parallel execution are described that utilise the many
+% communication networks present in economic models.
 % 
 % Building on the FLAME which is based upon extended finite state machines
 % (X-machines) where transitions between states are function that act on the
@@ -221,8 +228,8 @@ communication networks present in economic models.
 %Why research is novel and new and helps.
 
 Modern developments in fields such as biology and economics mean that we have to
-tackle the issue of extremely large amounts of data throughput which is achieved
-by providing efficient data transfer mechanisms and filters that permit the
+tackle the issue of extremely large amounts of data throughput. This is
+achieved by providing efficient data transfer mechanisms and filters that permit the
 operation of simulation environments featuring many thousands and millions of
 agents. The diversity of potential applications in biology, including cellular
 interactions \cite{3,125} and cell signalling pathways \cite{143}, and economics,
@@ -243,16 +250,18 @@ efficient execution techniques.
 
 %To execute an agent-based model efficiently in parallel and to be able to
 %verify and validate it, a formal description of the model is required.
-Different formal description of agents have been proposed but none with the
-onward ability to handle efficient parallel execution. UML has be proposed as a
-formal language for the intermediate stage towards the implementation of a model from the conceptual model. But does not provide
-implementation details and parallel execution techniques.
-Other formal specification languages \cite{object-z_statecharts, slabs} also do
-not give details on parallel implementation.
 
-This paper describes a formal description of agents in an agent-based model
-such that the description aids the parallel implementation and uses techniques
-also described to further the efficiently.
+
+This paper presents a formal specification of agents in an agent-based model
+such that the description aids parallel execution. Techniques for efficient
+parallel agent communication and processing are also presented. The key
+contributions are:
+
+\begin{enumerate}
+  \item A model for formally specifying agents.
+  \item A strategy for efficient parallel agent communication.
+  \item A strategy for efficient parallel agent process ordering.
+\end{enumerate}
 
 % The techniques described in this paper are based upon a parallel agent platform. 
 % The requirement for the agent platform to be parallel is two-fold, processing
@@ -268,46 +277,41 @@ also described to further the efficiently.
 \section{Background}
 
 This research is funded by the European Union via the EURACE project which aims
-to build a large agent-based model of the European economy to aid economic
-policy design. The project requires the development of software techniques and
+to build a large scale agent-based model of the European economy to aid
+economic policy design. The project requires the development of software techniques and
 a software platform for large-scale agent-based economic simulations.
 
 The issues involved include the definition of formal languages for modelling
-and for optimising simulation code generation. Previous work on techniques and
+and for optimising simulation execution.
+Different formal description of agents have been proposed but none with the
+onward ability to handle efficient parallel execution. UML has be proposed as a
+formal language for the intermediate stage towards the implementation of a model
+from its comceptualisation. But this does not provide implementation details and
+parallel execution techniques. Other formal specification languages
+\cite{object-z_statecharts, slabs} also do not give details on parallel
+implementation.
+
+Previous work on techniques and
 a software platform for large-scale agent-based modelling of biological systems
 has been developed at Sheffield University \cite{179, 256, 221}. Using abstract state
-machines as the formal definition language for agents, which are marked-up in
-XML, a parser was used, along with template files, to produce simulation code.
-
-The parser had the ability to produce simulation code that works in parallel,
-using the MPI library. The first communication strategy was based upon Cartesian
+machines (X-machines) as the formal definition language for agents, which are
+marked-up in XML, a parser was used, along with template files, to produce simulation code.
+The parser has the ability to produce simulation code that works in parallel,
+using the MPI library. The communication strategy used was limited to Cartesian
 space as this was the common topology used in biological models. Each
 processing node on a parallel computer has associated message boards where
 agents post messages. When all agents have posted a message of a certain type,
 the message boards are sychronisated in such a way that only messages required
-by agents on a processing node are sent to the cooresponding nodes message
-board.
+by agents on a processing node are sent to the cooresponding node message
+boards.
+% why econmic models need more
 
-Working with partners at the Rutherford Appleton Laboratories (Science \&
-Technology Facilities Council) a new communication strategy was defined which
-uses generic filtering and a new communication library was developed based upon
-starting and completion of message board synchronisation.
+Communication in economic models though are not resticted to
+a topology-based network but economic activity involving many
+heterogeneous agents with interconnected markets.
 
-\begin{figure}[hbp]
-\centering
-%\includegraphics[width=\columnwidth]{stategraph.ps}
-\includegraphics[width=2in]{layer_model.eps}
-\caption{Layered architecture}
-\end{figure}
 
-The current design of the framework consists of a model specification
-describing abstract state machines for each agent in a model along with
-the implementation of agent functions in source code. The parser reads the
-model specification, calculates order of operations, and produces simulation
-source code which is compiled with the agent function source code and linked
-with the communication library.
-
-\section{Specification}
+\subsection{X-Machines as Agent Specification}
 
 For an efficient parallel agent-based model, the operating limits of agents
 must be defined.
@@ -400,8 +404,8 @@ the input messages, sends output messages, and updates agent memory.
 An example model specification is given in Table \ref{tab:simpleexample} with
 the cooresponding state diagram in Figure \ref{tab:simpleexample} showing a
 single agent type that sends a message type between two functions. In a
-simulation multiple agents of this type would send messages and read each others
-messages, as wel as their own.
+simulation multiple agents of this type would send messages and receive each
+others messages (as well as their own).
 
 \begin{table}[hbp]
 \centering
@@ -432,7 +436,11 @@ between two functions}
 \label{fig:simpleexample}
 \end{figure}
 
-\section{Communication Strategy}
+The current EURACE economic model has 9 agent types with 159 functions using 55
+message types to communicate. The complexity of the model can be seen in the
+model state diagram, see Figure \ref{fig:eurace}.
+
+\subsection{The Challenge of Concurrent X-Machine Communication}
 
 % Problem
 Handling communication efficiently between agents is a hard problem especially
@@ -443,8 +451,8 @@ communication in a model, therefore making communication more managable.
 Common solutions involve the use of grid-based spacial topologies, where
 certain grid points can only communicate to a subset of other grid points that
 are spacially near. Agents are then associated with grid points.
-This solution only allows one communication network strategy and one which is
-spacially based.
+This solution only allows one communication network strategy and one
+communication restriction, which are spacially based.
 Spacial topology is less relivant for economic models looking to model economies
 because the relationship between agents are based upon their economic activities
 and not the spacial distance they are away from each other. For example: firms
@@ -454,6 +462,29 @@ provide a spacial aspect if used. This implies that there are many
 communication networks in economic models, specifically markets: labour; goods;
 credit; financial; and economic regions.
 
+\section{Managing Concurrent\\Agent Communications}
+
+A new communication strategy was needed that allows generic communication
+networks with generic communication restrictions.
+A new parallel communication library was developed based upon filters and the
+starting and completion of message synchronisation.
+
+\begin{figure}[hbp]
+\centering
+%\includegraphics[width=\columnwidth]{stategraph.ps}
+\includegraphics[width=2in]{layer_model.eps}
+\caption{Layered architecture}
+\end{figure}
+
+The current design of the framework consists of a model specification
+describing abstract state machines for each agent in a model along with
+the implementation of agent functions in source code. The framework parser reads
+the model specification, calculates order of operations, and produces simulation
+source code which is compiled with the agent function source code and linked
+with the communication library.
+
+\subsection{Type-Based Message Filtering}
+
 The model specification already defines a communication restriction: message
 types that can be sent between certain agent types. For example firms sending
 \textit{job vacancy} messages to households.
@@ -462,8 +493,8 @@ agents where agents types that often communicate are placed on the same
 processing node, therefore limiting node to node communication.
 
 But there is always going to be communication between processing nodes and the
-more this can be restricted the quicker and more efficient the execution of a
-model will be.
+more this can be restricted the less data that needs to be exchanged and the
+more efficient the execution of a model will be.
 
 % More restrictions the
 % better to try and limit the amount of communication exchanged between
@@ -499,8 +530,8 @@ model will be.
 % the more filters that can be defined the less messages that need to be
 % synchronised across computational nodes. For example:
 
-The strategy presented in this paper is the use of input filters, not just for
-local interactions, but generic comparisions between agent memory
+The communication restriction strategy uses filters for function input, not just
+for local interactions, but generic comparisions between agent memory
 and message memory.
 
 Filters are built up from conditions on variables from messages where the
@@ -531,28 +562,23 @@ $message\_firm\_vacancy\_id == agent\_firm\_id$
 
 The design of the communication library provides the ability to register
 filters with associated parameters, and methods to start a synchronisation and
-ask for a synchronisation completion.
+ask for a synchronisation completion before the messages are required to be
+read.
 
 A synchronisation without filters will invoke the communication library to send
 all messages from the local message board to all other processing nodes.
 
-By registering a filter before a synchronisation the communication library will
-get processing nodes to tell all other nodes the subset of messages it requires.
-
-Every function that accepts the input of a message type requires a
-synchronisation with the message board.
-These synchronisations can be batched together..
-
-
-Either all messages are received or a filter can be used to restrict the amount.
+By registering a filter before a synchronisation the communication library
+requires processing nodes to send their filter parameters to other nodes who
+use this information along with the filter to restrict outgoing data.
 
 The parameters required for filters can be easily reduced for each processing
-node. For example:
+node. For example where the filter operation is:
 
 \begin{itemize}
-  \item EQ / NEQ - list of unqiue values
-  \item LT / LEQ - maximum value
-  \item GT / GEQ - minimum value
+  \item EQ / NEQ - the list of unqiue values is required
+  \item LT / LEQ - the maximum value is required
+  \item GT / GEQ - the minimum value is required
 \end{itemize}
 
 For more complicated filters that require functions, for example
@@ -568,7 +594,11 @@ filters filter using a region identification number then this suggests agents
 should be partitioned according to the value of that particular variable in
 their memory.
 
-\section{Agent Process Ordering}
+% Every function that accepts the input of a message type requires a
+% synchronisation with the message board.
+% These synchronisations can be batched together..
+
+\subsection{Ensuring Consistent\\Distributed Execution}
 
 The sychronisation of communication requires the sychronisation of processing
 nodes and therefore the agents being processed.
@@ -608,6 +638,8 @@ green edges/arrows show the communication dependencies via the parallelogram
 showing the message type. The dependency graph also shows that a commuication
 sychronisation must take place between execution layers 2 and 3.
 
+The current EURACE model, see Figure \ref{fig:eurace}, has 75 execution layers.
+
 \begin{figure}[hbp]
 \centering
 \includegraphics[width=2in]{stategraph_1.ps}
@@ -629,8 +661,10 @@ to the functions in execution layer 2 it would be better to execute function FB2
 on agents before executing function FA1. By executing agent functions during
 synchronisations it means processing nodes are not idling waiting for
 commonication to complete.
+And by processing functions during communication sychronisations no processing
+time is wasted.
 
-If functions use one can try 
+%If functions use one can try 
 
 
 
@@ -650,14 +684,20 @@ If functions use one can try
 %   If filters wait until smaller amount of agents in state before?
 % Complete syncs as late as possible.
 
+% \begin{figure}[hbp]
+% \centering
+% %\includegraphics[width=\columnwidth]{stategraph.ps}
+% \includegraphics[width=2in]{stategraph.ps}
+% \caption{An example state diagram}
+% \end{figure}
+
 \begin{figure}[hbp]
 \centering
 %\includegraphics[width=\columnwidth]{stategraph.ps}
-\includegraphics[width=2in]{stategraph.ps}
-\caption{An example state diagram}
+\includegraphics[totalheight=0.96\textheight]{eurace_stategraph.ps}
+\caption{EURACE state diagram}
+\label{fig:eurace}
 \end{figure}
-
-
 
 
 %\end{document}
@@ -676,28 +716,30 @@ If functions use one can try
 % 
 % Use of this framework for testing see this paper using Daikon \cite{289}
 
-\section{Conclusions}
+\section{Discussion}
 
-Economic agent-based models of the economy use many communication networks
-based upon markets (labour, goods, credit, financial) but most frameworks only
-use one communication network based upon spatial topology to restrict
-communication.
-When executing models on parallel computers the more communication restrictions
-the better. This also helps partitioning strategies.
-The use of filters provides a generic mechanism to restrict communication and
-implicitly defines communication networks, rather than explicitly defining a
-single, spacial, topology.
-The execution of models in parallel requires a formal definition of agents in
-a model so that the process order of agents and the handling of agent
-communication can calculated and be made as efficient as possible.
+When executing large scale models on parallel computers a strategy is required
+to keep the model syncronised between processing nodes and restrict the amount
+of node to node communication as much as possible.
+The use of formally defined agents provides a way to pre-define agent
+function processing, keeping processing nodes synchronised, and calculating
+efficient times to sychronise communication between processing nodes.
+The use of input filters for agent functions provides a generic way to restrict
+agent communication while implicitly creating communication networks that can
+guide parallel partitioning strategies.
+
+
+% Related work / conclusions and future work
 
 % No spacial topologies explicit, but implicit via the use of input filters used by
 % agents.
 
 %ACKNOWLEDGMENTS are optional
 \section{Acknowledgements}
-This research funding provided by the European Commission as part of the
-FP6-STREP project EURACE (under contract no. 035086).
+We would like to thank our EURACE colleagues for guiding the requirements for a
+large scale economic model and
+we gratefully acknowledge the research funding by the European Commission as
+part of the FP6-STREP project EURACE (under contract no. 035086).
 
 %
 % The following two commands are all you need in the
@@ -760,6 +802,6 @@ FP6-STREP project EURACE (under contract no. 035086).
 % helpful comments.  If you consider yourself a moderately experienced
 % to expert user of \LaTeX, you may find reading it useful but please
 % remember not to change it.
-%\balancecolumns % GM June 2007
+\balancecolumns % GM June 2007
 % That's all folks!
 \end{document}
