@@ -170,6 +170,8 @@
 <description></description>
 <memory>
 <variable><type>int</type><name>age</name><description></description></variable>
+<variable><type>double</type><name>transfer_payment</name><description></description></variable>
+<variable><type>double</type><name>subsidy_payment</name><description></description></variable>
 </memory>
 
 <functions>
@@ -187,7 +189,7 @@
 <nextState>Start_Firm_Macro_Data</nextState>
 <condition><time><period>yearly</period><phase>1</phase></time></condition>
 <inputs>
-<input><messageName>government_tax_rates</messageName></input>
+<input><messageName>policy_announcement</messageName></input>
 </inputs>
 </function>
 
@@ -243,6 +245,12 @@ including several micro data.</description>
 <xagent>
 <name>IGFirm</name>
 <description></description>
+<memory>
+<variable><type>int</type><name>age</name><description></description></variable>
+<variable><type>double</type><name>transfer_payment</name><description></description></variable>
+<variable><type>double</type><name>subsidy_payment</name><description></description></variable>
+</memory>
+
 <functions>
 
 <function><name>IGFirm_idle</name>
@@ -258,7 +266,7 @@ including several micro data.</description>
 <nextState>Start_IGFirm_Productivity</nextState>
 <condition><time><period>yearly</period><phase>1</phase></time></condition>
 <inputs>
-<input><messageName>government_tax_rates</messageName></input>
+<input><messageName>policy_announcement</messageName></input>
 </inputs>
 </function>
 
@@ -269,6 +277,12 @@ including several micro data.</description>
 <xagent>
 <name>Household</name>
 <description></description>
+<memory>
+<variable><type>double</type><name>unemployment_benefit_pct</name><description></description></variable>
+<variable><type>double</type><name>transfer_payment</name><description></description></variable>
+<variable><type>double</type><name>subsidy_payment</name><description></description></variable>
+</memory>
+
 <functions>
 
 <function><name>Household_idle</name>
@@ -284,7 +298,7 @@ including several micro data.</description>
 <nextState>Start_Household_Tax_Data</nextState>
 <condition><time><period>yearly</period><phase>1</phase></time></condition>
 <inputs>
-<input><messageName>government_tax_rates</messageName></input>
+<input><messageName>policy_announcement</messageName></input>
 </inputs>
 </function>
 
@@ -331,6 +345,8 @@ including several micro data.</description>
 <name>Eurostat</name>
 <description></description>
 <memory>
+<variable><type>int</type><name>switch_datastorage</name><description>Switch to turn on/off datastorage</description></variable>
+
 <!-- Data for Firms -->
 <variable><type>int</type><name>num_households</name><description>Number of households in the economy</description></variable>
 <variable><type>int</type><name>no_households_skill_1</name><description>Number of households in the economy with general skill level 1</description></variable>
@@ -472,10 +488,10 @@ including several micro data.</description>
 <nextState>Start_Eurostat_Firm_Data</nextState>
 <condition><time><period>yearly</period><phase>1</phase></time></condition>
 <inputs>
-<input><messageName>government_tax_rates</messageName></input>
+<input><messageName>policy_announcement</messageName></input>
 </inputs>
 </function>
-                
+
 <!-- new loop: send_data -->
 <function><name>Eurostat_send_data</name>
 <description>Eurostat sends the data to the other agents</description>
@@ -497,18 +513,32 @@ including several micro data.</description>
 <!-- new loop: calculate_data -->
 <function><name>Eurostat_idle</name>
 <description></description>
-<currentState>01</currentState>
-<!--<nextState>end_Eurostat</nextState>-->                          <!--Toggle this if you want to turn OFF datastorage functionality --> 
-<nextState>Start_Eurostat_Monthly_Datastorage</nextState>           <!--Toggle this if you want to turn ON datastorage functionality -->
-<condition><not><time><period>monthly</period><phase>0</phase></time></not></condition>
+<currentState>01</currentState> 
+<nextState>Start_Eurostat_Monthly_Loop</nextState>
+<condition>
+<lhs>
+<not><time><period>monthly</period><phase>0</phase></time></not>
+</lhs>
+<op>OR</op>
+<rhs>
+<lhs><value>a.switch_datastorage</value></lhs><op>EQ</op><rhs><value>0</value></rhs>
+</rhs>
+</condition>
 </function>
 
 <function><name>Eurostat_calculate_data</name>
 <description>Eurostat calculates the global and regional macro data based on the received micro data</description>
 <currentState>01</currentState>
-<!--<nextState>end_Eurostat</nextState>-->                  <!--Toggle this if you want to turn OFF datastorage functionality -->
-<nextState>Start_Eurostat_Monthly_Datastorage</nextState>   <!--Toggle this if you want to turn ON datastorage functionality -->
-<condition><time><period>monthly</period><phase>0</phase></time></condition>
+<nextState>Start_Eurostat_Monthly_Loop</nextState>
+<condition>
+<lhs>
+<time><period>monthly</period><phase>0</phase></time>
+</lhs>
+<op>AND</op>
+<rhs>
+<lhs><value>a.switch_datastorage</value></lhs><op>EQ</op><rhs><value>1</value></rhs>
+</rhs>
+</condition>
 <inputs>
 <input><messageName>firm_send_data</messageName></input>
 <input><messageName>household_send_data</messageName></input>
@@ -516,15 +546,20 @@ including several micro data.</description>
 </inputs>
 </function>
 
-<!-- new loop: Monthly Loop -->
+<!-- new loop: Monthly_Loop -->
 
 <function><name>Eurostat_store_history_monthly</name>
 <description>Eurostat stores monthly macro data in its history struct.</description>
 <currentState>Start_Eurostat_Monthly_Loop</currentState>
-<nextState>02</nextState>                           <!--Toggle this if you want to turn ON growthrates functionality -->
-<!--<nextState>Start_Eurostat_Quarterly_Datastorage</nextState> Toggle this if you want to turn OFF growthrates functionality -->
+<nextState>02</nextState>
 <condition>
-        <time><period>monthly</period><phase>0</phase></time>
+<lhs>
+     <time><period>monthly</period><phase>0</phase></time>
+</lhs>
+<op>AND</op>
+<rhs>
+	<lhs><value>a.switch_datastorage</value></lhs><op>EQ</op><rhs><value>1</value></rhs>
+</rhs>
 </condition>
 </function>
 
@@ -539,50 +574,80 @@ including several micro data.</description>
 <currentState>Start_Eurostat_Monthly_Loop</currentState>
 <nextState>Start_Eurostat_Quarterly_Loop</nextState>
 <condition>
-        <not><time><period>monthly</period><phase>0</phase></time></not>
+<lhs>
+	<not><time><period>monthly</period><phase>0</phase></time></not>
+</lhs>
+	<op>OR</op>
+<rhs>
+	<lhs><value>a.switch_datastorage</value></lhs><op>EQ</op><rhs><value>0</value></rhs>
+</rhs>
 </condition>
 </function>
 
-<!-- new loop: Quarterly Loop -->
+<!-- new loop: Quarterly_Loop -->
+
 <function><name>Eurostat_store_history_quarterly</name>
 <description>Eurostat stores quarterly macro data in its history struct.</description>
-<currentState>Start_Eurostat_Quarterly_Datastorage</currentState>
-<nextState>03</nextState>                   <!--Toggle this if you want to turn ON growthrates functionality -->
-<!--<nextState>end_Eurostat</nextState>                 Toggle this if you want to turn OFF growthrates functionality -->
+<currentState>Start_Eurostat_Quarterly_Loop</currentState>
+<nextState>04</nextState>
 <condition>
-        <time><period>quarterly</period><phase>0</phase></time>
+<lhs>
+    <time><period>quarterly</period><phase>0</phase></time>
+</lhs>
+	<op>AND</op>
+<rhs>
+	<lhs><value>a.switch_datastorage</value></lhs><op>EQ</op><rhs><value>1</value></rhs>
+</rhs>
 </condition>
 </function>
 
 <function><name>Eurostat_compute_growth_rates_quarterly</name>
 <description>Eurostat computes quarterly growth rates for macro data stored in its quarterly history struct.</description>
-<currentState>03</currentState>
-<nextState>04</nextState>
+<currentState>04</currentState>
+<nextState>05</nextState>
 </function>
 
 <function><name>Eurostat_measure_recession</name>
 <description>Eurostat measures the start or end of recessions.</description>
-<currentState>04</currentState>
-<nextState>end_Eurostat</nextState>
+<currentState>05</currentState>
+<nextState>Start_Eurostat_EndOfYear_Loop</nextState>
 </function>
 
 <function><name>Eurostat_idle</name>
 <description>Eurostat does nothing</description>
 <currentState>Start_Eurostat_Quarterly_Loop</currentState>
-<nextState>Start_Eurostat_Yearly_Loop</nextState>
+<nextState>Start_Eurostat_EndOfYear_Loop</nextState>
 <condition>
-        <not><time><period>quarterly</period><phase>0</phase></time></not>
+<lhs>
+	<not><time><period>quarterly</period><phase>0</phase></time></not>
+</lhs>
+	<op>OR</op>
+<rhs>
+	<lhs><value>a.switch_datastorage</value></lhs><op>EQ</op><rhs><value>0</value></rhs>
+</rhs>
 </condition>
 </function>
 
 <!-- new loop: Yearly -->
+<function><name>Eurostat_idle</name>
+<description>Eurostat idle</description>
+<currentState>Start_Eurostat_EndOfYear_Loop</currentState>
+<nextState>end_Eurostat</nextState>
+<condition>
+    <not><time><period>yearly</period><phase>0</phase></time></not>
+</condition>
+</function>
+
+
 <function><name>Eurostat_send_data_to_government</name>
 <description>Eurostat sends the data to the governments for determining policies.</description>
-<currentState>Start_Eurostat_Yearly_Loop</currentState>
+<currentState>Start_Eurostat_EndOfYear_Loop</currentState>
 <nextState>end_Eurostat</nextState>
+<condition>
+    <time><period>yearly</period><phase>0</phase></time>
+</condition>
 <outputs>
-<output><messageName>mean_wage_for_government</messageName></output>
-<output><messageName>region_gdp_for_government</messageName></output>
+<output><messageName>data_for_government</messageName></output>
 </outputs>
 </function>
 
@@ -671,11 +736,21 @@ including several micro data.</description>
 </message>
 
 <message>
-<name>region_gdp_for_government</name>
-<description>Sent by Eurostat. Includes the region_id and gdp for the region. Used by gov to compute its GDP.</description>
+<name>mean_wage_for_government</name>
+<description></description>
+<variables>
+<variable><type>int</type><name>gov_id</name><description></description></variable>
+<variable><type>double</type><name>mean_wage</name><description></description></variable>
+</variables>
+</message>
+
+<message>
+<name>data_for_government</name>
+<description>Sent by Eurostat to gov. Includes the region_id and gdp for the region. Used by gov to compute its GDP. Also contains the mean wage for the region.</description>
 <variables>
 <variable><type>int</type><name>region_id</name><description></description></variable>
 <variable><type>double</type><name>gdp</name><description></description></variable>
+<variable><type>double</type><name>mean_wage</name><description></description></variable>
 </variables>
 </message>
 

@@ -8,17 +8,20 @@
 
 <!-- Models to include in Eurace model -->
 <models>
-<model><file>Cons_Goods_UNIBI/model.xml</file><enabled>true</enabled></model>
+<model><file>Cons_Goods_UNIBI/model.xml</file><enabled>false</enabled></model>
 <model><file>Credit_UNIBI/model-dummy.xml</file><enabled>false</enabled></model>
 <model><file>Credit_Ancona/model.xml</file><enabled>true</enabled></model>
 <model><file>Financial_Management_GREQAM/model.xml</file><enabled>true</enabled></model>
 <model><file>Financial_Management_Ancona/model.xml</file><enabled>false</enabled></model>
 <model><file>Inv_Goods_UNIBI/model.xml</file><enabled>true</enabled></model>
-<model><file>Labour_UNIBI/model.xml</file><enabled>true</enabled></model>
+<model><file>Labour_UNIBI/model.xml</file><enabled>false</enabled></model>
 <model><file>Statistical_Office_UNIBI/model.xml</file><enabled>true</enabled></model>
 <model><file>FINANCIAL_UG/model.xml</file><enabled>true</enabled></model>
 <model><file>Financial_UNIBI/model-dummy.xml</file><enabled>false</enabled></model>
 <model><file>Government_UNIBI/model.xml</file><enabled>false</enabled></model>
+
+<model><file>Cons_Goods_UNIBI/model-sander.xml</file><enabled>true</enabled></model>
+<model><file>Labour_UNIBI/model-sander.xml</file><enabled>true</enabled></model>
 <model><file>Government_GREQAM/model.xml</file><enabled>true</enabled></model>
 </models>
 
@@ -218,6 +221,15 @@
 </agents>
 
 <messages>
+<message>
+<name>tax_payment</name>
+<description>Added by agents to pay taxes</description>
+<variables>
+<variable><type>int</type><name>id</name><description></description></variable>
+<variable><type>int</type><name>gov_id</name><description></description></variable>
+<variable><type>double</type><name>tax_payment</name><description></description></variable>
+</variables>
+</message>
 
 <message>
 <name>bank_account_update</name>
@@ -230,6 +242,14 @@
 </variables>
 </message>
 
+<message>
+<name>central_bank_account_update</name>
+<description>Banks or Governments send account information to central bank</description>
+<variables>
+<variable><type>int</type><name>id</name><description></description></variable>
+<variable><type>double</type><name>payment_account</name><description></description></variable>
+</variables>
+</message>
 
 </messages>
 

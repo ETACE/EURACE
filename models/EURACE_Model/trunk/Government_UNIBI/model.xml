@@ -188,15 +188,6 @@
 </variables>
 </message>
 
-<message>
-<name>mean_wage_for_government</name>
-<description></description>
-<variables>
-<variable><type>int</type><name>gov_id</name><description></description></variable>
-<variable><type>double</type><name>mean_wage</name><description></description></variable>
-
-</variables>
-</message>
 
 </messages>
 

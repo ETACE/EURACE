@@ -11,6 +11,7 @@
 <functionFiles>
 <file>Firm_Employer_Functions.c</file>
 <file>Household_Employee_Functions.c</file>
+<file>Household_Employee_Functions-sander.c</file>
 </functionFiles>
 
 
@@ -309,6 +310,7 @@ of employees and the number of vacancies</description>
 <variable><type>double</type><name>specific_skill</name><description>The specific skills of a household</description></variable>
 <variable><type>int</type><name>employee_firm_id</name><description></description>The id of the employer</variable>
 <variable><type>int</type><name>employer_region_id</name><description>The id of the region</description></variable>
+<variable><type>int</type><name>day_of_month_receive_benefit</name><description>The day of the month that the household receives its unemployment benefit. Equal to the day on which it became unemployed. This value will change when the household becomes re-employed again by another (or the same) firm, with the exception in case the new firm has the same activation day as the old firm.</description></variable>
 </memory>
 
 <functions>
@@ -639,9 +641,8 @@ as well as the specific skills.</description>
 
 <message>
 <name>unemployment_notification</name>
-<description>Sent by unemployed hh to inform the government about the last income</description>
+<description>Household sends unemployment notification to gov, applying for unemployment benefits.</description>
 <variables>
-<variable><type>int</type><name>id</name><description></description></variable>
 <variable><type>int</type><name>gov_id</name><description></description></variable>
 <variable><type>double</type><name>last_labour_income</name><description></description></variable>
 </variables>
