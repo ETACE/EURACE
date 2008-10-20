@@ -3,16 +3,6 @@
 #include "../my_library_header.h"
 //#include "../Household_Library_Functions.h"
 
-
-/********************************* Household Condition/Dummy functions *************************************/
-
-
-
-
-
-
-
-
 /**********************************Household Role: Labour Market**********************************/
 
 /** \fn Household_read_firing_messages()
@@ -697,12 +687,14 @@ int Household_read_application_rejection_update_wage_reservation_2()
 }
 
 int Household_idle()
-{return 0;}
+{
+	return 0;
+}
 
 int Household_finish_labour_market()
 {
 	return 0;
-	}
+}
 
 
 

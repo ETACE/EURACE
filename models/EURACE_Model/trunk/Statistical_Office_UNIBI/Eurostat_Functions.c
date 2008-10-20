@@ -3,7 +3,7 @@
 #include "../my_library_header.h"
 #include "Eurostat_aux_header.h"
 
-//#define NO_REGIONS 30 //number of regions (hard-coded in xml as 30 max)
+#define NO_REGIONS 2 //number of regions (hard-coded in xml as 30 max)
 
 int Eurostat_idle()
 {
@@ -41,7 +41,8 @@ int Eurostat_Initialization()
                 0.0,0.0,0.0,0.0,0.0,0.0,
                 0.0,1.0,1.0,1.0,1.0,1.0);
 
-        //construct monthly history data structure for regions
+        //For each region 1...NO_REGIONS: construct monthly history data structure
+
         for (k=12; k>0; k--)
         {
             add_region_data_item(&HISTORY_MONTHLY[k].region_data,
@@ -75,7 +76,8 @@ int Eurostat_Initialization()
         add_region_data_item(&ANNUAL_GROWTH_RATES_QUARTERLY.region_data,
                 1.0,1.0,0.0,0.0,0,
                 0.0,0.0,0.0,0.0,0.0,0.0,
-                0.0,0,0,0);        
+                0.0,0,0,0);  
+        
     }
     
     return 0;
@@ -87,17 +89,21 @@ int Eurostat_Initialization()
  */   
 int Eurostat_send_data_to_government()
 {
+	int i, region;
+	double gdp;
+	
     //printf("AVERAGE_WAGE %f\n",AVERAGE_WAGE);
-	add_mean_wage_for_government_message(1,AVERAGE_WAGE);
+	add_mean_wage_for_government_message(1, AVERAGE_WAGE);
 
 	//add message for each region
-	for (i=0; i<HISTORY_MONTHLY[0].region_data->size; i++)
+	for (i=0; i<NO_REGIONS; i++)
 	{
-		region_id = i+1;
-		gdp = HISTORY_MONTHLY[0].region_data.gdp;
+		region = i+1;
 		
-		printf("Region %d GDP=%2.2f\n", region_id, gdp);
-		add_region_gdp_for_government_message(region_id, gdp);
+		gdp = REGION_FIRM_DATA.array[region].gdp;
+		
+		printf("\n Region %d GDP=%2.2f\n", region, gdp);
+		add_data_for_government_message(region, gdp, AVERAGE_WAGE);
 	}
 	
 	return 0;
@@ -887,7 +893,6 @@ int Eurostat_calculate_data()
     Eurostat_calc_price_index();
     Eurostat_calc_firm_population();
     Eurostat_calc_firm_survival_rates();
-    Eurostat_measure_recession();
     Eurostat_measure_export();
     
     
@@ -898,19 +903,20 @@ int Eurostat_read_tax_rates()
 {
     int i;
     
-    START_GOVERNMENT_TAX_RATES_MESSAGE_LOOP
+	//Messages send by Government:
+	START_POLICY_ANNOUNCEMENT_MESSAGE_LOOP			
     for (i=0; i<27; i++)
     {
-        if(government_tax_rates_message->gov_id == GOVERNMENT_TAX_RATES[i].gov_id)
+        if(policy_announcement_message->gov_id == GOVERNMENT_TAX_RATES[i].gov_id)
         {
-            GOVERNMENT_TAX_RATES[i].tax_rate_corporate = government_tax_rates_message->tax_rate_corporate;
-            GOVERNMENT_TAX_RATES[i].tax_rate_hh_labour = government_tax_rates_message->tax_rate_hh_labour;
-            GOVERNMENT_TAX_RATES[i].tax_rate_hh_capital = government_tax_rates_message->tax_rate_hh_capital;
-            GOVERNMENT_TAX_RATES[i].tax_rate_vat = government_tax_rates_message->tax_rate_vat;
+            GOVERNMENT_TAX_RATES[i].tax_rate_corporate = policy_announcement_message->tax_rate_corporate;
+            GOVERNMENT_TAX_RATES[i].tax_rate_hh_labour = policy_announcement_message->tax_rate_hh_labour;
+            GOVERNMENT_TAX_RATES[i].tax_rate_hh_capital = policy_announcement_message->tax_rate_hh_capital;
+            GOVERNMENT_TAX_RATES[i].tax_rate_vat = policy_announcement_message->tax_rate_vat;
             break;
         }
     }
-    FINISH_GOVERNMENT_TAX_RATES_MESSAGE_LOOP
+	FINISH_POLICY_ANNOUNCEMENT_MESSAGE_LOOP
     
     return 0;
 }
@@ -948,6 +954,7 @@ int Eurostat_read_tax_rates()
 int Eurostat_store_history_monthly()
 {   
     int i, region;
+    region=0;
     
     //Shift history backwards
     /*
@@ -957,6 +964,8 @@ int Eurostat_store_history_monthly()
      * history_monthly[1].GDP = history_monthly[0].GDP;     //t-1 gets filled with value from t-1
      * history_monthly[0].GDP = GDP;                        //t gets filled with value from t
      */
+
+    //*********************************** Economy-wide data
     for (i=12; i>0; i--)
     {
       //t-i-1 gets filled with value from t-i
@@ -992,7 +1001,8 @@ int Eurostat_store_history_monthly()
     HISTORY_MONTHLY[0].no_firm_births = NO_FIRM_BIRTHS; 
     HISTORY_MONTHLY[0].no_firm_deaths = NO_FIRM_DEATHS; 
 
-    //Code to be tested: region data
+    //*********************************** Code to be tested: region data
+/*
     for ( region=0; region<REGION_FIRM_DATA.size; region++)
     {
         //Shift history backwards
@@ -1030,7 +1040,8 @@ int Eurostat_store_history_monthly()
         HISTORY_MONTHLY[0].region_data.array[region].no_firm_births = REGION_FIRM_DATA.array[region].no_firm_births; 
         HISTORY_MONTHLY[0].region_data.array[region].no_firm_deaths = REGION_FIRM_DATA.array[region].no_firm_deaths;   
     }
-    
+*/
+
     if (PRINT_LOG)
     {
         printf("Monthly data recorded by Eurostat:\n");
@@ -1060,7 +1071,9 @@ int Eurostat_store_history_monthly()
 int Eurostat_store_history_quarterly()
 {
     int i, region;
+    region=0;
     
+    //*********************************** Economy-wide data
     //Shift history backwards
     for (i=4; i>0; i--)
     {
@@ -1132,6 +1145,7 @@ int Eurostat_store_history_quarterly()
     HISTORY_QUARTERLY[0].no_firm_deaths         = HISTORY_QUARTERLY[0].no_firm_deaths/3;
     
     //*********************************** Code to be tested: region data
+/*
     for ( region=0; region<REGION_FIRM_DATA.size; region++)
     {
         //Shift history backwards
@@ -1204,7 +1218,7 @@ int Eurostat_store_history_quarterly()
         HISTORY_QUARTERLY[0].region_data.array[region].no_firm_births         = HISTORY_QUARTERLY[0].region_data.array[region].no_firm_births/3;
         HISTORY_QUARTERLY[0].region_data.array[region].no_firm_deaths         = HISTORY_QUARTERLY[0].region_data.array[region].no_firm_deaths/3;    
     }
-    
+*/
 
     if (PRINT_LOG)
     {
@@ -1231,7 +1245,9 @@ int Eurostat_store_history_quarterly()
 int Eurostat_compute_growth_rates_monthly()
 {
     int region;
-    
+    region=0;
+
+    //*********************************** Economy-wide data
     MONTHLY_GROWTH_RATES.cpi                       = 0.0;
     MONTHLY_GROWTH_RATES.gdp                       = 0.0; 
     MONTHLY_GROWTH_RATES.output                    = 0.0;
@@ -1296,6 +1312,7 @@ int Eurostat_compute_growth_rates_monthly()
 
     
     //*********************************** Code to be tested: region data
+/*    
     for ( region=0; region<REGION_FIRM_DATA.size; region++)
     {
         MONTHLY_GROWTH_RATES.region_data.array[region].cpi                       = 0.0;
@@ -1360,6 +1377,7 @@ int Eurostat_compute_growth_rates_monthly()
         if(HISTORY_MONTHLY[12].region_data.array[region].no_firm_births>0)    {ANNUAL_GROWTH_RATES_MONTHLY.region_data.array[region].no_firm_births     = (HISTORY_MONTHLY[0].region_data.array[region].no_firm_births / HISTORY_MONTHLY[12].region_data.array[region].no_firm_births  -1)*100;}
         if(HISTORY_MONTHLY[12].region_data.array[region].no_firm_deaths>0)    {ANNUAL_GROWTH_RATES_MONTHLY.region_data.array[region].no_firm_deaths     = (HISTORY_MONTHLY[0].region_data.array[region].no_firm_deaths / HISTORY_MONTHLY[12].region_data.array[region].no_firm_deaths  -1)*100;}
     }
+*/
     
     return 0;
 }
@@ -1370,7 +1388,9 @@ int Eurostat_compute_growth_rates_monthly()
 int Eurostat_compute_growth_rates_quarterly()
 {
     int region;
-
+    region=0;
+    
+    //*********************************** Economy-wide data
     QUARTERLY_GROWTH_RATES.cpi                         = 0.0;
     QUARTERLY_GROWTH_RATES.gdp                         = 0.0;
     QUARTERLY_GROWTH_RATES.output                      = 0.0;
@@ -1434,6 +1454,7 @@ int Eurostat_compute_growth_rates_quarterly()
     if(HISTORY_QUARTERLY[4].no_firm_deaths>0)       {ANNUAL_GROWTH_RATES_QUARTERLY.no_firm_deaths       = (HISTORY_QUARTERLY[0].no_firm_deaths / HISTORY_QUARTERLY[4].no_firm_deaths  -1)*100;}
     
     //*********************************** Code to be tested: region data
+/*    
     for ( region=0; region<REGION_FIRM_DATA.size; region++)
     {
         QUARTERLY_GROWTH_RATES.region_data.array[region].cpi                         = 0.0;
@@ -1498,7 +1519,7 @@ int Eurostat_compute_growth_rates_quarterly()
         if(HISTORY_QUARTERLY[4].region_data.array[region].no_firm_births>0)       {ANNUAL_GROWTH_RATES_QUARTERLY.region_data.array[region].no_firm_births       = (HISTORY_QUARTERLY[0].region_data.array[region].no_firm_births / HISTORY_QUARTERLY[4].region_data.array[region].no_firm_births  -1)*100;}
         if(HISTORY_QUARTERLY[4].region_data.array[region].no_firm_deaths>0)       {ANNUAL_GROWTH_RATES_QUARTERLY.region_data.array[region].no_firm_deaths       = (HISTORY_QUARTERLY[0].region_data.array[region].no_firm_deaths / HISTORY_QUARTERLY[4].region_data.array[region].no_firm_deaths  -1)*100;}
     }
-    
+*/    
     return 0;
 }
 

@@ -546,11 +546,16 @@ This should be removed later on.
 Sander, rev 1394
 Refactoring of Eurostat code: simplification of REGION_FIRM_DATA loops into smaller functions.
 
+The function Eurostat_calculate_data
+should be broken up into smaller functions:
+
 Eurostat_aux_functions.c:
-void Eurostat_calc_macro_data(void);
-void Eurostat_calc_price_index(void);
-void Eurostat_calc_firm_population(void);
-void Eurostat_calc_firm_survival_rates(void);
+    Eurostat_calc_macro_data();
+    Eurostat_calc_price_index();
+    Eurostat_calc_firm_population();
+    Eurostat_calc_firm_survival_rates();
+    Eurostat_measure_export();
+
 ----------------------------------------------------------------------
 Sander, rev 1397
 
@@ -587,13 +592,78 @@ HISTORY_MONTHLY[0].region_data.array[i].gdp
 ----------------------------------------------------------------------
 Sander, rev 1405
 
-Added new government model
+Added new government model: 
+Government_GREQAM
 
-To merge into main Eurace model
-- unemployment benefit announcement: yearly
-- unemployment benefit notification: monthly
+To merge into main Eurace model, integrate changed to:
+- Cons_Goods_UNIBI
+- Labour_UNIBI
+- Government_GREQAM
+- Stat_Ofice_UNIBI
 
 
-- Household_receive_unemployment_benefits: no longer needed, gov no longer needs to send payment, household computes own benefit payment.
-- Government_send_unemployment_benefit_payment: replace with Government_calc_unemployment_benefit_payment
+Government
+- all policy announcements: yearly, start
+- unemployment benefit notification: read daily
+Same for subsidy, transfers.
+- remove interaction with Eurostat at beginning of year, replace by message end of the year.
+Eurostat_send_data_to_government
+Government_read_data_from_Eurostat
+
+Household:
+- If unemployed:
+Set day_of_month_receive_benefit
+
+- On re-employment of previously unemployed household: HH has to pay additional taxes to repay its unemployment benefits!
+1. New day_of_month_receive_income equals day_of_month_to_act of the firm
+so it is no longer equal to the day_of_month_receive_benefit.
+2. Use the condition:
+	if (day_of_month_receive_benefit != day_of_month_receive_income)
+to determine whether HH needs to repay part of the unemployment benefit to goverment.
+3. Set day_of_month_receive_benefit = day_of_month_receive_income so that next month the HH does not pay additional taxes.
+
+
+
+Messages:
+- the mean_wage_for_government is now integrated into the data_for_government(region_id, gdp, mean_wage).
+Note: In Gov_UNIBI there is still the function Eurostat_send_data_to_government and Government_read_data_from_Eurostat
+that are sending/reading the mean_wage_for_government msg. This needs to be replaced by the new msg at the end of year loop.
+Government_read_data_from_Eurostat moves to bottom of stategraph.
+
+Changes to interaction HH <-> Gov:
+- replaced Household_send_unemployment_notification_to_Government with Household_receive_unemployment_benefit
+- replaced Government_send_unemployment_benefit_payment with Government_read_unemployment_benefit_notifications
+- replaced Household_receive_unemployment_benefits: no longer needed, gov no longer needs to send individual payment,
+ household simply computes own benefits.
+
+In Cons_goods_UNIBI:
+- model-sander.xml: edits Household_Consumer_Functions.c
+Removed functions from Household_Consumer_Functions.c -> Household_Employee_Functions.c
+
+This changes the interaction for HH and Gov
+Removed: "Household_send_unemployment_notification_to_Government"
+Household_pay_taxes -> Household_send_tax_payment
+
+- Mall_Functions.c
+This includes new mall functions at end of file.
+
+In Labour_UNIBI:
+model-sander.xml
+Household_Consumer_Functions-sander.c
+ReMoved functions from Household_Consumer_Functions.c -> Household_Employee_Functions.c 
+
+Changes:
+Household_receive_wage
+Household_update_specific_skills
+Household_send_unemployment_notification_to_Government: 
+Household_receive_unemployment_benefits: remove this, replaced by HH own computation
+Household_pay_taxes: -> Household_send_tax_payment
+
+In Credit and Gov:
+- central_bank_account_update_message appears in both, but different syntax.
+
+TODO:
+- unittest of Government_GREQAM
+- fix the region_data[30] inside the history_monthly[] structure.
+- uncomment all code related to region_data in files Eurostat_Functions.c and Eurostat_aux_Functions.c 
 ----------------------------------------------------------------------

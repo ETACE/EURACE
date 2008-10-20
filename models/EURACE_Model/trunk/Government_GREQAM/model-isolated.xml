@@ -3,7 +3,7 @@
 <xmodel version="2">
 
 <name>Government</name>
-<version>pre-Aix, 22/09/2008</version>
+<version>pre-Oxford, 22/09/2008</version>
 <description>Authors: Sander van der Hoog</description>
 
 <environment>
@@ -67,9 +67,31 @@
 <description></description>
 <memory>
 <variable><type>int</type><name>id</name><description></description></variable>
+<variable><type>int</type><name>day_of_month_receive_income</name><description>The day when the household receives the wage</description></variable>
+<variable><type>int</type><name>day_of_month_receive_benefit</name><description>The day when the household receives the unemployment benefit</description></variable>
 </memory>
 
 <functions>
+<!-- yearly loop at start of iteration-->
+<function>
+<name>Household_idle</name>
+<description></description>
+<currentState>start_Household</currentState>
+<nextState>01</nextState>
+<condition><not><time><period>yearly</period><phase>1</phase></time></not></condition>
+</function>
+
+<function>
+<name>Household_read_policy_announcements</name>
+<description></description>
+<currentState>start_Household</currentState>
+<nextState>01</nextState>
+<condition><time><period>yearly</period><phase>1</phase></time></condition>
+<inputs>
+<input><messageName>policy_announcement</messageName></input>
+</inputs>
+</function>
+
 <!--monthly loop-->
 <function>
 <name>Household_idle</name>
@@ -80,7 +102,7 @@
 </function>
 
 <function>
-<name>Household_tax_payment</name>
+<name>Household_send_tax_payment</name>
 <description></description>
 <currentState>01</currentState>
 <nextState>02</nextState>
@@ -93,7 +115,7 @@
 </function>
 
 <function>
-<name>Household_subsidy_application</name>
+<name>Household_send_subsidy_application</name>
 <description></description>
 <currentState>02</currentState>
 <nextState>03</nextState>
@@ -105,7 +127,7 @@
 </function>
 
 <function>
-<name>Household_transfer_application</name>
+<name>Household_send_transfer_application</name>
 <description></description>
 <currentState>03</currentState>
 <nextState>04</nextState>
@@ -116,11 +138,19 @@
 </outputs>
 </function>
 
+<function><name>Household_idle</name>
+<description>Household does nothing</description>
+<currentState>04</currentState>
+<nextState>end_Household</nextState>
+<condition><not><time><period>monthly</period><phase>a.day_of_month_receive_income</phase></time></not></condition>
+</function>
+
 <function>
-<name>Household_unemployment_benefit_application</name>
+<name>Household_send_unemployment_benefit_notification</name>
 <description></description>
 <currentState>04</currentState>
 <nextState>end_Household</nextState>
+<condition><time><period>monthly</period><phase>a.day_of_month_receive_income</phase></time></condition>
 <outputs>
 <output>
 <messageName>unemployment_notification</messageName>
@@ -139,6 +169,26 @@
 </memory>
 
 <functions>
+<!-- yearly loop at start of iteration-->
+<function>
+<name>Firm_idle</name>
+<description></description>
+<currentState>start_Firm</currentState>
+<nextState>01</nextState>
+<condition><not><time><period>yearly</period><phase>1</phase></time></not></condition>
+</function>
+
+<function>
+<name>Firm_read_policy_announcements</name>
+<description></description>
+<currentState>start_Firm</currentState>
+<nextState>01</nextState>
+<condition><time><period>yearly</period><phase>1</phase></time></condition>
+<inputs>
+<input><messageName>policy_announcement</messageName></input>
+</inputs>
+</function>
+
 <!--monthly loop-->
 <function>
 <name>Firm_idle</name>
@@ -149,7 +199,7 @@
 </function>
 
 <function>
-<name>Firm_tax_payment</name>
+<name>Firm_send_tax_payment</name>
 <description></description>
 <currentState>01</currentState>
 <nextState>02</nextState>
@@ -162,7 +212,7 @@
 </function>
 
 <function>
-<name>Firm_subsidy_application</name>
+<name>Firm_send_subsidy_notification</name>
 <description></description>
 <currentState>02</currentState>
 <nextState>03</nextState>
@@ -174,7 +224,7 @@
 </function>
 
 <function>
-<name>Firm_transfer_application</name>
+<name>Firm_send_transfer_notification</name>
 <description></description>
 <currentState>03</currentState>
 <nextState>end_Firm</nextState>
@@ -193,31 +243,42 @@
 <description></description>
 <memory>
 <variable><type>int</type><name>id</name><description></description></variable>
-<variable><type>double</type><name>tax_revenues</name><description></description></variable>
-<variable><type>double</type><name>total_unemployment_benefit_payment</name><description>Unemployment benefit payments for all unemployed households.</description></variable>
-<variable><type>double</type><name>total_transfer_payment</name><description></description></variable>
-<variable><type>double</type><name>total_bond_coupon_payment</name><description></description></variable>
+<variable><type>double</type><name>payment_account</name><description></description></variable>
+<variable><type>int</type><name>list_of_regions[1]</name><description>List of regions that are associated to the government.</description></variable>
+<variable><type>double</type><name>unemployment_benefit_pct</name><description>Variable that sets the unemployment benefit as a fraction of last labour income.</description></variable>
+<variable><type>double</type><name>tax_rate_corporate</name><description></description></variable>
+<variable><type>double</type><name>tax_rate_hh_labour</name><description></description></variable>
+<variable><type>double</type><name>tax_rate_hh_capital</name><description></description></variable>
+<variable><type>double</type><name>tax_rate_vat</name><description></description></variable>
+<variable><type>double</type><name>monthly_tax_revenues</name><description></description></variable>
+<variable><type>double</type><name>yearly_tax_revenues</name><description></description></variable>
+<variable><type>double</type><name>monthly_unemployment_benefit_payment</name><description>Unemployment benefit payments for all unemployed households.</description></variable>
+<variable><type>double</type><name>yearly_unemployment_benefit_payment</name><description>Unemployment benefit payments for all unemployed households.</description></variable>
+<variable><type>double</type><name>transfer_payment</name><description></description></variable>
+<variable><type>double</type><name>monthly_transfer_payment</name><description></description></variable>
+<variable><type>double</type><name>yearly_transfer_payment</name><description></description></variable>
+<variable><type>double</type><name>subsidy_payment</name><description></description></variable>
+<variable><type>double</type><name>monthly_subsidy_payment</name><description></description></variable>
+<variable><type>double</type><name>yearly_subsidy_payment</name><description></description></variable>
+<variable><type>double</type><name>monthly_bond_coupon_payment</name><description></description></variable>
+<variable><type>double</type><name>yearly_bond_coupon_payment</name><description></description></variable>
 <variable><type>double</type><name>gov_interest_rate</name><description>Interest rate the gov uses to interest on the public debt.</description></variable>
-<variable><type>double</type><name>total_interest_payment</name><description></description></variable>
-<variable><type>double</type><name>total_gov_investment</name><description></description></variable>
-<variable><type>double</type><name>total_gov_consumption</name><description></description></variable>
+<variable><type>double</type><name>yearly_interest_payment</name><description></description></variable>
+<variable><type>double</type><name>yearly_gov_investment</name><description></description></variable>
+<variable><type>double</type><name>yearly_gov_consumption</name><description></description></variable>
 <variable><type>double</type><name>total_debt</name><description></description></variable>
 <variable><type>double</type><name>budget_deficit</name><description></description></variable>
 <variable><type>double</type><name>total_money_financing</name><description></description></variable>
 <variable><type>double</type><name>total_bond_financing</name><description></description></variable>
 <variable><type>double</type><name>gdp</name><description></description></variable>
 <variable><type>double</type><name>budget_forecast</name><description></description></variable>
-<variable><type>double</type><name>tax_rate_corporate</name><description></description></variable>
-<variable><type>double</type><name>tax_rate_hh_labour</name><description></description></variable>
-<variable><type>double</type><name>tax_rate_hh_capital</name><description></description></variable>
-<variable><type>double</type><name>tax_rate_vat</name><description></description></variable>
 <variable><type>double</type><name>country_wide_mean_wage</name><description></description></variable>
 <variable><type>int</type><name>num_unemployed</name><description></description></variable>
 </memory>
 
 <functions>
 
-<!-- yearly loop -->
+<!-- yearly loop at start of iteration-->
 <function>
 <name>Government_idle</name>
 <description></description>
@@ -233,27 +294,31 @@
 <nextState>00</nextState>
 <condition><time><period>yearly</period><phase>1</phase></time></condition>
 <outputs>
-<output><messageName>government_tax_rates</messageName></output>
-<output><messageName>unemployment_benefit_announcement</messageName></output>
-<output><messageName>transfer_payment_announcement</messageName></output>
-<output><messageName>subsidy_payment_announcement</messageName></output>
+<output><messageName>policy_announcement</messageName></output>
 </outputs>
+</function>
+
+<function>
+<name>Government_idle</name>
+<description></description>
+<currentState>00</currentState>
+<nextState>01</nextState>
 </function>
 
 <!--monthly loop-->
 <function>
 <name>Government_idle</name>
 <description></description>
-<currentState>00</currentState>
+<currentState>01</currentState>
 <nextState>04</nextState>
 <condition><not><time><period>monthly</period><phase>1</phase></time></not></condition>
 </function>
 
 <function>
-<name>Government_read_tax_payment</name>
+<name>Government_read_tax_payments</name>
 <description></description>
-<currentState>00</currentState>
-<nextState>01</nextState>
+<currentState>01</currentState>
+<nextState>02</nextState>
 <condition><time><period>monthly</period><phase>1</phase></time></condition>
 <inputs>
 <input>
@@ -264,10 +329,10 @@
 </function>
 
 <function>
-<name>Government_read_subsidy_applications</name>
+<name>Government_read_subsidy_notifications</name>
 <description></description>
-<currentState>01</currentState>
-<nextState>02</nextState>
+<currentState>02</currentState>
+<nextState>03</nextState>
 <inputs>
 <input>
 <messageName>subsidy_payment_notification</messageName>
@@ -277,10 +342,10 @@
 </function>
 
 <function>
-<name>Government_read_transfer_applications</name>
+<name>Government_read_transfer_notification</name>
 <description></description>
-<currentState>02</currentState>
-<nextState>03</nextState>
+<currentState>03</currentState>
+<nextState>04</nextState>
 <inputs>
 <input>
 <messageName>transfer_payment_notification</messageName>
@@ -289,11 +354,13 @@
 </inputs>
 </function>
 
+<!--daily loop -->
+
 <function>
-<name>Government_read_unemployment_benefit_applications</name>
+<name>Government_read_unemployment_benefit_notifications</name>
 <description></description>
-<currentState>03</currentState>
-<nextState>04</nextState>
+<currentState>04</currentState>
+<nextState>05</nextState>
 <inputs>
 <input><messageName>unemployment_notification</messageName>
 <filter><lhs><value>a.id</value></lhs><op>EQ</op><rhs><value>m.gov_id</value></rhs></filter>
@@ -305,7 +372,7 @@
 <function>
 <name>Government_idle</name>
 <description></description>
-<currentState>04</currentState>
+<currentState>05</currentState>
 <nextState>end_Government</nextState>
 <condition><not><time><period>yearly</period><phase>0</phase></time></not></condition>
 </function>
@@ -313,16 +380,16 @@
 <function>
 <name>Government_budget_accounting</name>
 <description></description>
-<currentState>04</currentState>
-<nextState>05</nextState>
+<currentState>05</currentState>
+<nextState>06</nextState>
 <condition><time><period>yearly</period><phase>0</phase></time></condition>
 </function>
 
 <function>
 <name>Government_send_account_update</name>
 <description></description>
-<currentState>05</currentState>
-<nextState>06</nextState>
+<currentState>06</currentState>
+<nextState>07</nextState>
 <outputs>
 <output><messageName>central_bank_account_update</messageName></output>
 </outputs>
@@ -331,25 +398,24 @@
 <function>
 <name>Government_read_data_from_Eurostat</name>
 <description></description>
-<currentState>06</currentState>
-<nextState>07</nextState>
+<currentState>07</currentState>
+<nextState>08</nextState>
 <inputs>
-<input><messageName>mean_wage_for_government</messageName></input>
-<input><messageName>region_gdp_for_government</messageName></input>
+<input><messageName>data_for_government</messageName></input>
 </inputs>
 </function>
 
 <function>
 <name>Government_set_policy</name>
 <description></description>
-<currentState>07</currentState>
-<nextState>08</nextState>
+<currentState>08</currentState>
+<nextState>09</nextState>
 </function>
 
 <function>
 <name>Government_yearly_resetting</name>
 <description></description>
-<currentState>08</currentState>
+<currentState>09</currentState>
 <nextState>end_Government</nextState>
 </function>
 
@@ -391,42 +457,37 @@
 </message>
 
 <message>
-<name>government_tax_rates</name>
-<description></description>
-<variables>
-<variable><type>int</type><name>gov_id</name><description></description></variable>
-<variable><type>double</type><name>tax_rate_corporate</name><description></description></variable>
-<variable><type>double</type><name>tax_rate_hh_labour</name><description></description></variable>
-<variable><type>double</type><name>tax_rate_hh_capital</name><description></description></variable>
-<variable><type>double</type><name>tax_rate_vat</name><description></description></variable>
-</variables>
-</message>
-
-<message>
 <name>tax_payment</name>
 <description></description>
 <variables>
-<variable><type>int</type><name>id</name><description></description></variable>
 <variable><type>int</type><name>gov_id</name><description></description></variable>
 <variable><type>double</type><name>tax_payment</name><description></description></variable>
 </variables>
 </message>
 
 <message>
-<name>mean_wage_for_government</name>
-<description></description>
+<name>data_for_government</name>
+<description>Sent by Eurostat to government. Includes the gov_id, mean_wage, region_id and gdp for the region. Used by government to compute its GDP.</description>
 <variables>
 <variable><type>int</type><name>gov_id</name><description></description></variable>
+<variable><type>int</type><name>region_id</name><description></description></variable>
+<variable><type>double</type><name>gdp</name><description></description></variable>
 <variable><type>double</type><name>mean_wage</name><description></description></variable>
 </variables>
 </message>
 
 <message>
-<name>unemployment_benefit_announcement</name>
-<description>Gov sends unemployment benefit announcement.</description>
+<name>policy_announcement</name>
+<description>Government announcing tax rates, benefits, transfer payments and subsidies.</description>
 <variables>
 <variable><type>int</type><name>gov_id</name><description></description></variable>
+<variable><type>double</type><name>tax_rate_corporate</name><description></description></variable>
+<variable><type>double</type><name>tax_rate_hh_labour</name><description></description></variable>
+<variable><type>double</type><name>tax_rate_hh_capital</name><description></description></variable>
+<variable><type>double</type><name>tax_rate_vat</name><description></description></variable>
 <variable><type>double</type><name>unemployment_benefit_pct</name><description></description></variable>
+<variable><type>double</type><name>transfer_payment</name><description></description></variable>
+<variable><type>double</type><name>subsidy_payment</name><description></description></variable>
 </variables>
 </message>
 
@@ -440,28 +501,10 @@
 </message>
 
 <message>
-<name>transfer_payment_announcement</name>
-<description>General announcement of a transfer payment.</description>
-<variables>
-<variable><type>int</type><name>gov_id</name><description></description></variable>
-<variable><type>double</type><name>transfer_payment</name><description></description></variable>
-</variables>
-</message>
-
-<message>
 <name>transfer_payment_notification</name>
 <description>An agent applies for a transfer payment and notifies its government.</description>
 <variables>
 <variable><type>int</type><name>gov_id</name><description></description></variable>
-</variables>
-</message>
-
-<message>
-<name>subsidy_payment_announcement</name>
-<description>General announcement of a subsidy payment.</description>
-<variables>
-<variable><type>int</type><name>gov_id</name><description></description></variable>
-<variable><type>double</type><name>subsidy_payment</name><description></description></variable>
 </variables>
 </message>
 
@@ -473,14 +516,6 @@
 </variables>
 </message>
 
-<message>
-<name>region_gdp_for_government</name>
-<description>Sent by Eurostat. Includes the region_id and gdp for the region. Used by gov to compute its GDP.</description>
-<variables>
-<variable><type>int</type><name>region_id</name><description></description></variable>
-<variable><type>double</type><name>gdp</name><description></description></variable>
-</variables>
-</message>
 
 </messages>
 

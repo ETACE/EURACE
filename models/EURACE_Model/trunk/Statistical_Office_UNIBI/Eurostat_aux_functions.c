@@ -284,13 +284,15 @@ void Eurostat_calc_firm_population(void)
 	FINISH_FIRM_SEND_DATA_MESSAGE_LOOP
 
 	/***************** Sum of: no_firm_deaths *********************/
-    NO_FIRM_DEATHS = -1*(NO_FIRMS - HISTORY_MONTHLY[0].no_firms - NO_FIRM_BIRTHS);        
-    for(i = 0; i < REGION_FIRM_DATA.size; i++)
+    NO_FIRM_DEATHS = -1*(NO_FIRMS - HISTORY_MONTHLY[0].no_firms - NO_FIRM_BIRTHS);
+	
+/*
+	for(i = 0; i < REGION_FIRM_DATA.size; i++)
     {
     	REGION_FIRM_DATA.array[i].no_firm_deaths = 
     		-1*(REGION_FIRM_DATA.array[i].no_firms - HISTORY_MONTHLY[0].region_data.array[i].no_firms - REGION_FIRM_DATA.array[i].no_firm_births); 
     }
-    
+*/    
     /***************** Firm birth rate *********************/
     //Def: nr of newborn firms in period x / nr of firms in period x
     if(NO_FIRMS == 0) FIRM_BIRTH_RATE = 0.0;
