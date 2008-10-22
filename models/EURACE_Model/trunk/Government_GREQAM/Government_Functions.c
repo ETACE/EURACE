@@ -1,7 +1,7 @@
-//#include "../header.h"
-//#include "../Government_agent_header.h"
-#include "header.h"
-#include "Government_agent_header.h"
+#include "../header.h"
+#include "../Government_agent_header.h"
+//#include "header.h"
+//#include "Government_agent_header.h"
 #include "../my_library_header.h"
 
 #define REGIONS_PER_GOV 1 //number of regions per gov
@@ -225,14 +225,14 @@ int Government_set_policy()
 	//Set the following policies:
 	
 	//Determine new unemployment benefit percentage
-	//GOV_POLICY_UNEMPLOYMENT_BENEFIT_PCT
+	GOV_POLICY_UNEMPLOYMENT_BENEFIT_PCT = 0.70;
 
 	//Determine new transfer payment
-	//TRANSFER_PAYMENT
+	TRANSFER_PAYMENT =1000;
 
 	
 	//Determine new transfer payment
-	//SUBSIDY_PAYMENT
+	SUBSIDY_PAYMENT =1000;
 
 
 	//Determine new government investment
@@ -244,6 +244,7 @@ int Government_set_policy()
 
 	//Determine new government consumption
 	// YEARLY_GOV_CONSUMPTION
+	
 	//Distribute total per firm consumption
 	// GOV_CONSUMPTION
 	
