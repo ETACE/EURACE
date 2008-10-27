@@ -667,3 +667,10 @@ TODO:
 - fix the region_data[30] inside the history_monthly[] structure.
 - uncomment all code related to region_data in files Eurostat_Functions.c and Eurostat_aux_Functions.c 
 ----------------------------------------------------------------------
+Sander, rev 1423
+
+Changed monthly growth rates for CPI: inflation measure is based on a chained price index, instead of a base year price index.
+MONTHLY_GROWTH_RATES.cpi = (HISTORY_MONTHLY[0].cpi/HISTORY_MONTHLY[1].cpi-1)*100;
+--->
+MONTHLY_GROWTH_RATES.cpi = (HISTORY_MONTHLY[0].cpi-1)*100;
+----------------------------------------------------------------------
