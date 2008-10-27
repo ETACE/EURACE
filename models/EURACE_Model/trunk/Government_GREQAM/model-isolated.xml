@@ -92,21 +92,12 @@
 </inputs>
 </function>
 
-<!--monthly loop-->
-<function>
-<name>Household_idle</name>
-<description></description>
-<currentState>01</currentState>
-<nextState>end_Household</nextState>
-<condition><not><time><period>monthly</period><phase>1</phase></time></not></condition>
-</function>
-
+<!--daily loop-->
 <function>
 <name>Household_send_tax_payment</name>
 <description></description>
 <currentState>01</currentState>
 <nextState>02</nextState>
-<condition><time><period>monthly</period><phase>1</phase></time></condition>
 <outputs>
 <output>
 <messageName>tax_payment</messageName>
@@ -189,21 +180,12 @@
 </inputs>
 </function>
 
-<!--monthly loop-->
-<function>
-<name>Firm_idle</name>
-<description></description>
-<currentState>01</currentState>
-<nextState>end_Firm</nextState>
-<condition><not><time><period>monthly</period><phase>1</phase></time></not></condition>
-</function>
-
+<!--daily loop-->
 <function>
 <name>Firm_send_tax_payment</name>
 <description></description>
 <currentState>01</currentState>
 <nextState>02</nextState>
-<condition><time><period>monthly</period><phase>1</phase></time></condition>
 <outputs>
 <output>
 <messageName>tax_payment</messageName>
@@ -283,7 +265,7 @@
 <name>Government_idle</name>
 <description></description>
 <currentState>start_Government</currentState>
-<nextState>00</nextState>
+<nextState>01</nextState>
 <condition><not><time><period>yearly</period><phase>1</phase></time></not></condition>
 </function>
 
@@ -291,35 +273,20 @@
 <name>Government_send_policy_announcements</name>
 <description></description>
 <currentState>start_Government</currentState>
-<nextState>00</nextState>
+<nextState>01</nextState>
 <condition><time><period>yearly</period><phase>1</phase></time></condition>
 <outputs>
 <output><messageName>policy_announcement</messageName></output>
 </outputs>
 </function>
 
-<function>
-<name>Government_idle</name>
-<description></description>
-<currentState>00</currentState>
-<nextState>01</nextState>
-</function>
 
-<!--monthly loop-->
-<function>
-<name>Government_idle</name>
-<description></description>
-<currentState>01</currentState>
-<nextState>04</nextState>
-<condition><not><time><period>monthly</period><phase>1</phase></time></not></condition>
-</function>
-
+<!--daily loop-->
 <function>
 <name>Government_read_tax_payments</name>
 <description></description>
 <currentState>01</currentState>
 <nextState>02</nextState>
-<condition><time><period>monthly</period><phase>1</phase></time></condition>
 <inputs>
 <input>
 <messageName>tax_payment</messageName>
@@ -342,7 +309,7 @@
 </function>
 
 <function>
-<name>Government_read_transfer_notification</name>
+<name>Government_read_transfer_notifications</name>
 <description></description>
 <currentState>03</currentState>
 <nextState>04</nextState>
@@ -353,8 +320,6 @@
 </input>
 </inputs>
 </function>
-
-<!--daily loop -->
 
 <function>
 <name>Government_read_unemployment_benefit_notifications</name>
@@ -367,6 +332,7 @@
 </input>
 </inputs>
 </function>
+
 
 <!--yearly loop: end of year-->
 <function>
