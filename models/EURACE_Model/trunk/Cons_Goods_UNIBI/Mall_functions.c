@@ -83,6 +83,7 @@ int Mall_update_mall_stocks_sales_rationing_1()
 	int i,j,k,l;
 	double aggregated_demand;
 	double rationing_rate;
+	double sold_quantity_to_consumer;
 
 	consumption_request_array consumption_request_list;
 	init_consumption_request_array(&consumption_request_list);
@@ -91,7 +92,8 @@ int Mall_update_mall_stocks_sales_rationing_1()
 	
 	// Message filter used: if(a.id==m.mall_id)
 	
-			add_consumption_request(&consumption_request_list,consumption_request_1_message->worker_id, 
+			add_consumption_request(&consumption_request_list,consumption_request_1_message->worker_id,
+			consumption_request_1_message->region_id, 
 			consumption_request_1_message->firm_id, 
 			consumption_request_1_message->quantity );
 	
@@ -116,16 +118,23 @@ int Mall_update_mall_stocks_sales_rationing_1()
 	
 			rationing_rate= CURRENT_STOCK.array[i].stock/ aggregated_demand;
 			
+			
 			for(k=0; k<consumption_request_list.size;k++)
 			{
 				if(CURRENT_STOCK.array[i].firm_id == 
 				consumption_request_list.array[k].firm_id)		
 				{
+					sold_quantity_to_consumer  = consumption_request_list.array[k].quantity*
+					rationing_rate;
+					
 					/*Send accepted consumption volume*/
 					add_accepted_consumption_1_message(ID,
 		 			consumption_request_list.array[k].worker_id, 
-					consumption_request_list.array[k].quantity*
-					rationing_rate, 1);
+		 			sold_quantity_to_consumer, 1);
+					
+					/*Add on Export matrix*/
+					Mall_add_export_data(CURRENT_STOCK.array[i].region_id, consumption_request_list.array[k].consumer_region_id,
+							sold_quantity_to_consumer*CURRENT_STOCK.array[i].price);
 				}
 			}
 			/*Calc and store revenues per firm*/
@@ -151,9 +160,15 @@ int Mall_update_mall_stocks_sales_rationing_1()
 				if(CURRENT_STOCK.array[i].firm_id == 
 				consumption_request_list.array[k].firm_id)
 				{	/*Send accepted consumption volume*/
+					
+					sold_quantity_to_consumer  = consumption_request_list.array[k].quantity;
+					
 					add_accepted_consumption_1_message(ID,
 					consumption_request_list.array[k].worker_id,
 					consumption_request_list.array[k].quantity, 0);
+					/*Add on Export matrix*/
+					Mall_add_export_data(CURRENT_STOCK.array[i].region_id, consumption_request_list.array[k].consumer_region_id,
+												sold_quantity_to_consumer*CURRENT_STOCK.array[i].price);
 				}	
 			}
 	
@@ -211,6 +226,7 @@ int Mall_update_mall_stocks_sales_rationing_2()
 	int i,j,k,l;
 	double aggregated_demand;
 	double rationing_rate;
+	double sold_quantity_to_consumer;
 
 	consumption_request_array consumption_request_list;
 	init_consumption_request_array(&consumption_request_list);
@@ -249,10 +265,17 @@ int Mall_update_mall_stocks_sales_rationing_2()
 				if(CURRENT_STOCK.array[i].firm_id == 
 				consumption_request_list.array[k].firm_id)
 				{
+					
+					sold_quantity_to_consumer  = consumption_request_list.array[k].quantity*
+										rationing_rate;
+										
 					add_accepted_consumption_2_message(ID,
 					consumption_request_list.array[k].worker_id,
-					consumption_request_list.array[k].quantity*
-					rationing_rate, 1);
+					sold_quantity_to_consumer, 1);
+					
+					/*Add on Export matrix*/
+					Mall_add_export_data(CURRENT_STOCK.array[i].region_id, consumption_request_list.array[k].consumer_region_id,
+												sold_quantity_to_consumer*CURRENT_STOCK.array[i].price);
 				}
 			}
 			/*Revenues and final mall stock*/
@@ -276,9 +299,15 @@ int Mall_update_mall_stocks_sales_rationing_2()
 				if(CURRENT_STOCK.array[i].firm_id == 
 				consumption_request_list.array[k].firm_id)
 				{
+					sold_quantity_to_consumer  = consumption_request_list.array[k].quantity;
+					
 					add_accepted_consumption_2_message(ID,
 					consumption_request_list.array[k].worker_id, 
 					consumption_request_list.array[k].quantity, 0);
+					
+					/*Add on Export matrix*/
+					Mall_add_export_data(CURRENT_STOCK.array[i].region_id, consumption_request_list.array[k].consumer_region_id,
+																	sold_quantity_to_consumer*CURRENT_STOCK.array[i].price);
 				}	
 			}
 			/*revenues and final stocks*/

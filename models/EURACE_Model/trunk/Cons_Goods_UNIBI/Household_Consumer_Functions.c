@@ -145,7 +145,7 @@ int Household_rank_and_buy_goods_1()
 
 			/*The consumption request message is sent  */ 
 			add_consumption_request_1_message(
-			mall_quality_price_info_list.array[index_selected_good].mall_id,ID,
+			mall_quality_price_info_list.array[index_selected_good].mall_id,ID,REGION_ID,
 			ORDER_QUANTITY[0].firm_id,
 			ORDER_QUANTITY[0].quantity);
 
@@ -327,7 +327,7 @@ int Household_rank_and_buy_goods_2()
 			/*Sending the second consumption request message  */
 			add_consumption_request_2_message(
 			mall_quality_price_info_list.array[index_selected_good].mall_id,
-			ID,ORDER_QUANTITY[1].firm_id,
+			ID,REGION_ID,ORDER_QUANTITY[1].firm_id,
 			ORDER_QUANTITY[1].quantity);
 		
 
@@ -448,9 +448,10 @@ int Household_handle_leftover_budget()
 		{	
 			
 			PAYMENT_ACCOUNT -= EXPENDITURES;
+			WEEK_OF_MONTH--;
 			WEEKLY_BUDGET = CONSUMPTION_BUDGET / WEEK_OF_MONTH;
 			
-			WEEK_OF_MONTH--; 
+			 
 		}
 		else
 		{

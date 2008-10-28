@@ -32,6 +32,7 @@
 <description>Used by  mall to hold demand</description>
 <variables>
 <variable><type>int</type><name>worker_id</name><description></description></variable>
+<variable><type>int</type><name>consumer_region_id</name><description></description></variable>
 <variable><type>int</type><name>firm_id</name><description></description></variable>
 <variable><type>double</type><name>quantity</name><description></description></variable>
 </variables>
@@ -65,6 +66,7 @@
 <description>Used by mall to hold information about current stock</description>
 <variables>
 <variable><type>int</type><name>firm_id</name><description></description></variable>
+<variable><type>int</type><name>region_id</name><description></description></variable>
 <variable><type>double</type><name>stock</name><description></description></variable>
 <variable><type>double</type><name>price</name><description></description></variable>
 <variable><type>double</type><name>quality</name><description></description></variable>
@@ -707,6 +709,7 @@ supplier and the quantity of the good a household wants to have.</description>
 <variables>
 <variable><type>int</type><name>mall_id</name><description></description></variable>
 <variable><type>int</type><name>worker_id</name><description></description></variable>
+<variable><type>int</type><name>region_id</name><description></description></variable>
 <variable><type>int</type><name>firm_id</name><description></description></variable>
 <variable><type>double</type><name>quantity</name><description></description></variable>
 </variables>
@@ -719,6 +722,7 @@ supplier and the quantity of the good a household wants to have.</description>
 <variables>
 <variable><type>int</type><name>mall_id</name><description></description></variable>
 <variable><type>int</type><name>worker_id</name><description></description></variable>
+<variable><type>int</type><name>region_id</name><description></description></variable>
 <variable><type>int</type><name>firm_id</name><description></description></variable>
 <variable><type>double</type><name>quantity</name><description></description></variable>
 </variables>
