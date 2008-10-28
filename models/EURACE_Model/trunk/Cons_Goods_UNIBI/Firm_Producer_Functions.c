@@ -548,13 +548,6 @@ int Firm_execute_production()
 			pow(NO_EMPLOYEES,ALPHA)*pow(TOTAL_UNITS_CAPITAL_STOCK,BETA); 
 		}
 
-
-
-		if(PRODUCTION_QUANTITY>PLANNED_PRODUCTION_QUANTITY)
-		{
-		
-
-		}
 	}
 	else
 	{
@@ -607,11 +600,13 @@ int Firm_calc_pay_costs()
 				if(CAPITAL_FINANCING.array[i].nr_periods_before_repayment==0)
 				{
 					remove_financing_capital(&CAPITAL_FINANCING,i);
+					i--;
 				}else
 				{
 				CAPITAL_FINANCING.array[i].nr_periods_before_repayment--;
-				}
 				calc_capital_costs+= CAPITAL_FINANCING.array[i].financing_per_month;
+				}
+				
 
 			} 
      			
@@ -625,11 +620,12 @@ int Firm_calc_pay_costs()
 			
 		}
 
+		
 		PRODUCTION_COSTS = CAPITAL_COSTS + LABOUR_COSTS;
 
 	PAYMENT_ACCOUNT -= PRODUCTION_COSTS;
 
-	if(PLANNED_PRODUCTION_COSTS<PRODUCTION_COSTS)
+	//if(PLANNED_PRODUCTION_COSTS<PRODUCTION_COSTS)
 		//printf("XXXX PLANNED_PRODUCTION_COSTS: %f  PRODUCTION_COSTS %f XXXXX\n",PLANNED_PRODUCTION_COSTS,PRODUCTION_COSTS);
 
 	remove_double(&LAST_PLANNED_PRODUCTION_QUANTITIES,0);
