@@ -12,10 +12,19 @@
 <file>Firm_Producer_Functions.c</file>
 <file>Household_Consumer_Functions.c</file>
 <file>Mall_functions.c</file>
+<file>Mall_aux_functions.c</file>
 </functionFiles>
 
 <dataTypes>
 
+<dataType>
+<name>portfolio</name>
+<description>Used by households to hold shares</description>
+<variables>
+<variable><type>int</type><name>firm_id</name><description></description></variable>
+<variable><type>int</type><name>shares</name><description></description></variable>
+</variables>
+</dataType>
 
 <dataType>
 <name>consumption_goods_offer</name>
@@ -265,7 +274,7 @@ on the current stocks in the malls</description>
 
 <function><name>Firm_calc_pay_costs</name>
 <description>In this function the firm receives the purchased investment
- goods and pays the goods and 	the wage bill. Additionally, the 
+ goods and pays the goods and   the wage bill. Additionally, the 
  new mean wage and the new average specific skill level is computed.</description>
 <currentState>11</currentState>
 <nextState>12</nextState>
@@ -363,13 +372,11 @@ firms update the specific skill levels of the workers.</description>
 <variable><type>double_array</type><name>last_income</name><description></description></variable>
 <variable><type>double</type><name>expenditures</name><description></description></variable>
 <variable><type>double</type><name>received_dividend</name><description></description></variable>
-
-<!--<variable><type>double</type><name>portfolio_budget</name><description></description></variable>-->
-
+<variable><type>portfolio_array</type><name>household_portfolio</name><description></description></variable>
 </memory>
 <functions>
-	
-	
+    
+    
 <function><name>Household_receive_dividends</name>
 <description>Household receives the dividend payments</description>
 <currentState>06</currentState>
@@ -398,7 +405,7 @@ firms update the specific skill levels of the workers.</description>
 <currentState>06c</currentState>
 <nextState>07</nextState>
 <condition>
-	<lhs><value>a.employee_firm_id</value></lhs><op>NEQ</op><rhs><value>-1</value></rhs>
+    <lhs><value>a.employee_firm_id</value></lhs><op>NEQ</op><rhs><value>-1</value></rhs>
 </condition>
 <inputs>
 <input><messageName>wage_payment</messageName>
@@ -422,7 +429,7 @@ firms update the specific skill levels of the workers.</description>
 <currentState>06c</currentState>
 <nextState>08</nextState>
 <condition>
-	<lhs><value>a.employee_firm_id</value></lhs><op>EQ</op><rhs><value>-1</value></rhs>
+    <lhs><value>a.employee_firm_id</value></lhs><op>EQ</op><rhs><value>-1</value></rhs>
 </condition>
 <outputs>
 <output><messageName>unemployment_notification</messageName>
@@ -538,7 +545,6 @@ spent in both consumtion steps, into the PAYMENT_ACCOUNT.</description>
 <variable><type>mall_stock_array</type><name>current_stock</name><description>Actual stock of the different firms</description></variable>
 <variable><type>sales_in_mall_array</type><name>firm_revenues</name><description>Actual revenue of the different firms</description></variable>
 <variable><type>double</type><name>total_supply</name><description>Total number of goods</description></variable>
-<!--<variable><type>double</type><name>no_regions</name><description>Number of regions.</description></variable>-->
 <variable><type>double</type><name>export_matrix[900]</name><description>Matrix holding data on exports between regions.</description></variable>
 </memory>
 <functions>

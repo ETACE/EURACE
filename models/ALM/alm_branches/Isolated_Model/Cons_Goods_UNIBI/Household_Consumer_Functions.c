@@ -415,12 +415,12 @@ int Household_receive_dividends()
 	//dividend_per_share_msg(firm_id, current_dividend_per_share) to shareholders (dividend per share)
 
 	START_DIVIDEND_PER_SHARE_MESSAGE_LOOP
-		for(imax=0; imax < ASSETSOWNED.size;imax++)
+		for(imax=0; imax < HOUSEHOLD_PORTFOLIO.size;imax++)
 		{
-			if(ASSETSOWNED.array[imax].id==dividend_per_share_message->firm_id)
+			if(HOUSEHOLD_PORTFOLIO.array[imax].firm_id==dividend_per_share_message->firm_id)
 			{
 				//Compute the total dividend
-				RECEIVED_DIVIDEND += dividend_per_share_message->current_dividend_per_share*ASSETSOWNED.array[imax].quantity;
+				RECEIVED_DIVIDEND += dividend_per_share_message->current_dividend_per_share*HOUSEHOLD_PORTFOLIO.array[imax].shares;
 			}
 		}
 	FINISH_DIVIDEND_PER_SHARE_MESSAGE_LOOP

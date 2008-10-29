@@ -5,6 +5,10 @@
 
 
 /* Library functions */
+int Firm_idle()
+{
+    return 0;
+}
 
 /** \fn Firm_calc_input_demands_2(), auxiliary function
  * \brief Firms recalculate the labor demand and the demand for capital goods
