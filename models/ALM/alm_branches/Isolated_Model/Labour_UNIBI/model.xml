@@ -13,6 +13,7 @@
 <file>Household_Employee_Functions.c</file>
 </functionFiles>
 
+
 <dataTypes>
 
 <dataType>
@@ -97,7 +98,7 @@
 
 <function><name>Firm_calculate_specific_skills_and_wage_offer</name>
 <description></description>
-<currentState>Start_Firm_Labour_Role</currentState>
+<currentState>Firm_Start_Labour_Role</currentState>
 <nextState>011</nextState>
 </function>
 
@@ -264,7 +265,7 @@ of employees and the number of vacancies</description>
 <description>The firm reads quitting messages and updates the number 
 of employees and the number of vacancies</description>
 <currentState>09c</currentState>
-<nextState>Start_Firm_Seller_Role</nextState>
+<nextState>Firm_Start_Seller_Role</nextState>
 <inputs>
 <input><messageName>quitting2</messageName></input>
 </inputs>
@@ -288,7 +289,7 @@ of employees and the number of vacancies</description>
 <function><name>Firm_compute_mean_wage_specific_skills</name>
 <description>Firm does nothing</description>
 <currentState>10</currentState>
-<nextState>End_Firm_Labour_Role</nextState>
+<nextState>Firm_End_Labour_Role</nextState>
 </function>
 
 </functions>
@@ -308,6 +309,7 @@ of employees and the number of vacancies</description>
 <variable><type>double</type><name>specific_skill</name><description>The specific skills of a household</description></variable>
 <variable><type>int</type><name>employee_firm_id</name><description></description>The id of the employer</variable>
 <variable><type>int</type><name>employer_region_id</name><description>The id of the region</description></variable>
+<variable><type>int</type><name>day_of_month_receive_benefit</name><description>The day of the month that the household receives its unemployment benefit. Equal to the day on which it became unemployed. This value will change when the household becomes re-employed again by another (or the same) firm, with the exception in case the new firm has the same activation day as the old firm.</description></variable>
 </memory>
 
 <functions>
@@ -633,6 +635,15 @@ as well as the specific skills.</description>
 <variables>
 <variable><type>int</type><name>worker_id</name><description></description></variable>
 <variable><type>int</type><name>firm_id</name><description></description></variable>
+</variables>
+</message>
+
+<message>
+<name>unemployment_notification</name>
+<description>Household sends unemployment notification to gov, applying for unemployment benefits.</description>
+<variables>
+<variable><type>int</type><name>gov_id</name><description></description></variable>
+<variable><type>double</type><name>last_labour_income</name><description></description></variable>
 </variables>
 </message>
 

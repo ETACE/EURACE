@@ -223,3 +223,61 @@ Sander, rev 1100
 * added inflation rate
 * firm age_distribution is used to compute the survival rate
 ----------------------------------------------------------------------
+Sander, edits to Isolated_Model
+
+Cons_Goods_UNIBI:
+- commented out last 3 items in Firm memory
+
+CB:
+- CB_accounts
+
+States that caused problems have been renamed:
+
+Credit module: 
+Firm_Start_Credit_Role
+Firm_End_Credit_Role
+
+FinMan module:
+Firm_End_Credit_Role
+Firm_End_External_Financing (was: Firm_Finish_Financial_Management)
+
+Cons_Goods:
+Firm_End_External_Financing
+Firm_Start_Labour_Role
+
+Labour:
+Firm_Start_Labour_Role
+Firm_End_Labour_Role
+
+Cons_Goods:
+Firm_End_Labour_Role
+Firm_Start_Seller_Role
+
+Firm_Start_Seller_Role
+Firm_End_Seller_Role
+
+FinMan module:
+Firm_Start_Financial_Management_Role
+Firm_End_Financial_Management_Role
+
+===============================
+Firm_Finish_Financial_Management
+--> Firm_End_Financial_Management
+In:
+- Firm_calc_production_quantity_2
+- Firm_execute_financial_payments
+
+Modules:
+- Credit_UNIBI/model-dummy.xml: Firm_idle
+- Fin Mng UNIBI/model.xml: Firm_execute_financial_payments
+- Cons_Goods_UNIBI/model.xml: Firm_calc_production_quantity_2
+
+Start_Household_Labour_Role
+In: Stat_Office_UNIBI
+
+Firm_new01
+In: Financial_UG: Firm_send_info function
+
+Firm_Start_Producer_Role
+In: Cons_Goods_UNIBI
+(related to Financial_UG)

@@ -109,7 +109,7 @@
 <function>
 <name>Firm_compute_financial_payments</name>
 <description>Computation of prior financial commitments: interests, installments, taxes</description>
-<currentState>13b</currentState>
+<currentState>Firm_Start_Financial_Management_Role</currentState>
 <nextState>001</nextState>
 </function>
 
@@ -138,7 +138,7 @@
 <name>Firm_compute_balance_sheet</name>
 <description>Computation of the balance sheet</description>
 <currentState>004</currentState>
-<nextState>005</nextState>
+<nextState>Firm_End_Financial_Management_Role</nextState>
 </function>
 
 
@@ -147,14 +147,14 @@
 <name>Firm_compute_total_liquidity_needs</name>
 <description>Function to compute total liquidity_needs</description>
 <currentState>02</currentState>
-<nextState>Start_Firm_Credit_Role</nextState>  
+<nextState>Firm_Start_Credit_Role</nextState>  
 </function>
 
 <function>
 <name>Firm_execute_financial_payments</name>
 <description>Function to execute financial payments</description>
-<currentState>Firm_Finish_Financial_Management</currentState>
-<nextState>Start_Firm_Labour_Role</nextState>
+<currentState>Firm_End_Credit_Role</currentState>
+<nextState>Firm_End_External_Financing</nextState>
 <outputs>
 <output><messageName>tax_payment</messageName></output>
 <output><messageName>dividend_per_share</messageName></output>

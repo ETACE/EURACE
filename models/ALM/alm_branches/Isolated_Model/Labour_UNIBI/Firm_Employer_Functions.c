@@ -4,6 +4,7 @@
 
 
 
+
 /************************************ Firm agent functions ************************************/
 
 /* Function condition functions */
@@ -554,13 +555,13 @@ int Firm_update_wage_offer()
 	/*If there are "a lot" of vacancies still open...*/	
 	if(VACANCIES > MIN_VACANCY)  
 	{
-		WAGE_OFFER = WAGE_OFFER*(1+WAGE_UPDATE);
+		WAGE_OFFER = WAGE_OFFER*(1+wage_update);
 
-		WAGE_OFFER_FOR_SKILL_1 = WAGE_OFFER_FOR_SKILL_1*(1+WAGE_UPDATE);
-		WAGE_OFFER_FOR_SKILL_2 = WAGE_OFFER_FOR_SKILL_2*(1+WAGE_UPDATE);
-		WAGE_OFFER_FOR_SKILL_3 = WAGE_OFFER_FOR_SKILL_3*(1+WAGE_UPDATE);
-		WAGE_OFFER_FOR_SKILL_4 = WAGE_OFFER_FOR_SKILL_4*(1+WAGE_UPDATE);
-		WAGE_OFFER_FOR_SKILL_5 = WAGE_OFFER_FOR_SKILL_5*(1+WAGE_UPDATE);	
+		WAGE_OFFER_FOR_SKILL_1 = WAGE_OFFER_FOR_SKILL_1*(1+wage_update);
+		WAGE_OFFER_FOR_SKILL_2 = WAGE_OFFER_FOR_SKILL_2*(1+wage_update);
+		WAGE_OFFER_FOR_SKILL_3 = WAGE_OFFER_FOR_SKILL_3*(1+wage_update);
+		WAGE_OFFER_FOR_SKILL_4 = WAGE_OFFER_FOR_SKILL_4*(1+wage_update);
+		WAGE_OFFER_FOR_SKILL_5 = WAGE_OFFER_FOR_SKILL_5*(1+wage_update);	
 	}
 	
 	return 0;
@@ -878,7 +879,7 @@ int Firm_update_wage_offer_2()
 	{	
 		if(VACANCIES > 0) 
 		{
-			//WAGE_OFFER = WAGE_OFFER*(1 + WAGE_UPDATE);
+			//WAGE_OFFER = WAGE_OFFER*(1 + wage_update);
 			
 		}
 

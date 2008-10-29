@@ -18,7 +18,8 @@
 <model><file>Statistical_Office_UNIBI/model.xml</file><enabled>true</enabled></model>
 <model><file>FINANCIAL_UG/model.xml</file><enabled>false</enabled></model>
 <model><file>Financial_UNIBI/model-dummy.xml</file><enabled>false</enabled></model>
-<model><file>Government_UNIBI/model.xml</file><enabled>true</enabled></model>
+<model><file>Government_UNIBI/model.xml</file><enabled>false</enabled></model>
+<model><file>Government_GREQAM/model.xml</file><enabled>true</enabled></model>
 </models>
 
 <environment>
@@ -59,14 +60,14 @@
 <variable><type>int</type><name>innovation_probability</name><description>10</description></variable>
 <variable><type>double</type><name>productivity_progress</name><description>0.05</description></variable>
 <!--Eurostat parameters-->
-<variable><type>int</type><name>max_firm_creation</name><description>10, maximum number of new firms created if survival rate of young firms is 1.</description></variable>
+<!--<variable><type>int</type><name>max_firm_creation</name><description>10, maximum number of new firms created if survival rate of young firms is 1.</description></variable>-->
 </constants>
  
 
 <functionFiles>
 <file>my_library_functions.c</file>
-<file>Firm_Library_Functions.c</file>
-<file>Household_Library_Functions.c</file>
+<!--<file>Firm_Library_Functions.c</file>-->
+<!--<file>Household_Library_Functions.c</file>-->
 </functionFiles>
   
 <timeUnits>
@@ -118,10 +119,10 @@
 <description></description>
 <memory>
 <variable><type>int</type><name>id</name><description></description></variable>
-<variable><type>int</type><name>age</name><description>Age of the firm in months</description></variable>
 <variable><type>int</type><name>region_id</name><description></description></variable>
 <variable><type>int</type><name>gov_id</name><description></description></variable>
 <variable><type>int</type><name>day_of_month_to_act</name><description></description></variable>
+<variable><type>int</type><name>last_day_of_month_to_act</name><description></description></variable>
 <variable><type>double</type><name>payment_account</name><description></description></variable>
 </memory>
 </xagent>
@@ -189,15 +190,33 @@
 <description></description>
 <memory>
 <variable><type>int</type><name>id</name><description></description></variable>
-<variable><type>int</type><name>bank_id</name><description></description></variable>
+<variable><type>int</type><name>list_of_regions[1]</name><description>List of regions that are associated to the government.</description></variable>
 <variable><type>double</type><name>payment_account</name><description></description></variable>
+<variable><type>int</type><name>day_of_month_to_act</name><description></description></variable>
 </memory>
 </xagent>
 
+<xagent>
+<name>Central_Bank</name>
+<description></description>
+<memory>
+<variable><type>int</type><name>id</name><description></description></variable>
+</memory>
+</xagent>
 
 </agents>
 
 <messages>
+
+<message>
+<name>tax_payment</name>
+<description>Added by agents to pay taxes</description>
+<variables>
+<variable><type>int</type><name>id</name><description></description></variable>
+<variable><type>int</type><name>gov_id</name><description></description></variable>
+<variable><type>double</type><name>tax_payment</name><description></description></variable>
+</variables>
+</message>
 
 <message>
 <name>bank_account_update</name>
@@ -211,12 +230,11 @@
 </message>
 
 <message>
-<name>tax_payment</name>
-<description>Added by firm to pay taxes</description>
+<name>central_bank_account_update</name>
+<description>Banks or Governments send account information to central bank</description>
 <variables>
 <variable><type>int</type><name>id</name><description></description></variable>
-<variable><type>int</type><name>gov_id</name><description></description></variable>
-<variable><type>double</type><name>tax_payment</name><description></description></variable>
+<variable><type>double</type><name>payment_account</name><description></description></variable>
 </variables>
 </message>
 

@@ -2,6 +2,7 @@
 #include "../Mall_agent_header.h"
 #include "../my_library_header.h"
 
+#define NO_REGIONS 1 //number of regions (hard-coded here)
 
 
 /********************Mall agent functions*****************/
@@ -12,12 +13,13 @@
  */
 int Mall_update_mall_stock()
 {
+	int j;
 	
 	START_UPDATE_MALL_STOCK_MESSAGE_LOOP
 	
 	// Message filter used: if(a.id==m.mall_id)
 	
-		for(int j=0; j < CURRENT_STOCK.size; j++)
+		for(j=0; j < CURRENT_STOCK.size; j++)
 		{	
 			
 			if(update_mall_stock_message->firm_id==
@@ -78,9 +80,10 @@ int Mall_send_quality_price_info_1()
  */
 int Mall_update_mall_stocks_sales_rationing_1()
 {
-	
+	int i,j,k,l;
 	double aggregated_demand;
 	double rationing_rate;
+	double sold_quantity_to_consumer;
 
 	consumption_request_array consumption_request_list;
 	init_consumption_request_array(&consumption_request_list);
@@ -89,7 +92,8 @@ int Mall_update_mall_stocks_sales_rationing_1()
 	
 	// Message filter used: if(a.id==m.mall_id)
 	
-			add_consumption_request(&consumption_request_list,consumption_request_1_message->worker_id, 
+			add_consumption_request(&consumption_request_list,consumption_request_1_message->worker_id,
+			consumption_request_1_message->region_id, 
 			consumption_request_1_message->firm_id, 
 			consumption_request_1_message->quantity );
 	
@@ -97,10 +101,10 @@ int Mall_update_mall_stocks_sales_rationing_1()
 
 
 	/*Aggregation of demand per firm*/
-	for(int i = 0; i < CURRENT_STOCK.size;i++)
+	for(i = 0; i < CURRENT_STOCK.size;i++)
 	{
 		aggregated_demand=0.0;
-		for(int j = 0; j < consumption_request_list.size; j++)	
+		for(j = 0; j < consumption_request_list.size; j++)	
 		{
 			if(CURRENT_STOCK.array[i].firm_id == 
 			consumption_request_list.array[j].firm_id)
@@ -114,20 +118,27 @@ int Mall_update_mall_stocks_sales_rationing_1()
 	
 			rationing_rate= CURRENT_STOCK.array[i].stock/ aggregated_demand;
 			
-			for(int k=0; k<consumption_request_list.size;k++)
+			
+			for(k=0; k<consumption_request_list.size;k++)
 			{
 				if(CURRENT_STOCK.array[i].firm_id == 
 				consumption_request_list.array[k].firm_id)		
 				{
+					sold_quantity_to_consumer  = consumption_request_list.array[k].quantity*
+					rationing_rate;
+					
 					/*Send accepted consumption volume*/
 					add_accepted_consumption_1_message(ID,
 		 			consumption_request_list.array[k].worker_id, 
-					consumption_request_list.array[k].quantity*
-					rationing_rate, 1);
+		 			sold_quantity_to_consumer, 1);
+					
+					/*Add on Export matrix*/
+					Mall_add_export_data(CURRENT_STOCK.array[i].region_id, consumption_request_list.array[k].consumer_region_id,
+							sold_quantity_to_consumer*CURRENT_STOCK.array[i].price);
 				}
 			}
 			/*Calc and store revenues per firm*/
-			for(int k=0; k< CURRENT_STOCK.size;k++)
+			for(k=0; k< CURRENT_STOCK.size;k++)
 			{
 					
 				if(CURRENT_STOCK.array[i].firm_id==
@@ -144,18 +155,24 @@ int Mall_update_mall_stocks_sales_rationing_1()
 		else /*Otherwise no rationing*/
 		{
 			
-			for(int k=0; k<consumption_request_list.size;k++)
+			for(k=0; k<consumption_request_list.size;k++)
 			{
 				if(CURRENT_STOCK.array[i].firm_id == 
 				consumption_request_list.array[k].firm_id)
 				{	/*Send accepted consumption volume*/
+					
+					sold_quantity_to_consumer  = consumption_request_list.array[k].quantity;
+					
 					add_accepted_consumption_1_message(ID,
 					consumption_request_list.array[k].worker_id,
 					consumption_request_list.array[k].quantity, 0);
+					/*Add on Export matrix*/
+					Mall_add_export_data(CURRENT_STOCK.array[i].region_id, consumption_request_list.array[k].consumer_region_id,
+												sold_quantity_to_consumer*CURRENT_STOCK.array[i].price);
 				}	
 			}
 	
-			for(int l=0; l< CURRENT_STOCK.size;l++)
+			for(l=0; l< CURRENT_STOCK.size;l++)
 			{
 				/*Calc and store revenues per firm*/
 				if(CURRENT_STOCK.array[i].firm_id==
@@ -174,7 +191,7 @@ int Mall_update_mall_stocks_sales_rationing_1()
 	free_consumption_request_array(&consumption_request_list);
 
 	/*Send second price info*/
-	int i;
+
 	int available;
 	for(i=0;i<CURRENT_STOCK.size;i++)
 	{
@@ -206,9 +223,10 @@ int Mall_update_mall_stocks_sales_rationing_1()
  */
 int Mall_update_mall_stocks_sales_rationing_2()
 {
-	
+	int i,j,k,l;
 	double aggregated_demand;
 	double rationing_rate;
+	double sold_quantity_to_consumer;
 
 	consumption_request_array consumption_request_list;
 	init_consumption_request_array(&consumption_request_list);
@@ -224,10 +242,10 @@ int Mall_update_mall_stocks_sales_rationing_2()
 	FINISH_CONSUMPTION_REQUEST_2_MESSAGE_LOOP
 
 		/*Aggregation of demand*/
-	for(int i = 0; i < CURRENT_STOCK.size;i++)
+	for(i = 0; i < CURRENT_STOCK.size;i++)
 	{
 		aggregated_demand=0;
-		for(int j = 0; j < consumption_request_list.size; j++)
+		for(j = 0; j < consumption_request_list.size; j++)
 		{
 			if(CURRENT_STOCK.array[i].firm_id == 
 			consumption_request_list.array[j].firm_id)
@@ -242,19 +260,26 @@ int Mall_update_mall_stocks_sales_rationing_2()
 
 			rationing_rate= CURRENT_STOCK.array[i].stock/ aggregated_demand;
 	
-			for(int k=0; k<consumption_request_list.size;k++)
+			for(k=0; k<consumption_request_list.size;k++)
 			{
 				if(CURRENT_STOCK.array[i].firm_id == 
 				consumption_request_list.array[k].firm_id)
 				{
+					
+					sold_quantity_to_consumer  = consumption_request_list.array[k].quantity*
+										rationing_rate;
+										
 					add_accepted_consumption_2_message(ID,
 					consumption_request_list.array[k].worker_id,
-					consumption_request_list.array[k].quantity*
-					rationing_rate, 1);
+					sold_quantity_to_consumer, 1);
+					
+					/*Add on Export matrix*/
+					Mall_add_export_data(CURRENT_STOCK.array[i].region_id, consumption_request_list.array[k].consumer_region_id,
+												sold_quantity_to_consumer*CURRENT_STOCK.array[i].price);
 				}
 			}
 			/*Revenues and final mall stock*/
-			for(int k=0; k< CURRENT_STOCK.size;k++)
+			for(k=0; k< CURRENT_STOCK.size;k++)
 			{
 				if(CURRENT_STOCK.array[i].firm_id==
 				FIRM_REVENUES.array[k].firm_id)
@@ -269,18 +294,24 @@ int Mall_update_mall_stocks_sales_rationing_2()
 		else /*Otherwise no rationg*/
 		{
 
-			for(int k=0; k<consumption_request_list.size;k++)
+			for(k=0; k<consumption_request_list.size;k++)
 			{
 				if(CURRENT_STOCK.array[i].firm_id == 
 				consumption_request_list.array[k].firm_id)
 				{
+					sold_quantity_to_consumer  = consumption_request_list.array[k].quantity;
+					
 					add_accepted_consumption_2_message(ID,
 					consumption_request_list.array[k].worker_id, 
 					consumption_request_list.array[k].quantity, 0);
+					
+					/*Add on Export matrix*/
+					Mall_add_export_data(CURRENT_STOCK.array[i].region_id, consumption_request_list.array[k].consumer_region_id,
+																	sold_quantity_to_consumer*CURRENT_STOCK.array[i].price);
 				}	
 			}
 			/*revenues and final stocks*/
-			for(int l=0; l< CURRENT_STOCK.size;l++)
+			for(l=0; l< CURRENT_STOCK.size;l++)
 			{
 		
 				if(CURRENT_STOCK.array[i].firm_id==
@@ -305,20 +336,22 @@ int Mall_update_mall_stocks_sales_rationing_2()
  */
 int Mall_pay_firm()
 {
+	int i,j;
+	
 	TOTAL_SUPPLY=0;
 	int stock_empty;
 
-	for(int i=0; i<CURRENT_STOCK.size;i++)
+	for(i=0; i<CURRENT_STOCK.size;i++)
 	{
 		TOTAL_SUPPLY += CURRENT_STOCK.array[i].stock;
 	}
 
 	
-	for(int i=0; i< FIRM_REVENUES.size;i++)
+	for(i=0; i< FIRM_REVENUES.size;i++)
 	{
 		
 		
-		for(int j=0; j<CURRENT_STOCK.size;j++)
+		for(j=0; j<CURRENT_STOCK.size;j++)
 		{
 		
 			if(FIRM_REVENUES.array[i].firm_id == CURRENT_STOCK.array[j].firm_id)
@@ -339,5 +372,66 @@ int Mall_pay_firm()
 	}
 
 
+	return 0;
+}
+
+/*****************
+ * TODO: Integrate the functions below in the mall functions.
+ */
+
+
+/* \fn: void Mall_reset_export_data()
+ * \brief: Function to reset the export matrix (at start of month).
+ */
+int Mall_reset_export_data()
+{
+	int i,j;
+	
+	//reset export matrix
+	for (i=0; i<NO_REGIONS; i++)
+	{
+		for (j=0; j<NO_REGIONS; j++)
+		{
+			EXPORT_MATRIX[i*NO_REGIONS+j]=0.0;
+		}
+	}
+	return 0;
+}
+
+/* \fn: void Mall_add_export_data()
+ * \brief: Function to add data to the export matrix (during every transaction).
+ */
+void Mall_add_export_data(int firm_region, int household_region, double transaction_value)
+{
+	int index;
+	
+	//add value to export matrix
+	index=(firm_region-1)*NO_REGIONS+(household_region-1);
+	EXPORT_MATRIX[index] = transaction_value;
+}
+
+/* \fn: int Mall_send_export_data()
+ * \brief: Function to send the export matrix to Eurostat.
+ */
+int Mall_send_export_data()
+{
+	int firm_region, household_region;
+	double value;
+
+	//mall sends a bunch of messages with export data (only the non-zero elements)
+	for (firm_region=1; firm_region<=NO_REGIONS; firm_region++)
+	{
+		for (household_region=1; household_region<=NO_REGIONS; household_region++)
+		{
+			value = EXPORT_MATRIX[(firm_region-1)*NO_REGIONS+(household_region-1)];
+			if (value > 0.0)
+			{
+				add_mall_data_message(ID, firm_region, household_region, value);
+				printf("\n Sending export data: region %d to region %d, value %2.2f", firm_region, household_region, value);
+			}
+			
+		}
+	}
+	
 	return 0;
 }

@@ -15,8 +15,7 @@ int Firm_send_data_to_Eurostat()
 	MEAN_WAGE, MEAN_SPECIFIC_SKILLS,
 	AVERAGE_S_SKILL_OF_1, AVERAGE_S_SKILL_OF_2, AVERAGE_S_SKILL_OF_3, AVERAGE_S_SKILL_OF_4, AVERAGE_S_SKILL_OF_5,
 	CUM_REVENUE, CAPITAL_COSTS,	NET_EARNINGS, TOTAL_DEBT, TOTAL_ASSETS, EQUITY,
-	PRICE, TOTAL_SUPPLY,
-	CUM_TOTAL_SOLD_QUANTITY, OUTPUT, PLANNED_OUTPUT, AGE);
+	PRICE, PRICE_LAST_MONTH, TOTAL_SUPPLY, CUM_TOTAL_SOLD_QUANTITY, OUTPUT, PLANNED_OUTPUT, AGE);
 
 	//printf("In Firm_send_data: Firm %d OUTPUT: %.2f\n", ID, OUTPUT);
 	//printf("In Firm_send_data: Firm %d PLANNED_OUTPUT: %.2f\n", ID, PLANNED_OUTPUT);
@@ -41,13 +40,15 @@ int Firm_read_tax_rates()
 {
 
 	//Message send by Government:
-	START_GOVERNMENT_TAX_RATES_MESSAGE_LOOP			
-		if(government_tax_rates_message->gov_id == GOV_ID)
+	START_POLICY_ANNOUNCEMENT_MESSAGE_LOOP			
+		if(policy_announcement_message->gov_id == GOV_ID)
 		{
-			TAX_RATE_CORPORATE = government_tax_rates_message->tax_rate_corporate;
-			TAX_RATE_VAT = government_tax_rates_message->tax_rate_vat;
+			TAX_RATE_CORPORATE = policy_announcement_message->tax_rate_corporate;
+			TAX_RATE_VAT = policy_announcement_message->tax_rate_vat;
+			TRANSFER_PAYMENT = policy_announcement_message->transfer_payment;
+			SUBSIDY_PAYMENT = policy_announcement_message->subsidy_payment;
 		}
-	FINISH_GOVERNMENT_TAX_RATES_MESSAGE_LOOP
+	FINISH_POLICY_ANNOUNCEMENT_MESSAGE_LOOP
 	
 	return 0;
 }
