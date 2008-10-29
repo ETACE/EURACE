@@ -1,7 +1,7 @@
 #include "../header.h"
 #include "../Firm_agent_header.h"
 #include "../my_library_header.h"
-#include "../Firm_Library_Functions.h"
+//#include "Firm_Library_Functions.h"
 
 
 /* Library functions */
@@ -31,7 +31,7 @@ int Firm_calc_input_demands_2()
 		{
 	
 			temp_capital_demand = PLANNED_PRODUCTION_QUANTITY * 
-			(pow((BETA*MEAN_WAGE*(1.04))/((DEPRECIATION_RATE*ACTUAL_CAP_PRICE+ACTUAL_CAP_PRICE/PERIODS_TO_REPAY_LOANS)*ALPHA),ALPHA)/
+			(pow((BETA*MEAN_WAGE*(1.04))/((DEPRECIATION_RATE*ACTUAL_CAP_PRICE)*ALPHA),ALPHA)/
 			MEAN_SPECIFIC_SKILLS);
 			
 			/*Smoothing of capital good demand*/
@@ -53,7 +53,7 @@ int Firm_calc_input_demands_2()
 		else
 		{
 			temp_capital_demand = PLANNED_PRODUCTION_QUANTITY * 
-			(pow((BETA*MEAN_WAGE*(1.04))/	((DEPRECIATION_RATE*ACTUAL_CAP_PRICE+ACTUAL_CAP_PRICE/PERIODS_TO_REPAY_LOANS)*ALPHA),ALPHA)/
+			(pow((BETA*MEAN_WAGE*(1.04))/	((DEPRECIATION_RATE*ACTUAL_CAP_PRICE)*ALPHA),ALPHA)/
 			TECHNOLOGY);
 
 			/*Smoothing of capital good demand*/
@@ -308,7 +308,7 @@ int Firm_calc_input_demands()
 		{
 	
 			temp_capital_demand = PLANNED_PRODUCTION_QUANTITY * 
-			(pow((BETA*MEAN_WAGE*(1.04))/((DEPRECIATION_RATE*ACTUAL_CAP_PRICE+ACTUAL_CAP_PRICE/PERIODS_TO_REPAY_LOANS)*ALPHA),ALPHA)/
+			(pow((BETA*MEAN_WAGE*(1.04))/((DEPRECIATION_RATE*ACTUAL_CAP_PRICE)*ALPHA),ALPHA)/
 			MEAN_SPECIFIC_SKILLS);
 			
 			/*Smoothing of capital good demand*/
@@ -331,7 +331,7 @@ int Firm_calc_input_demands()
 		else
 		{
 			temp_capital_demand = PLANNED_PRODUCTION_QUANTITY * 
-			(pow((BETA*MEAN_WAGE*(1.04))/	((DEPRECIATION_RATE*ACTUAL_CAP_PRICE+ACTUAL_CAP_PRICE/PERIODS_TO_REPAY_LOANS)*ALPHA),ALPHA)/
+			(pow((BETA*MEAN_WAGE*(1.04))/	((DEPRECIATION_RATE*ACTUAL_CAP_PRICE)*ALPHA),ALPHA)/
 			TECHNOLOGY);
 			
 				/*Smoothing of capital good demand*/
@@ -418,7 +418,9 @@ int Firm_calc_input_demands()
 
 /** \fn Firm_calc_production_quantity_2()
  * \brief Firms iterate over the planned production quantity decreasing it incrementally,
- * such that the corresponding labor demand and capital demand can be financed by the actually obtained financial resources.*/
+ * such that the corresponding labor demand and capital demand can be financed by the actually obtained financial resources.
+ * If PLANNED_PRODUCTION_COSTS <= PAYMENT_ACCOUNT this function does nothing.
+ */
 int Firm_calc_production_quantity_2()
 {
 	//printf("Firm_calc_production_quantity_2() ID: %d\n",ID);
@@ -431,19 +433,19 @@ int Firm_calc_production_quantity_2()
 	decrement = ADAPTION_PRODUCTION_VOLUME_DUE_TO_INSUFFICIENT_FINANCES*PLANNED_PRODUCTION_QUANTITY;
 	
 		
-		if( FINANCIAL_RESOURCES_FOR_PRODUCTION>0.0)
+		//if( FINANCIAL_RESOURCES_FOR_PRODUCTION>0.0)
+		if( PAYMENT_ACCOUNT>0.0)
 		{
-		while (PLANNED_PRODUCTION_COSTS > FINANCIAL_RESOURCES_FOR_PRODUCTION)
-		{
-			
-			PLANNED_PRODUCTION_QUANTITY -= decrement;
-			Firm_calc_input_demands_2();
-		}
+			//while (PLANNED_PRODUCTION_COSTS > FINANCIAL_RESOURCES_FOR_PRODUCTION)
+			while (PLANNED_PRODUCTION_COSTS > PAYMENT_ACCOUNT)
+			{
+				PLANNED_PRODUCTION_QUANTITY -= decrement;
+				Firm_calc_input_demands_2();
+			}
 		}else
 		{
-		PLANNED_PRODUCTION_QUANTITY=0.0;
-		Firm_calc_input_demands_2();
-
+			PLANNED_PRODUCTION_QUANTITY=0.0;
+			Firm_calc_input_demands_2();
 		}
 	
 	//printf("Labour: %d  Capital: %f  PLANNED_PROD_COSTS: %f\n", EMPLOYEES_NEEDED,NEEDED_CAPITAL_STOCK,PLANNED_PRODUCTION_COSTS);
@@ -546,13 +548,6 @@ int Firm_execute_production()
 			pow(NO_EMPLOYEES,ALPHA)*pow(TOTAL_UNITS_CAPITAL_STOCK,BETA); 
 		}
 
-
-
-		if(PRODUCTION_QUANTITY>PLANNED_PRODUCTION_QUANTITY)
-		{
-		
-
-		}
 	}
 	else
 	{
@@ -566,7 +561,7 @@ int Firm_execute_production()
 	OUTPUT = PRODUCTION_QUANTITY;
 	
 	TOTAL_SUPPLY = TOTAL_UNITS_LOCAL_INVENTORY + OUTPUT;
-
+	
 	//printf("In Execute production: Firm %d PRODUCTION_QUANTITY: %.2f (%.2f) \n", ID, PRODUCTION_QUANTITY, diff);
 	//printf("In Execute production: Firm %d OUTPUT: %.2f (%.2f)\n", ID, OUTPUT, diff);
 
@@ -605,11 +600,13 @@ int Firm_calc_pay_costs()
 				if(CAPITAL_FINANCING.array[i].nr_periods_before_repayment==0)
 				{
 					remove_financing_capital(&CAPITAL_FINANCING,i);
+					i--;
 				}else
 				{
 				CAPITAL_FINANCING.array[i].nr_periods_before_repayment--;
-				}
 				calc_capital_costs+= CAPITAL_FINANCING.array[i].financing_per_month;
+				}
+				
 
 			} 
      			
@@ -623,11 +620,12 @@ int Firm_calc_pay_costs()
 			
 		}
 
+		
 		PRODUCTION_COSTS = CAPITAL_COSTS + LABOUR_COSTS;
 
 	PAYMENT_ACCOUNT -= PRODUCTION_COSTS;
 
-	if(PLANNED_PRODUCTION_COSTS<PRODUCTION_COSTS)
+	//if(PLANNED_PRODUCTION_COSTS<PRODUCTION_COSTS)
 		//printf("XXXX PLANNED_PRODUCTION_COSTS: %f  PRODUCTION_COSTS %f XXXXX\n",PLANNED_PRODUCTION_COSTS,PRODUCTION_COSTS);
 
 	remove_double(&LAST_PLANNED_PRODUCTION_QUANTITIES,0);

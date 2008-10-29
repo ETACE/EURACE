@@ -3,7 +3,7 @@
 <xmodel version="2">
 
 <name>Consumption_Goods_Market</name>
-<version>pre-Genoa</version>
+<version>post-Sheffield</version>
 <description></description>
 
 <environment>
@@ -16,14 +16,6 @@
 
 <dataTypes>
 
-<dataType>
-<name>portfolio</name>
-<description>Used by households to hold shares</description>
-<variables>
-<variable><type>int</type><name>firm_id</name><description></description></variable>
-<variable><type>int</type><name>shares</name><description></description></variable>
-</variables>
-</dataType>
 
 <dataType>
 <name>consumption_goods_offer</name>
@@ -40,6 +32,7 @@
 <description>Used by  mall to hold demand</description>
 <variables>
 <variable><type>int</type><name>worker_id</name><description></description></variable>
+<variable><type>int</type><name>consumer_region_id</name><description></description></variable>
 <variable><type>int</type><name>firm_id</name><description></description></variable>
 <variable><type>double</type><name>quantity</name><description></description></variable>
 </variables>
@@ -73,6 +66,7 @@
 <description>Used by mall to hold information about current stock</description>
 <variables>
 <variable><type>int</type><name>firm_id</name><description></description></variable>
+<variable><type>int</type><name>region_id</name><description></description></variable>
 <variable><type>double</type><name>stock</name><description></description></variable>
 <variable><type>double</type><name>price</name><description></description></variable>
 <variable><type>double</type><name>quality</name><description></description></variable>
@@ -192,18 +186,21 @@
 <variable><type>double</type><name>adaption_production_volume_due_to_insufficient_finances</name><description>Percentage of production by which the quantity is reduced</description></variable>
 <variable><type>double</type><name>fraction_reserved_for_delayed_payments</name><description></description></variable>
 <variable><type>sold_quantities_per_mall_array</type><name>sold_quantities</name><description>Sold quantities in the different malls</description></variable>
-<variable><type>double</type><name>total_sold_quantity</name><description>Daily sum of sold quantities in the different malls</description></variable>
-<variable><type>double</type><name>cum_total_sold_quantity</name><description>Monthly sum of sold quantities in the different malls</description></variable>
+<variable><type>double</type><name>total_sold_quantity</name><description>Daily sum of sold quantities in all malls. The sold quantity of one firm in all malls.</description></variable>
+<variable><type>double</type><name>cum_total_sold_quantity</name><description>Monthly sum of sold quantities in all malls. The monthly sold quantity of one firm in all malls.</description></variable>
 <variable><type>delivery_volume_per_mall_array</type><name>delivery_volume</name><description>Delivery volume for each mall</description></variable>
 <variable><type>delivery_volume_per_mall_array</type><name>planned_delivery_volume</name>Planned delivery volume for each  mall<description></description></variable>
 <variable><type>mall_info_array</type><name>current_mall_stocks</name><description>Current stock in each mall</description></variable>
 <variable><type>double_array</type><name>last_planned_production_quantities</name><description>Array of the planned production quantities in the past</description></variable>
-<variable><type>double</type><name>direct_financial_needs_require_external_financing</name><description></description></variable>
+<!--<variable><type>double</type><name>direct_financial_needs_require_external_financing</name><description></description></variable>-->
 <variable><type>double</type><name>total_external_financing_obtained</name><description></description></variable>
-<variable><type>double</type><name>delayed_financial_needs_require_external_financing</name><description></description></variable>
+<!--<variable><type>double</type><name>delayed_financial_needs_require_external_financing</name><description></description></variable>-->
 <variable><type>double</type><name>capital_costs</name><description></description></variable>
 <variable><type>double</type><name>labour_costs</name><description></description></variable>
 <variable><type>financing_capital_array</type><name>capital_financing</name><description></description></variable>
+<!--<variable><type>double</type><name>financial_resources_for_production</name><description></description></variable>-->
+<!--<variable><type>double</type><name>planned_value_capital_stock</name><description></description></variable>-->
+<!--<variable><type>double</type><name>total_units_local_inventory</name><description></description></variable>-->
 </memory>
 <functions>
 
@@ -211,7 +208,7 @@
 <name>Firm_calc_production_quantity</name>
 <description>Firm calculate the intended production volume depending 
 on the current stocks in the malls</description>
-<currentState>00</currentState>
+<currentState>Firm_Start_Producer_Role</currentState>
 <nextState>01</nextState>
 <condition><time><period>monthly</period><phase>a.day_of_month_to_act</phase></time></condition>
 </function>
@@ -219,7 +216,7 @@ on the current stocks in the malls</description>
 <function>
 <name>Firm_set_quantities_zero</name>
 <description>Dummy: no production on not_day_of_month_to_act</description>
-<currentState>00</currentState>
+<currentState>Firm_Start_Producer_Role</currentState>
 <nextState>00b</nextState>
 <condition><not><time><period>monthly</period><phase>a.day_of_month_to_act</phase></time></not></condition>
 </function>
@@ -236,22 +233,14 @@ on the current stocks in the malls</description>
 <function><name>Firm_calc_production_quantity_2</name>
 <description>Firms iterate over the planned production quantity decreasing it incrementally,
  such that the corresponding labor demand and capital demand can be financed by 
- the actually obtained financial resources</description>
-<currentState>End_Firm_Credit_Role</currentState>
-<nextState>Firm_Finish_Financial_Management</nextState>
-<condition><not><lhs><value>a.financial_resources_for_production</value></lhs><op>GEQ</op><rhs><value>a.planned_production_costs</value></rhs></not></condition>
-</function>
-
-<function><name>Firm_idle</name>
-<description>Firm does nothing</description>
-<currentState>End_Firm_Credit_Role</currentState>
-<nextState>Firm_Finish_Financial_Management</nextState>
-<condition><lhs><value>a.financial_resources_for_production</value></lhs><op>GEQ</op><rhs><value>a.planned_production_costs</value></rhs></condition>
+ the actually obtained financial resources, AFTER all prior financial commitments have been paid.</description>
+<currentState>Firm_End_External_Financing</currentState>
+<nextState>Firm_Start_Labour_Role</nextState>
 </function>
 
 <function><name>Firm_send_capital_demand</name>
 <description>Firm sends demand for capital to the capital goods market.</description>
-<currentState>End_Firm_Labour_Role</currentState>
+<currentState>Firm_End_Labour_Role</currentState>
 <nextState>11a</nextState>
 <outputs>
 <output><messageName>capital_good_request</messageName></output>
@@ -293,7 +282,7 @@ If the realized output is less than the intended one, then
 the malls are only delivered with a proportional 
 share of their plannded delivery volumes.</description>
 <currentState>12</currentState>
-<nextState>Start_Firm_Seller_Role</nextState>
+<nextState>Firm_Start_Seller_Role</nextState>
 <outputs>
 <output><messageName>update_mall_stock</messageName></output>
 </outputs>
@@ -302,8 +291,8 @@ share of their plannded delivery volumes.</description>
 <function><name>Firm_calc_revenue</name>
 <description>Here the firms calc the revenues and profits and then 
 distribute the dividends to households.</description>
-<currentState>Start_Firm_Seller_Role</currentState>
-<nextState>13a</nextState>
+<currentState>Firm_Start_Seller_Role</currentState>
+<nextState>Firm_End_Seller_Role</nextState>
 <inputs>
 <input><messageName>sales</messageName>
 <filter><lhs><value>a.id</value></lhs><op>EQ</op><rhs><value>m.firm_id</value></rhs></filter>
@@ -311,12 +300,22 @@ distribute the dividends to households.</description>
 </inputs>
 </function>
 
+<function><name>idle</name>
+<description>Firm does nothing</description>
+<currentState>Firm_End_Seller_Role</currentState>
+<nextState>Firm_End_Financial_Management_Role</nextState>
+<!--<condition><not><time><period>monthly</period><phase>a.day_of_month_to_act</phase></time></not></condition>-->
+<!--THIS SHOULD BE REPLACED WITH: -->
+<condition><not><time><period>monthly</period><phase>a.last_day_of_month_to_act</phase></time></not></condition>
+</function>
 
 <function><name>Firm_compute_sales_statistics</name>
 <description></description>
-<currentState>13a</currentState>
-<nextState>13b</nextState>
-<condition><time><period>monthly</period><phase>a.day_of_month_to_act</phase></time></condition>
+<currentState>Firm_End_Seller_Role</currentState>
+<nextState>14</nextState>
+<!--<condition><time><period>monthly</period><phase>a.day_of_month_to_act</phase></time></condition>-->
+<!--THIS SHOULD BE REPLACED WITH: -->
+<condition><time><period>monthly</period><phase>a.last_day_of_month_to_act</phase></time></condition>
 </function>
 
 
@@ -324,8 +323,8 @@ distribute the dividends to households.</description>
 <function><name>Firm_update_specific_skills_of_workers</name>
 <description>Because the specific skills of workers have changed the 
 firms update the specific skill levels of the workers.</description>
-<currentState>005</currentState>
-<nextState>14</nextState>
+<currentState>14</currentState>
+<nextState>Firm_Start_Financial_Management_Role</nextState>
 <!--<condition><time><period>monthly</period><phase>a.day_of_month_to_act</phase></time></condition>-->
 <inputs>
 <input><messageName>specific_skill_update</messageName>
@@ -334,12 +333,6 @@ firms update the specific skill levels of the workers.</description>
 </inputs>
 </function>
 
-<function><name>Firm_idle</name>
-<description>Firm does nothing</description>
-<currentState>13a</currentState>
-<nextState>14</nextState>
-<condition><not><time><period>monthly</period><phase>a.day_of_month_to_act</phase></time></not></condition>
-</function>
 
 </functions>
 </xagent>
@@ -364,10 +357,14 @@ firms update the specific skill levels of the workers.</description>
 <variable><type>double</type><name>cum_total_dividends</name><description>Because dividends are paid daily and taxes monthly, the household has to cumulate dividens</description></variable>
 <variable><type>double</type><name>tax_rate_hh_capital</name><description>The current tax rates on capital income</description></variable>
 <variable><type>double</type><name>tax_rate_hh_labour</name><description>The current tax rates on labour income</description></variable>
+<variable><type>double</type><name>price_index</name><description>The current mean prices sent by Eurostat</description></variable>
+<variable><type>double</type><name>price_index_base_period</name><description>The mean prices of a base period</description></variable>
+<variable><type>double</type><name>commuting_costs_price_level_weight</name><description>Weight of price level that influences the commuting costs</description></variable>
 <variable><type>double_array</type><name>last_income</name><description></description></variable>
 <variable><type>double</type><name>expenditures</name><description></description></variable>
 <variable><type>double</type><name>received_dividend</name><description></description></variable>
-<variable><type>portfolio_array</type><name>household_portfolio</name><description></description></variable>
+
+<!--<variable><type>double</type><name>portfolio_budget</name><description></description></variable>-->
 
 </memory>
 <functions>
@@ -420,36 +417,20 @@ firms update the specific skill levels of the workers.</description>
 </outputs>
 </function>
 
-
-
-
-<function><name>Household_send_unemployment_notification_to_Government</name>
+<function><name>Household_send_unemployment_benefit_notification</name>
 <description>Household receives the unemployment benefit.</description>
 <currentState>06c</currentState>
-<nextState>06d</nextState>
+<nextState>08</nextState>
 <condition>
 	<lhs><value>a.employee_firm_id</value></lhs><op>EQ</op><rhs><value>-1</value></rhs>
 </condition>
 <outputs>
 <output><messageName>unemployment_notification</messageName>
-
 </output>
 </outputs>
 </function>
 
-
-<function><name>Household_receive_unemployment_benefits</name>
-<description>Household receives the unemployment benefit.</description>
-<currentState>06d</currentState>
-<nextState>08</nextState>
-<inputs>
-<input><messageName>unemployment_benefit</messageName>
-<filter><lhs><value>a.id</value></lhs><op>EQ</op><rhs><value>m.hh_id</value></rhs></filter>
-</input>
-</inputs>
-</function>
-
-<function><name>Household_pay_taxes</name>
+<function><name>Household_send_tax_payment</name>
 <description>Household pays the income taxes</description>
 <currentState>08</currentState>
 <nextState>08b</nextState>
@@ -557,12 +538,33 @@ spent in both consumtion steps, into the PAYMENT_ACCOUNT.</description>
 <variable><type>mall_stock_array</type><name>current_stock</name><description>Actual stock of the different firms</description></variable>
 <variable><type>sales_in_mall_array</type><name>firm_revenues</name><description>Actual revenue of the different firms</description></variable>
 <variable><type>double</type><name>total_supply</name><description>Total number of goods</description></variable>
+<!--<variable><type>double</type><name>no_regions</name><description>Number of regions.</description></variable>-->
+<variable><type>double</type><name>export_matrix[900]</name><description>Matrix holding data on exports between regions.</description></variable>
 </memory>
 <functions>
 
+<function><name>Mall_reset_export_data</name>
+<description>Mall resets the export data at start of month.</description>
+<currentState>start_Mall</currentState>
+<nextState>01</nextState>
+<condition>
+        <time><period>monthly</period><phase>1</phase></time>
+</condition>
+</function>
+
+<function><name>idle</name>
+<description></description>
+<currentState>start_Mall</currentState>
+<nextState>01</nextState>
+<condition>
+        <not><time><period>monthly</period><phase>0</phase></time></not>
+</condition>
+</function>
+
+
 <function><name>Mall_update_mall_stock</name>
 <description>Malls receive the goods deliveries.</description>
-<currentState>start_Mall</currentState>
+<currentState>01</currentState>
 <nextState>02</nextState>
 <inputs>
 <input><messageName>update_mall_stock</messageName>
@@ -611,11 +613,33 @@ possible, otherwise rationing.</description>
 <function><name>Mall_pay_firm</name>
 <description>Mall transfers the revenues to the firms.</description>
 <currentState>05</currentState>
-<nextState>end_Mall</nextState>
+<nextState>06</nextState>
 <outputs>
 <output><messageName>sales</messageName></output>
 </outputs>
 </function>
+
+<function><name>Mall_send_export_data</name>
+<description>Mall sends the export data to Eurostat at end of each month.</description>
+<currentState>06</currentState>
+<nextState>end_Mall</nextState>
+<condition>
+        <time><period>monthly</period><phase>0</phase></time>
+</condition>
+<outputs>
+<output><messageName>mall_data</messageName></output>
+</outputs>
+</function>
+
+<function><name>idle</name>
+<description></description>
+<currentState>06</currentState>
+<nextState>end_Mall</nextState>
+<condition>
+        <not><time><period>monthly</period><phase>0</phase></time></not>
+</condition>
+</function>
+
 
 </functions>
 </xagent>
@@ -685,6 +709,7 @@ supplier and the quantity of the good a household wants to have.</description>
 <variables>
 <variable><type>int</type><name>mall_id</name><description></description></variable>
 <variable><type>int</type><name>worker_id</name><description></description></variable>
+<variable><type>int</type><name>region_id</name><description></description></variable>
 <variable><type>int</type><name>firm_id</name><description></description></variable>
 <variable><type>double</type><name>quantity</name><description></description></variable>
 </variables>
@@ -697,6 +722,7 @@ supplier and the quantity of the good a household wants to have.</description>
 <variables>
 <variable><type>int</type><name>mall_id</name><description></description></variable>
 <variable><type>int</type><name>worker_id</name><description></description></variable>
+<variable><type>int</type><name>region_id</name><description></description></variable>
 <variable><type>int</type><name>firm_id</name><description></description></variable>
 <variable><type>double</type><name>quantity</name><description></description></variable>
 </variables>
@@ -750,9 +776,6 @@ updates specific skills.</description>
 </variables>
 </message>
 
-
-
-
 <message>
 <name>daily_revenue_to_bank</name>
 <description>Sent by firm. Firm informs the bank about the daily revenue.</description>
@@ -760,16 +783,6 @@ updates specific skills.</description>
 <variable><type>int</type><name>id</name><description></description></variable>
 <variable><type>int</type><name>bank_id</name><description></description></variable>
 <variable><type>double</type><name>payment_account</name><description></description></variable>
-</variables>
-</message>
-
-<message>
-<name>unemployment_notification</name>
-<description>Sent by unemployed hh to inform the government about the last income</description>
-<variables>
-<variable><type>int</type><name>id</name><description></description></variable>
-<variable><type>int</type><name>gov_id</name><description></description></variable>
-<variable><type>double</type><name>last_labour_income</name><description></description></variable>
 </variables>
 </message>
 

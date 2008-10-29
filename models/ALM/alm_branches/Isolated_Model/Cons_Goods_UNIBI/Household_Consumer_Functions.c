@@ -1,7 +1,7 @@
 #include "../header.h"
 #include "../Household_agent_header.h"
 #include "../my_library_header.h"
-#include "../Household_Library_Functions.h"
+//#include "../Household_Library_Functions.h"
 
 
 /********************************* Household agent functions *************************************/
@@ -10,133 +10,6 @@
 
 /**********************************Household Role: Consumption Goods Market*********************/
 
-
-/** \fn Household_receive_wage()
- * \brief Household receives wage if the household is employed 
- */
-
-int Household_receive_wage()
-{
-	
-	double mean_income = 0;
-	
-	/*Household reads the wage messages if employed*/
-	START_WAGE_PAYMENT_MESSAGE_LOOP
-
-	
-		WAGE = wage_payment_message->payment;
-		remove_double(&LAST_INCOME,0);
-		add_double(&LAST_INCOME,wage_payment_message->payment);
-		
-		/*Compute a mean income of the last four month*/
-		for(int i = 0; i < 4;i++)
-		{
-			mean_income += LAST_INCOME.array[i];
-		}
-
-		MEAN_INCOME= mean_income/4;
-		
-		/*Add wage on account   */
-		PAYMENT_ACCOUNT += wage_payment_message->payment;
-		
-	CURRENT_PRODUCTIVITY_EMPLOYER = wage_payment_message-> productivity;
-	CURRENT_MEAN_SPECIFIC_SKILLS_EMPLOYER =wage_payment_message->average_specific_skills;
-	FINISH_WAGE_PAYMENT_MESSAGE_LOOP
-	
-	
-	return 0;
-	
-}
-
-/** \fn Household_receive_wage()
- * \brief Household's specific skills are updated if the household is employed 
- */
-
-int Household_update_specific_skills()
-{
-	
-
-	if(SPECIFIC_SKILL < CURRENT_PRODUCTIVITY_EMPLOYER)
-	{
-		
-		
-		
-		SPECIFIC_SKILL = SPECIFIC_SKILL + (CURRENT_PRODUCTIVITY_EMPLOYER - SPECIFIC_SKILL)*((1-pow(0.5,1/(20+0.25*(GENERAL_SKILL-1)*(4-20))))+ 0*CURRENT_MEAN_SPECIFIC_SKILLS_EMPLOYER);
-
-
-		add_specific_skill_update_message(ID,EMPLOYEE_FIRM_ID,SPECIFIC_SKILL);
-			
-	}
-	
-	return 0;
-	
-}
-
-
-/** \fn Household_send_unemployment_notification_to_Government()
- * \brief This function sends a message to the government in case of being unemployed cpntaining the last earned labour income
- * The government then can calculate the unemployment benefit payment based on the last labour income
- */
-int Household_send_unemployment_notification_to_Government()
-{
-		add_unemployment_notification_message(ID,GOV_ID,LAST_LABOUR_INCOME);
-		return 0;
-		
-}
-
-
-int Household_receive_unemployment_benefits()
-{
-
-	
-	double mean_income = 0.0;
-	
-	START_UNEMPLOYMENT_BENEFIT_MESSAGE_LOOP
-		/*Read unemployment_benefit and add to account */
-		
-		PAYMENT_ACCOUNT +=  unemployment_benefit_message->unemployment_benefit;
-		remove_double(&LAST_INCOME,0);	
-		add_double(&LAST_INCOME,unemployment_benefit_message->unemployment_benefit);
-	FINISH_UNEMPLOYMENT_BENEFIT_MESSAGE_LOOP
-
-	
-		
-	/*Compute a mean income of the last four month*/
-	for(int i = 0; i < 4;i++)
-	{
-		mean_income += LAST_INCOME.array[i];
-	}
-
-	MEAN_INCOME = mean_income/4;
-	
-				
-return 0;	
-	
-}
-
-/** \fn Household_pay_taxes()
- * \brief Household pays the income taxes 
- */
-
-int Household_pay_taxes()
-{
-	
-	/*Compute the total taxes*/
-	TOTAL_TAXES = CUM_TOTAL_DIVIDENDS*TAX_RATE_HH_CAPITAL + WAGE*TAX_RATE_HH_LABOUR;
-	/*Send a message to the government*/
-	
-	add_tax_payment_message(ID,GOV_ID,TOTAL_TAXES);
-	
-	/*reduce the payment account*/
-	PAYMENT_ACCOUNT-=TOTAL_TAXES;
-	
-	/*Setting the counter of monthly dividends = 0*/
-	CUM_TOTAL_DIVIDENDS=0;
-	
-	
-	return 0;
-
-}
 
 /*\fn Household_determine_consumption_budget()
  * brief: If a household is unemployed then it receives an unemployment benefit payment
@@ -162,7 +35,7 @@ int Household_determine_consumption_budget()
 			
 		
 
-			
+			//PORTFOLIO_BUDGET=PAYMENT_ACCOUNT-CONSUMPTION_BUDGET;
 			WEEKLY_BUDGET = CONSUMPTION_BUDGET/4;
 			WEEK_OF_MONTH = 4;
 			
@@ -272,7 +145,7 @@ int Household_rank_and_buy_goods_1()
 
 			/*The consumption request message is sent  */ 
 			add_consumption_request_1_message(
-			mall_quality_price_info_list.array[index_selected_good].mall_id,ID,
+			mall_quality_price_info_list.array[index_selected_good].mall_id,ID,REGION_ID,
 			ORDER_QUANTITY[0].firm_id,
 			ORDER_QUANTITY[0].quantity);
 
@@ -454,7 +327,7 @@ int Household_rank_and_buy_goods_2()
 			/*Sending the second consumption request message  */
 			add_consumption_request_2_message(
 			mall_quality_price_info_list.array[index_selected_good].mall_id,
-			ID,ORDER_QUANTITY[1].firm_id,
+			ID,REGION_ID,ORDER_QUANTITY[1].firm_id,
 			ORDER_QUANTITY[1].quantity);
 		
 
@@ -542,12 +415,12 @@ int Household_receive_dividends()
 	//dividend_per_share_msg(firm_id, current_dividend_per_share) to shareholders (dividend per share)
 
 	START_DIVIDEND_PER_SHARE_MESSAGE_LOOP
-		for(imax=0; imax < HOUSEHOLD_PORTFOLIO.size;imax++)
+		for(imax=0; imax < ASSETSOWNED.size;imax++)
 		{
-			if(HOUSEHOLD_PORTFOLIO.array[imax].firm_id==dividend_per_share_message->firm_id)
+			if(ASSETSOWNED.array[imax].id==dividend_per_share_message->firm_id)
 			{
 				//Compute the total dividend
-				RECEIVED_DIVIDEND += dividend_per_share_message->current_dividend_per_share*HOUSEHOLD_PORTFOLIO.array[imax].shares;
+				RECEIVED_DIVIDEND += dividend_per_share_message->current_dividend_per_share*ASSETSOWNED.array[imax].quantity;
 			}
 		}
 	FINISH_DIVIDEND_PER_SHARE_MESSAGE_LOOP
@@ -575,9 +448,10 @@ int Household_handle_leftover_budget()
 		{	
 			
 			PAYMENT_ACCOUNT -= EXPENDITURES;
+			WEEK_OF_MONTH--;
 			WEEKLY_BUDGET = CONSUMPTION_BUDGET / WEEK_OF_MONTH;
 			
-			WEEK_OF_MONTH--; 
+			 
 		}
 		else
 		{
