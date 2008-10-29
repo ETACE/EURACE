@@ -1,12 +1,16 @@
 #include "../header.h"
 #include "../Mall_agent_header.h"
 #include "../my_library_header.h"
+#include "Mall_aux_header.h"
 
 #define NO_REGIONS 1 //number of regions (hard-coded here)
 
 
 /********************Mall agent functions*****************/
-
+int Mall_idle()
+{
+    return 0;
+}
 
 /** \fn Mall_update_mall_stock()
  * \brief Malls receive the goods deliveries  
@@ -92,7 +96,8 @@ int Mall_update_mall_stocks_sales_rationing_1()
 	
 	// Message filter used: if(a.id==m.mall_id)
 	
-			add_consumption_request(&consumption_request_list,consumption_request_1_message->worker_id,
+			add_consumption_request(&consumption_request_list,
+			consumption_request_1_message->worker_id,
 			consumption_request_1_message->region_id, 
 			consumption_request_1_message->firm_id, 
 			consumption_request_1_message->quantity );
@@ -235,7 +240,9 @@ int Mall_update_mall_stocks_sales_rationing_2()
 	START_CONSUMPTION_REQUEST_2_MESSAGE_LOOP
 	// Message filter used: if(a.id==m.mall_id)
 
-			add_consumption_request(&consumption_request_list, 				consumption_request_2_message->worker_id, 
+			add_consumption_request(&consumption_request_list,
+			consumption_request_2_message->worker_id, 
+			consumption_request_2_message->region_id,
 			consumption_request_2_message->firm_id, 
 			consumption_request_2_message->quantity );
 
@@ -380,7 +387,7 @@ int Mall_pay_firm()
  */
 
 
-/* \fn: void Mall_reset_export_data()
+/* \fn: int Mall_reset_export_data()
  * \brief: Function to reset the export matrix (at start of month).
  */
 int Mall_reset_export_data()
@@ -396,18 +403,6 @@ int Mall_reset_export_data()
 		}
 	}
 	return 0;
-}
-
-/* \fn: void Mall_add_export_data()
- * \brief: Function to add data to the export matrix (during every transaction).
- */
-void Mall_add_export_data(int firm_region, int household_region, double transaction_value)
-{
-	int index;
-	
-	//add value to export matrix
-	index=(firm_region-1)*NO_REGIONS+(household_region-1);
-	EXPORT_MATRIX[index] = transaction_value;
 }
 
 /* \fn: int Mall_send_export_data()
