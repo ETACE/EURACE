@@ -24,14 +24,12 @@ int Household_read_tax_rates()
 
 	//Message send by Government:
 	START_POLICY_ANNOUNCEMENT_MESSAGE_LOOP			
-		if(policy_announcement_message->gov_id == GOV_ID)
-		{
+	//Filter: m.gov_id == a.gov_id
 			TAX_RATE_HH_LABOUR = policy_announcement_message->tax_rate_hh_labour;
 			TAX_RATE_HH_CAPITAL = policy_announcement_message->tax_rate_hh_capital;
 			UNEMPLOYMENT_BENEFIT_PCT =  policy_announcement_message->unemployment_benefit_pct;
-			TRANSFER_PAYMENT = policy_announcement_message->transfer_payment;
-			SUBSIDY_PAYMENT = policy_announcement_message->subsidy_payment;
-		}
+			TRANSFER_PAYMENT = policy_announcement_message->hh_transfer_payment;
+			SUBSIDY_PAYMENT = policy_announcement_message->hh_subsidy_payment;
 	FINISH_POLICY_ANNOUNCEMENT_MESSAGE_LOOP
 
 	return 0;

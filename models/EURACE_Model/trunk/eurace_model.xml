@@ -3,8 +3,9 @@
 <xmodel version="2">
 
 <name>Eurace</name>
-<version>post-Sheffield</version>
-<description></description>
+<version>pre-Oxford</version>
+<description>Authors: Simon Coakley, Simon Gemkow, Philipp Harting, Sander van der Hoog</description>
+
 
 <!-- Models to include in Eurace model -->
 <models>
@@ -159,6 +160,7 @@
 <variable><type>int</type><name>id</name><description></description></variable>
 <variable><type>int</type><name>region_id</name><description></description></variable>
 <variable><type>int</type><name>gov_id</name><description></description></variable>
+<variable><type>int</type><name>bank_id</name><description></description></variable>
 <variable><type>int</type><name>day_of_month_to_act</name><description></description></variable>
 <variable><type>double</type><name>payment_account</name><description></description></variable>
 </memory>
@@ -172,7 +174,6 @@
 <variable><type>int</type><name>id</name><description></description></variable>
 <variable><type>int</type><name>region_id</name><description></description></variable>
 <variable><type>int</type><name>no_regions</name><description></description></variable>
-<variable><type>int</type><name>day_of_month_to_act</name><description></description></variable>
 </memory>
 </xagent>
 

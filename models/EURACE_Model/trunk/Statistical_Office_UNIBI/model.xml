@@ -298,7 +298,11 @@ including several micro data.</description>
 <nextState>Start_Household_Tax_Data</nextState>
 <condition><time><period>yearly</period><phase>1</phase></time></condition>
 <inputs>
-<input><messageName>policy_announcement</messageName></input>
+<input>
+<messageName>policy_announcement</messageName>
+<filter><lhs><value>a.gov_id</value></lhs><op>EQ</op><rhs><value>m.gov_id</value></rhs></filter>
+</input>
+
 </inputs>
 </function>
 
@@ -308,7 +312,6 @@ and stores the needed data.</description>
 <currentState>Start_Household_Tax_Data</currentState>
 <nextState>start_Household_financial_market_role</nextState>
 <condition><time><period>monthly</period><phase>1</phase></time></condition>
-
 </function>
 
 <function><name>Household_idle</name>

@@ -7,6 +7,10 @@
 
 /********************Mall agent functions*****************/
 
+int Mall_idle()
+{
+    return 0;
+}
 
 /** \fn Mall_update_mall_stock()
  * \brief Malls receive the goods deliveries  
@@ -396,18 +400,6 @@ int Mall_reset_export_data()
 		}
 	}
 	return 0;
-}
-
-/* \fn: void Mall_add_export_data()
- * \brief: Function to add data to the export matrix (during every transaction).
- */
-void Mall_add_export_data(int firm_region, int household_region, double transaction_value)
-{
-	int index;
-	
-	//add value to export matrix
-	index=(firm_region-1)*NO_REGIONS+(household_region-1);
-	EXPORT_MATRIX[index] = transaction_value;
 }
 
 /* \fn: int Mall_send_export_data()

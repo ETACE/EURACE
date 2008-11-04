@@ -11,7 +11,6 @@
 <functionFiles>
 <file>Firm_Employer_Functions.c</file>
 <file>Household_Employee_Functions.c</file>
-<file>Household_Employee_Functions-sander.c</file>
 </functionFiles>
 
 
@@ -483,15 +482,103 @@ the reservation wage</description>
 <condition><lhs><value>a.employee_firm_id</value></lhs><op>NEQ</op><rhs><value>-1</value></rhs></condition>
 </function>
 
+<function><name>Household_receive_dividends</name>
+<description>Household receives the dividend payments</description>
+<currentState>06</currentState>
+<nextState>06b</nextState>
+<inputs>
+<input><messageName>dividend_per_share</messageName></input>
+</inputs>
+</function>
+
+<function><name>Household_idle</name>
+<description>Household does nothing</description>
+<currentState>06b</currentState>
+<nextState>09</nextState>
+<condition><not><time><period>monthly</period><phase>a.day_of_month_receive_income</phase></time></not></condition>
+</function>
+
+<function><name>Household_idle</name>
+<description>Household does nothing</description>
+<currentState>06b</currentState>
+<nextState>06c</nextState>
+<condition><time><period>monthly</period><phase>a.day_of_month_receive_income</phase></time></condition>
+</function>
+
+<function><name>Household_send_subsidy_notification</name>
+<description>Household </description>
+<currentState>06c</currentState>
+<nextState>06d</nextState>
+<outputs>
+<output><messageName>hh_subsidy_notification</messageName></output>
+</outputs>
+</function>
+
+<function><name>Household_send_transfer_notification</name>
+<description>Household </description>
+<currentState>06d</currentState>
+<nextState>06e</nextState>
+<outputs>
+<output><messageName>hh_transfer_notification</messageName></output>
+</outputs>
+</function>
+
+<function><name>Household_receive_wage</name>
+<description>Household receives the wage /wage_payment_message</description>
+<currentState>06e</currentState>
+<nextState>07</nextState>
+<condition>
+    <lhs><value>a.employee_firm_id</value></lhs><op>NEQ</op><rhs><value>-1</value></rhs>
+</condition>
+<inputs>
+<input><messageName>wage_payment</messageName>
+<filter><lhs><value>a.id</value></lhs><op>EQ</op><rhs><value>m.worker_id</value></rhs></filter>
+</input>
+</inputs>
+</function>
+
+<function><name>Household_update_specific_skills</name>
+<description>Household's specific skills are updated if the household is employed.</description>
+<currentState>07</currentState>
+<nextState>08</nextState>
+<outputs>
+<output><messageName>specific_skill_update</messageName></output>
+</outputs>
+</function>
+
+<function><name>Household_send_unemployment_benefit_notification</name>
+<description>Household receives the unemployment benefit.</description>
+<currentState>06e</currentState>
+<nextState>08</nextState>
+<condition>
+    <lhs><value>a.employee_firm_id</value></lhs><op>EQ</op><rhs><value>-1</value></rhs>
+</condition>
+<outputs>
+<output><messageName>unemployment_notification</messageName>
+</output>
+</outputs>
+</function>
+
+<function><name>Household_send_tax_payment</name>
+<description>Household pays the income taxes</description>
+<currentState>08</currentState>
+<nextState>08b</nextState>
+<outputs>
+<output><messageName>tax_payment</messageName></output>
+</outputs>
+</function>
+
+<function><name>Household_determine_consumption_budget</name>
+<description>Household determines the consumption and portfolio budegt</description>
+<currentState>08b</currentState>
+<nextState>09</nextState>
+</function>
+
 </functions>
-
 </xagent>
-
 </agents>
 
 <messages>
-
-
 <message>
 <name>vacancies</name>
 <description>Send by firms. Includes the id, the region id the number of vacancies and the 
