@@ -106,25 +106,25 @@
 </function>
 
 <function>
-<name>Household_send_subsidy_application</name>
+<name>Household_send_subsidy_notification</name>
 <description></description>
 <currentState>02</currentState>
 <nextState>03</nextState>
 <outputs>
 <output>
-<messageName>subsidy_payment_notification</messageName>
+<messageName>hh_subsidy_notification</messageName>
 </output>
 </outputs>
 </function>
 
 <function>
-<name>Household_send_transfer_application</name>
+<name>Household_send_transfer_notification</name>
 <description></description>
 <currentState>03</currentState>
 <nextState>04</nextState>
 <outputs>
 <output>
-<messageName>transfer_payment_notification</messageName>
+<messageName>hh_transfer_notification</messageName>
 </output>
 </outputs>
 </function>
@@ -200,7 +200,7 @@
 <nextState>03</nextState>
 <outputs>
 <output>
-<messageName>subsidy_payment_notification</messageName>
+<messageName>firm_subsidy_notification</messageName>
 </output>
 </outputs>
 </function>
@@ -212,7 +212,7 @@
 <nextState>end_Firm</nextState>
 <outputs>
 <output>
-<messageName>transfer_payment_notification</messageName>
+<messageName>firm_transfer_notification</messageName>
 </output>
 </outputs>
 </function>
@@ -302,7 +302,11 @@
 <nextState>03</nextState>
 <inputs>
 <input>
-<messageName>subsidy_payment_notification</messageName>
+<messageName>hh_subsidy_notification</messageName>
+<filter><lhs><value>a.id</value></lhs><op>EQ</op><rhs><value>m.gov_id</value></rhs></filter>
+</input>
+<input>
+<messageName>firm_subsidy_notification</messageName>
 <filter><lhs><value>a.id</value></lhs><op>EQ</op><rhs><value>m.gov_id</value></rhs></filter>
 </input>
 </inputs>
@@ -315,7 +319,11 @@
 <nextState>04</nextState>
 <inputs>
 <input>
-<messageName>transfer_payment_notification</messageName>
+<messageName>hh_transfer_notification</messageName>
+<filter><lhs><value>a.id</value></lhs><op>EQ</op><rhs><value>m.gov_id</value></rhs></filter>
+</input>
+<input>
+<messageName>firm_transfer_notification</messageName>
 <filter><lhs><value>a.id</value></lhs><op>EQ</op><rhs><value>m.gov_id</value></rhs></filter>
 </input>
 </inputs>
@@ -452,8 +460,10 @@
 <variable><type>double</type><name>tax_rate_hh_capital</name><description></description></variable>
 <variable><type>double</type><name>tax_rate_vat</name><description></description></variable>
 <variable><type>double</type><name>unemployment_benefit_pct</name><description></description></variable>
-<variable><type>double</type><name>transfer_payment</name><description></description></variable>
-<variable><type>double</type><name>subsidy_payment</name><description></description></variable>
+<variable><type>double</type><name>hh_transfer_payment</name><description></description></variable>
+<variable><type>double</type><name>hh_subsidy_payment</name><description></description></variable>
+<variable><type>double</type><name>firm_transfer_payment</name><description></description></variable>
+<variable><type>double</type><name>firm_subsidy_payment</name><description></description></variable>
 </variables>
 </message>
 
@@ -467,7 +477,7 @@
 </message>
 
 <message>
-<name>transfer_payment_notification</name>
+<name>hh_transfer_notification</name>
 <description>An agent applies for a transfer payment and notifies its government.</description>
 <variables>
 <variable><type>int</type><name>gov_id</name><description></description></variable>
@@ -475,13 +485,28 @@
 </message>
 
 <message>
-<name>subsidy_payment_notification</name>
+<name>hh_subsidy_notification</name>
 <description>An agent applies for a subsidy payment and notifies its government.</description>
 <variables>
 <variable><type>int</type><name>gov_id</name><description></description></variable>
 </variables>
 </message>
 
+<message>
+<name>firm_transfer_notification</name>
+<description>An agent applies for a transfer payment and notifies its government.</description>
+<variables>
+<variable><type>int</type><name>gov_id</name><description></description></variable>
+</variables>
+</message>
+
+<message>
+<name>firm_subsidy_notification</name>
+<description>An agent applies for a subsidy payment and notifies its government.</description>
+<variables>
+<variable><type>int</type><name>gov_id</name><description></description></variable>
+</variables>
+</message>
 
 </messages>
 

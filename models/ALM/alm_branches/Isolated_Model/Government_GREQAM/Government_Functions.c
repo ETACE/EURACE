@@ -37,13 +37,8 @@ int Government_read_tax_payments()
 	return 0;
 }
 
-/* \fn: int Government_calc_unemployment_benefit_payment()
+/* \fn: int Government_read_unemployment_benefit_notifications()
  * \brief Monthly counter of total unemployment benefit payments.
- * TODO:
- * In household UNEMPLOYMENT_NOTIFICATION_MESSAGE
- * Instead of reading the msg from gov:
- * - read general GOV_POLICY_UNEMPLOYMENT_BENEFIT_PCT
- * - let HH compute its own unemployment benefit payment
  */
 int Government_read_unemployment_benefit_notifications()
 {
@@ -61,9 +56,9 @@ int Government_read_unemployment_benefit_notifications()
 		
 		//Compute the individual unemployment benefit payment as a fraction of the last labour income		
 		//if unemployment benefit is larger than the mean wage:
-		if(unemployment_notification_message->last_labour_income*GOV_POLICY_UNEMPLOYMENT_BENEFIT_PCT > COUNTRY_WIDE_MEAN_WAGE*0.5 )
+		if(unemployment_notification_message->last_labour_income*UNEMPLOYMENT_BENEFIT_PCT > COUNTRY_WIDE_MEAN_WAGE*0.5 )
 		{		
-			unemployment_payment = unemployment_notification_message->last_labour_income*GOV_POLICY_UNEMPLOYMENT_BENEFIT_PCT;	
+			unemployment_payment = unemployment_notification_message->last_labour_income*UNEMPLOYMENT_BENEFIT_PCT;	
 			//unemployment_payment = 0.8;
 		}
 		else	
@@ -85,7 +80,7 @@ int Government_read_unemployment_benefit_notifications()
 	return 0;
 }
 
-/* \fn: int Government_calc_transfer_payment()
+/* \fn: int Government_read_transfer_notifications()
  * \brief Daily counter
  */
 int Government_read_transfer_notifications()
@@ -94,20 +89,37 @@ int Government_read_transfer_notifications()
 		
 	//Start message loop 
 	sum=0;
-	START_TRANSFER_PAYMENT_NOTIFICATION_MESSAGE_LOOP
-		if(transfer_payment_notification_message->gov_id==ID) sum++;		
-	FINISH_TRANSFER_PAYMENT_NOTIFICATION_MESSAGE_LOOP
+	START_HH_TRANSFER_NOTIFICATION_MESSAGE_LOOP
+	//Filter: m.gov_id==a.id
+		//if(transfer_notification_message->gov_id==ID) sum++;
+		sum++;
+	FINISH_HH_TRANSFER_NOTIFICATION_MESSAGE_LOOP
 	
-	MONTHLY_TRANSFER_PAYMENT += sum*TRANSFER_PAYMENT;
-	YEARLY_TRANSFER_PAYMENT += sum*TRANSFER_PAYMENT; 	
+	MONTHLY_TRANSFER_PAYMENT += sum*HH_TRANSFER_PAYMENT;
+	YEARLY_TRANSFER_PAYMENT += sum*HH_TRANSFER_PAYMENT; 	
 
 	// Update the payment account
-	PAYMENT_ACCOUNT -= sum*TRANSFER_PAYMENT;
+	PAYMENT_ACCOUNT -= sum*HH_TRANSFER_PAYMENT;
 
+	//Start message loop 
+	sum=0;
+	START_FIRM_TRANSFER_NOTIFICATION_MESSAGE_LOOP
+	//Filter: m.gov_id==a.id
+		//if(transfer_notification_message->gov_id==ID) sum++;
+		sum++;
+	FINISH_FIRM_TRANSFER_NOTIFICATION_MESSAGE_LOOP
+	
+	MONTHLY_TRANSFER_PAYMENT += sum*FIRM_TRANSFER_PAYMENT;
+	YEARLY_TRANSFER_PAYMENT += sum*FIRM_TRANSFER_PAYMENT; 	
+
+	// Update the payment account
+	PAYMENT_ACCOUNT -= sum*FIRM_TRANSFER_PAYMENT;
+	
+	
 	return 0;
 }
 	
-/* \fn: int Government_calc_subsidy_payment()
+/* \fn: int Government_read_subsidy_notifications()
  * \brief Daily counter
  */
 int Government_read_subsidy_notifications()
@@ -116,18 +128,35 @@ int Government_read_subsidy_notifications()
 		
 	//Start message loop 
 	sum=0;
-	START_SUBSIDY_PAYMENT_NOTIFICATION_MESSAGE_LOOP
-		if(subsidy_payment_notification_message->gov_id==ID) sum++;		
-	FINISH_SUBSIDY_PAYMENT_NOTIFICATION_MESSAGE_LOOP
+	START_HH_SUBSIDY_NOTIFICATION_MESSAGE_LOOP
+	//Filter: m.gov_id==a.id
+		//if(subsidy_payment_notification_message->gov_id==ID) sum++;
+		sum++;
+	FINISH_HH_SUBSIDY_NOTIFICATION_MESSAGE_LOOP
 	
-	MONTHLY_SUBSIDY_PAYMENT += sum*SUBSIDY_PAYMENT;
-	YEARLY_SUBSIDY_PAYMENT += sum*SUBSIDY_PAYMENT; 	
+	MONTHLY_SUBSIDY_PAYMENT += sum*HH_SUBSIDY_PAYMENT;
+	YEARLY_SUBSIDY_PAYMENT += sum*HH_SUBSIDY_PAYMENT; 	
 
 	// Update the payment account
-	PAYMENT_ACCOUNT -= sum*SUBSIDY_PAYMENT;
+	PAYMENT_ACCOUNT -= sum*HH_SUBSIDY_PAYMENT;
+
+	//Start message loop 
+	sum=0;
+	START_FIRM_SUBSIDY_NOTIFICATION_MESSAGE_LOOP
+	//Filter: m.gov_id==a.id
+		//if(subsidy_payment_notification_message->gov_id==ID) sum++;
+		sum++;
+	FINISH_FIRM_SUBSIDY_NOTIFICATION_MESSAGE_LOOP
+	
+	MONTHLY_SUBSIDY_PAYMENT += sum*FIRM_SUBSIDY_PAYMENT;
+	YEARLY_SUBSIDY_PAYMENT += sum*FIRM_SUBSIDY_PAYMENT; 	
+
+	// Update the payment account
+	PAYMENT_ACCOUNT -= sum*FIRM_SUBSIDY_PAYMENT;
 
 	return 0;
 }
+
 
 int Government_budget_accounting()
 {
