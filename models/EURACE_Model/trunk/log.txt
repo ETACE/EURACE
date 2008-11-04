@@ -619,7 +619,7 @@ Set day_of_month_receive_benefit
 so it is no longer equal to the day_of_month_receive_benefit.
 2. Use the condition:
 	if (day_of_month_receive_benefit != day_of_month_receive_income)
-to determine whether HH needs to repay part of the unemployment benefit to goverment.
+to determine whether HH needs to repay part of the unemployment benefit to government.
 3. Set day_of_month_receive_benefit = day_of_month_receive_income so that next month the HH does not pay additional taxes.
 
 
@@ -673,4 +673,36 @@ Changed monthly growth rates for CPI: inflation measure is based on a chained pr
 MONTHLY_GROWTH_RATES.cpi = (HISTORY_MONTHLY[0].cpi/HISTORY_MONTHLY[1].cpi-1)*100;
 --->
 MONTHLY_GROWTH_RATES.cpi = (HISTORY_MONTHLY[0].cpi-1)*100;
+----------------------------------------------------------------------
+Sander, Rev 1425
+
+Proposal: everything from state 06 to state 09 refers to the labour role, not the consumer role of HH.
+In ConsGoods/model.xml all functions from Household_receive_dividends to Household_determine_consumption_budget
+should be moved from ConsGoods to the Labour.
+
+At the moment HHs receive their income (wage, dividends, benefits), they also receive subsidies and transfers.
+All income is taxed, before HHs can go the the ConsGoods market.
+
+Changed:
+HH sends:
+hh_subsidy_notification
+hh_transfer_notification
+
+Firm sends:
+firm_subsidy_notification
+firm_transfer_notification
+
+Updated:
+trunk/Gov/model.xml
+trunk/Gov/model-isolated.xml
+trunk/Gov/Gov.c
+trunk/Labour/model-sander.xml
+trunk/Labour/HH_functions.c
+
+
+
+TODO:
+- unittest of Government_GREQAM
+REGION_DATA.array[i].gdp
+HISTORY_MONTHLY[0].region_data.array[i].gdp
 ----------------------------------------------------------------------
