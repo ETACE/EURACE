@@ -50046,7 +50046,7 @@
   <average_debt_earnings_ratio>0.0</average_debt_earnings_ratio>
   <average_debt_equity_ratio>0.0</average_debt_equity_ratio>
   <labour_share_ratio>0.0</labour_share_ratio>
-  <inflation_rate>0.0</inflation_rate>
+  <cpi>100.0</cpi>
   <cpi>100.0</cpi>
   <gdp>0.0</gdp>
   <monthly_sold_quantity>0.0</monthly_sold_quantity>

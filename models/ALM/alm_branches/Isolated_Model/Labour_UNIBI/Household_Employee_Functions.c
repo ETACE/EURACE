@@ -818,6 +818,30 @@ int Household_send_unemployment_benefit_notification()
 	
 }
 
+/** \fn Household_send_subsidy_notification()
+ * \brief This function sends a message to the government in case the household applies for a subsidy. 
+ */
+int Household_send_subsidy_notification()
+{
+	/*Add subsidy message */
+	add_hh_subsidy_notification_message(GOV_ID);
+	PAYMENT_ACCOUNT += HH_SUBSIDY_PAYMENT;
+		
+	return 0;		
+}
+
+/** \fn Household_send_transfer_notification()
+ * \brief This function sends a message to the government in case the household applies for a transfer. 
+ */
+int Household_send_transfer_notification()
+{
+	/*Add transfer message */
+	add_hh_transfer_notification_message(GOV_ID);
+	PAYMENT_ACCOUNT += HH_TRANSFER_PAYMENT;
+		
+	return 0;		
+}
+
 /** \fn Household_send_tax_payment()
  * \brief Household pays the income taxes 
  */

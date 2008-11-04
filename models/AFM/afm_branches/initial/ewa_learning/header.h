@@ -14,7 +14,6 @@
 #include <string.h>
 #include <stdio.h>
 #include <math.h>
-#include <time.h>
 #include "mboard.h"
 
 
@@ -630,8 +629,8 @@ node_information * temp_node_info;
 * \brief Output path for files. */
 char outputpath[100];
 /** \var long total_time
-* \brief Total time for the simulation run */
-long total_time;
+* \brief Total time for the simulation run (in seconds) */
+double total_time;
 /** \var int total_messages
 * \brief Total messages sent between nodes for the simulation run */
 int total_messages;
@@ -1025,3 +1024,5 @@ m_rule_details * get_next_message_rule_details_in_range(m_rule_details * current
 
 /* memory.c */
 xmachine * add_xmachine(void);
+/* timing.c */
+double get_time(void);

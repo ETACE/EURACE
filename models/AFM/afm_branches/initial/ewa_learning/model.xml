@@ -23,7 +23,7 @@
     <functionFiles>
       <file>Household_ewa_functions.c</file>
       <file>FinancialAgent_ewa_functions.c</file>
-      <file>Household_aux_functions.c</file>
+<!--      <file>Household_aux_functions.c</file>-->
       <file>FinancialAgent_aux_functions.c</file>
       <file>some_new_functions.c</file>
     </functionFiles>

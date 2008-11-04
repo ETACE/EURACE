@@ -674,7 +674,7 @@ MONTHLY_GROWTH_RATES.cpi = (HISTORY_MONTHLY[0].cpi/HISTORY_MONTHLY[1].cpi-1)*100
 --->
 MONTHLY_GROWTH_RATES.cpi = (HISTORY_MONTHLY[0].cpi-1)*100;
 ----------------------------------------------------------------------
-Sander, Rev 1425
+Sander, Rev 1428
 
 Proposal: everything from state 06 to state 09 refers to the labour role, not the consumer role of HH.
 In ConsGoods/model.xml all functions from Household_receive_dividends to Household_determine_consumption_budget
