@@ -162,21 +162,18 @@ int Government_budget_accounting()
 	double in, out;
 
 	//Compute the following:
-	YEARLY_UNEMPLOYMENT_BENEFIT_PAYMENT =0.0;
-	YEARLY_TRANSFER_PAYMENT =0.0;
-	YEARLY_SUBSIDY_PAYMENT =0.0;
-	YEARLY_BOND_COUPON_PAYMENT =0.0;
-	YEARLY_GOV_INVESTMENT =0.0;
-	YEARLY_GOV_CONSUMPTION =0.0;
 	GOV_INTEREST_RATE = 0.05;
 	
 	
 	//Interest on debt
 		YEARLY_INTEREST_PAYMENT = (1+GOV_INTEREST_RATE)*TOTAL_DEBT;
-	
+	// Update the payment account
+		PAYMENT_ACCOUNT -= YEARLY_INTEREST_PAYMENT;
+
 	//Items that have already been added to the payment_account
 		in = YEARLY_TAX_REVENUES;
-
+		TOTAL_INCOME = in;
+		
 	//Items that have already been subtracted from the payment_account
 		out = YEARLY_UNEMPLOYMENT_BENEFIT_PAYMENT +
 		YEARLY_TRANSFER_PAYMENT +
@@ -184,6 +181,8 @@ int Government_budget_accounting()
 		YEARLY_INTEREST_PAYMENT +
 		YEARLY_GOV_INVESTMENT +
 		YEARLY_GOV_CONSUMPTION;
+		
+		TOTAL_EXPENDITURE = out;
 		
 	//Compute budget deficit
 		BUDGET_DEFICIT = in - out;
@@ -201,7 +200,8 @@ int Government_budget_accounting()
 			TAX_RATE_CORPORATE  += 0.01;
 			TAX_RATE_HH_LABOUR  += 0.01; 
 			TAX_RATE_HH_CAPITAL += 0.01;
-		}else if(PAYMENT_ACCOUNT>1000)
+		}
+		else if(PAYMENT_ACCOUNT>1000)
 		{
 			TAX_RATE_CORPORATE  -= 0.01;
 			TAX_RATE_HH_LABOUR  -= 0.01; 
@@ -247,8 +247,13 @@ int Government_send_account_update()
 
 int Government_set_policy()
 {
-		
-	BUDGET_FORECAST = GOV_POLICY_BUDGET_PCT*GDP;
+	GROWTH_FORECAST = 1.02;
+	
+	GDP_FORECAST = GDP*GROWTH_FORECAST;
+	TOTAL_INCOME_FORECAST = GROWTH_FORECAST*TOTAL_INCOME;
+	TOTAL_EXPENDITURE_FORECAST = GROWTH_FORECAST*TOTAL_EXPENDITURE;
+	
+	BUDGET_FORECAST = TOTAL_INCOME_FORECAST - TOTAL_EXPENDITURE_FORECAST;
 	
 	//Set the following policies:
 	
