@@ -454,9 +454,14 @@ including several micro data.</description>
 <variable><type>int</type><name>recession_duration</name><description>Duration of a recession measured in quarters.</description></variable>
 
 <!-- Data for storing export data -->
-<variable><type>double</type><name>export_matrix[900]</name><description>Matrix holding data on exports between regions.</description></variable>
-<variable><type>double</type><name>exports[30]</name><description>Array holding data on total exports of each region.</description></variable>
-<variable><type>double</type><name>imports[30]</name><description>Array holding data on total imports of each region.</description></variable>
+<variable><type>double</type><name>export_volume_matrix[900]</name><description>Matrix holding data on exports between regions, measured in volume.</description></variable>
+<variable><type>double</type><name>export_value_matrix[900]</name><description>Matrix holding data on exports between regions, measured in value.</description></variable>
+<variable><type>double</type><name>export_previous_value_matrix[900]</name><description>Matrix holding data on exports between regions, measured against previous prices.</description></variable>
+<variable><type>double</type><name>region_export_volume[30]</name><description>Array holding data on total exports of each region, measured in volume.</description></variable>
+<variable><type>double</type><name>region_import_volume[30]</name><description>Array holding data on total imports of each region, measured in volume.</description></variable>
+<variable><type>double</type><name>region_export_value[30]</name><description>Array holding data on total exports of each region, measured in value.</description></variable>
+<variable><type>double</type><name>region_import_value[30]</name><description>Array holding data on total imports of each region, measured in value.</description></variable>
+<variable><type>double</type><name>region_import_previous_value[30]</name><description>Array holding data on total imports of each region, measured in value against previous prices.</description></variable>
 </memory>
 
 
