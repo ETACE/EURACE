@@ -30,17 +30,3 @@ void Mall_add_export_data(int firm_region, int household_region, double export_v
 }
 
 
-/* \fn: void Mall_add_CPI_previous_value_data()
- * \brief: Function to add data to the CPI_previous_value matrix (during every transaction).
- * The value is given by: P_t*Q_{t-1}, it measures the transaction quantity at previous prices.
- */
-void Mall_add_CPI_previous_value_data(int firm_region, int household_region, double transaction_value)
-{
-	int index;
-	
-	//add value to export matrix
-	index=(firm_region-1)*NO_REGIONS+(household_region-1);
-	CPI_PREVIOUS_VALUE_MATRIX[index] = transaction_value;
-}
-
-

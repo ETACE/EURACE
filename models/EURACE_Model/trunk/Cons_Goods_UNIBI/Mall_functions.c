@@ -279,7 +279,7 @@ int Mall_update_mall_stocks_sales_rationing_2()
 					
 					/*Add on Export matrix*/
 					Mall_add_export_data(CURRENT_STOCK.array[i].region_id, consumption_request_list.array[k].consumer_region_id,
-												sold_quantity_to_consumer*CURRENT_STOCK.array[i].price);
+							sold_quantity_to_consumer, sold_quantity_to_consumer*CURRENT_STOCK.array[i].price, sold_quantity_to_consumer*CURRENT_STOCK.array[i].previous_price);
 				}
 			}
 			/*Revenues and final mall stock*/
