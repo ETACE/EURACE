@@ -71,6 +71,7 @@
 <variable><type>double</type><name>stock</name><description></description></variable>
 <variable><type>double</type><name>price</name><description></description></variable>
 <variable><type>double</type><name>quality</name><description></description></variable>
+<variable><type>double</type><name>previous_price</name><description></description></variable>
 </variables>
 </dataType>
 
@@ -626,6 +627,7 @@ the quality and price of the goods to inform the hosueholds about these goods.</
 <variable><type>double</type><name>quantity</name><description></description></variable>
 <variable><type>double</type><name>quality</name><description></description></variable>
 <variable><type>double</type><name>price</name><description></description></variable>
+<variable><type>double</type><name>previous_price</name><description></description></variable>
 </variables>
 </message>
 
