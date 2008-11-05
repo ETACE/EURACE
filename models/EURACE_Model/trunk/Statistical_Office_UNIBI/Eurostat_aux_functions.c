@@ -510,19 +510,27 @@ void Eurostat_measure_export(void)
     //reset export matrix
     for (i=0; i<NO_REGIONS; i++)
     {
-        EXPORTS[i]=0.0;
-        IMPORTS[i]=0.0;
+        REGION_EXPORT_VOLUME[i]=0.0;
+        REGION_IMPORT_VOLUME[i]=0.0;
+        REGION_EXPORT_VALUE[i]=0.0;
+        REGION_IMPORT_VALUE[i]=0.0;
+        REGION_IMPORT_PREVIOUS_VALUE[i]=0.0;
+        
         for (j=0; j<NO_REGIONS; j++)
         {
             index=i*NO_REGIONS+j;
-            EXPORT_MATRIX[index]=0.0;
+            EXPORT_VOLUME_MATRIX[index]=0.0;
+            EXPORT_VALUE_MATRIX[index]=0.0;
+            EXPORT_PREVIOUS_VALUE_MATRIX[index]=0.0;
         }
     }
     
-    //read in all data
+    //read in all data from the malls
     START_MALL_DATA_MESSAGE_LOOP
         index = (mall_data_message->firm_region-1)*NO_REGIONS + (mall_data_message->household_region-1);        
-        EXPORT_MATRIX[index] += mall_data_message->value;
+        EXPORT_VOLUME_MATRIX[index] += mall_data_message->export_volume;
+        EXPORT_VALUE_MATRIX[index] += mall_data_message->export_value;
+        EXPORT_PREVIOUS_VALUE_MATRIX[index] += mall_data_message->export_previous_value;
     FINISH_MALL_DATA_MESSAGE_LOOP
     
     //sum total exports (row sum) and imports (column sum)
@@ -533,11 +541,20 @@ void Eurostat_measure_export(void)
             if(i!=j)
             {
                 index=i*NO_REGIONS+j;
-                EXPORTS[i] += EXPORT_MATRIX[index];
-                IMPORTS[j] += EXPORT_MATRIX[index];
+                REGION_EXPORT_VOLUME[i] += EXPORT_VOLUME_MATRIX[index];
+                REGION_IMPORT_VOLUME[j] += EXPORT_VOLUME_MATRIX[index];
+                REGION_EXPORT_VALUE[i] += EXPORT_VALUE_MATRIX[index];
+                REGION_IMPORT_VALUE[j] += EXPORT_VALUE_MATRIX[index];
+                REGION_IMPORT_PREVIOUS_VALUE[j] += EXPORT_PREVIOUS_VALUE_MATRIX[index];
             }
         }
     }
    
+    //Compute the regional CPI as the ratio between sum(p_t*q_t)/sum(p_t-1*q_t)
+    for (j=0; j<NO_REGIONS; j++)
+    {    
+    	REGION_FIRM_DATA.array[j].cpi = REGION_IMPORT_VALUE[j]/REGION_IMPORT_PREVIOUS_VALUE[j];
+    }                
+                        
 }
 
