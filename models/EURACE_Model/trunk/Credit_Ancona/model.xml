@@ -63,7 +63,7 @@
 <function>
 <name>Firm_ask_loan</name>
 <description></description>
-<currentState>Start_Firm_Credit_Role</currentState>
+<currentState>Firm_Start_Credit_Role</currentState>
 <nextState>Firm_Credit_02</nextState>
 <condition><lhs><value>a.external_financial_needs</value></lhs><op>GT</op><rhs><value>0.0</value></rhs></condition>
 <outputs>

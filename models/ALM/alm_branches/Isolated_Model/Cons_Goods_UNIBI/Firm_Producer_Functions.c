@@ -5,10 +5,6 @@
 
 
 /* Library functions */
-int Firm_idle()
-{
-    return 0;
-}
 
 /** \fn Firm_calc_input_demands_2(), auxiliary function
  * \brief Firms recalculate the labor demand and the demand for capital goods
@@ -698,7 +694,7 @@ int Firm_send_goods_to_mall()
 			
 					add_update_mall_stock_message(
 					DELIVERY_VOLUME.array[j].mall_id,ID,
-					DELIVERY_VOLUME.array[j].quantity,QUALITY,PRICE);
+					DELIVERY_VOLUME.array[j].quantity,QUALITY,PRICE,PRICE_LAST_MONTH);
 			
 				}
 			}

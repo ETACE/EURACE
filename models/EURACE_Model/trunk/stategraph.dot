@@ -175,13 +175,13 @@ digraph state_graph {
 	Firm_03 [label = "03"]
 	Firm_011 [label = "011"]
 	Firm_14 [label = "14"]
-	Firm_13 [label = "13"]
-	Firm_Start_Firm_Seller_Role [label = "Start_Firm_Seller_Role"]
+	Firm_Firm_End_Seller_Role [label = "Firm_End_Seller_Role"]
+	Firm_Firm_Start_Seller_Role [label = "Firm_Start_Seller_Role"]
 	Firm_12 [label = "12"]
 	Firm_11 [label = "11"]
 	Firm_11b [label = "11b"]
 	Firm_11a [label = "11a"]
-	Firm_End_Firm_Labour_Role [label = "End_Firm_Labour_Role"]
+	Firm_Firm_End_Labour_Role [label = "Firm_End_Labour_Role"]
 	Firm_Firm_Start_Labour_Role [label = "Firm_Start_Labour_Role"]
 	Firm_00b [label = "00b"]
 	Firm_01 [label = "01"]
@@ -193,7 +193,7 @@ digraph state_graph {
 	Firm_Start_Firm_Macro_Data [label = "Start_Firm_Macro_Data"]
 	Firm_start_Firm [label = "start_Firm"]
 	Firm_Firm_End_Financial_Management [label = "Firm_End_Financial_Management"]
-	Firm_Firm_Ends_External_Financing [label = "Firm_Ends_External_Financing"]
+	Firm_Firm_End_External_Financing [label = "Firm_End_External_Financing"]
 	Firm_Firm_checks_financial_crisis [label = "Firm_checks_financial_crisis"]
 	Firm_Firm_bankruptcy_checked [label = "Firm_bankruptcy_checked"]
 	Firm_End_Firm_Financial_Role [label = "End_Firm_Financial_Role"]
@@ -208,7 +208,7 @@ digraph state_graph {
 	Firm_Firm_Start_Financial_Management_Role [label = "Firm_Start_Financial_Management_Role"]
 	Firm_Firm_End_Credit_Role [label = "Firm_End_Credit_Role"]
 	Firm_Firm_Credit_02 [label = "Firm_Credit_02"]
-	Firm_Start_Firm_Credit_Role [label = "Start_Firm_Credit_Role"]
+	Firm_Firm_Start_Credit_Role [label = "Firm_Start_Credit_Role"]
 	Household_08b [label = "08b"]
 	Household_08 [label = "08"]
 	Household_07 [label = "07"]
@@ -289,7 +289,7 @@ digraph state_graph {
 	Government_start_Government [label = "start_Government"]
 	Central_Bank_end_Central_Bank [label = "end_Central_Bank"]
 	Central_Bank_start_Central_Bank [label = "start_Central_Bank"]
-	Firm_Firm_ask_loan_Start_Firm_Credit_Role_Firm_Credit_02 [label = "Firm_ask_loan", shape = rect]
+	Firm_Firm_ask_loan_Firm_Start_Credit_Role_Firm_Credit_02 [label = "Firm_ask_loan", shape = rect]
 	Firm_Firm_get_loan_Firm_Credit_02_Firm_End_Credit_Role [label = "Firm_get_loan", shape = rect]
 	Firm_Firm_compute_financial_payments_Firm_Start_Financial_Management_Role_001 [label = "Firm_compute_financial_payments", shape = rect]
 	Firm_Firm_compute_income_statement_001_002 [label = "Firm_compute_income_statement", shape = rect]
@@ -298,17 +298,17 @@ digraph state_graph {
 	Firm_Firm_compute_balance_sheet_004_Firm_Bankruptcy_check [label = "Firm_compute_balance_sheet", shape = rect]
 	Firm_Firm_in_bankruptcy_Firm_Bankruptcy_check_Firm_End_Financial_Management_Role [label = "Firm_in_bankruptcy", shape = rect]
 	Firm_idle_Firm_Bankruptcy_check_Firm_End_Financial_Management_Role [label = "idle", shape = rect]
-	Firm_Firm_compute_total_liquidity_needs_02_Start_Firm_Credit_Role [label = "Firm_compute_total_liquidity_needs", shape = rect]
+	Firm_Firm_compute_total_liquidity_needs_02_Firm_Start_Credit_Role [label = "Firm_compute_total_liquidity_needs", shape = rect]
 	Firm_Firm_compute_and_send_stock_orders_Firm_End_Credit_Role_0003 [label = "Firm_compute_and_send_stock_orders", shape = rect]
 	Firm_Firm_read_stock_transactions_0003_End_Firm_Financial_Role [label = "Firm_read_stock_transactions", shape = rect]
 	Firm_Firm_check_financial_and_bankruptcy_state_End_Firm_Financial_Role_Firm_bankruptcy_checked [label = "Firm_check_financial_and_bankruptcy_state", shape = rect]
 	Firm_Firm_in_bankruptcy_Firm_bankruptcy_checked_Firm_End_Financial_Management_Role [label = "Firm_in_bankruptcy", shape = rect]
-	Firm_Firm_in_financial_crisis_Firm_checks_financial_crisis_Firm_Ends_External_Financing [label = "Firm_in_financial_crisis", shape = rect]
+	Firm_Firm_in_financial_crisis_Firm_checks_financial_crisis_Firm_End_External_Financing [label = "Firm_in_financial_crisis", shape = rect]
 	Firm_Firm_not_in_bankruptcy_Firm_bankruptcy_checked_Firm_checks_financial_crisis [label = "Firm_not_in_bankruptcy", shape = rect]
-	Firm_idle_Firm_checks_financial_crisis_Firm_Ends_External_Financing [label = "idle", shape = rect]
-	Firm_idle_Start_Firm_Credit_Role_Firm_Ends_External_Financing [label = "idle", shape = rect]
-	Firm_idle_Firm_End_Credit_Role_Firm_Ends_External_Financing [label = "idle", shape = rect]
-	Firm_Firm_execute_financial_payments_Firm_Ends_External_Financing_Firm_End_Financial_Management [label = "Firm_execute_financial_payments", shape = rect]
+	Firm_idle_Firm_checks_financial_crisis_Firm_End_External_Financing [label = "idle", shape = rect]
+	Firm_idle_Firm_Start_Credit_Role_Firm_End_External_Financing [label = "idle", shape = rect]
+	Firm_idle_Firm_End_Credit_Role_Firm_End_External_Financing [label = "idle", shape = rect]
+	Firm_Firm_execute_financial_payments_Firm_End_External_Financing_Firm_End_Financial_Management [label = "Firm_execute_financial_payments", shape = rect]
 	Firm_idle_start_Firm_Start_Firm_Macro_Data [label = "idle", shape = rect]
 	Firm_Firm_read_tax_rates_start_Firm_Start_Firm_Macro_Data [label = "Firm_read_tax_rates", shape = rect]
 	Firm_Firm_receive_data_Start_Firm_Macro_Data_Firm_new01 [label = "Firm_receive_data", shape = rect]
@@ -322,15 +322,15 @@ digraph state_graph {
 	Firm_Firm_set_quantities_zero_Firm_Start_Producer_Role_00b [label = "Firm_set_quantities_zero", shape = rect]
 	Firm_Firm_calc_input_demands_01_02 [label = "Firm_calc_input_demands", shape = rect]
 	Firm_Firm_calc_production_quantity_2_Firm_End_Financial_Management_Firm_Start_Labour_Role [label = "Firm_calc_production_quantity_2", shape = rect]
-	Firm_Firm_send_capital_demand_End_Firm_Labour_Role_11a [label = "Firm_send_capital_demand", shape = rect]
+	Firm_Firm_send_capital_demand_Firm_End_Labour_Role_11a [label = "Firm_send_capital_demand", shape = rect]
 	Firm_Firm_receive_capital_goods_11a_11b [label = "Firm_receive_capital_goods", shape = rect]
 	Firm_Firm_execute_production_11b_11 [label = "Firm_execute_production", shape = rect]
 	Firm_Firm_calc_pay_costs_11_12 [label = "Firm_calc_pay_costs", shape = rect]
-	Firm_Firm_send_goods_to_mall_12_Start_Firm_Seller_Role [label = "Firm_send_goods_to_mall", shape = rect]
-	Firm_Firm_calc_revenue_Start_Firm_Seller_Role_13 [label = "Firm_calc_revenue", shape = rect]
-	Firm_Firm_compute_sales_statistics_13_14 [label = "Firm_compute_sales_statistics", shape = rect]
+	Firm_Firm_send_goods_to_mall_12_Firm_Start_Seller_Role [label = "Firm_send_goods_to_mall", shape = rect]
+	Firm_Firm_calc_revenue_Firm_Start_Seller_Role_Firm_End_Seller_Role [label = "Firm_calc_revenue", shape = rect]
+	Firm_idle_Firm_End_Seller_Role_Firm_End_Financial_Management_Role [label = "idle", shape = rect]
+	Firm_Firm_compute_sales_statistics_Firm_End_Seller_Role_14 [label = "Firm_compute_sales_statistics", shape = rect]
 	Firm_Firm_update_specific_skills_of_workers_14_Firm_Start_Financial_Management_Role [label = "Firm_update_specific_skills_of_workers", shape = rect]
-	Firm_idle_13_Firm_End_Financial_Management_Role [label = "idle", shape = rect]
 	Firm_Firm_calculate_specific_skills_and_wage_offer_Firm_Start_Labour_Role_011 [label = "Firm_calculate_specific_skills_and_wage_offer", shape = rect]
 	Firm_Firm_send_vacancies_011_03 [label = "Firm_send_vacancies", shape = rect]
 	Firm_Firm_send_redundancies_011_03c [label = "Firm_send_redundancies", shape = rect]
@@ -348,10 +348,10 @@ digraph state_graph {
 	Firm_Firm_read_job_applications_send_job_offer_or_rejection_2_07_08 [label = "Firm_read_job_applications_send_job_offer_or_rejection_2", shape = rect]
 	Firm_Firm_read_job_responses_2_08_09a [label = "Firm_read_job_responses_2", shape = rect]
 	Firm_Firm_read_job_quitting_2_09a_09b [label = "Firm_read_job_quitting_2", shape = rect]
-	Firm_Firm_read_job_quitting_2_09c_Start_Firm_Seller_Role [label = "Firm_read_job_quitting_2", shape = rect]
+	Firm_Firm_read_job_quitting_2_09c_Firm_Start_Seller_Role [label = "Firm_read_job_quitting_2", shape = rect]
 	Firm_Firm_update_wage_offer_2_09b_10 [label = "Firm_update_wage_offer_2", shape = rect]
 	Firm_Firm_idle_09b_10 [label = "Firm_idle", shape = rect]
-	Firm_Firm_compute_mean_wage_specific_skills_10_End_Firm_Labour_Role [label = "Firm_compute_mean_wage_specific_skills", shape = rect]
+	Firm_Firm_compute_mean_wage_specific_skills_10_Firm_End_Labour_Role [label = "Firm_compute_mean_wage_specific_skills", shape = rect]
 	Household_Household_idle_start_Household_Start_Household_Tax_Data [label = "Household_idle", shape = rect]
 	Household_Household_read_tax_rates_start_Household_Start_Household_Tax_Data [label = "Household_read_tax_rates", shape = rect]
 	Household_Household_receive_data_Start_Household_Tax_Data_start_Household_financial_market_role [label = "Household_receive_data", shape = rect]
@@ -454,8 +454,8 @@ digraph state_graph {
 	Central_Bank_Central_Bank_read_account_update_start_Central_Bank_end_Central_Bank [label = "Central_Bank_read_account_update", shape = rect]
 	
 	/* Transitions */
-	Firm_Start_Firm_Credit_Role -> Firm_Firm_ask_loan_Start_Firm_Credit_Role_Firm_Credit_02 [ label = "a->external_financial_needs > 0.0"];
-	Firm_Firm_ask_loan_Start_Firm_Credit_Role_Firm_Credit_02 -> Firm_Firm_Credit_02;
+	Firm_Firm_Start_Credit_Role -> Firm_Firm_ask_loan_Firm_Start_Credit_Role_Firm_Credit_02 [ label = "a->external_financial_needs > 0.0"];
+	Firm_Firm_ask_loan_Firm_Start_Credit_Role_Firm_Credit_02 -> Firm_Firm_Credit_02;
 	Firm_Firm_Credit_02 -> Firm_Firm_get_loan_Firm_Credit_02_Firm_End_Credit_Role;
 	Firm_Firm_get_loan_Firm_Credit_02_Firm_End_Credit_Role -> Firm_Firm_End_Credit_Role;
 	Firm_Firm_Start_Financial_Management_Role -> Firm_Firm_compute_financial_payments_Firm_Start_Financial_Management_Role_001;
@@ -472,8 +472,8 @@ digraph state_graph {
 	Firm_Firm_in_bankruptcy_Firm_Bankruptcy_check_Firm_End_Financial_Management_Role -> Firm_Firm_End_Financial_Management_Role;
 	Firm_Firm_Bankruptcy_check -> Firm_idle_Firm_Bankruptcy_check_Firm_End_Financial_Management_Role [ label = "a->equity >= 0.0"];
 	Firm_idle_Firm_Bankruptcy_check_Firm_End_Financial_Management_Role -> Firm_Firm_End_Financial_Management_Role;
-	Firm_02 -> Firm_Firm_compute_total_liquidity_needs_02_Start_Firm_Credit_Role;
-	Firm_Firm_compute_total_liquidity_needs_02_Start_Firm_Credit_Role -> Firm_Start_Firm_Credit_Role;
+	Firm_02 -> Firm_Firm_compute_total_liquidity_needs_02_Firm_Start_Credit_Role;
+	Firm_Firm_compute_total_liquidity_needs_02_Firm_Start_Credit_Role -> Firm_Firm_Start_Credit_Role;
 	Firm_Firm_End_Credit_Role -> Firm_Firm_compute_and_send_stock_orders_Firm_End_Credit_Role_0003 [ label = "a->external_financial_needs > 0.0"];
 	Firm_Firm_compute_and_send_stock_orders_Firm_End_Credit_Role_0003 -> Firm_0003;
 	Firm_0003 -> Firm_Firm_read_stock_transactions_0003_End_Firm_Financial_Role;
@@ -482,18 +482,18 @@ digraph state_graph {
 	Firm_Firm_check_financial_and_bankruptcy_state_End_Firm_Financial_Role_Firm_bankruptcy_checked -> Firm_Firm_bankruptcy_checked;
 	Firm_Firm_bankruptcy_checked -> Firm_Firm_in_bankruptcy_Firm_bankruptcy_checked_Firm_End_Financial_Management_Role [ label = "a->bankruptcy_state == 1"];
 	Firm_Firm_in_bankruptcy_Firm_bankruptcy_checked_Firm_End_Financial_Management_Role -> Firm_Firm_End_Financial_Management_Role;
-	Firm_Firm_checks_financial_crisis -> Firm_Firm_in_financial_crisis_Firm_checks_financial_crisis_Firm_Ends_External_Financing [ label = "a->financial_crisis_state == 1"];
-	Firm_Firm_in_financial_crisis_Firm_checks_financial_crisis_Firm_Ends_External_Financing -> Firm_Firm_Ends_External_Financing;
+	Firm_Firm_checks_financial_crisis -> Firm_Firm_in_financial_crisis_Firm_checks_financial_crisis_Firm_End_External_Financing [ label = "a->financial_crisis_state == 1"];
+	Firm_Firm_in_financial_crisis_Firm_checks_financial_crisis_Firm_End_External_Financing -> Firm_Firm_End_External_Financing;
 	Firm_Firm_bankruptcy_checked -> Firm_Firm_not_in_bankruptcy_Firm_bankruptcy_checked_Firm_checks_financial_crisis [ label = "a->bankruptcy_state == 0"];
 	Firm_Firm_not_in_bankruptcy_Firm_bankruptcy_checked_Firm_checks_financial_crisis -> Firm_Firm_checks_financial_crisis;
-	Firm_Firm_checks_financial_crisis -> Firm_idle_Firm_checks_financial_crisis_Firm_Ends_External_Financing [ label = "a->financial_crisis_state == 0"];
-	Firm_idle_Firm_checks_financial_crisis_Firm_Ends_External_Financing -> Firm_Firm_Ends_External_Financing;
-	Firm_Start_Firm_Credit_Role -> Firm_idle_Start_Firm_Credit_Role_Firm_Ends_External_Financing [ label = "not ( a->external_financial_needs > 0.0 )"];
-	Firm_idle_Start_Firm_Credit_Role_Firm_Ends_External_Financing -> Firm_Firm_Ends_External_Financing;
-	Firm_Firm_End_Credit_Role -> Firm_idle_Firm_End_Credit_Role_Firm_Ends_External_Financing [ label = "not ( a->external_financial_needs > 0.0 )"];
-	Firm_idle_Firm_End_Credit_Role_Firm_Ends_External_Financing -> Firm_Firm_Ends_External_Financing;
-	Firm_Firm_Ends_External_Financing -> Firm_Firm_execute_financial_payments_Firm_Ends_External_Financing_Firm_End_Financial_Management;
-	Firm_Firm_execute_financial_payments_Firm_Ends_External_Financing_Firm_End_Financial_Management -> Firm_Firm_End_Financial_Management;
+	Firm_Firm_checks_financial_crisis -> Firm_idle_Firm_checks_financial_crisis_Firm_End_External_Financing [ label = "a->financial_crisis_state == 0"];
+	Firm_idle_Firm_checks_financial_crisis_Firm_End_External_Financing -> Firm_Firm_End_External_Financing;
+	Firm_Firm_Start_Credit_Role -> Firm_idle_Firm_Start_Credit_Role_Firm_End_External_Financing [ label = "not ( a->external_financial_needs > 0.0 )"];
+	Firm_idle_Firm_Start_Credit_Role_Firm_End_External_Financing -> Firm_Firm_End_External_Financing;
+	Firm_Firm_End_Credit_Role -> Firm_idle_Firm_End_Credit_Role_Firm_End_External_Financing [ label = "not ( a->external_financial_needs > 0.0 )"];
+	Firm_idle_Firm_End_Credit_Role_Firm_End_External_Financing -> Firm_Firm_End_External_Financing;
+	Firm_Firm_End_External_Financing -> Firm_Firm_execute_financial_payments_Firm_End_External_Financing_Firm_End_Financial_Management;
+	Firm_Firm_execute_financial_payments_Firm_End_External_Financing_Firm_End_Financial_Management -> Firm_Firm_End_Financial_Management;
 	Firm_start_Firm -> Firm_idle_start_Firm_Start_Firm_Macro_Data [ label = "not ( Periodicity: yearly\nPhase: 1 )"];
 	Firm_idle_start_Firm_Start_Firm_Macro_Data -> Firm_Start_Firm_Macro_Data;
 	Firm_start_Firm -> Firm_Firm_read_tax_rates_start_Firm_Start_Firm_Macro_Data [ label = "Periodicity: yearly\nPhase: 1"];
@@ -520,24 +520,24 @@ digraph state_graph {
 	Firm_Firm_calc_input_demands_01_02 -> Firm_02;
 	Firm_Firm_End_Financial_Management -> Firm_Firm_calc_production_quantity_2_Firm_End_Financial_Management_Firm_Start_Labour_Role;
 	Firm_Firm_calc_production_quantity_2_Firm_End_Financial_Management_Firm_Start_Labour_Role -> Firm_Firm_Start_Labour_Role;
-	Firm_End_Firm_Labour_Role -> Firm_Firm_send_capital_demand_End_Firm_Labour_Role_11a;
-	Firm_Firm_send_capital_demand_End_Firm_Labour_Role_11a -> Firm_11a;
+	Firm_Firm_End_Labour_Role -> Firm_Firm_send_capital_demand_Firm_End_Labour_Role_11a;
+	Firm_Firm_send_capital_demand_Firm_End_Labour_Role_11a -> Firm_11a;
 	Firm_11a -> Firm_Firm_receive_capital_goods_11a_11b;
 	Firm_Firm_receive_capital_goods_11a_11b -> Firm_11b;
 	Firm_11b -> Firm_Firm_execute_production_11b_11;
 	Firm_Firm_execute_production_11b_11 -> Firm_11;
 	Firm_11 -> Firm_Firm_calc_pay_costs_11_12;
 	Firm_Firm_calc_pay_costs_11_12 -> Firm_12;
-	Firm_12 -> Firm_Firm_send_goods_to_mall_12_Start_Firm_Seller_Role;
-	Firm_Firm_send_goods_to_mall_12_Start_Firm_Seller_Role -> Firm_Start_Firm_Seller_Role;
-	Firm_Start_Firm_Seller_Role -> Firm_Firm_calc_revenue_Start_Firm_Seller_Role_13;
-	Firm_Firm_calc_revenue_Start_Firm_Seller_Role_13 -> Firm_13;
-	Firm_13 -> Firm_Firm_compute_sales_statistics_13_14 [ label = "Periodicity: monthly\nPhase: a->last_day_of_month_to_act"];
-	Firm_Firm_compute_sales_statistics_13_14 -> Firm_14;
+	Firm_12 -> Firm_Firm_send_goods_to_mall_12_Firm_Start_Seller_Role;
+	Firm_Firm_send_goods_to_mall_12_Firm_Start_Seller_Role -> Firm_Firm_Start_Seller_Role;
+	Firm_Firm_Start_Seller_Role -> Firm_Firm_calc_revenue_Firm_Start_Seller_Role_Firm_End_Seller_Role;
+	Firm_Firm_calc_revenue_Firm_Start_Seller_Role_Firm_End_Seller_Role -> Firm_Firm_End_Seller_Role;
+	Firm_Firm_End_Seller_Role -> Firm_idle_Firm_End_Seller_Role_Firm_End_Financial_Management_Role [ label = "not ( Periodicity: monthly\nPhase: a->last_day_of_month_to_act )"];
+	Firm_idle_Firm_End_Seller_Role_Firm_End_Financial_Management_Role -> Firm_Firm_End_Financial_Management_Role;
+	Firm_Firm_End_Seller_Role -> Firm_Firm_compute_sales_statistics_Firm_End_Seller_Role_14 [ label = "Periodicity: monthly\nPhase: a->last_day_of_month_to_act"];
+	Firm_Firm_compute_sales_statistics_Firm_End_Seller_Role_14 -> Firm_14;
 	Firm_14 -> Firm_Firm_update_specific_skills_of_workers_14_Firm_Start_Financial_Management_Role;
 	Firm_Firm_update_specific_skills_of_workers_14_Firm_Start_Financial_Management_Role -> Firm_Firm_Start_Financial_Management_Role;
-	Firm_13 -> Firm_idle_13_Firm_End_Financial_Management_Role [ label = "not ( Periodicity: monthly\nPhase: a->last_day_of_month_to_act )"];
-	Firm_idle_13_Firm_End_Financial_Management_Role -> Firm_Firm_End_Financial_Management_Role;
 	Firm_Firm_Start_Labour_Role -> Firm_Firm_calculate_specific_skills_and_wage_offer_Firm_Start_Labour_Role_011;
 	Firm_Firm_calculate_specific_skills_and_wage_offer_Firm_Start_Labour_Role_011 -> Firm_011;
 	Firm_011 -> Firm_Firm_send_vacancies_011_03 [ label = "a->no_employees < a->employees_needed"];
@@ -572,14 +572,14 @@ digraph state_graph {
 	Firm_Firm_read_job_responses_2_08_09a -> Firm_09a;
 	Firm_09a -> Firm_Firm_read_job_quitting_2_09a_09b;
 	Firm_Firm_read_job_quitting_2_09a_09b -> Firm_09b;
-	Firm_09c -> Firm_Firm_read_job_quitting_2_09c_Start_Firm_Seller_Role;
-	Firm_Firm_read_job_quitting_2_09c_Start_Firm_Seller_Role -> Firm_Start_Firm_Seller_Role;
+	Firm_09c -> Firm_Firm_read_job_quitting_2_09c_Firm_Start_Seller_Role;
+	Firm_Firm_read_job_quitting_2_09c_Firm_Start_Seller_Role -> Firm_Firm_Start_Seller_Role;
 	Firm_09b -> Firm_Firm_update_wage_offer_2_09b_10 [ label = "a->no_employees < a->employees_needed"];
 	Firm_Firm_update_wage_offer_2_09b_10 -> Firm_10;
 	Firm_09b -> Firm_Firm_idle_09b_10 [ label = "not ( a->no_employees < a->employees_needed )"];
 	Firm_Firm_idle_09b_10 -> Firm_10;
-	Firm_10 -> Firm_Firm_compute_mean_wage_specific_skills_10_End_Firm_Labour_Role;
-	Firm_Firm_compute_mean_wage_specific_skills_10_End_Firm_Labour_Role -> Firm_End_Firm_Labour_Role;
+	Firm_10 -> Firm_Firm_compute_mean_wage_specific_skills_10_Firm_End_Labour_Role;
+	Firm_Firm_compute_mean_wage_specific_skills_10_Firm_End_Labour_Role -> Firm_Firm_End_Labour_Role;
 	Household_start_Household -> Household_Household_idle_start_Household_Start_Household_Tax_Data [ label = "not ( Periodicity: yearly\nPhase: 1 )"];
 	Household_Household_idle_start_Household_Start_Household_Tax_Data -> Household_Start_Household_Tax_Data;
 	Household_start_Household -> Household_Household_read_tax_rates_start_Household_Start_Household_Tax_Data [ label = "Periodicity: yearly\nPhase: 1"];
@@ -790,14 +790,14 @@ digraph state_graph {
 	Household_Household_send_subsidy_notification_06c_06d -> Government_Government_read_subsidy_notifications_02_03 [ label = "hh_subsidy_notification" color="#00ff00" constraint=false];
 	IGFirm_IGFirm_pay_taxes_04_04b -> Government_Government_read_tax_payments_01_02 [ label = "tax_payment" color="#00ff00" constraint=false];
 	Household_Household_send_tax_payment_08_08b -> Government_Government_read_tax_payments_01_02 [ label = "tax_payment" color="#00ff00" constraint=false];
-	Firm_Firm_execute_financial_payments_Firm_Ends_External_Financing_Firm_End_Financial_Management -> Government_Government_read_tax_payments_01_02 [ label = "tax_payment" color="#00ff00" constraint=false];
+	Firm_Firm_execute_financial_payments_Firm_End_External_Financing_Firm_End_Financial_Management -> Government_Government_read_tax_payments_01_02 [ label = "tax_payment" color="#00ff00" constraint=false];
 	Household_Household_handle_leftover_budget_14_15 -> Bank_Bank_account_update_deposits_Bank_04_Bank_05 [ label = "bank_account_update" color="#00ff00" constraint=false];
 	Firm_Firm_send_payments_to_bank_Update_02_end_Firm -> Bank_Bank_account_update_deposits_Bank_04_Bank_05 [ label = "bank_account_update" color="#00ff00" constraint=false];
 	Firm_Firm_in_bankruptcy_Firm_bankruptcy_checked_Firm_End_Financial_Management_Role -> Bank_Bank_receive_installment_Bank_03_Bank_04 [ label = "bankruptcy" color="#00ff00" constraint=false];
 	Firm_Firm_in_bankruptcy_Firm_Bankruptcy_check_Firm_End_Financial_Management_Role -> Bank_Bank_receive_installment_Bank_03_Bank_04 [ label = "bankruptcy" color="#00ff00" constraint=false];
-	Firm_Firm_execute_financial_payments_Firm_Ends_External_Financing_Firm_End_Financial_Management -> Bank_Bank_receive_installment_Bank_03_Bank_04 [ label = "installment" color="#00ff00" constraint=false];
+	Firm_Firm_execute_financial_payments_Firm_End_External_Financing_Firm_End_Financial_Management -> Bank_Bank_receive_installment_Bank_03_Bank_04 [ label = "installment" color="#00ff00" constraint=false];
 	Firm_Firm_get_loan_Firm_Credit_02_Firm_End_Credit_Role -> Bank_Bank_give_loan_Bank_02_Bank_03 [ label = "loan_acceptance" color="#00ff00" constraint=false];
-	Firm_Firm_ask_loan_Start_Firm_Credit_Role_Firm_Credit_02 -> Bank_Bank_decide_credit_conditions_Bank_start_credit_market_role_Bank_02 [ label = "loan_request" color="#00ff00" constraint=false];
+	Firm_Firm_ask_loan_Firm_Start_Credit_Role_Firm_Credit_02 -> Bank_Bank_decide_credit_conditions_Bank_start_credit_market_role_Bank_02 [ label = "loan_request" color="#00ff00" constraint=false];
 	Household_Household_select_strategy_SELECTSTRATEGY_WAITORDERSTATUS -> Clearinghouse_ClearingHouse_receive_orders_and_run_RECEIVEDINFOSTOCK_COMPUTEDPRICES [ label = "order" color="#00ff00" constraint=false];
 	Firm_Firm_compute_and_send_stock_orders_Firm_End_Credit_Role_0003 -> Clearinghouse_ClearingHouse_receive_orders_and_run_RECEIVEDINFOSTOCK_COMPUTEDPRICES [ label = "order" color="#00ff00" constraint=false];
 	Firm_Firm_send_info_Firm_new01_Firm_Start_Producer_Role -> Clearinghouse_ClearingHouse_receive_info_stock_start_Clearinghouse_RECEIVEDINFOSTOCK [ label = "info_firm" color="#00ff00" constraint=false];
@@ -807,13 +807,13 @@ digraph state_graph {
 	Government_Government_send_policy_announcements_start_Government_01 -> Eurostat_Eurostat_read_tax_rates_Start_Eurostat_Tax_Data_Start_Eurostat_Firm_Data [ label = "policy_announcement" color="#00ff00" constraint=false];
 	Government_Government_send_policy_announcements_start_Government_01 -> IGFirm_IGFirm_read_tax_rates_start_IGFirm_Start_IGFirm_Productivity [ label = "policy_announcement" color="#00ff00" constraint=false];
 	Firm_Firm_calc_pay_costs_11_12 -> IGFirm_IGFirm_receive_payment_03_04 [ label = "pay_capital_goods" color="#00ff00" constraint=false];
-	Firm_Firm_send_capital_demand_End_Firm_Labour_Role_11a -> IGFirm_IGFirm_send_capital_good_02_03 [ label = "capital_good_request" color="#00ff00" constraint=false];
+	Firm_Firm_send_capital_demand_Firm_End_Labour_Role_11a -> IGFirm_IGFirm_send_capital_good_02_03 [ label = "capital_good_request" color="#00ff00" constraint=false];
 	Household_Household_rank_and_buy_goods_2_11_12 -> Mall_Mall_update_mall_stocks_sales_rationing_2_04_05 [ label = "consumption_request_2" color="#00ff00" constraint=false];
 	Household_Household_rank_and_buy_goods_1_09_10 -> Mall_Mall_update_mall_stocks_sales_rationing_1_03_04 [ label = "consumption_request_1" color="#00ff00" constraint=false];
-	Firm_Firm_send_goods_to_mall_12_Start_Firm_Seller_Role -> Mall_Mall_update_mall_stock_01_02 [ label = "update_mall_stock" color="#00ff00" constraint=false];
+	Firm_Firm_send_goods_to_mall_12_Firm_Start_Seller_Role -> Mall_Mall_update_mall_stock_01_02 [ label = "update_mall_stock" color="#00ff00" constraint=false];
 	Firm_Firm_calc_pay_costs_11_12 -> Household_Household_receive_wage_06e_07 [ label = "wage_payment" color="#00ff00" constraint=false];
 	IGFirm_IGFirm_dividend_payment_04b_end_IGFirm -> Household_Household_receive_dividends_06_06b [ label = "dividend_per_share" color="#00ff00" constraint=false];
-	Firm_Firm_execute_financial_payments_Firm_Ends_External_Financing_Firm_End_Financial_Management -> Household_Household_receive_dividends_06_06b [ label = "dividend_per_share" color="#00ff00" constraint=false];
+	Firm_Firm_execute_financial_payments_Firm_End_External_Financing_Firm_End_Financial_Management -> Household_Household_receive_dividends_06_06b [ label = "dividend_per_share" color="#00ff00" constraint=false];
 	Firm_Firm_read_job_applications_send_job_offer_or_rejection_2_07_08 -> Household_Household_read_application_rejection_update_wage_reservation_2_05_06 [ label = "application_rejection2" color="#00ff00" constraint=false];
 	Firm_Firm_read_job_applications_send_job_offer_or_rejection_2_07_08 -> Household_Household_read_job_offers_send_response_2_04_05 [ label = "job_offer2" color="#00ff00" constraint=false];
 	Firm_Firm_send_vacancies_2_06_07 -> Household_Household_UNEMPLOYED_read_job_vacancies_and_send_applications_2_03_04 [ label = "vacancies2" color="#00ff00" constraint=false];
@@ -831,7 +831,7 @@ digraph state_graph {
 	Firm_Firm_send_info_Firm_new01_Firm_Start_Producer_Role -> Household_Household_select_strategy_SELECTSTRATEGY_WAITORDERSTATUS [ label = "info_firm" color="#00ff00" constraint=false];
 	Bank_Bank_send_accountInterest_start_Bank_Bank_start_credit_market_role -> Household_Household_receive_info_interest_from_bank_start_Household_financial_market_role_SELECTSTRATEGY [ label = "accountInterest" color="#00ff00" constraint=false];
 	Government_Government_send_policy_announcements_start_Government_01 -> Household_Household_read_tax_rates_start_Household_Start_Household_Tax_Data [ label = "policy_announcement" color="#00ff00" constraint=false];
-	Household_Household_read_job_offers_send_response_2_04_05 -> Firm_Firm_read_job_quitting_2_09c_Start_Firm_Seller_Role [ label = "quitting2" color="#00ff00" constraint=false];
+	Household_Household_read_job_offers_send_response_2_04_05 -> Firm_Firm_read_job_quitting_2_09c_Firm_Start_Seller_Role [ label = "quitting2" color="#00ff00" constraint=false];
 	Household_Household_read_job_offers_send_response_2_04_05 -> Firm_Firm_read_job_quitting_2_09a_09b [ label = "quitting2" color="#00ff00" constraint=false];
 	Household_Household_read_job_offers_send_response_2_04_05 -> Firm_Firm_read_job_responses_2_08_09a [ label = "job_acceptance2" color="#00ff00" constraint=false];
 	Household_Household_UNEMPLOYED_read_job_vacancies_and_send_applications_2_03_04 -> Firm_Firm_read_job_applications_send_job_offer_or_rejection_2_07_08 [ label = "job_application2" color="#00ff00" constraint=false];
@@ -843,7 +843,7 @@ digraph state_graph {
 	Household_Household_OTJS_read_job_vacancies_and_send_applications_01b_01 -> Firm_Firm_read_job_applications_send_job_offer_or_rejection_03_04 [ label = "job_application" color="#00ff00" constraint=false];
 	Household_Household_UNEMPLOYED_read_job_vacancies_and_send_applications_01a_01 -> Firm_Firm_read_job_applications_send_job_offer_or_rejection_03_04 [ label = "job_application" color="#00ff00" constraint=false];
 	Household_Household_update_specific_skills_07_08 -> Firm_Firm_update_specific_skills_of_workers_14_Firm_Start_Financial_Management_Role [ label = "specific_skill_update" color="#00ff00" constraint=false];
-	Mall_Mall_pay_firm_05_06 -> Firm_Firm_calc_revenue_Start_Firm_Seller_Role_13 [ label = "sales" color="#00ff00" constraint=false];
+	Mall_Mall_pay_firm_05_06 -> Firm_Firm_calc_revenue_Firm_Start_Seller_Role_Firm_End_Seller_Role [ label = "sales" color="#00ff00" constraint=false];
 	IGFirm_IGFirm_send_capital_good_02_03 -> Firm_Firm_receive_capital_goods_11a_11b [ label = "capital_good_delivery" color="#00ff00" constraint=false];
 	IGFirm_IGFirm_send_quality_price_info_01_02 -> Firm_Firm_calc_input_demands_01_02 [ label = "productivity" color="#00ff00" constraint=false];
 	Clearinghouse_ClearingHouse_send_asset_information_COMPUTEDPRICES_end_Clearinghouse -> Firm_Firm_receive_stock_info_15_Update_02 [ label = "infoAssetCH" color="#00ff00" constraint=false];
@@ -858,17 +858,17 @@ digraph state_graph {
 	{ rank=same; layer_4;  Firm_Firm_send_info_Firm_new01_Firm_Start_Producer_Role; }
 	{ rank=same; layer_5;  Firm_Firm_calc_production_quantity_Firm_Start_Producer_Role_01;  Firm_Firm_set_quantities_zero_Firm_Start_Producer_Role_00b;  Household_Household_select_strategy_SELECTSTRATEGY_WAITORDERSTATUS;  Clearinghouse_ClearingHouse_receive_info_stock_start_Clearinghouse_RECEIVEDINFOSTOCK; }
 	{ rank=same; layer_6;  Firm_Firm_calc_input_demands_01_02; }
-	{ rank=same; layer_7;  Firm_Firm_compute_total_liquidity_needs_02_Start_Firm_Credit_Role; }
-	{ rank=same; layer_8;  Firm_Firm_ask_loan_Start_Firm_Credit_Role_Firm_Credit_02;  Firm_idle_Start_Firm_Credit_Role_Firm_Ends_External_Financing; }
+	{ rank=same; layer_7;  Firm_Firm_compute_total_liquidity_needs_02_Firm_Start_Credit_Role; }
+	{ rank=same; layer_8;  Firm_Firm_ask_loan_Firm_Start_Credit_Role_Firm_Credit_02;  Firm_idle_Firm_Start_Credit_Role_Firm_End_External_Financing; }
 	{ rank=same; layer_9;  Bank_Bank_decide_credit_conditions_Bank_start_credit_market_role_Bank_02; }
 	{ rank=same; layer_10;  Firm_Firm_get_loan_Firm_Credit_02_Firm_End_Credit_Role; }
-	{ rank=same; layer_11;  Firm_Firm_compute_and_send_stock_orders_Firm_End_Credit_Role_0003;  Firm_idle_Firm_End_Credit_Role_Firm_Ends_External_Financing;  Bank_Bank_give_loan_Bank_02_Bank_03; }
+	{ rank=same; layer_11;  Firm_Firm_compute_and_send_stock_orders_Firm_End_Credit_Role_0003;  Firm_idle_Firm_End_Credit_Role_Firm_End_External_Financing;  Bank_Bank_give_loan_Bank_02_Bank_03; }
 	{ rank=same; layer_12;  Clearinghouse_ClearingHouse_receive_orders_and_run_RECEIVEDINFOSTOCK_COMPUTEDPRICES; }
 	{ rank=same; layer_13;  Firm_Firm_read_stock_transactions_0003_End_Firm_Financial_Role;  Household_Household_update_its_portfolio_WAITORDERSTATUS_Start_Household_Labour_Role;  Clearinghouse_ClearingHouse_send_asset_information_COMPUTEDPRICES_end_Clearinghouse; }
 	{ rank=same; layer_14;  Firm_Firm_check_financial_and_bankruptcy_state_End_Firm_Financial_Role_Firm_bankruptcy_checked;  Household_Household_idle_Start_Household_Labour_Role_01a; }
 	{ rank=same; layer_15;  Firm_Firm_in_bankruptcy_Firm_bankruptcy_checked_Firm_End_Financial_Management_Role;  Firm_Firm_not_in_bankruptcy_Firm_bankruptcy_checked_Firm_checks_financial_crisis; }
-	{ rank=same; layer_16;  Firm_Firm_in_financial_crisis_Firm_checks_financial_crisis_Firm_Ends_External_Financing;  Firm_idle_Firm_checks_financial_crisis_Firm_Ends_External_Financing; }
-	{ rank=same; layer_17;  Firm_Firm_execute_financial_payments_Firm_Ends_External_Financing_Firm_End_Financial_Management; }
+	{ rank=same; layer_16;  Firm_Firm_in_financial_crisis_Firm_checks_financial_crisis_Firm_End_External_Financing;  Firm_idle_Firm_checks_financial_crisis_Firm_End_External_Financing; }
+	{ rank=same; layer_17;  Firm_Firm_execute_financial_payments_Firm_End_External_Financing_Firm_End_Financial_Management; }
 	{ rank=same; layer_18;  Firm_Firm_calc_production_quantity_2_Firm_End_Financial_Management_Firm_Start_Labour_Role; }
 	{ rank=same; layer_19;  Firm_Firm_calculate_specific_skills_and_wage_offer_Firm_Start_Labour_Role_011; }
 	{ rank=same; layer_20;  Firm_Firm_send_vacancies_011_03;  Firm_Firm_send_redundancies_011_03c;  Firm_Firm_idle_011_03c; }
@@ -884,16 +884,16 @@ digraph state_graph {
 	{ rank=same; layer_30;  Household_Household_OTJS_read_job_vacancies_and_send_applications_2_02_04;  Household_Household_UNEMPLOYED_read_job_vacancies_and_send_applications_2_03_04; }
 	{ rank=same; layer_31;  Firm_Firm_read_job_applications_send_job_offer_or_rejection_2_07_08; }
 	{ rank=same; layer_32;  Household_Household_read_job_offers_send_response_2_04_05; }
-	{ rank=same; layer_33;  Firm_Firm_read_job_responses_2_08_09a;  Firm_Firm_read_job_quitting_2_09c_Start_Firm_Seller_Role;  Household_Household_read_application_rejection_update_wage_reservation_2_05_06;  Household_Household_idle_05_06; }
+	{ rank=same; layer_33;  Firm_Firm_read_job_responses_2_08_09a;  Firm_Firm_read_job_quitting_2_09c_Firm_Start_Seller_Role;  Household_Household_read_application_rejection_update_wage_reservation_2_05_06;  Household_Household_idle_05_06; }
 	{ rank=same; layer_34;  Firm_Firm_read_job_quitting_2_09a_09b; }
 	{ rank=same; layer_35;  Firm_Firm_update_wage_offer_2_09b_10;  Firm_Firm_idle_09b_10; }
-	{ rank=same; layer_36;  Firm_Firm_compute_mean_wage_specific_skills_10_End_Firm_Labour_Role; }
-	{ rank=same; layer_37;  Firm_Firm_send_capital_demand_End_Firm_Labour_Role_11a; }
+	{ rank=same; layer_36;  Firm_Firm_compute_mean_wage_specific_skills_10_Firm_End_Labour_Role; }
+	{ rank=same; layer_37;  Firm_Firm_send_capital_demand_Firm_End_Labour_Role_11a; }
 	{ rank=same; layer_38;  IGFirm_IGFirm_send_capital_good_02_03; }
 	{ rank=same; layer_39;  Firm_Firm_receive_capital_goods_11a_11b; }
 	{ rank=same; layer_40;  Firm_Firm_execute_production_11b_11; }
 	{ rank=same; layer_41;  Firm_Firm_calc_pay_costs_11_12; }
-	{ rank=same; layer_42;  Firm_Firm_send_goods_to_mall_12_Start_Firm_Seller_Role;  IGFirm_IGFirm_receive_payment_03_04; }
+	{ rank=same; layer_42;  Firm_Firm_send_goods_to_mall_12_Firm_Start_Seller_Role;  IGFirm_IGFirm_receive_payment_03_04; }
 	{ rank=same; layer_43;  Mall_Mall_update_mall_stock_01_02;  IGFirm_IGFirm_pay_taxes_04_04b;  IGFirm_IGFirm_idle_04_end_IGFirm; }
 	{ rank=same; layer_44;  Mall_Mall_send_quality_price_info_1_02_03;  IGFirm_IGFirm_dividend_payment_04b_end_IGFirm; }
 	{ rank=same; layer_45;  Household_Household_receive_dividends_06_06b; }
@@ -910,8 +910,8 @@ digraph state_graph {
 	{ rank=same; layer_56;  Household_Household_set_values_zero_11_14;  Household_Household_rank_and_buy_goods_2_11_12;  Government_Government_idle_05_end_Government;  Government_Government_budget_accounting_05_06; }
 	{ rank=same; layer_57;  Mall_Mall_update_mall_stocks_sales_rationing_2_04_05;  Government_Government_send_account_update_06_07; }
 	{ rank=same; layer_58;  Household_Household_receive_goods_read_rationing_2_12_14;  Mall_Mall_pay_firm_05_06; }
-	{ rank=same; layer_59;  Firm_Firm_calc_revenue_Start_Firm_Seller_Role_13;  Household_Household_handle_leftover_budget_14_15;  Mall_Mall_send_export_data_06_end_Mall;  Mall_idle_06_end_Mall; }
-	{ rank=same; layer_60;  Firm_Firm_compute_sales_statistics_13_14;  Firm_idle_13_Firm_End_Financial_Management_Role;  Household_Household_send_data_to_Eurostat_15_end_Household;  Household_Household_idle_15_end_Household; }
+	{ rank=same; layer_59;  Firm_Firm_calc_revenue_Firm_Start_Seller_Role_Firm_End_Seller_Role;  Household_Household_handle_leftover_budget_14_15;  Mall_Mall_send_export_data_06_end_Mall;  Mall_idle_06_end_Mall; }
+	{ rank=same; layer_60;  Firm_idle_Firm_End_Seller_Role_Firm_End_Financial_Management_Role;  Firm_Firm_compute_sales_statistics_Firm_End_Seller_Role_14;  Household_Household_send_data_to_Eurostat_15_end_Household;  Household_Household_idle_15_end_Household; }
 	{ rank=same; layer_61;  Firm_Firm_update_specific_skills_of_workers_14_Firm_Start_Financial_Management_Role; }
 	{ rank=same; layer_62;  Firm_Firm_compute_financial_payments_Firm_Start_Financial_Management_Role_001; }
 	{ rank=same; layer_63;  Firm_Firm_compute_income_statement_001_002; }

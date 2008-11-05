@@ -79,6 +79,7 @@
 <variable><type>double</type><name>stock</name><description></description></variable>
 <variable><type>double</type><name>price</name><description></description></variable>
 <variable><type>double</type><name>quality</name><description></description></variable>
+<variable><type>double</type><name>previous_price</name><description></description></variable>
 </variables>
 </dataType>
 
@@ -289,7 +290,7 @@ on the current stocks in the malls</description>
 <description>Here the firms send the produced goods to the malls. 
 If the realized output is less than the intended one, then 
 the malls are only delivered with a proportional 
-share of their plannded delivery volumes.</description>
+share of their planned delivery volumes.</description>
 <currentState>12</currentState>
 <nextState>Firm_Start_Seller_Role</nextState>
 <outputs>
@@ -313,8 +314,6 @@ distribute the dividends to households.</description>
 <description>Firm does nothing</description>
 <currentState>Firm_End_Seller_Role</currentState>
 <nextState>Firm_End_Financial_Management_Role</nextState>
-<!--<condition><not><time><period>monthly</period><phase>a.day_of_month_to_act</phase></time></not></condition>-->
-<!--THIS SHOULD BE REPLACED WITH: -->
 <condition><not><time><period>monthly</period><phase>a.last_day_of_month_to_act</phase></time></not></condition>
 </function>
 
@@ -322,8 +321,6 @@ distribute the dividends to households.</description>
 <description></description>
 <currentState>Firm_End_Seller_Role</currentState>
 <nextState>14</nextState>
-<!--<condition><time><period>monthly</period><phase>a.day_of_month_to_act</phase></time></condition>-->
-<!--THIS SHOULD BE REPLACED WITH: -->
 <condition><time><period>monthly</period><phase>a.last_day_of_month_to_act</phase></time></condition>
 </function>
 
@@ -472,7 +469,9 @@ spent in both consumtion steps, into the PAYMENT_ACCOUNT.</description>
 <variable><type>mall_stock_array</type><name>current_stock</name><description>Actual stock of the different firms</description></variable>
 <variable><type>sales_in_mall_array</type><name>firm_revenues</name><description>Actual revenue of the different firms</description></variable>
 <variable><type>double</type><name>total_supply</name><description>Total number of goods</description></variable>
-<variable><type>double</type><name>export_matrix[900]</name><description>Matrix holding data on exports between regions.</description></variable>
+<variable><type>double</type><name>export_volume_matrix[900]</name><description>Matrix holding data on exports between regions, measured in volume.</description></variable>
+<variable><type>double</type><name>export_value_matrix[900]</name><description>Matrix holding data on exports between regions, measured in value.</description></variable>
+<variable><type>double</type><name>export_previous_value_matrix[900]</name><description>Matrix holding data on exports between regions, measured against previous prices.</description></variable>
 </memory>
 <functions>
 
@@ -632,6 +631,7 @@ the quality and price of the goods to inform the hosueholds about these goods.</
 <variable><type>double</type><name>quantity</name><description></description></variable>
 <variable><type>double</type><name>quality</name><description></description></variable>
 <variable><type>double</type><name>price</name><description></description></variable>
+<variable><type>double</type><name>previous_price</name><description></description></variable>
 </variables>
 </message>
 
@@ -716,6 +716,17 @@ updates specific skills.</description>
 <variable><type>int</type><name>id</name><description></description></variable>
 <variable><type>int</type><name>bank_id</name><description></description></variable>
 <variable><type>double</type><name>payment_account</name><description></description></variable>
+</variables>
+</message>
+
+<message>
+<name>mall_data</name>
+<description>Sent by mall. Mall informs Eurostat about the transaction values (export_volume), against current prices (export_value) and against previous prices (export_previous_value).</description>
+<variables>
+<variable><type>int</type><name>id</name><description></description></variable>
+<variable><type>int</type><name>export_volume</name><description></description></variable>
+<variable><type>double</type><name>export_value</name><description></description></variable>
+<variable><type>double</type><name>export_previous_value</name><description></description></variable>
 </variables>
 </message>
 

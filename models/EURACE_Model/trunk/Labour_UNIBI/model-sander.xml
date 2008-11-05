@@ -265,7 +265,7 @@ of employees and the number of vacancies</description>
 <description>The firm reads quitting messages and updates the number 
 of employees and the number of vacancies</description>
 <currentState>09c</currentState>
-<nextState>Start_Firm_Seller_Role</nextState>
+<nextState>Firm_Start_Seller_Role</nextState>
 <inputs>
 <input><messageName>quitting2</messageName></input>
 </inputs>
@@ -289,7 +289,7 @@ of employees and the number of vacancies</description>
 <function><name>Firm_compute_mean_wage_specific_skills</name>
 <description>Firm does nothing</description>
 <currentState>10</currentState>
-<nextState>End_Firm_Labour_Role</nextState>
+<nextState>Firm_End_Labour_Role</nextState>
 </function>
 
 </functions>
