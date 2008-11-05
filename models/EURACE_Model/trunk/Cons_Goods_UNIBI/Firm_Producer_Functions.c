@@ -694,7 +694,7 @@ int Firm_send_goods_to_mall()
 			
 					add_update_mall_stock_message(
 					DELIVERY_VOLUME.array[j].mall_id,ID,
-					DELIVERY_VOLUME.array[j].quantity,QUALITY,PRICE);
+					DELIVERY_VOLUME.array[j].quantity,QUALITY,PRICE,PRICE_LAST_MONTH);
 			
 				}
 			}

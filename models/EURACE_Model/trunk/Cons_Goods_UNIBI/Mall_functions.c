@@ -39,7 +39,10 @@ int Mall_update_mall_stock()
 				update_mall_stock_message->quality;
 
 				CURRENT_STOCK.array[j].price=
-				update_mall_stock_message->price;	
+				update_mall_stock_message->price;
+				
+				CURRENT_STOCK.array[j].previous_price=
+								update_mall_stock_message->previous_price;
 			}
 		}
 
