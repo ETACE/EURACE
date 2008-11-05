@@ -706,3 +706,27 @@ TODO:
 REGION_DATA.array[i].gdp
 HISTORY_MONTHLY[0].region_data.array[i].gdp
 ----------------------------------------------------------------------
+Philipp, rev
+
+Added code for Mall export of data to Eurostat
+----------------------------------------------------------------------
+Sander, rev
+
+Added code for Mall export of data to Eurostat
+Added code for Eurostat compute regional CPI
+
+Changed "End_Firm_Labour_Role" into "Firm_End_Labour_Role" between Firm_compute_mean_wage_specific_skills and Firm_send_capital_demand to make it more consistent.
+
+
+Differences between Isolated Model in alm_branches/sander/ConsGoods and the trunk/ConsGoods version
+
+some extra datatypes are needed:
+<dataType><name>portfolio</name>
+
+some memory variables are needed:
+total_units_capital_stock
+
+some memory variables are NOT needed:
+financial_resources_for_production
+
+----------------------------------------------------------------------

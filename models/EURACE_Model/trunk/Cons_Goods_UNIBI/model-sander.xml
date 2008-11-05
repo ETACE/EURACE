@@ -242,7 +242,7 @@ on the current stocks in the malls</description>
 
 <function><name>Firm_send_capital_demand</name>
 <description>Firm sends demand for capital to the capital goods market.</description>
-<currentState>End_Firm_Labour_Role</currentState>
+<currentState>Firm_End_Labour_Role</currentState>
 <nextState>11a</nextState>
 <outputs>
 <output><messageName>capital_good_request</messageName></output>
@@ -267,7 +267,7 @@ on the current stocks in the malls</description>
 
 <function><name>Firm_calc_pay_costs</name>
 <description>In this function the firm receives the purchased investment
- goods and pays the goods and 	the wage bill. Additionally, the 
+ goods and pays the goods and   the wage bill. Additionally, the 
  new mean wage and the new average specific skill level is computed.</description>
 <currentState>11</currentState>
 <nextState>12</nextState>
@@ -282,9 +282,9 @@ on the current stocks in the malls</description>
 <description>Here the firms send the produced goods to the malls. 
 If the realized output is less than the intended one, then 
 the malls are only delivered with a proportional 
-share of their plannded delivery volumes.</description>
+share of their planned delivery volumes.</description>
 <currentState>12</currentState>
-<nextState>Start_Firm_Seller_Role</nextState>
+<nextState>Firm_Start_Seller_Role</nextState>
 <outputs>
 <output><messageName>update_mall_stock</messageName></output>
 </outputs>
@@ -293,8 +293,8 @@ share of their plannded delivery volumes.</description>
 <function><name>Firm_calc_revenue</name>
 <description>Here the firms calc the revenues and profits and then 
 distribute the dividends to households.</description>
-<currentState>Start_Firm_Seller_Role</currentState>
-<nextState>13</nextState>
+<currentState>Firm_Start_Seller_Role</currentState>
+<nextState>Firm_End_Seller_Role</nextState>
 <inputs>
 <input><messageName>sales</messageName>
 <filter><lhs><value>a.id</value></lhs><op>EQ</op><rhs><value>m.firm_id</value></rhs></filter>
@@ -302,13 +302,17 @@ distribute the dividends to households.</description>
 </inputs>
 </function>
 
+<function><name>idle</name>
+<description>Firm does nothing</description>
+<currentState>Firm_End_Seller_Role</currentState>
+<nextState>Firm_End_Financial_Management_Role</nextState>
+<condition><not><time><period>monthly</period><phase>a.last_day_of_month_to_act</phase></time></not></condition>
+</function>
 
 <function><name>Firm_compute_sales_statistics</name>
 <description></description>
-<currentState>13</currentState>
+<currentState>Firm_End_Seller_Role</currentState>
 <nextState>14</nextState>
-<!--<condition><time><period>monthly</period><phase>a.day_of_month_to_act</phase></time></condition>-->
-<!--THIS SHOULD BE REPLACED WITH: -->
 <condition><time><period>monthly</period><phase>a.last_day_of_month_to_act</phase></time></condition>
 </function>
 
@@ -327,14 +331,6 @@ firms update the specific skill levels of the workers.</description>
 </inputs>
 </function>
 
-<function><name>idle</name>
-<description>Firm does nothing</description>
-<currentState>13</currentState>
-<nextState>Firm_End_Financial_Management_Role</nextState>
-<!--<condition><not><time><period>monthly</period><phase>a.day_of_month_to_act</phase></time></not></condition>-->
-<!--THIS SHOULD BE REPLACED WITH: -->
-<condition><not><time><period>monthly</period><phase>a.last_day_of_month_to_act</phase></time></not></condition>
-</function>
 
 </functions>
 </xagent>
