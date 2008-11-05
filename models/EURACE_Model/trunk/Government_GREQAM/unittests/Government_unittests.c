@@ -260,7 +260,7 @@ void unittest_Government_read_transfer_notifications()
 	
 	/***** Messages: initialize message boards **********************************/
 
-	rc = MB_Create(&b_transfer_payment_notification, sizeof(m_transfer_payment_notification));
+	rc = MB_Create(&b_hh_transfer_notification, sizeof(m_hh_transfer_notification));
     	    #ifdef ERRCHECK
     	    if (rc != MB_SUCCESS)
     	    {
@@ -280,11 +280,11 @@ void unittest_Government_read_transfer_notifications()
     	    #endif
 	
 	/***** Messages: pre-conditions **********************************/
-     add_transfer_payment_notification_message(ID);
+     add_hh_transfer_notification_message(ID);
     	    
     /***** Adding message iterators ***************************************/
 
-	rc = MB_Iterator_Create(b_transfer_payment_notification, &i_transfer_payment_notification);
+	rc = MB_Iterator_Create(b_hh_transfer_notification, &i_hh_transfer_notification);
 			
 	if (rc != MB_SUCCESS)
 			{
@@ -336,7 +336,7 @@ void unittest_Government_read_subsidy_notifications()
 	
 	/***** Messages: initialize message boards **********************************/
 
-	rc = MB_Create(&b_subsidy_payment_notification, sizeof(m_subsidy_payment_notification));
+	rc = MB_Create(&b_hh_subsidy_notification, sizeof(m_hh_subsidy_notification));
     	    #ifdef ERRCHECK
     	    if (rc != MB_SUCCESS)
     	    {
@@ -356,11 +356,11 @@ void unittest_Government_read_subsidy_notifications()
     	    #endif
 	
 	/***** Messages: pre-conditions **********************************/
-     add_subsidy_payment_notification_message(ID);
+     add_hh_subsidy_notification_message(ID);
     	    
     /***** Adding message iterators ***************************************/
 
-	rc = MB_Iterator_Create(b_subsidy_payment_notification, &i_subsidy_payment_notification);
+	rc = MB_Iterator_Create(b_hh_subsidy_notification, &i_hh_subsidy_notification);
 			
 	if (rc != MB_SUCCESS)
 			{

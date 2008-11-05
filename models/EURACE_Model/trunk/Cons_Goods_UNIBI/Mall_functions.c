@@ -311,7 +311,7 @@ int Mall_update_mall_stocks_sales_rationing_2()
 					
 					/*Add on Export matrix*/
 					Mall_add_export_data(CURRENT_STOCK.array[i].region_id, consumption_request_list.array[k].consumer_region_id,
-																	sold_quantity_to_consumer*CURRENT_STOCK.array[i].price);
+							sold_quantity_to_consumer, sold_quantity_to_consumer*CURRENT_STOCK.array[i].price, sold_quantity_to_consumer*CURRENT_STOCK.array[i].previous_price);
 				}	
 			}
 			/*revenues and final stocks*/
@@ -384,7 +384,7 @@ int Mall_pay_firm()
  */
 
 
-/* \fn: void Mall_reset_export_data()
+/* \fn: int Mall_reset_export_data()
  * \brief: Function to reset the export matrix (at start of month).
  */
 int Mall_reset_export_data()
@@ -396,7 +396,9 @@ int Mall_reset_export_data()
 	{
 		for (j=0; j<NO_REGIONS; j++)
 		{
-			EXPORT_MATRIX[i*NO_REGIONS+j]=0.0;
+			EXPORT_VOLUME_MATRIX[i*NO_REGIONS+j]=0.0;
+			EXPORT_VALUE_MATRIX[i*NO_REGIONS+j]=0.0;
+			EXPORT_PREVIOUS_VALUE_MATRIX[i*NO_REGIONS+j]=0.0;
 		}
 	}
 	return 0;
@@ -408,20 +410,21 @@ int Mall_reset_export_data()
 int Mall_send_export_data()
 {
 	int firm_region, household_region;
-	double value;
+	double export_volume, export_value, export_previous_value;
 
 	//mall sends a bunch of messages with export data (only the non-zero elements)
 	for (firm_region=1; firm_region<=NO_REGIONS; firm_region++)
 	{
 		for (household_region=1; household_region<=NO_REGIONS; household_region++)
 		{
-			value = EXPORT_MATRIX[(firm_region-1)*NO_REGIONS+(household_region-1)];
+			export_volume = EXPORT_VOLUME_MATRIX[(firm_region-1)*NO_REGIONS+(household_region-1)];
+			export_value = EXPORT_VALUE_MATRIX[(firm_region-1)*NO_REGIONS+(household_region-1)];
+			export_previous_value = EXPORT_PREVIOUS_VALUE_MATRIX[(firm_region-1)*NO_REGIONS+(household_region-1)];
 			if (value > 0.0)
 			{
-				add_mall_data_message(ID, firm_region, household_region, value);
+				add_mall_data_message(ID, firm_region, household_region, export_volume, export_value, export_previous_value);
 				printf("\n Sending export data: region %d to region %d, value %2.2f", firm_region, household_region, value);
-			}
-			
+			}			
 		}
 	}
 	

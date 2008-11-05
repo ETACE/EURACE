@@ -46,6 +46,8 @@
 <variable><type>double</type><name>yearly_interest_payment</name><description></description></variable>
 <variable><type>double</type><name>yearly_gov_investment</name><description></description></variable>
 <variable><type>double</type><name>yearly_gov_consumption</name><description></description></variable>
+<variable><type>double</type><name>total_income</name><description></description></variable>
+<variable><type>double</type><name>total_expenditure</name><description></description></variable>
 <variable><type>double</type><name>total_debt</name><description></description></variable>
 <variable><type>double</type><name>budget_deficit</name><description></description></variable>
 <variable><type>double</type><name>total_money_financing</name><description></description></variable>
@@ -54,6 +56,11 @@
 <variable><type>double</type><name>budget_forecast</name><description></description></variable>
 <variable><type>double</type><name>country_wide_mean_wage</name><description></description></variable>
 <variable><type>int</type><name>num_unemployed</name><description></description></variable>
+<!--Memory related to forecasting-->
+<variable><type>double</type><name>growth_forecast</name><description></description></variable>
+<variable><type>double</type><name>gdp_forecast</name><description></description></variable>
+<variable><type>double</type><name>total_income_forecast</name><description></description></variable>
+<variable><type>double</type><name>total_expenditure_forecast</name><description></description></variable>
 </memory>
 
 <functions>
