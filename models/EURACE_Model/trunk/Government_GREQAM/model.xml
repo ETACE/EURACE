@@ -34,10 +34,12 @@
 <variable><type>double</type><name>yearly_tax_revenues</name><description></description></variable>
 <variable><type>double</type><name>monthly_unemployment_benefit_payment</name><description>Unemployment benefit payments for all unemployed households.</description></variable>
 <variable><type>double</type><name>yearly_unemployment_benefit_payment</name><description>Unemployment benefit payments for all unemployed households.</description></variable>
-<variable><type>double</type><name>transfer_payment</name><description></description></variable>
+<variable><type>double</type><name>hh_transfer_payment</name><description></description></variable>
+<variable><type>double</type><name>firm_transfer_payment</name><description></description></variable>
 <variable><type>double</type><name>monthly_transfer_payment</name><description></description></variable>
 <variable><type>double</type><name>yearly_transfer_payment</name><description></description></variable>
-<variable><type>double</type><name>subsidy_payment</name><description></description></variable>
+<variable><type>double</type><name>hh_subsidy_payment</name><description></description></variable>
+<variable><type>double</type><name>firm_subsidy_payment</name><description></description></variable>
 <variable><type>double</type><name>monthly_subsidy_payment</name><description></description></variable>
 <variable><type>double</type><name>yearly_subsidy_payment</name><description></description></variable>
 <variable><type>double</type><name>monthly_bond_coupon_payment</name><description></description></variable>
@@ -52,15 +54,16 @@
 <variable><type>double</type><name>budget_deficit</name><description></description></variable>
 <variable><type>double</type><name>total_money_financing</name><description></description></variable>
 <variable><type>double</type><name>total_bond_financing</name><description></description></variable>
-<variable><type>double</type><name>gdp</name><description></description></variable>
-<variable><type>double</type><name>budget_forecast</name><description></description></variable>
 <variable><type>double</type><name>country_wide_mean_wage</name><description></description></variable>
 <variable><type>int</type><name>num_unemployed</name><description></description></variable>
+
 <!--Memory related to forecasting-->
-<variable><type>double</type><name>growth_forecast</name><description></description></variable>
+<variable><type>double</type><name>gdp</name><description></description></variable>
+<variable><type>double</type><name>gdp_growth</name><description></description></variable>
 <variable><type>double</type><name>gdp_forecast</name><description></description></variable>
 <variable><type>double</type><name>total_income_forecast</name><description></description></variable>
 <variable><type>double</type><name>total_expenditure_forecast</name><description></description></variable>
+<variable><type>double</type><name>budget_forecast</name><description></description></variable>
 </memory>
 
 <functions>
@@ -235,10 +238,19 @@
 <variable><type>double</type><name>tax_rate_hh_capital</name><description></description></variable>
 <variable><type>double</type><name>tax_rate_vat</name><description></description></variable>
 <variable><type>double</type><name>unemployment_benefit_pct</name><description></description></variable>
-<variable><type>double</type><name>hh_transfer_payment</name><description></description></variable>
 <variable><type>double</type><name>hh_subsidy_payment</name><description></description></variable>
-<variable><type>double</type><name>firm_transfer_payment</name><description></description></variable>
 <variable><type>double</type><name>firm_subsidy_payment</name><description></description></variable>
+<variable><type>double</type><name>hh_transfer_payment</name><description></description></variable>
+<variable><type>double</type><name>firm_transfer_payment</name><description></description></variable>
+</variables>
+</message>
+
+<message>
+<name>tax_payment</name>
+<description>Added by agents to pay taxes</description>
+<variables>
+<variable><type>int</type><name>gov_id</name><description></description></variable>
+<variable><type>double</type><name>tax_payment</name><description></description></variable>
 </variables>
 </message>
 

@@ -356,7 +356,7 @@ int Firm_execute_financial_payments()
 		int imax,i;
 		double temp_interest=0.0;
 		//step 1: actual tax_payment to government
-		add_tax_payment_message(ID, GOV_ID, TAX_PAYMENT);
+		add_tax_payment_message(GOV_ID, TAX_PAYMENT);
 		PAYMENT_ACCOUNT -= TAX_PAYMENT;
 
 		//step 2: actual interest_payments and installment_payments

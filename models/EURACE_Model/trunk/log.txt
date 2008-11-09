@@ -706,14 +706,21 @@ TODO:
 REGION_DATA.array[i].gdp
 HISTORY_MONTHLY[0].region_data.array[i].gdp
 ----------------------------------------------------------------------
-Philipp, rev
+Philipp, rev 1432
 
 Added code for Mall export of data to Eurostat
 ----------------------------------------------------------------------
-Sander, rev
+Sander, rev 1433
 
-Added code for Mall export of data to Eurostat
+Added code for Mall export of data to Eurostat:
+export_volume_matrix[900]
+export_value_matrix[900]
+export_previous_value_matrix[900]
+
 Added code for Eurostat compute regional CPI
+region_export_volume[30]
+...
+region_import_previous_value[30]
 
 Changed "End_Firm_Labour_Role" into "Firm_End_Labour_Role" between Firm_compute_mean_wage_specific_skills and Firm_send_capital_demand to make it more consistent.
 
@@ -729,4 +736,11 @@ total_units_capital_stock
 some memory variables are NOT needed:
 financial_resources_for_production
 
+----------------------------------------------------------------------
+Sander, rev 1435
+
+Moved tax_payment_msg from eurace_model.xml to Gov_GREQAM/model.xml
+add_tax_payment_message(GOV_ID, TAX_PAYMENT);
+
+HH and firms only transmit the amount, not their ID.
 ----------------------------------------------------------------------

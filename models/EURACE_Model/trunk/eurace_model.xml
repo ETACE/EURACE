@@ -223,16 +223,6 @@
 
 <messages>
 <message>
-<name>tax_payment</name>
-<description>Added by agents to pay taxes</description>
-<variables>
-<variable><type>int</type><name>id</name><description></description></variable>
-<variable><type>int</type><name>gov_id</name><description></description></variable>
-<variable><type>double</type><name>tax_payment</name><description></description></variable>
-</variables>
-</message>
-
-<message>
 <name>bank_account_update</name>
 <description>Sent by household. Household informs the bank about the actual
  payment account</description>

@@ -451,9 +451,9 @@ void unittest3_Eurostat_store_history_monthly()
 /*
  * \fn: void unittest1_Eurostat_store_history_quarterly()
  * \brief: Unit test for: Eurostat_store_history_quarterly.
- * Test: history storage of economy-wide data
- * Init: HISTORY_MONTHLY[k].cpi = 1.0;  for k=0..2
- * Out:  HISTORY_QUARTERLY[0].cpi = 1.0; 
+ * Test: history storage of economy-wide data: sums or averages of monthly data
+ * Init: HISTORY_MONTHLY[k].cpi = 1.01;  for k=0..2
+ * Out:  HISTORY_QUARTERLY[0].cpi = 1.0303; 
  * Status: Tested OK
  */
 void unittest1_Eurostat_store_history_quarterly()
@@ -466,11 +466,22 @@ void unittest1_Eurostat_store_history_quarterly()
 	unittest_init_Eurostat_agent();
 	
     /***** Variables: Memory pre-conditions **************************/
+	//test product
 	for (k=0;k<3;k++)
 	{
-		HISTORY_MONTHLY[k].cpi = 1.0;
+		HISTORY_MONTHLY[k].cpi = 1.01;
 	}
-    
+	//test sum
+	for (k=0;k<3;k++)
+	{
+		HISTORY_MONTHLY[k].gdp = 100.0;
+	}
+	//test average
+	for (k=0;k<3;k++)
+	{
+		HISTORY_MONTHLY[k].unemployment_rate = 100.0;
+	}
+
 	/***** Messages: pre-conditions **********************************/
     
     /***** Function evaluation ***************************************/
@@ -478,11 +489,18 @@ void unittest1_Eurostat_store_history_quarterly()
     
     /***** Variables: Memory post-conditions *****/
 	var = HISTORY_QUARTERLY[0].cpi;
-	result = 1.0;
-
+	result = 1.0303;
+	CU_ASSERT_DOUBLE_EQUAL(var, result, 1e-3);
+	
+	var = HISTORY_QUARTERLY[0].gdp;
+	result = 300.0;
 	CU_ASSERT_DOUBLE_EQUAL(var, result, 1e-3);
     		
-    /************* At end of unit test, free the agent **************/
+	var = HISTORY_QUARTERLY[0].unemployment_rate;
+	result = 100.0;
+	CU_ASSERT_DOUBLE_EQUAL(var, result, 1e-3);
+
+	/************* At end of unit test, free the agent **************/
 	unittest_free_Eurostat_agent();
     /************* At end of unit tests, free all Messages **********/
     free_messages();
@@ -541,7 +559,7 @@ void unittest2_Eurostat_store_history_quarterly()
 /*
  * \fn: void unittest3_Eurostat_store_history_quarterly()
  * \brief: Unit test for: Eurostat_store_history_quarterly.
- * Test: history storage of region data: average of monthly data
+ * Test: history storage of region data: sums or averages of monthly data
  * Init: HISTORY_MONTHLY[k].region_data.array[region].cpi for k=0..2
  * Out:  HISTORY_QUARTERLY[0].region_data.array[region].cpi 
  * Status: Tested OK
@@ -564,7 +582,9 @@ void unittest3_Eurostat_store_history_quarterly()
     {
 		for (k=0;k<3;k++)
 		{
-			HISTORY_MONTHLY[k].region_data.array[region].cpi = 1.0;
+			HISTORY_MONTHLY[k].region_data.array[region].cpi = 1.01;
+			HISTORY_MONTHLY[k].region_data.array[region].gdp = 100.0;
+			HISTORY_MONTHLY[k].region_data.array[region].unemployment_rate = 0.10;
 			//printf("\n HISTORY_MONTHLY[%d].region_data.array[%d].cpi=%f\n", k, region, HISTORY_MONTHLY[k].region_data.array[region].cpi);
 		}
     }    
@@ -577,11 +597,17 @@ void unittest3_Eurostat_store_history_quarterly()
     for ( region=0; region<REGION_FIRM_DATA.size; region++)
     {
    		//checking whether storing data works:	
-		var = HISTORY_QUARTERLY[0].region_data.array[region].cpi;
-		result = 1.0;
 
-		//printf("\n var=%f, result=%f\n", var, result);		
+    	var = HISTORY_QUARTERLY[0].region_data.array[region].cpi;
+		result = 1.0303;
+		CU_ASSERT_DOUBLE_EQUAL(var, result, 1e-3);
+		
+    	var = HISTORY_QUARTERLY[0].region_data.array[region].gdp;
+		result = 300.0;
+		CU_ASSERT_DOUBLE_EQUAL(var, result, 1e-3);
 
+    	var = HISTORY_QUARTERLY[0].region_data.array[region].unemployment_rate;
+		result = 0.10;
 		CU_ASSERT_DOUBLE_EQUAL(var, result, 1e-3);
     }    		
     /************* At end of unit test, free the agent **************/
@@ -649,30 +675,48 @@ void unittest4_Eurostat_store_history_quarterly()
 }
 
 
-
-
 /*
- * \fn: void unittest_Eurostat_compute_growth_rates_monthly()
+ * \fn: void unittest1_Eurostat_compute_growth_rates_monthly()
  * \brief: Unit test for: Eurostat_compute_growth_rates_monthly.
+ * Test:  growth_rates_monthly of economy-wide data
+ * GDP: growth of GDP in pct over previous month and last 12 months
+ * CPI: compounded inflation rate in pct over previous month and last 12 months
  * Status: Tested OK
  */
-void unittest_Eurostat_compute_growth_rates_monthly()
+void unittest1_Eurostat_compute_growth_rates_monthly()
 {
+	int i;
     /************* At start of unit test, add one agent **************/
 	unittest_init_Eurostat_agent();
 	
     /***** Variables: Memory pre-conditions **************************/
-	HISTORY_MONTHLY[0].cpi = 2.0;
-	HISTORY_MONTHLY[1].cpi = 1.0;
-	HISTORY_MONTHLY[12].cpi = 0.20;
+	HISTORY_MONTHLY[0].gdp = 2.0;
+	HISTORY_MONTHLY[1].gdp = 1.0;
+	HISTORY_MONTHLY[12].gdp = 0.20;
+
+	for (i=0; i<13; i++)
+	{
+		HISTORY_MONTHLY[i].cpi = 1.01;
+	}
+	
 	/***** Messages: pre-conditions **********************************/
     
     /***** Function evaluation ***************************************/
 	Eurostat_compute_growth_rates_monthly();
     
     /***** Variables: Memory post-conditions *****/
-    CU_ASSERT_DOUBLE_EQUAL(MONTHLY_GROWTH_RATES.cpi, 100.0, 1e-3);
-    CU_ASSERT_DOUBLE_EQUAL(ANNUAL_GROWTH_RATES_MONTHLY.cpi, 900.0, 1e-3);
+	//monthly gdp has grown 100%
+    CU_ASSERT_DOUBLE_EQUAL(MONTHLY_GROWTH_RATES.gdp, 100.0, 1e-3);
+    
+    //annualy gdp has grown 900%
+    CU_ASSERT_DOUBLE_EQUAL(ANNUAL_GROWTH_RATES_MONTHLY.gdp, 900.0, 1e-3);
+
+	//Every month shows a 1% inflation (price growth rate)
+    CU_ASSERT_DOUBLE_EQUAL(MONTHLY_GROWTH_RATES.cpi, 1.0, 1e-3);
+    
+    //annual price growth rate: (1.01)^12=1.1268
+    CU_ASSERT_DOUBLE_EQUAL(ANNUAL_GROWTH_RATES_MONTHLY.cpi, 12.68, 1e-2);
+
     
     /************* At end of unit test, free the agent **************/
 	unittest_free_Eurostat_agent();
@@ -681,28 +725,248 @@ void unittest_Eurostat_compute_growth_rates_monthly()
 }
 
 /*
- * \fn: void unittest_Eurostat_compute_growth_rates_quarterly()
- * \brief: Unit test for: Eurostat_compute_growth_rates_quarterly.
+ * \fn: void unittest2_Eurostat_compute_growth_rates_monthly()
+ * \brief: Unit test for: Eurostat_compute_growth_rates_monthly.
+ * Test:  growth_rates_monthly of region data
+ * GDP: growth of regional GDP in pct over previous month and last 12 months
+ * CPI: compounded regional inflation rate in pct over previous month and last 12 months
  * Status: Tested OK
  */
-void unittest_Eurostat_compute_growth_rates_quarterly()
+void unittest2_Eurostat_compute_growth_rates_monthly()
 {
+	int i,k;
+	int region;
+	double result;
+	
+	region=0;
+	
+    /************* At start of unit test, add one agent **************/
+	unittest_init_Eurostat_agent();
+	
+	//add 1 item to the REGION_FIRM_DATA struct
+    add_firm_data(&REGION_FIRM_DATA,
+            i,0,0,                   //3 region_id -> vacancies 
+            0,0,0,0,0,0,             //6 employees_skill
+            0.0,0.0,0.0,0.0,0.0,0.0, //6 average_wage_skill
+            0.0,0.0,0.0,0.0,0.0,0.0, //6 average_s_skill
+            0.0,0.0,0.0,0.0,0.0, 	 //5 total_earnings -> average_debt_earnings_ratio
+            0.0,0.0,0.0,0.0,0.0,0.0, //6 average_debt_equity_ratio -> monthly_planned_output
+            0.0,0.0,0.0,             //3 gdp, cpi, cpi_last_month 
+            0,0);                    //2 no_firm_births, no_firm_deaths
+
+    //construct monthly history data structure for regions
+    for (k=12; k>0; k--)
+    {
+        add_region_data_item(&HISTORY_MONTHLY[k].region_data,
+                1.0,1.0,0.0,0.0,0,
+                0.0,0.0,0.0,0.0,0.0,0.0,
+                0.0,0,0,0);        
+    }
+    
+    //construct quarterly history data structure for regions
+    for (k=4; k>0; k--)
+    {
+        add_region_data_item(&HISTORY_QUARTERLY[k].region_data,
+                1.0,1.0,0.0,0.0,0,
+                0.0,0.0,0.0,0.0,0.0,0.0,
+                0.0,0,0,0);        
+    }
+    
+    //construct growth rates data structure for regions
+    add_region_data_item(&MONTHLY_GROWTH_RATES.region_data,
+            1.0,1.0,0.0,0.0,0,
+            0.0,0.0,0.0,0.0,0.0,0.0,
+            0.0,0,0,0);        
+    add_region_data_item(&ANNUAL_GROWTH_RATES_MONTHLY.region_data,
+            1.0,1.0,0.0,0.0,0,
+            0.0,0.0,0.0,0.0,0.0,0.0,
+            0.0,0,0,0);        
+    add_region_data_item(&QUARTERLY_GROWTH_RATES.region_data,
+            1.0,1.0,0.0,0.0,0,
+            0.0,0.0,0.0,0.0,0.0,0.0,
+            0.0,0,0,0);        
+    add_region_data_item(&ANNUAL_GROWTH_RATES_QUARTERLY.region_data,
+            1.0,1.0,0.0,0.0,0,
+            0.0,0.0,0.0,0.0,0.0,0.0,
+            0.0,0,0,0);  
+    
+    /***** Variables: Memory pre-conditions **************************/
+	HISTORY_MONTHLY[0].region_data.array[region].gdp = 2.0;	
+	HISTORY_MONTHLY[1].region_data.array[region].gdp = 1.0;	
+	HISTORY_MONTHLY[12].region_data.array[region].gdp = 0.20;
+	
+	for (i=0; i<13; i++)
+	{
+		HISTORY_MONTHLY[i].region_data.array[region].cpi = 1.01;
+	}
+	
+	/***** Messages: pre-conditions **********************************/
+    
+    /***** Function evaluation ***************************************/
+	Eurostat_compute_growth_rates_monthly();
+    
+    /***** Variables: Memory post-conditions *****/
+	//monthly gdp has grown 100%
+    CU_ASSERT_DOUBLE_EQUAL(MONTHLY_GROWTH_RATES.region_data.array[region].gdp, 100.0, 1e-3);
+    
+    //annualy gdp has grown 900%
+    CU_ASSERT_DOUBLE_EQUAL(ANNUAL_GROWTH_RATES_MONTHLY.region_data.array[region].gdp, 900.0, 1e-3);
+    
+	//Every month shows a 1% growth rate
+    CU_ASSERT_DOUBLE_EQUAL(MONTHLY_GROWTH_RATES.region_data.array[region].cpi, 1.0, 1e-3);
+    
+    //annual growth rate: (1.01)^12=1.1268
+    CU_ASSERT_DOUBLE_EQUAL(ANNUAL_GROWTH_RATES_MONTHLY.region_data.array[region].cpi, 12.68, 1e-2);
+    
+    /************* At end of unit test, free the agent **************/
+	unittest_free_Eurostat_agent();
+    /************* At end of unit tests, free all Messages **********/
+    free_messages();
+}
+
+/*
+ * \fn: void unittest1_Eurostat_compute_growth_rates_quarterly()
+ * \brief: Unit test for: Eurostat_compute_growth_rates_quarterly.
+ * Test:  growth_rates_quarterly of economy-wide data
+ * GDP: growth of GDP in pct over previous 3 months and last 4 quarters
+ * CPI: compounded inflation rate in pct over previous 3 months and last 4 quarters
+ * Status: Tested OK
+ */
+void unittest1_Eurostat_compute_growth_rates_quarterly()
+{
+	int i;
+	
     /************* At start of unit test, add one agent **************/
 	unittest_init_Eurostat_agent();
 	
     /***** Variables: Memory pre-conditions **************************/
-	HISTORY_QUARTERLY[0].cpi = 2.0;
-	HISTORY_QUARTERLY[1].cpi = 1.0;
-	HISTORY_QUARTERLY[4].cpi = 0.20;
+	HISTORY_QUARTERLY[0].gdp = 2.0;
+	HISTORY_QUARTERLY[1].gdp = 1.0;
+	HISTORY_QUARTERLY[4].gdp = 0.20;
     
+	for (i=0; i<13; i++)
+	{
+		HISTORY_MONTHLY[i].cpi = 1.01;
+	}
+
+	for (i=0; i<4; i++)
+	{
+		HISTORY_QUARTERLY[i].cpi = 1.0303;
+	}
 	/***** Messages: pre-conditions **********************************/
     
     /***** Function evaluation ***************************************/
 	Eurostat_compute_growth_rates_quarterly();
     
     /***** Variables: Memory post-conditions *****/
-	CU_ASSERT_DOUBLE_EQUAL(QUARTERLY_GROWTH_RATES.cpi, 100.0, 1e-3);
-    CU_ASSERT_DOUBLE_EQUAL(ANNUAL_GROWTH_RATES_QUARTERLY.cpi, 900.0, 1e-3);
+	CU_ASSERT_DOUBLE_EQUAL(QUARTERLY_GROWTH_RATES.gdp, 100.0, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(ANNUAL_GROWTH_RATES_QUARTERLY.gdp, 900.0, 1e-3);
+    
+	//Every MONTH shows a 1% inflation (price growth rate), hence (1.01)^3=1.0303 per quarter
+    //take the last 3 months:
+    CU_ASSERT_DOUBLE_EQUAL(QUARTERLY_GROWTH_RATES.cpi, 3.03, 1e-3);
+    
+    //annual price growth rate: (1.01)^12=1.1268
+    //take the last 4 quarters (same as last 12 months):
+    CU_ASSERT_DOUBLE_EQUAL(ANNUAL_GROWTH_RATES_QUARTERLY.cpi, 12.68, 1e-2);
+
+    /************* At end of unit test, free the agent **************/
+	unittest_free_Eurostat_agent();
+    /************* At end of unit tests, free all Messages **********/
+    free_messages();
+}
+
+/*
+ * \fn: void unittest2_Eurostat_compute_growth_rates_quarterly()
+ * \brief: Unit test for: Eurostat_compute_growth_rates_quarterly.
+ * Test:  growth_rates_quarterly of region data
+ * GDP: growth of regional GDP in pct over previous 3 months and last 4 quarters
+ * CPI: compounded regional inflation rate in pct over previous 3 months and last 4 quarters
+ * Status: Tested OK
+ */
+void unittest2_Eurostat_compute_growth_rates_quarterly()
+{
+	int i,k,region;
+	region=0;
+    /************* At start of unit test, add one agent **************/
+	unittest_init_Eurostat_agent();
+	
+	//add 1 item to the REGION_FIRM_DATA struct
+    add_firm_data(&REGION_FIRM_DATA,
+            i,0,0,                   //3 region_id -> vacancies 
+            0,0,0,0,0,0,             //6 employees_skill
+            0.0,0.0,0.0,0.0,0.0,0.0, //6 average_wage_skill
+            0.0,0.0,0.0,0.0,0.0,0.0, //6 average_s_skill
+            0.0,0.0,0.0,0.0,0.0, 	 //5 total_earnings -> average_debt_earnings_ratio
+            0.0,0.0,0.0,0.0,0.0,0.0, //6 average_debt_equity_ratio -> monthly_planned_output
+            0.0,0.0,0.0,             //3 gdp, cpi, cpi_last_month 
+            0,0);                    //2 no_firm_births, no_firm_deaths
+
+    //construct monthly history data structure for regions
+    for (k=12; k>0; k--)
+    {
+        add_region_data_item(&HISTORY_MONTHLY[k].region_data,
+                1.0,1.0,0.0,0.0,0,
+                0.0,0.0,0.0,0.0,0.0,0.0,
+                0.0,0,0,0);        
+    }
+    
+    //construct quarterly history data structure for regions
+    for (k=4; k>0; k--)
+    {
+        add_region_data_item(&HISTORY_QUARTERLY[k].region_data,
+                1.0,1.0,0.0,0.0,0,
+                0.0,0.0,0.0,0.0,0.0,0.0,
+                0.0,0,0,0);        
+    }
+    
+    //construct growth rates data structure for regions
+    add_region_data_item(&MONTHLY_GROWTH_RATES.region_data,
+            1.0,1.0,0.0,0.0,0,
+            0.0,0.0,0.0,0.0,0.0,0.0,
+            0.0,0,0,0);        
+    add_region_data_item(&ANNUAL_GROWTH_RATES_MONTHLY.region_data,
+            1.0,1.0,0.0,0.0,0,
+            0.0,0.0,0.0,0.0,0.0,0.0,
+            0.0,0,0,0);        
+    add_region_data_item(&QUARTERLY_GROWTH_RATES.region_data,
+            1.0,1.0,0.0,0.0,0,
+            0.0,0.0,0.0,0.0,0.0,0.0,
+            0.0,0,0,0);        
+    add_region_data_item(&ANNUAL_GROWTH_RATES_QUARTERLY.region_data,
+            1.0,1.0,0.0,0.0,0,
+            0.0,0.0,0.0,0.0,0.0,0.0,
+            0.0,0,0,0);  
+    
+    /***** Variables: Memory pre-conditions **************************/
+	HISTORY_QUARTERLY[0].region_data.array[region].gdp = 2.0;
+	HISTORY_QUARTERLY[1].region_data.array[region].gdp = 1.0;
+	HISTORY_QUARTERLY[4].region_data.array[region].gdp = 0.20;
+    
+	for (i=0; i<13; i++)
+	{
+		HISTORY_MONTHLY[i].region_data.array[region].cpi = 1.01;
+	}
+	for (i=0; i<4; i++)
+	{
+		HISTORY_QUARTERLY[i].region_data.array[region].cpi = 1.0303;
+	}
+
+	/***** Messages: pre-conditions **********************************/
+    
+    /***** Function evaluation ***************************************/
+	Eurostat_compute_growth_rates_quarterly();
+    
+    /***** Variables: Memory post-conditions *****/
+	CU_ASSERT_DOUBLE_EQUAL(QUARTERLY_GROWTH_RATES.region_data.array[region].gdp, 100.0, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(ANNUAL_GROWTH_RATES_QUARTERLY.region_data.array[region].gdp, 900.0, 1e-3);
+    
+	//Every MONTH shows a 1% inflation (price growth rate), hence (1.01)^3=1.0303 per quarter
+	//take the last 3 months:
+    CU_ASSERT_DOUBLE_EQUAL(QUARTERLY_GROWTH_RATES.region_data.array[region].cpi, 3.03, 1e-3);
+	
+    //take the last 4 quarters (same as last 12 months):
+    CU_ASSERT_DOUBLE_EQUAL(ANNUAL_GROWTH_RATES_QUARTERLY.region_data.array[region].cpi, 12.68, 1e-2);
     
     /************* At end of unit test, free the agent **************/
 	unittest_free_Eurostat_agent();
@@ -865,6 +1129,7 @@ void unittest4_Eurostat_measure_recession()
 /*
  * \fn: void unittest_Eurostat_measure_export()
  * \brief: Unit test for: Eurostat_measure_export.
+ * Tests if the mall_data_message is correctly read and values are added to memory.
  * Status: Tested OK
  */
 void unittest_Eurostat_measure_export()
@@ -898,17 +1163,18 @@ void unittest_Eurostat_measure_export()
     	    #endif
 
 	/***** Messages: pre-conditions **********************************/
+    //mall_data_message(ID, firm_region, household_region, export_volume, export_value, export_previous_value);
     //Adding mall 1 elements
-	add_mall_data_message(1, 1, 1, 1.0);
-    add_mall_data_message(1, 1, 2, 100.0);
-    add_mall_data_message(1, 2, 1, 100.0);
-    add_mall_data_message(1, 2, 2, 1.0);
+	add_mall_data_message(1, 1, 1,   1.0,   1.0,   1.0);
+    add_mall_data_message(1, 1, 2, 100.0, 100.0, 100.0);
+    add_mall_data_message(1, 2, 1, 100.0, 100.0, 100.0);
+    add_mall_data_message(1, 2, 2,   1.0,   1.0,   1.0);
 
     //Adding mall 2 elements
-    add_mall_data_message(2, 1, 1, 1.0);
-    add_mall_data_message(2, 1, 2, 100.0);
-    add_mall_data_message(2, 2, 1, 100.0);
-    add_mall_data_message(2, 2, 2, 1.0);
+    add_mall_data_message(2, 1, 1,   1.0,   1.0,   1.0);
+    add_mall_data_message(2, 1, 2, 100.0, 100.0, 100.0);
+    add_mall_data_message(2, 2, 1, 100.0, 100.0, 100.0);
+    add_mall_data_message(2, 2, 2,   1.0,   1.0,   1.0);
 
 	rc = MB_Iterator_Create(b_mall_data, &i_mall_data);
 			
@@ -935,17 +1201,44 @@ void unittest_Eurostat_measure_export()
 	Eurostat_measure_export();
     
     /***** Variables: Memory post-conditions *****/
-	CU_ASSERT_DOUBLE_EQUAL(EXPORT_MATRIX[0], 2.0, 1e-3);
-    CU_ASSERT_DOUBLE_EQUAL(EXPORT_MATRIX[1], 200.0, 1e-3);
-	CU_ASSERT_DOUBLE_EQUAL(EXPORT_MATRIX[2], 200.0, 1e-3);
-    CU_ASSERT_DOUBLE_EQUAL(EXPORT_MATRIX[3], 2.0, 1e-3);
+	//VOLUME
+	CU_ASSERT_DOUBLE_EQUAL(EXPORT_VOLUME_MATRIX[0], 2.0, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(EXPORT_VOLUME_MATRIX[1], 200.0, 1e-3);
+	CU_ASSERT_DOUBLE_EQUAL(EXPORT_VOLUME_MATRIX[2], 200.0, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(EXPORT_VOLUME_MATRIX[3], 2.0, 1e-3);
     
-    CU_ASSERT_DOUBLE_EQUAL(EXPORTS[0], 200.0, 1e-3);
-    CU_ASSERT_DOUBLE_EQUAL(EXPORTS[1], 200.0, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(REGION_EXPORT_VOLUME[0], 200.0, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(REGION_EXPORT_VOLUME[1], 200.0, 1e-3);
     
-    CU_ASSERT_DOUBLE_EQUAL(IMPORTS[0], 200.0, 1e-3);
-    CU_ASSERT_DOUBLE_EQUAL(IMPORTS[1], 200.0, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(REGION_IMPORT_VOLUME[0], 200.0, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(REGION_IMPORT_VOLUME[1], 200.0, 1e-3);
 
+    //VALUE
+	CU_ASSERT_DOUBLE_EQUAL(EXPORT_VALUE_MATRIX[0], 2.0, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(EXPORT_VALUE_MATRIX[1], 200.0, 1e-3);
+	CU_ASSERT_DOUBLE_EQUAL(EXPORT_VALUE_MATRIX[2], 200.0, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(EXPORT_VALUE_MATRIX[3], 2.0, 1e-3);
+    
+    CU_ASSERT_DOUBLE_EQUAL(REGION_EXPORT_VALUE[0], 200.0, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(REGION_EXPORT_VALUE[1], 200.0, 1e-3);
+    
+    CU_ASSERT_DOUBLE_EQUAL(REGION_IMPORT_VALUE[0], 200.0, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(REGION_IMPORT_VALUE[1], 200.0, 1e-3);
+
+    //PREVIOUS_VALUE
+	CU_ASSERT_DOUBLE_EQUAL(EXPORT_PREVIOUS_VALUE_MATRIX[0], 2.0, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(EXPORT_PREVIOUS_VALUE_MATRIX[1], 200.0, 1e-3);
+	CU_ASSERT_DOUBLE_EQUAL(EXPORT_PREVIOUS_VALUE_MATRIX[2], 200.0, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(EXPORT_PREVIOUS_VALUE_MATRIX[3], 2.0, 1e-3);
+    
+    //PREVIOUS_IMPORT_VALUE: used for CPI
+    CU_ASSERT_DOUBLE_EQUAL(REGION_IMPORT_PREVIOUS_VALUE[0], 200.0, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(REGION_IMPORT_PREVIOUS_VALUE[1], 200.0, 1e-3);
+    
+    //REGION_IMPORT_VALUE/REGION_PREVIOUS_IMPORT_VALUE:
+    CU_ASSERT_DOUBLE_EQUAL(REGION_FIRM_DATA.array[0].cpi, 1.0, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(REGION_FIRM_DATA.array[1].cpi, 1.0, 1e-3);
+    
     /************* At end of unit test, free the agent **************/
 	unittest_free_Eurostat_agent();
     /************* At end of unit tests, free all Messages **********/

@@ -211,14 +211,6 @@ and stores the needed data.</description>
 <condition><not><time><period>monthly</period><phase>1</phase></time></not></condition>
 </function>
 
-<function>
-<name>Firm_idle</name>
-<description></description>
-<currentState>Firm_new01</currentState>
-<nextState>Firm_Start_Producer_Role</nextState>
-</function>
-
-
 <function><name>Firm_send_data_to_Eurostat</name>
 <description>Firm sends message to the eurostat agent 
 including several micro data.</description>
@@ -239,8 +231,7 @@ including several micro data.</description>
 
 <function><name>Firm_send_payments_to_bank</name>
 <description></description>
-<!--<currentState>Update_02</currentState>-->
-<currentState>15</currentState>
+<currentState>Update_02</currentState>
 <nextState>end_Firm</nextState>
 <outputs>
 <output><messageName>bank_account_update</messageName></output>
@@ -307,7 +298,11 @@ including several micro data.</description>
 <nextState>Start_Household_Tax_Data</nextState>
 <condition><time><period>yearly</period><phase>1</phase></time></condition>
 <inputs>
-<input><messageName>policy_announcement</messageName></input>
+<input>
+<messageName>policy_announcement</messageName>
+<filter><lhs><value>a.gov_id</value></lhs><op>EQ</op><rhs><value>m.gov_id</value></rhs></filter>
+</input>
+
 </inputs>
 </function>
 
@@ -315,15 +310,14 @@ including several micro data.</description>
 <description>The household reads the messages from the eurostat agent 
 and stores the needed data.</description>
 <currentState>Start_Household_Tax_Data</currentState>
-<nextState>Start_Household_Labour_Role</nextState>
+<nextState>start_Household_financial_market_role</nextState>
 <condition><time><period>monthly</period><phase>1</phase></time></condition>
-
 </function>
 
 <function><name>Household_idle</name>
 <description>Household does nothing</description>
 <currentState>Start_Household_Tax_Data</currentState>
-<nextState>Start_Household_Labour_Role</nextState>
+<nextState>start_Household_financial_market_role</nextState>
 <condition><not><time><period>monthly</period><phase>1</phase></time></not></condition>
 </function>
 
@@ -460,9 +454,14 @@ including several micro data.</description>
 <variable><type>int</type><name>recession_duration</name><description>Duration of a recession measured in quarters.</description></variable>
 
 <!-- Data for storing export data -->
-<variable><type>double</type><name>export_matrix[900]</name><description>Matrix holding data on exports between regions.</description></variable>
-<variable><type>double</type><name>exports[30]</name><description>Array holding data on total exports of each region.</description></variable>
-<variable><type>double</type><name>imports[30]</name><description>Array holding data on total imports of each region.</description></variable>
+<variable><type>double</type><name>export_volume_matrix[900]</name><description>Matrix holding data on exports between regions, measured in volume.</description></variable>
+<variable><type>double</type><name>export_value_matrix[900]</name><description>Matrix holding data on exports between regions, measured in value.</description></variable>
+<variable><type>double</type><name>export_previous_value_matrix[900]</name><description>Matrix holding data on exports between regions, measured against previous prices.</description></variable>
+<variable><type>double</type><name>region_export_volume[30]</name><description>Array holding data on total exports of each region, measured in volume.</description></variable>
+<variable><type>double</type><name>region_import_volume[30]</name><description>Array holding data on total imports of each region, measured in volume.</description></variable>
+<variable><type>double</type><name>region_export_value[30]</name><description>Array holding data on total exports of each region, measured in value.</description></variable>
+<variable><type>double</type><name>region_import_value[30]</name><description>Array holding data on total imports of each region, measured in value.</description></variable>
+<variable><type>double</type><name>region_import_previous_value[30]</name><description>Array holding data on total imports of each region, measured in value against previous prices.</description></variable>
 </memory>
 
 

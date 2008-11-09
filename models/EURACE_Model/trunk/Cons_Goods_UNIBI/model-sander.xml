@@ -711,17 +711,6 @@ updates specific skills.</description>
 </variables>
 </message>
 
-<message>
-<name>mall_data</name>
-<description>Sent by mall. Mall informs Eurostat about the transaction values (export_volume), against current prices (export_value) and against previous prices (export_previous_value).</description>
-<variables>
-<variable><type>int</type><name>id</name><description></description></variable>
-<variable><type>int</type><name>export_volume</name><description></description></variable>
-<variable><type>double</type><name>export_value</name><description></description></variable>
-<variable><type>double</type><name>export_previous_value</name><description></description></variable>
-</variables>
-</message>
-
 </messages>
 
 </xmodel>
