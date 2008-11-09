@@ -861,7 +861,7 @@ int Household_send_tax_payment()
 	TOTAL_TAXES = additional_tax + CUM_TOTAL_DIVIDENDS*TAX_RATE_HH_CAPITAL + WAGE*TAX_RATE_HH_LABOUR;
 
 	/*Send a message to the government*/
-	add_tax_payment_message(ID, GOV_ID,TOTAL_TAXES);
+	add_tax_payment_message(GOV_ID, TOTAL_TAXES);
 	
 	/*Reduce the payment account*/
 	PAYMENT_ACCOUNT-=TOTAL_TAXES;

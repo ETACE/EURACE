@@ -5,8 +5,143 @@
 #include "../../my_library_header.h"
 
 /************Mall ********************************/
+#define NO_REGIONS 2 //number of regions (hard-coded here)
 
 /************ Unit tests ********************************/
+/*
+ * \fn: void unittest_Mall_update_mall_stock()
+ * \brief: Unit test for: Mall_update_mall_stock.
+ * Status: Not Tested
+ */
+void unittest_Mall_update_mall_stock()
+{
+    /************* At start of unit test, add one agent **************/
+	unittest_init_Mall_agent();
+	
+    /***** Variables: Memory pre-conditions **************************/
+
+	/***** Messages: pre-conditions **********************************/
+    
+    /***** Function evaluation ***************************************/
+	Mall_update_mall_stock();
+    
+    /***** Variables: Memory post-conditions *****/
+	//	CU_ASSERT_DOUBLE_EQUAL(var, result, 1e-3);
+
+    /************* At end of unit test, free the agent **************/
+	unittest_free_Mall_agent();
+    /************* At end of unit tests, free all Messages **********/
+    free_messages();
+}
+	
+	
+/*
+ * \fn: void unittest_Mall_send_quality_price_info_1()
+ * \brief: Unit test for: Mall_send_quality_price_info_1.
+ * Status: Not Tested
+ */
+void unittest_Mall_send_quality_price_info_1()
+{
+    /************* At start of unit test, add one agent **************/
+	unittest_init_Mall_agent();
+	
+    /***** Variables: Memory pre-conditions **************************/
+
+	/***** Messages: pre-conditions **********************************/
+    
+    /***** Function evaluation ***************************************/
+	Mall_send_quality_price_info_1();
+    
+    /***** Variables: Memory post-conditions *****/
+	//	CU_ASSERT_DOUBLE_EQUAL(var, result, 1e-3);
+
+    /************* At end of unit test, free the agent **************/
+	unittest_free_Mall_agent();
+    /************* At end of unit tests, free all Messages **********/
+    free_messages();
+}
+	
+/*
+ * \fn: void unittest_Mall_update_mall_stocks_sales_rationing_1()
+ * \brief: Unit test for: Mall_update_mall_stocks_sales_rationing_1.
+ * Status: Not Tested
+ */
+void unittest_Mall_update_mall_stocks_sales_rationing_1()
+{
+    /************* At start of unit test, add one agent **************/
+	unittest_init_Mall_agent();
+	
+    /***** Variables: Memory pre-conditions **************************/
+
+	/***** Messages: pre-conditions **********************************/
+    
+    /***** Function evaluation ***************************************/
+	Mall_update_mall_stocks_sales_rationing_1();
+    
+    /***** Variables: Memory post-conditions *****/
+	//	CU_ASSERT_DOUBLE_EQUAL(var, result, 1e-3);
+
+    /************* At end of unit test, free the agent **************/
+	unittest_free_Mall_agent();
+    /************* At end of unit tests, free all Messages **********/
+    free_messages();
+}
+	
+
+/*
+ * \fn: void unittest_Mall_update_mall_stocks_sales_rationing_2()
+ * \brief: Unit test for: Mall_update_mall_stocks_sales_rationing_2.
+ * Status: Not Tested
+ */
+void unittest_Mall_update_mall_stocks_sales_rationing_2()
+{
+    /************* At start of unit test, add one agent **************/
+	unittest_init_Mall_agent();
+	
+    /***** Variables: Memory pre-conditions **************************/
+
+	/***** Messages: pre-conditions **********************************/
+    
+    /***** Function evaluation ***************************************/
+	Mall_update_mall_stocks_sales_rationing_2();
+    
+    /***** Variables: Memory post-conditions *****/
+	//	CU_ASSERT_DOUBLE_EQUAL(var, result, 1e-3);
+
+    /************* At end of unit test, free the agent **************/
+	unittest_free_Mall_agent();
+    /************* At end of unit tests, free all Messages **********/
+    free_messages();
+}
+	
+
+/*
+ * \fn: void unittest_Mall_pay_firm()
+ * \brief: Unit test for: Mall_pay_firm.
+ * Status: Not Tested
+ */
+void unittest_Mall_pay_firm()
+{
+    /************* At start of unit test, add one agent **************/
+	unittest_init_Mall_agent();
+	
+    /***** Variables: Memory pre-conditions **************************/
+
+	/***** Messages: pre-conditions **********************************/
+    
+    /***** Function evaluation ***************************************/
+	Mall_pay_firm();
+    
+    /***** Variables: Memory post-conditions *****/
+	//	CU_ASSERT_DOUBLE_EQUAL(var, result, 1e-3);
+
+    /************* At end of unit test, free the agent **************/
+	unittest_free_Mall_agent();
+    /************* At end of unit tests, free all Messages **********/
+    free_messages();
+}
+
+
 /*
  * \fn: void unittest_Mall_reset_export_data()
  * \brief: Unit test for: Mall_reset_export_data.
@@ -25,14 +160,21 @@ void unittest_Mall_reset_export_data()
 	Mall_reset_export_data();
     
     /***** Variables: Memory post-conditions *****/
-    //CU_ASSERT_DOUBLE_EQUAL(, 0.0, 1e-3);
-    //CU_ASSERT_EQUAL();
-	CU_ASSERT_DOUBLE_EQUAL(EXPORT_MATRIX[0], 0.0, 1e-3);   //[0][0]
-    CU_ASSERT_DOUBLE_EQUAL(EXPORT_MATRIX[1], 0.0, 1e-3); //[0][1]
-	CU_ASSERT_DOUBLE_EQUAL(EXPORT_MATRIX[2], 0.0, 1e-3); //[1][0]
-    CU_ASSERT_DOUBLE_EQUAL(EXPORT_MATRIX[3], 0.0, 1e-3);   //[1][1]
+	CU_ASSERT_DOUBLE_EQUAL(EXPORT_VOLUME_MATRIX[0], 0.0, 1e-3); //[0][0]
+    CU_ASSERT_DOUBLE_EQUAL(EXPORT_VOLUME_MATRIX[1], 0.0, 1e-3); //[0][1]
+	CU_ASSERT_DOUBLE_EQUAL(EXPORT_VOLUME_MATRIX[2], 0.0, 1e-3); //[1][0]
+    CU_ASSERT_DOUBLE_EQUAL(EXPORT_VOLUME_MATRIX[3], 0.0, 1e-3); //[1][1]
 
-	
+	CU_ASSERT_DOUBLE_EQUAL(EXPORT_VALUE_MATRIX[0], 0.0, 1e-3); //[0][0]
+    CU_ASSERT_DOUBLE_EQUAL(EXPORT_VALUE_MATRIX[1], 0.0, 1e-3); //[0][1]
+	CU_ASSERT_DOUBLE_EQUAL(EXPORT_VALUE_MATRIX[2], 0.0, 1e-3); //[1][0]
+    CU_ASSERT_DOUBLE_EQUAL(EXPORT_VALUE_MATRIX[3], 0.0, 1e-3); //[1][1]
+
+	CU_ASSERT_DOUBLE_EQUAL(EXPORT_PREVIOUS_VALUE_MATRIX[0], 0.0, 1e-3); //[0][0]
+    CU_ASSERT_DOUBLE_EQUAL(EXPORT_PREVIOUS_VALUE_MATRIX[1], 0.0, 1e-3); //[0][1]
+	CU_ASSERT_DOUBLE_EQUAL(EXPORT_PREVIOUS_VALUE_MATRIX[2], 0.0, 1e-3); //[1][0]
+    CU_ASSERT_DOUBLE_EQUAL(EXPORT_PREVIOUS_VALUE_MATRIX[3], 0.0, 1e-3); //[1][1]
+
     /************* At end of unit test, free the agent **************/
 	unittest_free_Mall_agent();
     /************* At end of unit tests, free all Messages **********/
@@ -40,9 +182,10 @@ void unittest_Mall_reset_export_data()
 }
 
 /*
- * \fn: void unittest_Mall_reset_export_data()
- * \brief: Unit test for: Mall_reset_export_data.
+ * \fn: void unittest_Mall_add_export_data()
+ * \brief: Unit test for: Mall_add_export_data.
  * Status: Tested OK
+ * Tests if the mall_export_data is correctly added to memory.
  */
 void unittest_Mall_add_export_data()
 {
@@ -54,20 +197,27 @@ void unittest_Mall_add_export_data()
 	/***** Messages: pre-conditions **********************************/
     
     /***** Function evaluation ***************************************/
-	//Mall_add_export_data(int firm_region, int household_region, double transaction_value);
-	
-	Mall_add_export_data(1, 1, 1.0);
-	Mall_add_export_data(1, 2, 100.0);
-	Mall_add_export_data(2, 1, 100.0);
-	Mall_add_export_data(2, 2, 1.0);
+	//Mall_add_export_data(int firm_region, int household_region, double export_volume, double export_value, double export_previous_value);
+	Mall_add_export_data(1, 1,   1.0,   1.0,   1.0);
+	Mall_add_export_data(1, 2, 100.0, 100.0, 100.0);
+	Mall_add_export_data(2, 1, 100.0, 100.0, 100.0);
+	Mall_add_export_data(2, 2,   1.0,   1.0,   1.0);
 	
     /***** Variables: Memory post-conditions *****/
-    //CU_ASSERT_DOUBLE_EQUAL(, 0.0, 1e-3);
-    //CU_ASSERT_EQUAL();
-	CU_ASSERT_DOUBLE_EQUAL(EXPORT_MATRIX[0], 1.0, 1e-3);   //[0][0]
-    CU_ASSERT_DOUBLE_EQUAL(EXPORT_MATRIX[1], 100.0, 1e-3); //[0][1]
-	CU_ASSERT_DOUBLE_EQUAL(EXPORT_MATRIX[2], 100.0, 1e-3); //[1][0]
-    CU_ASSERT_DOUBLE_EQUAL(EXPORT_MATRIX[3], 1.0, 1e-3);   //[1][1]
+	CU_ASSERT_DOUBLE_EQUAL(EXPORT_VOLUME_MATRIX[0], 1.0, 1e-3); //[0][0]
+    CU_ASSERT_DOUBLE_EQUAL(EXPORT_VOLUME_MATRIX[1], 100.0, 1e-3); //[0][1]
+	CU_ASSERT_DOUBLE_EQUAL(EXPORT_VOLUME_MATRIX[2], 100.0, 1e-3); //[1][0]
+    CU_ASSERT_DOUBLE_EQUAL(EXPORT_VOLUME_MATRIX[3], 1.0, 1e-3); //[1][1]
+
+	CU_ASSERT_DOUBLE_EQUAL(EXPORT_VALUE_MATRIX[0], 1.0, 1e-3); //[0][0]
+    CU_ASSERT_DOUBLE_EQUAL(EXPORT_VALUE_MATRIX[1], 100.0, 1e-3); //[0][1]
+	CU_ASSERT_DOUBLE_EQUAL(EXPORT_VALUE_MATRIX[2], 100.0, 1e-3); //[1][0]
+    CU_ASSERT_DOUBLE_EQUAL(EXPORT_VALUE_MATRIX[3], 1.0, 1e-3); //[1][1]
+
+	CU_ASSERT_DOUBLE_EQUAL(EXPORT_PREVIOUS_VALUE_MATRIX[0], 1.0, 1e-3); //[0][0]
+    CU_ASSERT_DOUBLE_EQUAL(EXPORT_PREVIOUS_VALUE_MATRIX[1], 100.0, 1e-3); //[0][1]
+	CU_ASSERT_DOUBLE_EQUAL(EXPORT_PREVIOUS_VALUE_MATRIX[2], 100.0, 1e-3); //[1][0]
+    CU_ASSERT_DOUBLE_EQUAL(EXPORT_PREVIOUS_VALUE_MATRIX[3], 1.0, 1e-3); //[1][1]
 
 	
     /************* At end of unit test, free the agent **************/
@@ -80,6 +230,7 @@ void unittest_Mall_add_export_data()
  * \fn: void unittest_Mall_reset_export_data()
  * \brief: Unit test for: Mall_reset_export_data.
  * Status: Not tested
+ * Tests if the mall_data_message is correctly send.
  */
 void unittest_Mall_send_export_data()
 {
@@ -90,11 +241,21 @@ void unittest_Mall_send_export_data()
 	
     /***** Variables: Memory pre-conditions **************************/
 	ID=1;
-	EXPORT_MATRIX[0]=1.0;
-	EXPORT_MATRIX[1]=2.0;
-	EXPORT_MATRIX[2]=3.0;
-	EXPORT_MATRIX[3]=4.0;
+	EXPORT_VOLUME_MATRIX[0]=1.0;
+	EXPORT_VOLUME_MATRIX[1]=2.0;
+	EXPORT_VOLUME_MATRIX[2]=3.0;
+	EXPORT_VOLUME_MATRIX[3]=4.0;
 	
+	EXPORT_VALUE_MATRIX[0]=1.0;
+	EXPORT_VALUE_MATRIX[1]=2.0;
+	EXPORT_VALUE_MATRIX[2]=3.0;
+	EXPORT_VALUE_MATRIX[3]=4.0;
+
+	EXPORT_PREVIOUS_VALUE_MATRIX[0]=1.0;
+	EXPORT_PREVIOUS_VALUE_MATRIX[1]=2.0;
+	EXPORT_PREVIOUS_VALUE_MATRIX[2]=3.0;
+	EXPORT_PREVIOUS_VALUE_MATRIX[3]=4.0;
+
 	/***** Messages: pre-conditions **********************************/
     
 	/***** Messages: initialize message boards **********************************/
@@ -118,7 +279,6 @@ void unittest_Mall_send_export_data()
     	    #endif
 
 	/***** Messages: pre-conditions **********************************/
-//    add_<message_name>_message();
     	    
     /***** Adding message iterators ***************************************/
     rc = MB_Iterator_Create(b_mall_data, &i_mall_data);
@@ -146,30 +306,37 @@ void unittest_Mall_send_export_data()
 	Mall_send_export_data();
     
     /***** Variables: Memory post-conditions *****/
-    printf("\n Starting message loop");
+
     START_MALL_DATA_MESSAGE_LOOP
-    //mall_data_message(ID, firm_region, household_region, value);    
-    printf("\n Entering message loop");
-    printf("\n firm_region=%d, household_region=%d, value=%2.2f", mall_data_message->firm_region, mall_data_message->household_region, mall_data_message->value);
-    
+    printf("\n firm_region=%d, household_region=%d\n", mall_data_message->firm_region, mall_data_message->household_region);
+
+    //mall_data_message(ID, firm_region, household_region, export_volume, export_value, export_previous_value);    
     if (mall_data_message->firm_region==1 && mall_data_message->household_region==1)
 	{
-    	CU_ASSERT_DOUBLE_EQUAL(mall_data_message->value, 1.0, 1e-3);
+    	CU_ASSERT_DOUBLE_EQUAL(mall_data_message->export_volume, 1.0, 1e-3);
+    	CU_ASSERT_DOUBLE_EQUAL(mall_data_message->export_value, 1.0, 1e-3);
+    	CU_ASSERT_DOUBLE_EQUAL(mall_data_message->export_previous_value, 1.0, 1e-3);
 	}
     if (mall_data_message->firm_region==1 && mall_data_message->household_region==2)
 	{
-    	CU_ASSERT_DOUBLE_EQUAL(mall_data_message->value, 2.0, 1e-3);
+    	CU_ASSERT_DOUBLE_EQUAL(mall_data_message->export_volume, 2.0, 1e-3);
+    	CU_ASSERT_DOUBLE_EQUAL(mall_data_message->export_value, 2.0, 1e-3);
+    	CU_ASSERT_DOUBLE_EQUAL(mall_data_message->export_previous_value, 3.0, 1e-3);
 	}
 	if (mall_data_message->firm_region==2 && mall_data_message->household_region==1)
 	{
-    	CU_ASSERT_DOUBLE_EQUAL(mall_data_message->value, 3.0, 1e-3);
+    	CU_ASSERT_DOUBLE_EQUAL(mall_data_message->export_volume, 3.0, 1e-3);
+    	CU_ASSERT_DOUBLE_EQUAL(mall_data_message->export_value, 3.0, 1e-3);
+    	CU_ASSERT_DOUBLE_EQUAL(mall_data_message->export_previous_value, 3.0, 1e-3);
 	}
 	if (mall_data_message->firm_region==2 && mall_data_message->household_region==2)
 	{
-    	CU_ASSERT_DOUBLE_EQUAL(mall_data_message->value, 4.0, 1e-3);
+    	CU_ASSERT_DOUBLE_EQUAL(mall_data_message->export_volume, 4.0, 1e-3);
+    	CU_ASSERT_DOUBLE_EQUAL(mall_data_message->export_value, 4.0, 1e-3);
+    	CU_ASSERT_DOUBLE_EQUAL(mall_data_message->export_previous_value, 4.0, 1e-3);
 	}
 	FINISH_MALL_DATA_MESSAGE_LOOP
-	printf("\n Finished message loop");
+
 	
     /************* At end of unit test, free the agent **************/
 	unittest_free_Mall_agent();

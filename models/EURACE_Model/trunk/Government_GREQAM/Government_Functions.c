@@ -1,10 +1,13 @@
+//For trunk model
 #include "../header.h"
 #include "../Government_agent_header.h"
+
+//For Isolated model
 //#include "header.h"
 //#include "Government_agent_header.h"
-#include "../my_library_header.h"
+//#include "../my_library_header.h"
 
-#define REGIONS_PER_GOV 1 //number of regions per gov
+#define NO_REGIONS_PER_GOV 2 //number of regions per gov
 
 /************Government Role: Finance********************************/
 int Government_idle()
@@ -15,7 +18,7 @@ int Government_idle()
 int Government_send_policy_announcements()
 {	
 	//add announcements
-	add_policy_announcement_message(ID, TAX_RATE_CORPORATE, TAX_RATE_HH_LABOUR, TAX_RATE_HH_CAPITAL, TAX_RATE_VAT, UNEMPLOYMENT_BENEFIT_PCT, TRANSFER_PAYMENT, SUBSIDY_PAYMENT);
+	add_policy_announcement_message(ID, TAX_RATE_CORPORATE, TAX_RATE_HH_LABOUR, TAX_RATE_HH_CAPITAL, TAX_RATE_VAT, UNEMPLOYMENT_BENEFIT_PCT, HH_SUBSIDY_PAYMENT, FIRM_SUBSIDY_PAYMENT, HH_TRANSFER_PAYMENT, FIRM_TRANSFER_PAYMENT);
 	
 	return 0;	
 }
@@ -157,6 +160,14 @@ int Government_read_subsidy_notifications()
 	return 0;
 }
 
+int Government_send_account_update()
+{
+		// At the very end of agent government: update the bank account
+		add_central_bank_account_update_message(ID, PAYMENT_ACCOUNT);
+		
+	return 0;
+}
+
 int Government_budget_accounting()
 {
 	double in, out;
@@ -194,7 +205,47 @@ int Government_budget_accounting()
 		TOTAL_MONEY_FINANCING = GOV_POLICY_MONEY_FINANCING_FRACTION*BUDGET_DEFICIT;
 		TOTAL_BOND_FINANCING = (1-GOV_POLICY_MONEY_FINANCING_FRACTION)*BUDGET_DEFICIT;
 		
-	//Fiscal policy rule
+	return 0;
+}
+
+int Government_read_data_from_Eurostat()
+{
+	int i;
+	double old_gdp;
+	
+	old_gdp=GDP;
+	GDP=0.0;
+	COUNTRY_WIDE_MEAN_WAGE=0.0;
+	
+	START_DATA_FOR_GOVERNMENT_MESSAGE_LOOP
+		for (i=0; i<NO_REGIONS_PER_GOV; i++)
+		{
+			if(data_for_government_message->region_id==LIST_OF_REGIONS[i])
+			{
+				//Read region mean wage
+				COUNTRY_WIDE_MEAN_WAGE += data_for_government_message->mean_wage;
+				//Read region GDP
+				GDP += data_for_government_message->gdp;
+			}
+		}
+	FINISH_DATA_FOR_GOVERNMENT_MESSAGE_LOOP
+	
+	//Set country-wide mean wage as avg of region's mean wages
+	COUNTRY_WIDE_MEAN_WAGE = COUNTRY_WIDE_MEAN_WAGE/NO_REGIONS_PER_GOV;
+	
+	//Set GDP growth rate
+	GDP_GROWTH = GDP/old_gdp;
+
+	return 0;	
+}
+
+
+int Government_set_policy()
+{	
+/*		
+	//Fiscal policy rule 1
+
+		//increase tax rates when in debt
 		if(PAYMENT_ACCOUNT<0)
 		{
 			TAX_RATE_CORPORATE  += 0.01;
@@ -203,70 +254,52 @@ int Government_budget_accounting()
 		}
 		else if(PAYMENT_ACCOUNT>1000)
 		{
+			//decrease tax rates when in surplus
 			TAX_RATE_CORPORATE  -= 0.01;
 			TAX_RATE_HH_LABOUR  -= 0.01; 
 			TAX_RATE_HH_CAPITAL -= 0.01;
 		}
+*/
+		//Fiscal policy rule 2
 
-	return 0;
-}
-
-int Government_read_data_from_Eurostat()
-{
-	int i;
-	
-	//Read mean wage
-	START_DATA_FOR_GOVERNMENT_MESSAGE_LOOP
-		COUNTRY_WIDE_MEAN_WAGE = data_for_government_message->mean_wage;
-	FINISH_DATA_FOR_GOVERNMENT_MESSAGE_LOOP
-
-	//Read national GDP
-	START_DATA_FOR_GOVERNMENT_MESSAGE_LOOP
-	for (i=0; i<REGIONS_PER_GOV; i++)
-	{
-		//region_gdp_for_government_message(region_id, gdp);
-		if(data_for_government_message->region_id==LIST_OF_REGIONS[i])
+		//increase tax rates when GDP growth > 1.05
+		if(GDP_GROWTH>1.05)
 		{
-			GDP += data_for_government_message->gdp;
+			TAX_RATE_CORPORATE  += 0.01;
+			TAX_RATE_HH_LABOUR  += 0.01; 
+			TAX_RATE_HH_CAPITAL += 0.01;
 		}
-	}
-	FINISH_DATA_FOR_GOVERNMENT_MESSAGE_LOOP
-	
-	return 0;	
-}
-
-
-int Government_send_account_update()
-{
-		// At the very end of agent government: update the bank account
-		add_central_bank_account_update_message(ID, PAYMENT_ACCOUNT);
+		else if(GDP_GROWTH<1.01)
+		{
+			//decrease tax rates when GDP growth < 1.01
+			TAX_RATE_CORPORATE  -= 0.01;
+			TAX_RATE_HH_LABOUR  -= 0.01; 
+			TAX_RATE_HH_CAPITAL -= 0.01;
+		}
 		
-	return 0;
-}
-
-
-int Government_set_policy()
-{
-	GROWTH_FORECAST = 1.02;
+	//Set GDP forecast equal to extrapolation of previous growth rate*GDP
+	GDP_FORECAST = GDP_GROWTH*GDP;
 	
-	GDP_FORECAST = GDP*GROWTH_FORECAST;
-	TOTAL_INCOME_FORECAST = GROWTH_FORECAST*TOTAL_INCOME;
-	TOTAL_EXPENDITURE_FORECAST = GROWTH_FORECAST*TOTAL_EXPENDITURE;
+	//Set income forecast
+	TOTAL_INCOME_FORECAST = GDP_GROWTH*TOTAL_INCOME;
+
+	//Set expenditure forecast: counter-cyclical to gdp growth
+	TOTAL_EXPENDITURE_FORECAST = (1/GDP_GROWTH)*TOTAL_EXPENDITURE;
 	
 	BUDGET_FORECAST = TOTAL_INCOME_FORECAST - TOTAL_EXPENDITURE_FORECAST;
 	
 	//Set the following policies:
 	
 	//Determine new unemployment benefit percentage
-	GOV_POLICY_UNEMPLOYMENT_BENEFIT_PCT = 0.70;
+	//GOV_POLICY_UNEMPLOYMENT_BENEFIT_PCT = 0.70;
 
 	//Determine new transfer payment
-	TRANSFER_PAYMENT =1000;
-
+	HH_TRANSFER_PAYMENT =0.0;
+	FIRM_TRANSFER_PAYMENT =0.0;
 	
 	//Determine new transfer payment
-	SUBSIDY_PAYMENT =1000;
-
+	HH_SUBSIDY_PAYMENT =0.0;
+	FIRM_SUBSIDY_PAYMENT =0.0;
 
 	//Determine new government investment
 	// YEARLY_GOV_INVESTMENT

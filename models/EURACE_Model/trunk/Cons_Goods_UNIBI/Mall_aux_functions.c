@@ -9,7 +9,7 @@
 #include "../Mall_agent_header.h"
 #include "Mall_aux_header.h"
 
-#define NO_REGIONS 1 //number of regions (hard-coded here)
+#define NO_REGIONS 2 //number of regions (hard-coded here)
 
 
 /* \fn: void Mall_add_export_data()

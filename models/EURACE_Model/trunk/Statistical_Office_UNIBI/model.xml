@@ -726,7 +726,9 @@ including several micro data.</description>
 <variable><type>int</type><name>mall_id</name><description></description></variable>
 <variable><type>int</type><name>firm_region</name><description></description></variable>
 <variable><type>int</type><name>household_region</name><description></description></variable>
-<variable><type>double</type><name>value</name><description></description></variable>
+<variable><type>double</type><name>export_volume</name><description></description></variable>
+<variable><type>double</type><name>export_value</name><description></description></variable>
+<variable><type>double</type><name>export_previous_value</name><description></description></variable>
 </variables>
 </message>
 

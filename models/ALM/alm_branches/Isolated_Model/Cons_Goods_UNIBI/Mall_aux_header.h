@@ -7,4 +7,4 @@
  *********************************/
 
 /* Mall auxiliary functions */
-void Mall_add_export_data(int firm_region, int household_region, double export_volume, double export_value, double export_previous_value)
+void Mall_add_export_data(int firm_region, int household_region, double export_volume, double export_value, double export_previous_value);

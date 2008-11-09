@@ -1002,7 +1002,7 @@ int Eurostat_store_history_monthly()
     HISTORY_MONTHLY[0].no_firm_deaths = NO_FIRM_DEATHS; 
 
     //*********************************** Code to be tested: region data
-/*
+
     for ( region=0; region<REGION_FIRM_DATA.size; region++)
     {
         //Shift history backwards
@@ -1040,7 +1040,6 @@ int Eurostat_store_history_monthly()
         HISTORY_MONTHLY[0].region_data.array[region].no_firm_births = REGION_FIRM_DATA.array[region].no_firm_births; 
         HISTORY_MONTHLY[0].region_data.array[region].no_firm_deaths = REGION_FIRM_DATA.array[region].no_firm_deaths;   
     }
-*/
 
     if (PRINT_LOG)
     {
@@ -1095,7 +1094,7 @@ int Eurostat_store_history_quarterly()
     }
         
     //Reset first elements for sum
-    HISTORY_QUARTERLY[0].cpi=0.0;
+    HISTORY_QUARTERLY[0].cpi=1.0;
     HISTORY_QUARTERLY[0].gdp=0.0;
     HISTORY_QUARTERLY[0].output=0.0;
     HISTORY_QUARTERLY[0].employment=0.0;
@@ -1113,7 +1112,7 @@ int Eurostat_store_history_quarterly()
     //Store first value: construct quarterly sums from monthly history
     for (i=0; i<3; i++)
     {
-        HISTORY_QUARTERLY[0].cpi                += HISTORY_MONTHLY[i].cpi;
+        HISTORY_QUARTERLY[0].cpi                *= HISTORY_MONTHLY[i].cpi;
         HISTORY_QUARTERLY[0].gdp                += HISTORY_MONTHLY[i].gdp;
         HISTORY_QUARTERLY[0].output             += HISTORY_MONTHLY[i].output;
         HISTORY_QUARTERLY[0].employment         += HISTORY_MONTHLY[i].employment;        
@@ -1129,9 +1128,9 @@ int Eurostat_store_history_quarterly()
         HISTORY_QUARTERLY[0].no_firm_deaths     += HISTORY_MONTHLY[i].no_firm_deaths;
     }
     //The following quarterly statistics are averages of monthly statistics
-    HISTORY_QUARTERLY[0].cpi                    = HISTORY_QUARTERLY[0].cpi/3;
-    HISTORY_QUARTERLY[0].gdp                    = HISTORY_QUARTERLY[0].gdp/3;
-    HISTORY_QUARTERLY[0].output                 = HISTORY_QUARTERLY[0].output/3;
+    //HISTORY_QUARTERLY[0].cpi                    = HISTORY_QUARTERLY[0].cpi/3;
+    HISTORY_QUARTERLY[0].gdp                    = HISTORY_QUARTERLY[0].gdp;
+    HISTORY_QUARTERLY[0].output                 = HISTORY_QUARTERLY[0].output;
     HISTORY_QUARTERLY[0].employment             = HISTORY_QUARTERLY[0].employment/3;
     HISTORY_QUARTERLY[0].unemployment_rate      = HISTORY_QUARTERLY[0].unemployment_rate/3;
     HISTORY_QUARTERLY[0].unemployment_rate_skill_1 = HISTORY_QUARTERLY[0].unemployment_rate_skill_1/3;    
@@ -1141,11 +1140,11 @@ int Eurostat_store_history_quarterly()
     HISTORY_QUARTERLY[0].unemployment_rate_skill_5 = HISTORY_QUARTERLY[0].unemployment_rate_skill_5/3;
     HISTORY_QUARTERLY[0].average_wage           = HISTORY_QUARTERLY[0].average_wage/3;
     HISTORY_QUARTERLY[0].no_firms               = HISTORY_QUARTERLY[0].no_firms/3;
-    HISTORY_QUARTERLY[0].no_firm_births         = HISTORY_QUARTERLY[0].no_firm_births/3;
-    HISTORY_QUARTERLY[0].no_firm_deaths         = HISTORY_QUARTERLY[0].no_firm_deaths/3;
+    HISTORY_QUARTERLY[0].no_firm_births         = HISTORY_QUARTERLY[0].no_firm_births;
+    HISTORY_QUARTERLY[0].no_firm_deaths         = HISTORY_QUARTERLY[0].no_firm_deaths;
     
     //*********************************** Code to be tested: region data
-/*
+
     for ( region=0; region<REGION_FIRM_DATA.size; region++)
     {
         //Shift history backwards
@@ -1168,7 +1167,7 @@ int Eurostat_store_history_quarterly()
         }
 
         //Reset first elements for sum
-        HISTORY_QUARTERLY[0].region_data.array[region].cpi=0.0;
+        HISTORY_QUARTERLY[0].region_data.array[region].cpi=1.0;
         HISTORY_QUARTERLY[0].region_data.array[region].gdp=0.0;
         HISTORY_QUARTERLY[0].region_data.array[region].output=0.0;
         HISTORY_QUARTERLY[0].region_data.array[region].employment=0.0;
@@ -1186,7 +1185,7 @@ int Eurostat_store_history_quarterly()
         //Store first value: construct quarterly sums from monthly history
         for (i=0; i<3; i++)
         {
-            HISTORY_QUARTERLY[0].region_data.array[region].cpi                += HISTORY_MONTHLY[i].region_data.array[region].cpi;
+            HISTORY_QUARTERLY[0].region_data.array[region].cpi                *= HISTORY_MONTHLY[i].region_data.array[region].cpi;
             HISTORY_QUARTERLY[0].region_data.array[region].gdp                += HISTORY_MONTHLY[i].region_data.array[region].gdp;
             HISTORY_QUARTERLY[0].region_data.array[region].output             += HISTORY_MONTHLY[i].region_data.array[region].output;
             HISTORY_QUARTERLY[0].region_data.array[region].employment         += HISTORY_MONTHLY[i].region_data.array[region].employment;        
@@ -1203,9 +1202,9 @@ int Eurostat_store_history_quarterly()
         }
         
         //The following quarterly statistics are averages of monthly statistics
-        HISTORY_QUARTERLY[0].region_data.array[region].cpi                    = HISTORY_QUARTERLY[0].region_data.array[region].cpi/3;
-        HISTORY_QUARTERLY[0].region_data.array[region].gdp                    = HISTORY_QUARTERLY[0].region_data.array[region].gdp/3;
-        HISTORY_QUARTERLY[0].region_data.array[region].output                 = HISTORY_QUARTERLY[0].region_data.array[region].output/3;        
+        //HISTORY_QUARTERLY[0].region_data.array[region].cpi                    = HISTORY_QUARTERLY[0].region_data.array[region].cpi/3;
+        HISTORY_QUARTERLY[0].region_data.array[region].gdp                    = HISTORY_QUARTERLY[0].region_data.array[region].gdp;
+        HISTORY_QUARTERLY[0].region_data.array[region].output                 = HISTORY_QUARTERLY[0].region_data.array[region].output;        
         HISTORY_QUARTERLY[0].region_data.array[region].employment             = HISTORY_QUARTERLY[0].region_data.array[region].employment/3;
         HISTORY_QUARTERLY[0].region_data.array[region].unemployment_rate      = HISTORY_QUARTERLY[0].region_data.array[region].unemployment_rate/3;
         HISTORY_QUARTERLY[0].region_data.array[region].unemployment_rate_skill_1 = HISTORY_QUARTERLY[0].region_data.array[region].unemployment_rate_skill_1/3;    
@@ -1215,10 +1214,9 @@ int Eurostat_store_history_quarterly()
         HISTORY_QUARTERLY[0].region_data.array[region].unemployment_rate_skill_5 = HISTORY_QUARTERLY[0].region_data.array[region].unemployment_rate_skill_5/3;
         HISTORY_QUARTERLY[0].region_data.array[region].average_wage           = HISTORY_QUARTERLY[0].region_data.array[region].average_wage/3;
         HISTORY_QUARTERLY[0].region_data.array[region].no_firms               = HISTORY_QUARTERLY[0].region_data.array[region].no_firms/3;
-        HISTORY_QUARTERLY[0].region_data.array[region].no_firm_births         = HISTORY_QUARTERLY[0].region_data.array[region].no_firm_births/3;
-        HISTORY_QUARTERLY[0].region_data.array[region].no_firm_deaths         = HISTORY_QUARTERLY[0].region_data.array[region].no_firm_deaths/3;    
+        HISTORY_QUARTERLY[0].region_data.array[region].no_firm_births         = HISTORY_QUARTERLY[0].region_data.array[region].no_firm_births;
+        HISTORY_QUARTERLY[0].region_data.array[region].no_firm_deaths         = HISTORY_QUARTERLY[0].region_data.array[region].no_firm_deaths;    
     }
-*/
 
     if (PRINT_LOG)
     {
@@ -1244,11 +1242,11 @@ int Eurostat_store_history_quarterly()
  */
 int Eurostat_compute_growth_rates_monthly()
 {
-    int region;
+    int i,region;
     region=0;
 
     //*********************************** Economy-wide data
-    MONTHLY_GROWTH_RATES.cpi                       = 0.0;
+    MONTHLY_GROWTH_RATES.cpi                       = 1.0;
     MONTHLY_GROWTH_RATES.gdp                       = 0.0; 
     MONTHLY_GROWTH_RATES.output                    = 0.0;
     MONTHLY_GROWTH_RATES.employment                = 0.0;
@@ -1263,20 +1261,20 @@ int Eurostat_compute_growth_rates_monthly()
     MONTHLY_GROWTH_RATES.no_firm_births            = 0.0;
     MONTHLY_GROWTH_RATES.no_firm_deaths            = 0.0;
     
-    ANNUAL_GROWTH_RATES_MONTHLY.cpi                = 0.0;
-    ANNUAL_GROWTH_RATES_MONTHLY.gdp                = 0.0;
-    ANNUAL_GROWTH_RATES_MONTHLY.output             = 0.0;
-    ANNUAL_GROWTH_RATES_MONTHLY.employment         = 0.0;
-    ANNUAL_GROWTH_RATES_MONTHLY.unemployment_rate  = 0.0;
+    ANNUAL_GROWTH_RATES_MONTHLY.cpi                = 1.0;			//CPI: compounded inflation rate in pct over last 12 months
+    ANNUAL_GROWTH_RATES_MONTHLY.gdp                = 0.0;			//GDP: percentage change in GDP over last 12 months
+    ANNUAL_GROWTH_RATES_MONTHLY.output             = 0.0;			//percentage change in output over last 12 months
+    ANNUAL_GROWTH_RATES_MONTHLY.employment         = 0.0;			//percentage change in total employment over last 12 months
+    ANNUAL_GROWTH_RATES_MONTHLY.unemployment_rate  = 0.0;			//percentage change in unemployment_rate over last 12 months
     ANNUAL_GROWTH_RATES_MONTHLY.unemployment_rate_skill_1  = 0.0;
     ANNUAL_GROWTH_RATES_MONTHLY.unemployment_rate_skill_2  = 0.0;
     ANNUAL_GROWTH_RATES_MONTHLY.unemployment_rate_skill_3  = 0.0;
     ANNUAL_GROWTH_RATES_MONTHLY.unemployment_rate_skill_4  = 0.0;
     ANNUAL_GROWTH_RATES_MONTHLY.unemployment_rate_skill_5  = 0.0;
-    ANNUAL_GROWTH_RATES_MONTHLY.average_wage               = 0.0;
-    ANNUAL_GROWTH_RATES_MONTHLY.no_firms           = 0.0;
-    ANNUAL_GROWTH_RATES_MONTHLY.no_firm_births     = 0.0;
-    ANNUAL_GROWTH_RATES_MONTHLY.no_firm_deaths     = 0.0;
+    ANNUAL_GROWTH_RATES_MONTHLY.average_wage               = 0.0;	//percentage change in average_wage over last 12 months
+    ANNUAL_GROWTH_RATES_MONTHLY.no_firms           = 0.0;			//percentage change in no_firms over last 12 months
+    ANNUAL_GROWTH_RATES_MONTHLY.no_firm_births     = 0.0;			//percentage change in no_firm_births over last 12 months
+    ANNUAL_GROWTH_RATES_MONTHLY.no_firm_deaths     = 0.0;			//percentage change in no_firm_deaths over last 12 months
     
     //compute monthly rates of change: change over the previous month
     if(HISTORY_MONTHLY[1].cpi>0.0)              {MONTHLY_GROWTH_RATES.cpi                       = (HISTORY_MONTHLY[0].cpi-1)*100;}
@@ -1294,8 +1292,14 @@ int Eurostat_compute_growth_rates_monthly()
     if(HISTORY_MONTHLY[1].no_firm_births>0)     {MONTHLY_GROWTH_RATES.no_firm_births            = (HISTORY_MONTHLY[0].no_firm_births / HISTORY_MONTHLY[1].no_firm_births  -1)*100;}
     if(HISTORY_MONTHLY[1].no_firm_deaths>0)     {MONTHLY_GROWTH_RATES.no_firm_deaths            = (HISTORY_MONTHLY[0].no_firm_deaths / HISTORY_MONTHLY[1].no_firm_deaths  -1)*100;}   
 
+    //compute annual rate of change of CPI: compounded inflation rate over the previous 12 months
+    for (i=0; i<12; i++)
+    {
+    	ANNUAL_GROWTH_RATES_MONTHLY.cpi *= HISTORY_MONTHLY[i].cpi;
+    }
+	ANNUAL_GROWTH_RATES_MONTHLY.cpi = (ANNUAL_GROWTH_RATES_MONTHLY.cpi-1)*100;
+    
     //compute annual rates of change over the previous 12 months: respective to same month in previous year
-    //if(HISTORY_MONTHLY[12].cpi>0.0)             {ANNUAL_GROWTH_RATES_MONTHLY.cpi                = (HISTORY_MONTHLY[0].cpi / HISTORY_MONTHLY[12].cpi -1)*100;}
     if(HISTORY_MONTHLY[12].gdp>0.0)             {ANNUAL_GROWTH_RATES_MONTHLY.gdp                = (HISTORY_MONTHLY[0].gdp / HISTORY_MONTHLY[12].gdp  -1)*100;}
     if(HISTORY_MONTHLY[12].output>0.0)          {ANNUAL_GROWTH_RATES_MONTHLY.output             = (HISTORY_MONTHLY[0].output / HISTORY_MONTHLY[12].output  -1)*100;}
     if(HISTORY_MONTHLY[12].employment>0)        {ANNUAL_GROWTH_RATES_MONTHLY.employment         = (HISTORY_MONTHLY[0].employment / HISTORY_MONTHLY[12].employment  -1)*100;}
@@ -1312,10 +1316,10 @@ int Eurostat_compute_growth_rates_monthly()
 
     
     //*********************************** Code to be tested: region data
-/*    
+    
     for ( region=0; region<REGION_FIRM_DATA.size; region++)
     {
-        MONTHLY_GROWTH_RATES.region_data.array[region].cpi                       = 0.0;
+        MONTHLY_GROWTH_RATES.region_data.array[region].cpi                       = 1.0;
         MONTHLY_GROWTH_RATES.region_data.array[region].gdp                       = 0.0; 
         MONTHLY_GROWTH_RATES.region_data.array[region].output                    = 0.0;
         MONTHLY_GROWTH_RATES.region_data.array[region].employment                = 0.0;
@@ -1330,7 +1334,7 @@ int Eurostat_compute_growth_rates_monthly()
         MONTHLY_GROWTH_RATES.region_data.array[region].no_firm_births            = 0.0;
         MONTHLY_GROWTH_RATES.region_data.array[region].no_firm_deaths            = 0.0;
         
-        ANNUAL_GROWTH_RATES_MONTHLY.region_data.array[region].cpi                = 0.0;
+        ANNUAL_GROWTH_RATES_MONTHLY.region_data.array[region].cpi                = 1.0;
         ANNUAL_GROWTH_RATES_MONTHLY.region_data.array[region].gdp                = 0.0;
         ANNUAL_GROWTH_RATES_MONTHLY.region_data.array[region].output             = 0.0;
         ANNUAL_GROWTH_RATES_MONTHLY.region_data.array[region].employment         = 0.0;
@@ -1360,9 +1364,15 @@ int Eurostat_compute_growth_rates_monthly()
         if(HISTORY_MONTHLY[1].region_data.array[region].no_firms>0)           {MONTHLY_GROWTH_RATES.region_data.array[region].no_firms                  = (HISTORY_MONTHLY[0].region_data.array[region].no_firms / HISTORY_MONTHLY[1].region_data.array[region].no_firms  -1)*100;}
         if(HISTORY_MONTHLY[1].region_data.array[region].no_firm_births>0)     {MONTHLY_GROWTH_RATES.region_data.array[region].no_firm_births            = (HISTORY_MONTHLY[0].region_data.array[region].no_firm_births / HISTORY_MONTHLY[1].region_data.array[region].no_firm_births  -1)*100;}
         if(HISTORY_MONTHLY[1].region_data.array[region].no_firm_deaths>0)     {MONTHLY_GROWTH_RATES.region_data.array[region].no_firm_deaths            = (HISTORY_MONTHLY[0].region_data.array[region].no_firm_deaths / HISTORY_MONTHLY[1].region_data.array[region].no_firm_deaths  -1)*100;}   
+        
+        //compute annual rate of change of CPI: compounded inflation rate over the previous 12 months
+         for (i=0; i<12; i++)
+         {
+         	ANNUAL_GROWTH_RATES_MONTHLY.region_data.array[region].cpi *= HISTORY_MONTHLY[i].region_data.array[region].cpi;
+         }
+         ANNUAL_GROWTH_RATES_MONTHLY.region_data.array[region].cpi = (ANNUAL_GROWTH_RATES_MONTHLY.region_data.array[region].cpi-1)*100;
 
         //compute annual rates of change over the previous 12 months: respective to same month in previous year
-        //if(HISTORY_MONTHLY[12].region_data.array[region].cpi>0.0)             {ANNUAL_GROWTH_RATES_MONTHLY.region_data.array[region].cpi                = (HISTORY_MONTHLY[0].region_data.array[region].cpi / HISTORY_MONTHLY[12].region_data.array[region].cpi -1)*100;}
         if(HISTORY_MONTHLY[12].region_data.array[region].gdp>0.0)             {ANNUAL_GROWTH_RATES_MONTHLY.region_data.array[region].gdp                = (HISTORY_MONTHLY[0].region_data.array[region].gdp / HISTORY_MONTHLY[12].region_data.array[region].gdp  -1)*100;}
         if(HISTORY_MONTHLY[12].region_data.array[region].output>0.0)          {ANNUAL_GROWTH_RATES_MONTHLY.region_data.array[region].output             = (HISTORY_MONTHLY[0].region_data.array[region].output / HISTORY_MONTHLY[12].region_data.array[region].output  -1)*100;}
         if(HISTORY_MONTHLY[12].region_data.array[region].employment>0)        {ANNUAL_GROWTH_RATES_MONTHLY.region_data.array[region].employment         = (HISTORY_MONTHLY[0].region_data.array[region].employment / HISTORY_MONTHLY[12].region_data.array[region].employment  -1)*100;}
@@ -1377,7 +1387,7 @@ int Eurostat_compute_growth_rates_monthly()
         if(HISTORY_MONTHLY[12].region_data.array[region].no_firm_births>0)    {ANNUAL_GROWTH_RATES_MONTHLY.region_data.array[region].no_firm_births     = (HISTORY_MONTHLY[0].region_data.array[region].no_firm_births / HISTORY_MONTHLY[12].region_data.array[region].no_firm_births  -1)*100;}
         if(HISTORY_MONTHLY[12].region_data.array[region].no_firm_deaths>0)    {ANNUAL_GROWTH_RATES_MONTHLY.region_data.array[region].no_firm_deaths     = (HISTORY_MONTHLY[0].region_data.array[region].no_firm_deaths / HISTORY_MONTHLY[12].region_data.array[region].no_firm_deaths  -1)*100;}
     }
-*/
+
     
     return 0;
 }
@@ -1387,11 +1397,11 @@ int Eurostat_compute_growth_rates_monthly()
  */
 int Eurostat_compute_growth_rates_quarterly()
 {
-    int region;
+    int i,region;
     region=0;
     
     //*********************************** Economy-wide data
-    QUARTERLY_GROWTH_RATES.cpi                         = 0.0;
+    QUARTERLY_GROWTH_RATES.cpi                         = 1.0;
     QUARTERLY_GROWTH_RATES.gdp                         = 0.0;
     QUARTERLY_GROWTH_RATES.output                      = 0.0;
     QUARTERLY_GROWTH_RATES.employment                  = 0.0;
@@ -1406,7 +1416,7 @@ int Eurostat_compute_growth_rates_quarterly()
     QUARTERLY_GROWTH_RATES.no_firm_births              = 0.0;
     QUARTERLY_GROWTH_RATES.no_firm_deaths              = 0.0;
     
-    ANNUAL_GROWTH_RATES_QUARTERLY.cpi                  = 0.0;
+    ANNUAL_GROWTH_RATES_QUARTERLY.cpi                  = 1.0;
     ANNUAL_GROWTH_RATES_QUARTERLY.gdp                  = 0.0;
     ANNUAL_GROWTH_RATES_QUARTERLY.output               = 0.0;
     ANNUAL_GROWTH_RATES_QUARTERLY.employment           = 0.0;
@@ -1421,8 +1431,14 @@ int Eurostat_compute_growth_rates_quarterly()
     ANNUAL_GROWTH_RATES_QUARTERLY.no_firm_births       = 0.0;
     ANNUAL_GROWTH_RATES_QUARTERLY.no_firm_deaths       = 0.0;
 
-    //compute quarterly rates of change: change over the previous quarter
-    if(HISTORY_QUARTERLY[1].cpi>0.0)                {QUARTERLY_GROWTH_RATES.cpi                         = (HISTORY_QUARTERLY[0].cpi -1)*100;}
+    //compute quarterly rate of change of CPI: compounded inflation rate over the previous 3 months
+    for (i=0; i<3; i++)
+    {
+    	QUARTERLY_GROWTH_RATES.cpi *= HISTORY_MONTHLY[0].cpi;        	
+    }
+    QUARTERLY_GROWTH_RATES.cpi = (QUARTERLY_GROWTH_RATES.cpi-1)*100;
+    
+    //compute quarterly rates of change: change over the previous 3 months
     if(HISTORY_QUARTERLY[1].gdp>0.0)                {QUARTERLY_GROWTH_RATES.gdp                         = (HISTORY_QUARTERLY[0].gdp / HISTORY_QUARTERLY[1].gdp  -1)*100;}
     if(HISTORY_QUARTERLY[1].output>0.0)             {QUARTERLY_GROWTH_RATES.output                      = (HISTORY_QUARTERLY[0].output / HISTORY_QUARTERLY[1].output  -1)*100;}
     if(HISTORY_QUARTERLY[1].employment>0)           {QUARTERLY_GROWTH_RATES.employment                  = (HISTORY_QUARTERLY[0].employment / HISTORY_QUARTERLY[1].employment  -1)*100;}
@@ -1437,8 +1453,14 @@ int Eurostat_compute_growth_rates_quarterly()
     if(HISTORY_QUARTERLY[1].no_firm_births>0)       {QUARTERLY_GROWTH_RATES.no_firm_births              = (HISTORY_QUARTERLY[0].no_firm_births / HISTORY_QUARTERLY[1].no_firm_births  -1)*100;}
     if(HISTORY_QUARTERLY[1].no_firm_deaths>0)       {QUARTERLY_GROWTH_RATES.no_firm_deaths              = (HISTORY_QUARTERLY[0].no_firm_deaths / HISTORY_QUARTERLY[1].no_firm_deaths  -1)*100;}
     
-    //compute annual rates of change over the previous 4 quarters: respective to same quarter in previous year
-    //if(HISTORY_QUARTERLY[4].cpi>0.0)                {ANNUAL_GROWTH_RATES_QUARTERLY.cpi                  = (HISTORY_QUARTERLY[0].cpi / HISTORY_QUARTERLY[4].cpi -1)*100;}    
+    //compute annual rate of change of CPI: compounded inflation rate over the last 4 quarters (should equal the inflation rate measured over last 12 months)
+     for (i=0; i<4; i++)
+     {
+     	ANNUAL_GROWTH_RATES_QUARTERLY.cpi *= HISTORY_QUARTERLY[i].cpi;
+     }
+     ANNUAL_GROWTH_RATES_QUARTERLY.cpi = (ANNUAL_GROWTH_RATES_QUARTERLY.cpi-1)*100;
+
+    //compute annual rates of change over the previous 4 quarters: respective to same quarter in previous year    
     if(HISTORY_QUARTERLY[4].gdp>0.0)                {ANNUAL_GROWTH_RATES_QUARTERLY.gdp                  = (HISTORY_QUARTERLY[0].gdp / HISTORY_QUARTERLY[4].gdp  -1)*100;}
     if(HISTORY_QUARTERLY[4].output>0.0)             {ANNUAL_GROWTH_RATES_QUARTERLY.output               = (HISTORY_QUARTERLY[0].output / HISTORY_QUARTERLY[4].output  -1)*100;}
     if(HISTORY_QUARTERLY[4].employment>0)           {ANNUAL_GROWTH_RATES_QUARTERLY.employment           = (HISTORY_QUARTERLY[0].employment / HISTORY_QUARTERLY[4].employment  -1)*100;}
@@ -1454,10 +1476,10 @@ int Eurostat_compute_growth_rates_quarterly()
     if(HISTORY_QUARTERLY[4].no_firm_deaths>0)       {ANNUAL_GROWTH_RATES_QUARTERLY.no_firm_deaths       = (HISTORY_QUARTERLY[0].no_firm_deaths / HISTORY_QUARTERLY[4].no_firm_deaths  -1)*100;}
     
     //*********************************** Code to be tested: region data
-/*    
+    
     for ( region=0; region<REGION_FIRM_DATA.size; region++)
     {
-        QUARTERLY_GROWTH_RATES.region_data.array[region].cpi                         = 0.0;
+        QUARTERLY_GROWTH_RATES.region_data.array[region].cpi                         = 1.0;
         QUARTERLY_GROWTH_RATES.region_data.array[region].gdp                         = 0.0;
         QUARTERLY_GROWTH_RATES.region_data.array[region].output                      = 0.0;
         QUARTERLY_GROWTH_RATES.region_data.array[region].employment                  = 0.0;
@@ -1472,7 +1494,7 @@ int Eurostat_compute_growth_rates_quarterly()
         QUARTERLY_GROWTH_RATES.region_data.array[region].no_firm_births              = 0.0;
         QUARTERLY_GROWTH_RATES.region_data.array[region].no_firm_deaths              = 0.0;
         
-        ANNUAL_GROWTH_RATES_QUARTERLY.region_data.array[region].cpi                  = 0.0;
+        ANNUAL_GROWTH_RATES_QUARTERLY.region_data.array[region].cpi                  = 1.0;
         ANNUAL_GROWTH_RATES_QUARTERLY.region_data.array[region].gdp                  = 0.0;
         ANNUAL_GROWTH_RATES_QUARTERLY.region_data.array[region].output               = 0.0;
         ANNUAL_GROWTH_RATES_QUARTERLY.region_data.array[region].employment           = 0.0;
@@ -1487,8 +1509,14 @@ int Eurostat_compute_growth_rates_quarterly()
         ANNUAL_GROWTH_RATES_QUARTERLY.region_data.array[region].no_firm_births       = 0.0;
         ANNUAL_GROWTH_RATES_QUARTERLY.region_data.array[region].no_firm_deaths       = 0.0;
     
-        //compute quarterly rates of change: change over the previous quarter
-        if(HISTORY_QUARTERLY[1].region_data.array[region].cpi>0.0)                {QUARTERLY_GROWTH_RATES.region_data.array[region].cpi                         = (HISTORY_QUARTERLY[0].region_data.array[region].cpi -1)*100;}
+        //compute quarterly rates of change of CPI: compounded inflation rate over the previous 3 months
+        for (i=0; i<3; i++)
+        {
+        	QUARTERLY_GROWTH_RATES.region_data.array[region].cpi *= HISTORY_MONTHLY[0].region_data.array[region].cpi;        	
+        }
+        QUARTERLY_GROWTH_RATES.region_data.array[region].cpi = (QUARTERLY_GROWTH_RATES.region_data.array[region].cpi-1)*100;
+        
+        //compute quarterly rates of change:
         if(HISTORY_QUARTERLY[1].region_data.array[region].gdp>0.0)                {QUARTERLY_GROWTH_RATES.region_data.array[region].gdp                         = (HISTORY_QUARTERLY[0].region_data.array[region].gdp / HISTORY_QUARTERLY[1].region_data.array[region].gdp  -1)*100;}
         if(HISTORY_QUARTERLY[1].region_data.array[region].output>0.0)             {QUARTERLY_GROWTH_RATES.region_data.array[region].output                      = (HISTORY_QUARTERLY[0].region_data.array[region].output / HISTORY_QUARTERLY[1].region_data.array[region].output  -1)*100;}
         if(HISTORY_QUARTERLY[1].region_data.array[region].employment>0)           {QUARTERLY_GROWTH_RATES.region_data.array[region].employment                  = (HISTORY_QUARTERLY[0].region_data.array[region].employment / HISTORY_QUARTERLY[1].region_data.array[region].employment  -1)*100;}
@@ -1503,8 +1531,14 @@ int Eurostat_compute_growth_rates_quarterly()
         if(HISTORY_QUARTERLY[1].region_data.array[region].no_firm_births>0)       {QUARTERLY_GROWTH_RATES.region_data.array[region].no_firm_births              = (HISTORY_QUARTERLY[0].region_data.array[region].no_firm_births / HISTORY_QUARTERLY[1].region_data.array[region].no_firm_births  -1)*100;}
         if(HISTORY_QUARTERLY[1].region_data.array[region].no_firm_deaths>0)       {QUARTERLY_GROWTH_RATES.region_data.array[region].no_firm_deaths              = (HISTORY_QUARTERLY[0].region_data.array[region].no_firm_deaths / HISTORY_QUARTERLY[1].region_data.array[region].no_firm_deaths  -1)*100;}
         
+        //compute annual rate of change of CPI: compounded inflation rate over the last 4 quarters (should equal the inflation rate measured over last 12 months)
+         for (i=0; i<4; i++)
+         {
+         	ANNUAL_GROWTH_RATES_QUARTERLY.region_data.array[region].cpi *= HISTORY_QUARTERLY[i].region_data.array[region].cpi;
+         }
+         ANNUAL_GROWTH_RATES_QUARTERLY.region_data.array[region].cpi = (ANNUAL_GROWTH_RATES_QUARTERLY.region_data.array[region].cpi-1)*100;
+
         //compute annual rates of change over the previous 4 quarters: respective to same quarter in previous year
-        //if(HISTORY_QUARTERLY[4].region_data.array[region].cpi>0.0)                {ANNUAL_GROWTH_RATES_QUARTERLY.region_data.array[region].cpi                  = (HISTORY_QUARTERLY[0].region_data.array[region].cpi / HISTORY_QUARTERLY[4].region_data.array[region].cpi -1)*100;}    
         if(HISTORY_QUARTERLY[4].region_data.array[region].gdp>0.0)                {ANNUAL_GROWTH_RATES_QUARTERLY.region_data.array[region].gdp                  = (HISTORY_QUARTERLY[0].region_data.array[region].gdp / HISTORY_QUARTERLY[4].region_data.array[region].gdp  -1)*100;}
         if(HISTORY_QUARTERLY[4].region_data.array[region].output>0.0)             {ANNUAL_GROWTH_RATES_QUARTERLY.region_data.array[region].output               = (HISTORY_QUARTERLY[0].region_data.array[region].output / HISTORY_QUARTERLY[4].region_data.array[region].output  -1)*100;}
         if(HISTORY_QUARTERLY[4].region_data.array[region].employment>0)           {ANNUAL_GROWTH_RATES_QUARTERLY.region_data.array[region].employment           = (HISTORY_QUARTERLY[0].region_data.array[region].employment / HISTORY_QUARTERLY[4].region_data.array[region].employment  -1)*100;}
@@ -1519,7 +1553,7 @@ int Eurostat_compute_growth_rates_quarterly()
         if(HISTORY_QUARTERLY[4].region_data.array[region].no_firm_births>0)       {ANNUAL_GROWTH_RATES_QUARTERLY.region_data.array[region].no_firm_births       = (HISTORY_QUARTERLY[0].region_data.array[region].no_firm_births / HISTORY_QUARTERLY[4].region_data.array[region].no_firm_births  -1)*100;}
         if(HISTORY_QUARTERLY[4].region_data.array[region].no_firm_deaths>0)       {ANNUAL_GROWTH_RATES_QUARTERLY.region_data.array[region].no_firm_deaths       = (HISTORY_QUARTERLY[0].region_data.array[region].no_firm_deaths / HISTORY_QUARTERLY[4].region_data.array[region].no_firm_deaths  -1)*100;}
     }
-*/    
+    
     return 0;
 }
 
