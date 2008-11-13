@@ -136,7 +136,21 @@ int Firm_compute_dividends()
 	        TOTAL_DIVIDEND_PAYMENT = PREVIOUS_DIVIDEND_PER_SHARE*CURRENT_SHARES_OUTSTANDING;
 	    }
 	*/
-
+	
+	//option 6: replace the total divided payment by the same amount in share repurchases
+	// This option should be conditional on the current share price being "historically" low
+/*
+ 	if(CURRENT_STOCK_PRICE LOW)
+ 	{
+		TOTAL_STOCK_REPURCHASE = TOTAL_DIVIDEND_PAYMENT;
+		TOTAL_DIVIDEND_PAYMENT =0.0;
+		
+		//Number of shares repurchased (stock buying order)
+		NR_STOCK_REPURCHASE = TOTAL_STOCK_REPURCHASE/CURRENT_STOCK_PRICE;
+	}
+*/
+	
+	
     return 0;
 }
 

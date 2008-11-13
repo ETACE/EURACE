@@ -744,3 +744,7 @@ add_tax_payment_message(GOV_ID, TAX_PAYMENT);
 
 HH and firms only transmit the amount, not their ID.
 ----------------------------------------------------------------------
+Sander, rev 1436
+
+Added gov policy parameters and policy rules for consumption and investment.
+----------------------------------------------------------------------

@@ -261,7 +261,7 @@ int Government_set_policy()
 		}
 */
 		//Fiscal policy rule 2
-
+/*
 		//increase tax rates when GDP growth > 1.05
 		if(GDP_GROWTH>1.05)
 		{
@@ -276,7 +276,8 @@ int Government_set_policy()
 			TAX_RATE_HH_LABOUR  -= 0.01; 
 			TAX_RATE_HH_CAPITAL -= 0.01;
 		}
-		
+*/
+	
 	//Set GDP forecast equal to extrapolation of previous growth rate*GDP
 	GDP_FORECAST = GDP_GROWTH*GDP;
 	
@@ -284,15 +285,18 @@ int Government_set_policy()
 	TOTAL_INCOME_FORECAST = GDP_GROWTH*TOTAL_INCOME;
 
 	//Set expenditure forecast: counter-cyclical to gdp growth
-	TOTAL_EXPENDITURE_FORECAST = (1/GDP_GROWTH)*TOTAL_EXPENDITURE;
+	TOTAL_EXPENDITURE_FORECAST = GDP_GROWTH*TOTAL_EXPENDITURE;
 	
 	BUDGET_FORECAST = TOTAL_INCOME_FORECAST - TOTAL_EXPENDITURE_FORECAST;
 	
 	//Set the following policies:
-	
-	//Determine new unemployment benefit percentage
-	//GOV_POLICY_UNEMPLOYMENT_BENEFIT_PCT = 0.70;
 
+	//Determine new government consumption
+	 YEARLY_GOV_CONSUMPTION = GOV_POLICY_GDP_FRACTION_CONSUMPTION * GDP_FORECAST;	
+
+	//Determine new government investment
+	 YEARLY_GOV_INVESTMENT = GOV_POLICY_GDP_FRACTION_INVESTMENT * GDP_FORECAST;
+	
 	//Determine new transfer payment
 	HH_TRANSFER_PAYMENT =0.0;
 	FIRM_TRANSFER_PAYMENT =0.0;
@@ -301,19 +305,6 @@ int Government_set_policy()
 	HH_SUBSIDY_PAYMENT =0.0;
 	FIRM_SUBSIDY_PAYMENT =0.0;
 
-	//Determine new government investment
-	// YEARLY_GOV_INVESTMENT
-	
-	//Distribute total per firm investment
-	// GOV_INVESTMENT
-
-
-	//Determine new government consumption
-	// YEARLY_GOV_CONSUMPTION
-	
-	//Distribute total per firm consumption
-	// GOV_CONSUMPTION
-	
 	return 0;
 }
 
