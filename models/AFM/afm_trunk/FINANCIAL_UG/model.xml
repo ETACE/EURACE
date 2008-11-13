@@ -27,6 +27,11 @@
 			<file>Household_Financial_Market.c</file>
 			<file>Government_Financial_Market.c</file>
                 </functionFiles>
+		<constants>
+			<variable><type>double</type><name>trading_activity</name>
+				<description>household choose randomly to trade or not.</description>
+			</variable>
+                </constants>
 		<environment>
 			
         <timeUnits>
@@ -172,6 +177,7 @@
 			<variable><type>double</type><name>chartistWeight</name>	<description></description></variable>
 			<variable><type>int</type><name>holdingPeriodToForwardW</name>	<description></description></variable>
 			<variable><type>double</type><name>lossaversion</name>	<description></description></variable>
+			<variable><type>double</type><name>strategy</name>	<description></description></variable>
 			
 		</memory>
 		<!--     Defining functions     -->
@@ -190,11 +196,51 @@
 				<name>Household_select_strategy</name>
 				<description></description>
 				<currentState>SELECTSTRATEGY</currentState>
-				<nextState>WAITORDERSTATUS</nextState>
+				<nextState>CHOOSE_TO_TRADE_OR_NOT</nextState>
+			</function>
+			<function>
+				<name>Household_stock_beliefs_formation</name>
+				<description></description>
+				<currentState>CHOOSE_TO_TRADE_OR_NOT</currentState>
+				<nextState>BOND_BELIEF_FORMATION</nextState>
+				<condition>
+					<lhs><value>a.strategy</value></lhs><op>NEQ</op><rhs><value>0</value></rhs>
+				</condition>
 				<inputs>
 					<input><messageName>info_firm</messageName></input>
-					<input><messageName>info_bond</messageName></input>
+					
 				</inputs>
+				
+			</function>
+			<function>
+				<name>Household_bond_beliefs_formation</name>
+				<description></description>
+				<currentState>BOND_BELIEF_FORMATION</currentState>
+				<nextState>SEND_ORDERS</nextState>
+				<condition>
+					<lhs><value>a.strategy</value></lhs><op>NEQ</op><rhs><value>0</value></rhs>
+				</condition>
+				<inputs>
+					<input><messageName>info_bond</messageName></input>
+					
+				</inputs>
+				
+			</function>
+			<function>
+				<name>Household_does_not_trading</name>
+				<description></description>
+				<currentState>CHOOSE_TO_TRADE_OR_NOT</currentState>
+				<nextState>Start_Household_Labour_Role</nextState>
+				<condition>
+					<lhs><value>a.strategy</value></lhs><op>EQ</op><rhs><value>0</value></rhs>
+				</condition>
+				
+			</function>
+			<function>
+				<name>Household_send_orders</name>
+				<description></description>
+				<currentState>SEND_ORDERS</currentState>
+				<nextState>WAITORDERSTATUS</nextState>
 				<outputs>
 					<output><messageName>order</messageName></output>
 				</outputs>
@@ -205,7 +251,10 @@
 				<currentState>WAITORDERSTATUS</currentState>
 				<nextState>Start_Household_Labour_Role</nextState>
 				<inputs>
-					<input><messageName>order_status</messageName></input>
+					<input><messageName>order_status</messageName>
+					<filter><lhs><value>a.id</value></lhs><op>EQ</op><rhs><value>m.trader_id</value></rhs></filter>
+					</input>
+					
 				</inputs>
 				<!--<outputs>
 					<output><messageName>bankAccountUpdate</messageName></output>
@@ -327,7 +376,11 @@
 				<currentState>received_stock_info</currentState>
 				<nextState>end_Firm</nextState>
 				<inputs>
-					<input><messageName>infoAssetCH</messageName></input>
+					<input>
+					<messageName>infoAssetCH</messageName>
+					<filter><lhs><value>a.id</value></lhs><op>EQ</op><rhs><value>m.asset_id</value></rhs></filter>
+					</input>
+					
 				</inputs>
 			</function>
 		</functions>
@@ -379,7 +432,11 @@
 				<currentState>GOVERNMENT_SENT_ORDER</currentState>
 				<nextState>GOVERNMENT_PORTFOLIO_UPDATED</nextState>
 				<inputs>
-					<input><messageName>order_status</messageName></input>
+					<input>
+					<messageName>order_status</messageName>
+					<filter><lhs><value>a.id</value></lhs><op>EQ</op><rhs><value>m.trader_id</value></rhs></filter>
+					</input>
+					
 				</inputs>
 			</function>
 			<function>
@@ -388,7 +445,10 @@
 				<currentState>GOVERNMENT_PORTFOLIO_UPDATED</currentState>
 				<nextState>end_Government</nextState>
 				<inputs>
-					<input><messageName>infoAssetCH</messageName></input>
+					<input><messageName>infoAssetCH</messageName>
+					<filter><lhs><value>a.id</value></lhs><op>EQ</op><rhs><value>m.asset_id</value></rhs></filter>
+					</input>
+					
 				</inputs>
 			</function>
 		</functions>
