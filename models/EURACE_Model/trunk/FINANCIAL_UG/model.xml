@@ -6,7 +6,6 @@
 	<version>7/07/08</version>
 	<description>UNICA</description>
 	
-	<!--***************** Environment values and functions **********************-->
 	<environment>
 		<functionFiles>
 			<file>Order.c</file>
@@ -21,95 +20,120 @@
 			<file>Bank_Financial_Market.c</file>
 			<file>Firm_Financial_Market.c</file>
 			<file>Random.c</file>
+			<file>Bond.c</file>
 			<file>ClearingHouse_Financial_Market.c</file>
 			<file>ClearingMechanism.c</file>
 			<file>Household_Financial_Market.c</file>
-                </functionFiles>
-
-        <timeUnits>
+			<file>Government_Financial_Market.c</file>
+		</functionFiles>
+		<constants>
+			<variable><type>double</type><name>trading_activity</name>
+				<description>household choose randomly to trade or not.</description>
+			</variable>
+		</constants>
+		<environment>
 			
-	<timeUnit>
-		<name>daily</name>
-		<unit>iteration</unit>
-		<period>1</period>
-	</timeUnit>
-			
-	<timeUnit>
-		<name>weekly</name>
-		<unit>daily</unit>
-		<period>5</period>
-	</timeUnit>
-			
-	<timeUnit>
-	        <name>monthly</name>
-		<unit>weekly</unit>
-		<period>4</period>
-	</timeUnit>			
-        </timeUnits>
-		<dataTypes>
-			<dataType>
-				<name>Order</name>
-				<description>ADT order </description>
-				<variables>
-					<variable><type>int</type><name>issuer</name>	<description></description></variable>
-					<variable><type>int</type><name>quantity</name>	<description></description></variable>
-					<variable><type>double</type><name>price</name>	<description></description></variable>
-					<variable><type>int</type><name>assetId</name>	<description></description></variable>
-				</variables>
-			</dataType>
-			<dataType>
-				<name>Belief</name>
-				<description>ADT Belief </description>
-				<variables>
-					<variable><type>int</type><name>asset_id</name>	<description></description></variable>
-					<variable><type>double</type><name>expectedPriceReturns</name>	<description></description></variable>
-					<variable><type>double</type><name>expectedTotalReturns</name>	<description></description></variable>
-					<variable><type>double</type><name>expectedCashFlowYield</name>	<description></description></variable>
-					<variable><type>double</type><name>volatility</name><description></description></variable>
-					<variable><type>double</type><name>expectedEarning</name><description></description></variable>
-					<variable><type>double</type><name>expectedEarningPayout</name><description></description></variable>
-					<variable><type>double</type><name>last_price</name><description></description></variable>
-					<variable><type>double</type><name>utility</name><description></description></variable>
-				</variables>
-			</dataType>
-			
-			<dataType>
-				<name>Stock</name>
-				<description>ADT Stock</description>
-				<variables>
-					<variable><type>int</type><name>id</name>	<description></description></variable>
-					<variable><type>int</type><name>nrOutStandingShares</name>	<description></description></variable>
-					<variable><type>int</type><name>index</name>	<description></description></variable>
-					<!--<variable><type>double</type><name>dividendExp</name>	<description></description></variable>-->
-					<variable><type>double</type><name>prices[100]</name>	<description></description></variable>
-					<variable><type>double</type><name>returns[100]</name>	<description></description></variable>
-				</variables>
-			</dataType>
-			<dataType>
-				<name>Asset</name>
-				<description>ADT Asset </description>
-				<variables>
-					<variable><type>int</type><name>id</name>	<description></description></variable>
-					<variable><type>int</type><name>quantity</name>	<description></description></variable>
-					<variable><type>double</type><name>lastPrice</name>	<description></description></variable>
-				</variables>
-			</dataType>
-			<dataType>
-				<name>ClearingMechanism</name>
-				<description>ADT clearing mechanism </description>
-				<variables>
-					<variable><type>double</type><name>lastPrice</name>	<description></description></variable>
-					<variable><type>int</type><name>quantity</name>	<description></description></variable>
-					<variable><type>Order_array</type><name>sellOrders</name>	<description></description></variable>
-					<variable><type>Order_array</type><name>buyOrders</name>	<description></description></variable>
-					<variable><type>double_array</type><name>prices</name>	<description></description></variable>
-
-				</variables>
-			</dataType>
-			
-		</dataTypes>
+			<timeUnits>
+				
+				<timeUnit>
+					<name>daily</name>
+					<unit>iteration</unit>
+					<period>1</period>
+				</timeUnit>
+				
+				<timeUnit>
+					<name>weekly</name>
+					<unit>daily</unit>
+					<period>5</period>
+				</timeUnit>
+				
+				<timeUnit>
+					<name>monthly</name>
+					<unit>weekly</unit>
+					<period>4</period>
+				</timeUnit>			
+			</timeUnits>
+			<dataTypes>
+				<dataType>
+					<name>Order</name>
+					<description>ADT order </description>
+					<variables>
+						<variable><type>int</type><name>issuer</name>	<description></description></variable>
+						<variable><type>int</type><name>quantity</name>	<description></description></variable>
+						<variable><type>double</type><name>price</name>	<description></description></variable>
+						<variable><type>int</type><name>assetId</name>	<description></description></variable>
+					</variables>
+				</dataType>
+				<dataType>
+					<name>Belief</name>
+					<description>ADT Belief </description>
+					<variables>
+						<variable><type>int</type><name>asset_id</name>	<description></description></variable>
+						<variable><type>double</type><name>expectedPriceReturns</name>	<description></description></variable>
+						<variable><type>double</type><name>expectedTotalReturns</name>	<description></description></variable>
+						<variable><type>double</type><name>expectedCashFlowYield</name>	<description></description></variable>
+						<variable><type>double</type><name>volatility</name><description></description></variable>
+						<variable><type>double</type><name>expectedEarning</name><description></description></variable>
+						<variable><type>double</type><name>expectedEarningPayout</name><description></description></variable>
+						<variable><type>double</type><name>last_price</name><description></description></variable>
+						<variable><type>double</type><name>utility</name><description></description></variable>
+					</variables>
+				</dataType>
+				
+				<dataType>
+					<name>Stock</name>
+					<description>ADT Stock</description>
+					<variables>
+						<variable><type>int</type><name>id</name>	<description></description></variable>
+						<variable><type>int</type><name>nrOutStandingShares</name>	<description></description></variable>
+						<variable><type>int</type><name>index</name>	<description></description></variable>
+						<!--<variable><type>double</type><name>dividendExp</name>	<description></description></variable>-->
+						<variable><type>double</type><name>prices[100]</name>	<description></description></variable>
+						<variable><type>double</type><name>returns[100]</name>	<description></description></variable>
+					</variables>
+				</dataType>
+				<dataType>
+					<name>Bond</name>
+					<description>ADT Bond</description>
+					<variables>
+						<variable><type>int</type><name>id</name>	<description></description></variable>
+						<variable><type>int</type><name>nr_outstanding</name>	<description></description></variable>
+						<variable><type>int</type><name>quantity</name>	<description></description></variable>
+						<variable><type>double</type><name>face_value</name>	<description></description></variable>
+						<variable><type>double</type><name>nominal_yield</name>	<description></description></variable>
+						<variable><type>int</type><name>maturity_day</name>	<description></description></variable>
+						<variable><type>int</type><name>issue_day</name>	<description></description></variable>
+						<variable><type>double</type><name>yield2maturity</name>	<description></description></variable>
+						<variable><type>double</type><name>prices[100]</name>	<description></description></variable>
+						<variable><type>int</type><name>index</name>	<description></description></variable>
+						<variable><type>double</type><name>returns[100]</name>	<description></description></variable>
+					</variables>
+				</dataType>
+				<dataType>
+					<name>Asset</name>
+					<description>ADT Asset owned</description>
+					<variables>
+						<variable><type>int</type><name>id</name>	<description></description></variable>
+						<!--<variable><type>int</type><name>type</name>	<description>0= bond, 1=stock</description></variable>-->
+						<variable><type>int</type><name>quantity</name>	<description></description></variable>
+						<variable><type>double</type><name>lastPrice</name>	<description></description></variable>
+					</variables>
+				</dataType>
+				<dataType>
+					<name>ClearingMechanism</name>
+					<description>ADT clearing mechanism </description>
+					<variables>
+						<variable><type>double</type><name>lastPrice</name>	<description></description></variable>
+						<variable><type>int</type><name>quantity</name>	<description></description></variable>
+						<variable><type>Order_array</type><name>sellOrders</name>	<description></description></variable>
+						<variable><type>Order_array</type><name>buyOrders</name>	<description></description></variable>
+						<variable><type>double_array</type><name>prices</name>	<description></description></variable>
+						
+					</variables>
+				</dataType>
+				
+			</dataTypes>
 </environment>
-	
 	<!--********************* X-machine Agent - Trader ****************************-->
 	<agents>
 	
@@ -151,7 +175,7 @@
 			<variable><type>double</type><name>chartistWeight</name>	<description></description></variable>
 			<variable><type>int</type><name>holdingPeriodToForwardW</name>	<description></description></variable>
 			<variable><type>double</type><name>lossaversion</name>	<description></description></variable>
-			
+			<variable><type>double</type><name>strategy</name>	<description></description></variable>
 		</memory>
 		<!--     Defining functions     -->
 		<functions>
@@ -162,16 +186,58 @@
 				<nextState>SELECTSTRATEGY</nextState>
 				<inputs>
 					<input><messageName>accountInterest</messageName></input>
+					
 				</inputs>
 			</function>
 			<function>
 				<name>Household_select_strategy</name>
 				<description></description>
 				<currentState>SELECTSTRATEGY</currentState>
-				<nextState>WAITORDERSTATUS</nextState>
+				<nextState>CHOOSE_TO_TRADE_OR_NOT</nextState>
+			</function>
+			<function>
+				<name>Household_stock_beliefs_formation</name>
+				<description></description>
+				<currentState>CHOOSE_TO_TRADE_OR_NOT</currentState>
+				<nextState>BOND_BELIEF_FORMATION</nextState>
+				<condition>
+					<lhs><value>a.strategy</value></lhs><op>NEQ</op><rhs><value>0</value></rhs>
+				</condition>
 				<inputs>
 					<input><messageName>info_firm</messageName></input>
+					
 				</inputs>
+				
+			</function>
+			<function>
+				<name>Household_bond_beliefs_formation</name>
+				<description></description>
+				<currentState>BOND_BELIEF_FORMATION</currentState>
+				<nextState>SEND_ORDERS</nextState>
+				<condition>
+					<lhs><value>a.strategy</value></lhs><op>NEQ</op><rhs><value>0</value></rhs>
+				</condition>
+				<inputs>
+					<input><messageName>info_bond</messageName></input>
+					
+				</inputs>
+				
+			</function>
+			<function>
+				<name>Household_does_not_trading</name>
+				<description></description>
+				<currentState>CHOOSE_TO_TRADE_OR_NOT</currentState>
+				<nextState>Start_Household_Labour_Role</nextState>
+				<condition>
+					<lhs><value>a.strategy</value></lhs><op>EQ</op><rhs><value>0</value></rhs>
+				</condition>
+				
+			</function>
+			<function>
+				<name>Household_send_orders</name>
+				<description></description>
+				<currentState>SEND_ORDERS</currentState>
+				<nextState>WAITORDERSTATUS</nextState>
 				<outputs>
 					<output><messageName>order</messageName></output>
 				</outputs>
@@ -182,7 +248,10 @@
 				<currentState>WAITORDERSTATUS</currentState>
 				<nextState>Start_Household_Labour_Role</nextState>
 				<inputs>
-					<input><messageName>order_status</messageName></input>
+					<input><messageName>order_status</messageName>
+						<filter><lhs><value>a.id</value></lhs><op>EQ</op><rhs><value>m.trader_id</value></rhs></filter>
+					</input>
+					
 				</inputs>
 				<!--<outputs>
 					<output><messageName>bankAccountUpdate</messageName></output>
@@ -300,7 +369,79 @@
 				<currentState>15</currentState>
 				<nextState>Update_02</nextState>
 				<inputs>
-					<input><messageName>infoAssetCH</messageName></input>
+					<input>
+						<messageName>infoAssetCH</messageName>
+						<filter><lhs><value>a.id</value></lhs><op>EQ</op><rhs><value>m.asset_id</value></rhs></filter>
+					</input>
+					
+				</inputs>
+			</function>
+		</functions>
+	</xagent>
+	<xagent>
+		<name>Government</name>
+		<description></description>
+		
+		<memory>
+			<variable><type>Bond</type><name>bond</name>	<description></description></variable>
+			<variable><type>Order</type><name>pending_order</name>	<description></description></variable>
+			<variable><type>double</type><name>deficit</name>	<description></description></variable>
+		</memory>
+		<!--        Defining functions                -->
+		<functions>
+			<function>
+				<name>Government_send_info_bond</name>
+				<description></description>
+				<currentState>start_Government</currentState>
+				<nextState>GOVERNMENT_SENT_info_bond</nextState>
+				<outputs>
+					<output><messageName>info_bond</messageName></output>
+					
+				</outputs>
+			</function>
+			<function>
+				<name>Government_generate_pending_orders</name>
+				<description></description>
+				<currentState>GOVERNMENT_SENT_info_bond</currentState>
+				<nextState>GOVERNMENT_IN_DEFICIT</nextState>
+				<outputs>
+					<output><messageName>order</messageName></output>
+					
+				</outputs>
+			</function>
+			<function>
+				<name>Government_orders_issuing</name>
+				<description></description>
+				<currentState>GOVERNMENT_IN_DEFICIT</currentState>
+				<nextState>GOVERNMENT_SENT_ORDER</nextState>
+				<outputs>
+					<output><messageName>order</messageName></output>
+					
+				</outputs>
+			</function>
+			<function>
+				<name>Government_update_its_portfolio</name>
+				<description></description>
+				<currentState>GOVERNMENT_SENT_ORDER</currentState>
+				<nextState>GOVERNMENT_PORTFOLIO_UPDATED</nextState>
+				<inputs>
+					<input>
+						<messageName>order_status</messageName>
+						<filter><lhs><value>a.id</value></lhs><op>EQ</op><rhs><value>m.trader_id</value></rhs></filter>
+					</input>
+					
+				</inputs>
+			</function>
+			<function>
+				<name>Government_receive_info_bond</name>
+				<description></description>
+				<currentState>GOVERNMENT_PORTFOLIO_UPDATED</currentState>
+				<nextState>end_Government</nextState>
+				<inputs>
+					<input><messageName>infoAssetCH</messageName>
+						<filter><lhs><value>a.id</value></lhs><op>EQ</op><rhs><value>m.asset_id</value></rhs></filter>
+					</input>
+					
 				</inputs>
 			</function>
 		</functions>
@@ -345,7 +486,7 @@
 		
 		<message>
 			<name>info_firm</name>
-			<description>message posted by the Eurostat </description>
+			<description>message posted by the Firm</description>
 			<variables>
 				<variable><type>int</type><name>id</name><description></description></variable>
 				<variable><type>double</type><name>earnings</name><description></description></variable>
@@ -353,7 +494,7 @@
 				<variable><type>double</type><name>earnings_payout</name><description></description></variable>
 				<variable><type>double</type><name>equity</name><description></description></variable>
 				<variable><type>Stock</type><name>stock</name>	<description></description></variable>
-	
+				
 				
 			</variables>
 		</message>
@@ -372,6 +513,14 @@
 			<description>message posted by the Household </description>
 			<variables>
 				<variable><type>double</type><name>account</name>	<description></description></variable>
+				
+			</variables>
+		</message>
+		<message>
+			<name>info_bond</name>
+			<description>message posted by the Government </description>
+			<variables>
+				<variable><type>Bond</type><name>bond</name><description></description></variable>
 				
 			</variables>
 		</message>
