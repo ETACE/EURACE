@@ -118,13 +118,8 @@ void  stockBeliefFormation(Belief *belief, Stock *stock,int backwardWindow,int f
   dividend_yield_annualized=belief->expectedCashFlowYield*(NRDAYSINYEAR/forwardWindow);
   total_returns_avg=price_returns_avg+ dividend_yield_annualized;
  
-  /*if(chartistWeight) { //printf("un chartista?");
-                       binsnumber = min(bins,backwardWindow);
-                      frequencyTotalReturns(stock,hist,backwardWindow-1,binsnumber,factor,value);
-                     }
-  else frequencyTotalReturns(stock,hist,1,1,0,value);*/
-  if(chartistWeight) belief->utility= computeStockUtilityFunction(stock, backwardWindow, factor,  value, lossaversion);
-  else belief->utility= computeStockUtilityFunction(stock, 1, factor,  value, lossaversion);
+
+  belief->utility= computeStockUtilityFunction(stock, backwardWindow, factor,  value, lossaversion);
   belief->expectedPriceReturns=price_returns_avg;//gauss(rnd,0,0.1);//price_returns_avg;
 //printf("expected price return%f\n",price_returns_avg);
   belief->expectedTotalReturns=total_returns_avg;

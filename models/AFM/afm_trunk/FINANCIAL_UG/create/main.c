@@ -1,10 +1,10 @@
 //#include "../../header.h"
 #include "../my_library_header.h"
 #define NUMFIRM  2
-#define NUMHOUSE 1000
+#define NUMHOUSE 1010
 #define NUMRANDOM 900
-#define NUMFUND 100
-#define NUMCHAR 0
+#define NUMFUND 50
+#define NUMCHAR 60
 
 void initFirm(struct xmachine_memory_Firm *firm,int id, double price)
 {  
@@ -13,7 +13,7 @@ void initFirm(struct xmachine_memory_Firm *firm,int id, double price)
 	firm->equity = NUMHOUSE*1000*price;
 	firm->current_shares_outstanding = NUMHOUSE*1000;
 	firm->id = id;
-	firm->current_dividend_per_share = 0.01;
+	firm->current_dividend_per_share = 1;
 	init_Stock(&firm->stock);
         initializeStock(&firm->stock,id,price,firm->current_shares_outstanding);
         setStock(&firm->stock, id, price, NUMHOUSE*1000);
@@ -41,7 +41,7 @@ void initHousehold(struct xmachine_memory_Household *household,int id,double rW,
 	household->randomWeight = rW;
 	household->fundamentalWeight = fW;
 	household->chartistWeight = cW;
-	household->holdingPeriodToForwardW = 2;
+	household->holdingPeriodToForwardW = nextBetween( 3 , 6);;
 	household->lossaversion = 2.25;
 	
         init_Assetsowned(&household->assetsowned);
@@ -68,7 +68,7 @@ void initGovernment(struct xmachine_memory_Government *government)
 	government->payment_account=-2000000;	
 	//government->day_of_month_to_act;	
 	init_Bond(&government->bond);
-        initializeBond(&government->bond,2000,NUMHOUSE*1000,100,0.02);
+        initializeBond(&government->bond,2000,NUMHOUSE*100,50,0.02);
 	init_Order(&government->pending_order);	
 	government->deficit=0;	
 }

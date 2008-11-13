@@ -92,7 +92,7 @@ double volatilityStock(Stock *stock,int backwardWindow)
                aux=(backreturnsAt(stock,i)-expectedreturn);
                volatility=volatility+(aux*aux);
             }
-      volatility=sqrt(volatility/(backwardWindow));
+      volatility=volatility/(backwardWindow);
       //volatility=sqrt(volatility/(backwardWindow);
       return volatility;
      }

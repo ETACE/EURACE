@@ -5,10 +5,27 @@
 
 //utility functions
 
-int sendOrders()
+int Household_send_orders()
 {   Order_array *orders;
     Order *ord;
     int i;
+    double bankrate;
+    Order_array *pending;
+    Asset_array *assetsowned;
+    Belief_array *beliefs;
+    double_array *assetWeights;
+    double_array *assetUtilities;
+
+      
+    bankrate=0.01;
+    assetsowned=get_assetsowned();
+    pending=get_pendingOrders();
+    assetWeights=get_assetWeights();
+    assetUtilities=get_assetUtilities();
+    beliefs=get_beliefs();
+    computeUtilities(beliefs,assetUtilities);
+    assetUtilitiesToWeights(assetWeights,assetUtilities,bankrate);
+    generatePendingOrders(assetsowned,pending,beliefs,&PAYMENT_ACCOUNT);
     
     orders=get_pendingOrders();
     //printf(" size = %d\n",sizeCOrder(orders));
@@ -107,7 +124,7 @@ void assetUtilitiesToWeights(double_array *assetWeights,double_array *assetUtili
       add_double(assetWeights,bankrate);
                    
     divide(assetWeights,somma);
-}
+}*/
         
 /*void assetUtilitiesToWeights(double_array *assetWeights,double_array *assetUtilities,double bankrate)
 { 
@@ -126,38 +143,11 @@ void assetUtilitiesToWeights(double_array *assetWeights,double_array *assetUtili
  return ;
 }  */
 int  Household_select_strategy()
-  { double bankrate;
-    Order_array *pending;
-    Asset_array *assetsowned;
-    Belief_array *beliefs;
-    double_array *assetWeights;
-    double_array *assetUtilities;
-
-      
-    bankrate=0.001;
-    assetsowned=get_assetsowned();
-    pending=get_pendingOrders();
-    assetWeights=get_assetWeights();
-    assetUtilities=get_assetUtilities();
-    beliefs=get_beliefs();
-    if (next()<0.1)  
-    {  
-     stock_beliefs_formation();
-    bond_beliefs_formation();
-    computeUtilities(beliefs,assetUtilities);
-     //printf("\n");
-    // print_double_array(assetUtilities);
-     assetUtilitiesToWeights(assetWeights,assetUtilities,bankrate);
-   //printf("\n");
-   // print_double_array(assetWeights);
-    // printf("size pesi =====%d",assetWeights->size);
-     generatePendingOrders(assetsowned,pending,beliefs,&PAYMENT_ACCOUNT);
-
-    } 
-    sendOrders();
-//printf("ci sono%d\n",ID);
+  { 
+    set_strategy(next()<trading_activity);
     return 0;
   }
+
    
 int Household_update_its_portfolio()
 { int i,issuer;
@@ -266,7 +256,7 @@ void generatePendingOrders(Asset_array *assetsowned,Order_array *pending, Belief
    
 //}
 }
-int stock_beliefs_formation()
+int Household_stock_beliefs_formation()
 { 
   Stock *stock;
   int i;
@@ -274,10 +264,11 @@ int stock_beliefs_formation()
   Belief *belief;
   Belief_array *beliefs;
   double dividend, earning_payout,earnings,equity;
-  cinfo_stock=get_first_info_firm_message();
+  
   beliefs=get_beliefs();
   reset_Belief_array(beliefs);
   i=0;
+  cinfo_stock=get_first_info_firm_message();
   while( cinfo_stock)
     {  
      
@@ -298,7 +289,7 @@ int stock_beliefs_formation()
     }
 return 0;
 }
-int bond_beliefs_formation()
+int Household_bond_beliefs_formation()
 { 
   Bond *bond;
   int i;
@@ -323,29 +314,16 @@ int bond_beliefs_formation()
     }
 return 0;
 }
-/*int  Household_receive_info_asset_to_eurostat()
-   Asset *asset;
-   int assetId;
-   assets =get_assetsowned();
-   xmachine_message_infoAsset *currentAsset;
-   currentAsset=get_first_infoAsset_message();
-   while(currentAsset){
-                       assetId=currentAsset->issuer;
-   if(isPresentCAsset(assets,assetId))
-   {
-   asset=elementAtCAsset(assets,assetId);
-   setPrice(asset,currentAsset->price);}
-   currentAsset=currentAsset->next;
-  }
-  return 0;
-}*/
+
 
 int totalassetsowned()
   { Asset_array *assets;
     assets =get_assetsowned();
     return totalassets(assets);
   }
-
+int Household_does_not_trading()
+ {return 0;
+ }
                       
 //int Household_receive_info_asset_from_firm(){return 0;}
 int Household_receive_info_interest_from_bank(){return 0;}
