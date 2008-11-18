@@ -7,6 +7,12 @@
 	<description>UNICA</description>
 	
 	<environment>
+			<constants>
+			<variable><type>double</type><name>trading_activity</name>
+				<description>household choose randomly to trade or not.</description>
+			</variable>
+		</constants>
+	
 		<functionFiles>
 			<file>Order.c</file>
 			<file>COrder.c</file>
@@ -26,12 +32,6 @@
 			<file>Household_Financial_Market.c</file>
 			<file>Government_Financial_Market.c</file>
 		</functionFiles>
-		<constants>
-			<variable><type>double</type><name>trading_activity</name>
-				<description>household choose randomly to trade or not.</description>
-			</variable>
-		</constants>
-		<environment>
 			
 			<timeUnits>
 				
