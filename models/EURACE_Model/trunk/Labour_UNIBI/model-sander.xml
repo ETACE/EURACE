@@ -59,6 +59,16 @@
 </variables>
 </dataType>
 
+<dataType>
+<name>logit</name>
+<description>Used by firms to stock logits and corresponding worker IDs</description>
+<variables>
+<variable><type>double</type><name>logit_value</name><description></description></variable>
+<variable><type>int</type><name>worker_id</name><description></description></variable>
+<variable><type>int</type><name>general_skill</name><description></description></variable>
+</variables>
+</dataType>
+
 </dataTypes>
 
 </environment>
