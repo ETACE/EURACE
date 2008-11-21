@@ -820,7 +820,7 @@ void unittest_Government_read_data_from_Eurostat()
 /*
  * \fn: void unittest_Government_set_policy()
  * \brief: Unit tests for: Government_set_policy
- * Status: NOT Tested
+ * Status: Tested OK
  */
 void unittest_Government_set_policy()
 {
@@ -830,7 +830,14 @@ void unittest_Government_set_policy()
 	unittest_init_Government_agent();
 	
     /***** Variables: Memory pre-conditions **************************/
-
+	//environment constants
+	GOV_POLICY_GDP_FRACTION_CONSUMPTION=0.20;
+	GOV_POLICY_GDP_FRACTION_INVESTMENT=0.30;
+	
+	GDP=100.0;
+	GDP_GROWTH=1.00;
+	
+	
 	/***** Messages: initialize message boards **********************************/
 
 	/***** Messages: pre-conditions **********************************/
@@ -841,9 +848,11 @@ void unittest_Government_set_policy()
 	Government_set_policy();
     
     /***** Variables: Memory post-conditions *****/
-//	CU_ASSERT_DOUBLE_EQUAL(var, result, 1e-3);
+	CU_ASSERT_DOUBLE_EQUAL(GDP_FORECAST, 100.0, 1e-3);
+	CU_ASSERT_DOUBLE_EQUAL(YEARLY_GOV_CONSUMPTION, 20.0, 1e-3);
+	CU_ASSERT_DOUBLE_EQUAL(YEARLY_GOV_INVESTMENT, 30.0, 1e-3);
 
-    /***** Variables: Message post-conditions *****/
+	/***** Variables: Message post-conditions *****/
 	
     /************* At end of unit test, free the agent **************/
 	unittest_free_Government_agent();

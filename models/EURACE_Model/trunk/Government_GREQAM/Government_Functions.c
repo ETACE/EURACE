@@ -304,7 +304,7 @@ int Government_set_policy()
 	//Determine new transfer payment
 	HH_SUBSIDY_PAYMENT =0.0;
 	FIRM_SUBSIDY_PAYMENT =0.0;
-
+	
 	return 0;
 }
 

@@ -169,77 +169,6 @@ void Eurostat_calc_macro_data(void)
     MONTHLY_REVENUE = sum_total_cum_revenue;
     MONTHLY_PLANNED_OUTPUT = sum_total_planned_output;
 }
-
-/*\fn: void Eurostat_calc_price_index(void)
- * \brief: Compute price index for regions.
- * Q: REGION_FIRM_DATA.array[i].monthly_sold_quantity: total quantity sold in region
- * q: firm_send_data_message->cum_total_sold_quantity: Monthly sum of sold quantities in the different malls (= total quantity sold in all regions)             
- * weight=q/Q
- * p: firm_send_data_message->price
- * p_previous: firm_send_data_message->price_previous
- * sum_1= sum_firms(weight * p * q)
- * sum_2= sum_firms(weight * p_previous * q)
- * PRICE_INDEX =sum_1/sum2;
- * Assumed: firm uses the same price in all regions
- * firm_send_data_message->cum_total_sold_quantity refers to the firms own region.
- * TODO: Change this to use heterogenous prices for the regional sales
- * firm_send_data_message->mall_sales_array[mall_id].quantity
- * firm_send_data_message->mall_sales_array[mall_id].price
-*/
-void Eurostat_calc_price_index(void)
-{
-	int i;
-	double weight, price, price_last_month, quantity, sum_1, sum_2;
-	
-    CPI = 0.0;
-        
-    /*Store the region data of the firms*/
-    for(i = 0; i < REGION_FIRM_DATA.size; i++)
-    {                    
-    	/*Reset sums for each region*/
-	    sum_1 = 0.0;
-	    sum_2 = 0.0;
-	    
-	    /*Start a new reading loop*/
-	    START_FIRM_SEND_DATA_MESSAGE_LOOP
-	        if(firm_send_data_message->region_id == REGION_FIRM_DATA.array[i].region_id)
-	        {
-	        	quantity = firm_send_data_message->cum_total_sold_quantity;
-	        	weight = quantity/REGION_FIRM_DATA.array[i].monthly_sold_quantity;
-	            price = firm_send_data_message->price;
-	            price_last_month = firm_send_data_message->price_last_month;
-	            sum_1 += weight * price * quantity;
-	            sum_2 += weight * price_last_month * quantity;
-	        }
-	    FINISH_FIRM_SEND_DATA_MESSAGE_LOOP
-	    
-	    REGION_FIRM_DATA.array[i].cpi_last_month = REGION_FIRM_DATA.array[i].cpi;
-	    REGION_FIRM_DATA.array[i].cpi = sum_1/sum_2;
-	    
-	    if (PRINT_DEBUG)
-	    {
-	        fprintf(stdout,"CPI for region %d = %f\n", i, REGION_FIRM_DATA.array[i].cpi);
-	    }
-    }
-    
-    //Compute overall economy-wide price index: loop over regions
-    sum_1 = 0.0;
-    sum_2 = 0.0;
-    for(i = 0; i< REGION_FIRM_DATA.size; i++)
-    {
-    	quantity = REGION_FIRM_DATA.array[i].monthly_sold_quantity;
-    	weight = quantity/MONTHLY_SOLD_QUANTITY;
-        price = REGION_FIRM_DATA.array[i].cpi;
-        price_last_month = REGION_FIRM_DATA.array[i].cpi_last_month;
-        sum_1 += weight * price * quantity;
-        sum_2 += weight * price_last_month * quantity;
-    }
-    CPI = sum_1/sum_2;
-    if (PRINT_DEBUG)
-    {
-        fprintf(stdout,"CPI = %f\n", CPI);
-    }
-}
     
 void Eurostat_calc_firm_population(void)
 {
@@ -549,12 +478,52 @@ void Eurostat_measure_export(void)
             }
         }
     }
-   
+                           
+}
+
+
+/*\fn: void Eurostat_calc_price_index(void)
+ * \brief: Compute the regional CPI and the economy-wide CPI.
+ * Q: MONTHLY_SOLD_QUANTITY: total quantity sold in economy
+ * q: REGION_FIRM_DATA.array[i].monthly_sold_quantity: total quantity sold in region             
+ * weight=q/Q
+ * p: REGION_FIRM_DATA.array[i].cpi
+ * p_previous = REGION_FIRM_DATA.array[i].cpi_last_month
+ * sum_1= sum_regions(weight * p * q)
+ * sum_2= sum_regions(weight * p_previous * q)
+ * PRICE_INDEX =sum_1/sum2;
+*/
+void Eurostat_calc_price_index(void)
+{
+	int i,j, index;
+	double weight, price, price_last_month, quantity, sum_1, sum_2;
+	
+    CPI = 0.0;
+    
     //Compute the regional CPI as the ratio between sum(p_t*q_t)/sum(p_t-1*q_t)
+    //NOTE: we also need to include the diagonal value of the original export_value_matrix, which was excluded from the import/export sums.
     for (j=0; j<NO_REGIONS; j++)
     {    
-    	REGION_FIRM_DATA.array[j].cpi = REGION_IMPORT_VALUE[j]/REGION_IMPORT_PREVIOUS_VALUE[j];
+    	index=j*NO_REGIONS+j;
+    	REGION_FIRM_DATA.array[j].cpi = (REGION_IMPORT_VALUE[j]+EXPORT_VALUE_MATRIX[index])/(REGION_IMPORT_PREVIOUS_VALUE[j]+EXPORT_PREVIOUS_VALUE_MATRIX[index]);
     }                
-                        
+
+    //Compute overall economy-wide price index: loop over regions
+    sum_1 = 0.0;
+    sum_2 = 0.0;
+    for(i = 0; i< REGION_FIRM_DATA.size; i++)
+    {
+    	quantity = REGION_FIRM_DATA.array[i].monthly_sold_quantity;
+    	weight = quantity/MONTHLY_SOLD_QUANTITY;
+        price = REGION_FIRM_DATA.array[i].cpi;
+        price_last_month = REGION_FIRM_DATA.array[i].cpi_last_month;
+        sum_1 += weight * price * quantity;
+        sum_2 += weight * price_last_month * quantity;
+    }
+    CPI = sum_1/sum_2;
+    if (PRINT_DEBUG)
+    {
+        fprintf(stdout,"\n Economy-wide CPI = %f\n", CPI);
+    }
 }
 

@@ -3,7 +3,7 @@
 #include "../my_library_header.h"
 #include "Eurostat_aux_header.h"
 
-#define NO_REGIONS 2 //number of regions (hard-coded in xml as 30 max)
+#define NO_REGIONS 2 //number of regions (hard-coded here, but should be a environment constant)
 
 int Eurostat_idle()
 {
@@ -888,13 +888,11 @@ int Eurostat_calculate_data()
 
     
     /*Execute auxiliary functions*/
-
     Eurostat_calc_macro_data();
-    Eurostat_calc_price_index();
     Eurostat_calc_firm_population();
     Eurostat_calc_firm_survival_rates();
     Eurostat_measure_export();
-    
+    Eurostat_calc_price_index();    
     
     return 0;
 }
