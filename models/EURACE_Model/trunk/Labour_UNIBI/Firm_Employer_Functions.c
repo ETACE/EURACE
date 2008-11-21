@@ -306,109 +306,196 @@ int Firm_send_redundancies()
  */
 int Firm_read_job_applications_send_job_offer_or_rejection()
 {
-	/* Create a job application dynamic array */
-	job_application_array job_application_list; 
-	init_job_application_array(&job_application_list);
-	
-	/* If day of month to act... */
-
-	START_JOB_APPLICATION_MESSAGE_LOOP
+	int no_applications;
+			
+		/* Create a job application dynamic array */
+		job_application_array job_application_list; 
+		init_job_application_array(&job_application_list);
 		
-		/* Read job application messages for this Firm */
-		if(job_application_message->firm_id == ID)
-		{
-			/*Add application to a list (array)*/
-			add_job_application(&job_application_list, 
-			job_application_message->worker_id,
-			job_application_message->region_id,
-			job_application_message->general_skill, 
-			job_application_message->specific_skill);
-		}
+		/* If day of month to act... */
 
-	FINISH_JOB_APPLICATION_MESSAGE_LOOP
-
-/*+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-
-	/*Shuffle applications before sorting: If two or more applications are equal then 			they will be ranked by chance*/
-	/*int i,k;
-	job_application * i_job_application, * k_job_application;
-	job_application * temp_job_application = (job_application *)malloc(sizeof
-	(job_application));
-
-	for(i = 0; i < (job_application_list.size);i++)
-	{
-		k = random_int(i, (job_application_list.size-1));
-
-		i_job_application = &job_application_list.array[i];
-		k_job_application = &job_application_list.array[k];*/
-
-			/* Swap neighbours */
-			/** temp_job_application = * i_job_application;
-			* i_job_application = * k_job_application;
-			* k_job_application = * temp_job_application;
-	}
-
-	free(temp_job_application);*/
-
-
-/*+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-
-
-	/*Rank job applications (function from my_library_functions) */
-	//sort_job_application_list(&job_application_list);
-
-	qsort(job_application_list.array, job_application_list.size, 
-	sizeof(job_application), job_application_list_rank_general_skill_function);
-
-	int i;
-	/*For each job application message... */
-	for(i = 0; i < (job_application_list.size); i++)
-	{
-		/*A firm cannot send more job offers than it has vacancies to fill*/
-		if(i < VACANCIES)
-		{
-			/*For the different skill levels */
-			switch(job_application_list.array[i].general_skill)
+		START_JOB_APPLICATION_MESSAGE_LOOP
+			
+			/* Read job application messages for this Firm */
+			if(job_application_message->firm_id == ID)
 			{
-			/*If general skill level is 1 send job offer with wage offer for 					general skill level 1*/
-			case 1:
-				add_job_offer_message(ID, job_application_list.array[i]
-				.worker_id,REGION_ID, WAGE_OFFER_FOR_SKILL_1);
-				break;
-			case 2:
-				add_job_offer_message(ID, job_application_list.array[i]
-				.worker_id,REGION_ID, WAGE_OFFER_FOR_SKILL_2);
-				break;
-			case 3:
-				add_job_offer_message(ID, job_application_list.array[i]
-				.worker_id,REGION_ID, WAGE_OFFER_FOR_SKILL_3);
-				break;
-			case 4:
-				add_job_offer_message(ID, job_application_list.array[i]
-				.worker_id,REGION_ID, WAGE_OFFER_FOR_SKILL_4);
-				break;
-			/*If general skill level is 5 send job offer with wage offer for 					general skill level 5*/
-			case 5:
-				add_job_offer_message(ID, job_application_list.array[i]
-				.worker_id,REGION_ID, WAGE_OFFER_FOR_SKILL_5);
-				break;
+				/*Add application to a list (array)*/
+				add_job_application(&job_application_list, 
+				job_application_message->worker_id,
+				job_application_message->region_id,
+				job_application_message->general_skill, 
+				job_application_message->specific_skill);
+			}
+
+		FINISH_JOB_APPLICATION_MESSAGE_LOOP
+
+
+
+		no_applications = job_application_list.size;
+
+
+		//printf("ID: %d no_applications %d, VACANCIES %d \n",ID,no_applications, VACANCIES);
+		
+		/*Case 1: Number of Vacancies is equal or bigger than number of applications:
+		each applicant gets a job offer*/	
+		if(no_applications < VACANCIES)
+		{
+
+
+			
+
+			for(int i = 0; i < (job_application_list.size); i++)
+			{
+			/*A firm cannot send more job offers than it has vacancies to fill*/
+			
+				/*For the different skill levels */
+				switch(job_application_list.array[i].general_skill)
+				{
+				/*If general skill level is 1 send job offer with wage offer for 					general skill level 1*/
+				case 1:
+					add_job_offer_message(ID, job_application_list.array[i]
+					.worker_id,REGION_ID, WAGE_OFFER_FOR_SKILL_1);
+					break;
+				case 2:
+					add_job_offer_message(ID, job_application_list.array[i]
+					.worker_id,REGION_ID, WAGE_OFFER_FOR_SKILL_2);
+					break;
+				case 3:
+					add_job_offer_message(ID, job_application_list.array[i]
+					.worker_id,REGION_ID, WAGE_OFFER_FOR_SKILL_3);
+					break;
+				case 4:
+					add_job_offer_message(ID, job_application_list.array[i]
+					.worker_id,REGION_ID, WAGE_OFFER_FOR_SKILL_4);
+					break;
+				/*If general skill level is 5 send job offer with wage offer for 					general skill level 5*/
+				case 5:
+					add_job_offer_message(ID, job_application_list.array[i]
+					.worker_id,REGION_ID, WAGE_OFFER_FOR_SKILL_5);
+					break;
+				}
+
+			}
+
+		}else
+		{
+		/*Case 2: Number of Vacancies is smaller  than number of applications:
+		firm choose workers using a logit model*/
+		for(int i = 0; i< VACANCIES; i++)
+			{
+
+			logit_array  logit_applications_list;
+			init_logit_array(&logit_applications_list);
+			
+			
+			/*Computing the dominator of the logit*/
+			double denominator_logit = 0;
+			double logit, sum_of_logits;
+			double random_number;
+			
+			for(int j = 0; j< job_application_list.size;j++)
+				{
+				//denominator_logit+= exp(LOGIT_PARAMETER_GENERAL_SKILLS*job_application_list.array[j].general_skill + LOGIT_PARAMETER_SPECIFIC_SKILLS*job_application_list.array[j].specific_skill);	
+
+				denominator_logit+= exp(0.5*job_application_list.array[j].general_skill + 0*job_application_list.array[j].specific_skill);
+				}
+			
+			/*This computes the logits and stores them at the temorary array 			logit_applications_list*/
+
+			for(int j = 0; j< job_application_list.size;j++)
+				{
+				//logit = exp(LOGIT_PARAMETER_GENERAL_SKILLS*job_application_list.array[j].general_skill + LOGIT_PARAMETER_SPECIFIC_SKILLS*job_application_list.array[j].specific_skill)/ denominator_logit;
+
+
+			
+			logit = exp(0.5*job_application_list.array[j].general_skill + 0*job_application_list.array[j].specific_skill)/ denominator_logit;
+			
+
+			
+			add_logit(&logit_applications_list, 100*logit,job_application_list.array[j].worker_id,job_application_list.array[j].general_skill);
+				
+				}
+
+			/*This draws a random number*/
+			random_number =  random_double(0.0,100.0);
+			sum_of_logits = 0;
+			for(int j = 0; j< logit_applications_list.size;j++)
+				{
+		
+			sum_of_logits += logit_applications_list.array[j].logit_value;
+		
+			if(random_number<sum_of_logits)
+					{
+
+					
+				
+				/*If condition is true, the firm chooses that worker and send a job offer 				with the corresponding wage offer   */ 
+					switch(logit_applications_list.array[j].general_skill)
+						{
+				/*If general skill level is 1 send job offer with wage offer for 					general skill level 1*/
+						case 1:
+							add_job_offer_message(ID, logit_applications_list.array[j]
+					.worker_id,REGION_ID, WAGE_OFFER_FOR_SKILL_1);
+							break;
+						case 2:
+							add_job_offer_message(ID, logit_applications_list.array[j]
+					.worker_id,REGION_ID, WAGE_OFFER_FOR_SKILL_2);
+							break;
+						case 3:
+							add_job_offer_message(ID, logit_applications_list.array[j]
+					.worker_id,REGION_ID, WAGE_OFFER_FOR_SKILL_3);
+							break;
+						case 4:
+							add_job_offer_message(ID, logit_applications_list.array[j]
+					.worker_id,REGION_ID, WAGE_OFFER_FOR_SKILL_4);
+							break;
+						/*If general skill level is 5 send job offer with wage offer for general skill level 5*/
+						case 5:
+							add_job_offer_message(ID, logit_applications_list.array[j]
+					.worker_id,REGION_ID, WAGE_OFFER_FOR_SKILL_5);
+								break;
+						}
+
+				/*The chosen worker has to be removed from the application list*/
+
+						for(int k = 0; k< job_application_list.size;k++)
+						{
+						if(job_application_list.array[k]
+					.worker_id == logit_applications_list.array[j]
+					.worker_id)
+							{
+							remove_job_application(&job_application_list,k);
+							break;
+							}
+					
+
+						}
+
+					break;	
+					}
+
+					
+				}
+
+				/* Free the job application dynamic array */
+				free_logit_array(&logit_applications_list);
+			}
+		
+		
+		//The remaining applicants receive a rejection notification
+
+			for(int i=0; i < job_application_list.size;i++)
+			{
+		add_application_rejection_message(ID, 
+				job_application_list.array[i].worker_id);
 			}
 		}
+
+		/* Free the job application dynamic array */
+		free_job_application_array(&job_application_list);
 		
-		/* If no vacancies left then send a job rejection message */
-		else
-		{
-			add_application_rejection_message(ID, 
-			job_application_list.array[i].worker_id);
-		}
-	}
-		
-	
-	/* Free the job application dynamic array */
-	free_job_application_array(&job_application_list);
-	
-		
-	return 0;
+			
+		return 0;
 }
 
 
@@ -625,104 +712,188 @@ int Firm_send_vacancies_2()
  */
 int Firm_read_job_applications_send_job_offer_or_rejection_2()
 {
-	/* Create a job application dynamic array */
-	job_application_array job_application_list;
-	init_job_application_array(&job_application_list);
+	int no_applications;
+			
+		/* Create a job application dynamic array */
+		job_application_array job_application_list; 
+		init_job_application_array(&job_application_list);
+		
+		/* If day of month to act... */
 
-	/* If day of month to act... */
-	
-	START_JOB_APPLICATION2_MESSAGE_LOOP
-
-		/* Read job application messages for this Firm and add to the list*/
-		if(job_application2_message->firm_id == ID)
-		{
-			add_job_application(&job_application_list, 
-			job_application2_message->worker_id,
-			job_application2_message->region_id, 
-			job_application2_message->general_skill, 
-			job_application2_message->specific_skill);
-		}
-
-	FINISH_JOB_APPLICATION2_MESSAGE_LOOP
-
-/*+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-
-	/*Shuffle applications before sorting: If two or more applications are equal then 			they will be ranked by chance*/
-	/*int i,k;
-	job_application * i_job_application, * k_job_application;
-	job_application * temp_job_application = (job_application *)malloc(sizeof
-	(job_application));
-
-	for(i = 0; i < (job_application_list.size);i++)
-	{
-		k = random_int(i, (job_application_list.size-1));
-
-		i_job_application = &job_application_list.array[i];
-		k_job_application = &job_application_list.array[k];*/
-
-			/* Swap neighbours */
-			/** temp_job_application = * i_job_application;
-			* i_job_application = * k_job_application;
-			* k_job_application = * temp_job_application;
-	}
-
-	free(temp_job_application);*/
-
-
-/*+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-
-	
-	/* Rank job applications (function from my_library_functions) */
-	//sort_job_application_list(&job_application_list);
-	
-	qsort(job_application_list.array, job_application_list.size, 
-	sizeof(job_application), job_application_list_rank_general_skill_function);
-	
-	int i;
-	/*For each job application message... */
-	for(i = 0; i < job_application_list.size; i++)
-	{
-		/* A firm cannot send more job offers than it has vacancies to fill */
-		if(i < VACANCIES)
-		{
-			switch(job_application_list.array[i].general_skill)
+		START_JOB_APPLICATION2_MESSAGE_LOOP
+			
+			/* Read job application messages for this Firm */
+			if(job_application2_message->firm_id == ID)
 			{
-			/*If applicant has general skill level 1 send job offer with wage 					for skill group 1*/
-			case 1:
-				add_job_offer2_message(ID, job_application_list.array[i]
-				.worker_id,REGION_ID, WAGE_OFFER_FOR_SKILL_1);
-				break;	
-			case 2:
-				add_job_offer2_message(ID, job_application_list.array[i]
-				.worker_id,REGION_ID, WAGE_OFFER_FOR_SKILL_2);
-				break;
-			case 3:
-				add_job_offer2_message(ID, job_application_list.array[i]
-				.worker_id,REGION_ID, WAGE_OFFER_FOR_SKILL_3);
-				break;
-			case 4:
-				add_job_offer2_message(ID, job_application_list.array[i]
-				.worker_id,REGION_ID, WAGE_OFFER_FOR_SKILL_4);
-				break;
-			/*If applicant has general skill level 5 send job offer with wage 					for skill group 5*/
-			case 5:
-				add_job_offer2_message(ID, job_application_list.array[i]
-				.worker_id,REGION_ID, WAGE_OFFER_FOR_SKILL_5);
-				break;
+				/*Add application to a list (array)*/
+				add_job_application(&job_application_list, 
+				job_application2_message->worker_id,
+				job_application2_message->region_id,
+				job_application2_message->general_skill, 
+				job_application2_message->specific_skill);
+			}
+
+		FINISH_JOB_APPLICATION2_MESSAGE_LOOP
+
+
+
+		no_applications = job_application_list.size;
+
+		
+
+		/*Case 1: Number of Vacancies is equal or bigger than number of applications:
+		each applicant gets a job offer*/	
+		if(no_applications < VACANCIES)
+		{
+
+			for(int i = 0; i < (job_application_list.size); i++)
+			{
+			/*A firm cannot send more job offers than it has vacancies to fill*/
+			
+				/*For the different skill levels */
+				switch(job_application_list.array[i].general_skill)
+				{
+				/*If general skill level is 1 send job offer with wage offer for 					general skill level 1*/
+				case 1:
+					add_job_offer2_message(ID, job_application_list.array[i]
+					.worker_id,REGION_ID, WAGE_OFFER_FOR_SKILL_1);
+					break;
+				case 2:
+					add_job_offer2_message(ID, job_application_list.array[i]
+					.worker_id,REGION_ID, WAGE_OFFER_FOR_SKILL_2);
+					break;
+				case 3:
+					add_job_offer2_message(ID, job_application_list.array[i]
+					.worker_id,REGION_ID, WAGE_OFFER_FOR_SKILL_3);
+					break;
+				case 4:
+					add_job_offer2_message(ID, job_application_list.array[i]
+					.worker_id,REGION_ID, WAGE_OFFER_FOR_SKILL_4);
+					break;
+				/*If general skill level is 5 send job offer with wage offer for 					general skill level 5*/
+				case 5:
+					add_job_offer2_message(ID, job_application_list.array[i]
+					.worker_id,REGION_ID, WAGE_OFFER_FOR_SKILL_5);
+					break;
+				}
+
+			}
+
+		}else
+		{
+		/*Case 2: Number of Vacancies is smaller  than number of applications:
+		firm choose workers using a logit model*/
+		for(int i = 0; i< VACANCIES; i++)
+			{
+
+			logit_array  logit_applications_list;
+			init_logit_array(&logit_applications_list);
+			
+			
+			/*Computing the dominator of the logit*/
+			double denominator_logit = 0;
+			double logit, sum_of_logits;
+			double random_number;
+			
+			for(int j = 0; j< job_application_list.size;j++)
+				{
+				//denominator_logit+= exp(LOGIT_PARAMETER_GENERAL_SKILLS*job_application_list.array[j].general_skill + LOGIT_PARAMETER_SPECIFIC_SKILLS*job_application_list.array[j].specific_skill);	
+
+				denominator_logit+= exp(0.5*job_application_list.array[j].general_skill + 0*job_application_list.array[j].specific_skill);
+				}
+			
+			/*This computes the logits and stores them at the temorary array 			logit_applications_list*/
+
+			for(int j = 0; j< job_application_list.size;j++)
+				{
+				//logit = exp(LOGIT_PARAMETER_GENERAL_SKILLS*job_application_list.array[j].general_skill + LOGIT_PARAMETER_SPECIFIC_SKILLS*job_application_list.array[j].specific_skill)/ denominator_logit;
+
+			logit = exp(0.5*job_application_list.array[j].general_skill + 0*job_application_list.array[j].specific_skill)/ denominator_logit;
+				
+			
+			add_logit(&logit_applications_list, 100*logit,job_application_list.array[j].worker_id,job_application_list.array[j].general_skill);
+				
+				}
+
+			/*This draws a random number*/
+			random_number =  random_double(0,100);
+			sum_of_logits = 0;
+			for(int j = 0; j< logit_applications_list.size;j++)
+				{
+
+			sum_of_logits += logit_applications_list.array[j].logit_value;
+		
+			if(random_number<sum_of_logits)
+					{
+						
+				/*If condition is true, the firm chooses that worker and send a job offer 				with the corresponding wage offer   */ 
+					switch(logit_applications_list.array[j].general_skill)
+						{
+				/*If general skill level is 1 send job offer with wage offer for 					general skill level 1*/
+						case 1:
+							add_job_offer2_message(ID, logit_applications_list.array[j]
+					.worker_id,REGION_ID, WAGE_OFFER_FOR_SKILL_1);
+							break;
+						case 2:
+							add_job_offer2_message(ID, logit_applications_list.array[j]
+					.worker_id,REGION_ID, WAGE_OFFER_FOR_SKILL_2);
+							break;
+						case 3:
+							add_job_offer2_message(ID, logit_applications_list.array[j]
+					.worker_id,REGION_ID, WAGE_OFFER_FOR_SKILL_3);
+							break;
+						case 4:
+							add_job_offer2_message(ID, logit_applications_list.array[j]
+					.worker_id,REGION_ID, WAGE_OFFER_FOR_SKILL_4);
+							break;
+						/*If general skill level is 5 send job offer with wage offer for general skill level 5*/
+						case 5:
+							add_job_offer2_message(ID, logit_applications_list.array[j]
+					.worker_id,REGION_ID, WAGE_OFFER_FOR_SKILL_5);
+								break;
+						}
+
+				/*The chosen worker has to be removed from the application list*/
+
+						for(int k = 0; k< job_application_list.size;k++)
+						{
+						if(job_application_list.array[k]
+					.worker_id == logit_applications_list.array[j]
+					.worker_id)
+							{
+							remove_job_application(&job_application_list,k);
+							break;
+							}
+					
+
+						}
+						break;
+						
+					}
+
+					
+
+				}
+
+				/* Free the job application dynamic array */
+				free_logit_array(&logit_applications_list);
+			}
+		
+		
+		//The remaining applicants receive a rejection notification
+
+			for(int i=0; i < job_application_list.size;i++)
+			{
+		add_application_rejection_message(ID, 
+				job_application_list.array[i].worker_id);
 			}
 		}
-		/* If no vacancies left then send a job rejection message */
-		else
-		{
-			add_application_rejection2_message(ID, 
-			job_application_list.array[i].worker_id);
-		}
-	}	
-	
-	/* Free the job application dynamic array */
+
+		/* Free the job application dynamic array */
 		free_job_application_array(&job_application_list);
-	
-	return 0;
+		
+			
+		return 0;
 }
 
 
