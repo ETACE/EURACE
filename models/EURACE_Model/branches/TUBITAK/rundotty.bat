@@ -1,1 +1,0 @@
-dot -Tps stategraph.dot -o stategraph.ps
