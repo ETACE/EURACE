@@ -1,0 +1,135 @@
+#include "../Clearinghouse_agent_header.h"
+#include "my_library_header.h"
+
+void receiveOrderOnAsset(ClearingMechanism *mechanism, Asset *anAsset)
+{    Order *pord;
+     Order ord;
+     pord=&ord;
+     int id; 
+     int issuer;
+     int quantity;
+     double limit_price;
+     START_ORDER_MESSAGE_LOOP                        
+       id=order_message->asset_id;
+       if(anAsset->id==id)
+        {
+         
+          quantity=order_message->quantity;
+          issuer=order_message->trader_id;
+          limit_price=order_message->limit_price;
+           setOrder(pord,limit_price,quantity,id,issuer);
+       
+           if(isBuyOrder(pord)) addBuyOrder(mechanism,pord);
+           if(isSellOrder(pord))addSellOrder(mechanism,pord); 
+     }
+   
+     FINISH_ORDER_MESSAGE_LOOP
+//getchar();
+//getchar();
+ //printf("finito di ricevere");
+}
+
+
+
+void computeAssetPrice(ClearingMechanism *mechanism, Asset *anAsset)
+  {  double price;
+     int quantity;
+     setClearingMechanism(mechanism,lastPrice(anAsset));
+     runClearing(mechanism);
+     quantity=mechanism->quantity;
+     price=mechanism->lastPrice;
+     addPrice(anAsset,price);
+     addVolume(anAsset,quantity);
+     //sendOrderStatus(mechanism);
+     
+   }
+
+void sendOrderStatus(ClearingMechanism *clearm)
+{ int i,size;
+  Order_array *orders;
+  Order *ord;
+  double fprice;
+  orders=buyOrders(clearm);
+  size=sizeCOrder(orders);
+  fprice=formedPrice(clearm);
+  for(i=0;i<size;i++)
+   {
+    ord=elementAtCOrder(orders,i);
+    add_order_status_message(ord->issuer,ord->assetId,fprice,ord->quantity);
+    //printf(" issuer = %d\n",ord->issuer);
+   }
+  orders=sellOrders(clearm);
+  size=sizeCOrder(orders);
+  for(i=0;i<size;i++)
+   {
+    ord=elementAtCOrder(orders,i);
+    add_order_status_message(ord->issuer,ord->assetId,fprice,-(ord->quantity));
+      // printf(" --issuer = %d\n",ord->issuer);
+   }
+   
+}
+
+int ClearingHouse_receive_orders_and_run()
+{ int size,i;
+  ClearingMechanism *mechanism;
+// printf("numero di asset---- %d\n",size);
+  //mechanism=newClearing();
+  mechanism=&CLEARINGMECHANISM;
+  Asset_array *assets;
+  Asset *asset;
+  assets=get_assets();
+  size=sizeCAsset(assets);
+ 
+  for(i=0;i<size;i++)
+  {
+   asset=elementAtCAsset(assets,i);
+   emptyClearing(mechanism);
+  // printf("asset id = %d\n",asset->id);
+   receiveOrderOnAsset(mechanism, asset);
+
+   computeAssetPrice(mechanism, asset);
+   sendOrderStatus(mechanism);
+      
+  }
+  emptyClearing(mechanism);
+  //printf("sono qui---");
+  return 0;
+}
+
+
+int ClearingHouse_send_asset_information()
+ { Asset_array *assets;
+   Asset *asset;
+   int size,i;
+   double price;
+   assets =get_assets();
+   size=sizeCAsset(assets);
+     //printf("numero di asset aggiornati= %d\n",size);
+   for(i=0;i<size;i++)
+   {
+   asset=elementAtCAsset(assets,i);
+   price=lastPrice(asset);
+   add_infoAssetCH_message(asset->id,price,asset->quantity);
+  }
+  return 0;
+}
+
+
+int ClearingHouse_receive_info_stock()
+{  Asset_array *assets;
+   m_info_firm *cinfo_stock; 
+   Stock *stock;
+ 
+   cinfo_stock=get_first_info_firm_message();
+   assets =get_assets();
+   reset_Asset_array(assets);
+  while( cinfo_stock)
+    {  
+     stock= &(cinfo_stock->stock);
+     add_Asset(assets, stock->id,stock-> nrOutStandingShares, lastPriceStock(stock));
+    
+     cinfo_stock= get_next_info_firm_message(cinfo_stock);
+  
+    }
+ return 0;
+}
