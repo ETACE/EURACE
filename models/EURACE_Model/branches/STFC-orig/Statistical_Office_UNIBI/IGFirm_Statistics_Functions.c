@@ -10,13 +10,11 @@ int IGFirm_read_tax_rates()
 {
 	//Message send by Government:
 	START_POLICY_ANNOUNCEMENT_MESSAGE_LOOP			
-		if(policy_announcement_message->gov_id == GOV_ID)
-		{
+		//Filter: if(policy_announcement_message->gov_id == GOV_ID)
 			TAX_RATE_CORPORATE = policy_announcement_message->tax_rate_corporate;
 			TAX_RATE_VAT = policy_announcement_message->tax_rate_vat;
-			TRANSFER_PAYMENT = policy_announcement_message->transfer_payment;
-			SUBSIDY_PAYMENT = policy_announcement_message->subsidy_payment;
-		}
+			TRANSFER_PAYMENT = policy_announcement_message->firm_transfer_payment;
+			SUBSIDY_PAYMENT = policy_announcement_message->firm_subsidy_payment;
 	FINISH_POLICY_ANNOUNCEMENT_MESSAGE_LOOP
 
 	return 0;
