@@ -5,8 +5,6 @@
 <name>Eurace</name>
 <version>post-Sheffield</version>
 <description></description>
-
-<!-- Models to include in Eurace model -->
 <models>
 <model><file>Cons_Goods_UNIBI/model.xml</file><enabled>false</enabled></model>
 <model><file>Credit_UNIBI/model-dummy.xml</file><enabled>false</enabled></model>
