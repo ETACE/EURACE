@@ -3,9 +3,9 @@
 #include "../my_library_header.h"
 
 #define CONST_NUMBER_OF_BANKS 10
-#define NUMBER_OF_BANKS_TO_APPLY 3
-#define CONST_INSTALLMENT_PERIODS 12
-#define LINK 3
+//#define NUMBER_OF_BANKS_TO_APPLY 3
+//#define PERIODS_TO_REPAY_LOANS 12
+
 
 
 int Firm_ask_loan()
@@ -22,7 +22,7 @@ int Firm_ask_loan()
 	  } 
 	
 	//Create bank network for this firm
-	  while(connected<LINK)
+	  while(connected<NUMBER_OF_BANKS_TO_APPLY)
 	  {
 	        j= rand() % CONST_NUMBER_OF_BANKS ;// choose 'LINK' banks
 	      //printf("j %d \n", j);
