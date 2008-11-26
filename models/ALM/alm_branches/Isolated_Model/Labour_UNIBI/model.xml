@@ -123,7 +123,7 @@
 </outputs>
 </function>
 
-<function><name>Firm_idle</name>
+<function><name>idle</name>
 <description>Firm does nothing</description>
 <currentState>011</currentState>
 <nextState>03c</nextState>
@@ -278,7 +278,7 @@ of employees and the number of vacancies</description>
 <condition><lhs><value>a.no_employees</value></lhs><op>LT</op><rhs><value>a.employees_needed</value></rhs></condition>
 </function>
 
-<function><name>Firm_idle</name>
+<function><name>idle</name>
 <description>Firm does nothing</description>
 <currentState>09b</currentState>
 <nextState>10</nextState>
@@ -318,7 +318,7 @@ of employees and the number of vacancies</description>
 <function>
 <name>Household_read_firing_messages</name>
 <description>The household checks whether is is fired or not</description>
-<currentState>Start_Household_Labour_Role</currentState>
+<currentState>Household_Start_Labour_Role</currentState>
 <nextState>01d</nextState>
 <condition><lhs><value>a.employee_firm_id</value></lhs><op>NEQ</op><rhs><value>-1</value></rhs></condition>
 <inputs>
@@ -327,7 +327,7 @@ of employees and the number of vacancies</description>
 </function>
 
 <function>
-<name>Household_idle</name>
+<name>idle</name>
 <description>Household does nothing</description>
 <currentState>01d</currentState>
 <nextState>01a</nextState>
@@ -335,9 +335,9 @@ of employees and the number of vacancies</description>
 </function>
 
 <function>
-<name>Household_idle</name>
+<name>idle</name>
 <description>Household does nothing</description>
-<currentState>Start_Household_Labour_Role</currentState>
+<currentState>Household_Start_Labour_Role</currentState>
 <nextState>01a</nextState>
 <condition><lhs><value>a.employee_firm_id</value></lhs><op>EQ</op><rhs><value>-1</value></rhs></condition>
 </function>
@@ -381,7 +381,7 @@ and send s applications</description>
 </function>
 <function>
 
-<name>Household_idle</name>
+<name>idle</name>
 <description>Household does nothing</description>
 <currentState>01b</currentState>
 <nextState>06</nextState>
@@ -475,7 +475,7 @@ the reservation wage</description>
 </inputs>
 </function>
 
-<function><name>Household_idle</name>
+<function><name>idle</name>
 <description>Household does nothing</description>
 <currentState>05</currentState>
 <nextState>06</nextState>
@@ -491,14 +491,14 @@ the reservation wage</description>
 </inputs>
 </function>
 
-<function><name>Household_idle</name>
+<function><name>idle</name>
 <description>Household does nothing</description>
 <currentState>06b</currentState>
 <nextState>09</nextState>
 <condition><not><time><period>monthly</period><phase>a.day_of_month_receive_income</phase></time></not></condition>
 </function>
 
-<function><name>Household_idle</name>
+<function><name>idle</name>
 <description>Household does nothing</description>
 <currentState>06b</currentState>
 <nextState>06c</nextState>

@@ -244,7 +244,7 @@ on the current stocks in the malls</description>
 <description>Firms iterate over the planned production quantity decreasing it incrementally,
  such that the corresponding labor demand and capital demand can be financed by 
  the actually obtained financial resources, AFTER all prior financial commitments have been paid.</description>
-<currentState>Firm_End_External_Financing</currentState>
+<currentState>Firm_End_Financial_Management</currentState>
 <nextState>Firm_Start_Labour_Role</nextState>
 </function>
 
@@ -469,6 +469,7 @@ spent in both consumtion steps, into the PAYMENT_ACCOUNT.</description>
 <variable><type>mall_stock_array</type><name>current_stock</name><description>Actual stock of the different firms</description></variable>
 <variable><type>sales_in_mall_array</type><name>firm_revenues</name><description>Actual revenue of the different firms</description></variable>
 <variable><type>double</type><name>total_supply</name><description>Total number of goods</description></variable>
+<variable><type>int</type><name>no_regions</name><description>Number of regions. Max=30.</description></variable>
 <variable><type>double</type><name>export_volume_matrix[900]</name><description>Matrix holding data on exports between regions, measured in volume.</description></variable>
 <variable><type>double</type><name>export_value_matrix[900]</name><description>Matrix holding data on exports between regions, measured in value.</description></variable>
 <variable><type>double</type><name>export_previous_value_matrix[900]</name><description>Matrix holding data on exports between regions, measured against previous prices.</description></variable>
@@ -721,9 +722,11 @@ updates specific skills.</description>
 
 <message>
 <name>mall_data</name>
-<description>Sent by mall. Mall informs Eurostat about the transaction values (export_volume), against current prices (export_value) and against previous prices (export_previous_value).</description>
+<description>Sent by mall. Mall informs Eurostat about the exports between regions (export_volume), against current prices (export_value) and against previous prices (export_previous_value).</description>
 <variables>
-<variable><type>int</type><name>id</name><description></description></variable>
+<variable><type>int</type><name>mall_id</name><description></description></variable>
+<variable><type>int</type><name>firm_region</name><description></description></variable>
+<variable><type>int</type><name>household_region</name><description></description></variable>
 <variable><type>int</type><name>export_volume</name><description></description></variable>
 <variable><type>double</type><name>export_value</name><description></description></variable>
 <variable><type>double</type><name>export_previous_value</name><description></description></variable>
