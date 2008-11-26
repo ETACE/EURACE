@@ -417,7 +417,9 @@ int Firm_read_job_applications_send_job_offer_or_rejection()
 				}
 
 			/*This draws a random number*/
-			random_number =  random_double(0.0,100.0);
+			//random_number =  random_double(0.0,100.0);
+			random_number =  (double)random_int(0,100);
+			
 			sum_of_logits = 0;
 			for(int j = 0; j< logit_applications_list.size;j++)
 				{
@@ -816,7 +818,9 @@ int Firm_read_job_applications_send_job_offer_or_rejection_2()
 				}
 
 			/*This draws a random number*/
-			random_number =  random_double(0,100);
+			//random_number =  random_double(0,100);
+			random_number =  (double)random_int(0,100);
+			
 			sum_of_logits = 0;
 			for(int j = 0; j< logit_applications_list.size;j++)
 				{
