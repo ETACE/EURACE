@@ -175,7 +175,6 @@ int Government_budget_accounting()
 	//Compute the following:
 	GOV_INTEREST_RATE = 0.05;
 	
-	
 	//Interest on debt
 		YEARLY_INTEREST_PAYMENT = (1+GOV_INTEREST_RATE)*TOTAL_DEBT;
 	// Update the payment account
