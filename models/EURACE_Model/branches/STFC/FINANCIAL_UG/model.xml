@@ -355,11 +355,6 @@
 					<description></description>
 				</variable>
 				<variable>
-					<type>double</type>
-					<name>consumption_budget</name>
-					<description></description>
-				</variable>
-				<variable>
 					<type>int</type>
 					<name>forwardWindow</name>
 					<description></description>
@@ -636,27 +631,12 @@
 
 				<variable>
 					<type>double</type>
-					<name>earnings</name>
-					<description></description>
-				</variable>
-				<variable>
-					<type>double</type>
 					<name>earnings_payout</name>
 					<description></description>
 				</variable>
 				<variable>
 					<type>double</type>
 					<name>current_shares_outstanding</name>
-					<description></description>
-				</variable>
-				<variable>
-					<type>double</type>
-					<name>current_dividend_per_share</name>
-					<description></description>
-				</variable>
-				<variable>
-					<type>double</type>
-					<name>equity</name>
 					<description></description>
 				</variable>
 				<variable>
@@ -671,10 +651,10 @@
 				<function>
 					<name>Firm_send_info</name>
 					<description></description>
-					<currentState>start_Firm</currentState>
-					<!--<currentState>Firm_new01</currentState>-->
-					<!--<nextState>Firm_Start_Financial_Management_Role</nextState>-->
-					<nextState>received_stock_info</nextState>
+<!--					<currentState>start_Firm</currentState>-->
+<!--					<nextState>received_stock_info</nextState>-->
+					<currentState>Firm_End_Macro_Data</currentState>
+					<nextState>Firm_Start_Producer_Role</nextState>
 					<outputs>
 						<output>
 							<messageName>info_firm</messageName>
@@ -685,8 +665,10 @@
 				<function>
 					<name>Firm_receive_stock_info</name>
 					<description></description>
-					<currentState>received_stock_info</currentState>
-					<nextState>end_Firm</nextState>
+<!--					<currentState>received_stock_info</currentState>-->
+<!--					<nextState>end_Firm</nextState>-->
+					<currentState>15</currentState>
+					<nextState>16</nextState>
 					<inputs>
 						<input>
 							<messageName>infoAssetCH</messageName>
