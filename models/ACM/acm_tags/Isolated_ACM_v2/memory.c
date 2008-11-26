@@ -3003,6 +3003,38 @@ int get_financial_crisis_state()
     return (int)0;
 }
 
+/** \fn int_array get_neighboring_region_ids()
+ * \brief Get neighboring_region_ids memory variable from current X-machine.
+ * \return Value for variable.
+ */
+int_array * get_neighboring_region_ids()
+{
+
+    // suppress compiler warning by returning dummy value /
+    // this statement should rightfully NEVER be reached /
+    return NULL;
+}
+
+/** \fn void set_no_regions(int no_regions) 
+ * \brief Set no_regions memory variable for current X-machine.
+ * \param no_regions New value for variable.
+ */
+void set_no_regions(int no_regions)
+{
+}
+
+/** \fn int get_no_regions()
+ * \brief Get no_regions memory variable from current X-machine.
+ * \return Value for variable.
+ */
+int get_no_regions()
+{
+
+    // suppress compiler warning by returning dummy value /
+    // this statement should rightfully NEVER be reached /
+    return (int)0;
+}
+
 /** \fn void set_cash(double cash) 
  * \brief Set cash memory variable for current X-machine.
  * \param cash New value for variable.

@@ -670,6 +670,8 @@ void readinitialstates(char * filename, int * itno, double cloud_data[6],
 	int in_external_financial_needs;
 	int in_bankruptcy_state;
 	int in_financial_crisis_state;
+	int in_neighboring_region_ids;
+	int in_no_regions;
 	int in_cash;
 	int in_total_credit;
 	int in_bce_debt;
@@ -685,6 +687,7 @@ void readinitialstates(char * filename, int * itno, double cloud_data[6],
 	int in_debt_period;
 	int in_loan_request_message_found;
 
+	int in_number_of_banks_to_apply;
 
 	/* Variables for initial state data */
 //	int id;
@@ -743,6 +746,8 @@ void readinitialstates(char * filename, int * itno, double cloud_data[6],
 //	double external_financial_needs;
 //	int bankruptcy_state;
 //	int financial_crisis_state;
+//	int_array * neighboring_region_ids;
+//	int no_regions;
 //	double cash;
 //	double total_credit;
 //	double bce_debt;
@@ -842,6 +847,8 @@ void readinitialstates(char * filename, int * itno, double cloud_data[6],
 	in_external_financial_needs = 0;
 	in_bankruptcy_state = 0;
 	in_financial_crisis_state = 0;
+	in_neighboring_region_ids = 0;
+	in_no_regions = 0;
 	in_cash = 0;
 	in_total_credit = 0;
 	in_bce_debt = 0;
@@ -856,6 +863,7 @@ void readinitialstates(char * filename, int * itno, double cloud_data[6],
 	in_number_of_shares = 0;
 	in_debt_period = 0;
 	in_loan_request_message_found = 0;
+	in_number_of_banks_to_apply = 0;
 
 	/* Default variables for memory */
 	/* Not implemented static arrays */
@@ -914,6 +922,8 @@ void readinitialstates(char * filename, int * itno, double cloud_data[6],
 //	external_financial_needs = 0.0;
 //	bankruptcy_state = 0;
 //	financial_crisis_state = 0;
+//	neighboring_region_ids = init_int_array();
+//	no_regions = 0;
 //	cash = 0.0;
 //	total_credit = 0.0;
 //	bce_debt = 0.0;
@@ -927,6 +937,7 @@ void readinitialstates(char * filename, int * itno, double cloud_data[6],
 //	debt_period = 0.0;
 //	loan_request_message_found = 0;
 
+	number_of_banks_to_apply = 0;
 
 
 
@@ -1269,6 +1280,7 @@ in_Dummy_agent = 0;
 //				external_financial_needs = 0.0;
 //				bankruptcy_state = 0;
 //				financial_crisis_state = 0;
+////				no_regions = 0;
 //				cash = 0.0;
 //				total_credit = 0.0;
 //				bce_debt = 0.0;
@@ -1395,6 +1407,10 @@ in_Dummy_agent = 0;
 			if(strcmp(buffer, "/bankruptcy_state") == 0) in_bankruptcy_state = 0;
 			if(strcmp(buffer, "financial_crisis_state") == 0) in_financial_crisis_state = 1;
 			if(strcmp(buffer, "/financial_crisis_state") == 0) in_financial_crisis_state = 0;
+			if(strcmp(buffer, "neighboring_region_ids") == 0) in_neighboring_region_ids = 1;
+			if(strcmp(buffer, "/neighboring_region_ids") == 0) in_neighboring_region_ids = 0;
+			if(strcmp(buffer, "no_regions") == 0) in_no_regions = 1;
+			if(strcmp(buffer, "/no_regions") == 0) in_no_regions = 0;
 			if(strcmp(buffer, "cash") == 0) in_cash = 1;
 			if(strcmp(buffer, "/cash") == 0) in_cash = 0;
 			if(strcmp(buffer, "total_credit") == 0) in_total_credit = 1;
@@ -1424,6 +1440,8 @@ in_Dummy_agent = 0;
 			if(strcmp(buffer, "loan_request_message_found") == 0) in_loan_request_message_found = 1;
 			if(strcmp(buffer, "/loan_request_message_found") == 0) in_loan_request_message_found = 0;
 
+			if(strcmp(buffer, "number_of_banks_to_apply") == 0) in_number_of_banks_to_apply = 1;
+			if(strcmp(buffer, "/number_of_banks_to_apply") == 0) in_number_of_banks_to_apply = 0;
 
 			
 			/* End of tag and reset buffer */
@@ -1443,6 +1461,7 @@ in_Dummy_agent = 0;
 			if(in_name) strcpy(agentname, buffer);
 			if(in_environment)
 			{
+				if(in_number_of_banks_to_apply) number_of_banks_to_apply = atoi(buffer);
 			}
 			else if(in_Firm_agent == 1)
 			{
@@ -1570,7 +1589,8 @@ in_Dummy_agent = 0;
 ////////////////////////////	free_mall_info_array(current_mall_stocks);
 //////////////////////////////////////	free_debt_item_array(loans);
 //////	free_capital_stock_item_array(capital_stock);
-////////////////////////////////////////////////////
+//////////////////////////	free_int_array(neighboring_region_ids);
+//////////////////////////////
 }
 
 /** \fn void write_int_static_array(FILE *file, $name * temp)
@@ -2241,6 +2261,7 @@ void saveiterationdata(int iteration_number)
 	/* Pointer to file */
 	FILE *file;
 	char data[1000];
+	//int_array * neighboring_region_ids;
 	
 	sprintf(data, "%s%i.xml", outputpath, iteration_number);
 	file = fopen(data, "w");
@@ -2249,6 +2270,10 @@ void saveiterationdata(int iteration_number)
 	fputs(data, file);
 	fputs("</itno>\n", file);
 	fputs("<environment>\n" , file);
+	fputs("<number_of_banks_to_apply>", file);
+	sprintf(data, "%i", number_of_banks_to_apply);
+	fputs(data, file);
+	fputs("</number_of_banks_to_apply>\n", file);
 	fputs("</environment>\n" , file);
 
 //	current_xmachine = *p_xmachine;

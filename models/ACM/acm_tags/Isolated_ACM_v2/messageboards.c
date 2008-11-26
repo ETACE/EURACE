@@ -898,18 +898,16 @@ m_BCE_return * get_next_BCE_return_message(m_BCE_return * current)
 	return getInternalMessage_BCE_return();
 }
 
-/** \fn void add_tax_payment_message(int firm_id, int gov_id, double tax_payment)
+/** \fn void add_tax_payment_message(int gov_id, double tax_payment)
  * \brief Add tax_payment message by calling internal and processing.
- * \param firm_id Message variable.
  * \param gov_id Message variable.
  * \param tax_payment Message variable.
  */
-void add_tax_payment_message(int firm_id, int gov_id, double tax_payment)
+void add_tax_payment_message(int gov_id, double tax_payment)
 {
     int rc;
 	m_tax_payment msg;
     
-    msg.firm_id = firm_id;
     msg.gov_id = gov_id;
     msg.tax_payment = tax_payment;
     
