@@ -81,7 +81,7 @@
 <name>Firm_read_loan_acceptance</name>
 <description></description>
 <currentState>21</currentState>
-<nextState>Firm_End_Credit_Role</nextState>
+<nextState>Firm_End_External_Financing</nextState>
 <inputs>
 <input><messageName>loan_acceptance</messageName>
 <filter><lhs><value>a.id</value></lhs><op>EQ</op><rhs><value>m.firm_id</value></rhs></filter>
@@ -90,7 +90,7 @@
 </function>
 
 <function>
-<name>Firm_idle</name>
+<name>idle</name>
 <description></description>
 <currentState>Firm_Start_Credit_Role</currentState>
 <nextState>Firm_End_External_Financing</nextState>

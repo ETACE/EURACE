@@ -179,14 +179,14 @@
 <function><name>idle</name>
 <description></description>
 <currentState>start_Firm</currentState>
-<nextState>Start_Firm_Macro_Data</nextState>
+<nextState>Firm_Start_Macro_Data</nextState>
 <condition><not><time><period>yearly</period><phase>1</phase></time></not></condition>
 </function>
 
-<function><name>Firm_read_tax_rates</name>
+<function><name>Firm_read_policy_announcements</name>
 <description></description>
 <currentState>start_Firm</currentState>
-<nextState>Start_Firm_Macro_Data</nextState>
+<nextState>Firm_Start_Macro_Data</nextState>
 <condition><time><period>yearly</period><phase>1</phase></time></condition>
 <inputs>
 <input><messageName>policy_announcement</messageName></input>
@@ -196,8 +196,8 @@
 <function><name>Firm_receive_data</name>
 <description>The firm reads the messages from the eurostat agent 
 and stores the needed data.</description>
-<currentState>Start_Firm_Macro_Data</currentState>
-<nextState>Firm_new01</nextState>
+<currentState>Firm_Start_Macro_Data</currentState>
+<nextState>Firm_Start_Producer_Role</nextState>
 <condition><time><period>monthly</period><phase>1</phase></time></condition>
 <inputs>
 <input><messageName>eurostat_send_specific_skills</messageName></input>
@@ -206,8 +206,8 @@ and stores the needed data.</description>
 
 <function><name>idle</name>
 <description>Firm does nothing</description>
-<currentState>Start_Firm_Macro_Data</currentState>
-<nextState>Firm_new01</nextState>
+<currentState>Firm_Start_Macro_Data</currentState>
+<nextState>Firm_Start_Producer_Role</nextState>
 <condition><not><time><period>monthly</period><phase>1</phase></time></not></condition>
 </function>
 
@@ -231,7 +231,7 @@ including several micro data.</description>
 
 <function><name>Firm_send_payments_to_bank</name>
 <description></description>
-<currentState>Update_02</currentState>
+<currentState>15</currentState>
 <nextState>end_Firm</nextState>
 <outputs>
 <output><messageName>bank_account_update</messageName></output>
@@ -288,14 +288,14 @@ including several micro data.</description>
 <function><name>Household_idle</name>
 <description></description>
 <currentState>start_Household</currentState>
-<nextState>Start_Household_Tax_Data</nextState>
+<nextState>Household_Start_Tax_Data</nextState>
 <condition><not><time><period>yearly</period><phase>1</phase></time></not></condition>
 </function>
 
-<function><name>Household_read_tax_rates</name>
+<function><name>Household_read_policy_announcements</name>
 <description></description>
 <currentState>start_Household</currentState>
-<nextState>Start_Household_Tax_Data</nextState>
+<nextState>Household_Start_Tax_Data</nextState>
 <condition><time><period>yearly</period><phase>1</phase></time></condition>
 <inputs>
 <input>
@@ -309,15 +309,15 @@ including several micro data.</description>
 <function><name>Household_receive_data</name>
 <description>The household reads the messages from the eurostat agent 
 and stores the needed data.</description>
-<currentState>Start_Household_Tax_Data</currentState>
-<nextState>start_Household_financial_market_role</nextState>
+<currentState>Household_Start_Tax_Data</currentState>
+<nextState>Household_Start_Labour_Role</nextState>
 <condition><time><period>monthly</period><phase>1</phase></time></condition>
 </function>
 
 <function><name>Household_idle</name>
 <description>Household does nothing</description>
-<currentState>Start_Household_Tax_Data</currentState>
-<nextState>start_Household_financial_market_role</nextState>
+<currentState>Household_Start_Tax_Data</currentState>
+<nextState>Household_Start_Labour_Role</nextState>
 <condition><not><time><period>monthly</period><phase>1</phase></time></not></condition>
 </function>
 
@@ -715,18 +715,6 @@ including several micro data.</description>
 <variable><type>int</type><name>employment_status</name><description></description></variable>
 <variable><type>double</type><name>wage</name><description></description></variable>
 <variable><type>double</type><name>specific_skill</name><description></description></variable>
-</variables>
-</message>
-
-<message>
-<name>mall_data</name>
-<description>Sent by mall. Mall informs Eurostat about exports between regions. 
-</description>
-<variables>
-<variable><type>int</type><name>mall_id</name><description></description></variable>
-<variable><type>int</type><name>firm_region</name><description></description></variable>
-<variable><type>int</type><name>household_region</name><description></description></variable>
-<variable><type>double</type><name>value</name><description></description></variable>
 </variables>
 </message>
 
