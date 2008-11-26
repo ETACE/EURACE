@@ -26,6 +26,9 @@
 #endif
 
 
+/** \def NUMBER_OF_BANKS_TO_APPLY
+ * \brief Provide access to environment variables in uppercase. */
+#define NUMBER_OF_BANKS_TO_APPLY number_of_banks_to_apply
 /** \def ARRAY_BLOCK_SIZE
  * \brief The block size to allocate to dynamic arrays. */
 #define ARRAY_BLOCK_SIZE 5
@@ -554,7 +557,6 @@ struct m_BCE_return
  */
 struct m_tax_payment
 {
-	int firm_id;	/**< Message memory variable firm_id of type int. */
 	int gov_id;	/**< Message memory variable gov_id of type int. */
 	double tax_payment;	/**< Message memory variable tax_payment of type double. */
 };
@@ -796,6 +798,9 @@ typedef struct location location;
  */
 typedef struct node_information node_information;
 
+/** \var int number_of_banks_to_apply
+* \brief A constant variable from the environment. */
+int number_of_banks_to_apply;
 /** \var xmachine * temp_xmachine
 * \brief Pointer to xmachine to initialise linked list. */
 xmachine * temp_xmachine;
@@ -1258,7 +1263,7 @@ m_BCE_return * add_BCE_return_message_internal(void);
 m_BCE_return * get_first_BCE_return_message(void);
 m_BCE_return * get_next_BCE_return_message(m_BCE_return * current);
 void freeBCE_returnmessages(void);
-void add_tax_payment_message(int firm_id, int gov_id, double tax_payment);
+void add_tax_payment_message(int gov_id, double tax_payment);
 m_tax_payment * add_tax_payment_message_internal(void);
 m_tax_payment * get_first_tax_payment_message(void);
 m_tax_payment * get_next_tax_payment_message(m_tax_payment * current);
@@ -1391,6 +1396,9 @@ void set_bankruptcy_state(int bankruptcy_state);
 int get_bankruptcy_state();
 void set_financial_crisis_state(int financial_crisis_state);
 int get_financial_crisis_state();
+int_array * get_neighboring_region_ids();
+void set_no_regions(int no_regions);
+int get_no_regions();
 void set_cash(double cash);
 double get_cash();
 void set_total_credit(double total_credit);
