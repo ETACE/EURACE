@@ -22,6 +22,11 @@
 </models>
 
 <environment>
+<constants>
+<!--Firm parameters-->
+<variable><type>int</type><name>number_of_banks_to_apply</name><description>number of banks firms can ask loans</description></variable>
+
+</constants>
 
 <functionFiles>
 <file>my_library_functions.c</file>
