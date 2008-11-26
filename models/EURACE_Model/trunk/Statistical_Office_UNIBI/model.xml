@@ -189,7 +189,10 @@
 <nextState>Start_Firm_Macro_Data</nextState>
 <condition><time><period>yearly</period><phase>1</phase></time></condition>
 <inputs>
-<input><messageName>policy_announcement</messageName></input>
+<input>
+<messageName>policy_announcement</messageName>
+<filter><lhs><value>a.gov_id</value></lhs><op>EQ</op><rhs><value>m.gov_id</value></rhs></filter>
+</input>
 </inputs>
 </function>
 
@@ -200,7 +203,10 @@ and stores the needed data.</description>
 <nextState>Firm_new01</nextState>
 <condition><time><period>monthly</period><phase>1</phase></time></condition>
 <inputs>
-<input><messageName>eurostat_send_specific_skills</messageName></input>
+<input>
+<messageName>eurostat_send_specific_skills</messageName>
+<filter><lhs><value>a.region_id</value></lhs><op>EQ</op><rhs><value>m.region_id</value></rhs></filter>
+</input>
 </inputs>
 </function>
 
@@ -266,7 +272,10 @@ including several micro data.</description>
 <nextState>Start_IGFirm_Productivity</nextState>
 <condition><time><period>yearly</period><phase>1</phase></time></condition>
 <inputs>
-<input><messageName>policy_announcement</messageName></input>
+<input>
+<messageName>policy_announcement</messageName>
+<filter><lhs><value>a.gov_id</value></lhs><op>EQ</op><rhs><value>m.gov_id</value></rhs></filter>
+</input>
 </inputs>
 </function>
 

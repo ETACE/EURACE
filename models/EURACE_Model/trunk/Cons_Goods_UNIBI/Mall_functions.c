@@ -3,7 +3,7 @@
 #include "../my_library_header.h"
 #include "Mall_aux_header.h"
 
-#define NO_REGIONS 2 //number of regions (hard-coded here, but should be a environment constant)
+//#define NO_REGIONS 2 //number of regions (hard-coded here, but should be a environment constant)
 
 
 /********************Mall agent functions*****************/

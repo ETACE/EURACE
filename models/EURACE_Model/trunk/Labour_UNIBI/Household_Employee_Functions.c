@@ -840,7 +840,6 @@ int Household_send_transfer_notification()
 	return 0;		
 }
 
-}
 /** \fn Household_send_tax_payment()
  * \brief Household pays the income taxes 
  */
