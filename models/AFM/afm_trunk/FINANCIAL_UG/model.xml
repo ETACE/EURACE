@@ -1,5 +1,3 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
-<!DOCTYPE xmodel SYSTEM "http://eurace.cs.bilgi.edu.tr/XMML.dtd">
 <xmodel version="2">
 	
 	<name>Financial Market</name>
@@ -8,6 +6,14 @@
 	
 	<!--***************** Environment values and functions **********************-->
 	<environment>
+	<constants>
+			<variable><type>double</type><name>trading_activity</name>
+				<description>household choose randomly to trade or not.</description>
+			</variable>
+			<variable><type>double</type><name>BONDS_NEWISSUE_DISCOUNT</name>
+				<description></description>
+			</variable>
+        </constants>
 		<functionFiles>
 			<file>Order.c</file>
 			<file>COrder.c</file>
@@ -27,12 +33,6 @@
 			<file>Household_Financial_Market.c</file>
 			<file>Government_Financial_Market.c</file>
                 </functionFiles>
-		<constants>
-			<variable><type>double</type><name>trading_activity</name>
-				<description>household choose randomly to trade or not.</description>
-			</variable>
-                </constants>
-	</environment>
 			
         <timeUnits>
 			
@@ -351,10 +351,11 @@
 			
 			<variable><type>double</type><name>earnings</name><description></description></variable>
 			<variable><type>double</type><name>earnings_payout</name><description></description></variable>
-			<variable><type>double</type><name>equity</name><description></description></variable>
 			<variable><type>double</type><name>current_shares_outstanding</name><description></description></variable>
 			<variable><type>double</type><name>current_dividend_per_share</name><description></description></variable>
-			<variable><type>Stock</type><name>stock</name>	<description></description></variable>
+			<variable><type>double</type><name>equity</name><description></description></variable>
+            <variable><type>Stock</type><name>stock</name>	<description></description></variable>
+			
 		</memory>
 		<!--        Defining functions                -->
 		<functions>
