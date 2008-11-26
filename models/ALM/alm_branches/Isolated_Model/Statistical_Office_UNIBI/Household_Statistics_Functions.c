@@ -82,7 +82,7 @@ int Household_send_subsidy_notification()
 {
 	/*Add subsidy message */
 	add_hh_subsidy_notification_message(GOV_ID);
-	PAYMENT_ACCOUNT += HH_SUBSIDY_PAYMENT;
+	PAYMENT_ACCOUNT += SUBSIDY_PAYMENT;
 		
 	return 0;		
 }

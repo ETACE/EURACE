@@ -10,7 +10,8 @@
 <constants>
 <variable><type>double</type><name>gov_policy_unemployment_benefit_pct</name><description>Parameter that sets the unemployment benefit as a fraction of last labour income.</description></variable>
 <variable><type>double</type><name>gov_policy_money_financing_fraction</name><description>Parameter that sets the fraction of the budget deficit that is financed using money financing.</description></variable>
-<variable><type>double</type><name>gov_policy_budget_pct</name><description>Parameter that sets the budget forecast for the next year as a function of last years GDP (typically in the range [1.02, 1.05]).</description></variable>
+<variable><type>double</type><name>gov_policy_gdp_fraction_consumption</name><description>Parameter that sets the government consumption expenditure as a fraction of GDP.</description></variable>
+<variable><type>double</type><name>gov_policy_gdp_fraction_investment</name><description>Parameter that sets the government investment expenditure as a fraction of GDP.</description></variable>
 </constants>
 
 <functionFiles>
@@ -25,35 +26,51 @@
 <name>Government</name>
 <description></description>
 <memory>
+<!--government-specific policy parameters-->
 <variable><type>double</type><name>unemployment_benefit_pct</name><description>Variable that sets the unemployment benefit as a fraction of last labour income.</description></variable>
+<variable><type>double</type><name>money_financing_fraction</name><description>Parameter that sets the fraction of the budget deficit that is financed using money financing.</description></variable>
+<variable><type>double</type><name>gdp_fraction_consumption</name><description>Parameter that sets the government consumption expenditure as a fraction of GDP.</description></variable>
+<variable><type>double</type><name>gdp_fraction_investment</name><description>Parameter that sets the government investment expenditure as a fraction of GDP.</description></variable>
+<!--government-specific tax rates-->
 <variable><type>double</type><name>tax_rate_corporate</name><description></description></variable>
 <variable><type>double</type><name>tax_rate_hh_labour</name><description></description></variable>
 <variable><type>double</type><name>tax_rate_hh_capital</name><description></description></variable>
 <variable><type>double</type><name>tax_rate_vat</name><description></description></variable>
+<!--Memory related to monetary flows-->
 <variable><type>double</type><name>monthly_tax_revenues</name><description></description></variable>
 <variable><type>double</type><name>yearly_tax_revenues</name><description></description></variable>
 <variable><type>double</type><name>monthly_unemployment_benefit_payment</name><description>Unemployment benefit payments for all unemployed households.</description></variable>
 <variable><type>double</type><name>yearly_unemployment_benefit_payment</name><description>Unemployment benefit payments for all unemployed households.</description></variable>
-<variable><type>double</type><name>transfer_payment</name><description></description></variable>
+<variable><type>double</type><name>hh_transfer_payment</name><description></description></variable>
+<variable><type>double</type><name>firm_transfer_payment</name><description></description></variable>
 <variable><type>double</type><name>monthly_transfer_payment</name><description></description></variable>
 <variable><type>double</type><name>yearly_transfer_payment</name><description></description></variable>
-<variable><type>double</type><name>subsidy_payment</name><description></description></variable>
+<variable><type>double</type><name>hh_subsidy_payment</name><description></description></variable>
+<variable><type>double</type><name>firm_subsidy_payment</name><description></description></variable>
 <variable><type>double</type><name>monthly_subsidy_payment</name><description></description></variable>
 <variable><type>double</type><name>yearly_subsidy_payment</name><description></description></variable>
 <variable><type>double</type><name>monthly_bond_coupon_payment</name><description></description></variable>
 <variable><type>double</type><name>yearly_bond_coupon_payment</name><description></description></variable>
 <variable><type>double</type><name>gov_interest_rate</name><description>Interest rate the gov uses to interest on the public debt.</description></variable>
 <variable><type>double</type><name>yearly_interest_payment</name><description></description></variable>
+<!--Memory related to budgeting-->
 <variable><type>double</type><name>yearly_gov_investment</name><description></description></variable>
 <variable><type>double</type><name>yearly_gov_consumption</name><description></description></variable>
+<variable><type>double</type><name>total_income</name><description></description></variable>
+<variable><type>double</type><name>total_expenditure</name><description></description></variable>
 <variable><type>double</type><name>total_debt</name><description></description></variable>
 <variable><type>double</type><name>budget_deficit</name><description></description></variable>
 <variable><type>double</type><name>total_money_financing</name><description></description></variable>
 <variable><type>double</type><name>total_bond_financing</name><description></description></variable>
-<variable><type>double</type><name>gdp</name><description></description></variable>
-<variable><type>double</type><name>budget_forecast</name><description></description></variable>
 <variable><type>double</type><name>country_wide_mean_wage</name><description></description></variable>
 <variable><type>int</type><name>num_unemployed</name><description></description></variable>
+<!--Memory related to forecasting-->
+<variable><type>double</type><name>gdp</name><description></description></variable>
+<variable><type>double</type><name>gdp_growth</name><description></description></variable>
+<variable><type>double</type><name>gdp_forecast</name><description></description></variable>
+<variable><type>double</type><name>total_income_forecast</name><description></description></variable>
+<variable><type>double</type><name>total_expenditure_forecast</name><description></description></variable>
+<variable><type>double</type><name>budget_forecast</name><description></description></variable>
 </memory>
 
 <functions>
