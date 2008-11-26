@@ -41,13 +41,11 @@ int Firm_read_tax_rates()
 
 	//Message send by Government:
 	START_POLICY_ANNOUNCEMENT_MESSAGE_LOOP			
-		if(policy_announcement_message->gov_id == GOV_ID)
-		{
+		//Filter: if(policy_announcement_message->gov_id == GOV_ID)
 			TAX_RATE_CORPORATE = policy_announcement_message->tax_rate_corporate;
 			TAX_RATE_VAT = policy_announcement_message->tax_rate_vat;
-			TRANSFER_PAYMENT = policy_announcement_message->transfer_payment;
-			SUBSIDY_PAYMENT = policy_announcement_message->subsidy_payment;
-		}
+			TRANSFER_PAYMENT = policy_announcement_message->firm_transfer_payment;
+			SUBSIDY_PAYMENT = policy_announcement_message->firm_subsidy_payment;
 	FINISH_POLICY_ANNOUNCEMENT_MESSAGE_LOOP
 	
 	return 0;
@@ -65,8 +63,8 @@ int Firm_receive_data()
 	START_EUROSTAT_SEND_SPECIFIC_SKILLS_MESSAGE_LOOP
 		
 		/*Specific skills of the domestic region*/
-		if(eurostat_send_specific_skills_message->region_id == REGION_ID)
-		{
+		//Filter: if(eurostat_send_specific_skills_message->region_id == REGION_ID)
+		
 			/*If there is no employee with general skill level 1 resp. 2-5*/
 			if(NO_EMPLOYEES_SKILL_1 == 0)
 			{
@@ -97,7 +95,6 @@ int Firm_receive_data()
 				AVERAGE_S_SKILL_OF_5 = 						eurostat_send_specific_skills_message->
 				specific_skill_5;
 			}
-		}
 		FINISH_EUROSTAT_SEND_SPECIFIC_SKILLS_MESSAGE_LOOP
 		
 		return 0;
