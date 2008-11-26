@@ -32,7 +32,7 @@
 				<description>household choose randomly to trade or not.</description>
 			</variable>
                 </constants>
-		<environment>
+	</environment>
 			
         <timeUnits>
 			
