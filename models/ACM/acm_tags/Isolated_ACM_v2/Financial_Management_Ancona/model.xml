@@ -388,7 +388,6 @@
 <name>tax_payment</name>
 <description>Added by firm to pay taxes</description>
 <variables>
-<variable><type>int</type><name>firm_id</name><description></description></variable>
 <variable><type>int</type><name>gov_id</name><description></description></variable>
 <variable><type>double</type><name>tax_payment</name><description></description></variable>
 </variables>

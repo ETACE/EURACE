@@ -403,7 +403,7 @@ int Firm_execute_financial_payments_function()
 	double temp_interest=0.0;
 		
 		//step 1: actual tax_payment to government
-		add_tax_payment_message(ID, GOV_ID, TAX_PAYMENT);
+		add_tax_payment_message(GOV_ID, TAX_PAYMENT);
 		PAYMENT_ACCOUNT -= TAX_PAYMENT;
 
 		//step 2: actual interest_payments and installment_payments
@@ -513,17 +513,6 @@ int Firm_read_stock_transactions()
     
     return 0;
 }
-
-int Firm_idle()
-{
-	return 0;
-}
-
-int Firm_not_in_bankruptcy()
-{
-	return 0;
-}
-
 
 
 int Firm_generate_new_firm()
