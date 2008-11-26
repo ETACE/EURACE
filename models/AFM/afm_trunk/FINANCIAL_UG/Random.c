@@ -54,7 +54,7 @@ double getSeed()
  * \param seed the seed.
  */
 void setSeed( double seme)
- {
+ { 
     seed=seme;
  }
 /** \fn double next()

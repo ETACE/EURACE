@@ -1,3 +1,5 @@
+#ifndef MYLIB
+#define MYLIB
 #define traderStartingCash 50000
 #define assetStartingQuantity 1000
 #define max(A,B) ( (A) > (B) ? (A):(B))
@@ -424,4 +426,4 @@ int  coupons_payment_days(Bond *bond,int currentDay,int holding_period);
 
 
 double computeBondUtilityFunction(Bond *bond,int backwardWindow, double factor, double value, double lossaversion);
-
+#endif
