@@ -183,7 +183,7 @@ int Bank_accounting()
          PROFITS[0] -= tax_bank;
          EQUITY -= tax_bank;  
          CASH -= tax_bank; 
-         add_tax_payment_message(ID, GOV_ID, tax_bank);  
+         add_tax_payment_message(GOV_ID, tax_bank);  
          total_dividends = BANK_DIVIDEND_RATE*PROFITS[0];  
          dividend_per_share = total_dividends/NUMBER_OF_SHARES; 
         // printf("total_dividend %f tax bank %f \n", total_dividends, tax_bank);
