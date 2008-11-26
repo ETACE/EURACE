@@ -469,7 +469,6 @@ spent in both consumtion steps, into the PAYMENT_ACCOUNT.</description>
 <variable><type>mall_stock_array</type><name>current_stock</name><description>Actual stock of the different firms</description></variable>
 <variable><type>sales_in_mall_array</type><name>firm_revenues</name><description>Actual revenue of the different firms</description></variable>
 <variable><type>double</type><name>total_supply</name><description>Total number of goods</description></variable>
-<variable><type>int</type><name>no_regions</name><description>Number of regions. Max=30.</description></variable>
 <variable><type>double</type><name>export_volume_matrix[900]</name><description>Matrix holding data on exports between regions, measured in volume.</description></variable>
 <variable><type>double</type><name>export_value_matrix[900]</name><description>Matrix holding data on exports between regions, measured in value.</description></variable>
 <variable><type>double</type><name>export_previous_value_matrix[900]</name><description>Matrix holding data on exports between regions, measured against previous prices.</description></variable>

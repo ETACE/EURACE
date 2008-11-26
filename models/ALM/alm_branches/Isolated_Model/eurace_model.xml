@@ -148,6 +148,7 @@
 <variable><type>int</type><name>id</name><description></description></variable>
 <variable><type>int</type><name>region_id</name><description></description></variable>
 <variable><type>int</type><name>gov_id</name><description></description></variable>
+<variable><type>int</type><name>no_regions</name><description></description></variable>
 </memory>
 </xagent>
 
@@ -170,7 +171,7 @@
 <memory>
 <variable><type>int</type><name>id</name><description></description></variable>
 <variable><type>int</type><name>region_id</name><description></description></variable>
-<variable><type>int</type><name>no_regions</name><description></description></variable>
+<variable><type>int</type><name>no_regions</name><description>Number of regions. Max=30.</description></variable>
 </memory>
 </xagent>
 

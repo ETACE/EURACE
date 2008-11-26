@@ -33,10 +33,10 @@ int Firm_send_payments_to_bank()
 	return 0;
 }
 
-/** \fn Firm_read_tax_rates()
- * \brief Firms reads the tax_rates_messages from Governments
+/** \fn Firm_read_policy_announcements()
+ * \brief Firms reads the policy_announcements from Governments
  */
-int Firm_read_tax_rates()
+int Firm_read_policy_announcements()
 {
 
 	//Message send by Government:
