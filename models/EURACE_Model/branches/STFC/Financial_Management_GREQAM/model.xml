@@ -85,8 +85,6 @@
 <variable><type>double</type><name>total_dividend_payment</name><description>Total dividend payment</description></variable>
 
 <!-- Financial variables -->
-<!--CURRENT_SHARES_OUTSTANDING-->
-<!--PREVIOUS_SHARES_OUTSTANDING-->
 <variable><type>double</type><name>current_share_price</name><description>Current share price on the market</description></variable>
 <variable><type>double</type><name>previous_dividend_per_share</name><description>Dividend-per-share ratio (previous production cycle)</description></variable>
 <variable><type>double</type><name>current_dividend_per_share</name><description>Dividend-per-share ratio</description></variable>
@@ -129,6 +127,10 @@
 <variable><type>double</type><name>earnings_per_share</name><description></description></variable>
 <variable><type>double</type><name>total_payments</name><description></description></variable>
 <variable><type>double</type><name>total_interest_payments</name><description></description></variable>
+
+<!-- Firm_in_bankruptcy -->
+<variable><type>double</type><name>ipo_amount</name><description></description></variable>
+
 </memory>
 <functions>
 

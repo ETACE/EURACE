@@ -173,7 +173,7 @@
 <variable><type>double</type><name>transfer_payment</name><description></description></variable>
 <variable><type>double</type><name>subsidy_payment</name><description></description></variable>
 <variable><type>double</type><name>active</name><description>0,1. Flag indicating whether the firm should start production activity.</description></variable>
-<variable><type>double</type><name>bankruptcy_idle_counter</name><description>Number of iterations that a bankrupt firm remains idle, before resuming production activity.</description></variable>
+<variable><type>int</type><name>bankruptcy_idle_counter</name><description>Number of iterations that a bankrupt firm remains idle, before resuming production activity.</description></variable>
 
 </memory>
 
