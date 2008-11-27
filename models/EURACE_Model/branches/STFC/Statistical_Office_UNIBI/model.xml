@@ -172,20 +172,46 @@
 <variable><type>int</type><name>age</name><description></description></variable>
 <variable><type>double</type><name>transfer_payment</name><description></description></variable>
 <variable><type>double</type><name>subsidy_payment</name><description></description></variable>
+<variable><type>double</type><name>active</name><description>0,1. Flag indicating whether the firm should start production activity.</description></variable>
+<variable><type>double</type><name>bankruptcy_idle_counter</name><description>Number of iterations that a bankrupt firm remains idle, before resuming production activity.</description></variable>
+
 </memory>
 
 <functions>
 
+<function>
+<name>Firm_bankruptcy_idle_counter</name>
+<description></description>
+<currentState>start_Firm</currentState>
+<nextState>Firm_not_active</nextState>
+<condition>
+<lhs><value>a.active</value></lhs><op>EQ</op><rhs><value>0</value></rhs>
+</condition>
+</function>
+
+<function><name>idle</name>
+<description></description>
+<currentState>Firm_not_active</currentState>
+<nextState>end_Firm</nextState>
+</function>
+
 <function><name>idle</name>
 <description></description>
 <currentState>start_Firm</currentState>
-<nextState>Start_Firm_Macro_Data</nextState>
+<nextState>Firm_is_active</nextState>
+<condition><lhs><value>a.active</value></lhs><op>EQ</op><rhs><value>1</value></rhs></condition>
+</function>
+
+<function><name>idle</name>
+<description></description>
+<currentState>Firm_is_active</currentState>
+<nextState>Firm_Start_Macro_Data</nextState>
 <condition><not><time><period>yearly</period><phase>1</phase></time></not></condition>
 </function>
 
 <function><name>Firm_read_tax_rates</name>
 <description></description>
-<currentState>start_Firm</currentState>
+<currentState>Firm_is_active</currentState>
 <nextState>Firm_Start_Macro_Data</nextState>
 <condition><time><period>yearly</period><phase>1</phase></time></condition>
 <inputs>
@@ -212,8 +238,8 @@ and stores the needed data.</description>
 
 <function><name>idle</name>
 <description>Firm does nothing</description>
-<currentState>Start_Firm_Macro_Data</currentState>
-<nextState>Firm_new01</nextState>
+<currentState>Firm_Start_Macro_Data</currentState>
+<nextState>Firm_End_Macro_Data</nextState>
 <condition><not><time><period>monthly</period><phase>1</phase></time></not></condition>
 </function>
 
