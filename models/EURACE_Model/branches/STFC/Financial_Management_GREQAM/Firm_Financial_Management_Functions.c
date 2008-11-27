@@ -274,23 +274,30 @@ int Firm_check_financial_and_bankruptcy_state() {
  * \brief Function to process the bankruptcy condition.
  *  Sends a bankruptcy_message from the firm to all banks at which the firm has a loan.
  */
-int Firm_in_bankruptcy() {
+int Firm_in_bankruptcy()
+{
 	int i, imax;
-	double bad_debt, credit_refunded, residual_var;
+	double new_debt, write_off_ratio, bad_debt, credit_refunded, residual_var;
 
 	//Set active flag
 	ACTIVE=0;
-	
+	BANKRUPTCY_IDLE_COUNTER = CONST_BANKRUPTCY_IDLE_PERIOD;
 	
 	//Effect on credit market
+	//Set the new debt and the write_off_ratio
+	 new_debt = (2/3)*TOTAL_ASSETS;
+	 write_off_ratio = 1- (new_debt/TOTAL_DEBT);
+
 	//Refunding credit, bad debt
 	imax = LOANS.size;
-	for (i=0; i<imax; i++) {
+	for (i=0; i<imax; i++)
+	{
 		residual_var = LOANS.array[i].var_per_installment
 				* LOANS.array[i].nr_periods_before_repayment;
-		credit_refunded = LOANS.array[i].loan_value * PAYMENT_ACCOUNT
-				/TOTAL_DEBT;
-		bad_debt = LOANS.array[i].loan_value - credit_refunded;
+		//the credit_refunded is that part of the debt which can be refunded form the remaining cash holdings
+		credit_refunded = LOANS.array[i].loan_value * PAYMENT_ACCOUNT/TOTAL_DEBT;
+		
+		bad_debt = write_off_ratio * LOANS.array[i].loan_value; 
 
 		//add_bankruptcy_message(bank_id, bad_debt, credit_refunded, residual_var);
 		add_bankruptcy_message(LOANS.array[i].bank_id, bad_debt,
@@ -303,6 +310,9 @@ int Firm_in_bankruptcy() {
 
 	//Effect on financial market
 	//Cancelling all shares
+
+	//Set the IPO_AMOUNT
+		IPO_AMOUNT = TOTAL_ASSETS - new_debt;
 
 
 	//Effect on investment goods market
@@ -325,8 +335,10 @@ int Firm_bankruptcy_idle_counter()
 	
 	//Add conditions for setting the active flag to 1:
 	if (BANKRUPTCY_IDLE_COUNTER==0)
-		 ACTIVE=1;
-	 
+	{
+		ACTIVE=1;
+	}
+	
 	return 0;
 }
 
