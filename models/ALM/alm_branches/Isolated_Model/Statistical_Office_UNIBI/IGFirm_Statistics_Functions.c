@@ -3,10 +3,10 @@
 #include "../my_library_header.h"
 
 
-/** \fn IGFirm_read_tax_rates()
- * \brief IGFirms reads the tax_rates_messages from Governments
+/** \fn IGFirm_read_policy_announcements()
+ * \brief IGFirms reads the policy_announcement_messages from Governments
  */
-int IGFirm_read_tax_rates()
+int IGFirm_read_policy_announcements()
 {
 	//Message send by Government:
 	START_POLICY_ANNOUNCEMENT_MESSAGE_LOOP			

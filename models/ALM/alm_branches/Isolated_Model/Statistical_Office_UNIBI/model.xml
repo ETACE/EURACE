@@ -260,7 +260,7 @@ including several micro data.</description>
 <condition><not><time><period>yearly</period><phase>1</phase></time></not></condition>
 </function>
 
-<function><name>IGFirm_read_tax_rates</name>
+<function><name>IGFirm_read_policy_announcements</name>
 <description></description>
 <currentState>start_IGFirm</currentState>
 <nextState>Start_IGFirm_Productivity</nextState>

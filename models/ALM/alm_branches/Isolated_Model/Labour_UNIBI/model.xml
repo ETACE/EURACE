@@ -568,9 +568,33 @@ the reservation wage</description>
 </outputs>
 </function>
 
+<function>
+<name>Household_send_subsidy_notification</name>
+<description></description>
+<currentState>08b</currentState>
+<nextState>08c</nextState>
+<outputs>
+<output>
+<messageName>hh_subsidy_notification</messageName>
+</output>
+</outputs>
+</function>
+
+<function>
+<name>Household_send_transfer_notification</name>
+<description></description>
+<currentState>08c</currentState>
+<nextState>08d</nextState>
+<outputs>
+<output>
+<messageName>hh_transfer_notification</messageName>
+</output>
+</outputs>
+</function>
+
 <function><name>Household_determine_consumption_budget</name>
 <description>Household determines the consumption and portfolio budegt</description>
-<currentState>08b</currentState>
+<currentState>08d</currentState>
 <nextState>09</nextState>
 </function>
 

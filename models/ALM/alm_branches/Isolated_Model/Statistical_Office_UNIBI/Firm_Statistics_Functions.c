@@ -51,6 +51,30 @@ int Firm_read_policy_announcements()
 	return 0;
 }
 
+/** \fn Firm_send_subsidy_notification()
+ * \brief This function sends a message to the government in case the Firm applies for a subsidy. 
+ */
+int Firm_send_subsidy_notification()
+{
+	/*Add subsidy message */
+	add_firm_subsidy_notification_message(GOV_ID);
+	PAYMENT_ACCOUNT += SUBSIDY_PAYMENT;
+		
+	return 0;		
+}
+
+/** \fn Firm_send_transfer_notification()
+ * \brief This function sends a message to the government in case the Firm applies for a transfer. 
+ */
+int Firm_send_transfer_notification()
+{
+	/*Add transfer message */
+	add_firm_transfer_notification_message(GOV_ID);
+	PAYMENT_ACCOUNT += TRANSFER_PAYMENT;
+		
+	return 0;		
+}
+
 /** \fn Firm_receive_data()
  * \brief Firms receive the data messages from the Eurostat*/
 int Firm_receive_data()
