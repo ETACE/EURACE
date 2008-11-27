@@ -276,18 +276,28 @@ int Firm_check_financial_and_bankruptcy_state() {
  */
 int Firm_in_bankruptcy()
 {
-	int i, imax;
-	double new_debt, write_off_ratio, bad_debt, credit_refunded, residual_var;
-
 	//Set active flag
 	ACTIVE=0;
 	BANKRUPTCY_IDLE_COUNTER = CONST_BANKRUPTCY_IDLE_PERIOD;
 	
+	return 0;
+}
+
+/*
+ * \fn Firm_bankruptcy_procedure()
+ * \brief Function to process the bankruptcy condition.
+ *  Sends a bankruptcy_message from the firm to all banks at which the firm has a loan.
+ */
+int Firm_bankruptcy_procedure()
+{
+	int i, imax;
+	double new_debt, write_off_ratio, bad_debt, credit_refunded, residual_var;
+
 	//Effect on credit market
 	//Set the new debt and the write_off_ratio
 	 new_debt = (2/3)*TOTAL_ASSETS;
 	 write_off_ratio = 1- (new_debt/TOTAL_DEBT);
-
+	
 	//Refunding credit, bad debt
 	imax = LOANS.size;
 	for (i=0; i<imax; i++)
@@ -298,29 +308,32 @@ int Firm_in_bankruptcy()
 		credit_refunded = LOANS.array[i].loan_value * PAYMENT_ACCOUNT/TOTAL_DEBT;
 		
 		bad_debt = write_off_ratio * LOANS.array[i].loan_value; 
-
+	
 		//add_bankruptcy_message(bank_id, bad_debt, credit_refunded, residual_var);
 		add_bankruptcy_message(LOANS.array[i].bank_id, bad_debt,
 				credit_refunded, residual_var);
 	}
-
-	//Effect on labour market
-	//Firing all employees
-
-
+	
 	//Effect on financial market
 	//Cancelling all shares
-
+	
 	//Set the IPO_AMOUNT
-		IPO_AMOUNT = TOTAL_ASSETS - new_debt;
-
-
+	IPO_AMOUNT = TOTAL_ASSETS - new_debt;
+	
 	//Effect on investment goods market
 	//Left-over capital
-
-
+	
+	//Effect on labour market
+	//Firing all employees --> see Firm_bankruptcy_procedures
+	for (i=0;i<EMPLOYEES.size;i++)
+			add_firing_message(ID, EMPLOYEES.array[i].id);
+		
 	//Effect on consumption goods market
-	//Foreclosure sales at local outlet malls at discount prices
+	//Option 1: all local inventory stock is lost
+	//Option 2: send back local inventory stock to factory
+	//Option 3: fire-sales at local outlet malls at discount prices
+	
+	//Now recompute the balance sheet after the IPO
 
 	return 0;
 }

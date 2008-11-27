@@ -617,7 +617,7 @@ wage offer for the according general skill level.</description>
 
 <message>
 <name>firing</name>
-<description>Send by firms. Includes the id and the id of the dismissed employee.</description>
+<description>Send by firms. Includes the firm_id and the id of the dismissed employee.</description>
 <variables>
 <variable><type>int</type><name>firm_id</name><description></description></variable>
 <variable><type>int</type><name>worker_id</name><description></description></variable>
