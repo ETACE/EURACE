@@ -54,6 +54,8 @@
 <variable><type>int</type><name>delivery_prob_if_critical_stock_0</name><description>25, Probability for the delivery if the critical stock of one mall was zero for the last periods.</description></variable>
 <variable><type>int</type><name>innovation_probability</name><description>10</description></variable>
 <variable><type>double</type><name>productivity_progress</name><description>0.05</description></variable>
+<variable><type>double</type><name>bankruptcy_idle_counter</name><description>Number of iterations that a bankrupt firm remains idle, before resuming production activity.</description></variable>
+
 <!--Eurostat parameters-->
 <!--<variable><type>int</type><name>max_firm_creation</name><description>10, maximum number of new firms created if survival rate of young firms is 1.</description></variable>-->
 </constants>
