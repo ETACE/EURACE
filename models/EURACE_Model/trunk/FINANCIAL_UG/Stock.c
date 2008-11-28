@@ -13,14 +13,14 @@ void  freeStock(Stock *aStock)
 {
     free(aStock);
 } 
-void initializeStock(Stock *aStock,int id)
+void initializeStock(Stock *aStock,int id,double price,int nr_outstanding)
 { int i; 
   double aux;
   double prec;
   aStock->id=id;
   aStock->index=0;
- aux=50;
-aStock->nrOutStandingShares=40000;
+ aux=price;
+aStock->nrOutStandingShares=nr_outstanding;
  for(i=0;i<MAXPRICES;i++)
      { prec=aux;
       aux=prec+0.01*gauss(0,0.1);
@@ -92,7 +92,7 @@ double volatilityStock(Stock *stock,int backwardWindow)
                aux=(backreturnsAt(stock,i)-expectedreturn);
                volatility=volatility+(aux*aux);
             }
-      volatility=sqrt(volatility/(backwardWindow));
+      volatility=volatility/(backwardWindow);
       //volatility=sqrt(volatility/(backwardWindow);
       return volatility;
      }
@@ -131,7 +131,7 @@ void historicalReturnsStock(Stock *stock, double *vect, int backwardWindow,doubl
    
   return;
  }*/
-double computeAssetUtilityFunction(Stock *stock,int backwardWindow, double factor, double value, double lossaversion)
+double computeStockUtilityFunction(Stock *stock,int backwardWindow, double factor, double value, double lossaversion)
 { 
   int i;
   double utility;

@@ -1,3 +1,5 @@
+#ifndef MYLIB
+#define MYLIB
 #define traderStartingCash 50000
 #define assetStartingQuantity 1000
 #define max(A,B) ( (A) > (B) ? (A):(B))
@@ -7,12 +9,11 @@
 #define initialPrice 50
 #define MAXPRICES 100
 #define MAXRETURNS MAXPRICES
+//move constants to model.xml environment
 #define COUPONPERIODICITYNRMONTHS 6
 #define NRDAYSINYEAR  240
 #define FUNDAMENTAL_RETURN_WEIGHT_MIN 0.1
-#ifndef CONSUMPTION_BUDGET
-#define CONSUMPTION_BUDGET 0.0
-#endif
+
 #include "../header.h"
 #include <stdlib.h>
 #include <math.h>
@@ -424,4 +425,4 @@ int  coupons_payment_days(Bond *bond,int currentDay,int holding_period);
 
 
 double computeBondUtilityFunction(Bond *bond,int backwardWindow, double factor, double value, double lossaversion);
-
+#endif

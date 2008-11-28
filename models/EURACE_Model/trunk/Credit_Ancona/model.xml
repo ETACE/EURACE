@@ -211,9 +211,9 @@
 </filter>
 </input>
 </inputs>
-<outputs>
+<!--<outputs>
 <output><messageName>central_bank_account_update</messageName></output>
-</outputs>
+</outputs>-->
 </function>
 
 
@@ -317,6 +317,16 @@
 </variables>
 </message>
 
+<!--
+<message>
+<name>central_bank_account_update</name>
+<description>message for central bankto new name</description>
+<variables>
+<variable><type>double</type><name>payment_account</name><description></description></variable>
+<variable><type>int</type><name>bank_id</name><description></description></variable>
+</variables>
+</message>
+-->
 
 <message>
 <name>BCE_return</name>

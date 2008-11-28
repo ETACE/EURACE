@@ -10,17 +10,13 @@
 <!-- Models to include in Eurace model -->
 <models>
 <model><file>Cons_Goods_UNIBI/model.xml</file><enabled>true</enabled></model>
-<model><file>Credit_UNIBI/model-dummy.xml</file><enabled>false</enabled></model>
 <model><file>Credit_Ancona/model.xml</file><enabled>true</enabled></model>
 <model><file>Financial_Management_GREQAM/model.xml</file><enabled>true</enabled></model>
-<model><file>Financial_Management_Ancona/model.xml</file><enabled>false</enabled></model>
+<model><file>FINANCIAL_UG/model.xml</file><enabled>true</enabled></model>
 <model><file>Inv_Goods_UNIBI/model.xml</file><enabled>true</enabled></model>
 <model><file>Labour_UNIBI/model.xml</file><enabled>true</enabled></model>
-<model><file>Statistical_Office_UNIBI/model.xml</file><enabled>true</enabled></model>
-<model><file>FINANCIAL_UG/model.xml</file><enabled>true</enabled></model>
-<model><file>Financial_UNIBI/model-dummy.xml</file><enabled>false</enabled></model>
-<model><file>Government_UNIBI/model.xml</file><enabled>false</enabled></model>
 <model><file>Government_GREQAM/model.xml</file><enabled>true</enabled></model>
+<model><file>Statistical_Office_UNIBI/model.xml</file><enabled>true</enabled></model>
 </models>
 
 <environment>
@@ -58,6 +54,8 @@
 <variable><type>int</type><name>delivery_prob_if_critical_stock_0</name><description>25, Probability for the delivery if the critical stock of one mall was zero for the last periods.</description></variable>
 <variable><type>int</type><name>innovation_probability</name><description>10</description></variable>
 <variable><type>double</type><name>productivity_progress</name><description>0.05</description></variable>
+<variable><type>int</type><name>const_bankruptcy_idle_period</name><description>Number of iterations that a bankrupt firm remains idle, before resuming production activity.</description></variable>
+
 <!--Eurostat parameters-->
 <!--<variable><type>int</type><name>max_firm_creation</name><description>10, maximum number of new firms created if survival rate of young firms is 1.</description></variable>-->
 </constants>
@@ -148,6 +146,7 @@
 <variable><type>int</type><name>id</name><description></description></variable>
 <variable><type>int</type><name>region_id</name><description></description></variable>
 <variable><type>int</type><name>gov_id</name><description></description></variable>
+<variable><type>int</type><name>no_regions</name><description></description></variable>
 </memory>
 </xagent>
 
@@ -171,7 +170,7 @@
 <memory>
 <variable><type>int</type><name>id</name><description></description></variable>
 <variable><type>int</type><name>region_id</name><description></description></variable>
-<variable><type>int</type><name>no_regions</name><description></description></variable>
+<variable><type>int</type><name>no_regions</name><description>Number of regions. Max=30.</description></variable>
 </memory>
 </xagent>
 
