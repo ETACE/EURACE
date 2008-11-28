@@ -22,13 +22,12 @@
 #define STOCKPRICE EQUITY/nr_share
 #define MEAN_WAGE 1
 #define TECNOLOGICAL_FRONTIER 1.5
-#define GOV_ID NUMFirm + NUMHousehold +NUMMall+NUMIGFirm+NUMEurostat + NUMClearinghouse + NUMBank 
-#define BANK_ID NUMFirm + NUMHousehold +NUMMall+NUMIGFirm+NUMEurostat + NUMClearinghouse + NUMBank+NUMGovernment
+#define GOV_ID 0
+#define BANK_ID 1
 
 void initFirm(struct xmachine_memory_Firm *aFirm, int id, int region_id)
 { int j,k;
   struct xmachine_memory_Firm *agent;
-  
  agent=aFirm;
  agent->id=id;
  agent->region_id=region_id; //int;
@@ -76,7 +75,6 @@ for(j=0;j<NUMMall;j++)
  init_delivery_volume_per_mall_array(&agent->delivery_volume);
  for(j=0;j<NUMMall;j++)
  add_delivery_volume_per_mall(&agent->delivery_volume,NUMFirm+NUMHousehold+j,production_quantity_per_firm/NUMMall,1,1); //delivery_volume_per_mall_array;
- 
   init_delivery_volume_per_mall_array(&agent->planned_delivery_volume); //delivery_volume_per_mall_array;
  for(j=0;j<NUMMall;j++)
   add_delivery_volume_per_mall(&agent->planned_delivery_volume,NUMFirm+NUMHousehold+j,1,1,1);
@@ -238,15 +236,14 @@ void initHousehold(struct xmachine_memory_Household *aHousehold, int id, int reg
  agent->holdingPeriodToForwardW =0;//int;
  agent->lossaversion =0;//double;
  agent->strategy =0;//double;
- 
+
 }
 
 void initMall(struct xmachine_memory_Mall *aMall, int id, int region_id)
 { struct xmachine_memory_Mall *agent;
  agent=aMall;
  agent->id=id;
- agent->id =0;//int;
- agent->region_id =0;//int;
+ agent->region_id = region_id;//int;
  agent->gov_id =0;//int;
  init_mall_stock_array(&agent->current_stock);//mall_stock_array;
  init_sales_in_mall_array(&agent->firm_revenues);//sales_in_mall_array;
@@ -261,7 +258,7 @@ void initIGFirm(struct xmachine_memory_IGFirm *aIGFirm, int id, int region_id)
 { struct xmachine_memory_IGFirm *agent;
  agent=aIGFirm;
  agent->id=id;
- agent->id =0;//int;
+ //agent->id =0;//int;
  agent->region_id =0;//int;
  agent->gov_id =0;//int;
  agent->bank_id =0;//int;
@@ -287,7 +284,7 @@ void initEurostat(struct xmachine_memory_Eurostat *aEurostat, int id, int region
 { struct xmachine_memory_Eurostat *agent;
  agent=aEurostat;
  agent->id=id;
- agent->id =0;//int;
+ //agent->id =0;//int;
  agent->region_id =0;//int;
  agent->no_regions =0;//int;
  agent->switch_datastorage =0;//int;
@@ -395,7 +392,7 @@ void initClearinghouse(struct xmachine_memory_Clearinghouse *aClearinghouse, int
 { struct xmachine_memory_Clearinghouse *agent;
  agent=aClearinghouse;
  agent->id=id;
- agent->id =0;//int;
+ //agent->id =0;//int;
  agent->region_id =0;//int;
  init_Asset_array(&agent->assets);//Asset_array;
  init_ClearingMechanism(&agent->clearingmechanism);//ClearingMechanism;
@@ -406,7 +403,7 @@ void initBank(struct xmachine_memory_Bank *aBank, int id, int region_id)
 { struct xmachine_memory_Bank *agent;
  agent=aBank;
  agent->id=id;
- agent->id =0;//int;
+ //agent->id =0;//int;
  agent->region_id =0;//int;
  agent->gov_id =0;//int;
  agent->cash =0;//double;
@@ -433,7 +430,7 @@ void initGovernment(struct xmachine_memory_Government *aGovernment, int id, int 
 { struct xmachine_memory_Government *agent;
  agent=aGovernment;
  agent->id=id;
- agent->id =0;//int;
+ //agent->id =0;//int;
  //agent->list_of_regions =0;//int;
  agent->payment_account =0;//double;
  agent->day_of_month_to_act =0;//int;
@@ -487,15 +484,16 @@ void initCentral_Bank(struct xmachine_memory_Central_Bank *aCentral_Bank, int id
 { struct xmachine_memory_Central_Bank *agent;
  agent=aCentral_Bank;
  agent->id=id;
- agent->id =0;//int;
+ //agent->id =0;//int;
  //agent->accounts =0;//double;
  
 }
-  
+
 int main(void)
 {
        FILE *file;
        int i,region_id;
+       int temp;
        file = fopen("0.xml", "w");
        struct xmachine_memory_Firm aFirm[NUMFirm];
        struct xmachine_memory_Household aHousehold[NUMHousehold];
@@ -510,56 +508,152 @@ int main(void)
        
         fputs("<states>\n<itno>", file);
         fputs("0",file);
-	fputs("</itno>\n", file);
-   
-        for(region_id=1;region_id<NUMRegion;region_id++)
+	    fputs("</itno>\n", file);
+
+        region_id = 1;
+        temp = 0;
+        
+        for (i = temp; i < (int)NUMGovernment + temp; i++)
+        {
+           initGovernment(&aGovernment[i - temp],i,region_id);
+           write_Government_agent(file,&aGovernment[i - temp]);
+
+           region_id++;
+           if (region_id > NUMRegion) region_id = 1;    
+        }
+        temp = (int)NUMGovernment + temp;
+        
+        for (i = temp; i < (int)NUMBank + temp; i++)
+        {
+           initBank(&aBank[i - temp],i,region_id);
+           write_Bank_agent(file,&aBank[i - temp]);
+           region_id++;
+           if (region_id > NUMRegion) region_id = 1;    
+        }
+        temp = (int)NUMBank + temp;
+        
+        
+        for (i = temp; i < (int)NUMFirm + temp; i++)
+        {
+           initFirm(&aFirm[i - temp],i,region_id);
+           write_Firm_agent(file,&aFirm[i - temp]);
+           
+           region_id++;
+           if (region_id > NUMRegion) region_id = 1;    
+        }
+        temp = (int)NUMFirm + temp;
+        
+        for (i = temp; i < (int)NUMHousehold + temp; i++)
+        {
+           initHousehold(&aHousehold[i - temp],i,region_id,BANK_ID);
+           write_Household_agent(file,&aHousehold[i - temp]);
+  
+           region_id++;
+           if (region_id > NUMRegion) region_id = 1;    
+        }
+        temp = (int)NUMHousehold + temp;
+        
+        
+        for (i = temp; i < (int)NUMMall + temp; i++)
+        {
+           initMall(&aMall[i - temp],i,region_id);
+           write_Mall_agent(file,&aMall[i - temp]);
+        
+           region_id++;
+           if (region_id > NUMRegion) region_id = 1;    
+        }
+        temp = (int)NUMMall + temp;
+        
+        for (i = temp; i < (int)NUMCentral_Bank + temp; i++)
+        {
+           initCentral_Bank(&aCentral_Bank[i - temp],i,region_id);
+           write_Central_Bank_agent(file,&aCentral_Bank[i - temp]);
+  
+           region_id++;
+           if (region_id > NUMRegion) region_id = 1;    
+        }
+        temp = (int)NUMCentral_Bank + temp;
+        
+        
+        for (i = temp; i < (int)NUMIGFirm + temp; i++)
+        {
+           initIGFirm(&aIGFirm[i - temp],i,region_id);
+           write_IGFirm_agent(file,&aIGFirm[i - temp]);
+           
+           region_id++;
+           if (region_id > NUMRegion) region_id = 1;    
+        }
+        temp = (int)NUMIGFirm + temp;
+
+        for (i = temp; i < (int)NUMEurostat + temp; i++)
+        {
+           initEurostat(&aEurostat[i - temp],i,region_id);
+           write_Eurostat_agent(file,&aEurostat[i - temp]);
+
+           region_id++;
+           if (region_id > NUMRegion) region_id = 1;    
+        }
+        temp = (int)NUMEurostat + temp;
+
+        for (i = temp; i < (int)NUMClearinghouse + temp; i++)
+        {
+           initClearinghouse(&aClearinghouse[i - temp],i,region_id);
+           write_Clearinghouse_agent(file,&aClearinghouse[i - temp]);
+
+           region_id++;
+           if (region_id > NUMRegion) region_id = 1;    
+        }
+
+
+        /*for(region_id=1;region_id<NUMRegion;region_id++)
         {for(i=0;i<(int)NUMFirm/NUMRegion;i++)
         {
-         initFirm(&aFirm[i],i,region_id);
-         write_Firm_agent(file,&aFirm[i]);
+         temp = (region_id - 1) * (NUMFirm/NUMRegion);
+         initFirm(&aFirm[i - temp],i - temp,region_id);
+         write_Firm_agent(file,&aFirm[i - temp]);
         }
         
         for(i=NUMFirm;i<NUMFirm+NUMHousehold;i++)
         {
          initHousehold(&aHousehold[i],i,region_id,BANK_ID);
-         write_Household_agent(file,&aHousehold[i]);
+         write_Household_agent(file,&aHousehold[i-NUMFirm]);
         }
         }
         
         for(i=NUMFirm+NUMHousehold;i<NUMFirm+NUMHousehold+NUMMall;i++)
         {
          initMall(&aMall[i],i,region_id);
-         write_Mall_agent(file,&aMall[i]);
+         write_Mall_agent(file,&aMall[i-(NUMFirm+NUMHousehold)]);
         }
         
-        for(i=0;i<NUMIGFirm;i++)
+        for(i=NUMFirm+NUMHousehold+NUMMall;i<NUMFirm+NUMHousehold+NUMMall+NUMIGFirm;i++)
         {
          initIGFirm(&aIGFirm[i],i,region_id);
-         write_IGFirm_agent(file,&aIGFirm[i]);
+         write_IGFirm_agent(file,&aIGFirm[i-(NUMFirm+NUMHousehold+NUMMall)]);
         }
         
-        for(i=0;i<NUMEurostat;i++)
+        for(i=NUMFirm+NUMHousehold+NUMMall+NUMIGFirm;i<NUMFirm+NUMHousehold+NUMMall+NUMIGFirm+NUMEurostat;i++)
         {
          initEurostat(&aEurostat[i],i,region_id);
-         write_Eurostat_agent(file,&aEurostat[i]);
+         write_Eurostat_agent(file,&aEurostat[i-(NUMFirm+NUMHousehold+NUMMall+NUMIGFirm)]);
         }
         
-        for(i=0;i<NUMClearinghouse;i++)
+        for(i=NUMFirm+NUMHousehold+NUMMall+NUMIGFirm+NUMEurostat;i<NUMFirm+NUMHousehold+NUMMall+NUMIGFirm+NUMEurostat+NUMClearinghouse;i++)
         {
          initClearinghouse(&aClearinghouse[i],i,region_id);
-         write_Clearinghouse_agent(file,&aClearinghouse[i]);
+         write_Clearinghouse_agent(file,&aClearinghouse[i-(NUMFirm+NUMHousehold+NUMMall+NUMIGFirm+NUMEurostat+NUMClearinghouse)]);
         }
         
-        for(i=0;i<NUMBank;i++)
+        for(i=NUMFirm+NUMHousehold+NUMMall+NUMIGFirm+NUMEurostat+NUMClearinghouse;i<NUMFirm+NUMHousehold+NUMMall+NUMIGFirm+NUMEurostat+NUMClearinghouse+NUMBank;i++)
         {
          initBank(&aBank[i],i,region_id);
-         write_Bank_agent(file,&aBank[i]);
+         write_Bank_agent(file,&aBank[i-(NUMFirm+NUMHousehold+NUMMall+NUMIGFirm+NUMEurostat+NUMClearinghouse+NUMBank)]);
         }
         
-        for(i=0;i<NUMGovernment;i++)
+        for(i=NUMFirm+NUMHousehold+NUMMall+NUMIGFirm+NUMEurostat+NUMClearinghouse+NUMBank;i<NUMFirm+NUMHousehold+NUMMall+NUMIGFirm+NUMEurostat+NUMClearinghouse+NUMBank+NUMGovernment;i++)
         {
          initGovernment(&aGovernment[i],i,region_id);
-         write_Government_agent(file,&aGovernment[i]);
+         write_Government_agent(file,&aGovernment[i-(NUMFirm+NUMHousehold+NUMMall+NUMIGFirm+NUMEurostat+NUMClearinghouse+NUMBank+NUMGovernment)]);
         }
         
         for(i=0;i<NUMCentral_Bank;i++)
@@ -567,7 +661,8 @@ int main(void)
          initCentral_Bank(&aCentral_Bank[i],i,region_id);
          write_Central_Bank_agent(file,&aCentral_Bank[i]);
         }
-         
+        */
+        
        fputs("</states>\n" , file);
        fclose(file);
 }
