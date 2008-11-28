@@ -163,10 +163,12 @@ int Household_update_its_portfolio()
   issuer=get_id();
   info=get_first_order_status_message();
   i=0;
-  while(info)  
-  { if(info->trader_id==issuer) 
+//if( info==NULL)  printf("numero di execuzione =\n");
+  while(info)
+  {  //printf("numero di execuzione =%d\n",info->asset_id);
+     if(info->trader_id==issuer) 
       { i++;
-        
+         //printf("numero di execuzione =%d\n",info->asset_id);
        setOrder(currentOrder,info->price,info->quantity,info->asset_id,info->trader_id);
        if(sizeCOrder(pendingOrders)>0)executeOrder(&PAYMENT_ACCOUNT,currentOrder,assets,pendingOrders); 
        }

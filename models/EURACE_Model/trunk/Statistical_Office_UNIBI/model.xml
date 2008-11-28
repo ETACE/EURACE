@@ -172,21 +172,52 @@
 <variable><type>int</type><name>age</name><description></description></variable>
 <variable><type>double</type><name>transfer_payment</name><description></description></variable>
 <variable><type>double</type><name>subsidy_payment</name><description></description></variable>
+<variable><type>double</type><name>active</name><description>0,1. Flag indicating whether the firm should start production activity.</description></variable>
+<variable><type>int</type><name>bankruptcy_idle_counter</name><description>Number of iterations that a bankrupt firm remains idle, before resuming production activity.</description></variable>
+
 </memory>
 
 <functions>
 
+<function>
+<name>Firm_bankruptcy_idle_counter</name>
+<description></description>
+<currentState>start_Firm</currentState>
+<nextState>Firm_not_active</nextState>
+<condition>
+<lhs><value>a.active</value></lhs><op>EQ</op><rhs><value>0</value></rhs>
+</condition>
+</function>
+
+<function><name>Firm_bankruptcy_procedure</name>
+<description></description>
+<currentState>Firm_not_active</currentState>
+<nextState>end_Firm</nextState>
+<outputs>
+<output>
+<messageName>firing</messageName>
+</output>
+</outputs>
+</function>
+
 <function><name>idle</name>
 <description></description>
 <currentState>start_Firm</currentState>
-<nextState>Start_Firm_Macro_Data</nextState>
+<nextState>Firm_is_active</nextState>
+<condition><lhs><value>a.active</value></lhs><op>EQ</op><rhs><value>1</value></rhs></condition>
+</function>
+
+<function><name>idle</name>
+<description></description>
+<currentState>Firm_is_active</currentState>
+<nextState>Firm_Start_Macro_Data</nextState>
 <condition><not><time><period>yearly</period><phase>1</phase></time></not></condition>
 </function>
 
-<function><name>Firm_read_tax_rates</name>
+<function><name>Firm_read_policy_announcements</name>
 <description></description>
-<currentState>start_Firm</currentState>
-<nextState>Start_Firm_Macro_Data</nextState>
+<currentState>Firm_is_active</currentState>
+<nextState>Firm_Start_Macro_Data</nextState>
 <condition><time><period>yearly</period><phase>1</phase></time></condition>
 <inputs>
 <input>
@@ -199,8 +230,8 @@
 <function><name>Firm_receive_data</name>
 <description>The firm reads the messages from the eurostat agent 
 and stores the needed data.</description>
-<currentState>Start_Firm_Macro_Data</currentState>
-<nextState>Firm_new01</nextState>
+<currentState>Firm_Start_Macro_Data</currentState>
+<nextState>Firm_End_Macro_Data</nextState>
 <condition><time><period>monthly</period><phase>1</phase></time></condition>
 <inputs>
 <input>
@@ -212,8 +243,8 @@ and stores the needed data.</description>
 
 <function><name>idle</name>
 <description>Firm does nothing</description>
-<currentState>Start_Firm_Macro_Data</currentState>
-<nextState>Firm_new01</nextState>
+<currentState>Firm_Start_Macro_Data</currentState>
+<nextState>Firm_End_Macro_Data</nextState>
 <condition><not><time><period>monthly</period><phase>1</phase></time></not></condition>
 </function>
 
@@ -237,7 +268,7 @@ including several micro data.</description>
 
 <function><name>Firm_send_payments_to_bank</name>
 <description></description>
-<currentState>Update_02</currentState>
+<currentState>16</currentState>
 <nextState>end_Firm</nextState>
 <outputs>
 <output><messageName>bank_account_update</messageName></output>
@@ -405,13 +436,13 @@ including several micro data.</description>
 <variable><type>double</type><name>firm_average_wage_skill_3</name><description>Average wage in the economy paid by firms for general skill level 3</description></variable>
 <variable><type>double</type><name>firm_average_wage_skill_4</name><description>Average wage in the economy paid by firms for general skill level 4</description></variable>
 <variable><type>double</type><name>firm_average_wage_skill_5</name><description>Average wage in the economy paid by firms for general skill level 5</description></variable>
-<variable><type>double</type><name>firm_average_s_skill</name><description></description>Average specific skills in firm in the economy</variable>
-<variable><type>double</type><name>firm_average_s_skill_1</name><description></description>Average specific skills of general skill level 1 in firms in the economy</variable>
-<variable><type>double</type><name>firm_average_s_skill_2</name><description></description>Average specific skills of general skill level 2 in firms in the economy</variable>
-<variable><type>double</type><name>firm_average_s_skill_3</name><description></description>Average specific skills of general skill level 3 in firms in the economy</variable>
-<variable><type>double</type><name>firm_average_s_skill_4</name><description></description>Average specific skills of general skill level 4 in firms in the economy</variable>
-<variable><type>double</type><name>firm_average_s_skill_5</name><description></description>Average specific skills of general skill level 5 in firms in the economy</variable>
-<variable><type>firm_data_array</type><name>region_firm_data</name><description></description>Stores the eurostat memory variables concerning the firms for the different regions</variable>
+<variable><type>double</type><name>firm_average_s_skill</name><description>Average specific skills in firm in the economy</description></variable>
+<variable><type>double</type><name>firm_average_s_skill_1</name><description>Average specific skills of general skill level 1 in firms in the economy</description></variable>
+<variable><type>double</type><name>firm_average_s_skill_2</name><description>Average specific skills of general skill level 2 in firms in the economy</description></variable>
+<variable><type>double</type><name>firm_average_s_skill_3</name><description>Average specific skills of general skill level 3 in firms in the economy</description></variable>
+<variable><type>double</type><name>firm_average_s_skill_4</name><description>Average specific skills of general skill level 4 in firms in the economy</description></variable>
+<variable><type>double</type><name>firm_average_s_skill_5</name><description>Average specific skills of general skill level 5 in firms in the economy</description></variable>
+<variable><type>firm_data_array</type><name>region_firm_data</name><description>Stores the eurostat memory variables concerning the firms for the different regions</description></variable>
 <variable><type>household_data_array</type><name>region_household_data</name><description>Stores the eurostat memory variables concerning the households for the different regions</description></variable>
 
 <!-- Data for governments -->

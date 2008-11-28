@@ -85,8 +85,6 @@
 <variable><type>double</type><name>total_dividend_payment</name><description>Total dividend payment</description></variable>
 
 <!-- Financial variables -->
-<!--CURRENT_SHARES_OUTSTANDING-->
-<!--PREVIOUS_SHARES_OUTSTANDING-->
 <variable><type>double</type><name>current_share_price</name><description>Current share price on the market</description></variable>
 <variable><type>double</type><name>previous_dividend_per_share</name><description>Dividend-per-share ratio (previous production cycle)</description></variable>
 <variable><type>double</type><name>current_dividend_per_share</name><description>Dividend-per-share ratio</description></variable>
@@ -129,6 +127,10 @@
 <variable><type>double</type><name>earnings_per_share</name><description></description></variable>
 <variable><type>double</type><name>total_payments</name><description></description></variable>
 <variable><type>double</type><name>total_interest_payments</name><description></description></variable>
+
+<!-- Firm_in_bankruptcy -->
+<variable><type>double</type><name>ipo_amount</name><description></description></variable>
+
 </memory>
 <functions>
 
@@ -305,11 +307,35 @@
 <name>Firm_execute_financial_payments</name>
 <description>Function to execute financial payments.</description>
 <currentState>Firm_End_External_Financing</currentState>
-<nextState>Firm_End_Financial_Management</nextState>
+<nextState>Firm_Start_Public_Sector_Role</nextState>
 <outputs>
 <output><messageName>tax_payment</messageName></output>
 <output><messageName>dividend_per_share</messageName></output>
 <output><messageName>installment</messageName></output>
+</outputs>
+</function>
+
+<function>
+<name>Firm_send_subsidy_notification</name>
+<description></description>
+<currentState>Firm_Start_Public_Sector_Role</currentState>
+<nextState>005</nextState>
+<outputs>
+<output>
+<messageName>firm_subsidy_notification</messageName>
+</output>
+</outputs>
+</function>
+
+<function>
+<name>Firm_send_transfer_notification</name>
+<description></description>
+<currentState>005</currentState>
+<nextState>Firm_End_Financial_Management</nextState>
+<outputs>
+<output>
+<messageName>firm_transfer_notification</messageName>
+</output>
 </outputs>
 </function>
 

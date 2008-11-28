@@ -33,10 +33,10 @@ int Firm_send_payments_to_bank()
 	return 0;
 }
 
-/** \fn Firm_read_tax_rates()
- * \brief Firms reads the tax_rates_messages from Governments
+/** \fn Firm_read_policy_announcements()
+ * \brief Firms reads the policy_announcements from Governments
  */
-int Firm_read_tax_rates()
+int Firm_read_policy_announcements()
 {
 
 	//Message send by Government:
@@ -49,6 +49,30 @@ int Firm_read_tax_rates()
 	FINISH_POLICY_ANNOUNCEMENT_MESSAGE_LOOP
 	
 	return 0;
+}
+
+/** \fn Firm_send_subsidy_notification()
+ * \brief This function sends a message to the government in case the Firm applies for a subsidy. 
+ */
+int Firm_send_subsidy_notification()
+{
+	/*Add subsidy message */
+	add_firm_subsidy_notification_message(GOV_ID);
+	PAYMENT_ACCOUNT += SUBSIDY_PAYMENT;
+		
+	return 0;		
+}
+
+/** \fn Firm_send_transfer_notification()
+ * \brief This function sends a message to the government in case the Firm applies for a transfer. 
+ */
+int Firm_send_transfer_notification()
+{
+	/*Add transfer message */
+	add_firm_transfer_notification_message(GOV_ID);
+	PAYMENT_ACCOUNT += TRANSFER_PAYMENT;
+		
+	return 0;		
 }
 
 /** \fn Firm_receive_data()

@@ -1,22 +1,22 @@
-#include "header.h"
-#include "my_library_header.h"
+//#include "../../header.h"
+#include "../my_library_header.h"
 #define NUMFIRM  2
-#define NUMHOUSE 1100
-#define NUMRANDOM 1000
+#define NUMHOUSE 1010
+#define NUMRANDOM 900
 #define NUMFUND 50
-#define NUMCHAR 50
+#define NUMCHAR 60
 
-void initFirm(struct xmachine_memory_Firm *firm,int id)
+void initFirm(struct xmachine_memory_Firm *firm,int id, double price)
 {  
         firm->earnings = 1001;
 	firm->earnings_payout = 1000;
-	firm->equity = NUMHOUSE*1000*50;
+	firm->equity = NUMHOUSE*1000*price;
 	firm->current_shares_outstanding = NUMHOUSE*1000;
 	firm->id = id;
-	firm->current_dividend_per_share = 0.01;
+	firm->current_dividend_per_share = 1;
 	init_Stock(&firm->stock);
-        initializeStock(&firm->stock,id);
-        setStock(&firm->stock, id, 50, NUMHOUSE*1000);
+        initializeStock(&firm->stock,id,price,firm->current_shares_outstanding);
+        setStock(&firm->stock, id, price, NUMHOUSE*1000);
         return;
 }
 
@@ -32,16 +32,16 @@ void initHousehold(struct xmachine_memory_Household *household,int id,double rW,
 	init_double_array(&household->assetWeights);
 	init_double_array(&household->assetUtilities);
 	household->payment_account = 50000;
-	household->consumption_badget = 0.0;
-	household->cash_on_hand = 0.0;
-	household->portfolio_badget = 50000;
-	household->forwardWindow =nextBetween( 3 , 60);
+	//household->consumption_badget = 0.0;
+	//household->cash_on_hand = 0.0;
+	//household->payment_account = 50000;
+	household->forwardWindow =nextBetween( 10 , 60);
 	household->backwardWindow = nextBetween( 3 , 10);
 	household->bins = nextBetween( 3 , 5);
 	household->randomWeight = rW;
 	household->fundamentalWeight = fW;
 	household->chartistWeight = cW;
-	household->holdingPeriodToForwardW = 2*(household->forwardWindow);
+	household->holdingPeriodToForwardW = nextBetween( 3 , 6);;
 	household->lossaversion = 2.25;
 	
         init_Assetsowned(&household->assetsowned);
@@ -53,14 +53,25 @@ void initClearingHouse(struct xmachine_memory_Clearinghouse *clearing)
 	
 	clearing->id = 1;
 	init_Asset_array(&clearing->assets);
+        
 	 init_Assetsowned(&clearing->assets);
+init_ClearingMechanism(&clearing->clearingmechanism);
 	return;
 }
 void initBank(struct xmachine_memory_Bank *bank)
 {
   bank->id = 1;
 }
-
+void initGovernment(struct xmachine_memory_Government *government)
+{
+        government->id=2000;	/**< X-machine memory variable id of type int. */
+	government->payment_account=-2000000;	
+	//government->day_of_month_to_act;	
+	init_Bond(&government->bond);
+        initializeBond(&government->bond,2000,NUMHOUSE*100,50,0.02);
+	init_Order(&government->pending_order);	
+	government->deficit=0;	
+}
 int main()
   {    
 
@@ -71,6 +82,7 @@ int main()
        struct xmachine_memory_Household    households[NUMHOUSE];
         struct xmachine_memory_Clearinghouse clearinghouse;
        struct xmachine_memory_Bank bank;
+        struct xmachine_memory_Government government;
      
 
        //initialization 
@@ -80,11 +92,12 @@ int main()
         fputs("0",file);
 	fputs("</itno>\n", file);
 
-       for(i=0;i<NUMFIRM;i++)
-        {
-         initFirm(&firms[i],i);
-         write_Firm_agent(file,&firms[i]);
-        }
+       
+         initFirm(&firms[0],0,50);
+         write_Firm_agent(file,&firms[0]);
+         initFirm(&firms[1],1,100);
+         write_Firm_agent(file,&firms[1]);
+
        for(i=0;i<NUMRANDOM;i++)
         {
          initHousehold(&households[i],i,1,0,0);
@@ -106,6 +119,8 @@ int main()
              
        initBank(&bank);
        write_Bank_agent(file,&bank);
+       initGovernment(&government);
+       write_Government_agent(file,&government);
 fputs("</states>\n" , file);
        fclose(file);
 }
