@@ -33,7 +33,7 @@ HEADERS = header.h low_primes.h mboard.h  Firm_agent_header.h  Household_agent_h
 DEPS    = Makefile header.h low_primes.h
 
 OBJECTS = $(SOURCES:.c=.o) $(FLAME:.c=.o)
-EXECUTABLE = main
+EXECUTABLE = mainCreate
 RM = rm -f
 
 all: $(SOURCES) $(FLAME) $(EXECUTABLE)
