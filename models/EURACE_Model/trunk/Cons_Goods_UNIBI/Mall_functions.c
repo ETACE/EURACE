@@ -22,8 +22,9 @@ int Mall_update_mall_stock()
     
     START_UPDATE_MALL_STOCK_MESSAGE_LOOP
     
-    // Message filter used: if(a.id==m.mall_id)
-    
+    //Filter: 
+    if(ID==update_mall_stock_message->mall_id)
+    {
         for(j=0; j < CURRENT_STOCK.size; j++)
         {   
             
@@ -46,7 +47,7 @@ int Mall_update_mall_stock()
                                 update_mall_stock_message->previous_price;
             }
         }
-
+    }
     FINISH_UPDATE_MALL_STOCK_MESSAGE_LOOP
     
     return 0;
@@ -97,14 +98,14 @@ int Mall_update_mall_stocks_sales_rationing_1()
     init_consumption_request_array(&consumption_request_list);
     /*Read the consumption request message*/
     START_CONSUMPTION_REQUEST_1_MESSAGE_LOOP
-    
-    // Message filter used: if(a.id==m.mall_id)
-    
+    //Filter: (a.id==m.mall_id)
+    if(ID==consumption_request_1_message->mall_id)
+    {
             add_consumption_request(&consumption_request_list,consumption_request_1_message->worker_id,
             consumption_request_1_message->region_id, 
             consumption_request_1_message->firm_id, 
             consumption_request_1_message->quantity );
-    
+    }
     FINISH_CONSUMPTION_REQUEST_1_MESSAGE_LOOP
 
 
@@ -242,14 +243,15 @@ int Mall_update_mall_stocks_sales_rationing_2()
 
         /*Read the request*/
     START_CONSUMPTION_REQUEST_2_MESSAGE_LOOP
-    // Message filter used: if(a.id==m.mall_id)
-
+    //Filter: (a.id==m.mall_id)
+    if(ID==consumption_request_2_message->mall_id)
+    {
             add_consumption_request(&consumption_request_list,
             consumption_request_2_message->worker_id, 
             consumption_request_2_message->region_id, 
             consumption_request_2_message->firm_id, 
             consumption_request_2_message->quantity );
-
+    }
     FINISH_CONSUMPTION_REQUEST_2_MESSAGE_LOOP
 
         /*Aggregation of demand*/

@@ -486,15 +486,19 @@ int Firm_read_stock_transactions() {
 	double finances;
 
 	START_ORDER_STATUS_MESSAGE_LOOP
-	//Finances obtained: positive quantity is demand, negative quantity is selling
-	finances = (-1)*order_status_message->price
-			* order_status_message->quantity;
-
-	//Increase payment account with the finances obtained
-	PAYMENT_ACCOUNT += finances;
-
-	//Decrease external financial needs with the finances obtained
-	EXTERNAL_FINANCIAL_NEEDS -= finances;
+	if (ID == order_status_message->trader_id)
+	{
+		//Finances obtained: positive quantity is demand, negative quantity is selling
+		finances = (-1)*order_status_message->price
+				* order_status_message->quantity;
+	
+		//Increase payment account with the finances obtained
+		PAYMENT_ACCOUNT += finances;
+	
+		//Decrease external financial needs with the finances obtained
+		EXTERNAL_FINANCIAL_NEEDS -= finances;
+	}
 	FINISH_ORDER_STATUS_MESSAGE_LOOP
+
 	return 0;
 }
