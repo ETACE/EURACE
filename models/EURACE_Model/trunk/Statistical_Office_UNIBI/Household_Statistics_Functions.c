@@ -7,34 +7,14 @@
 /************************************ Household agent functions ************************************/
 /*************************************Household Role: Statistics *********************************/
 
-
+/** \fn Household_receive_data()
+ * \brief Household is importing macro data from Eurostat to use in behavioral rules.
+ */
 int Household_receive_data()
 {
 
-return 0;
-
-}
-
-
-/** \fn Household_read_tax_rates()
- * \brief Household reads the tax_rates_messages from Governments
- */
-int Household_read_tax_rates()
-{
-
-	//Message send by Government:
-	START_POLICY_ANNOUNCEMENT_MESSAGE_LOOP			
-	//Filter: m.gov_id == a.gov_id
-			TAX_RATE_HH_LABOUR = policy_announcement_message->tax_rate_hh_labour;
-			TAX_RATE_HH_CAPITAL = policy_announcement_message->tax_rate_hh_capital;
-			UNEMPLOYMENT_BENEFIT_PCT =  policy_announcement_message->unemployment_benefit_pct;
-			TRANSFER_PAYMENT = policy_announcement_message->hh_transfer_payment;
-			SUBSIDY_PAYMENT = policy_announcement_message->hh_subsidy_payment;
-	FINISH_POLICY_ANNOUNCEMENT_MESSAGE_LOOP
-
 	return 0;
 }
-
 
 /** \fn Household_send_data_to_Market_Research()
  * \brief Firms send data to Market Research: controlling results and creating macro data

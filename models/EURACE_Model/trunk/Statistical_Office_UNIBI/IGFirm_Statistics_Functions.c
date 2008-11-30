@@ -3,18 +3,21 @@
 #include "../my_library_header.h"
 
 
-/** \fn IGFirm_read_tax_rates()
- * \brief IGFirms reads the tax_rates_messages from Governments
+/** \fn IGFirm_read_policy_announcements()
+ * \brief IGFirms reads the policy_announcement_messages from Governments
  */
-int IGFirm_read_tax_rates()
+int IGFirm_read_policy_announcements()
 {
 	//Message send by Government:
 	START_POLICY_ANNOUNCEMENT_MESSAGE_LOOP			
-		//Filter: if(policy_announcement_message->gov_id == GOV_ID)
+		//Filter: 
+		if(policy_announcement_message->gov_id == GOV_ID)
+		{
 			TAX_RATE_CORPORATE = policy_announcement_message->tax_rate_corporate;
 			TAX_RATE_VAT = policy_announcement_message->tax_rate_vat;
 			TRANSFER_PAYMENT = policy_announcement_message->firm_transfer_payment;
 			SUBSIDY_PAYMENT = policy_announcement_message->firm_subsidy_payment;
+		}
 	FINISH_POLICY_ANNOUNCEMENT_MESSAGE_LOOP
 
 	return 0;

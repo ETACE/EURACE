@@ -897,7 +897,7 @@ int Eurostat_calculate_data()
     return 0;
 }
 
-int Eurostat_read_tax_rates()
+int Eurostat_read_policy_announcements()
 {
     int i;
     
