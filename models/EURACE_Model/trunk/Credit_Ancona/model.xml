@@ -9,6 +9,7 @@
   <functionFiles>
    <file>Bank_Credit_Functions.c</file>
    <file>Firm_Credit_Functions.c</file>
+   <file>Central_Bank_Functions.c</file>
   </functionFiles>
   <timeUnits>
    <timeUnit>
@@ -36,6 +37,22 @@
       <type>double</type>
       <name>value[10]</name>
       <description>Bank providing the loan</description>
+     </variable>
+    </variables>
+   </dataType>
+   <dataType>
+    <name>account_item</name>
+    <description></description>
+    <variables>
+     <variable>
+      <type>int</type>
+      <name>id</name>
+      <description>id of the account's holder</description>
+     </variable>
+     <variable>
+      <type>double</type>
+      <name>payment_account</name>
+      <description>value in the account</description>
      </variable>
     </variables>
    </dataType>
@@ -325,6 +342,31 @@
       </not>
      </condition>
      <inputs/>
+     <outputs/>
+    </function>
+   </functions>
+  </xagent>
+  <xagent>
+   <name>Central_Bank</name>
+   <description></description>
+   <memory>
+    <variable>
+     <type>account_item_array</type>
+     <name>accounts</name>
+     <description></description>
+    </variable>
+   </memory>
+   <functions>
+    <function>
+     <name>Central_Bank_read_account_update</name>
+     <description></description>
+     <currentState>start_Central_Bank</currentState>
+     <nextState>end_Central_Bank</nextState>
+     <inputs>
+      <input>
+       <messageName>central_bank_account_update</messageName>
+      </input>
+     </inputs>
      <outputs/>
     </function>
    </functions>

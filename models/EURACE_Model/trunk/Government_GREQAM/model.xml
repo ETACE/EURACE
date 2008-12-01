@@ -29,7 +29,6 @@
   </constants>
   <functionFiles>
    <file>Government_Functions.c</file>
-   <file>Central_Bank_Functions.c</file>
   </functionFiles>
   <timeUnits/>
   <dataTypes/>
@@ -451,31 +450,6 @@
      <currentState>09</currentState>
      <nextState>end_Government</nextState>
      <inputs/>
-     <outputs/>
-    </function>
-   </functions>
-  </xagent>
-  <xagent>
-   <name>Central_Bank</name>
-   <description></description>
-   <memory>
-    <variable>
-     <type>double</type>
-     <name>accounts[2030]</name>
-     <description></description>
-    </variable>
-   </memory>
-   <functions>
-    <function>
-     <name>Central_Bank_read_account_update</name>
-     <description></description>
-     <currentState>start_Central_Bank</currentState>
-     <nextState>end_Central_Bank</nextState>
-     <inputs>
-      <input>
-       <messageName>central_bank_account_update</messageName>
-      </input>
-     </inputs>
      <outputs/>
     </function>
    </functions>
