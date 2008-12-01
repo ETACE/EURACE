@@ -8,13 +8,15 @@
 
 int Central_Bank_read_account_update()
 {
-	int id;
+	int i;
 
 	START_CENTRAL_BANK_ACCOUNT_UPDATE_MESSAGE_LOOP
-	
-		id = central_bank_account_update_message->id;
-		ACCOUNTS[id] += central_bank_account_update_message->payment_account;
-	
+	//Search the correct account
+	for (i=0;i<ACCOUNTS.size;i++)
+	{		
+		if(ACCOUNTS.array[i].id == central_bank_account_update_message->id)
+			ACCOUNTS.array[i].payment_account = central_bank_account_update_message->payment_account;
+	}
 	FINISH_CENTRAL_BANK_ACCOUNT_UPDATE_MESSAGE_LOOP
 	return 0;
 }
