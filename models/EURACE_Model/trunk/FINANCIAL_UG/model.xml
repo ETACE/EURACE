@@ -638,7 +638,7 @@
     <function>
      <name>Government_send_info_bond</name>
      <description></description>
-     <currentState>start_Government</currentState>
+     <currentState>Gov_Start_Bond_Market</currentState>
      <nextState>GOVERNMENT_SENT_info_bond</nextState>
      <inputs/>
      <outputs>
@@ -696,7 +696,7 @@
      <name>Government_receive_info_bond</name>
      <description></description>
      <currentState>GOVERNMENT_PORTFOLIO_UPDATED</currentState>
-     <nextState>end_Government</nextState>
+     <nextState>01</nextState>
      <inputs>
       <input>
        <messageName>infoAssetCH</messageName>
