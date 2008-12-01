@@ -191,12 +191,12 @@
     <variable>
      <type>double</type>
      <name>total_money_financing</name>
-     <description></description>
+     <description>The fraction of the budget deficit that is financed by money creation.</description>
     </variable>
     <variable>
      <type>double</type>
      <name>total_bond_financing</name>
-     <description></description>
+     <description>The fraction of the budget deficit that is financed by government bonds.</description>
     </variable>
     <variable>
      <type>double</type>
@@ -226,17 +226,17 @@
     <variable>
      <type>double</type>
      <name>yearly_income_forecast</name>
-     <description>Forecasted/planned total income for the next year.</description>
+     <description>Forecasted/planned total government income for the next year.</description>
     </variable>
     <variable>
      <type>double</type>
-     <name>yearly_expenditure_plan</name>
-     <description>Forecasted/planned total expenditure for the next year.</description>
+     <name>yearly_expenditure_budget</name>
+     <description>The total expenditure budget for the next year.</description>
     </variable>
     <variable>
      <type>double</type>
      <name>budget_forecast</name>
-     <description></description>
+     <description>Forcast for the budget balance (deficit/surplus).</description>
     </variable>
     <variable>
      <type>double</type>
@@ -260,13 +260,13 @@
     </variable>
     <variable>
      <type>double</type>
-     <name>monthly_consumption_plan</name>
-     <description>Planned monthly consumption expenditure for the next month.</description>
+     <name>monthly_consumption_budget</name>
+     <description>The consumption budget for the next month.</description>
     </variable>
     <variable>
      <type>double</type>
-     <name>monthly_investment_plan</name>
-     <description>Planned monthly investment expenditure for the next month.</description>
+     <name>monthly_investment_budget</name>
+     <description>The investment budget for the next month.</description>
     </variable>
     <variable>
      <type>double</type>
@@ -280,13 +280,13 @@
     </variable>
     <variable>
      <type>double</type>
-     <name>yearly_consumption_plan</name>
-     <description>Planned yearly consumption expenditure for the next year.</description>
+     <name>yearly_consumption_budget</name>
+     <description>The planned consumption budget for the next year.</description>
     </variable>
     <variable>
      <type>double</type>
-     <name>yearly_investment_plan</name>
-     <description>Planned yearly investment expenditure for the next year.</description>
+     <name>yearly_investment_budget</name>
+     <description>The planned investment budget for the next year.</description>
     </variable>
    </memory>
    <functions>
