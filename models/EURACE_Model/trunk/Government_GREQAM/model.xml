@@ -160,23 +160,23 @@
     </variable>
     <variable>
      <type>double</type>
-     <name>yearly_gov_investment</name>
-     <description></description>
+     <name>yearly_investment_expenditure</name>
+     <description>The actual yearly government investment expenditure that is realised at the end of the year.</description>
     </variable>
     <variable>
      <type>double</type>
-     <name>yearly_gov_consumption</name>
-     <description></description>
+     <name>yearly_consumption_expenditure</name>
+     <description>The actual yearly government consumption expenditure that is realised at the end of the year.</description>
     </variable>
     <variable>
      <type>double</type>
-     <name>total_income</name>
-     <description></description>
+     <name>yearly_income</name>
+     <description>The actual total government income received at the end of the year.</description>
     </variable>
     <variable>
      <type>double</type>
-     <name>total_expenditure</name>
-     <description></description>
+     <name>yearly_expenditure</name>
+     <description>The actual total government expenditure at the end of the year.</description>
     </variable>
     <variable>
      <type>double</type>
@@ -185,8 +185,8 @@
     </variable>
     <variable>
      <type>double</type>
-     <name>budget_deficit</name>
-     <description></description>
+     <name>yearly_budget_deficit</name>
+     <description>The budget deficit that is realised at the end of the year.</description>
     </variable>
     <variable>
      <type>double</type>
@@ -225,18 +225,68 @@
     </variable>
     <variable>
      <type>double</type>
-     <name>total_income_forecast</name>
-     <description></description>
+     <name>yearly_income_forecast</name>
+     <description>Forecasted/planned total income for the next year.</description>
     </variable>
     <variable>
      <type>double</type>
-     <name>total_expenditure_forecast</name>
-     <description></description>
+     <name>yearly_expenditure_plan</name>
+     <description>Forecasted/planned total expenditure for the next year.</description>
     </variable>
     <variable>
      <type>double</type>
      <name>budget_forecast</name>
      <description></description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>monthly_interest_payment</name>
+     <description>The monthly interest payment on the national debt.</description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>monthly_consumption_expenditure</name>
+     <description>The actual monthly government consumption expenditure that is realised at the end of the month.</description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>monthly_investment_expenditure</name>
+     <description>The actual monthly government investment expenditure that is realised at the end of the month.</description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>monthly_budget_deficit</name>
+     <description>The budget deficit that is realised at the end of the month.</description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>monthly_consumption_plan</name>
+     <description>Planned monthly consumption expenditure for the next month.</description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>monthly_investment_plan</name>
+     <description>Planned monthly investment expenditure for the next month.</description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>monthly_income</name>
+     <description>The actual total government income at end of month.</description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>monthly_expenditure</name>
+     <description>The actual total government expenditure at end of month.</description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>yearly_consumption_plan</name>
+     <description>Planned yearly consumption expenditure for the next year.</description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>yearly_investment_plan</name>
+     <description>Planned yearly investment expenditure for the next year.</description>
     </variable>
    </memory>
    <functions>
@@ -244,7 +294,7 @@
      <name>Government_idle</name>
      <description></description>
      <currentState>start_Government</currentState>
-     <nextState>01</nextState>
+     <nextState>Gov_Start_Bond_Market</nextState>
      <condition>
       <not>
        <time>
@@ -260,7 +310,7 @@
      <name>Government_send_policy_announcements</name>
      <description></description>
      <currentState>start_Government</currentState>
-     <nextState>01</nextState>
+     <nextState>Gov_Start_Bond_Market</nextState>
      <condition>
       <time>
        <period>yearly</period>
@@ -365,7 +415,7 @@
      <name>Government_read_unemployment_benefit_notifications</name>
      <description></description>
      <currentState>04</currentState>
-     <nextState>05</nextState>
+     <nextState>Gov_Start_Monthly_Loop</nextState>
      <inputs>
       <input>
        <messageName>unemployment_notification</messageName>
@@ -385,12 +435,12 @@
     <function>
      <name>Government_idle</name>
      <description></description>
-     <currentState>05</currentState>
-     <nextState>end_Government</nextState>
+     <currentState>Gov_Start_Monthly_Loop</currentState>
+     <nextState>Gov_Start_Yearly_Loop</nextState>
      <condition>
       <not>
        <time>
-        <period>yearly</period>
+        <period>monthly</period>
         <phase>0</phase>
        </time>
       </not>
@@ -399,13 +449,13 @@
      <outputs/>
     </function>
     <function>
-     <name>Government_budget_accounting</name>
+     <name>Government_monthly_budget_accounting</name>
      <description></description>
-     <currentState>05</currentState>
-     <nextState>06</nextState>
+     <currentState>Gov_Start_Monthly_Loop</currentState>
+     <nextState>05</nextState>
      <condition>
       <time>
-       <period>yearly</period>
+       <period>monthly</period>
        <phase>0</phase>
       </time>
      </condition>
@@ -416,7 +466,7 @@
      <name>Government_send_account_update</name>
      <description></description>
      <currentState>06</currentState>
-     <nextState>07</nextState>
+     <nextState>Gov_Start_Yearly_Loop</nextState>
      <inputs/>
      <outputs>
       <output>
@@ -449,6 +499,44 @@
      <description></description>
      <currentState>09</currentState>
      <nextState>end_Government</nextState>
+     <inputs/>
+     <outputs/>
+    </function>
+    <function>
+     <name>idle</name>
+     <description></description>
+     <currentState>Gov_Start_Yearly_Loop</currentState>
+     <nextState>end_Government</nextState>
+     <condition>
+      <not>
+       <time>
+        <period>yearly</period>
+        <phase>0</phase>
+       </time>
+      </not>
+     </condition>
+     <inputs/>
+     <outputs/>
+    </function>
+    <function>
+     <name>Government_yearly_budget_accounting</name>
+     <description></description>
+     <currentState>Gov_Start_Yearly_Loop</currentState>
+     <nextState>07</nextState>
+     <condition>
+      <time>
+       <period>yearly</period>
+       <phase>0</phase>
+      </time>
+     </condition>
+     <inputs/>
+     <outputs/>
+    </function>
+    <function>
+     <name>Government_monthly_budget_accounting</name>
+     <description></description>
+     <currentState>05</currentState>
+     <nextState>06</nextState>
      <inputs/>
      <outputs/>
     </function>
