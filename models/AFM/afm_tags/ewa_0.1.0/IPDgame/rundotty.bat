@@ -1,1 +1,0 @@
-dot -Tps dgraph.dot -o dgraph.ps
