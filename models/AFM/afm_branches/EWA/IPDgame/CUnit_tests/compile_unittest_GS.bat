@@ -1,0 +1,1 @@
+gcc -g -I../libmboard/include -L../libmboard/lib unittest_GS.c ../memory.c ../messageboards.c  ../GameSolver_functions.c GameSolver_unittest.c ../some_new_functions.c -lm -lcunit -lmboard_s 
