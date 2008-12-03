@@ -35,6 +35,9 @@
 /** \def PRINT_LOG
  * \brief Provide access to environment variables in uppercase. */
 #define PRINT_LOG print_log
+/** \def SWITCH_EWA_LEARNING
+ * \brief Provide access to environment variables in uppercase. */
+#define SWITCH_EWA_LEARNING switch_ewa_learning
 /** \def ARRAY_BLOCK_SIZE
  * \brief The block size to allocate to dynamic arrays. */
 #define ARRAY_BLOCK_SIZE 5
@@ -530,9 +533,13 @@ typedef struct m_rule_details m_rule_details;
 
 
 int idle(void);
-int Household_idle_Start_Household_EWA_Learning_Start_GA_condition(xmachine_memory_Household *a);
+int Household_idle_Household_Activate_EWA_Household_End_EWA_Learning_condition(xmachine_memory_Household *a);
+int idle(void);
+int Household_idle_Household_Activate_EWA_Household_Start_EWA_Learning_condition(xmachine_memory_Household *a);
+int idle(void);
+int Household_idle_Household_Start_EWA_Learning_Start_GA_condition(xmachine_memory_Household *a);
 int Household_initialize_rule_details(void);
-int Household_Household_initialize_rule_details_Start_Household_EWA_Learning_Start_GA_condition(xmachine_memory_Household *a);
+int Household_Household_initialize_rule_details_Household_Start_EWA_Learning_Start_GA_condition(xmachine_memory_Household *a);
 int idle(void);
 int Household_idle_Start_GA_End_GA_condition(xmachine_memory_Household *a);
 int Household_print_private_classifiersystem(void);
@@ -540,7 +547,7 @@ int Household_Household_print_private_classifiersystem_Start_GA_01_condition(xma
 int Household_reset_private_classifiersystem(void);
 int Household_read_and_update_rule_details(void);
 int idle(void);
-int Household_idle_End_GA_End_Household_EWA_Learning_condition(xmachine_memory_Household *a);
+int Household_idle_End_GA_Household_End_EWA_Learning_condition(xmachine_memory_Household *a);
 int Household_send_rule_performance(void);
 int Household_Household_send_rule_performance_End_GA_03_condition(xmachine_memory_Household *a);
 int Household_read_all_performances(void);
@@ -606,6 +613,9 @@ int print_debug;
 /** \var int print_log
 * \brief A constant variable from the environment. */
 int print_log;
+/** \var int switch_ewa_learning
+* \brief A constant variable from the environment. */
+int switch_ewa_learning;
 /** \var xmachine * temp_xmachine
 * \brief Pointer to xmachine to initialise linked list. */
 xmachine * temp_xmachine;
@@ -654,9 +664,6 @@ xmachine_memory_Household_state * Household_04_state;
 /* Pointer to list of Household agents in state 03 state */
 //xmachine_memory_Household * temp_xmachine_Household_03;
 xmachine_memory_Household_state * Household_03_state;
-/* Pointer to list of Household agents in state End_Household_EWA_Learning state */
-//xmachine_memory_Household * temp_xmachine_Household_End_Household_EWA_Learning;
-xmachine_memory_Household_state * Household_End_Household_EWA_Learning_state;
 /* Pointer to list of Household agents in state 02 state */
 //xmachine_memory_Household * temp_xmachine_Household_02;
 xmachine_memory_Household_state * Household_02_state;
@@ -669,9 +676,15 @@ xmachine_memory_Household_state * Household_End_GA_state;
 /* Pointer to list of Household agents in state Start_GA state */
 //xmachine_memory_Household * temp_xmachine_Household_Start_GA;
 xmachine_memory_Household_state * Household_Start_GA_state;
-/* Pointer to list of Household agents in state Start_Household_EWA_Learning state */
-//xmachine_memory_Household * temp_xmachine_Household_Start_Household_EWA_Learning;
-xmachine_memory_Household_state * Household_Start_Household_EWA_Learning_state;
+/* Pointer to list of Household agents in state Household_Start_EWA_Learning state */
+//xmachine_memory_Household * temp_xmachine_Household_Household_Start_EWA_Learning;
+xmachine_memory_Household_state * Household_Household_Start_EWA_Learning_state;
+/* Pointer to list of Household agents in state Household_End_EWA_Learning state */
+//xmachine_memory_Household * temp_xmachine_Household_Household_End_EWA_Learning;
+xmachine_memory_Household_state * Household_Household_End_EWA_Learning_state;
+/* Pointer to list of Household agents in state Household_Activate_EWA state */
+//xmachine_memory_Household * temp_xmachine_Household_Household_Activate_EWA;
+xmachine_memory_Household_state * Household_Household_Activate_EWA_state;
 /* Pointer to current $agent_name agent */
 xmachine_memory_FinancialAgent * current_xmachine_FinancialAgent;
 xmachine_memory_FinancialAgent_holder * temp_xmachine_FinancialAgent_holder;

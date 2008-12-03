@@ -1,3 +1,5 @@
+#ifndef MYLIB
+#define MYLIB
 #define traderStartingCash 50000
 #define assetStartingQuantity 1000
 #define max(A,B) ( (A) > (B) ? (A):(B))
@@ -7,6 +9,10 @@
 #define initialPrice 50
 #define MAXPRICES 100
 #define MAXRETURNS MAXPRICES
+//move constants to model.xml environment
+#define COUPONPERIODICITYNRMONTHS 6
+#define NRDAYSINYEAR  240
+#define FUNDAMENTAL_RETURN_WEIGHT_MIN 0.1
 
 #include "../header.h"
 #include <stdlib.h>
@@ -308,7 +314,8 @@ void emptyClearing(ClearingMechanism *aClearing);
 /***********Stock **************/
 Stock *newStock();
 void  freeStock(Stock *aStock);
-void initializeStock(Stock *aStock,int id);
+
+void initializeStock(Stock *aStock,int id,double price,int nr_outstanding);
 void setStock(Stock *aStock, int issuer, double price, int quantity);
 void addPriceStock(Stock *aStock, double price);
 
@@ -323,7 +330,7 @@ void totalReturnsStock(Stock *stock, double *vect, int backwardWindow,double fac
 void priceReturnsStock(Stock *stock, double *vect, int backwardWindow);
 void historicalReturnsStock(Stock *stock, double *vect, int backwardWindow,double forwardWindow);
 //void frequencyTotalReturns(Stock *stock,Histogram *hist, int backwardWindow, int bins,double factor,double value);
-double computeAssetUtilityFunction(Stock *stock,int backwardWindow, double factor, double value, double lossAversion);
+double computeStockUtilityFunction(Stock *stock,int backwardWindow, double factor, double value, double lossAversion);
 
 /********Belief*******************/
 
@@ -334,7 +341,7 @@ void initializeBelief(Belief *belief);
 /*it compute the price return of the stocks as a weighted sum of different components*/
 void computeStockExpectedPriceReturns(Belief *belief, Asset *asset);
 
-double stockExpectedPriceReturns(Belief *belief);
+double expectedPriceReturns(Belief *belief);
 /*restituisce un istogramma delle frequenze dei expectedTotalReturn degli asset);*/
 
 
@@ -342,7 +349,7 @@ double stockExpectedPriceReturns(Belief *belief);
 void firmBeliefFormation(Belief *belief,Stock *stock,int currentDay,int forwardWindow,double dividendExp,double earning,double earningPayout);
 void computeStockExpectedPriceReturns(Belief *belief, Asset *asset);
 
-double stockExpectedPriceReturns(Belief *belief);
+double expectedPriceReturns(Belief *belief);
 
 int forwardMonths( int currentDay, int forwardWindow);
     
@@ -358,7 +365,7 @@ void  stockBeliefFormation(Belief *belief, Stock *stock,int backwardWindow,int f
 
 
 void dividendYield(Belief *belief,Stock *stock,int currentDay, int forwardWindow,double dividendExp);
-
+void  bondBeliefFormation(Belief *belief, Bond *bond,int backwardWindow,int forwardWindow, double randomWeight,double  fundamentalWeight,double chartistWeight, int bins ,int currentDay,int holdingPeriodToForwardW, double lossaversion);
 /****************Household*************/
 int sendOrders();
 void computeUtilities(Belief_array *beliefs, double_array *assetweigths);
@@ -372,7 +379,8 @@ Order *computeLimitOrder( Asset *anAsset, double weight, double resource,Belief 
 
 void generatePendingOrders(Asset_array *assetsowned,Order_array *pending, Belief_array *beliefs,double *payment_account);
 //void assetBeliefFormation(Belief_array *beliefs);
-int assets_beliefs_formation();
+int stock_beliefs_formation();
+int bond_beliefs_formation();
 int totalassetsowned();
 
 /******************Clearing House***********/
@@ -382,11 +390,39 @@ void receiveOrderOnAsset(ClearingMechanism *mechanism, Asset *anAsset);
 void computeAssetPrice(ClearingMechanism *mechanism, Asset *anAsset);
 
 void sendOrderStatus(ClearingMechanism *clearm);
+void ClearingHouse_receive_info_stock(Asset_array *assets);
+
+void ClearingHouse_receive_info_bond(Asset_array *assets);
 
 /******************Firm*******************/
 void CGP_income_statement_computing(double earnings, double earnings_payout, double *earnings_exp,double *earnings_payout_exp);
 
 
-/****************Bank*******************/
+/****************Bond*******************/
+void initializeBond(Bond *aBond,int id, int nr_outstanding,double face_value, double nominal_yield);
+double  backreturns_bond(Bond *bond,int ind);
+ 
+double lastPriceBond(Bond *aBond);
+
+double expectedReturnBond(Bond *bond,int backwardWindow);
+
+  void addPriceBond(Bond *bond, double price);
+
+     
+double volatilityBond(Bond *bond,int backwardWindow);
+
+void totalReturnsBond(Bond *bond, double *vect, int backwardWindow,double factor, double value);
+ 
+void priceReturnsBond(Bond *bond, double *vect, int backwardWindow);
+ 
 
 
+
+void historicalReturnsBond(Bond *bond, double *vect, int backwardWindow,double forwardWindow);
+
+
+int  coupons_payment_days(Bond *bond,int currentDay,int holding_period);
+
+
+double computeBondUtilityFunction(Bond *bond,int backwardWindow, double factor, double value, double lossaversion);
+#endif

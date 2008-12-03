@@ -2,8 +2,8 @@
 <xmodel version="2" >
  <name>Financial Market Model - EWA learning module-stand alone version</name>
  <version>4</version>
- <description>Author: Sander van der Hoog, 01/06/2007, 05/03/2008, 22/05/2008, 03/12/2008.
-Converted from old XMML 1.0,
+ <description>Author: Sander van der Hoog, 01/06/2007, 05/03/2008, 22/05/2008, 03/12/2008.&#xd;&#xd;&#xd;
+Converted from old XMML 1.0,&#xd;&#xd;&#xd;
 Converted from XMML 1.0 to XMML 2.0.</description>
  <models/>
  <environment>
@@ -22,6 +22,11 @@ Converted from XMML 1.0 to XMML 2.0.</description>
     <type>int</type>
     <name>print_log</name>
     <description>0 or 1, A flag to print logging output to terminal or to file.</description>
+   </variable>
+   <variable>
+    <type>int</type>
+    <name>switch_ewa_learning</name>
+    <description>Switch to turn on/off EWA learning.</description>
    </variable>
   </constants>
   <functionFiles>
@@ -326,8 +331,42 @@ Converted from XMML 1.0 to XMML 2.0.</description>
    <functions>
     <function>
      <name>idle</name>
+     <description>Idle to bypass the EWA module.</description>
+     <currentState>Household_Activate_EWA</currentState>
+     <nextState>Household_End_EWA_Learning</nextState>
+     <condition>
+      <lhs>
+       <value>switch_ewa_learning</value>
+      </lhs>
+      <op>EQ</op>
+      <rhs>
+       <value>0</value>
+      </rhs>
+     </condition>
+     <inputs/>
+     <outputs/>
+    </function>
+    <function>
+     <name>idle</name>
+     <description>Idle to activate EWA, going from state Household_Activate_EWA to Household_Start_EWA_Learning.</description>
+     <currentState>Household_Activate_EWA</currentState>
+     <nextState>Household_Start_EWA_Learning</nextState>
+     <condition>
+      <lhs>
+       <value>switch_ewa_learning</value>
+      </lhs>
+      <op>EQ</op>
+      <rhs>
+       <value>1</value>
+      </rhs>
+     </condition>
+     <inputs/>
+     <outputs/>
+    </function>
+    <function>
+     <name>idle</name>
      <description>Idle bypassing Initialization phase</description>
-     <currentState>Start_Household_EWA_Learning</currentState>
+     <currentState>Household_Start_EWA_Learning</currentState>
      <nextState>Start_GA</nextState>
      <condition>
       <not>
@@ -343,7 +382,7 @@ Converted from XMML 1.0 to XMML 2.0.</description>
     <function>
      <name>Household_initialize_rule_details</name>
      <description></description>
-     <currentState>Start_Household_EWA_Learning</currentState>
+     <currentState>Household_Start_EWA_Learning</currentState>
      <nextState>Start_GA</nextState>
      <condition>
       <time>
@@ -432,13 +471,13 @@ Converted from XMML 1.0 to XMML 2.0.</description>
      <name>idle</name>
      <description>Idle bypassing the EWA</description>
      <currentState>End_GA</currentState>
-     <nextState>End_Household_EWA_Learning</nextState>
+     <nextState>Household_End_EWA_Learning</nextState>
      <condition>
       <lhs>
        <not>
         <time>
          <period>monthly</period>
-         <phase>a.day_of_month_to_act</phase>
+         <phase>0</phase>
         </time>
        </not>
       </lhs>
@@ -462,7 +501,7 @@ Converted from XMML 1.0 to XMML 2.0.</description>
       <lhs>
        <time>
         <period>monthly</period>
-        <phase>a.day_of_month_to_act</phase>
+        <phase>0</phase>
        </time>
       </lhs>
       <op>AND</op>
@@ -498,7 +537,7 @@ Converted from XMML 1.0 to XMML 2.0.</description>
      <name>Household_select_rule</name>
      <description></description>
      <currentState>04</currentState>
-     <nextState>End_Household_EWA_Learning</nextState>
+     <nextState>Household_End_EWA_Learning</nextState>
      <inputs/>
      <outputs/>
     </function>

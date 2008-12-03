@@ -1,6 +1,10 @@
 #include "../Firm_agent_header.h"
 #include "my_library_header.h"
+//#include "../header.h"
 
+
+//Disable the stochastic process
+/*
 void CGP_income_statement_computing(double earnings, double earnings_payout, double *earnings_exp,double *earnings_payout_exp)
      {
        static double ROI=0.05;
@@ -32,7 +36,7 @@ void CGP_income_statement_computing(double earnings, double earnings_payout, dou
       else earnings_payout=0;
            *earnings_payout_exp = earnings_payout;
      }
-
+*/
 
 
 int Firm_send_info(void)
@@ -41,10 +45,15 @@ int Firm_send_info(void)
      Stock *stock;
      stock=get_stock();
      double dividend;
+     
+     //Use memory vars from financial management
      dividend=CURRENT_DIVIDEND_PER_SHARE;
-     //EQUITY=50+next();
-   CGP_income_statement_computing(EARNINGS,EARNINGS_PAYOUT, &earnings_exp,&earnings_payout_exp);
-     printf("earnings_exp=%f   earnings_payout_exp=%f\n",earnings_exp,earnings_payout_exp);
+     earnings_exp = EARNINGS;
+     earnings_payout_exp = TOTAL_DIVIDEND_PAYMENT;
+     
+     //EQUITY=50next();
+     //CGP_income_statement_computing(EARNINGS,EARNINGS_PAYOUT, &earnings_exp,&earnings_payout_exp);
+     //("earnings_exp=%f   earnings_payout_exp=%f\n",earnings_exp,earnings_payout_exp);
      add_info_firm_message(ID, earnings_exp,  dividend, earnings_payout_exp,  EQUITY, STOCK);
      return 0;
 }
