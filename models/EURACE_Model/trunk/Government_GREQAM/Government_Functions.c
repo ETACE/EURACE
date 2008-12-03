@@ -197,15 +197,19 @@ int Government_monthly_budget_accounting()
 		MONTHLY_EXPENDITURE = out;
 		
 	//Compute budget deficit
-		MONTHLY_BUDGET_DEFICIT = in - out;
+		MONTHLY_BUDGET_BALANCE = in - out;
 		
-	//Debt accounting
-		TOTAL_DEBT += MONTHLY_BUDGET_DEFICIT;
+	//Debt accounting: surplus decreases the debt, deficit increases it
+		TOTAL_DEBT -= MONTHLY_BUDGET_BALANCE;
 		
 	//Monetary policy rule
-		TOTAL_MONEY_FINANCING = GOV_POLICY_MONEY_FINANCING_FRACTION*MONTHLY_BUDGET_DEFICIT;
-		TOTAL_BOND_FINANCING = (1-GOV_POLICY_MONEY_FINANCING_FRACTION)*MONTHLY_BUDGET_DEFICIT;
-		
+		TOTAL_MONEY_FINANCING=0;
+		TOTAL_BOND_FINANCING=0;
+		if (MONTHLY_BUDGET_BALANCE<0)
+		{
+			TOTAL_MONEY_FINANCING = GOV_POLICY_MONEY_FINANCING_FRACTION*MONTHLY_BUDGET_BALANCE;
+			TOTAL_BOND_FINANCING = (1-GOV_POLICY_MONEY_FINANCING_FRACTION)*MONTHLY_BUDGET_BALANCE;
+		}
 	return 0;
 }
 int Government_yearly_budget_accounting()
@@ -236,7 +240,7 @@ int Government_yearly_budget_accounting()
 		YEARLY_EXPENDITURE = out;
 		
 	//Compute budget deficit
-		YEARLY_BUDGET_DEFICIT = in - out;
+		YEARLY_BUDGET_BALANCE = in - out;
 				
 	return 0;
 }
@@ -320,7 +324,7 @@ int Government_set_policy()
 	//Set expenditure forecast: counter-cyclical to gdp growth
 	YEARLY_EXPENDITURE_BUDGET = GDP_GROWTH*YEARLY_EXPENDITURE;
 	
-	BUDGET_FORECAST = YEARLY_INCOME_FORECAST - YEARLY_EXPENDITURE_BUDGET;
+	BUDGET_BALANCE_FORECAST = YEARLY_INCOME_FORECAST - YEARLY_EXPENDITURE_BUDGET;
 	
 	//Set the following policies:
 
