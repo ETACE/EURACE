@@ -185,8 +185,8 @@
     </variable>
     <variable>
      <type>double</type>
-     <name>yearly_budget_deficit</name>
-     <description>The budget deficit that is realised at the end of the year.</description>
+     <name>yearly_budget_balance</name>
+     <description>The budget balance (deficit/surplus) that is realised at the end of the year.</description>
     </variable>
     <variable>
      <type>double</type>
@@ -235,7 +235,7 @@
     </variable>
     <variable>
      <type>double</type>
-     <name>budget_forecast</name>
+     <name>budget_balance_forecast</name>
      <description>Forcast for the budget balance (deficit/surplus).</description>
     </variable>
     <variable>
@@ -255,8 +255,8 @@
     </variable>
     <variable>
      <type>double</type>
-     <name>monthly_budget_deficit</name>
-     <description>The budget deficit that is realised at the end of the month.</description>
+     <name>monthly_budget_balance</name>
+     <description>The budget balance (deficit/surplus) that is realised at the end of the month.</description>
     </variable>
     <variable>
      <type>double</type>
