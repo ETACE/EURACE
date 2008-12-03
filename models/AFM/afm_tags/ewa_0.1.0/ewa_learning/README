@@ -1,0 +1,146 @@
+ /*********************************
+ * README file for EWA learning module
+ * History:
+ * 25/07/08 Sander: Solved problem with  
+ * 24/07/08 Sander: Checked that all malloc pointers are freed at the end of functions.
+ * 15/07/08 Sander van der Hoog 
+ *********************************/
+
+TODO
+====
+- GA_reinsertion is run after each reproduction between offspring_1/offspring_2.
+This is incorrect, since then the reinserted offspring (that has crossed over and  possibly mutated)
+can be sampled again for a next pair.
+Better to add the offspring to a copy of the population, a population of candidates, and then add all the newly created offsprings at the end of the N_pairs
+loop.
+
+Possible solutions:
+In the FA: setup a candidate rule population to hold the new offsprings before they enter the real population.
+In the FA: let each rule have extra space to hold an array offspring_parameters[10] containing new values temporarily. 
+
+
+Both solutions have the some problems: 
+
+Problem 1: if a rule is selected multiple times for cross-over and mutation, then which temporary slot in the candidate population should we use?
+Problem 2: if a rule is selected multiple times, only the last result gets stored in the parent population.
+Problem 2: if a rule is selected to mate with itself (this is allowed to make sure that fitter rules have a higher probability of being selected for reproduction.)
+then only the 2nd result of the 2 offspring gets copied into the candidate population.
+
+In general: should we determine a set of rules N_rep that are to be going extinct, and are replaced by the new offsprings?
+If each rule in N_rep is only used once for reproduction (sampling without replacement) there is no problem:
+the new offspring replaces their parents (2 offsprings, 2 parents per pair, and we do not use election).
+
+If a rule in N_rep can be used more than once for reproduction (sampling with replacement) then there is a problem:
+How large should the new population be?
+
+parent_1 + parent_2 -> offspring_1 + offspring_2  
+ 
+parent_1 + parent_3 -> offspring_3 + offspring_4
+
+3 parents and 4 offspring: 3 slots in population.  
+
+CHANGELOG
+=========
+10/08/08
+- Solved the issue with candidates being reinserted immediately into the parent population.
+In the FA memory: public_classifiersystem_candidate holds the population of new offsprings before entering the real population.
+
+New functions:
+
+GA_copy_parents_to_candidates(): Before the N_pairs loop, we copy the parameters from the parent population to the candidate population. 
+GA_copy_candidates_to_parents(): After the complete N_pairs loop has finished, we copy all candidate strings to the parent population, replacing the old parents with their offspring.
+
+
+24/07/08
+- In GA_selection, line 234: draw_without_replacement should be used to draw for reproduction the N_rep strings from the population.
+(to be used for reproduction). For the random matching on line 239-263, drawing is with replacement using uniform probabilities.
+Solved 25/07/08
+
+24/07/08
+- Problem: draw_without_replacement:
+It is difficult to draw items that have low probability.
+- Solution: in draw_without_replacement reconstruct the cpdf, eliminating the items that have already been drawn.
+Solved 25/07/08, new implementation of draw_without_replacement, recursively reconstructs the cpdf by setting pdf[i]=0.
+
+24/07/08
+Possible bug in draw:
+- nr_selected_bin should start from 0 or from 1?
+- nr_selected_bin should end at size-1 or size?
+Solved 25/07/08: Corrected, bin is now 0-indexed.
+
+24/07/08
+- check problem with mutation(): unittest when mutation exceeds min, max values
+Solved 25/07/08: Correctly handled.
+
+24/07/08
+File: Household_ewa_functions
+- Household_send_rule_performance(), line 42: send current_rule now using 0-indexing
+- Household_select_rule(), line 169: set current_rule = nr_selected_rule now using 0-indexing
+
+
+
+Main files:
+===========
+File for main functions that are mentioned in the XML:
+1. FinancialAgent_ewa_functions.c
+2. Household_ewa_functions.c
+
+File for auxiliary functions that are only used by the FinancialAgent for GA:
+3. FinancialAgent_aux_functions.c
+
+All other auxiliary functions:
+4. some_new_functions.c
+
+Header files:
+=============
+header.h
+FinancialAgent_agent_header.h	(main functions)
+FinancialAgent_aux_header.h 	(GA specific auxiliary functions, may refer to memory variables)
+some_new_functions.h			(general auxiliary functions)
+Household_agent_header.h		(main functions)
+
+
+./Unittests:
+============
+FinancialAgent_ewa_functions_unittests.c
+FinancialAgent_aux_functions_unittests.c
+some_new_functions_unittests.c
+Household_ewa_functions_unittests.c
+
+
+Header files:
+=============
+All headers of unit test functions are in these files:
+
+unittest_aux.c	(all auxiliary functions)
+unittest_FA.c	(FinancialAgent XML functions)
+unittest_HH.c	(Household  XML functions)
+
+
+Compiling the unit tests:
+=========================
+1. compile_unittest_aux.bat compiles the auxiliary functions (general and GA specific)
+
+unittest_aux.c
+../memory.c
+../messageboards.c
+../FinancialAgent_ewa_functions.c FinancialAgent_ewa_unittest.c
+../FinancialAgent_aux_functions.c FinancialAgent_aux_unittest.c
+../some_new_functions.c 		  some_new_functions_unittest.c
+
+2. compile_unittest_FA.bat compiles the functions in unittest_FA.c
+
+unittest_FA.c
+../memory.c
+../messageboards.c
+../FinancialAgent_ewa_functions.c FinancialAgent_ewa_unittest.c
+../FinancialAgent_aux_functions.c FinancialAgent_aux_unittest.c
+../some_new_functions.c
+
+3. compile_unittest_HH.bat compiles the functions in unittest_HH.c
+
+unittest_HH.c
+../memory.c
+../messageboards.c
+../Household_ewa_functions.c Household_ewa_unittest.c
+../some_new_functions.c
