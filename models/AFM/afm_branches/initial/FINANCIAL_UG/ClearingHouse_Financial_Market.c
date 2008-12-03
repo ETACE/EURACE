@@ -113,16 +113,22 @@ int ClearingHouse_send_asset_information()
   }
   return 0;
 }
-
-
-int ClearingHouse_receive_info_stock()
-{  Asset_array *assets;
+int ClearingHouse_receive_info()
+   {
+    Asset_array *assets;
+    assets =get_assets();
+    reset_Asset_array(assets);
+    ClearingHouse_receive_info_stock(assets);
+    ClearingHouse_receive_info_bond(assets);
+ return 0;
+   }
+void ClearingHouse_receive_info_stock(Asset_array *assets)
+{  
    m_info_firm *cinfo_stock; 
    Stock *stock;
  
    cinfo_stock=get_first_info_firm_message();
-   assets =get_assets();
-   reset_Asset_array(assets);
+ 
   while( cinfo_stock)
     {  
      stock= &(cinfo_stock->stock);
@@ -131,5 +137,22 @@ int ClearingHouse_receive_info_stock()
      cinfo_stock= get_next_info_firm_message(cinfo_stock);
   
     }
- return 0;
+
+}
+void ClearingHouse_receive_info_bond(Asset_array *assets)
+{  
+   m_info_bond *cinfo_bond; 
+   Bond *bond;
+ 
+   cinfo_bond=get_first_info_bond_message();
+  
+  while( cinfo_bond)
+    {  
+     bond= &(cinfo_bond->bond);
+     add_Asset(assets, bond->id,bond-> nr_outstanding, lastPriceBond(bond));
+    
+     cinfo_bond= get_next_info_bond_message(cinfo_bond);
+  
+    }
+ 
 }

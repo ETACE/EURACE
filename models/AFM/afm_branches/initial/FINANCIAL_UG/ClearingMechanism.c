@@ -1,6 +1,7 @@
 
 #include "my_library_header.h"
 
+
 double formedPrice(ClearingMechanism *clearm)
 {
        return clearm->lastPrice;
@@ -215,7 +216,7 @@ void runClearing(ClearingMechanism *aClearing)
    
     
     balance=abs(supply-demand);
-    printf("sin qui ci siamo ----%d\n",balance);
+    //printf("sin qui ci siamo ----%d\n",balance);
   
     if(supply>demand) rationing(sellorders, balance);
     if(supply<demand) rationing(buyorders, balance);
@@ -223,7 +224,7 @@ void runClearing(ClearingMechanism *aClearing)
  //printf("sin qui ci siamo %d\n",balance);
     demand=aggregateDemand(aClearing,price);
     supply=aggregateSupply(aClearing,price);
-    printf("former price %f supply %d demand %d\n",price,supply,demand);
+   //printf("former price %f supply %d demand %d\n",price,supply,demand);
 }
    
 void emptyClearing(ClearingMechanism *aClearing)

@@ -2,9 +2,9 @@
 <xmodel version="2" >
  <name>Financial Market Model - EWA learning module</name>
  <version>4</version>
- <description>Author: Sander van der Hoog, 01/06/2007, 05/03/2008, 22/05/2008, 03/12/2008.
-Converted from old XMML 1.0
-Converted from XMML 2.0 to XMME v.1.9.4
+ <description>Author: Sander van der Hoog, 01/06/2007, 05/03/2008, 22/05/2008, 03/12/2008.&#xd;&#xd;&#xd;&#xd;
+Converted from old XMML 1.0&#xd;&#xd;&#xd;&#xd;
+Converted from XMML 2.0 to XMME v.1.9.4&#xd;&#xd;&#xd;&#xd;
 </description>
  <models/>
  <environment>
@@ -23,6 +23,11 @@ Converted from XMML 2.0 to XMME v.1.9.4
     <type>int</type>
     <name>print_log</name>
     <description>0 or 1, A flag to print logging output to terminal or to file.</description>
+   </variable>
+   <variable>
+    <type>int</type>
+    <name>switch_ewa_learning</name>
+    <description>Switch to turn on/off EWA learning.</description>
    </variable>
   </constants>
   <functionFiles>
@@ -313,12 +318,51 @@ Converted from XMML 2.0 to XMME v.1.9.4
      <name>private_classifiersystem</name>
      <description></description>
     </variable>
+    <variable>
+     <type>int</type>
+     <name>switch_ewa</name>
+     <description>Switch to turn on/off EWA learning. Copy from global constant.</description>
+    </variable>
    </memory>
    <functions>
     <function>
      <name>idle</name>
+     <description>Idle to bypass the EWA module.</description>
+     <currentState>Household_Activate_EWA</currentState>
+     <nextState>Household_End_EWA_Learning</nextState>
+     <condition>
+      <lhs>
+       <value>a.switch_ewa</value>
+      </lhs>
+      <op>EQ</op>
+      <rhs>
+       <value>0</value>
+      </rhs>
+     </condition>
+     <inputs/>
+     <outputs/>
+    </function>
+    <function>
+     <name>idle</name>
+     <description>Idle to activate EWA, going from state Household_Activate_EWA to Household_Start_EWA_Learning.</description>
+     <currentState>Household_Activate_EWA</currentState>
+     <nextState>Household_Start_EWA_Learning</nextState>
+     <condition>
+      <lhs>
+       <value>a.switch_ewa</value>
+      </lhs>
+      <op>EQ</op>
+      <rhs>
+       <value>1</value>
+      </rhs>
+     </condition>
+     <inputs/>
+     <outputs/>
+    </function>
+    <function>
+     <name>idle</name>
      <description>Idle bypassing Initialization phase</description>
-     <currentState>Start_Household_EWA_Learning</currentState>
+     <currentState>Household_Start_EWA_Learning</currentState>
      <nextState>Start_GA</nextState>
      <condition>
       <not>
@@ -334,8 +378,8 @@ Converted from XMML 2.0 to XMME v.1.9.4
     <function>
      <name>Household_initialize_rule_details</name>
      <description></description>
-     <currentState>Start_Household_EWA_Learning</currentState>
-     <nextState>001</nextState>
+     <currentState>Household_Start_EWA_Learning</currentState>
+     <nextState>001_ewa</nextState>
      <condition>
       <time>
        <period>millionyearly</period>
@@ -352,7 +396,7 @@ Converted from XMML 2.0 to XMME v.1.9.4
     <function>
      <name>Household_portfolio_strategy_interface</name>
      <description></description>
-     <currentState>001</currentState>
+     <currentState>001_ewa</currentState>
      <nextState>Start_GA</nextState>
      <inputs/>
      <outputs/>
@@ -386,7 +430,7 @@ Converted from XMML 2.0 to XMME v.1.9.4
      <name>Household_print_private_classifiersystem</name>
      <description></description>
      <currentState>Start_GA</currentState>
-     <nextState>01</nextState>
+     <nextState>01_ewa</nextState>
      <condition>
       <lhs>
        <time>
@@ -410,15 +454,15 @@ Converted from XMML 2.0 to XMME v.1.9.4
     <function>
      <name>Household_reset_private_classifiersystem</name>
      <description></description>
-     <currentState>01</currentState>
-     <nextState>02</nextState>
+     <currentState>01_ewa</currentState>
+     <nextState>02_ewa</nextState>
      <inputs/>
      <outputs/>
     </function>
     <function>
      <name>Household_read_and_update_rule_details</name>
      <description></description>
-     <currentState>02</currentState>
+     <currentState>02_ewa</currentState>
      <nextState>End_GA</nextState>
      <inputs>
       <input>
@@ -431,13 +475,13 @@ Converted from XMML 2.0 to XMME v.1.9.4
      <name>idle</name>
      <description>Idle bypassing the EWA</description>
      <currentState>End_GA</currentState>
-     <nextState>End_Household_EWA_Learning</nextState>
+     <nextState>Household_End_EWA_Learning</nextState>
      <condition>
       <lhs>
        <not>
         <time>
          <period>monthly</period>
-         <phase>a.day_of_month_to_act</phase>
+         <phase>0</phase>
         </time>
        </not>
       </lhs>
@@ -456,12 +500,12 @@ Converted from XMML 2.0 to XMME v.1.9.4
      <name>Household_send_rule_performance</name>
      <description></description>
      <currentState>End_GA</currentState>
-     <nextState>03</nextState>
+     <nextState>03_ewa</nextState>
      <condition>
       <lhs>
        <time>
         <period>monthly</period>
-        <phase>a.day_of_month_to_act</phase>
+        <phase>0</phase>
        </time>
       </lhs>
       <op>AND</op>
@@ -484,8 +528,8 @@ Converted from XMML 2.0 to XMME v.1.9.4
     <function>
      <name>Household_read_all_performances</name>
      <description></description>
-     <currentState>03</currentState>
-     <nextState>04</nextState>
+     <currentState>03_ewa</currentState>
+     <nextState>04_ewa</nextState>
      <inputs>
       <input>
        <messageName>new_performances</messageName>
@@ -496,16 +540,16 @@ Converted from XMML 2.0 to XMME v.1.9.4
     <function>
      <name>Household_select_rule</name>
      <description></description>
-     <currentState>04</currentState>
-     <nextState>05</nextState>
+     <currentState>04_ewa</currentState>
+     <nextState>05_ewa</nextState>
      <inputs/>
      <outputs/>
     </function>
     <function>
      <name>Household_portfolio_strategy_interface</name>
      <description></description>
-     <currentState>05</currentState>
-     <nextState>End_Household_EWA_Learning</nextState>
+     <currentState>05_ewa</currentState>
+     <nextState>Household_End_EWA_Learning</nextState>
      <inputs/>
      <outputs/>
     </function>
