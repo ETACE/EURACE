@@ -1,0 +1,1 @@
+gcc -g -I../libmboard/include -L../libmboard/lib unittest_FA.c ../memory.c ../messageboards.c  ../FinancialAgent_ewa_functions.c FinancialAgent_ewa_unittest.c ../FinancialAgent_aux_functions.c FinancialAgent_aux_unittest.c ../some_new_functions.c -lm -lcunit -lmboard_s 
