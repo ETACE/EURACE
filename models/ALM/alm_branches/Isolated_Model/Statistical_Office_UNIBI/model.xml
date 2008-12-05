@@ -1,7 +1,7 @@
 <!DOCTYPE xmodel SYSTEM "http://eurace.cs.bilgi.edu.tr/XMML.dtd">
 <xmodel version="2" >
  <name>Statistical_Office</name>
- <version>Sheffield, 29/07/2008</version>
+ <version>Post-STFC, 29/07/2008</version>
  <description>Authors: Simon Gemkow, Philipp Harting, Sander van der Hoog</description>
  <models/>
  <environment>
