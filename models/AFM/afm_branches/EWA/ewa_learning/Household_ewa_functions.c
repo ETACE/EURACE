@@ -42,38 +42,12 @@ int Household_initialize_rule_details()
 		}
 	FINISH_INITIAL_RULE_DETAILS_MESSAGE_LOOP
     
-	//Special code for AFM weights init:
-	//RANDOMWEIGHT     
-	//FUNDAMENTALWEIGHT
-	//CHARTISTWEIGHT		
-	//We have included in agent memory: global_rnd, prob_random, prob_fund
-
-	/*
-	if(GLOBAL_RND <= PROB_RANDOM)
-	{
-		RANDOMWEIGHT  = 1.0;
-		FUNDAMENTALWEIGHT = 0.0;
-		CHARTISTWEIGHT = 0.0;
-	}
-	else if ( PROB_RANDOM < GLOBAL_RND && GLOBAL_RND <=	PROB_RANDOM + PROB_FUND)
-	{
-		RANDOMWEIGHT  = 0.0;
-		FUNDAMENTALWEIGHT = 1.0;
-		CHARTISTWEIGHT = 0.0;
-	}
-	else
-	{
-		RANDOMWEIGHT  = 0.0;
-		FUNDAMENTALWEIGHT = 0.0;
-		CHARTISTWEIGHT = 1.0;
-	}
-	 */
     return 0;
 }
 
 /* STEP 1. Updating performance.*/
-/* HERE: Household sends message to FA agent with the per-day performance of it's own current rule, */
-/* including the total value invested in the asset portfolio (this is needed later on, when another household uses the rule). */
+/* HERE: Household sends message to FA agent with the per-day performance of it's own current rule.
+ */
 int Household_send_rule_performance()
 { 
     //Declare and assign local vars
@@ -284,7 +258,7 @@ int Household_read_and_update_rule_details()
 }
 
 /* \fn: Household_reset_private_classifiersystem()
- * \brief
+ * \brief Function that resets all parameters in the private classifier system. Used after there has been an update of rule details by the GA.
  */
 int Household_reset_private_classifiersystem()
 {
@@ -318,6 +292,10 @@ int Household_reset_private_classifiersystem()
     return 0;
 } 
 
+/* \fn: Household_print_private_classifiersystem()
+ * \brief Function to print out the CS of a household agent to a log file.
+ *  Used for debugging purposes.
+ */
 int Household_print_private_classifiersystem()
 {
 	char str[10];
@@ -371,6 +349,7 @@ int Household_print_private_classifiersystem()
     return 0;
 }
 
+/****************************** BELOW HERE: OLD CODE FOR HETEROGENEOUS RULE SETS ******************/
 
 /* \fn: Household_initialize_ruledetails()
  * \brief Initialization of all rule details to zero: parameters[10]=0.
