@@ -2,32 +2,32 @@
 <xmodel version="2" >
  <name>Financial Market Model - EWA learning module</name>
  <version>4</version>
- <description>Author: Sander van der Hoog, 01/06/2007, 05/03/2008, 22/05/2008, 03/12/2008.&#xd;&#xd;&#xd;&#xd;
-Converted from old XMML 1.0&#xd;&#xd;&#xd;&#xd;
-Converted from XMML 2.0 to XMME v.1.9.4&#xd;&#xd;&#xd;&#xd;
-</description>
+ <description>Author: Sander van der Hoog, 01/06/2007, 05/03/2008, 22/05/2008, 03/12/2008.
+
+Converted from old XMML 1.0
+Converted from XMML 2.0 to XMME v.1.9.4</description>
  <models/>
  <environment>
   <constants>
    <variable>
     <type>int</type>
     <name>nr_params</name>
-    <description>10, Number of parameters in a portfolio rule.</description>
+    <description>Number of parameters in a portfolio rule. &amp; 5</description>
    </variable>
    <variable>
     <type>int</type>
     <name>print_debug</name>
-    <description>0 or 1, Boolean for debugging print statements.</description>
+    <description>Flag for debugging print statements. &amp; 0 or 1</description>
    </variable>
    <variable>
     <type>int</type>
     <name>print_log</name>
-    <description>0 or 1, A flag to print logging output to terminal or to file.</description>
+    <description>Flag to print logging output to terminal or a file in ./log. &amp; 0 or 1</description>
    </variable>
    <variable>
     <type>int</type>
     <name>switch_ewa_learning</name>
-    <description>Switch to turn on/off EWA learning.</description>
+    <description>Flag to switch on/off EWA learning. &amp; 0 or 1</description>
    </variable>
   </constants>
   <functionFiles>
@@ -76,22 +76,22 @@ Converted from XMML 2.0 to XMME v.1.9.4&#xd;&#xd;&#xd;&#xd;
      <variable>
       <type>double</type>
       <name>EWA_rho</name>
-      <description></description>
+      <description>Memory parameter: depreciation rate of previous observations.</description>
      </variable>
      <variable>
       <type>double</type>
       <name>EWA_phi</name>
-      <description></description>
+      <description>Change parameter: depreciation rate of previous attraction.</description>
      </variable>
      <variable>
       <type>double</type>
       <name>EWA_delta</name>
-      <description></description>
+      <description>Imagination or exploration parameter: uses the law of simulated effect, weight on forgone payoff.</description>
      </variable>
      <variable>
       <type>double</type>
       <name>EWA_beta</name>
-      <description></description>
+      <description>Discrete choice parameter, intensity of choice.</description>
      </variable>
     </variables>
    </dataType>
@@ -102,202 +102,202 @@ Converted from XMML 2.0 to XMME v.1.9.4&#xd;&#xd;&#xd;&#xd;
      <variable>
       <type>double</type>
       <name>prob_cross</name>
-      <description>Crossover probability</description>
+      <description>Crossover probability.</description>
      </variable>
      <variable>
       <type>double</type>
       <name>prob_mut</name>
-      <description>Mutation probability</description>
+      <description>Mutation probability.</description>
      </variable>
      <variable>
       <type>int</type>
       <name>string_size</name>
-      <description></description>
+      <description>Length of strings, equal to the number of parameters.</description>
      </variable>
      <variable>
       <type>int</type>
       <name>pop_size</name>
-      <description>Size of the rule population</description>
+      <description>Size of the rule population in the classifier system.</description>
      </variable>
      <variable>
       <type>double</type>
       <name>reproduction_proportion</name>
-      <description>Proportion of population that reproduces</description>
+      <description>Proportion of the population that reproduces.</description>
      </variable>
      <variable>
       <type>int</type>
       <name>single_point_cross_over</name>
-      <description>Dummy for single-point crossover operator (1: use single-point; 0: use 2-point cross-over)</description>
+      <description>Flag to use single-point crossover operation. 1: use single-point, 0: use 2-point cross-over.</description>
      </variable>
      <variable>
       <type>int</type>
       <name>election</name>
-      <description>Dummy for election operator</description>
+      <description>Flag for election operator.</description>
      </variable>
      <variable>
       <type>double</type>
       <name>stepsize[5]</name>
-      <description>Mutation stepsize for each parameter</description>
+      <description>Mutation stepsize for each parameter value.</description>
      </variable>
      <variable>
       <type>int</type>
       <name>delta_min</name>
-      <description>Lower bound on number of units to mutate inside the mutation range: delta_min can be negative or positive. </description>
+      <description>Lower bound on the number of units to mutate inside the mutation range: delta_min can be negative or positive. </description>
      </variable>
      <variable>
       <type>int</type>
       <name>delta_max</name>
-      <description>Upper bound on number of units to mutate inside the mutation range: delta_max should be positive.</description>
+      <description>Upper bound on the number of units to mutate inside the mutation range: delta_max should be positive.</description>
      </variable>
      <variable>
       <type>double</type>
       <name>min_values[5]</name>
-      <description>Minimum values for each parameter</description>
+      <description>Minimum values for each parameter.</description>
      </variable>
      <variable>
       <type>double</type>
       <name>max_values[5]</name>
-      <description>Maximum values for each parameter</description>
+      <description>Maximum values for each parameter.</description>
      </variable>
     </variables>
    </dataType>
    <dataType>
     <name>PublicClassifierRule</name>
-    <description>Datatype for the central classifier system. The system is a dynamic array of PublicClassifierRules !Subject to change!</description>
+    <description>ADT for the central classifier system. The rule system is a dynamic array of PublicClassifierRules.</description>
     <variables>
      <variable>
       <type>int</type>
       <name>id</name>
-      <description>id for the rule</description>
+      <description>ID for the rule.</description>
      </variable>
      <variable>
       <type>int</type>
       <name>counter</name>
-      <description>User counter for each rule</description>
+      <description>User counter for the rule.</description>
      </variable>
      <variable>
       <type>double</type>
       <name>performance</name>
-      <description>Total performance for each rule</description>
+      <description>Sum of performance.</description>
      </variable>
      <variable>
       <type>double</type>
       <name>avg_performance</name>
-      <description>Average performance for each rule (=total performance/counter)</description>
+      <description>Average performance (=total performance/counter).</description>
      </variable>
      <variable>
       <type>double</type>
       <name>selection_prob</name>
-      <description>Selection probability for the rule</description>
+      <description>Selection probability.</description>
      </variable>
      <variable>
       <type>double</type>
       <name>parameters[5]</name>
-      <description>Parameter values encoding the rule</description>
+      <description>Parameter values encoding the rule.</description>
      </variable>
     </variables>
    </dataType>
    <dataType>
     <name>PrivateClassifierRule</name>
-    <description>Datatype for the private classifier system inside each agent. The system is a dynamic array of PrivateClassifierRule.  !Subject to change!</description>
+    <description>ADT for the private classifier system inside each agent. The system is a dynamic array of PrivateClassifierRule.</description>
     <variables>
      <variable>
       <type>int</type>
       <name>id</name>
-      <description>id for each rule</description>
+      <description>ID for the rule.</description>
      </variable>
      <variable>
       <type>double</type>
       <name>my_performance</name>
-      <description>Agent performance with current_rule (0.0 if this rule is not currently used)</description>
+      <description>Agent performance with current_rule. 0.0 if the rule is not currently used.</description>
      </variable>
      <variable>
       <type>double</type>
       <name>avg_performance</name>
-      <description>Average performance for this rule across population (copied from Central CS)</description>
+      <description>Average performance for the rule across the population (value copied from public CS).</description>
      </variable>
      <variable>
       <type>double</type>
       <name>attraction</name>
-      <description>Agent attractions</description>
+      <description>Agent attraction for the rule.</description>
      </variable>
      <variable>
       <type>double</type>
       <name>choiceprob</name>
-      <description>Agent choice probabilities</description>
+      <description>Agent choice probability for the rule.</description>
      </variable>
      <variable>
       <type>double</type>
       <name>parameters[5]</name>
-      <description>Parameter values encoding the rule</description>
+      <description>Parameter values encoding the rule.</description>
      </variable>
     </variables>
    </dataType>
    <dataType>
     <name>SimplePublicClassifierSystem</name>
-    <description>Datatype for the central classifier system. Simple version allows for rules of the same strategy type (all rules use the same function). !Subject to change!</description>
+    <description>ADT for the central classifier system. Simple version allows for rules of the same strategy type only (all rules use the same function).</description>
     <variables>
      <variable>
       <type>int</type>
       <name>nr_rules</name>
-      <description>Total number of rules in the rule set</description>
+      <description>Total number of rules in the rule set.</description>
      </variable>
      <variable>
       <type>PublicClassifierRule</type>
       <name>ruletable[100]</name>
-      <description>Static array of 100 public classifier rules of homogeneous type</description>
+      <description>Static array of 100 public classifier rules of homogeneous type.</description>
      </variable>
     </variables>
    </dataType>
    <dataType>
     <name>SimplePrivateClassifierSystem</name>
-    <description>Datatype for the private classifier system inside each agent. Simple version allows for rules of the same strategy type (all rules use the same function). !Subject to change!</description>
+    <description>ADT for the private classifier system inside each agent. Simple version allows for rules of the same strategy type (all rules use the same function).</description>
     <variables>
      <variable>
       <type>int</type>
       <name>nr_rules</name>
-      <description>Total number of rules in the rule set</description>
+      <description>Total number of rules in the rule set.</description>
      </variable>
      <variable>
       <type>double</type>
       <name>experience</name>
-      <description>Experience variable for EWA learning</description>
+      <description>Experience variable for EWA learning.</description>
      </variable>
      <variable>
       <type>int</type>
       <name>current_rule</name>
-      <description>Current rule in use by the agent</description>
+      <description>Current rule in use by the agent.</description>
      </variable>
      <variable>
       <type>PrivateClassifierRule</type>
       <name>ruletable[100]</name>
-      <description>Static array of 100 private classifier rules of homogeneous type</description>
+      <description>Static array of 100 private classifier rules of homogeneous type.</description>
      </variable>
     </variables>
    </dataType>
    <dataType>
     <name>ComplexPublicClassifierSystem</name>
-    <description>Datatype for the central classifier system. This complex version allows for heterogeneous rule sets. !Subject to change!</description>
+    <description>ADT for the central classifier system. This complex version allows for heterogeneous rule sets. The rule set consists of subpopulations of rules.</description>
     <variables>
      <variable>
       <type>int</type>
       <name>nr_types</name>
-      <description>Number of subpopulations (different types of rules)</description>
+      <description>Number of subpopulations (different types of rules).</description>
      </variable>
      <variable>
       <type>int_array</type>
       <name>nr_rules_per_type</name>
-      <description>Nr_rules_per_type may differ per type: size of subpopulations</description>
+      <description>Number of rules per type may differ per type, this is the size of the subpopulations.</description>
      </variable>
      <variable>
       <type>int</type>
       <name>nr_rules</name>
-      <description>Total number of rules in the rule set</description>
+      <description>Total number of rules in the rule set.</description>
      </variable>
      <variable>
       <type>PublicClassifierRule</type>
       <name>ruletable[100]</name>
-      <description>Static array of 100 public classifier rules of heterogenous type</description>
+      <description>Static array of 100 public classifier rules of heterogenous type.</description>
      </variable>
     </variables>
    </dataType>
@@ -311,17 +311,17 @@ Converted from XMML 2.0 to XMME v.1.9.4&#xd;&#xd;&#xd;&#xd;
     <variable>
      <type>EWAParameterStruct</type>
      <name>EWA_parameters</name>
-     <description></description>
+     <description>ADT holding the EWA parameters for the household.</description>
     </variable>
     <variable>
      <type>SimplePrivateClassifierSystem</type>
      <name>private_classifiersystem</name>
-     <description></description>
+     <description>Struct holding the private classifier system of the household agent.</description>
     </variable>
     <variable>
      <type>int</type>
      <name>switch_ewa</name>
-     <description>Switch to turn on/off EWA learning. Copy from global constant.</description>
+     <description>Switch to turn on/off EWA learning. Copied from global constant switch_ewa_learning.</description>
     </variable>
    </memory>
    <functions>
@@ -361,7 +361,7 @@ Converted from XMML 2.0 to XMME v.1.9.4&#xd;&#xd;&#xd;&#xd;
     </function>
     <function>
      <name>idle</name>
-     <description>Idle bypassing Initialization phase</description>
+     <description>Idle bypassing Initialization phase.</description>
      <currentState>Household_Start_EWA_Learning</currentState>
      <nextState>Start_GA</nextState>
      <condition>
@@ -377,7 +377,7 @@ Converted from XMML 2.0 to XMME v.1.9.4&#xd;&#xd;&#xd;&#xd;
     </function>
     <function>
      <name>Household_initialize_rule_details</name>
-     <description></description>
+     <description>Function to download the initial rule details from the Financial Advisor agent.</description>
      <currentState>Household_Start_EWA_Learning</currentState>
      <nextState>001_ewa</nextState>
      <condition>
@@ -395,7 +395,8 @@ Converted from XMML 2.0 to XMME v.1.9.4&#xd;&#xd;&#xd;&#xd;
     </function>
     <function>
      <name>Household_portfolio_strategy_interface</name>
-     <description></description>
+     <description>Interface function between the EWA module and the AFM module.&#xd;
+It translates the parameters in the CS rule database to the appropriate memory variables that are used in the AFM to select asset portfolios.</description>
      <currentState>001_ewa</currentState>
      <nextState>Start_GA</nextState>
      <inputs/>
@@ -403,7 +404,7 @@ Converted from XMML 2.0 to XMME v.1.9.4&#xd;&#xd;&#xd;&#xd;
     </function>
     <function>
      <name>idle</name>
-     <description>Idle bypassing the GA</description>
+     <description>Idle bypassing the GA.</description>
      <currentState>Start_GA</currentState>
      <nextState>End_GA</nextState>
      <condition>
@@ -428,7 +429,7 @@ Converted from XMML 2.0 to XMME v.1.9.4&#xd;&#xd;&#xd;&#xd;
     </function>
     <function>
      <name>Household_print_private_classifiersystem</name>
-     <description></description>
+     <description>Function to print out the CS of a household agent to a log file. Used for debugging purposes.</description>
      <currentState>Start_GA</currentState>
      <nextState>01_ewa</nextState>
      <condition>
@@ -453,7 +454,7 @@ Converted from XMML 2.0 to XMME v.1.9.4&#xd;&#xd;&#xd;&#xd;
     </function>
     <function>
      <name>Household_reset_private_classifiersystem</name>
-     <description></description>
+     <description>Function that resets all parameters in the private classifier system. Used after there has been an update of rule details by the GA.</description>
      <currentState>01_ewa</currentState>
      <nextState>02_ewa</nextState>
      <inputs/>
@@ -461,7 +462,7 @@ Converted from XMML 2.0 to XMME v.1.9.4&#xd;&#xd;&#xd;&#xd;
     </function>
     <function>
      <name>Household_read_and_update_rule_details</name>
-     <description></description>
+     <description>Function to download new rule details, reading the rule_details_message from the FA agent. Used by agents to refresh their rule details (parameters).</description>
      <currentState>02_ewa</currentState>
      <nextState>End_GA</nextState>
      <inputs>
@@ -473,7 +474,7 @@ Converted from XMML 2.0 to XMME v.1.9.4&#xd;&#xd;&#xd;&#xd;
     </function>
     <function>
      <name>idle</name>
-     <description>Idle bypassing the EWA</description>
+     <description>Idle bypassing the EWA module.</description>
      <currentState>End_GA</currentState>
      <nextState>Household_End_EWA_Learning</nextState>
      <condition>
@@ -498,7 +499,7 @@ Converted from XMML 2.0 to XMME v.1.9.4&#xd;&#xd;&#xd;&#xd;
     </function>
     <function>
      <name>Household_send_rule_performance</name>
-     <description></description>
+     <description>Household sends message to FA agent with the rule performance of it's own current rule.</description>
      <currentState>End_GA</currentState>
      <nextState>03_ewa</nextState>
      <condition>
@@ -527,7 +528,7 @@ Converted from XMML 2.0 to XMME v.1.9.4&#xd;&#xd;&#xd;&#xd;
     </function>
     <function>
      <name>Household_read_all_performances</name>
-     <description></description>
+     <description>Household reads the all_performances_message from the FA agent and updates its private classifiersystem.</description>
      <currentState>03_ewa</currentState>
      <nextState>04_ewa</nextState>
      <inputs>
@@ -539,7 +540,8 @@ Converted from XMML 2.0 to XMME v.1.9.4&#xd;&#xd;&#xd;&#xd;
     </function>
     <function>
      <name>Household_select_rule</name>
-     <description></description>
+     <description>The household applies the EWA learning algorithm to select a new rule.&#xd;
+The function performs several steps: update the experience and attractions, update choice probabilities, select a new rule, update the CS.</description>
      <currentState>04_ewa</currentState>
      <nextState>05_ewa</nextState>
      <inputs/>
@@ -547,7 +549,8 @@ Converted from XMML 2.0 to XMME v.1.9.4&#xd;&#xd;&#xd;&#xd;
     </function>
     <function>
      <name>Household_portfolio_strategy_interface</name>
-     <description></description>
+     <description>Interface function between the EWA module and the AFM module.&#xd;
+It translates the parameters in the CS rule database to the appropriate memory variables that are used in the AFM to select asset portfolios.</description>
      <currentState>05_ewa</currentState>
      <nextState>Household_End_EWA_Learning</nextState>
      <inputs/>
@@ -562,28 +565,28 @@ Converted from XMML 2.0 to XMME v.1.9.4&#xd;&#xd;&#xd;&#xd;
     <variable>
      <type>SimplePublicClassifierSystem</type>
      <name>public_classifiersystem</name>
-     <description>Public classifiersystem holding the rule table.</description>
+     <description>Struct holding the public classifier system of the FA agent.</description>
     </variable>
     <variable>
      <type>SimplePublicClassifierSystem</type>
      <name>public_classifiersystem_candidates</name>
-     <description>Public classifiersystem to hold the candidate offspring bitstrings, before copying them into the parent population.</description>
+     <description>Public classifiersystem to hold the new generation of candidate offspring bitstrings, before copying them into the final parent population. This is required to prevent the old strings to be copied over by new strings while performing the cross-over operation.</description>
     </variable>
     <variable>
      <type>GAParameterStruct</type>
      <name>GA_parameters</name>
-     <description></description>
+     <description>ADT holding the GA parameters.</description>
     </variable>
     <variable>
      <type>EWAParameterStruct</type>
      <name>EWA_parameters</name>
-     <description></description>
+     <description>ADT holding the EWA parameters for the FA agent. This memory variable can be used in the initialisation phase to propagate the EWA parameters to all households.</description>
     </variable>
    </memory>
    <functions>
     <function>
      <name>idle</name>
-     <description>Idle bypassing Initialization phase</description>
+     <description>Idle bypassing Initialization phase.</description>
      <currentState>Start_FinancialAgent</currentState>
      <nextState>Start_GA</nextState>
      <condition>
@@ -599,7 +602,7 @@ Converted from XMML 2.0 to XMME v.1.9.4&#xd;&#xd;&#xd;&#xd;
     </function>
     <function>
      <name>FinancialAgent_initialize_rule_details</name>
-     <description></description>
+     <description>Function to initialize the rule details. This function is run only once at the start of simulation, in order to randomly initialize the parameters of the rules and propagate these rule details to all households.</description>
      <currentState>Start_FinancialAgent</currentState>
      <nextState>Start_GA</nextState>
      <condition>
@@ -617,7 +620,7 @@ Converted from XMML 2.0 to XMME v.1.9.4&#xd;&#xd;&#xd;&#xd;
     </function>
     <function>
      <name>idle</name>
-     <description>Idle bypassing the GA</description>
+     <description>Idle bypassing the GA.</description>
      <currentState>Start_GA</currentState>
      <nextState>End_GA</nextState>
      <condition>
@@ -642,7 +645,7 @@ Converted from XMML 2.0 to XMME v.1.9.4&#xd;&#xd;&#xd;&#xd;
     </function>
     <function>
      <name>FinancialAgent_apply_GA</name>
-     <description></description>
+     <description>FinancialAgent applies the GA to the rule details parameters.</description>
      <currentState>Start_GA</currentState>
      <nextState>01</nextState>
      <condition>
@@ -667,7 +670,7 @@ Converted from XMML 2.0 to XMME v.1.9.4&#xd;&#xd;&#xd;&#xd;
     </function>
     <function>
      <name>FinancialAgent_send_rule_details</name>
-     <description></description>
+     <description>FinancialAgent sends new rule details. For each rule, a separate message is sent containing the static array parameters[NR_PARAMS].</description>
      <currentState>01</currentState>
      <nextState>02</nextState>
      <inputs/>
@@ -679,7 +682,7 @@ Converted from XMML 2.0 to XMME v.1.9.4&#xd;&#xd;&#xd;&#xd;
     </function>
     <function>
      <name>FinancialAgent_print_public_classifiersystem</name>
-     <description></description>
+     <description>Function to print out the CS of the FA agent to a log file. Used for debugging purposes.</description>
      <currentState>02</currentState>
      <nextState>03</nextState>
      <inputs/>
@@ -687,7 +690,8 @@ Converted from XMML 2.0 to XMME v.1.9.4&#xd;&#xd;&#xd;&#xd;
     </function>
     <function>
      <name>FinancialAgent_reset_public_classifiersystem</name>
-     <description>Resetting user counter, performance sum, avg_performance</description>
+     <description>Reset of the public classifiersystem, resetting user counter, performance sum, and avg_performance. 
+This should be run before any rule_performance_messages are being read.</description>
      <currentState>03</currentState>
      <nextState>End_GA</nextState>
      <inputs/>
@@ -695,7 +699,7 @@ Converted from XMML 2.0 to XMME v.1.9.4&#xd;&#xd;&#xd;&#xd;
     </function>
     <function>
      <name>FinancialAgent_read_rule_performance_and_update_classifiersystem</name>
-     <description></description>
+     <description>Financial Agent reads the rule_performance_messages and updates the average rule performance in its classifiersystem.</description>
      <currentState>End_GA</currentState>
      <nextState>04</nextState>
      <inputs>
@@ -707,7 +711,7 @@ Converted from XMML 2.0 to XMME v.1.9.4&#xd;&#xd;&#xd;&#xd;
     </function>
     <function>
      <name>FinancialAgent_send_all_performances</name>
-     <description></description>
+     <description>FinancialAgent sends for each rule the avg_performance in a separate message.</description>
      <currentState>04</currentState>
      <nextState>end_FinancialAgent</nextState>
      <inputs/>
@@ -723,7 +727,7 @@ Converted from XMML 2.0 to XMME v.1.9.4&#xd;&#xd;&#xd;&#xd;
  <messages>
   <message>
    <name>rule_performance</name>
-   <description></description>
+   <description>Message that holds the rule_performance measure for a single rule. Sent by households, read by FA agent.</description>
    <variables>
     <variable>
      <type>int</type>
@@ -739,7 +743,7 @@ Converted from XMML 2.0 to XMME v.1.9.4&#xd;&#xd;&#xd;&#xd;
   </message>
   <message>
    <name>new_performances</name>
-   <description></description>
+   <description>Message that holds all new rule performance measures. Sent by FA agent, read by households.</description>
    <variables>
     <variable>
      <type>int</type>
@@ -755,7 +759,7 @@ Converted from XMML 2.0 to XMME v.1.9.4&#xd;&#xd;&#xd;&#xd;
   </message>
   <message>
    <name>initial_rule_details</name>
-   <description></description>
+   <description>Message that holds the initial random rule parameters. Sent by FA agent, read by households.</description>
    <variables>
     <variable>
      <type>int</type>
@@ -771,7 +775,7 @@ Converted from XMML 2.0 to XMME v.1.9.4&#xd;&#xd;&#xd;&#xd;
   </message>
   <message>
    <name>rule_details</name>
-   <description></description>
+   <description>Message that holds new rule parameters after applying the GA. Sent by FA agent, read by households.</description>
    <variables>
     <variable>
      <type>int</type>
