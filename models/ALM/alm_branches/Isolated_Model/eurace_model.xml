@@ -474,6 +474,11 @@
      <name>id</name>
      <description></description>
     </variable>
+    <variable>
+     <type>account_item_array</type>
+     <name>list_accounts</name>
+     <description></description>
+    </variable>
    </memory>
    <functions/>
   </xagent>

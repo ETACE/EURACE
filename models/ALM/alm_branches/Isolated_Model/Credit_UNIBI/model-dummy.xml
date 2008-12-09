@@ -86,6 +86,22 @@
      </variable>
     </variables>
    </dataType>
+   <dataType>
+    <name>account_item</name>
+    <description></description>
+    <variables>
+     <variable>
+      <type>int</type>
+      <name>id</name>
+      <description></description>
+     </variable>
+     <variable>
+      <type>double</type>
+      <name>payment_account</name>
+      <description></description>
+     </variable>
+    </variables>
+   </dataType>
   </dataTypes>
  </environment>
  <agents>
@@ -266,13 +282,7 @@
   <xagent>
    <name>Central_Bank</name>
    <description></description>
-   <memory>
-    <variable>
-     <type></type>
-     <name>accounts</name>
-     <description></description>
-    </variable>
-   </memory>
+   <memory/>
    <functions>
     <function>
      <name>Central_Bank_read_account_update</name>
