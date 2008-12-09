@@ -9,6 +9,7 @@
   <functionFiles>
    <file>Bank_Credit_Functions_Dummy.c</file>
    <file>Firm_Credit_Functions_Dummy.c</file>
+   <file>Central_Bank_Credit_Functions_Dummy.c</file>
   </functionFiles>
   <timeUnits/>
   <dataTypes>
@@ -256,6 +257,31 @@
      <inputs>
       <input>
        <messageName>bank_account_update</messageName>
+      </input>
+     </inputs>
+     <outputs/>
+    </function>
+   </functions>
+  </xagent>
+  <xagent>
+   <name>Central_Bank</name>
+   <description></description>
+   <memory>
+    <variable>
+     <type></type>
+     <name>accounts</name>
+     <description></description>
+    </variable>
+   </memory>
+   <functions>
+    <function>
+     <name>Central_Bank_read_account_update</name>
+     <description></description>
+     <currentState>start_Central_Bank</currentState>
+     <nextState>end_Central_Bank</nextState>
+     <inputs>
+      <input>
+       <messageName>central_bank_account_update</messageName>
       </input>
      </inputs>
      <outputs/>
