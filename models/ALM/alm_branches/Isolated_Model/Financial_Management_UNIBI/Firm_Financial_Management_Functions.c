@@ -285,7 +285,7 @@ int Firm_execute_financial_payments()
 	
 	if (TAX_PAYMENT>0.0)
 	{
-		add_tax_payment_message(ID, GOV_ID, TAX_PAYMENT);
+		add_tax_payment_message(GOV_ID, TAX_PAYMENT);
 		PAYMENT_ACCOUNT -= TAX_PAYMENT;
 	}
 	//step 2: actual interest_payments and installment_payments
