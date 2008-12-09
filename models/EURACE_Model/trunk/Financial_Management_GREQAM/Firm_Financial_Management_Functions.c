@@ -344,12 +344,21 @@ int Firm_bankruptcy_procedure()
  */
 int Firm_bankruptcy_idle_counter()
 {
-	BANKRUPTCY_IDLE_COUNTER -= 1;
+	if (BANKRUPTCY_IDLE_COUNTER<0)
+	{
+		printf("\n ERROR: BANKRUPTCY_IDLE_COUNTER<0\n");
+	}	
+	
+	if (BANKRUPTCY_IDLE_COUNTER>0)
+	{
+		BANKRUPTCY_IDLE_COUNTER -= 1;
+	}	
 	
 	//Add conditions for setting the active flag to 1:
 	if (BANKRUPTCY_IDLE_COUNTER==0)
 	{
 		ACTIVE=1;
+		//add conditions here
 	}
 	
 	return 0;
