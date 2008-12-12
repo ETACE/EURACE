@@ -14,7 +14,8 @@
  *  - total_debt_installment_payment
  *  - total_interest_payments
  */
-int Firm_compute_financial_payments() {
+int Firm_compute_financial_payments()
+{
 	int imax;
 	int i;
 
@@ -58,7 +59,8 @@ int Firm_compute_financial_payments() {
  * \fn Firm_compute_income_statement()
  * \brief Function to compute the income statement of the firm.
  */
-int Firm_compute_income_statement() {
+int Firm_compute_income_statement()
+{
 	//In the future: if we want to include sales_costs
 	//SALES_COSTS = 0;
 
@@ -91,7 +93,8 @@ int Firm_compute_income_statement() {
  * \fn Firm_compute_dividends()
  * \brief Function to compute the total dividend payout of the firm.
  */
-int Firm_compute_dividends() {
+int Firm_compute_dividends()
+{
 	//Determine total_dividend_payment
 	//option 1: total divided payment remains constant
 	//TOTAL_DIVIDEND_PAYMENT *= 1;
@@ -159,7 +162,8 @@ int Firm_compute_dividends() {
  *  - tax_payment
  *  - production_costs
  */
-int Firm_compute_total_financial_payments() {
+int Firm_compute_total_financial_payments()
+{
 	//This variable is not used anywhere: it is the sum of financial_liquidity_needs and production_liquidity_needs
 	//but excluding the tax_payments. The tax_payments do not need to be financed since we assume they can always be paid out of earnings. 
 	TOTAL_PAYMENTS = TOTAL_INTEREST_PAYMENT + TOTAL_DEBT_INSTALLMENT_PAYMENT
@@ -176,7 +180,8 @@ int Firm_compute_total_financial_payments() {
  *  - total_assets
  *  - equity
  */
-int Firm_compute_balance_sheet() {
+int Firm_compute_balance_sheet()
+{
 	double sum;
 	int imax;
 	int i;
@@ -218,7 +223,8 @@ int Firm_compute_balance_sheet() {
  *  - production_liquidity_needs: to finance production costs
  * The payout policy can be subject to revision if it turns out to be insupportable by the obtained financial resources.
  */
-int Firm_compute_total_liquidity_needs() {
+int Firm_compute_total_liquidity_needs()
+{
 	//step 12B: set production and payout financial_needs
 	PRODUCTION_LIQUIDITY_NEEDS = PLANNED_PRODUCTION_COSTS;
 	FINANCIAL_LIQUIDITY_NEEDS = TOTAL_INTEREST_PAYMENT
@@ -233,10 +239,12 @@ int Firm_compute_total_liquidity_needs() {
 	//Check if external financing is needed
 
 	//CASE 1: No external financing needed
-	if (PAYMENT_ACCOUNT >= TOTAL_FINANCIAL_NEEDS) {
+	if (PAYMENT_ACCOUNT >= TOTAL_FINANCIAL_NEEDS)
+	{
 		//printf("Firm_financial_needs, External financing: case 1.");
 		EXTERNAL_FINANCIAL_NEEDS = 0.0;
-	} else {
+	} else
+	{
 		//external financing needed
 		EXTERNAL_FINANCIAL_NEEDS = TOTAL_FINANCIAL_NEEDS - PAYMENT_ACCOUNT;
 	}
@@ -248,20 +256,24 @@ int Firm_compute_total_liquidity_needs() {
  * \fn Firm_check_financial_and_bankruptcy_state()
  * \brief Function that checks the balance sheet and sets flags for the bankruptcy- or financial crisis state.
  */
-int Firm_check_financial_and_bankruptcy_state() {
+int Firm_check_financial_and_bankruptcy_state()
+{
 
-	BANKRUPTCY_STATE=0;
+	BANKRUPTCY_ILLIQUIDITY_STATE=0;
 	FINANCIAL_CRISIS_STATE=0;
 
 	//Check bankrupcy condition
-	if (PAYMENT_ACCOUNT < TOTAL_FINANCIAL_NEEDS) {
+	if (PAYMENT_ACCOUNT < TOTAL_FINANCIAL_NEEDS)
+	{
 		//Code: check if payment account is also less than financial payments
 		if (PAYMENT_ACCOUNT < TOTAL_INTEREST_PAYMENTS
-				+ TOTAL_DEBT_INSTALLMENT_PAYMENT + TAX_PAYMENT) {
-			BANKRUPTCY_STATE=1;
+				+ TOTAL_DEBT_INSTALLMENT_PAYMENT + TAX_PAYMENT)
+		{
+			BANKRUPTCY_ILLIQUIDITY_STATE=1;
 		}
 		if (PAYMENT_ACCOUNT >= TOTAL_INTEREST_PAYMENTS
-				+ TOTAL_DEBT_INSTALLMENT_PAYMENT + TAX_PAYMENT) {
+				+ TOTAL_DEBT_INSTALLMENT_PAYMENT + TAX_PAYMENT)
+		{
 			//Financial crisis condition
 			FINANCIAL_CRISIS_STATE=1;
 		}
@@ -270,44 +282,87 @@ int Firm_check_financial_and_bankruptcy_state() {
 }
 
 /*
- * \fn Firm_in_bankruptcy()
- * \brief Function to process the bankruptcy condition.
- *  Sends a bankruptcy_message from the firm to all banks at which the firm has a loan.
+ * \fn Firm_bankruptcy_illiquidity()
+ * \brief Function to set the active flag to 0, start the bankruptcy idle counter,
+ *  set the type of bankruptcy to illiquidity. Then go to end_Firm state.
+ *  
  */
-int Firm_in_bankruptcy()
+int Firm_set_bankruptcy_illiquidity()
 {
-	//Set active flag
+	//Set active flag to 0
 	ACTIVE=0;
+	
+	//Start the idle counter
 	BANKRUPTCY_IDLE_COUNTER = CONST_BANKRUPTCY_IDLE_PERIOD;
+	
+	//Set type of bankruptcy
+	//Type 1: illiquidity
+		BANKRUPTCY_INSOLVENCY_STATE  = 0;
+		BANKRUPTCY_ILLIQUIDITY_STATE = 1;
 	
 	return 0;
 }
 
 /*
- * \fn Firm_bankruptcy_procedure()
- * \brief Function to process the bankruptcy condition.
- *  Sends a bankruptcy_message from the firm to all banks at which the firm has a loan.
+ * \fn Firm_bankruptcy_insolvency()
+ * \brief Function to set the active flag to 0, start the bankruptcy idle counter,
+ *  set the type of bankruptcy to insolvency. Then go to end_Firm state.
+ *  
  */
-int Firm_bankruptcy_procedure()
+int Firm_set_bankruptcy_insolvency()
+{
+	//Set active flag to 0
+	ACTIVE=0;
+	
+	//Start the idle counter
+	BANKRUPTCY_IDLE_COUNTER = CONST_BANKRUPTCY_IDLE_PERIOD;
+	
+	//Set type of bankruptcy
+	//Type 2: insolvency
+		BANKRUPTCY_INSOLVENCY_STATE  = 1;
+		BANKRUPTCY_ILLIQUIDITY_STATE = 0;
+	
+	return 0;
+}
+
+/*
+ * \fn Firm_not_in_bankruptcy()
+ * \brief Idle function.
+ */
+int Firm_not_in_bankruptcy()
+{	
+	return 0;
+}
+
+
+/*
+ * \fn Firm_bankruptcy_insolvency_procedure()
+ * \brief Function to process the bankruptcy condition in case of insolvency.
+ *  Sends a bankruptcy_message from the firm to all banks at which the firm has a loan.
+ *  Write-down of bad debt on the bank's balance sheet.
+ *  New equity is raised by an equity issue on AFM according to a targetted leverage ratio.
+ */
+int Firm_bankruptcy_insolvency_procedure()
 {
 	int i, imax;
-	double new_debt, write_off_ratio, bad_debt, credit_refunded, residual_var;
-
+	double target_debt, bad_debt, credit_refunded, residual_var;
+	double target_equity;
+	
 	//Effect on credit market
 	//Set the new debt and the write_off_ratio
-	 new_debt = (2/3)*TOTAL_ASSETS;
-	 write_off_ratio = 1- (new_debt/TOTAL_DEBT);
+	 target_debt = (1-WRITE_OFF_RATIO)*TOTAL_ASSETS;
 	
-	//Refunding credit, bad debt
+	//Renegotiating debt: refunding credit, computing bad debt
 	imax = LOANS.size;
 	for (i=0; i<imax; i++)
 	{
 		residual_var = LOANS.array[i].var_per_installment
 				* LOANS.array[i].nr_periods_before_repayment;
-		//the credit_refunded is that part of the debt which can be refunded form the remaining cash holdings
-		credit_refunded = LOANS.array[i].loan_value * PAYMENT_ACCOUNT/TOTAL_DEBT;
 		
-		bad_debt = write_off_ratio * LOANS.array[i].loan_value; 
+		//the credit_refunded is that part of the debt which can be refunded form the remaining cash holdings
+		credit_refunded = (1-WRITE_OFF_RATIO)*LOANS.array[i].loan_value;
+		
+		bad_debt = WRITE_OFF_RATIO * LOANS.array[i].loan_value; 
 	
 		//add_bankruptcy_message(bank_id, bad_debt, credit_refunded, residual_var);
 		add_bankruptcy_message(LOANS.array[i].bank_id, bad_debt,
@@ -317,8 +372,10 @@ int Firm_bankruptcy_procedure()
 	//Effect on financial market
 	//Cancelling all shares
 	
-	//Set the IPO_AMOUNT
-	IPO_AMOUNT = TOTAL_ASSETS - new_debt;
+	//Set the IPO_AMOUNT to raise:
+	target_equity = (1/TARGET_LEVERAGE_RATIO) * target_debt;
+	IPO_AMOUNT = (1 + 1/TARGET_LEVERAGE_RATIO)* target_debt - TOTAL_ASSETS;
+	IPO_AMOUNT = max(0,IPO_AMOUNT);
 	
 	//Effect on investment goods market
 	//Left-over capital
@@ -338,6 +395,43 @@ int Firm_bankruptcy_procedure()
 	return 0;
 }
 
+/*
+ * \fn Firm_bankruptcy_illiquidity_procedure()
+ * \brief Function to process the bankruptcy condition in case of illiquidity.
+ *  There is no write-down of bad debt on the bank's balance sheet.
+ *  New equity is raised by an equity issue on AFM according to a targetted liquidity ratio.
+ */
+int Firm_bankruptcy_illiquidity_procedure()
+{	
+	int i;
+	
+	//Effect on credit market	
+	//Renegotiating debt not needed
+	
+	//Effect on financial market:
+	//Shareholders retain their shares.
+	
+	//Set the IPO_AMOUNT to raise:
+	IPO_AMOUNT = TARGET_LIQUIDITY_RATIO*(FINANCIAL_LIQUIDITY_NEEDS - PAYMENT_ACCOUNT);
+	IPO_AMOUNT = max(0,IPO_AMOUNT);
+	
+	//Effect on investment goods market
+	//Left-over capital
+	
+	//Effect on labour market
+	//Firing all employees --> see Firm_bankruptcy_procedures
+	for (i=0;i<EMPLOYEES.size;i++)
+			add_firing_message(ID, EMPLOYEES.array[i].id);
+		
+	//Effect on consumption goods market
+	//Option 1: all local inventory stock is lost
+	//Option 2: send back local inventory stock to factory
+	//Option 3: fire-sales at local outlet malls at discount prices
+	
+	//Now recompute the balance sheet after the IPO
+
+	return 0;
+}
 /*
  * \fn Firm_financial_crisis()
  * \brief Function to resolve the financial crisis by lowering dividends.
@@ -369,7 +463,8 @@ int Firm_bankruptcy_idle_counter()
  * \fn Firm_financial_crisis()
  * \brief Function to resolve the financial crisis by lowering dividends.
  */
-int Firm_in_financial_crisis() {
+int Firm_in_financial_crisis()
+{
 	double payment_account_after_compulsory_payments;
 
 	//Try to resolve the crisis
@@ -412,7 +507,8 @@ int Firm_in_financial_crisis() {
  * The payments are all subtracted from the payment account.
  * After this, all that is left over on the payment account can be used to pay for factor inputs for production.
  */
-int Firm_execute_financial_payments() {
+int Firm_execute_financial_payments()
+{
 
 	//No bankruptcy
 	int imax, i;
@@ -474,7 +570,8 @@ int Firm_execute_financial_payments() {
  * \fn Firm_compute_and_send_stock_orders()
  * \brief Function to send order_messages to the clearinghouse (share emission or repurchase).
  */
-int Firm_compute_and_send_stock_orders() {
+int Firm_compute_and_send_stock_orders()
+{
 	//Note: This function only runs if EXTERNAL_FINANCIAL_NEEDS>0.0
 
 	double limit_price=CURRENT_SHARE_PRICE*0.99;
@@ -491,7 +588,8 @@ int Firm_compute_and_send_stock_orders() {
  * \fn Firm_read_stock_transactions()
  * \brief Function to read order_status messages from the clearinghouse, and update the firm's trading account.
  */
-int Firm_read_stock_transactions() {
+int Firm_read_stock_transactions()
+{
 	double finances;
 
 	START_ORDER_STATUS_MESSAGE_LOOP

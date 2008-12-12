@@ -595,56 +595,30 @@
     <variable>
      <type>int</type>
      <name>bankruptcy_idle_counter</name>
-     <description>Number of iterations that a bankrupt firm remains idle, before resuming production activity.</description>
+     <description>Number of iterations before the bankrupt firm becomes active again and resumes production activity.</description>
+    </variable>
+    <variable>
+     <type>int</type>
+     <name>bankruptcy_state</name>
+     <description>0,1. Flag indicating whether the firm is in bankruptcy.</description>
+    </variable>
+    <variable>
+     <type>int</type>
+     <name>bankruptcy_insolvency_state</name>
+     <description>0,1. Flag indicating whether the firm is in bankruptcy case 1: insolvency.</description>
+    </variable>
+    <variable>
+     <type>int</type>
+     <name>bankruptcy_illiquidity_state</name>
+     <description>0,1. Flag indicating whether the firm is in bankruptcy case 1: illiquidity.</description>
+    </variable>
+    <variable>
+     <type>int</type>
+     <name>financial_crisis_state</name>
+     <description>0,1. Flag indicating whether the firm is in a financial crisis state.</description>
     </variable>
    </memory>
    <functions>
-    <function>
-     <name>Firm_bankruptcy_idle_counter</name>
-     <description></description>
-     <currentState>start_Firm</currentState>
-     <nextState>Firm_not_active</nextState>
-     <condition>
-      <lhs>
-       <value>a.active</value>
-      </lhs>
-      <op>EQ</op>
-      <rhs>
-       <value>0</value>
-      </rhs>
-     </condition>
-     <inputs/>
-     <outputs/>
-    </function>
-    <function>
-     <name>Firm_bankruptcy_procedure</name>
-     <description></description>
-     <currentState>Firm_not_active</currentState>
-     <nextState>end_Firm</nextState>
-     <inputs/>
-     <outputs>
-      <output>
-       <messageName>firing</messageName>
-      </output>
-     </outputs>
-    </function>
-    <function>
-     <name>idle</name>
-     <description></description>
-     <currentState>start_Firm</currentState>
-     <nextState>Firm_is_active</nextState>
-     <condition>
-      <lhs>
-       <value>a.active</value>
-      </lhs>
-      <op>EQ</op>
-      <rhs>
-       <value>1</value>
-      </rhs>
-     </condition>
-     <inputs/>
-     <outputs/>
-    </function>
     <function>
      <name>idle</name>
      <description></description>
@@ -690,7 +664,7 @@
     </function>
     <function>
      <name>Firm_receive_data</name>
-     <description>The firm reads the messages from the eurostat agent &#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+     <description>The firm reads the messages from the eurostat agent &#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
 and stores the needed data.</description>
      <currentState>Firm_Start_Macro_Data</currentState>
      <nextState>Firm_End_Macro_Data</nextState>
@@ -734,7 +708,7 @@ and stores the needed data.</description>
     </function>
     <function>
      <name>Firm_send_data_to_Eurostat</name>
-     <description>Firm sends message to the eurostat agent &#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+     <description>Firm sends message to the eurostat agent &#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
 including several micro data.</description>
      <currentState>Firm_End_Financial_Management_Role</currentState>
      <nextState>15</nextState>
@@ -913,7 +887,7 @@ including several micro data.</description>
     </function>
     <function>
      <name>Household_receive_data</name>
-     <description>The household reads the messages from the eurostat agent &#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+     <description>The household reads the messages from the eurostat agent &#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
 and stores the needed data.</description>
      <currentState>Start_Household_Policy_Data</currentState>
      <nextState>start_Household_financial_market_role</nextState>
@@ -944,7 +918,7 @@ and stores the needed data.</description>
     </function>
     <function>
      <name>Household_send_data_to_Eurostat</name>
-     <description>Household sends message to the eurostat agent &#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+     <description>Household sends message to the eurostat agent &#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
 including several micro data.</description>
      <currentState>15</currentState>
      <nextState>end_Household</nextState>
@@ -1996,7 +1970,7 @@ including several micro data.</description>
   </message>
   <message>
    <name>mall_data</name>
-   <description>Sent by mall. Mall informs Eurostat about exports between regions. &#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+   <description>Sent by mall. Mall informs Eurostat about exports between regions. &#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
 </description>
    <variables>
     <variable>
