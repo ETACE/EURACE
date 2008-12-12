@@ -240,7 +240,7 @@
     </function>
     <function>
      <name>Firm_send_vacancies</name>
-     <description>If additional workers are needed the firm sends vacancies messages&#xd;
+     <description>If additional workers are needed the firm sends vacancies messages&#xd;&#xd;
  espacially the different wage offers for the different general skill groups</description>
      <currentState>011</currentState>
      <nextState>03</nextState>
@@ -300,9 +300,9 @@
     </function>
     <function>
      <name>Firm_read_job_applications_send_job_offer_or_rejection</name>
-     <description>Firm reads the application, ranks the applicants according to &#xd;
-their general and specific skills and sends as many job offers to the &#xd;
-first ranked applicants as the firm has vacancies to fill. &#xd;
+     <description>Firm reads the application, ranks the applicants according to &#xd;&#xd;
+their general and specific skills and sends as many job offers to the &#xd;&#xd;
+first ranked applicants as the firm has vacancies to fill. &#xd;&#xd;
 The other applicants are refused.</description>
      <currentState>03</currentState>
      <nextState>04</nextState>
@@ -322,7 +322,7 @@ The other applicants are refused.</description>
     </function>
     <function>
      <name>Firm_read_job_responses</name>
-     <description>The firm reads the responses to their job offers and updates the number of &#xd;
+     <description>The firm reads the responses to their job offers and updates the number of &#xd;&#xd;
 employees and the number of vacancies</description>
      <currentState>04</currentState>
      <nextState>05a</nextState>
@@ -335,7 +335,7 @@ employees and the number of vacancies</description>
     </function>
     <function>
      <name>Firm_read_job_quitting</name>
-     <description>The firm reads quitting messages and updates the number &#xd;
+     <description>The firm reads quitting messages and updates the number &#xd;&#xd;
 of employees and the number of vacancies</description>
      <currentState>05a</currentState>
      <nextState>05b</nextState>
@@ -348,7 +348,7 @@ of employees and the number of vacancies</description>
     </function>
     <function>
      <name>Firm_read_job_quitting</name>
-     <description>The firm reads quitting messages and updates the number &#xd;
+     <description>The firm reads quitting messages and updates the number &#xd;&#xd;
 of employees and the number of vacancies</description>
      <currentState>00b</currentState>
      <nextState>09c</nextState>
@@ -361,7 +361,7 @@ of employees and the number of vacancies</description>
     </function>
     <function>
      <name>Firm_read_job_quitting</name>
-     <description>The firm reads quitting messages and updates the number &#xd;
+     <description>The firm reads quitting messages and updates the number &#xd;&#xd;
 of employees and the number of vacancies</description>
      <currentState>03c</currentState>
      <nextState>03d</nextState>
@@ -374,7 +374,7 @@ of employees and the number of vacancies</description>
     </function>
     <function>
      <name>Firm_start_labour_market</name>
-     <description>Dummy function if a firm has to enter the Labor Market &#xd;
+     <description>Dummy function if a firm has to enter the Labor Market &#xd;&#xd;
 in the second round after receiving quittings</description>
      <currentState>03d</currentState>
      <nextState>06</nextState>
@@ -445,7 +445,7 @@ in the second round after receiving quittings</description>
     </function>
     <function>
      <name>Firm_send_vacancies_2</name>
-     <description>If additional workers are needed the firm sends vacancies messages&#xd;
+     <description>If additional workers are needed the firm sends vacancies messages&#xd;&#xd;
  espacially the different wage offers for the different general skill groups</description>
      <currentState>06</currentState>
      <nextState>07</nextState>
@@ -458,9 +458,9 @@ in the second round after receiving quittings</description>
     </function>
     <function>
      <name>Firm_read_job_applications_send_job_offer_or_rejection_2</name>
-     <description>Firm reads the application, ranks the applicants according to &#xd;
-their general and specific skills and sends as many job offers to the &#xd;
-first ranked applicants as the firm has vacancies to fill. &#xd;
+     <description>Firm reads the application, ranks the applicants according to &#xd;&#xd;
+their general and specific skills and sends as many job offers to the &#xd;&#xd;
+first ranked applicants as the firm has vacancies to fill. &#xd;&#xd;
 The other applicants are refused.</description>
      <currentState>07</currentState>
      <nextState>08</nextState>
@@ -480,7 +480,7 @@ The other applicants are refused.</description>
     </function>
     <function>
      <name>Firm_read_job_responses_2</name>
-     <description>The firm reads the responses to their job offers and updates the number of &#xd;
+     <description>The firm reads the responses to their job offers and updates the number of &#xd;&#xd;
 employees and the number of vacancies</description>
      <currentState>08</currentState>
      <nextState>09a</nextState>
@@ -493,7 +493,7 @@ employees and the number of vacancies</description>
     </function>
     <function>
      <name>Firm_read_job_quitting_2</name>
-     <description>The firm reads quitting messages and updates the number &#xd;
+     <description>The firm reads quitting messages and updates the number &#xd;&#xd;
 of employees and the number of vacancies</description>
      <currentState>09a</currentState>
      <nextState>09b</nextState>
@@ -506,7 +506,7 @@ of employees and the number of vacancies</description>
     </function>
     <function>
      <name>Firm_read_job_quitting_2</name>
-     <description>The firm reads quitting messages and updates the number &#xd;
+     <description>The firm reads quitting messages and updates the number &#xd;&#xd;
 of employees and the number of vacancies</description>
      <currentState>09c</currentState>
      <nextState>Firm_Start_Seller_Role</nextState>
@@ -709,7 +709,7 @@ of employees and the number of vacancies</description>
     </function>
     <function>
      <name>Household_OTJS_read_job_vacancies_and_send_applications</name>
-     <description>Household searches on the job. Reads vacancies messages &#xd;
+     <description>Household searches on the job. Reads vacancies messages &#xd;&#xd;
 and send s applications</description>
      <currentState>01b</currentState>
      <nextState>01</nextState>
@@ -752,7 +752,7 @@ and send s applications</description>
     </function>
     <function>
      <name>Household_read_job_offers_send_response</name>
-     <description>Household reads the job offers and ranks them &#xd;
+     <description>Household reads the job offers and ranks them &#xd;&#xd;
 according to the wage offer</description>
      <currentState>01</currentState>
      <nextState>02</nextState>
@@ -801,7 +801,7 @@ according to the wage offer</description>
     </function>
     <function>
      <name>Household_read_application_rejection_update_wage_reservation</name>
-     <description>Household reads the application rejections and decreases the &#xd;
+     <description>Household reads the application rejections and decreases the &#xd;&#xd;
 reservation wage</description>
      <currentState>02</currentState>
      <nextState>03</nextState>
@@ -823,7 +823,7 @@ reservation wage</description>
     </function>
     <function>
      <name>Household_OTJS_read_job_vacancies_and_send_applications_2</name>
-     <description>Household searches on the job. Reads vacancies messages &#xd;
+     <description>Household searches on the job. Reads vacancies messages &#xd;&#xd;
 and send s applications</description>
      <currentState>02</currentState>
      <nextState>04</nextState>
@@ -865,7 +865,7 @@ and send s applications</description>
     </function>
     <function>
      <name>Household_read_job_offers_send_response_2</name>
-     <description>Household reads the job offers and ranks them &#xd;
+     <description>Household reads the job offers and ranks them &#xd;&#xd;
 according to the wage offer</description>
      <currentState>04</currentState>
      <nextState>05</nextState>
@@ -885,7 +885,7 @@ according to the wage offer</description>
     </function>
     <function>
      <name>Household_read_application_rejection_update_wage_reservation_2</name>
-     <description>Household reads the application rejections and decreases &#xd;
+     <description>Household reads the application rejections and decreases &#xd;&#xd;
 the reservation wage</description>
      <currentState>05</currentState>
      <nextState>06</nextState>
@@ -1101,7 +1101,7 @@ the reservation wage</description>
  <messages>
   <message>
    <name>vacancies</name>
-   <description>Send by firms. Includes the id, the region id the number of vacancies and the &#xd;
+   <description>Send by firms. Includes the id, the region id the number of vacancies and the &#xd;&#xd;
 wage offer for the according general skill level.</description>
    <variables>
     <variable>
@@ -1133,7 +1133,7 @@ wage offer for the according general skill level.</description>
   </message>
   <message>
    <name>vacancies2</name>
-   <description>Send by firms. Includes the id, the region id the number of vacancies and the &#xd;
+   <description>Send by firms. Includes the id, the region id the number of vacancies and the &#xd;&#xd;
 wage offer for the according general skill level.</description>
    <variables>
     <variable>
@@ -1181,7 +1181,7 @@ wage offer for the according general skill level.</description>
   </message>
   <message>
    <name>job_application</name>
-   <description>Send by households to apply for a job. Includes the id, firm id, region id the general &#xd;
+   <description>Send by households to apply for a job. Includes the id, firm id, region id the general &#xd;&#xd;
 as well as the specific skills.</description>
    <variables>
     <variable>
@@ -1213,7 +1213,7 @@ as well as the specific skills.</description>
   </message>
   <message>
    <name>job_application2</name>
-   <description>Send by households to apply for a job. Includes the id, firm id, region id the general &#xd;
+   <description>Send by households to apply for a job. Includes the id, firm id, region id the general &#xd;&#xd;
 as well as the specific skills.</description>
    <variables>
     <variable>
@@ -1245,7 +1245,7 @@ as well as the specific skills.</description>
   </message>
   <message>
    <name>job_offer</name>
-   <description>Send by firms to make a job offer for a household. Includes the id, worker id and the &#xd;
+   <description>Send by firms to make a job offer for a household. Includes the id, worker id and the &#xd;&#xd;
 corresponding wage offer.</description>
    <variables>
     <variable>
@@ -1272,7 +1272,7 @@ corresponding wage offer.</description>
   </message>
   <message>
    <name>job_offer2</name>
-   <description>Send by firms to make a job offer for a household. Includes the id, worker id and the &#xd;
+   <description>Send by firms to make a job offer for a household. Includes the id, worker id and the &#xd;&#xd;
 corresponding wage offer.</description>
    <variables>
     <variable>
@@ -1299,7 +1299,7 @@ corresponding wage offer.</description>
   </message>
   <message>
    <name>job_acceptance</name>
-   <description>Send by households to accept the job offer. Includes the id, firm id, region id, the general &#xd;
+   <description>Send by households to accept the job offer. Includes the id, firm id, region id, the general &#xd;&#xd;
 as well as the specific skills.</description>
    <variables>
     <variable>
@@ -1331,7 +1331,7 @@ as well as the specific skills.</description>
   </message>
   <message>
    <name>job_acceptance2</name>
-   <description>Send by households to accept the job offer. Includes the id, firm id, region id the general &#xd;
+   <description>Send by households to accept the job offer. Includes the id, firm id, region id the general &#xd;&#xd;
 as well as the specific skills.</description>
    <variables>
     <variable>
