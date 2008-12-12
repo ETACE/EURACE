@@ -82,7 +82,7 @@ int Household_rank_and_buy_goods_1()
 		for(i = 0; i < mall_quality_price_info_list.size;i++) 
 		{
 			sum_weighted_qual_pric_ratios += (mall_quality_price_info_list.array[i]
-			.available) * exp(log(mall_quality_price_info_list.array[i].price)*GAMMA); 
+			.available) * exp(log(mall_quality_price_info_list.array[i].price)*GAMMA_CONST); 
 		}
 
 
@@ -91,7 +91,7 @@ int Household_rank_and_buy_goods_1()
 		for(i = 0; i < mall_quality_price_info_list.size;i++) 
 		{
 			logit = (mall_quality_price_info_list.array[i].available) * 
-			exp(log(mall_quality_price_info_list.array[i].price)*GAMMA) / 
+			exp(log(mall_quality_price_info_list.array[i].price)*GAMMA_CONST) / 
 			sum_weighted_qual_pric_ratios;
 			
 			logit = logit * 100;
@@ -272,14 +272,14 @@ int Household_rank_and_buy_goods_2()
 		{
 			sum_weighted_qual_pric_ratios +=(mall_quality_price_info_list
 			.array[i].available) * 
-			exp(log(mall_quality_price_info_list.array[i].price)*GAMMA); 
+			exp(log(mall_quality_price_info_list.array[i].price)*GAMMA_CONST); 
 		}
 
 		/*This computes the logits  */
 		for(i = 0; i < mall_quality_price_info_list.size; i++) 
 		{
 			logit = (mall_quality_price_info_list.array[i].available) * 
-			exp(log(mall_quality_price_info_list.array[i].price)*GAMMA) / 
+			exp(log(mall_quality_price_info_list.array[i].price)*GAMMA_CONST) / 
 			sum_weighted_qual_pric_ratios;
 
 			logit = logit*100;

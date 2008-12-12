@@ -6,9 +6,31 @@
 #include <CUnit/Basic.h>
 
 /*************************** unittest prototypes ***************************/
+/*
 void unittest_Firm_compute_income_statement();
 void unittest_Firm_compute_balance_sheet();
 
+void unittest_Firm_compute_financial_payments(); //To create
+void unittest_Firm_compute_dividends(); //To create
+void unittest_Firm_compute_total_financial_payments(); //To create
+void unittest_Firm_compute_total_liquidity_needs(); //To create
+void unittest_Firm_check_financial_and_bankruptcy_state(); //To create
+void unittest_Firm_in_bankruptcy(); //To create
+*/
+void unittest1_Firm_bankruptcy_insolvency_procedure();
+void unittest2_Firm_bankruptcy_insolvency_procedure();
+void unittest3_Firm_bankruptcy_insolvency_procedure();
+/*
+void unittest1_Firm_bankruptcy_illiquidity_procedure();
+void unittest_Firm_bankruptcy_idle_counter(); //To create
+void unittest_Firm_in_financial_crisis(); //To create
+void unittest_Firm_execute_financial_payments(); //To create
+void unittest_Firm_compute_and_send_stock_orders(); //To create
+void unittest_Firm_read_stock_transactions(); //To create
+*/
+
+//OLD UNIT TESTS
+/*
 void unittest1_Firm_compute_payout_policy();
 void unittest2_Firm_compute_payout_policy();
 void unittest3_Firm_compute_payout_policy();
@@ -21,6 +43,7 @@ void unittest_Firm_issue_equity();
 void unittest_Firm_compute_stock_orders();
 void unittest_Firm_compute_bond_orders();
 void unittest_Firm_update_outstanding_shares();
+*/
 /*************************** end prototypes ***************************/
 
 int init_suite1(void)
@@ -61,7 +84,10 @@ int main(int argc, char * argv[])
     /* add extra tests using || */
     
     if(
-    	NULL == CU_add_test(pSuite, "Firm_compute_income_statement", unittest_Firm_compute_income_statement))
+   		NULL == CU_add_test(pSuite, "Firm_bankruptcy_insolvency_procedure, Case 1", unittest1_Firm_bankruptcy_insolvency_procedure) ||
+    	NULL == CU_add_test(pSuite, "Firm_bankruptcy_insolvency_procedure, Case 2", unittest2_Firm_bankruptcy_insolvency_procedure) ||    		
+        NULL == CU_add_test(pSuite, "Firm_bankruptcy_insolvency_procedure, Case 3", unittest3_Firm_bankruptcy_insolvency_procedure))
+    	//NULL == CU_add_test(pSuite, "Firm_compute_income_statement", unittest_Firm_compute_income_statement))
     	//NULL == CU_add_test(pSuite, "Firm_compute_balance_sheet", unittest_Firm_compute_balance_sheet) ||
     	//NULL == CU_add_test(pSuite, "Firm_compute_payout_policy, External financing: case 1", unittest1_Firm_compute_payout_policy)  ||
     	//NULL == CU_add_test(pSuite, "Firm_compute_payout_policy, External financing: case 2", unittest2_Firm_compute_payout_policy)  ||

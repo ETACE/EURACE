@@ -5,7 +5,26 @@
  <description>Author: Sander van der Hoog, last modified: July, 2008</description>
  <models/>
  <environment>
-  <constants/>
+  <constants>
+   <variable>
+    <type>double</type>
+    <name>write_off_ratio</name>
+    <description>The write-off ratio $\omega$ is to be used in case of a bankruptcy. It sets the target debt level in relation to the value of total assets: $L^*=(1-\omega)A^*$.
+The firm will not refund all of its loans completely, but will write off every loan with the write-off ratio: $w_j = (1-\omega)L_j$ for all banks $j$.</description>
+   </variable>
+   <variable>
+    <type>double</type>
+    <name>target_leverage_ratio</name>
+    <description>The target leverage ratio is the proportion of the target debt to target equity: $\ell = L^*/E^*$. This determines the target equity level as $E^*= (1/ell) L^*$ and sets the IPO amount that the firm should raise on the financial market.
+
+</description>
+   </variable>
+   <variable>
+    <type>double</type>
+    <name>target_liquidity_ratio</name>
+    <description>The target liquidity ratio is a parameter used in the case of firm bankruptcy due to illquidity. The amount of equity to raise on the AFM equals $\alpha(F-P)$, where $alpha$ is the target liquidity ratio, F are the financial commitments, and P is the payment account.</description>
+   </variable>
+  </constants>
   <functionFiles>
    <file>Firm_Financial_Management_Functions.c</file>
   </functionFiles>
@@ -297,16 +316,6 @@
      <description>External financing</description>
     </variable>
     <variable>
-     <type>int</type>
-     <name>bankruptcy_state</name>
-     <description>Flag to indicate the firm is in the bankruptcy state</description>
-    </variable>
-    <variable>
-     <type>int</type>
-     <name>financial_crisis_state</name>
-     <description>Flag to indicate the firm is in the financial crisis state</description>
-    </variable>
-    <variable>
      <type>double</type>
      <name>earnings_per_share</name>
      <description></description>
@@ -324,7 +333,7 @@
     <variable>
      <type>double</type>
      <name>ipo_amount</name>
-     <description></description>
+     <description>The IPO amount is the amount of money $m$ that a firm needs to raise in case of a bankruptcy. The target amount $m=\max\{0, (1+1/\ell)L^* - A\}$.</description>
     </variable>
    </memory>
    <functions>
@@ -369,20 +378,18 @@
      <outputs/>
     </function>
     <function>
-     <name>Firm_in_bankruptcy</name>
-     <description>Function to process the bankruptcy condition.</description>
+     <name>Firm_set_bankruptcy_insolvency</name>
+     <description>Function to set the bankruptcy condition to insolvency, and go to end_Firm state..</description>
      <currentState>Firm_Bankruptcy_check</currentState>
      <nextState>Firm_End_Financial_Management_Role</nextState>
      <condition>
-      <not>
-       <lhs>
-        <value>a.equity</value>
-       </lhs>
-       <op>GEQ</op>
-       <rhs>
-        <value>0.0</value>
-       </rhs>
-      </not>
+      <lhs>
+       <value>a.equity</value>
+      </lhs>
+      <op>LT</op>
+      <rhs>
+       <value>0.0</value>
+      </rhs>
      </condition>
      <inputs/>
      <outputs>
@@ -467,13 +474,13 @@
      <outputs/>
     </function>
     <function>
-     <name>Firm_in_bankruptcy</name>
-     <description>Function to process the bankruptcy condition.</description>
+     <name>Firm_set_bankruptcy_illiquidity</name>
+     <description>Function to set the bankruptcy contition to illiquidity, and go to end_Firm state.</description>
      <currentState>Firm_bankruptcy_checked</currentState>
      <nextState>Firm_End_Financial_Management_Role</nextState>
      <condition>
       <lhs>
-       <value>a.bankruptcy_state</value>
+       <value>a.bankruptcy_illiquidity_state</value>
       </lhs>
       <op>EQ</op>
       <rhs>
@@ -511,7 +518,7 @@
      <nextState>Firm_checks_financial_crisis</nextState>
      <condition>
       <lhs>
-       <value>a.bankruptcy_state</value>
+       <value>a.bankruptcy_illiquidity_state</value>
       </lhs>
       <op>EQ</op>
       <rhs>
@@ -617,6 +624,95 @@
        <messageName>firm_transfer_notification</messageName>
       </output>
      </outputs>
+    </function>
+    <function>
+     <name>Firm_bankruptcy_insolvency_procedure</name>
+     <description>Function to process the bankruptcy condition in case of insolvency.
+Sends a bankruptcy_message from the firm to all banks at which the firm has a loan.
+Write-down of bad debt on the bank's balance sheet.
+New equity is raised by an equity issue on AFM according to a targetted leverage ratio.</description>
+     <currentState>Firm_not_active</currentState>
+     <nextState>Firm_dummy_state_1</nextState>
+     <condition>
+      <lhs>
+       <value>a.bankruptcy_insolvency_state</value>
+      </lhs>
+      <op>EQ</op>
+      <rhs>
+       <value>1</value>
+      </rhs>
+     </condition>
+     <inputs/>
+     <outputs>
+      <output>
+       <messageName>firing</messageName>
+      </output>
+     </outputs>
+    </function>
+    <function>
+     <name>Firm_bankruptcy_illiquidity_procedure</name>
+     <description>Function to process the bankruptcy condition in case of illiquidity.
+There is no write-down of bad debt on the bank's balance sheet.
+ New equity is raised by an equity issue on AFM according to a targetted liquidity ratio.</description>
+     <currentState>Firm_not_active</currentState>
+     <nextState>Firm_dummy_state_1</nextState>
+     <condition>
+      <lhs>
+       <value>a.bankruptcy_illiquidity_state</value>
+      </lhs>
+      <op>EQ</op>
+      <rhs>
+       <value>1</value>
+      </rhs>
+     </condition>
+     <inputs/>
+     <outputs>
+      <output>
+       <messageName>firing</messageName>
+      </output>
+     </outputs>
+    </function>
+    <function>
+     <name>Firm_bankruptcy_idle_counter</name>
+     <description>Decrease the idle counter by 1.</description>
+     <currentState>start_Firm</currentState>
+     <nextState>Firm_not_active</nextState>
+     <condition>
+      <lhs>
+       <value>a.active</value>
+      </lhs>
+      <op>EQ</op>
+      <rhs>
+       <value>0</value>
+      </rhs>
+     </condition>
+     <inputs/>
+     <outputs/>
+    </function>
+    <function>
+     <name>idle</name>
+     <description></description>
+     <currentState>start_Firm</currentState>
+     <nextState>Firm_is_active</nextState>
+     <condition>
+      <lhs>
+       <value>a.active</value>
+      </lhs>
+      <op>EQ</op>
+      <rhs>
+       <value>1</value>
+      </rhs>
+     </condition>
+     <inputs/>
+     <outputs/>
+    </function>
+    <function>
+     <name>idle</name>
+     <description>Idle to go from dummy state to end.</description>
+     <currentState>Firm_dummy_state_1</currentState>
+     <nextState>end_Firm</nextState>
+     <inputs/>
+     <outputs/>
     </function>
    </functions>
   </xagent>
