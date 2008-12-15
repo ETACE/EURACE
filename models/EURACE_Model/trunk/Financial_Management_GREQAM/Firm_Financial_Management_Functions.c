@@ -33,7 +33,8 @@ int Firm_compute_financial_payments()
 	//step 1: compute total interest payments
 	TOTAL_INTEREST_PAYMENT=0.0;
 	imax = LOANS.size;
-	for (i=0; i<imax; i++) {
+	for (i=0; i<imax; i++)
+	{
 		interest_payment = LOANS.array[i].interest_rate
 				* LOANS.array[i].loan_value;
 
@@ -44,7 +45,8 @@ int Firm_compute_financial_payments()
 	//step 2: compute total debt installment payments
 	TOTAL_DEBT_INSTALLMENT_PAYMENT=0.0;
 	TOTAL_DEBT=0.0;
-	for (i=0; i<imax; i++) {
+	for (i=0; i<imax; i++)
+	{
 		//compute current total debt
 		TOTAL_DEBT += LOANS.array[i].loan_value;
 
@@ -73,14 +75,18 @@ int Firm_compute_income_statement()
 
 	//continue balance sheet (data pertaining to the period that just ended)
 	PREVIOUS_EARNINGS_PER_SHARE = EARNINGS_PER_SHARE;
+	
 	if (CURRENT_SHARES_OUTSTANDING>0)
 		EARNINGS_PER_SHARE = NET_EARNINGS/CURRENT_SHARES_OUTSTANDING;
 
 	PREVIOUS_DIVIDEND_PER_SHARE = CURRENT_DIVIDEND_PER_SHARE;
+	
 	if (CURRENT_SHARES_OUTSTANDING>0)
 		CURRENT_DIVIDEND_PER_SHARE = TOTAL_DIVIDEND_PAYMENT
 				/CURRENT_SHARES_OUTSTANDING;
+	
 	PREVIOUS_DIVIDEND_PER_EARNINGS = CURRENT_DIVIDEND_PER_EARNINGS;
+	
 	if (EARNINGS>0.0) {
 		CURRENT_DIVIDEND_PER_EARNINGS = TOTAL_DIVIDEND_PAYMENT/EARNINGS;
 	} else
@@ -110,7 +116,8 @@ int Firm_compute_dividends()
 	//option 4: keep earnings per share constant
 	//total divided payment increases with same ratio as earnings per share
 	//if current_shares_outstanding remains constant, this keeps earnings per share constant
-	if (PREVIOUS_EARNINGS_PER_SHARE>0.0) {
+	if (PREVIOUS_EARNINGS_PER_SHARE>0.0)
+	{
 		TOTAL_DIVIDEND_PAYMENT = TOTAL_DIVIDEND_PAYMENT * (EARNINGS_PER_SHARE
 				/PREVIOUS_EARNINGS_PER_SHARE);
 	}
@@ -282,10 +289,9 @@ int Firm_check_financial_and_bankruptcy_state()
 }
 
 /*
- * \fn Firm_bankruptcy_illiquidity()
+ * \fn Firm_set_bankruptcy_illiquidity()
  * \brief Function to set the active flag to 0, start the bankruptcy idle counter,
  *  set the type of bankruptcy to illiquidity. Then go to end_Firm state.
- *  
  */
 int Firm_set_bankruptcy_illiquidity()
 {
@@ -304,7 +310,7 @@ int Firm_set_bankruptcy_illiquidity()
 }
 
 /*
- * \fn Firm_bankruptcy_insolvency()
+ * \fn Firm_set_bankruptcy_insolvency()
  * \brief Function to set the active flag to 0, start the bankruptcy idle counter,
  *  set the type of bankruptcy to insolvency. Then go to end_Firm state.
  *  
@@ -339,18 +345,18 @@ int Firm_not_in_bankruptcy()
  * \fn Firm_bankruptcy_insolvency_procedure()
  * \brief Function to process the bankruptcy condition in case of insolvency.
  *  Sends a bankruptcy_message from the firm to all banks at which the firm has a loan.
- *  Write-down of bad debt on the bank's balance sheet.
+ *  Write-off of bad debt on the bank's balance sheet.
  *  New equity is raised by an equity issue on AFM according to a targetted leverage ratio.
  */
 int Firm_bankruptcy_insolvency_procedure()
 {
 	int i, imax;
 	double target_debt, bad_debt, credit_refunded, residual_var;
-	double target_equity;
+	double write_off_ratio, target_equity;
 	
 	//Effect on credit market
-	//Set the new debt and the write_off_ratio
-	 target_debt = (1-WRITE_OFF_RATIO)*TOTAL_ASSETS;
+	//Set the target debt
+	 target_debt = DEBT_RESCALING_FACTOR*(TOTAL_ASSETS-PAYMENT_ACCOUNT);
 	
 	//Renegotiating debt: refunding credit, computing bad debt
 	imax = LOANS.size;
@@ -358,24 +364,40 @@ int Firm_bankruptcy_insolvency_procedure()
 	{
 		residual_var = LOANS.array[i].var_per_installment
 				* LOANS.array[i].nr_periods_before_repayment;
+
+        //step 1: refunding credit
+		//the credit_refunded is that part of the loan which can be refunded using the payment_account
+		credit_refunded = (PAYMENT_ACCOUNT/TOTAL_DEBT)*LOANS.array[i].loan_value;
+		PAYMENT_ACCOUNT -= credit_refunded;
+		TOTAL_ASSETS -= credit_refunded;
 		
-		//the credit_refunded is that part of the debt which can be refunded form the remaining cash holdings
-		credit_refunded = (1-WRITE_OFF_RATIO)*LOANS.array[i].loan_value;
+		//step 2: computing bad debt
+		write_off_ratio = (TOTAL_DEBT - target_debt)/TOTAL_DEBT;
+		bad_debt = write_off_ratio*LOANS.array[i].loan_value;
 		
-		bad_debt = WRITE_OFF_RATIO * LOANS.array[i].loan_value; 
-	
+		//the credit_remaining is that part of the debt which is not written off
+		//credit_remaining = (1-write_off_ratio)*LOANS.array[i].loan_value
+
+		//step 3: send the bankruptcy_message to write off part of the debt
 		//add_bankruptcy_message(bank_id, bad_debt, credit_refunded, residual_var);
 		add_bankruptcy_message(LOANS.array[i].bank_id, bad_debt,
 				credit_refunded, residual_var);
 	}
 	
+	//Check that after refunding credit the payment account is depleted:
+	if (PAYMENT_ACCOUNT>0)
+		printf("\n ERROR in Firm_bankruptcy_insolvency_procedure:"
+				" payment_account not depleted after refunding credit. \n");
+	
 	//Effect on financial market
-	//Cancelling all shares
+    //Wiping out all existing shareholders by cancelling their shares
 	
 	//Set the IPO_AMOUNT to raise:
 	target_equity = (1/TARGET_LEVERAGE_RATIO) * target_debt;
-	IPO_AMOUNT = (1 + 1/TARGET_LEVERAGE_RATIO)* target_debt - TOTAL_ASSETS;
-	IPO_AMOUNT = max(0,IPO_AMOUNT);
+	IPO_AMOUNT = target_equity + target_debt - TOTAL_ASSETS;
+
+	//To use already implemented functions, we use the EXTERNAL_FINANCIAL_NEEDS to send the share emmission
+	EXTERNAL_FINANCIAL_NEEDS = max(0,IPO_AMOUNT);
 	
 	//Effect on investment goods market
 	//Left-over capital
@@ -398,7 +420,7 @@ int Firm_bankruptcy_insolvency_procedure()
 /*
  * \fn Firm_bankruptcy_illiquidity_procedure()
  * \brief Function to process the bankruptcy condition in case of illiquidity.
- *  There is no write-down of bad debt on the bank's balance sheet.
+ *  There is no writeoff of bad debt on the bank's balance sheet.
  *  New equity is raised by an equity issue on AFM according to a targetted liquidity ratio.
  */
 int Firm_bankruptcy_illiquidity_procedure()
@@ -413,7 +435,9 @@ int Firm_bankruptcy_illiquidity_procedure()
 	
 	//Set the IPO_AMOUNT to raise:
 	IPO_AMOUNT = TARGET_LIQUIDITY_RATIO*(FINANCIAL_LIQUIDITY_NEEDS - PAYMENT_ACCOUNT);
-	IPO_AMOUNT = max(0,IPO_AMOUNT);
+
+	//To use already implemented functions, we use the EXTERNAL_FINANCIAL_NEEDS to send the share emmission
+	EXTERNAL_FINANCIAL_NEEDS = max(0,IPO_AMOUNT);
 	
 	//Effect on investment goods market
 	//Left-over capital
@@ -432,9 +456,10 @@ int Firm_bankruptcy_illiquidity_procedure()
 
 	return 0;
 }
+
 /*
- * \fn Firm_financial_crisis()
- * \brief Function to resolve the financial crisis by lowering dividends.
+ * \fn Firm_bankruptcy_idle_counter()
+ * \brief Function to decrease the idle counter by 1 until 0.
  */
 int Firm_bankruptcy_idle_counter()
 {
@@ -447,20 +472,34 @@ int Firm_bankruptcy_idle_counter()
 	{
 		BANKRUPTCY_IDLE_COUNTER -= 1;
 	}	
-	
-	//Add conditions for setting the active flag to 1:
+		
+	return 0;
+}
+
+/*
+ * \fn Firm_reset_bankruptcy_flags()
+ * \brief Function to reset the bankruptcy flags.
+ */
+int Firm_reset_bankruptcy_flags()
+{
+	//Add conditions for resetting the active flag to 1:
 	if (BANKRUPTCY_IDLE_COUNTER==0)
 	{
 		ACTIVE=1;
-		//add conditions here
+	}
+	
+	//add more conditions here:
+	if (EXTERNAL_FINANCIAL_NEEDS<=0.0)
+	{
+		BANKRUPTCY_INSOLVENCY_STATE  = 0;
+		BANKRUPTCY_ILLIQUIDITY_STATE = 0;
 	}
 	
 	return 0;
 }
 
-
 /*
- * \fn Firm_financial_crisis()
+ * \fn Firm_in_financial_crisis()
  * \brief Function to resolve the financial crisis by lowering dividends.
  */
 int Firm_in_financial_crisis()
@@ -480,7 +519,8 @@ int Firm_in_financial_crisis()
 	//Set flag if resolved:
 	if (PAYMENT_ACCOUNT >= TOTAL_INTEREST_PAYMENTS
 			+ TOTAL_DEBT_INSTALLMENT_PAYMENT + TAX_PAYMENT
-			+ TOTAL_DIVIDEND_PAYMENT) {
+			+ TOTAL_DIVIDEND_PAYMENT)
+	{
 		FINANCIAL_CRISIS_STATE=0;
 		BANKRUPTCY_STATE=0;
 	}
