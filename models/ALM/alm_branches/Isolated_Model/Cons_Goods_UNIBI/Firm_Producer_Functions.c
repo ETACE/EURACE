@@ -228,7 +228,7 @@ int Firm_calc_production_quantity()
 					CURRENT_MALL_STOCKS.array[i].mall_id;
 
 					PLANNED_DELIVERY_VOLUME.array[i].quantity  = prod_vol;
-					production_volume = production_volume + prod_vol;
+					
 				}
 				else
 				/*If no stocks are left then the firms want to produce more 
