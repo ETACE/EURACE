@@ -340,7 +340,7 @@
     </variables>
    </dataType>
    <dataType>
-    <name>tempory_sales_statistics</name>
+    <name>temporary_sales_statistics</name>
     <description>This data type is used for building a temporray array of last sales in the malls. </description>
     <variables>
      <variable>
@@ -349,7 +349,7 @@
       <description>ID of the mall.</description>
      </variable>
      <variable>
-      <type>int </type>
+      <type>int</type>
       <name>period</name>
       <description>Number of periods elapsedsince the sales was archieved.</description>
      </variable>
