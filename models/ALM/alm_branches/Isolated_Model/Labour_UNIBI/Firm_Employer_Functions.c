@@ -46,18 +46,18 @@ int Firm_start_labour_market()
 /*************************************Firm Role: Labour Market*********************************/
 
 /** \fn Firm_calculate_specific_skills_and_wage_offer()
- * \brief Firms calculate the specific skills for each general skill group 
+ * \brief Firms calculate the specific skills for each general skill group
  * and the according wage offer*/
 int Firm_calculate_specific_skills_and_wage_offer()
 {
-	
+
 	/*Sum up the specific skills of each general skill group (1-5): for average*/
 	double sum_1 = 0;
 	double sum_2 = 0;
 	double sum_3 = 0;
 	double sum_4 = 0;
 	double sum_5 = 0;
-	
+
 	/*For every employee*/
 	for(int n = 0; n < EMPLOYEES.size; n++)
 	{
@@ -95,21 +95,21 @@ int Firm_calculate_specific_skills_and_wage_offer()
 		case 1:
 			/*If there are employees with general skill level 1*/
 			if(NO_EMPLOYEES_SKILL_1 > 0)
-			{	
+			{
 				/*Calculate average specific skill of skill group 1*/
 				AVERAGE_S_SKILL_OF_1 = sum_1/NO_EMPLOYEES_SKILL_1;
 			}
-			
+
 			/*Skill Group 1 gets the basic wage offer*/
 			WAGE_OFFER_FOR_SKILL_1 = WAGE_OFFER;
 			break;
-		
+
 		case 2:
 			if(NO_EMPLOYEES_SKILL_2 > 0)
 			{
-				AVERAGE_S_SKILL_OF_2 = sum_2/NO_EMPLOYEES_SKILL_2;	
+				AVERAGE_S_SKILL_OF_2 = sum_2/NO_EMPLOYEES_SKILL_2;
 			}
-			
+
 			/*The other skill groups get a higher wage offer depending on the 					productivity (specific skill)*/
 			WAGE_OFFER_FOR_SKILL_2 = WAGE_OFFER*AVERAGE_S_SKILL_OF_2/
 				AVERAGE_S_SKILL_OF_1;
@@ -118,9 +118,9 @@ int Firm_calculate_specific_skills_and_wage_offer()
 		case 3:
 			if(NO_EMPLOYEES_SKILL_3 > 0)
 			{
-				AVERAGE_S_SKILL_OF_3 = sum_3/NO_EMPLOYEES_SKILL_3;	
+				AVERAGE_S_SKILL_OF_3 = sum_3/NO_EMPLOYEES_SKILL_3;
 			}
-			
+
 			WAGE_OFFER_FOR_SKILL_3 = WAGE_OFFER*AVERAGE_S_SKILL_OF_3/
 				AVERAGE_S_SKILL_OF_1;
 			break;
@@ -128,9 +128,9 @@ int Firm_calculate_specific_skills_and_wage_offer()
 		case 4:
 			if(NO_EMPLOYEES_SKILL_4 > 0)
 			{
-				AVERAGE_S_SKILL_OF_4 = sum_4/NO_EMPLOYEES_SKILL_4;	
+				AVERAGE_S_SKILL_OF_4 = sum_4/NO_EMPLOYEES_SKILL_4;
 			}
-			
+
 			WAGE_OFFER_FOR_SKILL_4 = WAGE_OFFER*AVERAGE_S_SKILL_OF_4/
 				AVERAGE_S_SKILL_OF_1;
 			break;
@@ -139,15 +139,15 @@ int Firm_calculate_specific_skills_and_wage_offer()
 			if(NO_EMPLOYEES_SKILL_5 > 0)
 			{
 				/*Calculate average specific skill of skill group 5*/
-				AVERAGE_S_SKILL_OF_5 = sum_5/NO_EMPLOYEES_SKILL_5;	
+				AVERAGE_S_SKILL_OF_5 = sum_5/NO_EMPLOYEES_SKILL_5;
 			}
-			
+
 			WAGE_OFFER_FOR_SKILL_5 = WAGE_OFFER*AVERAGE_S_SKILL_OF_5/
 				AVERAGE_S_SKILL_OF_1;
-			break;		
+			break;
 		}
 	}
-	
+
 	return 0;
 }
 
@@ -158,8 +158,8 @@ int Firm_calculate_specific_skills_and_wage_offer()
  */
 int Firm_send_vacancies()
 {
-	
-								
+
+
 	 /*If more employees needed then send vacancies */
 	if(EMPLOYEES_NEEDED > NO_EMPLOYEES)
 	{
@@ -168,14 +168,14 @@ int Firm_send_vacancies()
 
 		/*For every skill group send vacancy message with the correspondent wage 				offer*/
 		for(int m = 1; m < 6;m++)
-		{	
+		{
 			switch(m)
 			{
 			case 1:/*If skill level 1 send wage offer for skill group 1*/
 				add_vacancies_message(ID, REGION_ID, VACANCIES,m,
 				WAGE_OFFER_FOR_SKILL_1);
 				break;
-			
+
 
 			case 2:
 				add_vacancies_message(ID, REGION_ID, VACANCIES,m,
@@ -196,10 +196,10 @@ int Firm_send_vacancies()
 				add_vacancies_message(ID, REGION_ID, VACANCIES,m,
 				WAGE_OFFER_FOR_SKILL_5);
 				break;
-			}		
-		}			
+			}
+		}
 	}
-	
+
 	return 0;
 }
 
@@ -210,12 +210,12 @@ int Firm_send_vacancies()
  */
 int Firm_send_redundancies()
 {
-	
+
 	/*If less employees needed then send redundencies */
 	if(EMPLOYEES_NEEDED < NO_EMPLOYEES)
 	{
 		VACANCIES = 0;
-		
+
 		/*sorting employees: highest specific skills first*/
 		/*int a, b;
 		employee * first_employee, * second_employee;
@@ -224,13 +224,13 @@ int Firm_send_redundancies()
 		/* Using a bubble sort */
 		/*for(a = 0; a<(EMPLOYEES.size-1); a++)
 		{
-			for(b=0; b<(EMPLOYEES.size-1)-a; b++) 
+			for(b=0; b<(EMPLOYEES.size-1)-a; b++)
 			{
 				first_employee = &EMPLOYEES.array[b+1];
 				second_employee = &EMPLOYEES.array[b];*/
-		
+
 				/* Comparing the values between neighbours */
-				/*if(first_employee.specific_skill > 
+				/*if(first_employee.specific_skill >
 				   second_employee.specific_skill)
 				{*/
 					/* Swap neighbours */
@@ -244,7 +244,7 @@ int Firm_send_redundancies()
 		/*sorting employees: highest specific skills first*/
 		qsort(EMPLOYEES.array, EMPLOYEES.size, sizeof(employee),
 			employee_list_rank_specific_skills_function);
-		
+
 		/*For the number of redundencies*/
 		int j;
 
@@ -252,7 +252,7 @@ int Firm_send_redundancies()
 		//for(int i = 0; i < (NO_EMPLOYEES - EMPLOYEES_NEEDED); i++)
 		int no_redundancies = NO_EMPLOYEES - EMPLOYEES_NEEDED;
 		for(int i = 0; i < no_redundancies; i++)
-		{	
+		{
 			/*Firing: by chance*/
 			j = random_int(0,(EMPLOYEES.size-1));
 			add_firing_message(ID, EMPLOYEES.array[j].id);
@@ -260,14 +260,14 @@ int Firm_send_redundancies()
 			/*Firing: lowest specific skill*/
 			/*j = EMPLOYEES.size-1;
 			add_firing_message(ID, EMPLOYEES.array[j].id);*/
-		
+
 			switch(EMPLOYEES.array[j].general_skill)
 			{
 				/*If employee have had skill level 1 reduce the number of 						employees with skill level 1 by 1*/
 				case 1:
 					NO_EMPLOYEES_SKILL_1--;
 					break;
-					
+
 				case 2:
 					NO_EMPLOYEES_SKILL_2--;
 					break;
@@ -284,17 +284,17 @@ int Firm_send_redundancies()
 					NO_EMPLOYEES_SKILL_5--;
 					break;
 			}
-			
+
 			remove_employee(&EMPLOYEES, j);
 			NO_EMPLOYEES--;
 
-			
+
 		}
-		
+
 		//NO_EMPLOYEES = EMPLOYEES_NEEDED;
 	}
-	
-	
+
+
 	return 0;
 }
 
@@ -307,21 +307,21 @@ int Firm_send_redundancies()
 int Firm_read_job_applications_send_job_offer_or_rejection()
 {
 	/* Create a job application dynamic array */
-	job_application_array job_application_list; 
+	job_application_array job_application_list;
 	init_job_application_array(&job_application_list);
-	
+
 	/* If day of month to act... */
 
 	START_JOB_APPLICATION_MESSAGE_LOOP
-		
+
 		/* Read job application messages for this Firm */
 		if(job_application_message->firm_id == ID)
 		{
 			/*Add application to a list (array)*/
-			add_job_application(&job_application_list, 
+			add_job_application(&job_application_list,
 			job_application_message->worker_id,
 			job_application_message->region_id,
-			job_application_message->general_skill, 
+			job_application_message->general_skill,
 			job_application_message->specific_skill);
 		}
 
@@ -357,7 +357,7 @@ int Firm_read_job_applications_send_job_offer_or_rejection()
 	/*Rank job applications (function from my_library_functions) */
 	//sort_job_application_list(&job_application_list);
 
-	qsort(job_application_list.array, job_application_list.size, 
+	qsort(job_application_list.array, job_application_list.size,
 	sizeof(job_application), job_application_list_rank_general_skill_function);
 
 	int i;
@@ -394,20 +394,20 @@ int Firm_read_job_applications_send_job_offer_or_rejection()
 				break;
 			}
 		}
-		
+
 		/* If no vacancies left then send a job rejection message */
 		else
 		{
-			add_application_rejection_message(ID, 
+			add_application_rejection_message(ID,
 			job_application_list.array[i].worker_id);
 		}
 	}
-		
-	
+
+
 	/* Free the job application dynamic array */
 	free_job_application_array(&job_application_list);
-	
-		
+
+
 	return 0;
 }
 
@@ -417,15 +417,15 @@ int Firm_read_job_applications_send_job_offer_or_rejection()
  * \brief Read job responses and add employees
  */
 int Firm_read_job_responses()
-{			
+{
 	/* If day of month to act... */
-	
+
 	START_JOB_ACCEPTANCE_MESSAGE_LOOP
-		
+
 		/* Read job acceptance messages for this Firm */
 		if(job_acceptance_message->firm_id == ID)
 		{
-			
+
 			/*Add employee to employee list */
 			VACANCIES--;
 			NO_EMPLOYEES++;
@@ -434,61 +434,61 @@ int Firm_read_job_responses()
 			{
 				/*If new employee has general skill level 1*/
 				case 1:
-					add_employee(&EMPLOYEES, 
+					add_employee(&EMPLOYEES,
 					job_acceptance_message->worker_id,
-					job_acceptance_message->region_id, 							WAGE_OFFER_FOR_SKILL_1, 
-					job_acceptance_message->general_skill, 
+					job_acceptance_message->region_id, 							WAGE_OFFER_FOR_SKILL_1,
+					job_acceptance_message->general_skill,
 					job_acceptance_message->specific_skill);
 
 					NO_EMPLOYEES_SKILL_1++;
 					break;
-			
+
 				case 2:
-					add_employee(&EMPLOYEES, 
+					add_employee(&EMPLOYEES,
 					job_acceptance_message->worker_id,
-					job_acceptance_message->region_id, 							WAGE_OFFER_FOR_SKILL_2, 
-					job_acceptance_message->general_skill, 
+					job_acceptance_message->region_id, 							WAGE_OFFER_FOR_SKILL_2,
+					job_acceptance_message->general_skill,
 					job_acceptance_message->specific_skill);
 
 					NO_EMPLOYEES_SKILL_2++;
 					break;
-			
+
 				case 3:
-					add_employee(&EMPLOYEES, 
+					add_employee(&EMPLOYEES,
 					job_acceptance_message->worker_id,
-					job_acceptance_message->region_id, 							WAGE_OFFER_FOR_SKILL_3, 
-					job_acceptance_message->general_skill, 
+					job_acceptance_message->region_id, 							WAGE_OFFER_FOR_SKILL_3,
+					job_acceptance_message->general_skill,
 					job_acceptance_message->specific_skill);
 
 					NO_EMPLOYEES_SKILL_3++;
 					break;
-			
+
 				case 4:
-					add_employee(&EMPLOYEES, 
+					add_employee(&EMPLOYEES,
 					job_acceptance_message->worker_id,
-					job_acceptance_message->region_id, 							WAGE_OFFER_FOR_SKILL_4, 
-					job_acceptance_message->general_skill, 
+					job_acceptance_message->region_id, 							WAGE_OFFER_FOR_SKILL_4,
+					job_acceptance_message->general_skill,
 					job_acceptance_message->specific_skill);
-					
+
 					NO_EMPLOYEES_SKILL_4++;
 					break;
 				/*If new employee has general skill level 5*/
 				case 5:
-					add_employee(&EMPLOYEES, 
+					add_employee(&EMPLOYEES,
 					job_acceptance_message->worker_id,
-					job_acceptance_message->region_id, 							WAGE_OFFER_FOR_SKILL_5, 
-					job_acceptance_message->general_skill, 
+					job_acceptance_message->region_id, 							WAGE_OFFER_FOR_SKILL_5,
+					job_acceptance_message->general_skill,
 					job_acceptance_message->specific_skill);
-					
+
 					NO_EMPLOYEES_SKILL_5++;
 					break;
-			}			
+			}
 		}
 
 	FINISH_JOB_ACCEPTANCE_MESSAGE_LOOP
 
-	
-			
+
+
 	return 0;
 }
 
@@ -504,12 +504,12 @@ int Firm_read_job_quitting()
 			for(i=0; i < (EMPLOYEES.size);i++)
 			{
 				if(quitting_message->worker_id == EMPLOYEES.array[i].id)
-				{	
+				{
 					int temp_skill = 0;
 					temp_skill = EMPLOYEES.array[i].general_skill;
 					/*remove that employee from the list*/
 					remove_employee(&EMPLOYEES,i);
-							
+
 					VACANCIES++;
 					NO_EMPLOYEES--;
 
@@ -519,7 +519,7 @@ int Firm_read_job_quitting()
 						case 1:
 							NO_EMPLOYEES_SKILL_1--;
 							break;
-						
+
 						case 2:
 							NO_EMPLOYEES_SKILL_2--;
 							break;
@@ -537,11 +537,11 @@ int Firm_read_job_quitting()
 							break;
 					}
 				}
-			}		
+			}
 		}
 
 	FINISH_QUITTING_MESSAGE_LOOP
-	
+
 	return 0;
 }
 
@@ -551,19 +551,19 @@ int Firm_read_job_quitting()
  */
 int Firm_update_wage_offer()
 {
-		
-	/*If there are "a lot" of vacancies still open...*/	
-	if(VACANCIES > MIN_VACANCY)  
-	{
-		WAGE_OFFER = WAGE_OFFER*(1+wage_update);
 
-		WAGE_OFFER_FOR_SKILL_1 = WAGE_OFFER_FOR_SKILL_1*(1+wage_update);
-		WAGE_OFFER_FOR_SKILL_2 = WAGE_OFFER_FOR_SKILL_2*(1+wage_update);
-		WAGE_OFFER_FOR_SKILL_3 = WAGE_OFFER_FOR_SKILL_3*(1+wage_update);
-		WAGE_OFFER_FOR_SKILL_4 = WAGE_OFFER_FOR_SKILL_4*(1+wage_update);
-		WAGE_OFFER_FOR_SKILL_5 = WAGE_OFFER_FOR_SKILL_5*(1+wage_update);	
+	/*If there are "a lot" of vacancies still open...*/
+	if(VACANCIES > MIN_VACANCY)
+	{
+		WAGE_OFFER = WAGE_OFFER*(1+WAGE_UPDATE);
+
+		WAGE_OFFER_FOR_SKILL_1 = WAGE_OFFER_FOR_SKILL_1*(1+WAGE_UPDATE);
+		WAGE_OFFER_FOR_SKILL_2 = WAGE_OFFER_FOR_SKILL_2*(1+WAGE_UPDATE);
+		WAGE_OFFER_FOR_SKILL_3 = WAGE_OFFER_FOR_SKILL_3*(1+WAGE_UPDATE);
+		WAGE_OFFER_FOR_SKILL_4 = WAGE_OFFER_FOR_SKILL_4*(1+WAGE_UPDATE);
+		WAGE_OFFER_FOR_SKILL_5 = WAGE_OFFER_FOR_SKILL_5*(1+WAGE_UPDATE);
 	}
-	
+
 	return 0;
 }
 
@@ -575,7 +575,7 @@ int Firm_update_wage_offer()
 int Firm_send_vacancies_2()
 {
 	/* If day of month to act... */
-	
+
 	/* If vacancies left */
 	if(VACANCIES > 0)
 	{
@@ -609,11 +609,11 @@ int Firm_send_vacancies_2()
 					add_vacancies2_message(ID, REGION_ID, VACANCIES,m,
 					WAGE_OFFER_FOR_SKILL_5);
 					break;
-			}	
-		}		
-	}	
-	
-	
+			}
+		}
+	}
+
+
 	return 0;
 }
 
@@ -630,16 +630,16 @@ int Firm_read_job_applications_send_job_offer_or_rejection_2()
 	init_job_application_array(&job_application_list);
 
 	/* If day of month to act... */
-	
+
 	START_JOB_APPLICATION2_MESSAGE_LOOP
 
 		/* Read job application messages for this Firm and add to the list*/
 		if(job_application2_message->firm_id == ID)
 		{
-			add_job_application(&job_application_list, 
+			add_job_application(&job_application_list,
 			job_application2_message->worker_id,
-			job_application2_message->region_id, 
-			job_application2_message->general_skill, 
+			job_application2_message->region_id,
+			job_application2_message->general_skill,
 			job_application2_message->specific_skill);
 		}
 
@@ -671,13 +671,13 @@ int Firm_read_job_applications_send_job_offer_or_rejection_2()
 
 /*+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
-	
+
 	/* Rank job applications (function from my_library_functions) */
 	//sort_job_application_list(&job_application_list);
-	
-	qsort(job_application_list.array, job_application_list.size, 
+
+	qsort(job_application_list.array, job_application_list.size,
 	sizeof(job_application), job_application_list_rank_general_skill_function);
-	
+
 	int i;
 	/*For each job application message... */
 	for(i = 0; i < job_application_list.size; i++)
@@ -691,7 +691,7 @@ int Firm_read_job_applications_send_job_offer_or_rejection_2()
 			case 1:
 				add_job_offer2_message(ID, job_application_list.array[i]
 				.worker_id,REGION_ID, WAGE_OFFER_FOR_SKILL_1);
-				break;	
+				break;
 			case 2:
 				add_job_offer2_message(ID, job_application_list.array[i]
 				.worker_id,REGION_ID, WAGE_OFFER_FOR_SKILL_2);
@@ -714,14 +714,14 @@ int Firm_read_job_applications_send_job_offer_or_rejection_2()
 		/* If no vacancies left then send a job rejection message */
 		else
 		{
-			add_application_rejection2_message(ID, 
+			add_application_rejection2_message(ID,
 			job_application_list.array[i].worker_id);
 		}
-	}	
-	
+	}
+
 	/* Free the job application dynamic array */
 		free_job_application_array(&job_application_list);
-	
+
 	return 0;
 }
 
@@ -733,14 +733,14 @@ int Firm_read_job_applications_send_job_offer_or_rejection_2()
 int Firm_read_job_responses_2()
 {
 	/* If day of month to act... */
-	
+
 	START_JOB_ACCEPTANCE2_MESSAGE_LOOP
 
 		/* Read job acceptance messages for this Firm */
 		if(job_acceptance2_message->firm_id == ID)
 		{
-			/*Add employee to employee list*/ 
-			
+			/*Add employee to employee list*/
+
 			VACANCIES--;
 			NO_EMPLOYEES++;
 
@@ -748,45 +748,45 @@ int Firm_read_job_responses_2()
 			{
 				/*If new employees has general skill level 1*/
 				case 1:
-					add_employee(&EMPLOYEES, 
+					add_employee(&EMPLOYEES,
 					job_acceptance2_message->worker_id,
-					job_acceptance2_message->region_id, 							WAGE_OFFER_FOR_SKILL_1, 
+					job_acceptance2_message->region_id, 							WAGE_OFFER_FOR_SKILL_1,
 					job_acceptance2_message->general_skill, 						job_acceptance2_message->specific_skill);
-					
+
 					NO_EMPLOYEES_SKILL_1++;
 					break;
-			
+
 				case 2:
-					add_employee(&EMPLOYEES, 
+					add_employee(&EMPLOYEES,
 					job_acceptance2_message->worker_id,
-					job_acceptance2_message->region_id, 							WAGE_OFFER_FOR_SKILL_2, 
+					job_acceptance2_message->region_id, 							WAGE_OFFER_FOR_SKILL_2,
 					job_acceptance2_message->general_skill, 						job_acceptance2_message->specific_skill);
 
 					NO_EMPLOYEES_SKILL_2++;
 					break;
-			
+
 				case 3:
-					add_employee(&EMPLOYEES, 
+					add_employee(&EMPLOYEES,
 					job_acceptance2_message->worker_id,
-					job_acceptance2_message->region_id, 							WAGE_OFFER_FOR_SKILL_3, 
+					job_acceptance2_message->region_id, 							WAGE_OFFER_FOR_SKILL_3,
 					job_acceptance2_message->general_skill, 						job_acceptance2_message->specific_skill);
 
 					NO_EMPLOYEES_SKILL_3++;
 					break;
-			
+
 				case 4:
-					add_employee(&EMPLOYEES, 
+					add_employee(&EMPLOYEES,
 					job_acceptance2_message->worker_id,
-					job_acceptance2_message->region_id, 							WAGE_OFFER_FOR_SKILL_4, 
+					job_acceptance2_message->region_id, 							WAGE_OFFER_FOR_SKILL_4,
 					job_acceptance2_message->general_skill, 						job_acceptance2_message->specific_skill);
 
 					NO_EMPLOYEES_SKILL_4++;
 					break;
 				/*If new employees has general skill level 5*/
 				case 5:
-					add_employee(&EMPLOYEES, 
+					add_employee(&EMPLOYEES,
 					job_acceptance2_message->worker_id,
-					job_acceptance2_message->region_id, 							WAGE_OFFER_FOR_SKILL_5, 
+					job_acceptance2_message->region_id, 							WAGE_OFFER_FOR_SKILL_5,
 					job_acceptance2_message->general_skill, 						job_acceptance2_message->specific_skill);
 
 					NO_EMPLOYEES_SKILL_5++;
@@ -795,8 +795,8 @@ int Firm_read_job_responses_2()
 		}
 
 	FINISH_JOB_ACCEPTANCE2_MESSAGE_LOOP
-	
-		
+
+
 	return 0;
 }
 
@@ -812,12 +812,12 @@ int Firm_read_job_quitting_2()
 			for(i=0; i < (EMPLOYEES.size);i++)
 			{
 				if(quitting2_message->worker_id == EMPLOYEES.array[i].id)
-				{	
+				{
 					int temp_skill = 0;
 					temp_skill = EMPLOYEES.array[i].general_skill;
 					/*remove this former employee from the list*/
 					remove_employee(&EMPLOYEES,i);
-						
+
 					VACANCIES++;
 					NO_EMPLOYEES--;
 
@@ -827,7 +827,7 @@ int Firm_read_job_quitting_2()
 						case 1:
 							NO_EMPLOYEES_SKILL_1--;
 							break;
-						
+
 						case 2:
 							NO_EMPLOYEES_SKILL_2--;
 							break;
@@ -846,11 +846,11 @@ int Firm_read_job_quitting_2()
 					}
 				}
 			}
-			
+
 		}
 
 	FINISH_QUITTING2_MESSAGE_LOOP
-	
+
 	return 0;
 }
 
@@ -866,21 +866,21 @@ int Firm_update_wage_offer_2()
 	/*Average  general skill at the end of one day*/
 	for(i = 0; i < (EMPLOYEES.size); i++)
 	{
-		j += EMPLOYEES.array[i].general_skill;	
+		j += EMPLOYEES.array[i].general_skill;
 	}
-	
+
 	if(NO_EMPLOYEES > 0)
 	{
 		AVERAGE_G_SKILL = (double)((double)j/(double)NO_EMPLOYEES);
 	}
-	
+
 
 	if(DAY%MONTH == DAY_OF_MONTH_TO_ACT)
-	{	
-		if(VACANCIES > 0) 
+	{
+		if(VACANCIES > 0)
 		{
-			//WAGE_OFFER = WAGE_OFFER*(1 + wage_update);
-			
+			//WAGE_OFFER = WAGE_OFFER*(1 + WAGE_UPDATE);
+
 		}
 
 	}
@@ -892,13 +892,13 @@ int Firm_compute_mean_wage_specific_skills()
 {
 	double ave_wage =0.0;
 	double ave_spec_skills =0.0;
-	
+
 	for(int i=0;i<EMPLOYEES.size;i++)
 	{
 		ave_wage+=EMPLOYEES.array[i].wage;
 		ave_spec_skills += EMPLOYEES.array[i].specific_skill;
 	}
-	
+
 	double no_employees = (double) NO_EMPLOYEES;
 	if(no_employees==0)
 	{
