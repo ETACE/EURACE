@@ -50,6 +50,28 @@ int Mall_update_mall_stock()
     }
     FINISH_UPDATE_MALL_STOCK_MESSAGE_LOOP
     
+    /*This reads the bankruptcy message of firms in a illiquitity bankruptcy*/
+    START_BANKRUPTCY_ILLIQUIDITY_MESSAGE_LOOP
+    for(int i=0; i< CURRENT_STOCK.size; i++)
+            {   
+                
+                if(bankruptcy_illiquidity_message->firm_id==
+                CURRENT_STOCK.array[i].firm_id)
+                {
+                    CURRENT_STOCK.array[i].stock=0;
+                    
+                    CURRENT_STOCK.array[i].firm_id=
+                    update_mall_stock_message->firm_id;
+
+                    CURRENT_STOCK.array[i].quality=0;
+
+                    CURRENT_STOCK.array[i].price=0;
+                    
+                    CURRENT_STOCK.array[i].previous_price=0;
+                }
+            }
+    
+    FINISH_BANKRUPTCY_ILLIQUIDITY_MESSAGE_LOOP 
     return 0;
 
 }
@@ -433,3 +455,35 @@ int Mall_send_export_data()
     
     return 0;
 }
+
+/* \fn: int Mall_send_export_data()
+ * \brief: Function to read bankruptcy messages from firms in insolvency. The mall has to set the current mall stocks equal 0.
+ */
+int Mall_read_bankruptcy()
+{
+
+START_BANKRUPTCY_INSOLVENCY_MESSAGE_LOOP
+    for(int i=0; i< CURRENT_STOCK.size; i++)
+            {   
+                
+                if(bankruptcy_insolvency_message->firm_id==
+                CURRENT_STOCK.array[i].firm_id)
+                {
+                    CURRENT_STOCK.array[i].stock=0;
+                    
+                    CURRENT_STOCK.array[i].firm_id=
+                    update_mall_stock_message->firm_id;
+
+                    CURRENT_STOCK.array[i].quality=0;
+
+                    CURRENT_STOCK.array[i].price=0;
+                    
+                    CURRENT_STOCK.array[i].previous_price=0;
+                }
+            }
+    
+    FINISH_BANKRUPTCY_INSOLVENCY_MESSAGE_LOOP 
+    
+    return 0;
+}
+
