@@ -303,9 +303,12 @@ int Firm_set_bankruptcy_illiquidity()
 	
 	//Set type of bankruptcy
 	//Type 1: illiquidity
-		BANKRUPTCY_INSOLVENCY_STATE  = 0;
-		BANKRUPTCY_ILLIQUIDITY_STATE = 1;
+	BANKRUPTCY_INSOLVENCY_STATE  = 0;
+	BANKRUPTCY_ILLIQUIDITY_STATE = 1;
 	
+	//send msg to malls
+	add_bankruptcy_illiquidity_message(ID);
+		
 	return 0;
 }
 
@@ -325,9 +328,12 @@ int Firm_set_bankruptcy_insolvency()
 	
 	//Set type of bankruptcy
 	//Type 2: insolvency
-		BANKRUPTCY_INSOLVENCY_STATE  = 1;
-		BANKRUPTCY_ILLIQUIDITY_STATE = 0;
+	BANKRUPTCY_INSOLVENCY_STATE  = 1;
+	BANKRUPTCY_ILLIQUIDITY_STATE = 0;
 	
+	//send msg to malls
+	add_bankruptcy_insolvency_message(ID);
+		
 	return 0;
 }
 
