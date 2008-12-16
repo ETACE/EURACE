@@ -154,8 +154,8 @@ int Firm_calc_production_quantity()
 		/*Creating a temporary array of the last X sales per mall*/
 		for(int i = 0; i < CURRENT_MALL_STOCKS.size;i++)
 		{
-			tempory_sales_statistics_array sales_mall;
-			init_tempory_sales_statistics_array(&sales_mall);
+			temporary_sales_statistics_array sales_mall;
+			init_temporary_sales_statistics_array(&sales_mall);
 
 			for(int j = 0; j < MALLS_SALES_STATISTICS.size;j++)
 			{
@@ -164,7 +164,7 @@ int Firm_calc_production_quantity()
 				{
 					for(int k = 0; k < FIRM_PLANNING_HORIZON; k++)
 					{
-					add_tempory_sales_statistics(&sales_mall,
+					add_temporary_sales_statistics(&sales_mall,
 					MALLS_SALES_STATISTICS.array[j].mall_id,
 					MALLS_SALES_STATISTICS.array[j].sales.array[k].period,
 					MALLS_SALES_STATISTICS.array[j].sales.array[k].sales);
@@ -775,7 +775,7 @@ int Firm_compute_sales_statistics()
 				if(MALLS_SALES_STATISTICS.array[j].sales.array[k].period== FIRM_PLANNING_HORIZON)
 				{		
 				remove_index = k;
-				remove_sales_statistics(&MALLS_SALES_STATISTICS.array[j].sales, remove_index);
+				remove_data_type_sales(&MALLS_SALES_STATISTICS.array[j].sales, remove_index);
 				k--;
 				}else
 				{
@@ -792,7 +792,7 @@ int Firm_compute_sales_statistics()
 			{
 			if(MALLS_SALES_STATISTICS.array[j].mall_id == SOLD_QUANTITIES.array[i].mall_id)
 				{
-				add_sales_statistics(&MALLS_SALES_STATISTICS.array[j].sales, 1 , 
+				add_data_type_sales(&MALLS_SALES_STATISTICS.array[j].sales, 1 , 
 					SOLD_QUANTITIES.array[i].sold_quantity);
 		
 				SOLD_QUANTITIES.array[i].sold_quantity=0;
