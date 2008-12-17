@@ -358,7 +358,7 @@ int Firm_bankruptcy_insolvency_procedure()
 {
 	int i, imax;
 	double target_debt, bad_debt, credit_refunded, residual_var;
-	double write_off_ratio, target_equity;
+	double write_off_ratio, target_equity, ipo_amount;
 	
 	//Effect on credit market
 	//Set the target debt
@@ -400,10 +400,10 @@ int Firm_bankruptcy_insolvency_procedure()
 	
 	//Set the IPO_AMOUNT to raise:
 	target_equity = (1/TARGET_LEVERAGE_RATIO) * target_debt;
-	IPO_AMOUNT = target_equity + target_debt - TOTAL_ASSETS;
+	ipo_amount = target_equity + target_debt - TOTAL_ASSETS;
 
 	//To use already implemented functions, we use the EXTERNAL_FINANCIAL_NEEDS to send the share emmission
-	EXTERNAL_FINANCIAL_NEEDS = max(0,IPO_AMOUNT);
+	EXTERNAL_FINANCIAL_NEEDS = max(0,ipo_amount);
 	
 	//Effect on investment goods market
 	//Left-over capital
@@ -432,6 +432,7 @@ int Firm_bankruptcy_insolvency_procedure()
 int Firm_bankruptcy_illiquidity_procedure()
 {	
 	int i;
+	double ipo_amount;
 	
 	//Effect on credit market	
 	//Renegotiating debt not needed
@@ -440,10 +441,10 @@ int Firm_bankruptcy_illiquidity_procedure()
 	//Shareholders retain their shares.
 	
 	//Set the IPO_AMOUNT to raise:
-	IPO_AMOUNT = TARGET_LIQUIDITY_RATIO*(FINANCIAL_LIQUIDITY_NEEDS - PAYMENT_ACCOUNT);
+	ipo_amount = TARGET_LIQUIDITY_RATIO*(FINANCIAL_LIQUIDITY_NEEDS - PAYMENT_ACCOUNT);
 
 	//To use already implemented functions, we use the EXTERNAL_FINANCIAL_NEEDS to send the share emmission
-	EXTERNAL_FINANCIAL_NEEDS = max(0,IPO_AMOUNT);
+	EXTERNAL_FINANCIAL_NEEDS = max(0,ipo_amount);
 	
 	//Effect on investment goods market
 	//Left-over capital

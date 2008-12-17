@@ -9,16 +9,14 @@
    <variable>
     <type>double</type>
     <name>debt_rescaling_factor</name>
-    <description>The debt_rescaling_factor $\omega$ is used in case of a firm bankruptcy to rescale the debt. This is a process of debt-to-equity transformation. It sets the target debt level in relation to the value of total assets: $L^*=\omega A^*$.&#xd;&#xd;&#xd;
-The firm will not refund all of its loans completely, but will write off every loan with a certain ratio: $w_j = (1-L^*/L)L_j$ for loan j.&#xd;&#xd;&#xd;
+    <description>The debt_rescaling_factor $\omega$ is used in case of a firm bankruptcy to rescale the debt. This is a process of debt-to-equity transformation. It sets the target debt level in relation to the value of total assets: $L^*=\omega A^*$.&#xd;
+The firm will not refund all of its loans completely, but will write off every loan with a certain ratio: $w_j = (1-L^*/L)L_j$ for loan j.&#xd;
 The fraction $(1-L^*/L)$ is the write-off ratio, and $w_j$ is the monetary amount of the write-off for loan j.</description>
    </variable>
    <variable>
     <type>double</type>
     <name>target_leverage_ratio</name>
-    <description>The target leverage ratio is the proportion of the target debt to target equity: $\ell = L^*/E^*$. This determines the target equity level as $E^*= (1/ell) L^*$ and sets the IPO amount that the firm should raise on the financial market.&#xd;&#xd;&#xd;&#xd;
-&#xd;&#xd;&#xd;&#xd;
-</description>
+    <description>The target leverage ratio is the proportion of the target debt to target equity: $\ell = L^*/E^*$. This determines the target equity level as $E^*= (1/ell) L^*$ and sets the IPO amount that the firm should raise on the financial market.</description>
    </variable>
    <variable>
     <type>double</type>
@@ -628,9 +626,9 @@ The fraction $(1-L^*/L)$ is the write-off ratio, and $w_j$ is the monetary amoun
     </function>
     <function>
      <name>Firm_bankruptcy_insolvency_procedure</name>
-     <description>Function to process the bankruptcy condition in case of insolvency.&#xd;&#xd;&#xd;&#xd;
-Sends a bankruptcy_message from the firm to all banks at which the firm has a loan.&#xd;&#xd;&#xd;&#xd;
-Write-down of bad debt on the bank's balance sheet.&#xd;&#xd;&#xd;&#xd;
+     <description>Function to process the bankruptcy condition in case of insolvency.&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+Sends a bankruptcy_message from the firm to all banks at which the firm has a loan.&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+Write-down of bad debt on the bank's balance sheet.&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
 New equity is raised by an equity issue on AFM according to a targetted leverage ratio.</description>
      <currentState>Firm_not_active</currentState>
      <nextState>Firm_bankrupty_state_1</nextState>
@@ -646,14 +644,17 @@ New equity is raised by an equity issue on AFM according to a targetted leverage
      <inputs/>
      <outputs>
       <output>
+       <messageName>bankruptcy</messageName>
+      </output>
+      <output>
        <messageName>firing</messageName>
       </output>
      </outputs>
     </function>
     <function>
      <name>Firm_bankruptcy_illiquidity_procedure</name>
-     <description>Function to process the bankruptcy condition in case of illiquidity.&#xd;&#xd;&#xd;&#xd;
-There is no write-down of bad debt on the bank's balance sheet.&#xd;&#xd;&#xd;&#xd;
+     <description>Function to process the bankruptcy condition in case of illiquidity.&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+There is no write-down of bad debt on the bank's balance sheet.&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
  New equity is raised by an equity issue on AFM according to a targetted liquidity ratio.</description>
      <currentState>Firm_not_active</currentState>
      <nextState>Firm_bankrupty_state_1</nextState>
