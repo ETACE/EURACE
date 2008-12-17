@@ -18,7 +18,7 @@ int Mall_idle()
  */
 int Mall_update_mall_stock()
 {
-    int j;
+    int i,j;
     
     START_UPDATE_MALL_STOCK_MESSAGE_LOOP
     
@@ -52,16 +52,15 @@ int Mall_update_mall_stock()
     
     /*This reads the bankruptcy message of firms in a illiquitity bankruptcy*/
     START_BANKRUPTCY_ILLIQUIDITY_MESSAGE_LOOP
-    for(int i=0; i< CURRENT_STOCK.size; i++)
-            {   
+    for(i=0; i< CURRENT_STOCK.size; i++)
+    {   
                 
                 if(bankruptcy_illiquidity_message->firm_id==
                 CURRENT_STOCK.array[i].firm_id)
                 {
                     CURRENT_STOCK.array[i].stock=0;
                     
-                    CURRENT_STOCK.array[i].firm_id=
-                    update_mall_stock_message->firm_id;
+                    //CURRENT_STOCK.array[i].firm_id=update_mall_stock_message->firm_id;
 
                     CURRENT_STOCK.array[i].quality=0;
 
@@ -69,11 +68,10 @@ int Mall_update_mall_stock()
                     
                     CURRENT_STOCK.array[i].previous_price=0;
                 }
-            }
-    
+    }
     FINISH_BANKRUPTCY_ILLIQUIDITY_MESSAGE_LOOP 
-    return 0;
 
+    return 0;
 }
 
 /** \fn Mall_send_quality_price_info_1()
@@ -456,14 +454,15 @@ int Mall_send_export_data()
     return 0;
 }
 
-/* \fn: int Mall_send_export_data()
+/* \fn: int Mall_read_bankruptcy()
  * \brief: Function to read bankruptcy messages from firms in insolvency. The mall has to set the current mall stocks equal 0.
  */
 int Mall_read_bankruptcy()
 {
-
-START_BANKRUPTCY_INSOLVENCY_MESSAGE_LOOP
-    for(int i=0; i< CURRENT_STOCK.size; i++)
+	int i;
+	
+	START_BANKRUPTCY_INSOLVENCY_MESSAGE_LOOP
+    for(i=0; i< CURRENT_STOCK.size; i++)
             {   
                 
                 if(bankruptcy_insolvency_message->firm_id==
@@ -471,8 +470,7 @@ START_BANKRUPTCY_INSOLVENCY_MESSAGE_LOOP
                 {
                     CURRENT_STOCK.array[i].stock=0;
                     
-                    CURRENT_STOCK.array[i].firm_id=
-                    update_mall_stock_message->firm_id;
+                    //CURRENT_STOCK.array[i].firm_id=update_mall_stock_message->firm_id;
 
                     CURRENT_STOCK.array[i].quality=0;
 
