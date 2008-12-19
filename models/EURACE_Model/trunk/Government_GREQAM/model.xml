@@ -533,7 +533,7 @@
      <outputs/>
     </function>
     <function>
-     <name>Government_monthly_budget_accounting</name>
+     <name>Government_monthly_resetting</name>
      <description></description>
      <currentState>05</currentState>
      <nextState>06</nextState>

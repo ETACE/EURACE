@@ -15,6 +15,9 @@ int Government_idle()
 	return 0;
 }
 
+/* \fn: int Government_send_policy_announcements()
+ * \brief Function to send yearly policy announcement message.
+ */
 int Government_send_policy_announcements()
 {	
 	//add announcements
@@ -23,6 +26,9 @@ int Government_send_policy_announcements()
 	return 0;	
 }
 
+/* \fn: int Government_read_tax_payments()
+ * \brief Month total, year total of tax revenues.
+ */
 int Government_read_tax_payments()
 {	
 	//Reset the monthly tax counter
@@ -41,7 +47,7 @@ int Government_read_tax_payments()
 }
 
 /* \fn: int Government_read_unemployment_benefit_notifications()
- * \brief Monthly counter of total unemployment benefit payments.
+ * \brief Monthly counter, month total, year total of total unemployment benefit payments.
  */
 int Government_read_unemployment_benefit_notifications()
 {
@@ -84,7 +90,7 @@ int Government_read_unemployment_benefit_notifications()
 }
 
 /* \fn: int Government_read_transfer_notifications()
- * \brief Daily counter
+ * \brief Daily counter, month total, year total.
  */
 int Government_read_transfer_notifications()
 {
@@ -123,7 +129,7 @@ int Government_read_transfer_notifications()
 }
 	
 /* \fn: int Government_read_subsidy_notifications()
- * \brief Daily counter
+ * \brief Daily counter, month total, year total.
  */
 int Government_read_subsidy_notifications()
 {
@@ -160,6 +166,9 @@ int Government_read_subsidy_notifications()
 	return 0;
 }
 
+/* \fn: int Government_send_account_update()
+ * \brief Function to send the payment_account value to the Central Bank.
+ */
 int Government_send_account_update()
 {
 		// At the very end of agent government: update the bank account
@@ -168,14 +177,16 @@ int Government_send_account_update()
 	return 0;
 }
 
-
+/* \fn: int Government_monthly_budget_accounting()
+ * \brief Function to perform accounting at the end of each month.
+ */
 int Government_monthly_budget_accounting()
 {
 	double in, out;
 
 	//Compute the following: the interest rate is the base rate of the Central Bank
-	GOV_INTEREST_RATE = 0.01;
-	//GOV_INTEREST_RATE = CB_BASE_RATE/12;
+	GOV_INTEREST_RATE = (double) 0.05/12.0;
+	//GOV_INTEREST_RATE = CB_BASE_RATE/12.0;
 	
 	//Interest on debt
 		MONTHLY_INTEREST_PAYMENT = (1+GOV_INTEREST_RATE)*TOTAL_DEBT;
@@ -199,8 +210,15 @@ int Government_monthly_budget_accounting()
 	//Compute budget deficit
 		MONTHLY_BUDGET_BALANCE = in - out;
 		
-	//Debt accounting: surplus decreases the debt, deficit increases it
+	//Debt accounting: if the balance>0 debt decreases, if balance<0, debt increases.
+		//Debt>0 means a debt, Debt<0 means a surplus.
 		TOTAL_DEBT -= MONTHLY_BUDGET_BALANCE;
+		PAYMENT_ACCOUNT += MONTHLY_BUDGET_BALANCE;
+		
+		//Check: value of payment account should be equal to total_debt:
+		//if (abs(TOTAL_DEBT + PAYMENT_ACCOUNT))> 0.001)
+		if ((TOTAL_DEBT + PAYMENT_ACCOUNT) =! 0.0)
+		printf("\n ERROR in Government: Total debt is not equal to payment account saldo.");
 		
 	//Monetary policy rule
 		TOTAL_MONEY_FINANCING=0;
@@ -212,13 +230,18 @@ int Government_monthly_budget_accounting()
 		}
 	return 0;
 }
+
+/* \fn: int Government_yearly_budget_accounting()
+ * \brief Function to perform accounting at the end of each year.
+ */
 int Government_yearly_budget_accounting()
 {
 	double in, out;
 
 	//Compute the following:
 	GOV_INTEREST_RATE = 0.05;
-	
+	//GOV_INTEREST_RATE = CB_BASE_RATE;
+
 	//Interest on debt
 	//	YEARLY_INTEREST_PAYMENT = (1+GOV_INTEREST_RATE)*TOTAL_DEBT;
 
@@ -245,6 +268,9 @@ int Government_yearly_budget_accounting()
 	return 0;
 }
 
+/* \fn: int Government_read_data_from_Eurostat()
+ * \brief Function to read data from Eurostat.
+ */
 int Government_read_data_from_Eurostat()
 {
 	int i;
@@ -276,7 +302,9 @@ int Government_read_data_from_Eurostat()
 	return 0;	
 }
 
-
+/* \fn: int Government_set_policy()
+ * \brief Function to set policy rules: income forecast and expenditure budget.
+ */
 int Government_set_policy()
 {	
 /*		
@@ -347,6 +375,9 @@ int Government_set_policy()
 	return 0;
 }
 
+/* \fn: int Government_yearly_resetting()
+ * \brief Yearly resetting of counters
+ */
 int Government_yearly_resetting()
 {
 	//Reset the yearly counters:
@@ -361,7 +392,9 @@ int Government_yearly_resetting()
 	return 0;
 }
 
-
+/* \fn: int Government_monthly_resetting()
+ * \brief Monthly resetting of counters
+ */
 int Government_monthly_resetting()
 {
 	//Reset the yearly counters:
