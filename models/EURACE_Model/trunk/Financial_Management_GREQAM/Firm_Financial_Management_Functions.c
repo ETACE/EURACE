@@ -87,9 +87,11 @@ int Firm_compute_income_statement()
 	
 	PREVIOUS_DIVIDEND_PER_EARNINGS = CURRENT_DIVIDEND_PER_EARNINGS;
 	
-	if (EARNINGS>0.0) {
+	if (EARNINGS>0.0)
+	{
 		CURRENT_DIVIDEND_PER_EARNINGS = TOTAL_DIVIDEND_PAYMENT/EARNINGS;
-	} else
+	}
+	else
 		CURRENT_DIVIDEND_PER_EARNINGS = 0.0;
 
 	return 0;
@@ -203,7 +205,8 @@ int Firm_compute_balance_sheet()
 	//We loop over the malls and sum the value of all local inventory stocks
 	imax = CURRENT_MALL_STOCKS.size;
 	sum=0.0;
-	for (i=0; i<imax; i++) {
+	for (i=0; i<imax; i++)
+	{
 		sum += PRICE*CURRENT_MALL_STOCKS.array[i].current_stock;
 		//When malls have different current_price use this code:
 		//sum += CURRENT_MALL_STOCKS.array[i].current_price * CURRENT_MALL_STOCKS.array[i].current_stock;
@@ -250,7 +253,8 @@ int Firm_compute_total_liquidity_needs()
 	{
 		//printf("Firm_financial_needs, External financing: case 1.");
 		EXTERNAL_FINANCIAL_NEEDS = 0.0;
-	} else
+	}
+	else
 	{
 		//external financing needed
 		EXTERNAL_FINANCIAL_NEEDS = TOTAL_FINANCIAL_NEEDS - PAYMENT_ACCOUNT;
@@ -306,6 +310,8 @@ int Firm_set_bankruptcy_illiquidity()
 	BANKRUPTCY_INSOLVENCY_STATE  = 0;
 	BANKRUPTCY_ILLIQUIDITY_STATE = 1;
 	
+	TOTAL_VALUE_LOCAL_INVENTORY = 0.0;
+	
 	//send msg to malls
 	add_bankruptcy_illiquidity_message(ID);
 		
@@ -330,6 +336,8 @@ int Firm_set_bankruptcy_insolvency()
 	//Type 2: insolvency
 	BANKRUPTCY_INSOLVENCY_STATE  = 1;
 	BANKRUPTCY_ILLIQUIDITY_STATE = 0;
+	
+	TOTAL_VALUE_LOCAL_INVENTORY = 0.0;
 	
 	//send msg to malls
 	add_bankruptcy_insolvency_message(ID);
@@ -361,8 +369,10 @@ int Firm_bankruptcy_insolvency_procedure()
 	double write_off_ratio, target_equity, ipo_amount;
 	
 	//Effect on credit market
+	TOTAL_ASSETS = TOTAL_VALUE_CAPITAL_STOCK;
+
 	//Set the target debt
-	 target_debt = DEBT_RESCALING_FACTOR*(TOTAL_ASSETS-PAYMENT_ACCOUNT);
+	 target_debt = DEBT_RESCALING_FACTOR*TOTAL_ASSETS;
 	
 	//Renegotiating debt: refunding credit, computing bad debt
 	imax = LOANS.size;
@@ -466,19 +476,12 @@ int Firm_bankruptcy_illiquidity_procedure()
 
 /*
  * \fn Firm_bankruptcy_idle_counter()
- * \brief Function to decrease the idle counter by 1 until 0.
+ * \brief Function to decrease the idle counter.
+ *  Note that if the counter has a negative value this means that the financing condition has not been yet satisfied at the end of the default idle period.
  */
 int Firm_bankruptcy_idle_counter()
-{
-	if (BANKRUPTCY_IDLE_COUNTER<0)
-	{
-		printf("\n ERROR: BANKRUPTCY_IDLE_COUNTER<0\n");
-	}	
-	
-	if (BANKRUPTCY_IDLE_COUNTER>0)
-	{
-		BANKRUPTCY_IDLE_COUNTER -= 1;
-	}	
+{	
+	BANKRUPTCY_IDLE_COUNTER -= 1;
 		
 	return 0;
 }
@@ -490,18 +493,13 @@ int Firm_bankruptcy_idle_counter()
 int Firm_reset_bankruptcy_flags()
 {
 	//Add conditions for resetting the active flag to 1:
-	if (BANKRUPTCY_IDLE_COUNTER==0)
+	if ((BANKRUPTCY_IDLE_COUNTER==0)&&(EXTERNAL_FINANCIAL_NEEDS<=0.0))
 	{
 		ACTIVE=1;
-	}
-	
-	//add more conditions here:
-	if (EXTERNAL_FINANCIAL_NEEDS<=0.0)
-	{
 		BANKRUPTCY_INSOLVENCY_STATE  = 0;
 		BANKRUPTCY_ILLIQUIDITY_STATE = 0;
 	}
-	
+		
 	return 0;
 }
 
@@ -567,7 +565,8 @@ int Firm_execute_financial_payments()
 	//step 2: actual interest_payments and installment_payments
 	//Sending installment_message to banks at which the firm has a loan 
 	imax = LOANS.size;
-	for (i=0; i<imax; i++) {
+	for (i=0; i<imax; i++)
+	{
 		//decrease payment_account with the interest_payment
 		temp_interest=LOANS.array[i].interest_rate*LOANS.array[i].loan_value;
 		PAYMENT_ACCOUNT -= temp_interest;
@@ -592,11 +591,10 @@ int Firm_execute_financial_payments()
 				LOANS.array[i].var_per_installment);
 
 		//If nr_periods_before_maturity == 0, remove the loan item
-		if (LOANS.array[i].nr_periods_before_repayment==0) {
+		if (LOANS.array[i].nr_periods_before_repayment==0)
 			remove_debt_item(&LOANS, i);
-		} else {
+		else
 			LOANS.array[i].nr_periods_before_repayment -= 1;
-		}
 
 		//step 3: actual dividend payments
 		//Actual bank account updates are send to the bank at end of day when the firm sends its bank_update message 
