@@ -294,8 +294,8 @@ int Firm_check_financial_and_bankruptcy_state()
 
 /*
  * \fn Firm_set_bankruptcy_illiquidity()
- * \brief Function to set the active flag to 0, start the bankruptcy idle counter,
- *  set the type of bankruptcy to illiquidity. Then go to end_Firm state.
+ * \brief Function to set the type of bankruptcy to illiquidity, set the active flag to 0,
+ *  start the bankruptcy idle counter, and then go to end_Firm state.
  */
 int Firm_set_bankruptcy_illiquidity()
 {
@@ -319,9 +319,126 @@ int Firm_set_bankruptcy_illiquidity()
 }
 
 /*
+ * \fn Firm_in_financial_crisis()
+ * \brief Function to resolve the financial crisis by lowering dividends.
+ */
+int Firm_in_financial_crisis()
+{
+	double payment_account_after_compulsory_payments;
+
+	//Try to resolve the crisis
+
+	//Recompute dividend
+	//Set TOTAL_DIVIDEND_PAYMENT
+	payment_account_after_compulsory_payments = PAYMENT_ACCOUNT
+			- (TOTAL_INTEREST_PAYMENTS + TOTAL_DEBT_INSTALLMENT_PAYMENT
+					+ TAX_PAYMENT);
+	TOTAL_DIVIDEND_PAYMENT = max(0, payment_account_after_compulsory_payments
+			- PRODUCTION_COSTS);
+
+	//Set flag if resolved:
+	if (PAYMENT_ACCOUNT >= TOTAL_INTEREST_PAYMENTS
+			+ TOTAL_DEBT_INSTALLMENT_PAYMENT + TAX_PAYMENT
+			+ TOTAL_DIVIDEND_PAYMENT)
+	{
+		FINANCIAL_CRISIS_STATE=0;
+		BANKRUPTCY_STATE=0;
+	}
+
+	//Set flag if not resolved: payment account remains below total needs
+	/*
+	 if (PAYMENT_ACCOUNT < TOTAL_INTEREST_PAYMENTS + TOTAL_DEBT_INSTALLMENT_PAYMENT + TAX_PAYMENT + TOTAL_DIVIDEND_PAYMENT_REALIZED)
+	 {
+	 FINANCIAL_CRISIS_STATE=0;
+	 BANKRUPTCY_STATE=1;
+	 }
+	 
+	 */
+	return 0;
+}
+
+/*
+ * \fn Firm_not_in_bankruptcy()
+ * \brief Idle function to transit from state Firm_bankruptcy_checked to state Firm_checks_financial_crisis.
+ */
+int Firm_not_in_bankruptcy()
+{	
+	return 0;
+}
+
+/*
+ * \fn Firm_execute_financial_payments()
+ * \brief Function to execute financial payments:
+ *  - tax_payment
+ *  - total_debt_installment_payment
+ *  - total_interest_payments
+ *  - total_dividend_payment
+ * All payments are subtracted from the payment account.
+ * After this, all that is left over on the payment account can be used to pay for factor inputs for production.
+ */
+int Firm_execute_financial_payments()
+{
+
+	//No bankruptcy
+	int imax, i;
+	double temp_interest=0.0;
+	//step 1: actual tax_payment to government
+	add_tax_payment_message(GOV_ID, TAX_PAYMENT);
+	PAYMENT_ACCOUNT -= TAX_PAYMENT;
+
+	//step 2: actual interest_payments and installment_payments
+	//Sending installment_message to banks at which the firm has a loan 
+	imax = LOANS.size;
+	for (i=0; i<imax; i++)
+	{
+		//decrease payment_account with the interest_payment
+		temp_interest=LOANS.array[i].interest_rate*LOANS.array[i].loan_value;
+		PAYMENT_ACCOUNT -= temp_interest;
+
+		//decrease payment_account with the installment payment
+		PAYMENT_ACCOUNT -= LOANS.array[i].installment_amount;
+
+		//decrease the value of the loan with the debt_installment_payment:
+		LOANS.array[i].loan_value -= LOANS.array[i].installment_amount;
+		//printf("Now subtracted debt_installment_payment from loan_value: %f (new value:%f).\n", LOANS.array[i].debt_installment_payment, LOANS.array[i].loan_value);
+
+		//decrease the residual_var of the loan with the var_per_installment:
+		LOANS.array[i].residual_var -= LOANS.array[i].var_per_installment;
+
+		//Sending debt_installment_payment_msg to all banks at which the firm has a loan
+		//Note: this message is to be separated from the general bank_account_update_message send at the end of the period
+		//to the firm's deposit bank (the banks at which the firm has loans is a different one than the bank at which the firm has deposits).
+
+		//add_debt_installment_message(bank_id, installment_amount, interest_amount, credit_refunded, var_per_installment)
+		add_installment_message(LOANS.array[i].bank_id,
+				LOANS.array[i].installment_amount, temp_interest,
+				LOANS.array[i].var_per_installment);
+
+		//If nr_periods_before_maturity == 0, remove the loan item
+		if (LOANS.array[i].nr_periods_before_repayment==0)
+			remove_debt_item(&LOANS, i);
+		else
+			LOANS.array[i].nr_periods_before_repayment -= 1;
+
+		//step 3: actual dividend payments
+		//Actual bank account updates are send to the bank at end of day when the firm sends its bank_update message 
+
+		//add dividend_per_share_msg(firm_id, current_dividend_per_share) to shareholders (dividend per share)     
+		CURRENT_DIVIDEND_PER_SHARE = TOTAL_DIVIDEND_PAYMENT
+				/CURRENT_SHARES_OUTSTANDING;
+		add_dividend_per_share_message(ID, CURRENT_DIVIDEND_PER_SHARE);
+
+		//decrease payment_account with the total_dividend_payment
+		PAYMENT_ACCOUNT -= TOTAL_DIVIDEND_PAYMENT;
+	}
+
+	return 0;
+}
+
+/*
  * \fn Firm_set_bankruptcy_insolvency()
- * \brief Function to set the active flag to 0, start the bankruptcy idle counter,
- *  set the type of bankruptcy to insolvency. Then go to end_Firm state.
+ * \brief Function to set the type of bankruptcy to insolvency, set the active flag to 0,
+ *  start the bankruptcy idle counter, and then go to end_Firm state.
  *  
  */
 int Firm_set_bankruptcy_insolvency()
@@ -346,21 +463,11 @@ int Firm_set_bankruptcy_insolvency()
 }
 
 /*
- * \fn Firm_not_in_bankruptcy()
- * \brief Idle function.
- */
-int Firm_not_in_bankruptcy()
-{	
-	return 0;
-}
-
-
-/*
  * \fn Firm_bankruptcy_insolvency_procedure()
  * \brief Function to process the bankruptcy condition in case of insolvency.
- *  Sends a bankruptcy_message from the firm to all banks at which the firm has a loan.
- *  Write-off of bad debt on the bank's balance sheet.
- *  New equity is raised by an equity issue on AFM according to a targetted leverage ratio.
+ *  Send a bankruptcy_message to all banks at which the firm has a loan.
+ *  Write-off bad debt on the balance sheet of the bank.
+ *  Raise new equity by a issuing nes shares on the AFM, following a target leverage ratio (target debt/target equity).
  */
 int Firm_bankruptcy_insolvency_procedure()
 {
@@ -436,8 +543,8 @@ int Firm_bankruptcy_insolvency_procedure()
 /*
  * \fn Firm_bankruptcy_illiquidity_procedure()
  * \brief Function to process the bankruptcy condition in case of illiquidity.
- *  There is no writeoff of bad debt on the bank's balance sheet.
- *  New equity is raised by an equity issue on AFM according to a targetted liquidity ratio.
+ *  There is no write-off of bad debt on the balance sheet of the banks.
+ *  Raise new equity by a issuing new shares on the AFM according to a target liquidity ratio.
  */
 int Firm_bankruptcy_illiquidity_procedure()
 {	
@@ -476,8 +583,8 @@ int Firm_bankruptcy_illiquidity_procedure()
 
 /*
  * \fn Firm_bankruptcy_idle_counter()
- * \brief Function to decrease the idle counter.
- *  Note that if the counter has a negative value this means that the financing condition has not been yet satisfied at the end of the default idle period.
+ * \brief Function to decrease the bankruptcy_idle_counter.
+ *  Note that a negative count means the financing condition has not been yet satisfied at the end of the default idle period.
  */
 int Firm_bankruptcy_idle_counter()
 {	
@@ -500,114 +607,6 @@ int Firm_reset_bankruptcy_flags()
 		BANKRUPTCY_ILLIQUIDITY_STATE = 0;
 	}
 		
-	return 0;
-}
-
-/*
- * \fn Firm_in_financial_crisis()
- * \brief Function to resolve the financial crisis by lowering dividends.
- */
-int Firm_in_financial_crisis()
-{
-	double payment_account_after_compulsory_payments;
-
-	//Try to resolve the crisis
-
-	//Recompute dividend
-	//Set TOTAL_DIVIDEND_PAYMENT
-	payment_account_after_compulsory_payments = PAYMENT_ACCOUNT
-			- (TOTAL_INTEREST_PAYMENTS + TOTAL_DEBT_INSTALLMENT_PAYMENT
-					+ TAX_PAYMENT);
-	TOTAL_DIVIDEND_PAYMENT = max(0, payment_account_after_compulsory_payments
-			- PRODUCTION_COSTS);
-
-	//Set flag if resolved:
-	if (PAYMENT_ACCOUNT >= TOTAL_INTEREST_PAYMENTS
-			+ TOTAL_DEBT_INSTALLMENT_PAYMENT + TAX_PAYMENT
-			+ TOTAL_DIVIDEND_PAYMENT)
-	{
-		FINANCIAL_CRISIS_STATE=0;
-		BANKRUPTCY_STATE=0;
-	}
-
-	//Set flag if not resolved: payment account remains below total needs
-	/*
-	 if (PAYMENT_ACCOUNT < TOTAL_INTEREST_PAYMENTS + TOTAL_DEBT_INSTALLMENT_PAYMENT + TAX_PAYMENT + TOTAL_DIVIDEND_PAYMENT_REALIZED)
-	 {
-	 FINANCIAL_CRISIS_STATE=0;
-	 BANKRUPTCY_STATE=1;
-	 }
-	 
-	 */
-	return 0;
-}
-
-/*
- * \fn Firm_execute_financial_payments()
- * \brief Function to execute financial payments:
- *  - tax_payment
- *  - total_debt_installment_payment
- *  - total_interest_payments
- *  - total_dividend_payment
- * The payments are all subtracted from the payment account.
- * After this, all that is left over on the payment account can be used to pay for factor inputs for production.
- */
-int Firm_execute_financial_payments()
-{
-
-	//No bankruptcy
-	int imax, i;
-	double temp_interest=0.0;
-	//step 1: actual tax_payment to government
-	add_tax_payment_message(GOV_ID, TAX_PAYMENT);
-	PAYMENT_ACCOUNT -= TAX_PAYMENT;
-
-	//step 2: actual interest_payments and installment_payments
-	//Sending installment_message to banks at which the firm has a loan 
-	imax = LOANS.size;
-	for (i=0; i<imax; i++)
-	{
-		//decrease payment_account with the interest_payment
-		temp_interest=LOANS.array[i].interest_rate*LOANS.array[i].loan_value;
-		PAYMENT_ACCOUNT -= temp_interest;
-
-		//decrease payment_account with the installment payment
-		PAYMENT_ACCOUNT -= LOANS.array[i].installment_amount;
-
-		//decrease the value of the loan with the debt_installment_payment:
-		LOANS.array[i].loan_value -= LOANS.array[i].installment_amount;
-		//printf("Now subtracted debt_installment_payment from loan_value: %f (new value:%f).\n", LOANS.array[i].debt_installment_payment, LOANS.array[i].loan_value);
-
-		//decrease the residual_var of the loan with the var_per_installment:
-		LOANS.array[i].residual_var -= LOANS.array[i].var_per_installment;
-
-		//Sending debt_installment_payment_msg to all banks at which the firm has a loan
-		//Note: this message is to be separated from the general bank_account_update_message send at the end of the period
-		//to the firm's deposit bank (the banks at which the firm has loans is a different one than the bank at which the firm has deposits).
-
-		//add_debt_installment_message(bank_id, installment_amount, interest_amount, credit_refunded, var_per_installment)
-		add_installment_message(LOANS.array[i].bank_id,
-				LOANS.array[i].installment_amount, temp_interest,
-				LOANS.array[i].var_per_installment);
-
-		//If nr_periods_before_maturity == 0, remove the loan item
-		if (LOANS.array[i].nr_periods_before_repayment==0)
-			remove_debt_item(&LOANS, i);
-		else
-			LOANS.array[i].nr_periods_before_repayment -= 1;
-
-		//step 3: actual dividend payments
-		//Actual bank account updates are send to the bank at end of day when the firm sends its bank_update message 
-
-		//add dividend_per_share_msg(firm_id, current_dividend_per_share) to shareholders (dividend per share)     
-		CURRENT_DIVIDEND_PER_SHARE = TOTAL_DIVIDEND_PAYMENT
-				/CURRENT_SHARES_OUTSTANDING;
-		add_dividend_per_share_message(ID, CURRENT_DIVIDEND_PER_SHARE);
-
-		//decrease payment_account with the total_dividend_payment
-		PAYMENT_ACCOUNT -= TOTAL_DIVIDEND_PAYMENT;
-	}
-
 	return 0;
 }
 
