@@ -129,11 +129,11 @@ void cumsum(double * p, int size, double * cumsum)
 }
 
 //void cumpdf(double * p, int size, double * cpdf)
-//Cummulative probability density function.
+//Cumulative probability density function.
 //p: probability vector (can be non-scaled, i.e. probabilities need not add up to 1).
 //size: number of elements, size of array p, cpdf
 //Given a vector of probabilities p, the cumulative pdf is given by
-//the normalized values in the cummulative sum:
+//the normalized values in the cumulative sum:
 //  cpdf = cumsum(p)/sum(p);
 //
 //USAGE:
@@ -181,13 +181,13 @@ void cumpdf(double * p, int size, double * cpdf)
 
 /*
  * \fn: int draw(int size, double * cpdf)
- * \bief: Draws a random number according to the inversion method, using the cummulative probability density function cpdf.
+ * \bief: Draws a random number according to the inversion method, using the cumulative probability density function cpdf.
  * Draw() returns the bin number associated to a uniform random u. Note that the bin index is 0-indexed.
  * 
- * Given a cummulative pdf F(.), the random number u belongs to bin j if and only if F(j-1) <= u < F(j).
+ * Given a cumulative pdf F(.), the random number u belongs to bin j if and only if F(j-1) <= u < F(j).
  * 
  * int size: size of the array cpdf
- * double cpdf: cummulative probability density function
+ * double cpdf: cumulative probability density function
  */
 //USAGE:
 //Before calling:
@@ -394,7 +394,7 @@ void draw_without_replacement(int size, double * pdf, int nr_draws, int * draws)
  
 //void draw_with_replacement(int size, double * pdf, int nr_draws, double * draws)
 //Drawing nr_draws random numbers (integers) with replacement
-//from the cummulative probability density function cpdf.
+//from the cumulative probability density function cpdf.
 //size: size of cpdf
 //pdf: pdf to sample from
 //nr_draws: number of draws

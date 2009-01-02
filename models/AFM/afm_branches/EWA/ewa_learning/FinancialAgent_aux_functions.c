@@ -186,7 +186,9 @@ void election(int size, double * offspring_1, double * offspring_2, double * par
 }
 
 
-
+/* \fn void GA_selection(int N_pairs, int * parent_index_1, int * parent_index_2, int * rule_id_1, int * rule_id_2)
+ * \brief GA_selection operator.
+ */
 void GA_selection(int N_pairs, int * parent_index_1, int * parent_index_2, int * rule_id_1, int * rule_id_2)
 {
 	int j, index;
@@ -318,7 +320,10 @@ void GA_selection(int N_pairs, int * parent_index_1, int * parent_index_2, int *
  	free(draws);
 }
 
-
+/* \fn void GA_reproduction(int size, int id1, int id2, double * offspring_1, double * offspring_2)
+ * \brief GA_reproduction operator. Applies the cross-over operation to the parent string pair k=0,...,N_pairs,
+ * using either single_point_cross_over or two_point_cross_over. 
+ */
 void GA_reproduction(int size, int id1, int id2, double * offspring_1, double * offspring_2)
 {
 	int k, j;
@@ -376,7 +381,8 @@ void GA_reproduction(int size, int id1, int id2, double * offspring_1, double * 
 		   		     printf("\n In GA_reproduction: cross_point = %d, cross_length = %d\n", cross_point, cross_length);
 		   	     }
 
-				two_point_cross_over(size, offspring_1, offspring_2, cross_point, cross_length);
+				//two_point_cross_over(size, offspring_1, offspring_2, cross_point, cross_length);
+				two_point_cross_over_alt(size, offspring_1, offspring_2, cross_point, cross_length);
 			}
 		}
 		else
@@ -398,6 +404,10 @@ void GA_reproduction(int size, int id1, int id2, double * offspring_1, double * 
 	/*********************** End of Reproduction function **************************************************/
 }
 
+/* \fn void GA_mutation(int size, double * offspring_1, double * offspring_2)
+ * \brief GA_mutation operator. Applies the mutation operator to both offspring strings in the pair k=0,...,N_pairs,
+ * using a random mutation range within the mutation interval and a given stepsize for each bit position.
+ */
 void GA_mutation(int size, double * offspring_1, double * offspring_2)
 {
 	int j;
@@ -425,6 +435,9 @@ void GA_mutation(int size, double * offspring_1, double * offspring_2)
 	/*********************** End of Mutation function ****************************************************/
 }
 
+/* \fn void GA_election(int size, int id1, int id2, double * offspring_1, double * offspring_2)
+ * \brief GA_election operator. Selects the best out of 4 strings: 2 parent strings and 2 offspring strings.
+ */
 void GA_election(int size, int id1, int id2, double * offspring_1, double * offspring_2)
 {
 	int k;
@@ -461,14 +474,16 @@ void GA_election(int size, int id1, int id2, double * offspring_1, double * offs
  	free(parent_2);
 }
 
+/* \fn void GA_reinsertion(int size, int id1, int id2, double * offspring_1, double * offspring_2)
+ * \brief Reinserts the new strings into a temporary candidate population that replaces the previous generation.
+ * This means that we copy the rule parameters into the classifier system.
+ */
 void GA_reinsertion(int size, int id1, int id2, double * offspring_1, double * offspring_2)
 {
 	int k;
 	
     /*********************** Start of Reinsertion function ****************************************************/
-	//void GA_reinsertion() : applies to each pair
 	//5. Finally, add the new strings to the population to replace the old ones
-	//This means: copy the parameters into the classifier system
 	for (k=0; k<size; k++)
 	{
 		PUBLIC_CLASSIFIERSYSTEM_CANDIDATES.ruletable[id1].parameters[k] = offspring_1[k];
@@ -478,8 +493,12 @@ void GA_reinsertion(int size, int id1, int id2, double * offspring_1, double * o
 }
 
 /* \fn: void GA_copy_parents_to_candidates()
- * \brief: Function to copy parent population into the candidate population, to be used as temporary storage for the offspring.
- * All rule parameters from the classifier system PUBLIC_CLASSIFIERSYSTEM are copied into PUBLIC_CLASSIFIERSYSTEM_CANDIDATES.
+ * \brief: Function to copy the original population of parent strings into a temporary candidate population.
+ * The genetic operations use the information from the original population, storing the results
+ * in the candidate population. This is in order to prevent contamination of the parent population by
+ * intermediate mutation or cross-over operations, to emulate that all GA operations occur in parallel.
+ * More specifically, all rule parameters from the classifier system PUBLIC_CLASSIFIERSYSTEM are copied
+ * into PUBLIC_CLASSIFIERSYSTEM_CANDIDATES.
  */
 void GA_copy_parents_to_candidates()
 {
@@ -494,7 +513,8 @@ void GA_copy_parents_to_candidates()
 }
 
 /* \fn: void GA_copy_candidates_to_parents()
- * \brief: Function to copy candidate population into the parent population, and replace the original parents.
+ * \brief: Function to copy the candidate population into the parent population, thereby overwriting the original parent strings.
+ * This is the final operation after all genetic operators have been applied to the strings. At the end the candiate strings should replace the original strings.
  * All rule parameters from the classifier system PUBLIC_CLASSIFIERSYSTEM_CANDIDATES are copied into PUBLIC_CLASSIFIERSYSTEM.
  */
 void GA_copy_candidates_to_parents()

@@ -9,19 +9,17 @@
    <variable>
     <type>double</type>
     <name>debt_rescaling_factor</name>
-    <description>The debt_rescaling_factor $\omega$ is used in case of a firm bankruptcy to rescale the debt. This is a process of debt-to-equity transformation. It sets the target debt level in relation to the value of total assets: $L^*=\omega A^*$.&#xd;&#xd;
-The firm will not refund all of its loans completely, but will write off every loan with a certain ratio: $w_j = (1-L^*/L)L_j$ for loan j.&#xd;&#xd;
-The fraction $(1-L^*/L)$ is the write-off ratio, and $w_j$ is the monetary amount of the write-off for loan j.</description>
+    <description>The debt rescaling factor $\omega$ is used in case of a firm bankruptcy to rescale the debt. This is a process of debt-to-equity transformation. It sets the target debt level in relation to the value of total assets: $L^*=\omega A^*$. The firm will not refund all of its loans completely, but will write off every loan with a certain ratio: $w_j = (1-L^*/L)L_j$ for loan $j$. The fraction $(1-L^*/L)$ is the write-off ratio, and $w_j$ is the monetary amount of the write-off for loan $j$.</description>
    </variable>
    <variable>
     <type>double</type>
     <name>target_leverage_ratio</name>
-    <description>The target leverage ratio is the proportion of the target debt to target equity: $\ell = L^*/E^*$. This determines the target equity level as $E^*= (1/ell) L^*$ and sets the IPO amount that the firm should raise on the financial market.</description>
+    <description>The target leverage ratio is the proportion of the target debt to target equity: $\ell = L^*/E^*$. This determines the target equity level as $E^*= (1/\ell) L^*$ and sets the amount of equity that the firm should raise on the financial market.</description>
    </variable>
    <variable>
     <type>double</type>
     <name>target_liquidity_ratio</name>
-    <description>The target liquidity ratio is a parameter used in the case of firm bankruptcy due to illquidity. The amount of equity to raise on the AFM equals $\alpha (F-P)$, where $alpha$ is the target liquidity ratio, F are the financial commitments, and P is the payment account.</description>
+    <description>The target liquidity ratio is a parameter used in the case of firm bankruptcy due to illiquidity. The amount of equity to raise on the AFM equals $\alpha (F-P)$, where $\alpha$ is the target liquidity ratio, F are the financial commitments, and P is the payment account.</description>
    </variable>
   </constants>
   <functionFiles>
@@ -52,68 +50,42 @@ The fraction $(1-L^*/L)$ is the write-off ratio, and $w_j$ is the monetary amoun
      <variable>
       <type>int</type>
       <name>bank_id</name>
-      <description>Bank providing the loan</description>
+      <description>Bank providing the loan.</description>
      </variable>
      <variable>
       <type>double</type>
       <name>loan_value</name>
-      <description>Current value of the loan</description>
+      <description>Current value of the loan (initial value minus debt installments).</description>
      </variable>
      <variable>
       <type>double</type>
       <name>interest_rate</name>
-      <description>Fixed interest rate per month</description>
+      <description>Fixed interest rate per month.</description>
      </variable>
      <variable>
       <type>double</type>
       <name>installment_amount</name>
-      <description>Fixed installment payment due per month</description>
+      <description>Fixed installment payment due per month.</description>
      </variable>
      <variable>
       <type>double</type>
       <name>var_per_installment</name>
-      <description>Value-at-risk subtracted from the residual value-at-risk at each installment</description>
+      <description>Value-at-risk subtracted from the residual value-at-risk at each installment.</description>
      </variable>
      <variable>
       <type>double</type>
       <name>residual_var</name>
-      <description>Residual value-at-risk, decreases gradually</description>
+      <description>Residual value-at-risk, decreases gradually.</description>
      </variable>
      <variable>
       <type>double</type>
       <name>bad_debt</name>
-      <description>Bad debt that is not refunded to bank in case of a firm bankruptcy</description>
+      <description>Bad debt that is not refunded to bank in case of a firm bankruptcy.</description>
      </variable>
      <variable>
       <type>int</type>
       <name>nr_periods_before_repayment</name>
-      <description>The number of periods before full repayment of the loan is due</description>
-     </variable>
-    </variables>
-   </dataType>
-   <dataType>
-    <name>capital_stock_item</name>
-    <description></description>
-    <variables>
-     <variable>
-      <type>double</type>
-      <name>units</name>
-      <description>Units of capital</description>
-     </variable>
-     <variable>
-      <type>double</type>
-      <name>purchase_price</name>
-      <description>Original purchasing price, used to determine the value</description>
-     </variable>
-     <variable>
-      <type>double</type>
-      <name>productivity</name>
-      <description>The productivity of the capital</description>
-     </variable>
-     <variable>
-      <type>double</type>
-      <name>depreciation_units_per_period</name>
-      <description>Discrete depreciation in units of capital per period</description>
+      <description>The number of periods left before full repayment of the loan is due.</description>
      </variable>
     </variables>
    </dataType>
@@ -329,11 +301,6 @@ The fraction $(1-L^*/L)$ is the write-off ratio, and $w_j$ is the monetary amoun
      <name>total_interest_payments</name>
      <description></description>
     </variable>
-    <variable>
-     <type>double</type>
-     <name>ipo_amount</name>
-     <description>The IPO amount is the amount of money $m$ that a firm needs to raise in case of a bankruptcy. The target amount $m=\max\{0, (1+1/\ell)L^* - A\}$.</description>
-    </variable>
    </memory>
    <functions>
     <function>
@@ -378,7 +345,9 @@ The fraction $(1-L^*/L)$ is the write-off ratio, and $w_j$ is the monetary amoun
     </function>
     <function>
      <name>Firm_set_bankruptcy_insolvency</name>
-     <description>Function to set the bankruptcy condition to insolvency, and go to end_Firm state..</description>
+     <description>Function to set the type of bankruptcy to `insolvency' and go to end_Firm state.&#xd;&#xd;&#xd;
+Also sets the active flag to 0 and starts the bankruptcy idle counter.&#xd;&#xd;&#xd;
+</description>
      <currentState>Firm_Bankruptcy_check</currentState>
      <nextState>Firm_End_Financial_Management_Role</nextState>
      <condition>
@@ -474,7 +443,8 @@ The fraction $(1-L^*/L)$ is the write-off ratio, and $w_j$ is the monetary amoun
     </function>
     <function>
      <name>Firm_set_bankruptcy_illiquidity</name>
-     <description>Function to set the bankruptcy contition to illiquidity, and go to end_Firm state.</description>
+     <description>unction to set the type of bankruptcy to `illiquidity' and then go to end_Firm state.&#xd;&#xd;&#xd;
+Also sets the active flag to 0 and starts the bankruptcy idle counter.</description>
      <currentState>Firm_bankruptcy_checked</currentState>
      <nextState>Firm_End_Financial_Management_Role</nextState>
      <condition>
@@ -495,7 +465,7 @@ The fraction $(1-L^*/L)$ is the write-off ratio, and $w_j$ is the monetary amoun
     </function>
     <function>
      <name>Firm_in_financial_crisis</name>
-     <description>Function to resolve the financial crisis by lowering dividends.</description>
+     <description>Function to resolve the financial crisis by reducing dividends.</description>
      <currentState>Firm_checks_financial_crisis</currentState>
      <nextState>Firm_End_External_Financing</nextState>
      <condition>
@@ -512,7 +482,7 @@ The fraction $(1-L^*/L)$ is the write-off ratio, and $w_j$ is the monetary amoun
     </function>
     <function>
      <name>Firm_not_in_bankruptcy</name>
-     <description>Function to resolve the financial crisis by lowering dividends.</description>
+     <description>Idle function to transit from state Firm_bankruptcy_checked to state Firm_checks_financial_crisis.</description>
      <currentState>Firm_bankruptcy_checked</currentState>
      <nextState>Firm_checks_financial_crisis</nextState>
      <condition>
@@ -602,7 +572,7 @@ The fraction $(1-L^*/L)$ is the write-off ratio, and $w_j$ is the monetary amoun
     </function>
     <function>
      <name>Firm_send_subsidy_notification</name>
-     <description></description>
+     <description>Function to send a subsidy_notification_message to the government.</description>
      <currentState>Firm_Start_Public_Sector_Role</currentState>
      <nextState>005</nextState>
      <inputs/>
@@ -614,7 +584,7 @@ The fraction $(1-L^*/L)$ is the write-off ratio, and $w_j$ is the monetary amoun
     </function>
     <function>
      <name>Firm_send_transfer_notification</name>
-     <description></description>
+     <description>Function to send a transfer_notification_message to the government.</description>
      <currentState>005</currentState>
      <nextState>Firm_End_Financial_Management</nextState>
      <inputs/>
@@ -626,10 +596,7 @@ The fraction $(1-L^*/L)$ is the write-off ratio, and $w_j$ is the monetary amoun
     </function>
     <function>
      <name>Firm_bankruptcy_insolvency_procedure</name>
-     <description>Function to process the bankruptcy condition in case of insolvency.&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-Sends a bankruptcy_message from the firm to all banks at which the firm has a loan.&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-Write-down of bad debt on the bank's balance sheet.&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-New equity is raised by an equity issue on AFM according to a targetted leverage ratio.</description>
+     <description>Function to process the bankruptcy condition in case of insolvency.</description>
      <currentState>Firm_not_active</currentState>
      <nextState>Firm_bankrupty_state_1</nextState>
      <condition>
@@ -653,9 +620,7 @@ New equity is raised by an equity issue on AFM according to a targetted leverage
     </function>
     <function>
      <name>Firm_bankruptcy_illiquidity_procedure</name>
-     <description>Function to process the bankruptcy condition in case of illiquidity.&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-There is no write-down of bad debt on the bank's balance sheet.&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
- New equity is raised by an equity issue on AFM according to a targetted liquidity ratio.</description>
+     <description>Function to process the bankruptcy condition in case of illiquidity.</description>
      <currentState>Firm_not_active</currentState>
      <nextState>Firm_bankrupty_state_1</nextState>
      <condition>
@@ -688,7 +653,8 @@ There is no write-down of bad debt on the bank's balance sheet.&#xd;&#xd;&#xd;&#
     </function>
     <function>
      <name>Firm_bankruptcy_idle_counter</name>
-     <description>Decrease the idle counter by 1.</description>
+     <description>Function to decrease the bankruptcy_idle_counter by 1.&#xd;&#xd;&#xd;
+Note that a negative count means the financing condition has not been yet satisfied at the end of the default idle period.</description>
      <currentState>start_Firm</currentState>
      <nextState>Firm_not_active</nextState>
      <condition>
@@ -755,7 +721,7 @@ There is no write-down of bad debt on the bank's balance sheet.&#xd;&#xd;&#xd;&#
     </function>
     <function>
      <name>Firm_reset_bankruptcy_flags</name>
-     <description></description>
+     <description>Function to reset the bankruptcy flags when the bankruptcy process has finished.</description>
      <currentState>Firm_bankrupty_state_3</currentState>
      <nextState>end_Firm</nextState>
      <inputs/>

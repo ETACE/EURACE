@@ -27,7 +27,7 @@ int Government_send_policy_announcements()
 }
 
 /* \fn: int Government_read_tax_payments()
- * \brief Month total, year total of tax revenues.
+ * \brief Function to read the tax revenues and store the monthly and yearly totals.
  */
 int Government_read_tax_payments()
 {	
@@ -47,7 +47,7 @@ int Government_read_tax_payments()
 }
 
 /* \fn: int Government_read_unemployment_benefit_notifications()
- * \brief Monthly counter, month total, year total of total unemployment benefit payments.
+ * \brief Counter of the unemployment benefit messages, monthly and yearly totals of the unemployment benefit payments.
  */
 int Government_read_unemployment_benefit_notifications()
 {
@@ -90,7 +90,7 @@ int Government_read_unemployment_benefit_notifications()
 }
 
 /* \fn: int Government_read_transfer_notifications()
- * \brief Daily counter, month total, year total.
+ * \brief Counter of the transfer notification messages, monthly and yearly totals of the transfer payments.
  */
 int Government_read_transfer_notifications()
 {
@@ -129,7 +129,7 @@ int Government_read_transfer_notifications()
 }
 	
 /* \fn: int Government_read_subsidy_notifications()
- * \brief Daily counter, month total, year total.
+ * \brief Counter of the subsidy notification messages, monthly and yearly totals of the subsidy payments.
  */
 int Government_read_subsidy_notifications()
 {
@@ -376,7 +376,7 @@ int Government_set_policy()
 }
 
 /* \fn: int Government_yearly_resetting()
- * \brief Yearly resetting of counters
+ * \brief Yearly resetting of counters.
  */
 int Government_yearly_resetting()
 {
@@ -393,7 +393,7 @@ int Government_yearly_resetting()
 }
 
 /* \fn: int Government_monthly_resetting()
- * \brief Monthly resetting of counters
+ * \brief Monthly resetting of counters.
  */
 int Government_monthly_resetting()
 {

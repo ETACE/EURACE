@@ -9,22 +9,22 @@
    <variable>
     <type>double</type>
     <name>gov_policy_unemployment_benefit_pct</name>
-    <description>Parameter that sets the unemployment benefit as a fraction of last labour income.</description>
+    <description>Parameter to set the net replacement rate (the unemployment benefit as a fraction of last labour income).</description>
    </variable>
    <variable>
     <type>double</type>
     <name>gov_policy_money_financing_fraction</name>
-    <description>Parameter that sets the fraction of the budget deficit that is financed using money financing.</description>
+    <description>Parameter to set the fraction of the budget deficit to be financed by money financing.</description>
    </variable>
    <variable>
     <type>double</type>
     <name>gov_policy_gdp_fraction_consumption</name>
-    <description>Parameter that sets the government consumption expenditure as a fraction of GDP.</description>
+    <description>Parameter to set government consumption expenditure as a fraction of GDP.</description>
    </variable>
    <variable>
     <type>double</type>
     <name>gov_policy_gdp_fraction_investment</name>
-    <description>Parameter that sets the government investment expenditure as a fraction of GDP.</description>
+    <description>Parameter to set government investment expenditure as a fraction of GDP.</description>
    </variable>
   </constants>
   <functionFiles>
@@ -308,7 +308,7 @@
     </function>
     <function>
      <name>Government_send_policy_announcements</name>
-     <description></description>
+     <description>Function to send the yearly policy announcement message.</description>
      <currentState>start_Government</currentState>
      <nextState>Gov_Start_Bond_Market</nextState>
      <condition>
@@ -326,7 +326,7 @@
     </function>
     <function>
      <name>Government_read_tax_payments</name>
-     <description></description>
+     <description>Function to read the tax revenues and store the monthly and yearly totals.</description>
      <currentState>01</currentState>
      <nextState>02</nextState>
      <inputs>
@@ -347,7 +347,7 @@
     </function>
     <function>
      <name>Government_read_subsidy_notifications</name>
-     <description></description>
+     <description>Counter of the \url{subsidy_notification} messages, monthly and yearly totals of the subsidy payments.</description>
      <currentState>02</currentState>
      <nextState>03</nextState>
      <inputs>
@@ -380,7 +380,7 @@
     </function>
     <function>
      <name>Government_read_transfer_notifications</name>
-     <description></description>
+     <description>Counter of the \url{transfer_notification} messages, monthly and yearly totals of the transfer payments.</description>
      <currentState>03</currentState>
      <nextState>04</nextState>
      <inputs>
@@ -413,7 +413,7 @@
     </function>
     <function>
      <name>Government_read_unemployment_benefit_notifications</name>
-     <description></description>
+     <description>Counter of the \url{unemployment} messages, monthly and yearly totals of the unemployment benefit payments.</description>
      <currentState>04</currentState>
      <nextState>Gov_Start_Monthly_Loop</nextState>
      <inputs>
@@ -450,7 +450,7 @@
     </function>
     <function>
      <name>Government_monthly_budget_accounting</name>
-     <description></description>
+     <description>Function to perform accounting at the end of each month.</description>
      <currentState>Gov_Start_Monthly_Loop</currentState>
      <nextState>05</nextState>
      <condition>
@@ -464,7 +464,7 @@
     </function>
     <function>
      <name>Government_send_account_update</name>
-     <description></description>
+     <description>Function to send the payment_account value to the Central Bank.</description>
      <currentState>06</currentState>
      <nextState>Gov_Start_Yearly_Loop</nextState>
      <inputs/>
@@ -476,7 +476,7 @@
     </function>
     <function>
      <name>Government_read_data_from_Eurostat</name>
-     <description></description>
+     <description>Function to read data from Eurostat.</description>
      <currentState>07</currentState>
      <nextState>08</nextState>
      <inputs>
@@ -488,7 +488,7 @@
     </function>
     <function>
      <name>Government_set_policy</name>
-     <description></description>
+     <description>Function to set policy rules: income forecast and expenditure budget.</description>
      <currentState>08</currentState>
      <nextState>09</nextState>
      <inputs/>
@@ -496,7 +496,7 @@
     </function>
     <function>
      <name>Government_yearly_resetting</name>
-     <description></description>
+     <description>Yearly resetting of counters.</description>
      <currentState>09</currentState>
      <nextState>end_Government</nextState>
      <inputs/>
@@ -520,7 +520,7 @@
     </function>
     <function>
      <name>Government_yearly_budget_accounting</name>
-     <description></description>
+     <description>Function to perform accounting at the end of each year.</description>
      <currentState>Gov_Start_Yearly_Loop</currentState>
      <nextState>07</nextState>
      <condition>
@@ -534,7 +534,7 @@
     </function>
     <function>
      <name>Government_monthly_resetting</name>
-     <description></description>
+     <description>Monthly resetting of counters.</description>
      <currentState>05</currentState>
      <nextState>06</nextState>
      <inputs/>

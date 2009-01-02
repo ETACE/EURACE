@@ -637,7 +637,7 @@
     </function>
     <function>
      <name>Firm_read_policy_announcements</name>
-     <description></description>
+     <description>Function to read the policy_announcements from Governments.</description>
      <currentState>Firm_is_active</currentState>
      <nextState>Firm_Start_Macro_Data</nextState>
      <condition>
@@ -664,7 +664,7 @@
     </function>
     <function>
      <name>Firm_receive_data</name>
-     <description>The firm reads the messages from the eurostat agent &#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+     <description>Function to read the messages from the eurostat agent.&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
 and stores the needed data.</description>
      <currentState>Firm_Start_Macro_Data</currentState>
      <nextState>Firm_End_Macro_Data</nextState>
@@ -708,7 +708,7 @@ and stores the needed data.</description>
     </function>
     <function>
      <name>Firm_send_data_to_Eurostat</name>
-     <description>Firm sends message to the eurostat agent &#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+     <description>Function to send a data_message to the eurostat agent.&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
 including several micro data.</description>
      <currentState>Firm_End_Financial_Management_Role</currentState>
      <nextState>15</nextState>
@@ -887,7 +887,7 @@ including several micro data.</description>
     </function>
     <function>
      <name>Household_receive_data</name>
-     <description>The household reads the messages from the eurostat agent &#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+     <description>The household reads the messages from the eurostat agent &#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
 and stores the needed data.</description>
      <currentState>Start_Household_Policy_Data</currentState>
      <nextState>start_Household_financial_market_role</nextState>
@@ -918,7 +918,7 @@ and stores the needed data.</description>
     </function>
     <function>
      <name>Household_send_data_to_Eurostat</name>
-     <description>Household sends message to the eurostat agent &#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+     <description>Household sends message to the eurostat agent &#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
 including several micro data.</description>
      <currentState>15</currentState>
      <nextState>end_Household</nextState>
@@ -1970,7 +1970,13 @@ including several micro data.</description>
   </message>
   <message>
    <name>mall_data</name>
-   <description>Sent by mall. Mall informs Eurostat about exports between regions. &#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+   <description>Sent by mall. Mall informs Eurostat about exports between regions.
+
+
+
+
+
+
 </description>
    <variables>
     <variable>
@@ -2007,7 +2013,7 @@ including several micro data.</description>
   </message>
   <message>
    <name>eurostat_send_specific_skills</name>
-   <description>Sent by eurostat. Includes the average specific skills of the different general skill groups for each region</description>
+   <description>Sent by Eurostat. Includes the average specific skills of the different general skill groups for each region.</description>
    <variables>
     <variable>
      <type>int</type>
@@ -2053,28 +2059,28 @@ including several micro data.</description>
     <variable>
      <type>double</type>
      <name>mean_wage</name>
-     <description></description>
+     <description>Mean wage for the government.</description>
     </variable>
    </variables>
   </message>
   <message>
    <name>data_for_government</name>
-   <description>Sent by Eurostat to gov. Includes the region_id and gdp for the region. Used by gov to compute its GDP. Also contains the mean wage for the region.</description>
+   <description>Sent by Eurostat to governments. Includes the region_id and gdp for the region. Used by gov to compute its GDP. Also contains the mean wage for the region.</description>
    <variables>
     <variable>
      <type>int</type>
      <name>region_id</name>
-     <description></description>
+     <description>Region to which the data applies.</description>
     </variable>
     <variable>
      <type>double</type>
      <name>gdp</name>
-     <description></description>
+     <description>GDP in the region.</description>
     </variable>
     <variable>
      <type>double</type>
      <name>mean_wage</name>
-     <description></description>
+     <description>Mean wage in the region.</description>
     </variable>
    </variables>
   </message>

@@ -34,7 +34,7 @@ int Firm_send_payments_to_bank()
 }
 
 /** \fn Firm_read_policy_announcements()
- * \brief Firms reads the policy_announcements from Governments
+ * \brief Function to read the policy_announcements from Governments.
  */
 int Firm_read_policy_announcements()
 {
@@ -55,7 +55,7 @@ int Firm_read_policy_announcements()
 }
 
 /** \fn Firm_send_subsidy_notification()
- * \brief This function sends a message to the government in case the Firm applies for a subsidy. 
+ * \brief Function to send a subsidy_notification_message to the government. 
  */
 int Firm_send_subsidy_notification()
 {
@@ -67,7 +67,7 @@ int Firm_send_subsidy_notification()
 }
 
 /** \fn Firm_send_transfer_notification()
- * \brief This function sends a message to the government in case the Firm applies for a transfer. 
+ * \brief Function to send a transfer_notification_message to the government. 
  */
 int Firm_send_transfer_notification()
 {
@@ -79,7 +79,8 @@ int Firm_send_transfer_notification()
 }
 
 /** \fn Firm_receive_data()
- * \brief Firms receive the data messages from the Eurostat*/
+ * \brief Firms receive the data messages from the Eurostat.
+ */
 int Firm_receive_data()
 {
 
