@@ -382,6 +382,7 @@ int Firm_execute_financial_payments()
 	//No bankruptcy
 	int imax, i;
 	double temp_interest=0.0;
+	
 	//step 1: actual tax_payment to government
 	add_tax_payment_message(GOV_ID, TAX_PAYMENT);
 	PAYMENT_ACCOUNT -= TAX_PAYMENT;
@@ -419,7 +420,8 @@ int Firm_execute_financial_payments()
 			remove_debt_item(&LOANS, i);
 		else
 			LOANS.array[i].nr_periods_before_repayment -= 1;
-
+	}
+	
 		//step 3: actual dividend payments
 		//Actual bank account updates are send to the bank at end of day when the firm sends its bank_update message 
 
@@ -430,7 +432,6 @@ int Firm_execute_financial_payments()
 
 		//decrease payment_account with the total_dividend_payment
 		PAYMENT_ACCOUNT -= TOTAL_DIVIDEND_PAYMENT;
-	}
 
 	return 0;
 }
@@ -600,7 +601,7 @@ int Firm_bankruptcy_idle_counter()
 int Firm_reset_bankruptcy_flags()
 {
 	//Add conditions for resetting the active flag to 1:
-	if ((BANKRUPTCY_IDLE_COUNTER==0)&&(EXTERNAL_FINANCIAL_NEEDS<=0.0))
+	if ((BANKRUPTCY_IDLE_COUNTER<=0)&&(EXTERNAL_FINANCIAL_NEEDS<=0.0))
 	{
 		ACTIVE=1;
 		BANKRUPTCY_INSOLVENCY_STATE  = 0;
