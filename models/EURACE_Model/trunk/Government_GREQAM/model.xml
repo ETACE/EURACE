@@ -155,11 +155,6 @@
     </variable>
     <variable>
      <type>double</type>
-     <name>yearly_interest_payment</name>
-     <description></description>
-    </variable>
-    <variable>
-     <type>double</type>
      <name>yearly_investment_expenditure</name>
      <description>The actual yearly government investment expenditure that is realised at the end of the year.</description>
     </variable>
@@ -237,11 +232,6 @@
      <type>double</type>
      <name>budget_balance_forecast</name>
      <description>Forcast for the budget balance (deficit/surplus).</description>
-    </variable>
-    <variable>
-     <type>double</type>
-     <name>monthly_interest_payment</name>
-     <description>The monthly interest payment on the national debt.</description>
     </variable>
     <variable>
      <type>double</type>

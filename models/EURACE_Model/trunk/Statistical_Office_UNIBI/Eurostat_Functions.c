@@ -897,6 +897,9 @@ int Eurostat_calculate_data()
     return 0;
 }
 
+/* \fn: int Eurostat_read_policy_announcements()
+ * \brief: Eurostat reads the policy announcement from Government. 
+ */
 int Eurostat_read_policy_announcements()
 {
     int i;
@@ -1561,7 +1564,7 @@ int Eurostat_compute_growth_rates_quarterly()
  */
 int Eurostat_measure_recession()
 {
-    //Signal start of recesson: 2 quarters of succesive negative growth of GDP
+    //Signal start of recession: 2 quarters of successive negative GDP growth.
     if (RECESSION_STARTED==0)
     {
         if ( (HISTORY_QUARTERLY[0].gdp < HISTORY_QUARTERLY[1].gdp) && (HISTORY_QUARTERLY[1].gdp < HISTORY_QUARTERLY[2].gdp))
@@ -1570,7 +1573,7 @@ int Eurostat_measure_recession()
             RECESSION_DURATION = 0;
         }   
     }   
-    //Signal end of recesson: 1 quarter of positive growth of GDP after start of recession
+    //Signal end of recession: 1 quarter of positive GDP growth after the start of a recession.
     if (RECESSION_STARTED==1)
     {
         RECESSION_DURATION++;

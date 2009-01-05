@@ -2,7 +2,7 @@
 <xmodel version="2" >
  <name>Eurace</name>
  <version>pre-Oxford</version>
- <description>Authors: Simon Coakley, Simon Gemkow, Philipp Harting, Sander van der Hoog</description>
+ <description>Authors: Simon Coakley, Mariam Kiran, Simon Gemkow, Philipp Harting, Sander van der Hoog, Mario Locci, Sabrina Ecca, Marco Raberto, Andrea Teglio, Saul Desiderio.</description>
  <models>
   <model>
    <file>Cons_Goods_UNIBI/model.xml</file>
@@ -490,7 +490,7 @@
  <messages>
   <message>
    <name>bank_account_update</name>
-   <description>Sent by household. Household informs the bank about the actual&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+   <description>Sent by household. Household informs the bank about the actual&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
  payment account</description>
    <variables>
     <variable>
