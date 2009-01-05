@@ -595,11 +595,11 @@ void unittest_Government_read_subsidy_notifications()
 }
 
 /*
- * \fn: void unittest_Government_budget_accounting()
- * \brief: Unit tests for: Government_budget_accounting
+ * \fn: void unittest_Government_monthly_budget_accounting()
+ * \brief: Unit tests for: Government_monthly_budget_accounting
  * Status: NOT Tested
  */
-void unittest_Government_budget_accounting()
+void unittest_Government_monthly_budget_accounting()
 {
 	int rc;
 	
@@ -615,7 +615,41 @@ void unittest_Government_budget_accounting()
     /***** Adding message iterators ***************************************/
 
     /***** Function evaluation ***************************************/
-	Government_budget_accounting();
+	Government_monthly_budget_accounting();
+    
+    /***** Variables: Memory post-conditions *****/
+//	CU_ASSERT_DOUBLE_EQUAL(var, result, 1e-3);
+
+    /***** Variables: Message post-conditions *****/
+
+    /************* At end of unit test, free the agent **************/
+	unittest_free_Government_agent();
+    /************* At end of unit tests, free all Messages **********/
+    free_messages();
+}
+
+/*
+ * \fn: void unittest_Government_yearly_budget_accounting()
+ * \brief: Unit tests for: Government_yearly_budget_accounting
+ * Status: NOT Tested
+ */
+void unittest_Government_yearly_budget_accounting()
+{
+	int rc;
+	
+    /************* At start of unit test, add one agent **************/
+	unittest_init_Government_agent();
+	
+    /***** Variables: Memory pre-conditions **************************/
+
+	/***** Messages: initialize message boards **********************************/
+
+	/***** Messages: pre-conditions **********************************/
+    	    
+    /***** Adding message iterators ***************************************/
+
+    /***** Function evaluation ***************************************/
+	Government_yearly_budget_accounting();
     
     /***** Variables: Memory post-conditions *****/
 //	CU_ASSERT_DOUBLE_EQUAL(var, result, 1e-3);
@@ -849,8 +883,8 @@ void unittest_Government_set_policy()
     
     /***** Variables: Memory post-conditions *****/
 	CU_ASSERT_DOUBLE_EQUAL(GDP_FORECAST, 100.0, 1e-3);
-	CU_ASSERT_DOUBLE_EQUAL(YEARLY_GOV_CONSUMPTION, 20.0, 1e-3);
-	CU_ASSERT_DOUBLE_EQUAL(YEARLY_GOV_INVESTMENT, 30.0, 1e-3);
+	CU_ASSERT_DOUBLE_EQUAL(YEARLY_CONSUMPTION_EXPENDITURE, 20.0, 1e-3);
+	CU_ASSERT_DOUBLE_EQUAL(YEARLY_INVESTMENT_EXPENDITURE, 30.0, 1e-3);
 
 	/***** Variables: Message post-conditions *****/
 	
@@ -879,8 +913,8 @@ void unittest_Government_yearly_resetting()
 	YEARLY_TRANSFER_PAYMENT =10.0;
 	YEARLY_SUBSIDY_PAYMENT =10.0;
 	YEARLY_BOND_COUPON_PAYMENT =10.0;
-	YEARLY_GOV_INVESTMENT =10.0;
-	YEARLY_GOV_CONSUMPTION =10.0;
+	YEARLY_INVESTMENT_EXPENDITURE =10.0;
+	YEARLY_CONSUMPTION_EXPENDITURE =10.0;
 
 	/***** Messages: initialize message boards **********************************/
 
@@ -898,8 +932,57 @@ void unittest_Government_yearly_resetting()
 	CU_ASSERT_DOUBLE_EQUAL(YEARLY_TRANSFER_PAYMENT, result, 1e-3);
 	CU_ASSERT_DOUBLE_EQUAL(YEARLY_SUBSIDY_PAYMENT, result, 1e-3);
 	CU_ASSERT_DOUBLE_EQUAL(YEARLY_BOND_COUPON_PAYMENT, result, 1e-3);
-	CU_ASSERT_DOUBLE_EQUAL(YEARLY_GOV_INVESTMENT, result, 1e-3);
-	CU_ASSERT_DOUBLE_EQUAL(YEARLY_GOV_CONSUMPTION, result, 1e-3);
+	CU_ASSERT_DOUBLE_EQUAL(YEARLY_INVESTMENT_EXPENDITURE, result, 1e-3);
+	CU_ASSERT_DOUBLE_EQUAL(YEARLY_CONSUMPTION_EXPENDITURE, result, 1e-3);
+	
+    /***** Variables: Message post-conditions *****/
+	
+    /************* At end of unit test, free the agent **************/
+	unittest_free_Government_agent();
+    /************* At end of unit tests, free all Messages **********/
+    free_messages();
+}
+
+/*
+ * \fn: void unittest_Government_monthly_resetting()
+ * \brief: Unit tests for: Government_monthy_resetting
+ * Status: Tested OK
+ */
+void unittest_Government_monthly_resetting()
+{
+	int rc;
+	double result;
+	
+    /************* At start of unit test, add one agent **************/
+	unittest_init_Government_agent();
+	
+    /***** Variables: Memory pre-conditions **************************/
+	MONTHLY_TAX_REVENUES =10.0;
+	MONTHLY_UNEMPLOYMENT_BENEFIT_PAYMENT =10.0;
+	MONTHLY_TRANSFER_PAYMENT =10.0;
+	MONTHLY_SUBSIDY_PAYMENT =10.0;
+	MONTHLY_BOND_COUPON_PAYMENT =10.0;
+	MONTHLY_INVESTMENT_EXPENDITURE =10.0;
+	MONTHLY_CONSUMPTION_EXPENDITURE =10.0;
+
+	/***** Messages: initialize message boards **********************************/
+
+	/***** Messages: pre-conditions **********************************/
+    	    
+    /***** Adding message iterators ***************************************/
+    	    
+    /***** Function evaluation ***************************************/
+	Government_monthly_resetting();
+    
+    /***** Variables: Memory post-conditions *****/
+	result=0.0;
+	CU_ASSERT_DOUBLE_EQUAL(MONTHLY_TAX_REVENUES, result, 1e-3);
+	CU_ASSERT_DOUBLE_EQUAL(MONTHLY_UNEMPLOYMENT_BENEFIT_PAYMENT, result, 1e-3);
+	CU_ASSERT_DOUBLE_EQUAL(MONTHLY_TRANSFER_PAYMENT, result, 1e-3);
+	CU_ASSERT_DOUBLE_EQUAL(MONTHLY_SUBSIDY_PAYMENT, result, 1e-3);
+	CU_ASSERT_DOUBLE_EQUAL(MONTHLY_BOND_COUPON_PAYMENT, result, 1e-3);
+	CU_ASSERT_DOUBLE_EQUAL(MONTHLY_INVESTMENT_EXPENDITURE, result, 1e-3);
+	CU_ASSERT_DOUBLE_EQUAL(MONTHLY_CONSUMPTION_EXPENDITURE, result, 1e-3);
 	
     /***** Variables: Message post-conditions *****/
 	

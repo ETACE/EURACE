@@ -13,6 +13,10 @@
 #define MAX_SURVIVAL_PERIODS 12 //length of the array to store the survival rate distribution, nr of bins
 #define MAX_FIRM_AGE 60			//length of the array to store the firm age distribution, nr of bins
 
+
+/* \fn: void Eurostat_calc_macro_data(void)
+ * \brief: Function to compute macro data from firm micro data.
+ */
 void Eurostat_calc_macro_data(void)
 {
     int i;
@@ -170,6 +174,9 @@ void Eurostat_calc_macro_data(void)
     MONTHLY_PLANNED_OUTPUT = sum_total_planned_output;
 }
     
+/* \fn: void Eurostat_calc_firm_population(void)
+ * \brief: Function to compute the firm population, number of new firm births and firm deaths.
+ */
 void Eurostat_calc_firm_population(void)
 {
 	int i;
@@ -235,6 +242,9 @@ void Eurostat_calc_firm_population(void)
         FIRM_DEATH_RATE = NO_FIRM_DEATHS / NO_FIRMS;
 }
 
+/* \fn: void Eurostat_calc_firm_survival_rates(void)
+ * \brief: Function to compute the (monthly) survival rates.
+ */
 void Eurostat_calc_firm_survival_rates(void)
 {
 	int i,x,index, index2;

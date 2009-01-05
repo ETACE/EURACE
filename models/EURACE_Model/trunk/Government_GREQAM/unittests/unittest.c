@@ -18,6 +18,7 @@ void unittest_Government_send_account_update();
 void unittest_Government_read_data_from_Eurostat();
 void unittest_Government_set_policy();
 void unittest_Government_yearly_resetting();
+void unittest_Government_monthly_resetting();
 
 /*************************** end prototypes ***************************/
 
@@ -64,14 +65,15 @@ int main(int argc, char * argv[])
     	//NULL == CU_add_test(pSuite, "Government_read_unemployment_benefit_notifications: case 1", unittest1_Government_read_unemployment_benefit_notifications) ||
     	//NULL == CU_add_test(pSuite, "Government_read_unemployment_benefit_notifications: case 2", unittest2_Government_read_unemployment_benefit_notifications) ||
     	//NULL == CU_add_test(pSuite, "Government_read_transfer_notifications", unittest_Government_read_transfer_notifications) ||
-		//NULL == CU_add_test(pSuite, "Government_read_subsidy_notifications", unittest_Government_read_subsidy_notifications) ||
+		//NULL == CU_add_test(pSuite, "Government_read_subsidy_notifications", unittest_Government_read_subsidy_notifications))
 
     	//NULL == CU_add_test(pSuite, "Government_budget_accounting", unittest_Government_budget_accounting))
 		//NULL == CU_add_test(pSuite, "Government_send_account_update", unittest_Government_send_account_update))
 		//NULL == CU_add_test(pSuite, "Government_read_data_from_Eurostat", unittest_Government_read_data_from_Eurostat))
 
-		NULL == CU_add_test(pSuite, "Government_set_policy", unittest_Government_set_policy))
+		//NULL == CU_add_test(pSuite, "Government_set_policy", unittest_Government_set_policy))
 		//NULL == CU_add_test(pSuite, "Government_yearly_resetting", unittest_Government_yearly_resetting))
+   		NULL == CU_add_test(pSuite, "Government_yearly_resetting", unittest_Government_monthly_resetting))
 	{
         CU_cleanup_registry();
         return CU_get_error();
