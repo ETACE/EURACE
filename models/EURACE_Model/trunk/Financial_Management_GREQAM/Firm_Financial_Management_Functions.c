@@ -79,21 +79,6 @@ int Firm_compute_income_statement()
 	if (CURRENT_SHARES_OUTSTANDING>0)
 		EARNINGS_PER_SHARE = NET_EARNINGS/CURRENT_SHARES_OUTSTANDING;
 
-	PREVIOUS_DIVIDEND_PER_SHARE = CURRENT_DIVIDEND_PER_SHARE;
-	
-	if (CURRENT_SHARES_OUTSTANDING>0)
-		CURRENT_DIVIDEND_PER_SHARE = TOTAL_DIVIDEND_PAYMENT
-				/CURRENT_SHARES_OUTSTANDING;
-	
-	PREVIOUS_DIVIDEND_PER_EARNINGS = CURRENT_DIVIDEND_PER_EARNINGS;
-	
-	if (EARNINGS>0.0)
-	{
-		CURRENT_DIVIDEND_PER_EARNINGS = TOTAL_DIVIDEND_PAYMENT/EARNINGS;
-	}
-	else
-		CURRENT_DIVIDEND_PER_EARNINGS = 0.0;
-
 	return 0;
 }
 
@@ -117,31 +102,28 @@ int Firm_compute_dividends()
 
 	//option 4: keep earnings per share constant
 	//total divided payment increases with same ratio as earnings per share
-	//if current_shares_outstanding remains constant, this keeps earnings per share constant
+	//this keeps earnings per share constant
 	if (PREVIOUS_EARNINGS_PER_SHARE>0.0)
-	{
-		TOTAL_DIVIDEND_PAYMENT = TOTAL_DIVIDEND_PAYMENT * (EARNINGS_PER_SHARE
-				/PREVIOUS_EARNINGS_PER_SHARE);
-	}
+		TOTAL_DIVIDEND_PAYMENT *= (EARNINGS_PER_SHARE/PREVIOUS_EARNINGS_PER_SHARE)
+		                           *(CURRENT_SHARES_OUTSTANDING/PREVIOUS_SHARES_OUTSTANDING);
+
 	//option 5: keep dividend to earnings ratio constant (dont let it fall), but do not decrease the dividend per share ratio.
 	/*
 	 if (CURRENT_DIVIDEND_PER_EARNINGS < PREVIOUS_DIVIDEND_PER_EARNINGS)
 	 {
-	 //Maintain the dividend to earnings ratio
-	 //D_{t} = (D_{t-1}/E_{t-1})*E_{t}
-	 TOTAL_DIVIDEND_PAYMENT = PREVIOUS_DIVIDEND_PER_EARNINGS * NET_EARNINGS;
-	 
-	 //But do not decrease the dividend per share ratio
-	 if (TOTAL_DIVIDEND_PAYMENT/CURRENT_SHARES_OUTSTANDING < CURRENT_DIVIDEND_PER_SHARE)
-	 {
-	 TOTAL_DIVIDEND_PAYMENT = CURRENT_DIVIDEND_PER_SHARE * CURRENT_SHARES_OUTSTANDING;
-	 }
+		 //Maintain the dividend to earnings ratio
+		 //D_{t} = (D_{t-1}/E_{t-1})*E_{t}
+		 TOTAL_DIVIDEND_PAYMENT = PREVIOUS_DIVIDEND_PER_EARNINGS * NET_EARNINGS;
+		 
+		 //But do not decrease the dividend per share ratio
+		 if (TOTAL_DIVIDEND_PAYMENT/CURRENT_SHARES_OUTSTANDING < CURRENT_DIVIDEND_PER_SHARE)
+		 	TOTAL_DIVIDEND_PAYMENT = CURRENT_DIVIDEND_PER_SHARE * CURRENT_SHARES_OUTSTANDING;
 	 }
 	 else
 	 {
-	 //the dividend to earnings ratio did not decrease
-	 //else keep the dividend per share ratio constant
-	 TOTAL_DIVIDEND_PAYMENT = PREVIOUS_DIVIDEND_PER_SHARE*CURRENT_SHARES_OUTSTANDING;
+		 //the dividend to earnings ratio did not decrease
+		 //else keep the dividend per share ratio constant
+		 TOTAL_DIVIDEND_PAYMENT = PREVIOUS_DIVIDEND_PER_SHARE*CURRENT_SHARES_OUTSTANDING;
 	 }
 	 */
 
@@ -150,14 +132,28 @@ int Firm_compute_dividends()
 	/*
 	 if(CURRENT_STOCK_PRICE LOW)
 	 {
-	 TOTAL_STOCK_REPURCHASE = TOTAL_DIVIDEND_PAYMENT;
-	 TOTAL_DIVIDEND_PAYMENT =0.0;
-	 
-	 //Number of shares repurchased (stock buying order)
-	 NR_STOCK_REPURCHASE = TOTAL_STOCK_REPURCHASE/CURRENT_STOCK_PRICE;
+		 TOTAL_STOCK_REPURCHASE = TOTAL_DIVIDEND_PAYMENT;
+		 TOTAL_DIVIDEND_PAYMENT =0.0;
+		 
+		 //Number of shares repurchased (stock buying order)
+		 NR_STOCK_REPURCHASE = TOTAL_STOCK_REPURCHASE/CURRENT_STOCK_PRICE;
 	 }
 	 */
-
+	
+	//Continue with computation of ratios
+	PREVIOUS_DIVIDEND_PER_SHARE = CURRENT_DIVIDEND_PER_SHARE;
+	
+	if (CURRENT_SHARES_OUTSTANDING>0)
+		CURRENT_DIVIDEND_PER_SHARE = TOTAL_DIVIDEND_PAYMENT
+				/CURRENT_SHARES_OUTSTANDING;
+	
+	PREVIOUS_DIVIDEND_PER_EARNINGS = CURRENT_DIVIDEND_PER_EARNINGS;
+	
+	if (EARNINGS>0.0)
+		CURRENT_DIVIDEND_PER_EARNINGS = TOTAL_DIVIDEND_PAYMENT/EARNINGS;
+	else
+		CURRENT_DIVIDEND_PER_EARNINGS = 0.0;
+	
 	return 0;
 }
 
@@ -218,10 +214,14 @@ int Firm_compute_balance_sheet()
 
 	EQUITY = TOTAL_ASSETS - TOTAL_DEBT;
 
-	DEBT_EQUITY_RATIO = TOTAL_DEBT/EQUITY;
+	if (EQUITY>0.0)
+		DEBT_EQUITY_RATIO = TOTAL_DEBT/EQUITY;
+	else DEBT_EQUITY_RATIO = 0.0;
+	
 	if (NET_EARNINGS>0.0)
 		DEBT_EARNINGS_RATIO = TOTAL_DEBT/NET_EARNINGS;
-
+	else DEBT_EARNINGS_RATIO = 0.0;
+	
 	return 0;
 }
 
@@ -422,16 +422,15 @@ int Firm_execute_financial_payments()
 			LOANS.array[i].nr_periods_before_repayment -= 1;
 	}
 	
-		//step 3: actual dividend payments
-		//Actual bank account updates are send to the bank at end of day when the firm sends its bank_update message 
+	//step 3: actual dividend payments
+	//Actual bank account updates are send to the bank at end of day when the firm sends its bank_update message 
 
-		//add dividend_per_share_msg(firm_id, current_dividend_per_share) to shareholders (dividend per share)     
-		CURRENT_DIVIDEND_PER_SHARE = TOTAL_DIVIDEND_PAYMENT
-				/CURRENT_SHARES_OUTSTANDING;
-		add_dividend_per_share_message(ID, CURRENT_DIVIDEND_PER_SHARE);
+	//add dividend_per_share_msg(firm_id, current_dividend_per_share) to shareholders (dividend per share)     
+	CURRENT_DIVIDEND_PER_SHARE = TOTAL_DIVIDEND_PAYMENT/CURRENT_SHARES_OUTSTANDING;
+	add_dividend_per_share_message(ID, CURRENT_DIVIDEND_PER_SHARE);
 
-		//decrease payment_account with the total_dividend_payment
-		PAYMENT_ACCOUNT -= TOTAL_DIVIDEND_PAYMENT;
+	//decrease payment_account with the total_dividend_payment
+	PAYMENT_ACCOUNT -= TOTAL_DIVIDEND_PAYMENT;
 
 	return 0;
 }
@@ -637,13 +636,18 @@ int Firm_read_stock_transactions()
 {
 	double finances;
 
+	//Before updating the share count
+	PREVIOUS_SHARES_OUTSTANDING = CURRENT_SHARES_OUTSTANDING;
+	
 	START_ORDER_STATUS_MESSAGE_LOOP
 	if (ID == order_status_message->trader_id)
 	{
-		//Finances obtained: positive quantity is demand, negative quantity is selling
+		//Finances obtained: positive quantity is demand (buying), negative quantity is supply (selling)
 		finances = (-1)*order_status_message->price
 				* order_status_message->quantity;
 	
+		CURRENT_SHARES_OUTSTANDING += (-1)*order_status_message->quantity;
+		
 		//Increase payment account with the finances obtained
 		PAYMENT_ACCOUNT += finances;
 	
