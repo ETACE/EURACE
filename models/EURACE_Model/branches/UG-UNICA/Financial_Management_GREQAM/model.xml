@@ -177,9 +177,13 @@
 <currentState>Firm_Bankruptcy_check</currentState>
 <nextState>Firm_End_Financial_Management_Role</nextState>
 <condition><not><lhs><value>a.equity</value></lhs><op>GEQ</op><rhs><value>0.0</value></rhs></not></condition>
+
+<!--
 <outputs>
 <output><messageName>bankruptcy</messageName></output>
 </outputs>
+-->
+
 </function>
 
 <!-- Idle going from Bankruptcy_check to Firm_End_Financial_Management_Role  -->
@@ -242,9 +246,13 @@
 <currentState>Firm_bankruptcy_checked</currentState>
 <nextState>Firm_End_Financial_Management_Role</nextState>
 <condition><lhs><value>a.bankruptcy_state</value></lhs><op>EQ</op><rhs><value>1</value></rhs></condition>
+
+<!--
 <outputs>
 <output><messageName>bankruptcy</messageName></output>
 </outputs>
+-->
+
 </function>
 
 <function>
@@ -308,10 +316,15 @@
 <description>Function to execute financial payments.</description>
 <currentState>Firm_End_External_Financing</currentState>
 <nextState>Firm_Start_Public_Sector_Role</nextState>
+
 <outputs>
+<!--
 <output><messageName>tax_payment</messageName></output>
+-->
 <output><messageName>dividend_per_share</messageName></output>
+<!--
 <output><messageName>installment</messageName></output>
+-->
 </outputs>
 </function>
 
@@ -320,11 +333,15 @@
 <description></description>
 <currentState>Firm_Start_Public_Sector_Role</currentState>
 <nextState>005</nextState>
+
+<!--
 <outputs>
 <output>
 <messageName>firm_subsidy_notification</messageName>
 </output>
 </outputs>
+-->
+
 </function>
 
 <function>
@@ -332,11 +349,14 @@
 <description></description>
 <currentState>005</currentState>
 <nextState>Firm_End_Financial_Management</nextState>
+
+<!--
 <outputs>
 <output>
 <messageName>firm_transfer_notification</messageName>
 </output>
 </outputs>
+-->
 </function>
 
 </functions>
