@@ -454,10 +454,10 @@ int Mall_send_export_data()
     return 0;
 }
 
-/* \fn: int Mall_read_bankruptcy()
- * \brief: Function to read bankruptcy messages from firms in insolvency. The mall has to set the current mall stocks equal 0.
+/* \fn: int Mall_read_insolvency_bankruptcy()
+ * \brief: Function to read insolvency_bankruptcy messages from firms in insolvency. The mall has to set the current mall stocks equal 0.
  */
-int Mall_read_bankruptcy()
+int Mall_read_insolvency_bankruptcy()
 {
 	int i;
 	
