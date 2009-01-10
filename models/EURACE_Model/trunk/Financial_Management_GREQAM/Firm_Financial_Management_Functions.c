@@ -69,7 +69,8 @@ int Firm_compute_income_statement()
 	// compute net earnings
 	EARNINGS = CUM_REVENUE - TOTAL_INTEREST_PAYMENT - PRODUCTION_COSTS;
 
-	TAX_PAYMENT = TAX_RATE_CORPORATE * EARNINGS;
+	if (EARNINGS<0.0)
+		TAX_PAYMENT = TAX_RATE_CORPORATE * EARNINGS;
 	PREVIOUS_NET_EARNINGS = NET_EARNINGS;
 	NET_EARNINGS = EARNINGS - TAX_PAYMENT;
 
@@ -139,6 +140,10 @@ int Firm_compute_dividends()
 		 NR_STOCK_REPURCHASE = TOTAL_STOCK_REPURCHASE/CURRENT_STOCK_PRICE;
 	 }
 	 */
+	
+	//Always check:
+	if (EARNINGS<0.0)
+		TOTAL_DIVIDEND_PAYMENT = 0.0;
 	
 	//Continue with computation of ratios
 	PREVIOUS_DIVIDEND_PER_SHARE = CURRENT_DIVIDEND_PER_SHARE;
@@ -334,7 +339,7 @@ int Firm_in_financial_crisis()
 			- (TOTAL_INTEREST_PAYMENTS + TOTAL_DEBT_INSTALLMENT_PAYMENT
 					+ TAX_PAYMENT);
 	TOTAL_DIVIDEND_PAYMENT = max(0, payment_account_after_compulsory_payments
-			- PRODUCTION_COSTS);
+			- PLANNED_PRODUCTION_COSTS);
 
 	//Set flag if resolved:
 	if (PAYMENT_ACCOUNT >= TOTAL_INTEREST_PAYMENTS
@@ -344,17 +349,12 @@ int Firm_in_financial_crisis()
 		FINANCIAL_CRISIS_STATE=0;
 		BANKRUPTCY_STATE=0;
 	}
+	else
+		//If not resolved: payment account remains below total needs
+		//Code should never reach this point
+		 printf("\nERROR in Firm_in_financial_crisis: financial crisis not resolved. \n");
 
-	//Set flag if not resolved: payment account remains below total needs
-	/*
-	 if (PAYMENT_ACCOUNT < TOTAL_INTEREST_PAYMENTS + TOTAL_DEBT_INSTALLMENT_PAYMENT + TAX_PAYMENT + TOTAL_DIVIDEND_PAYMENT_REALIZED)
-	 {
-	 FINANCIAL_CRISIS_STATE=0;
-	 BANKRUPTCY_STATE=1;
-	 }
-	 
-	 */
-	return 0;
+	 return 0;
 }
 
 /*
