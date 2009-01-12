@@ -8,6 +8,24 @@
 
 <messages>
 
+
+<message>
+<name>policy_announcement</name>
+<description>Government announcing tax rates, benefits, transfer payments and subsidies.</description>
+<variables>
+<variable><type>int</type><name>gov_id</name><description></description></variable>
+<variable><type>double</type><name>tax_rate_corporate</name><description></description></variable>
+<variable><type>double</type><name>tax_rate_hh_labour</name><description></description></variable>
+<variable><type>double</type><name>tax_rate_hh_capital</name><description></description></variable>
+<variable><type>double</type><name>tax_rate_vat</name><description></description></variable>
+<variable><type>double</type><name>unemployment_benefit_pct</name><description></description></variable>
+<variable><type>double</type><name>hh_subsidy_payment</name><description></description></variable>
+<variable><type>double</type><name>firm_subsidy_payment</name><description></description></variable>
+<variable><type>double</type><name>hh_transfer_payment</name><description></description></variable>
+<variable><type>double</type><name>firm_transfer_payment</name><description></description></variable>
+</variables>
+</message>
+
 </messages>
 
 </xmodel>
