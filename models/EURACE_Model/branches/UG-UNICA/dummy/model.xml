@@ -6,6 +6,26 @@
 <version></version>
 <description></description>
 
+<functions>
+
+<function>
+<name>Firm_planned_production_costs_dummy</name>
+<description>must set PLANNED_PRODUCTION_COSTS</description>
+<currentState>Firm_Start_Producer_Role</currentState>
+<nextState>02</nextState>
+</function>
+
+<function>
+<name>Firm_credit_market_dummy</name>
+<description></description>
+<currentState>Firm_Start_Credit_Role</currentState>
+<nextState>Firm_End_Credit_Role</nextState>
+</function>
+
+
+</functions>
+
+
 <messages>
 <message>
 <name>unemployment_notification</name>
