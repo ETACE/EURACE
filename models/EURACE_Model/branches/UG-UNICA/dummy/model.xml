@@ -19,7 +19,7 @@
 <name>Firm_credit_market_dummy</name>
 <description></description>
 <currentState>Firm_Start_Credit_Role</currentState>
-<nextState>Firm_End_Credit_Role</nextState>
+<nextState>Firm_End_Credit_Role_DUMMY</nextState>
 </function>
 
 </functions>
