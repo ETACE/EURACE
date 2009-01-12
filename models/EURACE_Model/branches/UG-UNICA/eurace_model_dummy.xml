@@ -17,7 +17,7 @@
 <model><file>Labour_UNIBI/model.xml</file><enabled>false</enabled></model>
 <model><file>Government_GREQAM/model.xml</file><enabled>false</enabled></model>
 <model><file>dummy/model.xml</file><enabled>true</enabled></model>
-<model><file>Statistical_Office_UNIBI/model.xml</file><enabled>false</enabled></model>
+<model><file>Statistical_Office_UNIBI/model.xml</file><enabled>true</enabled></model>
 </models>
 
 <environment>
