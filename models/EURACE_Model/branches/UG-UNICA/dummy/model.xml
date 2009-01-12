@@ -2,8 +2,22 @@
 <!DOCTYPE xmodel SYSTEM "http://eurace.cs.bilgi.edu.tr/XMML.dtd">
 <xmodel version="2">
 
-<name>dummy</name>
-<version></version>
+<name>Financial_Management</name>
+<version>Sheffield</version>
+<description>Author: Sander van der Hoog, last modified: July, 2008</description>
+
+<environment>
+
+<functionFiles>
+<file>Firm_Dummy_Functions.c</file>
+</functionFiles>
+
+</environment>
+
+<agents>
+
+<xagent>
+<name>Firm</name>
 <description></description>
 
 <functions>
@@ -17,13 +31,16 @@
 
 <function>
 <name>Firm_credit_market_dummy</name>
-<description></description>
+<description>To Do</description>
 <currentState>Firm_Start_Credit_Role</currentState>
 <nextState>Firm_End_Credit_Role_DUMMY</nextState>
 </function>
 
 </functions>
 
+</xagent>
+
+</agents>
 
 <messages>
 <message>
