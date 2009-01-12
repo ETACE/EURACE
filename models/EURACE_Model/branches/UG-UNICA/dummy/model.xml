@@ -7,6 +7,15 @@
 <description></description>
 
 <messages>
+<message>
+<name>unemployment_notification</name>
+<description>Household sends unemployment notification to gov, applying for unemployment benefits.</description>
+<variables>
+<variable><type>int</type><name>gov_id</name><description></description></variable>
+<variable><type>double</type><name>last_labour_income</name><description></description></variable>
+</variables>
+</message>
+
 
 </messages>
 
