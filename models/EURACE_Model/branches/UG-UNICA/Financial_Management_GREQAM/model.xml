@@ -207,7 +207,7 @@
 <function>
 <name>Firm_compute_and_send_stock_orders</name>
 <description>Function to send order_messages to the clearinghouse (share emission or repurchase).</description>
-<currentState>Firm_End_Credit_Role_DUMMY</currentState>
+<currentState>Firm_End_Credit_Role</currentState>
 <nextState>0003</nextState>
 <condition><lhs><value>a.external_financial_needs</value></lhs><op>GT</op><rhs><value>0.0</value></rhs></condition>
 <outputs>
