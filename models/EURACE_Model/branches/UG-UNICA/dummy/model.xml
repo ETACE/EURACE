@@ -2,9 +2,9 @@
 <!DOCTYPE xmodel SYSTEM "http://eurace.cs.bilgi.edu.tr/XMML.dtd">
 <xmodel version="2">
 
-<name>Financial_Management</name>
-<version>Sheffield</version>
-<description>Author: Sander van der Hoog, last modified: July, 2008</description>
+<name>Dummy</name>
+<version>Post-Oxford</version>
+<description>Author: Federico Scarpa, Marco Raberto, Andrea Teglio</description>
 
 <environment>
 
@@ -20,6 +20,10 @@
 <name>Firm</name>
 <description></description>
 
+<memory>
+<variable><type>int</type><name>credit_dummy</name><description></description></variable>
+</memory>
+
 <functions>
 
 <function>
@@ -34,6 +38,11 @@
 <description>To Do</description>
 <currentState>Firm_Start_Credit_Role</currentState>
 <nextState>Firm_End_Credit_Role</nextState>
+<condition>
+<lhs><value>a.external_financial_needs</value></lhs><op>GT</op><rhs><value>0.0</value></rhs>
+<op>AND</op>
+<lhs><value>a.credit_dummy</value></lhs><op>EQ</op><rhs><value>1</value></rhs>
+</condition>
 </function>
 
 <function>
