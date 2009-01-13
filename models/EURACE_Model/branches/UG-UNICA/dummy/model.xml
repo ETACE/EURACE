@@ -39,9 +39,9 @@
 <currentState>Firm_Start_Credit_Role</currentState>
 <nextState>Firm_End_Credit_Role</nextState>
 <condition>
-<lhs><value>a.external_financial_needs</value></lhs><op>GT</op><rhs><value>0.0</value></rhs>
-<!-- <op>AND</op>
-<lhs><value>a.credit_dummy</value></lhs><op>EQ</op><rhs><value>1</value></rhs> -->
+<lhs><lhs><value>a.external_financial_needs</value></lhs><op>GT</op><rhs><value>0.0</value></rhs></lhs>
+ <op>AND</op>
+<rhs><lhs><value>a.credit_dummy</value></lhs><op>EQ</op><rhs><value>1</value></rhs> --></rhs>
 </condition>
 </function>
 
