@@ -43,6 +43,16 @@
 <nextState>Firm_Start_Financial_Management_Role</nextState>
 </function>
 
+</functions>
+
+</xagent>
+
+
+<xagent>
+<name>Household</name>
+<description></description>
+
+<functions>
 
 <function>
 <name>Household_labour_good_market_dummy</name>
@@ -54,6 +64,7 @@
 </functions>
 
 </xagent>
+
 
 </agents>
 
