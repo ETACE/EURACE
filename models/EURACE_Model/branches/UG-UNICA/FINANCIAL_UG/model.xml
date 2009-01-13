@@ -496,8 +496,9 @@
 					<name>Household_update_its_portfolio</name>
 					<description></description>
 					<currentState>WAITORDERSTATUS</currentState>
-					<nextState>Start_Household_Labour_Role</nextState>
-					<inputs>
+                    <nextState>Start_Household_Labour_Role</nextState>
+					
+                    <inputs>
 						<input>
 							<messageName>order_status</messageName>
 							<filter>
