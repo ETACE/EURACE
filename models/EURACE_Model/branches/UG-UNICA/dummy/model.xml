@@ -43,6 +43,14 @@
 <nextState>Firm_Start_Financial_Management_Role</nextState>
 </function>
 
+
+<function>
+<name>Household_labour_good_market_dummy</name>
+<description></description>
+<currentState>Start_Household_Labour_Role</currentState>
+<nextState>15</nextState>
+</function>
+
 </functions>
 
 </xagent>
