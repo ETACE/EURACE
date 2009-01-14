@@ -10,6 +10,7 @@
 
 <functionFiles>
 <file>Firm_Dummy_Functions.c</file>
+<file>Household_Dummy_Functions.c</file>
 </functionFiles>
 
 </environment>
