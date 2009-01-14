@@ -10,7 +10,7 @@
   </model>
   <model>
    <file>Credit_Ancona/model.xml</file>
-   <enabled>false</enabled>
+   <enabled>true</enabled>
   </model>
   <model>
    <file>Financial_Management_GREQAM/model.xml</file>
