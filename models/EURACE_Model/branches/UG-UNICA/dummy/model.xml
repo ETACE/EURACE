@@ -68,6 +68,11 @@
 <description></description>
 <currentState>Start_Household_Labour_Role</currentState>
 <nextState>15</nextState>
+<outputs>
+  <output>
+    <messageName>bank_account_update</messageName>
+  </output>
+</outputs>
 </function>
 
 </functions>
