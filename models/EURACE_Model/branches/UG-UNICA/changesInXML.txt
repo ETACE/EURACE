@@ -3,4 +3,7 @@ FINANCIAL MANAGEMENT
 - commented output message firing in function <name>Firm_bankruptcy_illiquidity_procedure</name>
 - commented output message installment in function  <name>Firm_execute_financial_payments</name>
 - commented output message bankruptcy in function <name>Firm_bankruptcy_insolvency_procedure</name>
-- 
+
+
+
+CREDIT_MARKET_DUMMY MUST BE INITIALISED = 1
