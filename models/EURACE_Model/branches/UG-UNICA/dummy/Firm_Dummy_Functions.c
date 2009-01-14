@@ -4,6 +4,8 @@
 
 int Firm_planned_production_costs_dummy() {
 	
+	PLANNED_PRODUCTION_COSTS = 100.0;
+	
     return 0;
 	
 }
@@ -15,4 +17,12 @@ int Firm_planned_production_costs_dummy() {
 int Firm_credit_market_dummy() {
     
 	return 0;
+}
+
+int Firm_labour_good_market_dummy() {
+    
+    /* to evaluate revenues of the firm */
+    
+    return 0;
+                                
 }
