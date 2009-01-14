@@ -565,9 +565,10 @@ Also sets the active flag to 0 and starts the bankruptcy idle counter.</descript
       <output>
        <messageName>dividend_per_share</messageName>
       </output>
-      <output>
+      <!-- <output>
        <messageName>installment</messageName>
       </output>
+      -->
      </outputs>
     </function>
     <function>
