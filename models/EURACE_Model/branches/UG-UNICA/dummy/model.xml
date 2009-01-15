@@ -32,6 +32,7 @@
 <description>must set PLANNED_PRODUCTION_COSTS</description>
 <currentState>Firm_Start_Producer_Role</currentState>
 <nextState>02</nextState>
+<condition><time><period>monthly</period><phase>a.last_day_of_month_to_act</phase></time></condition>
 </function>
 
 <function>
@@ -50,7 +51,32 @@
 <name>Firm_labour_good_market_dummy</name>
 <description></description>
 <currentState>Firm_End_Financial_Management</currentState>
+<nextState>Monthly_Decision</nextState>
+</function>
+
+<function>
+<name>idle</name>
+<description></description>
+<currentState>Monthly_Decision</currentState>
 <nextState>Firm_Start_Financial_Management_Role</nextState>
+<condition><time><period>monthly</period><phase>a.last_day_of_month_to_act</phase></time></condition>
+</function>
+
+<function>
+<name>idle</name>
+<description></description>
+<currentState>Monthly_Decision</currentState>
+<nextState>Firm_End_Financial_Management_Role</nextState>
+<condition><not><time><period>monthly</period><phase>a.last_day_of_month_to_act</phase></time></not></condition>
+</function>
+
+
+<function>
+<name>idle</name>
+<description></description>
+<currentState>Monthly_Decision</currentState>
+<nextState>Firm_End_Financial_Management</nextState>
+<condition><not><time><period>monthly</period><phase>a.last_day_of_month_to_act</phase></time></not></condition>
 </function>
 
 </functions>
