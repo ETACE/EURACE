@@ -23,10 +23,23 @@ int Firm_credit_market_dummy() {
 
 int Firm_labour_good_market_dummy() {
     
-    /* to evaluate revenues of the firm */
+    int daily_revenue;
     
-    //PAYMENT_ACCOUNT
+    PRODUCTION_COSTS = PLANNED_PRODUCTION_COSTS;
+    
+    daily_revenue = 1.1 * (TOTAL_INTEREST_PAYMENT + PRODUCTION_COSTS)/MONTH;
+    
+    CUM_REVENUE += daily_revenue;
+    
+    PAYMENT_ACCOUNT += daily_revenue - (PRODUCTION_COSTS/MONTH);
     
     return 0;
                                 
 }
+
+int idle() 
+
+    return 0;
+
+}
+
