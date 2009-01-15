@@ -862,7 +862,7 @@
      <inputs/>
      <outputs/>
     </function>
-    -->
+    
     
     <function>
      <name>Household_read_policy_announcements</name>
@@ -891,6 +891,8 @@
      </inputs>
      <outputs/>
     </function>
+    -->
+    
     <function>
      <name>Household_receive_data</name>
      <description>The household reads the messages from the eurostat agent &#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
