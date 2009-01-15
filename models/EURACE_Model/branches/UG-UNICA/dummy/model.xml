@@ -23,6 +23,14 @@
 
 <memory>
 <variable><type>int</type><name>credit_dummy</name><description></description></variable>
+
+<variable><type>employee_array</type><name>employees</name><description>Used to store the data-type Employee</description></variable>
+<variable><type>double</type><name>production_costs</name><description>Actual production costs, labor and capital</description></variable>
+<variable><type>double</type><name>cum_revenue</name><description>Monthly revenue</description></variable>
+<variable><type>double</type><name>price</name><description>Price of the consumption good</description></variable>
+<variable><type>double</type><name>planned_production_costs</name><description> Planned production costs</description></variable>
+<variable><type>mall_info_array</type><name>current_mall_stocks</name><description>Current stock in each mall</description></variable>
+
 </memory>
 
 <functions>
