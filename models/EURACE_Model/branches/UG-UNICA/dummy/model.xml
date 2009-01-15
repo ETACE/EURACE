@@ -301,7 +301,6 @@
 <memory>
 <variable><type>double</type><name>consumption_budget</name><description>Part of the budget for consumption</description></variable>
 
-<variable><type>int</type><name>general_skill</name><description>The general skill level</description></variable>
 <variable><type>double</type><name>wage</name><description>The wage a household receives</description></variable>
 <variable><type>double</type><name>wage_reservation</name><description>Reservation wage</description></variable>
 <variable><type>int</type><name>general_skill</name><description>The general skill level</description></variable>
