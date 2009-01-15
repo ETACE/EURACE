@@ -863,7 +863,6 @@
      <outputs/>
     </function>
     
-    
     <function>
      <name>Household_read_policy_announcements</name>
      <description></description>
@@ -908,6 +907,7 @@ and stores the needed data.</description>
      <inputs/>
      <outputs/>
     </function>
+    <!--
     <function>
      <name>Household_idle</name>
      <description>Household does nothing</description>
@@ -924,6 +924,8 @@ and stores the needed data.</description>
      <inputs/>
      <outputs/>
     </function>
+    -->
+    
     <function>
      <name>Household_send_data_to_Eurostat</name>
      <description>Household sends message to the eurostat agent &#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
@@ -943,6 +945,8 @@ including several micro data.</description>
       </output>
      </outputs>
     </function>
+    
+    <!--
     <function>
      <name>Household_idle</name>
      <description>Household does nothing</description>
@@ -959,6 +963,8 @@ including several micro data.</description>
      <inputs/>
      <outputs/>
     </function>
+    -->
+    
    </functions>
   </xagent>
   <xagent>
