@@ -643,7 +643,7 @@ of employees and the number of vacancies</description>
     <function>
      <name>Household_read_firing_messages</name>
      <description>The household checks whether is is fired or not</description>
-     <currentState>Start_Household_Labour_Role</currentState>
+     <currentState>Household_Start_Labour_Role</currentState>
      <nextState>01d</nextState>
      <condition>
       <lhs>
@@ -681,7 +681,7 @@ of employees and the number of vacancies</description>
     <function>
      <name>Household_idle</name>
      <description>Household does nothing</description>
-     <currentState>Start_Household_Labour_Role</currentState>
+     <currentState>Household_Start_Labour_Role</currentState>
      <nextState>01a</nextState>
      <condition>
       <lhs>
