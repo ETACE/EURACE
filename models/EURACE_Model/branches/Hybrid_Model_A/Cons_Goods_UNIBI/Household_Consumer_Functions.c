@@ -402,34 +402,6 @@ int Household_receive_goods_read_rationing_2()
  */
 int Household_receive_dividends()
 {
-	int imax;
-	
-	RECEIVED_DIVIDEND= 0;
-	
-		
-	/*Check if there are dividends form the capital goods producer*/
-		
-
-	/*Check if there are dividends form the consumption goods producer*/
-	//total_dividend_payment_msg(firm_id, bank_id, total_dividend_payment)
-	//dividend_per_share_msg(firm_id, current_dividend_per_share) to shareholders (dividend per share)
-
-	START_DIVIDEND_PER_SHARE_MESSAGE_LOOP
-		for(imax=0; imax < ASSETSOWNED.size;imax++)
-		{
-			if(ASSETSOWNED.array[imax].id==dividend_per_share_message->firm_id)
-			{
-				//Compute the total dividend
-				RECEIVED_DIVIDEND += dividend_per_share_message->current_dividend_per_share*ASSETSOWNED.array[imax].quantity;
-			}
-		}
-	FINISH_DIVIDEND_PER_SHARE_MESSAGE_LOOP
-	
-
-	PAYMENT_ACCOUNT += RECEIVED_DIVIDEND;
-	
-	CUM_TOTAL_DIVIDENDS +=RECEIVED_DIVIDEND;
-
 	return 0;	
 }
 

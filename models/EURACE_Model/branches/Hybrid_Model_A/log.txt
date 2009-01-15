@@ -748,3 +748,58 @@ Sander, rev 1436
 
 Added gov policy parameters and policy rules for consumption and investment.
 ----------------------------------------------------------------------
+Sander, rev 1644
+
+Statename changes
+=================
+FM_UG:
+Before the first function of AFM: Household_receive_info_interest_from_bank.
+
+start_Household_financial_market_role
+-> Household_Start_Financial_Market_Role
+
+After the last function of AFM: Household_update_its_portfolio
+Start_Household_Labour_Role
+-> Household_Start_Labour_Role
+
+Statistical_Office_UNIBI:
+After the last functions: Household_idle, Household_receive_data
+
+start_Household_financial_market_role
+-> Household_Start_Financial_Market_Role
+
+Labour_UNIBI:
+Before the first functions: Idle, Household_read_firing_messages
+
+Start_Household_Labour_Role
+-> Household_Start_Labour_Role
+
+----------------------------------------------------------------------
+Sander, rev 1645
+
+Hybrid_Model_A
+===============
+Merged model.xml files from the trunk to the Hybrid_Model_A
+
+Added dummy C code for Financial_Management_GREQAM.
+External financial needs are always satisfied, such that bankruptcy never occurs.
+
+Added memory variable: current_shares_outstanding
+
+Firm_compute_and_send_stock_orders:
+	no order_message is sent
+
+Firm_read_stock_transactions:
+	PAYMENT_ACCOUNT += EXTERNAL_FINANCIAL_NEEDS;
+	EXTERNAL_FINANCIAL_NEEDS =0.0;
+
+----------------------------------------------------------------------
+Sander, rev 1646
+
+Hybrid_Model_A/Financial_UNIBI
+===============================
+Added dummy C code
+Added empty functions for Clearinghouse and Bank.
+
+Household_receive_dividends: empty function.
+----------------------------------------------------------------------
