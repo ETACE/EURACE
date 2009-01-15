@@ -7,6 +7,8 @@
  <environment>
   <constants/>
   <functionFiles>
+   <file>Bank_Financial_Market.c</file>
+   <file>ClearingHouse_Financial_Market.c</file>
    <file>Firm_Financial_Market_Functions.c</file>
    <file>Household_Financial_Market_Functions.c</file>
    <file>Government_Financial_Market_Functions.c</file>
@@ -65,6 +67,32 @@
      <nextState>01</nextState>
      <inputs/>
      <outputs/>
+    </function>
+   </functions>
+  </xagent>
+    <xagent>
+   <name>Clearinghouse</name>
+   <description></description>
+   <memory>
+   </memory>
+   <functions>
+    <function>
+     <name>ClearingHouse_receive_info</name>
+     <description></description>
+     <currentState>start_Clearinghouse</currentState>
+     <nextState>RECEIVEDINFOSTOCK</nextState>
+    </function>
+    <function>
+     <name>ClearingHouse_receive_orders_and_run</name>
+     <description></description>
+     <currentState>RECEIVEDINFOSTOCK</currentState>
+     <nextState>COMPUTEDPRICES</nextState>
+    </function>
+    <function>
+     <name>ClearingHouse_send_asset_information</name>
+     <description></description>
+     <currentState>COMPUTEDPRICES</currentState>
+     <nextState>end_Clearinghouse</nextState>
     </function>
    </functions>
   </xagent>
