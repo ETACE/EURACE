@@ -623,8 +623,10 @@ int Firm_compute_and_send_stock_orders()
 
 	//Firm tries to sell stock_units shares:
 	//add_order_message(trader_id, asset_id, limit_price, quantity)
+/*	
 	add_order_message(ID, ID, limit_price, quantity);
-
+*/
+	
 	return 0;
 }
 
@@ -638,7 +640,7 @@ int Firm_read_stock_transactions()
 
 	//Before updating the share count
 	PREVIOUS_SHARES_OUTSTANDING = CURRENT_SHARES_OUTSTANDING;
-	
+/*	
 	START_ORDER_STATUS_MESSAGE_LOOP
 	if (ID == order_status_message->trader_id)
 	{
@@ -655,6 +657,14 @@ int Firm_read_stock_transactions()
 		EXTERNAL_FINANCIAL_NEEDS -= finances;
 	}
 	FINISH_ORDER_STATUS_MESSAGE_LOOP
-
+*/
+	
+	//Short-cut for Hybrid model:
+	//Assume:
+	//All external financial needs are satisfied by the asset market
+	PAYMENT_ACCOUNT += EXTERNAL_FINANCIAL_NEEDS;
+	EXTERNAL_FINANCIAL_NEEDS =0.0;
+	
+	
 	return 0;
 }
