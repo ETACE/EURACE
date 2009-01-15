@@ -74,7 +74,7 @@
 <function>
 <name>idle</name>
 <description></description>
-<currentState>Monthly_Decision</currentState>
+<currentState>Firm_Start_Producer_Role</currentState>
 <nextState>Firm_End_Financial_Management</nextState>
 <condition><not><time><period>monthly</period><phase>a.last_day_of_month_to_act</phase></time></not></condition>
 </function>
