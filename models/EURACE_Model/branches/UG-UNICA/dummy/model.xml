@@ -17,14 +17,23 @@
 <dataTypes>
 
 <dataType>
-<name>employee</name>
-<description>Used to hold employee information in firms</description>
+<name>consumption_goods_offer</name>
+<description>Used by household and mall to hold consumption goods offers</description>
 <variables>
 <variable><type>int</type><name>id</name><description></description></variable>
-<variable><type>int</type><name>region_id</name><description></description></variable>
-<variable><type>double</type><name>wage</name><description></description></variable>
-<variable><type>int</type><name>general_skill</name><description></description></variable>
-<variable><type>double</type><name>specific_skill</name><description></description></variable>
+<variable><type>double</type><name>quality</name><description></description></variable>
+<variable><type>double</type><name>price</name><description></description></variable>
+</variables>
+</dataType>
+
+<dataType>
+<name>consumption_request</name>
+<description>Used by  mall to hold demand</description>
+<variables>
+<variable><type>int</type><name>worker_id</name><description></description></variable>
+<variable><type>int</type><name>consumer_region_id</name><description></description></variable>
+<variable><type>int</type><name>firm_id</name><description></description></variable>
+<variable><type>double</type><name>quantity</name><description></description></variable>
 </variables>
 </dataType>
 
@@ -37,6 +46,109 @@
 <variable><type>double</type><name>current_stock</name><description></description></variable>
 </variables>
 </dataType>
+
+<dataType>
+<name>mall_quality_price_info</name>
+<description>Used by household to hold information about quality and prices of one good offered by mall</description>
+<variables>
+<variable><type>int</type><name>mall_id</name><description></description></variable>
+<variable><type>int</type><name>firm_id</name><description></description></variable>
+<variable><type>int</type><name>mall_region_id</name><description></description></variable>
+<variable><type>double</type><name>quality</name><description></description></variable>
+<variable><type>double</type><name>price</name><description></description></variable>
+<variable><type>int</type><name>available</name><description></description></variable>
+</variables>
+</dataType>
+
+<dataType>
+<name>mall_stock</name>
+<description>Used by mall to hold information about current stock</description>
+<variables>
+<variable><type>int</type><name>firm_id</name><description></description></variable>
+<variable><type>int</type><name>region_id</name><description></description></variable>
+<variable><type>double</type><name>stock</name><description></description></variable>
+<variable><type>double</type><name>price</name><description></description></variable>
+<variable><type>double</type><name>quality</name><description></description></variable>
+<variable><type>double</type><name>previous_price</name><description></description></variable>
+</variables>
+</dataType>
+
+<dataType>
+<name>delivery_volume_per_mall</name>
+<description>Used by firm to hold information about delivery volume per mall</description>
+<variables>
+<variable><type>int</type><name>mall_id</name><description></description></variable>
+<variable><type>double</type><name>quantity</name><description></description></variable>
+<variable><type>double</type><name>price</name><description></description></variable>
+<variable><type>double</type><name>quality</name><description></description></variable>
+</variables>
+</dataType>
+
+<dataType>
+<name>logit_firm_id</name>
+<description>Used by household to stock logits and corresponding firm IDs</description>
+<variables>
+<variable><type>double</type><name>logit</name><description></description></variable>
+<variable><type>int</type><name>firm_id</name><description></description></variable>
+</variables>
+</dataType>
+
+<dataType>
+<name>sales_in_mall</name>
+<description>Used by mall to calculate sales</description>
+<variables>
+<variable><type>int</type><name>firm_id</name><description></description></variable>
+<variable><type>double</type><name>sales</name><description></description></variable>
+</variables>
+</dataType>
+
+<dataType>
+<name>ordered_quantity</name>
+<description>Used by household to stock ordered quantities</description>
+<variables>
+<variable><type>int</type><name>firm_id</name><description></description></variable>
+<variable><type>double</type><name>quantity</name><description></description></variable>
+<variable><type>double</type><name>price</name><description></description></variable>
+</variables>
+</dataType>
+
+<dataType>
+<name>received_quantities</name>
+<description>Used by household to stock received quantities</description>
+<variables>
+<variable><type>int</type><name>firm_id</name><description></description></variable>
+<variable><type>double</type><name>quantity</name><description></description></variable>
+</variables>
+</dataType>
+
+<dataType>
+<name>sold_quantities_per_mall</name>
+<description>Used by firm to hold informations about sales </description>
+<variables>
+<variable><type>int</type><name>mall_id</name><description></description></variable>
+<variable><type>double</type><name>sold_quantity</name><description></description></variable>
+<variable><type>int</type><name>stock_empty</name><description></description></variable>
+<variable><type>double</type><name>estimated_demand</name><description></description></variable>
+</variables>
+</dataType>
+
+<dataType>
+<name>sales_statistics</name>
+<description>Used by firm to store sales in malls of last periods</description>
+<variables>
+<variable><type>int</type><name>mall_id</name><description></description></variable>
+<variable><type>int</type><name>period</name><description></description></variable>
+<variable><type>double</type><name>sales</name><description></description></variable>
+</variables>
+</dataType>
+
+<dataType>
+<name>financing_capital</name>
+<description></description>
+<variables>
+<variable><type>double</type><name>financing_per_month</name><description></description></variable>
+<variable><type>int</type><name>nr_periods_before_repayment</name><description></description></variable>
+</variables>
 
 </dataTypes>
 
@@ -51,12 +163,46 @@
 <memory>
 <variable><type>int</type><name>credit_dummy</name><description></description></variable>
 
-<variable><type>employee_array</type><name>employees</name><description>Used to store the data-type Employee</description></variable>
+<variable><type>double</type><name>mean_wage</name><description>Average wage paid by a firm</description></variable>
+<!--<variable><type>double</type><name>total_units_capital_stock</name><description>Units of capital stock</description></variable>-->
+<variable><type>double</type><name>needed_capital_stock</name><description>The overall capital stock a firm wants to have</description></variable>
+<variable><type>double</type><name>actual_cap_price</name><description>Price of the latest capital good</description></variable>
+<variable><type>double</type><name>mean_specific_skills</name><description>Average specific skills of the workforce</description></variable>
+<variable><type>double</type><name>planned_production_quantity</name><description>Planned production quantity, has a value on production day, but is reset on other days.</description></variable>
+<variable><type>double</type><name>production_quantity</name><description>Actual production quantity, has a value on production day, but is reset on other days.</description></variable>
+<variable><type>double</type><name>planned_output</name><description>Planned output is the same as planned production quantity, but retains its value during the month.</description></variable>
+<variable><type>double</type><name>output</name><description>Actual output is the same as production quantity, but retains its value during the month.</description></variable>
+<variable><type>double</type><name>unit_costs</name><description>Cost per unit of the consumption good</description></variable>
+<variable><type>double</type><name>total_supply</name><description>The sum of local inventory and produced output gives the total supplied quantity</description></variable>
 <variable><type>double</type><name>production_costs</name><description>Actual production costs, labor and capital</description></variable>
+<variable><type>double</type><name>revenue_per_day</name><description>Daily revenue</description></variable>
+<variable><type>double</type><name>technological_frontier</name><description>Best available technology in the economy</description></variable>
 <variable><type>double</type><name>cum_revenue</name><description>Monthly revenue</description></variable>
+<variable><type>double</type><name>out_of_stock_costs</name><description></description></variable>
+<variable><type>sales_statistics_array</type><name>malls_sales_statistics</name><description>Sales of the last ten months</description></variable>
+<variable><type>double</type><name>quality</name><description>Quality of the consumption good</description></variable>
 <variable><type>double</type><name>price</name><description>Price of the consumption good</description></variable>
+<variable><type>double</type><name>price_last_month</name><description>Price of the consumption good in the last month</description></variable>
+<variable><type>double</type><name>demand_capital_stock</name><description>Demand for capital goods</description></variable>
 <variable><type>double</type><name>planned_production_costs</name><description> Planned production costs</description></variable>
+<variable><type>double</type><name>adaption_production_volume_due_to_insufficient_finances</name><description>Percentage of production by which the quantity is reduced</description></variable>
+<variable><type>double</type><name>fraction_reserved_for_delayed_payments</name><description></description></variable>
+<variable><type>sold_quantities_per_mall_array</type><name>sold_quantities</name><description>Sold quantities in the different malls</description></variable>
+<variable><type>double</type><name>total_sold_quantity</name><description>Daily sum of sold quantities in all malls. The sold quantity of one firm in all malls.</description></variable>
+<variable><type>double</type><name>cum_total_sold_quantity</name><description>Monthly sum of sold quantities in all malls. The monthly sold quantity of one firm in all malls.</description></variable>
+<variable><type>delivery_volume_per_mall_array</type><name>delivery_volume</name><description>Delivery volume for each mall</description></variable>
+<variable><type>delivery_volume_per_mall_array</type><name>planned_delivery_volume</name><description>Planned delivery volume for each  mall</description></variable>
 <variable><type>mall_info_array</type><name>current_mall_stocks</name><description>Current stock in each mall</description></variable>
+<variable><type>double_array</type><name>last_planned_production_quantities</name><description>Array of the planned production quantities in the past</description></variable>
+<!--<variable><type>double</type><name>direct_financial_needs_require_external_financing</name><description></description></variable>-->
+<variable><type>double</type><name>total_external_financing_obtained</name><description></description></variable>
+<!--<variable><type>double</type><name>delayed_financial_needs_require_external_financing</name><description></description></variable>-->
+<variable><type>double</type><name>capital_costs</name><description></description></variable>
+<variable><type>double</type><name>labour_costs</name><description></description></variable>
+<variable><type>financing_capital_array</type><name>capital_financing</name><description></description></variable>
+<variable><type>double</type><name>financial_resources_for_production</name><description></description></variable>
+<variable><type>double</type><name>planned_value_capital_stock</name><description></description></variable>
+<variable><type>double</type><name>total_units_local_inventory</name><description></description></variable>
 
 </memory>
 
