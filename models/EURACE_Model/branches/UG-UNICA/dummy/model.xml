@@ -205,6 +205,8 @@
 <variable><type>double</type><name>planned_value_capital_stock</name><description></description></variable>
 <variable><type>double</type><name>total_units_local_inventory</name><description></description></variable>
 
+<variable><type>employee_array</type><name>employees</name><description>Used to store the data-type Employee</description></variable>
+
 </memory>
 
 <functions>
