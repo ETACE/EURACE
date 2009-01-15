@@ -123,6 +123,10 @@
 <name>Household</name>
 <description></description>
 
+<memory>
+<variable><type>double</type><name>consumption_budget</name><description>Part of the budget for consumption</description></variable>
+</memory>
+
 <functions>
 
 <function>
