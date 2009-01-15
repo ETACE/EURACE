@@ -12,4 +12,4 @@ ADDED A CONDITION TO THE FUNCTION "FIRM_ASK_LOAN" IN CREDIT MARKET MODEL
 
 COMMENTED SOME FUNCTIONS IN MY_LIBRARY_FUNCTIONS and in MY_LIBRARY_HEADER
 
-Commented IG_Firm agent and function "Household_idle()" in Statistical_Office_UNIBI/model.xml
+Commented functions "IG_Firm_Idle()" and all teh occurrencies of "Household_idle()" in Statistical_Office_UNIBI/model.xml
