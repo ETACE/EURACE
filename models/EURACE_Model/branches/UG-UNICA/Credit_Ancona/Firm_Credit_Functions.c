@@ -188,10 +188,6 @@ int Firm_get_loan()
 	return 0;
 }
 
-int Firm_not_in_bankruptcy()
-{return 0;
-}
-
 int Firm_idle()
 {
 	return 0;
