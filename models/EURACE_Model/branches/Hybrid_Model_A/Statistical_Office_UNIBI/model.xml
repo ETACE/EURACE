@@ -844,7 +844,7 @@
      <name>Household_idle</name>
      <description></description>
      <currentState>start_Household</currentState>
-     <nextState>Start_Household_Policy_Data</nextState>
+     <nextState>Household_Start_Policy_Data</nextState>
      <condition>
       <not>
        <time>
@@ -860,7 +860,7 @@
      <name>Household_read_policy_announcements</name>
      <description></description>
      <currentState>start_Household</currentState>
-     <nextState>Start_Household_Policy_Data</nextState>
+     <nextState>Household_Start_Policy_Data</nextState>
      <condition>
       <time>
        <period>yearly</period>
@@ -885,10 +885,10 @@
     </function>
     <function>
      <name>Household_receive_data</name>
-     <description>The household reads the messages from the eurostat agent &#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+     <description>The household reads the messages from the eurostat agent &#xd;
 and stores the needed data.</description>
-     <currentState>Start_Household_Policy_Data</currentState>
-     <nextState>start_Household_financial_market_role</nextState>
+     <currentState>Household_Start_Policy_Data</currentState>
+     <nextState>Household_Start_Financial_Market_Role</nextState>
      <condition>
       <time>
        <period>monthly</period>
@@ -901,8 +901,8 @@ and stores the needed data.</description>
     <function>
      <name>Household_idle</name>
      <description>Household does nothing</description>
-     <currentState>Start_Household_Policy_Data</currentState>
-     <nextState>start_Household_financial_market_role</nextState>
+     <currentState>Household_Start_Policy_Data</currentState>
+     <nextState>Household_Start_Financial_Market_Role</nextState>
      <condition>
       <not>
        <time>
@@ -916,7 +916,7 @@ and stores the needed data.</description>
     </function>
     <function>
      <name>Household_send_data_to_Eurostat</name>
-     <description>Household sends message to the eurostat agent &#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+     <description>Household sends message to the eurostat agent &#xd;
 including several micro data.</description>
      <currentState>15</currentState>
      <nextState>end_Household</nextState>
@@ -1451,7 +1451,7 @@ including several micro data.</description>
      <name>Eurostat_Initialization</name>
      <description>Initializes the firm and household data arrays</description>
      <currentState>start_Eurostat</currentState>
-     <nextState>Start_Eurostat_Policy_Data</nextState>
+     <nextState>Eurostat_Start_Policy_Data</nextState>
      <condition>
       <time>
        <period>millionyearly</period>
@@ -1465,7 +1465,7 @@ including several micro data.</description>
      <name>Eurostat_idle</name>
      <description>Eurostat does nothing</description>
      <currentState>start_Eurostat</currentState>
-     <nextState>Start_Eurostat_Policy_Data</nextState>
+     <nextState>Eurostat_Start_Policy_Data</nextState>
      <condition>
       <not>
        <time>
@@ -1480,8 +1480,8 @@ including several micro data.</description>
     <function>
      <name>Eurostat_idle</name>
      <description>Eurostat does nothing</description>
-     <currentState>Start_Eurostat_Policy_Data</currentState>
-     <nextState>Start_Eurostat_Firm_Data</nextState>
+     <currentState>Eurostat_Start_Policy_Data</currentState>
+     <nextState>Eurostat_Start_Firm_Data</nextState>
      <condition>
       <not>
        <time>
@@ -1496,8 +1496,8 @@ including several micro data.</description>
     <function>
      <name>Eurostat_read_policy_announcements</name>
      <description></description>
-     <currentState>Start_Eurostat_Policy_Data</currentState>
-     <nextState>Start_Eurostat_Firm_Data</nextState>
+     <currentState>Eurostat_Start_Policy_Data</currentState>
+     <nextState>Eurostat_Start_Firm_Data</nextState>
      <condition>
       <time>
        <period>yearly</period>
@@ -1514,7 +1514,7 @@ including several micro data.</description>
     <function>
      <name>Eurostat_send_data</name>
      <description>Eurostat sends the data to the other agents</description>
-     <currentState>Start_Eurostat_Firm_Data</currentState>
+     <currentState>Eurostat_Start_Firm_Data</currentState>
      <nextState>01</nextState>
      <condition>
       <time>
@@ -1532,7 +1532,7 @@ including several micro data.</description>
     <function>
      <name>Eurostat_idle</name>
      <description>Eurostat does nothing</description>
-     <currentState>Start_Eurostat_Firm_Data</currentState>
+     <currentState>Eurostat_Start_Firm_Data</currentState>
      <nextState>01</nextState>
      <condition>
       <not>
@@ -1549,7 +1549,7 @@ including several micro data.</description>
      <name>Eurostat_idle</name>
      <description></description>
      <currentState>01</currentState>
-     <nextState>Start_Eurostat_Monthly_Loop</nextState>
+     <nextState>Eurostat_Start_Monthly_Loop</nextState>
      <condition>
       <lhs>
        <not>
@@ -1577,7 +1577,7 @@ including several micro data.</description>
      <name>Eurostat_calculate_data</name>
      <description>Eurostat calculates the global and regional macro data based on the received micro data</description>
      <currentState>01</currentState>
-     <nextState>Start_Eurostat_Monthly_Loop</nextState>
+     <nextState>Eurostat_Start_Monthly_Loop</nextState>
      <condition>
       <lhs>
        <time>
@@ -1612,7 +1612,7 @@ including several micro data.</description>
     <function>
      <name>Eurostat_store_history_monthly</name>
      <description>Eurostat stores monthly macro data in its history struct.</description>
-     <currentState>Start_Eurostat_Monthly_Loop</currentState>
+     <currentState>Eurostat_Start_Monthly_Loop</currentState>
      <nextState>02</nextState>
      <condition>
       <lhs>
@@ -1639,15 +1639,15 @@ including several micro data.</description>
      <name>Eurostat_compute_growth_rates_monthly</name>
      <description>Eurostat computes monthly growth rates for macro data stored in its monthly history struct.</description>
      <currentState>02</currentState>
-     <nextState>Start_Eurostat_Quarterly_Loop</nextState>
+     <nextState>Eurostat_Start_Quarterly_Loop</nextState>
      <inputs/>
      <outputs/>
     </function>
     <function>
      <name>Eurostat_idle</name>
      <description>Eurostat does nothing</description>
-     <currentState>Start_Eurostat_Monthly_Loop</currentState>
-     <nextState>Start_Eurostat_Quarterly_Loop</nextState>
+     <currentState>Eurostat_Start_Monthly_Loop</currentState>
+     <nextState>Eurostat_Start_Quarterly_Loop</nextState>
      <condition>
       <lhs>
        <not>
@@ -1674,7 +1674,7 @@ including several micro data.</description>
     <function>
      <name>Eurostat_store_history_quarterly</name>
      <description>Eurostat stores quarterly macro data in its history struct.</description>
-     <currentState>Start_Eurostat_Quarterly_Loop</currentState>
+     <currentState>Eurostat_Start_Quarterly_Loop</currentState>
      <nextState>04</nextState>
      <condition>
       <lhs>
@@ -1709,15 +1709,15 @@ including several micro data.</description>
      <name>Eurostat_measure_recession</name>
      <description>Eurostat measures the start or end of recessions.</description>
      <currentState>05</currentState>
-     <nextState>Start_Eurostat_EndOfYear_Loop</nextState>
+     <nextState>Eurostat_Start_EndOfYear_Loop</nextState>
      <inputs/>
      <outputs/>
     </function>
     <function>
      <name>Eurostat_idle</name>
      <description>Eurostat does nothing</description>
-     <currentState>Start_Eurostat_Quarterly_Loop</currentState>
-     <nextState>Start_Eurostat_EndOfYear_Loop</nextState>
+     <currentState>Eurostat_Start_Quarterly_Loop</currentState>
+     <nextState>Eurostat_Start_EndOfYear_Loop</nextState>
      <condition>
       <lhs>
        <not>
@@ -1744,7 +1744,7 @@ including several micro data.</description>
     <function>
      <name>Eurostat_idle</name>
      <description>Eurostat idle</description>
-     <currentState>Start_Eurostat_EndOfYear_Loop</currentState>
+     <currentState>Eurostat_Start_EndOfYear_Loop</currentState>
      <nextState>end_Eurostat</nextState>
      <condition>
       <not>
@@ -1760,7 +1760,7 @@ including several micro data.</description>
     <function>
      <name>Eurostat_send_data_to_government</name>
      <description>Eurostat sends the data to the governments for determining policies.</description>
-     <currentState>Start_Eurostat_EndOfYear_Loop</currentState>
+     <currentState>Eurostat_Start_EndOfYear_Loop</currentState>
      <nextState>end_Eurostat</nextState>
      <condition>
       <time>
@@ -1968,14 +1968,7 @@ including several micro data.</description>
   </message>
   <message>
    <name>mall_data</name>
-   <description>Sent by mall. Mall informs Eurostat about exports between regions.&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-</description>
+   <description>Sent by mall. Mall informs Eurostat about exports between regions.</description>
    <variables>
     <variable>
      <type>int</type>
