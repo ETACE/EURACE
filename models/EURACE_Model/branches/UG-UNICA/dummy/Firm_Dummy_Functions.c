@@ -37,9 +37,4 @@ int Firm_labour_good_market_dummy() {
                                 
 }
 
-int idle() { 
-
-    return 0;
-
-}
 
