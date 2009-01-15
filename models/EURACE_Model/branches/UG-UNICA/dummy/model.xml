@@ -28,6 +28,16 @@
 </variables>
 </dataType>
 
+<dataType>
+<name>mall_info</name>
+<description>Used by firm to hold information about sales in malls</description>
+<variables>
+<variable><type>int</type><name>mall_id</name><description></description></variable>
+<variable><type>double</type><name>critical_stock</name><description></description></variable>
+<variable><type>double</type><name>current_stock</name><description></description></variable>
+</variables>
+</dataType>
+
 </dataTypes>
 
 </environment>
