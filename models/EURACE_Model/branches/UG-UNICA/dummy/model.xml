@@ -17,6 +17,18 @@
 <dataTypes>
 
 <dataType>
+<name>employee</name>
+<description>Used to hold employee information in firms</description>
+<variables>
+<variable><type>int</type><name>id</name><description></description></variable>
+<variable><type>int</type><name>region_id</name><description></description></variable>
+<variable><type>double</type><name>wage</name><description></description></variable>
+<variable><type>int</type><name>general_skill</name><description></description></variable>
+<variable><type>double</type><name>specific_skill</name><description></description></variable>
+</variables>
+</dataType>
+
+<dataType>
 <name>consumption_goods_offer</name>
 <description>Used by household and mall to hold consumption goods offers</description>
 <variables>
