@@ -332,6 +332,23 @@
 
 </xagent>
 
+<xagent>
+<name>IGFirm</name>
+<description></description>
+<memory>
+<variable><type>double</type><name>productivity</name><description></description></variable>
+<variable><type>double</type><name>capital_good_price</name><description></description></variable>
+<variable><type>double</type><name>revenue_per_day</name><description></description></variable>
+<variable><type>double</type><name>tax_rate_corporate</name><description></description></variable>
+<variable><type>double</type><name>tax_rate_vat</name><description></description></variable>
+<variable><type>double</type><name>tax_payment</name><description></description></variable>
+<variable><type>double</type><name>net_profit</name><description></description></variable>
+<variable><type>int</type><name>outstanding_shares</name><description></description></variable>
+<variable><type>double</type><name>current_dividend_per_share</name><description></description></variable>
+<variable><type>double</type><name>cum_revenues</name><description></description></variable>
+</memory>
+</xagent>
+
 
 </agents>
 
