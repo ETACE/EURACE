@@ -149,6 +149,7 @@
 <variable><type>double</type><name>financing_per_month</name><description></description></variable>
 <variable><type>int</type><name>nr_periods_before_repayment</name><description></description></variable>
 </variables>
+</dataType>
 
 </dataTypes>
 
