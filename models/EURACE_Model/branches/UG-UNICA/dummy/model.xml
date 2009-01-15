@@ -328,6 +328,11 @@
 </outputs>
 </function>
 
+<function>
+<name>idle</name>
+<description></description>
+</function>
+
 </functions>
 
 </xagent>
@@ -348,6 +353,15 @@
 <variable><type>double</type><name>cum_revenues</name><description></description></variable>
 </memory>
 </xagent>
+
+<functions>
+
+<function>
+<name>idle</name>
+<description></description>
+</function>
+
+</functions>
 
 
 </agents>
