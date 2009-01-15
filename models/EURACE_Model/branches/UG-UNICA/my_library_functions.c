@@ -39,7 +39,7 @@ else return 0;
 }
 */
 
-
+/*
 int vacancy_list_rank_wage_offer_function(const void *x, const void *y)
 {
 	if( ((vacancy *)x)->wage_offer > ((vacancy *)y)->wage_offer) return -1;
@@ -53,7 +53,7 @@ int job_offer_list_rank_wage_offer_function(const void *x, const void *y)
 	else if( ((job_offer *)x)->wage_offer < ((job_offer *)y)->wage_offer) return 1;
 	else
 	{
-		/* If equal randomly sort */
+		/* If equal randomly sort */ /*
 		if(rand()/((double)RAND_MAX + 1) <= 0.5) return -1;
 		else return 1;
 	}
@@ -72,6 +72,7 @@ int employee_list_rank_specific_skills_function(const void *x, const void *y)
  * \param y The second element to compare.
  * \return The compare result.
  */
+ /*
 int job_application_list_rank_general_skill_function(const void *x, const void *y)
 {
 	if( ((job_application *)x)->general_skill > ((job_application *)y)->general_skill) 
@@ -87,7 +88,7 @@ int job_application_list_rank_general_skill_function(const void *x, const void *
 
 		else
 		{
-			/* If equal randomly sort */
+			/* If equal randomly sort */ /*
 			if(rand()/((double)RAND_MAX + 1) <= 0.5) return -1;
 			else return 1;
 		}
@@ -100,4 +101,6 @@ int sales_statistics_list_rank_sales_function(const void *x, const void *y)
 	else if( ((sales_statistics *)x)->sales > ((sales_statistics *)y)->sales) return 1;
 	else return 0;
 }
+*/
+
 
