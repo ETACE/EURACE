@@ -753,6 +753,8 @@
     </function>
    </functions>
   </xagent>
+  
+  <!--
   <xagent>
    <name>IGFirm</name>
    <description></description>
@@ -819,6 +821,8 @@
     </function>
    </functions>
   </xagent>
+  -->
+  
   <xagent>
    <name>Household</name>
    <description></description>
@@ -840,6 +844,7 @@
     </variable>
    </memory>
    <functions>
+   <!--
     <function>
      <name>Household_idle</name>
      <description></description>
@@ -856,6 +861,8 @@
      <inputs/>
      <outputs/>
     </function>
+    -->
+    
     <function>
      <name>Household_read_policy_announcements</name>
      <description></description>
