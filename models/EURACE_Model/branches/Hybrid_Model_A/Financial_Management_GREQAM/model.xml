@@ -301,6 +301,11 @@
      <name>previous_shares_outstanding</name>
      <description></description>
     </variable>
+    <variable>
+     <type>double</type>
+     <name>current_shares_outstanding</name>
+     <description></description>
+    </variable>
    </memory>
    <functions>
     <function>

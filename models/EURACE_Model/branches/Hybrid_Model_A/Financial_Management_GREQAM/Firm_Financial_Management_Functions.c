@@ -616,16 +616,6 @@ int Firm_reset_bankruptcy_flags()
  */
 int Firm_compute_and_send_stock_orders()
 {
-	//Note: This function only runs if EXTERNAL_FINANCIAL_NEEDS>0.0
-
-	double limit_price=CURRENT_SHARE_PRICE*0.99;
-	int quantity = -1*(1+EXTERNAL_FINANCIAL_NEEDS/limit_price);
-
-	//Firm tries to sell stock_units shares:
-	//add_order_message(trader_id, asset_id, limit_price, quantity)
-/*	
-	add_order_message(ID, ID, limit_price, quantity);
-*/
 	
 	return 0;
 }
@@ -636,28 +626,6 @@ int Firm_compute_and_send_stock_orders()
  */
 int Firm_read_stock_transactions()
 {
-	double finances;
-
-	//Before updating the share count
-	PREVIOUS_SHARES_OUTSTANDING = CURRENT_SHARES_OUTSTANDING;
-/*	
-	START_ORDER_STATUS_MESSAGE_LOOP
-	if (ID == order_status_message->trader_id)
-	{
-		//Finances obtained: positive quantity is demand (buying), negative quantity is supply (selling)
-		finances = (-1)*order_status_message->price
-				* order_status_message->quantity;
-	
-		CURRENT_SHARES_OUTSTANDING += (-1)*order_status_message->quantity;
-		
-		//Increase payment account with the finances obtained
-		PAYMENT_ACCOUNT += finances;
-	
-		//Decrease external financial needs with the finances obtained
-		EXTERNAL_FINANCIAL_NEEDS -= finances;
-	}
-	FINISH_ORDER_STATUS_MESSAGE_LOOP
-*/
 	
 	//Short-cut for Hybrid model:
 	//Assume:
