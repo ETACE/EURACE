@@ -176,6 +176,20 @@
 <memory>
 <variable><type>int</type><name>credit_dummy</name><description></description></variable>
 
+<variable><type>int</type><name>vacancies</name><description>number of vacancies</description></variable>
+<variable><type>int</type><name>no_employees</name><description>number of employees</description></variable>
+<variable><type>int</type><name>no_employees_skill_1</name><description>number of employees with general skills 1</description></variable>
+<variable><type>int</type><name>no_employees_skill_2</name><description>number of employees with general skills 2</description></variable>
+<variable><type>int</type><name>no_employees_skill_3</name><description>number of employees with general skills 3</description></variable>
+<variable><type>int</type><name>no_employees_skill_4</name><description>number of employees with general skills 4</description></variable>
+<variable><type>int</type><name>no_employees_skill_5</name><description>number of employees with general skills 5</description></variable>
+<variable><type>double</type><name>average_s_skill_of_1</name><description>average specific skills of employees with general skills 1</description></variable>
+<variable><type>double</type><name>average_s_skill_of_2</name><description>average specific skills of employees with general skills 2</description></variable>
+<variable><type>double</type><name>average_s_skill_of_3</name><description>average specific skills of employees with general skills 3</description></variable>
+<variable><type>double</type><name>average_s_skill_of_4</name><description>average specific skills of employees with general skills 4</description></variable>
+<variable><type>double</type><name>average_s_skill_of_5</name><description>average specific skills of employees with general skills 5</description></variable>
+
+
 <variable><type>double</type><name>mean_wage</name><description>Average wage paid by a firm</description></variable>
 <!--<variable><type>double</type><name>total_units_capital_stock</name><description>Units of capital stock</description></variable>-->
 <variable><type>double</type><name>needed_capital_stock</name><description>The overall capital stock a firm wants to have</description></variable>
