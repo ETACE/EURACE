@@ -1,0 +1,15 @@
+FINANCIAL MANAGEMENT
+- commented output message firing in function <name>Firm_bankruptcy_insolvency_procedure</name>
+- commented output message firing in function <name>Firm_bankruptcy_illiquidity_procedure</name>
+- commented output message installment in function  <name>Firm_execute_financial_payments</name>
+- commented output message bankruptcy in function <name>Firm_bankruptcy_insolvency_procedure</name>
+
+
+
+CREDIT_MARKET_DUMMY MUST BE INITIALISED = 1
+
+ADDED A CONDITION TO THE FUNCTION "FIRM_ASK_LOAN" IN CREDIT MARKET MODEL
+
+COMMENTED SOME FUNCTIONS IN MY_LIBRARY_FUNCTIONS and in MY_LIBRARY_HEADER
+
+Commented functions "IG_Firm_Idle()" and all teh occurrencies of "Household_idle()" in Statistical_Office_UNIBI/model.xml
