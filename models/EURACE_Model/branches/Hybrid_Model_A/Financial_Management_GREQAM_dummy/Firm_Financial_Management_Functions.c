@@ -614,7 +614,7 @@ int Firm_reset_bankruptcy_flags()
  * \fn Firm_compute_and_send_stock_orders()
  * \brief Function to send order_messages to the clearinghouse (share emission or repurchase).
  */
-int Firm_compute_and_send_stock_orders()
+int Firm_compute_and_send_stock_orders_dummy()
 {
 	
 	return 0;
@@ -624,7 +624,7 @@ int Firm_compute_and_send_stock_orders()
  * \fn Firm_read_stock_transactions()
  * \brief Function to read order_status messages from the clearinghouse, and update the firm's trading account.
  */
-int Firm_read_stock_transactions()
+int Firm_read_stock_transactions_dummy()
 {
 	
 	//Short-cut for Hybrid model:
