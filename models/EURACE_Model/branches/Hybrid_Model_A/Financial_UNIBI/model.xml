@@ -1,14 +1,13 @@
 <!DOCTYPE xmodel SYSTEM "http://eurace.cs.bilgi.edu.tr/XMML.dtd">
 <xmodel version="2" >
  <name>Financial Market Dummy-UNIBI</name>
- <version></version>
+ <version>post-Oxford</version>
  <description></description>
  <models/>
  <environment>
   <constants/>
   <functionFiles>
    <file>Bank_Financial_Market.c</file>
-   <file>ClearingHouse_Financial_Market.c</file>
    <file>Firm_Financial_Market_Functions.c</file>
    <file>Household_Financial_Market_Functions.c</file>
    <file>Government_Financial_Market_Functions.c</file>
@@ -20,7 +19,13 @@
   <xagent>
    <name>Firm</name>
    <description></description>
-   <memory/>
+   <memory>
+    <variable>
+     <type>int</type>
+     <name>current_shares_outstanding</name>
+     <description></description>
+    </variable>
+   </memory>
    <functions>
     <function>
      <name>Firm_receive_stock_info_dummy</name>
@@ -46,7 +51,7 @@
    <memory/>
    <functions>
     <function>
-     <name>idle</name>
+     <name>Household_financial_market_dummy</name>
      <description></description>
      <currentState>Household_Start_Financial_Market_Role</currentState>
      <nextState>Household_Start_Labour_Role</nextState>
@@ -67,32 +72,6 @@
      <nextState>01</nextState>
      <inputs/>
      <outputs/>
-    </function>
-   </functions>
-  </xagent>
-    <xagent>
-   <name>Clearinghouse</name>
-   <description></description>
-   <memory>
-   </memory>
-   <functions>
-    <function>
-     <name>ClearingHouse_receive_info</name>
-     <description></description>
-     <currentState>start_Clearinghouse</currentState>
-     <nextState>RECEIVEDINFOSTOCK</nextState>
-    </function>
-    <function>
-     <name>ClearingHouse_receive_orders_and_run</name>
-     <description></description>
-     <currentState>RECEIVEDINFOSTOCK</currentState>
-     <nextState>COMPUTEDPRICES</nextState>
-    </function>
-    <function>
-     <name>ClearingHouse_send_asset_information</name>
-     <description></description>
-     <currentState>COMPUTEDPRICES</currentState>
-     <nextState>end_Clearinghouse</nextState>
     </function>
    </functions>
   </xagent>
