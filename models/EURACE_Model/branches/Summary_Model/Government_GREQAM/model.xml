@@ -336,10 +336,10 @@
      <outputs/>
     </function>
     <function>
-     <name>Government_read_subsidy_notifications</name>
+     <name>Government_read_subsidy_notifications_transfers_and_unemployment_benefits_dummy</name>
      <description>Counter of the \url{subsidy_notification} messages, monthly and yearly totals of the subsidy payments.</description>
      <currentState>02</currentState>
-     <nextState>03</nextState>
+     <nextState>Gov_Start_Monthly_Loop</nextState>
      <inputs>
       <input>
        <messageName>hh_subsidy_notification</messageName>
@@ -369,100 +369,12 @@
      <outputs/>
     </function>
     <function>
-     <name>Government_read_transfer_notifications</name>
-     <description>Counter of the \url{transfer_notification} messages, monthly and yearly totals of the transfer payments.</description>
-     <currentState>03</currentState>
-     <nextState>04</nextState>
-     <inputs>
-      <input>
-       <messageName>hh_transfer_notification</messageName>
-       <filter>
-        <lhs>
-         <value>a.id</value>
-        </lhs>
-        <op>EQ</op>
-        <rhs>
-         <value>m.gov_id</value>
-        </rhs>
-       </filter>
-      </input>
-      <input>
-       <messageName>firm_transfer_notification</messageName>
-       <filter>
-        <lhs>
-         <value>a.id</value>
-        </lhs>
-        <op>EQ</op>
-        <rhs>
-         <value>m.gov_id</value>
-        </rhs>
-       </filter>
-      </input>
-     </inputs>
-     <outputs/>
-    </function>
-    <function>
-     <name>Government_read_unemployment_benefit_notifications</name>
-     <description>Counter of the \url{unemployment} messages, monthly and yearly totals of the unemployment benefit payments.</description>
-     <currentState>04</currentState>
-     <nextState>Gov_Start_Monthly_Loop</nextState>
-     <inputs>
-      <input>
-       <messageName>unemployment_notification</messageName>
-       <filter>
-        <lhs>
-         <value>a.id</value>
-        </lhs>
-        <op>EQ</op>
-        <rhs>
-         <value>m.gov_id</value>
-        </rhs>
-       </filter>
-      </input>
-     </inputs>
-     <outputs/>
-    </function>
-    <function>
-     <name>Government_idle</name>
-     <description></description>
-     <currentState>Gov_Start_Monthly_Loop</currentState>
-     <nextState>Gov_Start_Yearly_Loop</nextState>
-     <condition>
-      <not>
-       <time>
-        <period>monthly</period>
-        <phase>0</phase>
-       </time>
-      </not>
-     </condition>
-     <inputs/>
-     <outputs/>
-    </function>
-    <function>
-     <name>Government_monthly_budget_accounting</name>
+     <name>Government_monthly_budget_accounting_dummy</name>
      <description>Function to perform accounting at the end of each month.</description>
      <currentState>Gov_Start_Monthly_Loop</currentState>
-     <nextState>05</nextState>
-     <condition>
-      <time>
-       <period>monthly</period>
-       <phase>0</phase>
-      </time>
-     </condition>
-     <inputs/>
-     <outputs/>
-    </function>
-    <function>
-     <name>Government_send_account_update</name>
-     <description>Function to send the payment_account value to the Central Bank.</description>
-     <currentState>06</currentState>
      <nextState>Gov_Start_Yearly_Loop</nextState>
      <inputs/>
-     <outputs>
-      <output>
-       <messageName>central_bank_account_update</messageName>
-      </output>
-     </outputs>
+     <outputs/>
     </function>
     <function>
      <name>Government_read_data_from_Eurostat</name>
@@ -493,22 +405,6 @@
      <outputs/>
     </function>
     <function>
-     <name>idle</name>
-     <description></description>
-     <currentState>Gov_Start_Yearly_Loop</currentState>
-     <nextState>end_Government</nextState>
-     <condition>
-      <not>
-       <time>
-        <period>yearly</period>
-        <phase>0</phase>
-       </time>
-      </not>
-     </condition>
-     <inputs/>
-     <outputs/>
-    </function>
-    <function>
      <name>Government_yearly_budget_accounting</name>
      <description>Function to perform accounting at the end of each year.</description>
      <currentState>Gov_Start_Yearly_Loop</currentState>
@@ -519,14 +415,6 @@
        <phase>0</phase>
       </time>
      </condition>
-     <inputs/>
-     <outputs/>
-    </function>
-    <function>
-     <name>Government_monthly_resetting</name>
-     <description>Monthly resetting of counters.</description>
-     <currentState>05</currentState>
-     <nextState>06</nextState>
      <inputs/>
      <outputs/>
     </function>
