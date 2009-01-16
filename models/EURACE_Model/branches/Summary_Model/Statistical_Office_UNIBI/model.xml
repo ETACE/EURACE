@@ -753,7 +753,6 @@
     </function>
    </functions>
   </xagent>
-  
   <xagent>
    <name>IGFirm</name>
    <description></description>
@@ -775,25 +774,6 @@
     </variable>
    </memory>
    <functions>
-   <!--
-    <function>
-     <name>IGFirm_idle</name>
-     <description></description>
-     <currentState>start_IGFirm</currentState>
-     <nextState>Start_IGFirm_Productivity</nextState>
-     <condition>
-      <not>
-       <time>
-        <period>yearly</period>
-        <phase>1</phase>
-       </time>
-      </not>
-     </condition>
-     <inputs/>
-     <outputs/>
-    </function>
-    -->
-    
     <function>
      <name>IGFirm_read_policy_announcements</name>
      <description></description>
@@ -823,7 +803,6 @@
     </function>
    </functions>
   </xagent>
-  
   <xagent>
    <name>Household</name>
    <description></description>
@@ -845,56 +824,9 @@
     </variable>
    </memory>
    <functions>
-   <!--
-    <function>
-     <name>Household_idle</name>
-     <description></description>
-     <currentState>start_Household</currentState>
-     <nextState>Start_Household_Policy_Data</nextState>
-     <condition>
-      <not>
-       <time>
-        <period>yearly</period>
-        <phase>1</phase>
-       </time>
-      </not>
-     </condition>
-     <inputs/>
-     <outputs/>
-    </function>
-    
-    <function>
-     <name>Household_read_policy_announcements</name>
-     <description></description>
-     <currentState>start_Household</currentState>
-     <nextState>Start_Household_Policy_Data</nextState>
-     <condition>
-      <time>
-       <period>yearly</period>
-       <phase>1</phase>
-      </time>
-     </condition>
-     <inputs>
-      <input>
-       <messageName>policy_announcement</messageName>
-       <filter>
-        <lhs>
-         <value>a.gov_id</value>
-        </lhs>
-        <op>EQ</op>
-        <rhs>
-         <value>m.gov_id</value>
-        </rhs>
-       </filter>
-      </input>
-     </inputs>
-     <outputs/>
-    </function>
-    -->
-    
     <function>
      <name>Household_receive_data</name>
-     <description>The household reads the messages from the eurostat agent &#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+     <description>The household reads the messages from the eurostat agent &#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
 and stores the needed data.</description>
      <currentState>Start_Household_Policy_Data</currentState>
      <nextState>start_Household_financial_market_role</nextState>
@@ -907,28 +839,9 @@ and stores the needed data.</description>
      <inputs/>
      <outputs/>
     </function>
-    <!--
-    <function>
-     <name>Household_idle</name>
-     <description>Household does nothing</description>
-     <currentState>Start_Household_Policy_Data</currentState>
-     <nextState>start_Household_financial_market_role</nextState>
-     <condition>
-      <not>
-       <time>
-        <period>monthly</period>
-        <phase>1</phase>
-       </time>
-      </not>
-     </condition>
-     <inputs/>
-     <outputs/>
-    </function>
-    -->
-    
     <function>
      <name>Household_send_data_to_Eurostat</name>
-     <description>Household sends message to the eurostat agent &#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+     <description>Household sends message to the eurostat agent &#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
 including several micro data.</description>
      <currentState>15</currentState>
      <nextState>end_Household</nextState>
@@ -945,26 +858,6 @@ including several micro data.</description>
       </output>
      </outputs>
     </function>
-    
-    <!--
-    <function>
-     <name>Household_idle</name>
-     <description>Household does nothing</description>
-     <currentState>15</currentState>
-     <nextState>end_Household</nextState>
-     <condition>
-      <not>
-       <time>
-        <period>monthly</period>
-        <phase>0</phase>
-       </time>
-      </not>
-     </condition>
-     <inputs/>
-     <outputs/>
-    </function>
-    -->
-    
    </functions>
   </xagent>
   <xagent>
@@ -1984,13 +1877,13 @@ including several micro data.</description>
   </message>
   <message>
    <name>mall_data</name>
-   <description>Sent by mall. Mall informs Eurostat about exports between regions.&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+   <description>Sent by mall. Mall informs Eurostat about exports between regions.&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
 </description>
    <variables>
     <variable>
