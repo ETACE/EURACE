@@ -154,25 +154,28 @@ int Firm_calc_production_quantity()
 		/*Creating a temporary array of the last X sales per mall*/
 		for(int i = 0; i < CURRENT_MALL_STOCKS.size;i++)
 		{
-			sales_statistics_array sales_mall;
-			init_sales_statistics_array(&sales_mall);
+			temporary_sales_statistics_array sales_mall;
+			init_temporary_sales_statistics_array(&sales_mall);
 
 			for(int j = 0; j < MALLS_SALES_STATISTICS.size;j++)
 			{
 				if(CURRENT_MALL_STOCKS.array[i].mall_id==
 				MALLS_SALES_STATISTICS.array[j].mall_id)
 				{
-					add_sales_statistics(&sales_mall,
+					for(int k = 0; k < FIRM_PLANNING_HORIZON; k++)
+					{
+					add_temporary_sales_statistics(&sales_mall,
 					MALLS_SALES_STATISTICS.array[j].mall_id,
-					MALLS_SALES_STATISTICS.array[j].period,
-					MALLS_SALES_STATISTICS.array[j].sales);
+					MALLS_SALES_STATISTICS.array[j].sales.array[k].period,
+					MALLS_SALES_STATISTICS.array[j].sales.array[k].sales);
+					}
 				}
 			}
 			
 			/*Lowest number (sales) first*/	
 			//sort_mall_sales_list(&sales_mall);
 			/* Sorting the sales lists   */
-			qsort(sales_mall.array, sales_mall.size, sizeof(sales_statistics),
+			qsort(sales_mall.array, sales_mall.size, sizeof(temporary_sales_statistics),
 			 sales_statistics_list_rank_sales_function);
 
 		
@@ -180,7 +183,7 @@ int Firm_calc_production_quantity()
 			/*Setting the critical values*/
 			for(int k = 0; k < FIRM_PLANNING_HORIZON; k++)
 			{
-				double prob = (1 + k)/FIRM_PLANNING_HORIZON;
+				double prob = (1 + k)/(double)FIRM_PLANNING_HORIZON;
 
 				if(prob < OUT_OF_STOCK_COSTS)
 				{
@@ -202,7 +205,7 @@ int Firm_calc_production_quantity()
 
 			}
 	
-			free_sales_statistics_array(&sales_mall);
+			free_temporary_sales_statistics_array(&sales_mall);
 		}
 
 
@@ -225,7 +228,7 @@ int Firm_calc_production_quantity()
 					CURRENT_MALL_STOCKS.array[i].mall_id;
 
 					PLANNED_DELIVERY_VOLUME.array[i].quantity  = prod_vol;
-					production_volume = production_volume + prod_vol;
+					
 				}
 				else
 				/*If no stocks are left then the firms want to produce more 
@@ -767,35 +770,36 @@ int Firm_compute_sales_statistics()
 				
 		for(int j=0; j < MALLS_SALES_STATISTICS.size;j++)
 		{
-					 
-			if(MALLS_SALES_STATISTICS.array[j].period== FIRM_PLANNING_HORIZON)
-			{		
-				remove_index = j;
-				remove_sales_statistics(&MALLS_SALES_STATISTICS, remove_index);
-				j--;
-			}	
+			for(int k = 0; k < MALLS_SALES_STATISTICS.array[j].sales.size; k++)
+			{
+				if(MALLS_SALES_STATISTICS.array[j].sales.array[k].period== FIRM_PLANNING_HORIZON)
+				{		
+				remove_index = k;
+				remove_data_type_sales(&MALLS_SALES_STATISTICS.array[j].sales, remove_index);
+				k--;
+				}else
+				{
+					MALLS_SALES_STATISTICS.array[j].sales.array[k].period++;
+					
+				}
+			}
 		}
-										
-		for(int j=0; j < MALLS_SALES_STATISTICS.size;j++)
-		{
-			MALLS_SALES_STATISTICS.array[j].period++;	
-		}
-				
+											
 				
 		for(int i=0; i< SOLD_QUANTITIES.size;i++)
 		{
-			
-			add_sales_statistics(&MALLS_SALES_STATISTICS,
-			SOLD_QUANTITIES.array[i].mall_id, 1 , 
-			SOLD_QUANTITIES.array[i].sold_quantity);
+			for(int j=0; j<MALLS_SALES_STATISTICS.size; j++)
+			{
+			if(MALLS_SALES_STATISTICS.array[j].mall_id == SOLD_QUANTITIES.array[i].mall_id)
+				{
+				add_data_type_sales(&MALLS_SALES_STATISTICS.array[j].sales, 1 , 
+					SOLD_QUANTITIES.array[i].sold_quantity);
 		
-			SOLD_QUANTITIES.array[i].sold_quantity=0;
-			SOLD_QUANTITIES.array[i].stock_empty=0;	
+				SOLD_QUANTITIES.array[i].sold_quantity=0;
+				SOLD_QUANTITIES.array[i].stock_empty=0;
+				}
+			}
 		}
-
-
-		
-
 	
 	return 0;
 }

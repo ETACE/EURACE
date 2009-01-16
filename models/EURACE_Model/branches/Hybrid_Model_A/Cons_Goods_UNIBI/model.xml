@@ -275,6 +275,22 @@
      </variable>
     </variables>
    </dataType>
+    <dataType>
+    <name>data_type_sales</name>
+    <description>Used for storing the sales of a mall in one period.</description>
+    <variables>
+     <variable>
+      <type>int</type>
+      <name>period</name>
+      <description>Number of elapsed periods.</description>
+     </variable>
+     <variable>
+      <type>double</type>
+      <name>sales</name>
+      <description>Sales in that mall in the certain period.</description>
+     </variable>
+    </variables>
+   </dataType>
    <dataType>
     <name>sales_statistics</name>
     <description>Used by firm to store sales in malls of last periods</description>
@@ -285,14 +301,9 @@
       <description></description>
      </variable>
      <variable>
-      <type>int</type>
-      <name>period</name>
-      <description></description>
-     </variable>
-     <variable>
-      <type>double</type>
+      <type>data_type_sales_array</type>
       <name>sales</name>
-      <description></description>
+      <description>A lower array that stores the sales of the last periods for the mall. </description>
      </variable>
     </variables>
    </dataType>
@@ -309,6 +320,27 @@
       <type>int</type>
       <name>nr_periods_before_repayment</name>
       <description></description>
+     </variable>
+    </variables>
+   </dataType>
+   <dataType>
+    <name>temporary_sales_statistics</name>
+    <description>This data type is used for building a temporray array of last sales in the malls. </description>
+    <variables>
+     <variable>
+      <type>int</type>
+      <name>mall_id</name>
+      <description></description>
+     </variable>
+     <variable>
+      <type>int</type>
+      <name>period</name>
+      <description>Number of periods elapsedsince the sales was archieved.</description>
+     </variable>
+     <variable>
+      <type>double</type>
+      <name>sales</name>
+      <description>Sales in the mall.</description>
      </variable>
     </variables>
    </dataType>

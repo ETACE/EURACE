@@ -96,8 +96,8 @@ int job_application_list_rank_general_skill_function(const void *x, const void *
 
 int sales_statistics_list_rank_sales_function(const void *x, const void *y)
 {
-	if( ((sales_statistics *)x)->sales < ((sales_statistics *)y)->sales) return -1;
-	else if( ((sales_statistics *)x)->sales > ((sales_statistics *)y)->sales) return 1;
+	if( ((temporary_sales_statistics *)x)->sales < ((temporary_sales_statistics *)y)->sales) return -1;
+	else if( ((temporary_sales_statistics *)x)->sales > ((temporary_sales_statistics *)y)->sales) return 1;
 	else return 0;
 }
 
