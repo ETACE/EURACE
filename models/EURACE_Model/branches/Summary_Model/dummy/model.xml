@@ -768,7 +768,7 @@
     <function>
      <name>Household_labour_good_market_dummy</name>
      <description></description>
-     <currentState>Start_Household_Labour_Role</currentState>
+     <currentState>Household_Start_Labour_Role</currentState>
      <nextState>15</nextState>
      <inputs/>
      <outputs>

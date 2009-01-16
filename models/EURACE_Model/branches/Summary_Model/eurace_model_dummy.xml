@@ -331,33 +331,6 @@
    <functions/>
   </xagent>
   <xagent>
-   <name>Mall</name>
-   <description></description>
-   <memory>
-    <variable>
-     <type>int</type>
-     <name>id</name>
-     <description></description>
-    </variable>
-    <variable>
-     <type>int</type>
-     <name>region_id</name>
-     <description></description>
-    </variable>
-    <variable>
-     <type>int</type>
-     <name>gov_id</name>
-     <description></description>
-    </variable>
-    <variable>
-     <type>int</type>
-     <name>no_regions</name>
-     <description></description>
-    </variable>
-   </memory>
-   <functions/>
-  </xagent>
-  <xagent>
    <name>IGFirm</name>
    <description></description>
    <memory>
@@ -417,23 +390,6 @@
    <functions/>
   </xagent>
   <xagent>
-   <name>Clearinghouse</name>
-   <description></description>
-   <memory>
-    <variable>
-     <type>int</type>
-     <name>id</name>
-     <description></description>
-    </variable>
-    <variable>
-     <type>int</type>
-     <name>region_id</name>
-     <description></description>
-    </variable>
-   </memory>
-   <functions/>
-  </xagent>
-  <xagent>
    <name>Bank</name>
    <description></description>
    <memory>
@@ -482,23 +438,11 @@
    </memory>
    <functions/>
   </xagent>
-  <xagent>
-   <name>Central_Bank</name>
-   <description></description>
-   <memory>
-    <variable>
-     <type>int</type>
-     <name>id</name>
-     <description></description>
-    </variable>
-   </memory>
-   <functions/>
-  </xagent>
  </agents>
  <messages>
   <message>
    <name>bank_account_update</name>
-   <description>Sent by household. Household informs the bank about the actual&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+   <description>Sent by household. Household informs the bank about the actual&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
  payment account</description>
    <variables>
     <variable>

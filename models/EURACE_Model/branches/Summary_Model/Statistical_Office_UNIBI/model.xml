@@ -826,10 +826,10 @@
    <functions>
     <function>
      <name>Household_receive_data</name>
-     <description>The household reads the messages from the eurostat agent &#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+     <description>The household reads the messages from the eurostat agent &#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
 and stores the needed data.</description>
-     <currentState>Start_Household_Policy_Data</currentState>
-     <nextState>start_Household_financial_market_role</nextState>
+     <currentState>Household_Start_Policy_Data</currentState>
+     <nextState>Household_Start_Financial_Market_Role</nextState>
      <condition>
       <time>
        <period>monthly</period>
@@ -841,7 +841,7 @@ and stores the needed data.</description>
     </function>
     <function>
      <name>Household_send_data_to_Eurostat</name>
-     <description>Household sends message to the eurostat agent &#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+     <description>Household sends message to the eurostat agent &#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
 including several micro data.</description>
      <currentState>15</currentState>
      <nextState>end_Household</nextState>
@@ -1519,149 +1519,15 @@ including several micro data.</description>
      <outputs/>
     </function>
     <function>
-     <name>Eurostat_store_history_monthly</name>
+     <name>Eurostat_compute_data</name>
      <description>Eurostat stores monthly macro data in its history struct.</description>
      <currentState>Start_Eurostat_Monthly_Loop</currentState>
-     <nextState>02</nextState>
-     <condition>
-      <lhs>
-       <time>
-        <period>monthly</period>
-        <phase>0</phase>
-       </time>
-      </lhs>
-      <op>AND</op>
-      <rhs>
-       <lhs>
-        <value>a.switch_datastorage</value>
-       </lhs>
-       <op>EQ</op>
-       <rhs>
-        <value>1</value>
-       </rhs>
-      </rhs>
-     </condition>
-     <inputs/>
-     <outputs/>
-    </function>
-    <function>
-     <name>Eurostat_compute_growth_rates_monthly</name>
-     <description>Eurostat computes monthly growth rates for macro data stored in its monthly history struct.</description>
-     <currentState>02</currentState>
-     <nextState>Start_Eurostat_Quarterly_Loop</nextState>
-     <inputs/>
-     <outputs/>
-    </function>
-    <function>
-     <name>Eurostat_idle</name>
-     <description>Eurostat does nothing</description>
-     <currentState>Start_Eurostat_Monthly_Loop</currentState>
-     <nextState>Start_Eurostat_Quarterly_Loop</nextState>
-     <condition>
-      <lhs>
-       <not>
-        <time>
-         <period>monthly</period>
-         <phase>0</phase>
-        </time>
-       </not>
-      </lhs>
-      <op>OR</op>
-      <rhs>
-       <lhs>
-        <value>a.switch_datastorage</value>
-       </lhs>
-       <op>EQ</op>
-       <rhs>
-        <value>0</value>
-       </rhs>
-      </rhs>
-     </condition>
-     <inputs/>
-     <outputs/>
-    </function>
-    <function>
-     <name>Eurostat_store_history_quarterly</name>
-     <description>Eurostat stores quarterly macro data in its history struct.</description>
-     <currentState>Start_Eurostat_Quarterly_Loop</currentState>
-     <nextState>04</nextState>
-     <condition>
-      <lhs>
-       <time>
-        <period>quarterly</period>
-        <phase>0</phase>
-       </time>
-      </lhs>
-      <op>AND</op>
-      <rhs>
-       <lhs>
-        <value>a.switch_datastorage</value>
-       </lhs>
-       <op>EQ</op>
-       <rhs>
-        <value>1</value>
-       </rhs>
-      </rhs>
-     </condition>
-     <inputs/>
-     <outputs/>
-    </function>
-    <function>
-     <name>Eurostat_compute_growth_rates_quarterly</name>
-     <description>Eurostat computes quarterly growth rates for macro data stored in its quarterly history struct.</description>
-     <currentState>04</currentState>
-     <nextState>05</nextState>
-     <inputs/>
-     <outputs/>
-    </function>
-    <function>
-     <name>Eurostat_measure_recession</name>
-     <description>Eurostat measures the start or end of recessions.</description>
-     <currentState>05</currentState>
-     <nextState>Start_Eurostat_EndOfYear_Loop</nextState>
-     <inputs/>
-     <outputs/>
-    </function>
-    <function>
-     <name>Eurostat_idle</name>
-     <description>Eurostat does nothing</description>
-     <currentState>Start_Eurostat_Quarterly_Loop</currentState>
      <nextState>Start_Eurostat_EndOfYear_Loop</nextState>
      <condition>
-      <lhs>
-       <not>
-        <time>
-         <period>quarterly</period>
-         <phase>0</phase>
-        </time>
-       </not>
-      </lhs>
-      <op>OR</op>
-      <rhs>
-       <lhs>
-        <value>a.switch_datastorage</value>
-       </lhs>
-       <op>EQ</op>
-       <rhs>
-        <value>0</value>
-       </rhs>
-      </rhs>
-     </condition>
-     <inputs/>
-     <outputs/>
-    </function>
-    <function>
-     <name>Eurostat_idle</name>
-     <description>Eurostat idle</description>
-     <currentState>Start_Eurostat_EndOfYear_Loop</currentState>
-     <nextState>end_Eurostat</nextState>
-     <condition>
-      <not>
-       <time>
-        <period>yearly</period>
-        <phase>0</phase>
-       </time>
-      </not>
+      <time>
+       <period>monthly</period>
+       <phase>0</phase>
+      </time>
      </condition>
      <inputs/>
      <outputs/>
@@ -1877,13 +1743,13 @@ including several micro data.</description>
   </message>
   <message>
    <name>mall_data</name>
-   <description>Sent by mall. Mall informs Eurostat about exports between regions.&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+   <description>Sent by mall. Mall informs Eurostat about exports between regions.&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
 </description>
    <variables>
     <variable>
