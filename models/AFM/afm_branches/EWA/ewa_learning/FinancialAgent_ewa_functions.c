@@ -14,9 +14,11 @@
 //For stand-alone model:
 #include "header.h"
 #include "FinancialAgent_agent_header.h"
+
 //For integrated model:
 //#include "../header.h"
 //#include "../FinancialAgent_agent_header.h"
+
 //Always:
 #include "FinancialAgent_aux_header.h"
 #include "some_new_functions.h"

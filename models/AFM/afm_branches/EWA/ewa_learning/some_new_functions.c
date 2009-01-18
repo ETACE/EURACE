@@ -13,10 +13,10 @@
 #include "some_new_functions.h"
 
 //For stand-alone model:
-//#include "header.h" //required to have access to PRINT_DEBUG (model environment parameter)
+#include "header.h" //required to have access to PRINT_DEBUG (model environment parameter)
 
 //For integrated model:
-#include "../header.h"
+//#include "../header.h"
 
 /** \fn double random_unif()
  * \brief Uniformly distributed random numbers, chosen from
