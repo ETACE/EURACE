@@ -9,12 +9,12 @@
  * 13/11/07 Mariam: Converting the code into separate agent functions files. 
  *********************************/
 //For stand-alone model:
-//#include "header.h"
-//#include "Household_agent_header.h"
+#include "header.h"
+#include "Household_agent_header.h"
 
 //For integrated model:
-#include "../header.h"
-#include "../Household_agent_header.h"
+//#include "../header.h"
+//#include "../Household_agent_header.h"
 
 //Always:
 #include "some_new_functions.h"

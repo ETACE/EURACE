@@ -8,12 +8,12 @@
  *********************************/
 #include <limits.h> //required to test for max. double: LONG_MAX
 //For stand-alone model:
-//#include "header.h"
-//#include "FinancialAgent_agent_header.h"
+#include "header.h"
+#include "FinancialAgent_agent_header.h"
 
 //For integrated model:
-#include "../header.h"
-#include "../FinancialAgent_agent_header.h"
+//#include "../header.h"
+//#include "../FinancialAgent_agent_header.h"
 
 //Always:
 #include "FinancialAgent_aux_header.h"
