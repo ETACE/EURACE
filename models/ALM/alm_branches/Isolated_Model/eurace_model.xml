@@ -449,7 +449,7 @@
     </variable>
     <variable>
      <type>int</type>
-     <name>list_of_regions[1]</name>
+     <name>list_of_regions[2]</name>
      <description>List of regions that are associated to the government.</description>
     </variable>
     <variable>
