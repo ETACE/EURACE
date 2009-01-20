@@ -26,6 +26,11 @@
     <name>gov_policy_gdp_fraction_investment</name>
     <description>Parameter that sets the government investment expenditure as a fraction of GDP.</description>
    </variable>
+   <variable>
+    <type>int</type>
+    <name>no_regions_per_gov</name>
+    <description>Number of regions per government. Default 2.</description>
+   </variable>
   </constants>
   <functionFiles>
    <file>Government_Functions.c</file>
