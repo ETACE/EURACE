@@ -54,14 +54,16 @@ int Bank_account_update_deposits()
       if ( BCE_DEBT != 0 ) 
 		{
 			
-             if(CASH>=fabs(BCE_DEBT))
+             if(CASH>=BCE_DEBT)
              {
-                 CASH-=fabs(BCE_DEBT);
+                 add_central_bank_account_update_message(ID, -BCE_DEBT);
+                 CASH-=BCE_DEBT;
                  BCE_DEBT=0.0;
              }
  
-             if(CASH<fabs(BCE_DEBT))
+             if(CASH<BCE_DEBT)
              {
+                 add_central_bank_account_update_message(ID, -CASH);
                  BCE_DEBT-=CASH;
                  CASH=0.0;
              }
@@ -116,6 +118,7 @@ int Bank_give_loan()
         
 			if (CASH<0.0) 
 			{
+                add_central_bank_account_update_message(ID, fabs(CASH));          
 				BCE_DEBT += fabs(CASH);  
         		CASH = 0.0;
 			}
@@ -168,7 +171,8 @@ int Bank_accounting()
  
      if (CASH < 0) //if money is not enough, increase BCE debt
      {
-         BCE_DEBT -= CASH;
+         add_central_bank_account_update_message(ID, fabs(CASH),);
+         BCE_DEBT += fabs(CASH);
          CASH = 0.0;
      }
     
