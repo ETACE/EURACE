@@ -281,3 +281,16 @@ In: Financial_UG: Firm_send_info function
 Firm_Start_Producer_Role
 In: Cons_Goods_UNIBI
 (related to Financial_UG)
+
+----------------------------------------------------------------------
+Sander, edits to Isolated_Model
+
+Fixed the compiler error about gamma: renamed to gamma_const, in C code and XML
+
+Debugging:
+
+In Eurostat_calculate_data commented out lines for non-essential functions:
+    //Eurostat_calc_firm_population();
+    //Eurostat_calc_firm_survival_rates();
+
+Tried to run without the function Eurostat_calculate_data
