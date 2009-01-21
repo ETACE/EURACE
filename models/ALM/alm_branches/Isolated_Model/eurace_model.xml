@@ -84,7 +84,7 @@
    </variable>
    <variable>
     <type>int</type>
-    <name>gamma</name>
+    <name>gamma_const</name>
     <description> -2, Strength of logit rule for consumption</description>
    </variable>
    <variable>

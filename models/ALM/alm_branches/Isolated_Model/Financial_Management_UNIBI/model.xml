@@ -5,7 +5,13 @@
  <description>Authors: Sander van der Hoog</description>
  <models/>
  <environment>
-  <constants/>
+  <constants>
+   <variable>
+    <type>int</type>
+    <name>bankruptcy_idle_period</name>
+    <description></description>
+   </variable>
+  </constants>
   <functionFiles>
    <file>Firm_Financial_Management_Functions.c</file>
   </functionFiles>

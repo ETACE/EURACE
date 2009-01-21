@@ -893,7 +893,7 @@ void unittest2_Eurostat_compute_growth_rates_quarterly()
 	
 	//add 1 item to the REGION_FIRM_DATA struct
     add_firm_data(&REGION_FIRM_DATA,
-            i,0,0,                   //3 region_id -> vacancies 
+            1,0,0,                   //3 region_id -> vacancies 
             0,0,0,0,0,0,             //6 employees_skill
             0.0,0.0,0.0,0.0,0.0,0.0, //6 average_wage_skill
             0.0,0.0,0.0,0.0,0.0,0.0, //6 average_s_skill
@@ -1130,18 +1130,31 @@ void unittest4_Eurostat_measure_recession()
  * \fn: void unittest_Eurostat_measure_export()
  * \brief: Unit test for: Eurostat_measure_export.
  * Tests if the mall_data_message is correctly read and values are added to memory.
- * Status: Tested OK
+ * Status: Tested Failed
  */
 void unittest_Eurostat_measure_export()
 {
-	int rc;
+	int i,rc;
 	
     /************* At start of unit test, add one agent **************/
 	unittest_init_Eurostat_agent();
 	
     /***** Variables: Memory pre-conditions **************************/
 	NO_REGIONS=2;
-    
+
+	for (i=0;i<2;i++)
+	{
+		//add 1 firm_data_item to the REGION_FIRM_DATA memory variable (array of such items)
+	    add_firm_data(&REGION_FIRM_DATA,
+	            i,0,0,                   //3 region_id -> vacancies 
+	            0,0,0,0,0,0,             //6 employees_skill
+	            0.0,0.0,0.0,0.0,0.0,0.0, //6 average_wage_skill
+	            0.0,0.0,0.0,0.0,0.0,0.0, //6 average_s_skill
+	            0.0,0.0,0.0,0.0,0.0, 	 //5 total_earnings -> average_debt_earnings_ratio
+	            0.0,0.0,0.0,0.0,0.0,0.0, //6 average_debt_equity_ratio -> monthly_planned_output
+	            0.0,1.0,0.0,             //3 gdp, cpi, cpi_last_month 
+	            0,0);                    //2 no_firm_births, no_firm_deaths
+	}
 	/***** Messages: initialize message boards **********************************/
     rc = MB_Create(&b_mall_data, sizeof(m_mall_data));
     	    #ifdef ERRCHECK
