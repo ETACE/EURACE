@@ -7,7 +7,7 @@
 #include "my_library_header.h"
 
 /* Function condition functions */
-
+/*
 int first_day_of_month()
 {
 	if(DAY%MONTH == 1) return 1;
@@ -35,6 +35,7 @@ int not_last_day_of_month()
 	else
 		return 0;
 }
+*/
 
 /*New sorting algorithm from Simon C 3.4.2008*/
 
