@@ -289,8 +289,14 @@ Fixed the compiler error about gamma: renamed to gamma_const, in C code and XML
 
 Debugging:
 
-In Eurostat_calculate_data commented out lines for non-essential functions:
+1. In Eurostat_calculate_data commented out lines for non-essential functions:
     //Eurostat_calc_firm_population();
     //Eurostat_calc_firm_survival_rates();
 
-Tried to run without the function Eurostat_calculate_data
+Tried to run without the function Eurostat_calculate_data.
+
+2. 0.xml
+Constants:
+<bankruptcy_idle_period>240</bankruptcy_idle_period>
+<no_regions_per_gov>2</no_regions_per_gov>
+
