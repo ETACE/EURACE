@@ -6,29 +6,40 @@
 #include "header.h"
 #include "my_library_header.h"
 
-/** \fn int random_int(int min,int max)
- * \brief Returns an integer between and including min and max
- * \param min The minimum integer.
- * \param max The maximum integer.
- * \return The random integer.
- */
-int random_int(int min,int max)
-{
-	return min + rand() % (max - min + 1);
-}
-
-double max(double a, double b)
-{
-	return (a >= b) ? a : b; 
-}
-
-double min(double a, double b)
-{
-	return (a <= b) ? a : b; 
-}
-
-
+/* Function condition functions */
 /*
+int first_day_of_month()
+{
+	if(DAY%MONTH == 1) return 1;
+	else return 0;
+}
+
+int not_first_day_of_month()
+{
+	if(DAY%MONTH == 1) return 0;
+	else return 1;
+}
+
+int last_day_of_month()
+{
+	if (DAY%MONTH==0)
+		return 1;
+	else
+		return 0;
+	
+}
+int not_last_day_of_month()
+{
+	if (DAY%MONTH!=0)
+		return 1;
+	else
+		return 0;
+}
+*/
+
+/*New sorting algorithm from Simon C 3.4.2008*/
+
+
 int credit_request_function(const void *x, const void *y)
 {
 if( ((credit_request *)x)->prob_of_failure < ((credit_request *)y)->prob_of_failure) return -1;
@@ -37,7 +48,7 @@ else return 0;
 
 
 }
-*/
+
 
 
 int vacancy_list_rank_wage_offer_function(const void *x, const void *y)
@@ -96,8 +107,28 @@ int job_application_list_rank_general_skill_function(const void *x, const void *
 
 int sales_statistics_list_rank_sales_function(const void *x, const void *y)
 {
-	if( ((sales_statistics *)x)->sales < ((sales_statistics *)y)->sales) return -1;
-	else if( ((sales_statistics *)x)->sales > ((sales_statistics *)y)->sales) return 1;
+	if( ((temporary_sales_statistics *)x)->sales < ((temporary_sales_statistics *)y)->sales) return -1;
+	else if( ((temporary_sales_statistics *)x)->sales > ((temporary_sales_statistics *)y)->sales) return 1;
 	else return 0;
 }
 
+/** \fn int random_int(int min,int max)
+ * \brief Returns an integer between and including min and max
+ * \param min The minimum integer.
+ * \param max The maximum integer.
+ * \return The random integer.
+ */
+int random_int(int min,int max)
+{
+	return min + rand() % (max - min + 1);
+}
+
+double max(double a, double b)
+{
+	return (a >= b) ? a : b; 
+}
+
+double min(double a, double b)
+{
+	return (a <= b) ? a : b; 
+}
