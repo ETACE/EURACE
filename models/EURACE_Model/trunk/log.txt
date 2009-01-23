@@ -748,3 +748,54 @@ Sander, rev 1436
 
 Added gov policy parameters and policy rules for consumption and investment.
 ----------------------------------------------------------------------
+Sander,
+
+Debugging:
+
+trunk
+Isolated_Model
+Hybrid_Model_A
+
+
+1. IDEA: Remove all references to gov_id.
+
+Messages:
+
+Labour model:
+unemployment_notification: 
+send: agent adds its region_id
+read: filter on own region_ids, gov reads all msgs from regions in its list_of_regions
+
+Government Model/Statistical Office functions:
+
+policy_announcement: 
+send: for every region in the list_of_regions
+read: filter on own region_id
+
+tax_payment: 
+send: agent adds its region_id
+read: filter on own region_ids, gov reads all msgs from regions in its list_of_regions
+
+hh_transfer_notification: 
+send: agent adds its region_id
+read: filter on own region_ids, gov reads all msgs from regions in its list_of_regions
+
+Same for:
+hh_subsidy_notification
+firm_transfer_notification
+firm_subsidy_notification
+
+----------------------------------------------------------------------
+Sander, rev 1697
+
+eurace-model.xml
+==============
+removed constants: day,..., year - not used. Day and month are defined in my_library_header.h
+added constant: const_bankruptcy_idle_period (length of time firm remains idle)
+
+These changes have been made in:
+AML/alm_branches/Isolated_Model
+EURACE_Model/branches/Hybrid_Model_A
+EURACE_Model/trunk
+
+----------------------------------------------------------------------
