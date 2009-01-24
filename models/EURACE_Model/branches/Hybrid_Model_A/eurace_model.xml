@@ -55,31 +55,6 @@
    </variable>
    <variable>
     <type>int</type>
-    <name>day</name>
-    <description>iteration_loop, The day count.</description>
-   </variable>
-   <variable>
-    <type>int</type>
-    <name>week</name>
-    <description>5, Number of days in a week.</description>
-   </variable>
-   <variable>
-    <type>int</type>
-    <name>month</name>
-    <description>20, Number of days in a month.</description>
-   </variable>
-   <variable>
-    <type>int</type>
-    <name>quarter</name>
-    <description>60, The number of days in a quarter.</description>
-   </variable>
-   <variable>
-    <type>int</type>
-    <name>year</name>
-    <description>240, The number of days in a year.</description>
-   </variable>
-   <variable>
-    <type>int</type>
     <name>number_of_banks_to_apply</name>
     <description>number of banks firms can ask loans</description>
    </variable>
@@ -477,7 +452,7 @@
  <messages>
   <message>
    <name>bank_account_update</name>
-   <description>Sent by household. Household informs the bank about the actual&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+   <description>Sent by household. Household informs the bank about the actual&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
  payment account</description>
    <variables>
     <variable>
