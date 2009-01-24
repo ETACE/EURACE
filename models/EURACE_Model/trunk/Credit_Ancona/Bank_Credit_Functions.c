@@ -4,46 +4,46 @@
 
 int Bank_decide_credit_conditions()
 {
-	double e, c, d, r, i;
-	double bankruptcy_prob;
-	double credit_allowed;
-	
-	
+    double e, c, d, r, i;
+    double bankruptcy_prob;
+    double credit_allowed;
+    
+    
 
 
-	if(BCE_DEBT==0.0) 
-	{
-			
-		START_LOAN_REQUEST_MESSAGE_LOOP
-	    	e = loan_request_message->equity;
-			d = loan_request_message->total_debt;
-			c = loan_request_message->external_financial_needs;
-			bankruptcy_prob = 1-exp(-(d+c)/e);
-			r = bankruptcy_prob*c/e;
-	
-			if ( VALUE_AT_RISK+r <= ALFA*EQUITY ) 
-			{
-				credit_allowed = c;
-	
-    		}
-			else 
-			{
-				credit_allowed = (ALFA*EQUITY - VALUE_AT_RISK)/bankruptcy_prob;
-	
-			}
-			i = MIN_INTEREST + BANK_GAMMA[0]*r*(((double)rand()/(double)RAND_MAX)*0.01);
-			
-				add_loan_conditions_message(loan_request_message->firm_id, ID, i, credit_allowed,  r*(c/credit_allowed));
-		FINISH_LOAN_REQUEST_MESSAGE_LOOP
-	}
-	
-	return 0;
+    if(BCE_DEBT==0.0) 
+    {
+            
+        START_LOAN_REQUEST_MESSAGE_LOOP
+            e = loan_request_message->equity;
+            d = loan_request_message->total_debt;
+            c = loan_request_message->external_financial_needs;
+            bankruptcy_prob = 1-exp(-(d+c)/e);
+            r = bankruptcy_prob*c/e;
+    
+            if ( VALUE_AT_RISK+r <= ALFA*EQUITY ) 
+            {
+                credit_allowed = c;
+    
+            }
+            else 
+            {
+                credit_allowed = (ALFA*EQUITY - VALUE_AT_RISK)/bankruptcy_prob;
+    
+            }
+            i = MIN_INTEREST + BANK_GAMMA[0]*r*(((double)rand()/(double)RAND_MAX)*0.01);
+            
+                add_loan_conditions_message(loan_request_message->firm_id, ID, i, credit_allowed,  r*(c/credit_allowed));
+        FINISH_LOAN_REQUEST_MESSAGE_LOOP
+    }
+    
+    return 0;
 }
 
 
 int Bank_account_update_deposits()
 {
-	 	
+        
       START_BANK_ACCOUNT_UPDATE_MESSAGE_LOOP
       if (bank_account_update_message->bank_id==ID)
         {
@@ -52,8 +52,8 @@ int Bank_account_update_deposits()
       FINISH_BANK_ACCOUNT_UPDATE_MESSAGE_LOOP
 
       if ( BCE_DEBT != 0 ) 
-		{
-			
+        {
+            
              if(CASH>=BCE_DEBT)
              {
                  add_central_bank_account_update_message(ID, -BCE_DEBT);
@@ -70,36 +70,36 @@ int Bank_account_update_deposits()
 
          }
       
-	return 0;
+    return 0;
 }
 
 int Bank_receive_installment()
 {
-	
-	START_INSTALLMENT_MESSAGE_LOOP
-		if(installment_message->bank_id==ID)
-		{
-	
-		CASH +=installment_message->installment_amount;
+    
+    START_INSTALLMENT_MESSAGE_LOOP
+        if(installment_message->bank_id==ID)
+        {
+    
+        CASH +=installment_message->installment_amount;
         PROFITS[0] += installment_message->interest_amount;
         TOTAL_CREDIT-=installment_message->installment_amount;
         EQUITY += installment_message->interest_amount;
         VALUE_AT_RISK -= installment_message->var_per_installment;
       
-		}
+        }
 
-	FINISH_INSTALLMENT_MESSAGE_LOOP
+    FINISH_INSTALLMENT_MESSAGE_LOOP
 
     START_BANKRUPTCY_MESSAGE_LOOP
-		if(bankruptcy_message->bank_id==ID)
-		{
-	
+        if(bankruptcy_message->bank_id==ID)
+        {
+    
        CASH +=bankruptcy_message->credit_refunded;
        EQUITY -= bankruptcy_message->bad_debt;
        TOTAL_CREDIT-=(bankruptcy_message->credit_refunded+bankruptcy_message->bad_debt);
        PROFITS[0] -= bankruptcy_message->bad_debt;
        VALUE_AT_RISK -= bankruptcy_message->residual_var;
-		}
+        }
 
     FINISH_BANKRUPTCY_MESSAGE_LOOP   
     
@@ -108,26 +108,26 @@ int Bank_receive_installment()
 
 int Bank_give_loan()
 {
-	
-	START_LOAN_ACCEPTANCE_MESSAGE_LOOP
-		if(loan_acceptance_message->bank_id==ID)
-		{
-			CASH -= loan_acceptance_message->credit_amount_taken;
-			VALUE_AT_RISK+=loan_acceptance_message->loan_total_var;
+    
+    START_LOAN_ACCEPTANCE_MESSAGE_LOOP
+        if(loan_acceptance_message->bank_id==ID)
+        {
+            CASH -= loan_acceptance_message->credit_amount_taken;
+            VALUE_AT_RISK+=loan_acceptance_message->loan_total_var;
             TOTAL_CREDIT+=loan_acceptance_message->credit_amount_taken;           
         
-			if (CASH<0.0) 
-			{
+            if (CASH<0.0) 
+            {
                 add_central_bank_account_update_message(ID, fabs(CASH));          
-				BCE_DEBT += fabs(CASH);  
-        		CASH = 0.0;
-			}
-		}
+                BCE_DEBT += fabs(CASH);  
+                CASH = 0.0;
+            }
+        }
 
-	FINISH_LOAN_ACCEPTANCE_MESSAGE_LOOP
-	
-	
-	return 0;
+    FINISH_LOAN_ACCEPTANCE_MESSAGE_LOOP
+    
+    
+    return 0;
 }
 
 int Bank_accounting()
@@ -146,7 +146,7 @@ int Bank_accounting()
      PROFITS[1]=PROFITS[0]; //update
      q=BANK_GAMMA[0]; 
      c=BANK_GAMMA[1];
-     BANK_GAMMA[1]=	q;
+     BANK_GAMMA[1]= q;
      BANK_GAMMA[0]=(q+(BANK_LAMBDA*(q-c)*gro)+(((double)rand()/(double)RAND_MAX)*0.01));
  
      if (BANK_GAMMA[0]<0.02)
@@ -171,7 +171,7 @@ int Bank_accounting()
  
      if (CASH < 0) //if money is not enough, increase BCE debt
      {
-         add_central_bank_account_update_message(ID, fabs(CASH),);
+         add_central_bank_account_update_message(ID, fabs(CASH));
          BCE_DEBT += fabs(CASH);
          CASH = 0.0;
      }
@@ -179,13 +179,13 @@ int Bank_accounting()
   
      PROFITS[0]=0;  //update
      
-	
+    
       return 0;
 }
 
 int Bank_idle()
 {
-	return 0;
+    return 0;
 }
 
 
