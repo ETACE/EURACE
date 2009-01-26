@@ -331,6 +331,9 @@
   <output>  
     <messageName>hh_transfer_notification</messageName>
   </output>
+  <output>
+    <messageName>unemployment_notification</messageName>
+  </output>
 </outputs>
 </function>
 
