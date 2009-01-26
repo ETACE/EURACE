@@ -360,10 +360,11 @@
 <variable><type>double</type><name>cum_revenues</name><description></description></variable>
 </memory>
 
-<function><name>idle</name>
+<function>
+<name>idle</name>
 <description></description>
-<currentState>Start_IGFirm</currentState>
-<nextState>End_IGFirm</nextState>
+<currentState>Start_IGFirm_Productivity</currentState>
+<nextState>End_IGFirm_DUMMY</nextState>
 <inputs>
 <input><messageName>dividend_per_share</messageName></input>
 </inputs>
