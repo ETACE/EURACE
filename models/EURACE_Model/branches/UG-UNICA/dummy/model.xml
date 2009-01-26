@@ -368,6 +368,7 @@
 <inputs>
 <input><messageName>dividend_per_share</messageName></input>
 <input><messageName>bankruptcy_illiquidity</messageName></input>
+<input><messageName>bankruptcy_insolvency</messageName></input>
 </inputs>
 </function>
 
