@@ -334,6 +334,9 @@
   <output>
     <messageName>unemployment_notification</messageName>
   </output>
+  <output>
+    <messageName>mall_data</messageName>
+  </output>
 </outputs>
 </function>
 
