@@ -324,7 +324,11 @@
 <outputs>
   <output>
     <messageName>bank_account_update</messageName>
+  </output>
+  <output>
     <messageName>hh_subsidy_notification</messageName>
+  </output>
+  <output>  
     <messageName>hh_transfer_notification</messageName>
   </output>
 </outputs>
