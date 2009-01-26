@@ -359,6 +359,16 @@
 <variable><type>double</type><name>current_dividend_per_share</name><description></description></variable>
 <variable><type>double</type><name>cum_revenues</name><description></description></variable>
 </memory>
+
+<function><name>idle</name>
+<description></description>
+<currentState>Start_IGFirm</currentState>
+<nextState>End_IGFirm</nextState>
+<inputs>
+<input><messageName>dividend_per_share</messageName></input>
+</inputs>
+</function>
+
 </xagent>
 
 
