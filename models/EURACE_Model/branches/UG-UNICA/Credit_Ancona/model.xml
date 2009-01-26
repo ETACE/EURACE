@@ -321,6 +321,7 @@
 </variables>
 </message>
 
+<!--
 <message>
 <name>central_bank_account_update</name>
 <description>message for central bankto new name</description>
@@ -329,7 +330,7 @@
 <variable><type>int</type><name>bank_id</name><description></description></variable>
 </variables>
 </message>
-
+-->
 
 <message>
 <name>BCE_return</name>
