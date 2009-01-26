@@ -325,6 +325,7 @@
   <output>
     <messageName>bank_account_update</messageName>
     <messageName>hh_subsidy_notification</messageName>
+    <messageName>hh_transfer_notification</messageName>
   </output>
 </outputs>
 </function>
