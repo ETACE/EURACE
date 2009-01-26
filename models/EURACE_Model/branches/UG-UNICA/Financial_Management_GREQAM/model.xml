@@ -567,8 +567,7 @@ Also sets the active flag to 0 and starts the bankruptcy idle counter.</descript
       </output>
       <output>
        <messageName>installment</messageName>
-      </output>
-      
+      </output>      
      </outputs>
     </function>
     <function>
