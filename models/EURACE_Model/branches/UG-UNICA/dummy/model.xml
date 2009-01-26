@@ -361,6 +361,28 @@
 </memory>
 </xagent>
 
+
+<xagent>
+<name>Central_Bank</name>
+<description></description>
+
+<functions>
+<function>
+<name>idle</name>
+<description></description>
+<currentState>Start_Central_Bank_Dummy</currentState>
+<nextState>End_Central_Bank_Dummy</nextState>
+<inputs>
+        <input>
+               <messageName>central_bank_account_update</messageName>
+        </input>
+</inputs>
+<outputs/>
+</function>
+</functions>
+</xagent>
+
+
 </agents>
 
 <messages>
