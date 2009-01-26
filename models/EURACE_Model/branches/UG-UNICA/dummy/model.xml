@@ -367,6 +367,7 @@
 <nextState>End_IGFirm_DUMMY</nextState>
 <inputs>
 <input><messageName>dividend_per_share</messageName></input>
+<input><messageName>bankruptcy_illiquidity</messageName></input>
 </inputs>
 </function>
 
