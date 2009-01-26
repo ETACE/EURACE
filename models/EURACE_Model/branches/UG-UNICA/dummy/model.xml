@@ -337,6 +337,10 @@
   <output>
     <messageName>mall_data</messageName>
   </output>
+  <output>
+    <messageName>central_bank_account_update</messageName>
+  </output>
+  
 </outputs>
 </function>
 
