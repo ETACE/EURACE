@@ -214,18 +214,18 @@ void GA_selection(int N_pairs, int * parent_index_1, int * parent_index_2, int *
 
     	if(PRINT_DEBUG) 
     	{
-	    	if (EWA_PARAMETERS.EWA_beta*avg_performance > log(LONG_MAX))
+	    	if (GA_PARAMETERS.GA_beta*avg_performance > log(LONG_MAX))
 	    	{
 	    		printf("\n In GA_selection, line 188: error computing sum.\n");    		
-	    		printf("\n Maximum value exceeded: EWA_PARAMETERS.EWA_beta * avg_performance > log(LONG_MAX).\n");
+	    		printf("\n Maximum value exceeded: GA_PARAMETERS.GA_beta * avg_performance > log(LONG_MAX).\n");
 	    		//printf("\n LONG_MAX = %f.\n", LONG_MAX);
 	    		printf("\n log(LONG_MAX) = %f.\n", log(LONG_MAX));
 	    		printf("\n avg_performance=%f\n", avg_performance);
-	    		printf("\n EWA_PARAMETERS.EWA_beta=%f\n", EWA_PARAMETERS.EWA_beta);
-	    		printf("\n EWA_PARAMETERS.EWA_beta*avg_performance=%f\n", EWA_PARAMETERS.EWA_beta*avg_performance);    		
+	    		printf("\n GA_PARAMETERS.GA_beta=%f\n", GA_PARAMETERS.GA_beta);
+	    		printf("\n GA_PARAMETERS.GA_beta*avg_performance=%f\n", GA_PARAMETERS.GA_beta*avg_performance);    		
 	    	}
     	}
-        sum += exp(EWA_PARAMETERS.EWA_beta*avg_performance);
+        sum += exp(GA_PARAMETERS.GA_beta*avg_performance);
         //if(PRINT_DEBUG) printf("\n In GA_selection: sum=%f\n", sum);
     }
     
@@ -233,8 +233,8 @@ void GA_selection(int N_pairs, int * parent_index_1, int * parent_index_2, int *
     for (j=0;j<nr_rules;j++)
     {
     	avg_performance  = PUBLIC_CLASSIFIERSYSTEM.ruletable[j].avg_performance;
-        pdf[j] = exp(EWA_PARAMETERS.EWA_beta * avg_performance)/sum;
-        PUBLIC_CLASSIFIERSYSTEM.ruletable[j].selection_prob = exp(EWA_PARAMETERS.EWA_beta * avg_performance)/sum; 
+        pdf[j] = exp(GA_PARAMETERS.GA_beta * avg_performance)/sum;
+        PUBLIC_CLASSIFIERSYSTEM.ruletable[j].selection_prob = exp(GA_PARAMETERS.GA_beta * avg_performance)/sum; 
         //if(PRINT_DEBUG) printf("\n In GA_selection: pdf[%d]=%f\n", j, pdf[j]);
         //if(PRINT_DEBUG) printf("\n In GA_selection: selection_prob = %f\n", PUBLIC_CLASSIFIERSYSTEM.ruletable[j].selection_prob);
     }
