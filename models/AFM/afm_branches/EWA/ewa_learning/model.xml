@@ -2,9 +2,9 @@
 <xmodel version="2" >
  <name>Financial Market Model - EWA learning module</name>
  <version>4</version>
- <description>Author: Sander van der Hoog, 01/06/2007, 05/03/2008, 22/05/2008, 03/12/2008.&#xd;
-&#xd;
-Converted from old XMML 1.0&#xd;
+ <description>Author: Sander van der Hoog, 01/06/2007, 05/03/2008, 22/05/2008, 03/12/2008.&#xd;&#xd;&#xd;&#xd;
+&#xd;&#xd;&#xd;&#xd;
+Converted from old XMML 1.0&#xd;&#xd;&#xd;&#xd;
 Converted from XMML 2.0 to XMME v.1.9.4</description>
  <models/>
  <environment>
@@ -91,7 +91,7 @@ Converted from XMML 2.0 to XMME v.1.9.4</description>
      <variable>
       <type>double</type>
       <name>EWA_beta</name>
-      <description>Discrete choice parameter, intensity of choice.</description>
+      <description>Intensity of choice for rule switching.</description>
      </variable>
     </variables>
    </dataType>
@@ -158,6 +158,11 @@ Converted from XMML 2.0 to XMME v.1.9.4</description>
       <type>double</type>
       <name>max_values[5]</name>
       <description>Maximum values for each parameter.</description>
+     </variable>
+     <variable>
+      <type>double</type>
+      <name>GA_beta</name>
+      <description>Intensity of choice parameter for rule switching.</description>
      </variable>
     </variables>
    </dataType>
@@ -395,7 +400,7 @@ Converted from XMML 2.0 to XMME v.1.9.4</description>
     </function>
     <function>
      <name>Household_portfolio_strategy_interface</name>
-     <description>Interface function between the EWA module and the AFM module.&#xd;&#xd;
+     <description>Interface function between the EWA module and the AFM module.&#xd;&#xd;&#xd;&#xd;&#xd;
 It translates the parameters in the CS rule database to the appropriate memory variables that are used in the AFM to select asset portfolios.</description>
      <currentState>001_ewa</currentState>
      <nextState>Start_GA</nextState>
@@ -540,7 +545,7 @@ It translates the parameters in the CS rule database to the appropriate memory v
     </function>
     <function>
      <name>Household_select_rule</name>
-     <description>The household applies the EWA learning algorithm to select a new rule.&#xd;&#xd;
+     <description>The household applies the EWA learning algorithm to select a new rule.&#xd;&#xd;&#xd;&#xd;&#xd;
 The function performs several steps: update the experience and attractions, update choice probabilities, select a new rule, update the CS.</description>
      <currentState>04_ewa</currentState>
      <nextState>05_ewa</nextState>
@@ -549,7 +554,7 @@ The function performs several steps: update the experience and attractions, upda
     </function>
     <function>
      <name>Household_portfolio_strategy_interface</name>
-     <description>Interface function between the EWA module and the AFM module.&#xd;&#xd;
+     <description>Interface function between the EWA module and the AFM module.&#xd;&#xd;&#xd;&#xd;&#xd;
 It translates the parameters in the CS rule database to the appropriate memory variables that are used in the AFM to select asset portfolios.</description>
      <currentState>05_ewa</currentState>
      <nextState>Household_End_EWA_Learning</nextState>
@@ -576,11 +581,6 @@ It translates the parameters in the CS rule database to the appropriate memory v
      <type>GAParameterStruct</type>
      <name>GA_parameters</name>
      <description>ADT holding the GA parameters.</description>
-    </variable>
-    <variable>
-     <type>EWAParameterStruct</type>
-     <name>EWA_parameters</name>
-     <description>ADT holding the EWA parameters for the FA agent. This memory variable can be used in the initialisation phase to propagate the EWA parameters to all households.</description>
     </variable>
    </memory>
    <functions>
@@ -690,7 +690,7 @@ It translates the parameters in the CS rule database to the appropriate memory v
     </function>
     <function>
      <name>FinancialAgent_reset_public_classifiersystem</name>
-     <description>Reset of the public classifiersystem, resetting user counter, performance sum, and avg_performance. &#xd;
+     <description>Reset of the public classifiersystem, resetting user counter, performance sum, and avg_performance. &#xd;&#xd;&#xd;&#xd;
 This should be run before any rule_performance_messages are being read.</description>
      <currentState>03</currentState>
      <nextState>End_GA</nextState>

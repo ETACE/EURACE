@@ -501,6 +501,12 @@ Sander, rev 613
 		added unit tests for Household_ewa_functions, FinancialAgent_ewa_functions
 		debugged some_new_functions.c
 --------------------------------------------------------------------------------------
-Sander, rev 6
+Sander, rev 
+
+Added to GA_paramters: GA_beta - this is the beta intensity of choce parameter for rule switching in the GA.
+(The selection probabilities for reproduction are a transformation of the avg_performance in the public classifier system.)
+
+EWA_beta: private beta intensity of choce parameter for the agent.
+(The selection probabilities for rules are a transformation of the attractions in the private classifier system.)
 
 --------------------------------------------------------------------------------------
