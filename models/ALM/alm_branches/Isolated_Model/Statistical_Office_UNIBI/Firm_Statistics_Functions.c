@@ -94,35 +94,34 @@ int Firm_receive_data()
 		if(eurostat_send_specific_skills_message->region_id == REGION_ID)
 		{
 			/*If there is no employee with general skill level 1 resp. 2-5*/
-			if(NO_EMPLOYEES_SKILL_1 == 0)
-			{
+			
+			
 				AVERAGE_S_SKILL_OF_1 = 						eurostat_send_specific_skills_message->
 				specific_skill_1;
-			}
+			
 
-			if(NO_EMPLOYEES_SKILL_2 == 0)
-			{
+			
+			
 				AVERAGE_S_SKILL_OF_2 = 						eurostat_send_specific_skills_message->
 				specific_skill_2;
-			}
+			
 
-			if(NO_EMPLOYEES_SKILL_3 == 0)
-			{
+			
 				AVERAGE_S_SKILL_OF_3 = 						eurostat_send_specific_skills_message->
 				specific_skill_3;
-			}
+			
 
-			if(NO_EMPLOYEES_SKILL_4 == 0)
-			{
+			
+			
 				AVERAGE_S_SKILL_OF_4 = 						eurostat_send_specific_skills_message->
 				specific_skill_4;
-			}
+			
 
-			if(NO_EMPLOYEES_SKILL_5 == 0)
-			{
+			
+			
 				AVERAGE_S_SKILL_OF_5 = 						eurostat_send_specific_skills_message->
 				specific_skill_5;
-			}
+			
 		}
 		FINISH_EUROSTAT_SEND_SPECIFIC_SKILLS_MESSAGE_LOOP
 		
