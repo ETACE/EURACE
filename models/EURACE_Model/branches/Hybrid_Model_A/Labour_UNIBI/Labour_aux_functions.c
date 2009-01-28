@@ -5,7 +5,7 @@
  * History:
  * 28/01/09 Sander 
  *********************************/
-#include "header.h"
+#include "../header.h"
 #include "Labour_aux_headers.h"
 
 int vacancy_list_rank_wage_offer_function(const void *x, const void *y)
