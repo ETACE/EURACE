@@ -298,7 +298,67 @@ int Firm_send_redundancies()
 	return 0;
 }
 
+/** \fn Firm_send_redundancies()
+* \brief Firms have to dismiss employees. Therefore the send firing_messages:
+*/
+int Firm_send_random_redundancies()
+{
+           int random_num = random_int(LOWER_BOUND_FIRING,UPPER_BOUND_FIRING);
+           
+       /*sorting employees: highest specific skills first*/
+       qsort(EMPLOYEES.array, EMPLOYEES.size, sizeof(employee),
+           employee_list_rank_specific_skills_function);
+             /*For the number of redundencies*/
+       int j;
 
+
+       //for(int i = 0; i < (NO_EMPLOYEES - EMPLOYEES_NEEDED); i++)
+       int no_redundancies = (random_num*NO_EMPLOYEES)/100;
+
+       if(((random_num*NO_EMPLOYEES)%100) < 100 && ((random_num*NO_EMPLOYEES)%100)>0)
+       {
+           no_redundancies = no_redundancies+1;
+       }
+
+//printf("random_num %d; NO_EMPLOYEES %d; no_redundancies %d
+//\n",random_num,NO_EMPLOYEES,no_redundancies);
+       for(int i = 0; i < no_redundancies; i++)
+       {              /*Firing: by chance*/
+           j = random_int(0,(EMPLOYEES.size-1));
+           add_firing_message(ID, EMPLOYEES.array[j].id);
+
+           /*Firing: lowest specific skill*/
+           /*j = EMPLOYEES.size-1;
+           add_firing_message(ID, EMPLOYEES.array[j].id);*/
+                 switch(EMPLOYEES.array[j].general_skill)
+           {
+               /*If employee have had skill level 1 reduce the number of                         employees with skill level 1 by 1*/
+               case 1:
+                   NO_EMPLOYEES_SKILL_1--;
+                   break;
+                                 case 2:
+                   NO_EMPLOYEES_SKILL_2--;
+                   break;
+
+               case 3:
+                   NO_EMPLOYEES_SKILL_3--;
+                   break;
+
+               case 4:
+                   NO_EMPLOYEES_SKILL_4--;
+                   break;
+               /*If employee have had skill level 5 reduce the number of                         employees with skill level 5 by 1*/
+               case 5:
+                   NO_EMPLOYEES_SKILL_5--;
+                   break;
+           }
+                     remove_employee(&EMPLOYEES, j);
+           NO_EMPLOYEES--;
+
+                 }
+             //NO_EMPLOYEES = EMPLOYEES_NEEDED;
+         return 0;
+} 
 
 
 /** \fn Firm_read_job_applications_send_offer_or_rejection()
