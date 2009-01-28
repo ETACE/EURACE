@@ -187,6 +187,16 @@
     <name>productivity_progress</name>
     <description>0.05</description>
    </variable>
+   <variable>
+    <type>int</type>
+    <name>lower_bound_firing</name>
+    <description></description>
+   </variable>
+   <variable>
+    <type>int</type>
+    <name>upper_bound_firing</name>
+    <description></description>
+   </variable>
   </constants>
   <functionFiles>
    <file>my_library_functions.c</file>
@@ -423,8 +433,8 @@
      <description></description>
     </variable>
     <variable>
-     <type>int</type>
-     <name>list_of_regions[2]</name>
+     <type>int_array</type>
+     <name>list_of_regions</name>
      <description>List of regions that are associated to the government.</description>
     </variable>
     <variable>
