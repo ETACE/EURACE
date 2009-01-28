@@ -1,8 +1,7 @@
 #include "../header.h"
 #include "../Firm_agent_header.h"
 #include "../my_library_header.h"
-
-
+#include "./Labour_aux_headers.h"
 
 
 /************************************ Firm agent functions ************************************/

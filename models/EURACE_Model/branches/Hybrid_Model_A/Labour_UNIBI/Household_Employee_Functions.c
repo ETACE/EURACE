@@ -2,6 +2,7 @@
 #include "../Household_agent_header.h"
 #include "../my_library_header.h"
 //#include "../Household_Library_Functions.h"
+#include "Labour_aux_headers.h"
 
 /**********************************Household Role: Labour Market**********************************/
 /** \fn Household_receive_wage()
