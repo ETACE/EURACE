@@ -433,8 +433,8 @@
      <description></description>
     </variable>
     <variable>
-     <type>int_array</type>
-     <name>list_of_regions</name>
+     <type>int</type>
+     <name>list_of_regions[2]</name>
      <description>List of regions that are associated to the government.</description>
     </variable>
     <variable>
