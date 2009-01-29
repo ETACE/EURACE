@@ -304,7 +304,7 @@ int Government_read_data_from_Eurostat()
 	START_DATA_FOR_GOVERNMENT_MESSAGE_LOOP
 		for (i=0; i<NO_REGIONS_PER_GOV; i++)
 		{
-			if(data_for_government_message->region_id==LIST_OF_REGIONS[i])
+			if(data_for_government_message->region_id==LIST_OF_REGIONS.array[i])
 			{
 				//Read region mean wage
 				COUNTRY_WIDE_MEAN_WAGE += data_for_government_message->mean_wage;
