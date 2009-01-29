@@ -9,7 +9,7 @@ Sander, rev 925
 
 New functions:
 
-Government_UG/Government_Functions.c:	Government_send_tax_rates
+Government_UG/Government_Functions.c:   Government_send_tax_rates
 Statistical_Office_UNIBI/Eurostat_Functions.c: Eurostat_read_tax_rates
 Statistical_Office_UNIBI/Household_Statistics_Functions.c: Household_receive_data
 Labour_UNIBI/Firm_Employer_Functions.c: Firm_receive_data
@@ -50,20 +50,20 @@ Firm_fin_management.c:
 
 Statistical_Office_UNIBI/model.xml:
 - added a new message that contains data from the firm's balance sheet:
-	
-	firm_balance_sheet_data_message(cum_revenue, investment_costs, net_earnings, total_debt, total_assets, equity).
+    
+    firm_balance_sheet_data_message(cum_revenue, investment_costs, net_earnings, total_debt, total_assets, equity).
 
 This message is send in the function Firm_send_data_to_Eurostat, together with the firm_send_data_message.
 
 - added 8 new memory variables to Eurostat agent:
-	gdp
-	total_earnings
-	total_debt
-	total_assets
-	total_equity
-	average_debt_earnings_ratio
-	average_debt_equity_ratio  
-	wage_profit_ratio
+    gdp
+    total_earnings
+    total_debt
+    total_assets
+    total_equity
+    average_debt_earnings_ratio
+    average_debt_equity_ratio  
+    wage_profit_ratio
 
 - added those elements to the struct FIRM_DATA as well
 
@@ -76,9 +76,9 @@ fn: Eurostat_calculate_data()
 - initialized the elements to 0 in the Eurostat memory at start of each iteration
 - added 8 zeros to the line add_firm_data(&REGION_FIRM_DATA,...)
 - constructed 3 macrovariables, both regional and global, in the Eurostat memory:
-	AVERAGE_DEBT_EARNINGS_RATIO = TOTAL_DEBT/TOTAL_EARNINGS;
-	AVERAGE_DEBT_EQUITY_RATIO = TOTAL_DEBT/TOTAL_EQUITY;
-	WAGE_PROFIT_RATIO = FIRM_AVERAGE_WAGE/TOTAL_EARNINGS;
+    AVERAGE_DEBT_EARNINGS_RATIO = TOTAL_DEBT/TOTAL_EARNINGS;
+    AVERAGE_DEBT_EQUITY_RATIO = TOTAL_DEBT/TOTAL_EQUITY;
+    WAGE_PROFIT_RATIO = FIRM_AVERAGE_WAGE/TOTAL_EARNINGS;
 -------------------------------------------------------------------------------------------
 Sander, rev 987
 
@@ -379,26 +379,26 @@ Note: also changes by Mario rev 1286 should be merged in this.
 Sander, rev 1291
 
 eurace_model.xml:
-	Added Firm variable: last_day_of_month_to_act
-	The function Firm_compute_sales_statistics now is active on this day.
+    Added Firm variable: last_day_of_month_to_act
+    The function Firm_compute_sales_statistics now is active on this day.
 
 ./its/0-eurace.pop: 
-	includes all environment variables
-	Firm: day_of_month_to_act should still be manually set to 1
-	
+    includes all environment variables
+    Firm: day_of_month_to_act should still be manually set to 1
+    
 ./its/0-alt.xml: 
-	manually replace: day=1 --> day=iteration_loop
-	manually replace: day_of_month_to_act = 0 --> day_of_month_to_act = 1
+    manually replace: day=1 --> day=iteration_loop
+    manually replace: day_of_month_to_act = 0 --> day_of_month_to_act = 1
 
 ./Cons_Goods_UNIBI/model.xml
 
-	line 315: on Firm_compute_sales_statistics
-	- commented out condition (a.day_of_month_to_act)
-	- added condition (a.last_day_of_month_to_act)
-	
-	line 339: on idle
-	- commented out condition (not a.day_of_month_to_act)
-	- added condition (not a.last_day_of_month_to_act)
+    line 315: on Firm_compute_sales_statistics
+    - commented out condition (a.day_of_month_to_act)
+    - added condition (a.last_day_of_month_to_act)
+    
+    line 339: on idle
+    - commented out condition (not a.day_of_month_to_act)
+    - added condition (not a.last_day_of_month_to_act)
  
 ----------------------------------------------------------------------
 Sander, rev 1291
@@ -415,18 +415,18 @@ Removed lines:
 
 Function: Firm_compute_dividends()
 line 109: Added condition
-	if (PREVIOUS_EARNINGS_PER_SHARE>0.0)
+    if (PREVIOUS_EARNINGS_PER_SHARE>0.0)
 
 Function: Firm_execute_financial_payments
 line 361:
-	temp_interest=LOANS.array[i].interest_rate*LOANS.array[i].installment_amount;
-	-->temp_interest=LOANS.array[i].interest_rate*LOANS.array[i].loan_value;
-	
+    temp_interest=LOANS.array[i].interest_rate*LOANS.array[i].installment_amount;
+    -->temp_interest=LOANS.array[i].interest_rate*LOANS.array[i].loan_value;
+    
 File: Cons_Goods_UNIBI/model.xml
 
 Removed two old variables:
-	direct_financial_needs_require_external_financing
-	delayed_financial_needs_require_external_financing
+    direct_financial_needs_require_external_financing
+    delayed_financial_needs_require_external_financing
 ----------------------------------------------------------------------
 Sander, rev 1306
 
@@ -503,17 +503,17 @@ Any other loan items that have nr_periods_before_repayment<13 do get serviced.
 To decrease the nr_periods_before_repayment immediately in the first period of the contract,
 we should decrease it from 13 to 12. This is done at the end:
 
-	        if (LOANS.array[i].nr_periods_before_repayment==0)
-	        {
-	            remove_debt_item(&LOANS, i);
-	        }
-		    else
-			{
-		    	LOANS.array[i].nr_periods_before_repayment -= 1;
-			}
+            if (LOANS.array[i].nr_periods_before_repayment==0)
+            {
+                remove_debt_item(&LOANS, i);
+            }
+            else
+            {
+                LOANS.array[i].nr_periods_before_repayment -= 1;
+            }
 ----------------------------------------------------------------------
 Sander, rev 1311
-	Merged Isolated_Model/FFM_UNIBI code with trunk FFM_GREQAM code.
+    Merged Isolated_Model/FFM_UNIBI code with trunk FFM_GREQAM code.
 ----------------------------------------------------------------------
 Sander, rev 1323
 
@@ -618,7 +618,7 @@ Set day_of_month_receive_benefit
 1. New day_of_month_receive_income equals day_of_month_to_act of the firm
 so it is no longer equal to the day_of_month_receive_benefit.
 2. Use the condition:
-	if (day_of_month_receive_benefit != day_of_month_receive_income)
+    if (day_of_month_receive_benefit != day_of_month_receive_income)
 to determine whether HH needs to repay part of the unemployment benefit to government.
 3. Set day_of_month_receive_benefit = day_of_month_receive_income so that next month the HH does not pay additional taxes.
 
@@ -787,11 +787,11 @@ External financial needs are always satisfied, such that bankruptcy never occurs
 Added memory variable: current_shares_outstanding
 
 Firm_compute_and_send_stock_orders:
-	no order_message is sent
+    no order_message is sent
 
 Firm_read_stock_transactions:
-	PAYMENT_ACCOUNT += EXTERNAL_FINANCIAL_NEEDS;
-	EXTERNAL_FINANCIAL_NEEDS =0.0;
+    PAYMENT_ACCOUNT += EXTERNAL_FINANCIAL_NEEDS;
+    EXTERNAL_FINANCIAL_NEEDS =0.0;
 
 ----------------------------------------------------------------------
 Sander, rev 1646
@@ -803,3 +803,14 @@ Added empty functions for Clearinghouse and Bank.
 
 Household_receive_dividends: empty function.
 ----------------------------------------------------------------------
+Sander, rev 1710
+
+Hybrid_Model_A
+==============
+28/01/09
+- Separated library functions per module: Labour, Cons_Goods
+- Eurostat: remove initialisation function
+
+29/01/09
+- Government: made list_of_regions dynamic array
+---------------------------------------------------------------------- 
