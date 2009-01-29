@@ -283,7 +283,7 @@ In: Cons_Goods_UNIBI
 (related to Financial_UG)
 
 ----------------------------------------------------------------------
-Sander, edits to Isolated_Model
+Sander, edits to Isolated_Model rev 1695
 
 Fixed the compiler error about gamma: renamed to gamma_const, in C code and XML
 
@@ -300,3 +300,30 @@ Constants:
 <bankruptcy_idle_period>240</bankruptcy_idle_period>
 <no_regions_per_gov>2</no_regions_per_gov>
 
+----------------------------------------------------------------------
+Sander, rev 1697
+
+eurace-model.xml
+==============
+removed constants: day,..., year - not used. Day and month are defined in my_library_header.h
+added constant: const_bankruptcy_idle_period (length of time firm remains idle)
+
+These changes have been made in:
+AML/alm_branches/Isolated_Model
+EURACE_Model/branches/Hybrid_Model_A
+EURACE_Model/trunk
+
+----------------------------------------------------------------------
+Sander, rev 1702
+
+Eurostat
+Data structures region_firm_data, region_household_data, region_data in history can now all
+be initialised by pop gui:
+* Remove function: Eurostat_Initialization
+* added shortcut: Eurostat_Initialization_dummy
+* set ARRAY_LENGTH = getNumRegions()
+
+Files:
+0_isolated_model.pop
+0.xml
+----------------------------------------------------------------------
