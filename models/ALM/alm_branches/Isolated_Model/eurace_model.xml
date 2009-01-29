@@ -197,6 +197,11 @@
     <name>upper_bound_firing</name>
     <description></description>
    </variable>
+   <variable>
+    <type>int</type>
+    <name>const_bankruptcy_idle_period</name>
+    <description></description>
+   </variable>
   </constants>
   <functionFiles>
    <file>my_library_functions.c</file>
