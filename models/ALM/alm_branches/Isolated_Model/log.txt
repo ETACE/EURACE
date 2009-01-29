@@ -327,3 +327,14 @@ Files:
 0_isolated_model.pop
 0.xml
 ----------------------------------------------------------------------
+Sander, rev 1738
+
+Isolated_Model
+==============
+28/01/09
+- Separated library functions per module: Labour, Cons_Goods
+- Eurostat: remove initialisation function
+
+29/01/09
+- Government: made list_of_regions dynamic array
+----------------------------------------------------------------------

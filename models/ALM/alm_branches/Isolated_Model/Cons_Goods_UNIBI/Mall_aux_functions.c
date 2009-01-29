@@ -11,6 +11,16 @@
 
 //#define NO_REGIONS 2 //number of regions (hard-coded here, but should be a environment constant)
 
+/* \fn: int sales_statistics_list_rank_sales_function(const void *x, const void *y)
+ * \brief: 
+ */
+int sales_statistics_list_rank_sales_function(const void *x, const void *y)
+{
+    if( ((temporary_sales_statistics *)x)->sales < ((temporary_sales_statistics *)y)->sales) return -1;
+    else if( ((temporary_sales_statistics *)x)->sales > ((temporary_sales_statistics *)y)->sales) return 1;
+    else return 0;
+}
+
 
 /* \fn: void Mall_add_export_data()
  * \brief: Function to add data to the export matrix (during every transaction).
