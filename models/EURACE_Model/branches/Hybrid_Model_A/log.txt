@@ -812,5 +812,10 @@ Hybrid_Model_A
 - Eurostat: remove initialisation function
 
 29/01/09
-- Government: made list_of_regions dynamic array
+- Government: list_of_regions is a dynamic int array
+- Statistical_Office, Firm: checked that active is int
+- Statistical_Office, Eurostat: 
+checked that Eurostat_Initialization_dummy is used, NOT Eurostat_Initialization!!
+checked that firm,household_region_data have correct initialisations in 0.xml.
+- Constant: const_bankruptcy_idle_period
 ---------------------------------------------------------------------- 
