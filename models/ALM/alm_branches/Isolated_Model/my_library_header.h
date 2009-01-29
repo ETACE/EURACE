@@ -6,13 +6,6 @@
 #define DAY iteration_loop
 #define MONTH 20
 
-/*
-int first_day_of_month();
-int not_first_day_of_month();
-int last_day_of_month();
-int not_last_day_of_month();
-*/
-
 void sort_vacancy_list(vacancy_array * vacancy_list);
 void sort_job_offer_list(job_offer_array * job_offer_list);
 void sort_job_application_list(job_application_array * job_application_list);
