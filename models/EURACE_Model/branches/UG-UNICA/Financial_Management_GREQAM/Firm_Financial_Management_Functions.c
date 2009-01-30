@@ -588,6 +588,8 @@ int Firm_bankruptcy_illiquidity_procedure()
  */
 int Firm_bankruptcy_idle_counter()
 {	
+    
+    printf("\nFirm is active: %d (0=bankruptcy, 1=active)\n", ACTIVE);
 	BANKRUPTCY_IDLE_COUNTER -= 1;
 		
 	return 0;
