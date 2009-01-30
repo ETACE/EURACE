@@ -14,3 +14,16 @@ int Household_labour_good_market_dummy() {
 	
 }
 
+
+
+int Household_idle()
+{
+	return 0;
+}
+
+
+int Household_read_policy_announcements()
+{
+    return 0;
+}
+
