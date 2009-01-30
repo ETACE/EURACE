@@ -53,31 +53,7 @@
     <name>print_debug</name>
     <description>0 or 1, A flag to print debugging output to terminal.</description>
    </variable>
-   <variable>
-    <type>int</type>
-    <name>day</name>
-    <description>iteration_loop, The day count.</description>
-   </variable>
-   <variable>
-    <type>int</type>
-    <name>week</name>
-    <description>5, Number of days in a week.</description>
-   </variable>
-   <variable>
-    <type>int</type>
-    <name>month</name>
-    <description>20, Number of days in a month.</description>
-   </variable>
-   <variable>
-    <type>int</type>
-    <name>quarter</name>
-    <description>60, The number of days in a quarter.</description>
-   </variable>
-   <variable>
-    <type>int</type>
-    <name>year</name>
-    <description>240, The number of days in a year.</description>
-   </variable>
+
    <variable>
     <type>int</type>
     <name>number_of_banks_to_apply</name>
@@ -216,7 +192,7 @@
    <timeUnit>
     <name>weekly</name>
     <unit>daily</unit>
-    <period>5</period>
+    <period>1</period>
    </timeUnit>
    <timeUnit>
     <name>monthly</name>
