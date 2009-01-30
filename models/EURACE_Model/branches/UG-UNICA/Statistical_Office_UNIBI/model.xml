@@ -845,7 +845,6 @@
     </variable>
    </memory>
    <functions>
-   <!--
     <function>
      <name>Household_idle</name>
      <description></description>
@@ -890,7 +889,6 @@
      </inputs>
      <outputs/>
     </function>
-    -->
     
     <function>
      <name>Household_receive_data</name>
@@ -907,7 +905,6 @@ and stores the needed data.</description>
      <inputs/>
      <outputs/>
     </function>
-    <!--
     <function>
      <name>Household_idle</name>
      <description>Household does nothing</description>
@@ -924,7 +921,6 @@ and stores the needed data.</description>
      <inputs/>
      <outputs/>
     </function>
-    -->
     
     <function>
      <name>Household_send_data_to_Eurostat</name>
