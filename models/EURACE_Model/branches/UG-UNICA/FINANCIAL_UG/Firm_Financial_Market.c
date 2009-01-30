@@ -57,7 +57,7 @@ int Firm_send_info(void)
      add_info_firm_message(ID, earnings_exp,  dividend, earnings_payout_exp,  EQUITY, STOCK);
      
      printf("\n\n*****\nFirm ID: %d\nEarnings_exp: %f\,Dividend: %f\nEarnings_payout_exp: %f\nEQUITY: %f\n*****\n\n",ID, earnings_exp,  dividend, earnings_payout_exp,  EQUITY);
-     
+     getchar();
      return 0;
 }
 
