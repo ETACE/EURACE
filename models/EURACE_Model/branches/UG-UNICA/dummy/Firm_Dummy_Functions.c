@@ -18,6 +18,8 @@ int Firm_planned_production_costs_dummy() {
  */
 int Firm_credit_market_dummy() {
     
+    printf("\n\n*Firm_credit_market_dummy*\nEXTERNAL FINANCIAL NEEDS: %f\n\n",EXTERNAL_FINANCIAL_NEEDS);
+    
 	return 0;
 }
 
