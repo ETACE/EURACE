@@ -294,6 +294,9 @@ int Firm_check_financial_and_bankruptcy_state()
 			FINANCIAL_CRISIS_STATE=1;
 		}
 	}
+	
+	printf("\n\n*Firm_check_financial_and_bankruptcy_state\nBankrutcy illiquidity state: %d\nFinancial crisis state: %d",BANKRUPTCY_ILLIQUIDITY_STATE,FINANCIAL_CRISIS_STATE);
+	
 	return 0;
 }
 
@@ -627,6 +630,8 @@ int Firm_compute_and_send_stock_orders()
 	//add_order_message(trader_id, asset_id, limit_price, quantity)
 	add_order_message(ID, ID, limit_price, quantity);
 
+    printf("\n\n*Firm_compute_and_send_stock_orders*\nID: %d\nLimit price: %f\nQuantity: %d",ID,limit_price, quantity);
+    getchar();
 	return 0;
 }
 
