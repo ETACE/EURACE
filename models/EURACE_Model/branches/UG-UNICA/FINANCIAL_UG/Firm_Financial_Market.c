@@ -55,6 +55,9 @@ int Firm_send_info(void)
      //CGP_income_statement_computing(EARNINGS,EARNINGS_PAYOUT, &earnings_exp,&earnings_payout_exp);
      //("earnings_exp=%f   earnings_payout_exp=%f\n",earnings_exp,earnings_payout_exp);
      add_info_firm_message(ID, earnings_exp,  dividend, earnings_payout_exp,  EQUITY, STOCK);
+     
+     printf("\n\n*****\nFirm ID: %d\nEarnings_exp: %d\,Dividend: %d\nEarnings_payout_exp: %d\nEQUITY: %d\n*****\n\n",ID, earnings_exp,  dividend, earnings_payout_exp,  EQUITY);
+     
      return 0;
 }
 
