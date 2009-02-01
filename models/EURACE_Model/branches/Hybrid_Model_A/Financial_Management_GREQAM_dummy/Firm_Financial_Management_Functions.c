@@ -16,15 +16,16 @@ int Firm_compute_financial_payments()
 {
     int imax;
     int i;
-
-    //double PAYMENT_ACCOUNT: account out of which payments are made, to be separated from the income_account on which current sale receipts are incoming
+    double interest_payment =0.0;
+    
+    //double PAYMENT_ACCOUNT			: account out of which payments are made
 
     //double_array LOANS                : dynamic array of structs with each struct a loan_item
     //struct debt_item
     //int bank_id                       : bank at which the loan was obtained
     //double loan_value                 : total value of the loan remaining
     //double interest_rate              : interest for this loan
-    double interest_payment =0.0; //          : interest to be paid this period
+    //double interest_payment           : interest to be paid this period
     //double debt_installment_payment   : installment payment per period
     //int nr_periods_before_maturity    : nr of periods to go before the loan has to be fully repaid
 
@@ -67,7 +68,7 @@ int Firm_compute_income_statement()
     // compute net earnings
     EARNINGS = CUM_REVENUE - TOTAL_INTEREST_PAYMENT - PRODUCTION_COSTS;
 
-    if (EARNINGS<0.0)
+    if (EARNINGS>0.0)
         TAX_PAYMENT = TAX_RATE_CORPORATE * EARNINGS;
     PREVIOUS_NET_EARNINGS = NET_EARNINGS;
     NET_EARNINGS = EARNINGS - TAX_PAYMENT;
@@ -388,6 +389,8 @@ int Firm_execute_financial_payments()
     //step 2: actual interest_payments and installment_payments
     //Sending installment_message to banks at which the firm has a loan 
     imax = LOANS.size;
+    TOTAL_DEBT=0.0;
+
     for (i=0; i<imax; i++)
     {
         //decrease payment_account with the interest_payment
@@ -400,6 +403,9 @@ int Firm_execute_financial_payments()
         //decrease the value of the loan with the debt_installment_payment:
         LOANS.array[i].loan_value -= LOANS.array[i].installment_amount;
         //printf("Now subtracted debt_installment_payment from loan_value: %f (new value:%f).\n", LOANS.array[i].debt_installment_payment, LOANS.array[i].loan_value);
+
+        //compute current total debt
+        TOTAL_DEBT += LOANS.array[i].loan_value;
 
         //decrease the residual_var of the loan with the var_per_installment:
         LOANS.array[i].residual_var -= LOANS.array[i].var_per_installment;
@@ -614,7 +620,6 @@ int Firm_reset_bankruptcy_flags()
  */
 int Firm_compute_and_send_stock_orders_dummy()
 {
-    
     return 0;
 }
 

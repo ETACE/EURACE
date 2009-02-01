@@ -26,7 +26,8 @@ void unittest_<Agentname>_function()
     /***** Variables: Memory pre-conditions **************************/
 
 	/***** Messages: initialize message boards **********************************/
-    rc = MB_Create(&b_<message>, sizeof(m_<message>));
+/*
+	rc = MB_Create(&b_<message>, sizeof(m_<message>));
     	    #ifdef ERRCHECK
     	    if (rc != MB_SUCCESS)
     	    {
@@ -44,13 +45,13 @@ void unittest_<Agentname>_function()
     	       }
     	    }
     	    #endif
-	
+*/	
 	/***** Messages: pre-conditions **********************************/
-    add_<message>_message();
+    //add_<message>_message();
     	    
     /***** Message: Adding message iterators ***************************************/
-	rc = MB_Iterator_Create(b_<message>, &i_<message>);
-			
+	//rc = MB_Iterator_Create(b_<message>, &i_<message>);
+/*			
 	if (rc != MB_SUCCESS)
 			{
 			   fprintf(stderr, "ERROR: Could not create Iterator for '<message>'\n");
@@ -69,20 +70,21 @@ void unittest_<Agentname>_function()
 		               break;
 			   }
 			}
-	    	    
+*/
     /***** Function evaluation ***************************************/
-	<Agentname>_function();
+//	<Agentname>_function();
     
     /***** Variables: Memory post-conditions *****/
 //	CU_ASSERT_DOUBLE_EQUAL(var, result, 1e-3);
 
     /***** Messages: Message post-conditions *****/
 	//start a reading loop
-	START_<message>_MESSAGE_LOOP
+/*
+    START_<message>_MESSAGE_LOOP
 	     CU_ASSERT_EQUAL(<message>_message->var, value);
 	     CU_ASSERT_DOUBLE_EQUAL(<message>_message->var, value, 1e-3);
 	FINISH_<message>_MESSAGE_LOOP
-	
+*/	
     /************* At end of unit test, free the agent **************/
 	unittest_free_<Agentname>_agent();
     /************* At end of unit tests, free all Messages **********/
