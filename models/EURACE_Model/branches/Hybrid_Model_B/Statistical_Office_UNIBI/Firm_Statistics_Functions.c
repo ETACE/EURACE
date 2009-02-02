@@ -44,11 +44,18 @@ int Firm_read_policy_announcements()
 		//Filter: 
 		if(policy_announcement_message->gov_id == GOV_ID)
 		{
-                                               
+            printf("TAX_RATE_CORPORATE was %f",TAX_RATE_CORPORATE);
 			TAX_RATE_CORPORATE = policy_announcement_message->tax_rate_corporate;
-			TAX_RATE_VAT = policy_announcement_message->tax_rate_vat;
-			TRANSFER_PAYMENT = policy_announcement_message->firm_transfer_payment;
-			SUBSIDY_PAYMENT = policy_announcement_message->firm_subsidy_payment;
+			printf(" and now is %f\n",TAX_RATE_CORPORATE);
+			printf("TAX_RATE_VAT was %f",TAX_RATE_VAT);
+            TAX_RATE_VAT = policy_announcement_message->tax_rate_vat;
+			printf(" and now is %f\n",TAX_RATE_VAT);
+			printf("TRANSFER_PAYMENT was %f",TRANSFER_PAYMENT);
+            TRANSFER_PAYMENT = policy_announcement_message->firm_transfer_payment;
+			printf(" and now is %f\n",TRANSFER_PAYMENT);
+			printf("TRANSFER_PAYMENT was %f",SUBSIDY_PAYMENT);
+            SUBSIDY_PAYMENT = policy_announcement_message->firm_subsidy_payment;
+            printf(" and now is %f\n",SUBSIDY_PAYMENT);
 		}
 	FINISH_POLICY_ANNOUNCEMENT_MESSAGE_LOOP
 	
