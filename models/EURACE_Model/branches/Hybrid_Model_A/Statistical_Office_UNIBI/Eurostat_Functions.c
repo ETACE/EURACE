@@ -142,7 +142,7 @@ int Eurostat_send_data()
 /** \Eurostat_calculate_data
  * \brief Eurostat receive micro data and calculates macro data
  */
-int Eurostat_calculate_data()
+int Eurostat_calculate_data_old_version()
 {
     int i,j,m;
         
@@ -198,6 +198,7 @@ int Eurostat_calculate_data()
 
     sum_consumption_good_supply    = 0.0;
 
+    
     /*delete the content of the data arrays in order to store the data for the new month*/
     //free(REGION_HOUSEHOLD_DATA);
     //free(REGION_FIRM_DATA);
@@ -241,15 +242,11 @@ int Eurostat_calculate_data()
         /*Compute a weighted mean price*/
                 
         START_FIRM_SEND_DATA_MESSAGE_LOOP
-                
-        sum_consumption_good_supply+= firm_send_data_message->total_supply;
-                
+        	sum_consumption_good_supply+= firm_send_data_message->total_supply;
         FINISH_FIRM_SEND_DATA_MESSAGE_LOOP
                 
         START_FIRM_SEND_DATA_MESSAGE_LOOP
-                
-        PRICE_INDEX += (firm_send_data_message->price*firm_send_data_message->total_supply)/ sum_consumption_good_supply;
-                
+        	PRICE_INDEX += (firm_send_data_message->price*firm_send_data_message->total_supply)/ sum_consumption_good_supply;
         FINISH_FIRM_SEND_DATA_MESSAGE_LOOP
         
         /*Store the region data of the firms*/
@@ -360,7 +357,8 @@ int Eurostat_calculate_data()
 
         }
 
-    /*Create the REGIONAL data which is needed for controlling the results or sending           back to the Firms*/
+    /*Create the REGIONAL data which is needed for controlling the results or sending
+     *            back to the Firms*/
     for(i = 0; i < REGION_FIRM_DATA.size; i++)
     {
         /*********************WAGES************************/
@@ -420,7 +418,8 @@ int Eurostat_calculate_data()
     }
 
     
-    /*Create the GLOBAL data which is needed for controlling the results or sending         back to the Households*/
+    /*Create the GLOBAL data which is needed for controlling the results or sending 
+     *         back to the Households*/
     
     /*********************WAGES****************/
     if(NO_EMPLOYEES > 0)
@@ -904,6 +903,35 @@ int Eurostat_calculate_data()
     return 0;
 }
 
+/** \fn Eurostat_calculate_data
+ * \brief Eurostat receive micro data and calculates macro data
+ */
+int Eurostat_calculate_data()
+{
+	/* Eurostat auxiliary functions */
+	 Eurostat_reset_data();
+	 Eurostat_compute_mean_price();
+
+	 Eurostat_read_firm_data();
+	 Eurostat_compute_region_firm_data();
+	 Eurostat_compute_global_firm_data();
+
+	 Eurostat_read_household_data();
+	 Eurostat_compute_region_household_data();
+	 Eurostat_compute_global_household_data();
+
+	 Eurostat_calc_macro_data();
+    //Eurostat_calc_firm_population();
+    //Eurostat_calc_firm_survival_rates();
+     Eurostat_measure_export();
+     Eurostat_calc_price_index();    
+    
+    return 0;
+}
+
+/** \fn Eurostat_read_policy_announcements
+ * \brief Eurostat receive micro data and calculates macro data
+ */
 int Eurostat_read_policy_announcements()
 {
     int i;
