@@ -420,7 +420,7 @@ int Firm_execute_financial_payments()
                 LOANS.array[i].var_per_installment);
 
         //If nr_periods_before_maturity == 0, remove the loan item
-        if (LOANS.array[i].nr_periods_before_repayment==0)
+        if (LOANS.array[i].nr_periods_before_repayment==1)
             remove_debt_item(&LOANS, i);
         else
             LOANS.array[i].nr_periods_before_repayment -= 1;
