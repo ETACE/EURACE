@@ -30,6 +30,7 @@ int Firm_labour_good_market_dummy() {
     PRODUCTION_COSTS = PLANNED_PRODUCTION_COSTS;
     printf("\n*Production costs = %f\n",PRODUCTION_COSTS);
     printf("\n*TOTAL_INTEREST_PAYMENT = %f, PRODUCTION_COSTS = %F, MONTH = %d",TOTAL_INTEREST_PAYMENT, PRODUCTION_COSTS, MONTH);
+    printf("\n** %f ** \n", 1.1 * (TOTAL_INTEREST_PAYMENT + PRODUCTION_COSTS)/MONTH);
     daily_revenue = 1.1 * (TOTAL_INTEREST_PAYMENT + PRODUCTION_COSTS)/MONTH;
     printf("\n*Daily revenue = %f\n",daily_revenue);    
     CUM_REVENUE = CUM_REVENUE + daily_revenue;
