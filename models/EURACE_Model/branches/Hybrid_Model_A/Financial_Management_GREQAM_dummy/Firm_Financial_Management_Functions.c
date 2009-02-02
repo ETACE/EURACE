@@ -281,12 +281,12 @@ int Firm_check_financial_and_bankruptcy_state()
     if (PAYMENT_ACCOUNT < TOTAL_FINANCIAL_NEEDS)
     {
         //Code: check if payment account is also less than financial payments
-        if (PAYMENT_ACCOUNT < TOTAL_INTEREST_PAYMENTS
+        if (PAYMENT_ACCOUNT < TOTAL_INTEREST_PAYMENT
                 + TOTAL_DEBT_INSTALLMENT_PAYMENT + TAX_PAYMENT)
         {
             BANKRUPTCY_ILLIQUIDITY_STATE=1;
         }
-        if (PAYMENT_ACCOUNT >= TOTAL_INTEREST_PAYMENTS
+        if (PAYMENT_ACCOUNT >= TOTAL_INTEREST_PAYMENT
                 + TOTAL_DEBT_INSTALLMENT_PAYMENT + TAX_PAYMENT)
         {
             //Financial crisis condition
@@ -335,13 +335,13 @@ int Firm_in_financial_crisis()
     //Recompute dividend
     //Set TOTAL_DIVIDEND_PAYMENT
     payment_account_after_compulsory_payments = PAYMENT_ACCOUNT
-            - (TOTAL_INTEREST_PAYMENTS + TOTAL_DEBT_INSTALLMENT_PAYMENT
+            - (TOTAL_INTEREST_PAYMENT + TOTAL_DEBT_INSTALLMENT_PAYMENT
                     + TAX_PAYMENT);
     TOTAL_DIVIDEND_PAYMENT = max(0, payment_account_after_compulsory_payments
             - PLANNED_PRODUCTION_COSTS);
 
     //Set flag if resolved:
-    if (PAYMENT_ACCOUNT >= TOTAL_INTEREST_PAYMENTS
+    if (PAYMENT_ACCOUNT >= TOTAL_INTEREST_PAYMENT
             + TOTAL_DEBT_INSTALLMENT_PAYMENT + TAX_PAYMENT
             + TOTAL_DIVIDEND_PAYMENT)
     {
@@ -414,13 +414,13 @@ int Firm_execute_financial_payments()
         //Note: this message is to be separated from the general bank_account_update_message send at the end of the period
         //to the firm's deposit bank (the banks at which the firm has loans is a different one than the bank at which the firm has deposits).
 
-        //add_debt_installment_message(bank_id, installment_amount, interest_amount, credit_refunded, var_per_installment)
+        //add_installment_message(bank_id, installment_amount, interest_amount, var_per_installment)
         add_installment_message(LOANS.array[i].bank_id,
                 LOANS.array[i].installment_amount, temp_interest,
                 LOANS.array[i].var_per_installment);
 
         //If nr_periods_before_maturity == 0, remove the loan item
-        if (LOANS.array[i].nr_periods_before_repayment==0)
+        if (LOANS.array[i].nr_periods_before_repayment==1)
             remove_debt_item(&LOANS, i);
         else
             LOANS.array[i].nr_periods_before_repayment -= 1;
@@ -522,10 +522,18 @@ int Firm_bankruptcy_insolvency_procedure()
     //Set the IPO_AMOUNT to raise:
     target_equity = (1/TARGET_LEVERAGE_RATIO) * target_debt;
     ipo_amount = target_equity + target_debt - TOTAL_ASSETS;
-
+    
+    
     //To use already implemented functions, we use the EXTERNAL_FINANCIAL_NEEDS to send the share emmission
     EXTERNAL_FINANCIAL_NEEDS = max(0,ipo_amount);
-    
+
+    printf("\n In function Firm_bankruptcy_insolvency_procedure:\n"
+    		"target_debt = %2.2f\n"
+    		"TARGET_LEVERAGE_RATIO = %2.2f\n"
+    		"ipo_amount = %2.2f\n"
+    		"EXTERNAL_FINANCIAL_NEEDS = %2.2f\n",
+    		target_debt, TARGET_LEVERAGE_RATIO, ipo_amount, EXTERNAL_FINANCIAL_NEEDS);
+
     //Effect on investment goods market
     //Left-over capital
     
