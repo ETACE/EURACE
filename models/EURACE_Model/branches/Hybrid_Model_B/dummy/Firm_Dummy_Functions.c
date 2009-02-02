@@ -30,9 +30,8 @@ int Firm_labour_good_market_dummy() {
     if(MONTH > 0)
              daily_revenue = 1.1 * (TOTAL_INTEREST_PAYMENT + PRODUCTION_COSTS)/MONTH;
     else
-             daily_revenue = 0.0;
+             daily_revenue = 10;
     CUM_REVENUE = CUM_REVENUE + daily_revenue;
-    printf("\n*New Cum revenue = %f\n****************\n",CUM_REVENUE);
     
     PAYMENT_ACCOUNT += daily_revenue - (PRODUCTION_COSTS/MONTH);
     
