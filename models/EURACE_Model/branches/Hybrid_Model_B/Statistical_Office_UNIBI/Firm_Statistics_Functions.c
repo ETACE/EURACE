@@ -38,12 +38,13 @@ int Firm_send_payments_to_bank()
  */
 int Firm_read_policy_announcements()
 {
-
+    printf("Firm read policy announcements");
 	//Message send by Government:
 	START_POLICY_ANNOUNCEMENT_MESSAGE_LOOP			
 		//Filter: 
 		if(policy_announcement_message->gov_id == GOV_ID)
 		{
+                                               
 			TAX_RATE_CORPORATE = policy_announcement_message->tax_rate_corporate;
 			TAX_RATE_VAT = policy_announcement_message->tax_rate_vat;
 			TRANSFER_PAYMENT = policy_announcement_message->firm_transfer_payment;
