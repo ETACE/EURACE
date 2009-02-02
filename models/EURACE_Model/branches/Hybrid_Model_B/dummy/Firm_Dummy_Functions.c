@@ -26,13 +26,11 @@ int Firm_credit_market_dummy() {
 int Firm_labour_good_market_dummy() {
     
     double daily_revenue = 0.0;
-    printf("\n************\n*Cum revenue = %f\n",CUM_REVENUE);
     PRODUCTION_COSTS = PLANNED_PRODUCTION_COSTS;
-    printf("\n*Production costs = %f\n",PRODUCTION_COSTS);
-    printf("\n*TOTAL_INTEREST_PAYMENT = %f, PRODUCTION_COSTS = %F, MONTH = %d",TOTAL_INTEREST_PAYMENT, PRODUCTION_COSTS, MONTH);
-    printf("\n** %f ** \n", 1.1 * (TOTAL_INTEREST_PAYMENT + PRODUCTION_COSTS)/MONTH);
-    daily_revenue = 1.1 * (TOTAL_INTEREST_PAYMENT + PRODUCTION_COSTS)/MONTH;
-    printf("\n*Daily revenue = %f\n",daily_revenue);    
+    if(MONTH > 0)
+             daily_revenue = 1.1 * (TOTAL_INTEREST_PAYMENT + PRODUCTION_COSTS)/MONTH;
+    else
+             daily_revenue = 0.0;
     CUM_REVENUE = CUM_REVENUE + daily_revenue;
     printf("\n*New Cum revenue = %f\n****************\n",CUM_REVENUE);
     
