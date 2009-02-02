@@ -264,7 +264,7 @@
      <name>Firm_send_vacancies</name>
      <description>If additional workers are needed the firm sends vacancies messages&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
  espacially the different wage offers for the different general skill groups</description>
-     <currentState>011</currentState>
+     <currentState>04ccc</currentState>
      <nextState>03</nextState>
      <condition>
       <lhs>
@@ -286,7 +286,7 @@
      <name>Firm_send_redundancies</name>
      <description>If the firm wants to decrease the workforce it sends redundancies</description>
      <currentState>011</currentState>
-     <nextState>03c</nextState>
+     <nextState>03ccc</nextState>
      <condition>
       <lhs>
        <value>a.no_employees</value>
@@ -307,12 +307,12 @@
      <name>Firm_idle</name>
      <description>Firm does nothing</description>
      <currentState>011</currentState>
-     <nextState>03c</nextState>
+     <nextState>03ccc</nextState>
      <condition>
       <lhs>
        <value>a.no_employees</value>
       </lhs>
-      <op>EQ</op>
+      <op>LEQ</op>
       <rhs>
        <value>a.employees_needed</value>
       </rhs>
@@ -580,6 +580,35 @@ of employees and the number of vacancies</description>
      <description>Firm does nothing</description>
      <currentState>10</currentState>
      <nextState>Firm_End_Labour_Role</nextState>
+     <inputs/>
+     <outputs/>
+    </function>
+     <function>
+     <name>Firm_send_random_redundancies</name>
+     <description>Firms fire workers randomly.</description>
+     <currentState>03ccc</currentState>
+     <nextState>04ccc</nextState>
+     <inputs/>
+     <outputs>
+      <output>
+       <messageName>firing</messageName>
+      </output>
+     </outputs>
+    </function>
+    <function>
+     <name>idle</name>
+     <description></description>
+     <currentState>04ccc</currentState>
+     <nextState>03c</nextState>
+     <condition>
+      <lhs>
+       <value>a.no_employees</value>
+      </lhs>
+      <op>EQ</op>
+      <rhs>
+       <value>a.employees_needed</value>
+      </rhs>
+     </condition>
      <inputs/>
      <outputs/>
     </function>

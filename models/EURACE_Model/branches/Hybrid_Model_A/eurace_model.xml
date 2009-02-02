@@ -175,6 +175,16 @@
    </variable>
    <variable>
     <type>int</type>
+    <name>lower_bound_firing</name>
+    <description></description>
+   </variable>
+   <variable>
+    <type>int</type>
+    <name>upper_bound_firing</name>
+    <description></description>
+   </variable>
+   <variable>
+    <type>int</type>
     <name>const_bankruptcy_idle_period</name>
     <description>Number of iterations that a bankrupt firm remains idle, before resuming production activity.</description>
    </variable>
