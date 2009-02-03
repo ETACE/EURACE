@@ -27,13 +27,10 @@ int Firm_labour_good_market_dummy() {
     
     double daily_revenue = 0.0;
     PRODUCTION_COSTS = PLANNED_PRODUCTION_COSTS;
-    if(MONTH > 0)
-             daily_revenue = 1.1 * (TOTAL_INTEREST_PAYMENT + PRODUCTION_COSTS)/MONTH;
-    else
-             daily_revenue = 10;
+    daily_revenue = 1.1 * (TOTAL_INTEREST_PAYMENT + PRODUCTION_COSTS)/20;
     CUM_REVENUE = CUM_REVENUE + daily_revenue;
     
-    PAYMENT_ACCOUNT += daily_revenue - (PRODUCTION_COSTS/MONTH);
+    PAYMENT_ACCOUNT += daily_revenue - (PRODUCTION_COSTS/20);
     
     return 0;
                                 
