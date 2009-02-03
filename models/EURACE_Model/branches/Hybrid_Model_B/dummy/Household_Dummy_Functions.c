@@ -24,6 +24,7 @@ int Household_idle()
 
 int Household_read_policy_announcements()
 {
+    printf("\n * HOUSEHOLD READ POLICY ANNOUNCEMENTS *\n");
     return 0;
 }
 
