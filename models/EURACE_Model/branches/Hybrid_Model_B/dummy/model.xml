@@ -317,6 +317,21 @@
 <functions>
 
 <function>
+<name>idel</name>
+<description></description>
+<currentState>15</currentState>
+<nextState>end_Household</nextState>
+     <condition>
+      <not>
+       <time>
+        <period>monthly</period>
+        <phase>0</phase>
+       </time>
+      </not>
+     </condition>
+</function>
+
+<function>
 <name>Household_labour_good_market_dummy</name>
 <description></description>
 <currentState>Start_Household_Labour_Role</currentState>
