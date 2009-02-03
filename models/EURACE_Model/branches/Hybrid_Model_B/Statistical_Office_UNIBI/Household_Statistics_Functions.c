@@ -12,7 +12,8 @@
  */
 int Household_receive_data()
 {
-
+    printf("\n * HOUSEHOLD RECEIVE DATA *\n");
+    
 	return 0;
 }
 
