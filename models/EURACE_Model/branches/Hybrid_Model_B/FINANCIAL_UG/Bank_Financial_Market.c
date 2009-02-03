@@ -2,8 +2,8 @@
 
 int Bank_send_accountInterest(void)
 {
-   add_accountInterest_message(1, 0.04);
-return 0;
+   add_accountInterest_message(get_id(), 0.001);
+   return 0;
 }
 int Bank_receive_account_update(void)
 {
