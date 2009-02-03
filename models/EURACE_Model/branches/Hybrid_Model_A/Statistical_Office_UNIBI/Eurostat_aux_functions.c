@@ -591,28 +591,28 @@ void Eurostat_compute_region_household_data(void)
 
         /**************UNEMPLOYMENT-RATE******************/
         REGION_HOUSEHOLD_DATA.array[i].unemployment_rate = 
-        1 - (double)REGION_HOUSEHOLD_DATA.array[i].employed/
-        (double)REGION_HOUSEHOLD_DATA.array[i].no_households;
+        	100*(1 - (double)REGION_HOUSEHOLD_DATA.array[i].employed/
+        (double)REGION_HOUSEHOLD_DATA.array[i].no_households);
 
         REGION_HOUSEHOLD_DATA.array[i].unemployment_rate_skill_1 =
-        1 - (double)REGION_HOUSEHOLD_DATA.array[i].employed_skill_1/
-        (double)REGION_HOUSEHOLD_DATA.array[i].no_households_skill_1;
+        	100*(1 - (double)REGION_HOUSEHOLD_DATA.array[i].employed_skill_1/
+        (double)REGION_HOUSEHOLD_DATA.array[i].no_households_skill_1);
 
         REGION_HOUSEHOLD_DATA.array[i].unemployment_rate_skill_2 =
-        1 - (double)REGION_HOUSEHOLD_DATA.array[i].employed_skill_2/
-        (double)REGION_HOUSEHOLD_DATA.array[i].no_households_skill_2;
+        	100*(1 - (double)REGION_HOUSEHOLD_DATA.array[i].employed_skill_2/
+        (double)REGION_HOUSEHOLD_DATA.array[i].no_households_skill_2);
 
         REGION_HOUSEHOLD_DATA.array[i].unemployment_rate_skill_3 =
-        1 - (double)REGION_HOUSEHOLD_DATA.array[i].employed_skill_3/
-        (double)REGION_HOUSEHOLD_DATA.array[i].no_households_skill_3;
+        	100*(1 - (double)REGION_HOUSEHOLD_DATA.array[i].employed_skill_3/
+        (double)REGION_HOUSEHOLD_DATA.array[i].no_households_skill_3);
 
         REGION_HOUSEHOLD_DATA.array[i].unemployment_rate_skill_4 =
-        1 - (double)REGION_HOUSEHOLD_DATA.array[i].employed_skill_4/
-        (double)REGION_HOUSEHOLD_DATA.array[i].no_households_skill_4;
+        	100*(1 - (double)REGION_HOUSEHOLD_DATA.array[i].employed_skill_4/
+        (double)REGION_HOUSEHOLD_DATA.array[i].no_households_skill_4);
 
         REGION_HOUSEHOLD_DATA.array[i].unemployment_rate_skill_5 =
-        1 - (double)REGION_HOUSEHOLD_DATA.array[i].employed_skill_5/
-        (double)REGION_HOUSEHOLD_DATA.array[i].no_households_skill_5;
+        	100*(1 - (double)REGION_HOUSEHOLD_DATA.array[i].employed_skill_5/
+        (double)REGION_HOUSEHOLD_DATA.array[i].no_households_skill_5);
     
 
     
@@ -719,17 +719,17 @@ void Eurostat_compute_global_household_data(void)
 	/*Create the GLOBAL data which is needed for controlling the results or sending         back to the Households*/
 	
 	/*******************UNEMPLOYMENT RATE**********************/
-	UNEMPLOYMENT_RATE = 1 - (double)EMPLOYED/(double)NUM_HOUSEHOLDS;
-	UNEMPLOYMENT_RATE_SKILL_1 = 1 - (double)EMPLOYED_SKILL_1/
-	                (double)NO_HOUSEHOLDS_SKILL_1;
-	UNEMPLOYMENT_RATE_SKILL_2 = 1 - (double)EMPLOYED_SKILL_2/
-	                (double)NO_HOUSEHOLDS_SKILL_2;
-	UNEMPLOYMENT_RATE_SKILL_3 = 1 - (double)EMPLOYED_SKILL_3/
-	                (double)NO_HOUSEHOLDS_SKILL_3;
-	UNEMPLOYMENT_RATE_SKILL_4 = 1 - (double)EMPLOYED_SKILL_4/
-	                (double)NO_HOUSEHOLDS_SKILL_4;
-	UNEMPLOYMENT_RATE_SKILL_5 = 1 - (double)EMPLOYED_SKILL_5/
-	                (double)NO_HOUSEHOLDS_SKILL_5;
+	UNEMPLOYMENT_RATE = 100*(1 - (double)EMPLOYED/(double)NUM_HOUSEHOLDS);
+	UNEMPLOYMENT_RATE_SKILL_1 = 100*(1 - (double)EMPLOYED_SKILL_1/
+	                (double)NO_HOUSEHOLDS_SKILL_1);
+	UNEMPLOYMENT_RATE_SKILL_2 = 100*(1 - (double)EMPLOYED_SKILL_2/
+	                (double)NO_HOUSEHOLDS_SKILL_2);
+	UNEMPLOYMENT_RATE_SKILL_3 = 100*(1 - (double)EMPLOYED_SKILL_3/
+	                (double)NO_HOUSEHOLDS_SKILL_3);
+	UNEMPLOYMENT_RATE_SKILL_4 = 100*(1 - (double)EMPLOYED_SKILL_4/
+	                (double)NO_HOUSEHOLDS_SKILL_4);
+	UNEMPLOYMENT_RATE_SKILL_5 = 100*(1 - (double)EMPLOYED_SKILL_5/
+	                (double)NO_HOUSEHOLDS_SKILL_5);
 	
 	
 	/*******************WAGES**********************/

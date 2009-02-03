@@ -10,7 +10,7 @@
 /*
  * \fn: void unittest_Eurostat_reset_data()
  * \brief: Unit test for: Eurostat_reset_data.
- * Status: NOT Tested
+ * Status: Tested OK
  */
 void unittest_Eurostat_reset_data()
 {	
@@ -86,7 +86,7 @@ void unittest_Eurostat_reset_data()
 /*
  * \fn: void unittest_Eurostat_compute_mean_price()
  * \brief: Unit test for: Eurostat_compute_mean_price.
- * Status: NOT Tested
+ * Status: Tested OK
  */
 void unittest_Eurostat_compute_mean_price()
 {
@@ -171,7 +171,7 @@ void unittest_Eurostat_compute_mean_price()
 /*
  * \fn: void unittest_Eurostat_read_firm_data()
  * \brief: Unit test for: Eurostat_read_firm_data.
- * Status: NOT Tested
+ * Status: Tested OK
  */
 void unittest_Eurostat_read_firm_data()
 {
@@ -181,7 +181,27 @@ void unittest_Eurostat_read_firm_data()
 	unittest_init_Eurostat_agent();
 	
     /***** Variables: Memory pre-conditions **************************/
+	add_firm_data(&REGION_FIRM_DATA,
+		    1,0,0,                   //3 region_id, no_firms, vacancies 
+		    0,0,0,0,0,0,             //6 employees_skill
+		    0.0,0.0,0.0,0.0,0.0,0.0, //6 average_wage_skill
+		    0.0,0.0,0.0,0.0,0.0,0.0, //6 average_s_skill
+		    0.0,0.0,0.0,0.0,0.0, 	 //5 total_earnings -> average_debt_earnings_ratio
+		    0.0,0.0,0.0,0.0,0.0,0.0, //6 average_debt_equity_ratio -> monthly_planned_output
+		    0.0,0.0,0.0,             //3 gdp, cpi, cpi_last_month 
+		    0,0);                    //2 no_firm_births, no_firm_deaths
 
+	add_firm_data(&REGION_FIRM_DATA,
+		    2,0,0,                   //3 region_id, no_firms, vacancies 
+		    0,0,0,0,0,0,             //6 employees_skill
+		    0.0,0.0,0.0,0.0,0.0,0.0, //6 average_wage_skill
+		    0.0,0.0,0.0,0.0,0.0,0.0, //6 average_s_skill
+		    0.0,0.0,0.0,0.0,0.0, 	 //5 total_earnings -> average_debt_earnings_ratio
+		    0.0,0.0,0.0,0.0,0.0,0.0, //6 average_debt_equity_ratio -> monthly_planned_output
+		    0.0,0.0,0.0,             //3 gdp, cpi, cpi_last_month 
+		    0,0);                    //2 no_firm_births, no_firm_deaths
+
+	
 	/***** Messages: initialize message boards **********************************/
     rc = MB_Create(&b_firm_send_data, sizeof(m_firm_send_data));
     	    #ifdef ERRCHECK
@@ -246,7 +266,7 @@ void unittest_Eurostat_read_firm_data()
 	Eurostat_read_firm_data();
     
     /***** Variables: Memory post-conditions *****/
-//	CU_ASSERT_DOUBLE_EQUAL(var, result, 1e-3);
+
 	CU_ASSERT_EQUAL(REGION_FIRM_DATA.array[0].no_firms, 2); 
 	CU_ASSERT_EQUAL(REGION_FIRM_DATA.array[1].no_firms, 2);
 	
@@ -269,7 +289,7 @@ void unittest_Eurostat_read_firm_data()
 /*
  * \fn: void unittest_Eurostat_compute_region_firm_data()
  * \brief: Unit test for: Eurostat_compute_region_firm_data.
- * Status: NOT Tested
+ * Status: Tested OK
  */
 void unittest_Eurostat_compute_region_firm_data()
 {	
@@ -321,7 +341,7 @@ void unittest_Eurostat_compute_region_firm_data()
 /*
  * \fn: void unittest_Eurostat_compute_global_firm_data()
  * \brief: Unit test for: Eurostat_compute_global_firm_data.
- * Status: NOT Tested
+ * Status: Tested OK
  */
 void unittest_Eurostat_compute_global_firm_data()
 {	
@@ -355,7 +375,7 @@ void unittest_Eurostat_compute_global_firm_data()
 /*
  * \fn: void unittest_Eurostat_read_household_data()
  * \brief: Unit test for: Eurostat_read_household_data.
- * Status: NOT Tested
+ * Status: Tested OK
  */
 void unittest_Eurostat_read_household_data()
 {
@@ -365,6 +385,23 @@ void unittest_Eurostat_read_household_data()
 	unittest_init_Eurostat_agent();
 	
     /***** Variables: Memory pre-conditions **************************/
+    add_household_data(&REGION_HOUSEHOLD_DATA,
+            1,
+            0,0,0,0,0,0,			 //no_households
+            0,0,0,0,0,0,
+            0,
+            0.0,0.0,0.0,0.0,0.0,0.0,
+            0.0,0.0,0.0,0.0,0.0,0.0,
+            0.0,1.0,1.0,1.0,1.0,1.0);
+
+    add_household_data(&REGION_HOUSEHOLD_DATA,
+            2,
+            0,0,0,0,0,0,			 //no_households
+            0,0,0,0,0,0,
+            0,
+            0.0,0.0,0.0,0.0,0.0,0.0,
+            0.0,0.0,0.0,0.0,0.0,0.0,
+            0.0,1.0,1.0,1.0,1.0,1.0);
 
 	/***** Messages: initialize message boards **********************************/
     rc = MB_Create(&b_household_send_data, sizeof(m_household_send_data));
@@ -394,6 +431,7 @@ void unittest_Eurostat_read_household_data()
     
     add_household_send_data_message(0,2,1,1, 0.0, 0.0);
     add_household_send_data_message(0,2,2,-1, 0.0, 0.0);
+    
     /***** Message: Adding message iterators ***************************************/
 	rc = MB_Iterator_Create(b_household_send_data, &i_household_send_data);
 			
@@ -445,7 +483,7 @@ void unittest_Eurostat_read_household_data()
 /*
  * \fn: void unittest_Eurostat_compute_region_household_data()
  * \brief: Unit test for: Eurostat_compute_region_household_data.
- * Status: NOT Tested
+ * Status: Tested OK
  */
 void unittest_Eurostat_compute_region_household_data()
 {	
@@ -483,7 +521,7 @@ void unittest_Eurostat_compute_region_household_data()
     /***** Variables: Memory post-conditions *****/
 	CU_ASSERT_DOUBLE_EQUAL(REGION_HOUSEHOLD_DATA.array[0].unemployment_rate, 0.0, 1e-3);
 	CU_ASSERT_DOUBLE_EQUAL(REGION_HOUSEHOLD_DATA.array[1].unemployment_rate, 100.0, 1e-3);
-
+	
 	/***** Messages: Message post-conditions *****/
 	
     /************* At end of unit test, free the agent **************/
@@ -495,7 +533,7 @@ void unittest_Eurostat_compute_region_household_data()
 /*
  * \fn: void unittest_Eurostat_compute_global_household_data()
  * \brief: Unit test for: Eurostat_compute_global_household_data.
- * Status: NOT Tested
+ * Status: Tested OK
  */
 void unittest_Eurostat_compute_global_household_data()
 {	
@@ -516,8 +554,8 @@ void unittest_Eurostat_compute_global_household_data()
 	Eurostat_compute_global_household_data();
     
     /***** Variables: Memory post-conditions *****/
-	CU_ASSERT_DOUBLE_EQUAL(UNEMPLOYMENT_RATE, 0.25, 1e-3);
-	CU_ASSERT_DOUBLE_EQUAL(AVERAGE_WAGE, 100, 1e-3);
+	CU_ASSERT_DOUBLE_EQUAL(UNEMPLOYMENT_RATE, 25.0, 1e-3);
+	CU_ASSERT_DOUBLE_EQUAL(AVERAGE_WAGE, 100.0, 1e-3);
 	
     /***** Messages: Message post-conditions *****/
 
@@ -530,7 +568,7 @@ void unittest_Eurostat_compute_global_household_data()
 /*
  * \fn: void unittest_Eurostat_calc_macro_data()
  * \brief: Unit test for: Eurostat_calc_macro_data.
- * Status: NOT Tested
+ * Status: Tested OK
  */
 void unittest_Eurostat_calc_macro_data()
 {
@@ -672,7 +710,7 @@ void unittest_Eurostat_calc_macro_data()
 /*
  * \fn: void unittest_Eurostat_calc_price_index()
  * \brief: Unit test for: Eurostat_calc_price_index.
- * Status: NOT Tested
+ * Status: Tested OK
  */
 void unittest_Eurostat_calc_price_index()
 {
@@ -743,7 +781,7 @@ void unittest_Eurostat_calc_price_index()
 /*
  * \fn: void unittest_Eurostat_calc_firm_population()
  * \brief: Unit test for: Eurostat_calc_firm_population.
- * Status: NOT Tested
+ * Status: Tested OK
  */
 void unittest_Eurostat_calc_firm_population()
 {
@@ -772,7 +810,7 @@ void unittest_Eurostat_calc_firm_population()
 /*
  * \fn: void unittest_Eurostat_calc_firm_survival_rates()
  * \brief: Unit test for: Eurostat_calc_firm_survival_rates.
- * Status: NOT Tested
+ * Status: Tested OK
  */
 void unittest_Eurostat_calc_firm_survival_rates()
 {
@@ -1661,7 +1699,27 @@ void unittest_Eurostat_measure_export()
 	
     /***** Variables: Memory pre-conditions **************************/
 	NO_REGIONS=2;
-    
+	
+	add_firm_data(&REGION_FIRM_DATA,
+		    1,100,0,                   //3 region_id, no_firms, vacancies 
+		    0,0,0,0,0,0,             //6 employees_skill
+		    0.0,0.0,0.0,0.0,0.0,0.0, //6 average_wage_skill
+		    0.0,0.0,0.0,0.0,0.0,0.0, //6 average_s_skill
+		    0.0,0.0,0.0,0.0,0.0, 	 //5 total_earnings -> average_debt_earnings_ratio
+		    0.0,0.0,0.0,0.0,0.0,0.0, //6 average_debt_equity_ratio -> monthly_planned_output
+		    0.0,1.0,0.0,             //3 gdp, cpi, cpi_last_month 
+		    0,0);                    //2 no_firm_births, no_firm_deaths
+
+	add_firm_data(&REGION_FIRM_DATA,
+		    2,200,0,                   //3 region_id, no_firms, vacancies 
+		    0,0,0,0,0,0,             //6 employees_skill
+		    0.0,0.0,0.0,0.0,0.0,0.0, //6 average_wage_skill
+		    0.0,0.0,0.0,0.0,0.0,0.0, //6 average_s_skill
+		    0.0,0.0,0.0,0.0,0.0, 	 //5 total_earnings -> average_debt_earnings_ratio
+		    0.0,0.0,0.0,0.0,0.0,0.0, //6 average_debt_equity_ratio -> monthly_planned_output
+		    0.0,1.0,0.0,             //3 gdp, cpi, cpi_last_month 
+		    0,0);                    //2 no_firm_births, no_firm_deaths
+
 	/***** Messages: initialize message boards **********************************/
     rc = MB_Create(&b_mall_data, sizeof(m_mall_data));
     	    #ifdef ERRCHECK
