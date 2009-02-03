@@ -64,22 +64,25 @@ int Firm_send_info(void)
 
 
 int Firm_receive_stock_info(void)
-{ Stock *stock;
-   double price;
+{  Stock *stock;
    stock =get_stock();
   
    m_infoAssetCH  *current;
-   current=get_first_infoAssetCH_message();
    
+   START_INFOASSETCH_MESSAGE_LOOP
+   /*current=get_first_infoAssetCH_message();
    while(current)
-  {
+  {*/   
+       if(ID==infoAssetCH_message->asset_id) 
+          {  
+             CURRENT_SHARE_PRICE = infoAssetCH_message->price;
+             addPriceStock(stock,CURRENT_SHARE_PRICE);
+             
+          }
+       /*current=get_first_infoAssetCH_message();*/
+   /*}*/
+   FINISH_INFOASSETCH_MESSAGE_LOOP
    
-   if(ID==current->asset_id) 
-       {  price=current->price;
-          addPriceStock(stock,price);
-       }
-    current=get_first_infoAssetCH_message();
-   }
-  return 0;
+   return 0;
 }
 
