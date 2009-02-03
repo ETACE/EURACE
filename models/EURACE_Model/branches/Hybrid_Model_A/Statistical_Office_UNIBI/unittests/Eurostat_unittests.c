@@ -8,6 +8,526 @@
 
 /************ Unit tests ********************************/
 /*
+ * \fn: void unittest_Eurostat_reset_data()
+ * \brief: Unit test for: Eurostat_reset_data.
+ * Status: NOT Tested
+ */
+void unittest_Eurostat_reset_data()
+{	
+	
+    /************* At start of unit test, add one agent **************/
+	unittest_init_Eurostat_agent();
+	
+    /***** Variables: Memory pre-conditions **************************/
+	NO_REGIONS = 2;
+	
+	add_firm_data(&REGION_FIRM_DATA,
+		    1,100,0,                   //3 region_id, no_firms, vacancies 
+		    0,0,0,0,0,0,             //6 employees_skill
+		    0.0,0.0,0.0,0.0,0.0,0.0, //6 average_wage_skill
+		    0.0,0.0,0.0,0.0,0.0,0.0, //6 average_s_skill
+		    0.0,0.0,0.0,0.0,0.0, 	 //5 total_earnings -> average_debt_earnings_ratio
+		    0.0,0.0,0.0,0.0,0.0,0.0, //6 average_debt_equity_ratio -> monthly_planned_output
+		    0.0,0.0,0.0,             //3 gdp, cpi, cpi_last_month 
+		    0,0);                    //2 no_firm_births, no_firm_deaths
+
+	add_firm_data(&REGION_FIRM_DATA,
+		    2,200,0,                   //3 region_id, no_firms, vacancies 
+		    0,0,0,0,0,0,             //6 employees_skill
+		    0.0,0.0,0.0,0.0,0.0,0.0, //6 average_wage_skill
+		    0.0,0.0,0.0,0.0,0.0,0.0, //6 average_s_skill
+		    0.0,0.0,0.0,0.0,0.0, 	 //5 total_earnings -> average_debt_earnings_ratio
+		    0.0,0.0,0.0,0.0,0.0,0.0, //6 average_debt_equity_ratio -> monthly_planned_output
+		    0.0,0.0,0.0,             //3 gdp, cpi, cpi_last_month 
+		    0,0);                    //2 no_firm_births, no_firm_deaths
+
+    add_household_data(&REGION_HOUSEHOLD_DATA,
+            1,
+            10,0,0,0,0,0,			 //no_households
+            0,0,0,0,0,0,
+            0,
+            0.0,0.0,0.0,0.0,0.0,0.0,
+            0.0,0.0,0.0,0.0,0.0,0.0,
+            0.0,1.0,1.0,1.0,1.0,1.0);
+
+    add_household_data(&REGION_HOUSEHOLD_DATA,
+            2,
+            20,0,0,0,0,0,			 //no_households
+            0,0,0,0,0,0,
+            0,
+            0.0,0.0,0.0,0.0,0.0,0.0,
+            0.0,0.0,0.0,0.0,0.0,0.0,
+            0.0,1.0,1.0,1.0,1.0,1.0);
+
+	
+	/***** Messages: initialize message boards **********************************/
+
+	/***** Messages: pre-conditions **********************************/
+    	    
+    /***** Message: Adding message iterators ***************************************/
+   
+    /***** Function evaluation ***************************************/
+	Eurostat_reset_data();
+    
+    /***** Variables: Memory post-conditions *****/
+	CU_ASSERT_EQUAL(REGION_FIRM_DATA.array[0].no_firms, 0);
+	CU_ASSERT_EQUAL(REGION_FIRM_DATA.array[1].no_firms, 0);
+	CU_ASSERT_EQUAL(REGION_HOUSEHOLD_DATA.array[0].no_households, 0);
+	CU_ASSERT_EQUAL(REGION_HOUSEHOLD_DATA.array[1].no_households, 0);	
+	
+    /***** Messages: Message post-conditions *****/
+	
+    /************* At end of unit test, free the agent **************/
+	unittest_free_Eurostat_agent();
+    /************* At end of unit tests, free all Messages **********/
+    free_messages();
+}
+
+/*
+ * \fn: void unittest_Eurostat_compute_mean_price()
+ * \brief: Unit test for: Eurostat_compute_mean_price.
+ * Status: NOT Tested
+ */
+void unittest_Eurostat_compute_mean_price()
+{
+	int rc;
+	
+    /************* At start of unit test, add one agent **************/
+	unittest_init_Eurostat_agent();
+	
+    /***** Variables: Memory pre-conditions **************************/
+
+	/***** Messages: initialize message boards **********************************/
+    rc = MB_Create(&b_firm_send_data, sizeof(m_firm_send_data));
+    	    #ifdef ERRCHECK
+    	    if (rc != MB_SUCCESS)
+    	    {
+    	       fprintf(stderr, "ERROR: Could not create 'firm_send_data' board\n");
+    	       switch(rc) {
+    	           case MB_ERR_INVALID:
+    	               fprintf(stderr, "\t reason: Invalid message size\n");
+    	               break;
+    	           case MB_ERR_MEMALLOC:
+    	               fprintf(stderr, "\t reason: out of memory\n");
+    	               break;
+    	           case MB_ERR_INTERNAL:
+    	               fprintf(stderr, "\t reason: internal error. Recompile libmoard in debug mode for more info \n");
+    	               break;
+    	       }
+    	    }
+    	    #endif
+	
+	/***** Messages: pre-conditions **********************************/
+/*	add_firm_send_data_message(ID, REGION_ID, VACANCIES, NO_EMPLOYEES,
+	NO_EMPLOYEES_SKILL_1, NO_EMPLOYEES_SKILL_2, NO_EMPLOYEES_SKILL_3, NO_EMPLOYEES_SKILL_4,	NO_EMPLOYEES_SKILL_5, 
+	MEAN_WAGE, MEAN_SPECIFIC_SKILLS,
+	AVERAGE_S_SKILL_OF_1, AVERAGE_S_SKILL_OF_2, AVERAGE_S_SKILL_OF_3, AVERAGE_S_SKILL_OF_4, AVERAGE_S_SKILL_OF_5,
+	CUM_REVENUE, CAPITAL_COSTS,	NET_EARNINGS, TOTAL_DEBT, TOTAL_ASSETS, EQUITY,
+	PRICE, PRICE_LAST_MONTH, TOTAL_SUPPLY, CUM_TOTAL_SOLD_QUANTITY, OUTPUT, PLANNED_OUTPUT, AGE);
+*/	
+	//Fixture:
+	//PRICE=1;
+	//TOTAL_SUPPLY=10;
+
+	add_firm_send_data_message(0,0,0,0, 0,0,0,0,0, 0,0, 0,0,0,0,0, 0,0,0,0,0,0, 1.0,0,10.0,0,0,0,0);
+	add_firm_send_data_message(0,0,0,0, 0,0,0,0,0, 0,0, 0,0,0,0,0, 0,0,0,0,0,0, 2.0,0,10.0,0,0,0,0);
+	
+    /***** Message: Adding message iterators ***************************************/
+	rc = MB_Iterator_Create(b_firm_send_data, &i_firm_send_data);
+			
+	if (rc != MB_SUCCESS)
+			{
+			   fprintf(stderr, "ERROR: Could not create Iterator for 'firm_send_data'\n");
+			   switch(rc) {
+			       case MB_ERR_INVALID:
+			           fprintf(stderr, "\t reason: 'firm_send_data' board is invalid\n");
+			           break;
+			       case MB_ERR_LOCKED:
+		               fprintf(stderr, "\t reason: 'firm_send_data' board is locked\n");
+		               break;
+		           case MB_ERR_MEMALLOC:
+		               fprintf(stderr, "\t reason: out of memory\n");
+		               break;
+		           case MB_ERR_INTERNAL:
+		               fprintf(stderr, "\t reason: internal error. Recompile libmoard in debug mode for more info \n");
+		               break;
+			   }
+			}
+	    	    
+    /***** Function evaluation ***************************************/
+	Eurostat_compute_mean_price();
+    
+    /***** Variables: Memory post-conditions *****/
+	CU_ASSERT_DOUBLE_EQUAL(PRICE_INDEX, 1.5, 1e-3);
+
+    /***** Messages: Message post-conditions *****/
+	
+    /************* At end of unit test, free the agent **************/
+	unittest_free_Eurostat_agent();
+    /************* At end of unit tests, free all Messages **********/
+    free_messages();
+}
+
+/*
+ * \fn: void unittest_Eurostat_read_firm_data()
+ * \brief: Unit test for: Eurostat_read_firm_data.
+ * Status: NOT Tested
+ */
+void unittest_Eurostat_read_firm_data()
+{
+	int rc;
+	
+    /************* At start of unit test, add one agent **************/
+	unittest_init_Eurostat_agent();
+	
+    /***** Variables: Memory pre-conditions **************************/
+
+	/***** Messages: initialize message boards **********************************/
+    rc = MB_Create(&b_firm_send_data, sizeof(m_firm_send_data));
+    	    #ifdef ERRCHECK
+    	    if (rc != MB_SUCCESS)
+    	    {
+    	       fprintf(stderr, "ERROR: Could not create 'firm_send_data' board\n");
+    	       switch(rc) {
+    	           case MB_ERR_INVALID:
+    	               fprintf(stderr, "\t reason: Invalid message size\n");
+    	               break;
+    	           case MB_ERR_MEMALLOC:
+    	               fprintf(stderr, "\t reason: out of memory\n");
+    	               break;
+    	           case MB_ERR_INTERNAL:
+    	               fprintf(stderr, "\t reason: internal error. Recompile libmoard in debug mode for more info \n");
+    	               break;
+    	       }
+    	    }
+    	    #endif
+	
+	/***** Messages: pre-conditions **********************************/
+/*	add_firm_send_data_message(ID, REGION_ID, VACANCIES, NO_EMPLOYEES,
+	NO_EMPLOYEES_SKILL_1, NO_EMPLOYEES_SKILL_2, NO_EMPLOYEES_SKILL_3, NO_EMPLOYEES_SKILL_4,	NO_EMPLOYEES_SKILL_5, 
+	MEAN_WAGE, MEAN_SPECIFIC_SKILLS,
+	AVERAGE_S_SKILL_OF_1, AVERAGE_S_SKILL_OF_2, AVERAGE_S_SKILL_OF_3, AVERAGE_S_SKILL_OF_4, AVERAGE_S_SKILL_OF_5,
+	CUM_REVENUE, CAPITAL_COSTS,	NET_EARNINGS, TOTAL_DEBT, TOTAL_ASSETS, EQUITY,
+	PRICE, PRICE_LAST_MONTH, TOTAL_SUPPLY, CUM_TOTAL_SOLD_QUANTITY, OUTPUT, PLANNED_OUTPUT, AGE);
+*/	
+	//Fixture:
+	//PRICE=1;
+	//TOTAL_SUPPLY=10;
+
+	add_firm_send_data_message(1,1,100,50, 10,10,10,10,10, 0,0, 0,0,0,0,0, 0,0,0,0,0,0, 1.0,0,10.0,0,0,0,0);
+	add_firm_send_data_message(2,1,100,100, 20,20,20,20,20, 0,0, 0,0,0,0,0, 0,0,0,0,0,0, 2.0,0,10.0,0,0,0,0);
+    	    
+	add_firm_send_data_message(3,2,300,150, 30,30,30,30,30, 0,0, 0,0,0,0,0, 0,0,0,0,0,0, 1.0,0,10.0,0,0,0,0);
+	add_firm_send_data_message(4,2,300,200, 40,40,40,40,40, 0,0, 0,0,0,0,0, 0,0,0,0,0,0, 2.0,0,10.0,0,0,0,0);
+
+	/***** Message: Adding message iterators ***************************************/
+	rc = MB_Iterator_Create(b_firm_send_data, &i_firm_send_data);
+			
+	if (rc != MB_SUCCESS)
+			{
+			   fprintf(stderr, "ERROR: Could not create Iterator for 'firm_send_data'\n");
+			   switch(rc) {
+			       case MB_ERR_INVALID:
+			           fprintf(stderr, "\t reason: 'firm_send_data' board is invalid\n");
+			           break;
+			       case MB_ERR_LOCKED:
+		               fprintf(stderr, "\t reason: 'firm_send_data' board is locked\n");
+		               break;
+		           case MB_ERR_MEMALLOC:
+		               fprintf(stderr, "\t reason: out of memory\n");
+		               break;
+		           case MB_ERR_INTERNAL:
+		               fprintf(stderr, "\t reason: internal error. Recompile libmoard in debug mode for more info \n");
+		               break;
+			   }
+			}
+	    	        
+    /***** Function evaluation ***************************************/
+	Eurostat_read_firm_data();
+    
+    /***** Variables: Memory post-conditions *****/
+//	CU_ASSERT_DOUBLE_EQUAL(var, result, 1e-3);
+	CU_ASSERT_EQUAL(REGION_FIRM_DATA.array[0].no_firms, 2); 
+	CU_ASSERT_EQUAL(REGION_FIRM_DATA.array[1].no_firms, 2);
+	
+	CU_ASSERT_EQUAL(REGION_FIRM_DATA.array[0].vacancies, 200);
+	CU_ASSERT_EQUAL(REGION_FIRM_DATA.array[1].vacancies, 600);
+	CU_ASSERT_EQUAL(NO_VACANCIES, 800);
+	
+	CU_ASSERT_EQUAL(REGION_FIRM_DATA.array[0].employees, 150);
+	CU_ASSERT_EQUAL(REGION_FIRM_DATA.array[1].employees, 350);
+	CU_ASSERT_EQUAL(NO_EMPLOYEES, 500);
+	
+    /***** Messages: Message post-conditions *****/
+
+	/************* At end of unit test, free the agent **************/
+	unittest_free_Eurostat_agent();
+    /************* At end of unit tests, free all Messages **********/
+    free_messages();
+}
+
+/*
+ * \fn: void unittest_Eurostat_compute_region_firm_data()
+ * \brief: Unit test for: Eurostat_compute_region_firm_data.
+ * Status: NOT Tested
+ */
+void unittest_Eurostat_compute_region_firm_data()
+{	
+    /************* At start of unit test, add one agent **************/
+	unittest_init_Eurostat_agent();
+	
+    /***** Variables: Memory pre-conditions **************************/
+	add_firm_data(&REGION_FIRM_DATA,
+		    1,100,0,                   //3 region_id, no_firms, vacancies 
+		    10,0,0,0,0,0,             //6 employees, employees_skill_1 5
+		    100.0,0.0,0.0,0.0,0.0,0.0, //6 average_wage, average_wage_skill_1 5
+		    0.0,0.0,0.0,0.0,0.0,0.0, //6 average_s_skill
+		    0.0,0.0,0.0,0.0,0.0, 	 //5 total_earnings -> average_debt_earnings_ratio
+		    0.0,0.0,0.0,0.0,0.0,0.0, //6 average_debt_equity_ratio -> monthly_planned_output
+		    0.0,0.0,0.0,             //3 gdp, cpi, cpi_last_month 
+		    0,0);                    //2 no_firm_births, no_firm_deaths
+
+	add_firm_data(&REGION_FIRM_DATA,
+		    2,200,0,                   //3 region_id, no_firms, vacancies 
+		    20,0,0,0,0,0,             //6 employees, employees_skill_1 5
+		    200.0,0.0,0.0,0.0,0.0,0.0, //6 average_wage, average_wage_skill_1 5
+		    0.0,0.0,0.0,0.0,0.0,0.0, //6 average_s_skill
+		    0.0,0.0,0.0,0.0,0.0, 	 //5 total_earnings -> average_debt_earnings_ratio
+		    0.0,0.0,0.0,0.0,0.0,0.0, //6 average_debt_equity_ratio -> monthly_planned_output
+		    0.0,0.0,0.0,             //3 gdp, cpi, cpi_last_month 
+		    0,0);                    //2 no_firm_births, no_firm_deaths
+
+	/***** Messages: initialize message boards **********************************/
+
+	/***** Messages: pre-conditions **********************************/
+    	    
+    /***** Message: Adding message iterators ***************************************/
+  
+    /***** Function evaluation ***************************************/
+	Eurostat_compute_region_firm_data();
+    
+    /***** Variables: Memory post-conditions *****/
+	CU_ASSERT_DOUBLE_EQUAL(REGION_FIRM_DATA.array[0].average_wage, 10.0, 1e-3);
+	CU_ASSERT_DOUBLE_EQUAL(REGION_FIRM_DATA.array[1].average_wage, 10.0, 1e-3);
+	
+    /***** Messages: Message post-conditions *****/
+	
+    /************* At end of unit test, free the agent **************/
+	unittest_free_Eurostat_agent();
+    /************* At end of unit tests, free all Messages **********/
+    free_messages();
+}
+
+/*
+ * \fn: void unittest_Eurostat_compute_global_firm_data()
+ * \brief: Unit test for: Eurostat_compute_global_firm_data.
+ * Status: NOT Tested
+ */
+void unittest_Eurostat_compute_global_firm_data()
+{	
+    /************* At start of unit test, add one agent **************/
+	unittest_init_Eurostat_agent();
+	
+    /***** Variables: Memory pre-conditions **************************/
+	FIRM_AVERAGE_WAGE = 100.0;
+	NO_EMPLOYEES = 10;
+	
+	/***** Messages: initialize message boards **********************************/
+
+	/***** Messages: pre-conditions **********************************/
+    	    
+    /***** Message: Adding message iterators ***************************************/
+ 	    
+    /***** Function evaluation ***************************************/
+	Eurostat_compute_global_firm_data();
+    
+    /***** Variables: Memory post-conditions *****/
+	CU_ASSERT_DOUBLE_EQUAL(FIRM_AVERAGE_WAGE, 10.0, 1e-3);
+
+    /***** Messages: Message post-conditions *****/
+	
+    /************* At end of unit test, free the agent **************/
+	unittest_free_Eurostat_agent();
+    /************* At end of unit tests, free all Messages **********/
+    free_messages();
+}
+
+/*
+ * \fn: void unittest_Eurostat_read_household_data()
+ * \brief: Unit test for: Eurostat_read_household_data.
+ * Status: NOT Tested
+ */
+void unittest_Eurostat_read_household_data()
+{
+	int rc;
+	
+    /************* At start of unit test, add one agent **************/
+	unittest_init_Eurostat_agent();
+	
+    /***** Variables: Memory pre-conditions **************************/
+
+	/***** Messages: initialize message boards **********************************/
+    rc = MB_Create(&b_household_send_data, sizeof(m_household_send_data));
+    	    #ifdef ERRCHECK
+    	    if (rc != MB_SUCCESS)
+    	    {
+    	       fprintf(stderr, "ERROR: Could not create 'household_send_data' board\n");
+    	       switch(rc) {
+    	           case MB_ERR_INVALID:
+    	               fprintf(stderr, "\t reason: Invalid message size\n");
+    	               break;
+    	           case MB_ERR_MEMALLOC:
+    	               fprintf(stderr, "\t reason: out of memory\n");
+    	               break;
+    	           case MB_ERR_INTERNAL:
+    	               fprintf(stderr, "\t reason: internal error. Recompile libmoard in debug mode for more info \n");
+    	               break;
+    	       }
+    	    }
+    	    #endif
+	
+	/***** Messages: pre-conditions **********************************/
+    
+    //add_household_send_data_message(int household_id, int region_id, int general_skill, int employment_status, double wage, double specific_skill)	    
+    add_household_send_data_message(0,1,1,1, 0.0, 0.0);
+    add_household_send_data_message(0,1,2,-1, 0.0, 0.0);
+    
+    add_household_send_data_message(0,2,1,1, 0.0, 0.0);
+    add_household_send_data_message(0,2,2,-1, 0.0, 0.0);
+    /***** Message: Adding message iterators ***************************************/
+	rc = MB_Iterator_Create(b_household_send_data, &i_household_send_data);
+			
+	if (rc != MB_SUCCESS)
+			{
+			   fprintf(stderr, "ERROR: Could not create Iterator for 'household_send_data'\n");
+			   switch(rc) {
+			       case MB_ERR_INVALID:
+			           fprintf(stderr, "\t reason: 'household_send_data' board is invalid\n");
+			           break;
+			       case MB_ERR_LOCKED:
+		               fprintf(stderr, "\t reason: 'household_send_data' board is locked\n");
+		               break;
+		           case MB_ERR_MEMALLOC:
+		               fprintf(stderr, "\t reason: out of memory\n");
+		               break;
+		           case MB_ERR_INTERNAL:
+		               fprintf(stderr, "\t reason: internal error. Recompile libmoard in debug mode for more info \n");
+		               break;
+			   }
+			}
+	    	    
+    /***** Function evaluation ***************************************/
+	Eurostat_read_household_data();
+    
+    /***** Variables: Memory post-conditions *****/
+	CU_ASSERT_EQUAL(NUM_HOUSEHOLDS, 4);
+	CU_ASSERT_EQUAL(REGION_HOUSEHOLD_DATA.array[0].no_households, 2);
+	CU_ASSERT_EQUAL(REGION_HOUSEHOLD_DATA.array[1].no_households, 2);
+	
+	CU_ASSERT_EQUAL(UNEMPLOYED, 2);
+	CU_ASSERT_EQUAL(REGION_HOUSEHOLD_DATA.array[0].unemployed, 1);
+	CU_ASSERT_EQUAL(REGION_HOUSEHOLD_DATA.array[1].unemployed, 1);
+	
+	CU_ASSERT_EQUAL(REGION_HOUSEHOLD_DATA.array[0].no_households_skill_1, 1);
+	CU_ASSERT_EQUAL(REGION_HOUSEHOLD_DATA.array[1].no_households_skill_1, 1);
+	
+	CU_ASSERT_EQUAL(REGION_HOUSEHOLD_DATA.array[0].no_households_skill_2, 1);
+	CU_ASSERT_EQUAL(REGION_HOUSEHOLD_DATA.array[1].no_households_skill_2, 1);
+
+	/***** Messages: Message post-conditions *****/
+	
+    /************* At end of unit test, free the agent **************/
+	unittest_free_Eurostat_agent();
+    /************* At end of unit tests, free all Messages **********/
+    free_messages();
+}
+
+/*
+ * \fn: void unittest_Eurostat_compute_region_household_data()
+ * \brief: Unit test for: Eurostat_compute_region_household_data.
+ * Status: NOT Tested
+ */
+void unittest_Eurostat_compute_region_household_data()
+{	
+    /************* At start of unit test, add one agent **************/
+	unittest_init_Eurostat_agent();
+	
+    /***** Variables: Memory pre-conditions **************************/
+    add_household_data(&REGION_HOUSEHOLD_DATA,
+            1,						 //region_id
+            10,0,0,0,0,0,			 //no_households, no_households_skill_1 5
+            10,0,0,0,0,0,			 //employed, employed_skill_1 5
+            0,						 //unemployed
+            0.0,0.0,0.0,0.0,0.0,0.0,
+            0.0,0.0,0.0,0.0,0.0,0.0,
+            0.0,1.0,1.0,1.0,1.0,1.0);
+
+    add_household_data(&REGION_HOUSEHOLD_DATA,
+            2,
+            20,0,0,0,0,0,			 //no_households
+            0,0,0,0,0,0,			 //employed, employed_skill_1 5
+            20,						 //unemployed
+            0.0,0.0,0.0,0.0,0.0,0.0,
+            0.0,0.0,0.0,0.0,0.0,0.0,
+            0.0,1.0,1.0,1.0,1.0,1.0);
+
+	/***** Messages: initialize message boards **********************************/
+	
+	/***** Messages: pre-conditions **********************************/
+    	    
+    /***** Message: Adding message iterators ***************************************/
+    	    
+    /***** Function evaluation ***************************************/
+	Eurostat_compute_region_household_data();
+    
+    /***** Variables: Memory post-conditions *****/
+	CU_ASSERT_DOUBLE_EQUAL(REGION_HOUSEHOLD_DATA.array[0].unemployment_rate, 0.0, 1e-3);
+	CU_ASSERT_DOUBLE_EQUAL(REGION_HOUSEHOLD_DATA.array[1].unemployment_rate, 100.0, 1e-3);
+
+	/***** Messages: Message post-conditions *****/
+	
+    /************* At end of unit test, free the agent **************/
+	unittest_free_Eurostat_agent();
+    /************* At end of unit tests, free all Messages **********/
+    free_messages();
+}
+
+/*
+ * \fn: void unittest_Eurostat_compute_global_household_data()
+ * \brief: Unit test for: Eurostat_compute_global_household_data.
+ * Status: NOT Tested
+ */
+void unittest_Eurostat_compute_global_household_data()
+{	
+    /************* At start of unit test, add one agent **************/
+	unittest_init_Eurostat_agent();
+	
+    /***** Variables: Memory pre-conditions **************************/
+	EMPLOYED = 75;
+	NUM_HOUSEHOLDS = 100;
+	AVERAGE_WAGE = 7500.0;
+	/***** Messages: initialize message boards **********************************/
+	
+	/***** Messages: pre-conditions **********************************/
+    	    
+    /***** Message: Adding message iterators ***************************************/
+    	    
+    /***** Function evaluation ***************************************/
+	Eurostat_compute_global_household_data();
+    
+    /***** Variables: Memory post-conditions *****/
+	CU_ASSERT_DOUBLE_EQUAL(UNEMPLOYMENT_RATE, 0.25, 1e-3);
+	CU_ASSERT_DOUBLE_EQUAL(AVERAGE_WAGE, 100, 1e-3);
+	
+    /***** Messages: Message post-conditions *****/
+
+	/************* At end of unit test, free the agent **************/
+	unittest_free_Eurostat_agent();
+    /************* At end of unit tests, free all Messages **********/
+    free_messages();
+}
+
+/*
  * \fn: void unittest_Eurostat_calc_macro_data()
  * \brief: Unit test for: Eurostat_calc_macro_data.
  * Status: NOT Tested
