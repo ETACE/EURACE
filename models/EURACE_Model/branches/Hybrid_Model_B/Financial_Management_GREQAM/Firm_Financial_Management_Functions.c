@@ -260,7 +260,6 @@ int Firm_compute_total_liquidity_needs()
             + FINANCIAL_LIQUIDITY_NEEDS + TOTAL_DIVIDEND_PAYMENT;
     
     printf("TOTAL_FINANCIAL_NEEDS: %f\n\t", TOTAL_FINANCIAL_NEEDS);
-    getchar();
     
     //step 12D:
     //Check if external financing is needed
@@ -279,6 +278,7 @@ int Firm_compute_total_liquidity_needs()
         EXTERNAL_FINANCIAL_NEEDS = TOTAL_FINANCIAL_NEEDS - PAYMENT_ACCOUNT;
     }
     printf("EXTERNAL_FINANCIAL_NEEDS: %f\n\t", EXTERNAL_FINANCIAL_NEEDS);
+    getchar();
         
     return 0;
 }
@@ -683,7 +683,7 @@ int Firm_compute_and_send_stock_orders()
 	//Firm tries to sell stock_units shares:
 	//add_order_message(trader_id, asset_id, limit_price, quantity)
 	add_order_message(ID, ID, limit_price, quantity);
-    printf("quantity: %f\n\t", quantity);
+    printf("quantity: %d\n\t", quantity);
     getchar();
     
 	return 0;

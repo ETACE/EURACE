@@ -168,8 +168,8 @@ int Household_update_its_portfolio()
   {  //printf("numero di execuzione =%d\n",info->asset_id);
      if(info->trader_id==issuer) 
       { i++;
-        printf("info->quantity: %f\n\t", info->quantity);
-        printf("info->asset_id: %f\n\t", info->asset_id);
+        printf("info->quantity: %d\n\t", info->quantity);
+        printf("info->asset_id: %d\n\t", info->asset_id);
         printf("info->price: %f\n\t", info->price);
        
          //printf("numero di execuzione =%d\n",info->asset_id);
