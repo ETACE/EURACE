@@ -66,8 +66,6 @@ void computeUtilities(Belief_array *beliefs, double_array *assetUtilities)
      belief=&(beliefs->array[i]);
 
      utility=belief->utility;
-    // printf("%d\n",utility);
-    // utility= next(rnd);//da rimuovere
      add_double(assetUtilities,utility);//da rivedere questo algoritmo
      }
 }
@@ -230,7 +228,7 @@ void generatePendingOrders(Asset_array *assetsowned,Order_array *pending, Belief
   Belief *belief;
 
   double_array *weights;
-  resource=wealth(*payment_account-CONSUMPTION_BUDGET,assetsowned);
+  resource=wealth(*payment_account - get_consumption_budget(),assetsowned);
   set_wealth(resource);
   size=beliefs->size;
   reset_Order_array(pending);
@@ -330,6 +328,5 @@ int Household_receive_info_interest_from_bank() {
        if(accountInterest_message->bank_id == get_bank_id())
           set_risk_free_rate(accountInterest_message->interest);
     FINISH_ACCOUNTINTEREST_MESSAGE_LOOP
-    printf("\n\n** RISK FREE RATE: %f ***\n\n", get_risk_free_rate());
     return 0;
 }

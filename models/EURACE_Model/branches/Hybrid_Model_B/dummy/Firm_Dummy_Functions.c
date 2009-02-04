@@ -4,6 +4,9 @@
 
 int Firm_planned_production_costs_dummy() {
 	
+	printf("\n  ***  FIRM PLANNED PRODUCTION COSTS DUMMY ***\n  - last_day_of_month_to_act: %d  -\n\n", get_last_day_of_month_to_act());
+	getchar();
+	
 	PLANNED_PRODUCTION_COSTS = 100.0;
 	
 	CUM_REVENUE = 0.0;
