@@ -9,7 +9,6 @@ int Household_send_orders()
 {   Order_array *orders;
     Order *ord;
     int i;
-    double bankrate;
     Order_array *pending;
     Asset_array *assetsowned;
     Belief_array *beliefs;
@@ -17,14 +16,13 @@ int Household_send_orders()
     double_array *assetUtilities;
 
       
-    bankrate=0.01;
     assetsowned=get_assetsowned();
     pending=get_pendingOrders();
     assetWeights=get_assetWeights();
     assetUtilities=get_assetUtilities();
     beliefs=get_beliefs();
     computeUtilities(beliefs,assetUtilities);
-    assetUtilitiesToWeights(assetWeights,assetUtilities,bankrate);
+    assetUtilitiesToWeights(assetWeights,assetUtilities,get_risk_free_rate());
     generatePendingOrders(assetsowned,pending,beliefs,&PAYMENT_ACCOUNT);
     
     orders=get_pendingOrders();
@@ -254,10 +252,9 @@ void generatePendingOrders(Asset_array *assetsowned,Order_array *pending, Belief
     if((ord->quantity!=0)&&(ord->price>0)) addOrder(pending,ord);
     
   }
-   
-   
-//}
 }
+
+
 int Household_stock_beliefs_formation()
 { 
   Stock *stock;
@@ -328,4 +325,10 @@ int Household_does_not_trading()
  }
                       
 //int Household_receive_info_asset_from_firm(){return 0;}
-int Household_receive_info_interest_from_bank(){return 0;}
+int Household_receive_info_interest_from_bank() {
+    START_ACCOUNTINTEREST_MESSAGE_LOOP
+       if(accountInterest_message->bank_id == get_bank_id())
+          set_risk_free_rate(accountInterest_message->interest);
+    FINISH_ACCOUNTINTEREST_MESSAGE_LOOP
+    return 0;
+}
