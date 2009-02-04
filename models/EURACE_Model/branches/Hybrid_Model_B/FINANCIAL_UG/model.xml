@@ -284,6 +284,11 @@
    <memory>
     <variable>
      <type>double</type>
+     <name>risk_free_rate</name>
+     <description>Remuneration rate sent by Bank</description>
+    </variable>
+    <variable>
+     <type>double</type>
      <name>wealth</name>
      <description></description>
     </variable>
