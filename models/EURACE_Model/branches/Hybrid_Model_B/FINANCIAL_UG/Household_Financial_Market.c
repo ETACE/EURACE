@@ -230,7 +230,7 @@ Order *computeLimitOrder( Asset *anAsset, double weight, double resource,Belief 
 //printf("last price=%f\n",lastprice);
 //printf("limitprice=%f\n",limitPrice);
       deltaquantity=(int)(weight*resource/(limitPrice))-quantity;
-      printf("\deltaquantity: %d", deltaquantity);
+      printf("\tdeltaquantity: %d", deltaquantity);
       //printf("quantity=%d\n",deltaquantity);
       //if(deltaquantity<0) deltaquantity=deltaquantity*1.1;
       //else deltaquantity=deltaquantity*0.9;  
@@ -253,7 +253,7 @@ void generatePendingOrders(Asset_array *assetsowned,Order_array *pending, Belief
   size=beliefs->size;
   reset_Order_array(pending);
   weights=get_assetWeights();
-  //printf("size=%d\n",size);
+  printf("\nsize=%d\n",size);
   printf("\n** generatePendingOrders **\n\tHousehold id: %d", get_id());
   for(i=0;i<size;i++)
   { 
