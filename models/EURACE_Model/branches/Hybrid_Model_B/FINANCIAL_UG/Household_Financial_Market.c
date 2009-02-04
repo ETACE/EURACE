@@ -33,7 +33,7 @@ int Household_send_orders()
      //printf("price=%f\n",ord->price);
      add_order_message(ord->issuer,ord->assetId, ord->price, ord->quantity);
     }
-     return 0;
+    return 0;
 
 }
 
@@ -219,13 +219,19 @@ Order *computeLimitOrder( Asset *anAsset, double weight, double resource,Belief 
       lastprice=belief->last_price;
       anAsset->lastPrice=belief->last_price;
       aux=expectedPriceReturns(belief)/NRDAYSINYEAR;
+      
+      printf("\nasset id: %d\tAUX: %f", assetId, aux);
+      
      // printf("aux========%f\n",aux);
-      limitPrice=lastprice*(1+aux); 
+      limitPrice=lastprice*(1+aux);
+      printf("\tlastprice: %f", lastprice);
+      printf("\tlimitPrice: %f", limitPrice);
 //printf("expeceted=%f\n",aux);
 //printf("last price=%f\n",lastprice);
 //printf("limitprice=%f\n",limitPrice);
       deltaquantity=(int)(weight*resource/(limitPrice))-quantity;
-//printf("quantity=%d\n",deltaquantity);
+      printf("\deltaquantity: %d", deltaquantity);
+      //printf("quantity=%d\n",deltaquantity);
       //if(deltaquantity<0) deltaquantity=deltaquantity*1.1;
       //else deltaquantity=deltaquantity*0.9;  
       setOrder(order,limitPrice,deltaquantity,assetId,trader_id);
@@ -248,6 +254,7 @@ void generatePendingOrders(Asset_array *assetsowned,Order_array *pending, Belief
   reset_Order_array(pending);
   weights=get_assetWeights();
   //printf("size=%d\n",size);
+  printf("\n** generatePendingOrders **\n\tHousehold id: %d", get_id());
   for(i=0;i<size;i++)
   { 
     belief=&(beliefs->array[i]);
@@ -264,6 +271,7 @@ void generatePendingOrders(Asset_array *assetsowned,Order_array *pending, Belief
     if((ord->quantity!=0)&&(ord->price>0)) addOrder(pending,ord);
     
   }
+  getchar();
 }
 
 
