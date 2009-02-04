@@ -266,6 +266,8 @@ int Firm_compute_total_liquidity_needs()
     //Check if external financing is needed
 
     //CASE 1: No external financing needed
+    printf("PAYMENT_ACCOUNT: %f\n\t", PAYMENT_ACCOUNT);
+    
     if (PAYMENT_ACCOUNT >= TOTAL_FINANCIAL_NEEDS)
     {
         //printf("Firm_financial_needs, External financing: case 1.");
@@ -276,7 +278,8 @@ int Firm_compute_total_liquidity_needs()
         //external financing needed
         EXTERNAL_FINANCIAL_NEEDS = TOTAL_FINANCIAL_NEEDS - PAYMENT_ACCOUNT;
     }
-
+    printf("EXTERNAL_FINANCIAL_NEEDS: %f\n\t", EXTERNAL_FINANCIAL_NEEDS);
+        
     return 0;
 }
 
