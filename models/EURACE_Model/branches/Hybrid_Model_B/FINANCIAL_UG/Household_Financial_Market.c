@@ -146,7 +146,11 @@ int  Household_select_strategy()
 
    
 int Household_update_its_portfolio()
-{ int i,issuer;
+{ 
+  printf("\n ** Household_update_its_portfolio **\n\t");
+  printf("PAYMENT_ACCOUNT (before trading): %f\n\t", get_payment_account());
+       
+  int i,issuer;
   Asset_array *assets;
   Order_array *pendingOrders;
   m_order_status *info;
@@ -164,13 +168,23 @@ int Household_update_its_portfolio()
   {  //printf("numero di execuzione =%d\n",info->asset_id);
      if(info->trader_id==issuer) 
       { i++;
+        printf("info->quantity: %f\n\t", info->quantity);
+        printf("info->asset_id: %f\n\t", info->asset_id);
+        printf("info->price: %f\n\t", info->price);
+       
          //printf("numero di execuzione =%d\n",info->asset_id);
        setOrder(currentOrder,info->price,info->quantity,info->asset_id,info->trader_id);
-       if(sizeCOrder(pendingOrders)>0)executeOrder(&PAYMENT_ACCOUNT,currentOrder,assets,pendingOrders); 
+       if(sizeCOrder(pendingOrders)>0)
+          executeOrder(&PAYMENT_ACCOUNT,currentOrder,assets,pendingOrders);
+       
+       printf("PAYMENT_ACCOUNT (after trading of asset %d): %f\n\t", info->asset_id, get_payment_account());
+        
        }
 
      info=get_next_order_status_message(info);   
   }
+  
+  getchar();
  // if(i==2) printf("numero di execuzione =%d\n",i);
   return 0;
 }
