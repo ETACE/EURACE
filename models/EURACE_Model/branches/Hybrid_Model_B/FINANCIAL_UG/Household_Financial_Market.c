@@ -147,7 +147,7 @@ int  Household_select_strategy()
    
 int Household_update_its_portfolio()
 { 
-  printf("\n ** Household_update_its_portfolio **\n\t");
+  printf("\n ** Household_update_its_portfolio **\n\tID: %d\n\t", get_id());
   printf("PAYMENT_ACCOUNT (before trading): %f\n\t", get_payment_account());
        
   int i,issuer;
@@ -177,7 +177,7 @@ int Household_update_its_portfolio()
        if(sizeCOrder(pendingOrders)>0)
           executeOrder(&PAYMENT_ACCOUNT,currentOrder,assets,pendingOrders);
        
-       printf("PAYMENT_ACCOUNT (after trading of asset %d): %f\n\t", info->asset_id, get_payment_account());
+       printf("\n\tPAYMENT_ACCOUNT (after trading of asset %d): %f\n\t", info->asset_id, get_payment_account());
         
        }
 
