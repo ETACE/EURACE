@@ -145,7 +145,6 @@ void assetUtilitiesToWeights(double_array *assetWeights,double_array *assetUtili
 int  Household_select_strategy()
   { 
     set_strategy(next()<trading_activity);
-    printf("\n*** Fa trading? (0 = NO, 1 = SI)   %d   ***\n",STRATEGY);
     return 0;
   }
 
