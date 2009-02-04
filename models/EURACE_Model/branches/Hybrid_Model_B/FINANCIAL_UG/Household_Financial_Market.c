@@ -330,5 +330,6 @@ int Household_receive_info_interest_from_bank() {
        if(accountInterest_message->bank_id == get_bank_id())
           set_risk_free_rate(accountInterest_message->interest);
     FINISH_ACCOUNTINTEREST_MESSAGE_LOOP
+    printf("\n\n** RISK FREE RATE: %f ***\n\n", get_risk_free_rate());
     return 0;
 }
