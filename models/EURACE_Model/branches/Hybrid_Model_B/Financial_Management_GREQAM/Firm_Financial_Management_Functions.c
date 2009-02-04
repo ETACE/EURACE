@@ -675,11 +675,17 @@ int Firm_compute_and_send_stock_orders()
 
 	double limit_price=CURRENT_SHARE_PRICE*0.99;
 	int quantity = -1*(1+EXTERNAL_FINANCIAL_NEEDS/limit_price);
-
+    
+    printf("** Firm_compute_and_send_stock_orders **\n\t");
+    printf("CURRENT_SHARE_PRICE: %f\n\t", CURRENT_SHARE_PRICE);
+    printf("EXTERNAL_FINANCIAL_NEEDS: %f\n\t", EXTERNAL_FINANCIAL_NEEDS);
+    
 	//Firm tries to sell stock_units shares:
 	//add_order_message(trader_id, asset_id, limit_price, quantity)
 	add_order_message(ID, ID, limit_price, quantity);
-
+    printf("quantity: %f\n\t", quantity);
+    getchar();
+    
 	return 0;
 }
 
@@ -690,9 +696,13 @@ int Firm_compute_and_send_stock_orders()
 int Firm_read_stock_transactions()
 {
 	double finances;
-
+ 
+    printf("** Firm_read_stock_transactions **\n\t");
+    
 	//Before updating the share count
 	PREVIOUS_SHARES_OUTSTANDING = CURRENT_SHARES_OUTSTANDING;
+	
+	printf("PREVIOUS_SHARES_OUTSTANDING: %f\n\t",PREVIOUS_SHARES_OUTSTANDING);
 	
 	START_ORDER_STATUS_MESSAGE_LOOP
 	if (ID == order_status_message->trader_id)
@@ -702,7 +712,10 @@ int Firm_read_stock_transactions()
 				* order_status_message->quantity;
 	
 		CURRENT_SHARES_OUTSTANDING += (-1)*order_status_message->quantity;
-		
+	
+    	printf("CURRENT_SHARES_OUTSTANDING: %f\n\t",CURRENT_SHARES_OUTSTANDING);
+	    printf("finances: %f\n\t",finances);
+	
 		//Increase payment account with the finances obtained
 		PAYMENT_ACCOUNT += finances;
 	
@@ -710,6 +723,11 @@ int Firm_read_stock_transactions()
 		EXTERNAL_FINANCIAL_NEEDS -= finances;
 	}
 	FINISH_ORDER_STATUS_MESSAGE_LOOP
-
+    
+    printf("PAYMENT_ACCOUNT: %f\n\t",PAYMENT_ACCOUNT);
+	printf("EXTERNAL_FINANCIAL_NEEDS: %f\n\t",EXTERNAL_FINANCIAL_NEEDS);
+	getchar();
+	
+    
 	return 0;
 }

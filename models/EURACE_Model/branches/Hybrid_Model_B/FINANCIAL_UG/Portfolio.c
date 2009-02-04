@@ -16,7 +16,8 @@ int i;
 
 
  void executeOrder(double *payment_account,Order *anOrder,Asset_array *assets,Order_array *pending)
- {     double cash;
+ {     
+       double cash;
        int assetId;
        int quantity;
        int size;
@@ -27,10 +28,13 @@ int i;
        assetId=anOrder->assetId;
        cash=(anOrder->price)*(anOrder->quantity);
        *payment_account=*payment_account-cash;
+       
        size=sizeCAsset(assets);
        index=findCAsset(assets,assetId);
        currentAsset=elementAtCAsset(assets,index);
+       printf(" current asset: %d\n\t quantity (pre-execution): %d", currentAsset->id, currentAsset->quantity);
        currentAsset->quantity=currentAsset->quantity+quantity;
+       printf(" current asset: %d\n\t quantity (post-execution): %d", currentAsset->id, currentAsset->quantity);
        size=sizeCOrder(pending);
        index=findCOrder(pending,assetId);
                        if(index>-1)
