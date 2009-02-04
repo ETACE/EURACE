@@ -239,16 +239,29 @@ int Firm_compute_balance_sheet()
  */
 int Firm_compute_total_liquidity_needs()
 {
+    printf("\n ** Firm_compute_total_liquidity_needs **\n\t");
+    
+    printf("TOTAL_INTEREST_PAYMENT: %f\n\t", TOTAL_INTEREST_PAYMENT);
+    printf("TOTAL_DEBT_INSTALLMENT_PAYMENT: %f\n\t", TOTAL_DEBT_INSTALLMENT_PAYMENT);
+    printf("TAX_PAYMENT: %f\n\t", TAX_PAYMENT);
+    printf("TOTAL_DIVIDEND_PAYMENT: %f\n\t", TOTAL_DIVIDEND_PAYMENT);
+    
     //step 12B: set production and payout financial_needs
     PRODUCTION_LIQUIDITY_NEEDS = PLANNED_PRODUCTION_COSTS;
     FINANCIAL_LIQUIDITY_NEEDS = TOTAL_INTEREST_PAYMENT
             + TOTAL_DEBT_INSTALLMENT_PAYMENT + TAX_PAYMENT;
-
+    
+    printf("PRODUCTION_LIQUIDITY_NEEDS: %f\n\t", PRODUCTION_LIQUIDITY_NEEDS);
+    printf("FINANCIAL_LIQUIDITY_NEEDS: %f\n\t", FINANCIAL_LIQUIDITY_NEEDS);
+    
     //step 12C:
     //Check if additional external financial needs are required for total financial needs (direct payable and delayed payable)    
     TOTAL_FINANCIAL_NEEDS = PRODUCTION_LIQUIDITY_NEEDS
             + FINANCIAL_LIQUIDITY_NEEDS + TOTAL_DIVIDEND_PAYMENT;
-
+    
+    printf("TOTAL_FINANCIAL_NEEDS: %f\n\t", TOTAL_FINANCIAL_NEEDS);
+    getchar();
+    
     //step 12D:
     //Check if external financing is needed
 
