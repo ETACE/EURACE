@@ -3,6 +3,13 @@
 #include "../my_library_header.h"
 #include "Eurostat_aux_header.h"
 
+/** \Eurostat_idle()
+  */
+int Eurostat_idle()
+{
+	return 0;	
+}
+
 /** \Eurostat_send_data_to_government()
  * \brief Eurostat send data: mean wage  ...
  */   
