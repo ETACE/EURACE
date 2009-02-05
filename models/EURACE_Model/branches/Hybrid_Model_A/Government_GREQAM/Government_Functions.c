@@ -31,9 +31,6 @@ int Government_send_policy_announcements()
  */
 int Government_read_tax_payments()
 {	
-	//Reset the monthly tax counter
-	MONTHLY_TAX_REVENUES =0.0;
-
 	START_TAX_PAYMENT_MESSAGE_LOOP
 		
 		MONTHLY_TAX_REVENUES += tax_payment_message->tax_payment;
@@ -51,12 +48,9 @@ int Government_read_tax_payments()
  */
 int Government_read_unemployment_benefit_notifications()
 {
-	
 	double sum, unemployment_payment;
 	NUM_UNEMPLOYED = 0;
 	
-	MONTHLY_UNEMPLOYMENT_BENEFIT_PAYMENT=0.0;
-
 	//Start message loop
 	sum=0.0;
 	START_UNEMPLOYMENT_NOTIFICATION_MESSAGE_LOOP
