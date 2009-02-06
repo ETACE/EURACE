@@ -1,0 +1,346 @@
+----------------------------------------------------------------------
+Sander, rev 1023
+14/6/08
+
+Changes to euracemodel.xml:
+- Credit_UNIBI/model-sander.xml: scenario with different interest rates per region
+- Statistical_Office_UNIBI/model-new.xml: changes to memory of Eurostat, messages, and order of functions.
+
+
+1. Why is the function Firm_send_data_to_Eurostat run with phase 19 and not phase 0?
+
+It should be on the last day of the month, so on day 20, 40, ...
+Therefore: Period: Monthly, Phase: 0 ?
+It seems that this is what it should be, if I compare the planned production and executed production with the data send to Eurostat.
+
+
+2. New feature: Eurostat now also computes regional sums and total sums of production macrovariables.
+
+* Added message variables to Eurostat:
+    MONTHLY_SOLD_QUANTITY
+    MONTHLY_OUTPUT
+    MONTHLY_REVENUE
+    MONTHLY_PLANNED_OUTPUT
+
+* Added message variables to Firm:
+    output (equal to production_quantity)
+    planned_output (equal to planned_production_quantity)
+
+* Added message variables to Firm_send_data_message:
+    cum_total_sold_quantity
+    output
+    planned_output
+
+
+3. Accounting at the end of an iteration instead of at the beginning
+
+In order to have correct monthly data in Eurostat, the accounting of the firm needs to be done at the end of the month. The functions firms_compute_income_statement and balance sheet were at the beginning, but are now at the end of the iteration, so that all firms compute their data at the end of the month, instead of on the first day of the next month. This means that when they send their data to Eurostat, the message includes the most up-to-date financial data and Eurostat can compute the correct monthly macroeconomic statistics (otherwise the statistics refer to the previous month!). The computation of the liquidity needs for paying the production and financial commitments remains at the beginning of the iteration.
+
+Each iteration now starts with:
+
+(Period: Monthly, Phase: day_of_month_to_act)
+Firm_calc_production_quantity
+Firm_calc_input_demands
+Firm_compute_total_liquidity_needs
+etc.
+
+At the end of an iteration, after Fim_calc_revenue (every day), we have:
+
+(Period: Monthly, Phase: day_of_month_to_act)
+Firm_compute_sales_statistics
+Firm_compute_financial_payments
+Firm_compute_income_statement
+Firm_compute_dividends
+Firm_compute_total_financial_payments
+Firm_compute_balance_sheet
+
+
+4. Order of states in the stategraph
+After Firm_calc_revenue: state 13a
+state 13a -> state 13b: Firm_compute_sales_statistics
+state 13b -> state 13c: all the financial management stuff
+From state 13c: Firm_update_specific_skills_of_workers
+There is an idle going from 13a to 14 in case of not(day_of_month_to_act)
+
+5. The resetting of counters:
+
+    //Reset the counters
+    CUM_TOTAL_SOLD_QUANTITY = 0.0;
+    CUM_REVENUE = 0.0;        
+
+This has to be done at the start of the month, so it is moved from 
+Firm_calculate_income_statement to Firm_calc_production_quantity.
+
+6. 
+In Firm_set_quantities_zero:
+
+    PLANNED_PRODUCTION_QUANTITY = 0;
+    PRODUCTION_QUANTITY = 0;
+    
+This is run every day, except on the first day of the month. The reason we need this is that otherwise the same PRODUCTION_QUANTITY is added daily, while it is only a monthly quantity.
+In order to get the production quantities correctly in the monthly statistics, we need 2 variables that stay in memory during the month:
+
+    In Firm_calc_production_quantity and Firm_calc_production_quantity_2:
+    PLANNED_OUTPUT=PLANNED_PRODUCTION_QUANTITY; 
+    
+    In Firm_execute_production:
+    OUTPUT        = PRODUCTION_QUANTITY; 
+
+These values can now be send at the end of the month to Eurostat in the send_data_message.
+----------------------------------------------------------------------
+Sander, rev 1025
+NOTE: New features are still experimental and have been turned off in the model.xml
+28/07/08: After the Sheffield Meeting, the features have been turned on.
+
+Feature: history storage in Eurostat
+
+- The memory of the Eurostat agent now contains a running history of monthly and quarterly data,
+being overwritten using a rolling horizon.
+- All data is stored at the end of the last day of the month or quarter.
+- All growth rates are stored as percentages. For example, 0.25 means 25% growth.
+
+Added files:
+    model-sander.xml
+    Eurostat_Functions-sander.c
+
+Datatype for storage of selected macroeconomic statistics
+
+      struct history_item
+      {
+            double gdp;
+            double output;
+            double employment;
+            double unemployment_rate;
+            double wages;    
+       }
+
+Static arrays for history:
+
+     history_item history_monthly[13];
+     history_item history_quarterly[5];
+    
+    - For monthly history: we store the current month in [0] and the history in [1]...[12].
+    
+    - For quarterly history: we store the current quarter in [0] and the history in [1]...[4].
+    
+Single history_items for storing monthly and quarterly growth rates of each variable:
+
+    history_item monthly_growth_rates:          month-to-month growth rate statistics
+    history_item quarterly__growth_rates:       quarter-to-quarter growth rate statistics
+    history_item annual_growth_rates_monthly:   annual growth rates (per month), measured as the percentage change over the same month in the previous year.
+    history_item annual_growth_rates_quarterly: annual growth rates (per quarter), measured as the percentage change over the same quarter in the previous year.
+
+----------------------------------------------------------------------
+Sander, rev 1046
+NOTE: New features are still experimental and have been turned off in the model.xml
+28/07/08: After the Sheffield Meeting, the features have been turned on.
+
+New feature: Eurostat collects data on firm demises and firm births (related to bankruptcy process and firm creation process)
+New feature: Firms now have an age!! This is necessary to measure the average firm survival rate.
+
+            
+CHANGES
+Affects files:
+    model-sander.xml
+    Eurostat_Functions-sander.c
+    Firm_Stat_Functions-sander.c
+
+Firm memory
+ AGE: age of the firm (in months)
+
+Firm_Stat_Functions-sander.c:
+    Firm_send_data_to_Eurostat: AGE in Firm_send_data_msg
+
+model-sander.xml:
+Added to datatype history_item for storing monthly and quarterly:
+ no_firms
+ no_firm_births
+ no_firm_deaths
+ 
+Added to Firm memory:
+  age
+  
+Added to Eurostat memory:
+ no_firms
+ no_firm_births
+ no_firm_deaths
+ firm_age_distribution[60]
+ firm_birth_rate
+ firm_death_rate
+ 
+ 
+Eurostat_Functions-sander.c
+    Added no_firm_births, no_firm_deaths to monthly/quarterly data+growth rates
+----------------------------------------------------------------------
+Sander, rev 1046
+    Firm_credit_functions_sander.c: only difference is the apply_for_loans msg: added the region_id
+----------------------------------------------------------------------
+Sander, rev 1063
+
+Added FM_GREQAM to: afm_branches/Model_Sheffield
+
+Differences between the FM_UNIBI and FM_GREQAM:
+
+1. Removed variables in FM_GREQAM:
+- different credit items
+ used old version from trunk, includes bad_debt and var
+
+- related to capital depreciation:
+dataype capital_stock_item: removed 
+capital_stock_item_array  capital_stock: removed
+total_units_capital_stock: removed
+
+2. Added variables to FM_GREQAM:
+
+financial_resources_for_production
+planned_value_capital_stock
+planned_total_assets
+total payments
+----------------------------------------------------------------------
+Sander, rev 1087-1090
+
+* Merged:
+
+ - Government:
+   model.xml from Philipp (include )
+ 
+ - Eurostat:
+   model-sander.xml from Sander (includes history items)
+   replaces model.xml
+   Eurostat_Functions-sander.c replaces Eurostat_Functions.c
+   
+ - Statistical_Office:
+   Firm_Statistics_Functions-sander.c replaces Firm_Statistics_Functions.c
+   includes AGE in firm message
+   
+* Updated: model.xml headers: pre-Sheffield, date, authors
+
+* Dummy Credit_GREQAM is now separate from Credit_UNIBI
+----------------------------------------------------------------------
+Sander, rev 1100
+
+- Eurostat
+* added inflation rate
+* firm age_distribution is used to compute the survival rate
+----------------------------------------------------------------------
+Sander, edits to Isolated_Model
+
+Cons_Goods_UNIBI:
+- commented out last 3 items in Firm memory
+
+CB:
+- CB_accounts
+
+States that caused problems have been renamed:
+
+Credit module: 
+Firm_Start_Credit_Role
+Firm_End_Credit_Role
+
+FinMan module:
+Firm_End_Credit_Role
+Firm_End_External_Financing (was: Firm_Finish_Financial_Management)
+
+Cons_Goods:
+Firm_End_External_Financing
+Firm_Start_Labour_Role
+
+Labour:
+Firm_Start_Labour_Role
+Firm_End_Labour_Role
+
+Cons_Goods:
+Firm_End_Labour_Role
+Firm_Start_Seller_Role
+
+Firm_Start_Seller_Role
+Firm_End_Seller_Role
+
+FinMan module:
+Firm_Start_Financial_Management_Role
+Firm_End_Financial_Management_Role
+
+===============================
+Firm_Finish_Financial_Management
+--> Firm_End_Financial_Management
+In:
+- Firm_calc_production_quantity_2
+- Firm_execute_financial_payments
+
+Modules:
+- Credit_UNIBI/model-dummy.xml: Firm_idle
+- Fin Mng UNIBI/model.xml: Firm_execute_financial_payments
+- Cons_Goods_UNIBI/model.xml: Firm_calc_production_quantity_2
+
+Start_Household_Labour_Role
+In: Stat_Office_UNIBI
+
+Firm_new01
+In: Financial_UG: Firm_send_info function
+
+Firm_Start_Producer_Role
+In: Cons_Goods_UNIBI
+(related to Financial_UG)
+
+----------------------------------------------------------------------
+Sander, edits to Isolated_Model rev 1695
+
+Fixed the compiler error about gamma: renamed to gamma_const, in C code and XML
+
+Debugging:
+
+1. In Eurostat_calculate_data commented out lines for non-essential functions:
+    //Eurostat_calc_firm_population();
+    //Eurostat_calc_firm_survival_rates();
+
+Tried to run without the function Eurostat_calculate_data.
+
+2. 0.xml
+Constants:
+<bankruptcy_idle_period>240</bankruptcy_idle_period>
+<no_regions_per_gov>2</no_regions_per_gov>
+
+----------------------------------------------------------------------
+Sander, rev 1697
+
+eurace-model.xml
+==============
+removed constants: day,..., year - not used. Day and month are defined in my_library_header.h
+added constant: const_bankruptcy_idle_period (length of time firm remains idle)
+
+These changes have been made in:
+AML/alm_branches/Isolated_Model
+EURACE_Model/branches/Hybrid_Model_A
+EURACE_Model/trunk
+
+----------------------------------------------------------------------
+Sander, rev 1702
+
+Eurostat
+Data structures region_firm_data, region_household_data, region_data in history can now all
+be initialised by pop gui:
+* Remove function: Eurostat_Initialization
+* added shortcut: Eurostat_Initialization_dummy
+* set ARRAY_LENGTH = getNumRegions()
+
+Files:
+0_isolated_model.pop
+0.xml
+----------------------------------------------------------------------
+Sander, rev 1738
+
+Isolated_Model
+==============
+28/01/09
+- Separated library functions per module: Labour, Cons_Goods
+- Eurostat: remove initialisation function
+
+29/01/09
+- Government: list_of_regions is a dynamic int array
+- Statistical_Office, Firm: checked that active is int
+- Statistical_Office, Eurostat:
+checked that Eurostat_Initialization_dummy is used, NOT Eurostat_Initialization!!
+checked that firm,household_region_data have correct initialisations in 0.xml.
+
+- Constant: const_bankruptcy_idle_period
+----------------------------------------------------------------------
