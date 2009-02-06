@@ -15,6 +15,9 @@ int Government_idle()
     return 0;
 }
 
+/* \fn: int Government_send_policy_announcements()
+ * \brief Function to send yearly policy announcement message.
+ */
 int Government_send_policy_announcements()
 {   
     //add announcements
@@ -23,11 +26,11 @@ int Government_send_policy_announcements()
     return 0;   
 }
 
+/* \fn: int Government_read_tax_payments()
+ * \brief Function to read the tax revenues and store the monthly and yearly totals.
+ */
 int Government_read_tax_payments()
 {   
-    //Reset the monthly tax counter
-    MONTHLY_TAX_REVENUES =0.0;
-
     START_TAX_PAYMENT_MESSAGE_LOOP
         
         MONTHLY_TAX_REVENUES += tax_payment_message->tax_payment;
@@ -41,16 +44,13 @@ int Government_read_tax_payments()
 }
 
 /* \fn: int Government_read_unemployment_benefit_notifications()
- * \brief Monthly counter of total unemployment benefit payments.
+ * \brief Counter of the unemployment benefit messages, monthly and yearly totals of the unemployment benefit payments.
  */
 int Government_read_unemployment_benefit_notifications()
 {
-    
     double sum, unemployment_payment;
     NUM_UNEMPLOYED = 0;
     
-    MONTHLY_UNEMPLOYMENT_BENEFIT_PAYMENT=0.0;
-
     //Start message loop
     sum=0.0;
     START_UNEMPLOYMENT_NOTIFICATION_MESSAGE_LOOP
@@ -84,7 +84,7 @@ int Government_read_unemployment_benefit_notifications()
 }
 
 /* \fn: int Government_read_transfer_notifications()
- * \brief Daily counter
+ * \brief Counter of the transfer notification messages, monthly and yearly totals of the transfer payments.
  */
 int Government_read_transfer_notifications()
 {
@@ -94,8 +94,8 @@ int Government_read_transfer_notifications()
     sum=0;
     START_HH_TRANSFER_NOTIFICATION_MESSAGE_LOOP
     //Filter: m.gov_id==a.id
-        //if(transfer_notification_message->gov_id==ID) sum++;
-        sum++;
+        if(hh_transfer_notification_message->gov_id==ID)
+            sum++;
     FINISH_HH_TRANSFER_NOTIFICATION_MESSAGE_LOOP
     
     MONTHLY_TRANSFER_PAYMENT += sum*HH_TRANSFER_PAYMENT;
@@ -108,8 +108,8 @@ int Government_read_transfer_notifications()
     sum=0;
     START_FIRM_TRANSFER_NOTIFICATION_MESSAGE_LOOP
     //Filter: m.gov_id==a.id
-        //if(transfer_notification_message->gov_id==ID) sum++;
-        sum++;
+        if(firm_transfer_notification_message->gov_id==ID)
+            sum++;
     FINISH_FIRM_TRANSFER_NOTIFICATION_MESSAGE_LOOP
     
     MONTHLY_TRANSFER_PAYMENT += sum*FIRM_TRANSFER_PAYMENT;
@@ -123,7 +123,7 @@ int Government_read_transfer_notifications()
 }
     
 /* \fn: int Government_read_subsidy_notifications()
- * \brief Daily counter
+ * \brief Counter of the subsidy notification messages, monthly and yearly totals of the subsidy payments.
  */
 int Government_read_subsidy_notifications()
 {
@@ -133,8 +133,8 @@ int Government_read_subsidy_notifications()
     sum=0;
     START_HH_SUBSIDY_NOTIFICATION_MESSAGE_LOOP
     //Filter: m.gov_id==a.id
-        //if(subsidy_payment_notification_message->gov_id==ID) sum++;
-        sum++;
+        if(hh_subsidy_notification_message->gov_id==ID)
+            sum++;
     FINISH_HH_SUBSIDY_NOTIFICATION_MESSAGE_LOOP
     
     MONTHLY_SUBSIDY_PAYMENT += sum*HH_SUBSIDY_PAYMENT;
@@ -147,8 +147,8 @@ int Government_read_subsidy_notifications()
     sum=0;
     START_FIRM_SUBSIDY_NOTIFICATION_MESSAGE_LOOP
     //Filter: m.gov_id==a.id
-        //if(subsidy_payment_notification_message->gov_id==ID) sum++;
-        sum++;
+        if(firm_subsidy_notification_message->gov_id==ID)
+            sum++;
     FINISH_FIRM_SUBSIDY_NOTIFICATION_MESSAGE_LOOP
     
     MONTHLY_SUBSIDY_PAYMENT += sum*FIRM_SUBSIDY_PAYMENT;
@@ -160,6 +160,9 @@ int Government_read_subsidy_notifications()
     return 0;
 }
 
+/* \fn: int Government_send_account_update()
+ * \brief Function to send the payment_account value to the Central Bank.
+ */
 int Government_send_account_update()
 {
         // At the very end of agent government: update the bank account
@@ -168,20 +171,17 @@ int Government_send_account_update()
     return 0;
 }
 
-
+/* \fn: int Government_monthly_budget_accounting()
+ * \brief Function to perform accounting at the end of each month.
+ */
 int Government_monthly_budget_accounting()
 {
     double in, out;
 
     //Compute the following: the interest rate is the base rate of the Central Bank
-    GOV_INTEREST_RATE = 0.01;
-    //GOV_INTEREST_RATE = CB_BASE_RATE/12;
+    GOV_INTEREST_RATE = (double) 0.05/12.0;
+    //GOV_INTEREST_RATE = CB_BASE_RATE/12.0;
     
-    //Interest on debt
-        MONTHLY_INTEREST_PAYMENT = (1+GOV_INTEREST_RATE)*TOTAL_DEBT;
-    // Update the payment account
-        PAYMENT_ACCOUNT -= MONTHLY_INTEREST_PAYMENT;
-
     //Items that have already been added to the payment_account
         in = MONTHLY_TAX_REVENUES;
         MONTHLY_INCOME = in;
@@ -190,7 +190,6 @@ int Government_monthly_budget_accounting()
         out = MONTHLY_UNEMPLOYMENT_BENEFIT_PAYMENT +
         MONTHLY_TRANSFER_PAYMENT +
         MONTHLY_BOND_COUPON_PAYMENT +
-        MONTHLY_INTEREST_PAYMENT +
         MONTHLY_INVESTMENT_EXPENDITURE +
         MONTHLY_CONSUMPTION_EXPENDITURE;
         
@@ -199,8 +198,15 @@ int Government_monthly_budget_accounting()
     //Compute budget deficit
         MONTHLY_BUDGET_BALANCE = in - out;
         
-    //Debt accounting: surplus decreases the debt, deficit increases it
+    //Debt accounting: if the balance>0 debt decreases, if balance<0, debt increases.
+        //Debt>0 means a debt, Debt<0 means a surplus.
         TOTAL_DEBT -= MONTHLY_BUDGET_BALANCE;
+        PAYMENT_ACCOUNT += MONTHLY_BUDGET_BALANCE;
+        
+        //Check: value of payment account should be equal to total_debt:
+        //if (abs(TOTAL_DEBT + PAYMENT_ACCOUNT))> 0.001)
+        if ((TOTAL_DEBT + PAYMENT_ACCOUNT) != 0.0)
+        printf("\n ERROR in Government: Total debt %2.5f is not equal to payment account %2.5f\n\n", TOTAL_DEBT, PAYMENT_ACCOUNT);
         
     //Monetary policy rule
         TOTAL_MONEY_FINANCING=0;
@@ -212,18 +218,34 @@ int Government_monthly_budget_accounting()
         }
     return 0;
 }
+
+/* \fn: int Government_monthly_resetting()
+ * \brief Monthly resetting of counters.
+ */
+int Government_monthly_resetting()
+{
+    //Reset the yearly counters:
+    MONTHLY_TAX_REVENUES =0.0;
+    MONTHLY_UNEMPLOYMENT_BENEFIT_PAYMENT =0.0;
+    MONTHLY_TRANSFER_PAYMENT =0.0;
+    MONTHLY_SUBSIDY_PAYMENT =0.0;
+    MONTHLY_BOND_COUPON_PAYMENT =0.0;
+    MONTHLY_INVESTMENT_EXPENDITURE =0.0;
+    MONTHLY_CONSUMPTION_EXPENDITURE =0.0;
+    
+    return 0;
+}
+
+/* \fn: int Government_yearly_budget_accounting()
+ * \brief Function to perform accounting at the end of each year.
+ */
 int Government_yearly_budget_accounting()
 {
     double in, out;
 
     //Compute the following:
     GOV_INTEREST_RATE = 0.05;
-    
-    //Interest on debt
-    //  YEARLY_INTEREST_PAYMENT = (1+GOV_INTEREST_RATE)*TOTAL_DEBT;
-
-    // Update the payment account
-    //  PAYMENT_ACCOUNT -= YEARLY_INTEREST_PAYMENT;
+    //GOV_INTEREST_RATE = CB_BASE_RATE;
 
     //Items that have already been added to the payment_account
         in = YEARLY_TAX_REVENUES;
@@ -233,7 +255,6 @@ int Government_yearly_budget_accounting()
         out = YEARLY_UNEMPLOYMENT_BENEFIT_PAYMENT +
         YEARLY_TRANSFER_PAYMENT +
         YEARLY_BOND_COUPON_PAYMENT +
-        YEARLY_INTEREST_PAYMENT +
         YEARLY_INVESTMENT_EXPENDITURE +
         YEARLY_CONSUMPTION_EXPENDITURE;
         
@@ -245,6 +266,26 @@ int Government_yearly_budget_accounting()
     return 0;
 }
 
+/* \fn: int Government_yearly_resetting()
+ * \brief Yearly resetting of counters.
+ */
+int Government_yearly_resetting()
+{
+    //Reset the yearly counters:
+    YEARLY_TAX_REVENUES =0.0;
+    YEARLY_UNEMPLOYMENT_BENEFIT_PAYMENT =0.0;
+    YEARLY_TRANSFER_PAYMENT =0.0;
+    YEARLY_SUBSIDY_PAYMENT =0.0;
+    YEARLY_BOND_COUPON_PAYMENT =0.0;
+    YEARLY_INVESTMENT_EXPENDITURE =0.0;
+    YEARLY_CONSUMPTION_EXPENDITURE =0.0;
+    
+    return 0;
+}
+
+/* \fn: int Government_read_data_from_Eurostat()
+ * \brief Function to read data from Eurostat.
+ */
 int Government_read_data_from_Eurostat()
 {
     int i;
@@ -276,7 +317,9 @@ int Government_read_data_from_Eurostat()
     return 0;   
 }
 
-
+/* \fn: int Government_set_policy()
+ * \brief Function to set policy rules: income forecast and expenditure budget.
+ */
 int Government_set_policy()
 {   
 /*      
@@ -340,38 +383,10 @@ int Government_set_policy()
     HH_TRANSFER_PAYMENT =0.0;
     FIRM_TRANSFER_PAYMENT =0.0;
     
-    //Determine new transfer payment
+    //Determine new subsidy payment
     HH_SUBSIDY_PAYMENT =0.0;
     FIRM_SUBSIDY_PAYMENT =0.0;
     
     return 0;
 }
 
-int Government_yearly_resetting()
-{
-    //Reset the yearly counters:
-    YEARLY_TAX_REVENUES =0.0;
-    YEARLY_UNEMPLOYMENT_BENEFIT_PAYMENT =0.0;
-    YEARLY_TRANSFER_PAYMENT =0.0;
-    YEARLY_SUBSIDY_PAYMENT =0.0;
-    YEARLY_BOND_COUPON_PAYMENT =0.0;
-    YEARLY_INVESTMENT_EXPENDITURE =0.0;
-    YEARLY_CONSUMPTION_EXPENDITURE =0.0;
-    
-    return 0;
-}
-
-
-int Government_monthly_resetting()
-{
-    //Reset the yearly counters:
-    MONTHLY_TAX_REVENUES =0.0;
-    MONTHLY_UNEMPLOYMENT_BENEFIT_PAYMENT =0.0;
-    MONTHLY_TRANSFER_PAYMENT =0.0;
-    MONTHLY_SUBSIDY_PAYMENT =0.0;
-    MONTHLY_BOND_COUPON_PAYMENT =0.0;
-    MONTHLY_INVESTMENT_EXPENDITURE =0.0;
-    MONTHLY_CONSUMPTION_EXPENDITURE =0.0;
-    
-    return 0;
-}

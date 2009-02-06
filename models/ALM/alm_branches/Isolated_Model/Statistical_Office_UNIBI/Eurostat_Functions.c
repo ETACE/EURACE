@@ -3,92 +3,11 @@
 #include "../my_library_header.h"
 #include "Eurostat_aux_header.h"
 
-//#define NO_REGIONS 2 //number of regions (hard-coded here, but should be a environment constant)
-
+/** \Eurostat_idle()
+  */
 int Eurostat_idle()
 {
-    return 0;
-}
-
-int Eurostat_Initialization_dummy()
-{
-    return 0;
-}
-
-int Eurostat_Initialization()
-{
-    int i, k;
-    
-    /*Create data content of REGION_FIRM_DATA REGION_HOUSEHOLD_DATA and REGION_DATA
-     * at the beginning of the first day.
-     * The first firms will send the data at the end of the first day and the other firms
-     * at the end of their activation days
-     */  
-
-    for(i = 1; i <= NO_REGIONS; i++)
-    {
-        add_firm_data(&REGION_FIRM_DATA,
-                i,0,0,                   //3 region_id -> vacancies 
-                0,0,0,0,0,0,             //6 employees_skill
-                0.0,0.0,0.0,0.0,0.0,0.0, //6 average_wage_skill
-                0.0,0.0,0.0,0.0,0.0,0.0, //6 average_s_skill
-                0.0,0.0,0.0,0.0,0.0,     //5 total_earnings -> average_debt_earnings_ratio
-                0.0,0.0,0.0,0.0,0.0,0.0, //6 average_debt_equity_ratio -> monthly_planned_output
-                0.0,0.0,0.0,             //3 gdp, cpi, cpi_last_month 
-                0,0);                    //2 no_firm_births, no_firm_deaths
-
-        add_household_data(&REGION_HOUSEHOLD_DATA,
-                i,
-                0,0,0,0,0,0,
-                0,0,0,0,0,0,
-                0,
-                0.0,0.0,0.0,0.0,0.0,0.0,
-                0.0,0.0,0.0,0.0,0.0,0.0,
-                0.0,1.0,1.0,1.0,1.0,1.0);
-
-        //For each region 1...NO_REGIONS: construct monthly history data structure
-
-        for (k=12; k>0; k--)
-        {
-            add_region_data_item(&HISTORY_MONTHLY[k].region_data,
-                    1.0,1.0,0.0,0.0,0,
-                    0.0,0.0,0.0,0.0,0.0,0.0,
-                    0.0,0,0,0);        
-        }
-        
-        //construct quarterly history data structure for regions
-
-    for (k=4; k>0; k--)
-        {
-            add_region_data_item(&HISTORY_QUARTERLY[k].region_data,
-                    1.0,1.0,0.0,0.0,0,
-                    0.0,0.0,0.0,0.0,0.0,0.0,
-                    0.0,0,0,0);        
-        }
-        
-        //construct growth rates data structure for regions
-
-        add_region_data_item(&MONTHLY_GROWTH_RATES.region_data,
-                1.0,1.0,0.0,0.0,0,
-                0.0,0.0,0.0,0.0,0.0,0.0,
-                0.0,0,0,0);        
-        add_region_data_item(&ANNUAL_GROWTH_RATES_MONTHLY.region_data,
-                1.0,1.0,0.0,0.0,0,
-                0.0,0.0,0.0,0.0,0.0,0.0,
-                0.0,0,0,0);        
-        add_region_data_item(&QUARTERLY_GROWTH_RATES.region_data,
-                1.0,1.0,0.0,0.0,0,
-                0.0,0.0,0.0,0.0,0.0,0.0,
-                0.0,0,0,0);        
-        add_region_data_item(&ANNUAL_GROWTH_RATES_QUARTERLY.region_data,
-                1.0,1.0,0.0,0.0,0,
-                0.0,0.0,0.0,0.0,0.0,0.0,
-                0.0,0,0,0);  
-        
-    }
-    
-    return 0;
-        
+	return 0;	
 }
 
 /** \Eurostat_send_data_to_government()
@@ -142,7 +61,7 @@ int Eurostat_send_data()
 /** \Eurostat_calculate_data
  * \brief Eurostat receive micro data and calculates macro data
  */
-int Eurostat_calculate_data()
+int Eurostat_calculate_data_old_version()
 {
     int i,j,m;
         
@@ -198,6 +117,7 @@ int Eurostat_calculate_data()
 
     sum_consumption_good_supply    = 0.0;
 
+    
     /*delete the content of the data arrays in order to store the data for the new month*/
     //free(REGION_HOUSEHOLD_DATA);
     //free(REGION_FIRM_DATA);
@@ -241,15 +161,11 @@ int Eurostat_calculate_data()
         /*Compute a weighted mean price*/
                 
         START_FIRM_SEND_DATA_MESSAGE_LOOP
-                
-        sum_consumption_good_supply+= firm_send_data_message->total_supply;
-                
+        	sum_consumption_good_supply+= firm_send_data_message->total_supply;
         FINISH_FIRM_SEND_DATA_MESSAGE_LOOP
                 
         START_FIRM_SEND_DATA_MESSAGE_LOOP
-                
-        PRICE_INDEX += (firm_send_data_message->price*firm_send_data_message->total_supply)/ sum_consumption_good_supply;
-                
+        	PRICE_INDEX += (firm_send_data_message->price*firm_send_data_message->total_supply)/ sum_consumption_good_supply;
         FINISH_FIRM_SEND_DATA_MESSAGE_LOOP
         
         /*Store the region data of the firms*/
@@ -360,7 +276,8 @@ int Eurostat_calculate_data()
 
         }
 
-    /*Create the REGIONAL data which is needed for controlling the results or sending           back to the Firms*/
+    /*Create the REGIONAL data which is needed for controlling the results or sending
+     *            back to the Firms*/
     for(i = 0; i < REGION_FIRM_DATA.size; i++)
     {
         /*********************WAGES************************/
@@ -420,7 +337,8 @@ int Eurostat_calculate_data()
     }
 
     
-    /*Create the GLOBAL data which is needed for controlling the results or sending         back to the Households*/
+    /*Create the GLOBAL data which is needed for controlling the results or sending 
+     *         back to the Households*/
     
     /*********************WAGES****************/
     if(NO_EMPLOYEES > 0)
@@ -904,6 +822,35 @@ int Eurostat_calculate_data()
     return 0;
 }
 
+/** \fn Eurostat_calculate_data
+ * \brief Eurostat receive micro data and calculates macro data
+ */
+int Eurostat_calculate_data()
+{
+	/* Eurostat auxiliary functions */
+	 Eurostat_reset_data();
+	 Eurostat_compute_mean_price();
+
+	 Eurostat_read_firm_data();
+	 Eurostat_compute_region_firm_data();
+	 Eurostat_compute_global_firm_data();
+
+	 Eurostat_read_household_data();
+	 Eurostat_compute_region_household_data();
+	 Eurostat_compute_global_household_data();
+
+	 Eurostat_calc_macro_data();
+    //Eurostat_calc_firm_population();
+    //Eurostat_calc_firm_survival_rates();
+     Eurostat_measure_export();
+     Eurostat_calc_price_index();    
+    
+    return 0;
+}
+
+/** \fn Eurostat_read_policy_announcements
+ * \brief Eurostat receive micro data and calculates macro data
+ */
 int Eurostat_read_policy_announcements()
 {
     int i;
