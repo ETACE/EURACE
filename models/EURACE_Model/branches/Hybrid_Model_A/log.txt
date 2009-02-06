@@ -819,3 +819,12 @@ checked that Eurostat_Initialization_dummy is used, NOT Eurostat_Initialization!
 checked that firm,household_region_data have correct initialisations in 0.xml.
 - Constant: const_bankruptcy_idle_period
 ---------------------------------------------------------------------- 
+Sander, rev 1710
+
+Hybrid_Model_A
+==============
+06/02/09
+- remove Eurostat init function from state graph
+- copied FM_GREQAM functions.c to trunk
+- TODO: unit tests with constants
+----------------------------------------------------------------------

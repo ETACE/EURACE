@@ -70,6 +70,9 @@ int Firm_compute_income_statement()
 
     if (EARNINGS>0.0)
         TAX_PAYMENT = TAX_RATE_CORPORATE * EARNINGS;
+    else
+    	TAX_PAYMENT = 0.0;
+    
     PREVIOUS_NET_EARNINGS = NET_EARNINGS;
     NET_EARNINGS = EARNINGS - TAX_PAYMENT;
 
