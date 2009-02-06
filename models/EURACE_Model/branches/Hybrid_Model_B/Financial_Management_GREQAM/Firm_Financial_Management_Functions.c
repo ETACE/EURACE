@@ -277,6 +277,7 @@ int Firm_compute_total_liquidity_needs()
         //external financing needed
         EXTERNAL_FINANCIAL_NEEDS = TOTAL_FINANCIAL_NEEDS - PAYMENT_ACCOUNT;
     }
+   
     printf("EXTERNAL_FINANCIAL_NEEDS: %f\n\t", EXTERNAL_FINANCIAL_NEEDS);
     getchar();
         
@@ -723,7 +724,10 @@ int Firm_read_stock_transactions()
 		EXTERNAL_FINANCIAL_NEEDS -= finances;
 	}
 	FINISH_ORDER_STATUS_MESSAGE_LOOP
-    
+     if (EXTERNAL_FINANCIAL_NEEDS < 0.0)
+    {
+    EXTERNAL_FINANCIAL_NEEDS = 0.0;
+    }
     printf("PAYMENT_ACCOUNT: %f\n\t",PAYMENT_ACCOUNT);
 	printf("EXTERNAL_FINANCIAL_NEEDS: %f\n\t",EXTERNAL_FINANCIAL_NEEDS);
 	getchar();
