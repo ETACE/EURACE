@@ -6,6 +6,17 @@
 #include <CUnit/Basic.h>
 
 /*************************** unittest prototypes ***************************/
+void unittest_Eurostat_reset_data();
+void unittest_Eurostat_compute_mean_price();
+
+void unittest_Eurostat_read_firm_data();
+void unittest_Eurostat_compute_region_firm_data();
+void unittest_Eurostat_compute_global_firm_data();
+
+void unittest_Eurostat_read_household_data();
+void unittest_Eurostat_compute_region_household_data();
+void unittest_Eurostat_compute_global_household_data();
+
 void unittest_Eurostat_calc_macro_data();
 void unittest_Eurostat_calc_price_index();
 void unittest_Eurostat_calc_firm_population();
@@ -72,27 +83,36 @@ int main(int argc, char * argv[])
     /* add extra tests using || */
     
     if(
-     	NULL == CU_add_test(pSuite, "Eurostat_calc_macro_data", unittest_Eurostat_calc_macro_data) ||
-/*
+     	NULL == CU_add_test(pSuite, "Eurostat_reset_data", unittest_Eurostat_reset_data) ||
+     	NULL == CU_add_test(pSuite, "Eurostat_compute_mean_price", unittest_Eurostat_compute_mean_price) ||
+     	NULL == CU_add_test(pSuite, "Eurostat_read_firm_data", unittest_Eurostat_read_firm_data) ||
+     	NULL == CU_add_test(pSuite, "Eurostat_compute_region_firm_data", unittest_Eurostat_compute_region_firm_data) ||
+     	NULL == CU_add_test(pSuite, "Eurostat_compute_global_firm_data", unittest_Eurostat_compute_global_firm_data) ||
+     	NULL == CU_add_test(pSuite, "Eurostat_read_household_data", unittest_Eurostat_read_household_data) ||
+     	NULL == CU_add_test(pSuite, "Eurostat_compute_region_household_data", unittest_Eurostat_compute_region_household_data) ||
+     	NULL == CU_add_test(pSuite, "Eurostat_compute_global_household_data", unittest_Eurostat_compute_global_household_data) ||
+
+       	NULL == CU_add_test(pSuite, "Eurostat_calc_macro_data", unittest_Eurostat_calc_macro_data) ||
+
     	NULL == CU_add_test(pSuite, "Eurostat_calc_price_index", unittest_Eurostat_calc_price_index) ||
     	NULL == CU_add_test(pSuite, "Eurostat_calc_firm_population", unittest_Eurostat_calc_firm_population) ||
-    	NULL == CU_add_test(pSuite, "Eurostat_calc_firm_survival_rates", unittest_Eurostat_calc_firm_survival_rates))
-*/   		
+    	NULL == CU_add_test(pSuite, "Eurostat_calc_firm_survival_rates", unittest_Eurostat_calc_firm_survival_rates) ||
 
      	NULL == CU_add_test(pSuite, "Eurostat_store_history_monthly 1: history storage and shifting of economy-wide data", unittest1_Eurostat_store_history_monthly) ||
      	NULL == CU_add_test(pSuite, "Eurostat_store_history_monthly 2: history storage of region data", unittest2_Eurostat_store_history_monthly) ||
      	NULL == CU_add_test(pSuite, "Eurostat_store_history_monthly 3: history shifting of region data", unittest3_Eurostat_store_history_monthly) ||
-     	NULL == CU_add_test(pSuite, "Eurostat_store_history_quarterly 1: history storage of economy-wide data", unittest1_Eurostat_store_history_quarterly) ||
+
+     	NULL == CU_add_test(pSuite, "Eurostat_store_history_quarterly 1: history storage of economy-wide data", unittest1_Eurostat_store_history_quarterly)  ||
     	NULL == CU_add_test(pSuite, "Eurostat_store_history_quarterly 2: history shifting of economy-wide data", unittest2_Eurostat_store_history_quarterly) ||
     	NULL == CU_add_test(pSuite, "Eurostat_store_history_quarterly 3: history storage of region data", unittest3_Eurostat_store_history_quarterly) ||
 		NULL == CU_add_test(pSuite, "Eurostat_store_history_quarterly 4: history shifting of region data", unittest4_Eurostat_store_history_quarterly) ||
+
     	NULL == CU_add_test(pSuite, "Eurostat_compute_growth_rates_monthly 1: monthly growth rates of economy-wide data", unittest1_Eurostat_compute_growth_rates_monthly) ||
     	NULL == CU_add_test(pSuite, "Eurostat_compute_growth_rates_monthly 2: monthly growth rates of region data", unittest2_Eurostat_compute_growth_rates_monthly) ||
     	NULL == CU_add_test(pSuite, "Eurostat_compute_growth_rates_quarterly 1: quarterly growth rates of economy-wide data", unittest1_Eurostat_compute_growth_rates_quarterly) ||
     	NULL == CU_add_test(pSuite, "Eurostat_compute_growth_rates_quarterly 2: quarterly growth rates of region data", unittest1_Eurostat_compute_growth_rates_quarterly) ||
-
-//    	NULL == CU_add_test(pSuite, "Eurostat_firm_creation", unittest_Eurostat_firm_creation) ||
-
+    	NULL == CU_add_test(pSuite, "Eurostat_firm_creation", unittest_Eurostat_firm_creation) ||
+    	
     	NULL == CU_add_test(pSuite, "Eurostat_measure_recession 1: Detect recession", unittest1_Eurostat_measure_recession) ||
     	NULL == CU_add_test(pSuite, "Eurostat_measure_recession 2: Recession in progress, duration updated by 1, recession continues", unittest2_Eurostat_measure_recession) ||
     	NULL == CU_add_test(pSuite, "Eurostat_measure_recession 3: Recession in progress, duration updated by 1, recession stops", unittest3_Eurostat_measure_recession) ||
