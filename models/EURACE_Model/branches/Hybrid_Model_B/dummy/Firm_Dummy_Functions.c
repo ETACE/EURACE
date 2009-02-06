@@ -28,6 +28,9 @@ int Firm_credit_market_dummy() {
 
 int Firm_labour_good_market_dummy() {
     
+
+    printf("\n\n**Firm_labour_good_market_dummy**");
+
     double daily_revenue = 0.0;
     PRODUCTION_COSTS = PLANNED_PRODUCTION_COSTS;
     daily_revenue = 1.1 * (TOTAL_INTEREST_PAYMENT + PRODUCTION_COSTS)/20;
@@ -35,6 +38,8 @@ int Firm_labour_good_market_dummy() {
     
     PAYMENT_ACCOUNT += daily_revenue - (PRODUCTION_COSTS/20);
     
+    printf("\n daily_revenue: %f\t CUM_REVENUE: %f\t PAYMENT_ACCOUNT: %f\t", daily_revenue, CUM_REVENUE, PAYMENT_ACCOUNT);
+
     return 0;
                                 
 }
