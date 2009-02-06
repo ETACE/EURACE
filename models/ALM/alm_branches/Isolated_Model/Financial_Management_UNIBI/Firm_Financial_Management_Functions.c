@@ -55,16 +55,16 @@ int Firm_compute_financial_payments()
     TOTAL_DEBT=0.0;
     for (i=0; i<imax;i++)
     {
-       	//printf("Firm_Financial_Management_Function, line 58: Adding loan values to total debt\n");
+        //printf("Firm_Financial_Management_Function, line 58: Adding loan values to total debt\n");
         //compute current total debt
         TOTAL_DEBT += LOANS.array[i].loan_value;
         
         //add debt_installment_payment to total installment payment
         TOTAL_DEBT_INSTALLMENT_PAYMENT += LOANS.array[i].installment_amount;
     }
-	
-	
-	
+    
+    
+    
     return 0;
 }
 
@@ -74,104 +74,104 @@ int Firm_compute_financial_payments()
  */
 int Firm_compute_income_statement()
 {
-	
-	
+    
+    
     //In the future: if we want to include sales_costs
     //SALES_COSTS = 0;
    
     // compute net earnings
     EARNINGS = CUM_REVENUE - TOTAL_INTEREST_PAYMENT - PRODUCTION_COSTS;
     
- if(EARNINGS>0)	
+ if(EARNINGS>0.0) 
     TAX_PAYMENT = TAX_RATE_CORPORATE * EARNINGS;
     else
-	 TAX_PAYMENT = 0;
+     TAX_PAYMENT = 0;
 
-	PREVIOUS_NET_EARNINGS = NET_EARNINGS;
+    PREVIOUS_NET_EARNINGS = NET_EARNINGS;
     NET_EARNINGS = EARNINGS - TAX_PAYMENT;
 
     //continue balance sheet (data pertaining to the period that just ended)
     if (CURRENT_SHARES_OUTSTANDING>0)
     {
-	    PREVIOUS_EARNINGS_PER_SHARE = EARNINGS_PER_SHARE;
-	    EARNINGS_PER_SHARE = NET_EARNINGS/CURRENT_SHARES_OUTSTANDING;
+        PREVIOUS_EARNINGS_PER_SHARE = EARNINGS_PER_SHARE;
+        EARNINGS_PER_SHARE = NET_EARNINGS/CURRENT_SHARES_OUTSTANDING;
     }
-	    PREVIOUS_DIVIDEND_PER_SHARE = CURRENT_DIVIDEND_PER_SHARE;
-	    CURRENT_DIVIDEND_PER_SHARE = TOTAL_DIVIDEND_PAYMENT/CURRENT_SHARES_OUTSTANDING;
+        PREVIOUS_DIVIDEND_PER_SHARE = CURRENT_DIVIDEND_PER_SHARE;
+        CURRENT_DIVIDEND_PER_SHARE = TOTAL_DIVIDEND_PAYMENT/CURRENT_SHARES_OUTSTANDING;
     if (EARNINGS>0.0)
     {
-	    
-	    PREVIOUS_DIVIDEND_PER_EARNINGS = CURRENT_DIVIDEND_PER_EARNINGS;
-	    CURRENT_DIVIDEND_PER_EARNINGS = TOTAL_DIVIDEND_PAYMENT/EARNINGS;
+        
+        PREVIOUS_DIVIDEND_PER_EARNINGS = CURRENT_DIVIDEND_PER_EARNINGS;
+        CURRENT_DIVIDEND_PER_EARNINGS = TOTAL_DIVIDEND_PAYMENT/EARNINGS;
     }
         
-	
+    
     return 0;
 }
 
 
 int Firm_compute_dividends()
 {
-	
-	
-	//Determine total_dividend_payment
-	//option 1: total divided payment remains constant
-	//TOTAL_DIVIDEND_PAYMENT *= 1;
-	
-	//option 2: total dividend payment increases with same ratio as net earnings
-	//This is very dangerous, since earnings may fluctuate violently
-	//TOTAL_DIVIDEND_PAYMENT *= NET_EARNINGS/PREVIOUS_NET_EARNINGS;
-	
-	//option 3: keep dividend per share constant
-	//total divided payment increases with same ratio as current_shares_outstanding
-	//TOTAL_DIVIDEND_PAYMENT *= CURRENT_SHARES_OUTSTANDING/PREVIOUS_SHARES_OUTSTANDING;
-	
-	//option 4: keep earnings per share constant
-	//total divided payment increases with same ratio as earnings per share
-	//if current_shares_outstanding remains constant, this keeps earnings per share constant
-	
-	//TOTAL_DIVIDEND_PAYMENT = TOTAL_DIVIDEND_PAYMENT * (EARNINGS_PER_SHARE/PREVIOUS_EARNINGS_PER_SHARE);
+    
+    
+    //Determine total_dividend_payment
+    //option 1: total divided payment remains constant
+    //TOTAL_DIVIDEND_PAYMENT *= 1;
+    
+    //option 2: total dividend payment increases with same ratio as net earnings
+    //This is very dangerous, since earnings may fluctuate violently
+    //TOTAL_DIVIDEND_PAYMENT *= NET_EARNINGS/PREVIOUS_NET_EARNINGS;
+    
+    //option 3: keep dividend per share constant
+    //total divided payment increases with same ratio as current_shares_outstanding
+    //TOTAL_DIVIDEND_PAYMENT *= CURRENT_SHARES_OUTSTANDING/PREVIOUS_SHARES_OUTSTANDING;
+    
+    //option 4: keep earnings per share constant
+    //total divided payment increases with same ratio as earnings per share
+    //if current_shares_outstanding remains constant, this keeps earnings per share constant
+    
+    //TOTAL_DIVIDEND_PAYMENT = TOTAL_DIVIDEND_PAYMENT * (EARNINGS_PER_SHARE/PREVIOUS_EARNINGS_PER_SHARE);
 
 
-	if (NET_EARNINGS > 0.0 )
-		TOTAL_DIVIDEND_PAYMENT =  DIVIDEND_RATE*NET_EARNINGS; 
-	else
-	TOTAL_DIVIDEND_PAYMENT=0;
-	
-	//option 5: keep dividend to earnings ratio constant (dont let it fall), but do not decrease the dividend per share ratio.
-	/*
-	    if (CURRENT_DIVIDEND_PER_EARNINGS < PREVIOUS_DIVIDEND_PER_EARNINGS)
-	    {
-	        //Maintain the dividend to earnings ratio
-	        //D_{t} = (D_{t-1}/E_{t-1})*E_{t}
-	        TOTAL_DIVIDEND_PAYMENT = PREVIOUS_DIVIDEND_PER_EARNINGS * NET_EARNINGS;
-	        
-	        //But do not decrease the dividend per share ratio
-	        if (TOTAL_DIVIDEND_PAYMENT/CURRENT_SHARES_OUTSTANDING < CURRENT_DIVIDEND_PER_SHARE)
-	        {
-	            TOTAL_DIVIDEND_PAYMENT = CURRENT_DIVIDEND_PER_SHARE * CURRENT_SHARES_OUTSTANDING;
-	        }
-	    }
-	    else
-	    {
-	        //the dividend to earnings ratio did not decrease
-	        //else keep the dividend per share ratio constant
-	        TOTAL_DIVIDEND_PAYMENT = PREVIOUS_DIVIDEND_PER_SHARE*CURRENT_SHARES_OUTSTANDING;
-	    }
-	*/
+    if (NET_EARNINGS > 0.0 )
+        TOTAL_DIVIDEND_PAYMENT =  DIVIDEND_RATE*NET_EARNINGS; 
+    else
+    TOTAL_DIVIDEND_PAYMENT=0.0;
+    
+    //option 5: keep dividend to earnings ratio constant (dont let it fall), but do not decrease the dividend per share ratio.
+    /*
+        if (CURRENT_DIVIDEND_PER_EARNINGS < PREVIOUS_DIVIDEND_PER_EARNINGS)
+        {
+            //Maintain the dividend to earnings ratio
+            //D_{t} = (D_{t-1}/E_{t-1})*E_{t}
+            TOTAL_DIVIDEND_PAYMENT = PREVIOUS_DIVIDEND_PER_EARNINGS * NET_EARNINGS;
+            
+            //But do not decrease the dividend per share ratio
+            if (TOTAL_DIVIDEND_PAYMENT/CURRENT_SHARES_OUTSTANDING < CURRENT_DIVIDEND_PER_SHARE)
+            {
+                TOTAL_DIVIDEND_PAYMENT = CURRENT_DIVIDEND_PER_SHARE * CURRENT_SHARES_OUTSTANDING;
+            }
+        }
+        else
+        {
+            //the dividend to earnings ratio did not decrease
+            //else keep the dividend per share ratio constant
+            TOTAL_DIVIDEND_PAYMENT = PREVIOUS_DIVIDEND_PER_SHARE*CURRENT_SHARES_OUTSTANDING;
+        }
+    */
 
     return 0;
 }
 
 int Firm_compute_total_financial_payments()
 {
-	
-	//This variable is not used anywhere: it is the sum of financial_liquidity_needs and production_liquidity_needs
-	//but excluding the tax_payments. The tax_payments do not need to be financed since we assume they can always be paid out of earnings. 
-	TOTAL_PAYMENTS = TOTAL_INTEREST_PAYMENT + TOTAL_DEBT_INSTALLMENT_PAYMENT + TOTAL_DIVIDEND_PAYMENT + TAX_PAYMENT + PLANNED_PRODUCTION_COSTS;
+    
+    //This variable is not used anywhere: it is the sum of financial_liquidity_needs and production_liquidity_needs
+    //but excluding the tax_payments. The tax_payments do not need to be financed since we assume they can always be paid out of earnings. 
+    TOTAL_PAYMENTS = TOTAL_INTEREST_PAYMENT + TOTAL_DEBT_INSTALLMENT_PAYMENT + TOTAL_DIVIDEND_PAYMENT + TAX_PAYMENT + PLANNED_PRODUCTION_COSTS;
 
-	
-	return 0;
+    
+    return 0;
 }
 
 /*
@@ -201,8 +201,8 @@ int Firm_compute_balance_sheet()
     //We loop over the malls and sum the value of all local inventory stocks
     imax = CURRENT_MALL_STOCKS.size;
     sum=0.0;
-	sum_1=0.0;
-	
+    sum_1=0.0;
+    
     for (i=0;i<imax;i++)
     {
         sum += PRICE*CURRENT_MALL_STOCKS.array[i].current_stock;
@@ -211,12 +211,12 @@ int Firm_compute_balance_sheet()
         //sum += CURRENT_MALL_STOCKS.array[i].current_price * CURRENT_MALL_STOCKS.array[i].current_stock;
     }
     TOTAL_VALUE_LOCAL_INVENTORY=sum;
-	TOTAL_UNITS_LOCAL_INVENTORY = sum_1;
+    TOTAL_UNITS_LOCAL_INVENTORY = sum_1;
 
     TOTAL_ASSETS = PAYMENT_ACCOUNT + TOTAL_VALUE_CAPITAL_STOCK + TOTAL_VALUE_LOCAL_INVENTORY;
-		
-	PLANNED_TOTAL_ASSETS = PAYMENT_ACCOUNT  + PLANNED_VALUE_CAPITAL_STOCK +  TOTAL_VALUE_LOCAL_INVENTORY;
-	
+        
+    PLANNED_TOTAL_ASSETS = PAYMENT_ACCOUNT  + PLANNED_VALUE_CAPITAL_STOCK +  TOTAL_VALUE_LOCAL_INVENTORY;
+    
     EQUITY = TOTAL_ASSETS - TOTAL_DEBT;
     
     //printf("\nTOTAL_ASSETS in functions.c file: %f\n", TOTAL_ASSETS);
@@ -248,14 +248,14 @@ int Firm_compute_total_liquidity_needs()
 
     //CASE 1: No external financing needed
         if (PAYMENT_ACCOUNT >= TOTAL_FINANCIAL_NEEDS)
-        {        	
+        {           
             //printf("Firm_financial_needs, External financing: case 1.");
             EXTERNAL_FINANCIAL_NEEDS = 0.0;                   
         }
         else
         {
-        	//external financing needed
-        	EXTERNAL_FINANCIAL_NEEDS = TOTAL_FINANCIAL_NEEDS - PAYMENT_ACCOUNT;
+            //external financing needed
+            EXTERNAL_FINANCIAL_NEEDS = TOTAL_FINANCIAL_NEEDS - PAYMENT_ACCOUNT;
         }
  
     return 0;
@@ -270,82 +270,83 @@ int Firm_compute_total_liquidity_needs()
  * The payments are all subtracted from the payment account.
  */
 int Firm_execute_financial_payments()
-{	
+{   
 
-	int imax;
-	int i;	//printf("PAYMENT_ACCOUNT firm %d %f\n",ID,PAYMENT_ACCOUNT);
+    int imax;
+    int i;
+    //printf("PAYMENT_ACCOUNT firm %d %f\n",ID,PAYMENT_ACCOUNT);
 
-	
-	double debt_installment = 0.0;
-	double interest_payment = 0.0;
-	
-	//step 1: actual tax_payment to government
-	
-	if (TAX_PAYMENT>0.0)
-	{
-		add_tax_payment_message(GOV_ID, TAX_PAYMENT);
-		PAYMENT_ACCOUNT -= TAX_PAYMENT;
-	}
-	//step 2: actual interest_payments and installment_payments
+    
+    double debt_installment = 0.0;
+    double interest_payment = 0.0;
+    
+    //step 1: actual tax_payment to government
+    
+    if (TAX_PAYMENT>0.0)
+    {
+        add_tax_payment_message(GOV_ID, TAX_PAYMENT);
+        PAYMENT_ACCOUNT -= TAX_PAYMENT;
+    }
+    //step 2: actual interest_payments and installment_payments
 
-	
-	//Sending installment_message to banks at which the firm has a loan 
+    
+    //Sending installment_message to banks at which the firm has a loan 
 
-	
-   	 imax = LOANS.size;
-   	 for (i=0; i<imax;i++)
-	 {
-		    //decrease payment_account with the interest_payment
-			if(LOANS.array[i].nr_periods_before_repayment!=PERIODS_TO_REPAY_LOANS+1)
-		    {
-			 
-				if(TOTAL_INTEREST_PAYMENT>0)
-				{
-					PAYMENT_ACCOUNT -= LOANS.array[i].interest_payment;
-					add_interest_payment_message(ID,LOANS.array[i].bank_id,LOANS.array[i].interest_payment);
-					interest_payment+=LOANS.array[i].interest_payment;
-				}
-			
-				if(TOTAL_DEBT_INSTALLMENT_PAYMENT>0)	
-				{	
-		        	//decrease payment_account with the installment payment
-		        	PAYMENT_ACCOUNT -= LOANS.array[i].installment_amount;
-		        	debt_installment+=LOANS.array[i].installment_amount;
-			
-		        	//decrease the value of the loan with the debt_installment_payment:
-		        	LOANS.array[i].loan_value -= LOANS.array[i].installment_amount;
-		       
-		        	//decrease the value of the nr_periods_before_repayment
-		   	
-			
-		        	//Sending debt_installment_payment_msg to all banks at which the firm has a loan
-		       
-		        	add_debt_installment_payment_message(ID,LOANS.array[i].bank_id,LOANS.array[i].credit_id, LOANS.array[i].installment_amount);
-				}	
-			}
-		        //If nr_periods_before_maturity == 0, remove the loan item
-		        if (LOANS.array[i].nr_periods_before_repayment==0)
-		        {
-		            remove_debt_item(&LOANS, i);
-		        }
-			    else
-				{
-			    	LOANS.array[i].nr_periods_before_repayment -= 1;
-				}
-	  }
+    
+     imax = LOANS.size;
+     for (i=0; i<imax;i++)
+     {
+            //decrease payment_account with the interest_payment
+            if(LOANS.array[i].nr_periods_before_repayment!=PERIODS_TO_REPAY_LOANS+1)
+            {
+             
+                if(TOTAL_INTEREST_PAYMENT>0.0)
+                {
+                    PAYMENT_ACCOUNT -= LOANS.array[i].interest_payment;
+                    add_interest_payment_message(ID,LOANS.array[i].bank_id,LOANS.array[i].interest_payment);
+                    interest_payment+=LOANS.array[i].interest_payment;
+                }
+            
+                if(TOTAL_DEBT_INSTALLMENT_PAYMENT>0.0)    
+                {   
+                    //decrease payment_account with the installment payment
+                    PAYMENT_ACCOUNT -= LOANS.array[i].installment_amount;
+                    debt_installment+=LOANS.array[i].installment_amount;
+            
+                    //decrease the value of the loan with the debt_installment_payment:
+                    LOANS.array[i].loan_value -= LOANS.array[i].installment_amount;
+               
+                    //decrease the value of the nr_periods_before_repayment
+            
+            
+                    //Sending debt_installment_payment_msg to all banks at which the firm has a loan
+               
+                    add_debt_installment_payment_message(ID,LOANS.array[i].bank_id,LOANS.array[i].credit_id, LOANS.array[i].installment_amount);
+                }   
+            }
+                //If nr_periods_before_maturity == 0, remove the loan item
+                if (LOANS.array[i].nr_periods_before_repayment==0)
+                {
+                    remove_debt_item(&LOANS, i);
+                }
+                else
+                {
+                    LOANS.array[i].nr_periods_before_repayment -= 1;
+                }
+      }
 
-		//step 3: actual dividend payments
- 	    //Actual payments to the bank are paid at end of day when the firm sends its bank_update message 
+        //step 3: actual dividend payments
+        //Actual payments to the bank are paid at end of day when the firm sends its bank_update message 
 
         //add dividend_per_share_msg(firm_id, current_dividend_per_share) to shareholders (dividend per share)     
-		if(TOTAL_DIVIDEND_PAYMENT>0)
-		{
-			add_dividend_per_share_message(ID, CURRENT_DIVIDEND_PER_SHARE);
+        if(TOTAL_DIVIDEND_PAYMENT>0.0)
+        {
+            add_dividend_per_share_message(ID, CURRENT_DIVIDEND_PER_SHARE);
 
-	        //decrease payment_account with the total_dividend_payment
-	        PAYMENT_ACCOUNT -= TOTAL_DIVIDEND_PAYMENT;
-		}	
-	    
-		
+            //decrease payment_account with the total_dividend_payment
+            PAYMENT_ACCOUNT -= TOTAL_DIVIDEND_PAYMENT;
+        }   
+        
+        
     return 0;
 }
