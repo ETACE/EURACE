@@ -7,7 +7,7 @@
   */
 int Eurostat_idle()
 {
-	return 0;	
+    return 0;   
 }
 
 /** \Eurostat_send_data_to_government()
@@ -161,11 +161,11 @@ int Eurostat_calculate_data_old_version()
         /*Compute a weighted mean price*/
                 
         START_FIRM_SEND_DATA_MESSAGE_LOOP
-        	sum_consumption_good_supply+= firm_send_data_message->total_supply;
+            sum_consumption_good_supply+= firm_send_data_message->total_supply;
         FINISH_FIRM_SEND_DATA_MESSAGE_LOOP
                 
         START_FIRM_SEND_DATA_MESSAGE_LOOP
-        	PRICE_INDEX += (firm_send_data_message->price*firm_send_data_message->total_supply)/ sum_consumption_good_supply;
+            PRICE_INDEX += (firm_send_data_message->price*firm_send_data_message->total_supply)/ sum_consumption_good_supply;
         FINISH_FIRM_SEND_DATA_MESSAGE_LOOP
         
         /*Store the region data of the firms*/
@@ -827,21 +827,21 @@ int Eurostat_calculate_data_old_version()
  */
 int Eurostat_calculate_data()
 {
-	/* Eurostat auxiliary functions */
-	 Eurostat_reset_data();
-	 Eurostat_compute_mean_price();
+    /* Eurostat auxiliary functions */
+     Eurostat_reset_data();
+     Eurostat_compute_mean_price();
 
-	 Eurostat_read_firm_data();
-	 Eurostat_compute_region_firm_data();
-	 Eurostat_compute_global_firm_data();
+     Eurostat_read_firm_data();
+     Eurostat_compute_region_firm_data();
+     Eurostat_compute_global_firm_data();
 
-	 Eurostat_read_household_data();
-	 Eurostat_compute_region_household_data();
-	 Eurostat_compute_global_household_data();
+     Eurostat_read_household_data();
+     Eurostat_compute_region_household_data();
+     Eurostat_compute_global_household_data();
 
-	 Eurostat_calc_macro_data();
-    //Eurostat_calc_firm_population();
-    //Eurostat_calc_firm_survival_rates();
+     Eurostat_calc_macro_data();
+     Eurostat_calc_firm_population();
+     Eurostat_calc_firm_survival_rates();
      Eurostat_measure_export();
      Eurostat_calc_price_index();    
     

@@ -205,8 +205,9 @@ int Government_monthly_budget_accounting()
         
         //Check: value of payment account should be equal to total_debt:
         //if (abs(TOTAL_DEBT + PAYMENT_ACCOUNT))> 0.001)
-        if ((TOTAL_DEBT + PAYMENT_ACCOUNT) != 0.0)
-        printf("\n ERROR in Government: Total debt %2.5f is not equal to payment account %2.5f\n\n", TOTAL_DEBT, PAYMENT_ACCOUNT);
+
+        if (PRINT_DEBUG && ((TOTAL_DEBT + PAYMENT_ACCOUNT) != 0.0))
+            fprintf(stdout,"\n ERROR in Government: Total debt %2.5f is not equal to payment account %2.5f\n\n", TOTAL_DEBT, PAYMENT_ACCOUNT);
         
     //Monetary policy rule
         TOTAL_MONEY_FINANCING=0;
