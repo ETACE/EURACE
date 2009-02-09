@@ -180,16 +180,10 @@ int Firm_calc_production_quantity()
         
 
             /*Setting the critical values*/
-            for(int k = 0; k < FIRM_PLANNING_HORIZON; k++)
-            {
-                double prob = (1 + k)/(double)FIRM_PLANNING_HORIZON;
-
-                if(prob < OUT_OF_STOCK_COSTS)
-                {
-                    CURRENT_MALL_STOCKS.array[i].critical_stock = 
-                    sales_mall.array[k].sales;
-                }
-            }
+            
+            CURRENT_MALL_STOCKS.array[i].critical_stock = 
+                                sales_mall.array[6].sales;
+            
 
             /*If the critical level for a mall is zero then the firm sets (with a certain prob )the 
              * critical level equal the average CL in order to keep this mall on the delivery list */
