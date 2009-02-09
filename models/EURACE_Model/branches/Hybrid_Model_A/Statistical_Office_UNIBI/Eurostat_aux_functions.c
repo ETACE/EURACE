@@ -12,7 +12,7 @@
 #include "Eurostat_aux_header.h"
 
 #define MAX_SURVIVAL_PERIODS 12 //length of the array to store the survival rate distribution, nr of bins
-#define MAX_FIRM_AGE 60			//length of the array to store the firm age distribution, nr of bins
+#define MAX_FIRM_AGE 60         //length of the array to store the firm age distribution, nr of bins
 
 
 /* \fn: void Eurostat_reset_data(void)
@@ -72,15 +72,15 @@ void Eurostat_compute_mean_price(void)
     double sum_consumption_good_supply = 0.0;
     PRICE_INDEX = 0.0;
 
-	/*Compute a weighted mean price*/
-	        
-	START_FIRM_SEND_DATA_MESSAGE_LOOP
-		sum_consumption_good_supply+= firm_send_data_message->total_supply;
-	FINISH_FIRM_SEND_DATA_MESSAGE_LOOP
-	        
-	START_FIRM_SEND_DATA_MESSAGE_LOOP
-		PRICE_INDEX += (firm_send_data_message->price*firm_send_data_message->total_supply)/ sum_consumption_good_supply;
-	FINISH_FIRM_SEND_DATA_MESSAGE_LOOP
+    /*Compute a weighted mean price*/
+            
+    START_FIRM_SEND_DATA_MESSAGE_LOOP
+        sum_consumption_good_supply+= firm_send_data_message->total_supply;
+    FINISH_FIRM_SEND_DATA_MESSAGE_LOOP
+            
+    START_FIRM_SEND_DATA_MESSAGE_LOOP
+        PRICE_INDEX += (firm_send_data_message->price*firm_send_data_message->total_supply)/ sum_consumption_good_supply;
+    FINISH_FIRM_SEND_DATA_MESSAGE_LOOP
 }
 
 /* \fn: void Eurostat_read_firm_data(void)
@@ -88,9 +88,9 @@ void Eurostat_compute_mean_price(void)
  */
 void Eurostat_read_firm_data(void)
 {
-	int i;
+    int i;
 
-	NO_VACANCIES = 0.0;
+    NO_VACANCIES = 0.0;
     NO_EMPLOYEES = 0.0;
     NO_EMPLOYEES_SKILL_1 = 0.0;
     NO_EMPLOYEES_SKILL_2 = 0.0;
@@ -107,112 +107,112 @@ void Eurostat_read_firm_data(void)
     FIRM_AVERAGE_S_SKILL_4 = 0.0;
     FIRM_AVERAGE_S_SKILL_5 = 0.0;
 
-	for(i = 0; i < REGION_FIRM_DATA.size; i++)
-	{
-	    REGION_FIRM_DATA.array[i].no_firms = 0;
-	                
-	    START_FIRM_SEND_DATA_MESSAGE_LOOP
-	    
-	    if(firm_send_data_message->region_id == 
-	    REGION_FIRM_DATA.array[i].region_id)
-	    {
-	        REGION_FIRM_DATA.array[i].no_firms += 1;
-	        NO_FIRMS++;
-	        
-	        REGION_FIRM_DATA.array[i].vacancies += 
-	            firm_send_data_message->vacancies;
-	        NO_VACANCIES += firm_send_data_message->vacancies;
-	
-	        REGION_FIRM_DATA.array[i].employees += 
-	            firm_send_data_message->employees;
-	        NO_EMPLOYEES += firm_send_data_message->employees;
-	
-	        REGION_FIRM_DATA.array[i].employees_skill_1 += 
-	            firm_send_data_message->employees_skill_1;
-	        NO_EMPLOYEES_SKILL_1 += 
-	            firm_send_data_message->employees_skill_1;
-	
-	        REGION_FIRM_DATA.array[i].employees_skill_2 += 
-	            firm_send_data_message->employees_skill_2;
-	        NO_EMPLOYEES_SKILL_2 += 
-	            firm_send_data_message->employees_skill_2;
-	
-	        REGION_FIRM_DATA.array[i].employees_skill_3 += 
-	            firm_send_data_message->employees_skill_3;
-	        NO_EMPLOYEES_SKILL_3 += 
-	            firm_send_data_message->employees_skill_3;
-	
-	        REGION_FIRM_DATA.array[i].employees_skill_4 += 
-	            firm_send_data_message->employees_skill_4;
-	        NO_EMPLOYEES_SKILL_4 += 
-	            firm_send_data_message->employees_skill_4;
-	
-	        REGION_FIRM_DATA.array[i].employees_skill_5 += 
-	            firm_send_data_message->employees_skill_5;
-	        NO_EMPLOYEES_SKILL_5 += 
-	            firm_send_data_message->employees_skill_5;
-	
-	
-	        /********sum of wages of the firms++++++++*/
-	        REGION_FIRM_DATA.array[i].average_wage += 
-	            firm_send_data_message->average_wage*
-	            firm_send_data_message->employees;
-	        FIRM_AVERAGE_WAGE += firm_send_data_message->average_wage*
-	            firm_send_data_message->employees;
-	
-	
-	        /********sum of specific skills of the firms++++++++*/
-	        REGION_FIRM_DATA.array[i].average_s_skill += 
-	            firm_send_data_message->average_s_skill *
-	            firm_send_data_message->employees;
-	        FIRM_AVERAGE_S_SKILL += 
-	            firm_send_data_message->average_s_skill *
-	            firm_send_data_message->employees;
-	
-	
-	        REGION_FIRM_DATA.array[i].average_s_skill_1 +=
-	            firm_send_data_message->average_s_skill_1*
-	            firm_send_data_message->employees_skill_1;
-	        FIRM_AVERAGE_S_SKILL_1 +=
-	            firm_send_data_message->average_s_skill_1*
-	            firm_send_data_message->employees_skill_1;
-	
-	
-	        REGION_FIRM_DATA.array[i].average_s_skill_2 +=
-	            firm_send_data_message->average_s_skill_2*
-	            firm_send_data_message->employees_skill_2;
-	        FIRM_AVERAGE_S_SKILL_2 +=
-	            firm_send_data_message->average_s_skill_2*
-	            firm_send_data_message->employees_skill_2;
-	
-	
-	        REGION_FIRM_DATA.array[i].average_s_skill_3 +=
-	            firm_send_data_message->average_s_skill_3*
-	            firm_send_data_message->employees_skill_3;
-	        FIRM_AVERAGE_S_SKILL_3 +=
-	            firm_send_data_message->average_s_skill_3*
-	            firm_send_data_message->employees_skill_3;
-	
-	
-	        REGION_FIRM_DATA.array[i].average_s_skill_4 +=
-	            firm_send_data_message->average_s_skill_4*
-	            firm_send_data_message->employees_skill_4;
-	        FIRM_AVERAGE_S_SKILL_4 +=
-	            firm_send_data_message->average_s_skill_4*
-	            firm_send_data_message->employees_skill_4;
-	
-	        
-	        REGION_FIRM_DATA.array[i].average_s_skill_5 +=
-	            firm_send_data_message->average_s_skill_5*
-	            firm_send_data_message->employees_skill_5;
-	        FIRM_AVERAGE_S_SKILL_5 +=
-	            firm_send_data_message->average_s_skill_5*
-	            firm_send_data_message->employees_skill_5;
-	    }
-	    FINISH_FIRM_SEND_DATA_MESSAGE_LOOP
-	}
+    for(i = 0; i < REGION_FIRM_DATA.size; i++)
+    {
+        REGION_FIRM_DATA.array[i].no_firms = 0;
+                    
+        START_FIRM_SEND_DATA_MESSAGE_LOOP
+        
+        if(firm_send_data_message->region_id == 
+        REGION_FIRM_DATA.array[i].region_id)
+        {
+            REGION_FIRM_DATA.array[i].no_firms += 1;
+            NO_FIRMS++;
+            
+            REGION_FIRM_DATA.array[i].vacancies += 
+                firm_send_data_message->vacancies;
+            NO_VACANCIES += firm_send_data_message->vacancies;
+    
+            REGION_FIRM_DATA.array[i].employees += 
+                firm_send_data_message->employees;
+            NO_EMPLOYEES += firm_send_data_message->employees;
+    
+            REGION_FIRM_DATA.array[i].employees_skill_1 += 
+                firm_send_data_message->employees_skill_1;
+            NO_EMPLOYEES_SKILL_1 += 
+                firm_send_data_message->employees_skill_1;
+    
+            REGION_FIRM_DATA.array[i].employees_skill_2 += 
+                firm_send_data_message->employees_skill_2;
+            NO_EMPLOYEES_SKILL_2 += 
+                firm_send_data_message->employees_skill_2;
+    
+            REGION_FIRM_DATA.array[i].employees_skill_3 += 
+                firm_send_data_message->employees_skill_3;
+            NO_EMPLOYEES_SKILL_3 += 
+                firm_send_data_message->employees_skill_3;
+    
+            REGION_FIRM_DATA.array[i].employees_skill_4 += 
+                firm_send_data_message->employees_skill_4;
+            NO_EMPLOYEES_SKILL_4 += 
+                firm_send_data_message->employees_skill_4;
+    
+            REGION_FIRM_DATA.array[i].employees_skill_5 += 
+                firm_send_data_message->employees_skill_5;
+            NO_EMPLOYEES_SKILL_5 += 
+                firm_send_data_message->employees_skill_5;
+    
+    
+            /********sum of wages of the firms++++++++*/
+            REGION_FIRM_DATA.array[i].average_wage += 
+                firm_send_data_message->average_wage*
+                firm_send_data_message->employees;
+            FIRM_AVERAGE_WAGE += firm_send_data_message->average_wage*
+                firm_send_data_message->employees;
+    
+    
+            /********sum of specific skills of the firms++++++++*/
+            REGION_FIRM_DATA.array[i].average_s_skill += 
+                firm_send_data_message->average_s_skill *
+                firm_send_data_message->employees;
+            FIRM_AVERAGE_S_SKILL += 
+                firm_send_data_message->average_s_skill *
+                firm_send_data_message->employees;
+    
+    
+            REGION_FIRM_DATA.array[i].average_s_skill_1 +=
+                firm_send_data_message->average_s_skill_1*
+                firm_send_data_message->employees_skill_1;
+            FIRM_AVERAGE_S_SKILL_1 +=
+                firm_send_data_message->average_s_skill_1*
+                firm_send_data_message->employees_skill_1;
+    
+    
+            REGION_FIRM_DATA.array[i].average_s_skill_2 +=
+                firm_send_data_message->average_s_skill_2*
+                firm_send_data_message->employees_skill_2;
+            FIRM_AVERAGE_S_SKILL_2 +=
+                firm_send_data_message->average_s_skill_2*
+                firm_send_data_message->employees_skill_2;
+    
+    
+            REGION_FIRM_DATA.array[i].average_s_skill_3 +=
+                firm_send_data_message->average_s_skill_3*
+                firm_send_data_message->employees_skill_3;
+            FIRM_AVERAGE_S_SKILL_3 +=
+                firm_send_data_message->average_s_skill_3*
+                firm_send_data_message->employees_skill_3;
+    
+    
+            REGION_FIRM_DATA.array[i].average_s_skill_4 +=
+                firm_send_data_message->average_s_skill_4*
+                firm_send_data_message->employees_skill_4;
+            FIRM_AVERAGE_S_SKILL_4 +=
+                firm_send_data_message->average_s_skill_4*
+                firm_send_data_message->employees_skill_4;
+    
+            
+            REGION_FIRM_DATA.array[i].average_s_skill_5 +=
+                firm_send_data_message->average_s_skill_5*
+                firm_send_data_message->employees_skill_5;
+            FIRM_AVERAGE_S_SKILL_5 +=
+                firm_send_data_message->average_s_skill_5*
+                firm_send_data_message->employees_skill_5;
+        }
+        FINISH_FIRM_SEND_DATA_MESSAGE_LOOP
+    }
 }
-	
+    
 /* \fn: void Eurostat_compute_region_firm_data(void)
  * \brief: Function to compute regional data related to firms.
  */
@@ -220,115 +220,115 @@ void Eurostat_compute_region_firm_data(void)
 {
     int i;
 
-	/*Create the REGIONAL data which feed backs to firms*/
-	for(i = 0; i < REGION_FIRM_DATA.size; i++)
-	{
-	    /*********************WAGES************************/
-	    if(REGION_FIRM_DATA.array[i].employees > 0)
-	    {
-	        REGION_FIRM_DATA.array[i].average_wage = 
-	        REGION_FIRM_DATA.array[i].average_wage/
-	        REGION_FIRM_DATA.array[i].employees;
-	    }
-	
-	
-	    /*****************SPECIFIC SKILLS*********************/
-	    if(REGION_FIRM_DATA.array[i].employees > 0)
-	    {
-	        REGION_FIRM_DATA.array[i].average_s_skill =
-	        REGION_FIRM_DATA.array[i].average_s_skill/
-	        REGION_FIRM_DATA.array[i].employees;
-	    }
-	
-	    if(REGION_FIRM_DATA.array[i].employees_skill_1 > 0)
-	    {
-	        REGION_FIRM_DATA.array[i].average_s_skill_1 =
-	        REGION_FIRM_DATA.array[i].average_s_skill_1/
-	        REGION_FIRM_DATA.array[i].employees_skill_1;
-	    }
-	
-	    if(REGION_FIRM_DATA.array[i].employees_skill_2 > 0)
-	    {
-	        REGION_FIRM_DATA.array[i].average_s_skill_2 =
-	        REGION_FIRM_DATA.array[i].average_s_skill_2/
-	        REGION_FIRM_DATA.array[i].employees_skill_2;
-	    }
-	
-	
-	    if(REGION_FIRM_DATA.array[i].employees_skill_3 > 0)
-	    {
-	        REGION_FIRM_DATA.array[i].average_s_skill_3 =
-	        REGION_FIRM_DATA.array[i].average_s_skill_3/
-	        REGION_FIRM_DATA.array[i].employees_skill_3;
-	    }
-	
-	
-	    if(REGION_FIRM_DATA.array[i].employees_skill_4 > 0)
-	    {
-	        REGION_FIRM_DATA.array[i].average_s_skill_4 =
-	        REGION_FIRM_DATA.array[i].average_s_skill_4/
-	        REGION_FIRM_DATA.array[i].employees_skill_4;
-	    }
-	
-	    if(REGION_FIRM_DATA.array[i].employees_skill_5 > 0)
-	    {
-	        REGION_FIRM_DATA.array[i].average_s_skill_5 =
-	        REGION_FIRM_DATA.array[i].average_s_skill_5/
-	        REGION_FIRM_DATA.array[i].employees_skill_5;
-	    }	
-	}
+    /*Create the REGIONAL data which feed backs to firms*/
+    for(i = 0; i < REGION_FIRM_DATA.size; i++)
+    {
+        /*********************WAGES************************/
+        if(REGION_FIRM_DATA.array[i].employees > 0)
+        {
+            REGION_FIRM_DATA.array[i].average_wage = 
+            REGION_FIRM_DATA.array[i].average_wage/
+            REGION_FIRM_DATA.array[i].employees;
+        }
+    
+    
+        /*****************SPECIFIC SKILLS*********************/
+        if(REGION_FIRM_DATA.array[i].employees > 0)
+        {
+            REGION_FIRM_DATA.array[i].average_s_skill =
+            REGION_FIRM_DATA.array[i].average_s_skill/
+            REGION_FIRM_DATA.array[i].employees;
+        }
+    
+        if(REGION_FIRM_DATA.array[i].employees_skill_1 > 0)
+        {
+            REGION_FIRM_DATA.array[i].average_s_skill_1 =
+            REGION_FIRM_DATA.array[i].average_s_skill_1/
+            REGION_FIRM_DATA.array[i].employees_skill_1;
+        }
+    
+        if(REGION_FIRM_DATA.array[i].employees_skill_2 > 0)
+        {
+            REGION_FIRM_DATA.array[i].average_s_skill_2 =
+            REGION_FIRM_DATA.array[i].average_s_skill_2/
+            REGION_FIRM_DATA.array[i].employees_skill_2;
+        }
+    
+    
+        if(REGION_FIRM_DATA.array[i].employees_skill_3 > 0)
+        {
+            REGION_FIRM_DATA.array[i].average_s_skill_3 =
+            REGION_FIRM_DATA.array[i].average_s_skill_3/
+            REGION_FIRM_DATA.array[i].employees_skill_3;
+        }
+    
+    
+        if(REGION_FIRM_DATA.array[i].employees_skill_4 > 0)
+        {
+            REGION_FIRM_DATA.array[i].average_s_skill_4 =
+            REGION_FIRM_DATA.array[i].average_s_skill_4/
+            REGION_FIRM_DATA.array[i].employees_skill_4;
+        }
+    
+        if(REGION_FIRM_DATA.array[i].employees_skill_5 > 0)
+        {
+            REGION_FIRM_DATA.array[i].average_s_skill_5 =
+            REGION_FIRM_DATA.array[i].average_s_skill_5/
+            REGION_FIRM_DATA.array[i].employees_skill_5;
+        }   
+    }
 }
 
 /* \fn: void Eurostat_compute_global_firm_data(void)
  * \brief: Function to compute global data that is related to firms.
  */
 void Eurostat_compute_global_firm_data(void)
-{	
-	/*Create the GLOBAL data which is needed for controlling the results or sending 
-	 *         back to the Households*/
-	
-	/*********************WAGES****************/
-	if(NO_EMPLOYEES > 0)
-	{
-	    FIRM_AVERAGE_WAGE = FIRM_AVERAGE_WAGE/(double)NO_EMPLOYEES;
-	}
-	
-	
-	/*****************SPECIFIC_SKILLS******************/
-	if(NO_EMPLOYEES > 0)
-	{
-	    FIRM_AVERAGE_S_SKILL = FIRM_AVERAGE_S_SKILL/(double)NO_EMPLOYEES;
-	}
-	
-	if(NO_EMPLOYEES_SKILL_1 > 0)
-	{
-	    FIRM_AVERAGE_S_SKILL_1 = FIRM_AVERAGE_S_SKILL_1/
-	                (double)NO_EMPLOYEES_SKILL_1;
-	}
-	
-	if(NO_EMPLOYEES_SKILL_2 > 0)
-	{
-	    FIRM_AVERAGE_S_SKILL_2 = FIRM_AVERAGE_S_SKILL_2/
-	                (double)NO_EMPLOYEES_SKILL_2;
-	}
-	
-	if(NO_EMPLOYEES_SKILL_3 > 0)
-	{
-	    FIRM_AVERAGE_S_SKILL_3 = FIRM_AVERAGE_S_SKILL_3/
-	                (double)NO_EMPLOYEES_SKILL_3;
-	}
-	
-	if(NO_EMPLOYEES_SKILL_4 > 0)
-	{
-	    FIRM_AVERAGE_S_SKILL_4 = FIRM_AVERAGE_S_SKILL_4/
-	                (double)NO_EMPLOYEES_SKILL_4;
-	}
-	
-	if(NO_EMPLOYEES_SKILL_5 > 0)
-	{
-	    FIRM_AVERAGE_S_SKILL_5 = FIRM_AVERAGE_S_SKILL_5/
-	                (double)NO_EMPLOYEES_SKILL_5;
-	}
+{   
+    /*Create the GLOBAL data which is needed for controlling the results or sending 
+     *         back to the Households*/
+    
+    /*********************WAGES****************/
+    if(NO_EMPLOYEES > 0)
+    {
+        FIRM_AVERAGE_WAGE = FIRM_AVERAGE_WAGE/(double)NO_EMPLOYEES;
+    }
+    
+    
+    /*****************SPECIFIC_SKILLS******************/
+    if(NO_EMPLOYEES > 0)
+    {
+        FIRM_AVERAGE_S_SKILL = FIRM_AVERAGE_S_SKILL/(double)NO_EMPLOYEES;
+    }
+    
+    if(NO_EMPLOYEES_SKILL_1 > 0)
+    {
+        FIRM_AVERAGE_S_SKILL_1 = FIRM_AVERAGE_S_SKILL_1/
+                    (double)NO_EMPLOYEES_SKILL_1;
+    }
+    
+    if(NO_EMPLOYEES_SKILL_2 > 0)
+    {
+        FIRM_AVERAGE_S_SKILL_2 = FIRM_AVERAGE_S_SKILL_2/
+                    (double)NO_EMPLOYEES_SKILL_2;
+    }
+    
+    if(NO_EMPLOYEES_SKILL_3 > 0)
+    {
+        FIRM_AVERAGE_S_SKILL_3 = FIRM_AVERAGE_S_SKILL_3/
+                    (double)NO_EMPLOYEES_SKILL_3;
+    }
+    
+    if(NO_EMPLOYEES_SKILL_4 > 0)
+    {
+        FIRM_AVERAGE_S_SKILL_4 = FIRM_AVERAGE_S_SKILL_4/
+                    (double)NO_EMPLOYEES_SKILL_4;
+    }
+    
+    if(NO_EMPLOYEES_SKILL_5 > 0)
+    {
+        FIRM_AVERAGE_S_SKILL_5 = FIRM_AVERAGE_S_SKILL_5/
+                    (double)NO_EMPLOYEES_SKILL_5;
+    }
 }
 
 
@@ -336,10 +336,10 @@ void Eurostat_compute_global_firm_data(void)
  * \brief: Function to read household_send_data_messages and store the global/region data of the households.
  */
 void Eurostat_read_household_data(void)
-{	
-	int i;
-	NUM_HOUSEHOLDS=0;
-	
+{   
+    int i;
+    NUM_HOUSEHOLDS=0;
+    
     EMPLOYED = 0;
     EMPLOYED_SKILL_1 = 0;
     EMPLOYED_SKILL_2 = 0;
@@ -362,219 +362,219 @@ void Eurostat_read_household_data(void)
     AVERAGE_S_SKILL_4 = 0.0;
     AVERAGE_S_SKILL_5 = 0.0;
 
-	START_HOUSEHOLD_SEND_DATA_MESSAGE_LOOP
-	
-	    /*Store the global/region data of the households*/
-	    for(i = 0; i < REGION_HOUSEHOLD_DATA.size; i++)
-	    {
-	        if(household_send_data_message->region_id == 
-	        REGION_HOUSEHOLD_DATA.array[i].region_id)
-	        {
-	
-	            //if(DAY == 20)
-	            //{
-	                NUM_HOUSEHOLDS++;
-	            //}
-	            
-	
-	            REGION_HOUSEHOLD_DATA.array[i].no_households++;
-	
-	            REGION_HOUSEHOLD_DATA.array[i].average_wage +=
-	            household_send_data_message->wage;
-	            AVERAGE_WAGE = AVERAGE_WAGE + 
-	            household_send_data_message->wage;
-	
-	            REGION_HOUSEHOLD_DATA.array[i].average_s_skill +=
-	            household_send_data_message->specific_skill;
-	            AVERAGE_S_SKILL = AVERAGE_S_SKILL + 
-	            household_send_data_message->specific_skill;
-	
-	            /*(Region) data is subdivided by general skill level*/
-	            switch(household_send_data_message->general_skill)
-	            {  
-	            case 1:/*General skill level 1*/
-	            if(household_send_data_message->employment_status != -1)
-	            {
-	                REGION_HOUSEHOLD_DATA.array[i].employed++;
-	                REGION_HOUSEHOLD_DATA.array[i].employed_skill_1++;
-	                EMPLOYED_SKILL_1++;
-	                EMPLOYED++;
-	            }
-	            else
-	            {
-	                REGION_HOUSEHOLD_DATA.array[i].unemployed++;
-	                UNEMPLOYED++;
-	            }
-	
-	            if(DAY == 20)
-	            {   
-	                NO_HOUSEHOLDS_SKILL_1++;
-	            }
-	
-	            REGION_HOUSEHOLD_DATA.array[i].no_households_skill_1++;
-	
-	            REGION_HOUSEHOLD_DATA.array[i].average_wage_skill_1 =
-	            REGION_HOUSEHOLD_DATA.array[i].average_wage_skill_1 +
-	            household_send_data_message->wage;
-	
-	            AVERAGE_WAGE_SKILL_1 = AVERAGE_WAGE_SKILL_1 + 
-	            household_send_data_message->wage;
-	
-	            REGION_HOUSEHOLD_DATA.array[i].average_s_skill_1 =
-	            REGION_HOUSEHOLD_DATA.array[i].average_s_skill_1 +
-	            household_send_data_message->specific_skill;
-	
-	            AVERAGE_S_SKILL_1 = AVERAGE_S_SKILL_1 + 
-	            household_send_data_message->specific_skill;
-	            break;
-	
-	            case 2:/*General skill level 2*/
-	            if(household_send_data_message->employment_status != -1)
-	            {
-	                REGION_HOUSEHOLD_DATA.array[i].employed++;
-	                REGION_HOUSEHOLD_DATA.array[i].employed_skill_2++;
-	                EMPLOYED_SKILL_2++;
-	                EMPLOYED++;
-	            }
-	            else
-	            {
-	                REGION_HOUSEHOLD_DATA.array[i].unemployed++;
-	                UNEMPLOYED++;
-	            }       
-	    
-	            if(DAY == 20)
-	            {   
-	                NO_HOUSEHOLDS_SKILL_2++;
-	            }
-	            
-	            REGION_HOUSEHOLD_DATA.array[i].no_households_skill_2++;
-	            
-	            REGION_HOUSEHOLD_DATA.array[i].average_wage_skill_2 =
-	            REGION_HOUSEHOLD_DATA.array[i].average_wage_skill_2 +
-	            household_send_data_message->wage;
-	
-	            AVERAGE_WAGE_SKILL_2 = AVERAGE_WAGE_SKILL_2 + 
-	            household_send_data_message->wage;
-	
-	            REGION_HOUSEHOLD_DATA.array[i].average_s_skill_2 =
-	            REGION_HOUSEHOLD_DATA.array[i].average_s_skill_2 +
-	            household_send_data_message->specific_skill;
-	
-	            AVERAGE_S_SKILL_2 = AVERAGE_S_SKILL_2 + 
-	            household_send_data_message->specific_skill;
-	            break;
-	
-	            case 3:/*General skill level 3*/
-	            if(household_send_data_message->employment_status != -1)
-	            {
-	                REGION_HOUSEHOLD_DATA.array[i].employed++;
-	                REGION_HOUSEHOLD_DATA.array[i].employed_skill_3++;
-	                EMPLOYED_SKILL_3++;
-	                EMPLOYED++;
-	            }
-	            else
-	            {
-	                REGION_HOUSEHOLD_DATA.array[i].unemployed++;
-	                UNEMPLOYED++;
-	            }
-	    
-	            if(DAY == 20)
-	            {
-	                NO_HOUSEHOLDS_SKILL_3++;
-	            }
-	
-	            REGION_HOUSEHOLD_DATA.array[i].no_households_skill_3++;
-	
-	            REGION_HOUSEHOLD_DATA.array[i].average_wage_skill_3 =
-	            REGION_HOUSEHOLD_DATA.array[i].average_wage_skill_3 +
-	            household_send_data_message->wage;
-	
-	            AVERAGE_WAGE_SKILL_3 = AVERAGE_WAGE_SKILL_3 + 
-	            household_send_data_message->wage;
-	
-	            REGION_HOUSEHOLD_DATA.array[i].average_s_skill_3 =
-	            REGION_HOUSEHOLD_DATA.array[i].average_s_skill_3 +
-	            household_send_data_message->specific_skill;
-	
-	            AVERAGE_S_SKILL_3 = AVERAGE_S_SKILL_3 + 
-	            household_send_data_message->specific_skill;
-	            break;
-	
-	            case 4:/*General skill level 4*/
-	            if(household_send_data_message->employment_status != -1)
-	            {
-	                REGION_HOUSEHOLD_DATA.array[i].employed++;
-	                REGION_HOUSEHOLD_DATA.array[i].employed_skill_4++;
-	                EMPLOYED_SKILL_4++;
-	                EMPLOYED++;
-	            }
-	            else
-	            {
-	                REGION_HOUSEHOLD_DATA.array[i].unemployed++;
-	                UNEMPLOYED++;
-	            }
-	            
-	            if(DAY == 20)
-	            {
-	                NO_HOUSEHOLDS_SKILL_4++;
-	            }
-	
-	            REGION_HOUSEHOLD_DATA.array[i].no_households_skill_4++;
-	
-	            REGION_HOUSEHOLD_DATA.array[i].average_wage_skill_4 =
-	            REGION_HOUSEHOLD_DATA.array[i].average_wage_skill_4 +
-	            household_send_data_message->wage;
-	
-	            AVERAGE_WAGE_SKILL_4 = AVERAGE_WAGE_SKILL_4 + 
-	            household_send_data_message->wage;
-	
-	            REGION_HOUSEHOLD_DATA.array[i].average_s_skill_4 =
-	            REGION_HOUSEHOLD_DATA.array[i].average_s_skill_4 +
-	            household_send_data_message->specific_skill;
-	
-	            AVERAGE_S_SKILL_4 = AVERAGE_S_SKILL_4 + 
-	            household_send_data_message->specific_skill;
-	            break;
-	        
-	            case 5:/*General skill level 5*/
-	            if(household_send_data_message->employment_status != -1)
-	            {
-	                REGION_HOUSEHOLD_DATA.array[i].employed++;
-	                REGION_HOUSEHOLD_DATA.array[i].employed_skill_5++;
-	                EMPLOYED_SKILL_5++;
-	                EMPLOYED++;
-	            }
-	            else
-	            {
-	                REGION_HOUSEHOLD_DATA.array[i].unemployed++;
-	                UNEMPLOYED++;
-	            }
-	
-	            if(DAY == 20)
-	            {
-	                NO_HOUSEHOLDS_SKILL_5++;
-	            }
-	
-	            REGION_HOUSEHOLD_DATA.array[i].no_households_skill_5++;
-	
-	            REGION_HOUSEHOLD_DATA.array[i].average_wage_skill_5 =
-	            REGION_HOUSEHOLD_DATA.array[i].average_wage_skill_5 +
-	            household_send_data_message->wage;
-	
-	            AVERAGE_WAGE_SKILL_5 = AVERAGE_WAGE_SKILL_5 + 
-	            household_send_data_message->wage;
-	
-	            REGION_HOUSEHOLD_DATA.array[i].average_s_skill_5 =
-	            REGION_HOUSEHOLD_DATA.array[i].average_s_skill_5 +
-	            household_send_data_message->specific_skill;
-	
-	            AVERAGE_S_SKILL_5 = AVERAGE_S_SKILL_5 + 
-	            household_send_data_message->specific_skill;
-	            break;
-	            }
-	        }
-	    }
-	FINISH_HOUSEHOLD_SEND_DATA_MESSAGE_LOOP
+    START_HOUSEHOLD_SEND_DATA_MESSAGE_LOOP
+    
+        /*Store the global/region data of the households*/
+        for(i = 0; i < REGION_HOUSEHOLD_DATA.size; i++)
+        {
+            if(household_send_data_message->region_id == 
+            REGION_HOUSEHOLD_DATA.array[i].region_id)
+            {
+    
+                //if(DAY == 20)
+                //{
+                    NUM_HOUSEHOLDS++;
+                //}
+                
+    
+                REGION_HOUSEHOLD_DATA.array[i].no_households++;
+    
+                REGION_HOUSEHOLD_DATA.array[i].average_wage +=
+                household_send_data_message->wage;
+                AVERAGE_WAGE = AVERAGE_WAGE + 
+                household_send_data_message->wage;
+    
+                REGION_HOUSEHOLD_DATA.array[i].average_s_skill +=
+                household_send_data_message->specific_skill;
+                AVERAGE_S_SKILL = AVERAGE_S_SKILL + 
+                household_send_data_message->specific_skill;
+    
+                /*(Region) data is subdivided by general skill level*/
+                switch(household_send_data_message->general_skill)
+                {  
+                case 1:/*General skill level 1*/
+                if(household_send_data_message->employment_status != -1)
+                {
+                    REGION_HOUSEHOLD_DATA.array[i].employed++;
+                    REGION_HOUSEHOLD_DATA.array[i].employed_skill_1++;
+                    EMPLOYED_SKILL_1++;
+                    EMPLOYED++;
+                }
+                else
+                {
+                    REGION_HOUSEHOLD_DATA.array[i].unemployed++;
+                    UNEMPLOYED++;
+                }
+    
+                if(DAY == 20)
+                {   
+                    NO_HOUSEHOLDS_SKILL_1++;
+                }
+    
+                REGION_HOUSEHOLD_DATA.array[i].no_households_skill_1++;
+    
+                REGION_HOUSEHOLD_DATA.array[i].average_wage_skill_1 =
+                REGION_HOUSEHOLD_DATA.array[i].average_wage_skill_1 +
+                household_send_data_message->wage;
+    
+                AVERAGE_WAGE_SKILL_1 = AVERAGE_WAGE_SKILL_1 + 
+                household_send_data_message->wage;
+    
+                REGION_HOUSEHOLD_DATA.array[i].average_s_skill_1 =
+                REGION_HOUSEHOLD_DATA.array[i].average_s_skill_1 +
+                household_send_data_message->specific_skill;
+    
+                AVERAGE_S_SKILL_1 = AVERAGE_S_SKILL_1 + 
+                household_send_data_message->specific_skill;
+                break;
+    
+                case 2:/*General skill level 2*/
+                if(household_send_data_message->employment_status != -1)
+                {
+                    REGION_HOUSEHOLD_DATA.array[i].employed++;
+                    REGION_HOUSEHOLD_DATA.array[i].employed_skill_2++;
+                    EMPLOYED_SKILL_2++;
+                    EMPLOYED++;
+                }
+                else
+                {
+                    REGION_HOUSEHOLD_DATA.array[i].unemployed++;
+                    UNEMPLOYED++;
+                }       
+        
+                if(DAY == 20)
+                {   
+                    NO_HOUSEHOLDS_SKILL_2++;
+                }
+                
+                REGION_HOUSEHOLD_DATA.array[i].no_households_skill_2++;
+                
+                REGION_HOUSEHOLD_DATA.array[i].average_wage_skill_2 =
+                REGION_HOUSEHOLD_DATA.array[i].average_wage_skill_2 +
+                household_send_data_message->wage;
+    
+                AVERAGE_WAGE_SKILL_2 = AVERAGE_WAGE_SKILL_2 + 
+                household_send_data_message->wage;
+    
+                REGION_HOUSEHOLD_DATA.array[i].average_s_skill_2 =
+                REGION_HOUSEHOLD_DATA.array[i].average_s_skill_2 +
+                household_send_data_message->specific_skill;
+    
+                AVERAGE_S_SKILL_2 = AVERAGE_S_SKILL_2 + 
+                household_send_data_message->specific_skill;
+                break;
+    
+                case 3:/*General skill level 3*/
+                if(household_send_data_message->employment_status != -1)
+                {
+                    REGION_HOUSEHOLD_DATA.array[i].employed++;
+                    REGION_HOUSEHOLD_DATA.array[i].employed_skill_3++;
+                    EMPLOYED_SKILL_3++;
+                    EMPLOYED++;
+                }
+                else
+                {
+                    REGION_HOUSEHOLD_DATA.array[i].unemployed++;
+                    UNEMPLOYED++;
+                }
+        
+                if(DAY == 20)
+                {
+                    NO_HOUSEHOLDS_SKILL_3++;
+                }
+    
+                REGION_HOUSEHOLD_DATA.array[i].no_households_skill_3++;
+    
+                REGION_HOUSEHOLD_DATA.array[i].average_wage_skill_3 =
+                REGION_HOUSEHOLD_DATA.array[i].average_wage_skill_3 +
+                household_send_data_message->wage;
+    
+                AVERAGE_WAGE_SKILL_3 = AVERAGE_WAGE_SKILL_3 + 
+                household_send_data_message->wage;
+    
+                REGION_HOUSEHOLD_DATA.array[i].average_s_skill_3 =
+                REGION_HOUSEHOLD_DATA.array[i].average_s_skill_3 +
+                household_send_data_message->specific_skill;
+    
+                AVERAGE_S_SKILL_3 = AVERAGE_S_SKILL_3 + 
+                household_send_data_message->specific_skill;
+                break;
+    
+                case 4:/*General skill level 4*/
+                if(household_send_data_message->employment_status != -1)
+                {
+                    REGION_HOUSEHOLD_DATA.array[i].employed++;
+                    REGION_HOUSEHOLD_DATA.array[i].employed_skill_4++;
+                    EMPLOYED_SKILL_4++;
+                    EMPLOYED++;
+                }
+                else
+                {
+                    REGION_HOUSEHOLD_DATA.array[i].unemployed++;
+                    UNEMPLOYED++;
+                }
+                
+                if(DAY == 20)
+                {
+                    NO_HOUSEHOLDS_SKILL_4++;
+                }
+    
+                REGION_HOUSEHOLD_DATA.array[i].no_households_skill_4++;
+    
+                REGION_HOUSEHOLD_DATA.array[i].average_wage_skill_4 =
+                REGION_HOUSEHOLD_DATA.array[i].average_wage_skill_4 +
+                household_send_data_message->wage;
+    
+                AVERAGE_WAGE_SKILL_4 = AVERAGE_WAGE_SKILL_4 + 
+                household_send_data_message->wage;
+    
+                REGION_HOUSEHOLD_DATA.array[i].average_s_skill_4 =
+                REGION_HOUSEHOLD_DATA.array[i].average_s_skill_4 +
+                household_send_data_message->specific_skill;
+    
+                AVERAGE_S_SKILL_4 = AVERAGE_S_SKILL_4 + 
+                household_send_data_message->specific_skill;
+                break;
+            
+                case 5:/*General skill level 5*/
+                if(household_send_data_message->employment_status != -1)
+                {
+                    REGION_HOUSEHOLD_DATA.array[i].employed++;
+                    REGION_HOUSEHOLD_DATA.array[i].employed_skill_5++;
+                    EMPLOYED_SKILL_5++;
+                    EMPLOYED++;
+                }
+                else
+                {
+                    REGION_HOUSEHOLD_DATA.array[i].unemployed++;
+                    UNEMPLOYED++;
+                }
+    
+                if(DAY == 20)
+                {
+                    NO_HOUSEHOLDS_SKILL_5++;
+                }
+    
+                REGION_HOUSEHOLD_DATA.array[i].no_households_skill_5++;
+    
+                REGION_HOUSEHOLD_DATA.array[i].average_wage_skill_5 =
+                REGION_HOUSEHOLD_DATA.array[i].average_wage_skill_5 +
+                household_send_data_message->wage;
+    
+                AVERAGE_WAGE_SKILL_5 = AVERAGE_WAGE_SKILL_5 + 
+                household_send_data_message->wage;
+    
+                REGION_HOUSEHOLD_DATA.array[i].average_s_skill_5 =
+                REGION_HOUSEHOLD_DATA.array[i].average_s_skill_5 +
+                household_send_data_message->specific_skill;
+    
+                AVERAGE_S_SKILL_5 = AVERAGE_S_SKILL_5 + 
+                household_send_data_message->specific_skill;
+                break;
+                }
+            }
+        }
+    FINISH_HOUSEHOLD_SEND_DATA_MESSAGE_LOOP
 }
 
 /* \fn: void Eurostat_compute_region_household_data(void)
@@ -582,8 +582,8 @@ void Eurostat_read_household_data(void)
  */
 void Eurostat_compute_region_household_data(void)
 {
-	int i;
-	
+    int i;
+    
     /*Create the REGIONAL data which is needed for controlling the results or sending
      *            back to the Households*/
     for(i = 0; i < REGION_HOUSEHOLD_DATA.size; i++)
@@ -591,27 +591,27 @@ void Eurostat_compute_region_household_data(void)
 
         /**************UNEMPLOYMENT-RATE******************/
         REGION_HOUSEHOLD_DATA.array[i].unemployment_rate = 
-        	100*(1 - (double)REGION_HOUSEHOLD_DATA.array[i].employed/
+            100*(1 - (double)REGION_HOUSEHOLD_DATA.array[i].employed/
         (double)REGION_HOUSEHOLD_DATA.array[i].no_households);
 
         REGION_HOUSEHOLD_DATA.array[i].unemployment_rate_skill_1 =
-        	100*(1 - (double)REGION_HOUSEHOLD_DATA.array[i].employed_skill_1/
+            100*(1 - (double)REGION_HOUSEHOLD_DATA.array[i].employed_skill_1/
         (double)REGION_HOUSEHOLD_DATA.array[i].no_households_skill_1);
 
         REGION_HOUSEHOLD_DATA.array[i].unemployment_rate_skill_2 =
-        	100*(1 - (double)REGION_HOUSEHOLD_DATA.array[i].employed_skill_2/
+            100*(1 - (double)REGION_HOUSEHOLD_DATA.array[i].employed_skill_2/
         (double)REGION_HOUSEHOLD_DATA.array[i].no_households_skill_2);
 
         REGION_HOUSEHOLD_DATA.array[i].unemployment_rate_skill_3 =
-        	100*(1 - (double)REGION_HOUSEHOLD_DATA.array[i].employed_skill_3/
+            100*(1 - (double)REGION_HOUSEHOLD_DATA.array[i].employed_skill_3/
         (double)REGION_HOUSEHOLD_DATA.array[i].no_households_skill_3);
 
         REGION_HOUSEHOLD_DATA.array[i].unemployment_rate_skill_4 =
-        	100*(1 - (double)REGION_HOUSEHOLD_DATA.array[i].employed_skill_4/
+            100*(1 - (double)REGION_HOUSEHOLD_DATA.array[i].employed_skill_4/
         (double)REGION_HOUSEHOLD_DATA.array[i].no_households_skill_4);
 
         REGION_HOUSEHOLD_DATA.array[i].unemployment_rate_skill_5 =
-        	100*(1 - (double)REGION_HOUSEHOLD_DATA.array[i].employed_skill_5/
+            100*(1 - (double)REGION_HOUSEHOLD_DATA.array[i].employed_skill_5/
         (double)REGION_HOUSEHOLD_DATA.array[i].no_households_skill_5);
     
 
@@ -709,95 +709,95 @@ void Eurostat_compute_region_household_data(void)
         REGION_HOUSEHOLD_DATA.array[i].no_households_skill_5;   
     }
 }
-	
+    
 /* \fn: void Eurostat_compute_global_household_data(void)
  * \brief: Function to compute the global macro data related to households.
  */
 void Eurostat_compute_global_household_data(void)
 {
 
-	/*Create the GLOBAL data which is needed for controlling the results or sending         back to the Households*/
-	
-	/*******************UNEMPLOYMENT RATE**********************/
-	UNEMPLOYMENT_RATE = 100*(1 - (double)EMPLOYED/(double)NUM_HOUSEHOLDS);
-	UNEMPLOYMENT_RATE_SKILL_1 = 100*(1 - (double)EMPLOYED_SKILL_1/
-	                (double)NO_HOUSEHOLDS_SKILL_1);
-	UNEMPLOYMENT_RATE_SKILL_2 = 100*(1 - (double)EMPLOYED_SKILL_2/
-	                (double)NO_HOUSEHOLDS_SKILL_2);
-	UNEMPLOYMENT_RATE_SKILL_3 = 100*(1 - (double)EMPLOYED_SKILL_3/
-	                (double)NO_HOUSEHOLDS_SKILL_3);
-	UNEMPLOYMENT_RATE_SKILL_4 = 100*(1 - (double)EMPLOYED_SKILL_4/
-	                (double)NO_HOUSEHOLDS_SKILL_4);
-	UNEMPLOYMENT_RATE_SKILL_5 = 100*(1 - (double)EMPLOYED_SKILL_5/
-	                (double)NO_HOUSEHOLDS_SKILL_5);
-	
-	
-	/*******************WAGES**********************/
-	
-	if(EMPLOYED > 0)
-	{
-	    AVERAGE_WAGE = AVERAGE_WAGE/(double)EMPLOYED;
-	}
-	else
-	{
-	    AVERAGE_WAGE = 0;
-	}
-	
-	if(EMPLOYED_SKILL_1 > 0)
-	{
-	    AVERAGE_WAGE_SKILL_1 = AVERAGE_WAGE_SKILL_1/(double)EMPLOYED_SKILL_1;
-	}
-	else
-	{
-	    AVERAGE_WAGE_SKILL_1 = 0;
-	}
-	
-	if(EMPLOYED_SKILL_2 > 0)
-	{
-	    AVERAGE_WAGE_SKILL_2 = AVERAGE_WAGE_SKILL_2/(double)EMPLOYED_SKILL_2;
-	}
-	else
-	{
-	    AVERAGE_WAGE_SKILL_2 = 0;
-	}
-	
-	if(EMPLOYED_SKILL_3 > 0)
-	{
-	    AVERAGE_WAGE_SKILL_3 = AVERAGE_WAGE_SKILL_3/(double)EMPLOYED_SKILL_3;
-	}
-	else
-	{
-	    AVERAGE_WAGE_SKILL_3 = 0;
-	}
-	
-	if(EMPLOYED_SKILL_4 > 0)
-	{
-	    AVERAGE_WAGE_SKILL_4 = AVERAGE_WAGE_SKILL_4/(double)EMPLOYED_SKILL_4;
-	}
-	else
-	{
-	    AVERAGE_WAGE_SKILL_4 = 0;
-	}
-	
-	if(EMPLOYED_SKILL_5 > 0)
-	{
-	    AVERAGE_WAGE_SKILL_5 = AVERAGE_WAGE_SKILL_5/(double)EMPLOYED_SKILL_5;
-	}
-	else
-	{
-	    AVERAGE_WAGE_SKILL_5 = 0;
-	}
-	
-	
-	/*******************SPECIFIC SKILLS**********************/
-	AVERAGE_S_SKILL = AVERAGE_S_SKILL/(double)NUM_HOUSEHOLDS;
-	AVERAGE_S_SKILL_1 = AVERAGE_S_SKILL_1/(double)NO_HOUSEHOLDS_SKILL_1;
-	AVERAGE_S_SKILL_2 = AVERAGE_S_SKILL_2/(double)NO_HOUSEHOLDS_SKILL_2;
-	AVERAGE_S_SKILL_3 = AVERAGE_S_SKILL_3/(double)NO_HOUSEHOLDS_SKILL_3;
-	AVERAGE_S_SKILL_4 = AVERAGE_S_SKILL_4/(double)NO_HOUSEHOLDS_SKILL_4;
-	AVERAGE_S_SKILL_5 = AVERAGE_S_SKILL_5/(double)NO_HOUSEHOLDS_SKILL_5;
+    /*Create the GLOBAL data which is needed for controlling the results or sending         back to the Households*/
+    
+    /*******************UNEMPLOYMENT RATE**********************/
+    UNEMPLOYMENT_RATE = 100*(1 - (double)EMPLOYED/(double)NUM_HOUSEHOLDS);
+    UNEMPLOYMENT_RATE_SKILL_1 = 100*(1 - (double)EMPLOYED_SKILL_1/
+                    (double)NO_HOUSEHOLDS_SKILL_1);
+    UNEMPLOYMENT_RATE_SKILL_2 = 100*(1 - (double)EMPLOYED_SKILL_2/
+                    (double)NO_HOUSEHOLDS_SKILL_2);
+    UNEMPLOYMENT_RATE_SKILL_3 = 100*(1 - (double)EMPLOYED_SKILL_3/
+                    (double)NO_HOUSEHOLDS_SKILL_3);
+    UNEMPLOYMENT_RATE_SKILL_4 = 100*(1 - (double)EMPLOYED_SKILL_4/
+                    (double)NO_HOUSEHOLDS_SKILL_4);
+    UNEMPLOYMENT_RATE_SKILL_5 = 100*(1 - (double)EMPLOYED_SKILL_5/
+                    (double)NO_HOUSEHOLDS_SKILL_5);
+    
+    
+    /*******************WAGES**********************/
+    
+    if(EMPLOYED > 0)
+    {
+        AVERAGE_WAGE = AVERAGE_WAGE/(double)EMPLOYED;
+    }
+    else
+    {
+        AVERAGE_WAGE = 0;
+    }
+    
+    if(EMPLOYED_SKILL_1 > 0)
+    {
+        AVERAGE_WAGE_SKILL_1 = AVERAGE_WAGE_SKILL_1/(double)EMPLOYED_SKILL_1;
+    }
+    else
+    {
+        AVERAGE_WAGE_SKILL_1 = 0;
+    }
+    
+    if(EMPLOYED_SKILL_2 > 0)
+    {
+        AVERAGE_WAGE_SKILL_2 = AVERAGE_WAGE_SKILL_2/(double)EMPLOYED_SKILL_2;
+    }
+    else
+    {
+        AVERAGE_WAGE_SKILL_2 = 0;
+    }
+    
+    if(EMPLOYED_SKILL_3 > 0)
+    {
+        AVERAGE_WAGE_SKILL_3 = AVERAGE_WAGE_SKILL_3/(double)EMPLOYED_SKILL_3;
+    }
+    else
+    {
+        AVERAGE_WAGE_SKILL_3 = 0;
+    }
+    
+    if(EMPLOYED_SKILL_4 > 0)
+    {
+        AVERAGE_WAGE_SKILL_4 = AVERAGE_WAGE_SKILL_4/(double)EMPLOYED_SKILL_4;
+    }
+    else
+    {
+        AVERAGE_WAGE_SKILL_4 = 0;
+    }
+    
+    if(EMPLOYED_SKILL_5 > 0)
+    {
+        AVERAGE_WAGE_SKILL_5 = AVERAGE_WAGE_SKILL_5/(double)EMPLOYED_SKILL_5;
+    }
+    else
+    {
+        AVERAGE_WAGE_SKILL_5 = 0;
+    }
+    
+    
+    /*******************SPECIFIC SKILLS**********************/
+    AVERAGE_S_SKILL = AVERAGE_S_SKILL/(double)NUM_HOUSEHOLDS;
+    AVERAGE_S_SKILL_1 = AVERAGE_S_SKILL_1/(double)NO_HOUSEHOLDS_SKILL_1;
+    AVERAGE_S_SKILL_2 = AVERAGE_S_SKILL_2/(double)NO_HOUSEHOLDS_SKILL_2;
+    AVERAGE_S_SKILL_3 = AVERAGE_S_SKILL_3/(double)NO_HOUSEHOLDS_SKILL_3;
+    AVERAGE_S_SKILL_4 = AVERAGE_S_SKILL_4/(double)NO_HOUSEHOLDS_SKILL_4;
+    AVERAGE_S_SKILL_5 = AVERAGE_S_SKILL_5/(double)NO_HOUSEHOLDS_SKILL_5;
 }
-	
+    
 /* \fn: void Eurostat_calc_macro_data(void)
  * \brief: Function to compute macro data from firm micro data.
  */
@@ -852,8 +852,8 @@ void Eurostat_calc_macro_data(void)
     /*Store the region data of the firms*/
     for(i = 0; i < REGION_FIRM_DATA.size; i++)
     {
-//    	printf("\n Entering region %d", i+1);
-    	
+//      printf("\n Entering region %d", i+1);
+        
         counter_firms_in_region =0;
         
         //Reset region sums: these are updated to sum across all firms in the region
@@ -865,86 +865,86 @@ void Eurostat_calc_macro_data(void)
         sum_region_cum_revenue          = 0.0;
         sum_region_planned_output       = 0.0;
 
-		//Reading loop
-		START_FIRM_SEND_DATA_MESSAGE_LOOP
-		if(firm_send_data_message->region_id ==	REGION_FIRM_DATA.array[i].region_id)
-		{
+        //Reading loop
+        START_FIRM_SEND_DATA_MESSAGE_LOOP
+        if(firm_send_data_message->region_id == REGION_FIRM_DATA.array[i].region_id)
+        {
             counter_firms_in_region++;
 
-	        /********sum of GDP: total consumption and investment costs++++++++*/
-	        REGION_FIRM_DATA.array[i].gdp += firm_send_data_message->cum_revenue + firm_send_data_message->capital_costs;
-	        GDP += firm_send_data_message->cum_revenue + firm_send_data_message->capital_costs;
+            /********sum of GDP: total consumption and investment costs++++++++*/
+            REGION_FIRM_DATA.array[i].gdp += firm_send_data_message->cum_revenue + firm_send_data_message->capital_costs;
+            GDP += firm_send_data_message->cum_revenue + firm_send_data_message->capital_costs;
 
-	        /********sum of net earnings of the firms++++++++*/
-	        REGION_FIRM_DATA.array[i].total_earnings += firm_send_data_message->net_earnings;
-	        TOTAL_EARNINGS += firm_send_data_message->net_earnings;
-	        
-	        
-	        /********sum of total debt of the firms++++++++*/
-	        REGION_FIRM_DATA.array[i].total_debt += firm_send_data_message->total_debt;
-	        TOTAL_DEBT += firm_send_data_message->total_debt;
-	        
-	        
-	        /********sum of total assets of the firms++++++++*/
-	        REGION_FIRM_DATA.array[i].total_assets += firm_send_data_message->total_assets;
-	        TOTAL_ASSETS += firm_send_data_message->total_assets;
-	        
-	        
-	        /********sum of total equity of the firms++++++++*/
-	        REGION_FIRM_DATA.array[i].total_equity += firm_send_data_message->equity;
-	        TOTAL_EQUITY += firm_send_data_message->equity;
-	        
-	        /***************** average debt/earnings ratio *********************/
-	        if (firm_send_data_message->net_earnings>0.0)
-	        {
-	            sum_region_debt_earnings_ratios += firm_send_data_message->total_debt/firm_send_data_message->net_earnings;
-	            sum_total_debt_earnings_ratios += firm_send_data_message->total_debt/firm_send_data_message->net_earnings;
-	        }
-	        
-	        /***************** average debt/equity ratio *********************/
-	        if (firm_send_data_message->equity>0.0)
-	        {
-	            sum_region_debt_equity_ratios += firm_send_data_message->total_debt/firm_send_data_message->equity;
-	            sum_total_debt_equity_ratios += firm_send_data_message->total_debt/firm_send_data_message->equity;
-	        }
-	        
-	        /***************** average labour share *********************/
-	        if (firm_send_data_message->net_earnings>0.0)
-	        {               
-	            sum_region_labour_share_ratios += firm_send_data_message->average_wage*firm_send_data_message->employees/firm_send_data_message->net_earnings;
-	            sum_total_labour_share_ratios += firm_send_data_message->average_wage*firm_send_data_message->employees/firm_send_data_message->net_earnings;
-	        }
-	        
-	        /***************** Sum of: total_sold_quantity *********************/
-	        sum_region_sold_quantity += firm_send_data_message->cum_total_sold_quantity;
-	        sum_total_sold_quantity  += firm_send_data_message->cum_total_sold_quantity;
-	
-	        /***************** Sum of: output *********************/
-	        //printf("Eurostat reads output: %.2f", firm_send_data_message->output);
-	        sum_region_output += firm_send_data_message->output;
-	        sum_total_output  += firm_send_data_message->output;
-	        
-	        /***************** Sum of: cum_revenue *********************/                                 
-	        sum_region_cum_revenue += firm_send_data_message->cum_revenue;
-	        sum_total_cum_revenue  += firm_send_data_message->cum_revenue;
-	        
-	        /***************** Sum of: planned_output *********************/
-	        //printf("Eurostat reads planned_output: %.2f\n", firm_send_data_message->planned_output);
-	        sum_region_planned_output += firm_send_data_message->planned_output;
-	        sum_total_planned_output  += firm_send_data_message->planned_output;
-			
-		}
-		FINISH_FIRM_SEND_DATA_MESSAGE_LOOP
-		
-	    //Compute regional averages after the regional-specific message loop
-	    REGION_FIRM_DATA.array[i].average_debt_earnings_ratio = sum_region_debt_earnings_ratios/counter_firms_in_region;
-	    REGION_FIRM_DATA.array[i].average_debt_equity_ratio = sum_region_debt_equity_ratios/counter_firms_in_region;
-	    REGION_FIRM_DATA.array[i].labour_share_ratio = sum_region_labour_share_ratios/counter_firms_in_region;
-	    
-	    REGION_FIRM_DATA.array[i].monthly_sold_quantity = sum_region_sold_quantity;
-	    REGION_FIRM_DATA.array[i].monthly_output = sum_region_output;
-	    REGION_FIRM_DATA.array[i].monthly_revenue = sum_region_cum_revenue;
-	    REGION_FIRM_DATA.array[i].monthly_planned_output = sum_region_planned_output;
+            /********sum of net earnings of the firms++++++++*/
+            REGION_FIRM_DATA.array[i].total_earnings += firm_send_data_message->net_earnings;
+            TOTAL_EARNINGS += firm_send_data_message->net_earnings;
+            
+            
+            /********sum of total debt of the firms++++++++*/
+            REGION_FIRM_DATA.array[i].total_debt += firm_send_data_message->total_debt;
+            TOTAL_DEBT += firm_send_data_message->total_debt;
+            
+            
+            /********sum of total assets of the firms++++++++*/
+            REGION_FIRM_DATA.array[i].total_assets += firm_send_data_message->total_assets;
+            TOTAL_ASSETS += firm_send_data_message->total_assets;
+            
+            
+            /********sum of total equity of the firms++++++++*/
+            REGION_FIRM_DATA.array[i].total_equity += firm_send_data_message->equity;
+            TOTAL_EQUITY += firm_send_data_message->equity;
+            
+            /***************** average debt/earnings ratio *********************/
+            if (firm_send_data_message->net_earnings>0.0)
+            {
+                sum_region_debt_earnings_ratios += firm_send_data_message->total_debt/firm_send_data_message->net_earnings;
+                sum_total_debt_earnings_ratios += firm_send_data_message->total_debt/firm_send_data_message->net_earnings;
+            }
+            
+            /***************** average debt/equity ratio *********************/
+            if (firm_send_data_message->equity>0.0)
+            {
+                sum_region_debt_equity_ratios += firm_send_data_message->total_debt/firm_send_data_message->equity;
+                sum_total_debt_equity_ratios += firm_send_data_message->total_debt/firm_send_data_message->equity;
+            }
+            
+            /***************** average labour share *********************/
+            if (firm_send_data_message->net_earnings>0.0)
+            {               
+                sum_region_labour_share_ratios += firm_send_data_message->average_wage*firm_send_data_message->employees/firm_send_data_message->net_earnings;
+                sum_total_labour_share_ratios += firm_send_data_message->average_wage*firm_send_data_message->employees/firm_send_data_message->net_earnings;
+            }
+            
+            /***************** Sum of: total_sold_quantity *********************/
+            sum_region_sold_quantity += firm_send_data_message->cum_total_sold_quantity;
+            sum_total_sold_quantity  += firm_send_data_message->cum_total_sold_quantity;
+    
+            /***************** Sum of: output *********************/
+            //printf("Eurostat reads output: %.2f", firm_send_data_message->output);
+            sum_region_output += firm_send_data_message->output;
+            sum_total_output  += firm_send_data_message->output;
+            
+            /***************** Sum of: cum_revenue *********************/                                 
+            sum_region_cum_revenue += firm_send_data_message->cum_revenue;
+            sum_total_cum_revenue  += firm_send_data_message->cum_revenue;
+            
+            /***************** Sum of: planned_output *********************/
+            //printf("Eurostat reads planned_output: %.2f\n", firm_send_data_message->planned_output);
+            sum_region_planned_output += firm_send_data_message->planned_output;
+            sum_total_planned_output  += firm_send_data_message->planned_output;
+            
+        }
+        FINISH_FIRM_SEND_DATA_MESSAGE_LOOP
+        
+        //Compute regional averages after the regional-specific message loop
+        REGION_FIRM_DATA.array[i].average_debt_earnings_ratio = sum_region_debt_earnings_ratios/counter_firms_in_region;
+        REGION_FIRM_DATA.array[i].average_debt_equity_ratio = sum_region_debt_equity_ratios/counter_firms_in_region;
+        REGION_FIRM_DATA.array[i].labour_share_ratio = sum_region_labour_share_ratios/counter_firms_in_region;
+        
+        REGION_FIRM_DATA.array[i].monthly_sold_quantity = sum_region_sold_quantity;
+        REGION_FIRM_DATA.array[i].monthly_output = sum_region_output;
+        REGION_FIRM_DATA.array[i].monthly_revenue = sum_region_cum_revenue;
+        REGION_FIRM_DATA.array[i].monthly_planned_output = sum_region_planned_output;
     }
     
     //Compute total averages after the region for-loop
@@ -963,7 +963,7 @@ void Eurostat_calc_macro_data(void)
  */
 void Eurostat_calc_firm_population(void)
 {
-	int i;
+    int i;
 
     /* Reset the content of the memory variables*/
     NO_FIRMS =0;
@@ -980,37 +980,37 @@ void Eurostat_calc_firm_population(void)
     }
     
     /*Start reading loop*/
-	START_FIRM_SEND_DATA_MESSAGE_LOOP
-	    /***************** Sum of: no_firm_births *********************/
-	    if (firm_send_data_message->age==1)
-	    {
-	        NO_FIRM_BIRTHS++;
-	        for(i = 0; i < REGION_FIRM_DATA.size; i++)
-	        {
-	        	REGION_FIRM_DATA.array[i].no_firm_births++;
-	        }
-	    }
-	    
-	    /***************** Firm age distribution *********************/
-	    //add the firm's age to correct bin (we assume max. age is 60 months, all firms older than 60 are in the last bin)
-	    if (firm_send_data_message->age<MAX_FIRM_AGE)
-	    {
-	        FIRM_AGE_DISTRIBUTION[firm_send_data_message->age -1]++;
-	    }
-	    else
-	    {
-	        FIRM_AGE_DISTRIBUTION[MAX_FIRM_AGE-1]++;
-	    }
-	FINISH_FIRM_SEND_DATA_MESSAGE_LOOP
+    START_FIRM_SEND_DATA_MESSAGE_LOOP
+        /***************** Sum of: no_firm_births *********************/
+        if (firm_send_data_message->age==1)
+        {
+            NO_FIRM_BIRTHS++;
+            for(i = 0; i < REGION_FIRM_DATA.size; i++)
+            {
+                REGION_FIRM_DATA.array[i].no_firm_births++;
+            }
+        }
+        
+        /***************** Firm age distribution *********************/
+        //add the firm's age to correct bin (we assume max. age is 60 months, all firms older than 60 are in the last bin)
+        if (firm_send_data_message->age<MAX_FIRM_AGE)
+        {
+            FIRM_AGE_DISTRIBUTION[firm_send_data_message->age -1]++;
+        }
+        else
+        {
+            FIRM_AGE_DISTRIBUTION[MAX_FIRM_AGE-1]++;
+        }
+    FINISH_FIRM_SEND_DATA_MESSAGE_LOOP
 
-	/***************** Sum of: no_firm_deaths *********************/
+    /***************** Sum of: no_firm_deaths *********************/
     NO_FIRM_DEATHS = -1*(NO_FIRMS - HISTORY_MONTHLY[0].no_firms - NO_FIRM_BIRTHS);
-	
+    
 /*
-	for(i = 0; i < REGION_FIRM_DATA.size; i++)
+    for(i = 0; i < REGION_FIRM_DATA.size; i++)
     {
-    	REGION_FIRM_DATA.array[i].no_firm_deaths = 
-    		-1*(REGION_FIRM_DATA.array[i].no_firms - HISTORY_MONTHLY[0].region_data.array[i].no_firms - REGION_FIRM_DATA.array[i].no_firm_births); 
+        REGION_FIRM_DATA.array[i].no_firm_deaths = 
+            -1*(REGION_FIRM_DATA.array[i].no_firms - HISTORY_MONTHLY[0].region_data.array[i].no_firms - REGION_FIRM_DATA.array[i].no_firm_births); 
     }
 */    
     /***************** Firm birth rate *********************/
@@ -1031,8 +1031,8 @@ void Eurostat_calc_firm_population(void)
  */
 void Eurostat_calc_firm_survival_rates(void)
 {
-	int i,x,index, index2;
-	
+    int i,x,index, index2;
+    
 
     /***************** Firm survival rate *********************/
     //Def: The survival rate after x years (or months) is the percentage of all enterprise births of year n which are still active in year n+x.
@@ -1057,7 +1057,7 @@ void Eurostat_calc_firm_survival_rates(void)
     }
     
 
-		/*********************************************
+        /*********************************************
          * NEW FEATURE: Multi-period survival rates
          *********************************************/
         
@@ -1127,7 +1127,7 @@ void Eurostat_calc_firm_survival_rates(void)
         //In model.xml we need to add these variables:
         // <variable><type>int</type><name>firm_age_distribution_multiperiod[12][60]</name><description>Multi-period firm_age_distributions.</description></variable>
         // <variable><type>double</type><name>survival_rate_multiperiod[12][60]</name><description>Multi-period survival rates. Definition: "The survival rate after x years is the percentage of all enterprise births of year n which are still active in year n+x." The 1st row survival_rate_multiperiod[0][.] equals survival_rate[], and contains the 1-period survival rates (for all age bins 0-59). The 2nd row survival_rate_multiperiod[1][.] contains the 2-period survival rates (for all age bins 0-59), etc.</description></variable>
-        //Using matrix-to-array transalation:
+        //Using matrix-to-array translation:
         // <variable><type>int</type><name>firm_age_distribution_multiperiod[MAX_SURVIVAL_PERIODS*MAX_FIRM_AGE]</name><description>Multi-period firm_age_distributions.</description></variable>
         // <variable><type>double</type><name>survival_rate_multiperiod[MAX_SURVIVAL_PERIODS*MAX_FIRM_AGE]</name><description>Multi-period survival rates. Definition: "The survival rate after x years is the percentage of all enterprise births of year n which are still active in year n+x." The 1st row survival_rate_multiperiod[0][.] equals survival_rate[], and contains the 1-period survival rates (for all age bins 0-59). The 2nd row survival_rate_multiperiod[1][.] contains the 2-period survival rates (for all age bins 0-59), etc.</description></variable>        
         
@@ -1160,7 +1160,7 @@ void Eurostat_calc_firm_survival_rates(void)
 */
 //Translation:                
                 index = x*MAX_SURVIVAL_PERIODS+i;
-				index2 =(x+1)*MAX_SURVIVAL_PERIODS+(i+x+1);
+                index2 =(x+1)*MAX_SURVIVAL_PERIODS+(i+x+1);
  
                 if(FIRM_AGE_DISTRIBUTION_MULTIPERIOD[i]>0)
                 {
@@ -1289,17 +1289,17 @@ void Eurostat_measure_export(void)
 */
 void Eurostat_calc_price_index(void)
 {
-	int i,j, index;
-	double weight, price, price_last_month, quantity, sum_1, sum_2;
-	
+    int i,j, index;
+    double weight, price, price_last_month, quantity, sum_1, sum_2;
+    
     CPI = 0.0;
     
     //Compute the regional CPI as the ratio between sum(p_t*q_t)/sum(p_t-1*q_t)
     //NOTE: we also need to include the diagonal value of the original export_value_matrix, which was excluded from the import/export sums.
     for (j=0; j<NO_REGIONS; j++)
     {    
-    	index=j*NO_REGIONS+j;
-    	REGION_FIRM_DATA.array[j].cpi = (REGION_IMPORT_VALUE[j]+EXPORT_VALUE_MATRIX[index])/(REGION_IMPORT_PREVIOUS_VALUE[j]+EXPORT_PREVIOUS_VALUE_MATRIX[index]);
+        index=j*NO_REGIONS+j;
+        REGION_FIRM_DATA.array[j].cpi = (REGION_IMPORT_VALUE[j]+EXPORT_VALUE_MATRIX[index])/(REGION_IMPORT_PREVIOUS_VALUE[j]+EXPORT_PREVIOUS_VALUE_MATRIX[index]);
     }                
 
     //Compute overall economy-wide price index: loop over regions
@@ -1307,8 +1307,8 @@ void Eurostat_calc_price_index(void)
     sum_2 = 0.0;
     for(i = 0; i< REGION_FIRM_DATA.size; i++)
     {
-    	quantity = REGION_FIRM_DATA.array[i].monthly_sold_quantity;
-    	weight = quantity/MONTHLY_SOLD_QUANTITY;
+        quantity = REGION_FIRM_DATA.array[i].monthly_sold_quantity;
+        weight = quantity/MONTHLY_SOLD_QUANTITY;
         price = REGION_FIRM_DATA.array[i].cpi;
         price_last_month = REGION_FIRM_DATA.array[i].cpi_last_month;
         sum_1 += weight * price * quantity;
