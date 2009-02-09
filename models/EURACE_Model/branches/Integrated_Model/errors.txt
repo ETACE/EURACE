@@ -1,0 +1,6 @@
+Compiler Errors
+----------------
+
+* Labour_UNIBI/Firm_Employer_Funactions.c
+line 420, 820:
+random_number =  random_double(0.0,100.0);
