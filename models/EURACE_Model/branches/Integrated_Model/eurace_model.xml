@@ -18,11 +18,11 @@
   </model>
   <model>
    <file>FINANCIAL_UG/model.xml</file>
-   <enabled>false</enabled>
+   <enabled>true</enabled>
   </model>
   <model>
    <file>Financial_UNIBI/model.xml</file>
-   <enabled>true</enabled>
+   <enabled>false</enabled>
   </model>
   <model>
    <file>Inv_Goods_UNIBI/model.xml</file>
@@ -187,6 +187,11 @@
     <type>int</type>
     <name>const_bankruptcy_idle_period</name>
     <description>Number of iterations that a bankrupt firm remains idle, before resuming production activity.</description>
+   </variable>
+   <variable>
+    <type>int</type>
+    <name>days_per_month</name>
+    <description></description>
    </variable>
   </constants>
   <functionFiles>
@@ -462,7 +467,7 @@
  <messages>
   <message>
    <name>bank_account_update</name>
-   <description>Sent by household. Household informs the bank about the actual&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+   <description>Sent by household. Household informs the bank about the actual&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
  payment account</description>
    <variables>
     <variable>
