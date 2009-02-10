@@ -1,7 +1,7 @@
 <!DOCTYPE xmodel SYSTEM "http://eurace.cs.bilgi.edu.tr/XMML.dtd">
 <xmodel version="2" >
  <name>Financial Market Dummy-UNIBI</name>
- <version>post-Oxford</version>
+ <version>Aix, 10/02/2009</version>
  <description></description>
  <models/>
  <environment>

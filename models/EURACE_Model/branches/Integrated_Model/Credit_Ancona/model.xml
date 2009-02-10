@@ -1,7 +1,7 @@
 <!DOCTYPE xmodel SYSTEM "http://eurace.cs.bilgi.edu.tr/XMML.dtd">
 <xmodel version="2" >
  <name>Credit_Market</name>
- <version>Genoa 09/05/2008</version>
+ <version>Aix, 10/02/2009</version>
  <description></description>
  <models/>
  <environment>

@@ -1,7 +1,7 @@
 <!DOCTYPE xmodel SYSTEM "http://eurace.cs.bilgi.edu.tr/XMML.dtd">
 <xmodel version="2" >
- <name>Financial Management Dummy</name>
- <version>post-Oxford</version>
+ <name>Financial Management</name>
+ <version>Aix, 10/02/2009</version>
  <description>Author: Sander van der Hoog, last modified: December, 2008</description>
  <models/>
  <environment>
@@ -340,8 +340,8 @@
     </function>
     <function>
      <name>Firm_set_bankruptcy_insolvency</name>
-     <description>Function to set the type of bankruptcy to `insolvency' and go to end_Firm state.&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-Also sets the active flag to 0 and starts the bankruptcy idle counter.&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+     <description>Function to set the type of bankruptcy to `insolvency' and go to end_Firm state.&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+Also sets the active flag to 0 and starts the bankruptcy idle counter.&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
 </description>
      <currentState>Firm_Bankruptcy_check</currentState>
      <nextState>Firm_End_Financial_Management_Role</nextState>
@@ -387,7 +387,7 @@ Also sets the active flag to 0 and starts the bankruptcy idle counter.&#xd;&#xd;
      <outputs/>
     </function>
     <function>
-     <name>Firm_compute_and_send_stock_orders_dummy</name>
+     <name>Firm_compute_and_send_stock_orders</name>
      <description>Function to send order_messages to the clearinghouse (share emission or repurchase).</description>
      <currentState>Firm_End_Credit_Role</currentState>
      <nextState>0003</nextState>
@@ -404,7 +404,7 @@ Also sets the active flag to 0 and starts the bankruptcy idle counter.&#xd;&#xd;
      <outputs/>
     </function>
     <function>
-     <name>Firm_read_stock_transactions_dummy</name>
+     <name>Firm_read_stock_transactions</name>
      <description>Function to read order_status messages from the clearinghouse, and update the firm's trading account.</description>
      <currentState>0003</currentState>
      <nextState>End_Firm_Financial_Role</nextState>
@@ -421,7 +421,7 @@ Also sets the active flag to 0 and starts the bankruptcy idle counter.&#xd;&#xd;
     </function>
     <function>
      <name>Firm_set_bankruptcy_illiquidity</name>
-     <description>unction to set the type of bankruptcy to `illiquidity' and then go to end_Firm state.&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+     <description>unction to set the type of bankruptcy to `illiquidity' and then go to end_Firm state.&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
 Also sets the active flag to 0 and starts the bankruptcy idle counter.</description>
      <currentState>Firm_bankruptcy_checked</currentState>
      <nextState>Firm_End_Financial_Management_Role</nextState>
@@ -631,7 +631,7 @@ Also sets the active flag to 0 and starts the bankruptcy idle counter.</descript
     </function>
     <function>
      <name>Firm_bankruptcy_idle_counter</name>
-     <description>Function to decrease the bankruptcy_idle_counter by 1.&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+     <description>Function to decrease the bankruptcy_idle_counter by 1.&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
 Note that a negative count means the financing condition has not been yet satisfied at the end of the default idle period.</description>
      <currentState>start_Firm</currentState>
      <nextState>Firm_not_active</nextState>
@@ -665,7 +665,7 @@ Note that a negative count means the financing condition has not been yet satisf
      <outputs/>
     </function>
     <function>
-     <name>Firm_compute_and_send_stock_orders_dummy</name>
+     <name>Firm_compute_and_send_stock_orders</name>
      <description>Function to send order_messages to the clearinghouse (new share emission).</description>
      <currentState>Firm_bankrupty_state_1</currentState>
      <nextState>Firm_bankrupty_state_2</nextState>
@@ -682,7 +682,7 @@ Note that a negative count means the financing condition has not been yet satisf
      <outputs/>
     </function>
     <function>
-     <name>Firm_read_stock_transactions_dummy</name>
+     <name>Firm_read_stock_transactions</name>
      <description>Function to read order_status messages from the clearinghouse, and update the firm's trading account.</description>
      <currentState>Firm_bankrupty_state_2</currentState>
      <nextState>Firm_bankrupty_state_3</nextState>
