@@ -212,6 +212,11 @@
      <name>day_of_month_to_act</name>
      <description>Day of the month to act for bank accounting function</description>
     </variable>
+    <variable>
+     <type>double</type>
+     <name>deposits</name>
+     <description></description>
+    </variable>
    </memory>
    <functions>
     <function>
@@ -312,7 +317,11 @@
        </filter>
       </input>
      </inputs>
-     <outputs/>
+     <outputs>
+      <output>
+       <messageName>central_bank_account_update</messageName>
+      </output>
+     </outputs>
     </function>
     <function>
      <name>Bank_accounting</name>
@@ -326,7 +335,11 @@
       </time>
      </condition>
      <inputs/>
-     <outputs/>
+     <outputs>
+      <output>
+       <messageName>central_bank_account_update</messageName>
+      </output>
+     </outputs>
     </function>
     <function>
      <name>Bank_idle</name>
