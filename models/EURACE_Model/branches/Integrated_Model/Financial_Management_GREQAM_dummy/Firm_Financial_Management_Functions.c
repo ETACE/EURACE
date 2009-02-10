@@ -18,7 +18,7 @@ int Firm_compute_financial_payments()
     int i;
     double interest_payment =0.0;
     
-    //double PAYMENT_ACCOUNT			: account out of which payments are made
+    //double PAYMENT_ACCOUNT            : account out of which payments are made
 
     //double_array LOANS                : dynamic array of structs with each struct a loan_item
     //struct debt_item
@@ -71,7 +71,7 @@ int Firm_compute_income_statement()
     if (EARNINGS>0.0)
         TAX_PAYMENT = TAX_RATE_CORPORATE * EARNINGS;
     else
-    	TAX_PAYMENT = 0.0;
+        TAX_PAYMENT = 0.0;
     
     PREVIOUS_NET_EARNINGS = NET_EARNINGS;
     NET_EARNINGS = EARNINGS - TAX_PAYMENT;
@@ -531,11 +531,11 @@ int Firm_bankruptcy_insolvency_procedure()
     EXTERNAL_FINANCIAL_NEEDS = max(0,ipo_amount);
 
     printf("\n In function Firm_bankruptcy_insolvency_procedure:\n"
-    		"target_debt = %2.2f\n"
-    		"TARGET_LEVERAGE_RATIO = %2.2f\n"
-    		"ipo_amount = %2.2f\n"
-    		"EXTERNAL_FINANCIAL_NEEDS = %2.2f\n",
-    		target_debt, TARGET_LEVERAGE_RATIO, ipo_amount, EXTERNAL_FINANCIAL_NEEDS);
+            "target_debt = %2.2f\n"
+            "TARGET_LEVERAGE_RATIO = %2.2f\n"
+            "ipo_amount = %2.2f\n"
+            "EXTERNAL_FINANCIAL_NEEDS = %2.2f\n",
+            target_debt, TARGET_LEVERAGE_RATIO, ipo_amount, EXTERNAL_FINANCIAL_NEEDS);
 
     //Effect on investment goods market
     //Left-over capital
@@ -629,8 +629,23 @@ int Firm_reset_bankruptcy_flags()
  * \fn Firm_compute_and_send_stock_orders()
  * \brief Function to send order_messages to the clearinghouse (share emission or repurchase).
  */
-int Firm_compute_and_send_stock_orders_dummy()
+int Firm_compute_and_send_stock_orders()
 {
+    //Note: This function only runs if EXTERNAL_FINANCIAL_NEEDS>0.0
+
+    double limit_price=CURRENT_SHARE_PRICE*0.99;
+    int quantity = -1*(1+EXTERNAL_FINANCIAL_NEEDS/limit_price);
+    
+    printf("** Firm_compute_and_send_stock_orders **\n\t");
+    printf("CURRENT_SHARE_PRICE: %f\n\t", CURRENT_SHARE_PRICE);
+    printf("EXTERNAL_FINANCIAL_NEEDS: %f\n\t", EXTERNAL_FINANCIAL_NEEDS);
+    
+    //Firm tries to sell stock_units shares:
+    //add_order_message(trader_id, asset_id, limit_price, quantity)
+    add_order_message(ID, ID, limit_price, quantity);
+    printf("quantity: %d\n\t", quantity);
+    getchar();
+    
     return 0;
 }
 
@@ -638,14 +653,43 @@ int Firm_compute_and_send_stock_orders_dummy()
  * \fn Firm_read_stock_transactions()
  * \brief Function to read order_status messages from the clearinghouse, and update the firm's trading account.
  */
-int Firm_read_stock_transactions_dummy()
+int Firm_read_stock_transactions()
 {
+    double finances;
+ 
+    printf("** Firm_read_stock_transactions **\n\t");
     
-    //Short-cut for Hybrid model:
-    //Assume:
-    //All external financial needs are satisfied by the asset market
-    PAYMENT_ACCOUNT += EXTERNAL_FINANCIAL_NEEDS;
-    EXTERNAL_FINANCIAL_NEEDS =0.0;
+    //Before updating the share count
+    PREVIOUS_SHARES_OUTSTANDING = CURRENT_SHARES_OUTSTANDING;
+     if (EXTERNAL_FINANCIAL_NEEDS < 0.0)
+    {
+    EXTERNAL_FINANCIAL_NEEDS = 0.0;
+    }
+    printf("PREVIOUS_SHARES_OUTSTANDING: %f\n\t",PREVIOUS_SHARES_OUTSTANDING);
+    
+    START_ORDER_STATUS_MESSAGE_LOOP
+    if (ID == order_status_message->trader_id)
+    {
+        //Finances obtained: positive quantity is demand (buying), negative quantity is supply (selling)
+        finances = (-1)*order_status_message->price
+                * order_status_message->quantity;
+    
+        CURRENT_SHARES_OUTSTANDING += (-1)*order_status_message->quantity;
+    
+        printf("CURRENT_SHARES_OUTSTANDING: %f\n\t",CURRENT_SHARES_OUTSTANDING);
+        printf("finances: %f\n\t",finances);
+    
+        //Increase payment account with the finances obtained
+        PAYMENT_ACCOUNT += finances;
+    
+        //Decrease external financial needs with the finances obtained
+        EXTERNAL_FINANCIAL_NEEDS -= finances;
+    }
+    FINISH_ORDER_STATUS_MESSAGE_LOOP
+    
+    printf("PAYMENT_ACCOUNT: %f\n\t",PAYMENT_ACCOUNT);
+    printf("EXTERNAL_FINANCIAL_NEEDS: %f\n\t",EXTERNAL_FINANCIAL_NEEDS);
+    getchar();
     
     
     return 0;
