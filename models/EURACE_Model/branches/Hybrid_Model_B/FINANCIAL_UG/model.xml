@@ -372,7 +372,7 @@
     <function>
      <name>Household_receive_info_interest_from_bank</name>
      <description></description>
-     <currentState>start_Household_financial_market_role</currentState>
+     <currentState>Household_Start_Financial_Market_Role</currentState>
      <nextState>SELECTSTRATEGY</nextState>
      <inputs>
       <input>
@@ -435,7 +435,7 @@
      <name>Household_does_not_trading</name>
      <description></description>
      <currentState>CHOOSE_TO_TRADE_OR_NOT</currentState>
-     <nextState>Start_Household_Labour_Role</nextState>
+     <nextState>Household_Start_Labour_Role</nextState>
      <condition>
       <lhs>
        <value>a.strategy</value>
