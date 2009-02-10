@@ -7,8 +7,6 @@
 //#include "Government_agent_header.h"
 //#include "../my_library_header.h"
 
-//#define NO_REGIONS_PER_GOV 2 //number of regions per gov
-
 /************Government Role: Finance********************************/
 int Government_idle()
 {
