@@ -140,7 +140,7 @@ void assetUtilitiesToWeights(double_array *assetWeights,double_array *assetUtili
 }  */
 int  Household_select_strategy()
   { 
-    set_strategy(next()<trading_activity);
+    set_strategy(next()<TRADING_ACTIVITY);
     return 0;
   }
 
