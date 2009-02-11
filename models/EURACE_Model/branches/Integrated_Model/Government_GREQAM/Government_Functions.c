@@ -1,11 +1,15 @@
 //For trunk model
+#include <math.h>
 #include "../header.h"
 #include "../Government_agent_header.h"
 
 //For Isolated model
+//#include <math.h>
 //#include "header.h"
 //#include "Government_agent_header.h"
 //#include "../my_library_header.h"
+
+//#define NO_REGIONS_PER_GOV 2 //number of regions per gov
 
 /************Government Role: Finance********************************/
 int Government_idle()
@@ -210,10 +214,10 @@ int Government_monthly_budget_accounting()
     //Monetary policy rule
         TOTAL_MONEY_FINANCING=0;
         TOTAL_BOND_FINANCING=0;
-        if (MONTHLY_BUDGET_BALANCE<0)
+        if (MONTHLY_BUDGET_BALANCE<0.0)
         {
-            TOTAL_MONEY_FINANCING = GOV_POLICY_MONEY_FINANCING_FRACTION*MONTHLY_BUDGET_BALANCE;
-            TOTAL_BOND_FINANCING = (1-GOV_POLICY_MONEY_FINANCING_FRACTION)*MONTHLY_BUDGET_BALANCE;
+            TOTAL_MONEY_FINANCING = GOV_POLICY_MONEY_FINANCING_FRACTION*abs(MONTHLY_BUDGET_BALANCE);
+            TOTAL_BOND_FINANCING = (1-GOV_POLICY_MONEY_FINANCING_FRACTION)*abs(MONTHLY_BUDGET_BALANCE);
         }
     return 0;
 }

@@ -368,6 +368,11 @@
      <name>accounts</name>
      <description></description>
     </variable>
+    <variable>
+     <type>double</type>
+     <name>ecb_interest_rate</name>
+     <description>Base rate of the Central Bank</description>
+    </variable>
    </memory>
    <functions>
     <function>

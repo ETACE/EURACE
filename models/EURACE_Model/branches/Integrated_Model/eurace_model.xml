@@ -271,6 +271,11 @@
      <name>bank_id</name>
      <description></description>
     </variable>
+    <variable>
+     <type>int</type>
+     <name>partition_id</name>
+     <description></description>
+    </variable>
    </memory>
    <functions/>
   </xagent>
@@ -313,6 +318,11 @@
      <name>bank_id</name>
      <description></description>
     </variable>
+    <variable>
+     <type>int</type>
+     <name>partition_id</name>
+     <description></description>
+    </variable>
    </memory>
    <functions/>
   </xagent>
@@ -338,6 +348,11 @@
     <variable>
      <type>int</type>
      <name>no_regions</name>
+     <description></description>
+    </variable>
+    <variable>
+     <type>int</type>
+     <name>partition_id</name>
      <description></description>
     </variable>
    </memory>
@@ -377,6 +392,11 @@
      <name>payment_account</name>
      <description></description>
     </variable>
+    <variable>
+     <type>int</type>
+     <name>partition_id</name>
+     <description></description>
+    </variable>
    </memory>
    <functions/>
   </xagent>
@@ -399,6 +419,11 @@
      <name>no_regions</name>
      <description>Number of regions. Max=30.</description>
     </variable>
+    <variable>
+     <type>int</type>
+     <name>partition_id</name>
+     <description></description>
+    </variable>
    </memory>
    <functions/>
   </xagent>
@@ -419,6 +444,11 @@
     <variable>
      <type>int</type>
      <name>gov_id</name>
+     <description></description>
+    </variable>
+    <variable>
+     <type>int</type>
+     <name>partition_id</name>
      <description></description>
     </variable>
    </memory>
@@ -448,6 +478,16 @@
      <name>day_of_month_to_act</name>
      <description></description>
     </variable>
+    <variable>
+     <type>int</type>
+     <name>region_id</name>
+     <description></description>
+    </variable>
+    <variable>
+     <type>int</type>
+     <name>partition_id</name>
+     <description></description>
+    </variable>
    </memory>
    <functions/>
   </xagent>
@@ -460,6 +500,38 @@
      <name>id</name>
      <description></description>
     </variable>
+    <variable>
+     <type>int</type>
+     <name>region_id</name>
+     <description></description>
+    </variable>
+    <variable>
+     <type>int</type>
+     <name>partition_id</name>
+     <description></description>
+    </variable>
+   </memory>
+   <functions/>
+  </xagent>
+  <xagent>
+   <name>Clearinghouse</name>
+   <description></description>
+   <memory>
+    <variable>
+     <type>int</type>
+     <name>id</name>
+     <description></description>
+    </variable>
+    <variable>
+     <type>int</type>
+     <name>region_id</name>
+     <description></description>
+    </variable>
+    <variable>
+     <type>int</type>
+     <name>partition_id</name>
+     <description></description>
+    </variable>
    </memory>
    <functions/>
   </xagent>
@@ -467,7 +539,7 @@
  <messages>
   <message>
    <name>bank_account_update</name>
-   <description>Sent by household. Household informs the bank about the actual&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+   <description>Sent by household. Household informs the bank about the actual&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
  payment account</description>
    <variables>
     <variable>

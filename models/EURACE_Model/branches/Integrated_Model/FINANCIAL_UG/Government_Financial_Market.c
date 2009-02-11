@@ -1,9 +1,10 @@
 #include "../Government_agent_header.h"
 #include "my_library_header.h"
 //#include "../header.h"
+#define BONDS_NEWISSUE_DISCOUNT 0.01
 
 
-int Government_BondIssuing_decision(double gov_deficit)
+int Government_BondIssuing_decision(void)
 { int GovBondNewIssueAmount;
   Bond *bond;
   double limit_price,last_market_price;
@@ -14,7 +15,7 @@ int Government_BondIssuing_decision(double gov_deficit)
     if(bond->maturity_day>CURRENTDAY)
          last_market_price=lastPriceBond(bond);
 limit_price = (1-BONDS_NEWISSUE_DISCOUNT)*last_market_price;
-GovBondNewIssueAmount = (int) abs(gov_deficit)/limit_price;
+GovBondNewIssueAmount = (int) TOTAL_BOND_FINANCING/limit_price;
 //printf("sono qui%f\n",last_market_price);
 return GovBondNewIssueAmount;
 
@@ -38,7 +39,7 @@ int Government_orders_issuing(void)
    }
 int Government_generate_pending_orders(void)
     {int  qty,issuer;
-     double  GovBondsInPortfolioValue,lastMarketPrice,GovDeficit,GovBondNewIssueAmount;
+     double  GovBondsInPortfolioValue,lastMarketPrice,GovBondNewIssueAmount;
      Bond *bond;
      Order *pending_order;
      int limitPrice;
@@ -54,9 +55,7 @@ int Government_generate_pending_orders(void)
      GovBondsInPortfolioValue = GovBondsInPortfolioValue + qty*lastMarketPrice;
 if ((payment_account+GovBondsInPortfolioValue)<0)
    {
-    GovDeficit = payment_account+GovBondsInPortfolioValue;
-    set_deficit(GovDeficit);
-    GovBondNewIssueAmount=Government_BondIssuing_decision(GovDeficit);
+    GovBondNewIssueAmount=Government_BondIssuing_decision();
     bond->quantity = bond->quantity + GovBondNewIssueAmount;
     bond->nr_outstanding= bond->nr_outstanding +GovBondNewIssueAmount;
     lastMarketPrice = lastPriceBond(bond);
