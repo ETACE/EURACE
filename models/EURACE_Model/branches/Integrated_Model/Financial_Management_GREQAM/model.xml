@@ -408,7 +408,11 @@ Also sets the active flag to 0 and starts the bankruptcy idle counter.&#xd;&#xd;
      <description>Function to read order_status messages from the clearinghouse, and update the firm's trading account.</description>
      <currentState>0003</currentState>
      <nextState>End_Firm_Financial_Role</nextState>
-     <inputs/>
+     <inputs>
+      <input>
+       <messageName>order_status</messageName>
+      </input>
+     </inputs>
      <outputs/>
     </function>
     <function>
@@ -686,7 +690,11 @@ Note that a negative count means the financing condition has not been yet satisf
      <description>Function to read order_status messages from the clearinghouse, and update the firm's trading account.</description>
      <currentState>Firm_bankrupty_state_2</currentState>
      <nextState>Firm_bankrupty_state_3</nextState>
-     <inputs/>
+     <inputs>
+      <input>
+       <messageName>order_status</messageName>
+      </input>
+     </inputs>
      <outputs/>
     </function>
     <function>
