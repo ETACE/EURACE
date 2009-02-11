@@ -67,20 +67,13 @@ int Firm_receive_stock_info(void)
 {  Stock *stock;
    stock =get_stock();
   
-   m_infoAssetCH  *current;
-   
    START_INFOASSETCH_MESSAGE_LOOP
-   /*current=get_first_infoAssetCH_message();
-   while(current)
-  {*/   
        if(ID==infoAssetCH_message->asset_id) 
           {  
              CURRENT_SHARE_PRICE = infoAssetCH_message->price;
              addPriceStock(stock,CURRENT_SHARE_PRICE);
              
           }
-       /*current=get_first_infoAssetCH_message();*/
-   /*}*/
    FINISH_INFOASSETCH_MESSAGE_LOOP
    
    return 0;
