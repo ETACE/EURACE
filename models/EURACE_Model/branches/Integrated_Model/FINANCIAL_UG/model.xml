@@ -633,11 +633,6 @@
      <name>pending_order</name>
      <description></description>
     </variable>
-    <variable>
-     <type>double</type>
-     <name>deficit</name>
-     <description></description>
-    </variable>
    </memory>
    <functions>
     <function>
