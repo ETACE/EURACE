@@ -98,12 +98,10 @@ void historicalReturnsBond(Bond *bond, double *vect, int backwardWindow,double f
 int  coupons_payment_days(Bond *bond,int currentDay,int holding_period)
 { 
    int nrCoupons;
-   int HorizonDay;
    int coupon_day_period;
    int issue_day;
    issue_day=bond->issue_day;
    coupon_day_period=(int)DAYINMONTH*COUPONPERIODICITYNRMONTHS;
-//printf("sono qui%d\n",coupon_day_period);
    nrCoupons= ((currentDay+issue_day+holding_period)/coupon_day_period)-(currentDay+issue_day)/coupon_day_period;
    return nrCoupons;
 }
@@ -124,3 +122,4 @@ double computeBondUtilityFunction(Bond *bond,int backwardWindow, double factor, 
   return utility/backwardWindow;
 
 }
+

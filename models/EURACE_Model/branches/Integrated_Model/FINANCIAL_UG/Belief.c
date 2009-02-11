@@ -137,7 +137,7 @@ void  bondBeliefFormation(Belief *belief, Bond *bond,int backwardWindow,int forw
   double random_return_weight_bond;
   double chartist_return_weight_bond;
   double fundamentalReturn,aux;
-  double factor,value,coupon_yield,coupon_yield_annualized,priceReturns,volatility,returns_avg,randomReturn;
+  double factor,value,coupon_yield,coupon_yield_annualized,volatility,returns_avg,randomReturn;
 
 
   holding_period=holdingPeriodToForwardW*forwardWindow;
