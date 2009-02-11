@@ -209,7 +209,6 @@ void runClearing(ClearingMechanism *aClearing)
     aClearing->lastPrice=price;
     demand=aggregateDemand(aClearing,price);
     supply=aggregateSupply(aClearing,price);
-    printf("former price %f supply %d demand %d\n",price,supply,demand);
     aClearing->quantity=min(supply,demand);
     ordersMacthing(buyorders, price,1);
     ordersMacthing(sellorders, price,-1);

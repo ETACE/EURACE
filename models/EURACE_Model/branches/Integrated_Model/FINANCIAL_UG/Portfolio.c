@@ -32,16 +32,14 @@ int i;
        size=sizeCAsset(assets);
        index=findCAsset(assets,assetId);
        currentAsset=elementAtCAsset(assets,index);
-       printf(" current asset: %d\n\t quantity (pre-execution): %d", currentAsset->id, currentAsset->quantity);
        currentAsset->quantity=currentAsset->quantity+quantity;
-       printf(" current asset: %d\n\t quantity (post-execution): %d", currentAsset->id, currentAsset->quantity);
        size=sizeCOrder(pending);
        index=findCOrder(pending,assetId);
                        if(index>-1)
                        { order=elementAtCOrder(pending,index);
                          order->quantity=order->quantity-quantity;
                         }
-       else  {printf("assetId =%d size= %d",assetId,size);}
+                        else  {printf("assetId =%d size= %d",assetId,size);}
        
     
 }
