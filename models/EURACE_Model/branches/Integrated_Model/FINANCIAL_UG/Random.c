@@ -35,7 +35,6 @@ void initializeRandom()
     q = quo(m ,a);
     r = fmod(m ,a);
     seed=2345678901.0+clock();//( double ) clock() ;
-    printf("valore %f",seed);
     next();
 }
 

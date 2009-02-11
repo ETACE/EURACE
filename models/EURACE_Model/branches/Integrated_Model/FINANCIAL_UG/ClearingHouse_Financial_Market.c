@@ -24,9 +24,6 @@ void receiveOrderOnAsset(ClearingMechanism *mechanism, Asset *anAsset)
      }
    
      FINISH_ORDER_MESSAGE_LOOP
-//getchar();
-//getchar();
- //printf("finito di ricevere");
 }
 
 
@@ -72,7 +69,6 @@ void sendOrderStatus(ClearingMechanism *clearm)
 int ClearingHouse_receive_orders_and_run()
 { int size,i;
   ClearingMechanism *mechanism;
-  printf("numero di asset---- %d\n",size);
   //mechanism=newClearing();
   mechanism=&CLEARINGMECHANISM;
   Asset_array *assets;
@@ -84,7 +80,6 @@ int ClearingHouse_receive_orders_and_run()
   {
    asset=elementAtCAsset(assets,i);
    emptyClearing(mechanism);
-   printf("asset id = %d\n",asset->id);
    receiveOrderOnAsset(mechanism, asset);
 
    computeAssetPrice(mechanism, asset);
