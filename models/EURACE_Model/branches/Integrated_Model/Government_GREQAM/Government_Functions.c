@@ -181,7 +181,7 @@ int Government_monthly_budget_accounting()
     double in, out;
 
     //Compute the following: the interest rate is the base rate of the Central Bank
-    GOV_INTEREST_RATE = (double) 0.05/12.0;
+    //GOV_INTEREST_RATE = (double) 0.05/12.0;
     //GOV_INTEREST_RATE = CB_BASE_RATE/12.0;
     
     //Items that have already been added to the payment_account
@@ -247,7 +247,7 @@ int Government_yearly_budget_accounting()
     double in, out;
 
     //Compute the following:
-    GOV_INTEREST_RATE = 0.05;
+   // GOV_INTEREST_RATE = 0.05;
     //GOV_INTEREST_RATE = CB_BASE_RATE;
 
     //Items that have already been added to the payment_account
@@ -315,8 +315,10 @@ int Government_read_data_from_Eurostat()
     COUNTRY_WIDE_MEAN_WAGE = COUNTRY_WIDE_MEAN_WAGE/NO_REGIONS_PER_GOV;
     
     //Set GDP growth rate
-    GDP_GROWTH = GDP/old_gdp;
-
+    if (old_gdp > 0.0)
+    	GDP_GROWTH = GDP/old_gdp;
+    else GDP_GROWTH = 1.0; 
+    	
     return 0;   
 }
 
