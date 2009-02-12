@@ -191,7 +191,27 @@
    <variable>
     <type>int</type>
     <name>days_per_month</name>
+    <description>Optional setting for the number of days in a month.</description>
+   </variable>
+   <variable>
+    <type>int</type>
+    <name>const_number_of_banks</name>
+    <description>Total number of banks.</description>
+   </variable>
+   <variable>
+    <type>int</type>
+    <name>const_installment_periods</name>
     <description></description>
+   </variable>
+   <variable>
+    <type>double</type>
+    <name>const_wage_wealth_ratio</name>
+    <description>The household's initial ratio between wage and wealth. This parametrises the link between the unit price of capital and the unit price of labour.</description>
+   </variable>
+   <variable>
+    <type>double</type>
+    <name>const_firm_leverage</name>
+    <description>Initial leverage (debt/equity ratio) of each firm.</description>
    </variable>
   </constants>
   <functionFiles>
@@ -539,7 +559,7 @@
  <messages>
   <message>
    <name>bank_account_update</name>
-   <description>Sent by household. Household informs the bank about the actual&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+   <description>Sent by household. Household informs the bank about the actual&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
  payment account</description>
    <variables>
     <variable>

@@ -7,10 +7,7 @@
         double e, c, d, r, i;
         double bankruptcy_prob;
         double credit_allowed;
-        
-        
-    
-    
+            
         if(BCE_DEBT==0.0) 
         {
                 
@@ -24,12 +21,14 @@
                 if ( VALUE_AT_RISK+r <= ALFA*EQUITY ) 
                 {
                     credit_allowed = c;
-        
+                    if (credit_allowed<0)
+                        printf("\n ERROR in function bank_decide_credit_condition: credit_allowed = %2.5f\n ", credit_allowed);
                 }
                 else 
                 {
                     credit_allowed = (ALFA*EQUITY - VALUE_AT_RISK)/bankruptcy_prob;
-        
+                    if (credit_allowed<0)
+                        printf("\n ERROR in function bank_decide_credit_condition: credit_allowed = %2.5f\n ", credit_allowed);                
                 }
                 i = MIN_INTEREST + BANK_GAMMA[0]*r*(((double)rand()/(double)RAND_MAX)*0.01);
                 
