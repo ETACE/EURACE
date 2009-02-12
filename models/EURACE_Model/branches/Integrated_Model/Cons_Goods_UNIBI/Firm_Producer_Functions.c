@@ -30,7 +30,7 @@ int Firm_calc_input_demands_2()
         {
     
             temp_capital_demand = PLANNED_PRODUCTION_QUANTITY * 
-            (pow((BETA*MEAN_WAGE*(1.04))/((DEPRECIATION_RATE*ACTUAL_CAP_PRICE)*ALPHA),ALPHA)/
+            (pow((BETA*MEAN_WAGE*(1.04))/((ACTUAL_CAP_PRICE/CONST_INSTALLMENT_PERIODS)*ALPHA),ALPHA)/
             MEAN_SPECIFIC_SKILLS);
             
             /*Smoothing of capital good demand*/
@@ -52,7 +52,7 @@ int Firm_calc_input_demands_2()
         else
         {
             temp_capital_demand = PLANNED_PRODUCTION_QUANTITY * 
-            (pow((BETA*MEAN_WAGE*(1.04))/   ((DEPRECIATION_RATE*ACTUAL_CAP_PRICE)*ALPHA),ALPHA)/
+            (pow((BETA*MEAN_WAGE*(1.04))/   ((ACTUAL_CAP_PRICE/CONST_INSTALLMENT_PERIODS)*ALPHA),ALPHA)/
             TECHNOLOGY);
 
             /*Smoothing of capital good demand*/
@@ -304,7 +304,7 @@ int Firm_calc_input_demands()
         {
     
             temp_capital_demand = PLANNED_PRODUCTION_QUANTITY * 
-            (pow((BETA*MEAN_WAGE*(1.04))/((DEPRECIATION_RATE*ACTUAL_CAP_PRICE)*ALPHA),ALPHA)/
+            (pow((BETA*MEAN_WAGE*(1.04))/((ACTUAL_CAP_PRICE/CONST_INSTALLMENT_PERIODS)*ALPHA),ALPHA)/
             MEAN_SPECIFIC_SKILLS);
             
             /*Smoothing of capital good demand*/
@@ -327,7 +327,7 @@ int Firm_calc_input_demands()
         else
         {
             temp_capital_demand = PLANNED_PRODUCTION_QUANTITY * 
-            (pow((BETA*MEAN_WAGE*(1.04))/   ((DEPRECIATION_RATE*ACTUAL_CAP_PRICE)*ALPHA),ALPHA)/
+            (pow((BETA*MEAN_WAGE*(1.04))/   ((ACTUAL_CAP_PRICE/CONST_INSTALLMENT_PERIODS)*ALPHA),ALPHA)/
             TECHNOLOGY);
             
                 /*Smoothing of capital good demand*/
@@ -515,7 +515,7 @@ int Firm_receive_capital_goods()
     FINISH_CAPITAL_GOOD_DELIVERY_MESSAGE_LOOP
         if(CAPITAL_COSTS>0.0)
         {
-        add_financing_capital(&CAPITAL_FINANCING,CAPITAL_COSTS/PERIODS_TO_REPAY_LOANS,PERIODS_TO_REPAY_LOANS);
+        add_financing_capital(&CAPITAL_FINANCING,CAPITAL_COSTS/CONST_INSTALLMENT_PERIODS,CONST_INSTALLMENT_PERIODS);
         }
 return 0;
 }
