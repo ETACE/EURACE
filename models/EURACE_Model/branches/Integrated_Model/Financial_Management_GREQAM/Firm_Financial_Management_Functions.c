@@ -46,6 +46,9 @@ int Firm_compute_financial_payments()
     TOTAL_DEBT=0.0;
     for (i=0; i<imax; i++)
     {
+        if(LOANS.array[i].loan_value < 0.0)
+            printf("\n ERROR in function Firm_compute_financial_payments: loan_value is NEGATIVE.\n ");
+        
         //compute current total debt
         TOTAL_DEBT += LOANS.array[i].loan_value;
 
@@ -405,8 +408,20 @@ int Firm_execute_financial_payments()
 
         //decrease the value of the loan with the debt_installment_payment:
         LOANS.array[i].loan_value -= LOANS.array[i].installment_amount;
+        
         //printf("Now subtracted debt_installment_payment from loan_value: %f (new value:%f).\n", LOANS.array[i].debt_installment_payment, LOANS.array[i].loan_value);
 
+        //check that the loan value does not go negative:
+        if(LOANS.array[i].loan_value <0.0)
+        {
+            printf("\n ERROR in function Firm_execute_financial_payments, line 416:"
+             "loan value = %2.5f,"
+             "installment_amount = %2.5f."
+             "Corrected negative loan value to zero. \n", LOANS.array[i].loan_value, LOANS.array[i].installment_amount);
+
+            LOANS.array[i].loan_value =0.0;
+        }
+        
         //compute current total debt
         TOTAL_DEBT += LOANS.array[i].loan_value;
 
@@ -422,11 +437,16 @@ int Firm_execute_financial_payments()
                 LOANS.array[i].installment_amount, temp_interest,
                 LOANS.array[i].var_per_installment);
 
-        //If nr_periods_before_maturity == 0, remove the loan item
-        if (LOANS.array[i].nr_periods_before_repayment==1)
+        //If nr_periods_before_maturity == 2, remove the loan item. This is because we set the total nr of payments to
+        // +1, such that 
+        if (LOANS.array[i].nr_periods_before_repayment==2)
             remove_debt_item(&LOANS, i);
         else
             LOANS.array[i].nr_periods_before_repayment -= 1;
+            
+        if (LOANS.array[i].nr_periods_before_repayment==1)
+            printf("\n ERROR in function Firm_execute_financial_payments, line 442: nr_periods_before_repayment. \n");
+
     }
     
     //step 3: actual dividend payments
