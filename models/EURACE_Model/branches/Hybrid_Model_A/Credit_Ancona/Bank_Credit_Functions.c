@@ -20,7 +20,8 @@
                 c = loan_request_message->external_financial_needs;
                 bankruptcy_prob = 1-exp(-(d+c)/e);
                 r = bankruptcy_prob*c/e;
-        
+        if (EQUITY>=0)
+           {
                 if ( VALUE_AT_RISK+r <= ALFA*EQUITY ) 
                 {
                     credit_allowed = c;
@@ -32,8 +33,9 @@
         
                 }
                 i = MIN_INTEREST + BANK_GAMMA[0]*r*(((double)rand()/(double)RAND_MAX)*0.01);
-                
+                printf("\n in function bank_decide_credit_condition: credit_allowed = %2.5f\n ", credit_allowed);
                     add_loan_conditions_message(loan_request_message->firm_id, ID, i, credit_allowed,  r*(c/credit_allowed));
+            }
             FINISH_LOAN_REQUEST_MESSAGE_LOOP
         }
         
