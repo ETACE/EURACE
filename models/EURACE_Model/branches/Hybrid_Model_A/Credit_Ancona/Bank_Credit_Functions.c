@@ -174,16 +174,16 @@
          // tax and dividends payment
          if (PROFITS[0]>0)
          {
-             tax_bank = TAX_RATE_CORPORATE*PROFITS[0]; 
+             tax_bank = 0.9*PROFITS[0]; //TAX_RATE_CORPORATE  We do not want bank to accumulate too much money...
              PROFITS[0] -= tax_bank;
              EQUITY -= tax_bank;  
              CASH -= tax_bank; 
              add_tax_payment_message(GOV_ID, tax_bank);  
-             total_dividends = BANK_DIVIDEND_RATE*PROFITS[0];  
-             dividend_per_share = total_dividends/NUMBER_OF_SHARES; 
-             EQUITY -= total_dividends;     
-             CASH -= total_dividends;      
-             add_dividend_per_share_message(ID, dividend_per_share);                  
+             //total_dividends = BANK_DIVIDEND_RATE*PROFITS[0];     When Mario will...
+             //dividend_per_share = total_dividends/NUMBER_OF_SHARES; 
+             //EQUITY -= total_dividends;     
+             //CASH -= total_dividends;      
+             //add_dividend_per_share_message(ID, dividend_per_share);                  
          }
      
          if (CASH < 0) //if money is not enough, increase BCE debt
