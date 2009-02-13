@@ -399,52 +399,57 @@ int Firm_execute_financial_payments()
 
     for (i=0; i<imax; i++)
     {
-        //decrease payment_account with the interest_payment
-        temp_interest=LOANS.array[i].interest_rate*LOANS.array[i].loan_value;
-        PAYMENT_ACCOUNT -= temp_interest;
-
-        //decrease payment_account with the installment payment
-        PAYMENT_ACCOUNT -= LOANS.array[i].installment_amount;
-
-        //decrease the value of the loan with the debt_installment_payment:
-        LOANS.array[i].loan_value -= LOANS.array[i].installment_amount;
-        
-        //printf("Now subtracted debt_installment_payment from loan_value: %f (new value:%f).\n", LOANS.array[i].debt_installment_payment, LOANS.array[i].loan_value);
-
-        //check that the loan value does not go negative:
-        if(LOANS.array[i].loan_value <0.0)
-        {
-            printf("\n ERROR in function Firm_execute_financial_payments, line 416:"
-             "loan value = %2.5f,"
-             "installment_amount = %2.5f."
-             "Corrected negative loan value to zero. \n", LOANS.array[i].loan_value, LOANS.array[i].installment_amount);
-
-            LOANS.array[i].loan_value =0.0;
-        }
-        
-        //compute current total debt
-        TOTAL_DEBT += LOANS.array[i].loan_value;
-
-        //decrease the residual_var of the loan with the var_per_installment:
-        LOANS.array[i].residual_var -= LOANS.array[i].var_per_installment;
-
-        //Sending debt_installment_payment_msg to all banks at which the firm has a loan
-        //Note: this message is to be separated from the general bank_account_update_message send at the end of the period
-        //to the firm's deposit bank (the banks at which the firm has loans is a different one than the bank at which the firm has deposits).
-
-        //add_installment_message(bank_id, installment_amount, interest_amount, var_per_installment)
-        add_installment_message(LOANS.array[i].bank_id,
-                LOANS.array[i].installment_amount, temp_interest,
-                LOANS.array[i].var_per_installment);
-
+    	
+    	//decrease payment_account with the interest_payment
+    	if(LOANS.array[i].nr_periods_before_repayment!=CONST_INSTALLMENT_PERIODS+1)
+    	{
+	        //decrease payment_account with the interest_payment
+	        temp_interest=LOANS.array[i].interest_rate*LOANS.array[i].loan_value;
+	        PAYMENT_ACCOUNT -= temp_interest;
+	
+	        //decrease payment_account with the installment payment
+	        PAYMENT_ACCOUNT -= LOANS.array[i].installment_amount;
+	
+	        //decrease the value of the loan with the debt_installment_payment:
+	        LOANS.array[i].loan_value -= LOANS.array[i].installment_amount;
+	        
+	        //printf("Now subtracted debt_installment_payment from loan_value: %f (new value:%f).\n", LOANS.array[i].debt_installment_payment, LOANS.array[i].loan_value);
+	
+	        //check that the loan value does not go negative:
+	        if(LOANS.array[i].loan_value <0.0)
+	        {
+	            printf("\n ERROR in function Firm_execute_financial_payments, line 416:"
+	             "loan value = %2.5f,"
+	             "installment_amount = %2.5f."
+	             "Corrected negative loan value to zero. \n", LOANS.array[i].loan_value, LOANS.array[i].installment_amount);
+	
+	            LOANS.array[i].loan_value =0.0;
+	        }
+	        
+	        //compute current total debt
+	        TOTAL_DEBT += LOANS.array[i].loan_value;
+	
+	        //decrease the residual_var of the loan with the var_per_installment:
+	        LOANS.array[i].residual_var -= LOANS.array[i].var_per_installment;
+	
+	        //Sending debt_installment_payment_msg to all banks at which the firm has a loan
+	        //Note: this message is to be separated from the general bank_account_update_message send at the end of the period
+	        //to the firm's deposit bank (the banks at which the firm has loans is a different one than the bank at which the firm has deposits).
+	
+	        //add_installment_message(bank_id, installment_amount, interest_amount, var_per_installment)
+	        add_installment_message(LOANS.array[i].bank_id,
+	                LOANS.array[i].installment_amount, temp_interest,
+	                LOANS.array[i].var_per_installment);
+    	}
+    	
         //If nr_periods_before_maturity == 2, remove the loan item. This is because we set the total nr of payments to
         // +1, such that 
-        if (LOANS.array[i].nr_periods_before_repayment==2)
+        if (LOANS.array[i].nr_periods_before_repayment==0)
             remove_debt_item(&LOANS, i);
         else
             LOANS.array[i].nr_periods_before_repayment -= 1;
             
-        if (LOANS.array[i].nr_periods_before_repayment==1)
+        if (LOANS.array[i].nr_periods_before_repayment==-1)
             printf("\n ERROR in function Firm_execute_financial_payments, line 442: nr_periods_before_repayment. \n");
 
     }

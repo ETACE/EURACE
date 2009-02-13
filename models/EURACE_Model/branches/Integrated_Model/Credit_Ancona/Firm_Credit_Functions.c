@@ -154,7 +154,7 @@ int Firm_get_loan()
             
             residual_var =var_per_installment*CONST_INSTALLMENT_PERIODS;// value_at_risk_array[rate_order_array[primo]]*(credit_offer_array[rate_order_array[primo]]/credit_accepted);
             bad_debt = 0.0;
-            nr_periods_before_repayment=CONST_INSTALLMENT_PERIODS;
+            nr_periods_before_repayment=CONST_INSTALLMENT_PERIODS+1;
             
             //ADD LOAN
             if(loan_value < 0.0)
