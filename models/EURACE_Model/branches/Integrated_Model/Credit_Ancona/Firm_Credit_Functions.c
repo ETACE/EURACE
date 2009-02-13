@@ -141,7 +141,7 @@ int Firm_get_loan()
             total_credit_taken += credit_accepted;                  
             bank_id = rate_order_array[primo];
             loan_value = credit_accepted;
-            interest_rate = pow(1+interest_array[primo]),(1/12.0)) - 1; //transform the annual interest in monthly interest
+            interest_rate = interest_array[primo];
             installment_amount = credit_accepted/CONST_INSTALLMENT_PERIODS;
             interest_amount=interest_rate*installment_amount;
                 
