@@ -144,7 +144,7 @@
     </variable>
     <variable>
      <type>double</type>
-     <name>bce_debt</name>
+     <name>ecb_debt</name>
      <description></description>
     </variable>
     <variable>
@@ -155,11 +155,6 @@
     <variable>
      <type>double</type>
      <name>value_at_risk</name>
-     <description></description>
-    </variable>
-    <variable>
-     <type>double</type>
-     <name>min_interest</name>
      <description></description>
     </variable>
     <variable>
@@ -179,7 +174,7 @@
     </variable>
     <variable>
      <type>double</type>
-     <name>bce_interest</name>
+     <name>ecb_interest_rate</name>
      <description></description>
     </variable>
     <variable>
@@ -372,6 +367,22 @@
      <type>double</type>
      <name>ecb_interest_rate</name>
      <description>Base rate of the Central Bank</description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>equity</name>
+     <description>The ECB equity is the account to collect the interest payments from the banks and the government bond interest rate payments.
+The equity of ECB is paid out to all governments as dividends, in proportion to their population.</description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>total_dividend_payment</name>
+     <description>The equity of ECB is paid out to all governments as dividends, in proportion to their population.</description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>total_ecb_debt</name>
+     <description>This is the sum of all the ECB_debts of the banks, on the ECB's balance sheet.</description>
     </variable>
    </memory>
    <functions>
