@@ -1,1 +1,1 @@
-gcc -g -I../../libmboard/include -L../../libmboard/lib unittest.c ../../memory.c ../../rules.c ../../messageboards.c ../Mall_Functions.c ../Mall_aux_functions.c Mall_unittests.c -lm -lcunit -lmboard_s 
+gcc -std=c99 -D_DEBUG_MODE -g -I../../libmboard/include -L unittest.c ../../memory.c ../../rules.c ../../messageboards.c ../Mall_aux_functions.c ../../my_library_functions.c ../Firm_Producer_Functions.c unittest_Firm.c -lm -lcunit -lmboard_s
