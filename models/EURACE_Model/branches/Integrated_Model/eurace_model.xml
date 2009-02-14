@@ -119,7 +119,7 @@
     <description>0.2, Cost of working in a different region: commuting costs.</description>
    </variable>
    <variable>
-    <type>int</type>
+    <type>double</type>
     <name>inventory_costs_per_unit</name>
     <description>2, Administrative cost of storing one unit for one period.</description>
    </variable>
@@ -144,7 +144,7 @@
     <description>10, Planning horizon of firms</description>
    </variable>
    <variable>
-    <type>int</type>
+    <type>double</type>
     <name>inv_inertia</name>
     <description>3</description>
    </variable>
@@ -154,12 +154,12 @@
     <description>0.05</description>
    </variable>
    <variable>
-    <type>int</type>
+    <type>double</type>
     <name>delivery_prob_if_critical_stock_0</name>
     <description>25, Probability for the delivery if the critical stock of one mall was zero for the last periods.</description>
    </variable>
    <variable>
-    <type>int</type>
+    <type>double</type>
     <name>innovation_probability</name>
     <description>10</description>
    </variable>
@@ -554,7 +554,7 @@
  <messages>
   <message>
    <name>bank_account_update</name>
-   <description>Sent by household. Household informs the bank about the actual&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+   <description>Sent by household. Household informs the bank about the actual&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
  payment account</description>
    <variables>
     <variable>
