@@ -18,7 +18,7 @@
                 bankruptcy_prob = 1-exp(-(d+c)/e);
                 r = bankruptcy_prob*c/e;
         
-                if ( VALUE_AT_RISK+r <= ALFA*EQUITY ) 
+                if ( VALUE_AT_RISK+r <= BANK_GAMMA[0]*ALFA*EQUITY )  //Instead of ALFA*EQUITY 
                 {
                     credit_allowed = c;
                     if (credit_allowed<0)
@@ -26,7 +26,7 @@
                 }
                 else 
                 {
-                    credit_allowed = max(0,(ALFA*EQUITY - VALUE_AT_RISK)/bankruptcy_prob);  
+                    credit_allowed = max(0,(BANK_GAMMA[0]*ALFA*EQUITY - VALUE_AT_RISK)/bankruptcy_prob);  
                     if (credit_allowed<0)
                         printf("\n ERROR in function bank_decide_credit_condition: credit_allowed = %2.5f\n ", credit_allowed);                
                 }
@@ -161,7 +161,7 @@
          q=BANK_GAMMA[0]; 
          c=BANK_GAMMA[1];
          BANK_GAMMA[1]= q;
-         BANK_GAMMA[0]=(q+(BANK_LAMBDA*(q-c)*gro)+(((double)rand()/(double)RAND_MAX)*0.01));
+         BANK_GAMMA[0]=(q+(BANK_LAMBDA*(q-c)*gro)+(((double)rand()/(double)RAND_MAX)*0.01)); //Cambiare formula
      
          if (BANK_GAMMA[0]<0.02)
          {
