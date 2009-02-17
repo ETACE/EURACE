@@ -212,6 +212,36 @@
      <name>deposits</name>
      <description></description>
     </variable>
+    <variable>
+     <type>double</type>
+     <name>firm_loan_installments</name>
+     <description></description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>firm_interest_payments</name>
+     <description></description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>firm_loan_issues</name>
+     <description></description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>ecb_interest_payment</name>
+     <description></description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>dividend_payment</name>
+     <description></description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>tax_payment</name>
+     <description></description>
+    </variable>
    </memory>
    <functions>
     <function>
@@ -316,13 +346,16 @@
       <output>
        <messageName>central_bank_account_update</messageName>
       </output>
+      <output>
+       <messageName>bank_balance_sheet</messageName>
+      </output>
      </outputs>
     </function>
     <function>
      <name>Bank_accounting</name>
      <description></description>
      <currentState>Bank_05</currentState>
-     <nextState>end_Bank_cycle</nextState>
+     <nextState>Bank_06</nextState>
      <condition>
       <time>
        <period>monthly</period>
@@ -352,6 +385,64 @@
      <inputs/>
      <outputs/>
     </function>
+    <function>
+     <name>Bank_send_data_to_Eurostat</name>
+     <description></description>
+     <currentState>Bank_06</currentState>
+     <nextState>end_Bank_cycle</nextState>
+     <condition>
+      <lhs>
+       <time>
+        <period>monthly</period>
+        <phase>0</phase>
+       </time>
+      </lhs>
+      <op>AND</op>
+      <rhs>
+       <lhs>
+        <value>SWITCH_STOCK_CONSISTENCY_CHECK</value>
+       </lhs>
+       <op>EQ</op>
+       <rhs>
+        <value>1</value>
+       </rhs>
+      </rhs>
+     </condition>
+     <inputs/>
+     <outputs>
+      <output>
+       <messageName>bank_balance_sheet</messageName>
+      </output>
+     </outputs>
+    </function>
+    <function>
+     <name>Bank_idle</name>
+     <description></description>
+     <currentState>Bank_06</currentState>
+     <nextState>end_Bank_cycle</nextState>
+     <condition>
+      <lhs>
+       <not>
+        <time>
+         <period>monthly</period>
+         <phase>0</phase>
+        </time>
+       </not>
+      </lhs>
+      <op>OR</op>
+      <rhs>
+       <lhs>
+        <value>SWITCH_STOCK_CONSISTENCY_CHECK</value>
+       </lhs>
+       <op>EQ</op>
+       <rhs>
+        <value>0</value>
+       </rhs>
+      </rhs>
+     </condition>
+     <inputs/>
+     <outputs/>
+    </function>
    </functions>
   </xagent>
   <xagent>
@@ -371,12 +462,12 @@
     <variable>
      <type>double</type>
      <name>equity</name>
-     <description>The ECB equity is the account to collect the interest payments from the banks and the government bond interest rate payments.&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+     <description>The ECB equity is the account to collect the interest payments from the banks and the government bond interest rate payments.&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
 The equity of ECB is paid out to all governments as dividends, in proportion to their population.</description>
     </variable>
     <variable>
      <type>double</type>
-     <name>total_dividend_payment</name>
+     <name>dividend_payment</name>
      <description>The equity of ECB is paid out to all governments as dividends, in proportion to their population.</description>
     </variable>
     <variable>
@@ -390,12 +481,70 @@ The equity of ECB is paid out to all governments as dividends, in proportion to 
      <name>Central_Bank_read_account_update</name>
      <description></description>
      <currentState>start_Central_Bank</currentState>
-     <nextState>end_Central_Bank</nextState>
+     <nextState>01</nextState>
      <inputs>
       <input>
        <messageName>central_bank_account_update</messageName>
       </input>
      </inputs>
+     <outputs/>
+    </function>
+    <function>
+     <name>Central_Bank_send_data_to_Eurostat</name>
+     <description></description>
+     <currentState>01</currentState>
+     <nextState>end_Central_Bank</nextState>
+     <condition>
+      <lhs>
+       <time>
+        <period>monthly</period>
+        <phase>0</phase>
+       </time>
+      </lhs>
+      <op>AND</op>
+      <rhs>
+       <lhs>
+        <value>SWITCH_STOCK_CONSISTENCY_CHECK</value>
+       </lhs>
+       <op>EQ</op>
+       <rhs>
+        <value>1</value>
+       </rhs>
+      </rhs>
+     </condition>
+     <inputs/>
+     <outputs>
+      <output>
+       <messageName>ecb_balance_sheet</messageName>
+      </output>
+     </outputs>
+    </function>
+    <function>
+     <name>idle</name>
+     <description></description>
+     <currentState>01</currentState>
+     <nextState>end_Central_Bank</nextState>
+     <condition>
+      <lhs>
+       <not>
+        <time>
+         <period>monthly</period>
+         <phase>0</phase>
+        </time>
+       </not>
+      </lhs>
+      <op>OR</op>
+      <rhs>
+       <lhs>
+        <value>SWITCH_STOCK_CONSISTENCY_CHECK</value>
+       </lhs>
+       <op>EQ</op>
+       <rhs>
+        <value>0</value>
+       </rhs>
+      </rhs>
+     </condition>
+     <inputs/>
      <outputs/>
     </function>
    </functions>

@@ -1694,7 +1694,7 @@ int Eurostat_check_flow_consistency()
 	//Checking cash flow consistency requirements
     
     //Revenues
-    //assert(FIRM_BALANCE_SHEETS.flows.cum_revenue >= 0.0);
+    assert(FIRM_BALANCE_SHEETS.flows.cum_revenue >= 0.0);
     
     //Consumption
     //assert((abs(FIRM_BALANCE_SHEETS.flows.cum_revenue - HOUSEHOLD_BALANCE_SHEETS.flows.consumption) < 0.05);

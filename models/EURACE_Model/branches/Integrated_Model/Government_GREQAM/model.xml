@@ -145,12 +145,12 @@
     </variable>
     <variable>
      <type>double</type>
-     <name>monthly_bond_coupon_payment</name>
+     <name>monthly_bond_interest_payment</name>
      <description></description>
     </variable>
     <variable>
      <type>double</type>
-     <name>yearly_bond_coupon_payment</name>
+     <name>yearly_bond_interest_payment</name>
      <description></description>
     </variable>
     <variable>
@@ -291,6 +291,11 @@
     <variable>
      <type>double</type>
      <name>total_liabilities</name>
+     <description></description>
+    </variable>
+    <variable>
+     <type>int</type>
+     <name>nr_bonds_outstanding</name>
      <description></description>
     </variable>
    </memory>
@@ -476,6 +481,9 @@
      <outputs>
       <output>
        <messageName>central_bank_account_update</messageName>
+      </output>
+      <output>
+       <messageName>gov_balance_sheet</messageName>
       </output>
      </outputs>
     </function>
