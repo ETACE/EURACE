@@ -1543,3 +1543,75 @@ int Eurostat_measure_recession()
     
     return 0;
 }
+
+/* \fn: int Eurostat_check_flow_consistency(void)
+ * \brief: Function to check cash flow consistency.
+ */
+int Eurostat_check_flow_consistency()
+{
+	//Reset all counters
+	FIRM_BALANCE_SHEETS.flows.cum_revenue=0.0;
+	
+	//Reading cash flow messages
+	START_FIRM_BALANCE_SHEET_MESSAGE_LOOP
+		FIRM_BALANCE_SHEETS.flows.cum_revenue += firm_balance_sheet_message->cum_revenue;
+	FINISH_FIRM_BALANCE_SHEET_MESSAGE_LOOP
+
+	
+	//Checking cash flow consistency requirements
+
+	//FIRM_BALANCE_SHEETS.flows.cum_revenue - HOUSEHOLD_BALANCE_SHEETS.flows.consumption = 0.0;
+	
+	/*	
+    FIRM_BALANCE_SHEETS.flows.
+    HOUSEHOLD_BALANCE_SHEETS.flows.
+    IGFIRM_BALANCE_SHEETS.flows.
+    GOV_BALANCE_SHEETS.flows.
+    BANK_BALANCE_SHEETS.flows.
+    ECB_BALANCE_SHEETS.flows.
+*/
+	
+    return 0;
+}
+
+/* \fn: int Eurostat_check_stock_consistency(void)
+ * \brief: Function to check the balance sheet stock-flow consistency.
+ */
+int Eurostat_check_stock_consistency()
+{
+	//Reset all counters
+	FIRM_BALANCE_SHEETS.stocks.payment_account=0.0;
+    HOUSEHOLD_BALANCE_SHEETS.stocks.payment_account=0.0;
+    IGFIRM_BALANCE_SHEETS.stocks.payment_account=0.0;
+    GOV_BALANCE_SHEETS.stocks.payment_account=0.0;
+	
+	//Read all balance sheet stock messages
+	START_FIRM_BALANCE_SHEET_MESSAGE_LOOP
+		FIRM_BALANCE_SHEETS.stocks.payment_account += firm_balance_sheet_message->payment_account;
+	FINISH_FIRM_BALANCE_SHEET_MESSAGE_LOOP
+/*	
+	START_HOUSEHOLD_BALANCE_SHEET_MESSAGE_LOOP
+		HOUSEHOLD_BALANCE_SHEETS.stocks.payment_account += household_balance_sheet_message->payment_account;
+	FINISH_HOUSEHOLD_BALANCE_SHEET_MESSAGE_LOOP
+
+	START_IGFIRM_BALANCE_SHEET_MESSAGE_LOOP
+		IGFIRM_BALANCE_SHEETS.stocks.payment_account += igfirm_balance_sheet_message->payment_account;
+	FINISH_IGFIRM_BALANCE_SHEET_MESSAGE_LOOP
+
+	START_GOV_BALANCE_SHEET_MESSAGE_LOOP
+		GOV_BALANCE_SHEETS.stocks.payment_account += gov_balance_sheet_message->payment_account;
+	FINISH_GOV_BALANCE_SHEET_MESSAGE_LOOP
+*/	
+
+	//Check all balance sheet stock consistency requirements
+/*
+	FIRM_BALANCE_SHEETS.stocks.
+    HOUSEHOLD_BALANCE_SHEETS.stocks.
+    IGFIRM_BALANCE_SHEETS.stocks.
+    GOV_BALANCE_SHEETS.stocks.
+    BANK_BALANCE_SHEETS.stocks.
+    ECB_BALANCE_SHEETS.stocks.
+*/
+	
+    return 0;
+}

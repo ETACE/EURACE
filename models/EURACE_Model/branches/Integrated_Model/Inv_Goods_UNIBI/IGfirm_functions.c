@@ -120,7 +120,7 @@ int IGFirm_pay_taxes()
 
 int IGFirm_dividend_payment()
 {
-	CURRENT_DIVIDEND_PER_SHARE = NET_PROFIT / OUTSTANDING_SHARES;
+	CURRENT_DIVIDEND_PER_SHARE = NET_PROFIT / CURRENT_SHARES_OUTSTANDING;
 
 	
 	//add dividend_per_share_msg(firm_id, current_dividend_per_share) to shareholders (dividend per share)     
