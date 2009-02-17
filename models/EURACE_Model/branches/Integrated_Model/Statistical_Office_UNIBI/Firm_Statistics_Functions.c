@@ -3,7 +3,7 @@
 #include "../my_library_header.h"
 
 /** \fn Firm_send_data_to_Eurostat()
- * \brief Firms send data to Market Research: controlling results and creating macro data
+ * \brief Firms send data to Eurostat.
  */
 int Firm_send_data_to_Eurostat()
 {
@@ -22,11 +22,15 @@ int Firm_send_data_to_Eurostat()
 	//printf("In Firm_send_data: Firm %d PLANNED_OUTPUT: %.2f\n", ID, PLANNED_OUTPUT);
 	
 	//Firm_balance_sheet_message is used for the balance sheet accounting (monthly)
-	TOTAL_INCOME = CUM_REVENUE;	
-	add_firm_balance_sheet_message(PAYMENT_ACCOUNT, TOTAL_VALUE_LOCAL_INVENTORY, TOTAL_VALUE_CAPITAL_STOCK,
-            TOTAL_DEBT, CURRENT_SHARES_OUTSTANDING, CUM_REVENUE, LABOUR_COSTS, CAPITAL_COSTS, TAX_PAYMENT,
-            TOTAL_DEBT_INSTALLMENT_PAYMENT, TOTAL_INTEREST_PAYMENT, TOTAL_DIVIDEND_PAYMENT, 
-            TOTAL_ASSETS, TOTAL_LIABILITIES, TOTAL_INCOME, TOTAL_PAYMENTS);
+
+	if (SWITCH_STOCK_CONSISTENCY_CHECK)
+	{
+		TOTAL_INCOME = CUM_REVENUE;	
+		add_firm_balance_sheet_message(PAYMENT_ACCOUNT, TOTAL_VALUE_LOCAL_INVENTORY, TOTAL_VALUE_CAPITAL_STOCK,
+	            TOTAL_DEBT, CURRENT_SHARES_OUTSTANDING, CUM_REVENUE, LABOUR_COSTS, CAPITAL_COSTS, TAX_PAYMENT,
+	            TOTAL_DEBT_INSTALLMENT_PAYMENT, TOTAL_INTEREST_PAYMENT, TOTAL_DIVIDEND_PAYMENT, 
+	            TOTAL_ASSETS, TOTAL_LIABILITIES, TOTAL_INCOME, TOTAL_PAYMENTS);
+	}
 	
 	return 0;
 }
@@ -37,7 +41,16 @@ int Firm_send_payments_to_bank()
 	add_bank_account_update_message(ID, BANK_ID, PAYMENT_ACCOUNT);
 	if(PAYMENT_ACCOUNT<0)
 		printf("PAYMENT_ACCOUNT of Firm %d:  %f \n",ID,PAYMENT_ACCOUNT);
-	
+
+	if (SWITCH_FLOW_CONSISTENCY_CHECK)
+	{
+		TOTAL_INCOME = CUM_REVENUE;	
+		add_firm_balance_sheet_message(PAYMENT_ACCOUNT, TOTAL_VALUE_LOCAL_INVENTORY, TOTAL_VALUE_CAPITAL_STOCK,
+	            TOTAL_DEBT, CURRENT_SHARES_OUTSTANDING, CUM_REVENUE, LABOUR_COSTS, CAPITAL_COSTS, TAX_PAYMENT,
+	            TOTAL_DEBT_INSTALLMENT_PAYMENT, TOTAL_INTEREST_PAYMENT, TOTAL_DIVIDEND_PAYMENT, 
+	            TOTAL_ASSETS, TOTAL_LIABILITIES, TOTAL_INCOME, TOTAL_PAYMENTS);
+	}
+
 	return 0;
 }
 

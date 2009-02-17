@@ -1,3 +1,4 @@
+#include <assert.h>
 #include "../header.h"
 #include "../Eurostat_agent_header.h"
 #include "../my_library_header.h"
@@ -1551,26 +1552,154 @@ int Eurostat_check_flow_consistency()
 {
 	//Reset all counters
 	FIRM_BALANCE_SHEETS.flows.cum_revenue=0.0;
-	
+	FIRM_BALANCE_SHEETS.flows.labour_costs=0.0;
+	FIRM_BALANCE_SHEETS.flows.capital_costs=0.0;
+	FIRM_BALANCE_SHEETS.flows.tax_payment=0.0;
+	FIRM_BALANCE_SHEETS.flows.total_debt_installment_payment=0.0;
+	FIRM_BALANCE_SHEETS.flows.total_interest_payment=0.0;
+	FIRM_BALANCE_SHEETS.flows.total_dividend_payment=0.0;
+	FIRM_BALANCE_SHEETS.flows.total_income=0.0;
+	FIRM_BALANCE_SHEETS.flows.total_expenses=0.0;
+
 	//Reading cash flow messages
 	START_FIRM_BALANCE_SHEET_MESSAGE_LOOP
 		FIRM_BALANCE_SHEETS.flows.cum_revenue += firm_balance_sheet_message->cum_revenue;
-	FINISH_FIRM_BALANCE_SHEET_MESSAGE_LOOP
+		FIRM_BALANCE_SHEETS.flows.labour_costs += firm_balance_sheet_message->labour_costs;
+		FIRM_BALANCE_SHEETS.flows.capital_costs += firm_balance_sheet_message->capital_costs;
+		FIRM_BALANCE_SHEETS.flows.tax_payment += firm_balance_sheet_message->tax_payment;
+		FIRM_BALANCE_SHEETS.flows.total_debt_installment_payment += firm_balance_sheet_message->total_debt_installment_payment;
+		FIRM_BALANCE_SHEETS.flows.total_interest_payment += firm_balance_sheet_message->total_interest_payment;
+		FIRM_BALANCE_SHEETS.flows.total_dividend_payment += firm_balance_sheet_message->total_dividend_payment;
+		FIRM_BALANCE_SHEETS.flows.total_income += firm_balance_sheet_message->total_income;
+		FIRM_BALANCE_SHEETS.flows.total_expenses += firm_balance_sheet_message->total_expenses;
+    FINISH_FIRM_BALANCE_SHEET_MESSAGE_LOOP
+
+/*	
+	//Reset all counters
+	IGFIRM_BALANCE_SHEETS.flows.cum_revenue=0.0;
+	IGFIRM_BALANCE_SHEETS.flows.labour_costs=0.0;
+	IGFIRM_BALANCE_SHEETS.flows.energy_costs=0.0;
+	IGFIRM_BALANCE_SHEETS.flows.tax_payment=0.0;
+	IGFIRM_BALANCE_SHEETS.flows.total_debt_installment_payment=0.0;
+	IGFIRM_BALANCE_SHEETS.flows.total_interest_payment=0.0;
+	IGFIRM_BALANCE_SHEETS.flows.total_dividend_payment=0.0;
+	IGFIRM_BALANCE_SHEETS.flows.total_income=0.0;
+	IGFIRM_BALANCE_SHEETS.flows.total_expenses=0.0;
+
+	//Reading cash flow messages
+	START_IGFIRM_BALANCE_SHEET_MESSAGE_LOOP
+		IGFIRM_BALANCE_SHEETS.flows.cum_revenue += igfirm_balance_sheet_message->cum_revenue;
+		IGFIRM_BALANCE_SHEETS.flows.labour_costs += igfirm_balance_sheet_message->labour_costs;
+		IGFIRM_BALANCE_SHEETS.flows.energy_costs += igfirm_balance_sheet_message->energy_costs;
+		IGFIRM_BALANCE_SHEETS.flows.tax_payment += igfirm_balance_sheet_message->tax_payment;
+		IGFIRM_BALANCE_SHEETS.flows.total_debt_installment_payment += igfirm_balance_sheet_message->total_debt_installment_payment;
+		IGFIRM_BALANCE_SHEETS.flows.total_interest_payment += igfirm_balance_sheet_message->total_interest_payment;
+		IGFIRM_BALANCE_SHEETS.flows.total_dividend_payment += igfirm_balance_sheet_message->total_dividend_payment;
+		IGFIRM_BALANCE_SHEETS.flows.total_income += igfirm_balance_sheet_message->total_income;
+		IGFIRM_BALANCE_SHEETS.flows.total_expenses += igfirm_balance_sheet_message->total_expenses;
+	FINISH_IGFIRM_BALANCE_SHEET_MESSAGE_LOOP
+
+	//Reset all counters
+	HOUSEHOLD_BALANCE_SHEETS.flows.wage=0.0;
+	HOUSEHOLD_BALANCE_SHEETS.flows.gov_interest=0.0;
+	HOUSEHOLD_BALANCE_SHEETS.flows.stock_sales=0.0;
+	HOUSEHOLD_BALANCE_SHEETS.flows.cum_total_dividends=0.0;
+	HOUSEHOLD_BALANCE_SHEETS.flows.consumption=0.0;
+	HOUSEHOLD_BALANCE_SHEETS.flows.tax_payment=0.0;
+	HOUSEHOLD_BALANCE_SHEETS.flows.stock_purchases=0.0;
+	HOUSEHOLD_BALANCE_SHEETS.flows.total_income=0.0;
+	HOUSEHOLD_BALANCE_SHEETS.flows.total_expenses=0.0;
+
+	//Reading cash flow messages
+	START_HOUSEHOLD_BALANCE_SHEET_MESSAGE_LOOP
+		HOUSEHOLD_BALANCE_SHEETS.flows.wage += household_balance_sheet_message->wage;
+		HOUSEHOLD_BALANCE_SHEETS.flows.gov_interest += household_balance_sheet_message->gov_interest;
+		HOUSEHOLD_BALANCE_SHEETS.flows.stock_sales += household_balance_sheet_message->stock_sales;
+		HOUSEHOLD_BALANCE_SHEETS.flows.cum_total_dividends += household_balance_sheet_message->cum_total_dividends;
+		HOUSEHOLD_BALANCE_SHEETS.flows.consumption += household_balance_sheet_message->consumption;
+		HOUSEHOLD_BALANCE_SHEETS.flows.tax_payment += household_balance_sheet_message->tax_payment;
+		HOUSEHOLD_BALANCE_SHEETS.flows.stock_purchases += household_balance_sheet_message->stock_purchases;
+		HOUSEHOLD_BALANCE_SHEETS.flows.total_income += household_balance_sheet_message->total_income;
+		HOUSEHOLD_BALANCE_SHEETS.flows.total_expenses += household_balance_sheet_message->total_expenses;
+	FINISH_HOUSEHOLD_BALANCE_SHEET_MESSAGE_LOOP
+
+	//Reset all counters
+	BANK_BALANCE_SHEETS.flows.firm_loan_installments=0.0;
+	BANK_BALANCE_SHEETS.flows.firm_interest_payments=0.0;
+	BANK_BALANCE_SHEETS.flows.firm_loan_issues=0.0;
+	BANK_BALANCE_SHEETS.flows.ecb_interest_payment=0.0;
+	BANK_BALANCE_SHEETS.flows.dividend_payment=0.0;
+	BANK_BALANCE_SHEETS.flows.tax_payment=0.0;
+	BANK_BALANCE_SHEETS.flows.total_income=0.0;
+	BANK_BALANCE_SHEETS.flows.total_expenses=0.0;
+
+	//Reading cash flow messages
+	START_BANK_BALANCE_SHEET_MESSAGE_LOOP
+		BANK_BALANCE_SHEETS.flows.firm_loan_installments += bank_balance_sheet_message->firm_loan_installments;
+		BANK_BALANCE_SHEETS.flows.firm_interest_payments += bank_balance_sheet_message->firm_interest_payments;
+		BANK_BALANCE_SHEETS.flows.firm_loan_issues += bank_balance_sheet_message->firm_loan_issues;
+		BANK_BALANCE_SHEETS.flows.ecb_interest_payment += bank_balance_sheet_message->ecb_interest_payment;
+		BANK_BALANCE_SHEETS.flows.dividend_payment += bank_balance_sheet_message->dividend_payment;
+		BANK_BALANCE_SHEETS.flows.tax_payment += bank_balance_sheet_message->tax_payment;
+		BANK_BALANCE_SHEETS.flows.total_income += bank_balance_sheet_message->total_income;
+		BANK_BALANCE_SHEETS.flows.total_expenses += bank_balance_sheet_message->total_expenses;
+	FINISH_GBANK_BALANCE_SHEET_MESSAGE_LOOP
+
+	//Reset all counters
+	GOV_BALANCE_SHEETS.flows.monthly_tax_revenues=0.0;
+	GOV_BALANCE_SHEETS.flows.total_bond_financing=0.0;
+	GOV_BALANCE_SHEETS.flows.monthly_investment_expenditure=0.0;
+	GOV_BALANCE_SHEETS.flows.monthly_consumption_expenditure=0.0;
+	GOV_BALANCE_SHEETS.flows.monthly_benefit_payment=0.0;
+	GOV_BALANCE_SHEETS.flows.monthly_subsidy_payment=0.0;
+	GOV_BALANCE_SHEETS.flows.monthly_transfer_payment=0.0;
+	GOV_BALANCE_SHEETS.flows.monthly_bond_interest_payment=0.0;
+	GOV_BALANCE_SHEETS.flows.total_income=0.0;
+	GOV_BALANCE_SHEETS.flows.total_expenses=0.0;
+
+	//Reading cash flow messages
+	START_GOV_BALANCE_SHEET_MESSAGE_LOOP
+		GOV_BALANCE_SHEETS.flows.monthly_tax_revenues += gov_balance_sheet_message->monthly_tax_revenues;
+		GOV_BALANCE_SHEETS.flows.total_bond_financing += gov_balance_sheet_message->total_bond_financing;
+		GOV_BALANCE_SHEETS.flows.monthly_investment_expenditure += gov_balance_sheet_message->monthly_investment_expenditure;
+		GOV_BALANCE_SHEETS.flows.monthly_consumption_expenditure += gov_balance_sheet_message->monthly_consumption_expenditure;
+		GOV_BALANCE_SHEETS.flows.monthly_benefit_payment += gov_balance_sheet_message->monthly_benefit_payment;
+		GOV_BALANCE_SHEETS.flows.monthly_subsidy_payment += gov_balance_sheet_message->monthly_subsidy_payment;
+		GOV_BALANCE_SHEETS.flows.monthly_transfer_payment += gov_balance_sheet_message->monthly_transfer_payment;
+		GOV_BALANCE_SHEETS.flows.monthly_bond_interest_payment += gov_balance_sheet_message->monthly_bond_interest_payment;
+		GOV_BALANCE_SHEETS.flows.total_income += gov_balance_sheet_message->total_income;
+		GOV_BALANCE_SHEETS.flows.total_expenses += gov_balance_sheet_message->total_expenses;
+	FINISH_GOV_BALANCE_SHEET_MESSAGE_LOOP
+
+	//Reset all counters
+	ECB_BALANCE_SHEETS.flows.bank_interest=0.0;
+	ECB_BALANCE_SHEETS.flows.gov_interest=0.0;
+	ECB_BALANCE_SHEETS.flows.gov_bond_purchase=0.0;
+	ECB_BALANCE_SHEETS.flows.dividend_payment=0.0;
+	ECB_BALANCE_SHEETS.flows.total_income=0.0;
+	ECB_BALANCE_SHEETS.flows.total_expenses=0.0;
+
+	//Reading cash flow messages
+	START_ECB_BALANCE_SHEET_MESSAGE_LOOP
+		ECB_BALANCE_SHEETS.flows.bank_interest += ecb_balance_sheet_message->bank_interest;
+		ECB_BALANCE_SHEETS.flows.gov_interest += ecb_balance_sheet_message->gov_interest;
+		ECB_BALANCE_SHEETS.flows.gov_bond_purchase += ecb_balance_sheet_message->gov_bond_purchase;
+		ECB_BALANCE_SHEETS.flows.dividend_payment += ecb_balance_sheet_message->dividend_payment;		
+		ECB_BALANCE_SHEETS.flows.total_income += ecb_balance_sheet_message->total_income;
+		ECB_BALANCE_SHEETS.flows.total_expenses += ecb_balance_sheet_message->total_expenses;
+	FINISH_ECB_BALANCE_SHEET_MESSAGE_LOOP
+*/	
 
 	
 	//Checking cash flow consistency requirements
-
-	//FIRM_BALANCE_SHEETS.flows.cum_revenue - HOUSEHOLD_BALANCE_SHEETS.flows.consumption = 0.0;
+    
+    //Revenues
+    //assert(FIRM_BALANCE_SHEETS.flows.cum_revenue >= 0.0);
+    
+    //Consumption
+    //assert((abs(FIRM_BALANCE_SHEETS.flows.cum_revenue - HOUSEHOLD_BALANCE_SHEETS.flows.consumption) < 0.05);
 	
-	/*	
-    FIRM_BALANCE_SHEETS.flows.
-    HOUSEHOLD_BALANCE_SHEETS.flows.
-    IGFIRM_BALANCE_SHEETS.flows.
-    GOV_BALANCE_SHEETS.flows.
-    BANK_BALANCE_SHEETS.flows.
-    ECB_BALANCE_SHEETS.flows.
-*/
-	
+    
     return 0;
 }
 
@@ -1581,37 +1710,125 @@ int Eurostat_check_stock_consistency()
 {
 	//Reset all counters
 	FIRM_BALANCE_SHEETS.stocks.payment_account=0.0;
-    HOUSEHOLD_BALANCE_SHEETS.stocks.payment_account=0.0;
-    IGFIRM_BALANCE_SHEETS.stocks.payment_account=0.0;
-    GOV_BALANCE_SHEETS.stocks.payment_account=0.0;
+	FIRM_BALANCE_SHEETS.stocks.total_value_local_inventory=0.0;
+	FIRM_BALANCE_SHEETS.stocks.total_value_capital_stock=0.0;
+	FIRM_BALANCE_SHEETS.stocks.total_debt=0.0;
+	FIRM_BALANCE_SHEETS.stocks.current_shares_outstanding=0;
+	FIRM_BALANCE_SHEETS.stocks.total_assets=0.0;
+	FIRM_BALANCE_SHEETS.stocks.total_liabilities=0.0;
 	
-	//Read all balance sheet stock messages
+	//Read stock messages
 	START_FIRM_BALANCE_SHEET_MESSAGE_LOOP
 		FIRM_BALANCE_SHEETS.stocks.payment_account += firm_balance_sheet_message->payment_account;
+		FIRM_BALANCE_SHEETS.stocks.total_value_local_inventory += firm_balance_sheet_message->total_value_local_inventory;
+		FIRM_BALANCE_SHEETS.stocks.total_value_capital_stock += firm_balance_sheet_message->total_value_capital_stock;
+		FIRM_BALANCE_SHEETS.stocks.total_debt += firm_balance_sheet_message->total_debt;
+		FIRM_BALANCE_SHEETS.stocks.current_shares_outstanding += firm_balance_sheet_message->current_shares_outstanding;
+		FIRM_BALANCE_SHEETS.stocks.total_assets += firm_balance_sheet_message->total_assets;
+		FIRM_BALANCE_SHEETS.stocks.total_liabilities += firm_balance_sheet_message->total_liabilities;
 	FINISH_FIRM_BALANCE_SHEET_MESSAGE_LOOP
 /*	
-	START_HOUSEHOLD_BALANCE_SHEET_MESSAGE_LOOP
-		HOUSEHOLD_BALANCE_SHEETS.stocks.payment_account += household_balance_sheet_message->payment_account;
-	FINISH_HOUSEHOLD_BALANCE_SHEET_MESSAGE_LOOP
+ 	//Reset all counters
+	IGFIRM_BALANCE_SHEETS.stocks.payment_account=0.0;
+	IGFIRM_BALANCE_SHEETS.stocks.total_value_local_inventory=0.0;
+	IGFIRM_BALANCE_SHEETS.stocks.total_value_capital_stock=0.0;
+	IGFIRM_BALANCE_SHEETS.stocks.total_debt=0.0;
+	IGFIRM_BALANCE_SHEETS.stocks.current_shares_outstanding=0;
+	IGFIRM_BALANCE_SHEETS.stocks.total_assets=0.0;
+	IGFIRM_BALANCE_SHEETS.stocks.total_liabilities=0.0;
 
+	//Reading stock messages
 	START_IGFIRM_BALANCE_SHEET_MESSAGE_LOOP
 		IGFIRM_BALANCE_SHEETS.stocks.payment_account += igfirm_balance_sheet_message->payment_account;
+		IGFIRM_BALANCE_SHEETS.stocks.total_value_local_inventory += igfirm_balance_sheet_message->total_value_local_inventory;
+		IGFIRM_BALANCE_SHEETS.stocks.total_value_capital_stock += igfirm_balance_sheet_message->total_value_capital_stock;
+		IGFIRM_BALANCE_SHEETS.stocks.total_debt += igfirm_balance_sheet_message->total_debt;
+		IGFIRM_BALANCE_SHEETS.stocks.current_shares_outstanding += igfirm_balance_sheet_message->current_shares_outstanding;
+		IGFIRM_BALANCE_SHEETS.stocks.total_assets += igfirm_balance_sheet_message->total_assets;
+		IGFIRM_BALANCE_SHEETS.stocks.total_liabilities += igfirm_balance_sheet_message->total_liabilities;
 	FINISH_IGFIRM_BALANCE_SHEET_MESSAGE_LOOP
 
+ 	//Reset all counters
+	HOUSEHOLD_BALANCE_SHEETS.stocks.payment_account=0.0;
+	HOUSEHOLD_BALANCE_SHEETS.stocks.nr_gov_bonds=0;
+	HOUSEHOLD_BALANCE_SHEETS.stocks.nr_firm_shares=0;
+	HOUSEHOLD_BALANCE_SHEETS.stocks.total_assets=0.0;
+	HOUSEHOLD_BALANCE_SHEETS.stocks.total_liabilities=0.0;
+
+	//Reading stock messages
+	START_HOUSEHOLD_BALANCE_SHEET_MESSAGE_LOOP
+		HOUSEHOLD_BALANCE_SHEETS.stocks.payment_account += household_balance_sheet_message->payment_account;
+		HOUSEHOLD_BALANCE_SHEETS.stocks.nr_gov_bonds += household_balance_sheet_message->nr_gov_bonds;
+		HOUSEHOLD_BALANCE_SHEETS.stocks.nr_firm_shares += household_balance_sheet_message->nr_firm_shares;
+		HOUSEHOLD_BALANCE_SHEETS.stocks.total_assets += household_balance_sheet_message->total_assets;
+		HOUSEHOLD_BALANCE_SHEETS.stocks.total_liabilities += household_balance_sheet_message->total_liabilities;
+	FINISH_HOUSEHOLD_BALANCE_SHEET_MESSAGE_LOOP
+
+ 	//Reset all counters
+	BANK_BALANCE_SHEETS.stocks.cash=0.0; 
+	BANK_BALANCE_SHEETS.stocks.total_credit=0.0;
+	BANK_BALANCE_SHEETS.stocks.deposits=0.0;
+	BANK_BALANCE_SHEETS.stocks.ecb_debt=0.0;
+	BANK_BALANCE_SHEETS.stocks.total_assets=0.0;
+	BANK_BALANCE_SHEETS.stocks.total_liabilities=0.0;
+
+	//Reading stock messages
+	START_BANK_BALANCE_SHEET_MESSAGE_LOOP
+		BANK_BALANCE_SHEETS.stocks.cash += bank_balance_sheet_message->cash;
+		BANK_BALANCE_SHEETS.stocks.total_credit += bank_balance_sheet_message->total_credit;		
+		BANK_BALANCE_SHEETS.stocks.deposits += bank_balance_sheet_message->deposits;
+		BANK_BALANCE_SHEETS.stocks.ecb_debt += bank_balance_sheet_message->ecb_debt;				
+		BANK_BALANCE_SHEETS.stocks.total_assets += bank_balance_sheet_message->total_assets;
+		BANK_BALANCE_SHEETS.stocks.total_liabilities += bank_balance_sheet_message->total_liabilities;
+	FINISH_GBANK_BALANCE_SHEET_MESSAGE_LOOP
+	
+ 	//Reset all counters
+	GOV_BALANCE_SHEETS.stocks.payment_account=0.0; 
+ 	GOV_BALANCE_SHEETS.stocks.nr_bonds_outstanding=0;
+	GOV_BALANCE_SHEETS.stocks.total_assets=0.0;
+	GOV_BALANCE_SHEETS.stocks.total_liabilities=0.0;
+
+	//Reading stock messages
 	START_GOV_BALANCE_SHEET_MESSAGE_LOOP
 		GOV_BALANCE_SHEETS.stocks.payment_account += gov_balance_sheet_message->payment_account;
+		GOV_BALANCE_SHEETS.stocks.total_assets += gov_balance_sheet_message->total_assets;
+		GOV_BALANCE_SHEETS.stocks.total_liabilities += gov_balance_sheet_message->total_liabilities;
 	FINISH_GOV_BALANCE_SHEET_MESSAGE_LOOP
+
+ 	//Reset all counters
+	ECB_BALANCE_SHEETS.stocks.nr_gov_bonds = 0;
+	ECB_BALANCE_SHEETS.stocks.loans_to_banks=0.0;
+	ECB_BALANCE_SHEETS.stocks.payment_account_private_sector=0.0;
+	ECB_BALANCE_SHEETS.stocks.payment_account_public_sector=0.0;
+	ECB_BALANCE_SHEETS.stocks.fiat_money=0.0;
+	ECB_BALANCE_SHEETS.stocks.total_assets=0.0;
+	ECB_BALANCE_SHEETS.stocks.total_liabilities=0.0;
+	
+	//Reading stock messages
+	START_ECB_BALANCE_SHEET_MESSAGE_LOOP
+		ECB_BALANCE_SHEETS.stocks.nr_gov_bonds += ecb_balance_sheet_message->nr_gov_bonds;
+		ECB_BALANCE_SHEETS.stocks.loans_to_banks += ecb_balance_sheet_message->loans_to_banks;
+		ECB_BALANCE_SHEETS.stocks.payment_account_private_sector += ecb_balance_sheet_message->payment_account_private_sector;
+		ECB_BALANCE_SHEETS.stocks.payment_account_public_sector += ecb_balance_sheet_message->payment_account_public_sector;
+		ECB_BALANCE_SHEETS.stocks.fiat_money += ecb_balance_sheet_message->fiat_money;
+		ECB_BALANCE_SHEETS.stocks.total_assets += ecb_balance_sheet_message->total_assets;
+		ECB_BALANCE_SHEETS.stocks.total_liabilities += ecb_balance_sheet_message->total_liabilities;		
+	FINISH_ECB_BALANCE_SHEET_MESSAGE_LOOP
 */	
 
-	//Check all balance sheet stock consistency requirements
-/*
-	FIRM_BALANCE_SHEETS.stocks.
-    HOUSEHOLD_BALANCE_SHEETS.stocks.
-    IGFIRM_BALANCE_SHEETS.stocks.
-    GOV_BALANCE_SHEETS.stocks.
-    BANK_BALANCE_SHEETS.stocks.
-    ECB_BALANCE_SHEETS.stocks.
-*/
+	//Check stock consistency requirements
+	//payment_accounts
+	assert(FIRM_BALANCE_SHEETS.stocks.payment_account >= 0.0);
+	assert(HOUSEHOLD_BALANCE_SHEETS.stocks.payment_account >= 0.0);
+	assert(IGFIRM_BALANCE_SHEETS.stocks.payment_account >= 0.0);
+	assert(GOV_BALANCE_SHEETS.stocks.payment_account >= 0.0);
+	
+	//Gov bonds
+	assert(HOUSEHOLD_BALANCE_SHEETS.stocks.nr_gov_bonds + ECB_BALANCE_SHEETS.stocks.nr_gov_bonds 
+			- GOV_BALANCE_SHEETS.stocks.nr_bonds_outstanding == 0);
+	//Firm shares
+	assert(FIRM_BALANCE_SHEETS.stocks.current_shares_outstanding + IGFIRM_BALANCE_SHEETS.stocks.current_shares_outstanding 
+			- HOUSEHOLD_BALANCE_SHEETS.stocks.nr_firm_shares == 0);
 	
     return 0;
 }
