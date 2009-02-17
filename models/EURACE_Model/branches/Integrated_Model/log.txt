@@ -828,3 +828,63 @@ Hybrid_Model_A
 - copied FM_GREQAM functions.c to trunk
 - TODO: unit tests with constants
 ----------------------------------------------------------------------
+Sander, rev
+
+Eurostat feature: Stock-flow consistency
+
+1) To make it to work, I had to add some functionality to the 
+Cons_Good_Market, Credit_Market, AND Stat_Office.
+This involved adding functions that need to send messages with the balance sheet information and the flows.
+
+2) Most balance sheet items could make use of existing names, but I also
+had to invent some new memory variable names that were not there yet.
+All variables are in the Eurostat function that does the actual summing oer the balance sheets:
+
+Stat_Office_UNIBI/Eurostat_Function.c:
+	Eurostat_check_flow_consistency()
+	Eurostat_check_stock_consistency()
+
+For the Bank: the flows were not separated, I propose to make new variables for them:
+
+firm_loan_installments: installment payments by firms
+firm_interest_payments: interest payments by firms  
+firm_loan_issues: newly issued loans
+ecb_interest_payment
+dividend_payment
+tax_payment
+
+3) Functions from where the <agent>_balance_sheet_messages are being sent:
+(either a new function or a pre-existing one)
+
+Firm: existing function
+Stat_Office/Firm_Statistics_Functions.c
+Firm_send_data_to_Eurostat (calendar month)
+Condition switch: if condition in C
+
+IGFirm: None yet
+Stat_Office/Stat_Office/IGFirm_Statistics_Functions.c
+IGFirm_send_data_to_Eurostat
+Condition: if condition in C
+
+Household: existing function
+Stat_Office/Household_Statistics_Functions.c
+Household_send_data_to_Eurostat (calendar month)
+Condition: if condition in C
+
+Bank: new function
+Credit_Ancona/Bank_Credit_Functions.c
+Bank_send_data_to_Eurostat (calendar month)
+Condition: xml, C
+
+Gov: existing function
+Government_GREQAM/Government_Functions.c
+Government_send_account_update (calendar month)
+Condition: if condition in C
+
+ECB: new function
+Credit_Ancona/Central_Bank_Functions.c
+Central_Bank_send_data_to_Eurostat (calendar month)
+Condition: xml, C
+
+
+----------------------------------------------------------------------

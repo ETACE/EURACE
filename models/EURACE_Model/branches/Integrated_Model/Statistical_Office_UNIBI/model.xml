@@ -1457,6 +1457,36 @@
      <name>total_liabilities</name>
      <description></description>
     </variable>
+    <variable>
+     <type>double</type>
+     <name>gov_interest</name>
+     <description></description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>stock_sales</name>
+     <description></description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>stock_purchases</name>
+     <description></description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>consumption</name>
+     <description></description>
+    </variable>
+    <variable>
+     <type>int</type>
+     <name>nr_gov_bonds</name>
+     <description></description>
+    </variable>
+    <variable>
+     <type>int</type>
+     <name>nr_firm_shares</name>
+     <description></description>
+    </variable>
    </memory>
    <functions>
     <function>
@@ -1504,7 +1534,7 @@
     </function>
     <function>
      <name>Household_receive_data</name>
-     <description>The household reads the messages from the eurostat agent &#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+     <description>The household reads the messages from the eurostat agent &#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
 and stores the needed data.</description>
      <currentState>Household_Start_Policy_Data</currentState>
      <nextState>Household_Start_Financial_Market_Role</nextState>
@@ -1535,7 +1565,7 @@ and stores the needed data.</description>
     </function>
     <function>
      <name>Household_send_data_to_Eurostat</name>
-     <description>Household sends message to the eurostat agent &#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+     <description>Household sends message to the eurostat agent &#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
 including several micro data.</description>
      <currentState>15</currentState>
      <nextState>end_Household</nextState>
@@ -1549,6 +1579,9 @@ including several micro data.</description>
      <outputs>
       <output>
        <messageName>household_send_data</messageName>
+      </output>
+      <output>
+       <messageName>household_balance_sheet</messageName>
       </output>
      </outputs>
     </function>
@@ -2540,6 +2573,41 @@ including several micro data.</description>
    <description></description>
    <memory>
     <variable>
+     <type>int</type>
+     <name>nr_gov_bonds</name>
+     <description></description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>payment_account_private_sector</name>
+     <description></description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>payment_account_public_sector</name>
+     <description></description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>fiat_money</name>
+     <description></description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>bank_interest</name>
+     <description></description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>gov_interest</name>
+     <description></description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>gov_bond_purchase</name>
+     <description></description>
+    </variable>
+    <variable>
      <type>double</type>
      <name>total_income</name>
      <description></description>
@@ -3261,7 +3329,7 @@ including several micro data.</description>
     </variable>
     <variable>
      <type>double</type>
-     <name>loans_to_banks</name>
+     <name>total_ecb_debt</name>
      <description></description>
     </variable>
     <variable>
