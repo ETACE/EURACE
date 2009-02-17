@@ -1314,6 +1314,9 @@
       <output>
        <messageName>firm_send_data</messageName>
       </output>
+      <output>
+       <messageName>firm_balance_sheet</messageName>
+      </output>
      </outputs>
     </function>
     <function>
@@ -1341,6 +1344,9 @@
      <outputs>
       <output>
        <messageName>bank_account_update</messageName>
+      </output>
+      <output>
+       <messageName>firm_balance_sheet</messageName>
       </output>
      </outputs>
     </function>
@@ -1498,7 +1504,7 @@
     </function>
     <function>
      <name>Household_receive_data</name>
-     <description>The household reads the messages from the eurostat agent &#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+     <description>The household reads the messages from the eurostat agent &#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
 and stores the needed data.</description>
      <currentState>Household_Start_Policy_Data</currentState>
      <nextState>Household_Start_Financial_Market_Role</nextState>
@@ -1529,7 +1535,7 @@ and stores the needed data.</description>
     </function>
     <function>
      <name>Household_send_data_to_Eurostat</name>
-     <description>Household sends message to the eurostat agent &#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+     <description>Household sends message to the eurostat agent &#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
 including several micro data.</description>
      <currentState>15</currentState>
      <nextState>end_Household</nextState>
@@ -1572,16 +1578,6 @@ including several micro data.</description>
      <type>int</type>
      <name>switch_datastorage</name>
      <description>Switch to turn on/off datastorage</description>
-    </variable>
-    <variable>
-     <type>int</type>
-     <name>switch_flow_consistency_check</name>
-     <description>Switch to turn on/off the flow_consistency_check (run daily).</description>
-    </variable>
-    <variable>
-     <type>int</type>
-     <name>switch_stock_consistency_check</name>
-     <description>Switch to turn on/off the stock_consistency_check (run monthly).</description>
     </variable>
     <variable>
      <type>int</type>
@@ -2379,7 +2375,7 @@ including several micro data.</description>
       <op>AND</op>
       <rhs>
        <lhs>
-        <value>a.switch_flow_consistency_check</value>
+        <value>SWITCH_FLOW_CONSISTENCY_CHECK</value>
        </lhs>
        <op>EQ</op>
        <rhs>
@@ -2426,7 +2422,7 @@ including several micro data.</description>
       <op>OR</op>
       <rhs>
        <lhs>
-        <value>a.switch_flow_consistency_check</value>
+        <value>SWITCH_FLOW_CONSISTENCY_CHECK</value>
        </lhs>
        <op>EQ</op>
        <rhs>
@@ -2452,7 +2448,7 @@ including several micro data.</description>
       <op>AND</op>
       <rhs>
        <lhs>
-        <value>a.switch_stock_consistency_check</value>
+        <value>SWITCH_STOCK_CONSISTENCY_CHECK</value>
        </lhs>
        <op>EQ</op>
        <rhs>
@@ -2499,7 +2495,7 @@ including several micro data.</description>
       <op>OR</op>
       <rhs>
        <lhs>
-        <value>a.switch_stock_consistency_check</value>
+        <value>SWITCH_STOCK_CONSISTENCY_CHECK</value>
        </lhs>
        <op>EQ</op>
        <rhs>

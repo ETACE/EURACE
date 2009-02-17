@@ -55,6 +55,16 @@
    </variable>
    <variable>
     <type>int</type>
+    <name>switch_flow_consistency_check</name>
+    <description>Switch to turn on flow consistency checking (run daily).</description>
+   </variable>
+   <variable>
+    <type>int</type>
+    <name>switch_stock_consistency_check</name>
+    <description>Switch to turn on stock consistency checking (run monthly).</description>
+   </variable>
+   <variable>
+    <type>int</type>
     <name>number_of_banks_to_apply</name>
     <description>number of banks firms can ask loans</description>
    </variable>
@@ -554,7 +564,7 @@
  <messages>
   <message>
    <name>bank_account_update</name>
-   <description>Sent by household. Household informs the bank about the actual&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+   <description>Sent by household. Household informs the bank about the actual&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
  payment account</description>
    <variables>
     <variable>
