@@ -10,6 +10,7 @@ int Firm_send_data_to_Eurostat()
 	//Increase the age of the firm in months
 	AGE++;
 	
+	//Firm_send_data_message is used for collecting macrodata
 	add_firm_send_data_message(ID, REGION_ID, VACANCIES, NO_EMPLOYEES,
 	NO_EMPLOYEES_SKILL_1, NO_EMPLOYEES_SKILL_2, NO_EMPLOYEES_SKILL_3, NO_EMPLOYEES_SKILL_4,	NO_EMPLOYEES_SKILL_5, 
 	MEAN_WAGE, MEAN_SPECIFIC_SKILLS,
@@ -19,7 +20,14 @@ int Firm_send_data_to_Eurostat()
 
 	//printf("In Firm_send_data: Firm %d OUTPUT: %.2f\n", ID, OUTPUT);
 	//printf("In Firm_send_data: Firm %d PLANNED_OUTPUT: %.2f\n", ID, PLANNED_OUTPUT);
-
+	
+	//Firm_balance_sheet_message is used for the balance sheet accounting (monthly)
+	TOTAL_INCOME = CUM_REVENUE;	
+	add_firm_balance_sheet_message(PAYMENT_ACCOUNT, TOTAL_VALUE_LOCAL_INVENTORY, TOTAL_VALUE_CAPITAL_STOCK,
+            TOTAL_DEBT, CURRENT_SHARES_OUTSTANDING, CUM_REVENUE, LABOUR_COSTS, CAPITAL_COSTS, TAX_PAYMENT,
+            TOTAL_DEBT_INSTALLMENT_PAYMENT, TOTAL_INTEREST_PAYMENT, TOTAL_DIVIDEND_PAYMENT, 
+            TOTAL_ASSETS, TOTAL_LIABILITIES, TOTAL_INCOME, TOTAL_PAYMENTS);
+	
 	return 0;
 }
 

@@ -283,6 +283,16 @@
      <name>yearly_investment_budget</name>
      <description>The planned investment budget for the next year.</description>
     </variable>
+    <variable>
+     <type>double</type>
+     <name>total_assets</name>
+     <description></description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>total_liabilities</name>
+     <description></description>
+    </variable>
    </memory>
    <functions>
     <function>

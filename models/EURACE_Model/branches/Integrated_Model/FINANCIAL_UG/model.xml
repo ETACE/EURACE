@@ -573,7 +573,7 @@
      <description></description>
     </variable>
     <variable>
-     <type>double</type>
+     <type>int</type>
      <name>current_shares_outstanding</name>
      <description></description>
     </variable>
