@@ -1,4 +1,4 @@
-#include <Basic.h>
+#include <CUnit/Basic.h>
 //For trunk model
 #include "../../header.h"
 #include "../../Firm_agent_header.h"
@@ -34,7 +34,9 @@ void unittest_Firm_execute_production()
 	        MEAN_SPECIFIC_SKILLS=1;
 	        TECHNOLOGY = 1.5;
 	        NO_EMPLOYEES=100;
-	    
+		ALPHA = 0.5;
+		BETA = 0.5;
+	    	PLANNED_PRODUCTION_QUANTITY = 100;
 	        TOTAL_UNITS_CAPITAL_STOCK=100;
 	      
 	   
@@ -47,6 +49,75 @@ void unittest_Firm_execute_production()
 	CU_ASSERT_DOUBLE_EQUAL(PRODUCTION_QUANTITY,100, 1e-3);
 
     
+	
+    /************* At end of unit test, free the agent **************/
+	unittest_free_Firm_agent();
+    /************* At end of unit tests, free all Messages **********/
+
+}
+
+void unittest_Firm_execute_production_1()
+{
+	int rc;
+	
+    /************* At start of unit test, add one agent **************/
+	unittest_init_Firm_agent();
+	
+    /***** Variables: Memory pre-conditions **************************/
+	    
+	        MEAN_SPECIFIC_SKILLS=1;
+	        TECHNOLOGY = 1.5;
+	        NO_EMPLOYEES=100;
+		ALPHA = 0.5;
+		BETA = 0.5;
+	    	PLANNED_PRODUCTION_QUANTITY = 0;
+	        TOTAL_UNITS_CAPITAL_STOCK=100;
+	      
+	   
+	    
+	    	    
+    /***** Function evaluation ***************************************/
+	Firm_execute_production();
+    
+    /***** Variables: Memory post-conditions *****/
+	CU_ASSERT_DOUBLE_EQUAL(PRODUCTION_QUANTITY,0, 1e-3);
+
+    
+	
+    /************* At end of unit test, free the agent **************/
+	unittest_free_Firm_agent();
+    /************* At end of unit tests, free all Messages **********/
+
+}
+
+void unittest_Firm_execute_production_2()
+{
+	int rc;
+	
+    /************* At start of unit test, add one agent **************/
+	unittest_init_Firm_agent();
+	
+    /***** Variables: Memory pre-conditions **************************/
+	    
+	        MEAN_SPECIFIC_SKILLS=1.5;
+	        TECHNOLOGY = 1;
+	        NO_EMPLOYEES=100;
+		ALPHA = 0.5;
+		BETA = 0.5;
+	    	PLANNED_PRODUCTION_QUANTITY = 100;
+	        TOTAL_UNITS_CAPITAL_STOCK=100;
+	      
+	   
+	    
+	    	    
+    /***** Function evaluation ***************************************/
+	Firm_execute_production();
+    
+    /***** Variables: Memory post-conditions *****/
+	CU_ASSERT_DOUBLE_EQUAL(PRODUCTION_QUANTITY,100, 1e-3);
+
+	
+
 	
     /************* At end of unit test, free the agent **************/
 	unittest_free_Firm_agent();
