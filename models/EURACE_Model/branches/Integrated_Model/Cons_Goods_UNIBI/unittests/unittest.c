@@ -4,11 +4,12 @@
  */
 #include "../../header.h"
 //#include "../../header.h"
-#include <Basic.h>
+#include <CUnit/Basic.h>
 
 /*************************** unittest prototypes ***************************/
 void unittest_Firm_execute_production();
-
+void unittest_Firm_execute_production_1();
+void unittest_Firm_execute_production_2();
 
 /*************************** end prototypes ***************************/
 
@@ -51,7 +52,7 @@ int main(int argc, char * argv[])
     
     if(
     	
-   		NULL == CU_add_test(pSuite, "Firm_execute_production",unittest_Firm_execute_production))
+   		 NULL == CU_add_test(pSuite, "Firm_execute_production",unittest_Firm_execute_production) || NULL == CU_add_test(pSuite, "Firm_execute_production",unittest_Firm_execute_production_1)|| NULL == CU_add_test(pSuite, "Firm_execute_production",unittest_Firm_execute_production_2))
 	{
         CU_cleanup_registry();
         return CU_get_error();
