@@ -51,8 +51,9 @@ int main(int argc, char * argv[])
     /* add extra tests using || */
     
     if(
-    	
-   		 NULL == CU_add_test(pSuite, "Firm_execute_production",unittest_Firm_execute_production) || NULL == CU_add_test(pSuite, "Firm_execute_production",unittest_Firm_execute_production_1)|| NULL == CU_add_test(pSuite, "Firm_execute_production",unittest_Firm_execute_production_2))
+//   		 NULL == CU_add_test(pSuite, "Firm_execute_production",unittest_Firm_execute_production) ||
+//   		 NULL == CU_add_test(pSuite, "Firm_execute_production",unittest_Firm_execute_production_1)||
+   		 NULL == CU_add_test(pSuite, "Firm_execute_production",unittest_Firm_execute_production_2))
 	{
         CU_cleanup_registry();
         return CU_get_error();

@@ -34,8 +34,8 @@ void unittest_Firm_execute_production()
 	        MEAN_SPECIFIC_SKILLS=1;
 	        TECHNOLOGY = 1.5;
 	        NO_EMPLOYEES=100;
-		ALPHA = 0.5;
-		BETA = 0.5;
+	        ALPHA = 0.5;
+	        BETA = 0.5;
 	    	PLANNED_PRODUCTION_QUANTITY = 100;
 	        TOTAL_UNITS_CAPITAL_STOCK=100;
 	      
@@ -46,7 +46,7 @@ void unittest_Firm_execute_production()
 	Firm_execute_production();
     
     /***** Variables: Memory post-conditions *****/
-	CU_ASSERT_DOUBLE_EQUAL(PRODUCTION_QUANTITY,100, 1e-3);
+	CU_ASSERT_DOUBLE_EQUAL(PRODUCTION_QUANTITY,100.0, 1e-3);
 
     
 	
@@ -68,9 +68,9 @@ void unittest_Firm_execute_production_1()
 	        MEAN_SPECIFIC_SKILLS=1;
 	        TECHNOLOGY = 1.5;
 	        NO_EMPLOYEES=100;
-		ALPHA = 0.5;
-		BETA = 0.5;
-	    	PLANNED_PRODUCTION_QUANTITY = 0;
+	        ALPHA = 0.5;
+	        BETA = 0.5;
+	    	PLANNED_PRODUCTION_QUANTITY = 0.0;
 	        TOTAL_UNITS_CAPITAL_STOCK=100;
 	      
 	   

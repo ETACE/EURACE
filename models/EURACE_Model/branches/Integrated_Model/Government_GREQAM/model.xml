@@ -95,12 +95,12 @@
     </variable>
     <variable>
      <type>double</type>
-     <name>monthly_unemployment_benefit_payment</name>
+     <name>monthly_benefit_payment</name>
      <description>Unemployment benefit payments for all unemployed households.</description>
     </variable>
     <variable>
      <type>double</type>
-     <name>yearly_unemployment_benefit_payment</name>
+     <name>yearly_benefit_payment</name>
      <description>Unemployment benefit payments for all unemployed households.</description>
     </variable>
     <variable>

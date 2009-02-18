@@ -1,3 +1,24 @@
+#include <CUnit/Basic.h>
+
+#include "../../header.h"
+#include "../../Firm_agent_header.h"
+#include "../../my_library_header.h"
+
+#define CONST_BANKRUPTCY_IDLE_PERIOD 240
+
+//Case 1: unittest3_Firm_bankruptcy_insolvency_procedure()
+	#define DEBT_RESCALING_FACTOR 0.33
+	#define TARGET_LEVERAGE_RATIO 1.25
+	#define TARGET_LIQUIDITY_RATIO 0.0
+//Case 2: unittest3_Firm_bankruptcy_insolvency_procedure()
+//	#define DEBT_RESCALING_FACTOR 0.33
+//	#define TARGET_LEVERAGE_RATIO 2.0
+//	#define TARGET_LIQUIDITY_RATIO 0.0
+
+//Case 3: unittest3_Firm_bankruptcy_insolvency_procedure()
+//	#define DEBT_RESCALING_FACTOR 0.33
+//	#define TARGET_LEVERAGE_RATIO 4.0
+//	#define TARGET_LIQUIDITY_RATIO 0.0
 
 
 /*
@@ -22,7 +43,6 @@ void unittest_Firm_set_bankruptcy_illiquidity()
 	
 	TOTAL_VALUE_LOCAL_INVENTORY = 10.0;
 
-	#define CONST_BANKRUPTCY_IDLE_PERIOD 240
 	
 	/***** Messages: initialize message boards **********************************/
 
@@ -116,8 +136,6 @@ void unittest_Firm_set_bankruptcy_insolvency()
 	BANKRUPTCY_ILLIQUIDITY_STATE = 0;
 	
 	TOTAL_VALUE_LOCAL_INVENTORY = 10.0;
-
-	#define CONST_BANKRUPTCY_IDLE_PERIOD 240
 	
 	/***** Messages: initialize message boards **********************************/
 
@@ -202,12 +220,6 @@ void unittest1_Firm_bankruptcy_insolvency_procedure()
 	unittest_init_Firm_agent();
 	
     /***** Variables: Memory pre-conditions **************************/
-	//constants
-	#define DEBT_RESCALING_FACTOR 0.33
-	#define TARGET_LEVERAGE_RATIO 1.25
-	#define TARGET_LIQUIDITY_RATIO 0.0
-		
-	//variables
 	TOTAL_ASSETS = 120.0;
 	TOTAL_DEBT = 150.0;	
 	PAYMENT_ACCOUNT = 10.0; //degree of freedom to set this value
@@ -303,12 +315,6 @@ void unittest2_Firm_bankruptcy_insolvency_procedure()
 	unittest_init_Firm_agent();
 	
     /***** Variables: Memory pre-conditions **************************/
-	//constants
-	#define DEBT_RESCALING_FACTOR 0.33
-	#define TARGET_LEVERAGE_RATIO 2.0
-	#define TARGET_LIQUIDITY_RATIO 0.0
-	
-	//variables
 	TOTAL_ASSETS = 120.0;
 	TOTAL_DEBT = 150.0;
 	PAYMENT_ACCOUNT = 10.0;
@@ -404,12 +410,6 @@ void unittest3_Firm_bankruptcy_insolvency_procedure()
 	unittest_init_Firm_agent();
 	
     /***** Variables: Memory pre-conditions **************************/
-	//constants
-	#define DEBT_RESCALING_FACTOR 0.33
-	#define TARGET_LEVERAGE_RATIO 4.0
-	#define TARGET_LIQUIDITY_RATIO 0.0
-	
-	//variables
 	TOTAL_ASSETS = 120.0;
 	TOTAL_DEBT = 150.0;
 	PAYMENT_ACCOUNT = 10.0;
