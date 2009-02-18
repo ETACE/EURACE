@@ -1598,7 +1598,8 @@ int Eurostat_check_flow_consistency()
 		IGFIRM_BALANCE_SHEETS.flows.total_income += igfirm_balance_sheet_message->total_income;
 		IGFIRM_BALANCE_SHEETS.flows.total_expenses += igfirm_balance_sheet_message->total_expenses;
 	FINISH_IGFIRM_BALANCE_SHEET_MESSAGE_LOOP
-
+*/
+    
 	//Reset all counters
 	HOUSEHOLD_BALANCE_SHEETS.flows.wage=0.0;
 	HOUSEHOLD_BALANCE_SHEETS.flows.gov_interest=0.0;
@@ -1643,7 +1644,7 @@ int Eurostat_check_flow_consistency()
 		BANK_BALANCE_SHEETS.flows.tax_payment += bank_balance_sheet_message->tax_payment;
 		BANK_BALANCE_SHEETS.flows.total_income += bank_balance_sheet_message->total_income;
 		BANK_BALANCE_SHEETS.flows.total_expenses += bank_balance_sheet_message->total_expenses;
-	FINISH_GBANK_BALANCE_SHEET_MESSAGE_LOOP
+	FINISH_BANK_BALANCE_SHEET_MESSAGE_LOOP
 
 	//Reset all counters
 	GOV_BALANCE_SHEETS.flows.monthly_tax_revenues=0.0;
@@ -1688,13 +1689,12 @@ int Eurostat_check_flow_consistency()
 		ECB_BALANCE_SHEETS.flows.total_income += ecb_balance_sheet_message->total_income;
 		ECB_BALANCE_SHEETS.flows.total_expenses += ecb_balance_sheet_message->total_expenses;
 	FINISH_ECB_BALANCE_SHEET_MESSAGE_LOOP
-*/	
 
 	
 	//Checking cash flow consistency requirements
     
     //Revenues
-    assert(FIRM_BALANCE_SHEETS.flows.cum_revenue >= 0.0);
+    //assert(FIRM_BALANCE_SHEETS.flows.cum_revenue >= 0.0);
     
     //Consumption
     //assert((abs(FIRM_BALANCE_SHEETS.flows.cum_revenue - HOUSEHOLD_BALANCE_SHEETS.flows.consumption) < 0.05);
@@ -1747,8 +1747,9 @@ int Eurostat_check_stock_consistency()
 		IGFIRM_BALANCE_SHEETS.stocks.total_assets += igfirm_balance_sheet_message->total_assets;
 		IGFIRM_BALANCE_SHEETS.stocks.total_liabilities += igfirm_balance_sheet_message->total_liabilities;
 	FINISH_IGFIRM_BALANCE_SHEET_MESSAGE_LOOP
+*/
 
- 	//Reset all counters
+	//Reset all counters
 	HOUSEHOLD_BALANCE_SHEETS.stocks.payment_account=0.0;
 	HOUSEHOLD_BALANCE_SHEETS.stocks.nr_gov_bonds=0;
 	HOUSEHOLD_BALANCE_SHEETS.stocks.nr_firm_shares=0;
@@ -1780,7 +1781,7 @@ int Eurostat_check_stock_consistency()
 		BANK_BALANCE_SHEETS.stocks.ecb_debt += bank_balance_sheet_message->ecb_debt;				
 		BANK_BALANCE_SHEETS.stocks.total_assets += bank_balance_sheet_message->total_assets;
 		BANK_BALANCE_SHEETS.stocks.total_liabilities += bank_balance_sheet_message->total_liabilities;
-	FINISH_GBANK_BALANCE_SHEET_MESSAGE_LOOP
+	FINISH_BANK_BALANCE_SHEET_MESSAGE_LOOP
 	
  	//Reset all counters
 	GOV_BALANCE_SHEETS.stocks.payment_account=0.0; 
@@ -1791,13 +1792,14 @@ int Eurostat_check_stock_consistency()
 	//Reading stock messages
 	START_GOV_BALANCE_SHEET_MESSAGE_LOOP
 		GOV_BALANCE_SHEETS.stocks.payment_account += gov_balance_sheet_message->payment_account;
+		GOV_BALANCE_SHEETS.stocks.nr_bonds_outstanding += gov_balance_sheet_message->nr_bonds_outstanding;
 		GOV_BALANCE_SHEETS.stocks.total_assets += gov_balance_sheet_message->total_assets;
 		GOV_BALANCE_SHEETS.stocks.total_liabilities += gov_balance_sheet_message->total_liabilities;
 	FINISH_GOV_BALANCE_SHEET_MESSAGE_LOOP
 
  	//Reset all counters
 	ECB_BALANCE_SHEETS.stocks.nr_gov_bonds = 0;
-	ECB_BALANCE_SHEETS.stocks.loans_to_banks=0.0;
+	ECB_BALANCE_SHEETS.stocks.total_ecb_debt=0.0;
 	ECB_BALANCE_SHEETS.stocks.payment_account_private_sector=0.0;
 	ECB_BALANCE_SHEETS.stocks.payment_account_public_sector=0.0;
 	ECB_BALANCE_SHEETS.stocks.fiat_money=0.0;
@@ -1807,20 +1809,19 @@ int Eurostat_check_stock_consistency()
 	//Reading stock messages
 	START_ECB_BALANCE_SHEET_MESSAGE_LOOP
 		ECB_BALANCE_SHEETS.stocks.nr_gov_bonds += ecb_balance_sheet_message->nr_gov_bonds;
-		ECB_BALANCE_SHEETS.stocks.loans_to_banks += ecb_balance_sheet_message->loans_to_banks;
+		ECB_BALANCE_SHEETS.stocks.total_ecb_debt += ecb_balance_sheet_message->total_ecb_debt;
 		ECB_BALANCE_SHEETS.stocks.payment_account_private_sector += ecb_balance_sheet_message->payment_account_private_sector;
 		ECB_BALANCE_SHEETS.stocks.payment_account_public_sector += ecb_balance_sheet_message->payment_account_public_sector;
 		ECB_BALANCE_SHEETS.stocks.fiat_money += ecb_balance_sheet_message->fiat_money;
 		ECB_BALANCE_SHEETS.stocks.total_assets += ecb_balance_sheet_message->total_assets;
 		ECB_BALANCE_SHEETS.stocks.total_liabilities += ecb_balance_sheet_message->total_liabilities;		
 	FINISH_ECB_BALANCE_SHEET_MESSAGE_LOOP
-*/	
 
 	//Check stock consistency requirements
 	//payment_accounts
 	assert(FIRM_BALANCE_SHEETS.stocks.payment_account >= 0.0);
 	assert(HOUSEHOLD_BALANCE_SHEETS.stocks.payment_account >= 0.0);
-	assert(IGFIRM_BALANCE_SHEETS.stocks.payment_account >= 0.0);
+	//assert(IGFIRM_BALANCE_SHEETS.stocks.payment_account >= 0.0);
 	assert(GOV_BALANCE_SHEETS.stocks.payment_account >= 0.0);
 	
 	//Gov bonds
