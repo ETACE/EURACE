@@ -7,12 +7,9 @@
         double e, c, d, r, i;
         double bankruptcy_prob;
         double credit_allowed;
+            
+         
         
-        
-    
-    
-        if(BCE_DEBT==0.0) 
-        {
                 
             START_LOAN_REQUEST_MESSAGE_LOOP
                 e = loan_request_message->equity;
@@ -20,24 +17,24 @@
                 c = loan_request_message->external_financial_needs;
                 bankruptcy_prob = 1-exp(-(d+c)/e);
                 r = bankruptcy_prob*c/e;
-        if (EQUITY>=0)
-           {
-                if ( VALUE_AT_RISK+r <= ALFA*EQUITY ) 
+        
+                if ( VALUE_AT_RISK+r <= BANK_GAMMA[0]*ALFA*EQUITY )  //Instead of ALFA*EQUITY 
                 {
                     credit_allowed = c;
-        
+                    if (credit_allowed<0)
+                        printf("\n ERROR in function bank_decide_credit_condition: credit_allowed = %2.5f\n ", credit_allowed);
                 }
                 else 
                 {
-                    credit_allowed = (ALFA*EQUITY - VALUE_AT_RISK)/bankruptcy_prob;
-        
+                    credit_allowed = max(0,(BANK_GAMMA[0]*ALFA*EQUITY - VALUE_AT_RISK)/bankruptcy_prob);  
+                    if (credit_allowed<0)
+                        printf("\n ERROR in function bank_decide_credit_condition: credit_allowed = %2.5f\n ", credit_allowed);                
                 }
-                i = MIN_INTEREST + BANK_GAMMA[0]*r*(((double)rand()/(double)RAND_MAX)*0.01);
-                printf("\n in function bank_decide_credit_condition: credit_allowed = %2.5f\n ", credit_allowed);
+                i = ECB_INTEREST_RATE + BANK_GAMMA[0]*r*(((double)rand()/(double)RAND_MAX)*0.01);
+                
                     add_loan_conditions_message(loan_request_message->firm_id, ID, i, credit_allowed,  r*(c/credit_allowed));
-            }
             FINISH_LOAN_REQUEST_MESSAGE_LOOP
-        }
+        
         
         return 0;
     }
@@ -57,31 +54,31 @@
     //CASH += bank_account_update_message->payment_account;
     
       //Compute CASH
-          CASH=DEPOSITS+BCE_DEBT+EQUITY-TOTAL_CREDIT;
+          CASH=DEPOSITS+ECB_DEBT+EQUITY-TOTAL_CREDIT;
     
        if (CASH<0)
             {
-             add_central_bank_account_update_message(ID, -CASH);
-             BCE_DEBT+=-CASH; //Monetary base is increased
+             add_central_bank_account_update_message(ID, CASH);
+             ECB_DEBT+=-CASH; //Monetary base is increased
              CASH=0;
             }
             
-       // Procedure to reduce BCE debt
-          if ( BCE_DEBT != 0 ) 
+       // Procedure to reduce ECB debt
+          if ( ECB_DEBT != 0 ) 
             {
                 
                 
-                 if(CASH>=BCE_DEBT)
+                 if(CASH>=ECB_DEBT)
                  {
-                     add_central_bank_account_update_message(ID, -BCE_DEBT);
-                     CASH-=BCE_DEBT;
-                     BCE_DEBT=0.0;
+                     add_central_bank_account_update_message(ID, -ECB_DEBT);    //TO CHANGE
+                     CASH-=ECB_DEBT;
+                     ECB_DEBT=0.0;
                  }
      
-                 if(CASH<BCE_DEBT)
+                 if(CASH<ECB_DEBT)
                  {
-                     add_central_bank_account_update_message(ID, -CASH);
-                     BCE_DEBT-=CASH;
+                     add_central_bank_account_update_message(ID, -CASH);   //TO CHANGE 
+                     ECB_DEBT-=CASH;
                      CASH=0.0;
                  }
     
@@ -131,16 +128,8 @@
         START_LOAN_ACCEPTANCE_MESSAGE_LOOP
             if(loan_acceptance_message->bank_id==ID)
             {
-                //CASH -= loan_acceptance_message->credit_amount_taken;
                 VALUE_AT_RISK+=loan_acceptance_message->loan_total_var;
                 TOTAL_CREDIT+=loan_acceptance_message->credit_amount_taken;           
-            
-              /*  if (CASH<0.0) 
-                {
-                    add_central_bank_account_update_message(ID, fabs(CASH));          
-                    BCE_DEBT += fabs(CASH);  
-                    CASH = 0.0;
-                }*/
             }
     
         FINISH_LOAN_ACCEPTANCE_MESSAGE_LOOP
@@ -152,7 +141,13 @@
     int Bank_accounting()
     {
     
-         double q, c, gro, tax_bank, total_dividends, dividend_per_share;   
+         double q, c, gro, tax_bank, total_dividends, dividend_per_share, int_to_ecb;   
+         
+         //Pay interests to ecb
+         int_to_ecb=ECB_DEBT*ECB_INTEREST_RATE;
+         PROFITS[0]-=int_to_ecb; 
+         CASH-=int_to_ecb;
+         EQUITY-=int_to_ecb;
     
          if (PROFITS[1]!=0)
          {
@@ -166,7 +161,7 @@
          q=BANK_GAMMA[0]; 
          c=BANK_GAMMA[1];
          BANK_GAMMA[1]= q;
-         BANK_GAMMA[0]=(q+(BANK_LAMBDA*(q-c)*gro)+(((double)rand()/(double)RAND_MAX)*0.01));
+         BANK_GAMMA[0]=(q+(BANK_LAMBDA*(q-c)*gro)+(((double)rand()/(double)RAND_MAX)*0.01)); //Cambiare formula
      
          if (BANK_GAMMA[0]<0.02)
          {
@@ -188,16 +183,20 @@
              //add_dividend_per_share_message(ID, dividend_per_share);                  
          }
      
-         if (CASH < 0) //if money is not enough, increase BCE debt
+    // add_central_bank_account_update_message(ID, CASH); //bank sending its payment account (stock)...
+     /*
+         if (CASH < 0) //... and if is negative (if money is not enough), increase ECB debt
          {
-             add_central_bank_account_update_message(ID, fabs(CASH));
-             BCE_DEBT += fabs(CASH);
+             
+             ECB_DEBT += fabs(CASH);
              CASH = 0.0;
          }
-        
+       */ 
       
          PROFITS[0]=0;  //update
          
+        //at the end of the month, the bank changes its lending strategy, reducing or not its 
+        
         
           return 0;
     }
