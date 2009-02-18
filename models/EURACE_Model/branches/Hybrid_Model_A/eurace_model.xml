@@ -36,6 +36,10 @@
    <file>Government_GREQAM/model.xml</file>
    <enabled>true</enabled>
   </model>
+  <model>
+   <file>Statistical_Office_UNIBI/model.xml</file>
+   <enabled>true</enabled>
+  </model>
  </models>
  <environment>
   <constants>
@@ -183,6 +187,16 @@
     <type>int</type>
     <name>const_bankruptcy_idle_period</name>
     <description>Number of iterations that a bankrupt firm remains idle, before resuming production activity.</description>
+   </variable>
+   <variable>
+    <type>int</type>
+    <name>const_installment_periods</name>
+    <description></description>
+   </variable>
+   <variable>
+    <type>double</type>
+    <name>const_firm_leverage</name>
+    <description></description>
    </variable>
   </constants>
   <functionFiles>
@@ -458,7 +472,7 @@
  <messages>
   <message>
    <name>bank_account_update</name>
-   <description>Sent by household. Household informs the bank about the actual&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+   <description>Sent by household. Household informs the bank about the actual&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
  payment account</description>
    <variables>
     <variable>
