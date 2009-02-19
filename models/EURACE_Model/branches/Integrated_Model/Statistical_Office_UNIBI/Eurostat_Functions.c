@@ -1605,7 +1605,7 @@ int Eurostat_check_flow_consistency()
 	HOUSEHOLD_BALANCE_SHEETS.flows.gov_interest=0.0;
 	HOUSEHOLD_BALANCE_SHEETS.flows.stock_sales=0.0;
 	HOUSEHOLD_BALANCE_SHEETS.flows.cum_total_dividends=0.0;
-	HOUSEHOLD_BALANCE_SHEETS.flows.consumption=0.0;
+	HOUSEHOLD_BALANCE_SHEETS.flows.monthly_consumption_expenditure=0.0;
 	HOUSEHOLD_BALANCE_SHEETS.flows.tax_payment=0.0;
 	HOUSEHOLD_BALANCE_SHEETS.flows.stock_purchases=0.0;
 	HOUSEHOLD_BALANCE_SHEETS.flows.total_income=0.0;
@@ -1617,7 +1617,7 @@ int Eurostat_check_flow_consistency()
 		HOUSEHOLD_BALANCE_SHEETS.flows.gov_interest += household_balance_sheet_message->gov_interest;
 		HOUSEHOLD_BALANCE_SHEETS.flows.stock_sales += household_balance_sheet_message->stock_sales;
 		HOUSEHOLD_BALANCE_SHEETS.flows.cum_total_dividends += household_balance_sheet_message->cum_total_dividends;
-		HOUSEHOLD_BALANCE_SHEETS.flows.consumption += household_balance_sheet_message->consumption;
+		HOUSEHOLD_BALANCE_SHEETS.flows.monthly_consumption_expenditure += household_balance_sheet_message->monthly_consumption_expenditure;
 		HOUSEHOLD_BALANCE_SHEETS.flows.tax_payment += household_balance_sheet_message->tax_payment;
 		HOUSEHOLD_BALANCE_SHEETS.flows.stock_purchases += household_balance_sheet_message->stock_purchases;
 		HOUSEHOLD_BALANCE_SHEETS.flows.total_income += household_balance_sheet_message->total_income;
@@ -1690,16 +1690,75 @@ int Eurostat_check_flow_consistency()
 		ECB_BALANCE_SHEETS.flows.total_expenses += ecb_balance_sheet_message->total_expenses;
 	FINISH_ECB_BALANCE_SHEET_MESSAGE_LOOP
 
-	
-	//Checking cash flow consistency requirements
+	/**************************** Check cash flow consistency requirements ****************************/
     
     //Revenues
     //assert(FIRM_BALANCE_SHEETS.flows.cum_revenue >= 0.0);
+    //assert(IGFIRM_BALANCE_SHEETS.flows.cum_revenue >= 0.0);
     
-    //Consumption
-    //assert((abs(FIRM_BALANCE_SHEETS.flows.cum_revenue - HOUSEHOLD_BALANCE_SHEETS.flows.consumption) < 0.05);
+    //Consumption: Household+Government
+    //assert(abs(FIRM_BALANCE_SHEETS.flows.cum_revenue - HOUSEHOLD_BALANCE_SHEETS.flows.monthly_consumption_expenditure
+	//- GOV_BALANCE_SHEETS.flows.monthly_consumption_expenditure) < 1e-3);
+		
+	//Investment: Firms+Government
+    //assert(abs(IGFIRM_BALANCE_SHEETS.flows.cum_revenue - FIRM_BALANCE_SHEETS.flows.capital_costs
+	//- GOV_BALANCE_SHEETS.flows.monthly_investment_expenditure) < 1e-3);
 	
-    
+	//Salaries
+	printf("\n FIRM_BALANCE_SHEETS.flows.labour_costs = %4.4f\n", FIRM_BALANCE_SHEETS.flows.labour_costs);
+	printf("\n IGFIRM_BALANCE_SHEETS.flows.labour_costs = %4.4f\n", IGFIRM_BALANCE_SHEETS.flows.labour_costs);
+	printf("\n HOUSEHOLD_BALANCE_SHEETS.flows.wage = %4.4f\n", HOUSEHOLD_BALANCE_SHEETS.flows.wage);
+
+//	assert(abs(FIRM_BALANCE_SHEETS.flows.labour_costs + IGFIRM_BALANCE_SHEETS.flows.labour_costs
+//	- HOUSEHOLD_BALANCE_SHEETS.flows.wage	) < 1e-3);
+	
+	//Taxes
+    //assert(abs(FIRM_BALANCE_SHEETS.flows.tax_payment + IGFIRM_BALANCE_SHEETS.flows.tax_payment
+	//+ BANK_BALANCE_SHEETS.flows.tax_payment + HOUSEHOLD_BALANCE_SHEETS.flows.tax_payment - GOV_BALANCE_SHEETS.flows.monthly_tax_revenues) < 1e-3);
+	
+	//Dividend on stocks
+    //assert(abs(FIRM_BALANCE_SHEETS.flows.total_dividend_payment + IGFIRM_BALANCE_SHEETS.flows.total_dividend_payment
+	//+ BANK_BALANCE_SHEETS.flows.dividend_payment - HOUSEHOLD_BALANCE_SHEETS.flows.cum_total_dividends) < 1e-3);
+
+	//Interest on bank loans to firms
+    //assert(abs(FIRM_BALANCE_SHEETS.flows.total_interest_payment + IGFIRM_BALANCE_SHEETS.flows.total_interest_payment
+	//- BANK_BALANCE_SHEETS.flows.firm_interest_payments) < 1e-3);
+
+	//Debt installment payments by firms to banks
+    //assert(abs(FIRM_BALANCE_SHEETS.flows.total_debt_installment_payment + IGFIRM_BALANCE_SHEETS.flows.total_debt_installment_payment
+	//- BANK_BALANCE_SHEETS.flows.firm_loan_installments) < 1e-3);
+
+	//Interest on central bank loans to banks
+    //assert(abs(BANK_BALANCE_SHEETS.flows.ecb_interest_payment
+	//- ECB_BALANCE_SHEETS.flows.bank_interest) < 1e-3);
+	
+	//Interest on gov. bonds
+    //assert(abs(GOV_BALANCE_SHEETS.flows.monthly_bond_interest_payment
+	//- ECB_BALANCE_SHEETS.flows.gov_interest - HOUSEHOLD_BALANCE_SHEETS.flows.gov_interest) < 1e-3);
+	
+	//Benefits (not implemented)
+    //assert(abs(GOV_BALANCE_SHEETS.flows.monthly_benefit_payment
+	//- HOUSEHOLD_BALANCE_SHEETS.flows.benefit_income) < 1e-3);
+	
+	//Subsidies (not implemented)
+    //assert(abs(GOV_BALANCE_SHEETS.flows.monthly_subsidy_payment
+	//- HOUSEHOLD_BALANCE_SHEETS.flows.subsidy_income - FIRM_BALANCE_SHEETS.flows.subsidy_income - IGFIRM_BALANCE_SHEETS.flows.subsidy_income) < 1e-3);
+	
+	//Transfers (not implemented)
+    //assert(abs(GOV_BALANCE_SHEETS.flows.monthly_transfer_payment
+	//- HOUSEHOLD_BALANCE_SHEETS.flows.transfer_income - FIRM_BALANCE_SHEETS.flows.transfer_income - IGFIRM_BALANCE_SHEETS.flows.transfer_income) < 1e-3);
+	
+
+	//Total income == Total expenses
+/*
+	assert(abs(FIRM_BALANCE_SHEETS.flows.total_income - FIRM_BALANCE_SHEETS.flows.total_expenses +
+	IGFIRM_BALANCE_SHEETS.flows.total_income - IGFIRM_BALANCE_SHEETS.flows.total_expenses +
+	HOUSEHOLD_BALANCE_SHEETS.flows.total_income - HOUSEHOLD_BALANCE_SHEETS.flows.total_expenses +
+	BANK_BALANCE_SHEETS.flows.total_income - BANK_BALANCE_SHEETS.flows.total_expenses +
+	GOV_BALANCE_SHEETS.flows.total_income - GOV_BALANCE_SHEETS.flows.total_expenses +
+	ECB_BALANCE_SHEETS.flows.total_income - ECB_BALANCE_SHEETS.flows.total_expenses	) < 1e-3);
+*/
+	
     return 0;
 }
 
@@ -1817,19 +1876,59 @@ int Eurostat_check_stock_consistency()
 		ECB_BALANCE_SHEETS.stocks.total_liabilities += ecb_balance_sheet_message->total_liabilities;		
 	FINISH_ECB_BALANCE_SHEET_MESSAGE_LOOP
 
-	//Check stock consistency requirements
-	//payment_accounts
+	/**************************** Check stock consistency requirements ****************************/
+	
+	//Payment_accounts
+/*	
 	assert(FIRM_BALANCE_SHEETS.stocks.payment_account >= 0.0);
 	assert(HOUSEHOLD_BALANCE_SHEETS.stocks.payment_account >= 0.0);
 	//assert(IGFIRM_BALANCE_SHEETS.stocks.payment_account >= 0.0);
 	assert(GOV_BALANCE_SHEETS.stocks.payment_account >= 0.0);
+	assert(BANK_BALANCE_SHEETS.stocks.cash >= 0.0);
+*/	
+	//Total Bank deposits
+//	assert(abs( FIRM_BALANCE_SHEETS.stocks.payment_account + IGFIRM_BALANCE_SHEETS.stocks.payment_account
+//			+ HOUSEHOLD_BALANCE_SHEETS.stocks.payment_account - BANK_BALANCE_SHEETS.stocks.deposits ) < 1e-3);
 	
-	//Gov bonds
-	assert(HOUSEHOLD_BALANCE_SHEETS.stocks.nr_gov_bonds + ECB_BALANCE_SHEETS.stocks.nr_gov_bonds 
-			- GOV_BALANCE_SHEETS.stocks.nr_bonds_outstanding == 0);
-	//Firm shares
-	assert(FIRM_BALANCE_SHEETS.stocks.current_shares_outstanding + IGFIRM_BALANCE_SHEETS.stocks.current_shares_outstanding 
-			- HOUSEHOLD_BALANCE_SHEETS.stocks.nr_firm_shares == 0);
+	//Total Central Bank fiat money: 1st method
+/*
+	assert(abs( FIRM_BALANCE_SHEETS.stocks.payment_account + IGFIRM_BALANCE_SHEETS.stocks.payment_account
+			+ HOUSEHOLD_BALANCE_SHEETS.stocks.payment_account + GOV_BALANCE_SHEETS.stocks.payment_account 
+			+ BANK_BALANCE_SHEETS.stocks.cash - BANK_BALANCE_SHEETS.stocks.total_credit 
+			- ECB_BALANCE_SHEETS.stocks.fiat_money	) < 1e-3);
+*/
+	//Total Central Bank fiat money: 2nd method
+/*
+	assert(abs( BANK_BALANCE_SHEETS.stocks.deposits	+ BANK_BALANCE_SHEETS.stocks.cash 
+			- BANK_BALANCE_SHEETS.stocks.total_credit 
+			- ECB_BALANCE_SHEETS.stocks.fiat_money	) < 1e-3);
+*/
 	
+	//Total bank loans to firms
+//	assert(abs( FIRM_BALANCE_SHEETS.stocks.total_debt
+//	 - BANK_BALANCE_SHEETS.stocks.total_credit ) < 1e-3);
+	
+	//Total Central Bank loans to banks
+//	assert(abs( ECB_BALANCE_SHEETS.stocks.total_ecb_debt
+//	 - BANK_BALANCE_SHEETS.stocks.ecb_debt ) < 1e-3);
+	
+	//Nr of Gov bonds
+//	assert(HOUSEHOLD_BALANCE_SHEETS.stocks.nr_gov_bonds + ECB_BALANCE_SHEETS.stocks.nr_gov_bonds 
+//			- GOV_BALANCE_SHEETS.stocks.nr_bonds_outstanding == 0);
+	//Nr of Firm shares
+//	assert(FIRM_BALANCE_SHEETS.stocks.current_shares_outstanding + IGFIRM_BALANCE_SHEETS.stocks.current_shares_outstanding 
+//			- HOUSEHOLD_BALANCE_SHEETS.stocks.nr_firm_shares == 0);
+
+	
+	//Total assets == Total liabilities
+/*
+	assert(abs(FIRM_BALANCE_SHEETS.stocks.total_assets - FIRM_BALANCE_SHEETS.stocks.total_liabilities +
+	IGFIRM_BALANCE_SHEETS.stocks.total_assets - IGFIRM_BALANCE_SHEETS.stocks.total_liabilities +
+	HOUSEHOLD_BALANCE_SHEETS.stocks.total_assets - HOUSEHOLD_BALANCE_SHEETS.stocks.total_liabilities +
+	BANK_BALANCE_SHEETS.stocks.total_assets - BANK_BALANCE_SHEETS.stocks.total_liabilities +
+	GOV_BALANCE_SHEETS.stocks.total_assets - GOV_BALANCE_SHEETS.stocks.total_liabilities +
+	ECB_BALANCE_SHEETS.stocks.total_assets - ECB_BALANCE_SHEETS.stocks.total_liabilities	) < 1e-3);
+*/
+
     return 0;
 }
