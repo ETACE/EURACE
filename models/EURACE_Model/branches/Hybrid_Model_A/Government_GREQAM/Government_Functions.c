@@ -76,8 +76,8 @@ int Government_read_unemployment_benefit_notifications()
         
     FINISH_UNEMPLOYMENT_NOTIFICATION_MESSAGE_LOOP
 
-    MONTHLY_UNEMPLOYMENT_BENEFIT_PAYMENT += sum;    
-    YEARLY_UNEMPLOYMENT_BENEFIT_PAYMENT += sum;     
+    MONTHLY_BENEFIT_PAYMENT += sum;    
+    YEARLY_BENEFIT_PAYMENT += sum;     
 
     // Update the payment account
     PAYMENT_ACCOUNT -= sum;
@@ -162,6 +162,27 @@ int Government_read_subsidy_notifications()
     return 0;
 }
 
+/* \fn: int Government_send_data_to_Eurostat()
+ * \brief Function to send balance sheet data to Eurostat.
+ */
+int Government_send_data_to_Eurostat()
+{        
+    	if (SWITCH_FLOW_CONSISTENCY_CHECK)
+    	{
+    		NR_BONDS_OUTSTANDING=0;
+    		
+    		TOTAL_ASSETS=0.0;
+    		TOTAL_LIABILITIES=0.0;
+
+    		add_gov_balance_sheet_message(PAYMENT_ACCOUNT, NR_BONDS_OUTSTANDING, 
+    				MONTHLY_TAX_REVENUES, TOTAL_BOND_FINANCING, MONTHLY_INVESTMENT_EXPENDITURE, MONTHLY_CONSUMPTION_EXPENDITURE,
+    				MONTHLY_BENEFIT_PAYMENT, MONTHLY_SUBSIDY_PAYMENT, MONTHLY_TRANSFER_PAYMENT, MONTHLY_BOND_INTEREST_PAYMENT,
+    				TOTAL_ASSETS, TOTAL_LIABILITIES, MONTHLY_INCOME, MONTHLY_EXPENDITURE);
+    	}
+
+    return 0;
+}
+
 /* \fn: int Government_send_account_update()
  * \brief Function to send the payment_account value to the Central Bank.
  */
@@ -170,6 +191,19 @@ int Government_send_account_update()
         // At the very end of agent government: update the bank account
         add_central_bank_account_update_message(ID, PAYMENT_ACCOUNT);
         
+    	if (SWITCH_STOCK_CONSISTENCY_CHECK)
+    	{
+    		NR_BONDS_OUTSTANDING=0;
+    		
+    		TOTAL_ASSETS=0.0;
+    		TOTAL_LIABILITIES=0.0;
+
+    		add_gov_balance_sheet_message(PAYMENT_ACCOUNT, NR_BONDS_OUTSTANDING, 
+    				MONTHLY_TAX_REVENUES, TOTAL_BOND_FINANCING, MONTHLY_INVESTMENT_EXPENDITURE, MONTHLY_CONSUMPTION_EXPENDITURE,
+    				MONTHLY_BENEFIT_PAYMENT, MONTHLY_SUBSIDY_PAYMENT, MONTHLY_TRANSFER_PAYMENT, MONTHLY_BOND_INTEREST_PAYMENT,
+    				TOTAL_ASSETS, TOTAL_LIABILITIES, MONTHLY_INCOME, MONTHLY_EXPENDITURE);
+    	}
+
     return 0;
 }
 
@@ -181,7 +215,7 @@ int Government_monthly_budget_accounting()
     double in, out;
 
     //Compute the following: the interest rate is the base rate of the Central Bank
-    GOV_INTEREST_RATE = (double) 0.05/12.0;
+    //GOV_INTEREST_RATE = (double) 0.05/12.0;
     //GOV_INTEREST_RATE = CB_BASE_RATE/12.0;
     
     //Items that have already been added to the payment_account
@@ -189,9 +223,9 @@ int Government_monthly_budget_accounting()
         MONTHLY_INCOME = in;
         
     //Items that have already been subtracted from the payment_account
-        out = MONTHLY_UNEMPLOYMENT_BENEFIT_PAYMENT +
+        out = MONTHLY_BENEFIT_PAYMENT +
         MONTHLY_TRANSFER_PAYMENT +
-        MONTHLY_BOND_COUPON_PAYMENT +
+        MONTHLY_BOND_INTEREST_PAYMENT +
         MONTHLY_INVESTMENT_EXPENDITURE +
         MONTHLY_CONSUMPTION_EXPENDITURE;
         
@@ -229,10 +263,10 @@ int Government_monthly_resetting()
 {
     //Reset the yearly counters:
     MONTHLY_TAX_REVENUES =0.0;
-    MONTHLY_UNEMPLOYMENT_BENEFIT_PAYMENT =0.0;
+    MONTHLY_BENEFIT_PAYMENT =0.0;
     MONTHLY_TRANSFER_PAYMENT =0.0;
     MONTHLY_SUBSIDY_PAYMENT =0.0;
-    MONTHLY_BOND_COUPON_PAYMENT =0.0;
+    MONTHLY_BOND_INTEREST_PAYMENT =0.0;
     MONTHLY_INVESTMENT_EXPENDITURE =0.0;
     MONTHLY_CONSUMPTION_EXPENDITURE =0.0;
     
@@ -247,7 +281,7 @@ int Government_yearly_budget_accounting()
     double in, out;
 
     //Compute the following:
-    GOV_INTEREST_RATE = 0.05;
+   // GOV_INTEREST_RATE = 0.05;
     //GOV_INTEREST_RATE = CB_BASE_RATE;
 
     //Items that have already been added to the payment_account
@@ -255,9 +289,9 @@ int Government_yearly_budget_accounting()
         YEARLY_INCOME = in;
         
     //Items that have already been subtracted from the payment_account
-        out = YEARLY_UNEMPLOYMENT_BENEFIT_PAYMENT +
+        out = YEARLY_BENEFIT_PAYMENT +
         YEARLY_TRANSFER_PAYMENT +
-        YEARLY_BOND_COUPON_PAYMENT +
+        YEARLY_BOND_INTEREST_PAYMENT +
         YEARLY_INVESTMENT_EXPENDITURE +
         YEARLY_CONSUMPTION_EXPENDITURE;
         
@@ -276,10 +310,10 @@ int Government_yearly_resetting()
 {
     //Reset the yearly counters:
     YEARLY_TAX_REVENUES =0.0;
-    YEARLY_UNEMPLOYMENT_BENEFIT_PAYMENT =0.0;
+    YEARLY_BENEFIT_PAYMENT =0.0;
     YEARLY_TRANSFER_PAYMENT =0.0;
     YEARLY_SUBSIDY_PAYMENT =0.0;
-    YEARLY_BOND_COUPON_PAYMENT =0.0;
+    YEARLY_BOND_INTEREST_PAYMENT =0.0;
     YEARLY_INVESTMENT_EXPENDITURE =0.0;
     YEARLY_CONSUMPTION_EXPENDITURE =0.0;
     
@@ -315,8 +349,10 @@ int Government_read_data_from_Eurostat()
     COUNTRY_WIDE_MEAN_WAGE = COUNTRY_WIDE_MEAN_WAGE/NO_REGIONS_PER_GOV;
     
     //Set GDP growth rate
-    GDP_GROWTH = GDP/old_gdp;
-
+    if (old_gdp > 0.0)
+    	GDP_GROWTH = GDP/old_gdp;
+    else GDP_GROWTH = 1.0; 
+    	
     return 0;   
 }
 

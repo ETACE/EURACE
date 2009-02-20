@@ -436,6 +436,27 @@ int Household_handle_leftover_budget()
         /*GENUA*/
         add_bank_account_update_message(ID, BANK_ID, PAYMENT_ACCOUNT);
     
+        /*AIX*/
+    	if (SWITCH_FLOW_CONSISTENCY_CHECK)
+    	{
+    		//Set these to correct expressions:
+    		NR_GOV_BONDS=0;
+    		NR_FIRM_SHARES=0;
+    		GOV_INTEREST=0.0;
+    		STOCK_SALES=0.0;
+    		MONTHLY_CONSUMPTION_EXPENDITURE=0.0;
+    		STOCK_PURCHASES=0.0;
+    		TOTAL_ASSETS=0.0;
+    		TOTAL_LIABILITIES=0.0;
+    		TOTAL_INCOME=0.0;
+    		TOTAL_EXPENSES=0.0;
+
+    		//printf("\n Household %d: my WAGE=%2.2f.\n", ID, WAGE);
+    		add_household_balance_sheet_message(PAYMENT_ACCOUNT, NR_GOV_BONDS, NR_FIRM_SHARES, 
+    				WAGE, GOV_INTEREST, STOCK_SALES,
+    				CUM_TOTAL_DIVIDENDS, MONTHLY_CONSUMPTION_EXPENDITURE, TAX_PAYMENT, STOCK_PURCHASES, 
+    				TOTAL_ASSETS, TOTAL_LIABILITIES, TOTAL_INCOME, TOTAL_EXPENSES);
+    	}
 
     return 0;
 }
