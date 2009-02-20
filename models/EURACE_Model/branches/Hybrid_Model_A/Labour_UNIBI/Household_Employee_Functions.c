@@ -857,13 +857,13 @@ int Household_send_tax_payment()
 
 
     /*Compute the total taxes*/
-    TOTAL_TAXES = additional_tax + CUM_TOTAL_DIVIDENDS*TAX_RATE_HH_CAPITAL + WAGE*TAX_RATE_HH_LABOUR;
+    TAX_PAYMENT = additional_tax + CUM_TOTAL_DIVIDENDS*TAX_RATE_HH_CAPITAL + WAGE*TAX_RATE_HH_LABOUR;
 
     /*Send a message to the government*/
-    add_tax_payment_message(GOV_ID, TOTAL_TAXES);
+    add_tax_payment_message(GOV_ID, TAX_PAYMENT);
 
     /*Reduce the payment account*/
-    PAYMENT_ACCOUNT-=TOTAL_TAXES;
+    PAYMENT_ACCOUNT-=TAX_PAYMENT;
 
     /*Setting the counter of monthly dividends = 0*/
     CUM_TOTAL_DIVIDENDS=0;

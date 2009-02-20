@@ -95,12 +95,12 @@
     </variable>
     <variable>
      <type>double</type>
-     <name>monthly_unemployment_benefit_payment</name>
+     <name>monthly_benefit_payment</name>
      <description>Unemployment benefit payments for all unemployed households.</description>
     </variable>
     <variable>
      <type>double</type>
-     <name>yearly_unemployment_benefit_payment</name>
+     <name>yearly_benefit_payment</name>
      <description>Unemployment benefit payments for all unemployed households.</description>
     </variable>
     <variable>
@@ -145,12 +145,12 @@
     </variable>
     <variable>
      <type>double</type>
-     <name>monthly_bond_coupon_payment</name>
+     <name>monthly_bond_interest_payment</name>
      <description></description>
     </variable>
     <variable>
      <type>double</type>
-     <name>yearly_bond_coupon_payment</name>
+     <name>yearly_bond_interest_payment</name>
      <description></description>
     </variable>
     <variable>
@@ -283,6 +283,21 @@
      <name>yearly_investment_budget</name>
      <description>The planned investment budget for the next year.</description>
     </variable>
+    <variable>
+     <type>double</type>
+     <name>total_assets</name>
+     <description></description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>total_liabilities</name>
+     <description></description>
+    </variable>
+    <variable>
+     <type>int</type>
+     <name>nr_bonds_outstanding</name>
+     <description></description>
+    </variable>
    </memory>
    <functions>
     <function>
@@ -410,7 +425,7 @@
      <name>Government_read_unemployment_benefit_notifications</name>
      <description>Counter of the \url{unemployment} messages, monthly and yearly totals of the unemployment benefit payments.</description>
      <currentState>04</currentState>
-     <nextState>Gov_Start_Monthly_Loop</nextState>
+     <nextState>04b</nextState>
      <inputs>
       <input>
        <messageName>unemployment_notification</messageName>
@@ -466,6 +481,9 @@
      <outputs>
       <output>
        <messageName>central_bank_account_update</messageName>
+      </output>
+      <output>
+       <messageName>gov_balance_sheet</messageName>
       </output>
      </outputs>
     </function>
@@ -534,6 +552,18 @@
      <nextState>06</nextState>
      <inputs/>
      <outputs/>
+    </function>
+    <function>
+     <name>Government_send_data_to_Eurostat</name>
+     <description></description>
+     <currentState>04b</currentState>
+     <nextState>Gov_Start_Monthly_Loop</nextState>
+     <inputs/>
+     <outputs>
+      <output>
+       <messageName>gov_balance_sheet</messageName>
+      </output>
+     </outputs>
     </function>
    </functions>
   </xagent>

@@ -207,3 +207,30 @@
     }
     
     
+    /** \fn Bank_send_data_to_Eurostat()
+     * \brief 
+     */
+    int Bank_send_data_to_Eurostat()
+    {
+    	if (SWITCH_STOCK_CONSISTENCY_CHECK)
+    	{
+	    	FIRM_LOAN_INSTALLMENTS=0.0;
+	    	FIRM_INTEREST_PAYMENTS=0.0;
+	    	FIRM_LOAN_ISSUES=0.0;
+	    	ECB_INTEREST_PAYMENT=0.0;
+	    	DIVIDEND_PAYMENT=0.0;
+	    	TAX_PAYMENT=0.0;
+	    	
+	    	TOTAL_ASSETS=0.0;
+	    	TOTAL_LIABILITIES=0.0;
+	    	TOTAL_INCOME=0.0;
+	    	TOTAL_EXPENSES=0.0;
+	
+	    	add_bank_balance_sheet_message(CASH, TOTAL_CREDIT, DEPOSITS, ECB_DEBT,
+	    			FIRM_LOAN_INSTALLMENTS, FIRM_INTEREST_PAYMENTS, FIRM_LOAN_ISSUES,
+	    			 ECB_INTEREST_PAYMENT, DIVIDEND_PAYMENT, TAX_PAYMENT,           
+	    			TOTAL_ASSETS, TOTAL_LIABILITIES, TOTAL_INCOME, TOTAL_EXPENSES);
+    	}
+    	
+    	return 0;
+    }
