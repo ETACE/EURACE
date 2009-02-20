@@ -878,6 +878,9 @@ Condition: xml, C
 
 Gov: existing function
 Government_GREQAM/Government_Functions.c
+Government_send_data_to_Eurostat (calendar DAY)
+Condition: if condition in C
+
 Government_send_account_update (calendar month)
 Condition: if condition in C
 

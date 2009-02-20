@@ -1705,14 +1705,21 @@ int Eurostat_check_flow_consistency()
 	//- GOV_BALANCE_SHEETS.flows.monthly_investment_expenditure) < 1e-3);
 	
 	//Salaries
-	printf("\n FIRM_BALANCE_SHEETS.flows.labour_costs = %4.4f\n", FIRM_BALANCE_SHEETS.flows.labour_costs);
-	printf("\n IGFIRM_BALANCE_SHEETS.flows.labour_costs = %4.4f\n", IGFIRM_BALANCE_SHEETS.flows.labour_costs);
-	printf("\n HOUSEHOLD_BALANCE_SHEETS.flows.wage = %4.4f\n", HOUSEHOLD_BALANCE_SHEETS.flows.wage);
+//	printf("\n FIRM_BALANCE_SHEETS.flows.labour_costs = %4.4f\n", FIRM_BALANCE_SHEETS.flows.labour_costs);
+//	printf("\n IGFIRM_BALANCE_SHEETS.flows.labour_costs = %4.4f\n", IGFIRM_BALANCE_SHEETS.flows.labour_costs);
+//	printf("\n HOUSEHOLD_BALANCE_SHEETS.flows.wage = %4.4f\n", HOUSEHOLD_BALANCE_SHEETS.flows.wage);
 
 //	assert(abs(FIRM_BALANCE_SHEETS.flows.labour_costs + IGFIRM_BALANCE_SHEETS.flows.labour_costs
 //	- HOUSEHOLD_BALANCE_SHEETS.flows.wage	) < 1e-3);
 	
 	//Taxes
+	
+	printf("\n FIRM_BALANCE_SHEETS.flows.tax_payment = %4.4f\n", FIRM_BALANCE_SHEETS.flows.tax_payment);
+	printf("\n IGFIRM_BALANCE_SHEETS.flows.tax_payment = %4.4f\n", IGFIRM_BALANCE_SHEETS.flows.tax_payment);
+	printf("\n BANK_BALANCE_SHEETS.flows.tax_payment = %4.4f\n", BANK_BALANCE_SHEETS.flows.tax_payment);
+	printf("\n HOUSEHOLD_BALANCE_SHEETS.flows.tax_payment = %4.4f\n", HOUSEHOLD_BALANCE_SHEETS.flows.tax_payment);
+	printf("\n GOV_BALANCE_SHEETS.flows.monthly_tax_revenues = %4.4f\n", GOV_BALANCE_SHEETS.flows.monthly_tax_revenues);
+	
     //assert(abs(FIRM_BALANCE_SHEETS.flows.tax_payment + IGFIRM_BALANCE_SHEETS.flows.tax_payment
 	//+ BANK_BALANCE_SHEETS.flows.tax_payment + HOUSEHOLD_BALANCE_SHEETS.flows.tax_payment - GOV_BALANCE_SHEETS.flows.monthly_tax_revenues) < 1e-3);
 	
