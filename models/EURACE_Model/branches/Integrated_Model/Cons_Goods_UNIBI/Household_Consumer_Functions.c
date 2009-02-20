@@ -451,6 +451,7 @@ int Household_handle_leftover_budget()
     		TOTAL_INCOME=0.0;
     		TOTAL_EXPENSES=0.0;
 
+    		//printf("\n Household %d: my WAGE=%2.2f.\n", ID, WAGE);
     		add_household_balance_sheet_message(PAYMENT_ACCOUNT, NR_GOV_BONDS, NR_FIRM_SHARES, 
     				WAGE, GOV_INTEREST, STOCK_SALES,
     				CUM_TOTAL_DIVIDENDS, MONTHLY_CONSUMPTION_EXPENDITURE, TAX_PAYMENT, STOCK_PURCHASES, 

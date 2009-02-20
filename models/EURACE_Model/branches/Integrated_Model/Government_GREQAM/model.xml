@@ -425,7 +425,7 @@
      <name>Government_read_unemployment_benefit_notifications</name>
      <description>Counter of the \url{unemployment} messages, monthly and yearly totals of the unemployment benefit payments.</description>
      <currentState>04</currentState>
-     <nextState>Gov_Start_Monthly_Loop</nextState>
+     <nextState>04b</nextState>
      <inputs>
       <input>
        <messageName>unemployment_notification</messageName>
@@ -552,6 +552,18 @@
      <nextState>06</nextState>
      <inputs/>
      <outputs/>
+    </function>
+    <function>
+     <name>Government_send_data_to_Eurostat</name>
+     <description></description>
+     <currentState>04b</currentState>
+     <nextState>Gov_Start_Monthly_Loop</nextState>
+     <inputs/>
+     <outputs>
+      <output>
+       <messageName>gov_balance_sheet</messageName>
+      </output>
+     </outputs>
     </function>
    </functions>
   </xagent>
