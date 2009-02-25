@@ -139,29 +139,33 @@ int Firm_calc_production_quantity()
     
         /*Computing of mean critical stock levels*/
         double mean_critical_stocks=0;
-        for (int j = 0; j < CURRENT_MALL_STOCKS.size;j++)
+        int i,j,k;
+	for (j = 0; j < CURRENT_MALL_STOCKS.size;j++)
         {
             mean_critical_stocks += CURRENT_MALL_STOCKS.array[j].critical_stock;
         }
 
         mean_critical_stocks = mean_critical_stocks/CURRENT_MALL_STOCKS.size;
 
+
+
         /*Computing of out-of-stock costs*/
         OUT_OF_STOCK_COSTS = (PRICE - DISCOUNT_RATE*UNIT_COSTS)/
         (PRICE+INVENTORY_COSTS_PER_UNIT);
 
         /*Creating a temporary array of the last X sales per mall*/
-        for(int i = 0; i < CURRENT_MALL_STOCKS.size;i++)
+        
+	for(i = 0; i < CURRENT_MALL_STOCKS.size;i++)
         {
             temporary_sales_statistics_array sales_mall;
             init_temporary_sales_statistics_array(&sales_mall);
 
-            for(int j = 0; j < MALLS_SALES_STATISTICS.size;j++)
+            for(j = 0; j < MALLS_SALES_STATISTICS.size;j++)
             {
                 if(CURRENT_MALL_STOCKS.array[i].mall_id==
                 MALLS_SALES_STATISTICS.array[j].mall_id)
                 {
-                    for(int k = 0; k < FIRM_PLANNING_HORIZON; k++)
+                    for(k = 0; k < FIRM_PLANNING_HORIZON; k++)
                     {
                     add_temporary_sales_statistics(&sales_mall,
                     MALLS_SALES_STATISTICS.array[j].mall_id,
@@ -183,7 +187,8 @@ int Firm_calc_production_quantity()
             
             CURRENT_MALL_STOCKS.array[i].critical_stock = 
                                 sales_mall.array[6].sales;
-            
+
+			
 
             /*If the critical level for a mall is zero then the firm sets (with a certain prob )the 
              * critical level equal the average CL in order to keep this mall on the delivery list */
@@ -204,7 +209,8 @@ int Firm_calc_production_quantity()
 
         /*checking whether or not the current mall stocks are below the critical values         
          * (sS-Rule) If this is the case refill the stock up to the max stock */
-        for(int i = 0; i < CURRENT_MALL_STOCKS.size; i++)
+        
+	for(i = 0; i < CURRENT_MALL_STOCKS.size; i++)
         {
             
             if(CURRENT_MALL_STOCKS.array[i].current_stock <= 
@@ -228,17 +234,20 @@ int Firm_calc_production_quantity()
                  * units than the period before. They increase the production 
                  * volume for one mall by a certain fraction of the last delivery volume*/
                 {
-                    for(int j = 0; j < DELIVERY_VOLUME.size; j++)
+		    
+                    for(j = 0; j < PLANNED_DELIVERY_VOLUME.size; j++)
                     {
-                        if(PLANNED_DELIVERY_VOLUME.array[i].mall_id==
-                        DELIVERY_VOLUME.array[j].mall_id)
+                        if(PLANNED_DELIVERY_VOLUME.array[j].mall_id==
+                        CURRENT_MALL_STOCKS.array[i].mall_id)
                         {
                             prod_vol = CURRENT_MALL_STOCKS.array[i].critical_stock*(1 + ADAPTION_DELIVERY_VOLUME);
-
+			
+			    CURRENT_MALL_STOCKS.array[i].critical_stock= prod_vol;
+	
                             PLANNED_DELIVERY_VOLUME.
-                            array[i].quantity = prod_vol;
+                            array[j].quantity = prod_vol;
 
-                            /*printf("Prod-Vol %f\n",prod_vol);*/
+                            //printf("Prod-Vol %f\n",prod_vol);
                         }
                     }
                 }
@@ -257,7 +266,8 @@ int Firm_calc_production_quantity()
 
         /*Smoothing of production quantity in order to avoid high fluctuations*/
         double mean_production_quantity=0;
-        for(int i = 0; i < LAST_PLANNED_PRODUCTION_QUANTITIES.size; i++)
+        
+	for(i = 0; i < LAST_PLANNED_PRODUCTION_QUANTITIES.size; i++)
         {
             mean_production_quantity += LAST_PLANNED_PRODUCTION_QUANTITIES.array[i];
         }
@@ -265,12 +275,13 @@ int Firm_calc_production_quantity()
         mean_production_quantity = mean_production_quantity/
         LAST_PLANNED_PRODUCTION_QUANTITIES.size;
     
+
         PLANNED_PRODUCTION_QUANTITY = LAMBDA*production_volume + (1-LAMBDA)*mean_production_quantity;
-        
+      
         //Set planned production value that is retained in memory during the month:
         PLANNED_OUTPUT = PLANNED_PRODUCTION_QUANTITY; 
         
-        //printf("In calculate production: Firm %d PLANNED_PRODUCTION_QUANTITY %f\n", ID, PLANNED_PRODUCTION_QUANTITY);
+       // printf("In calculate production: Firm %d PLANNED_PRODUCTION_QUANTITY %f\n", ID, PLANNED_PRODUCTION_QUANTITY);
         //printf("In calculate production: Firm %d PLANNED_OUTPUT %f\n", ID, PLANNED_OUTPUT);
         
     return 0;
@@ -480,10 +491,7 @@ int Firm_receive_capital_goods()
         CAPITAL_COSTS = 0.0;
         START_CAPITAL_GOOD_DELIVERY_MESSAGE_LOOP
         
-        /*Adding the new capital*/
-
-        TOTAL_UNITS_CAPITAL_STOCK += capital_good_delivery_message
-        ->capital_good_delivery_volume;
+       
         
         /*Determine the weighted average productivity of the total capital stock*/
     
@@ -501,9 +509,12 @@ int Firm_receive_capital_goods()
                 capital_good_delivery_message->capital_good_delivery_volume/
                 (TOTAL_UNITS_CAPITAL_STOCK + 
                 capital_good_delivery_message->capital_good_delivery_volume)
-                *capital_good_delivery_message->capital_good_price;     
+                *capital_good_delivery_message->capital_good_price*capital_good_delivery_message->capital_good_delivery_volume;     
 
+	 /*Adding the new capital*/
 
+        TOTAL_UNITS_CAPITAL_STOCK += capital_good_delivery_message
+        ->capital_good_delivery_volume;
 
         /*Computing the capital bill*/
         CAPITAL_COSTS += capital_good_delivery_message
@@ -550,6 +561,8 @@ int Firm_execute_production()
         PRODUCTION_QUANTITY=0.0;
     }
     
+	//printf("PRODUCTION_QUANTITY %f \n",PRODUCTION_QUANTITY);
+
     //compute diff between actual and planned
     diff = PRODUCTION_QUANTITY - PLANNED_PRODUCTION_QUANTITY;
     
@@ -575,8 +588,8 @@ int Firm_calc_pay_costs()
         add_pay_capital_goods_message(ID,CAPITAL_COSTS);
 
         LABOUR_COSTS=0.0;
-
-        for(int i=0; i<EMPLOYEES.size;i++)
+	int i;
+        for(i=0; i<EMPLOYEES.size;i++)
         {
             LABOUR_COSTS += EMPLOYEES.array[i].wage;
 
@@ -591,7 +604,8 @@ int Firm_calc_pay_costs()
         {
             
             double calc_capital_costs = 0;
-        for(int i = 0; i<CAPITAL_FINANCING.size;i++) 
+	int i;        
+	for(i = 0; i<CAPITAL_FINANCING.size;i++) 
             {
                 if(CAPITAL_FINANCING.array[i].nr_periods_before_repayment==0)
                 {
@@ -621,9 +635,6 @@ int Firm_calc_pay_costs()
 
     PAYMENT_ACCOUNT -= PRODUCTION_COSTS;
 
-    //if(PLANNED_PRODUCTION_COSTS<PRODUCTION_COSTS)
-        //printf("XXXX PLANNED_PRODUCTION_COSTS: %f  PRODUCTION_COSTS %f XXXXX\n",PLANNED_PRODUCTION_COSTS,PRODUCTION_COSTS);
-
     remove_double(&LAST_PLANNED_PRODUCTION_QUANTITIES,0);
     add_double(&LAST_PLANNED_PRODUCTION_QUANTITIES,PLANNED_PRODUCTION_QUANTITY);    
     
@@ -638,18 +649,18 @@ int Firm_send_goods_to_mall()
 {   
     
         double delivery_volume=0;
-
-        for(int i=0; i<PLANNED_DELIVERY_VOLUME.size; i++)
+	int i,j;
+        for(i=0; i<PLANNED_DELIVERY_VOLUME.size; i++)
         {
             delivery_volume+=PLANNED_DELIVERY_VOLUME.array[i].quantity;
 
         }
 
 
-        for(int i = 0; i < PLANNED_DELIVERY_VOLUME.size; i++)
+        for(i = 0; i < PLANNED_DELIVERY_VOLUME.size; i++)
         {
 
-            for(int j = 0; j < DELIVERY_VOLUME.size; j++)
+            for(j = 0; j < DELIVERY_VOLUME.size; j++)
             {
                 if(DELIVERY_VOLUME.array[j].mall_id == 
                 PLANNED_DELIVERY_VOLUME.array[i].mall_id)
@@ -711,8 +722,8 @@ int Firm_calc_revenue()
 
     /*calc the daily revenue and sum up the monthly revenue*/
     START_SALES_MESSAGE_LOOP
-    
-        for(int i=0; i< SOLD_QUANTITIES.size; i++)
+    	int i;
+        for(i=0; i< SOLD_QUANTITIES.size; i++)
         {
             if(sales_message->mall_id ==  SOLD_QUANTITIES.array[i].mall_id)
             {
@@ -729,7 +740,7 @@ int Firm_calc_revenue()
         
 
         //Update mall stocks
-        for(int i=0; i< CURRENT_MALL_STOCKS.size; i++)
+        for(i=0; i< CURRENT_MALL_STOCKS.size; i++)
         {
             if(sales_message->mall_id ==  CURRENT_MALL_STOCKS.array[i].mall_id)
             {
@@ -759,11 +770,11 @@ int Firm_compute_sales_statistics()
 
     /*The sales per mall must be stored for the inventory rule*/
             
-        int remove_index;
+        int remove_index, j, k, i;
                 
-        for(int j=0; j < MALLS_SALES_STATISTICS.size;j++)
+        for(j=0; j < MALLS_SALES_STATISTICS.size;j++)
         {
-            for(int k = 0; k < MALLS_SALES_STATISTICS.array[j].sales.size; k++)
+            for(k = 0; k < MALLS_SALES_STATISTICS.array[j].sales.size; k++)
             {
                 if(MALLS_SALES_STATISTICS.array[j].sales.array[k].period== FIRM_PLANNING_HORIZON)
                 {       
@@ -779,9 +790,9 @@ int Firm_compute_sales_statistics()
         }
                                             
                 
-        for(int i=0; i< SOLD_QUANTITIES.size;i++)
+        for(i=0; i< SOLD_QUANTITIES.size;i++)
         {
-            for(int j=0; j<MALLS_SALES_STATISTICS.size; j++)
+            for(j=0; j<MALLS_SALES_STATISTICS.size; j++)
             {
             if(MALLS_SALES_STATISTICS.array[j].mall_id == SOLD_QUANTITIES.array[i].mall_id)
                 {
@@ -805,8 +816,8 @@ int Firm_update_specific_skills_of_workers()
 {
 
     START_SPECIFIC_SKILL_UPDATE_MESSAGE_LOOP
-        
-        for(int i=0; i<EMPLOYEES.size;i++)
+        int i;
+        for(i=0; i<EMPLOYEES.size;i++)
         {
             if(specific_skill_update_message->id==EMPLOYEES.array[i].id)
             {
