@@ -1,4 +1,4 @@
-#include <assert.h>
+//#include <assert.h>
 #include "../header.h"
 #include "../Eurostat_agent_header.h"
 #include "../my_library_header.h"
@@ -1693,70 +1693,151 @@ int Eurostat_check_flow_consistency()
 	/**************************** Check cash flow consistency requirements ****************************/
     
     //Revenues
-    //assert(FIRM_BALANCE_SHEETS.flows.cum_revenue >= 0.0);
-    //assert(IGFIRM_BALANCE_SHEETS.flows.cum_revenue >= 0.0);
+    assert(FIRM_BALANCE_SHEETS.flows.cum_revenue >= 0.0);
+    assert(IGFIRM_BALANCE_SHEETS.flows.cum_revenue >= 0.0);
     
     //Consumption: Household+Government
+	printf("\n -----------------------------------\n");
+	printf("\n Checking cash flow: Consumption.\n");
+	printf("\n FIRM_BALANCE_SHEETS.flows.cum_revenue = %.4f\n", FIRM_BALANCE_SHEETS.flows.cum_revenue);
+	printf("\n HOUSEHOLD_BALANCE_SHEETS.flows.monthly_consumption_expenditure = %.4f\n", HOUSEHOLD_BALANCE_SHEETS.flows.monthly_consumption_expenditure);
+
     //assert(abs(FIRM_BALANCE_SHEETS.flows.cum_revenue - HOUSEHOLD_BALANCE_SHEETS.flows.monthly_consumption_expenditure
 	//- GOV_BALANCE_SHEETS.flows.monthly_consumption_expenditure) < 1e-3);
 		
 	//Investment: Firms+Government
+	printf("\n -----------------------------------\n");	
+	printf("\n Checking cash flow: Investment.\n");
+	printf("\n IGFIRM_BALANCE_SHEETS.flows.cum_revenue = %.4f\n", IGFIRM_BALANCE_SHEETS.flows.cum_revenue);
+	printf("\n FIRM_BALANCE_SHEETS.flows.capital_costs = %.4f\n", FIRM_BALANCE_SHEETS.flows.capital_costs);
+	printf("\n GOV_BALANCE_SHEETS.flows.monthly_investment_expenditure = %.4f\n", GOV_BALANCE_SHEETS.flows.monthly_investment_expenditure);
+
     //assert(abs(IGFIRM_BALANCE_SHEETS.flows.cum_revenue - FIRM_BALANCE_SHEETS.flows.capital_costs
 	//- GOV_BALANCE_SHEETS.flows.monthly_investment_expenditure) < 1e-3);
 	
 	//Salaries
-//	printf("\n FIRM_BALANCE_SHEETS.flows.labour_costs = %4.4f\n", FIRM_BALANCE_SHEETS.flows.labour_costs);
-//	printf("\n IGFIRM_BALANCE_SHEETS.flows.labour_costs = %4.4f\n", IGFIRM_BALANCE_SHEETS.flows.labour_costs);
-//	printf("\n HOUSEHOLD_BALANCE_SHEETS.flows.wage = %4.4f\n", HOUSEHOLD_BALANCE_SHEETS.flows.wage);
+	printf("\n -----------------------------------\n");
+	printf("\n Checking cash flow: Salaries.\n");
+	printf("\n FIRM_BALANCE_SHEETS.flows.labour_costs = %.4f\n", FIRM_BALANCE_SHEETS.flows.labour_costs);
+	printf("\n IGFIRM_BALANCE_SHEETS.flows.labour_costs = %.4f\n", IGFIRM_BALANCE_SHEETS.flows.labour_costs);
+	printf("\n HOUSEHOLD_BALANCE_SHEETS.flows.wage = %.4f\n", HOUSEHOLD_BALANCE_SHEETS.flows.wage);
 
 //	assert(abs(FIRM_BALANCE_SHEETS.flows.labour_costs + IGFIRM_BALANCE_SHEETS.flows.labour_costs
 //	- HOUSEHOLD_BALANCE_SHEETS.flows.wage	) < 1e-3);
 	
 	//Taxes
-	
-	printf("\n FIRM_BALANCE_SHEETS.flows.tax_payment = %4.4f\n", FIRM_BALANCE_SHEETS.flows.tax_payment);
-	printf("\n IGFIRM_BALANCE_SHEETS.flows.tax_payment = %4.4f\n", IGFIRM_BALANCE_SHEETS.flows.tax_payment);
-	printf("\n BANK_BALANCE_SHEETS.flows.tax_payment = %4.4f\n", BANK_BALANCE_SHEETS.flows.tax_payment);
-	printf("\n HOUSEHOLD_BALANCE_SHEETS.flows.tax_payment = %4.4f\n", HOUSEHOLD_BALANCE_SHEETS.flows.tax_payment);
-	printf("\n GOV_BALANCE_SHEETS.flows.monthly_tax_revenues = %4.4f\n", GOV_BALANCE_SHEETS.flows.monthly_tax_revenues);
+	printf("\n -----------------------------------\n");
+    printf("\n Checking cash flow: Taxes.\n");
+	printf("\n FIRM_BALANCE_SHEETS.flows.tax_payment = %.4f\n", FIRM_BALANCE_SHEETS.flows.tax_payment);
+	printf("\n IGFIRM_BALANCE_SHEETS.flows.tax_payment = %.4f\n", IGFIRM_BALANCE_SHEETS.flows.tax_payment);
+	printf("\n BANK_BALANCE_SHEETS.flows.tax_payment = %.4f\n", BANK_BALANCE_SHEETS.flows.tax_payment);
+	printf("\n HOUSEHOLD_BALANCE_SHEETS.flows.tax_payment = %.4f\n", HOUSEHOLD_BALANCE_SHEETS.flows.tax_payment);
+	printf("\n GOV_BALANCE_SHEETS.flows.monthly_tax_revenues = %.4f\n", GOV_BALANCE_SHEETS.flows.monthly_tax_revenues);
 	
     //assert(abs(FIRM_BALANCE_SHEETS.flows.tax_payment + IGFIRM_BALANCE_SHEETS.flows.tax_payment
 	//+ BANK_BALANCE_SHEETS.flows.tax_payment + HOUSEHOLD_BALANCE_SHEETS.flows.tax_payment - GOV_BALANCE_SHEETS.flows.monthly_tax_revenues) < 1e-3);
 	
 	//Dividend on stocks
-    //assert(abs(FIRM_BALANCE_SHEETS.flows.total_dividend_payment + IGFIRM_BALANCE_SHEETS.flows.total_dividend_payment
+	printf("\n -----------------------------------\n");
+	printf("\n Checking cash flow: Dividend on stocks.\n");
+	printf("\n FIRM_BALANCE_SHEETS.flows.total_dividend_payment = %.4f\n", FIRM_BALANCE_SHEETS.flows.total_dividend_payment);
+	printf("\n IGFIRM_BALANCE_SHEETS.flows.total_dividend_payment = %.4f\n", IGFIRM_BALANCE_SHEETS.flows.total_dividend_payment);
+	printf("\n BANK_BALANCE_SHEETS.flows.dividend_payment = %.4f\n", BANK_BALANCE_SHEETS.flows.dividend_payment);
+	printf("\n HOUSEHOLD_BALANCE_SHEETS.flows.cum_total_dividends = %.4f\n", HOUSEHOLD_BALANCE_SHEETS.flows.cum_total_dividends);
+
+	//assert(abs(FIRM_BALANCE_SHEETS.flows.total_dividend_payment + IGFIRM_BALANCE_SHEETS.flows.total_dividend_payment
 	//+ BANK_BALANCE_SHEETS.flows.dividend_payment - HOUSEHOLD_BALANCE_SHEETS.flows.cum_total_dividends) < 1e-3);
 
 	//Interest on bank loans to firms
+	printf("\n -----------------------------------\n");
+	printf("\n Checking cash flow: Interest on bank loans to firms.\n");
+	printf("\n BANK_BALANCE_SHEETS.flows.firm_interest_payments = %.4f\n", BANK_BALANCE_SHEETS.flows.firm_interest_payments);
+	printf("\n FIRM_BALANCE_SHEETS.flows.total_interest_payment = %.4f\n", FIRM_BALANCE_SHEETS.flows.total_interest_payment);
+	printf("\n IGFIRM_BALANCE_SHEETS.flows.total_interest_payment = %.4f\n", IGFIRM_BALANCE_SHEETS.flows.total_interest_payment);
+
     //assert(abs(FIRM_BALANCE_SHEETS.flows.total_interest_payment + IGFIRM_BALANCE_SHEETS.flows.total_interest_payment
 	//- BANK_BALANCE_SHEETS.flows.firm_interest_payments) < 1e-3);
 
 	//Debt installment payments by firms to banks
-    //assert(abs(FIRM_BALANCE_SHEETS.flows.total_debt_installment_payment + IGFIRM_BALANCE_SHEETS.flows.total_debt_installment_payment
+	printf("\n -----------------------------------\n");
+	printf("\n Checking cash flow: Debt installment payments.\n");
+	printf("\n BANK_BALANCE_SHEETS.flows.firm_loan_installments = %.4f\n", BANK_BALANCE_SHEETS.flows.firm_loan_installments);
+	printf("\n FIRM_BALANCE_SHEETS.flows.total_debt_installment_payment = %.4f\n", FIRM_BALANCE_SHEETS.flows.total_debt_installment_payment);
+	printf("\n IGFIRM_BALANCE_SHEETS.flows.total_debt_installment_payment = %.4f\n", IGFIRM_BALANCE_SHEETS.flows.total_debt_installment_payment);
+
+	//assert(abs(FIRM_BALANCE_SHEETS.flows.total_debt_installment_payment + IGFIRM_BALANCE_SHEETS.flows.total_debt_installment_payment
 	//- BANK_BALANCE_SHEETS.flows.firm_loan_installments) < 1e-3);
 
 	//Interest on central bank loans to banks
+	printf("\n -----------------------------------\n");
+	printf("\n Checking cash flow: Interest on central bank loans to banks.\n");
+	printf("\n BANK_BALANCE_SHEETS.flows.ecb_interest_payment = %.4f\n", BANK_BALANCE_SHEETS.flows.ecb_interest_payment);
+	printf("\n ECB_BALANCE_SHEETS.flows.bank_interest = %.4f\n", ECB_BALANCE_SHEETS.flows.bank_interest);
+	
     //assert(abs(BANK_BALANCE_SHEETS.flows.ecb_interest_payment
 	//- ECB_BALANCE_SHEETS.flows.bank_interest) < 1e-3);
 	
 	//Interest on gov. bonds
+	printf("\n -----------------------------------\n");
+	printf("\n Checking cash flow: Interest on gov. bonds.\n");
+	printf("\n GOV_BALANCE_SHEETS.flows.monthly_bond_interest_payment = %.4f\n", GOV_BALANCE_SHEETS.flows.monthly_bond_interest_payment);
+	printf("\n HOUSEHOLD_BALANCE_SHEETS.flows.gov_interest = %.4f\n", HOUSEHOLD_BALANCE_SHEETS.flows.gov_interest);
+	printf("\n ECB_BALANCE_SHEETS.flows.gov_interest = %.4f\n", ECB_BALANCE_SHEETS.flows.gov_interest);
+	
     //assert(abs(GOV_BALANCE_SHEETS.flows.monthly_bond_interest_payment
 	//- ECB_BALANCE_SHEETS.flows.gov_interest - HOUSEHOLD_BALANCE_SHEETS.flows.gov_interest) < 1e-3);
 	
 	//Benefits (not implemented)
-    //assert(abs(GOV_BALANCE_SHEETS.flows.monthly_benefit_payment
+/*
+	printf("\n -----------------------------------\n");
+	printf("\n Checking cash flow: Benefits.\n");
+	printf("\n GOV_BALANCE_SHEETS.flows.monthly_benefit_payment = %.4f\n", GOV_BALANCE_SHEETS.flows.monthly_benefit_payment);
+	printf("\n HOUSEHOLD_BALANCE_SHEETS.flows.benefit_income = %.4f\n", HOUSEHOLD_BALANCE_SHEETS.flows.benefit_income);
+*/
+	//assert(abs(GOV_BALANCE_SHEETS.flows.monthly_benefit_payment
 	//- HOUSEHOLD_BALANCE_SHEETS.flows.benefit_income) < 1e-3);
 	
 	//Subsidies (not implemented)
-    //assert(abs(GOV_BALANCE_SHEETS.flows.monthly_subsidy_payment
+/*
+ 	printf("\n -----------------------------------\n");
+	printf("\n Checking cash flow: Subsidies.\n");
+	printf("\n GOV_BALANCE_SHEETS.flows.monthly_subsidy_payment = %.4f\n", GOV_BALANCE_SHEETS.flows.monthly_subsidy_payment);
+	printf("\n HOUSEHOLD_BALANCE_SHEETS.flows.subsidy_income = %.4f\n", HOUSEHOLD_BALANCE_SHEETS.flows.subsidy_income);
+	printf("\n IGFIRM_BALANCE_SHEETS.flows.subsidy_income = %.4f\n", IGFIRM_BALANCE_SHEETS.flows.subsidy_income);
+	printf("\n IGFIRM_BALANCE_SHEETS.flows.subsidy_income = %.4f\n", IGFIRM_BALANCE_SHEETS.flows.subsidy_income);
+*/
+	//assert(abs(GOV_BALANCE_SHEETS.flows.monthly_subsidy_payment
 	//- HOUSEHOLD_BALANCE_SHEETS.flows.subsidy_income - FIRM_BALANCE_SHEETS.flows.subsidy_income - IGFIRM_BALANCE_SHEETS.flows.subsidy_income) < 1e-3);
 	
 	//Transfers (not implemented)
-    //assert(abs(GOV_BALANCE_SHEETS.flows.monthly_transfer_payment
+/*
+	printf("\n -----------------------------------\n");
+	printf("\n Checking cash flow: Transfers.\n");
+	printf("\n GOV_BALANCE_SHEETS.flows.monthly_transfer_payment = %.4f\n", GOV_BALANCE_SHEETS.flows.monthly_transfer_payment);
+	printf("\n HOUSEHOLD_BALANCE_SHEETS.flows.transfer_income = %.4f\n", HOUSEHOLD_BALANCE_SHEETS.flows.transfer_income);
+	printf("\n FIRM_BALANCE_SHEETS.flows.transfer_income = %.4f\n", FIRM_BALANCE_SHEETS.flows.transfer_income);
+	printf("\n IGFIRM_BALANCE_SHEETS.flows.transfer_income = %.4f\n", IGFIRM_BALANCE_SHEETS.flows.transfer_income);
+*/
+	//assert(abs(GOV_BALANCE_SHEETS.flows.monthly_transfer_payment
 	//- HOUSEHOLD_BALANCE_SHEETS.flows.transfer_income - FIRM_BALANCE_SHEETS.flows.transfer_income - IGFIRM_BALANCE_SHEETS.flows.transfer_income) < 1e-3);
 	
 
 	//Total income == Total expenses
+	printf("\n -----------------------------------\n");
+	printf("\n Checking cash flow: Total income == Total expenses.\n");
+	printf("\n GOV_BALANCE_SHEETS.flows.total_income = %.4f\n", GOV_BALANCE_SHEETS.flows.total_income);
+	printf("\n GOV_BALANCE_SHEETS.flows.total_expenses = %.4f\n", GOV_BALANCE_SHEETS.flows.total_expenses);
+	printf("\n HOUSEHOLD_BALANCE_SHEETS.flows.total_income = %.4f\n", HOUSEHOLD_BALANCE_SHEETS.flows.total_income);
+	printf("\n HOUSEHOLD_BALANCE_SHEETS.flows.total_expenses = %.4f\n", HOUSEHOLD_BALANCE_SHEETS.flows.total_expenses);
+	printf("\n FIRM_BALANCE_SHEETS.flows.total_income = %.4f\n", FIRM_BALANCE_SHEETS.flows.total_income);
+	printf("\n FIRM_BALANCE_SHEETS.flows.total_expenses = %.4f\n", FIRM_BALANCE_SHEETS.flows.total_expenses);
+	printf("\n IGFIRM_BALANCE_SHEETS.flows.total_income = %.4f\n", IGFIRM_BALANCE_SHEETS.flows.total_income);
+	printf("\n IGFIRM_BALANCE_SHEETS.flows.total_expenses = %.4f\n", IGFIRM_BALANCE_SHEETS.flows.total_expenses);
+	printf("\n BANK_BALANCE_SHEETS.flows.total_income = %.4f\n", BANK_BALANCE_SHEETS.flows.total_income);
+	printf("\n BANK_BALANCE_SHEETS.flows.total_expenses = %.4f\n", BANK_BALANCE_SHEETS.flows.total_expenses);
+	printf("\n ECB_BALANCE_SHEETS.flows.total_income = %.4f\n", ECB_BALANCE_SHEETS.flows.total_income);
+	printf("\n ECB_BALANCE_SHEETS.flows.total_expenses = %.4f\n", ECB_BALANCE_SHEETS.flows.total_expenses);
+
 /*
 	assert(abs(FIRM_BALANCE_SHEETS.flows.total_income - FIRM_BALANCE_SHEETS.flows.total_expenses +
 	IGFIRM_BALANCE_SHEETS.flows.total_income - IGFIRM_BALANCE_SHEETS.flows.total_expenses +
@@ -1886,6 +1967,8 @@ int Eurostat_check_stock_consistency()
 	/**************************** Check stock consistency requirements ****************************/
 	
 	//Payment_accounts
+	printf("\n -----------------------------------\n");
+	printf("\n Checking Stocks: payment_account\n");
 /*	
 	assert(FIRM_BALANCE_SHEETS.stocks.payment_account >= 0.0);
 	assert(HOUSEHOLD_BALANCE_SHEETS.stocks.payment_account >= 0.0);
@@ -1893,18 +1976,44 @@ int Eurostat_check_stock_consistency()
 	assert(GOV_BALANCE_SHEETS.stocks.payment_account >= 0.0);
 	assert(BANK_BALANCE_SHEETS.stocks.cash >= 0.0);
 */	
+
 	//Total Bank deposits
+	printf("\n -----------------------------------\n");
+	printf("\n Checking Stocks: Bank deposits\n");
+	printf("\n FIRM_BALANCE_SHEETS.stocks.payment_account = %.4f\n", FIRM_BALANCE_SHEETS.stocks.payment_account);
+	printf("\n IGFIRM_BALANCE_SHEETS.stocks.payment_account = %.4f\n", IGFIRM_BALANCE_SHEETS.stocks.payment_account);
+	printf("\n HOUSEHOLD_BALANCE_SHEETS.stocks.payment_account = %.4f\n", HOUSEHOLD_BALANCE_SHEETS.stocks.payment_account);	
+	printf("\n BANK_BALANCE_SHEETS.stocks.deposits = %.4f\n", BANK_BALANCE_SHEETS.stocks.deposits);
+	
 //	assert(abs( FIRM_BALANCE_SHEETS.stocks.payment_account + IGFIRM_BALANCE_SHEETS.stocks.payment_account
 //			+ HOUSEHOLD_BALANCE_SHEETS.stocks.payment_account - BANK_BALANCE_SHEETS.stocks.deposits ) < 1e-3);
 	
 	//Total Central Bank fiat money: 1st method
+	printf("\n -----------------------------------\n");
+	printf("\n Checking Stocks: Central Bank fiat money\n");
+	printf("\n FIRM_BALANCE_SHEETS.stocks.payment_account = %.4f\n", FIRM_BALANCE_SHEETS.stocks.payment_account);
+	printf("\n + IGFIRM_BALANCE_SHEETS.stocks.payment_account = %.4f\n", IGFIRM_BALANCE_SHEETS.stocks.payment_account);
+	printf("\n + HOUSEHOLD_BALANCE_SHEETS.stocks.payment_account = %.4f\n", HOUSEHOLD_BALANCE_SHEETS.stocks.payment_account);	
+	printf("\n + GOV_BALANCE_SHEETS.stocks.payment_account = %.4f\n", GOV_BALANCE_SHEETS.stocks.payment_account);
+	printf("\n + BANK_BALANCE_SHEETS.stocks.cash = %.4f\n", BANK_BALANCE_SHEETS.stocks.cash);
+	printf("\n - BANK_BALANCE_SHEETS.stocks.total_credit = %.4f\n", BANK_BALANCE_SHEETS.stocks.total_credit);
+	printf("\n -----------------------------------\n");
+	printf("\n = ECB_BALANCE_SHEETS.stocks.fiat_money = %.4f\n", ECB_BALANCE_SHEETS.stocks.fiat_money);
 /*
 	assert(abs( FIRM_BALANCE_SHEETS.stocks.payment_account + IGFIRM_BALANCE_SHEETS.stocks.payment_account
 			+ HOUSEHOLD_BALANCE_SHEETS.stocks.payment_account + GOV_BALANCE_SHEETS.stocks.payment_account 
 			+ BANK_BALANCE_SHEETS.stocks.cash - BANK_BALANCE_SHEETS.stocks.total_credit 
 			- ECB_BALANCE_SHEETS.stocks.fiat_money	) < 1e-3);
 */
+	
 	//Total Central Bank fiat money: 2nd method
+	printf("\n -----------------------------------\n");
+	printf("\n Checking Stocks: Central Bank fiat money\n");
+	printf("\n BANK_BALANCE_SHEETS.stocks.deposits = %.4f\n", BANK_BALANCE_SHEETS.stocks.deposits);
+	printf("\n + BANK_BALANCE_SHEETS.stocks.cash = %.4f\n", BANK_BALANCE_SHEETS.stocks.cash);
+	printf("\n - BANK_BALANCE_SHEETS.stocks.total_credit = %.4f\n", BANK_BALANCE_SHEETS.stocks.total_credit);
+	printf("\n -----------------------------------\n");
+	printf("\n = ECB_BALANCE_SHEETS.stocks.fiat_money = %.4f\n", ECB_BALANCE_SHEETS.stocks.fiat_money);
 /*
 	assert(abs( BANK_BALANCE_SHEETS.stocks.deposits	+ BANK_BALANCE_SHEETS.stocks.cash 
 			- BANK_BALANCE_SHEETS.stocks.total_credit 
@@ -1912,22 +2021,60 @@ int Eurostat_check_stock_consistency()
 */
 	
 	//Total bank loans to firms
+	printf("\n -----------------------------------\n");
+	printf("\n Checking Stocks: Total bank loans.\n");
+	printf("\n FIRM_BALANCE_SHEETS.stocks.total_debt = %.4f\n", FIRM_BALANCE_SHEETS.stocks.total_debt);
+	printf("\n BANK_BALANCE_SHEETS.stocks.total_credit = %.4f\n", BANK_BALANCE_SHEETS.stocks.total_credit);
+
 //	assert(abs( FIRM_BALANCE_SHEETS.stocks.total_debt
 //	 - BANK_BALANCE_SHEETS.stocks.total_credit ) < 1e-3);
 	
 	//Total Central Bank loans to banks
+	printf("\n -----------------------------------\n");
+	printf("\n Checking Stocks: Central Bank loans.\n");
+	printf("\n ECB_BALANCE_SHEETS.stocks.total_ecb_debt = %.4f\n", ECB_BALANCE_SHEETS.stocks.total_ecb_debt);
+	printf("\n BANK_BALANCE_SHEETS.stocks.ecb_debt = %.4f\n", BANK_BALANCE_SHEETS.stocks.ecb_debt);
+	
 //	assert(abs( ECB_BALANCE_SHEETS.stocks.total_ecb_debt
 //	 - BANK_BALANCE_SHEETS.stocks.ecb_debt ) < 1e-3);
 	
 	//Nr of Gov bonds
+	printf("\n -----------------------------------\n");
+	printf("\n Checking Stocks: Number of Gov bonds.\n");
+	printf("\n HOUSEHOLD_BALANCE_SHEETS.stocks.nr_gov_bonds = %d\n", HOUSEHOLD_BALANCE_SHEETS.stocks.nr_gov_bonds);
+	printf("\n ECB_BALANCE_SHEETS.stocks.nr_gov_bonds = %d\n", ECB_BALANCE_SHEETS.stocks.nr_gov_bonds);
+	printf("\n GOV_BALANCE_SHEETS.stocks.nr_bonds_outstanding = %d\n", GOV_BALANCE_SHEETS.stocks.nr_bonds_outstanding);
+
 //	assert(HOUSEHOLD_BALANCE_SHEETS.stocks.nr_gov_bonds + ECB_BALANCE_SHEETS.stocks.nr_gov_bonds 
 //			- GOV_BALANCE_SHEETS.stocks.nr_bonds_outstanding == 0);
+
 	//Nr of Firm shares
+	printf("\n -----------------------------------\n");
+	printf("\n Checking Stocks: Number of Firm shares.\n");
+	printf("\n FIRM_BALANCE_SHEETS.stocks.current_shares_outstanding = %d\n", FIRM_BALANCE_SHEETS.stocks.current_shares_outstanding);
+	printf("\n IGFIRM_BALANCE_SHEETS.stocks.current_shares_outstanding = %d\n", IGFIRM_BALANCE_SHEETS.stocks.current_shares_outstanding);	printf("\n HOUSEHOLD_BALANCE_SHEETS.stocks.nr_gov_bonds = %.4f\n", HOUSEHOLD_BALANCE_SHEETS.stocks.nr_gov_bonds);
+	printf("\n HOUSEHOLD_BALANCE_SHEETS.stocks.nr_firm_shares = %d\n", HOUSEHOLD_BALANCE_SHEETS.stocks.nr_firm_shares);
+
 //	assert(FIRM_BALANCE_SHEETS.stocks.current_shares_outstanding + IGFIRM_BALANCE_SHEETS.stocks.current_shares_outstanding 
 //			- HOUSEHOLD_BALANCE_SHEETS.stocks.nr_firm_shares == 0);
 
 	
 	//Total assets == Total liabilities
+	printf("\n -----------------------------------\n");
+	printf("\n Checking Stocks: Total assets == Total liabilities.\n");
+	printf("\n FIRM_BALANCE_SHEETS.stocks.total_assets = %.4f\n", FIRM_BALANCE_SHEETS.stocks.total_assets);
+	printf("\n FIRM_BALANCE_SHEETS.stocks.total_liabilities = %.4f\n", FIRM_BALANCE_SHEETS.stocks.total_liabilities);
+	printf("\n IGFIRM_BALANCE_SHEETS.stocks.total_assets = %.4f\n", IGFIRM_BALANCE_SHEETS.stocks.total_assets);
+	printf("\n IGFIRM_BALANCE_SHEETS.stocks.total_liabilities = %.4f\n", IGFIRM_BALANCE_SHEETS.stocks.total_liabilities);
+	printf("\n HOUSEHOLD_BALANCE_SHEETS.stocks.total_assets = %.4f\n", HOUSEHOLD_BALANCE_SHEETS.stocks.total_assets);
+	printf("\n HOUSEHOLD_BALANCE_SHEETS.stocks.total_liabilities = %.4f\n", HOUSEHOLD_BALANCE_SHEETS.stocks.total_liabilities);
+	printf("\n BANK_BALANCE_SHEETS.stocks.total_assets = %.4f\n", BANK_BALANCE_SHEETS.stocks.total_assets);
+	printf("\n BANK_BALANCE_SHEETS.stocks.total_liabilities = %.4f\n", BANK_BALANCE_SHEETS.stocks.total_liabilities);
+	printf("\n GOV_BALANCE_SHEETS.stocks.total_assets = %.4f\n", GOV_BALANCE_SHEETS.stocks.total_assets);
+	printf("\n GOV_BALANCE_SHEETS.stocks.total_liabilities = %.4f\n", GOV_BALANCE_SHEETS.stocks.total_liabilities);
+	printf("\n ECB_BALANCE_SHEETS.stocks.total_assets = %.4f\n", ECB_BALANCE_SHEETS.stocks.total_assets);
+	printf("\n ECB_BALANCE_SHEETS.stocks.total_liabilities = %.4f\n", ECB_BALANCE_SHEETS.stocks.total_liabilities);
+
 /*
 	assert(abs(FIRM_BALANCE_SHEETS.stocks.total_assets - FIRM_BALANCE_SHEETS.stocks.total_liabilities +
 	IGFIRM_BALANCE_SHEETS.stocks.total_assets - IGFIRM_BALANCE_SHEETS.stocks.total_liabilities +
