@@ -70,7 +70,7 @@ int main(int argc, char * argv[])
     /* add the tests to the suite */
     /* add extra tests using || */
     
-<<<<<<< .mine
+
     if(NULL == CU_add_test(pSuite, "Firm_execute_production Case 1",unittest_Firm_execute_production) ||
     		NULL == CU_add_test(pSuite, "Firm_execute_production Case 2",unittest_Firm_execute_production_1)||
     		NULL == CU_add_test(pSuite, "Firm_execute_production Case 3",unittest_Firm_execute_production_2)||
