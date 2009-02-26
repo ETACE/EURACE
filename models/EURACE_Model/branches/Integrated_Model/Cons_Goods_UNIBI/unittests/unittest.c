@@ -31,6 +31,18 @@ void unittest_Firm_send_goods_to_mall_4();
 void unittest_Firm_calc_revenue();
 void unittest_Firm_compute_sales_statistics();
 void unittest_Firm_update_specific_skills_of_worker();
+
+void unittest_Household_determine_consumption_budget();
+void unittest_Household_determine_consumption_budget_2();
+void unittest_Household_rank_and_buy_goods_1();
+void unittest_Household_rank_and_buy_goods_1_2();
+void unittest_Household_receive_goods_read_rationing();
+void unittest_Household_receive_goods_read_rationing_2();
+void unittest_Household_receive_goods_read_rationing_3();
+void unittest_Household_rank_and_buy_goods_2();
+void unittest_Household_rank_and_buy_goods_2_2();
+void unittest_Household_receive_goods_read_rationing_II();
+void unittest_Household_handle_leftover_budget();
 /*************************** end prototypes ***************************/
 
 int init_suite1(void)
@@ -43,6 +55,7 @@ int clean_suite1(void)
     return 0;
 }
 
+
 /** \fn int main(int argc, char * argv[])
  * \brief Main program loop.
  * \param argc Argument count.
@@ -51,6 +64,7 @@ int clean_suite1(void)
 int main(int argc, char * argv[])
 {
     CU_pSuite pSuite = NULL;
+    CU_pSuite pSuite2 = NULL;
     
     /* Init FLAME */
     initialise_unit_testing();
@@ -67,6 +81,7 @@ int main(int argc, char * argv[])
         return CU_get_error();
     }
     
+   
     /* add the tests to the suite */
     /* add extra tests using || */
     
@@ -84,7 +99,7 @@ NULL == CU_add_test(pSuite, "Firm_calc_input_demands Case 2",unittest_Firm_calc_
 NULL == CU_add_test(pSuite, "Firm_calc_input_demands Case 3",unittest_Firm_calc_input_demands_3)||
 NULL == CU_add_test(pSuite, "Firm_calc_input_demands Case 4",unittest_Firm_calc_input_demands_4)|| 
 NULL == CU_add_test(pSuite, "Firm_calc_input_demands Case 5",unittest_Firm_calc_input_demands_5)||
-NULL == CU_add_test(pSuite,  "Firm_calc_production_quantity Case 1",unittest_Firm_calc_production_quantity_II)||
+NULL == CU_add_test(pSuite,  "Firm_calc_production_quantity_2 Case 1",unittest_Firm_calc_production_quantity_II)||
 NULL == CU_add_test(pSuite,  "Firm_calc_production_quantity_2 Case 2",unittest_Firm_calc_production_quantity_II_2)||
 NULL == CU_add_test(pSuite,  "Firm_calc_production_quantity_2 Case 3",unittest_Firm_calc_production_quantity_II_3)||
 NULL == CU_add_test(pSuite,  "Firm_calc_input_demands_2 Case 1",unittest_Firm_calc_input_demands_II)||
@@ -102,6 +117,36 @@ NULL == CU_add_test(pSuite,  "Firm_update_specific_skills_of_worker",unittest_Fi
         return CU_get_error();
     }
     
+
+ 
+    
+    pSuite2 = CU_add_suite("Suite_Household_unittests", init_suite1, clean_suite1);
+          if (NULL == pSuite2)
+          {
+              CU_cleanup_registry();
+              return CU_get_error();
+          }
+          
+                
+           
+    if(NULL == CU_add_test(pSuite2, "Household_determine_consumption_budget Case 1",unittest_Household_determine_consumption_budget)||
+       NULL == CU_add_test(pSuite2, "Household_determine_consumption_budget Case 2",unittest_Household_determine_consumption_budget_2)||
+       NULL == CU_add_test(pSuite2, "Household_rank_and_buy_goods_1 Case 1", unittest_Household_rank_and_buy_goods_1)||
+       NULL == CU_add_test(pSuite2, "Household_rank_and_buy_goods_1 Case 2", unittest_Household_rank_and_buy_goods_1_2)||
+       NULL == CU_add_test(pSuite2, "Household_receive_goods_read_rationin Case 1", unittest_Household_receive_goods_read_rationing)||
+       NULL == CU_add_test(pSuite2, "Household_receive_goods_read_rationing Case 2", unittest_Household_receive_goods_read_rationing_2)||
+       NULL == CU_add_test(pSuite2, "Household_receive_goods_read_rationing Case 3", unittest_Household_receive_goods_read_rationing_3)||
+       NULL == CU_add_test(pSuite2, "Household_rank_and_buy_goods_2 Case 1", unittest_Household_rank_and_buy_goods_2)||
+       NULL == CU_add_test(pSuite2, "Household_rank_and_buy_goods_2 Case 2", unittest_Household_rank_and_buy_goods_2_2)||
+       NULL == CU_add_test(pSuite2, "Household_receive_goods_read_rationing_2", unittest_Household_receive_goods_read_rationing_II)||
+       NULL == CU_add_test(pSuite2, "Household_handle_leftover_budget", unittest_Household_handle_leftover_budget))
+
+
+   	{
+           CU_cleanup_registry();
+           return CU_get_error();
+       }
+       
     /* Run all tests using the CUnit Basic interface */
     CU_basic_set_mode(CU_BRM_VERBOSE);
     CU_basic_run_tests();
