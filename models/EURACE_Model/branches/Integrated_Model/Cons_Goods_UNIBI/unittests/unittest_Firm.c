@@ -561,6 +561,9 @@ void unittest_Firm_calc_pay_costs()
     	    }
     	    #endif
 	
+	    /***** Function evaluation ***************************************/
+		Firm_calc_pay_costs();
+    	    
     	    
     /***** Message: Adding message iterators ***************************************/
 	rc = MB_Iterator_Create(b_pay_capital_goods, &i_pay_capital_goods);
@@ -605,10 +608,6 @@ void unittest_Firm_calc_pay_costs()
 			   }
 			}
 
-
-	
-    /***** Function evaluation ***************************************/
-	Firm_calc_pay_costs();
     
     /***** Variables: Memory post-conditions *****/
 	CU_ASSERT_DOUBLE_EQUAL(LABOUR_COSTS,10.0, 1e-3);
@@ -631,13 +630,13 @@ void unittest_Firm_calc_pay_costs()
 
 	START_PAY_CAPITAL_GOODS_MESSAGE_LOOP
 	     CU_ASSERT_EQUAL(pay_capital_goods_message->firm_id, ID);	
-	     CU_ASSERT_DOUBLE_EQUAL(pay_capital_goods_message->capital_bill, 300.0, 1e-3);
+	     CU_ASSERT_DOUBLE_EQUAL(pay_capital_goods_message->capital_bill, 200.0, 1e-3);
 	FINISH_PAY_CAPITAL_GOODS_MESSAGE_LOOP
 
 	START_WAGE_PAYMENT_MESSAGE_LOOP
 		
 		CU_ASSERT_EQUAL(wage_payment_message->firm_id, ID);	
-	     	CU_ASSERT_DOUBLE_EQUAL(wage_payment_message->payment, 2.0, 1e-3);
+	     	CU_ASSERT_DOUBLE_EQUAL(wage_payment_message->payment, 1.0, 1e-3);
 		CU_ASSERT_DOUBLE_EQUAL(wage_payment_message->productivity, 2.0, 1e-3);
 		CU_ASSERT_DOUBLE_EQUAL(wage_payment_message->average_specific_skills, 1.5, 1e-3);
 	FINISH_WAGE_PAYMENT_MESSAGE_LOOP
@@ -731,14 +730,8 @@ void unittest_Firm_calc_input_demands()
 	CU_ASSERT_DOUBLE_EQUAL(TOTAL_VALUE_CAPITAL_STOCK,617.5, 1e-3);
 	CU_ASSERT_DOUBLE_EQUAL(DEMAND_CAPITAL_STOCK,6.23693, 1e-3);
 	CU_ASSERT_DOUBLE_EQUAL(PLANNED_PRODUCTION_COSTS,129.9693, 1e-3);
-    /***** Messages: Message post-conditions *****/
-	//start a reading loop
-/*
-    START_<message>_MESSAGE_LOOP
-	     CU_ASSERT_EQUAL(<message>_message->var, value);
-	     CU_ASSERT_DOUBLE_EQUAL(<message>_message->var, value, 1e-3);
-	FINISH_<message>_MESSAGE_LOOP
-*/	
+ 
+	
     /************* At end of unit test, free the agent **************/
 	unittest_free_Firm_agent();
     /************* At end of unit tests, free all Messages **********/
@@ -827,14 +820,7 @@ void unittest_Firm_calc_input_demands_2()
 	CU_ASSERT_DOUBLE_EQUAL(DEMAND_CAPITAL_STOCK,8, 1e-3);
 	CU_ASSERT_DOUBLE_EQUAL(PLANNED_PRODUCTION_COSTS,150.72, 1e-3);
 
-    /***** Messages: Message post-conditions *****/
-	//start a reading loop
-/*
-    START_<message>_MESSAGE_LOOP
-	     CU_ASSERT_EQUAL(<message>_message->var, value);
-	     CU_ASSERT_DOUBLE_EQUAL(<message>_message->var, value, 1e-3);
-	FINISH_<message>_MESSAGE_LOOP
-*/	
+
     /************* At end of unit test, free the agent **************/
 	unittest_free_Firm_agent();
     /************* At end of unit tests, free all Messages **********/
@@ -926,14 +912,8 @@ void unittest_Firm_calc_input_demands_3()
 	CU_ASSERT_DOUBLE_EQUAL(TOTAL_VALUE_CAPITAL_STOCK,617.5, 1e-3);
 	CU_ASSERT_DOUBLE_EQUAL(DEMAND_CAPITAL_STOCK,6.23693, 1e-3);
 	CU_ASSERT_DOUBLE_EQUAL(PLANNED_PRODUCTION_COSTS,129.9693, 1e-3);
-    /***** Messages: Message post-conditions *****/
-	//start a reading loop
-/*
-    START_<message>_MESSAGE_LOOP
-	     CU_ASSERT_EQUAL(<message>_message->var, value);
-	     CU_ASSERT_DOUBLE_EQUAL(<message>_message->var, value, 1e-3);
-	FINISH_<message>_MESSAGE_LOOP
-*/	
+   
+
     /************* At end of unit test, free the agent **************/
 	unittest_free_Firm_agent();
     /************* At end of unit tests, free all Messages **********/
@@ -1024,14 +1004,7 @@ void unittest_Firm_calc_input_demands_4()
 	CU_ASSERT_DOUBLE_EQUAL(DEMAND_CAPITAL_STOCK,8, 1e-3);
 	CU_ASSERT_DOUBLE_EQUAL(PLANNED_PRODUCTION_COSTS,150.72, 1e-3);
 
-    /***** Messages: Message post-conditions *****/
-	//start a reading loop
-/*
-    START_<message>_MESSAGE_LOOP
-	     CU_ASSERT_EQUAL(<message>_message->var, value);
-	     CU_ASSERT_DOUBLE_EQUAL(<message>_message->var, value, 1e-3);
-	FINISH_<message>_MESSAGE_LOOP
-*/	
+ 
     /************* At end of unit test, free the agent **************/
 	unittest_free_Firm_agent();
     /************* At end of unit tests, free all Messages **********/
@@ -1123,14 +1096,7 @@ void unittest_Firm_calc_input_demands_5()
 	CU_ASSERT_DOUBLE_EQUAL(DEMAND_CAPITAL_STOCK,0, 1e-3);
 	CU_ASSERT_DOUBLE_EQUAL(PLANNED_PRODUCTION_COSTS,60.32, 1e-3);
 
-    /***** Messages: Message post-conditions *****/
-	//start a reading loop
-/*
-    START_<message>_MESSAGE_LOOP
-	     CU_ASSERT_EQUAL(<message>_message->var, value);
-	     CU_ASSERT_DOUBLE_EQUAL(<message>_message->var, value, 1e-3);
-	FINISH_<message>_MESSAGE_LOOP
-*/	
+ 
     /************* At end of unit test, free the agent **************/
 	unittest_free_Firm_agent();
     /************* At end of unit tests, free all Messages **********/
@@ -1406,7 +1372,8 @@ void unittest_Firm_send_goods_to_mall()
     	               break;
     	       }
     	    }
-    	    #endif
+    	    #endif	    /***** Function evaluation ***************************************/
+	  	Firm_send_goods_to_mall();
     	    
     /***** Message: Adding message iterators ***************************************/
 	rc = MB_Iterator_Create(b_update_mall_stock, &i_update_mall_stock);
@@ -1430,8 +1397,7 @@ void unittest_Firm_send_goods_to_mall()
 			   }
 			}
 
-    /***** Function evaluation ***************************************/
-	Firm_send_goods_to_mall();
+  
     
     /***** Variables: Memory post-conditions *****/
 	CU_ASSERT_DOUBLE_EQUAL(DELIVERY_VOLUME.array[0].quantity,10.00, 1e-3);
@@ -1499,7 +1465,8 @@ void unittest_Firm_send_goods_to_mall_2()
     	       }
     	    }
     	    #endif
-    	    
+	    /***** Function evaluation ***************************************/
+	    	Firm_send_goods_to_mall();   	    
     /***** Message: Adding message iterators ***************************************/
 	rc = MB_Iterator_Create(b_update_mall_stock, &i_update_mall_stock);
 			
@@ -1522,8 +1489,7 @@ void unittest_Firm_send_goods_to_mall_2()
 			   }
 			}
 
-    /***** Function evaluation ***************************************/
-	Firm_send_goods_to_mall();
+    
     
     /***** Variables: Memory post-conditions *****/
 	CU_ASSERT_DOUBLE_EQUAL(DELIVERY_VOLUME.array[0].quantity,5.00, 1e-3);
@@ -1591,7 +1557,8 @@ void unittest_Firm_send_goods_to_mall_3()
     	       }
     	    }
     	    #endif
-    	    
+	    /***** Function evaluation ***************************************/
+	    	Firm_send_goods_to_mall();	    
     /***** Message: Adding message iterators ***************************************/
 	rc = MB_Iterator_Create(b_update_mall_stock, &i_update_mall_stock);
 			
@@ -1614,8 +1581,7 @@ void unittest_Firm_send_goods_to_mall_3()
 			   }
 			}
 
-    /***** Function evaluation ***************************************/
-	Firm_send_goods_to_mall();
+    
     
     /***** Variables: Memory post-conditions *****/
 	CU_ASSERT_DOUBLE_EQUAL(DELIVERY_VOLUME.array[0].quantity,15.00, 1e-3);
@@ -1662,6 +1628,9 @@ void unittest_Firm_send_goods_to_mall_4()
     		add_delivery_volume_per_mall(&DELIVERY_VOLUME, 1,0 , 0, 0);
    		add_delivery_volume_per_mall(&DELIVERY_VOLUME, 2, 0, 0, 0);
 
+   	  /***** Function evaluation ***************************************/
+   		Firm_send_goods_to_mall();
+   		
 	/***** Messages: initialize message boards **********************************/
 
 	rc = MB_Create(&b_update_mall_stock, sizeof(m_update_mall_stock));
@@ -1705,8 +1674,7 @@ void unittest_Firm_send_goods_to_mall_4()
 			   }
 			}
 
-    /***** Function evaluation ***************************************/
-	Firm_send_goods_to_mall();
+  
     
     /***** Variables: Memory post-conditions *****/
 	CU_ASSERT_DOUBLE_EQUAL(DELIVERY_VOLUME.array[0].quantity,0.00, 1e-3);
