@@ -43,6 +43,10 @@ void unittest_Household_rank_and_buy_goods_2();
 void unittest_Household_rank_and_buy_goods_2_2();
 void unittest_Household_receive_goods_read_rationing_II();
 void unittest_Household_handle_leftover_budget();
+
+void unittest_Mall_update_mall_stock();
+void unittest_Mall_update_mall_stock_2();
+void unittest_Mall_send_quality_price_info_1();
 /*************************** end prototypes ***************************/
 
 int init_suite1(void)
@@ -65,6 +69,7 @@ int main(int argc, char * argv[])
 {
     CU_pSuite pSuite = NULL;
     CU_pSuite pSuite2 = NULL;
+    CU_pSuite pSuite3 = NULL;
     
     /* Init FLAME */
     initialise_unit_testing();
@@ -118,7 +123,7 @@ NULL == CU_add_test(pSuite,  "Firm_update_specific_skills_of_worker",unittest_Fi
     }
     
 
- 
+ printf("\n");
     
     pSuite2 = CU_add_suite("Suite_Household_unittests", init_suite1, clean_suite1);
           if (NULL == pSuite2)
@@ -146,6 +151,26 @@ NULL == CU_add_test(pSuite,  "Firm_update_specific_skills_of_worker",unittest_Fi
            CU_cleanup_registry();
            return CU_get_error();
        }
+    printf("\n");   
+    
+    pSuite3 = CU_add_suite("Suite_Mall_unittests", init_suite1, clean_suite1);
+             if (NULL == pSuite3)
+             {
+                 CU_cleanup_registry();
+                 return CU_get_error();
+             }
+             
+                  
+                
+       if(	   NULL == CU_add_test(pSuite3, "Mall_update_mall_stock",unittest_Mall_update_mall_stock)||
+    		   NULL == CU_add_test(pSuite3, "Mall_update_mall_stock Case 2",unittest_Mall_update_mall_stock_2)||
+    		   NULL == CU_add_test(pSuite3, "Mall_send_quality_price_info_1",unittest_Mall_send_quality_price_info_1))
+         
+
+      	{
+              CU_cleanup_registry();
+              return CU_get_error();
+          }
        
     /* Run all tests using the CUnit Basic interface */
     CU_basic_set_mode(CU_BRM_VERBOSE);

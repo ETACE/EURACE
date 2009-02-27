@@ -30,14 +30,7 @@
 		CU_ASSERT_DOUBLE_EQUAL(CONSUMPTION_BUDGET, 98.8, 1e-3);
 		CU_ASSERT_DOUBLE_EQUAL(WEEKLY_BUDGET, 24.7, 1e-3);
 		CU_ASSERT_EQUAL(WEEK_OF_MONTH, 4);
-	    /***** Messages: Message post-conditions *****/
-		//start a reading loop
-	/*
-	    START_<message>_MESSAGE_LOOP
-		     CU_ASSERT_EQUAL(<message>_message->var, value);
-		     CU_ASSERT_DOUBLE_EQUAL(<message>_message->var, value, 1e-3);
-		FINISH_<message>_MESSAGE_LOOP
-	*/	
+	    
 	    /************* At end of unit test, free the agent **************/
 		unittest_free_Household_agent();
 	    /************* At end of unit tests, free all Messages **********/
@@ -168,6 +161,10 @@
 			               break;
 				   }
 				}
+		
+		  /***** Function evaluation ***************************************/
+				Household_rank_and_buy_goods_1();
+		
 		rc = MB_Iterator_Create(b_consumption_request_1, &i_consumption_request_1);
 						
 				if (rc != MB_SUCCESS)
@@ -189,8 +186,7 @@
 						   }
 						}
 	
-	    /***** Function evaluation ***************************************/
-		Household_rank_and_buy_goods_1();
+	  
 	    
 	    /***** Variables: Memory post-conditions *****/
 	if(ORDER_QUANTITY[0].firm_id ==2)
@@ -200,11 +196,7 @@
 		CU_ASSERT_DOUBLE_EQUAL(ORDER_QUANTITY[0].price, 1.0, 1e-3);
 		
 		START_CONSUMPTION_REQUEST_1_MESSAGE_LOOP
-		
-			printf("consumption_request_1_message->worker_id %d\n",consumption_request_1_message->worker_id);
-		printf("consumption_request_1_message->mall_id %d\n",consumption_request_1_message->mall_id);
-		printf("consumption_request_1_message->region_id %d\n",consumption_request_1_message->region_id);
-		printf("consumption_request_1_message->firm_id %d\n",consumption_request_1_message->firm_id);
+	
 		     CU_ASSERT_EQUAL(consumption_request_1_message->worker_id, ID);	
 			 CU_ASSERT_EQUAL(consumption_request_1_message->mall_id, 1);
 			 CU_ASSERT_EQUAL(consumption_request_1_message->region_id, 1);
@@ -625,6 +617,10 @@ void unittest_Household_rank_and_buy_goods_2()
 			               break;
 				   }
 				}
+		
+		 /***** Function evaluation ***************************************/
+				Household_rank_and_buy_goods_2();
+		
 		rc = MB_Iterator_Create(b_consumption_request_2, &i_consumption_request_2);
 						
 				if (rc != MB_SUCCESS)
@@ -646,8 +642,7 @@ void unittest_Household_rank_and_buy_goods_2()
 						   }
 						}
 	
-	    /***** Function evaluation ***************************************/
-		Household_rank_and_buy_goods_2();
+	   
 	    
 	    /***** Variables: Memory post-conditions *****/
 	if(ORDER_QUANTITY[1].firm_id ==2)
@@ -658,10 +653,6 @@ void unittest_Household_rank_and_buy_goods_2()
 		
 		START_CONSUMPTION_REQUEST_2_MESSAGE_LOOP
 		
-			printf("consumption_request_2_message->worker_id %d\n",consumption_request_2_message->worker_id);
-		printf("consumption_request_2_message->mall_id %d\n",consumption_request_2_message->mall_id);
-		printf("consumption_request_2_message->region_id %d\n",consumption_request_2_message->region_id);
-		printf("consumption_request_2_message->firm_id %d\n",consumption_request_2_message->firm_id);
 		     CU_ASSERT_EQUAL(consumption_request_2_message->worker_id, ID);	
 			 CU_ASSERT_EQUAL(consumption_request_2_message->mall_id, 1);
 			 CU_ASSERT_EQUAL(consumption_request_2_message->region_id, 1);
@@ -919,7 +910,8 @@ void unittest_Household_handle_leftover_budget()
    	    }
    	    #endif
 	
-	
+   	 /***** Function evaluation ***************************************/
+   	 	Household_handle_leftover_budget();	
    /***** Message: Adding message iterators ***************************************/
 	rc = MB_Iterator_Create(b_bank_account_update, &i_bank_account_update);
 			
@@ -942,8 +934,7 @@ void unittest_Household_handle_leftover_budget()
 			   }
 			}
 
-   /***** Function evaluation ***************************************/
-	Household_handle_leftover_budget();
+   
    
    /***** Variables: Memory post-conditions *****/
 	CU_ASSERT_DOUBLE_EQUAL(CONSUMPTION_BUDGET, 50.0, 1e-3);
