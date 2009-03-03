@@ -8,8 +8,6 @@
 //#include "../Government_agent_header.h"
 //#include "../../my_library_header.h"
 
-#define NO_REGIONS_PER_GOV 2 //number of regions per gov
-
 /************Government: Public Sector Role ********************************/
 
 /************ Unit tests ********************************/
@@ -679,7 +677,6 @@ void unittest_Government_send_account_update()
 	PAYMENT_ACCOUNT=100.0;
 
 	/***** Messages: initialize message boards **********************************/
-
 	rc = MB_Create(&b_central_bank_account_update, sizeof(m_central_bank_account_update));
     	    #ifdef ERRCHECK
     	    if (rc != MB_SUCCESS)
@@ -700,9 +697,11 @@ void unittest_Government_send_account_update()
     	    #endif
 	
 	/***** Messages: pre-conditions **********************************/
-    	    
+    	    	    	    
+    /***** Function evaluation ***************************************/
+	Government_send_account_update();
+    
     /***** Adding message iterators ***************************************/
-
 	rc = MB_Iterator_Create(b_central_bank_account_update, &i_central_bank_account_update);
 			
 	if (rc != MB_SUCCESS)
@@ -723,10 +722,7 @@ void unittest_Government_send_account_update()
 		               break;
 			   }
 			}
-	    	    
-    /***** Function evaluation ***************************************/
-	Government_send_account_update();
-    
+
     /***** Variables: Memory post-conditions *****/
 
     /***** Variables: Message post-conditions *****/
@@ -756,14 +752,17 @@ void unittest_Government_read_data_from_Eurostat()
 	
     /************* At start of unit test, add one agent **************/
 	unittest_init_Government_agent();
-	
+
+    /************* Setting environment variables **************/
+	FLAME_environment_variable_no_regions_per_gov = 2;
+
     /***** Variables: Memory pre-conditions **************************/
 	ID=1;
 	GDP=10.0;
 	GDP_GROWTH=0.0;
 	
-	LIST_OF_REGIONS[0]=1;
-	LIST_OF_REGIONS[1]=2;
+	LIST_OF_REGIONS.array[0]=1;
+	LIST_OF_REGIONS.array[1]=2;
 	
 	/***** Messages: initialize message boards **********************************/
 
@@ -790,9 +789,8 @@ void unittest_Government_read_data_from_Eurostat()
      //add_data_for_government_message(region_id, gdp, mean_wage);
      add_data_for_government_message(1, 10.0, 1.0);
      add_data_for_government_message(2, 10.0, 1.0);
-     
-    /***** Adding message iterators ***************************************/
 
+    /***** Adding message iterators ***************************************/
 	rc = MB_Iterator_Create(b_data_for_government, &i_data_for_government);
 			
 	if (rc != MB_SUCCESS)
@@ -814,19 +812,17 @@ void unittest_Government_read_data_from_Eurostat()
 			   }
 			}
 	    	    
-    /***** Function evaluation ***************************************/
-	Government_read_data_from_Eurostat();
+
+     /***** Function evaluation ***************************************/
+     Government_read_data_from_Eurostat();
     
     /***** Variables: Memory post-conditions *****/
-	CU_ASSERT_DOUBLE_EQUAL(COUNTRY_WIDE_MEAN_WAGE, 1.0, 1e-3);
-	CU_ASSERT_DOUBLE_EQUAL(GDP, 20.0, 1e-3);
-	CU_ASSERT_DOUBLE_EQUAL(GDP_GROWTH, 2.0, 1e-3);
-	
+		
     /***** Variables: Message post-conditions *****/
 	//start a reading loop
 
 	START_DATA_FOR_GOVERNMENT_MESSAGE_LOOP
-	if(data_for_government_message->region_id==LIST_OF_REGIONS[0])
+	if(data_for_government_message->region_id==LIST_OF_REGIONS.array[0])
 	{
 		//printf("\n region=%d\n", data_for_government_message->region_id);
 	     CU_ASSERT_EQUAL(data_for_government_message->region_id, 1);
@@ -835,17 +831,24 @@ void unittest_Government_read_data_from_Eurostat()
 	    //printf("\n data_for_government_message->mean_wage=%2.2f\n", data_for_government_message->mean_wage);
 	     CU_ASSERT_DOUBLE_EQUAL(data_for_government_message->mean_wage, 1.0, 1e-3);
 	}
-	if(data_for_government_message->region_id==LIST_OF_REGIONS[1])
+	if(data_for_government_message->region_id==LIST_OF_REGIONS.array[1])
 	{
 		//printf("\n region=%d\n", data_for_government_message->region_id);
 	     CU_ASSERT_EQUAL(data_for_government_message->region_id, 2);
-	    //printf("\n data_for_government_message->gdp=%2.2f\n", data_for_government_message->gdp);	     CU_ASSERT_DOUBLE_EQUAL(data_for_government_message->gdp, 10.0, 1e-3);
+	    //printf("\n data_for_government_message->gdp=%2.2f\n", data_for_government_message->gdp);
 	    CU_ASSERT_DOUBLE_EQUAL(data_for_government_message->gdp, 10.0, 1e-3);
 	    //printf("\n data_for_government_message->mean_wage=%2.2f\n", data_for_government_message->mean_wage);
 	     CU_ASSERT_DOUBLE_EQUAL(data_for_government_message->mean_wage, 1.0, 1e-3);
 	}
      FINISH_DATA_FOR_GOVERNMENT_MESSAGE_LOOP
 	
+ 	//printf("\n COUNTRY_WIDE_MEAN_WAGE=%2.2f\n", COUNTRY_WIDE_MEAN_WAGE);
+ 	CU_ASSERT_DOUBLE_EQUAL(COUNTRY_WIDE_MEAN_WAGE, 1.0, 1e-3);
+ 	//printf("\n GDP=%2.2f\n", GDP);
+ 	CU_ASSERT_DOUBLE_EQUAL(GDP, 20.0, 1e-3);
+ 	//printf("\n GDP_GROWTH=%2.2f\n", GDP_GROWTH);
+ 	CU_ASSERT_DOUBLE_EQUAL(GDP_GROWTH, 2.0, 1e-3);
+
     /************* At end of unit test, free the agent **************/
 	unittest_free_Government_agent();
     /************* At end of unit tests, free all Messages **********/
@@ -864,18 +867,11 @@ void unittest_Government_set_policy()
     /************* At start of unit test, add one agent **************/
 	unittest_init_Government_agent();
 	
-    /***** Variables: Memory pre-conditions **************************/
-	//environment constants
-	#ifdef GOV_POLICY_GDP_FRACTION_CONSUMPTION
-	#undef GOV_POLICY_GDP_FRACTION_CONSUMPTION
-	#endif
-	#define	GOV_POLICY_GDP_FRACTION_CONSUMPTION 0.20
-
-	#ifdef GOV_POLICY_GDP_FRACTION_INVESTMENT
-	#undef GOV_POLICY_GDP_FRACTION_INVESTMENT
-	#endif
-	#define	GOV_POLICY_GDP_FRACTION_INVESTMENT 0.30
+    /************* Setting environment variables **************/
+	FLAME_environment_variable_gov_policy_gdp_fracion_consumption = 0.20;
+	FLAME_environment_variable_gov_policy_gdp_fracion_investment = 0.30;
 	
+    /***** Variables: Memory pre-conditions **************************/
 	GDP=100.0;
 	GDP_GROWTH=1.00;
 	

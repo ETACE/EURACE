@@ -9,8 +9,6 @@
 //#include "Government_agent_header.h"
 //#include "../my_library_header.h"
 
-//#define NO_REGIONS_PER_GOV 2 //number of regions per gov
-
 /************Government Role: Finance********************************/
 int Government_idle()
 {
@@ -335,7 +333,7 @@ int Government_read_data_from_Eurostat()
     START_DATA_FOR_GOVERNMENT_MESSAGE_LOOP
         for (i=0; i<NO_REGIONS_PER_GOV; i++)
         {
-            if(data_for_government_message->region_id==LIST_OF_REGIONS.array[i])
+        	if(data_for_government_message->region_id==LIST_OF_REGIONS.array[i])
             {
                 //Read region mean wage
                 COUNTRY_WIDE_MEAN_WAGE += data_for_government_message->mean_wage;
@@ -346,7 +344,10 @@ int Government_read_data_from_Eurostat()
     FINISH_DATA_FOR_GOVERNMENT_MESSAGE_LOOP
     
     //Set country-wide mean wage as avg of region's mean wages
-    COUNTRY_WIDE_MEAN_WAGE = COUNTRY_WIDE_MEAN_WAGE/NO_REGIONS_PER_GOV;
+    if (NO_REGIONS_PER_GOV>0)
+    	COUNTRY_WIDE_MEAN_WAGE = COUNTRY_WIDE_MEAN_WAGE/NO_REGIONS_PER_GOV;
+    else
+    	printf("\n ERROR in function Government_read_data_from_Eurostat: NO_REGIONS_PER_GOV=0.\n");
     
     //Set GDP growth rate
     if (old_gdp > 0.0)

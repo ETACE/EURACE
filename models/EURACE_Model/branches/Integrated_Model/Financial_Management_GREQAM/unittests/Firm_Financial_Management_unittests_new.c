@@ -4,64 +4,6 @@
 #include "../../Firm_agent_header.h"
 #include "../../my_library_header.h"
 
-#ifdef CONST_BANKRUPTCY_IDLE_PERIOD
-#undef CONST_BANKRUPTCY_IDLE_PERIOD
-#endif
-#define CONST_BANKRUPTCY_IDLE_PERIOD 240
-
-//Case 1: unittest1_Firm_bankruptcy_insolvency_procedure()
-/*
-#ifdef DEBT_RESCALING_FACTOR
-#undef DEBT_RESCALING_FACTOR
-#endif
-#define DEBT_RESCALING_FACTOR 0.33
-
-#ifdef TARGET_LEVERAGE_RATIO
-#undef TARGET_LEVERAGE_RATIO
-#endif
-#define TARGET_LEVERAGE_RATIO 1.25
-
-#ifdef TARGET_LIQUIDITY_RATIO
-#undef TARGET_LIQUIDITY_RATIO
-#endif
-#define TARGET_LIQUIDITY_RATIO 0.0
-*/
-//Case 2: unittest2_Firm_bankruptcy_insolvency_procedure()
-/*
-#ifdef DEBT_RESCALING_FACTOR
-#undef DEBT_RESCALING_FACTOR
-#endif
-#define DEBT_RESCALING_FACTOR 0.33
-
-#ifdef TARGET_LEVERAGE_RATIO
-#undef TARGET_LEVERAGE_RATIO
-#endif
-#define TARGET_LEVERAGE_RATIO 2.00
-
-#ifdef TARGET_LIQUIDITY_RATIO
-#undef TARGET_LIQUIDITY_RATIO
-#endif
-#define TARGET_LIQUIDITY_RATIO 0.0
-*/
-
-//Case 3: unittest3_Firm_bankruptcy_insolvency_procedure()
-/*
-#ifdef DEBT_RESCALING_FACTOR
-#undef DEBT_RESCALING_FACTOR
-#endif
-#define DEBT_RESCALING_FACTOR 0.33
-
-#ifdef TARGET_LEVERAGE_RATIO
-#undef TARGET_LEVERAGE_RATIO
-#endif
-#define TARGET_LEVERAGE_RATIO 4.00
-
-#ifdef TARGET_LIQUIDITY_RATIO
-#undef TARGET_LIQUIDITY_RATIO
-#endif
-#define TARGET_LIQUIDITY_RATIO 0.0
-*/
-
 /*
  * \fn: void unittest_Firm_set_bankruptcy_illiquidity()
  * \brief: Unit test for: Firm_set_bankruptcy_illiquidity.
@@ -74,6 +16,9 @@ void unittest_Firm_set_bankruptcy_illiquidity()
     /************* At start of unit test, add one agent **************/
 	unittest_init_Firm_agent();
 	
+	/************* Setting environment variables **************/
+	FLAME_environment_variable_const_bankruptcy_idle_period = 240;
+
     /***** Variables: Memory pre-conditions **************************/
 	ID=1;
 	ACTIVE =1;
@@ -108,6 +53,9 @@ void unittest_Firm_set_bankruptcy_illiquidity()
 
 	/***** Messages: pre-conditions **********************************/
     	    
+	/***** Function evaluation ***************************************/
+	Firm_set_bankruptcy_illiquidity();
+
     /***** Message: Adding message iterators ***************************************/
 	rc = MB_Iterator_Create(b_bankruptcy_illiquidity, &i_bankruptcy_illiquidity);
 			
@@ -130,9 +78,6 @@ void unittest_Firm_set_bankruptcy_illiquidity()
 			   }
 			}
 
-	/***** Function evaluation ***************************************/
-	Firm_set_bankruptcy_illiquidity();
-    
     /***** Variables: Memory post-conditions *****/
 	
 	CU_ASSERT_EQUAL(ACTIVE, 0);
@@ -168,6 +113,9 @@ void unittest_Firm_set_bankruptcy_insolvency()
     /************* At start of unit test, add one agent **************/
 	unittest_init_Firm_agent();
 	
+	/************* Setting environment variables **************/
+	FLAME_environment_variable_const_bankruptcy_idle_period = 240;
+	
     /***** Variables: Memory pre-conditions **************************/
 	ID=1;
 	ACTIVE =1;
@@ -201,6 +149,9 @@ void unittest_Firm_set_bankruptcy_insolvency()
 
 	/***** Messages: pre-conditions **********************************/
     	    
+	/***** Function evaluation ***************************************/
+	Firm_set_bankruptcy_insolvency();
+
     /***** Message: Adding message iterators ***************************************/
 	rc = MB_Iterator_Create(b_bankruptcy_insolvency, &i_bankruptcy_insolvency);
 			
@@ -222,9 +173,6 @@ void unittest_Firm_set_bankruptcy_insolvency()
 		               break;
 			   }
 			}
-
-	/***** Function evaluation ***************************************/
-	Firm_set_bankruptcy_insolvency();
     
     /***** Variables: Memory post-conditions *****/
 	
@@ -255,28 +203,19 @@ void unittest_Firm_set_bankruptcy_insolvency()
  */
 void unittest1_Firm_bankruptcy_insolvency_procedure()
 {
-	#ifdef DEBT_RESCALING_FACTOR
-	#undef DEBT_RESCALING_FACTOR
-	#endif
-	#define DEBT_RESCALING_FACTOR 0.33
-	
-	#ifdef TARGET_LEVERAGE_RATIO
-	#undef TARGET_LEVERAGE_RATIO
-	#endif
-	#define TARGET_LEVERAGE_RATIO 1.25
-	
-	#ifdef TARGET_LIQUIDITY_RATIO
-	#undef TARGET_LIQUIDITY_RATIO
-	#endif
-	#define TARGET_LIQUIDITY_RATIO 0.0
-	
 	int rc;
 	
     /************* At start of unit test, add one agent **************/
 	unittest_init_Firm_agent();
 	
+    /************* Setting environment variables **************/
+	FLAME_environment_variable_debt_rescaling_factor = 0.33333333333;
+	FLAME_environment_variable_target_leverage_ratio = 2.00;
+	FLAME_environment_variable_target_liquidity_ratio = 0.0;
+
     /***** Variables: Memory pre-conditions **************************/
-	TOTAL_ASSETS = 120.0;
+	TOTAL_VALUE_CAPITAL_STOCK = 130.0;
+	TOTAL_ASSETS =0.0;
 	TOTAL_DEBT = 150.0;	
 	PAYMENT_ACCOUNT = 10.0; //degree of freedom to set this value
 	EXTERNAL_FINANCIAL_NEEDS =0.0;
@@ -297,12 +236,34 @@ void unittest1_Firm_bankruptcy_insolvency_procedure()
     LOANS[0].nr_periods_before_repayment=3;
 */
     reset_debt_item_array(&LOANS);
-    add_debt_item(&LOANS, 1, 150.0, 0.01, 50.0, 50.0, 150.0, 0.0, 5);
+    add_debt_item(&LOANS, 1, 150.0, 0.01, 50.0, 50.0, 150.0, 0.0, 3);
     
 	/***** Messages: initialize message boards **********************************/
+	rc = MB_Create(&b_bankruptcy, sizeof(m_bankruptcy));
+    	    #ifdef ERRCHECK
+    	    if (rc != MB_SUCCESS)
+    	    {
+    	       fprintf(stderr, "ERROR: Could not create 'bankruptcy' board\n");
+    	       switch(rc) {
+    	           case MB_ERR_INVALID:
+    	               fprintf(stderr, "\t reason: Invalid message size\n");
+    	               break;
+    	           case MB_ERR_MEMALLOC:
+    	               fprintf(stderr, "\t reason: out of memory\n");
+    	               break;
+    	           case MB_ERR_INTERNAL:
+    	               fprintf(stderr, "\t reason: internal error. Recompile libmoard in debug mode for more info \n");
+    	               break;
+    	       }
+    	    }
+    	    #endif
+
 
 	/***** Messages: pre-conditions **********************************/
     	    
+    /***** Function evaluation ***************************************/
+	Firm_bankruptcy_insolvency_procedure();    
+    
     /***** Message: Adding message iterators ***************************************/
 	//add_bankruptcy_message(bank_id, bad_debt, credit_refunded, residual_var);
 
@@ -327,8 +288,6 @@ void unittest1_Firm_bankruptcy_insolvency_procedure()
 			   }
 			}
 
-    /***** Function evaluation ***************************************/
-	Firm_bankruptcy_insolvency_procedure();
     
     /***** Variables: Memory post-conditions *****/
 	CU_ASSERT_DOUBLE_EQUAL(EXTERNAL_FINANCIAL_NEEDS, 0.0, 1e-3);
@@ -350,7 +309,7 @@ void unittest1_Firm_bankruptcy_insolvency_procedure()
 	FINISH_BANKRUPTCY_MESSAGE_LOOP
 
 	CU_ASSERT_DOUBLE_EQUAL(PAYMENT_ACCOUNT, 0.0, 1e-3);
-	CU_ASSERT_DOUBLE_EQUAL(TOTAL_ASSETS, 110.0, 1e-3);
+	CU_ASSERT_DOUBLE_EQUAL(TOTAL_ASSETS, 120.0, 1e-3);
 	
     /************* At end of unit test, free the agent **************/
 	unittest_free_Firm_agent();
@@ -369,9 +328,15 @@ void unittest2_Firm_bankruptcy_insolvency_procedure()
 	
     /************* At start of unit test, add one agent **************/
 	unittest_init_Firm_agent();
-	
+
+	/************* Setting environment variables **************/
+	FLAME_environment_variable_debt_rescaling_factor = 0.3333333;
+	FLAME_environment_variable_target_leverage_ratio = 1.25;
+	FLAME_environment_variable_target_liquidity_ratio = 0.0;
+
     /***** Variables: Memory pre-conditions **************************/
-	TOTAL_ASSETS = 120.0;
+	TOTAL_VALUE_CAPITAL_STOCK = 130.0;
+	TOTAL_ASSETS =0.0;
 	TOTAL_DEBT = 150.0;
 	PAYMENT_ACCOUNT = 10.0;
 	EXTERNAL_FINANCIAL_NEEDS =0.0;
@@ -392,12 +357,33 @@ void unittest2_Firm_bankruptcy_insolvency_procedure()
     LOANS[0].nr_periods_before_repayment=3;
 */
     reset_debt_item_array(&LOANS);
-    add_debt_item(&LOANS, 1, 150.0, 0.01, 50.0, 50.0, 150.0, 0.0, 5);
+    add_debt_item(&LOANS, 1, 150.0, 0.01, 50.0, 50.0, 150.0, 0.0, 3);
     
 	/***** Messages: initialize message boards **********************************/
+	rc = MB_Create(&b_bankruptcy, sizeof(m_bankruptcy));
+    	    #ifdef ERRCHECK
+    	    if (rc != MB_SUCCESS)
+    	    {
+    	       fprintf(stderr, "ERROR: Could not create 'bankruptcy' board\n");
+    	       switch(rc) {
+    	           case MB_ERR_INVALID:
+    	               fprintf(stderr, "\t reason: Invalid message size\n");
+    	               break;
+    	           case MB_ERR_MEMALLOC:
+    	               fprintf(stderr, "\t reason: out of memory\n");
+    	               break;
+    	           case MB_ERR_INTERNAL:
+    	               fprintf(stderr, "\t reason: internal error. Recompile libmoard in debug mode for more info \n");
+    	               break;
+    	       }
+    	    }
+    	    #endif
 
 	/***** Messages: pre-conditions **********************************/
     	    
+    /***** Function evaluation ***************************************/
+    Firm_bankruptcy_insolvency_procedure();
+
     /***** Message: Adding message iterators ***************************************/
 	//add_bankruptcy_message(bank_id, bad_debt, credit_refunded, residual_var);
 
@@ -421,10 +407,7 @@ void unittest2_Firm_bankruptcy_insolvency_procedure()
 		               break;
 			   }
 			}
-
-    /***** Function evaluation ***************************************/
-	Firm_bankruptcy_insolvency_procedure();
-    
+	
     /***** Variables: Memory post-conditions *****/
 	CU_ASSERT_DOUBLE_EQUAL(EXTERNAL_FINANCIAL_NEEDS, 24.0, 1e-3);
 
@@ -445,7 +428,7 @@ void unittest2_Firm_bankruptcy_insolvency_procedure()
 	FINISH_BANKRUPTCY_MESSAGE_LOOP
 
 	CU_ASSERT_DOUBLE_EQUAL(PAYMENT_ACCOUNT, 0.0, 1e-3);
-	CU_ASSERT_DOUBLE_EQUAL(TOTAL_ASSETS, 110.0, 1e-3);
+	CU_ASSERT_DOUBLE_EQUAL(TOTAL_ASSETS, 120.0, 1e-3);
 
 	/************* At end of unit test, free the agent **************/
 	unittest_free_Firm_agent();
@@ -465,8 +448,14 @@ void unittest3_Firm_bankruptcy_insolvency_procedure()
     /************* At start of unit test, add one agent **************/
 	unittest_init_Firm_agent();
 	
+    /************* Setting environment variables **************/
+	FLAME_environment_variable_debt_rescaling_factor = 0.3333333333;
+	FLAME_environment_variable_target_leverage_ratio = 4.0;
+	FLAME_environment_variable_target_liquidity_ratio = 0.0;
+
     /***** Variables: Memory pre-conditions **************************/
-	TOTAL_ASSETS = 120.0;
+	TOTAL_VALUE_CAPITAL_STOCK = 130.0;
+	TOTAL_ASSETS =0.0;
 	TOTAL_DEBT = 150.0;
 	PAYMENT_ACCOUNT = 10.0;
 	EXTERNAL_FINANCIAL_NEEDS =0.0;
@@ -487,12 +476,33 @@ void unittest3_Firm_bankruptcy_insolvency_procedure()
     LOANS[0].nr_periods_before_repayment=3;
 */
     reset_debt_item_array(&LOANS);
-    add_debt_item(&LOANS, 1, 150.0, 0.01, 50.0, 50.0, 150.0, 0.0, 5);
+    add_debt_item(&LOANS, 1, 150.0, 0.01, 50.0, 50.0, 150.0, 0.0, 3);
     
 	/***** Messages: initialize message boards **********************************/
+	rc = MB_Create(&b_bankruptcy, sizeof(m_bankruptcy));
+    	    #ifdef ERRCHECK
+    	    if (rc != MB_SUCCESS)
+    	    {
+    	       fprintf(stderr, "ERROR: Could not create 'bankruptcy' board\n");
+    	       switch(rc) {
+    	           case MB_ERR_INVALID:
+    	               fprintf(stderr, "\t reason: Invalid message size\n");
+    	               break;
+    	           case MB_ERR_MEMALLOC:
+    	               fprintf(stderr, "\t reason: out of memory\n");
+    	               break;
+    	           case MB_ERR_INTERNAL:
+    	               fprintf(stderr, "\t reason: internal error. Recompile libmoard in debug mode for more info \n");
+    	               break;
+    	       }
+    	    }
+    	    #endif
 
 	/***** Messages: pre-conditions **********************************/
     	    
+    /***** Function evaluation ***************************************/
+    Firm_bankruptcy_insolvency_procedure();
+
     /***** Message: Adding message iterators ***************************************/
 	//add_bankruptcy_message(bank_id, bad_debt, credit_refunded, residual_var);
 
@@ -516,9 +526,6 @@ void unittest3_Firm_bankruptcy_insolvency_procedure()
 		               break;
 			   }
 			}
-
-    /***** Function evaluation ***************************************/
-	Firm_bankruptcy_insolvency_procedure();
     
     /***** Variables: Memory post-conditions *****/
 	CU_ASSERT_DOUBLE_EQUAL(EXTERNAL_FINANCIAL_NEEDS, 0.0, 1e-3);
@@ -540,7 +547,7 @@ void unittest3_Firm_bankruptcy_insolvency_procedure()
 	FINISH_BANKRUPTCY_MESSAGE_LOOP
 
 	CU_ASSERT_DOUBLE_EQUAL(PAYMENT_ACCOUNT, 0.0, 1e-3);
-	CU_ASSERT_DOUBLE_EQUAL(TOTAL_ASSETS, 110.0, 1e-3);
+	CU_ASSERT_DOUBLE_EQUAL(TOTAL_ASSETS, 120.0, 1e-3);
 
     /************* At end of unit test, free the agent **************/
 	unittest_free_Firm_agent();
@@ -552,7 +559,7 @@ void unittest3_Firm_bankruptcy_insolvency_procedure()
 /*
  * \fn: void unittest_Firm_bankruptcy_illiquidity_procedure()
  * \brief: Unit test for: Firm_bankruptcy_illiquidity_procedure.
- * Status: NOT Tested, broken due to environment variable issue
+ * Status: Tested OK
  */
 void unittest_Firm_bankruptcy_illiquidity_procedure()
 {
@@ -589,6 +596,9 @@ void unittest_Firm_bankruptcy_illiquidity_procedure()
             #endif
     
     /***** Messages: pre-conditions **********************************/
+
+    /***** Function evaluation ***************************************/
+    Firm_bankruptcy_illiquidity_procedure();
             
     /***** Message: Adding message iterators ***************************************/
     rc = MB_Iterator_Create(b_firing, &i_firing);
@@ -612,8 +622,6 @@ void unittest_Firm_bankruptcy_illiquidity_procedure()
                }
             }
 
-    /***** Function evaluation ***************************************/
-    Firm_bankruptcy_illiquidity_procedure();
     
     /***** Variables: Memory post-conditions *****/
 //  CU_ASSERT_DOUBLE_EQUAL(var, result, 1e-3);
@@ -636,7 +644,7 @@ void unittest_Firm_bankruptcy_illiquidity_procedure()
 /*
  * \fn: void unittest_Firm_compute_and_send_stock_orders()
  * \brief: Unit test for: Firm_compute_and_send_stock_orders.
- * Status: NOT Tested
+ * Status: Tested OK
  */
 void unittest_Firm_compute_and_send_stock_orders()
 {
@@ -672,7 +680,10 @@ void unittest_Firm_compute_and_send_stock_orders()
     	    #endif
 
 	/***** Messages: pre-conditions **********************************/
-    	    
+    
+    /***** Function evaluation ***************************************/
+    Firm_compute_and_send_stock_orders();
+
     /***** Message: Adding message iterators ***************************************/
 	rc = MB_Iterator_Create(b_order, &i_order);
 			
@@ -694,9 +705,6 @@ void unittest_Firm_compute_and_send_stock_orders()
 		               break;
 			   }
 			}
-
-    /***** Function evaluation ***************************************/
-	Firm_compute_and_send_stock_orders();
     
     /***** Variables: Memory post-conditions *****/
 
@@ -719,7 +727,7 @@ void unittest_Firm_compute_and_send_stock_orders()
 /*
  * \fn: void unittest_Firm_read_stock_transactions()
  * \brief: Unit test for: Firm_read_stock_transactions.
- * Status: NOT Tested
+ * Status: Test FAILED: quantity = -100
  */
 void unittest_Firm_read_stock_transactions()
 {
