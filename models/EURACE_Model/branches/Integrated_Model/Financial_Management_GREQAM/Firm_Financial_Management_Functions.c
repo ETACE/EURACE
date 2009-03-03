@@ -511,7 +511,7 @@ int Firm_bankruptcy_insolvency_procedure()
     TOTAL_ASSETS = TOTAL_VALUE_CAPITAL_STOCK;
 
     //Set the target debt
-     target_debt = DEBT_RESCALING_FACTOR*TOTAL_ASSETS;
+     target_debt = (1-DEBT_RESCALING_FACTOR)*(TOTAL_ASSETS-PAYMENT_ACCOUNT);
     
     //Renegotiating debt: refunding credit, computing bad debt
     imax = LOANS.size;
@@ -560,10 +560,11 @@ int Firm_bankruptcy_insolvency_procedure()
     		"TARGET_LEVERAGE_RATIO = %2.2f\n"
     		"TARGET_LIQUIDITY_RATIO = %2.2f\n"
             "target_debt = %2.2f\n"
+    		"target_equity = %2.2f\n"
             "ipo_amount = %2.2f\n"
             "EXTERNAL_FINANCIAL_NEEDS = %2.2f\n",
             DEBT_RESCALING_FACTOR, TARGET_LEVERAGE_RATIO, TARGET_LIQUIDITY_RATIO,
-            target_debt, ipo_amount, EXTERNAL_FINANCIAL_NEEDS);
+            target_debt, target_equity, ipo_amount, EXTERNAL_FINANCIAL_NEEDS);
 
     //Effect on investment goods market
     //Left-over capital
