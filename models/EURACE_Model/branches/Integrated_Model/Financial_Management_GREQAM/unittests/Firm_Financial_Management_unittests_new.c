@@ -4,22 +4,63 @@
 #include "../../Firm_agent_header.h"
 #include "../../my_library_header.h"
 
+#ifdef CONST_BANKRUPTCY_IDLE_PERIOD
+#undef CONST_BANKRUPTCY_IDLE_PERIOD
+#endif
 #define CONST_BANKRUPTCY_IDLE_PERIOD 240
 
-//Case 1: unittest3_Firm_bankruptcy_insolvency_procedure()
-	#define DEBT_RESCALING_FACTOR 0.33
-	#define TARGET_LEVERAGE_RATIO 1.25
-	#define TARGET_LIQUIDITY_RATIO 0.0
-//Case 2: unittest3_Firm_bankruptcy_insolvency_procedure()
-//	#define DEBT_RESCALING_FACTOR 0.33
-//	#define TARGET_LEVERAGE_RATIO 2.0
-//	#define TARGET_LIQUIDITY_RATIO 0.0
+//Case 1: unittest1_Firm_bankruptcy_insolvency_procedure()
+/*
+#ifdef DEBT_RESCALING_FACTOR
+#undef DEBT_RESCALING_FACTOR
+#endif
+#define DEBT_RESCALING_FACTOR 0.33
+
+#ifdef TARGET_LEVERAGE_RATIO
+#undef TARGET_LEVERAGE_RATIO
+#endif
+#define TARGET_LEVERAGE_RATIO 1.25
+
+#ifdef TARGET_LIQUIDITY_RATIO
+#undef TARGET_LIQUIDITY_RATIO
+#endif
+#define TARGET_LIQUIDITY_RATIO 0.0
+*/
+//Case 2: unittest2_Firm_bankruptcy_insolvency_procedure()
+/*
+#ifdef DEBT_RESCALING_FACTOR
+#undef DEBT_RESCALING_FACTOR
+#endif
+#define DEBT_RESCALING_FACTOR 0.33
+
+#ifdef TARGET_LEVERAGE_RATIO
+#undef TARGET_LEVERAGE_RATIO
+#endif
+#define TARGET_LEVERAGE_RATIO 2.00
+
+#ifdef TARGET_LIQUIDITY_RATIO
+#undef TARGET_LIQUIDITY_RATIO
+#endif
+#define TARGET_LIQUIDITY_RATIO 0.0
+*/
 
 //Case 3: unittest3_Firm_bankruptcy_insolvency_procedure()
-//	#define DEBT_RESCALING_FACTOR 0.33
-//	#define TARGET_LEVERAGE_RATIO 4.0
-//	#define TARGET_LIQUIDITY_RATIO 0.0
+/*
+#ifdef DEBT_RESCALING_FACTOR
+#undef DEBT_RESCALING_FACTOR
+#endif
+#define DEBT_RESCALING_FACTOR 0.33
 
+#ifdef TARGET_LEVERAGE_RATIO
+#undef TARGET_LEVERAGE_RATIO
+#endif
+#define TARGET_LEVERAGE_RATIO 4.00
+
+#ifdef TARGET_LIQUIDITY_RATIO
+#undef TARGET_LIQUIDITY_RATIO
+#endif
+#define TARGET_LIQUIDITY_RATIO 0.0
+*/
 
 /*
  * \fn: void unittest_Firm_set_bankruptcy_illiquidity()
@@ -210,10 +251,25 @@ void unittest_Firm_set_bankruptcy_insolvency()
 /*
  * \fn: void unittest1_Firm_bankruptcy_insolvency_procedure()
  * \brief: Unit test for: Firm_bankruptcy_insolvency_procedure.
- * Status: NOT Tested
+ * Status: NOT Tested, broken due to environment variable issue
  */
 void unittest1_Firm_bankruptcy_insolvency_procedure()
 {
+	#ifdef DEBT_RESCALING_FACTOR
+	#undef DEBT_RESCALING_FACTOR
+	#endif
+	#define DEBT_RESCALING_FACTOR 0.33
+	
+	#ifdef TARGET_LEVERAGE_RATIO
+	#undef TARGET_LEVERAGE_RATIO
+	#endif
+	#define TARGET_LEVERAGE_RATIO 1.25
+	
+	#ifdef TARGET_LIQUIDITY_RATIO
+	#undef TARGET_LIQUIDITY_RATIO
+	#endif
+	#define TARGET_LIQUIDITY_RATIO 0.0
+	
 	int rc;
 	
     /************* At start of unit test, add one agent **************/
@@ -305,7 +361,7 @@ void unittest1_Firm_bankruptcy_insolvency_procedure()
 /*
  * \fn: void unittest2_Firm_bankruptcy_insolvency_procedure()
  * \brief: Unit test for: Firm_bankruptcy_insolvency_procedure.
- * Status: NOT Tested
+ * Status: NOT Tested, broken due to environment variable issue
  */
 void unittest2_Firm_bankruptcy_insolvency_procedure()
 {
@@ -400,7 +456,7 @@ void unittest2_Firm_bankruptcy_insolvency_procedure()
 /*
  * \fn: void unittest3_Firm_bankruptcy_insolvency_procedure()
  * \brief: Unit test for: Firm_bankruptcy_insolvency_procedure.
- * Status: NOT Tested
+ * Status: NOT Tested, broken due to environment variable issue
  */
 void unittest3_Firm_bankruptcy_insolvency_procedure()
 {
@@ -488,6 +544,90 @@ void unittest3_Firm_bankruptcy_insolvency_procedure()
 
     /************* At end of unit test, free the agent **************/
 	unittest_free_Firm_agent();
+    /************* At end of unit tests, free all Messages **********/
+    free_messages();
+}
+
+
+/*
+ * \fn: void unittest_Firm_bankruptcy_illiquidity_procedure()
+ * \brief: Unit test for: Firm_bankruptcy_illiquidity_procedure.
+ * Status: NOT Tested, broken due to environment variable issue
+ */
+void unittest_Firm_bankruptcy_illiquidity_procedure()
+{
+    int rc;
+    
+    /************* At start of unit test, add one agent **************/
+    unittest_init_Firm_agent();
+    
+    /***** Variables: Memory pre-conditions **************************/
+    ID=1;
+    //employee(worker_id, region_id, wage, general_skill, specific_skill);
+    reset_employee_array(&EMPLOYEES);
+    add_employee(&EMPLOYEES, 2, 1, 1.0,1,1.0);
+    
+    /***** Messages: initialize message boards **********************************/
+
+    rc = MB_Create(&b_firing, sizeof(m_firing));
+            #ifdef ERRCHECK
+            if (rc != MB_SUCCESS)
+            {
+               fprintf(stderr, "ERROR: Could not create 'firing' board\n");
+               switch(rc) {
+                   case MB_ERR_INVALID:
+                       fprintf(stderr, "\t reason: Invalid message size\n");
+                       break;
+                   case MB_ERR_MEMALLOC:
+                       fprintf(stderr, "\t reason: out of memory\n");
+                       break;
+                   case MB_ERR_INTERNAL:
+                       fprintf(stderr, "\t reason: internal error. Recompile libmoard in debug mode for more info \n");
+                       break;
+               }
+            }
+            #endif
+    
+    /***** Messages: pre-conditions **********************************/
+            
+    /***** Message: Adding message iterators ***************************************/
+    rc = MB_Iterator_Create(b_firing, &i_firing);
+            
+    if (rc != MB_SUCCESS)
+            {
+               fprintf(stderr, "ERROR: Could not create Iterator for 'firing'\n");
+               switch(rc) {
+                   case MB_ERR_INVALID:
+                       fprintf(stderr, "\t reason: 'firing' board is invalid\n");
+                       break;
+                   case MB_ERR_LOCKED:
+                       fprintf(stderr, "\t reason: 'firing' board is locked\n");
+                       break;
+                   case MB_ERR_MEMALLOC:
+                       fprintf(stderr, "\t reason: out of memory\n");
+                       break;
+                   case MB_ERR_INTERNAL:
+                       fprintf(stderr, "\t reason: internal error. Recompile libmoard in debug mode for more info \n");
+                       break;
+               }
+            }
+
+    /***** Function evaluation ***************************************/
+    Firm_bankruptcy_illiquidity_procedure();
+    
+    /***** Variables: Memory post-conditions *****/
+//  CU_ASSERT_DOUBLE_EQUAL(var, result, 1e-3);
+
+    /***** Messages: Message post-conditions *****/
+    //start a reading loop
+
+    START_FIRING_MESSAGE_LOOP
+         CU_ASSERT_EQUAL(firing_message->firm_id,1);
+         CU_ASSERT_EQUAL(firing_message->worker_id,2);
+    FINISH_FIRING_MESSAGE_LOOP
+    
+    /************* At end of unit test, free the agent **************/
+    unittest_free_Firm_agent();
     /************* At end of unit tests, free all Messages **********/
     free_messages();
 }

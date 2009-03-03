@@ -189,8 +189,8 @@ void unittest1_Government_read_unemployment_benefit_notifications()
 	ID=1;
 	UNEMPLOYMENT_BENEFIT_PCT=0.70;
 	COUNTRY_WIDE_MEAN_WAGE=60.0;
-	MONTHLY_UNEMPLOYMENT_BENEFIT_PAYMENT=0.0;
-	YEARLY_UNEMPLOYMENT_BENEFIT_PAYMENT=0.0;
+	MONTHLY_BENEFIT_PAYMENT=0.0;
+	YEARLY_BENEFIT_PAYMENT=0.0;
 	PAYMENT_ACCOUNT=0.0;
 	
 	/***** Messages: initialize message boards **********************************/
@@ -245,8 +245,8 @@ void unittest1_Government_read_unemployment_benefit_notifications()
 	Government_read_unemployment_benefit_notifications();
     
     /***** Variables: Memory post-conditions *****/
-	CU_ASSERT_DOUBLE_EQUAL(MONTHLY_UNEMPLOYMENT_BENEFIT_PAYMENT, 70.0, 1e-3);
-	CU_ASSERT_DOUBLE_EQUAL(YEARLY_UNEMPLOYMENT_BENEFIT_PAYMENT, 70.0, 1e-3);
+	CU_ASSERT_DOUBLE_EQUAL(MONTHLY_BENEFIT_PAYMENT, 70.0, 1e-3);
+	CU_ASSERT_DOUBLE_EQUAL(YEARLY_BENEFIT_PAYMENT, 70.0, 1e-3);
 	CU_ASSERT_DOUBLE_EQUAL(PAYMENT_ACCOUNT, -70.0, 1e-3);	
 	CU_ASSERT_EQUAL(NUM_UNEMPLOYED, 1);	
 	
@@ -276,8 +276,8 @@ void unittest2_Government_read_unemployment_benefit_notifications()
 	ID=1;
 	UNEMPLOYMENT_BENEFIT_PCT=0.70;
 	COUNTRY_WIDE_MEAN_WAGE=150.0;
-	MONTHLY_UNEMPLOYMENT_BENEFIT_PAYMENT=0.0;
-	YEARLY_UNEMPLOYMENT_BENEFIT_PAYMENT=0.0;
+	MONTHLY_BENEFIT_PAYMENT=0.0;
+	YEARLY_BENEFIT_PAYMENT=0.0;
 	PAYMENT_ACCOUNT=0.0;
 	
 	/***** Messages: initialize message boards **********************************/
@@ -332,8 +332,8 @@ void unittest2_Government_read_unemployment_benefit_notifications()
 	Government_read_unemployment_benefit_notifications();
     
     /***** Variables: Memory post-conditions *****/
-	CU_ASSERT_DOUBLE_EQUAL(MONTHLY_UNEMPLOYMENT_BENEFIT_PAYMENT, 75.0, 1e-3);
-	CU_ASSERT_DOUBLE_EQUAL(YEARLY_UNEMPLOYMENT_BENEFIT_PAYMENT, 75.0, 1e-3);
+	CU_ASSERT_DOUBLE_EQUAL(MONTHLY_BENEFIT_PAYMENT, 75.0, 1e-3);
+	CU_ASSERT_DOUBLE_EQUAL(YEARLY_BENEFIT_PAYMENT, 75.0, 1e-3);
 	CU_ASSERT_DOUBLE_EQUAL(PAYMENT_ACCOUNT, -75.0, 1e-3);	
 	CU_ASSERT_EQUAL(NUM_UNEMPLOYED, 1);	
 	
@@ -747,8 +747,9 @@ void unittest_Government_send_account_update()
 /*
  * \fn: void unittest_Government_read_data_from_Eurostat()
  * \brief: Unit tests for: Government_read_data_from_Eurostat
- * Status: Tested OK
+ * Status: Test broken due to envionment vars
  */
+
 void unittest_Government_read_data_from_Eurostat()
 {
 	int rc;
@@ -760,9 +761,9 @@ void unittest_Government_read_data_from_Eurostat()
 	ID=1;
 	GDP=10.0;
 	GDP_GROWTH=0.0;
+	
 	LIST_OF_REGIONS[0]=1;
 	LIST_OF_REGIONS[1]=2;
-	printf("\n NO_REGIONS_PER_GOV=%d", NO_REGIONS_PER_GOV);
 	
 	/***** Messages: initialize message boards **********************************/
 
@@ -865,8 +866,15 @@ void unittest_Government_set_policy()
 	
     /***** Variables: Memory pre-conditions **************************/
 	//environment constants
-	GOV_POLICY_GDP_FRACTION_CONSUMPTION=0.20;
-	GOV_POLICY_GDP_FRACTION_INVESTMENT=0.30;
+	#ifdef GOV_POLICY_GDP_FRACTION_CONSUMPTION
+	#undef GOV_POLICY_GDP_FRACTION_CONSUMPTION
+	#endif
+	#define	GOV_POLICY_GDP_FRACTION_CONSUMPTION 0.20
+
+	#ifdef GOV_POLICY_GDP_FRACTION_INVESTMENT
+	#undef GOV_POLICY_GDP_FRACTION_INVESTMENT
+	#endif
+	#define	GOV_POLICY_GDP_FRACTION_INVESTMENT 0.30
 	
 	GDP=100.0;
 	GDP_GROWTH=1.00;
@@ -909,10 +917,10 @@ void unittest_Government_yearly_resetting()
 	
     /***** Variables: Memory pre-conditions **************************/
 	YEARLY_TAX_REVENUES =10.0;
-	YEARLY_UNEMPLOYMENT_BENEFIT_PAYMENT =10.0;
+	YEARLY_BENEFIT_PAYMENT =10.0;
 	YEARLY_TRANSFER_PAYMENT =10.0;
 	YEARLY_SUBSIDY_PAYMENT =10.0;
-	YEARLY_BOND_COUPON_PAYMENT =10.0;
+	YEARLY_BOND_INTEREST_PAYMENT =10.0;
 	YEARLY_INVESTMENT_EXPENDITURE =10.0;
 	YEARLY_CONSUMPTION_EXPENDITURE =10.0;
 
@@ -928,10 +936,10 @@ void unittest_Government_yearly_resetting()
     /***** Variables: Memory post-conditions *****/
 	result=0.0;
 	CU_ASSERT_DOUBLE_EQUAL(YEARLY_TAX_REVENUES, result, 1e-3);
-	CU_ASSERT_DOUBLE_EQUAL(YEARLY_UNEMPLOYMENT_BENEFIT_PAYMENT, result, 1e-3);
+	CU_ASSERT_DOUBLE_EQUAL(YEARLY_BENEFIT_PAYMENT, result, 1e-3);
 	CU_ASSERT_DOUBLE_EQUAL(YEARLY_TRANSFER_PAYMENT, result, 1e-3);
 	CU_ASSERT_DOUBLE_EQUAL(YEARLY_SUBSIDY_PAYMENT, result, 1e-3);
-	CU_ASSERT_DOUBLE_EQUAL(YEARLY_BOND_COUPON_PAYMENT, result, 1e-3);
+	CU_ASSERT_DOUBLE_EQUAL(YEARLY_BOND_INTEREST_PAYMENT, result, 1e-3);
 	CU_ASSERT_DOUBLE_EQUAL(YEARLY_INVESTMENT_EXPENDITURE, result, 1e-3);
 	CU_ASSERT_DOUBLE_EQUAL(YEARLY_CONSUMPTION_EXPENDITURE, result, 1e-3);
 	
@@ -958,10 +966,10 @@ void unittest_Government_monthly_resetting()
 	
     /***** Variables: Memory pre-conditions **************************/
 	MONTHLY_TAX_REVENUES =10.0;
-	MONTHLY_UNEMPLOYMENT_BENEFIT_PAYMENT =10.0;
+	MONTHLY_BENEFIT_PAYMENT =10.0;
 	MONTHLY_TRANSFER_PAYMENT =10.0;
 	MONTHLY_SUBSIDY_PAYMENT =10.0;
-	MONTHLY_BOND_COUPON_PAYMENT =10.0;
+	MONTHLY_BOND_INTEREST_PAYMENT =10.0;
 	MONTHLY_INVESTMENT_EXPENDITURE =10.0;
 	MONTHLY_CONSUMPTION_EXPENDITURE =10.0;
 
@@ -977,10 +985,10 @@ void unittest_Government_monthly_resetting()
     /***** Variables: Memory post-conditions *****/
 	result=0.0;
 	CU_ASSERT_DOUBLE_EQUAL(MONTHLY_TAX_REVENUES, result, 1e-3);
-	CU_ASSERT_DOUBLE_EQUAL(MONTHLY_UNEMPLOYMENT_BENEFIT_PAYMENT, result, 1e-3);
+	CU_ASSERT_DOUBLE_EQUAL(MONTHLY_BENEFIT_PAYMENT, result, 1e-3);
 	CU_ASSERT_DOUBLE_EQUAL(MONTHLY_TRANSFER_PAYMENT, result, 1e-3);
 	CU_ASSERT_DOUBLE_EQUAL(MONTHLY_SUBSIDY_PAYMENT, result, 1e-3);
-	CU_ASSERT_DOUBLE_EQUAL(MONTHLY_BOND_COUPON_PAYMENT, result, 1e-3);
+	CU_ASSERT_DOUBLE_EQUAL(MONTHLY_BOND_INTEREST_PAYMENT, result, 1e-3);
 	CU_ASSERT_DOUBLE_EQUAL(MONTHLY_INVESTMENT_EXPENDITURE, result, 1e-3);
 	CU_ASSERT_DOUBLE_EQUAL(MONTHLY_CONSUMPTION_EXPENDITURE, result, 1e-3);
 	
