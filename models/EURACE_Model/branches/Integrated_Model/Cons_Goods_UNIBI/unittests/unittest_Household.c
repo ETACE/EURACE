@@ -668,13 +668,13 @@ void unittest_Household_rank_and_buy_goods_2()
 		CU_ASSERT_DOUBLE_EQUAL(ORDER_QUANTITY[1].quantity, 50.0, 1e-3);	
 		CU_ASSERT_DOUBLE_EQUAL(ORDER_QUANTITY[1].price, 2.0, 1e-3);
 		
-		START_CONSUMPTION_REQUEST_1_MESSAGE_LOOP
+		START_CONSUMPTION_REQUEST_2_MESSAGE_LOOP
 			     CU_ASSERT_EQUAL(consumption_request_2_message->worker_id, ID);	
 				 CU_ASSERT_EQUAL(consumption_request_2_message->mall_id, 1);
 				 CU_ASSERT_EQUAL(consumption_request_2_message->region_id, 1);
 				 CU_ASSERT_EQUAL(consumption_request_2_message->firm_id, 3);
 			     CU_ASSERT_DOUBLE_EQUAL(consumption_request_2_message->quantity, 50.0, 1e-3);
-	    FINISH_CONSUMPTION_REQUEST_1_MESSAGE_LOOP
+	    FINISH_CONSUMPTION_REQUEST_2_MESSAGE_LOOP
 	}
 		
 	    /************* At end of unit test, free the agent **************/

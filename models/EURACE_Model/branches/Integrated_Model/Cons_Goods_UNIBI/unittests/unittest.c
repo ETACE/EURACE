@@ -47,6 +47,13 @@ void unittest_Household_handle_leftover_budget();
 void unittest_Mall_update_mall_stock();
 void unittest_Mall_update_mall_stock_2();
 void unittest_Mall_send_quality_price_info_1();
+void unittest_Mall_update_mall_stocks_sales_rationing_1();
+void unittest_Mall_update_mall_stocks_sales_rationing_1_2();
+void unittest_Mall_update_mall_stocks_sales_rationing_2();
+void unittest_Mall_update_mall_stocks_sales_rationing_2_2();
+void unittest_Mall_pay_firm();
+void unittest_Mall_pay_firm_2();
+void unittest_Mall_read_insolvency_bankruptcy();
 /*************************** end prototypes ***************************/
 
 int init_suite1(void)
@@ -160,11 +167,18 @@ NULL == CU_add_test(pSuite,  "Firm_update_specific_skills_of_worker",unittest_Fi
                  return CU_get_error();
              }
              
-                  
+                        
                 
        if(	   NULL == CU_add_test(pSuite3, "Mall_update_mall_stock",unittest_Mall_update_mall_stock)||
     		   NULL == CU_add_test(pSuite3, "Mall_update_mall_stock Case 2",unittest_Mall_update_mall_stock_2)||
-    		   NULL == CU_add_test(pSuite3, "Mall_send_quality_price_info_1",unittest_Mall_send_quality_price_info_1))
+    		   NULL == CU_add_test(pSuite3, "Mall_send_quality_price_info_1",unittest_Mall_send_quality_price_info_1)||
+    		   NULL == CU_add_test(pSuite3, "Mall_update_mall_stocks_sales_rationing_1 Case 1",unittest_Mall_update_mall_stocks_sales_rationing_1)||
+    		   NULL == CU_add_test(pSuite3, "Mall_update_mall_stocks_sales_rationing_1 Case 2",unittest_Mall_update_mall_stocks_sales_rationing_1_2)||
+    		   NULL == CU_add_test(pSuite3, "Mall_update_mall_stocks_sales_rationing_2 Case 1",unittest_Mall_update_mall_stocks_sales_rationing_2)||
+    		   NULL == CU_add_test(pSuite3, "Mall_update_mall_stocks_sales_rationing_2 Case 2",unittest_Mall_update_mall_stocks_sales_rationing_2_2)||
+    		   NULL == CU_add_test(pSuite3, "Mall_pay_firm Case 1",unittest_Mall_pay_firm)||
+    		   NULL == CU_add_test(pSuite3, "Mall_pay_firm Case 2",unittest_Mall_pay_firm_2)||
+    		   NULL == CU_add_test(pSuite3, "Mall_read_insolvency_bankruptcy",unittest_Mall_read_insolvency_bankruptcy))
          
 
       	{
