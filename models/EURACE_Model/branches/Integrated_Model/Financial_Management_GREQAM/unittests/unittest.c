@@ -84,7 +84,7 @@ int main(int argc, char * argv[])
         NULL == CU_add_test(pSuite, "Firm_check_financial_and_bankruptcy_state, Case 1", unittest1_Firm_check_financial_and_bankruptcy_state) ||
         NULL == CU_add_test(pSuite, "Firm_check_financial_and_bankruptcy_state, Case 2", unittest2_Firm_check_financial_and_bankruptcy_state) ||
         NULL == CU_add_test(pSuite, "Firm_in_financial_crisis", unittest_Firm_in_financial_crisis) ||
-*/
+
         NULL == CU_add_test(pSuite, "Firm_execute_financial_payments, Case 1", unittest1_Firm_execute_financial_payments) ||
         NULL == CU_add_test(pSuite, "Firm_execute_financial_payments, Case 2", unittest2_Firm_execute_financial_payments))
 /*
@@ -96,7 +96,8 @@ int main(int argc, char * argv[])
         //NULL == CU_add_test(pSuite, "Firm_read_stock_transactions", unittest_Firm_read_stock_transactions))
         //NULL == CU_add_test(pSuite, "Firm_set_bankruptcy_illiquidity", unittest_Firm_set_bankruptcy_illiquidity) ||
         //NULL == CU_add_test(pSuite, "Firm_set_bankruptcy_insolvency", unittest_Firm_set_bankruptcy_insolvency) ||
-        //NULL == CU_add_test(pSuite, "Firm_bankruptcy_insolvency_procedure, Case 1", unittest1_Firm_bankruptcy_insolvency_procedure))// ||
+
+    	//NULL == CU_add_test(pSuite, "Firm_bankruptcy_insolvency_procedure, Case 1", unittest1_Firm_bankruptcy_insolvency_procedure))// ||
         //NULL == CU_add_test(pSuite, "Firm_bankruptcy_insolvency_procedure, Case 2", unittest2_Firm_bankruptcy_insolvency_procedure) ||            
         //NULL == CU_add_test(pSuite, "Firm_bankruptcy_insolvency_procedure, Case 3", unittest3_Firm_bankruptcy_insolvency_procedure))          
     {

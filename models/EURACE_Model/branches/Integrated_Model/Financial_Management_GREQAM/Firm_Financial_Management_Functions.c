@@ -556,11 +556,14 @@ int Firm_bankruptcy_insolvency_procedure()
     EXTERNAL_FINANCIAL_NEEDS = max(0,ipo_amount);
 
     printf("\n In function Firm_bankruptcy_insolvency_procedure:\n"
+    		"DEBT_RESCALING_FACTOR = %2.2f\n"
+    		"TARGET_LEVERAGE_RATIO = %2.2f\n"
+    		"TARGET_LIQUIDITY_RATIO = %2.2f\n"
             "target_debt = %2.2f\n"
-            "TARGET_LEVERAGE_RATIO = %2.2f\n"
             "ipo_amount = %2.2f\n"
             "EXTERNAL_FINANCIAL_NEEDS = %2.2f\n",
-            target_debt, TARGET_LEVERAGE_RATIO, ipo_amount, EXTERNAL_FINANCIAL_NEEDS);
+            DEBT_RESCALING_FACTOR, TARGET_LEVERAGE_RATIO, TARGET_LIQUIDITY_RATIO,
+            target_debt, ipo_amount, EXTERNAL_FINANCIAL_NEEDS);
 
     //Effect on investment goods market
     //Left-over capital
