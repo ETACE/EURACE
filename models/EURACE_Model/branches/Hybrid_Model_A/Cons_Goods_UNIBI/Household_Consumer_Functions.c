@@ -401,6 +401,23 @@ int Household_receive_goods_read_rationing_2()
  */
 int Household_receive_dividends()
 {
+	
+	START_DIVIDEND_PER_SHARE_MESSAGE_LOOP
+	int i;
+	for(i = 0; i < ASSETSOWNED.size; i++)
+	{
+		if(ASSETSOWNED.array[i].id == dividend_per_share_message->firm_id)
+		{
+			double dividend = dividend_per_share_message->current_dividend_per_share*ASSETSOWNED.array[i].quantity;
+			CUM_TOTAL_DIVIDENDS +=dividend ;
+			PAYMENT_ACCOUNT += dividend;
+			break;
+		}
+		
+	}
+	
+	FINISH_DIVIDEND_PER_SHARE_MESSAGE_LOOP
+	
     return 0;   
 }
 

@@ -228,15 +228,17 @@ int Firm_calc_production_quantity()
                  * units than the period before. They increase the production 
                  * volume for one mall by a certain fraction of the last delivery volume*/
                 {
-                    for(int j = 0; j < DELIVERY_VOLUME.size; j++)
+                    for(int j = 0; j < PLANNED_DELIVERY_VOLUME.size; j++)
                     {
-                        if(PLANNED_DELIVERY_VOLUME.array[i].mall_id==
-                        DELIVERY_VOLUME.array[j].mall_id)
+                        if(PLANNED_DELIVERY_VOLUME.array[j].mall_id==
+                        	CURRENT_MALL_STOCKS.array[i].mall_id)
                         {
                             prod_vol = CURRENT_MALL_STOCKS.array[i].critical_stock*(1 + ADAPTION_DELIVERY_VOLUME);
 
+                            CURRENT_MALL_STOCKS.array[i].critical_stock= prod_vol;
+                            
                             PLANNED_DELIVERY_VOLUME.
-                            array[i].quantity = prod_vol;
+                            array[j].quantity = prod_vol;
 
                             /*printf("Prod-Vol %f\n",prod_vol);*/
                         }
@@ -480,11 +482,6 @@ int Firm_receive_capital_goods()
         CAPITAL_COSTS = 0.0;
         START_CAPITAL_GOOD_DELIVERY_MESSAGE_LOOP
         
-        /*Adding the new capital*/
-
-        TOTAL_UNITS_CAPITAL_STOCK += capital_good_delivery_message
-        ->capital_good_delivery_volume;
-        
         /*Determine the weighted average productivity of the total capital stock*/
     
         /*Update of productivity*/
@@ -503,7 +500,9 @@ int Firm_receive_capital_goods()
                 capital_good_delivery_message->capital_good_delivery_volume)
                 *capital_good_delivery_message->capital_good_price;     
 
-
+                /*Adding the new capital*/
+                TOTAL_UNITS_CAPITAL_STOCK += capital_good_delivery_message
+                ->capital_good_delivery_volume;
 
         /*Computing the capital bill*/
         CAPITAL_COSTS += capital_good_delivery_message
