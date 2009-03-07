@@ -13,7 +13,29 @@
    <file>Government_Financial_Market_Functions.c</file>
   </functionFiles>
   <timeUnits/>
-  <dataTypes/>
+ <dataTypes>
+  <dataType>
+    <name>Asset</name>
+    <description>ADT Asset owned</description>
+    <variables>
+     <variable>
+      <type>int</type>
+      <name>id</name>
+      <description></description>
+     </variable>
+     <variable>
+      <type>int</type>
+      <name>quantity</name>
+      <description></description>
+     </variable>
+     <variable>
+      <type>double</type>
+      <name>lastPrice</name>
+      <description></description>
+     </variable>
+    </variables>
+   </dataType>
+  </dataTypes>
  </environment>
  <agents>
   <xagent>
@@ -48,7 +70,13 @@
   <xagent>
    <name>Household</name>
    <description></description>
-   <memory/>
+   <memory>
+   <variable>
+     <type>Asset_array</type>
+     <name>assetsowned</name>
+     <description></description>
+    </variable>
+   </memory>
    <functions>
     <function>
      <name>Household_financial_market_dummy</name>
