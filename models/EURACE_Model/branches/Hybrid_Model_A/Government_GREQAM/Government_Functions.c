@@ -39,8 +39,8 @@ int Government_read_tax_payments()
         
     FINISH_TAX_PAYMENT_MESSAGE_LOOP 
 
-    PAYMENT_ACCOUNT += MONTHLY_TAX_REVENUES;
-    YEARLY_TAX_REVENUES += MONTHLY_TAX_REVENUES;
+   PAYMENT_ACCOUNT += MONTHLY_TAX_REVENUES;
+    
     
     return 0;
 }
@@ -80,6 +80,7 @@ int Government_read_unemployment_benefit_notifications()
     YEARLY_BENEFIT_PAYMENT += sum;     
 
     // Update the payment account
+    
     PAYMENT_ACCOUNT -= sum;
     
     return 0;
@@ -213,10 +214,13 @@ int Government_send_account_update()
 int Government_monthly_budget_accounting()
 {
     double in, out;
+    
 
     //Compute the following: the interest rate is the base rate of the Central Bank
     //GOV_INTEREST_RATE = (double) 0.05/12.0;
     //GOV_INTEREST_RATE = CB_BASE_RATE/12.0;
+    
+    YEARLY_TAX_REVENUES += MONTHLY_TAX_REVENUES;
     
     //Items that have already been added to the payment_account
         in = MONTHLY_TAX_REVENUES;
@@ -237,7 +241,7 @@ int Government_monthly_budget_accounting()
     //Debt accounting: if the balance>0 debt decreases, if balance<0, debt increases.
         //Debt>0 means a debt, Debt<0 means a surplus.
         TOTAL_DEBT -= MONTHLY_BUDGET_BALANCE;
-        PAYMENT_ACCOUNT += MONTHLY_BUDGET_BALANCE;
+       // PAYMENT_ACCOUNT += MONTHLY_BUDGET_BALANCE;
         
         //Check: value of payment account should be equal to total_debt:
         //if (abs(TOTAL_DEBT + PAYMENT_ACCOUNT))> 0.001)
