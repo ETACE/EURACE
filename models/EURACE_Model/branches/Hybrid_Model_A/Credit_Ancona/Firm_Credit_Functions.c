@@ -22,7 +22,7 @@
                  
          FINISH_BANK_IDENTITY_MESSAGE_LOOP
     
-         CONST_NUMBER_OF_BANKS=SET_OF_LENDERS.size;  //provvisorio
+         
           
          connected=0; 
         
@@ -46,7 +46,7 @@
          }
         }
                 
-        CONST_NUMBER_OF_BANKS=SET_OF_LENDERS.size; //to initialize matrices in firm_get_loan
+        NUMBER_OF_BANKS_ASKED=SET_OF_LENDERS.size;  //provvisorio
        
         return 0;
     }
@@ -57,10 +57,10 @@
         int n, n1, k, i, primo;
         int bk = -1;
     
-        int rate_order_array[CONST_NUMBER_OF_BANKS]; //constant size dynamic array: name of banks
-        double interest_array[CONST_NUMBER_OF_BANKS]; //constant size dynamic array
-        double credit_offer_array[CONST_NUMBER_OF_BANKS]; //constant size dynamic array
-        double value_at_risk_array[CONST_NUMBER_OF_BANKS]; //constant size dynamic array
+        int rate_order_array[NUMBER_OF_BANKS_ASKED]; //constant size dynamic array: name of banks
+        double interest_array[NUMBER_OF_BANKS_ASKED]; //constant size dynamic array
+        double credit_offer_array[NUMBER_OF_BANKS_ASKED]; //constant size dynamic array
+        double value_at_risk_array[NUMBER_OF_BANKS_ASKED]; //constant size dynamic array
         
         
         double aux;
@@ -79,7 +79,7 @@
         int nr_periods_before_repayment;
         
          
-        for (i=0; i<CONST_NUMBER_OF_BANKS;i++)
+        for (i=0; i<NUMBER_OF_BANKS_ASKED;i++)
         {
             rate_order_array[i]=-1;   //vettore lunghezza number_of_banks
             interest_array[i]=0.0;
@@ -110,9 +110,9 @@
         n1=0;
         
         //SORTING the set of  lenders according to their interest rates
-        for(i=0;i<CONST_NUMBER_OF_BANKS-1;i++)
+        for(i=0;i<NUMBER_OF_BANKS_ASKED-1;i++)
         {
-                for(k=i+1; k<CONST_NUMBER_OF_BANKS; k++)
+                for(k=i+1; k<NUMBER_OF_BANKS_ASKED; k++)
                 {       
                     if (interest_array[i]>interest_array[k]) 
                     {
@@ -141,7 +141,7 @@
         //obtain a loan if credit_demand >= credit_offer
         
                 
-        for(primo=0; primo<CONST_NUMBER_OF_BANKS; primo++)
+        for(primo=0; primo<NUMBER_OF_BANKS_ASKED; primo++)
         {
                   
             if (rate_order_array[primo]!=-1)// && interest_array[primo]!=0.0)
@@ -155,8 +155,9 @@
                 if (credit_demand >= credit_offer_array[primo])
                 {
                    credit_accepted = credit_offer_array[primo];
-             
-                else                 
+                }
+                else
+                {
                    credit_accepted=credit_demand;
                 }
                 
