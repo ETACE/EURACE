@@ -39,7 +39,7 @@
           //delete from the list not contacted banks
           for(j=CONST_NUMBER_OF_BANKS-1;j>-1;j--)
          {
-           if (SET_OF_LENDERS.array[j].contacted=0)
+           if (SET_OF_LENDERS.array[j].contacted==0)
            {
              remove_potential_lender(&SET_OF_LENDERS,j);    
            }     
