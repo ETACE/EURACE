@@ -385,7 +385,7 @@ int Firm_execute_financial_payments()
 {
 
     //No bankruptcy
-    int imax, i;
+    int i;
     double temp_interest=0.0;
     
     //step 1: actual tax_payment to government
@@ -394,13 +394,12 @@ int Firm_execute_financial_payments()
 
     //step 2: actual interest_payments and installment_payments
     //Sending installment_message to banks at which the firm has a loan 
-    imax = LOANS.size;
-    TOTAL_DEBT=0.0;
 
-    for (i=0; i<imax; i++)
+    TOTAL_DEBT=0.0;
+    for (i=0; i<LOANS.size; i++)
     {
-    	
     	//decrease payment_account with the interest_payment
+    	//the if-condition prevents an interest payment in the first period in which the loan is obtained
     	if(LOANS.array[i].nr_periods_before_repayment!=CONST_INSTALLMENT_PERIODS+1)
     	{
 	        //decrease payment_account with the interest_payment
@@ -444,13 +443,16 @@ int Firm_execute_financial_payments()
     	
         //If nr_periods_before_maturity == 2, remove the loan item. This is because we set the total nr of payments to
         // +1, such that 
-        if (LOANS.array[i].nr_periods_before_repayment==0)
-            remove_debt_item(&LOANS, i);
+        if (LOANS.array[i].nr_periods_before_repayment==1)
+        {
+        	remove_debt_item(&LOANS, i);
+        	i--; //shift to left because removing an item shifts all items after i to the left
+        }
         else
             LOANS.array[i].nr_periods_before_repayment -= 1;
             
         if (LOANS.array[i].nr_periods_before_repayment==-1)
-            printf("\n ERROR in function Firm_execute_financial_payments, line 442: nr_periods_before_repayment. \n");
+            printf("\n ERROR in function Firm_execute_financial_payments, line 455: nr_periods_before_repayment. \n");
 
     }
     
