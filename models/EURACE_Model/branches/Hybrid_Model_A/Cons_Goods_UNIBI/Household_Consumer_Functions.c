@@ -62,14 +62,17 @@ int Household_rank_and_buy_goods_1()
     mall_quality_price_info_array mall_quality_price_info_list;
     init_mall_quality_price_info_array(&mall_quality_price_info_list);
 
-    
+ 
 
         /*Household reads quality price info mesasges sent by malls   */
         START_QUALITY_PRICE_INFO_1_MESSAGE_LOOP
-                
+
+	if( quality_price_info_1_message->available==1)
+             {   
         add_mall_quality_price_info(&mall_quality_price_info_list,  quality_price_info_1_message->mall_id, quality_price_info_1_message->firm_id,               quality_price_info_1_message->mall_region_id,                   quality_price_info_1_message->quality,                  quality_price_info_1_message->price, 
         quality_price_info_1_message->available);
-                
+	}
+             
 
         FINISH_QUALITY_PRICE_INFO_1_MESSAGE_LOOP
 
@@ -82,7 +85,11 @@ int Household_rank_and_buy_goods_1()
         {
             sum_weighted_qual_pric_ratios += (mall_quality_price_info_list.array[i]
             .available) * exp(log(mall_quality_price_info_list.array[i].price)*GAMMA_CONST); 
+
+
+	
         }
+
 
 
 
