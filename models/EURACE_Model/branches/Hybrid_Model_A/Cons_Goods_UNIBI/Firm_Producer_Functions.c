@@ -14,7 +14,7 @@
 int Firm_calc_input_demands_2()
 {
 
-    
+ 
     double temp_labour_demand;
     double temp_capital_demand;
     
@@ -589,7 +589,7 @@ int Firm_calc_pay_costs()
         if(PRODUCTION_QUANTITY!=0 )
         {
             
-            double calc_capital_costs = 0;
+        	CALC_CAPITAL_COSTS = 0;
         for(int i = 0; i<CAPITAL_FINANCING.size;i++) 
             {
                 if(CAPITAL_FINANCING.array[i].nr_periods_before_repayment==0)
@@ -599,17 +599,19 @@ int Firm_calc_pay_costs()
                 }else
                 {
                 CAPITAL_FINANCING.array[i].nr_periods_before_repayment--;
-                calc_capital_costs+= CAPITAL_FINANCING.array[i].financing_per_month;
+                CALC_CAPITAL_COSTS+= CAPITAL_FINANCING.array[i].financing_per_month;
                 }
                 
 
             } 
                 
-            UNIT_COSTS=(LABOUR_COSTS + calc_capital_costs + TOTAL_INTEREST_PAYMENT) / PRODUCTION_QUANTITY;
+            UNIT_COSTS=(LABOUR_COSTS + CALC_CAPITAL_COSTS + TOTAL_INTEREST_PAYMENT) / PRODUCTION_QUANTITY;
     
             
-
+            PRICE_LAST_MONTH = PRICE;
             PRICE = UNIT_COSTS*(1 + MARK_UP);
+            
+            
             
 
             
@@ -617,8 +619,8 @@ int Firm_calc_pay_costs()
 
         
         PRODUCTION_COSTS = CAPITAL_COSTS + LABOUR_COSTS;
-
-    PAYMENT_ACCOUNT -= PRODUCTION_COSTS;
+        CALC_PRODUCTION_COSTS= LABOUR_COSTS + CALC_CAPITAL_COSTS;
+        PAYMENT_ACCOUNT -= PRODUCTION_COSTS;
 
     //if(PLANNED_PRODUCTION_COSTS<PRODUCTION_COSTS)
         //printf("XXXX PLANNED_PRODUCTION_COSTS: %f  PRODUCTION_COSTS %f XXXXX\n",PLANNED_PRODUCTION_COSTS,PRODUCTION_COSTS);
