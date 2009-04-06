@@ -828,3 +828,18 @@ Hybrid_Model_A
 - copied FM_GREQAM functions.c to trunk
 - TODO: unit tests with constants
 ----------------------------------------------------------------------
+Sander, rev 1925
+
+
+Hybrid_Model_A
+==============
+06/04/09
+
+- added partition_id
+- added new global constant to Financial_Management: CONST_DIVIDEND_EARNINGS_RATIO
+- Saul: added new variable to Credit_Ancona: NUMBER_OF_BANKS_ASKED
+- Sander: Firm_execute _payments:
+Traverse loans array in reverse order:
+    for (i=LOANS.size; i>-1; i--)
+
+----------------------------------------------------------------------
