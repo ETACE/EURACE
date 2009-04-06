@@ -258,15 +258,15 @@ int Household_rank_and_buy_goods_2()
         /*The updated quality price message is read  */
         START_QUALITY_PRICE_INFO_2_MESSAGE_LOOP
 
-
-                
+if( quality_price_info_2_message->available==1)
+{
                 add_mall_quality_price_info(&mall_quality_price_info_list,quality_price_info_2_message->mall_id, 
                 quality_price_info_2_message->firm_id, 
                 quality_price_info_2_message->mall_region_id, 
                 quality_price_info_2_message->quality, 
                 quality_price_info_2_message->price, 
                 quality_price_info_2_message->available);
-                
+}          
         FINISH_QUALITY_PRICE_INFO_2_MESSAGE_LOOP
 
 
@@ -408,6 +408,7 @@ int Household_receive_goods_read_rationing_2()
  */
 int Household_receive_dividends()
 {
+	RECEIVED_DIVIDEND=0;
 	
 	START_DIVIDEND_PER_SHARE_MESSAGE_LOOP
 	int i;
@@ -416,6 +417,8 @@ int Household_receive_dividends()
 		if(ASSETSOWNED.array[i].id == dividend_per_share_message->firm_id)
 		{
 			double dividend = dividend_per_share_message->current_dividend_per_share*ASSETSOWNED.array[i].quantity;
+			
+			RECEIVED_DIVIDEND +=dividend;
 			CUM_TOTAL_DIVIDENDS +=dividend ;
 			PAYMENT_ACCOUNT += dividend;
 			break;
