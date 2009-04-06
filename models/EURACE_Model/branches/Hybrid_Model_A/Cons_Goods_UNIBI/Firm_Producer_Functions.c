@@ -182,7 +182,7 @@ int Firm_calc_production_quantity()
             /*Setting the critical values*/
             
             CURRENT_MALL_STOCKS.array[i].critical_stock = 
-                                sales_mall.array[6].sales;
+                                sales_mall.array[7].sales;
             
 
             /*If the critical level for a mall is zero then the firm sets (with a certain prob )the 
@@ -492,13 +492,10 @@ int Firm_receive_capital_goods()
                 capital_good_delivery_message->capital_good_delivery_volume)
                 *capital_good_delivery_message->productivity;
         /*Update of current value of capital stock*/
-
-                TOTAL_VALUE_CAPITAL_STOCK = TOTAL_UNITS_CAPITAL_STOCK /     (TOTAL_UNITS_CAPITAL_STOCK +capital_good_delivery_message->capital_good_delivery_volume)
-                *TOTAL_VALUE_CAPITAL_STOCK + 
-                capital_good_delivery_message->capital_good_delivery_volume/
-                (TOTAL_UNITS_CAPITAL_STOCK + 
-                capital_good_delivery_message->capital_good_delivery_volume)
-                *capital_good_delivery_message->capital_good_price;     
+ 
+                TOTAL_VALUE_CAPITAL_STOCK =
+                TOTAL_VALUE_CAPITAL_STOCK + capital_good_delivery_message->capital_good_delivery_volume
+                *capital_good_delivery_message->capital_good_price;              
 
                 /*Adding the new capital*/
                 TOTAL_UNITS_CAPITAL_STOCK += capital_good_delivery_message
@@ -569,7 +566,10 @@ return 0;
  * \brief In this function the firm receives the purchased investment goods and pays the goods and  the wage bill. Additionally, the new mean wage and tthe new average specific skill level is     computed. */
 int Firm_calc_pay_costs()
 {
-        /*Pay capital costs*/
+        
+	int i;
+	
+		/*Pay capital costs*/
 
         add_pay_capital_goods_message(ID,CAPITAL_COSTS);
 
@@ -590,7 +590,7 @@ int Firm_calc_pay_costs()
         {
             
         	CALC_CAPITAL_COSTS = 0;
-        for(int i = 0; i<CAPITAL_FINANCING.size;i++) 
+        for( i = 0; i<CAPITAL_FINANCING.size;i++) 
             {
                 if(CAPITAL_FINANCING.array[i].nr_periods_before_repayment==0)
                 {
@@ -604,7 +604,8 @@ int Firm_calc_pay_costs()
                 
 
             } 
-                
+            
+        
             UNIT_COSTS=(LABOUR_COSTS + CALC_CAPITAL_COSTS + TOTAL_INTEREST_PAYMENT) / PRODUCTION_QUANTITY;
     
             
@@ -748,6 +749,7 @@ int Firm_calc_revenue()
     
     /*The monthly sales statistics*/
     CUM_TOTAL_SOLD_QUANTITY += TOTAL_SOLD_QUANTITY; 
+    SOLD_QUANTITY_IN_CALENDAR_MONTH+= TOTAL_SOLD_QUANTITY;
         
     /*On a monthly base the earnings are computed and dividends distributed*/
     //See the functions for financial management
