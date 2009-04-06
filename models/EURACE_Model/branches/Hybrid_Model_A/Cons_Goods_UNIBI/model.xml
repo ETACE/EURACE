@@ -481,6 +481,11 @@
      <name>cum_total_sold_quantity</name>
      <description>Monthly sum of sold quantities in all malls. The monthly sold quantity of one firm in all malls.</description>
     </variable>
+     <variable>
+      <type>double</type>
+     <name>sold_quantity_in_calendar_month</name>
+     <description>Monthly sum of sold quantities in all malls. The quantity sold in one calendar month.</description>
+    </variable>
     <variable>
      <type>delivery_volume_per_mall_array</type>
      <name>delivery_volume</name>
