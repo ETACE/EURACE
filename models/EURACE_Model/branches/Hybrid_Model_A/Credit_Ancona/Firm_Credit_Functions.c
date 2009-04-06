@@ -10,16 +10,19 @@
           int connected, j;
          
          //Delete the old set of lenders
-         for(j=CONST_NUMBER_OF_BANKS-1;j>-1;j--)
+         for(j=NUMBER_OF_BANKS_ASKED-1;j>-1;j--)
          {
            remove_potential_lender(&SET_OF_LENDERS,j);         
          }
     
+         NUMBER_OF_BANKS_ASKED=0;
+         
         //Search for active banks' name
          START_BANK_IDENTITY_MESSAGE_LOOP
          
                  add_potential_lender(&SET_OF_LENDERS,bank_identity_message->bank_id,0);
-                 
+                 NUMBER_OF_BANKS_ASKED++;
+         
          FINISH_BANK_IDENTITY_MESSAGE_LOOP
     
          
@@ -30,14 +33,14 @@
         //Create bank network for this firm
           while(connected<NUMBER_OF_BANKS_TO_APPLY)
           {
-                j= rand() % CONST_NUMBER_OF_BANKS ;// choose banks
+                j= rand() % NUMBER_OF_BANKS_ASKED ;// choose banks
                 add_loan_request_message(ID, SET_OF_LENDERS.array[j].bank_name, EQUITY, TOTAL_DEBT, EXTERNAL_FINANCIAL_NEEDS);
                 SET_OF_LENDERS.array[j].contacted=1;
                 connected++;         
           }
           
           //delete from the list not contacted banks
-          for(j=CONST_NUMBER_OF_BANKS-1;j>-1;j--)
+          for(j=NUMBER_OF_BANKS_ASKED-1;j>-1;j--)
          {
            if (SET_OF_LENDERS.array[j].contacted==0)
            {
