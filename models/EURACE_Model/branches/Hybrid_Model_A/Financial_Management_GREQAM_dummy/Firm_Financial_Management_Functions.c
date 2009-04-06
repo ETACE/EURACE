@@ -18,7 +18,7 @@ int Firm_compute_financial_payments()
     int i;
     double interest_payment =0.0;
     
-    //double PAYMENT_ACCOUNT			: account out of which payments are made
+    //double PAYMENT_ACCOUNT            : account out of which payments are made
 
     //double_array LOANS                : dynamic array of structs with each struct a loan_item
     //struct debt_item
@@ -71,7 +71,7 @@ int Firm_compute_income_statement()
     if (EARNINGS>0.0)
         TAX_PAYMENT = TAX_RATE_CORPORATE * EARNINGS;
     else
-    	TAX_PAYMENT = 0.0;
+        TAX_PAYMENT = 0.0;
     
     PREVIOUS_NET_EARNINGS = NET_EARNINGS;
     NET_EARNINGS = EARNINGS - TAX_PAYMENT;
@@ -91,9 +91,13 @@ int Firm_compute_income_statement()
  */
 int Firm_compute_dividends()
 {
-    //Determine total_dividend_payment
-    //option 1: total divided payment remains constant
-    //TOTAL_DIVIDEND_PAYMENT *= 1;
+    //Determine total_dividend_payment when it is zero, and there are positive net earnings.
+    //option 1: Set total divided payment equal to some dividend-earnings ratio (a parameter)
+    
+    if(TOTAL_DIVIDEND_PAYMENT<0.01 && NET_EARNINGS>0.0)
+    {
+        TOTAL_DIVIDEND_PAYMENT = CONST_DIVIDEND_EARNINGS_RATIO * NET_EARNINGS;
+    }
 
     //option 2: total dividend payment increases with same ratio as net earnings
     //This is very dangerous, since earnings may fluctuate violently
@@ -393,56 +397,55 @@ int Firm_execute_financial_payments()
     //Sending installment_message to banks at which the firm has a loan 
     
     TOTAL_DEBT=0.0;
-    for (i=0; i<LOANS.size; i++)
+    for (i=LOANS.size; i>-1; i--)
     {
         //decrease payment_account with the interest_payment
-    	//the if-condition prevents an interest payment in the first period in which the loan is obtained
-    	if(LOANS.array[i].nr_periods_before_repayment!=CONST_INSTALLMENT_PERIODS+1)
-    	{
-	    	
-	        temp_interest=LOANS.array[i].interest_rate*LOANS.array[i].loan_value;
-	        PAYMENT_ACCOUNT -= temp_interest;
-	
-	        //decrease payment_account with the installment payment
-	        PAYMENT_ACCOUNT -= LOANS.array[i].installment_amount;
-	
-	        //decrease the value of the loan with the debt_installment_payment:
-	        LOANS.array[i].loan_value -= LOANS.array[i].installment_amount;
-	        
-	        //printf("Now subtracted debt_installment_payment from loan_value: %f (new value:%f).\n", LOANS.array[i].debt_installment_payment, LOANS.array[i].loan_value);
+        //the if-condition prevents an interest payment in the first period in which the loan is obtained
+        if(LOANS.array[i].nr_periods_before_repayment!=CONST_INSTALLMENT_PERIODS+1)
+        {
+            
+            temp_interest=LOANS.array[i].interest_rate*LOANS.array[i].loan_value;
+            PAYMENT_ACCOUNT -= temp_interest;
+    
+            //decrease payment_account with the installment payment
+            PAYMENT_ACCOUNT -= LOANS.array[i].installment_amount;
+    
+            //decrease the value of the loan with the debt_installment_payment:
+            LOANS.array[i].loan_value -= LOANS.array[i].installment_amount;
+            
+            //printf("Now subtracted debt_installment_payment from loan_value: %f (new value:%f).\n", LOANS.array[i].debt_installment_payment, LOANS.array[i].loan_value);
 
-	        //check that the loan value does not go negative:
-	        if(LOANS.array[i].loan_value <0.0)
-	        {
-	            printf("\n ERROR in function Firm_execute_financial_payments, line 416:"
-	             "loan value = %2.5f,"
-	             "installment_amount = %2.5f."
-	             "Corrected negative loan value to zero. \n", LOANS.array[i].loan_value, LOANS.array[i].installment_amount);
-	
-	            LOANS.array[i].loan_value =0.0;
-	        }
+            //check that the loan value does not go negative:
+            if(LOANS.array[i].loan_value <0.0)
+            {
+                printf("\n ERROR in function Firm_execute_financial_payments, line 416:"
+                 "loan value = %2.5f,"
+                 "installment_amount = %2.5f."
+                 "Corrected negative loan value to zero. \n", LOANS.array[i].loan_value, LOANS.array[i].installment_amount);
+    
+                LOANS.array[i].loan_value =0.0;
+            }
 
-	        //compute current total debt
-	        TOTAL_DEBT += LOANS.array[i].loan_value;
-	
-	        //decrease the residual_var of the loan with the var_per_installment:
-	        LOANS.array[i].residual_var -= LOANS.array[i].var_per_installment;
-	
-	        //Sending debt_installment_payment_msg to all banks at which the firm has a loan
-	        //Note: this message is to be separated from the general bank_account_update_message send at the end of the period
-	        //to the firm's deposit bank (the banks at which the firm has loans is a different one than the bank at which the firm has deposits).
-	
-	        //add_installment_message(bank_id, installment_amount, interest_amount, var_per_installment)
-	        add_installment_message(LOANS.array[i].bank_id,
-	                LOANS.array[i].installment_amount, temp_interest,
-	                LOANS.array[i].var_per_installment);
-    	}
-    	
+            //compute current total debt
+            TOTAL_DEBT += LOANS.array[i].loan_value;
+    
+            //decrease the residual_var of the loan with the var_per_installment:
+            LOANS.array[i].residual_var -= LOANS.array[i].var_per_installment;
+    
+            //Sending debt_installment_payment_msg to all banks at which the firm has a loan
+            //Note: this message is to be separated from the general bank_account_update_message send at the end of the period
+            //to the firm's deposit bank (the banks at which the firm has loans is a different one than the bank at which the firm has deposits).
+    
+            //add_installment_message(bank_id, installment_amount, interest_amount, var_per_installment)
+            add_installment_message(LOANS.array[i].bank_id,
+                    LOANS.array[i].installment_amount, temp_interest,
+                    LOANS.array[i].var_per_installment);
+        }
+        
         //If nr_periods_before_maturity == 0, remove the loan item
         if (LOANS.array[i].nr_periods_before_repayment==1)
         {
-        	remove_debt_item(&LOANS, i);
-        	i--; //shift to left because removing an item shifts all items after i to the left
+            remove_debt_item(&LOANS, i);
         }
         else
             LOANS.array[i].nr_periods_before_repayment -= 1;
@@ -553,11 +556,11 @@ int Firm_bankruptcy_insolvency_procedure()
     EXTERNAL_FINANCIAL_NEEDS = max(0,ipo_amount);
 
     printf("\n In function Firm_bankruptcy_insolvency_procedure:\n"
-    		"target_debt = %2.2f\n"
-    		"TARGET_LEVERAGE_RATIO = %2.2f\n"
-    		"ipo_amount = %2.2f\n"
-    		"EXTERNAL_FINANCIAL_NEEDS = %2.2f\n",
-    		target_debt, TARGET_LEVERAGE_RATIO, ipo_amount, EXTERNAL_FINANCIAL_NEEDS);
+            "target_debt = %2.2f\n"
+            "TARGET_LEVERAGE_RATIO = %2.2f\n"
+            "ipo_amount = %2.2f\n"
+            "EXTERNAL_FINANCIAL_NEEDS = %2.2f\n",
+            target_debt, TARGET_LEVERAGE_RATIO, ipo_amount, EXTERNAL_FINANCIAL_NEEDS);
 
     //Effect on investment goods market
     //Left-over capital
