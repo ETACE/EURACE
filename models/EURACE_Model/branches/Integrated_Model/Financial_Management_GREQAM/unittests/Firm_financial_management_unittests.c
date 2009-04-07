@@ -143,9 +143,47 @@ void unittest_Firm_compute_income_statement()
  * \fn: void unittest_Firm_compute_dividends()
  * \brief: Unit test for: Firm_compute_dividends.
  * Status: Tested OK
+ * Case: Zero dividends at start
+ */
+void unittest1_Firm_compute_dividends()
+{   
+    /************* At start of unit test, add one agent **************/
+    unittest_init_Firm_agent();
+    
+    /************* Setting environment variables **************/
+    FLAME_environment_variable_const_dividend_earnings_ratio = 0.01;
+
+    /***** Variables: Memory pre-conditions **************************/
+    TOTAL_DIVIDEND_PAYMENT =0.0;
+    NET_EARNINGS = 4.0;
+
+    /***** Messages: initialize message boards **********************************/
+
+    /***** Messages: pre-conditions **********************************/
+            
+    /***** Message: Adding message iterators ***************************************/
+
+    /***** Function evaluation ***************************************/
+    Firm_compute_dividends();
+    
+    /***** Variables: Memory post-conditions *****/
+    CU_ASSERT_DOUBLE_EQUAL(TOTAL_DIVIDEND_PAYMENT, 0.04, 1e-3);
+    
+    /***** Messages: Message post-conditions *****/
+
+    /************* At end of unit test, free the agent **************/
+    unittest_free_Firm_agent();
+    /************* At end of unit tests, free all Messages **********/
+    free_messages();
+}
+
+/*
+ * \fn: void unittest_Firm_compute_dividends()
+ * \brief: Unit test for: Firm_compute_dividends.
+ * Status: Tested OK
  * Case: option 4: keep earnings per share constant
  */
-void unittest_Firm_compute_dividends()
+void unittest2_Firm_compute_dividends()
 {   
     /************* At start of unit test, add one agent **************/
     unittest_init_Firm_agent();
@@ -160,6 +198,7 @@ void unittest_Firm_compute_dividends()
     
     CURRENT_DIVIDEND_PER_SHARE =0.0;
 
+    NET_EARNINGS = 4.0;
     EARNINGS = 4.0;
     PREVIOUS_DIVIDEND_PER_EARNINGS = 0.0;
     CURRENT_DIVIDEND_PER_EARNINGS = 1.0;
@@ -176,11 +215,10 @@ void unittest_Firm_compute_dividends()
     /***** Variables: Memory post-conditions *****/
     CU_ASSERT_DOUBLE_EQUAL(TOTAL_DIVIDEND_PAYMENT, 4.0, 1e-3);
     CU_ASSERT_DOUBLE_EQUAL(PREVIOUS_DIVIDEND_PER_SHARE, 0.0, 1e-3);
-    CU_ASSERT_DOUBLE_EQUAL(CURRENT_DIVIDEND_PER_SHARE, 0.02, 1e-3);
-    
+    CU_ASSERT_DOUBLE_EQUAL(CURRENT_DIVIDEND_PER_SHARE, 0.02, 1e-3);    
     CU_ASSERT_DOUBLE_EQUAL(PREVIOUS_DIVIDEND_PER_EARNINGS, 1.0, 1e-3);
     CU_ASSERT_DOUBLE_EQUAL(CURRENT_DIVIDEND_PER_EARNINGS, 1.0, 1e-3);
-    
+
     /***** Messages: Message post-conditions *****/
 
     /************* At end of unit test, free the agent **************/
@@ -462,7 +500,7 @@ void unittest_Firm_in_financial_crisis()
 /*
  * \fn: void unittest1_Firm_execute_financial_payments()
  * \brief: Unit test for: Firm_execute_financial_payments.
- * Status: Tested, Error: Loan 2 should have been removed , but isnt
+ * Status: Tested OK
  */
 void unittest1_Firm_execute_financial_payments()
 {
@@ -470,6 +508,9 @@ void unittest1_Firm_execute_financial_payments()
     
     /************* At start of unit test, add one agent **************/
     unittest_init_Firm_agent();
+    
+    /************* Setting environment variables **************/
+    FLAME_environment_variable_const_installment_periods = 24;
     
     /***** Variables: Memory pre-conditions **************************/
 /*
@@ -555,8 +596,8 @@ void unittest1_Firm_execute_financial_payments()
     CU_ASSERT_DOUBLE_EQUAL(LOANS.array[0].interest_rate, 0.01, 1e-3);
     CU_ASSERT_DOUBLE_EQUAL(LOANS.array[0].installment_amount, 20.0, 1e-3);
     CU_ASSERT_EQUAL(LOANS.array[0].nr_periods_before_repayment, 4);
-
     CU_ASSERT_DOUBLE_EQUAL(PAYMENT_ACCOUNT, 28.0, 1e-3);
+    
     CU_ASSERT_DOUBLE_EQUAL(TOTAL_DEBT, 80.0, 1e-3);
     CU_ASSERT_EQUAL(LOANS.size, 1);
     
@@ -589,7 +630,7 @@ void unittest1_Firm_execute_financial_payments()
 /*
  * \fn: void unittest2_Firm_execute_financial_payments()
  * \brief: Unit test for: Firm_execute_financial_payments.
- * Status: NOT Tested
+ * Status: Tested OK
  */
 void unittest2_Firm_execute_financial_payments()
 {
@@ -598,6 +639,9 @@ void unittest2_Firm_execute_financial_payments()
     /************* At start of unit test, add one agent **************/
     unittest_init_Firm_agent();
     
+    /************* Setting environment variables **************/
+    FLAME_environment_variable_const_installment_periods = 24;
+
     /***** Variables: Memory pre-conditions **************************/
     GOV_ID=1;
     ID =2;
