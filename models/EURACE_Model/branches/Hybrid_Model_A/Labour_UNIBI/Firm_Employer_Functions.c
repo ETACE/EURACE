@@ -949,7 +949,7 @@ int Firm_read_job_applications_send_job_offer_or_rejection_2()
 
             for(int i=0; i < job_application_list.size;i++)
             {
-        add_application_rejection_message(ID, 
+        add_application_rejection2_message(ID, 
                 job_application_list.array[i].worker_id);
             }
         }
