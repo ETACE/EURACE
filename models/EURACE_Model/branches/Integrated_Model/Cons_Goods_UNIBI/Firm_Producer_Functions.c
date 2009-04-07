@@ -504,12 +504,9 @@ int Firm_receive_capital_goods()
                 *capital_good_delivery_message->productivity;
         /*Update of current value of capital stock*/
 
-                TOTAL_VALUE_CAPITAL_STOCK = TOTAL_UNITS_CAPITAL_STOCK /     (TOTAL_UNITS_CAPITAL_STOCK +capital_good_delivery_message->capital_good_delivery_volume)
-                *TOTAL_VALUE_CAPITAL_STOCK + 
-                capital_good_delivery_message->capital_good_delivery_volume/
-                (TOTAL_UNITS_CAPITAL_STOCK + 
-                capital_good_delivery_message->capital_good_delivery_volume)
-                *capital_good_delivery_message->capital_good_price*capital_good_delivery_message->capital_good_delivery_volume;     
+                TOTAL_VALUE_CAPITAL_STOCK = TOTAL_VALUE_CAPITAL_STOCK + 
+                capital_good_delivery_message->capital_good_price*
+                capital_good_delivery_message->capital_good_delivery_volume;     
 
 	 /*Adding the new capital*/
 
@@ -603,7 +600,7 @@ int Firm_calc_pay_costs()
         if(PRODUCTION_QUANTITY!=0 )
         {
             
-            double calc_capital_costs = 0;
+        	CALC_CAPITAL_COSTS = 0;
 	int i;        
 	for(i = 0; i<CAPITAL_FINANCING.size;i++) 
             {
@@ -614,23 +611,23 @@ int Firm_calc_pay_costs()
                 }else
                 {
                 CAPITAL_FINANCING.array[i].nr_periods_before_repayment--;
-                calc_capital_costs+= CAPITAL_FINANCING.array[i].financing_per_month;
+                CALC_CAPITAL_COSTS+= CAPITAL_FINANCING.array[i].financing_per_month;
                 }
                 
 
             } 
                 
-            UNIT_COSTS=(LABOUR_COSTS + calc_capital_costs + TOTAL_INTEREST_PAYMENT) / PRODUCTION_QUANTITY;
+            UNIT_COSTS=(LABOUR_COSTS + CALC_CAPITAL_COSTS + TOTAL_INTEREST_PAYMENT) / PRODUCTION_QUANTITY;
     
             
-
+            PRICE_LAST_MONTH = PRICE;
             PRICE = UNIT_COSTS*(1 + MARK_UP);
             
 
             
         }
 
-        
+        CALC_PRODUCTION_COSTS = CALC_CAPITAL_COSTS + LABOUR_COSTS;
         PRODUCTION_COSTS = CAPITAL_COSTS + LABOUR_COSTS;
 
     PAYMENT_ACCOUNT -= PRODUCTION_COSTS;
@@ -758,6 +755,7 @@ int Firm_calc_revenue()
     
     /*The monthly sales statistics*/
     CUM_TOTAL_SOLD_QUANTITY += TOTAL_SOLD_QUANTITY; 
+    SOLD_QUANTITY_IN_CALENDAR_MONTH+=TOTAL_SOLD_QUANTITY;
         
     /*On a monthly base the earnings are computed and dividends distributed*/
     //See the functions for financial management
