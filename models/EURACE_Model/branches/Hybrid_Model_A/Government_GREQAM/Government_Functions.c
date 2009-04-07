@@ -33,13 +33,14 @@ int Government_send_policy_announcements()
  */
 int Government_read_tax_payments()
 {   
+	double sum =0;
     START_TAX_PAYMENT_MESSAGE_LOOP
         
         MONTHLY_TAX_REVENUES += tax_payment_message->tax_payment;
-        
+     	sum+= tax_payment_message->tax_payment;
     FINISH_TAX_PAYMENT_MESSAGE_LOOP 
 
-   PAYMENT_ACCOUNT += MONTHLY_TAX_REVENUES;
+   PAYMENT_ACCOUNT += sum;
     
     
     return 0;
