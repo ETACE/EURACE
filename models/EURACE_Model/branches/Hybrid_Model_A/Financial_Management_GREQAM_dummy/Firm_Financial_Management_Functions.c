@@ -91,13 +91,6 @@ int Firm_compute_income_statement()
  */
 int Firm_compute_dividends()
 {
-    //Determine total_dividend_payment when it is zero, and there are positive net earnings.
-    //option 1: Set total divided payment equal to some dividend-earnings ratio (a parameter)
-    
-    if(TOTAL_DIVIDEND_PAYMENT<0.01 && NET_EARNINGS>0.0)
-    {
-        TOTAL_DIVIDEND_PAYMENT = CONST_DIVIDEND_EARNINGS_RATIO * NET_EARNINGS;
-    }
 
     //option 2: total dividend payment increases with same ratio as net earnings
     //This is very dangerous, since earnings may fluctuate violently
@@ -146,7 +139,16 @@ int Firm_compute_dividends()
          NR_STOCK_REPURCHASE = TOTAL_STOCK_REPURCHASE/CURRENT_STOCK_PRICE;
      }
      */
+
+    //Determine total_dividend_payment when it is zero, and there are positive net earnings.
+    //Set total divided payment equal to some dividend-earnings ratio (a parameter)
     
+    if(TOTAL_DIVIDEND_PAYMENT<1e-6 && NET_EARNINGS>0.0)
+    {
+        TOTAL_DIVIDEND_PAYMENT = CONST_DIVIDEND_EARNINGS_RATIO * NET_EARNINGS;
+        //printf("\n In Firm_compute_dividends: setting TOTAL_DIVIDEND_PAYMENT = %2.4f\n", TOTAL_DIVIDEND_PAYMENT):
+    }
+        
     //Always check:
     if (EARNINGS<0.0)
         TOTAL_DIVIDEND_PAYMENT = 0.0;
@@ -401,6 +403,7 @@ int Firm_execute_financial_payments()
     {
         //decrease payment_account with the interest_payment
         //the if-condition prevents an interest payment in the first period in which the loan is obtained
+        // CONST_INSTALLMENT_PERIODS = 24 months by default
         if(LOANS.array[i].nr_periods_before_repayment!=CONST_INSTALLMENT_PERIODS+1)
         {
             
@@ -416,7 +419,7 @@ int Firm_execute_financial_payments()
             //printf("Now subtracted debt_installment_payment from loan_value: %f (new value:%f).\n", LOANS.array[i].debt_installment_payment, LOANS.array[i].loan_value);
 
             //check that the loan value does not go negative:
-            if(LOANS.array[i].loan_value <0.0)
+            if(LOANS.array[i].loan_value < -1e-3)
             {
                 printf("\n ERROR in function Firm_execute_financial_payments, line 421:"
                  "loan value = %2.5f,"
@@ -451,7 +454,7 @@ int Firm_execute_financial_payments()
 
         if (LOANS.array[i].nr_periods_before_repayment==1)
         {
-            printf("\n Removing loan item %d\n", i);
+            //printf("\n Removing loan item %d\n", i);
             remove_debt_item(&LOANS, i);
         }
         else
