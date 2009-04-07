@@ -458,6 +458,7 @@ int Firm_execute_financial_payments()
         {
             printf("\n Decreasing nr_periods_before_repayment from %d to %d\n", LOANS.array[i].nr_periods_before_repayment, LOANS.array[i].nr_periods_before_repayment-1);
             LOANS.array[i].nr_periods_before_repayment -= 1;
+            printf("\n Firm: %d, Bank: %d\n", ID, LOANS.array[i].bank_id);            
         }
         if (LOANS.array[i].nr_periods_before_repayment==-1)
             printf("\n ERROR in function Firm_execute_financial_payments, line 456: nr_periods_before_repayment is -1. \n");
