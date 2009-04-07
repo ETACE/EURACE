@@ -418,7 +418,7 @@ int Firm_execute_financial_payments()
             //check that the loan value does not go negative:
             if(LOANS.array[i].loan_value <0.0)
             {
-                printf("\n ERROR in function Firm_execute_financial_payments, line 416:"
+                printf("\n ERROR in function Firm_execute_financial_payments, line 421:"
                  "loan value = %2.5f,"
                  "installment_amount = %2.5f."
                  "Corrected negative loan value to zero. \n", LOANS.array[i].loan_value, LOANS.array[i].installment_amount);
@@ -443,15 +443,24 @@ int Firm_execute_financial_payments()
         }
         
         //If nr_periods_before_maturity == 0, remove the loan item
+        if (LOANS.array[i].nr_periods_before_repayment==0)
+        {
+            printf("\n Loan item %d: nr_periods_before_repayment==0\n", i);
+            printf("\n Firm: %d, Bank: %d\n", ID, LOANS.array[i].bank_id);
+        }
+
         if (LOANS.array[i].nr_periods_before_repayment==1)
         {
+            printf("\n Removing loan item %d\n", i);
             remove_debt_item(&LOANS, i);
         }
         else
+        {
+            printf("\n Decreasing nr_periods_before_repayment from %d to %d\n", LOANS.array[i].nr_periods_before_repayment, LOANS.array[i].nr_periods_before_repayment-1);
             LOANS.array[i].nr_periods_before_repayment -= 1;
-
+        }
         if (LOANS.array[i].nr_periods_before_repayment==-1)
-            printf("\n ERROR in function Firm_execute_financial_payments, line 439: nr_periods_before_repayment. \n");
+            printf("\n ERROR in function Firm_execute_financial_payments, line 456: nr_periods_before_repayment is -1. \n");
     }
     
     //step 3: actual dividend payments
