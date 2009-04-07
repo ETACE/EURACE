@@ -397,7 +397,7 @@ int Firm_execute_financial_payments()
     //Sending installment_message to banks at which the firm has a loan 
     
     TOTAL_DEBT=0.0;
-    for (i=LOANS.size; i>-1; i--)
+    for (i=LOANS.size-1; i>-1; i--)
     {
         //decrease payment_account with the interest_payment
         //the if-condition prevents an interest payment in the first period in which the loan is obtained
@@ -456,11 +456,9 @@ int Firm_execute_financial_payments()
         }
         else
         {
-            printf("\n Decreasing nr_periods_before_repayment from %d to %d\n", LOANS.array[i].nr_periods_before_repayment, LOANS.array[i].nr_periods_before_repayment-1);
             LOANS.array[i].nr_periods_before_repayment -= 1;
-            printf("\n Firm: %d, Bank: %d\n", ID, LOANS.array[i].bank_id);            
         }
-        if (LOANS.array[i].nr_periods_before_repayment==-1)
+        if (LOANS.array[i].nr_periods_before_repayment<0)
             printf("\n ERROR in function Firm_execute_financial_payments, line 456: nr_periods_before_repayment is -1. \n");
     }
     
