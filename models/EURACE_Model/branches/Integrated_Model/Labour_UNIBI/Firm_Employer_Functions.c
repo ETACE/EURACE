@@ -244,8 +244,8 @@ int Firm_send_redundancies()
         }*/
 
         /*sorting employees: highest specific skills first*/
-        //qsort(EMPLOYEES.array, EMPLOYEES.size, sizeof(employee),
-            //employee_list_rank_specific_skills_function);
+        qsort(EMPLOYEES.array, EMPLOYEES.size, sizeof(employee),
+            employee_list_rank_specific_skills_function);
         
         /*For the number of redundencies*/
         int j;
@@ -310,8 +310,8 @@ int Firm_send_random_redundancies()
            int random_num = random_int(LOWER_BOUND_FIRING,UPPER_BOUND_FIRING);
            
        /*sorting employees: highest specific skills first*/
-       //qsort(EMPLOYEES.array, EMPLOYEES.size, sizeof(employee),
-           //employee_list_rank_specific_skills_function);
+       qsort(EMPLOYEES.array, EMPLOYEES.size, sizeof(employee),
+           employee_list_rank_specific_skills_function);
              /*For the number of redundencies*/
        int j;
 
@@ -966,7 +966,7 @@ int Firm_read_job_applications_send_job_offer_or_rejection_2()
 
             for(i=0; i < job_application_list.size;i++)
             {
-        add_application_rejection_message(ID, 
+        add_application_rejection2_message(ID, 
                 job_application_list.array[i].worker_id);
             }
         }
