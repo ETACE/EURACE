@@ -22,7 +22,8 @@ int Household_receive_wage()
         add_double(&LAST_INCOME,wage_payment_message->payment);
 
         /*Compute a mean income of the last four month*/
-        for(int i = 0; i < 4;i++)
+        int i;
+        for(i = 0; i < 4;i++)
         {
             mean_income += LAST_INCOME.array[i];
         }
@@ -151,7 +152,8 @@ int Household_OTJS_read_job_vacancies_and_send_applications()
                 {
 
                   /*For every neighboring region*/
-                  for(int i = 0; i < NEIGHBORING_REGION_IDS.size;i++)
+                	int i;
+                  for(i = 0; i < NEIGHBORING_REGION_IDS.size;i++)
                   {
                     /*Vacancy is in a neighboring region*/
                     if(vacancies_message->region_id==
@@ -194,6 +196,7 @@ int Household_OTJS_read_job_vacancies_and_send_applications()
     vacancy_list_rank_wage_offer_function);
 
     /* If the vacancy list is bigger than zero then send applications for every             vacancy*/
+    
     for(i = 0; i < (vacancy_list.size); i++)
     {
         add_job_application_message(ID, vacancy_list.array[i].firm_id,
@@ -238,7 +241,8 @@ int Household_UNEMPLOYED_read_job_vacancies_and_send_applications()
             else /*take into account the costs of a different region:                           Firm and Household; Households can only apply in                            neighboring regions*/
             {
                 /*For every neighboring region*/
-                for(int i = 0;i < NEIGHBORING_REGION_IDS.size; i++)
+            	
+                for(i = 0;i < NEIGHBORING_REGION_IDS.size; i++)
                 {
                     /*If vacancy is in a neighboring region*/
                     if(vacancies_message->region_id
@@ -415,7 +419,7 @@ int Household_read_application_rejection_update_wage_reservation()
     FINISH_APPLICATION_REJECTION_MESSAGE_LOOP
 
     /* Update wage reservation */
-    if(rejection_count > 0 )
+    if(rejection_count >= 0 )
     {
         WAGE_RESERVATION = WAGE_RESERVATION - WAGE_RESERVATION*WAGE_RESERVATION_UPDATE;
         rejection_count = 0;
@@ -511,7 +515,8 @@ int Household_OTJS_read_job_vacancies_and_send_applications_2()
         vacancy_list_rank_wage_offer_function);
 
         /* If the vacancy list is bigger than zero then send a job applications to every            vacancy on the list */
-        for(int i = 0; i < (vacancy_list.size); i++)
+        int i;
+        for(i = 0; i < (vacancy_list.size); i++)
         {
             add_job_application2_message(ID, vacancy_list.array[i].firm_id,                 REGION_ID, GENERAL_SKILL, SPECIFIC_SKILL);
         }
@@ -552,7 +557,8 @@ int Household_UNEMPLOYED_read_job_vacancies_and_send_applications_2()
             else /*Firm and Household are in different region: take                     into account the region costs*/
             {
                 /*For every neighboring region*/
-                for(int i = 0; i < NEIGHBORING_REGION_IDS.size;i++)
+            	int i;
+                for(i = 0; i < NEIGHBORING_REGION_IDS.size;i++)
                 {
                     /*If vacancy is in a neighboring region*/
                     if(vacancies2_message->region_id
@@ -731,7 +737,7 @@ int Household_read_application_rejection_update_wage_reservation_2()
     FINISH_APPLICATION_REJECTION2_MESSAGE_LOOP
 
     /* Update wage reservation */
-    if(rejection_count > 0)
+    if(rejection_count >= 0)
     {
         WAGE_RESERVATION = WAGE_RESERVATION-WAGE_RESERVATION*               WAGE_RESERVATION_UPDATE;
         rejection_count = 0;
@@ -801,7 +807,8 @@ int Household_send_unemployment_benefit_notification()
 
 
     /*Compute a mean income of the last four month*/
-    for(int i = 0; i < 4;i++)
+    int i;
+    for(i = 0; i < 4;i++)
     {
         mean_income += LAST_INCOME.array[i];
     }
