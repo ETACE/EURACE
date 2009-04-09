@@ -58,7 +58,8 @@ int Firm_calculate_specific_skills_and_wage_offer()
     double sum_5 = 0;
     
     /*For every employee*/
-    for(int n = 0; n < EMPLOYEES.size; n++)
+    int n;
+    for(n = 0; n < EMPLOYEES.size; n++)
     {
         /*general skill levels 1-5*/
         switch(EMPLOYEES.array[n].general_skill)
@@ -86,7 +87,8 @@ int Firm_calculate_specific_skills_and_wage_offer()
     }
 
     /*for each general skill group: calculate the average specific skills*/
-    for(int m = 1; m < 6;m++)
+    int m;
+    for(m = 1; m < 6;m++)
     {
         switch(m)
         {
@@ -165,8 +167,9 @@ int Firm_send_vacancies()
         /*Number of Vacancies/additional employees wanted*/
         VACANCIES = EMPLOYEES_NEEDED - NO_EMPLOYEES;
 
-        /*For every skill group send vacancy message with the correspondent wage                offer*/
-        for(int m = 1; m < 6;m++)
+        /*For every skill group send vacancy message with the correspondent wage offer*/
+        int m;
+        for(m = 1; m < 6;m++)
         {   
             switch(m)
             {
@@ -250,7 +253,8 @@ int Firm_send_redundancies()
 
         //for(int i = 0; i < (NO_EMPLOYEES - EMPLOYEES_NEEDED); i++)
         int no_redundancies = NO_EMPLOYEES - EMPLOYEES_NEEDED;
-        for(int i = 0; i < no_redundancies; i++)
+        int i;
+        for(i = 0; i < no_redundancies; i++)
         {   
             /*Firing: by chance*/
             j = random_int(0,(EMPLOYEES.size-1));
@@ -322,7 +326,8 @@ int Firm_send_random_redundancies()
 
 //printf("random_num %d; NO_EMPLOYEES %d; no_redundancies %d
 //\n",random_num,NO_EMPLOYEES,no_redundancies);
-       for(int i = 0; i < no_redundancies; i++)
+       int i;
+       for(i = 0; i < no_redundancies; i++)
        {              /*Firing: by chance*/
            j = random_int(0,(EMPLOYEES.size-1));
            add_firing_message(ID, EMPLOYEES.array[j].id);
@@ -393,19 +398,22 @@ int Firm_read_job_applications_send_job_offer_or_rejection()
 
 
         no_applications = job_application_list.size;
+        
+        qsort(job_application_list.array, job_application_list.size, 
+        sizeof(job_application), job_application_list_rank_general_skill_function);
 
 
         //printf("ID: %d no_applications %d, VACANCIES %d \n",ID,no_applications, VACANCIES);
         
         /*Case 1: Number of Vacancies is equal or bigger than number of applications:
         each applicant gets a job offer*/   
-        if(no_applications < VACANCIES)
+        if(no_applications <= VACANCIES)
         {
 
 
             
-
-            for(int i = 0; i < (job_application_list.size); i++)
+        	int i;
+            for(i = 0; i < (job_application_list.size); i++)
             {
             /*A firm cannot send more job offers than it has vacancies to fill*/
             
@@ -442,7 +450,8 @@ int Firm_read_job_applications_send_job_offer_or_rejection()
         {
         /*Case 2: Number of Vacancies is smaller  than number of applications:
         firm choose workers using a logit model*/
-        for(int i = 0; i< VACANCIES; i++)
+        int i;
+        for(i = 0; i< VACANCIES; i++)
             {
 
             logit_array  logit_applications_list;
@@ -454,7 +463,8 @@ int Firm_read_job_applications_send_job_offer_or_rejection()
             double logit, sum_of_logits;
             double random_number;
             
-            for(int j = 0; j< job_application_list.size;j++)
+            int j;
+            for(j = 0; j< job_application_list.size;j++)
                 {
                 //denominator_logit+= exp(LOGIT_PARAMETER_GENERAL_SKILLS*job_application_list.array[j].general_skill + LOGIT_PARAMETER_SPECIFIC_SKILLS*job_application_list.array[j].specific_skill);   
 
@@ -463,7 +473,7 @@ int Firm_read_job_applications_send_job_offer_or_rejection()
             
             /*This computes the logits and stores them at the temorary array            logit_applications_list*/
 
-            for(int j = 0; j< job_application_list.size;j++)
+            for(j = 0; j< job_application_list.size;j++)
                 {
                 //logit = exp(LOGIT_PARAMETER_GENERAL_SKILLS*job_application_list.array[j].general_skill + LOGIT_PARAMETER_SPECIFIC_SKILLS*job_application_list.array[j].specific_skill)/ denominator_logit;
 
@@ -482,7 +492,7 @@ int Firm_read_job_applications_send_job_offer_or_rejection()
             random_number =  (double)random_int(0,100);
             
             sum_of_logits = 0;
-            for(int j = 0; j< logit_applications_list.size;j++)
+            for(j = 0; j< logit_applications_list.size;j++)
                 {
         
             sum_of_logits += logit_applications_list.array[j].logit_value;
@@ -521,7 +531,8 @@ int Firm_read_job_applications_send_job_offer_or_rejection()
 
                 /*The chosen worker has to be removed from the application list*/
 
-                        for(int k = 0; k< job_application_list.size;k++)
+                    	int k;
+                        for(k = 0; k< job_application_list.size;k++)
                         {
                         if(job_application_list.array[k]
                     .worker_id == logit_applications_list.array[j]
@@ -546,8 +557,8 @@ int Firm_read_job_applications_send_job_offer_or_rejection()
         
         
         //The remaining applicants receive a rejection notification
-
-            for(int i=0; i < job_application_list.size;i++)
+        	
+            for(i=0; i < job_application_list.size;i++)
             {
         add_application_rejection_message(ID, 
                 job_application_list.array[i].worker_id);
@@ -649,7 +660,7 @@ int Firm_read_job_quitting()
         /*Read quittings for this firm*/
         if(quitting_message->firm_id == ID)
         {
-            int i=0;
+            int i;
             /*Control employees if one of them wants to quit*/
             for(i=0; i < (EMPLOYEES.size);i++)
             {
@@ -730,7 +741,8 @@ int Firm_send_vacancies_2()
     if(VACANCIES > 0)
     {
         /*For every general skill level (1-5)*/
-        for(int m = 1; m < 6;m++)
+    	int m;
+        for(m = 1; m < 6;m++)
         {
             switch(m)
             {
@@ -802,14 +814,16 @@ int Firm_read_job_applications_send_job_offer_or_rejection_2()
 
         no_applications = job_application_list.size;
 
-        
+        qsort(job_application_list.array, job_application_list.size, 
+        sizeof(job_application), job_application_list_rank_general_skill_function);
 
         /*Case 1: Number of Vacancies is equal or bigger than number of applications:
         each applicant gets a job offer*/   
-        if(no_applications < VACANCIES)
+        if(no_applications <= VACANCIES)
         {
-
-            for(int i = 0; i < (job_application_list.size); i++)
+        	
+        	int i;
+            for(i = 0; i < (job_application_list.size); i++)
             {
             /*A firm cannot send more job offers than it has vacancies to fill*/
             
@@ -846,7 +860,8 @@ int Firm_read_job_applications_send_job_offer_or_rejection_2()
         {
         /*Case 2: Number of Vacancies is smaller  than number of applications:
         firm choose workers using a logit model*/
-        for(int i = 0; i< VACANCIES; i++)
+        int i;
+        for(i = 0; i< VACANCIES; i++)
             {
 
             logit_array  logit_applications_list;
@@ -858,7 +873,8 @@ int Firm_read_job_applications_send_job_offer_or_rejection_2()
             double logit, sum_of_logits;
             double random_number;
             
-            for(int j = 0; j< job_application_list.size;j++)
+            int j;
+            for(j = 0; j< job_application_list.size;j++)
                 {
                 //denominator_logit+= exp(LOGIT_PARAMETER_GENERAL_SKILLS*job_application_list.array[j].general_skill + LOGIT_PARAMETER_SPECIFIC_SKILLS*job_application_list.array[j].specific_skill);   
 
@@ -867,7 +883,7 @@ int Firm_read_job_applications_send_job_offer_or_rejection_2()
             
             /*This computes the logits and stores them at the temorary array            logit_applications_list*/
 
-            for(int j = 0; j< job_application_list.size;j++)
+            for(j = 0; j< job_application_list.size;j++)
                 {
                 //logit = exp(LOGIT_PARAMETER_GENERAL_SKILLS*job_application_list.array[j].general_skill + LOGIT_PARAMETER_SPECIFIC_SKILLS*job_application_list.array[j].specific_skill)/ denominator_logit;
 
@@ -883,7 +899,7 @@ int Firm_read_job_applications_send_job_offer_or_rejection_2()
             random_number =  (double)random_int(0,100);
             
             sum_of_logits = 0;
-            for(int j = 0; j< logit_applications_list.size;j++)
+            for(j = 0; j< logit_applications_list.size;j++)
                 {
 
             sum_of_logits += logit_applications_list.array[j].logit_value;
@@ -919,8 +935,9 @@ int Firm_read_job_applications_send_job_offer_or_rejection_2()
                         }
 
                 /*The chosen worker has to be removed from the application list*/
-
-                        for(int k = 0; k< job_application_list.size;k++)
+                    
+                    	int k;
+                        for(k = 0; k< job_application_list.size;k++)
                         {
                         if(job_application_list.array[k]
                     .worker_id == logit_applications_list.array[j]
@@ -947,7 +964,7 @@ int Firm_read_job_applications_send_job_offer_or_rejection_2()
         
         //The remaining applicants receive a rejection notification
 
-            for(int i=0; i < job_application_list.size;i++)
+            for(i=0; i < job_application_list.size;i++)
             {
         add_application_rejection2_message(ID, 
                 job_application_list.array[i].worker_id);
@@ -1045,6 +1062,7 @@ int Firm_read_job_quitting_2()
         {
             int i;
             /*Control every employee if he wants to quit*/
+       
             for(i=0; i < (EMPLOYEES.size);i++)
             {
                 if(quitting2_message->worker_id == EMPLOYEES.array[i].id)
@@ -1100,6 +1118,7 @@ int Firm_update_wage_offer_2()
     int j = 0;
 
     /*Average  general skill at the end of one day*/
+    
     for(i = 0; i < (EMPLOYEES.size); i++)
     {
         j += EMPLOYEES.array[i].general_skill;  
@@ -1111,15 +1130,18 @@ int Firm_update_wage_offer_2()
     }
     
 
-    if(DAY%MONTH == DAY_OF_MONTH_TO_ACT)
-    {   
-        if(VACANCIES > 0) 
-        {
-            //WAGE_OFFER = WAGE_OFFER*(1 + WAGE_UPDATE);
-            
-        }
+    if(VACANCIES > MIN_VACANCY)  
+    {
+            /*WAGE_OFFER = WAGE_OFFER*(1+WAGE_UPDATE);
 
-    }
+            WAGE_OFFER_FOR_SKILL_1 = WAGE_OFFER_FOR_SKILL_1*(1+WAGE_UPDATE);
+            WAGE_OFFER_FOR_SKILL_2 = WAGE_OFFER_FOR_SKILL_2*(1+WAGE_UPDATE);
+            WAGE_OFFER_FOR_SKILL_3 = WAGE_OFFER_FOR_SKILL_3*(1+WAGE_UPDATE);
+            WAGE_OFFER_FOR_SKILL_4 = WAGE_OFFER_FOR_SKILL_4*(1+WAGE_UPDATE);
+            WAGE_OFFER_FOR_SKILL_5 = WAGE_OFFER_FOR_SKILL_5*(1+WAGE_UPDATE);  */  
+     }
+
+    
 
     return 0;
 }
@@ -1129,7 +1151,8 @@ int Firm_compute_mean_wage_specific_skills()
     double ave_wage =0.0;
     double ave_spec_skills =0.0;
     
-    for(int i=0;i<EMPLOYEES.size;i++)
+    int i;
+    for(i=0;i<EMPLOYEES.size;i++)
     {
         ave_wage+=EMPLOYEES.array[i].wage;
         ave_spec_skills += EMPLOYEES.array[i].specific_skill;
