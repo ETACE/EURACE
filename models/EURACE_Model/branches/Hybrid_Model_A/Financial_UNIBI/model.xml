@@ -13,8 +13,8 @@
    <file>Government_Financial_Market_Functions.c</file>
   </functionFiles>
   <timeUnits/>
- <dataTypes>
-  <dataType>
+  <dataTypes>
+   <dataType>
     <name>Asset</name>
     <description>ADT Asset owned</description>
     <variables>
@@ -71,7 +71,7 @@
    <name>Household</name>
    <description></description>
    <memory>
-   <variable>
+    <variable>
      <type>Asset_array</type>
      <name>assetsowned</name>
      <description></description>
@@ -105,7 +105,11 @@
       </time>
      </condition>
      <inputs/>
-     <outputs/>
+     <outputs>
+      <output>
+       <messageName>gov_bond</messageName>
+      </output>
+     </outputs>
     </function>
     <function>
      <name>Government_idle</name>
@@ -125,6 +129,37 @@
     </function>
    </functions>
   </xagent>
+  <xagent>
+   <name>Central_Bank</name>
+   <description></description>
+   <memory/>
+   <functions>
+    <function>
+     <name>Central_Bank_read_bond_update</name>
+     <description></description>
+     <currentState>start_Central_Bank</currentState>
+     <nextState>00</nextState>
+     <inputs>
+      <input>
+       <messageName>gov_bond</messageName>
+      </input>
+     </inputs>
+     <outputs/>
+    </function>
+   </functions>
+  </xagent>
  </agents>
- <messages/>
+ <messages>
+  <message>
+   <name>gov_bond</name>
+   <description></description>
+   <variables>
+    <variable>
+     <type>double</type>
+     <name>amount</name>
+     <description>Monetary amount of the government bond issue.</description>
+    </variable>
+   </variables>
+  </message>
+ </messages>
 </xmodel>
