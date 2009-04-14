@@ -681,9 +681,12 @@ int Firm_read_stock_transactions_dummy()
     //Short-cut for Hybrid model:
     //Assume:
     //All external financial needs are satisfied by the asset market
-    PAYMENT_ACCOUNT += EXTERNAL_FINANCIAL_NEEDS;
+	if(ACTIVE==0)
+	{
+		PAYMENT_ACCOUNT += EXTERNAL_FINANCIAL_NEEDS;
+	}
     EXTERNAL_FINANCIAL_NEEDS =0.0;
-    
+	
     
     return 0;
 }
