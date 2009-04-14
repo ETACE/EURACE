@@ -2571,6 +2571,11 @@
    <description></description>
    <memory>
     <variable>
+     <type>double</type>
+     <name>gov_bond_holdings</name>
+     <description></description>
+    </variable>
+    <variable>
      <type>int</type>
      <name>nr_gov_bonds</name>
      <description></description>

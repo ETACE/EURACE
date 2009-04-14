@@ -11,6 +11,7 @@
    <file>Firm_Financial_Market_Functions.c</file>
    <file>Household_Financial_Market_Functions.c</file>
    <file>Government_Financial_Market_Functions.c</file>
+   <file>Central_Bank_Financial_Market.c</file>
   </functionFiles>
   <timeUnits/>
   <dataTypes>

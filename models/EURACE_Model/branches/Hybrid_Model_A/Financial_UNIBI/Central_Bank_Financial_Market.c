@@ -10,15 +10,15 @@
  */
 int Central_Bank_read_bond_update()
 {
-	GOV_BOND_PURCHASE=0;
-	
-	START_GOV_BOND_MESSAGE_LOOP
-		GOV_BOND_PURCHASE += gov_bond_message->amount;
-	FINISH_GOV_BOND_MESSAGE_LOOP
-	
-	%Update stocks
-	GOV_BOND_HOLDINGS += GOV_BOND_PURCHASE;
-	FIAT_MONEY += GOV_BOND_PURCHASE;
-	
-	return 0;
-}
+    GOV_BOND_PURCHASE=0;
+    
+    START_GOV_BOND_MESSAGE_LOOP
+        GOV_BOND_PURCHASE += gov_bond_message->amount;
+    FINISH_GOV_BOND_MESSAGE_LOOP
+    
+    //Update stock variables
+    GOV_BOND_HOLDINGS += GOV_BOND_PURCHASE;
+    FIAT_MONEY += GOV_BOND_PURCHASE;
+    
+    return 0;
+} 
