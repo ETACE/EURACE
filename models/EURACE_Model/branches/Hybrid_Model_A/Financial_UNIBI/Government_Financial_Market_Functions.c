@@ -8,6 +8,9 @@ int Government_bond_market_dummy()
 	
 	PAYMENT_ACCOUNT += TOTAL_BOND_FINANCING;
 	
+	//Msg to Central Bank: monetary amount
+	add_gov_bond_message(TOTAL_BOND_FINANCING);
+	
 	return 0;
 }
 
