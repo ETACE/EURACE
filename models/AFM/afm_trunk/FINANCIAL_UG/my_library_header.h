@@ -138,7 +138,7 @@ double elementAtCDouble(double_array *coll ,int index);
 double mean(double_array *aFixedC);
 
 double variance(double_array *aFixedC);
-
+void rescale(double_array *coll, double treshold);
 void divide(double_array *coll, double denominator);
 // add an Double with decreasing or increasing relation respectively rel='<' or rel='>'
 
@@ -303,7 +303,7 @@ int aggregateSupply(ClearingMechanism *aClearing,double aPriceValue );
  double newPrice(ClearingMechanism *aClearing);                 
 void ordersMacthing(Order_array *coll, double price,int type);
 
-void rationing(Order_array *coll,int quantity );
+void rationing(Order_array *coll,int quantity , double price);
 void removeZeroOrders(Order_array *coll);
   
 	  

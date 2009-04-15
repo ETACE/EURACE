@@ -92,14 +92,19 @@ void assetUtilitiesToWeights(double_array *assetWeights,double_array *assetUtili
 
          }
 
-     if(minimo<0)  { somma=somma+bankrate-minimo;
-                    add_double(assetWeights,bankrate-minimo);
-                   }
-              else { somma=somma+bankrate;
-                     add_double(assetWeights,bankrate);
-                   }
+     if(minimo<0)  
+       { somma=somma+bankrate-minimo;
+        add_double(assetWeights,bankrate-minimo);
+       }
+              
+     else 
+       { somma=somma+bankrate;
+         add_double(assetWeights,bankrate);
+       }
  //printf("size pesi =====%d\n",assetWeights->size);
     divide(assetWeights,somma);
+   //rescale(assetWeights,0.3);
+    
 }
 /*void assetUtilitiesToWeights(double_array *assetWeights,double_array *assetUtilities,double bankrate)
 {
@@ -143,12 +148,22 @@ void assetUtilitiesToWeights(double_array *assetWeights,double_array *assetUtili
  return ;
 }  */
 int  Household_select_strategy()
-  { 
+  { if(PAYMENT_ACCOUNT>=CONSUMPTION_BUDGET) set_strategy(1);
     set_strategy(next()<trading_activity);
     return 0;
   }
 
-   
+void  force_sell()
+ {  int i,size;
+    Order_array *pending;
+    Order *ord;
+    pending=get_pendingOrders();
+    size=sizeCOrder(pending);
+    for(i=0;i<0;i++)
+     {ord=elementAtCOrder(pending,i);
+      ord->price=0;
+     }
+ }
 int Household_update_its_portfolio()
 { int i,issuer;
   Asset_array *assets;
@@ -176,6 +191,7 @@ int Household_update_its_portfolio()
      info=get_next_order_status_message(info);   
   }
  // if(i==2) printf("numero di execuzione =%d\n",i);
+ if(PAYMENT_ACCOUNT<CONSUMPTION_BUDGET) force_sell();
   return 0;
 }
 
@@ -233,7 +249,8 @@ void generatePendingOrders(Asset_array *assetsowned,Order_array *pending, Belief
 
   double_array *weights;
   resource=wealth(*payment_account-CONSUMPTION_BUDGET,assetsowned);
-  set_wealth(resource);
+  printf("ciao");
+  set_wealth(resource+CONSUMPTION_BUDGET);
   size=beliefs->size;
   reset_Order_array(pending);
   weights=get_assetWeights();
@@ -258,6 +275,10 @@ void generatePendingOrders(Asset_array *assetsowned,Order_array *pending, Belief
    
 //}
 }
+
+
+      
+    
 int Household_stock_beliefs_formation()
 { 
   Stock *stock;

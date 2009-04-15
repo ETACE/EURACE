@@ -1,7 +1,6 @@
 
 #include "my_library_header.h"
 
-
 double formedPrice(ClearingMechanism *clearm)
 {
        return clearm->lastPrice;
@@ -157,6 +156,49 @@ void ordersMacthing(Order_array *coll, double price,int type)
    coll->total_size=aux.total_size;
    coll->size=aux.size;
 }
+
+void rationing(Order_array *coll,int quantity , double price)
+{ int balance,max,i,delta;
+  int sum,sum2;
+    Order *ord; 
+    max=sizeCOrder(coll);
+    sum=0;
+    balance=quantity;
+    for(i=0;i<max;i++)
+        { ord=elementAtCOrder(coll,i);
+	  if(ord->price==price) sum=sum+ord->quantity;
+	}
+    sum2=0;
+    for(i=0;i<max;i++)
+      { ord=elementAtCOrder(coll,i);
+	  if(ord->price==price) 
+	            { 
+	              ord->quantity=(int)ord->quantity*((sum-balance)/sum); 
+		      sum2=sum2+ord->quantity;
+	            }
+      }
+      delta = sum2-(sum-quantity);
+       if(delta != 0)
+        {
+       for(i=0;i<max;i++)
+        { ord=elementAtCOrder(coll,i);
+	  if(ord->price==price&&(ord->quantity>=delta)) 
+            {
+               ord->quantity-= delta;
+	       delta = 0;
+	    }
+          else
+	    {
+	       delta-= ord->quantity;
+	       ord->quantity = 0;
+	     }
+	}
+       }
+	
+    removeZeroOrders(coll);
+}
+
+/*
 void rationing(Order_array *coll,int quantity )
 { int balance,max,index;
     Order *ord; 
@@ -164,7 +206,8 @@ void rationing(Order_array *coll,int quantity )
    // printf("sin qui ci siamo %d\n",max);
     balance=quantity;
   while(balance>0)
-  { index=nextMax(max);
+  { 
+    index=nextMax(max);
 //  printf("sin qui ci siamo %d",index);
     ord=elementAtCOrder(coll,index);
     if(ord->quantity>0) {ord->quantity--;balance--;}
@@ -172,7 +215,7 @@ void rationing(Order_array *coll,int quantity )
   }
   
   removeZeroOrders(coll);
-}
+}*/
 void removeZeroOrders(Order_array *coll)
 { 
        int size,i;
@@ -218,8 +261,8 @@ void runClearing(ClearingMechanism *aClearing)
     balance=abs(supply-demand);
     //printf("sin qui ci siamo ----%d\n",balance);
   
-    if(supply>demand) rationing(sellorders, balance);
-    if(supply<demand) rationing(buyorders, balance);
+    if(supply>demand) rationing(sellorders, balance,price);
+    if(supply<demand) rationing(buyorders, balance,price);
     
  //printf("sin qui ci siamo %d\n",balance);
     demand=aggregateDemand(aClearing,price);
