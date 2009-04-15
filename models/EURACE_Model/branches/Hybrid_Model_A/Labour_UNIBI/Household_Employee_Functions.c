@@ -247,16 +247,7 @@ int Household_UNEMPLOYED_read_job_vacancies_and_send_applications()
     /*if unemployed: search for vacancies*/
 
     START_VACANCIES_MESSAGE_LOOP
- /*if(ID < 44 ) 
- {
-	printf(" ID: %d \n",ID);
-    printf(" GENERAL SKILL: %d \n",GENERAL_SKILL);
-    printf(" WAGE OFFER 1 %f \n",vacancies_message->firm_wage_offer_for_skill_1);
-    printf(" WAGE OFFER 2 %f \n",vacancies_message->firm_wage_offer_for_skill_2);
-    printf(" WAGE OFFER 3 %f \n",vacancies_message->firm_wage_offer_for_skill_3);
-    printf(" WAGE OFFER 4 %f \n",vacancies_message->firm_wage_offer_for_skill_4);
-    printf(" WAGE OFFER 5 %f \n",vacancies_message->firm_wage_offer_for_skill_5);
- }*/
+ 
     /*Unemployed take into account only the vacancy messages with the wage offer for            the correspondent general skill level*/
     	if(GENERAL_SKILL == 1)
     	{
@@ -282,11 +273,7 @@ int Household_UNEMPLOYED_read_job_vacancies_and_send_applications()
     	{
     		wage_offer =  vacancies_message->firm_wage_offer_for_skill_5;
     	}
-/* if(ID < 44 ) 
- {   	
-    printf(" WAGE OFFER %f \n",wage_offer);
-    printf(" _____________________\n");
- }*/  	
+  	
         /*wage offer has to be equal or higher than the reservation wage*/
         if(wage_offer >= WAGE_RESERVATION)
         {
