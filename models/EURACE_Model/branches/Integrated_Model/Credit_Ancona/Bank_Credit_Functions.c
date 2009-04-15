@@ -2,6 +2,15 @@
     #include "../Bank_agent_header.h"
     #include "../my_library_header.h"
     
+    int Bank_communicate_identity()
+    {
+        add_bank_identity_message(ID);
+        
+     return 0;   
+    }
+        
+    
+    
     int Bank_decide_credit_conditions()
     {
         double e, c, d, r, i;

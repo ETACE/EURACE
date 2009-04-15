@@ -30,13 +30,18 @@
   </timeUnits>
   <dataTypes>
    <dataType>
-    <name>residual_var_datatype</name>
-    <description></description>
+    <name>potential_lender</name>
+    <description>Collecing the name of an active bank found by firm when entering its credit market role</description>
     <variables>
      <variable>
-      <type>double</type>
-      <name>value[10]</name>
-      <description>Bank providing the loan</description>
+      <type>int</type>
+      <name>bank_name</name>
+      <description>Name of Bank</description>
+     </variable>
+     <variable>
+      <type>int</type>
+      <name>contacted</name>
+      <description>if the bank has been contacted (1) or not (0)</description>
      </variable>
     </variables>
    </dataType>
@@ -64,14 +69,14 @@
    <description></description>
    <memory>
     <variable>
-     <type>int</type>
-     <name>dmarketmatrix[10]</name>
-     <description></description>
+     <type>potential_lender_array</type>
+     <name>set_of_lenders</name>
+     <description>Array of structs (potential lender) holding names of (found) active banks</description>
     </variable>
     <variable>
-     <type>residual_var_datatype</type>
-     <name>residual_var[10]</name>
-     <description></description>
+     <type>int</type>
+     <name>number_of_banks_asked</name>
+     <description>Number of banks where the firm has asked for loans</description>
     </variable>
    </memory>
    <functions>
@@ -89,7 +94,11 @@
        <value>0.0</value>
       </rhs>
      </condition>
-     <inputs/>
+     <inputs>
+      <input>
+       <messageName>bank_identity</messageName>
+      </input>
+     </inputs>
      <outputs>
       <output>
        <messageName>loan_request</messageName>
@@ -245,10 +254,22 @@
    </memory>
    <functions>
     <function>
-     <name>Bank_decide_credit_conditions</name>
+     <name>Bank_communicate_identity</name>
      <description></description>
      <currentState>Bank_start_credit_market_role</currentState>
      <nextState>Bank_02</nextState>
+     <inputs/>
+     <outputs>
+      <output>
+       <messageName>bank_identity</messageName>
+      </output>
+     </outputs>
+    </function>
+    <function>
+     <name>Bank_decide_credit_conditions</name>
+     <description></description>
+     <currentState>Bank_02</currentState>
+     <nextState>Bank_03</nextState>
      <inputs>
       <input>
        <messageName>loan_request</messageName>
@@ -272,8 +293,8 @@
     <function>
      <name>Bank_give_loan</name>
      <description></description>
-     <currentState>Bank_02</currentState>
-     <nextState>Bank_03</nextState>
+     <currentState>Bank_03</currentState>
+     <nextState>Bank_04</nextState>
      <inputs>
       <input>
        <messageName>loan_acceptance</messageName>
@@ -293,8 +314,8 @@
     <function>
      <name>Bank_receive_installment</name>
      <description></description>
-     <currentState>Bank_03</currentState>
-     <nextState>Bank_04</nextState>
+     <currentState>Bank_04</currentState>
+     <nextState>Bank_05</nextState>
      <inputs>
       <input>
        <messageName>installment</messageName>
@@ -326,8 +347,8 @@
     <function>
      <name>Bank_account_update_deposits</name>
      <description></description>
-     <currentState>Bank_04</currentState>
-     <nextState>Bank_05</nextState>
+     <currentState>Bank_05</currentState>
+     <nextState>Bank_06</nextState>
      <inputs>
       <input>
        <messageName>bank_account_update</messageName>
@@ -354,8 +375,8 @@
     <function>
      <name>Bank_accounting</name>
      <description></description>
-     <currentState>Bank_05</currentState>
-     <nextState>Bank_06</nextState>
+     <currentState>Bank_06</currentState>
+     <nextState>Bank_07</nextState>
      <condition>
       <time>
        <period>monthly</period>
@@ -372,7 +393,7 @@
     <function>
      <name>Bank_idle</name>
      <description></description>
-     <currentState>Bank_05</currentState>
+     <currentState>Bank_06</currentState>
      <nextState>end_Bank_cycle</nextState>
      <condition>
       <not>
@@ -388,7 +409,7 @@
     <function>
      <name>Bank_send_data_to_Eurostat</name>
      <description></description>
-     <currentState>Bank_06</currentState>
+     <currentState>Bank_07</currentState>
      <nextState>end_Bank_cycle</nextState>
      <condition>
       <lhs>
@@ -418,7 +439,7 @@
     <function>
      <name>Bank_idle</name>
      <description></description>
-     <currentState>Bank_06</currentState>
+     <currentState>Bank_07</currentState>
      <nextState>end_Bank_cycle</nextState>
      <condition>
       <lhs>
@@ -462,7 +483,7 @@
     <variable>
      <type>double</type>
      <name>equity</name>
-     <description>The ECB equity is the account to collect the interest payments from the banks and the government bond interest rate payments.&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+     <description>The ECB equity is the account to collect the interest payments from the banks and the government bond interest rate payments.&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
 The equity of ECB is paid out to all governments as dividends, in proportion to their population.</description>
     </variable>
     <variable>
@@ -480,7 +501,7 @@ The equity of ECB is paid out to all governments as dividends, in proportion to 
     <function>
      <name>Central_Bank_read_account_update</name>
      <description></description>
-     <currentState>start_Central_Bank</currentState>
+     <currentState>00</currentState>
      <nextState>01</nextState>
      <inputs>
       <input>
@@ -551,6 +572,17 @@ The equity of ECB is paid out to all governments as dividends, in proportion to 
   </xagent>
  </agents>
  <messages>
+  <message>
+   <name>bank_identity</name>
+   <description>Message added by bank to communicate its existence to firms.</description>
+   <variables>
+    <variable>
+     <type>int</type>
+     <name>bank_id</name>
+     <description>name of the bank</description>
+    </variable>
+   </variables>
+  </message>
   <message>
    <name>loan_request</name>
    <description>Message added by firm to demand credit with bank_id, with financial info of applying firm.</description>
