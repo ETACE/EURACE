@@ -42,6 +42,36 @@ return 0;
 }
 
 
+/** \fn Household_shifting_consumption_day())
+ * \brief If the payment account does not cover the planed conspumtion expenditures in that week,
+ * the day of consumption is shifted by one day.       
+ */
+int Household_shifting_consumption_day()
+{
+	
+	FLAG_CONSUMPTION_SHIFTING =1;
+	DAY_OF_WEEK_TO_ACT = (DAY_OF_WEEK_TO_ACT+1)%5;
+
+	
+	return 0;
+}
+
+
+/** \fn Household_back_shifting_consumption_day()
+ * \brief When the consumption has been shifted it has to be set back to the normal value.       
+ */
+int Household_back_shifting_consumption_day()
+{
+	
+	DAY_OF_WEEK_TO_ACT = (DAY_OF_WEEK_TO_ACT-1)%5;
+	FLAG_CONSUMPTION_SHIFTING =0;
+	
+	return 0;
+}
+
+
+
+
 /** \fn Household_rank_and_buy_goods_1()
  * \brief Household receives information about the offered range of goods in the malls.
     Depending on these infos the household sends its good request       
