@@ -801,7 +801,7 @@ int Household_read_application_rejection_update_wage_reservation_2()
     /* If unemployed... */
 
     WAGE_RESERVATION = WAGE_RESERVATION-WAGE_RESERVATION*WAGE_RESERVATION_UPDATE;
-    rejection_count = 0;
+    
     /* Don't let wage reservation be below 1 */
     if(WAGE_RESERVATION < 1)
     {
