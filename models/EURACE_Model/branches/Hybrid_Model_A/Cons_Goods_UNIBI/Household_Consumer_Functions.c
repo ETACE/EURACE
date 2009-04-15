@@ -67,11 +67,11 @@ int Household_rank_and_buy_goods_1()
         /*Household reads quality price info mesasges sent by malls   */
         START_QUALITY_PRICE_INFO_1_MESSAGE_LOOP
 
-	if( quality_price_info_1_message->available==1)
+    if( quality_price_info_1_message->available==1)
              {   
         add_mall_quality_price_info(&mall_quality_price_info_list,  quality_price_info_1_message->mall_id, quality_price_info_1_message->firm_id,               quality_price_info_1_message->mall_region_id,                   quality_price_info_1_message->quality,                  quality_price_info_1_message->price, 
         quality_price_info_1_message->available);
-	}
+    }
              
 
         FINISH_QUALITY_PRICE_INFO_1_MESSAGE_LOOP
@@ -87,7 +87,7 @@ int Household_rank_and_buy_goods_1()
             .available) * exp(log(mall_quality_price_info_list.array[i].price)*GAMMA_CONST); 
 
 
-	
+    
         }
 
 
@@ -408,26 +408,26 @@ int Household_receive_goods_read_rationing_2()
  */
 int Household_receive_dividends()
 {
-	RECEIVED_DIVIDEND=0;
-	
-	START_DIVIDEND_PER_SHARE_MESSAGE_LOOP
-	int i;
-	for(i = 0; i < ASSETSOWNED.size; i++)
-	{
-		if(ASSETSOWNED.array[i].id == dividend_per_share_message->firm_id)
-		{
-			double dividend = dividend_per_share_message->current_dividend_per_share*ASSETSOWNED.array[i].quantity;
-			
-			RECEIVED_DIVIDEND +=dividend;
-			CUM_TOTAL_DIVIDENDS +=dividend ;
-			PAYMENT_ACCOUNT += dividend;
-			break;
-		}
-		
-	}
-	
-	FINISH_DIVIDEND_PER_SHARE_MESSAGE_LOOP
-	
+    RECEIVED_DIVIDEND=0;
+    
+    START_DIVIDEND_PER_SHARE_MESSAGE_LOOP
+    int i;
+    for(i = 0; i < ASSETSOWNED.size; i++)
+    {
+        if(ASSETSOWNED.array[i].id == dividend_per_share_message->firm_id)
+        {
+            double dividend = dividend_per_share_message->current_dividend_per_share*ASSETSOWNED.array[i].quantity;
+            
+            RECEIVED_DIVIDEND +=dividend;
+            CUM_TOTAL_DIVIDENDS +=dividend ;
+            PAYMENT_ACCOUNT += dividend;
+            break;
+        }
+        
+    }
+    
+    FINISH_DIVIDEND_PER_SHARE_MESSAGE_LOOP
+    
     return 0;   
 }
 
@@ -464,26 +464,27 @@ int Household_handle_leftover_budget()
         add_bank_account_update_message(ID, BANK_ID, PAYMENT_ACCOUNT);
     
         /*AIX*/
-    	if (SWITCH_FLOW_CONSISTENCY_CHECK)
-    	{
-    		//Set these to correct expressions:
-    		NR_GOV_BONDS=0;
-    		NR_FIRM_SHARES=0;
-    		GOV_INTEREST=0.0;
-    		STOCK_SALES=0.0;
-    		MONTHLY_CONSUMPTION_EXPENDITURE=0.0;
-    		STOCK_PURCHASES=0.0;
-    		TOTAL_ASSETS=0.0;
-    		TOTAL_LIABILITIES=0.0;
-    		TOTAL_INCOME=0.0;
-    		TOTAL_EXPENSES=0.0;
+        if (SWITCH_FLOW_CONSISTENCY_CHECK)
+        {
+            //Set these to correct expressions:
+            GOV_BOND_HOLDINGS=0.0;
+            NR_GOV_BONDS=0;
+            NR_FIRM_SHARES=0;
+            GOV_INTEREST=0.0;
+            STOCK_SALES=0.0;
+            MONTHLY_CONSUMPTION_EXPENDITURE=0.0;
+            STOCK_PURCHASES=0.0;
+            TOTAL_ASSETS=0.0;
+            TOTAL_LIABILITIES=0.0;
+            TOTAL_INCOME=0.0;
+            TOTAL_EXPENSES=0.0;
 
-    		//printf("\n Household %d: my WAGE=%2.2f.\n", ID, WAGE);
-    		add_household_balance_sheet_message(PAYMENT_ACCOUNT, NR_GOV_BONDS, NR_FIRM_SHARES, 
-    				WAGE, GOV_INTEREST, STOCK_SALES,
-    				CUM_TOTAL_DIVIDENDS, MONTHLY_CONSUMPTION_EXPENDITURE, TAX_PAYMENT, STOCK_PURCHASES, 
-    				TOTAL_ASSETS, TOTAL_LIABILITIES, TOTAL_INCOME, TOTAL_EXPENSES);
-    	}
+            //printf("\n Household %d: my WAGE=%2.2f.\n", ID, WAGE);
+            add_household_balance_sheet_message(PAYMENT_ACCOUNT, GOV_BOND_HOLDINGS, NR_GOV_BONDS, NR_FIRM_SHARES, 
+                    WAGE, GOV_INTEREST, STOCK_SALES,
+                    CUM_TOTAL_DIVIDENDS, MONTHLY_CONSUMPTION_EXPENDITURE, TAX_PAYMENT, STOCK_PURCHASES, 
+                    TOTAL_ASSETS, TOTAL_LIABILITIES, TOTAL_INCOME, TOTAL_EXPENSES);
+        }
 
     return 0;
 }

@@ -667,6 +667,11 @@
       <description></description>
      </variable>
      <variable>
+      <type>double</type>
+      <name>gov_bond_holdings</name>
+      <description></description>
+     </variable>
+     <variable>
       <type>int</type>
       <name>nr_gov_bonds</name>
       <description></description>
@@ -913,6 +918,11 @@
       <description></description>
      </variable>
      <variable>
+      <type>double</type>
+      <name>value_bonds_outstanding</name>
+      <description></description>
+     </variable>
+     <variable>
       <type>int</type>
       <name>nr_bonds_outstanding</name>
       <description></description>
@@ -989,6 +999,11 @@
     <name>ecb_stocks_adt</name>
     <description></description>
     <variables>
+     <variable>
+      <type>double</type>
+      <name>gov_bond_holdings</name>
+      <description></description>
+     </variable>
      <variable>
       <type>int</type>
       <name>nr_gov_bonds</name>
@@ -1474,7 +1489,17 @@
     </variable>
     <variable>
      <type>double</type>
+     <name>gov_bond_purchases</name>
+     <description></description>
+    </variable>
+    <variable>
+     <type>double</type>
      <name>monthly_consumption_expenditure</name>
+     <description></description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>gov_bond_holdings</name>
      <description></description>
     </variable>
     <variable>
@@ -3027,6 +3052,11 @@
      <description></description>
     </variable>
     <variable>
+     <type>double</type>
+     <name>gov_bond_holdings</name>
+     <description></description>
+    </variable>
+    <variable>
      <type>int</type>
      <name>nr_gov_bonds</name>
      <description></description>
@@ -3255,6 +3285,11 @@
      <description></description>
     </variable>
     <variable>
+     <type>double</type>
+     <name>value_bonds_outstanding</name>
+     <description></description>
+    </variable>
+    <variable>
      <type>int</type>
      <name>nr_bonds_outstanding</name>
      <description></description>
@@ -3325,6 +3360,11 @@
    <name>ecb_balance_sheet</name>
    <description></description>
    <variables>
+    <variable>
+     <type>double</type>
+     <name>gov_bond_holdings</name>
+     <description></description>
+    </variable>
     <variable>
      <type>int</type>
      <name>nr_gov_bonds</name>

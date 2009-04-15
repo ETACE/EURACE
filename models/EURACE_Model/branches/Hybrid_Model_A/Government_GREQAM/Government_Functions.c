@@ -33,11 +33,11 @@ int Government_send_policy_announcements()
  */
 int Government_read_tax_payments()
 {   
-	double sum =0;
+    double sum =0;
     START_TAX_PAYMENT_MESSAGE_LOOP
         
         MONTHLY_TAX_REVENUES += tax_payment_message->tax_payment;
-     	sum+= tax_payment_message->tax_payment;
+        sum+= tax_payment_message->tax_payment;
     FINISH_TAX_PAYMENT_MESSAGE_LOOP 
 
    PAYMENT_ACCOUNT += sum;
@@ -169,18 +169,19 @@ int Government_read_subsidy_notifications()
  */
 int Government_send_data_to_Eurostat()
 {        
-    	if (SWITCH_FLOW_CONSISTENCY_CHECK)
-    	{
-    		NR_BONDS_OUTSTANDING=0;
-    		
-    		TOTAL_ASSETS=0.0;
-    		TOTAL_LIABILITIES=0.0;
+        if (SWITCH_FLOW_CONSISTENCY_CHECK)
+        {
+            VALUE_BONDS_OUTSTANDING=0.0;
+            NR_BONDS_OUTSTANDING=0;
+            
+            TOTAL_ASSETS=0.0;
+            TOTAL_LIABILITIES=0.0;
 
-    		add_gov_balance_sheet_message(PAYMENT_ACCOUNT, NR_BONDS_OUTSTANDING, 
-    				MONTHLY_TAX_REVENUES, TOTAL_BOND_FINANCING, MONTHLY_INVESTMENT_EXPENDITURE, MONTHLY_CONSUMPTION_EXPENDITURE,
-    				MONTHLY_BENEFIT_PAYMENT, MONTHLY_SUBSIDY_PAYMENT, MONTHLY_TRANSFER_PAYMENT, MONTHLY_BOND_INTEREST_PAYMENT,
-    				TOTAL_ASSETS, TOTAL_LIABILITIES, MONTHLY_INCOME, MONTHLY_EXPENDITURE);
-    	}
+            add_gov_balance_sheet_message(PAYMENT_ACCOUNT, VALUE_BONDS_OUTSTANDING, NR_BONDS_OUTSTANDING, 
+                    MONTHLY_TAX_REVENUES, TOTAL_BOND_FINANCING, MONTHLY_INVESTMENT_EXPENDITURE, MONTHLY_CONSUMPTION_EXPENDITURE,
+                    MONTHLY_BENEFIT_PAYMENT, MONTHLY_SUBSIDY_PAYMENT, MONTHLY_TRANSFER_PAYMENT, MONTHLY_BOND_INTEREST_PAYMENT,
+                    TOTAL_ASSETS, TOTAL_LIABILITIES, MONTHLY_INCOME, MONTHLY_EXPENDITURE);
+        }
 
     return 0;
 }
@@ -193,18 +194,19 @@ int Government_send_account_update()
         // At the very end of agent government: update the bank account
         add_central_bank_account_update_message(ID, PAYMENT_ACCOUNT);
         
-    	if (SWITCH_STOCK_CONSISTENCY_CHECK)
-    	{
-    		NR_BONDS_OUTSTANDING=0;
-    		
-    		TOTAL_ASSETS=0.0;
-    		TOTAL_LIABILITIES=0.0;
+        if (SWITCH_STOCK_CONSISTENCY_CHECK)
+        {
+            VALUE_BONDS_OUTSTANDING=0.0;
+            NR_BONDS_OUTSTANDING=0;
+            
+            TOTAL_ASSETS=0.0;
+            TOTAL_LIABILITIES=0.0;
 
-    		add_gov_balance_sheet_message(PAYMENT_ACCOUNT, NR_BONDS_OUTSTANDING, 
-    				MONTHLY_TAX_REVENUES, TOTAL_BOND_FINANCING, MONTHLY_INVESTMENT_EXPENDITURE, MONTHLY_CONSUMPTION_EXPENDITURE,
-    				MONTHLY_BENEFIT_PAYMENT, MONTHLY_SUBSIDY_PAYMENT, MONTHLY_TRANSFER_PAYMENT, MONTHLY_BOND_INTEREST_PAYMENT,
-    				TOTAL_ASSETS, TOTAL_LIABILITIES, MONTHLY_INCOME, MONTHLY_EXPENDITURE);
-    	}
+            add_gov_balance_sheet_message(PAYMENT_ACCOUNT, VALUE_BONDS_OUTSTANDING, NR_BONDS_OUTSTANDING, 
+                    MONTHLY_TAX_REVENUES, TOTAL_BOND_FINANCING, MONTHLY_INVESTMENT_EXPENDITURE, MONTHLY_CONSUMPTION_EXPENDITURE,
+                    MONTHLY_BENEFIT_PAYMENT, MONTHLY_SUBSIDY_PAYMENT, MONTHLY_TRANSFER_PAYMENT, MONTHLY_BOND_INTEREST_PAYMENT,
+                    TOTAL_ASSETS, TOTAL_LIABILITIES, MONTHLY_INCOME, MONTHLY_EXPENDITURE);
+        }
 
     return 0;
 }
@@ -355,9 +357,9 @@ int Government_read_data_from_Eurostat()
     
     //Set GDP growth rate
     if (old_gdp > 0.0)
-    	GDP_GROWTH = GDP/old_gdp;
+        GDP_GROWTH = GDP/old_gdp;
     else GDP_GROWTH = 1.0; 
-    	
+        
     return 0;   
 }
 
