@@ -294,6 +294,11 @@
      <description></description>
     </variable>
     <variable>
+     <type>double</type>
+     <name>value_bonds_outstanding</name>
+     <description></description>
+    </variable>
+    <variable>
      <type>int</type>
      <name>nr_bonds_outstanding</name>
      <description></description>
