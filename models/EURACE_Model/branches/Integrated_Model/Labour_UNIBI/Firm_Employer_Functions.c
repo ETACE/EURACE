@@ -168,38 +168,12 @@ int Firm_send_vacancies()
         VACANCIES = EMPLOYEES_NEEDED - NO_EMPLOYEES;
 
         /*For every skill group send vacancy message with the correspondent wage offer*/
-        int m;
-        for(m = 1; m < 6;m++)
-        {   
-            switch(m)
-            {
-            case 1:/*If skill level 1 send wage offer for skill group 1*/
-                add_vacancies_message(ID, REGION_ID, VACANCIES,m,
-                WAGE_OFFER_FOR_SKILL_1);
-                break;
-            
-
-            case 2:
-                add_vacancies_message(ID, REGION_ID, VACANCIES,m,
-                WAGE_OFFER_FOR_SKILL_2);
-                break;
-
-            case 3:
-                add_vacancies_message(ID, REGION_ID, VACANCIES,m,
-                WAGE_OFFER_FOR_SKILL_3);
-                break;
-
-            case 4:
-                add_vacancies_message(ID, REGION_ID, VACANCIES,m,
-                WAGE_OFFER_FOR_SKILL_4);
-                break;
-
-            case 5:/*If skill level 5 send wage offer for skill group 5*/
-                add_vacancies_message(ID, REGION_ID, VACANCIES,m,
-                WAGE_OFFER_FOR_SKILL_5);
-                break;
-            }       
-        }           
+        
+        add_vacancies_message(ID, REGION_ID, 
+        WAGE_OFFER_FOR_SKILL_1, WAGE_OFFER_FOR_SKILL_2, 
+        WAGE_OFFER_FOR_SKILL_3, WAGE_OFFER_FOR_SKILL_4, 
+        WAGE_OFFER_FOR_SKILL_5);
+                                        
     }
     
     return 0;
@@ -560,8 +534,8 @@ int Firm_read_job_applications_send_job_offer_or_rejection()
         	
             for(i=0; i < job_application_list.size;i++)
             {
-        add_application_rejection_message(ID, 
-                job_application_list.array[i].worker_id);
+        //add_application_rejection_message(ID, 
+          //      job_application_list.array[i].worker_id);
             }
         }
 
@@ -741,40 +715,11 @@ int Firm_send_vacancies_2()
     if(VACANCIES > 0)
     {
         /*For every general skill level (1-5)*/
-    	int m;
-        for(m = 1; m < 6;m++)
-        {
-            switch(m)
-            {
-                /*If general skill level 1 send wage offer for general                      skill level 1*/
-                case 1:
-                    add_vacancies2_message(ID, REGION_ID, VACANCIES,m,
-                    WAGE_OFFER_FOR_SKILL_1);
-                    break;
-
-                case 2:
-                    add_vacancies2_message(ID, REGION_ID, VACANCIES,m,
-                    WAGE_OFFER_FOR_SKILL_2);
-                    break;
-
-                case 3:
-                    add_vacancies2_message(ID, REGION_ID, VACANCIES,m,
-                    WAGE_OFFER_FOR_SKILL_3);
-                    break;
-
-                case 4:
-                    add_vacancies2_message(ID, REGION_ID, VACANCIES,m,
-                    WAGE_OFFER_FOR_SKILL_4);
-                    break;
-                /*If general skill level 5 send wage offer for general                      skill level 5*/
-                case 5:
-                    add_vacancies2_message(ID, REGION_ID, VACANCIES,m,
-                    WAGE_OFFER_FOR_SKILL_5);
-                    break;
-            }   
-        }       
+    	
+        add_vacancies2_message(ID, REGION_ID, 
+        WAGE_OFFER_FOR_SKILL_1, WAGE_OFFER_FOR_SKILL_2, WAGE_OFFER_FOR_SKILL_3, WAGE_OFFER_FOR_SKILL_4, WAGE_OFFER_FOR_SKILL_5);
+                         
     }   
-    
     
     return 0;
 }
@@ -966,8 +911,8 @@ int Firm_read_job_applications_send_job_offer_or_rejection_2()
 
             for(i=0; i < job_application_list.size;i++)
             {
-        add_application_rejection2_message(ID, 
-                job_application_list.array[i].worker_id);
+        //add_application_rejection2_message(ID, 
+          //      job_application_list.array[i].worker_id);
             }
         }
 
@@ -1132,13 +1077,13 @@ int Firm_update_wage_offer_2()
 
     if(VACANCIES > MIN_VACANCY)  
     {
-            WAGE_OFFER = WAGE_OFFER*(1+WAGE_UPDATE);
+            /*WAGE_OFFER = WAGE_OFFER*(1+WAGE_UPDATE);
 
             WAGE_OFFER_FOR_SKILL_1 = WAGE_OFFER_FOR_SKILL_1*(1+WAGE_UPDATE);
             WAGE_OFFER_FOR_SKILL_2 = WAGE_OFFER_FOR_SKILL_2*(1+WAGE_UPDATE);
             WAGE_OFFER_FOR_SKILL_3 = WAGE_OFFER_FOR_SKILL_3*(1+WAGE_UPDATE);
             WAGE_OFFER_FOR_SKILL_4 = WAGE_OFFER_FOR_SKILL_4*(1+WAGE_UPDATE);
-            WAGE_OFFER_FOR_SKILL_5 = WAGE_OFFER_FOR_SKILL_5*(1+WAGE_UPDATE);    
+            WAGE_OFFER_FOR_SKILL_5 = WAGE_OFFER_FOR_SKILL_5*(1+WAGE_UPDATE);  */  
      }
 
     
