@@ -105,7 +105,7 @@ int IGFirm_pay_taxes()
 {
 	
 	//TAX_PAYMENT = CUM_REVENUES*TAX_RATE_CORPORATE;
-	TAX_PAYMENT = CUM_REVENUES*1;	
+	TAX_PAYMENT = CUM_REVENUES*0;	
 	
 	PAYMENT_ACCOUNT -= TAX_PAYMENT;
 
@@ -120,16 +120,17 @@ int IGFirm_pay_taxes()
 
 int IGFirm_dividend_payment()
 {
-	CURRENT_DIVIDEND_PER_SHARE = NET_PROFIT / CURRENT_SHARES_OUTSTANDING;
+	double total_dividend_payment;
+	total_dividend_payment = NET_PROFIT;
+	
+	CURRENT_DIVIDEND_PER_SHARE = NET_PROFIT / OUTSTANDING_SHARES;
 
 	
 	//add dividend_per_share_msg(firm_id, current_dividend_per_share) to shareholders (dividend per share)     
 	add_dividend_per_share_message(ID, CURRENT_DIVIDEND_PER_SHARE);
-
-
 	
 	//decrease payment_account with the total_dividend_payment
-	//PAYMENT_ACCOUNT -= TOTAL_DIVIDEND_PAYMENT;
+	PAYMENT_ACCOUNT -= total_dividend_payment;
 	
 	return 0;
 }
