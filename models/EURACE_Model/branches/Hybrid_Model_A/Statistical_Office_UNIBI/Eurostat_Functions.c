@@ -1898,6 +1898,7 @@ int Eurostat_check_stock_consistency()
 
     //Reset all counters
     HOUSEHOLD_BALANCE_SHEETS.stocks.payment_account=0.0;
+    HOUSEHOLD_BALANCE_SHEETS.stocks.gov_bond_holdings=0.0;
     HOUSEHOLD_BALANCE_SHEETS.stocks.nr_gov_bonds=0;
     HOUSEHOLD_BALANCE_SHEETS.stocks.nr_firm_shares=0;
     HOUSEHOLD_BALANCE_SHEETS.stocks.total_assets=0.0;
@@ -1906,6 +1907,7 @@ int Eurostat_check_stock_consistency()
     //Reading stock messages
     START_HOUSEHOLD_BALANCE_SHEET_MESSAGE_LOOP
         HOUSEHOLD_BALANCE_SHEETS.stocks.payment_account += household_balance_sheet_message->payment_account;
+        HOUSEHOLD_BALANCE_SHEETS.stocks.gov_bond_holdings += household_balance_sheet_message->gov_bond_holdings;
         HOUSEHOLD_BALANCE_SHEETS.stocks.nr_gov_bonds += household_balance_sheet_message->nr_gov_bonds;
         HOUSEHOLD_BALANCE_SHEETS.stocks.nr_firm_shares += household_balance_sheet_message->nr_firm_shares;
         HOUSEHOLD_BALANCE_SHEETS.stocks.total_assets += household_balance_sheet_message->total_assets;
@@ -1932,6 +1934,7 @@ int Eurostat_check_stock_consistency()
     
     //Reset all counters
     GOV_BALANCE_SHEETS.stocks.payment_account=0.0; 
+    GOV_BALANCE_SHEETS.stocks.value_bonds_outstanding=0.0;
     GOV_BALANCE_SHEETS.stocks.nr_bonds_outstanding=0;
     GOV_BALANCE_SHEETS.stocks.total_assets=0.0;
     GOV_BALANCE_SHEETS.stocks.total_liabilities=0.0;
@@ -1939,12 +1942,14 @@ int Eurostat_check_stock_consistency()
     //Reading stock messages
     START_GOV_BALANCE_SHEET_MESSAGE_LOOP
         GOV_BALANCE_SHEETS.stocks.payment_account += gov_balance_sheet_message->payment_account;
+        GOV_BALANCE_SHEETS.stocks.value_bonds_outstanding += gov_balance_sheet_message->value_bonds_outstanding;
         GOV_BALANCE_SHEETS.stocks.nr_bonds_outstanding += gov_balance_sheet_message->nr_bonds_outstanding;
         GOV_BALANCE_SHEETS.stocks.total_assets += gov_balance_sheet_message->total_assets;
         GOV_BALANCE_SHEETS.stocks.total_liabilities += gov_balance_sheet_message->total_liabilities;
     FINISH_GOV_BALANCE_SHEET_MESSAGE_LOOP
 
     //Reset all counters
+    ECB_BALANCE_SHEETS.stocks.gov_bond_holdings=0.0;
     ECB_BALANCE_SHEETS.stocks.nr_gov_bonds = 0;
     ECB_BALANCE_SHEETS.stocks.total_ecb_debt=0.0;
     ECB_BALANCE_SHEETS.stocks.payment_account_private_sector=0.0;
@@ -1955,6 +1960,7 @@ int Eurostat_check_stock_consistency()
     
     //Reading stock messages
     START_ECB_BALANCE_SHEET_MESSAGE_LOOP
+        ECB_BALANCE_SHEETS.stocks.gov_bond_holdings += ecb_balance_sheet_message->gov_bond_holdings;
         ECB_BALANCE_SHEETS.stocks.nr_gov_bonds += ecb_balance_sheet_message->nr_gov_bonds;
         ECB_BALANCE_SHEETS.stocks.total_ecb_debt += ecb_balance_sheet_message->total_ecb_debt;
         ECB_BALANCE_SHEETS.stocks.payment_account_private_sector += ecb_balance_sheet_message->payment_account_private_sector;
@@ -2037,6 +2043,18 @@ int Eurostat_check_stock_consistency()
     
 //  assert(abs( ECB_BALANCE_SHEETS.stocks.total_ecb_debt
 //   - BANK_BALANCE_SHEETS.stocks.ecb_debt ) < 1e-3);
+
+
+    //Holdings of Gov bonds
+    printf("\n -----------------------------------\n");
+    printf("\n Checking Stocks: Holdings of Gov bonds.\n");
+    printf("\n HOUSEHOLD_BALANCE_SHEETS.stocks.gov_bond_holdings = %.4f\n", HOUSEHOLD_BALANCE_SHEETS.stocks.gov_bond_holdings);
+    printf("\n ECB_BALANCE_SHEETS.stocks.gov_bond_holdings = %.4f\n", ECB_BALANCE_SHEETS.stocks.gov_bond_holdings);
+    printf("\n GOV_BALANCE_SHEETS.stocks.value_bonds_outstanding = %.4f\n", GOV_BALANCE_SHEETS.stocks.value_bonds_outstanding);
+
+    assert(abs( HOUSEHOLD_BALANCE_SHEETS.stocks.gov_bond_holdings + ECB_BALANCE_SHEETS.stocks.gov_bond_holdings 
+                - GOV_BALANCE_SHEETS.stocks.value_bonds_outstanding ) < 1e-3);
+
     
     //Nr of Gov bonds
     printf("\n -----------------------------------\n");
