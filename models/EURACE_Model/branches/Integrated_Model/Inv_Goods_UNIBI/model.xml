@@ -1,7 +1,7 @@
 <!DOCTYPE xmodel SYSTEM "http://eurace.cs.bilgi.edu.tr/XMML.dtd">
 <xmodel version="2" >
  <name>Investment_Goods_Market</name>
- <version>Aix, 10/02/2009</version>
+ <version>pre-Genoa</version>
  <description></description>
  <models/>
  <environment>
@@ -54,7 +54,7 @@
     </variable>
     <variable>
      <type>int</type>
-     <name>current_shares_outstanding</name>
+     <name>outstanding_shares</name>
      <description></description>
     </variable>
     <variable>
@@ -65,16 +65,6 @@
     <variable>
      <type>double</type>
      <name>cum_revenues</name>
-     <description></description>
-    </variable>
-    <variable>
-     <type>double</type>
-     <name>total_liabilities</name>
-     <description></description>
-    </variable>
-    <variable>
-     <type>double</type>
-     <name>total_assets</name>
      <description></description>
     </variable>
    </memory>
