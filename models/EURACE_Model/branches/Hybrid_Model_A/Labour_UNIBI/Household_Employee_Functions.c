@@ -127,16 +127,39 @@ int Household_OTJS_read_job_vacancies_and_send_applications()
     vacancy_array  vacancy_list;
     init_vacancy_array(&vacancy_list);
     int i, j;
+    double wage_offer;
 
     /* If on_the_job_search: search for vacancies */
 
     START_VACANCIES_MESSAGE_LOOP
     /*Employees take into account only the vacancy messages with the wage offer for             the correspondent general skill level*/
-    if(vacancies_message->skill_group == GENERAL_SKILL)
+    if(GENERAL_SKILL == 1)
     {
+    	wage_offer = vacancies_message->firm_wage_offer_for_skill_1;
+    }
+    
+    if(GENERAL_SKILL == 2)
+    {
+    	wage_offer = vacancies_message->firm_wage_offer_for_skill_2;
+    }
+    
+    if(GENERAL_SKILL == 3)
+    {
+      	wage_offer =  vacancies_message->firm_wage_offer_for_skill_3;
+    }
+    
+    if(GENERAL_SKILL == 4)
+    {
+        wage_offer =  vacancies_message->firm_wage_offer_for_skill_4;
+    }
+    
+    if(GENERAL_SKILL == 5)
+    {
+        wage_offer =  vacancies_message->firm_wage_offer_for_skill_5;
+    }
         /*Wage offer has to be higher than the actual wage*/
         /*Reservation wage: 1.) = wage or  2.) = wage - region cost*/
-        if(vacancies_message->firm_wage_offer > WAGE_RESERVATION)
+        if(wage_offer > WAGE_RESERVATION)
         {
             /*On the job search only for vacancies of different firms*/
             if(vacancies_message->firm_id != EMPLOYEE_FIRM_ID)
@@ -146,7 +169,7 @@ int Household_OTJS_read_job_vacancies_and_send_applications()
                 {
                     add_vacancy(&vacancy_list,
                     vacancies_message->firm_id,                             vacancies_message->region_id,
-                    vacancies_message->firm_wage_offer);
+                    wage_offer);
                 }
                 else /*take into account the costs of a different region:                           Firm and Household; Households can only apply in                            neighboring regions*/
                 {
@@ -160,21 +183,20 @@ int Household_OTJS_read_job_vacancies_and_send_applications()
                     NEIGHBORING_REGION_IDS.array[i])
                     {
 
-                        if((vacancies_message->firm_wage_offer -
+                        if((wage_offer -
                         REGION_COST*COMMUTING_COSTS_PRICE_LEVEL_WEIGHT) > WAGE_RESERVATION)
                         {
-                            add_vacancy(&vacancy_list,                                  vacancies_message->firm_id,                                     vacancies_message->region_id,
-                            (vacancies_message->
-                            firm_wage_offer - REGION_COST*COMMUTING_COSTS_PRICE_LEVEL_WEIGHT));
+                            add_vacancy(&vacancy_list, vacancies_message->firm_id,                                     vacancies_message->region_id,
+                            (wage_offer - REGION_COST*COMMUTING_COSTS_PRICE_LEVEL_WEIGHT));
                         }
                         break;
 
                     }
-                    }
+                   }
                   }
             }
         }
-    }
+    
 
     FINISH_VACANCIES_MESSAGE_LOOP
 
@@ -220,23 +242,60 @@ int Household_UNEMPLOYED_read_job_vacancies_and_send_applications()
     vacancy_array  vacancy_list;
     init_vacancy_array(&vacancy_list);
     int i, j;
-
+    double wage_offer;
+    
     /*if unemployed: search for vacancies*/
 
     START_VACANCIES_MESSAGE_LOOP
-
+ /*if(ID < 44 ) 
+ {
+	printf(" ID: %d \n",ID);
+    printf(" GENERAL SKILL: %d \n",GENERAL_SKILL);
+    printf(" WAGE OFFER 1 %f \n",vacancies_message->firm_wage_offer_for_skill_1);
+    printf(" WAGE OFFER 2 %f \n",vacancies_message->firm_wage_offer_for_skill_2);
+    printf(" WAGE OFFER 3 %f \n",vacancies_message->firm_wage_offer_for_skill_3);
+    printf(" WAGE OFFER 4 %f \n",vacancies_message->firm_wage_offer_for_skill_4);
+    printf(" WAGE OFFER 5 %f \n",vacancies_message->firm_wage_offer_for_skill_5);
+ }*/
     /*Unemployed take into account only the vacancy messages with the wage offer for            the correspondent general skill level*/
-    if(vacancies_message->skill_group == GENERAL_SKILL)
-    {
+    	if(GENERAL_SKILL == 1)
+    	{
+    		wage_offer = vacancies_message->firm_wage_offer_for_skill_1;
+    	}
+    
+    	if(GENERAL_SKILL == 2)
+    	{
+    		wage_offer = vacancies_message->firm_wage_offer_for_skill_2;
+    	}
+    
+    	if(GENERAL_SKILL == 3)
+    	{
+    		wage_offer =  vacancies_message->firm_wage_offer_for_skill_3;
+    	}
+    
+    	if(GENERAL_SKILL == 4)
+    	{
+    		wage_offer =  vacancies_message->firm_wage_offer_for_skill_4;
+    	}
+    
+    	if(GENERAL_SKILL == 5)
+    	{
+    		wage_offer =  vacancies_message->firm_wage_offer_for_skill_5;
+    	}
+/* if(ID < 44 ) 
+ {   	
+    printf(" WAGE OFFER %f \n",wage_offer);
+    printf(" _____________________\n");
+ }*/  	
         /*wage offer has to be equal or higher than the reservation wage*/
-        if(vacancies_message->firm_wage_offer >= WAGE_RESERVATION)
+        if(wage_offer >= WAGE_RESERVATION)
         {
             /*same region: Firm and Household*/
             if(REGION_ID == vacancies_message->region_id)
             {
                 add_vacancy(&vacancy_list,
-                vacancies_message->firm_id,                         vacancies_message->region_id,
-                vacancies_message->firm_wage_offer);
+                vacancies_message->firm_id, vacancies_message->region_id,
+                wage_offer);
             }
             else /*take into account the costs of a different region:                           Firm and Household; Households can only apply in                            neighboring regions*/
             {
@@ -248,19 +307,18 @@ int Household_UNEMPLOYED_read_job_vacancies_and_send_applications()
                     if(vacancies_message->region_id
                     ==NEIGHBORING_REGION_IDS.array[i])
                     {
-                        if((vacancies_message->firm_wage_offer -
+                        if((wage_offer -
                          REGION_COST*COMMUTING_COSTS_PRICE_LEVEL_WEIGHT) >= WAGE_RESERVATION)
                         {
-                            add_vacancy(&vacancy_list,                                  vacancies_message->firm_id,                                     vacancies_message->region_id,
-                            (vacancies_message->
-                            firm_wage_offer - REGION_COST*COMMUTING_COSTS_PRICE_LEVEL_WEIGHT));
+                            add_vacancy(&vacancy_list, vacancies_message->firm_id,                                     vacancies_message->region_id,
+                            (wage_offer - REGION_COST*COMMUTING_COSTS_PRICE_LEVEL_WEIGHT));
                         }
                         break;
                     }
                  }
             }
         }
-    }
+    
 
     FINISH_VACANCIES_MESSAGE_LOOP
 
@@ -446,6 +504,7 @@ int Household_OTJS_read_job_vacancies_and_send_applications_2()
     vacancy_array  vacancy_list;
     init_vacancy_array(&vacancy_list);
     int i, j;
+    double wage_offer;
 
     /*On the job search in the second loop is no longer allowed*/
     //ON_THE_JOB_SEARCH = 0;
@@ -454,9 +513,31 @@ int Household_OTJS_read_job_vacancies_and_send_applications_2()
     {
     START_VACANCIES2_MESSAGE_LOOP
         /*read vacancy messages with the wage offer for the correspondent general skill         level of the household*/
-        if(vacancies2_message->skill_group == GENERAL_SKILL)
-        {
-            if(vacancies2_message->firm_wage_offer > WAGE_RESERVATION)
+    	if(GENERAL_SKILL == 1)
+    	{
+    		wage_offer = vacancies2_message->firm_wage_offer_for_skill_1;
+    	}
+    
+    	if(GENERAL_SKILL == 2)
+    	{
+    		wage_offer = vacancies2_message->firm_wage_offer_for_skill_2;
+    	}
+    
+    	if(GENERAL_SKILL == 3)
+    	{
+    		wage_offer =  vacancies2_message->firm_wage_offer_for_skill_3;
+    	}
+    
+    	if(GENERAL_SKILL == 4)
+    	{
+    		wage_offer =  vacancies2_message->firm_wage_offer_for_skill_4;
+    	}
+    
+    	if(GENERAL_SKILL == 5)
+    	{
+    		wage_offer =  vacancies2_message->firm_wage_offer_for_skill_5;
+    	}
+            if(wage_offer > WAGE_RESERVATION)
             {
                 /*Employees can only search for vacancies of a different firm*/
                 if(vacancies2_message->firm_id != EMPLOYEE_FIRM_ID)
@@ -465,8 +546,8 @@ int Household_OTJS_read_job_vacancies_and_send_applications_2()
                     if(REGION_ID == vacancies2_message->region_id)
                     {
                         add_vacancy(&vacancy_list,
-                        vacancies2_message->firm_id,                            vacancies2_message->region_id,
-                        vacancies2_message->firm_wage_offer);
+                        vacancies2_message->firm_id, vacancies2_message->region_id,
+                        wage_offer);
                     }
                     else /*Firm and Household are in different region: take                     into account the region costs*/
                     {
@@ -478,13 +559,12 @@ int Household_OTJS_read_job_vacancies_and_send_applications_2()
                         if(vacancies2_message->region_id
                         ==NEIGHBORING_REGION_IDS.array[i])
                         {
-                            if((vacancies2_message->firm_wage_offer -
+                            if((wage_offer -
                              REGION_COST*COMMUTING_COSTS_PRICE_LEVEL_WEIGHT) >= WAGE_RESERVATION)
                             {
                                 add_vacancy(&vacancy_list,
-                                vacancies2_message->firm_id,                                    vacancies2_message->region_id,
-                                (vacancies2_message->
-                                firm_wage_offer - REGION_COST*COMMUTING_COSTS_PRICE_LEVEL_WEIGHT));
+                                vacancies2_message->firm_id, vacancies2_message->region_id,
+                                (wage_offer - REGION_COST*COMMUTING_COSTS_PRICE_LEVEL_WEIGHT));
                             }
                             break;
 
@@ -493,7 +573,7 @@ int Household_OTJS_read_job_vacancies_and_send_applications_2()
                      }
                 }
             }
-        }
+        
 
     FINISH_VACANCIES2_MESSAGE_LOOP
 
@@ -539,20 +619,43 @@ int Household_UNEMPLOYED_read_job_vacancies_and_send_applications_2()
     vacancy_array  vacancy_list;
     init_vacancy_array(&vacancy_list);
     int i, j;
+    double wage_offer;
 
     /*If unemployed*/
     START_VACANCIES2_MESSAGE_LOOP
     /*read vacancy messages with the wage offer for the correspondent general skill         level of the household*/
-    if(vacancies2_message->skill_group == GENERAL_SKILL)
-    {
+    	if(GENERAL_SKILL == 1)
+    	{
+    		wage_offer = vacancies2_message->firm_wage_offer_for_skill_1;
+    	}
+    
+    	if(GENERAL_SKILL == 2)
+    	{
+    		wage_offer = vacancies2_message->firm_wage_offer_for_skill_2;
+    	}
+    
+    	if(GENERAL_SKILL == 3)
+    	{
+    		wage_offer =  vacancies2_message->firm_wage_offer_for_skill_3;
+    	}
+    
+    	if(GENERAL_SKILL == 4)
+    	{
+    		wage_offer =  vacancies2_message->firm_wage_offer_for_skill_4;
+    	}
+    
+    	if(GENERAL_SKILL == 5)
+    	{
+    		wage_offer =  vacancies2_message->firm_wage_offer_for_skill_5;
+    	}
 
-        if(vacancies2_message->firm_wage_offer >= WAGE_RESERVATION)
+        if(wage_offer >= WAGE_RESERVATION)
         {
             /*Firm and Household are in the same region*/
             if(REGION_ID == vacancies2_message->region_id)
             {
-                add_vacancy(&vacancy_list, vacancies2_message->firm_id,                     vacancies2_message->region_id,
-                vacancies2_message->firm_wage_offer);
+                add_vacancy(&vacancy_list, vacancies2_message->firm_id, vacancies2_message->region_id,
+                wage_offer);
             }
             else /*Firm and Household are in different region: take                     into account the region costs*/
             {
@@ -564,13 +667,12 @@ int Household_UNEMPLOYED_read_job_vacancies_and_send_applications_2()
                     if(vacancies2_message->region_id
                     ==NEIGHBORING_REGION_IDS.array[i])
                     {
-                        if((vacancies2_message->firm_wage_offer -
+                        if((wage_offer -
                         REGION_COST*COMMUTING_COSTS_PRICE_LEVEL_WEIGHT) >= WAGE_RESERVATION)
                         {
                             add_vacancy(&vacancy_list,
-                            vacancies2_message->firm_id,                                    vacancies2_message->region_id,
-                            (vacancies2_message->
-                            firm_wage_offer - REGION_COST*COMMUTING_COSTS_PRICE_LEVEL_WEIGHT));
+                            vacancies2_message->firm_id, vacancies2_message->region_id,
+                            (wage_offer - REGION_COST*COMMUTING_COSTS_PRICE_LEVEL_WEIGHT));
                         }
                         break;
 
@@ -578,7 +680,7 @@ int Household_UNEMPLOYED_read_job_vacancies_and_send_applications_2()
                  }
             }
         }
-    }
+    
 
     FINISH_VACANCIES2_MESSAGE_LOOP
 
