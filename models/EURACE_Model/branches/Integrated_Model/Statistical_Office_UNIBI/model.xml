@@ -667,6 +667,11 @@
       <description></description>
      </variable>
      <variable>
+      <type>double</type>
+      <name>gov_bond_holdings</name>
+      <description></description>
+     </variable>
+     <variable>
       <type>int</type>
       <name>nr_gov_bonds</name>
       <description></description>
@@ -913,6 +918,11 @@
       <description></description>
      </variable>
      <variable>
+      <type>double</type>
+      <name>value_bonds_outstanding</name>
+      <description></description>
+     </variable>
+     <variable>
       <type>int</type>
       <name>nr_bonds_outstanding</name>
       <description></description>
@@ -989,6 +999,11 @@
     <name>ecb_stocks_adt</name>
     <description></description>
     <variables>
+     <variable>
+      <type>double</type>
+      <name>gov_bond_holdings</name>
+      <description></description>
+     </variable>
      <variable>
       <type>int</type>
       <name>nr_gov_bonds</name>
@@ -1474,7 +1489,17 @@
     </variable>
     <variable>
      <type>double</type>
+     <name>gov_bond_purchases</name>
+     <description></description>
+    </variable>
+    <variable>
+     <type>double</type>
      <name>monthly_consumption_expenditure</name>
+     <description></description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>gov_bond_holdings</name>
      <description></description>
     </variable>
     <variable>
@@ -1534,8 +1559,7 @@
     </function>
     <function>
      <name>Household_receive_data</name>
-     <description>The household reads the messages from the eurostat agent &#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-and stores the needed data.</description>
+     <description>The household reads the messages from the eurostat agent and stores the needed data.</description>
      <currentState>Household_Start_Policy_Data</currentState>
      <nextState>Household_Start_Financial_Market_Role</nextState>
      <condition>
@@ -1565,8 +1589,7 @@ and stores the needed data.</description>
     </function>
     <function>
      <name>Household_send_data_to_Eurostat</name>
-     <description>Household sends message to the eurostat agent &#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-including several micro data.</description>
+     <description>Household sends message to the eurostat agent including several micro data.</description>
      <currentState>15</currentState>
      <nextState>end_Household</nextState>
      <condition>
@@ -2573,6 +2596,11 @@ including several micro data.</description>
    <description></description>
    <memory>
     <variable>
+     <type>double</type>
+     <name>gov_bond_holdings</name>
+     <description></description>
+    </variable>
+    <variable>
      <type>int</type>
      <name>nr_gov_bonds</name>
      <description></description>
@@ -3024,6 +3052,11 @@ including several micro data.</description>
      <description></description>
     </variable>
     <variable>
+     <type>double</type>
+     <name>gov_bond_holdings</name>
+     <description></description>
+    </variable>
+    <variable>
      <type>int</type>
      <name>nr_gov_bonds</name>
      <description></description>
@@ -3252,6 +3285,11 @@ including several micro data.</description>
      <description></description>
     </variable>
     <variable>
+     <type>double</type>
+     <name>value_bonds_outstanding</name>
+     <description></description>
+    </variable>
+    <variable>
      <type>int</type>
      <name>nr_bonds_outstanding</name>
      <description></description>
@@ -3322,6 +3360,11 @@ including several micro data.</description>
    <name>ecb_balance_sheet</name>
    <description></description>
    <variables>
+    <variable>
+     <type>double</type>
+     <name>gov_bond_holdings</name>
+     <description></description>
+    </variable>
     <variable>
      <type>int</type>
      <name>nr_gov_bonds</name>
