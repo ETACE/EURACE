@@ -49,9 +49,18 @@ return 0;
 int Household_shifting_consumption_day()
 {
 	
+	if(FLAG_CONSUMPTION_SHIFTING==1)
+	{
+		printf("Error in Function Household_shifting_consumption_day\n\n"
+				"Household %d had already shifted the consumption day, but the payment_account is still smaller than the weekly_budget! \n",ID);
+	}
+	assert(FLAG_CONSUMPTION_SHIFTING==0);
+	
 	FLAG_CONSUMPTION_SHIFTING =1;
 	DAY_OF_WEEK_TO_ACT = (DAY_OF_WEEK_TO_ACT+1)%5;
 
+	
+	printf("Household %d shifts the consumption day \n",ID);
 	
 	return 0;
 }
@@ -62,9 +71,12 @@ int Household_shifting_consumption_day()
  */
 int Household_back_shifting_consumption_day()
 {
+	assert(FLAG_CONSUMPTION_SHIFTING==1);
 	
 	DAY_OF_WEEK_TO_ACT = (DAY_OF_WEEK_TO_ACT-1)%5;
 	FLAG_CONSUMPTION_SHIFTING =0;
+	
+	printf("Household %d shifts the consumption day back.\n",ID);
 	
 	return 0;
 }
