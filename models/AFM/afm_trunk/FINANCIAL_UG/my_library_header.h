@@ -249,6 +249,8 @@ int isEqualDouble(double a ,double b);
 
 double forceTologInterval(double rec,double value, double aNumber );
 
+void qsortdoublearray(double_array * array);
+
 /************Double array ***********/
 double_array *newCDouble(int size);       
 

@@ -1,32 +1,70 @@
 digraph state_graph {
 	rankdir=TB;
 	size="8,5;"
+	
+	/* Layers */
 	layer_0 [shape=plaintext, label="layer 0"];
+	layer_0_b [style=invis, shape=point];
+	layer_0_a [style=invis, shape=point];
+	layer_0_b -> layer_0 [style=invis];
+	layer_0 -> layer_0_a [style=invis];
 	layer_1 [shape=plaintext, label="layer 1"];
-	layer_0 -> layer_1 [style=invis];
+	layer_1_b [style=invis, shape=point];
+	layer_1_a [style=invis, shape=point];
+	layer_1_b -> layer_1 [style=invis];
+	layer_1 -> layer_1_a [style=invis];
+	layer_0_a -> layer_1_b [style=invis];
 	layer_2 [shape=plaintext, label="layer 2"];
-	layer_1 -> layer_2 [style=invis];
+	layer_2_b [style=invis, shape=point];
+	layer_2_a [style=invis, shape=point];
+	layer_2_b -> layer_2 [style=invis];
+	layer_2 -> layer_2_a [style=invis];
+	layer_1_a -> layer_2_b [style=invis];
 	layer_3 [shape=plaintext, label="layer 3"];
-	layer_2 -> layer_3 [style=invis];
+	layer_3_b [style=invis, shape=point];
+	layer_3_a [style=invis, shape=point];
+	layer_3_b -> layer_3 [style=invis];
+	layer_3 -> layer_3_a [style=invis];
+	layer_2_a -> layer_3_b [style=invis];
 	layer_4 [shape=plaintext, label="layer 4"];
-	layer_3 -> layer_4 [style=invis];
+	layer_4_b [style=invis, shape=point];
+	layer_4_a [style=invis, shape=point];
+	layer_4_b -> layer_4 [style=invis];
+	layer_4 -> layer_4_a [style=invis];
+	layer_3_a -> layer_4_b [style=invis];
 	layer_5 [shape=plaintext, label="layer 5"];
-	layer_4 -> layer_5 [style=invis];
+	layer_5_b [style=invis, shape=point];
+	layer_5_a [style=invis, shape=point];
+	layer_5_b -> layer_5 [style=invis];
+	layer_5 -> layer_5_a [style=invis];
+	layer_4_a -> layer_5_b [style=invis];
 	layer_6 [shape=plaintext, label="layer 6"];
-	layer_5 -> layer_6 [style=invis];
+	layer_6_b [style=invis, shape=point];
+	layer_6_a [style=invis, shape=point];
+	layer_6_b -> layer_6 [style=invis];
+	layer_6 -> layer_6_a [style=invis];
+	layer_5_a -> layer_6_b [style=invis];
 	layer_7 [shape=plaintext, label="layer 7"];
-	layer_6 -> layer_7 [style=invis];
+	layer_7_b [style=invis, shape=point];
+	layer_7_a [style=invis, shape=point];
+	layer_7_b -> layer_7 [style=invis];
+	layer_7 -> layer_7_a [style=invis];
+	layer_6_a -> layer_7_b [style=invis];
 	layer_8 [shape=plaintext, label="layer 8"];
-	layer_7 -> layer_8 [style=invis];
+	layer_8_b [style=invis, shape=point];
+	layer_8_a [style=invis, shape=point];
+	layer_8_b -> layer_8 [style=invis];
+	layer_8 -> layer_8_a [style=invis];
+	layer_7_a -> layer_8_b [style=invis];
 	
 	/* States */
 	Firm_end_Firm [label = "end_Firm"]
 	Firm_received_stock_info [label = "received_stock_info"]
 	Firm_start_Firm [label = "start_Firm"]
-	Household_WAITORDERSTATUS [label = "WAITORDERSTATUS"]
 	Household_Start_Household_Labour_Role [label = "Start_Household_Labour_Role"]
 	Household_SEND_ORDERS [label = "SEND_ORDERS"]
 	Household_BOND_BELIEF_FORMATION [label = "BOND_BELIEF_FORMATION"]
+	Household_WAITORDERSTATUS [label = "WAITORDERSTATUS"]
 	Household_CHOOSE_TO_TRADE_OR_NOT [label = "CHOOSE_TO_TRADE_OR_NOT"]
 	Household_SELECTSTRATEGY [label = "SELECTSTRATEGY"]
 	Household_start_Household_financial_market_role [label = "start_Household_financial_market_role"]
@@ -42,10 +80,13 @@ digraph state_graph {
 	Government_GOVERNMENT_IN_DEFICIT [label = "GOVERNMENT_IN_DEFICIT"]
 	Government_GOVERNMENT_SENT_info_bond [label = "GOVERNMENT_SENT_info_bond"]
 	Government_start_Government [label = "start_Government"]
+	
+	/* Functions */
 	Firm_Firm_send_info_start_Firm_received_stock_info [label = "Firm_send_info", shape = rect]
 	Firm_Firm_receive_stock_info_received_stock_info_end_Firm [label = "Firm_receive_stock_info", shape = rect]
 	Household_Household_receive_info_interest_from_bank_start_Household_financial_market_role_SELECTSTRATEGY [label = "Household_receive_info_interest_from_bank", shape = rect]
 	Household_Household_select_strategy_SELECTSTRATEGY_CHOOSE_TO_TRADE_OR_NOT [label = "Household_select_strategy", shape = rect]
+	Household_Household_send_pending_orders_CHOOSE_TO_TRADE_OR_NOT_WAITORDERSTATUS [label = "Household_send_pending_orders", shape = rect]
 	Household_Household_stock_beliefs_formation_CHOOSE_TO_TRADE_OR_NOT_BOND_BELIEF_FORMATION [label = "Household_stock_beliefs_formation", shape = rect]
 	Household_Household_bond_beliefs_formation_BOND_BELIEF_FORMATION_SEND_ORDERS [label = "Household_bond_beliefs_formation", shape = rect]
 	Household_Household_does_not_trading_CHOOSE_TO_TRADE_OR_NOT_Start_Household_Labour_Role [label = "Household_does_not_trading", shape = rect]
@@ -61,6 +102,58 @@ digraph state_graph {
 	Government_Government_update_its_portfolio_GOVERNMENT_SENT_ORDER_GOVERNMENT_PORTFOLIO_UPDATED [label = "Government_update_its_portfolio", shape = rect]
 	Government_Government_receive_info_bond_GOVERNMENT_PORTFOLIO_UPDATED_end_Government [label = "Government_receive_info_bond", shape = rect]
 	
+	/* Message types */
+	bank_account_update_message [ label = "bank_account_update" color="#00ff00" shape = parallelogram];
+	order_message [ label = "order" color="#00ff00" shape = parallelogram];
+	order_message -> order_message_start_0 [ color="#00ff00" ];
+	order_message_start_0 [ label = "start 5" color="#00ff00" shape = parallelogram];
+	order_message_start_0 -> order_message_end_0 [ color="#00ff00" ];
+	order_message_end_0 [ label = "end 6" color="#00ff00" shape = parallelogram];
+	order_message_end_0 -> Clearinghouse_ClearingHouse_receive_orders_and_run_RECEIVEDINFOSTOCK_COMPUTEDPRICES [ color="#00ff00" label = "" ];
+	order_status_message [ label = "order_status" color="#00ff00" shape = parallelogram];
+	order_status_message -> order_status_message_start_0 [ color="#00ff00" ];
+	order_status_message_start_0 [ label = "start 6" color="#00ff00" shape = parallelogram];
+	order_status_message_start_0 -> order_status_message_end_0 [ color="#00ff00" ];
+	order_status_message_end_0 [ label = "end 7" color="#00ff00" shape = parallelogram];
+	order_status_message_end_0 -> Household_Household_update_its_portfolio_WAITORDERSTATUS_Start_Household_Labour_Role [ color="#00ff00" label = "a->id == m->trader_id" ];
+	order_status_message_end_0 -> Government_Government_update_its_portfolio_GOVERNMENT_SENT_ORDER_GOVERNMENT_PORTFOLIO_UPDATED [ color="#00ff00" label = "a->id == m->trader_id" ];
+	infoAssetCH_message [ label = "infoAssetCH" color="#00ff00" shape = parallelogram];
+	infoAssetCH_message -> infoAssetCH_message_start_0 [ color="#00ff00" ];
+	infoAssetCH_message_start_0 [ label = "start 7" color="#00ff00" shape = parallelogram];
+	infoAssetCH_message_start_0 -> infoAssetCH_message_end_0 [ color="#00ff00" ];
+	infoAssetCH_message_end_0 [ label = "end 8" color="#00ff00" shape = parallelogram];
+	infoAssetCH_message_end_0 -> Firm_Firm_receive_stock_info_received_stock_info_end_Firm [ color="#00ff00" label = "a->id == m->asset_id" ];
+	infoAssetCH_message_end_0 -> Government_Government_receive_info_bond_GOVERNMENT_PORTFOLIO_UPDATED_end_Government [ color="#00ff00" label = "a->id == m->asset_id" ];
+	info_firm_message [ label = "info_firm" color="#00ff00" shape = parallelogram];
+	info_firm_message -> info_firm_message_start_0 [ color="#00ff00" ];
+	info_firm_message_start_0 [ label = "start 0" color="#00ff00" shape = parallelogram];
+	info_firm_message_start_0 -> info_firm_message_end_0 [ color="#00ff00" ];
+	info_firm_message_end_0 [ label = "end 1" color="#00ff00" shape = parallelogram];
+	info_firm_message_end_0 -> Clearinghouse_ClearingHouse_receive_info_start_Clearinghouse_RECEIVEDINFOSTOCK [ color="#00ff00" label = "" ];
+	info_firm_message -> info_firm_message_start_1 [ color="#00ff00" ];
+	info_firm_message_start_1 [ label = "start 1" color="#00ff00" shape = parallelogram];
+	info_firm_message_start_1 -> info_firm_message_end_1 [ color="#00ff00" ];
+	info_firm_message_end_1 [ label = "end 3" color="#00ff00" shape = parallelogram];
+	info_firm_message_end_1 -> Household_Household_stock_beliefs_formation_CHOOSE_TO_TRADE_OR_NOT_BOND_BELIEF_FORMATION [ color="#00ff00" label = "" ];
+	accountInterest_message [ label = "accountInterest" color="#00ff00" shape = parallelogram];
+	accountInterest_message -> accountInterest_message_start_0 [ color="#00ff00" ];
+	accountInterest_message_start_0 [ label = "start 0" color="#00ff00" shape = parallelogram];
+	accountInterest_message_start_0 -> accountInterest_message_end_0 [ color="#00ff00" ];
+	accountInterest_message_end_0 [ label = "end 1" color="#00ff00" shape = parallelogram];
+	accountInterest_message_end_0 -> Household_Household_receive_info_interest_from_bank_start_Household_financial_market_role_SELECTSTRATEGY [ color="#00ff00" label = "" ];
+	bankAccountUpdate_message [ label = "bankAccountUpdate" color="#00ff00" shape = parallelogram];
+	info_bond_message [ label = "info_bond" color="#00ff00" shape = parallelogram];
+	info_bond_message -> info_bond_message_start_0 [ color="#00ff00" ];
+	info_bond_message_start_0 [ label = "start 0" color="#00ff00" shape = parallelogram];
+	info_bond_message_start_0 -> info_bond_message_end_0 [ color="#00ff00" ];
+	info_bond_message_end_0 [ label = "end 1" color="#00ff00" shape = parallelogram];
+	info_bond_message_end_0 -> Clearinghouse_ClearingHouse_receive_info_start_Clearinghouse_RECEIVEDINFOSTOCK [ color="#00ff00" label = "" ];
+	info_bond_message -> info_bond_message_start_1 [ color="#00ff00" ];
+	info_bond_message_start_1 [ label = "start 1" color="#00ff00" shape = parallelogram];
+	info_bond_message_start_1 -> info_bond_message_end_1 [ color="#00ff00" ];
+	info_bond_message_end_1 [ label = "end 4" color="#00ff00" shape = parallelogram];
+	info_bond_message_end_1 -> Household_Household_bond_beliefs_formation_BOND_BELIEF_FORMATION_SEND_ORDERS [ color="#00ff00" label = "" ];
+	
 	/* Transitions */
 	Firm_start_Firm -> Firm_Firm_send_info_start_Firm_received_stock_info;
 	Firm_Firm_send_info_start_Firm_received_stock_info -> Firm_received_stock_info;
@@ -70,9 +163,11 @@ digraph state_graph {
 	Household_Household_receive_info_interest_from_bank_start_Household_financial_market_role_SELECTSTRATEGY -> Household_SELECTSTRATEGY;
 	Household_SELECTSTRATEGY -> Household_Household_select_strategy_SELECTSTRATEGY_CHOOSE_TO_TRADE_OR_NOT;
 	Household_Household_select_strategy_SELECTSTRATEGY_CHOOSE_TO_TRADE_OR_NOT -> Household_CHOOSE_TO_TRADE_OR_NOT;
-	Household_CHOOSE_TO_TRADE_OR_NOT -> Household_Household_stock_beliefs_formation_CHOOSE_TO_TRADE_OR_NOT_BOND_BELIEF_FORMATION [ label = "a->strategy != 0"];
+	Household_CHOOSE_TO_TRADE_OR_NOT -> Household_Household_send_pending_orders_CHOOSE_TO_TRADE_OR_NOT_WAITORDERSTATUS [ label = "a->strategy == 2"];
+	Household_Household_send_pending_orders_CHOOSE_TO_TRADE_OR_NOT_WAITORDERSTATUS -> Household_WAITORDERSTATUS;
+	Household_CHOOSE_TO_TRADE_OR_NOT -> Household_Household_stock_beliefs_formation_CHOOSE_TO_TRADE_OR_NOT_BOND_BELIEF_FORMATION [ label = "a->strategy == 1"];
 	Household_Household_stock_beliefs_formation_CHOOSE_TO_TRADE_OR_NOT_BOND_BELIEF_FORMATION -> Household_BOND_BELIEF_FORMATION;
-	Household_BOND_BELIEF_FORMATION -> Household_Household_bond_beliefs_formation_BOND_BELIEF_FORMATION_SEND_ORDERS [ label = "a->strategy != 0"];
+	Household_BOND_BELIEF_FORMATION -> Household_Household_bond_beliefs_formation_BOND_BELIEF_FORMATION_SEND_ORDERS [ label = "a->strategy == 1"];
 	Household_Household_bond_beliefs_formation_BOND_BELIEF_FORMATION_SEND_ORDERS -> Household_SEND_ORDERS;
 	Household_CHOOSE_TO_TRADE_OR_NOT -> Household_Household_does_not_trading_CHOOSE_TO_TRADE_OR_NOT_Start_Household_Labour_Role [ label = "a->strategy == 0"];
 	Household_Household_does_not_trading_CHOOSE_TO_TRADE_OR_NOT_Start_Household_Labour_Role -> Household_Start_Household_Labour_Role;
@@ -100,25 +195,40 @@ digraph state_graph {
 	Government_Government_receive_info_bond_GOVERNMENT_PORTFOLIO_UPDATED_end_Government -> Government_end_Government;
 	
 	/* Communications */
-	Clearinghouse_ClearingHouse_send_asset_information_COMPUTEDPRICES_end_Clearinghouse -> Government_Government_receive_info_bond_GOVERNMENT_PORTFOLIO_UPDATED_end_Government [ label = "infoAssetCH" color="#00ff00" constraint=false];
-	Clearinghouse_ClearingHouse_receive_orders_and_run_RECEIVEDINFOSTOCK_COMPUTEDPRICES -> Government_Government_update_its_portfolio_GOVERNMENT_SENT_ORDER_GOVERNMENT_PORTFOLIO_UPDATED [ label = "order_status" color="#00ff00" constraint=false];
-	Government_Government_orders_issuing_GOVERNMENT_IN_DEFICIT_GOVERNMENT_SENT_ORDER -> Clearinghouse_ClearingHouse_receive_orders_and_run_RECEIVEDINFOSTOCK_COMPUTEDPRICES [ label = "order" color="#00ff00" constraint=false];
-	Government_Government_generate_pending_orders_GOVERNMENT_SENT_info_bond_GOVERNMENT_IN_DEFICIT -> Clearinghouse_ClearingHouse_receive_orders_and_run_RECEIVEDINFOSTOCK_COMPUTEDPRICES [ label = "order" color="#00ff00" constraint=false];
-	Household_Household_send_orders_SEND_ORDERS_WAITORDERSTATUS -> Clearinghouse_ClearingHouse_receive_orders_and_run_RECEIVEDINFOSTOCK_COMPUTEDPRICES [ label = "order" color="#00ff00" constraint=false];
-	Government_Government_send_info_bond_start_Government_GOVERNMENT_SENT_info_bond -> Clearinghouse_ClearingHouse_receive_info_start_Clearinghouse_RECEIVEDINFOSTOCK [ label = "info_bond" color="#00ff00" constraint=false];
-	Firm_Firm_send_info_start_Firm_received_stock_info -> Clearinghouse_ClearingHouse_receive_info_start_Clearinghouse_RECEIVEDINFOSTOCK [ label = "info_firm" color="#00ff00" constraint=false];
-	Clearinghouse_ClearingHouse_receive_orders_and_run_RECEIVEDINFOSTOCK_COMPUTEDPRICES -> Household_Household_update_its_portfolio_WAITORDERSTATUS_Start_Household_Labour_Role [ label = "order_status" color="#00ff00" constraint=false];
-	Government_Government_send_info_bond_start_Government_GOVERNMENT_SENT_info_bond -> Household_Household_bond_beliefs_formation_BOND_BELIEF_FORMATION_SEND_ORDERS [ label = "info_bond" color="#00ff00" constraint=false];
-	Firm_Firm_send_info_start_Firm_received_stock_info -> Household_Household_stock_beliefs_formation_CHOOSE_TO_TRADE_OR_NOT_BOND_BELIEF_FORMATION [ label = "info_firm" color="#00ff00" constraint=false];
-	Bank_Bank_send_accountInterest_start_Bank_Bank_start_credit_market_role -> Household_Household_receive_info_interest_from_bank_start_Household_financial_market_role_SELECTSTRATEGY [ label = "accountInterest" color="#00ff00" constraint=false];
-	Clearinghouse_ClearingHouse_send_asset_information_COMPUTEDPRICES_end_Clearinghouse -> Firm_Firm_receive_stock_info_received_stock_info_end_Firm [ label = "infoAssetCH" color="#00ff00" constraint=false];
+	Firm_Firm_send_info_start_Firm_received_stock_info -> info_firm_message [ color="#00ff00" ];
+	Household_Household_send_pending_orders_CHOOSE_TO_TRADE_OR_NOT_WAITORDERSTATUS -> order_message [ color="#00ff00" ];
+	Household_Household_send_orders_SEND_ORDERS_WAITORDERSTATUS -> order_message [ color="#00ff00" ];
+	Clearinghouse_ClearingHouse_receive_orders_and_run_RECEIVEDINFOSTOCK_COMPUTEDPRICES -> order_status_message [ color="#00ff00" ];
+	Clearinghouse_ClearingHouse_send_asset_information_COMPUTEDPRICES_end_Clearinghouse -> infoAssetCH_message [ color="#00ff00" ];
+	Bank_Bank_send_accountInterest_start_Bank_Bank_start_credit_market_role -> accountInterest_message [ color="#00ff00" ];
+	Government_Government_send_info_bond_start_Government_GOVERNMENT_SENT_info_bond -> info_bond_message [ color="#00ff00" ];
+	Government_Government_generate_pending_orders_GOVERNMENT_SENT_info_bond_GOVERNMENT_IN_DEFICIT -> order_message [ color="#00ff00" ];
+	Government_Government_orders_issuing_GOVERNMENT_IN_DEFICIT_GOVERNMENT_SENT_ORDER -> order_message [ color="#00ff00" ];
 	{ rank=same; layer_0;  Firm_Firm_send_info_start_Firm_received_stock_info;  Bank_Bank_send_accountInterest_start_Bank_Bank_start_credit_market_role;  Government_Government_send_info_bond_start_Government_GOVERNMENT_SENT_info_bond; }
+	{ rank=same; layer_0_b; }
+	{ rank=same; layer_0_a; info_firm_message_start_0; accountInterest_message_start_0; info_bond_message_start_0; }
 	{ rank=same; layer_1;  Household_Household_receive_info_interest_from_bank_start_Household_financial_market_role_SELECTSTRATEGY;  Clearinghouse_ClearingHouse_receive_info_start_Clearinghouse_RECEIVEDINFOSTOCK;  Government_Government_generate_pending_orders_GOVERNMENT_SENT_info_bond_GOVERNMENT_IN_DEFICIT; }
+	{ rank=same; layer_1_b; info_firm_message_end_0; accountInterest_message_end_0; info_bond_message_end_0; }
+	{ rank=same; layer_1_a; info_firm_message_start_1; info_bond_message_start_1; }
 	{ rank=same; layer_2;  Household_Household_select_strategy_SELECTSTRATEGY_CHOOSE_TO_TRADE_OR_NOT;  Government_Government_orders_issuing_GOVERNMENT_IN_DEFICIT_GOVERNMENT_SENT_ORDER; }
-	{ rank=same; layer_3;  Household_Household_stock_beliefs_formation_CHOOSE_TO_TRADE_OR_NOT_BOND_BELIEF_FORMATION;  Household_Household_does_not_trading_CHOOSE_TO_TRADE_OR_NOT_Start_Household_Labour_Role; }
+	{ rank=same; layer_2_b; }
+	{ rank=same; layer_2_a; }
+	{ rank=same; layer_3;  Household_Household_send_pending_orders_CHOOSE_TO_TRADE_OR_NOT_WAITORDERSTATUS;  Household_Household_stock_beliefs_formation_CHOOSE_TO_TRADE_OR_NOT_BOND_BELIEF_FORMATION;  Household_Household_does_not_trading_CHOOSE_TO_TRADE_OR_NOT_Start_Household_Labour_Role; }
+	{ rank=same; layer_3_b; info_firm_message_end_1; }
+	{ rank=same; layer_3_a; }
 	{ rank=same; layer_4;  Household_Household_bond_beliefs_formation_BOND_BELIEF_FORMATION_SEND_ORDERS; }
+	{ rank=same; layer_4_b; info_bond_message_end_1; }
+	{ rank=same; layer_4_a; }
 	{ rank=same; layer_5;  Household_Household_send_orders_SEND_ORDERS_WAITORDERSTATUS; }
+	{ rank=same; layer_5_b; }
+	{ rank=same; layer_5_a; order_message_start_0; }
 	{ rank=same; layer_6;  Clearinghouse_ClearingHouse_receive_orders_and_run_RECEIVEDINFOSTOCK_COMPUTEDPRICES; }
+	{ rank=same; layer_6_b; order_message_end_0; }
+	{ rank=same; layer_6_a; order_status_message_start_0; }
 	{ rank=same; layer_7;  Household_Household_update_its_portfolio_WAITORDERSTATUS_Start_Household_Labour_Role;  Clearinghouse_ClearingHouse_send_asset_information_COMPUTEDPRICES_end_Clearinghouse;  Government_Government_update_its_portfolio_GOVERNMENT_SENT_ORDER_GOVERNMENT_PORTFOLIO_UPDATED; }
+	{ rank=same; layer_7_b; order_status_message_end_0; }
+	{ rank=same; layer_7_a; infoAssetCH_message_start_0; }
 	{ rank=same; layer_8;  Firm_Firm_receive_stock_info_received_stock_info_end_Firm;  Government_Government_receive_info_bond_GOVERNMENT_PORTFOLIO_UPDATED_end_Government; }
+	{ rank=same; layer_8_b; infoAssetCH_message_end_0; }
+	{ rank=same; layer_8_a; }
 }
