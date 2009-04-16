@@ -379,15 +379,6 @@ of employees and the number of vacancies</description>
      <inputs>
       <input>
        <messageName>quitting</messageName>
-       <filter>
-        <lhs>
-         <value>a.id</value>
-        </lhs>
-        <op>EQ</op>
-        <rhs>
-         <value>m.firm_id</value>
-        </rhs>
-       </filter>
       </input>
      </inputs>
      <outputs/>
@@ -401,15 +392,6 @@ of employees and the number of vacancies</description>
      <inputs>
       <input>
        <messageName>quitting</messageName>
-       <filter>
-        <lhs>
-         <value>a.id</value>
-        </lhs>
-        <op>EQ</op>
-        <rhs>
-         <value>m.firm_id</value>
-        </rhs>
-       </filter>
       </input>
      </inputs>
      <outputs/>
@@ -423,15 +405,6 @@ of employees and the number of vacancies</description>
      <inputs>
       <input>
        <messageName>quitting</messageName>
-       <filter>
-        <lhs>
-         <value>a.id</value>
-        </lhs>
-        <op>EQ</op>
-        <rhs>
-         <value>m.firm_id</value>
-        </rhs>
-       </filter>
       </input>
      </inputs>
      <outputs/>
@@ -579,15 +552,6 @@ of employees and the number of vacancies</description>
      <inputs>
       <input>
        <messageName>quitting2</messageName>
-       <filter>
-        <lhs>
-         <value>a.id</value>
-        </lhs>
-        <op>EQ</op>
-        <rhs>
-         <value>m.firm_id</value>
-        </rhs>
-       </filter>
       </input>
      </inputs>
      <outputs/>
@@ -601,15 +565,6 @@ of employees and the number of vacancies</description>
      <inputs>
       <input>
        <messageName>quitting2</messageName>
-       <filter>
-        <lhs>
-         <value>a.id</value>
-        </lhs>
-        <op>EQ</op>
-        <rhs>
-         <value>m.firm_id</value>
-        </rhs>
-       </filter>
       </input>
      </inputs>
      <outputs/>
