@@ -333,11 +333,11 @@ The other applicants are refused.</description>
        <messageName>job_application</messageName>
        <filter>
         <lhs>
-         <value>a.region_id</value>
+         <value>a.id</value>
         </lhs>
         <op>EQ</op>
         <rhs>
-         <value>m.region_id</value>
+         <value>m.firm_id</value>
         </rhs>
        </filter>
       </input>
@@ -359,11 +359,11 @@ employees and the number of vacancies</description>
        <messageName>job_acceptance</messageName>
        <filter>
         <lhs>
-         <value>a.region_id</value>
+         <value>a.id</value>
         </lhs>
         <op>EQ</op>
         <rhs>
-         <value>m.region_id</value>
+         <value>m.firm_id</value>
         </rhs>
        </filter>
       </input>
@@ -506,11 +506,11 @@ The other applicants are refused.</description>
        <messageName>job_application2</messageName>
        <filter>
         <lhs>
-         <value>a.region_id</value>
+         <value>a.id</value>
         </lhs>
         <op>EQ</op>
         <rhs>
-         <value>m.region_id</value>
+         <value>m.firm_id</value>
         </rhs>
        </filter>
       </input>
@@ -532,11 +532,11 @@ employees and the number of vacancies</description>
        <messageName>job_acceptance2</messageName>
        <filter>
         <lhs>
-         <value>a.region_id</value>
+         <value>a.id</value>
         </lhs>
         <op>EQ</op>
         <rhs>
-         <value>m.region_id</value>
+         <value>m.firm_id</value>
         </rhs>
        </filter>
       </input>
@@ -817,11 +817,11 @@ according to the wage offer</description>
        <messageName>job_offer</messageName>
        <filter>
         <lhs>
-         <value>a.region_id</value>
+         <value>a.id</value>
         </lhs>
         <op>EQ</op>
         <rhs>
-         <value>m.region_id</value>
+         <value>m.worker_id</value>
         </rhs>
        </filter>
       </input>
@@ -906,11 +906,11 @@ according to the wage offer</description>
        <messageName>job_offer2</messageName>
        <filter>
         <lhs>
-         <value>a.region_id</value>
+         <value>a.id</value>
         </lhs>
         <op>EQ</op>
         <rhs>
-         <value>m.region_id</value>
+         <value>m.worker_id</value>
         </rhs>
        </filter>
       </input>
