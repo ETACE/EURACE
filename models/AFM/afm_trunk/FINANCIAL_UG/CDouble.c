@@ -185,3 +185,17 @@ void divide(double_array *coll, double denominator)
      for(i=0;i<coll->size;i++)
      coll->array[i]=(coll->array[i])/denominator;
 }
+void rescale(double_array *coll, double treshold)
+{ 
+     int i;
+     double denominator;
+     int last;
+     last=coll->size -1;
+     if(coll->array[last]<treshold) 
+        { 
+         denominator=1-coll->array[last];
+         coll->array[last]=treshold;
+         for(i=0;i<(last);i++)
+         coll->array[i]=(1-treshold)*(coll->array[i])/denominator;
+        }
+}
