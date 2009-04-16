@@ -221,6 +221,41 @@ Order *computeLimitOrder( Asset *anAsset, double weight, double resource,Belief 
       return order;
 }
 
+double cashDemand(Order_array *pending)
+       {
+          int size,i; 
+          double value,cashFordemand;
+          Order *ord;
+          size= sizeCOrder(pending);
+          cashFordemand=0;
+          for(i=0; i<size ; i++)
+            {
+              ord=elementAtCOrder(pending,i);
+              value=ord->price*ord->quantity;
+              if(value>0) cashFordemand+=value;
+            }
+         return cashFordemand;
+}
+
+void reduce_demand(Order_array *pending, double budget)
+     {    int size,i; 
+          double cashFordemand,demand_budget,value;
+          Order *ord;
+          size= sizeCOrder(pending);
+          cashFordemand= cashDemand(pending);
+          demand_budget=cashFordemand;
+          if(budget<demand_budget)
+          for(i=0; i<size ; i++)
+            {
+              ord=elementAtCOrder(pending,i);
+              value=ord->price*ord->quantity;
+              if(value>0) ord->quantity=(int)ord->quantity*(budget/demand_budget);
+            }
+}
+              
+              
+              
+              
 void generatePendingOrders(Asset_array *assetsowned,Order_array *pending, Belief_array *beliefs,double *payment_account)
 { int size,i;
   int index;
@@ -231,11 +266,12 @@ void generatePendingOrders(Asset_array *assetsowned,Order_array *pending, Belief
   Belief *belief;
 
   double_array *weights;
-  resource=wealth(*payment_account - get_consumption_budget(),assetsowned);
+  resource=wealth(*payment_account-CONSUMPTION_BUDGET,assetsowned);
   set_wealth(resource);
   size=beliefs->size;
   reset_Order_array(pending);
   weights=get_assetWeights();
+  //printf("size=%d\n",size);
   for(i=0;i<size;i++)
   { 
     belief=&(beliefs->array[i]);
@@ -249,9 +285,17 @@ void generatePendingOrders(Asset_array *assetsowned,Order_array *pending, Belief
          }
     weight=elementAtCDouble(weights,i);
     ord=computeLimitOrder(asset, weight,resource,belief);
+  
     if((ord->quantity!=0)&&(ord->price>0)) addOrder(pending,ord);
     
   }
+    /*double prima,dopo;
+    prima=cashDemand(pending);
+    reduce_demand(pending, PAYMENT_ACCOUNT-CONSUMPTION_BUDGET);
+    dopo=cashDemand(pending);
+    printf("budget =%f prima=%f dopo=%f \n",PAYMENT_ACCOUNT-CONSUMPTION_BUDGET,prima,dopo);
+   */
+//}
 }
 
 
