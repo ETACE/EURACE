@@ -582,6 +582,11 @@
      <name>stock</name>
      <description></description>
     </variable>
+ <variable>
+     <type>double</type>
+     <name>stockPrice</name>
+     <description></description>
+    </variable>
    </memory>
    <functions>
     <function>
