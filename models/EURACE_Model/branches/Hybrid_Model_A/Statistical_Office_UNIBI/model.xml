@@ -2615,7 +2615,20 @@
        <phase>1</phase>
       </time>
      </condition>
-     <inputs/>
+     <inputs>
+      <input>
+       <messageName>policy_announcement</messageName>
+       <filter>
+        <lhs>
+         <value>a.gov_id</value>
+        </lhs>
+        <op>EQ</op>
+        <rhs>
+         <value>m.gov_id</value>
+        </rhs>
+       </filter>
+      </input>
+     </inputs>
      <outputs/>
     </function>
    </functions>
