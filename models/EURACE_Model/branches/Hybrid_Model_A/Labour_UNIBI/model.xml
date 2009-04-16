@@ -681,6 +681,15 @@ of employees and the number of vacancies</description>
      <inputs>
       <input>
        <messageName>firing</messageName>
+       <filter>
+        <lhs>
+         <value>a.id</value>
+        </lhs>
+        <op>EQ</op>
+        <rhs>
+         <value>m.worker_id</value>
+        </rhs>
+       </filter>
       </input>
      </inputs>
      <outputs/>
