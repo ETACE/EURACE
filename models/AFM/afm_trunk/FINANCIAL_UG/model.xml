@@ -427,6 +427,26 @@
 					<nextState>CHOOSE_TO_TRADE_OR_NOT</nextState>
 				</function>
 				<function>
+					<name>Household_send_pending_orders</name>
+					<description></description>
+					<currentState>CHOOSE_TO_TRADE_OR_NOT</currentState>
+					<nextState>WAITORDERSTATUS</nextState>
+					<condition>
+						<lhs>
+							<value>a.strategy</value>
+						</lhs>
+						<op>EQ</op>
+						<rhs>
+							<value>2</value>
+						</rhs>
+					</condition>
+					<outputs>
+						<output>
+							<messageName>order</messageName>
+						</output>
+					</outputs>
+				</function>
+				<function>
 					<name>Household_stock_beliefs_formation</name>
 					<description></description>
 					<currentState>CHOOSE_TO_TRADE_OR_NOT</currentState>
@@ -435,9 +455,9 @@
 						<lhs>
 							<value>a.strategy</value>
 						</lhs>
-						<op>NEQ</op>
+						<op>EQ</op>
 						<rhs>
-							<value>0</value>
+							<value>1</value>
 						</rhs>
 					</condition>
 					<inputs>
@@ -457,9 +477,9 @@
 						<lhs>
 							<value>a.strategy</value>
 						</lhs>
-						<op>NEQ</op>
+						<op>EQ</op>
 						<rhs>
-							<value>0</value>
+							<value>1</value>
 						</rhs>
 					</condition>
 					<inputs>
