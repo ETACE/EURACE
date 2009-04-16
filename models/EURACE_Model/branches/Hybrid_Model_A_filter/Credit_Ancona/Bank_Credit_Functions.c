@@ -27,7 +27,7 @@
                 bankruptcy_prob = 1-exp(-(d+c)/e);
                 r = bankruptcy_prob*c/e;
         
-                if ( VALUE_AT_RISK+r <= BANK_GAMMA[0]*ALFA*EQUITY )  //Instead of ALFA*EQUITY 
+                if ( VALUE_AT_RISK+r <= ALFA*EQUITY )  //Instead of ALFA*EQUITY 
                 {
                     credit_allowed = c;
                     if (credit_allowed<0)
@@ -180,7 +180,7 @@
          // tax and dividends payment
          if (PROFITS[0]>0)
          {
-             tax_bank = 0.9*PROFITS[0]; //TAX_RATE_CORPORATE  We do not want bank to accumulate too much money...
+             tax_bank = TAX_RATE_CORPORATE*PROFITS[0]; 
              PROFITS[0] -= tax_bank;
              EQUITY -= tax_bank;  
              CASH -= tax_bank; 
