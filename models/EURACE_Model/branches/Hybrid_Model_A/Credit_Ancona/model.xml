@@ -388,6 +388,9 @@
       <output>
        <messageName>central_bank_account_update</messageName>
       </output>
+      <output>
+       <messageName>tax_payment</messageName>
+      </output>
      </outputs>
     </function>
     <function>

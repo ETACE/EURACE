@@ -20,7 +20,7 @@ int Eurostat_send_data_to_government()
     double gdp;
     
     //printf("AVERAGE_WAGE %f\n",AVERAGE_WAGE);
-    add_mean_wage_for_government_message(1, AVERAGE_WAGE);
+    //add_mean_wage_for_government_message(1, AVERAGE_WAGE);
 
     //add message for each region
     for (i=0; i<NO_REGIONS; i++)
