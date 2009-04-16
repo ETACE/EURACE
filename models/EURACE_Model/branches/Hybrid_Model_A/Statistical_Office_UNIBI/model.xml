@@ -1360,9 +1360,6 @@
       <output>
        <messageName>bank_account_update</messageName>
       </output>
-      <output>
-       <messageName>firm_balance_sheet</messageName>
-      </output>
      </outputs>
     </function>
    </functions>

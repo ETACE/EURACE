@@ -337,9 +337,6 @@ The other applicants are refused.</description>
       <output>
        <messageName>job_offer</messageName>
       </output>
-      <output>
-       <messageName>application_rejection</messageName>
-      </output>
      </outputs>
     </function>
     <function>
@@ -492,9 +489,6 @@ The other applicants are refused.</description>
       </input>
      </inputs>
      <outputs>
-      <output>
-       <messageName>application_rejection2</messageName>
-      </output>
       <output>
        <messageName>job_offer2</messageName>
       </output>
@@ -810,11 +804,7 @@ reservation wage</description>
        <value>-1</value>
       </rhs>
      </condition>
-     <inputs>
-      <input>
-       <messageName>application_rejection</messageName>
-      </input>
-     </inputs>
+     <inputs/>
      <outputs/>
     </function>
     <function>
@@ -868,11 +858,7 @@ the reservation wage</description>
        <value>-1</value>
       </rhs>
      </condition>
-     <inputs>
-      <input>
-       <messageName>application_rejection2</messageName>
-      </input>
-     </inputs>
+     <inputs/>
      <outputs/>
     </function>
     <function>
@@ -1323,38 +1309,6 @@ as well as the specific skills.</description>
     <variable>
      <type>double</type>
      <name>specific_skill</name>
-     <description></description>
-    </variable>
-   </variables>
-  </message>
-  <message>
-   <name>application_rejection</name>
-   <description>Send by firms. Includes the id and the id of the refused applicant.</description>
-   <variables>
-    <variable>
-     <type>int</type>
-     <name>firm_id</name>
-     <description></description>
-    </variable>
-    <variable>
-     <type>int</type>
-     <name>worker_id</name>
-     <description></description>
-    </variable>
-   </variables>
-  </message>
-  <message>
-   <name>application_rejection2</name>
-   <description>Send by firms. Includes the id and the id of the refused applicant.</description>
-   <variables>
-    <variable>
-     <type>int</type>
-     <name>firm_id</name>
-     <description></description>
-    </variable>
-    <variable>
-     <type>int</type>
-     <name>worker_id</name>
      <description></description>
     </variable>
    </variables>
