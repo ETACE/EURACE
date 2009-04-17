@@ -58,7 +58,7 @@
     int Firm_get_loan()
     {
         int n, n1, k, i, primo;
-        int bk = -1;
+        
     
         int rate_order_array[NUMBER_OF_BANKS_ASKED]; //constant size dynamic array: name of banks
         double interest_array[NUMBER_OF_BANKS_ASKED]; //constant size dynamic array

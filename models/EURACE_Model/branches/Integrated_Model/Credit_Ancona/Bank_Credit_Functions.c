@@ -100,7 +100,9 @@
     
     int Bank_receive_installment()
     {
-        
+        FIRM_LOAN_INSTALLMENTS=0.0;
+	    FIRM_INTEREST_PAYMENTS=0.0;
+	    	
         START_INSTALLMENT_MESSAGE_LOOP
             if(installment_message->bank_id==ID)
             {
@@ -111,6 +113,10 @@
             EQUITY += installment_message->interest_amount;
             VALUE_AT_RISK -= installment_message->var_per_installment;
           
+            //Flow accounting
+            FIRM_INTEREST_PAYMENTS+= installment_message->interest_amount;
+            FIRM_LOAN_INSTALLMENTS += installment_message->installment_amount;
+            
             }
     
         FINISH_INSTALLMENT_MESSAGE_LOOP
@@ -133,12 +139,16 @@
     
     int Bank_give_loan()
     {
+        FIRM_LOAN_ISSUES=0.0;
         
         START_LOAN_ACCEPTANCE_MESSAGE_LOOP
             if(loan_acceptance_message->bank_id==ID)
             {
                 VALUE_AT_RISK+=loan_acceptance_message->loan_total_var;
-                TOTAL_CREDIT+=loan_acceptance_message->credit_amount_taken;           
+                TOTAL_CREDIT+=loan_acceptance_message->credit_amount_taken;
+                
+                //Flow accounting 
+                FIRM_LOAN_ISSUES+=loan_acceptance_message->credit_amount_taken;          
             }
     
         FINISH_LOAN_ACCEPTANCE_MESSAGE_LOOP
@@ -150,14 +160,20 @@
     int Bank_accounting()
     {
     
-         double q, c, gro, tax_bank, total_dividends, dividend_per_share, int_to_ecb;   
+         double q, c, gro, int_to_ecb;  // total_dividends, dividend_per_share
+         
+         ECB_INTEREST_PAYMENT=0.0;
          
          //Pay interests to ecb
          int_to_ecb=ECB_DEBT*ECB_INTEREST_RATE;
          PROFITS[0]-=int_to_ecb; 
          CASH-=int_to_ecb;
          EQUITY-=int_to_ecb;
-    
+         add_bank_interest_payment_message(int_to_ecb);
+         
+         //Flow accounting
+         ECB_INTEREST_PAYMENT=int_to_ecb;
+         
          if (PROFITS[1]!=0)
          {
             gro=( (PROFITS[0]-PROFITS[1])/PROFITS[1] );
@@ -180,27 +196,25 @@
          // tax and dividends payment
          if (PROFITS[0]>0)
          {
-             tax_bank = 0.9*PROFITS[0]; //TAX_RATE_CORPORATE  We do not want bank to accumulate too much money...
-             PROFITS[0] -= tax_bank;
-             EQUITY -= tax_bank;  
-             CASH -= tax_bank; 
-             add_tax_payment_message(GOV_ID, tax_bank);  
+             TAXES = TAX_RATE_CORPORATE*PROFITS[0]; // We do not want bank to accumulate too much money...
+             PROFITS[0] -= TAXES;
+             EQUITY -= TAXES;  
+             CASH -= TAXES; 
+             add_tax_payment_message(GOV_ID, TAXES);  
              //total_dividends = BANK_DIVIDEND_RATE*PROFITS[0];     When Mario will...
              //dividend_per_share = total_dividends/NUMBER_OF_SHARES; 
              //EQUITY -= total_dividends;     
              //CASH -= total_dividends;      
              //add_dividend_per_share_message(ID, dividend_per_share);                  
          }
-     
-    // add_central_bank_account_update_message(ID, CASH); //bank sending its payment account (stock)...
-     /*
-         if (CASH < 0) //... and if is negative (if money is not enough), increase ECB debt
+          
+         if (EQUITY < 0.0) //... and if is negative (if money is not enough), increase ECB debt
          {
-             
-             ECB_DEBT += fabs(CASH);
-             CASH = 0.0;
+             printf("In function Bank_accounting: Bank %d has EQUITY<0, but we ignore this for now.\n", ID);
+            // ECB_DEBT += fabs(EQUITY);
+            // EQUITY = 0.0;
          }
-       */ 
+        
       
          PROFITS[0]=0;  //update
          
@@ -223,12 +237,9 @@
     {
     	if (SWITCH_STOCK_CONSISTENCY_CHECK)
     	{
-	    	FIRM_LOAN_INSTALLMENTS=0.0;
-	    	FIRM_INTEREST_PAYMENTS=0.0;
-	    	FIRM_LOAN_ISSUES=0.0;
-	    	ECB_INTEREST_PAYMENT=0.0;
+	    	
+	    	
 	    	DIVIDEND_PAYMENT=0.0;
-	    	TAX_PAYMENT=0.0;
 	    	
 	    	TOTAL_ASSETS=0.0;
 	    	TOTAL_LIABILITIES=0.0;
@@ -237,7 +248,7 @@
 	
 	    	add_bank_balance_sheet_message(CASH, TOTAL_CREDIT, DEPOSITS, ECB_DEBT,
 	    			FIRM_LOAN_INSTALLMENTS, FIRM_INTEREST_PAYMENTS, FIRM_LOAN_ISSUES,
-	    			 ECB_INTEREST_PAYMENT, DIVIDEND_PAYMENT, TAX_PAYMENT,           
+	    			 ECB_INTEREST_PAYMENT, DIVIDEND_PAYMENT, TAXES,           
 	    			TOTAL_ASSETS, TOTAL_LIABILITIES, TOTAL_INCOME, TOTAL_EXPENSES);
     	}
     	
