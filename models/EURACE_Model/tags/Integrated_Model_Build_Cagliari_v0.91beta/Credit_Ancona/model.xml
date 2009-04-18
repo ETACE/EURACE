@@ -256,12 +256,24 @@
     <function>
      <name>Bank_communicate_identity</name>
      <description></description>
-     <currentState>Bank_start_credit_market_role</currentState>
-     <nextState>Bank_02</nextState>
+     <currentState>start_Bank</currentState>
+     <nextState>Bank_communicated_identity</nextState>
      <inputs/>
      <outputs>
       <output>
        <messageName>bank_identity</messageName>
+      </output>
+     </outputs>
+    </function>
+ <function>
+     <name>Bank_send_accountInterest</name>
+     <description></description>
+     <currentState>Bank_identity_communicated</currentState>
+     <nextState>Bank_02</nextState>
+     <inputs/>
+     <outputs>
+      <output>
+       <messageName>accountInterest</messageName>
       </output>
      </outputs>
     </function>
@@ -741,6 +753,22 @@ The equity of ECB is paid out to all governments as dividends, in proportion to 
     <variable>
      <type>double</type>
      <name>bank_interest_amount</name>
+     <description></description>
+    </variable>
+   </variables>
+  </message>
+ <message>
+   <name>accountInterest</name>
+   <description>message posted by the Bank </description>
+   <variables>
+    <variable>
+     <type>int</type>
+     <name>bank_id</name>
+     <description></description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>interest</name>
      <description></description>
     </variable>
    </variables>
