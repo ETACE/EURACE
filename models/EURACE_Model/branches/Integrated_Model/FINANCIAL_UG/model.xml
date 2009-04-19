@@ -27,7 +27,6 @@
    <file>Asset.c</file>
    <file>CAsset.c</file>
    <file>Belief.c</file>
-   <file>Bank_Financial_Market.c</file>
    <file>Firm_Financial_Market.c</file>
    <file>Random.c</file>
    <file>Bond.c</file>
@@ -545,25 +544,6 @@
    </functions>
   </xagent>
   <xagent>
-   <name>Bank</name>
-   <description></description>
-   <memory/>
-   <functions>
-    <function>
-     <name>Bank_send_accountInterest</name>
-     <description></description>
-     <currentState>start_Bank</currentState>
-     <nextState>Bank_start_credit_market_role</nextState>
-     <inputs/>
-     <outputs>
-      <output>
-       <messageName>accountInterest</messageName>
-      </output>
-     </outputs>
-    </function>
-   </functions>
-  </xagent>
-  <xagent>
    <name>Firm</name>
    <description></description>
    <memory>
@@ -822,22 +802,6 @@
     <variable>
      <type>Stock</type>
      <name>stock</name>
-     <description></description>
-    </variable>
-   </variables>
-  </message>
-  <message>
-   <name>accountInterest</name>
-   <description>message posted by the Household </description>
-   <variables>
-    <variable>
-     <type>int</type>
-     <name>bank_id</name>
-     <description></description>
-    </variable>
-    <variable>
-     <type>double</type>
-     <name>interest</name>
      <description></description>
     </variable>
    </variables>
