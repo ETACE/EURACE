@@ -30,7 +30,7 @@ int Firm_calc_input_demands_2()
         {
     
             temp_capital_demand = PLANNED_PRODUCTION_QUANTITY * 
-            (pow((BETA*MEAN_WAGE*(1.04))/((DEPRECIATION_RATE*ACTUAL_CAP_PRICE)*ALPHA),ALPHA)/
+            (pow((BETA*MEAN_WAGE*(1.04))/((ACTUAL_CAP_PRICE/CONST_INSTALLMENT_PERIODS)*ALPHA),ALPHA)/
             MEAN_SPECIFIC_SKILLS);
             
             /*Smoothing of capital good demand*/
@@ -52,7 +52,7 @@ int Firm_calc_input_demands_2()
         else
         {
             temp_capital_demand = PLANNED_PRODUCTION_QUANTITY * 
-            (pow((BETA*MEAN_WAGE*(1.04))/   ((DEPRECIATION_RATE*ACTUAL_CAP_PRICE)*ALPHA),ALPHA)/
+            (pow((BETA*MEAN_WAGE*(1.04))/   ((ACTUAL_CAP_PRICE/CONST_INSTALLMENT_PERIODS)*ALPHA),ALPHA)/
             TECHNOLOGY);
 
             /*Smoothing of capital good demand*/
@@ -306,7 +306,7 @@ int Firm_calc_input_demands()
         {
     
             temp_capital_demand = PLANNED_PRODUCTION_QUANTITY * 
-            (pow((BETA*MEAN_WAGE*(1.04))/((DEPRECIATION_RATE*ACTUAL_CAP_PRICE)*ALPHA),ALPHA)/
+            (pow((BETA*MEAN_WAGE*(1.04))/((ACTUAL_CAP_PRICE/CONST_INSTALLMENT_PERIODS)*ALPHA),ALPHA)/
             MEAN_SPECIFIC_SKILLS);
             
             /*Smoothing of capital good demand*/
@@ -329,7 +329,7 @@ int Firm_calc_input_demands()
         else
         {
             temp_capital_demand = PLANNED_PRODUCTION_QUANTITY * 
-            (pow((BETA*MEAN_WAGE*(1.04))/   ((DEPRECIATION_RATE*ACTUAL_CAP_PRICE)*ALPHA),ALPHA)/
+            (pow((BETA*MEAN_WAGE*(1.04))/   ((ACTUAL_CAP_PRICE/CONST_INSTALLMENT_PERIODS)*ALPHA),ALPHA)/
             TECHNOLOGY);
             
                 /*Smoothing of capital good demand*/
