@@ -429,12 +429,6 @@ int Firm_execute_financial_payments()
     
                 LOANS.array[i].loan_value =0.0;
             }
-
-            //compute current total debt
-            TOTAL_DEBT += LOANS.array[i].loan_value;
-    
-            //decrease the residual_var of the loan with the var_per_installment:
-            LOANS.array[i].residual_var -= LOANS.array[i].var_per_installment;
     
             //Sending debt_installment_payment_msg to all banks at which the firm has a loan
             //Note: this message is to be separated from the general bank_account_update_message send at the end of the period
@@ -444,26 +438,35 @@ int Firm_execute_financial_payments()
             add_installment_message(LOANS.array[i].bank_id,
                     LOANS.array[i].installment_amount, temp_interest,
                     LOANS.array[i].var_per_installment);
-        }
         
-        //If nr_periods_before_maturity == 0, remove the loan item
-        if (LOANS.array[i].nr_periods_before_repayment==0)
-        {
-            printf("\n Loan item %d: nr_periods_before_repayment==0\n", i);
-            printf("\n Firm: %d, Bank: %d\n", ID, LOANS.array[i].bank_id);
+            //If nr_periods_before_maturity == 0, this should be an error
+            if (LOANS.array[i].nr_periods_before_repayment==0)
+            {
+                printf("\n Loan item %d: nr_periods_before_repayment==0\n", i);
+                printf("\n Firm: %d, Bank: %d\n", ID, LOANS.array[i].bank_id);
+            }
+    
+            //If nr_periods_before_maturity == 1, remove the loan item, else add the loan value to total_debt
+            if (LOANS.array[i].nr_periods_before_repayment==1)
+            {
+                //printf("\n Removing loan item %d\n", i);
+                remove_debt_item(&LOANS, i);
+            }
+            else
+            {
+                LOANS.array[i].nr_periods_before_repayment -= 1;
+    
+                //Add loan_value to the current total debt
+                TOTAL_DEBT += LOANS.array[i].loan_value;
+                    
+                //decrease the residual_var of the loan with the var_per_installment:
+                LOANS.array[i].residual_var -= LOANS.array[i].var_per_installment;
+            }
+            if (LOANS.array[i].nr_periods_before_repayment<0)
+                printf("\n ERROR in function Firm_execute_financial_payments, line 456: nr_periods_before_repayment is -1. \n");
+
         }
 
-        if (LOANS.array[i].nr_periods_before_repayment==1)
-        {
-            //printf("\n Removing loan item %d\n", i);
-            remove_debt_item(&LOANS, i);
-        }
-        else
-        {
-            LOANS.array[i].nr_periods_before_repayment -= 1;
-        }
-        if (LOANS.array[i].nr_periods_before_repayment<0)
-            printf("\n ERROR in function Firm_execute_financial_payments, line 456: nr_periods_before_repayment is -1. \n");
     }
     
     //step 3: actual dividend payments
@@ -681,12 +684,12 @@ int Firm_read_stock_transactions_dummy()
     //Short-cut for Hybrid model:
     //Assume:
     //All external financial needs are satisfied by the asset market
-	if(ACTIVE==0)
-	{
-		PAYMENT_ACCOUNT += EXTERNAL_FINANCIAL_NEEDS;
-	}
+    if(ACTIVE==0)
+    {
+        PAYMENT_ACCOUNT += EXTERNAL_FINANCIAL_NEEDS;
+    }
     EXTERNAL_FINANCIAL_NEEDS =0.0;
-	
+    
     
     return 0;
 }
