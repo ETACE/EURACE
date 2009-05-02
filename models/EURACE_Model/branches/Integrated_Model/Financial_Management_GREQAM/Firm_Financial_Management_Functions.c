@@ -403,7 +403,7 @@ int Firm_execute_financial_payments()
     
     TOTAL_DEBT=0.0;
     for (i=LOANS.size-1; i>-1; i--)
-    {    
+    {
         //decrease payment_account with the interest_payment
         //the if-condition prevents an interest payment in the first period in which the loan is obtained
         // CONST_INSTALLMENT_PERIODS = 24 months by default
@@ -415,7 +415,7 @@ int Firm_execute_financial_payments()
     
             //decrease payment_account with the installment payment
             PAYMENT_ACCOUNT -= LOANS.array[i].installment_amount;
-
+    
             //decrease the value of the loan with the debt_installment_payment:
             LOANS.array[i].loan_value -= LOANS.array[i].installment_amount;
             
@@ -431,12 +431,6 @@ int Firm_execute_financial_payments()
     
                 LOANS.array[i].loan_value =0.0;
             }
-
-            //compute current total debt
-            TOTAL_DEBT += LOANS.array[i].loan_value;
-    
-            //decrease the residual_var of the loan with the var_per_installment:
-            LOANS.array[i].residual_var -= LOANS.array[i].var_per_installment;
     
             //Sending debt_installment_payment_msg to all banks at which the firm has a loan
             //Note: this message is to be separated from the general bank_account_update_message send at the end of the period
@@ -446,28 +440,37 @@ int Firm_execute_financial_payments()
             add_installment_message(LOANS.array[i].bank_id,
                     LOANS.array[i].installment_amount, temp_interest,
                     LOANS.array[i].var_per_installment);
-        }
         
-        //If nr_periods_before_maturity == 0, remove the loan item
-        if (LOANS.array[i].nr_periods_before_repayment==0)
-        {
-            printf("\n Loan item %d: nr_periods_before_repayment==0\n", i);
-            printf("\n Firm: %d, Bank: %d\n", ID, LOANS.array[i].bank_id);
+            //If nr_periods_before_maturity == 0, this should be an error
+            if (LOANS.array[i].nr_periods_before_repayment==0)
+            {
+                printf("\n Loan item %d: nr_periods_before_repayment==0\n", i);
+                printf("\n Firm: %d, Bank: %d\n", ID, LOANS.array[i].bank_id);
+            }
+    
+            //If nr_periods_before_maturity == 1, remove the loan item, else add the loan value to total_debt
+            if (LOANS.array[i].nr_periods_before_repayment==1)
+            {
+                //printf("\n Removing loan item %d\n", i);
+                remove_debt_item(&LOANS, i);
+            }
+            else
+            {
+                LOANS.array[i].nr_periods_before_repayment -= 1;
+    
+                //Add loan_value to the current total debt
+                TOTAL_DEBT += LOANS.array[i].loan_value;
+                    
+                //decrease the residual_var of the loan with the var_per_installment:
+                LOANS.array[i].residual_var -= LOANS.array[i].var_per_installment;
+            }
+            if (LOANS.array[i].nr_periods_before_repayment<0)
+                printf("\n ERROR in function Firm_execute_financial_payments, line 456: nr_periods_before_repayment is -1. \n");
+
         }
 
-        if (LOANS.array[i].nr_periods_before_repayment==1)
-        {
-            //printf("\n Removing loan item at index %d\n", i);
-            remove_debt_item(&LOANS, i);
-        }
-        else
-        {
-            LOANS.array[i].nr_periods_before_repayment -= 1;
-        }
-        if (LOANS.array[i].nr_periods_before_repayment<0)
-            printf("\n ERROR in function Firm_execute_financial_payments, line 467: nr_periods_before_repayment is -1. \n");
     }
-    
+
     //step 3: actual dividend payments
     //Actual bank account updates are send to the bank at end of day when the firm sends its bank_update message 
 
