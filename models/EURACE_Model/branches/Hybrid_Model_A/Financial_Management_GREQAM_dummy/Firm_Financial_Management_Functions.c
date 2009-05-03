@@ -576,12 +576,14 @@ int Firm_bankruptcy_insolvency_procedure()
     //To use already implemented functions, we use the EXTERNAL_FINANCIAL_NEEDS to send the share emmission
     EXTERNAL_FINANCIAL_NEEDS = max(0,ipo_amount);
 
+/*
     printf("\n In function Firm_bankruptcy_insolvency_procedure:\n"
             "target_debt = %2.2f\n"
             "TARGET_LEVERAGE_RATIO = %2.2f\n"
             "ipo_amount = %2.2f\n"
             "EXTERNAL_FINANCIAL_NEEDS = %2.2f\n",
             target_debt, TARGET_LEVERAGE_RATIO, ipo_amount, EXTERNAL_FINANCIAL_NEEDS);
+*/
 
     //Effect on investment goods market
     //Left-over capital
