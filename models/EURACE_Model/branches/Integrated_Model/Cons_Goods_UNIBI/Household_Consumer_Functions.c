@@ -38,12 +38,14 @@ int Household_determine_consumption_budget()
             WEEKLY_BUDGET = CONSUMPTION_BUDGET/4;
             WEEK_OF_MONTH = 4;
             
-return 0;   
+	    EXCESS_WEEKLY_BUDGET = WEEKLY_BUDGET - PAYMENT_ACCOUNT;
+
+	return 0;   
 }
 
 
 /** \fn Household_shifting_consumption_day())
- * \brief If the payment account does not cover the planed conspumtion expenditures in that week,
+ * \brief If the payment account does not cover the planned consumption expenditures in that week,
  * the day of consumption is shifted by one day.       
  */
 int Household_shifting_consumption_day()
@@ -52,7 +54,8 @@ int Household_shifting_consumption_day()
 	if(FLAG_CONSUMPTION_SHIFTING==1)
 	{
 		printf("Error in Function Household_shifting_consumption_day\n\n"
-				"Household %d had already shifted the consumption day, but the payment_account is still smaller than the weekly_budget! \n",ID);
+				"Household %d wants to shift the consumption day a 2nd time, but had already shifted it; the payment_account is still smaller than the weekly_budget! \n",ID);
+		printf("Payment_account=%2.11f weekly_budget=%2.11f\n\n", PAYMENT_ACCOUNT, WEEKLY_BUDGET);
 	}
 	assert(FLAG_CONSUMPTION_SHIFTING==0);
 	
