@@ -895,6 +895,11 @@ firms update the specific skill levels of the workers.</description>
      <name>flag_consumption_shifting</name>
      <description>Indicator variable that shows if the consumer has to shift the consumption day due to selling restrictions on the Finacual market.</description>
     </variable>
+    <variable>
+     <type>double</type>
+     <name>excess_weekly_budget</name>
+     <description>Auxiliary variable to be used in stategraph condition, excess_weekly_budget=weekly_budget-payment_account</description>
+    </variable>
    </memory>
    <functions>
     <function>
@@ -1120,11 +1125,11 @@ spent in both consumtion steps, into the PAYMENT_ACCOUNT.</description>
       <op>AND</op>
       <rhs>
        <lhs>
-        <value>a.weekly_budget</value>
+        <value>a.excess_weekly_budget</value>
        </lhs>
        <op>GT</op>
        <rhs>
-        <value>a.payment_account</value>
+        <value>0.0000001</value>
        </rhs>
       </rhs>
      </condition>
