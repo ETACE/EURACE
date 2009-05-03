@@ -440,34 +440,40 @@ int Firm_execute_financial_payments()
             add_installment_message(LOANS.array[i].bank_id,
                     LOANS.array[i].installment_amount, temp_interest,
                     LOANS.array[i].var_per_installment);
-        
-            //If nr_periods_before_maturity == 0, this should be an error
-            if (LOANS.array[i].nr_periods_before_repayment==0)
-            {
-                printf("\n Loan item %d: nr_periods_before_repayment==0\n", i);
-                printf("\n Firm: %d, Bank: %d\n", ID, LOANS.array[i].bank_id);
-            }
-    
-            //If nr_periods_before_maturity == 1, remove the loan item, else add the loan value to total_debt
-            if (LOANS.array[i].nr_periods_before_repayment==1)
-            {
-                //printf("\n Removing loan item %d\n", i);
-                remove_debt_item(&LOANS, i);
-            }
-            else
-            {
-                LOANS.array[i].nr_periods_before_repayment -= 1;
-    
-                //Add loan_value to the current total debt
-                TOTAL_DEBT += LOANS.array[i].loan_value;
-                    
-                //decrease the residual_var of the loan with the var_per_installment:
-                LOANS.array[i].residual_var -= LOANS.array[i].var_per_installment;
-            }
-            if (LOANS.array[i].nr_periods_before_repayment<0)
-                printf("\n ERROR in function Firm_execute_financial_payments, line 456: nr_periods_before_repayment is -1. \n");
-
         }
+                
+        //If 1<nr_periods_before_maturity<CONST_INSTALLMENT_PERIODS+1, decrease with 1, add loan value to total_debt, and decrease var.
+        if ((LOANS.array[i].nr_periods_before_repayment>1)&&(LOANS.array[i].nr_periods_before_repayment<CONST_INSTALLMENT_PERIODS+1))
+        {
+            LOANS.array[i].nr_periods_before_repayment -= 1;
+
+            //Add loan_value to the current total debt
+            TOTAL_DEBT += LOANS.array[i].loan_value;
+                
+            //decrease the residual_var of the loan with the var_per_installment:
+            LOANS.array[i].residual_var -= LOANS.array[i].var_per_installment;
+        }
+        //If nr_periods_before_maturity==CONST_INSTALLMENT_PERIODS+1, decrease with 1, add value to total debt.
+        else if (LOANS.array[i].nr_periods_before_repayment==CONST_INSTALLMENT_PERIODS+1)
+        {
+            LOANS.array[i].nr_periods_before_repayment -= 1;
+            
+            //Add loan_value to the current total debt
+            TOTAL_DEBT += LOANS.array[i].loan_value;
+        }
+        //If nr_periods_before_maturity == 0, this should be an error
+        else if (LOANS.array[i].nr_periods_before_repayment==0)
+        {
+            printf("\n Loan item %d: nr_periods_before_repayment==0\n", i);
+            printf("\n Firm: %d, Bank: %d\n", ID, LOANS.array[i].bank_id);
+        }
+        //If nr_periods_before_maturity == 1, remove the loan item.
+        else if (LOANS.array[i].nr_periods_before_repayment==1)
+        {
+            remove_debt_item(&LOANS, i);
+        }
+        else if (LOANS.array[i].nr_periods_before_repayment<0)
+            printf("\n ERROR in function Firm_execute_financial_payments, line 482: nr_periods_before_repayment is -1. \n");
 
     }
 
@@ -572,6 +578,7 @@ int Firm_bankruptcy_insolvency_procedure()
     //To use already implemented functions, we use the EXTERNAL_FINANCIAL_NEEDS to send the share emmission
     EXTERNAL_FINANCIAL_NEEDS = max(0,ipo_amount);
 
+/*
     printf("\n In function Firm_bankruptcy_insolvency_procedure:\n"
             "DEBT_RESCALING_FACTOR = %2.2f\n"
             "TARGET_LEVERAGE_RATIO = %2.2f\n"
@@ -582,6 +589,7 @@ int Firm_bankruptcy_insolvency_procedure()
             "EXTERNAL_FINANCIAL_NEEDS = %2.2f\n",
             DEBT_RESCALING_FACTOR, TARGET_LEVERAGE_RATIO, TARGET_LIQUIDITY_RATIO,
             target_debt, target_equity, ipo_amount, EXTERNAL_FINANCIAL_NEEDS);
+*/
 
     //Effect on investment goods market
     //Left-over capital
@@ -680,7 +688,9 @@ int Firm_compute_and_send_stock_orders()
     //Note: This function only runs if EXTERNAL_FINANCIAL_NEEDS>0.0
 
     double limit_price=CURRENT_SHARE_PRICE*0.99;
-    int quantity = -1*(1+EXTERNAL_FINANCIAL_NEEDS/limit_price);
+    
+    //If the quantity is fractional, take the ceiling, such that EXTERNAL_FINANCIAL_NEEDS are met.
+    int quantity = -1*ceil(EXTERNAL_FINANCIAL_NEEDS/limit_price);
     
     //Firm tries to sell stock_units shares:
     //add_order_message(trader_id, asset_id, limit_price, quantity)

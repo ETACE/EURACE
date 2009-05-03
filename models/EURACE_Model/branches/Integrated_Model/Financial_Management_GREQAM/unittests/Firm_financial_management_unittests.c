@@ -99,7 +99,7 @@ void unittest_Firm_compute_income_statement()
 
     CUM_REVENUE = 130.0;
     TOTAL_INTEREST_PAYMENT = 20.0;
-    PRODUCTION_COSTS = 10.0;
+    CALC_PRODUCTION_COSTS = 10.0;
     EARNINGS =0.0;
     TAX_PAYMENT =0.0;
     TAX_RATE_CORPORATE = 0.25;
@@ -245,7 +245,7 @@ void unittest_Firm_compute_total_financial_payments()
     TOTAL_DEBT_INSTALLMENT_PAYMENT = 1.0;
     TOTAL_DIVIDEND_PAYMENT = 1.0; 
     TAX_PAYMENT = 1.0;
-    PRODUCTION_COSTS = 1.0;
+    CALC_PRODUCTION_COSTS = 1.0;
     
     /***** Messages: initialize message boards **********************************/
 
@@ -500,6 +500,11 @@ void unittest_Firm_in_financial_crisis()
 /*
  * \fn: void unittest1_Firm_execute_financial_payments()
  * \brief: Unit test for: Firm_execute_financial_payments.
+ * Cases: 
+ * - 1 loan with nr_periods_before_repayment=2 (to be decreased)
+ * - 1 loan with nr_periods_before_repayment=1 (to be removed)
+ * - 1 loan with nr_periods_before_repayment=25 (to be decreased and shifted)
+ * - 1 loan with nr_periods_before_repayment=25 (to be decreased and shifted)
  * Status: Tested OK
  */
 void unittest1_Firm_execute_financial_payments()
@@ -521,7 +526,7 @@ void unittest1_Firm_execute_financial_payments()
     LOANS[0].var_per_installment=20.0;
     LOANS[0].residual_var=0.0;
     LOANS[0].bad_debt=0.0;
-    LOANS[0].nr_periods_before_repayment=5;
+    LOANS[0].nr_periods_before_repayment=2;
 
     LOANS[1].bank_id=2;
     LOANS[1].loan_value=50.0;
@@ -531,11 +536,31 @@ void unittest1_Firm_execute_financial_payments()
     LOANS[1].residual_var=0.0;
     LOANS[1].bad_debt=0.0;
     LOANS[1].nr_periods_before_repayment=1;
+
+    LOANS[2].bank_id=3;
+    LOANS[2].loan_value=240.0;
+    LOANS[2].interest_rate=0.01;
+    LOANS[2].installment_amount=10.0;
+    LOANS[2].var_per_installment=10.0;
+    LOANS[2].residual_var=240.0;
+    LOANS[2].bad_debt=0.0;
+    LOANS[2].nr_periods_before_repayment=25;
+
+    LOANS[3].bank_id=4;
+    LOANS[3].loan_value=480.0;
+    LOANS[3].interest_rate=0.01;
+    LOANS[3].installment_amount=20.0;
+    LOANS[3].var_per_installment=20.0;
+    LOANS[3].residual_var=480.0;
+    LOANS[3].bad_debt=0.0;
+    LOANS[3].nr_periods_before_repayment=25;
 */
     reset_debt_item_array(&LOANS);
-    add_debt_item(&LOANS, 1, 100.0, 0.01, 20.0, 20.0, 0.0, 0.0, 5);
+    add_debt_item(&LOANS, 1, 100.0, 0.01, 20.0, 20.0, 0.0, 0.0, 2);
     add_debt_item(&LOANS, 2, 50.0, 0.02, 50.0, 50.0, 0.0, 0.0, 1);
-
+    add_debt_item(&LOANS, 3, 240.0, 0.01, 10.0, 10.0, 240.0, 0.0, 25);
+    add_debt_item(&LOANS, 4, 480.0, 0.01, 20.0, 20.0, 480.0, 0.0, 25);
+    
     PAYMENT_ACCOUNT = 100.0;
     TOTAL_INTEREST_PAYMENT=0.0;
     TOTAL_DEBT_INSTALLMENT_PAYMENT=0.0;
@@ -595,11 +620,27 @@ void unittest1_Firm_execute_financial_payments()
     CU_ASSERT_DOUBLE_EQUAL(LOANS.array[0].loan_value, 80.0, 1e-3);
     CU_ASSERT_DOUBLE_EQUAL(LOANS.array[0].interest_rate, 0.01, 1e-3);
     CU_ASSERT_DOUBLE_EQUAL(LOANS.array[0].installment_amount, 20.0, 1e-3);
-    CU_ASSERT_EQUAL(LOANS.array[0].nr_periods_before_repayment, 4);
+    CU_ASSERT_EQUAL(LOANS.array[0].nr_periods_before_repayment, 1);
     CU_ASSERT_DOUBLE_EQUAL(PAYMENT_ACCOUNT, 28.0, 1e-3);
+
+    //printf("\n LOANS.array[1].bank_id=%d\n", LOANS.array[1].bank_id);
+    //printf("\n LOANS.array[1].loan_value=%2.2f\n", LOANS.array[1].loan_value);
+    //printf("\n LOANS.array[1].nr_periods_before_repayment=%d\n", LOANS.array[1].nr_periods_before_repayment);
+
+    CU_ASSERT_EQUAL(LOANS.array[1].bank_id, 3);
+    CU_ASSERT_DOUBLE_EQUAL(LOANS.array[1].loan_value, 240.0, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(LOANS.array[1].interest_rate, 0.01, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(LOANS.array[1].installment_amount, 10.0, 1e-3);
+    CU_ASSERT_EQUAL(LOANS.array[1].nr_periods_before_repayment, 24);
     
-    CU_ASSERT_DOUBLE_EQUAL(TOTAL_DEBT, 80.0, 1e-3);
-    CU_ASSERT_EQUAL(LOANS.size, 1);
+    CU_ASSERT_EQUAL(LOANS.array[2].bank_id, 4);
+    CU_ASSERT_DOUBLE_EQUAL(LOANS.array[2].loan_value, 480.0, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(LOANS.array[2].interest_rate, 0.01, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(LOANS.array[2].installment_amount, 20.0, 1e-3);
+    CU_ASSERT_EQUAL(LOANS.array[2].nr_periods_before_repayment, 24);
+
+    CU_ASSERT_DOUBLE_EQUAL(TOTAL_DEBT, 800.0, 1e-3);
+    CU_ASSERT_EQUAL(LOANS.size, 3);
     
     /***** Messages: Message post-conditions *****/
     //start a reading loop
