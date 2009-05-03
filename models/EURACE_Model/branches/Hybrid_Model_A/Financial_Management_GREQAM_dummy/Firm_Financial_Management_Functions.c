@@ -437,35 +437,41 @@ int Firm_execute_financial_payments()
             //add_installment_message(bank_id, installment_amount, interest_amount, var_per_installment)
             add_installment_message(LOANS.array[i].bank_id,
                     LOANS.array[i].installment_amount, temp_interest,
-                    LOANS.array[i].var_per_installment);
-        
-            //If nr_periods_before_maturity == 0, this should be an error
-            if (LOANS.array[i].nr_periods_before_repayment==0)
-            {
-                printf("\n Loan item %d: nr_periods_before_repayment==0\n", i);
-                printf("\n Firm: %d, Bank: %d\n", ID, LOANS.array[i].bank_id);
-            }
-    
-            //If nr_periods_before_maturity == 1, remove the loan item, else add the loan value to total_debt
-            if (LOANS.array[i].nr_periods_before_repayment==1)
-            {
-                //printf("\n Removing loan item %d\n", i);
-                remove_debt_item(&LOANS, i);
-            }
-            else
-            {
-                LOANS.array[i].nr_periods_before_repayment -= 1;
-    
-                //Add loan_value to the current total debt
-                TOTAL_DEBT += LOANS.array[i].loan_value;
-                    
-                //decrease the residual_var of the loan with the var_per_installment:
-                LOANS.array[i].residual_var -= LOANS.array[i].var_per_installment;
-            }
-            if (LOANS.array[i].nr_periods_before_repayment<0)
-                printf("\n ERROR in function Firm_execute_financial_payments, line 456: nr_periods_before_repayment is -1. \n");
-
+                    LOANS.array[i].var_per_installment);        
         }
+        
+        //If 1<nr_periods_before_maturity<CONST_INSTALLMENT_PERIODS+1, decrease with 1, add loan value to total_debt, and decrease var.
+        if ((LOANS.array[i].nr_periods_before_repayment>1)&&(LOANS.array[i].nr_periods_before_repayment<CONST_INSTALLMENT_PERIODS+1))
+        {
+            LOANS.array[i].nr_periods_before_repayment -= 1;
+
+            //Add loan_value to the current total debt
+            TOTAL_DEBT += LOANS.array[i].loan_value;
+                
+            //decrease the residual_var of the loan with the var_per_installment:
+            LOANS.array[i].residual_var -= LOANS.array[i].var_per_installment;
+        }
+        //If nr_periods_before_maturity==CONST_INSTALLMENT_PERIODS+1, decrease with 1, add value to total debt.
+        else if (LOANS.array[i].nr_periods_before_repayment==CONST_INSTALLMENT_PERIODS+1)
+        {
+            LOANS.array[i].nr_periods_before_repayment -= 1;
+            
+            //Add loan_value to the current total debt
+            TOTAL_DEBT += LOANS.array[i].loan_value;
+        }
+        //If nr_periods_before_maturity == 0, this should be an error
+        else if (LOANS.array[i].nr_periods_before_repayment==0)
+        {
+            printf("\n Loan item %d: nr_periods_before_repayment==0\n", i);
+            printf("\n Firm: %d, Bank: %d\n", ID, LOANS.array[i].bank_id);
+        }
+        //If nr_periods_before_maturity == 1, remove the loan item.
+        else if (LOANS.array[i].nr_periods_before_repayment==1)
+        {
+            remove_debt_item(&LOANS, i);
+        }
+        else if (LOANS.array[i].nr_periods_before_repayment<0)
+            printf("\n ERROR in function Firm_execute_financial_payments, line 482: nr_periods_before_repayment is -1. \n");
 
     }
     
