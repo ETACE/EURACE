@@ -1,10 +1,7 @@
 #ifndef MYLIB
 #define MYLIB
-#define traderStartingCash 50000
-#define assetStartingQuantity 1000
 #define max(A,B) ( (A) > (B) ? (A):(B))
 #define min(A,B) ( (A) < (B) ? (A):(B))
-#define  DAYINMONTH 20
 #define CURRENTDAY iteration_loop
 #define initialPrice 50
 #define MAXPRICES 100

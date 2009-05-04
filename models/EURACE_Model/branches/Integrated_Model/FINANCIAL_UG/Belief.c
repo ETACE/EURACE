@@ -38,7 +38,7 @@ double expectedPriceReturns(Belief *belief)
 int forwardMonths( int currentDay, int forwardWindow)
 {   
     int nrForwardMonths;
-    nrForwardMonths=((currentDay+forwardWindow)/ DAYINMONTH)-(currentDay/DAYINMONTH);
+    nrForwardMonths=((currentDay+forwardWindow)/ days_per_month)-(currentDay/days_per_month);
     return nrForwardMonths;
 }
     

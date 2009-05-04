@@ -72,25 +72,6 @@ int suite_Household_clean(void)
     return 0;
 }
 
-int suite_Mall_init(void)
-{  
-   // initialise_unit_testing();
-    unittest_init_Mall_agent();
-    current_xmachine = (xmachine *)malloc(sizeof(xmachine));
-    CHECK_POINTER(current_xmachine);
-    current_xmachine->xmachine_Mall=current_xmachine_Mall;
-    return 0;
-
-}
-
-int suite_Mall_clean(void)
- {  
-    unittest_free_Mall_agent();
-    //MB_Env_Finalise ();
-    free_messages();
-    return 0;
-}
-
 int suite_IGFirm_init(void)
 {  
    // initialise_unit_testing();
@@ -129,25 +110,6 @@ int suite_Eurostat_clean(void)
     return 0;
 }
 
-int suite_Clearinghouse_init(void)
-{  
-   // initialise_unit_testing();
-    unittest_init_Clearinghouse_agent();
-    current_xmachine = (xmachine *)malloc(sizeof(xmachine));
-    CHECK_POINTER(current_xmachine);
-    current_xmachine->xmachine_Clearinghouse=current_xmachine_Clearinghouse;
-    return 0;
-
-}
-
-int suite_Clearinghouse_clean(void)
- {  
-    unittest_free_Clearinghouse_agent();
-    //MB_Env_Finalise ();
-    free_messages();
-    return 0;
-}
-
 int suite_Bank_init(void)
 {  
    // initialise_unit_testing();
@@ -181,25 +143,6 @@ int suite_Government_init(void)
 int suite_Government_clean(void)
  {  
     unittest_free_Government_agent();
-    //MB_Env_Finalise ();
-    free_messages();
-    return 0;
-}
-
-int suite_Central_Bank_init(void)
-{  
-   // initialise_unit_testing();
-    unittest_init_Central_Bank_agent();
-    current_xmachine = (xmachine *)malloc(sizeof(xmachine));
-    CHECK_POINTER(current_xmachine);
-    current_xmachine->xmachine_Central_Bank=current_xmachine_Central_Bank;
-    return 0;
-
-}
-
-int suite_Central_Bank_clean(void)
- {  
-    unittest_free_Central_Bank_agent();
     //MB_Env_Finalise ();
     free_messages();
     return 0;
