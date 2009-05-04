@@ -29,31 +29,20 @@ int Firm_compute_financial_payments()
     //double debt_installment_payment   : installment payment per period
     //int nr_periods_before_maturity    : nr of periods to go before the loan has to be fully repaid
 
-    //step 1: compute total interest payments
     TOTAL_INTEREST_PAYMENT=0.0;
-    imax = LOANS.size;
-    for (i=0; i<imax; i++)
-    {
-        interest_payment = LOANS.array[i].interest_rate
-                * LOANS.array[i].loan_value;
-
-        //add to total
-        TOTAL_INTEREST_PAYMENT += interest_payment;
-    }
-
-    //step 2: compute total debt installment payments
     TOTAL_DEBT_INSTALLMENT_PAYMENT=0.0;
-    TOTAL_DEBT=0.0;
-    for (i=0; i<imax; i++)
+
+    for (i=0; i<LOANS.size; i++)
     {
         if(LOANS.array[i].loan_value < 0.0)
-            printf("\n ERROR in function Firm_compute_financial_payments: loan_value is NEGATIVE.\n ");
-        
-        //compute current total debt
-        TOTAL_DEBT += LOANS.array[i].loan_value;
+        printf("\n ERROR in function Firm_compute_financial_payments: loan_value is NEGATIVE.\n ");
 
-        //add debt_installment_payment to total installment payment
-        TOTAL_DEBT_INSTALLMENT_PAYMENT += LOANS.array[i].installment_amount;
+        //step 1: compute total interest payments
+        TOTAL_INTEREST_PAYMENT += = LOANS.array[i].interest_rate
+                * LOANS.array[i].loan_value;
+                
+        //step 2: compute total debt installment payments
+        TOTAL_DEBT_INSTALLMENT_PAYMENT += LOANS.array[i].installment_amount;}
     }
 
     return 0;
