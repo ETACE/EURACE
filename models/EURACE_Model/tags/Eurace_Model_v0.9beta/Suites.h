@@ -1,5 +1,6 @@
 #include <CUnit/Basic.h>
 #include <CUnit/CUnit.h>
+#include <CUnit/Console.h>
 
 void test_Firm_calc_production_quantity(void);
 
@@ -27,6 +28,8 @@ void test_Firm_compute_sales_statistics(void);
 
 void test_Firm_update_specific_skills_of_workers(void);
 
+void test_idle(void);
+
 void test_Firm_ask_loan(void);
 
 void test_Firm_get_loan(void);
@@ -41,7 +44,7 @@ void test_Firm_compute_total_financial_payments(void);
 
 void test_Firm_compute_balance_sheet(void);
 
-void test_Firm_in_bankruptcy(void);
+void test_Firm_set_bankruptcy_insolvency(void);
 
 void test_idle(void);
 
@@ -53,7 +56,7 @@ void test_Firm_read_stock_transactions(void);
 
 void test_Firm_check_financial_and_bankruptcy_state(void);
 
-void test_Firm_in_bankruptcy(void);
+void test_Firm_set_bankruptcy_illiquidity(void);
 
 void test_Firm_in_financial_crisis(void);
 
@@ -66,6 +69,30 @@ void test_idle(void);
 void test_idle(void);
 
 void test_Firm_execute_financial_payments(void);
+
+void test_Firm_send_subsidy_notification(void);
+
+void test_Firm_send_transfer_notification(void);
+
+void test_Firm_bankruptcy_insolvency_procedure(void);
+
+void test_Firm_bankruptcy_illiquidity_procedure(void);
+
+void test_Firm_bankruptcy_idle_counter(void);
+
+void test_idle(void);
+
+void test_Firm_compute_and_send_stock_orders(void);
+
+void test_Firm_read_stock_transactions(void);
+
+void test_Firm_reset_bankruptcy_flags(void);
+
+void test_idle(void);
+
+void test_Firm_send_info(void);
+
+void test_Firm_receive_stock_info(void);
 
 void test_Firm_calculate_specific_skills_and_wage_offer(void);
 
@@ -109,9 +136,13 @@ void test_Firm_idle(void);
 
 void test_Firm_compute_mean_wage_specific_skills(void);
 
+void test_Firm_send_random_redundancies(void);
+
 void test_idle(void);
 
-void test_Firm_read_tax_rates(void);
+void test_idle(void);
+
+void test_Firm_read_policy_announcements(void);
 
 void test_Firm_receive_data(void);
 
@@ -122,10 +153,6 @@ void test_Firm_send_data_to_Eurostat(void);
 void test_idle(void);
 
 void test_Firm_send_payments_to_bank(void);
-
-void test_Firm_send_info(void);
-
-void test_Firm_receive_stock_info(void);
 
 void test_Household_idle(void);
 
@@ -140,6 +167,20 @@ void test_Household_rank_and_buy_goods_2(void);
 void test_Household_receive_goods_read_rationing_2(void);
 
 void test_Household_handle_leftover_budget(void);
+
+void test_Household_receive_info_interest_from_bank(void);
+
+void test_Household_select_strategy(void);
+
+void test_Household_stock_beliefs_formation(void);
+
+void test_Household_bond_beliefs_formation(void);
+
+void test_Household_does_not_trading(void);
+
+void test_Household_send_orders(void);
+
+void test_Household_update_its_portfolio(void);
 
 void test_Household_read_firing_messages(void);
 
@@ -193,7 +234,7 @@ void test_Household_determine_consumption_budget(void);
 
 void test_Household_idle(void);
 
-void test_Household_read_tax_rates(void);
+void test_Household_read_policy_announcements(void);
 
 void test_Household_receive_data(void);
 
@@ -202,20 +243,6 @@ void test_Household_idle(void);
 void test_Household_send_data_to_Eurostat(void);
 
 void test_Household_idle(void);
-
-void test_Household_receive_info_interest_from_bank(void);
-
-void test_Household_select_strategy(void);
-
-void test_Household_stock_beliefs_formation(void);
-
-void test_Household_bond_beliefs_formation(void);
-
-void test_Household_does_not_trading(void);
-
-void test_Household_send_orders(void);
-
-void test_Household_update_its_portfolio(void);
 
 void test_Mall_reset_export_data(void);
 
@@ -235,6 +262,8 @@ void test_Mall_send_export_data(void);
 
 void test_idle(void);
 
+void test_Mall_read_insolvency_bankruptcy(void);
+
 void test_IGFirm_update_productivity_price(void);
 
 void test_IGFirm_idle(void);
@@ -253,15 +282,7 @@ void test_IGFirm_idle(void);
 
 void test_IGFirm_idle(void);
 
-void test_IGFirm_read_tax_rates(void);
-
-void test_Eurostat_Initialization(void);
-
-void test_Eurostat_idle(void);
-
-void test_Eurostat_idle(void);
-
-void test_Eurostat_read_tax_rates(void);
+void test_IGFirm_read_policy_announcements(void);
 
 void test_Eurostat_send_data(void);
 
@@ -288,12 +309,6 @@ void test_Eurostat_idle(void);
 void test_Eurostat_idle(void);
 
 void test_Eurostat_send_data_to_government(void);
-
-void test_ClearingHouse_receive_info_stock(void);
-
-void test_ClearingHouse_receive_orders_and_run(void);
-
-void test_ClearingHouse_send_asset_information(void);
 
 void test_Bank_decide_credit_conditions(void);
 
@@ -333,7 +348,7 @@ void test_Government_read_unemployment_benefit_notifications(void);
 
 void test_Government_idle(void);
 
-void test_Government_budget_accounting(void);
+void test_Government_monthly_budget_accounting(void);
 
 void test_Government_send_account_update(void);
 
@@ -343,7 +358,19 @@ void test_Government_set_policy(void);
 
 void test_Government_yearly_resetting(void);
 
+void test_idle(void);
+
+void test_Government_yearly_budget_accounting(void);
+
+void test_Government_monthly_resetting(void);
+
 void test_Central_Bank_read_account_update(void);
+
+void test_ClearingHouse_receive_info(void);
+
+void test_ClearingHouse_receive_orders_and_run(void);
+
+void test_ClearingHouse_send_asset_information(void);
 
 
 int suite_Firm_init(void);
@@ -361,9 +388,6 @@ int suite_IGFirm_clean(void);
 int suite_Eurostat_init(void);
 int suite_Eurostat_clean(void);
 
-int suite_Clearinghouse_init(void);
-int suite_Clearinghouse_clean(void);
-
 int suite_Bank_init(void);
 int suite_Bank_clean(void);
 
@@ -372,6 +396,9 @@ int suite_Government_clean(void);
 
 int suite_Central_Bank_init(void);
 int suite_Central_Bank_clean(void);
+
+int suite_Clearinghouse_init(void);
+int suite_Clearinghouse_clean(void);
 
 	
 
@@ -389,6 +416,7 @@ static CU_TestInfo tests_Firm[]= {
  { "test for idle",test_idle},
  { "test for Firm_compute_sales_statistics",test_Firm_compute_sales_statistics},
  { "test for Firm_update_specific_skills_of_workers",test_Firm_update_specific_skills_of_workers},
+ { "test for idle",test_idle},
  { "test for Firm_ask_loan",test_Firm_ask_loan},
  { "test for Firm_get_loan",test_Firm_get_loan},
  { "test for Firm_compute_financial_payments",test_Firm_compute_financial_payments},
@@ -396,19 +424,31 @@ static CU_TestInfo tests_Firm[]= {
  { "test for Firm_compute_dividends",test_Firm_compute_dividends},
  { "test for Firm_compute_total_financial_payments",test_Firm_compute_total_financial_payments},
  { "test for Firm_compute_balance_sheet",test_Firm_compute_balance_sheet},
- { "test for Firm_in_bankruptcy",test_Firm_in_bankruptcy},
+ { "test for Firm_set_bankruptcy_insolvency",test_Firm_set_bankruptcy_insolvency},
  { "test for idle",test_idle},
  { "test for Firm_compute_total_liquidity_needs",test_Firm_compute_total_liquidity_needs},
  { "test for Firm_compute_and_send_stock_orders",test_Firm_compute_and_send_stock_orders},
  { "test for Firm_read_stock_transactions",test_Firm_read_stock_transactions},
  { "test for Firm_check_financial_and_bankruptcy_state",test_Firm_check_financial_and_bankruptcy_state},
- { "test for Firm_in_bankruptcy",test_Firm_in_bankruptcy},
+ { "test for Firm_set_bankruptcy_illiquidity",test_Firm_set_bankruptcy_illiquidity},
  { "test for Firm_in_financial_crisis",test_Firm_in_financial_crisis},
  { "test for Firm_not_in_bankruptcy",test_Firm_not_in_bankruptcy},
  { "test for idle",test_idle},
  { "test for idle",test_idle},
  { "test for idle",test_idle},
  { "test for Firm_execute_financial_payments",test_Firm_execute_financial_payments},
+ { "test for Firm_send_subsidy_notification",test_Firm_send_subsidy_notification},
+ { "test for Firm_send_transfer_notification",test_Firm_send_transfer_notification},
+ { "test for Firm_bankruptcy_insolvency_procedure",test_Firm_bankruptcy_insolvency_procedure},
+ { "test for Firm_bankruptcy_illiquidity_procedure",test_Firm_bankruptcy_illiquidity_procedure},
+ { "test for Firm_bankruptcy_idle_counter",test_Firm_bankruptcy_idle_counter},
+ { "test for idle",test_idle},
+ { "test for Firm_compute_and_send_stock_orders",test_Firm_compute_and_send_stock_orders},
+ { "test for Firm_read_stock_transactions",test_Firm_read_stock_transactions},
+ { "test for Firm_reset_bankruptcy_flags",test_Firm_reset_bankruptcy_flags},
+ { "test for idle",test_idle},
+ { "test for Firm_send_info",test_Firm_send_info},
+ { "test for Firm_receive_stock_info",test_Firm_receive_stock_info},
  { "test for Firm_calculate_specific_skills_and_wage_offer",test_Firm_calculate_specific_skills_and_wage_offer},
  { "test for Firm_send_vacancies",test_Firm_send_vacancies},
  { "test for Firm_send_redundancies",test_Firm_send_redundancies},
@@ -430,15 +470,15 @@ static CU_TestInfo tests_Firm[]= {
  { "test for Firm_update_wage_offer_2",test_Firm_update_wage_offer_2},
  { "test for Firm_idle",test_Firm_idle},
  { "test for Firm_compute_mean_wage_specific_skills",test_Firm_compute_mean_wage_specific_skills},
+ { "test for Firm_send_random_redundancies",test_Firm_send_random_redundancies},
  { "test for idle",test_idle},
- { "test for Firm_read_tax_rates",test_Firm_read_tax_rates},
+ { "test for idle",test_idle},
+ { "test for Firm_read_policy_announcements",test_Firm_read_policy_announcements},
  { "test for Firm_receive_data",test_Firm_receive_data},
  { "test for idle",test_idle},
  { "test for Firm_send_data_to_Eurostat",test_Firm_send_data_to_Eurostat},
  { "test for idle",test_idle},
  { "test for Firm_send_payments_to_bank",test_Firm_send_payments_to_bank},
- { "test for Firm_send_info",test_Firm_send_info},
- { "test for Firm_receive_stock_info",test_Firm_receive_stock_info},
 
 CU_TEST_INFO_NULL,
 };
@@ -451,6 +491,13 @@ static CU_TestInfo tests_Household[]= {
  { "test for Household_rank_and_buy_goods_2",test_Household_rank_and_buy_goods_2},
  { "test for Household_receive_goods_read_rationing_2",test_Household_receive_goods_read_rationing_2},
  { "test for Household_handle_leftover_budget",test_Household_handle_leftover_budget},
+ { "test for Household_receive_info_interest_from_bank",test_Household_receive_info_interest_from_bank},
+ { "test for Household_select_strategy",test_Household_select_strategy},
+ { "test for Household_stock_beliefs_formation",test_Household_stock_beliefs_formation},
+ { "test for Household_bond_beliefs_formation",test_Household_bond_beliefs_formation},
+ { "test for Household_does_not_trading",test_Household_does_not_trading},
+ { "test for Household_send_orders",test_Household_send_orders},
+ { "test for Household_update_its_portfolio",test_Household_update_its_portfolio},
  { "test for Household_read_firing_messages",test_Household_read_firing_messages},
  { "test for Household_idle",test_Household_idle},
  { "test for Household_idle",test_Household_idle},
@@ -477,18 +524,11 @@ static CU_TestInfo tests_Household[]= {
  { "test for Household_send_tax_payment",test_Household_send_tax_payment},
  { "test for Household_determine_consumption_budget",test_Household_determine_consumption_budget},
  { "test for Household_idle",test_Household_idle},
- { "test for Household_read_tax_rates",test_Household_read_tax_rates},
+ { "test for Household_read_policy_announcements",test_Household_read_policy_announcements},
  { "test for Household_receive_data",test_Household_receive_data},
  { "test for Household_idle",test_Household_idle},
  { "test for Household_send_data_to_Eurostat",test_Household_send_data_to_Eurostat},
  { "test for Household_idle",test_Household_idle},
- { "test for Household_receive_info_interest_from_bank",test_Household_receive_info_interest_from_bank},
- { "test for Household_select_strategy",test_Household_select_strategy},
- { "test for Household_stock_beliefs_formation",test_Household_stock_beliefs_formation},
- { "test for Household_bond_beliefs_formation",test_Household_bond_beliefs_formation},
- { "test for Household_does_not_trading",test_Household_does_not_trading},
- { "test for Household_send_orders",test_Household_send_orders},
- { "test for Household_update_its_portfolio",test_Household_update_its_portfolio},
 
 CU_TEST_INFO_NULL,
 };
@@ -503,6 +543,7 @@ static CU_TestInfo tests_Mall[]= {
  { "test for Mall_pay_firm",test_Mall_pay_firm},
  { "test for Mall_send_export_data",test_Mall_send_export_data},
  { "test for idle",test_idle},
+ { "test for Mall_read_insolvency_bankruptcy",test_Mall_read_insolvency_bankruptcy},
 
 CU_TEST_INFO_NULL,
 };
@@ -517,16 +558,12 @@ static CU_TestInfo tests_IGFirm[]= {
  { "test for IGFirm_dividend_payment",test_IGFirm_dividend_payment},
  { "test for IGFirm_idle",test_IGFirm_idle},
  { "test for IGFirm_idle",test_IGFirm_idle},
- { "test for IGFirm_read_tax_rates",test_IGFirm_read_tax_rates},
+ { "test for IGFirm_read_policy_announcements",test_IGFirm_read_policy_announcements},
 
 CU_TEST_INFO_NULL,
 };
 
 static CU_TestInfo tests_Eurostat[]= {
- { "test for Eurostat_Initialization",test_Eurostat_Initialization},
- { "test for Eurostat_idle",test_Eurostat_idle},
- { "test for Eurostat_idle",test_Eurostat_idle},
- { "test for Eurostat_read_tax_rates",test_Eurostat_read_tax_rates},
  { "test for Eurostat_send_data",test_Eurostat_send_data},
  { "test for Eurostat_idle",test_Eurostat_idle},
  { "test for Eurostat_idle",test_Eurostat_idle},
@@ -540,14 +577,6 @@ static CU_TestInfo tests_Eurostat[]= {
  { "test for Eurostat_idle",test_Eurostat_idle},
  { "test for Eurostat_idle",test_Eurostat_idle},
  { "test for Eurostat_send_data_to_government",test_Eurostat_send_data_to_government},
-
-CU_TEST_INFO_NULL,
-};
-
-static CU_TestInfo tests_Clearinghouse[]= {
- { "test for ClearingHouse_receive_info_stock",test_ClearingHouse_receive_info_stock},
- { "test for ClearingHouse_receive_orders_and_run",test_ClearingHouse_receive_orders_and_run},
- { "test for ClearingHouse_send_asset_information",test_ClearingHouse_send_asset_information},
 
 CU_TEST_INFO_NULL,
 };
@@ -577,17 +606,28 @@ static CU_TestInfo tests_Government[]= {
  { "test for Government_read_transfer_notifications",test_Government_read_transfer_notifications},
  { "test for Government_read_unemployment_benefit_notifications",test_Government_read_unemployment_benefit_notifications},
  { "test for Government_idle",test_Government_idle},
- { "test for Government_budget_accounting",test_Government_budget_accounting},
+ { "test for Government_monthly_budget_accounting",test_Government_monthly_budget_accounting},
  { "test for Government_send_account_update",test_Government_send_account_update},
  { "test for Government_read_data_from_Eurostat",test_Government_read_data_from_Eurostat},
  { "test for Government_set_policy",test_Government_set_policy},
  { "test for Government_yearly_resetting",test_Government_yearly_resetting},
+ { "test for idle",test_idle},
+ { "test for Government_yearly_budget_accounting",test_Government_yearly_budget_accounting},
+ { "test for Government_monthly_resetting",test_Government_monthly_resetting},
 
 CU_TEST_INFO_NULL,
 };
 
 static CU_TestInfo tests_Central_Bank[]= {
  { "test for Central_Bank_read_account_update",test_Central_Bank_read_account_update},
+
+CU_TEST_INFO_NULL,
+};
+
+static CU_TestInfo tests_Clearinghouse[]= {
+ { "test for ClearingHouse_receive_info",test_ClearingHouse_receive_info},
+ { "test for ClearingHouse_receive_orders_and_run",test_ClearingHouse_receive_orders_and_run},
+ { "test for ClearingHouse_send_asset_information",test_ClearingHouse_send_asset_information},
 
 CU_TEST_INFO_NULL,
 };
@@ -599,10 +639,10 @@ CU_TEST_INFO_NULL,
 { "suite_Mall",  suite_Mall_init, suite_Mall_clean, tests_Mall},
 { "suite_IGFirm",  suite_IGFirm_init, suite_IGFirm_clean, tests_IGFirm},
 { "suite_Eurostat",  suite_Eurostat_init, suite_Eurostat_clean, tests_Eurostat},
-{ "suite_Clearinghouse",  suite_Clearinghouse_init, suite_Clearinghouse_clean, tests_Clearinghouse},
 { "suite_Bank",  suite_Bank_init, suite_Bank_clean, tests_Bank},
 { "suite_Government",  suite_Government_init, suite_Government_clean, tests_Government},
 { "suite_Central_Bank",  suite_Central_Bank_init, suite_Central_Bank_clean, tests_Central_Bank},
+{ "suite_Clearinghouse",  suite_Clearinghouse_init, suite_Clearinghouse_clean, tests_Clearinghouse},
 
 CU_SUITE_INFO_NULL,
 };

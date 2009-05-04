@@ -2,18 +2,6 @@
 
 
 
-void initializePortfolio(double *payment_account, Asset_array *assets)
-{  
-int i;
-   Asset *currentAsset;
-  *payment_account=traderStartingCash;
-  for(i=1;i<sizeCAsset(assets);i++)
-  {currentAsset=elementAtCAsset(assets,i);
-   setAsset(currentAsset,i,initialPrice,assetStartingQuantity);
-  }
-}
-
-
 
  void executeOrder(double *payment_account,Order *anOrder,Asset_array *assets,Order_array *pending)
  {     
