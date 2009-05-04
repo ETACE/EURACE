@@ -3,13 +3,10 @@
 #define max(A,B) ( (A) > (B) ? (A):(B))
 #define min(A,B) ( (A) < (B) ? (A):(B))
 #define CURRENTDAY iteration_loop
-#define initialPrice 50
 #define MAXPRICES 100
 #define MAXRETURNS MAXPRICES
 //move constants to model.xml environment
-#define COUPONPERIODICITYNRMONTHS 6
-#define NRDAYSINYEAR  240
-#define FUNDAMENTAL_RETURN_WEIGHT_MIN 0.1
+#define NRDAYSINYEAR  days_in_month*12
 
 #include "../header.h"
 #include <stdlib.h>
