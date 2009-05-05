@@ -46,7 +46,6 @@ void unittest_Firm_compute_financial_payments()
 
     TOTAL_INTEREST_PAYMENT=0.0;
     TOTAL_DEBT_INSTALLMENT_PAYMENT=0.0;
-    TOTAL_DEBT=0.0;
     
     /***** Messages: initialize message boards **********************************/
 
@@ -74,7 +73,6 @@ void unittest_Firm_compute_financial_payments()
         
         CU_ASSERT_DOUBLE_EQUAL(TOTAL_INTEREST_PAYMENT, 5.0, 1e-3);
         CU_ASSERT_DOUBLE_EQUAL(TOTAL_DEBT_INSTALLMENT_PAYMENT, 70.0, 1e-3);
-        CU_ASSERT_DOUBLE_EQUAL(TOTAL_DEBT, 300.0, 1e-3);
 
     /***** Messages: Message post-conditions *****/
 
@@ -616,30 +614,41 @@ void unittest1_Firm_execute_financial_payments()
     Firm_execute_financial_payments();
     
     /***** Variables: Memory post-conditions *****/
+/*    
+    printf("\n LOANS.array[0].bank_id=%d\n", LOANS.array[0].bank_id);
+    printf("\n LOANS.array[0].loan_value=%2.2f\n", LOANS.array[0].loan_value);
+    printf("\n LOANS.array[0].nr_periods_before_repayment=%d\n", LOANS.array[0].nr_periods_before_repayment);
+*/
     CU_ASSERT_EQUAL(LOANS.array[0].bank_id, 1);
     CU_ASSERT_DOUBLE_EQUAL(LOANS.array[0].loan_value, 80.0, 1e-3);
     CU_ASSERT_DOUBLE_EQUAL(LOANS.array[0].interest_rate, 0.01, 1e-3);
     CU_ASSERT_DOUBLE_EQUAL(LOANS.array[0].installment_amount, 20.0, 1e-3);
     CU_ASSERT_EQUAL(LOANS.array[0].nr_periods_before_repayment, 1);
     CU_ASSERT_DOUBLE_EQUAL(PAYMENT_ACCOUNT, 28.0, 1e-3);
-
-    //printf("\n LOANS.array[1].bank_id=%d\n", LOANS.array[1].bank_id);
-    //printf("\n LOANS.array[1].loan_value=%2.2f\n", LOANS.array[1].loan_value);
-    //printf("\n LOANS.array[1].nr_periods_before_repayment=%d\n", LOANS.array[1].nr_periods_before_repayment);
-
+/*
+    printf("\n LOANS.array[1].bank_id=%d\n", LOANS.array[1].bank_id);
+    printf("\n LOANS.array[1].loan_value=%2.2f\n", LOANS.array[1].loan_value);
+    printf("\n LOANS.array[1].nr_periods_before_repayment=%d\n", LOANS.array[1].nr_periods_before_repayment);
+*/
     CU_ASSERT_EQUAL(LOANS.array[1].bank_id, 3);
     CU_ASSERT_DOUBLE_EQUAL(LOANS.array[1].loan_value, 240.0, 1e-3);
     CU_ASSERT_DOUBLE_EQUAL(LOANS.array[1].interest_rate, 0.01, 1e-3);
     CU_ASSERT_DOUBLE_EQUAL(LOANS.array[1].installment_amount, 10.0, 1e-3);
     CU_ASSERT_EQUAL(LOANS.array[1].nr_periods_before_repayment, 24);
-    
+/*    
+    printf("\n LOANS.array[2].bank_id=%d\n", LOANS.array[2].bank_id);
+    printf("\n LOANS.array[2].loan_value=%2.2f\n", LOANS.array[2].loan_value);
+    printf("\n LOANS.array[2].nr_periods_before_repayment=%d\n", LOANS.array[2].nr_periods_before_repayment);
+*/
     CU_ASSERT_EQUAL(LOANS.array[2].bank_id, 4);
     CU_ASSERT_DOUBLE_EQUAL(LOANS.array[2].loan_value, 480.0, 1e-3);
     CU_ASSERT_DOUBLE_EQUAL(LOANS.array[2].interest_rate, 0.01, 1e-3);
     CU_ASSERT_DOUBLE_EQUAL(LOANS.array[2].installment_amount, 20.0, 1e-3);
     CU_ASSERT_EQUAL(LOANS.array[2].nr_periods_before_repayment, 24);
 
-    CU_ASSERT_DOUBLE_EQUAL(TOTAL_DEBT, 800.0, 1e-3);
+    //printf("\n Total_debt=%2.2f\n", TOTAL_DEBT);
+
+    CU_ASSERT_DOUBLE_EQUAL(TOTAL_DEBT, 870.0, 1e-3);
     CU_ASSERT_EQUAL(LOANS.size, 3);
     
     /***** Messages: Message post-conditions *****/
