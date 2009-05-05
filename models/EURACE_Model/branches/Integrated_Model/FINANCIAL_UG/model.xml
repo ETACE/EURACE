@@ -24,7 +24,7 @@
      <variable>
     <type>double</type>
     <name>FUNDAMENTAL_RETURN_WEIGHT_MIN</name>
-    <description>constant value that regulate the minumum value of the fundamental weight</description>
+    <description>constant value that regulate the minumum value of the fundamental weight:typical value is 0.1</description>
    </variable>
   </constants>
   <functionFiles>
