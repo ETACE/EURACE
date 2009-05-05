@@ -15,7 +15,6 @@
 int Firm_compute_financial_payments()
 {
     int i;
-    double interest_payment =0.0;
     
     //double PAYMENT_ACCOUNT            : account out of which payments are made
 
@@ -37,11 +36,10 @@ int Firm_compute_financial_payments()
         printf("\n ERROR in function Firm_compute_financial_payments: loan_value is NEGATIVE.\n ");
 
         //step 1: compute total interest payments
-        TOTAL_INTEREST_PAYMENT += = LOANS.array[i].interest_rate
-                * LOANS.array[i].loan_value;
+        TOTAL_INTEREST_PAYMENT += LOANS.array[i].interest_rate * LOANS.array[i].loan_value;
                 
         //step 2: compute total debt installment payments
-        TOTAL_DEBT_INSTALLMENT_PAYMENT += LOANS.array[i].installment_amount;}
+        TOTAL_DEBT_INSTALLMENT_PAYMENT += LOANS.array[i].installment_amount;
     }
 
     return 0;
