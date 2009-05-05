@@ -643,11 +643,7 @@
      <currentState>GOVERNMENT_SENT_info_bond</currentState>
      <nextState>GOVERNMENT_IN_DEFICIT</nextState>
      <inputs/>
-     <outputs>
-      <output>
-       <messageName>order</messageName>
-      </output>
-     </outputs>
+     <outputs/>
     </function>
     <function>
      <name>Government_orders_issuing</name>
