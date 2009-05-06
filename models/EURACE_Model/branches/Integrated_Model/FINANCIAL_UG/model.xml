@@ -26,6 +26,11 @@
     <name>FUNDAMENTAL_RETURN_WEIGHT_MIN</name>
     <description>constant value that regulate the minumum value of the fundamental weight:typical value is 0.1</description>
    </variable>
+      <variable>
+    <type>double</type>
+    <name>DAYS_IN_MONTH</name>
+    <description>number of days in month : typical value is 20</description>
+   </variable>
   </constants>
   <functionFiles>
    <file>Order.c</file>
