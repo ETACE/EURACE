@@ -134,7 +134,7 @@ int Firm_compute_dividends()
     
     if(TOTAL_DIVIDEND_PAYMENT<1e-6 && NET_EARNINGS>0.0)
     {
-        TOTAL_DIVIDEND_PAYMENT = CONST_DIVIDEND_EARNINGS_RATIO * NET_EARNINGS;
+        TOTAL_DIVIDEND_PAYMENT = CONST_DIVIDEND_EARNINGS_RATIO * EARNINGS;
         //printf("\n In Firm_compute_dividends: setting TOTAL_DIVIDEND_PAYMENT = %2.4f\n", TOTAL_DIVIDEND_PAYMENT):
     }
     
@@ -148,6 +148,7 @@ int Firm_compute_dividends()
     if (CURRENT_SHARES_OUTSTANDING>0)
         CURRENT_DIVIDEND_PER_SHARE = TOTAL_DIVIDEND_PAYMENT
                 /CURRENT_SHARES_OUTSTANDING;
+    else CURRENT_DIVIDEND_PER_SHARE = 0.0;
     
     PREVIOUS_DIVIDEND_PER_EARNINGS = CURRENT_DIVIDEND_PER_EARNINGS;
     
@@ -175,6 +176,7 @@ int Firm_compute_total_financial_payments()
     //but excluding the tax_payments. The tax_payments do not need to be financed since we assume they can always be paid out of earnings. 
     TOTAL_PAYMENTS = TOTAL_INTEREST_PAYMENT + TOTAL_DEBT_INSTALLMENT_PAYMENT
             + TOTAL_DIVIDEND_PAYMENT + TAX_PAYMENT + CALC_PRODUCTION_COSTS;
+            
     return 0;
 }
 
@@ -262,6 +264,21 @@ int Firm_compute_total_liquidity_needs()
         EXTERNAL_FINANCIAL_NEEDS = TOTAL_FINANCIAL_NEEDS - PAYMENT_ACCOUNT;
     }
 
+    if (PRINT_DEBUG)
+    {
+        printf("\n Firm_compute_total_liquidity_needs: \n");
+        printf("\t FIRM %d PRODUCTION_LIQUIDITY_NEEDS %f \n",ID,PRODUCTION_LIQUIDITY_NEEDS);
+        printf("\t FIRM %d TOTAL_INTEREST_PAYMENT %f \n",ID,TOTAL_INTEREST_PAYMENT);
+        printf("\t FIRM %d TOTAL_DEBT_INSTALLMENT_PAYMENT %f \n",ID,TOTAL_DEBT_INSTALLMENT_PAYMENT);
+        printf("\t FIRM %d TOTAL_DIVIDEND_PAYMENT %f \n",ID,TOTAL_DIVIDEND_PAYMENT);
+        printf("\t FIRM %d FINANCIAL_LIQUIDITY_NEEDS %f \n",ID,FINANCIAL_LIQUIDITY_NEEDS);
+    
+        printf("\t FIRM %d TOTAL_FINANCIAL_NEEDS %f \n",ID,TOTAL_FINANCIAL_NEEDS);
+        printf("\t FIRM %d PAYMENT_ACCOUNT %f \n",ID,PAYMENT_ACCOUNT);
+        printf("\t FIRM %d EXTERNAL_FINANCIAL_NEEDS %f \n",ID,EXTERNAL_FINANCIAL_NEEDS);
+        printf("\t FIRM %d TOTAL_DEBT %f \n",ID,TOTAL_DEBT);
+    }
+    
     return 0;
 }
 
@@ -386,7 +403,14 @@ int Firm_execute_financial_payments()
 
     //step 2: actual interest_payments and installment_payments
     //Sending installment_message to banks at which the firm has a loan 
-    
+
+    if (PRINT_DEBUG)
+    {
+        printf("\n Firm_execute_financial_payments: \n");
+        printf("\t FIRM: %d PAYMENT_ACCOUNT before: %f\n",ID,PAYMENT_ACCOUNT);
+        printf("\t FIRM: %d TOTAL_DEBT before: %f\n",ID,TOTAL_DEBT);
+    }
+
     TOTAL_DEBT=0.0;
     for (i=LOANS.size-1; i>-1; i--)
     {
@@ -414,6 +438,14 @@ int Firm_execute_financial_payments()
                 
             //decrease the residual_var of the loan with the var_per_installment:
             LOANS.array[i].residual_var -= LOANS.array[i].var_per_installment;
+
+            if (PRINT_DEBUG)
+            {
+                printf("\t FIRM: %d repaying LOAN: %d\n",ID,i);
+                printf("\t\t installment_amount: %f interest_amount: %f remaining loan_value: %f \n",LOANS.array[i].installment_amount,temp_interest,LOANS.array[i].loan_value);
+                printf("\t FIRM: %d PAYMENT_ACCOUNT after: %f\n",ID,PAYMENT_ACCOUNT);
+                printf("\t FIRM: %d TOTAL_DEBT after: %f\n",ID,TOTAL_DEBT);
+            }
 
             //pay interest            
             temp_interest=LOANS.array[i].interest_rate*LOANS.array[i].loan_value;
@@ -580,8 +612,9 @@ int Firm_bankruptcy_insolvency_procedure()
     //To use already implemented functions, we use the EXTERNAL_FINANCIAL_NEEDS to send the share emmission
     EXTERNAL_FINANCIAL_NEEDS = max(0,ipo_amount);
 
-/*
-    printf("\n In function Firm_bankruptcy_insolvency_procedure:\n"
+    if(PRINT_DEBUG)
+    {
+        printf("\n In function Firm_bankruptcy_insolvency_procedure:\n"
             "DEBT_RESCALING_FACTOR = %2.2f\n"
             "TARGET_LEVERAGE_RATIO = %2.2f\n"
             "TARGET_LIQUIDITY_RATIO = %2.2f\n"
@@ -591,7 +624,7 @@ int Firm_bankruptcy_insolvency_procedure()
             "EXTERNAL_FINANCIAL_NEEDS = %2.2f\n",
             DEBT_RESCALING_FACTOR, TARGET_LEVERAGE_RATIO, TARGET_LIQUIDITY_RATIO,
             target_debt, target_equity, ipo_amount, EXTERNAL_FINANCIAL_NEEDS);
-*/
+    }
 
     //Effect on investment goods market
     //Left-over capital
@@ -693,9 +726,6 @@ int Firm_compute_and_send_stock_orders()
     
     //If the quantity is fractional, take the ceiling, such that EXTERNAL_FINANCIAL_NEEDS are met.
     int quantity = -1*ceil(EXTERNAL_FINANCIAL_NEEDS/limit_price);
-    
-    //Firm tries to sell stock_units shares:
-    //add_order_message(trader_id, asset_id, limit_price, quantity)
     add_order_message(ID, ID, limit_price, quantity);
     
     return 0;
