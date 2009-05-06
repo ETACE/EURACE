@@ -94,7 +94,7 @@ void historicalReturnsBond(Bond *bond, double *vect, int backwardWindow,double f
      for(i=0;i<(backwardWindow);i++)
      vect[i]=backreturns_bond(bond,i)*forwardWindow;
   }
-
+/**/
 int  coupons_payment_days(Bond *bond,int currentDay,int holding_period)
 { 
    int nrCoupons;
