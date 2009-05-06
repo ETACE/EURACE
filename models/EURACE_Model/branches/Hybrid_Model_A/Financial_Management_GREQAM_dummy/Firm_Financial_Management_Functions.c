@@ -417,13 +417,13 @@ int Firm_execute_financial_payments()
         //the if-condition prevents an interest payment in the first period in which the loan is obtained
         // CONST_INSTALLMENT_PERIODS = 24 months by default
 
-        //If 1<=nr_periods_before_maturity<CONST_INSTALLMENT_PERIODS+1:
+        //If nr_periods_before_maturity<CONST_INSTALLMENT_PERIODS+1:
         //* decrease nr_periods_before_maturity with 1
         //* add loan value to total_debt
         //* decrease residual_var with var_per_installment
         //* decrease loan_value and payment account with installment amount
         //* send message to bank
-        if ((LOANS.array[i].nr_periods_before_repayment>=1)&&(LOANS.array[i].nr_periods_before_repayment<CONST_INSTALLMENT_PERIODS+1))
+        if (LOANS.array[i].nr_periods_before_repayment<CONST_INSTALLMENT_PERIODS+1)
         {
             //printf("\n Loan item %d: nr_periods_before_repayment=%d\n", i, LOANS.array[i].nr_periods_before_repayment);
 
@@ -478,9 +478,6 @@ int Firm_execute_financial_payments()
                     LOANS.array[i].installment_amount, temp_interest,
                     LOANS.array[i].var_per_installment);        
         }
-        //If nr_periods_before_maturity==CONST_INSTALLMENT_PERIODS+1:
-        //* decrease with 1
-        //* add value to total debt
         else if (LOANS.array[i].nr_periods_before_repayment==CONST_INSTALLMENT_PERIODS+1)
         {
             //printf("\n Loan item %d: nr_periods_before_repayment=%d\n", i, LOANS.array[i].nr_periods_before_repayment);
@@ -492,8 +489,6 @@ int Firm_execute_financial_payments()
             //printf("\n Loan item %d: adding debt value =%2.2f\n", i, LOANS.array[i].loan_value);
             //printf("\n TOTAL_DEBT=%2.2f\n", TOTAL_DEBT);
         }
-        //If nr_periods_before_maturity<0:
-        //* this should give an error
         else if (LOANS.array[i].nr_periods_before_repayment<0)
         {
             printf("\n Loan item %d: nr_periods_before_repayment=%d\n", i, LOANS.array[i].nr_periods_before_repayment);
@@ -501,8 +496,6 @@ int Firm_execute_financial_payments()
             printf("\n ERROR in function Firm_execute_financial_payments, line 482: nr_periods_before_repayment<0. \n");
         }
 
-        //If nr_periods_before_maturity == 0
-        //* remove the loan item.
         if (LOANS.array[i].nr_periods_before_repayment==0)
         {
             //printf("\n Loan item %d: nr_periods_before_repayment=%d\n", i, LOANS.array[i].nr_periods_before_repayment);
