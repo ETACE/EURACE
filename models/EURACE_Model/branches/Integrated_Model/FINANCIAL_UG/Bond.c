@@ -101,7 +101,7 @@ int  coupons_payment_days(Bond *bond,int currentDay,int holding_period)
    int coupon_day_period;
    int issue_day;
    issue_day=bond->issue_day;
-   coupon_day_period=(int)days_per_month*COUPONPERIODICITYNRMONTHS;
+   coupon_day_period=(int)DAYS_IN_MONTH*COUPONPERIODICITYNRMONTHS;
    nrCoupons= ((currentDay+issue_day+holding_period)/coupon_day_period)-(currentDay+issue_day)/coupon_day_period;
    return nrCoupons;
 }
