@@ -18,19 +18,32 @@
 int Household_determine_consumption_budget()
 {
 
-    
-    /*Determing the consumption budget of the month*/
-            if(PAYMENT_ACCOUNT > (INITIAL_CONSUMPTION_PROPENSITY*MEAN_INCOME))
+  if(LAST_LABOUR_INCOME > (CONSUMPTION_PROPENSITY*MEAN_INCOME))
             {
                 
-                CONSUMPTION_BUDGET=CONSUMPTION_PROPENSITY*PAYMENT_ACCOUNT+(1-CONSUMPTION_PROPENSITY)
-                *INITIAL_CONSUMPTION_PROPENSITY*MEAN_INCOME;
+                CONSUMPTION_BUDGET=CONSUMPTION_PROPENSITY*LAST_LABOUR_INCOME+(1-CONSUMPTION_PROPENSITY)
+                *INITIAL_CONSUMPTION_PROPENSITY*LAST_LABOUR_INCOME;
             }
             else
             {
                 
-                CONSUMPTION_BUDGET = PAYMENT_ACCOUNT;
-            }
+                CONSUMPTION_BUDGET = LAST_LABOUR_INCOME;
+          }
+            
+    
+    /*Determing the consumption budget of the month*/
+ 
+// if(PAYMENT_ACCOUNT > (INITIAL_CONSUMPTION_PROPENSITY*MEAN_INCOME))
+//            {
+//                
+//                CONSUMPTION_BUDGET=CONSUMPTION_PROPENSITY*PAYMENT_ACCOUNT+(1-CONSUMPTION_PROPENSITY)
+//                *INITIAL_CONSUMPTION_PROPENSITY*MEAN_INCOME;
+//            }
+//            else
+//            {
+//                
+//                CONSUMPTION_BUDGET = PAYMENT_ACCOUNT;
+//            }
             
         
 
@@ -54,7 +67,7 @@ int Household_shifting_consumption_day()
 		printf("Error in Function Household_shifting_consumption_day\n\n"
 				"Household %d had already shifted the consumption day, but the payment_account is still smaller than the weekly_budget! \n",ID);
 	}
-	assert(FLAG_CONSUMPTION_SHIFTING==0);
+	//assert(FLAG_CONSUMPTION_SHIFTING==0);
 	
 	FLAG_CONSUMPTION_SHIFTING =1;
 	DAY_OF_WEEK_TO_ACT = (DAY_OF_WEEK_TO_ACT+1)%5;
