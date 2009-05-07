@@ -7,6 +7,35 @@
  */
 int Firm_send_data_to_Eurostat()
 {
+	
+	/*Determine the productivity of the firm. Send data to Eurostat in 
+	 * order to calculate the productivity progress once a year*/
+	if(DAY%240 == 0)
+	{	if(ID < 3)
+		printf(" FIRM_ID: %d \n",ID);
+		FIRM_PRODUCTIVITY_LAST_YEAR = FIRM_PRODUCTIVITY;
+		if(ID < 3)
+		printf(" FIRM_PRODUCTIVITY_LAST_YEAR: %f \n",FIRM_PRODUCTIVITY_LAST_YEAR);
+		if(ID < 3)
+		printf(" MEAN_SPECIFIC_SKILLS: %f \n",MEAN_SPECIFIC_SKILLS);
+		if(ID < 3)
+		printf(" TECHNOLOGY: %f \n",TECHNOLOGY);
+		if(MEAN_SPECIFIC_SKILLS >= TECHNOLOGY)
+		{
+			FIRM_PRODUCTIVITY = TECHNOLOGY;
+		}
+		else
+		{
+			FIRM_PRODUCTIVITY = MEAN_SPECIFIC_SKILLS;
+		}
+		
+		FIRM_PRODUCTIVITY_PROGRESS = FIRM_PRODUCTIVITY/FIRM_PRODUCTIVITY_LAST_YEAR -1;
+		if(ID < 3)
+		printf(" FIRM_PRODUCTIVITY: %f \n",FIRM_PRODUCTIVITY);
+		if(ID < 3)
+		printf(" FIRM_PRODUCTIVITY_PROGRESS: %f \n",FIRM_PRODUCTIVITY_PROGRESS);
+	}
+	
     //Increase the age of the firm in months
     AGE++;
     
@@ -15,7 +44,7 @@ int Firm_send_data_to_Eurostat()
     MEAN_WAGE, MEAN_SPECIFIC_SKILLS,
     AVERAGE_S_SKILL_OF_1, AVERAGE_S_SKILL_OF_2, AVERAGE_S_SKILL_OF_3, AVERAGE_S_SKILL_OF_4, AVERAGE_S_SKILL_OF_5,
     CUM_REVENUE, CAPITAL_COSTS, NET_EARNINGS, TOTAL_DEBT, TOTAL_ASSETS, EQUITY,
-    PRICE, PRICE_LAST_MONTH, TOTAL_SUPPLY, SOLD_QUANTITY_IN_CALENDAR_MONTH, OUTPUT, PLANNED_OUTPUT, AGE);
+    PRICE, PRICE_LAST_MONTH, TOTAL_SUPPLY, SOLD_QUANTITY_IN_CALENDAR_MONTH, OUTPUT, PLANNED_OUTPUT, AGE, FIRM_PRODUCTIVITY, FIRM_PRODUCTIVITY_PROGRESS);
 
     //Set SOLD_QUANTITY_IN_CALENDAR_MONTH = 0 
     
@@ -140,6 +169,29 @@ int Firm_receive_data()
                 AVERAGE_S_SKILL_OF_5 =                      eurostat_send_specific_skills_message->
                 specific_skill_5;
             }
+            
+            /*Increase wage offer regarding the productivity increase*/
+            if(DAY%240 == 1)
+            {
+     if(ID < 3)
+     printf("FIRM_ID %d \n",ID);
+     if(ID < 3)
+     printf("eurostat_send_specific_skills_message->productivity_progress %f \n",eurostat_send_specific_skills_message->productivity_progress);
+            	if(eurostat_send_specific_skills_message->productivity_progress > 0)
+            	{     
+            		WAGE_OFFER = WAGE_OFFER*(1+
+            		eurostat_send_specific_skills_message->productivity_progress);
+            	}
+            	
+            	int i;
+            	for(i = 0; i < EMPLOYEES.size; i++)
+            	{  
+            		EMPLOYEES.array[i].wage = EMPLOYEES.array[i].wage*(1+
+            		eurostat_send_specific_skills_message->productivity_progress);    
+            	}
+            }
+            
+            
         }
         FINISH_EUROSTAT_SEND_SPECIFIC_SKILLS_MESSAGE_LOOP
         

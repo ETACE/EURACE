@@ -371,6 +371,16 @@
       <name>no_firm_deaths</name>
       <description>Number of firm deaths</description>
      </variable>
+     <variable>
+      <type>double</type>
+      <name>productivity_progress</name>
+      <description></description>
+     </variable>
+     <variable>
+      <type>double</type>
+      <name>productivity</name>
+      <description></description>
+     </variable>
     </variables>
    </dataType>
    <dataType>
@@ -2148,6 +2158,16 @@
      <name>ecb_balance_sheets</name>
      <description></description>
     </variable>
+    <variable>
+     <type>double</type>
+     <name>firm_average_productivity_progress</name>
+     <description></description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>firm_average_productivity</name>
+     <description></description>
+    </variable>
    </memory>
    <functions>
     <function>
@@ -2851,6 +2871,16 @@
      <name>age</name>
      <description>Age of the firm in months</description>
     </variable>
+    <variable>
+     <type>double</type>
+     <name>firm_productivity</name>
+     <description>Technology or mean_specific_skills in order to calculate the productivity progress</description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>firm_productivity_progress</name>
+     <description>Yearly productivity_progress</description>
+    </variable>
    </variables>
   </message>
   <message>
@@ -2958,6 +2988,11 @@
      <type>double</type>
      <name>specific_skill_5</name>
      <description></description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>productivity_progress</name>
+     <description>Regional productivity progress</description>
     </variable>
    </variables>
   </message>
