@@ -11,15 +11,9 @@ int Firm_send_data_to_Eurostat()
 	/*Determine the productivity of the firm. Send data to Eurostat in 
 	 * order to calculate the productivity progress once a year*/
 	if(DAY%240 == 0)
-	{	if(ID < 3)
-		printf(" FIRM_ID: %d \n",ID);
+	{	
 		FIRM_PRODUCTIVITY_LAST_YEAR = FIRM_PRODUCTIVITY;
-		if(ID < 3)
-		printf(" FIRM_PRODUCTIVITY_LAST_YEAR: %f \n",FIRM_PRODUCTIVITY_LAST_YEAR);
-		if(ID < 3)
-		printf(" MEAN_SPECIFIC_SKILLS: %f \n",MEAN_SPECIFIC_SKILLS);
-		if(ID < 3)
-		printf(" TECHNOLOGY: %f \n",TECHNOLOGY);
+		
 		if(MEAN_SPECIFIC_SKILLS >= TECHNOLOGY)
 		{
 			FIRM_PRODUCTIVITY = TECHNOLOGY;
@@ -30,10 +24,7 @@ int Firm_send_data_to_Eurostat()
 		}
 		
 		FIRM_PRODUCTIVITY_PROGRESS = FIRM_PRODUCTIVITY/FIRM_PRODUCTIVITY_LAST_YEAR -1;
-		if(ID < 3)
-		printf(" FIRM_PRODUCTIVITY: %f \n",FIRM_PRODUCTIVITY);
-		if(ID < 3)
-		printf(" FIRM_PRODUCTIVITY_PROGRESS: %f \n",FIRM_PRODUCTIVITY_PROGRESS);
+		
 	}
 	
     //Increase the age of the firm in months
@@ -173,10 +164,10 @@ int Firm_receive_data()
             /*Increase wage offer regarding the productivity increase*/
             if(DAY%240 == 1)
             {
-     if(ID < 3)
-     printf("FIRM_ID %d \n",ID);
-     if(ID < 3)
-     printf("eurostat_send_specific_skills_message->productivity_progress %f \n",eurostat_send_specific_skills_message->productivity_progress);
+     //if(ID < 3)
+     //printf("FIRM_ID %d \n",ID);
+     //if(ID < 3)
+     //printf("eurostat_send_specific_skills_message->productivity_progress %f \n",eurostat_send_specific_skills_message->productivity_progress);
             	if(eurostat_send_specific_skills_message->productivity_progress > 0)
             	{     
             		WAGE_OFFER = WAGE_OFFER*(1+
