@@ -16,18 +16,18 @@
     <name>BONDS_NEWISSUE_DISCOUNT</name>
     <description></description>
    </variable>
-     <variable>
+   <variable>
     <type>int</type>
     <name>COUPONPERIODICITYNRMONTHS</name>
     <description>payment coupon period expressed in number of months: typical value is 6 </description>
    </variable>
-     <variable>
+   <variable>
     <type>double</type>
     <name>FUNDAMENTAL_RETURN_WEIGHT_MIN</name>
     <description>constant value that regulate the minumum value of the fundamental weight:typical value is 0.1</description>
    </variable>
-      <variable>
-    <type>double</type>
+   <variable>
+    <type>int</type>
     <name>DAYS_IN_MONTH</name>
     <description>number of days in month : typical value is 20</description>
    </variable>
