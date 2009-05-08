@@ -339,7 +339,6 @@ int Household_bond_beliefs_formation()
   m_info_bond *cinfo_bond;
   Belief *belief;
   Belief_array *beliefs;
-  double dividend, earning_payout,earnings,equity;
   cinfo_bond=get_first_info_bond_message();
   beliefs=get_beliefs();
   //reset_Belief_array(beliefs);

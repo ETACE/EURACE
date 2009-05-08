@@ -1,7 +1,6 @@
 #include "../Government_agent_header.h"
 #include "my_library_header.h"
 //#include "../header.h"
-#define BONDS_NEWISSUE_DISCOUNT 0.01
 
 
 int Government_BondIssuing_decision(void)
@@ -70,7 +69,7 @@ return 0;
 }
 
 int Government_update_its_portfolio()
-{ int issuer,quantity;
+{ int issuer;
   double payment_account;
   Bond *bond;
   Order *pending_order;
