@@ -7,15 +7,39 @@
  */
 int Firm_send_data_to_Eurostat()
 {
+
+	/*Determine the productivity of the firm. It is the minimum of TECHNOLOGY and MEAN-SPECIFIC-SKILLS
+	Calculates the productivity progress and sends it to eurostat*/
+	if(DAY%240 == 0)
+	{
+
+		FIRM_PRODUCTIVITY_LAST_YEAR = FIRM_PRODUCTIVITY;
+
+		if(MEAN_SPECIFIC_SKILLS >= TECHNOLOGY)
+		{
+			FIRM_PRODUCTIVITY = TECHNOLOGY;
+		}
+		else
+		{
+			FIRM_PRODUCTIVITY = MEAN_SPECIFIC_SKILLS;
+		}
+
+
+		FIRM_PRODUCTIVITY_PROGRESS = FIRM_PRODUCTIVITY/FIRM_PRODUCTIVITY_LAST_YEAR -1;
+
+	}
+
 	//Increase the age of the firm in months
 	AGE++;
 	
 	add_firm_send_data_message(ID, REGION_ID, VACANCIES, NO_EMPLOYEES,
-	NO_EMPLOYEES_SKILL_1, NO_EMPLOYEES_SKILL_2, NO_EMPLOYEES_SKILL_3, NO_EMPLOYEES_SKILL_4,	NO_EMPLOYEES_SKILL_5, 
-	MEAN_WAGE, MEAN_SPECIFIC_SKILLS,
-	AVERAGE_S_SKILL_OF_1, AVERAGE_S_SKILL_OF_2, AVERAGE_S_SKILL_OF_3, AVERAGE_S_SKILL_OF_4, AVERAGE_S_SKILL_OF_5,
-	CUM_REVENUE, CAPITAL_COSTS,	NET_EARNINGS, TOTAL_DEBT, TOTAL_ASSETS, EQUITY,
-	PRICE, PRICE_LAST_MONTH, TOTAL_SUPPLY, CUM_TOTAL_SOLD_QUANTITY, OUTPUT, PLANNED_OUTPUT, AGE);
+		NO_EMPLOYEES_SKILL_1, NO_EMPLOYEES_SKILL_2, NO_EMPLOYEES_SKILL_3, 	
+		NO_EMPLOYEES_SKILL_4,NO_EMPLOYEES_SKILL_5, 		MEAN_WAGE, MEAN_SPECIFIC_SKILLS,
+		AVERAGE_S_SKILL_OF_1, AVERAGE_S_SKILL_OF_2, AVERAGE_S_SKILL_OF_3, AVERAGE_S_SKILL_OF_4, 
+		AVERAGE_S_SKILL_OF_5,
+		CUM_REVENUE, CAPITAL_COSTS,	NET_EARNINGS, TOTAL_DEBT, TOTAL_ASSETS, EQUITY,
+		PRICE, PRICE_LAST_MONTH, TOTAL_SUPPLY, CUM_TOTAL_SOLD_QUANTITY, OUTPUT, PLANNED_OUTPUT, 
+		AGE,FIRM_PRODUCTIVITY_PROGRESS, FIRM_PRODUCTIVITY);
 
 	//printf("In Firm_send_data: Firm %d OUTPUT: %.2f\n", ID, OUTPUT);
 	//printf("In Firm_send_data: Firm %d PLANNED_OUTPUT: %.2f\n", ID, PLANNED_OUTPUT);
@@ -50,6 +74,21 @@ int Firm_read_policy_announcements()
 			SUBSIDY_PAYMENT = policy_announcement_message->firm_subsidy_payment;
 		}
 	FINISH_POLICY_ANNOUNCEMENT_MESSAGE_LOOP
+
+
+
+	/*int i;
+	for(i=0; i<EMPLOYEES.size;i++)
+	{
+	EMPLOYEES.array[i].wage=EMPLOYEES.array[i].wage*1.01;
+	
+	}
+WAGE_OFFER*=1.01;
+WAGE_OFFER_FOR_SKILL_1*=1.01;
+WAGE_OFFER_FOR_SKILL_2*=1.01;
+WAGE_OFFER_FOR_SKILL_3*=1.01;
+WAGE_OFFER_FOR_SKILL_4*=1.01;
+WAGE_OFFER_FOR_SKILL_5*=1.01;*/
 	
 	return 0;
 }
@@ -96,31 +135,52 @@ int Firm_receive_data()
 			/*If there is no employee with general skill level 1 resp. 2-5*/
 			
 			
-				AVERAGE_S_SKILL_OF_1 = 						eurostat_send_specific_skills_message->
+				AVERAGE_S_SKILL_OF_1 = 	eurostat_send_specific_skills_message->
 				specific_skill_1;
 			
 
 			
 			
-				AVERAGE_S_SKILL_OF_2 = 						eurostat_send_specific_skills_message->
+				AVERAGE_S_SKILL_OF_2 = 	eurostat_send_specific_skills_message->
 				specific_skill_2;
 			
 
 			
-				AVERAGE_S_SKILL_OF_3 = 						eurostat_send_specific_skills_message->
+				AVERAGE_S_SKILL_OF_3 = 	eurostat_send_specific_skills_message->
 				specific_skill_3;
 			
 
 			
 			
-				AVERAGE_S_SKILL_OF_4 = 						eurostat_send_specific_skills_message->
+				AVERAGE_S_SKILL_OF_4 = 	eurostat_send_specific_skills_message->
 				specific_skill_4;
 			
 
 			
 			
-				AVERAGE_S_SKILL_OF_5 = 						eurostat_send_specific_skills_message->
+				AVERAGE_S_SKILL_OF_5 = 	eurostat_send_specific_skills_message->
 				specific_skill_5;
+
+				/*Updates wage_offer and wages regarding the productivity progress*/
+				if(DAY%240 == 1)
+				{
+if(ID <= 2)
+printf("eurostat_send_specific_skills_message->productivity_progress %f \n",eurostat_send_specific_skills_message->productivity_progress);
+					if(eurostat_send_specific_skills_message->productivity_progress > 0)
+					{
+						WAGE_OFFER = WAGE_OFFER*(1+ 
+						eurostat_send_specific_skills_message->productivity_progress);
+
+						int i;
+						for(i = 0; i< EMPLOYEES.size; i++)
+						{
+
+							EMPLOYEES.array[i].wage = EMPLOYEES.array[i].wage*(1+ 	
+							eurostat_send_specific_skills_message->productivity_progress);
+
+						}
+					}
+				}
 			
 		}
 		FINISH_EUROSTAT_SEND_SPECIFIC_SKILLS_MESSAGE_LOOP
