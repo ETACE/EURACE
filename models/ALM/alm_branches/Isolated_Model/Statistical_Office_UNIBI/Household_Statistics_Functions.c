@@ -13,6 +13,30 @@
 int Household_receive_data()
 {
 
+
+START_EUROSTAT_SEND_PRICE_INDEX_MESSAGE_LOOP
+
+PRICE_INDEX = eurostat_send_price_index_message->price_index;
+
+FINISH_EUROSTAT_SEND_PRICE_INDEX_MESSAGE_LOOP
+
+if(DAY==41)
+{
+	PRICE_INDEX_BASE_PERIOD= PRICE_INDEX;
+}
+
+
+if(DAY<41)
+{
+	COMMUTING_COSTS_PRICE_LEVEL_WEIGHT = 1;
+}else
+{
+	COMMUTING_COSTS_PRICE_LEVEL_WEIGHT = PRICE_INDEX/PRICE_INDEX_BASE_PERIOD;
+	
+}
+return 0;
+
+
 	return 0;
 }
 
