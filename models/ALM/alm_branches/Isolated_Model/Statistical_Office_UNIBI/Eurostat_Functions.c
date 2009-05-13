@@ -52,8 +52,12 @@ int Eurostat_send_data()
         REGION_HOUSEHOLD_DATA.array[i].average_s_skill_2,
         REGION_HOUSEHOLD_DATA.array[i].average_s_skill_3, 
         REGION_HOUSEHOLD_DATA.array[i].average_s_skill_4, 
-        REGION_HOUSEHOLD_DATA.array[i].average_s_skill_5);
+        REGION_HOUSEHOLD_DATA.array[i].average_s_skill_5,
+	REGION_FIRM_DATA.array[i].productivity_progress);
     }
+
+
+	add_eurostat_send_price_index_message(PRICE_INDEX);
     return 0;
 }
 
@@ -112,6 +116,9 @@ int Eurostat_calculate_data_old_version()
     FIRM_AVERAGE_S_SKILL_3 = 0.0;
     FIRM_AVERAGE_S_SKILL_4 = 0.0;
     FIRM_AVERAGE_S_SKILL_5 = 0.0;
+
+    FIRM_AVERAGE_PRODUCTIVITY = 0.0;
+    FIRM_AVERAGE_PRODUCTIVITY_PROGRESS = 0.0;
     
     PRICE_INDEX = 0.0;
 
@@ -146,7 +153,8 @@ int Eurostat_calculate_data_old_version()
                 0.0,0.0,0.0,0.0,0.0,     //total_earnings -> average_debt_earnings_ratio
                 0.0,0.0,0.0,0.0,0.0,0.0, //average_debt_equity_ratio -> monthly_planned_output
                 0.0,0.0,0.0,             //gdp, cpi, cpi_last_month 
-                0,0);                    //no_firm_births, no_firm_deaths
+                0,0,                    //no_firm_births, no_firm_deaths
+		0,0);				//productivity_progress, productivity
         
         add_household_data(&REGION_HOUSEHOLD_DATA,
                 i,
@@ -270,6 +278,17 @@ int Eurostat_calculate_data_old_version()
                 FIRM_AVERAGE_S_SKILL_5 +=
                     firm_send_data_message->average_s_skill_5*
                     firm_send_data_message->employees_skill_5;
+
+		REGION_FIRM_DATA.array[i].productivity_progress +=
+                    firm_send_data_message->firm_productivity_progress;
+                FIRM_AVERAGE_PRODUCTIVITY_PROGRESS +=
+                    firm_send_data_message->firm_productivity_progress;
+                    
+		REGION_FIRM_DATA.array[i].productivity +=
+                    firm_send_data_message->firm_productivity;
+                FIRM_AVERAGE_PRODUCTIVITY +=
+                    firm_send_data_message->firm_productivity;
+		
             }
             
             FINISH_FIRM_SEND_DATA_MESSAGE_LOOP
@@ -334,6 +353,17 @@ int Eurostat_calculate_data_old_version()
             REGION_FIRM_DATA.array[i].employees_skill_5;
         }
 
+	if(REGION_FIRM_DATA.array[i].no_firms > 0)
+	{
+		REGION_FIRM_DATA.array[i].productivity_progress =
+		REGION_FIRM_DATA.array[i].productivity_progress/
+		REGION_FIRM_DATA.array[i].no_firms;
+
+		REGION_FIRM_DATA.array[i].productivity =
+		REGION_FIRM_DATA.array[i].productivity/
+		REGION_FIRM_DATA.array[i].no_firms;
+	}
+
     }
 
     
@@ -381,6 +411,18 @@ int Eurostat_calculate_data_old_version()
     {
         FIRM_AVERAGE_S_SKILL_5 = FIRM_AVERAGE_S_SKILL_5/
                     (double)NO_EMPLOYEES_SKILL_5;
+    }
+
+
+    if(NO_FIRMS> 0)
+    {
+		FIRM_AVERAGE_PRODUCTIVITY_PROGRESS =
+		FIRM_AVERAGE_PRODUCTIVITY_PROGRESS/
+		NO_FIRMS;
+
+		FIRM_AVERAGE_PRODUCTIVITY =
+		FIRM_AVERAGE_PRODUCTIVITY/
+		NO_FIRMS;
     }
 
     
