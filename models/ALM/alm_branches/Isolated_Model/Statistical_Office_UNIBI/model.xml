@@ -370,6 +370,16 @@
       <name>no_firm_deaths</name>
       <description>Number of firm deaths</description>
      </variable>
+    <variable>
+      <type>double</type>
+      <name>productivity_progress</name>
+      <description></description>
+     </variable>
+    <variable>
+      <type>double</type>
+      <name>productivity</name>
+      <description></description>
+     </variable>
     </variables>
    </dataType>
    <dataType>
@@ -885,7 +895,7 @@
     </function>
     <function>
      <name>Household_receive_data</name>
-     <description>The household reads the messages from the eurostat agent &#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+     <description>The household reads the messages from the eurostat agent 
 and stores the needed data.</description>
      <currentState>Household_Start_Policy_Data</currentState>
      <nextState>Household_Start_Financial_Market_Role</nextState>
@@ -895,7 +905,9 @@ and stores the needed data.</description>
        <phase>1</phase>
       </time>
      </condition>
-     <inputs/>
+     <inputs>
+<input><messageName>eurostat_send_price_index</messageName></input>
+</inputs>
      <outputs/>
     </function>
     <function>
@@ -1445,6 +1457,16 @@ including several micro data.</description>
      <name>region_import_previous_value[30]</name>
      <description>Array holding data on total imports of each region, measured in value against previous prices.</description>
     </variable>
+    <variable>
+     <type>double</type>
+     <name>firm_average_productivity</name>
+     <description></description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>firm_average_productivity_progress</name>
+     <description></description>
+    </variable>
    </memory>
    <functions>
     <function>
@@ -1463,6 +1485,7 @@ including several micro data.</description>
       <output>
        <messageName>eurostat_send_specific_skills</messageName>
       </output>
+	<output><messageName>eurostat_send_price_index</messageName></output>
      </outputs>
     </function>
     <function>
@@ -1864,6 +1887,16 @@ including several micro data.</description>
      <name>age</name>
      <description>Age of the firm in months</description>
     </variable>
+    <variable>
+     <type>double</type>
+     <name>firm_productivity_progress</name>
+     <description></description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>firm_productivity</name>
+     <description></description>
+    </variable>
    </variables>
   </message>
   <message>
@@ -1972,6 +2005,11 @@ including several micro data.</description>
      <name>specific_skill_5</name>
      <description></description>
     </variable>
+    <variable>
+     <type>double</type>
+     <name>productivity_progress</name>
+     <description></description>
+    </variable>
    </variables>
   </message>
   <message>
@@ -2011,5 +2049,12 @@ including several micro data.</description>
     </variable>
    </variables>
   </message>
+<message>
+<name>eurostat_send_price_index</name>
+<description>Sent by eurostat. Includes information about the price level</description>
+<variables>
+<variable><type>double</type><name>price_index</name><description></description></variable>
+</variables>
+</message>
  </messages>
 </xmodel>
