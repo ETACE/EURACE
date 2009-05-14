@@ -292,8 +292,16 @@ int Firm_calc_input_demands()
         START_PRODUCTIVITY_MESSAGE_LOOP
             /*Update of the actual capital good information*/
             TECHNOLOGICAL_FRONTIER = productivity_message->cap_productivity;
-            ACTUAL_CAP_PRICE = productivity_message->cap_good_price;
-        
+
+		if(REGION_ID == REGION_SUBSIDY)
+		{
+            		ACTUAL_CAP_PRICE = productivity_message->cap_good_price*(1-SUBSIDY_FRACTION);
+        	}
+		else
+		{
+			ACTUAL_CAP_PRICE = productivity_message->cap_good_price;
+		}
+printf(" REGION_ID: %d; ACTUAL_CAP_PRICE %f \n", REGION_ID,ACTUAL_CAP_PRICE);
         FINISH_PRODUCTIVITY_MESSAGE_LOOP
         
         /*Calculate labor demand and needed capital goods. 
