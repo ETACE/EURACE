@@ -41,6 +41,8 @@
 <change_in_skill_distribution>0</change_in_skill_distribution>
 <lower_bound_firing>0</lower_bound_firing>
 <upper_bound_firing>10</upper_bound_firing>
+<region_subsidy>2</region_subsidy>
+<subsidy_fraction>0.500000</subsidy_fraction>
 <gov_policy_unemployment_benefit_pct>0.750000</gov_policy_unemployment_benefit_pct>
 <no_regions_per_gov>2</no_regions_per_gov>
 </environment>
@@ -4947,7 +4949,7 @@
 <xagent>
 <name>IGFirm</name>
 <id>51</id>
-<region_id>2</region_id>
+<region_id>1</region_id>
 <gov_id>1052</gov_id>
 <bank_id>1053</bank_id>
 <payment_account>0.000000</payment_account>
