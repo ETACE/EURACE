@@ -155,7 +155,10 @@ int UPPER_BOUND_FIRING = 10;
 
 int NO_REGIONS_PER_GOV = 2;
 
-
+/*region ID of the region which will receive subsidies*/
+int REGION_SUBSIDY = 2;
+/*fraction of cap_good_price which is subsidized*/
+double SUBSIDY_FRACTION = 0.5;
 
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -410,6 +413,9 @@ sprintf(data, "%d",CHANGE_IN_SKILL_DISTRIBUTION);    print_tag("change_in_skill_
 
 sprintf(data, "%d",LOWER_BOUND_FIRING);    print_tag("lower_bound_firing", data, file);
 sprintf(data, "%d",UPPER_BOUND_FIRING);    print_tag("upper_bound_firing", data, file);
+
+sprintf(data, "%d",REGION_SUBSIDY);    print_tag("region_subsidy", data, file);
+sprintf(data, "%f",SUBSIDY_FRACTION);    print_tag("subsidy_fraction", data, file);
 
 sprintf(data, "%f",unemployment_benefit_payment);    print_tag("gov_policy_unemployment_benefit_pct", data, file);
 
