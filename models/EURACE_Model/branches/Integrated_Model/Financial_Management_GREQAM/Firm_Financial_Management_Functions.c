@@ -134,7 +134,7 @@ int Firm_compute_dividends()
     
     if(TOTAL_DIVIDEND_PAYMENT<1e-6 && NET_EARNINGS>0.0)
     {
-        TOTAL_DIVIDEND_PAYMENT = CONST_DIVIDEND_EARNINGS_RATIO * EARNINGS;
+        TOTAL_DIVIDEND_PAYMENT = CONST_DIVIDEND_EARNINGS_RATIO * NET_EARNINGS;
         //printf("\n In Firm_compute_dividends: setting TOTAL_DIVIDEND_PAYMENT = %2.4f\n", TOTAL_DIVIDEND_PAYMENT):
     }
     
@@ -151,8 +151,8 @@ int Firm_compute_dividends()
     
     PREVIOUS_DIVIDEND_PER_EARNINGS = CURRENT_DIVIDEND_PER_EARNINGS;
     
-    if (EARNINGS>0.0)
-        CURRENT_DIVIDEND_PER_EARNINGS = TOTAL_DIVIDEND_PAYMENT/EARNINGS;
+    if (NET_EARNINGS>0.0)
+        CURRENT_DIVIDEND_PER_EARNINGS = TOTAL_DIVIDEND_PAYMENT/NET_EARNINGS;
     else
         CURRENT_DIVIDEND_PER_EARNINGS = 0.0;
     
@@ -598,7 +598,8 @@ int Firm_bankruptcy_insolvency_procedure()
     //Check that after refunding credit the payment account is depleted:
     if (PAYMENT_ACCOUNT>0)
         printf("\n ERROR in Firm_bankruptcy_insolvency_procedure:"
-                " payment_account not depleted after refunding credit. \n");
+                " payment_account not depleted after refunding credit. \n"
+                "PAYMENT_ACCOUNT=%f\n", PAYMENT_ACCOUNT);
     
     //Effect on financial market
     //Wiping out all existing shareholders by cancelling their shares
