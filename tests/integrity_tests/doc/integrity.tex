@@ -25,7 +25,7 @@ Economic Complex systems, such as others  physical objects that exchanged inform
 
 Since the integrity of the data have been several type and form, it is requested a flexible tool that is able to embrace many cases. In addiction, the integrity of the data have to maintain for all iterations , in many cases the data is constant for all or some iterations.
 In order to remove all kind of error due to a bad transaction or a bad computation, we have implemented a tool that discover the error checking if the integrity of some resources are preserved. 
-\section{the tool to test integrity}
+\section{The  integrity test tool ITT}
 In order to obtain a tool that is flexible for many cases we have decided to implement an automated testing tool that is based on rules.
 \subsection{The lexical-grammar rules}
 In this paragraph we will describe the rules formally and will present some sencence that satisfy the formal definition. We will describe the lexical rules and syntactic rules that have been defined to implement the integrity rules.  
@@ -53,5 +53,31 @@ we can observe the absence of any specifier from the previous rules, this means 
 Here is a set of steps for setting up and minimally testing \textbf{Integrity}, . Details and instructions for
 a more thorough tour of Integrity features, including installing, validating, benchmarking,
 and using the performance evaluation tools, are given in the following sections. 
-\end{document}
+
 \subsection{Downloading}
+The first step is to download Integrity and install any necessary files.
+The  way to get Integrity is to use the repository at the address  http://ccpforge.cse.rl.ac.uk/svn/eurace/tests. Get the the entire folder integrity\_tests.
+Now you are ready to build.
+\subsection{Making}
+Before you can use \textbf{Integrity}, you must make it. \\
+Make Integrity\\
+\% make \\
+This may take a while, depending on the load on your system and on your file server,
+it may take anywhere from a few minutes to an hour or more.
+\subsection{Running}
+Run a simple integrity test:\\
+\% cd ../integrity\_tests\\
+\% ./integrity tests/rules.xml target.txt\\
+At this point you have run an integrity test on your system. 
+\subsection{The examples: rules.xml}
+The Integrity distribution contains a simple programs, which are located in the
+integrity source tree.
+The rules.xml \ref{fig:fig1} is a simple example which is explained how configure an integrity test.
+\begin{figure}
+\label{fig:fig1}
+\verbatiminput{../tests/rules.xml}
+
+\caption{the configuration file rules.xml}
+\end{figure}
+
+\end{document}
