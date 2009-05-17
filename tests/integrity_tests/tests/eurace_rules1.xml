@@ -1,0 +1,13 @@
+  <integrity>
+  <directory>H:/integrato/its/</directory>
+   <iteration>
+    <start>1</start>
+    <stop>10</stop>
+  </iteration>
+  <rules>
+   <rule>monthly_consumption_expenditure(Government,Household) = cum_revenue(Firm);</rule> 
+   <rule>capital_costs(Firm) + monthly_investment_expenditure(Government) = cum_revenue(IGFirm);</rule>
+   <rule>wage(Household) = labour_costs(Firm) +labour_costs(IGFirm);</rule>
+   <rule>payment_account(Household,Firm,IGFirm) = deposits(Bank);</rule>
+  </rules>
+ </integrity>

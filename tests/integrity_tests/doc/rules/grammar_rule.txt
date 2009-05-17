@@ -1,0 +1,9 @@
+<letter>::=_ | [a..z] |[A..Z]
+<digit>::=1|2|3|4|5|6|7|8|9|0
+<identifier>::=<letter>|<identifier><digit>|<identifier><letter>
+<tag>::=<identifier>
+<specifier>::=<identifier>
+<specifierlist>::=(<specifier>,<specifierlist>)|(<specifier>)
+<rule>::=<expression> = <expression>;\\
+<expression>::=<expression> + <expression> | <tag>| <tag><specifierlist>
+

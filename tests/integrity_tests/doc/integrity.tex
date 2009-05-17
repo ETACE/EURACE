@@ -1,0 +1,57 @@
+\documentclass[a4paper,10pt]{article}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{graphicx}
+\usepackage{verbatim}
+
+
+\title{A Tool to maintain and test integrity constraints }
+
+\author{UNICA}
+
+\begin{document}
+\maketitle
+
+
+
+\begin{abstract} 
+Economic Complex systems, such as others  physical objects that exchanged information, have got some constraints related to the limited resources. Moreover, the eurace economic systems is based on the exchange of goods, where the money is itself a type of a good and an intermediary of exchange,since the amount of the goods could be lost or could be created,a very important thing is to test that any goods is generated arbitrarily during the transactions or during the computation. 
+In order to remove all kind of error due to a bad transaction or a bad computation, we have implemented a tool, called \textbf{Integrity},that discover the error checking if the integrity of some resources are preserved. 
+\end{abstract}
+\tableofcontents
+
+\section{Introduction}
+Economic Complex systems, such as others  physical objects that exchanged information, have got some constraints related to the limited resources. The exchange of some good during a transaction could be an hot spot, because a bad code can invalidate the software that many expected behaviors will not emerge.
+
+Since the integrity of the data have been several type and form, it is requested a flexible tool that is able to embrace many cases. In addiction, the integrity of the data have to maintain for all iterations , in many cases the data is constant for all or some iterations.
+In order to remove all kind of error due to a bad transaction or a bad computation, we have implemented a tool that discover the error checking if the integrity of some resources are preserved. 
+\section{the tool to test integrity}
+In order to obtain a tool that is flexible for many cases we have decided to implement an automated testing tool that is based on rules.
+\subsection{The lexical-grammar rules}
+In this paragraph we will describe the rules formally and will present some sencence that satisfy the formal definition. We will describe the lexical rules and syntactic rules that have been defined to implement the integrity rules.  
+\verbatiminput{rules/grammar_rule.txt}
+The rules that is following satisfy the lexical-grammar definition that we have defined before:
+\verbatiminput{rules/rules.txt}
+
+
+\subsection{Rules, some examples}
+We suppose to have three agents, for example Bank, Firm and Household,  each Households and each Firm have got in a Bank  its own accounts, this relation bind  those kinds of agents with a rule of integrity. 
+The rule could be expressed as following:
+\begin{equation}
+payment \_ account(Household,Firm)=deposits(Bank)
+\end{equation}
+Furthermor, we suppose to have two kinds of agents, for example  Bank and the Central\_Bank,  the Central\_Bank  have loaned money to the Banks, this relation binds those kinds of agents with a rule of integrity or consistency. The rule could be expressed as following:
+\begin{equation}
+ecb\_debt(Bank) = total\_ecb\_debt(Central\_Bank)
+\end{equation}
+A rule that constrain all kinds of agents present in the system could be expressed as following::
+\begin{equation}
+tag1 = tag2+tag3
+\end{equation}
+we can observe the absence of any specifier from the previous rules, this means that all agents must respect this integrity rule. 
+\section{Quick start guide}
+Here is a set of steps for setting up and minimally testing \textbf{Integrity}, . Details and instructions for
+a more thorough tour of Integrity features, including installing, validating, benchmarking,
+and using the performance evaluation tools, are given in the following sections. 
+\end{document}
+\subsection{Downloading}

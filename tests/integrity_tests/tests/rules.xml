@@ -1,0 +1,12 @@
+  <integrity>
+  <directory>tests/</directory>
+   <iteration>
+    <start>0</start>
+    <stop>1</stop>
+  </iteration>
+  <rules>
+   <rule>payment_account(Household,Firm)=deposits(Bank);</rule> 
+   <rule>payment_account=deposits(Bank);</rule>
+   <rule>payment_account(Household)=deposits(Bank);</rule>
+  </rules>
+ </integrity>
