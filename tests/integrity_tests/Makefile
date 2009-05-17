@@ -1,7 +1,5 @@
 # Makefile for INTEGRITYCC         = gcc
-INCLUDEDIR =
-
-CFLAGS     = -c -g -Wall -I /media/disk/xmachine/integrity_tests  -L /media/disk/xmachine/integrity_tests
+CFLAGS     = -c -g -Wall -I /home/universo/Desktop/eurace/eurace/tests/integrity_tests/ -L /home/universo/Desktop/eurace/eurace/tests/integrity_tests/
 LDFLAGS    =
 LIBS       = -lxml2 -lm
 SOURCES    = main.c compileNode.c tags.c
