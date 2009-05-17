@@ -1,4 +1,4 @@
-# Makefile for xparser
+# Makefile for INTEGRITY
 
 CC         = i586-mingw32msvc-gcc
 CFLAGS     = -c -g -Wall -I /media/disk/xmachine/integrity_tests  -L /media/disk/xmachine/integrity_tests
