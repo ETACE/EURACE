@@ -1,0 +1,2 @@
+ nr_gov_bonds =  nr_bonds_outstanding;
+ nr_gov_bonds(Household,Firm) =  nr_bonds_outstanding(Government);

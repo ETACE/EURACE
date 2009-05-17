@@ -1,31 +1,14 @@
 #include "my_library_header.h"
-#include "../Household_agent_header.h"
+#include "Household_agent_header.h"
 
 //extern Random rnd;
 
 //utility functions
 
-int Household_send_orders()
+int sendOrders()
 {   Order_array *orders;
     Order *ord;
     int i;
-    double bankrate;
-    Order_array *pending;
-    Asset_array *assetsowned;
-    Belief_array *beliefs;
-    double_array *assetWeights;
-    double_array *assetUtilities;
-
-      
-    bankrate=0.01;
-    assetsowned=get_assetsowned();
-    pending=get_pendingOrders();
-    assetWeights=get_assetWeights();
-    assetUtilities=get_assetUtilities();
-    beliefs=get_beliefs();
-    computeUtilities(beliefs,assetUtilities);
-    assetUtilitiesToWeights(assetWeights,assetUtilities,bankrate);
-    generatePendingOrders(assetsowned,pending,beliefs,&PAYMENT_ACCOUNT);
     
     orders=get_pendingOrders();
     //printf(" size = %d\n",sizeCOrder(orders));
@@ -124,7 +107,7 @@ void assetUtilitiesToWeights(double_array *assetWeights,double_array *assetUtili
       add_double(assetWeights,bankrate);
                    
     divide(assetWeights,somma);
-}*/
+}
         
 /*void assetUtilitiesToWeights(double_array *assetWeights,double_array *assetUtilities,double bankrate)
 { 
@@ -142,12 +125,39 @@ void assetUtilitiesToWeights(double_array *assetWeights,double_array *assetUtili
   divide(assetWeights,sum);
  return ;
 }  */
-int  Household_select_strategy()
-  { 
-    set_strategy(next()<trading_activity);
+int  Household_apply_strategy()
+  { double bankrate;
+    Order_array *pending;
+    Asset_array *assetsowned;
+    Belief_array *beliefs;
+    double_array *assetWeights;
+    double_array *assetUtilities;
+
+      
+    bankrate=0.0001;
+    assetsowned=get_assetsowned();
+    pending=get_pendingOrders();
+    assetWeights=get_assetWeights();
+    assetUtilities=get_assetUtilities();
+    beliefs=get_beliefs();
+    if (next()<0.1)  
+    {  
+     assets_beliefs_formation();
+   
+    computeUtilities(beliefs,assetUtilities);
+     //printf("\n");
+    // print_double_array(assetUtilities);
+     assetUtilitiesToWeights(assetWeights,assetUtilities,bankrate);
+   //printf("\n");
+   // print_double_array(assetWeights);
+    // printf("size pesi =====%d",assetWeights->size);
+     generatePendingOrders(assetsowned,pending,beliefs,&PAYMENT_ACCOUNT);
+
+    } 
+    sendOrders();
+//printf("ci sono%d\n",ID);
     return 0;
   }
-
    
 int Household_update_its_portfolio()
 { int i,issuer;
@@ -163,12 +173,10 @@ int Household_update_its_portfolio()
   issuer=get_id();
   info=get_first_order_status_message();
   i=0;
-//if( info==NULL)  printf("numero di execuzione =\n");
   while(info)
-  {  //printf("numero di execuzione =%d\n",info->asset_id);
-     if(info->trader_id==issuer) 
+  { if(info->trader_id==issuer) 
       { i++;
-         //printf("numero di execuzione =%d\n",info->asset_id);
+         //printf("numero di execuzione =%d\n",info->assetId);
        setOrder(currentOrder,info->price,info->quantity,info->asset_id,info->trader_id);
        if(sizeCOrder(pendingOrders)>0)executeOrder(&PAYMENT_ACCOUNT,currentOrder,assets,pendingOrders); 
        }
@@ -208,54 +216,20 @@ Order *computeLimitOrder( Asset *anAsset, double weight, double resource,Belief 
       if(assetId!=belief->asset_id) printf("------------errore----------\n");
       lastprice=belief->last_price;
       anAsset->lastPrice=belief->last_price;
-      aux=expectedPriceReturns(belief)/NRDAYSINYEAR;
+      aux=stockExpectedPriceReturns(belief);
      // printf("aux========%f\n",aux);
       limitPrice=lastprice*(1+aux); 
 //printf("expeceted=%f\n",aux);
 //printf("last price=%f\n",lastprice);
 //printf("limitprice=%f\n",limitPrice);
       deltaquantity=(int)(weight*resource/(limitPrice))-quantity;
-      //printf("quantity=%d\n",deltaquantity);
+//printf("quantity=%d\n",deltaquantity);
       //if(deltaquantity<0) deltaquantity=deltaquantity*1.1;
       //else deltaquantity=deltaquantity*0.9;  
       setOrder(order,limitPrice,deltaquantity,assetId,trader_id);
       return order;
 }
 
-double *cashDemand(Order_array *pending)
-       {
-          int size; double value,cashFordemand;
-          Order *ord;
-          size= sizeCOrder(pending);
-          cashFordemand=0;
-          for(i=0; i<size ; i++)
-            {
-              ord=elementAtCOrder(pending,i);
-              value=ord->price*ord->quantity;
-              if(value>0) cashFordemand+=value;
-            }
-         return cashFordemand;
-}
-
-void reduce_demand(Order_array *pending, double budget)
-     {   int size; 
-          double cashFordemand;
-          Order *ord;
-          size= sizeCOrder(pending);
-          cashFordemand= cashDemand(pending);
-          demand_budget=cashFordemand;
-          if(budget<demand_budget)
-          for(i=0; i<size ; i++)
-            {
-              ord=elementAtCOrder(pending,i);
-              value=ord->price*ord->quantity;
-              if(value>0) ord->quantity=(int)ord->quantity*(budget/demand_budget);
-            }
-}
-              
-              
-              
-              
 void generatePendingOrders(Asset_array *assetsowned,Order_array *pending, Belief_array *beliefs,double *payment_account)
 { int size,i;
   int index;
@@ -266,7 +240,7 @@ void generatePendingOrders(Asset_array *assetsowned,Order_array *pending, Belief
   Belief *belief;
 
   double_array *weights;
-  resource=wealth(*payment_account-CONSUMPTION_BUDGET,assetsowned);
+  resource=wealth(*payment_account,assetsowned);
   set_wealth(resource);
   size=beliefs->size;
   reset_Order_array(pending);
@@ -285,8 +259,6 @@ void generatePendingOrders(Asset_array *assetsowned,Order_array *pending, Belief
          }
     weight=elementAtCDouble(weights,i);
     ord=computeLimitOrder(asset, weight,resource,belief);
-    printf("budget = %f\n",PAYMENT_ACCOUNT-CONSUMPTION_BUDGET);
-    reduce_demand(pending, PAYMENT_ACCOUNT-CONSUMPTION_BUDGET);
     if((ord->quantity!=0)&&(ord->price>0)) addOrder(pending,ord);
     
   }
@@ -294,19 +266,18 @@ void generatePendingOrders(Asset_array *assetsowned,Order_array *pending, Belief
    
 //}
 }
-int Household_stock_beliefs_formation()
+int assets_beliefs_formation()
 { 
   Stock *stock;
   int i;
-  m_info_firm *cinfo_stock;
+  m_info_firm *cinfo_stock; 
   Belief *belief;
   Belief_array *beliefs;
   double dividend, earning_payout,earnings,equity;
-  
+  cinfo_stock=get_first_info_firm_message();
   beliefs=get_beliefs();
   reset_Belief_array(beliefs);
   i=0;
-  cinfo_stock=get_first_info_firm_message();
   while( cinfo_stock)
     {  
      
@@ -327,41 +298,29 @@ int Household_stock_beliefs_formation()
     }
 return 0;
 }
-int Household_bond_beliefs_formation()
-{ 
-  Bond *bond;
-  int i;
-  m_info_bond *cinfo_bond;
-  Belief *belief;
-  Belief_array *beliefs;
-  double dividend, earning_payout,earnings,equity;
-  cinfo_bond=get_first_info_bond_message();
-  beliefs=get_beliefs();
-  //reset_Belief_array(beliefs);
-  i=0;
-  while( cinfo_bond)
-    {  
-     
-     bond=&(cinfo_bond->bond);
-     
-     add_Belief(beliefs,bond->id, 0, 0, 0,0, 0,0, 0,0);
-     belief=&(beliefs->array[beliefs->size-1]); 
-     bondBeliefFormation(belief, bond,BACKWARDWINDOW,FORWARDWINDOW, RANDOMWEIGHT,FUNDAMENTALWEIGHT, CHARTISTWEIGHT, BINS , CURRENTDAY, HOLDINGPERIODTOFORWARDW,  LOSSAVERSION);
-     cinfo_bond= get_next_info_bond_message(cinfo_bond);
-     i++;
-    }
-return 0;
-}
-
+/*int  Household_receive_info_asset_to_eurostat()
+   Asset *asset;
+   int assetId;
+   assets =get_assetsowned();
+   xmachine_message_infoAsset *currentAsset;
+   currentAsset=get_first_infoAsset_message();
+   while(currentAsset){
+                       assetId=currentAsset->issuer;
+   if(isPresentCAsset(assets,assetId))
+   {
+   asset=elementAtCAsset(assets,assetId);
+   setPrice(asset,currentAsset->price);}
+   currentAsset=currentAsset->next;
+  }
+  return 0;
+}*/
 
 int totalassetsowned()
   { Asset_array *assets;
     assets =get_assetsowned();
     return totalassets(assets);
   }
-int Household_does_not_trading()
- {return 0;
- }
+
                       
 //int Household_receive_info_asset_from_firm(){return 0;}
 int Household_receive_info_interest_from_bank(){return 0;}

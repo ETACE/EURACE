@@ -1,0 +1,150 @@
+ITERATION 1
+- monthly_consumption_expenditure (Government,Household) =0.000000
++ cum_revenue (Firm) =0.428375
+    THE RULE IS VERIFIED
++ capital_costs (Firm) =4.771257
+- monthly_investment_expenditure (Government) =0.000000
++ cum_revenue (IGFirm) =0.428375
+    THE RULE FAILED
+- wage (Household) =41.000000
++ labour_costs (Firm) =41.000000
++ labour_costs (IGFirm) =0.000000
+    THE RULE IS VERIFIED
+- payment_account (Household,Firm,IGFirm) =2068.427310
++ deposits (Bank) =1895.175293
+    THE RULE FAILED
+ITERATION 2
+- monthly_consumption_expenditure (Government,Household) =0.000000
++ cum_revenue (Firm) =10.280992
+    THE RULE FAILED
++ capital_costs (Firm) =23.856285
+- monthly_investment_expenditure (Government) =0.000000
++ cum_revenue (IGFirm) =10.280992
+    THE RULE FAILED
+- wage (Household) =205.060000
++ labour_costs (Firm) =205.059998
++ labour_costs (IGFirm) =0.000000
+    THE RULE IS VERIFIED
+- payment_account (Household,Firm,IGFirm) =2090.774848
++ deposits (Bank) =1816.787720
+    THE RULE FAILED
+ITERATION 3
+- monthly_consumption_expenditure (Government,Household) =0.000000
++ cum_revenue (Firm) =25.061727
+    THE RULE FAILED
++ capital_costs (Firm) =38.170055
+- monthly_investment_expenditure (Government) =0.000000
++ cum_revenue (IGFirm) =25.061727
+    THE RULE FAILED
+- wage (Household) =328.060000
++ labour_costs (Firm) =328.059998
++ labour_costs (IGFirm) =0.000000
+    THE RULE IS VERIFIED
+- payment_account (Household,Firm,IGFirm) =2108.517250
++ deposits (Bank) =1749.466919
+    THE RULE FAILED
+ITERATION 4
+- monthly_consumption_expenditure (Government,Household) =0.000000
++ cum_revenue (Firm) =41.768337
+    THE RULE FAILED
++ capital_costs (Firm) =47.712569
+- monthly_investment_expenditure (Government) =0.000000
++ cum_revenue (IGFirm) =41.768337
+    THE RULE FAILED
+- wage (Household) =410.060000
++ labour_costs (Firm) =410.059998
++ labour_costs (IGFirm) =0.000000
+    THE RULE IS VERIFIED
+- payment_account (Household,Firm,IGFirm) =2119.143288
++ deposits (Bank) =1712.590332
+    THE RULE FAILED
+ITERATION 5
+- monthly_consumption_expenditure (Government,Household) =0.000000
++ cum_revenue (Firm) =64.268869
+    THE RULE FAILED
++ capital_costs (Firm) =62.026340
+- monthly_investment_expenditure (Government) =0.000000
++ cum_revenue (IGFirm) =64.268869
+    THE RULE FAILED
+- wage (Household) =533.140000
++ labour_costs (Firm) =533.139996
++ labour_costs (IGFirm) =0.000000
+    THE RULE IS VERIFIED
+- payment_account (Household,Firm,IGFirm) =2135.479970
++ deposits (Bank) =1658.211426
+    THE RULE FAILED
+ITERATION 6
+- monthly_consumption_expenditure (Government,Household) =0.000000
++ cum_revenue (Firm) =86.756910
+    THE RULE FAILED
++ capital_costs (Firm) =66.797597
+- monthly_investment_expenditure (Government) =0.000000
++ cum_revenue (IGFirm) =86.756910
+    THE RULE FAILED
+- wage (Household) =574.140000
++ labour_costs (Firm) =574.139996
++ labour_costs (IGFirm) =0.000000
+    THE RULE IS VERIFIED
+- payment_account (Household,Firm,IGFirm) =2141.201775
++ deposits (Bank) =1645.903687
+    THE RULE FAILED
+ITERATION 7
+- monthly_consumption_expenditure (Government,Household) =0.000000
++ cum_revenue (Firm) =117.591144
+    THE RULE FAILED
++ capital_costs (Firm) =71.568854
+- monthly_investment_expenditure (Government) =0.000000
++ cum_revenue (IGFirm) =117.591144
+    THE RULE FAILED
+- wage (Household) =615.140000
++ labour_costs (Firm) =615.139996
++ labour_costs (IGFirm) =0.000000
+    THE RULE IS VERIFIED
+- payment_account (Household,Firm,IGFirm) =2146.646114
++ deposits (Bank) =1666.406860
+    THE RULE FAILED
+ITERATION 8
+- monthly_consumption_expenditure (Government,Household) =0.000000
++ cum_revenue (Firm) =145.938887
+    THE RULE FAILED
++ capital_costs (Firm) =76.340111
+- monthly_investment_expenditure (Government) =0.000000
++ cum_revenue (IGFirm) =145.938887
+    THE RULE FAILED
+- wage (Household) =656.140000
++ labour_costs (Firm) =656.139996
++ labour_costs (IGFirm) =0.000000
+    THE RULE IS VERIFIED
+- payment_account (Household,Firm,IGFirm) =2151.819139
++ deposits (Bank) =1652.843140
+    THE RULE FAILED
+ITERATION 9
+- monthly_consumption_expenditure (Government,Household) =0.000000
++ cum_revenue (Firm) =176.789104
+    THE RULE FAILED
++ capital_costs (Firm) =85.882625
+- monthly_investment_expenditure (Government) =0.000000
++ cum_revenue (IGFirm) =176.789104
+    THE RULE FAILED
+- wage (Household) =738.170000
++ labour_costs (Firm) =738.169994
++ labour_costs (IGFirm) =0.000000
+    THE RULE IS VERIFIED
+- payment_account (Household,Firm,IGFirm) =2163.272963
++ deposits (Bank) =1626.185425
+    THE RULE FAILED
+ITERATION 10
+- monthly_consumption_expenditure (Government,Household) =0.000000
++ cum_revenue (Firm) =206.789220
+    THE RULE FAILED
++ capital_costs (Firm) =85.882625
+- monthly_investment_expenditure (Government) =0.000000
++ cum_revenue (IGFirm) =206.789220
+    THE RULE FAILED
+- wage (Household) =738.170000
++ labour_costs (Firm) =738.169994
++ labour_costs (IGFirm) =0.000000
+    THE RULE IS VERIFIED
+- payment_account (Household,Firm,IGFirm) =2163.276029
++ deposits (Bank) =1647.166260
+    THE RULE FAILED

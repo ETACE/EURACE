@@ -1,0 +1,25 @@
+# Makefile for xparser
+
+CC         = i586-mingw32msvc-gcc
+CFLAGS     = -c -g -Wall -I /media/disk/xmachine/integrity_tests  -L /media/disk/xmachine/integrity_tests
+LDFLAGS    =
+LIBS       = libxml2.lib
+SOURCES    = main.c compileNode.c tags.c
+OBJECTS    = $(SOURCES:.c=.o)
+EXECUTABLE = integrity.exe
+DEPS       = Makefile compileNode.h tags.h
+RM         = rm -f
+
+all: $(SOURCES) $(EXECUTABLE)
+	
+$(EXECUTABLE): $(OBJECTS) 
+	$(CC) $(LDFLAGS) $(OBJECTS) -o $@ $(LIBS)
+
+$(OBJECTS): $(DEPS)
+
+.c.o:
+	$(CC) $(CFLAGS) $< -o $@
+
+clean:
+	$(RM) *.o integrity.exe integrity
+
