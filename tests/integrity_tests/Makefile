@@ -1,4 +1,6 @@
-# Makefile for xparserCC         = gcc
+# Makefile for INTEGRITYCC         = gcc
+INCLUDEDIR =
+
 CFLAGS     = -c -g -Wall -I /media/disk/xmachine/integrity_tests  -L /media/disk/xmachine/integrity_tests
 LDFLAGS    =
 LIBS       = -lxml2 -lm

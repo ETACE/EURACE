@@ -78,7 +78,7 @@ void print_rules(FILE *file, Rules *rules)
      int i;
        for(i=0;i<=rules->index;i++)
          {
-         //print_tagarray(file,&rules->array[i]);          
+         //print_rule(file,&rules->array[i]);          
          print_rule(file,&rules->array[i]);
          fprintf(file,"    ");
          print_assertion_rule(&rules->array[i],file);
