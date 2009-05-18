@@ -3,7 +3,7 @@
 #include "../my_library_header.h"
 #include "Labour_aux_headers.h"
 
-/*test*/
+
 /************************************ Firm agent functions ************************************/
 
 /* Function condition functions */
