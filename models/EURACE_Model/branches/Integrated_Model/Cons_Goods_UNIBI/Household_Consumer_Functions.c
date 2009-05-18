@@ -20,7 +20,7 @@ int Household_determine_consumption_budget()
 
     
     /*Determing the consumption budget of the month*/
-            if(PAYMENT_ACCOUNT > (INITIAL_CONSUMPTION_PROPENSITY*MEAN_INCOME))
+            /*if(PAYMENT_ACCOUNT > (INITIAL_CONSUMPTION_PROPENSITY*MEAN_INCOME))
             {
                 
                 CONSUMPTION_BUDGET=CONSUMPTION_PROPENSITY*PAYMENT_ACCOUNT+(1-CONSUMPTION_PROPENSITY)
@@ -30,7 +30,11 @@ int Household_determine_consumption_budget()
             {
                 
                 CONSUMPTION_BUDGET = PAYMENT_ACCOUNT;
-            }
+            }*/
+            
+			/*Based on Carrol-Rule: Determination of the consumption budget*/
+            CONSUMPTION_BUDGET = MEAN_INCOME + 
+            CONSUMPTION_PROPENSITY*(WEALTH - WEALTH_INCOME_RATIO*MEAN_INCOME);
             
         
 
