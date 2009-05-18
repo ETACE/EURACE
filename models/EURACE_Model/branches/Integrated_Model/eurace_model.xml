@@ -140,11 +140,6 @@
    </variable>
    <variable>
     <type>double</type>
-    <name>initial_consumption_propensity</name>
-    <description>0.95, The initial_consumption_propensity times the mean income is the upper limit of the consumption during the first five periods: this smoothes the consumption expenditures because of high dividend payments of the capital goods producer.</description>
-   </variable>
-   <variable>
-    <type>double</type>
     <name>consumption_propensity</name>
     <description>0.95, Percentage of savings allocated to consumption.</description>
    </variable>
