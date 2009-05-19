@@ -109,7 +109,7 @@ void print_integrity_test(IntegrityTest *test, FILE *file)
 /*delete all blan_ks from a string*/
 void stream_blank(char *string)
     { 
-      char aux[DIM];
+      char aux[MAXCHAR];
       int i,k;
       i=0;
       k=0;
@@ -191,7 +191,35 @@ void get_condition(char *tag, char *type )
       if(end>0) tag[end]='\0';
       type[k]='\0';
       }
-                         
+int in_condition(char *type,char *str)
+   {  int i,k,limit,trovato;
+      char aus[MAXCHAR];
+      i=0; limit=0;
+      k=0;
+      trovato=1;
+      printf("%s\n",type);
+      printf("%s\n",str);
+     while((type[i]!='\0')&&(trovato))
+       {    
+       if((type[i]==')')||(type[i]==',') ) 
+        {
+          aus[k]='\0';
+          k=0; 
+          printf("%s",aus); limit=1;
+        }
+        else 
+        if(!(type[i]=='(')||(type[i]==')')||(type[i]==',') )
+         {
+          aus[k]=type[i]; 
+          k++; limit=0;
+         }
+       
+       if(limit) trovato=strcmp(str,aus);
+      i++;
+      }
+     if(!trovato) return 1;
+        else return 0;
+  }     
 void add_rule(Rules *rules, TagArray *expr)
      {  
         rules->index++;
@@ -349,7 +377,7 @@ Tag *in_rule(TagArray *tagarray,Tag *tag)
                   {found=0; result=current_tag;}
              }
           else
-          if((strcmp(current_tag->name,tag->name)==0)&&(strstr(current_tag->type,tag->type)!=NULL)) 
+          if((strcmp(current_tag->name,tag->name)==0)&&(in_condition(current_tag->type,tag->type))) 
                   {found=0; result=current_tag;}
           i++;
          }
