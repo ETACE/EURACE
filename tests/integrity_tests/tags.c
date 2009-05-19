@@ -34,7 +34,7 @@ void print_tag(FILE *file, Tag *tag)
       //fprintf(file,"%d ",tag->sign);
       fprintf(file,"%s ",tag->name);
       fprintf(file,"%s ",tag->type);
-      fprintf(file,"%f ",tag->sum_values);
+      fprintf(file,"%lf ",tag->sum_values);
      }
 
 void reset_integrity(IntegrityTest *test)
@@ -95,7 +95,7 @@ void print_rule(FILE *file,TagArray *tagarray)
           {
            tag=&tagarray->array[i];
            if(tag->sign==-1) sign='-'; else sign='+';
-           fprintf(file,"%c %s %s =%f\n",sign,tag->name,tag->type,tag->sum_values);
+           fprintf(file,"%c %s %s =%lf\n",sign,tag->name,tag->type,tag->sum_values);
           }
     }
 
@@ -130,16 +130,18 @@ void print_assertion_rule(TagArray *rule,FILE *file)
      {
       int i;
       Tag *tag;
-      double sum;
+      double sum,ass;
       sum=0;
       for(i=0;i<=rule->index; i++)
         {
          tag=&rule->array[i];
-         sum+=tag->sum_values*(tag->sign);
+         sum= sum+(tag->sum_values*(tag->sign));
         }
-  if(abs(sum)>PRECISION) fprintf(file,"THE RULE FAILED");
-                 else    fprintf(file,"THE RULE IS VERIFIED");
-
+  if(sum<0) ass=-sum;
+  else ass=sum;
+  if(ass>PRECISION) fprintf(file,"THE RULE FAILED %lf",ass);
+                 else    fprintf(file,"THE RULE IS VERIFIED %lf",ass);
+  
      }
 
 void parse_expression(TagArray *tag_array, char *expr)
@@ -197,15 +199,16 @@ int in_condition(char *type,char *str)
       i=0; limit=0;
       k=0;
       trovato=1;
-      printf("%s\n",type);
-      printf("%s\n",str);
+     // printf("%s\n",type);
+     // printf("%s\n",str);
      while((type[i]!='\0')&&(trovato))
        {    
        if((type[i]==')')||(type[i]==',') ) 
         {
           aus[k]='\0';
           k=0; 
-          printf("%s",aus); limit=1;
+          //printf("%s",aus); 
+        limit=1;
         }
         else 
         if(!(type[i]=='(')||(type[i]==')')||(type[i]==',') )

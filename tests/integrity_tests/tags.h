@@ -1,6 +1,6 @@
 #ifndef TAGH
 #define TAGH
-#define PRECISION 1E-15
+#define PRECISION 0.000000000001
 #define DEFAULTDIRECTORY "its/"
 #include <string.h>
 #include <stdio.h>
@@ -67,6 +67,7 @@ int compile_test_rules(char *filename, IntegrityTest *test);
 void compile_iteration(xmlNode * a_node, IntegrityTest *test);
 void print_tagarray(FILE *file, TagArray *tagarray);
 void print_rules(FILE *file, Rules *rule);
+void print_rule(FILE *file,TagArray *tagarray);
 void  compile_directory(xmlNode * a_node, IntegrityTest *test);
 void print_integrity_test(IntegrityTest *test, FILE *file);
 Tag *in_rule(TagArray *rule,Tag *tag);
