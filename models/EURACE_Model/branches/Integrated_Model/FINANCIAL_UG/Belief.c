@@ -38,7 +38,7 @@ double expectedPriceReturns(Belief *belief)
 int forwardMonths( int currentDay, int forwardWindow)
 {   
     int nrForwardMonths;
-    printf("%d %d %d",currentDay,forwardWindow,DAYS_IN_MONTH);
+    //printf("%d %d %d",currentDay,forwardWindow,DAYS_IN_MONTH);
     nrForwardMonths=((currentDay+forwardWindow)/ DAYS_IN_MONTH)-(currentDay/DAYS_IN_MONTH);
     return nrForwardMonths;
 }
