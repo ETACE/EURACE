@@ -262,12 +262,14 @@ void generatePendingOrders(Asset_array *assetsowned,Order_array *pending, Belief
   Order *ord;
   double resource;
   double weight;
+  double tem_wealth;
   Asset *asset;
   Belief *belief;
 
   double_array *weights;
+  tem_wealth=wealth(PAYMENT_ACCOUNT,assetsowned);
   resource=wealth(*payment_account-CONSUMPTION_BUDGET,assetsowned);
-  set_wealth(resource);
+  set_wealth(tem_wealth);
   size=beliefs->size;
   reset_Order_array(pending);
   weights=get_assetWeights();
