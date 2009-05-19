@@ -61,7 +61,7 @@ void compile_states(xmlNode * a_node,Rules *rules)
     cur_node=a_node;
     Tag current_tag;
     char *x_agent_name;
-    float value;
+    double value;
     TagArray *tagarray;
     Tag *tag;
     int i;
@@ -103,12 +103,12 @@ char *compile_name(xmlNode * a_node)
     return (char *)a_node->content;
 }
 
-float compile_var(xmlNode * a_node)
+double compile_var(xmlNode * a_node)
 {
-    float num;
+    double num;
      // printf("compile variable %s \n",a_node->content);
      if(strlen(a_node->content)>0)  
-                                    sscanf(a_node->content,"%f",&num);			    
+                                    sscanf((char *)a_node->content,"%lf",&num);			    
      else printf("errore");
      return num;
 

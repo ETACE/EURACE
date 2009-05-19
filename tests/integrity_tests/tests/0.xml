@@ -1,7 +1,7 @@
 <states>
 <xagent>
 <name>Firm</name>
-<payment_account>10.0</payment_account>
+<payment_account>10.00000000001</payment_account>
 </xagent>
 <xagent>
 <name>Firm</name>
@@ -13,7 +13,7 @@
 </xagent>
 <xagent>
 <name>Firm</name>
-<payment_account>10</payment_account>
+<payment_account>10.0000000000001</payment_account>
 </xagent>
 <xagent>
 <name>Firm</name>
@@ -25,7 +25,7 @@
 </xagent>
 <xagent>
 <name>Household</name>
-<payment_account>10</payment_account>
+<payment_account>10.0000</payment_account>
 </xagent>
 <xagent>
 <name>Household</name>
@@ -37,11 +37,11 @@
 </xagent>
 <xagent>
 <name>Household</name>
-<payment_account>10</payment_account>
+<payment_account>10.000001</payment_account>
 </xagent>
 <xagent>
 <name>Bank</name>
-<deposits>50</deposits>
+<deposits>50.0000010001</deposits>
 </xagent>
 <xagent>
 <name>Bank</name>
