@@ -7,7 +7,7 @@
 #include <libxml/parser.h>
 #include <libxml/tree.h>
 
-#define MAXCHAR 100
+#define MAXCHAR 200
 #define DIM 100
 
  struct  tag
@@ -72,4 +72,5 @@ void print_integrity_test(IntegrityTest *test, FILE *file);
 Tag *in_rule(TagArray *rule,Tag *tag);
 void reset_integrity(IntegrityTest *test);
 void print_assertion_rule(TagArray *rule,FILE *file);
+int in_condition(char *type,char *str);
 #endif
