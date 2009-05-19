@@ -1,7 +1,7 @@
 # Makefile for INTEGRITY
 
 CC         = i586-mingw32msvc-gcc
-CFLAGS     = -c -g -Wall -I /media/disk/xmachine/integrity_tests  -L /media/disk/xmachine/integrity_tests
+CFLAGS     = -c -g -Wall -I /home/universo/Desktop/eurace/eurace/tests/integrity_tests  -L /home/universo/Desktop/eurace/eurace/tests/integrity_tests
 LDFLAGS    =
 LIBS       = libxml2.lib
 SOURCES    = main.c compileNode.c tags.c
