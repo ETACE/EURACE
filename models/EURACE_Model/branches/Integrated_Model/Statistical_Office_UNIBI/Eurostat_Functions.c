@@ -55,8 +55,7 @@ int Eurostat_send_data()
         REGION_HOUSEHOLD_DATA.array[i].average_s_skill_4, 
         REGION_HOUSEHOLD_DATA.array[i].average_s_skill_5,
         REGION_FIRM_DATA.array[i].productivity_progress);
-        printf("%f ;%f \n",REGION_HOUSEHOLD_DATA.array[i].average_s_skill_1,REGION_HOUSEHOLD_DATA.array[i].average_s_skill_5);
-        
+       
     }
     return 0;
 }
