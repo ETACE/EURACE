@@ -562,7 +562,30 @@ int Firm_bankruptcy_insolvency_procedure()
     int i, imax;
     double target_debt, bad_debt, credit_refunded, residual_var;
     double write_off_ratio, target_equity, ipo_amount;
+  
+    char * filename;
+    FILE * file1,*file2;
     
+    //Start an empty string for the filename
+    filename = malloc(40*sizeof(char));
+    filename[0]=0;
+    
+    //Concatenate
+    strcpy(filename, "debug_bankruptcy.txt");
+    //Open a file pointer: FILE * file 
+    file1 = fopen(filename,"a");
+    
+    strcpy(filename, "debug_bankruptcy2.txt");
+    file2 = fopen(filename,"a");
+ 
+    printf("___________________________________________ Firm function Firm_bankruptcy_insolvency_procedure()\n");
+    fprintf(file1,"IT %d ID %d EQUITY %f\n",DAY,ID,EQUITY);
+    
+    //close the file pointer: FILE * file 
+      fclose(file1);
+      fclose(file2);
+      free(filename);
+
     //Effect on credit market
     TOTAL_ASSETS = TOTAL_VALUE_CAPITAL_STOCK;
 
