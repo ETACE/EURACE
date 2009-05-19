@@ -954,13 +954,15 @@ sends its good request.</description>
       </lhs>
       <op>AND</op>
       <rhs>
-       <lhs>
-        <value>a.weekly_budget</value>
-       </lhs>
-       <op>LEQ</op>
-       <rhs>
-        <value>a.payment_account</value>
-       </rhs>
+        <not>
+        <lhs>
+         <value>a.excess_weekly_budget</value>
+        </lhs>
+        <op>GT</op>
+        <rhs>
+         <value>0.0000001</value>
+        </rhs>
+        </not>
       </rhs>
      </condition>
      <inputs>
@@ -1144,7 +1146,6 @@ spent in both consumtion steps, into the PAYMENT_ACCOUNT.</description>
       </lhs>
       <op>AND</op>
       <rhs>
-       <not>
         <lhs>
          <value>a.excess_weekly_budget</value>
         </lhs>
@@ -1152,7 +1153,6 @@ spent in both consumtion steps, into the PAYMENT_ACCOUNT.</description>
         <rhs>
          <value>0.0000001</value>
         </rhs>
-       </not>
       </rhs>
      </condition>
      <inputs/>
