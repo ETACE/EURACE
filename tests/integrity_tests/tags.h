@@ -1,7 +1,7 @@
 #ifndef TAGH
 #define TAGH
 #define PRECISION 0.000000000001
-#define DEFAULTDIRECTORY "its/"
+#define DEFAULTDIRECTORY ""
 #include <string.h>
 #include <stdio.h>
 #include <libxml/parser.h>
