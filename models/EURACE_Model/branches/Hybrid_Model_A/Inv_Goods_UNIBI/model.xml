@@ -67,6 +67,11 @@
      <name>cum_revenues</name>
      <description></description>
     </variable>
+    <variable>
+     <type>double</type>
+     <name>total_dividend_payment</name>
+     <description>Total dividend payment.</description>
+    </variable>
    </memory>
    <functions>
     <function>
