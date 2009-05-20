@@ -67,7 +67,7 @@
     
        if (CASH<0)
             {
-             add_central_bank_account_update_message(ID, CASH);
+             add_central_bank_account_update_message(ID, -CASH);
              ECB_DEBT+=-CASH; //Monetary base is increased
              CASH=0;
             }
