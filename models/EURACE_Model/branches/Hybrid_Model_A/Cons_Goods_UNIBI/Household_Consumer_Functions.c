@@ -19,26 +19,65 @@ int Household_determine_consumption_budget()
 {
 
     
-    /*Determing the consumption budget of the month*/
-            if(PAYMENT_ACCOUNT > (INITIAL_CONSUMPTION_PROPENSITY*MEAN_INCOME))
-            {
-                
-                CONSUMPTION_BUDGET=CONSUMPTION_PROPENSITY*PAYMENT_ACCOUNT+(1-CONSUMPTION_PROPENSITY)
-                *INITIAL_CONSUMPTION_PROPENSITY*MEAN_INCOME;
-            }
-            else
-            {
-                
-                CONSUMPTION_BUDGET = PAYMENT_ACCOUNT;
-            }
-            
-        
+	char temp[10];
+	    char * filename;
+	    FILE * file1,*file2;
+	    
+	    //Start an empty string for the filename
+	    filename = malloc(40*sizeof(char));
+	    filename[0]=0;
+	    
+	    //Concatenate
+	    strcpy(filename, "debug_payment_account.txt");
+	    //Open a file pointer: FILE * file 
+	    file1 = fopen(filename,"a");
+	    
+	    strcpy(filename, "debug_consumption_budget.txt");
+	    file2 = fopen(filename,"a");
 
-            //PORTFOLIO_BUDGET=PAYMENT_ACCOUNT-CONSUMPTION_BUDGET;
-            WEEKLY_BUDGET = CONSUMPTION_BUDGET/4;
-            WEEK_OF_MONTH = 4;
-            
-	    EXCESS_WEEKLY_BUDGET = WEEKLY_BUDGET - PAYMENT_ACCOUNT;
+	    /*Deteriming the consumption budget of the month*/
+	            //Previous rule based Deaton rule: uses PAYMENT_ACCOUNT
+	            /*if(PAYMENT_ACCOUNT > (INITIAL_CONSUMPTION_PROPENSITY*MEAN_INCOME))
+	            {
+	                
+	                CONSUMPTION_BUDGET=CONSUMPTION_PROPENSITY*PAYMENT_ACCOUNT+(1-CONSUMPTION_PROPENSITY)
+	                *INITIAL_CONSUMPTION_PROPENSITY*MEAN_INCOME;
+	            }
+	            else
+	            {
+	                
+	                CONSUMPTION_BUDGET = PAYMENT_ACCOUNT;
+	            }*/
+	            
+	            /*Based on Carrol-Rule: Determination of the consumption budget*/
+	            CONSUMPTION_BUDGET = MEAN_INCOME + 
+	            CONSUMPTION_PROPENSITY*(WEALTH - WEALTH_INCOME_RATIO*MEAN_INCOME);
+	            if(PAYMENT_ACCOUNT < 0)
+	            {
+	                fprintf(file1, "IT %d ID %d PAYMENT_ACCOUNT %f \n", DAY, ID, PAYMENT_ACCOUNT);
+	            }
+	            
+	            if(CONSUMPTION_BUDGET < 0.5*LAST_INCOME.array[3])
+	            {
+	                if(CONSUMPTION_BUDGET < 0)
+	                {
+	                    printf("___________________________________________ Household payment_account<0\n");
+	                    fprintf(file2,"IT %d ID %d CONSUMPTION_BUDGET %f\n",DAY,ID,CONSUMPTION_BUDGET);
+	                }
+	                CONSUMPTION_BUDGET = 0.5*LAST_INCOME.array[3];
+	            }
+	            
+	            //close the file pointer: FILE * file 
+	            fclose(file1);
+	            fclose(file2);
+	            free(filename);
+	        
+
+	            //PORTFOLIO_BUDGET=PAYMENT_ACCOUNT-CONSUMPTION_BUDGET;
+	            WEEKLY_BUDGET = CONSUMPTION_BUDGET/4;
+	            WEEK_OF_MONTH = 4;
+	            
+	        EXCESS_WEEKLY_BUDGET = WEEKLY_BUDGET - PAYMENT_ACCOUNT;
 
 	return 0;   
 }
