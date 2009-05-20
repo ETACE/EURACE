@@ -120,8 +120,8 @@ int IGFirm_pay_taxes()
 
 int IGFirm_dividend_payment()
 {
-	double total_dividend_payment;
-	total_dividend_payment = NET_PROFIT;
+	
+	TOTAL_DIVIDEND_PAYMENT = NET_PROFIT;
 	
 	CURRENT_DIVIDEND_PER_SHARE = NET_PROFIT / OUTSTANDING_SHARES;
 
@@ -130,7 +130,7 @@ int IGFirm_dividend_payment()
 	add_dividend_per_share_message(ID, CURRENT_DIVIDEND_PER_SHARE);
 	
 	//decrease payment_account with the total_dividend_payment
-	PAYMENT_ACCOUNT -= total_dividend_payment;
+	PAYMENT_ACCOUNT -= TOTAL_DIVIDEND_PAYMENT;
 	
 	return 0;
 }
