@@ -949,13 +949,15 @@ sends its good request.</description>
       </lhs>
       <op>AND</op>
       <rhs>
+      <not>
        <lhs>
-        <value>a.weekly_budget</value>
+        <value>a.excess_weekly_budget</value>
        </lhs>
-       <op>LEQ</op>
+       <op>GT</op>
        <rhs>
-        <value>a.payment_account</value>
+        <value>0.0000001</value>
        </rhs>
+       </not>
       </rhs>
      </condition>
      <inputs>
