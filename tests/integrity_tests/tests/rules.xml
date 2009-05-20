@@ -8,5 +8,6 @@
    <rule>payment_account(Household,Firm)=deposits(Bank);</rule> 
    <rule>payment_account=deposits(Bank);</rule>
    <rule>payment_account(Household)=deposits(Bank);</rule>
+   <rule>payment_account(Household)+deposits(Bank)=dummy;</rule>
   </rules>
  </integrity>

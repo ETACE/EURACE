@@ -113,7 +113,7 @@ void stream_blank(char *string)
       int i,k;
       i=0;
       k=0;
-      while(string[i]!=';')
+      while(string[i]!='\0')
         {
           if(string[i]!=' ') 
            {
@@ -121,8 +121,8 @@ void stream_blank(char *string)
             k++;
            }
           i++;
-        }
-     aux[i]='\0';      
+        }   
+     aux[i]='\0';
      strcpy(string,aux);
     }
 
@@ -149,29 +149,37 @@ void parse_expression(TagArray *tag_array, char *expr)
       int i,k,found,sign;
       Tag current_tag;
       char tag[MAXCHAR];
-      found=1;
-       i=0;
+
+      found=0;
+      i=0;
+      sign=1;
+      k=0;
+
       while(expr[i]!='\0')
-       {// printf("%c",expr[i]);
-          k=0; 
-          sign=1;
-          found=1;
-          while((expr[i]!='\0')&&found)
-            { 
-              if((expr[i]=='+')||(expr[i]=='=')) found=0;
+       { 
+         if((expr[i]=='+')||(expr[i]=='=')||(expr[i]==';')) 
+                {
+                 found=1;
+                 tag[k]='\0'; 
+                 k=0; 
+                 printf("%s\n",tag);
+                 }
                else
                 { tag[k]=expr[i];
                   k++;
-                } 
-              i++;
-              if(expr[i]=='=') sign=-1;
-            }
-        tag[k]='\0';
-	get_condition(tag,current_tag.type);
-        strcpy(current_tag.name,tag);
-        current_tag.sign=sign;
-        add_tag(tag_array,&current_tag);
-       }
+                 found=0;
+                }    
+       
+       if(found)
+         {
+	  get_condition(tag,current_tag.type);
+          strcpy(current_tag.name,tag);
+          current_tag.sign=sign;
+          add_tag(tag_array,&current_tag);
+          if(expr[i]=='=') sign=-1; 
+         }
+      i++;
+      }
      }
 
 
