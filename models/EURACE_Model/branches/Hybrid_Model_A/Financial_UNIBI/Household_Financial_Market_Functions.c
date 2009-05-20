@@ -3,5 +3,6 @@
 
 int Household_financial_market_dummy()
 {
+	WEALTH = PAYMENT_ACCOUNT;
 	return 0;	
 }
