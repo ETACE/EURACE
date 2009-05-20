@@ -6,7 +6,7 @@
  <models/>
  <environment>
   <constants/>
-  <functionFiles>  
+  <functionFiles>
    <file>Bank_Financial_Market.c</file>
    <file>Firm_Financial_Market_Functions.c</file>
    <file>Household_Financial_Market_Functions.c</file>
@@ -16,7 +16,7 @@
   </functionFiles>
   <timeUnits/>
   <dataTypes>
-     <dataType>
+   <dataType>
     <name>Order</name>
     <description>ADT order </description>
     <variables>
@@ -240,7 +240,7 @@
   </dataTypes>
  </environment>
  <agents>
-   <xagent>
+  <xagent>
    <name>Clearinghouse</name>
    <description></description>
    <memory>
@@ -319,6 +319,11 @@
      <type>Asset_array</type>
      <name>assetsowned</name>
      <description></description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>wealth</name>
+     <description>wealth equaly payment_acoount </description>
     </variable>
    </memory>
    <functions>
