@@ -1,0 +1,1225 @@
+digraph communication_graph {
+	rankdir=BT;
+	size="8,5;"
+	layer_0 [ color="#ff0000" label="layer 0"];
+	Government_Government_send_policy_announcements_start_Government_Gov_Start_Bond_Market [ shape = rect label="Government_Government_send_policy_announcements_start_Government_Gov_Start_Bond_Market [-14]" ];
+	Government_Government_send_policy_announcements_start_Government_Gov_Start_Bond_Market -> layer_0;
+	Eurostat_Eurostat_send_data_start_Eurostat_01 [ shape = rect label="Eurostat_Eurostat_send_data_start_Eurostat_01 [-26]" ];
+	Eurostat_Eurostat_send_data_start_Eurostat_01 -> Government_Government_send_policy_announcements_start_Government_Gov_Start_Bond_Market;
+	Clearinghouse_ClearingHouse_receive_info_dummy_start_Clearinghouse_RECEIVEDINFOSTOCK [ shape = rect label="Clearinghouse_ClearingHouse_receive_info_dummy_start_Clearinghouse_RECEIVEDINFOSTOCK [0]" ];
+	Clearinghouse_ClearingHouse_receive_info_dummy_start_Clearinghouse_RECEIVEDINFOSTOCK -> Eurostat_Eurostat_send_data_start_Eurostat_01;
+	Government_Government_idle_start_Government_Gov_Start_Bond_Market [ shape = rect label="Government_Government_idle_start_Government_Gov_Start_Bond_Market [0]" ];
+	Government_Government_idle_start_Government_Gov_Start_Bond_Market -> Clearinghouse_ClearingHouse_receive_info_dummy_start_Clearinghouse_RECEIVEDINFOSTOCK;
+	Bank_idle_start_Bank_Bank_start_credit_market_role [ shape = rect label="Bank_idle_start_Bank_Bank_start_credit_market_role [0]" ];
+	Bank_idle_start_Bank_Bank_start_credit_market_role -> Government_Government_idle_start_Government_Gov_Start_Bond_Market;
+	Eurostat_Eurostat_idle_start_Eurostat_01 [ shape = rect label="Eurostat_Eurostat_idle_start_Eurostat_01 [0]" ];
+	Eurostat_Eurostat_idle_start_Eurostat_01 -> Bank_idle_start_Bank_Bank_start_credit_market_role;
+	IGFirm_IGFirm_idle_start_IGFirm_Start_IGFirm_Productivity [ shape = rect label="IGFirm_IGFirm_idle_start_IGFirm_Start_IGFirm_Productivity [0]" ];
+	IGFirm_IGFirm_idle_start_IGFirm_Start_IGFirm_Productivity -> Eurostat_Eurostat_idle_start_Eurostat_01;
+	Mall_idle_start_Mall_01 [ shape = rect label="Mall_idle_start_Mall_01 [0]" ];
+	Mall_idle_start_Mall_01 -> IGFirm_IGFirm_idle_start_IGFirm_Start_IGFirm_Productivity;
+	Mall_Mall_reset_export_data_start_Mall_01 [ shape = rect label="Mall_Mall_reset_export_data_start_Mall_01 [0]" ];
+	Mall_Mall_reset_export_data_start_Mall_01 -> Mall_idle_start_Mall_01;
+	Household_Household_idle_start_Household_Household_Start_Policy_Data [ shape = rect label="Household_Household_idle_start_Household_Household_Start_Policy_Data [0]" ];
+	Household_Household_idle_start_Household_Household_Start_Policy_Data -> Mall_Mall_reset_export_data_start_Mall_01;
+	Firm_idle_start_Firm_Firm_is_active [ shape = rect label="Firm_idle_start_Firm_Firm_is_active [0]" ];
+	Firm_idle_start_Firm_Firm_is_active -> Household_Household_idle_start_Household_Household_Start_Policy_Data;
+	Firm_Firm_bankruptcy_idle_counter_start_Firm_Firm_not_active [ shape = rect label="Firm_Firm_bankruptcy_idle_counter_start_Firm_Firm_not_active [0]" ];
+	Firm_Firm_bankruptcy_idle_counter_start_Firm_Firm_not_active -> Firm_idle_start_Firm_Firm_is_active;
+	layer_1 [ color="#ff0000" label="layer 1"];
+	layer_1 ->Firm_Firm_bankruptcy_idle_counter_start_Firm_Firm_not_active;
+	Government_Government_bond_market_dummy_Gov_Start_Bond_Market_01 [ shape = rect label="Government_Government_bond_market_dummy_Gov_Start_Bond_Market_01 [-10]" ];
+	Government_Government_bond_market_dummy_Gov_Start_Bond_Market_01 -> layer_1;
+	Firm_Firm_bankruptcy_illiquidity_procedure_Firm_not_active_Firm_bankrupty_state_1 [ shape = rect label="Firm_Firm_bankruptcy_illiquidity_procedure_Firm_not_active_Firm_bankrupty_state_1 [-46]" ];
+	Firm_Firm_bankruptcy_illiquidity_procedure_Firm_not_active_Firm_bankrupty_state_1 -> Government_Government_bond_market_dummy_Gov_Start_Bond_Market_01;
+	Firm_Firm_bankruptcy_insolvency_procedure_Firm_not_active_Firm_bankrupty_state_1 [ shape = rect label="Firm_Firm_bankruptcy_insolvency_procedure_Firm_not_active_Firm_bankrupty_state_1 [-82]" ];
+	Firm_Firm_bankruptcy_insolvency_procedure_Firm_not_active_Firm_bankrupty_state_1 -> Firm_Firm_bankruptcy_illiquidity_procedure_Firm_not_active_Firm_bankrupty_state_1;
+	Clearinghouse_ClearingHouse_receive_orders_and_run_dummy_RECEIVEDINFOSTOCK_COMPUTEDPRICES [ shape = rect label="Clearinghouse_ClearingHouse_receive_orders_and_run_dummy_RECEIVEDINFOSTOCK_COMPUTEDPRICES [0]" ];
+	Clearinghouse_ClearingHouse_receive_orders_and_run_dummy_RECEIVEDINFOSTOCK_COMPUTEDPRICES -> Firm_Firm_bankruptcy_insolvency_procedure_Firm_not_active_Firm_bankrupty_state_1;
+	Government_Government_idle_Gov_Start_Bond_Market_01 [ shape = rect label="Government_Government_idle_Gov_Start_Bond_Market_01 [0]" ];
+	Government_Government_idle_Gov_Start_Bond_Market_01 -> Clearinghouse_ClearingHouse_receive_orders_and_run_dummy_RECEIVEDINFOSTOCK_COMPUTEDPRICES;
+	Eurostat_Eurostat_idle_01_Eurostat_Start_Monthly_Loop [ shape = rect label="Eurostat_Eurostat_idle_01_Eurostat_Start_Monthly_Loop [0]" ];
+	Eurostat_Eurostat_idle_01_Eurostat_Start_Monthly_Loop -> Government_Government_idle_Gov_Start_Bond_Market_01;
+	Firm_idle_Firm_is_active_Firm_Start_Macro_Data [ shape = rect label="Firm_idle_Firm_is_active_Firm_Start_Macro_Data [0]" ];
+	Firm_idle_Firm_is_active_Firm_Start_Macro_Data -> Eurostat_Eurostat_idle_01_Eurostat_Start_Monthly_Loop;
+	Firm_Firm_read_policy_announcements_Firm_is_active_Firm_Start_Macro_Data [ shape = rect label="Firm_Firm_read_policy_announcements_Firm_is_active_Firm_Start_Macro_Data [9]" ];
+	Firm_Firm_read_policy_announcements_Firm_is_active_Firm_Start_Macro_Data -> Firm_idle_Firm_is_active_Firm_Start_Macro_Data;
+	Household_Household_read_policy_announcements_start_Household_Household_Start_Policy_Data [ shape = rect label="Household_Household_read_policy_announcements_start_Household_Household_Start_Policy_Data [8]" ];
+	Household_Household_read_policy_announcements_start_Household_Household_Start_Policy_Data -> Firm_Firm_read_policy_announcements_Firm_is_active_Firm_Start_Macro_Data;
+	IGFirm_IGFirm_read_policy_announcements_start_IGFirm_Start_IGFirm_Productivity [ shape = rect label="IGFirm_IGFirm_read_policy_announcements_start_IGFirm_Start_IGFirm_Productivity [7]" ];
+	IGFirm_IGFirm_read_policy_announcements_start_IGFirm_Start_IGFirm_Productivity -> Household_Household_read_policy_announcements_start_Household_Household_Start_Policy_Data;
+	Bank_Bank_read_policy_announcements_start_Bank_Bank_start_credit_market_role [ shape = rect label="Bank_Bank_read_policy_announcements_start_Bank_Bank_start_credit_market_role [5]" ];
+	Bank_Bank_read_policy_announcements_start_Bank_Bank_start_credit_market_role -> IGFirm_IGFirm_read_policy_announcements_start_IGFirm_Start_IGFirm_Productivity;
+	layer_2 [ color="#ff0000" label="layer 2"];
+	layer_2 ->Bank_Bank_read_policy_announcements_start_Bank_Bank_start_credit_market_role;
+	Bank_Bank_communicate_identity_Bank_start_credit_market_role_Bank_01 [ shape = rect label="Bank_Bank_communicate_identity_Bank_start_credit_market_role_Bank_01 [-21]" ];
+	Bank_Bank_communicate_identity_Bank_start_credit_market_role_Bank_01 -> layer_2;
+	Clearinghouse_ClearingHouse_send_asset_information_dummy_COMPUTEDPRICES_end_Clearinghouse [ shape = rect label="Clearinghouse_ClearingHouse_send_asset_information_dummy_COMPUTEDPRICES_end_Clearinghouse [0]" ];
+	Clearinghouse_ClearingHouse_send_asset_information_dummy_COMPUTEDPRICES_end_Clearinghouse -> Bank_Bank_communicate_identity_Bank_start_credit_market_role_Bank_01;
+	IGFirm_IGFirm_idle_Start_IGFirm_Productivity_01 [ shape = rect label="IGFirm_IGFirm_idle_Start_IGFirm_Productivity_01 [0]" ];
+	IGFirm_IGFirm_idle_Start_IGFirm_Productivity_01 -> Clearinghouse_ClearingHouse_send_asset_information_dummy_COMPUTEDPRICES_end_Clearinghouse;
+	IGFirm_IGFirm_update_productivity_price_Start_IGFirm_Productivity_01 [ shape = rect label="IGFirm_IGFirm_update_productivity_price_Start_IGFirm_Productivity_01 [0]" ];
+	IGFirm_IGFirm_update_productivity_price_Start_IGFirm_Productivity_01 -> IGFirm_IGFirm_idle_Start_IGFirm_Productivity_01;
+	Household_Household_idle_Household_Start_Policy_Data_Household_Start_Financial_Market_Role [ shape = rect label="Household_Household_idle_Household_Start_Policy_Data_Household_Start_Financial_Market_Role [0]" ];
+	Household_Household_idle_Household_Start_Policy_Data_Household_Start_Financial_Market_Role -> IGFirm_IGFirm_update_productivity_price_Start_IGFirm_Productivity_01;
+	Household_Household_receive_data_Household_Start_Policy_Data_Household_Start_Financial_Market_Role [ shape = rect label="Household_Household_receive_data_Household_Start_Policy_Data_Household_Start_Financial_Market_Role [0]" ];
+	Household_Household_receive_data_Household_Start_Policy_Data_Household_Start_Financial_Market_Role -> Household_Household_idle_Household_Start_Policy_Data_Household_Start_Financial_Market_Role;
+	Firm_idle_Firm_Start_Macro_Data_Firm_End_Macro_Data [ shape = rect label="Firm_idle_Firm_Start_Macro_Data_Firm_End_Macro_Data [0]" ];
+	Firm_idle_Firm_Start_Macro_Data_Firm_End_Macro_Data -> Household_Household_receive_data_Household_Start_Policy_Data_Household_Start_Financial_Market_Role;
+	Firm_idle_Firm_bankrupty_state_1_Firm_bankrupty_state_3 [ shape = rect label="Firm_idle_Firm_bankrupty_state_1_Firm_bankrupty_state_3 [0]" ];
+	Firm_idle_Firm_bankrupty_state_1_Firm_bankrupty_state_3 -> Firm_idle_Firm_Start_Macro_Data_Firm_End_Macro_Data;
+	Firm_Firm_compute_and_send_stock_orders_dummy_Firm_bankrupty_state_1_Firm_bankrupty_state_2 [ shape = rect label="Firm_Firm_compute_and_send_stock_orders_dummy_Firm_bankrupty_state_1_Firm_bankrupty_state_2 [0]" ];
+	Firm_Firm_compute_and_send_stock_orders_dummy_Firm_bankrupty_state_1_Firm_bankrupty_state_2 -> Firm_idle_Firm_bankrupty_state_1_Firm_bankrupty_state_3;
+	Firm_Firm_receive_data_Firm_Start_Macro_Data_Firm_End_Macro_Data [ shape = rect label="Firm_Firm_receive_data_Firm_Start_Macro_Data_Firm_End_Macro_Data [11]" ];
+	Firm_Firm_receive_data_Firm_Start_Macro_Data_Firm_End_Macro_Data -> Firm_Firm_compute_and_send_stock_orders_dummy_Firm_bankrupty_state_1_Firm_bankrupty_state_2;
+	Central_Bank_Central_Bank_read_bond_update_start_Central_Bank_00 [ shape = rect label="Central_Bank_Central_Bank_read_bond_update_start_Central_Bank_00 [10]" ];
+	Central_Bank_Central_Bank_read_bond_update_start_Central_Bank_00 -> Firm_Firm_receive_data_Firm_Start_Macro_Data_Firm_End_Macro_Data;
+	layer_3 [ color="#ff0000" label="layer 3"];
+	layer_3 ->Central_Bank_Central_Bank_read_bond_update_start_Central_Bank_00;
+	IGFirm_IGFirm_send_quality_price_info_01_02 [ shape = rect label="IGFirm_IGFirm_send_quality_price_info_01_02 [-8]" ];
+	IGFirm_IGFirm_send_quality_price_info_01_02 -> layer_3;
+	Bank_Bank_send_accountInterest_Bank_01_Bank_02 [ shape = rect label="Bank_Bank_send_accountInterest_Bank_01_Bank_02 [0]" ];
+	Bank_Bank_send_accountInterest_Bank_01_Bank_02 -> IGFirm_IGFirm_send_quality_price_info_01_02;
+	Household_Household_financial_market_dummy_Household_Start_Financial_Market_Role_Household_Start_Labour_Role [ shape = rect label="Household_Household_financial_market_dummy_Household_Start_Financial_Market_Role_Household_Start_Labour_Role [0]" ];
+	Household_Household_financial_market_dummy_Household_Start_Financial_Market_Role_Household_Start_Labour_Role -> Bank_Bank_send_accountInterest_Bank_01_Bank_02;
+	Firm_Firm_send_info_dummy_Firm_End_Macro_Data_Firm_Start_Producer_Role [ shape = rect label="Firm_Firm_send_info_dummy_Firm_End_Macro_Data_Firm_Start_Producer_Role [0]" ];
+	Firm_Firm_send_info_dummy_Firm_End_Macro_Data_Firm_Start_Producer_Role -> Household_Household_financial_market_dummy_Household_Start_Financial_Market_Role_Household_Start_Labour_Role;
+	Firm_Firm_read_stock_transactions_dummy_Firm_bankrupty_state_2_Firm_bankrupty_state_3 [ shape = rect label="Firm_Firm_read_stock_transactions_dummy_Firm_bankrupty_state_2_Firm_bankrupty_state_3 [0]" ];
+	Firm_Firm_read_stock_transactions_dummy_Firm_bankrupty_state_2_Firm_bankrupty_state_3 -> Firm_Firm_send_info_dummy_Firm_End_Macro_Data_Firm_Start_Producer_Role;
+	layer_4 [ color="#ff0000" label="layer 4"];
+	layer_4 ->Firm_Firm_read_stock_transactions_dummy_Firm_bankrupty_state_2_Firm_bankrupty_state_3;
+	Household_Household_idle_Household_Start_Labour_Role_01a [ shape = rect label="Household_Household_idle_Household_Start_Labour_Role_01a [0]" ];
+	Household_Household_idle_Household_Start_Labour_Role_01a -> layer_4;
+	Firm_Firm_reset_bankruptcy_flags_Firm_bankrupty_state_3_end_Firm [ shape = rect label="Firm_Firm_reset_bankruptcy_flags_Firm_bankrupty_state_3_end_Firm [0]" ];
+	Firm_Firm_reset_bankruptcy_flags_Firm_bankrupty_state_3_end_Firm -> Household_Household_idle_Household_Start_Labour_Role_01a;
+	Firm_Firm_set_quantities_zero_Firm_Start_Producer_Role_00b [ shape = rect label="Firm_Firm_set_quantities_zero_Firm_Start_Producer_Role_00b [0]" ];
+	Firm_Firm_set_quantities_zero_Firm_Start_Producer_Role_00b -> Firm_Firm_reset_bankruptcy_flags_Firm_bankrupty_state_3_end_Firm;
+	Firm_Firm_calc_production_quantity_Firm_Start_Producer_Role_01 [ shape = rect label="Firm_Firm_calc_production_quantity_Firm_Start_Producer_Role_01 [0]" ];
+	Firm_Firm_calc_production_quantity_Firm_Start_Producer_Role_01 -> Firm_Firm_set_quantities_zero_Firm_Start_Producer_Role_00b;
+	layer_5 [ color="#ff0000" label="layer 5"];
+	layer_5 ->Firm_Firm_calc_production_quantity_Firm_Start_Producer_Role_01;
+	Firm_Firm_calc_input_demands_01_02 [ shape = rect label="Firm_Firm_calc_input_demands_01_02 [8]" ];
+	Firm_Firm_calc_input_demands_01_02 -> layer_5;
+	layer_6 [ color="#ff0000" label="layer 6"];
+	layer_6 ->Firm_Firm_calc_input_demands_01_02;
+	Firm_Firm_compute_total_liquidity_needs_02_Firm_Start_Credit_Role [ shape = rect label="Firm_Firm_compute_total_liquidity_needs_02_Firm_Start_Credit_Role [0]" ];
+	Firm_Firm_compute_total_liquidity_needs_02_Firm_Start_Credit_Role -> layer_6;
+	layer_7 [ color="#ff0000" label="layer 7"];
+	layer_7 ->Firm_Firm_compute_total_liquidity_needs_02_Firm_Start_Credit_Role;
+	Firm_idle_Firm_Start_Credit_Role_Firm_End_External_Financing [ shape = rect label="Firm_idle_Firm_Start_Credit_Role_Firm_End_External_Financing [0]" ];
+	Firm_idle_Firm_Start_Credit_Role_Firm_End_External_Financing -> layer_7;
+	Firm_Firm_ask_loan_Firm_Start_Credit_Role_Firm_Credit_02 [ shape = rect label="Firm_Firm_ask_loan_Firm_Start_Credit_Role_Firm_Credit_02 [21]" ];
+	Firm_Firm_ask_loan_Firm_Start_Credit_Role_Firm_Credit_02 -> Firm_idle_Firm_Start_Credit_Role_Firm_End_External_Financing;
+	layer_8 [ color="#ff0000" label="layer 8"];
+	layer_8 ->Firm_Firm_ask_loan_Firm_Start_Credit_Role_Firm_Credit_02;
+	Bank_Bank_decide_credit_conditions_Bank_02_Bank_03 [ shape = rect label="Bank_Bank_decide_credit_conditions_Bank_02_Bank_03 [0]" ];
+	Bank_Bank_decide_credit_conditions_Bank_02_Bank_03 -> layer_8;
+	layer_9 [ color="#ff0000" label="layer 9"];
+	layer_9 ->Bank_Bank_decide_credit_conditions_Bank_02_Bank_03;
+	Firm_Firm_get_loan_Firm_Credit_02_Firm_End_Credit_Role [ shape = rect label="Firm_Firm_get_loan_Firm_Credit_02_Firm_End_Credit_Role [0]" ];
+	Firm_Firm_get_loan_Firm_Credit_02_Firm_End_Credit_Role -> layer_9;
+	layer_10 [ color="#ff0000" label="layer 10"];
+	layer_10 ->Firm_Firm_get_loan_Firm_Credit_02_Firm_End_Credit_Role;
+	Firm_idle_Firm_End_Credit_Role_Firm_End_External_Financing [ shape = rect label="Firm_idle_Firm_End_Credit_Role_Firm_End_External_Financing [0]" ];
+	Firm_idle_Firm_End_Credit_Role_Firm_End_External_Financing -> layer_10;
+	Firm_Firm_compute_and_send_stock_orders_dummy_Firm_End_Credit_Role_0003 [ shape = rect label="Firm_Firm_compute_and_send_stock_orders_dummy_Firm_End_Credit_Role_0003 [0]" ];
+	Firm_Firm_compute_and_send_stock_orders_dummy_Firm_End_Credit_Role_0003 -> Firm_idle_Firm_End_Credit_Role_Firm_End_External_Financing;
+	Bank_Bank_give_loan_Bank_03_Bank_04 [ shape = rect label="Bank_Bank_give_loan_Bank_03_Bank_04 [1]" ];
+	Bank_Bank_give_loan_Bank_03_Bank_04 -> Firm_Firm_compute_and_send_stock_orders_dummy_Firm_End_Credit_Role_0003;
+	layer_11 [ color="#ff0000" label="layer 11"];
+	layer_11 ->Bank_Bank_give_loan_Bank_03_Bank_04;
+	Firm_Firm_read_stock_transactions_dummy_0003_End_Firm_Financial_Role [ shape = rect label="Firm_Firm_read_stock_transactions_dummy_0003_End_Firm_Financial_Role [0]" ];
+	Firm_Firm_read_stock_transactions_dummy_0003_End_Firm_Financial_Role -> layer_11;
+	layer_12 [ color="#ff0000" label="layer 12"];
+	layer_12 ->Firm_Firm_read_stock_transactions_dummy_0003_End_Firm_Financial_Role;
+	Firm_Firm_check_financial_and_bankruptcy_state_End_Firm_Financial_Role_Firm_bankruptcy_checked [ shape = rect label="Firm_Firm_check_financial_and_bankruptcy_state_End_Firm_Financial_Role_Firm_bankruptcy_checked [0]" ];
+	Firm_Firm_check_financial_and_bankruptcy_state_End_Firm_Financial_Role_Firm_bankruptcy_checked -> layer_12;
+	layer_13 [ color="#ff0000" label="layer 13"];
+	layer_13 ->Firm_Firm_check_financial_and_bankruptcy_state_End_Firm_Financial_Role_Firm_bankruptcy_checked;
+	Firm_Firm_set_bankruptcy_illiquidity_Firm_bankruptcy_checked_Firm_End_Financial_Management_Role [ shape = rect label="Firm_Firm_set_bankruptcy_illiquidity_Firm_bankruptcy_checked_Firm_End_Financial_Management_Role [-51]" ];
+	Firm_Firm_set_bankruptcy_illiquidity_Firm_bankruptcy_checked_Firm_End_Financial_Management_Role -> layer_13;
+	Firm_Firm_not_in_bankruptcy_Firm_bankruptcy_checked_Firm_checks_financial_crisis [ shape = rect label="Firm_Firm_not_in_bankruptcy_Firm_bankruptcy_checked_Firm_checks_financial_crisis [0]" ];
+	Firm_Firm_not_in_bankruptcy_Firm_bankruptcy_checked_Firm_checks_financial_crisis -> Firm_Firm_set_bankruptcy_illiquidity_Firm_bankruptcy_checked_Firm_End_Financial_Management_Role;
+	layer_14 [ color="#ff0000" label="layer 14"];
+	layer_14 ->Firm_Firm_not_in_bankruptcy_Firm_bankruptcy_checked_Firm_checks_financial_crisis;
+	Firm_idle_Firm_checks_financial_crisis_Firm_End_External_Financing [ shape = rect label="Firm_idle_Firm_checks_financial_crisis_Firm_End_External_Financing [0]" ];
+	Firm_idle_Firm_checks_financial_crisis_Firm_End_External_Financing -> layer_14;
+	Firm_Firm_in_financial_crisis_Firm_checks_financial_crisis_Firm_End_External_Financing [ shape = rect label="Firm_Firm_in_financial_crisis_Firm_checks_financial_crisis_Firm_End_External_Financing [0]" ];
+	Firm_Firm_in_financial_crisis_Firm_checks_financial_crisis_Firm_End_External_Financing -> Firm_idle_Firm_checks_financial_crisis_Firm_End_External_Financing;
+	layer_15 [ color="#ff0000" label="layer 15"];
+	layer_15 ->Firm_Firm_in_financial_crisis_Firm_checks_financial_crisis_Firm_End_External_Financing;
+	Firm_Firm_execute_financial_payments_Firm_End_External_Financing_Firm_Start_Public_Sector_Role [ shape = rect label="Firm_Firm_execute_financial_payments_Firm_End_External_Financing_Firm_Start_Public_Sector_Role [-154]" ];
+	Firm_Firm_execute_financial_payments_Firm_End_External_Financing_Firm_Start_Public_Sector_Role -> layer_15;
+	layer_16 [ color="#ff0000" label="layer 16"];
+	layer_16 ->Firm_Firm_execute_financial_payments_Firm_End_External_Financing_Firm_Start_Public_Sector_Role;
+	Firm_Firm_send_subsidy_notification_Firm_Start_Public_Sector_Role_005 [ shape = rect label="Firm_Firm_send_subsidy_notification_Firm_Start_Public_Sector_Role_005 [-105]" ];
+	Firm_Firm_send_subsidy_notification_Firm_Start_Public_Sector_Role_005 -> layer_16;
+	Bank_Bank_receive_installment_Bank_04_Bank_05 [ shape = rect label="Bank_Bank_receive_installment_Bank_04_Bank_05 [11]" ];
+	Bank_Bank_receive_installment_Bank_04_Bank_05 -> Firm_Firm_send_subsidy_notification_Firm_Start_Public_Sector_Role_005;
+	layer_17 [ color="#ff0000" label="layer 17"];
+	layer_17 ->Bank_Bank_receive_installment_Bank_04_Bank_05;
+	Firm_Firm_send_transfer_notification_005_Firm_End_Financial_Management [ shape = rect label="Firm_Firm_send_transfer_notification_005_Firm_End_Financial_Management [-106]" ];
+	Firm_Firm_send_transfer_notification_005_Firm_End_Financial_Management -> layer_17;
+	layer_18 [ color="#ff0000" label="layer 18"];
+	layer_18 ->Firm_Firm_send_transfer_notification_005_Firm_End_Financial_Management;
+	Firm_Firm_calc_production_quantity_2_Firm_End_Financial_Management_Firm_Start_Labour_Role [ shape = rect label="Firm_Firm_calc_production_quantity_2_Firm_End_Financial_Management_Firm_Start_Labour_Role [0]" ];
+	Firm_Firm_calc_production_quantity_2_Firm_End_Financial_Management_Firm_Start_Labour_Role -> layer_18;
+	layer_19 [ color="#ff0000" label="layer 19"];
+	layer_19 ->Firm_Firm_calc_production_quantity_2_Firm_End_Financial_Management_Firm_Start_Labour_Role;
+	Firm_Firm_calculate_specific_skills_and_wage_offer_Firm_Start_Labour_Role_011 [ shape = rect label="Firm_Firm_calculate_specific_skills_and_wage_offer_Firm_Start_Labour_Role_011 [0]" ];
+	Firm_Firm_calculate_specific_skills_and_wage_offer_Firm_Start_Labour_Role_011 -> layer_19;
+	layer_20 [ color="#ff0000" label="layer 20"];
+	layer_20 ->Firm_Firm_calculate_specific_skills_and_wage_offer_Firm_Start_Labour_Role_011;
+	Firm_Firm_send_redundancies_011_03ccc [ shape = rect label="Firm_Firm_send_redundancies_011_03ccc [-2]" ];
+	Firm_Firm_send_redundancies_011_03ccc -> layer_20;
+	Firm_Firm_idle_011_03ccc [ shape = rect label="Firm_Firm_idle_011_03ccc [0]" ];
+	Firm_Firm_idle_011_03ccc -> Firm_Firm_send_redundancies_011_03ccc;
+	layer_21 [ color="#ff0000" label="layer 21"];
+	layer_21 ->Firm_Firm_idle_011_03ccc;
+	Firm_Firm_send_random_redundancies_03ccc_04ccc [ shape = rect label="Firm_Firm_send_random_redundancies_03ccc_04ccc [-1]" ];
+	Firm_Firm_send_random_redundancies_03ccc_04ccc -> layer_21;
+	layer_22 [ color="#ff0000" label="layer 22"];
+	layer_22 ->Firm_Firm_send_random_redundancies_03ccc_04ccc;
+	Firm_Firm_send_vacancies_04ccc_03 [ shape = rect label="Firm_Firm_send_vacancies_04ccc_03 [-3]" ];
+	Firm_Firm_send_vacancies_04ccc_03 -> layer_22;
+	Firm_idle_04ccc_03c [ shape = rect label="Firm_idle_04ccc_03c [0]" ];
+	Firm_idle_04ccc_03c -> Firm_Firm_send_vacancies_04ccc_03;
+	Household_Household_read_firing_messages_Household_Start_Labour_Role_01d [ shape = rect label="Household_Household_read_firing_messages_Household_Start_Labour_Role_01d [1]" ];
+	Household_Household_read_firing_messages_Household_Start_Labour_Role_01d -> Firm_idle_04ccc_03c;
+	layer_23 [ color="#ff0000" label="layer 23"];
+	layer_23 ->Household_Household_read_firing_messages_Household_Start_Labour_Role_01d;
+	Household_Household_idle_01d_06 [ shape = rect label="Household_Household_idle_01d_06 [0]" ];
+	Household_Household_idle_01d_06 -> layer_23;
+	Household_Household_idle_01d_01a [ shape = rect label="Household_Household_idle_01d_01a [0]" ];
+	Household_Household_idle_01d_01a -> Household_Household_idle_01d_06;
+	layer_24 [ color="#ff0000" label="layer 24"];
+	layer_24 ->Household_Household_idle_01d_01a;
+	Household_Household_UNEMPLOYED_read_job_vacancies_and_send_applications_01a_01 [ shape = rect label="Household_Household_UNEMPLOYED_read_job_vacancies_and_send_applications_01a_01 [3]" ];
+	Household_Household_UNEMPLOYED_read_job_vacancies_and_send_applications_01a_01 -> layer_24;
+	layer_25 [ color="#ff0000" label="layer 25"];
+	layer_25 ->Household_Household_UNEMPLOYED_read_job_vacancies_and_send_applications_01a_01;
+	Firm_Firm_read_job_applications_send_job_offer_or_rejection_03_04 [ shape = rect label="Firm_Firm_read_job_applications_send_job_offer_or_rejection_03_04 [0]" ];
+	Firm_Firm_read_job_applications_send_job_offer_or_rejection_03_04 -> layer_25;
+	layer_26 [ color="#ff0000" label="layer 26"];
+	layer_26 ->Firm_Firm_read_job_applications_send_job_offer_or_rejection_03_04;
+	Household_Household_read_job_offers_send_response_01_02 [ shape = rect label="Household_Household_read_job_offers_send_response_01_02 [-16]" ];
+	Household_Household_read_job_offers_send_response_01_02 -> layer_26;
+	layer_27 [ color="#ff0000" label="layer 27"];
+	layer_27 ->Household_Household_read_job_offers_send_response_01_02;
+	Household_Household_read_application_rejection_update_wage_reservation_02_03 [ shape = rect label="Household_Household_read_application_rejection_update_wage_reservation_02_03 [0]" ];
+	Household_Household_read_application_rejection_update_wage_reservation_02_03 -> layer_27;
+	Household_Household_finish_labour_market_02_06 [ shape = rect label="Household_Household_finish_labour_market_02_06 [0]" ];
+	Household_Household_finish_labour_market_02_06 -> Household_Household_read_application_rejection_update_wage_reservation_02_03;
+	Firm_Firm_read_job_responses_04_05a [ shape = rect label="Firm_Firm_read_job_responses_04_05a [5]" ];
+	Firm_Firm_read_job_responses_04_05a -> Household_Household_finish_labour_market_02_06;
+	Firm_Firm_read_job_quitting_00b_09c [ shape = rect label="Firm_Firm_read_job_quitting_00b_09c [4]" ];
+	Firm_Firm_read_job_quitting_00b_09c -> Firm_Firm_read_job_responses_04_05a;
+	Firm_Firm_read_job_quitting_03c_03d [ shape = rect label="Firm_Firm_read_job_quitting_03c_03d [3]" ];
+	Firm_Firm_read_job_quitting_03c_03d -> Firm_Firm_read_job_quitting_00b_09c;
+	layer_28 [ color="#ff0000" label="layer 28"];
+	layer_28 ->Firm_Firm_read_job_quitting_03c_03d;
+	Firm_Firm_finish_labour_market_first_round_03d_09a [ shape = rect label="Firm_Firm_finish_labour_market_first_round_03d_09a [0]" ];
+	Firm_Firm_finish_labour_market_first_round_03d_09a -> layer_28;
+	Firm_Firm_start_labour_market_03d_06 [ shape = rect label="Firm_Firm_start_labour_market_03d_06 [0]" ];
+	Firm_Firm_start_labour_market_03d_06 -> Firm_Firm_finish_labour_market_first_round_03d_09a;
+	Firm_Firm_read_job_quitting_05a_05b [ shape = rect label="Firm_Firm_read_job_quitting_05a_05b [4]" ];
+	Firm_Firm_read_job_quitting_05a_05b -> Firm_Firm_start_labour_market_03d_06;
+	layer_29 [ color="#ff0000" label="layer 29"];
+	layer_29 ->Firm_Firm_read_job_quitting_05a_05b;
+	Firm_Firm_update_wage_offer_05b_06 [ shape = rect label="Firm_Firm_update_wage_offer_05b_06 [0]" ];
+	Firm_Firm_update_wage_offer_05b_06 -> layer_29;
+	Firm_Firm_finish_labour_market_first_round_05b_09a [ shape = rect label="Firm_Firm_finish_labour_market_first_round_05b_09a [0]" ];
+	Firm_Firm_finish_labour_market_first_round_05b_09a -> Firm_Firm_update_wage_offer_05b_06;
+	layer_30 [ color="#ff0000" label="layer 30"];
+	layer_30 ->Firm_Firm_finish_labour_market_first_round_05b_09a;
+	Firm_Firm_send_vacancies_2_06_07 [ shape = rect label="Firm_Firm_send_vacancies_2_06_07 [-1]" ];
+	Firm_Firm_send_vacancies_2_06_07 -> layer_30;
+	layer_31 [ color="#ff0000" label="layer 31"];
+	layer_31 ->Firm_Firm_send_vacancies_2_06_07;
+	Household_Household_UNEMPLOYED_read_job_vacancies_and_send_applications_2_03_04 [ shape = rect label="Household_Household_UNEMPLOYED_read_job_vacancies_and_send_applications_2_03_04 [0]" ];
+	Household_Household_UNEMPLOYED_read_job_vacancies_and_send_applications_2_03_04 -> layer_31;
+	layer_32 [ color="#ff0000" label="layer 32"];
+	layer_32 ->Household_Household_UNEMPLOYED_read_job_vacancies_and_send_applications_2_03_04;
+	Firm_Firm_read_job_applications_send_job_offer_or_rejection_2_07_08 [ shape = rect label="Firm_Firm_read_job_applications_send_job_offer_or_rejection_2_07_08 [0]" ];
+	Firm_Firm_read_job_applications_send_job_offer_or_rejection_2_07_08 -> layer_32;
+	layer_33 [ color="#ff0000" label="layer 33"];
+	layer_33 ->Firm_Firm_read_job_applications_send_job_offer_or_rejection_2_07_08;
+	Household_Household_read_job_offers_send_response_2_04_05 [ shape = rect label="Household_Household_read_job_offers_send_response_2_04_05 [-12]" ];
+	Household_Household_read_job_offers_send_response_2_04_05 -> layer_33;
+	layer_34 [ color="#ff0000" label="layer 34"];
+	layer_34 ->Household_Household_read_job_offers_send_response_2_04_05;
+	Household_Household_idle_05_06 [ shape = rect label="Household_Household_idle_05_06 [0]" ];
+	Household_Household_idle_05_06 -> layer_34;
+	Household_Household_read_application_rejection_update_wage_reservation_2_05_06 [ shape = rect label="Household_Household_read_application_rejection_update_wage_reservation_2_05_06 [0]" ];
+	Household_Household_read_application_rejection_update_wage_reservation_2_05_06 -> Household_Household_idle_05_06;
+	Firm_Firm_read_job_responses_2_08_09a [ shape = rect label="Firm_Firm_read_job_responses_2_08_09a [4]" ];
+	Firm_Firm_read_job_responses_2_08_09a -> Household_Household_read_application_rejection_update_wage_reservation_2_05_06;
+	Firm_Firm_read_job_quitting_2_09c_Firm_Start_Seller_Role [ shape = rect label="Firm_Firm_read_job_quitting_2_09c_Firm_Start_Seller_Role [3]" ];
+	Firm_Firm_read_job_quitting_2_09c_Firm_Start_Seller_Role -> Firm_Firm_read_job_responses_2_08_09a;
+	layer_35 [ color="#ff0000" label="layer 35"];
+	layer_35 ->Firm_Firm_read_job_quitting_2_09c_Firm_Start_Seller_Role;
+	Firm_Firm_read_job_quitting_2_09a_09b [ shape = rect label="Firm_Firm_read_job_quitting_2_09a_09b [2]" ];
+	Firm_Firm_read_job_quitting_2_09a_09b -> layer_35;
+	layer_36 [ color="#ff0000" label="layer 36"];
+	layer_36 ->Firm_Firm_read_job_quitting_2_09a_09b;
+	Firm_Firm_idle_09b_10 [ shape = rect label="Firm_Firm_idle_09b_10 [0]" ];
+	Firm_Firm_idle_09b_10 -> layer_36;
+	Firm_Firm_update_wage_offer_2_09b_10 [ shape = rect label="Firm_Firm_update_wage_offer_2_09b_10 [0]" ];
+	Firm_Firm_update_wage_offer_2_09b_10 -> Firm_Firm_idle_09b_10;
+	layer_37 [ color="#ff0000" label="layer 37"];
+	layer_37 ->Firm_Firm_update_wage_offer_2_09b_10;
+	Firm_Firm_compute_mean_wage_specific_skills_10_Firm_End_Labour_Role [ shape = rect label="Firm_Firm_compute_mean_wage_specific_skills_10_Firm_End_Labour_Role [0]" ];
+	Firm_Firm_compute_mean_wage_specific_skills_10_Firm_End_Labour_Role -> layer_37;
+	layer_38 [ color="#ff0000" label="layer 38"];
+	layer_38 ->Firm_Firm_compute_mean_wage_specific_skills_10_Firm_End_Labour_Role;
+	Firm_Firm_send_capital_demand_Firm_End_Labour_Role_11a [ shape = rect label="Firm_Firm_send_capital_demand_Firm_End_Labour_Role_11a [-1]" ];
+	Firm_Firm_send_capital_demand_Firm_End_Labour_Role_11a -> layer_38;
+	layer_39 [ color="#ff0000" label="layer 39"];
+	layer_39 ->Firm_Firm_send_capital_demand_Firm_End_Labour_Role_11a;
+	IGFirm_IGFirm_send_capital_good_02_03 [ shape = rect label="IGFirm_IGFirm_send_capital_good_02_03 [0]" ];
+	IGFirm_IGFirm_send_capital_good_02_03 -> layer_39;
+	layer_40 [ color="#ff0000" label="layer 40"];
+	layer_40 ->IGFirm_IGFirm_send_capital_good_02_03;
+	Firm_Firm_receive_capital_goods_11a_11b [ shape = rect label="Firm_Firm_receive_capital_goods_11a_11b [1]" ];
+	Firm_Firm_receive_capital_goods_11a_11b -> layer_40;
+	layer_41 [ color="#ff0000" label="layer 41"];
+	layer_41 ->Firm_Firm_receive_capital_goods_11a_11b;
+	Firm_Firm_execute_production_11b_11 [ shape = rect label="Firm_Firm_execute_production_11b_11 [0]" ];
+	Firm_Firm_execute_production_11b_11 -> layer_41;
+	layer_42 [ color="#ff0000" label="layer 42"];
+	layer_42 ->Firm_Firm_execute_production_11b_11;
+	Firm_Firm_calc_pay_costs_11_12 [ shape = rect label="Firm_Firm_calc_pay_costs_11_12 [-15]" ];
+	Firm_Firm_calc_pay_costs_11_12 -> layer_42;
+	layer_43 [ color="#ff0000" label="layer 43"];
+	layer_43 ->Firm_Firm_calc_pay_costs_11_12;
+	Firm_Firm_send_goods_to_mall_12_Firm_Start_Seller_Role [ shape = rect label="Firm_Firm_send_goods_to_mall_12_Firm_Start_Seller_Role [-3]" ];
+	Firm_Firm_send_goods_to_mall_12_Firm_Start_Seller_Role -> layer_43;
+	IGFirm_IGFirm_receive_payment_03_04 [ shape = rect label="IGFirm_IGFirm_receive_payment_03_04 [1]" ];
+	IGFirm_IGFirm_receive_payment_03_04 -> Firm_Firm_send_goods_to_mall_12_Firm_Start_Seller_Role;
+	layer_44 [ color="#ff0000" label="layer 44"];
+	layer_44 ->IGFirm_IGFirm_receive_payment_03_04;
+	IGFirm_IGFirm_pay_taxes_04_04b [ shape = rect label="IGFirm_IGFirm_pay_taxes_04_04b [-55]" ];
+	IGFirm_IGFirm_pay_taxes_04_04b -> layer_44;
+	IGFirm_IGFirm_idle_04_end_IGFirm [ shape = rect label="IGFirm_IGFirm_idle_04_end_IGFirm [0]" ];
+	IGFirm_IGFirm_idle_04_end_IGFirm -> IGFirm_IGFirm_pay_taxes_04_04b;
+	Mall_Mall_update_mall_stock_01_02 [ shape = rect label="Mall_Mall_update_mall_stock_01_02 [54]" ];
+	Mall_Mall_update_mall_stock_01_02 -> IGFirm_IGFirm_idle_04_end_IGFirm;
+	layer_45 [ color="#ff0000" label="layer 45"];
+	layer_45 ->Mall_Mall_update_mall_stock_01_02;
+	IGFirm_IGFirm_dividend_payment_04b_end_IGFirm [ shape = rect label="IGFirm_IGFirm_dividend_payment_04b_end_IGFirm [-2]" ];
+	IGFirm_IGFirm_dividend_payment_04b_end_IGFirm -> layer_45;
+	Mall_Mall_send_quality_price_info_1_02_03 [ shape = rect label="Mall_Mall_send_quality_price_info_1_02_03 [-12]" ];
+	Mall_Mall_send_quality_price_info_1_02_03 -> IGFirm_IGFirm_dividend_payment_04b_end_IGFirm;
+	layer_46 [ color="#ff0000" label="layer 46"];
+	layer_46 ->Mall_Mall_send_quality_price_info_1_02_03;
+	Household_Household_receive_dividends_06_06b [ shape = rect label="Household_Household_receive_dividends_06_06b [2]" ];
+	Household_Household_receive_dividends_06_06b -> layer_46;
+	layer_47 [ color="#ff0000" label="layer 47"];
+	layer_47 ->Household_Household_receive_dividends_06_06b;
+	Household_Household_idle_06b_06c [ shape = rect label="Household_Household_idle_06b_06c [0]" ];
+	Household_Household_idle_06b_06c -> layer_47;
+	Household_Household_idle_06b_09 [ shape = rect label="Household_Household_idle_06b_09 [0]" ];
+	Household_Household_idle_06b_09 -> Household_Household_idle_06b_06c;
+	layer_48 [ color="#ff0000" label="layer 48"];
+	layer_48 ->Household_Household_idle_06b_09;
+	Household_Household_send_subsidy_notification_06c_06d [ shape = rect label="Household_Household_send_subsidy_notification_06c_06d [-53]" ];
+	Household_Household_send_subsidy_notification_06c_06d -> layer_48;
+	layer_49 [ color="#ff0000" label="layer 49"];
+	layer_49 ->Household_Household_send_subsidy_notification_06c_06d;
+	Household_Household_send_transfer_notification_06d_06e [ shape = rect label="Household_Household_send_transfer_notification_06d_06e [-54]" ];
+	Household_Household_send_transfer_notification_06d_06e -> layer_49;
+	layer_50 [ color="#ff0000" label="layer 50"];
+	layer_50 ->Household_Household_send_transfer_notification_06d_06e;
+	Household_Household_send_unemployment_benefit_notification_06e_08 [ shape = rect label="Household_Household_send_unemployment_benefit_notification_06e_08 [-55]" ];
+	Household_Household_send_unemployment_benefit_notification_06e_08 -> layer_50;
+	Household_Household_receive_wage_06e_07 [ shape = rect label="Household_Household_receive_wage_06e_07 [2]" ];
+	Household_Household_receive_wage_06e_07 -> Household_Household_send_unemployment_benefit_notification_06e_08;
+	layer_51 [ color="#ff0000" label="layer 51"];
+	layer_51 ->Household_Household_receive_wage_06e_07;
+	Household_Household_update_specific_skills_07_08 [ shape = rect label="Household_Household_update_specific_skills_07_08 [-20]" ];
+	Household_Household_update_specific_skills_07_08 -> layer_51;
+	layer_52 [ color="#ff0000" label="layer 52"];
+	layer_52 ->Household_Household_update_specific_skills_07_08;
+	Household_Household_send_tax_payment_08_08b [ shape = rect label="Household_Household_send_tax_payment_08_08b [-43]" ];
+	Household_Household_send_tax_payment_08_08b -> layer_52;
+	layer_53 [ color="#ff0000" label="layer 53"];
+	layer_53 ->Household_Household_send_tax_payment_08_08b;
+	Household_Household_determine_consumption_budget_08b_09 [ shape = rect label="Household_Household_determine_consumption_budget_08b_09 [0]" ];
+	Household_Household_determine_consumption_budget_08b_09 -> layer_53;
+	layer_54 [ color="#ff0000" label="layer 54"];
+	layer_54 ->Household_Household_determine_consumption_budget_08b_09;
+	Household_Household_shifting_consumption_day_09_15 [ shape = rect label="Household_Household_shifting_consumption_day_09_15 [0]" ];
+	Household_Household_shifting_consumption_day_09_15 -> layer_54;
+	Household_Household_rank_and_buy_goods_1_09_09b [ shape = rect label="Household_Household_rank_and_buy_goods_1_09_09b [0]" ];
+	Household_Household_rank_and_buy_goods_1_09_09b -> Household_Household_shifting_consumption_day_09_15;
+	Household_Household_idle_09_15 [ shape = rect label="Household_Household_idle_09_15 [0]" ];
+	Household_Household_idle_09_15 -> Household_Household_rank_and_buy_goods_1_09_09b;
+	layer_55 [ color="#ff0000" label="layer 55"];
+	layer_55 ->Household_Household_idle_09_15;
+	Mall_Mall_update_mall_stocks_sales_rationing_1_03_04 [ shape = rect label="Mall_Mall_update_mall_stocks_sales_rationing_1_03_04 [-7]" ];
+	Mall_Mall_update_mall_stocks_sales_rationing_1_03_04 -> layer_55;
+	Household_Household_idle_09b_10 [ shape = rect label="Household_Household_idle_09b_10 [0]" ];
+	Household_Household_idle_09b_10 -> Mall_Mall_update_mall_stocks_sales_rationing_1_03_04;
+	Household_Household_back_shifting_consumption_day_09b_10 [ shape = rect label="Household_Household_back_shifting_consumption_day_09b_10 [0]" ];
+	Household_Household_back_shifting_consumption_day_09b_10 -> Household_Household_idle_09b_10;
+	layer_56 [ color="#ff0000" label="layer 56"];
+	layer_56 ->Household_Household_back_shifting_consumption_day_09b_10;
+	Household_Household_receive_goods_read_rationing_10_11 [ shape = rect label="Household_Household_receive_goods_read_rationing_10_11 [1]" ];
+	Household_Household_receive_goods_read_rationing_10_11 -> layer_56;
+	layer_57 [ color="#ff0000" label="layer 57"];
+	layer_57 ->Household_Household_receive_goods_read_rationing_10_11;
+	Household_Household_rank_and_buy_goods_2_11_12 [ shape = rect label="Household_Household_rank_and_buy_goods_2_11_12 [-2]" ];
+	Household_Household_rank_and_buy_goods_2_11_12 -> layer_57;
+	Household_Household_set_values_zero_11_14 [ shape = rect label="Household_Household_set_values_zero_11_14 [0]" ];
+	Household_Household_set_values_zero_11_14 -> Household_Household_rank_and_buy_goods_2_11_12;
+	layer_58 [ color="#ff0000" label="layer 58"];
+	layer_58 ->Household_Household_set_values_zero_11_14;
+	Mall_Mall_update_mall_stocks_sales_rationing_2_04_05 [ shape = rect label="Mall_Mall_update_mall_stocks_sales_rationing_2_04_05 [0]" ];
+	Mall_Mall_update_mall_stocks_sales_rationing_2_04_05 -> layer_58;
+	layer_59 [ color="#ff0000" label="layer 59"];
+	layer_59 ->Mall_Mall_update_mall_stocks_sales_rationing_2_04_05;
+	Mall_Mall_pay_firm_05_05a [ shape = rect label="Mall_Mall_pay_firm_05_05a [-3]" ];
+	Mall_Mall_pay_firm_05_05a -> layer_59;
+	Household_Household_receive_goods_read_rationing_2_12_14 [ shape = rect label="Household_Household_receive_goods_read_rationing_2_12_14 [2]" ];
+	Household_Household_receive_goods_read_rationing_2_12_14 -> Mall_Mall_pay_firm_05_05a;
+	layer_60 [ color="#ff0000" label="layer 60"];
+	layer_60 ->Household_Household_receive_goods_read_rationing_2_12_14;
+	Household_Household_handle_leftover_budget_14_15 [ shape = rect label="Household_Household_handle_leftover_budget_14_15 [-134]" ];
+	Household_Household_handle_leftover_budget_14_15 -> layer_60;
+	Firm_Firm_calc_revenue_Firm_Start_Seller_Role_Firm_End_Seller_Role [ shape = rect label="Firm_Firm_calc_revenue_Firm_Start_Seller_Role_Firm_End_Seller_Role [3]" ];
+	Firm_Firm_calc_revenue_Firm_Start_Seller_Role_Firm_End_Seller_Role -> Household_Household_handle_leftover_budget_14_15;
+	layer_61 [ color="#ff0000" label="layer 61"];
+	layer_61 ->Firm_Firm_calc_revenue_Firm_Start_Seller_Role_Firm_End_Seller_Role;
+	Household_Household_send_data_to_Eurostat_15_end_Household [ shape = rect label="Household_Household_send_data_to_Eurostat_15_end_Household [-123]" ];
+	Household_Household_send_data_to_Eurostat_15_end_Household -> layer_61;
+	Household_Household_idle_15_end_Household [ shape = rect label="Household_Household_idle_15_end_Household [0]" ];
+	Household_Household_idle_15_end_Household -> Household_Household_send_data_to_Eurostat_15_end_Household;
+	Firm_idle_Firm_End_Seller_Role_14 [ shape = rect label="Firm_idle_Firm_End_Seller_Role_14 [0]" ];
+	Firm_idle_Firm_End_Seller_Role_14 -> Household_Household_idle_15_end_Household;
+	Firm_Firm_update_specific_skills_of_workers_Firm_End_Seller_Role_14 [ shape = rect label="Firm_Firm_update_specific_skills_of_workers_Firm_End_Seller_Role_14 [4]" ];
+	Firm_Firm_update_specific_skills_of_workers_Firm_End_Seller_Role_14 -> Firm_idle_Firm_End_Seller_Role_14;
+	layer_62 [ color="#ff0000" label="layer 62"];
+	layer_62 ->Firm_Firm_update_specific_skills_of_workers_Firm_End_Seller_Role_14;
+	Firm_Firm_compute_sales_statistics_14_Firm_Start_Financial_Management_Role [ shape = rect label="Firm_Firm_compute_sales_statistics_14_Firm_Start_Financial_Management_Role [0]" ];
+	Firm_Firm_compute_sales_statistics_14_Firm_Start_Financial_Management_Role -> layer_62;
+	Firm_idle_14_Firm_End_Financial_Management_Role [ shape = rect label="Firm_idle_14_Firm_End_Financial_Management_Role [0]" ];
+	Firm_idle_14_Firm_End_Financial_Management_Role -> Firm_Firm_compute_sales_statistics_14_Firm_Start_Financial_Management_Role;
+	layer_63 [ color="#ff0000" label="layer 63"];
+	layer_63 ->Firm_idle_14_Firm_End_Financial_Management_Role;
+	Firm_Firm_compute_financial_payments_Firm_Start_Financial_Management_Role_001 [ shape = rect label="Firm_Firm_compute_financial_payments_Firm_Start_Financial_Management_Role_001 [0]" ];
+	Firm_Firm_compute_financial_payments_Firm_Start_Financial_Management_Role_001 -> layer_63;
+	layer_64 [ color="#ff0000" label="layer 64"];
+	layer_64 ->Firm_Firm_compute_financial_payments_Firm_Start_Financial_Management_Role_001;
+	Firm_Firm_compute_income_statement_001_002 [ shape = rect label="Firm_Firm_compute_income_statement_001_002 [0]" ];
+	Firm_Firm_compute_income_statement_001_002 -> layer_64;
+	layer_65 [ color="#ff0000" label="layer 65"];
+	layer_65 ->Firm_Firm_compute_income_statement_001_002;
+	Firm_Firm_compute_dividends_002_003 [ shape = rect label="Firm_Firm_compute_dividends_002_003 [0]" ];
+	Firm_Firm_compute_dividends_002_003 -> layer_65;
+	layer_66 [ color="#ff0000" label="layer 66"];
+	layer_66 ->Firm_Firm_compute_dividends_002_003;
+	Firm_Firm_compute_total_financial_payments_003_004 [ shape = rect label="Firm_Firm_compute_total_financial_payments_003_004 [0]" ];
+	Firm_Firm_compute_total_financial_payments_003_004 -> layer_66;
+	layer_67 [ color="#ff0000" label="layer 67"];
+	layer_67 ->Firm_Firm_compute_total_financial_payments_003_004;
+	Firm_Firm_compute_balance_sheet_004_Firm_Bankruptcy_check [ shape = rect label="Firm_Firm_compute_balance_sheet_004_Firm_Bankruptcy_check [0]" ];
+	Firm_Firm_compute_balance_sheet_004_Firm_Bankruptcy_check -> layer_67;
+	layer_68 [ color="#ff0000" label="layer 68"];
+	layer_68 ->Firm_Firm_compute_balance_sheet_004_Firm_Bankruptcy_check;
+	Firm_Firm_set_bankruptcy_insolvency_Firm_Bankruptcy_check_Firm_End_Financial_Management_Role [ shape = rect label="Firm_Firm_set_bankruptcy_insolvency_Firm_Bankruptcy_check_Firm_End_Financial_Management_Role [-1]" ];
+	Firm_Firm_set_bankruptcy_insolvency_Firm_Bankruptcy_check_Firm_End_Financial_Management_Role -> layer_68;
+	Firm_idle_Firm_Bankruptcy_check_Firm_End_Financial_Management_Role [ shape = rect label="Firm_idle_Firm_Bankruptcy_check_Firm_End_Financial_Management_Role [0]" ];
+	Firm_idle_Firm_Bankruptcy_check_Firm_End_Financial_Management_Role -> Firm_Firm_set_bankruptcy_insolvency_Firm_Bankruptcy_check_Firm_End_Financial_Management_Role;
+	layer_69 [ color="#ff0000" label="layer 69"];
+	layer_69 ->Firm_idle_Firm_Bankruptcy_check_Firm_End_Financial_Management_Role;
+	Firm_Firm_send_data_to_Eurostat_Firm_End_Financial_Management_Role_15 [ shape = rect label="Firm_Firm_send_data_to_Eurostat_Firm_End_Financial_Management_Role_15 [-81]" ];
+	Firm_Firm_send_data_to_Eurostat_Firm_End_Financial_Management_Role_15 -> layer_69;
+	Firm_idle_Firm_End_Financial_Management_Role_15 [ shape = rect label="Firm_idle_Firm_End_Financial_Management_Role_15 [0]" ];
+	Firm_idle_Firm_End_Financial_Management_Role_15 -> Firm_Firm_send_data_to_Eurostat_Firm_End_Financial_Management_Role_15;
+	Mall_Mall_read_insolvency_bankruptcy_05a_06 [ shape = rect label="Mall_Mall_read_insolvency_bankruptcy_05a_06 [1]" ];
+	Mall_Mall_read_insolvency_bankruptcy_05a_06 -> Firm_idle_Firm_End_Financial_Management_Role_15;
+	layer_70 [ color="#ff0000" label="layer 70"];
+	layer_70 ->Mall_Mall_read_insolvency_bankruptcy_05a_06;
+	Mall_Mall_send_export_data_06_end_Mall [ shape = rect label="Mall_Mall_send_export_data_06_end_Mall [-2]" ];
+	Mall_Mall_send_export_data_06_end_Mall -> layer_70;
+	Mall_idle_06_end_Mall [ shape = rect label="Mall_idle_06_end_Mall [0]" ];
+	Mall_idle_06_end_Mall -> Mall_Mall_send_export_data_06_end_Mall;
+	Firm_Firm_receive_stock_info_dummy_15_16 [ shape = rect label="Firm_Firm_receive_stock_info_dummy_15_16 [0]" ];
+	Firm_Firm_receive_stock_info_dummy_15_16 -> Mall_idle_06_end_Mall;
+	layer_71 [ color="#ff0000" label="layer 71"];
+	layer_71 ->Firm_Firm_receive_stock_info_dummy_15_16;
+	Firm_Firm_send_payments_to_bank_16_end_Firm [ shape = rect label="Firm_Firm_send_payments_to_bank_16_end_Firm [-1]" ];
+	Firm_Firm_send_payments_to_bank_16_end_Firm -> layer_71;
+	Eurostat_Eurostat_calculate_data_01_Eurostat_Start_Monthly_Loop [ shape = rect label="Eurostat_Eurostat_calculate_data_01_Eurostat_Start_Monthly_Loop [24]" ];
+	Eurostat_Eurostat_calculate_data_01_Eurostat_Start_Monthly_Loop -> Firm_Firm_send_payments_to_bank_16_end_Firm;
+	layer_72 [ color="#ff0000" label="layer 72"];
+	layer_72 ->Eurostat_Eurostat_calculate_data_01_Eurostat_Start_Monthly_Loop;
+	Bank_Bank_account_update_deposits_Bank_05_Bank_06 [ shape = rect label="Bank_Bank_account_update_deposits_Bank_05_Bank_06 [-24]" ];
+	Bank_Bank_account_update_deposits_Bank_05_Bank_06 -> layer_72;
+	Eurostat_Eurostat_idle_Eurostat_Start_Monthly_Loop_Eurostat_Start_Quarterly_Loop [ shape = rect label="Eurostat_Eurostat_idle_Eurostat_Start_Monthly_Loop_Eurostat_Start_Quarterly_Loop [0]" ];
+	Eurostat_Eurostat_idle_Eurostat_Start_Monthly_Loop_Eurostat_Start_Quarterly_Loop -> Bank_Bank_account_update_deposits_Bank_05_Bank_06;
+	Eurostat_Eurostat_store_history_monthly_Eurostat_Start_Monthly_Loop_02 [ shape = rect label="Eurostat_Eurostat_store_history_monthly_Eurostat_Start_Monthly_Loop_02 [0]" ];
+	Eurostat_Eurostat_store_history_monthly_Eurostat_Start_Monthly_Loop_02 -> Eurostat_Eurostat_idle_Eurostat_Start_Monthly_Loop_Eurostat_Start_Quarterly_Loop;
+	layer_73 [ color="#ff0000" label="layer 73"];
+	layer_73 ->Eurostat_Eurostat_store_history_monthly_Eurostat_Start_Monthly_Loop_02;
+	Bank_Bank_accounting_Bank_06_Bank_07 [ shape = rect label="Bank_Bank_accounting_Bank_06_Bank_07 [-2]" ];
+	Bank_Bank_accounting_Bank_06_Bank_07 -> layer_73;
+	Bank_Bank_idle_Bank_06_end_Bank_cycle [ shape = rect label="Bank_Bank_idle_Bank_06_end_Bank_cycle [0]" ];
+	Bank_Bank_idle_Bank_06_end_Bank_cycle -> Bank_Bank_accounting_Bank_06_Bank_07;
+	Eurostat_Eurostat_compute_growth_rates_monthly_02_Eurostat_Start_Quarterly_Loop [ shape = rect label="Eurostat_Eurostat_compute_growth_rates_monthly_02_Eurostat_Start_Quarterly_Loop [0]" ];
+	Eurostat_Eurostat_compute_growth_rates_monthly_02_Eurostat_Start_Quarterly_Loop -> Bank_Bank_idle_Bank_06_end_Bank_cycle;
+	layer_74 [ color="#ff0000" label="layer 74"];
+	layer_74 ->Eurostat_Eurostat_compute_growth_rates_monthly_02_Eurostat_Start_Quarterly_Loop;
+	Bank_Bank_send_data_to_Eurostat_Bank_07_end_Bank_cycle [ shape = rect label="Bank_Bank_send_data_to_Eurostat_Bank_07_end_Bank_cycle [-49]" ];
+	Bank_Bank_send_data_to_Eurostat_Bank_07_end_Bank_cycle -> layer_74;
+	Bank_Bank_idle_Bank_07_end_Bank_cycle [ shape = rect label="Bank_Bank_idle_Bank_07_end_Bank_cycle [0]" ];
+	Bank_Bank_idle_Bank_07_end_Bank_cycle -> Bank_Bank_send_data_to_Eurostat_Bank_07_end_Bank_cycle;
+	Eurostat_Eurostat_idle_Eurostat_Start_Quarterly_Loop_Eurostat_Start_EndOfYear_Loop [ shape = rect label="Eurostat_Eurostat_idle_Eurostat_Start_Quarterly_Loop_Eurostat_Start_EndOfYear_Loop [0]" ];
+	Eurostat_Eurostat_idle_Eurostat_Start_Quarterly_Loop_Eurostat_Start_EndOfYear_Loop -> Bank_Bank_idle_Bank_07_end_Bank_cycle;
+	Eurostat_Eurostat_store_history_quarterly_Eurostat_Start_Quarterly_Loop_04 [ shape = rect label="Eurostat_Eurostat_store_history_quarterly_Eurostat_Start_Quarterly_Loop_04 [0]" ];
+	Eurostat_Eurostat_store_history_quarterly_Eurostat_Start_Quarterly_Loop_04 -> Eurostat_Eurostat_idle_Eurostat_Start_Quarterly_Loop_Eurostat_Start_EndOfYear_Loop;
+	Government_Government_read_tax_payments_01_02 [ shape = rect label="Government_Government_read_tax_payments_01_02 [2]" ];
+	Government_Government_read_tax_payments_01_02 -> Eurostat_Eurostat_store_history_quarterly_Eurostat_Start_Quarterly_Loop_04;
+	layer_75 [ color="#ff0000" label="layer 75"];
+	layer_75 ->Government_Government_read_tax_payments_01_02;
+	Eurostat_Eurostat_compute_growth_rates_quarterly_04_05 [ shape = rect label="Eurostat_Eurostat_compute_growth_rates_quarterly_04_05 [0]" ];
+	Eurostat_Eurostat_compute_growth_rates_quarterly_04_05 -> layer_75;
+	Government_Government_read_subsidy_notifications_02_03 [ shape = rect label="Government_Government_read_subsidy_notifications_02_03 [10]" ];
+	Government_Government_read_subsidy_notifications_02_03 -> Eurostat_Eurostat_compute_growth_rates_quarterly_04_05;
+	layer_76 [ color="#ff0000" label="layer 76"];
+	layer_76 ->Government_Government_read_subsidy_notifications_02_03;
+	Eurostat_Eurostat_measure_recession_05_Eurostat_Start_EndOfYear_Loop [ shape = rect label="Eurostat_Eurostat_measure_recession_05_Eurostat_Start_EndOfYear_Loop [0]" ];
+	Eurostat_Eurostat_measure_recession_05_Eurostat_Start_EndOfYear_Loop -> layer_76;
+	Government_Government_read_transfer_notifications_03_04 [ shape = rect label="Government_Government_read_transfer_notifications_03_04 [4]" ];
+	Government_Government_read_transfer_notifications_03_04 -> Eurostat_Eurostat_measure_recession_05_Eurostat_Start_EndOfYear_Loop;
+	layer_77 [ color="#ff0000" label="layer 77"];
+	layer_77 ->Government_Government_read_transfer_notifications_03_04;
+	Eurostat_Eurostat_send_data_to_government_Eurostat_Start_EndOfYear_Loop_Eurostat_check_flows [ shape = rect label="Eurostat_Eurostat_send_data_to_government_Eurostat_Start_EndOfYear_Loop_Eurostat_check_flows [-13]" ];
+	Eurostat_Eurostat_send_data_to_government_Eurostat_Start_EndOfYear_Loop_Eurostat_check_flows -> layer_77;
+	Eurostat_Eurostat_idle_Eurostat_Start_EndOfYear_Loop_Eurostat_check_flows [ shape = rect label="Eurostat_Eurostat_idle_Eurostat_Start_EndOfYear_Loop_Eurostat_check_flows [0]" ];
+	Eurostat_Eurostat_idle_Eurostat_Start_EndOfYear_Loop_Eurostat_check_flows -> Eurostat_Eurostat_send_data_to_government_Eurostat_Start_EndOfYear_Loop_Eurostat_check_flows;
+	Government_Government_read_unemployment_benefit_notifications_04_04b [ shape = rect label="Government_Government_read_unemployment_benefit_notifications_04_04b [2]" ];
+	Government_Government_read_unemployment_benefit_notifications_04_04b -> Eurostat_Eurostat_idle_Eurostat_Start_EndOfYear_Loop_Eurostat_check_flows;
+	layer_78 [ color="#ff0000" label="layer 78"];
+	layer_78 ->Government_Government_read_unemployment_benefit_notifications_04_04b;
+	Government_Government_send_data_to_Eurostat_04b_Gov_Start_Monthly_Loop [ shape = rect label="Government_Government_send_data_to_Eurostat_04b_Gov_Start_Monthly_Loop [-29]" ];
+	Government_Government_send_data_to_Eurostat_04b_Gov_Start_Monthly_Loop -> layer_78;
+	Eurostat_idle_Eurostat_check_flows_Eurostat_check_stocks [ shape = rect label="Eurostat_idle_Eurostat_check_flows_Eurostat_check_stocks [0]" ];
+	Eurostat_idle_Eurostat_check_flows_Eurostat_check_stocks -> Government_Government_send_data_to_Eurostat_04b_Gov_Start_Monthly_Loop;
+	layer_79 [ color="#ff0000" label="layer 79"];
+	layer_79 ->Eurostat_idle_Eurostat_check_flows_Eurostat_check_stocks;
+	Government_Government_monthly_budget_accounting_Gov_Start_Monthly_Loop_05 [ shape = rect label="Government_Government_monthly_budget_accounting_Gov_Start_Monthly_Loop_05 [0]" ];
+	Government_Government_monthly_budget_accounting_Gov_Start_Monthly_Loop_05 -> layer_79;
+	Government_Government_idle_Gov_Start_Monthly_Loop_Gov_Start_Yearly_Loop [ shape = rect label="Government_Government_idle_Gov_Start_Monthly_Loop_Gov_Start_Yearly_Loop [0]" ];
+	Government_Government_idle_Gov_Start_Monthly_Loop_Gov_Start_Yearly_Loop -> Government_Government_monthly_budget_accounting_Gov_Start_Monthly_Loop_05;
+	layer_80 [ color="#ff0000" label="layer 80"];
+	layer_80 ->Government_Government_idle_Gov_Start_Monthly_Loop_Gov_Start_Yearly_Loop;
+	Government_Government_monthly_resetting_05_06 [ shape = rect label="Government_Government_monthly_resetting_05_06 [0]" ];
+	Government_Government_monthly_resetting_05_06 -> layer_80;
+	layer_81 [ color="#ff0000" label="layer 81"];
+	layer_81 ->Government_Government_monthly_resetting_05_06;
+	Government_Government_send_account_update_06_Gov_Start_Yearly_Loop [ shape = rect label="Government_Government_send_account_update_06_Gov_Start_Yearly_Loop [-20]" ];
+	Government_Government_send_account_update_06_Gov_Start_Yearly_Loop -> layer_81;
+	layer_82 [ color="#ff0000" label="layer 82"];
+	layer_82 ->Government_Government_send_account_update_06_Gov_Start_Yearly_Loop;
+	Government_Government_yearly_budget_accounting_Gov_Start_Yearly_Loop_07 [ shape = rect label="Government_Government_yearly_budget_accounting_Gov_Start_Yearly_Loop_07 [0]" ];
+	Government_Government_yearly_budget_accounting_Gov_Start_Yearly_Loop_07 -> layer_82;
+	Government_idle_Gov_Start_Yearly_Loop_end_Government [ shape = rect label="Government_idle_Gov_Start_Yearly_Loop_end_Government [0]" ];
+	Government_idle_Gov_Start_Yearly_Loop_end_Government -> Government_Government_yearly_budget_accounting_Gov_Start_Yearly_Loop_07;
+	Central_Bank_Central_Bank_read_account_update_00_01 [ shape = rect label="Central_Bank_Central_Bank_read_account_update_00_01 [1]" ];
+	Central_Bank_Central_Bank_read_account_update_00_01 -> Government_idle_Gov_Start_Yearly_Loop_end_Government;
+	layer_83 [ color="#ff0000" label="layer 83"];
+	layer_83 ->Central_Bank_Central_Bank_read_account_update_00_01;
+	Central_Bank_Central_Bank_send_data_to_Eurostat_01_end_Central_Bank [ shape = rect label="Central_Bank_Central_Bank_send_data_to_Eurostat_01_end_Central_Bank [-9]" ];
+	Central_Bank_Central_Bank_send_data_to_Eurostat_01_end_Central_Bank -> layer_83;
+	Central_Bank_idle_01_end_Central_Bank [ shape = rect label="Central_Bank_idle_01_end_Central_Bank [0]" ];
+	Central_Bank_idle_01_end_Central_Bank -> Central_Bank_Central_Bank_send_data_to_Eurostat_01_end_Central_Bank;
+	Government_Government_read_data_from_Eurostat_07_08 [ shape = rect label="Government_Government_read_data_from_Eurostat_07_08 [13]" ];
+	Government_Government_read_data_from_Eurostat_07_08 -> Central_Bank_idle_01_end_Central_Bank;
+	layer_84 [ color="#ff0000" label="layer 84"];
+	layer_84 ->Government_Government_read_data_from_Eurostat_07_08;
+	Government_Government_set_policy_08_09 [ shape = rect label="Government_Government_set_policy_08_09 [0]" ];
+	Government_Government_set_policy_08_09 -> layer_84;
+	Eurostat_Eurostat_check_flow_consistency_Eurostat_check_flows_Eurostat_check_stocks [ shape = rect label="Eurostat_Eurostat_check_flow_consistency_Eurostat_check_flows_Eurostat_check_stocks [122]" ];
+	Eurostat_Eurostat_check_flow_consistency_Eurostat_check_flows_Eurostat_check_stocks -> Government_Government_set_policy_08_09;
+	layer_85 [ color="#ff0000" label="layer 85"];
+	layer_85 ->Eurostat_Eurostat_check_flow_consistency_Eurostat_check_flows_Eurostat_check_stocks;
+	Government_Government_yearly_resetting_09_end_Government [ shape = rect label="Government_Government_yearly_resetting_09_end_Government [0]" ];
+	Government_Government_yearly_resetting_09_end_Government -> layer_85;
+	Eurostat_idle_Eurostat_check_stocks_end_Eurostat [ shape = rect label="Eurostat_idle_Eurostat_check_stocks_end_Eurostat [0]" ];
+	Eurostat_idle_Eurostat_check_stocks_end_Eurostat -> Government_Government_yearly_resetting_09_end_Government;
+	Eurostat_Eurostat_check_stock_consistency_Eurostat_check_stocks_end_Eurostat [ shape = rect label="Eurostat_Eurostat_check_stock_consistency_Eurostat_check_stocks_end_Eurostat [15]" ];
+	Eurostat_Eurostat_check_stock_consistency_Eurostat_check_stocks_end_Eurostat -> Eurostat_idle_Eurostat_check_stocks_end_Eurostat;
+	bank_account_update_message [ label = "bank_account_update" color="#00ff00" shape = parallelogram];
+	bank_account_update_message_sync_start_0 [ label = "start" color="#00ff00" shape = parallelogram];
+	bank_account_update_message_sync_start_0 -> bank_account_update_message [ color="#00ff00" ];
+	{ rank=same; Firm_Firm_send_payments_to_bank_16_end_Firm; bank_account_update_message_sync_start_0; }
+	bank_account_update_message_sync_end_0 [ label = "end" color="#00ff00" shape = parallelogram];
+	bank_account_update_message_sync_end_0 -> bank_account_update_message_sync_start_0 [ color="#00ff00" ];
+	bank_account_update_message_sync_end_0 -> Bank_Bank_account_update_deposits_Bank_05_Bank_06 [ color="#00ff00" constraint=false ];
+	bank_account_update_message_sync_start_0 -> Household_Household_handle_leftover_budget_14_15 [ color="#00ff00", constraint=false, style=dashed ];
+	bank_account_update_message_sync_start_0 -> Firm_Firm_send_payments_to_bank_16_end_Firm [ color="#00ff00", constraint=false, style=dashed ];
+	bank_account_update_message_sync_start_0 -> Bank_Bank_receive_installment_Bank_04_Bank_05 [ color="#00ff00", constraint=false, style=dashed ];
+	{ rank=same; Bank_Bank_account_update_deposits_Bank_05_Bank_06; bank_account_update_message_sync_end_0; }
+	central_bank_account_update_message [ label = "central_bank_account_update" color="#00ff00" shape = parallelogram];
+	central_bank_account_update_message_sync_start_0 [ label = "start" color="#00ff00" shape = parallelogram];
+	central_bank_account_update_message_sync_start_0 -> central_bank_account_update_message [ color="#00ff00" ];
+	{ rank=same; Government_Government_send_account_update_06_Gov_Start_Yearly_Loop; central_bank_account_update_message_sync_start_0; }
+	central_bank_account_update_message_sync_end_0 [ label = "end" color="#00ff00" shape = parallelogram];
+	central_bank_account_update_message_sync_end_0 -> central_bank_account_update_message_sync_start_0 [ color="#00ff00" ];
+	central_bank_account_update_message_sync_end_0 -> Central_Bank_Central_Bank_read_account_update_00_01 [ color="#00ff00" constraint=false ];
+	central_bank_account_update_message_sync_start_0 -> Bank_Bank_account_update_deposits_Bank_05_Bank_06 [ color="#00ff00", constraint=false, style=dashed ];
+	central_bank_account_update_message_sync_start_0 -> Government_Government_send_account_update_06_Gov_Start_Yearly_Loop [ color="#00ff00", constraint=false, style=dashed ];
+	{ rank=same; Central_Bank_Central_Bank_read_account_update_00_01; central_bank_account_update_message_sync_end_0; }
+	wage_payment_message [ label = "wage_payment" color="#00ff00" shape = parallelogram];
+	wage_payment_message_sync_start_0 [ label = "start" color="#00ff00" shape = parallelogram];
+	wage_payment_message_sync_start_0 -> wage_payment_message [ color="#00ff00" ];
+	{ rank=same; Household_Household_send_transfer_notification_06d_06e; wage_payment_message_sync_start_0; }
+	wage_payment_message_sync_end_0 [ label = "end" color="#00ff00" shape = parallelogram];
+	wage_payment_message_sync_end_0 -> wage_payment_message_sync_start_0 [ color="#00ff00" ];
+	wage_payment_message_sync_end_0 -> Household_Household_receive_wage_06e_07 [ color="#00ff00" constraint=false ];
+	wage_payment_message_sync_start_0 -> Firm_Firm_calc_pay_costs_11_12 [ color="#00ff00", constraint=false, style=dashed ];
+	wage_payment_message_sync_start_0 -> Household_Household_send_transfer_notification_06d_06e [ color="#00ff00", constraint=false, style=dashed ];
+	{ rank=same; Household_Household_receive_wage_06e_07; wage_payment_message_sync_end_0; }
+	quality_price_info_1_message [ label = "quality_price_info_1" color="#00ff00" shape = parallelogram];
+	quality_price_info_1_message_sync_start_0 [ label = "start" color="#00ff00" shape = parallelogram];
+	quality_price_info_1_message_sync_start_0 -> quality_price_info_1_message [ color="#00ff00" ];
+	{ rank=same; Household_Household_determine_consumption_budget_08b_09; quality_price_info_1_message_sync_start_0; }
+	quality_price_info_1_message_sync_end_0 [ label = "end" color="#00ff00" shape = parallelogram];
+	quality_price_info_1_message_sync_end_0 -> quality_price_info_1_message_sync_start_0 [ color="#00ff00" ];
+	quality_price_info_1_message_sync_end_0 -> Household_Household_rank_and_buy_goods_1_09_09b [ color="#00ff00" constraint=false ];
+	quality_price_info_1_message_sync_start_0 -> Mall_Mall_send_quality_price_info_1_02_03 [ color="#00ff00", constraint=false, style=dashed ];
+	quality_price_info_1_message_sync_start_0 -> Household_Household_idle_06b_09 [ color="#00ff00", constraint=false, style=dashed ];
+	quality_price_info_1_message_sync_start_0 -> Household_Household_determine_consumption_budget_08b_09 [ color="#00ff00", constraint=false, style=dashed ];
+	{ rank=same; Household_Household_rank_and_buy_goods_1_09_09b; quality_price_info_1_message_sync_end_0; }
+	quality_price_info_2_message [ label = "quality_price_info_2" color="#00ff00" shape = parallelogram];
+	quality_price_info_2_message_sync_start_0 [ label = "start" color="#00ff00" shape = parallelogram];
+	quality_price_info_2_message_sync_start_0 -> quality_price_info_2_message [ color="#00ff00" ];
+	{ rank=same; Household_Household_receive_goods_read_rationing_10_11; quality_price_info_2_message_sync_start_0; }
+	quality_price_info_2_message_sync_end_0 [ label = "end" color="#00ff00" shape = parallelogram];
+	quality_price_info_2_message_sync_end_0 -> quality_price_info_2_message_sync_start_0 [ color="#00ff00" ];
+	quality_price_info_2_message_sync_end_0 -> Household_Household_rank_and_buy_goods_2_11_12 [ color="#00ff00" constraint=false ];
+	quality_price_info_2_message_sync_start_0 -> Mall_Mall_update_mall_stocks_sales_rationing_1_03_04 [ color="#00ff00", constraint=false, style=dashed ];
+	quality_price_info_2_message_sync_start_0 -> Household_Household_receive_goods_read_rationing_10_11 [ color="#00ff00", constraint=false, style=dashed ];
+	{ rank=same; Household_Household_rank_and_buy_goods_2_11_12; quality_price_info_2_message_sync_end_0; }
+	update_mall_stock_message [ label = "update_mall_stock" color="#00ff00" shape = parallelogram];
+	update_mall_stock_message_sync_start_0 [ label = "start" color="#00ff00" shape = parallelogram];
+	update_mall_stock_message_sync_start_0 -> update_mall_stock_message [ color="#00ff00" ];
+	{ rank=same; Firm_Firm_send_goods_to_mall_12_Firm_Start_Seller_Role; update_mall_stock_message_sync_start_0; }
+	update_mall_stock_message_sync_end_0 [ label = "end" color="#00ff00" shape = parallelogram];
+	update_mall_stock_message_sync_end_0 -> update_mall_stock_message_sync_start_0 [ color="#00ff00" ];
+	update_mall_stock_message_sync_end_0 -> Mall_Mall_update_mall_stock_01_02 [ color="#00ff00" constraint=false ];
+	update_mall_stock_message_sync_start_0 -> Firm_Firm_send_goods_to_mall_12_Firm_Start_Seller_Role [ color="#00ff00", constraint=false, style=dashed ];
+	{ rank=same; Mall_Mall_update_mall_stock_01_02; update_mall_stock_message_sync_end_0; }
+	consumption_request_1_message [ label = "consumption_request_1" color="#00ff00" shape = parallelogram];
+	consumption_request_1_message_sync_start_0 [ label = "start" color="#00ff00" shape = parallelogram];
+	consumption_request_1_message_sync_start_0 -> consumption_request_1_message [ color="#00ff00" ];
+	{ rank=same; Household_Household_rank_and_buy_goods_1_09_09b; consumption_request_1_message_sync_start_0; }
+	consumption_request_1_message_sync_end_0 [ label = "end" color="#00ff00" shape = parallelogram];
+	consumption_request_1_message_sync_end_0 -> consumption_request_1_message_sync_start_0 [ color="#00ff00" ];
+	consumption_request_1_message_sync_end_0 -> Mall_Mall_update_mall_stocks_sales_rationing_1_03_04 [ color="#00ff00" constraint=false ];
+	consumption_request_1_message_sync_start_0 -> Household_Household_rank_and_buy_goods_1_09_09b [ color="#00ff00", constraint=false, style=dashed ];
+	consumption_request_1_message_sync_start_0 -> Mall_Mall_send_quality_price_info_1_02_03 [ color="#00ff00", constraint=false, style=dashed ];
+	{ rank=same; Mall_Mall_update_mall_stocks_sales_rationing_1_03_04; consumption_request_1_message_sync_end_0; }
+	consumption_request_2_message [ label = "consumption_request_2" color="#00ff00" shape = parallelogram];
+	consumption_request_2_message_sync_start_0 [ label = "start" color="#00ff00" shape = parallelogram];
+	consumption_request_2_message_sync_start_0 -> consumption_request_2_message [ color="#00ff00" ];
+	{ rank=same; Household_Household_rank_and_buy_goods_2_11_12; consumption_request_2_message_sync_start_0; }
+	consumption_request_2_message_sync_end_0 [ label = "end" color="#00ff00" shape = parallelogram];
+	consumption_request_2_message_sync_end_0 -> consumption_request_2_message_sync_start_0 [ color="#00ff00" ];
+	consumption_request_2_message_sync_end_0 -> Mall_Mall_update_mall_stocks_sales_rationing_2_04_05 [ color="#00ff00" constraint=false ];
+	consumption_request_2_message_sync_start_0 -> Household_Household_rank_and_buy_goods_2_11_12 [ color="#00ff00", constraint=false, style=dashed ];
+	consumption_request_2_message_sync_start_0 -> Mall_Mall_update_mall_stocks_sales_rationing_1_03_04 [ color="#00ff00", constraint=false, style=dashed ];
+	{ rank=same; Mall_Mall_update_mall_stocks_sales_rationing_2_04_05; consumption_request_2_message_sync_end_0; }
+	accepted_consumption_1_message [ label = "accepted_consumption_1" color="#00ff00" shape = parallelogram];
+	accepted_consumption_1_message_sync_start_0 [ label = "start" color="#00ff00" shape = parallelogram];
+	accepted_consumption_1_message_sync_start_0 -> accepted_consumption_1_message [ color="#00ff00" ];
+	{ rank=same; Household_Household_back_shifting_consumption_day_09b_10; accepted_consumption_1_message_sync_start_0; }
+	accepted_consumption_1_message_sync_end_0 [ label = "end" color="#00ff00" shape = parallelogram];
+	accepted_consumption_1_message_sync_end_0 -> accepted_consumption_1_message_sync_start_0 [ color="#00ff00" ];
+	accepted_consumption_1_message_sync_end_0 -> Household_Household_receive_goods_read_rationing_10_11 [ color="#00ff00" constraint=false ];
+	accepted_consumption_1_message_sync_start_0 -> Mall_Mall_update_mall_stocks_sales_rationing_1_03_04 [ color="#00ff00", constraint=false, style=dashed ];
+	accepted_consumption_1_message_sync_start_0 -> Household_Household_back_shifting_consumption_day_09b_10 [ color="#00ff00", constraint=false, style=dashed ];
+	accepted_consumption_1_message_sync_start_0 -> Household_Household_idle_09b_10 [ color="#00ff00", constraint=false, style=dashed ];
+	{ rank=same; Household_Household_receive_goods_read_rationing_10_11; accepted_consumption_1_message_sync_end_0; }
+	accepted_consumption_2_message [ label = "accepted_consumption_2" color="#00ff00" shape = parallelogram];
+	accepted_consumption_2_message_sync_start_0 [ label = "start" color="#00ff00" shape = parallelogram];
+	accepted_consumption_2_message_sync_start_0 -> accepted_consumption_2_message [ color="#00ff00" ];
+	{ rank=same; Mall_Mall_update_mall_stocks_sales_rationing_2_04_05; accepted_consumption_2_message_sync_start_0; }
+	accepted_consumption_2_message_sync_end_0 [ label = "end" color="#00ff00" shape = parallelogram];
+	accepted_consumption_2_message_sync_end_0 -> accepted_consumption_2_message_sync_start_0 [ color="#00ff00" ];
+	accepted_consumption_2_message_sync_end_0 -> Household_Household_receive_goods_read_rationing_2_12_14 [ color="#00ff00" constraint=false ];
+	accepted_consumption_2_message_sync_start_0 -> Mall_Mall_update_mall_stocks_sales_rationing_2_04_05 [ color="#00ff00", constraint=false, style=dashed ];
+	accepted_consumption_2_message_sync_start_0 -> Household_Household_rank_and_buy_goods_2_11_12 [ color="#00ff00", constraint=false, style=dashed ];
+	{ rank=same; Household_Household_receive_goods_read_rationing_2_12_14; accepted_consumption_2_message_sync_end_0; }
+	sales_message [ label = "sales" color="#00ff00" shape = parallelogram];
+	sales_message_sync_start_0 [ label = "start" color="#00ff00" shape = parallelogram];
+	sales_message_sync_start_0 -> sales_message [ color="#00ff00" ];
+	{ rank=same; Mall_Mall_pay_firm_05_05a; sales_message_sync_start_0; }
+	sales_message_sync_end_0 [ label = "end" color="#00ff00" shape = parallelogram];
+	sales_message_sync_end_0 -> sales_message_sync_start_0 [ color="#00ff00" ];
+	sales_message_sync_end_0 -> Firm_Firm_calc_revenue_Firm_Start_Seller_Role_Firm_End_Seller_Role [ color="#00ff00" constraint=false ];
+	sales_message_sync_start_0 -> Mall_Mall_pay_firm_05_05a [ color="#00ff00", constraint=false, style=dashed ];
+	sales_message_sync_start_0 -> Firm_Firm_send_goods_to_mall_12_Firm_Start_Seller_Role [ color="#00ff00", constraint=false, style=dashed ];
+	sales_message_sync_start_0 -> Firm_Firm_read_job_quitting_2_09c_Firm_Start_Seller_Role [ color="#00ff00", constraint=false, style=dashed ];
+	{ rank=same; Firm_Firm_calc_revenue_Firm_Start_Seller_Role_Firm_End_Seller_Role; sales_message_sync_end_0; }
+	specific_skill_update_message [ label = "specific_skill_update" color="#00ff00" shape = parallelogram];
+	specific_skill_update_message_sync_start_0 [ label = "start" color="#00ff00" shape = parallelogram];
+	specific_skill_update_message_sync_start_0 -> specific_skill_update_message [ color="#00ff00" ];
+	{ rank=same; Firm_Firm_calc_revenue_Firm_Start_Seller_Role_Firm_End_Seller_Role; specific_skill_update_message_sync_start_0; }
+	specific_skill_update_message_sync_end_0 [ label = "end" color="#00ff00" shape = parallelogram];
+	specific_skill_update_message_sync_end_0 -> specific_skill_update_message_sync_start_0 [ color="#00ff00" ];
+	specific_skill_update_message_sync_end_0 -> Firm_Firm_update_specific_skills_of_workers_Firm_End_Seller_Role_14 [ color="#00ff00" constraint=false ];
+	specific_skill_update_message_sync_start_0 -> Household_Household_update_specific_skills_07_08 [ color="#00ff00", constraint=false, style=dashed ];
+	specific_skill_update_message_sync_start_0 -> Firm_Firm_calc_revenue_Firm_Start_Seller_Role_Firm_End_Seller_Role [ color="#00ff00", constraint=false, style=dashed ];
+	{ rank=same; Firm_Firm_update_specific_skills_of_workers_Firm_End_Seller_Role_14; specific_skill_update_message_sync_end_0; }
+	daily_revenue_to_bank_message [ label = "daily_revenue_to_bank" color="#00ff00" shape = parallelogram];
+	bank_identity_message [ label = "bank_identity" color="#00ff00" shape = parallelogram];
+	bank_identity_message_sync_start_0 [ label = "start" color="#00ff00" shape = parallelogram];
+	bank_identity_message_sync_start_0 -> bank_identity_message [ color="#00ff00" ];
+	{ rank=same; Bank_Bank_communicate_identity_Bank_start_credit_market_role_Bank_01; bank_identity_message_sync_start_0; }
+	bank_identity_message_sync_end_0 [ label = "end" color="#00ff00" shape = parallelogram];
+	bank_identity_message_sync_end_0 -> bank_identity_message_sync_start_0 [ color="#00ff00" ];
+	bank_identity_message_sync_end_0 -> Firm_Firm_ask_loan_Firm_Start_Credit_Role_Firm_Credit_02 [ color="#00ff00" constraint=false ];
+	bank_identity_message_sync_start_0 -> Bank_Bank_communicate_identity_Bank_start_credit_market_role_Bank_01 [ color="#00ff00", constraint=false, style=dashed ];
+	{ rank=same; Firm_Firm_ask_loan_Firm_Start_Credit_Role_Firm_Credit_02; bank_identity_message_sync_end_0; }
+	loan_request_message [ label = "loan_request" color="#00ff00" shape = parallelogram];
+	loan_request_message_sync_start_0 [ label = "start" color="#00ff00" shape = parallelogram];
+	loan_request_message_sync_start_0 -> loan_request_message [ color="#00ff00" ];
+	{ rank=same; Firm_Firm_ask_loan_Firm_Start_Credit_Role_Firm_Credit_02; loan_request_message_sync_start_0; }
+	loan_request_message_sync_end_0 [ label = "end" color="#00ff00" shape = parallelogram];
+	loan_request_message_sync_end_0 -> loan_request_message_sync_start_0 [ color="#00ff00" ];
+	loan_request_message_sync_end_0 -> Bank_Bank_decide_credit_conditions_Bank_02_Bank_03 [ color="#00ff00" constraint=false ];
+	loan_request_message_sync_start_0 -> Firm_Firm_ask_loan_Firm_Start_Credit_Role_Firm_Credit_02 [ color="#00ff00", constraint=false, style=dashed ];
+	loan_request_message_sync_start_0 -> Bank_Bank_send_accountInterest_Bank_01_Bank_02 [ color="#00ff00", constraint=false, style=dashed ];
+	{ rank=same; Bank_Bank_decide_credit_conditions_Bank_02_Bank_03; loan_request_message_sync_end_0; }
+	loan_conditions_message [ label = "loan_conditions" color="#00ff00" shape = parallelogram];
+	loan_conditions_message_sync_start_0 [ label = "start" color="#00ff00" shape = parallelogram];
+	loan_conditions_message_sync_start_0 -> loan_conditions_message [ color="#00ff00" ];
+	{ rank=same; Bank_Bank_decide_credit_conditions_Bank_02_Bank_03; loan_conditions_message_sync_start_0; }
+	loan_conditions_message_sync_end_0 [ label = "end" color="#00ff00" shape = parallelogram];
+	loan_conditions_message_sync_end_0 -> loan_conditions_message_sync_start_0 [ color="#00ff00" ];
+	loan_conditions_message_sync_end_0 -> Firm_Firm_get_loan_Firm_Credit_02_Firm_End_Credit_Role [ color="#00ff00" constraint=false ];
+	loan_conditions_message_sync_start_0 -> Bank_Bank_decide_credit_conditions_Bank_02_Bank_03 [ color="#00ff00", constraint=false, style=dashed ];
+	loan_conditions_message_sync_start_0 -> Firm_Firm_ask_loan_Firm_Start_Credit_Role_Firm_Credit_02 [ color="#00ff00", constraint=false, style=dashed ];
+	{ rank=same; Firm_Firm_get_loan_Firm_Credit_02_Firm_End_Credit_Role; loan_conditions_message_sync_end_0; }
+	loan_acceptance_message [ label = "loan_acceptance" color="#00ff00" shape = parallelogram];
+	loan_acceptance_message_sync_start_0 [ label = "start" color="#00ff00" shape = parallelogram];
+	loan_acceptance_message_sync_start_0 -> loan_acceptance_message [ color="#00ff00" ];
+	{ rank=same; Firm_Firm_get_loan_Firm_Credit_02_Firm_End_Credit_Role; loan_acceptance_message_sync_start_0; }
+	loan_acceptance_message_sync_end_0 [ label = "end" color="#00ff00" shape = parallelogram];
+	loan_acceptance_message_sync_end_0 -> loan_acceptance_message_sync_start_0 [ color="#00ff00" ];
+	loan_acceptance_message_sync_end_0 -> Bank_Bank_give_loan_Bank_03_Bank_04 [ color="#00ff00" constraint=false ];
+	loan_acceptance_message_sync_start_0 -> Firm_Firm_get_loan_Firm_Credit_02_Firm_End_Credit_Role [ color="#00ff00", constraint=false, style=dashed ];
+	loan_acceptance_message_sync_start_0 -> Bank_Bank_decide_credit_conditions_Bank_02_Bank_03 [ color="#00ff00", constraint=false, style=dashed ];
+	{ rank=same; Bank_Bank_give_loan_Bank_03_Bank_04; loan_acceptance_message_sync_end_0; }
+	installment_message [ label = "installment" color="#00ff00" shape = parallelogram];
+	installment_message_sync_start_0 [ label = "start" color="#00ff00" shape = parallelogram];
+	installment_message_sync_start_0 -> installment_message [ color="#00ff00" ];
+	{ rank=same; Firm_Firm_execute_financial_payments_Firm_End_External_Financing_Firm_Start_Public_Sector_Role; installment_message_sync_start_0; }
+	installment_message_sync_end_0 [ label = "end" color="#00ff00" shape = parallelogram];
+	installment_message_sync_end_0 -> installment_message_sync_start_0 [ color="#00ff00" ];
+	installment_message_sync_end_0 -> Bank_Bank_receive_installment_Bank_04_Bank_05 [ color="#00ff00" constraint=false ];
+	installment_message_sync_start_0 -> Firm_Firm_execute_financial_payments_Firm_End_External_Financing_Firm_Start_Public_Sector_Role [ color="#00ff00", constraint=false, style=dashed ];
+	installment_message_sync_start_0 -> Bank_Bank_give_loan_Bank_03_Bank_04 [ color="#00ff00", constraint=false, style=dashed ];
+	{ rank=same; Bank_Bank_receive_installment_Bank_04_Bank_05; installment_message_sync_end_0; }
+	bankruptcy_message [ label = "bankruptcy" color="#00ff00" shape = parallelogram];
+	bankruptcy_message_sync_start_0 [ label = "start" color="#00ff00" shape = parallelogram];
+	bankruptcy_message_sync_start_0 -> bankruptcy_message [ color="#00ff00" ];
+	{ rank=same; Bank_Bank_give_loan_Bank_03_Bank_04; bankruptcy_message_sync_start_0; }
+	bankruptcy_message_sync_end_0 [ label = "end" color="#00ff00" shape = parallelogram];
+	bankruptcy_message_sync_end_0 -> bankruptcy_message_sync_start_0 [ color="#00ff00" ];
+	bankruptcy_message_sync_end_0 -> Bank_Bank_receive_installment_Bank_04_Bank_05 [ color="#00ff00" constraint=false ];
+	bankruptcy_message_sync_start_0 -> Firm_Firm_bankruptcy_insolvency_procedure_Firm_not_active_Firm_bankrupty_state_1 [ color="#00ff00", constraint=false, style=dashed ];
+	bankruptcy_message_sync_start_0 -> Bank_Bank_give_loan_Bank_03_Bank_04 [ color="#00ff00", constraint=false, style=dashed ];
+	{ rank=same; Bank_Bank_receive_installment_Bank_04_Bank_05; bankruptcy_message_sync_end_0; }
+	BCE_return_message [ label = "BCE_return" color="#00ff00" shape = parallelogram];
+	bank_interest_payment_message [ label = "bank_interest_payment" color="#00ff00" shape = parallelogram];
+	accountInterest_message [ label = "accountInterest" color="#00ff00" shape = parallelogram];
+	dividend_per_share_message [ label = "dividend_per_share" color="#00ff00" shape = parallelogram];
+	dividend_per_share_message_sync_start_0 [ label = "start" color="#00ff00" shape = parallelogram];
+	dividend_per_share_message_sync_start_0 -> dividend_per_share_message [ color="#00ff00" ];
+	{ rank=same; IGFirm_IGFirm_dividend_payment_04b_end_IGFirm; dividend_per_share_message_sync_start_0; }
+	dividend_per_share_message_sync_end_0 [ label = "end" color="#00ff00" shape = parallelogram];
+	dividend_per_share_message_sync_end_0 -> dividend_per_share_message_sync_start_0 [ color="#00ff00" ];
+	dividend_per_share_message_sync_end_0 -> Household_Household_receive_dividends_06_06b [ color="#00ff00" constraint=false ];
+	dividend_per_share_message_sync_start_0 -> Firm_Firm_execute_financial_payments_Firm_End_External_Financing_Firm_Start_Public_Sector_Role [ color="#00ff00", constraint=false, style=dashed ];
+	dividend_per_share_message_sync_start_0 -> IGFirm_IGFirm_dividend_payment_04b_end_IGFirm [ color="#00ff00", constraint=false, style=dashed ];
+	{ rank=same; Household_Household_receive_dividends_06_06b; dividend_per_share_message_sync_end_0; }
+	bankruptcy_illiquidity_message [ label = "bankruptcy_illiquidity" color="#00ff00" shape = parallelogram];
+	bankruptcy_illiquidity_message_sync_start_0 [ label = "start" color="#00ff00" shape = parallelogram];
+	bankruptcy_illiquidity_message_sync_start_0 -> bankruptcy_illiquidity_message [ color="#00ff00" ];
+	{ rank=same; Firm_Firm_set_bankruptcy_illiquidity_Firm_bankruptcy_checked_Firm_End_Financial_Management_Role; bankruptcy_illiquidity_message_sync_start_0; }
+	bankruptcy_illiquidity_message_sync_end_0 [ label = "end" color="#00ff00" shape = parallelogram];
+	bankruptcy_illiquidity_message_sync_end_0 -> bankruptcy_illiquidity_message_sync_start_0 [ color="#00ff00" ];
+	bankruptcy_illiquidity_message_sync_end_0 -> Mall_Mall_update_mall_stock_01_02 [ color="#00ff00" constraint=false ];
+	bankruptcy_illiquidity_message_sync_start_0 -> Firm_Firm_set_bankruptcy_illiquidity_Firm_bankruptcy_checked_Firm_End_Financial_Management_Role [ color="#00ff00", constraint=false, style=dashed ];
+	{ rank=same; Mall_Mall_update_mall_stock_01_02; bankruptcy_illiquidity_message_sync_end_0; }
+	bankruptcy_insolvency_message [ label = "bankruptcy_insolvency" color="#00ff00" shape = parallelogram];
+	bankruptcy_insolvency_message_sync_start_0 [ label = "start" color="#00ff00" shape = parallelogram];
+	bankruptcy_insolvency_message_sync_start_0 -> bankruptcy_insolvency_message [ color="#00ff00" ];
+	{ rank=same; Firm_Firm_set_bankruptcy_insolvency_Firm_Bankruptcy_check_Firm_End_Financial_Management_Role; bankruptcy_insolvency_message_sync_start_0; }
+	bankruptcy_insolvency_message_sync_end_0 [ label = "end" color="#00ff00" shape = parallelogram];
+	bankruptcy_insolvency_message_sync_end_0 -> bankruptcy_insolvency_message_sync_start_0 [ color="#00ff00" ];
+	bankruptcy_insolvency_message_sync_end_0 -> Mall_Mall_read_insolvency_bankruptcy_05a_06 [ color="#00ff00" constraint=false ];
+	bankruptcy_insolvency_message_sync_start_0 -> Firm_Firm_set_bankruptcy_insolvency_Firm_Bankruptcy_check_Firm_End_Financial_Management_Role [ color="#00ff00", constraint=false, style=dashed ];
+	{ rank=same; Mall_Mall_read_insolvency_bankruptcy_05a_06; bankruptcy_insolvency_message_sync_end_0; }
+	gov_bond_message [ label = "gov_bond" color="#00ff00" shape = parallelogram];
+	gov_bond_message_sync_start_0 [ label = "start" color="#00ff00" shape = parallelogram];
+	gov_bond_message_sync_start_0 -> gov_bond_message [ color="#00ff00" ];
+	{ rank=same; Government_Government_bond_market_dummy_Gov_Start_Bond_Market_01; gov_bond_message_sync_start_0; }
+	gov_bond_message_sync_end_0 [ label = "end" color="#00ff00" shape = parallelogram];
+	gov_bond_message_sync_end_0 -> gov_bond_message_sync_start_0 [ color="#00ff00" ];
+	gov_bond_message_sync_end_0 -> Central_Bank_Central_Bank_read_bond_update_start_Central_Bank_00 [ color="#00ff00" constraint=false ];
+	gov_bond_message_sync_start_0 -> Government_Government_bond_market_dummy_Gov_Start_Bond_Market_01 [ color="#00ff00", constraint=false, style=dashed ];
+	{ rank=same; Central_Bank_Central_Bank_read_bond_update_start_Central_Bank_00; gov_bond_message_sync_end_0; }
+	productivity_message [ label = "productivity" color="#00ff00" shape = parallelogram];
+	productivity_message_sync_start_0 [ label = "start" color="#00ff00" shape = parallelogram];
+	productivity_message_sync_start_0 -> productivity_message [ color="#00ff00" ];
+	{ rank=same; IGFirm_IGFirm_send_quality_price_info_01_02; productivity_message_sync_start_0; }
+	productivity_message_sync_end_0 [ label = "end" color="#00ff00" shape = parallelogram];
+	productivity_message_sync_end_0 -> productivity_message_sync_start_0 [ color="#00ff00" ];
+	productivity_message_sync_end_0 -> Firm_Firm_calc_input_demands_01_02 [ color="#00ff00" constraint=false ];
+	productivity_message_sync_start_0 -> IGFirm_IGFirm_send_quality_price_info_01_02 [ color="#00ff00", constraint=false, style=dashed ];
+	{ rank=same; Firm_Firm_calc_input_demands_01_02; productivity_message_sync_end_0; }
+	capital_good_request_message [ label = "capital_good_request" color="#00ff00" shape = parallelogram];
+	capital_good_request_message_sync_start_0 [ label = "start" color="#00ff00" shape = parallelogram];
+	capital_good_request_message_sync_start_0 -> capital_good_request_message [ color="#00ff00" ];
+	{ rank=same; Firm_Firm_send_capital_demand_Firm_End_Labour_Role_11a; capital_good_request_message_sync_start_0; }
+	capital_good_request_message_sync_end_0 [ label = "end" color="#00ff00" shape = parallelogram];
+	capital_good_request_message_sync_end_0 -> capital_good_request_message_sync_start_0 [ color="#00ff00" ];
+	capital_good_request_message_sync_end_0 -> IGFirm_IGFirm_send_capital_good_02_03 [ color="#00ff00" constraint=false ];
+	capital_good_request_message_sync_start_0 -> Firm_Firm_send_capital_demand_Firm_End_Labour_Role_11a [ color="#00ff00", constraint=false, style=dashed ];
+	{ rank=same; IGFirm_IGFirm_send_capital_good_02_03; capital_good_request_message_sync_end_0; }
+	capital_good_profit_distribution_message [ label = "capital_good_profit_distribution" color="#00ff00" shape = parallelogram];
+	capital_good_delivery_message [ label = "capital_good_delivery" color="#00ff00" shape = parallelogram];
+	capital_good_delivery_message_sync_start_0 [ label = "start" color="#00ff00" shape = parallelogram];
+	capital_good_delivery_message_sync_start_0 -> capital_good_delivery_message [ color="#00ff00" ];
+	{ rank=same; IGFirm_IGFirm_send_capital_good_02_03; capital_good_delivery_message_sync_start_0; }
+	capital_good_delivery_message_sync_end_0 [ label = "end" color="#00ff00" shape = parallelogram];
+	capital_good_delivery_message_sync_end_0 -> capital_good_delivery_message_sync_start_0 [ color="#00ff00" ];
+	capital_good_delivery_message_sync_end_0 -> Firm_Firm_receive_capital_goods_11a_11b [ color="#00ff00" constraint=false ];
+	capital_good_delivery_message_sync_start_0 -> IGFirm_IGFirm_send_capital_good_02_03 [ color="#00ff00", constraint=false, style=dashed ];
+	capital_good_delivery_message_sync_start_0 -> Firm_Firm_send_capital_demand_Firm_End_Labour_Role_11a [ color="#00ff00", constraint=false, style=dashed ];
+	{ rank=same; Firm_Firm_receive_capital_goods_11a_11b; capital_good_delivery_message_sync_end_0; }
+	dividend_message [ label = "dividend" color="#00ff00" shape = parallelogram];
+	pay_capital_goods_message [ label = "pay_capital_goods" color="#00ff00" shape = parallelogram];
+	pay_capital_goods_message_sync_start_0 [ label = "start" color="#00ff00" shape = parallelogram];
+	pay_capital_goods_message_sync_start_0 -> pay_capital_goods_message [ color="#00ff00" ];
+	{ rank=same; Firm_Firm_calc_pay_costs_11_12; pay_capital_goods_message_sync_start_0; }
+	pay_capital_goods_message_sync_end_0 [ label = "end" color="#00ff00" shape = parallelogram];
+	pay_capital_goods_message_sync_end_0 -> pay_capital_goods_message_sync_start_0 [ color="#00ff00" ];
+	pay_capital_goods_message_sync_end_0 -> IGFirm_IGFirm_receive_payment_03_04 [ color="#00ff00" constraint=false ];
+	pay_capital_goods_message_sync_start_0 -> Firm_Firm_calc_pay_costs_11_12 [ color="#00ff00", constraint=false, style=dashed ];
+	{ rank=same; IGFirm_IGFirm_receive_payment_03_04; pay_capital_goods_message_sync_end_0; }
+	vacancies_message [ label = "vacancies" color="#00ff00" shape = parallelogram];
+	vacancies_message_sync_start_0 [ label = "start" color="#00ff00" shape = parallelogram];
+	vacancies_message_sync_start_0 -> vacancies_message [ color="#00ff00" ];
+	{ rank=same; Firm_Firm_send_vacancies_04ccc_03; vacancies_message_sync_start_0; }
+	vacancies_message_sync_end_0 [ label = "end" color="#00ff00" shape = parallelogram];
+	vacancies_message_sync_end_0 -> vacancies_message_sync_start_0 [ color="#00ff00" ];
+	vacancies_message_sync_end_0 -> Household_Household_UNEMPLOYED_read_job_vacancies_and_send_applications_01a_01 [ color="#00ff00" constraint=false ];
+	vacancies_message_sync_start_0 -> Firm_Firm_send_vacancies_04ccc_03 [ color="#00ff00", constraint=false, style=dashed ];
+	{ rank=same; Household_Household_UNEMPLOYED_read_job_vacancies_and_send_applications_01a_01; vacancies_message_sync_end_0; }
+	vacancies2_message [ label = "vacancies2" color="#00ff00" shape = parallelogram];
+	vacancies2_message_sync_start_0 [ label = "start" color="#00ff00" shape = parallelogram];
+	vacancies2_message_sync_start_0 -> vacancies2_message [ color="#00ff00" ];
+	{ rank=same; Firm_Firm_send_vacancies_2_06_07; vacancies2_message_sync_start_0; }
+	vacancies2_message_sync_end_0 [ label = "end" color="#00ff00" shape = parallelogram];
+	vacancies2_message_sync_end_0 -> vacancies2_message_sync_start_0 [ color="#00ff00" ];
+	vacancies2_message_sync_end_0 -> Household_Household_UNEMPLOYED_read_job_vacancies_and_send_applications_2_03_04 [ color="#00ff00" constraint=false ];
+	vacancies2_message_sync_start_0 -> Firm_Firm_send_vacancies_2_06_07 [ color="#00ff00", constraint=false, style=dashed ];
+	{ rank=same; Household_Household_UNEMPLOYED_read_job_vacancies_and_send_applications_2_03_04; vacancies2_message_sync_end_0; }
+	firing_message [ label = "firing" color="#00ff00" shape = parallelogram];
+	firing_message_sync_start_0 [ label = "start" color="#00ff00" shape = parallelogram];
+	firing_message_sync_start_0 -> firing_message [ color="#00ff00" ];
+	{ rank=same; Firm_Firm_send_random_redundancies_03ccc_04ccc; firing_message_sync_start_0; }
+	firing_message_sync_end_0 [ label = "end" color="#00ff00" shape = parallelogram];
+	firing_message_sync_end_0 -> firing_message_sync_start_0 [ color="#00ff00" ];
+	firing_message_sync_end_0 -> Household_Household_read_firing_messages_Household_Start_Labour_Role_01d [ color="#00ff00" constraint=false ];
+	firing_message_sync_start_0 -> Firm_Firm_bankruptcy_illiquidity_procedure_Firm_not_active_Firm_bankrupty_state_1 [ color="#00ff00", constraint=false, style=dashed ];
+	firing_message_sync_start_0 -> Firm_Firm_bankruptcy_insolvency_procedure_Firm_not_active_Firm_bankrupty_state_1 [ color="#00ff00", constraint=false, style=dashed ];
+	firing_message_sync_start_0 -> Firm_Firm_send_redundancies_011_03ccc [ color="#00ff00", constraint=false, style=dashed ];
+	firing_message_sync_start_0 -> Firm_Firm_send_random_redundancies_03ccc_04ccc [ color="#00ff00", constraint=false, style=dashed ];
+	firing_message_sync_start_0 -> Household_Household_financial_market_dummy_Household_Start_Financial_Market_Role_Household_Start_Labour_Role [ color="#00ff00", constraint=false, style=dashed ];
+	{ rank=same; Household_Household_read_firing_messages_Household_Start_Labour_Role_01d; firing_message_sync_end_0; }
+	job_application_message [ label = "job_application" color="#00ff00" shape = parallelogram];
+	job_application_message_sync_start_0 [ label = "start" color="#00ff00" shape = parallelogram];
+	job_application_message_sync_start_0 -> job_application_message [ color="#00ff00" ];
+	{ rank=same; Household_Household_UNEMPLOYED_read_job_vacancies_and_send_applications_01a_01; job_application_message_sync_start_0; }
+	job_application_message_sync_end_0 [ label = "end" color="#00ff00" shape = parallelogram];
+	job_application_message_sync_end_0 -> job_application_message_sync_start_0 [ color="#00ff00" ];
+	job_application_message_sync_end_0 -> Firm_Firm_read_job_applications_send_job_offer_or_rejection_03_04 [ color="#00ff00" constraint=false ];
+	job_application_message_sync_start_0 -> Household_Household_UNEMPLOYED_read_job_vacancies_and_send_applications_01a_01 [ color="#00ff00", constraint=false, style=dashed ];
+	{ rank=same; Firm_Firm_read_job_applications_send_job_offer_or_rejection_03_04; job_application_message_sync_end_0; }
+	job_application2_message [ label = "job_application2" color="#00ff00" shape = parallelogram];
+	job_application2_message_sync_start_0 [ label = "start" color="#00ff00" shape = parallelogram];
+	job_application2_message_sync_start_0 -> job_application2_message [ color="#00ff00" ];
+	{ rank=same; Household_Household_UNEMPLOYED_read_job_vacancies_and_send_applications_2_03_04; job_application2_message_sync_start_0; }
+	job_application2_message_sync_end_0 [ label = "end" color="#00ff00" shape = parallelogram];
+	job_application2_message_sync_end_0 -> job_application2_message_sync_start_0 [ color="#00ff00" ];
+	job_application2_message_sync_end_0 -> Firm_Firm_read_job_applications_send_job_offer_or_rejection_2_07_08 [ color="#00ff00" constraint=false ];
+	job_application2_message_sync_start_0 -> Household_Household_UNEMPLOYED_read_job_vacancies_and_send_applications_2_03_04 [ color="#00ff00", constraint=false, style=dashed ];
+	{ rank=same; Firm_Firm_read_job_applications_send_job_offer_or_rejection_2_07_08; job_application2_message_sync_end_0; }
+	job_offer_message [ label = "job_offer" color="#00ff00" shape = parallelogram];
+	job_offer_message_sync_start_0 [ label = "start" color="#00ff00" shape = parallelogram];
+	job_offer_message_sync_start_0 -> job_offer_message [ color="#00ff00" ];
+	{ rank=same; Firm_Firm_read_job_applications_send_job_offer_or_rejection_03_04; job_offer_message_sync_start_0; }
+	job_offer_message_sync_end_0 [ label = "end" color="#00ff00" shape = parallelogram];
+	job_offer_message_sync_end_0 -> job_offer_message_sync_start_0 [ color="#00ff00" ];
+	job_offer_message_sync_end_0 -> Household_Household_read_job_offers_send_response_01_02 [ color="#00ff00" constraint=false ];
+	job_offer_message_sync_start_0 -> Firm_Firm_read_job_applications_send_job_offer_or_rejection_03_04 [ color="#00ff00", constraint=false, style=dashed ];
+	{ rank=same; Household_Household_read_job_offers_send_response_01_02; job_offer_message_sync_end_0; }
+	job_offer2_message [ label = "job_offer2" color="#00ff00" shape = parallelogram];
+	job_offer2_message_sync_start_0 [ label = "start" color="#00ff00" shape = parallelogram];
+	job_offer2_message_sync_start_0 -> job_offer2_message [ color="#00ff00" ];
+	{ rank=same; Firm_Firm_read_job_applications_send_job_offer_or_rejection_2_07_08; job_offer2_message_sync_start_0; }
+	job_offer2_message_sync_end_0 [ label = "end" color="#00ff00" shape = parallelogram];
+	job_offer2_message_sync_end_0 -> job_offer2_message_sync_start_0 [ color="#00ff00" ];
+	job_offer2_message_sync_end_0 -> Household_Household_read_job_offers_send_response_2_04_05 [ color="#00ff00" constraint=false ];
+	job_offer2_message_sync_start_0 -> Firm_Firm_read_job_applications_send_job_offer_or_rejection_2_07_08 [ color="#00ff00", constraint=false, style=dashed ];
+	{ rank=same; Household_Household_read_job_offers_send_response_2_04_05; job_offer2_message_sync_end_0; }
+	job_acceptance_message [ label = "job_acceptance" color="#00ff00" shape = parallelogram];
+	job_acceptance_message_sync_start_0 [ label = "start" color="#00ff00" shape = parallelogram];
+	job_acceptance_message_sync_start_0 -> job_acceptance_message [ color="#00ff00" ];
+	{ rank=same; Household_Household_read_job_offers_send_response_01_02; job_acceptance_message_sync_start_0; }
+	job_acceptance_message_sync_end_0 [ label = "end" color="#00ff00" shape = parallelogram];
+	job_acceptance_message_sync_end_0 -> job_acceptance_message_sync_start_0 [ color="#00ff00" ];
+	job_acceptance_message_sync_end_0 -> Firm_Firm_read_job_responses_04_05a [ color="#00ff00" constraint=false ];
+	job_acceptance_message_sync_start_0 -> Household_Household_read_job_offers_send_response_01_02 [ color="#00ff00", constraint=false, style=dashed ];
+	{ rank=same; Firm_Firm_read_job_responses_04_05a; job_acceptance_message_sync_end_0; }
+	job_acceptance2_message [ label = "job_acceptance2" color="#00ff00" shape = parallelogram];
+	job_acceptance2_message_sync_start_0 [ label = "start" color="#00ff00" shape = parallelogram];
+	job_acceptance2_message_sync_start_0 -> job_acceptance2_message [ color="#00ff00" ];
+	{ rank=same; Household_Household_read_job_offers_send_response_2_04_05; job_acceptance2_message_sync_start_0; }
+	job_acceptance2_message_sync_end_0 [ label = "end" color="#00ff00" shape = parallelogram];
+	job_acceptance2_message_sync_end_0 -> job_acceptance2_message_sync_start_0 [ color="#00ff00" ];
+	job_acceptance2_message_sync_end_0 -> Firm_Firm_read_job_responses_2_08_09a [ color="#00ff00" constraint=false ];
+	job_acceptance2_message_sync_start_0 -> Household_Household_read_job_offers_send_response_2_04_05 [ color="#00ff00", constraint=false, style=dashed ];
+	{ rank=same; Firm_Firm_read_job_responses_2_08_09a; job_acceptance2_message_sync_end_0; }
+	quitting_message [ label = "quitting" color="#00ff00" shape = parallelogram];
+	quitting_message_sync_start_0 [ label = "start" color="#00ff00" shape = parallelogram];
+	quitting_message_sync_start_0 -> quitting_message [ color="#00ff00" ];
+	{ rank=same; Household_Household_read_job_offers_send_response_01_02; quitting_message_sync_start_0; }
+	quitting_message_sync_end_0 [ label = "end" color="#00ff00" shape = parallelogram];
+	quitting_message_sync_end_0 -> quitting_message_sync_start_0 [ color="#00ff00" ];
+	quitting_message_sync_end_0 -> Firm_Firm_read_job_quitting_00b_09c [ color="#00ff00" constraint=false ];
+	quitting_message_sync_end_0 -> Firm_Firm_read_job_quitting_03c_03d [ color="#00ff00" constraint=false ];
+	quitting_message_sync_start_0 -> Household_Household_read_job_offers_send_response_01_02 [ color="#00ff00", constraint=false, style=dashed ];
+	{ rank=same; Firm_Firm_read_job_quitting_00b_09c; quitting_message_sync_end_0; }
+	quitting_message_sync_start_1 [ label = "start" color="#00ff00" shape = parallelogram];
+	quitting_message_sync_start_1 -> quitting_message [ color="#00ff00" ];
+	{ rank=same; Firm_Firm_read_job_quitting_03c_03d; quitting_message_sync_start_1; }
+	quitting_message_sync_end_1 [ label = "end" color="#00ff00" shape = parallelogram];
+	quitting_message_sync_end_1 -> quitting_message_sync_start_1 [ color="#00ff00" ];
+	quitting_message_sync_end_1 -> Firm_Firm_read_job_quitting_05a_05b [ color="#00ff00" constraint=false ];
+	quitting_message_sync_start_1 -> Household_Household_read_job_offers_send_response_01_02 [ color="#00ff00", constraint=false, style=dashed ];
+	quitting_message_sync_start_1 -> Firm_Firm_read_job_quitting_00b_09c [ color="#00ff00", constraint=false, style=dashed ];
+	quitting_message_sync_start_1 -> Firm_Firm_read_job_quitting_03c_03d [ color="#00ff00", constraint=false, style=dashed ];
+	{ rank=same; Firm_Firm_read_job_quitting_05a_05b; quitting_message_sync_end_1; }
+	quitting2_message [ label = "quitting2" color="#00ff00" shape = parallelogram];
+	quitting2_message_sync_start_0 [ label = "start" color="#00ff00" shape = parallelogram];
+	quitting2_message_sync_start_0 -> quitting2_message [ color="#00ff00" ];
+	{ rank=same; Household_Household_read_job_offers_send_response_2_04_05; quitting2_message_sync_start_0; }
+	quitting2_message_sync_end_0 [ label = "end" color="#00ff00" shape = parallelogram];
+	quitting2_message_sync_end_0 -> quitting2_message_sync_start_0 [ color="#00ff00" ];
+	quitting2_message_sync_end_0 -> Firm_Firm_read_job_quitting_2_09c_Firm_Start_Seller_Role [ color="#00ff00" constraint=false ];
+	quitting2_message_sync_start_0 -> Household_Household_read_job_offers_send_response_2_04_05 [ color="#00ff00", constraint=false, style=dashed ];
+	{ rank=same; Firm_Firm_read_job_quitting_2_09c_Firm_Start_Seller_Role; quitting2_message_sync_end_0; }
+	quitting2_message_sync_start_1 [ label = "start" color="#00ff00" shape = parallelogram];
+	quitting2_message_sync_start_1 -> quitting2_message [ color="#00ff00" ];
+	{ rank=same; Firm_Firm_read_job_quitting_2_09c_Firm_Start_Seller_Role; quitting2_message_sync_start_1; }
+	quitting2_message_sync_end_1 [ label = "end" color="#00ff00" shape = parallelogram];
+	quitting2_message_sync_end_1 -> quitting2_message_sync_start_1 [ color="#00ff00" ];
+	quitting2_message_sync_end_1 -> Firm_Firm_read_job_quitting_2_09a_09b [ color="#00ff00" constraint=false ];
+	quitting2_message_sync_start_1 -> Household_Household_read_job_offers_send_response_2_04_05 [ color="#00ff00", constraint=false, style=dashed ];
+	quitting2_message_sync_start_1 -> Firm_Firm_read_job_quitting_2_09c_Firm_Start_Seller_Role [ color="#00ff00", constraint=false, style=dashed ];
+	{ rank=same; Firm_Firm_read_job_quitting_2_09a_09b; quitting2_message_sync_end_1; }
+	unemployment_notification_message [ label = "unemployment_notification" color="#00ff00" shape = parallelogram];
+	unemployment_notification_message_sync_start_0 [ label = "start" color="#00ff00" shape = parallelogram];
+	unemployment_notification_message_sync_start_0 -> unemployment_notification_message [ color="#00ff00" ];
+	{ rank=same; Government_Government_read_transfer_notifications_03_04; unemployment_notification_message_sync_start_0; }
+	unemployment_notification_message_sync_end_0 [ label = "end" color="#00ff00" shape = parallelogram];
+	unemployment_notification_message_sync_end_0 -> unemployment_notification_message_sync_start_0 [ color="#00ff00" ];
+	unemployment_notification_message_sync_end_0 -> Government_Government_read_unemployment_benefit_notifications_04_04b [ color="#00ff00" constraint=false ];
+	unemployment_notification_message_sync_start_0 -> Household_Household_send_unemployment_benefit_notification_06e_08 [ color="#00ff00", constraint=false, style=dashed ];
+	unemployment_notification_message_sync_start_0 -> Government_Government_read_transfer_notifications_03_04 [ color="#00ff00", constraint=false, style=dashed ];
+	{ rank=same; Government_Government_read_unemployment_benefit_notifications_04_04b; unemployment_notification_message_sync_end_0; }
+	policy_announcement_message [ label = "policy_announcement" color="#00ff00" shape = parallelogram];
+	policy_announcement_message_sync_start_0 [ label = "start" color="#00ff00" shape = parallelogram];
+	policy_announcement_message_sync_start_0 -> policy_announcement_message [ color="#00ff00" ];
+	{ rank=same; Firm_idle_start_Firm_Firm_is_active; policy_announcement_message_sync_start_0; }
+	policy_announcement_message_sync_end_0 [ label = "end" color="#00ff00" shape = parallelogram];
+	policy_announcement_message_sync_end_0 -> policy_announcement_message_sync_start_0 [ color="#00ff00" ];
+	policy_announcement_message_sync_end_0 -> Firm_Firm_read_policy_announcements_Firm_is_active_Firm_Start_Macro_Data [ color="#00ff00" constraint=false ];
+	policy_announcement_message_sync_end_0 -> Household_Household_read_policy_announcements_start_Household_Household_Start_Policy_Data [ color="#00ff00" constraint=false ];
+	policy_announcement_message_sync_end_0 -> IGFirm_IGFirm_read_policy_announcements_start_IGFirm_Start_IGFirm_Productivity [ color="#00ff00" constraint=false ];
+	policy_announcement_message_sync_end_0 -> Bank_Bank_read_policy_announcements_start_Bank_Bank_start_credit_market_role [ color="#00ff00" constraint=false ];
+	policy_announcement_message_sync_start_0 -> Government_Government_send_policy_announcements_start_Government_Gov_Start_Bond_Market [ color="#00ff00", constraint=false, style=dashed ];
+	policy_announcement_message_sync_start_0 -> Firm_idle_start_Firm_Firm_is_active [ color="#00ff00", constraint=false, style=dashed ];
+	{ rank=same; Firm_Firm_read_policy_announcements_Firm_is_active_Firm_Start_Macro_Data; policy_announcement_message_sync_end_0; }
+	tax_payment_message [ label = "tax_payment" color="#00ff00" shape = parallelogram];
+	tax_payment_message_sync_start_0 [ label = "start" color="#00ff00" shape = parallelogram];
+	tax_payment_message_sync_start_0 -> tax_payment_message [ color="#00ff00" ];
+	{ rank=same; Bank_Bank_accounting_Bank_06_Bank_07; tax_payment_message_sync_start_0; }
+	tax_payment_message_sync_end_0 [ label = "end" color="#00ff00" shape = parallelogram];
+	tax_payment_message_sync_end_0 -> tax_payment_message_sync_start_0 [ color="#00ff00" ];
+	tax_payment_message_sync_end_0 -> Government_Government_read_tax_payments_01_02 [ color="#00ff00" constraint=false ];
+	tax_payment_message_sync_start_0 -> Firm_Firm_execute_financial_payments_Firm_End_External_Financing_Firm_Start_Public_Sector_Role [ color="#00ff00", constraint=false, style=dashed ];
+	tax_payment_message_sync_start_0 -> IGFirm_IGFirm_pay_taxes_04_04b [ color="#00ff00", constraint=false, style=dashed ];
+	tax_payment_message_sync_start_0 -> Household_Household_send_tax_payment_08_08b [ color="#00ff00", constraint=false, style=dashed ];
+	tax_payment_message_sync_start_0 -> Bank_Bank_accounting_Bank_06_Bank_07 [ color="#00ff00", constraint=false, style=dashed ];
+	tax_payment_message_sync_start_0 -> Government_Government_bond_market_dummy_Gov_Start_Bond_Market_01 [ color="#00ff00", constraint=false, style=dashed ];
+	tax_payment_message_sync_start_0 -> Government_Government_idle_Gov_Start_Bond_Market_01 [ color="#00ff00", constraint=false, style=dashed ];
+	{ rank=same; Government_Government_read_tax_payments_01_02; tax_payment_message_sync_end_0; }
+	hh_transfer_notification_message [ label = "hh_transfer_notification" color="#00ff00" shape = parallelogram];
+	hh_transfer_notification_message_sync_start_0 [ label = "start" color="#00ff00" shape = parallelogram];
+	hh_transfer_notification_message_sync_start_0 -> hh_transfer_notification_message [ color="#00ff00" ];
+	{ rank=same; Government_Government_read_subsidy_notifications_02_03; hh_transfer_notification_message_sync_start_0; }
+	hh_transfer_notification_message_sync_end_0 [ label = "end" color="#00ff00" shape = parallelogram];
+	hh_transfer_notification_message_sync_end_0 -> hh_transfer_notification_message_sync_start_0 [ color="#00ff00" ];
+	hh_transfer_notification_message_sync_end_0 -> Government_Government_read_transfer_notifications_03_04 [ color="#00ff00" constraint=false ];
+	hh_transfer_notification_message_sync_start_0 -> Household_Household_send_transfer_notification_06d_06e [ color="#00ff00", constraint=false, style=dashed ];
+	hh_transfer_notification_message_sync_start_0 -> Government_Government_read_subsidy_notifications_02_03 [ color="#00ff00", constraint=false, style=dashed ];
+	{ rank=same; Government_Government_read_transfer_notifications_03_04; hh_transfer_notification_message_sync_end_0; }
+	hh_subsidy_notification_message [ label = "hh_subsidy_notification" color="#00ff00" shape = parallelogram];
+	hh_subsidy_notification_message_sync_start_0 [ label = "start" color="#00ff00" shape = parallelogram];
+	hh_subsidy_notification_message_sync_start_0 -> hh_subsidy_notification_message [ color="#00ff00" ];
+	{ rank=same; Government_Government_read_tax_payments_01_02; hh_subsidy_notification_message_sync_start_0; }
+	hh_subsidy_notification_message_sync_end_0 [ label = "end" color="#00ff00" shape = parallelogram];
+	hh_subsidy_notification_message_sync_end_0 -> hh_subsidy_notification_message_sync_start_0 [ color="#00ff00" ];
+	hh_subsidy_notification_message_sync_end_0 -> Government_Government_read_subsidy_notifications_02_03 [ color="#00ff00" constraint=false ];
+	hh_subsidy_notification_message_sync_start_0 -> Household_Household_send_subsidy_notification_06c_06d [ color="#00ff00", constraint=false, style=dashed ];
+	hh_subsidy_notification_message_sync_start_0 -> Government_Government_read_tax_payments_01_02 [ color="#00ff00", constraint=false, style=dashed ];
+	{ rank=same; Government_Government_read_subsidy_notifications_02_03; hh_subsidy_notification_message_sync_end_0; }
+	firm_transfer_notification_message [ label = "firm_transfer_notification" color="#00ff00" shape = parallelogram];
+	firm_transfer_notification_message_sync_start_0 [ label = "start" color="#00ff00" shape = parallelogram];
+	firm_transfer_notification_message_sync_start_0 -> firm_transfer_notification_message [ color="#00ff00" ];
+	{ rank=same; Government_Government_read_subsidy_notifications_02_03; firm_transfer_notification_message_sync_start_0; }
+	firm_transfer_notification_message_sync_end_0 [ label = "end" color="#00ff00" shape = parallelogram];
+	firm_transfer_notification_message_sync_end_0 -> firm_transfer_notification_message_sync_start_0 [ color="#00ff00" ];
+	firm_transfer_notification_message_sync_end_0 -> Government_Government_read_transfer_notifications_03_04 [ color="#00ff00" constraint=false ];
+	firm_transfer_notification_message_sync_start_0 -> Firm_Firm_send_transfer_notification_005_Firm_End_Financial_Management [ color="#00ff00", constraint=false, style=dashed ];
+	firm_transfer_notification_message_sync_start_0 -> Government_Government_read_subsidy_notifications_02_03 [ color="#00ff00", constraint=false, style=dashed ];
+	{ rank=same; Government_Government_read_transfer_notifications_03_04; firm_transfer_notification_message_sync_end_0; }
+	firm_subsidy_notification_message [ label = "firm_subsidy_notification" color="#00ff00" shape = parallelogram];
+	firm_subsidy_notification_message_sync_start_0 [ label = "start" color="#00ff00" shape = parallelogram];
+	firm_subsidy_notification_message_sync_start_0 -> firm_subsidy_notification_message [ color="#00ff00" ];
+	{ rank=same; Government_Government_read_tax_payments_01_02; firm_subsidy_notification_message_sync_start_0; }
+	firm_subsidy_notification_message_sync_end_0 [ label = "end" color="#00ff00" shape = parallelogram];
+	firm_subsidy_notification_message_sync_end_0 -> firm_subsidy_notification_message_sync_start_0 [ color="#00ff00" ];
+	firm_subsidy_notification_message_sync_end_0 -> Government_Government_read_subsidy_notifications_02_03 [ color="#00ff00" constraint=false ];
+	firm_subsidy_notification_message_sync_start_0 -> Firm_Firm_send_subsidy_notification_Firm_Start_Public_Sector_Role_005 [ color="#00ff00", constraint=false, style=dashed ];
+	firm_subsidy_notification_message_sync_start_0 -> Government_Government_read_tax_payments_01_02 [ color="#00ff00", constraint=false, style=dashed ];
+	{ rank=same; Government_Government_read_subsidy_notifications_02_03; firm_subsidy_notification_message_sync_end_0; }
+	firm_send_data_message [ label = "firm_send_data" color="#00ff00" shape = parallelogram];
+	firm_send_data_message_sync_start_0 [ label = "start" color="#00ff00" shape = parallelogram];
+	firm_send_data_message_sync_start_0 -> firm_send_data_message [ color="#00ff00" ];
+	{ rank=same; Firm_Firm_send_data_to_Eurostat_Firm_End_Financial_Management_Role_15; firm_send_data_message_sync_start_0; }
+	firm_send_data_message_sync_end_0 [ label = "end" color="#00ff00" shape = parallelogram];
+	firm_send_data_message_sync_end_0 -> firm_send_data_message_sync_start_0 [ color="#00ff00" ];
+	firm_send_data_message_sync_end_0 -> Eurostat_Eurostat_calculate_data_01_Eurostat_Start_Monthly_Loop [ color="#00ff00" constraint=false ];
+	firm_send_data_message_sync_start_0 -> Firm_Firm_send_data_to_Eurostat_Firm_End_Financial_Management_Role_15 [ color="#00ff00", constraint=false, style=dashed ];
+	{ rank=same; Eurostat_Eurostat_calculate_data_01_Eurostat_Start_Monthly_Loop; firm_send_data_message_sync_end_0; }
+	household_send_data_message [ label = "household_send_data" color="#00ff00" shape = parallelogram];
+	household_send_data_message_sync_start_0 [ label = "start" color="#00ff00" shape = parallelogram];
+	household_send_data_message_sync_start_0 -> household_send_data_message [ color="#00ff00" ];
+	{ rank=same; Household_Household_send_data_to_Eurostat_15_end_Household; household_send_data_message_sync_start_0; }
+	household_send_data_message_sync_end_0 [ label = "end" color="#00ff00" shape = parallelogram];
+	household_send_data_message_sync_end_0 -> household_send_data_message_sync_start_0 [ color="#00ff00" ];
+	household_send_data_message_sync_end_0 -> Eurostat_Eurostat_calculate_data_01_Eurostat_Start_Monthly_Loop [ color="#00ff00" constraint=false ];
+	household_send_data_message_sync_start_0 -> Household_Household_send_data_to_Eurostat_15_end_Household [ color="#00ff00", constraint=false, style=dashed ];
+	{ rank=same; Eurostat_Eurostat_calculate_data_01_Eurostat_Start_Monthly_Loop; household_send_data_message_sync_end_0; }
+	mall_data_message [ label = "mall_data" color="#00ff00" shape = parallelogram];
+	mall_data_message_sync_start_0 [ label = "start" color="#00ff00" shape = parallelogram];
+	mall_data_message_sync_start_0 -> mall_data_message [ color="#00ff00" ];
+	{ rank=same; Mall_Mall_send_export_data_06_end_Mall; mall_data_message_sync_start_0; }
+	mall_data_message_sync_end_0 [ label = "end" color="#00ff00" shape = parallelogram];
+	mall_data_message_sync_end_0 -> mall_data_message_sync_start_0 [ color="#00ff00" ];
+	mall_data_message_sync_end_0 -> Eurostat_Eurostat_calculate_data_01_Eurostat_Start_Monthly_Loop [ color="#00ff00" constraint=false ];
+	mall_data_message_sync_start_0 -> Mall_Mall_send_export_data_06_end_Mall [ color="#00ff00", constraint=false, style=dashed ];
+	{ rank=same; Eurostat_Eurostat_calculate_data_01_Eurostat_Start_Monthly_Loop; mall_data_message_sync_end_0; }
+	eurostat_send_specific_skills_message [ label = "eurostat_send_specific_skills" color="#00ff00" shape = parallelogram];
+	eurostat_send_specific_skills_message_sync_start_0 [ label = "start" color="#00ff00" shape = parallelogram];
+	eurostat_send_specific_skills_message_sync_start_0 -> eurostat_send_specific_skills_message [ color="#00ff00" ];
+	{ rank=same; Firm_Firm_read_policy_announcements_Firm_is_active_Firm_Start_Macro_Data; eurostat_send_specific_skills_message_sync_start_0; }
+	eurostat_send_specific_skills_message_sync_end_0 [ label = "end" color="#00ff00" shape = parallelogram];
+	eurostat_send_specific_skills_message_sync_end_0 -> eurostat_send_specific_skills_message_sync_start_0 [ color="#00ff00" ];
+	eurostat_send_specific_skills_message_sync_end_0 -> Firm_Firm_receive_data_Firm_Start_Macro_Data_Firm_End_Macro_Data [ color="#00ff00" constraint=false ];
+	eurostat_send_specific_skills_message_sync_start_0 -> Eurostat_Eurostat_send_data_start_Eurostat_01 [ color="#00ff00", constraint=false, style=dashed ];
+	eurostat_send_specific_skills_message_sync_start_0 -> Firm_idle_Firm_is_active_Firm_Start_Macro_Data [ color="#00ff00", constraint=false, style=dashed ];
+	eurostat_send_specific_skills_message_sync_start_0 -> Firm_Firm_read_policy_announcements_Firm_is_active_Firm_Start_Macro_Data [ color="#00ff00", constraint=false, style=dashed ];
+	{ rank=same; Firm_Firm_receive_data_Firm_Start_Macro_Data_Firm_End_Macro_Data; eurostat_send_specific_skills_message_sync_end_0; }
+	mean_wage_for_government_message [ label = "mean_wage_for_government" color="#00ff00" shape = parallelogram];
+	data_for_government_message [ label = "data_for_government" color="#00ff00" shape = parallelogram];
+	data_for_government_message_sync_start_0 [ label = "start" color="#00ff00" shape = parallelogram];
+	data_for_government_message_sync_start_0 -> data_for_government_message [ color="#00ff00" ];
+	{ rank=same; Eurostat_Eurostat_send_data_to_government_Eurostat_Start_EndOfYear_Loop_Eurostat_check_flows; data_for_government_message_sync_start_0; }
+	data_for_government_message_sync_end_0 [ label = "end" color="#00ff00" shape = parallelogram];
+	data_for_government_message_sync_end_0 -> data_for_government_message_sync_start_0 [ color="#00ff00" ];
+	data_for_government_message_sync_end_0 -> Government_Government_read_data_from_Eurostat_07_08 [ color="#00ff00" constraint=false ];
+	data_for_government_message_sync_start_0 -> Eurostat_Eurostat_send_data_to_government_Eurostat_Start_EndOfYear_Loop_Eurostat_check_flows [ color="#00ff00", constraint=false, style=dashed ];
+	{ rank=same; Government_Government_read_data_from_Eurostat_07_08; data_for_government_message_sync_end_0; }
+	firm_balance_sheet_message [ label = "firm_balance_sheet" color="#00ff00" shape = parallelogram];
+	firm_balance_sheet_message_sync_start_0 [ label = "start" color="#00ff00" shape = parallelogram];
+	firm_balance_sheet_message_sync_start_0 -> firm_balance_sheet_message [ color="#00ff00" ];
+	{ rank=same; Firm_Firm_send_data_to_Eurostat_Firm_End_Financial_Management_Role_15; firm_balance_sheet_message_sync_start_0; }
+	firm_balance_sheet_message_sync_end_0 [ label = "end" color="#00ff00" shape = parallelogram];
+	firm_balance_sheet_message_sync_end_0 -> firm_balance_sheet_message_sync_start_0 [ color="#00ff00" ];
+	firm_balance_sheet_message_sync_end_0 -> Eurostat_Eurostat_check_flow_consistency_Eurostat_check_flows_Eurostat_check_stocks [ color="#00ff00" constraint=false ];
+	firm_balance_sheet_message_sync_start_0 -> Firm_Firm_send_data_to_Eurostat_Firm_End_Financial_Management_Role_15 [ color="#00ff00", constraint=false, style=dashed ];
+	{ rank=same; Eurostat_Eurostat_check_flow_consistency_Eurostat_check_flows_Eurostat_check_stocks; firm_balance_sheet_message_sync_end_0; }
+	firm_balance_sheet_message_sync_start_1 [ label = "start" color="#00ff00" shape = parallelogram];
+	firm_balance_sheet_message_sync_start_1 -> firm_balance_sheet_message [ color="#00ff00" ];
+	{ rank=same; Eurostat_Eurostat_check_flow_consistency_Eurostat_check_flows_Eurostat_check_stocks; firm_balance_sheet_message_sync_start_1; }
+	firm_balance_sheet_message_sync_end_1 [ label = "end" color="#00ff00" shape = parallelogram];
+	firm_balance_sheet_message_sync_end_1 -> firm_balance_sheet_message_sync_start_1 [ color="#00ff00" ];
+	firm_balance_sheet_message_sync_end_1 -> Eurostat_Eurostat_check_stock_consistency_Eurostat_check_stocks_end_Eurostat [ color="#00ff00" constraint=false ];
+	firm_balance_sheet_message_sync_start_1 -> Firm_Firm_send_data_to_Eurostat_Firm_End_Financial_Management_Role_15 [ color="#00ff00", constraint=false, style=dashed ];
+	firm_balance_sheet_message_sync_start_1 -> Eurostat_Eurostat_check_flow_consistency_Eurostat_check_flows_Eurostat_check_stocks [ color="#00ff00", constraint=false, style=dashed ];
+	{ rank=same; Eurostat_Eurostat_check_stock_consistency_Eurostat_check_stocks_end_Eurostat; firm_balance_sheet_message_sync_end_1; }
+	household_balance_sheet_message [ label = "household_balance_sheet" color="#00ff00" shape = parallelogram];
+	household_balance_sheet_message_sync_start_0 [ label = "start" color="#00ff00" shape = parallelogram];
+	household_balance_sheet_message_sync_start_0 -> household_balance_sheet_message [ color="#00ff00" ];
+	{ rank=same; Household_Household_send_data_to_Eurostat_15_end_Household; household_balance_sheet_message_sync_start_0; }
+	household_balance_sheet_message_sync_end_0 [ label = "end" color="#00ff00" shape = parallelogram];
+	household_balance_sheet_message_sync_end_0 -> household_balance_sheet_message_sync_start_0 [ color="#00ff00" ];
+	household_balance_sheet_message_sync_end_0 -> Eurostat_Eurostat_check_flow_consistency_Eurostat_check_flows_Eurostat_check_stocks [ color="#00ff00" constraint=false ];
+	household_balance_sheet_message_sync_start_0 -> Household_Household_handle_leftover_budget_14_15 [ color="#00ff00", constraint=false, style=dashed ];
+	household_balance_sheet_message_sync_start_0 -> Household_Household_send_data_to_Eurostat_15_end_Household [ color="#00ff00", constraint=false, style=dashed ];
+	{ rank=same; Eurostat_Eurostat_check_flow_consistency_Eurostat_check_flows_Eurostat_check_stocks; household_balance_sheet_message_sync_end_0; }
+	household_balance_sheet_message_sync_start_1 [ label = "start" color="#00ff00" shape = parallelogram];
+	household_balance_sheet_message_sync_start_1 -> household_balance_sheet_message [ color="#00ff00" ];
+	{ rank=same; Eurostat_Eurostat_check_flow_consistency_Eurostat_check_flows_Eurostat_check_stocks; household_balance_sheet_message_sync_start_1; }
+	household_balance_sheet_message_sync_end_1 [ label = "end" color="#00ff00" shape = parallelogram];
+	household_balance_sheet_message_sync_end_1 -> household_balance_sheet_message_sync_start_1 [ color="#00ff00" ];
+	household_balance_sheet_message_sync_end_1 -> Eurostat_Eurostat_check_stock_consistency_Eurostat_check_stocks_end_Eurostat [ color="#00ff00" constraint=false ];
+	household_balance_sheet_message_sync_start_1 -> Household_Household_handle_leftover_budget_14_15 [ color="#00ff00", constraint=false, style=dashed ];
+	household_balance_sheet_message_sync_start_1 -> Household_Household_send_data_to_Eurostat_15_end_Household [ color="#00ff00", constraint=false, style=dashed ];
+	household_balance_sheet_message_sync_start_1 -> Eurostat_Eurostat_check_flow_consistency_Eurostat_check_flows_Eurostat_check_stocks [ color="#00ff00", constraint=false, style=dashed ];
+	{ rank=same; Eurostat_Eurostat_check_stock_consistency_Eurostat_check_stocks_end_Eurostat; household_balance_sheet_message_sync_end_1; }
+	igfirm_balance_sheet_message [ label = "igfirm_balance_sheet" color="#00ff00" shape = parallelogram];
+	bank_balance_sheet_message [ label = "bank_balance_sheet" color="#00ff00" shape = parallelogram];
+	bank_balance_sheet_message_sync_start_0 [ label = "start" color="#00ff00" shape = parallelogram];
+	bank_balance_sheet_message_sync_start_0 -> bank_balance_sheet_message [ color="#00ff00" ];
+	{ rank=same; Bank_Bank_send_data_to_Eurostat_Bank_07_end_Bank_cycle; bank_balance_sheet_message_sync_start_0; }
+	bank_balance_sheet_message_sync_end_0 [ label = "end" color="#00ff00" shape = parallelogram];
+	bank_balance_sheet_message_sync_end_0 -> bank_balance_sheet_message_sync_start_0 [ color="#00ff00" ];
+	bank_balance_sheet_message_sync_end_0 -> Eurostat_Eurostat_check_flow_consistency_Eurostat_check_flows_Eurostat_check_stocks [ color="#00ff00" constraint=false ];
+	bank_balance_sheet_message_sync_start_0 -> Bank_Bank_send_data_to_Eurostat_Bank_07_end_Bank_cycle [ color="#00ff00", constraint=false, style=dashed ];
+	{ rank=same; Eurostat_Eurostat_check_flow_consistency_Eurostat_check_flows_Eurostat_check_stocks; bank_balance_sheet_message_sync_end_0; }
+	bank_balance_sheet_message_sync_start_1 [ label = "start" color="#00ff00" shape = parallelogram];
+	bank_balance_sheet_message_sync_start_1 -> bank_balance_sheet_message [ color="#00ff00" ];
+	{ rank=same; Eurostat_Eurostat_check_flow_consistency_Eurostat_check_flows_Eurostat_check_stocks; bank_balance_sheet_message_sync_start_1; }
+	bank_balance_sheet_message_sync_end_1 [ label = "end" color="#00ff00" shape = parallelogram];
+	bank_balance_sheet_message_sync_end_1 -> bank_balance_sheet_message_sync_start_1 [ color="#00ff00" ];
+	bank_balance_sheet_message_sync_end_1 -> Eurostat_Eurostat_check_stock_consistency_Eurostat_check_stocks_end_Eurostat [ color="#00ff00" constraint=false ];
+	bank_balance_sheet_message_sync_start_1 -> Bank_Bank_send_data_to_Eurostat_Bank_07_end_Bank_cycle [ color="#00ff00", constraint=false, style=dashed ];
+	bank_balance_sheet_message_sync_start_1 -> Eurostat_Eurostat_check_flow_consistency_Eurostat_check_flows_Eurostat_check_stocks [ color="#00ff00", constraint=false, style=dashed ];
+	{ rank=same; Eurostat_Eurostat_check_stock_consistency_Eurostat_check_stocks_end_Eurostat; bank_balance_sheet_message_sync_end_1; }
+	gov_balance_sheet_message [ label = "gov_balance_sheet" color="#00ff00" shape = parallelogram];
+	gov_balance_sheet_message_sync_start_0 [ label = "start" color="#00ff00" shape = parallelogram];
+	gov_balance_sheet_message_sync_start_0 -> gov_balance_sheet_message [ color="#00ff00" ];
+	{ rank=same; Government_Government_send_account_update_06_Gov_Start_Yearly_Loop; gov_balance_sheet_message_sync_start_0; }
+	gov_balance_sheet_message_sync_end_0 [ label = "end" color="#00ff00" shape = parallelogram];
+	gov_balance_sheet_message_sync_end_0 -> gov_balance_sheet_message_sync_start_0 [ color="#00ff00" ];
+	gov_balance_sheet_message_sync_end_0 -> Eurostat_Eurostat_check_flow_consistency_Eurostat_check_flows_Eurostat_check_stocks [ color="#00ff00" constraint=false ];
+	gov_balance_sheet_message_sync_start_0 -> Government_Government_send_data_to_Eurostat_04b_Gov_Start_Monthly_Loop [ color="#00ff00", constraint=false, style=dashed ];
+	gov_balance_sheet_message_sync_start_0 -> Government_Government_send_account_update_06_Gov_Start_Yearly_Loop [ color="#00ff00", constraint=false, style=dashed ];
+	{ rank=same; Eurostat_Eurostat_check_flow_consistency_Eurostat_check_flows_Eurostat_check_stocks; gov_balance_sheet_message_sync_end_0; }
+	gov_balance_sheet_message_sync_start_1 [ label = "start" color="#00ff00" shape = parallelogram];
+	gov_balance_sheet_message_sync_start_1 -> gov_balance_sheet_message [ color="#00ff00" ];
+	{ rank=same; Eurostat_Eurostat_check_flow_consistency_Eurostat_check_flows_Eurostat_check_stocks; gov_balance_sheet_message_sync_start_1; }
+	gov_balance_sheet_message_sync_end_1 [ label = "end" color="#00ff00" shape = parallelogram];
+	gov_balance_sheet_message_sync_end_1 -> gov_balance_sheet_message_sync_start_1 [ color="#00ff00" ];
+	gov_balance_sheet_message_sync_end_1 -> Eurostat_Eurostat_check_stock_consistency_Eurostat_check_stocks_end_Eurostat [ color="#00ff00" constraint=false ];
+	gov_balance_sheet_message_sync_start_1 -> Government_Government_send_data_to_Eurostat_04b_Gov_Start_Monthly_Loop [ color="#00ff00", constraint=false, style=dashed ];
+	gov_balance_sheet_message_sync_start_1 -> Government_Government_send_account_update_06_Gov_Start_Yearly_Loop [ color="#00ff00", constraint=false, style=dashed ];
+	gov_balance_sheet_message_sync_start_1 -> Eurostat_Eurostat_check_flow_consistency_Eurostat_check_flows_Eurostat_check_stocks [ color="#00ff00", constraint=false, style=dashed ];
+	{ rank=same; Eurostat_Eurostat_check_stock_consistency_Eurostat_check_stocks_end_Eurostat; gov_balance_sheet_message_sync_end_1; }
+	ecb_balance_sheet_message [ label = "ecb_balance_sheet" color="#00ff00" shape = parallelogram];
+	ecb_balance_sheet_message_sync_start_0 [ label = "start" color="#00ff00" shape = parallelogram];
+	ecb_balance_sheet_message_sync_start_0 -> ecb_balance_sheet_message [ color="#00ff00" ];
+	{ rank=same; Central_Bank_Central_Bank_send_data_to_Eurostat_01_end_Central_Bank; ecb_balance_sheet_message_sync_start_0; }
+	ecb_balance_sheet_message_sync_end_0 [ label = "end" color="#00ff00" shape = parallelogram];
+	ecb_balance_sheet_message_sync_end_0 -> ecb_balance_sheet_message_sync_start_0 [ color="#00ff00" ];
+	ecb_balance_sheet_message_sync_end_0 -> Eurostat_Eurostat_check_flow_consistency_Eurostat_check_flows_Eurostat_check_stocks [ color="#00ff00" constraint=false ];
+	ecb_balance_sheet_message_sync_start_0 -> Central_Bank_Central_Bank_send_data_to_Eurostat_01_end_Central_Bank [ color="#00ff00", constraint=false, style=dashed ];
+	{ rank=same; Eurostat_Eurostat_check_flow_consistency_Eurostat_check_flows_Eurostat_check_stocks; ecb_balance_sheet_message_sync_end_0; }
+	ecb_balance_sheet_message_sync_start_1 [ label = "start" color="#00ff00" shape = parallelogram];
+	ecb_balance_sheet_message_sync_start_1 -> ecb_balance_sheet_message [ color="#00ff00" ];
+	{ rank=same; Eurostat_Eurostat_check_flow_consistency_Eurostat_check_flows_Eurostat_check_stocks; ecb_balance_sheet_message_sync_start_1; }
+	ecb_balance_sheet_message_sync_end_1 [ label = "end" color="#00ff00" shape = parallelogram];
+	ecb_balance_sheet_message_sync_end_1 -> ecb_balance_sheet_message_sync_start_1 [ color="#00ff00" ];
+	ecb_balance_sheet_message_sync_end_1 -> Eurostat_Eurostat_check_stock_consistency_Eurostat_check_stocks_end_Eurostat [ color="#00ff00" constraint=false ];
+	ecb_balance_sheet_message_sync_start_1 -> Central_Bank_Central_Bank_send_data_to_Eurostat_01_end_Central_Bank [ color="#00ff00", constraint=false, style=dashed ];
+	ecb_balance_sheet_message_sync_start_1 -> Eurostat_Eurostat_check_flow_consistency_Eurostat_check_flows_Eurostat_check_stocks [ color="#00ff00", constraint=false, style=dashed ];
+	{ rank=same; Eurostat_Eurostat_check_stock_consistency_Eurostat_check_stocks_end_Eurostat; ecb_balance_sheet_message_sync_end_1; }
+	Firm_Firm_send_capital_demand_Firm_End_Labour_Role_11a -> capital_good_request_message [ color="#00ff00" constraint=false ];
+	Firm_Firm_calc_pay_costs_11_12 -> wage_payment_message [ color="#00ff00" constraint=false ];
+	Firm_Firm_calc_pay_costs_11_12 -> pay_capital_goods_message [ color="#00ff00" constraint=false ];
+	Firm_Firm_send_goods_to_mall_12_Firm_Start_Seller_Role -> update_mall_stock_message [ color="#00ff00" constraint=false ];
+	Firm_Firm_ask_loan_Firm_Start_Credit_Role_Firm_Credit_02 -> loan_request_message [ color="#00ff00" constraint=false ];
+	Firm_Firm_get_loan_Firm_Credit_02_Firm_End_Credit_Role -> loan_acceptance_message [ color="#00ff00" constraint=false ];
+	Firm_Firm_set_bankruptcy_insolvency_Firm_Bankruptcy_check_Firm_End_Financial_Management_Role -> bankruptcy_insolvency_message [ color="#00ff00" constraint=false ];
+	Firm_Firm_set_bankruptcy_illiquidity_Firm_bankruptcy_checked_Firm_End_Financial_Management_Role -> bankruptcy_illiquidity_message [ color="#00ff00" constraint=false ];
+	Firm_Firm_execute_financial_payments_Firm_End_External_Financing_Firm_Start_Public_Sector_Role -> tax_payment_message [ color="#00ff00" constraint=false ];
+	Firm_Firm_execute_financial_payments_Firm_End_External_Financing_Firm_Start_Public_Sector_Role -> dividend_per_share_message [ color="#00ff00" constraint=false ];
+	Firm_Firm_execute_financial_payments_Firm_End_External_Financing_Firm_Start_Public_Sector_Role -> installment_message [ color="#00ff00" constraint=false ];
+	Firm_Firm_send_subsidy_notification_Firm_Start_Public_Sector_Role_005 -> firm_subsidy_notification_message [ color="#00ff00" constraint=false ];
+	Firm_Firm_send_transfer_notification_005_Firm_End_Financial_Management -> firm_transfer_notification_message [ color="#00ff00" constraint=false ];
+	Firm_Firm_bankruptcy_insolvency_procedure_Firm_not_active_Firm_bankrupty_state_1 -> bankruptcy_message [ color="#00ff00" constraint=false ];
+	Firm_Firm_bankruptcy_insolvency_procedure_Firm_not_active_Firm_bankrupty_state_1 -> firing_message [ color="#00ff00" constraint=false ];
+	Firm_Firm_bankruptcy_illiquidity_procedure_Firm_not_active_Firm_bankrupty_state_1 -> firing_message [ color="#00ff00" constraint=false ];
+	Firm_Firm_send_vacancies_04ccc_03 -> vacancies_message [ color="#00ff00" constraint=false ];
+	Firm_Firm_send_redundancies_011_03ccc -> firing_message [ color="#00ff00" constraint=false ];
+	Firm_Firm_read_job_applications_send_job_offer_or_rejection_03_04 -> job_offer_message [ color="#00ff00" constraint=false ];
+	Firm_Firm_send_vacancies_2_06_07 -> vacancies2_message [ color="#00ff00" constraint=false ];
+	Firm_Firm_read_job_applications_send_job_offer_or_rejection_2_07_08 -> job_offer2_message [ color="#00ff00" constraint=false ];
+	Firm_Firm_send_random_redundancies_03ccc_04ccc -> firing_message [ color="#00ff00" constraint=false ];
+	Firm_Firm_send_data_to_Eurostat_Firm_End_Financial_Management_Role_15 -> firm_send_data_message [ color="#00ff00" constraint=false ];
+	Firm_Firm_send_data_to_Eurostat_Firm_End_Financial_Management_Role_15 -> firm_balance_sheet_message [ color="#00ff00" constraint=false ];
+	Firm_Firm_send_payments_to_bank_16_end_Firm -> bank_account_update_message [ color="#00ff00" constraint=false ];
+	Household_Household_rank_and_buy_goods_1_09_09b -> consumption_request_1_message [ color="#00ff00" constraint=false ];
+	Household_Household_rank_and_buy_goods_2_11_12 -> consumption_request_2_message [ color="#00ff00" constraint=false ];
+	Household_Household_handle_leftover_budget_14_15 -> bank_account_update_message [ color="#00ff00" constraint=false ];
+	Household_Household_handle_leftover_budget_14_15 -> household_balance_sheet_message [ color="#00ff00" constraint=false ];
+	Household_Household_UNEMPLOYED_read_job_vacancies_and_send_applications_01a_01 -> job_application_message [ color="#00ff00" constraint=false ];
+	Household_Household_read_job_offers_send_response_01_02 -> quitting_message [ color="#00ff00" constraint=false ];
+	Household_Household_read_job_offers_send_response_01_02 -> job_acceptance_message [ color="#00ff00" constraint=false ];
+	Household_Household_UNEMPLOYED_read_job_vacancies_and_send_applications_2_03_04 -> job_application2_message [ color="#00ff00" constraint=false ];
+	Household_Household_read_job_offers_send_response_2_04_05 -> job_acceptance2_message [ color="#00ff00" constraint=false ];
+	Household_Household_read_job_offers_send_response_2_04_05 -> quitting2_message [ color="#00ff00" constraint=false ];
+	Household_Household_send_subsidy_notification_06c_06d -> hh_subsidy_notification_message [ color="#00ff00" constraint=false ];
+	Household_Household_send_transfer_notification_06d_06e -> hh_transfer_notification_message [ color="#00ff00" constraint=false ];
+	Household_Household_update_specific_skills_07_08 -> specific_skill_update_message [ color="#00ff00" constraint=false ];
+	Household_Household_send_unemployment_benefit_notification_06e_08 -> unemployment_notification_message [ color="#00ff00" constraint=false ];
+	Household_Household_send_tax_payment_08_08b -> tax_payment_message [ color="#00ff00" constraint=false ];
+	Household_Household_send_data_to_Eurostat_15_end_Household -> household_send_data_message [ color="#00ff00" constraint=false ];
+	Household_Household_send_data_to_Eurostat_15_end_Household -> household_balance_sheet_message [ color="#00ff00" constraint=false ];
+	Mall_Mall_send_quality_price_info_1_02_03 -> quality_price_info_1_message [ color="#00ff00" constraint=false ];
+	Mall_Mall_update_mall_stocks_sales_rationing_1_03_04 -> quality_price_info_2_message [ color="#00ff00" constraint=false ];
+	Mall_Mall_update_mall_stocks_sales_rationing_1_03_04 -> accepted_consumption_1_message [ color="#00ff00" constraint=false ];
+	Mall_Mall_update_mall_stocks_sales_rationing_2_04_05 -> accepted_consumption_2_message [ color="#00ff00" constraint=false ];
+	Mall_Mall_pay_firm_05_05a -> sales_message [ color="#00ff00" constraint=false ];
+	Mall_Mall_send_export_data_06_end_Mall -> mall_data_message [ color="#00ff00" constraint=false ];
+	IGFirm_IGFirm_send_quality_price_info_01_02 -> productivity_message [ color="#00ff00" constraint=false ];
+	IGFirm_IGFirm_send_capital_good_02_03 -> capital_good_delivery_message [ color="#00ff00" constraint=false ];
+	IGFirm_IGFirm_pay_taxes_04_04b -> tax_payment_message [ color="#00ff00" constraint=false ];
+	IGFirm_IGFirm_dividend_payment_04b_end_IGFirm -> dividend_per_share_message [ color="#00ff00" constraint=false ];
+	Eurostat_Eurostat_send_data_start_Eurostat_01 -> eurostat_send_specific_skills_message [ color="#00ff00" constraint=false ];
+	Eurostat_Eurostat_send_data_to_government_Eurostat_Start_EndOfYear_Loop_Eurostat_check_flows -> data_for_government_message [ color="#00ff00" constraint=false ];
+	Bank_Bank_communicate_identity_Bank_start_credit_market_role_Bank_01 -> bank_identity_message [ color="#00ff00" constraint=false ];
+	Bank_Bank_send_accountInterest_Bank_01_Bank_02 -> accountInterest_message [ color="#00ff00" constraint=false ];
+	Bank_Bank_decide_credit_conditions_Bank_02_Bank_03 -> loan_conditions_message [ color="#00ff00" constraint=false ];
+	Bank_Bank_account_update_deposits_Bank_05_Bank_06 -> central_bank_account_update_message [ color="#00ff00" constraint=false ];
+	Bank_Bank_accounting_Bank_06_Bank_07 -> bank_interest_payment_message [ color="#00ff00" constraint=false ];
+	Bank_Bank_accounting_Bank_06_Bank_07 -> tax_payment_message [ color="#00ff00" constraint=false ];
+	Bank_Bank_send_data_to_Eurostat_Bank_07_end_Bank_cycle -> bank_balance_sheet_message [ color="#00ff00" constraint=false ];
+	Government_Government_bond_market_dummy_Gov_Start_Bond_Market_01 -> gov_bond_message [ color="#00ff00" constraint=false ];
+	Government_Government_send_policy_announcements_start_Government_Gov_Start_Bond_Market -> policy_announcement_message [ color="#00ff00" constraint=false ];
+	Government_Government_send_account_update_06_Gov_Start_Yearly_Loop -> central_bank_account_update_message [ color="#00ff00" constraint=false ];
+	Government_Government_send_account_update_06_Gov_Start_Yearly_Loop -> gov_balance_sheet_message [ color="#00ff00" constraint=false ];
+	Government_Government_send_data_to_Eurostat_04b_Gov_Start_Monthly_Loop -> gov_balance_sheet_message [ color="#00ff00" constraint=false ];
+	Central_Bank_Central_Bank_send_data_to_Eurostat_01_end_Central_Bank -> ecb_balance_sheet_message [ color="#00ff00" constraint=false ];
+}
