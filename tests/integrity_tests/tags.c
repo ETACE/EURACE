@@ -122,8 +122,9 @@ void stream_blank(char *string)
            }
           i++;
         }   
-     aux[i]='\0';
+     aux[k]='\0';
      strcpy(string,aux);
+     printf("%s\n",aux);
     }
 
 void print_assertion_rule(TagArray *rule,FILE *file)
