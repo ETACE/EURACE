@@ -566,21 +566,24 @@ int Firm_bankruptcy_insolvency_procedure()
     char * filename;
     FILE * file1;
     
-    //Start an empty string for the filename
-    filename = malloc(40*sizeof(char));
-    filename[0]=0;
-    
-    //Concatenate
-    strcpy(filename, "debug_bankruptcy.txt");
-    //Open a file pointer: FILE * file 
-    file1 = fopen(filename,"a");
-     
-    printf("___________________________________________ Firm function Firm_bankruptcy_insolvency_procedure()\n");
-    fprintf(file1,"IT %d ID %d EQUITY %f\n",DAY,ID,EQUITY);
-    
-    //close the file pointer: FILE * file 
-      fclose(file1);
-      free(filename);
+    if (PRINT_DEBUG)
+    {
+        //Start an empty string for the filename
+        filename = malloc(40*sizeof(char));
+        filename[0]=0;
+        
+        //Concatenate
+        strcpy(filename, "debug_bankruptcy.txt");
+        //Open a file pointer: FILE * file 
+        file1 = fopen(filename,"a");
+        
+        printf("_____In file Firm_Financial_Management_Functions.c, , line 578: Function Firm function Firm_bankruptcy_insolvency_procedure()\n");
+        fprintf(file1,"IT %d ID %d EQUITY %f\n",DAY,ID,EQUITY);
+        
+        //close the file pointer: FILE * file 
+        fclose(file1);
+        free(filename);
+    }
 
     //Effect on credit market
     TOTAL_ASSETS = TOTAL_VALUE_CAPITAL_STOCK;
