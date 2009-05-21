@@ -1598,7 +1598,7 @@
     <function>
      <name>Household_send_data_to_Eurostat</name>
      <description>Household sends message to the eurostat agent including several micro data.</description>
-     <currentState>15</currentState>
+     <currentState>16</currentState>
      <nextState>end_Household</nextState>
      <condition>
       <time>
@@ -1619,7 +1619,7 @@
     <function>
      <name>Household_idle</name>
      <description>Household does nothing</description>
-     <currentState>15</currentState>
+     <currentState>16</currentState>
      <nextState>end_Household</nextState>
      <condition>
       <not>
