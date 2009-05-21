@@ -15,7 +15,10 @@ int Household_send_orders()
     double_array *assetWeights;
     double_array *assetUtilities;
 
-      
+    //Sander: Added for debugging
+    char * string;
+    int * tmp;
+
     assetsowned=get_assetsowned();
     pending=get_pendingOrders();
     assetWeights=get_assetWeights();
@@ -31,6 +34,14 @@ int Household_send_orders()
     {
      ord=elementAtCOrder(orders,i);
      //printf("price=%f\n",ord->price);
+     
+     if (ord->quantity>10e+3)
+     {
+        printf("\nIn Household_send_orders: Order quantity=%d\n", ord->quantity);
+        printf("Press a number and then ENTER to continue ...");
+        scanf("%d", tmp);
+     }
+     
      add_order_message(ord->issuer,ord->assetId, ord->price, ord->quantity);
     }
     return 0;
