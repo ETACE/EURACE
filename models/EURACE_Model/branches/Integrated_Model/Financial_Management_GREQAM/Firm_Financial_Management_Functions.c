@@ -612,8 +612,8 @@ int Firm_bankruptcy_insolvency_procedure()
         //credit_remaining = (1-write_off_ratio)*LOANS.array[i].loan_value
 
         //step 3: send the bankruptcy_message to write off part of the debt
-        //add_bankruptcy_message(bank_id, bad_debt, credit_refunded, residual_var);
-        add_bankruptcy_message(LOANS.array[i].bank_id, bad_debt,
+        //add_bankruptcy_message(firm_id, bank_id, bad_debt, credit_refunded, residual_var);
+        add_bankruptcy_message(ID, LOANS.array[i].bank_id, bad_debt,
                 credit_refunded, residual_var);
     }
     

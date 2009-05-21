@@ -1520,6 +1520,11 @@
      <name>nr_firm_shares</name>
      <description></description>
     </variable>
+    <variable>
+     <type>int_array</type>
+     <name>list_of_bankrupt_firms</name>
+     <description>The household records a list_of_bankrupt_firms to reset the quantity in assetsowned.quantity=0.</description>
+    </variable>
    </memory>
    <functions>
     <function>
@@ -1570,29 +1575,11 @@
      <description>The household reads the messages from the eurostat agent and stores the needed data.</description>
      <currentState>Household_Start_Policy_Data</currentState>
      <nextState>Household_Start_Financial_Market_Role</nextState>
-     <condition>
-      <time>
-       <period>monthly</period>
-       <phase>1</phase>
-      </time>
-     </condition>
-     <inputs/>
-     <outputs/>
-    </function>
-    <function>
-     <name>Household_idle</name>
-     <description>Household does nothing</description>
-     <currentState>Household_Start_Policy_Data</currentState>
-     <nextState>Household_Start_Financial_Market_Role</nextState>
-     <condition>
-      <not>
-       <time>
-        <period>monthly</period>
-        <phase>1</phase>
-       </time>
-      </not>
-     </condition>
-     <inputs/>
+     <inputs>
+      <input>
+       <messageName>bankruptcy</messageName>
+      </input>
+     </inputs>
      <outputs/>
     </function>
     <function>

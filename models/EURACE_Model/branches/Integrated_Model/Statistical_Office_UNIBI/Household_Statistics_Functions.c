@@ -8,10 +8,13 @@
 /*************************************Household Role: Statistics *********************************/
 
 /** \fn Household_receive_data()
- * \brief Household is importing macro data from Eurostat to use in behavioral rules.
+ * \brief Household receives macro data from Eurostat and bankruptcy messages from Firms
  */
 int Household_receive_data()
 {
+    START_BANKRUPTCY_MESSAGE_LOOP
+       add_int(&LIST_OF_BANKRUPT_FIRMS, bankruptcy_message->firm_id);
+    FINISH_BANKRUPTCY_MESSAGE_LOOP  
 
     return 0;
 }

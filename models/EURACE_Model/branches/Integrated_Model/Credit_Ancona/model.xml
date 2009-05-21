@@ -708,7 +708,12 @@ The equity of ECB is paid out to all governments as dividends, in proportion to 
    <name>bankruptcy</name>
    <description>Message added by firm to bank to signal bankruptcy.</description>
    <variables>
-    <variable>
+    <variable>    
+     <type>int</type>
+     <name>firm_id</name>
+     <description></description>
+    </variable>
+    <variable>    
      <type>int</type>
      <name>bank_id</name>
      <description></description>
