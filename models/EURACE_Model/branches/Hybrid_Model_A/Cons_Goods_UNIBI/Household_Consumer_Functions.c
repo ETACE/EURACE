@@ -17,69 +17,76 @@
 
 int Household_determine_consumption_budget()
 {
-
+    char * filename;
+    FILE * file1,*file2;
     
-	char temp[10];
-	    char * filename;
-	    FILE * file1,*file2;
-	    
-	    //Start an empty string for the filename
-	    filename = malloc(40*sizeof(char));
-	    filename[0]=0;
-	    
-	    //Concatenate
-	    strcpy(filename, "debug_payment_account.txt");
-	    //Open a file pointer: FILE * file 
-	    file1 = fopen(filename,"a");
-	    
-	    strcpy(filename, "debug_consumption_budget.txt");
-	    file2 = fopen(filename,"a");
+    if (PRINT_LOG)
+    {
+        //Start an empty string for the filename
+        filename = malloc(40*sizeof(char));
+        filename[0]=0;
+        
+        //Concatenate
+        strcpy(filename, "debug_payment_account.txt");
 
-	    /*Deteriming the consumption budget of the month*/
-	            //Previous rule based Deaton rule: uses PAYMENT_ACCOUNT
-	            /*if(PAYMENT_ACCOUNT > (INITIAL_CONSUMPTION_PROPENSITY*MEAN_INCOME))
-	            {
-	                
-	                CONSUMPTION_BUDGET=CONSUMPTION_PROPENSITY*PAYMENT_ACCOUNT+(1-CONSUMPTION_PROPENSITY)
-	                *INITIAL_CONSUMPTION_PROPENSITY*MEAN_INCOME;
-	            }
-	            else
-	            {
-	                
-	                CONSUMPTION_BUDGET = PAYMENT_ACCOUNT;
-	            }*/
-	            
-	            /*Based on Carrol-Rule: Determination of the consumption budget*/
-	            CONSUMPTION_BUDGET = MEAN_INCOME + 
-	            CONSUMPTION_PROPENSITY*(WEALTH - WEALTH_INCOME_RATIO*MEAN_INCOME);
-	            if(PAYMENT_ACCOUNT < 0)
-	            {
-	                fprintf(file1, "IT %d ID %d PAYMENT_ACCOUNT %f \n", DAY, ID, PAYMENT_ACCOUNT);
-	            }
-	            
-	            if(CONSUMPTION_BUDGET < 0.5*LAST_INCOME.array[3])
-	            {
-	                if(CONSUMPTION_BUDGET < 0)
-	                {
-	                    printf("___________________________________________ Household payment_account<0\n");
-	                    fprintf(file2,"IT %d ID %d CONSUMPTION_BUDGET %f\n",DAY,ID,CONSUMPTION_BUDGET);
-	                }
-	                CONSUMPTION_BUDGET = 0.5*LAST_INCOME.array[3];
-	            }
-	            
-	            //close the file pointer: FILE * file 
-	            fclose(file1);
-	            fclose(file2);
-	            free(filename);
-	        
+        //Open a file pointer: FILE * file 
+        file1 = fopen(filename,"a");
+        
+        strcpy(filename, "debug_consumption_budget.txt");
+        file2 = fopen(filename,"a");
+    }
+    
+    /*Determining the consumption budget of the month*/
+            //Previous rule based Deaton rule: uses PAYMENT_ACCOUNT
+            /*if(PAYMENT_ACCOUNT > (INITIAL_CONSUMPTION_PROPENSITY*MEAN_INCOME))
+            {
+                
+                CONSUMPTION_BUDGET=CONSUMPTION_PROPENSITY*PAYMENT_ACCOUNT+(1-CONSUMPTION_PROPENSITY)
+                *INITIAL_CONSUMPTION_PROPENSITY*MEAN_INCOME;
+            }
+            else
+            {
+                
+                CONSUMPTION_BUDGET = PAYMENT_ACCOUNT;
+            }*/
+            
+            /*Based on Carrol-Rule: Determination of the consumption budget*/
+            CONSUMPTION_BUDGET = MEAN_INCOME + 
+            CONSUMPTION_PROPENSITY*(WEALTH - WEALTH_INCOME_RATIO*MEAN_INCOME);
+            if(PAYMENT_ACCOUNT < 0)
+            {
+               if (PRINT_LOG)
+                    fprintf(file1, "IT %d ID %d PAYMENT_ACCOUNT %f \n", DAY, ID, PAYMENT_ACCOUNT);
+            }
+            
+            if(CONSUMPTION_BUDGET < 0.5*LAST_INCOME.array[3])
+            {
+                if(CONSUMPTION_BUDGET < 0)
+                {
+                    printf("___________In file Household_Consumer_Functions.c, function Household_determine_consumption_budget, line 65:\n"
+                    "Household payment_account<0\n");
+                    
+                    if (PRINT_LOG)
+                        fprintf(file2,"IT %d ID %d CONSUMPTION_BUDGET %f\n",DAY,ID,CONSUMPTION_BUDGET);
+                }
+                CONSUMPTION_BUDGET = 0.5*LAST_INCOME.array[3];
+            }
 
-	            //PORTFOLIO_BUDGET=PAYMENT_ACCOUNT-CONSUMPTION_BUDGET;
-	            WEEKLY_BUDGET = CONSUMPTION_BUDGET/4;
-	            WEEK_OF_MONTH = 4;
-	            
-	        EXCESS_WEEKLY_BUDGET = WEEKLY_BUDGET - PAYMENT_ACCOUNT;
+            //PORTFOLIO_BUDGET=PAYMENT_ACCOUNT-CONSUMPTION_BUDGET;
+            WEEKLY_BUDGET = CONSUMPTION_BUDGET/4;
+            WEEK_OF_MONTH = 4;
+            
+        EXCESS_WEEKLY_BUDGET = WEEKLY_BUDGET - PAYMENT_ACCOUNT;
 
-	return 0;   
+        if (PRINT_LOG)
+        {
+            //close the file pointer: FILE * file
+            fclose(file1);
+            fclose(file2);
+            free(filename);
+        }
+
+    return 0;   
 }
 
 
@@ -89,22 +96,23 @@ int Household_determine_consumption_budget()
  */
 int Household_shifting_consumption_day()
 {
-	
-	if(FLAG_CONSUMPTION_SHIFTING==1)
-	{
-		printf("Error in Function Household_shifting_consumption_day\n\n"
-				"Household %d wants to shift the consumption day a 2nd time, but had already shifted it; the payment_account is still smaller than the weekly_budget! \n",ID);
-		printf("Payment_account=%2.11f weekly_budget=%2.11f\n\n", PAYMENT_ACCOUNT, WEEKLY_BUDGET);
-	}
-	assert(FLAG_CONSUMPTION_SHIFTING==0);
-	
-	FLAG_CONSUMPTION_SHIFTING =1;
-	DAY_OF_WEEK_TO_ACT = (DAY_OF_WEEK_TO_ACT+1)%5;
+    
+    //if(FLAG_CONSUMPTION_SHIFTING==1)
+    //{
+        //printf("Error in Function Household_shifting_consumption_day\n\n"
+          //      "Household %d wants to shift the consumption day a 2nd time, but had already shifted it; the payment_account is still smaller than the weekly_budget! \n",ID);
+        //printf("Payment_account=%2.11f weekly_budget=%2.11f\n\n", PAYMENT_ACCOUNT, WEEKLY_BUDGET);
+    //}
+    //if(PRINT_DEBUG==0)
+        //assert(FLAG_CONSUMPTION_SHIFTING==0);
+    
+    // FLAG_CONSUMPTION_SHIFTING =1;
+    // DAY_OF_WEEK_TO_ACT = (DAY_OF_WEEK_TO_ACT+1)%5;
 
-	
-	printf("Household %d shifts the consumption day \n",ID);
-	
-	return 0;
+    
+   // printf("Household %d shifts the consumption day \n",ID);
+    
+    return 0;
 }
 
 
@@ -113,14 +121,15 @@ int Household_shifting_consumption_day()
  */
 int Household_back_shifting_consumption_day()
 {
-	assert(FLAG_CONSUMPTION_SHIFTING==1);
-	
-	DAY_OF_WEEK_TO_ACT = (DAY_OF_WEEK_TO_ACT-1)%5;
-	FLAG_CONSUMPTION_SHIFTING =0;
-	
-	printf("Household %d shifts the consumption day back.\n",ID);
-	
-	return 0;
+    /*
+    assert(FLAG_CONSUMPTION_SHIFTING==1);
+    
+    DAY_OF_WEEK_TO_ACT = (DAY_OF_WEEK_TO_ACT-1)%5;
+    FLAG_CONSUMPTION_SHIFTING =0;
+    
+    printf("Household %d shifts the consumption day back.\n",ID);
+    */
+    return 0;
 }
 
 
@@ -572,7 +581,3 @@ int Household_handle_leftover_budget()
 
     return 0;
 }
-
-
-
-
