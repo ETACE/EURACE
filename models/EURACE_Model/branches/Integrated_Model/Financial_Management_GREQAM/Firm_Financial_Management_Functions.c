@@ -566,7 +566,7 @@ int Firm_bankruptcy_insolvency_procedure()
     char * filename;
     FILE * file1;
     
-    if (PRINT_DEBUG)
+    if (PRINT_LOG)
     {
         //Start an empty string for the filename
         filename = malloc(40*sizeof(char));

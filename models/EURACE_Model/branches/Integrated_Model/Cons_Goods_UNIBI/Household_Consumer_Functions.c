@@ -17,11 +17,10 @@
 
 int Household_determine_consumption_budget()
 {
-    char temp[10];
     char * filename;
     FILE * file1,*file2;
     
-    if (PRINT_DEBUG)
+    if (PRINT_LOG)
     {
         //Start an empty string for the filename
         filename = malloc(40*sizeof(char));
@@ -29,6 +28,7 @@ int Household_determine_consumption_budget()
         
         //Concatenate
         strcpy(filename, "debug_payment_account.txt");
+
         //Open a file pointer: FILE * file 
         file1 = fopen(filename,"a");
         
@@ -55,7 +55,7 @@ int Household_determine_consumption_budget()
             CONSUMPTION_PROPENSITY*(WEALTH - WEALTH_INCOME_RATIO*MEAN_INCOME);
             if(PAYMENT_ACCOUNT < 0)
             {
-               if (PRINT_DEBUG)
+               if (PRINT_LOG)
                     fprintf(file1, "IT %d ID %d PAYMENT_ACCOUNT %f \n", DAY, ID, PAYMENT_ACCOUNT);
             }
             
@@ -66,7 +66,7 @@ int Household_determine_consumption_budget()
                     printf("___________In file Household_Consumer_Functions.c, function Household_determine_consumption_budget, line 65:\n"
                     "Household payment_account<0\n");
                     
-                    if (PRINT_DEBUG)
+                    if (PRINT_LOG)
                         fprintf(file2,"IT %d ID %d CONSUMPTION_BUDGET %f\n",DAY,ID,CONSUMPTION_BUDGET);
                 }
                 CONSUMPTION_BUDGET = 0.5*LAST_INCOME.array[3];
@@ -78,7 +78,7 @@ int Household_determine_consumption_budget()
             
         EXCESS_WEEKLY_BUDGET = WEEKLY_BUDGET - PAYMENT_ACCOUNT;
 
-        if (PRINT_DEBUG)
+        if (PRINT_LOG)
         {
             //close the file pointer: FILE * file
             fclose(file1);
