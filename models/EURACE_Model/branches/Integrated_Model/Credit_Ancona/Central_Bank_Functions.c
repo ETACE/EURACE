@@ -21,10 +21,10 @@ int Central_Bank_read_account_update()
                  ACCOUNTS.array[i].payment_account = central_bank_account_update_message->payment_account;
             }
             
-        if  (central_bank_account_update_message->payment_account<0)
-            { 
+        //if  (central_bank_account_update_message->payment_account<0)
+          //  { 
                  TOTAL_ECB_DEBT+=fabs(central_bank_account_update_message->payment_account);
-            }                  
+          //  }                  
             
     }
     FINISH_CENTRAL_BANK_ACCOUNT_UPDATE_MESSAGE_LOOP

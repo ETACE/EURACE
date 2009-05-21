@@ -67,7 +67,7 @@
     
        if (CASH<0)
             {
-             add_central_bank_account_update_message(ID, CASH);
+             add_central_bank_account_update_message(ID, -CASH);
              ECB_DEBT+=-CASH; //Monetary base is increased
              CASH=0;
             }
@@ -253,7 +253,8 @@
     	}
     	
     	return 0;
-    }int Bank_send_accountInterest(void)
+    }
+int Bank_send_accountInterest(void)
 {
    add_accountInterest_message(get_id(), 0.001);
    return 0;
