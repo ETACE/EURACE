@@ -16,7 +16,6 @@ int Household_send_orders()
     double_array *assetUtilities;
 
     //Sander: Added for debugging
-    char * string;
     int * tmp;
 
     assetsowned=get_assetsowned();
@@ -35,7 +34,7 @@ int Household_send_orders()
      ord=elementAtCOrder(orders,i);
      //printf("price=%f\n",ord->price);
      
-     if (ord->quantity>10e+3)
+     if (ord->quantity>10e+4)
      {
         printf("\nIn Household_send_orders: Order quantity=%d\n", ord->quantity);
         printf("Press a number and then ENTER to continue ...");
