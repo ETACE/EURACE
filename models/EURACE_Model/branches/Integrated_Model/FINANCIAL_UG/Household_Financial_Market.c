@@ -33,9 +33,12 @@ int Household_send_orders()
     {
      ord=elementAtCOrder(orders,i);
      //printf("price=%f\n",ord->price);
-     //printf("ord->assetId %d\n",ord->assetId);
-     //printf("ord->quantity %d\n",ord->quantity);
-     //printf("ord->price %f\n",ord->price);
+     if(ord->quantity > 1000 )
+     {
+    	 //printf("ord->assetId %d\n",ord->assetId);
+    	 //printf("ord->quantity %d\n",ord->quantity);
+    	 //printf("ord->price %f\n",ord->price);
+     }
      if (ord->quantity>10e+6)
      {
     	printf("Financial_UG/Household_Financial_Market.c/Household_send_orders()\n");
