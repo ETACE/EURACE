@@ -63,8 +63,8 @@ int Government_orders_issuing(void)
        {  	   
         //add_order_message(issuer,bond->id, pending_order->price,pending_order->quantity);
        printf("Financial_UG/Government_Financial_Market.c/Government_generate_pending_orders()\n");
-       printf("Line: 65 -> Temporary solution: setting pending_order->price to 1.0 in order_message \n");
-       add_order_message(issuer,bond->id, 1.0,pending_order->quantity);
+       printf("Line: 65 -> Temporary solution: setting pending_order->price to 0.25 in order_message \n");
+       add_order_message(issuer,bond->id, 0.25,pending_order->quantity);
        //printf("_____________GOVERNMENT ORDERS ISSUING______________\n");
          //   printf("BOND: pending_order->price %f\n",pending_order->price);
            // printf("BOND: pending_order->quantity %d\n",pending_order->quantity);
