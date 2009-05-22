@@ -29,8 +29,9 @@ void unittest_Eurostat_reset_data()
             0.0,0.0,0.0,0.0,0.0,     //5 total_earnings -> average_debt_earnings_ratio
             0.0,0.0,0.0,0.0,0.0,0.0, //6 average_debt_equity_ratio -> monthly_planned_output
             0.0,0.0,0.0,             //3 gdp, cpi, cpi_last_month 
-            0,0);                    //2 no_firm_births, no_firm_deaths
-
+            0,0,                     //2 no_firm_births, no_firm_deaths
+            0.0,0.0);				 //2 productivity_progress, productivity
+    
     add_firm_data(&REGION_FIRM_DATA,
             2,200,0,                   //3 region_id, no_firms, vacancies 
             0,0,0,0,0,0,             //6 employees_skill
@@ -39,7 +40,8 @@ void unittest_Eurostat_reset_data()
             0.0,0.0,0.0,0.0,0.0,     //5 total_earnings -> average_debt_earnings_ratio
             0.0,0.0,0.0,0.0,0.0,0.0, //6 average_debt_equity_ratio -> monthly_planned_output
             0.0,0.0,0.0,             //3 gdp, cpi, cpi_last_month 
-            0,0);                    //2 no_firm_births, no_firm_deaths
+            0,0,                     //2 no_firm_births, no_firm_deaths
+            0.0,0.0);				 //2 productivity_progress, productivity
 
     add_household_data(&REGION_HOUSEHOLD_DATA,
             1,
@@ -129,8 +131,8 @@ void unittest_Eurostat_compute_mean_price()
     //PRICE=1;
     //TOTAL_SUPPLY=10;
 
-    add_firm_send_data_message(0,0,0,0, 0,0,0,0,0, 0,0, 0,0,0,0,0, 0,0,0,0,0,0, 1.0,0,10.0,0,0,0,0);
-    add_firm_send_data_message(0,0,0,0, 0,0,0,0,0, 0,0, 0,0,0,0,0, 0,0,0,0,0,0, 2.0,0,10.0,0,0,0,0);
+    add_firm_send_data_message(0,0,0,0, 0,0,0,0,0, 0,0, 0,0,0,0,0, 0,0,0,0,0,0, 1.0,0,10.0,0,0,0,0, 0.0,0.0);
+    add_firm_send_data_message(0,0,0,0, 0,0,0,0,0, 0,0, 0,0,0,0,0, 0,0,0,0,0,0, 2.0,0,10.0,0,0,0,0, 0.0,0.0);
     
     /***** Message: Adding message iterators ***************************************/
     rc = MB_Iterator_Create(b_firm_send_data, &i_firm_send_data);
@@ -189,7 +191,8 @@ void unittest_Eurostat_read_firm_data()
             0.0,0.0,0.0,0.0,0.0,     //5 total_earnings -> average_debt_earnings_ratio
             0.0,0.0,0.0,0.0,0.0,0.0, //6 average_debt_equity_ratio -> monthly_planned_output
             0.0,0.0,0.0,             //3 gdp, cpi, cpi_last_month 
-            0,0);                    //2 no_firm_births, no_firm_deaths
+            0,0,                     //2 no_firm_births, no_firm_deaths
+            0.0,0.0);				 //2 productivity_progress, productivity
 
     add_firm_data(&REGION_FIRM_DATA,
             2,0,0,                   //3 region_id, no_firms, vacancies 
@@ -199,7 +202,8 @@ void unittest_Eurostat_read_firm_data()
             0.0,0.0,0.0,0.0,0.0,     //5 total_earnings -> average_debt_earnings_ratio
             0.0,0.0,0.0,0.0,0.0,0.0, //6 average_debt_equity_ratio -> monthly_planned_output
             0.0,0.0,0.0,             //3 gdp, cpi, cpi_last_month 
-            0,0);                    //2 no_firm_births, no_firm_deaths
+            0,0,                     //2 no_firm_births, no_firm_deaths
+            0.0,0.0);				 //2 productivity_progress, productivity
 
     
     /***** Messages: initialize message boards **********************************/
@@ -234,11 +238,11 @@ void unittest_Eurostat_read_firm_data()
     //PRICE=1;
     //TOTAL_SUPPLY=10;
 
-    add_firm_send_data_message(1,1,100,50, 10,10,10,10,10, 0,0, 0,0,0,0,0, 0,0,0,0,0,0, 1.0,0,10.0,0,0,0,0);
-    add_firm_send_data_message(2,1,100,100, 20,20,20,20,20, 0,0, 0,0,0,0,0, 0,0,0,0,0,0, 2.0,0,10.0,0,0,0,0);
+    add_firm_send_data_message(1,1,100,50, 10,10,10,10,10, 0,0, 0,0,0,0,0, 0,0,0,0,0,0, 1.0,0,10.0,0,0,0,0, 0.0,0.0);
+    add_firm_send_data_message(2,1,100,100, 20,20,20,20,20, 0,0, 0,0,0,0,0, 0,0,0,0,0,0, 2.0,0,10.0,0,0,0,0, 0.0,0.0);
             
-    add_firm_send_data_message(3,2,300,150, 30,30,30,30,30, 0,0, 0,0,0,0,0, 0,0,0,0,0,0, 1.0,0,10.0,0,0,0,0);
-    add_firm_send_data_message(4,2,300,200, 40,40,40,40,40, 0,0, 0,0,0,0,0, 0,0,0,0,0,0, 2.0,0,10.0,0,0,0,0);
+    add_firm_send_data_message(3,2,300,150, 30,30,30,30,30, 0,0, 0,0,0,0,0, 0,0,0,0,0,0, 1.0,0,10.0,0,0,0,0, 0.0,0.0);
+    add_firm_send_data_message(4,2,300,200, 40,40,40,40,40, 0,0, 0,0,0,0,0, 0,0,0,0,0,0, 2.0,0,10.0,0,0,0,0, 0.0,0.0);
 
     /***** Message: Adding message iterators ***************************************/
     rc = MB_Iterator_Create(b_firm_send_data, &i_firm_send_data);
@@ -305,7 +309,8 @@ void unittest_Eurostat_compute_region_firm_data()
             0.0,0.0,0.0,0.0,0.0,     //5 total_earnings -> average_debt_earnings_ratio
             0.0,0.0,0.0,0.0,0.0,0.0, //6 average_debt_equity_ratio -> monthly_planned_output
             0.0,0.0,0.0,             //3 gdp, cpi, cpi_last_month 
-            0,0);                    //2 no_firm_births, no_firm_deaths
+            0,0,                     //2 no_firm_births, no_firm_deaths
+            0.0,0.0);				 //2 productivity_progress, productivity
 
     add_firm_data(&REGION_FIRM_DATA,
             2,200,0,                   //3 region_id, no_firms, vacancies 
@@ -315,7 +320,8 @@ void unittest_Eurostat_compute_region_firm_data()
             0.0,0.0,0.0,0.0,0.0,     //5 total_earnings -> average_debt_earnings_ratio
             0.0,0.0,0.0,0.0,0.0,0.0, //6 average_debt_equity_ratio -> monthly_planned_output
             0.0,0.0,0.0,             //3 gdp, cpi, cpi_last_month 
-            0,0);                    //2 no_firm_births, no_firm_deaths
+            0,0,                     //2 no_firm_births, no_firm_deaths
+            0.0,0.0);				 //2 productivity_progress, productivity
 
     /***** Messages: initialize message boards **********************************/
 
@@ -601,7 +607,8 @@ void unittest_Eurostat_calc_macro_data()
             0.0,0.0,0.0,0.0,0.0,     //5 total_earnings -> average_debt_earnings_ratio
             0.0,0.0,0.0,0.0,0.0,0.0, //6 average_debt_equity_ratio -> monthly_planned_output
             0.0,0.0,0.0,             //3 gdp, cpi, cpi_last_month 
-            0,0);                    //2 no_firm_births, no_firm_deaths
+            0,0,                     //2 no_firm_births, no_firm_deaths
+            0.0,0.0);				 //2 productivity_progress, productivity
 
     add_firm_data(&REGION_FIRM_DATA,
             2,0,0,                   //3 region_id -> vacancies 
@@ -611,7 +618,8 @@ void unittest_Eurostat_calc_macro_data()
             0.0,0.0,0.0,0.0,0.0,     //5 total_earnings -> average_debt_earnings_ratio
             0.0,0.0,0.0,0.0,0.0,0.0, //6 average_debt_equity_ratio -> monthly_planned_output
             0.0,0.0,0.0,             //3 gdp, cpi, cpi_last_month 
-            0,0);                    //2 no_firm_births, no_firm_deaths
+            0,0,                     //2 no_firm_births, no_firm_deaths
+            0.0,0.0);				 //2 productivity_progress, productivity
 
     /***** Messages: initialize message boards **********************************/
     rc = MB_Create(&b_firm_send_data, sizeof(m_firm_send_data));
@@ -653,10 +661,10 @@ void unittest_Eurostat_calc_macro_data()
     //NET_EARNINGS=100
     //labour_share=1*10/100 = 0.10
 
-    add_firm_send_data_message(1,1,0, 10, 0,0,0,0,0, 0,0, 1,0,0,0,0, 100,100,100,0,0,0, 0,0,0,1000,0,0,0);
-    add_firm_send_data_message(2,1,0, 10, 0,0,0,0,0, 0,0, 1,0,0,0,0, 100,100,100,0,0,0, 0,0,0,1000,0,0,0);
-    add_firm_send_data_message(3,2,0, 10, 0,0,0,0,0, 0,0, 1,0,0,0,0, 10,10,100,0,0,0,   0,0,0,100, 0,0,0);
-    add_firm_send_data_message(4,2,0, 10, 0,0,0,0,0, 0,0, 1,0,0,0,0, 10,10,100,0,0,0,   0,0,0,100, 0,0,0);
+    add_firm_send_data_message(1,1,0, 10, 0,0,0,0,0, 0,0, 1,0,0,0,0, 100,100,100,0,0,0, 0,0,0,1000,0,0,0, 0.0,0.0);
+    add_firm_send_data_message(2,1,0, 10, 0,0,0,0,0, 0,0, 1,0,0,0,0, 100,100,100,0,0,0, 0,0,0,1000,0,0,0, 0.0,0.0);
+    add_firm_send_data_message(3,2,0, 10, 0,0,0,0,0, 0,0, 1,0,0,0,0, 10,10,100,0,0,0,   0,0,0,100, 0,0,0, 0.0,0.0);
+    add_firm_send_data_message(4,2,0, 10, 0,0,0,0,0, 0,0, 1,0,0,0,0, 10,10,100,0,0,0,   0,0,0,100, 0,0,0, 0.0,0.0);
 
     /***** Adding message iterators ***************************************/
     rc = MB_Iterator_Create(b_firm_send_data, &i_firm_send_data);
@@ -1310,7 +1318,8 @@ void unittest2_Eurostat_compute_growth_rates_monthly()
             0.0,0.0,0.0,0.0,0.0,     //5 total_earnings -> average_debt_earnings_ratio
             0.0,0.0,0.0,0.0,0.0,0.0, //6 average_debt_equity_ratio -> monthly_planned_output
             0.0,0.0,0.0,             //3 gdp, cpi, cpi_last_month 
-            0,0);                    //2 no_firm_births, no_firm_deaths
+            0,0,                     //2 no_firm_births, no_firm_deaths
+            0.0,0.0);				 //2 productivity_progress, productivity
 
     //construct monthly history data structure for regions
     for (k=12; k>0; k--)
@@ -1458,7 +1467,8 @@ void unittest2_Eurostat_compute_growth_rates_quarterly()
             0.0,0.0,0.0,0.0,0.0,     //5 total_earnings -> average_debt_earnings_ratio
             0.0,0.0,0.0,0.0,0.0,0.0, //6 average_debt_equity_ratio -> monthly_planned_output
             0.0,0.0,0.0,             //3 gdp, cpi, cpi_last_month 
-            0,0);                    //2 no_firm_births, no_firm_deaths
+            0,0,                     //2 no_firm_births, no_firm_deaths
+            0.0,0.0);				 //2 productivity_progress, productivity
 
     //construct monthly history data structure for regions
     for (k=12; k>0; k--)
@@ -1708,7 +1718,8 @@ void unittest_Eurostat_measure_export()
             0.0,0.0,0.0,0.0,0.0,     //5 total_earnings -> average_debt_earnings_ratio
             0.0,0.0,0.0,0.0,0.0,0.0, //6 average_debt_equity_ratio -> monthly_planned_output
             0.0,1.0,0.0,             //3 gdp, cpi, cpi_last_month 
-            0,0);                    //2 no_firm_births, no_firm_deaths
+            0,0,                     //2 no_firm_births, no_firm_deaths
+            0.0,0.0);				 //2 productivity_progress, productivity
 
     add_firm_data(&REGION_FIRM_DATA,
             2,200,0,                   //3 region_id, no_firms, vacancies 
@@ -1718,7 +1729,8 @@ void unittest_Eurostat_measure_export()
             0.0,0.0,0.0,0.0,0.0,     //5 total_earnings -> average_debt_earnings_ratio
             0.0,0.0,0.0,0.0,0.0,0.0, //6 average_debt_equity_ratio -> monthly_planned_output
             0.0,1.0,0.0,             //3 gdp, cpi, cpi_last_month 
-            0,0);                    //2 no_firm_births, no_firm_deaths
+            0,0,                     //2 no_firm_births, no_firm_deaths
+            0.0,0.0);				 //2 productivity_progress, productivity
 
     /***** Messages: initialize message boards **********************************/
     rc = MB_Create(&b_mall_data, sizeof(m_mall_data));
