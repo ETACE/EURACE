@@ -15,8 +15,8 @@ int Household_send_orders()
     double_array *assetWeights;
     double_array *assetUtilities;
 
-    //Sander: Added for debugging
-    int * tmp;
+    //Sander: Added for debugging : fore scanf() in line 45
+    //int * tmp;
 
     assetsowned=get_assetsowned();
     pending=get_pendingOrders();
@@ -33,12 +33,16 @@ int Household_send_orders()
     {
      ord=elementAtCOrder(orders,i);
      //printf("price=%f\n",ord->price);
-     
-     if (ord->quantity>10e+4)
+     //printf("ord->assetId %d\n",ord->assetId);
+     //printf("ord->quantity %d\n",ord->quantity);
+     //printf("ord->price %f\n",ord->price);
+     if (ord->quantity>10e+6)
      {
-        printf("\nIn Household_send_orders: Order quantity=%d\n", ord->quantity);
-        printf("Press a number and then ENTER to continue ...");
-        scanf("%d", tmp);
+    	printf("Financial_UG/Household_Financial_Market.c/Household_send_orders()\n");
+    	printf("Line: 42 ->  ord->quantity>10e+6\n");
+        printf("ASSET_ID %d, In Household_send_orders: Order quantity=%d\n", ord->assetId,ord->quantity);
+        //printf("Press a number and then ENTER to continue ...");
+        //scanf("%d", tmp);
      }
      
      add_order_message(ord->issuer,ord->assetId, ord->price, ord->quantity);
@@ -77,6 +81,15 @@ void computeUtilities(Belief_array *beliefs, double_array *assetUtilities)
 
      utility=belief->utility;
      add_double(assetUtilities,utility);//da rivedere questo algoritmo
+    /* printf("Asset ID %d  ;Utility %f \n",belief->asset_id,belief->utility);
+     printf("last_price %f\n", belief->last_price);
+     printf("expectedPriceReturns %f\n", belief->expectedPriceReturns);
+     printf("expectedTotalReturns %f\n", belief->expectedTotalReturns);
+     printf("expectedCashFlowYield %f\n", belief->expectedCashFlowYield);
+     printf("volatility %f\n", belief->volatility);
+     printf("expectedEarning %f\n", belief->expectedEarning);
+     printf("expectedEarningPayout %f\n", belief->expectedEarningPayout);*/
+     
      }
 }
 void assetUtilitiesToWeights(double_array *assetWeights,double_array *assetUtilities,double bankrate)
