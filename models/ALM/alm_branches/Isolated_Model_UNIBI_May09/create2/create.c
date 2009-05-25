@@ -82,7 +82,7 @@ double TETA = 0.0;
 
 
 /*brief Pricing rule: mark up on unit costs. */
-double MARK_UP = 0.2;
+double MARK_UP = 0.1;
 
 /*Strenght of the influence of the actual demand on the next production quantity: if LAMBDA = 0 then the planned production quantities of the last periods are recognized. If LAMBDA = 1 then the only the actual demand is recognized*/
 double LAMBDA = 1;
