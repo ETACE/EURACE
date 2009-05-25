@@ -110,7 +110,7 @@ int Firm_calculate_specific_skills_and_wage_offer()
             {
                 AVERAGE_S_SKILL_OF_2 = sum_2/NO_EMPLOYEES_SKILL_2;  
             }
-            
+        
             /*The other skill groups get a higher wage offer depending on the                   productivity (specific skill)*/
             WAGE_OFFER_FOR_SKILL_2 = WAGE_OFFER*AVERAGE_S_SKILL_OF_2/
                 AVERAGE_S_SKILL_OF_1;
@@ -173,7 +173,7 @@ int Firm_send_vacancies()
         WAGE_OFFER_FOR_SKILL_1, WAGE_OFFER_FOR_SKILL_2, 
         WAGE_OFFER_FOR_SKILL_3, WAGE_OFFER_FOR_SKILL_4, 
         WAGE_OFFER_FOR_SKILL_5);
-                                        
+                                    
     }
     
     return 0;
