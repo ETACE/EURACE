@@ -301,7 +301,7 @@ int Firm_calc_input_demands()
 		{
 			ACTUAL_CAP_PRICE = productivity_message->cap_good_price;
 		}
-printf(" REGION_ID: %d; ACTUAL_CAP_PRICE %f \n", REGION_ID,ACTUAL_CAP_PRICE);
+//printf(" REGION_ID: %d; ACTUAL_CAP_PRICE %f \n", REGION_ID,ACTUAL_CAP_PRICE);
         FINISH_PRODUCTIVITY_MESSAGE_LOOP
         
         /*Calculate labor demand and needed capital goods. 
@@ -316,6 +316,8 @@ printf(" REGION_ID: %d; ACTUAL_CAP_PRICE %f \n", REGION_ID,ACTUAL_CAP_PRICE);
             temp_capital_demand = PLANNED_PRODUCTION_QUANTITY * 
             (pow((BETA*MEAN_WAGE*(1.04))/((ACTUAL_CAP_PRICE/PERIODS_TO_REPAY_LOANS)*ALPHA),ALPHA)/
             MEAN_SPECIFIC_SKILLS);
+//printf(" REGION_ID: %d; ACTUAL_CAP_PRICE %f \n", REGION_ID,ACTUAL_CAP_PRICE);
+//printf(" REGION_ID: %d; temp_capital_demand %f \n", temp_capital_demand);
             
             /*Smoothing of capital good demand*/
             if(temp_capital_demand > TOTAL_UNITS_CAPITAL_STOCK + (INV_INERTIA-1)*TOTAL_CAPITAL_DEPRECIATION_UNITS)
@@ -326,7 +328,7 @@ printf(" REGION_ID: %d; ACTUAL_CAP_PRICE %f \n", REGION_ID,ACTUAL_CAP_PRICE);
                 NEEDED_CAPITAL_STOCK = temp_capital_demand;
             }
             
-                
+  //printf(" REGION_ID: %d; NEEDED_CAPITAL_STOCK %f \n", NEEDED_CAPITAL_STOCK);              
             
                 
         temp_labour_demand = pow(PLANNED_PRODUCTION_QUANTITY /
