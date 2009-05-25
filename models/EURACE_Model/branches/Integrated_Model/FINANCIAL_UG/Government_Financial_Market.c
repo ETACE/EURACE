@@ -3,55 +3,25 @@
 //#include "../header.h"
 
 
-int Government_BondIssuing_decision(void)
-{ 
-	//printf("________BOND ISSUING DECISION________\n");
-	int GovBondNewIssueAmount;
+int Government_BondIssuing_decision()
+{ int GovBondNewIssueAmount;
   Bond *bond;
   double limit_price,last_market_price;
   bond=get_bond();
-  
+  if(bond->maturity_day>CURRENTDAY) last_market_price=lastPriceBond(bond);
+  limit_price = (1-BONDS_NEWISSUE_DISCOUNT)*last_market_price;
+ GovBondNewIssueAmount = (int) TOTAL_BOND_FINANCING/limit_price;
 
-    
-    if(bond->maturity_day>CURRENTDAY)
-         last_market_price=lastPriceBond(bond);
-
-   /*Simon G: Temporary solution: limit price != 0*/
-   if(last_market_price>0.0)
-    	limit_price = (1-BONDS_NEWISSUE_DISCOUNT)*last_market_price;
-   else
-   {
-	   printf("Financial_UG/Government_Financial_Market.c/Government_BondIssuing_decision()\n");
-	   printf("Line: 25 -> Simon G: temporary solution if limit price is zero");
-	   limit_price = 0.25;
-	   last_market_price = 0.25;
-   }
-    
-   /* printf("TOTAL_BOND_FINANCING %f \n",TOTAL_BOND_FINANCING);
-    printf("limit_price %f \n",limit_price);
-    printf("BONDS_NEWISSUE_DISCOUNT %f \n",BONDS_NEWISSUE_DISCOUNT);
-    printf("last_market_price %f \n",last_market_price);*/
-
-GovBondNewIssueAmount = (int) TOTAL_BOND_FINANCING/limit_price;
-//printf("1_GovBondNewIssueAmount %d \n",GovBondNewIssueAmount);
-
-//printf("sono qui%f\n",last_market_price);
-return GovBondNewIssueAmount;
-
+  return GovBondNewIssueAmount;
 }
+
 int Government_send_info_bond(void)
 {    Bond *bond;
      bond=get_bond();
-     //printf("_____________GOVERNMENT SEND BOND INFO______________\n");
-     //printf("BOND: nr_outstanding %d\n",bond->nr_outstanding);
-     //printf("BOND: quantity %d\n",bond->quantity);
-    // printf("BOND: face_value %f\n",bond->face_value);
-     //printf("BOND: nominal_yield %f\n",bond->nominal_yield);
-     //printf("BOND: price %f\n",bond->prices[99]);
-     //printf("BOND: price %f\n",bond->prices[0]);
      add_info_bond_message(*bond);
      return 0;
 }
+
 int Government_orders_issuing(void)
     {  Order *pending_order;
        Bond *bond;
@@ -60,78 +30,44 @@ int Government_orders_issuing(void)
        issuer=get_id();
        bond=get_bond();
        if(pending_order->quantity!=0)
-       {  	   
-        //add_order_message(issuer,bond->id, pending_order->price,pending_order->quantity);
-       printf("Financial_UG/Government_Financial_Market.c/Government_generate_pending_orders()\n");
-       printf("Line: 65 -> Temporary solution: setting pending_order->price to 0.25 in order_message \n");
-       add_order_message(issuer,bond->id, 0.25,pending_order->quantity);
-       //printf("_____________GOVERNMENT ORDERS ISSUING______________\n");
-         //   printf("BOND: pending_order->price %f\n",pending_order->price);
-           // printf("BOND: pending_order->quantity %d\n",pending_order->quantity);
-       }
-            
+        {
+         //printf("invio ordini di vendita bond id%d price%f quantity%d",bond->id, pending_order->price,pending_order->quantity);
+         add_order_message(issuer,bond->id, pending_order->price,pending_order->quantity);
+        }
     return 0;
    }
 int Government_generate_pending_orders(void)
     {int  qty,issuer;
-     double  GovBondsInPortfolioValue,lastMarketPrice,GovBondNewIssueAmount;
+     double  GovBondsInPortfolioValue,lastMarketPrice,govdeficit; 
+     int GovBondNewIssueAmount;
      Bond *bond;
      Order *pending_order;
-     int limitPrice;
+      double limitPrice;
      double payment_account;
-    // int * tmp;
-     
-     GovBondsInPortfolioValue = 0;
      bond=get_bond();
      pending_order=get_pending_order();
      issuer=get_id();
      payment_account=get_payment_account();
      qty =bond->quantity;
-     
      lastMarketPrice = lastPriceBond(bond);
-     
-     /*Simon G: Temporary solution: limit price != 0*/
-     if(lastMarketPrice >0.0)
-         limitPrice = (1- BONDS_NEWISSUE_DISCOUNT)*lastMarketPrice;
-     else
-     {
-    	 printf("Financial_UG/Government_Financial_Market.c/Government_generate_pending_orders()\n");
-    	 printf("Line: 99 -> Simon G: temporary solution if limit price is zero \n");
-         limitPrice = 0.25;
-         lastMarketPrice = 0.25;
-     }
-     
-     GovBondsInPortfolioValue = GovBondsInPortfolioValue + qty*lastMarketPrice;
+     GovBondsInPortfolioValue =  qty*lastMarketPrice;
+   // printf("BONDS_NEWISSUE_DISCOUNT==%f",BONDS_NEWISSUE_DISCOUNT);
 if ((payment_account+GovBondsInPortfolioValue)<0)
    {
-    GovBondNewIssueAmount=Government_BondIssuing_decision();
+    govdeficit=(payment_account+GovBondsInPortfolioValue);
+    //set_deficit(govdeficit);
+    GovBondNewIssueAmount=Government_BondIssuing_decision();//govdeficit);
     bond->quantity = bond->quantity + GovBondNewIssueAmount;
     bond->nr_outstanding= bond->nr_outstanding +GovBondNewIssueAmount;
-    lastMarketPrice = lastPriceBond(bond);
-    
-    /*Simon G: Temporary solution: limit price != 0*/
-    if(lastMarketPrice >0.0)
-    	limitPrice = (1- BONDS_NEWISSUE_DISCOUNT)*lastMarketPrice;
-    else
-    {
-    	printf("Financial_UG/Government_Financial_Market.c/Government_generate_pending_orders()\n");
-    	printf("Line: 118 -> Simon G: temporary solution if limit price is zero\n");
-    	limitPrice = 0.25;
-    	lastMarketPrice = 0.25;
-    }
-    
+    printf("BONDS_NEWISSUE_DISCOUNT==%f",BONDS_NEWISSUE_DISCOUNT);
+    limitPrice = (1- BONDS_NEWISSUE_DISCOUNT)*lastMarketPrice;
+   printf(" Government_generate_pending_orders id%d price%f quantity%d",ID, limitPrice,GovBondNewIssueAmount);
     qty =-bond->quantity;
     pending_order->quantity= qty;
     pending_order->price=limitPrice;
     pending_order->issuer=ID;
     pending_order->assetId=bond->id;
-    
-    //if(GovBondNewIssueAmount > 20000)
-    //scanf("%d", tmp);
-    
  }
-//printf("2__GovBondNewIssueAmount %d \n",GovBondNewIssueAmount);
-//printf("2__qty %d \n",qty);
 return 0;
 }
 
@@ -173,14 +109,14 @@ int Government_receive_info_bond(void)
    m_infoAssetCH  *current;
    current=get_first_infoAssetCH_message();
    
-   while(current)
+ while(current)
   {
    
    if(ID==current->asset_id) 
        {  price=current->price;
           addPriceBond(bond,price);
        }
-    current=get_first_infoAssetCH_message();
+    current=get_next_infoAssetCH_message(current);
    }
   return 0;
 }

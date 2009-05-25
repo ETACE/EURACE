@@ -238,9 +238,14 @@ Order *computeLimitOrder( Asset *anAsset, double weight, double resource,Belief 
       anAsset->lastPrice=belief->last_price;
       aux=expectedPriceReturns(belief)/NRDAYSINYEAR;
       
-      limitPrice=lastprice*(1+aux);
+      if(aux<0) aux=max(-0.999,aux); 
+      aux=gauss(0,0.0001);
+      limitPrice=lastprice*(1+aux); 
       deltaquantity=(int)(weight*resource/(limitPrice))-quantity;
-      //printf("quantity=%d\n",deltaquantity);
+      if((deltaquantity<0)&&(deltaquantity<(-quantity))) 
+             {  printf("last price %f exptected return %f\n",limitPrice,aux);
+                printf("id %d limitprice %f weight %f resource %lf deltaquantity %d quantity=%d\n",belief->asset_id,limitPrice,weight,resource,deltaquantity,quantity);
+             }
       //if(deltaquantity<0) deltaquantity=deltaquantity*1.1;
       //else deltaquantity=deltaquantity*0.9;  
       setOrder(order,limitPrice,deltaquantity,assetId,trader_id);
@@ -294,7 +299,11 @@ void generatePendingOrders(Asset_array *assetsowned,Order_array *pending, Belief
 
   double_array *weights;
   tem_wealth=wealth(PAYMENT_ACCOUNT,assetsowned);
-  resource=wealth(*payment_account-CONSUMPTION_BUDGET,assetsowned);
+  resource=wealth(PAYMENT_ACCOUNT-CONSUMPTION_BUDGET,assetsowned);
+  if(abs(resource)>abs(tem_wealth)) 
+                                   { printf("consumption budeget %f resource %f wealth %f \n",CONSUMPTION_BUDGET,resource,tem_wealth);
+                                     getchar();
+                                    }
   set_wealth(tem_wealth);
   size=beliefs->size;
   reset_Order_array(pending);
@@ -379,6 +388,7 @@ int Household_bond_beliefs_formation()
      add_Belief(beliefs,bond->id, 0, 0, 0,0, 0,0, 0,0);
      belief=&(beliefs->array[beliefs->size-1]); 
      bondBeliefFormation(belief, bond,BACKWARDWINDOW,FORWARDWINDOW, RANDOMWEIGHT,FUNDAMENTALWEIGHT, CHARTISTWEIGHT, BINS , CURRENTDAY, HOLDINGPERIODTOFORWARDW,  LOSSAVERSION);
+     //printf("ricevuto bond shares=%d quantity=%d\n",bond->nr_outstanding,bond->quantity);
      cinfo_bond= get_next_info_bond_message(cinfo_bond);
      i++;
     }

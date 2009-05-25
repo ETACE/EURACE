@@ -34,7 +34,7 @@ double lastPriceBond(Bond *aBond)
 }
 
 
-    void addPriceBond(Bond *bond, double price)
+void addPriceBond(Bond *bond, double price)
 {    int precindex;
      precindex=bond->index;
      if(bond->index==MAXPRICES-1) bond->index=0;
