@@ -102,8 +102,8 @@ double region_cost_1 = 0.25;
 double region_cost_2 = 0.25;
 double region_cost_3 = 0.25;
 
-int day_change_region_costs_1 =750;
-int day_change_region_costs_2 = 1500;
+int day_change_region_costs_1 = 10000000;
+int day_change_region_costs_2 = 10000000;
 
 
 /*calculatory cost of storing one unit over one period*/
@@ -156,9 +156,9 @@ int UPPER_BOUND_FIRING = 10;
 int NO_REGIONS_PER_GOV = 2;
 
 /*region ID of the region which will receive subsidies*/
-int REGION_SUBSIDY = 2;
+int REGION_SUBSIDY = 0;
 /*fraction of cap_good_price which is subsidized*/
-double SUBSIDY_FRACTION = 0.5;
+double SUBSIDY_FRACTION = 0.0;
 
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -171,10 +171,10 @@ double SUBSIDY_FRACTION = 0.5;
 	int num_regions = num_regions_X*num_regions_Y; /*number of regions*/
 	
 	
-	int total_households = 1000;/*number of households in the economy*/
+	int total_households = 1600;/*number of households in the economy*/
 	int households_per_region = total_households/num_regions; 
 
-	int total_firms  = 50; /*total_firms modulo num_regions should be 0*/
+	int total_firms  = 80; /*total_firms modulo num_regions should be 0*/
 	int total_IGfirms = 1;
 	int total_market_research = 1;
 	int total_malls = num_regions;  /*one mall per region*/
@@ -283,8 +283,10 @@ double SUBSIDY_FRACTION = 0.5;
 	
 	
 		//region specific initial value of households specific skills
+		double spec_s_hh_reg1 = 0.8;
+		double spec_s_hh_reg2 = 0.8;
 		double specific_skills_of_household[2][1]=
-							{0.8,0.8};
+							{spec_s_hh_reg1,spec_s_hh_reg2};
 		
 
 		//Total production volume for a single firm
@@ -295,7 +297,7 @@ double SUBSIDY_FRACTION = 0.5;
 				                            {45.0,45.0};
 			//Firm's starting value of productivity of the capital stock
 			double technology[2][1]=
-							{0.8,0.8};
+							{1.0,1.0};
 			//This defines the financial resources of firm at the beginning of a simulation
 			double payment_account[2][1]= 
 			{20.0,20.0};
@@ -427,6 +429,7 @@ sprintf(data, "%d",NO_REGIONS_PER_GOV);	print_tag("no_regions_per_gov", data, fi
 	/* Firms */
 	num_start = 1;
 	int region;
+	double mss; //mean_specific_skills
 	for(num=num_start; num<total_firms+num_start; num++)
 	{
 		
@@ -439,6 +442,16 @@ sprintf(data, "%d",NO_REGIONS_PER_GOV);	print_tag("no_regions_per_gov", data, fi
 		
 		int row = (region-1) / num_regions_X;
 				int column = (region-1) % num_regions_X; 
+
+		
+		if(region == 1)
+			{
+				mss = spec_s_hh_reg1;
+			}
+		if(region == 2)
+			{
+				mss = spec_s_hh_reg2;
+			}
 		
 		int strategy;	
 				
@@ -470,11 +483,11 @@ sprintf(data, "%d",NO_REGIONS_PER_GOV);	print_tag("no_regions_per_gov", data, fi
 
 		sprintf(data, "%d",0);	print_tag("wage_update_was_made", data, file);
 
-		sprintf(data, "%f",0.8);	print_tag("average_s_skill_of_1", data, file);
-		sprintf(data, "%f",0.8);	print_tag("average_s_skill_of_2", data, file);
-		sprintf(data, "%f",0.8);	print_tag("average_s_skill_of_3", data, file);
-		sprintf(data, "%f",0.8);	print_tag("average_s_skill_of_4", data, file);
-		sprintf(data, "%f",0.8);	print_tag("average_s_skill_of_5", data, file);
+		sprintf(data, "%f",mss);	print_tag("average_s_skill_of_1", data, file);
+		sprintf(data, "%f",mss);	print_tag("average_s_skill_of_2", data, file);
+		sprintf(data, "%f",mss);	print_tag("average_s_skill_of_3", data, file);
+		sprintf(data, "%f",mss);	print_tag("average_s_skill_of_4", data, file);
+		sprintf(data, "%f",mss);	print_tag("average_s_skill_of_5", data, file);
 
 		sprintf(data, "%f",technology[column][row]);		print_tag("technology", data, file);
 		sprintf(data, "%d", 0);			print_tag("no_employees", data, file);
@@ -621,7 +634,7 @@ sprintf(data, "%d",NO_REGIONS_PER_GOV);	print_tag("no_regions_per_gov", data, fi
 		sprintf(data, "%f", 0.0);	print_tag("production_quantity", data, file);
 		sprintf(data, "%f", 0.0);	print_tag("planned_production_quantity", data, file);	
 		sprintf(data, "%f", wage_offer[column][row]);	print_tag("mean_wage", data, file);
-		sprintf(data, "%f", 0.8);	print_tag("mean_specific_skills", data, file);
+		sprintf(data, "%f", mss);	print_tag("mean_specific_skills", data, file);
 		sprintf(data, "%f", 0.0);	print_tag("unit_costs", data, file);
 		sprintf(data, "%f", 0.0);	print_tag("costs", data, file);
 		sprintf(data, "%f", 0.0);	print_tag("revenue", data, file);
@@ -737,7 +750,7 @@ sprintf(data, "%d",NO_REGIONS_PER_GOV);	print_tag("no_regions_per_gov", data, fi
 		sprintf(data, "%f", 0.0);	print_tag("total_financial_needs", data, file);
 		sprintf(data, "%f", 0.0);	print_tag("external_financial_needs", data, file);
 		sprintf(data, "%f", 0.0);	print_tag("total_payments", data, file);
-		sprintf(data, "%f", 0.8);	print_tag("firm_productivity", data, file);
+		sprintf(data, "%f", mss);	print_tag("firm_productivity", data, file);
 		sprintf(data, "%f", 0.0);	print_tag("firm_productivity_last_year", data, file);
 		sprintf(data, "%f", 0.0);	print_tag("firm_productivity_progress", data, file);
 		
@@ -1239,7 +1252,9 @@ sprintf(data, "%d", 1);     print_tag("switch_datastorage", data, file);
 		sprintf(data, "%f", 0.0);		print_tag("firm_average_productivity_progress", data, file);
 
 		sprintf(data, "{{1,0,0,0,0,0,0,0,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,1.0,0,0},{2,0,0,0,0,0,0,0,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,1.0,0,0}}");       print_tag("region_firm_data", data, file);
-		sprintf(data, ">{{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0},{2,0,0,0,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0}}");       print_tag("region_household_data", data, file);
+
+		sprintf(data, "{{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,%f,%f,%f,%f,%f},{2,0,0,0,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,%f,%f,%f,%f,%f}}",spec_s_hh_reg1,spec_s_hh_reg1,spec_s_hh_reg1,spec_s_hh_reg1,spec_s_hh_reg1,spec_s_hh_reg2,spec_s_hh_reg2,spec_s_hh_reg2,spec_s_hh_reg2,spec_s_hh_reg2);       print_tag("region_household_data", data, file);
+
 
 sprintf(data, "{{0,0.0,0.0,0.0,0.0},{0,0.0,0.0,0.0,0.0},{0,0.0,0.0,0.0,0.0},{0,0.0,0.0,0.0,0.0},{0,0.0,0.0,0.0,0.0},{0,0.0,0.0,0.0,0.0},{0,0.0,0.0,0.0,0.0},{0,0.0,0.0,0.0,0.0},{0,0.0,0.0,0.0,0.0},{0,0.0,0.0,0.0,0.0},{0,0.0,0.0,0.0,0.0},{0,0.0,0.0,0.0,0.0},{0,0.0,0.0,0.0,0.0},{0,0.0,0.0,0.0,0.0},{0,0.0,0.0,0.0,0.0},{0,0.0,0.0,0.0,0.0},{0,0.0,0.0,0.0,0.0},{0,0.0,0.0,0.0,0.0},{0,0.0,0.0,0.0,0.0},{0,0.0,0.0,0.0,0.0},{0,0.0,0.0,0.0,0.0},{0,0.0,0.0,0.0,0.0},{0,0.0,0.0,0.0,0.0},{0,0.0,0.0,0.0,0.0},{0,0.0,0.0,0.0,0.0},{0,0.0,0.0,0.0,0.0},{0,0.0,0.0,0.0,0.0}}");		print_tag("government_tax_rates", data, file);
 sprintf(data, "{{1.0,0.0,0.0,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,{{1.0,1.0,0.0,0.0,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0},{1.0,1.0,0.0,0.0,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0}}},{1.0,0.0,0.0,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,{{1.0,1.0,0.0,0.0,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0},{1.0,1.0,0.0,0.0,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0}}},{1.0,0.0,0.0,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,{{1.0,1.0,0.0,0.0,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0},{1.0,1.0,0.0,0.0,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0}}},{1.0,0.0,0.0,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,{{1.0,1.0,0.0,0.0,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0},{1.0,1.0,0.0,0.0,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0}}},{1.0,0.0,0.0,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,{{1.0,1.0,0.0,0.0,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0},{1.0,1.0,0.0,0.0,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0}}},{1.0,0.0,0.0,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,{{1.0,1.0,0.0,0.0,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0},{1.0,1.0,0.0,0.0,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0}}},{1.0,0.0,0.0,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,{{1.0,1.0,0.0,0.0,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0},{1.0,1.0,0.0,0.0,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0}}},{1.0,0.0,0.0,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,{{1.0,1.0,0.0,0.0,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0},{1.0,1.0,0.0,0.0,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0}}},{1.0,0.0,0.0,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,{{1.0,1.0,0.0,0.0,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0},{1.0,1.0,0.0,0.0,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0}}},{1.0,0.0,0.0,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,{{1.0,1.0,0.0,0.0,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0},{1.0,1.0,0.0,0.0,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0}}},{1.0,0.0,0.0,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,{{1.0,1.0,0.0,0.0,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0},{1.0,1.0,0.0,0.0,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0}}},{1.0,0.0,0.0,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,{{1.0,1.0,0.0,0.0,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0},{1.0,1.0,0.0,0.0,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0}}},{1.0,0.0,0.0,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0,{{1.0,1.0,0.0,0.0,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0},{1.0,1.0,0.0,0.0,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0}}}}");		print_tag("history_monthly", data, file);
