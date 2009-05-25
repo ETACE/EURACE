@@ -5,20 +5,20 @@
 
 int day_of_month_to_act()
 {
-	if(DAY%MONTH == DAY_OF_MONTH_TO_ACT) return 1;
-	else return 0;
+    if(DAY%MONTH == DAY_OF_MONTH_TO_ACT) return 1;
+    else return 0;
 }
 
 int not_day_of_month_to_act()
 {
-	if(DAY%MONTH == DAY_OF_MONTH_TO_ACT) return 0;
-	else return 1;
+    if(DAY%MONTH == DAY_OF_MONTH_TO_ACT) return 0;
+    else return 1;
 }
 
 
 int IGFirm_idle()
 {
-	return 0;
+    return 0;
 }
 
 
@@ -27,68 +27,64 @@ int IGFirm_idle()
  * \brief IGFirm inceases productivity via a stochastic process and the according price */
 int IGFirm_update_productivity_price()
 {
-	
-	int i;
+    
+    int i;
 
-	
-		i = random_int( 0 ,100);
-		
-		if(i < INNOVATION_PROBABILITY)
-		{
-			PRODUCTIVITY = PRODUCTIVITY*(1 + PRODUCTIVITY_PROGRESS);
-			CAPITAL_GOOD_PRICE = CAPITAL_GOOD_PRICE*(1 +.5* PRODUCTIVITY_PROGRESS);	
-		}
+    
+        i = random_int( 0 ,100);
+        
+        if(i < INNOVATION_PROBABILITY)
+        {
+            PRODUCTIVITY = PRODUCTIVITY*(1 + PRODUCTIVITY_PROGRESS);
+            CAPITAL_GOOD_PRICE = CAPITAL_GOOD_PRICE*(1 +.5* PRODUCTIVITY_PROGRESS); 
+        }
 
 
-	return 0;
+    return 0;
 }
 
 /** \fn IGFirm_update_productivity_price()
  * \brief IGFirm send quality and price information */
 int IGFirm_send_quality_price_info()
 {
-
-	if (DISCRETE_SHOCK==0)
-	{	
-		// To simulate a continuous energy price shock over a time interval:	
-		if ((DAY>=ENERGY_SHOCK_START)&&(DAY<=ENERGY_SHOCK_END)&&((DAY-ENERGY_SHOCK_START)%ENERGY_SHOCK_FREQUENCY==0))
-		{
-			ENERGY_PRICE_MARKUP = CONST_ENERGY_PRICE_MARKUP;
-		}
-		else ENERGY_PRICE_MARKUP = 0.0;
-	
-		//Additive: mark up defined in absolute terms
-		CAPITAL_GOOD_PRICE += ENERGY_PRICE_MARKUP;
-	
-		//Multiplicative: mark up defined in percentage terms
-		//CAPITAL_GOOD_PRICE *= (1+ENERGY_PRICE_MARKUP);
-	}
-	
-	if (DISCRETE_SHOCK==1)
-	{	
-		//Only update the price with the energy markup once at the start
-		if (DAY==ENERGY_SHOCK_START)
-		{
-			//Additive: mark up defined in absolute terms
-			CAPITAL_GOOD_PRICE += CONST_ENERGY_PRICE_MARKUP;
-		
-			//Multiplicative: mark up defined in percentage terms
-			//CAPITAL_GOOD_PRICE *= (1+ENERGY_PRICE_MARKUP);
-		}
-		if (DAY==ENERGY_SHOCK_END)
-		{
-			//Additive: mark up defined in absolute terms
-			CAPITAL_GOOD_PRICE -= CONST_ENERGY_PRICE_MARKUP;
-		
-			//Multiplicative: mark up defined in percentage terms
-			//CAPITAL_GOOD_PRICE = CAPITAL_GOOD_PRICE/(1+ENERGY_PRICE_MARKUP);
-		}
-		
-		
-
-	}
-		add_productivity_message(ID,PRODUCTIVITY,CAPITAL_GOOD_PRICE);
-	return 0;
+    //Case 1: shock occurs multiple times
+    if (ENERGY_SHOCK_FREQUENCY!=0)
+    {   
+        // To simulate a REPEATED energy price shock over a time duration interval:    
+        if ((DAY>=ENERGY_SHOCK_START)&&(DAY<=ENERGY_SHOCK_END)&&((DAY-ENERGY_SHOCK_START)%ENERGY_SHOCK_FREQUENCY==0))
+        {
+            ENERGY_PRICE_MARKUP = CONST_ENERGY_SHOCK_INTENSITY;
+        }
+        else ENERGY_PRICE_MARKUP = 0.0;
+        
+        //Multiplicative: mark up is defined in percentage terms
+        CAPITAL_GOOD_PRICE *= (1+ENERGY_PRICE_MARKUP);
+        
+        //At the end of the time interval there is a down_shock only if the shock is set to be symmetric:
+        if ((DAY==ENERGY_SHOCK_END)&&(SYMMETRIC_SHOCK==1))
+        {        
+            //Multiplicative: mark up defined in percentage terms
+            CAPITAL_GOOD_PRICE = CAPITAL_GOOD_PRICE*pow((1+CONST_ENERGY_SHOCK_INTENSITY),-(ENERGY_SHOCK_END-ENERGY_SHOCK_START)/ENERGY_SHOCK_FREQUENCY);
+        }        
+    }
+    
+    //Case 2: shock occurs only at start and end
+    if (ENERGY_SHOCK_FREQUENCY==0)
+    {   
+        //Only update the price with the energy markup once at the start
+        if (DAY==ENERGY_SHOCK_START)
+        {        
+            //Multiplicative: mark up defined in percentage terms
+            CAPITAL_GOOD_PRICE *= (1+CONST_ENERGY_SHOCK_INTENSITY);
+        }
+        if ((DAY==ENERGY_SHOCK_END)&&(SYMMETRIC_SHOCK==1))
+        {        
+            //Multiplicative: mark up defined in percentage terms
+            CAPITAL_GOOD_PRICE = CAPITAL_GOOD_PRICE/(1+CONST_ENERGY_SHOCK_INTENSITY);
+        }
+    }
+        add_productivity_message(ID,PRODUCTIVITY,CAPITAL_GOOD_PRICE);
+    return 0;
 }
 
 /** \fn IGFirm_send_capital_good()
@@ -96,14 +92,14 @@ int IGFirm_send_quality_price_info()
  */
 int IGFirm_send_capital_good()
 {
-	START_CAPITAL_GOOD_REQUEST_MESSAGE_LOOP
+    START_CAPITAL_GOOD_REQUEST_MESSAGE_LOOP
 
-		add_capital_good_delivery_message(capital_good_request_message->firm_id,
-				capital_good_request_message->capital_good_demand, PRODUCTIVITY, CAPITAL_GOOD_PRICE);
+        add_capital_good_delivery_message(capital_good_request_message->firm_id,
+                capital_good_request_message->capital_good_demand, PRODUCTIVITY, CAPITAL_GOOD_PRICE);
 
-	FINISH_CAPITAL_GOOD_REQUEST_MESSAGE_LOOP
+    FINISH_CAPITAL_GOOD_REQUEST_MESSAGE_LOOP
 
-	return 0;
+    return 0;
 }
 
 
@@ -114,28 +110,28 @@ int IGFirm_send_capital_good()
 
 int IGFirm_receive_payment()
 {
-	
-	
-	REVENUE_PER_DAY = 0;
+    
+    
+    REVENUE_PER_DAY = 0;
 
-	START_PAY_CAPITAL_GOODS_MESSAGE_LOOP
+    START_PAY_CAPITAL_GOODS_MESSAGE_LOOP
 
-		
-		
-		REVENUE_PER_DAY += pay_capital_goods_message->capital_bill;
-		
+        
+        
+        REVENUE_PER_DAY += pay_capital_goods_message->capital_bill;
+        
 
-	FINISH_PAY_CAPITAL_GOODS_MESSAGE_LOOP
-	
-	ENERGY_COSTS_PER_DAY = (ENERGY_PRICE_MARKUP/CAPITAL_GOOD_PRICE)*REVENUE_PER_DAY;
-	
-	EARNINGS_PER_DAY = REVENUE_PER_DAY - ENERGY_COSTS_PER_DAY;
-	
+    FINISH_PAY_CAPITAL_GOODS_MESSAGE_LOOP
+    
+    ENERGY_COSTS_PER_DAY = (ENERGY_PRICE_MARKUP/CAPITAL_GOOD_PRICE)*REVENUE_PER_DAY;
+    
+    EARNINGS_PER_DAY = REVENUE_PER_DAY - ENERGY_COSTS_PER_DAY;
+    
 
-	CUM_ENERGY_COSTS += ENERGY_COSTS_PER_DAY;
-	EARNINGS += EARNINGS_PER_DAY; 
-	PAYMENT_ACCOUNT += EARNINGS_PER_DAY;
-	return 0;
+    CUM_ENERGY_COSTS += ENERGY_COSTS_PER_DAY;
+    EARNINGS += EARNINGS_PER_DAY; 
+    PAYMENT_ACCOUNT += EARNINGS_PER_DAY;
+    return 0;
 }
 
 /** \fn IGFirm_dividend_payment()
@@ -146,39 +142,39 @@ int IGFirm_receive_payment()
 
 int IGFirm_pay_taxes()
 {
-	
-	// Compute the monthly earnings from revenues minus energy 
-	
-	
-	//TAX_PAYMENT = CUM_REVENUES*TAX_RATE_CORPORATE;
-	TAX_PAYMENT = EARNINGS *0;	
-	
-	PAYMENT_ACCOUNT -= TAX_PAYMENT;
+    
+    // Compute the monthly earnings from revenues minus energy 
+    
+    
+    //TAX_PAYMENT = CUM_REVENUES*TAX_RATE_CORPORATE;
+    TAX_PAYMENT = EARNINGS *0;  
+    
+    PAYMENT_ACCOUNT -= TAX_PAYMENT;
 
-	NET_PROFIT = EARNINGS  - TAX_PAYMENT;
-	EARNINGS =0.0;
-	add_tax_payment_message(GOV_ID,TAX_PAYMENT);
-	
-	return 0;
+    NET_PROFIT = EARNINGS  - TAX_PAYMENT;
+    EARNINGS =0.0;
+    add_tax_payment_message(GOV_ID,TAX_PAYMENT);
+    
+    return 0;
 }
 
 
 
 int IGFirm_dividend_payment()
 {
-	double total_dividend_payment;
-	total_dividend_payment = NET_PROFIT;
-	
-	CURRENT_DIVIDEND_PER_SHARE = NET_PROFIT / OUTSTANDING_SHARES;
+    double total_dividend_payment;
+    total_dividend_payment = NET_PROFIT;
+    
+    CURRENT_DIVIDEND_PER_SHARE = NET_PROFIT / OUTSTANDING_SHARES;
 
-	
-	//add dividend_per_share_msg(firm_id, current_dividend_per_share) to shareholders (dividend per share)     
-	add_dividend_per_share_message(ID, CURRENT_DIVIDEND_PER_SHARE);
-	
-	//decrease payment_account with the total_dividend_payment
-	PAYMENT_ACCOUNT -= total_dividend_payment;
-	
-	return 0;
+    
+    //add dividend_per_share_msg(firm_id, current_dividend_per_share) to shareholders (dividend per share)     
+    add_dividend_per_share_message(ID, CURRENT_DIVIDEND_PER_SHARE);
+    
+    //decrease payment_account with the total_dividend_payment
+    PAYMENT_ACCOUNT -= total_dividend_payment;
+    
+    return 0;
 }
 
 
