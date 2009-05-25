@@ -158,7 +158,8 @@ void ordersMacthing(Order_array *coll, double price,int type)
    coll->size=aux.size;
 }
 void rationing(Order_array *coll,int quantity )
-{ int balance,max,index;
+{ 
+    int balance,max,index;
     Order *ord; 
     max=sizeCOrder(coll);
    // printf("sin qui ci siamo %d\n",max);
@@ -206,24 +207,21 @@ void runClearing(ClearingMechanism *aClearing)
     sellorders=sellOrders(aClearing);
     sortOrders(aClearing);
     price=newPrice(aClearing);
+
     aClearing->lastPrice=price;
     demand=aggregateDemand(aClearing,price);
     supply=aggregateSupply(aClearing,price);
+    printf("prima di bilanciare  supply %d demand %d\n",supply,demand);
     aClearing->quantity=min(supply,demand);
     ordersMacthing(buyorders, price,1);
     ordersMacthing(sellorders, price,-1);
-   
-    
     balance=abs(supply-demand);
-    //printf("sin qui ci siamo ----%d\n",balance);
-  
     if(supply>demand) rationing(sellorders, balance);
-    if(supply<demand) rationing(buyorders, balance);
-    
- //printf("sin qui ci siamo %d\n",balance);
+    if(supply<demand) rationing(buyorders, balance);   
+    printf("sin qui ci siamo %d\n",balance);
     demand=aggregateDemand(aClearing,price);
     supply=aggregateSupply(aClearing,price);
-   //printf("former price %f supply %d demand %d\n",price,supply,demand);
+    printf("former price %f supply %d demand %d\n",price,supply,demand);
 }
    
 void emptyClearing(ClearingMechanism *aClearing)

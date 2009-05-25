@@ -18,7 +18,7 @@ void receiveOrderOnAsset(ClearingMechanism *mechanism, Asset *anAsset)
           issuer=order_message->trader_id;
           limit_price=order_message->limit_price;
            setOrder(pord,limit_price,quantity,id,issuer);
-       
+       //printf("id %d price %f quantity %d\n",id,limit_price,quantity);
            if(isBuyOrder(pord)) addBuyOrder(mechanism,pord);
            if(isSellOrder(pord))addSellOrder(mechanism,pord); 
      }
@@ -31,6 +31,7 @@ void receiveOrderOnAsset(ClearingMechanism *mechanism, Asset *anAsset)
 void computeAssetPrice(ClearingMechanism *mechanism, Asset *anAsset)
   {  double price;
      int quantity;
+       printf("computed asset price id ===%d\n",anAsset->id);
      setClearingMechanism(mechanism,lastPrice(anAsset));
      runClearing(mechanism);
      quantity=mechanism->quantity;
@@ -105,6 +106,7 @@ int ClearingHouse_send_asset_information()
    asset=elementAtCAsset(assets,i);
    price=lastPrice(asset);
    add_infoAssetCH_message(asset->id,price,asset->quantity);
+
   }
   return 0;
 }

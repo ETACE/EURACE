@@ -51,8 +51,7 @@ int Household_determine_consumption_budget()
             }*/
             
             /*Based on Carrol-Rule: Determination of the consumption budget*/
-            CONSUMPTION_BUDGET = MEAN_INCOME + 
-            CONSUMPTION_PROPENSITY*(WEALTH - WEALTH_INCOME_RATIO*MEAN_INCOME);
+            CONSUMPTION_BUDGET = MEAN_INCOME +CONSUMPTION_PROPENSITY*(WEALTH - WEALTH_INCOME_RATIO*MEAN_INCOME);
             if(PAYMENT_ACCOUNT < 0)
             {
                if (PRINT_LOG)
