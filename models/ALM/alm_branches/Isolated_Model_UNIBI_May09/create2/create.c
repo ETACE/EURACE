@@ -69,7 +69,7 @@ double ALPHA = 0.662;
 double BETA = 0.338;
 
 /*brief Dividend rate of consumption goods producers. */
-double DIVIDEND_RATE = 0.7;
+double DIVIDEND_RATE = 0.4;
 
 /*brief deprication rate. */
 double DEPRECIATION_RATE = 0.01;
@@ -82,7 +82,7 @@ double TETA = 0.0;
 
 
 /*brief Pricing rule: mark up on unit costs. */
-double MARK_UP = 0.1;
+double MARK_UP = 0.05;
 
 /*Strenght of the influence of the actual demand on the next production quantity: if LAMBDA = 0 then the planned production quantities of the last periods are recognized. If LAMBDA = 1 then the only the actual demand is recognized*/
 double LAMBDA = 1;
@@ -98,12 +98,12 @@ int MIN_VACANCY = 2;
 double wage_reservation_update = 0.01;//0.01
 
 /*Cost of working in a different region: for example travelling costs*/
-double region_cost_1 = 0.25;
-double region_cost_2 = 0.25;
-double region_cost_3 = 0.25;
+double region_cost_1 = 99;
+double region_cost_2 = 99;
+double region_cost_3 = 99;
 
-int day_change_region_costs_1 = 10000000;
-int day_change_region_costs_2 = 10000000;
+int day_change_region_costs_1 =9999;
+int day_change_region_costs_2 = 10000;
 
 
 /*calculatory cost of storing one unit over one period*/
@@ -158,7 +158,7 @@ int NO_REGIONS_PER_GOV = 2;
 /*region ID of the region which will receive subsidies*/
 int REGION_SUBSIDY = 0;
 /*fraction of cap_good_price which is subsidized*/
-double SUBSIDY_FRACTION = 0.0;
+double SUBSIDY_FRACTION = 0;
 
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -187,23 +187,20 @@ double SUBSIDY_FRACTION = 0.0;
 	double 	tax_rate_corporate = 0.05;
 	double	tax_rate_hh_labour = 0.05;
 	double	tax_rate_hh_capital =0.0;
-	double	unemployment_benefit_payment = 0.75;
+	double	unemployment_benefit_payment = 0.7;
 	double	payment_account_government =1000.0;
 	double 	payment_account_household = 0;
 
-	double	capital_good_price = 4.0;
-	double productivity_best_practice = 1.1;  //Productivity of the technology offered by the IG firm
+	double	capital_good_price = 6;
+	double productivity_best_practice = 3.3;  //Productivity of the technology offered by the IG firm
 	int years_statistics = 10;/*number of years used to smooth the production*/
 
-	/*Defining skill distributions in regions*/
+	/*Defining skill distributions in regions: only 1-4*/
 
 	double skilldistribution_1[5]={0.8,0.05,0.05,0.05,0.05};
 	double skilldistribution_2[5]={0.05,0.05,0.8,0.05,0.05};
-	double skilldistribution_3[5]={0.05,0.05,0.05,0.05,0.8};
-	double skilldistribution_4[5]={0.2,0.2,0.2,0.2,0.2};
-	//double skilldistribution_5[5]={0.1,0.1,0.2,0.3,0.3};
-	//double skilldistribution_6[5]={0.0,0.25,0.25,0.25,0.25};
-
+	double skilldistribution_3[5]={0.42,0.33,0.20,0.04,0.01};
+	double skilldistribution_4[5]={0.1,0.3,0.4,0.15,0.05};
 	
 	int id_igfirm ;
 	
@@ -279,32 +276,32 @@ double SUBSIDY_FRACTION = 0.0;
 	
 	//This determines the local skill distribution. Use numbers 1 .. 4 (see above, skill distribution_X) to give a region a skill distribution. 
 		int skills_in_regions[2][1]=
-					{4,4};
+					{4,3};
 	
 	
 		//region specific initial value of households specific skills
-		double spec_s_hh_reg1 = 0.8;
-		double spec_s_hh_reg2 = 0.8;
+		double spec_s_hh_reg1 = 3.0;
+		double spec_s_hh_reg2 = 1.0;
 		double specific_skills_of_household[2][1]=
 							{spec_s_hh_reg1,spec_s_hh_reg2};
 		
 
 		//Total production volume for a single firm
 			double total_production_quantity[2][1]=
-						{20.0,20.0};
+						{81.0,27.0};
 			//This defines the initial capital stock of firm depending on the region.
 			double total_units_capital[2][1]=
 				                            {45.0,45.0};
 			//Firm's starting value of productivity of the capital stock
 			double technology[2][1]=
-							{1.0,1.0};
+							{3.3,1.1};
 			//This defines the financial resources of firm at the beginning of a simulation
 			double payment_account[2][1]= 
-			{20.0,20.0};
+			{50.0,50.0};
 			
 			//Initital wage offer of the firms
 			double wage_offer[2][1]= 
-				{1.0,1.0};
+				{3.0,1.0};
 
 	
 	/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
