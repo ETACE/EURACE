@@ -8,8 +8,8 @@
   <constants>
    <variable>
     <type>int</type>
-    <name>discrete_shock</name>
-    <description>Binary parameter to set either a discrete or continuous energy shock.</description>
+    <name>symmetric_shock</name>
+    <description>Binary parameter to set if the energy shock is symmetric.</description>
    </variable>
    <variable>
     <type>int</type>
@@ -19,17 +19,17 @@
    <variable>
     <type>int</type>
     <name>energy_shock_end</name>
-    <description>day when the energy shock ends.</description>
+    <description>Day when the energy shock ends.</description>
    </variable>
    <variable>
     <type>double</type>
-    <name>const_energy_price_markup</name>
+    <name>const_energy_shock_intensity</name>
     <description>Mark up on the capital goods price that flows out of the system, representing energy costs.</description>
    </variable>
    <variable>
     <type>int</type>
     <name>energy_shock_frequency</name>
-    <description>The frequency how often the energy price is updated.</description>
+    <description>The frequency at which the energy price is updated.</description>
    </variable>
   </constants>
   <functionFiles>
