@@ -54,6 +54,7 @@ int Eurostat_send_data()
         REGION_HOUSEHOLD_DATA.array[i].average_s_skill_4, 
         REGION_HOUSEHOLD_DATA.array[i].average_s_skill_5,
 	REGION_FIRM_DATA.array[i].productivity_progress);
+
     }
 
 
@@ -163,7 +164,7 @@ int Eurostat_calculate_data_old_version()
                 0,
                 0.0,0.0,0.0,0.0,0.0,0.0,
                 0.0,0.0,0.0,0.0,0.0,0.0,
-                0.0,1.0,1.0,1.0,1.0,1.0);
+                0.0,0.0,0.0,0.0,0.0,0.0);
     }
     
         /*Compute a weighted mean price*/
