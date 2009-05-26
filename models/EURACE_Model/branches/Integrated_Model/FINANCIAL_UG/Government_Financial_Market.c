@@ -97,7 +97,9 @@ int Government_update_its_portfolio()
      order_status=get_next_order_status_message(order_status);   
   }
   }
+  bond->nr_outstanding = bond->nr_outstanding -bond->quantity;
  // if(i==2) printf("numero di execuzione =%d\n",i);
+ printf("numero di outstanding bonds =%d\n",bond->nr_outstanding);
   return 0;
 }
 
