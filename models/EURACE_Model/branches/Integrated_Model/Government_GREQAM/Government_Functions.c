@@ -260,6 +260,11 @@ int Government_monthly_budget_accounting()
             TOTAL_MONEY_FINANCING = GOV_POLICY_MONEY_FINANCING_FRACTION*abs(MONTHLY_BUDGET_BALANCE);
             TOTAL_BOND_FINANCING = (1-GOV_POLICY_MONEY_FINANCING_FRACTION)*abs(MONTHLY_BUDGET_BALANCE);
         }
+        
+        //Government sends a message to ECB with the value of fiat money requested:
+        //add_request_fiat_money_to_ecb_message(nominal_value);
+        //add_request_fiat_money_to_ecb_message(TOTAL_MONEY_FINANCING);
+    
     return 0;
 }
 
