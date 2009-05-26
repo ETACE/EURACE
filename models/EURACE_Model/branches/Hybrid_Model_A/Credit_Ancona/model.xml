@@ -495,7 +495,7 @@
     <variable>
      <type>double</type>
      <name>equity</name>
-     <description>The ECB equity is the account to collect the interest payments from the banks and the government bond interest rate payments.&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+     <description>The ECB equity is the account to collect the interest payments from the banks and the government bond interest rate payments.&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
 The equity of ECB is paid out to all governments as dividends, in proportion to their population.</description>
     </variable>
     <variable>
@@ -577,6 +577,14 @@ The equity of ECB is paid out to all governments as dividends, in proportion to 
        </rhs>
       </rhs>
      </condition>
+     <inputs/>
+     <outputs/>
+    </function>
+    <function>
+     <name>Central_Bank_read_fiat_money_requests</name>
+     <description>Function read the requests for fiat money sent by governments.</description>
+     <currentState>start_Central_Bank</currentState>
+     <nextState>00</nextState>
      <inputs/>
      <outputs/>
     </function>
@@ -708,6 +716,11 @@ The equity of ECB is paid out to all governments as dividends, in proportion to 
    <name>bankruptcy</name>
    <description>Message added by firm to bank to signal bankruptcy.</description>
    <variables>
+    <variable>
+     <type>int</type>
+     <name>firm_id</name>
+     <description></description>
+    </variable>
     <variable>
      <type>int</type>
      <name>bank_id</name>
