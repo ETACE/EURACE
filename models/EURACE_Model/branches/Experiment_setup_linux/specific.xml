@@ -1,0 +1,6 @@
+<environment>
+<energy_shock_start>801</energy_shock_start>
+<energy_shock_end>801</energy_shock_end>
+<const_energy_price_markup>0</const_energy_price_markup>
+<energy_shock_frequency>0</energy_shock_frequency>
+</environment>
