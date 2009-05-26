@@ -8,6 +8,29 @@
 /** \fn Central_Bank_read_account_update()
  * \brief 
  */
+int Central_Bank_read_fiat_money_requests()
+{
+
+    //Read the bond emission -> fiat money request from governments
+    START_ISSUE_BONDS_TO_ECB_MESSAGE_LOOP
+        FIAT_MONEY += issue_bonds_to_ecb_message->nominal_value;
+        //BOND_HOLDINGS += issue_bonds_to_ecb_message->quantity;
+    FINISH_ISSUE_BONDS_TO_ECB_MESSAGE_LOOP
+
+
+    //Read the fiat money request from governments
+    //request_fiat_money_message(nominal_value);
+    START_REQUEST_FIAT_MONEY_MESSAGE_LOOP
+        FIAT_MONEY += request_fiat_money_message->nominal_value;
+    FINISH_REQUEST_FIAT_MONEY_MESSAGE_LOOP
+
+
+    return 0;
+}
+
+/** \fn Central_Bank_read_account_update()
+ * \brief 
+ */
 int Central_Bank_read_account_update()
 {
     int i;
