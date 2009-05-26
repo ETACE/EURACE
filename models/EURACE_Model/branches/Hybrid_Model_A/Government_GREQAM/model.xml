@@ -690,5 +690,32 @@
     </variable>
    </variables>
   </message>
+  <message>
+   <name>request_fiat_money</name>
+   <description>The government requests fiat money directly from the ECB, without issuing bonds.</description>
+   <variables>
+    <variable>
+     <type>double</type>
+     <name>nominal_value</name>
+     <description></description>
+    </variable>
+   </variables>
+  </message>
+  <message>
+   <name>issue_bonds_to_ecb</name>
+   <description>The government issues bonds to the ECB in case it cannot sell them on the bond market.</description>
+   <variables>
+    <variable>
+     <type>double</type>
+     <name>nominal_value</name>
+     <description>Nominal value of the bond issue.</description>
+    </variable>
+    <variable>
+     <type>int</type>
+     <name>quantity</name>
+     <description>Number of bonds issued</description>
+    </variable>
+   </variables>
+  </message>
  </messages>
 </xmodel>
