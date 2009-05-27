@@ -12,18 +12,16 @@
 # - remove the node-*.xml files
 ###################################################################################
 
-#NR_NODES=4
-#ITS=200
-#MAIN='/media/DOCS/Docs/EURACE/X-models/SVN_linux/models/EURACE_Model/branches/Hybrid_Model_A_energy_shock/main'
+NR_NODES=4
+ITS=800
+MAIN='/media/DOCS/Docs/EURACE/X-models/SVN_linux/models/EURACE_Model/branches/Hybrid_Model_A_energy_shock/main'
+JOIN='/home/sander/cloning/scripts/join/join.sh'
 
-ITS=20
-MAIN='D:\Docs\EURACE\X-models\SVN\eurace\EURACE_Model\branches\Hybrid_Model_A_energy_shock/main.exe'
-$MAIN $ITS output.xml
-
-#mpiexec -n $NR_NODES $MAIN $ITS output.xml
+#$MAIN $ITS output.xml
+mpiexec -n $NR_NODES $MAIN $ITS output.xml
 
 #Concatenating the node files
-#bash ~/cloning/join.sh ./ $NR_NODES
+bash $JOIN ./ $NR_NODES
 
 #Removing the node files
-#rm node*.xml
+rm node*.xml

@@ -1,17 +1,40 @@
 DESCRIPTION
 
 Pre-requisites
-1. You need David's cloning script in home folder: ~/cloning/join.sh
+1. You need to have David's cloning script in home folder: /home/username/cloning/scripts/join/join.sh
 This is called in the script run_first_stage.sh. Currently the line using it is commented out for testing.
 
 Settings
-The main settings that should be set for your particular situation are in the run.sh file:
+The main settings that should be set for your particular situation are in these files:
+
+run_exp.sh
+==================
+TOTAL_RUNS=4
+
+run_experiment.sh
+==================
+TOTAL_RUNS=4
+
+exp_script_1.sh
+==================
+TOTAL_RUNS=4
+
+run_first_stage.sh
+==================
 NR_NODES=4
-ITS=200
+ITS=500 #the transient period is set to 500 iterations
 MAIN='/media/DOCS/Docs/EURACE/X-models/SVN_linux/models/EURACE_Model/branches/Hybrid_Model_A_energy_shock/main'
+JOIN='/home/sander/cloning/scripts/join/join.sh'
+
+run.sh
+=======
+NR_NODES=4
+ITS=800 #the max iterates is 800 for duration=560 + 240 after =800
+MAIN='/media/DOCS/Docs/EURACE/X-models/SVN_linux/models/EURACE_Model/branches/Hybrid_Model_A_energy_shock/main'
+JOIN='/home/sander/cloning/scripts/join/join.sh'
 
 NOTE:
-I have preferred to have the main executable completely separate from the folder in which the simulation results are stored, in order that the experiment data can be on a large storage device that is not the same as the one holding the model. So MAIN needs to have the full path.
+I have preferred to keep the main executable $MAIN completely separate from the folder in which the simulation results are stored, in order that the experiment data can be on a large storage device that is not the same as the one holding the model. So $MAIN needs to have the full path. Also $JOIN needs to be set to the absolute path to where you have put the join.sh script.
 
 Explanation of scripts
 To understand what it does, have a look at the scripts in this order:

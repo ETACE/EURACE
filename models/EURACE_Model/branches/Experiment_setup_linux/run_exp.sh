@@ -22,21 +22,22 @@ echo 'Starting top-level experiment script...'
 #Construct the RUNS list:
 TOTAL_RUNS=4
 RUNS=''
-#for ((j=0; j<TOTAL_RUNS; j++)); do
-#    RUNS=$RUNS' '$j
-#done
-while [ $j -lt $TOTAL_RUNS ]; do
-   RUNS=$RUNS' '$j
-   let j="j + 1"
+for ((j=0; j<TOTAL_RUNS; j++)); do
+    RUNS=$RUNS' '$j
 done
 
-echo '  Number of batch runs:' $TOTAL_RUNS
+#while [ $j -lt $TOTAL_RUNS ]; do
+#   RUNS=$RUNS' '$j
+#   let j="j + 1"
+#done
 
+echo '  Number of batch runs:' $TOTAL_RUNS
+echo $RUNS
 ######### STEP 2: CREATION OF EXPERIMENT FOLDER HIERARCHY #####################################################
 bash ./exp_script_1.sh
 
 ######### STEP 3: CREATION OF THE SPECIFIC SETTINGS XML FILE ##################################################
-#bash ./exp_script_2.sh
+bash ./exp_script_2.sh
 
 ######### STEP 4: RUNNING THE INITIAL PHASE ###################################################################
 #bash ./run_first_stage.sh
