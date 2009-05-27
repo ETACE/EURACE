@@ -356,7 +356,7 @@
      <inputs/>
      <outputs>
       <output>
-       <messageName>gov_bond</messageName>
+       <messageName>issue_bonds_to_ecb</messageName>
       </output>
      </outputs>
     </function>
@@ -382,33 +382,8 @@
    <name>Central_Bank</name>
    <description></description>
    <memory/>
-   <functions>
-    <function>
-     <name>Central_Bank_read_bond_update</name>
-     <description></description>
-     <currentState>start_Central_Bank</currentState>
-     <nextState>00</nextState>
-     <inputs>
-      <input>
-       <messageName>gov_bond</messageName>
-      </input>
-     </inputs>
-     <outputs/>
-    </function>
-   </functions>
+   <functions/>
   </xagent>
  </agents>
- <messages>
-  <message>
-   <name>gov_bond</name>
-   <description></description>
-   <variables>
-    <variable>
-     <type>double</type>
-     <name>amount</name>
-     <description>Monetary amount of the government bond issue.</description>
-    </variable>
-   </variables>
-  </message>
- </messages>
+ <messages/>
 </xmodel>
