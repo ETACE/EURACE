@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 ######### CREATION OF EXPERIMENT FOLDERS ###############################################
 # Script to create the folder hierarchy
@@ -13,14 +13,19 @@ F2="intensity_1 intensity_5 intensity_10 intensity_20"
 F3="frequency_0 frequency_20 frequency_40 frequency_60"
 
 #Construct the RUNS list:
-TOTAL_RUNS=4;
+TOTAL_RUNS=4
 RUNS=''
-i=0
 for ((j=0; j<TOTAL_RUNS; j++)); do
     RUNS=$RUNS' '$j
 done
+#while [ $j -lt $TOTAL_RUNS ]; do
+#   RUNS=$RUNS' '$j
+#   let j="j + 1"
+#done
+echo $RUNS
 
 echo '  Creating folder hierarchy...'
+echo $F1
 
 rm -f STATUS
 for folder1 in $F1; do

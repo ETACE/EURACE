@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 ######### CREATION OF THE SPECIFIC SETTINGS #########################################################
 # Script to create the file specific.xml that contains the specific parameter settings for the cases

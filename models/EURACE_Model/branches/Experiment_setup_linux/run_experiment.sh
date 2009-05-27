@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 ######### RUNNING THE EXPERIMENT ##################################################################
 # Script to run the second stage of the experiment:
@@ -12,11 +12,14 @@ F2="intensity_1 intensity_5 intensity_10 intensity_20"
 F3="frequency_0 frequency_20 frequency_40 frequency_60"
 
 #Construct the RUNS list:
-TOTAL_RUNS=4;
+TOTAL_RUNS=4
 RUNS=''
-i=0
-for ((j=0; j<TOTAL_RUNS; j++)); do
-    RUNS=$RUNS' '$j
+#for ((j=0; j<TOTAL_RUNS; j++)); do
+#    RUNS=$RUNS' '$j
+#done
+while [ $j -lt $TOTAL_RUNS ]; do
+   RUNS=$RUNS' '$j
+   let j="j + 1"
 done
 
 echo '  Starting second stage of experiment: running all cases...'
@@ -28,7 +31,7 @@ for folder1 in $F1; do
         cd $folder1/$folder2/$folder3
         for run in $RUNS; do
             cd 'its_'$run
-            #sh run.sh
+            bash run.sh
             echo '              '$folder1'/'$folder2'/'$folder3'/its_'$run --DONE
             echo $folder1/$folder2/$folder3/'its_'$run':OK'>> $BASE/STATUS 
             cd ..
