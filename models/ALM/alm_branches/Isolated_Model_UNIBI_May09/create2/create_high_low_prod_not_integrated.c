@@ -191,7 +191,8 @@ double SUBSIDY_FRACTION = 0;
 	double	payment_account_government =1000.0;
 	double 	payment_account_household = 0;
 
-	double	capital_good_price = 6;
+	double   cap_price; // temp variable for printing capital_good_price_region into memory variables of the firm
+	double	capital_good_price = 6 ;
 	double	capital_good_price_region_1 = 6;
 	double	capital_good_price_region_2 = 2;
 	double productivity_best_practice = 3.3;  //Productivity of the technology offered by the IG firm
@@ -442,14 +443,16 @@ sprintf(data, "%d",NO_REGIONS_PER_GOV);	print_tag("no_regions_per_gov", data, fi
 		int row = (region-1) / num_regions_X;
 				int column = (region-1) % num_regions_X; 
 
-		
+				
 		if(region == 1)
 			{
 				mss = spec_s_hh_reg1;
+				cap_price = capital_good_price_region_1;
 			}
 		if(region == 2)
 			{
 				mss = spec_s_hh_reg2;
+				cap_price = capital_good_price_region_2;
 			}
 		
 		int strategy;	
@@ -512,7 +515,7 @@ sprintf(data, "%d",NO_REGIONS_PER_GOV);	print_tag("no_regions_per_gov", data, fi
 		
 		
 		sprintf(data, "%f", total_units_capital[column][row]);	print_tag("total_units_capital_stock", data, file);
-		sprintf(data, "%f", total_units_capital[column][row]*capital_good_price);	print_tag("total_value_capital_stock", data, file);
+		sprintf(data, "%f", total_units_capital[column][row]*cap_price);	print_tag("total_value_capital_stock", data, file);
 		sprintf(data, "%f", total_units_capital[column][row]);	print_tag("planned_value_capital_stock", data, file);
 		
 		
@@ -551,7 +554,7 @@ sprintf(data, "%d",NO_REGIONS_PER_GOV);	print_tag("no_regions_per_gov", data, fi
 		double qu = (double) qual;
 		sprintf(data, "%f", 1.0);		print_tag("quality", data, file);
 		
-		sprintf(data, "%f", capital_good_price);		print_tag("actual_cap_price", data, file);
+		sprintf(data, "%f", cap_price);		print_tag("actual_cap_price", data, file);
 		sprintf(data, "%f", 2.0);		print_tag("price", data, file);
 		sprintf(data, "%f", 2.0);		print_tag("price_last_month", data, file);
 		sprintf(data, "%d", first_mall_id +region);			print_tag("home_mall", data, file);
@@ -608,14 +611,7 @@ sprintf(data, "%d",NO_REGIONS_PER_GOV);	print_tag("no_regions_per_gov", data, fi
 		sprintf(data, "{%s}",data3);	print_tag("malls_sales_statistics", data3, file);
 		
 		
-		if(region == 1)
-		{
-			capital_good_price = capital_good_price_region_1;
-		}
-		if(region == 2)
-		{
-			capital_good_price = capital_good_price_region_2;
-		}		
+		
 
 		
 		sprintf(initial_capi_costs, "{");
@@ -628,7 +624,7 @@ sprintf(data, "%d",NO_REGIONS_PER_GOV);	print_tag("no_regions_per_gov", data, fi
 				
 				
 				//sprintf(data1,"%s { %f , %d}",initial_capi_costs,rand_2, i);	
-				sprintf(data1,"%s { %f , %d}",initial_capi_costs,total_units_capital[column][row]*capital_good_price*DEPRECIATION_RATE/PERIODS_TO_REPAY_LOANS, l);
+				sprintf(data1,"%s { %f , %d}",initial_capi_costs,total_units_capital[column][row]*cap_price*DEPRECIATION_RATE/PERIODS_TO_REPAY_LOANS, l);
 				sprintf(initial_capi_costs,"%s",data1);
 
 			}
