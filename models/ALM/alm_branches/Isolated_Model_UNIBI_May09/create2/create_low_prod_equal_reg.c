@@ -192,8 +192,8 @@ double SUBSIDY_FRACTION = 0;
 	double 	payment_account_household = 0;
 
 	double   cap_price; // temp variable for printing capital_good_price_region into memory variables of the firm
-	double	capital_good_price = 6;
-	double	capital_good_price_region_1 = 6;
+	double	capital_good_price = 2;
+	double	capital_good_price_region_1 = 2;
 	double	capital_good_price_region_2 = 2;
 	double productivity_best_practice = 1.1;  //Productivity of the technology offered by the IG firm
 	int years_statistics = 10;/*number of years used to smooth the production*/
