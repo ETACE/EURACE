@@ -475,7 +475,11 @@
       </time>
      </condition>
      <inputs/>
-     <outputs/>
+     <outputs>
+      <output>
+       <messageName>request_fiat_money</messageName>
+      </output>
+     </outputs>
     </function>
     <function>
      <name>Government_send_account_update</name>
