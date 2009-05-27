@@ -211,6 +211,25 @@ int Government_send_account_update()
     return 0;
 }
 
+/* \fn: int Government_resolve_leftover_bonds()
+ * \brief Function to resolve the bonds that are left unsold at the end of each month.
+ */
+int Government_resolve_unsold_bonds()
+{   
+    //At the end of the month:
+    if (BOND.quantity>0)
+    {
+    //Government sends a new type of message to ECB with the nr of bonds, and the value:
+    //add_issue_bonds_to_ecb_message(nominal_value, quantity);
+    add_issue_bonds_to_ecb_message(BOND.face_value, BOND.quantity);
+    
+    //Assume that the ECB is FULLY accommodating the government's demand for fiat money:
+    PAYMENT_ACCOUNT += BOND.face_value*BOND.quantity;
+    BOND.quantity = 0;
+    }
+    return 0;
+}
+
 /* \fn: int Government_monthly_budget_accounting()
  * \brief Function to perform accounting at the end of each month.
  */
