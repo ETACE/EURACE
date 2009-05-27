@@ -191,7 +191,9 @@ double SUBSIDY_FRACTION = 0;
 	double	payment_account_government =1000.0;
 	double 	payment_account_household = 0;
 
-	double	capital_good_price = 6;
+	double	capital_good_price;
+	double	capital_good_price_region_1 = 6;
+	double	capital_good_price_region_2 = 2;
 	double productivity_best_practice = 3.3;  //Productivity of the technology offered by the IG firm
 	int years_statistics = 10;/*number of years used to smooth the production*/
 
@@ -606,6 +608,14 @@ sprintf(data, "%d",NO_REGIONS_PER_GOV);	print_tag("no_regions_per_gov", data, fi
 		sprintf(data, "{%s}",data3);	print_tag("malls_sales_statistics", data3, file);
 		
 		
+		if(region == 1)
+		{
+			capital_good_price = capital_good_price_region_1;
+		}
+		if(region == 2)
+		{
+			capital_good_price = capital_good_price_region_2;
+		}
 		
 		
 		sprintf(initial_capi_costs, "{");
@@ -751,14 +761,14 @@ sprintf(data, "%d",NO_REGIONS_PER_GOV);	print_tag("no_regions_per_gov", data, fi
 		sprintf(data, "%f", 0.0);	print_tag("firm_productivity_last_year", data, file);
 		sprintf(data, "%f", 0.0);	print_tag("firm_productivity_progress", data, file);
 		
-		/*int rnd = random_int(0,19);
+		int rnd = random_int(0,19);
 		sprintf(data, "%d", rnd);	print_tag("day_of_month_to_act", data, file);
 		int rnd2 = ((rnd-1)+20)%20;		
-		sprintf(data, "%d",rnd2);	print_tag("last_day_of_month_to_act", data, file);*/
+		sprintf(data, "%d",rnd2);	print_tag("last_day_of_month_to_act", data, file);
 		
-	sprintf(data, "%d", 0);	print_tag("day_of_month_to_act", data, file);
+	//sprintf(data, "%d", 0);	print_tag("day_of_month_to_act", data, file);
 			
-		sprintf(data, "%d",19);	print_tag("last_day_of_month_to_act", data, file);
+		//sprintf(data, "%d",19);	print_tag("last_day_of_month_to_act", data, file);
 
 		sprintf(data, "%f", 0.0);	print_tag("posx", data, file);
 		sprintf(data, "%f", 0.0);	print_tag("posy", data, file);
@@ -999,8 +1009,8 @@ sprintf(data, "%d",NO_REGIONS_PER_GOV);	print_tag("no_regions_per_gov", data, fi
 		sprintf(data, "{{%d, %f},{%d, %f}}", 0, 0.0,0,0.0);       
 		print_tag("received_quantity", data, file);
 
-		//sprintf(data, "%d", random_int(0,4));	
-		sprintf(data, "%d", 0);
+		sprintf(data, "%d", random_int(0,4));	
+		//sprintf(data, "%d", 0);
 		print_tag("day_of_week_to_act", data, file);
 		sprintf(data, "%f", 1.0);		print_tag("last_labour_income", data, file);
 		sprintf(data, "%d", 4);		print_tag("week_of_month", data, file);
