@@ -193,7 +193,7 @@ double SUBSIDY_FRACTION = 0;
 
 	double	capital_good_price = 6;
 	double	capital_good_price_region_1 = 6;
-	double	capital_good_price_region_2 = 5;
+	double	capital_good_price_region_2 = 2;
 	double productivity_best_practice = 3.3;  //Productivity of the technology offered by the IG firm
 	int years_statistics = 10;/*number of years used to smooth the production*/
 
