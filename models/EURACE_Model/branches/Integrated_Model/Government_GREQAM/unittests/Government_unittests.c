@@ -19,75 +19,75 @@
  */
 void unittest_Government_send_policy_announcements()
 {
-	int rc;
-	
+    int rc;
+    
     /************* At start of unit test, add one agent **************/
-	unittest_init_Government_agent();
-	
+    unittest_init_Government_agent();
+    
     /***** Variables: Memory pre-conditions **************************/
 
-	/***** Messages: initialize message boards **********************************/
+    /***** Messages: initialize message boards **********************************/
 
-	rc = MB_Create(&b_policy_announcement, sizeof(m_policy_announcement));
-    	    #ifdef ERRCHECK
-    	    if (rc != MB_SUCCESS)
-    	    {
-    	       fprintf(stderr, "ERROR: Could not create 'policy_announcement' board\n");
-    	       switch(rc) {
-    	           case MB_ERR_INVALID:
-    	               fprintf(stderr, "\t reason: Invalid message size\n");
-    	               break;
-    	           case MB_ERR_MEMALLOC:
-    	               fprintf(stderr, "\t reason: out of memory\n");
-    	               break;
-    	           case MB_ERR_INTERNAL:
-    	               fprintf(stderr, "\t reason: internal error. Recompile libmoard in debug mode for more info \n");
-    	               break;
-    	       }
-    	    }
-    	    #endif
-	
-	/***** Messages: pre-conditions **********************************/
-    	    
+    rc = MB_Create(&b_policy_announcement, sizeof(m_policy_announcement));
+            #ifdef ERRCHECK
+            if (rc != MB_SUCCESS)
+            {
+               fprintf(stderr, "ERROR: Could not create 'policy_announcement' board\n");
+               switch(rc) {
+                   case MB_ERR_INVALID:
+                       fprintf(stderr, "\t reason: Invalid message size\n");
+                       break;
+                   case MB_ERR_MEMALLOC:
+                       fprintf(stderr, "\t reason: out of memory\n");
+                       break;
+                   case MB_ERR_INTERNAL:
+                       fprintf(stderr, "\t reason: internal error. Recompile libmoard in debug mode for more info \n");
+                       break;
+               }
+            }
+            #endif
+    
+    /***** Messages: pre-conditions **********************************/
+            
     /***** Adding message iterators ***************************************/
 
-	rc = MB_Iterator_Create(b_policy_announcement, &i_policy_announcement);
-			
-	if (rc != MB_SUCCESS)
-			{
-			   fprintf(stderr, "ERROR: Could not create Iterator for 'policy_announcement'\n");
-			   switch(rc) {
-			       case MB_ERR_INVALID:
-			           fprintf(stderr, "\t reason: 'policy_announcement' board is invalid\n");
-			           break;
-			       case MB_ERR_LOCKED:
-		               fprintf(stderr, "\t reason: 'policy_announcement' board is locked\n");
-		               break;
-		           case MB_ERR_MEMALLOC:
-		               fprintf(stderr, "\t reason: out of memory\n");
-		               break;
-		           case MB_ERR_INTERNAL:
-		               fprintf(stderr, "\t reason: internal error. Recompile libmoard in debug mode for more info \n");
-		               break;
-			   }
-			}
-	    	    
+    rc = MB_Iterator_Create(b_policy_announcement, &i_policy_announcement);
+            
+    if (rc != MB_SUCCESS)
+            {
+               fprintf(stderr, "ERROR: Could not create Iterator for 'policy_announcement'\n");
+               switch(rc) {
+                   case MB_ERR_INVALID:
+                       fprintf(stderr, "\t reason: 'policy_announcement' board is invalid\n");
+                       break;
+                   case MB_ERR_LOCKED:
+                       fprintf(stderr, "\t reason: 'policy_announcement' board is locked\n");
+                       break;
+                   case MB_ERR_MEMALLOC:
+                       fprintf(stderr, "\t reason: out of memory\n");
+                       break;
+                   case MB_ERR_INTERNAL:
+                       fprintf(stderr, "\t reason: internal error. Recompile libmoard in debug mode for more info \n");
+                       break;
+               }
+            }
+                
     /***** Function evaluation ***************************************/
-	Government_send_policy_announcements();
+    Government_send_policy_announcements();
     
     /***** Variables: Memory post-conditions *****/
-//	CU_ASSERT_DOUBLE_EQUAL(var, result, 1e-3);
+//  CU_ASSERT_DOUBLE_EQUAL(var, result, 1e-3);
 
     /***** Variables: Message post-conditions *****/
-	//start a reading loop
+    //start a reading loop
 
-	START_POLICY_ANNOUNCEMENT_MESSAGE_LOOP
-	     //CU_ASSERT_EQUAL(policy_announcement_message->var, value);
-	     //CU_ASSERT_DOUBLE_EQUAL(policy_announcement_message->var, value, 1e-3);
-	FINISH_POLICY_ANNOUNCEMENT_MESSAGE_LOOP
-	
+    START_POLICY_ANNOUNCEMENT_MESSAGE_LOOP
+         //CU_ASSERT_EQUAL(policy_announcement_message->var, value);
+         //CU_ASSERT_DOUBLE_EQUAL(policy_announcement_message->var, value, 1e-3);
+    FINISH_POLICY_ANNOUNCEMENT_MESSAGE_LOOP
+    
     /************* At end of unit test, free the agent **************/
-	unittest_free_Government_agent();
+    unittest_free_Government_agent();
     /************* At end of unit tests, free all Messages **********/
     free_messages();
 }
@@ -99,73 +99,73 @@ void unittest_Government_send_policy_announcements()
  */
 void unittest_Government_read_tax_payments()
 {
-	int rc;
-	
+    int rc;
+    
     /************* At start of unit test, add one agent **************/
-	unittest_init_Government_agent();
-	
+    unittest_init_Government_agent();
+    
     /***** Variables: Memory pre-conditions **************************/
-	ID=1;
-	
-	/***** Messages: initialize message boards **********************************/
+    ID=1;
+    
+    /***** Messages: initialize message boards **********************************/
 
-	rc = MB_Create(&b_tax_payment, sizeof(m_tax_payment));
-    	    #ifdef ERRCHECK
-    	    if (rc != MB_SUCCESS)
-    	    {
-    	       fprintf(stderr, "ERROR: Could not create 'tax_payment' board\n");
-    	       switch(rc) {
-    	           case MB_ERR_INVALID:
-    	               fprintf(stderr, "\t reason: Invalid message size\n");
-    	               break;
-    	           case MB_ERR_MEMALLOC:
-    	               fprintf(stderr, "\t reason: out of memory\n");
-    	               break;
-    	           case MB_ERR_INTERNAL:
-    	               fprintf(stderr, "\t reason: internal error. Recompile libmoard in debug mode for more info \n");
-    	               break;
-    	       }
-    	    }
-    	    #endif
+    rc = MB_Create(&b_tax_payment, sizeof(m_tax_payment));
+            #ifdef ERRCHECK
+            if (rc != MB_SUCCESS)
+            {
+               fprintf(stderr, "ERROR: Could not create 'tax_payment' board\n");
+               switch(rc) {
+                   case MB_ERR_INVALID:
+                       fprintf(stderr, "\t reason: Invalid message size\n");
+                       break;
+                   case MB_ERR_MEMALLOC:
+                       fprintf(stderr, "\t reason: out of memory\n");
+                       break;
+                   case MB_ERR_INTERNAL:
+                       fprintf(stderr, "\t reason: internal error. Recompile libmoard in debug mode for more info \n");
+                       break;
+               }
+            }
+            #endif
 
-	/***** Messages: pre-conditions **********************************/
+    /***** Messages: pre-conditions **********************************/
      add_tax_payment_message(ID, 100.0);
-    	    
+            
     /***** Adding message iterators ***************************************/
 
-	rc = MB_Iterator_Create(b_tax_payment, &i_tax_payment);
-			
-	if (rc != MB_SUCCESS)
-			{
-			   fprintf(stderr, "ERROR: Could not create Iterator for 'tax_payment'\n");
-			   switch(rc) {
-			       case MB_ERR_INVALID:
-			           fprintf(stderr, "\t reason: 'tax_payment' board is invalid\n");
-			           break;
-			       case MB_ERR_LOCKED:
-		               fprintf(stderr, "\t reason: 'tax_payment' board is locked\n");
-		               break;
-		           case MB_ERR_MEMALLOC:
-		               fprintf(stderr, "\t reason: out of memory\n");
-		               break;
-		           case MB_ERR_INTERNAL:
-		               fprintf(stderr, "\t reason: internal error. Recompile libmoard in debug mode for more info \n");
-		               break;
-			   }
-			}
-	    	    
+    rc = MB_Iterator_Create(b_tax_payment, &i_tax_payment);
+            
+    if (rc != MB_SUCCESS)
+            {
+               fprintf(stderr, "ERROR: Could not create Iterator for 'tax_payment'\n");
+               switch(rc) {
+                   case MB_ERR_INVALID:
+                       fprintf(stderr, "\t reason: 'tax_payment' board is invalid\n");
+                       break;
+                   case MB_ERR_LOCKED:
+                       fprintf(stderr, "\t reason: 'tax_payment' board is locked\n");
+                       break;
+                   case MB_ERR_MEMALLOC:
+                       fprintf(stderr, "\t reason: out of memory\n");
+                       break;
+                   case MB_ERR_INTERNAL:
+                       fprintf(stderr, "\t reason: internal error. Recompile libmoard in debug mode for more info \n");
+                       break;
+               }
+            }
+                
     /***** Function evaluation ***************************************/
-	Government_read_tax_payments();
+    Government_read_tax_payments();
     
     /***** Variables: Memory post-conditions *****/
-	CU_ASSERT_DOUBLE_EQUAL(MONTHLY_TAX_REVENUES, 100.0, 1e-3);
-	CU_ASSERT_DOUBLE_EQUAL(PAYMENT_ACCOUNT, 100.0, 1e-3);
-	CU_ASSERT_DOUBLE_EQUAL(YEARLY_TAX_REVENUES, 100.0, 1e-3);
-	
+    CU_ASSERT_DOUBLE_EQUAL(MONTHLY_TAX_REVENUES, 100.0, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(PAYMENT_ACCOUNT, 100.0, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(YEARLY_TAX_REVENUES, 100.0, 1e-3);
+    
     /***** Variables: Message post-conditions *****/
-	
+    
     /************* At end of unit test, free the agent **************/
-	unittest_free_Government_agent();
+    unittest_free_Government_agent();
     /************* At end of unit tests, free all Messages **********/
     free_messages();
 }
@@ -178,80 +178,80 @@ void unittest_Government_read_tax_payments()
  */
 void unittest1_Government_read_unemployment_benefit_notifications()
 {
-	int rc;
-	
+    int rc;
+    
     /************* At start of unit test, add one agent **************/
-	unittest_init_Government_agent();
-	
+    unittest_init_Government_agent();
+        
     /***** Variables: Memory pre-conditions **************************/
-	ID=1;
-	UNEMPLOYMENT_BENEFIT_PCT=0.70;
-	COUNTRY_WIDE_MEAN_WAGE=60.0;
-	MONTHLY_BENEFIT_PAYMENT=0.0;
-	YEARLY_BENEFIT_PAYMENT=0.0;
-	PAYMENT_ACCOUNT=0.0;
-	
-	/***** Messages: initialize message boards **********************************/
+    ID=1;
+    UNEMPLOYMENT_BENEFIT_PCT=0.70;
+    COUNTRY_WIDE_MEAN_WAGE=60.0;
+    MONTHLY_BENEFIT_PAYMENT=0.0;
+    YEARLY_BENEFIT_PAYMENT=0.0;
+    PAYMENT_ACCOUNT=0.0;
+    
+    /***** Messages: initialize message boards **********************************/
 
-	rc = MB_Create(&b_unemployment_notification, sizeof(m_unemployment_notification));
-    	    #ifdef ERRCHECK
-    	    if (rc != MB_SUCCESS)
-    	    {
-    	       fprintf(stderr, "ERROR: Could not create 'unemployment_notification' board\n");
-    	       switch(rc) {
-    	           case MB_ERR_INVALID:
-    	               fprintf(stderr, "\t reason: Invalid message size\n");
-    	               break;
-    	           case MB_ERR_MEMALLOC:
-    	               fprintf(stderr, "\t reason: out of memory\n");
-    	               break;
-    	           case MB_ERR_INTERNAL:
-    	               fprintf(stderr, "\t reason: internal error. Recompile libmoard in debug mode for more info \n");
-    	               break;
-    	       }
-    	    }
-    	    #endif
-	
-	/***** Messages: pre-conditions **********************************/
+    rc = MB_Create(&b_unemployment_notification, sizeof(m_unemployment_notification));
+            #ifdef ERRCHECK
+            if (rc != MB_SUCCESS)
+            {
+               fprintf(stderr, "ERROR: Could not create 'unemployment_notification' board\n");
+               switch(rc) {
+                   case MB_ERR_INVALID:
+                       fprintf(stderr, "\t reason: Invalid message size\n");
+                       break;
+                   case MB_ERR_MEMALLOC:
+                       fprintf(stderr, "\t reason: out of memory\n");
+                       break;
+                   case MB_ERR_INTERNAL:
+                       fprintf(stderr, "\t reason: internal error. Recompile libmoard in debug mode for more info \n");
+                       break;
+               }
+            }
+            #endif
+    
+    /***** Messages: pre-conditions **********************************/
      //add_unemployment_notification_message(gov_id,last_labour_income);
      add_unemployment_notification_message(ID, 100.0);
-    	    
+            
     /***** Adding message iterators ***************************************/
 
-	rc = MB_Iterator_Create(b_unemployment_notification, &i_unemployment_notification);
-			
-	if (rc != MB_SUCCESS)
-			{
-			   fprintf(stderr, "ERROR: Could not create Iterator for 'unemployment_notification'\n");
-			   switch(rc) {
-			       case MB_ERR_INVALID:
-			           fprintf(stderr, "\t reason: 'unemployment_notification' board is invalid\n");
-			           break;
-			       case MB_ERR_LOCKED:
-		               fprintf(stderr, "\t reason: 'unemployment_notification' board is locked\n");
-		               break;
-		           case MB_ERR_MEMALLOC:
-		               fprintf(stderr, "\t reason: out of memory\n");
-		               break;
-		           case MB_ERR_INTERNAL:
-		               fprintf(stderr, "\t reason: internal error. Recompile libmoard in debug mode for more info \n");
-		               break;
-			   }
-			}
-	    	    
+    rc = MB_Iterator_Create(b_unemployment_notification, &i_unemployment_notification);
+            
+    if (rc != MB_SUCCESS)
+            {
+               fprintf(stderr, "ERROR: Could not create Iterator for 'unemployment_notification'\n");
+               switch(rc) {
+                   case MB_ERR_INVALID:
+                       fprintf(stderr, "\t reason: 'unemployment_notification' board is invalid\n");
+                       break;
+                   case MB_ERR_LOCKED:
+                       fprintf(stderr, "\t reason: 'unemployment_notification' board is locked\n");
+                       break;
+                   case MB_ERR_MEMALLOC:
+                       fprintf(stderr, "\t reason: out of memory\n");
+                       break;
+                   case MB_ERR_INTERNAL:
+                       fprintf(stderr, "\t reason: internal error. Recompile libmoard in debug mode for more info \n");
+                       break;
+               }
+            }
+                
     /***** Function evaluation ***************************************/
-	Government_read_unemployment_benefit_notifications();
+    Government_read_unemployment_benefit_notifications();
     
     /***** Variables: Memory post-conditions *****/
-	CU_ASSERT_DOUBLE_EQUAL(MONTHLY_BENEFIT_PAYMENT, 70.0, 1e-3);
-	CU_ASSERT_DOUBLE_EQUAL(YEARLY_BENEFIT_PAYMENT, 70.0, 1e-3);
-	CU_ASSERT_DOUBLE_EQUAL(PAYMENT_ACCOUNT, -70.0, 1e-3);	
-	CU_ASSERT_EQUAL(NUM_UNEMPLOYED, 1);	
-	
+    CU_ASSERT_DOUBLE_EQUAL(MONTHLY_BENEFIT_PAYMENT, 70.0, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(YEARLY_BENEFIT_PAYMENT, 70.0, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(PAYMENT_ACCOUNT, -70.0, 1e-3);   
+    CU_ASSERT_EQUAL(NUM_UNEMPLOYED, 1); 
+    
     /***** Variables: Message post-conditions *****/
 
     /************* At end of unit test, free the agent **************/
-	unittest_free_Government_agent();
+    unittest_free_Government_agent();
     /************* At end of unit tests, free all Messages **********/
     free_messages();
 }
@@ -265,80 +265,80 @@ void unittest1_Government_read_unemployment_benefit_notifications()
  */
 void unittest2_Government_read_unemployment_benefit_notifications()
 {
-	int rc;
-	
+    int rc;
+    
     /************* At start of unit test, add one agent **************/
-	unittest_init_Government_agent();
-	
+    unittest_init_Government_agent();
+    
     /***** Variables: Memory pre-conditions **************************/
-	ID=1;
-	UNEMPLOYMENT_BENEFIT_PCT=0.70;
-	COUNTRY_WIDE_MEAN_WAGE=150.0;
-	MONTHLY_BENEFIT_PAYMENT=0.0;
-	YEARLY_BENEFIT_PAYMENT=0.0;
-	PAYMENT_ACCOUNT=0.0;
-	
-	/***** Messages: initialize message boards **********************************/
+    ID=1;
+    UNEMPLOYMENT_BENEFIT_PCT=0.70;
+    COUNTRY_WIDE_MEAN_WAGE=150.0;
+    MONTHLY_BENEFIT_PAYMENT=0.0;
+    YEARLY_BENEFIT_PAYMENT=0.0;
+    PAYMENT_ACCOUNT=0.0;
+    
+    /***** Messages: initialize message boards **********************************/
 
-	rc = MB_Create(&b_unemployment_notification, sizeof(m_unemployment_notification));
-    	    #ifdef ERRCHECK
-    	    if (rc != MB_SUCCESS)
-    	    {
-    	       fprintf(stderr, "ERROR: Could not create 'unemployment_notification' board\n");
-    	       switch(rc) {
-    	           case MB_ERR_INVALID:
-    	               fprintf(stderr, "\t reason: Invalid message size\n");
-    	               break;
-    	           case MB_ERR_MEMALLOC:
-    	               fprintf(stderr, "\t reason: out of memory\n");
-    	               break;
-    	           case MB_ERR_INTERNAL:
-    	               fprintf(stderr, "\t reason: internal error. Recompile libmoard in debug mode for more info \n");
-    	               break;
-    	       }
-    	    }
-    	    #endif
-	
-	/***** Messages: pre-conditions **********************************/
+    rc = MB_Create(&b_unemployment_notification, sizeof(m_unemployment_notification));
+            #ifdef ERRCHECK
+            if (rc != MB_SUCCESS)
+            {
+               fprintf(stderr, "ERROR: Could not create 'unemployment_notification' board\n");
+               switch(rc) {
+                   case MB_ERR_INVALID:
+                       fprintf(stderr, "\t reason: Invalid message size\n");
+                       break;
+                   case MB_ERR_MEMALLOC:
+                       fprintf(stderr, "\t reason: out of memory\n");
+                       break;
+                   case MB_ERR_INTERNAL:
+                       fprintf(stderr, "\t reason: internal error. Recompile libmoard in debug mode for more info \n");
+                       break;
+               }
+            }
+            #endif
+    
+    /***** Messages: pre-conditions **********************************/
      //add_unemployment_notification_message(gov_id,last_labour_income);
      add_unemployment_notification_message(ID, 100.0);
-    	    
+            
     /***** Adding message iterators ***************************************/
 
-	rc = MB_Iterator_Create(b_unemployment_notification, &i_unemployment_notification);
-			
-	if (rc != MB_SUCCESS)
-			{
-			   fprintf(stderr, "ERROR: Could not create Iterator for 'unemployment_notification'\n");
-			   switch(rc) {
-			       case MB_ERR_INVALID:
-			           fprintf(stderr, "\t reason: 'unemployment_notification' board is invalid\n");
-			           break;
-			       case MB_ERR_LOCKED:
-		               fprintf(stderr, "\t reason: 'unemployment_notification' board is locked\n");
-		               break;
-		           case MB_ERR_MEMALLOC:
-		               fprintf(stderr, "\t reason: out of memory\n");
-		               break;
-		           case MB_ERR_INTERNAL:
-		               fprintf(stderr, "\t reason: internal error. Recompile libmoard in debug mode for more info \n");
-		               break;
-			   }
-			}
-	    	    
+    rc = MB_Iterator_Create(b_unemployment_notification, &i_unemployment_notification);
+            
+    if (rc != MB_SUCCESS)
+            {
+               fprintf(stderr, "ERROR: Could not create Iterator for 'unemployment_notification'\n");
+               switch(rc) {
+                   case MB_ERR_INVALID:
+                       fprintf(stderr, "\t reason: 'unemployment_notification' board is invalid\n");
+                       break;
+                   case MB_ERR_LOCKED:
+                       fprintf(stderr, "\t reason: 'unemployment_notification' board is locked\n");
+                       break;
+                   case MB_ERR_MEMALLOC:
+                       fprintf(stderr, "\t reason: out of memory\n");
+                       break;
+                   case MB_ERR_INTERNAL:
+                       fprintf(stderr, "\t reason: internal error. Recompile libmoard in debug mode for more info \n");
+                       break;
+               }
+            }
+                
     /***** Function evaluation ***************************************/
-	Government_read_unemployment_benefit_notifications();
+    Government_read_unemployment_benefit_notifications();
     
     /***** Variables: Memory post-conditions *****/
-	CU_ASSERT_DOUBLE_EQUAL(MONTHLY_BENEFIT_PAYMENT, 75.0, 1e-3);
-	CU_ASSERT_DOUBLE_EQUAL(YEARLY_BENEFIT_PAYMENT, 75.0, 1e-3);
-	CU_ASSERT_DOUBLE_EQUAL(PAYMENT_ACCOUNT, -75.0, 1e-3);	
-	CU_ASSERT_EQUAL(NUM_UNEMPLOYED, 1);	
-	
+    CU_ASSERT_DOUBLE_EQUAL(MONTHLY_BENEFIT_PAYMENT, 75.0, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(YEARLY_BENEFIT_PAYMENT, 75.0, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(PAYMENT_ACCOUNT, -75.0, 1e-3);   
+    CU_ASSERT_EQUAL(NUM_UNEMPLOYED, 1); 
+    
     /***** Variables: Message post-conditions *****/
 
     /************* At end of unit test, free the agent **************/
-	unittest_free_Government_agent();
+    unittest_free_Government_agent();
     /************* At end of unit tests, free all Messages **********/
     free_messages();
 }
@@ -351,58 +351,58 @@ void unittest2_Government_read_unemployment_benefit_notifications()
  */
 void unittest_Government_read_transfer_notifications()
 {
-	int rc;
-	
+    int rc;
+    
     /************* At start of unit test, add one agent **************/
-	unittest_init_Government_agent();
-	
+    unittest_init_Government_agent();
+    
     /***** Variables: Memory pre-conditions **************************/
-	ID=1;
-	HH_TRANSFER_PAYMENT = 100;
-	FIRM_TRANSFER_PAYMENT = 200;
-	PAYMENT_ACCOUNT =350;
-	MONTHLY_TRANSFER_PAYMENT =0.0;
-	YEARLY_TRANSFER_PAYMENT =0.0;
+    ID=1;
+    HH_TRANSFER_PAYMENT = 100;
+    FIRM_TRANSFER_PAYMENT = 200;
+    PAYMENT_ACCOUNT =350;
+    MONTHLY_TRANSFER_PAYMENT =0.0;
+    YEARLY_TRANSFER_PAYMENT =0.0;
 
-	/***** Messages: initialize message boards **********************************/
+    /***** Messages: initialize message boards **********************************/
 
-	rc = MB_Create(&b_hh_transfer_notification, sizeof(m_hh_transfer_notification));
-    	    #ifdef ERRCHECK
-    	    if (rc != MB_SUCCESS)
-    	    {
-    	       fprintf(stderr, "ERROR: Could not create 'hh_transfer_notification' board\n");
-    	       switch(rc) {
-    	           case MB_ERR_INVALID:
-    	               fprintf(stderr, "\t reason: Invalid message size\n");
-    	               break;
-    	           case MB_ERR_MEMALLOC:
-    	               fprintf(stderr, "\t reason: out of memory\n");
-    	               break;
-    	           case MB_ERR_INTERNAL:
-    	               fprintf(stderr, "\t reason: internal error. Recompile libmoard in debug mode for more info \n");
-    	               break;
-    	       }
-    	    }
-    	    #endif
-	
-	rc = MB_Create(&b_firm_transfer_notification, sizeof(m_firm_transfer_notification));
-    	    #ifdef ERRCHECK
-    	    if (rc != MB_SUCCESS)
-    	    {
-    	       fprintf(stderr, "ERROR: Could not create 'firm_transfer_notification' board\n");
-    	       switch(rc) {
-    	           case MB_ERR_INVALID:
-    	               fprintf(stderr, "\t reason: Invalid message size\n");
-    	               break;
-    	           case MB_ERR_MEMALLOC:
-    	               fprintf(stderr, "\t reason: out of memory\n");
-    	               break;
-    	           case MB_ERR_INTERNAL:
-    	               fprintf(stderr, "\t reason: internal error. Recompile libmoard in debug mode for more info \n");
-    	               break;
-    	       }
-    	    }
-    	    #endif
+    rc = MB_Create(&b_hh_transfer_notification, sizeof(m_hh_transfer_notification));
+            #ifdef ERRCHECK
+            if (rc != MB_SUCCESS)
+            {
+               fprintf(stderr, "ERROR: Could not create 'hh_transfer_notification' board\n");
+               switch(rc) {
+                   case MB_ERR_INVALID:
+                       fprintf(stderr, "\t reason: Invalid message size\n");
+                       break;
+                   case MB_ERR_MEMALLOC:
+                       fprintf(stderr, "\t reason: out of memory\n");
+                       break;
+                   case MB_ERR_INTERNAL:
+                       fprintf(stderr, "\t reason: internal error. Recompile libmoard in debug mode for more info \n");
+                       break;
+               }
+            }
+            #endif
+    
+    rc = MB_Create(&b_firm_transfer_notification, sizeof(m_firm_transfer_notification));
+            #ifdef ERRCHECK
+            if (rc != MB_SUCCESS)
+            {
+               fprintf(stderr, "ERROR: Could not create 'firm_transfer_notification' board\n");
+               switch(rc) {
+                   case MB_ERR_INVALID:
+                       fprintf(stderr, "\t reason: Invalid message size\n");
+                       break;
+                   case MB_ERR_MEMALLOC:
+                       fprintf(stderr, "\t reason: out of memory\n");
+                       break;
+                   case MB_ERR_INTERNAL:
+                       fprintf(stderr, "\t reason: internal error. Recompile libmoard in debug mode for more info \n");
+                       break;
+               }
+            }
+            #endif
     
     /***** Messages: pre-conditions **********************************/
      add_hh_transfer_notification_message(ID);
@@ -410,60 +410,60 @@ void unittest_Government_read_transfer_notifications()
      
     /***** Adding message iterators ***************************************/
 
-	rc = MB_Iterator_Create(b_hh_transfer_notification, &i_hh_transfer_notification);
-			
-	if (rc != MB_SUCCESS)
-			{
-			   fprintf(stderr, "ERROR: Could not create Iterator for 'hh_transfer_notification'\n");
-			   switch(rc) {
-			       case MB_ERR_INVALID:
-			           fprintf(stderr, "\t reason: 'hh_transfer_notification' board is invalid\n");
-			           break;
-			       case MB_ERR_LOCKED:
-		               fprintf(stderr, "\t reason: 'hh_transfer_notification' board is locked\n");
-		               break;
-		           case MB_ERR_MEMALLOC:
-		               fprintf(stderr, "\t reason: out of memory\n");
-		               break;
-		           case MB_ERR_INTERNAL:
-		               fprintf(stderr, "\t reason: internal error. Recompile libmoard in debug mode for more info \n");
-		               break;
-			   }
-			}
-	    	    
-	rc = MB_Iterator_Create(b_firm_transfer_notification, &i_firm_transfer_notification);
-			
-	if (rc != MB_SUCCESS)
-			{
-			   fprintf(stderr, "ERROR: Could not create Iterator for 'transfer_notification'\n");
-			   switch(rc) {
-			       case MB_ERR_INVALID:
-			           fprintf(stderr, "\t reason: 'firm_transfer_notification' board is invalid\n");
-			           break;
-			       case MB_ERR_LOCKED:
-		               fprintf(stderr, "\t reason: 'firm_transfer_notification' board is locked\n");
-		               break;
-		           case MB_ERR_MEMALLOC:
-		               fprintf(stderr, "\t reason: out of memory\n");
-		               break;
-		           case MB_ERR_INTERNAL:
-		               fprintf(stderr, "\t reason: internal error. Recompile libmoard in debug mode for more info \n");
-		               break;
-			   }
-			}
-	
+    rc = MB_Iterator_Create(b_hh_transfer_notification, &i_hh_transfer_notification);
+            
+    if (rc != MB_SUCCESS)
+            {
+               fprintf(stderr, "ERROR: Could not create Iterator for 'hh_transfer_notification'\n");
+               switch(rc) {
+                   case MB_ERR_INVALID:
+                       fprintf(stderr, "\t reason: 'hh_transfer_notification' board is invalid\n");
+                       break;
+                   case MB_ERR_LOCKED:
+                       fprintf(stderr, "\t reason: 'hh_transfer_notification' board is locked\n");
+                       break;
+                   case MB_ERR_MEMALLOC:
+                       fprintf(stderr, "\t reason: out of memory\n");
+                       break;
+                   case MB_ERR_INTERNAL:
+                       fprintf(stderr, "\t reason: internal error. Recompile libmoard in debug mode for more info \n");
+                       break;
+               }
+            }
+                
+    rc = MB_Iterator_Create(b_firm_transfer_notification, &i_firm_transfer_notification);
+            
+    if (rc != MB_SUCCESS)
+            {
+               fprintf(stderr, "ERROR: Could not create Iterator for 'transfer_notification'\n");
+               switch(rc) {
+                   case MB_ERR_INVALID:
+                       fprintf(stderr, "\t reason: 'firm_transfer_notification' board is invalid\n");
+                       break;
+                   case MB_ERR_LOCKED:
+                       fprintf(stderr, "\t reason: 'firm_transfer_notification' board is locked\n");
+                       break;
+                   case MB_ERR_MEMALLOC:
+                       fprintf(stderr, "\t reason: out of memory\n");
+                       break;
+                   case MB_ERR_INTERNAL:
+                       fprintf(stderr, "\t reason: internal error. Recompile libmoard in debug mode for more info \n");
+                       break;
+               }
+            }
+    
     /***** Function evaluation ***************************************/
-	Government_read_transfer_notifications();
+    Government_read_transfer_notifications();
     
     /***** Variables: Memory post-conditions *****/
-	CU_ASSERT_DOUBLE_EQUAL(MONTHLY_TRANSFER_PAYMENT, 300.0, 1e-3);
-	CU_ASSERT_DOUBLE_EQUAL(YEARLY_TRANSFER_PAYMENT, 300.0, 1e-3);
-	CU_ASSERT_DOUBLE_EQUAL(PAYMENT_ACCOUNT, 50.0, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(MONTHLY_TRANSFER_PAYMENT, 300.0, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(YEARLY_TRANSFER_PAYMENT, 300.0, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(PAYMENT_ACCOUNT, 50.0, 1e-3);
 
     /***** Variables: Message post-conditions *****/
 
     /************* At end of unit test, free the agent **************/
-	unittest_free_Government_agent();
+    unittest_free_Government_agent();
     /************* At end of unit tests, free all Messages **********/
     free_messages();
 }
@@ -475,119 +475,119 @@ void unittest_Government_read_transfer_notifications()
  */
 void unittest_Government_read_subsidy_notifications()
 {
-	int rc;
-	
+    int rc;
+    
     /************* At start of unit test, add one agent **************/
-	unittest_init_Government_agent();
-	
+    unittest_init_Government_agent();
+    
     /***** Variables: Memory pre-conditions **************************/
-	ID=1;
-	HH_SUBSIDY_PAYMENT = 100;
-	FIRM_SUBSIDY_PAYMENT = 200;
-	PAYMENT_ACCOUNT =350;
-	MONTHLY_SUBSIDY_PAYMENT=0.0;
-	YEARLY_SUBSIDY_PAYMENT=0.0;
-	
-	/***** Messages: initialize message boards **********************************/
+    ID=1;
+    HH_SUBSIDY_PAYMENT = 100;
+    FIRM_SUBSIDY_PAYMENT = 200;
+    PAYMENT_ACCOUNT =350;
+    MONTHLY_SUBSIDY_PAYMENT=0.0;
+    YEARLY_SUBSIDY_PAYMENT=0.0;
+    
+    /***** Messages: initialize message boards **********************************/
 
-	rc = MB_Create(&b_hh_subsidy_notification, sizeof(m_hh_subsidy_notification));
-    	    #ifdef ERRCHECK
-    	    if (rc != MB_SUCCESS)
-    	    {
-    	       fprintf(stderr, "ERROR: Could not create 'hh_subsidy_notification' board\n");
-    	       switch(rc) {
-    	           case MB_ERR_INVALID:
-    	               fprintf(stderr, "\t reason: Invalid message size\n");
-    	               break;
-    	           case MB_ERR_MEMALLOC:
-    	               fprintf(stderr, "\t reason: out of memory\n");
-    	               break;
-    	           case MB_ERR_INTERNAL:
-    	               fprintf(stderr, "\t reason: internal error. Recompile libmoard in debug mode for more info \n");
-    	               break;
-    	       }
-    	    }
-    	    #endif
+    rc = MB_Create(&b_hh_subsidy_notification, sizeof(m_hh_subsidy_notification));
+            #ifdef ERRCHECK
+            if (rc != MB_SUCCESS)
+            {
+               fprintf(stderr, "ERROR: Could not create 'hh_subsidy_notification' board\n");
+               switch(rc) {
+                   case MB_ERR_INVALID:
+                       fprintf(stderr, "\t reason: Invalid message size\n");
+                       break;
+                   case MB_ERR_MEMALLOC:
+                       fprintf(stderr, "\t reason: out of memory\n");
+                       break;
+                   case MB_ERR_INTERNAL:
+                       fprintf(stderr, "\t reason: internal error. Recompile libmoard in debug mode for more info \n");
+                       break;
+               }
+            }
+            #endif
 
-	rc = MB_Create(&b_firm_subsidy_notification, sizeof(m_firm_subsidy_notification));
-    	    #ifdef ERRCHECK
-    	    if (rc != MB_SUCCESS)
-    	    {
-    	       fprintf(stderr, "ERROR: Could not create 'firm_subsidy_notification' board\n");
-    	       switch(rc) {
-    	           case MB_ERR_INVALID:
-    	               fprintf(stderr, "\t reason: Invalid message size\n");
-    	               break;
-    	           case MB_ERR_MEMALLOC:
-    	               fprintf(stderr, "\t reason: out of memory\n");
-    	               break;
-    	           case MB_ERR_INTERNAL:
-    	               fprintf(stderr, "\t reason: internal error. Recompile libmoard in debug mode for more info \n");
-    	               break;
-    	       }
-    	    }
-    	    #endif
-    		
-	/***** Messages: pre-conditions **********************************/
+    rc = MB_Create(&b_firm_subsidy_notification, sizeof(m_firm_subsidy_notification));
+            #ifdef ERRCHECK
+            if (rc != MB_SUCCESS)
+            {
+               fprintf(stderr, "ERROR: Could not create 'firm_subsidy_notification' board\n");
+               switch(rc) {
+                   case MB_ERR_INVALID:
+                       fprintf(stderr, "\t reason: Invalid message size\n");
+                       break;
+                   case MB_ERR_MEMALLOC:
+                       fprintf(stderr, "\t reason: out of memory\n");
+                       break;
+                   case MB_ERR_INTERNAL:
+                       fprintf(stderr, "\t reason: internal error. Recompile libmoard in debug mode for more info \n");
+                       break;
+               }
+            }
+            #endif
+            
+    /***** Messages: pre-conditions **********************************/
      add_hh_subsidy_notification_message(ID);
      add_firm_subsidy_notification_message(ID);
      
     /***** Adding message iterators ***************************************/
 
-	rc = MB_Iterator_Create(b_hh_subsidy_notification, &i_hh_subsidy_notification);
-			
-	if (rc != MB_SUCCESS)
-			{
-			   fprintf(stderr, "ERROR: Could not create Iterator for 'hh_subsidy_notification'\n");
-			   switch(rc) {
-			       case MB_ERR_INVALID:
-			           fprintf(stderr, "\t reason: 'hh_subsidy_notification' board is invalid\n");
-			           break;
-			       case MB_ERR_LOCKED:
-		               fprintf(stderr, "\t reason: 'hh_subsidy_notification' board is locked\n");
-		               break;
-		           case MB_ERR_MEMALLOC:
-		               fprintf(stderr, "\t reason: out of memory\n");
-		               break;
-		           case MB_ERR_INTERNAL:
-		               fprintf(stderr, "\t reason: internal error. Recompile libmoard in debug mode for more info \n");
-		               break;
-			   }
-			}
+    rc = MB_Iterator_Create(b_hh_subsidy_notification, &i_hh_subsidy_notification);
+            
+    if (rc != MB_SUCCESS)
+            {
+               fprintf(stderr, "ERROR: Could not create Iterator for 'hh_subsidy_notification'\n");
+               switch(rc) {
+                   case MB_ERR_INVALID:
+                       fprintf(stderr, "\t reason: 'hh_subsidy_notification' board is invalid\n");
+                       break;
+                   case MB_ERR_LOCKED:
+                       fprintf(stderr, "\t reason: 'hh_subsidy_notification' board is locked\n");
+                       break;
+                   case MB_ERR_MEMALLOC:
+                       fprintf(stderr, "\t reason: out of memory\n");
+                       break;
+                   case MB_ERR_INTERNAL:
+                       fprintf(stderr, "\t reason: internal error. Recompile libmoard in debug mode for more info \n");
+                       break;
+               }
+            }
     
-	rc = MB_Iterator_Create(b_firm_subsidy_notification, &i_firm_subsidy_notification);
-			
-	if (rc != MB_SUCCESS)
-			{
-			   fprintf(stderr, "ERROR: Could not create Iterator for 'firm_subsidy_notification'\n");
-			   switch(rc) {
-			       case MB_ERR_INVALID:
-			           fprintf(stderr, "\t reason: 'firm_subsidy_notification' board is invalid\n");
-			           break;
-			       case MB_ERR_LOCKED:
-		               fprintf(stderr, "\t reason: 'firm_subsidy_notification' board is locked\n");
-		               break;
-		           case MB_ERR_MEMALLOC:
-		               fprintf(stderr, "\t reason: out of memory\n");
-		               break;
-		           case MB_ERR_INTERNAL:
-		               fprintf(stderr, "\t reason: internal error. Recompile libmoard in debug mode for more info \n");
-		               break;
-			   }
-			}
-	    	    
+    rc = MB_Iterator_Create(b_firm_subsidy_notification, &i_firm_subsidy_notification);
+            
+    if (rc != MB_SUCCESS)
+            {
+               fprintf(stderr, "ERROR: Could not create Iterator for 'firm_subsidy_notification'\n");
+               switch(rc) {
+                   case MB_ERR_INVALID:
+                       fprintf(stderr, "\t reason: 'firm_subsidy_notification' board is invalid\n");
+                       break;
+                   case MB_ERR_LOCKED:
+                       fprintf(stderr, "\t reason: 'firm_subsidy_notification' board is locked\n");
+                       break;
+                   case MB_ERR_MEMALLOC:
+                       fprintf(stderr, "\t reason: out of memory\n");
+                       break;
+                   case MB_ERR_INTERNAL:
+                       fprintf(stderr, "\t reason: internal error. Recompile libmoard in debug mode for more info \n");
+                       break;
+               }
+            }
+                
     /***** Function evaluation ***************************************/
-	Government_read_subsidy_notifications();
+    Government_read_subsidy_notifications();
     
     /***** Variables: Memory post-conditions *****/
-	CU_ASSERT_DOUBLE_EQUAL(MONTHLY_SUBSIDY_PAYMENT, 300.0, 1e-3);
-	CU_ASSERT_DOUBLE_EQUAL(YEARLY_SUBSIDY_PAYMENT, 300.0, 1e-3);
-	CU_ASSERT_DOUBLE_EQUAL(PAYMENT_ACCOUNT, 50.0, 1e-3);
-	
+    CU_ASSERT_DOUBLE_EQUAL(MONTHLY_SUBSIDY_PAYMENT, 300.0, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(YEARLY_SUBSIDY_PAYMENT, 300.0, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(PAYMENT_ACCOUNT, 50.0, 1e-3);
+    
     /***** Variables: Message post-conditions *****/
 
     /************* At end of unit test, free the agent **************/
-	unittest_free_Government_agent();
+    unittest_free_Government_agent();
     /************* At end of unit tests, free all Messages **********/
     free_messages();
 }
@@ -599,29 +599,29 @@ void unittest_Government_read_subsidy_notifications()
  */
 void unittest_Government_monthly_budget_accounting()
 {
-	int rc;
-	
+    int rc;
+    
     /************* At start of unit test, add one agent **************/
-	unittest_init_Government_agent();
-	
+    unittest_init_Government_agent();
+    
     /***** Variables: Memory pre-conditions **************************/
 
-	/***** Messages: initialize message boards **********************************/
+    /***** Messages: initialize message boards **********************************/
 
-	/***** Messages: pre-conditions **********************************/
-    	    
+    /***** Messages: pre-conditions **********************************/
+            
     /***** Adding message iterators ***************************************/
 
     /***** Function evaluation ***************************************/
-	Government_monthly_budget_accounting();
+    Government_monthly_budget_accounting();
     
     /***** Variables: Memory post-conditions *****/
-//	CU_ASSERT_DOUBLE_EQUAL(var, result, 1e-3);
+//  CU_ASSERT_DOUBLE_EQUAL(var, result, 1e-3);
 
     /***** Variables: Message post-conditions *****/
 
     /************* At end of unit test, free the agent **************/
-	unittest_free_Government_agent();
+    unittest_free_Government_agent();
     /************* At end of unit tests, free all Messages **********/
     free_messages();
 }
@@ -633,29 +633,29 @@ void unittest_Government_monthly_budget_accounting()
  */
 void unittest_Government_yearly_budget_accounting()
 {
-	int rc;
-	
+    int rc;
+    
     /************* At start of unit test, add one agent **************/
-	unittest_init_Government_agent();
-	
+    unittest_init_Government_agent();
+    
     /***** Variables: Memory pre-conditions **************************/
 
-	/***** Messages: initialize message boards **********************************/
+    /***** Messages: initialize message boards **********************************/
 
-	/***** Messages: pre-conditions **********************************/
-    	    
+    /***** Messages: pre-conditions **********************************/
+            
     /***** Adding message iterators ***************************************/
 
     /***** Function evaluation ***************************************/
-	Government_yearly_budget_accounting();
+    Government_yearly_budget_accounting();
     
     /***** Variables: Memory post-conditions *****/
-//	CU_ASSERT_DOUBLE_EQUAL(var, result, 1e-3);
+//  CU_ASSERT_DOUBLE_EQUAL(var, result, 1e-3);
 
     /***** Variables: Message post-conditions *****/
 
     /************* At end of unit test, free the agent **************/
-	unittest_free_Government_agent();
+    unittest_free_Government_agent();
     /************* At end of unit tests, free all Messages **********/
     free_messages();
 }
@@ -667,75 +667,75 @@ void unittest_Government_yearly_budget_accounting()
  */
 void unittest_Government_send_account_update()
 {
-	int rc;
-	
+    int rc;
+    
     /************* At start of unit test, add one agent **************/
-	unittest_init_Government_agent();
-	
+    unittest_init_Government_agent();
+    
     /***** Variables: Memory pre-conditions **************************/
-	ID=1;
-	PAYMENT_ACCOUNT=100.0;
+    ID=1;
+    PAYMENT_ACCOUNT=100.0;
 
-	/***** Messages: initialize message boards **********************************/
-	rc = MB_Create(&b_central_bank_account_update, sizeof(m_central_bank_account_update));
-    	    #ifdef ERRCHECK
-    	    if (rc != MB_SUCCESS)
-    	    {
-    	       fprintf(stderr, "ERROR: Could not create 'central_bank_account_update' board\n");
-    	       switch(rc) {
-    	           case MB_ERR_INVALID:
-    	               fprintf(stderr, "\t reason: Invalid message size\n");
-    	               break;
-    	           case MB_ERR_MEMALLOC:
-    	               fprintf(stderr, "\t reason: out of memory\n");
-    	               break;
-    	           case MB_ERR_INTERNAL:
-    	               fprintf(stderr, "\t reason: internal error. Recompile libmoard in debug mode for more info \n");
-    	               break;
-    	       }
-    	    }
-    	    #endif
-	
-	/***** Messages: pre-conditions **********************************/
-    	    	    	    
+    /***** Messages: initialize message boards **********************************/
+    rc = MB_Create(&b_central_bank_account_update, sizeof(m_central_bank_account_update));
+            #ifdef ERRCHECK
+            if (rc != MB_SUCCESS)
+            {
+               fprintf(stderr, "ERROR: Could not create 'central_bank_account_update' board\n");
+               switch(rc) {
+                   case MB_ERR_INVALID:
+                       fprintf(stderr, "\t reason: Invalid message size\n");
+                       break;
+                   case MB_ERR_MEMALLOC:
+                       fprintf(stderr, "\t reason: out of memory\n");
+                       break;
+                   case MB_ERR_INTERNAL:
+                       fprintf(stderr, "\t reason: internal error. Recompile libmoard in debug mode for more info \n");
+                       break;
+               }
+            }
+            #endif
+    
+    /***** Messages: pre-conditions **********************************/
+                            
     /***** Function evaluation ***************************************/
-	Government_send_account_update();
+    Government_send_account_update();
     
     /***** Adding message iterators ***************************************/
-	rc = MB_Iterator_Create(b_central_bank_account_update, &i_central_bank_account_update);
-			
-	if (rc != MB_SUCCESS)
-			{
-			   fprintf(stderr, "ERROR: Could not create Iterator for 'central_bank_account_update'\n");
-			   switch(rc) {
-			       case MB_ERR_INVALID:
-			           fprintf(stderr, "\t reason: 'central_bank_account_update' board is invalid\n");
-			           break;
-			       case MB_ERR_LOCKED:
-		               fprintf(stderr, "\t reason: 'central_bank_account_update' board is locked\n");
-		               break;
-		           case MB_ERR_MEMALLOC:
-		               fprintf(stderr, "\t reason: out of memory\n");
-		               break;
-		           case MB_ERR_INTERNAL:
-		               fprintf(stderr, "\t reason: internal error. Recompile libmoard in debug mode for more info \n");
-		               break;
-			   }
-			}
+    rc = MB_Iterator_Create(b_central_bank_account_update, &i_central_bank_account_update);
+            
+    if (rc != MB_SUCCESS)
+            {
+               fprintf(stderr, "ERROR: Could not create Iterator for 'central_bank_account_update'\n");
+               switch(rc) {
+                   case MB_ERR_INVALID:
+                       fprintf(stderr, "\t reason: 'central_bank_account_update' board is invalid\n");
+                       break;
+                   case MB_ERR_LOCKED:
+                       fprintf(stderr, "\t reason: 'central_bank_account_update' board is locked\n");
+                       break;
+                   case MB_ERR_MEMALLOC:
+                       fprintf(stderr, "\t reason: out of memory\n");
+                       break;
+                   case MB_ERR_INTERNAL:
+                       fprintf(stderr, "\t reason: internal error. Recompile libmoard in debug mode for more info \n");
+                       break;
+               }
+            }
 
     /***** Variables: Memory post-conditions *****/
 
     /***** Variables: Message post-conditions *****/
-	//start a reading loop
+    //start a reading loop
 
-	//add_central_bank_account_update_message(ID, PAYMENT_ACCOUNT);
-	START_CENTRAL_BANK_ACCOUNT_UPDATE_MESSAGE_LOOP
-	     CU_ASSERT_EQUAL(central_bank_account_update_message->id, 1);
-	     CU_ASSERT_DOUBLE_EQUAL(central_bank_account_update_message->payment_account, 100.0, 1e-3);
-	FINISH_CENTRAL_BANK_ACCOUNT_UPDATE_MESSAGE_LOOP
-	
+    //add_central_bank_account_update_message(ID, PAYMENT_ACCOUNT);
+    START_CENTRAL_BANK_ACCOUNT_UPDATE_MESSAGE_LOOP
+         CU_ASSERT_EQUAL(central_bank_account_update_message->id, 1);
+         CU_ASSERT_DOUBLE_EQUAL(central_bank_account_update_message->payment_account, 100.0, 1e-3);
+    FINISH_CENTRAL_BANK_ACCOUNT_UPDATE_MESSAGE_LOOP
+    
     /************* At end of unit test, free the agent **************/
-	unittest_free_Government_agent();
+    unittest_free_Government_agent();
     /************* At end of unit tests, free all Messages **********/
     free_messages();
 }
@@ -748,109 +748,109 @@ void unittest_Government_send_account_update()
 
 void unittest_Government_read_data_from_Eurostat()
 {
-	int rc;
-	
+    int rc;
+    
     /************* At start of unit test, add one agent **************/
-	unittest_init_Government_agent();
+    unittest_init_Government_agent();
 
     /************* Setting environment variables **************/
-	FLAME_environment_variable_no_regions_per_gov = 2;
+    FLAME_environment_variable_no_regions_per_gov = 2;
 
     /***** Variables: Memory pre-conditions **************************/
-	ID=1;
-	GDP=10.0;
-	GDP_GROWTH=0.0;
-	
-	LIST_OF_REGIONS.array[0]=1;
-	LIST_OF_REGIONS.array[1]=2;
-	
-	/***** Messages: initialize message boards **********************************/
+    ID=1;
+    GDP=10.0;
+    GDP_GROWTH=0.0;
+    
+    LIST_OF_REGIONS.array[0]=1;
+    LIST_OF_REGIONS.array[1]=2;
+    
+    /***** Messages: initialize message boards **********************************/
 
-	rc = MB_Create(&b_data_for_government, sizeof(m_data_for_government));
-    	    #ifdef ERRCHECK
-    	    if (rc != MB_SUCCESS)
-    	    {
-    	       fprintf(stderr, "ERROR: Could not create 'data_for_government' board\n");
-    	       switch(rc) {
-    	           case MB_ERR_INVALID:
-    	               fprintf(stderr, "\t reason: Invalid message size\n");
-    	               break;
-    	           case MB_ERR_MEMALLOC:
-    	               fprintf(stderr, "\t reason: out of memory\n");
-    	               break;
-    	           case MB_ERR_INTERNAL:
-    	               fprintf(stderr, "\t reason: internal error. Recompile libmoard in debug mode for more info \n");
-    	               break;
-    	       }
-    	    }
-    	    #endif
+    rc = MB_Create(&b_data_for_government, sizeof(m_data_for_government));
+            #ifdef ERRCHECK
+            if (rc != MB_SUCCESS)
+            {
+               fprintf(stderr, "ERROR: Could not create 'data_for_government' board\n");
+               switch(rc) {
+                   case MB_ERR_INVALID:
+                       fprintf(stderr, "\t reason: Invalid message size\n");
+                       break;
+                   case MB_ERR_MEMALLOC:
+                       fprintf(stderr, "\t reason: out of memory\n");
+                       break;
+                   case MB_ERR_INTERNAL:
+                       fprintf(stderr, "\t reason: internal error. Recompile libmoard in debug mode for more info \n");
+                       break;
+               }
+            }
+            #endif
 
-	/***** Messages: pre-conditions **********************************/
+    /***** Messages: pre-conditions **********************************/
      //add_data_for_government_message(region_id, gdp, mean_wage);
      add_data_for_government_message(1, 10.0, 1.0);
      add_data_for_government_message(2, 10.0, 1.0);
 
     /***** Adding message iterators ***************************************/
-	rc = MB_Iterator_Create(b_data_for_government, &i_data_for_government);
-			
-	if (rc != MB_SUCCESS)
-			{
-			   fprintf(stderr, "ERROR: Could not create Iterator for 'data_for_government'\n");
-			   switch(rc) {
-			       case MB_ERR_INVALID:
-			           fprintf(stderr, "\t reason: 'data_for_government' board is invalid\n");
-			           break;
-			       case MB_ERR_LOCKED:
-		               fprintf(stderr, "\t reason: 'data_for_government' board is locked\n");
-		               break;
-		           case MB_ERR_MEMALLOC:
-		               fprintf(stderr, "\t reason: out of memory\n");
-		               break;
-		           case MB_ERR_INTERNAL:
-		               fprintf(stderr, "\t reason: internal error. Recompile libmoard in debug mode for more info \n");
-		               break;
-			   }
-			}
-	    	    
+    rc = MB_Iterator_Create(b_data_for_government, &i_data_for_government);
+            
+    if (rc != MB_SUCCESS)
+            {
+               fprintf(stderr, "ERROR: Could not create Iterator for 'data_for_government'\n");
+               switch(rc) {
+                   case MB_ERR_INVALID:
+                       fprintf(stderr, "\t reason: 'data_for_government' board is invalid\n");
+                       break;
+                   case MB_ERR_LOCKED:
+                       fprintf(stderr, "\t reason: 'data_for_government' board is locked\n");
+                       break;
+                   case MB_ERR_MEMALLOC:
+                       fprintf(stderr, "\t reason: out of memory\n");
+                       break;
+                   case MB_ERR_INTERNAL:
+                       fprintf(stderr, "\t reason: internal error. Recompile libmoard in debug mode for more info \n");
+                       break;
+               }
+            }
+                
 
      /***** Function evaluation ***************************************/
      Government_read_data_from_Eurostat();
     
     /***** Variables: Memory post-conditions *****/
-		
+        
     /***** Variables: Message post-conditions *****/
-	//start a reading loop
+    //start a reading loop
 
-	START_DATA_FOR_GOVERNMENT_MESSAGE_LOOP
-	if(data_for_government_message->region_id==LIST_OF_REGIONS.array[0])
-	{
-		//printf("\n region=%d\n", data_for_government_message->region_id);
-	     CU_ASSERT_EQUAL(data_for_government_message->region_id, 1);
-	    //printf("\n data_for_government_message->gdp=%2.2f\n", data_for_government_message->gdp);
-	     CU_ASSERT_DOUBLE_EQUAL(data_for_government_message->gdp, 10.0, 1e-3);
-	    //printf("\n data_for_government_message->mean_wage=%2.2f\n", data_for_government_message->mean_wage);
-	     CU_ASSERT_DOUBLE_EQUAL(data_for_government_message->mean_wage, 1.0, 1e-3);
-	}
-	if(data_for_government_message->region_id==LIST_OF_REGIONS.array[1])
-	{
-		//printf("\n region=%d\n", data_for_government_message->region_id);
-	     CU_ASSERT_EQUAL(data_for_government_message->region_id, 2);
-	    //printf("\n data_for_government_message->gdp=%2.2f\n", data_for_government_message->gdp);
-	    CU_ASSERT_DOUBLE_EQUAL(data_for_government_message->gdp, 10.0, 1e-3);
-	    //printf("\n data_for_government_message->mean_wage=%2.2f\n", data_for_government_message->mean_wage);
-	     CU_ASSERT_DOUBLE_EQUAL(data_for_government_message->mean_wage, 1.0, 1e-3);
-	}
+    START_DATA_FOR_GOVERNMENT_MESSAGE_LOOP
+    if(data_for_government_message->region_id==LIST_OF_REGIONS.array[0])
+    {
+        //printf("\n region=%d\n", data_for_government_message->region_id);
+         CU_ASSERT_EQUAL(data_for_government_message->region_id, 1);
+        //printf("\n data_for_government_message->gdp=%2.2f\n", data_for_government_message->gdp);
+         CU_ASSERT_DOUBLE_EQUAL(data_for_government_message->gdp, 10.0, 1e-3);
+        //printf("\n data_for_government_message->mean_wage=%2.2f\n", data_for_government_message->mean_wage);
+         CU_ASSERT_DOUBLE_EQUAL(data_for_government_message->mean_wage, 1.0, 1e-3);
+    }
+    if(data_for_government_message->region_id==LIST_OF_REGIONS.array[1])
+    {
+        //printf("\n region=%d\n", data_for_government_message->region_id);
+         CU_ASSERT_EQUAL(data_for_government_message->region_id, 2);
+        //printf("\n data_for_government_message->gdp=%2.2f\n", data_for_government_message->gdp);
+        CU_ASSERT_DOUBLE_EQUAL(data_for_government_message->gdp, 10.0, 1e-3);
+        //printf("\n data_for_government_message->mean_wage=%2.2f\n", data_for_government_message->mean_wage);
+         CU_ASSERT_DOUBLE_EQUAL(data_for_government_message->mean_wage, 1.0, 1e-3);
+    }
      FINISH_DATA_FOR_GOVERNMENT_MESSAGE_LOOP
-	
- 	//printf("\n COUNTRY_WIDE_MEAN_WAGE=%2.2f\n", COUNTRY_WIDE_MEAN_WAGE);
- 	CU_ASSERT_DOUBLE_EQUAL(COUNTRY_WIDE_MEAN_WAGE, 1.0, 1e-3);
- 	//printf("\n GDP=%2.2f\n", GDP);
- 	CU_ASSERT_DOUBLE_EQUAL(GDP, 20.0, 1e-3);
- 	//printf("\n GDP_GROWTH=%2.2f\n", GDP_GROWTH);
- 	CU_ASSERT_DOUBLE_EQUAL(GDP_GROWTH, 2.0, 1e-3);
+    
+    //printf("\n COUNTRY_WIDE_MEAN_WAGE=%2.2f\n", COUNTRY_WIDE_MEAN_WAGE);
+    CU_ASSERT_DOUBLE_EQUAL(COUNTRY_WIDE_MEAN_WAGE, 1.0, 1e-3);
+    //printf("\n GDP=%2.2f\n", GDP);
+    CU_ASSERT_DOUBLE_EQUAL(GDP, 20.0, 1e-3);
+    //printf("\n GDP_GROWTH=%2.2f\n", GDP_GROWTH);
+    CU_ASSERT_DOUBLE_EQUAL(GDP_GROWTH, 2.0, 1e-3);
 
     /************* At end of unit test, free the agent **************/
-	unittest_free_Government_agent();
+    unittest_free_Government_agent();
     /************* At end of unit tests, free all Messages **********/
     free_messages();
 }
@@ -862,38 +862,38 @@ void unittest_Government_read_data_from_Eurostat()
  */
 void unittest_Government_set_policy()
 {
-	int rc;
-	
+    int rc;
+    
     /************* At start of unit test, add one agent **************/
-	unittest_init_Government_agent();
-	
+    unittest_init_Government_agent();
+    
     /************* Setting environment variables **************/
-	FLAME_environment_variable_gov_policy_gdp_fracion_consumption = 0.20;
-	FLAME_environment_variable_gov_policy_gdp_fracion_investment = 0.30;
-	
+    FLAME_environment_variable_gov_policy_gdp_fraction_consumption = 0.20;
+    FLAME_environment_variable_gov_policy_gdp_fraction_investment = 0.30;
+    
     /***** Variables: Memory pre-conditions **************************/
-	GDP=100.0;
-	GDP_GROWTH=1.00;
-	
-	
-	/***** Messages: initialize message boards **********************************/
+    GDP=100.0;
+    GDP_GROWTH=1.00;
+    
+    
+    /***** Messages: initialize message boards **********************************/
 
-	/***** Messages: pre-conditions **********************************/
-    	    
+    /***** Messages: pre-conditions **********************************/
+            
     /***** Adding message iterators ***************************************/
     
     /***** Function evaluation ***************************************/
-	Government_set_policy();
+    Government_set_policy();
     
     /***** Variables: Memory post-conditions *****/
-	CU_ASSERT_DOUBLE_EQUAL(GDP_FORECAST, 100.0, 1e-3);
-	CU_ASSERT_DOUBLE_EQUAL(YEARLY_CONSUMPTION_EXPENDITURE, 20.0, 1e-3);
-	CU_ASSERT_DOUBLE_EQUAL(YEARLY_INVESTMENT_EXPENDITURE, 30.0, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(GDP_FORECAST, 100.0, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(YEARLY_CONSUMPTION_EXPENDITURE, 20.0, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(YEARLY_INVESTMENT_EXPENDITURE, 30.0, 1e-3);
 
-	/***** Variables: Message post-conditions *****/
-	
+    /***** Variables: Message post-conditions *****/
+    
     /************* At end of unit test, free the agent **************/
-	unittest_free_Government_agent();
+    unittest_free_Government_agent();
     /************* At end of unit tests, free all Messages **********/
     free_messages();
 }
@@ -905,44 +905,44 @@ void unittest_Government_set_policy()
  */
 void unittest_Government_yearly_resetting()
 {
-	int rc;
-	double result;
-	
+    int rc;
+    double result;
+    
     /************* At start of unit test, add one agent **************/
-	unittest_init_Government_agent();
-	
+    unittest_init_Government_agent();
+    
     /***** Variables: Memory pre-conditions **************************/
-	YEARLY_TAX_REVENUES =10.0;
-	YEARLY_BENEFIT_PAYMENT =10.0;
-	YEARLY_TRANSFER_PAYMENT =10.0;
-	YEARLY_SUBSIDY_PAYMENT =10.0;
-	YEARLY_BOND_INTEREST_PAYMENT =10.0;
-	YEARLY_INVESTMENT_EXPENDITURE =10.0;
-	YEARLY_CONSUMPTION_EXPENDITURE =10.0;
+    YEARLY_TAX_REVENUES =10.0;
+    YEARLY_BENEFIT_PAYMENT =10.0;
+    YEARLY_TRANSFER_PAYMENT =10.0;
+    YEARLY_SUBSIDY_PAYMENT =10.0;
+    YEARLY_BOND_INTEREST_PAYMENT =10.0;
+    YEARLY_INVESTMENT_EXPENDITURE =10.0;
+    YEARLY_CONSUMPTION_EXPENDITURE =10.0;
 
-	/***** Messages: initialize message boards **********************************/
+    /***** Messages: initialize message boards **********************************/
 
-	/***** Messages: pre-conditions **********************************/
-    	    
+    /***** Messages: pre-conditions **********************************/
+            
     /***** Adding message iterators ***************************************/
-    	    
+            
     /***** Function evaluation ***************************************/
-	Government_yearly_resetting();
+    Government_yearly_resetting();
     
     /***** Variables: Memory post-conditions *****/
-	result=0.0;
-	CU_ASSERT_DOUBLE_EQUAL(YEARLY_TAX_REVENUES, result, 1e-3);
-	CU_ASSERT_DOUBLE_EQUAL(YEARLY_BENEFIT_PAYMENT, result, 1e-3);
-	CU_ASSERT_DOUBLE_EQUAL(YEARLY_TRANSFER_PAYMENT, result, 1e-3);
-	CU_ASSERT_DOUBLE_EQUAL(YEARLY_SUBSIDY_PAYMENT, result, 1e-3);
-	CU_ASSERT_DOUBLE_EQUAL(YEARLY_BOND_INTEREST_PAYMENT, result, 1e-3);
-	CU_ASSERT_DOUBLE_EQUAL(YEARLY_INVESTMENT_EXPENDITURE, result, 1e-3);
-	CU_ASSERT_DOUBLE_EQUAL(YEARLY_CONSUMPTION_EXPENDITURE, result, 1e-3);
-	
+    result=0.0;
+    CU_ASSERT_DOUBLE_EQUAL(YEARLY_TAX_REVENUES, result, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(YEARLY_BENEFIT_PAYMENT, result, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(YEARLY_TRANSFER_PAYMENT, result, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(YEARLY_SUBSIDY_PAYMENT, result, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(YEARLY_BOND_INTEREST_PAYMENT, result, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(YEARLY_INVESTMENT_EXPENDITURE, result, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(YEARLY_CONSUMPTION_EXPENDITURE, result, 1e-3);
+    
     /***** Variables: Message post-conditions *****/
-	
+    
     /************* At end of unit test, free the agent **************/
-	unittest_free_Government_agent();
+    unittest_free_Government_agent();
     /************* At end of unit tests, free all Messages **********/
     free_messages();
 }
@@ -954,44 +954,44 @@ void unittest_Government_yearly_resetting()
  */
 void unittest_Government_monthly_resetting()
 {
-	int rc;
-	double result;
-	
+    int rc;
+    double result;
+    
     /************* At start of unit test, add one agent **************/
-	unittest_init_Government_agent();
-	
+    unittest_init_Government_agent();
+    
     /***** Variables: Memory pre-conditions **************************/
-	MONTHLY_TAX_REVENUES =10.0;
-	MONTHLY_BENEFIT_PAYMENT =10.0;
-	MONTHLY_TRANSFER_PAYMENT =10.0;
-	MONTHLY_SUBSIDY_PAYMENT =10.0;
-	MONTHLY_BOND_INTEREST_PAYMENT =10.0;
-	MONTHLY_INVESTMENT_EXPENDITURE =10.0;
-	MONTHLY_CONSUMPTION_EXPENDITURE =10.0;
+    MONTHLY_TAX_REVENUES =10.0;
+    MONTHLY_BENEFIT_PAYMENT =10.0;
+    MONTHLY_TRANSFER_PAYMENT =10.0;
+    MONTHLY_SUBSIDY_PAYMENT =10.0;
+    MONTHLY_BOND_INTEREST_PAYMENT =10.0;
+    MONTHLY_INVESTMENT_EXPENDITURE =10.0;
+    MONTHLY_CONSUMPTION_EXPENDITURE =10.0;
 
-	/***** Messages: initialize message boards **********************************/
+    /***** Messages: initialize message boards **********************************/
 
-	/***** Messages: pre-conditions **********************************/
-    	    
+    /***** Messages: pre-conditions **********************************/
+            
     /***** Adding message iterators ***************************************/
-    	    
+            
     /***** Function evaluation ***************************************/
-	Government_monthly_resetting();
+    Government_monthly_resetting();
     
     /***** Variables: Memory post-conditions *****/
-	result=0.0;
-	CU_ASSERT_DOUBLE_EQUAL(MONTHLY_TAX_REVENUES, result, 1e-3);
-	CU_ASSERT_DOUBLE_EQUAL(MONTHLY_BENEFIT_PAYMENT, result, 1e-3);
-	CU_ASSERT_DOUBLE_EQUAL(MONTHLY_TRANSFER_PAYMENT, result, 1e-3);
-	CU_ASSERT_DOUBLE_EQUAL(MONTHLY_SUBSIDY_PAYMENT, result, 1e-3);
-	CU_ASSERT_DOUBLE_EQUAL(MONTHLY_BOND_INTEREST_PAYMENT, result, 1e-3);
-	CU_ASSERT_DOUBLE_EQUAL(MONTHLY_INVESTMENT_EXPENDITURE, result, 1e-3);
-	CU_ASSERT_DOUBLE_EQUAL(MONTHLY_CONSUMPTION_EXPENDITURE, result, 1e-3);
-	
+    result=0.0;
+    CU_ASSERT_DOUBLE_EQUAL(MONTHLY_TAX_REVENUES, result, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(MONTHLY_BENEFIT_PAYMENT, result, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(MONTHLY_TRANSFER_PAYMENT, result, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(MONTHLY_SUBSIDY_PAYMENT, result, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(MONTHLY_BOND_INTEREST_PAYMENT, result, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(MONTHLY_INVESTMENT_EXPENDITURE, result, 1e-3);
+    CU_ASSERT_DOUBLE_EQUAL(MONTHLY_CONSUMPTION_EXPENDITURE, result, 1e-3);
+    
     /***** Variables: Message post-conditions *****/
-	
+    
     /************* At end of unit test, free the agent **************/
-	unittest_free_Government_agent();
+    unittest_free_Government_agent();
     /************* At end of unit tests, free all Messages **********/
     free_messages();
 }
