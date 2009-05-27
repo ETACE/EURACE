@@ -211,6 +211,14 @@ int Government_send_account_update()
     return 0;
 }
 
+/* \fn: int Government_resolve_leftover_bonds()
+ * \brief Function to resolve the bonds that are left unsold at the end of each month.
+ */
+int Government_resolve_unsold_bonds()
+{ 
+    return 0;
+}
+
 /* \fn: int Government_monthly_budget_accounting()
  * \brief Function to perform accounting at the end of each month.
  */

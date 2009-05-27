@@ -448,6 +448,18 @@
      <outputs/>
     </function>
     <function>
+     <name>Government_send_data_to_Eurostat</name>
+     <description></description>
+     <currentState>04b</currentState>
+     <nextState>Gov_Start_Monthly_Loop</nextState>
+     <inputs/>
+     <outputs>
+      <output>
+       <messageName>gov_balance_sheet</messageName>
+      </output>
+     </outputs>
+    </function>    
+    <function>
      <name>Government_idle</name>
      <description></description>
      <currentState>Gov_Start_Monthly_Loop</currentState>
@@ -464,10 +476,10 @@
      <outputs/>
     </function>
     <function>
-     <name>Government_monthly_budget_accounting</name>
-     <description>Function to perform accounting at the end of each month.</description>
+     <name>Government_resolve_unsold_bonds</name>
+     <description></description>
      <currentState>Gov_Start_Monthly_Loop</currentState>
-     <nextState>05</nextState>
+     <nextState>05a</nextState>
      <condition>
       <time>
        <period>monthly</period>
@@ -475,8 +487,32 @@
       </time>
      </condition>
      <inputs/>
-     <outputs/>
+     <outputs>
+      <output>
+       <messageName>issue_bonds_to_ecb</messageName>
+      </output>
+     </outputs>
+    </function>    
+    <function>
+     <name>Government_monthly_budget_accounting</name>
+     <description>Function to perform accounting at the end of each month.</description>
+     <currentState>05a</currentState>
+     <nextState>05b</nextState>
+     <inputs/>
+     <outputs>
+      <output>
+       <messageName>request_fiat_money</messageName>
+      </output>
+     </outputs>
     </function>
+    <function>
+     <name>Government_monthly_resetting</name>
+     <description>Monthly resetting of counters.</description>
+     <currentState>05b</currentState>
+     <nextState>06</nextState>
+     <inputs/>
+     <outputs/>
+    </function>        
     <function>
      <name>Government_send_account_update</name>
      <description>Function to send the payment_account value to the Central Bank.</description>
@@ -492,6 +528,36 @@
       </output>
      </outputs>
     </function>
+    <function>
+     <name>idle</name>
+     <description></description>
+     <currentState>Gov_Start_Yearly_Loop</currentState>
+     <nextState>end_Government</nextState>
+     <condition>
+      <not>
+       <time>
+        <period>yearly</period>
+        <phase>0</phase>
+       </time>
+      </not>
+     </condition>
+     <inputs/>
+     <outputs/>
+    </function>    
+    <function>
+     <name>Government_yearly_budget_accounting</name>
+     <description>Function to perform accounting at the end of each year.</description>
+     <currentState>Gov_Start_Yearly_Loop</currentState>
+     <nextState>07</nextState>
+     <condition>
+      <time>
+       <period>yearly</period>
+       <phase>0</phase>
+      </time>
+     </condition>
+     <inputs/>
+     <outputs/>
+    </function>    
     <function>
      <name>Government_read_data_from_Eurostat</name>
      <description>Function to read data from Eurostat.</description>
@@ -519,56 +585,6 @@
      <nextState>end_Government</nextState>
      <inputs/>
      <outputs/>
-    </function>
-    <function>
-     <name>idle</name>
-     <description></description>
-     <currentState>Gov_Start_Yearly_Loop</currentState>
-     <nextState>end_Government</nextState>
-     <condition>
-      <not>
-       <time>
-        <period>yearly</period>
-        <phase>0</phase>
-       </time>
-      </not>
-     </condition>
-     <inputs/>
-     <outputs/>
-    </function>
-    <function>
-     <name>Government_yearly_budget_accounting</name>
-     <description>Function to perform accounting at the end of each year.</description>
-     <currentState>Gov_Start_Yearly_Loop</currentState>
-     <nextState>07</nextState>
-     <condition>
-      <time>
-       <period>yearly</period>
-       <phase>0</phase>
-      </time>
-     </condition>
-     <inputs/>
-     <outputs/>
-    </function>
-    <function>
-     <name>Government_monthly_resetting</name>
-     <description>Monthly resetting of counters.</description>
-     <currentState>05</currentState>
-     <nextState>06</nextState>
-     <inputs/>
-     <outputs/>
-    </function>
-    <function>
-     <name>Government_send_data_to_Eurostat</name>
-     <description></description>
-     <currentState>04b</currentState>
-     <nextState>Gov_Start_Monthly_Loop</nextState>
-     <inputs/>
-     <outputs>
-      <output>
-       <messageName>gov_balance_sheet</messageName>
-      </output>
-     </outputs>
     </function>
    </functions>
   </xagent>
