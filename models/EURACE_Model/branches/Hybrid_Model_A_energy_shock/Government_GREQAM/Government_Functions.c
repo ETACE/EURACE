@@ -216,6 +216,13 @@ int Government_send_account_update()
  */
 int Government_resolve_unsold_bonds()
 { 
+    //Government sends a new type of message to ECB with the nr of bonds, and the value:
+    //add_issue_bonds_to_ecb_message(nominal_value, quantity);
+    add_issue_bonds_to_ecb_message(TOTAL_BOND_FINANCING, 0);
+    
+    //Assume that the ECB is FULLY accommodating the government's demand for fiat money:
+    PAYMENT_ACCOUNT += TOTAL_BOND_FINANCING;
+
     return 0;
 }
 
