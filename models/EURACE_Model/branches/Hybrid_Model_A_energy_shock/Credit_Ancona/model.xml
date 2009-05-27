@@ -580,6 +580,14 @@ The equity of ECB is paid out to all governments as dividends, in proportion to 
      <inputs/>
      <outputs/>
     </function>
+    <function>
+     <name>Central_Bank_read_fiat_money_requests</name>
+     <description>Function read the requests for fiat money sent by governments.</description>
+     <currentState>start_Central_Bank</currentState>
+     <nextState>00</nextState>
+     <inputs/>
+     <outputs/>
+    </function>
    </functions>
   </xagent>
  </agents>
@@ -708,6 +716,11 @@ The equity of ECB is paid out to all governments as dividends, in proportion to 
    <name>bankruptcy</name>
    <description>Message added by firm to bank to signal bankruptcy.</description>
    <variables>
+    <variable>
+     <type>int</type>
+     <name>firm_id</name>
+     <description></description>
+    </variable>
     <variable>
      <type>int</type>
      <name>bank_id</name>

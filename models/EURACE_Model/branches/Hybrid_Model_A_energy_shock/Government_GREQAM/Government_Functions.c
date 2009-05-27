@@ -252,7 +252,7 @@ int Government_monthly_budget_accounting()
         if (PRINT_DEBUG && ((TOTAL_DEBT + PAYMENT_ACCOUNT) != 0.0))
             fprintf(stdout,"\n ERROR in Government: Total debt %2.5f is not equal to payment account %2.5f\n\n", TOTAL_DEBT, PAYMENT_ACCOUNT);
         
-    //Monetary policy rule
+    //Monetary policy rule: decide on fraction of deficit to be financed by bonds/fiar money
         TOTAL_MONEY_FINANCING=0;
         TOTAL_BOND_FINANCING=0;
         if (MONTHLY_BUDGET_BALANCE<0.0)
@@ -260,6 +260,13 @@ int Government_monthly_budget_accounting()
             TOTAL_MONEY_FINANCING = GOV_POLICY_MONEY_FINANCING_FRACTION*abs(MONTHLY_BUDGET_BALANCE);
             TOTAL_BOND_FINANCING = (1-GOV_POLICY_MONEY_FINANCING_FRACTION)*abs(MONTHLY_BUDGET_BALANCE);
         }
+        
+        //Government sends a message to ECB with the value of fiat money requested:
+        //add_request_fiat_money_message(nominal_value);
+        add_request_fiat_money_message(TOTAL_MONEY_FINANCING);
+
+        PAYMENT_ACCOUNT += TOTAL_MONEY_FINANCING;
+        
     return 0;
 }
 

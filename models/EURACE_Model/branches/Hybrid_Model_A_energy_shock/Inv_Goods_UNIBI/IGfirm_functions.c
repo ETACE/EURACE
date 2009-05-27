@@ -74,12 +74,11 @@ int IGFirm_send_quality_price_info()
         //Only update the price with the energy markup once at the start
         if (DAY==ENERGY_SHOCK_START)
         {        
-            //Multiplicative: mark up defined in percentage terms
             CAPITAL_GOOD_PRICE *= (1+CONST_ENERGY_SHOCK_INTENSITY);
         }
+        //Reset price at end of period
         if ((DAY==ENERGY_SHOCK_END)&&(SYMMETRIC_SHOCK==1))
         {        
-            //Multiplicative: mark up defined in percentage terms
             CAPITAL_GOOD_PRICE = CAPITAL_GOOD_PRICE/(1+CONST_ENERGY_SHOCK_INTENSITY);
         }
     }
