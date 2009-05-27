@@ -6,7 +6,6 @@
 # - Write xml tags and parameter settings to the file specific.xml
 #####################################################################################################
 BASE=$PWD
-OLDPWD=$PWD
 
 F1="40 120 240 560"     #duration: 240+"40 120 240 560"=280 360 480 801
 F2="1 5 10 20"          #intensity

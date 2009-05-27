@@ -14,13 +14,13 @@ F3="frequency_0 frequency_20 frequency_40 frequency_60"
 #Construct the RUNS list:
 TOTAL_RUNS=4
 RUNS=''
-#for ((j=0; j<TOTAL_RUNS; j++)); do
-#    RUNS=$RUNS' '$j
-#done
-while [ $j -lt $TOTAL_RUNS ]; do
-   RUNS=$RUNS' '$j
-   let j="j + 1"
+for ((j=0; j<TOTAL_RUNS; j++)); do
+    RUNS=$RUNS' '$j
 done
+#while [ $j -lt $TOTAL_RUNS ]; do
+#   RUNS=$RUNS' '$j
+#   let j="j + 1"
+#done
 
 echo '  Starting second stage of experiment: running all cases...'
 
@@ -41,3 +41,4 @@ for folder1 in $F1; do
     done
 done
 echo '  Finished second stage of experiment: all cases are done.'
+

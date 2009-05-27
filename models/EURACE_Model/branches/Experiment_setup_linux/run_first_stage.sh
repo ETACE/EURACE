@@ -21,18 +21,16 @@ echo '  Starting first stage of experiment...'
 NR_NODES=4
 ITS=500
 MAIN='/media/DOCS/Docs/EURACE/X-models/SVN_linux/models/EURACE_Model/branches/Hybrid_Model_A_energy_shock/main'
-
-ITS=20
-MAIN='D:\Docs\EURACE\X-models\SVN\eurace\EURACE_Model\branches\Hybrid_Model_A_energy_shock/main.exe'
-$MAIN $ITS output_last.xml
+JOIN='/home/sander/cloning/scripts/join/join.sh'
 
 echo '      Starting run for initial transient...'
-#mpiexec -n $NR_NODES $MAIN $ITS output_last.xml
+#$MAIN $ITS output_last.xml
+mpiexec -n $NR_NODES $MAIN $ITS output_last.xml
 echo '      Finished run for initial transient.'
 
 #Concatenating the node files
 echo '      Starting concatenation of the node output files'
-#bash ~/cloning/join.sh ./ $NR_NODES
+bash $JOIN ./ $NR_NODES
 echo '      Finished concatenation'
 
 #Removing the node files
