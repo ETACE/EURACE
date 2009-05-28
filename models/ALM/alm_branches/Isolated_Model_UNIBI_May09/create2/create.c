@@ -194,7 +194,7 @@ double SUBSIDY_FRACTION = 0;
 	double   cap_price; // temp variable for printing capital_good_price_region into memory variables of the firm
 	double	capital_good_price = 6;
 	double	capital_good_price_region_1 = 6;
-	double	capital_good_price_region_2 = 2;
+	double	capital_good_price_region_2 = 6;
 	double productivity_best_practice = 3.3;  //Productivity of the technology offered by the IG firm
 	int years_statistics = 10;/*number of years used to smooth the production*/
 
@@ -284,27 +284,27 @@ double SUBSIDY_FRACTION = 0;
 	
 		//region specific initial value of households specific skills
 		double spec_s_hh_reg1 = 3.0;
-		double spec_s_hh_reg2 = 1.0;
+		double spec_s_hh_reg2 = 3.0;
 		double specific_skills_of_household[2][1]=
 							{spec_s_hh_reg1,spec_s_hh_reg2};
 		
 
 		//Total production volume for a single firm
 			double total_production_quantity[2][1]=
-						{81.0,27.0};
+						{81.0,81.0};
 			//This defines the initial capital stock of firm depending on the region.
 			double total_units_capital[2][1]=
 				                            {45.0,45.0};
 			//Firm's starting value of productivity of the capital stock
 			double technology[2][1]=
-							{3.3,1.1};
+							{3.3,3.3};
 			//This defines the financial resources of firm at the beginning of a simulation
 			double payment_account[2][1]= 
 			{50.0,50.0};
 			
 			//Initital wage offer of the firms
 			double wage_offer[2][1]= 
-				{3.0,1.0};
+				{3.0,3.0};
 
 	
 	/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
@@ -590,14 +590,17 @@ sprintf(data, "%d",NO_REGIONS_PER_GOV);	print_tag("no_regions_per_gov", data, fi
 				{
 				sprintf(data3,"%s,{%d,{",data4,m_id,d,k);
 				sprintf(data4,"%s",data3);
-					foif(region == 1)
+
+					if(region == 1)
 					{
 						cap_price = capital_good_price_region_1;
 					}
 					if(region == 2)
 					{
 						cap_price = capital_good_price_region_2;
-					}r (d=1; d<=years_statistics; d++)
+					} 
+					
+					for (d=1; d<=years_statistics; d++)
 					{
 						if(d<years_statistics)
 						{
