@@ -9,7 +9,7 @@
 BASE=$PWD
 
 F1="duration_40 duration_120 duration_240 duration_560"
-F2="intensity_1 intensity_5 intensity_10 intensity_20"
+F2="intensity_0.01 intensity_0.05 intensity_0.10 intensity_0.20"
 F3="frequency_0 frequency_20 frequency_40 frequency_60"
 
 #Construct the RUNS list:

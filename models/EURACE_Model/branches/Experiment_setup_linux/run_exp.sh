@@ -37,12 +37,12 @@ echo $RUNS
 bash ./exp_script_1.sh
 
 ######### STEP 3: CREATION OF THE SPECIFIC SETTINGS XML FILE ##################################################
-bash ./exp_script_2.sh
+#bash ./exp_script_2.sh
 
 ######### STEP 4: RUNNING THE INITIAL PHASE ###################################################################
 #bash ./run_first_stage.sh
 
 ######### STEP 5: RUNNING THE EXPERIMENT ######################################################################
-#bash ./run_experiment.sh
+bash ./run_experiment.sh
 
 echo 'Finished top-level experiment script.'
