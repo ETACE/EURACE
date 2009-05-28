@@ -101,6 +101,8 @@ int Eurostat_calculate_data_old_version()
     AVERAGE_S_SKILL_4 = 0.0;
     AVERAGE_S_SKILL_5 = 0.0;
 
+    NO_FIRMS = 0.0;
+    
     NO_VACANCIES = 0.0;
     NO_EMPLOYEES = 0.0;
     NO_EMPLOYEES_SKILL_1 = 0.0;
