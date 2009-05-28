@@ -101,6 +101,8 @@ void Eurostat_read_firm_data(void)
 
     FIRM_AVERAGE_WAGE = 0.0;
 
+    NO_FIRMS = 0.0;
+    
     FIRM_AVERAGE_S_SKILL = 0.0;
     FIRM_AVERAGE_S_SKILL_1 = 0.0;
     FIRM_AVERAGE_S_SKILL_2 = 0.0;
