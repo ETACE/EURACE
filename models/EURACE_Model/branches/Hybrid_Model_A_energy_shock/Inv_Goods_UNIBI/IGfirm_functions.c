@@ -1,3 +1,4 @@
+#include <math.h>
 #include "../header.h"
 #include "../IGFirm_agent_header.h"
 #include "../my_library_header.h"
@@ -51,7 +52,7 @@ int IGFirm_send_quality_price_info()
     if (ENERGY_SHOCK_FREQUENCY!=0)
     {   
         // To simulate a REPEATED energy price shock over a time duration interval:    
-        if ((DAY>=ENERGY_SHOCK_START)&&(DAY<=ENERGY_SHOCK_END)&&((DAY-ENERGY_SHOCK_START)%ENERGY_SHOCK_FREQUENCY==0))
+        if ((DAY>=ENERGY_SHOCK_START)&&(DAY<ENERGY_SHOCK_END)&&((DAY-ENERGY_SHOCK_START)%ENERGY_SHOCK_FREQUENCY==0))
         {
             ENERGY_PRICE_MARKUP = CONST_ENERGY_SHOCK_INTENSITY;
         }
@@ -62,7 +63,8 @@ int IGFirm_send_quality_price_info()
         
         //At the end of the time interval there is a down_shock only if the shock is set to be symmetric:
         if ((DAY==ENERGY_SHOCK_END)&&(SYMMETRIC_SHOCK==1))
-        {        
+        {   
+            if(PRINT_DEBUG) printf("\nIn IGFirm_send_quality_price_info: Downward shock due to SYMMETRIC_SHOCK==1\n");
             //Multiplicative: mark up defined in percentage terms
             CAPITAL_GOOD_PRICE = CAPITAL_GOOD_PRICE*pow((1+CONST_ENERGY_SHOCK_INTENSITY),-(ENERGY_SHOCK_END-ENERGY_SHOCK_START)/ENERGY_SHOCK_FREQUENCY);
         }        
