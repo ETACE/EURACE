@@ -111,31 +111,31 @@ int Household_UNEMPLOYED_read_job_vacancies_and_send_applications()
     START_VACANCIES_MESSAGE_LOOP
  
     /*Unemployed take into account only the vacancy messages with the wage offer for            the correspondent general skill level*/
-    	if(GENERAL_SKILL == 1)
-    	{
-    		wage_offer = vacancies_message->firm_wage_offer_for_skill_1;
-    	}
+        if(GENERAL_SKILL == 1)
+        {
+            wage_offer = vacancies_message->firm_wage_offer_for_skill_1;
+        }
     
-    	if(GENERAL_SKILL == 2)
-    	{
-    		wage_offer = vacancies_message->firm_wage_offer_for_skill_2;
-    	}
+        if(GENERAL_SKILL == 2)
+        {
+            wage_offer = vacancies_message->firm_wage_offer_for_skill_2;
+        }
     
-    	if(GENERAL_SKILL == 3)
-    	{
-    		wage_offer =  vacancies_message->firm_wage_offer_for_skill_3;
-    	}
+        if(GENERAL_SKILL == 3)
+        {
+            wage_offer =  vacancies_message->firm_wage_offer_for_skill_3;
+        }
     
-    	if(GENERAL_SKILL == 4)
-    	{
-    		wage_offer =  vacancies_message->firm_wage_offer_for_skill_4;
-    	}
+        if(GENERAL_SKILL == 4)
+        {
+            wage_offer =  vacancies_message->firm_wage_offer_for_skill_4;
+        }
     
-    	if(GENERAL_SKILL == 5)
-    	{
-    		wage_offer =  vacancies_message->firm_wage_offer_for_skill_5;
-    	}
-  	
+        if(GENERAL_SKILL == 5)
+        {
+            wage_offer =  vacancies_message->firm_wage_offer_for_skill_5;
+        }
+    
         /*wage offer has to be equal or higher than the reservation wage*/
         if(wage_offer >= WAGE_RESERVATION)
         {
@@ -149,7 +149,7 @@ int Household_UNEMPLOYED_read_job_vacancies_and_send_applications()
             else /*take into account the costs of a different region:                           Firm and Household; Households can only apply in                            neighboring regions*/
             {
                 /*For every neighboring region*/
-            	
+                
                 for(i = 0;i < NEIGHBORING_REGION_IDS.size; i++)
                 {
                     /*If vacancy is in a neighboring region*/
@@ -341,30 +341,30 @@ int Household_UNEMPLOYED_read_job_vacancies_and_send_applications_2()
     /*If unemployed*/
     START_VACANCIES2_MESSAGE_LOOP
     /*read vacancy messages with the wage offer for the correspondent general skill         level of the household*/
-    	if(GENERAL_SKILL == 1)
-    	{
-    		wage_offer = vacancies2_message->firm_wage_offer_for_skill_1;
-    	}
+        if(GENERAL_SKILL == 1)
+        {
+            wage_offer = vacancies2_message->firm_wage_offer_for_skill_1;
+        }
     
-    	if(GENERAL_SKILL == 2)
-    	{
-    		wage_offer = vacancies2_message->firm_wage_offer_for_skill_2;
-    	}
+        if(GENERAL_SKILL == 2)
+        {
+            wage_offer = vacancies2_message->firm_wage_offer_for_skill_2;
+        }
     
-    	if(GENERAL_SKILL == 3)
-    	{
-    		wage_offer =  vacancies2_message->firm_wage_offer_for_skill_3;
-    	}
+        if(GENERAL_SKILL == 3)
+        {
+            wage_offer =  vacancies2_message->firm_wage_offer_for_skill_3;
+        }
     
-    	if(GENERAL_SKILL == 4)
-    	{
-    		wage_offer =  vacancies2_message->firm_wage_offer_for_skill_4;
-    	}
+        if(GENERAL_SKILL == 4)
+        {
+            wage_offer =  vacancies2_message->firm_wage_offer_for_skill_4;
+        }
     
-    	if(GENERAL_SKILL == 5)
-    	{
-    		wage_offer =  vacancies2_message->firm_wage_offer_for_skill_5;
-    	}
+        if(GENERAL_SKILL == 5)
+        {
+            wage_offer =  vacancies2_message->firm_wage_offer_for_skill_5;
+        }
 
         if(wage_offer >= WAGE_RESERVATION)
         {
@@ -377,7 +377,7 @@ int Household_UNEMPLOYED_read_job_vacancies_and_send_applications_2()
             else /*Firm and Household are in different region: take                     into account the region costs*/
             {
                 /*For every neighboring region*/
-            	int i;
+                int i;
                 for(i = 0; i < NEIGHBORING_REGION_IDS.size;i++)
                 {
                     /*If vacancy is in a neighboring region*/
@@ -567,30 +567,6 @@ int Household_finish_labour_market()
 }
 
 /**********************************Household Role: Public Sector *********************/
-/** \fn Household_read_policy_announcements()
- * \brief This function reads messages send by the government announcing tax rates, benefits, transfer payments and subsidies.
- */
-int Household_read_policy_announcements()
-{
-    /*Read tax announcement*/
-    /*Read unemployment benefit announcement*/
-    /*Read transfer announcement*/
-    /*Read subsidy announcement*/
-    START_POLICY_ANNOUNCEMENT_MESSAGE_LOOP
-    if(policy_announcement_message->gov_id == GOV_ID)
-    {
-        TAX_RATE_HH_LABOUR  = policy_announcement_message->tax_rate_hh_labour;
-        TAX_RATE_HH_CAPITAL = policy_announcement_message->tax_rate_hh_capital;
-
-        /*This is the endogeneous unemployment percentage (the global parameter is: GOV_POLICY_UNEMPLOYMENT_BENEFIT_PCT)*/
-        UNEMPLOYMENT_BENEFIT_PCT = policy_announcement_message->unemployment_benefit_pct;
-        TRANSFER_PAYMENT = policy_announcement_message->hh_transfer_payment;
-        SUBSIDY_PAYMENT = policy_announcement_message->hh_subsidy_payment;
-    }
-    FINISH_POLICY_ANNOUNCEMENT_MESSAGE_LOOP
-
-    return 0;
-}
 
 /** \fn Household_send_unemployment_benefit_notification()
  * \brief This function sends a message to the government in case of being unemployed that contains the last earned labour income
