@@ -8,7 +8,7 @@
 BASE=$PWD
 
 F1="40 120 240 560"     #duration: 240+"40 120 240 560"=280 360 480 801
-F2="1 5 10 20"          #intensity
+F2="0.01 0.05 0.10 0.20" #intensity
 F3="0 20 40 60"         #frequency
 
 echo '  Creating specific.xml files in folder hierarchy...'
@@ -23,6 +23,11 @@ for f1 in $F1; do
                 cd ./$folder1/$folder2/$folder3
                 rm -f specific.xml
                 echo '<environment>'>>specific.xml
+
+                #Symmetric shock:
+                echo -n '<symmetric_shock>'>>specific.xml
+                echo -n '0'>>specific.xml
+                echo '</symmetric_shock>'>>specific.xml
         
                 #Duration:
                 echo -n '<energy_shock_start>'>>specific.xml
