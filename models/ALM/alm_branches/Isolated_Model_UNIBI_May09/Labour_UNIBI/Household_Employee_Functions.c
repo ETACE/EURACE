@@ -104,17 +104,15 @@ int Household_UNEMPLOYED_read_job_vacancies_and_send_applications()
 
 	if(DAY<DAY_CHANGE_REGION_COSTS_1)
 	{
-	REGION_COST=REGION_COST_1;
-	}else if(DAY>=DAY_CHANGE_REGION_COSTS_1 && DAY<DAY_CHANGE_REGION_COSTS_2)
-{
-
-	REGION_COST=REGION_COST_2;
-
-}else
-{
-	REGION_COST=REGION_COST_3;
-
-}
+		REGION_COST=REGION_COST_1;
+	}
+	else if(DAY>=DAY_CHANGE_REGION_COSTS_1 && DAY<DAY_CHANGE_REGION_COSTS_2)
+			{
+				REGION_COST=REGION_COST_2;
+			}else
+				{
+					REGION_COST=REGION_COST_3;
+				}
 
     /* Create a vacancy dynamic array to store vacancies*/
     vacancy_array  vacancy_list;
@@ -123,7 +121,7 @@ int Household_UNEMPLOYED_read_job_vacancies_and_send_applications()
     double wage_offer;
     
     /*if unemployed: search for vacancies*/
-
+    
     START_VACANCIES_MESSAGE_LOOP
  
     /*Unemployed take into account only the vacancy messages with the wage offer for            the correspondent general skill level*/
