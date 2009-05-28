@@ -6,6 +6,30 @@
 
 /************************************ Household agent functions ************************************/
 /*************************************Household Role: Statistics *********************************/
+/** \fn Household_read_policy_announcements()
+ * \brief This function reads messages send by the government announcing tax rates, benefits, transfer payments and subsidies.
+ */
+int Household_read_policy_announcements()
+{
+    /*Read tax announcement*/
+    /*Read unemployment benefit announcement*/
+    /*Read transfer announcement*/
+    /*Read subsidy announcement*/
+    START_POLICY_ANNOUNCEMENT_MESSAGE_LOOP
+    if(policy_announcement_message->gov_id == GOV_ID)
+    {
+        TAX_RATE_HH_LABOUR  = policy_announcement_message->tax_rate_hh_labour;
+        TAX_RATE_HH_CAPITAL = policy_announcement_message->tax_rate_hh_capital;
+
+        /*This is the endogeneous unemployment percentage (the global parameter is: GOV_POLICY_UNEMPLOYMENT_BENEFIT_PCT)*/
+        UNEMPLOYMENT_BENEFIT_PCT = policy_announcement_message->unemployment_benefit_pct;
+        TRANSFER_PAYMENT = policy_announcement_message->hh_transfer_payment;
+        SUBSIDY_PAYMENT = policy_announcement_message->hh_subsidy_payment;
+    }
+    FINISH_POLICY_ANNOUNCEMENT_MESSAGE_LOOP
+
+    return 0;
+}
 
 /** \fn Household_receive_data()
  * \brief Household is importing macro data from Eurostat to use in behavioral rules.
