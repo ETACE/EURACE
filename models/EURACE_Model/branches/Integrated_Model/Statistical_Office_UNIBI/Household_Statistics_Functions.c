@@ -36,8 +36,18 @@ int Household_read_policy_announcements()
  */
 int Household_receive_data()
 {
+    int i;
+
     START_BANKRUPTCY_MESSAGE_LOOP
-       add_int(&LIST_OF_BANKRUPT_FIRMS, bankruptcy_message->firm_id);
+       //Resetting the quantity in portfolio to zero:
+        for (i=0; i<ASSETSOWNED.size; i++)
+        {
+            if (ASSETSOWNED.array[i].id == bankruptcy_message->firm_id)
+            {
+                ASSETSOWNED.array[i].quantity=0;
+                ASSETSOWNED.array[i].lastPrice=0.0;
+            }
+        }
     FINISH_BANKRUPTCY_MESSAGE_LOOP  
 
     return 0;
