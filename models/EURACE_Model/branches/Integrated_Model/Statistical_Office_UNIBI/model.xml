@@ -1520,11 +1520,6 @@
      <name>nr_firm_shares</name>
      <description></description>
     </variable>
-    <variable>
-     <type>int_array</type>
-     <name>list_of_bankrupt_firms</name>
-     <description>The household records a list_of_bankrupt_firms to reset the quantity in assetsowned.quantity=0.</description>
-    </variable>
    </memory>
    <functions>
     <function>
