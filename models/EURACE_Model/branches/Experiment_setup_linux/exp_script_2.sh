@@ -26,7 +26,7 @@ for f1 in $F1; do
 
                 #Symmetric shock:
                 echo -n '<symmetric_shock>'>>specific.xml
-                echo -n '0'>>specific.xml
+                echo -n '1'>>specific.xml
                 echo '</symmetric_shock>'>>specific.xml
         
                 #Duration:
