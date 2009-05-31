@@ -30,15 +30,15 @@ echo '      Finished run for initial transient.'
 
 #Concatenating the node files
 echo '      Starting concatenation of the node output files'
-#bash ./join.sh ./ $NR_NODES
+bash ./join.sh ./ $NR_NODES
 echo '      Finished concatenation'
 
 #Removing the node files
-#rm -f node*.xml
+rm -f node*.xml
 echo '      Removed node output files'
 
 #Rename the $ITS.xml to transient.xml
-#mv $ITS.xml transient.xml
+mv $ITS.xml transient.xml
 echo '      Renamed last iteration xml file to transient.xml'
 
 echo '  Finished first stage of experiment.'
