@@ -27,7 +27,7 @@ int Eurostat_send_data_to_government()
     {
         region = i+1;
         
-        gdp = REGION_FIRM_DATA.array[region].gdp;
+        gdp = REGION_FIRM_DATA.array[i].gdp;
         
         printf("\n Region %d GDP=%2.2f\n", region, gdp);
         add_data_for_government_message(region, gdp, AVERAGE_WAGE);
