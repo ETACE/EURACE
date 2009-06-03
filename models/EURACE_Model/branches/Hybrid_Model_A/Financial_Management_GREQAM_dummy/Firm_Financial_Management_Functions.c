@@ -191,8 +191,6 @@ int Firm_compute_total_financial_payments()
  */
 int Firm_compute_balance_sheet()
 {
-    double sum;
-    int imax;
     int i;
 
     //compute the equity of the firm
@@ -203,15 +201,14 @@ int Firm_compute_balance_sheet()
 
     //TOTAL_VALUE_LOCAL_INVENTORY: estimated value of local inventory stocks at current mall prices
     //We loop over the malls and sum the value of all local inventory stocks
-    imax = CURRENT_MALL_STOCKS.size;
-    sum=0.0;
-    for (i=0; i<imax; i++)
+
+    TOTAL_VALUE_LOCAL_INVENTORY=0.0;
+    for (i=0; i<CURRENT_MALL_STOCKS.size; i++)
     {
-        sum += PRICE*CURRENT_MALL_STOCKS.array[i].current_stock;
+    	TOTAL_VALUE_LOCAL_INVENTORY += PRICE*CURRENT_MALL_STOCKS.array[i].current_stock;
         //When malls have different current_price use this code:
-        //sum += CURRENT_MALL_STOCKS.array[i].current_price * CURRENT_MALL_STOCKS.array[i].current_stock;
+        //TOTAL_VALUE_LOCAL_INVENTORY += CURRENT_MALL_STOCKS.array[i].current_price * CURRENT_MALL_STOCKS.array[i].current_stock;
     }
-    TOTAL_VALUE_LOCAL_INVENTORY=sum;
 
     TOTAL_ASSETS = PAYMENT_ACCOUNT + TOTAL_VALUE_CAPITAL_STOCK
             + TOTAL_VALUE_LOCAL_INVENTORY;
@@ -552,7 +549,7 @@ int Firm_set_bankruptcy_insolvency()
  */
 int Firm_bankruptcy_insolvency_procedure()
 {
-    int i, imax;
+    int i;
     double target_debt, bad_debt, credit_refunded, residual_var;
     double write_off_ratio, target_equity, ipo_amount;
     
@@ -563,8 +560,7 @@ int Firm_bankruptcy_insolvency_procedure()
      target_debt = (1-DEBT_RESCALING_FACTOR)*(TOTAL_ASSETS-PAYMENT_ACCOUNT);
     
     //Renegotiating debt: refunding credit, computing bad debt
-    imax = LOANS.size;
-    for (i=0; i<imax; i++)
+    for (i=0; i<LOANS.size; i++)
     {
         residual_var = LOANS.array[i].var_per_installment
                 * LOANS.array[i].nr_periods_before_repayment;
