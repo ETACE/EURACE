@@ -331,10 +331,10 @@ int Household_read_application_rejection_update_wage_reservation()
     WAGE_RESERVATION = WAGE_RESERVATION - WAGE_RESERVATION*WAGE_RESERVATION_UPDATE;
     
 
-    /* Don't let wage reservation be below 1 */
-    if(WAGE_RESERVATION < 1)
+    /* Don't let wage reservation be below the current unemplyoment benefit pct*/
+    if(WAGE_RESERVATION < LAST_LABOUR_INCOME*UNEMPLOYMENT_BENEFIT_PCT)
     {
-        WAGE_RESERVATION = 1;
+        WAGE_RESERVATION = LAST_LABOUR_INCOME*UNEMPLOYMENT_BENEFIT_PCT;
     }
     
 
@@ -561,9 +561,9 @@ int Household_read_application_rejection_update_wage_reservation_2()
     WAGE_RESERVATION = WAGE_RESERVATION-WAGE_RESERVATION*WAGE_RESERVATION_UPDATE;
     
     /* Don't let wage reservation be below 1 */
-    if(WAGE_RESERVATION < 1)
+    if(WAGE_RESERVATION < LAST_LABOUR_INCOME*UNEMPLOYMENT_BENEFIT_PCT)
     {
-        WAGE_RESERVATION = 1;
+        WAGE_RESERVATION = LAST_LABOUR_INCOME*UNEMPLOYMENT_BENEFIT_PCT;
     }
     
 
