@@ -963,8 +963,8 @@ sprintf(data, "%d",NO_REGIONS_PER_GOV);	print_tag("no_regions_per_gov", data, fi
 
 		
 		sprintf(data, "%f", 0);     	print_tag("wage", data, file);
-		sprintf(data, "%f", 1.0); 	print_tag("wage_reservation", data, file);
-		sprintf(data, "%f", 1.0); 	print_tag("last_labour_income", data, file);
+		sprintf(data, "%f", wage_offer[column][row]); 	print_tag("wage_reservation", data, file);
+		sprintf(data, "%f", wage_offer[column][row]); 	print_tag("last_labour_income", data, file);
 		sprintf(data, "%d", -1);       	print_tag("employee_firm_id", data, file);
 		sprintf(data, "%d", g_skill_level);   print_tag("general_skill", data, file);
 		sprintf(data, "%f", specific_skills_of_household[column][row]);       print_tag("specific_skill", data, file);
