@@ -49,7 +49,7 @@ return 0;
 int Household_shifting_consumption_day()
 {
 	
-	if(FLAG_CONSUMPTION_SHIFTING==1)
+	/*if(FLAG_CONSUMPTION_SHIFTING==1)
 	{
 		printf("Error in Function Household_shifting_consumption_day\n\n"
 				"Household %d had already shifted the consumption day, but the payment_account is still smaller than the weekly_budget! \n",ID);
@@ -60,7 +60,7 @@ int Household_shifting_consumption_day()
 	DAY_OF_WEEK_TO_ACT = (DAY_OF_WEEK_TO_ACT+1)%5;
 
 	
-	printf("Household %d shifts the consumption day \n",ID);
+	printf("Household %d shifts the consumption day \n",ID);*/
 	
 	return 0;
 }
@@ -71,12 +71,12 @@ int Household_shifting_consumption_day()
  */
 int Household_back_shifting_consumption_day()
 {
-	assert(FLAG_CONSUMPTION_SHIFTING==1);
+	/*assert(FLAG_CONSUMPTION_SHIFTING==1);
 	
 	DAY_OF_WEEK_TO_ACT = (DAY_OF_WEEK_TO_ACT-1)%5;
 	FLAG_CONSUMPTION_SHIFTING =0;
 	
-	printf("Household %d shifts the consumption day back.\n",ID);
+	printf("Household %d shifts the consumption day back.\n",ID);*/
 	
 	return 0;
 }
@@ -193,6 +193,9 @@ int Household_rank_and_buy_goods_1()
         
             ORDER_QUANTITY[0].price = mall_quality_price_info_list.
             array[index_selected_good].price;
+            
+            ORDER_QUANTITY[0].firm_id = mall_quality_price_info_list.
+                        array[index_selected_good].firm_id;
 
             /*The consumption request message is sent  */ 
             add_consumption_request_1_message(
