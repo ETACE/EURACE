@@ -2157,7 +2157,7 @@ int main( int argc, char **argv )
 		
 		if(stilldata) savedatatofile(iteration_number, p_firms, p_household,p_IGfirms, p_malls);
 		
-		iteration_number++;
+		iteration_number +=20;
 		
 		/*current = *p_agents;
 		
