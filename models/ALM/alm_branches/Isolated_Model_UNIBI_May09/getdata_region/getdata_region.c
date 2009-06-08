@@ -28,6 +28,11 @@ struct firm
 	double planned_production_quantity;
 	double payment_account_firm;
 	double mean_wage;
+	double wage_offer_for_skill_1;
+	double wage_offer_for_skill_2;
+	double wage_offer_for_skill_3;
+	double wage_offer_for_skill_4;
+	double wage_offer_for_skill_5;
 
 	struct firm * next;
 };
@@ -97,6 +102,11 @@ struct Household_data
 	double commuter;
 	double foreign_commuter;
 	double average_payment_account;
+	double reservation_wage_skill_1;
+	double reservation_wage_skill_2;
+	double reservation_wage_skill_3;
+	double reservation_wage_skill_4;
+	double reservation_wage_skill_5;
 	
 		
 };
@@ -130,6 +140,11 @@ struct Firm_data
 	double planned_production_quantity;
 	double production_quantity_last_month;
 	double average_technology_last_month;
+	double wage_offer_for_skill_1;
+	double wage_offer_for_skill_2;
+	double wage_offer_for_skill_3;
+	double wage_offer_for_skill_4;
+	double wage_offer_for_skill_5;
 	
 };
 typedef struct Firm_data Firm_data;
@@ -153,6 +168,7 @@ double last_technology[10];
 * FUNCTIONS: linked list functions                               *
 * PURPOSE: to allocate and free memory in linked lists           *
 *****************************************************************/
+
 void freefirms(firm * head)
 {
 	/* Tempory element needed for loop */
@@ -355,7 +371,7 @@ int getiteration(char * filepath, int itno, firm ** pointer_to_firms, household 
 	FILE *file;
 	/* Char and char buffer for reading file to */
 	char c = ' ';
-	char buffer[100000];
+	char buffer[1000000];
 	/* Variable to keep reading file */
 	int reading = 1;
 
@@ -365,6 +381,13 @@ int getiteration(char * filepath, int itno, firm ** pointer_to_firms, household 
 	int inwage_offer, intechnology, inno_employees, invacancies, inaverage_g_skill;
 	int inproduction_quantity, incapital_stock, inrevenue, inearnings, inprice;
 	int intotal_sold_quantity, inplanned_production_quantity, inpayment_account_firm, inprice_last_month, inmean_specific_skills, inmean_wage;
+
+	int inwage_offer_for_skill_1;
+	int inwage_offer_for_skill_2;
+	int inwage_offer_for_skill_3;
+	int inwage_offer_for_skill_4;
+	int inwage_offer_for_skill_5;
+
 	/*Household*/
 	int  inwage, inwage_reservation, ingeneral_skill, inspecific_skill, inemployee_firm_id;
 	int inemployer_region_id, inpayment_account;
@@ -383,6 +406,12 @@ int getiteration(char * filepath, int itno, firm ** pointer_to_firms, household 
 	double wage_offer, technology, average_g_skill, production_quantity, capital_stock;
 	double revenue, earnings, price, total_sold_quantity, planned_production_quantity;
 	double payment_account_firm,  price_last_month, mean_specific_skills,  mean_wage;
+	double wage_offer_for_skill_1;
+	double wage_offer_for_skill_2;
+	double wage_offer_for_skill_3;
+	double wage_offer_for_skill_4;
+	double wage_offer_for_skill_5;
+	
 
 	/*Household*/
 	int  general_skill, employee_firm_id, employer_region_id;
@@ -394,7 +423,7 @@ int getiteration(char * filepath, int itno, firm ** pointer_to_firms, household 
 	/*IGFirm*/
 	double productivity, revenue_per_day;
 	
-	char name[100];
+	char name[1000];
 	
 	firm * current_firm, * tail_firm;
 	tail_firm = *pointer_to_firms;
@@ -414,7 +443,7 @@ int getiteration(char * filepath, int itno, firm ** pointer_to_firms, household 
 	current_IGfirm = NULL;
 	
 	/* Open config file to read-only */
-	char data[200];
+	char data[2000];
 	sprintf(data, "%s%i%s", filepath, itno, ".xml");
 	printf("%s", data);
 	if((file = fopen(data, "r"))==NULL)
@@ -454,6 +483,11 @@ int getiteration(char * filepath, int itno, firm ** pointer_to_firms, household 
 	inpayment_account_firm  = 0;
 	inprice_last_month=0;
 	inmean_specific_skills=0;
+	inwage_offer_for_skill_1=0;
+	inwage_offer_for_skill_2=0;
+	inwage_offer_for_skill_3=0;
+	inwage_offer_for_skill_4=0;
+	inwage_offer_for_skill_5=0;
 	/*Household*/
 	inwage = 0;
 	inwage_reservation = 0;
@@ -489,6 +523,12 @@ int getiteration(char * filepath, int itno, firm ** pointer_to_firms, household 
 	price_last_month=0.0;
 	mean_specific_skills=0.0;
 	mean_wage=0;
+
+	wage_offer_for_skill_1=0;
+	wage_offer_for_skill_2=0;
+	wage_offer_for_skill_3=0;
+	wage_offer_for_skill_4=0;
+	wage_offer_for_skill_5=0;
 	
 	wage = 0.0;
 	wage_reservation = 0.0;
@@ -557,10 +597,15 @@ int getiteration(char * filepath, int itno, firm ** pointer_to_firms, household 
 					current_firm->mean_wage = mean_wage;
 					current_firm->price = price;
 					current_firm->total_sold_quantity = total_sold_quantity;
-			current_firm->planned_production_quantity = planned_production_quantity;
+					current_firm->planned_production_quantity = planned_production_quantity;
 					current_firm->payment_account_firm = payment_account;
 					current_firm->price_last_month=price_last_month;
 					current_firm->mean_specific_skills=mean_specific_skills;
+					current_firm->wage_offer_for_skill_1=wage_offer_for_skill_1;
+					current_firm->wage_offer_for_skill_2=wage_offer_for_skill_2;
+					current_firm->wage_offer_for_skill_3=wage_offer_for_skill_3;
+					current_firm->wage_offer_for_skill_4=wage_offer_for_skill_4;
+					current_firm->wage_offer_for_skill_5=wage_offer_for_skill_5;
 					
 					
 					
@@ -681,6 +726,18 @@ int getiteration(char * filepath, int itno, firm ** pointer_to_firms, household 
 			if(strcmp(buffer, "/technology") == 0) { intechnology = 0; }
 			if(strcmp(buffer, "mean_wage") == 0) { inmean_wage = 1; }
 			if(strcmp(buffer, "/mean_wage") == 0) { inmean_wage = 0; }
+
+			if(strcmp(buffer, "wage_offer_for_skill_1") == 0) { inwage_offer_for_skill_1 = 1; }
+			if(strcmp(buffer, "/wage_offer_for_skill_1") == 0) { inwage_offer_for_skill_1 = 0; }
+			if(strcmp(buffer, "wage_offer_for_skill_2") == 0) { inwage_offer_for_skill_2 = 2; }
+			if(strcmp(buffer, "/wage_offer_for_skill_2") == 0) { inwage_offer_for_skill_2 = 0; }
+			if(strcmp(buffer, "wage_offer_for_skill_3") == 0) { inwage_offer_for_skill_3 = 1; }
+			if(strcmp(buffer, "/wage_offer_for_skill_3") == 0) { inwage_offer_for_skill_3 = 0; }
+			if(strcmp(buffer, "wage_offer_for_skill_4") == 0) { inwage_offer_for_skill_4 = 1; }
+			if(strcmp(buffer, "/wage_offer_for_skill_4") == 0) { inwage_offer_for_skill_4 = 0; }
+			if(strcmp(buffer, "wage_offer_for_skill_5") == 0) { inwage_offer_for_skill_5 = 1; }
+			if(strcmp(buffer, "/wage_offer_for_skill_5") == 0) { inwage_offer_for_skill_5 = 0; }
+
 			if(strcmp(buffer, "no_employees") == 0) { inno_employees = 1; }
 			if(strcmp(buffer, "/no_employees") == 0) { inno_employees = 0; }
 			if(strcmp(buffer, "vacancies") == 0) { invacancies = 1; }
@@ -754,6 +811,13 @@ int getiteration(char * filepath, int itno, firm ** pointer_to_firms, household 
 			
 
 			if(inagent && inwage_offer)  { wage_offer  = atof(buffer); }
+
+			if(inagent && inwage_offer_for_skill_1)  { wage_offer_for_skill_1  = atof(buffer); }
+			if(inagent && inwage_offer_for_skill_2)  { wage_offer_for_skill_2  = atof(buffer); }
+			if(inagent && inwage_offer_for_skill_3)  { wage_offer_for_skill_3  = atof(buffer); }
+			if(inagent && inwage_offer_for_skill_4)  { wage_offer_for_skill_4  = atof(buffer); }
+			if(inagent && inwage_offer_for_skill_5)  { wage_offer_for_skill_5  = atof(buffer); }
+
 			if(inagent && intechnology)  { technology  = atof(buffer); }
 			if(inagent && inno_employees)  { no_employees  = atoi(buffer); }
 			if(inagent && invacancies)  { vacancies  = atof(buffer); }
@@ -844,7 +908,7 @@ if(inagent && inplanned_production_quantity)  { planned_production_quantity  = a
 void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_households,IGfirm ** pointer_to_IGfirms,mall ** pointer_to_malls)
 {
 	FILE *file;
-	char data[100];
+	char data[1000];
 	firm * current_firm;
 	household * current_household;
 	IGfirm * current_IGfirm;
@@ -943,6 +1007,11 @@ void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_
 		Data_Household[i].commuter = 0.0;
 		Data_Household[i].foreign_commuter = 0.0;
 		Data_Household[i].average_payment_account = 0.0;
+		Data_Household[i].reservation_wage_skill_1 = 0.0;
+		Data_Household[i].reservation_wage_skill_2 = 0.0;
+		Data_Household[i].reservation_wage_skill_3 = 0.0;
+		Data_Household[i].reservation_wage_skill_4 = 0.0;
+		Data_Household[i].reservation_wage_skill_5 = 0.0;
 	}
 
 
@@ -967,7 +1036,7 @@ void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_
 				Data_Household[0].commuter++;	
 			}
 		}
-		
+
 		/*Get seperated data for different general skill groups*/
 		switch(current_household->general_skill)
 		{
@@ -981,6 +1050,10 @@ void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_
 				Data_Household[0].average_wage_skill_1 +=
 				current_household->wage;	
 			}
+			else
+			{
+				Data_Household[0].reservation_wage_skill_1 += current_household->wage_reservation;	
+			}
 			break;
 
 			case 2:
@@ -990,6 +1063,10 @@ void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_
 				Data_Household[0].employed_skill_2++;
 				Data_Household[0].average_wage_skill_2 +=
 				current_household->wage;	
+			}
+			else
+			{
+				Data_Household[0].reservation_wage_skill_2 += current_household->wage_reservation;	
 			}
 			break;
 
@@ -1001,6 +1078,10 @@ void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_
 				Data_Household[0].average_wage_skill_3 +=
 				current_household->wage;	
 			}
+			else
+			{
+				Data_Household[0].reservation_wage_skill_3 += current_household->wage_reservation;	
+			}
 			break;
 
 			case 4:
@@ -1011,6 +1092,10 @@ void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_
 				Data_Household[0].average_wage_skill_4 +=
 				current_household->wage;	
 			}
+			else
+			{
+				Data_Household[0].reservation_wage_skill_4 += current_household->wage_reservation;	
+			}
 			break;
 
 			case 5:
@@ -1020,6 +1105,10 @@ void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_
 				Data_Household[0].employed_skill_5++;
 				Data_Household[0].average_wage_skill_5 +=
 				current_household->wage;	
+			}
+			else
+			{
+				Data_Household[0].reservation_wage_skill_5 += current_household->wage_reservation;	
 			}
 			break;
 					
@@ -1075,6 +1164,10 @@ void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_
 						commuters[0][l][r] += 1;
 							
 					}
+					else
+					{
+					Data_Household[i].reservation_wage_skill_1 += current_household->wage_reservation;	
+					}
 					break;
 
 					case 2:
@@ -1091,6 +1184,10 @@ void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_
 						r = current_household->employer_region_id;
 						commuters[2][l][r] += 1;
 						commuters[0][l][r] += 1;	
+					}
+					else
+					{
+					Data_Household[i].reservation_wage_skill_2 += current_household->wage_reservation;	
 					}
 					break;
 
@@ -1109,6 +1206,10 @@ void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_
 						commuters[3][l][r] += 1;
 						commuters[0][l][r] += 1;	
 					}
+					else
+					{
+					Data_Household[i].reservation_wage_skill_3 += current_household->wage_reservation;	
+					}
 					break;
 
 					case 4:
@@ -1126,6 +1227,10 @@ void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_
 						commuters[4][l][r] += 1;
 						commuters[0][l][r] += 1;	
 					}
+					else
+					{
+					Data_Household[i].reservation_wage_skill_4 += current_household->wage_reservation;	
+					}
 					break;
 
 					case 5:
@@ -1142,6 +1247,10 @@ void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_
 						r = current_household->employer_region_id;
 						commuters[5][l][r] += 1;
 						commuters[0][l][r] += 1;	
+					}
+					else
+					{
+					Data_Household[i].reservation_wage_skill_5 += current_household->wage_reservation;	
 					}
 					break;
 					
@@ -1251,6 +1360,47 @@ void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_
 	fclose(file);
 
 
+
+/*Regions: reservation_wages*/
+	file = fopen("data-reservation-wage.csv", "a");
+
+	sprintf(data, "%i", itno);
+	fputs(data, file);
+	fputs("\t", file);
+	
+	//int i;
+	for(i = 0; i <= no_regions; i++)
+	{
+		sprintf(data, "%f", Data_Household[i].reservation_wage_skill_1 
+		/(Data_Household[i].no_households_skill_1-Data_Household[i].employed_skill_1));
+		fputs(data, file);
+		fputs("\t", file);
+		sprintf(data, "%f", Data_Household[i].reservation_wage_skill_2 
+		/(Data_Household[i].no_households_skill_2-Data_Household[i].employed_skill_2));
+		fputs(data, file);
+		fputs("\t", file);
+		sprintf(data, "%f", Data_Household[i].reservation_wage_skill_3 
+		/(Data_Household[i].no_households_skill_3-Data_Household[i].employed_skill_3));
+		fputs(data, file);
+		fputs("\t", file);
+		sprintf(data, "%f", Data_Household[i].reservation_wage_skill_4 
+		/(Data_Household[i].no_households_skill_4-Data_Household[i].employed_skill_4));
+		fputs(data, file);
+		fputs("\t", file);
+		sprintf(data, "%f", Data_Household[i].reservation_wage_skill_5 
+		/(Data_Household[i].no_households_skill_5-Data_Household[i].employed_skill_5));
+		fputs(data, file);
+		fputs("\t", file);
+	}
+
+	fputs("\n", file);
+
+	fclose(file);
+
+
+
+
+
 /*Regions: commuter*/
 	file = fopen("data-commuter-region.csv", "a");
 
@@ -1329,7 +1479,7 @@ void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_
 
 
 
-	if(itno%20 == 0)
+	/*if(itno%20 == 0)
 	{int sum = 0;
 	for(m = 0; m <= 5; m++)
 	{
@@ -1352,7 +1502,7 @@ void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_
 		printf("/////////////////////////////\n");
 	}
 	
-	}
+	}*/
 
 
 
@@ -1565,6 +1715,11 @@ void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_
 		Data_Firm[i].planned_production_quantity = 0.0;
 		Data_Firm[i].production_quantity = 0.0;
 		Data_Firm[i].average_technology = 0.0;
+		Data_Firm[i].wage_offer_for_skill_1 = 0.0;
+		Data_Firm[i].wage_offer_for_skill_2 = 0.0;
+		Data_Firm[i].wage_offer_for_skill_3 = 0.0;
+		Data_Firm[i].wage_offer_for_skill_4 = 0.0;
+		Data_Firm[i].wage_offer_for_skill_5 = 0.0;
 		
 	}
 
@@ -1592,10 +1747,15 @@ void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_
 			Data_Firm[0].average_price += (current_firm->price*
 						       current_firm->total_sold_quantity);
 			Data_Firm[0].capital_stock += current_firm->capital_stock;
-			Data_Firm[0].earnings = current_firm->earnings;
-			Data_Firm[0].revenues = current_firm->revenue;
-			Data_Firm[0].planned_production_quantity = 
+			Data_Firm[0].earnings += current_firm->earnings;
+			Data_Firm[0].revenues += current_firm->revenue;
+			Data_Firm[0].planned_production_quantity += 
 						      current_firm->planned_production_quantity;
+			Data_Firm[0].wage_offer_for_skill_1 +=  current_firm->wage_offer_for_skill_1;
+			Data_Firm[0].wage_offer_for_skill_2 +=  current_firm->wage_offer_for_skill_2;
+			Data_Firm[0].wage_offer_for_skill_3 +=  current_firm->wage_offer_for_skill_3;
+			Data_Firm[0].wage_offer_for_skill_4 +=  current_firm->wage_offer_for_skill_4;
+			Data_Firm[0].wage_offer_for_skill_5 +=  current_firm->wage_offer_for_skill_5;
 
 		}
 		
@@ -1626,10 +1786,15 @@ void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_
 				Data_Firm[i].average_price += 
 				  (current_firm->price*current_firm->total_sold_quantity);
 				Data_Firm[i].capital_stock += current_firm->capital_stock;
-				Data_Firm[i].earnings = current_firm->earnings;
-				Data_Firm[i].revenues = current_firm->revenue;
-				Data_Firm[i].planned_production_quantity = 
+				Data_Firm[i].earnings += current_firm->earnings;
+				Data_Firm[i].revenues += current_firm->revenue;
+				Data_Firm[i].planned_production_quantity += 
 				   current_firm->planned_production_quantity;
+				Data_Firm[i].wage_offer_for_skill_1 +=  current_firm->wage_offer_for_skill_1;
+				Data_Firm[i].wage_offer_for_skill_2 +=  current_firm->wage_offer_for_skill_2;
+				Data_Firm[i].wage_offer_for_skill_3 +=  current_firm->wage_offer_for_skill_3;
+				Data_Firm[i].wage_offer_for_skill_4 +=  current_firm->wage_offer_for_skill_4;
+				Data_Firm[i].wage_offer_for_skill_5 +=  current_firm->wage_offer_for_skill_5;
 			}
 		}
 		
@@ -1925,6 +2090,41 @@ void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_
 	fclose(file);
 
 
+/*Regions: wage*/
+	file = fopen("data-wage-offer-region.csv", "a");
+
+	sprintf(data, "%i", itno);
+	fputs(data, file);
+	fputs("\t", file);
+
+	
+	for(i = 0; i <= no_regions; i++)
+	{
+		sprintf(data, "%f", Data_Firm[i].wage_offer_for_skill_1/Data_Firm[i].no_firms);
+		fputs(data, file);
+		fputs("\t", file);
+		sprintf(data, "%f", Data_Firm[i].wage_offer_for_skill_2/Data_Firm[i].no_firms);
+		fputs(data, file);
+		fputs("\t", file);
+		sprintf(data, "%f", Data_Firm[i].wage_offer_for_skill_3/Data_Firm[i].no_firms);
+		fputs(data, file);
+		fputs("\t", file);
+		sprintf(data, "%f", Data_Firm[i].wage_offer_for_skill_4/Data_Firm[i].no_firms);
+		fputs(data, file);
+		fputs("\t", file);
+		sprintf(data, "%f", Data_Firm[i].wage_offer_for_skill_5/Data_Firm[i].no_firms);
+		fputs(data, file);
+		fputs("\t", file);
+		
+	}
+		
+	fputs("\n", file);
+
+	fclose(file);
+
+
+
+
 /*Regions: growthrate output*/
 
 	if(itno%20 == 0 & itno > 20)
@@ -2027,6 +2227,9 @@ int main( int argc, char **argv )
 	file = fopen("data-wage-region.csv", "w");
 	fclose(file);
 
+	file = fopen("data-reservation-wage.csv", "w");
+	fclose(file);
+
 	file = fopen("data-commuter-region.csv", "w");
 	fclose(file);
 
@@ -2099,7 +2302,8 @@ int main( int argc, char **argv )
 	file = fopen("data-growthrate-technology-region.csv", "w");
 	fclose(file);
 
-	
+	file = fopen("data-wage-offer-region.csv", "w");
+	fclose(file);
 
 	
 	
