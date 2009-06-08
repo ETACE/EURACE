@@ -10,7 +10,7 @@ int Firm_send_data_to_Eurostat()
 
 	/*Determine the productivity of the firm. It is the minimum of TECHNOLOGY and MEAN-SPECIFIC-SKILLS
 	Calculates the productivity progress and sends it to eurostat*/
-	if(DAY%240 == 0)
+	if(DAY%20 == 0)
 	{
 
 		FIRM_PRODUCTIVITY_LAST_YEAR = FIRM_PRODUCTIVITY;
@@ -162,24 +162,23 @@ int Firm_receive_data()
 				specific_skill_5;
 
 				/*Updates wage_offer and wages regarding the productivity progress*/
-				if(DAY%240 == 1)
+				if(DAY%20 == 1)
 				{
 if(ID <= 2)
 printf("eurostat_send_specific_skills_message->productivity_progress %f \n",eurostat_send_specific_skills_message->productivity_progress);
+
 					if(eurostat_send_specific_skills_message->productivity_progress > 0)
 					{
 						WAGE_OFFER = WAGE_OFFER*(1+ 
 						eurostat_send_specific_skills_message->productivity_progress);
-
+	
 						int i;
 						for(i = 0; i< EMPLOYEES.size; i++)
-						{
-
+						{				
 							EMPLOYEES.array[i].wage = EMPLOYEES.array[i].wage*(1+ 	
 							eurostat_send_specific_skills_message->productivity_progress);
-
 						}
-					}
+					}		
 				}
 			
 		}
