@@ -216,14 +216,14 @@ void Eurostat_read_firm_data(void)
 	            firm_send_data_message->employees_skill_5;
 
 		REGION_FIRM_DATA.array[i].productivity_progress +=
-                    firm_send_data_message->firm_productivity_progress;
+                    firm_send_data_message->firm_productivity_progress* firm_send_data_message->employees;
                 FIRM_AVERAGE_PRODUCTIVITY_PROGRESS +=
-                    firm_send_data_message->firm_productivity_progress;
+                    firm_send_data_message->firm_productivity_progress* firm_send_data_message->employees;
                     
 		REGION_FIRM_DATA.array[i].productivity +=
-                    firm_send_data_message->firm_productivity;
+                    firm_send_data_message->firm_productivity* firm_send_data_message->employees;
                 FIRM_AVERAGE_PRODUCTIVITY +=
-                    firm_send_data_message->firm_productivity;		
+                    firm_send_data_message->firm_productivity* firm_send_data_message->employees;		
 
 	    }
 	    FINISH_FIRM_SEND_DATA_MESSAGE_LOOP
@@ -298,11 +298,11 @@ void Eurostat_compute_region_firm_data(void)
 	   {
 		REGION_FIRM_DATA.array[i].productivity_progress =
 		REGION_FIRM_DATA.array[i].productivity_progress/
-		REGION_FIRM_DATA.array[i].no_firms;
+		REGION_FIRM_DATA.array[i].employees;
 
 		REGION_FIRM_DATA.array[i].productivity =
 		REGION_FIRM_DATA.array[i].productivity/
-		REGION_FIRM_DATA.array[i].no_firms;
+		REGION_FIRM_DATA.array[i].employees;
 	   }
 
 	}
@@ -363,11 +363,11 @@ void Eurostat_compute_global_firm_data(void)
     	{
 		FIRM_AVERAGE_PRODUCTIVITY_PROGRESS =
 		FIRM_AVERAGE_PRODUCTIVITY_PROGRESS/
-		NO_FIRMS;
+		NO_EMPLOYEES;
 
 		FIRM_AVERAGE_PRODUCTIVITY =
 		FIRM_AVERAGE_PRODUCTIVITY/
-		NO_FIRMS;
+		NO_EMPLOYEES;
     	}
 
 }

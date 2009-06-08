@@ -285,12 +285,12 @@ int Eurostat_calculate_data_old_version()
 		REGION_FIRM_DATA.array[i].productivity_progress +=
                     firm_send_data_message->firm_productivity_progress* firm_send_data_message->employees;
                 FIRM_AVERAGE_PRODUCTIVITY_PROGRESS +=
-                    firm_send_data_message->firm_productivity_progress;
+                    firm_send_data_message->firm_productivity_progress* firm_send_data_message->employees;
                     
 		REGION_FIRM_DATA.array[i].productivity +=
                     firm_send_data_message->firm_productivity* firm_send_data_message->employees;
                 FIRM_AVERAGE_PRODUCTIVITY +=
-                    firm_send_data_message->firm_productivity;
+                    firm_send_data_message->firm_productivity* firm_send_data_message->employees;
 		
             }
             
@@ -421,11 +421,11 @@ int Eurostat_calculate_data_old_version()
     {
 		FIRM_AVERAGE_PRODUCTIVITY_PROGRESS =
 		FIRM_AVERAGE_PRODUCTIVITY_PROGRESS/
-		NO_FIRMS;
+		NO_EMPLOYEES;
 
 		FIRM_AVERAGE_PRODUCTIVITY =
 		FIRM_AVERAGE_PRODUCTIVITY/
-		NO_FIRMS;
+		NO_EMPLOYEES;
     }
 
     
