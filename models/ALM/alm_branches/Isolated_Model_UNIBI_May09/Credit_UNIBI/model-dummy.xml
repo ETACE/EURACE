@@ -223,6 +223,56 @@
      <name>payment_account</name>
      <description></description>
     </variable>
+	<variable>
+     <type>double</type>
+     <name>earnings</name>
+     <description></description>
+    </variable>
+<variable>
+     <type>double</type>
+     <name>monthly_interest_revenue</name>
+     <description></description>
+    </variable>
+<variable>
+     <type>double</type>
+     <name>daily_interest_revenue</name>
+     <description></description>
+    </variable>
+<variable>
+     <type>double</type>
+     <name>tax_payment</name>
+     <description></description>
+    </variable>
+<variable>
+     <type>double</type>
+     <name>tax_rate_coporate</name>
+     <description></description>
+    </variable>
+<variable>
+     <type>double</type>
+     <name>net_earnings</name>
+     <description></description>
+    </variable>
+<variable>
+     <type>double</type>
+     <name>dividend_payment</name>
+     <description></description>
+    </variable>
+<variable>
+     <type>double</type>
+     <name>current_dividend_per_share</name>
+     <description></description>
+    </variable>
+<variable>
+     <type>int</type>
+     <name>outstanding_shares</name>
+     <description></description>
+    </variable>
+<variable>
+     <type>int</type>
+     <name>day_of_month_to_act</name>
+     <description></description>
+    </variable>
    </memory>
    <functions>
     <function>
@@ -252,7 +302,7 @@
     <function>
      <name>Bank_read_loan_request_send_acceptance</name>
      <description></description>
-     <currentState>Start_Bank</currentState>
+     <currentState>01a</currentState>
      <nextState>01</nextState>
      <inputs>
       <input>
@@ -269,7 +319,7 @@
      <name>Bank_account_update_deposits</name>
      <description></description>
      <currentState>03</currentState>
-     <nextState>end_BANK</nextState>
+     <nextState>04</nextState>
      <inputs>
       <input>
        <messageName>bank_account_update</messageName>
@@ -277,6 +327,49 @@
      </inputs>
      <outputs/>
     </function>
+<function>
+     <name>Bank_pays_dividends_taxes</name>
+     <description></description>
+     <currentState>start_bank</currentState>
+     <nextState>01a</nextState>
+	  <condition>
+       <time>
+        <period>monthly</period>
+        <phase>a.day_of_month_to_act</phase>
+       </time>  
+     </condition>
+     <intputs/>
+	<outputs>
+      <output>
+       <messageName>tax_payment</messageName>
+      </output>
+	 <output>
+       <messageName>dividend_per_share</messageName>
+      </output>
+     </outputs>
+     
+    </function>
+
+<function>
+     <name>Bank_idle</name>
+     <description></description>
+     <currentState>start_bank</currentState>
+     <nextState>01a</nextState>
+	 <condition>
+	<not>
+       <time>
+        <period>monthly</period>
+        <phase>a.day_of_month_to_act</phase>
+       </time> 
+	</not> 
+     </condition>
+     <intputs/>
+
+     </outputs/>
+     
+    </function>
+	
+
    </functions>
   </xagent>
   <xagent>
