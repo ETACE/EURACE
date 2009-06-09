@@ -164,8 +164,8 @@ int Firm_receive_data()
 				/*Updates wage_offer and wages regarding the productivity progress*/
 				if(DAY%20 == 1)
 				{
-if(ID <= 2)
-printf("eurostat_send_specific_skills_message->productivity_progress %f \n",eurostat_send_specific_skills_message->productivity_progress);
+					if(ID <= 2)
+						printf("eurostat_send_specific_skills_message->productivity_progress %f \n",eurostat_send_specific_skills_message->productivity_progress);
 
 					if(eurostat_send_specific_skills_message->productivity_progress > 0)
 					{
