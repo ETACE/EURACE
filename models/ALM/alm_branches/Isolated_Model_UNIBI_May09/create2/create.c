@@ -128,7 +128,7 @@ double INTEREST_RATE = 0.005;
 double INV_INERTIA = 2.5;
 
 
-double ADAPTION_DELIVERY_VOLUME = 0.07;//0.05
+double ADAPTION_DELIVERY_VOLUME = 0.025;//0.05
 
 int PERIODS_TO_REPAY_LOANS = 24;
 
@@ -1003,7 +1003,8 @@ sprintf(data, "%d",NO_REGIONS_PER_GOV);	print_tag("no_regions_per_gov", data, fi
 		}
 
 		
-
+		sprintf(data1, "%s,{%d, 1,0.1}",data2,bank_id);
+				sprintf(data2,"%s",data1);
 		 
 		
 		sprintf(data, "{%s}",data2);	print_tag("assetsowned", data, file);
@@ -1076,24 +1077,28 @@ num_start = num;
 	for(num=num_start; num<total_banks+num_start; num++)
 	{
 		fputs("<xagent>\n", file);
-		fputs("<name>Bank</name>\n", file);
-		sprintf(data, "%d", num);     print_tag("id", data, file);
-		sprintf(data, "%d",random_int(1,num_regions));	print_tag("region_id", data, file);
-		sprintf(data, "%d",gov_id);	print_tag("gov_id", data, file);
-		
-	
-		sprintf(data, "{}");			print_tag("loans_outstanding", data, file);
+				fputs("<name>Bank</name>\n", file);
+				sprintf(data, "%d", num);     print_tag("id", data, file);
+				sprintf(data, "%d",random_int(1,num_regions));	print_tag("region_id", data, file);
+				sprintf(data, "%d",gov_id);	print_tag("gov_id", data, file);
+				
+			
+				sprintf(data, "{}");			print_tag("loans_outstanding", data, file);
 
-		sprintf(data, "%f",0.0);	print_tag("total_deposits", data, file);
-		sprintf(data, "%f",0.0);	print_tag("amount_credit_offer", data, file);
-		sprintf(data, "%f",0.0);	print_tag("total_loan_supply", data, file);
-		sprintf(data, "%f",0.0);	print_tag("total_loan_demand", data, file);
-		sprintf(data, "%f",0.0);	print_tag("payment_account", data, file);
-		sprintf(data, "%d",0);	 print_tag("last_credit_id", data, file);
-		sprintf(data, "%f", 0.0);       print_tag("posx", data, file);
-		sprintf(data, "%f", 0.0);       print_tag("posy", data, file);
-	
-		fputs("</xagent>\n", file);
+				sprintf(data, "%f",0.0);	print_tag("total_deposits", data, file);
+				sprintf(data, "%f",0.0);	print_tag("amount_credit_offer", data, file);
+				sprintf(data, "%f",0.0);	print_tag("total_loan_supply", data, file);
+				sprintf(data, "%f",0.0);	print_tag("total_loan_demand", data, file);
+				sprintf(data, "%f",0.0);	print_tag("payment_account", data, file);
+				sprintf(data, "%d",0);	 print_tag("last_credit_id", data, file);
+				sprintf(data, "%f", tax_rate_corporate);	print_tag("tax_rate_corporate", data, file);
+				sprintf(data, "%d", 0);	print_tag("day_of_month_to_act", data, file);
+				printf("total_households %d\n",total_households);
+				sprintf(data, "%d", total_households);	print_tag("outstanding_shares", data, file);
+				sprintf(data, "%f", 0.0);       print_tag("posx", data, file);
+				sprintf(data, "%f", 0.0);       print_tag("posy", data, file);
+			
+				fputs("</xagent>\n", file);
 	}
 
 

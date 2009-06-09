@@ -108,12 +108,19 @@ int Bank_read_interest_payments()
 {
 	
 	//int firm_id;
+
+		DAILY_INTEREST_REVENUE =0.0;
 	
 	START_INTEREST_PAYMENT_MESSAGE_LOOP
 		if(interest_payment_message->bank_id==ID)
 		{
-			
+					
+
 			PAYMENT_ACCOUNT+=interest_payment_message->interest_payment;
+
+			DAILY_INTEREST_REVENUE += interest_payment_message->interest_payment;
+
+			MONTHLY_INTEREST_REVENUE+= interest_payment_message->interest_payment;
 
 
 			//Update the firm's bank account: the interest is NOT an amount that is added or subtracted
@@ -188,3 +195,42 @@ FINISH_BANK_ACCOUNT_UPDATE_MESSAGE_LOOP
 
 return 0;
 }
+
+
+
+
+int Bank_pays_dividends_taxes()
+{
+
+
+	//Compute the monthy earnings
+	EARNINGS = MONTHLY_INTEREST_REVENUE;
+	MONTHLY_INTEREST_REVENUE =0;
+
+	//Compute and pay taxes
+	TAX_PAYMENT = TAX_RATE_COPORATE * EARNINGS;
+	NET_EARNINGS = EARNINGS - TAX_PAYMENT;
+	PAYMENT_ACCOUNT -= TAX_PAYMENT;
+	add_tax_payment_message(GOV_ID,TAX_PAYMENT) ;
+
+	//Compute and pay dividends
+	DIVIDEND_PAYMENT = NET_EARNINGS;
+	CURRENT_DIVIDEND_PER_SHARE= DIVIDEND_PAYMENT/OUTSTANDING_SHARES;
+	PAYMENT_ACCOUNT -= DIVIDEND_PAYMENT;
+	add_dividend_per_share_message(ID, CURRENT_DIVIDEND_PER_SHARE);
+
+return 0;
+}
+
+
+int Bank_idle()
+{
+
+
+return 0;
+}
+
+
+
+
+
