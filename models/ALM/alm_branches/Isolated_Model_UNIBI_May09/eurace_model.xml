@@ -178,7 +178,7 @@
     <description>0.005</description>
    </variable>
    <variable>
-    <type>int</type>
+    <type>double</type>
     <name>inv_inertia</name>
     <description>3</description>
    </variable>

@@ -150,6 +150,8 @@ int Firm_calc_production_quantity()
         OUT_OF_STOCK_COSTS = (PRICE - DISCOUNT_RATE*UNIT_COSTS)/
         (PRICE+INVENTORY_COSTS_PER_UNIT);
 
+
+
         /*Creating a temporary array of the last X sales per mall*/
         for(int i = 0; i < CURRENT_MALL_STOCKS.size;i++)
         {
@@ -180,10 +182,35 @@ int Firm_calc_production_quantity()
         
 
             /*Setting the critical values*/
+
+
+	 if(CURRENT_MALL_STOCKS.array[i].current_stock > 0)
+
+	{
             
             CURRENT_MALL_STOCKS.array[i].critical_stock = 
                                 sales_mall.array[6].sales;
-            
+        }else
+	{
+		CURRENT_MALL_STOCKS.array[i].critical_stock = CURRENT_MALL_STOCKS.array[i].critical_stock*(1 + ADAPTION_DELIVERY_VOLUME);
+
+	for(int j = 0; j < MALLS_SALES_STATISTICS.size;j++)
+            {
+                if(CURRENT_MALL_STOCKS.array[i].mall_id==
+                MALLS_SALES_STATISTICS.array[j].mall_id)
+                {
+                    for(int k = 0; k < FIRM_PLANNING_HORIZON; k++)
+                    {
+                 
+                    MALLS_SALES_STATISTICS.array[j].sales.array[k].sales*=(1 + ADAPTION_DELIVERY_VOLUME);
+                    }
+                }
+            }
+	
+
+	
+
+	}    
 
             /*If the critical level for a mall is zero then the firm sets (with a certain prob )the 
              * critical level equal the average CL in order to keep this mall on the delivery list */
@@ -213,38 +240,14 @@ int Firm_calc_production_quantity()
                 /*If stocks are left at the beginning of a new production cycle 
                  * then firms produce the difference between these stocks and the 
                  * critical stock for this mall*/
-                if(CURRENT_MALL_STOCKS.array[i].current_stock > 0)
-                {
+              
                     prod_vol = CURRENT_MALL_STOCKS.array[i].critical_stock - CURRENT_MALL_STOCKS.array[i].current_stock;
     
                     PLANNED_DELIVERY_VOLUME.array[i].mall_id = 
                     CURRENT_MALL_STOCKS.array[i].mall_id;
 
                     PLANNED_DELIVERY_VOLUME.array[i].quantity  = prod_vol;
-                    
-                }
-                else
-                /*If no stocks are left then the firms want to produce more 
-                 * units than the period before. They increase the production 
-                 * volume for one mall by a certain fraction of the last delivery volume*/
-                {
-                    for(int j = 0; j < PLANNED_DELIVERY_VOLUME.size; j++)
-                    {
-                        if(PLANNED_DELIVERY_VOLUME.array[j].mall_id==
-                        	CURRENT_MALL_STOCKS.array[i].mall_id)
-                        {
-                            prod_vol = CURRENT_MALL_STOCKS.array[i].critical_stock*(1 + ADAPTION_DELIVERY_VOLUME);
-
-                            CURRENT_MALL_STOCKS.array[i].critical_stock= prod_vol;
-                            
-                            PLANNED_DELIVERY_VOLUME.
-                            array[j].quantity = prod_vol;
-
-                            /*printf("Prod-Vol %f\n",prod_vol);*/
-                        }
-                    }
-                }
-                
+                                
                 production_volume = production_volume + prod_vol;
                 
             }
@@ -323,6 +326,10 @@ int Firm_calc_input_demands()
             if(temp_capital_demand > TOTAL_UNITS_CAPITAL_STOCK + (INV_INERTIA-1)*TOTAL_CAPITAL_DEPRECIATION_UNITS)
             {
                 NEEDED_CAPITAL_STOCK = TOTAL_UNITS_CAPITAL_STOCK + (INV_INERTIA-1)*TOTAL_CAPITAL_DEPRECIATION_UNITS;
+
+		//printf("Firm %d in region %d: capital rationing:  %f \n", ID, REGION_ID,  NEEDED_CAPITAL_STOCK  / temp_capital_demand);
+
+
             }else
             {
                 NEEDED_CAPITAL_STOCK = temp_capital_demand;
@@ -346,6 +353,10 @@ int Firm_calc_input_demands()
             if(temp_capital_demand > TOTAL_UNITS_CAPITAL_STOCK + (INV_INERTIA-1)*TOTAL_CAPITAL_DEPRECIATION_UNITS)
             {
                 NEEDED_CAPITAL_STOCK = TOTAL_UNITS_CAPITAL_STOCK + (INV_INERTIA-1)*TOTAL_CAPITAL_DEPRECIATION_UNITS;
+
+		//printf("Firm %d in region %d: capital rationing:  %f \n", ID, REGION_ID,  NEEDED_CAPITAL_STOCK  / temp_capital_demand);
+
+
             }else
             {
                 NEEDED_CAPITAL_STOCK = temp_capital_demand;
@@ -360,6 +371,7 @@ int Firm_calc_input_demands()
         (pow(NEEDED_CAPITAL_STOCK,BETA)*TECHNOLOGY),1/ALPHA);
         }
         
+	//printf("temp_labour_demand %f, NO_EMPLOYEES %d \n",  temp_labour_demand, NO_EMPLOYEES);
         
         /*Compute new capital stock, in units and in value*/
         
@@ -703,6 +715,8 @@ int Firm_send_goods_to_mall()
                     add_update_mall_stock_message(
                     DELIVERY_VOLUME.array[j].mall_id,ID,
                     DELIVERY_VOLUME.array[j].quantity,QUALITY,PRICE,PRICE_LAST_MONTH);
+
+
             
                 }
             }
