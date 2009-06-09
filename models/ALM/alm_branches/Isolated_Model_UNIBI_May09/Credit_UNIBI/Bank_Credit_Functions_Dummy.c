@@ -86,14 +86,14 @@ credit_request_array  credit_requests;
 
 	}
 	
-		for(int j=0; j<LOANS_OUTSTANDING.size;j++)
+		/*for(int j=0; j<LOANS_OUTSTANDING.size;j++)
 		{
 		if(LOANS_OUTSTANDING.array[j].firm_id==credit_requests.array[i].firm_id)
 		{
 			LOANS_OUTSTANDING.array[j].total_amount += credit_requests.array[i].credit_amount;
 
 		}
-		}
+		}*/
 
 	
 	}
@@ -134,10 +134,22 @@ int Bank_read_debt_installment_payments()
 			//update the firm's bank account: the debt_installment_payment is added to the bank account of the firm
 			for(int i=0; i<LOANS_OUTSTANDING.size;i++)
 			{
-			if(LOANS_OUTSTANDING.array[i].firm_id==debt_installment_payment_message->firm_id &&  LOANS_OUTSTANDING.array[i].credit_id==debt_installment_payment_message->credit_id)
-{
+			if(  LOANS_OUTSTANDING.array[i].credit_id==debt_installment_payment_message->credit_id)
+			{
+
+			//printf("\n debt_installment_payment_message->credit_id %d debt_installment_payment_message->debt_installment_payment%f \n",debt_installment_payment_message->credit_id,debt_installment_payment_message->debt_installment_payment);
+
+		/*if(LOANS_OUTSTANDING.array[i].credit_id==100)
+
+		{
+		printf("\n LOANS_OUTSTANDING.array[i].total_amount %f debt_installment_payment_message->debt_installment_payment%f \n",LOANS_OUTSTANDING.array[i].total_amount,debt_installment_payment_message->debt_installment_payment);
+
+		}*/
 			
 LOANS_OUTSTANDING.array[i].total_amount-=debt_installment_payment_message->debt_installment_payment;
+
+
+
 			//printf("LOANS_OUTSTANDING.array[i].total_amount %f \n",LOANS_OUTSTANDING.array[i].total_amount);
 		
 			if(LOANS_OUTSTANDING.array[i].total_amount<=0.0)
@@ -159,14 +171,16 @@ LOANS_OUTSTANDING.array[i].total_amount-=debt_installment_payment_message->debt_
 
 int Bank_account_update_deposits()
 {
-	
+TOTAL_DEPOSITS=0;	
 START_BANK_ACCOUNT_UPDATE_MESSAGE_LOOP
 if(ID == bank_account_update_message->bank_id)
 {
 
-TOTAL_DEPOSITS=0;
+
 
 TOTAL_DEPOSITS+=bank_account_update_message->payment_account;
+
+
 
 }
 
