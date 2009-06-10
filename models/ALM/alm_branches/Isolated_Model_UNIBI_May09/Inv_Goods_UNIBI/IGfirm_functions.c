@@ -27,7 +27,8 @@ int IGFirm_idle()
  * \brief IGFirm inceases productivity via a stochastic process and the according price */
 int IGFirm_update_productivity_price()
 {
-	
+	 if(DAY >= TRANSITION_PHASE)
+	 {
 	int i;
 
 	
@@ -41,7 +42,7 @@ int IGFirm_update_productivity_price()
 
 	
 	
-
+	 }
 
 
 	return 0;
@@ -120,8 +121,12 @@ int IGFirm_pay_taxes()
 
 int IGFirm_dividend_payment()
 {
+	
+	double total_dividend_payment;
+	
 	CURRENT_DIVIDEND_PER_SHARE = NET_PROFIT / OUTSTANDING_SHARES;
-
+	
+	NET_PROFIT =total_dividend_payment;
 	
 	//add dividend_per_share_msg(firm_id, current_dividend_per_share) to shareholders (dividend per share)     
 	add_dividend_per_share_message(ID, CURRENT_DIVIDEND_PER_SHARE);
@@ -129,7 +134,7 @@ int IGFirm_dividend_payment()
 
 	
 	//decrease payment_account with the total_dividend_payment
-	//PAYMENT_ACCOUNT -= TOTAL_DIVIDEND_PAYMENT;
+	PAYMENT_ACCOUNT -= total_dividend_payment;;
 	
 	return 0;
 }

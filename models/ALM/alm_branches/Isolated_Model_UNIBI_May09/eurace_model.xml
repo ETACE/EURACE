@@ -58,7 +58,7 @@
     <description>1, A flag to print debugging output to terminal.</description>
    </variable>
    <variable>
-    <type>int</type>
+    <type>double</type>
     <name>gamma_const</name>
     <description> -2, Strength of logit rule for consumption</description>
    </variable>
@@ -141,6 +141,11 @@
     <type>double</type>
     <name>day_change_region_costs_2</name>
     <description>0.2, Cost of working in a different region: commuting costs.</description>
+   </variable>
+   <variable>
+    <type>double</type>
+    <name>transition_phase</name>
+    <description> </description>
    </variable>
    <variable>
     <type>int</type>
