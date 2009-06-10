@@ -182,35 +182,10 @@ int Firm_calc_production_quantity()
         
 
             /*Setting the critical values*/
-
-
-	 if(CURRENT_MALL_STOCKS.array[i].current_stock > 0)
-
-	{
             
-            CURRENT_MALL_STOCKS.array[i].critical_stock = 
-                                sales_mall.array[6].sales;
-        }else
-	{
-		CURRENT_MALL_STOCKS.array[i].critical_stock = CURRENT_MALL_STOCKS.array[i].critical_stock*(1 + ADAPTION_DELIVERY_VOLUME);
-
-	for(int j = 0; j < MALLS_SALES_STATISTICS.size;j++)
-            {
-                if(CURRENT_MALL_STOCKS.array[i].mall_id==
-                MALLS_SALES_STATISTICS.array[j].mall_id)
-                {
-                    for(int k = 0; k < FIRM_PLANNING_HORIZON; k++)
-                    {
-                 
-                    MALLS_SALES_STATISTICS.array[j].sales.array[k].sales*=(1 + ADAPTION_DELIVERY_VOLUME);
-                    }
-                }
-            }
-	
-
-	
-
-	}    
+          CURRENT_MALL_STOCKS.array[i].critical_stock = 
+                                sales_mall.array[8].sales;
+    
 
             /*If the critical level for a mall is zero then the firm sets (with a certain prob )the 
              * critical level equal the average CL in order to keep this mall on the delivery list */
@@ -292,6 +267,10 @@ int Firm_calc_input_demands()
     double temp_labour_demand;
     double temp_capital_demand;
     
+    
+    //Transition period: No technological progress before day == tranition_phase
+    if(DAY >= TRANSITION_PHASE)
+    {
         START_PRODUCTIVITY_MESSAGE_LOOP
             /*Update of the actual capital good information*/
             TECHNOLOGICAL_FRONTIER = productivity_message->cap_productivity;
@@ -306,7 +285,7 @@ int Firm_calc_input_demands()
 		}
 //printf(" REGION_ID: %d; ACTUAL_CAP_PRICE %f \n", REGION_ID,ACTUAL_CAP_PRICE);
         FINISH_PRODUCTIVITY_MESSAGE_LOOP
-        
+    }
         /*Calculate labor demand and needed capital goods. 
          * Complementarity between specific skills and productivity*/
         
@@ -507,17 +486,17 @@ int Firm_receive_capital_goods()
         /*Determine the weighted average productivity of the total capital stock*/
     
         /*Update of productivity*/
-                TECHNOLOGY = TOTAL_UNITS_CAPITAL_STOCK /    (TOTAL_UNITS_CAPITAL_STOCK +capital_good_delivery_message->capital_good_delivery_volume)
+               TECHNOLOGY = TOTAL_UNITS_CAPITAL_STOCK /    (TOTAL_UNITS_CAPITAL_STOCK +capital_good_delivery_message->capital_good_delivery_volume)
                 *TECHNOLOGY + 
                 capital_good_delivery_message->capital_good_delivery_volume/
                 (TOTAL_UNITS_CAPITAL_STOCK + 
                 capital_good_delivery_message->capital_good_delivery_volume)
-                *capital_good_delivery_message->productivity;
+                *TECHNOLOGICAL_FRONTIER;
         /*Update of current value of capital stock*/
  
                 TOTAL_VALUE_CAPITAL_STOCK =
                 TOTAL_VALUE_CAPITAL_STOCK + capital_good_delivery_message->capital_good_delivery_volume
-                *capital_good_delivery_message->capital_good_price;              
+                *ACTUAL_CAP_PRICE;              
 
                 /*Adding the new capital*/
                 TOTAL_UNITS_CAPITAL_STOCK += capital_good_delivery_message
@@ -525,8 +504,7 @@ int Firm_receive_capital_goods()
 
         /*Computing the capital bill*/
         CAPITAL_COSTS += capital_good_delivery_message
-        ->capital_good_delivery_volume* capital_good_delivery_message
-        ->capital_good_price;
+        ->capital_good_delivery_volume* ACTUAL_CAP_PRICE;
 
         
         
@@ -744,6 +722,10 @@ int Firm_calc_revenue()
             {
                 SOLD_QUANTITIES.array[i].sold_quantity += 
                 sales_message->revenue/PRICE;
+                
+                SOLD_QUANTITIES.array[i].stock_empty = 
+                               sales_message->stock_empty;
+                
             
                 REVENUE_PER_DAY += sales_message->revenue;
         
@@ -812,9 +794,20 @@ int Firm_compute_sales_statistics()
             {
             if(MALLS_SALES_STATISTICS.array[j].mall_id == SOLD_QUANTITIES.array[i].mall_id)
                 {
+            	
+            	if(SOLD_QUANTITIES.array[i].stock_empty==0)
+            	{
                 add_data_type_sales(&MALLS_SALES_STATISTICS.array[j].sales, 1 , 
                     SOLD_QUANTITIES.array[i].sold_quantity);
-        
+                	//printf("ID %d   stock empty, = 0  SOLD_QUANTITIES.array[i].sold_quantity %f\n",ID,SOLD_QUANTITIES.array[i].sold_quantity);
+                
+            	}
+                else
+                {
+                	add_data_type_sales(&MALLS_SALES_STATISTICS.array[j].sales, 1 , 
+                	                    SOLD_QUANTITIES.array[i].sold_quantity*(1 + ADAPTION_DELIVERY_VOLUME));
+                	//printf("ID %d   stock empty, = 1   sold_quantity*(1 + ADAPTION_DELIVERY_VOLUME)  %f\n",ID,SOLD_QUANTITIES.array[i].sold_quantity*(1 + ADAPTION_DELIVERY_VOLUME));
+                }
                 SOLD_QUANTITIES.array[i].sold_quantity=0;
                 SOLD_QUANTITIES.array[i].stock_empty=0;
                 }

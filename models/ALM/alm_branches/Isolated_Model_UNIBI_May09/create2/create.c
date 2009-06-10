@@ -60,7 +60,7 @@ int main(int argc, char ** argv)
 
 
 /*Strenght of logit*/
-double GAMMA = -6.5;
+double GAMMA_CONST = -6.5;
 
 /*brief Paramater for production function. */
 double ALPHA = 0.662;
@@ -99,11 +99,13 @@ double wage_reservation_update = 0.01;//0.01
 
 /*Cost of working in a different region: for example travelling costs*/
 double region_cost_1 = 99;
-double region_cost_2 = 99;
-double region_cost_3 = 99;
+double region_cost_2 = 0;
+double region_cost_3 = 0;
 
-int day_change_region_costs_1 =10000;
+int day_change_region_costs_1 =800;
 int day_change_region_costs_2 = 20000;
+
+int TRANSITION_PHASE = 0;
 
 
 /*calculatory cost of storing one unit over one period*/
@@ -128,7 +130,7 @@ double INTEREST_RATE = 0.005;
 double INV_INERTIA = 2.5;
 
 
-double ADAPTION_DELIVERY_VOLUME = 0.025;//0.05
+double ADAPTION_DELIVERY_VOLUME = 0.05;//0.05
 
 int PERIODS_TO_REPAY_LOANS = 24;
 
@@ -150,7 +152,7 @@ int CHANGE_IN_SKILL_DISTRIBUTION = 0;
 sprintf(skill_distribution, "{{1,0.2,0.2,0.2,0.2,0.2}{2,0.2,0.2,0.2,0.2,0.2}}");
 
 
-int LOWER_BOUND_FIRING = 10;
+int LOWER_BOUND_FIRING = 0;
 int UPPER_BOUND_FIRING = 10;
 
 int NO_REGIONS_PER_GOV = 2;
@@ -192,10 +194,14 @@ double SUBSIDY_FRACTION = 0.0;
 	double 	payment_account_household = 0;
 
 	double   cap_price; // temp variable for printing capital_good_price_region into memory variables of the firm
-	double	capital_good_price = 2;
-	double	capital_good_price_region_1 = 2;
-	double	capital_good_price_region_2 = 2;
-	double productivity_best_practice = 1.1;  //Productivity of the technology offered by the IG firm
+	double	capital_good_price = 6;
+	double	capital_good_price_region[2][1] = {6.0,2.0};
+	
+	double productivity_best_practice_igfirm = 3.3;  //Productivity of the technology offered by the IG firm
+	double productivity_best_practice[2][1]=
+					{3.3,1.1};
+
+
 	int years_statistics = 10;/*number of years used to smooth the production*/
 
 	/*Defining skill distributions in regions: only 1-4*/
@@ -279,11 +285,11 @@ double SUBSIDY_FRACTION = 0.0;
 	
 	//This determines the local skill distribution. Use numbers 1 .. 4 (see above, skill distribution_X) to give a region a skill distribution. 
 		int skills_in_regions[2][1]=
-					{4,4};
+					{4,3};
 	
 	
 		//region specific initial value of households specific skills
-		double spec_s_hh_reg1 = 1.0;
+		double spec_s_hh_reg1 = 3.0;
 		double spec_s_hh_reg2 = 1.0;
 		double specific_skills_of_household[2][1]=
 							{spec_s_hh_reg1,spec_s_hh_reg2};
@@ -291,19 +297,20 @@ double SUBSIDY_FRACTION = 0.0;
 
 		//Total production volume for a single firm
 			double total_production_quantity[2][1]=
-						{27.0,27.0};
+						{81.0,27.0};
 			//This defines the initial capital stock of firm depending on the region.
 			double total_units_capital[2][1]=
 				                            {45.0,45.0};
 			//Firm's starting value of productivity of the capital stock
 			double technology[2][1]=
-							{1.0,1.0};
+							{3.0,1.0};
+
 			//This defines the financial resources of firm at the beginning of a simulation
 			double payment_account[2][1]= 
 			{50.0,50.0};
 			
 			//Initital wage offer of the firms
-			double wage_offer_region_1 = 1.0;
+			double wage_offer_region_1 = 3.0;
 			double wage_offer_region_2 = 1.0;
 			double wage_offer[2][1]= 
 				{wage_offer_region_1,wage_offer_region_2};
@@ -382,7 +389,7 @@ double SUBSIDY_FRACTION = 0.0;
 	sprintf(data, "%d",20);    print_tag("month", data, file);
 	sprintf(data, "%d",60);    print_tag("quarter", data, file);
 	sprintf(data, "%d",240);    print_tag("year", data, file);
-	sprintf(data, "%f",GAMMA);    print_tag("gamma", data, file);
+	sprintf(data, "%f",GAMMA_CONST);    print_tag("gamma_const", data, file);
 	sprintf(data, "%f",ALPHA);    print_tag("alpha", data, file);
 	sprintf(data, "%f",BETA);    print_tag("beta", data, file);
 	sprintf(data, "%f",DIVIDEND_RATE);    print_tag("dividend_rate", data, file);
@@ -407,6 +414,10 @@ sprintf(data, "%f",region_cost_2);    print_tag("region_cost_2", data, file);
 sprintf(data, "%f",region_cost_3);    print_tag("region_cost_3", data, file);
 sprintf(data, "%d",day_change_region_costs_1);    print_tag("day_change_region_costs_1", data, file);
 sprintf(data, "%d",day_change_region_costs_2);    print_tag("day_change_region_costs_2", data, file);
+
+	sprintf(data, "%d",TRANSITION_PHASE);    print_tag("transition_phase", data, file);
+
+
 
 	sprintf(data, "%f",INTEREST_RATE);    print_tag("interest_rate", data, file);
 	sprintf(data, "%f",INV_INERTIA);    print_tag("inv_inertia", data, file);
@@ -455,13 +466,15 @@ sprintf(data, "%d",NO_REGIONS_PER_GOV);	print_tag("no_regions_per_gov", data, fi
 		if(region == 1)
 		{
 			mss = spec_s_hh_reg1;
-			cap_price = capital_good_price_region_1;
+			
 		}
 		if(region == 2)
 		{
 			mss = spec_s_hh_reg2;
-			cap_price = capital_good_price_region_2;
+			
 		}
+
+		cap_price = capital_good_price_region[column][row];
 		
 		int strategy;	
 				
@@ -526,7 +539,7 @@ sprintf(data, "%d",NO_REGIONS_PER_GOV);	print_tag("no_regions_per_gov", data, fi
 		sprintf(data, "%f", total_units_capital[column][row]*cap_price);	print_tag("total_value_capital_stock", data, file);
 		sprintf(data, "%f", total_units_capital[column][row]);	print_tag("planned_value_capital_stock", data, file);
 		
-		
+		sprintf(data, "%f",  productivity_best_practice[column][row]);	print_tag("technological_frontier", data, file);
 
 
 		
@@ -796,7 +809,7 @@ sprintf(data, "%d",NO_REGIONS_PER_GOV);	print_tag("no_regions_per_gov", data, fi
 		sprintf(data, "%d",gov_id);	print_tag("gov_id", data, file);
 		sprintf(data, "%d",bank_id);		print_tag("bank_id", data, file);
 		sprintf(data, "%f",.0);	print_tag("payment_account", data, file);
-		sprintf(data, "%f",productivity_best_practice);	print_tag("productivity", data, file);
+		sprintf(data, "%f",productivity_best_practice_igfirm);	print_tag("productivity", data, file);
 		sprintf(data, "%f", capital_good_price);	print_tag("capital_good_price", data, file);
 		sprintf(data, "%d",0);		print_tag("day_of_month_to_act", data, file);
 		sprintf(data, "%f", 0.0);	print_tag("revenue_per_day", data, file);
@@ -1004,7 +1017,7 @@ sprintf(data, "%d",NO_REGIONS_PER_GOV);	print_tag("no_regions_per_gov", data, fi
 
 		
 		sprintf(data1, "%s,{%d, 1,0.1}",data2,bank_id);
-				sprintf(data2,"%s",data1);
+						sprintf(data2,"%s",data1);
 		 
 		
 		sprintf(data, "{%s}",data2);	print_tag("assetsowned", data, file);
@@ -1077,28 +1090,28 @@ num_start = num;
 	for(num=num_start; num<total_banks+num_start; num++)
 	{
 		fputs("<xagent>\n", file);
-				fputs("<name>Bank</name>\n", file);
-				sprintf(data, "%d", num);     print_tag("id", data, file);
-				sprintf(data, "%d",random_int(1,num_regions));	print_tag("region_id", data, file);
-				sprintf(data, "%d",gov_id);	print_tag("gov_id", data, file);
-				
-			
-				sprintf(data, "{}");			print_tag("loans_outstanding", data, file);
+						fputs("<name>Bank</name>\n", file);
+						sprintf(data, "%d", num);     print_tag("id", data, file);
+						sprintf(data, "%d",random_int(1,num_regions));	print_tag("region_id", data, file);
+						sprintf(data, "%d",gov_id);	print_tag("gov_id", data, file);
+						
+					
+						sprintf(data, "{}");			print_tag("loans_outstanding", data, file);
 
-				sprintf(data, "%f",0.0);	print_tag("total_deposits", data, file);
-				sprintf(data, "%f",0.0);	print_tag("amount_credit_offer", data, file);
-				sprintf(data, "%f",0.0);	print_tag("total_loan_supply", data, file);
-				sprintf(data, "%f",0.0);	print_tag("total_loan_demand", data, file);
-				sprintf(data, "%f",0.0);	print_tag("payment_account", data, file);
-				sprintf(data, "%d",0);	 print_tag("last_credit_id", data, file);
-				sprintf(data, "%f", tax_rate_corporate);	print_tag("tax_rate_corporate", data, file);
-				sprintf(data, "%d", 0);	print_tag("day_of_month_to_act", data, file);
-				printf("total_households %d\n",total_households);
-				sprintf(data, "%d", total_households);	print_tag("outstanding_shares", data, file);
-				sprintf(data, "%f", 0.0);       print_tag("posx", data, file);
-				sprintf(data, "%f", 0.0);       print_tag("posy", data, file);
-			
-				fputs("</xagent>\n", file);
+						sprintf(data, "%f",0.0);	print_tag("total_deposits", data, file);
+						sprintf(data, "%f",0.0);	print_tag("amount_credit_offer", data, file);
+						sprintf(data, "%f",0.0);	print_tag("total_loan_supply", data, file);
+						sprintf(data, "%f",0.0);	print_tag("total_loan_demand", data, file);
+						sprintf(data, "%f",0.0);	print_tag("payment_account", data, file);
+						sprintf(data, "%d",0);	 print_tag("last_credit_id", data, file);
+						sprintf(data, "%f", tax_rate_corporate);	print_tag("tax_rate_corporate", data, file);
+						sprintf(data, "%d", 0);	print_tag("day_of_month_to_act", data, file);
+						printf("total_households %d\n",total_households);
+						sprintf(data, "%d", total_households);	print_tag("outstanding_shares", data, file);
+						sprintf(data, "%f", 0.0);       print_tag("posx", data, file);
+						sprintf(data, "%f", 0.0);       print_tag("posy", data, file);
+					
+						fputs("</xagent>\n", file);
 	}
 
 
@@ -1141,11 +1154,11 @@ num_start = num;
 			}
 		if(i==1)
 		{
-		sprintf(data2, "{%d , %d, %f, %f, %f, %f}",i, region, 0,0,1.0,0.0);
+		sprintf(data2, "{%d , %d, %f, %f, %f, %f}",i, region, 0.0,1.0,0.0);
 		}
 		else 
 			{
-			sprintf(data1, "%s,{%d , %d, %f, %f, %f, %f}",data2,i,region,0,1.0,0.0);
+			sprintf(data1, "%s,{%d , %d, %f, %f, %f, %f}",data2,i,region,0.0,1.0,0.0);
 			sprintf(data2,"%s",data1);
 			}
 		}

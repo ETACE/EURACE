@@ -1107,7 +1107,7 @@ int Firm_compute_mean_wage_specific_skills()
     if(no_employees==0)
     {
         MEAN_WAGE = WAGE_OFFER;
-        MEAN_SPECIFIC_SKILLS = 1;
+        MEAN_SPECIFIC_SKILLS = AVERAGE_S_SKILL_OF_1;
     }
     else
     {
