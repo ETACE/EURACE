@@ -19,7 +19,7 @@
 echo '  Starting first stage of experiment...'
 BASE=$PWD
 NR_NODES='4'
-ITS=500
+ITS=240
 MAIN='/media/DOCS/Docs/EURACE/X-models/SVN_linux/models/EURACE_Model/branches/Hybrid_Model_A_energy_shock/main'
 #JOIN='/home/sander/cloning/scripts/join/join.sh'
 

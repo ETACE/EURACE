@@ -7,16 +7,15 @@
 #####################################################################################################
 BASE=$PWD
 
-F0="symmetric_shock"
-F1="40 120 240 560"     #duration: 240+"40 120 240 560"=280 360 480 801
-F2="0.01 0.05 0.10 0.20" #intensity
-F3="0 20 40 60"         #frequency
+F0="symmetric_shock2"
+#F1="40 120 240 560"     #duration: 240+"40 120 240 560"=280 360 480 801
+#F2="0.01 0.05 0.10 0.20" #intensity
+#F3="0 20 40 60"         #frequency
 
-
-#F1="40 240"
+F1="40 240"
 #F1="560"     		#duration: 240+"40 120 240 560"=280 360 480 801
-#F2="0.01 0.10" 		#intensity
-#F3="0 20 40"         #frequency
+F2="0.01 0.05 0.10" 		#intensity
+F3="0 20 60"         #frequency
 
 #Create main latex document
 echo '  Creating main latex document...'
@@ -42,9 +41,9 @@ for folder0 in $F0; do
 		echo '\begin{minipage}{14cm}'>>plot.tex
 		echo '\centering\leavevmode'>>plot.tex
 		echo '{$d='$f1', i='$f2', f='$f3'$}\\'>>plot.tex
-		echo '\includegraphics[width=4cm]{'./$folder0/$folder1/$folder2/$folder3/'IGFirm-capital_good_price.png}'>>plot.tex
-		echo '\includegraphics[width=4cm]{'./$folder0/$folder1/$folder2/$folder3/'Eurostat-gdp.png}'>>plot.tex
-		echo '\includegraphics[width=4cm]{'./$folder0/$folder1/$folder2/$folder3/'Eurostat-unemployment_rate.png}'>>plot.tex
+		echo '\includegraphics[width=4cm]{'./$folder0/$folder1/$folder2/$folder3/'IGFirm-capital_good_price(double).png}'>>plot.tex
+		echo '\includegraphics[width=4cm]{'./$folder0/$folder1/$folder2/$folder3/'Eurostat-gdp(double).png}'>>plot.tex
+		echo '\includegraphics[width=4cm]{'./$folder0/$folder1/$folder2/$folder3/'Eurostat-unemployment_rate(double).png}'>>plot.tex
 		echo '\end{minipage}'>>plot.tex
 		echo '%\caption{$d='$f1', i='$f2', f='$f3'$}'>>plot.tex
 		echo '%\label{Figure: IGFirm-capital_good_price}'>>plot.tex

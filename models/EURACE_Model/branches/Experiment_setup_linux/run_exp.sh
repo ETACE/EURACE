@@ -11,9 +11,6 @@
 ################################################################################################################
 
 BASE=$PWD
-F1="duration_40 duration_120 duration_240 duration_560"
-F2="intensity_1 intensity_5 intensity_10 intensity_20"
-F3="frequency_0 frequency_20 frequency_40 frequency_60"
 
 echo 'Starting top-level experiment script...'
 
@@ -34,15 +31,18 @@ done
 echo '  Number of batch runs:' $TOTAL_RUNS
 echo $RUNS
 ######### STEP 2: CREATION OF EXPERIMENT FOLDER HIERARCHY #####################################################
-bash ./exp_script_1.sh
+#bash ./exp_script_1.sh
 
 ######### STEP 3: CREATION OF THE SPECIFIC SETTINGS XML FILE ##################################################
-bash ./exp_script_2.sh
+#bash ./exp_script_2.sh
 
 ######### STEP 4: RUNNING THE INITIAL PHASE ###################################################################
-bash ./run_first_stage.sh
+#bash ./run_first_stage.sh
+
+######### STEP 4b: RUNNING BENCHMARK SCENARIO ###################################################################
+bash ./run_benchmark.sh
 
 ######### STEP 5: RUNNING THE EXPERIMENT ######################################################################
-bash ./run_experiment.sh
+#bash ./run_experiment.sh
 
 echo 'Finished top-level experiment script.'
