@@ -5,6 +5,22 @@
 
 
 /************************************ Household agent functions ************************************/
+/* \fn: int Household_initialization()
+ * \brief Function to initialize.
+ */
+int Household_initialization()
+{   
+    //add the region_id of regions that are in the household's neighbourhood
+
+    //ADD HERE SOME FUNCTION THAT SETS THE NEIGHBORHOOD STRUCTURE
+
+    //add_int(&NEIGHBORING_REGION_IDS, region);
+    
+    return 0;   
+}
+
+
+
 /*************************************Household Role: Statistics *********************************/
 /** \fn Household_read_policy_announcements()
  * \brief This function reads messages send by the government announcing tax rates, benefits, transfer payments and subsidies.
@@ -65,22 +81,15 @@ int Household_send_data_to_Eurostat()
     if ((SWITCH_FLOW_CONSISTENCY_CHECK)||(SWITCH_STOCK_CONSISTENCY_CHECK))
     {
         //Set these to correct expressions:
-        GOV_BOND_HOLDINGS=0.0;
-        NR_GOV_BONDS=0;
-        NR_FIRM_SHARES=0;
-        GOV_INTEREST=0.0;
-        STOCK_SALES=0.0;
         MONTHLY_CONSUMPTION_EXPENDITURE=0.0;
-        STOCK_PURCHASES=0.0;
         TOTAL_ASSETS=0.0;
         TOTAL_LIABILITIES=0.0;
         TOTAL_INCOME=0.0;
         TOTAL_EXPENSES=0.0;
 
         //printf("\n Household %d: my WAGE=%2.2f.\n", ID, WAGE);
-        add_household_balance_sheet_message(PAYMENT_ACCOUNT, GOV_BOND_HOLDINGS, NR_GOV_BONDS, NR_FIRM_SHARES, 
-                WAGE, GOV_INTEREST, STOCK_SALES,
-                CUM_TOTAL_DIVIDENDS, MONTHLY_CONSUMPTION_EXPENDITURE, TAX_PAYMENT, STOCK_PURCHASES, 
+        add_household_balance_sheet_message(PAYMENT_ACCOUNT, 
+                WAGE, CUM_TOTAL_DIVIDENDS, MONTHLY_CONSUMPTION_EXPENDITURE, TAX_PAYMENT, 
                 TOTAL_ASSETS, TOTAL_LIABILITIES, TOTAL_INCOME, TOTAL_EXPENSES);
     }
     
