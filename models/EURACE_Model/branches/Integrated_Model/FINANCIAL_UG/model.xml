@@ -383,10 +383,22 @@
     </variable>
    </memory>
    <functions>
+   <function>
+     <name>Household_receives_payment_coupons</name>
+     <description></description>
+     <currentState>Household_Start_Financial_Market_Role</currentState>
+     <nextState>Household_received_coupons</nextState>
+     <inputs>
+      <input>
+       <messageName>payment_coupons</messageName>
+      </input>
+     </inputs>
+     <outputs/>
+    </function>
     <function>
      <name>Household_receive_info_interest_from_bank</name>
      <description></description>
-     <currentState>Household_Start_Financial_Market_Role</currentState>
+     <currentState>Household_received_coupons</currentState>
      <nextState>SELECTSTRATEGY</nextState>
      <inputs>
       <input>
@@ -630,10 +642,28 @@
     </variable>
    </memory>
    <functions>
+   <function>
+     <name>Government_pays_coupons</name>
+     <description></description>
+     <currentState>Gov_Start_Bond_Market</currentState>
+     <nextState>GOVERNMENT_paid_coupons</nextState>
+      <condition>
+      <time>
+       <period>yearly</period>
+       <phase>0</phase>
+      </time>
+     </condition>
+     <inputs/>
+     <outputs>
+      <output>
+       <messageName>payment_coupons</messageName>
+      </output>
+     </outputs>
+    </function>
     <function>
      <name>Government_send_info_bond</name>
      <description></description>
-     <currentState>Gov_Start_Bond_Market</currentState>
+     <currentState>GOVERNMENT_paid_coupons</currentState>
      <nextState>GOVERNMENT_SENT_info_bond</nextState>
      <inputs/>
      <outputs>
@@ -836,6 +866,21 @@
      <type>Bond</type>
      <name>bond</name>
      <description></description>
+    </variable>
+   </variables>
+  </message>
+   <message>
+   <name>payment_coupons</name>
+   <description>message posted by the Government, announce the payment coupons and it decreases its payment_account </description>
+   <variables>
+    <variable>
+     <type>double</type>
+     <name>coupon</name>
+   </variable>
+   <variable>
+     <type>int</type>
+     <name>government_id</name>
+     <description>the unitary cost of a coupon</description>
     </variable>
    </variables>
   </message>

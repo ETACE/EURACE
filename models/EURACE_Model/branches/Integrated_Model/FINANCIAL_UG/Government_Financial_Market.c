@@ -126,3 +126,9 @@ int Government_receive_info_bond(void)
   return 0;
 }
 
+int Government_pays_coupons()
+   { double coupon;
+     coupon=BOND.nominal_yield*BOND.face_value;
+     PAYMENT_ACCOUNT=PAYMENT_ACCOUNT-coupon*BOND.nr_outstanding;
+     add_payment_coupons_message(coupon,ID);
+   }
