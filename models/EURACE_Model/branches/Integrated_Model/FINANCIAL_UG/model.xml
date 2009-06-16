@@ -650,7 +650,7 @@
       <condition>
       <time>
        <period>yearly</period>
-       <phase>0</phase>
+       <phase>1</phase>
       </time>
      </condition>
      <inputs/>
@@ -734,6 +734,22 @@
      </inputs>
      <outputs/>
     </function>
+    <function>
+     <name>idle</name>
+     <description></description>
+     <currentState>Gov_Start_Bond_Market</currentState>
+     <nextState>GOVERNMENT_paid_coupons</nextState>
+     <condition>
+      <not>
+       <time>
+        <period>yearly</period>
+        <phase>1</phase>
+       </time>
+      </not>
+     </condition>
+     <inputs/>
+     <outputs/>
+    </function>   
    </functions>
   </xagent>
  </agents>
