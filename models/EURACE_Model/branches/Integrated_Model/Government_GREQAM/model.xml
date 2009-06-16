@@ -293,22 +293,72 @@
      <name>total_liabilities</name>
      <description></description>
     </variable>
-    <variable>
-     <type>double</type>
-     <name>value_bonds_outstanding</name>
-     <description></description>
-    </variable>
-    <variable>
-     <type>int</type>
-     <name>nr_bonds_outstanding</name>
-     <description></description>
-    </variable>
    </memory>
    <functions>
     <function>
-     <name>Government_idle</name>
-     <description></description>
+     <name>Government_initialization</name>
+     <description>Initialization function, runs only once at the start.</description>
      <currentState>start_Government</currentState>
+     <nextState>Government_Start_Monthly_Loop_Top</nextState>
+     <condition>
+      <time>
+       <period>millionyearly</period>
+       <phase>1</phase>
+      </time>
+     </condition>
+     <inputs/>
+     <outputs/>
+    </function>
+    <function>
+     <name>idle</name>
+     <description>Idle for initialization function.</description>
+     <currentState>start_Government</currentState>
+     <nextState>Government_Start_Monthly_Loop_Top</nextState>
+     <condition>
+      <not>
+       <time>
+        <period>millionyearly</period>
+        <phase>1</phase>
+       </time>
+      </not>
+     </condition>
+     <inputs/>
+     <outputs/>
+    </function>
+    <function>
+     <name>Government_monthly_resetting</name>
+     <description>Monthly resetting of counters.</description>
+     <currentState>Government_Start_Monthly_Loop_Top</currentState>
+     <nextState>Government_Start_Yearly_Loop_Top</nextState>
+     <condition>
+      <time>
+       <period>monthly</period>
+       <phase>1</phase>
+      </time>
+     </condition>
+     <inputs/>
+     <outputs/>
+    </function>
+    <function>
+     <name>idle</name>
+     <description>Idle for monthly resetting loop at top.</description>
+     <currentState>Government_Start_Monthly_Loop_Top</currentState>
+     <nextState>Government_Start_Yearly_Loop_Top</nextState>
+     <condition>
+      <not>
+       <time>
+        <period>monthly</period>
+        <phase>1</phase>
+       </time>
+      </not>
+     </condition>
+     <inputs/>
+     <outputs/>
+    </function>
+    <function>
+     <name>idle</name>
+     <description>Idle for yearly loop at top.</description>
+     <currentState>Government_Start_Yearly_Loop_Top</currentState>
      <nextState>Gov_Start_Bond_Market</nextState>
      <condition>
       <not>
@@ -324,14 +374,8 @@
     <function>
      <name>Government_send_policy_announcements</name>
      <description>Function to send the yearly policy announcement message.</description>
-     <currentState>start_Government</currentState>
+     <currentState>00</currentState>
      <nextState>Gov_Start_Bond_Market</nextState>
-     <condition>
-      <time>
-       <period>yearly</period>
-       <phase>1</phase>
-      </time>
-     </condition>
      <inputs/>
      <outputs>
       <output>
@@ -458,10 +502,10 @@
        <messageName>gov_balance_sheet</messageName>
       </output>
      </outputs>
-    </function>    
+    </function>
     <function>
-     <name>Government_idle</name>
-     <description></description>
+     <name>idle</name>
+     <description>Idle for yearly loop</description>
      <currentState>Gov_Start_Monthly_Loop</currentState>
      <nextState>Gov_Start_Yearly_Loop</nextState>
      <condition>
@@ -492,12 +536,12 @@
        <messageName>issue_bonds_to_ecb</messageName>
       </output>
      </outputs>
-    </function>    
+    </function>
     <function>
      <name>Government_monthly_budget_accounting</name>
      <description>Function to perform accounting at the end of each month.</description>
      <currentState>05a</currentState>
-     <nextState>05b</nextState>
+     <nextState>06</nextState>
      <inputs/>
      <outputs>
       <output>
@@ -505,14 +549,6 @@
       </output>
      </outputs>
     </function>
-    <function>
-     <name>Government_monthly_resetting</name>
-     <description>Monthly resetting of counters.</description>
-     <currentState>05b</currentState>
-     <nextState>06</nextState>
-     <inputs/>
-     <outputs/>
-    </function>        
     <function>
      <name>Government_send_account_update</name>
      <description>Function to send the payment_account value to the Central Bank.</description>
@@ -543,7 +579,7 @@
      </condition>
      <inputs/>
      <outputs/>
-    </function>    
+    </function>
     <function>
      <name>Government_yearly_budget_accounting</name>
      <description>Function to perform accounting at the end of each year.</description>
@@ -557,7 +593,7 @@
      </condition>
      <inputs/>
      <outputs/>
-    </function>    
+    </function>
     <function>
      <name>Government_read_data_from_Eurostat</name>
      <description>Function to read data from Eurostat.</description>
@@ -574,15 +610,21 @@
      <name>Government_set_policy</name>
      <description>Function to set policy rules: income forecast and expenditure budget.</description>
      <currentState>08</currentState>
-     <nextState>09</nextState>
+     <nextState>end_Government</nextState>
      <inputs/>
      <outputs/>
     </function>
     <function>
      <name>Government_yearly_resetting</name>
      <description>Yearly resetting of counters.</description>
-     <currentState>09</currentState>
-     <nextState>end_Government</nextState>
+     <currentState>Government_Start_Yearly_Loop_Top</currentState>
+     <nextState>00</nextState>
+     <condition>
+      <time>
+       <period>yearly</period>
+       <phase>1</phase>
+      </time>
+     </condition>
      <inputs/>
      <outputs/>
     </function>

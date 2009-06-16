@@ -17,6 +17,19 @@ int Government_idle()
     return 0;
 }
 
+
+/* \fn: int Government_initialization()
+ * \brief Function to initialize.
+ */
+int Government_initialization()
+{   
+    //add the region_id of the government to its list_of_regions
+    add_int(&LIST_OF_REGIONS, REGION_ID);
+    
+    return 0;   
+}
+
+
 /* \fn: int Government_send_policy_announcements()
  * \brief Function to send yearly policy announcement message.
  */
@@ -169,15 +182,18 @@ int Government_read_subsidy_notifications()
  */
 int Government_send_data_to_Eurostat()
 {        
+    double value_bonds_outstanding;
+    int nr_bonds_outstanding;
+
         if (SWITCH_FLOW_CONSISTENCY_CHECK)
         {
-            VALUE_BONDS_OUTSTANDING=0.0;
-            NR_BONDS_OUTSTANDING=0;
+            value_bonds_outstanding=BOND.nr_outstanding * BOND.face_value;
+            nr_bonds_outstanding=BOND.nr_outstanding;
             
             TOTAL_ASSETS=0.0;
             TOTAL_LIABILITIES=0.0;
 
-            add_gov_balance_sheet_message(PAYMENT_ACCOUNT, VALUE_BONDS_OUTSTANDING, NR_BONDS_OUTSTANDING, 
+            add_gov_balance_sheet_message(PAYMENT_ACCOUNT, value_bonds_outstanding, nr_bonds_outstanding, 
                     MONTHLY_TAX_REVENUES, TOTAL_BOND_FINANCING, MONTHLY_INVESTMENT_EXPENDITURE, MONTHLY_CONSUMPTION_EXPENDITURE,
                     MONTHLY_BENEFIT_PAYMENT, MONTHLY_SUBSIDY_PAYMENT, MONTHLY_TRANSFER_PAYMENT, MONTHLY_BOND_INTEREST_PAYMENT,
                     TOTAL_ASSETS, TOTAL_LIABILITIES, MONTHLY_INCOME, MONTHLY_EXPENDITURE);
@@ -191,18 +207,21 @@ int Government_send_data_to_Eurostat()
  */
 int Government_send_account_update()
 {
+    double value_bonds_outstanding;
+    int nr_bonds_outstanding;
+
         // At the very end of agent government: update the bank account
         add_central_bank_account_update_message(ID, PAYMENT_ACCOUNT);
         
         if (SWITCH_STOCK_CONSISTENCY_CHECK)
         {
-            VALUE_BONDS_OUTSTANDING=0.0;
-            NR_BONDS_OUTSTANDING=0;
+            value_bonds_outstanding=BOND.nr_outstanding * BOND.face_value;
+            nr_bonds_outstanding=BOND.nr_outstanding;
             
             TOTAL_ASSETS=0.0;
             TOTAL_LIABILITIES=0.0;
 
-            add_gov_balance_sheet_message(PAYMENT_ACCOUNT, VALUE_BONDS_OUTSTANDING, NR_BONDS_OUTSTANDING, 
+            add_gov_balance_sheet_message(PAYMENT_ACCOUNT, value_bonds_outstanding, nr_bonds_outstanding, 
                     MONTHLY_TAX_REVENUES, TOTAL_BOND_FINANCING, MONTHLY_INVESTMENT_EXPENDITURE, MONTHLY_CONSUMPTION_EXPENDITURE,
                     MONTHLY_BENEFIT_PAYMENT, MONTHLY_SUBSIDY_PAYMENT, MONTHLY_TRANSFER_PAYMENT, MONTHLY_BOND_INTEREST_PAYMENT,
                     TOTAL_ASSETS, TOTAL_LIABILITIES, MONTHLY_INCOME, MONTHLY_EXPENDITURE);
