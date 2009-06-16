@@ -1635,24 +1635,18 @@ int Eurostat_check_flow_consistency()
     
     //Reset all counters
     HOUSEHOLD_BALANCE_SHEETS.flows.wage=0.0;
-    HOUSEHOLD_BALANCE_SHEETS.flows.gov_interest=0.0;
-    HOUSEHOLD_BALANCE_SHEETS.flows.stock_sales=0.0;
     HOUSEHOLD_BALANCE_SHEETS.flows.cum_total_dividends=0.0;
     HOUSEHOLD_BALANCE_SHEETS.flows.monthly_consumption_expenditure=0.0;
     HOUSEHOLD_BALANCE_SHEETS.flows.tax_payment=0.0;
-    HOUSEHOLD_BALANCE_SHEETS.flows.stock_purchases=0.0;
     HOUSEHOLD_BALANCE_SHEETS.flows.total_income=0.0;
     HOUSEHOLD_BALANCE_SHEETS.flows.total_expenses=0.0;
 
     //Reading cash flow messages
     START_HOUSEHOLD_BALANCE_SHEET_MESSAGE_LOOP
         HOUSEHOLD_BALANCE_SHEETS.flows.wage += household_balance_sheet_message->wage;
-        HOUSEHOLD_BALANCE_SHEETS.flows.gov_interest += household_balance_sheet_message->gov_interest;
-        HOUSEHOLD_BALANCE_SHEETS.flows.stock_sales += household_balance_sheet_message->stock_sales;
         HOUSEHOLD_BALANCE_SHEETS.flows.cum_total_dividends += household_balance_sheet_message->cum_total_dividends;
         HOUSEHOLD_BALANCE_SHEETS.flows.monthly_consumption_expenditure += household_balance_sheet_message->monthly_consumption_expenditure;
         HOUSEHOLD_BALANCE_SHEETS.flows.tax_payment += household_balance_sheet_message->tax_payment;
-        HOUSEHOLD_BALANCE_SHEETS.flows.stock_purchases += household_balance_sheet_message->stock_purchases;
         HOUSEHOLD_BALANCE_SHEETS.flows.total_income += household_balance_sheet_message->total_income;
         HOUSEHOLD_BALANCE_SHEETS.flows.total_expenses += household_balance_sheet_message->total_expenses;
     FINISH_HOUSEHOLD_BALANCE_SHEET_MESSAGE_LOOP
@@ -1931,18 +1925,12 @@ int Eurostat_check_stock_consistency()
 
     //Reset all counters
     HOUSEHOLD_BALANCE_SHEETS.stocks.payment_account=0.0;
-    HOUSEHOLD_BALANCE_SHEETS.stocks.gov_bond_holdings=0.0;
-    HOUSEHOLD_BALANCE_SHEETS.stocks.nr_gov_bonds=0;
-    HOUSEHOLD_BALANCE_SHEETS.stocks.nr_firm_shares=0;
     HOUSEHOLD_BALANCE_SHEETS.stocks.total_assets=0.0;
     HOUSEHOLD_BALANCE_SHEETS.stocks.total_liabilities=0.0;
 
     //Reading stock messages
     START_HOUSEHOLD_BALANCE_SHEET_MESSAGE_LOOP
         HOUSEHOLD_BALANCE_SHEETS.stocks.payment_account += household_balance_sheet_message->payment_account;
-        HOUSEHOLD_BALANCE_SHEETS.stocks.gov_bond_holdings += household_balance_sheet_message->gov_bond_holdings;
-        HOUSEHOLD_BALANCE_SHEETS.stocks.nr_gov_bonds += household_balance_sheet_message->nr_gov_bonds;
-        HOUSEHOLD_BALANCE_SHEETS.stocks.nr_firm_shares += household_balance_sheet_message->nr_firm_shares;
         HOUSEHOLD_BALANCE_SHEETS.stocks.total_assets += household_balance_sheet_message->total_assets;
         HOUSEHOLD_BALANCE_SHEETS.stocks.total_liabilities += household_balance_sheet_message->total_liabilities;
     FINISH_HOUSEHOLD_BALANCE_SHEET_MESSAGE_LOOP

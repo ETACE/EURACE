@@ -1507,30 +1507,34 @@
     </variable>
     <variable>
      <type>double</type>
-     <name>gov_bond_holdings</name>
-     <description></description>
-    </variable>
-    <variable>
-     <type>int</type>
-     <name>nr_gov_bonds</name>
-     <description></description>
-    </variable>
-    <variable>
-     <type>int</type>
-     <name>nr_firm_shares</name>
+     <name>monthly_bond_interest_income</name>
      <description></description>
     </variable>
    </memory>
    <functions>
     <function>
-     <name>Household_idle</name>
-     <description></description>
+     <name>Household_initialization</name>
+     <description>Initialization function for household.</description>
      <currentState>start_Household</currentState>
-     <nextState>Household_Start_Policy_Data</nextState>
+     <nextState>Household_Start_Yearly_Loop_Top</nextState>
+     <condition>
+      <time>
+       <period>millionyearly</period>
+       <phase>1</phase>
+      </time>
+     </condition>
+     <inputs/>
+     <outputs/>
+    </function>
+    <function>
+     <name>idle</name>
+     <description>Idle for initialization function.</description>
+     <currentState>start_Household</currentState>
+     <nextState>Household_Start_Yearly_Loop_Top</nextState>
      <condition>
       <not>
        <time>
-        <period>yearly</period>
+        <period>millionyearly</period>
         <phase>1</phase>
        </time>
       </not>
@@ -1541,7 +1545,7 @@
     <function>
      <name>Household_read_policy_announcements</name>
      <description></description>
-     <currentState>start_Household</currentState>
+     <currentState>Household_Start_Yearly_Loop_Top</currentState>
      <nextState>Household_Start_Policy_Data</nextState>
      <condition>
       <time>
@@ -1563,6 +1567,22 @@
        </filter>
       </input>
      </inputs>
+     <outputs/>
+    </function>
+    <function>
+     <name>idle</name>
+     <description>Idle for read_policy_announcement</description>
+     <currentState>Household_Start_Yearly_Loop_Top</currentState>
+     <nextState>Household_Start_Policy_Data</nextState>
+     <condition>
+      <not>
+       <time>
+        <period>yearly</period>
+        <phase>1</phase>
+       </time>
+      </not>
+     </condition>
+     <inputs/>
      <outputs/>
     </function>
     <function>
@@ -1599,8 +1619,8 @@
      </outputs>
     </function>
     <function>
-     <name>Household_idle</name>
-     <description>Household does nothing</description>
+     <name>idle</name>
+     <description>Idle for send_data_to_eurostat</description>
      <currentState>16</currentState>
      <nextState>end_Household</nextState>
      <condition>
@@ -3112,32 +3132,7 @@
     </variable>
     <variable>
      <type>double</type>
-     <name>gov_bond_holdings</name>
-     <description></description>
-    </variable>
-    <variable>
-     <type>int</type>
-     <name>nr_gov_bonds</name>
-     <description></description>
-    </variable>
-    <variable>
-     <type>int</type>
-     <name>nr_firm_shares</name>
-     <description></description>
-    </variable>
-    <variable>
-     <type>double</type>
      <name>wage</name>
-     <description></description>
-    </variable>
-    <variable>
-     <type>double</type>
-     <name>gov_interest</name>
-     <description></description>
-    </variable>
-    <variable>
-     <type>double</type>
-     <name>stock_sales</name>
      <description></description>
     </variable>
     <variable>
@@ -3153,11 +3148,6 @@
     <variable>
      <type>double</type>
      <name>tax_payment</name>
-     <description></description>
-    </variable>
-    <variable>
-     <type>double</type>
-     <name>stock_purchases</name>
      <description></description>
     </variable>
     <variable>
