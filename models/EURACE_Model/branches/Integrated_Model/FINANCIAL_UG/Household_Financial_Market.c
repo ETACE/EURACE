@@ -413,3 +413,21 @@ int Household_receive_info_interest_from_bank() {
     FINISH_ACCOUNTINTEREST_MESSAGE_LOOP
     return 0;
 }
+
+int Household_receives_payment_coupons()
+   { int index,quantity;
+     Asset *asset;
+     Asset_array *assetsowned;
+     assetsowned=get_assetsowned();
+     START_PAYMENT_COUPONS_MESSAGE_LOOP 
+       index=findCAsset(assetsowned,payment_coupons_message->government_id);
+    if(index>=0) 
+     {
+      asset=elementAtCAsset(assetsowned,index);
+      quantity=asset->quantity;
+      PAYMENT_ACCOUNT=PAYMENT_ACCOUNT+(quantity*payment_coupons_message->coupon);
+     }
+     FINISH_PAYMENT_COUPONS_MESSAGE_LOOP
+    return 0;
+   }
+
