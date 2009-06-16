@@ -131,4 +131,5 @@ int Government_pays_coupons()
      coupon=BOND.nominal_yield*BOND.face_value;
      PAYMENT_ACCOUNT=PAYMENT_ACCOUNT-coupon*BOND.nr_outstanding;
      add_payment_coupons_message(coupon,ID);
+     return 0;
    }
