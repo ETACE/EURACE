@@ -59,9 +59,9 @@ if ((payment_account+GovBondsInPortfolioValue)<0)
     GovBondNewIssueAmount=Government_BondIssuing_decision();//govdeficit);
     bond->quantity = bond->quantity + GovBondNewIssueAmount;
     //bond->nr_outstanding= bond->nr_outstanding +GovBondNewIssueAmount;
-    printf("BONDS_NEWISSUE_DISCOUNT==%f",BONDS_NEWISSUE_DISCOUNT);
+   //printf("BONDS_NEWISSUE_DISCOUNT==%f",BONDS_NEWISSUE_DISCOUNT);
     limitPrice = (1- BONDS_NEWISSUE_DISCOUNT)*lastMarketPrice;
-   printf(" Government_generate_pending_orders id%d price%f quantity%d",ID, limitPrice,GovBondNewIssueAmount);
+   //printf(" Government_generate_pending_orders id%d price%f quantity%d",ID, limitPrice,GovBondNewIssueAmount);
     qty =-bond->quantity;
     pending_order->quantity= qty;
     pending_order->price=limitPrice;
@@ -102,7 +102,7 @@ int Government_update_its_portfolio()
   }
   bond->nr_outstanding = bond->nr_outstanding +sold_quantity;
  // if(i==2) printf("numero di execuzione =%d\n",i);
- printf("numero di outstanding bonds =%d\n",bond->nr_outstanding);
+ //printf("numero di outstanding bonds =%d\n",bond->nr_outstanding);
   return 0;
 }
 
