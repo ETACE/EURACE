@@ -91,7 +91,7 @@ int Government_update_its_portfolio()
       { 
        pending_order->quantity=pending_order->quantity-order_status->quantity;
        payment_account=payment_account-order_status->price*order_status->quantity;
-;      set_payment_account(payment_account);
+       set_payment_account(payment_account);
        bond->quantity=bond->quantity+order_status->quantity;
        sold_quantity=sold_quantity-order_status->quantity;
        }
@@ -130,6 +130,7 @@ int Government_pays_coupons()
    { double coupon;
      coupon=BOND.nominal_yield*BOND.face_value;
      PAYMENT_ACCOUNT=PAYMENT_ACCOUNT-(coupon*BOND.nr_outstanding);
+     MONTHLY_BOND_INTEREST_PAYMENT = coupon*BOND.nr_outstanding; //Defined in Government/model.xml Gov memory
      add_payment_coupons_message(coupon,ID);
      return 0;
    }
