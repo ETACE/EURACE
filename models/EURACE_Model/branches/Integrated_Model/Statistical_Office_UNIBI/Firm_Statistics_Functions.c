@@ -10,7 +10,7 @@ int Firm_send_data_to_Eurostat()
 	
 	/*Determine the productivity of the firm. Send data to Eurostat in 
 	 * order to calculate the productivity progress once a year*/
-	if(DAY%240 == 0)
+	if(DAY%20 == 0)
 	{	
 	
 		FIRM_PRODUCTIVITY_LAST_YEAR = FIRM_PRODUCTIVITY;
@@ -163,7 +163,7 @@ int Firm_receive_data()
             }
             
             /*Increase wage offer regarding the productivity increase*/
-            if(DAY%240 == 1)
+            if(DAY%20 == 1)
             {
     //if(ID < 3)
     //printf("FIRM_ID %d \n",ID);
