@@ -6,20 +6,32 @@
 
 /************************************ Household agent functions ************************************/
 /* \fn: int Household_initialization()
- * \brief Function to initialize.
+ * \brief Function to initialize. Note: this overwrites pop settings for the NEIGHBORING_REGION_IDS.
  */
 int Household_initialization()
 {   
-    //add the region_id of regions that are in the household's neighbourhood
-
     //ADD HERE SOME FUNCTION THAT SETS THE NEIGHBORHOOD STRUCTURE
-
-    //add_int(&NEIGHBORING_REGION_IDS, region);
+    int j;
+    int k=2; //each region has k neighbors
     
+    reset_int_array(&NEIGHBORING_REGION_IDS);
+
+    //add the region_id of regions that are in the household's neighbourhood
+    if (REGION_ID>k)
+    {
+        //set neighbourhood_regions={REGION_ID-k,...,REGION_ID-1}
+        for (j=1; j<=k; j++) 
+            add_int(&NEIGHBORING_REGION_IDS,REGION_ID-j);
+    }
+    if (REGION_ID<=k)
+    {
+        //set neighbourhood_regions={REGION_ID+1,...,REGION_ID+k}
+        for (j=1; j<=k; j++) 
+            add_int(&NEIGHBORING_REGION_IDS,REGION_ID+j);
+    }
+
     return 0;   
 }
-
-
 
 /*************************************Household Role: Statistics *********************************/
 /** \fn Household_read_policy_announcements()
