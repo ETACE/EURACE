@@ -18,6 +18,8 @@ int Household_receive_wage()
 
 
         WAGE = wage_payment_message->payment;
+    /*Simon: 16.06.2009*/
+    	WAGE_RESERVATION = WAGE;
         remove_double(&LAST_INCOME,0);
         add_double(&LAST_INCOME,wage_payment_message->payment);
 
