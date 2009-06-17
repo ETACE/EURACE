@@ -49,9 +49,9 @@ void Eurostat_reset_data(void)
                 0.0,0.0,0.0,0.0,0.0,0.0, //average_s_skill
                 0.0,0.0,0.0,0.0,0.0,     //total_earnings -> average_debt_earnings_ratio
                 0.0,0.0,0.0,0.0,0.0,0.0, //average_debt_equity_ratio -> monthly_planned_output
-                0.0,0.0,0.0,             //gdp, cpi, cpi_last_month 
+                0.0,1.0,1.0,             //gdp, cpi, cpi_last_month 
                 0,0,                     //no_firm_births, no_firm_deaths
-        		0,0);					 //productivity_progress, productivity
+                0,0);                    //productivity_progress, productivity
         
         add_household_data(&REGION_HOUSEHOLD_DATA,
                 i,
@@ -216,14 +216,14 @@ void Eurostat_read_firm_data(void)
                 firm_send_data_message->employees_skill_5;
             
             REGION_FIRM_DATA.array[i].productivity_progress +=
-            	firm_send_data_message->firm_productivity_progress;
+                firm_send_data_message->firm_productivity_progress;
             FIRM_AVERAGE_PRODUCTIVITY_PROGRESS +=
-            	firm_send_data_message->firm_productivity_progress;
+                firm_send_data_message->firm_productivity_progress;
             
             REGION_FIRM_DATA.array[i].productivity +=
                 firm_send_data_message->firm_productivity;
             FIRM_AVERAGE_PRODUCTIVITY +=
-            	firm_send_data_message->firm_productivity;
+                firm_send_data_message->firm_productivity;
    
         }
         FINISH_FIRM_SEND_DATA_MESSAGE_LOOP
@@ -297,13 +297,13 @@ void Eurostat_compute_region_firm_data(void)
         
         if(REGION_FIRM_DATA.array[i].no_firms > 0)
         {
-        	REGION_FIRM_DATA.array[i].productivity_progress =
-        	REGION_FIRM_DATA.array[i].productivity_progress/
-        	REGION_FIRM_DATA.array[i].no_firms;
-        	
-        	REGION_FIRM_DATA.array[i].productivity =
-        	REGION_FIRM_DATA.array[i].productivity/
-        	REGION_FIRM_DATA.array[i].no_firms;
+            REGION_FIRM_DATA.array[i].productivity_progress =
+            REGION_FIRM_DATA.array[i].productivity_progress/
+            REGION_FIRM_DATA.array[i].no_firms;
+            
+            REGION_FIRM_DATA.array[i].productivity =
+            REGION_FIRM_DATA.array[i].productivity/
+            REGION_FIRM_DATA.array[i].no_firms;
      
         }
     }
@@ -362,11 +362,11 @@ void Eurostat_compute_global_firm_data(void)
     
     if(NO_FIRMS > 0)
     {
-    	FIRM_AVERAGE_PRODUCTIVITY_PROGRESS = FIRM_AVERAGE_PRODUCTIVITY_PROGRESS/
-    	NO_FIRMS;
-    	
-    	FIRM_AVERAGE_PRODUCTIVITY = FIRM_AVERAGE_PRODUCTIVITY/NO_FIRMS;
-    	
+        FIRM_AVERAGE_PRODUCTIVITY_PROGRESS = FIRM_AVERAGE_PRODUCTIVITY_PROGRESS/
+        NO_FIRMS;
+        
+        FIRM_AVERAGE_PRODUCTIVITY = FIRM_AVERAGE_PRODUCTIVITY/NO_FIRMS;
+        
     }
 }
 
@@ -1328,32 +1328,37 @@ void Eurostat_measure_export(void)
 */
 void Eurostat_calc_price_index(void)
 {
-    int i,j, index;
+    int j, index;
     double weight, price, price_last_month, quantity, sum_1, sum_2;
-    
-    CPI = 0.0;
     
     //Compute the regional CPI as the ratio between sum(p_t*q_t)/sum(p_t-1*q_t)
     //NOTE: we also need to include the diagonal value of the original export_value_matrix, which was excluded from the import/export sums.
     for (j=0; j<NO_REGIONS; j++)
     {    
         index=j*NO_REGIONS+j;
+        REGION_FIRM_DATA.array[j].cpi_last_month = HISTORY_MONTHLY[0].region_data.array[j].cpi;
         REGION_FIRM_DATA.array[j].cpi = (REGION_IMPORT_VALUE[j]+EXPORT_VALUE_MATRIX[index])/(REGION_IMPORT_PREVIOUS_VALUE[j]+EXPORT_PREVIOUS_VALUE_MATRIX[index]);
+
+        //printf("\n HISTORY_MONTHLY[0].region_data.array[%d].cpi = %f\n", j, HISTORY_MONTHLY[0].region_data.array[j].cpi);
+        //printf("\n REGION_FIRM_DATA.array[%d].cpi = %f\n", j, REGION_FIRM_DATA.array[j].cpi);
+        //printf("\n REGION_FIRM_DATA.array[%d].cpi_last_month = %f\n", j, REGION_FIRM_DATA.array[j].cpi_last_month);
     }                
 
     //Compute overall economy-wide price index: loop over regions
     sum_1 = 0.0;
     sum_2 = 0.0;
-    for(i = 0; i< REGION_FIRM_DATA.size; i++)
+    for(j=0; j<REGION_FIRM_DATA.size; j++)
     {
-        quantity = REGION_FIRM_DATA.array[i].monthly_sold_quantity;
+        quantity = REGION_FIRM_DATA.array[j].monthly_sold_quantity;
         weight = quantity/MONTHLY_SOLD_QUANTITY;
-        price = REGION_FIRM_DATA.array[i].cpi;
-        price_last_month = REGION_FIRM_DATA.array[i].cpi_last_month;
+        price = REGION_FIRM_DATA.array[j].cpi;
+        price_last_month = REGION_FIRM_DATA.array[j].cpi_last_month;
         sum_1 += weight * price * quantity;
         sum_2 += weight * price_last_month * quantity;
     }
+    
     CPI = sum_1/sum_2;
+    
     if (PRINT_DEBUG)
     {
         fprintf(stdout,"\n Economy-wide CPI = %f\n", CPI);
