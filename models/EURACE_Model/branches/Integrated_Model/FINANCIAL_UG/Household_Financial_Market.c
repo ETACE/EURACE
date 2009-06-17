@@ -301,7 +301,7 @@ void generatePendingOrders(Asset_array *assetsowned,Order_array *pending, Belief
   tem_wealth=wealth(PAYMENT_ACCOUNT,assetsowned);
   resource=wealth(PAYMENT_ACCOUNT-CONSUMPTION_BUDGET,assetsowned);
   if(abs(resource)>abs(tem_wealth)) 
-                                   { printf("consumption budeget %f resource %f wealth %f \n",CONSUMPTION_BUDGET,resource,tem_wealth);
+                                   { //printf("consumption budeget %f resource %f wealth %f \n",CONSUMPTION_BUDGET,resource,tem_wealth);
                                      getchar();
                                     }
   set_wealth(tem_wealth);

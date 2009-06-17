@@ -31,7 +31,7 @@ void receiveOrderOnAsset(ClearingMechanism *mechanism, Asset *anAsset)
 void computeAssetPrice(ClearingMechanism *mechanism, Asset *anAsset)
   {  double price;
      int quantity;
-       printf("computed asset price id ===%d\n",anAsset->id);
+      // printf("computed asset price id ===%d\n",anAsset->id);
      setClearingMechanism(mechanism,lastPrice(anAsset));
      runClearing(mechanism);
      quantity=mechanism->quantity;
