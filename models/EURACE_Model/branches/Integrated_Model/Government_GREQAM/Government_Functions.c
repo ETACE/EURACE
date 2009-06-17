@@ -236,16 +236,16 @@ int Government_send_account_update()
  */
 int Government_resolve_unsold_bonds()
 {   
-    //At the end of the month:
+    //At the end of the month: check if the nr of bonds in the gov's own portfolio is positive
     if (BOND.quantity>0)
     {
-    //Government sends a new type of message to ECB with the nr of bonds, and the value:
-    //add_issue_bonds_to_ecb_message(nominal_value, quantity);
-    add_issue_bonds_to_ecb_message(BOND.face_value, BOND.quantity);
-    
-    //Assume that the ECB is FULLY accommodating the government's demand for fiat money:
-    PAYMENT_ACCOUNT += BOND.face_value*BOND.quantity;
-    BOND.quantity = 0;
+        //Government sends a new type of message to ECB with the nr of bonds, and the value:
+        //add_issue_bonds_to_ecb_message(nominal_value, quantity);
+        add_issue_bonds_to_ecb_message(BOND.face_value, BOND.quantity);
+        
+        //Assume that the ECB is FULLY accommodating the government's demand for fiat money:
+        PAYMENT_ACCOUNT += BOND.face_value*BOND.quantity;
+        BOND.quantity = 0;
     }
     return 0;
 }
@@ -283,7 +283,6 @@ int Government_monthly_budget_accounting()
     //Debt accounting: if the balance>0 debt decreases, if balance<0, debt increases.
         //Debt>0 means a debt, Debt<0 means a surplus.
         TOTAL_DEBT -= MONTHLY_BUDGET_BALANCE;
-       // PAYMENT_ACCOUNT += MONTHLY_BUDGET_BALANCE;
         
         //Check: value of payment account should be equal to total_debt:
         //if (abs(TOTAL_DEBT + PAYMENT_ACCOUNT))> 0.001)
@@ -300,7 +299,8 @@ int Government_monthly_budget_accounting()
             TOTAL_BOND_FINANCING = (1-GOV_POLICY_MONEY_FINANCING_FRACTION)*abs(MONTHLY_BUDGET_BALANCE);
         }
         
-        //Government sends a message to ECB with the value of fiat money requested:
+        //Government sends a message to ECB with the value of fiat money requested
+        //Assume that the ECB is FULLY accommodating the government's demand for fiat money
         //add_request_fiat_money_message(nominal_value);
         add_request_fiat_money_message(TOTAL_MONEY_FINANCING);
 
