@@ -10,7 +10,7 @@ int Government_BondIssuing_decision()
   bond=get_bond();
   if(bond->maturity_day>CURRENTDAY) last_market_price=lastPriceBond(bond);
   limit_price = (1-BONDS_NEWISSUE_DISCOUNT)*last_market_price;
- GovBondNewIssueAmount = (int) TOTAL_BOND_FINANCING/limit_price;
+ GovBondNewIssueAmount = ceil(TOTAL_BOND_FINANCING/limit_price);
 
   return GovBondNewIssueAmount;
 }
