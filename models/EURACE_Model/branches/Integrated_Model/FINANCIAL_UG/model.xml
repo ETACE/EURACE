@@ -388,12 +388,32 @@
      <description></description>
      <currentState>Household_Start_Financial_Market_Role</currentState>
      <nextState>Household_received_coupons</nextState>
+     <condition>
+      <time>
+       <period>monthly</period>
+       <phase>1</phase>
+      </time>
+     </condition>
      <inputs>
       <input>
        <messageName>payment_coupons</messageName>
       </input>
      </inputs>
      <outputs/>
+    </function>
+    <function>
+     <name>idle</name>
+     <description></description>
+     <currentState>Household_Start_Financial_Market_Role</currentState>
+     <nextState>Household_received_coupons</nextState>
+     <condition>
+     <not>
+      <time>
+       <period>monthly</period>
+       <phase>1</phase>
+      </time>
+      </not>
+     </condition>
     </function>
     <function>
      <name>Household_receive_info_interest_from_bank</name>
@@ -649,7 +669,7 @@
      <nextState>GOVERNMENT_paid_coupons</nextState>
       <condition>
       <time>
-       <period>yearly</period>
+       <period>monthly</period>
        <phase>1</phase>
       </time>
      </condition>
@@ -742,7 +762,7 @@
      <condition>
       <not>
        <time>
-        <period>yearly</period>
+        <period>monthly</period>
         <phase>1</phase>
        </time>
       </not>
