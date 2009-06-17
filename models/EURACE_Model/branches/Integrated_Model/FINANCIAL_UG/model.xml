@@ -884,17 +884,6 @@
    </variables>
   </message>
   <message>
-   <name>bankAccountUpdate</name>
-   <description>message posted by the Household </description>
-   <variables>
-    <variable>
-     <type>double</type>
-     <name>account</name>
-     <description></description>
-    </variable>
-   </variables>
-  </message>
-  <message>
    <name>info_bond</name>
    <description>message posted by the Government </description>
    <variables>
