@@ -35,14 +35,14 @@ int Household_send_orders()
      //printf("price=%f\n",ord->price);
      if(ord->quantity > 1000 )
      {
-    	 //printf("ord->assetId %d\n",ord->assetId);
-    	 //printf("ord->quantity %d\n",ord->quantity);
-    	 //printf("ord->price %f\n",ord->price);
+         //printf("ord->assetId %d\n",ord->assetId);
+         //printf("ord->quantity %d\n",ord->quantity);
+         //printf("ord->price %f\n",ord->price);
      }
      if (ord->quantity>10e+6)
      {
-    	printf("Financial_UG/Household_Financial_Market.c/Household_send_orders()\n");
-    	printf("Line: 42 ->  ord->quantity>10e+6\n");
+        printf("Financial_UG/Household_Financial_Market.c/Household_send_orders()\n");
+        printf("Line: 42 ->  ord->quantity>10e+6\n");
         printf("ASSET_ID %d, In Household_send_orders: Order quantity=%d\n", ord->assetId,ord->quantity);
         //printf("Press a number and then ENTER to continue ...");
         //scanf("%d", tmp);
@@ -419,6 +419,8 @@ int Household_receives_payment_coupons()
      Asset *asset;
      Asset_array *assetsowned;
      assetsowned=get_assetsowned();
+     
+     MONTHLY_BOND_INTEREST_INCOME=0.0; //defined in Statistical_Office//model.xml Household memory
      START_PAYMENT_COUPONS_MESSAGE_LOOP 
        index=findCAsset(assetsowned,payment_coupons_message->government_id);
     if(index>=0) 
@@ -426,6 +428,7 @@ int Household_receives_payment_coupons()
       asset=elementAtCAsset(assetsowned,index);
       quantity=asset->quantity;
       PAYMENT_ACCOUNT=PAYMENT_ACCOUNT+(quantity*payment_coupons_message->coupon);
+      MONTHLY_BOND_INTEREST_INCOME += quantity*payment_coupons_message->coupon;      
      }
      FINISH_PAYMENT_COUPONS_MESSAGE_LOOP
     return 0;
