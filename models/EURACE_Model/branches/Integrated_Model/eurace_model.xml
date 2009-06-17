@@ -259,16 +259,19 @@
     <variable>
      <type>int</type>
      <name>id</name>
+     <constant>true</constant>
      <description></description>
     </variable>
     <variable>
      <type>int</type>
      <name>region_id</name>
+     <constant>true</constant>
      <description></description>
     </variable>
     <variable>
      <type>int</type>
      <name>gov_id</name>
+     <constant>true</constant>
      <description></description>
     </variable>
     <variable>
@@ -289,11 +292,13 @@
     <variable>
      <type>int</type>
      <name>bank_id</name>
+     <constant>true</constant>
      <description></description>
     </variable>
     <variable>
      <type>int</type>
      <name>partition_id</name>
+     <constant>true</constant>
      <description></description>
     </variable>
    </memory>
@@ -306,21 +311,25 @@
     <variable>
      <type>int</type>
      <name>id</name>
+     <constant>true</constant>
      <description></description>
     </variable>
     <variable>
      <type>int</type>
      <name>region_id</name>
+     <constant>true</constant>
      <description></description>
     </variable>
     <variable>
      <type>int_array</type>
      <name>neighboring_region_ids</name>
+     <constant>true</constant>
      <description></description>
     </variable>
     <variable>
      <type>int</type>
      <name>gov_id</name>
+     <constant>true</constant>
      <description></description>
     </variable>
     <variable>
@@ -336,11 +345,13 @@
     <variable>
      <type>int</type>
      <name>bank_id</name>
+     <constant>true</constant>
      <description></description>
     </variable>
     <variable>
      <type>int</type>
      <name>partition_id</name>
+     <constant>true</constant>
      <description></description>
     </variable>
    </memory>
@@ -353,26 +364,31 @@
     <variable>
      <type>int</type>
      <name>id</name>
+     <constant>true</constant>
      <description></description>
     </variable>
     <variable>
      <type>int</type>
      <name>region_id</name>
+     <constant>true</constant>
      <description></description>
     </variable>
     <variable>
      <type>int</type>
      <name>gov_id</name>
+     <constant>true</constant>
      <description></description>
     </variable>
     <variable>
      <type>int</type>
      <name>no_regions</name>
+     <constant>true</constant>
      <description></description>
     </variable>
     <variable>
      <type>int</type>
      <name>partition_id</name>
+     <constant>true</constant>
      <description></description>
     </variable>
    </memory>
@@ -385,21 +401,25 @@
     <variable>
      <type>int</type>
      <name>id</name>
+     <constant>true</constant>
      <description></description>
     </variable>
     <variable>
      <type>int</type>
      <name>region_id</name>
+     <constant>true</constant>
      <description></description>
     </variable>
     <variable>
      <type>int</type>
      <name>gov_id</name>
+     <constant>true</constant>
      <description></description>
     </variable>
     <variable>
      <type>int</type>
      <name>bank_id</name>
+     <constant>true</constant>
      <description></description>
     </variable>
     <variable>
@@ -415,6 +435,7 @@
     <variable>
      <type>int</type>
      <name>partition_id</name>
+     <constant>true</constant>
      <description></description>
     </variable>
    </memory>
@@ -427,21 +448,25 @@
     <variable>
      <type>int</type>
      <name>id</name>
+     <constant>true</constant>
      <description></description>
     </variable>
     <variable>
      <type>int</type>
      <name>region_id</name>
+     <constant>true</constant>
      <description></description>
     </variable>
     <variable>
      <type>int</type>
      <name>no_regions</name>
+     <constant>true</constant>
      <description>Number of regions. Max=30.</description>
     </variable>
     <variable>
      <type>int</type>
      <name>partition_id</name>
+     <constant>true</constant>
      <description></description>
     </variable>
    </memory>
@@ -454,21 +479,25 @@
     <variable>
      <type>int</type>
      <name>id</name>
+     <constant>true</constant>
      <description></description>
     </variable>
     <variable>
      <type>int</type>
      <name>region_id</name>
+     <constant>true</constant>
      <description></description>
     </variable>
     <variable>
      <type>int</type>
      <name>gov_id</name>
+     <constant>true</constant>
      <description></description>
     </variable>
     <variable>
      <type>int</type>
      <name>partition_id</name>
+     <constant>true</constant>
      <description></description>
     </variable>
    </memory>
@@ -481,11 +510,13 @@
     <variable>
      <type>int</type>
      <name>id</name>
+     <constant>true</constant>
      <description></description>
     </variable>
     <variable>
      <type>int_array</type>
      <name>list_of_regions</name>
+     <constant>true</constant>
      <description>List of regions that are associated to the government.</description>
     </variable>
     <variable>
@@ -496,16 +527,19 @@
     <variable>
      <type>int</type>
      <name>day_of_month_to_act</name>
+     <constant>true</constant>
      <description></description>
     </variable>
     <variable>
      <type>int</type>
      <name>region_id</name>
+     <constant>true</constant>
      <description></description>
     </variable>
     <variable>
      <type>int</type>
      <name>partition_id</name>
+     <constant>true</constant>
      <description></description>
     </variable>
    </memory>
@@ -518,16 +552,19 @@
     <variable>
      <type>int</type>
      <name>id</name>
+     <constant>true</constant>
      <description></description>
     </variable>
     <variable>
      <type>int</type>
      <name>region_id</name>
+     <constant>true</constant>
      <description></description>
     </variable>
     <variable>
      <type>int</type>
      <name>partition_id</name>
+     <constant>true</constant>
      <description></description>
     </variable>
    </memory>
@@ -540,16 +577,19 @@
     <variable>
      <type>int</type>
      <name>id</name>
+     <constant>true</constant>
      <description></description>
     </variable>
     <variable>
      <type>int</type>
      <name>region_id</name>
+     <constant>true</constant>
      <description></description>
     </variable>
     <variable>
      <type>int</type>
      <name>partition_id</name>
+     <constant>true</constant>
      <description></description>
     </variable>
    </memory>
