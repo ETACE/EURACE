@@ -152,7 +152,7 @@ int Eurostat_calculate_data_old_version()
                 0.0,0.0,0.0,0.0,0.0,0.0, //average_s_skill
                 0.0,0.0,0.0,0.0,0.0,     //total_earnings -> average_debt_earnings_ratio
                 0.0,0.0,0.0,0.0,0.0,0.0, //average_debt_equity_ratio -> monthly_planned_output
-                0.0,0.0,0.0,             //gdp, cpi, cpi_last_month 
+                0.0,1.0,1.0,             //gdp, cpi, cpi_last_month 
                 0,0,                    //no_firm_births, no_firm_deaths
                 0,0);                   //productivity_progress, productivity
         
