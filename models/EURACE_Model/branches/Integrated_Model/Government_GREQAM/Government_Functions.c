@@ -240,11 +240,15 @@ int Government_resolve_unsold_bonds()
     if (BOND.quantity>0)
     {
         //Government sends a new type of message to ECB with the nr of bonds, and the value:
-        //add_issue_bonds_to_ecb_message(nominal_value, quantity);
-        add_issue_bonds_to_ecb_message(BOND.face_value, BOND.quantity);
         
-        //Assume that the ECB is FULLY accommodating the government's demand for fiat money:
-        PAYMENT_ACCOUNT += BOND.face_value*BOND.quantity;
+        if (GOV_POLICY_SWITCH_QUANTITATIVE_EASING)
+        {        
+            add_issue_bonds_to_ecb_message(BOND.face_value, BOND.quantity);
+            
+            //Assume that the ECB is FULLY accommodating the government's demand for fiat money:
+            PAYMENT_ACCOUNT += BOND.face_value*BOND.quantity;
+        }        
+        
         BOND.quantity = 0;
     }
     return 0;
