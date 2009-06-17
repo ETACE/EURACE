@@ -34,7 +34,7 @@
    <variable>
     <type>int</type>
     <name>gov_policy_switch_quantitative_easing</name>
-    <description>Constant to switch on/off automatic quantitative easing: gov issues bonds to ecb.&#xd;
+    <description>Constant to switch on/off automatic quantitative easing: gov issues bonds to ecb.&#xd;&#xd;
 </description>
    </variable>
   </constants>
@@ -298,6 +298,11 @@
      <type>double</type>
      <name>total_liabilities</name>
      <description></description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>cumulated_deficit</name>
+     <description>The cumulative sum of deficits, updated monthly.</description>
     </variable>
    </memory>
    <functions>
