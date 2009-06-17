@@ -110,6 +110,8 @@ void Eurostat_read_firm_data(void)
     
     FIRM_AVERAGE_PRODUCTIVITY_PROGRESS = 0.0;
     FIRM_AVERAGE_PRODUCTIVITY = 0.0;
+    
+    NO_FIRMS =0;
 
     for(i = 0; i < REGION_FIRM_DATA.size; i++)
     {
@@ -1003,7 +1005,7 @@ void Eurostat_calc_firm_population(void)
     int i;
 
     /* Reset the content of the memory variables*/
-    NO_FIRMS =0;
+   // NO_FIRMS =0;
     NO_FIRM_BIRTHS=0;
     NO_FIRM_DEATHS=0;
 

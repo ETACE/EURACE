@@ -121,6 +121,8 @@ int Eurostat_calculate_data_old_version()
     FIRM_AVERAGE_PRODUCTIVITY = 0.0;
 
     sum_consumption_good_supply    = 0.0;
+    
+    NO_FIRMS =0;
 
     
     /*delete the content of the data arrays in order to store the data for the new month*/
