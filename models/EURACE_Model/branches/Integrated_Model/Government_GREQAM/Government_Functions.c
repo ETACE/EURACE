@@ -23,7 +23,8 @@ int Government_idle()
  */
 int Government_initialization()
 {   
-    //add the region_id of the government to its list_of_regions
+    //add only the region_id of the government to its list_of_regions
+    reset_int_array(&LIST_OF_REGIONS);
     add_int(&LIST_OF_REGIONS, REGION_ID);
     
     return 0;   
