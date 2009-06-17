@@ -231,7 +231,7 @@ int Government_send_account_update()
     return 0;
 }
 
-/* \fn: int Government_resolve_leftover_bonds()
+/* \fn: int Government_resolve_unsold_bonds()
  * \brief Function to resolve the bonds that are left unsold at the end of each month.
  */
 int Government_resolve_unsold_bonds()
@@ -293,10 +293,19 @@ int Government_monthly_budget_accounting()
     //Monetary policy rule: decide on fraction of deficit to be financed by bonds/fiar money
         TOTAL_MONEY_FINANCING=0;
         TOTAL_BOND_FINANCING=0;
+        
+/* Sander, 17.06.09: Old style code: refers to the monthly budget deficit        
         if (MONTHLY_BUDGET_BALANCE<0.0)
         {
             TOTAL_MONEY_FINANCING = GOV_POLICY_MONEY_FINANCING_FRACTION*abs(MONTHLY_BUDGET_BALANCE);
             TOTAL_BOND_FINANCING = (1-GOV_POLICY_MONEY_FINANCING_FRACTION)*abs(MONTHLY_BUDGET_BALANCE);
+        }
+*/        
+/* Sander, 17.06.09: Marco proposed code: refers to a negative payment_account*/
+        if (PAYMENT_ACCOUNT<0.0)
+        {
+            TOTAL_MONEY_FINANCING = GOV_POLICY_MONEY_FINANCING_FRACTION*abs(PAYMENT_ACCOUNT);
+            TOTAL_BOND_FINANCING = (1-GOV_POLICY_MONEY_FINANCING_FRACTION)*abs(PAYMENT_ACCOUNT);
         }
         
         //Government sends a message to ECB with the value of fiat money requested
