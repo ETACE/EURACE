@@ -286,7 +286,8 @@ int Government_monthly_budget_accounting()
         
     //Debt accounting: if the balance>0 debt decreases, if balance<0, debt increases.
         //Debt>0 means a debt, Debt<0 means a surplus.
-        TOTAL_DEBT -= MONTHLY_BUDGET_BALANCE;
+        CUMULATED_DEFICIT -= MONTHLY_BUDGET_BALANCE;
+        TOTAL_DEBT = BOND.nr_outstanding*BOND.face_value;
         
         //Check: value of payment account should be equal to total_debt:
         //if (abs(TOTAL_DEBT + PAYMENT_ACCOUNT))> 0.001)
