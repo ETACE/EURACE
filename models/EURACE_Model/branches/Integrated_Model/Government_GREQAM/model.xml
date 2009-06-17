@@ -31,6 +31,12 @@
     <name>no_regions_per_gov</name>
     <description>Number of regions per government. Default 2.</description>
    </variable>
+   <variable>
+    <type>int</type>
+    <name>gov_policy_switch_quantitative_easing</name>
+    <description>Constant to switch on/off automatic quantitative easing: gov issues bonds to ecb.
+</description>
+   </variable>
   </constants>
   <functionFiles>
    <file>Government_Functions.c</file>
@@ -525,10 +531,22 @@
      <currentState>Gov_Start_Monthly_Loop</currentState>
      <nextState>05a</nextState>
      <condition>
-      <time>
-       <period>monthly</period>
-       <phase>0</phase>
-      </time>
+      <lhs>
+       <time>
+        <period>monthly</period>
+        <phase>0</phase>
+       </time>
+      </lhs>
+      <op>AND</op>
+      <rhs>
+       <lhs>
+        <value>GOV_POLICY_SWITCH_QUANTITATIVE_EASING</value>
+       </lhs>
+       <op>EQ</op>
+       <rhs>
+        <value>1</value>
+       </rhs>
+      </rhs>
      </condition>
      <inputs/>
      <outputs>
@@ -624,6 +642,32 @@
        <period>yearly</period>
        <phase>1</phase>
       </time>
+     </condition>
+     <inputs/>
+     <outputs/>
+    </function>
+    <function>
+     <name>idle</name>
+     <description>Idle for gov_resolve_unsold_bonds.</description>
+     <currentState>Gov_Start_Monthly_Loop</currentState>
+     <nextState>05a</nextState>
+     <condition>
+      <lhs>
+       <time>
+        <period>monthly</period>
+        <phase>0</phase>
+       </time>
+      </lhs>
+      <op>AND</op>
+      <rhs>
+       <lhs>
+        <value>GOV_POLICY_SWITCH_QUANTITATIVE_EASING</value>
+       </lhs>
+       <op>EQ</op>
+       <rhs>
+        <value>0</value>
+       </rhs>
+      </rhs>
      </condition>
      <inputs/>
      <outputs/>
