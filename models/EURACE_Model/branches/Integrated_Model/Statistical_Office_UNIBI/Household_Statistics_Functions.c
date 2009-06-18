@@ -12,16 +12,29 @@ int Household_initialization()
 {   
     //ADD HERE SOME FUNCTIONS THAT SET THE NEIGHBORHOOD STRUCTURE OF REGIONS
 
-    /*********** NETWORK: complete **************/    
+    /*********** NETWORK: complete graph **************/
+/*    
     int j, k=TOTAL_REGIONS; //total number of regions
     
     reset_int_array(&NEIGHBORING_REGION_IDS);
     
     for (j=1; j<=k; j++) 
         add_int(&NEIGHBORING_REGION_IDS,j);
+*/
 
-
-    /*********** NETWORK: k=2 neighbors **************/    
+    /*********** NETWORK: k neighbors with wrap-around */
+    int j, k=2;
+    for (j=1; j<=k; j++)
+    { 
+        if((REGION_ID+j)<=TOTAL_REGIONS)
+            add_int(&NEIGHBORING_REGION_IDS,(REGION_ID+j));
+        else
+            add_int(&NEIGHBORING_REGION_IDS,(REGION_ID+j)%TOTAL_REGIONS);
+    }
+    /*********** NETWORK: k neighbors without wrap-around */
+    //for (REGION_ID>k): use backward neighborhood
+    //for (REGION_ID<=): use forward neighborhood
+    /******************************************************/
 /*    
     int j, k=2; //each region has k neighbors
     
@@ -41,7 +54,6 @@ int Household_initialization()
             add_int(&NEIGHBORING_REGION_IDS,REGION_ID+j);
     }
 */
-
 
     return 0;   
 }
