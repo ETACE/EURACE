@@ -331,8 +331,6 @@ The other applicants are refused.</description>
      <inputs>
       <input>
        <messageName>job_application</messageName>
-       <sort><key>general_skill</key><order>descend</order></sort>
-		<random>true</random>
        <filter>
         <lhs>
          <value>a.id</value>
@@ -506,8 +504,6 @@ The other applicants are refused.</description>
      <inputs>
       <input>
        <messageName>job_application2</messageName>
-       <sort><key>general_skill</key><order>descend</order></sort>
-       <random>true</random>
        <filter>
         <lhs>
          <value>a.id</value>
