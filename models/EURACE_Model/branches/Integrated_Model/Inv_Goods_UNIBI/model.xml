@@ -142,7 +142,11 @@
        <messageName>pay_capital_goods</messageName>
       </input>
      </inputs>
-     <outputs/>
+     <outputs>
+      <output>
+       <messageName>bank_account_update</messageName>
+      </output>
+     </outputs>
     </function>
     <function>
      <name>IGFirm_pay_taxes</name>
