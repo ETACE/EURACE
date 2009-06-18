@@ -1,2 +1,6 @@
-Household
+Firm
+IGFirm
 Government
+Household
+Mall
+Bank 
