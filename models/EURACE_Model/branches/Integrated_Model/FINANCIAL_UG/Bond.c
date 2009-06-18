@@ -69,7 +69,7 @@ double volatilityBond(Bond *bond,int backwardWindow)
                volatility=volatility+(aux*aux);
             }
       volatility=volatility/(backwardWindow);
-      //volatility=sqrt(volatility/(backwardWindow);
+      volatility=sqrt(volatility);
       return volatility;
      }
 void totalReturnsBond(Bond *bond, double *vect, int backwardWindow,double factor, double value)
@@ -106,7 +106,7 @@ int  coupons_payment_days(Bond *bond,int currentDay,int holding_period)
    return nrCoupons;
 }
 
-double computeBondUtilityFunction(Bond *bond,int backwardWindow, double factor, double value, double lossaversion)
+double computeBondUtilityFunction(Bond *bond,int backwardWindow, double factor, double value, double lossaversion,double *rndvect, double randomWeight)
 { 
   int i;
   double utility;
@@ -114,7 +114,7 @@ double computeBondUtilityFunction(Bond *bond,int backwardWindow, double factor, 
   utility=0;
   for(i=0;i<backwardWindow;i++)
     { 
-     r=backreturns_bond(bond,i)*factor+value;
+     r=backreturns_bond(bond,i)*factor+value+rndvect[i]*randomWeight;
      
      if (r<0) utility=utility+r*lossaversion;
      else     utility=utility+r;

@@ -95,7 +95,7 @@ double volatilityStock(Stock *stock,int backwardWindow)
                volatility=volatility+(aux*aux);
             }
       volatility=volatility/(backwardWindow);
-      //volatility=sqrt(volatility/(backwardWindow);
+      volatility=sqrt(volatility);
       return volatility;
      }
 void totalReturnsStock(Stock *stock, double *vect, int backwardWindow,double factor, double value)
@@ -123,17 +123,8 @@ void historicalReturnsStock(Stock *stock, double *vect, int backwardWindow,doubl
 
 
 
-/*void frequencyTotalReturns(Stock *stock,Histogram *hist, int backwardWindow, int bins,double factor,double value)
- { 
-   double temp[MAXRETURNS];
 
-   totalReturnsStock(stock,temp,backwardWindow,factor,value);
-
-   histogram(hist,temp,backwardWindow,bins);
-   
-  return;
- }*/
-double computeStockUtilityFunction(Stock *stock,int backwardWindow, double factor, double value, double lossaversion)
+double computeStockUtilityFunction(Stock *stock,int backwardWindow, double factor, double value, double lossaversion, double *rndvect,double randomWeight)
 { 
   int i;
   double utility;
@@ -141,7 +132,7 @@ double computeStockUtilityFunction(Stock *stock,int backwardWindow, double facto
   utility=0;
   for(i=0;i<backwardWindow;i++)
     { 
-     r=backreturnsAt(stock,i)*factor+value;
+     r=backreturnsAt(stock,i)*factor+value+rndvect[i]*randomWeight;
      
      if (r<0) utility=utility+r*lossaversion;
      else     utility=utility+r;
