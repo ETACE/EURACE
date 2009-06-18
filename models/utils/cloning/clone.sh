@@ -46,6 +46,11 @@ fi
 # Copying first set of cloned agents to new 0.xml but remove last </states> line
 sed -e '/<\/states>/d' < 0_0.xml > $3
 
+# Fix the <total_regions> tag
+let "num_regions = $2 + 1"
+sed "s/<total_regions>[0-9]<\/total_regions>/<total_regions>$num_regions<\/total_regions>/g" $3 > tmp
+mv tmp $3
+
 # If -j option supplied then add other data
 if [ x$4 != "x" ] && [ $4 = "-j" ]; then
   for i in `seq 1 $2`
@@ -75,5 +80,7 @@ fi
 
 # Put the final tag back
 echo "</states>" >> $3
+
+
 
 rm 0.xml
