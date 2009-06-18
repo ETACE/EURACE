@@ -10,9 +10,20 @@
  */
 int Household_initialization()
 {   
-    //ADD HERE SOME FUNCTION THAT SETS THE NEIGHBORHOOD STRUCTURE
-    int j;
-    int k=2; //each region has k neighbors
+    //ADD HERE SOME FUNCTIONS THAT SET THE NEIGHBORHOOD STRUCTURE OF REGIONS
+
+    /*********** NETWORK: complete **************/    
+    int j, k=TOTAL_REGIONS; //total number of regions
+    
+    reset_int_array(&NEIGHBORING_REGION_IDS);
+    
+    for (j=1; j<=k; j++) 
+        add_int(&NEIGHBORING_REGION_IDS,j);
+
+
+    /*********** NETWORK: k=2 neighbors **************/    
+/*    
+    int j, k=2; //each region has k neighbors
     
     reset_int_array(&NEIGHBORING_REGION_IDS);
 
@@ -29,6 +40,8 @@ int Household_initialization()
         for (j=1; j<=k; j++) 
             add_int(&NEIGHBORING_REGION_IDS,REGION_ID+j);
     }
+*/
+
 
     return 0;   
 }
