@@ -98,7 +98,7 @@ int Household_receive_data()
             if (ASSETSOWNED.array[i].id == bankruptcy_message->firm_id)
             {
                 ASSETSOWNED.array[i].quantity=0;
-                ASSETSOWNED.array[i].lastPrice=0.0;
+                //ASSETSOWNED.array[i].lastPrice=0.0;
             }
         }
     FINISH_BANKRUPTCY_MESSAGE_LOOP  
