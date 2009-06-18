@@ -1,7 +1,6 @@
 #include "my_library_header.h"
 #include "../Household_agent_header.h"
 
-//extern Random rnd;
 
 //utility functions
 
@@ -54,22 +53,7 @@ int Household_send_orders()
 
 }
 
-/*CDouble *assetUtilitiesToDesiredWeights()//assetUtilities);
-{ CDouble *weights;
-  int i;
-  double weight;
-  double sum;
-  sum=0;
-  weights=newCDouble(maxAssets+1);
-   for(i=0;i<(maxAssets+1);i++)
-   {
-     weight=next(rnd);
-     sum=sum+weight;
-     addCDouble(weights,weight);
-   }
-  divide(weights,sum);
- return weights;
-}  */
+
 void computeUtilities(Belief_array *beliefs, double_array *assetUtilities)
 {
   Belief *belief;
@@ -123,47 +107,7 @@ void assetUtilitiesToWeights(double_array *assetWeights,double_array *assetUtili
  //printf("size pesi =====%d\n",assetWeights->size);
     divide(assetWeights,somma);
 }
-/*void assetUtilitiesToWeights(double_array *assetWeights,double_array *assetUtilities,double bankrate)
-{
-      double elem;
-      int size,i;
-      double somma;
 
-      reset_double_array(assetWeights);
-      size=sizeCDouble(assetUtilities);
-      somma=0;
-      for(i=0;i<size;i++)
-         { elem=elementAtCDouble(assetUtilities,i);
-           if(elem>0) {somma=somma+elem;
-
-                       add_double(assetWeights,elem);
-                      }
-           else add_double(assetWeights,0);
-           
-         }
-
-      somma=somma+bankrate;
-      add_double(assetWeights,bankrate);
-                   
-    divide(assetWeights,somma);
-}*/
-        
-/*void assetUtilitiesToWeights(double_array *assetWeights,double_array *assetUtilities,double bankrate)
-{ 
-  int i;
-  double weight;
-  double sum;
-  sum=0;
-  reset_double_array(assetWeights);
-   for(i=0;i<(3);i++)
-   {
-     weight=next(rnd);
-     sum=sum+weight;
-     add_double(assetWeights,weight);
-   }
-  divide(assetWeights,sum);
- return ;
-}  */
 int  Household_select_strategy()
   { 
     set_strategy(next()<TRADING_ACTIVITY);
