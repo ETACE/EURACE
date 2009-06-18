@@ -373,8 +373,8 @@ int Firm_read_job_applications_send_job_offer_or_rejection()
 
         no_applications = job_application_list.size;
         
-       // qsort(job_application_list.array, job_application_list.size, 
-        //sizeof(job_application), job_application_list_rank_general_skill_function);
+        qsort(job_application_list.array, job_application_list.size, 
+        sizeof(job_application), job_application_list_rank_general_skill_function);
 
 
         //printf("ID: %d no_applications %d, VACANCIES %d \n",ID,no_applications, VACANCIES);
@@ -759,8 +759,8 @@ int Firm_read_job_applications_send_job_offer_or_rejection_2()
 
         no_applications = job_application_list.size;
 
-        //qsort(job_application_list.array, job_application_list.size, 
-        //sizeof(job_application), job_application_list_rank_general_skill_function);
+        qsort(job_application_list.array, job_application_list.size, 
+        sizeof(job_application), job_application_list_rank_general_skill_function);
 
         /*Case 1: Number of Vacancies is equal or bigger than number of applications:
         each applicant gets a job offer*/   
