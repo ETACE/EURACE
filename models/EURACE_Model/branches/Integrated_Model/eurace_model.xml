@@ -43,6 +43,11 @@
  </models>
  <environment>
   <constants>
+    <variable>
+    <type>int</type>
+    <name>total_regions</name>
+    <description>Total number of regions.</description>
+   </variable>
    <variable>
     <type>int</type>
     <name>print_log</name>
@@ -65,126 +70,6 @@
    </variable>
    <variable>
     <type>int</type>
-    <name>number_of_banks_to_apply</name>
-    <description>number of banks firms can ask loans</description>
-   </variable>
-   <variable>
-    <type>double</type>
-    <name>gamma_const</name>
-    <description> -2, Strength of logit rule for consumption</description>
-   </variable>
-   <variable>
-    <type>double</type>
-    <name>alpha</name>
-    <description>0.662, Parameter for production function.</description>
-   </variable>
-   <variable>
-    <type>double</type>
-    <name>beta</name>
-    <description>0.338, Parameter for production function.</description>
-   </variable>
-   <variable>
-    <type>double</type>
-    <name>depreciation_rate</name>
-    <description>0.01, Capital depreciation rate.</description>
-   </variable>
-   <variable>
-    <type>double</type>
-    <name>discount_rate</name>
-    <description>0.05, Discount rate.</description>
-   </variable>
-   <variable>
-    <type>double</type>
-    <name>teta</name>
-    <description>0.0, Strength of adaption of the capital stock if firm is rationed on the labor market.</description>
-   </variable>
-   <variable>
-    <type>double</type>
-    <name>mark_up</name>
-    <description>0.2, Pricing rule: mark up on unit costs.</description>
-   </variable>
-   <variable>
-    <type>double</type>
-    <name>lambda</name>
-    <description>0.5, Strength of the influence of the actual demand on the next production quantity: if LAMBDA = 0 then the planned production quantities of the last periods are recognized. If LAMBDA = 1 then only the actual demand is recognized.</description>
-   </variable>
-   <variable>
-    <type>double</type>
-    <name>wage_update</name>
-    <description>0.02, Parameter for adaption of the wage offer: percentage</description>
-   </variable>
-   <variable>
-    <type>int</type>
-    <name>min_vacancy</name>
-    <description>2, minimum number of vacancies to trigger vacancy counter</description>
-   </variable>
-   <variable>
-    <type>double</type>
-    <name>wage_reservation_update</name>
-    <description>0.02, Parameter adaption of the reservation wage: percentage.</description>
-   </variable>
-   <variable>
-    <type>double</type>
-    <name>region_cost</name>
-    <description>0.2, Cost of working in a different region: commuting costs.</description>
-   </variable>
-   <variable>
-    <type>double</type>
-    <name>inventory_costs_per_unit</name>
-    <description>2, Administrative cost of storing one unit for one period.</description>
-   </variable>
-   <variable>
-    <type>double</type>
-    <name>on_the_job_search_rate</name>
-    <description>10.0, Percentage of employees who are searching for a new job.</description>
-   </variable>
-   <variable>
-    <type>double</type>
-    <name>consumption_propensity</name>
-    <description>0.95, Percentage of savings allocated to consumption.</description>
-   </variable>
-   <variable>
-    <type>int</type>
-    <name>firm_planning_horizon</name>
-    <description>10, Planning horizon of firms</description>
-   </variable>
-   <variable>
-    <type>double</type>
-    <name>inv_inertia</name>
-    <description>3</description>
-   </variable>
-   <variable>
-    <type>double</type>
-    <name>adaption_delivery_volume</name>
-    <description>0.05</description>
-   </variable>
-   <variable>
-    <type>double</type>
-    <name>delivery_prob_if_critical_stock_0</name>
-    <description>25, Probability for the delivery if the critical stock of one mall was zero for the last periods.</description>
-   </variable>
-   <variable>
-    <type>double</type>
-    <name>innovation_probability</name>
-    <description>10</description>
-   </variable>
-   <variable>
-    <type>double</type>
-    <name>productivity_progress</name>
-    <description>0.05</description>
-   </variable>
-   <variable>
-    <type>int</type>
-    <name>lower_bound_firing</name>
-    <description></description>
-   </variable>
-   <variable>
-    <type>int</type>
-    <name>upper_bound_firing</name>
-    <description></description>
-   </variable>
-   <variable>
-    <type>int</type>
     <name>const_bankruptcy_idle_period</name>
     <description>Number of iterations that a bankrupt firm remains idle, before resuming production activity.</description>
    </variable>
@@ -192,6 +77,11 @@
     <type>int</type>
     <name>days_per_month</name>
     <description>Optional setting for the number of days in a month.</description>
+   </variable>
+   <variable>
+    <type>int</type>
+    <name>number_of_banks_to_apply</name>
+    <description>number of banks firms can ask loans</description>
    </variable>
    <variable>
     <type>int</type>
