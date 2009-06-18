@@ -14,19 +14,7 @@ void initializeBelief(Belief *belief)
       belief->expectedTotalReturns=0.0;
       belief->expectedCashFlowYield=0.0;
       belief->volatility=0.0;
-      //belief->forwardWindow=0;
-      //belief->backwardWindow=0;
-      //belief->binsNumber=0;
-      //belief->randomReturnWeight=0.0;
-      //belief->fundametalReturnWeight=0.0;
-      //belief->chartistReturnWeight=0.0;
-      //belief->holdingPeriodToForwardW=0;
 }
-/*
-void  assetBeliefFormation(Belief *belief, Asset_array *assets,Random *rnd)
-{ belief->expectedPriceReturns=gauss(rnd,0,sigma);
-}
-*/
 
 
 
@@ -57,15 +45,18 @@ double horizonRetainedEarnings(Belief *belief, int currentDay,int forwardWindow)
 }
 
 double futureFundamentalReturn(Belief *belief,Stock *stock,int currentDay,int forwardWindow, double equity)
-{ double futureFundPrice;
+{
+
+  double futureFundPrice;
   double fundamentalReturn;
   int hRetainedEarnings;
   hRetainedEarnings=horizonRetainedEarnings(belief,currentDay,forwardWindow);
   futureFundPrice = (equity+hRetainedEarnings)/(stock->nrOutStandingShares);
- // printf(" return%f\n",futureFundPrice);
+  //printf(" fundamentalprice%f\n",futureFundPrice);
   fundamentalReturn = (futureFundPrice-lastPriceStock(stock))/lastPriceStock(stock);
+  //printf(" fundamentalreturn%f\n",fundamentalReturn);
   return fundamentalReturn;
-       }
+}
 
 double randomReturn(Belief *belief, Stock *stock,int backwardWindow,int forwardWindow)
 {  double rndReturn;
@@ -74,8 +65,7 @@ double randomReturn(Belief *belief, Stock *stock,int backwardWindow,int forwardW
    volatility=volatilityStock(stock,backwardWindow);
    volatility=max(0.1,volatility);
    randn=gauss(0,1);
-   rndReturn = sqrt(forwardWindow)*volatility*randn;//sqrt(forwardWindow)*volatility*randn;
- //rndReturn = volatility*randn;//sqrt(forwardWindow)*volatility*randn;
+   rndReturn = sqrt(forwardWindow)*volatility*randn;
    return rndReturn;
 }
 void dividendYield(Belief *belief,Stock *stock,int currentDay, int forwardWindow,double dividendExp)
@@ -105,24 +95,17 @@ void  stockBeliefFormation(Belief *belief, Stock *stock,int backwardWindow,int f
  
   //dividendYield(belief,stock,currentDay, forwardWindow);
   rndreturn=randomReturn(belief, stock,forwardWindow,backwardWindow);
- 
   fundreturn= futureFundamentalReturn(belief,stock,currentDay,forwardWindow, equity);
-
   returns_avg=expectedReturnStock(stock,backwardWindow);
-  //printf(" return%f\n",returns_avg);
- 
   value= randomWeight*rndreturn + fundamentalWeight*fundreturn + belief->expectedCashFlowYield; 
   factor=forwardWindow*chartistWeight;
- price_returns_avg=(randomWeight*rndreturn+fundamentalWeight*fundreturn+chartistWeight*forwardWindow*returns_avg)*(NRDAYSINYEAR/forwardWindow);
-  //price_returns_avg=(randomWeight*rndreturn+fundamentalWeight*fundreturn+chartistWeight*forwardWindow*returns_avg)/forwardWindow;
+
+  price_returns_avg=(randomWeight*rndreturn+fundamentalWeight*fundreturn+chartistWeight*forwardWindow*returns_avg)*(NRDAYSINYEAR/forwardWindow);
 
   dividend_yield_annualized=belief->expectedCashFlowYield*(NRDAYSINYEAR/forwardWindow);
   total_returns_avg=price_returns_avg+ dividend_yield_annualized;
- 
-
   belief->utility= computeStockUtilityFunction(stock, backwardWindow, factor,  value, lossaversion);
-  belief->expectedPriceReturns=price_returns_avg;//gauss(rnd,0,0.1);//price_returns_avg;
-//printf("expected price return%f\n",price_returns_avg);
+  belief->expectedPriceReturns=price_returns_avg;
   belief->expectedTotalReturns=total_returns_avg;
   belief->last_price=lastPriceStock(stock);
 }
@@ -131,7 +114,6 @@ void  stockBeliefFormation(Belief *belief, Stock *stock,int backwardWindow,int f
 void  bondBeliefFormation(Belief *belief, Bond *bond,int backwardWindow,int forwardWindow, double randomWeight,double  fundamentalWeight,double chartistWeight, int bins ,int currentDay,int holdingPeriodToForwardW, double lossaversion)
 { int holding_period;
   int nrCoupons;
-  int bins_number;
   double coupon;
   double coupon_stream,last_market_price;
   double fundamental_return_weight_bond;
@@ -177,7 +159,7 @@ else
 if (holding_period>=aux)
     {value=fundamentalReturn; 
      factor=0;
-    }//priceReturns=fundamentalReturn;
+    }
 else
     // Random Return
    {
@@ -185,13 +167,11 @@ else
      volatility=max(0.1,volatility);
      randomReturn = sqrt(holding_period)*volatility*gauss(0,1);
     //total return Returns
-    value= random_return_weight_bond*randomReturn +fundamental_return_weight_bond*fundamentalReturn+coupon_yield;
+    value= random_return_weight_bond*randomReturn+fundamental_return_weight_bond*fundamentalReturn+coupon_yield;
     factor = holding_period* chartist_return_weight_bond;
     
    }
-bins_number = min(bins,backwardWindow);
 returns_avg=expectedReturnBond(bond,backwardWindow);
-//belief->expectedPriceReturns=(value+factor*returns_avg)/holding_period;
 belief->expectedPriceReturns=((value+factor*returns_avg)*NRDAYSINYEAR)/holding_period;
 coupon_yield_annualized = coupon_yield*(NRDAYSINYEAR/holding_period);
 belief->expectedTotalReturns=value+factor*returns_avg+coupon_yield_annualized;

@@ -36,11 +36,13 @@ void setStock(Stock *aStock, int id, double price, int nrOutStandingShares)
 void addPriceStock(Stock *stock, double price)
 {    int precindex;
      precindex=stock->index;
+     double precprice;
      if(stock->index==MAXPRICES-1) stock->index=0;
                                     
      else stock->index++;
      stock->prices[stock->index]=price;
-     stock->returns[stock->index]= (price-stock->prices[precindex])/price;
+     precprice=stock->prices[precindex];
+     stock->returns[stock->index]= (price-precprice)/precprice;
   
 }
 
