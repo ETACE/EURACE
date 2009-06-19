@@ -180,18 +180,15 @@ Order *computeLimitOrder( Asset *anAsset, double weight, double resource,Belief 
       if(assetId!=belief->asset_id) printf("------------errore----------\n");
       lastprice=belief->last_price;
       anAsset->lastPrice=belief->last_price;
-      aux=expectedPriceReturns(belief);
+      aux=expectedPriceReturns(belief)/NRDAYSINYEAR;
       
-      aux=aux/(int)NRDAYSINYEAR;
-      //if(abs(aux)>1) printf("expected price return %f\n",aux);
-      if(aux<-1) aux=-1; 
+      if(aux<0) aux=max(-0.999,aux); 
       aux=gauss(0,0.0001);
       limitPrice=lastprice*(1+aux); 
       deltaquantity=(int)(weight*resource/(limitPrice))-quantity;
-      if(deltaquantity<0) deltaquantity=max(deltaquantity,-quantity);
       if((deltaquantity<0)&&(deltaquantity<(-quantity))) 
              {  printf("last price %f exptected return %f\n",limitPrice,aux);
-                printf("id %d limitprice %f weight %f resource %f deltaquantity %d quantity=%d\n",belief->asset_id,limitPrice,weight,resource,deltaquantity,quantity);
+                printf("id %d limitprice %f weight %f resource %lf deltaquantity %d quantity=%d\n",belief->asset_id,limitPrice,weight,resource,deltaquantity,quantity);
              }
       //if(deltaquantity<0) deltaquantity=deltaquantity*1.1;
       //else deltaquantity=deltaquantity*0.9;  
@@ -247,10 +244,10 @@ void generatePendingOrders(Asset_array *assetsowned,Order_array *pending, Belief
   double_array *weights;
   tem_wealth=wealth(PAYMENT_ACCOUNT,assetsowned);
   resource=wealth(PAYMENT_ACCOUNT-CONSUMPTION_BUDGET,assetsowned);
-  if(abs(resource)>abs(tem_wealth))                                 
-    { 
-     getchar();
-    }
+  if(abs(resource)>abs(tem_wealth)) 
+                                   { //printf("consumption budeget %f resource %f wealth %f \n",CONSUMPTION_BUDGET,resource,tem_wealth);
+                                     getchar();
+                                    }
   set_wealth(tem_wealth);
   size=beliefs->size;
   reset_Order_array(pending);
@@ -330,7 +327,8 @@ int Household_bond_beliefs_formation()
   while( cinfo_bond)
     {  
      
-     bond=&(cinfo_bond->bond); 
+     bond=&(cinfo_bond->bond);
+     
      add_Belief(beliefs,bond->id, 0, 0, 0,0, 0,0, 0,0);
      belief=&(beliefs->array[beliefs->size-1]); 
      bondBeliefFormation(belief, bond,BACKWARDWINDOW,FORWARDWINDOW, RANDOMWEIGHT,FUNDAMENTALWEIGHT, CHARTISTWEIGHT, BINS , CURRENTDAY, HOLDINGPERIODTOFORWARDW,  LOSSAVERSION);

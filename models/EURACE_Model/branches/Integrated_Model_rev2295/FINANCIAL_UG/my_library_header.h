@@ -324,7 +324,7 @@ void totalReturnsStock(Stock *stock, double *vect, int backwardWindow,double fac
 void priceReturnsStock(Stock *stock, double *vect, int backwardWindow);
 void historicalReturnsStock(Stock *stock, double *vect, int backwardWindow,double forwardWindow);
 //void frequencyTotalReturns(Stock *stock,Histogram *hist, int backwardWindow, int bins,double factor,double value);
-double computeStockUtilityFunction(Stock *stock,int backwardWindow, double factor, double value, double lossAversion, double *rndvect,double randomWeight);
+double computeStockUtilityFunction(Stock *stock,int backwardWindow, double factor, double value, double lossAversion);
 
 /********Belief*******************/
 
@@ -352,8 +352,8 @@ double horizonRetainedEarnings(Belief *belief, int currentDay,int forwardWindow)
 
 double futureFundamentalReturn(Belief *belief,Stock *stock,int currentDay,int forwardWindow, double equity);
 
-double randomReturnStock(Belief *belief, Stock *stock,int backwardWindow,int forwardWindow,double *rndvect);
-double randomReturnBond(Belief *belief, Bond *bond,int backwardWindow,int forwardWindow,double *rndvect);
+double randomReturn(Belief *belief, Stock *stock,int backwardWindow,int forwardWindow);
+
 
 void  stockBeliefFormation(Belief *belief, Stock *stock,int backwardWindow,int forwardWindow, double randomWeight,double  fundamentalWeight,double chartistWeight, int bins ,int currentDay,double equity,double lossaversion);
 
@@ -418,5 +418,5 @@ void historicalReturnsBond(Bond *bond, double *vect, int backwardWindow,double f
 int  coupons_payment_days(Bond *bond,int currentDay,int holding_period);
 
 
-double computeBondUtilityFunction(Bond *bond,int backwardWindow, double factor, double value, double lossaversion, double *rndvect,double randomWeight);
+double computeBondUtilityFunction(Bond *bond,int backwardWindow, double factor, double value, double lossaversion);
 #endif
