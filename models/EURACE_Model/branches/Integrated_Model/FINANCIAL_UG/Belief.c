@@ -118,28 +118,28 @@ void  stockBeliefFormation(Belief *belief, Stock *stock,int backwardWindow,int f
  
   annual_coeff=(NRDAYSINYEAR/forwardWindow);
   rnd_avg=randomReturnStock(belief, stock,forwardWindow,backwardWindow,rndreturn);
-  printf("random return%f\n",rnd_avg);
+  //printf("random return%f\n",rnd_avg);
   fundreturn= futureFundamentalReturn(belief,stock,currentDay,forwardWindow, equity);
-  printf("fundamental return%f\n",fundreturn);
+  //printf("fundamental return%f\n",fundreturn);
   returns_avg=expectedReturnStock(stock,backwardWindow);
-  printf("chartist return%f\n",returns_avg);
+  //printf("chartist return%f\n",returns_avg);
   value= fundamentalWeight*fundreturn + belief->expectedCashFlowYield; 
   factor=forwardWindow*chartistWeight;
   price_returns_avg=((randomWeight*rnd_avg)+(fundamentalWeight*fundreturn)+(chartistWeight*forwardWindow*returns_avg))*annual_coeff;
   dividend_yield_annualized=belief->expectedCashFlowYield*annual_coeff;
 
-  printf("pesi %f %f %f",randomWeight,fundamentalWeight,chartistWeight);
+  //printf("pesi %f %f %f",randomWeight,fundamentalWeight,chartistWeight);
   
 //printf("forwardWindow %d\n",forwardWindow);  
-  printf("coeff di annualizz %f\n",annual_coeff); 
-  printf("dividend yield annualized %f\n",dividend_yield_annualized);
+  //printf("coeff di annualizz %f\n",annual_coeff); 
+  //printf("dividend yield annualized %f\n",dividend_yield_annualized);
   total_returns_avg=price_returns_avg+ dividend_yield_annualized;
   belief->utility= computeStockUtilityFunction(stock, backwardWindow, factor,  value, lossaversion,rndreturn, randomWeight);
   belief->expectedPriceReturns=price_returns_avg;
   belief->expectedTotalReturns=total_returns_avg;
   belief->last_price=lastPriceStock(stock);
 
-  printf("price_return %f\n",belief->expectedPriceReturns/NRDAYSINYEAR);
+  //printf("price_return %f\n",belief->expectedPriceReturns/NRDAYSINYEAR);
   //if(abs(belief->expectedPriceReturns/NRDAYSINYEAR)>1) getchar();
 }
 
