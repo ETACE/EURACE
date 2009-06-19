@@ -183,11 +183,12 @@ Order *computeLimitOrder( Asset *anAsset, double weight, double resource,Belief 
       aux=expectedPriceReturns(belief);
       
       aux=aux/(int)NRDAYSINYEAR;
-      if(abs(aux)>1) printf("expected price return %f\n",aux);
+      //if(abs(aux)>1) printf("expected price return %f\n",aux);
       if(aux<-1) aux=-1; 
-      //aux=gauss(0,0.0001);
+      aux=gauss(0,0.0001);
       limitPrice=lastprice*(1+aux); 
       deltaquantity=(int)(weight*resource/(limitPrice))-quantity;
+      if(deltaquantity<0) deltaquantity=max(deltaquantity,-quantity);
       if((deltaquantity<0)&&(deltaquantity<(-quantity))) 
              {  printf("last price %f exptected return %f\n",limitPrice,aux);
                 printf("id %d limitprice %f weight %f resource %f deltaquantity %d quantity=%d\n",belief->asset_id,limitPrice,weight,resource,deltaquantity,quantity);
