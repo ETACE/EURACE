@@ -4,18 +4,22 @@ if __name__=="__main__":
     try:
         setDebugValue(0)
     except:setDebug(0)
-    optlist, args = getopt.getopt(sys.argv[1:],"r")
+    optlist, args = getopt.getopt(sys.argv[1:],"rg")
     for o in optlist:
         o,v=o
         if o=="-r":
             setReplaceId()
             print "USING '",getReplaceId(), "' AS ID PREFIX"
+        if o=="-g":
+            setRegionReplaceId()
+            print "USING '",getRegionReplaceId(), "' AS ID PREFIX"
     try:
         popfile=args[0]
         zerofile=args[1]
     except:
-        print "usage:\n %s [-r]popfile 0.xml"%sys.argv[0]
-        print "OPTIONS: \n  -r : Prefix agent IDs with string 'REPLACE_ID_'"
+        print "usage:\n %s [-rg] popfile 0.xml"%sys.argv[0]
+        print "OPTIONS: \n  -r : Prefix  IDs with replacement markers"
+        print "OPTIONS: \n  -g : Prefix region IDs with string 'REPLACE_REGIONID_'"
         sys.exit()
     try:
         numthreads=int(sys.argv[3])
@@ -34,7 +38,9 @@ if __name__=="__main__":
     global popguinumregions
     popguinumregions=pop.numregions
     print "popguinumregions",popguinumregions
-    try:
-        pop.instantiateMEMEFF(open(zerofile,"w"),numthreads=numthreads)
-    except:
-        pop.instantiate(open(zerofile,"w"))
+    #try:
+    #    pop.instantiateMEMEFF(open(zerofile,"w"),numthreads=numthreads)
+    #except:
+    #    pop.instantiate(open(zerofile,"w"))
+    pop.instantiate(open(zerofile,"w"))
+    print "POPULATION IS INSTANTIATED SUCCESSFULLY IN ",zerofile
