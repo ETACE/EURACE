@@ -34,6 +34,14 @@ struct firm
 	double wage_offer_for_skill_4;
 	double wage_offer_for_skill_5;
 
+	double delivery;
+	double delivery_to_home_region;
+	double delivery_to_foreign_region;
+
+	double stocks;
+	double stocks_in_home_region;
+	double stocks_in_foreign_region;
+
 	struct firm * next;
 };
 
@@ -58,6 +66,9 @@ struct mall
 	int id;
 	int region_id;
 	double total_supply;
+	double sales;
+	double sales_of_domestic_firms;
+	double sales_of_foreign_firms;
 
 	struct mall * next;
 
@@ -117,6 +128,9 @@ struct Mall_data
 {
 	double region_id;
 	double supply;
+	double sales;
+	double sales_of_domestic_firms;
+	double sales_of_foreign_firms;
 };
 typedef struct Mall_data Mall_data;
 
@@ -145,6 +159,13 @@ struct Firm_data
 	double wage_offer_for_skill_3;
 	double wage_offer_for_skill_4;
 	double wage_offer_for_skill_5;
+	double delivery;
+	double delivery_to_home_region;
+	double delivery_to_foreign_region;
+	double stocks;
+	double stocks_in_home_region;
+	double stocks_in_foreign_region;
+	
 	
 };
 typedef struct Firm_data Firm_data;
@@ -388,12 +409,22 @@ int getiteration(char * filepath, int itno, firm ** pointer_to_firms, household 
 	int inwage_offer_for_skill_4;
 	int inwage_offer_for_skill_5;
 
+	int indelivery;
+	int indelivery_to_home_region;
+	int indelivery_to_foreign_region;
+	int instocks;
+	int instocks_in_home_region;
+	int instocks_in_foreign_region;
+
 	/*Household*/
 	int  inwage, inwage_reservation, ingeneral_skill, inspecific_skill, inemployee_firm_id;
 	int inemployer_region_id, inpayment_account;
 
 	/*Mall*/
 	int intotal_supply;
+	int insales;
+	int insales_of_domestic_firms;
+	int insales_of_foreign_firms;
 
 	/*IGFirm*/
 	int inproductivity, inrevenue_per_day;
@@ -411,6 +442,12 @@ int getiteration(char * filepath, int itno, firm ** pointer_to_firms, household 
 	double wage_offer_for_skill_3;
 	double wage_offer_for_skill_4;
 	double wage_offer_for_skill_5;
+	double delivery;
+	double delivery_to_home_region;
+	double delivery_to_foreign_region;
+	double stocks;
+	double stocks_in_home_region;
+	double stocks_in_foreign_region;
 	
 
 	/*Household*/
@@ -419,6 +456,9 @@ int getiteration(char * filepath, int itno, firm ** pointer_to_firms, household 
 
 	/*Mall*/
 	double total_supply;
+	double sales;
+	double sales_of_domestic_firms;
+	double sales_of_foreign_firms;
 
 	/*IGFirm*/
 	double productivity, revenue_per_day;
@@ -488,6 +528,13 @@ int getiteration(char * filepath, int itno, firm ** pointer_to_firms, household 
 	inwage_offer_for_skill_3=0;
 	inwage_offer_for_skill_4=0;
 	inwage_offer_for_skill_5=0;
+	indelivery=0;
+	indelivery_to_home_region=0;
+	indelivery_to_foreign_region=0;
+	instocks=0;
+	instocks_in_home_region=0;
+	instocks_in_foreign_region=0;
+
 	/*Household*/
 	inwage = 0;
 	inwage_reservation = 0;
@@ -498,6 +545,10 @@ int getiteration(char * filepath, int itno, firm ** pointer_to_firms, household 
 	inpayment_account = 0.0;
 	/*Mall*/
 	intotal_supply =0;
+	insales=0;
+	insales_of_domestic_firms=0;
+	insales_of_foreign_firms=0;
+
 	/*IGFirm*/
 	inproductivity=0;
 	inrevenue_per_day=0;
@@ -529,6 +580,13 @@ int getiteration(char * filepath, int itno, firm ** pointer_to_firms, household 
 	wage_offer_for_skill_3=0;
 	wage_offer_for_skill_4=0;
 	wage_offer_for_skill_5=0;
+
+	delivery=0;
+	delivery_to_home_region=0;
+	delivery_to_foreign_region=0;
+	stocks=0;
+	stocks_in_home_region=0;
+	stocks_in_foreign_region=0;
 	
 	wage = 0.0;
 	wage_reservation = 0.0;
@@ -539,6 +597,9 @@ int getiteration(char * filepath, int itno, firm ** pointer_to_firms, household 
 	payment_account = 0.0;
 		
 	total_supply =0;
+	sales=0;
+	sales_of_domestic_firms=0;
+	sales_of_foreign_firms=0;
 		
 	inproductivity=0;
 	revenue_per_day=0;
@@ -606,9 +667,14 @@ int getiteration(char * filepath, int itno, firm ** pointer_to_firms, household 
 					current_firm->wage_offer_for_skill_3=wage_offer_for_skill_3;
 					current_firm->wage_offer_for_skill_4=wage_offer_for_skill_4;
 					current_firm->wage_offer_for_skill_5=wage_offer_for_skill_5;
+					current_firm->delivery=delivery;
+					current_firm->delivery_to_home_region=delivery_to_home_region;
+					current_firm->delivery_to_foreign_region=delivery_to_foreign_region;
+					current_firm->stocks=stocks;
+					current_firm->stocks_in_home_region=stocks_in_home_region;
+					current_firm->stocks_in_foreign_region=stocks_in_foreign_region;
 					
-					
-					
+									
 					
 					//printf("Firm %d, ", id);
 					
@@ -668,6 +734,9 @@ int getiteration(char * filepath, int itno, firm ** pointer_to_firms, household 
 					current_mall->id = id;
 					current_mall->region_id = region_id;
 					current_mall->total_supply =total_supply;
+					current_mall->sales =sales;
+					current_mall->sales_of_domestic_firms =sales_of_domestic_firms;
+					current_mall->sales_of_foreign_firms =sales_of_foreign_firms;
 					
 					
 					
@@ -737,6 +806,21 @@ int getiteration(char * filepath, int itno, firm ** pointer_to_firms, household 
 			if(strcmp(buffer, "/wage_offer_for_skill_4") == 0) { inwage_offer_for_skill_4 = 0; }
 			if(strcmp(buffer, "wage_offer_for_skill_5") == 0) { inwage_offer_for_skill_5 = 1; }
 			if(strcmp(buffer, "/wage_offer_for_skill_5") == 0) { inwage_offer_for_skill_5 = 0; }
+			if(strcmp(buffer, "delivery") == 0) { indelivery = 1; }
+			if(strcmp(buffer, "/delivery") == 0) { indelivery = 0; }
+			if(strcmp(buffer, "delivery_to_home_region") == 0) { indelivery_to_home_region = 1; }
+			if(strcmp(buffer, "/delivery_to_home_region") == 0) { indelivery_to_home_region = 0; }
+			if(strcmp(buffer, "delivery_to_foreign_region") == 0) { indelivery_to_foreign_region= 1; }
+			if(strcmp(buffer, "/delivery_to_foreign_region") == 0) { indelivery_to_foreign_region = 0; }
+
+			if(strcmp(buffer, "stocks") == 0) { instocks = 1; }
+			if(strcmp(buffer, "/stocks") == 0) { instocks = 0; }
+			if(strcmp(buffer, "stocks_in_home_region") == 0) { instocks_in_home_region = 1; }
+			if(strcmp(buffer, "/stocks_in_home_region") == 0) { instocks_in_home_region = 0; }
+			if(strcmp(buffer, "stocks_in_foreign_region") == 0) { instocks_in_foreign_region= 1; }
+			if(strcmp(buffer, "/stocks_in_foreign_region") == 0) { instocks_in_foreign_region = 0; }
+
+
 
 			if(strcmp(buffer, "no_employees") == 0) { inno_employees = 1; }
 			if(strcmp(buffer, "/no_employees") == 0) { inno_employees = 0; }
@@ -788,6 +872,14 @@ int getiteration(char * filepath, int itno, firm ** pointer_to_firms, household 
 
 			if(strcmp(buffer, "total_supply") == 0) { intotal_supply = 1; }
 		       if(strcmp(buffer, "/total_supply") == 0) { intotal_supply = 0; }
+			if(strcmp(buffer, "sales") == 0) { insales = 1; }
+		       if(strcmp(buffer, "/sales") == 0) { insales = 0; }
+			if(strcmp(buffer, "sales_of_domestic_firms") == 0) { insales_of_domestic_firms = 1; }
+		       if(strcmp(buffer, "/sales_of_domestic_firms") == 0) { insales_of_domestic_firms = 0; }
+			if(strcmp(buffer, "sales_of_foreign_firms") == 0) { insales_of_foreign_firms = 1; }
+		       if(strcmp(buffer, "/sales_of_foreign_firms") == 0) { insales_of_foreign_firms = 0; }
+
+
 			if(strcmp(buffer, "productivity") == 0) { inproductivity = 1; }
 		       if(strcmp(buffer, "/productivity") == 0) { inproductivity= 0; }	
 			if(strcmp(buffer, "revenue_per_day") == 0) { inrevenue_per_day = 1; }
@@ -817,6 +909,13 @@ int getiteration(char * filepath, int itno, firm ** pointer_to_firms, household 
 			if(inagent && inwage_offer_for_skill_3)  { wage_offer_for_skill_3  = atof(buffer); }
 			if(inagent && inwage_offer_for_skill_4)  { wage_offer_for_skill_4  = atof(buffer); }
 			if(inagent && inwage_offer_for_skill_5)  { wage_offer_for_skill_5  = atof(buffer); }
+			if(inagent && indelivery)  { delivery  = atof(buffer); }
+			if(inagent && indelivery_to_home_region)  { delivery_to_home_region  = atof(buffer); }
+			if(inagent && indelivery_to_foreign_region)  { delivery_to_foreign_region  = atof(buffer); }
+
+			if(inagent && instocks)  {stocks  = atof(buffer); }
+			if(inagent && instocks_in_home_region)  { stocks_in_home_region  = atof(buffer); }
+			if(inagent && instocks_in_foreign_region)  { stocks_in_foreign_region  = atof(buffer); }
 
 			if(inagent && intechnology)  { technology  = atof(buffer); }
 			if(inagent && inno_employees)  { no_employees  = atoi(buffer); }
@@ -846,6 +945,10 @@ if(inagent && inplanned_production_quantity)  { planned_production_quantity  = a
 			if(inagent && inrevenue_per_day)  {revenue_per_day  = atof(buffer); }
 			if(inagent && inproductivity)  { productivity  = atof(buffer); }
 			if(inagent && intotal_supply)  { total_supply  = atof(buffer); }
+
+			if(inagent && insales)  { sales  = atof(buffer); }
+			if(inagent && insales_of_domestic_firms)  { sales_of_domestic_firms  = atof(buffer); }
+			if(inagent && insales_of_foreign_firms)  { sales_of_foreign_firms  = atof(buffer); }
 				
 			
 			
@@ -1612,7 +1715,10 @@ void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_
 	for(i = 0; i <= no_regions; i++)
 	{
 		Data_Mall[i].region_id = i;
-		Data_Mall[i].supply = 0.0;	
+		Data_Mall[i].supply = 0.0;
+		Data_Mall[i].sales = 0.0;
+		Data_Mall[i].sales_of_domestic_firms = 0.0;
+		Data_Mall[i].sales_of_foreign_firms = 0.0;	
 	}
 
 
@@ -1620,6 +1726,9 @@ void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_
 	while(current_mall)
 	{
 		Data_Mall[0].supply += current_mall->total_supply;
+		Data_Mall[0].sales += current_mall->sales;
+		Data_Mall[0].sales_of_domestic_firms += current_mall->sales_of_domestic_firms;
+		Data_Mall[0].sales_of_foreign_firms += current_mall->sales_of_foreign_firms;
 		
 		int i;
 		for(i = 1; i <= no_regions; i++)
@@ -1627,12 +1736,60 @@ void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_
 			if(current_mall->region_id == Data_Mall[i].region_id)
 			{
 				Data_Mall[i].supply = current_mall->total_supply;
+				Data_Mall[i].sales = current_mall->sales;
+				Data_Mall[i].sales_of_domestic_firms = current_mall->sales_of_domestic_firms;
+				Data_Mall[i].sales_of_foreign_firms = current_mall->sales_of_foreign_firms;
 			}
 		}
 		
 		current_mall = current_mall->next;
 		
 	}
+
+	/*SALES*/
+		file = fopen("data-sales-region.csv", "a");
+
+		sprintf(data, "%i", itno);
+		fputs(data, file);
+		fputs("\t", file);
+
+		for(i = 0; i <= no_regions; i++)
+		{
+			sprintf(data, "%f", Data_Mall[i].sales );
+			fputs(data, file);
+			fputs("\t", file);
+			sprintf(data, "%f", Data_Mall[i].sales_of_domestic_firms );
+			fputs(data, file);
+			fputs("\t", file);
+			sprintf(data, "%f", Data_Mall[i].sales_of_foreign_firms);
+			fputs(data, file);
+			fputs("\t", file);
+		}
+
+		fputs("\n", file);
+
+		fclose(file);
+
+
+	
+		file = fopen("data-sales-origin.csv", "a");
+
+		sprintf(data, "%i", itno);
+		fputs(data, file);
+		fputs("\t", file);
+		sprintf(data, "%f", Data_Mall[0].sales );
+		fputs(data, file);
+		fputs("\t", file);
+		sprintf(data, "%f", Data_Mall[1].sales_of_domestic_firms+Data_Mall[2].sales_of_foreign_firms );
+		fputs(data, file);
+		fputs("\t", file);
+		sprintf(data, "%f", Data_Mall[2].sales_of_domestic_firms+Data_Mall[1].sales_of_foreign_firms );
+		fputs(data, file);
+		fputs("\t", file);
+
+		fputs("\n", file);
+
+		fclose(file);
 
 	if(itno%20 == 0)
 	{
@@ -1720,6 +1877,13 @@ void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_
 		Data_Firm[i].wage_offer_for_skill_3 = 0.0;
 		Data_Firm[i].wage_offer_for_skill_4 = 0.0;
 		Data_Firm[i].wage_offer_for_skill_5 = 0.0;
+		Data_Firm[i].delivery = 0.0;
+		Data_Firm[i].delivery_to_home_region = 0.0;
+		Data_Firm[i].delivery_to_foreign_region = 0.0;
+		Data_Firm[i].stocks = 0.0;
+		Data_Firm[i].stocks_in_home_region = 0.0;
+		Data_Firm[i].stocks_in_foreign_region = 0.0;
+		
 		
 	}
 
@@ -1756,6 +1920,12 @@ void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_
 			Data_Firm[0].wage_offer_for_skill_3 +=  current_firm->wage_offer_for_skill_3;
 			Data_Firm[0].wage_offer_for_skill_4 +=  current_firm->wage_offer_for_skill_4;
 			Data_Firm[0].wage_offer_for_skill_5 +=  current_firm->wage_offer_for_skill_5;
+			Data_Firm[0].delivery += current_firm->delivery;
+			Data_Firm[0].delivery_to_home_region += current_firm->delivery_to_home_region;
+			Data_Firm[0].delivery_to_foreign_region += current_firm->delivery_to_foreign_region;
+			Data_Firm[0].stocks+= current_firm->stocks;
+			Data_Firm[0].stocks_in_home_region += current_firm->stocks_in_home_region;
+			Data_Firm[0].stocks_in_foreign_region += current_firm->stocks_in_foreign_region;
 
 		}
 		
@@ -1776,25 +1946,27 @@ void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_
 				Data_Firm[i].average_specific_skill += 
 				  (current_firm->mean_specific_skills*current_firm->no_employees);
 				Data_Firm[i].average_general_skill += 
-				  (current_firm->average_g_skill*current_firm->no_employees);
-				Data_Firm[i].production_quantity += 
-				   current_firm->production_quantity;
-				Data_Firm[i].sold_quantity += 
-				   current_firm->total_sold_quantity;
-				Data_Firm[i].average_payment_account += 
-				   current_firm->payment_account_firm;
-				Data_Firm[i].average_price += 
-				  (current_firm->price*current_firm->total_sold_quantity);
+				 (current_firm->average_g_skill*current_firm->no_employees);
+				Data_Firm[i].production_quantity += current_firm->production_quantity;
+				Data_Firm[i].sold_quantity += current_firm->total_sold_quantity;
+				Data_Firm[i].average_payment_account += current_firm->payment_account_firm;
+				Data_Firm[i].average_price += (current_firm->price*current_firm->total_sold_quantity);
 				Data_Firm[i].capital_stock += current_firm->capital_stock;
 				Data_Firm[i].earnings += current_firm->earnings;
 				Data_Firm[i].revenues += current_firm->revenue;
-				Data_Firm[i].planned_production_quantity += 
-				   current_firm->planned_production_quantity;
+				Data_Firm[i].planned_production_quantity += current_firm->planned_production_quantity;
 				Data_Firm[i].wage_offer_for_skill_1 +=  current_firm->wage_offer_for_skill_1;
 				Data_Firm[i].wage_offer_for_skill_2 +=  current_firm->wage_offer_for_skill_2;
 				Data_Firm[i].wage_offer_for_skill_3 +=  current_firm->wage_offer_for_skill_3;
 				Data_Firm[i].wage_offer_for_skill_4 +=  current_firm->wage_offer_for_skill_4;
 				Data_Firm[i].wage_offer_for_skill_5 +=  current_firm->wage_offer_for_skill_5;
+				Data_Firm[i].delivery += current_firm->delivery;
+				Data_Firm[i].delivery_to_home_region += current_firm->delivery_to_home_region;
+				Data_Firm[i].delivery_to_foreign_region += current_firm->delivery_to_foreign_region;
+				Data_Firm[i].stocks+= current_firm->stocks;
+				Data_Firm[i].stocks_in_home_region += current_firm->stocks_in_home_region;
+				Data_Firm[i].stocks_in_foreign_region += current_firm->stocks_in_foreign_region;
+
 			}
 		}
 		
@@ -1806,6 +1978,80 @@ void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_
 		current_firm = current_firm->next;
 		
 	}
+
+/*Regions: Delivery */
+	file = fopen("data-delivery-region.csv", "a");
+
+	sprintf(data, "%i", itno);
+	fputs(data, file);
+	fputs("\t", file);
+
+	
+	for(i = 0; i <= no_regions; i++)
+	{
+		sprintf(data, "%f", Data_Firm[i].delivery);
+		fputs(data, file);
+		fputs("\t", file);
+		sprintf(data, "%f", Data_Firm[i].delivery_to_home_region);
+		fputs(data, file);
+		fputs("\t", file);
+		sprintf(data, "%f", Data_Firm[i].delivery_to_foreign_region);
+		fputs(data, file);
+		fputs("\t", file);
+	}
+		
+	fputs("\n", file);
+
+	fclose(file);
+
+
+/*Regions: Delivery*/
+	file = fopen("data-delivery-receiver.csv", "a");
+
+	sprintf(data, "%i", itno);
+	fputs(data, file);
+	fputs("\t", file);
+	sprintf(data, "%f", Data_Firm[1].delivery+Data_Firm[2].delivery);
+	fputs(data, file);
+	fputs("\t", file);
+	sprintf(data, "%f", Data_Firm[1].delivery_to_home_region+Data_Firm[2].delivery_to_foreign_region);
+	fputs(data, file);
+	fputs("\t", file);
+	sprintf(data, "%f", Data_Firm[2].delivery_to_home_region+Data_Firm[1].delivery_to_foreign_region);
+	fputs(data, file);
+	fputs("\t", file);
+	
+		
+	fputs("\n", file);
+
+	fclose(file);
+
+
+/*Regions: Stocks*/
+	file = fopen("data-stocks-region.csv", "a");
+
+	sprintf(data, "%i", itno);
+	fputs(data, file);
+	fputs("\t", file);
+
+	
+	for(i = 0; i <= no_regions; i++)
+	{
+		sprintf(data, "%f", Data_Firm[i].stocks);
+		fputs(data, file);
+		fputs("\t", file);
+		sprintf(data, "%f", Data_Firm[i].stocks_in_home_region);
+		fputs(data, file);
+		fputs("\t", file);
+		sprintf(data, "%f", Data_Firm[i].stocks_in_foreign_region);
+		fputs(data, file);
+		fputs("\t", file);
+	}
+		
+	fputs("\n", file);
+
+	fclose(file);
+
 
 
 /*Regions: average number of employees and vacancies*/
@@ -2253,9 +2499,24 @@ int main( int argc, char **argv )
 
 	file = fopen("data-supply-region.csv", "w");
 	fclose(file);
+
+	file = fopen("data-sales-region.csv", "w");
+	fclose(file);
+
+	file = fopen("data-sales-origin.csv", "w");
+	fclose(file);
 	
 /*FIRM FILES*/
-	
+
+	file = fopen("data-delivery-region.csv", "w");
+	fclose(file);	
+
+	file = fopen("data-delivery-receiver.csv", "w");
+	fclose(file);
+
+	file = fopen("data-stocks-region.csv", "w");
+	fclose(file);
+
 	file = fopen("data-employees-vacancies-region.csv", "w");
 	fclose(file);
 
