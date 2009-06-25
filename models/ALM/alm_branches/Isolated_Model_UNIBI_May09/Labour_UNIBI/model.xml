@@ -684,6 +684,11 @@ of employees and the number of vacancies</description>
      <description>The specific skills of a household</description>
     </variable>
     <variable>
+     <type>double</type>
+     <name>region_cost</name>
+     <description></description>
+    </variable>
+    <variable>
      <type>int</type>
      <name>employee_firm_id</name>
      <description>The id of the employer</description>
@@ -772,7 +777,7 @@ of employees and the number of vacancies</description>
      <inputs>
       <input>
        <messageName>vacancies</messageName>
-       <filter>
+       <!--  <filter>
         <lhs>
          <value>a.region_id</value>
         </lhs>
@@ -780,7 +785,7 @@ of employees and the number of vacancies</description>
         <rhs>
          <value>m.region_id</value>
         </rhs>
-       </filter>
+       </filter>-->
       </input>
      </inputs>
      <outputs>
@@ -878,7 +883,7 @@ reservation wage</description>
      <inputs>
       <input>
        <messageName>vacancies2</messageName>
-       <filter>
+      <!--   <filter>
         <lhs>
          <value>a.region_id</value>
         </lhs>
@@ -886,7 +891,7 @@ reservation wage</description>
         <rhs>
          <value>m.region_id</value>
         </rhs>
-       </filter>
+       </filter>-->
       </input>
      </inputs>
      <outputs>
