@@ -2259,6 +2259,9 @@
      </condition>
      <inputs>
       <input>
+       <messageName>bankruptcy</messageName>
+      </input>
+      <input>
        <messageName>firm_send_data</messageName>
       </input>
       <input>
