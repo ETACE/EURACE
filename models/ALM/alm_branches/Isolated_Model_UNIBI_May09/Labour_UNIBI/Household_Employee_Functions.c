@@ -18,6 +18,7 @@ int Household_receive_wage()
 
 
         WAGE = wage_payment_message->payment;
+    	WAGE_RESERVATION=WAGE;
         remove_double(&LAST_INCOME,0);
         add_double(&LAST_INCOME,wage_payment_message->payment);
 
@@ -105,14 +106,16 @@ int Household_UNEMPLOYED_read_job_vacancies_and_send_applications()
 	if(DAY<DAY_CHANGE_REGION_COSTS_1)
 	{
 		REGION_COST=REGION_COST_1;
+		//printf("REGION_COst %f \n",REGION_COST);
 	}
 	else if(DAY>=DAY_CHANGE_REGION_COSTS_1 && DAY<DAY_CHANGE_REGION_COSTS_2)
-			{
-				REGION_COST=REGION_COST_2;
-			}else
-				{
-					REGION_COST=REGION_COST_3;
-				}
+		{
+			REGION_COST=REGION_COST_2;
+		}
+		else
+		{
+			REGION_COST=REGION_COST_3;
+		}
 
     /* Create a vacancy dynamic array to store vacancies*/
     vacancy_array  vacancy_list;
