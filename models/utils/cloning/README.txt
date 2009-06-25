@@ -1,13 +1,13 @@
 # Script to clone 0.xml to make bigger populations
 
 Usage: 
-./clone.sh base_0.xml number_of_clones new_0.xml -j
+./clone.sh base_0.xml number_of_clones new_0.xml [-j|-r]
 
 Arguments:
    $1 - The original 0.xml
    $2 - Number of times to clone
-   $3 - New 0.xml file
-   $4 - -j if files are to be joined. Otherwise use <import>
+   $3 - New 0.xml file (ignored with -r option)
+   $4 - -j if files are to be joined OR -r if you want region partitioned input files. Otherwise use <import>
 
 Example:
 ./clone.sh 0_eurace_minimal.xml 2 0_clone2.xml -j

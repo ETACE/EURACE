@@ -6,7 +6,7 @@
 #   $1 - The original 0.xml
 #   $2 - Number of times to clone
 #   $3 - New 0.xml file
-#   $4 - -j if files are to be joined. Otherwise use <import>
+#   $4 - -j if files are to be joined. -r if you want region partitioned input files. Otherwise use <import>
 
 if [ -e clone_parallel ]; then
   echo "Will do parallel cloning"
@@ -43,6 +43,12 @@ elif [ -x clone_serial ]; then
   done
 fi
 
+# If -r option supplied then copy the extra stuff from original 0.xml to tmp1
+# tmp1 is added to 0_* later
+if [ x$4 != "x" ] && [ $4 = "-r" ]; then
+  sed -n '1,/<\/environment>/p' "$1" > tmp1
+fi
+
 # Copying first set of cloned agents to new 0.xml but remove last </states> line
 sed -e '/<\/states>/d' < 0_0.xml > $3
 
@@ -60,6 +66,18 @@ if [ x$4 != "x" ] && [ $4 = "-j" ]; then
   done
   rm 0_[0-9]*.xml
   echo New 0.xml contains `grep "<xagent" "$3" | wc -l` agents
+elif [ x$4 != "x" ] && [ $4 = "-r" ]; then
+  num_agents=`grep "<xagent" "$3" | wc -l`
+  for i in `seq 1 $2`
+  do
+    cat tmp1 0_$i.xml > node$i-0.xml
+    echo "</states>" >> node$i-0.xml
+    let "num_agents = $num_agents + `grep "<xagent" 0_$i.xml | wc -l`"
+  done
+  echo "</states>" >> $3
+  mv $3 node0-0.xml
+  rm 0_[0-9]*.xml tmp1
+  echo New 0.xml contains $num_agents agents
 else
   echo "Adding <import> sections"
   echo "<imports>" >> $3
