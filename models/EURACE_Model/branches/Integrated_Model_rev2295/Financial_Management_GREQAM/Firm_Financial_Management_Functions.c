@@ -204,7 +204,7 @@ int Firm_compute_balance_sheet()
     TOTAL_VALUE_LOCAL_INVENTORY=0.0;
     for (i=0; i<CURRENT_MALL_STOCKS.size; i++)
     {
-    	TOTAL_VALUE_LOCAL_INVENTORY += PRICE*CURRENT_MALL_STOCKS.array[i].current_stock;
+        TOTAL_VALUE_LOCAL_INVENTORY += PRICE*CURRENT_MALL_STOCKS.array[i].current_stock;
         //When malls have different current_price use this code:
         //TOTAL_VALUE_LOCAL_INVENTORY += CURRENT_MALL_STOCKS.array[i].current_price * CURRENT_MALL_STOCKS.array[i].current_stock;
     }
@@ -674,6 +674,9 @@ int Firm_bankruptcy_illiquidity_procedure()
     int i;
     double ipo_amount;
     
+    //add a bankruptcy_message for households only, with bank_id=0 so no bank will ever read it:
+     add_bankruptcy_message(ID, 0, 0.0, 0.0, 0.0);
+                
     //Effect on credit market   
     //Renegotiating debt not needed
     
