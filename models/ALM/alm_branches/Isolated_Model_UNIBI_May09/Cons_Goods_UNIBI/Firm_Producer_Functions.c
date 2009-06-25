@@ -132,6 +132,10 @@ int Firm_calc_production_quantity()
     double production_volume = 0;
     double prod_vol;
 
+	STOCKS = 0.0;
+	STOCKS_IN_HOME_REGION = 0.0;
+	STOCKS_IN_FOREIGN_REGION = 0.0;
+
     //Reset the counters at the start of month
     CUM_TOTAL_SOLD_QUANTITY = 0.0;
     CUM_REVENUE = 0.0;        
@@ -233,6 +237,21 @@ int Firm_calc_production_quantity()
 
                 PLANNED_DELIVERY_VOLUME.array[i].quantity= 0;
             }
+
+
+		/*Simon: Control the flow of consumption goods*/
+		STOCKS += CURRENT_MALL_STOCKS.array[i].current_stock;
+
+		if(CURRENT_MALL_STOCKS.array[i].mall_region_id == REGION_ID)
+		{
+			STOCKS_IN_HOME_REGION = CURRENT_MALL_STOCKS.array[i].current_stock;
+		}
+		else
+		{
+			STOCKS_IN_FOREIGN_REGION = CURRENT_MALL_STOCKS.array[i].current_stock;
+		}
+
+
         }
 
         /*Smoothing of production quantity in order to avoid high fluctuations*/
@@ -639,6 +658,10 @@ int Firm_calc_pay_costs()
 int Firm_send_goods_to_mall()
 {   
     
+	DELIVERY_TO_HOME_REGION = 0.0;
+	DELIVERY_TO_FOREIGN_REGION = 0.0;
+	DELIVERY = 0.0;
+
         double delivery_volume=0;
 
         for(int i=0; i<PLANNED_DELIVERY_VOLUME.size; i++)
@@ -691,10 +714,22 @@ int Firm_send_goods_to_mall()
             
             
                     add_update_mall_stock_message(
-                    DELIVERY_VOLUME.array[j].mall_id,ID,
+                    DELIVERY_VOLUME.array[j].mall_id,ID,REGION_ID,
                     DELIVERY_VOLUME.array[j].quantity,QUALITY,PRICE,PRICE_LAST_MONTH);
 
+			
+			/*Simon: Control the flows of consumption goods*/
 
+			DELIVERY += DELIVERY_VOLUME.array[j].quantity;
+
+			if(DELIVERY_VOLUME.array[j].mall_region_id == REGION_ID)
+			{	
+				DELIVERY_TO_HOME_REGION = DELIVERY_VOLUME.array[j].quantity;
+			}
+			else
+			{
+				DELIVERY_TO_FOREIGN_REGION = DELIVERY_VOLUME.array[j].quantity;
+			}
             
                 }
             }

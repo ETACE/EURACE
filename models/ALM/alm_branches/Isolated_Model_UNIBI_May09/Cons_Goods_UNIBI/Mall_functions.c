@@ -353,6 +353,14 @@ int Mall_pay_firm()
     int i,j;
     
     TOTAL_SUPPLY=0;
+
+	if(DAY%20 ==1)
+	{
+		SALES = 0.0;
+		SALES_OF_FOREIGN_FIRMS = 0.0;
+		SALES_OF_DOMESTIC_FIRMS = 0.0;
+	}
+
     int stock_empty;
 
     for(i=0; i<CURRENT_STOCK.size;i++)
@@ -379,8 +387,21 @@ int Mall_pay_firm()
                     stock_empty =0;
                 }
             
-                add_sales_message(ID, FIRM_REVENUES.array[i].firm_id,
+                add_sales_message(ID, REGION_ID,FIRM_REVENUES.array[i].firm_id,
                         FIRM_REVENUES.array[i].sales,stock_empty,CURRENT_STOCK.array[j].stock);
+
+			/*SIMON: Control flows of consumption goods*/
+			
+			SALES += FIRM_REVENUES.array[i].sales;
+
+			if(REGION_ID == FIRM_REVENUES.array[i].region_id)
+			{
+				SALES_OF_DOMESTIC_FIRMS += FIRM_REVENUES.array[i].sales;
+			}
+			else
+			{
+				SALES_OF_FOREIGN_FIRMS+= FIRM_REVENUES.array[i].sales;
+			}
             }
         }
     }
