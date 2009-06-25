@@ -102,7 +102,7 @@ int Firm_calculate_specific_skills_and_wage_offer()
             }
             
             /*Skill Group 1 gets the basic wage offer*/
-            WAGE_OFFER_FOR_SKILL_1 = WAGE_OFFER;
+            WAGE_OFFER_FOR_SKILL_1 = WAGE_OFFER* min(TECHNOLOGY,AVERAGE_S_SKILL_OF_1);
             break;
         
         case 2:
@@ -112,8 +112,7 @@ int Firm_calculate_specific_skills_and_wage_offer()
             }
         
             /*The other skill groups get a higher wage offer depending on the                   productivity (specific skill)*/
-            WAGE_OFFER_FOR_SKILL_2 = WAGE_OFFER*AVERAGE_S_SKILL_OF_2/
-                AVERAGE_S_SKILL_OF_1;
+            WAGE_OFFER_FOR_SKILL_2 = WAGE_OFFER*min(TECHNOLOGY,AVERAGE_S_SKILL_OF_2);
             break;
 
         case 3:
@@ -122,8 +121,7 @@ int Firm_calculate_specific_skills_and_wage_offer()
                 AVERAGE_S_SKILL_OF_3 = sum_3/NO_EMPLOYEES_SKILL_3;  
             }
             
-            WAGE_OFFER_FOR_SKILL_3 = WAGE_OFFER*AVERAGE_S_SKILL_OF_3/
-                AVERAGE_S_SKILL_OF_1;
+            WAGE_OFFER_FOR_SKILL_3 = WAGE_OFFER*min(TECHNOLOGY,AVERAGE_S_SKILL_OF_3);
             break;
 
         case 4:
@@ -132,8 +130,7 @@ int Firm_calculate_specific_skills_and_wage_offer()
                 AVERAGE_S_SKILL_OF_4 = sum_4/NO_EMPLOYEES_SKILL_4;  
             }
             
-            WAGE_OFFER_FOR_SKILL_4 = WAGE_OFFER*AVERAGE_S_SKILL_OF_4/
-                AVERAGE_S_SKILL_OF_1;
+            WAGE_OFFER_FOR_SKILL_4 = WAGE_OFFER*min(TECHNOLOGY,AVERAGE_S_SKILL_OF_4);
             break;
 
         case 5:/*If there are employees with skill level 5*/
@@ -143,8 +140,7 @@ int Firm_calculate_specific_skills_and_wage_offer()
                 AVERAGE_S_SKILL_OF_5 = sum_5/NO_EMPLOYEES_SKILL_5;  
             }
             
-            WAGE_OFFER_FOR_SKILL_5 = WAGE_OFFER*AVERAGE_S_SKILL_OF_5/
-                AVERAGE_S_SKILL_OF_1;
+            WAGE_OFFER_FOR_SKILL_5 = WAGE_OFFER*min(TECHNOLOGY,AVERAGE_S_SKILL_OF_5);
             break;      
         }
     }
