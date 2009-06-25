@@ -70,6 +70,11 @@
       <name>mall_id</name>
       <description></description>
      </variable>
+	<variable>
+      <type>int</type>
+      <name>mall_region_id</name>
+      <description></description>
+     </variable>
      <variable>
       <type>double</type>
       <name>critical_stock</name>
@@ -163,6 +168,11 @@
       <name>mall_id</name>
       <description></description>
      </variable>
+      <variable>
+      <type>int</type>
+      <name>mall_region_id</name>
+      <description></description>
+     </variable>
      <variable>
       <type>double</type>
       <name>quantity</name>
@@ -203,6 +213,11 @@
      <variable>
       <type>int</type>
       <name>firm_id</name>
+      <description></description>
+     </variable>
+     <variable>
+      <type>int</type>
+      <name>region_id</name>
       <description></description>
      </variable>
      <variable>
@@ -259,6 +274,11 @@
       <description></description>
      </variable>
      <variable>
+      <type>int</type>
+      <name>mall_region_id</name>
+      <description></description>
+     </variable>
+     <variable>
       <type>double</type>
       <name>sold_quantity</name>
       <description></description>
@@ -298,6 +318,11 @@
      <variable>
       <type>int</type>
       <name>mall_id</name>
+      <description></description>
+     </variable>
+	<variable>
+      <type>int</type>
+      <name>mall_region_id</name>
       <description></description>
      </variable>
      <variable>
@@ -554,6 +579,36 @@
    <variable>
      <type>double</type>
      <name>firm_productivity_progress</name>
+     <description></description>
+    </variable>
+<variable>
+     <type>double</type>
+     <name>delivery</name>
+     <description></description>
+    </variable>
+<variable>
+     <type>double</type>
+     <name>delivery_to_home_region</name>
+     <description></description>
+    </variable>
+<variable>
+     <type>double</type>
+     <name>delivery_to_foreign_region</name>
+     <description></description>
+    </variable>
+<variable>
+     <type>double</type>
+     <name>stocks</name>
+     <description></description>
+    </variable>
+<variable>
+     <type>double</type>
+     <name>stocks_in_home_region</name>
+     <description></description>
+    </variable>
+<variable>
+     <type>double</type>
+     <name>stocks_in_foreign_region</name>
      <description></description>
     </variable>
    </memory>
@@ -1154,6 +1209,21 @@ spent in both consumtion steps, into the PAYMENT_ACCOUNT.</description>
      <name>total_supply</name>
      <description>Total number of goods</description>
     </variable>
+<variable>
+     <type>double</type>
+     <name>sales</name>
+     <description></description>
+    </variable>
+<variable>
+     <type>double</type>
+     <name>sales_of_domestic_firms</name>
+     <description></description>
+    </variable>
+<variable>
+     <type>double</type>
+     <name>sales_of_foreign_firms</name>
+     <description></description>
+    </variable>
     <variable>
      <type>double</type>
      <name>export_volume_matrix[900]</name>
@@ -1459,6 +1529,11 @@ the quality and price of the goods to inform the hosueholds about these goods.</
      <description></description>
     </variable>
     <variable>
+     <type>int</type>
+     <name>region_id</name>
+     <description></description>
+    </variable>
+    <variable>
      <type>double</type>
      <name>quantity</name>
      <description></description>
@@ -1603,6 +1678,11 @@ supplier and the quantity of the good a household wants to have.</description>
     <variable>
      <type>int</type>
      <name>mall_id</name>
+     <description></description>
+    </variable>
+   <variable>
+     <type>int</type>
+     <name>region_id</name>
      <description></description>
     </variable>
     <variable>
