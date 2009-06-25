@@ -850,7 +850,7 @@ int Eurostat_calculate_data_old_version()
     
     /*Execute auxiliary functions*/
     Eurostat_calc_macro_data();
-    //Eurostat_calc_firm_population();
+    Eurostat_calc_firm_population();
     //Eurostat_calc_firm_survival_rates();
     Eurostat_measure_export();
     Eurostat_calc_price_index();    

@@ -1043,15 +1043,21 @@ void Eurostat_calc_firm_population(void)
     FINISH_FIRM_SEND_DATA_MESSAGE_LOOP
 
     /***************** Sum of: no_firm_deaths *********************/
-    NO_FIRM_DEATHS = -1*(NO_FIRMS - HISTORY_MONTHLY[0].no_firms - NO_FIRM_BIRTHS);
+    //NO_FIRM_DEATHS = -1*(NO_FIRMS - HISTORY_MONTHLY[0].no_firms - NO_FIRM_BIRTHS);
     
-/*
+    START_BANKRUPTCY_MESSAGE_LOOP
+        NO_FIRM_DEATHS++;
+    FINISH_BANKRUPTCY_MESSAGE_LOOP    
+    
+    //Compute firm demises in a region as follows:
+    //F_t = F_{t-1} + B_t - D_t this gives the nr of firms alive in t, thus
+    //D_t = F_{t-1} + B_t - F_t gives nr of firm deaths
     for(i = 0; i < REGION_FIRM_DATA.size; i++)
     {
         REGION_FIRM_DATA.array[i].no_firm_deaths = 
-            -1*(REGION_FIRM_DATA.array[i].no_firms - HISTORY_MONTHLY[0].region_data.array[i].no_firms - REGION_FIRM_DATA.array[i].no_firm_births); 
+            HISTORY_MONTHLY[0].region_data.array[i].no_firms + REGION_FIRM_DATA.array[i].no_firm_births - REGION_FIRM_DATA.array[i].no_firms; 
     }
-*/    
+    
     /***************** Firm birth rate *********************/
     //Def: nr of newborn firms in period x / nr of firms in period x
     if(NO_FIRMS == 0) FIRM_BIRTH_RATE = 0.0;
