@@ -1006,8 +1006,8 @@ void Eurostat_calc_firm_population(void)
 
     /* Reset the content of the memory variables*/
    // NO_FIRMS =0;
-    NO_FIRM_BIRTHS=0;
-    NO_FIRM_DEATHS=0;
+   // NO_FIRM_BIRTHS=0;
+   // NO_FIRM_DEATHS=0;
 
     //Reset the age distribution, and store the previous distribution (needed to compute the 1-period survival rates)
     for (i=0;i<MAX_FIRM_AGE;i++)
@@ -1043,7 +1043,7 @@ void Eurostat_calc_firm_population(void)
     FINISH_FIRM_SEND_DATA_MESSAGE_LOOP
 
     /***************** Sum of: no_firm_deaths *********************/
-    //NO_FIRM_DEATHS = -1*(NO_FIRMS - HISTORY_MONTHLY[0].no_firms - NO_FIRM_BIRTHS);
+    //NO_FIRM_DEATHS = HISTORY_MONTHLY[0].no_firms + NO_FIRM_BIRTHS - NO_FIRMS;
     
     START_BANKRUPTCY_MESSAGE_LOOP
         NO_FIRM_DEATHS++;
