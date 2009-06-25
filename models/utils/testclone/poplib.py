@@ -716,9 +716,10 @@ class BaseForm:
             getlocals["depfinetune"]=depfinetune
             #print "IN DEPFINETUNE",getlocals
             try:
-                retval=eval(expr,globals(),getlocals)
-            except:
-                raise
+                try:
+                    retval=eval(expr,globals(),getlocals)
+                except:
+                    raise
             finally:
                 depfinetune=0
             return retval
@@ -728,9 +729,10 @@ class BaseForm:
             getlocals["depfinetune"]=depfinetune
             #print "IN DEPFINETUNE",getlocals
             try:
-                retval=eval(expr,globals(),getlocals)
-            except:
-                raise
+                try:
+                    retval=eval(expr,globals(),getlocals)
+                except:
+                    raise
             finally:
                 depfinetune=0
             return retval
