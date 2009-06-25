@@ -60,7 +60,7 @@ int main(int argc, char ** argv)
 
 
 /*Strenght of logit*/
-double GAMMA_CONST = -6.5;
+double GAMMA_CONST = -7.5;
 
 /*brief Paramater for production function. */
 double ALPHA = 0.662;
@@ -99,10 +99,10 @@ double wage_reservation_update = 0.01;//0.01
 
 /*Cost of working in a different region: for example travelling costs*/
 double region_cost_1 = 99;
-double region_cost_2 = 0;
+double region_cost_2 =0.0;
 double region_cost_3 = 0;
 
-int day_change_region_costs_1 =800;
+int day_change_region_costs_1 =10000;
 int day_change_region_costs_2 = 20000;
 
 int TRANSITION_PHASE = 0;
@@ -309,9 +309,17 @@ double SUBSIDY_FRACTION = 0.0;
 			double payment_account[2][1]= 
 			{50.0,50.0};
 			
+				
+			//Base wage offer per unit of specific skills:
+			double base_wage_offer = 1.0;
+
+
 			//Initital wage offer of the firms
-			double wage_offer_region_1 = 3.0;
-			double wage_offer_region_2 = 1.0;
+			double wage_offer_region_1 = base_wage_offer*specific_skills_of_household[2][1];
+			double wage_offer_region_2 = base_wage_offer*specific_skills_of_household[1][1];
+
+			//printf("specific_skills_of_household[1][1] %f \n",specific_skills_of_household[2][1]);
+			//printf("specific_skills_of_household[2][1] %f \n",specific_skills_of_household[1][1]);
 			double wage_offer[2][1]= 
 				{wage_offer_region_1,wage_offer_region_2};
 			
@@ -496,7 +504,7 @@ sprintf(data, "%d",NO_REGIONS_PER_GOV);	print_tag("no_regions_per_gov", data, fi
 		sprintf(data, "%d",gov_id);    print_tag("gov_id", data, file);
 		sprintf(data, "{}");			print_tag("employees", data, file);
 		sprintf(data, "%d",strategy);	print_tag("firm_strategy", data, file);	
-		sprintf(data, "%f",wage_offer[column][row]);		print_tag("wage_offer", data, file);
+		sprintf(data, "%f",base_wage_offer);		print_tag("wage_offer", data, file);
 
 		sprintf(data, "%f",wage_offer[column][row]);	print_tag("wage_offer_for_skill_1", data, file);
 		sprintf(data, "%f",wage_offer[column][row]);	print_tag("wage_offer_for_skill_2", data, file);
