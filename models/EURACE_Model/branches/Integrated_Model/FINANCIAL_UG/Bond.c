@@ -119,6 +119,7 @@ double computeBondUtilityFunction(Bond *bond,int backwardWindow, double factor, 
      if (r<0) utility=utility+r*lossaversion;
      else     utility=utility+r;
     }
+if(utility==NAN) printf("----------%f",rndvect[i]*randomWeight);
   return utility/backwardWindow;
 
 }

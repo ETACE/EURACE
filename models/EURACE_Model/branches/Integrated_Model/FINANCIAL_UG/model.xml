@@ -431,14 +431,14 @@
      <name>Household_select_strategy</name>
      <description></description>
      <currentState>SELECTSTRATEGY</currentState>
-     <nextState>CHOOSE_TO_TRADE_OR_NOT</nextState>
+     <nextState>CHOOSE_TO_UPDATE_BELIEFS_OR_NOT</nextState>
      <inputs/>
      <outputs/>
     </function>
     <function>
      <name>Household_stock_beliefs_formation</name>
      <description></description>
-     <currentState>CHOOSE_TO_TRADE_OR_NOT</currentState>
+     <currentState>CHOOSE_TO_UPDATE_BELIEFS_OR_NOT</currentState>
      <nextState>BOND_BELIEF_FORMATION</nextState>
      <condition>
       <lhs>
@@ -478,10 +478,10 @@
      <outputs/>
     </function>
     <function>
-     <name>Household_does_not_trading</name>
+     <name>idle</name>
      <description></description>
-     <currentState>CHOOSE_TO_TRADE_OR_NOT</currentState>
-     <nextState>Household_Start_Labour_Role</nextState>
+     <currentState>CHOOSE_TO_UPDATE_BELIEFS_OR_NOT</currentState>
+     <nextState>SEND_ORDERS</nextState>
      <condition>
       <lhs>
        <value>a.strategy</value>

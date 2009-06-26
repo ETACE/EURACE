@@ -95,7 +95,7 @@ void assetUtilitiesToWeights(double_array *assetWeights,double_array *assetUtili
          { if(minimo<0) add_double(assetWeights,assetUtilities->array[i]-minimo);
            else add_double(assetWeights,assetUtilities->array[i]);
            somma=somma+assetWeights->array[i];
-
+          
          }
 
      if(minimo<0)  { somma=somma+bankrate-minimo;
@@ -106,6 +106,8 @@ void assetUtilitiesToWeights(double_array *assetWeights,double_array *assetUtili
                    }
  //printf("size pesi =====%d\n",assetWeights->size);
     divide(assetWeights,somma);
+ for(i=0;i<size;i++)
+   if(assetWeights->array[i]==NAN) printf("----------errore\n");
 }
 
 int  Household_select_strategy()
@@ -195,6 +197,8 @@ Order *computeLimitOrder( Asset *anAsset, double weight, double resource,Belief 
              }
       //if(deltaquantity<0) deltaquantity=deltaquantity*1.1;
       //else deltaquantity=deltaquantity*0.9;  
+ if(deltaquantity>10e+6) 
+       printf("household ID %d weight %f resource %f quantity %d limitprice=%f\n",ID,weight,resource,deltaquantity,limitPrice);
       setOrder(order,limitPrice,deltaquantity,assetId,trader_id);
       return order;
 }
