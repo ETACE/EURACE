@@ -137,6 +137,7 @@ double computeStockUtilityFunction(Stock *stock,int backwardWindow, double facto
      if (r<0) utility=utility+r*lossaversion;
      else     utility=utility+r;
     }
+  if(utility==NAN) printf("----------%f",rndvect[i]*randomWeight);
   return utility/backwardWindow;
 }
 /*aswer the variance of the prices with a time window.
