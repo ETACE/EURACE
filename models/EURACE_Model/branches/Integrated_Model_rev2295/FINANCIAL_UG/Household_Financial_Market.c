@@ -240,12 +240,22 @@ void generatePendingOrders(Asset_array *assetsowned,Order_array *pending, Belief
   double tem_wealth;
   Asset *asset;
   Belief *belief;
+  int target_quantity;
 
   double_array *weights;
   tem_wealth=wealth(PAYMENT_ACCOUNT,assetsowned);
   resource=wealth(PAYMENT_ACCOUNT-CONSUMPTION_BUDGET,assetsowned);
+  
+   if (PRINT_DEBUG)
+             {
+             printf("\n HOUSEHOLD %d generatePendingOrders (I): \n",ID);
+             printf("\t PAYMENT_ACCOUNT %f WEALTH %f \n",PAYMENT_ACCOUNT,WEALTH);
+             printf("\t tem_wealth %f CONSUMPTION_BUDGET %f resource %f\n",tem_wealth,CONSUMPTION_BUDGET,resource);
+             
+             } 
+  
   if(abs(resource)>abs(tem_wealth)) 
-                                   { //printf("consumption budeget %f resource %f wealth %f \n",CONSUMPTION_BUDGET,resource,tem_wealth);
+                                   { //printf("ERROR: consumption budeget %f resource %f wealth %f \n",CONSUMPTION_BUDGET,resource,tem_wealth);
                                      getchar();
                                     }
   set_wealth(tem_wealth);
@@ -253,6 +263,18 @@ void generatePendingOrders(Asset_array *assetsowned,Order_array *pending, Belief
   reset_Order_array(pending);
   weights=get_assetWeights();
   //printf("size=%d\n",size);
+
+   if (PRINT_DEBUG)
+             {
+             printf("\t WEALTH after: %f\n",ID);
+             } 
+
+   if (PRINT_DEBUG)
+             {
+             printf("\n HOUSEHOLD: %d generatePendingOrders (II) \n",ID);
+             } 
+
+
   for(i=0;i<size;i++)
   { 
     belief=&(beliefs->array[i]);
@@ -269,7 +291,23 @@ void generatePendingOrders(Asset_array *assetsowned,Order_array *pending, Belief
   
     if((ord->quantity!=0)&&(ord->price>0)) addOrder(pending,ord);
     
+    if (PRINT_DEBUG)
+             {
+             printf("\t asset_id %d \n",belief->asset_id);
+             printf("\t portfolio quantity: %d last market price: %f\n",asset->quantity,asset->lastPrice);
+             printf("\t target weight: %f target weight*resource: %f\n",weight,weight*resource);
+             printf("\t order quantity: %d limit price: %f\n",ord->quantity,ord->price);
+             target_quantity = asset->quantity+ord->quantity;
+             printf("\t target quantity: %d target resource: %f\n",target_quantity,ord->price*target_quantity);
+             
+             }  
+    
   }
+
+    if (PRINT_DEBUG)
+    {getchar();}
+
+
     /*double prima,dopo;
     prima=cashDemand(pending);
     reduce_demand(pending, PAYMENT_ACCOUNT-CONSUMPTION_BUDGET);
@@ -277,6 +315,8 @@ void generatePendingOrders(Asset_array *assetsowned,Order_array *pending, Belief
     printf("budget =%f prima=%f dopo=%f \n",PAYMENT_ACCOUNT-CONSUMPTION_BUDGET,prima,dopo);
    */
 //}
+
+
 }
 
 
