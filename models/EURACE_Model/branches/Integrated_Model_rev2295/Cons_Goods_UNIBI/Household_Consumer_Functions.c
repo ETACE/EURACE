@@ -75,7 +75,7 @@ int Household_determine_consumption_budget()
             WEEKLY_BUDGET = CONSUMPTION_BUDGET/4;
             WEEK_OF_MONTH = 4;
             
-        EXCESS_WEEKLY_BUDGET = WEEKLY_BUDGET - PAYMENT_ACCOUNT;
+        EXCESS_WEEKLY_BUDGET = -1;
 
         if (PRINT_LOG)
         {
