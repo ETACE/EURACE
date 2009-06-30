@@ -1,8 +1,8 @@
 #set terminal postscript eps "Helvetica" 30
-#set output "graph-wage-offer.eps"
+#set output "wage-offer-skill.eps"
 
 #set terminal png
-#set output "graph-wage-offer.png"
+#set output "wage-offer-skill.png"
 
 set data style linespoints
 #set pointsize 4.0
@@ -20,10 +20,7 @@ set xlabel "Days"
 #set ylabel "value of a"
 
 
-plot 'data-wage-offer-region.csv' using 1:2 title "wage-offer-for-skill-1",'data-wage-offer-region.csv' using 1:3 title "wage-offer-for-skill-2",'data-wage-offer-region.csv' using 1:4 title "wage-offer-for-skill-3",'data-wage-offer-region.csv' using 1:5 title "wage-offer-for-skill-4",'data-wage-offer-region.csv' using 1:6 title "wage-offer-for-skill-5"
-
-
-
+plot 'data-wage-offer-region.csv' using 1:2 title "average-wage-offer",'data-wage-offer-region.csv' using 1:3 title "wage-offer-for-skill-1",'data-wage-offer-region.csv' using 1:4 title "wage-offer-for-skill-2",'data-wage-offer-region.csv' using 1:5 title "wage-offer-for-skill-3",'data-wage-offer-region.csv' using 1:6 title "wage-offer-for-skill-4",'data-wage-offer-region.csv' using 1:7 title "wage-offer-for-skill-5"
 
 
 pause -1
