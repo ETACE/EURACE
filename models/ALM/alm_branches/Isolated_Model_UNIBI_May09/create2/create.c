@@ -85,7 +85,7 @@ double TETA = 0.0;
 double MARK_UP = 0.05;
 
 /*Strenght of the influence of the actual demand on the next production quantity: if LAMBDA = 0 then the planned production quantities of the last periods are recognized. If LAMBDA = 1 then the only the actual demand is recognized*/
-double LAMBDA = 1;
+double LAMBDA = 0.5;
 
 /*adaption of the wage offer: percent*/
 double wage_update = 0.01;//0.01
@@ -105,7 +105,7 @@ double region_cost_3 = 0;
 
 
 
-int day_change_region_costs_1 =8800;
+int day_change_region_costs_1 =20000;
 int day_change_region_costs_2 = 20000;
 
 int TRANSITION_PHASE = 0;
@@ -133,7 +133,7 @@ double INTEREST_RATE = 0.005;
 double INV_INERTIA = 2.5;
 
 
-double ADAPTION_DELIVERY_VOLUME = 0.05;//0.05
+double ADAPTION_DELIVERY_VOLUME = 0.10;//0.05
 
 int PERIODS_TO_REPAY_LOANS = 24;
 
@@ -143,7 +143,7 @@ int DELIVERY_PROB_IF_CRITICAL_STOCK_0 = 25;
 
 int INNOVATION_PROBABILITY = 10; //10
 
-double PRODUCTIVITY_PROGRESS = 0.05;
+double PRODUCTIVITY_PROGRESS = 0.025;
 
 double LOGIT_PARAMETER_SPECIFIC_SKILLS = 0;
 
