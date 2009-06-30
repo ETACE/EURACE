@@ -246,7 +246,7 @@ void generatePendingOrders(Asset_array *assetsowned,Order_array *pending, Belief
   tem_wealth=wealth(PAYMENT_ACCOUNT,assetsowned);
   resource=wealth(PAYMENT_ACCOUNT-CONSUMPTION_BUDGET,assetsowned);
   
-   if (PRINT_DEBUG)
+   if (PRINT_DEBUG_AFM)
              {
              printf("\n HOUSEHOLD %d generatePendingOrders (I): \n",ID);
              printf("\t PAYMENT_ACCOUNT %f WEALTH %f \n",PAYMENT_ACCOUNT,WEALTH);
@@ -264,12 +264,12 @@ void generatePendingOrders(Asset_array *assetsowned,Order_array *pending, Belief
   weights=get_assetWeights();
   //printf("size=%d\n",size);
 
-   if (PRINT_DEBUG)
+   if (PRINT_DEBUG_AFM)
              {
              printf("\t WEALTH after: %f\n",ID);
              } 
 
-   if (PRINT_DEBUG)
+   if (PRINT_DEBUG_AFM)
              {
              printf("\n HOUSEHOLD: %d generatePendingOrders (II) \n",ID);
              } 
@@ -291,7 +291,7 @@ void generatePendingOrders(Asset_array *assetsowned,Order_array *pending, Belief
   
     if((ord->quantity!=0)&&(ord->price>0)) addOrder(pending,ord);
     
-    if (PRINT_DEBUG)
+    if (PRINT_DEBUG_AFM)
              {
              printf("\t asset_id %d \n",belief->asset_id);
              printf("\t portfolio quantity: %d last market price: %f\n",asset->quantity,asset->lastPrice);
