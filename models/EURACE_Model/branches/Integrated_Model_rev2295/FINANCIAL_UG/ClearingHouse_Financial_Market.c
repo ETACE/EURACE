@@ -9,15 +9,24 @@ void receiveOrderOnAsset(ClearingMechanism *mechanism, Asset *anAsset)
      int issuer;
      int quantity;
      double limit_price;
+     if (PRINT_DEBUG_AFM)
+        {
+        printf("\n Orders sent to clearing house. Asset: %d\n",anAsset->id);
+        }
      START_ORDER_MESSAGE_LOOP                        
        id=order_message->asset_id;
        if(anAsset->id==id)
         {
-         
           quantity=order_message->quantity;
           issuer=order_message->trader_id;
           limit_price=order_message->limit_price;
-           setOrder(pord,limit_price,quantity,id,issuer);
+          setOrder(pord,limit_price,quantity,id,issuer);
+          
+          if (PRINT_DEBUG_AFM)
+          {
+          printf("\t quantity: %d limit Price: %f trader: %d\n",quantity,limit_price,issuer);
+          }
+          
        //printf("id %d price %f quantity %d\n",id,limit_price,quantity);
            if(isBuyOrder(pord)) addBuyOrder(mechanism,pord);
            if(isSellOrder(pord))addSellOrder(mechanism,pord); 
@@ -38,6 +47,13 @@ void computeAssetPrice(ClearingMechanism *mechanism, Asset *anAsset)
      price=mechanism->lastPrice;
      addPrice(anAsset,price);
      addVolume(anAsset,quantity);
+     
+     if (PRINT_DEBUG_AFM)
+        {
+        printf("\t Clearing of asset: %d volume: %d price: %f \n",anAsset->id,quantity,price);
+        getchar();
+        }
+     
      //sendOrderStatus(mechanism);
      
    }
