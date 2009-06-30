@@ -1380,7 +1380,24 @@ void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_
 	}
 
 	
+/*Regions: employed*/
+	file = fopen("data-employed-region.csv", "a");
 
+	sprintf(data, "%i", itno);
+	fputs(data, file);
+	fputs("\t", file);
+	
+	//int i;
+	for(i = 0; i <= no_regions; i++)
+	{
+		sprintf(data, "%f", Data_Household[i].employed );
+		fputs(data, file);
+		fputs("\t", file);	
+	}
+
+	fputs("\n", file);
+
+	fclose(file);
 	
 	
 /*Regions: unemployment rates*/
@@ -2531,6 +2548,11 @@ sprintf(data, "%f", ((Data_Firm[1].delivery_to_home_region+Data_Firm[2].delivery
 	
 	for(i = 0; i <= no_regions; i++)
 	{
+		sprintf(data, "%f", (Data_Firm[i].wage_offer_for_skill_1+Data_Firm[i].wage_offer_for_skill_2+
+		Data_Firm[i].wage_offer_for_skill_3+Data_Firm[i].wage_offer_for_skill_4+
+		Data_Firm[i].wage_offer_for_skill_5)/(Data_Firm[i].no_firms*5));
+		fputs(data, file);
+		fputs("\t", file);
 		sprintf(data, "%f", Data_Firm[i].wage_offer_for_skill_1/Data_Firm[i].no_firms);
 		fputs(data, file);
 		fputs("\t", file);
@@ -2651,6 +2673,9 @@ int main( int argc, char **argv )
 	FILE *file;
 
 /*HOUSEHOLD FILES*/
+
+	file = fopen("data-employed-region.csv", "w");
+	fclose(file);
 	
 	file = fopen("data-unemployment-region.csv", "w");
 	fclose(file);
