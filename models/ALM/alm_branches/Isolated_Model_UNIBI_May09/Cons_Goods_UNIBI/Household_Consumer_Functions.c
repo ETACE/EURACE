@@ -32,7 +32,10 @@ int Household_determine_consumption_budget()
                 CONSUMPTION_BUDGET = PAYMENT_ACCOUNT;
             }
             
-        
+            //memory variable that saves the available monthly budget
+            
+            CONSUMPTION_BUDGET_IN_MONTH = CONSUMPTION_BUDGET;
+            
 
             //PORTFOLIO_BUDGET=PAYMENT_ACCOUNT-CONSUMPTION_BUDGET;
             WEEKLY_BUDGET = CONSUMPTION_BUDGET/4;
