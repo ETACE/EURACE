@@ -1485,7 +1485,7 @@ void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_
 
 
 /*Regions: reservation_wages*/
-	file = fopen("data-reservation-wage.csv", "a");
+	file = fopen("data-reservation-wage-region.csv", "a");
 
 	sprintf(data, "%i", itno);
 	fputs(data, file);
@@ -1523,42 +1523,8 @@ void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_
 
 
 
-
-/*Regions: commuter*/
-	file = fopen("data-commuter-region.csv", "a");
-
-	sprintf(data, "%i", itno);
-	fputs(data, file);
-	fputs("\t", file);
-	
-	for(i = 0; i <= no_regions; i++)
-	{
-		sprintf(data, "%f", Data_Household[i].commuter 
-		/Data_Household[i].employed);
-		fputs(data, file);
-		fputs("\t", file);
-		
-		if(i > 0)
-		{
-		 sprintf(data, "%f", (Data_Household[i].employed - Data_Household[i].commuter)/
-		 (Data_Household[i].employed - Data_Household[i].commuter + 
-		 Data_Household[i].foreign_commuter));
-		 fputs(data, file);
-		 fputs("\t", file);
-		 sprintf(data, "%f", Data_Household[i].foreign_commuter/(Data_Household[i].employed
-		 - Data_Household[i].commuter + Data_Household[i].foreign_commuter));
-		 fputs(data, file);
-		 fputs("\t", file);
-		}
-	}
-
-	fputs("\n", file);
-
-	fclose(file);
-
-
 /*Regions: specific_skills*/
-	file = fopen("data-specific-skill-region.csv", "a");
+	file = fopen("data-specific-skill-household-region.csv", "a");
 
 	sprintf(data, "%i", itno);
 	fputs(data, file);
@@ -1627,7 +1593,31 @@ void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_
 	
 	}*/
 
+/*Regions: commuter region  */
+	file = fopen("data-commuter-region.csv", "a");
 
+	sprintf(data, "%i", itno);
+	fputs(data, file);
+	fputs("\t", file);
+	sprintf(data, "%i", commuters[0][1][2]+commuters[0][2][1]);
+	fputs(data, file);
+	fputs("\t", file);
+	sprintf(data, "%i", commuters[0][1][2]);
+	fputs(data, file);
+	fputs("\t", file);
+	sprintf(data, "%i", commuters[0][2][1]);
+	fputs(data, file);
+	fputs("\t", file);
+	for(i = 0; i <= no_regions; i++)
+	{
+		sprintf(data, "%f", Data_Household[i].employed );
+		fputs(data, file);
+		fputs("\t", file);
+	}
+			
+	fputs("\n", file);
+
+	fclose(file);
 
 /*Regions: commuter region 1 */
 	file = fopen("data-commuter-region-1.csv", "a");
@@ -2683,13 +2673,13 @@ int main( int argc, char **argv )
 	file = fopen("data-wage-region.csv", "w");
 	fclose(file);
 
-	file = fopen("data-reservation-wage.csv", "w");
+	file = fopen("data-reservation-wage-region.csv", "w");
 	fclose(file);
 
 	file = fopen("data-commuter-region.csv", "w");
 	fclose(file);
 
-	file = fopen("data-specific-skill-region.csv", "w");
+	file = fopen("data-specific-skill-household-region.csv", "w");
 	fclose(file);
 
 	file = fopen("data-payment-account-region.csv", "w");
