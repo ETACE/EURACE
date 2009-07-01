@@ -41,6 +41,9 @@ struct firm
 	double stocks;
 	double stocks_in_home_region;
 	double stocks_in_foreign_region;
+	
+	double total_debt;
+	double assets;
 
 	struct firm * next;
 };
@@ -57,6 +60,7 @@ struct household
 	double wage_reservation;
 	double demand;
 	double payment_account;
+	double consumption_budget_in_month;
 
 	struct household * next;
 };
@@ -118,6 +122,7 @@ struct Household_data
 	double reservation_wage_skill_3;
 	double reservation_wage_skill_4;
 	double reservation_wage_skill_5;
+	double consumption_budget_in_month;
 	
 		
 };
@@ -138,6 +143,7 @@ struct Firm_data
 {
 	double region_id;
 	double no_firms;
+	int total_no_firms;
 	double no_employees;
 	double vacancies;
 	double average_wage;
@@ -168,7 +174,13 @@ struct Firm_data
 	double price_index_mall;
 	double price_index_home_mall;
 	double price_index_foreign_mall;
-	
+	double total_debt;
+	double debt_active_firms;
+	double assets;
+	double assets_active_firms;
+	double debt_asset_ratio_active_firms;
+	double debt_asset_ratio;
+	int count_debt_asset_ratio_threshold;
 	
 };
 typedef struct Firm_data Firm_data;
@@ -418,10 +430,12 @@ int getiteration(char * filepath, int itno, firm ** pointer_to_firms, household 
 	int instocks;
 	int instocks_in_home_region;
 	int instocks_in_foreign_region;
+	int intotal_debt;
+	int inassets;
 
 	/*Household*/
 	int  inwage, inwage_reservation, ingeneral_skill, inspecific_skill, inemployee_firm_id;
-	int inemployer_region_id, inpayment_account;
+	int inemployer_region_id, inpayment_account, inconsumption_budget_in_month;
 
 	/*Mall*/
 	int intotal_supply;
@@ -451,11 +465,13 @@ int getiteration(char * filepath, int itno, firm ** pointer_to_firms, household 
 	double stocks;
 	double stocks_in_home_region;
 	double stocks_in_foreign_region;
+	double total_debt;
+	double assets;
 	
 
 	/*Household*/
 	int  general_skill, employee_firm_id, employer_region_id;
-	double a, wage, wage_reservation, specific_skill, payment_account;
+	double a, wage, wage_reservation, specific_skill, payment_account, consumption_budget_in_month;
 
 	/*Mall*/
 	double total_supply;
@@ -537,6 +553,9 @@ int getiteration(char * filepath, int itno, firm ** pointer_to_firms, household 
 	instocks=0;
 	instocks_in_home_region=0;
 	instocks_in_foreign_region=0;
+	intotal_debt = 0;
+	inassets=0;
+	inconsumption_budget_in_month=0;
 
 	/*Household*/
 	inwage = 0;
@@ -577,6 +596,8 @@ int getiteration(char * filepath, int itno, firm ** pointer_to_firms, household 
 	price_last_month=0.0;
 	mean_specific_skills=0.0;
 	mean_wage=0;
+	total_debt = 0.0;
+	assets=0.0;
 
 	wage_offer_for_skill_1=0;
 	wage_offer_for_skill_2=0;
@@ -598,6 +619,7 @@ int getiteration(char * filepath, int itno, firm ** pointer_to_firms, household 
 	employee_firm_id = 0;
 	employer_region_id = 0;
 	payment_account = 0.0;
+	consumption_budget_in_month=0.0;
 		
 	total_supply =0;
 	sales=0;
@@ -676,8 +698,8 @@ int getiteration(char * filepath, int itno, firm ** pointer_to_firms, household 
 					current_firm->stocks=stocks;
 					current_firm->stocks_in_home_region=stocks_in_home_region;
 					current_firm->stocks_in_foreign_region=stocks_in_foreign_region;
-					
-									
+					current_firm->total_debt=total_debt;
+					current_firm->assets=assets;				
 					
 					//printf("Firm %d, ", id);
 					
@@ -710,7 +732,8 @@ int getiteration(char * filepath, int itno, firm ** pointer_to_firms, household 
 					current_household->employee_firm_id = employee_firm_id;
 				     current_household->employer_region_id = employer_region_id;
 					current_household->payment_account = payment_account;
-					
+					current_household->consumption_budget_in_month=consumption_budget_in_month;
+					//printf("consumption_budget_in_month %f, ",consumption_budget_in_month);
 					//printf("Household %d, ", id);
 					
 					/* Make tail the next element in the linked list */
@@ -854,8 +877,10 @@ int getiteration(char * filepath, int itno, firm ** pointer_to_firms, household 
 	if(strcmp(buffer, "/planned_output") == 0) { inplanned_output = 0; }
 			if(strcmp(buffer, "payment_account") == 0) { inpayment_account_firm = 1; }
 			if(strcmp(buffer, "/payment_account") == 0) { inpayment_account_firm = 0; }
-
-		
+			if(strcmp(buffer, "total_debt") == 0) { intotal_debt = 1; }
+						if(strcmp(buffer, "/total_debt") == 0) { intotal_debt= 0; }
+						if(strcmp(buffer, "total_assets") == 0) { inassets = 1; }
+						if(strcmp(buffer, "/total_assets") == 0) { inassets= 0; }
 
 			if(strcmp(buffer, "wage") == 0) { inwage = 1; }
 			if(strcmp(buffer, "/wage") == 0) { inwage = 0; }
@@ -871,7 +896,8 @@ int getiteration(char * filepath, int itno, firm ** pointer_to_firms, household 
 		       if(strcmp(buffer, "/employer_region_id") == 0) { inemployer_region_id = 0; }
 			if(strcmp(buffer, "payment_account") == 0) { inpayment_account = 1; }
 			if(strcmp(buffer, "/payment_account") == 0) { inpayment_account = 0; }
-
+			if(strcmp(buffer, "consumption_budget_in_month") == 0) { inconsumption_budget_in_month = 1; }
+			if(strcmp(buffer, "/consumption_budget_in_month") == 0) { inconsumption_budget_in_month = 0; }
 
 			if(strcmp(buffer, "total_supply") == 0) { intotal_supply = 1; }
 		       if(strcmp(buffer, "/total_supply") == 0) { intotal_supply = 0; }
@@ -944,6 +970,10 @@ if(inagent && inplanned_output)  { planned_output  = atof(buffer); }
 			if(inagent && inemployee_firm_id)  { employee_firm_id = atoi(buffer); }
 			if(inagent && inemployer_region_id)  { employer_region_id = atoi(buffer); }
 			if(inagent && inpayment_account)  { payment_account  = atof(buffer); }
+			if(inagent && intotal_debt)  { total_debt  = atof(buffer); }
+			if(inagent && inassets)  { assets  = atof(buffer); }
+			if(inagent && inconsumption_budget_in_month)  { consumption_budget_in_month  = atof(buffer); }
+			
 			
 			if(inagent && inrevenue_per_day)  {revenue_per_day  = atof(buffer); }
 			if(inagent && inproductivity)  { productivity  = atof(buffer); }
@@ -1118,6 +1148,7 @@ void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_
 		Data_Household[i].reservation_wage_skill_3 = 0.0;
 		Data_Household[i].reservation_wage_skill_4 = 0.0;
 		Data_Household[i].reservation_wage_skill_5 = 0.0;
+		Data_Household[i].consumption_budget_in_month=0.0;
 	}
 
 
@@ -1130,6 +1161,7 @@ void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_
 		Data_Household[0].no_households++;
 		Data_Household[0].average_specific_skill += current_household->specific_skill;
 		Data_Household[0].average_payment_account += current_household->payment_account;
+		Data_Household[0].consumption_budget_in_month+=current_household->consumption_budget_in_month;
 		
 		/*If employed*/
 		if(current_household->employee_firm_id > -1)
@@ -1234,6 +1266,7 @@ void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_
 					current_household->specific_skill;
 				Data_Household[i].average_payment_account += 
 					current_household->payment_account;
+				Data_Household[i].consumption_budget_in_month+=current_household->consumption_budget_in_month;
 				
 				/*If employed*/
 				if(current_household->employee_firm_id > -1)
@@ -1565,6 +1598,26 @@ void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_
 
 	fclose(file);
 
+/*Regions: Consumption budget*/
+	file = fopen("data-consumption-budget-region.csv", "a");
+
+	sprintf(data, "%i", itno);
+	fputs(data, file);
+	fputs("\t", file);
+	
+	
+	for(i = 0; i <= no_regions; i++)
+	{
+		sprintf(data, "%f", Data_Household[i].consumption_budget_in_month
+		/Data_Household[i].no_households);
+		fputs(data, file);
+		fputs("\t", file);
+		
+	}
+
+	fputs("\n", file);
+
+	fclose(file);
 
 
 
@@ -1860,6 +1913,7 @@ void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_
 	
 /*Initialization of the STRUCT Firm_data*/
 	
+
 	
 	Firm_data Data_Firm[no_regions+1];
 	
@@ -1868,6 +1922,7 @@ void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_
 	{
 		Data_Firm[i].region_id = i;
 		Data_Firm[i].no_firms = 0.0;
+		Data_Firm[i].total_no_firms=0;
 		Data_Firm[i].no_employees = 0.0;		
 		Data_Firm[i].vacancies = 0.0;
 		Data_Firm[i].average_wage = 0.0;
@@ -1896,6 +1951,13 @@ void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_
 		Data_Firm[i].price_index_mall = 0.0;
 		Data_Firm[i].price_index_home_mall= 0.0;
 		Data_Firm[i].price_index_foreign_mall = 0.0;
+		Data_Firm[i].total_debt = 0.0;
+		Data_Firm[i].assets = 0.0;
+		Data_Firm[i].debt_active_firms = 0.0;
+		Data_Firm[i].assets_active_firms = 0.0;
+		Data_Firm[i].debt_asset_ratio_active_firms=0.0;
+		Data_Firm[i].debt_asset_ratio=0.0;
+		Data_Firm[i].count_debt_asset_ratio_threshold=0;
 		
 	}
 
@@ -1904,6 +1966,9 @@ void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_
 
 	while(current_firm)
 	{
+		
+		Data_Firm[0].total_no_firms++;
+		
 		if(current_firm->no_employees > 0)
 		{
 			Data_Firm[0].no_firms++;
@@ -1938,15 +2003,28 @@ void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_
 				current_firm->stocks_in_home_region)*current_firm->price;
 			Data_Firm[0].price_index_foreign_mall += (current_firm->delivery_to_foreign_region+
 				current_firm->stocks_in_foreign_region)*current_firm->price;
-
+			Data_Firm[0].debt_active_firms+= current_firm->total_debt;
+			Data_Firm[0].assets_active_firms+= current_firm->assets;
+			Data_Firm[0].debt_asset_ratio_active_firms+=current_firm->total_debt/current_firm->assets;
+			
+			
+			}
+		Data_Firm[0].total_debt+= current_firm->total_debt;
+		Data_Firm[0].assets+= current_firm->assets;
+		Data_Firm[0].debt_asset_ratio+=current_firm->total_debt/current_firm->assets;
+		if(current_firm->total_debt/current_firm->assets>0.8)
+		{
+			Data_Firm[0].count_debt_asset_ratio_threshold++;
 		}
-		
 
 		int i;
 		for(i = 1; i <= no_regions; i++)
 		{
-			if(current_firm->region_id == Data_Firm[i].region_id 
-			& current_firm->no_employees > 0)
+			if(current_firm->region_id == Data_Firm[i].region_id )
+			{
+				Data_Firm[i].total_no_firms++;
+				
+			if( current_firm->no_employees > 0)
 			{
 				Data_Firm[i].no_firms++;
 				Data_Firm[i].no_employees += current_firm->no_employees;
@@ -1984,12 +2062,23 @@ void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_
 					current_firm->stocks_in_home_region)*current_firm->price;
 				Data_Firm[i].price_index_foreign_mall += (current_firm->delivery_to_foreign_region+
 					current_firm->stocks_in_foreign_region)*current_firm->price;
-
+				Data_Firm[i].debt_active_firms+= current_firm->total_debt;
+				Data_Firm[i].assets_active_firms+= current_firm->assets;
+				Data_Firm[i].debt_asset_ratio_active_firms+=current_firm->total_debt/current_firm->assets;
+							
+				}
+				Data_Firm[i].total_debt+= current_firm->total_debt;
+				Data_Firm[i].assets+= current_firm->assets;
+				Data_Firm[i].debt_asset_ratio+=current_firm->total_debt/current_firm->assets;
+				if(current_firm->total_debt/current_firm->assets>0.8)
+					{
+						Data_Firm[i].count_debt_asset_ratio_threshold++;
+					}
 			}
 		}
 		
 		
-		
+	
 		
 		
 		
@@ -2505,7 +2594,87 @@ sprintf(data, "%f", ((Data_Firm[1].delivery_to_home_region+Data_Firm[2].delivery
 	fputs("\n", file);
 
 	fclose(file);
+	
+	/*Regions: total debt*/
+		file = fopen("data-total-debt-region.csv", "a");
 
+		sprintf(data, "%i", itno);
+		fputs(data, file);
+		fputs("\t", file);
+
+		
+		for(i = 0; i <= no_regions; i++)
+		{
+			sprintf(data, "%f", Data_Firm[i].total_debt);
+			fputs(data, file);
+			fputs("\t", file);	
+		}
+			
+		fputs("\n", file);
+
+		fclose(file);
+
+		
+		/*Regions: total assets*/
+				file = fopen("data-assets-region.csv", "a");
+
+				sprintf(data, "%i", itno);
+				fputs(data, file);
+				fputs("\t", file);
+
+				
+				for(i = 0; i <= no_regions; i++)
+				{
+					sprintf(data, "%f", Data_Firm[i].assets);
+					fputs(data, file);
+					fputs("\t", file);	
+				}
+					
+				fputs("\n", file);
+
+				fclose(file);
+				
+				
+				
+				/*Regions: total assets*/
+						file = fopen("data-debt-assets-ratio-region.csv", "a");
+
+						sprintf(data, "%i", itno);
+						fputs(data, file);
+						fputs("\t", file);
+
+						
+						for(i = 0; i <= no_regions; i++)
+						{
+							sprintf(data, "%f", Data_Firm[i].debt_asset_ratio/Data_Firm[i].total_no_firms);
+							fputs(data, file);
+							fputs("\t", file);	
+						}
+							
+						fputs("\n", file);
+
+						fclose(file);
+						
+						
+						
+						/*Regions: total assets*/
+							file = fopen("data-number-debt-asset-ratio-violator-region.csv", "a");
+
+							sprintf(data, "%i", itno);
+							fputs(data, file);
+							fputs("\t", file);
+
+							
+							for(i = 0; i <= no_regions; i++)
+							{
+								sprintf(data, "%f", Data_Firm[i].count_debt_asset_ratio_threshold);
+								fputs(data, file);
+								fputs("\t", file);	
+							}
+								
+							fputs("\n", file);
+
+							fclose(file);
 
 /*Regions: technology*/
 	file = fopen("data-technology-region.csv", "a");
@@ -2694,6 +2863,8 @@ int main( int argc, char **argv )
 	file = fopen("data-commuter-region-5.csv", "w");
 	fclose(file);
 
+	file = fopen("data-consumption-budget-region.csv", "w");
+	fclose(file);
 
 /*MALL FILES*/
 
@@ -2788,7 +2959,18 @@ int main( int argc, char **argv )
 	
 	file = fopen("data-IGfirm-revenues.csv", "w");
 	fclose(file);
-
+	
+	file = fopen("data-total-debt-region.csv", "w");
+	fclose(file);
+	
+	file = fopen("data-assets-region.csv", "w");
+		fclose(file);
+		
+		file = fopen("data-debt-assets-ratio-region.csv", "w");
+			fclose(file);
+			
+			file = fopen("data-number-debt-asset-ratio-violator-region.csv", "w");
+				fclose(file);
 
 	
 	/* Read initial states of x-machines */
