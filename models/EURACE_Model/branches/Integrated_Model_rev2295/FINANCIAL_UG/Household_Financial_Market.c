@@ -304,8 +304,8 @@ void generatePendingOrders(Asset_array *assetsowned,Order_array *pending, Belief
     
   }
 
-    if (PRINT_DEBUG)
-    {getchar();}
+    //if (PRINT_DEBUG)
+//    {getchar();}
 
 
     /*double prima,dopo;

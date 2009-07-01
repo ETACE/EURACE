@@ -235,19 +235,30 @@ int Government_send_account_update()
  * \brief Function to resolve the bonds that are left unsold at the end of each month.
  */
 int Government_resolve_unsold_bonds()
-{   
+{   double last_market_price;
     //At the end of the month: check if the nr of bonds in the gov's own portfolio is positive
     if (BOND.quantity>0)
     {
         //Government sends a new type of message to ECB with the nr of bonds, and the value:
         
         if (GOV_POLICY_SWITCH_QUANTITATIVE_EASING)
-        {        
-            add_issue_bonds_to_ecb_message(BOND.face_value, BOND.quantity);
-            
+        {   
+            last_market_price = BOND.prices[BOND.index];     
+            add_issue_bonds_to_ecb_message(last_market_price, BOND.quantity);
+            if (PRINT_DEBUG_GOV)
+            {
+            printf("\n Government_resolve_unsold_bonds.QUANTITATIVE_EASING \n");
+            printf("\t Payment account before easing: %f \n", PAYMENT_ACCOUNT);
+            }
             //Assume that the ECB is FULLY accommodating the government's demand for fiat money:
-            PAYMENT_ACCOUNT += BOND.face_value*BOND.quantity;
-        }        
+            PAYMENT_ACCOUNT += last_market_price*BOND.quantity;
+            if (PRINT_DEBUG_GOV)
+            {
+            printf("\t Payment account after easing: %f \n", PAYMENT_ACCOUNT);
+            printf("\t last_market_price %f BOND.quantity %d \n", last_market_price,BOND.quantity );
+            }       
+        }   
+             
         
         BOND.quantity = 0;
     }
@@ -292,8 +303,8 @@ int Government_monthly_budget_accounting()
         //Check: value of payment account should be equal to total_debt:
         //if (abs(TOTAL_DEBT + PAYMENT_ACCOUNT))> 0.001)
 
-        if (PRINT_DEBUG && ((TOTAL_DEBT + PAYMENT_ACCOUNT) != 0.0))
-            fprintf(stdout,"\n ERROR in Government: Total debt %2.5f is not equal to payment account %2.5f\n\n", TOTAL_DEBT, PAYMENT_ACCOUNT);
+        //if (PRINT_DEBUG && ((TOTAL_DEBT + PAYMENT_ACCOUNT) != 0.0))
+//            fprintf(stdout,"\n ERROR in Government: Total debt %2.5f is not equal to payment account %2.5f\n\n", TOTAL_DEBT, PAYMENT_ACCOUNT);
         
     //Monetary policy rule: decide on fraction of deficit to be financed by bonds/fiar money
         TOTAL_MONEY_FINANCING=0;
@@ -319,8 +330,36 @@ int Government_monthly_budget_accounting()
         add_request_fiat_money_message(TOTAL_MONEY_FINANCING);
 
         PAYMENT_ACCOUNT += TOTAL_MONEY_FINANCING;
+        if (PRINT_DEBUG_GOV)
+        {
+        printf("\n Government_monthly_budget_accounting \n");
+        printf("\t TOTAL_BOND_FINANCING: %f PAYMENT_ACCOUNT: %f \n",TOTAL_BOND_FINANCING, PAYMENT_ACCOUNT);
+        printf("\t MONTHLY_TAX_REVENUES %f MONTHLY_BENEFIT_PAYMENT %f MONTHLY_BOND_INTEREST_PAYMENT %f out %f \n",MONTHLY_TAX_REVENUES, MONTHLY_BENEFIT_PAYMENT, MONTHLY_BOND_INTEREST_PAYMENT, out);
+        }
         
     return 0;
+}
+
+
+int Government_bonds_issuing_decision(void)
+    {int  new_bonds_amount;
+     double  last_market_price; 
+     Bond *bond;
+     double limit_price;
+     bond=get_bond();
+     
+     last_market_price = bond->prices[bond->index];
+     limit_price = (1-BONDS_NEWISSUE_DISCOUNT)*last_market_price;
+     new_bonds_amount = ceil(TOTAL_BOND_FINANCING/limit_price);
+     bond->quantity = bond->quantity + new_bonds_amount;
+    //bond->nr_outstanding= bond->nr_outstanding +GovBondNewIssueAmount;
+    if (PRINT_DEBUG_GOV)
+    {
+    printf("\n Government_bonds_issuing_decision \n");
+    printf("\t last_market_price: %f limit_price: %f \n",last_market_price, limit_price);
+    printf("\t new_bonds_amount: %d bond->quantity: %d \n",new_bonds_amount, bond->quantity);
+    }
+return 0;
 }
 
 /* \fn: int Government_monthly_resetting()
