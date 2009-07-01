@@ -2128,7 +2128,7 @@ sprintf(data, "%f", ((Data_Firm[1].delivery_to_home_region+Data_Firm[2].delivery
 	fclose(file);
 
 /*Regions: price index mall perspective */
-	file = fopen("data-price-index-mall.csv", "a");
+	file = fopen("data-price-index-mall-region.csv", "a");
 
 	sprintf(data, "%i", itno);
 	fputs(data, file);
@@ -2720,7 +2720,7 @@ int main( int argc, char **argv )
 	file = fopen("data-relative-delivery-region.csv", "w");
 	fclose(file);
 
-	file = fopen("data-price-index-mall.csv", "w");
+	file = fopen("data-price-index-mall-region.csv", "w");
 	fclose(file);
 
 	file = fopen("data-delivery-region.csv", "w");
