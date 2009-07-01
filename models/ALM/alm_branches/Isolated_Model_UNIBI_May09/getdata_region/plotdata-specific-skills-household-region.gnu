@@ -1,8 +1,8 @@
 #set terminal postscript eps "Helvetica" 30
-#set output "graph-pecific-skills-household.eps"
+#set output "specific-skills-household-region.eps"
 
 #set terminal png
-#set output "pecific-skills-household.png"
+#set output "specific-skills-household-region.png"
 
 set data style linespoints
 #set pointsize 4.0
