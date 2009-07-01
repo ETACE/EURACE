@@ -1,8 +1,8 @@
 #set terminal postscript eps "Helvetica" 30
-#set output "graph-price-2-region.eps"
+#set output "-price-region.eps"
 
 #set terminal png
-#set output "graph-price-2-region.png"
+#set output "price-region.png"
 
 set data style linespoints
 #set pointsize 4.0

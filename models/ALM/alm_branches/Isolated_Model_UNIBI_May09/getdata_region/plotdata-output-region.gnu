@@ -1,8 +1,8 @@
 #set terminal postscript eps "Helvetica" 30
-#set output "output.eps"
+#set output "output-region.eps"
 
 #set terminal png
-#set output "output.png"
+#set output "output-region.png"
 
 set data style linespoints
 #set pointsize 4.0

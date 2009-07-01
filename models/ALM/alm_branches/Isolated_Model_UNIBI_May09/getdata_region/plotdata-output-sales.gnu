@@ -1,8 +1,8 @@
 #set terminal postscript eps "Helvetica" 30
-#set output "graph-output.eps"
+#set output "output-sales.eps"
 
 #set terminal png
-#set output "graph-output.png"
+#set output "output-sales.png"
 
 set data style linespoints
 #set pointsize 4.0
