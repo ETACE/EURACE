@@ -1,8 +1,8 @@
 #set terminal postscript eps "Helvetica" 30
-#set output "specific-skills.eps"
+#set output "specific-skills-firm-region.eps"
 
 set terminal png
-set output "specific-skills.png"
+set output "specific-skills-firm-region.png"
 
 set data style linespoints
 #set pointsize 4.0
