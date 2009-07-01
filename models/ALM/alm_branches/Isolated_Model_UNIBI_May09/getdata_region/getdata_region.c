@@ -2364,13 +2364,11 @@ sprintf(data, "%f", ((Data_Firm[1].delivery_to_home_region+Data_Firm[2].delivery
 	fputs(data, file);
 	fputs("\t", file);
 
-	
 	for(i = 0; i <= no_regions; i++)
 	{
 		sprintf(data, "%f", Data_Firm[i].average_wage/Data_Firm[i].no_employees);
 		fputs(data, file);
-		fputs("\t", file);
-		
+		fputs("\t", file);	
 	}
 		
 	fputs("\n", file);
