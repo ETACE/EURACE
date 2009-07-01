@@ -1,8 +1,8 @@
 #set terminal postscript eps "Helvetica" 30
-#set output "graph-commuter-region-2-to-1.eps"
+#set output "commuter-2-to-1.eps"
 
 #set terminal png
-#set output "graph-commuter-region-2-to-1.png"
+#set output "commuter-2-to-1.png"
 
 set data style linespoints
 #set pointsize 4.0
