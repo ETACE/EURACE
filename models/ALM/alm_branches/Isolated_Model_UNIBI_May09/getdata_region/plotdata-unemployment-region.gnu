@@ -1,8 +1,8 @@
 #set terminal postscript eps "Helvetica" 30
-#set output "graph-unemployment.eps"
+#set output "unemployment-region.eps"
 
 #set terminal png
-#set output "graph-unemployment.png"
+#set output "unemployment-region.png"
 
 set data style linespoints
 #set pointsize 4.0

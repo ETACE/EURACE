@@ -1,8 +1,8 @@
 #set terminal postscript eps "Helvetica" 30
-#set output "graph-vacancies-region.eps"
+#set output "vacancies-region.eps"
 
 #set terminal png
-#set output "graph-vacancies-region.png"
+#set output "vacancies-region.png"
 
 set data style linespoints
 #set pointsize 4.0

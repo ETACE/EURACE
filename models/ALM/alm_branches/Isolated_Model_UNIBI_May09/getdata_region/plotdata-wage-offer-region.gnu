@@ -1,8 +1,8 @@
 #set terminal postscript eps "Helvetica" 30
-#set output "wage-offer.eps"
+#set output "wage-offer-region.eps"
 
 #set terminal png
-#set output "wage-offer.png"
+#set output "wage-offer-region.png"
 
 set data style linespoints
 #set pointsize 4.0
