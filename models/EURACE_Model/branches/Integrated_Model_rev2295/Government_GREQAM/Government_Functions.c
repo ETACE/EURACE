@@ -340,26 +340,32 @@ int Government_monthly_budget_accounting()
     return 0;
 }
 
+/* \fn: int Government_bonds_issuing_decision()
+ * \brief Monthly bond issuing decision. Transforms the nominal amount to units of bonds.
+ */
 
-int Government_bonds_issuing_decision(void)
-    {int  new_bonds_amount;
-     double  last_market_price; 
-     Bond *bond;
-     double limit_price;
-     bond=get_bond();
-     
-     last_market_price = bond->prices[bond->index];
-     limit_price = (1-BONDS_NEWISSUE_DISCOUNT)*last_market_price;
-     new_bonds_amount = ceil(TOTAL_BOND_FINANCING/limit_price);
-     bond->quantity = bond->quantity + new_bonds_amount;
-    //bond->nr_outstanding= bond->nr_outstanding +GovBondNewIssueAmount;
+int Government_bonds_issuing_decision()
+{
+    int new_bonds_amount;
+    double last_market_price, limit_price; 
+    
+    //last_market_price = bond->prices[bond->index];
+    last_market_price = BOND.prices[BOND.index];
+    
+    //Set the bond issue price a bit lower than the last_market_price
+    limit_price = (1-BONDS_NEWISSUE_DISCOUNT)*last_market_price;
+    new_bonds_amount = ceil(TOTAL_BOND_FINANCING/limit_price);
+
+    //bond->quantity = bond->quantity + new_bonds_amount;
+    BOND.quantity = BOND.quantity + new_bonds_amount;
+
     if (PRINT_DEBUG_GOV)
     {
-    printf("\n Government_bonds_issuing_decision \n");
-    printf("\t last_market_price: %f limit_price: %f \n",last_market_price, limit_price);
-    printf("\t new_bonds_amount: %d bond->quantity: %d \n",new_bonds_amount, bond->quantity);
+        printf("\n Government_bonds_issuing_decision \n");
+        printf("\t last_market_price: %f limit_price: %f \n", last_market_price, limit_price);
+        printf("\t new_bonds_amount: %d BOND.quantity: %d \n", new_bonds_amount, BOND.quantity);
     }
-return 0;
+    return 0;
 }
 
 /* \fn: int Government_monthly_resetting()
