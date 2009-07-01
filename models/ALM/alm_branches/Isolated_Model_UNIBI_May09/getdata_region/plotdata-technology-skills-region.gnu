@@ -1,8 +1,8 @@
 #set terminal postscript eps "Helvetica" 30
-#set output "graph-technology-skill-region.eps"
+#set output "technology-skill-region.eps"
 
 #set terminal png
-#set output "graph-technology-skill-region.png"
+#set output "technology-skill-region.png"
 
 set data style linespoints
 #set pointsize 4.0

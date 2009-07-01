@@ -1,8 +1,8 @@
 #set terminal postscript eps "Helvetica" 30
-#set output "graph-relative-stocks.eps"
+#set output "stocks-region.eps"
 
 #set terminal png
-#set output "graph-relative-stocks.png"
+#set output "stocks-region.png"
 
 set data style linespoints
 #set pointsize 4.0
