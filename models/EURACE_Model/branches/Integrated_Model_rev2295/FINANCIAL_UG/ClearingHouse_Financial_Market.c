@@ -48,6 +48,7 @@ void computeAssetPrice(ClearingMechanism *mechanism, Asset *anAsset)
      addPrice(anAsset,price);
      addVolume(anAsset,quantity);
      
+        
      if (PRINT_DEBUG_AFM)
         {
         printf("\t Clearing of asset: %d volume: %d price: %f \n",anAsset->id,quantity,price);

@@ -552,7 +552,7 @@
      <name>Government_monthly_budget_accounting</name>
      <description>Function to perform accounting at the end of each month.</description>
      <currentState>05a</currentState>
-     <nextState>06</nextState>
+     <nextState>Gov_bonds_decision</nextState>
      <inputs/>
      <outputs>
       <output>
@@ -560,6 +560,42 @@
       </output>
      </outputs>
     </function>
+    <function>
+     <name>Government_bonds_issuing_decision</name>
+     <description>Function to decide how many bonds to issue.</description>
+     <currentState>Gov_bonds_decision</currentState>
+     <nextState>06</nextState>
+     <condition>
+      <lhs>
+       <value>a.total_bond_financing</value>
+      </lhs>
+      <op>GT</op>
+      <rhs>
+       <value>0</value>
+      </rhs>
+     </condition>
+     <inputs/>
+     <outputs/>
+    </function>
+     <function>
+     <name>idle</name>
+     <description>Idle function if Gov does not issue new bonds.</description>
+     <currentState>Gov_bonds_decision</currentState>
+     <nextState>06</nextState>
+     <condition>
+     <not>
+      <lhs>
+       <value>a.total_bond_financing</value>
+      </lhs>
+      <op>GT</op>
+      <rhs>
+       <value>0</value>
+      </rhs>
+      </not>
+     </condition>
+     <inputs/>
+     <outputs/>
+    </function>    
     <function>
      <name>Government_send_account_update</name>
      <description>Function to send the payment_account value to the Central Bank.</description>

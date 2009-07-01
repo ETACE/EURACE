@@ -693,17 +693,9 @@
      </outputs>
     </function>
     <function>
-     <name>Government_generate_pending_orders</name>
-     <description></description>
-     <currentState>GOVERNMENT_SENT_info_bond</currentState>
-     <nextState>GOVERNMENT_IN_DEFICIT</nextState>
-     <inputs/>
-     <outputs/>
-    </function>
-    <function>
      <name>Government_orders_issuing</name>
      <description></description>
-     <currentState>GOVERNMENT_IN_DEFICIT</currentState>
+     <currentState>GOVERNMENT_SENT_info_bond</currentState>
      <nextState>GOVERNMENT_SENT_ORDER</nextState>
      <inputs/>
      <outputs>
