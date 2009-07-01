@@ -1,8 +1,8 @@
 #set terminal postscript eps "Helvetica" 30
-#set output "graph-active-firms.eps"
+#set output "active-firms-region.eps"
 
 #set terminal png
-#set output "graph-active-firms.png"
+#set output "active-firms-region.png"
 
 set data style linespoints
 #set pointsize 4.0

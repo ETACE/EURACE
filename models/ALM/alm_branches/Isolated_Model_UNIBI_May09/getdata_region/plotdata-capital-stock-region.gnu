@@ -1,8 +1,8 @@
 #set terminal postscript eps "Helvetica" 30
-#set output "graph-capital-stock-2-region.eps"
+#set output "capital-stock-region.eps"
 
 #set terminal png
-#set output "graph-capital-2-region.png"
+#set output "capital-stock-region.png"
 
 set data style linespoints
 #set pointsize 4.0

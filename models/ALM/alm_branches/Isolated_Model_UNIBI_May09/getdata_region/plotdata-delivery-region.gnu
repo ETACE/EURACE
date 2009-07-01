@@ -1,8 +1,8 @@
 #set terminal postscript eps "Helvetica" 30
-#set output "graph-relative-delivery.eps"
+#set output "delivery-region.eps"
 
 #set terminal png
-#set output "graph-relative-delivery.png"
+#set output "delivery-region.png"
 
 set data style linespoints
 #set pointsize 4.0
