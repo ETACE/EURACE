@@ -1,8 +1,8 @@
 #set terminal postscript eps "Helvetica" 30
-#set output "graph-payment-account-2-region.eps"
+#set output "payment-account-household-region.eps"
 
 #set terminal png
-#set output "graph-payment-account-2-region.png"
+#set output "payment-account-household-region.png"
 
 set data style linespoints
 #set pointsize 4.0
