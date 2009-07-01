@@ -845,6 +845,11 @@ firms update the specific skill levels of the workers.</description>
      <name>consumption_budget</name>
      <description>Part of the budget for consumption</description>
     </variable>
+	   <variable>
+     <type>double</type>
+     <name>consumption_budget_in_month</name>
+     <description>The budget that is available for consumption during the month</description>
+    </variable>
     <variable>
      <type>double</type>
      <name>mean_income</name>
