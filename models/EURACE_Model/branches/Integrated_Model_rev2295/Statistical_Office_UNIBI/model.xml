@@ -2664,8 +2664,8 @@
    <memory>
     <variable>
      <type>double</type>
-     <name>gov_bond_holdings</name>
-     <description></description>
+     <name>bond_holdings_value</name>
+     <description>Total monetary amount of the ECBs government bond holdings.</description>
     </variable>
     <variable>
      <type>int</type>
