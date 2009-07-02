@@ -14,7 +14,7 @@ int Central_Bank_read_fiat_money_requests()
     //Read the bond emission -> fiat money request from governments
     START_ISSUE_BONDS_TO_ECB_MESSAGE_LOOP
         FIAT_MONEY += issue_bonds_to_ecb_message->nominal_value*issue_bonds_to_ecb_message->quantity;
-        //BOND_HOLDINGS += issue_bonds_to_ecb_message->quantity;
+        BOND_HOLDINGS_VALUE += issue_bonds_to_ecb_message->nominal_value;
     FINISH_ISSUE_BONDS_TO_ECB_MESSAGE_LOOP
 
 
@@ -34,6 +34,9 @@ int Central_Bank_read_fiat_money_requests()
 int Central_Bank_read_account_update()
 {
     int i;
+    
+    TOTAL_ECB_DEBT=0.0;
+    ECB_DEPOSITS=0.0;
 
     START_CENTRAL_BANK_ACCOUNT_UPDATE_MESSAGE_LOOP
     //Search the correct account
@@ -43,12 +46,13 @@ int Central_Bank_read_account_update()
             {
                  ACCOUNTS.array[i].payment_account = central_bank_account_update_message->payment_account;
             }
-            
-        //if  (central_bank_account_update_message->payment_account<0)
-          //  { 
-                 TOTAL_ECB_DEBT+=fabs(central_bank_account_update_message->payment_account);
-          //  }                  
-            
+        
+        //The sum of negative payment_account values
+        if (central_bank_account_update_message->payment_account<0.0)
+            TOTAL_ECB_DEBT += fabs(central_bank_account_update_message->payment_account);
+                    
+        //Total deposits at ECB
+        ECB_DEPOSITS += central_bank_account_update_message->payment_account;
     }
     FINISH_CENTRAL_BANK_ACCOUNT_UPDATE_MESSAGE_LOOP
     return 0;
@@ -78,8 +82,8 @@ int Central_Bank_send_data_to_Eurostat()
         TOTAL_INCOME=0.0;
         TOTAL_EXPENSES=0.0;
     
-        add_ecb_balance_sheet_message(GOV_BOND_HOLDINGS, NR_GOV_BONDS,
-                TOTAL_ECB_DEBT, PAYMENT_ACCOUNT_PRIVATE_SECTOR, PAYMENT_ACCOUNT_PUBLIC_SECTOR, 
+        add_ecb_balance_sheet_message(BOND_HOLDINGS_VALUE, NR_GOV_BONDS,
+                ECB_DEPOSITS, PAYMENT_ACCOUNT_PRIVATE_SECTOR, PAYMENT_ACCOUNT_PUBLIC_SECTOR, 
                 FIAT_MONEY, BANK_INTEREST, GOV_INTEREST, GOV_BOND_PURCHASE, DIVIDEND_PAYMENT, 
                 TOTAL_ASSETS, TOTAL_LIABILITIES, TOTAL_INCOME, TOTAL_EXPENSES);
     }   
