@@ -107,7 +107,7 @@ int Government_receive_info_bond(void)
 
 int Government_pays_coupons()
    { double coupon;
-     coupon=BOND.nominal_yield*BOND.face_value;
+     coupon=(BOND.nominal_yield*BOND.face_value)/12;//Monthly coupon divided by 12
      PAYMENT_ACCOUNT=PAYMENT_ACCOUNT-(coupon*BOND.nr_outstanding);
      MONTHLY_BOND_INTEREST_PAYMENT = coupon*BOND.nr_outstanding; //Defined in Government/model.xml Gov memory
      add_payment_coupons_message(coupon,ID);
