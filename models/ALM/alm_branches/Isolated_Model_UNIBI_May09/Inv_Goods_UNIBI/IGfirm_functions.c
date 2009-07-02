@@ -123,22 +123,22 @@ int IGFirm_pay_taxes()
 
 int IGFirm_dividend_payment()
 {
-	double weight = 0.2;
+	//double weight = 0.2;
 	double average_last_net_profits;
 	double total_dividend_payment;
 
 	/*First: pay out complete NET_PROFIT as dividends*/
-	CURRENT_DIVIDEND_PER_SHARE = NET_PROFIT / OUTSTANDING_SHARES;
+	/*CURRENT_DIVIDEND_PER_SHARE = NET_PROFIT / OUTSTANDING_SHARES;
 	printf("1: DIVIDEND %f \n",CURRENT_DIVIDEND_PER_SHARE);
 	
 	total_dividend_payment=NET_PROFIT;
-	printf("1: total_dividend_payment %f \n",total_dividend_payment);
+	printf("1: total_dividend_payment %f \n",total_dividend_payment);*/
 	
 	
 	
 	
 	/*Second: pay out geometrical average as dividends*/
-	CURRENT_DIVIDEND_PER_SHARE = (weight*CUM_NET_PROFITS +(1-weight)*NET_PROFIT)/ OUTSTANDING_SHARES;
+	/*CURRENT_DIVIDEND_PER_SHARE = (weight*CUM_NET_PROFITS +(1-weight)*NET_PROFIT)/ OUTSTANDING_SHARES;
 	printf("2: DIVIDEND %f \n",CURRENT_DIVIDEND_PER_SHARE);
 	
 	total_dividend_payment=weight*CUM_NET_PROFITS +(1-weight)*NET_PROFIT;
@@ -146,7 +146,7 @@ int IGFirm_dividend_payment()
 	
 	printf("1: CUM_NET_PROFITS %f\n",CUM_NET_PROFITS);
 	CUM_NET_PROFITS = (1- weight)*CUM_NET_PROFITS +weight*NET_PROFIT; 
-	printf("2: CUM_NET_PROFITS %f\n",CUM_NET_PROFITS);
+	printf("2: CUM_NET_PROFITS %f\n",CUM_NET_PROFITS);*/
 	
 	
 	
@@ -164,7 +164,7 @@ int IGFirm_dividend_payment()
 	CURRENT_DIVIDEND_PER_SHARE = average_last_net_profits/ OUTSTANDING_SHARES;
 	printf("3: DIVIDEND %f \n",CURRENT_DIVIDEND_PER_SHARE);
 	
-	total_dividend_payment=weight*CUM_NET_PROFITS +(1-weight)*NET_PROFIT;
+	total_dividend_payment = average_last_net_profits;
 	printf("3: total_dividend_payment %f \n",total_dividend_payment);
 	
 	
