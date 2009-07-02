@@ -101,7 +101,7 @@ double wage_reservation_update = 0.01;//0.01
 
 double region_cost_1 = 99;
 double region_cost_2 =0.0;
-double region_cost_3 = 0;
+double region_cost_3 = 0.0;
 
 
 
@@ -831,6 +831,10 @@ sprintf(data, "%d",NO_REGIONS_PER_GOV);	print_tag("no_regions_per_gov", data, fi
 		sprintf(data, "%d", total_households);	print_tag("outstanding_shares", data, file);
 		sprintf(data, "%f", 0.0);	print_tag("current_dividend_per_share", data, file);
 		sprintf(data, "%f", 0.0);	print_tag("cum_revenues", data, file);
+		sprintf(data, "%f", 0.0);	print_tag("net_profit", data, file);
+		sprintf(data, "%f", 0.0);	print_tag("cum_net_profits", data, file);
+		sprintf(data, "{%f,%f,%f,%f,%f,%f,%f,%f,%f,%f}",0,0,0,0,0,0,0,0,0,0);		print_tag("last_net_profits", data, file);
+		
 		sprintf(data, "%f", 0.0);       print_tag("posx", data, file);
 		sprintf(data, "%f", 0.0);       print_tag("posy", data, file);
 	
