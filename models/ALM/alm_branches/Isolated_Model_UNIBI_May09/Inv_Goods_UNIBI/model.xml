@@ -67,6 +67,16 @@
      <name>cum_revenues</name>
      <description></description>
     </variable>
+    <variable>
+     <type>double</type>
+     <name>cum_net_profits</name>
+     <description></description>
+    </variable>
+    <variable>
+     <type>double_array</type>
+     <name>last_net_profits</name>
+     <description>Array of the planned production quantities in the past</description>
+    </variable>
    </memory>
    <functions>
     <function>
