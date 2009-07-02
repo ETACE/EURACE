@@ -105,8 +105,8 @@ int IGFirm_receive_payment()
 int IGFirm_pay_taxes()
 {
 	
-	//TAX_PAYMENT = CUM_REVENUES*TAX_RATE_CORPORATE;
-	TAX_PAYMENT = CUM_REVENUES*0.0;	
+	TAX_PAYMENT = CUM_REVENUES*TAX_RATE_CORPORATE;
+	//TAX_PAYMENT = CUM_REVENUES*0.0;	
 	
 	PAYMENT_ACCOUNT -= TAX_PAYMENT;
 	
@@ -153,6 +153,9 @@ int IGFirm_dividend_payment()
 	
 	
 	/*Third: pay out the average of the last 10 NET_PROFITs as dividends*/
+	remove_double(& LAST_NET_PROFITS,0);
+	add_double(& LAST_NET_PROFITS,NET_PROFIT);  
+	
 	int p;
 	for(p = 0; p < LAST_NET_PROFITS.size; p++)
 	{
