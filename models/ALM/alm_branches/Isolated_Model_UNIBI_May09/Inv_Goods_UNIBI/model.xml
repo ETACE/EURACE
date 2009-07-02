@@ -77,6 +77,11 @@
      <name>last_net_profits</name>
      <description>Array of the planned production quantities in the past</description>
     </variable>
+    <variable>
+     <type>double</type>
+     <name>dividend_payment</name>
+     <description></description>
+    </variable>
    </memory>
    <functions>
     <function>

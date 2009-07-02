@@ -126,6 +126,7 @@ int IGFirm_dividend_payment()
 	//double weight = 0.2;
 	double average_last_net_profits;
 	double total_dividend_payment;
+	DIVIDEND_PAYMENT = 0.0;
 
 	/*First: pay out complete NET_PROFIT as dividends*/
 	/*CURRENT_DIVIDEND_PER_SHARE = NET_PROFIT / OUTSTANDING_SHARES;
@@ -165,17 +166,19 @@ int IGFirm_dividend_payment()
 	average_last_net_profits = average_last_net_profits/LAST_NET_PROFITS.size;
 	
 	CURRENT_DIVIDEND_PER_SHARE = average_last_net_profits/ OUTSTANDING_SHARES;
-	printf("3: DIVIDEND %f \n",CURRENT_DIVIDEND_PER_SHARE);
+	//printf("3: DIVIDEND %f \n",CURRENT_DIVIDEND_PER_SHARE);
 	
 	total_dividend_payment = average_last_net_profits;
-	printf("3: total_dividend_payment %f \n",total_dividend_payment);
+	//printf("3: total_dividend_payment %f \n",total_dividend_payment);
 	
 	
 	//add dividend_per_share_msg(firm_id, current_dividend_per_share) to shareholders (dividend per share)     
 	add_dividend_per_share_message(ID, CURRENT_DIVIDEND_PER_SHARE);
 	
 	//decrease payment_account with the total_dividend_payment
-	PAYMENT_ACCOUNT -= total_dividend_payment;;
+	PAYMENT_ACCOUNT -= total_dividend_payment;
+	
+	DIVIDEND_PAYMENT = total_dividend_payment;
 	
 	return 0;
 }
