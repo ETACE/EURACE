@@ -84,6 +84,7 @@ struct mall
 	int region_id;
 	double productivity;
 	double revenue_per_day;	
+	double dividend_payment;
 
 	struct IGfirm * next;
 
@@ -445,6 +446,7 @@ int getiteration(char * filepath, int itno, firm ** pointer_to_firms, household 
 
 	/*IGFirm*/
 	int inproductivity, inrevenue_per_day;
+	int individend_payment;
 
 	/* Variables for model data */
 	int state, id, region_id;
@@ -480,7 +482,7 @@ int getiteration(char * filepath, int itno, firm ** pointer_to_firms, household 
 	double sales_of_foreign_firms;
 
 	/*IGFirm*/
-	double productivity, revenue_per_day;
+	double productivity, revenue_per_day,dividend_payment;
 	
 	char name[1000];
 	
@@ -574,6 +576,7 @@ int getiteration(char * filepath, int itno, firm ** pointer_to_firms, household 
 	/*IGFirm*/
 	inproductivity=0;
 	inrevenue_per_day=0;
+	individend_payment = 0;
 
 	state = 0;
 	id = 0;
@@ -626,8 +629,10 @@ int getiteration(char * filepath, int itno, firm ** pointer_to_firms, household 
 	sales_of_domestic_firms=0;
 	sales_of_foreign_firms=0;
 		
-	inproductivity=0;
+	productivity=0;
 	revenue_per_day=0;
+	dividend_payment = 0;
+	
 		
 	/* Read characters until the end of the file */
 	/*while(c != EOF)*/
@@ -796,6 +801,7 @@ int getiteration(char * filepath, int itno, firm ** pointer_to_firms, household 
 					current_IGfirm->region_id = region_id;
 					current_IGfirm->productivity = productivity;
 					current_IGfirm->revenue_per_day = revenue_per_day;
+					current_IGfirm->dividend_payment = dividend_payment;
 					
 					
 					
@@ -913,6 +919,11 @@ int getiteration(char * filepath, int itno, firm ** pointer_to_firms, household 
 		       if(strcmp(buffer, "/productivity") == 0) { inproductivity= 0; }	
 			if(strcmp(buffer, "revenue_per_day") == 0) { inrevenue_per_day = 1; }
 		       if(strcmp(buffer, "/revenue_per_day") == 0) { inrevenue_per_day= 0; }	
+
+			if(strcmp(buffer, "dividend_payment") == 0) { individend_payment = 1; }
+		       if(strcmp(buffer, "/dividend_payment") == 0) { individend_payment= 0; }
+
+
 			
 			/* End of tag and reset buffer */
 			intag = 0;
@@ -978,6 +989,10 @@ if(inagent && inplanned_output)  { planned_output  = atof(buffer); }
 			if(inagent && inrevenue_per_day)  {revenue_per_day  = atof(buffer); }
 			if(inagent && inproductivity)  { productivity  = atof(buffer); }
 			if(inagent && intotal_supply)  { total_supply  = atof(buffer); }
+
+			if(inagent && individend_payment)  { dividend_payment  = atof(buffer); }
+
+
 
 			if(inagent && insales)  { sales  = atof(buffer); }
 			if(inagent && insales_of_domestic_firms)  { sales_of_domestic_firms  = atof(buffer); }
@@ -1894,12 +1909,29 @@ void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_
 
 	fclose(file);
 
+
+
 	file = fopen("data-IGfirm-revenues.csv", "a");
 
 	sprintf(data, "%i", itno);
 	fputs(data, file);
 	fputs("\t", file);
 	sprintf(data, "%f", current_IGfirm->revenue_per_day );
+	fputs(data, file);
+
+	fputs("\n", file);
+
+	fclose(file);
+
+
+
+
+	file = fopen("data-IGfirm-dividend-payment.csv", "a");
+
+	sprintf(data, "%i", itno);
+	fputs(data, file);
+	fputs("\t", file);
+	sprintf(data, "%f", current_IGfirm->dividend_payment );
 	fputs(data, file);
 
 	fputs("\n", file);
@@ -2684,10 +2716,20 @@ sprintf(data, "%f", ((Data_Firm[1].delivery_to_home_region+Data_Firm[2].delivery
 	
 	for(i = 0; i <= no_regions; i++)
 	{
-		sprintf(data, "%f", Data_Firm[i].average_technology/
-		Data_Firm[i].output);
-		fputs(data, file);
-		fputs("\t", file);	
+
+		if(itno == 0)
+		{
+			sprintf(data, "%f", Data_Firm[i].average_technology);
+			fputs(data, file);
+			fputs("\t", file);
+		}
+		if(itno%20 == 0 & itno >0)
+		{
+			sprintf(data, "%f", Data_Firm[i].average_technology/
+			Data_Firm[i].output);
+			fputs(data, file);
+			fputs("\t", file);
+		}	
 	}
 		
 	fputs("\n", file);
@@ -2956,6 +2998,9 @@ int main( int argc, char **argv )
 	fclose(file);
 	
 	file = fopen("data-IGfirm-revenues.csv", "w");
+	fclose(file);
+
+	file = fopen("data-IGfirm-dividend-payment.csv", "w");
 	fclose(file);
 	
 	file = fopen("data-total-debt-region.csv", "w");
