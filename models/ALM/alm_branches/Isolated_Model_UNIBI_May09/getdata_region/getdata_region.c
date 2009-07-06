@@ -2086,6 +2086,51 @@ void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_
 		
 	}
 
+/*Regions: control*/
+	file = fopen("data-budget-supply-region.csv", "a");
+
+	sprintf(data, "%i", itno);
+	fputs(data, file);
+	fputs("\t", file);
+	sprintf(data, "%f", ((Data_Firm[1].delivery_to_home_region+Data_Firm[2].delivery_to_foreign_region)+
+		(Data_Firm[1].stocks_in_home_region+Data_Firm[2].stocks_in_foreign_region))/
+		((Data_Firm[2].delivery_to_home_region+Data_Firm[1].delivery_to_foreign_region)+
+		(Data_Firm[2].stocks_in_home_region+Data_Firm[1].stocks_in_foreign_region)));
+	fputs(data, file);
+	fputs("\t", file);
+	sprintf(data, "%f", Data_Household[1].consumption_budget_in_month
+		/Data_Household[2].consumption_budget_in_month);
+	fputs(data, file);
+	fputs("\t", file);
+if(((Data_Firm[1].stocks_in_home_region+Data_Firm[2].stocks_in_foreign_region)/
+		(Data_Firm[2].stocks_in_home_region+Data_Firm[1].stocks_in_foreign_region))<5)
+{
+	sprintf(data, "%f", (Data_Firm[1].stocks_in_home_region+Data_Firm[2].stocks_in_foreign_region)/
+		(Data_Firm[2].stocks_in_home_region+Data_Firm[1].stocks_in_foreign_region));
+	fputs(data, file);
+	fputs("\t", file);
+}
+else
+{double help =5.0;
+	sprintf(data, "%f", help);
+	fputs(data, file);
+	fputs("\t", file);
+}
+	sprintf(data, "%f", (Data_Firm[1].delivery_to_home_region+Data_Firm[2].delivery_to_foreign_region)/
+	(Data_Firm[2].delivery_to_home_region+Data_Firm[1].delivery_to_foreign_region));
+	fputs(data, file);
+	fputs("\t", file);
+	sprintf(data, "%f", Data_Mall[1].sales/Data_Mall[2].sales );
+	fputs(data, file);
+	fputs("\t", file);
+		
+	fputs("\n", file);
+
+	fclose(file);
+
+
+
+
 /*Regions: active firms*/
 	file = fopen("data-active-firms-region.csv", "a");
 
@@ -2107,7 +2152,7 @@ void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_
 
 
 
-/*Regions: relative delivery */
+/*Regions: relative stocks*/
 	file = fopen("data-relative-stocks-region.csv", "a");
 
 	sprintf(data, "%i", itno);
@@ -2876,6 +2921,9 @@ int main( int argc, char **argv )
 	fclose(file);
 	
 /*FIRM FILES*/
+
+	file = fopen("data-budget-supply-region.csv", "w");
+	fclose(file);
 
 	file = fopen("data-active-firms-region.csv", "w");
 	fclose(file);
