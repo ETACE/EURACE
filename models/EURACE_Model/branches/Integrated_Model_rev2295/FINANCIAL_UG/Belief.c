@@ -72,7 +72,7 @@ double randomReturn(Belief *belief, Stock *stock,int backwardWindow,int forwardW
    double volatility;
    double randn;
    volatility=volatilityStock(stock,backwardWindow);
-   volatility=max(0.1,volatility);
+   volatility=max(0.05,volatility);
    randn=gauss(0,1);
    rndReturn = sqrt(forwardWindow)*volatility*randn;//sqrt(forwardWindow)*volatility*randn;
  //rndReturn = volatility*randn;//sqrt(forwardWindow)*volatility*randn;
@@ -182,7 +182,7 @@ else
     // Random Return
    {
      volatility=volatilityBond(bond,backwardWindow);
-     volatility=max(0.1,volatility);
+     volatility=max(0.05,volatility);
      randomReturn = sqrt(holding_period)*volatility*gauss(0,1);
     //total return Returns
     value= random_return_weight_bond*randomReturn +fundamental_return_weight_bond*fundamentalReturn+coupon_yield;
