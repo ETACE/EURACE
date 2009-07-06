@@ -37,7 +37,9 @@ int IGFirm_update_productivity_price()
 		if(i < INNOVATION_PROBABILITY)
 		{
 			PRODUCTIVITY = PRODUCTIVITY*(1 + PRODUCTIVITY_PROGRESS);
+
 			CAPITAL_GOOD_PRICE = CAPITAL_GOOD_PRICE*(1 +PRODUCTIVITY_PROGRESS);	
+
 		}
 
 	
@@ -105,12 +107,18 @@ int IGFirm_receive_payment()
 int IGFirm_pay_taxes()
 {
 	
+
 	TAX_PAYMENT = CUM_REVENUES*TAX_RATE_CORPORATE;
 	//TAX_PAYMENT = CUM_REVENUES*0.0;	
+
+
+
 	
 	PAYMENT_ACCOUNT -= TAX_PAYMENT;
 	
 	NET_PROFIT = CUM_REVENUES - TAX_PAYMENT;
+	
+	CUM_REVENUE_LAST_MONTH = CUM_REVENUES;
 	CUM_REVENUES=0.0;
 	add_tax_payment_message(GOV_ID,TAX_PAYMENT);
 	
@@ -123,19 +131,21 @@ int IGFirm_pay_taxes()
 
 int IGFirm_dividend_payment()
 {
+
+
 	//double weight = 0.2;
 	double average_last_net_profits;
 	double total_dividend_payment;
 	DIVIDEND_PAYMENT = 0.0;
 
 	/*First: pay out complete NET_PROFIT as dividends*/
-	/*CURRENT_DIVIDEND_PER_SHARE = NET_PROFIT / OUTSTANDING_SHARES;
+/*CURRENT_DIVIDEND_PER_SHARE = NET_PROFIT / OUTSTANDING_SHARES;
 	printf("1: DIVIDEND %f \n",CURRENT_DIVIDEND_PER_SHARE);
 	
 	total_dividend_payment=NET_PROFIT;
-	printf("1: total_dividend_payment %f \n",total_dividend_payment);*/
+	printf("1: total_dividend_payment %f \n",total_dividend_payment);
 	
-	
+	*/
 	
 	
 	/*Second: pay out geometrical average as dividends*/
@@ -170,11 +180,11 @@ int IGFirm_dividend_payment()
 	
 	total_dividend_payment = average_last_net_profits;
 	//printf("3: total_dividend_payment %f \n",total_dividend_payment);
-	
+		
 	
 	//add dividend_per_share_msg(firm_id, current_dividend_per_share) to shareholders (dividend per share)     
 	add_dividend_per_share_message(ID, CURRENT_DIVIDEND_PER_SHARE);
-	
+
 	//decrease payment_account with the total_dividend_payment
 	PAYMENT_ACCOUNT -= total_dividend_payment;
 	
