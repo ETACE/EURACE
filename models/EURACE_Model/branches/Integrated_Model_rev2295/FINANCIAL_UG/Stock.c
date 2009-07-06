@@ -92,10 +92,12 @@ double volatilityStock(Stock *stock,int backwardWindow)
                aux=(backreturnsAt(stock,i)-expectedreturn);
                volatility=volatility+(aux*aux);
             }
-      volatility=volatility/(backwardWindow);
-      //volatility=sqrt(volatility/(backwardWindow);
+  
+      volatility=sqrt(volatility/(backwardWindow);
       return volatility;
      }
+
+
 void totalReturnsStock(Stock *stock, double *vect, int backwardWindow,double factor, double value)
   {  int i;
      for(i=0;i<(backwardWindow);i++)
