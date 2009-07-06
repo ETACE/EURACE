@@ -67,6 +67,11 @@
      <name>cum_revenues</name>
      <description></description>
     </variable>
+<variable>
+     <type>double</type>
+     <name>cum_revenue_last_month</name>
+     <description></description>
+    </variable>
     <variable>
      <type>double</type>
      <name>cum_net_profits</name>
