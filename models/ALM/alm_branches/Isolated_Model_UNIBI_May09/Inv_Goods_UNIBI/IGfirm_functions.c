@@ -88,8 +88,7 @@ int IGFirm_receive_payment()
 	START_PAY_CAPITAL_GOODS_MESSAGE_LOOP
 
 		REVENUE_PER_DAY += pay_capital_goods_message->capital_bill;
-
-		
+	
 
 	FINISH_PAY_CAPITAL_GOODS_MESSAGE_LOOP  
 
@@ -109,7 +108,7 @@ int IGFirm_pay_taxes()
 	
 
 	TAX_PAYMENT = CUM_REVENUES*TAX_RATE_CORPORATE;
-	//TAX_PAYMENT = CUM_REVENUES*0.0;	
+	//TAX_PAYMENT = CUM_REVENUES*0.3;	
 
 
 
