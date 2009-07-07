@@ -770,7 +770,7 @@ void Eurostat_compute_global_household_data(void)
     UNEMPLOYMENT_RATE_SKILL_5 = 100*(1 - (double)EMPLOYED_SKILL_5/
                     (double)NO_HOUSEHOLDS_SKILL_5);
     
-    
+    printf("Unemployment rate %f \n", UNEMPLOYMENT_RATE);
     /*******************WAGES**********************/
     
     if(EMPLOYED > 0)

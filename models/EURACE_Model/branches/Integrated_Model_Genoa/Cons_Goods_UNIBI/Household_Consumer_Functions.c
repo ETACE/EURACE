@@ -70,12 +70,21 @@ int Household_determine_consumption_budget()
                 }
                 CONSUMPTION_BUDGET = 0.5*LAST_INCOME.array[3];
             }
-
+           
             //PORTFOLIO_BUDGET=PAYMENT_ACCOUNT-CONSUMPTION_BUDGET;
             WEEKLY_BUDGET = CONSUMPTION_BUDGET/4;
             WEEK_OF_MONTH = 4;
             
-        EXCESS_WEEKLY_BUDGET = WEEKLY_BUDGET - PAYMENT_ACCOUNT;
+        //EXCESS_WEEKLY_BUDGET = WEEKLY_BUDGET - PAYMENT_ACCOUNT;
+        EXCESS_WEEKLY_BUDGET = -1;
+        
+        // if(PRINT_DEBUG)
+            {
+                           if (ID==584)
+                           {
+            printf("ID %d, CONS_BUDG %f, Mean_inc %f, Payment_acc %f, wealth %f, Assets Value %f, WIR %f \n", ID, CONSUMPTION_BUDGET, MEAN_INCOME, PAYMENT_ACCOUNT, WEALTH, WEALTH - PAYMENT_ACCOUNT, WEALTH_INCOME_RATIO);
+                           }
+            }
 
         if (PRINT_LOG)
         {
@@ -271,8 +280,10 @@ int Household_rank_and_buy_goods_1()
 
 int Household_receive_goods_read_rationing()
 {
-    
-    
+    if (ID==584)
+    {
+    printf("MALL_COMPLETELY_SOLD_OUT %d \n", MALL_COMPLETELY_SOLD_OUT);
+    }
     if(MALL_COMPLETELY_SOLD_OUT == 0)
     {
         EXPENDITURES = 0;
@@ -293,6 +304,14 @@ int Household_receive_goods_read_rationing()
                 ->offered_consumption_volume;
 
                 RECEIVED_QUANTITY[0].firm_id = ORDER_QUANTITY[0].firm_id;
+                
+                // if(PRINT_DEBUG)
+            {
+                           if (ID==584)
+                           {
+            printf("ID %d, EXPENDITURES %f, RECEIVED_QUANTITY %f \n", ID, EXPENDITURES, RECEIVED_QUANTITY[0].quantity);
+                           }
+            }
 
         FINISH_ACCEPTED_CONSUMPTION_1_MESSAGE_LOOP
         
