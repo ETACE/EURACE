@@ -99,13 +99,13 @@ double wage_reservation_update = 0.01;//0.01
 
 /*Cost of working in a different region: for example travelling costs*/
 
-double region_cost_1 = 99;
+double region_cost_1 = 99.0;
 double region_cost_2 =1.0;
 double region_cost_3 = 0.0;
 
 
 
-int day_change_region_costs_1 =1000;
+int day_change_region_costs_1 =10000;
 int day_change_region_costs_2 = 20000;
 
 int TRANSITION_PHASE = 0;
@@ -204,6 +204,10 @@ double SUBSIDY_FRACTION = 0.0;
 	double productivity_best_practice[2][1]=
 					{3.3,1.1};
 
+
+	int decil_production_rule_upper_bound= 8;	
+	int decil_production_rule_lower_bound = 8; 			
+	
 
 	int years_statistics = 10;/*number of years used to smooth the production*/
 
@@ -488,16 +492,7 @@ sprintf(data, "%d",NO_REGIONS_PER_GOV);	print_tag("no_regions_per_gov", data, fi
 
 		cap_price = capital_good_price_region[column][row];
 		
-		int strategy;	
-				
-		if(num <= 0.5*total_firms)
-		{
-			strategy = 0; //draw production quantity from interval [0,4]
-		}
-		else
-		{
-			strategy = 0; //draw production quantity from interval [5,9]
-		}	
+			
 
 
 		fputs("<xagent>\n", file);
@@ -507,7 +502,10 @@ sprintf(data, "%d",NO_REGIONS_PER_GOV);	print_tag("no_regions_per_gov", data, fi
 		sprintf(data, "%d",bank_id);    print_tag("bank_id", data, file);
 		sprintf(data, "%d",gov_id);    print_tag("gov_id", data, file);
 		sprintf(data, "{}");			print_tag("employees", data, file);
-		sprintf(data, "%d",strategy);	print_tag("firm_strategy", data, file);	
+	
+		int decil_production_rule = random_int(decil_production_rule_lower_bound,decil_production_rule_upper_bound);
+
+		sprintf(data, "%d",decil_production_rule);	print_tag("decil_production_rule", data, file);	
 		sprintf(data, "%f",base_wage_offer);		print_tag("wage_offer", data, file);
 
 		sprintf(data, "%f",wage_offer[column][row]);	print_tag("wage_offer_for_skill_1", data, file);
@@ -833,7 +831,7 @@ sprintf(data, "%d",NO_REGIONS_PER_GOV);	print_tag("no_regions_per_gov", data, fi
 		sprintf(data, "%f", 0.0);	print_tag("cum_revenues", data, file);
 		sprintf(data, "%f", 0.0);	print_tag("net_profit", data, file);
 		sprintf(data, "%f", 0.0);	print_tag("cum_net_profits", data, file);
-		sprintf(data, "{%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f}",0,0,0,0,0,0,0,0,0,0,0,0);		print_tag("last_net_profits", data, file);
+		sprintf(data, "{%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f}",0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);		print_tag("last_net_profits", data, file);
 		
 		sprintf(data, "%f", 0.0);       print_tag("posx", data, file);
 		sprintf(data, "%f", 0.0);       print_tag("posy", data, file);
