@@ -113,3 +113,18 @@ int Government_pays_coupons()
      add_payment_coupons_message(coupon,ID);
      return 0;
    }
+
+int Government_read_policy_rate()
+   { double tmp;
+   
+            START_POLICY_RATE_MESSAGE_LOOP
+                tmp = policy_rate_message->policy_rate_value;      
+            FINISH_POLICY_RATE_MESSAGE_LOOP
+     
+     BOND.nominal_yield = 1.1 * tmp;
+     
+     return 0;
+   }
+
+
+
