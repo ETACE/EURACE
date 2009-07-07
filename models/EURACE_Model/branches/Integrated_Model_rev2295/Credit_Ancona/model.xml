@@ -258,7 +258,7 @@
     </variable>
    </memory>
    <functions>
-   <function>
+    <function>
      <name>Bank_read_policy_rate</name>
      <description>The bank reads policy rate and updated risk free rate</description>
      <currentState>Bank_update_policy_rate</currentState>
@@ -276,17 +276,17 @@
      </inputs>
      <outputs/>
     </function>
-      <function>
+    <function>
      <name>idle</name>
      <description>The bank does not update risk free rate</description>
      <currentState>Bank_update_policy_rate</currentState>
      <nextState>Bank_start_credit_market_role</nextState>
      <condition>
-     <not>
-      <time>
-       <period>monthly</period>
-       <phase>1</phase>
-      </time>
+      <not>
+       <time>
+        <period>monthly</period>
+        <phase>1</phase>
+       </time>
       </not>
      </condition>
      <inputs/>
@@ -445,7 +445,7 @@
      <name>Bank_idle</name>
      <description></description>
      <currentState>Bank_06</currentState>
-     <nextState>end_Bank_cycle</nextState>
+     <nextState>Bank_07</nextState>
      <condition>
       <not>
        <time>
@@ -534,7 +534,7 @@
     <variable>
      <type>double</type>
      <name>equity</name>
-     <description>The ECB equity is the account to collect the interest payments from the banks and the government bond interest rate payments.&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+     <description>The ECB equity is the account to collect the interest payments from the banks and the government bond interest rate payments.&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
 The equity of ECB is paid out to all governments as dividends, in proportion to their population.</description>
     </variable>
     <variable>
@@ -630,10 +630,10 @@ The equity of ECB is paid out to all governments as dividends, in proportion to 
      <currentState>start_Central_Bank</currentState>
      <nextState>CB_market_operations</nextState>
      <condition>
-     <time>
-         <period>monthly</period>
-         <phase>1</phase>
-        </time>
+      <time>
+       <period>monthly</period>
+       <phase>1</phase>
+      </time>
      </condition>
      <inputs/>
      <outputs>
@@ -643,16 +643,16 @@ The equity of ECB is paid out to all governments as dividends, in proportion to 
      </outputs>
     </function>
     <function>
-    <name>idle</name>
+     <name>idle</name>
      <description>Central bank does not implement monetary policy</description>
      <currentState>start_Central_Bank</currentState>
      <nextState>CB_market_operations</nextState>
      <condition>
       <not>
-        <time>
-         <period>monthly</period>
-         <phase>1</phase>
-        </time>
+       <time>
+        <period>monthly</period>
+        <phase>1</phase>
+       </time>
       </not>
      </condition>
      <inputs/>
@@ -677,7 +677,7 @@ The equity of ECB is paid out to all governments as dividends, in proportion to 
   </xagent>
  </agents>
  <messages>
-   <message>
+  <message>
    <name>policy_rate</name>
    <description>Message sent by CB to communicate the policy rate</description>
    <variables>
