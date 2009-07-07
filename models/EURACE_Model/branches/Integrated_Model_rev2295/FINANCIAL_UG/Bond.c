@@ -68,7 +68,7 @@ double volatilityBond(Bond *bond,int backwardWindow)
                aux=(backreturns_bond(bond,i)-expectedreturn);
                volatility=volatility+(aux*aux);
             }
-      volatility=sqrt(volatility/(backwardWindow);
+      volatility=sqrt(volatility/backwardWindow);
       return volatility;
      }
 void totalReturnsBond(Bond *bond, double *vect, int backwardWindow,double factor, double value)
