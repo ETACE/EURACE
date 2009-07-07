@@ -169,9 +169,9 @@ int Firm_receive_data()
 
 					if(eurostat_send_specific_skills_message->productivity_progress > 0)
 					{
-						WAGE_OFFER = WAGE_OFFER*(1+ 
-						eurostat_send_specific_skills_message->productivity_progress);
-	
+						//WAGE_OFFER = WAGE_OFFER*(1+ 
+						//eurostat_send_specific_skills_message->productivity_progress);
+		
 						int i;
 						for(i = 0; i< EMPLOYEES.size; i++)
 						{				
