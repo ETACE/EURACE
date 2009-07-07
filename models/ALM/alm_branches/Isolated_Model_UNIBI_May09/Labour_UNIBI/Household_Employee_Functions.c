@@ -627,9 +627,15 @@ double fraction_if_recently_unemployed=0;
 
     /*Add unemployment_benefit to account */
     PAYMENT_ACCOUNT +=  fraction_if_recently_unemployed*UNEMPLOYMENT_BENEFIT_PCT * LAST_LABOUR_INCOME;
-    remove_double(&LAST_INCOME,0);
-    add_double(&LAST_INCOME, fraction_if_recently_unemployed*UNEMPLOYMENT_BENEFIT_PCT * LAST_LABOUR_INCOME);
-
+    if(fraction_if_recently_unemployed < 1)
+    {
+    	LAST_INCOME.array[3] += fraction_if_recently_unemployed*UNEMPLOYMENT_BENEFIT_PCT * LAST_LABOUR_INCOME;
+    }
+    else
+    {
+    	remove_double(&LAST_INCOME,0);
+    	add_double(&LAST_INCOME, fraction_if_recently_unemployed*UNEMPLOYMENT_BENEFIT_PCT * LAST_LABOUR_INCOME);
+    }
 
     /*Compute a mean income of the last four month*/
     int i;
