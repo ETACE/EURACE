@@ -169,7 +169,7 @@
     <variable>
      <type>double</type>
      <name>deposits_rate</name>
-     <description></description>
+     <description>rate on deposits</description>
     </variable>
     <variable>
      <type>double</type>
@@ -565,36 +565,6 @@ The equity of ECB is paid out to all governments as dividends, in proportion to 
       </input>
      </inputs>
      <outputs/>
-    </function>
-    <function>
-     <name>Central_Bank_send_data_to_Eurostat</name>
-     <description></description>
-     <currentState>01</currentState>
-     <nextState>end_Central_Bank</nextState>
-     <condition>
-      <lhs>
-       <time>
-        <period>monthly</period>
-        <phase>0</phase>
-       </time>
-      </lhs>
-      <op>AND</op>
-      <rhs>
-       <lhs>
-        <value>SWITCH_STOCK_CONSISTENCY_CHECK</value>
-       </lhs>
-       <op>EQ</op>
-       <rhs>
-        <value>1</value>
-       </rhs>
-      </rhs>
-     </condition>
-     <inputs/>
-     <outputs>
-      <output>
-       <messageName>ecb_balance_sheet</messageName>
-      </output>
-     </outputs>
     </function>
     <function>
      <name>Central_Bank_send_data_to_Eurostat</name>
