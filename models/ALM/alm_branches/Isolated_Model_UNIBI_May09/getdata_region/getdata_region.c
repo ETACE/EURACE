@@ -24,7 +24,7 @@ struct firm
 	double price_last_month;
 	double mean_specific_skills;
 
-	double sold_quantity_in_calendar_month;
+	double total_sold_quantity;
 	double planned_output;
 	double payment_account_firm;
 	double mean_wage;
@@ -84,6 +84,7 @@ struct mall
 	int region_id;
 	double productivity;
 	double cum_revenue_last_month;	
+	double dividend_payment;
 
 	struct IGfirm * next;
 
@@ -416,7 +417,7 @@ int getiteration(char * filepath, int itno, firm ** pointer_to_firms, household 
 	/*Firm*/
 	int inwage_offer, intechnology, inno_employees, invacancies, inaverage_g_skill;
 	int inoutput, incapital_stock, inrevenue, inearnings, inprice;
-	int insold_quantity_in_calendar_month, inplanned_output, inpayment_account_firm, inprice_last_month, inmean_specific_skills, inmean_wage;
+	int intotal_sold_quantity, inplanned_output, inpayment_account_firm, inprice_last_month, inmean_specific_skills, inmean_wage;
 
 	int inwage_offer_for_skill_1;
 	int inwage_offer_for_skill_2;
@@ -445,6 +446,7 @@ int getiteration(char * filepath, int itno, firm ** pointer_to_firms, household 
 
 	/*IGFirm*/
 	int inproductivity, incum_revenue_last_month;
+	int individend_payment;
 
 	/* Variables for model data */
 	int state, id, region_id;
@@ -452,7 +454,7 @@ int getiteration(char * filepath, int itno, firm ** pointer_to_firms, household 
 	/*Firm*/
 	int  no_employees, vacancies; 
 	double wage_offer, technology, average_g_skill, output, capital_stock;
-	double revenue, earnings, price, sold_quantity_in_calendar_month, planned_output;
+	double revenue, earnings, price, total_sold_quantity, planned_output;
 	double payment_account_firm,  price_last_month, mean_specific_skills,  mean_wage;
 	double wage_offer_for_skill_1;
 	double wage_offer_for_skill_2;
@@ -480,7 +482,7 @@ int getiteration(char * filepath, int itno, firm ** pointer_to_firms, household 
 	double sales_of_foreign_firms;
 
 	/*IGFirm*/
-	double productivity, cum_revenue_last_month;
+	double productivity, cum_revenue_last_month,dividend_payment;
 	
 	char name[1000];
 	
@@ -537,7 +539,7 @@ int getiteration(char * filepath, int itno, firm ** pointer_to_firms, household 
 	inearnings = 0;
 	inprice = 0;
 	inmean_wage=0;
-	insold_quantity_in_calendar_month = 0;
+	intotal_sold_quantity = 0;
 	inplanned_output = 0;
 	inpayment_account_firm  = 0;
 	inprice_last_month=0;
@@ -574,6 +576,7 @@ int getiteration(char * filepath, int itno, firm ** pointer_to_firms, household 
 	/*IGFirm*/
 	inproductivity=0;
 	incum_revenue_last_month=0;
+	individend_payment = 0;
 
 	state = 0;
 	id = 0;
@@ -590,7 +593,7 @@ int getiteration(char * filepath, int itno, firm ** pointer_to_firms, household 
 	revenue = 0;
 	earnings = 0;
 	price = 0;
-	sold_quantity_in_calendar_month = 0.0;
+	total_sold_quantity = 0.0;
 	planned_output = 0.0;
 	payment_account_firm = 0.0;
 	price_last_month=0.0;
@@ -626,8 +629,10 @@ int getiteration(char * filepath, int itno, firm ** pointer_to_firms, household 
 	sales_of_domestic_firms=0;
 	sales_of_foreign_firms=0;
 		
-	inproductivity=0;
+	productivity=0;
 	cum_revenue_last_month=0;
+	dividend_payment = 0;
+	
 		
 	/* Read characters until the end of the file */
 	/*while(c != EOF)*/
@@ -682,7 +687,7 @@ int getiteration(char * filepath, int itno, firm ** pointer_to_firms, household 
 					current_firm->earnings = earnings;
 					current_firm->mean_wage = mean_wage;
 					current_firm->price = price;
-					current_firm->sold_quantity_in_calendar_month = sold_quantity_in_calendar_month;
+					current_firm->total_sold_quantity = total_sold_quantity;
 					current_firm->planned_output = planned_output;
 					current_firm->payment_account_firm = payment_account;
 					current_firm->price_last_month=price_last_month;
@@ -796,6 +801,7 @@ int getiteration(char * filepath, int itno, firm ** pointer_to_firms, household 
 					current_IGfirm->region_id = region_id;
 					current_IGfirm->productivity = productivity;
 					current_IGfirm->cum_revenue_last_month = cum_revenue_last_month;
+					current_IGfirm->dividend_payment = dividend_payment;
 					
 					
 					
@@ -871,8 +877,8 @@ int getiteration(char * filepath, int itno, firm ** pointer_to_firms, household 
 
 			if(strcmp(buffer, "price") == 0) { inprice = 1; }
 			if(strcmp(buffer, "/price") == 0) { inprice = 0; }
-		     if(strcmp(buffer, "sold_quantity_in_calendar_month") == 0) { insold_quantity_in_calendar_month = 1; }
-		     if(strcmp(buffer, "/sold_quantity_in_calendar_month") == 0) { insold_quantity_in_calendar_month = 0; }
+		     if(strcmp(buffer, "total_sold_quantity") == 0) { intotal_sold_quantity = 1; }
+		     if(strcmp(buffer, "/total_sold_quantity") == 0) { intotal_sold_quantity = 0; }
 	if(strcmp(buffer, "planned_output") == 0) { inplanned_output = 1; }
 	if(strcmp(buffer, "/planned_output") == 0) { inplanned_output = 0; }
 			if(strcmp(buffer, "payment_account") == 0) { inpayment_account_firm = 1; }
@@ -913,6 +919,11 @@ int getiteration(char * filepath, int itno, firm ** pointer_to_firms, household 
 		       if(strcmp(buffer, "/productivity") == 0) { inproductivity= 0; }	
 			if(strcmp(buffer, "cum_revenue_last_month") == 0) { incum_revenue_last_month = 1; }
 		       if(strcmp(buffer, "/cum_revenue_last_month") == 0) { incum_revenue_last_month= 0; }	
+
+			if(strcmp(buffer, "dividend_payment") == 0) { individend_payment = 1; }
+		       if(strcmp(buffer, "/dividend_payment") == 0) { individend_payment= 0; }
+
+
 			
 			/* End of tag and reset buffer */
 			intag = 0;
@@ -957,7 +968,7 @@ int getiteration(char * filepath, int itno, firm ** pointer_to_firms, household 
 			if(inagent && inrevenue)  { revenue  = atof(buffer); }
 			if(inagent && inearnings)  { earnings  = atof(buffer); }
 			if(inagent && inprice)  { price  = atof(buffer); }
-			if(inagent && insold_quantity_in_calendar_month)  { sold_quantity_in_calendar_month  = atof(buffer); }
+			if(inagent && intotal_sold_quantity)  { total_sold_quantity  = atof(buffer); }
 if(inagent && inplanned_output)  { planned_output  = atof(buffer); }
 			if(inagent && inpayment_account_firm)  { payment_account_firm  = atof(buffer); }
 			if(inagent && inprice_last_month)  { price_last_month  = atof(buffer); }
@@ -978,6 +989,10 @@ if(inagent && inplanned_output)  { planned_output  = atof(buffer); }
 			if(inagent && incum_revenue_last_month)  {cum_revenue_last_month  = atof(buffer); }
 			if(inagent && inproductivity)  { productivity  = atof(buffer); }
 			if(inagent && intotal_supply)  { total_supply  = atof(buffer); }
+
+			if(inagent && individend_payment)  { dividend_payment  = atof(buffer); }
+
+
 
 			if(inagent && insales)  { sales  = atof(buffer); }
 			if(inagent && insales_of_domestic_firms)  { sales_of_domestic_firms  = atof(buffer); }
@@ -1894,12 +1909,29 @@ void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_
 
 	fclose(file);
 
+
+
 	file = fopen("data-IGfirm-revenues.csv", "a");
 
 	sprintf(data, "%i", itno);
 	fputs(data, file);
 	fputs("\t", file);
 	sprintf(data, "%f", current_IGfirm->cum_revenue_last_month );
+	fputs(data, file);
+
+	fputs("\n", file);
+
+	fclose(file);
+
+
+
+
+	file = fopen("data-IGfirm-dividend-payment.csv", "a");
+
+	sprintf(data, "%i", itno);
+	fputs(data, file);
+	fputs("\t", file);
+	sprintf(data, "%f", current_IGfirm->dividend_payment );
 	fputs(data, file);
 
 	fputs("\n", file);
@@ -1980,9 +2012,9 @@ void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_
 						      		current_firm->no_employees);
 			Data_Firm[0].average_general_skill += (current_firm->average_g_skill*current_firm->no_employees);
 			Data_Firm[0].output += current_firm->output;
-			Data_Firm[0].sold_quantity += current_firm->sold_quantity_in_calendar_month;
+			Data_Firm[0].sold_quantity += current_firm->total_sold_quantity;
 			Data_Firm[0].average_payment_account += current_firm->payment_account_firm;
-			Data_Firm[0].average_price += (current_firm->price*current_firm->sold_quantity_in_calendar_month);
+			Data_Firm[0].average_price += (current_firm->price*current_firm->total_sold_quantity);
 			Data_Firm[0].capital_stock += (current_firm->capital_stock);
 			Data_Firm[0].earnings += current_firm->earnings;
 			Data_Firm[0].revenues += current_firm->revenue;
@@ -2038,9 +2070,9 @@ void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_
 				Data_Firm[i].average_general_skill += 
 				 (current_firm->average_g_skill*current_firm->no_employees);
 				Data_Firm[i].output += current_firm->output;
-				Data_Firm[i].sold_quantity += current_firm->sold_quantity_in_calendar_month;
+				Data_Firm[i].sold_quantity += current_firm->total_sold_quantity;
 				Data_Firm[i].average_payment_account += current_firm->payment_account_firm;
-				Data_Firm[i].average_price += (current_firm->price*current_firm->sold_quantity_in_calendar_month);
+				Data_Firm[i].average_price += (current_firm->price*current_firm->total_sold_quantity);
 				Data_Firm[i].capital_stock += (current_firm->capital_stock);
 				Data_Firm[i].earnings += current_firm->earnings;
 				Data_Firm[i].revenues += current_firm->revenue;
@@ -2729,10 +2761,20 @@ sprintf(data, "%f", ((Data_Firm[1].delivery_to_home_region+Data_Firm[2].delivery
 	
 	for(i = 0; i <= no_regions; i++)
 	{
-		sprintf(data, "%f", Data_Firm[i].average_technology/
-		Data_Firm[i].output);
-		fputs(data, file);
-		fputs("\t", file);	
+
+		if(itno == 0)
+		{
+			sprintf(data, "%f", Data_Firm[i].average_technology);
+			fputs(data, file);
+			fputs("\t", file);
+		}
+		if(itno%20 == 0 & itno >0)
+		{
+			sprintf(data, "%f", Data_Firm[i].average_technology/
+			Data_Firm[i].output);
+			fputs(data, file);
+			fputs("\t", file);
+		}	
 	}
 		
 	fputs("\n", file);
@@ -3004,6 +3046,9 @@ int main( int argc, char **argv )
 	fclose(file);
 	
 	file = fopen("data-IGfirm-revenues.csv", "w");
+	fclose(file);
+
+	file = fopen("data-IGfirm-dividend-payment.csv", "w");
 	fclose(file);
 	
 	file = fopen("data-total-debt-region.csv", "w");
