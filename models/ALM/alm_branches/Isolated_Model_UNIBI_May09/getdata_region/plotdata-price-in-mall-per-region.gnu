@@ -20,7 +20,7 @@ set xlabel "Days"
 #set ylabel "value of a"
 
 
-plot 'data-price-index-mall.csv' using 1:5 title "price-mall-1-origin-1",'data-price-index-mall.csv' using 1:6 title "price-mall-2-origin-1",'data-price-index-mall.csv' using 1:7 title "price-mall-1-origin-2",'data-price-index-mall.csv' using 1:8 title "price-mall-2-origin-2"
+plot 'data-price-index-mall-region.csv' using 1:5 title "price-mall-1-origin-1",'data-price-index-mall-region.csv' using 1:6 title "price-mall-2-origin-1",'data-price-index-mall-region.csv' using 1:7 title "price-mall-1-origin-2",'data-price-index-mall-region.csv' using 1:8 title "price-mall-2-origin-2"
  
 
 pause -1
