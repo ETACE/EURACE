@@ -8,6 +8,17 @@
 /** \fn Central_Bank_read_account_update()
  * \brief 
  */
+
+int Central_Bank_monetary_policy()
+{
+    
+    ECB_INTEREST_RATE = ECB_INTEREST_RATE + 0.001;
+    
+    add_policy_rate_message(ECB_INTEREST_RATE);
+
+    return 0;
+}
+
 int Central_Bank_read_fiat_money_requests()
 {
 

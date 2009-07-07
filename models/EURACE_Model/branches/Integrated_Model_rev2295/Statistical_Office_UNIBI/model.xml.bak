@@ -2617,7 +2617,7 @@
      <name>idle</name>
      <description></description>
      <currentState>start_Bank</currentState>
-     <nextState>Bank_update_policy_rate</nextState>
+     <nextState>Bank_start_credit_market_role</nextState>
      <condition>
       <not>
        <time>
@@ -2633,7 +2633,7 @@
      <name>Bank_read_policy_announcements</name>
      <description></description>
      <currentState>start_Bank</currentState>
-     <nextState>Bank_update_policy_rate</nextState>
+     <nextState>Bank_start_credit_market_role</nextState>
      <condition>
       <time>
        <period>yearly</period>

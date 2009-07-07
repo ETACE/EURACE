@@ -2,6 +2,18 @@
     #include "../Bank_agent_header.h"
     #include "../my_library_header.h"
     
+    
+     int Bank_read_policy_rate()
+    {
+          START_POLICY_RATE_MESSAGE_LOOP
+                ECB_INTEREST_RATE = policy_rate_message->policy_rate_value;      
+          FINISH_POLICY_RATE_MESSAGE_LOOP
+          
+        DEPOSITS_RATE = 0.9 * ECB_INTEREST_RATE;
+        
+     return 0;   
+    }
+    
     int Bank_communicate_identity()
     {
         add_bank_identity_message(ID);
@@ -256,6 +268,6 @@
     }
 int Bank_send_accountInterest(void)
 {
-   add_accountInterest_message(get_id(), 0.001);
+   add_accountInterest_message(get_id(), DEPOSITS_RATE);
    return 0;
 }
