@@ -95,7 +95,6 @@ void assetUtilitiesToWeights(double_array *assetWeights,double_array *assetUtili
          { if(minimo<0) add_double(assetWeights,assetUtilities->array[i]-minimo);
            else add_double(assetWeights,assetUtilities->array[i]);
            somma=somma+assetWeights->array[i];
-
          }
 
      if(minimo<0)  { somma=somma+bankrate-minimo;
