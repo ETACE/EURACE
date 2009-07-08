@@ -72,6 +72,7 @@ int Central_Bank_read_account_update()
 /** \fn Central_Bank_read_account_update()
  * \brief 
  */
+/*
 int Central_Bank_read_account_update_new()
 {
     int i;
@@ -114,6 +115,7 @@ int Central_Bank_read_account_update_new()
 
     return 0;
 }
+*/
 
 /** \fn Central_Bank_send_data_to_Eurostat()
  * \brief 
