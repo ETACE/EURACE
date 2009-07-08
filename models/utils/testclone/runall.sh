@@ -2,12 +2,12 @@
 
 #Set directories:
 BASE=$PWD
-POP_GUI_DIR='/cygdrive/d/Docs/EURACE/X-models/SVN/Pop_GUI'
-SIM_DIR='/cygdrive/d/Docs/EURACE/X-models/SVN/eurace/EURACE_Model/branches/Integrated_Model'
+POP_GUI_DIR='/media/DOCS/Docs/EURACE/X-models/SVN_linux/guis/popgui-trunk'
+SIM_DIR='/media/DOCS/Docs/EURACE/X-models/SVN_linux/models/EURACE_Model/branches/Integrated_Model_rev2295/its'
 
-#CLONE_SCRIPT_DIR='/cygdrive/d/Docs/EURACE/X-models/SVN/eurace/utils/cloning'
-#PREPARTITION_DIR='/cygdrive/d/Docs/EURACE/X-models/SVN/eurace/utils/prepartitioning'
-#JOIN_DIR='/cygdrive/d/Docs/EURACE/X-models/SVN/eurace/utils/join'
+#CLONE_SCRIPT_DIR='~/cloning/utils/cloning'
+#PREPARTITION_DIR='~/cloning/utils/prepartitioning'
+#JOIN_DIR='~/cloning/utils/join'
 
 CLONE_SCRIPT_DIR='../cloning'
 PREPARTITION_DIR='../prepartitioning'
@@ -20,22 +20,26 @@ NR_CLONES=2
 
 #Create standard pop from PopGUI (1 region)
 
-#Add markers:
-#python $POP_GUI_DIR/instantiate.py -r 0.pop 0_markers.xml
-
-#Clone regions:
-cd $CLONE_SCRIPT_DIR
-bash clone.sh $BASE/0_markers.xml $NR_CLONES $BASE/0_cloned.xml -j
-cd -
+#Standard command line instantiation:
+python $POP_GUI_DIR/popcmdline.py $SIM_DIR/0.pop $SIM_DIR/0_standard.xml
 
 #Partitioning:
-#cd $PREPARTITION_DIR
+cd $PREPARTITION_DIR
 #python prepartition_statefile.py $BASE/0_cloned.xml $BASE/0_partition.xml region_id name $NR_NODES
-#python prepartition_statefile.py $BASE/0.xml $BASE/0_partition.xml region_id name $NR_NODES
+#python prepartition_statefile.py $BASE/0-BENCHMARK.xml $BASE/0_partition.xml region_id name $NR_NODES
+python prepartition_statefile.py $SIM_DIR/0_standard.xml $SIM_DIR/0_partition.xml region_id name 4
+cd -
+
+#Add markers:
+#python $POP_GUI_DIR/instantiate.py -r $SIM_DIR/0_standard.pop $SIM_DIR/0_markers.xml
+
+#Clone regions:
+#cd $CLONE_SCRIPT_DIR
+#bash clone.sh $SIM_DIR/0_markers.xml $NR_CLONES $SIM_DIR/0_cloned.xml -j
 #cd -
 
 #Simulation:
-#cd $SIM_DIR
+#cd $SIM_DIR/..
 #mpiexec -n $NR_NODES $SIM_DIR/main $NR_ITS 0_partition.xml -r -f 20
 #cd -
 
