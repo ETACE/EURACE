@@ -43,7 +43,7 @@
  </models>
  <environment>
   <constants>
-    <variable>
+   <variable>
     <type>int</type>
     <name>total_regions</name>
     <description>Total number of regions.</description>

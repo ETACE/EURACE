@@ -34,7 +34,7 @@
    <variable>
     <type>int</type>
     <name>gov_policy_switch_quantitative_easing</name>
-    <description>Constant to switch on/off automatic quantitative easing: gov issues bonds to ecb.&#xd;&#xd;
+    <description>Constant to switch on/off automatic quantitative easing: gov issues bonds to ecb.&#xd;&#xd;&#xd;
 </description>
    </variable>
   </constants>
@@ -577,25 +577,25 @@
      <inputs/>
      <outputs/>
     </function>
-     <function>
+    <function>
      <name>idle</name>
      <description>Idle function if Gov does not issue new bonds.</description>
      <currentState>Gov_bonds_decision</currentState>
      <nextState>06</nextState>
      <condition>
-     <not>
-      <lhs>
-       <value>a.total_bond_financing</value>
-      </lhs>
-      <op>GT</op>
-      <rhs>
-       <value>0</value>
-      </rhs>
+      <not>
+       <lhs>
+        <value>a.total_bond_financing</value>
+       </lhs>
+       <op>GT</op>
+       <rhs>
+        <value>0</value>
+       </rhs>
       </not>
      </condition>
      <inputs/>
      <outputs/>
-    </function>    
+    </function>
     <function>
      <name>Government_send_account_update</name>
      <description>Function to send the payment_account value to the Central Bank.</description>
