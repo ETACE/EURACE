@@ -69,6 +69,52 @@ int Central_Bank_read_account_update()
     return 0;
 }
 
+/** \fn Central_Bank_read_account_update()
+ * \brief 
+ */
+int Central_Bank_read_account_update_new()
+{
+    int i;
+    
+    TOTAL_ECB_DEBT=0.0;
+    ECB_DEPOSITS=0.0;
+
+    START_BANK_TO_CENTRAL_BANK_ACCOUNT_UPDATE_MESSAGE_LOOP
+    //Search the correct account and update the value
+    for (i=0;i<ACCOUNTS_BANKS.size;i++)
+    {       
+        if(ACCOUNTS_BANKS.array[i].id == bank_to_central_bank_account_update_message->id)
+            {
+                 ACCOUNTS_BANKS.array[i].payment_account = bank_to_central_bank_account_update_message->payment_account;
+            }
+        
+        //The sum of negative payment_account values
+        if (bank_to_central_bank_account_update_message->payment_account<0.0)
+            TOTAL_ECB_DEBT += fabs(bank_to_central_bank_account_update_message->payment_account);
+                    
+        //Total deposits at ECB
+        ECB_DEPOSITS += bank_to_central_bank_account_update_message->payment_account;
+    }
+    FINISH_BANK_TO_CENTRAL_BANK_ACCOUNT_UPDATE_MESSAGE_LOOP
+
+
+    START_GOV_TO_CENTRAL_BANK_ACCOUNT_UPDATE_MESSAGE_LOOP
+    //Search the correct account and update the value
+    for (i=0;i<ACCOUNTS_GOVS.size;i++)
+    {       
+        if(ACCOUNTS_GOVS.array[i].id == gov_to_central_bank_account_update_message->id)
+            {
+                 ACCOUNTS_GOVS.array[i].payment_account = gov_to_central_bank_account_update_message->payment_account;
+            }
+
+        //Total deposits at ECB
+        ECB_DEPOSITS += bank_to_central_bank_account_update_message->payment_account;
+    }
+    FINISH_GOV_TO_CENTRAL_BANK_ACCOUNT_UPDATE_MESSAGE_LOOP
+
+    return 0;
+}
+
 /** \fn Central_Bank_send_data_to_Eurostat()
  * \brief 
  */
