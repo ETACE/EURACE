@@ -42,6 +42,7 @@ int Central_Bank_read_fiat_money_requests()
 /** \fn Central_Bank_read_account_update()
  * \brief 
  */
+ /*
 int Central_Bank_read_account_update()
 {
     int i;
@@ -68,12 +69,12 @@ int Central_Bank_read_account_update()
     FINISH_CENTRAL_BANK_ACCOUNT_UPDATE_MESSAGE_LOOP
     return 0;
 }
+*/
 
 /** \fn Central_Bank_read_account_update()
  * \brief 
  */
-/*
-int Central_Bank_read_account_update_new()
+int Central_Bank_read_account_update()
 {
     int i;
     
@@ -115,36 +116,4 @@ int Central_Bank_read_account_update_new()
 
     return 0;
 }
-*/
 
-/** \fn Central_Bank_send_data_to_Eurostat()
- * \brief 
- */
-int Central_Bank_send_data_to_Eurostat()
-{
-    if (SWITCH_STOCK_CONSISTENCY_CHECK)
-    {
-        //********** Stocks
-        //GOV_BOND_HOLDINGS=0.0;
-        NR_GOV_BONDS=0;
-        PAYMENT_ACCOUNT_PRIVATE_SECTOR=0.0;
-        PAYMENT_ACCOUNT_PUBLIC_SECTOR=0.0; 
-        FIAT_MONEY=0.0;
-        BANK_INTEREST=0.0;
-        GOV_INTEREST=0.0;
-        
-        //********** Flows
-        //GOV_BOND_PURCHASE=0.0;
-        DIVIDEND_PAYMENT=0.0;
-        TOTAL_ASSETS=0.0;
-        TOTAL_LIABILITIES=0.0;
-        TOTAL_INCOME=0.0;
-        TOTAL_EXPENSES=0.0;
-    
-        add_ecb_balance_sheet_message(BOND_HOLDINGS_VALUE, NR_GOV_BONDS,
-                ECB_DEPOSITS, PAYMENT_ACCOUNT_PRIVATE_SECTOR, PAYMENT_ACCOUNT_PUBLIC_SECTOR, 
-                FIAT_MONEY, BANK_INTEREST, GOV_INTEREST, GOV_BOND_PURCHASE, DIVIDEND_PAYMENT, 
-                TOTAL_ASSETS, TOTAL_LIABILITIES, TOTAL_INCOME, TOTAL_EXPENSES);
-    }   
-    return 0;
-}

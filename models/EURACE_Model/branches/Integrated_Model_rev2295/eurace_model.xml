@@ -85,16 +85,6 @@
    </variable>
    <variable>
     <type>int</type>
-    <name>switch_flow_consistency_check</name>
-    <description>Switch to turn on flow consistency checking (run daily).</description>
-   </variable>
-   <variable>
-    <type>int</type>
-    <name>switch_stock_consistency_check</name>
-    <description>Switch to turn on stock consistency checking (run monthly).</description>
-   </variable>
-   <variable>
-    <type>int</type>
     <name>const_bankruptcy_idle_period</name>
     <description>Number of iterations that a bankrupt firm remains idle, before resuming production activity.</description>
    </variable>
@@ -494,8 +484,24 @@
    </variables>
   </message>
   <message>
-   <name>central_bank_account_update</name>
-   <description>Banks or Governments send account information to central bank</description>
+   <name>bank_to_central_bank_account_update</name>
+   <description>Banks send account information to central bank</description>
+   <variables>
+    <variable>
+     <type>int</type>
+     <name>id</name>
+     <description></description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>payment_account</name>
+     <description></description>
+    </variable>
+   </variables>
+  </message>
+  <message>
+   <name>gov_to_central_bank_account_update</name>
+   <description>Governments send account information to central bank</description>
    <variables>
     <variable>
      <type>int</type>

@@ -34,7 +34,7 @@
    <variable>
     <type>int</type>
     <name>gov_policy_switch_quantitative_easing</name>
-    <description>Constant to switch on/off automatic quantitative easing: gov issues bonds to ecb.&#xd;&#xd;&#xd;
+    <description>Constant to switch on/off automatic quantitative easing: gov issues bonds to ecb.&#xd;&#xd;&#xd;&#xd;
 </description>
    </variable>
   </constants>
@@ -485,7 +485,7 @@
      <name>Government_read_unemployment_benefit_notifications</name>
      <description>Counter of the \url{unemployment} messages, monthly and yearly totals of the unemployment benefit payments.</description>
      <currentState>04</currentState>
-     <nextState>04b</nextState>
+     <nextState>Gov_Start_Monthly_Loop</nextState>
      <inputs>
       <input>
        <messageName>unemployment_notification</messageName>
@@ -501,18 +501,6 @@
       </input>
      </inputs>
      <outputs/>
-    </function>
-    <function>
-     <name>Government_send_data_to_Eurostat</name>
-     <description></description>
-     <currentState>04b</currentState>
-     <nextState>Gov_Start_Monthly_Loop</nextState>
-     <inputs/>
-     <outputs>
-      <output>
-       <messageName>gov_balance_sheet</messageName>
-      </output>
-     </outputs>
     </function>
     <function>
      <name>idle</name>
@@ -604,10 +592,7 @@
      <inputs/>
      <outputs>
       <output>
-       <messageName>central_bank_account_update</messageName>
-      </output>
-      <output>
-       <messageName>gov_balance_sheet</messageName>
+       <messageName>gov_to_central_bank_account_update</messageName>
       </output>
      </outputs>
     </function>

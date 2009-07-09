@@ -114,22 +114,6 @@ int Household_send_data_to_Eurostat()
     add_household_send_data_message(ID, REGION_ID, GENERAL_SKILL,EMPLOYEE_FIRM_ID,
     WAGE, SPECIFIC_SKILL);
     
-    /*AIX*/
-    if ((SWITCH_FLOW_CONSISTENCY_CHECK)||(SWITCH_STOCK_CONSISTENCY_CHECK))
-    {
-        //Set these to correct expressions:
-        MONTHLY_CONSUMPTION_EXPENDITURE=0.0;
-        TOTAL_ASSETS=0.0;
-        TOTAL_LIABILITIES=0.0;
-        TOTAL_INCOME=0.0;
-        TOTAL_EXPENSES=0.0;
-
-        //printf("\n Household %d: my WAGE=%2.2f.\n", ID, WAGE);
-        add_household_balance_sheet_message(PAYMENT_ACCOUNT, 
-                WAGE, CUM_TOTAL_DIVIDENDS, MONTHLY_CONSUMPTION_EXPENDITURE, TAX_PAYMENT, 
-                TOTAL_ASSETS, TOTAL_LIABILITIES, TOTAL_INCOME, TOTAL_EXPENSES);
-    }
-    
     return 0;
 }
 
