@@ -7,27 +7,27 @@
  */
 int Firm_send_data_to_Eurostat()
 {
-	
-	/*Determine the productivity of the firm. Send data to Eurostat in 
-	 * order to calculate the productivity progress once a year*/
-	if(DAY%20 == 0)
-	{	
-	
-		FIRM_PRODUCTIVITY_LAST_YEAR = FIRM_PRODUCTIVITY;
-		
-		if(MEAN_SPECIFIC_SKILLS >= TECHNOLOGY)
-		{
-			FIRM_PRODUCTIVITY = TECHNOLOGY;
-		}
-		else
-		{
-			FIRM_PRODUCTIVITY = MEAN_SPECIFIC_SKILLS;
-		}
-		
-		FIRM_PRODUCTIVITY_PROGRESS = FIRM_PRODUCTIVITY/FIRM_PRODUCTIVITY_LAST_YEAR -1;
-		
-	}
-	
+    
+    /*Determine the productivity of the firm. Send data to Eurostat in 
+     * order to calculate the productivity progress once a year*/
+    if(DAY%20 == 0)
+    {   
+    
+        FIRM_PRODUCTIVITY_LAST_YEAR = FIRM_PRODUCTIVITY;
+        
+        if(MEAN_SPECIFIC_SKILLS >= TECHNOLOGY)
+        {
+            FIRM_PRODUCTIVITY = TECHNOLOGY;
+        }
+        else
+        {
+            FIRM_PRODUCTIVITY = MEAN_SPECIFIC_SKILLS;
+        }
+        
+        FIRM_PRODUCTIVITY_PROGRESS = FIRM_PRODUCTIVITY/FIRM_PRODUCTIVITY_LAST_YEAR -1;
+        
+    }
+    
     //Increase the age of the firm in months
     AGE++;
     
@@ -45,18 +45,6 @@ int Firm_send_data_to_Eurostat()
     //printf("In Firm_send_data: Firm %d OUTPUT: %.2f\n", ID, OUTPUT);
     //printf("In Firm_send_data: Firm %d PLANNED_OUTPUT: %.2f\n", ID, PLANNED_OUTPUT);
 
-    
-
-    //Firm_balance_sheet_message is used for the balance sheet accounting (monthly)
-    if (SWITCH_STOCK_CONSISTENCY_CHECK)
-    {
-        TOTAL_INCOME = CUM_REVENUE; 
-        add_firm_balance_sheet_message(PAYMENT_ACCOUNT, TOTAL_VALUE_LOCAL_INVENTORY, TOTAL_VALUE_CAPITAL_STOCK,
-                TOTAL_DEBT, CURRENT_SHARES_OUTSTANDING, CUM_REVENUE, LABOUR_COSTS, CAPITAL_COSTS, TAX_PAYMENT,
-                TOTAL_DEBT_INSTALLMENT_PAYMENT, TOTAL_INTEREST_PAYMENT, TOTAL_DIVIDEND_PAYMENT, 
-                TOTAL_ASSETS, TOTAL_LIABILITIES, TOTAL_INCOME, TOTAL_PAYMENTS);
-    }
-    
     return 0;
 }
 
@@ -169,18 +157,18 @@ int Firm_receive_data()
     //printf("FIRM_ID %d \n",ID);
     //if(ID < 3)
     //printf("eurostat_send_specific_skills_message->productivity_progress %f \n",eurostat_send_specific_skills_message->productivity_progress);
-            	if(eurostat_send_specific_skills_message->productivity_progress > 0)
-            	{     
-            		WAGE_OFFER = WAGE_OFFER*(1+
-            		eurostat_send_specific_skills_message->productivity_progress);
-            	}
-            	
-            	int i;
-            	for(i = 0; i < EMPLOYEES.size; i++)
-            	{  
-            		EMPLOYEES.array[i].wage = EMPLOYEES.array[i].wage*(1+
-            		eurostat_send_specific_skills_message->productivity_progress);    
-            	}
+                if(eurostat_send_specific_skills_message->productivity_progress > 0)
+                {     
+                    WAGE_OFFER = WAGE_OFFER*(1+
+                    eurostat_send_specific_skills_message->productivity_progress);
+                }
+                
+                int i;
+                for(i = 0; i < EMPLOYEES.size; i++)
+                {  
+                    EMPLOYEES.array[i].wage = EMPLOYEES.array[i].wage*(1+
+                    eurostat_send_specific_skills_message->productivity_progress);    
+                }
             }
             
             
