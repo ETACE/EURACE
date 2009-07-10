@@ -42,38 +42,6 @@ int Central_Bank_read_fiat_money_requests()
 /** \fn Central_Bank_read_account_update()
  * \brief 
  */
- /*
-int Central_Bank_read_account_update()
-{
-    int i;
-    
-    TOTAL_ECB_DEBT=0.0;
-    ECB_DEPOSITS=0.0;
-
-    START_CENTRAL_BANK_ACCOUNT_UPDATE_MESSAGE_LOOP
-    //Search the correct account
-    for (i=0;i<ACCOUNTS.size;i++)
-    {       
-        if(ACCOUNTS.array[i].id == central_bank_account_update_message->id)
-            {
-                 ACCOUNTS.array[i].payment_account = central_bank_account_update_message->payment_account;
-            }
-        
-        //The sum of negative payment_account values
-        if (central_bank_account_update_message->payment_account<0.0)
-            TOTAL_ECB_DEBT += fabs(central_bank_account_update_message->payment_account);
-                    
-        //Total deposits at ECB
-        ECB_DEPOSITS += central_bank_account_update_message->payment_account;
-    }
-    FINISH_CENTRAL_BANK_ACCOUNT_UPDATE_MESSAGE_LOOP
-    return 0;
-}
-*/
-
-/** \fn Central_Bank_read_account_update()
- * \brief 
- */
 int Central_Bank_read_account_update()
 {
     int i;
