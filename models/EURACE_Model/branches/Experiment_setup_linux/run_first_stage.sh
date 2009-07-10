@@ -19,13 +19,14 @@
 echo '  Starting first stage of experiment...'
 BASE=$PWD
 NR_NODES='4'
-ITS=240
-MAIN='/media/DOCS/Docs/EURACE/X-models/SVN_linux/models/EURACE_Model/branches/Hybrid_Model_A_energy_shock/main'
+ITS=540
+MAIN='/media/DOCS/Docs/EURACE/X-models/SVN_linux/models/EURACE_Model/branches/Integrated_Model_rev2295/main'
+#MAIN='/media/DOCS/Docs/EURACE/X-models/SVN_linux/models/EURACE_Model/branches/Hybrid_Model_A_energy_shock/main'
 #JOIN='/home/sander/cloning/scripts/join/join.sh'
 
 echo '      Starting run for initial transient...'
 #$MAIN $ITS output_last.xml
-mpiexec -n $NR_NODES $MAIN $ITS output_last.xml
+mpiexec -n $NR_NODES $MAIN $ITS output_last.xml -r
 echo '      Finished run for initial transient.'
 
 #Concatenating the node files
@@ -37,8 +38,8 @@ echo '      Finished concatenation'
 rm -f node*.xml
 echo '      Removed node output files'
 
-#Rename the $ITS.xml to transient.xml
-mv $ITS.xml transient.xml
+#Rename the $ITS.xml to 0_transient.xml
+mv $ITS.xml 0_transient.xml
 echo '      Renamed last iteration xml file to transient.xml'
 
 echo '  Finished first stage of experiment.'
