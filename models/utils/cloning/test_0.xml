@@ -1,5 +1,7 @@
 <states>
 <itno>0</itno>
+<environment>
+</environment>
 <xagent>
 <name>Circle</name>
 <id>REPLACE_ID_1</id>
