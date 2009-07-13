@@ -47,6 +47,10 @@ fi
 # tmp1 is added to 0_* later
 if [ x$4 != "x" ] && [ $4 = "-r" ]; then
   sed -n '1,/<\/environment>/p' "$1" > tmp1
+  # Fix the <total_regions> tag
+  let "num_regions = $2 + 1"
+  sed "s/<total_regions>[0-9]<\/total_regions>/<total_regions>$num_regions<\/total_regions>/g" tmp1 > tmp
+  mv tmp tmp1
 fi
 
 # Copying first set of cloned agents to new 0.xml but remove last </states> line
