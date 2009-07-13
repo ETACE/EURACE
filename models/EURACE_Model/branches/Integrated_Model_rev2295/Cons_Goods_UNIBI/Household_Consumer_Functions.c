@@ -13,8 +13,7 @@
 /*\fn Household_determine_consumption_budget()
  * brief: If a household is unemployed then it receives an unemployment benefit payment
  * 
- * */
-
+ */
 int Household_determine_consumption_budget()
 {
     char * filename;
@@ -46,7 +45,6 @@ int Household_determine_consumption_budget()
             }
             else
             {
-                
                 CONSUMPTION_BUDGET = PAYMENT_ACCOUNT;
             }*/
             
@@ -136,9 +134,8 @@ int Household_back_shifting_consumption_day()
 
 /** \fn Household_rank_and_buy_goods_1()
  * \brief Household receives information about the offered range of goods in the malls.
-    Depending on these infos the household sends its good request       
+ *  Depending on these infos the household sends its good request       
  */
-
 int Household_rank_and_buy_goods_1()
 {
     
@@ -182,9 +179,6 @@ int Household_rank_and_buy_goods_1()
     
         }
 
-
-
-
         /* Compute logits and add on temporary logit array   */
         for(i = 0; i < mall_quality_price_info_list.size;i++) 
         {
@@ -201,7 +195,6 @@ int Household_rank_and_buy_goods_1()
             }
 
         }
-
 
         if(sum_weighted_qual_pric_ratios > 0)
         {
@@ -234,7 +227,7 @@ int Household_rank_and_buy_goods_1()
                 }
             }
 
-            /*This computes and stores the order quantity of the selected good and              saves the price in memory */
+            /*This computes and stores the order quantity of the selected good and saves the price in memory */
             ORDER_QUANTITY[0].quantity = WEEKLY_BUDGET/ mall_quality_price_info_list
             .array[index_selected_good].price;
         
@@ -265,14 +258,12 @@ int Household_rank_and_buy_goods_1()
 }
 
 /** \fn Household_read_rationing()
- * \brief The household gets information about the accepted amount of goods and, if the mall is completly sold out then the households set the order and delivery volumes forn the second step equal 0
-            
+ * \brief The household gets information about the accepted amount of goods and,
+ * if the mall is completely sold out then the households set the order and delivery volumes
+ * from the second step equal 0          
  */
-
 int Household_receive_goods_read_rationing()
 {
-    
-    
     if(MALL_COMPLETELY_SOLD_OUT == 0)
     {
         EXPENDITURES = 0;
@@ -295,9 +286,6 @@ int Household_receive_goods_read_rationing()
                 RECEIVED_QUANTITY[0].firm_id = ORDER_QUANTITY[0].firm_id;
 
         FINISH_ACCEPTED_CONSUMPTION_1_MESSAGE_LOOP
-        
-        
-
     }
     else if(MALL_COMPLETELY_SOLD_OUT == 1)
     {
@@ -310,31 +298,32 @@ int Household_receive_goods_read_rationing()
         RECEIVED_QUANTITY[1].quantity = 0;
         RECEIVED_QUANTITY[1].firm_id = 0;
         
-    }
+    }    
     
+    //Reset on first day of calendar month
+    if (DAY%20==1)
+        MONTHLY_CONSUMPTION_EXPENDITURE = 0.0;
+    
+    MONTHLY_CONSUMPTION_EXPENDITURE += EXPENDITURES;
+
     return 0;
 }
 
 
 int Household_set_values_zero()
 {
-
         ORDER_QUANTITY[1].quantity = 0;
         ORDER_QUANTITY[1].firm_id = 0;
         ORDER_QUANTITY[1].price = 0;
         RECEIVED_QUANTITY[1].quantity = 0;
         RECEIVED_QUANTITY[1].firm_id = 0;
 
-return 0;
+    return 0;
 }
 
-
-
-        /*If rationed repeat ranking and request of goods: */
+/*If rationed repeat ranking and request of goods: */
 int Household_rank_and_buy_goods_2()    
 {
-            
-            
             int j = 0;
             int i = 0;
             double logit;
@@ -350,15 +339,15 @@ int Household_rank_and_buy_goods_2()
         /*The updated quality price message is read  */
         START_QUALITY_PRICE_INFO_2_MESSAGE_LOOP
 
-if( quality_price_info_2_message->available==1)
-{
+        if( quality_price_info_2_message->available==1)
+        {
                 add_mall_quality_price_info(&mall_quality_price_info_list,quality_price_info_2_message->mall_id, 
                 quality_price_info_2_message->firm_id, 
                 quality_price_info_2_message->mall_region_id, 
                 quality_price_info_2_message->quality, 
                 quality_price_info_2_message->price, 
                 quality_price_info_2_message->available);
-}          
+        }          
         FINISH_QUALITY_PRICE_INFO_2_MESSAGE_LOOP
 
 
@@ -394,7 +383,7 @@ if( quality_price_info_2_message->available==1)
 
             for(j = 0; j < logit_firm_id_list.size;j++)
             {
-                /*if randum number <= logit then select the corresponding                       good  */ 
+                /*if random number <= logit then select the corresponding good  */ 
                 if((random_number < logit_firm_id_list.array[j].logit)
                 && (x!=1))
                 {
@@ -409,7 +398,7 @@ if( quality_price_info_2_message->available==1)
                 {
                     if((j < logit_firm_id_list.size-1) )
                     {
-                        logit_firm_id_list.array[j+1].logit =                               logit_firm_id_list.array[j+1].logit+ 
+                        logit_firm_id_list.array[j+1].logit = logit_firm_id_list.array[j+1].logit+ 
                         logit_firm_id_list.array[j].logit;
                     }
                 }
@@ -427,11 +416,6 @@ if( quality_price_info_2_message->available==1)
             mall_quality_price_info_list.array[index_selected_good].mall_id,
             ID,REGION_ID,ORDER_QUANTITY[1].firm_id,
             ORDER_QUANTITY[1].quantity);
-        
-
-        
-
-        
         }
         else
         {       
@@ -439,23 +423,18 @@ if( quality_price_info_2_message->available==1)
             ORDER_QUANTITY[1].firm_id= 0;
             ORDER_QUANTITY[1].price= 0;
         }
-    
 
-
-free_mall_quality_price_info_array(&mall_quality_price_info_list);
-free_logit_firm_id_array(&logit_firm_id_list);
+    free_mall_quality_price_info_array(&mall_quality_price_info_list);
+    free_logit_firm_id_array(&logit_firm_id_list);
 
     return 0;
 }
 
-/** \fn Household_read_rationing()
- * \brief This function stores in memory the realized consumption if HH was rationed in first round. 
-            
+/** \fn Household_receive_goods_read_rationing_2()
+ * \brief This function stores in memory the realized consumption if HH was rationed in the first round.
  */
 int Household_receive_goods_read_rationing_2()
 {
-
-
 
     if(RATIONED ==1)
     {
@@ -471,9 +450,6 @@ int Household_receive_goods_read_rationing_2()
                 ORDER_QUANTITY[1].firm_id; 
 
         FINISH_ACCEPTED_CONSUMPTION_2_MESSAGE_LOOP
-        
-        
-
     }
     else
     {
@@ -482,21 +458,17 @@ int Household_receive_goods_read_rationing_2()
     }
 
     WEEKLY_BUDGET = WEEKLY_BUDGET - RECEIVED_QUANTITY[1].quantity 
-    *ORDER_QUANTITY[1].price ;
+    *ORDER_QUANTITY[1].price;
+    
+    EXPENDITURES += RECEIVED_QUANTITY[1].quantity * ORDER_QUANTITY[1].price;
+    
+    MONTHLY_CONSUMPTION_EXPENDITURE += EXPENDITURES;
 
-    
-    
-    EXPENDITURES += RECEIVED_QUANTITY[1].quantity * ORDER_QUANTITY[1].price ;
-    
-    ;
     return 0;
 }
 
-
-
-/** \fn Household_receicve_dividens()
- * \brief Here the households get their dividends payments
-            
+/** \fn Household_receive_dividends()
+ * \brief Here the households get their dividend payments            
  */
 int Household_receive_dividends()
 {
@@ -511,7 +483,7 @@ int Household_receive_dividends()
             double dividend = dividend_per_share_message->current_dividend_per_share*ASSETSOWNED.array[i].quantity;
             
             RECEIVED_DIVIDEND +=dividend;
-            CUM_TOTAL_DIVIDENDS +=dividend ;
+            CUM_TOTAL_DIVIDENDS +=dividend;
             PAYMENT_ACCOUNT += dividend;
             break;
         }
@@ -525,23 +497,17 @@ int Household_receive_dividends()
 
 
 /** \fn Household_handle_leftover_budget()
- * \brief This function convert the remaining budget, that is not spent in both consumtion steps, into the PAYMENT_ACCOUNT 
-            
+ * \brief This function converts the remaining budget, that is not spent in both consumption steps, into the PAYMENT_ACCOUNT            
  */
 int Household_handle_leftover_budget()
 {
-    
         CONSUMPTION_BUDGET -= EXPENDITURES;
 
-
         if(WEEK_OF_MONTH !=1)
-        {   
-            
+        {               
             PAYMENT_ACCOUNT -= EXPENDITURES;
             WEEK_OF_MONTH--;
             WEEKLY_BUDGET = CONSUMPTION_BUDGET / WEEK_OF_MONTH;
-            
-             
         }
         else
         {
@@ -549,10 +515,10 @@ int Household_handle_leftover_budget()
             
             WEEK_OF_MONTH--;
         }
+        
         //set rationed back to zero:
         RATIONED = 0;
     
-
     return 0;
 }
 
