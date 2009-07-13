@@ -4,9 +4,10 @@
 #
 # Arguments:
 #   $1 - The original 0.xml
-#   $2 - Number of times to clone
+#   $2 - Number of times to clone (per node if 5th argument is supplied)
 #   $3 - New 0.xml file
 #   $4 - -j if files are to be joined. -r if you want region partitioned input files. Otherwise use <import>
+#   $5 - Number of nodes if -r used (Optional, if not set then number of nodes = number of clones+1.)
 
 if [ -e clone_parallel ]; then
   echo "Will do parallel cloning"
@@ -22,6 +23,16 @@ else
   exit 0
 fi
 
+if [ x$5 != "x" ]; then
+  let "num_nodes = $5"
+  let "clones_per_node = $2"
+  let "num_regions = $num_nodes * $clones_per_node"
+else
+  let "num_nodes = $2 + 1"
+  let "clones_per_node = 1"
+  let "num_regions = $num_nodes"
+fi
+
 # Work out the increment to add to agent ids for each clone
 increment=`grep "<xagent" "$1" | wc -l`
 
@@ -32,11 +43,11 @@ ln -sf $1 0.xml
 
 # If clone_parallel exists and is executable use that with mpirun
 # otherwise run clone_serial many times
-let "times = $2 + 1"
 if [ -x clone_parallel ]; then
-  mpirun -np $times ./clone_parallel $increment
+  mpirun -np $num_regions ./clone_parallel $increment
 elif [ -x clone_serial ]; then
-  for i in `seq 0 $2`
+  let "times = $num_regions - 1"
+  for i in `seq 0 $times`
   do
     echo "Clone iteration $i"
     ./clone_serial $increment $i
@@ -48,7 +59,6 @@ fi
 if [ x$4 != "x" ] && [ $4 = "-r" ]; then
   sed -n '1,/<\/environment>/p' "$1" > tmp1
   # Fix the <total_regions> tag
-  let "num_regions = $2 + 1"
   sed "s/<total_regions>[0-9]<\/total_regions>/<total_regions>$num_regions<\/total_regions>/g" tmp1 > tmp
   mv tmp tmp1
 fi
@@ -57,9 +67,13 @@ fi
 sed -e '/<\/states>/d' < 0_0.xml > $3
 
 # Fix the <total_regions> tag
-let "num_regions = $2 + 1"
 sed "s/<total_regions>[0-9]<\/total_regions>/<total_regions>$num_regions<\/total_regions>/g" $3 > tmp
 mv tmp $3
+cp $3 0_0.xml
+#if [ -e 0_0.xml ]; then
+#  sed "s/<total_regions>[0-9]<\/total_regions>/<total_regions>$num_regions<\/total_regions>/g" 0_0.xml > tmp
+#  mv tmp 0_0.xml
+#fi
 
 # If -j option supplied then add other data
 if [ x$4 != "x" ] && [ $4 = "-j" ]; then
@@ -68,19 +82,26 @@ if [ x$4 != "x" ] && [ $4 = "-j" ]; then
     echo "Add cloned data $i"
     cat 0_$i.xml >> $3
   done
+  # Put the final tag back
+  echo "</states>" >> $3
   rm 0_[0-9]*.xml
   echo New 0.xml contains `grep "<xagent" "$3" | wc -l` agents
 elif [ x$4 != "x" ] && [ $4 = "-r" ]; then
-  num_agents=`grep "<xagent" "$3" | wc -l`
-  for i in `seq 1 $2`
+  rm -f node*
+  let "num_agents = 0"
+  let "limit = $num_nodes - 1"
+  for i in `seq 0 $limit`
   do
-    cat tmp1 0_$i.xml > node$i-0.xml
+    if [ $i -gt 0 ]; then cat tmp1 > node$i-0.xml; fi
+    for j in `seq 1 $clones_per_node`
+    do
+      let "k = i * $clones_per_node + j - 1"
+      cat 0_$k.xml >> node$i-0.xml
+    done
+    let "num_agents = $num_agents + `grep "<xagent" node$i-0.xml | wc -l`"
     echo "</states>" >> node$i-0.xml
-    let "num_agents = $num_agents + `grep "<xagent" 0_$i.xml | wc -l`"
   done
-  echo "</states>" >> $3
-  mv $3 node0-0.xml
-  rm 0_[0-9]*.xml tmp1
+  rm 0_[0-9]*.xml tmp1 $3
   echo New 0.xml contains $num_agents agents
 else
   echo "Adding <import> sections"
@@ -96,13 +117,10 @@ else
     let "num_agents = $num_agents + `grep "<xagent" 0_$i.xml | wc -l`"
   done
   echo "</imports>" >> $3
+  # Put the final tag back
+  echo "</states>" >> $3
   echo New 0.xml contains $num_agents agents
   rm 0_0.xml
 fi
-
-# Put the final tag back
-echo "</states>" >> $3
-
-
 
 rm 0.xml
