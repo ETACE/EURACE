@@ -54,6 +54,9 @@ int Household_determine_consumption_budget()
             {
                if (PRINT_LOG)
                     fprintf(file1, "IT %d ID %d PAYMENT_ACCOUNT %f \n", DAY, ID, PAYMENT_ACCOUNT);
+
+		if (PRINT_DEBUG_CONSUMPTION)
+			printf("In Household_determine_consumption_budget, line 57: IT %d ID %d PAYMENT_ACCOUNT %f CONSUMPTION_BUDGET %f\n", DAY, ID, PAYMENT_ACCOUNT, CONSUMPTION_BUDGET);
             }
             
             if(CONSUMPTION_BUDGET < 0.5*LAST_INCOME.array[3])
