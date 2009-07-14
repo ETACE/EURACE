@@ -104,7 +104,7 @@ void  stockBeliefFormation(Belief *belief, Stock *stock,int backwardWindow,int f
   double value,factor,dividend_yield_annualized;
  
   //dividendYield(belief,stock,currentDay, forwardWindow);
-  rndreturn=randomReturn(belief, stock,forwardWindow,backwardWindow);
+  rndreturn=randomReturn(belief, stock, backwardWindow, forwardWindow);
  
   fundreturn= futureFundamentalReturn(belief,stock,currentDay,forwardWindow, equity);
 
