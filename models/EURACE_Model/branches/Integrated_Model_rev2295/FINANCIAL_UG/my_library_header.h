@@ -6,7 +6,7 @@
 #define MAXPRICES 100
 #define MAXRETURNS MAXPRICES
 //move constants to model.xml environment
-#define NRDAYSINYEAR  DAYS_IN_MONTH*12
+#define NRDAYSINYEAR  (DAYS_IN_MONTH*12)
 
 #include "../header.h"
 #include <stdlib.h>
