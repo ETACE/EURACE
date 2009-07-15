@@ -68,16 +68,20 @@ void computeUtilities(Belief_array *beliefs, double_array *assetUtilities)
 
      utility=belief->utility;
      add_double(assetUtilities,utility);//da rivedere questo algoritmo
-    /* printf("Asset ID %d  ;Utility %f \n",belief->asset_id,belief->utility);
+     //printf("\n computeUtilities i %d utility %f",i, utility);
+     
+     /* printf("Asset ID %d  ;Utility %f \n",belief->asset_id,belief->utility);
      printf("last_price %f\n", belief->last_price);
      printf("expectedPriceReturns %f\n", belief->expectedPriceReturns);
      printf("expectedTotalReturns %f\n", belief->expectedTotalReturns);
      printf("expectedCashFlowYield %f\n", belief->expectedCashFlowYield);
      printf("volatility %f\n", belief->volatility);
      printf("expectedEarning %f\n", belief->expectedEarning);
-     printf("expectedEarningPayout %f\n", belief->expectedEarningPayout);*/
+     printf("expectedEarningPayout %f\n", belief->expectedEarningPayout);
+     getchar(); */
      
      }
+     //getchar();
 }
 void assetUtilitiesToWeights(double_array *assetWeights,double_array *assetUtilities,double bankrate)
 {
@@ -179,10 +183,14 @@ Order *computeLimitOrder( Asset *anAsset, double weight, double resource,Belief 
       if(assetId!=belief->asset_id) printf("------------errore----------\n");
       lastprice=belief->last_price;
       anAsset->lastPrice=belief->last_price;
-      aux=expectedPriceReturns(belief)/NRDAYSINYEAR;
       
-      if(aux<0) aux=max(-0.999,aux); 
-      aux=gauss(0,0.0001);
+      aux=expectedPriceReturns(belief);           
+      aux= aux/NRDAYSINYEAR;       
+      //printf("\n expected price return %f NRDAYSINYEAR %d", aux, NRDAYSINYEAR);
+      //if(abs(aux)>1) printf("\n assetId %d expected price return %f exp_price_tmp %f",assetId,aux,aux_tmp);
+      if(aux<-1) aux=-1; 
+       
+      //aux=gauss(0,0.0001);
       limitPrice=lastprice*(1+aux); 
       deltaquantity=(int)(weight*resource/(limitPrice))-quantity;
       if((deltaquantity<0)&&(deltaquantity<(-quantity))) 
@@ -286,6 +294,7 @@ void generatePendingOrders(Asset_array *assetsowned,Order_array *pending, Belief
            asset=elementAtCAsset(assetsowned,index);
          }
     weight=elementAtCDouble(weights,i);
+    //printf("\n generatePendingOrders i %d weight %f", i, weight);
     ord=computeLimitOrder(asset, weight,resource,belief);
   
     if((ord->quantity!=0)&&(ord->price>0)) addOrder(pending,ord);
@@ -299,8 +308,7 @@ void generatePendingOrders(Asset_array *assetsowned,Order_array *pending, Belief
              target_quantity = asset->quantity+ord->quantity;
              printf("\t target quantity: %d target resource: %f\n",target_quantity,ord->price*target_quantity);
              
-             }  
-    
+             }   
   }
 
     //if (PRINT_DEBUG)
@@ -314,8 +322,6 @@ void generatePendingOrders(Asset_array *assetsowned,Order_array *pending, Belief
     printf("budget =%f prima=%f dopo=%f \n",PAYMENT_ACCOUNT-CONSUMPTION_BUDGET,prima,dopo);
    */
 //}
-
-
 }
 
 
@@ -370,6 +376,7 @@ int Household_bond_beliefs_formation()
      
      add_Belief(beliefs,bond->id, 0, 0, 0,0, 0,0, 0,0);
      belief=&(beliefs->array[beliefs->size-1]); 
+     //printf("\n ID %d BACKWARDWINDOW %d", ID, BACKWARDWINDOW);
      bondBeliefFormation(belief, bond,BACKWARDWINDOW,FORWARDWINDOW, RANDOMWEIGHT,FUNDAMENTALWEIGHT, CHARTISTWEIGHT, BINS , CURRENTDAY, HOLDINGPERIODTOFORWARDW,  LOSSAVERSION);
      //printf("ricevuto bond shares=%d quantity=%d\n",bond->nr_outstanding,bond->quantity);
      cinfo_bond= get_next_info_bond_message(cinfo_bond);
