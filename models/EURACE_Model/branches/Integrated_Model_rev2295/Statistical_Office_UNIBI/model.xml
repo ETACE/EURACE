@@ -2169,7 +2169,7 @@
     <function>
      <name>Eurostat_send_data</name>
      <description>Eurostat sends the data to the other agents</description>
-     <currentState>start_Eurostat</currentState>
+     <currentState>00</currentState>
      <nextState>01</nextState>
      <condition>
       <time>
@@ -2187,7 +2187,7 @@
     <function>
      <name>Eurostat_idle</name>
      <description>Eurostat does nothing</description>
-     <currentState>start_Eurostat</currentState>
+     <currentState>00</currentState>
      <nextState>01</nextState>
      <condition>
       <not>
@@ -2432,6 +2432,36 @@
        <messageName>data_for_government</messageName>
       </output>
      </outputs>
+    </function>
+    <function>
+     <name>Eurostat_initialization</name>
+     <description>Initialization function for Eurostat.</description>
+     <currentState>start_Eurostat</currentState>
+     <nextState>00</nextState>
+     <condition>
+      <time>
+       <period>millionyearly</period>
+       <phase>1</phase>
+      </time>
+     </condition>
+     <inputs/>
+     <outputs/>
+    </function>
+    <function>
+     <name>idle</name>
+     <description>Idle for initialization function.</description>
+     <currentState>start_Eurostat</currentState>
+     <nextState>00</nextState>
+     <condition>
+      <not>
+       <time>
+        <period>millionyearly</period>
+        <phase>1</phase>
+       </time>
+      </not>
+     </condition>
+     <inputs/>
+     <outputs/>
     </function>
    </functions>
   </xagent>

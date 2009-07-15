@@ -11,6 +11,13 @@ int Eurostat_idle()
     return 0;   
 }
 
+/** \Eurostat_initialization()
+  */
+int Eurostat_initialization()
+{
+    return 0;   
+}
+
 /** \Eurostat_send_data_to_government()
  * \brief Eurostat send data: mean wage  ...
  */   
@@ -23,7 +30,7 @@ int Eurostat_send_data_to_government()
     //add_mean_wage_for_government_message(1, AVERAGE_WAGE);
 
     //add message for each region
-    for (i=0; i<NO_REGIONS; i++)
+    for (i=0; i<TOTAL_REGIONS; i++)
     {
         region = i+1;
         
@@ -143,7 +150,7 @@ int Eurostat_calculate_data_old_version()
     }
 
     //Reconstruct empty data arrays
-    for(i = 1; i <= NO_REGIONS; i++)
+    for(i = 1; i <= TOTAL_REGIONS; i++)
     {
         add_firm_data(&REGION_FIRM_DATA,
                 i,0,0,                   //region_id -> vacancies

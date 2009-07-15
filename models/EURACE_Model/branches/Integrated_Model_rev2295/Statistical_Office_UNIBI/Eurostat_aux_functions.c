@@ -40,7 +40,7 @@ void Eurostat_reset_data(void)
     }
 
     //Reconstruct empty data arrays
-    for(i = 1; i <= NO_REGIONS; i++)
+    for(i = 1; i <= TOTAL_REGIONS; i++)
     {
         add_firm_data(&REGION_FIRM_DATA,
                 i,0,0,                   //region_id -> vacancies
@@ -1276,7 +1276,7 @@ void Eurostat_measure_export(void)
     int i,j,index;
     
     //reset export matrix
-    for (i=0; i<NO_REGIONS; i++)
+    for (i=0; i<TOTAL_REGIONS; i++)
     {
         REGION_EXPORT_VOLUME[i]=0.0;
         REGION_IMPORT_VOLUME[i]=0.0;
@@ -1284,9 +1284,9 @@ void Eurostat_measure_export(void)
         REGION_IMPORT_VALUE[i]=0.0;
         REGION_IMPORT_PREVIOUS_VALUE[i]=0.0;
         
-        for (j=0; j<NO_REGIONS; j++)
+        for (j=0; j<TOTAL_REGIONS; j++)
         {
-            index=i*NO_REGIONS+j;
+            index=i*TOTAL_REGIONS+j;
             EXPORT_VOLUME_MATRIX[index]=0.0;
             EXPORT_VALUE_MATRIX[index]=0.0;
             EXPORT_PREVIOUS_VALUE_MATRIX[index]=0.0;
@@ -1295,20 +1295,20 @@ void Eurostat_measure_export(void)
     
     //read in all data from the malls
     START_MALL_DATA_MESSAGE_LOOP
-        index = (mall_data_message->firm_region-1)*NO_REGIONS + (mall_data_message->household_region-1);        
+        index = (mall_data_message->firm_region-1)*TOTAL_REGIONS + (mall_data_message->household_region-1);        
         EXPORT_VOLUME_MATRIX[index] += mall_data_message->export_volume;
         EXPORT_VALUE_MATRIX[index] += mall_data_message->export_value;
         EXPORT_PREVIOUS_VALUE_MATRIX[index] += mall_data_message->export_previous_value;
     FINISH_MALL_DATA_MESSAGE_LOOP
     
     //sum total exports (row sum) and imports (column sum)
-    for (i=0; i<NO_REGIONS; i++)
+    for (i=0; i<TOTAL_REGIONS; i++)
     {
-        for (j=0; j<NO_REGIONS; j++)
+        for (j=0; j<TOTAL_REGIONS; j++)
         {
             if(i!=j)
             {
-                index=i*NO_REGIONS+j;
+                index=i*TOTAL_REGIONS+j;
                 REGION_EXPORT_VOLUME[i] += EXPORT_VOLUME_MATRIX[index];
                 REGION_IMPORT_VOLUME[j] += EXPORT_VOLUME_MATRIX[index];
                 REGION_EXPORT_VALUE[i] += EXPORT_VALUE_MATRIX[index];
@@ -1339,12 +1339,17 @@ void Eurostat_calc_price_index(void)
     
     //Compute the regional CPI as the ratio between sum(p_t*q_t)/sum(p_t-1*q_t)
     //NOTE: we also need to include the diagonal value of the original export_value_matrix, which was excluded from the import/export sums.
-    for (j=0; j<NO_REGIONS; j++)
+    for (j=0; j<TOTAL_REGIONS; j++)
     {    
-        index=j*NO_REGIONS+j;
+        index=j*TOTAL_REGIONS+j;
         REGION_FIRM_DATA.array[j].cpi_last_month = HISTORY_MONTHLY[0].region_data.array[j].cpi;
-        REGION_FIRM_DATA.array[j].cpi = (REGION_IMPORT_VALUE[j]+EXPORT_VALUE_MATRIX[index])/(REGION_IMPORT_PREVIOUS_VALUE[j]+EXPORT_PREVIOUS_VALUE_MATRIX[index]);
 
+        if((REGION_IMPORT_PREVIOUS_VALUE[j]+EXPORT_PREVIOUS_VALUE_MATRIX[index])>1e-5)
+            REGION_FIRM_DATA.array[j].cpi = (REGION_IMPORT_VALUE[j]+EXPORT_VALUE_MATRIX[index])/(REGION_IMPORT_PREVIOUS_VALUE[j]+EXPORT_PREVIOUS_VALUE_MATRIX[index]);
+        else
+            printf("\n DIVISION BY ZERO: In Eurostat_aux_functions.c, line 1389:"
+                    "REGION_IMPORT_PREVIOUS_VALUE[%d]+EXPORT_PREVIOUS_VALUE_MATRIX[%d]=%f", j, index, REGION_IMPORT_PREVIOUS_VALUE[j]+EXPORT_PREVIOUS_VALUE_MATRIX[index]);
+                    
         //printf("\n HISTORY_MONTHLY[0].region_data.array[%d].cpi = %f\n", j, HISTORY_MONTHLY[0].region_data.array[j].cpi);
         //printf("\n REGION_FIRM_DATA.array[%d].cpi = %f\n", j, REGION_FIRM_DATA.array[j].cpi);
         //printf("\n REGION_FIRM_DATA.array[%d].cpi_last_month = %f\n", j, REGION_FIRM_DATA.array[j].cpi_last_month);
@@ -1354,7 +1359,16 @@ void Eurostat_calc_price_index(void)
     sum_1 = 0.0;
     sum_2 = 0.0;
     for(j=0; j<REGION_FIRM_DATA.size; j++)
-    {
+    {   
+        //Diagnostics: 
+        if (REGION_FIRM_DATA.array[j].monthly_sold_quantity<1e-5)
+            printf("\n DIVISION BY ZERO: In Eurostat_aux_functions.c, line 1360"
+            "Monthly_sold_quantity in region %d =%f", j, REGION_FIRM_DATA.array[j].monthly_sold_quantity);
+    
+        if (MONTHLY_SOLD_QUANTITY<1e-5)
+            printf("\n DIVISION BY ZERO: In Eurostat_aux_functions.c, line 1364:"
+            "MONTHLY_SOLD_QUANTITY=%f", MONTHLY_SOLD_QUANTITY);
+    
         quantity = REGION_FIRM_DATA.array[j].monthly_sold_quantity;
         weight = quantity/MONTHLY_SOLD_QUANTITY;
         price = REGION_FIRM_DATA.array[j].cpi;
@@ -1363,7 +1377,10 @@ void Eurostat_calc_price_index(void)
         sum_2 += weight * price_last_month * quantity;
     }
     
-    CPI = sum_1/sum_2;
+    if (sum_2>1e-5)
+        CPI = sum_1/sum_2;
+    else
+        printf("\n DIVISION BY ZERO: In Eurostat_aux_functions.c, line 1375: sum_2=%f", sum_2);
     
     if (PRINT_DEBUG)
     {
