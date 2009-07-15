@@ -15,10 +15,19 @@ int Eurostat_idle()
   */
 int Eurostat_initialization()
 {
-    if(TOTAL_REGIONS>REGION_FIRM_DATA.size)
-        printf("TOTAL_REGIONS (%d) > size of REGION_FIRM_DATA array (%d)", TOTAL_REGIONS, REGION_FIRM_DATA.size);
+	if(TOTAL_REGIONS>REGION_FIRM_DATA.size)
+	{	
+
+		printf("\nIn Eurostat_initialization:");
+		printf("\nTOTAL_REGIONS (%d) > size of REGION_FIRM_DATA array (%d)", TOTAL_REGIONS, REGION_FIRM_DATA.size);
     
-    Eurostat_reset_data();
+		printf("\n		Running Eurostat_reset_data function to reset data structures");
+		Eurostat_reset_data();
+
+		if(TOTAL_REGIONS==REGION_FIRM_DATA.size)
+			printf("\n		TOTAL_REGIONS (%d) == size of REGION_FIRM_DATA array (%d)\n", TOTAL_REGIONS, REGION_FIRM_DATA.size);
+	}
+	assert(TOTAL_REGIONS==REGION_FIRM_DATA.size);
 
     return 0;   
 }
