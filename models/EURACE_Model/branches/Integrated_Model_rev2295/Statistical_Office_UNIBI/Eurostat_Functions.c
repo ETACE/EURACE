@@ -15,6 +15,11 @@ int Eurostat_idle()
   */
 int Eurostat_initialization()
 {
+    if(TOTAL_REGIONS>REGION_FIRM_DATA.size)
+        printf("TOTAL_REGIONS (%d) > size of REGION_FIRM_DATA array (%d)", TOTAL_REGIONS, REGION_FIRM_DATA.size);
+    
+    Eurostat_reset_data();
+
     return 0;   
 }
 
