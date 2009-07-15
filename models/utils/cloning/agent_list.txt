@@ -1,5 +1,4 @@
 Firm
-IGFirm
 Government
 Household
 Mall
