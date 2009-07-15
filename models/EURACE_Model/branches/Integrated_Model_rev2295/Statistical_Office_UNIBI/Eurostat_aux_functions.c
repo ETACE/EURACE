@@ -1347,8 +1347,8 @@ void Eurostat_calc_price_index(void)
         if((REGION_IMPORT_PREVIOUS_VALUE[j]+EXPORT_PREVIOUS_VALUE_MATRIX[index])>1e-5)
             REGION_FIRM_DATA.array[j].cpi = (REGION_IMPORT_VALUE[j]+EXPORT_VALUE_MATRIX[index])/(REGION_IMPORT_PREVIOUS_VALUE[j]+EXPORT_PREVIOUS_VALUE_MATRIX[index]);
         else
-            printf("\n DIVISION BY ZERO: In Eurostat_aux_functions.c, line 1389:"
-                    "REGION_IMPORT_PREVIOUS_VALUE[%d]+EXPORT_PREVIOUS_VALUE_MATRIX[%d]=%f", j, index, REGION_IMPORT_PREVIOUS_VALUE[j]+EXPORT_PREVIOUS_VALUE_MATRIX[index]);
+            printf("\n DIVISION BY ZERO: In Eurostat_aux_functions.c, line 1350:"
+                    "REGION_IMPORT_PREVIOUS_VALUE[%d]+EXPORT_PREVIOUS_VALUE_MATRIX[%d][%d](index=%d)=%f", j,j,j,index, REGION_IMPORT_PREVIOUS_VALUE[j]+EXPORT_PREVIOUS_VALUE_MATRIX[index]);
                     
         //printf("\n HISTORY_MONTHLY[0].region_data.array[%d].cpi = %f\n", j, HISTORY_MONTHLY[0].region_data.array[j].cpi);
         //printf("\n REGION_FIRM_DATA.array[%d].cpi = %f\n", j, REGION_FIRM_DATA.array[j].cpi);
@@ -1362,12 +1362,12 @@ void Eurostat_calc_price_index(void)
     {   
         //Diagnostics: 
         if (REGION_FIRM_DATA.array[j].monthly_sold_quantity<1e-5)
-            printf("\n DIVISION BY ZERO: In Eurostat_aux_functions.c, line 1360"
-            "Monthly_sold_quantity in region %d =%f", j, REGION_FIRM_DATA.array[j].monthly_sold_quantity);
+            printf("\n DIVISION BY ZERO: In Eurostat_aux_functions.c, line 1360: "
+            "Monthly_sold_quantity in region %d =%f\n", j, REGION_FIRM_DATA.array[j].monthly_sold_quantity);
     
         if (MONTHLY_SOLD_QUANTITY<1e-5)
-            printf("\n DIVISION BY ZERO: In Eurostat_aux_functions.c, line 1364:"
-            "MONTHLY_SOLD_QUANTITY=%f", MONTHLY_SOLD_QUANTITY);
+            printf("\n DIVISION BY ZERO: In Eurostat_aux_functions.c, line 1364: "
+            "MONTHLY_SOLD_QUANTITY=%f\n", MONTHLY_SOLD_QUANTITY);
     
         quantity = REGION_FIRM_DATA.array[j].monthly_sold_quantity;
         weight = quantity/MONTHLY_SOLD_QUANTITY;
@@ -1375,12 +1375,17 @@ void Eurostat_calc_price_index(void)
         price_last_month = REGION_FIRM_DATA.array[j].cpi_last_month;
         sum_1 += weight * price * quantity;
         sum_2 += weight * price_last_month * quantity;
+
+        if (MONTHLY_SOLD_QUANTITY<1e-5)
+            printf("\n DIVISION BY ZERO: In Eurostat_aux_functions.c, line 1380: "
+            "weight=%f\n", weight);
+
     }
     
     if (sum_2>1e-5)
         CPI = sum_1/sum_2;
     else
-        printf("\n DIVISION BY ZERO: In Eurostat_aux_functions.c, line 1375: sum_2=%f", sum_2);
+        printf("\n DIVISION BY ZERO: In Eurostat_aux_functions.c, line 1388: sum_2=%f", sum_2);
     
     if (PRINT_DEBUG)
     {
