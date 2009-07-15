@@ -121,19 +121,7 @@ void historicalReturnsStock(Stock *stock, double *vect, int backwardWindow,doubl
      vect[i]=backreturnsAt(stock,i)*forwardWindow;
   }
 
-
-
-/*void frequencyTotalReturns(Stock *stock,Histogram *hist, int backwardWindow, int bins,double factor,double value)
- { 
-   double temp[MAXRETURNS];
-
-   totalReturnsStock(stock,temp,backwardWindow,factor,value);
-
-   histogram(hist,temp,backwardWindow,bins);
-   
-  return;
- }*/
-double computeStockUtilityFunction(Stock *stock,int backwardWindow, double factor, double value, double lossaversion)
+double computeStockUtilityFunction(Stock *stock,int backwardWindow, double factor, double value, double lossaversion, double *rndvect,double randomWeight)
 { 
   int i;
   double utility;
@@ -141,11 +129,13 @@ double computeStockUtilityFunction(Stock *stock,int backwardWindow, double facto
   utility=0;
   for(i=0;i<backwardWindow;i++)
     { 
-     r=backreturnsAt(stock,i)*factor+value;
-     
+     r=backreturnsAt(stock,i)*factor+value+rndvect[i]*randomWeight;
+     //printf("\n r %f rndvect %f value %f randomWeight %f",r, rndvect[i], value, randomWeight);
+     //getchar();
      if (r<0) utility=utility+r*lossaversion;
      else     utility=utility+r;
     }
+    //printf ("\n utilitystock %f", utility);
   //if(utility==NAN) printf("----------%f",rndvect[i]*randomWeight);
   return utility/backwardWindow;
 }
