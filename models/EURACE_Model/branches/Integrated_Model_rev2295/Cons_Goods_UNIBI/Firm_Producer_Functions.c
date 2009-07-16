@@ -179,11 +179,12 @@ int Firm_calc_production_quantity()
 
         
 
+
             /*Setting the critical values*/
             
-            CURRENT_MALL_STOCKS.array[i].critical_stock = 
-                                sales_mall.array[7].sales;
-            
+          CURRENT_MALL_STOCKS.array[i].critical_stock = 
+                                sales_mall.array[DECIL_PRODUCTION_RULE].sales;
+    
 
             /*If the critical level for a mall is zero then the firm sets (with a certain prob )the 
              * critical level equal the average CL in order to keep this mall on the delivery list */
@@ -213,38 +214,14 @@ int Firm_calc_production_quantity()
                 /*If stocks are left at the beginning of a new production cycle 
                  * then firms produce the difference between these stocks and the 
                  * critical stock for this mall*/
-                if(CURRENT_MALL_STOCKS.array[i].current_stock > 0)
-                {
+              
                     prod_vol = CURRENT_MALL_STOCKS.array[i].critical_stock - CURRENT_MALL_STOCKS.array[i].current_stock;
     
                     PLANNED_DELIVERY_VOLUME.array[i].mall_id = 
                     CURRENT_MALL_STOCKS.array[i].mall_id;
 
                     PLANNED_DELIVERY_VOLUME.array[i].quantity  = prod_vol;
-                    
-                }
-                else
-                /*If no stocks are left then the firms want to produce more 
-                 * units than the period before. They increase the production 
-                 * volume for one mall by a certain fraction of the last delivery volume*/
-                {
-                    for(int j = 0; j < PLANNED_DELIVERY_VOLUME.size; j++)
-                    {
-                        if(PLANNED_DELIVERY_VOLUME.array[j].mall_id==
-                        	CURRENT_MALL_STOCKS.array[i].mall_id)
-                        {
-                            prod_vol = CURRENT_MALL_STOCKS.array[i].critical_stock*(1 + ADAPTION_DELIVERY_VOLUME);
-
-                            CURRENT_MALL_STOCKS.array[i].critical_stock= prod_vol;
-                            
-                            PLANNED_DELIVERY_VOLUME.
-                            array[j].quantity = prod_vol;
-
-                            /*printf("Prod-Vol %f\n",prod_vol);*/
-                        }
-                    }
-                }
-                
+                                
                 production_volume = production_volume + prod_vol;
                 
             }
@@ -718,6 +695,12 @@ int Firm_calc_revenue()
         {
             if(sales_message->mall_id ==  SOLD_QUANTITIES.array[i].mall_id)
             {
+            	
+                
+                SOLD_QUANTITIES.array[i].stock_empty = 
+                               sales_message->stock_empty;
+                
+          
                 SOLD_QUANTITIES.array[i].sold_quantity += 
                 sales_message->revenue/PRICE;
             
@@ -746,6 +729,9 @@ int Firm_calc_revenue()
     //Not needed here: there is a function after this called Firm_send_payments_to_bank
     
     PAYMENT_ACCOUNT += REVENUE_PER_DAY;
+    
+    //Resetting the calendar month sales
+    
     
     /*The monthly sales statistics*/
     CUM_TOTAL_SOLD_QUANTITY += TOTAL_SOLD_QUANTITY; 
@@ -781,21 +767,37 @@ int Firm_compute_sales_statistics()
             }
         }
                                             
-                
-        for(int i=0; i< SOLD_QUANTITIES.size;i++)
-        {
-            for(int j=0; j<MALLS_SALES_STATISTICS.size; j++)
-            {
-            if(MALLS_SALES_STATISTICS.array[j].mall_id == SOLD_QUANTITIES.array[i].mall_id)
-                {
-                add_data_type_sales(&MALLS_SALES_STATISTICS.array[j].sales, 1 , 
-                    SOLD_QUANTITIES.array[i].sold_quantity);
         
-                SOLD_QUANTITIES.array[i].sold_quantity=0;
-                SOLD_QUANTITIES.array[i].stock_empty=0;
-                }
-            }
-        }
+        
+        /*Storing of mall sales in an array. if the delivery of the last month was not sufficient to satify the demand, then the sales volume of the last month is
+         * increased by a percentage. */ 
+        for(int i=0; i< SOLD_QUANTITIES.size;i++)
+               {
+                   for(int j=0; j<MALLS_SALES_STATISTICS.size; j++)
+                   {
+                   if(MALLS_SALES_STATISTICS.array[j].mall_id == SOLD_QUANTITIES.array[i].mall_id)
+                       {
+                   	
+                   	if(SOLD_QUANTITIES.array[i].stock_empty==0)
+                   	{
+                       add_data_type_sales(&MALLS_SALES_STATISTICS.array[j].sales, 1 , 
+                           SOLD_QUANTITIES.array[i].sold_quantity);
+                       	//printf("ID %d   stock empty, = 0  SOLD_QUANTITIES.array[i].sold_quantity %f\n",ID,SOLD_QUANTITIES.array[i].sold_quantity);
+                       
+                   	}
+                       else
+                       {
+                       	add_data_type_sales(&MALLS_SALES_STATISTICS.array[j].sales, 1 , 
+                       	                    SOLD_QUANTITIES.array[i].sold_quantity*(1 + ADAPTION_DELIVERY_VOLUME));
+                       	//printf("ID %d   stock empty, = 1   sold_quantity*(1 + ADAPTION_DELIVERY_VOLUME)  %f\n",ID,SOLD_QUANTITIES.array[i].sold_quantity*(1 + ADAPTION_DELIVERY_VOLUME));
+                       }
+                       SOLD_QUANTITIES.array[i].sold_quantity=0;
+                       SOLD_QUANTITIES.array[i].stock_empty=0;
+                       }
+                   }
+               }
+           
+         
     
     return 0;
 }

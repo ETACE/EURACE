@@ -121,6 +121,16 @@
     <name>upper_bound_firing</name>
     <description></description>
    </variable>
+   <variable>
+    <type>double</type>
+    <name>logit_parameter_specific_skills</name>
+    <description></description>
+   </variable>
+<variable>
+    <type>double</type>
+    <name>logit_parameter_general_skills</name>
+    <description></description>
+   </variable>
   </constants>
   <functionFiles>
    <file>Firm_Employer_Functions.c</file>
