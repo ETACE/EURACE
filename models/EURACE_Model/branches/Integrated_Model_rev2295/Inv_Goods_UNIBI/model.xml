@@ -69,8 +69,23 @@
     </variable>
     <variable>
      <type>double</type>
-     <name>total_dividend_payment</name>
-     <description>Total dividend payments.</description>
+     <name>cum_revenue_last_month</name>
+     <description></description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>cum_net_profits</name>
+     <description></description>
+    </variable>
+    <variable>
+     <type>double_array</type>
+     <name>last_net_profits</name>
+     <description>Array of the planned production quantities in the past</description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>dividend_payment</name>
+     <description></description>
     </variable>
    </memory>
    <functions>
