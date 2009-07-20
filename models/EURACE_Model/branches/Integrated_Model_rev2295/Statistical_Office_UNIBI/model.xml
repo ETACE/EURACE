@@ -2873,22 +2873,6 @@
    </variables>
   </message>
   <message>
-   <name>mean_wage_for_government</name>
-   <description></description>
-   <variables>
-    <variable>
-     <type>int</type>
-     <name>gov_id</name>
-     <description></description>
-    </variable>
-    <variable>
-     <type>double</type>
-     <name>mean_wage</name>
-     <description>Mean wage for the government.</description>
-    </variable>
-   </variables>
-  </message>
-  <message>
    <name>data_for_government</name>
    <description>Sent by Eurostat to governments. Includes the region_id and gdp for the region. Used by gov to compute its GDP. Also contains the mean wage for the region.</description>
    <variables>

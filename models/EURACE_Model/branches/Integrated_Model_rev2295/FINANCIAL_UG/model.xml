@@ -667,7 +667,11 @@
       </time>
      </condition>
      <inputs/>
-     <outputs/>
+     <outputs>
+      <output>
+       <messageName>payment_coupons</messageName>
+      </output>
+     </outputs>
     </function>
     <function>
      <name>Government_read_policy_rate</name>

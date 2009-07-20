@@ -164,19 +164,16 @@
     <variable>
      <type>int</type>
      <name>id</name>
-     <constant>true</constant>
      <description></description>
     </variable>
     <variable>
      <type>int</type>
      <name>region_id</name>
-     <constant>true</constant>
      <description></description>
     </variable>
     <variable>
      <type>int</type>
      <name>gov_id</name>
-     <constant>true</constant>
      <description></description>
     </variable>
     <variable>
@@ -197,13 +194,11 @@
     <variable>
      <type>int</type>
      <name>bank_id</name>
-     <constant>true</constant>
      <description></description>
     </variable>
     <variable>
      <type>int</type>
      <name>partition_id</name>
-     <constant>true</constant>
      <description></description>
     </variable>
    </memory>
@@ -216,13 +211,11 @@
     <variable>
      <type>int</type>
      <name>id</name>
-     <constant>true</constant>
      <description></description>
     </variable>
     <variable>
      <type>int</type>
      <name>region_id</name>
-     <constant>true</constant>
      <description></description>
     </variable>
     <variable>
@@ -233,7 +226,6 @@
     <variable>
      <type>int</type>
      <name>gov_id</name>
-     <constant>true</constant>
      <description></description>
     </variable>
     <variable>
@@ -249,13 +241,11 @@
     <variable>
      <type>int</type>
      <name>bank_id</name>
-     <constant>true</constant>
      <description></description>
     </variable>
     <variable>
      <type>int</type>
      <name>partition_id</name>
-     <constant>true</constant>
      <description></description>
     </variable>
    </memory>
@@ -268,19 +258,16 @@
     <variable>
      <type>int</type>
      <name>id</name>
-     <constant>true</constant>
      <description></description>
     </variable>
     <variable>
      <type>int</type>
      <name>region_id</name>
-     <constant>true</constant>
      <description></description>
     </variable>
     <variable>
      <type>int</type>
      <name>gov_id</name>
-     <constant>true</constant>
      <description></description>
     </variable>
     <variable>
@@ -291,7 +278,6 @@
     <variable>
      <type>int</type>
      <name>partition_id</name>
-     <constant>true</constant>
      <description></description>
     </variable>
    </memory>
@@ -304,25 +290,21 @@
     <variable>
      <type>int</type>
      <name>id</name>
-     <constant>true</constant>
      <description></description>
     </variable>
     <variable>
      <type>int</type>
      <name>region_id</name>
-     <constant>true</constant>
      <description></description>
     </variable>
     <variable>
      <type>int</type>
      <name>gov_id</name>
-     <constant>true</constant>
      <description></description>
     </variable>
     <variable>
      <type>int</type>
      <name>bank_id</name>
-     <constant>true</constant>
      <description></description>
     </variable>
     <variable>
@@ -338,7 +320,6 @@
     <variable>
      <type>int</type>
      <name>partition_id</name>
-     <constant>true</constant>
      <description></description>
     </variable>
    </memory>
@@ -351,13 +332,11 @@
     <variable>
      <type>int</type>
      <name>id</name>
-     <constant>true</constant>
      <description></description>
     </variable>
     <variable>
      <type>int</type>
      <name>region_id</name>
-     <constant>true</constant>
      <description></description>
     </variable>
     <variable>
@@ -368,7 +347,6 @@
     <variable>
      <type>int</type>
      <name>partition_id</name>
-     <constant>true</constant>
      <description></description>
     </variable>
    </memory>
@@ -381,25 +359,21 @@
     <variable>
      <type>int</type>
      <name>id</name>
-     <constant>true</constant>
      <description></description>
     </variable>
     <variable>
      <type>int</type>
      <name>region_id</name>
-     <constant>true</constant>
      <description></description>
     </variable>
     <variable>
      <type>int</type>
      <name>gov_id</name>
-     <constant>true</constant>
      <description></description>
     </variable>
     <variable>
      <type>int</type>
      <name>partition_id</name>
-     <constant>true</constant>
      <description></description>
     </variable>
    </memory>
@@ -412,7 +386,6 @@
     <variable>
      <type>int</type>
      <name>id</name>
-     <constant>true</constant>
      <description></description>
     </variable>
     <variable>
@@ -433,13 +406,11 @@
     <variable>
      <type>int</type>
      <name>region_id</name>
-     <constant>true</constant>
      <description></description>
     </variable>
     <variable>
      <type>int</type>
      <name>partition_id</name>
-     <constant>true</constant>
      <description></description>
     </variable>
    </memory>
@@ -452,19 +423,16 @@
     <variable>
      <type>int</type>
      <name>id</name>
-     <constant>true</constant>
      <description></description>
     </variable>
     <variable>
      <type>int</type>
      <name>region_id</name>
-     <constant>true</constant>
      <description></description>
     </variable>
     <variable>
      <type>int</type>
      <name>partition_id</name>
-     <constant>true</constant>
      <description></description>
     </variable>
    </memory>
@@ -477,19 +445,16 @@
     <variable>
      <type>int</type>
      <name>id</name>
-     <constant>true</constant>
      <description></description>
     </variable>
     <variable>
      <type>int</type>
      <name>region_id</name>
-     <constant>true</constant>
      <description></description>
     </variable>
     <variable>
      <type>int</type>
      <name>partition_id</name>
-     <constant>true</constant>
      <description></description>
     </variable>
    </memory>
