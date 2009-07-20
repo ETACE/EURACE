@@ -15,19 +15,19 @@ int Eurostat_idle()
   */
 int Eurostat_initialization()
 {
-	if(TOTAL_REGIONS>REGION_FIRM_DATA.size)
-	{	
+    if(TOTAL_REGIONS>REGION_FIRM_DATA.size)
+    {   
 
-		printf("\nIn Eurostat_initialization:");
-		printf("\nTOTAL_REGIONS (%d) > size of REGION_FIRM_DATA array (%d)", TOTAL_REGIONS, REGION_FIRM_DATA.size);
+        printf("\nIn Eurostat_initialization:");
+        printf("\nTOTAL_REGIONS (%d) > size of REGION_FIRM_DATA array (%d)", TOTAL_REGIONS, REGION_FIRM_DATA.size);
     
-		printf("\n		Running Eurostat_reset_data function to reset data structures");
-		Eurostat_reset_data();
+        printf("\n      Running Eurostat_reset_data function to reset data structures");
+        Eurostat_reset_data();
 
-		if(TOTAL_REGIONS==REGION_FIRM_DATA.size)
-			printf("\n		TOTAL_REGIONS (%d) == size of REGION_FIRM_DATA array (%d)\n", TOTAL_REGIONS, REGION_FIRM_DATA.size);
-	}
-	assert(TOTAL_REGIONS==REGION_FIRM_DATA.size);
+        if(TOTAL_REGIONS==REGION_FIRM_DATA.size)
+            printf("\n      TOTAL_REGIONS (%d) == size of REGION_FIRM_DATA array (%d)\n", TOTAL_REGIONS, REGION_FIRM_DATA.size);
+    }
+    assert(TOTAL_REGIONS==REGION_FIRM_DATA.size);
 
     return 0;   
 }
@@ -77,6 +77,9 @@ int Eurostat_send_data()
         REGION_HOUSEHOLD_DATA.array[i].average_s_skill_5,
         REGION_FIRM_DATA.array[i].productivity_progress);
     }
+    
+    add_eurostat_send_macrodata_message(ANNUAL_GROWTH_RATES_MONTHLY.cpi, GDP, UNEMPLOYMENT_RATE);
+    
     return 0;
 }
 
