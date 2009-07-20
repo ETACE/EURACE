@@ -294,17 +294,6 @@
    </variables>
   </message>
   <message>
-   <name>dividend</name>
-   <description></description>
-   <variables>
-    <variable>
-     <type>double</type>
-     <name>dividend</name>
-     <description></description>
-    </variable>
-   </variables>
-  </message>
-  <message>
    <name>pay_capital_goods</name>
    <description></description>
    <variables>

@@ -85,7 +85,7 @@ int Central_Bank_read_account_update()
             if(bank_mesg_count!=ACCOUNTS_BANKS.size)
             {    
                 printf("\nERROR in Central_Bank_Functions.c, line 86: nr of mesg not equal to size of bank account array.\n");
-                printf("\n nr of Bank_mesg=%d, size of bank account array=%d\n", bank_mesg_count, ACCOUNTS_BANKS.size);
+                printf("\n Nr of Bank_mesg=%d, size of bank account array=%d\n", bank_mesg_count, ACCOUNTS_BANKS.size);
             }    
             else
                 printf("\n Nr of mesg equal to size of bank account array.\n");
@@ -114,7 +114,7 @@ int Central_Bank_read_account_update()
             if(gov_mesg_count!=ACCOUNTS_GOVS.size)
             {
                 printf("\nERROR in Central_Bank_Functions.c, line 107: nr of mesg not equal to size of gov account array.\n");
-                printf("\n Nr of Gov_mesg=%d, size of bank account array=%d\n", bank_mesg_count, ACCOUNTS_GOVS.size);
+                printf("\n Nr of Gov_mesg=%d, size of gov account array=%d\n", gov_mesg_count, ACCOUNTS_GOVS.size);
             }
             else
                 printf("\n Nr of mesg equal to size of gov account array.\n");
