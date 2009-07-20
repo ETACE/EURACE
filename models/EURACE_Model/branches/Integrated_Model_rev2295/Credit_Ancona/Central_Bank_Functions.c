@@ -100,7 +100,7 @@ int Central_Bank_read_account_update()
         ECB_DEPOSITS += gov_to_central_bank_account_update_message->payment_account;
     }
     if(PRINT_DEBUG_CREDIT)
-       bank_mesg_count++;
+       gov_mesg_count++;
 
     FINISH_GOV_TO_CENTRAL_BANK_ACCOUNT_UPDATE_MESSAGE_LOOP
 
