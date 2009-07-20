@@ -1,7 +1,7 @@
-    #include "../header.h"
+
     #include "../Central_Bank_agent_header.h"
     #include "../my_library_header.h"
-    
+    #include "../header.h"    
     
     
     /************Central_Bank Role: manage accounts for Governments and commercial banks********************************/
@@ -11,8 +11,16 @@
 
 int Central_Bank_monetary_policy()
 {
-    
+    double inflation, gdp, unemployment_rate;
+
     ECB_INTEREST_RATE = ECB_INTEREST_RATE + 0.001;
+ 
+    START_EUROSTAT_SEND_MACRODATA_MESSAGE_LOOP
+        inflation = eurostat_send_macrodata_message->inflation;
+        gdp = eurostat_send_macrodata_message->gdp;
+        unemployment_rate = eurostat_send_macrodata_message->unemployment_rate;
+    FINISH_EUROSTAT_SEND_MACRODATA_MESSAGE_LOOP 
+ 
     
     add_policy_rate_message(ECB_INTEREST_RATE);
 

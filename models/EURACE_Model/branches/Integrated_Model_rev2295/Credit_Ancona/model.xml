@@ -471,7 +471,7 @@
     <variable>
      <type>double</type>
      <name>equity</name>
-     <description>The ECB equity is the account to collect the interest payments from the banks and the government bond interest rate payments.&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+     <description>The ECB equity is the account to collect the interest payments from the banks and the government bond interest rate payments.&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
 The equity of ECB is paid out to all governments as dividends, in proportion to their population.</description>
     </variable>
     <variable>
@@ -482,7 +482,7 @@ The equity of ECB is paid out to all governments as dividends, in proportion to 
     <variable>
      <type>double</type>
      <name>total_ecb_debt</name>
-     <description>This is the sum over banks and governments of all ECB_debts, on the ECB's balance sheet.</description>
+     <description>This is the sum over banks' ECB_debt, on the ECB's balance sheet.</description>
     </variable>
     <variable>
      <type>double</type>
@@ -527,7 +527,11 @@ The equity of ECB is paid out to all governments as dividends, in proportion to 
        <phase>1</phase>
       </time>
      </condition>
-     <inputs/>
+     <inputs>
+      <input>
+       <messageName>eurostat_send_macrodata</messageName>
+      </input>
+     </inputs>
      <outputs>
       <output>
        <messageName>policy_rate</messageName>
