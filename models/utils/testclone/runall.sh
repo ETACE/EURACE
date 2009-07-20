@@ -24,14 +24,14 @@ NR_CLONES=2
 python $POP_GUI_DIR/popcmdline.py $SIM_DIR/0.pop $SIM_DIR/0_standard.xml
 
 #Partitioning:
-cd $PREPARTITION_DIR
+#cd $PREPARTITION_DIR
 #python prepartition_statefile.py $BASE/0_cloned.xml $BASE/0_partition.xml region_id name $NR_NODES
 #python prepartition_statefile.py $BASE/0-BENCHMARK.xml $BASE/0_partition.xml region_id name $NR_NODES
-python prepartition_statefile.py $SIM_DIR/0_standard.xml $SIM_DIR/0_partition.xml region_id name 4
-cd -
+##python prepartition_statefile.py $SIM_DIR/0_standard.xml $SIM_DIR/0_partition.xml region_id name 4
+#cd -
 
 #Add markers:
-#python $POP_GUI_DIR/instantiate.py -r $SIM_DIR/0_standard.pop $SIM_DIR/0_markers.xml
+#python $POP_GUI_DIR/instantiate.py -r $SIM_DIR/0.pop $SIM_DIR/0_markers.xml
 
 #Clone regions:
 #cd $CLONE_SCRIPT_DIR
