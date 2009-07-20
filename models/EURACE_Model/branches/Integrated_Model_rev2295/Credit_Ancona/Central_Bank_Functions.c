@@ -53,6 +53,8 @@ int Central_Bank_read_fiat_money_requests()
 int Central_Bank_read_account_update()
 {
     int i;
+    int bank_mesg_count=0; //debug
+    int gov_mesg_count=0; //debug
     
     TOTAL_ECB_DEBT=0.0;
     ECB_DEPOSITS=0.0;
@@ -73,7 +75,16 @@ int Central_Bank_read_account_update()
         //Total deposits at ECB
         ECB_DEPOSITS += bank_to_central_bank_account_update_message->payment_account;
     }
+        if(DEBUG_CREDIT)
+            bank_mesg_count++;
+        
     FINISH_BANK_TO_CENTRAL_BANK_ACCOUNT_UPDATE_MESSAGE_LOOP
+
+        if(DEBUG_CREDIT)
+        {                        
+            if(bank_mesg_count!=ACCOUNTS_BANKS.size)
+                printf("\nERROR in Central_Bank_Functions.c, line 86: nr of mesg not equal to size of bank account array.\n");
+        }
 
 
     START_GOV_TO_CENTRAL_BANK_ACCOUNT_UPDATE_MESSAGE_LOOP
@@ -88,7 +99,16 @@ int Central_Bank_read_account_update()
         //Total deposits at ECB
         ECB_DEPOSITS += gov_to_central_bank_account_update_message->payment_account;
     }
+    if(DEBUG_CREDIT)
+       bank_mesg_count++;
+
     FINISH_GOV_TO_CENTRAL_BANK_ACCOUNT_UPDATE_MESSAGE_LOOP
+
+        if(DEBUG_CREDIT)
+        {                        
+            if(gov_mesg_count!=ACCOUNTS_GOVS.size)
+                printf("\nERROR in Central_Bank_Functions.c, line 107: nr of mesg not equal to size of gov account array.\n");
+        }
 
     return 0;
 }
