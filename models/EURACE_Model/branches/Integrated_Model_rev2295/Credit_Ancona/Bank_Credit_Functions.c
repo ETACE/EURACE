@@ -85,10 +85,8 @@
             }
             
        // Procedure to reduce ECB debt
-          if ( ECB_DEBT != 0 ) 
+          if ( (ECB_DEBT != 0)&& (CASH>0) ) 
             {
-                
-                
                  if(CASH>=ECB_DEBT)
                  {
                      add_bank_to_central_bank_account_update_message(ID, -ECB_DEBT);    //TO CHANGE
@@ -102,9 +100,7 @@
                      ECB_DEBT-=CASH;
                      CASH=0.0;
                  }
-    
              }
-          
        //End of procedure
                   
         return 0;
