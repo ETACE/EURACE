@@ -171,6 +171,7 @@ double minPriceOrder(Order_array *aFixedC);
 
 void qSortCOrder(Order_array *v, int first, int last);
 void qSortCOrderDec(Order_array *v, int first, int last);
+void randomize(Order_array *v, int first, int last);
 double maxPriceOrder(Order_array *aFixedC);
 
 /********Asset******************/
