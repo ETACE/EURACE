@@ -32,7 +32,7 @@ int Central_Bank_read_fiat_money_requests()
 
     //Read the bond emission -> fiat money request from governments
     START_ISSUE_BONDS_TO_ECB_MESSAGE_LOOP
-        FIAT_MONEY += issue_bonds_to_ecb_message->nominal_value*issue_bonds_to_ecb_message->quantity;
+        FIAT_MONEY_GOVS += issue_bonds_to_ecb_message->nominal_value*issue_bonds_to_ecb_message->quantity;
         BOND_HOLDINGS_VALUE += issue_bonds_to_ecb_message->nominal_value;
     FINISH_ISSUE_BONDS_TO_ECB_MESSAGE_LOOP
 
@@ -40,7 +40,7 @@ int Central_Bank_read_fiat_money_requests()
     //Read the fiat money request from governments
     //request_fiat_money_message(nominal_value);
     START_REQUEST_FIAT_MONEY_MESSAGE_LOOP
-        FIAT_MONEY += request_fiat_money_message->nominal_value;
+        FIAT_MONEY_GOVS += request_fiat_money_message->nominal_value;
     FINISH_REQUEST_FIAT_MONEY_MESSAGE_LOOP
 
 
@@ -56,11 +56,15 @@ int Central_Bank_read_account_update()
     int bank_mesg_count=0; //debug
     int gov_mesg_count=0; //debug
     
-    TOTAL_ECB_DEBT=0.0;
+    FIAT_MONEY_BANKS=0.0;
     ECB_DEPOSITS=0.0;
 
     START_BANK_TO_CENTRAL_BANK_ACCOUNT_UPDATE_MESSAGE_LOOP
     //Search the correct account and update the value
+    
+    ECB_DEPOSITS += bank_to_central_bank_account_update_message->payment_account;
+    FIAT_MONEY_BANKS += bank_to_central_bank_account_update_message->ecb_debt;
+    
     for (i=0;i<ACCOUNTS_BANKS.size;i++)
     {       
         if(ACCOUNTS_BANKS.array[i].id == bank_to_central_bank_account_update_message->id)
@@ -69,11 +73,10 @@ int Central_Bank_read_account_update()
             }
         
         //The sum of negative payment_account values
-        if (bank_to_central_bank_account_update_message->payment_account<0.0)
-            TOTAL_ECB_DEBT += fabs(bank_to_central_bank_account_update_message->payment_account);
+      
                     
         //Total deposits at ECB
-        ECB_DEPOSITS += bank_to_central_bank_account_update_message->payment_account;
+        
     }
         if(PRINT_DEBUG_CREDIT)
             bank_mesg_count++;
