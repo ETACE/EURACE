@@ -232,17 +232,25 @@ void runClearing(ClearingMechanism *aClearing)
     aClearing->lastPrice=price;
     demand=aggregateDemand(aClearing,price);
     supply=aggregateSupply(aClearing,price);
-   printf("prima di bilanciare  supply %d demand %d\n",supply,demand);
+    
+    if (PRINT_DEBUG_AFM)
+    printf("prima di bilanciare  supply %d demand %d\n",supply,demand);
+    
     aClearing->quantity=min(supply,demand);
     ordersMacthing(buyorders, price,1);
     ordersMacthing(sellorders, price,-1);
     balance=abs(supply-demand);
     if(supply>demand) rationing(sellorders, balance);
-    if(supply<demand) rationing(buyorders, balance);   
+    if(supply<demand) rationing(buyorders, balance);
+    
+    if (PRINT_DEBUG_AFM)  
     printf("sin qui ci siamo %d\n",balance);
+
     demand=aggregateDemand(aClearing,price);
     supply=aggregateSupply(aClearing,price);
-   printf("former price %f supply %d demand %d\n",price,supply,demand);
+   
+   if (PRINT_DEBUG_AFM)
+     printf("former price %f supply %d demand %d\n",price,supply,demand);
 }
    
 void emptyClearing(ClearingMechanism *aClearing)

@@ -497,6 +497,11 @@
      <name>payment_account</name>
      <description></description>
     </variable>
+    <variable>
+     <type>double</type>
+     <name>ecb_debt</name>
+     <description>Debt of the bank to the Central Bank</description>
+    </variable>
    </variables>
   </message>
   <message>

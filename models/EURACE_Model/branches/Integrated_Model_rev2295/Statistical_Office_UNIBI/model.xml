@@ -2555,8 +2555,8 @@
     </variable>
     <variable>
      <type>double</type>
-     <name>fiat_money</name>
-     <description></description>
+     <name>fiat_money_govs</name>
+     <description>Money given to governments in exchange of gov bonds or for free</description>
     </variable>
     <variable>
      <type>double</type>

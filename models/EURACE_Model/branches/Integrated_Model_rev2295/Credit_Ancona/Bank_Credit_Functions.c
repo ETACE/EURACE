@@ -79,29 +79,31 @@
     
        if (CASH<0)
             {
-             add_bank_to_central_bank_account_update_message(ID, -CASH);
-             ECB_DEBT+=-CASH; //Monetary base is increased
+             ECB_DEBT+=-CASH; //Monetary base is increased     
              CASH=0;
-            }
+             
+             }
+            
+            
             
        // Procedure to reduce ECB debt
           if ( (ECB_DEBT != 0)&& (CASH>0) ) 
             {
                  if(CASH>=ECB_DEBT)
                  {
-                     add_bank_to_central_bank_account_update_message(ID, -ECB_DEBT);    //TO CHANGE
                      CASH-=ECB_DEBT;
                      ECB_DEBT=0.0;
                  }
      
                  if(CASH<ECB_DEBT)
                  {
-                     add_bank_to_central_bank_account_update_message(ID, -CASH);   //TO CHANGE 
                      ECB_DEBT-=CASH;
                      CASH=0.0;
                  }
              }
        //End of procedure
+       
+       add_bank_to_central_bank_account_update_message(ID, CASH, ECB_DEBT); 
                   
         return 0;
     }
