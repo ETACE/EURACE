@@ -436,19 +436,25 @@ int Firm_read_job_applications_send_job_offer_or_rejection()
             int j;
             for(j = 0; j< job_application_list.size;j++)
                 {
-                //denominator_logit+= exp(LOGIT_PARAMETER_GENERAL_SKILLS*job_application_list.array[j].general_skill + LOGIT_PARAMETER_SPECIFIC_SKILLS*job_application_list.array[j].specific_skill);   
+                denominator_logit+= exp(LOGIT_PARAMETER_GENERAL_SKILLS*job_application_list.array[j].general_skill + LOGIT_PARAMETER_SPECIFIC_SKILLS*job_application_list.array[j].specific_skill);   
 
-                denominator_logit+= exp(0.5*job_application_list.array[j].general_skill + 0*job_application_list.array[j].specific_skill);
+                //denominator_logit+= exp(0.5*job_application_list.array[j].general_skill + 0*job_application_list.array[j].specific_skill);
                 }
             
             /*This computes the logits and stores them at the temorary array            logit_applications_list*/
 
+            if(denominator_logit==0)
+               {
+            	printf(In LabourUNIBI/Firm_Employer_Function.c Line 448: denominator_logit = 0 );
+                     	
+               }
+            
             for(j = 0; j< job_application_list.size;j++)
                 {
                 //logit = exp(LOGIT_PARAMETER_GENERAL_SKILLS*job_application_list.array[j].general_skill + LOGIT_PARAMETER_SPECIFIC_SKILLS*job_application_list.array[j].specific_skill)/ denominator_logit;
 
 
-            
+         
             logit = exp(LOGIT_PARAMETER_GENERAL_SKILLS*job_application_list.array[j].general_skill + LOGIT_PARAMETER_SPECIFIC_SKILLS*job_application_list.array[j].specific_skill)/ denominator_logit;
             
 
@@ -817,18 +823,24 @@ int Firm_read_job_applications_send_job_offer_or_rejection_2()
             int j;
             for(j = 0; j< job_application_list.size;j++)
                 {
-                //denominator_logit+= exp(LOGIT_PARAMETER_GENERAL_SKILLS*job_application_list.array[j].general_skill + LOGIT_PARAMETER_SPECIFIC_SKILLS*job_application_list.array[j].specific_skill);   
+                denominator_logit+= exp(LOGIT_PARAMETER_GENERAL_SKILLS*job_application_list.array[j].general_skill + LOGIT_PARAMETER_SPECIFIC_SKILLS*job_application_list.array[j].specific_skill);   
 
-                denominator_logit+= exp(0.5*job_application_list.array[j].general_skill + 0*job_application_list.array[j].specific_skill);
+                //denominator_logit+= exp(0.5*job_application_list.array[j].general_skill + 0*job_application_list.array[j].specific_skill);
                 }
             
             /*This computes the logits and stores them at the temorary array            logit_applications_list*/
 
+            if(denominator_logit==0)
+              {
+               printf(In LabourUNIBI/Firm_Employer_Function.c Line 836: denominator_logit = 0 );
+               denominator_logit = 1;
+              }
+            
             for(j = 0; j< job_application_list.size;j++)
                 {
-                //logit = exp(LOGIT_PARAMETER_GENERAL_SKILLS*job_application_list.array[j].general_skill + LOGIT_PARAMETER_SPECIFIC_SKILLS*job_application_list.array[j].specific_skill)/ denominator_logit;
+                logit = exp(LOGIT_PARAMETER_GENERAL_SKILLS*job_application_list.array[j].general_skill + LOGIT_PARAMETER_SPECIFIC_SKILLS*job_application_list.array[j].specific_skill)/ denominator_logit;
 
-            logit = exp(0.5*job_application_list.array[j].general_skill + 0*job_application_list.array[j].specific_skill)/ denominator_logit;
+            //logit = exp(0.5*job_application_list.array[j].general_skill + 0*job_application_list.array[j].specific_skill)/ denominator_logit;
                 
             
             add_logit(&logit_applications_list, 100*logit,job_application_list.array[j].worker_id,job_application_list.array[j].general_skill);
