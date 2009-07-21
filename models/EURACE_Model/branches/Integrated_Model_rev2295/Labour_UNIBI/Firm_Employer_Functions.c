@@ -842,7 +842,7 @@ int Firm_read_job_applications_send_job_offer_or_rejection_2()
             add_logit(&logit_applications_list, 100*logit,job_application_list.array[j].worker_id,job_application_list.array[j].general_skill);
                 
                 }
-         
+         }
             /*This draws a random number*/
             //random_number =  random_double(0,100);
             random_number =  (double)random_int(0,100);
