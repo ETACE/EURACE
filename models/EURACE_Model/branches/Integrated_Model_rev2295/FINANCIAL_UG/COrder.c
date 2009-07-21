@@ -155,6 +155,34 @@ void qSortCOrder(Order_array *v, int first, int last){
     qSortCOrder(v, i, last);
   }
 }
+
+void randomize(Order_array *v, int first, int last)
+{
+  int i,j,index;
+  Order *pivot;
+  Order *ci;
+  Order *cj;
+  if (first<last) {
+    i = first; j = last;
+     index=(first+last)/2;
+     pivot = elementAtCOrder(v,index);
+ 
+    do {
+      
+      ci=elementAtCOrder(v,i);
+      while (next()<0.5) {  i++;ci=elementAtCOrder(v,i);}
+ 
+      cj=elementAtCOrder(v,j);
+      while (next()>0.5) {j--;cj=elementAtCOrder(v,j);}
+      if (i <= j) {
+        swapOrder(ci, cj);
+        i++, j--;
+      }
+    } while (i <= j);  
+    randomize(v, first, j);
+    randomize(v, i, last);
+  }
+}
 void qSortCOrderDec(Order_array *v, int first, int last){
   int i,j,index;
   Order *pivot;
