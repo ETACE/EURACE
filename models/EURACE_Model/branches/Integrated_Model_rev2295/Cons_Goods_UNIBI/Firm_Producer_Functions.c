@@ -757,7 +757,7 @@ int Firm_compute_sales_statistics()
                 if(MALLS_SALES_STATISTICS.array[j].sales.array[k].period== FIRM_PLANNING_HORIZON)
                 {       
                 remove_index = k;
-                remove_data_type_sales(&MALLS_SALES_STATISTICS.array[j].sales, remove_index);
+                remove_data_type_sales(&(MALLS_SALES_STATISTICS.array[j].sales), remove_index);
                 k--;
                 }else
                 {
@@ -780,14 +780,14 @@ int Firm_compute_sales_statistics()
                    	
                    	if(SOLD_QUANTITIES.array[i].stock_empty==0)
                    	{
-                       add_data_type_sales(&MALLS_SALES_STATISTICS.array[j].sales, 1 , 
+                       add_data_type_sales(&(MALLS_SALES_STATISTICS.array[j].sales), 1 , 
                            SOLD_QUANTITIES.array[i].sold_quantity);
                        	//printf("ID %d   stock empty, = 0  SOLD_QUANTITIES.array[i].sold_quantity %f\n",ID,SOLD_QUANTITIES.array[i].sold_quantity);
                        
                    	}
                        else
                        {
-                       	add_data_type_sales(&MALLS_SALES_STATISTICS.array[j].sales, 1 , 
+                       	add_data_type_sales(&(MALLS_SALES_STATISTICS.array[j].sales), 1 , 
                        	                    SOLD_QUANTITIES.array[i].sold_quantity*(1 + ADAPTION_DELIVERY_VOLUME));
                        	//printf("ID %d   stock empty, = 1   sold_quantity*(1 + ADAPTION_DELIVERY_VOLUME)  %f\n",ID,SOLD_QUANTITIES.array[i].sold_quantity*(1 + ADAPTION_DELIVERY_VOLUME));
                        }
