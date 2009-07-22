@@ -83,6 +83,16 @@ int Central_Bank_read_account_update()
         
     FINISH_BANK_TO_CENTRAL_BANK_ACCOUNT_UPDATE_MESSAGE_LOOP
 
+    
+    
+    START_BANK_INTEREST_PAYMENT_MESSAGE_LOOP
+    
+    CASH += bank_interest_payment_message->bank_interest_amount;
+    
+    FINISH_BANK_INTEREST_PAYMENT_MESSAGE_LOOP
+    
+
+
         if(PRINT_DEBUG_CREDIT)
         {                        
             if(bank_mesg_count!=ACCOUNTS_BANKS.size)
