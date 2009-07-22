@@ -163,8 +163,8 @@ int IGFirm_dividend_payment()
 	
 	
 	/*Third: pay out the average of the last 10 NET_PROFITs as dividends*/
-	remove_double(& LAST_NET_PROFITS,0);
-	add_double(& LAST_NET_PROFITS,NET_PROFIT);  
+	remove_double(&LAST_NET_PROFITS,0);
+	add_double(&LAST_NET_PROFITS,NET_PROFIT);  
 	
 	int p;
 	for(p = 0; p < LAST_NET_PROFITS.size; p++)
