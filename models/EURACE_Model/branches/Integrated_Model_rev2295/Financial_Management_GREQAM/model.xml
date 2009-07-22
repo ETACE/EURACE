@@ -605,7 +605,7 @@ Also sets the active flag to 0 and starts the bankruptcy idle counter.</descript
      <name>Firm_bankruptcy_insolvency_procedure</name>
      <description>Function to process the bankruptcy condition in case of insolvency.</description>
      <currentState>Firm_not_active</currentState>
-     <nextState>Firm_bankrupty_state_1</nextState>
+     <nextState>Firm_bankruptcy_state_1</nextState>
      <condition>
       <lhs>
        <value>a.bankruptcy_insolvency_state</value>
@@ -629,7 +629,7 @@ Also sets the active flag to 0 and starts the bankruptcy idle counter.</descript
      <name>Firm_bankruptcy_illiquidity_procedure</name>
      <description>Function to process the bankruptcy condition in case of illiquidity.</description>
      <currentState>Firm_not_active</currentState>
-     <nextState>Firm_bankrupty_state_1</nextState>
+     <nextState>Firm_bankruptcy_state_1</nextState>
      <condition>
       <lhs>
        <lhs>
@@ -699,8 +699,57 @@ Note that a negative count means the financing condition has not been yet satisf
     <function>
      <name>Firm_compute_and_send_stock_orders</name>
      <description>Function to send order_messages to the clearinghouse (new share emission).</description>
-     <currentState>Firm_bankrupty_state_1</currentState>
-     <nextState>Firm_bankrupty_state_2</nextState>
+     <currentState>Firm_bankruptcy_state_1b</currentState>
+     <nextState>Firm_bankruptcy_state_2</nextState>
+     <inputs/>
+     <outputs>
+      <output>
+       <messageName>order</messageName>
+      </output>
+     </outputs>
+    </function>
+    <function>
+     <name>Firm_read_stock_transactions</name>
+     <description>Function to read order_status messages from the clearinghouse, and update the firm's trading account.</description>
+     <currentState>Firm_bankruptcy_state_2</currentState>
+     <nextState>Firm_bankruptcy_state_3</nextState>
+     <inputs>
+      <input>
+       <messageName>order_status</messageName>
+      </input>
+     </inputs>
+     <outputs/>
+    </function>
+    <function>
+     <name>Firm_reset_bankruptcy_flags</name>
+     <description>Function to reset the bankruptcy flags when the bankruptcy process has finished.</description>
+     <currentState>Firm_bankruptcy_state_3</currentState>
+     <nextState>16</nextState>
+     <inputs/>
+     <outputs/>
+    </function>
+    <function>
+     <name>idle</name>
+     <description></description>
+     <currentState>Firm_bankruptcy_state_1</currentState>
+     <nextState>Firm_bankruptcy_state_3</nextState>
+     <condition>
+      <lhs>
+       <value>a.external_financial_needs</value>
+      </lhs>
+      <op>LEQ</op>
+      <rhs>
+       <value>0.0</value>
+      </rhs>
+     </condition>
+     <inputs/>
+     <outputs/>
+    </function>
+    <function>
+     <name>Firm_send_info</name>
+     <description></description>
+     <currentState>Firm_bankruptcy_state_1</currentState>
+     <nextState>Firm_bankruptcy_state_1b</nextState>
      <condition>
       <lhs>
        <value>a.external_financial_needs</value>
@@ -713,46 +762,9 @@ Note that a negative count means the financing condition has not been yet satisf
      <inputs/>
      <outputs>
       <output>
-       <messageName>order</messageName>
+       <messageName>info_firm</messageName>
       </output>
      </outputs>
-    </function>
-    <function>
-     <name>Firm_read_stock_transactions</name>
-     <description>Function to read order_status messages from the clearinghouse, and update the firm's trading account.</description>
-     <currentState>Firm_bankrupty_state_2</currentState>
-     <nextState>Firm_bankrupty_state_3</nextState>
-     <inputs>
-      <input>
-       <messageName>order_status</messageName>
-      </input>
-     </inputs>
-     <outputs/>
-    </function>
-    <function>
-     <name>Firm_reset_bankruptcy_flags</name>
-     <description>Function to reset the bankruptcy flags when the bankruptcy process has finished.</description>
-     <currentState>Firm_bankrupty_state_3</currentState>
-     <nextState>16</nextState>
-     <inputs/>
-     <outputs/>
-    </function>
-    <function>
-     <name>idle</name>
-     <description></description>
-     <currentState>Firm_bankrupty_state_1</currentState>
-     <nextState>Firm_bankrupty_state_3</nextState>
-     <condition>
-      <lhs>
-       <value>a.external_financial_needs</value>
-      </lhs>
-      <op>LEQ</op>
-      <rhs>
-       <value>0.0</value>
-      </rhs>
-     </condition>
-     <inputs/>
-     <outputs/>
     </function>
    </functions>
   </xagent>

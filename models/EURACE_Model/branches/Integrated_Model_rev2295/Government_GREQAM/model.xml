@@ -506,7 +506,7 @@
      <name>idle</name>
      <description>Idle for yearly loop</description>
      <currentState>Gov_Start_Monthly_Loop</currentState>
-     <nextState>Gov_Start_Yearly_Loop</nextState>
+     <nextState>06</nextState>
      <condition>
       <not>
        <time>
