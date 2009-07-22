@@ -12,6 +12,15 @@ int Firm_send_info(void)
      dividend=CURRENT_DIVIDEND_PER_SHARE;
      earnings_exp = EARNINGS;
      earnings_payout_exp = TOTAL_DIVIDEND_PAYMENT;
+     
+     if(ACTIVE==0)
+     {
+        printf("\n ID=%d, earnings_exp=%f,  dividend=%f, earnings_payout_exp=%f,  EQUITY=%f\n",ID, earnings_exp,  dividend, earnings_payout_exp,  EQUITY);
+        
+        if (EQUITY<0.0)
+            printf("\n In Firm_send_info: EQUITY NEGATIVE\n");
+     }
+     
      add_info_firm_message(ID, earnings_exp,  dividend, earnings_payout_exp,  EQUITY, STOCK);
      
     return 0;
