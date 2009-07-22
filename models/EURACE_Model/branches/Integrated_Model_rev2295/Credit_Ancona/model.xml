@@ -471,7 +471,7 @@
     <variable>
      <type>double</type>
      <name>equity</name>
-     <description>The ECB equity is the account to collect the interest payments from the banks and the government bond interest rate payments.&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+     <description>The ECB equity is the account to collect the interest payments from the banks and the government bond interest rate payments.&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
 The equity of ECB is paid out to all governments as dividends, in proportion to their population.</description>
     </variable>
     <variable>
@@ -499,6 +499,11 @@ The equity of ECB is paid out to all governments as dividends, in proportion to 
      <name>accounts_govs</name>
      <description></description>
     </variable>
+    <variable>
+     <type>double</type>
+     <name>cash</name>
+     <description>CB liquid asset which takes into account interest payments to CB from banks and (in the future) from govs</description>
+    </variable>
    </memory>
    <functions>
     <function>
@@ -512,6 +517,9 @@ The equity of ECB is paid out to all governments as dividends, in proportion to 
       </input>
       <input>
        <messageName>gov_to_central_bank_account_update</messageName>
+      </input>
+      <input>
+       <messageName>bank_interest_payment</messageName>
       </input>
      </inputs>
      <outputs/>
@@ -731,22 +739,6 @@ The equity of ECB is paid out to all governments as dividends, in proportion to 
     <variable>
      <type>double</type>
      <name>residual_var</name>
-     <description></description>
-    </variable>
-   </variables>
-  </message>
-  <message>
-   <name>BCE_return</name>
-   <description></description>
-   <variables>
-    <variable>
-     <type>int</type>
-     <name>bce_debt</name>
-     <description></description>
-    </variable>
-    <variable>
-     <type>int</type>
-     <name>id</name>
      <description></description>
     </variable>
    </variables>
