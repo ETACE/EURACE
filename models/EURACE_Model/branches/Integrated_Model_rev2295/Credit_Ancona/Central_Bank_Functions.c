@@ -32,8 +32,9 @@ int Central_Bank_read_fiat_money_requests()
 
     //Read the bond emission -> fiat money request from governments
     START_ISSUE_BONDS_TO_ECB_MESSAGE_LOOP
-        FIAT_MONEY_GOVS += issue_bonds_to_ecb_message->nominal_value*issue_bonds_to_ecb_message->quantity;
+        FIAT_MONEY_GOVS += issue_bonds_to_ecb_message->nominal_value;
         BOND_HOLDINGS_VALUE += issue_bonds_to_ecb_message->nominal_value;
+        NR_GOV_BONDS += issue_bonds_to_ecb_message->quantity;
     FINISH_ISSUE_BONDS_TO_ECB_MESSAGE_LOOP
 
 
@@ -55,9 +56,9 @@ int Central_Bank_read_account_update()
     int i;
     int bank_mesg_count=0; //debug
     int gov_mesg_count=0; //debug
-    
+
+    ECB_DEPOSITS=0.0;    
     FIAT_MONEY_BANKS=0.0;
-    ECB_DEPOSITS=0.0;
 
     START_BANK_TO_CENTRAL_BANK_ACCOUNT_UPDATE_MESSAGE_LOOP
         ECB_DEPOSITS += bank_to_central_bank_account_update_message->payment_account;
@@ -106,6 +107,11 @@ int Central_Bank_read_account_update()
         gov_mesg_count++;    
     FINISH_GOV_TO_CENTRAL_BANK_ACCOUNT_UPDATE_MESSAGE_LOOP
 
+/* CHECK THIS FOR CORRECTNESS: if multiple governments pay different coupons?
+    START_PAYMENT_COUPONS_MESSAGE_LOOP
+        CASH += payment_coupons_message->coupon*NR_GOV_BONDS;
+    FINISH_PAYMENT_COUPONS_MESSAGE_LOOP
+*/
         if(PRINT_DEBUG_CREDIT)
         {                        
             if(gov_mesg_count!=ACCOUNTS_GOVS.size)
