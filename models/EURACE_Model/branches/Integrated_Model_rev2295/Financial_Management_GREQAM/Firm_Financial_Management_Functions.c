@@ -589,7 +589,11 @@ int Firm_bankruptcy_insolvency_procedure()
      target_debt = (1-DEBT_RESCALING_FACTOR)*(TOTAL_ASSETS-PAYMENT_ACCOUNT);
     
     //Renegotiating debt: refunding credit, computing bad debt
+    
+//printf("\n Firm_bankruptcy_insolvency_procedure BANKRUPTCY_IDLE_COUNTER %d",BANKRUPTCY_IDLE_COUNTER);
 
+if (BANKRUPTCY_IDLE_COUNTER == CONST_BANKRUPTCY_IDLE_PERIOD - 1)
+{
     for (i=0; i<LOANS.size; i++)
     {
         residual_var = LOANS.array[i].var_per_installment
@@ -610,10 +614,13 @@ int Firm_bankruptcy_insolvency_procedure()
 
         //step 3: send the bankruptcy_message to write off part of the debt
         //add_bankruptcy_message(firm_id, bank_id, bad_debt, credit_refunded, residual_var);
+        
         add_bankruptcy_message(ID, LOANS.array[i].bank_id, bad_debt,
-                credit_refunded, residual_var);
-    }
-    
+        credit_refunded, residual_var);        
+                
+   }
+   reset_debt_item_array(&LOANS);
+}   
     //Check that after refunding credit the payment account is depleted:
     if (PAYMENT_ACCOUNT>0)
         printf("\n ERROR in Firm_bankruptcy_insolvency_procedure:"
