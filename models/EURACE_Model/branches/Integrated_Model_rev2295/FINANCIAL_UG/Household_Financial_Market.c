@@ -168,17 +168,14 @@ int distribuite(double cash, double totalwealth)
 
 
 /* it compute a limitOrder on an Asset  anAsset contained into its Portfolio , */
-Order *computeLimitOrder( Asset *anAsset, double weight, double resource,Belief *belief)
+void computeLimitOrder( Asset *anAsset, double weight, double resource,Belief *belief, Order *order)
 {
       double limitPrice,lastprice;
       int quantity,deltaquantity; 
       int assetId;
       int trader_id;
       double aux;
-      Order *order;
-      Order anorder;
       trader_id=get_id();
-      order =newOrder();
       quantity=anAsset->quantity;
       assetId=anAsset->id;
       if(assetId!=belief->asset_id) printf("------------errore----------\n");
@@ -201,7 +198,7 @@ Order *computeLimitOrder( Asset *anAsset, double weight, double resource,Belief 
       //if(deltaquantity<0) deltaquantity=deltaquantity*1.1;
       //else deltaquantity=deltaquantity*0.9;  
       setOrder(order,limitPrice,deltaquantity,assetId,trader_id);
-      return order;
+      
 }
 
 double cashDemand(Order_array *pending)
@@ -243,13 +240,14 @@ void generatePendingOrders(Asset_array *assetsowned,Order_array *pending, Belief
 { int size,i;
   int index;
   Order *ord;
+  Order anorder;
   double resource;
   double weight;
   double tem_wealth;
   Asset *asset;
   Belief *belief;
   int target_quantity;
-
+  ord=&anorder;
   double_array *weights;
   tem_wealth=wealth(PAYMENT_ACCOUNT,assetsowned);
   resource=wealth(PAYMENT_ACCOUNT-CONSUMPTION_BUDGET,assetsowned);
@@ -296,7 +294,7 @@ void generatePendingOrders(Asset_array *assetsowned,Order_array *pending, Belief
          }
     weight=elementAtCDouble(weights,i);
     //printf("\n generatePendingOrders i %d weight %f", i, weight);
-    ord=computeLimitOrder(asset, weight,resource,belief);
+    computeLimitOrder(asset, weight,resource,belief, ord);
     
     if((ord->quantity!=0)&&(ord->price>0)) addOrder(pending,ord);
     
@@ -311,7 +309,6 @@ void generatePendingOrders(Asset_array *assetsowned,Order_array *pending, Belief
              
              }   
   }
- free(ord);
     //if (PRINT_DEBUG)
 //    {getchar();}
 
