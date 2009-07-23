@@ -207,7 +207,11 @@ int Government_resolve_unsold_bonds()
         
         if (GOV_POLICY_SWITCH_QUANTITATIVE_EASING)
         {   
-            last_market_price = BOND.prices[BOND.index];     
+            last_market_price = BOND.prices[BOND.index];
+            
+            if(last_market_price*BOND.quantity<0.0)
+                printf("\n In Government_resolve_unsold_bonds: Government nominal value %f \n", last_market_price*BOND.quantity);
+
             add_issue_bonds_to_ecb_message(last_market_price*BOND.quantity, BOND.quantity);
             
             if (PRINT_DEBUG_GOV)
