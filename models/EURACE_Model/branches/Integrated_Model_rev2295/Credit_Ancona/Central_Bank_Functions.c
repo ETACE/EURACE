@@ -60,38 +60,24 @@ int Central_Bank_read_account_update()
     ECB_DEPOSITS=0.0;
 
     START_BANK_TO_CENTRAL_BANK_ACCOUNT_UPDATE_MESSAGE_LOOP
-    //Search the correct account and update the value
+        ECB_DEPOSITS += bank_to_central_bank_account_update_message->payment_account;
+        FIAT_MONEY_BANKS += bank_to_central_bank_account_update_message->ecb_debt;
     
-    ECB_DEPOSITS += bank_to_central_bank_account_update_message->payment_account;
-    FIAT_MONEY_BANKS += bank_to_central_bank_account_update_message->ecb_debt;
-    
-    for (i=0;i<ACCOUNTS_BANKS.size;i++)
-    {       
-        if(ACCOUNTS_BANKS.array[i].id == bank_to_central_bank_account_update_message->id)
+        //Search the correct account and update the value    
+        for (i=0;i<ACCOUNTS_BANKS.size;i++)
+        {       
+            if(ACCOUNTS_BANKS.array[i].id == bank_to_central_bank_account_update_message->id)
             {
-                 ACCOUNTS_BANKS.array[i].payment_account = bank_to_central_bank_account_update_message->payment_account;
+            ACCOUNTS_BANKS.array[i].payment_account = bank_to_central_bank_account_update_message->payment_account;
             }
-        
-        //The sum of negative payment_account values
-      
-                    
-        //Total deposits at ECB
-        
-    }
+        }
         if(PRINT_DEBUG_CREDIT)
-            bank_mesg_count++;
-        
+            bank_mesg_count++;        
     FINISH_BANK_TO_CENTRAL_BANK_ACCOUNT_UPDATE_MESSAGE_LOOP
 
-    
-    
     START_BANK_INTEREST_PAYMENT_MESSAGE_LOOP
-    
-    CASH += bank_interest_payment_message->bank_interest_amount;
-    
+        CASH += bank_interest_payment_message->bank_interest_amount;
     FINISH_BANK_INTEREST_PAYMENT_MESSAGE_LOOP
-    
-
 
         if(PRINT_DEBUG_CREDIT)
         {                        
@@ -104,22 +90,20 @@ int Central_Bank_read_account_update()
                 printf("\n Nr of mesg equal to size of bank account array.\n");
         }
 
-
     START_GOV_TO_CENTRAL_BANK_ACCOUNT_UPDATE_MESSAGE_LOOP
-    //Search the correct account and update the value
-    for (i=0;i<ACCOUNTS_GOVS.size;i++)
-    {       
-        if(ACCOUNTS_GOVS.array[i].id == gov_to_central_bank_account_update_message->id)
+        for (i=0;i<ACCOUNTS_GOVS.size;i++)
+        {       
+            //Search the correct account and update the value
+            if(ACCOUNTS_GOVS.array[i].id == gov_to_central_bank_account_update_message->id)
             {
-                 ACCOUNTS_GOVS.array[i].payment_account = gov_to_central_bank_account_update_message->payment_account;
+            ACCOUNTS_GOVS.array[i].payment_account = gov_to_central_bank_account_update_message->payment_account;
             }
-
-        //Total deposits at ECB
-        ECB_DEPOSITS += gov_to_central_bank_account_update_message->payment_account;
-    }
-    if(PRINT_DEBUG_CREDIT)
-       gov_mesg_count++;
-
+    
+            //Total deposits at ECB
+            ECB_DEPOSITS += gov_to_central_bank_account_update_message->payment_account;
+        }
+        if(PRINT_DEBUG_CREDIT)
+        gov_mesg_count++;    
     FINISH_GOV_TO_CENTRAL_BANK_ACCOUNT_UPDATE_MESSAGE_LOOP
 
         if(PRINT_DEBUG_CREDIT)
@@ -135,4 +119,3 @@ int Central_Bank_read_account_update()
 
     return 0;
 }
-

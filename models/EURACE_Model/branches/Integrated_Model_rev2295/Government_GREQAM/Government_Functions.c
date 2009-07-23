@@ -36,6 +36,9 @@ int Government_initialization()
  */
 int Government_send_policy_announcements()
 {   
+    //Set tax rate to global constant
+    TAX_RATE_HH_LABOUR = CONST_INCOME_TAX_RATE;
+
     //add announcements
     add_policy_announcement_message(ID, TAX_RATE_CORPORATE, TAX_RATE_HH_LABOUR, TAX_RATE_HH_CAPITAL, TAX_RATE_VAT, UNEMPLOYMENT_BENEFIT_PCT, HH_SUBSIDY_PAYMENT, FIRM_SUBSIDY_PAYMENT, HH_TRANSFER_PAYMENT, FIRM_TRANSFER_PAYMENT);
     
@@ -499,4 +502,3 @@ int Government_set_policy()
     
     return 0;
 }
-
