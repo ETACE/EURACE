@@ -47,9 +47,14 @@ int Household_determine_consumption_budget()
             {
                 CONSUMPTION_BUDGET = PAYMENT_ACCOUNT;
             }*/
+
+		/*Compute the wealth income ratio*/
+		
+		WEALTH_INCOME_RATIO_ACTUAL = WEALTH/ MEAN_INCOME;
+
             
             /*Based on Carrol-Rule: Determination of the consumption budget*/
-            CONSUMPTION_BUDGET = MEAN_INCOME +CONSUMPTION_PROPENSITY*(WEALTH - WEALTH_INCOME_RATIO*MEAN_INCOME);
+            CONSUMPTION_BUDGET = MEAN_INCOME +CONSUMPTION_PROPENSITY*(WEALTH - WEALTH_INCOME_RATIO_TARGET*MEAN_INCOME);
             if(PAYMENT_ACCOUNT < 0)
             {
                if (PRINT_LOG)
