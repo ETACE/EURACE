@@ -371,7 +371,7 @@ int distribuite(double cash, double totalwealth);
 
 
 /* it compute a limitOrder on an Asset  anAsset contained into its Portfolio , */
-Order *computeLimitOrder( Asset *anAsset, double weight, double resource,Belief *belief);
+void computeLimitOrder( Asset *anAsset, double weight, double resource,Belief *belief, Order *ord);
 
 void generatePendingOrders(Asset_array *assetsowned,Order_array *pending, Belief_array *beliefs,double *payment_account);
 //void assetBeliefFormation(Belief_array *beliefs);
