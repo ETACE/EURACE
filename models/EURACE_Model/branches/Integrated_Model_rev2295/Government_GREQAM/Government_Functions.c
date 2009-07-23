@@ -197,7 +197,9 @@ int Government_send_account_update()
  * \brief Function to resolve the bonds that are left unsold at the end of each month.
  */
 int Government_resolve_unsold_bonds()
-{   double last_market_price;
+{   
+    double last_market_price;
+    
     //At the end of the month: check if the nr of bonds in the gov's own portfolio is positive
     if (BOND.quantity>0)
     {
@@ -206,7 +208,8 @@ int Government_resolve_unsold_bonds()
         if (GOV_POLICY_SWITCH_QUANTITATIVE_EASING)
         {   
             last_market_price = BOND.prices[BOND.index];     
-            add_issue_bonds_to_ecb_message(last_market_price, BOND.quantity);
+            add_issue_bonds_to_ecb_message(last_market_price*BOND.quantity, BOND.quantity);
+            
             if (PRINT_DEBUG_GOV)
             {
             printf("\n Government_resolve_unsold_bonds.QUANTITATIVE_EASING \n");
@@ -216,8 +219,8 @@ int Government_resolve_unsold_bonds()
             PAYMENT_ACCOUNT += last_market_price*BOND.quantity;
             if (PRINT_DEBUG_GOV)
             {
-            printf("\t Payment account after easing: %f \n", PAYMENT_ACCOUNT);
-            printf("\t last_market_price %f BOND.quantity %d \n", last_market_price,BOND.quantity );
+                printf("\t Payment account after easing: %f \n", PAYMENT_ACCOUNT);
+                printf("\t last_market_price %f BOND.quantity %d \n", last_market_price,BOND.quantity );
             }       
         }   
              
