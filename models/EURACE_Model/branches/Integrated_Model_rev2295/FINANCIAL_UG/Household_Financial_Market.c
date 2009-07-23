@@ -176,6 +176,7 @@ Order *computeLimitOrder( Asset *anAsset, double weight, double resource,Belief 
       int trader_id;
       double aux;
       Order *order;
+      Order anorder;
       trader_id=get_id();
       order =newOrder();
       quantity=anAsset->quantity;
@@ -296,7 +297,7 @@ void generatePendingOrders(Asset_array *assetsowned,Order_array *pending, Belief
     weight=elementAtCDouble(weights,i);
     //printf("\n generatePendingOrders i %d weight %f", i, weight);
     ord=computeLimitOrder(asset, weight,resource,belief);
-  
+    
     if((ord->quantity!=0)&&(ord->price>0)) addOrder(pending,ord);
     
     if (PRINT_DEBUG_AFM)
@@ -310,7 +311,7 @@ void generatePendingOrders(Asset_array *assetsowned,Order_array *pending, Belief
              
              }   
   }
-
+ free(ord);
     //if (PRINT_DEBUG)
 //    {getchar();}
 
