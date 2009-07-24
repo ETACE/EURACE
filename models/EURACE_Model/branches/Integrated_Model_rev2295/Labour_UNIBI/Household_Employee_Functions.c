@@ -12,7 +12,6 @@ int Household_receive_wage()
 {
 
     double mean_income = 0;
-    double total_income;
     
     /*Household reads the wage messages if employed*/
     START_WAGE_PAYMENT_MESSAGE_LOOP
@@ -23,9 +22,9 @@ int Household_receive_wage()
     	WAGE_RESERVATION = WAGE;
         remove_double(&LAST_INCOME,0);
         
-        total_income= wage_payment_message->payment +  CUM_TOTAL_DIVIDENDS + MONTHLY_BOND_INTEREST_INCOME;
+        TOTAL_INCOME= wage_payment_message->payment +  CUM_TOTAL_DIVIDENDS + MONTHLY_BOND_INTEREST_INCOME;
         
-        add_double(&LAST_INCOME,total_income);
+        add_double(&LAST_INCOME,TOTAL_INCOME);
 
         /*Compute a mean income of the last four month*/
         int i;
@@ -582,16 +581,16 @@ int Household_finish_labour_market()
 int Household_send_unemployment_benefit_notification()
 {
     double mean_income = 0.0;
-    double total_income;
+    
     /*Add unemployment_benefit message */
     add_unemployment_notification_message(GOV_ID,LAST_LABOUR_INCOME);
 
     /*Add unemployment_benefit to account */
     PAYMENT_ACCOUNT +=  UNEMPLOYMENT_BENEFIT_PCT * LAST_LABOUR_INCOME;
-    total_income=  UNEMPLOYMENT_BENEFIT_PCT * LAST_LABOUR_INCOME + CUM_TOTAL_DIVIDENDS + MONTHLY_BOND_INTEREST_INCOME;
+    TOTAL_INCOME=  UNEMPLOYMENT_BENEFIT_PCT * LAST_LABOUR_INCOME + CUM_TOTAL_DIVIDENDS + MONTHLY_BOND_INTEREST_INCOME;
     
     remove_double(&LAST_INCOME,0);
-    add_double(&LAST_INCOME, total_income);
+    add_double(&LAST_INCOME, TOTAL_INCOME);
 
 
     /*Compute a mean income of the last four month*/
