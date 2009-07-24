@@ -20,62 +20,62 @@
     <variable>
      <type>double</type>
      <name>productivity</name>
-     <description></description>
+     <description>Current best practice technology of the IG firm.</description>
     </variable>
     <variable>
      <type>double</type>
      <name>capital_good_price</name>
-     <description></description>
+     <description>Price of the capital good.</description>
     </variable>
     <variable>
      <type>double</type>
      <name>revenue_per_day</name>
-     <description></description>
+     <description>Daily revenue.</description>
     </variable>
     <variable>
      <type>double</type>
      <name>tax_rate_corporate</name>
-     <description></description>
+     <description>Corporate tax rate.</description>
     </variable>
     <variable>
      <type>double</type>
      <name>tax_rate_vat</name>
-     <description></description>
+     <description>VAT tax rate.</description>
     </variable>
     <variable>
      <type>double</type>
      <name>tax_payment</name>
-     <description></description>
+     <description>Sum of taxes paid.</description>
     </variable>
     <variable>
      <type>double</type>
      <name>net_profit</name>
-     <description></description>
+     <description>Net profits: earnings after tax payment.</description>
     </variable>
     <variable>
      <type>int</type>
      <name>outstanding_shares</name>
-     <description></description>
+     <description>Number of outstanding shares</description>
     </variable>
     <variable>
      <type>double</type>
      <name>current_dividend_per_share</name>
-     <description></description>
+     <description>Dividends per share</description>
     </variable>
     <variable>
      <type>double</type>
      <name>cum_revenues</name>
-     <description></description>
+     <description>This counts the monthly revenue.</description>
     </variable>
     <variable>
      <type>double</type>
      <name>cum_revenue_last_month</name>
-     <description></description>
+     <description>Monthly revenue of the last month</description>
     </variable>
     <variable>
      <type>double</type>
      <name>cum_net_profits</name>
-     <description></description>
+     <description>Sum of net profits of the last periods.</description>
     </variable>
     <variable>
      <type>double_array</type>
@@ -85,7 +85,7 @@
     <variable>
      <type>double</type>
      <name>dividend_payment</name>
-     <description></description>
+     <description>Dividends paid.</description>
     </variable>
    </memory>
    <functions>
@@ -221,7 +221,7 @@
  <messages>
   <message>
    <name>productivity</name>
-   <description></description>
+   <description>Sent by IG firm: Contains information about price and quality of the investment good.</description>
    <variables>
     <variable>
      <type>int</type>
@@ -242,7 +242,7 @@
   </message>
   <message>
    <name>capital_good_request</name>
-   <description></description>
+   <description>Sent by firms: Contains the capital goods demand.</description>
    <variables>
     <variable>
      <type>int</type>
@@ -257,19 +257,8 @@
    </variables>
   </message>
   <message>
-   <name>capital_good_profit_distribution</name>
-   <description></description>
-   <variables>
-    <variable>
-     <type>double</type>
-     <name>capital_good_profit_shares</name>
-     <description></description>
-    </variable>
-   </variables>
-  </message>
-  <message>
    <name>capital_good_delivery</name>
-   <description></description>
+   <description>Sent by IG firm: Delivery of the investment good.</description>
    <variables>
     <variable>
      <type>int</type>
@@ -289,6 +278,17 @@
     <variable>
      <type>double</type>
      <name>capital_good_price</name>
+     <description></description>
+    </variable>
+   </variables>
+  </message>
+  <message>
+   <name>dividend</name>
+   <description></description>
+   <variables>
+    <variable>
+     <type>double</type>
+     <name>dividend</name>
      <description></description>
     </variable>
    </variables>
