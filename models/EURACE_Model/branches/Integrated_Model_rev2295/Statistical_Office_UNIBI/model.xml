@@ -465,37 +465,6 @@
     </variables>
    </dataType>
    <dataType>
-    <name>tax_rates_item</name>
-    <description>Used by Eurostat to store data from different Government agents</description>
-    <variables>
-     <variable>
-      <type>int</type>
-      <name>gov_id</name>
-      <description></description>
-     </variable>
-     <variable>
-      <type>double</type>
-      <name>tax_rate_corporate</name>
-      <description>Tax rate on corporate profit.</description>
-     </variable>
-     <variable>
-      <type>double</type>
-      <name>tax_rate_hh_labour</name>
-      <description>Tax rate on labour income.</description>
-     </variable>
-     <variable>
-      <type>double</type>
-      <name>tax_rate_hh_capital</name>
-      <description>Tax rate on capital income.</description>
-     </variable>
-     <variable>
-      <type>double</type>
-      <name>tax_rate_vat</name>
-      <description>Tax rate VAT.</description>
-     </variable>
-    </variables>
-   </dataType>
-   <dataType>
     <name>history_item</name>
     <description>Used by Eurostat to store history data</description>
     <variables>
@@ -1903,11 +1872,6 @@
      <type>household_data_array</type>
      <name>region_household_data</name>
      <description>Stores the eurostat memory variables concerning the households for the different regions</description>
-    </variable>
-    <variable>
-     <type>tax_rates_item</type>
-     <name>government_tax_rates[100]</name>
-     <description></description>
     </variable>
     <variable>
      <type>double</type>
