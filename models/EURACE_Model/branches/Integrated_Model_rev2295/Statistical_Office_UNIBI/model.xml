@@ -1906,7 +1906,7 @@
     </variable>
     <variable>
      <type>tax_rates_item</type>
-     <name>government_tax_rates[27]</name>
+     <name>government_tax_rates[100]</name>
      <description></description>
     </variable>
     <variable>
@@ -2086,42 +2086,42 @@
     </variable>
     <variable>
      <type>double</type>
-     <name>export_volume_matrix[900]</name>
+     <name>export_volume_matrix[10000]</name>
      <description>Matrix holding data on exports between regions, measured in volume.</description>
     </variable>
     <variable>
      <type>double</type>
-     <name>export_value_matrix[900]</name>
+     <name>export_value_matrix[10000]</name>
      <description>Matrix holding data on exports between regions, measured in value.</description>
     </variable>
     <variable>
      <type>double</type>
-     <name>export_previous_value_matrix[900]</name>
+     <name>export_previous_value_matrix[10000]</name>
      <description>Matrix holding data on exports between regions, measured against previous prices.</description>
     </variable>
     <variable>
      <type>double</type>
-     <name>region_export_volume[30]</name>
+     <name>region_export_volume[100]</name>
      <description>Array holding data on total exports of each region, measured in volume.</description>
     </variable>
     <variable>
      <type>double</type>
-     <name>region_import_volume[30]</name>
+     <name>region_import_volume[100]</name>
      <description>Array holding data on total imports of each region, measured in volume.</description>
     </variable>
     <variable>
      <type>double</type>
-     <name>region_export_value[30]</name>
+     <name>region_export_value[100]</name>
      <description>Array holding data on total exports of each region, measured in value.</description>
     </variable>
     <variable>
      <type>double</type>
-     <name>region_import_value[30]</name>
+     <name>region_import_value[100]</name>
      <description>Array holding data on total imports of each region, measured in value.</description>
     </variable>
     <variable>
      <type>double</type>
-     <name>region_import_previous_value[30]</name>
+     <name>region_import_previous_value[100]</name>
      <description>Array holding data on total imports of each region, measured in value against previous prices.</description>
     </variable>
     <variable>
