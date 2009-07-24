@@ -809,11 +809,6 @@ of employees and the number of vacancies</description>
      <name>day_of_month_receive_benefit</name>
      <description>The day of the month that the household receives its unemployment benefit. Equal to the day on which it became unemployed. This value will change when the household becomes re-employed again by another (or the same) firm, with the exception in case the new firm has the same activation day as the old firm.</description>
     </variable>
-    <variable>
-     <type>double</type>
-     <name>total_income</name>
-     <description>This variable counts the total income of households.</description>
-    </variable>
    </memory>
    <functions>
     <function>
