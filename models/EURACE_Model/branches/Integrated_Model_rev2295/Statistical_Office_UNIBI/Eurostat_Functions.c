@@ -908,34 +908,6 @@ int Eurostat_calculate_data()
     return 0;
 }
 
-/** \fn Eurostat_read_policy_announcements
- * \brief Eurostat receive micro data and calculates macro data
- */
-int Eurostat_read_policy_announcements()
-{
-    int i;
-    
-    //Messages send by Government:
-    START_POLICY_ANNOUNCEMENT_MESSAGE_LOOP          
-    for (i=0; i<27; i++)
-    {
-        if(policy_announcement_message->gov_id == GOVERNMENT_TAX_RATES[i].gov_id)
-        {
-            GOVERNMENT_TAX_RATES[i].tax_rate_corporate = policy_announcement_message->tax_rate_corporate;
-            GOVERNMENT_TAX_RATES[i].tax_rate_hh_labour = policy_announcement_message->tax_rate_hh_labour;
-            GOVERNMENT_TAX_RATES[i].tax_rate_hh_capital = policy_announcement_message->tax_rate_hh_capital;
-            GOVERNMENT_TAX_RATES[i].tax_rate_vat = policy_announcement_message->tax_rate_vat;
-            break;
-        }
-    }
-    FINISH_POLICY_ANNOUNCEMENT_MESSAGE_LOOP
-    
-    return 0;
-}
-
-
-
-
 /******************************* STORING MONTHLY DATA **************************************/
 /* Datatype:
 
