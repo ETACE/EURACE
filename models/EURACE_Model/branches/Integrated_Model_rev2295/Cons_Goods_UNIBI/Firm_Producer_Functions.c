@@ -117,6 +117,9 @@ int Firm_set_quantities_zero()
     PLANNED_PRODUCTION_QUANTITY = 0;
     PRODUCTION_QUANTITY = 0;
 
+    TOTAL_INTEREST_PAYMENT=0.0;
+    TOTAL_DEBT_INSTALLMENT_PAYMENT=0.0;
+
     return 0;
 }
 
@@ -541,9 +544,9 @@ return 0;
 int Firm_calc_pay_costs()
 {
         
-	int i;
-	
-		/*Pay capital costs*/
+    int i;
+    
+        /*Pay capital costs*/
 
         add_pay_capital_goods_message(ID,CAPITAL_COSTS);
 
@@ -563,7 +566,7 @@ int Firm_calc_pay_costs()
         if(PRODUCTION_QUANTITY!=0 )
         {
             
-        	CALC_CAPITAL_COSTS = 0;
+            CALC_CAPITAL_COSTS = 0;
         for( i = 0; i<CAPITAL_FINANCING.size;i++) 
             {
                 if(CAPITAL_FINANCING.array[i].nr_periods_before_repayment==0)
@@ -692,7 +695,7 @@ int Firm_calc_revenue()
         {
             if(sales_message->mall_id ==  SOLD_QUANTITIES.array[i].mall_id)
             {
-            	
+                
                 
                 SOLD_QUANTITIES.array[i].stock_empty = 
                                sales_message->stock_empty;
@@ -774,19 +777,19 @@ int Firm_compute_sales_statistics()
                    {
                    if(MALLS_SALES_STATISTICS.array[j].mall_id == SOLD_QUANTITIES.array[i].mall_id)
                        {
-                   	
-                   	if(SOLD_QUANTITIES.array[i].stock_empty==0)
-                   	{
+                    
+                    if(SOLD_QUANTITIES.array[i].stock_empty==0)
+                    {
                        add_data_type_sales(&(MALLS_SALES_STATISTICS.array[j].sales), 1 , 
                            SOLD_QUANTITIES.array[i].sold_quantity);
-                       	//printf("ID %d   stock empty, = 0  SOLD_QUANTITIES.array[i].sold_quantity %f\n",ID,SOLD_QUANTITIES.array[i].sold_quantity);
+                        //printf("ID %d   stock empty, = 0  SOLD_QUANTITIES.array[i].sold_quantity %f\n",ID,SOLD_QUANTITIES.array[i].sold_quantity);
                        
-                   	}
+                    }
                        else
                        {
-                       	add_data_type_sales(&(MALLS_SALES_STATISTICS.array[j].sales), 1 , 
-                       	                    SOLD_QUANTITIES.array[i].sold_quantity*(1 + ADAPTION_DELIVERY_VOLUME));
-                       	//printf("ID %d   stock empty, = 1   sold_quantity*(1 + ADAPTION_DELIVERY_VOLUME)  %f\n",ID,SOLD_QUANTITIES.array[i].sold_quantity*(1 + ADAPTION_DELIVERY_VOLUME));
+                        add_data_type_sales(&(MALLS_SALES_STATISTICS.array[j].sales), 1 , 
+                                            SOLD_QUANTITIES.array[i].sold_quantity*(1 + ADAPTION_DELIVERY_VOLUME));
+                        //printf("ID %d   stock empty, = 1   sold_quantity*(1 + ADAPTION_DELIVERY_VOLUME)  %f\n",ID,SOLD_QUANTITIES.array[i].sold_quantity*(1 + ADAPTION_DELIVERY_VOLUME));
                        }
                        SOLD_QUANTITIES.array[i].sold_quantity=0;
                        SOLD_QUANTITIES.array[i].stock_empty=0;
