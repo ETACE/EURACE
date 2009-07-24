@@ -146,9 +146,6 @@ int Firm_calc_production_quantity()
 
         mean_critical_stocks = mean_critical_stocks/CURRENT_MALL_STOCKS.size;
 
-        /*Computing of out-of-stock costs*/
-        OUT_OF_STOCK_COSTS = (PRICE - DISCOUNT_RATE*UNIT_COSTS)/
-        (PRICE+INVENTORY_COSTS_PER_UNIT);
 
         /*Creating a temporary array of the last X sales per mall*/
         for(int i = 0; i < CURRENT_MALL_STOCKS.size;i++)
