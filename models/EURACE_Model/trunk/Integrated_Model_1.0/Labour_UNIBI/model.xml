@@ -745,7 +745,7 @@ of employees and the number of vacancies</description>
       <lhs>
        <value>a.no_employees</value>
       </lhs>
-      <op>EQ</op>
+      <op>GEQ</op>
       <rhs>
        <value>a.employees_needed</value>
       </rhs>
