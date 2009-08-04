@@ -57,22 +57,7 @@ Asset *elementAtCAsset(Asset_array *coll ,int index)
 }
 
 
-void init_Assetsowned(Asset_array *assets)
-{  
-    init_Asset_array(assets);
-    reset_Asset_array(assets);
-    add_Asset(assets, 0, 1000, 50);
-    add_Asset(assets, 1, 500, 100);
-    add_Asset(assets, 2000, 1000, 100);
-}
-Asset_array *newAssetsTotal(int quantity)
-{   Asset_array *assets;
-    init_Asset_array(assets);
-    reset_Asset_array(assets);
-    add_Asset(assets, 0, quantity, 50);
-    add_Asset(assets, 1, quantity, 50);
-    return assets;
-}
+
 
 int findCAsset(Asset_array *coll,int assetId)
 {   int answer;
