@@ -6,19 +6,19 @@
  <models>
   <model>
    <file>Cons_Goods_UNIBI/model.xml</file>
-   <enabled>true</enabled>
+   <enabled>false</enabled>
   </model>
   <model>
    <file>Credit_Ancona/model.xml</file>
-   <enabled>true</enabled>
+   <enabled>false</enabled>
   </model>
   <model>
    <file>Financial_Management_GREQAM/model.xml</file>
-   <enabled>true</enabled>
+   <enabled>false</enabled>
   </model>
   <model>
    <file>FINANCIAL_UG/model.xml</file>
-   <enabled>true</enabled>
+   <enabled>false</enabled>
   </model>
   <model>
    <file>Financial_UNIBI/model.xml</file>
