@@ -99,7 +99,7 @@ double wage_reservation_update = 0.01;//0.01
 
 /*Cost of working in a different region: for example travelling costs*/
 
-double region_cost_1 =99.0;
+double region_cost_1 =0.0;
 double region_cost_2 =0.0;
 double region_cost_3 = 0.0;
 
@@ -176,10 +176,10 @@ double SUBSIDY_FRACTION = 0.0;
 	int num_regions = num_regions_X*num_regions_Y; /*number of regions*/
 	
 	
-	int total_households = 1600;/*number of households in the economy*/
+	int total_households = 1000;/*number of households in the economy*/
 	int households_per_region = total_households/num_regions; 
 
-	int total_firms  = 80; /*total_firms modulo num_regions should be 0*/
+	int total_firms  = 4; /*total_firms modulo num_regions should be 0*/
 	int total_IGfirms = 1;
 	int total_market_research = 1;
 	int total_malls = num_regions;  /*one mall per region*/
@@ -187,6 +187,7 @@ double SUBSIDY_FRACTION = 0.0;
 	int num_app =5;
 	int total_Governments =1;
 	int total_banks = 1;
+	double fraction_researchers = 0.03;
 	
 
 	double 	tax_rate_corporate = 0.05;
@@ -197,19 +198,19 @@ double SUBSIDY_FRACTION = 0.0;
 	double 	payment_account_household [2][1] = {0.0,0.0};
 
 	double   cap_price; // temp variable for printing capital_good_price_region into memory variables of the firm
-	double	capital_good_price = 6;
-	double	capital_good_price_region[2][1] = {6.0,2.0};
+	double	capital_good_price = 2;
+	double	capital_good_price_region[2][1] = {2.0,2.0};
 	
-	double productivity_best_practice_igfirm = 3.3;  //Productivity of the technology offered by the IG firm
+	double productivity_best_practice_igfirm = 1.1;  //Productivity of the technology offered by the IG firm
 	double productivity_best_practice[2][1]=
-					{3.3,1.1};
+					{1.1,1.1};
 
 
 	int years_statistics = 10;/*number of years used to smooth the production*/
 
 	/*Defining skill distributions in regions: only 1-4*/
 
-	double skilldistribution_1[5]={0.8,0.05,0.05,0.05,0.05};
+	double skilldistribution_1[5]={0.2,0.2,0.2,0.2,0.2};
 	double skilldistribution_2[5]={0.05,0.05,0.8,0.05,0.05};
 	double skilldistribution_3[5]={0.42,0.33,0.20,0.04,0.01};
 	double skilldistribution_4[5]={0.1,0.3,0.4,0.15,0.05};
@@ -288,11 +289,11 @@ double SUBSIDY_FRACTION = 0.0;
 	
 	//This determines the local skill distribution. Use numbers 1 .. 4 (see above, skill distribution_X) to give a region a skill distribution. 
 		int skills_in_regions[2][1]=
-					{4,3};
+					{1,1};
 	
 	
 		//region specific initial value of households specific skills
-		double spec_s_hh_reg1 = 3.0;
+		double spec_s_hh_reg1 = 1.0;
 		double spec_s_hh_reg2 = 1.0;
 		double specific_skills_of_household[2][1]=
 							{spec_s_hh_reg1,spec_s_hh_reg2};
@@ -300,17 +301,17 @@ double SUBSIDY_FRACTION = 0.0;
 
 		//Total production volume for a single firm
 			double total_production_quantity[2][1]=
-						{81.0,27.0};
+						{27.0,27.0};
 			//This defines the initial capital stock of firm depending on the region.
 			double total_units_capital[2][1]=
 				                            {45.0,45.0};
 			//Firm's starting value of productivity of the capital stock
 			double technology[2][1]=
-							{3.0,1.0};
+							{1.0,1.0};
 
 			//This defines the financial resources of firm at the beginning of a simulation
 			double payment_account[2][1]= 
-			{150.0,50.0};
+			{50.0,50.0};
 			
 				
 			//Base wage offer per unit of specific skills:
@@ -811,6 +812,8 @@ sprintf(data, "%d",NO_REGIONS_PER_GOV);	print_tag("no_regions_per_gov", data, fi
 
 
 	/* IGFirm */
+ int column = 1;
+int row = 1;
 	num_start = num;
 	for(num=num_start; num<total_IGfirms+num_start; num++)
 	{
@@ -818,9 +821,40 @@ sprintf(data, "%d",NO_REGIONS_PER_GOV);	print_tag("no_regions_per_gov", data, fi
 		fputs("<name>IGFirm</name>\n", file);
 		sprintf(data, "%d", num);     print_tag("id", data, file);
 		id_igfirm = num;
-		sprintf(data, "%d",random_int(1,num_regions));	print_tag("region_id", data, file);
-		sprintf(data, "%d",gov_id);	print_tag("gov_id", data, file);
+		sprintf(data, "%d",1);	print_tag("region_id", data, file);
+		sprintf(data, "%d",gov_id);		print_tag("gov_id", data, file);
 		sprintf(data, "%d",bank_id);		print_tag("bank_id", data, file);
+
+		sprintf(data, "{}");							print_tag("employees", data, file);
+		sprintf(data, "{}");							print_tag("research_employees", data, file);
+		sprintf(data, "%f",base_wage_offer);			print_tag("wage_offer", data, file);
+		sprintf(data, "%f",wage_offer[column][row]);	print_tag("wage_offer_for_skill_1", data, file);
+		sprintf(data, "%f",wage_offer[column][row]);	print_tag("wage_offer_for_skill_2", data, file);
+		sprintf(data, "%f",wage_offer[column][row]);	print_tag("wage_offer_for_skill_3", data, file);
+		sprintf(data, "%f",wage_offer[column][row]);	print_tag("wage_offer_for_skill_4", data, file);
+		sprintf(data, "%f",wage_offer[column][row]);	print_tag("wage_offer_for_skill_5", data, file);
+		sprintf(data, "%f",base_wage_offer);			print_tag("wage_offer_for_rd", data, file);
+
+		sprintf(data, "%f",specific_skills_of_household[column][row]);	print_tag("average_s_skill_of_1", data, file);
+		sprintf(data, "%f",specific_skills_of_household[column][row]);	print_tag("average_s_skill_of_2", data, file);
+		sprintf(data, "%f",specific_skills_of_household[column][row]);	print_tag("average_s_skill_of_3", data, file);
+		sprintf(data, "%f",specific_skills_of_household[column][row]);	print_tag("average_s_skill_of_4", data, file);
+		sprintf(data, "%f",specific_skills_of_household[column][row]);	print_tag("average_s_skill_of_5", data, file);
+		sprintf(data, "%d", 0);		print_tag("no_employees", data, file);
+		sprintf(data, "%d", 0);		print_tag("no_employees_skill_1", data, file);
+		sprintf(data, "%d", 0);		print_tag("no_employees_skill_2", data, file);
+		sprintf(data, "%d", 0);		print_tag("no_employees_skill_3", data, file);
+		sprintf(data, "%d", 0);		print_tag("no_employees_skill_4", data, file);
+		sprintf(data, "%d", 0);		print_tag("no_employees_skill_5", data, file);
+		sprintf(data, "%d", 0);		print_tag("no_research_employees", data, file);
+
+		sprintf(data, "%d", 0);		print_tag("vacancies", data, file);
+		sprintf(data, "%d", 0);		print_tag("vacancies_posted", data, file);
+		sprintf(data, "%d", 0);		print_tag("research_vacancies", data, file);
+		sprintf(data, "%d", 0);		print_tag("research_vacancies_posted", data, file);
+		sprintf(data, "%d", 0);		print_tag("employees_needed", data, file);
+		sprintf(data, "%d", 0);		print_tag("research_employees_needed", data, file);
+
 		sprintf(data, "%f",0.0);	print_tag("payment_account", data, file);
 		sprintf(data, "%f",productivity_best_practice_igfirm);	print_tag("productivity", data, file);
 		sprintf(data, "%f", capital_good_price);	print_tag("capital_good_price", data, file);
@@ -903,16 +937,30 @@ sprintf(data, "%d",NO_REGIONS_PER_GOV);	print_tag("no_regions_per_gov", data, fi
 			skill_fraction_4 = skilldistribution_4[3];
 			skill_fraction_5 = skilldistribution_4[4];
 			}
-		if(counter<=skill_fraction_1* households_per_region)
+
+		if(counter<=skill_fraction_1*(1-fraction_researchers)* households_per_region)
 			g_skill_level =1;
-		else if(counter<=(skill_fraction_1+skill_fraction_2)* households_per_region)
+
+
+		else if(counter<=(skill_fraction_1+skill_fraction_2)*(1-fraction_researchers)* households_per_region)
 			g_skill_level =2;
-		else if(counter<=(skill_fraction_1+skill_fraction_2+skill_fraction_3)* households_per_region)
+
+
+		else if(counter<=(skill_fraction_1+skill_fraction_2+skill_fraction_3)*(1-fraction_researchers)* households_per_region)
 			g_skill_level =3;
-		else if(counter<=(skill_fraction_1+skill_fraction_2+skill_fraction_3+skill_fraction_4)* households_per_region)
+
+
+		else if(counter<=(skill_fraction_1+skill_fraction_2+skill_fraction_3+skill_fraction_4)*(1-fraction_researchers)* households_per_region)
 			g_skill_level =4;
+
+
+		else if(counter<=(skill_fraction_1+skill_fraction_2+skill_fraction_3+skill_fraction_4+skill_fraction_5)*(1-fraction_researchers)* households_per_region)
+			 g_skill_level =5;
+
 		else
-			g_skill_level =5;
+			g_skill_level = 6;
+
+
 		sprintf(data, "%d", a_id);     	print_tag("id", data, file);
 		sprintf(data, "%d",region);     print_tag("region_id", data, file);
 		sprintf(data, "%d", gov_id);     print_tag("gov_id", data, file);

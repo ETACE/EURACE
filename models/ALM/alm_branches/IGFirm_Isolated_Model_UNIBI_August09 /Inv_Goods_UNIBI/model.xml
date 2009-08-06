@@ -88,6 +88,7 @@
      <description></description>
     </variable>
    </memory>
+
    <functions>
     <function>
      <name>IGFirm_update_productivity_price</name>
@@ -119,11 +120,19 @@
      <inputs/>
      <outputs/>
     </function>
+
     <function>
      <name>IGFirm_send_quality_price_info</name>
      <description></description>
      <currentState>01</currentState>
-     <nextState>02</nextState>
+    <!-- <nextState>02</nextState>-->
+  <nextState>Start_IGFirm_Employer_Role</nextState>
+  <condition>
+       <time>
+        <period>monthly</period>
+        <phase>a.day_of_month_to_act</phase>
+       </time>
+     </condition>
      <inputs/>
      <outputs>
       <output>
@@ -131,10 +140,32 @@
       </output>
      </outputs>
     </function>
+
+<function>
+     <name>IGFirm_idle</name>
+     <description></description>
+     <currentState>01</currentState>
+     <nextState>Start_IGFirm_Production</nextState>
+     <condition>
+      <not>
+       <time>
+        <period>monthly</period>
+        <phase>a.day_of_month_to_act</phase>
+       </time>
+      </not>
+     </condition>
+     <inputs/>
+     <outputs/>
+    </function>
+
+
+
+
+
     <function>
      <name>IGFirm_send_capital_good</name>
      <description></description>
-     <currentState>02</currentState>
+     <currentState>Start_IGFirm_Production</currentState>
      <nextState>03</nextState>
      <inputs>
       <input>

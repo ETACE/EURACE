@@ -168,7 +168,7 @@ int Firm_send_vacancies()
         add_vacancies_message(ID, REGION_ID, 
         WAGE_OFFER_FOR_SKILL_1, WAGE_OFFER_FOR_SKILL_2, 
         WAGE_OFFER_FOR_SKILL_3, WAGE_OFFER_FOR_SKILL_4, 
-        WAGE_OFFER_FOR_SKILL_5);
+        WAGE_OFFER_FOR_SKILL_5,0);
                                     
     }
     
@@ -713,7 +713,7 @@ int Firm_send_vacancies_2()
         /*For every general skill level (1-5)*/
     	
         add_vacancies2_message(ID, REGION_ID, 
-        WAGE_OFFER_FOR_SKILL_1, WAGE_OFFER_FOR_SKILL_2, WAGE_OFFER_FOR_SKILL_3, WAGE_OFFER_FOR_SKILL_4, WAGE_OFFER_FOR_SKILL_5);
+        WAGE_OFFER_FOR_SKILL_1, WAGE_OFFER_FOR_SKILL_2, WAGE_OFFER_FOR_SKILL_3, WAGE_OFFER_FOR_SKILL_4, WAGE_OFFER_FOR_SKILL_5,0);
                          
     }   
     

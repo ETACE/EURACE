@@ -789,6 +789,7 @@
      <description></description>
      <currentState>start_IGFirm</currentState>
      <nextState>Start_IGFirm_Productivity</nextState>
+<!--<nextState>Start_IGFirm_Employer_Role</nextState>-->
      <condition>
       <not>
        <time>
@@ -805,6 +806,7 @@
      <description></description>
      <currentState>start_IGFirm</currentState>
      <nextState>Start_IGFirm_Productivity</nextState>
+	<!--<nextState>Start_IGFirm_Employer_Role</nextState>-->
      <condition>
       <time>
        <period>yearly</period>

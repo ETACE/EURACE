@@ -152,6 +152,11 @@ int Household_UNEMPLOYED_read_job_vacancies_and_send_applications()
     	{
     		wage_offer =  vacancies_message->firm_wage_offer_for_skill_5;
     	}
+
+	if(GENERAL_SKILL == 6)
+    	{
+    		wage_offer =  vacancies_message->firm_wage_offer_for_rd;
+    	}
   	
         /*wage offer has to be equal or higher than the reservation wage*/
         if(wage_offer >= WAGE_RESERVATION)
@@ -383,6 +388,11 @@ int Household_UNEMPLOYED_read_job_vacancies_and_send_applications_2()
     		wage_offer =  vacancies2_message->firm_wage_offer_for_skill_5;
     	}
 
+	if(GENERAL_SKILL == 6)
+    	{
+    		wage_offer =  vacancies2_message->firm_wage_offer_for_rd;
+    	}
+
         if(wage_offer >= WAGE_RESERVATION)
         {
             /*Firm and Household are in the same region*/
@@ -439,6 +449,10 @@ int Household_UNEMPLOYED_read_job_vacancies_and_send_applications_2()
     for(i = 0; i < (vacancy_list.size); i++)
     {
         add_job_application2_message(ID, vacancy_list.array[i].firm_id,                 REGION_ID, GENERAL_SKILL, SPECIFIC_SKILL);
+
+/*if(vacancy_list.array[i].firm_id ==5)
+printf("APPLICATION TO IG++++++++APPLICATION TO IG++++++++++++APPLICATION TO IG++++APPLICATION TO IG+++++++++++++++++++++++++++\n");*/
+
     }
 
 
@@ -519,6 +533,7 @@ int Household_read_job_offers_send_response_2()
     if(job_offer_list.size > 0)
     {
         add_job_acceptance2_message(ID, job_offer_list.array[0].firm_id,                REGION_ID, GENERAL_SKILL, SPECIFIC_SKILL);
+
 
         /*If on the job search add quitting message*/
         if(ON_THE_JOB_SEARCH == 1)
