@@ -133,7 +133,7 @@ int IGFirm_dividend_payment()
 
 
 	//double weight = 0.2;
-	double average_last_net_profits;
+	double average_last_net_profits = 0.0;
 	double total_dividend_payment;
 	DIVIDEND_PAYMENT = 0.0;
 
