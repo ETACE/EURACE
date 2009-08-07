@@ -116,6 +116,8 @@ int Government_pays_coupons()
 
 int Government_read_policy_rate()
    { double tmp;
+     
+     tmp = BOND.nominal_yield / 1.1;
    
             START_POLICY_RATE_MESSAGE_LOOP
                 tmp = policy_rate_message->policy_rate_value;      
