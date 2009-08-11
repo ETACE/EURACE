@@ -157,11 +157,7 @@ int Firm_receive_data()
     //printf("FIRM_ID %d \n",ID);
     //if(ID < 3)
     //printf("eurostat_send_specific_skills_message->productivity_progress %f \n",eurostat_send_specific_skills_message->productivity_progress);
-                if(eurostat_send_specific_skills_message->productivity_progress > 0)
-                {     
-                    WAGE_OFFER = WAGE_OFFER*(1+
-                    eurostat_send_specific_skills_message->productivity_progress);
-                }
+               
                 
                 int i;
                 for(i = 0; i < EMPLOYEES.size; i++)
