@@ -459,7 +459,7 @@ int Firm_calc_production_quantity_2()
             {
                 PLANNED_PRODUCTION_QUANTITY -= decrement;
                 Firm_calc_input_demands_2();
-		printf("YYYYYYYYYYYYYYYYYYY\n");
+		
             }
         }else
         {
