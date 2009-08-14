@@ -164,15 +164,7 @@ int Government_read_subsidy_notifications()
     return 0;
 }
 
-/* \fn: int Government_send_data_to_Eurostat()
- * \brief Function to send balance sheet data to Eurostat.
- */
-int Government_send_data_to_Eurostat()
-{        
-      
 
-    return 0;
-}
 
 /* \fn: int Government_send_account_update()
  * \brief Function to send the payment_account value to the Central Bank.
@@ -238,6 +230,8 @@ int Government_monthly_budget_accounting()
         }
     return 0;
 }
+
+
 
 /* \fn: int Government_monthly_resetting()
  * \brief Monthly resetting of counters.
