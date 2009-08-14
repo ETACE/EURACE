@@ -90,6 +90,19 @@ struct mall
 
 };
 
+ struct government
+{
+	int id;
+	int region_id;
+	double monthly_tax_revenues;
+	double monthly_benefit_payment;	
+	double monthly_budget_balance;
+	double total_debt;
+
+	struct government * next;
+
+};
+
 
 
 /*Defining structs to store regional data*/
@@ -186,7 +199,15 @@ struct Firm_data
 };
 typedef struct Firm_data Firm_data;
 
-
+struct Government_data
+{
+	int region_id;
+	double monthly_tax_revenues;
+	double monthly_benefit_payment;	
+	double monthly_budget_balance;
+	double total_debt;
+};
+typedef struct Government_data Government_data;
 
 
 typedef struct firm firm;
@@ -194,6 +215,7 @@ typedef struct household household;
 
 typedef struct mall mall;
 typedef struct IGfirm IGfirm;
+typedef struct government government;
 
 double last_production[10];
 double last_technology[10];
@@ -273,6 +295,26 @@ void freeIGfirms(IGfirm * head)
 		head = tmp;
 	}
 }
+
+
+void freegovernments(government * head)
+{
+	/* Tempory element needed for loop */
+	government * tmp;
+
+	/* Loop while head is not NULL */
+	while(head)
+	{
+		/* Make next in list tmp */
+		tmp = head->next;
+		/* Free memory of head */
+		free(head);
+		/* Make head the next in the list */
+		head = tmp;
+	}
+}
+
+
 
 firm * addfirm(firm ** pointer_to_firms, firm * current)
 {
@@ -379,6 +421,33 @@ IGfirm * addIGfirm(IGfirm ** pointer_to_IGfirms, IGfirm * current)
 }
 
 
+government * addgovernment(government ** pointer_to_governments, government * current)
+{
+	/* The new tail of the linked list */
+	government * tail;
+
+	/* Allocate memory for new neighbour data */
+
+	tail = (government *)malloc(sizeof(government));
+
+	/* Check if current is not NULL */
+	if(current)
+	{
+		/* Current exists therefore make its next point to tail */
+		current->next = tail;
+	}
+	else
+	{
+		/* Current is NULL therefore make the cell neighbour_head point to tail */
+		*pointer_to_governments = tail;
+	}
+	/* Point next to NULL */
+	tail->next = NULL;
+	/* Return new neighbour data */
+	return tail;
+}
+
+
 
 
 /* Print all cell data */
@@ -402,7 +471,7 @@ IGfirm * addIGfirm(IGfirm ** pointer_to_IGfirms, IGfirm * current)
 * FUNCTION: getIteration                                         *
 * PURPOSE: read iteration xml file                               *
 *****************************************************************/
-int getiteration(char * filepath, int itno, firm ** pointer_to_firms, household ** pointer_to_households,IGfirm ** pointer_to_IGfirms,mall ** pointer_to_malls)
+int getiteration(char * filepath, int itno, firm ** pointer_to_firms, household ** pointer_to_households,IGfirm ** pointer_to_IGfirms,mall ** pointer_to_malls,government ** pointer_to_governments)
 {
 	/* Pointer to file */
 	FILE *file;
@@ -448,6 +517,13 @@ int getiteration(char * filepath, int itno, firm ** pointer_to_firms, household 
 	int inproductivity, incum_revenue_last_month;
 	int individend_payment;
 
+	/*Government*/
+	int inmonthly_tax_revenues;
+	int inmonthly_benefit_payment;
+	int inmonthly_budget_balance;
+	//int intotal_debt;
+	
+
 	/* Variables for model data */
 	int state, id, region_id;
 
@@ -483,6 +559,12 @@ int getiteration(char * filepath, int itno, firm ** pointer_to_firms, household 
 
 	/*IGFirm*/
 	double productivity, cum_revenue_last_month,dividend_payment;
+
+	/*Government*/
+	double monthly_tax_revenues;
+	double monthly_benefit_payment;
+	double monthly_budget_balance;
+	//double total_debt;
 	
 	char name[1000];
 	
@@ -502,6 +584,10 @@ int getiteration(char * filepath, int itno, firm ** pointer_to_firms, household 
 	IGfirm * current_IGfirm, * tail_IGfirm;
 	tail_IGfirm = *pointer_to_IGfirms;
 	current_IGfirm = NULL;
+
+	government * current_government, * tail_government;
+	tail_government = *pointer_to_governments;
+	current_government = NULL;
 	
 	/* Open config file to read-only */
 	char data[2000];
@@ -578,6 +664,11 @@ int getiteration(char * filepath, int itno, firm ** pointer_to_firms, household 
 	incum_revenue_last_month=0;
 	individend_payment = 0;
 
+	/*Government*/
+	inmonthly_tax_revenues = 0;
+	inmonthly_benefit_payment = 0;
+	inmonthly_budget_balance = 0;
+
 	state = 0;
 	id = 0;
 	region_id = 0;
@@ -632,6 +723,11 @@ int getiteration(char * filepath, int itno, firm ** pointer_to_firms, household 
 	productivity=0;
 	cum_revenue_last_month=0;
 	dividend_payment = 0;
+
+	/*Government*/
+	monthly_tax_revenues = 0;
+	monthly_benefit_payment = 0;
+	monthly_budget_balance = 0;
 	
 		
 	/* Read characters until the end of the file */
@@ -812,6 +908,42 @@ int getiteration(char * filepath, int itno, firm ** pointer_to_firms, household 
 					/* Make tail the next element in the linked list */
 					tail_IGfirm = current_IGfirm->next;
 				}
+
+			if(strcmp(name, "Government") == 0)
+				{
+					//printf("Adding agent\n");
+					
+					/* check if tail is NULL */
+					if(tail_government == NULL)
+					{
+						//printf("tail is null allocate more memory\n");
+						/* Allocate memory */
+						tail_government = addgovernment(pointer_to_governments, current_government);
+					}
+					//else printf("tail exisits\n");
+					
+					/* Make tail the current element to add to */
+					current_government = tail_government;
+					
+					current_government->id = id;
+					current_government->region_id = region_id;
+					current_government->monthly_tax_revenues = monthly_tax_revenues;
+					current_government->monthly_benefit_payment = monthly_benefit_payment;
+					current_government->monthly_budget_balance = monthly_budget_balance;
+					current_government->total_debt = total_debt;
+					
+					
+					
+					
+					
+					//printf("IGfirm %d, ", id);
+					
+					/* Make tail the next element in the linked list */
+					tail_government = current_government->next;
+				}
+
+
+
 						//else printf("Not adding agent\n");
 			}
 			if(strcmp(buffer, "name") == 0) { inname = 1; }
@@ -923,6 +1055,16 @@ int getiteration(char * filepath, int itno, firm ** pointer_to_firms, household 
 			if(strcmp(buffer, "dividend_payment") == 0) { individend_payment = 1; }
 		       if(strcmp(buffer, "/dividend_payment") == 0) { individend_payment= 0; }
 
+			if(strcmp(buffer, "monthly_tax_revenues") == 0) { inmonthly_tax_revenues = 1; }
+		       if(strcmp(buffer, "/monthly_tax_revenues") == 0) { inmonthly_tax_revenues= 0; }
+			if(strcmp(buffer, "monthly_benefit_payment") == 0) { inmonthly_benefit_payment= 1; }
+		       if(strcmp(buffer, "/monthly_benefit_payment") == 0) { inmonthly_benefit_payment= 0; }
+			if(strcmp(buffer, "monthly_budget_balance") == 0) { inmonthly_budget_balance = 1; }
+		       if(strcmp(buffer, "/monthly_budget_balance") == 0) { inmonthly_budget_balance= 0; }
+			if(strcmp(buffer, "total_debt") == 0) { intotal_debt = 1; }
+		       if(strcmp(buffer, "/total_debt") == 0) { intotal_debt= 0; }
+
+
 
 			
 			/* End of tag and reset buffer */
@@ -992,13 +1134,19 @@ if(inagent && inplanned_output)  { planned_output  = atof(buffer); }
 
 			if(inagent && individend_payment)  { dividend_payment  = atof(buffer); }
 
-
-
 			if(inagent && insales)  { sales  = atof(buffer); }
 			if(inagent && insales_of_domestic_firms)  { sales_of_domestic_firms  = atof(buffer); }
 			if(inagent && insales_of_foreign_firms)  { sales_of_foreign_firms  = atof(buffer); }
+
+if(inagent && inmonthly_tax_revenues)  { monthly_tax_revenues = atof(buffer); }
+if(inagent && inmonthly_benefit_payment)  { monthly_benefit_payment  = atof(buffer); }
+if(inagent && inmonthly_budget_balance)  { monthly_budget_balance  = atof(buffer); }
+if(inagent && intotal_debt)  { total_debt  = atof(buffer); }
 				
-			
+double monthly_tax_revenues;
+	double monthly_benefit_payment;	
+	double monthly_budget_balance;
+	double total_debt;			
 			
 			/* Reset buffer */
 			i = 0;
@@ -1046,6 +1194,15 @@ if(inagent && inplanned_output)  { planned_output  = atof(buffer); }
 		/* Make pointer to tail equal NULL */
 		if(current_IGfirm) { current_IGfirm->next = NULL; }
 	}
+
+	if(tail_government)
+	{
+		freegovernments(tail_government);
+		/* Make pointer to tail equal NULL */
+		if(current_government) { current_government->next = NULL; }
+	}
+
+
 	
 	/* Close the file */
 	fclose(file);
@@ -1056,7 +1213,7 @@ if(inagent && inplanned_output)  { planned_output  = atof(buffer); }
 	}
 }
 
-void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_households,IGfirm ** pointer_to_IGfirms,mall ** pointer_to_malls)
+void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_households,IGfirm ** pointer_to_IGfirms,mall ** pointer_to_malls,government ** pointer_to_governments)
 {
 	FILE *file;
 	char data[1000];
@@ -1064,10 +1221,12 @@ void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_
 	household * current_household;
 	IGfirm * current_IGfirm;
 	mall* current_mall;
+	government* current_government;
 	current_firm = *pointer_to_firms;
 	current_household = *pointer_to_households;
 	current_mall = *pointer_to_malls;
 	current_IGfirm = *pointer_to_IGfirms;
+	current_government = *pointer_to_governments;
 
 
 	
@@ -1888,6 +2047,126 @@ void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_
 
 		fclose(file);
 	}
+
+
+
+
+
+/*+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/*----------------------------Government-------------- DATA---------------------------------------*/
+
+/*Initialization of the STRUCT Governent_data*/
+	Government_data Data_Government[no_regions+1];
+	
+	for(i = 0; i <= no_regions; i++)
+	{
+		Data_Government[i].region_id = i;
+		Data_Government[i].monthly_tax_revenues = 0.0;
+		Data_Government[i].monthly_benefit_payment = 0.0;
+		Data_Government[i].monthly_budget_balance = 0.0;
+		Data_Government[i].total_debt = 0.0;	
+	}
+
+
+	current_government = *pointer_to_governments;
+	while(current_government)
+	{
+		Data_Government[0].monthly_tax_revenues += current_government->monthly_tax_revenues;
+		Data_Government[0].monthly_benefit_payment += current_government->monthly_benefit_payment;
+		Data_Government[0].monthly_budget_balance += current_government->monthly_budget_balance;
+		Data_Government[0].total_debt += current_government->total_debt;	
+	
+		int i;
+		for(i = 1; i <= no_regions; i++)
+		{
+			if(current_government->region_id == Data_Government[i].region_id)
+			{
+				Data_Government[i].monthly_tax_revenues = current_government->monthly_tax_revenues;
+				Data_Government[i].monthly_benefit_payment = current_government->monthly_benefit_payment;
+				Data_Government[i].monthly_budget_balance = current_government->monthly_budget_balance;
+				Data_Government[i].total_debt = current_government->total_debt;	
+			}
+		}
+		
+		current_government= current_government->next;
+		
+	}
+
+/*Regions: tax revenue*/
+
+	file = fopen("data-government-tax-revenues-region.csv", "a");
+
+		sprintf(data, "%i", itno);
+		fputs(data, file);
+		fputs("\t", file);
+
+		for(i = 0; i <= no_regions; i++)
+		{
+			sprintf(data, "%f", Data_Government[i].monthly_tax_revenues );
+			fputs(data, file);
+			fputs("\t", file);
+		}
+
+		fputs("\n", file);
+
+		fclose(file);
+
+/*Regions: benefit payment*/
+
+	file = fopen("data-government-benefit-payment-region.csv", "a");
+
+		sprintf(data, "%i", itno);
+		fputs(data, file);
+		fputs("\t", file);
+
+		for(i = 0; i <= no_regions; i++)
+		{
+			sprintf(data, "%f", Data_Government[i].monthly_benefit_payment );
+			fputs(data, file);
+			fputs("\t", file);
+		}
+
+		fputs("\n", file);
+
+		fclose(file);
+
+/*Regions: budget balance*/
+
+	file = fopen("data-government-budget-balance-region.csv", "a");
+
+		sprintf(data, "%i", itno);
+		fputs(data, file);
+		fputs("\t", file);
+
+		for(i = 0; i <= no_regions; i++)
+		{
+			sprintf(data, "%f", Data_Government[i].monthly_budget_balance );
+			fputs(data, file);
+			fputs("\t", file);
+		}
+
+		fputs("\n", file);
+
+		fclose(file);
+
+/*Regions: total debt*/
+
+	file = fopen("data-government-total-debt-region.csv", "a");
+
+		sprintf(data, "%i", itno);
+		fputs(data, file);
+		fputs("\t", file);
+
+		for(i = 0; i <= no_regions; i++)
+		{
+			sprintf(data, "%f", Data_Government[i].total_debt );
+			fputs(data, file);
+			fputs("\t", file);
+		}
+
+		fputs("\n", file);
+
+		fclose(file);
 
 /*+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/	
 /*+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
@@ -2904,10 +3183,12 @@ int main( int argc, char **argv )
 	household * households, * current_household;
 	IGfirm * IGfirms, * current_IGfirm;
 	mall * malls, * current_mall;
+	government * governments, * current_government;
 	firm ** p_firms;
 	household ** p_household;
 	IGfirm ** p_IGfirms;
 	mall ** p_malls;
+	government ** p_governments;
 	int iteration_number = 0;
 	int stilldata = 1;
 	
@@ -3063,6 +3344,21 @@ int main( int argc, char **argv )
 			file = fopen("data-number-debt-asset-ratio-violator-region.csv", "w");
 				fclose(file);
 
+/*Government*/
+	
+	file = fopen("data-government-tax-revenues-region.csv", "w");
+	fclose(file);
+
+	file = fopen("data-government-benefit-payment-region.csv", "w");
+	fclose(file);
+
+	file = fopen("data-government-budget-balance-region.csv", "w");
+	fclose(file);
+
+	file = fopen("data-government-total-debt-region.csv", "w");
+	fclose(file);
+
+
 	
 	/* Read initial states of x-machines */
 	/* advance argument pointer to next argument */
@@ -3103,12 +3399,15 @@ int main( int argc, char **argv )
 	
 	malls = NULL;
 	p_malls = &malls;
+
+	governments = NULL;
+	p_governments = &governments;
 	
 	while(stilldata)
 	{
-		stilldata = getiteration(filepath, iteration_number, p_firms, p_household,p_IGfirms, p_malls );
+		stilldata = getiteration(filepath, iteration_number, p_firms, p_household,p_IGfirms, p_malls,p_governments );
 		
-		if(stilldata) savedatatofile(iteration_number, p_firms, p_household,p_IGfirms, p_malls);
+		if(stilldata) savedatatofile(iteration_number, p_firms, p_household,p_IGfirms, p_malls,p_governments);
 		
 		iteration_number +=20;
 		
