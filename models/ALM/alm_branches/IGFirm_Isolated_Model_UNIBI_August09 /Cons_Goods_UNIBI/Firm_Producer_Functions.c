@@ -188,7 +188,7 @@ int Firm_calc_production_quantity()
             /*Setting the critical values*/
             
           CURRENT_MALL_STOCKS.array[i].critical_stock = 
-                                sales_mall.array[8].sales;
+                                sales_mall.array[DECIL_PRODUCTION_RULE].sales;
     
 
             /*If the critical level for a mall is zero then the firm sets (with a certain prob )the 
@@ -789,7 +789,13 @@ int Firm_calc_revenue()
     
     PAYMENT_ACCOUNT += REVENUE_PER_DAY;
     
-    /*The monthly sales statistics*/
+    
+
+	if(DAY%MONTH == 1)
+	{
+		 SOLD_QUANTITY_IN_CALENDAR_MONTH = 0;
+	}
+	/*The monthly sales statistics*/
     CUM_TOTAL_SOLD_QUANTITY += TOTAL_SOLD_QUANTITY; 
     SOLD_QUANTITY_IN_CALENDAR_MONTH+= TOTAL_SOLD_QUANTITY;
         
