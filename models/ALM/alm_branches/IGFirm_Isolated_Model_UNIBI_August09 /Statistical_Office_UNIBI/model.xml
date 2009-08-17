@@ -12,6 +12,7 @@
    <file>Eurostat_Functions.c</file>
    <file>Eurostat_aux_functions.c</file>
    <file>IGFirm_Statistics_Functions.c</file>
+   <file>Government_Statistics_Functions.c</file>
   </functionFiles>
   <timeUnits/>
   <dataTypes>
@@ -575,6 +576,47 @@
      </variable>
     </variables>
    </dataType>
+   <dataType>
+    <name>government_data</name>
+    <description>Used by Eurostat to store data of the different regions</description>
+    <variables>
+     <variable>
+      <type>int</type>
+      <name>region_id</name>
+      <description></description>
+     </variable>
+     <variable>
+     <type>double</type>
+     <name>monthly_income</name>
+     <description></description>
+    </variable>
+     <variable>
+     <type>double</type>
+     <name>monthly_expenditure</name>
+     <description></description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>monthly_budget_balance</name>
+     <description></description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>total_debt</name>
+     <description></description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>monthly_tax_revenues</name>
+     <description></description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>monthly_benefit_payment</name>
+     <description></description>
+    </variable>
+     </variables>
+     </dataType>
   </dataTypes>
  </environment>
  <agents>
@@ -1067,6 +1109,34 @@ including several micro data.</description>
     </function>
    </functions>
   </xagent>
+  
+  
+  
+  <xagent>
+   <name>Government</name>
+   <description></description>
+   <memory>
+   </memory>
+   <functions>
+   <function>
+     <name>Government_send_data_to_Eurostat</name>
+     <description></description>
+     <currentState>05</currentState>
+     <nextState>06</nextState>
+     <inputs/>
+     <outputs>
+     <output>
+     <messageName>government_send_data</messageName>
+     </output>
+     </outputs>
+    </function>
+    </functions>
+  </xagent>
+  
+  
+  
+  
+  
   <xagent>
    <name>Eurostat</name>
    <description></description>
@@ -1339,6 +1409,11 @@ including several micro data.</description>
     <variable>
      <type>household_data_array</type>
      <name>region_household_data</name>
+     <description>Stores the eurostat memory variables concerning the households for the different regions</description>
+    </variable>
+    <variable>
+     <type>government_data_array</type>
+     <name>region_government_data</name>
      <description>Stores the eurostat memory variables concerning the households for the different regions</description>
     </variable>
     <variable>
@@ -1662,6 +1737,9 @@ including several micro data.</description>
      <inputs>
       <input>
        <messageName>firm_send_data</messageName>
+      </input>
+      <input>
+       <messageName>government_send_data</messageName>
       </input>
       <input>
        <messageName>household_send_data</messageName>
@@ -2160,5 +2238,51 @@ including several micro data.</description>
 <variable><type>double</type><name>price_index</name><description></description></variable>
 </variables>
 </message>
+<message>
+   <name>government_send_data</name>
+   <description>Government send data to Eurostat.</description>
+   <variables>
+    <variable>
+     <type>int</type>
+     <name>gov_id</name>
+     <description></description>
+    </variable>
+    <variable>
+     <type>int</type>
+     <name>region_id</name>
+     <description></description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>monthly_income</name>
+     <description></description>
+    </variable>
+     <variable>
+     <type>double</type>
+     <name>monthly_expenditure</name>
+     <description></description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>monthly_budget_balance</name>
+     <description></description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>total_debt</name>
+     <description></description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>monthly_tax_revenues</name>
+     <description></description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>monthly_benefit_payment</name>
+     <description></description>
+    </variable>
+   </variables>
+  </message>
  </messages>
 </xmodel>

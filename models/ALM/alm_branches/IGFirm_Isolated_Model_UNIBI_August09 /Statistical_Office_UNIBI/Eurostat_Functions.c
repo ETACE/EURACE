@@ -144,6 +144,12 @@ int Eurostat_calculate_data_old_version()
         remove_household_data(&REGION_HOUSEHOLD_DATA, m);
         m--;
     }
+    
+    for(m = 0; m < REGION_GOVERNMENT_DATA.size; m++)
+        {
+            remove_government_data(&REGION_GOVERNMENT_DATA, m);
+            m--;
+        }
 
     //Reconstruct empty data arrays
     for(i = 1; i <= NO_REGIONS; i++)
@@ -167,6 +173,10 @@ int Eurostat_calculate_data_old_version()
                 0.0,0.0,0.0,0.0,0.0,0.0,
                 0.0,0.0,0.0,0.0,0.0,0.0,
                 0.0,0.0,0.0,0.0,0.0,0.0);
+        
+        add_government_data(&REGION_GOVERNMENT_DATA,
+        		i,
+        		0,0,0,0,0,0);
     }
     
         /*Compute a weighted mean price*/
@@ -773,7 +783,37 @@ int Eurostat_calculate_data_old_version()
         REGION_HOUSEHOLD_DATA.array[i].no_households_skill_5;   
     }
 
-
+ /*Store the data of the Governments*/
+    START_GOVERNMENT_SEND_DATA_MESSAGE_LOOP
+    	for(i =0 ; i < REGION_GOVERNMENT_DATA.size; i++)
+    	{
+    		if(government_send_data_message->region_id == 
+    			REGION_GOVERNMENT_DATA.array[i].region_id)
+    		{
+    			REGION_GOVERNMENT_DATA.array[i].monthly_income =  
+    				government_send_data_message->monthly_income;
+    			
+    			REGION_GOVERNMENT_DATA.array[i].monthly_expenditure =  
+    				government_send_data_message->monthly_expenditure ;
+    			
+    			REGION_GOVERNMENT_DATA.array[i].monthly_budget_balance =  
+    				government_send_data_message->monthly_budget_balance;
+    			
+    			REGION_GOVERNMENT_DATA.array[i].total_debt =  
+    				government_send_data_message->total_debt;
+    			
+    			REGION_GOVERNMENT_DATA.array[i].monthly_tax_revenues =  
+    				government_send_data_message->monthly_tax_revenues;
+    			
+    			REGION_GOVERNMENT_DATA.array[i].monthly_benefit_payment =  
+    				government_send_data_message->monthly_benefit_payment;
+    		}
+    	}
+    
+    
+    
+    FINISH_GOVERNMENT_SEND_DATA_MESSAGE_LOOP
+    
 
     /*Create the GLOBAL data which is needed for controlling the results or sending         back to the Households*/
 
@@ -883,6 +923,8 @@ int Eurostat_calculate_data()
 	 Eurostat_read_household_data();
 	 Eurostat_compute_region_household_data();
 	 Eurostat_compute_global_household_data();
+	 
+	 Eurostat_read_government_data();
 
 	 Eurostat_calc_macro_data();
     //Eurostat_calc_firm_population();
