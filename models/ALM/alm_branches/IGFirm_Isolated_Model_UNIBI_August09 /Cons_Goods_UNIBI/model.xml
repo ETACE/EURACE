@@ -476,6 +476,11 @@
      <name>price_last_month</name>
      <description>Price of the consumption good in the last month</description>
     </variable>
+     <variable>
+     <type>int</type>
+     <name>decil_production_rule</name>
+     <description>Actual output is the same as production quantity, but retains its value during the month.</description>
+    </variable>
     <variable>
      <type>double</type>
      <name>demand_capital_stock</name>
