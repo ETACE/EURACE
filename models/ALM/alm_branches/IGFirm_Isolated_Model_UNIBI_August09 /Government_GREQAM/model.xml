@@ -309,7 +309,7 @@
      <name>Government_idle</name>
      <description></description>
      <currentState>start_Government</currentState>
-     <nextState>Gov_Start_Bond_Market</nextState>
+     <nextState>0111</nextState>
      <condition>
       <not>
        <time>
@@ -325,7 +325,7 @@
      <name>Government_send_policy_announcements</name>
      <description>Function to send the yearly policy announcement message.</description>
      <currentState>start_Government</currentState>
-     <nextState>Gov_Start_Bond_Market</nextState>
+     <nextState>0111</nextState>
      <condition>
       <time>
        <period>yearly</period>
@@ -430,7 +430,7 @@
      <name>Government_read_unemployment_benefit_notifications</name>
      <description>Counter of the \url{unemployment} messages, monthly and yearly totals of the unemployment benefit payments.</description>
      <currentState>04</currentState>
-     <nextState>04b</nextState>
+     <nextState>Gov_Start_Monthly_Loop</nextState>
      <inputs>
       <input>
        <messageName>unemployment_notification</messageName>
@@ -550,20 +550,34 @@
     <function>
      <name>Government_monthly_resetting</name>
      <description>Monthly resetting of counters.</description>
-     <currentState>05</currentState>
-     <nextState>06</nextState>
+     <currentState>0111</currentState>
+     <nextState>Gov_Start_Bond_Market</nextState>
+     <condition>
+      <time>
+       <period>monthly</period>
+       <phase>0</phase>
+      </time>
+     </condition>
      <inputs/>
      <outputs/>
     </function>
     <function>
-     <name>Government_send_data_to_Eurostat</name>
+     <name>Government_idle</name>
      <description></description>
-     <currentState>04b</currentState>
-     <nextState>Gov_Start_Monthly_Loop</nextState>
+     <currentState>0111</currentState>
+     <nextState>Gov_Start_Bond_Market</nextState>
+     <condition>
+      <not>
+       <time>
+        <period>monthly</period>
+        <phase>0</phase>
+       </time>
+      </not>
+     </condition>
      <inputs/>
-     <outputs>
-     </outputs>
+     <outputs/>
     </function>
+    
    </functions>
   </xagent>
  </agents>
