@@ -34,8 +34,18 @@ int Household_receive_wage()
         /*Add wage on account   */
         PAYMENT_ACCOUNT += wage_payment_message->payment;
 
-    CURRENT_PRODUCTIVITY_EMPLOYER = wage_payment_message-> productivity;
-    CURRENT_MEAN_SPECIFIC_SKILLS_EMPLOYER =wage_payment_message->average_specific_skills;
+	if( wage_payment_message->employer_igfirm == 0 )
+	{
+		EMPLOYER_IGFIRM = 0; // Employer is a consumption goods producer
+		CURRENT_PRODUCTIVITY_EMPLOYER = wage_payment_message-> productivity;
+    		CURRENT_MEAN_SPECIFIC_SKILLS_EMPLOYER =wage_payment_message->average_specific_skills;
+	}
+	else
+	{
+		EMPLOYER_IGFIRM = 1; // Employer is a capital goods producer
+	}
+
+    
     FINISH_WAGE_PAYMENT_MESSAGE_LOOP
 
 
@@ -50,13 +60,12 @@ int Household_receive_wage()
 int Household_update_specific_skills()
 {
 
-
-    if(SPECIFIC_SKILL < CURRENT_PRODUCTIVITY_EMPLOYER)
+	/*If technology is higher than specific skills and worker is not employed at the IGFirm*/
+    if(SPECIFIC_SKILL < CURRENT_PRODUCTIVITY_EMPLOYER && EMPLOYER_IGFIRM == 0)
     {
 
-
-
-        SPECIFIC_SKILL = SPECIFIC_SKILL + (CURRENT_PRODUCTIVITY_EMPLOYER - SPECIFIC_SKILL)*((1-pow(0.5,1/(20+0.25*(GENERAL_SKILL-1)*(4-20))))+ 0*CURRENT_MEAN_SPECIFIC_SKILLS_EMPLOYER);
+        SPECIFIC_SKILL = SPECIFIC_SKILL + (CURRENT_PRODUCTIVITY_EMPLOYER - SPECIFIC_SKILL)*
+	((1-pow(0.5,1/(20+0.25*(GENERAL_SKILL-1)*(4-20))))+ 0*CURRENT_MEAN_SPECIFIC_SKILLS_EMPLOYER);
 
 
         add_specific_skill_update_message(ID,EMPLOYEE_FIRM_ID,SPECIFIC_SKILL);
@@ -155,7 +164,7 @@ int Household_UNEMPLOYED_read_job_vacancies_and_send_applications()
 
 	if(GENERAL_SKILL == 6)
     	{
-    		wage_offer =  vacancies_message->firm_wage_offer_for_rd;
+    		wage_offer =  vacancies_message->firm_wage_offer_for_skill_6;
     	}
   	
         /*wage offer has to be equal or higher than the reservation wage*/
@@ -390,7 +399,7 @@ int Household_UNEMPLOYED_read_job_vacancies_and_send_applications_2()
 
 	if(GENERAL_SKILL == 6)
     	{
-    		wage_offer =  vacancies2_message->firm_wage_offer_for_rd;
+    		wage_offer =  vacancies2_message->firm_wage_offer_for_skill_6;
     	}
 
         if(wage_offer >= WAGE_RESERVATION)
