@@ -247,6 +247,41 @@
     <name>subsidy_fraction</name>
     <description>fraction of cap_good_price which is subsidized</description>
    </variable>
+<variable>
+    <type>double</type>
+    <name>efficiency_innovation</name>
+    <description></description>
+   </variable>
+<variable>
+    <type>double</type>
+    <name>percent_revenue_for_innovation</name>
+    <description></description>
+   </variable>
+<variable>
+    <type>double</type>
+    <name>ig_lambda</name>
+    <description></description>
+   </variable>
+<variable>
+    <type>double</type>
+    <name>production_productivity</name>
+    <description></description>
+   </variable>
+<variable>
+    <type>double</type>
+    <name>ig_mark_up</name>
+    <description></description>
+   </variable>
+<variable>
+    <type>double</type>
+    <name>max_capital_good_price_increase</name>
+    <description></description>
+   </variable>
+<variable>
+    <type>double</type>
+    <name>additional_capital_good_production</name>
+    <description></description>
+   </variable>
   </constants>
   <functionFiles>
    <file>my_library_functions.c</file>
