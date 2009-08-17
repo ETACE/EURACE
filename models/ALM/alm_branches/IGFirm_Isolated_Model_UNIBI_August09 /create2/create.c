@@ -139,6 +139,8 @@ double INV_INERTIA = 2.5;
 
 double ADAPTION_DELIVERY_VOLUME = 0.10;//0.05
 
+double ADDITIONAL_CAPITAL_GOOD_PRODUCTION = 0.1;
+
 int PERIODS_TO_REPAY_LOANS = 24;
 
 /*Probability for the delivery if the critical stock of one mall was zero for the last periods*/
@@ -443,9 +445,12 @@ double MAX_CAPITAL_GOOD_PRICE_INCREASE = 0.05;
 	sprintf(data, "%f",INTEREST_RATE);    print_tag("interest_rate", data, file);
 	sprintf(data, "%f",INV_INERTIA);    print_tag("inv_inertia", data, file);
 	sprintf(data, "%f",ADAPTION_DELIVERY_VOLUME);    print_tag("adaption_delivery_volume", data, file);
+	sprintf(data, "%f",ADDITIONAL_CAPITAL_GOOD_PRODUCTION);    print_tag("additional_capital_good_production", data, file);
+
+
 	sprintf(data, "%d",DELIVERY_PROB_IF_CRITICAL_STOCK_0);    print_tag("delivery_prob_if_critical_stock_0", data, file);
 	sprintf(data, "%d",PERIODS_TO_REPAY_LOANS);    print_tag("periods_to_repay_loans", data, file);
-	sprintf(data, "%d",INNOVATION_PROBABILITY);    print_tag("innovation_probability", data, file);
+	//sprintf(data, "%d",INNOVATION_PROBABILITY);    print_tag("innovation_probability", data, file);
 	sprintf(data, "%f",PRODUCTIVITY_PROGRESS);    print_tag("productivity_progress", data, file);
 	sprintf(data, "%f",LOGIT_PARAMETER_SPECIFIC_SKILLS);    print_tag("logit_parameter_specific_skills", data, file);
 	sprintf(data, "%f",LOGIT_PARAMETER_GENERAL_SKILLS);    print_tag("logit_parameter_general_skills", data, file);
