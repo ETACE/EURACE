@@ -86,6 +86,27 @@ struct mall
 	double cum_revenue_last_month;	
 	double dividend_payment;
 
+	double no_employees;
+	double no_research_employees;
+	int vacancies;
+	int research_vacancies;
+	double sales_last_month;
+	double capital_good_demand_last_month;
+	double capital_good_store_before_production;
+	double capital_good_store_after_production;
+	double capital_good_price;
+	double output;
+	double planned_output;
+	double wage_offer;
+	double wage_offer_for_skill_1;
+	double wage_offer_for_skill_2;
+	double wage_offer_for_skill_3;
+	double wage_offer_for_skill_4;
+	double wage_offer_for_skill_5;
+	double wage_offer_for_skill_6;
+	double mean_specific_skills;
+	
+
 	struct IGfirm * next;
 
 };
@@ -186,7 +207,35 @@ struct Firm_data
 };
 typedef struct Firm_data Firm_data;
 
+struct IGFirm_data
+{
+	int region_id;
+	int no_igfirms;
+	double productivity;
+	double cum_revenue_last_month;	
+	double dividend_payment;
 
+	double no_employees;
+	double no_research_employees;
+	int vacancies;
+	int research_vacancies;
+	double sales_last_month;
+	double capital_good_demand_last_month;
+	double capital_good_store_before_production;
+	double capital_good_store_after_production;
+	double capital_good_price;
+	double output;
+	double planned_output;
+	double wage_offer;
+	double wage_offer_for_skill_1;
+	double wage_offer_for_skill_2;
+	double wage_offer_for_skill_3;
+	double wage_offer_for_skill_4;
+	double wage_offer_for_skill_5;
+	double wage_offer_for_skill_6;
+	double mean_specific_skills;
+};
+typedef struct IGFirm_data IGFirm_data;
 
 
 typedef struct firm firm;
@@ -447,6 +496,25 @@ int getiteration(char * filepath, int itno, firm ** pointer_to_firms, household 
 	/*IGFirm*/
 	int inproductivity, incum_revenue_last_month;
 	int individend_payment;
+	//int inno_employees;
+	int inno_research_employees;
+	//int invacancies;
+	int inresearch_vacancies;
+	int insales_last_month;
+	int incapital_good_demand_last_month;
+	int incapital_good_store_before_production;
+	int incapital_good_store_after_production;
+	int incapital_good_price;
+	/*int inoutput;
+	int inplanned_output;
+	int inwage_offer;
+	int inwage_offer_for_skill_1;
+	int inwage_offer_for_skill_2;
+	int inwage_offer_for_skill_3;
+	int inwage_offer_for_skill_4;
+	int inwage_offer_for_skill_5;*/
+	int inwage_offer_for_skill_6;
+	//int inmean_specific_skills;
 
 	/* Variables for model data */
 	int state, id, region_id;
@@ -483,6 +551,25 @@ int getiteration(char * filepath, int itno, firm ** pointer_to_firms, household 
 
 	/*IGFirm*/
 	double productivity, cum_revenue_last_month,dividend_payment;
+	//double no_employees;
+	double no_research_employees;
+	//int vacancies;
+	int research_vacancies;
+	double sales_last_month;
+	double capital_good_demand_last_month;
+	double capital_good_store_before_production;
+	double capital_good_store_after_production;
+	double capital_good_price;
+	/*double output;
+	double planned_output;
+	double wage_offer;
+	double wage_offer_for_skill_1;
+	double wage_offer_for_skill_2;
+	double wage_offer_for_skill_3;
+	double wage_offer_for_skill_4;
+	double wage_offer_for_skill_5;*/
+	double wage_offer_for_skill_6;
+	//double mean_specific_skills;
 	
 	char name[1000];
 	
@@ -504,7 +591,7 @@ int getiteration(char * filepath, int itno, firm ** pointer_to_firms, household 
 	current_IGfirm = NULL;
 	
 	/* Open config file to read-only */
-	char data[2000];
+	char data[20000];
 	sprintf(data, "%s%i%s", filepath, itno, ".xml");
 	printf("%s", data);
 	if((file = fopen(data, "r"))==NULL)
@@ -577,6 +664,25 @@ int getiteration(char * filepath, int itno, firm ** pointer_to_firms, household 
 	inproductivity=0;
 	incum_revenue_last_month=0;
 	individend_payment = 0;
+	inno_employees = 0;
+	inno_research_employees = 0;
+	invacancies = 0;
+	inresearch_vacancies = 0;
+	insales_last_month = 0;
+	incapital_good_demand_last_month = 0;
+	incapital_good_store_before_production = 0;
+	incapital_good_store_after_production = 0;
+	incapital_good_price = 0;
+	inoutput = 0;
+	inplanned_output = 0;
+	inwage_offer = 0;
+	inwage_offer_for_skill_1 = 0;
+	inwage_offer_for_skill_2 = 0;
+	inwage_offer_for_skill_3 = 0;
+	inwage_offer_for_skill_4 = 0;
+	inwage_offer_for_skill_5 = 0;
+	inwage_offer_for_skill_6 = 0;
+	inmean_specific_skills = 0;
 
 	state = 0;
 	id = 0;
@@ -632,6 +738,25 @@ int getiteration(char * filepath, int itno, firm ** pointer_to_firms, household 
 	productivity=0;
 	cum_revenue_last_month=0;
 	dividend_payment = 0;
+	no_employees = 0;
+	no_research_employees = 0;
+	vacancies = 0;
+	research_vacancies = 0;
+	sales_last_month = 0;
+	capital_good_demand_last_month = 0;
+	capital_good_store_before_production = 0;
+	capital_good_store_after_production = 0;
+	capital_good_price = 0;
+	output = 0;
+	planned_output = 0;
+	wage_offer = 0;
+	wage_offer_for_skill_1 = 0;
+	wage_offer_for_skill_2 = 0;
+	wage_offer_for_skill_3 = 0;
+	wage_offer_for_skill_4 = 0;
+	wage_offer_for_skill_5 = 0;
+	wage_offer_for_skill_6 = 0;
+	mean_specific_skills = 0;
 	
 		
 	/* Read characters until the end of the file */
@@ -802,6 +927,25 @@ int getiteration(char * filepath, int itno, firm ** pointer_to_firms, household 
 					current_IGfirm->productivity = productivity;
 					current_IGfirm->cum_revenue_last_month = cum_revenue_last_month;
 					current_IGfirm->dividend_payment = dividend_payment;
+					current_IGfirm->no_employees = no_employees;
+					current_IGfirm->no_research_employees = no_research_employees;
+					current_IGfirm->no_research_employees= no_research_employees;
+					current_IGfirm->research_vacancies = research_vacancies;
+					current_IGfirm->sales_last_month = sales_last_month;
+					current_IGfirm->capital_good_demand_last_month = capital_good_demand_last_month;
+				current_IGfirm->capital_good_store_before_production = capital_good_store_before_production;
+				current_IGfirm->capital_good_store_after_production = capital_good_store_after_production;
+					current_IGfirm->capital_good_price = capital_good_price;
+					current_IGfirm->output = output;
+					current_IGfirm->planned_output = planned_output;
+					current_IGfirm->wage_offer = wage_offer;
+					current_IGfirm->wage_offer_for_skill_1 = wage_offer_for_skill_1;
+					current_IGfirm->wage_offer_for_skill_2 = wage_offer_for_skill_2;
+					current_IGfirm->wage_offer_for_skill_3 = wage_offer_for_skill_3;
+					current_IGfirm->wage_offer_for_skill_4 = wage_offer_for_skill_4;
+					current_IGfirm->wage_offer_for_skill_5 = wage_offer_for_skill_5;
+					current_IGfirm->wage_offer_for_skill_6 = wage_offer_for_skill_6;
+					current_IGfirm->mean_specific_skills = mean_specific_skills;
 					
 					
 					
@@ -838,6 +982,9 @@ int getiteration(char * filepath, int itno, firm ** pointer_to_firms, household 
 			if(strcmp(buffer, "/wage_offer_for_skill_4") == 0) { inwage_offer_for_skill_4 = 0; }
 			if(strcmp(buffer, "wage_offer_for_skill_5") == 0) { inwage_offer_for_skill_5 = 1; }
 			if(strcmp(buffer, "/wage_offer_for_skill_5") == 0) { inwage_offer_for_skill_5 = 0; }
+			if(strcmp(buffer, "wage_offer_for_skill_6") == 0) { inwage_offer_for_skill_6 = 1; }
+			if(strcmp(buffer, "/wage_offer_for_skill_6") == 0) { inwage_offer_for_skill_6 = 0; }
+
 			if(strcmp(buffer, "delivery") == 0) { indelivery = 1; }
 			if(strcmp(buffer, "/delivery") == 0) { indelivery = 0; }
 			if(strcmp(buffer, "delivery_to_home_region") == 0) { indelivery_to_home_region = 1; }
@@ -923,6 +1070,42 @@ int getiteration(char * filepath, int itno, firm ** pointer_to_firms, household 
 			if(strcmp(buffer, "dividend_payment") == 0) { individend_payment = 1; }
 		       if(strcmp(buffer, "/dividend_payment") == 0) { individend_payment= 0; }
 
+			if(strcmp(buffer, "no_research_employees") == 0) { inno_research_employees = 1; }
+		       if(strcmp(buffer, "/no_research_employees") == 0) { inno_research_employees= 0; }
+			if(strcmp(buffer, "research_vacancies") == 0) { inresearch_vacancies = 1; }
+		       if(strcmp(buffer, "/research_vacancies") == 0) { inresearch_vacancies= 0; }
+			if(strcmp(buffer, "sales_last_month") == 0) { insales_last_month = 1; }
+		       if(strcmp(buffer, "/sales_last_month") == 0) { insales_last_month= 0; }
+			if(strcmp(buffer, "capital_good_demand_last_month") == 0) { incapital_good_demand_last_month = 1; }
+		       if(strcmp(buffer, "/capital_good_demand_last_month") == 0) { incapital_good_demand_last_month= 0; }
+	if(strcmp(buffer, "capital_good_store_before_production") == 0) { incapital_good_store_before_production = 1; }
+	if(strcmp(buffer, "/capital_good_store_before_production") == 0) { incapital_good_store_before_production= 0; }
+	if(strcmp(buffer, "capital_good_store_after_production") == 0) { incapital_good_store_after_production = 1; }
+	if(strcmp(buffer, "/capital_good_store_after_production") == 0) { incapital_good_store_after_production= 0; }
+			if(strcmp(buffer, "capital_good_price") == 0) { incapital_good_price = 1; }
+		       if(strcmp(buffer, "/capital_good_price") == 0) { incapital_good_price= 0; }
+
+
+
+//double no_employees;
+	double no_research_employees;
+	//int no_research_employees;
+	int research_vacancies;
+	double sales_last_month;
+	double capital_good_demand_last_month;
+	double capital_good_store_before_production;
+	double capital_good_store_after_production;
+	double capital_good_price;
+	/*double output;
+	double planned_output;
+	double wage_offer;
+	double wage_offer_for_skill_1;
+	double wage_offer_for_skill_2;
+	double wage_offer_for_skill_3;
+	double wage_offer_for_skill_4;
+	double wage_offer_for_skill_5;*/
+	double wage_offer_for_skill_6;
+	//double mean_specific_skills;
 
 			
 			/* End of tag and reset buffer */
@@ -949,6 +1132,7 @@ int getiteration(char * filepath, int itno, firm ** pointer_to_firms, household 
 			if(inagent && inwage_offer_for_skill_3)  { wage_offer_for_skill_3  = atof(buffer); }
 			if(inagent && inwage_offer_for_skill_4)  { wage_offer_for_skill_4  = atof(buffer); }
 			if(inagent && inwage_offer_for_skill_5)  { wage_offer_for_skill_5  = atof(buffer); }
+			if(inagent && inwage_offer_for_skill_6)  { wage_offer_for_skill_6 = atof(buffer); }
 			if(inagent && indelivery)  { delivery  = atof(buffer); }
 			if(inagent && indelivery_to_home_region)  { delivery_to_home_region  = atof(buffer); }
 			if(inagent && indelivery_to_foreign_region)  { delivery_to_foreign_region  = atof(buffer); }
@@ -991,6 +1175,13 @@ if(inagent && inplanned_output)  { planned_output  = atof(buffer); }
 			if(inagent && intotal_supply)  { total_supply  = atof(buffer); }
 
 			if(inagent && individend_payment)  { dividend_payment  = atof(buffer); }
+if(inagent && inno_research_employees)  { no_research_employees  = atof(buffer); }
+if(inagent && inresearch_vacancies)  { research_vacancies  = atof(buffer); }
+if(inagent && insales_last_month)  { sales_last_month  = atof(buffer); }
+if(inagent && incapital_good_demand_last_month)  { capital_good_demand_last_month  = atof(buffer); }
+if(inagent && incapital_good_store_before_production)  { capital_good_store_before_production  = atof(buffer); }
+if(inagent && incapital_good_store_after_production)  { capital_good_store_after_production  = atof(buffer); }
+if(inagent && incapital_good_price)  { capital_good_price  = atof(buffer); }
 
 
 
@@ -998,6 +1189,10 @@ if(inagent && inplanned_output)  { planned_output  = atof(buffer); }
 			if(inagent && insales_of_domestic_firms)  { sales_of_domestic_firms  = atof(buffer); }
 			if(inagent && insales_of_foreign_firms)  { sales_of_foreign_firms  = atof(buffer); }
 				
+
+
+
+
 			
 			
 			/* Reset buffer */
@@ -1893,17 +2088,245 @@ void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_
 /*+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /*----------------------------IGFirm-------------- DATA---------------------------------------*/
 	
-	current_IGfirm = *pointer_to_IGfirms;
+	
+/*Initialization of the STRUCT IGFirm_data*/
+	IGFirm_data Data_IGFirm[no_regions+1];
+	
+	for(i = 0; i <= no_regions; i++)
+	{
+		Data_IGFirm[i].region_id = i;
+		Data_IGFirm[i].no_igfirms = 0.0;
+		Data_IGFirm[i].productivity = 0;
+		Data_IGFirm[i].cum_revenue_last_month = 0;
+		Data_IGFirm[i].dividend_payment = 0;
+		Data_IGFirm[i].no_employees = 0;
+		Data_IGFirm[i].no_research_employees = 0;
+		Data_IGFirm[i].research_vacancies = 0;
+		Data_IGFirm[i].vacancies = 0;
+		Data_IGFirm[i].sales_last_month = 0;
+		Data_IGFirm[i].capital_good_demand_last_month = 0;
+		Data_IGFirm[i].capital_good_store_before_production = 0;
+		Data_IGFirm[i].capital_good_store_after_production = 0;
+		Data_IGFirm[i].capital_good_price = 0;
+		Data_IGFirm[i].output = 0;
+		Data_IGFirm[i].planned_output = 0;
+		Data_IGFirm[i].wage_offer = 0;
+		Data_IGFirm[i].wage_offer_for_skill_1 = 0;
+		Data_IGFirm[i].wage_offer_for_skill_2 = 0;
+		Data_IGFirm[i].wage_offer_for_skill_3 = 0;
+		Data_IGFirm[i].wage_offer_for_skill_4 = 0;
+		Data_IGFirm[i].wage_offer_for_skill_5 = 0;
+		Data_IGFirm[i].wage_offer_for_skill_6 = 0;
+		Data_IGFirm[i].mean_specific_skills = 0;	
+	}
 
-	double technological_frontier =  current_IGfirm->productivity ;
+
+	current_IGfirm = *pointer_to_IGfirms;
+	while(current_IGfirm)
+	{
+		Data_IGFirm[0].no_igfirms++;
+		Data_IGFirm[0].productivity+= current_IGfirm->productivity;
+		Data_IGFirm[0].cum_revenue_last_month += current_IGfirm->cum_revenue_last_month;
+		Data_IGFirm[0].dividend_payment += current_IGfirm->dividend_payment;
+		Data_IGFirm[0].no_employees+= current_IGfirm->no_employees;
+		Data_IGFirm[0].no_research_employees+= current_IGfirm->no_research_employees;
+		Data_IGFirm[0].research_vacancies+= current_IGfirm->research_vacancies;
+		Data_IGFirm[0].vacancies+= current_IGfirm->vacancies;
+		Data_IGFirm[0].sales_last_month+= current_IGfirm->sales_last_month;
+		Data_IGFirm[0].capital_good_demand_last_month+= current_IGfirm->capital_good_demand_last_month;
+		Data_IGFirm[0].capital_good_store_before_production+= 
+		current_IGfirm->capital_good_store_before_production;
+		Data_IGFirm[0].capital_good_store_after_production+= current_IGfirm->capital_good_store_after_production;
+		Data_IGFirm[0].capital_good_price+= current_IGfirm->capital_good_price;
+		Data_IGFirm[0].output+= current_IGfirm->output;
+		Data_IGFirm[0].planned_output+= current_IGfirm->planned_output;
+		Data_IGFirm[0].wage_offer+= current_IGfirm->wage_offer;
+		Data_IGFirm[0].wage_offer_for_skill_1+= current_IGfirm->wage_offer_for_skill_1;
+		Data_IGFirm[0].wage_offer_for_skill_2+= current_IGfirm->wage_offer_for_skill_2;
+		Data_IGFirm[0].wage_offer_for_skill_3+= current_IGfirm->wage_offer_for_skill_3;
+		Data_IGFirm[0].wage_offer_for_skill_4+= current_IGfirm->wage_offer_for_skill_4;
+		Data_IGFirm[0].wage_offer_for_skill_5+= current_IGfirm->wage_offer_for_skill_5;
+		Data_IGFirm[0].wage_offer_for_skill_6+= current_IGfirm->wage_offer_for_skill_6;
+		Data_IGFirm[0].mean_specific_skills+= current_IGfirm->mean_specific_skills;
+		
+		int i;
+		for(i = 1; i <= no_regions; i++)
+		{
+			if(current_IGfirm->region_id == Data_IGFirm[i].region_id)
+			{
+				Data_IGFirm[i].no_igfirms++;
+				Data_IGFirm[i].productivity+= current_IGfirm->productivity;
+				Data_IGFirm[i].dividend_payment += current_IGfirm->dividend_payment;
+				Data_IGFirm[i].no_employees+= current_IGfirm->no_employees;
+				Data_IGFirm[i].no_research_employees+= current_IGfirm->no_research_employees;
+				Data_IGFirm[i].research_vacancies+= current_IGfirm->research_vacancies;
+				Data_IGFirm[i].vacancies+= current_IGfirm->vacancies;
+				Data_IGFirm[i].sales_last_month+= current_IGfirm->sales_last_month;
+				Data_IGFirm[i].capital_good_demand_last_month+= 
+				current_IGfirm->capital_good_demand_last_month;
+				Data_IGFirm[i].capital_good_store_before_production+= 
+				current_IGfirm->capital_good_store_before_production;
+				Data_IGFirm[i].capital_good_store_after_production+= 
+				current_IGfirm->capital_good_store_after_production;
+				Data_IGFirm[i].capital_good_price+= current_IGfirm->capital_good_price;
+				Data_IGFirm[i].output+= current_IGfirm->output;
+				Data_IGFirm[i].planned_output+= current_IGfirm->planned_output;
+				Data_IGFirm[i].wage_offer+= current_IGfirm->wage_offer;
+				Data_IGFirm[i].wage_offer_for_skill_1+= current_IGfirm->wage_offer_for_skill_1;
+				Data_IGFirm[i].wage_offer_for_skill_2+= current_IGfirm->wage_offer_for_skill_2;
+				Data_IGFirm[i].wage_offer_for_skill_3+= current_IGfirm->wage_offer_for_skill_3;
+				Data_IGFirm[i].wage_offer_for_skill_4+= current_IGfirm->wage_offer_for_skill_4;
+				Data_IGFirm[i].wage_offer_for_skill_5+= current_IGfirm->wage_offer_for_skill_5;
+				Data_IGFirm[i].wage_offer_for_skill_6+= current_IGfirm->wage_offer_for_skill_6;
+				Data_IGFirm[i].mean_specific_skills+= current_IGfirm->mean_specific_skills;
+			}
+		}
+		
+		current_IGfirm = current_IGfirm->next;
+		
+	}
+
+
+//Regions: capital_good_demand
+	file = fopen("data-IGfirm-capital-good-demand-region.csv", "a");
+
+	sprintf(data, "%i", itno);
+	fputs(data, file);
+	fputs("\t", file);
+
+	
+	for(i = 0; i <= no_regions; i++)
+	{
+		sprintf(data, "%f", Data_IGFirm[i].capital_good_demand_last_month);
+		fputs(data, file);
+		fputs("\t", file);
+	}
+		
+	fputs("\n", file);
+
+	fclose(file);
+
+
+//Regions: IGFirm production/ planned Production
+	file = fopen("data-IGfirm-output-region.csv", "a");
+
+	sprintf(data, "%i", itno);
+	fputs(data, file);
+	fputs("\t", file);
+
+	
+	for(i = 0; i <= no_regions; i++)
+	{
+		sprintf(data, "%f", Data_IGFirm[i].output);
+		fputs(data, file);
+		fputs("\t", file);
+		sprintf(data, "%f", Data_IGFirm[i].planned_output);
+		fputs(data, file);
+		fputs("\t", file);
+	}
+		
+	fputs("\n", file);
+
+	fclose(file);
+	
+	
+//Region: IGFirm capital good store: before production-> minimum; after production->maximum
+	file = fopen("data-IGfirm-capital-good-store-region.csv", "a");
+
+	sprintf(data, "%i", itno);
+	fputs(data, file);
+	fputs("\t", file);
+
+	
+	for(i = 0; i <= no_regions; i++)
+	{
+		sprintf(data, "%f", Data_IGFirm[i].capital_good_store_before_production);
+		fputs(data, file);
+		fputs("\t", file);
+		sprintf(data, "%f", Data_IGFirm[i].capital_good_store_after_production);
+		fputs(data, file);
+		fputs("\t", file);
+	}
+		
+	fputs("\n", file);
+
+	fclose(file);
+
+
+//Region: IG firm sales
+	file = fopen("data-IGfirm-sales-region.csv", "a");
+
+	sprintf(data, "%i", itno);
+	fputs(data, file);
+	fputs("\t", file);
+
+	
+	for(i = 0; i <= no_regions; i++)
+	{
+		sprintf(data, "%f", Data_IGFirm[i].sales_last_month);
+		fputs(data, file);
+		fputs("\t", file);
+	}
+
+	fputs("\n", file);
+	fclose(file);
+
+
+
+//Region: IGfirm no_employees and no_research_employees
+	file = fopen("data-IGfirm-employees-region.csv", "a");
+
+	sprintf(data, "%i", itno);
+	fputs(data, file);
+	fputs("\t", file);
+
+	
+	for(i = 0; i <= no_regions; i++)
+	{
+		sprintf(data, "%f", Data_IGFirm[i].no_employees);
+		fputs(data, file);
+		fputs("\t", file);
+		sprintf(data, "%f", Data_IGFirm[i].no_research_employees);
+		fputs(data, file);
+		fputs("\t", file);
+	}
+
+	fputs("\n", file);
+	fclose(file);
+
+	//Region: IGfirm no_employees and no_research_employees
+	file = fopen("data-IGfirm-capital-good-price-region.csv", "a");
+
+	sprintf(data, "%i", itno);
+	fputs(data, file);
+	fputs("\t", file);
+
+	
+	for(i = 0; i <= no_regions; i++)
+	{
+		sprintf(data, "%f", Data_IGFirm[i].capital_good_price);
+		fputs(data, file);
+		fputs("\t", file);
+		
+	}
+
+	fputs("\n", file);
+	fclose(file);
+
+
 
 	file = fopen("data-technological-frontier.csv", "a");
 
 	sprintf(data, "%i", itno);
 	fputs(data, file);
 	fputs("\t", file);
-	sprintf(data, "%f", current_IGfirm->productivity );
-	fputs(data, file);
+
+	for(i = 0; i <= no_regions; i++)
+	{
+		sprintf(data, "%f", Data_IGFirm[i].productivity );
+		fputs(data, file);
+		fputs("\t", file);
+	}
 
 	fputs("\n", file);
 
@@ -1916,9 +2339,14 @@ void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_
 	sprintf(data, "%i", itno);
 	fputs(data, file);
 	fputs("\t", file);
-	sprintf(data, "%f", current_IGfirm->cum_revenue_last_month );
-	fputs(data, file);
 
+	for(i = 0; i <= no_regions; i++)
+	{
+		sprintf(data, "%f", Data_IGFirm[i].cum_revenue_last_month );
+		fputs(data, file);
+		fputs("\t", file);
+	}
+	
 	fputs("\n", file);
 
 	fclose(file);
@@ -1931,8 +2359,13 @@ void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_
 	sprintf(data, "%i", itno);
 	fputs(data, file);
 	fputs("\t", file);
-	sprintf(data, "%f", current_IGfirm->dividend_payment );
-	fputs(data, file);
+	
+	for(i = 0; i <= no_regions; i++)
+	{
+		sprintf(data, "%f", Data_IGFirm[i].dividend_payment );
+		fputs(data, file);
+		fputs("\t", file);
+	}
 
 	fputs("\n", file);
 
@@ -3055,13 +3488,33 @@ int main( int argc, char **argv )
 	fclose(file);
 	
 	file = fopen("data-assets-region.csv", "w");
-		fclose(file);
+	fclose(file);
 		
-		file = fopen("data-debt-assets-ratio-region.csv", "w");
-			fclose(file);
+	file = fopen("data-debt-assets-ratio-region.csv", "w");
+	fclose(file);
 			
-			file = fopen("data-number-debt-asset-ratio-violator-region.csv", "w");
-				fclose(file);
+	file = fopen("data-number-debt-asset-ratio-violator-region.csv", "w");
+	fclose(file);
+
+	/*IGFirm files*/
+
+	file = fopen("data-IGfirm-output-region.csv", "w");
+	fclose(file);
+	
+	file = fopen("data-IGfirm-capital-good-demand-region.csv", "w");
+	fclose(file);
+
+	file = fopen("data-IGfirm-capital-good-store-region.csv", "w");
+	fclose(file);
+
+	file = fopen("data-IGfirm-sales-region.csv", "w");
+	fclose(file);
+
+	file = fopen("data-IGfirm-employees-region.csv", "w");
+	fclose(file);
+
+	file = fopen("data-IGfirm-capital-good-price-region.csv", "w");
+	fclose(file);
 
 	
 	/* Read initial states of x-machines */
