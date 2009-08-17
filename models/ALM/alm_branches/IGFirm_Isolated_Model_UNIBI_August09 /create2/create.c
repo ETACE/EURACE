@@ -164,7 +164,7 @@ sprintf(skill_distribution, "{{1,0.2,0.2,0.2,0.2,0.2}{2,0.2,0.2,0.2,0.2,0.2}}");
 int LOWER_BOUND_FIRING = 0;
 int UPPER_BOUND_FIRING = 10;
 
-int NO_REGIONS_PER_GOV = 2;
+int NO_REGIONS_PER_GOV = 1;
 
 /*region ID of the region which will receive subsidies*/
 int REGION_SUBSIDY = 0;
@@ -199,17 +199,17 @@ double MAX_CAPITAL_GOOD_PRICE_INCREASE = 0.05;
 	int total_malls = num_regions;  /*one mall per region*/
 	//int num_app =  0.5*total_firms; /*number of applications per agent*/
 	int num_app =5;
-	int total_Governments =1;
+	int total_Governments =2;
 	int total_banks = 1;
 	double fraction_researchers = 0.03;
 	
 
-	double 	tax_rate_corporate = 0.05;
-	double	tax_rate_hh_labour = 0.05;
-	double	tax_rate_hh_capital =0.0;
-	double	unemployment_benefit_payment = 0.7;
+	double 	tax_rate_corporate[2][1] = {0.028,0.0245};
+	double	tax_rate_hh_labour[2][1]= {0.28,0.0245};
+	double	tax_rate_hh_capital[2][1] ={0.0,0.0};
+	double	unemployment_benefit_payment[2][1] = {0.7,0.6};
 	double	payment_account_government =1000.0;
-	double 	payment_account_household [2][1] = {0.0,0.0};
+	double 	payment_account_household = 0;
 
 	double   cap_price; // temp variable for printing capital_good_price_region into memory variables of the firm
 	double	capital_good_price = 2;
@@ -219,6 +219,9 @@ double MAX_CAPITAL_GOOD_PRICE_INCREASE = 0.05;
 	double productivity_best_practice[2][1]=
 					{1.1,1.1};
 
+	int decil_production_rule_upper_bound= 8;	
+	int decil_production_rule_lower_bound = 8; 			
+	
 
 	int years_statistics = 10;/*number of years used to smooth the production*/
 
@@ -333,9 +336,8 @@ double MAX_CAPITAL_GOOD_PRICE_INCREASE = 0.05;
 
 
 			//Initital wage offer of the firms
-			double wage_offer_region_1 = base_wage_offer*specific_skills_of_household[2][1];
-			double wage_offer_region_2 = base_wage_offer*specific_skills_of_household[1][1];
-
+			double wage_offer_region_1 = base_wage_offer*specific_skills_of_household[0][0];
+			double wage_offer_region_2 = base_wage_offer*specific_skills_of_household[0][1];
 			//printf("specific_skills_of_household[1][1] %f \n",specific_skills_of_household[2][1]);
 			//printf("specific_skills_of_household[2][1] %f \n",specific_skills_of_household[1][1]);
 
@@ -379,7 +381,7 @@ double MAX_CAPITAL_GOOD_PRICE_INCREASE = 0.05;
 	
 
 
-	int gov_id  = total_firms+total_households+total_IGfirms+1;
+	//int gov_id  = total_firms+total_households+total_IGfirms+1;
 	int bank_id = total_firms+total_households+total_IGfirms+total_Governments+1;
 
 	
@@ -422,6 +424,7 @@ double MAX_CAPITAL_GOOD_PRICE_INCREASE = 0.05;
 	sprintf(data, "%f",DIVIDEND_RATE);    print_tag("dividend_rate", data, file);
 	sprintf(data, "%f",DEPRECIATION_RATE);    print_tag("depreciation_rate", data, file);
 	sprintf(data, "%f",DISCOUNT_RATE);    print_tag("discount_rate", data, file);
+	
 	sprintf(data, "%f",TETA);    print_tag("teta", data, file);
 	sprintf(data, "%f",MARK_UP);    print_tag("mark_up", data, file);
 	sprintf(data, "%f",IG_MARK_UP);    print_tag("ig_mark_up", data, file);
@@ -485,8 +488,9 @@ double MAX_CAPITAL_GOOD_PRICE_INCREASE = 0.05;
 			}
 		
 		int row = (region-1) / num_regions_X;
-				int column = (region-1) % num_regions_X; 
+		int column = (region-1) % num_regions_X; 
 
+		int gov_id  = total_firms+total_households+total_IGfirms+region;
 		
 		if(region == 1)
 		{
@@ -501,16 +505,7 @@ double MAX_CAPITAL_GOOD_PRICE_INCREASE = 0.05;
 
 		cap_price = capital_good_price_region[column][row];
 		
-		int strategy;	
-				
-		if(num <= 0.5*total_firms)
-		{
-			strategy = 0; //draw production quantity from interval [0,4]
-		}
-		else
-		{
-			strategy = 0; //draw production quantity from interval [5,9]
-		}	
+			
 
 
 		fputs("<xagent>\n", file);
@@ -520,7 +515,10 @@ double MAX_CAPITAL_GOOD_PRICE_INCREASE = 0.05;
 		sprintf(data, "%d",bank_id);    print_tag("bank_id", data, file);
 		sprintf(data, "%d",gov_id);    print_tag("gov_id", data, file);
 		sprintf(data, "{}");			print_tag("employees", data, file);
-		sprintf(data, "%d",strategy);	print_tag("firm_strategy", data, file);	
+	
+		int decil_production_rule = random_int(decil_production_rule_lower_bound,decil_production_rule_upper_bound);
+
+		sprintf(data, "%d",decil_production_rule);	print_tag("decil_production_rule", data, file);	
 		sprintf(data, "%f",base_wage_offer);		print_tag("wage_offer", data, file);
 
 		sprintf(data, "%f",wage_offer[column][row]);	print_tag("wage_offer_for_skill_1", data, file);
@@ -770,7 +768,7 @@ double MAX_CAPITAL_GOOD_PRICE_INCREASE = 0.05;
 		sprintf(data, "%f", 0.0);	print_tag("ebit", data, file);
 		
 		sprintf(data, "%f", 0.0);	print_tag("total_external_financing_obtained", data, file);
-		sprintf(data, "%f", tax_rate_corporate);	print_tag("tax_rate_corporate", data, file);
+		sprintf(data, "%f", tax_rate_corporate[column][row]);	print_tag("tax_rate_corporate", data, file);
 		sprintf(data, "%f", 0.0);	print_tag("tax_rate_vat", data, file);
 		sprintf(data, "%f", 0.0);	print_tag("earnings", data, file);
 		sprintf(data, "%f", 0.0);	print_tag("previous_net_earnings", data, file);
@@ -797,7 +795,7 @@ double MAX_CAPITAL_GOOD_PRICE_INCREASE = 0.05;
 		
 		sprintf(data, "%f", 0.0);	print_tag("total_capital_depreciation_value", data, file);
 		sprintf(data, "%f", 0.0);	print_tag("total_capital_depreciation_units", data, file);
-		sprintf(data, "%f", total_units_capital[column][row]*cap_price);	print_tag("total_assets", data, file);
+		sprintf(data, "%f", 0.0);	print_tag("total_assets", data, file);
 		sprintf(data, "%f", 0.0);	print_tag("equity", data, file);
 		sprintf(data, "%f", 0.0);	print_tag("production_liquidity_needs", data, file);
 		sprintf(data, "%f", 0.0);	print_tag("financial_liquidity_needs", data, file);
@@ -824,17 +822,18 @@ double MAX_CAPITAL_GOOD_PRICE_INCREASE = 0.05;
 
 
 	/* IGFirm */
- int column = 1;
-int row = 1;
 	num_start = num;
 	for(num=num_start; num<total_IGfirms+num_start; num++)
-	{
+	{		
+			
+		int gov_id  = total_firms+total_households+total_IGfirms+1;
+		
 		fputs("<xagent>\n", file);
 		fputs("<name>IGFirm</name>\n", file);
 		sprintf(data, "%d", num);     print_tag("id", data, file);
 		id_igfirm = num;
 		sprintf(data, "%d",1);	print_tag("region_id", data, file);
-		sprintf(data, "%d",gov_id);		print_tag("gov_id", data, file);
+		sprintf(data, "%d",gov_id);	print_tag("gov_id", data, file);
 		sprintf(data, "%d",bank_id);		print_tag("bank_id", data, file);
 
 		sprintf(data, "{}");							print_tag("employees", data, file);
@@ -907,7 +906,7 @@ sprintf(data, "%f",1000.0);		print_tag("financial_resources_for_production", dat
 		sprintf(data, "%f", capital_good_price);				print_tag("capital_good_price", data, file);
 		sprintf(data, "%d",0);								print_tag("day_of_month_to_act", data, file);
 		sprintf(data, "%f", 0.0);								print_tag("revenue_per_day", data, file);
-		sprintf(data, "%f", tax_rate_corporate);				print_tag("tax_rate_corporate", data, file);
+		sprintf(data, "%f", tax_rate_corporate[0][0]);				print_tag("tax_rate_corporate", data, file);
 		sprintf(data, "%f", 0.0);								print_tag("tax_rate_vat", data, file);
 		sprintf(data, "%d", total_households);					print_tag("outstanding_shares", data, file);
 		sprintf(data, "%f", 0.0);								print_tag("current_dividend_per_share", data, file);
@@ -950,6 +949,8 @@ sprintf(data, "%f",1000.0);		print_tag("financial_resources_for_production", dat
 		double	skill_fraction_3;
 		double	skill_fraction_4;
 		double	skill_fraction_5;
+		
+		int gov_id  = total_firms+total_households+total_IGfirms+region;
 
 
 		if(skills_in_regions[column][row]==1)
@@ -1096,14 +1097,14 @@ sprintf(data, "%f",1000.0);		print_tag("financial_resources_for_production", dat
 		sprintf(data, "%d", 0);     	print_tag("on_the_job_search", data, file);
 		sprintf(data, "%d", num_app);   print_tag("number_applications", data, file);
 		sprintf(data, "%d", 0);       	print_tag("rationed", data, file);
-		sprintf(data, "%f", payment_account_household [column][row]);       print_tag("consumption_budget", data, file);
-		sprintf(data, "%f", payment_account_household [column][row]/4);       print_tag("weekly_budget", data, file);
-		sprintf(data, "%f", payment_account_household [column][row]);	print_tag("payment_account", data, file);
+		sprintf(data, "%f", payment_account_household);       print_tag("consumption_budget", data, file);
+		sprintf(data, "%f", payment_account_household/4);       print_tag("weekly_budget", data, file);
+		sprintf(data, "%f", payment_account_household);	print_tag("payment_account", data, file);
 		sprintf(data, "%f", 0.0);	print_tag("mean_income", data, file);
 		sprintf(data, "%f", 0.0);	print_tag("total_taxes", data, file);
 		sprintf(data, "%f", 0.0);	print_tag("cum_total_dividends", data, file);
-		sprintf(data, "%f", tax_rate_hh_capital);	print_tag("tax_rate_hh_capital", data, file);
-		sprintf(data, "%f", tax_rate_hh_labour);	print_tag("tax_rate_hh_labour", data, file);
+		sprintf(data, "%f", tax_rate_hh_capital[column][row]);	print_tag("tax_rate_hh_capital", data, file);
+		sprintf(data, "%f", tax_rate_hh_labour[column][row]);	print_tag("tax_rate_hh_labour", data, file);
 		sprintf(data, "%f", 0.0);	print_tag("expenditures", data, file);
 		sprintf(data, "%f", 0.0);	print_tag("received_dividends", data, file);
 		sprintf(data, "%d", 0);		print_tag("just_employed", data, file);
@@ -1170,29 +1171,34 @@ sprintf(data, "%f",1000.0);		print_tag("financial_resources_for_production", dat
 
 
 num_start = num;
+r_id = 1;
 	for(num=num_start; num<total_Governments+num_start; num++)
 	{
+		region = r_id;
+				
+		int row = (region-1) / num_regions_X;
+		int column = (region-1) % num_regions_X;
+						
 		fputs("<xagent>\n", file);
 		fputs("<name>Government</name>\n", file);
 		sprintf(data, "%d", num);     print_tag("id", data, file);
 		sprintf(data, "%d",bank_id);	print_tag("bank_id", data, file);
+		sprintf(data, "%d",region);	print_tag("region_id", data, file);
 		sprintf(data, "%f",payment_account_government);	print_tag("payment_account", data, file);
 		sprintf(data, "%f",0.0);	print_tag("tax_revenues", data, file);
-		sprintf(data, "%f",unemployment_benefit_payment);		print_tag("unemployment_benefit_pct", data, file);
+		sprintf(data, "%f",unemployment_benefit_payment[column][row]);		print_tag("unemployment_benefit_pct", data, file);
 		sprintf(data, "%f",0.0);		print_tag("total_unemployment_benefit_payment", data, file);
 		sprintf(data, "%f",0.0);	print_tag("total_interest_payment", data, file);
 		sprintf(data, "%f", 0.0);	print_tag("total_debt", data, file);
-		sprintf(data, "%f", tax_rate_corporate);	print_tag("tax_rate_corporate", data, file);
-		sprintf(data, "%f",tax_rate_hh_labour);	print_tag("tax_rate_hh_labour", data, file);
-		sprintf(data, "%f",tax_rate_hh_capital);	print_tag("tax_rate_hh_capital", data, file);
+		sprintf(data, "%f", tax_rate_corporate[column][row]);	print_tag("tax_rate_corporate", data, file);
+		sprintf(data, "%f",tax_rate_hh_labour[column][row]);	print_tag("tax_rate_hh_labour", data, file);
+		sprintf(data, "%f",tax_rate_hh_capital[column][row]);	print_tag("tax_rate_hh_capital", data, file);
 		sprintf(data, "%f",0.0);	print_tag("tax_rate_vat", data, file);
 		
-		
-		sprintf(data, "{1,2}");       print_tag("list_of_regions", data, file);
-	
-	
+		sprintf(data, "{%d}",region);       print_tag("list_of_regions", data, file);
 	
 		fputs("</xagent>\n", file);
+		r_id++;
 	}
 
 
@@ -1201,22 +1207,24 @@ num_start = num;
 	
 	for(num=num_start; num<total_banks+num_start; num++)
 	{
+		int gov_id  = total_firms+total_households+total_IGfirms+1;
+		
 		fputs("<xagent>\n", file);
 						fputs("<name>Bank</name>\n", file);
 						sprintf(data, "%d", num);     print_tag("id", data, file);
-						sprintf(data, "%d",random_int(1,num_regions));	print_tag("region_id", data, file);
+						sprintf(data, "%d",1);	print_tag("region_id", data, file);
 						sprintf(data, "%d",gov_id);	print_tag("gov_id", data, file);
 						
 					
 						sprintf(data, "{}");			print_tag("loans_outstanding", data, file);
 
-						sprintf(data, "%f",100.0);	print_tag("total_deposits", data, file);
+						sprintf(data, "%f",0.0);	print_tag("total_deposits", data, file);
 						sprintf(data, "%f",0.0);	print_tag("amount_credit_offer", data, file);
 						sprintf(data, "%f",0.0);	print_tag("total_loan_supply", data, file);
 						sprintf(data, "%f",0.0);	print_tag("total_loan_demand", data, file);
 						sprintf(data, "%f",0.0);	print_tag("payment_account", data, file);
 						sprintf(data, "%d",0);	 print_tag("last_credit_id", data, file);
-						sprintf(data, "%f", tax_rate_corporate);	print_tag("tax_rate_corporate", data, file);
+						sprintf(data, "%f", tax_rate_corporate[0][0]);	print_tag("tax_rate_corporate", data, file);
 						sprintf(data, "%d", 0);	print_tag("day_of_month_to_act", data, file);
 						printf("total_households %d\n",total_households);
 						sprintf(data, "%d", total_households);	print_tag("outstanding_shares", data, file);
