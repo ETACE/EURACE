@@ -505,7 +505,8 @@ int Firm_receive_capital_goods()
         /*Determine the weighted average productivity of the total capital stock*/
     
         /*Update of productivity*/
-               TECHNOLOGY = TOTAL_UNITS_CAPITAL_STOCK /    (TOTAL_UNITS_CAPITAL_STOCK +capital_good_delivery_message->capital_good_delivery_volume)
+               TECHNOLOGY = TOTAL_UNITS_CAPITAL_STOCK /
+		(TOTAL_UNITS_CAPITAL_STOCK +capital_good_delivery_message->capital_good_delivery_volume)
                 *TECHNOLOGY + 
                 capital_good_delivery_message->capital_good_delivery_volume/
                 (TOTAL_UNITS_CAPITAL_STOCK + 
@@ -594,13 +595,13 @@ int Firm_calc_pay_costs()
 
         LABOUR_COSTS=0.0;
 
-        for(int i=0; i<EMPLOYEES.size;i++)
+        for(i=0; i<EMPLOYEES.size;i++)
         {
             LABOUR_COSTS += EMPLOYEES.array[i].wage;
 
             add_wage_payment_message(ID,
             EMPLOYEES.array[i].id,EMPLOYEES.array[i].wage,
-            TECHNOLOGY,MEAN_SPECIFIC_SKILLS);
+            TECHNOLOGY,MEAN_SPECIFIC_SKILLS,0);
 
             
         }
