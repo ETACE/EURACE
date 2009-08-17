@@ -955,6 +955,11 @@ firms update the specific skill levels of the workers.</description>
      <name>received_dividend</name>
      <description></description>
     </variable>
+	<variable>
+     <type>int</type>
+     <name>employer_igfirm</name>
+     <description></description>
+    </variable>
     <variable>
      <type>int</type>
      <name>flag_consumption_shifting</name>
@@ -1441,6 +1446,11 @@ order to update the specific skills.</description>
     <variable>
      <type>double</type>
      <name>average_specific_skills</name>
+     <description></description>
+    </variable>
+<variable>
+     <type>int</type>
+     <name>employer_igfirm</name>
      <description></description>
     </variable>
    </variables>
