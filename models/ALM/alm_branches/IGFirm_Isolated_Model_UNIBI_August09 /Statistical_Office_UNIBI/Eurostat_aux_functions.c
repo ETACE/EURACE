@@ -38,6 +38,12 @@ void Eurostat_reset_data(void)
         remove_household_data(&REGION_HOUSEHOLD_DATA, i);
         i--;
     }
+    
+    for(i = 0; i < REGION_GOVERNMENT_DATA.size; i++)
+           {
+               remove_government_data(&REGION_GOVERNMENT_DATA, i);
+               i--;
+           }
 
     //Reconstruct empty data arrays
     for(i = 1; i <= NO_REGIONS; i++)
@@ -61,6 +67,10 @@ void Eurostat_reset_data(void)
                 0.0,0.0,0.0,0.0,0.0,0.0,
                 0.0,0.0,0.0,0.0,0.0,0.0,
                 0.0,0.0,0.0,0.0,0.0,0.0);
+        
+        add_government_data(&REGION_GOVERNMENT_DATA,
+                		i,
+                		0,0,0,0,0,0);
     }
     
 }
@@ -838,7 +848,44 @@ void Eurostat_compute_global_household_data(void)
 	AVERAGE_S_SKILL_4 = AVERAGE_S_SKILL_4/(double)NO_HOUSEHOLDS_SKILL_4;
 	AVERAGE_S_SKILL_5 = AVERAGE_S_SKILL_5/(double)NO_HOUSEHOLDS_SKILL_5;
 }
-	
+
+/* \fn: void Eurostat_read_Goverment_data(void)
+ * \brief: Function to read government_send_data_messages and store the global/region data.
+ */
+void Eurostat_read_government_data(void)
+{	
+
+/*Store the data of the Governments*/
+	int i;
+    START_GOVERNMENT_SEND_DATA_MESSAGE_LOOP
+    	for(i =0 ; i < REGION_GOVERNMENT_DATA.size; i++)
+    	{
+    		if(government_send_data_message->region_id == 
+    			REGION_GOVERNMENT_DATA.array[i].region_id)
+    		{
+    			REGION_GOVERNMENT_DATA.array[i].monthly_income =  
+    				government_send_data_message->monthly_income;
+    			
+    			REGION_GOVERNMENT_DATA.array[i].monthly_expenditure =  
+    				government_send_data_message->monthly_expenditure ;
+    			
+    			REGION_GOVERNMENT_DATA.array[i].monthly_budget_balance =  
+    				government_send_data_message->monthly_budget_balance;
+    			
+    			REGION_GOVERNMENT_DATA.array[i].total_debt =  
+    				government_send_data_message->total_debt;
+    			
+    			REGION_GOVERNMENT_DATA.array[i].monthly_tax_revenues =  
+    				government_send_data_message->monthly_tax_revenues;
+    			
+    			REGION_GOVERNMENT_DATA.array[i].monthly_benefit_payment =  
+    				government_send_data_message->monthly_benefit_payment;
+    		}
+    	}
+    FINISH_GOVERNMENT_SEND_DATA_MESSAGE_LOOP
+}
+
+
 /* \fn: void Eurostat_calc_macro_data(void)
  * \brief: Function to compute macro data from firm micro data.
  */
