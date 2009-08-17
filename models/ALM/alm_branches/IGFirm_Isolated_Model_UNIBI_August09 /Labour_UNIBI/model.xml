@@ -673,7 +673,7 @@ of employees and the number of vacancies</description>
     </variable>
     <variable>
      <type>double</type>
-     <name>wage_offer_for_rd</name>
+     <name>wage_offer_for_skill_6</name>
      <description>The basic wage offer</description>
     </variable>
     <variable>
@@ -1580,7 +1580,7 @@ wage offer for the according general skill level.</description>
     </variable>
     <variable>
      <type>double</type>
-     <name>firm_wage_offer_for_rd</name>
+     <name>firm_wage_offer_for_skill_6</name>
      <description></description>
     </variable>
    </variables>
@@ -1627,7 +1627,7 @@ wage offer for the according general skill level.</description>
     </variable>
 <variable>
      <type>double</type>
-     <name>firm_wage_offer_for_rd</name>
+     <name>firm_wage_offer_for_skill_6</name>
      <description></description>
     </variable>
    </variables>
