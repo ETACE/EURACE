@@ -161,7 +161,7 @@ int CHANGE_IN_SKILL_DISTRIBUTION = 0;
 sprintf(skill_distribution, "{{1,0.2,0.2,0.2,0.2,0.2}{2,0.2,0.2,0.2,0.2,0.2}}");
 
 
-int LOWER_BOUND_FIRING = 0;
+int LOWER_BOUND_FIRING = 1;
 int UPPER_BOUND_FIRING = 10;
 
 int NO_REGIONS_PER_GOV = 1;
