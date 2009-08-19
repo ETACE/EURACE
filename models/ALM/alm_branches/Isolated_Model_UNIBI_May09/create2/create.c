@@ -189,20 +189,20 @@ double SUBSIDY_FRACTION = 0.0;
 	int total_banks = 1;
 	
 
-	double 	tax_rate_corporate[2][1] = {0.028,0.0245};
-	double	tax_rate_hh_labour[2][1]= {0.28,0.0245};
+	double 	tax_rate_corporate[2][1] = {0.05,0.05};
+	double	tax_rate_hh_labour[2][1]= {0.5,0.05};
 	double	tax_rate_hh_capital[2][1] ={0.0,0.0};
-	double	unemployment_benefit_payment[2][1] = {0.7,0.6};
+	double	unemployment_benefit_payment[2][1] = {0.7,0.7};
 	double	payment_account_government =1000.0;
 	double 	payment_account_household = 0;
 
 	double   cap_price; // temp variable for printing capital_good_price_region into memory variables of the firm
 	double	capital_good_price = 6;
-	double	capital_good_price_region[2][1] = {6.0,2.0};
+	double	capital_good_price_region[2][1] = {2.0,2.0};
 	
-	double productivity_best_practice_igfirm = 3.3;  //Productivity of the technology offered by the IG firm
+	double productivity_best_practice_igfirm = 1.1;  //Productivity of the technology offered by the IG firm
 	double productivity_best_practice[2][1]=
-					{3.3,1.1};
+					{1.1,1.1};
 
 
 	int decil_production_rule_upper_bound= 8;	
@@ -213,7 +213,7 @@ double SUBSIDY_FRACTION = 0.0;
 
 	/*Defining skill distributions in regions: only 1-4*/
 
-	double skilldistribution_1[5]={0.8,0.05,0.05,0.05,0.05};
+	double skilldistribution_1[5]={0.2,0.2,0.2,0.2,0.2};
 	double skilldistribution_2[5]={0.05,0.05,0.8,0.05,0.05};
 	double skilldistribution_3[5]={0.42,0.33,0.20,0.04,0.01};
 	double skilldistribution_4[5]={0.1,0.3,0.4,0.15,0.05};
@@ -292,11 +292,11 @@ double SUBSIDY_FRACTION = 0.0;
 	
 	//This determines the local skill distribution. Use numbers 1 .. 4 (see above, skill distribution_X) to give a region a skill distribution. 
 		int skills_in_regions[2][1]=
-					{4,3};
+					{1,1};
 	
 	
 		//region specific initial value of households specific skills
-		double spec_s_hh_reg1 = 3.0;
+		double spec_s_hh_reg1 = 1.0;
 		double spec_s_hh_reg2 = 1.0;
 		double specific_skills_of_household[2][1]=
 							{spec_s_hh_reg1,spec_s_hh_reg2};
@@ -304,13 +304,13 @@ double SUBSIDY_FRACTION = 0.0;
 
 		//Total production volume for a single firm
 			double total_production_quantity[2][1]=
-						{81.0,27.0};
+						{27.0,27.0};
 			//This defines the initial capital stock of firm depending on the region.
 			double total_units_capital[2][1]=
 				                            {45.0,45.0};
 			//Firm's starting value of productivity of the capital stock
 			double technology[2][1]=
-							{3.0,1.0};
+							{1.0,1.0};
 
 			//This defines the financial resources of firm at the beginning of a simulation
 			double payment_account[2][1]= 
