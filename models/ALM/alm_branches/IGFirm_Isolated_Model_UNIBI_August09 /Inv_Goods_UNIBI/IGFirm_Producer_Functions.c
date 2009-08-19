@@ -46,8 +46,8 @@ printf("IN FUNCTION: IGFirm_calc_research_employees\n");
 		k = (double)(random_int(0, 1000))/1000;
 		random_progress += ((k - 0.5)/influence_the_variance);	
 	}
-printf("1: DURATION_UNTIL_NEXT_INNOVATION: %d\n",DURATION_UNTIL_NEXT_INNOVATION);
-printf("1: INNOVATION_SUCCESS: %d\n",INNOVATION_SUCCESS);
+//printf("1: DURATION_UNTIL_NEXT_INNOVATION: %d\n",DURATION_UNTIL_NEXT_INNOVATION);
+//printf("1: INNOVATION_SUCCESS: %d\n",INNOVATION_SUCCESS);
 	
 	DURATION_UNTIL_NEXT_INNOVATION += 12;
 	INNOVATION_SUCCESS = 0;	
@@ -64,7 +64,7 @@ printf("1: INNOVATION_SUCCESS: %d\n",INNOVATION_SUCCESS);
 		/*Project completed*/
 		innovation_probability = 1;	
 	}
-printf("Innovation_probability: %f\n",innovation_probability);
+//printf("Innovation_probability: %f\n",innovation_probability);
 	/*If project is completed calculate the productivity progress*/
 	if((innovation_probability * 100) >= i)
 	{
@@ -75,12 +75,12 @@ printf("Innovation_probability: %f\n",innovation_probability);
 			ADDITIONAL_PRODUCTIVITY =  (PRODUCTIVITY_PROGRESS + random_progress);
 			PRODUCTIVITY = PRODUCTIVITY*(1 + ADDITIONAL_PRODUCTIVITY);
 			//CAPITAL_GOOD_PRICE = CAPITAL_GOOD_PRICE*(1 +0.5* ADDITIONAL_PRODUCTIVITY);
-printf("PRODUCTIVITY %f\n",PRODUCTIVITY);
-printf("ADDITIONAL_PRODUCTIVITY %f\n",ADDITIONAL_PRODUCTIVITY);
+//printf("PRODUCTIVITY %f\n",PRODUCTIVITY);
+//printf("ADDITIONAL_PRODUCTIVITY %f\n",ADDITIONAL_PRODUCTIVITY);
 		}
 	}
-printf("2: DURATION_UNTIL_NEXT_INNOVATION: %d\n",DURATION_UNTIL_NEXT_INNOVATION);
-printf("2: INNOVATION_SUCCESS: %d\n",INNOVATION_SUCCESS);
+//printf("2: DURATION_UNTIL_NEXT_INNOVATION: %d\n",DURATION_UNTIL_NEXT_INNOVATION);
+//printf("2: INNOVATION_SUCCESS: %d\n",INNOVATION_SUCCESS);
 /**********************TEST: NORMAL DISTRIBUTION************************************************/
 	/*int l,m,counter;
 	counter = 1000000;
@@ -218,8 +218,8 @@ int IGFirm_calc_research_employees()
 		CAPITAL_GOOD_DEMAND_AFTER_LAST_INNOVATION = 0;
 		
 	}
-printf("DURATION_UNTIL_NEXT_INNOVATION: %d\n",DURATION_UNTIL_NEXT_INNOVATION);
-printf("CAPITAL_GOOD_DEMAND_AFTER_LAST_INNOVATION: %f\n",CAPITAL_GOOD_DEMAND_AFTER_LAST_INNOVATION);
+//printf("DURATION_UNTIL_NEXT_INNOVATION: %d\n",DURATION_UNTIL_NEXT_INNOVATION);
+//printf("CAPITAL_GOOD_DEMAND_AFTER_LAST_INNOVATION: %f\n",CAPITAL_GOOD_DEMAND_AFTER_LAST_INNOVATION);
 
 	//ESTIMATED_RESEARCHER_WAGE = WAGE_OFFER_FOR_SKILL_6;
 
@@ -252,7 +252,7 @@ printf("CAPITAL_GOOD_DEMAND_AFTER_LAST_INNOVATION: %f\n",CAPITAL_GOOD_DEMAND_AFT
 	}*/
 
 printf("REVENUE_FOR_INNOVATION: %f\n",REVENUE_FOR_INNOVATION/12);
-printf("WAGE_OFFER_FOR_SKILL_6: %f\n",WAGE_OFFER_FOR_SKILL_6);
+//printf("WAGE_OFFER_FOR_SKILL_6: %f\n",WAGE_OFFER_FOR_SKILL_6);
 
 	/*2. option: The number Research employees is determined every year*/
 
@@ -267,7 +267,7 @@ printf("WAGE_OFFER_FOR_SKILL_6: %f\n",WAGE_OFFER_FOR_SKILL_6);
 	REVENUE_FOR_INNOVATION = 0;
 
 	printf("RESEARCH_EMPLOYEES_NEEDED %d \n",RESEARCH_EMPLOYEES_NEEDED);	
-	printf("CUM_REVENUES %f \n",CUM_REVENUES);
+	//printf("CUM_REVENUES %f \n",CUM_REVENUES);
 	
 	printf("***************************************************************************\n");
 	return 0;
@@ -351,7 +351,7 @@ int IGFirm_calc_production_quantity()
 	}
 
 	mean_of_last_sales = mean_of_last_sales/FIRM_PLANNING_HORIZON;	
-	printf("mean_of_last_sales %f\n",mean_of_last_sales);
+	//printf("mean_of_last_sales %f\n",mean_of_last_sales);
 
 	/*printf("********SALES BEFORE ********\n");
 	for(int y = 0; y<10;y++)
@@ -408,12 +408,12 @@ int IGFirm_calc_production_quantity()
 		if(random_nummer < DELIVERY_PROB_IF_CRITICAL_STOCK_0)
 		{
 			CRITICAL_STOCK = mean_of_last_sales;
-			printf("CRITICAL_STOCK DETERMINED BY MEAN \n");
+			//printf("CRITICAL_STOCK DETERMINED BY MEAN \n");
 		}
 
 	}
-printf("CRITICAL_STOCK: %f \n",CRITICAL_STOCK);	
-printf("CAPITAL_GOOD_STORE: %f \n",CAPITAL_GOOD_STORE);
+//printf("CRITICAL_STOCK: %f \n",CRITICAL_STOCK);	
+//printf("CAPITAL_GOOD_STORE: %f \n",CAPITAL_GOOD_STORE);
 
 	if(CAPITAL_GOOD_STORE <= CRITICAL_STOCK)
 	{
@@ -432,7 +432,7 @@ printf("CAPITAL_GOOD_STORE: %f \n",CAPITAL_GOOD_STORE);
 		PLANNED_PRODUCTION_QUANTITY = 0.0;	
 	}
 
-printf("1: PLANNED_PRODUCTION_QUANTITY OF SALES ARRAY %f \n",PLANNED_PRODUCTION_QUANTITY);
+//printf("1: PLANNED_PRODUCTION_QUANTITY OF SALES ARRAY %f \n",PLANNED_PRODUCTION_QUANTITY);
 
 	double mean_last_demand = 0.0;
 	
@@ -444,7 +444,7 @@ printf("1: PLANNED_PRODUCTION_QUANTITY OF SALES ARRAY %f \n",PLANNED_PRODUCTION_
 
 	
 	mean_last_demand = mean_last_demand/(double)LAST_CAPITAL_GOOD_DEMAND.size;
-	printf("mean_last_demand %f \n",mean_last_demand);
+	//printf("mean_last_demand %f \n",mean_last_demand);
 	
 	/*if(mean_last_demand < CAPITAL_GOOD_DEMAND)
 	{
@@ -458,6 +458,11 @@ printf("1: PLANNED_PRODUCTION_QUANTITY OF SALES ARRAY %f \n",PLANNED_PRODUCTION_
 	if(NO_ZERO_DEMAND > 0)
 	{
 		PLANNED_PRODUCTION_QUANTITY = 0.0;	
+	}
+
+	if(CAPITAL_GOOD_STORE > CRITICAL_STOCK)
+	{
+		PLANNED_PRODUCTION_QUANTITY = 0.0;
 	}
 
 	
@@ -488,11 +493,11 @@ int IGFirm_calc_input_demands()
 	PLANNED_PRODUCTION_COSTS = EMPLOYEES_NEEDED*MEAN_WAGE +
  	RESEARCH_EMPLOYEES_NEEDED*MEAN_RESEARCH_WAGE;
 
-	printf("MEAN_SPECIFIC_SKILLS %f \n",MEAN_SPECIFIC_SKILLS);
-	printf("PRODUCTION_PRODUCTIVITY %f \n",PRODUCTION_PRODUCTIVITY);	
+	//printf("MEAN_SPECIFIC_SKILLS %f \n",MEAN_SPECIFIC_SKILLS);
+	//printf("PRODUCTION_PRODUCTIVITY %f \n",PRODUCTION_PRODUCTIVITY);	
 	printf("PLANNED_PRODUCTION_QUANTITY %f \n",PLANNED_PRODUCTION_QUANTITY);	
 	printf("EMPLOYEES_NEEDED %d \n",EMPLOYEES_NEEDED);
-	printf("RESEARCH_EMPLOYEES_NEEDED %d \n",RESEARCH_EMPLOYEES_NEEDED);
+	//printf("RESEARCH_EMPLOYEES_NEEDED %d \n",RESEARCH_EMPLOYEES_NEEDED);
 	
 	printf("******************************************\n");
 
@@ -511,6 +516,8 @@ printf("FINANCIAL_RESOURCES_FOR_PRODUCTION %f\n",FINANCIAL_RESOURCES_FOR_PRODUCT
 printf("PLANNED_PRODUCTION_COSTS %f\n",PLANNED_PRODUCTION_COSTS);
 printf("EMPLOYEES_NEEDED %d\n",EMPLOYEES_NEEDED);
 printf("RESEARCH_EMPLOYEES_NEEDED %d\n",RESEARCH_EMPLOYEES_NEEDED);
+
+	FINANCIAL_RESOURCES_FOR_PRODUCTION = PAYMENT_ACCOUNT - FINANCIAL_LIQUIDITY_NEEDS;
 	
 	if( FINANCIAL_RESOURCES_FOR_PRODUCTION > 0.0)
 	{
@@ -836,10 +843,10 @@ printf("CAPITAL_GOOD_DEMAND_AFTER_LAST_INNOVATION: %f\n",CAPITAL_GOOD_DEMAND_AFT
 //printf("SALES %f\n",SALES);
 if(DAY%MONTH==DAY_OF_MONTH_TO_ACT)
 {
-	printf("CAPITAL_GOOD_STORE %f\n",CAPITAL_GOOD_STORE);
-	printf("CAPITAL_GOOD_DEMAND %f\n",CAPITAL_GOOD_DEMAND);
-	printf("SALES %f\n",SALES);
-	printf("CALC REVENUE %f\n",(SALES*CAPITAL_GOOD_PRICE));
+	//printf("CAPITAL_GOOD_STORE %f\n",CAPITAL_GOOD_STORE);
+	//printf("CAPITAL_GOOD_DEMAND %f\n",CAPITAL_GOOD_DEMAND);
+	//printf("SALES %f\n",SALES);
+	//printf("CALC REVENUE %f\n",(SALES*CAPITAL_GOOD_PRICE));
 	printf("******************************************************************************************\n");
 
 }
@@ -872,7 +879,7 @@ if(DAY%MONTH==DAY_OF_MONTH_TO_ACT)
 
 	CUM_REVENUES += REVENUE_PER_DAY; 
 	PAYMENT_ACCOUNT += REVENUE_PER_DAY;
-	REVENUE_FOR_INNOVATION += CUM_REVENUES;
+	REVENUE_FOR_INNOVATION += REVENUE_PER_DAY;
 
 if(DAY%MONTH==DAY_OF_MONTH_TO_ACT)
 {
@@ -889,94 +896,10 @@ if(DAY%MONTH==DAY_OF_MONTH_TO_ACT)
 
 
 
-int IGFirm_pay_taxes()
-{
-	
-
-	TAX_PAYMENT = CUM_REVENUES*TAX_RATE_CORPORATE;
-	//TAX_PAYMENT = CUM_REVENUES*0.3;	
 
 
 
-	
-	PAYMENT_ACCOUNT -= TAX_PAYMENT;
-	
-	NET_PROFIT = CUM_REVENUES - TAX_PAYMENT;
-	
-	CUM_REVENUE_LAST_MONTH = CUM_REVENUES;
-	CUM_REVENUES=0.0;
-	add_tax_payment_message(GOV_ID,TAX_PAYMENT);
-	
-	
-	
-	return 0;
-}
 
-
-
-int IGFirm_dividend_payment()
-{
-
-
-	//double weight = 0.2;
-	double average_last_net_profits;
-	double total_dividend_payment;
-	DIVIDEND_PAYMENT = 0.0;
-
-	/*First: pay out complete NET_PROFIT as dividends*/
-/*CURRENT_DIVIDEND_PER_SHARE = NET_PROFIT / OUTSTANDING_SHARES;
-	printf("1: DIVIDEND %f \n",CURRENT_DIVIDEND_PER_SHARE);
-	
-	total_dividend_payment=NET_PROFIT;
-	printf("1: total_dividend_payment %f \n",total_dividend_payment);
-	
-	*/
-	
-	
-	/*Second: pay out geometrical average as dividends*/
-	/*CURRENT_DIVIDEND_PER_SHARE = (weight*CUM_NET_PROFITS +(1-weight)*NET_PROFIT)/ OUTSTANDING_SHARES;
-	printf("2: DIVIDEND %f \n",CURRENT_DIVIDEND_PER_SHARE);
-	
-	total_dividend_payment=weight*CUM_NET_PROFITS +(1-weight)*NET_PROFIT;
-	printf("2: total_dividend_payment %f \n",total_dividend_payment);
-	
-	printf("1: CUM_NET_PROFITS %f\n",CUM_NET_PROFITS);
-	CUM_NET_PROFITS = (1- weight)*CUM_NET_PROFITS +weight*NET_PROFIT; 
-	printf("2: CUM_NET_PROFITS %f\n",CUM_NET_PROFITS);*/
-	
-	
-	
-	
-	
-	/*Third: pay out the average of the last 10 NET_PROFITs as dividends*/
-	remove_double(& LAST_NET_PROFITS,0);
-	add_double(& LAST_NET_PROFITS,NET_PROFIT);  
-	
-	int p;
-	for(p = 0; p < LAST_NET_PROFITS.size; p++)
-	{
-		average_last_net_profits += LAST_NET_PROFITS.array[p];
-	}
-	
-	average_last_net_profits = average_last_net_profits/LAST_NET_PROFITS.size;
-	
-	CURRENT_DIVIDEND_PER_SHARE = average_last_net_profits/ OUTSTANDING_SHARES;
-	//printf("3: DIVIDEND %f \n",CURRENT_DIVIDEND_PER_SHARE);
-	
-	total_dividend_payment = average_last_net_profits;
-	//printf("3: total_dividend_payment %f \n",total_dividend_payment);
-		
-	
-	//add dividend_per_share_msg(firm_id, current_dividend_per_share) to shareholders (dividend per share)     
-	add_dividend_per_share_message(ID, CURRENT_DIVIDEND_PER_SHARE);
-
-	//decrease payment_account with the total_dividend_payment
-	PAYMENT_ACCOUNT -= total_dividend_payment;
-	
-	DIVIDEND_PAYMENT = total_dividend_payment;
-	
-	return 0;
-}
 
 
 

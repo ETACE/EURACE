@@ -448,12 +448,12 @@
     </variable>
     <variable>
      <type>int</type>
-     <name>bank_id</name>
+     <name>day_of_month_to_act</name>
      <description></description>
     </variable>
-    <variable>
+	<variable>
      <type>int</type>
-     <name>day_of_month_to_act</name>
+     <name>last_day_of_month_to_act</name>
      <description></description>
     </variable>
     <variable>

@@ -328,6 +328,9 @@ int Firm_execute_financial_payments()
                 if (LOANS.array[i].nr_periods_before_repayment==0)
                 {
                     remove_debt_item(&LOANS, i);
+			i--;
+			if(LOANS.size==0)
+			break;
                 }
                 else
                 {
