@@ -161,7 +161,7 @@ int CHANGE_IN_SKILL_DISTRIBUTION = 0;
 sprintf(skill_distribution, "{{1,0.2,0.2,0.2,0.2,0.2}{2,0.2,0.2,0.2,0.2,0.2}}");
 
 
-int LOWER_BOUND_FIRING = 1;
+int LOWER_BOUND_FIRING = 0;
 int UPPER_BOUND_FIRING = 10;
 
 int NO_REGIONS_PER_GOV = 1;
@@ -204,10 +204,10 @@ double MAX_CAPITAL_GOOD_PRICE_INCREASE = 0.05;
 	double fraction_researchers = 0.03;
 	
 
-	double 	tax_rate_corporate[2][1] = {0.028,0.0245};
-	double	tax_rate_hh_labour[2][1]= {0.28,0.0245};
+	double 	tax_rate_corporate[2][1] = {0.05,0.05};
+	double	tax_rate_hh_labour[2][1]= {0.05,0.05};
 	double	tax_rate_hh_capital[2][1] ={0.0,0.0};
-	double	unemployment_benefit_payment[2][1] = {0.7,0.6};
+	double	unemployment_benefit_payment[2][1] = {0.7,0.7};
 	double	payment_account_government =1000.0;
 	double 	payment_account_household = 0;
 
@@ -836,84 +836,121 @@ double MAX_CAPITAL_GOOD_PRICE_INCREASE = 0.05;
 		sprintf(data, "%d",gov_id);	print_tag("gov_id", data, file);
 		sprintf(data, "%d",bank_id);		print_tag("bank_id", data, file);
 
-		sprintf(data, "{}");							print_tag("employees", data, file);
-		sprintf(data, "{}");							print_tag("research_employees", data, file);
-		sprintf(data, "%f",base_wage_offer);			print_tag("wage_offer", data, file);
-		sprintf(data, "%f",base_wage_offer);			print_tag("mean_wage", data, file);
-		sprintf(data, "%f",base_wage_offer);			print_tag("mean_wage", data, file);
-		sprintf(data, "%f",base_wage_offer);			print_tag("wage_offer_for_skill_1", data, file);
-		sprintf(data, "%f",base_wage_offer);			print_tag("wage_offer_for_skill_2", data, file);
-		sprintf(data, "%f",base_wage_offer);			print_tag("wage_offer_for_skill_3", data, file);
-		sprintf(data, "%f",base_wage_offer);			print_tag("wage_offer_for_skill_4", data, file);
-		sprintf(data, "%f",base_wage_offer);			print_tag("wage_offer_for_skill_5", data, file);
-		sprintf(data, "%f",base_wage_offer);			print_tag("wage_offer_for_skill_6", data, file);
-		sprintf(data, "%f",base_wage_offer);			print_tag("mean_research_wage", data, file);
+		sprintf(data, "{}");								print_tag("employees", data, file);
+		sprintf(data, "{}");								print_tag("research_employees", data, file);
+		sprintf(data, "%f",base_wage_offer);				print_tag("wage_offer", data, file);
+		sprintf(data, "%f",base_wage_offer);				print_tag("mean_wage", data, file);
+		sprintf(data, "%f",base_wage_offer);				print_tag("mean_wage", data, file);
+		sprintf(data, "%f",base_wage_offer);				print_tag("wage_offer_for_skill_1", data, file);
+		sprintf(data, "%f",base_wage_offer);				print_tag("wage_offer_for_skill_2", data, file);
+		sprintf(data, "%f",base_wage_offer);				print_tag("wage_offer_for_skill_3", data, file);
+		sprintf(data, "%f",base_wage_offer);				print_tag("wage_offer_for_skill_4", data, file);
+		sprintf(data, "%f",base_wage_offer);				print_tag("wage_offer_for_skill_5", data, file);
+		sprintf(data, "%f",base_wage_offer);				print_tag("wage_offer_for_skill_6", data, file);
+		sprintf(data, "%f",base_wage_offer);				print_tag("mean_research_wage", data, file);
+		sprintf(data, "%f",specific_skills_of_household[0][0]);	print_tag("mean_specific_skills", data, file);
+		sprintf(data, "%f",specific_skills_of_household[0][0]);	print_tag("average_s_skill_of_1", data, file);
+		sprintf(data, "%f",specific_skills_of_household[0][0]);	print_tag("average_s_skill_of_2", data, file);
+		sprintf(data, "%f",specific_skills_of_household[0][0]);	print_tag("average_s_skill_of_3", data, file);
+		sprintf(data, "%f",specific_skills_of_household[0][0]);	print_tag("average_s_skill_of_4", data, file);
+		sprintf(data, "%f",specific_skills_of_household[0][0]);	print_tag("average_s_skill_of_5", data, file);
+		sprintf(data, "%d", 0);							print_tag("no_employees", data, file);
+		sprintf(data, "%d", 0);							print_tag("no_employees_skill_1", data, file);
+		sprintf(data, "%d", 0);							print_tag("no_employees_skill_2", data, file);
+		sprintf(data, "%d", 0);							print_tag("no_employees_skill_3", data, file);
+		sprintf(data, "%d", 0);							print_tag("no_employees_skill_4", data, file);
+		sprintf(data, "%d", 0);							print_tag("no_employees_skill_5", data, file);
+		sprintf(data, "%d", 0);							print_tag("no_research_employees", data, file);
+		sprintf(data, "%d", 0);							print_tag("vacancies", data, file);
+		sprintf(data, "%d", 0);							print_tag("vacancies_posted", data, file);
+		sprintf(data, "%d", 0);							print_tag("research_vacancies", data, file);
+		sprintf(data, "%d", 0);							print_tag("research_vacancies_posted", data, file);
+		sprintf(data, "%d", 0);							print_tag("employees_needed", data, file);
+		sprintf(data, "%d", 10);							print_tag("research_employees_needed", data, file);
+		sprintf(data, "%d", 0);							print_tag("duration_until_next_innovation", data, file);
+		sprintf(data, "%d", 0);							print_tag("innovation_success", data, file);
+		sprintf(data, "%f",0.0);							print_tag("additional_productivity", data, file);
+		sprintf(data, "%f",0.0);							print_tag("revenue_for_innovation", data, file);
+		sprintf(data, "%f",0.0);							print_tag("capital_good_demand_after_last_innovation", data, file);
+		sprintf(data, "%f",0.0);							print_tag("capital_good_demand", data, file);
 
-		sprintf(data, "%f",specific_skills_of_household[column][row]);	print_tag("mean_specific_skills", data, file);
-		sprintf(data, "%f",specific_skills_of_household[column][row]);	print_tag("average_s_skill_of_1", data, file);
-		sprintf(data, "%f",specific_skills_of_household[column][row]);	print_tag("average_s_skill_of_2", data, file);
-		sprintf(data, "%f",specific_skills_of_household[column][row]);	print_tag("average_s_skill_of_3", data, file);
-		sprintf(data, "%f",specific_skills_of_household[column][row]);	print_tag("average_s_skill_of_4", data, file);
-		sprintf(data, "%f",specific_skills_of_household[column][row]);	print_tag("average_s_skill_of_5", data, file);
-		sprintf(data, "%d", 0);		print_tag("no_employees", data, file);
-		sprintf(data, "%d", 0);		print_tag("no_employees_skill_1", data, file);
-		sprintf(data, "%d", 0);		print_tag("no_employees_skill_2", data, file);
-		sprintf(data, "%d", 0);		print_tag("no_employees_skill_3", data, file);
-		sprintf(data, "%d", 0);		print_tag("no_employees_skill_4", data, file);
-		sprintf(data, "%d", 0);		print_tag("no_employees_skill_5", data, file);
-		sprintf(data, "%d", 0);		print_tag("no_research_employees", data, file);
-
-		sprintf(data, "%d", 0);		print_tag("vacancies", data, file);
-		sprintf(data, "%d", 0);		print_tag("vacancies_posted", data, file);
-		sprintf(data, "%d", 0);		print_tag("research_vacancies", data, file);
-		sprintf(data, "%d", 0);		print_tag("research_vacancies_posted", data, file);
-		sprintf(data, "%d", 0);		print_tag("employees_needed", data, file);
-		sprintf(data, "%d", 10);		print_tag("research_employees_needed", data, file);
-
-		sprintf(data, "%d", 0);		print_tag("duration_until_next_innovation", data, file);
-		sprintf(data, "%d", 0);		print_tag("innovation_success", data, file);
-		sprintf(data, "%f",0.0);		print_tag("additional_productivity", data, file);
-		sprintf(data, "%f",0.0);		print_tag("revenue_for_innovation", data, file);
-		sprintf(data, "%f",0.0);		print_tag("capital_good_demand_after_last_innovation", data, file);
-		sprintf(data, "%f",0.0);		print_tag("capital_good_demand", data, file);
-
-double a = 30;
-sprintf(data, "{%f,%f,%f,%f,%f}", a,a,a,a,a);	
-print_tag("last_capital_good_demand", data, file);
-sprintf(data, "{%f,%f,%f,%f,%f,%f,%f,%f,%f,%f}", a,a,a,a,a,a,a,a,a,a);	
-print_tag("last_capital_good_sales", data, file);
-sprintf(data, "%d",0);		print_tag("no_zero_demand", data, file);
-sprintf(data, "%f",0.0);		print_tag("critical_stock", data, file);
-sprintf(data, "%f",35.0);		print_tag("capital_good_store", data, file);
-sprintf(data, "%f",0.0);		print_tag("planned_production_quantity", data, file);
-sprintf(data, "%f",0.0);		print_tag("capital_demand", data, file);
-sprintf(data, "%f",0.0);		print_tag("planned_production_costs", data, file);
-sprintf(data, "%f",0.0);		print_tag("production_costs", data, file);
-sprintf(data, "%f",0.0);		print_tag("production_quantity", data, file);
-sprintf(data, "{%f,%f,%f,%f,%f}", a,a,a,a,a);	
-print_tag("last_production_quantities", data, file);
-sprintf(data, "%f",0.0);		print_tag("labour_costs", data, file);
-
-sprintf(data, "%f",0.0);		print_tag("unit_costs", data, file);
-sprintf(data, "%f",0.0);		print_tag("sales", data, file);
+		double a = 30;
+		sprintf(data, "{%f,%f,%f,%f,%f}", a,a,a,a,a);	
+		print_tag("last_capital_good_demand", data, file);
+		sprintf(data, "{%f,%f,%f,%f,%f,%f,%f,%f,%f,%f}", a,a,a,a,a,a,a,a,a,a);	
+		print_tag("last_capital_good_sales", data, file);
+		sprintf(data, "%d",0);							print_tag("no_zero_demand", data, file);
+		sprintf(data, "%f",0.0);							print_tag("critical_stock", data, file);
+		sprintf(data, "%f",100.0);							print_tag("capital_good_store", data, file);
+		sprintf(data, "%f",0.0);							print_tag("planned_production_quantity", data, file);
+		sprintf(data, "%f",0.0);							print_tag("capital_demand", data, file);
+		sprintf(data, "%f",0.0);							print_tag("planned_production_costs", data, file);
+		sprintf(data, "%f",0.0);							print_tag("production_costs", data, file);
+		sprintf(data, "%f",0.0);							print_tag("production_quantity", data, file);
+		sprintf(data, "{%f,%f,%f,%f,%f}", a,a,a,a,a);	
+		print_tag("last_production_quantities", data, file);
+		sprintf(data, "%f",0.0);							print_tag("labour_costs", data, file);
+		sprintf(data, "%f",0.0);							print_tag("unit_costs", data, file);
+		sprintf(data, "%f",0.0);							print_tag("sales", data, file);
 
 
 
 
-sprintf(data, "%f",1000.0);		print_tag("financial_resources_for_production", data, file);
-		sprintf(data, "%f",0.0);								print_tag("payment_account", data, file);
+		
+		sprintf(data, "%f",100.0);								print_tag("payment_account", data, file);
 		sprintf(data, "%f",productivity_best_practice_igfirm);		print_tag("productivity", data, file);
 		sprintf(data, "%f", capital_good_price);				print_tag("capital_good_price", data, file);
-		sprintf(data, "%d",0);								print_tag("day_of_month_to_act", data, file);
 		sprintf(data, "%f", 0.0);								print_tag("revenue_per_day", data, file);
-		sprintf(data, "%f", tax_rate_corporate[0][0]);				print_tag("tax_rate_corporate", data, file);
+		sprintf(data, "%f", tax_rate_corporate[0][0]);			print_tag("tax_rate_corporate", data, file);
 		sprintf(data, "%f", 0.0);								print_tag("tax_rate_vat", data, file);
-		sprintf(data, "%d", total_households);					print_tag("outstanding_shares", data, file);
-		sprintf(data, "%f", 0.0);								print_tag("current_dividend_per_share", data, file);
 		sprintf(data, "%f", 0.0);								print_tag("cum_revenues", data, file);
 		sprintf(data, "%f", 0.0);								print_tag("net_profit", data, file);
 		sprintf(data, "%f", 0.0);								print_tag("cum_net_profits", data, file);
-		sprintf(data, "{%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f}",0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);					print_tag("last_net_profits", data, file);
+
+
+		sprintf(data, "%f",0.0);	print_tag("financial_resources_for_production", data, file);
+		sprintf(data, "%f", 0.0);	print_tag("total_capital_depreciation_value", data, file);
+		sprintf(data, "%f", 0.0);	print_tag("total_capital_depreciation_units", data, file);
+		sprintf(data, "%f", 0.0);	print_tag("total_assets", data, file);
+		sprintf(data, "%f", 0.0);	print_tag("equity", data, file);
+		sprintf(data, "%f", 0.0);	print_tag("production_liquidity_needs", data, file);
+		sprintf(data, "%f", 0.0);	print_tag("financial_liquidity_needs", data, file);
+		sprintf(data, "%f", 0.0);	print_tag("total_financial_needs", data, file);
+		sprintf(data, "%f", 0.0);	print_tag("external_financial_needs", data, file);
+		sprintf(data, "%f", 0.0);	print_tag("total_payments", data, file);
+
+		sprintf(data, "{}");		print_tag("loans", data, file);
+		sprintf(data, "%f", 0.0);	print_tag("total_debt", data, file);
+		sprintf(data, "%f", 0.0);	print_tag("total_value_local_inventory", data, file);
+
+		sprintf(data, "%f", 0.0);	print_tag("earnings", data, file);
+		sprintf(data, "%f", 0.0);	print_tag("previous_net_earnings", data, file);
+		
+		
+		sprintf(data, "%f", 0.01);	print_tag("earnings_per_share", data, file);
+		sprintf(data, "%d", total_households);	print_tag("current_shares_outstanding", data, file);
+		sprintf(data, "%f", 0.0);	print_tag("total_interest_payment", data, file);
+		sprintf(data, "%f", 0.0);	print_tag("total_debt_installment_payment", data, file);
+		sprintf(data, "%f", 0.0);	print_tag("total_dividend_payment", data, file);
+		sprintf(data, "%f", 0.0);	print_tag("previous_dividend_per_share", data, file);
+		sprintf(data, "%f", 0.0);	print_tag("current_dividend_per_share", data, file);
+		sprintf(data, "%f", 0.0);	print_tag("previous_earnings_per_share", data, file);
+		sprintf(data, "%f", 0.0);	print_tag("current_earnings_per_share", data, file);
+		sprintf(data, "%f", 0.0);	print_tag("previous_dividend_per_earnings", data, file);
+		sprintf(data, "%f", 0.0);	print_tag("current_dividend_per_earnings", data, file);
+		
+
+/*
+		int rnd = random_int(0,19);
+		sprintf(data, "%d", rnd);	print_tag("day_of_month_to_act", data, file);
+		int rnd2 = ((rnd-1)+20)%20;		
+		sprintf(data, "%d",rnd2);	print_tag("last_day_of_month_to_act", data, file);
+*/
+
+		sprintf(data, "%d",0);		print_tag("day_of_month_to_act", data, file);
+		sprintf(data, "%d",19);	print_tag("last_day_of_month_to_act", data, file);
+
+
 		
 		sprintf(data, "%f", 0.0);       print_tag("posx", data, file);
 		sprintf(data, "%f", 0.0);       print_tag("posy", data, file);

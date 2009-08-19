@@ -201,7 +201,7 @@
      <name>revenue_per_day</name>
      <description></description>
     </variable>
-    <variable>
+    <!--<variable>
      <type>double</type>
      <name>tax_rate_corporate</name>
      <description></description>
@@ -215,7 +215,7 @@
      <type>double</type>
      <name>tax_payment</name>
      <description></description>
-    </variable>
+    </variable>-->
     <variable>
      <type>double</type>
      <name>net_profit</name>
@@ -226,11 +226,11 @@
      <name>outstanding_shares</name>
      <description></description>
     </variable>
-    <variable>
+    <!--<variable>
      <type>double</type>
      <name>current_dividend_per_share</name>
      <description></description>
-    </variable>
+    </variable>-->
     <variable>
      <type>double</type>
      <name>cum_revenues</name>
@@ -257,11 +257,11 @@
      <description></description>
     </variable>
 
-<variable>
+<!--<variable>
      <type>double</type>
      <name>financial_resources_for_production</name>
      <description></description>
-    </variable>
+    </variable>-->
 
    </memory>
 
@@ -364,7 +364,7 @@
    <function>
      <name>IGFirm_calc_production_quantity_2</name>
      <description></description>
-     <currentState>01kk</currentState>
+     <currentState>01ll</currentState>
      <nextState>Start_IGFirm_Employer_Role</nextState>
      <inputs/>
      <outputs/>
@@ -377,6 +377,12 @@
      <description></description>
      <currentState>Start_IGFirm_Production</currentState>
      <nextState>03</nextState>
+	<condition>
+       <time>
+        <period>monthly</period>
+        <phase>a.day_of_month_to_act</phase>
+       </time>
+     </condition>
      <inputs/>
      <outputs/>
     </function>
@@ -435,7 +441,7 @@
      <outputs/>
     </function>
 
-    <function>
+    <!--<function>
      <name>IGFirm_pay_taxes</name>
      <description></description>
      <currentState>04</currentState>
@@ -465,9 +471,9 @@
        <messageName>dividend_per_share</messageName>
       </output>
      </outputs>
-    </function>
+    </function>-->
 
-    <function>
+    <!--<function>
      <name>IGFirm_idle</name>
      <description></description>
      <currentState>04</currentState>
@@ -482,7 +488,7 @@
      </condition>
      <inputs/>
      <outputs/>
-    </function>
+    </function>-->
 
    </functions>
   </xagent>
