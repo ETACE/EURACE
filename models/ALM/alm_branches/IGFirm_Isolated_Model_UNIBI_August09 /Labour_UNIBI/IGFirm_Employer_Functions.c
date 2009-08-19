@@ -203,7 +203,7 @@ int IGFirm_send_vacancies()
         	WAGE_OFFER_FOR_SKILL_1, WAGE_OFFER_FOR_SKILL_2, 
         	WAGE_OFFER_FOR_SKILL_3, WAGE_OFFER_FOR_SKILL_4, 
         	WAGE_OFFER_FOR_SKILL_5,WAGE_OFFER_FOR_SKILL_6);
-printf("Send vacancies: Production and Research\n");
+//printf("Send vacancies: Production and Research\n");
 	}
 
 	if(VACANCIES > 0 && RESEARCH_VACANCIES == 0)
@@ -212,14 +212,14 @@ printf("Send vacancies: Production and Research\n");
         	WAGE_OFFER_FOR_SKILL_1, WAGE_OFFER_FOR_SKILL_2, 
         	WAGE_OFFER_FOR_SKILL_3, WAGE_OFFER_FOR_SKILL_4, 
         	WAGE_OFFER_FOR_SKILL_5,0);
-printf("Send vacancies: only Production \n");
+//printf("Send vacancies: only Production \n");
 	}
 
 	if(VACANCIES == 0 && RESEARCH_VACANCIES > 0)
 	{	
 		add_vacancies_message(ID, REGION_ID, 
         	0, 0, 0, 0, 0,WAGE_OFFER_FOR_SKILL_6);
-printf("Send vacancies: only Research \n");
+//printf("Send vacancies: only Research \n");
 	}					
 	
 	printf("*************************************\n");
@@ -248,8 +248,8 @@ int IGFirm_send_redundancies()
 	
 	int no_redundancies = NO_EMPLOYEES - EMPLOYEES_NEEDED;
 	int j,i;
-	printf("no_redundancies %d \n",no_redundancies);
-	printf("Employees %d \n",NO_EMPLOYEES);
+	//printf("no_redundancies %d \n",no_redundancies);
+	//printf("Employees %d \n",NO_EMPLOYEES);
 
 	for(i = 0; i < (no_redundancies); i++)	
 	{	
@@ -289,12 +289,12 @@ int IGFirm_send_redundancies()
 		NO_EMPLOYEES--;		
 	}
 
-	printf("Employees %d \n",NO_EMPLOYEES);
+	//printf("Employees %d \n",NO_EMPLOYEES);
 
 	int no_researcher_redundancies = NO_RESEARCH_EMPLOYEES - RESEARCH_EMPLOYEES_NEEDED;
 	int k;
-	printf("no_researcher_redundancies %d \n",no_researcher_redundancies);
-	printf("Research-Employees %d \n",NO_RESEARCH_EMPLOYEES);
+	//printf("no_researcher_redundancies %d \n",no_researcher_redundancies);
+	//printf("Research-Employees %d \n",NO_RESEARCH_EMPLOYEES);
 	for(i = 0; i < (no_researcher_redundancies); i++)	
 	{
 		/*Firing: by chance*/
@@ -306,7 +306,7 @@ int IGFirm_send_redundancies()
 		
 	}
 
-	printf("Research-Employees %d \n",NO_RESEARCH_EMPLOYEES);
+	//printf("Research-Employees %d \n",NO_RESEARCH_EMPLOYEES);
 		
 	
 	printf("*************************************\n");
@@ -322,8 +322,8 @@ int IGFirm_send_random_redundancies()
 printf("IN FUNCTION: IGFirm_send_random_redundancies \n");
 	printf("************************************************\n");
 	int random_num = random_int(LOWER_BOUND_FIRING,UPPER_BOUND_FIRING);
-printf("Employees %d\n",NO_EMPLOYEES);  
-printf("Research_Employees %d\n",NO_RESEARCH_EMPLOYEES);      
+//printf("Employees %d\n",NO_EMPLOYEES);  
+//printf("Research_Employees %d\n",NO_RESEARCH_EMPLOYEES);      
 	/*sorting employees: highest specific skills first*/
 	qsort(EMPLOYEES.array, EMPLOYEES.size, sizeof(employee),
 	employee_list_rank_specific_skills_function);
@@ -336,7 +336,7 @@ printf("Research_Employees %d\n",NO_RESEARCH_EMPLOYEES);
 		no_redundancies = no_redundancies+1;
 	}
 
-printf("random_num: %d;  no_redundancies: %d\n",random_num,no_redundancies);
+//printf("random_num: %d;  no_redundancies: %d\n",random_num,no_redundancies);
 	int i,j;
 	for(i = 0; i < no_redundancies; i++)
 	{	 /*Firing: by chance*/
@@ -381,7 +381,7 @@ printf("random_num: %d;  no_redundancies: %d\n",random_num,no_redundancies);
 		no_redundancies = no_redundancies+1;
 	}
 
-printf("random_num: %d;  no_research_redundancies: %d\n",random_num,no_redundancies);	
+//printf("random_num: %d;  no_research_redundancies: %d\n",random_num,no_redundancies);	
 	
 	for(i = 0; i < no_redundancies; i++)
 	{	 /*Firing: by chance*/
@@ -392,8 +392,8 @@ printf("random_num: %d;  no_research_redundancies: %d\n",random_num,no_redundanc
 		NO_RESEARCH_EMPLOYEES--;
 	}
 	
-printf("Employees %d\n",NO_EMPLOYEES);  
-printf("Research_Employees %d\n",NO_RESEARCH_EMPLOYEES);  
+//printf("Employees %d\n",NO_EMPLOYEES);  
+//printf("Research_Employees %d\n",NO_RESEARCH_EMPLOYEES);  
    printf("************************************************\n");          
          return 0;
 } 
@@ -462,8 +462,8 @@ int IGFirm_read_job_applications_send_job_offer_or_rejection()
 
 	FINISH_JOB_APPLICATION_MESSAGE_LOOP
 	
-printf("Prod-Applications: %d\n",no_PROD_applications);
-printf("Research-Applications: %d\n",no_RD_applications);
+//printf("Prod-Applications: %d\n",no_PROD_applications);
+//printf("Research-Applications: %d\n",no_RD_applications);
 /*+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
 	/*Shuffle applications before sorting: If two or more applications are equal then 			they will be ranked by chance*/
@@ -720,8 +720,8 @@ int IGFirm_read_job_responses()
 	printf("************************************************\n");
 			
 	/* If day of month to act... */
-	printf("Vacancies %d\n",VACANCIES);
-	printf("Research-Vacancies %d\n",RESEARCH_VACANCIES);
+	//printf("Vacancies %d\n",VACANCIES);
+	//printf("Research-Vacancies %d\n",RESEARCH_VACANCIES);
 	
 	START_JOB_ACCEPTANCE_MESSAGE_LOOP
 		
@@ -908,7 +908,7 @@ int IGFirm_update_wage_offer()
 	if(VACANCIES > MIN_VACANCY)  
 	{
 		WAGE_OFFER = WAGE_OFFER*(1+WAGE_UPDATE);
-printf("Production-Wage-Update: %f\n",WAGE_OFFER);
+//printf("Production-Wage-Update: %f\n",WAGE_OFFER);
 
 		WAGE_OFFER_FOR_SKILL_1 = WAGE_OFFER_FOR_SKILL_1*(1+WAGE_UPDATE);
 		WAGE_OFFER_FOR_SKILL_2 = WAGE_OFFER_FOR_SKILL_2*(1+WAGE_UPDATE);
@@ -922,7 +922,7 @@ printf("Production-Wage-Update: %f\n",WAGE_OFFER);
 	if(RESEARCH_VACANCIES > 0)//MIN_VACANCY)
 	{
 		WAGE_OFFER_FOR_SKILL_6 = WAGE_OFFER_FOR_SKILL_6*(1+WAGE_UPDATE);
-printf("Research-Wage-Update: %f\n",WAGE_OFFER_FOR_SKILL_6);
+//printf("Research-Wage-Update: %f\n",WAGE_OFFER_FOR_SKILL_6);
 
 	}
 printf("********************************************* \n");	
@@ -951,7 +951,7 @@ int IGFirm_send_vacancies_2()
         	WAGE_OFFER_FOR_SKILL_1, WAGE_OFFER_FOR_SKILL_2, 
         	WAGE_OFFER_FOR_SKILL_3, WAGE_OFFER_FOR_SKILL_4, 
         	WAGE_OFFER_FOR_SKILL_5,WAGE_OFFER_FOR_SKILL_6);
-printf("Send vacancies: Production and Research\n");
+//printf("Send vacancies: Production and Research\n");
 	}
 
 	if(VACANCIES > 0 && RESEARCH_VACANCIES == 0)
@@ -960,14 +960,14 @@ printf("Send vacancies: Production and Research\n");
         	WAGE_OFFER_FOR_SKILL_1, WAGE_OFFER_FOR_SKILL_2, 
         	WAGE_OFFER_FOR_SKILL_3, WAGE_OFFER_FOR_SKILL_4, 
         	WAGE_OFFER_FOR_SKILL_5,0);
-printf("Send vacancies: only Production \n");
+//printf("Send vacancies: only Production \n");
 	}
 
 	if(VACANCIES == 0 && RESEARCH_VACANCIES > 0)
 	{	
 		add_vacancies2_message(ID, REGION_ID, 
         	0, 0, 0, 0, 0,WAGE_OFFER_FOR_SKILL_6);
-printf("Send vacancies: only Research\n");
+//printf("Send vacancies: only Research\n");
 	}	
 			
 			
@@ -1037,8 +1037,8 @@ int IGFirm_read_job_applications_send_job_offer_or_rejection_2()
 
 	FINISH_JOB_APPLICATION2_MESSAGE_LOOP
 	
-printf("Prod-Applications: %d\n",no_PROD_applications);
-printf("Research-Applications: %d\n",no_RD_applications);
+//printf("Prod-Applications: %d\n",no_PROD_applications);
+//printf("Research-Applications: %d\n",no_RD_applications);
 
 /*+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
@@ -1293,8 +1293,8 @@ printf("IN FUNCTION: IGFirm_read_job_responses_2 \n");
 	printf("************************************************\n");
 	/* If day of month to act... */
 
-printf("Vacancies %d\n",VACANCIES);
-printf("Research-Vacancies %d\n",RESEARCH_VACANCIES);
+//printf("Vacancies %d\n",VACANCIES);
+//printf("Research-Vacancies %d\n",RESEARCH_VACANCIES);
 	
 	START_JOB_ACCEPTANCE2_MESSAGE_LOOP
 
