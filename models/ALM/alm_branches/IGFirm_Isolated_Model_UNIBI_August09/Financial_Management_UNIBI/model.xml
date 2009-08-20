@@ -402,6 +402,7 @@
 <variable><type>double</type><name>total_financial_needs</name><description>Total financial needs = Production liquidity needs + Financial liquidity needs + dividends</description></variable>
 <variable><type>double</type><name>external_financial_needs</name><description>External financing</description></variable>
 <variable><type>double</type><name>total_payments</name><description></description></variable>
+<variable><type>double</type><name>production_costs_last_month</name><description></description></variable>
 
 
 <variable><type>double</type><name>total_external_financing_obtained</name><description></description></variable>
