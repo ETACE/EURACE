@@ -1,8 +1,8 @@
 #set terminal postscript eps "Helvetica" 30
-#set output "IGvariables.eps"
+#set output "IG-variables.eps"
 
 #set terminal png
-#set output "IGvariables.png"
+#set output "IG-variables.png"
 
 set data style linespoints
 #set pointsize 4.0

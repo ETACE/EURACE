@@ -84,7 +84,7 @@ struct mall
 	int region_id;
 	double productivity;
 	double cum_revenue_last_month;	
-	double dividend_payment;
+	
 
 	double no_employees;
 	double no_research_employees;
@@ -105,6 +105,17 @@ struct mall
 	double wage_offer_for_skill_5;
 	double wage_offer_for_skill_6;
 	double mean_specific_skills;
+
+	double tax_payment;
+	double total_interest_payment;
+	double total_debt_installment_payment;
+	double total_dividend_payment;
+	double earnings;
+	double total_debt;
+	double external_financial_needs;
+	double total_external_financing_obtained;
+	double payment_account;
+	double production_costs_last_month;
 	
 
 	struct IGfirm * next;
@@ -136,12 +147,14 @@ struct Household_data
 	double no_households_skill_3;
 	double no_households_skill_4;
 	double no_households_skill_5;
+	double no_households_skill_6;
 	double employed;
 	double employed_skill_1;
 	double employed_skill_2;
 	double employed_skill_3;
 	double employed_skill_4;
 	double employed_skill_5;
+	double employed_skill_6;
 	double average_specific_skill;
 	double average_wage;
 	double average_wage_skill_1;
@@ -149,6 +162,7 @@ struct Household_data
 	double average_wage_skill_3;
 	double average_wage_skill_4;
 	double average_wage_skill_5;
+	double average_wage_skill_6;
 	double commuter;
 	double foreign_commuter;
 	double average_payment_account;
@@ -157,6 +171,7 @@ struct Household_data
 	double reservation_wage_skill_3;
 	double reservation_wage_skill_4;
 	double reservation_wage_skill_5;
+	double reservation_wage_skill_6;
 	double consumption_budget_in_month;
 	
 		
@@ -257,6 +272,17 @@ struct IGFirm_data
 	double wage_offer_for_skill_5;
 	double wage_offer_for_skill_6;
 	double mean_specific_skills;
+	double tax_payment;
+	double total_interest_payment;
+	double total_debt_installment_payment;
+	double total_dividend_payment;
+	double earnings;
+	double total_debt;
+	double external_financial_needs;
+	double total_external_financing_obtained;
+	double payment_account;
+	double production_costs_last_month;
+	
 };
 typedef struct IGFirm_data IGFirm_data;
 
@@ -566,7 +592,14 @@ int getiteration(char * filepath, int itno, firm ** pointer_to_firms, household 
 
 	/*IGFirm*/
 	int inproductivity, incum_revenue_last_month;
-	int individend_payment;
+	int intax_payment; 
+	int intotal_interest_payment;
+	int intotal_debt_installment_payment;
+	int intotal_dividend_payment;
+	//int inearnings;
+	//int intotal_debt;
+	int inexternal_financial_needs;
+	int intotal_external_financing_obtained;
 	//int inno_employees;
 	int inno_research_employees;
 	//int invacancies;
@@ -592,6 +625,7 @@ int getiteration(char * filepath, int itno, firm ** pointer_to_firms, household 
 	int inmonthly_benefit_payment;
 	int inmonthly_budget_balance;
 	//int intotal_debt;
+	int inproduction_costs_last_month;
 	
 
 	/* Variables for model data */
@@ -648,12 +682,22 @@ int getiteration(char * filepath, int itno, firm ** pointer_to_firms, household 
 	double wage_offer_for_skill_5;*/
 	double wage_offer_for_skill_6;
 	//double mean_specific_skills;
+
+	double tax_payment;
+	double total_interest_payment;
+	double total_debt_installment_payment;
+	double total_dividend_payment;
+	//double earnings;
+	//double total_debt;
+	double external_financial_needs;
+	double total_external_financing_obtained;
 	
 	/*Government*/
 	double monthly_tax_revenues;
 	double monthly_benefit_payment;
 	double monthly_budget_balance;
 	//double total_debt;
+	double production_costs_last_month;
 	
 	char name[1000];
 	
@@ -751,7 +795,7 @@ int getiteration(char * filepath, int itno, firm ** pointer_to_firms, household 
 	/*IGFirm*/
 	inproductivity=0;
 	incum_revenue_last_month=0;
-	individend_payment = 0;
+	
 	inno_employees = 0;
 	inno_research_employees = 0;
 	invacancies = 0;
@@ -771,6 +815,16 @@ int getiteration(char * filepath, int itno, firm ** pointer_to_firms, household 
 	inwage_offer_for_skill_5 = 0;
 	inwage_offer_for_skill_6 = 0;
 	inmean_specific_skills = 0;
+
+	intax_payment= 0;
+	intotal_interest_payment= 0;
+	intotal_debt_installment_payment= 0;
+	intotal_dividend_payment= 0;
+	inearnings= 0;
+	intotal_debt= 0;
+	inexternal_financial_needs= 0;
+	intotal_external_financing_obtained= 0;
+	inproduction_costs_last_month =  0;
 	
 	/*Government*/
 	inmonthly_tax_revenues = 0;
@@ -850,6 +904,16 @@ int getiteration(char * filepath, int itno, firm ** pointer_to_firms, household 
 	wage_offer_for_skill_5 = 0;
 	wage_offer_for_skill_6 = 0;
 	mean_specific_skills = 0;
+
+	tax_payment= 0;
+	total_interest_payment= 0;
+	total_debt_installment_payment= 0;
+	total_dividend_payment= 0;
+	earnings= 0;
+	total_debt= 0;
+	external_financial_needs= 0;
+	total_external_financing_obtained= 0;
+	production_costs_last_month = 0;
 	
 	/*Government*/
 	monthly_tax_revenues = 0;
@@ -1024,7 +1088,6 @@ int getiteration(char * filepath, int itno, firm ** pointer_to_firms, household 
 					current_IGfirm->region_id = region_id;
 					current_IGfirm->productivity = productivity;
 					current_IGfirm->cum_revenue_last_month = cum_revenue_last_month;
-					current_IGfirm->dividend_payment = dividend_payment;
 					current_IGfirm->no_employees = no_employees;
 					current_IGfirm->no_research_employees = no_research_employees;
 					current_IGfirm->no_research_employees= no_research_employees;
@@ -1044,9 +1107,19 @@ int getiteration(char * filepath, int itno, firm ** pointer_to_firms, household 
 					current_IGfirm->wage_offer_for_skill_5 = wage_offer_for_skill_5;
 					current_IGfirm->wage_offer_for_skill_6 = wage_offer_for_skill_6;
 					current_IGfirm->mean_specific_skills = mean_specific_skills;
+					current_IGfirm->tax_payment = tax_payment;
+					current_IGfirm->total_interest_payment = total_interest_payment;
+					current_IGfirm->total_debt_installment_payment = total_debt_installment_payment;
+					current_IGfirm->total_dividend_payment = total_dividend_payment;
+					current_IGfirm->earnings = earnings;
+					current_IGfirm->total_debt = total_debt;
+					current_IGfirm->external_financial_needs = external_financial_needs;
+					current_IGfirm->total_external_financing_obtained = total_external_financing_obtained;
+					current_IGfirm->payment_account = payment_account;
+					current_IGfirm->production_costs_last_month = production_costs_last_month;
 					
-					
-					
+			
+				
 					
 					
 					//printf("IGfirm %d, ", id);
@@ -1201,8 +1274,7 @@ int getiteration(char * filepath, int itno, firm ** pointer_to_firms, household 
 			if(strcmp(buffer, "cum_revenue_last_month") == 0) { incum_revenue_last_month = 1; }
 		       if(strcmp(buffer, "/cum_revenue_last_month") == 0) { incum_revenue_last_month= 0; }	
 
-			if(strcmp(buffer, "dividend_payment") == 0) { individend_payment = 1; }
-		       if(strcmp(buffer, "/dividend_payment") == 0) { individend_payment= 0; }
+			
 
 			if(strcmp(buffer, "no_research_employees") == 0) { inno_research_employees = 1; }
 		       if(strcmp(buffer, "/no_research_employees") == 0) { inno_research_employees= 0; }
@@ -1230,7 +1302,21 @@ if(strcmp(buffer, "monthly_tax_revenues") == 0) { inmonthly_tax_revenues = 1; }
 			if(strcmp(buffer, "total_debt") == 0) { intotal_debt = 1; }
 		       if(strcmp(buffer, "/total_debt") == 0) { intotal_debt= 0; }
 
+			if(strcmp(buffer, "tax_payment") == 0) { intax_payment = 1; }
+		       if(strcmp(buffer, "/tax_payment") == 0) { intax_payment= 0; }
+			if(strcmp(buffer, "total_interest_payment") == 0) { intotal_interest_payment = 1; }
+		       if(strcmp(buffer, "/total_interest_payment") == 0) { intotal_interest_payment= 0; }
+			if(strcmp(buffer, "total_debt_installment_payment") == 0) { intotal_debt_installment_payment= 1; }
+		       if(strcmp(buffer, "/total_debt_installment_payment") == 0) { intotal_debt_installment_payment= 0; }
+			if(strcmp(buffer, "total_dividend_payment") == 0) { intotal_dividend_payment = 1; }
+		       if(strcmp(buffer, "/total_dividend_payment") == 0) { intotal_dividend_payment= 0; }
+			if(strcmp(buffer, "external_financial_needs") == 0) { inexternal_financial_needs= 1; }
+		       if(strcmp(buffer, "/external_financial_needs") == 0) { inexternal_financial_needs= 0; }
+			if(strcmp(buffer, "total_external_financing_obtained") == 0) { intotal_external_financing_obtained = 1; }
+		       if(strcmp(buffer, "/total_external_financing_obtained") == 0) { intotal_external_financing_obtained= 0; }
 
+			if(strcmp(buffer, "production_costs_last_month") == 0) { inproduction_costs_last_month = 1; }
+		       if(strcmp(buffer, "/production_costs_last_month") == 0) { inproduction_costs_last_month = 0; }
 
 			
 			/* End of tag and reset buffer */
@@ -1299,26 +1385,35 @@ if(inagent && inplanned_output)  { planned_output  = atof(buffer); }
 			if(inagent && inproductivity)  { productivity  = atof(buffer); }
 			if(inagent && intotal_supply)  { total_supply  = atof(buffer); }
 
-			if(inagent && individend_payment)  { dividend_payment  = atof(buffer); }
-if(inagent && inno_research_employees)  { no_research_employees  = atof(buffer); }
-if(inagent && inresearch_vacancies)  { research_vacancies  = atof(buffer); }
-if(inagent && insales_last_month)  { sales_last_month  = atof(buffer); }
-if(inagent && incapital_good_demand_last_month)  { capital_good_demand_last_month  = atof(buffer); }
-if(inagent && incapital_good_store_before_production)  { capital_good_store_before_production  = atof(buffer); }
-if(inagent && incapital_good_store_after_production)  { capital_good_store_after_production  = atof(buffer); }
-if(inagent && incapital_good_price)  { capital_good_price  = atof(buffer); }
+			
+	if(inagent && inno_research_employees)  { no_research_employees  = atof(buffer); }
+	if(inagent && inresearch_vacancies)  { research_vacancies  = atof(buffer); }
+	if(inagent && insales_last_month)  { sales_last_month  = atof(buffer); }
+	if(inagent && incapital_good_demand_last_month)  { capital_good_demand_last_month  = atof(buffer); }
+	if(inagent && incapital_good_store_before_production)  { capital_good_store_before_production  = atof(buffer); }
+	if(inagent && incapital_good_store_after_production)  { capital_good_store_after_production  = atof(buffer); }
+	if(inagent && incapital_good_price)  { capital_good_price  = atof(buffer); }
 
 			if(inagent && insales)  { sales  = atof(buffer); }
 			if(inagent && insales_of_domestic_firms)  { sales_of_domestic_firms  = atof(buffer); }
 			if(inagent && insales_of_foreign_firms)  { sales_of_foreign_firms  = atof(buffer); }
 
-if(inagent && inmonthly_tax_revenues)  { monthly_tax_revenues = atof(buffer); }
-if(inagent && inmonthly_benefit_payment)  { monthly_benefit_payment  = atof(buffer); }
-if(inagent && inmonthly_budget_balance)  { monthly_budget_balance  = atof(buffer); }
-if(inagent && intotal_debt)  { total_debt  = atof(buffer); }
+	if(inagent && inmonthly_tax_revenues)  { monthly_tax_revenues = atof(buffer); }
+	if(inagent && inmonthly_benefit_payment)  { monthly_benefit_payment  = atof(buffer); }
+	if(inagent && inmonthly_budget_balance)  { monthly_budget_balance  = atof(buffer); }
+	if(inagent && intotal_debt)  { total_debt  = atof(buffer); }
 
 
+	if(inagent && intax_payment)  {tax_payment = atof(buffer); }
+	if(inagent && intotal_interest_payment)  { total_interest_payment  = atof(buffer); }
+	if(inagent && intotal_debt_installment_payment)  { total_debt_installment_payment  = atof(buffer); }
+	if(inagent && intotal_dividend_payment)  { total_dividend_payment  = atof(buffer); }
+	if(inagent && inexternal_financial_needs)  { external_financial_needs  = atof(buffer); }
+	if(inagent && intotal_external_financing_obtained)  { total_external_financing_obtained  = atof(buffer); }
+	if(inagent && inproduction_costs_last_month)  { production_costs_last_month  = atof(buffer); }
 
+
+	
 			
 			/* Reset buffer */
 			i = 0;
@@ -1446,9 +1541,9 @@ void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_
 	
 	/*  1:skill level 2:lives in region 3: works in region
 	commuters[0][n][o] is the sum over all skill groups. commuters[1][n][o] is for skill group 		1 and so on...*/
-	int commuters[5+1][no_regions+1][no_regions+1];
+	int commuters[6+1][no_regions+1][no_regions+1];
 		int m,n,o;
-		for(m = 0; m <= 5; m++)
+		for(m = 0; m <= 6; m++)
 		{
 			for(n = 1; n <= no_regions; n++)
 			{
@@ -1469,6 +1564,7 @@ void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_
 		Data_Household[i].no_households_skill_3 = 0.0;
 		Data_Household[i].no_households_skill_4 = 0.0;
 		Data_Household[i].no_households_skill_5 = 0.0;
+		Data_Household[i].no_households_skill_6 = 0.0;
 		
 		Data_Household[i].employed = 0.0;
 		Data_Household[i].employed_skill_1 = 0.0;
@@ -1476,6 +1572,7 @@ void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_
 		Data_Household[i].employed_skill_3 = 0.0;
 		Data_Household[i].employed_skill_4 = 0.0;
 		Data_Household[i].employed_skill_5 = 0.0;
+		Data_Household[i].employed_skill_6 = 0.0;
 
 		Data_Household[i].average_specific_skill = 0.0;
 
@@ -1485,6 +1582,7 @@ void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_
 		Data_Household[i].average_wage_skill_3 = 0.0;
 		Data_Household[i].average_wage_skill_4 = 0.0;
 		Data_Household[i].average_wage_skill_5 = 0.0;
+		Data_Household[i].average_wage_skill_6 = 0.0;
 
 		Data_Household[i].commuter = 0.0;
 		Data_Household[i].foreign_commuter = 0.0;
@@ -1494,6 +1592,7 @@ void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_
 		Data_Household[i].reservation_wage_skill_3 = 0.0;
 		Data_Household[i].reservation_wage_skill_4 = 0.0;
 		Data_Household[i].reservation_wage_skill_5 = 0.0;
+		Data_Household[i].reservation_wage_skill_6 = 0.0;
 		Data_Household[i].consumption_budget_in_month=0.0;
 	}
 
@@ -1595,6 +1694,20 @@ void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_
 				Data_Household[0].reservation_wage_skill_5 += current_household->wage_reservation;	
 			}
 			break;
+
+			case 6:
+			Data_Household[0].no_households_skill_6++;
+			if(current_household->employee_firm_id > -1)
+			{
+				Data_Household[0].employed_skill_6++;
+				Data_Household[0].average_wage_skill_6 +=
+				current_household->wage;	
+			}
+			else
+			{
+				Data_Household[0].reservation_wage_skill_6 += current_household->wage_reservation;	
+			}
+			break;
 					
 		}
 		
@@ -1612,7 +1725,8 @@ void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_
 					current_household->specific_skill;
 				Data_Household[i].average_payment_account += 
 					current_household->payment_account;
-				Data_Household[i].consumption_budget_in_month+=current_household->consumption_budget_in_month;
+				Data_Household[i].consumption_budget_in_month+=
+					current_household->consumption_budget_in_month;
 				
 				/*If employed*/
 				if(current_household->employee_firm_id > -1)
@@ -1738,6 +1852,27 @@ void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_
 					Data_Household[i].reservation_wage_skill_5 += current_household->wage_reservation;	
 					}
 					break;
+
+					case 6:
+					Data_Household[i].no_households_skill_6++;
+					if(current_household->employee_firm_id > -1)
+					{
+						Data_Household[i].employed_skill_6++;
+						Data_Household[i].average_wage_skill_6 +=
+						current_household->wage;
+
+						int l = 0;
+						int r = 0;
+						l = current_household->region_id;
+						r = current_household->employer_region_id;
+						commuters[6][l][r] += 1;
+						commuters[0][l][r] += 1;	
+					}
+					else
+					{
+					Data_Household[i].reservation_wage_skill_6 += current_household->wage_reservation;	
+					}
+					break;
 					
 				}
 
@@ -1813,6 +1948,10 @@ void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_
 		Data_Household[i].employed_skill_5)/Data_Household[i].no_households_skill_5);
 		fputs(data, file);
 		fputs("\t", file);
+		sprintf(data, "%f", (Data_Household[i].no_households_skill_6 - 
+		Data_Household[i].employed_skill_6)/Data_Household[i].no_households_skill_6);
+		fputs(data, file);
+		fputs("\t", file);
 		
 	}
 
@@ -1855,6 +1994,10 @@ void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_
 		/Data_Household[i].employed_skill_5);
 		fputs(data, file);
 		fputs("\t", file);
+		sprintf(data, "%f", Data_Household[i].average_wage_skill_6 
+		/Data_Household[i].employed_skill_6);
+		fputs(data, file);
+		fputs("\t", file);
 	}
 
 	fputs("\n", file);
@@ -1891,6 +2034,10 @@ void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_
 		fputs("\t", file);
 		sprintf(data, "%f", Data_Household[i].reservation_wage_skill_5 
 		/(Data_Household[i].no_households_skill_5-Data_Household[i].employed_skill_5));
+		fputs(data, file);
+		fputs("\t", file);
+		sprintf(data, "%f", Data_Household[i].reservation_wage_skill_6 
+		/(Data_Household[i].no_households_skill_6-Data_Household[i].employed_skill_6));
 		fputs(data, file);
 		fputs("\t", file);
 	}
@@ -1969,7 +2116,7 @@ void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_
 
 	/*if(itno%20 == 0)
 	{int sum = 0;
-	for(m = 0; m <= 5; m++)
+	for(m = 0; m <= 6; m++)
 	{
 
 		printf("SKILL: %d\n", m);
@@ -2025,7 +2172,7 @@ void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_
 	fputs(data, file);
 	fputs("\t", file);
 	
-	for(m = 0; m <= 5; m++)
+	for(m = 0; m <= 6; m++)
 	{	
 		/*"emigrants"*/
 		for(o = 1; o <= no_regions; o++)
@@ -2056,7 +2203,7 @@ void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_
 	fputs(data, file);
 	fputs("\t", file);
 	
-	for(m = 0; m <= 5; m++)
+	for(m = 0; m <= 6; m++)
 	{	
 		/*"emigrants"*/
 		for(o = 1; o <= no_regions; o++)
@@ -2087,7 +2234,7 @@ void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_
 	fputs(data, file);
 	fputs("\t", file);
 	
-	for(m = 0; m <= 5; m++)
+	for(m = 0; m <= 6; m++)
 	{	
 		/*"emigrants"*/
 		for(o = 1; o <= no_regions; o++)
@@ -2354,7 +2501,6 @@ void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_
 		Data_IGFirm[i].no_igfirms = 0.0;
 		Data_IGFirm[i].productivity = 0;
 		Data_IGFirm[i].cum_revenue_last_month = 0;
-		Data_IGFirm[i].dividend_payment = 0;
 		Data_IGFirm[i].no_employees = 0;
 		Data_IGFirm[i].no_research_employees = 0;
 		Data_IGFirm[i].research_vacancies = 0;
@@ -2373,7 +2519,17 @@ void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_
 		Data_IGFirm[i].wage_offer_for_skill_4 = 0;
 		Data_IGFirm[i].wage_offer_for_skill_5 = 0;
 		Data_IGFirm[i].wage_offer_for_skill_6 = 0;
-		Data_IGFirm[i].mean_specific_skills = 0;	
+		Data_IGFirm[i].mean_specific_skills = 0;
+		Data_IGFirm[i].tax_payment = 0;
+		Data_IGFirm[i].total_interest_payment = 0;
+		Data_IGFirm[i].total_debt_installment_payment = 0;
+		Data_IGFirm[i].total_dividend_payment = 0;
+		Data_IGFirm[i].earnings = 0;
+		Data_IGFirm[i].total_debt = 0;
+		Data_IGFirm[i].external_financial_needs = 0;
+		Data_IGFirm[i].total_external_financing_obtained = 0;
+		Data_IGFirm[i].payment_account = 0;	
+		Data_IGFirm[i].production_costs_last_month = 0;	
 	}
 
 
@@ -2383,7 +2539,6 @@ void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_
 		Data_IGFirm[0].no_igfirms++;
 		Data_IGFirm[0].productivity+= current_IGfirm->productivity;
 		Data_IGFirm[0].cum_revenue_last_month += current_IGfirm->cum_revenue_last_month;
-		Data_IGFirm[0].dividend_payment += current_IGfirm->dividend_payment;
 		Data_IGFirm[0].no_employees+= current_IGfirm->no_employees;
 		Data_IGFirm[0].no_research_employees+= current_IGfirm->no_research_employees;
 		Data_IGFirm[0].research_vacancies+= current_IGfirm->research_vacancies;
@@ -2404,6 +2559,18 @@ void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_
 		Data_IGFirm[0].wage_offer_for_skill_5+= current_IGfirm->wage_offer_for_skill_5;
 		Data_IGFirm[0].wage_offer_for_skill_6+= current_IGfirm->wage_offer_for_skill_6;
 		Data_IGFirm[0].mean_specific_skills+= current_IGfirm->mean_specific_skills;
+
+		Data_IGFirm[0].tax_payment += current_IGfirm->tax_payment;
+		Data_IGFirm[0].total_interest_payment += current_IGfirm->total_interest_payment ;
+		Data_IGFirm[0].total_debt_installment_payment += current_IGfirm->total_debt_installment_payment;
+		Data_IGFirm[0].total_dividend_payment += current_IGfirm->total_dividend_payment;
+		Data_IGFirm[0].earnings += current_IGfirm->earnings;
+		Data_IGFirm[0].total_debt += current_IGfirm->total_debt;
+		Data_IGFirm[0].external_financial_needs += current_IGfirm->external_financial_needs;
+		Data_IGFirm[0].total_external_financing_obtained += current_IGfirm->total_external_financing_obtained;
+		Data_IGFirm[0].payment_account += current_IGfirm->payment_account;
+		Data_IGFirm[0].production_costs_last_month += current_IGfirm->production_costs_last_month;
+
 		
 		int i;
 		for(i = 1; i <= no_regions; i++)
@@ -2412,7 +2579,7 @@ void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_
 			{
 				Data_IGFirm[i].no_igfirms++;
 				Data_IGFirm[i].productivity+= current_IGfirm->productivity;
-				Data_IGFirm[i].dividend_payment += current_IGfirm->dividend_payment;
+				Data_IGFirm[i].cum_revenue_last_month += current_IGfirm->cum_revenue_last_month;
 				Data_IGFirm[i].no_employees+= current_IGfirm->no_employees;
 				Data_IGFirm[i].no_research_employees+= current_IGfirm->no_research_employees;
 				Data_IGFirm[i].research_vacancies+= current_IGfirm->research_vacancies;
@@ -2435,12 +2602,130 @@ void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_
 				Data_IGFirm[i].wage_offer_for_skill_5+= current_IGfirm->wage_offer_for_skill_5;
 				Data_IGFirm[i].wage_offer_for_skill_6+= current_IGfirm->wage_offer_for_skill_6;
 				Data_IGFirm[i].mean_specific_skills+= current_IGfirm->mean_specific_skills;
+
+				Data_IGFirm[i].tax_payment += current_IGfirm->tax_payment;
+				Data_IGFirm[i].total_interest_payment += current_IGfirm->total_interest_payment ;
+				Data_IGFirm[i].total_debt_installment_payment += 
+				current_IGfirm->total_debt_installment_payment;
+				Data_IGFirm[i].total_dividend_payment += current_IGfirm->total_dividend_payment;
+				Data_IGFirm[i].earnings += current_IGfirm->earnings;
+				Data_IGFirm[i].total_debt += current_IGfirm->total_debt;
+				Data_IGFirm[i].external_financial_needs += current_IGfirm->external_financial_needs;
+				Data_IGFirm[i].total_external_financing_obtained +=
+				 current_IGfirm->total_external_financing_obtained;
+				Data_IGFirm[i].payment_account += current_IGfirm->payment_account;
+				Data_IGFirm[i].production_costs_last_month += current_IGfirm->production_costs_last_month;
+	
 			}
 		}
 		
 		current_IGfirm = current_IGfirm->next;
 		
 	}
+
+
+//Regions: tax interest debt installment dividend payments
+	file = fopen("data-IGfirm-payments-region.csv", "a");
+
+	sprintf(data, "%i", itno);
+	fputs(data, file);
+	fputs("\t", file);
+
+	
+	for(i = 0; i <= no_regions; i++)
+	{
+		sprintf(data, "%f", Data_IGFirm[i].tax_payment);
+		fputs(data, file);
+		fputs("\t", file);
+		sprintf(data, "%f", Data_IGFirm[i].total_interest_payment);
+		fputs(data, file);
+		fputs("\t", file);
+		sprintf(data, "%f", Data_IGFirm[i].total_debt_installment_payment);
+		fputs(data, file);
+		fputs("\t", file);
+		sprintf(data, "%f", Data_IGFirm[i].total_dividend_payment);
+		fputs(data, file);
+		fputs("\t", file);
+		sprintf(data, "%f", Data_IGFirm[i].production_costs_last_month);
+		fputs(data, file);
+		fputs("\t", file);
+	}
+		
+	fputs("\n", file);
+
+	fclose(file);
+
+//Regions: financial needs, financing obtaind
+	file = fopen("data-IGfirm-external-financing-region.csv", "a");
+
+	sprintf(data, "%i", itno);
+	fputs(data, file);
+	fputs("\t", file);
+
+	
+	for(i = 0; i <= no_regions; i++)
+	{
+		sprintf(data, "%f", Data_IGFirm[i].external_financial_needs);
+		fputs(data, file);
+		fputs("\t", file);
+		sprintf(data, "%f", Data_IGFirm[i].total_external_financing_obtained);
+		fputs(data, file);
+		fputs("\t", file);
+		
+	}
+		
+	fputs("\n", file);
+
+	fclose(file);
+
+//Regions: payment account
+	file = fopen("data-IGfirm-payment-account-region.csv", "a");
+
+	sprintf(data, "%i", itno);
+	fputs(data, file);
+	fputs("\t", file);
+
+	
+	for(i = 0; i <= no_regions; i++)
+	{
+		sprintf(data, "%f", Data_IGFirm[i].payment_account);
+		fputs(data, file);
+		fputs("\t", file);
+		
+		
+	}
+		
+	fputs("\n", file);
+
+	fclose(file);
+
+//Regions: earnings
+	file = fopen("data-IGfirm-earnings-region.csv", "a");
+
+	sprintf(data, "%i", itno);
+	fputs(data, file);
+	fputs("\t", file);
+
+	
+	for(i = 0; i <= no_regions; i++)
+	{
+		sprintf(data, "%f", Data_IGFirm[i].earnings);
+		fputs(data, file);
+		fputs("\t", file);
+		sprintf(data, "%f", Data_IGFirm[i].cum_revenue_last_month);
+		fputs(data, file);
+		fputs("\t", file);
+		
+		
+	}
+		
+	fputs("\n", file);
+
+	fclose(file);
+
+
+
+
 
 
 //Regions: capital_good_demand
@@ -3579,6 +3864,31 @@ sprintf(data, "%f", ((Data_Firm[1].delivery_to_home_region+Data_Firm[2].delivery
 	}
 
 
+/*Regions: wage*/
+	file = fopen("data-capital-labor-region.csv", "a");
+
+	sprintf(data, "%i", itno);
+	fputs(data, file);
+	fputs("\t", file);
+
+	
+	for(i = 0; i <= no_regions; i++)
+	{
+		sprintf(data, "%f", Data_Firm[i].capital_stock/Data_Firm[i].no_employees);
+		fputs(data, file);
+		fputs("\t", file);
+		sprintf(data, "%f", (Data_Firm[i].average_technology/Data_Firm[i].output)/
+						(Data_Firm[i].average_specific_skill/Data_Firm[i].no_employees));
+		fputs(data, file);
+		fputs("\t", file);
+		
+	}
+		
+	fputs("\n", file);
+
+	fclose(file);
+
+
 }
 
 
@@ -3731,7 +4041,8 @@ int main( int argc, char **argv )
 	file = fopen("data-wage-offer-region.csv", "w");
 	fclose(file);
 
-	
+	file = fopen("data-capital-labor-region.csv", "w");
+	fclose(file);	
 	
 	file = fopen("data-technological-frontier.csv", "w");
 	fclose(file);
@@ -3772,6 +4083,18 @@ int main( int argc, char **argv )
 	fclose(file);
 
 	file = fopen("data-IGfirm-capital-good-price-region.csv", "w");
+	fclose(file);
+
+	file = fopen("data-IGfirm-payments-region.csv", "w");
+	fclose(file);
+
+	file = fopen("data-IGfirm-earnings-region.csv", "w");
+	fclose(file);
+
+	file = fopen("data-IGfirm-external-financing-region.csv", "w");
+	fclose(file);
+
+	file = fopen("data-IGfirm-payment-account-region.csv", "w");
 	fclose(file);
 
 /*Government*/

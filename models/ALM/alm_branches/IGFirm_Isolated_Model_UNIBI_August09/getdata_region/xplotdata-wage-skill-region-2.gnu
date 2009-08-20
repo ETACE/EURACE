@@ -20,6 +20,6 @@ set xlabel "Days"
 #set ylabel "value of a"
 
 
-plot 'data-wage-region.csv' using 1:14 title "wage", 'data-wage-region.csv' using 1:15 title "wage_skill_1",'data-wage-region.csv' using 1:16 title "wage_skill_2",'data-wage-region.csv' using 1:17 title "wage_skill_3",'data-wage-region.csv' using 1:18 title "wage_skill_4",'data-wage-region.csv' using 1:19 title "wage_skill_5"
+plot 'data-wage-region.csv' using 1:16 title "wage", 'data-wage-region.csv' using 1:17 title "wage_skill_1",'data-wage-region.csv' using 1:18 title "wage_skill_2",'data-wage-region.csv' using 1:19 title "wage_skill_3",'data-wage-region.csv' using 1:20 title "wage_skill_4",'data-wage-region.csv' using 1:21 title "wage_skill_5",'data-wage-region.csv' using 1:22 title "wage_skill_6"
 
 #pause -1

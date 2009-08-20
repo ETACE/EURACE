@@ -20,7 +20,7 @@ set xlabel "Days"
 #set ylabel "value of a"
 
 
-plot 'data-unemployment-region.csv' using 1:2 title "unemployment-rate", 'data-unemployment-region.csv' using 1:8 title "unemployment-rate-reg-1", 'data-unemployment-region.csv' using 1:14 title "unemployment-rate-reg-2"
+plot 'data-unemployment-region.csv' using 1:2 title "unemployment-rate", 'data-unemployment-region.csv' using 1:9 title "unemployment-rate-reg-1", 'data-unemployment-region.csv' using 1:16 title "unemployment-rate-reg-2"
 
 
 #pause -1
