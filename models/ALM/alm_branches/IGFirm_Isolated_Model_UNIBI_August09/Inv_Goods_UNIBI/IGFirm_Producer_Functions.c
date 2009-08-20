@@ -634,6 +634,7 @@ int IGFirm_calc_pay_costs()
 
 	PAYMENT_ACCOUNT -= LABOUR_COSTS;
 
+	PRODUCTION_COSTS_LAST_MONTH = PRODUCTION_COSTS;
 	PRODUCTION_COSTS = LABOUR_COSTS;
 
 	double old_capital_good_price = 0.0;
@@ -866,6 +867,8 @@ if(DAY%MONTH==DAY_OF_MONTH_TO_ACT)
 {
 	printf("IN FUNCTION: IGFirm_calc_revenue\n");
 	printf("**************************************************************************\n");
+	
+	CUM_REVENUE_LAST_MONTH = CUM_REVENUES;
 	CUM_REVENUES = 0.0;
 }
 	REVENUE_PER_DAY = 0;
