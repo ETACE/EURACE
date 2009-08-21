@@ -256,6 +256,11 @@
      <name>taxes</name>
      <description></description>
     </variable>
+    <variable>
+     <type>double</type>
+     <name>dividend_per_share</name>
+     <description></description>
+    </variable>
    </memory>
    <functions>
     <function>
@@ -437,6 +442,9 @@
        <messageName>bank_interest_payment</messageName>
       </output>
       <output>
+       <messageName>dividend_per_share</messageName>
+      </output>
+      <output>
        <messageName>tax_payment</messageName>
       </output>
      </outputs>
@@ -471,7 +479,7 @@
     <variable>
      <type>double</type>
      <name>equity</name>
-     <description>The ECB equity is the account to collect the interest payments from the banks and the government bond interest rate payments.&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+     <description>The ECB equity is the account to collect the interest payments from the banks and the government bond interest rate payments.&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
 The equity of ECB is paid out to all governments as dividends, in proportion to their population.</description>
     </variable>
     <variable>
