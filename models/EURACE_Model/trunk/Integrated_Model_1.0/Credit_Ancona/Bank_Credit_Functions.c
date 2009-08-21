@@ -267,11 +267,11 @@
              EQUITY -= TAXES;  
              CASH -= TAXES; 
              add_tax_payment_message(GOV_ID, TAXES);  
-             //total_dividends = BANK_DIVIDEND_RATE*PROFITS[0];     When Mario will...
-             //dividend_per_share = total_dividends/NUMBER_OF_SHARES; 
-             //EQUITY -= total_dividends;     
-             //CASH -= total_dividends;      
-             //add_dividend_per_share_message(ID, dividend_per_share);                  
+             TOTAL_DIVIDENDS = BANK_DIVIDEND_RATE*PROFITS[0];     //Proposal by Sander, Marco, Andrea and Philipp
+             DIVIDEND_PER_SHARE = TOTAL_DIVIDENDS/CURRENT_SHARES_OUTSTANDING; 
+             EQUITY -=  TOTAL_DIVIDENDS;     
+             CASH -=  TOTAL_DIVIDENDS;      
+             add_dividend_per_share_message(ID, DIVIDEND_PER_SHARE);                  
          }
           
          if (EQUITY < 0.0) //... and if is negative (if money is not enough), increase ECB debt
