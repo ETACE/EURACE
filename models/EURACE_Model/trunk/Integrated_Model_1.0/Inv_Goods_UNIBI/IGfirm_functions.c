@@ -39,10 +39,12 @@ int IGFirm_update_productivity_price()
             CAPITAL_GOOD_PRICE = CAPITAL_GOOD_PRICE*(1 +1.0* PRODUCTIVITY_PROGRESS); 
         }
 
-    
-    
-
-
+        if (PRINT_DEBUG)
+        {
+         printf("\n IGFirm_update_productivity_price ID:%d",ID);
+         printf("\n\t PRODUCTIVITY: %f CAPITAL_GOOD_PRICE: %f",PRODUCTIVITY,CAPITAL_GOOD_PRICE);
+         getchar();
+         }
 
     return 0;
 }
@@ -52,6 +54,13 @@ int IGFirm_update_productivity_price()
 int IGFirm_send_quality_price_info()
 {
     add_productivity_message(ID,PRODUCTIVITY,CAPITAL_GOOD_PRICE);
+    
+       if (PRINT_DEBUG)
+        {
+         printf("\n IGFirm_send_quality_price_info ID: %d",ID);
+         getchar();
+         }
+
     return 0;
 }
 

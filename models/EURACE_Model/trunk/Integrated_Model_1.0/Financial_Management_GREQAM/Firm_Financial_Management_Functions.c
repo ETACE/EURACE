@@ -262,17 +262,15 @@ int Firm_compute_total_liquidity_needs()
 
     if (PRINT_DEBUG)
     {
-        printf("\n Firm_compute_total_liquidity_needs: \n");
-        printf("\t FIRM %d PRODUCTION_LIQUIDITY_NEEDS %f \n",ID,PRODUCTION_LIQUIDITY_NEEDS);
-        printf("\t FIRM %d TOTAL_INTEREST_PAYMENT %f \n",ID,TOTAL_INTEREST_PAYMENT);
-        printf("\t FIRM %d TOTAL_DEBT_INSTALLMENT_PAYMENT %f \n",ID,TOTAL_DEBT_INSTALLMENT_PAYMENT);
-        printf("\t FIRM %d TOTAL_DIVIDEND_PAYMENT %f \n",ID,TOTAL_DIVIDEND_PAYMENT);
-        printf("\t FIRM %d FINANCIAL_LIQUIDITY_NEEDS %f \n",ID,FINANCIAL_LIQUIDITY_NEEDS);
+        printf("\n Firm_compute_total_liquidity_needs ID: %d",ID);
+        printf("\n\t PRODUCTION_LIQUIDITY_NEEDS %f",PRODUCTION_LIQUIDITY_NEEDS);
+        printf("\n\t TOTAL_DEBT_INSTALLMENT_PAYMENT %f TOTAL_INTEREST_PAYMENT %f",TOTAL_DEBT_INSTALLMENT_PAYMENT, TOTAL_INTEREST_PAYMENT);
+        printf("\n\t TAX_PAYMENT %f FINANCIAL_LIQUIDITY_NEEDS %f",TAX_PAYMENT, FINANCIAL_LIQUIDITY_NEEDS);
+        printf("\n\t PRODUCTION_LIQUIDITY_NEEDS %f",PRODUCTION_LIQUIDITY_NEEDS);
+        printf("\n\t TOTAL_DIVIDEND_PAYMENT %f TOTAL_FINANCIAL_NEEDS %f",TOTAL_DIVIDEND_PAYMENT,TOTAL_FINANCIAL_NEEDS);
     
-        printf("\t FIRM %d TOTAL_FINANCIAL_NEEDS %f \n",ID,TOTAL_FINANCIAL_NEEDS);
-        printf("\t FIRM %d PAYMENT_ACCOUNT %f \n",ID,PAYMENT_ACCOUNT);
-        printf("\t FIRM %d EXTERNAL_FINANCIAL_NEEDS %f \n",ID,EXTERNAL_FINANCIAL_NEEDS);
-        printf("\t FIRM %d TOTAL_DEBT %f \n",ID,TOTAL_DEBT);
+        printf("\n\t PAYMENT_ACCOUNT %f EXTERNAL_FINANCIAL_NEEDS %f",PAYMENT_ACCOUNT,EXTERNAL_FINANCIAL_NEEDS);
+        getchar();
     }
     
     return 0;
@@ -304,6 +302,13 @@ int Firm_check_financial_and_bankruptcy_state()
             FINANCIAL_CRISIS_STATE=1;
         }
     }
+    
+    if (PRINT_DEBUG)
+    {
+                    printf("\n Firm_check_financial_and_bankruptcy_state ID: %d",ID);
+                    printf("\n\t BANKRUPTCY_ILLIQUIDITY_STATE: %d FINANCIAL_CRISIS_STATE: %d",BANKRUPTCY_ILLIQUIDITY_STATE,FINANCIAL_CRISIS_STATE);
+                    }
+    
     return 0;
 }
 
@@ -327,6 +332,14 @@ int Firm_set_bankruptcy_illiquidity()
     
     TOTAL_VALUE_LOCAL_INVENTORY = 0.0;
     
+    if (PRINT_DEBUG)
+    {
+                    printf("\n\n Firm_set_bankruptcy_illiquidity ID: %d",ID);
+                    printf("\n\t ACTIVE: %d BANKRUPTCY_IDLE_COUNTER: %d",ACTIVE,BANKRUPTCY_IDLE_COUNTER);
+                    printf("\n\t BANKRUPTCY_ILLIQUIDITY_STATE: %d BANKRUPTCY_INSOLVENCY_STATE: %d",BANKRUPTCY_ILLIQUIDITY_STATE,BANKRUPTCY_INSOLVENCY_STATE);
+                    }
+                    
+    
     //send msg to malls
     add_bankruptcy_illiquidity_message(ID);
         
@@ -348,6 +361,13 @@ int Firm_in_financial_crisis()
     payment_account_after_compulsory_payments = PAYMENT_ACCOUNT
             - (TOTAL_INTEREST_PAYMENT + TOTAL_DEBT_INSTALLMENT_PAYMENT
                     + TAX_PAYMENT);
+    
+    if (PRINT_DEBUG)
+    {
+                    printf("\n\n Firm_in_financial_crisis ID: %d",ID);
+                    printf("\n\t former TOTAL_DIVIDEND_PAYMENT: %f",TOTAL_DIVIDEND_PAYMENT);
+                    }
+                    
     TOTAL_DIVIDEND_PAYMENT = max(0, payment_account_after_compulsory_payments
             - PLANNED_PRODUCTION_COSTS);
 
@@ -364,6 +384,13 @@ int Firm_in_financial_crisis()
         //Code should never reach this point
          printf("\nERROR in Firm_in_financial_crisis: financial crisis not resolved. \n");
 
+    if (PRINT_DEBUG)
+    {               
+                    printf("\n\t new TOTAL_DIVIDEND_PAYMENT: %f",TOTAL_DIVIDEND_PAYMENT);
+                    printf("\n\t new FINANCIAL_CRISIS_STATE: %d BANKRUPTCY_STATE: %d",FINANCIAL_CRISIS_STATE,BANKRUPTCY_STATE);
+                    getchar();
+                    }
+
      return 0;
 }
 
@@ -373,6 +400,7 @@ int Firm_in_financial_crisis()
  */
 int Firm_not_in_bankruptcy()
 {   
+    if (PRINT_DEBUG) printf("\n\n Firm_not_in_bankruptcy");
     return 0;
 }
 
@@ -402,9 +430,8 @@ int Firm_execute_financial_payments()
 
     if (PRINT_DEBUG)
     {
-        printf("\n Firm_execute_financial_payments: \n");
-        printf("\t FIRM: %d PAYMENT_ACCOUNT before: %f\n",ID,PAYMENT_ACCOUNT);
-        printf("\t FIRM: %d TOTAL_DEBT before: %f\n",ID,TOTAL_DEBT);
+        printf("\n Firm_execute_financial_payments ID: %d",ID);
+        printf("\n\t (before) PAYMENT_ACCOUNT: %f TOTAL_DEBT: %f",PAYMENT_ACCOUNT,TOTAL_DEBT);
     }
 
     TOTAL_DEBT=0.0;
@@ -437,10 +464,9 @@ int Firm_execute_financial_payments()
 
             if (PRINT_DEBUG)
             {
-                printf("\t FIRM: %d repaying LOAN: %d\n",ID,i);
-                printf("\t\t installment_amount: %f interest_amount: %f remaining loan_value: %f \n",LOANS.array[i].installment_amount,temp_interest,LOANS.array[i].loan_value);
-                printf("\t FIRM: %d PAYMENT_ACCOUNT after: %f\n",ID,PAYMENT_ACCOUNT);
-                printf("\t FIRM: %d TOTAL_DEBT after: %f\n",ID,TOTAL_DEBT);
+                printf("\n\t repayment LOAN: %d",ID,i);
+                printf("\n\t installment_amount: %f interest_amount: %f remaining loan_value: %f",LOANS.array[i].installment_amount,temp_interest,LOANS.array[i].loan_value);
+                printf("\n\t (after) PAYMENT_ACCOUNT: %f TOTAL_DEBT: %f",PAYMENT_ACCOUNT,TOTAL_DEBT);
             }
 
             //pay interest            
@@ -732,6 +758,12 @@ int Firm_bankruptcy_idle_counter()
  */
 int Firm_reset_bankruptcy_flags()
 {
+    if (PRINT_DEBUG)
+    {
+                    printf("\n\n Firm_reset_bankruptcy_flags ID: %d",ID);
+                    printf("\n\t BANKRUPTCY_IDLE_COUNTER: %d EXTERNAL_FINANCIAL_NEEDS: %f",BANKRUPTCY_IDLE_COUNTER,EXTERNAL_FINANCIAL_NEEDS);
+                    }
+    
     //Add conditions for resetting the active flag to 1:
     if ((BANKRUPTCY_IDLE_COUNTER<=0)&&(EXTERNAL_FINANCIAL_NEEDS<=0.0))
     {
@@ -739,6 +771,12 @@ int Firm_reset_bankruptcy_flags()
         BANKRUPTCY_INSOLVENCY_STATE  = 0;
         BANKRUPTCY_ILLIQUIDITY_STATE = 0;
     }
+    
+    if (PRINT_DEBUG) 
+    {
+                     printf("\n\t BANKRUPTCY_INSOLVENCY_STATE: %d BANKRUPTCY_ILLIQUIDITY_STATE: %d",BANKRUPTCY_INSOLVENCY_STATE,BANKRUPTCY_ILLIQUIDITY_STATE);
+                     getchar();
+                     }
         
     return 0;
 }
@@ -756,6 +794,13 @@ int Firm_compute_and_send_stock_orders()
     //If the quantity is fractional, take the ceiling, such that EXTERNAL_FINANCIAL_NEEDS are met.
     int quantity = -1*ceil(EXTERNAL_FINANCIAL_NEEDS/limit_price);
     add_order_message(ID, ID, limit_price, quantity);
+    
+    if (PRINT_DEBUG)
+    {
+                    printf("\n\n Firm_compute_and_send_stock_orders ID: %d",ID);
+                    printf("\n\t EXTERNAL_FINANCIAL_NEEDS: %f limit_price: %f quantity: %f",EXTERNAL_FINANCIAL_NEEDS,limit_price,quantity);       
+                    getchar();             
+                    }
     
     return 0;
 }
@@ -775,6 +820,12 @@ int Firm_read_stock_transactions()
     EXTERNAL_FINANCIAL_NEEDS = 0.0;
     }
     
+    if (PRINT_DEBUG) 
+    {
+                     printf("\n\n Firm_read_stock_transactions ID: %d",ID);
+                     printf("\n\t EXTERNAL_FINANCIAL_NEEDS: %f PAYMENT_ACCOUNT: %f",EXTERNAL_FINANCIAL_NEEDS,PAYMENT_ACCOUNT);
+                     }
+    
     START_ORDER_STATUS_MESSAGE_LOOP
     if (ID == order_status_message->trader_id)
     {
@@ -789,6 +840,13 @@ int Firm_read_stock_transactions()
     
         //Decrease external financial needs with the finances obtained
         EXTERNAL_FINANCIAL_NEEDS -= finances;
+        
+        if (PRINT_DEBUG) 
+        {
+                         printf("\n\t price: %d quantity: %d",order_status_message->price,order_status_message->quantity);
+                         printf("\n\t PREVIOUS_SHARES_OUTSTANDING: %d CURRENT_SHARES_OUTSTANDING: %d",PREVIOUS_SHARES_OUTSTANDING,CURRENT_SHARES_OUTSTANDING);
+                         printf("\n\t EXTERNAL_FINANCIAL_NEEDS: %f PAYMENT_ACCOUNT: %f",EXTERNAL_FINANCIAL_NEEDS,PAYMENT_ACCOUNT);
+                         }
     }
     FINISH_ORDER_STATUS_MESSAGE_LOOP
     

@@ -114,6 +114,13 @@ int Firm_calc_input_demands_2()
 int Firm_set_quantities_zero()
 {
     
+    if (PRINT_DEBUG)
+    {
+            printf("\n Firm_set_quantities_zero ID: %d",ID);
+            printf("\n\t DAY_OF_MONTH_TO_ACT: %d",DAY_OF_MONTH_TO_ACT);
+            getchar();
+             }
+                    
     PLANNED_PRODUCTION_QUANTITY = 0;
     PRODUCTION_QUANTITY = 0;
 
@@ -249,6 +256,13 @@ int Firm_calc_production_quantity()
         //Set planned production value that is retained in memory during the month:
         PLANNED_OUTPUT = PLANNED_PRODUCTION_QUANTITY; 
         
+         if (PRINT_DEBUG)
+               {
+                         printf("\n Firm_calc_production_quantity ID: %d",ID);
+                         printf("\n\t PLANNED_PRODUCTION_QUANTITY: %f",PLANNED_PRODUCTION_QUANTITY);
+                         getchar();
+             }
+        
         //printf("In calculate production: Firm %d PLANNED_PRODUCTION_QUANTITY %f\n", ID, PLANNED_PRODUCTION_QUANTITY);
         //printf("In calculate production: Firm %d PLANNED_OUTPUT %f\n", ID, PLANNED_OUTPUT);
         
@@ -380,6 +394,16 @@ int Firm_calc_input_demands()
         PLANNED_VALUE_CAPITAL_STOCK = TOTAL_UNITS_CAPITAL_STOCK /max(NEEDED_CAPITAL_STOCK,TOTAL_UNITS_CAPITAL_STOCK)*TOTAL_VALUE_CAPITAL_STOCK + DEMAND_CAPITAL_STOCK/max(NEEDED_CAPITAL_STOCK,TOTAL_UNITS_CAPITAL_STOCK)*ACTUAL_CAP_PRICE;
         
         PLANNED_PRODUCTION_COSTS = EMPLOYEES_NEEDED*(1.04)*MEAN_WAGE + DEMAND_CAPITAL_STOCK*ACTUAL_CAP_PRICE;
+
+        if (PRINT_DEBUG)
+        { 
+                        printf("\n Firm_calc_input_demands ID: %d",ID);
+                        printf("\n\t EMPLOYEES_NEEDED: %d NEEDED_CAPITAL_STOCK: %f",EMPLOYEES_NEEDED,NEEDED_CAPITAL_STOCK);
+                        printf("\n\t TOTAL_UNITS_CAPITAL_STOCK: %f DEMAND_CAPITAL_STOCK: %f",TOTAL_UNITS_CAPITAL_STOCK,DEMAND_CAPITAL_STOCK);
+                        printf("\n\t PLANNED_VALUE_CAPITAL_STOCK: %f PLANNED_PRODUCTION_COSTS: %f",PLANNED_VALUE_CAPITAL_STOCK,PLANNED_PRODUCTION_COSTS);
+                        getchar();
+                        }
+
 
         //printf("Firm: %d  Labour: %d  Capital: %f  PLANNED_PROD_COSTS: %f\n", ID,EMPLOYEES_NEEDED,NEEDED_CAPITAL_STOCK,PLANNED_PRODUCTION_COSTS);
     

@@ -28,6 +28,12 @@ int Eurostat_initialization()
             printf("\n      TOTAL_REGIONS (%d) == size of REGION_FIRM_DATA array (%d)\n", TOTAL_REGIONS, REGION_FIRM_DATA.size);
     }
     assert(TOTAL_REGIONS==REGION_FIRM_DATA.size);
+    
+    if (PRINT_DEBUG)
+    {
+                    printf("\n Eurostat_initialization");
+                    getchar();
+                    }
 
     return 0;   
 }

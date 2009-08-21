@@ -13,16 +13,24 @@ int Central_Bank_monetary_policy()
 {
     double inflation, gdp, unemployment_rate;
 
-    ECB_INTEREST_RATE = ECB_INTEREST_RATE + 0.001;
  
     START_EUROSTAT_SEND_MACRODATA_MESSAGE_LOOP
         inflation = eurostat_send_macrodata_message->inflation;
         gdp = eurostat_send_macrodata_message->gdp;
         unemployment_rate = eurostat_send_macrodata_message->unemployment_rate;
     FINISH_EUROSTAT_SEND_MACRODATA_MESSAGE_LOOP 
- 
+    
+    ECB_INTEREST_RATE = ECB_INTEREST_RATE;
     
     add_policy_rate_message(ECB_INTEREST_RATE);
+    
+     if (PRINT_DEBUG)
+     {
+       printf("\n Central_Bank_monetary_policy ID: %d",ID); 
+       printf("\n\t inflation: %f gdp: %f unemployment_rate: %f",inflation,gdp,unemployment_rate);
+       printf("\n\t ECB_INTEREST_RATE: %f",ECB_INTEREST_RATE);   
+        getchar(); 
+      }              
 
     return 0;
 }

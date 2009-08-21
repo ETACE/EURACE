@@ -50,6 +50,13 @@
         }
                 
         NUMBER_OF_BANKS_ASKED=SET_OF_LENDERS.size;  //provvisorio
+        
+        if (PRINT_DEBUG)
+        { printf("\n\n Firm_ask_loan ID: %d",ID);
+        printf("\n\t NUMBER_OF_BANKS_ASKED: %d",NUMBER_OF_BANKS_ASKED);
+        printf("\n\t EQUITY: %f TOTAL_DEBT: %f EXTERNAL_FINANCIAL_NEEDS: %f",EQUITY,TOTAL_DEBT,EXTERNAL_FINANCIAL_NEEDS);
+        getchar();
+                  }
        
         return 0;
     }
@@ -209,6 +216,15 @@
                 //external financing needed
                 EXTERNAL_FINANCIAL_NEEDS = TOTAL_FINANCIAL_NEEDS - PAYMENT_ACCOUNT;
             }
+        
+          if (PRINT_DEBUG)
+     {
+       printf("\n Firm_get_loan ID: %d",ID); 
+       printf("\n\t credit_accepted: %f interest_rate: %f",credit_accepted,interest_rate);
+       printf("\n\t PAYMENT_ACCOUNT: %f EXTERNAL_FINANCIAL_NEEDS: %f",PAYMENT_ACCOUNT,EXTERNAL_FINANCIAL_NEEDS);
+      
+        getchar(); 
+      }                  
         
         
         return 0;

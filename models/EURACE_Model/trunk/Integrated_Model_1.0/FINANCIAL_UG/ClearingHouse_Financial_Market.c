@@ -116,6 +116,13 @@ int ClearingHouse_receive_orders_and_run()
   }
   emptyClearing(mechanism);
   //printf("sono qui---");
+  
+  if (PRINT_DEBUG)  
+  {
+                    printf("\n\n ClearingHouse_receive_orders_and_run ID: %d",ID);
+                    getchar();}
+  
+  
   return 0;
 }
 
@@ -128,15 +135,24 @@ int ClearingHouse_send_asset_information()
    assets =get_assets();
    size=sizeCAsset(assets);
      //printf("numero di asset aggiornati= %d\n",size);
+     
+   if (PRINT_DEBUG) printf("\n\n ClearingHouse_send_asset_information ID: %d",ID);
+   
    for(i=0;i<size;i++)
    {
    asset=elementAtCAsset(assets,i);
    price=lastPrice(asset);
    add_infoAssetCH_message(asset->id,price,asset->quantity);
+   
+   if (PRINT_DEBUG) 
+   {
+                    printf("\n\t asset_id: %d  price: %f quanity: %d",asset->id,price,asset->quantity);
+                    }
 
   }
   return 0;
 }
+
 int ClearingHouse_receive_info()
    {
     Asset_array *assets;
@@ -144,6 +160,12 @@ int ClearingHouse_receive_info()
     reset_Asset_array(assets);
     ClearingHouse_receive_info_stock(assets);
     ClearingHouse_receive_info_bond(assets);
+    
+    if (PRINT_DEBUG)
+    { printf("\n ClearingHouse_receive_info ID: %d",ID);
+    getchar();
+                    }
+    
  return 0;
    }
 void ClearingHouse_receive_info_stock(Asset_array *assets)

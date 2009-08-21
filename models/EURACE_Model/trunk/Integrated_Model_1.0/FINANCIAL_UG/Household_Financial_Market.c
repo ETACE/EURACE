@@ -28,6 +28,9 @@ int Household_send_orders()
     
     orders=get_pendingOrders();
     //printf(" size = %d\n",sizeCOrder(orders));
+    
+    if (PRINT_DEBUG) printf("\n Household_send_orders ID: %d",ID);
+    
     for(i=0;i<sizeCOrder(orders);i++)
     {
      ord=elementAtCOrder(orders,i);
@@ -48,6 +51,9 @@ int Household_send_orders()
      }
      
      add_order_message(ord->issuer,ord->assetId, ord->price, ord->quantity);
+     
+     if (PRINT_DEBUG) printf("\n\t assetId: %d price: %f quantity: %d",ord->assetId,ord->price,ord->quantity);
+     
     }
     return 0;
 
@@ -114,6 +120,14 @@ void assetUtilitiesToWeights(double_array *assetWeights,double_array *assetUtili
 int  Household_select_strategy()
   { 
     set_strategy(next()<TRADING_ACTIVITY);
+    
+    if (PRINT_DEBUG)
+    {
+                    printf("\n Household_select_strategy Id: %d",ID);
+                    printf("\n\t strategy: %f",STRATEGY);
+                    
+                    }
+    
     return 0;
   }
 
@@ -135,6 +149,12 @@ int Household_update_its_portfolio()
   info=get_first_order_status_message();
   i=0;
 //if( info==NULL)  printf("numero di execuzione =\n");
+
+  if (PRINT_DEBUG) 
+  {
+                   printf("\n\n Household_update_its_portfolio ID: %d",ID);
+                   printf("\n\t PAYMENT_ACCOUNT: %f",PAYMENT_ACCOUNT);}
+  
   while(info)
   {  //printf("numero di execuzione =%d\n",info->asset_id);
      if(info->trader_id==issuer) 
@@ -145,11 +165,15 @@ int Household_update_its_portfolio()
        if(sizeCOrder(pendingOrders)>0)
           executeOrder(&PAYMENT_ACCOUNT,currentOrder,assets,pendingOrders);
        
+       if (PRINT_DEBUG) printf("\n\t asset_id: %d price: %f quantity: %d",info->asset_id,info->price,info->quantity);
         
        }
 
      info=get_next_order_status_message(info);   
   }
+  
+  if (PRINT_DEBUG) printf("\n\t PAYMENT_ACCOUNT: %f",PAYMENT_ACCOUNT);
+    
   
   return 0;
 }
@@ -354,8 +378,15 @@ int Household_stock_beliefs_formation()
      cinfo_stock= get_next_info_firm_message(cinfo_stock);
      i++;
     }
+    
+    if (PRINT_DEBUG) printf("\n Household_stock_beliefs_formation ID: %d",ID);
+    
+    
 return 0;
 }
+
+
+
 int Household_bond_beliefs_formation()
 { 
   Bond *bond;
@@ -380,6 +411,9 @@ int Household_bond_beliefs_formation()
      cinfo_bond= get_next_info_bond_message(cinfo_bond);
      i++;
     }
+    
+    if (PRINT_DEBUG) printf("\n Household_bond_beliefs_formation ID: %d",ID);
+    
 return 0;
 }
 
@@ -399,6 +433,12 @@ int Household_receive_info_interest_from_bank() {
        if(accountInterest_message->bank_id == get_bank_id())
           set_risk_free_rate(accountInterest_message->interest);
     FINISH_ACCOUNTINTEREST_MESSAGE_LOOP
+    
+    if (PRINT_DEBUG)
+    {printf("\n Household_receive_info_interest_from_bank ID: %d",ID);
+    printf("\n\t RISK_FREE_RATE: %f",RISK_FREE_RATE);
+                      }
+    
     return 0;
 }
 
@@ -409,6 +449,13 @@ int Household_receives_payment_coupons()
      assetsowned=get_assetsowned();
      
      MONTHLY_BOND_INTEREST_INCOME=0.0; //defined in Statistical_Office//model.xml Household memory
+   
+   if (PRINT_DEBUG)
+      {
+       printf("\n Household_receives_payment_coupons ID: %d",ID);
+       printf("\n\t PAYMENT_ACCOUNT before: %f",PAYMENT_ACCOUNT);
+                   }   
+   
      START_PAYMENT_COUPONS_MESSAGE_LOOP 
        index=findCAsset(assetsowned,payment_coupons_message->government_id);
     if(index>=0) 
@@ -419,6 +466,14 @@ int Household_receives_payment_coupons()
       MONTHLY_BOND_INTEREST_INCOME += quantity*payment_coupons_message->coupon;      
      }
      FINISH_PAYMENT_COUPONS_MESSAGE_LOOP
+     
+      if (PRINT_DEBUG)
+      {
+       printf("\n\t quantity: %d MONTHLY_BOND_INTEREST_INCOME: %f",quantity,MONTHLY_BOND_INTEREST_INCOME);
+       printf("\n\t PAYMENT_ACCOUNT after: %f",PAYMENT_ACCOUNT);
+       getchar();
+                   }   
+     
     return 0;
    }
 

@@ -8,6 +8,13 @@ int Government_send_info_bond(void)
 {    Bond *bond;
      bond=get_bond();
      add_info_bond_message(*bond);
+     
+     if (PRINT_DEBUG) 
+     {
+             printf("\n Government_send_info_bond ID: %d",ID);
+             getchar();
+             }
+     
      return 0;
 }
 
@@ -35,6 +42,14 @@ int Government_orders_issuing(void)
          //printf("invio ordini di vendita bond id%d price%f quantity%d",bond->id, pending_order->price,pending_order->quantity);
          add_order_message(issuer,bond->id, pending_order->price,pending_order->quantity);
         }
+        
+        if (PRINT_DEBUG)
+        {
+              printf("\n\n Government_orders_issuing ID: %d",ID);
+              printf("\n\t limit_price: %f qty: %f",limit_price,qty,ID);
+              getchar();          
+                        }
+        
     return 0;
    }
 
@@ -50,10 +65,10 @@ int Government_update_its_portfolio()
   bond=get_bond();
   issuer=get_id();
   sold_quantity=0;
-  if (PRINT_DEBUG_GOV)
+  if (PRINT_DEBUG)
   {
-  printf("\n Government_update_its_portfolio \n");
-  printf("\t payment account before: %f \n",payment_account);
+  printf("\n\n Government_update_its_portfolio ID: %d",ID);
+  printf("\n\t payment account before: %f",payment_account);
   }
   if(pending_order->quantity!=0)
   {
@@ -77,8 +92,8 @@ int Government_update_its_portfolio()
  
  if (PRINT_DEBUG_GOV)
  {
-  printf("\t payment account after: %f \n",payment_account);
-  printf("\t bond->quantity: %d sold_quantity: %d  bond->nr_outstanding: %d \n",bond->quantity,sold_quantity,bond->nr_outstanding);
+  printf("\n\t payment account after: %f",payment_account);
+  printf("\n\t bond->quantity: %d sold_quantity: %d  bond->nr_outstanding: %d",bond->quantity,sold_quantity,bond->nr_outstanding);
   }
  // if(i==2) printf("numero di execuzione =%d\n",i);
  //printf("numero di outstanding bonds =%d\n",bond->nr_outstanding);
@@ -102,6 +117,9 @@ int Government_receive_info_bond(void)
        }
     current=get_next_infoAssetCH_message(current);
    }
+   
+   if (PRINT_DEBUG) printf("\n\n Government_receive_info_bond ID: %d",ID);
+   
   return 0;
 }
 
@@ -111,6 +129,16 @@ int Government_pays_coupons()
      PAYMENT_ACCOUNT=PAYMENT_ACCOUNT-(coupon*BOND.nr_outstanding);
      MONTHLY_BOND_INTEREST_PAYMENT = coupon*BOND.nr_outstanding; //Defined in Government/model.xml Gov memory
      add_payment_coupons_message(coupon,ID);
+     
+     if (PRINT_DEBUG)
+     {
+                     printf("\n\n Government_pays_coupons ID: %d",ID);
+                     printf("\n\t BOND.nr_outstanding: %d",BOND.nr_outstanding);
+                     printf("\n\t BOND.face_value: %f BOND.nominal_yield: %f",BOND.face_value,BOND.nominal_yield);
+                     printf("\n\t coupon: %f MONTHLY_BOND_INTEREST_PAYMENT: %f",coupon,MONTHLY_BOND_INTEREST_PAYMENT);
+                     getchar();
+                     }
+     
      return 0;
    }
 

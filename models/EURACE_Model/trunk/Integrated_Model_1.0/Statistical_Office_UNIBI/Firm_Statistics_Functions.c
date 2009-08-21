@@ -76,6 +76,15 @@ int Firm_read_policy_announcements()
         }
     FINISH_POLICY_ANNOUNCEMENT_MESSAGE_LOOP
     
+    
+    if (PRINT_DEBUG)
+        {
+                    printf("\n Firm_read_policy_announcements ID: %d",ID);
+                    printf("\n \t TAX_RATE_CORPORATE: %f TAX_RATE_VAT: %f TRANSFER_PAYMENT: %f SUBSIDY_PAYMENT: %f",TAX_RATE_CORPORATE,TAX_RATE_VAT,TRANSFER_PAYMENT,SUBSIDY_PAYMENT);
+                    getchar();
+                    }
+        
+    
     return 0;
 }
 
@@ -170,6 +179,13 @@ int Firm_receive_data()
             
         }
         FINISH_EUROSTAT_SEND_SPECIFIC_SKILLS_MESSAGE_LOOP
+        
+        
+          if (PRINT_DEBUG)
+     {
+       printf("\n Firm receive data ID: %d",ID); 
+       
+      }          
         
         return 0;
 }
