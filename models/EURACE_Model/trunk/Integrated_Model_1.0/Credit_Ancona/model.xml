@@ -261,6 +261,11 @@
      <name>dividend_per_share</name>
      <description></description>
     </variable>
+    <variable>
+     <type>double</type>
+     <name>current_share_price</name>
+     <description></description>
+    </variable>
    </memory>
    <functions>
     <function>
@@ -479,7 +484,7 @@
     <variable>
      <type>double</type>
      <name>equity</name>
-     <description>The ECB equity is the account to collect the interest payments from the banks and the government bond interest rate payments.&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+     <description>The ECB equity is the account to collect the interest payments from the banks and the government bond interest rate payments.&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
 The equity of ECB is paid out to all governments as dividends, in proportion to their population.</description>
     </variable>
     <variable>
