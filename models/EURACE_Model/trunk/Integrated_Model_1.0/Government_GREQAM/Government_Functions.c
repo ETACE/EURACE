@@ -27,6 +27,12 @@ int Government_initialization()
     reset_int_array(&LIST_OF_REGIONS);
     add_int(&LIST_OF_REGIONS, REGION_ID);
     
+    if (PRINT_DEBUG_GOV)
+        { 
+                    printf("\n Government_initialization ID: %d",ID);
+                    getchar();
+        }
+    
     return 0;   
 }
 
@@ -42,6 +48,14 @@ int Government_send_policy_announcements()
     //add announcements
     add_policy_announcement_message(ID, TAX_RATE_CORPORATE, TAX_RATE_HH_LABOUR, TAX_RATE_HH_CAPITAL, TAX_RATE_VAT, UNEMPLOYMENT_BENEFIT_PCT, HH_SUBSIDY_PAYMENT, FIRM_SUBSIDY_PAYMENT, HH_TRANSFER_PAYMENT, FIRM_TRANSFER_PAYMENT);
     
+    if (PRINT_DEBUG_GOV)
+        { 
+                    printf("\n Government_send_policy_announcements ID: %d",ID);
+                    printf("\n \t TAX_RATE_HH_LABOUR: %f TAX_RATE_CORPORATE: %f TAX_RATE_HH_CAPITAL: %f TAX_RATE_VAT: %f", TAX_RATE_HH_LABOUR, TAX_RATE_CORPORATE, TAX_RATE_HH_CAPITAL, TAX_RATE_VAT);
+                    printf("\n \t UNEMPLOYMENT_BENEFIT_PCT: %f HH_SUBSIDY_PAYMENT: %f FIRM_SUBSIDY_PAYMENT: %f HH_TRANSFER_PAYMENT: %f FIRM_TRANSFER_PAYMENT; %f", UNEMPLOYMENT_BENEFIT_PCT, HH_SUBSIDY_PAYMENT, FIRM_SUBSIDY_PAYMENT, HH_TRANSFER_PAYMENT, FIRM_TRANSFER_PAYMENT);
+                    getchar();
+        }
+       
     return 0;   
 }
 
@@ -351,6 +365,13 @@ int Government_monthly_resetting()
     MONTHLY_INVESTMENT_EXPENDITURE =0.0;
     MONTHLY_CONSUMPTION_EXPENDITURE =0.0;
     
+      if (PRINT_DEBUG_GOV)
+        { 
+                    printf("\n Government_monthly_resetting");
+                    getchar();
+        }
+    
+    
     return 0;
 }
 
@@ -397,6 +418,12 @@ int Government_yearly_resetting()
     YEARLY_BOND_INTEREST_PAYMENT =0.0;
     YEARLY_INVESTMENT_EXPENDITURE =0.0;
     YEARLY_CONSUMPTION_EXPENDITURE =0.0;
+    
+      if (PRINT_DEBUG_GOV)
+        { 
+                    printf("\n Government_yearly_resetting");
+                    getchar();
+        }
     
     return 0;
 }

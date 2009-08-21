@@ -11,12 +11,26 @@
           
         DEPOSITS_RATE = 0.9 * ECB_INTEREST_RATE;
         
+            if (PRINT_DEBUG)
+     {
+       printf("\n\n Bank_read_policy_rate ID: %d",ID); 
+       printf("\n\t policy_rate_value: %f DEPOSITS_RATE: %f",ECB_INTEREST_RATE,DEPOSITS_RATE);
+      
+        getchar(); 
+      }              
+        
      return 0;   
     }
     
     int Bank_communicate_identity()
     {
         add_bank_identity_message(ID);
+        
+        if (PRINT_DEBUG)
+        {
+                        printf("\n Bank_communicate_identity ID: %d",ID);
+                        getchar();
+                        }      
         
      return 0;   
     }
@@ -55,7 +69,13 @@
                 
                     add_loan_conditions_message(loan_request_message->firm_id, ID, i, credit_allowed,  r*(c/credit_allowed));
             FINISH_LOAN_REQUEST_MESSAGE_LOOP
-        
+            
+            if (PRINT_DEBUG) 
+            {
+                             printf("\n Bank_decide_credit_conditions ID: %d",ID);
+                             printf("\n\t credit_allowed: %f rate: %f",credit_allowed,r*(c/credit_allowed));
+                             getchar();
+                             }       
         
         return 0;
     }
@@ -112,6 +132,12 @@
     {
         FIRM_LOAN_INSTALLMENTS=0.0;
         FIRM_INTEREST_PAYMENTS=0.0;
+        
+        if (PRINT_DEBUG) 
+        {
+                         printf("\n\n Bank_receive_installment ID: %d",ID);
+                         printf("\n\t PROFITS: %f TOTAL_CREDIT: %f",PROFITS[0],TOTAL_CREDIT);
+                         }
             
         START_INSTALLMENT_MESSAGE_LOOP
             if(installment_message->bank_id==ID)
@@ -122,6 +148,13 @@
             TOTAL_CREDIT-=installment_message->installment_amount;
             EQUITY += installment_message->interest_amount;
             VALUE_AT_RISK -= installment_message->var_per_installment;
+            
+            if (PRINT_DEBUG)
+            {
+                            printf("\n\t interest_amount: %f installment_amount: %f",installment_message->interest_amount,installment_message->installment_amount);
+                            printf("\n\t PROFITS: %f TOTAL_CREDIT: %f EQUITY: %f",PROFITS[0],TOTAL_CREDIT,EQUITY);
+                            getchar();
+                            }
           
             //Flow accounting
             FIRM_INTEREST_PAYMENTS+= installment_message->interest_amount;
@@ -140,6 +173,17 @@
            TOTAL_CREDIT-=(bankruptcy_message->credit_refunded+bankruptcy_message->bad_debt);
            PROFITS[0] -= bankruptcy_message->bad_debt;
            VALUE_AT_RISK -= bankruptcy_message->residual_var;
+           
+           
+           if (PRINT_DEBUG)
+            {
+                            printf("\n\t BANKRUPTCY_MESSAGE_LOOP");
+                            printf("\n\t bad_debt: %f",bankruptcy_message->bad_debt);
+                            printf("\n\t PROFITS: %f TOTAL_CREDIT: %f EQUITY: %f",PROFITS[0],TOTAL_CREDIT,EQUITY);
+                            getchar();
+                            }
+
+           
             }
     
         FINISH_BANKRUPTCY_MESSAGE_LOOP   
@@ -151,6 +195,13 @@
     {
         FIRM_LOAN_ISSUES=0.0;
         
+      if (PRINT_DEBUG)
+     {
+       printf("\n\n Bank_give_loan ID: %d",ID); 
+       printf("\n\t TOTAL_CREDIT: %f",TOTAL_CREDIT);
+      }        
+        
+        
         START_LOAN_ACCEPTANCE_MESSAGE_LOOP
             if(loan_acceptance_message->bank_id==ID)
             {
@@ -158,14 +209,19 @@
                 TOTAL_CREDIT+=loan_acceptance_message->credit_amount_taken;
                 
                 //Flow accounting 
-                FIRM_LOAN_ISSUES+=loan_acceptance_message->credit_amount_taken;          
+                FIRM_LOAN_ISSUES+=loan_acceptance_message->credit_amount_taken;    
+                if (PRINT_DEBUG) printf("\n\t credit_amount_taken: %f",loan_acceptance_message->credit_amount_taken);     
             }
     
         FINISH_LOAN_ACCEPTANCE_MESSAGE_LOOP
         
+    if (PRINT_DEBUG) printf("\n\t TOTAL_CREDIT: %f",TOTAL_CREDIT);
+       
         
         return 0;
     }
+
+
     
     int Bank_accounting()
     {
@@ -243,5 +299,13 @@
 int Bank_send_accountInterest(void)
 {
    add_accountInterest_message(get_id(), DEPOSITS_RATE);
+   
+   if (PRINT_DEBUG)
+   {
+      printf("\n Bank_send_accountInterest ID: %d",ID);
+      printf("\n\t DEPOSITS_RATE %f",DEPOSITS_RATE);
+      getchar();
+                   }
+   
    return 0;
 }
