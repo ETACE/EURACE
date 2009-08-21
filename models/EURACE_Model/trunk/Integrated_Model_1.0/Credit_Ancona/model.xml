@@ -447,9 +447,6 @@
        <messageName>bank_interest_payment</messageName>
       </output>
       <output>
-       <messageName>dividend_per_share</messageName>
-      </output>
-      <output>
        <messageName>tax_payment</messageName>
       </output>
      </outputs>
