@@ -104,6 +104,13 @@ int Firm_calc_input_demands_2()
         PLANNED_PRODUCTION_COSTS = EMPLOYEES_NEEDED*MEAN_WAGE*(1.04) + DEMAND_CAPITAL_STOCK*ACTUAL_CAP_PRICE;
     
     
+    if (PRINT_DEBUG)
+    {
+                    printf("\n\n Firm_calc_input_demands_2 ID: %d",ID);
+                    printf("\n\t TOTAL_UNITS_CAPITAL_STOCK: %f NEEDED_CAPITAL_STOCK: %f",TOTAL_UNITS_CAPITAL_STOCK,NEEDED_CAPITAL_STOCK);
+                    printf("\n\t DEMAND_CAPITAL_STOCK: %f EMPLOYEES_NEEDED: %d",DEMAND_CAPITAL_STOCK,EMPLOYEES_NEEDED);                    
+                    getchar();}
+    
     return 0;
 }   
 
