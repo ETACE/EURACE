@@ -315,6 +315,40 @@
      </outputs>
     </function>
     <function>
+     <name>Bank_send_dividend_payment</name>
+     <description>Function to send the dividend_per_share message to households.</description>
+     <currentState>Bank_01</currentState>
+     <nextState>Bank_01b</nextState>
+     <condition>
+      <time>
+       <period>monthly</period>
+       <phase>a.day_of_month_to_act</phase>
+      </time>
+     </condition>
+     <inputs/>
+     <outputs>
+      <output>
+       <messageName>dividend_per_share</messageName>
+      </output>
+     </outputs>
+    </function>
+    <function>
+     <name>idle</name>
+     <description></description>
+     <currentState>Bank_01</currentState>
+     <nextState>Bank_01b</nextState>
+     <condition>
+      <not>
+       <time>
+        <period>monthly</period>
+        <phase>a.day_of_month_to_act</phase>
+       </time>
+      </not>
+     </condition>
+     <inputs/>
+     <outputs/>
+    </function>    
+    <function>
      <name>Bank_send_accountInterest</name>
      <description></description>
      <currentState>Bank_01b</currentState>
@@ -467,18 +501,6 @@
      <inputs/>
      <outputs/>
     </function>
-    <function>
-     <name>Bank_send_dividend_payment</name>
-     <description>Function to send the dividend_per_share message to households.</description>
-     <currentState>Bank_01</currentState>
-     <nextState>Bank_01b</nextState>
-     <inputs/>
-     <outputs>
-      <output>
-       <messageName>dividend_per_share</messageName>
-      </output>
-     </outputs>
-    </function>
    </functions>
   </xagent>
   <xagent>
@@ -493,7 +515,7 @@
     <variable>
      <type>double</type>
      <name>equity</name>
-     <description>The ECB equity is the account to collect the interest payments from the banks and the government bond interest rate payments.&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+     <description>The ECB equity is the account to collect the interest payments from the banks and the government bond interest rate payments.&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
 The equity of ECB is paid out to all governments as dividends, in proportion to their population.</description>
     </variable>
     <variable>

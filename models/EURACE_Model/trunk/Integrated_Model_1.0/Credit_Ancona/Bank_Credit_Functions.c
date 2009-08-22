@@ -279,7 +279,9 @@
              TOTAL_DIVIDENDS = BANK_DIVIDEND_RATE*PROFITS[0];     //Proposal by Sander, Marco, Andrea and Philipp
              DIVIDEND_PER_SHARE = TOTAL_DIVIDENDS/CURRENT_SHARES_OUTSTANDING; 
              EQUITY -=  TOTAL_DIVIDENDS;     
-             CASH -=  TOTAL_DIVIDENDS;      
+             CASH -=  TOTAL_DIVIDENDS;
+             
+             //The dividend msg is send in the function Bank_send_dividend_payment (see below)      
              //add_dividend_per_share_message(ID, DIVIDEND_PER_SHARE);                  
          }
           
