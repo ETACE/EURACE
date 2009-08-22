@@ -124,6 +124,15 @@
        //End of procedure
        
        add_bank_to_central_bank_account_update_message(ID, CASH, ECB_DEBT); 
+       
+       if (PRINT_DEBUG)
+       {
+                       printf("\n\n Bank_account_update_deposits ID: %d",ID);
+                       printf("\n\t ECB_DEBT: %f DEPOSITS: %f EQUITY: %f",ECB_DEBT,DEPOSITS,EQUITY);
+                       printf("\n\t TOTAL_CREDIT: %f CASH: %f",TOTAL_CREDIT,CASH);
+                       getchar();
+                       }
+       
                   
         return 0;
     }
@@ -231,7 +240,7 @@
          ECB_INTEREST_PAYMENT=0.0;
          
          //Pay interests to ecb
-         int_to_ecb=ECB_DEBT*ECB_INTEREST_RATE;
+         int_to_ecb=ECB_DEBT*ECB_INTEREST_RATE/12;
          PROFITS[0]-=int_to_ecb; 
          CASH-=int_to_ecb;
          EQUITY-=int_to_ecb;
@@ -273,6 +282,14 @@
              CASH -=  TOTAL_DIVIDENDS;      
              //add_dividend_per_share_message(ID, DIVIDEND_PER_SHARE);                  
          }
+          
+         if (PRINT_DEBUG)
+         {
+                         printf("\n\n Bank_accounting ID: %d",ID);
+                         printf("\n\t ECB_DEBT: %f int_to_ecb: %f",ECB_DEBT,int_to_ecb);
+                         printf("\n\t PROFITS[0]: %f EQUITY: %f",PROFITS[0],EQUITY);
+                         printf("\n\t CASH: %f TOTAL_DIVIDENDS: %f",CASH,TOTAL_DIVIDENDS);
+                         } 
           
          if (EQUITY < 0.0) //... and if is negative (if money is not enough), increase ECB debt
          {
