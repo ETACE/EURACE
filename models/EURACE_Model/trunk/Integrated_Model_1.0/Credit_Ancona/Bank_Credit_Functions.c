@@ -271,7 +271,7 @@
              DIVIDEND_PER_SHARE = TOTAL_DIVIDENDS/CURRENT_SHARES_OUTSTANDING; 
              EQUITY -=  TOTAL_DIVIDENDS;     
              CASH -=  TOTAL_DIVIDENDS;      
-             add_dividend_per_share_message(ID, DIVIDEND_PER_SHARE);                  
+             //add_dividend_per_share_message(ID, DIVIDEND_PER_SHARE);                  
          }
           
          if (EQUITY < 0.0) //... and if is negative (if money is not enough), increase ECB debt
@@ -306,6 +306,13 @@ int Bank_send_accountInterest(void)
       printf("\n\t DEPOSITS_RATE %f",DEPOSITS_RATE);
       getchar();
                    }
+   
+   return 0;
+}
+
+int Bank_send_dividend_payment(void)
+{
+    add_dividend_per_share_message(ID, DIVIDEND_PER_SHARE);
    
    return 0;
 }
