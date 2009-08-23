@@ -504,7 +504,7 @@ int Firm_execute_financial_payments()
 
             if (PRINT_DEBUG)
             {
-                printf("\n\t repayment LOAN: %d",ID,i);
+                printf("\n\t repayment LOAN: %d",i);
                 printf("\n\t installment_amount: %f interest_amount: %f remaining loan_value: %f",LOANS.array[i].installment_amount,temp_interest,LOANS.array[i].loan_value);
                 printf("\n\t (after) PAYMENT_ACCOUNT: %f TOTAL_DEBT: %f",PAYMENT_ACCOUNT,TOTAL_DEBT);
             }
@@ -883,7 +883,7 @@ int Firm_read_stock_transactions()
         
         if (PRINT_DEBUG) 
         {
-                         printf("\n\t price: %d quantity: %d",order_status_message->price,order_status_message->quantity);
+                         printf("\n\t price: %f quantity: %d",order_status_message->price,order_status_message->quantity);
                          printf("\n\t PREVIOUS_SHARES_OUTSTANDING: %d CURRENT_SHARES_OUTSTANDING: %d",PREVIOUS_SHARES_OUTSTANDING,CURRENT_SHARES_OUTSTANDING);
                          printf("\n\t EXTERNAL_FINANCIAL_NEEDS: %f PAYMENT_ACCOUNT: %f",EXTERNAL_FINANCIAL_NEEDS,PAYMENT_ACCOUNT);
                          }
