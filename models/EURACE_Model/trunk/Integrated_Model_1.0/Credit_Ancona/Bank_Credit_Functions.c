@@ -278,8 +278,7 @@
              add_tax_payment_message(GOV_ID, TAXES);  
              TOTAL_DIVIDENDS = BANK_DIVIDEND_RATE*PROFITS[0];     //Proposal by Sander, Marco, Andrea and Philipp
              DIVIDEND_PER_SHARE = TOTAL_DIVIDENDS/CURRENT_SHARES_OUTSTANDING; 
-             EQUITY -=  TOTAL_DIVIDENDS;     
-             CASH -=  TOTAL_DIVIDENDS;
+             
              
              //The dividend msg is send in the function Bank_send_dividend_payment (see below)      
              //add_dividend_per_share_message(ID, DIVIDEND_PER_SHARE);                  
@@ -332,6 +331,16 @@ int Bank_send_accountInterest(void)
 int Bank_send_dividend_payment(void)
 {
     add_dividend_per_share_message(ID, DIVIDEND_PER_SHARE);
+         EQUITY -=  TOTAL_DIVIDENDS;     
+      CASH -=  TOTAL_DIVIDENDS;
+    
+      if (PRINT_DEBUG)
+   {
+      printf("\n Bank_send_dividend_payment ID: %d",ID);
+      printf("\n\t DIVIDEND_PER_SHARE %f",DIVIDEND_PER_SHARE);
+      getchar();
+ 
+                   }
    
    return 0;
 }
