@@ -46,7 +46,7 @@ int Government_orders_issuing(void)
         if (PRINT_DEBUG)
         {
               printf("\n\n Government_orders_issuing ID: %d",ID);
-              printf("\n\t limit_price: %f qty: %f",limit_price,qty,ID);
+              printf("\n\t limit_price: %f qty: %d",limit_price,qty);
               getchar();          
                         }
         
