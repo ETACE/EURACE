@@ -233,6 +233,12 @@ int Government_send_account_update()
         // At the very end of agent government: update the bank account
         add_gov_to_central_bank_account_update_message(ID, PAYMENT_ACCOUNT);
         
+        if (PRINT_DEBUG)
+        {
+                        printf("\n\n Government_send_account_update ID: %d",ID);
+                        printf("\n\t PAYMENT_ACCOUNT: %f",PAYMENT_ACCOUNT);
+                        getchar();}
+        
     return 0;
 }
 
@@ -257,17 +263,18 @@ int Government_resolve_unsold_bonds()
 
             add_issue_bonds_to_ecb_message(last_market_price*BOND.quantity, BOND.quantity);
             
-            if (PRINT_DEBUG_GOV)
+            if (PRINT_DEBUG)
             {
-            printf("\n Government_resolve_unsold_bonds.QUANTITATIVE_EASING \n");
-            printf("\t Payment account before easing: %f \n", PAYMENT_ACCOUNT);
+            printf("\n\n Government_resolve_unsold_bonds.QUANTITATIVE_EASING ID: %d",ID);
+            printf("\n\t Payment account before easing: %f \n", PAYMENT_ACCOUNT);
             }
             //Assume that the ECB is FULLY accommodating the government's demand for fiat money:
             PAYMENT_ACCOUNT += last_market_price*BOND.quantity;
-            if (PRINT_DEBUG_GOV)
+            if (PRINT_DEBUG)
             {
-                printf("\t Payment account after easing: %f \n", PAYMENT_ACCOUNT);
-                printf("\t last_market_price %f BOND.quantity %d \n", last_market_price,BOND.quantity );
+                printf("\n\t Payment account after easing: %f", PAYMENT_ACCOUNT);
+                printf("n\t last_market_price %f BOND.quantity %d \n", last_market_price,BOND.quantity );
+                getchar();
             }       
         }   
              
@@ -344,9 +351,13 @@ int Government_monthly_budget_accounting()
         PAYMENT_ACCOUNT += TOTAL_MONEY_FINANCING;
         if (PRINT_DEBUG_GOV)
         {
-        printf("\n Government_monthly_budget_accounting \n");
-        printf("\t TOTAL_BOND_FINANCING: %f PAYMENT_ACCOUNT: %f \n",TOTAL_BOND_FINANCING, PAYMENT_ACCOUNT);
-        printf("\t MONTHLY_TAX_REVENUES %f MONTHLY_BENEFIT_PAYMENT %f MONTHLY_BOND_INTEREST_PAYMENT %f out %f \n",MONTHLY_TAX_REVENUES, MONTHLY_BENEFIT_PAYMENT, MONTHLY_BOND_INTEREST_PAYMENT, out);
+        printf("\n\n Government_monthly_budget_accounting ID: %d",ID);
+        printf("\n\t MONTHLY_TAX_REVENUES: %f MONTHLY_BENEFIT_PAYMENT: %f",MONTHLY_TAX_REVENUES, MONTHLY_BENEFIT_PAYMENT);
+        printf("\n\t MONTHLY_BOND_INTEREST_PAYMENT: %f out: %f",MONTHLY_BOND_INTEREST_PAYMENT, out);
+        printf("\n\t MONTHLY_TAX_REVENUES: %f out: %f",MONTHLY_TAX_REVENUES, MONTHLY_BUDGET_BALANCE);
+        printf("\n\t PAYMENT_ACCOUNT: %f CUMULATED_DEFICIT: %f TOTAL_DEBT: %f",PAYMENT_ACCOUNT,CUMULATED_DEFICIT, TOTAL_DEBT);
+ 
+        getchar();
         }
         
     return 0;
@@ -373,9 +384,9 @@ int Government_bonds_issuing_decision()
 
     if (PRINT_DEBUG_GOV)
     {
-        printf("\n Government_bonds_issuing_decision \n");
-        printf("\t last_market_price: %f limit_price: %f \n", last_market_price, limit_price);
-        printf("\t new_bonds_amount: %d BOND.quantity: %d \n", new_bonds_amount, BOND.quantity);
+        printf("\n\n Government_bonds_issuing_decision ID: %d",ID);
+        printf("\n\t last_market_price: %f limit_price: %f", last_market_price, limit_price);
+        printf("\n\t new_bonds_amount: %d BOND.quantity: %d", new_bonds_amount, BOND.quantity);
     }
     return 0;
 }
@@ -397,7 +408,7 @@ int Government_monthly_resetting()
       if (PRINT_DEBUG_GOV)
         { 
                     printf("\n Government_monthly_resetting");
-                    getchar();
+                
         }
     
     
@@ -451,7 +462,7 @@ int Government_yearly_resetting()
       if (PRINT_DEBUG_GOV)
         { 
                     printf("\n Government_yearly_resetting");
-                    getchar();
+             
         }
     
     return 0;
@@ -489,6 +500,13 @@ int Government_read_data_from_Eurostat()
     if (old_gdp > 0.0)
         GDP_GROWTH = GDP/old_gdp;
     else GDP_GROWTH = 1.0; 
+    
+    if (PRINT_DEBUG)
+    {
+                    printf("\n\n Government_read_data_from_Eurostat ID: %d",ID);
+                    printf("\n\t GDP: %d old GDP: %d",GDP,old_gdp);
+                    getchar();
+                    }
         
     return 0;   
 }
