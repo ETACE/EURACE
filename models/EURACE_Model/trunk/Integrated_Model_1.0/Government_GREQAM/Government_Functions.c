@@ -72,6 +72,14 @@ int Government_read_tax_payments()
     FINISH_TAX_PAYMENT_MESSAGE_LOOP 
 
    PAYMENT_ACCOUNT += sum;
+   
+   if (PRINT_DEBUG)
+   {
+                   printf("\n\n Government_read_tax_payments ID: %d",ID);
+                   printf("\n\n MONTHLY_TAX_REVENUES: %f sum: %f",MONTHLY_TAX_REVENUES,sum);
+                   printf("\n\n PAYMENT_ACCOUNT: %f",PAYMENT_ACCOUNT);
+                   getchar();
+                   }
     
     
     return 0;
@@ -115,6 +123,14 @@ int Government_read_unemployment_benefit_notifications()
     
     PAYMENT_ACCOUNT -= sum;
     
+    if (PRINT_DEBUG)
+   {
+                   printf("\n\n Government_read_unemployment_benefit_notifications ID: %d",ID);
+                   printf("\n\n MONTHLY_BENEFIT_PAYMENT: %f sum: %f",MONTHLY_BENEFIT_PAYMENT,sum);
+                   printf("\n\n YEARLY_BENEFIT_PAYMENT: %f PAYMENT_ACCOUNT: %f",YEARLY_BENEFIT_PAYMENT,PAYMENT_ACCOUNT);
+                   getchar();
+                   }
+    
     return 0;
 }
 
@@ -153,6 +169,12 @@ int Government_read_transfer_notifications()
     // Update the payment account
     PAYMENT_ACCOUNT -= sum*FIRM_TRANSFER_PAYMENT;
     
+    if (PRINT_DEBUG)
+   {
+                   printf("\n\n Government_read_transfer_notifications ID: %d",ID);
+                   printf("\n\n MONTHLY_TRANSFER_PAYMENT: %f YEARLY_TRANSFER_PAYMENT: %f",MONTHLY_TRANSFER_PAYMENT,YEARLY_TRANSFER_PAYMENT);
+                   getchar();
+                   }
     
     return 0;
 }
@@ -191,6 +213,13 @@ int Government_read_subsidy_notifications()
 
     // Update the payment account
     PAYMENT_ACCOUNT -= sum*FIRM_SUBSIDY_PAYMENT;
+    
+     if (PRINT_DEBUG)
+   {
+                   printf("\n\n Government_read_subsidy_notifications ID: %d",ID);
+                   printf("\n\n MONTHLY_SUBSIDY_PAYMENT: %f YEARLY_SUBSIDY_PAYMENT: %f",MONTHLY_SUBSIDY_PAYMENT,YEARLY_SUBSIDY_PAYMENT);
+                   getchar();
+                   }
 
     return 0;
 }

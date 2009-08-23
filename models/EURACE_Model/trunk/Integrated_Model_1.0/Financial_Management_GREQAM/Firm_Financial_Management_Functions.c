@@ -42,6 +42,13 @@ int Firm_compute_financial_payments()
         TOTAL_DEBT_INSTALLMENT_PAYMENT += LOANS.array[i].installment_amount;
     }
 
+    if (PRINT_DEBUG)
+    { 
+                    printf("\n\n Firm_compute_financial_payments ID: %d",ID);
+                    printf("\n\t TOTAL_INTEREST_PAYMENT: %f TOTAL_DEBT_INSTALLMENT_PAYMENT: %f",TOTAL_INTEREST_PAYMENT,TOTAL_DEBT_INSTALLMENT_PAYMENT);
+                    getchar();
+                    }    
+
     return 0;
 }
 
@@ -70,6 +77,15 @@ int Firm_compute_income_statement()
     
     if (CURRENT_SHARES_OUTSTANDING>0)
         EARNINGS_PER_SHARE = NET_EARNINGS/CURRENT_SHARES_OUTSTANDING;
+        
+    if (PRINT_DEBUG)
+    { 
+                    printf("\n\n Firm_compute_income_statement ID: %d",ID);
+                    printf("\n\t CUM_REVENUE: %f CALC_PRODUCTION_COSTS: %f",CUM_REVENUE,CALC_PRODUCTION_COSTS);
+                    printf("\n\t TOTAL_INTEREST_PAYMENT: %f EARNINGS: %f",TOTAL_INTEREST_PAYMENT,EARNINGS);
+                    printf("\n\t TAX_PAYMENT: %f NET_EARNINGS: %f",TAX_PAYMENT,NET_EARNINGS);
+                    getchar();
+                    }    
 
     return 0;
 }
@@ -155,6 +171,13 @@ int Firm_compute_dividends()
         CURRENT_DIVIDEND_PER_EARNINGS = TOTAL_DIVIDEND_PAYMENT/NET_EARNINGS;
     else
         CURRENT_DIVIDEND_PER_EARNINGS = 0.0;
+        
+    if (PRINT_DEBUG)
+    { 
+                    printf("\n\n Firm_compute_dividends ID: %d",ID);
+                    printf("\n\t NET_EARNINGS: %f TOTAL_DIVIDEND_PAYMENT: %f",NET_EARNINGS,TOTAL_DIVIDEND_PAYMENT);
+                    getchar();
+                    }    
     
     return 0;
 }
@@ -175,6 +198,14 @@ int Firm_compute_total_financial_payments()
     //but excluding the tax_payments. The tax_payments do not need to be financed since we assume they can always be paid out of earnings. 
     TOTAL_PAYMENTS = TOTAL_INTEREST_PAYMENT + TOTAL_DEBT_INSTALLMENT_PAYMENT
             + TOTAL_DIVIDEND_PAYMENT + TAX_PAYMENT + CALC_PRODUCTION_COSTS;
+            
+   if (PRINT_DEBUG)
+    { 
+                    printf("\n\n Firm_compute_total_financial_payments ID: %d",ID);
+                    printf("\n\t TOTAL_PAYMENTS: %f",TOTAL_PAYMENTS);
+                    getchar();
+                    }    
+
             
     return 0;
 }
@@ -221,6 +252,15 @@ int Firm_compute_balance_sheet()
     if (NET_EARNINGS>0.0)
         DEBT_EARNINGS_RATIO = TOTAL_DEBT/NET_EARNINGS;
     else DEBT_EARNINGS_RATIO = 0.0;
+    
+    if (PRINT_DEBUG)
+    { 
+                    printf("\n\n Firm_compute_balance_sheet ID: %d",ID);
+                    printf("\n\t PAYMENT_ACCOUNT: %f TOTAL_VALUE_CAPITAL_STOCK: %f",PAYMENT_ACCOUNT,TOTAL_VALUE_CAPITAL_STOCK);
+                    printf("\n\t TOTAL_VALUE_LOCAL_INVENTORY: %f TOTAL_ASSETS: %f",TOTAL_VALUE_LOCAL_INVENTORY,TOTAL_ASSETS);
+                    printf("\n\t EQUITY: %f DEBT_EQUITY_RATIO: %f",EQUITY,DEBT_EQUITY_RATIO);
+                    getchar();
+                    }    
     
     return 0;
 }
@@ -798,7 +838,7 @@ int Firm_compute_and_send_stock_orders()
     if (PRINT_DEBUG)
     {
                     printf("\n\n Firm_compute_and_send_stock_orders ID: %d",ID);
-                    printf("\n\t EXTERNAL_FINANCIAL_NEEDS: %f limit_price: %f quantity: %f",EXTERNAL_FINANCIAL_NEEDS,limit_price,quantity);       
+                    printf("\n\t EXTERNAL_FINANCIAL_NEEDS: %f limit_price: %f quantity: %d",EXTERNAL_FINANCIAL_NEEDS,limit_price,quantity);       
                     getchar();             
                     }
     
