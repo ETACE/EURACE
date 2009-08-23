@@ -322,7 +322,7 @@
      <condition>
       <time>
        <period>monthly</period>
-       <phase>a.day_of_month_to_act</phase>
+       <phase>1</phase>
       </time>
      </condition>
      <inputs/>
@@ -341,13 +341,13 @@
       <not>
        <time>
         <period>monthly</period>
-        <phase>a.day_of_month_to_act</phase>
+        <phase>1</phase>
        </time>
       </not>
      </condition>
      <inputs/>
      <outputs/>
-    </function>    
+    </function>
     <function>
      <name>Bank_send_accountInterest</name>
      <description></description>
@@ -472,7 +472,7 @@
      <condition>
       <time>
        <period>monthly</period>
-       <phase>a.day_of_month_to_act</phase>
+       <phase>0</phase>
       </time>
      </condition>
      <inputs/>
@@ -494,7 +494,7 @@
       <not>
        <time>
         <period>monthly</period>
-        <phase>a.day_of_month_to_act</phase>
+        <phase>0</phase>
        </time>
       </not>
      </condition>
@@ -515,7 +515,7 @@
     <variable>
      <type>double</type>
      <name>equity</name>
-     <description>The ECB equity is the account to collect the interest payments from the banks and the government bond interest rate payments.&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+     <description>The ECB equity is the account to collect the interest payments from the banks and the government bond interest rate payments.&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
 The equity of ECB is paid out to all governments as dividends, in proportion to their population.</description>
     </variable>
     <variable>
