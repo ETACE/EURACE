@@ -201,6 +201,8 @@ int Firm_calc_production_quantity()
                 }
                   
             }
+            
+        }
                     
             
          
