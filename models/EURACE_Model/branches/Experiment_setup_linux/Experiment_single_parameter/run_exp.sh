@@ -18,18 +18,18 @@ echo 'Starting top-level experiment script...'
 
 
 ######### STEP 2: CREATION OF EXPERIMENT FOLDER HIERARCHY #####################################################
-bash ./exp_script_1.sh
+#bash ./exp_script_1.sh
 
 ######### STEP 3: CREATION OF THE SPECIFIC SETTINGS XML FILE ##################################################
-bash ./exp_script_2.sh
+#bash ./exp_script_2.sh
 
 ######### STEP 4: RUNNING THE INITIAL PHASE ###################################################################
 #bash ./run_first_stage.sh
 
 ######### STEP 4b: RUNNING BENCHMARK SCENARIO ###################################################################
-#bash ./run_benchmark.sh
+bash ./run_benchmark.sh
 
 ######### STEP 5: RUNNING THE EXPERIMENT ######################################################################
-bash ./run_experiment_tax.sh
+#bash ./run_experiment_tax.sh
 
 echo 'Finished top-level experiment script.'
