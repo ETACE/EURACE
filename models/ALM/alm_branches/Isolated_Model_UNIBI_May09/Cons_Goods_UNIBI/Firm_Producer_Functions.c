@@ -148,7 +148,7 @@ int Firm_calc_production_quantity()
     
     //Delete the LINEAR_REGRESSION_ESTIMATORS array
     
-    for (k=0; k<LINEAR_REGRESSION_ESTIMATORS.size, k++)
+    for (k=0; k<LINEAR_REGRESSION_ESTIMATORS.size; k++)
     {
     	remove(&LINEAR_REGRESSION_ESTIMATORS,k);
     	k--;
