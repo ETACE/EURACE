@@ -196,7 +196,7 @@ int Firm_calc_production_quantity()
                 	LINEAR_REGRESSION_ESTIMATORS.array[j].mall_id)
                 {
                 	 CURRENT_MALL_STOCKS.array[i].critical_stock = 
-                		 LINEAR_REGRESSION_ESTIMATORS.array[j].intercept +   LINEAR_REGRESSION_ESTIMATORS.array[j].regressor + QUANTIL_NORMAL_DISTRIBUTION*pow(LINEAR_REGRESSION_ESTIMATORS.array[j].variance,0.5)  
+                		 LINEAR_REGRESSION_ESTIMATORS.array[j].intercept +   LINEAR_REGRESSION_ESTIMATORS.array[j].regressor + QUANTIL_NORMAL_DISTRIBUTION*pow(LINEAR_REGRESSION_ESTIMATORS.array[j].variance,0.5)  ;
     
                 }
                   
