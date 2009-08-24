@@ -756,6 +756,28 @@ sprintf(data, "%d",NO_REGIONS_PER_GOV);	print_tag("no_regions_per_gov", data, fi
 
 
 		
+		
+		for( m=1; m<=total_malls;m++)
+				{
+					m_id = first_mall_id + m;
+					if(m==1)
+					{
+					sprintf(data2, "{%d,0.0, 0.0,0.0}",m_id,m);
+					}
+					
+					else 
+					{
+					sprintf(data1, "%s,{%d,0.0, 0.0,0.0}",data2,m_id,m);
+					sprintf(data2,"%s",data1);
+					}
+				}
+		
+				if(m>2)
+				{sprintf(data, "{%s}",data1);	print_tag("linear_regression_estimators", data, file);}	
+				else
+				{sprintf(data, "{%s}",data2);	print_tag("linear_regression_estimators", data, file);}
+
+		
 		sprintf(data, "%f", 0.0);	print_tag("ebit", data, file);
 		
 		sprintf(data, "%f", 0.0);	print_tag("total_external_financing_obtained", data, file);
