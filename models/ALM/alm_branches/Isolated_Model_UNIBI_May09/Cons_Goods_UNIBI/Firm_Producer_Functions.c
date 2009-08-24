@@ -183,7 +183,7 @@ int Firm_calc_production_quantity()
     	    }
    
     
-    	  for(K=0; k< LINEAR_REGRESSION_ESTIMATORS.size<0 ;k++)
+    	  for(k=0; k< LINEAR_REGRESSION_ESTIMATORS.size<0 ;k++)
     		  
     	  {
     		  if(MALLS_SALES_STATISTICS.array[i].mall_id==LINEAR_REGRESSION_ESTIMATORS.array[k].mall_id)
