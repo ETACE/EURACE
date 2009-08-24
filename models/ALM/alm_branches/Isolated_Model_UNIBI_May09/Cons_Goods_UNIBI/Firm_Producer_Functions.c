@@ -133,6 +133,8 @@ int Firm_calc_production_quantity()
     double prod_vol;
     int i,j;
     
+    double regressor, intercept, variance;
+    
     double sum_1, sum_2;
 
 	STOCKS = 0.0;
