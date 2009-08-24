@@ -149,19 +149,7 @@ int Firm_calc_production_quantity()
     
     //New forcasting rule added on August, 24th
    
-    
-   
-    //Compute some sums needed for the calculation of the estimators
-    for(i=0; i< MALLS_SALES_STATISTICS.size; i++)
-    {
-    	for (j=0;j<FIRM_PLANNING_HORIZON; j++)
-    	{
-    	sum_1[i]+=(i+1)* MALLS_SALES_STATISTICS.array[i].sales.array[j].sales;
-    	
-    	sum_2[i]+=  MALLS_SALES_STATISTICS.array[i].sales.array[j].sales;
-    	}
-    }
-    
+
     
     //Compute the estimatores for each mall
     
