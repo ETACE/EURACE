@@ -131,6 +131,9 @@ int Firm_calc_production_quantity()
 
     double production_volume = 0;
     double prod_vol;
+    int i,j;
+    
+    double sum_1, sum_2;
 
 	STOCKS = 0.0;
 	STOCKS_IN_HOME_REGION = 0.0;
@@ -138,75 +141,79 @@ int Firm_calc_production_quantity()
 
     //Reset the counters at the start of month
     CUM_TOTAL_SOLD_QUANTITY = 0.0;
-    CUM_REVENUE = 0.0;        
-
+    CUM_REVENUE = 0.0;  
+   
     
-        /*Computing of mean critical stock levels*/
-        double mean_critical_stocks=0;
-        for (int j = 0; j < CURRENT_MALL_STOCKS.size;j++)
+    
+    //New forcasting rule added on August, 24th
+   
+    
+   
+    //Compute some sums needed for the calculation of the estimators
+    for(i=0; i< MALLS_SALES_STATISTICS.size; i++)
+    {
+    	for (j=0;j<FIRM_PLANNING_HORIZON; j++)
+    	{
+    	sum_1[i]+=(i+1)* MALLS_SALES_STATISTICS.array[i].sales.array[j].sales;
+    	
+    	sum_2[i]+=  MALLS_SALES_STATISTICS.array[i].sales.array[j].sales;
+    	}
+    }
+    
+    
+    //Compute the estimatores for each mall
+    
+    for(i=0; i< MALLS_SALES_STATISTICS.size; i++)
+    {
+    	sum_1=0;
+    	sum_2=0;
+    	
+    	for (j=0;j<FIRM_PLANNING_HORIZON; j++)
+    	    	{
+    	    	sum_1+= MALLS_SALES_STATISTICS.array[i].sales.array[j].period* MALLS_SALES_STATISTICS.array[i].sales.array[j].sales;
+    	    	
+    	    	sum_2+=  MALLS_SALES_STATISTICS.array[i].sales.array[j].sales;
+    	    	}
+    
+    	regressor = (FIRM_PLANNING_HORIZON * sum_1[i] - 0.5*FIRM_PLANNING_HORIZON*(FIRM_PLANNING_HORIZON+1)*sum_2[i])/
+        		(1/6*pow(FIRM_PLANNING_HORIZON,2)*(FIRM_PLANNING_HORIZON+1)*
+        		(2*FIRM_PLANNING_HORIZON+1)-1/4*(pow(FIRM_PLANNING_HORIZON,2)*pow((FIRM_PLANNING_HORIZON+1),2)));
+
+    	intercept =  1/(FIRM_PLANNING_HORIZON)*sum_2[i] - regressor/2*(FIRM_PLANNING_HORIZON+1);
+    	
+    	variance = 0;
+    	
+    	  for(j=0; j< FIRM_PLANNING_HORIZON; j++)
+    	    {
+    		  variance+= pow(MALLS_SALES_STATISTICS.array[i].sales.array[j].sales-intercept- 
+    				  (FIRM_PLANNING_HORIZON - (MALLS_SALES_STATISTICS.array[i].sales.array[j].period))* regressor,2)
+    				  /(FIRM_PLANNING_HORIZON-1);
+    	    }
+
+    	
+    	
+     add_estimators_linear_regression(&LINEAR_REGRESSION_ESTIMATORS, MALLS_SALES_STATISTICS.array[i].mall_id, intercept, regressor, variance);	
+     
+    }
+         /*Setting the critical values*/
+    
+    for(int i = 0; i < CURRENT_MALL_STOCKS.size;i++)
         {
-            mean_critical_stocks += CURRENT_MALL_STOCKS.array[j].critical_stock;
-        }
-
-        mean_critical_stocks = mean_critical_stocks/CURRENT_MALL_STOCKS.size;
-
-        /*Computing of out-of-stock costs*/
-        OUT_OF_STOCK_COSTS = (PRICE - DISCOUNT_RATE*UNIT_COSTS)/
-        (PRICE+INVENTORY_COSTS_PER_UNIT);
-
-
-
-        /*Creating a temporary array of the last X sales per mall*/
-        for(int i = 0; i < CURRENT_MALL_STOCKS.size;i++)
-        {
-            temporary_sales_statistics_array sales_mall;
-            init_temporary_sales_statistics_array(&sales_mall);
-
-            for(int j = 0; j < MALLS_SALES_STATISTICS.size;j++)
+        
+            for(int j = 0; j < LINEAR_REGRESSION_ESTIMATORS.size;j++)
             {
                 if(CURRENT_MALL_STOCKS.array[i].mall_id==
-                MALLS_SALES_STATISTICS.array[j].mall_id)
+                	LINEAR_REGRESSION_ESTIMATORS.array[j].mall_id)
                 {
-                    for(int k = 0; k < FIRM_PLANNING_HORIZON; k++)
-                    {
-                    add_temporary_sales_statistics(&sales_mall,
-                    MALLS_SALES_STATISTICS.array[j].mall_id,
-                    MALLS_SALES_STATISTICS.array[j].sales.array[k].period,
-                    MALLS_SALES_STATISTICS.array[j].sales.array[k].sales);
-                    }
-                }
-            }
-            
-            /*Lowest number (sales) first*/ 
-            //sort_mall_sales_list(&sales_mall);
-            /* Sorting the sales lists   */
-            qsort(sales_mall.array, sales_mall.size, sizeof(temporary_sales_statistics),
-             sales_statistics_list_rank_sales_function);
-
-        
-
-            /*Setting the critical values*/
-            
-          CURRENT_MALL_STOCKS.array[i].critical_stock = 
-                                sales_mall.array[DECIL_PRODUCTION_RULE].sales;
+                	 CURRENT_MALL_STOCKS.array[i].critical_stock = 
+                		 LINEAR_REGRESSION_ESTIMATORS.array[j].intetercept +   LINEAR_REGRESSION_ESTIMATORS.array[j].regressor + QUANTIL_NORMAL_DISTRIBUTION*pow(LINEAR_REGRESSION_ESTIMATORS.array[j].variance,0.5)  
     
-
-            /*If the critical level for a mall is zero then the firm sets (with a certain prob )the 
-             * critical level equal the average CL in order to keep this mall on the delivery list */
-            if(CURRENT_MALL_STOCKS.array[i].critical_stock==0)
-            {
-                int random_nummer = random_int(0,100);
-                if(random_nummer < DELIVERY_PROB_IF_CRITICAL_STOCK_0)
-                {
-                    CURRENT_MALL_STOCKS.array[i].critical_stock=
-                    mean_critical_stocks;
                 }
-
+                  
             }
-    
-            free_temporary_sales_statistics_array(&sales_mall);
-        }
-
+                    
+            
+         
 
         /*checking whether or not the current mall stocks are below the critical values         
          * (sS-Rule) If this is the case refill the stock up to the max stock */
