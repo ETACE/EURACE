@@ -165,11 +165,11 @@ int Firm_calc_production_quantity()
     	    	sum_2+=  MALLS_SALES_STATISTICS.array[i].sales.array[j].sales;
     	    	}
     
-    	regressor = (FIRM_PLANNING_HORIZON * sum_1[i] - 0.5*FIRM_PLANNING_HORIZON*(FIRM_PLANNING_HORIZON+1)*sum_2[i])/
+    	regressor = (FIRM_PLANNING_HORIZON * sum_1 - 0.5*FIRM_PLANNING_HORIZON*(FIRM_PLANNING_HORIZON+1)*sum_2)/
         		(1/6*pow(FIRM_PLANNING_HORIZON,2)*(FIRM_PLANNING_HORIZON+1)*
         		(2*FIRM_PLANNING_HORIZON+1)-1/4*(pow(FIRM_PLANNING_HORIZON,2)*pow((FIRM_PLANNING_HORIZON+1),2)));
 
-    	intercept =  1/(FIRM_PLANNING_HORIZON)*sum_2[i] - regressor/2*(FIRM_PLANNING_HORIZON+1);
+    	intercept =  1/(FIRM_PLANNING_HORIZON)*sum_2 - regressor/2*(FIRM_PLANNING_HORIZON+1);
     	
     	variance = 0;
     	
