@@ -72,6 +72,11 @@
     <name>beta</name>
     <description>0.338, Parameter for production function.</description>
    </variable>
+      <variable>
+    <type>double</type>
+    <name>quantil_normal_distribution</name>
+    <description></description>
+   </variable>
    <variable>
     <type>double</type>
     <name>dividend_rate</name>
