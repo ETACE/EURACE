@@ -150,7 +150,7 @@ int Firm_calc_production_quantity()
     
     for (k=0; k<LINEAR_REGRESSION_ESTIMATORS.size; k++)
     {
-    	remove(&LINEAR_REGRESSION_ESTIMATORS,k);
+    	remove_estimators_linear_regression(&LINEAR_REGRESSION_ESTIMATORS,k);
     	k--;
     }
     
