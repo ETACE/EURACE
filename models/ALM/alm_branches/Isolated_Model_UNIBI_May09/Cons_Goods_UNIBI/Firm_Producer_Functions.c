@@ -131,7 +131,7 @@ int Firm_calc_production_quantity()
 
     double production_volume = 0;
     double prod_vol;
-    int i,j;
+    int i,j,k;
     
     double regressor, intercept, variance;
     
@@ -145,6 +145,14 @@ int Firm_calc_production_quantity()
     CUM_TOTAL_SOLD_QUANTITY = 0.0;
     CUM_REVENUE = 0.0;  
    
+    
+    //Delete the LINEAR_REGRESSION_ESTIMATORS array
+    
+    for (k=0; k<LINEAR_REGRESSION_ESTIMATORS.size, k++)
+    {
+    	remove(&LINEAR_REGRESSION_ESTIMATORS,k);
+    	k--;
+    }
     
     
     //New forcasting rule added on August, 24th
@@ -179,9 +187,7 @@ int Firm_calc_production_quantity()
     				  (FIRM_PLANNING_HORIZON - (MALLS_SALES_STATISTICS.array[i].sales.array[j].period))* regressor,2)
     				  /(FIRM_PLANNING_HORIZON-1);
     	    }
-
-    	
-    	
+   
      add_estimators_linear_regression(&LINEAR_REGRESSION_ESTIMATORS, MALLS_SALES_STATISTICS.array[i].mall_id, intercept, regressor, variance);	
      
     }
