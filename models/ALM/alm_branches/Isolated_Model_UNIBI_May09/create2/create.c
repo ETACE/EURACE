@@ -93,6 +93,8 @@ double wage_update = 0.01;//0.01
 /*min number of vacancies to trigger vacancy counter*/
 int MIN_VACANCY = 2;
 
+double QUANTIL_NORMAL_DISTRIBUTION = 1.96;
+
 		
 /*adaption of the reservation wage: prercent*/
 double wage_reservation_update = 0.01;//0.01
@@ -438,6 +440,8 @@ sprintf(data, "%d",day_change_region_costs_2);    print_tag("day_change_region_c
 	sprintf(data, "%f",INV_INERTIA);    print_tag("inv_inertia", data, file);
 	sprintf(data, "%f",ADAPTION_DELIVERY_VOLUME);    print_tag("adaption_delivery_volume", data, file);
 	sprintf(data, "%d",DELIVERY_PROB_IF_CRITICAL_STOCK_0);    print_tag("delivery_prob_if_critical_stock_0", data, file);
+	sprintf(data, "%f",QUANTIL_NORMAL_DISTRIBUTION);    print_tag("quantil_normal_distribution", data, file);
+	
 
 	sprintf(data, "%d",PERIODS_TO_REPAY_LOANS);    print_tag("periods_to_repay_loans", data, file);
 	sprintf(data, "%d",INNOVATION_PROBABILITY);    print_tag("innovation_probability", data, file);
