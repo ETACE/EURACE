@@ -148,12 +148,6 @@ int Firm_calc_production_quantity()
     
     //Delete the LINEAR_REGRESSION_ESTIMATORS array
     
-    for (k=0; k<LINEAR_REGRESSION_ESTIMATORS.size; k++)
-    {
-    	remove_estimators_linear_regression(&LINEAR_REGRESSION_ESTIMATORS,k);
-    	k--;
-    }
-    
     
     //New forcasting rule added on August, 24th
    
@@ -188,7 +182,20 @@ int Firm_calc_production_quantity()
     				  /(FIRM_PLANNING_HORIZON-1);
     	    }
    
-     add_estimators_linear_regression(&LINEAR_REGRESSION_ESTIMATORS, MALLS_SALES_STATISTICS.array[i].mall_id, intercept, regressor, variance);	
+    
+    	  for(K=0; k< LINEAR_REGRESSION_ESTIMATORS.size<0 ;k++)
+    		  
+    	  {
+    		  if(MALLS_SALES_STATISTICS.array[i].mall_id==LINEAR_REGRESSION_ESTIMATORS.array[k].mall_id)
+    		  {
+    			  LINEAR_REGRESSION_ESTIMATORS.array[k].intercept=intercept;
+    			  LINEAR_REGRESSION_ESTIMATORS.array[k].regressor=regressor;
+    			  LINEAR_REGRESSION_ESTIMATORS.array[k].variance=variance;
+    		  }
+    	  }
+    	  
+    	  
+    	 
      
     }
          /*Setting the critical values*/
