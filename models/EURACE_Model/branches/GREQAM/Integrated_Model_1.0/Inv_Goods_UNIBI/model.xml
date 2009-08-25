@@ -104,7 +104,7 @@
      <outputs/>
     </function>
     <function>
-     <name>IGFirm_idle</name>
+     <name>IGFirm_set_quantities_zero</name>
      <description></description>
      <currentState>Start_IGFirm_Productivity</currentState>
      <nextState>01</nextState>
