@@ -328,19 +328,26 @@ int Bank_send_accountInterest(void)
    return 0;
 }
 
-int Bank_send_dividend_payment(void)
+int Bank_send_dividend_payment()
 {
     add_dividend_per_share_message(ID, DIVIDEND_PER_SHARE);
          EQUITY -=  TOTAL_DIVIDENDS;     
       CASH -=  TOTAL_DIVIDENDS;
     
-      if (PRINT_DEBUG)
-   {
+    if (PRINT_DEBUG)
+    {
       printf("\n Bank_send_dividend_payment ID: %d",ID);
       printf("\n\t DIVIDEND_PER_SHARE %f",DIVIDEND_PER_SHARE);
       getchar();
- 
-                   }
+    }
    
    return 0;
+}
+
+int Bank_set_quantities_zero()
+{
+    TOTAL_DIVIDENDS=0.0;
+    TAXES=0.0;
+
+    return 0;
 }

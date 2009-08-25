@@ -883,10 +883,10 @@ int Firm_read_stock_transactions()
         
         if (PRINT_DEBUG) 
         {
-                         printf("\n\t price: %f quantity: %d",order_status_message->price,order_status_message->quantity);
-                         printf("\n\t PREVIOUS_SHARES_OUTSTANDING: %d CURRENT_SHARES_OUTSTANDING: %d",PREVIOUS_SHARES_OUTSTANDING,CURRENT_SHARES_OUTSTANDING);
-                         printf("\n\t EXTERNAL_FINANCIAL_NEEDS: %f PAYMENT_ACCOUNT: %f",EXTERNAL_FINANCIAL_NEEDS,PAYMENT_ACCOUNT);
-                         }
+            printf("\n\t price: %f quantity: %d",order_status_message->price,order_status_message->quantity);
+            printf("\n\t PREVIOUS_SHARES_OUTSTANDING: %d CURRENT_SHARES_OUTSTANDING: %d",PREVIOUS_SHARES_OUTSTANDING,CURRENT_SHARES_OUTSTANDING);
+            printf("\n\t EXTERNAL_FINANCIAL_NEEDS: %f PAYMENT_ACCOUNT: %f",EXTERNAL_FINANCIAL_NEEDS,PAYMENT_ACCOUNT);
+        }
     }
     FINISH_ORDER_STATUS_MESSAGE_LOOP
     
