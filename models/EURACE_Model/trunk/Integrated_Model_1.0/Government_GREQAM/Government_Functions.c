@@ -503,10 +503,10 @@ int Government_read_data_from_Eurostat()
     
     if (PRINT_DEBUG)
     {
-                    printf("\n\n Government_read_data_from_Eurostat ID: %d",ID);
-                    printf("\n\t GDP: %d old GDP: %d",GDP,old_gdp);
-                    getchar();
-                    }
+        printf("\n\n Government_read_data_from_Eurostat ID: %d",ID);
+        printf("\n\t GDP: %f old GDP: %f",GDP,old_gdp);
+        getchar();
+    }
         
     return 0;   
 }
