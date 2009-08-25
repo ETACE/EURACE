@@ -1,0 +1,40 @@
+<tests>
+	<testcase>
+	<agentFileName>Government_GREQAM</agentFileName>
+		<agentName>Government</agentName>
+		<function>
+			<functionName>Government_read_tax_payments</functionName>
+			<fixture>
+                <variable>	
+					<name>id</name>
+					<value>1</value>
+				</variable>
+		        <message>
+					<name>tax_payment</name>
+					<value>ID, 100</value>
+				</message>
+			</fixture>
+			
+			<assertion>
+			    <variable>
+					<type>double</type>
+					<op>EQUAL</op>
+					<name>MONTHLY_TAX_REVENUES</name>
+					<value>100.0, 1e-3</value>
+				</variable>
+                <variable>
+					<type>double</type>
+					<op>EQUAL</op>
+					<name>PAYMENT_ACCOUNT</name>
+					<value>100.0, 1e-3</value>
+				</variable>
+				<variable>
+					<type>double</type>
+					<op>EQUAL</op>
+					<name>YEARLY_TAX_REVENUES</name>
+					<value>100.0, 1e-3</value>
+				</variable>
+			</assertion>
+		</function>
+	</testcase>
+</tests>
