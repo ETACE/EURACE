@@ -50,7 +50,8 @@ int Household_receive_wage()
 int Household_update_specific_skills()
 {
 
-
+	 if(DAY >= TRANSITION_PHASE)
+	 {
     if(SPECIFIC_SKILL < CURRENT_PRODUCTIVITY_EMPLOYER)
     {
 
@@ -62,6 +63,7 @@ int Household_update_specific_skills()
         add_specific_skill_update_message(ID,EMPLOYEE_FIRM_ID,SPECIFIC_SKILL);
 
     }
+}
 
     return 0;
 
