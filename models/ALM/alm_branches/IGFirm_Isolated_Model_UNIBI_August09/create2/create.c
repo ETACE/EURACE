@@ -57,7 +57,7 @@ int main(int argc, char ** argv)
  * Global parameters (formerly found in mylibrary_header.h)
  * +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/	
 
-
+int IGFIRM_SWITCH_ON = 1; /*1: complete functionality of the IGFirm  0: ISOLATED MODEL UNIBI MAY 09 */
 
 /*Strenght of logit*/
 double GAMMA_CONST = -7.5;
@@ -201,8 +201,18 @@ double MAX_CAPITAL_GOOD_PRICE_INCREASE = 0.05;
 	int num_app =5;
 	int total_Governments =2;
 	int total_banks = 1;
-	double fraction_researchers = 0.03;
 	
+	double fraction_researchers;
+	if(IGFIRM_SWITCH_ON == 1)
+	{
+		fraction_researchers = 0.03;
+	}
+	else
+	{
+		fraction_researchers = 0.0;
+	}	
+	
+	int igfirm_producer_debug = 0;
 
 	double 	tax_rate_corporate[2][1] = {0.05,0.05};
 	double	tax_rate_hh_labour[2][1]= {0.05,0.05};
@@ -418,6 +428,7 @@ double MAX_CAPITAL_GOOD_PRICE_INCREASE = 0.05;
 	sprintf(data, "%d",20);    print_tag("month", data, file);
 	sprintf(data, "%d",60);    print_tag("quarter", data, file);
 	sprintf(data, "%d",240);    print_tag("year", data, file);
+	sprintf(data, "%d",IGFIRM_SWITCH_ON );    print_tag("igfirm_switch_on", data, file);
 	sprintf(data, "%f",GAMMA_CONST);    print_tag("gamma_const", data, file);
 	sprintf(data, "%f",ALPHA);    print_tag("alpha", data, file);
 	sprintf(data, "%f",BETA);    print_tag("beta", data, file);
@@ -835,6 +846,7 @@ double MAX_CAPITAL_GOOD_PRICE_INCREASE = 0.05;
 		sprintf(data, "%d",1);	print_tag("region_id", data, file);
 		sprintf(data, "%d",gov_id);	print_tag("gov_id", data, file);
 		sprintf(data, "%d",bank_id);		print_tag("bank_id", data, file);
+		sprintf(data, "%d",igfirm_producer_debug);		print_tag("igfirm_producer_debug", data, file);
 
 		sprintf(data, "{}");								print_tag("employees", data, file);
 		sprintf(data, "{}");								print_tag("research_employees", data, file);
@@ -927,7 +939,7 @@ double MAX_CAPITAL_GOOD_PRICE_INCREASE = 0.05;
 		sprintf(data, "%f", 0.0);	print_tag("previous_net_earnings", data, file);
 		
 		
-		sprintf(data, "%f", 0.01);	print_tag("earnings_per_share", data, file);
+		sprintf(data, "%f", 0.0);	print_tag("earnings_per_share", data, file);
 		sprintf(data, "%d", total_households);	print_tag("current_shares_outstanding", data, file);
 		sprintf(data, "%f", 0.0);	print_tag("total_interest_payment", data, file);
 		sprintf(data, "%f", 0.0);	print_tag("total_debt_installment_payment", data, file);
