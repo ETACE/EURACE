@@ -57,6 +57,11 @@
     <name>print_debug</name>
     <description>1, A flag to print debugging output to terminal.</description>
    </variable>
+    <variable>
+    <type>int</type>
+    <name>igfirm_switch_on</name>
+    <description>1: Switch full functionality ON</description>
+   </variable>
    <variable>
     <type>double</type>
     <name>gamma_const</name>
