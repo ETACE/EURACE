@@ -89,6 +89,7 @@ int Government_read_unemployment_benefit_notifications()
 	
 	
 	NUM_UNEMPLOYED = 0;
+	UNEMPLOYMENT_BENEFIT_RATIONING_PERCENTAGE = 0.0;
 	    
 	    //Start message loop
 	    sum=0.0;
@@ -102,15 +103,10 @@ int Government_read_unemployment_benefit_notifications()
 	        
 	    FINISH_UNEMPLOYMENT_NOTIFICATION_MESSAGE_LOOP
 	    
-	    
-	    if(sum<=PAYMENT_ACCOUNT)
-	    {
-	    
-	    	 UNEMPLOYMENT_BENEFIT_RATIONING_PERCENTAGE = 0.0;
-	    }else
+	    if(sum > PAYMENT_ACCOUNT && sum > 0.0 )
 	    {
 	    	UNEMPLOYMENT_BENEFIT_RATIONING_PERCENTAGE = 1 - PAYMENT_ACCOUNT/sum;	
-	     }
+	    }
 	    
 		sum = (1- UNEMPLOYMENT_BENEFIT_RATIONING_PERCENTAGE)*sum;
 		MONTHLY_BENEFIT_PAYMENT += sum;    
