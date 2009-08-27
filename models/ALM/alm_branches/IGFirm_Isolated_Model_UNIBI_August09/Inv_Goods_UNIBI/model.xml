@@ -35,7 +35,11 @@
    <description></description>
    <memory>
 
-
+<variable>
+     <type>int</type>
+     <name>igfirm_producer_debug</name>
+     <description></description>
+    </variable>
 
 <variable>
      <type>int</type>
