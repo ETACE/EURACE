@@ -2623,6 +2623,41 @@ void savedatatofile(int itno, firm ** pointer_to_firms, household ** pointer_to_
 		
 	}
 
+//Regions: wageoffer
+	file = fopen("data-IGfirm-wage-offer-region.csv", "a");
+
+	sprintf(data, "%i", itno);
+	fputs(data, file);
+	fputs("\t", file);
+
+	
+	for(i = 0; i <= no_regions; i++)
+	{
+		sprintf(data, "%f", Data_IGFirm[i].wage_offer_for_skill_1);
+		fputs(data, file);
+		fputs("\t", file);
+		sprintf(data, "%f", Data_IGFirm[i].wage_offer_for_skill_2);
+		fputs(data, file);
+		fputs("\t", file);
+		sprintf(data, "%f", Data_IGFirm[i].wage_offer_for_skill_3);
+		fputs(data, file);
+		fputs("\t", file);
+		sprintf(data, "%f", Data_IGFirm[i].wage_offer_for_skill_4);
+		fputs(data, file);
+		fputs("\t", file);
+		sprintf(data, "%f", Data_IGFirm[i].wage_offer_for_skill_5);
+		fputs(data, file);
+		fputs("\t", file);
+		sprintf(data, "%f", Data_IGFirm[i].wage_offer_for_skill_6);
+		fputs(data, file);
+		fputs("\t", file);
+	}
+		
+	fputs("\n", file);
+
+	fclose(file);
+
+
 
 //Regions: tax interest debt installment dividend payments
 	file = fopen("data-IGfirm-payments-region.csv", "a");
@@ -3867,7 +3902,7 @@ sprintf(data, "%f", ((Data_Firm[1].delivery_to_home_region+Data_Firm[2].delivery
 /*Regions: wage*/
 	file = fopen("data-capital-labor-region.csv", "a");
 
-	sprintf(data, "%i", itno);
+	/*sprintf(data, "%i", itno);
 	fputs(data, file);
 	fputs("\t", file);
 
@@ -3881,10 +3916,16 @@ sprintf(data, "%f", ((Data_Firm[1].delivery_to_home_region+Data_Firm[2].delivery
 						(Data_Firm[i].average_specific_skill/Data_Firm[i].no_employees));
 		fputs(data, file);
 		fputs("\t", file);
+		sprintf(data, "%f", Data_Firm[i].stocks/Data_IGFirm[i].capital_good_demand_last_month);
+		fputs(data, file);
+		fputs("\t", file);
+		sprintf(data, "%f", Data_Firm[i].stocks/Data_Firm[i].output);
+		fputs(data, file);
+		fputs("\t", file);
 		
 	}
 		
-	fputs("\n", file);
+	fputs("\n", file);*/
 
 	fclose(file);
 
@@ -4096,6 +4137,10 @@ int main( int argc, char **argv )
 
 	file = fopen("data-IGfirm-payment-account-region.csv", "w");
 	fclose(file);
+
+	file = fopen("data-IGfirm-wage-offer-region.csv", "w");
+	fclose(file);
+
 
 /*Government*/
 	
