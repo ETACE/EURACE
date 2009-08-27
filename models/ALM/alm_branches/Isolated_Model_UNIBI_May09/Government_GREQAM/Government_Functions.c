@@ -51,7 +51,7 @@ int Government_read_tax_payments()
  */
 int Government_read_unemployment_benefit_notifications()
 {
-    double sum, unemployment_payment, rationing_rate;
+    double sum, unemployment_payment;
     /*
     NUM_UNEMPLOYED = 0;
     
@@ -96,7 +96,7 @@ int Government_read_unemployment_benefit_notifications()
 	        
 	        NUM_UNEMPLOYED++;
 	        
-	    unemployment_payment = unemployment_notification_message->last_labour_income*UNEMPLOYMENT_BENEFIT_PCT
+	    unemployment_payment = unemployment_notification_message->last_labour_income*UNEMPLOYMENT_BENEFIT_PCT;
 	    sum += unemployment_payment;
 	    
 	        
