@@ -618,7 +618,7 @@ int Household_read_policy_announcements()
  */
 int Household_send_unemployment_benefit_notification()
 {
-    double mean_income = 0.0;
+  
 double fraction_if_recently_unemployed=0;
 
     /*Add unemployment_benefit message */
@@ -627,16 +627,38 @@ double fraction_if_recently_unemployed=0;
 	
     add_unemployment_notification_message(GOV_ID,fraction_if_recently_unemployed*LAST_LABOUR_INCOME);
 
+   
+
+	//printf("fraction_if_recently_unemployed%f \n", fraction_if_recently_unemployed);
+    return 0;
+
+}
+
+int Household_receives_unemployment_benefit()
+{
+    double mean_income = 0.0;
+    double fraction_if_recently_unemployed=0;
+    double benefit_received;
+    
+
+    fraction_if_recently_unemployed= (MONTH-DAY%MONTH)/(double) MONTH;
+
+
+	START_HH_UNEMPLOYMENT_BENEFIT_PAY_OUT_MESSAGE_LOOP
+	
+	benefit_received =  (1-hh_unemployment_benefit_pay_out_message->rationing_rate)*fraction_if_recently_unemployed*UNEMPLOYMENT_BENEFIT_PCT * LAST_LABOUR_INCOME;
+	
+	FINISH_HH_UNEMPLOYMENT_BENEFIT_PAY_OUT_MESSAGE_LOOP
     /*Add unemployment_benefit to account */
-    PAYMENT_ACCOUNT +=  fraction_if_recently_unemployed*UNEMPLOYMENT_BENEFIT_PCT * LAST_LABOUR_INCOME;
+    PAYMENT_ACCOUNT +=  benefit_received;
     if(fraction_if_recently_unemployed < 1)
     {
-    	LAST_INCOME.array[3] += fraction_if_recently_unemployed*UNEMPLOYMENT_BENEFIT_PCT * LAST_LABOUR_INCOME;
+    	LAST_INCOME.array[3] += benefit_received;
     }
     else
     {
     	remove_double(&LAST_INCOME,0);
-    	add_double(&LAST_INCOME, fraction_if_recently_unemployed*UNEMPLOYMENT_BENEFIT_PCT * LAST_LABOUR_INCOME);
+    	add_double(&LAST_INCOME, benefit_received);
     }
 
     /*Compute a mean income of the last four month*/
@@ -657,6 +679,8 @@ double fraction_if_recently_unemployed=0;
     return 0;
 
 }
+
+
 
 
 /** \fn Household_send_subsidy_notification()

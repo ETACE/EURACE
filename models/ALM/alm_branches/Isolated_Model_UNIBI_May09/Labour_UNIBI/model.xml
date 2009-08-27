@@ -1076,7 +1076,7 @@ the reservation wage</description>
      <name>Household_send_unemployment_benefit_notification</name>
      <description>Household receives the unemployment benefit.</description>
      <currentState>06e</currentState>
-     <nextState>08</nextState>
+     <nextState>06f</nextState>
      <condition>
       <lhs>
        <value>a.employee_firm_id</value>
@@ -1092,6 +1092,28 @@ the reservation wage</description>
        <messageName>unemployment_notification</messageName>
       </output>
      </outputs>
+    </function>
+    </function>
+    <function>
+     <name>Household_receives_unemployment_benefit</name>
+     <description>Household receives the unemployment benefit.</description>
+     <currentState>06f</currentState>
+     <nextState>08</nextState>
+     <inputs>
+      <input>
+       <messageName>hh_unemployment_benefit_pay_out</messageName>
+        <filter>
+        <lhs>
+         <value>a.gov_id</value>
+        </lhs>
+        <op>EQ</op>
+        <rhs>
+         <value>m.gov_id</value>
+        </rhs>
+       </filter>
+      </input>
+     </inputs>
+     <outputs/>
     </function>
     <function>
      <name>Household_send_tax_payment</name>

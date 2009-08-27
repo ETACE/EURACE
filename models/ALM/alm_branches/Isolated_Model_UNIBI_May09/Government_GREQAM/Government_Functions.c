@@ -51,7 +51,8 @@ int Government_read_tax_payments()
  */
 int Government_read_unemployment_benefit_notifications()
 {
-    double sum, unemployment_payment;
+    double sum, unemployment_payment, rationing_rate;
+    /*
     NUM_UNEMPLOYED = 0;
     
     //Start message loop
@@ -83,7 +84,46 @@ int Government_read_unemployment_benefit_notifications()
     // Update the payment account
     
     PAYMENT_ACCOUNT -= sum;
-    
+    */
+	
+	
+	
+	NUM_UNEMPLOYED = 0;
+	    
+	    //Start message loop
+	    sum=0.0;
+	    START_UNEMPLOYMENT_NOTIFICATION_MESSAGE_LOOP
+	        
+	        NUM_UNEMPLOYED++;
+	        
+	    unemployment_payment = unemployment_notification_message->last_labour_income*UNEMPLOYMENT_BENEFIT_PCT
+	    sum += unemployment_payment;
+	    
+	        
+	    FINISH_UNEMPLOYMENT_NOTIFICATION_MESSAGE_LOOP
+	    
+	    
+	    if(sum<=PAYMENT_ACCOUNT)
+	    {
+	    
+	    	 UNEMPLOYMENT_BENEFIT_RATIONING_PERCENTAGE = 0.0;
+	    }else
+	    {
+	    	UNEMPLOYMENT_BENEFIT_RATIONING_PERCENTAGE = 1 - PAYMENT_ACCOUNT/sum;	
+	     }
+	    
+		sum = (1- UNEMPLOYMENT_BENEFIT_RATIONING_PERCENTAGE)*sum;
+		MONTHLY_BENEFIT_PAYMENT += sum;    
+		YEARLY_BENEFIT_PAYMENT += sum;
+
+	    // Update the payment account
+	    
+	    PAYMENT_ACCOUNT -= sum;
+	    
+	    //Send message to household
+	    
+	    add_hh_unemployment_benefit_pay_out_message(ID,UNEMPLOYMENT_BENEFIT_RATIONING_PERCENTAGE);
+	
     return 0;
 }
 
