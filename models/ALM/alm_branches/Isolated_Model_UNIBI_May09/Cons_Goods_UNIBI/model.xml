@@ -453,6 +453,11 @@
      <name>total_supply</name>
      <description>The sum of local inventory and produced output gives the total supplied quantity</description>
     </variable>
+<variable>
+     <type>double_array</type>
+     <name>last_net_earnings</name>
+     <description>Array that stores the last earnings of a firm</description>
+    </variable>
  <variable>
      <type>double</type>
      <name>total_units_capital_stock</name>

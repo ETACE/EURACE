@@ -162,31 +162,38 @@ int Firm_calc_production_quantity()
     	
     	for (j=0;j<FIRM_PLANNING_HORIZON; j++)
     	    	{
-    	    	sum_1+= MALLS_SALES_STATISTICS.array[i].sales.array[j].period* MALLS_SALES_STATISTICS.array[i].sales.array[j].sales;
-    	    	
+    	    	sum_1+= (FIRM_PLANNING_HORIZON + 1 - MALLS_SALES_STATISTICS.array[i].sales.array[j].period)* MALLS_SALES_STATISTICS.array[i].sales.array[j].sales;
+
     	    	sum_2+=  MALLS_SALES_STATISTICS.array[i].sales.array[j].sales;
+
+
     	    	}
     
     	regressor = (FIRM_PLANNING_HORIZON * sum_1 - 0.5*FIRM_PLANNING_HORIZON*(FIRM_PLANNING_HORIZON+1)*sum_2)/
-        		(1/6*pow(FIRM_PLANNING_HORIZON,2)*(FIRM_PLANNING_HORIZON+1)*
-        		(2*FIRM_PLANNING_HORIZON+1)-1/4*(pow(FIRM_PLANNING_HORIZON,2)*pow((FIRM_PLANNING_HORIZON+1),2)));
+        		(1/6.0*pow(FIRM_PLANNING_HORIZON,2)*(FIRM_PLANNING_HORIZON+1)*
+        		(2*FIRM_PLANNING_HORIZON+1)-1/4.0*(pow(FIRM_PLANNING_HORIZON,2)*pow((FIRM_PLANNING_HORIZON+1),2)));
 
-    	intercept =  1/(FIRM_PLANNING_HORIZON)*sum_2 - regressor/2*(FIRM_PLANNING_HORIZON+1);
+    	intercept =  1/(1.0*FIRM_PLANNING_HORIZON)*sum_2 - 0.5*regressor*(FIRM_PLANNING_HORIZON+1);
     	
     	variance = 0;
     	
     	  for(j=0; j< FIRM_PLANNING_HORIZON; j++)
     	    {
-    		  variance+= pow(MALLS_SALES_STATISTICS.array[i].sales.array[j].sales-intercept- 
-    				  (FIRM_PLANNING_HORIZON - (MALLS_SALES_STATISTICS.array[i].sales.array[j].period))* regressor,2)
+    		  variance+= pow(MALLS_SALES_STATISTICS.array[i].sales.array[j].sales-(intercept+ 
+    				 (FIRM_PLANNING_HORIZON + 1 - MALLS_SALES_STATISTICS.array[i].sales.array[j].period)* regressor),2)
     				  /(FIRM_PLANNING_HORIZON-1);
     	    }
-   
-    
-    	  for(k=0; k< LINEAR_REGRESSION_ESTIMATORS.size ;k++)  
-    	  {
+
+
+    		
+    	  for(k=0; k< LINEAR_REGRESSION_ESTIMATORS.size ;k++)
+    		   {
+
+	
     		  if(MALLS_SALES_STATISTICS.array[i].mall_id==LINEAR_REGRESSION_ESTIMATORS.array[k].mall_id)
     		  {
+
+				
     			  LINEAR_REGRESSION_ESTIMATORS.array[k].intercept=intercept;
     			  LINEAR_REGRESSION_ESTIMATORS.array[k].regressor=regressor;
     			  LINEAR_REGRESSION_ESTIMATORS.array[k].variance=variance;
@@ -208,7 +215,7 @@ int Firm_calc_production_quantity()
                 	LINEAR_REGRESSION_ESTIMATORS.array[j].mall_id)
                 {
                 	 CURRENT_MALL_STOCKS.array[i].critical_stock = 
-                		 LINEAR_REGRESSION_ESTIMATORS.array[j].intercept +   LINEAR_REGRESSION_ESTIMATORS.array[j].regressor + QUANTIL_NORMAL_DISTRIBUTION*pow(LINEAR_REGRESSION_ESTIMATORS.array[j].variance,0.5)  ;
+                		 LINEAR_REGRESSION_ESTIMATORS.array[j].intercept + (1+FIRM_PLANNING_HORIZON)*LINEAR_REGRESSION_ESTIMATORS.array[j].regressor + QUANTIL_NORMAL_DISTRIBUTION*pow(LINEAR_REGRESSION_ESTIMATORS.array[j].variance,0.5)  ;
     
                 }
                   
@@ -839,7 +846,7 @@ int Firm_compute_sales_statistics()
                 }
             }
         }
-                                            
+                                         
                 
         for(int i=0; i< SOLD_QUANTITIES.size;i++)
         {
