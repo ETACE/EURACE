@@ -105,6 +105,11 @@
     </variable>
     <variable>
      <type>double</type>
+     <name>unemployment_benefit_rationing_percentage</name>
+     <description>Unemployment benefit payments for all unemployed households.</description>
+    </variable>
+    <variable>
+     <type>double</type>
      <name>hh_transfer_payment</name>
      <description></description>
     </variable>
@@ -445,7 +450,9 @@
        </filter>
       </input>
      </inputs>
-     <outputs/>
+     <outputs>
+     <messageName>hh_unemployment_benefit_pay_out</messageName>
+     </outputs>
     </function>
     <function>
      <name>Government_idle</name>
@@ -694,6 +701,22 @@
     <variable>
      <type>int</type>
      <name>gov_id</name>
+     <description></description>
+    </variable>
+   </variables>
+  </message>
+   <message>
+   <name>hh_unemployment_benefit_pay_out</name>
+   <description>Households receives the unemployment benefits.</description>
+   <variables>
+    <variable>
+     <type>int</type>
+     <name>gov_id</name>
+     <description></description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>rationing_rate</name>
      <description></description>
     </variable>
    </variables>
