@@ -27,8 +27,14 @@ int IGFirm_idle()
  * \brief IGFirm inceases productivity via a stochastic process and the according price */
 int IGFirm_update_productivity_price()
 {
-printf("IN FUNCTION: IGFirm_calc_research_employees\n");
-	printf("*****************************************************************************\n");
+	/*1: print the printf-statements*/
+	if(IGFIRM_PRODUCER_DEBUG == 1)
+	{
+		printf("IN FUNCTION: IGFirm_update_productivity()\n");
+		printf("*****************************************************************************\n");
+	}
+
+
 	 if(DAY >= TRANSITION_PHASE)
 	 {}
 
@@ -38,7 +44,7 @@ printf("IN FUNCTION: IGFirm_calc_research_employees\n");
 	progress*/
 
 	double k,random_progress,innovation_probability;
-	i = random_int( 0 ,100);
+	
 	
 	/*Create normal distributed random number: mean~0, standard deviation ~ 0.01*/
 	for(j = 0; j < 12; j++)
@@ -46,9 +52,8 @@ printf("IN FUNCTION: IGFirm_calc_research_employees\n");
 		k = (double)(random_int(0, 1000))/1000;
 		random_progress += ((k - 0.5)/influence_the_variance);	
 	}
-//printf("1: DURATION_UNTIL_NEXT_INNOVATION: %d\n",DURATION_UNTIL_NEXT_INNOVATION);
-//printf("1: INNOVATION_SUCCESS: %d\n",INNOVATION_SUCCESS);
-	
+
+
 	DURATION_UNTIL_NEXT_INNOVATION += 12;
 	INNOVATION_SUCCESS = 0;	
 	
@@ -64,7 +69,15 @@ printf("IN FUNCTION: IGFirm_calc_research_employees\n");
 		/*Project completed*/
 		innovation_probability = 1;	
 	}
-//printf("Innovation_probability: %f\n",innovation_probability);
+
+	/*1: print the printf-statements*/
+	if(IGFIRM_PRODUCER_DEBUG == 1)
+	{
+		printf("Innovation_probability: %f\n",innovation_probability);
+	}
+
+
+	i = random_int( 0 ,100);
 	/*If project is completed calculate the productivity progress*/
 	if((innovation_probability * 100) >= i)
 	{
@@ -74,13 +87,26 @@ printf("IN FUNCTION: IGFirm_calc_research_employees\n");
 			INNOVATION_SUCCESS = 1;
 			ADDITIONAL_PRODUCTIVITY =  (PRODUCTIVITY_PROGRESS + random_progress);
 			PRODUCTIVITY = PRODUCTIVITY*(1 + ADDITIONAL_PRODUCTIVITY);
-			//CAPITAL_GOOD_PRICE = CAPITAL_GOOD_PRICE*(1 +0.5* ADDITIONAL_PRODUCTIVITY);
-//printf("PRODUCTIVITY %f\n",PRODUCTIVITY);
-//printf("ADDITIONAL_PRODUCTIVITY %f\n",ADDITIONAL_PRODUCTIVITY);
+
+			/*1: print the printf-statements*/
+			if(IGFIRM_PRODUCER_DEBUG == 1)
+			{
+				printf("Project completed with positive progress\n");
+				printf("PRODUCTIVITY %f\n",PRODUCTIVITY);
+				printf("ADDITIONAL_PRODUCTIVITY %f\n",ADDITIONAL_PRODUCTIVITY);
+			}
 		}
 	}
-//printf("2: DURATION_UNTIL_NEXT_INNOVATION: %d\n",DURATION_UNTIL_NEXT_INNOVATION);
-//printf("2: INNOVATION_SUCCESS: %d\n",INNOVATION_SUCCESS);
+
+	
+	/*1: complete functionality of the IGFirm  0: ISOLATED MODEL UNIBI MAY 09 */
+	if(IGFIRM_SWITCH_ON == 0)
+	{
+		PRODUCTIVITY = PRODUCTIVITY*(1 + PRODUCTIVITY_PROGRESS + 0.02);
+		CAPITAL_GOOD_PRICE = CAPITAL_GOOD_PRICE*(1 + PRODUCTIVITY_PROGRESS + 0.02);
+	}
+	
+
 /**********************TEST: NORMAL DISTRIBUTION************************************************/
 	/*int l,m,counter;
 	counter = 1000000;
@@ -108,7 +134,7 @@ printf("IN FUNCTION: IGFirm_calc_research_employees\n");
 		}
 		if(-0.04 < random_progress && random_progress <= -0.03)
 		{
-			two++; //printf(" 2 \n");
+			two++;//printf(" 2 \n");
 		}
 		if(-0.03 < random_progress && random_progress <= -0.02)
 		{
@@ -170,7 +196,13 @@ printf("IN FUNCTION: IGFirm_calc_research_employees\n");
 
 	printf("%f  %f  %f  %f  %f  %f  %f  %f  %f  %f	%f  %f\n" ,one,two,three,four,five, 	
 	six,seven,eight,nine,ten,small, big);*/
-printf("*****************************************************************************\n");
+
+
+	/*1: print the printf-statements*/
+	if(IGFIRM_PRODUCER_DEBUG == 1)
+	{
+		printf("*****************************************************************************\n");
+	}
 	return 0;
 }
 
@@ -179,59 +211,29 @@ printf("************************************************************************
  * \brief IGFirm determines the number of research_employees */
 int IGFirm_calc_research_employees()
 {
-
-	printf("IN FUNCTION: IGFirm_calc_research_employees\n");
-	printf("******************************************************************************\n");
+	/*1: print the printf-statements*/
+	if(IGFIRM_PRODUCER_DEBUG == 1)
+	{
+		printf("IN FUNCTION: IGFirm_calc_research_employees\n");
+		printf("******************************************************************************\n");
+	}
 	
 
-	//int m;
 	if(INNOVATION_SUCCESS == 1)
 	{	
-		//double demand_change;
-			
-		/*store information about the innovation period: capital good demand after last 		innovation, additional productivity of the new innovation, number of months after 			last innovation, percent change of capital good demand*/
-		/*add_innovation_period_info(&INNOVATION_PERIOD_INFO_LIST,
-		(REVENUE_FOR_INNOVATION/DURATION_UNTIL_NEXT_INNOVATION),
-		CAPITAL_GOOD_DEMAND_AFTER_LAST_INNOVATION,
-		ADDITIONAL_PRODUCTIVITY,
-		DURATION_UNTIL_NEXT_INNOVATION,
-		0);*/
-		
-		
-		//m = INNOVATION_PERIOD_INFO_LIST.size;
-		
-		/*Ignore the starting values*/	
-		/*if(m > 1)
-		{
-			//calculate the demand change per month
-			demand_change= ((INNOVATION_PERIOD_INFO_LIST.array[m-1].capital_good_demand
-			/INNOVATION_PERIOD_INFO_LIST.array[m-1].duration_until_next_innovation)/
-			(INNOVATION_PERIOD_INFO_LIST.array[m-2].capital_good_demand
-			/INNOVATION_PERIOD_INFO_LIST.array[m-2].duration_until_next_innovation))-1;
-			
-	
-			INNOVATION_PERIOD_INFO_LIST.array[m-1].demand_change= demand_change;
-		}*/
-		
 		/*"start" of new innovation period*/
 		DURATION_UNTIL_NEXT_INNOVATION = 0;
-		CAPITAL_GOOD_DEMAND_AFTER_LAST_INNOVATION = 0;
-		
+		CAPITAL_GOOD_DEMAND_AFTER_LAST_INNOVATION = 0;	
 	}
-//printf("DURATION_UNTIL_NEXT_INNOVATION: %d\n",DURATION_UNTIL_NEXT_INNOVATION);
-//printf("CAPITAL_GOOD_DEMAND_AFTER_LAST_INNOVATION: %f\n",CAPITAL_GOOD_DEMAND_AFTER_LAST_INNOVATION);
-
-	//ESTIMATED_RESEARCHER_WAGE = WAGE_OFFER_FOR_SKILL_6;
-
-
+
 	/*1. option: The number Research employees is determined when there is a successful 	
 	Innovation*/
 	
 	/*if(INNOVATION_SUCCESS == 1 )
 	{
 		RESEARCH_EMPLOYEES_NEEDED = (int) (PERCENT_REVENUE_FOR_INNOVATION*
-		INNOVATION_PERIOD_INFO_LIST.array[INNOVATION_PERIOD_INFO_LIST.size-1].
-		revenue_for_innovation/WAGE_OFFER_FOR_SKILL_6);
+		(REVENUE_FOR_INNOVATION/DURATION_UNTIL_NEXT_INNOVATION)
+		/WAGE_OFFER_FOR_SKILL_6);
 
 		REVENUE_FOR_INNOVATION = 0;
 
@@ -244,32 +246,48 @@ int IGFirm_calc_research_employees()
 		(REVENUE_FOR_INNOVATION/DURATION_UNTIL_NEXT_INNOVATION)
 		/WAGE_OFFER_FOR_SKILL_6);
 
-		if(RESEARCH_EMPLOYEES_NEEDED > 25)
+		if(RESEARCH_EMPLOYEES_NEEDED > 10)
 		{
-			RESEARCH_EMPLOYEES_NEEDED = 25;
+			RESEARCH_EMPLOYEES_NEEDED = 10;
 		}
 		
 	}*/
 
-printf("REVENUE_FOR_INNOVATION: %f\n",REVENUE_FOR_INNOVATION/12);
-//printf("WAGE_OFFER_FOR_SKILL_6: %f\n",WAGE_OFFER_FOR_SKILL_6);
+
+	/*1: print the printf-statements*/
+	if(IGFIRM_PRODUCER_DEBUG == 1)
+	{
+		printf("REVENUE_FOR_INNOVATION: %f\n",REVENUE_FOR_INNOVATION/12);
+		printf("WAGE_OFFER_FOR_SKILL_6: %f\n",WAGE_OFFER_FOR_SKILL_6);
+	}
 
 	/*2. option: The number Research employees is determined every year*/
 
 	RESEARCH_EMPLOYEES_NEEDED = (int) (PERCENT_REVENUE_FOR_INNOVATION*
 	(REVENUE_FOR_INNOVATION/12))/WAGE_OFFER_FOR_SKILL_6;
 
-		/*if(RESEARCH_EMPLOYEES_NEEDED > 50)
-		{
-			RESEARCH_EMPLOYEES_NEEDED = 50;
-		}*/
-
 	REVENUE_FOR_INNOVATION = 0;
 
-	printf("RESEARCH_EMPLOYEES_NEEDED %d \n",RESEARCH_EMPLOYEES_NEEDED);	
-	//printf("CUM_REVENUES %f \n",CUM_REVENUES);
+
+	/*1: print the printf-statements*/
+	if(IGFIRM_PRODUCER_DEBUG == 1)
+	{
+		printf("RESEARCH_EMPLOYEES_NEEDED %d \n",RESEARCH_EMPLOYEES_NEEDED);
+	}
 	
-	printf("***************************************************************************\n");
+	
+	/*1: complete functionality of the IGFirm  0: ISOLATED MODEL UNIBI MAY 09 */
+	if(IGFIRM_SWITCH_ON == 0)
+	{
+		RESEARCH_EMPLOYEES_NEEDED = 0;
+	}
+
+	/*1: print the printf-statements*/
+	if(IGFIRM_PRODUCER_DEBUG == 1)
+	{
+		printf("***************************************************************************\n");
+	}
+
 	return 0;
 }
 
@@ -288,13 +306,25 @@ int IGFirm_set_quantities_zero()
  * \brief IGFirm send quality and price information */
 int IGFirm_send_quality_price_info()
 {
-	printf("IN FUNCTION: IGFirm_send_quality_price_info\n");
-	printf("************************************************************************\n");
+	
+	/*1: print the printf-statements*/
+	if(IGFIRM_PRODUCER_DEBUG == 1)
+	{
+		printf("IN FUNCTION: IGFirm_send_quality_price_info\n");
+		printf("************************************************************************\n");
+	}
+
 	add_productivity_message(ID,PRODUCTIVITY,CAPITAL_GOOD_PRICE);
 
-	printf("PRODUCTIVITY %f \n",PRODUCTIVITY);
-	printf("CAPITAL_GOOD_PRICE %f \n",CAPITAL_GOOD_PRICE);
-	printf("************************************************************************\n");	
+	
+	/*1: print the printf-statements*/
+	if(IGFIRM_PRODUCER_DEBUG == 1)
+	{
+		printf("PRODUCTIVITY %f \n",PRODUCTIVITY);
+		printf("CAPITAL_GOOD_PRICE %f \n",CAPITAL_GOOD_PRICE);
+		printf("************************************************************************\n");
+	}
+	
 	return 0;
 }
 
@@ -303,15 +333,26 @@ int IGFirm_send_quality_price_info()
  * \brief IGFirm calculate the intended production volume depending on the current stocks in the malls*/
 int IGFirm_calc_production_quantity()
 {
+	/*1: print the printf-statements*/
+	if(IGFIRM_PRODUCER_DEBUG == 1)
+	{
+		printf("IN FUNCTION: IGFirm_calc_production_quantity()\n");
+		printf("***************************************************************************\n");
+	}
 
-	printf("IN FUNCTION: IGFirm_calc_production_quantity()\n");
-	printf("***************************************************************************\n");
+
+	double sales[FIRM_PLANNING_HORIZON];
+	double mean_of_last_sales;
+	double mean_last_demand = 0.0;
+	int i;
 
 	/*Remove the oldest capital good demand and add the capital good demand of the last 	
 	period*/
 	remove_double(&LAST_CAPITAL_GOOD_DEMAND,0);
 	add_double(&LAST_CAPITAL_GOOD_DEMAND, CAPITAL_GOOD_DEMAND);
 	
+	/*Count the number of zero demands: faster adaption of the 
+	production when there is no demand for capital goods*/
 	if(CAPITAL_GOOD_DEMAND > 0)
 	{
 		NO_ZERO_DEMAND = 0;
@@ -321,43 +362,43 @@ int IGFirm_calc_production_quantity()
 		NO_ZERO_DEMAND++;
 	}
 
+
+	/*Remove the oldest capital good sales and add the capital good salesof the last 	
+	period*/
 	remove_double(&LAST_CAPITAL_GOOD_SALES,0);
 	add_double(&LAST_CAPITAL_GOOD_SALES, SALES);
 
 
-	printf("CAPITAL_GOOD_DEMAND %f \n",CAPITAL_GOOD_DEMAND);
-	printf("SALES %f \n",SALES);
-	printf("CAPITAL_GOOD_STORE %f \n",CAPITAL_GOOD_STORE);
+	/*1: print the printf-statements*/
+	if(IGFIRM_PRODUCER_DEBUG == 1)
+	{
+		printf("CAPITAL_GOOD_DEMAND %f \n",CAPITAL_GOOD_DEMAND);
+		printf("SALES %f \n",SALES);
+		printf("CAPITAL_GOOD_STORE %f \n",CAPITAL_GOOD_STORE);
+	}
 
 	
-
-	/*Computing of out-of-stock costs*/
-	/*OUT_OF_STOCK_COSTS = (CAPITAL_GOOD_PRICE - DISCOUNT_RATE*UNIT_COSTS)/
-	(CAPITAL_GOOD_PRICE+IG_INVENTORY_COSTS_PER_UNIT);
-
-	printf("OUT_OF_STOCK_COSTS %f \n",OUT_OF_STOCK_COSTS);
-	printf("CAPITAL_GOOD_PRICE %f \n",CAPITAL_GOOD_PRICE);
-	printf("UNIT_COSTS %f \n",UNIT_COSTS);*/
-
-	
-
-	double sales[FIRM_PLANNING_HORIZON];
-	double mean_of_last_sales;
-	int i;
-	for(i = 0; i < 10; i++)
+	/*Calculate the average of the last sales*/
+	for(i = 0; i < FIRM_PLANNING_HORIZON; i++)
 	{
 		sales[i] = LAST_CAPITAL_GOOD_SALES.array[i];
 		mean_of_last_sales += LAST_CAPITAL_GOOD_SALES.array[i];
 	}
 
 	mean_of_last_sales = mean_of_last_sales/FIRM_PLANNING_HORIZON;	
-	//printf("mean_of_last_sales %f\n",mean_of_last_sales);
 
-	/*printf("********SALES BEFORE ********\n");
-	for(int y = 0; y<10;y++)
+
+	/*1: print the printf-statements*/
+	if(IGFIRM_PRODUCER_DEBUG == 1)
 	{
-		printf("%f \n", sales[y]);
-	}*/
+		printf("mean_of_last_sales %f\n",mean_of_last_sales);
+
+		printf("********SALES BEFORE SORTING********\n");
+		for(int y = 0; y<10;y++)
+		{
+			printf("%f \n", sales[y]);
+		}
+	}
 
 	double temp1;
 	double temp2;
@@ -379,101 +420,153 @@ int IGFirm_calc_production_quantity()
 		}
 	}
 
-	/*printf("********SALES after ********\n");
-	for(int z = 0; z<10;z++)
-	{
-		printf("%f \n", sales[z]);
-	}*/
 
-	/*Setting the critical values*/
-	//for(int k = 0; k < FIRM_PLANNING_HORIZON; k++)
-	//{
-	//	double prob = (1 + k)/(double)FIRM_PLANNING_HORIZON;
-	//	if(prob < OUT_OF_STOCK_COSTS)
-	//	{
-			CRITICAL_STOCK = sales[8];
-			
-			
-	//	}
-		/*if(OUT_OF_STOCK_COSTS < 1/(double)FIRM_PLANNING_HORIZON)
+	/*1: print the printf-statements*/
+	if(IGFIRM_PRODUCER_DEBUG == 1)
+	{
+		printf("********SALES after ********\n");
+		for(int z = 0; z<10;z++)
 		{
-			CRITICAL_STOCK = 0.0;
-		}*/
-		
-	//}
+			printf("%f \n", sales[z]);
+		}
+	}
+
 	
+	/*Setting the critical values: determined to 8*/
+	CRITICAL_STOCK = sales[8];
+			
+		
 	if(CRITICAL_STOCK == 0)
 	{
-		int random_nummer = random_int(0,100);
-		if(random_nummer < DELIVERY_PROB_IF_CRITICAL_STOCK_0)
+		int random_num = random_int(0,100);
+		if(random_num < DELIVERY_PROB_IF_CRITICAL_STOCK_0)
 		{
 			CRITICAL_STOCK = mean_of_last_sales;
-			//printf("CRITICAL_STOCK DETERMINED BY MEAN \n");
+			
+			/*1: print the printf-statements*/
+			if(IGFIRM_PRODUCER_DEBUG == 1)
+			{	
+				printf("CRITICAL_STOCK IS 0 -> NOW IT IS DETERMINED BY MEAN OF LAST SALES\n");
+				printf("CRITICAL_STOCK: %f \n",CRITICAL_STOCK);	
+				
+			}
 		}
 
 	}
-//printf("CRITICAL_STOCK: %f \n",CRITICAL_STOCK);	
-//printf("CAPITAL_GOOD_STORE: %f \n",CAPITAL_GOOD_STORE);
 
+
+	/*1: print the printf-statements*/
+	if(IGFIRM_PRODUCER_DEBUG == 1)
+	{
+		printf("CRITICAL_STOCK: %f  > or < than \n",CRITICAL_STOCK);	
+		printf("CAPITAL_GOOD_STORE: %f \n",CAPITAL_GOOD_STORE);
+	}
+
+	/*If capital good store is too small, plan the production the IGFirm has to produce*/
 	if(CAPITAL_GOOD_STORE <= CRITICAL_STOCK)
 	{
+
+		/*1: print the printf-statements*/
+		if(IGFIRM_PRODUCER_DEBUG == 1)
+		{
+			printf(" 1: CAPITAL_GOOD_STORE <= CRITICAL_STOCK\n");
+		}
+
+		/*If capital goods are left produce the difference between the critical stock and the actual store*/
 		if(CAPITAL_GOOD_STORE > 0)
 		{
 			PLANNED_PRODUCTION_QUANTITY = CRITICAL_STOCK - CAPITAL_GOOD_STORE;
+
+			/*1: print the printf-statements*/
+			if(IGFIRM_PRODUCER_DEBUG == 1)
+			{
+				printf(" 1: CAPITAL_GOOD_STORE > 0\n");
+				printf("PLANNED_PRODUCTION_QUANTITY:  %f = \n",PLANNED_PRODUCTION_QUANTITY);
+				printf(" CRITICAL_STOCK - CAPITAL_GOOD_STORE\n");
+			}
 		}
+		/*If no stocks are left produce the critical stock plus an additional 
+		fraction because the IGFirm could have sold more goods in the last period*/
 		else
 		{
 			PLANNED_PRODUCTION_QUANTITY = CRITICAL_STOCK*
 			(1 + ADDITIONAL_CAPITAL_GOOD_PRODUCTION);
+			
+			/*1: print the printf-statements*/
+			if(IGFIRM_PRODUCER_DEBUG == 1)
+			{
+				printf(" 2: CAPITAL_GOOD_STORE = 0\n");
+				printf("PLANNED_PRODUCTION_QUANTITY %f = \n",PLANNED_PRODUCTION_QUANTITY);
+				printf(" CRITICAL_STOCK + %f percent \n",ADDITIONAL_CAPITAL_GOOD_PRODUCTION);
+			}
 		}
+
+
+		/*Calculate the average of the last capital goods demand*/
+		for(i = 0; i < LAST_CAPITAL_GOOD_DEMAND.size; i++)
+		{
+			mean_last_demand += LAST_CAPITAL_GOOD_DEMAND.array[i];	
+		}
+
+		mean_last_demand = mean_last_demand/(double)LAST_CAPITAL_GOOD_DEMAND.size;
+	
+
+		/*1: print the printf-statements*/
+		if(IGFIRM_PRODUCER_DEBUG == 1)
+		{	
+			printf("PLANNED_PRODUCTION_QUANTITY %f = \n",PLANNED_PRODUCTION_QUANTITY);
+			printf("MEAN_LAST_DEMAND %f \n",mean_last_demand);
+			printf("IG_LAMBDA %f: weight for PLANNED_PRODUCTION_QUANTITY \n",mean_last_demand);	
+		}
+		
+		/*Smooth the production quantity by taking also the average of the last demands into account*/
+		PLANNED_PRODUCTION_QUANTITY = IG_LAMBDA*PLANNED_PRODUCTION_QUANTITY +
+		(1-IG_LAMBDA)*mean_last_demand;
+
+
+		/*1: print the printf-statements*/
+		if(IGFIRM_PRODUCER_DEBUG == 1)
+		{
+			printf("FINAL PLANNED_PRODUCTION_QUANTITY %f = \n",PLANNED_PRODUCTION_QUANTITY);
+		}
+
+
+		if(NO_ZERO_DEMAND > 0)
+		{
+			PLANNED_PRODUCTION_QUANTITY = 0.0;	
+		}
+
+		
 	}
+	/*If capital good store is greater than the critical stock*/
 	else
 	{
-		PLANNED_PRODUCTION_QUANTITY = 0.0;	
+		PLANNED_PRODUCTION_QUANTITY = 0.0;
+
+		/*1: print the printf-statements*/
+		if(IGFIRM_PRODUCER_DEBUG == 1)
+		{
+			printf(" 1: CAPITAL_GOOD_STORE > CRITICAL_STOCK\n");
+			printf("PLANNED_PRODUCTION_QUANTITY %f = \n",PLANNED_PRODUCTION_QUANTITY);
+		}	
 	}
 
-//printf("1: PLANNED_PRODUCTION_QUANTITY OF SALES ARRAY %f \n",PLANNED_PRODUCTION_QUANTITY);
-
-	double mean_last_demand = 0.0;
-	
-	for(i = 0; i < LAST_CAPITAL_GOOD_DEMAND.size; i++)
-	{
-		mean_last_demand += LAST_CAPITAL_GOOD_DEMAND.array[i];
-		
-	}
 
 	
-	mean_last_demand = mean_last_demand/(double)LAST_CAPITAL_GOOD_DEMAND.size;
-	//printf("mean_last_demand %f \n",mean_last_demand);
+
 	
-	/*if(mean_last_demand < CAPITAL_GOOD_DEMAND)
-	{
-		mean_last_demand = mean_last_demand*(1+ADDITIONAL_CAPITAL_GOOD_PRODUCTION);
-	}*/
-		
-
-	PLANNED_PRODUCTION_QUANTITY = IG_LAMBDA*PLANNED_PRODUCTION_QUANTITY +
-	(1-IG_LAMBDA)*mean_last_demand;
-
-	if(NO_ZERO_DEMAND > 0)
-	{
-		PLANNED_PRODUCTION_QUANTITY = 0.0;	
-	}
-
-	if(CAPITAL_GOOD_STORE > CRITICAL_STOCK)
+	/*1: complete functionality of the IGFirm  0: ISOLATED MODEL UNIBI MAY 09 */
+	if(IGFIRM_SWITCH_ON == 0)
 	{
 		PLANNED_PRODUCTION_QUANTITY = 0.0;
 	}
+	
+	/*1: print the printf-statements*/
+	if(IGFIRM_PRODUCER_DEBUG == 1)
+	{
+		printf("********************************************************************************\n");
+	}
 
-	
-	/*only for getdata: every 20 iteration*/
-	
-
-	printf("CAPITAL_GOOD_STORE %f \n",CAPITAL_GOOD_STORE);
-	printf("2: PLANNED_PRODUCTION_QUANTITY AS AVERAGE %f \n",PLANNED_PRODUCTION_QUANTITY);
-	printf("CAPITAL_GOOD_DEMAND_LAST_MONTH %f \n",CAPITAL_GOOD_DEMAND_LAST_MONTH);
-	
-	printf("********************************************************************************\n");
 	return 0;
 }
 
@@ -481,9 +574,14 @@ int IGFirm_calc_production_quantity()
  * \brief IGFirms calculate the labor demand and the demand for energy*/
 int IGFirm_calc_input_demands()
 {
-	printf("IN FUNCTION: IGFirm_calc_input_demands \n");
-	printf("******************************************\n");
+	/*1: print the printf-statements*/
+	if(IGFIRM_PRODUCER_DEBUG == 1)
+	{
+		printf("IN FUNCTION: IGFirm_calc_input_demands \n");
+		printf("**********************************************************************\n");
+	}
 
+	/*Calculated the number of production employees*/
 	EMPLOYEES_NEEDED = (int)(PLANNED_PRODUCTION_QUANTITY
 	/(PRODUCTION_PRODUCTIVITY*MEAN_SPECIFIC_SKILLS));
 
@@ -493,13 +591,24 @@ int IGFirm_calc_input_demands()
 	PLANNED_PRODUCTION_COSTS = EMPLOYEES_NEEDED*MEAN_WAGE +
  	RESEARCH_EMPLOYEES_NEEDED*MEAN_RESEARCH_WAGE;
 
-	//printf("MEAN_SPECIFIC_SKILLS %f \n",MEAN_SPECIFIC_SKILLS);
-	//printf("PRODUCTION_PRODUCTIVITY %f \n",PRODUCTION_PRODUCTIVITY);	
-	printf("PLANNED_PRODUCTION_QUANTITY %f \n",PLANNED_PRODUCTION_QUANTITY);	
-	printf("EMPLOYEES_NEEDED %d \n",EMPLOYEES_NEEDED);
-	//printf("RESEARCH_EMPLOYEES_NEEDED %d \n",RESEARCH_EMPLOYEES_NEEDED);
 	
-	printf("******************************************\n");
+	/*1: complete functionality of the IGFirm  0: ISOLATED MODEL UNIBI MAY 09 */
+	if(IGFIRM_SWITCH_ON == 0)
+	{
+		PLANNED_PRODUCTION_COSTS = 0;
+		EMPLOYEES_NEEDED = 0;
+	}
+
+	/*1: print the printf-statements*/
+	if(IGFIRM_PRODUCER_DEBUG == 1)
+	{
+		printf("MEAN_SPECIFIC_SKILLS %f \n",MEAN_SPECIFIC_SKILLS);
+		printf("PRODUCTION_PRODUCTIVITY %f \n",PRODUCTION_PRODUCTIVITY);	
+		printf("PLANNED_PRODUCTION_QUANTITY %f \n",PLANNED_PRODUCTION_QUANTITY);	
+		printf("EMPLOYEES_NEEDED %d \n",EMPLOYEES_NEEDED);
+		printf("RESEARCH_EMPLOYEES_NEEDED %d \n",RESEARCH_EMPLOYEES_NEEDED);
+		printf("*************************************************************************\n");
+	}
 
     return 0;	
 }
@@ -508,58 +617,87 @@ int IGFirm_calc_input_demands()
 
 int IGFirm_calc_production_quantity_2()
 {
+	/*1: print the printf-statements*/
+	if(IGFIRM_PRODUCER_DEBUG == 1)
+	{
+		printf("IN FUNCTION: IGFirm_calc_production_quantity_2()\n");
+		printf("********************************************************************************\n");
+	}
 
-printf("IN FUNCTION: IGFirm_calc_production_quantity_2()\n");
-printf("********************************************************************************\n");
 
-printf("FINANCIAL_RESOURCES_FOR_PRODUCTION %f\n",FINANCIAL_RESOURCES_FOR_PRODUCTION);
-printf("PLANNED_PRODUCTION_COSTS %f\n",PLANNED_PRODUCTION_COSTS);
-printf("EMPLOYEES_NEEDED %d\n",EMPLOYEES_NEEDED);
-printf("RESEARCH_EMPLOYEES_NEEDED %d\n",RESEARCH_EMPLOYEES_NEEDED);
+
+
 
 	FINANCIAL_RESOURCES_FOR_PRODUCTION = PAYMENT_ACCOUNT - FINANCIAL_LIQUIDITY_NEEDS;
-	
-	if( FINANCIAL_RESOURCES_FOR_PRODUCTION > 0.0)
+
+	/*1: print the printf-statements*/
+	if(IGFIRM_PRODUCER_DEBUG == 1)
 	{
-		while (PLANNED_PRODUCTION_COSTS > FINANCIAL_RESOURCES_FOR_PRODUCTION)
+		printf("RESOURCES_FOR_PRODUCTION %f > or <	\n",FINANCIAL_RESOURCES_FOR_PRODUCTION);
+		printf("PLANNED_PRODUCTION_COSTS %f\n",PLANNED_PRODUCTION_COSTS);	
+		printf("EMPLOYEES_NEEDED %d\n",EMPLOYEES_NEEDED);
+		printf("RESEARCH_EMPLOYEES_NEEDED %d\n",RESEARCH_EMPLOYEES_NEEDED);
+	}
+
+	if(FINANCIAL_RESOURCES_FOR_PRODUCTION < PLANNED_PRODUCTION_COSTS)
+	{
+		/*1: print the printf-statements*/
+		if(IGFIRM_PRODUCER_DEBUG == 1)
 		{
-			if(EMPLOYEES_NEEDED >0)
-			{
-				EMPLOYEES_NEEDED -= 1;
+			printf("FINANCIAL_RESOURCES_FOR_PRODUCTION < PLANNED_PRODUCTION_COSTS\n");
+			printf("Decrease number of production and research employees\n");
+		}
 
-				PLANNED_PRODUCTION_COSTS = EMPLOYEES_NEEDED*MEAN_WAGE +
- 				RESEARCH_EMPLOYEES_NEEDED*MEAN_RESEARCH_WAGE;
-			}
+
+		if( FINANCIAL_RESOURCES_FOR_PRODUCTION > 0.0)
+		{
+			while (PLANNED_PRODUCTION_COSTS > FINANCIAL_RESOURCES_FOR_PRODUCTION)
+			{
+				if(EMPLOYEES_NEEDED >0)
+				{
+					EMPLOYEES_NEEDED -= 1;
+
+					PLANNED_PRODUCTION_COSTS = EMPLOYEES_NEEDED*MEAN_WAGE +
+ 					RESEARCH_EMPLOYEES_NEEDED*MEAN_RESEARCH_WAGE;
+				}
 
 			
-			if(PLANNED_PRODUCTION_COSTS > FINANCIAL_RESOURCES_FOR_PRODUCTION && 
-			RESEARCH_EMPLOYEES_NEEDED > 0)
-			{
-				RESEARCH_EMPLOYEES_NEEDED -= 1;
+				if(PLANNED_PRODUCTION_COSTS > FINANCIAL_RESOURCES_FOR_PRODUCTION && 
+				RESEARCH_EMPLOYEES_NEEDED > 0)
+				{
+					RESEARCH_EMPLOYEES_NEEDED -= 1;
 
-				PLANNED_PRODUCTION_COSTS = EMPLOYEES_NEEDED*MEAN_WAGE +
- 				RESEARCH_EMPLOYEES_NEEDED*MEAN_RESEARCH_WAGE;
+					PLANNED_PRODUCTION_COSTS = EMPLOYEES_NEEDED*MEAN_WAGE +
+ 					RESEARCH_EMPLOYEES_NEEDED*MEAN_RESEARCH_WAGE;
+				}
+	
 			}
-			printf("PLANNED_PRODUCTION_COSTS %f\n",PLANNED_PRODUCTION_COSTS);
+		}
+		else
+		{	
+			/*1: print the printf-statements*/
+			if(IGFIRM_PRODUCER_DEBUG == 1)
+			{
+				printf("FINANCIAL_RESOURCES_FOR_PRODUCTION = 0\n");
+			}	
+			EMPLOYEES_NEEDED = 0;
+			RESEARCH_EMPLOYEES_NEEDED = 0;
 
-			//PLANNED_PRODUCTION_QUANTITY =
-			//EMPLOYEES_NEEDED*PRODUCTION_PRODUCTIVITY*MEAN_SPECIFIC_SKILLS;
-			
+
 		}
 	}
-	else
+
+	
+	/*1: print the printf-statements*/
+	if(IGFIRM_PRODUCER_DEBUG == 1)
 	{
-		EMPLOYEES_NEEDED = 0;
-		RESEARCH_EMPLOYEES_NEEDED = 0;
+		printf("EMPLOYEES_NEEDED %d\n",EMPLOYEES_NEEDED);
+		printf("RESEARCH_EMPLOYEES_NEEDED %d\n",RESEARCH_EMPLOYEES_NEEDED);
+		printf("PLANNED_PRODUCTION_QUANTITY %f \n",PLANNED_PRODUCTION_QUANTITY);
+		printf("PLANNED_PRODUCTION_COSTS %f\n",PLANNED_PRODUCTION_COSTS);
+
+		printf("**************************************************************************************\n");
 	}
-
-	
-	
-	printf("EMPLOYEES_NEEDED %d\n",EMPLOYEES_NEEDED);
-	printf("RESEARCH_EMPLOYEES_NEEDED %d\n",RESEARCH_EMPLOYEES_NEEDED);
-	printf("PLANNED_PRODUCTION_QUANTITY %f \n",PLANNED_PRODUCTION_QUANTITY);
-
-	printf("**************************************************************************************\n");
 
 	return 0;
 }
@@ -570,34 +708,44 @@ printf("RESEARCH_EMPLOYEES_NEEDED %d\n",RESEARCH_EMPLOYEES_NEEDED);
  * \brief IGFirms produce the capital good*/
 int IGFirm_produce_capital_good()
 {
-	printf("IN FUNCTION: IGFirm_produce_capital_good()\n");
-	printf("********************************************************************************\n");
-
-	OUTPUT = 0;
-	PLANNED_OUTPUT = 0;
-
-	PLANNED_OUTPUT = PLANNED_PRODUCTION_QUANTITY;
-
-	/*Minimum of the capital good store: directly before production*/
-	CAPITAL_GOOD_STORE_BEFORE_PRODUCTION = CAPITAL_GOOD_STORE;
+	/*1: print the printf-statements*/
+	if(IGFIRM_PRODUCER_DEBUG == 1)
+	{
+		printf("IN FUNCTION: IGFirm_produce_capital_good()\n");
+		printf("********************************************************************************\n");
+	}
 	
-	PRODUCTION_QUANTITY = NO_EMPLOYEES*PRODUCTION_PRODUCTIVITY*MEAN_SPECIFIC_SKILLS;
-	OUTPUT = PRODUCTION_QUANTITY;
-
-	/*Add the production quantity to the capital good store*/
-	CAPITAL_GOOD_STORE += PRODUCTION_QUANTITY;
-
-	/*Maximum of the capital good store: directly after production*/
-	CAPITAL_GOOD_STORE_AFTER_PRODUCTION = CAPITAL_GOOD_STORE;
-
-	remove_double(&LAST_PRODUCTION_QUANTITIES,0);
-	add_double(&LAST_PRODUCTION_QUANTITIES, PRODUCTION_QUANTITY);
-
-	printf("PRODUCTION_QUANTITY %f \n",PRODUCTION_QUANTITY);
-	printf("CAPITAL_GOOD_STORE %f \n",CAPITAL_GOOD_STORE);
-	printf("*********************************************************************************\n");
-
+	if(IGFIRM_SWITCH_ON == 1)
+	{
+		/*Variables for getdata*/
+		OUTPUT = 0;
+		PLANNED_OUTPUT = 0;
 	
+		PLANNED_OUTPUT = PLANNED_PRODUCTION_QUANTITY;
+	
+		/*Minimum of the capital good store: directly before production*/
+		CAPITAL_GOOD_STORE_BEFORE_PRODUCTION = CAPITAL_GOOD_STORE;
+		
+		PRODUCTION_QUANTITY = NO_EMPLOYEES*PRODUCTION_PRODUCTIVITY*MEAN_SPECIFIC_SKILLS;
+		OUTPUT = PRODUCTION_QUANTITY;
+	
+		/*Add the production quantity to the capital good store*/
+		CAPITAL_GOOD_STORE += PRODUCTION_QUANTITY;
+	
+		/*Maximum of the capital good store: directly after production*/
+		CAPITAL_GOOD_STORE_AFTER_PRODUCTION = CAPITAL_GOOD_STORE;
+	
+		remove_double(&LAST_PRODUCTION_QUANTITIES,0);
+		add_double(&LAST_PRODUCTION_QUANTITIES, PRODUCTION_QUANTITY);
+	}
+
+	/*1: print the printf-statements*/
+	if(IGFIRM_PRODUCER_DEBUG == 1)
+	{
+		printf("PRODUCTION_QUANTITY %f \n",PRODUCTION_QUANTITY);
+		printf("CAPITAL_GOOD_STORE %f \n",CAPITAL_GOOD_STORE);
+		printf("*********************************************************************************\n");
+	}
 
 	return 0;
 }
@@ -607,13 +755,20 @@ int IGFirm_produce_capital_good()
 
 int IGFirm_calc_pay_costs()
 {
-	printf("IN FUNCTION: IGFirm_calc_pay_costs\n");
-	printf("***************************************************************************************\n");
+	/*1: print the printf-statements*/
+	if(IGFIRM_PRODUCER_DEBUG == 1)
+	{
+		printf("IN FUNCTION: IGFirm_calc_pay_costs\n");
+		printf("***************************************************************************************\n");
+	}
 	
 	double average_production_quantity = 0.0;
+	double old_capital_good_price = 0.0;
+	int i,m;
+	
 	LABOUR_COSTS = 0.0;
-	int i;
 
+	/*Sum up the wages for production workers*/
 	for(i=0; i<EMPLOYEES.size;i++)
 	{
 		LABOUR_COSTS += EMPLOYEES.array[i].wage;
@@ -622,24 +777,29 @@ int IGFirm_calc_pay_costs()
 		EMPLOYEES.array[i].id,EMPLOYEES.array[i].wage,
 		TECHNOLOGY,MEAN_SPECIFIC_SKILLS,1);	
 	}
-
+	
+	/*Sum up the wages for researchers*/
 	for(i=0; i<RESEARCH_EMPLOYEES.size;i++)
 	{
 		LABOUR_COSTS += RESEARCH_EMPLOYEES.array[i].wage;
+
 		add_wage_payment_message(ID,
 		RESEARCH_EMPLOYEES.array[i].id,RESEARCH_EMPLOYEES.array[i].wage,
-		TECHNOLOGY,MEAN_SPECIFIC_SKILLS,1);
-		
+		TECHNOLOGY,MEAN_SPECIFIC_SKILLS,1);	
 	}
 
 	PAYMENT_ACCOUNT -= LABOUR_COSTS;
 
+	/*Store the production costs for getdata*/
 	PRODUCTION_COSTS_LAST_MONTH = PRODUCTION_COSTS;
+
+	/*Production costs are only labor costs*/
 	PRODUCTION_COSTS = LABOUR_COSTS;
 
-	double old_capital_good_price = 0.0;
+	
 	old_capital_good_price = CAPITAL_GOOD_PRICE;
-	int m;
+	
+	/*Calculate the average of the last production quantities*/
 	for(m = 0; m < LAST_PRODUCTION_QUANTITIES.size; m++)
 	{
 		average_production_quantity += LAST_PRODUCTION_QUANTITIES.array[m];
@@ -647,44 +807,34 @@ int IGFirm_calc_pay_costs()
 	average_production_quantity = 
 	average_production_quantity/(double)LAST_PRODUCTION_QUANTITIES.size;
 
-
-	if(PRODUCTION_QUANTITY > 0)
+	
+	/*1: complete functionality of the IGFirm  0: ISOLATED MODEL UNIBI MAY 09 */
+	if(IGFIRM_SWITCH_ON == 1)
 	{
-		UNIT_COSTS = LABOUR_COSTS/average_production_quantity;
-		CAPITAL_GOOD_PRICE = UNIT_COSTS*(1+IG_MARK_UP);
+		/*If the IGFirm has produced capital goods*/	
+		if(PRODUCTION_QUANTITY > 0)
+		{
+			/*The average of the last production quantities is used to smooth the capital good price*/
+			UNIT_COSTS = LABOUR_COSTS/average_production_quantity;
+			CAPITAL_GOOD_PRICE = UNIT_COSTS*(1+IG_MARK_UP);
+		}
+		/*If there was no production*/
+		else
+		{	/*Take the unit costs of the last period and also the price*/
+			UNIT_COSTS = UNIT_COSTS;
+			CAPITAL_GOOD_PRICE = CAPITAL_GOOD_PRICE;
+		}
 	}
-	else
+	
+	/*1: print the printf-statements*/
+	if(IGFIRM_PRODUCER_DEBUG == 1)
 	{
-		UNIT_COSTS = UNIT_COSTS;
-		CAPITAL_GOOD_PRICE = CAPITAL_GOOD_PRICE;
+		printf("LABOUR_COSTS %f / \n",LABOUR_COSTS);
+		printf("AVERAGE PRODUCTION QUANTITY %f  =\n",average_production_quantity);
+		printf("UNIT_COSTS %f \n",UNIT_COSTS);
+		printf("CAPITAL_GOOD_PRICE %f \n",CAPITAL_GOOD_PRICE);
+		printf("***************************************************************************************\n");
 	}
-
-	if(UNIT_COSTS == 0)
-	{
-		CAPITAL_GOOD_PRICE = CAPITAL_GOOD_PRICE;
-	}
-
-	/*if(UNIT_COSTS > 0)
-	{
-		CAPITAL_GOOD_PRICE = UNIT_COSTS*(1+IG_MARK_UP);
-	}
-	else
-	{
-		CAPITAL_GOOD_PRICE = CAPITAL_GOOD_PRICE;
-	}*/
-
-	if(CAPITAL_GOOD_PRICE > old_capital_good_price*(1 + MAX_CAPITAL_GOOD_PRICE_INCREASE))
-	{
-		CAPITAL_GOOD_PRICE = old_capital_good_price*(1 + MAX_CAPITAL_GOOD_PRICE_INCREASE);
-	}
-
-
-	printf("NO_EMPLOYEES %d \n",NO_EMPLOYEES);
-	printf("NO_RESEARCH_EMPLOYEES %d \n",NO_RESEARCH_EMPLOYEES);
-	printf("LABOUR_COSTS %f \n",LABOUR_COSTS);
-	printf("UNIT_COSTS %f \n",UNIT_COSTS);
-	printf("CAPITAL_GOOD_PRICE %f \n",CAPITAL_GOOD_PRICE);
-	printf("***************************************************************************************\n");
 
 	return 0;
 }
@@ -701,9 +851,16 @@ int IGFirm_send_capital_good()
 
 if(DAY%MONTH==DAY_OF_MONTH_TO_ACT)
 {
-	printf("IN FUNCTION: IGFirm_send_capital_good\n");
-	printf("***************************************************************************************\n");
+	/*1: print the printf-statements*/
+	if(IGFIRM_PRODUCER_DEBUG == 1)
+	{
+		printf("IN FUNCTION: IGFirm_send_capital_good\n");
+		printf("***************************************************************************************\n");
+	}
 }
+
+	double daily_capital_good_demand = 0.0;
+	double daily_sales = 0.0;	
 
 	if(DAY%MONTH==DAY_OF_MONTH_TO_ACT)
 	{	
@@ -715,12 +872,13 @@ if(DAY%MONTH==DAY_OF_MONTH_TO_ACT)
 		SALES = 0.0;
 	}
 
-	double daily_capital_good_demand = 0.0;
-	double daily_sales = 0.0;
+	
 
 	capital_good_request_array capital_good_request_list;
 	init_capital_good_request_array(&capital_good_request_list); 
-	//printf("DAILY CAPITAL_GOOD_STORE: %f\n",CAPITAL_GOOD_STORE);
+
+	
+
 	START_CAPITAL_GOOD_REQUEST_MESSAGE_LOOP
 
 		add_capital_good_request(&capital_good_request_list,
@@ -730,15 +888,21 @@ if(DAY%MONTH==DAY_OF_MONTH_TO_ACT)
 		daily_capital_good_demand += capital_good_request_message->capital_good_demand;
 
 	FINISH_CAPITAL_GOOD_REQUEST_MESSAGE_LOOP
-//	printf("DAILY CAPITAL_GOOD_DEMAND %f\n",daily_capital_good_demand);
+
 
 	CAPITAL_GOOD_DEMAND += daily_capital_good_demand;
-//printf("CAPITAL_GOOD_DEMAND %f\n",CAPITAL_GOOD_DEMAND);
 
 	CAPITAL_GOOD_DEMAND_AFTER_LAST_INNOVATION += daily_capital_good_demand;
 
-/*printf("CAPITAL_GOOD_DEMAND: %f\n",CAPITAL_GOOD_DEMAND);
-printf("CAPITAL_GOOD_DEMAND_AFTER_LAST_INNOVATION: %f\n",CAPITAL_GOOD_DEMAND_AFTER_LAST_INNOVATION);*/
+
+	/*1: print the printf-statements*/
+	if(IGFIRM_PRODUCER_DEBUG == 1)
+	{
+		//printf("DAILY CAPITAL_GOOD_STORE: %f\n",CAPITAL_GOOD_STORE);
+		//printf("DAILY CAPITAL_GOOD_DEMAND %f\n",daily_capital_good_demand);
+		//printf("CAPITAL_GOOD_DEMAND %f\n",CAPITAL_GOOD_DEMAND);
+		//printf("CAPITAL_GOOD_DEMAND_LAST_MONTH %f\n",CAPITAL_GOOD_DEMAND_LAST_MONTH);
+	}		
 
 	/*for(int j = 0; j < capital_good_request_list.size; j++)
 	{
@@ -746,8 +910,95 @@ printf("CAPITAL_GOOD_DEMAND_AFTER_LAST_INNOVATION: %f\n",CAPITAL_GOOD_DEMAND_AFT
 		capital_good_request_list.array[j].capital_good_order);
 	}*/
 
-	/*Capital good store is bigger than capital good demand*/
-	if(daily_capital_good_demand <= CAPITAL_GOOD_STORE)
+	
+	/*1: complete functionality of the IGFirm  0: ISOLATED MODEL UNIBI MAY 09 */
+	if(IGFIRM_SWITCH_ON == 1)
+	{
+	
+		/*Capital good store is bigger than capital good demand: demand can be satisfied*/
+		if(daily_capital_good_demand <= CAPITAL_GOOD_STORE)
+		{
+			int v;
+			for(v = 0; v < capital_good_request_list.size; v++)
+			{
+				add_capital_good_delivery_message(
+				capital_good_request_list.array[v].firm_id,
+				capital_good_request_list.array[v].capital_good_order, 	
+				PRODUCTIVITY, 
+				CAPITAL_GOOD_PRICE);
+	
+				CAPITAL_GOOD_STORE -= capital_good_request_list.
+				array[v].capital_good_order;
+	
+				SALES += capital_good_request_list.
+				array[v].capital_good_order;
+	
+				daily_sales += capital_good_request_list.
+				array[v].capital_good_order;
+			}
+		}
+		else
+		{	/*Capital good demand is higher than capital good store and 
+			the store is positive: every firm gets a fration of their order*/
+			if(CAPITAL_GOOD_STORE > 0)
+			{
+				double fraction_order;
+				fraction_order = CAPITAL_GOOD_STORE/daily_capital_good_demand;
+
+				/*1: print the printf-statements*/
+				if(IGFIRM_PRODUCER_DEBUG == 1)
+				{
+					printf("Demand is higher than the capital good store \n");
+					printf("DAILY fraction_order %f\n",fraction_order);
+				}
+				int v;
+				for(v = 0; v < capital_good_request_list.size; v++)
+				{
+					add_capital_good_delivery_message(
+					capital_good_request_list.array[v].firm_id,
+					capital_good_request_list.array[v].capital_good_order*fraction_order, 
+					PRODUCTIVITY, 	
+					CAPITAL_GOOD_PRICE);
+	
+					CAPITAL_GOOD_STORE -= capital_good_request_list.
+					array[v].capital_good_order *fraction_order;
+	
+					SALES += capital_good_request_list.
+					array[v].capital_good_order*fraction_order;
+				
+					daily_sales += capital_good_request_list.
+					array[v].capital_good_order*fraction_order;
+			
+				}
+	
+				
+			}
+			/*Capital goods store is empty: no delivery*/
+			else
+			{
+				/*1: print the printf-statements*/
+				if(IGFIRM_PRODUCER_DEBUG == 1)
+				{
+					printf("Capital good store is empty \n");
+				}
+
+				int v;
+				for(v = 0; v < capital_good_request_list.size; v++)
+				{
+					add_capital_good_delivery_message(
+					capital_good_request_list.array[v].firm_id,
+					0, 
+					PRODUCTIVITY, 	
+					CAPITAL_GOOD_PRICE);
+	
+					SALES += 0.0;
+				}
+			}
+		}
+
+	}
+	/*If IGFIRM_SWITCH_ON is zero: demand of the firms is satisfied*/
+	else
 	{
 		int v;
 		for(v = 0; v < capital_good_request_list.size; v++)
@@ -757,100 +1008,40 @@ printf("CAPITAL_GOOD_DEMAND_AFTER_LAST_INNOVATION: %f\n",CAPITAL_GOOD_DEMAND_AFT
 			capital_good_request_list.array[v].capital_good_order, 	
 			PRODUCTIVITY, 
 			CAPITAL_GOOD_PRICE);
-//printf("capital_good_request_list.array[v].capital_good_order %f\n",capital_good_request_list.array//[v].capital_good_order);
+		
 			CAPITAL_GOOD_STORE -= capital_good_request_list.
 			array[v].capital_good_order;
-
+	
 			SALES += capital_good_request_list.
 			array[v].capital_good_order;
-
+	
 			daily_sales += capital_good_request_list.
 			array[v].capital_good_order;
 		}
-		
-		
-
 	}
-	else
-	{	/*Capital good demand is higher than capital good store and the store is positive*/
-		if(CAPITAL_GOOD_STORE > 0)
-		{
-			double fraction_order;
-			fraction_order = CAPITAL_GOOD_STORE/daily_capital_good_demand;
-//printf("DAILY fraction_order %f\n",fraction_order);
-			int v;
-			for(v = 0; v < capital_good_request_list.size; v++)
-			{
-				add_capital_good_delivery_message(
-				capital_good_request_list.array[v].firm_id,
-				capital_good_request_list.array[v].capital_good_order*fraction_order, 
-				PRODUCTIVITY, 	
-				CAPITAL_GOOD_PRICE);
-
-				CAPITAL_GOOD_STORE -= capital_good_request_list.
-				array[v].capital_good_order *fraction_order;
-
-				SALES += capital_good_request_list.
-				array[v].capital_good_order*fraction_order;
-			
-				daily_sales += capital_good_request_list.
-				array[v].capital_good_order*fraction_order;
-		
-			}
-
-			
-		}
-		else
-		{
-			int v;
-			for(v = 0; v < capital_good_request_list.size; v++)
-			{
-				add_capital_good_delivery_message(
-				capital_good_request_list.array[v].firm_id,
-				0, 
-				PRODUCTIVITY, 	
-				CAPITAL_GOOD_PRICE);
-
-				SALES += 0.0;
-			}
-		}
-	}
-
-	
-
-	/*Remove the oldest capital good demand and add the capital good demand of the last 	
-	period*/
-	/*if(DAY%20 == DAY_OF_MONTH_TO_ACT)
-	{
-		remove_double(&LAST_CAPITAL_GOOD_SALES,0);
-		add_double(&LAST_CAPITAL_GOOD_SALES, SALES);
-		
-	}*/
-	/*if(CAPITAL_GOOD_DEMAND > CAPITAL_GOOD_STORE && CAPITAL_GOOD_STORE = 0)
-	{
-		for(int v = 0; v < capital_good_request_list.size; v++)
-		{
-			add_capital_good_delivery_message(
-			capital_good_request_list.array[v].firm_id,
-			0, 
-			PRODUCTIVITY, 	
-			CAPITAL_GOOD_PRICE);
-		}
-	}*/
 
 	free_capital_good_request_array(&capital_good_request_list);
-//printf("DAILY CAPITAL_GOOD_STORE %f\n",CAPITAL_GOOD_STORE);
-//printf("DAILY SALES %f\n",daily_sales);
-//printf("SALES %f\n",SALES);
-if(DAY%MONTH==DAY_OF_MONTH_TO_ACT)
-{
-	//printf("CAPITAL_GOOD_STORE %f\n",CAPITAL_GOOD_STORE);
-	//printf("CAPITAL_GOOD_DEMAND %f\n",CAPITAL_GOOD_DEMAND);
-	//printf("SALES %f\n",SALES);
-	//printf("CALC REVENUE %f\n",(SALES*CAPITAL_GOOD_PRICE));
-	printf("******************************************************************************************\n");
 
-}
+	
+	/*1: print the printf-statements*/
+	if(IGFIRM_PRODUCER_DEBUG == 1)
+	{
+		printf("DAILY SALES %f\n",daily_sales);
+		printf("SALES %f\n",SALES);
+		printf("CAPITAL_GOOD_STORE %f \n",CAPITAL_GOOD_STORE);
+	}
+	
+	
+	if(DAY%MONTH==DAY_OF_MONTH_TO_ACT)
+	{
+		/*1: print the printf-statements*/
+		if(IGFIRM_PRODUCER_DEBUG == 1)
+		{
+			printf("******************************************************************************************\n");
+		}
+
+	}
+
 	return 0;
 }
 
@@ -863,14 +1054,21 @@ if(DAY%MONTH==DAY_OF_MONTH_TO_ACT)
 
 int IGFirm_calc_revenue()
 {
-if(DAY%MONTH==DAY_OF_MONTH_TO_ACT)
-{
-	printf("IN FUNCTION: IGFirm_calc_revenue\n");
-	printf("**************************************************************************\n");
+
+	if(DAY%MONTH==DAY_OF_MONTH_TO_ACT)
+	{
+		/*1: print the printf-statements*/
+		if(IGFIRM_PRODUCER_DEBUG == 1)
+		{	
+			printf("IN FUNCTION: IGFirm_calc_revenue\n");
+			printf("**************************************************************************\n");
+		}
 	
-	CUM_REVENUE_LAST_MONTH = CUM_REVENUES;
-	CUM_REVENUES = 0.0;
-}
+		/*Store the revenue for getdata*/
+		CUM_REVENUE_LAST_MONTH = CUM_REVENUES;
+		CUM_REVENUES = 0.0;
+	}
+
 	REVENUE_PER_DAY = 0;
 	
 
@@ -882,14 +1080,20 @@ if(DAY%MONTH==DAY_OF_MONTH_TO_ACT)
 
 	CUM_REVENUES += REVENUE_PER_DAY; 
 	PAYMENT_ACCOUNT += REVENUE_PER_DAY;
+	/*Sum up revenues for the R&D budget: not necessary if research employees are 
+	calculated every year -> then: CUM_REVENUES = REVENUE FOR INNOVATION*/
 	REVENUE_FOR_INNOVATION += REVENUE_PER_DAY;
 
-if(DAY%MONTH==DAY_OF_MONTH_TO_ACT)
-{
-	printf("CUM_REVENUES %f\n",CUM_REVENUES);
-	printf("PAYMENT_ACCOUNT %f\n",PAYMENT_ACCOUNT);
-	printf("*****************************************\n");
-}
+	if(DAY%MONTH==DAY_OF_MONTH_TO_ACT)
+	{
+		/*1: print the printf-statements*/
+		if(IGFIRM_PRODUCER_DEBUG == 1)
+		{
+			printf("CUM_REVENUE_LAST_MONTH %f\n",CUM_REVENUE_LAST_MONTH);
+			printf("PAYMENT_ACCOUNT %f\n",PAYMENT_ACCOUNT);
+			printf("**********************************************************************\n");
+		}
+	}
 	return 0;
 }
 
