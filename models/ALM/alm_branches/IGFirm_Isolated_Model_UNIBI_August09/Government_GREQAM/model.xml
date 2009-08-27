@@ -555,7 +555,7 @@
      <condition>
       <time>
        <period>monthly</period>
-       <phase>0</phase>
+       <phase>1</phase>
       </time>
      </condition>
      <inputs/>
@@ -570,7 +570,7 @@
       <not>
        <time>
         <period>monthly</period>
-        <phase>0</phase>
+        <phase>1</phase>
        </time>
       </not>
      </condition>
