@@ -648,6 +648,8 @@ int Household_receives_unemployment_benefit()
 	
 	benefit_received =  (1-hh_unemployment_benefit_pay_out_message->rationing_rate)*fraction_if_recently_unemployed*UNEMPLOYMENT_BENEFIT_PCT * LAST_LABOUR_INCOME;
 	
+	printf("benefit_received %f\n",benefit_received);
+
 	FINISH_HH_UNEMPLOYMENT_BENEFIT_PAY_OUT_MESSAGE_LOOP
     /*Add unemployment_benefit to account */
     PAYMENT_ACCOUNT +=  benefit_received;
