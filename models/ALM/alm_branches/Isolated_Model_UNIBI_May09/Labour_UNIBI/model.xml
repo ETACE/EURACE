@@ -1093,7 +1093,7 @@ the reservation wage</description>
       </output>
      </outputs>
     </function>
-    </function>
+   
     <function>
      <name>Household_receives_unemployment_benefit</name>
      <description>Household receives the unemployment benefit.</description>
