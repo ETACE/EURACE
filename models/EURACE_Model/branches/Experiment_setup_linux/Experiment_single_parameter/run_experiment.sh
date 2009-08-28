@@ -13,7 +13,7 @@ NR_NODES=4
 F1="tax_0.01 tax_0.05 tax_0.10"
 
 #Construct the RUNS list:
-TOTAL_RUNS=4
+TOTAL_RUNS=3
 RUNS=''
 for ((j=0; j<TOTAL_RUNS; j++)); do
     RUNS=$RUNS' '$j
@@ -27,14 +27,14 @@ for folder1 in $F1; do
 		cd $folder1
         for run in $RUNS; do
             cd 'its_'$run
-       	    bash run.sh				#Running single run
-	    	bash $JOIN/join.sh ./ $NR_NODES 	#Concatenating the node files
+       		bash run.sh				#Running single run
+	    	bash $BASE/join.sh ./ $NR_NODES 	#Concatenating the node files
 	    	rm node*.xml 			#Removing the node files
             echo '              '$folder1'/its_'$run --DONE
             echo $folder1/'its_'$run':OK'>> $BASE/STATUS  
             cd ..
         done
-        cd $BASE
+        cd ..
 done
 cd ..
 echo '  Finished second stage of experiment: all cases are done.'

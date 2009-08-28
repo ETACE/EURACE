@@ -2,7 +2,7 @@
 
 ######### CREATION OF THE SPECIFIC SETTINGS #########################################################
 # Script to create the file specific.xml that contains the specific parameter settings for the cases
-# - Enter folder ./duration_x/intensity_y/frequency_z
+# - Enter folder ./value_x
 # - Write xml tags and parameter settings to the file specific.xml
 #####################################################################################################
 BASE=$PWD
@@ -14,9 +14,9 @@ mkdir -p 'its'
 cd ./its
 
 for f1 in $F1; do
-    folder1=tax_$f1
+    folder1='tax_'$f1
                 #echo $PWD
-                cd ./$folder1/
+                cd $folder1
                 rm -f specific.xml
                 echo '<environment>'>>specific.xml
 
@@ -27,7 +27,7 @@ for f1 in $F1; do
 
                 echo '</environment>'>>specific.xml
                 
-                cd $BASE
+                cd -
         done
 cd ..
 
