@@ -30,6 +30,6 @@ echo 'Starting top-level experiment script...'
 bash ./run_benchmark.sh
 
 ######### STEP 5: RUNNING THE EXPERIMENT ######################################################################
-#bash ./run_experiment_tax.sh
+#bash ./run_experiment.sh
 
 echo 'Finished top-level experiment script.'
