@@ -20,8 +20,8 @@ echo '  Starting first stage of experiment...'
 BASE=$PWD
 NR_NODES='4'
 ITS=540
-MAIN='/media/DOCS/Docs/EURACE/X-models/SVN_linux/models/EURACE_Model/branches/Integrated_Model_rev2295/main'
-#MAIN='/media/DOCS/Docs/EURACE/X-models/SVN_linux/models/EURACE_Model/branches/Hybrid_Model_A_energy_shock/main'
+MAIN='/media/DOCS/Docs/EURACE/X-models/SVN_linux/models/EURACE_Model/trunk/Integrated_Model_1.0/main'
+#MAIN='/media/DOCS/Docs/EURACE/X-models/SVN_linux/models/EURACE_Model/branches/Integrated_Model_1.0_energy_shock/main'
 #JOIN='/home/sander/cloning/scripts/join/join.sh'
 
 echo '      Starting run for initial transient...'
