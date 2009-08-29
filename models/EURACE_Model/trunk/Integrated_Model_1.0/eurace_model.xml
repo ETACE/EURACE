@@ -60,6 +60,11 @@
    </variable>
    <variable>
     <type>int</type>
+    <name>print_debug_exp1</name>
+    <description>0 or 1, A flag to print logging output to terminal or to file.</description>
+   </variable>
+   <variable>
+    <type>int</type>
     <name>print_debug_gov</name>
     <description>0 or 1, A flag to print logging output to terminal or to file.</description>
    </variable>
