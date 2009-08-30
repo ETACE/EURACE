@@ -72,7 +72,7 @@ int Firm_read_policy_announcements()
             TAX_RATE_CORPORATE = policy_announcement_message->tax_rate_corporate;
             TAX_RATE_VAT = policy_announcement_message->tax_rate_vat;
             TRANSFER_PAYMENT = policy_announcement_message->firm_transfer_payment;
-            SUBSIDY_PAYMENT = policy_announcement_message->firm_subsidy_payment;
+            SUBSIDY_PCT = policy_announcement_message->firm_subsidy_pct;
         }
     FINISH_POLICY_ANNOUNCEMENT_MESSAGE_LOOP
     
@@ -80,7 +80,7 @@ int Firm_read_policy_announcements()
     if (PRINT_DEBUG)
         {
                     printf("\n Firm_read_policy_announcements ID: %d",ID);
-                    printf("\n \t TAX_RATE_CORPORATE: %f TAX_RATE_VAT: %f TRANSFER_PAYMENT: %f SUBSIDY_PAYMENT: %f",TAX_RATE_CORPORATE,TAX_RATE_VAT,TRANSFER_PAYMENT,SUBSIDY_PAYMENT);
+                    printf("\n \t TAX_RATE_CORPORATE: %f TAX_RATE_VAT: %f TRANSFER_PAYMENT: %f SUBSIDY_PCT: %f",TAX_RATE_CORPORATE,TAX_RATE_VAT,TRANSFER_PAYMENT,SUBSIDY_PCT);
                     getchar();
                     }
         
@@ -93,8 +93,11 @@ int Firm_read_policy_announcements()
  */
 int Firm_send_subsidy_notification()
 {
+    SUBSIDY_PAYMENT = SUBSIDY_PCT*CAPITAL_COSTS;
+    
     /*Add subsidy message */
-    add_firm_subsidy_notification_message(GOV_ID);
+    add_firm_subsidy_notification_message(GOV_ID, SUBSIDY_PAYMENT);
+    
     PAYMENT_ACCOUNT += SUBSIDY_PAYMENT;
         
     return 0;       

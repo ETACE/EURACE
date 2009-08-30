@@ -19,7 +19,7 @@ int Household_receive_wage()
     
         WAGE = wage_payment_message->payment;
     /*Simon: 16.06.2009*/
-    	WAGE_RESERVATION = WAGE;
+        WAGE_RESERVATION = WAGE;
         remove_double(&LAST_INCOME,0);
         
         TOTAL_INCOME= wage_payment_message->payment +  CUM_TOTAL_DIVIDENDS + MONTHLY_BOND_INTEREST_INCOME;
@@ -615,8 +615,11 @@ int Household_send_unemployment_benefit_notification()
  */
 int Household_send_subsidy_notification()
 {
+
+    //SUBSIDY_PAYMENT = SUBSIDY_PCT*EXPENDITURES;
+
     /*Add subsidy message */
-    add_hh_subsidy_notification_message(GOV_ID);
+    add_hh_subsidy_notification_message(GOV_ID, SUBSIDY_PAYMENT);
     PAYMENT_ACCOUNT += SUBSIDY_PAYMENT;
 
     return 0;
@@ -666,6 +669,3 @@ int Household_send_tax_payment()
     return 0;
 
 }
-
-
-
