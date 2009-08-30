@@ -77,7 +77,7 @@ int Household_read_policy_announcements()
         /*This is the endogeneous unemployment percentage (the global parameter is: GOV_POLICY_UNEMPLOYMENT_BENEFIT_PCT)*/
         UNEMPLOYMENT_BENEFIT_PCT = policy_announcement_message->unemployment_benefit_pct;
         TRANSFER_PAYMENT = policy_announcement_message->hh_transfer_payment;
-        SUBSIDY_PAYMENT = policy_announcement_message->hh_subsidy_payment;
+        SUBSIDY_PCT = policy_announcement_message->hh_subsidy_pct;
     }
     FINISH_POLICY_ANNOUNCEMENT_MESSAGE_LOOP
     
@@ -85,7 +85,7 @@ int Household_read_policy_announcements()
     {
                                 printf("\n Household_read_policy_announcements ID: %d",ID);
                                 printf("\n \t TAX_RATE_HH_LABOUR: %f TAX_RATE_HH_CAPITAL: %f",TAX_RATE_HH_LABOUR,TAX_RATE_HH_CAPITAL);
-                                printf("\n \t UNEMPLOYMENT_BENEFIT_PCT: %f TRANSFER_PAYMENT: %f SUBSIDY_PAYMENT: %f", UNEMPLOYMENT_BENEFIT_PCT, TRANSFER_PAYMENT, SUBSIDY_PAYMENT);
+                                printf("\n \t UNEMPLOYMENT_BENEFIT_PCT: %f TRANSFER_PAYMENT: %f SUBSIDY_PCT: %f", UNEMPLOYMENT_BENEFIT_PCT, TRANSFER_PAYMENT, SUBSIDY_PCT);
                                 getchar();
                                 }
 
@@ -130,4 +130,3 @@ int Household_send_data_to_Eurostat()
     
     return 0;
 }
-
