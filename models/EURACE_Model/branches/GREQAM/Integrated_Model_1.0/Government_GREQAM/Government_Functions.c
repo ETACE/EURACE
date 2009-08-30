@@ -42,12 +42,19 @@ int Government_initialization()
  */
 int Government_send_policy_announcements()
 {   
+    int indicator_gdp, indicator_inflation;
+
     //Set tax rate to global constant
     TAX_RATE_HH_LABOUR = CONST_INCOME_TAX_RATE;
 
+
+    //Set indicator functions:
+    if (GDP_GROWTH_RATE<0) indicator_gdp=1; else indicator_gdp=0;
+    if (INFLATION_RATE>0) indicator_inflation=1; else indicator_inflation=0;
+
     //Set subsidy percentages (these are used to compute individual subsidy payments)
-    HH_SUBSIDY_PCT = 0.01; //0.1*(-GDP_GROWTH_RATE*(GDP_GROWTH_RATE<0) + INFLATION_RATE*(INFLATION_RATE>0) + UNEMPLOYMENT_RATE);
-    FIRM_SUBSIDY_PCT = 0.01; //= 0.25*GDP_GROWTH_RATE + 0.25*INFLATION_RATE + 0.25*UNEMPLOYMENT_RATE;
+    HH_SUBSIDY_PCT = 0.01; //0.1*(-GDP_GROWTH_RATE*indicator_gdp + INFLATION_RATE*indicator_inflation + UNEMPLOYMENT_RATE);
+    FIRM_SUBSIDY_PCT = 0.01; //0.1*(-GDP_GROWTH_RATE*indicator_gdp + INFLATION_RATE*indicator_inflation + UNEMPLOYMENT_RATE);
 
     //add announcement
     add_policy_announcement_message(ID, TAX_RATE_CORPORATE, TAX_RATE_HH_LABOUR, TAX_RATE_HH_CAPITAL, TAX_RATE_VAT, UNEMPLOYMENT_BENEFIT_PCT, HH_SUBSIDY_PCT, FIRM_SUBSIDY_PCT, HH_TRANSFER_PAYMENT, FIRM_TRANSFER_PAYMENT);
