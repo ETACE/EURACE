@@ -1,0 +1,28 @@
+digraph G {
+
+node [shape=box,fontsize=6];
+rankdir=LR;
+ node0 [ label ="suites"];
+ node1 [ label ="suite Consumption Good    "];
+ node2 [ label ="suite Investment Good     "];
+ node3 [ label ="suite Financial market    "];
+ node4 [ label ="suite Credit Market       "];
+ node5 [ label ="suite Financial Management"];
+ node6 [ label ="test case (1)"];
+ node7 [ label ="test case (2)"];
+ node8 [ label ="test case (3)"];
+ node9 [ label ="test case (N)"];
+
+       
+        node1-> node0;
+        node2-> node0;
+        node3-> node0;
+        node4-> node0;
+        node5-> node0;
+        node6-> node1;
+        node7-> node1;
+        node8-> node1;
+        node9-> node5;
+
+
+} 

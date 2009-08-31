@@ -1,0 +1,17 @@
+<declaration>
+<variables>
+ <variable>
+     <type>Asset_array</type>
+     <name>assetsowned</name>
+ </variable>
+<variable>
+     <type>Order_array</type>
+     <name>pendingOrders</name>
+ </variable>
+</variables>
+<messages>
+<message>
+  <name>order</name>
+</message>
+</messages>
+</declaration>
