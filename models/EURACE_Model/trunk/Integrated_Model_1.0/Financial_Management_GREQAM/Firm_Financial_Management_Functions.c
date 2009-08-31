@@ -78,7 +78,7 @@ int Firm_compute_income_statement()
     if (CURRENT_SHARES_OUTSTANDING>0)
         EARNINGS_PER_SHARE = NET_EARNINGS/CURRENT_SHARES_OUTSTANDING;
         
-    if (PRINT_DEBUG)
+    if (PRINT_DEBUG_EXP1 || PRINT_DEBUG)
     { 
                     printf("\n\n Firm_compute_income_statement ID: %d",ID);
                     printf("\n\t CUM_REVENUE: %f CALC_PRODUCTION_COSTS: %f",CUM_REVENUE,CALC_PRODUCTION_COSTS);
@@ -222,6 +222,8 @@ int Firm_compute_total_financial_payments()
 int Firm_compute_balance_sheet()
 {
     int i;
+    FILE *file1;
+    char *filename;
 
     //compute the equity of the firm
     //TOTAL_ASSETS=
@@ -249,19 +251,30 @@ int Firm_compute_balance_sheet()
         DEBT_EQUITY_RATIO = TOTAL_DEBT/EQUITY;
     else DEBT_EQUITY_RATIO = 0.0;
     
-    if (NET_EARNINGS>0.0)
+    if(NET_EARNINGS>0.0)
         DEBT_EARNINGS_RATIO = TOTAL_DEBT/NET_EARNINGS;
     else DEBT_EARNINGS_RATIO = 0.0;
     
-    if (PRINT_DEBUG)
+    if (PRINT_DEBUG_EXP1 || PRINT_DEBUG)
     { 
                     printf("\n\n Firm_compute_balance_sheet ID: %d",ID);
                     printf("\n\t PAYMENT_ACCOUNT: %f TOTAL_VALUE_CAPITAL_STOCK: %f",PAYMENT_ACCOUNT,TOTAL_VALUE_CAPITAL_STOCK);
                     printf("\n\t TOTAL_VALUE_LOCAL_INVENTORY: %f TOTAL_ASSETS: %f",TOTAL_VALUE_LOCAL_INVENTORY,TOTAL_ASSETS);
-                    printf("\n\t EQUITY: %f DEBT_EQUITY_RATIO: %f",EQUITY,DEBT_EQUITY_RATIO);
+                    printf("\n\t EQUITY: %f DEBT: %f",EQUITY,TOTAL_DEBT);
                     getchar();
-                    }    
-    
+                    }   
+                    
+         if (PRINT_DEBUG_FILE_EXP1)
+              {
+                            filename = malloc(40*sizeof(char));
+                            filename[0]=0;
+                            strcpy(filename, "its/firms_balance_sheet.txt");      
+                            file1 = fopen(filename,"a");
+                            fprintf(file1,"\n %d %d %f %f %f",DAY,ID,TOTAL_UNITS_CAPITAL_STOCK,EQUITY,TOTAL_DEBT);
+                            fclose(file1);
+                            free(filename);
+                                        }    
+                                                         
     return 0;
 }
 
@@ -300,7 +313,7 @@ int Firm_compute_total_liquidity_needs()
         EXTERNAL_FINANCIAL_NEEDS = TOTAL_FINANCIAL_NEEDS - PAYMENT_ACCOUNT;
     }
 
-    if (PRINT_DEBUG)
+    if (PRINT_DEBUG_EXP1 || PRINT_DEBUG)
     {
         printf("\n Firm_compute_total_liquidity_needs ID: %d",ID);
         printf("\n\t PRODUCTION_LIQUIDITY_NEEDS %f",PRODUCTION_LIQUIDITY_NEEDS);
@@ -372,7 +385,7 @@ int Firm_set_bankruptcy_illiquidity()
     
     TOTAL_VALUE_LOCAL_INVENTORY = 0.0;
     
-    if (PRINT_DEBUG)
+    if (PRINT_DEBUG_EXP1 || PRINT_DEBUG)
     {
                     printf("\n\n Firm_set_bankruptcy_illiquidity ID: %d",ID);
                     printf("\n\t ACTIVE: %d BANKRUPTCY_IDLE_COUNTER: %d",ACTIVE,BANKRUPTCY_IDLE_COUNTER);
@@ -402,7 +415,7 @@ int Firm_in_financial_crisis()
             - (TOTAL_INTEREST_PAYMENT + TOTAL_DEBT_INSTALLMENT_PAYMENT
                     + TAX_PAYMENT);
     
-    if (PRINT_DEBUG)
+    if (PRINT_DEBUG_EXP1 || PRINT_DEBUG)
     {
                     printf("\n\n Firm_in_financial_crisis ID: %d",ID);
                     printf("\n\t former TOTAL_DIVIDEND_PAYMENT: %f",TOTAL_DIVIDEND_PAYMENT);
@@ -424,7 +437,7 @@ int Firm_in_financial_crisis()
         //Code should never reach this point
          printf("\nERROR in Firm_in_financial_crisis: financial crisis not resolved. \n");
 
-    if (PRINT_DEBUG)
+    if (PRINT_DEBUG_EXP1 || PRINT_DEBUG)
     {               
                     printf("\n\t new TOTAL_DIVIDEND_PAYMENT: %f",TOTAL_DIVIDEND_PAYMENT);
                     printf("\n\t new FINANCIAL_CRISIS_STATE: %d BANKRUPTCY_STATE: %d",FINANCIAL_CRISIS_STATE,BANKRUPTCY_STATE);
@@ -440,7 +453,7 @@ int Firm_in_financial_crisis()
  */
 int Firm_not_in_bankruptcy()
 {   
-    if (PRINT_DEBUG) printf("\n\n Firm_not_in_bankruptcy");
+    if (PRINT_DEBUG_EXP1 || PRINT_DEBUG) printf("\n\n Firm_not_in_bankruptcy");
     return 0;
 }
 
@@ -468,7 +481,7 @@ int Firm_execute_financial_payments()
     //step 2: actual interest_payments and installment_payments
     //Sending installment_message to banks at which the firm has a loan 
 
-    if (PRINT_DEBUG)
+    if (PRINT_DEBUG_EXP1 || PRINT_DEBUG)
     {
         printf("\n Firm_execute_financial_payments ID: %d",ID);
         printf("\n\t (before) PAYMENT_ACCOUNT: %f TOTAL_DEBT: %f",PAYMENT_ACCOUNT,TOTAL_DEBT);
@@ -502,7 +515,7 @@ int Firm_execute_financial_payments()
             //decrease the residual_var of the loan with the var_per_installment:
             LOANS.array[i].residual_var -= LOANS.array[i].var_per_installment;
 
-            if (PRINT_DEBUG)
+            if (PRINT_DEBUG_EXP1 || PRINT_DEBUG)
             {
                 printf("\n\t repayment LOAN: %d",i);
                 printf("\n\t installment_amount: %f interest_amount: %f remaining loan_value: %f",LOANS.array[i].installment_amount,temp_interest,LOANS.array[i].loan_value);
@@ -798,7 +811,7 @@ int Firm_bankruptcy_idle_counter()
  */
 int Firm_reset_bankruptcy_flags()
 {
-    if (PRINT_DEBUG)
+    if (PRINT_DEBUG_EXP1 || PRINT_DEBUG)
     {
                     printf("\n\n Firm_reset_bankruptcy_flags ID: %d",ID);
                     printf("\n\t BANKRUPTCY_IDLE_COUNTER: %d EXTERNAL_FINANCIAL_NEEDS: %f",BANKRUPTCY_IDLE_COUNTER,EXTERNAL_FINANCIAL_NEEDS);
@@ -812,7 +825,7 @@ int Firm_reset_bankruptcy_flags()
         BANKRUPTCY_ILLIQUIDITY_STATE = 0;
     }
     
-    if (PRINT_DEBUG) 
+    if (PRINT_DEBUG_EXP1 || PRINT_DEBUG)
     {
                      printf("\n\t BANKRUPTCY_INSOLVENCY_STATE: %d BANKRUPTCY_ILLIQUIDITY_STATE: %d",BANKRUPTCY_INSOLVENCY_STATE,BANKRUPTCY_ILLIQUIDITY_STATE);
                      getchar();
@@ -833,7 +846,11 @@ int Firm_compute_and_send_stock_orders()
     
     //If the quantity is fractional, take the ceiling, such that EXTERNAL_FINANCIAL_NEEDS are met.
     int quantity = -1*ceil(EXTERNAL_FINANCIAL_NEEDS/limit_price);
-    add_order_message(ID, ID, limit_price, quantity);
+    
+    if (POLICY_EXP1)
+    {}
+    else  
+    {add_order_message(ID, ID, limit_price, quantity);}
     
     if (PRINT_DEBUG)
     {

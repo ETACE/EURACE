@@ -68,8 +68,8 @@ int Household_determine_consumption_budget()
             {
                 if(CONSUMPTION_BUDGET < 0)
                 {
-                    printf("___________In file Household_Consumer_Functions.c, function Household_determine_consumption_budget, line 65:\n"
-                    "Household payment_account<0\n");
+                    //printf("___________In file Household_Consumer_Functions.c, function Household_determine_consumption_budget, line 65:\n"
+                    //"Household payment_account<0\n");
                     
                     if (PRINT_LOG)
                         fprintf(file2,"IT %d ID %d CONSUMPTION_BUDGET %f\n",DAY,ID,CONSUMPTION_BUDGET);
