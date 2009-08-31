@@ -1,0 +1,47 @@
+#ifndef!!STUNIT\\
+#define!!STUNIT\\
+#include!!<CUnit/Basic.h>\\
+#include!!<CUnit/CUnit.h>\\
+#include!!<CUnit/Console.h>\\
+#include!!"header.h"\\
+repeat suites
+begin
+int!! __suitename _init(void);\\
+int!! __suitename _clean(void);\\
+repeat utests
+begin
+void !! __utestname (void);\\
+int!! __function_name (void);\\
+end
+
+static !! CU_TestInfo !! __suitename []= {\\
+repeat utests
+begin
+{ "test!! __utestname ", __utestname },\\
+end 
+CU_TEST_INFO_NULL,\\
+};\\
+end 
+
+static!!CU_SuiteInfo!!suites[] = {\\
+repeat suites
+begin
+{ " __suitename ",   __suitename _init,  __suitename _clean, __suitename },\\
+end
+CU_SUITE_INFO_NULL,\\
+};\\
+
+void!!AddTests();\\
+void!!print_example_results(void);\\
+void!!read_xml_states_and_messages( xmlNode!!*a_node, XMachineList !!*xmachinelist, XMessageList !!*xmessagelist);\\
+void!!read_xml_messages( xmlNode!!*a_node, XMessageList !!*xmessageslist);\\
+void!!read_xml_values( xmlNode!!*a_node, XMachineList !!*current, XMachineList !!*expected, XMessageList !!*current_messages,XMessageList !!*expected_messages, char !!*unit_name);\\
+void!!compile_name(xmlNode !!*a_node, char !!*name);
+
+void !!read_suite_states(xmlNode!!*a_node, XMachineList !!*current, XMachineList !!*expected, XMessageList !!*current_messages,XMessageList !!*expected_messages,char !!*suite_name );\\
+int !! read_suite(char !!*filename,xmlNode !!**root_element, xmlDoc !!**doc);\\
+int !!free_suite( xmlDoc !!*doc );\\
+
+xmlNode!!*root_element;\\ 
+xmlDoc!!*doc;\\
+#endif\\

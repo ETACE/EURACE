@@ -1,0 +1,330 @@
+#ifndef!!LHH\\
+#define!!LHH\\
+#include !! <string.h>\\
+#include !! <stdio.h>\\
+#include !! <stdlib.h>\\
+#include !! <math.h>\\
+#include !! <assert.h>\\
+#include !! <libxml/parser.h>\\
+#include !! <libxml/tree.h>\\
+#define!!ARRAY_BLOCK_SIZE!! 5\\
+#define!!MAXBUF!!25\\
+#define!!TESTPREC !!0.000001\\
+#define!!MAXCHAR!!100\\
+repeat messages
+begin 
+#define!!START_ __MESSAGENAME _MESSAGE_LOOP !! __messagename _message = get_first_ __messagename _message(); while( __messagename _message) {\\
+#define!!FINISH_ __MESSAGENAME _MESSAGE_LOOP!! __messagename _message = get_next_ __messagename _message( __messagename _message); }\\
+end
+\\
+repeat consts
+begin
+#define!! __NAME !! constants. __name \\
+end
+repeat primitivetypes
+begin
+typedef!!struct  \\
+{\\
+!!!!int!!size;\\
+!!!!int!!total_size;\\
+!!!! __primtype !! *array;\\
+}!!  __primtype _array;\\
+end
+repeat datatypes
+begin 
+ struct!! __datatypename _s\\
+ {\\
+ repeat variables
+  begin
+ ifstatic
+  begin
+  __type !! __name [ __dim ];\\
+  end
+ ifnotstatic
+  begin 
+  __type !! __name ;\\
+  end 
+  end
+ };\\
+typedef!!struct!! __datatypename _s !! __datatypename ;\\
+
+struct!! __datatypename _array_s\\
+{\\
+	int!!size;\\
+	int!!total_size;\\
+     !! __datatypename  !! * array;\\
+};\\
+
+
+typedef!!struct!! __datatypename _array_s!! __datatypename _array;\\
+end
+
+repeat xagents 
+ begin
+ typedef!!struct\\
+!!!!{\\
+ repeat variables
+  begin
+  ifstatic
+   begin
+!!!!!!    __type !! __name [ __dim ];\\
+   end
+ifnotstatic
+  begin
+!!!!!!  __type !! __name ;\\
+  end
+  end
+!!}!! __xagentname ;\\
+ end
+
+struct !! constants_s\\
+{\\
+repeat consts
+begin
+ifstatic
+  begin
+  __type !! __name [ __dim ];\\
+  end
+ ifnotstatic
+  begin 
+  __type !! __name ;\\
+  end 
+end 
+};\\
+
+typedef!!struct!!constants_s!!Constants ;\\
+void !! read_xml_constants ( Constants !!*constants, xmlNode!!*a_node);\\
+
+struct !! xmachine_list\\
+{\\
+repeat xagents
+begin
+__xagentname !!*an __xagentname ;\\
+end
+};\\
+typedef !! struct!!xmachine_list!!XMachineList;\\
+void!!init_int(int!!*i);\\
+void!!init_double(double!!*d);\\
+void!!init_float(float!!*f);\\
+void!!init_char(char!!*c);\\
+int!!equal_int(int!!*a,int!!*b);\\
+int!!equal_double(double!!*a,double!!*b);\\
+int!!equal_float(float!!*a,float!!*b);\\
+int!!equal_char(char!!*a,char!!*b);\\
+
+
+repeat primitivetypes
+begin
+void!!read_xml_ __primtype ( __primtype !!*i, char *file, int!!*index);\\
+void!!read_xml_ __primtype _static_array( __primtype !!*aninstance,char !!*file, int!!size,int!!*index);\\
+void!!read_xml_ __primtype _array( __primtype _array!!*aninstance,char !!*file,int *index);\\
+void!!copy_ __primtype  ( __primtype !!*dest, __primtype !!*source);\\
+void!!copy_ __primtype _static_array( __primtype !!*dest, __primtype !!*source, int!!size);\\
+int!!equal_ __primtype _static_array( __primtype !!*dest, __primtype !!*source, int!!size);\\
+int!!equal_ __primtype _array( __primtype _array!!*dest, __primtype _array!!*source);\\
+void !! print_xml_ __primtype ( __primtype !!*aninstance, FILE *file );\\
+void !! print_xml_ __primtype _static_array ( __primtype !!*aninstance, FILE *file , int!!size);\\
+void !! print_xml_ __primtype _array( __primtype _array!!*aninstance, FILE *file );\\
+void !! init_ __primtype _static_array( __primtype !!*aninstace, int !! size);\\
+void !!init_ __primtype _array( __primtype _array!!*aninstance);\\
+void !!free_ __primtype _array( __primtype _array!!*aninstance);\\
+void  !! add_ __primtype ( __primtype _array!!*anarray, __primtype !!source);\\
+void !! remove_ __primtype ( __primtype _array!!*aninstance, int!!index);\\
+void !!reset_ __primtype _array( __primtype _array!!*aninstance);\\
+end
+
+repeat datatypes
+begin 
+void  !!init_ __datatypename ( __datatypename !!*aninstance);\\
+void  !! free_ __datatypename ( __datatypename !!*aninstance);\\
+
+void  !!copy_ __datatypename ( __datatypename !!*dest, __datatypename !!*source);\\
+int !!equal_ __datatypename ( __datatypename !!*dest, __datatypename !!*source);\\
+void  !!add_ __datatypename ( __datatypename _array!!*anarray
+repeat variables
+begin
+ifstatic
+begin 
+, __type !! __name [ __dim ]
+end
+ifnotstatic
+begin 
+, __type !! __name !!
+end
+end
+);\\
+void  !! copy_ __datatypename _array( __datatypename _array!!*dest, __datatypename _array!!*source);\\
+int  !! equal_ __datatypename _array( __datatypename _array!!*dest, __datatypename _array!!*source);\\
+int  !! equal_ __datatypename _static_array( __datatypename !!*dest, __datatypename !!*source, int!!size);\\
+void  !! init_ __datatypename _static_array( __datatypename !!*aninstance, int!!size);\\
+void  !! init_ __datatypename _array( __datatypename _array!!*aninstance);\\
+void  !! reset_ __datatypename _array( __datatypename _array!!*aninstance);\\
+void  !! free_ __datatypename _array( __datatypename _array!!*aninstance);\\
+void  !! read_xml_ __datatypename ( __datatypename !!*aninstance, char!!*file,int!!*index);\\
+void  !! read_xml_ __datatypename _array( __datatypename _array!!*aninstance, char!!*file, int!!*index);\\
+void!!read_xml_ __datatypename _static_array( __datatypename !!*aninstance,char !!*file, int!!size,int!!*index);\\
+void  !! print_xml_ __datatypename ( __datatypename !!*aninstance, FILE!!*file);\\
+void  !! print_xml_ __datatypename _array( __datatypename _array!!*aninstance, FILE!!*file);\\
+void !! print_xml_ __datatypename _static_array ( __datatypename !!*aninstance, FILE *file , int!!size);\\
+void !! remove_ __datatypename ( __datatypename _array!!*aninstance, int!!index);\\
+end
+repeat xagents
+ begin
+void !! read_xml_ __xagentname ( __xagentname !!*anagent, xmlNode!!*a_node);\\
+
+void !! print_xml_ __xagentname ( __xagentname !!*anagent, FILE !!*file);\\
+void !! init_ __xagentname ( __xagentname !! *anagent);\\
+
+ end
+
+void!!read_states(xmlNode!!* a_node,XMachineList !!*xmachinelist);\\
+void!!print_initial_states(char !!*filename, XMachineList !!*xmachinelist);
+void !! read_initial_states(char *filename,XMachineList !!*xmachinelist);\\
+repeat messages
+begin 
+ struct!! __messagename _ms\\
+ {\\
+ repeat variables
+  begin
+ ifstatic
+  begin
+  __type !! __name [ __dim ];\\
+  end
+ ifnotstatic
+  begin 
+  __type !! __name ;\\
+  end 
+  end
+ };\\
+typedef!!struct!! __messagename _ms !!m_ __messagename ;\\
+
+struct!! __messagename _array_ms\\
+{\\
+	int!!size;\\
+	int!!total_size;\\
+        int!!index;\\
+     !! m_ __messagename  !! * array;\\
+};\\
+
+
+typedef!!struct!! __messagename _array_ms!! __messagename _messages;\\
+end
+repeat messages
+begin 
+void  !!init_m_ __messagename ( m_ __messagename !!*aninstance);\\
+void  !!copy_m_ __messagename ( m_ __messagename !!*dest, m_ __messagename !!*source);\\
+//int   !!equal_m_ __messagename ( m_ __messagename !!*dest, m_ __messagename !!*source);\\
+void  !!add_m_ __messagename ( __messagename _messages!!*anarray
+repeat variables
+begin
+ifstatic
+begin 
+, __type !! __name [ __dim ]
+end
+ifnotstatic
+begin 
+, __type !! __name !!
+end
+end
+);\\
+void  !! copy_ __messagename _messages( __messagename _messages!!*dest, __messagename _messages!!*source);\\
+void  !! init_ __messagename _static_messages( m_ __messagename !!*aninstance, int!!size);\\
+void  !! init_ __messagename _messages( __messagename _messages!!*aninstance);\\
+void  !! reset_ __messagename _messages( __messagename _messages!!*aninstance);\\
+void  !! free_ __messagename _messages( __messagename _messages!!*aninstance);\\
+void  !! read_xml_m_ __messagename ( m_ __messagename !!*aninstance, char!!*file,int!!*index);\\
+void  !! read_xml_ __messagename _messages( __messagename _messages !!*aninstance, char!!*file,int!!*index);\\
+void  !! print_xml_m_ __messagename ( m_ __messagename !!*aninstance, FILE!!*file);\\
+void  !! print_xml_m_ __messagename _messages( __messagename _messages!!*aninstance, FILE!!*file);\\
+int  !! equal_ m_ __messagename ( m_ __messagename !!*a, m_ __messagename !!*b );\\
+int   !! equal_ __messagename _messages( __messagename _messages!!*a, __messagename _messages!!*b);\\
+m_ __messagename !!*get_first_ __messagename _message ();\\
+m_ __messagename !!*get_next_ __messagename _message ();\\
+void !! add_ __messagename _message ( 
+repeat variables
+begin
+ifstatic
+begin 
+ __type !! __name [ __dim ] 
+ifnotlast
+begin
+, 
+end 
+end
+ifnotstatic
+begin 
+ __type !! __name !!
+ifnotlast
+begin
+, 
+end 
+end
+end
+);\\
+
+end
+struct!!messages_list\\
+{\\
+repeat messages
+begin
+__messagename _messages!!* __messagename _list;\\
+end
+};\\
+typedef!!struct!!messages_list!! XMessageList;\\
+
+void!!initialize_xmachinelist(XMachineList !!*xmachinelist);\\
+void!!initialize_xmessagelist(XMessageList !!*xmessagelist);\\
+void!!reset_xmessagelist(XMessageList !!*xmessagelist);\\
+void!!free_xmessagelist(XMessageList !!*xmessagelist);\\
+
+
+XMachineList !!*current;\\
+XMachineList !!*expected;\\
+XMessageList !!*current_messages;\\
+XMessageList !!*expected_messages;\\
+repeat xagents
+begin
+
+void !!initialize_ __xagentname ( XMachineList !! *xmachinelist);\\
+void !!free_ __xagentname ( __xagentname !! *anagent);\\
+void !!free_ xmachinelist( XMachineList !! *xmachinelist);\\
+
+__xagentname !! *current_ __xagentname ;\\
+__xagentname !! *expected_ __xagentname ;\\
+
+
+end
+Constants!!constants;\\
+repeat messages
+begin
+m_ __messagename !! * __messagename _message; \\
+end
+repeat messages
+begin
+void!!initialize_ __messagename ( XMessageList !! *xmessagelist);\\
+end
+int !! iteration_loop;\\
+repeat xagents
+begin
+repeat variables
+begin
+ifprimtype
+begin
+ifstatic
+begin
+__type !!*get_ __name ();\\
+end
+ifnotstatic
+
+begin
+__type !!get_ __name ();\\
+void !!set_ __name ( __type !! __name );\\
+end
+end
+ifnotprimtype
+begin
+__type !!*get_ __name ();\\
+end
+end
+end
+#endif

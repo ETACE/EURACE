@@ -1,0 +1,278 @@
+#include !!"header.h"\\
+repeat xagents
+ begin
+void !! init_ __xagentname ( __xagentname !! *anagent)\\
+{\\
+repeat variables
+ begin
+ ifstatic
+   begin
+    init_ __dtype _array(anagent-> __name ,   __dim );\\
+   end
+  ifnotstatic
+   begin
+    init_ __type (&anagent-> __name );\\
+   end
+ end
+}\\
+void!!initialize_ __xagentname ( XMachineList !! *xmachinelist)
+{\\
+xmachinelist->an __xagentname = ( __xagentname !!*) malloc (sizeof ( __xagentname ));\\
+init_ __xagentname ( xmachinelist->an __xagentname );\\
+}\\
+
+void!!free_ __xagentname ( __xagentname !!*anagent)
+{\\
+repeat variables
+begin
+ifnotprimtype
+begin
+ifnotstatic
+begin
+!!free_ __type ( &anagent-> __name );\\
+end
+end
+end
+}\\
+
+
+void !! read_xml_ __xagentname ( __xagentname !!*anagent, xmlNode!!*a_node)\\
+ !!{\\
+ !!!!xmlNode!!*cur_node;\\
+ !!!!xmlNode!!*aux_node;\\
+  printf("reading!! __xagentname \n");\\
+      for (cur_node = a_node; cur_node; cur_node = cur_node->next)\\
+       !!{\\
+        if (cur_node->type == XML_ELEMENT_NODE)\\
+           !!!!{\\
+         repeat variables
+          begin 
+           ifnotstatic
+             begin
+           !!!!!!  if(strcmp((char!!*)cur_node->name," __name ")==0)!!  
+           !!!!!!!!         {\\ 
+           !!!!!!!!         int!!index;\\
+           !!!!!!!!          index=0;\\
+           !!!!!!!!printf("reading!! __name \n");\\
+           !!!!!!!!aux_node=cur_node->children;
+           !!!!!!!!          read_xml_ __dtype (& anagent -> __name ,(char!!*) aux_node->content,&index);\\
+           !!!!!!!!         }\\
+             end
+           ifstatic
+          begin
+           !!!!!!!!         {\\ 
+           !!!!!!!!         int!!index;\\
+           !!!!!!!!printf("reading!! __name \n");\\
+           !!!!!!!!aux_node=cur_node->children;
+           !!!!!!!!          index=0;\\
+           !!!!!!  if(strcmp((char!!*)cur_node->name,"__name ")==0)!!  read_xml_ __dtype _array( anagent -> __name , (char!!*)aux_node->content, __dim ,&index );\\
+             !!!!!!!!         }\\
+          end
+         end
+           !!!!}\\
+       !!}\\
+!!}\\
+ 
+
+
+void !! print_xml_ __xagentname ( __xagentname !!*anagent, FILE *file)\\
+ !!{\\
+      !!!!fprintf(file,"< __xagentname >\n");\\
+         repeat variables
+          begin 
+           ifnotstatic
+             begin
+           !!!!!!  fprintf (file,"< __name >");\\
+           !!!!!!  print_xml_ __dtype (& anagent -> __name , file);\\
+           !!!!!!  fprintf (file,"</ __name >\n");\\
+             end
+           ifstatic
+          begin
+           !!!!!!  fprintf (file,"< __name >");\\
+           !!!!!!  print_xml_ __dtype _array(anagent-> __name , file, __dim );\\
+           !!!!!!  fprintf (file,"</ __name >\n");\\
+          end
+         end
+!!!!fprintf(file,"</ __xagentname >\n");\\
+          
+!!}\\
+
+
+ end
+
+void!!read_states(xmlNode!!* a_node, XMachineList !!*xmachinelist)\\
+!!{\\
+!!!!xmlNode *cur_node = NULL;\\
+!!!!printf("read !!x-agent !!states \n");\\
+!!!!for (cur_node = a_node; cur_node; cur_node = cur_node->next)\\
+!!!!!!{\\
+!!!!!!if (cur_node->type == XML_ELEMENT_NODE)\\
+!!!!!!{\\
+      repeat xagents
+      begin
+!!!!!!!!if(strcmp((char!!*)cur_node->name," __xagentname ")==0) !! 
+!!!!!!!!{\\
+!!!!!!!!xmachinelist-> an __xagentname = ( __xagentname *) malloc ( sizeof( __xagentname ));
+!!!!!!!!read_xml_ __xagentname  ( xmachinelist->an __xagentname ,cur_node->children);\\
+!!!!!!!!}\\
+      end
+!!!!!!}\\
+!!!!!!}\\
+!!}\\
+
+void!!print_initial_states(char !!*filename, XMachineList !!*xmachinelist)\\
+!!{\\
+ FILE!!*file;\\
+
+ file=fopen(filename,"w");\\
+ !!!!fprintf(file,"<states>\n");\\
+ repeat xagents
+    begin
+!!!!!!if(xmachinelist->an __xagentname )!!print_xml_ __xagentname ( xmachinelist->an __xagentname ,file);\\  
+    end
+ !!!!fprintf(file,"</states>\n");\\
+fclose(file);\\
+!!}\\ 
+
+void !! read_initial_states(char!!*filename, XMachineList !!*xmachinelist)\\
+{\\
+    xmlDoc *doc = NULL;\\
+    xmlNode *root_element = NULL;\\
+    LIBXML_TEST_VERSION\\
+    doc = xmlReadFile(filename, NULL, 0);\\
+    if (doc == NULL) 
+    {\\
+        printf("error:!! could!! not!! parse!! file %s\n", filename);\\
+    }\\
+    root_element = xmlDocGetRootElement(doc);\\
+    read_states(root_element->children, xmachinelist);\\
+    xmlFreeDoc(doc);\\
+    xmlCleanupParser();\\
+}\\
+
+void !! read_xml_constants ( Constants !!*costante, xmlNode!!*a_node)\\
+ !!{\\
+ !!!!xmlNode!!*cur_node;\\
+ !!!!xmlNode!!*aux_node;\\
+  printf("reading!! constants \n");\\
+      for (cur_node = a_node; cur_node; cur_node = cur_node->next)\\
+       !!{\\
+        if (cur_node->type == XML_ELEMENT_NODE)\\
+           !!!!{\\
+         repeat consts
+          begin 
+           ifnotstatic
+             begin
+           !!!!!!  if(strcmp((char!!*)cur_node->name," __name ")==0)!!  
+           !!!!!!!!         {\\ 
+           !!!!!!!!         int!!index;\\
+           !!!!!!!!          index=0;\\
+           !!!!!!!!printf("reading!! __name \n");\\
+           !!!!!!!!aux_node=cur_node->children;
+           !!!!!!!!          read_xml_ __dtype (& costante -> __name ,(char!!*) aux_node->content,&index);\\
+           !!!!!!!!         }\\
+             end
+           ifstatic
+          begin
+           !!!!!!!!         {\\ 
+           !!!!!!!!         int!!index;\\
+           !!!!!!!!printf("reading!! __name \n");\\
+           !!!!!!!!aux_node=cur_node->children;
+           !!!!!!!!          index=0;\\
+           !!!!!!  if(strcmp((char!!*)cur_node->name," __name ")==0)!!  read_xml_ __dtype ( costante -> __name , (char!!*)aux_node->content, __dim ,&index );\\
+             !!!!!!!!         }\\
+          end
+         end
+           !!!!}\\
+       !!}\\
+!!}\\
+
+
+void!!initialize_xmachinelist(XMachineList !!*xmachinelist)\\
+{\\
+repeat xagents
+begin
+xmachinelist->an __xagentname =NULL;\\
+end
+}\\
+
+repeat allvariables
+begin
+ifprimtype
+ begin
+  ifnotstatic
+  begin
+  __type !!get_ __name ()\\
+  end
+  ifstatic
+  begin
+   __type !!*get_ __name ()\\
+  end
+  {\\
+ repeat xagents
+  begin
+  ifinagent
+   begin
+   if( current-> an __xagentname )!! return !!(current-> an __xagentname )-> __name ; \\
+   end
+  end
+  ifnotstatic
+  begin
+  return !! ( __type )0;\\
+  end
+ ifstatic
+  begin
+ return !! NULL;\\
+  end
+  }\\
+ifnotstatic
+begin
+void !!set_ __name ( __type !! __name )\\
+  {\\
+  repeat xagents
+   begin
+    ifinagent 
+     begin 
+      if( current->an __xagentname )!! (current->an __xagentname )-> __name = __name ; \\
+     end
+   end
+  }\\
+end
+
+ end
+
+ifnotprimtype
+begin
+__type !!*get_ __name ()\\
+{\\
+repeat xagents
+begin
+ifinagent
+begin
+ifstatic
+begin
+if( current->an __xagentname )!! return !!(current->an __xagentname )-> __name ; \\
+end
+ifnotstatic
+begin
+if( current->an __xagentname )!! return !!&((current->an __xagentname )-> __name ) ; \\
+end
+end
+end
+return !!NULL;\\
+}\\
+end
+end
+
+void!!free_xmachinelist ( XMachineList !! *xmachinelist)
+{\\
+repeat xagents
+begin
+if(xmachinelist-> an __xagentname ) 
+!!{\\
+!!!!free_ __xagentname ( xmachinelist->an __xagentname );\\
+!!!!free( xmachinelist->an __xagentname );\\
+!!}\\
+end
+}\\
+

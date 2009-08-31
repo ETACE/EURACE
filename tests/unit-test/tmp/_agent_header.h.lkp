@@ -1,0 +1,8 @@
+repeat xagentheaders
+begin
+repeat variables
+begin
+#define!! __NAME !!( current_ __xagentname -> __name )\\
+end 
+end
+

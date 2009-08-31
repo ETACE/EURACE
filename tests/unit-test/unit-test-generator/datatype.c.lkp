@@ -1,0 +1,501 @@
+#include !!"header.h"\\
+
+void!!init_int(int!!*i)\\
+ {\\
+  *i=0;\\
+ }\\
+void!!init_double(double!!*d)\\
+ {\\
+  *d=0;\\
+ }\\
+void!!init_float(float!!*f)\\
+ {\\
+  *f=0;\\
+ }\\
+void!!init_char(char!!*c)\\
+ {\\
+  *c='\0';\\
+ }\\
+
+int!!equal_int(int!!*a,int!!*b)\\
+ {\\
+  !!return !!*a==*b;\\
+ }\\
+int!!equal_double(double!!*a,double!!*b)\\
+ {\\
+ !!return !!(abs(*a)>(abs(*b)-TESTPREC))&&((abs(*a)<(abs(*b)+TESTPREC)));\\
+ }\\
+int!!equal_float(float!!*a,float!!*b)\\
+ {\\
+ !!return !!(abs(*a)>(abs(*b)-TESTPREC))&&((abs(*a)<(abs(*b)+TESTPREC)));\\
+ }\\
+int!!equal_char(char!!*a,char!!*b)\\
+ {\\
+ !!return !!*a==*b;\\
+ }\\
+repeat primitivetypes
+begin
+void !!init_ __primtype _static_array( __primtype !!*aninstance, int !! size)\\
+{\\
+int!!i;\\
+for(i=0;i<size;i++)\\
+ init_ __primtype (&aninstance[i]);\\
+
+}\\
+int !!equal_ __primtype _static_array( __primtype !!*a, __primtype !!*b,int !! size)\\
+{\\
+!!int!!assertion;
+!!int!!i;\\
+!!assertion=1;\\
+for(i=0;i<size;i++)\\
+ !!!!assertion=assertion& equal_ __primtype (&a[i],&b[i]);\\
+return !!assertion;\\
+}\\
+int !!equal_ __primtype _array( __primtype _array!!*a, __primtype _array!!*b)\\
+{\\
+!!int!!assertion;
+!!int!!i;\\
+!!assertion=1;\\
+if(a->size!=b->size) !!return !!0;\\
+for(i=0;i<a->size;i++)\\
+ !!!!assertion=assertion&&equal_ __primtype (&a->array[i],&b->array[i]);\\
+return !!assertion;\\
+}\\
+void !!init_ __primtype _array( __primtype _array!!*aninstance)\\
+{\\
+int!!i;\\
+aninstance->array=( __primtype *)malloc(sizeof( __primtype )*ARRAY_BLOCK_SIZE);\\
+aninstance->size=0;
+aninstance->total_size=ARRAY_BLOCK_SIZE;\\
+for(i=0;i<aninstance->total_size;i++)\\
+ init_ __primtype (&aninstance->array[i]);\\
+
+}\\
+void !!free_ __primtype _array( __primtype _array!!*aninstance)\\
+{\\
+!!free(aninstance->array);\\
+}\\
+
+void !!reset_ __primtype _array( __primtype _array!!*aninstance)\\
+{\\
+!!aninstance->size=0;
+}\\
+void!!read_xml_ __primtype ( __primtype !!*aninstance, char!!*file,int!!*index)\\
+ !!{\\ 
+  !!!!int!!j;\\
+  !!!!int!!len;\\
+  !!!!char!!buffer[MAXBUF];\\
+  !!!!len=strlen(file);\\
+  !!!!j=0;\\
+  !!!!buffer[j]='\0'; 
+ !!!!while((file[*index]!=',')&&(file[*index]!='}')&&(file[*index]!='\0')&&(*index<len))\\
+  !!!!!!{\\
+   !!!!!!!!buffer[j]=file[*index];\\
+   !!!!!!!!*index=*index+1;\\
+   !!!!!!!!j++;\\
+  !!!!!!}\\
+  !!!!!!buffer[j]='\0';\\
+  //!!!!!!printf("%s",buffer);\\
+  !!!!!!sscanf(buffer," __spec ",aninstance);\\
+  //!!!!!!printf("reading !! __primtype !! __spec \n",*aninstance);\\
+ !!}\\
+void!!read_xml_ __primtype _static_array( __primtype !!*aninstance,char !!*file, int!!size,int!!*index)\\
+ {\\ 
+ int!!i;\\
+ 
+  for(i=0;i<size;i++)\\
+!!!!{\\
+ *index=*index+1;\\
+!!!!!!read_xml_ __primtype (&aninstance[i],file,index);\\
+!!!!}\\
+ *index=*index+1;\\
+ }\\
+void!!read_xml_ __primtype _array( __primtype _array!!*aninstance,char !!*file,int *index)\\
+ {\\ 
+!!int!!len;\\
+!!len=strlen(file);\\
+
+!!!! __primtype !!aux;\\
+!!!!*index=*index+1;\\
+while((file[*index]!='}')&&(*index<len))\\
+   !!{\\
+
+!!!!read_xml_ __primtype ( &aux,file,index);\\
+!!!!*index=*index+1;\\
+!!!!add_ __primtype ( aninstance, aux);\\
+
+   !!}\\
+ }\\
+void!!copy_ __primtype  ( __primtype !!*dest, __primtype !!*source)\\
+ {\\
+  *dest=*source;\\
+ }\\
+
+void!!copy_ __primtype _static_array( __primtype !!*dest, __primtype !!*source, int!!size)\\
+ {\\
+ int!!i;\\
+  for(i=0;i<size;i++)\\
+   !!dest[i]=source[i];\\
+ }\\
+void!!copy_ __primtype _array( __primtype _array!!*dest, __primtype _array!!*source)\\
+ {\\
+ int!!i;\\
+  for(i=0;i<source->size;i++)\\
+   !!dest->array[i]=source->array[i];\\
+ }\\
+void !! print_xml_ __primtype ( __primtype !!*aninstance, FILE *file )\\
+{\\
+fprintf(file, " __spec ", *aninstance);\\ 
+}\\
+
+void !! print_xml_ __primtype _static_array ( __primtype !!*aninstance, FILE *file , int!!size)\\
+{\\
+int!!i;\\
+fprintf(file,"%c",'{');\\
+for(i=0;i<size;i++)\\
+{\\
+!!!! print_xml_ __primtype (&aninstance[i], file );\\
+if(i<size-1) fprintf(file,"%c",',');\\
+}\\
+fprintf(file,"%c",'}');\\
+}\\
+
+void !! print_xml_ __primtype _array( __primtype _array!!*aninstance, FILE *file )\\
+{\\
+int!!i;\\
+fprintf(file,"%c",'{');\\
+for(i=0;i<aninstance->size;i++)\\
+{\\
+!!!! print_xml_ __primtype (&aninstance->array[i], file );\\
+if(i<aninstance->size-1) fprintf(file,"%c",',');\\
+}\\
+fprintf(file,"%c",'}');\\
+}\\
+void!!add_ __primtype ( __primtype _array!!*anarray, __primtype !!source)\\
+{\\
+!! __primtype !!*aux;\\
+!! __primtype !!tmp;\\
+!! tmp =source;\\
+!!if(anarray->size==anarray->total_size)\\
+  !!{\\
+  !!!!anarray->total_size=anarray->total_size+ARRAY_BLOCK_SIZE;\\
+  !!!!anarray->array = ( __primtype !!*)realloc(anarray->array, ((anarray->total_size) * sizeof( __primtype )));\\
+  !!}\\
+!!aux = &anarray->array[anarray->size];\\
+!!copy_ __primtype (aux,&tmp);\\
+!!anarray->size++;\\
+}\\
+
+void !! remove_ __primtype ( __primtype _array!!*aninstance, int!!index)\\
+{\\
+!!int!!i,size;\\
+!!size=aninstance->size;\\
+!!if(index <= size)\\
+!!!!{\\
+!!!!for(i = index; i < (size - 1); i++)
+!!!!!!aninstance->array[i] = aninstance->array[i+1];\\
+!!!!aninstance->size--;\\
+!!!!}\\
+}\\
+
+
+end
+
+
+repeat datatypes
+begin
+
+void  !! init_ __datatypename ( __datatypename !!*aninstance)\\
+ {\\
+repeat variables
+ begin
+ifnotstatic
+begin
+ init_ __dtype ( &aninstance-> __name );\\ 
+end 
+ifstatic
+begin
+init_ __dtype _array( aninstance-> __name , __dim );\\ 
+end
+ end 
+}\\
+void  !! free_ __datatypename ( __datatypename !!*aninstance)\\
+ {\\
+repeat variables
+ begin
+ifnotprimtype
+begin
+free_ __type ( &(aninstance-> __name ));\\
+end
+ end 
+}\\
+
+int  !! equal_ __datatypename ( __datatypename !!*a, __datatypename !!*b )\\
+ {\\ 
+!!int !!result;\\
+!!result=1;\\
+repeat variables
+ begin
+ifnotstatic
+begin
+ !!result=result && equal_ __dtype ( &a-> __name ,&b-> __name );\\ 
+end 
+ifstatic
+begin
+!!result=result && equal_ __dtype _array( a-> __name , b-> __name , __dim );\\ 
+end
+ end 
+return !!result;
+}\\
+
+void  !! copy_ __datatypename ( __datatypename !!*dest, __datatypename !!*source)\\
+ {\\
+repeat variables
+ begin
+ifstatic
+begin
+ copy_ __dtype _array( dest-> __name , source-> __name , __dim );\\ 
+end
+ifnotstatic
+begin
+copy_ __dtype ( &dest-> __name , &source-> __name );\\ 
+end
+ end 
+}\\
+void!!add_ __datatypename ( __datatypename _array!!*anarray
+repeat variables
+begin
+ifstatic
+begin 
+, __type !! __name [ __dim ]
+end
+ifnotstatic
+begin 
+, __type !! __name !!
+end
+end
+)\\
+{\\
+!!int!!i;\\
+!!int!!prec_size;\\
+__datatypename !!*aux;\\
+!!if(anarray->size==anarray->total_size)\\
+  !!!!{\\
+  !!!!prec_size=anarray->total_size;\\
+  !!!!anarray->total_size=anarray->total_size+ARRAY_BLOCK_SIZE;\\
+  !!!!anarray->array = ( __datatypename !!*)realloc(anarray->array, ((anarray->total_size) * sizeof( __datatypename )));\\
+    for(i=prec_size;i<anarray->total_size;i++)\\
+        !!!!init_ __datatypename (&anarray->array[i]);\\
+  !!}\\
+aux = &anarray->array[anarray->size];\\
+repeat variables
+begin 
+
+ifstatic
+begin
+copy_ __dtype _array( aux-> __name , __name  
+, __dim 
+end
+ifnotstatic
+begin
+//__type !!tmp_ __name ;\\
+//!!tmp_ __name = __name ;\\
+copy_ __type (&(aux-> __name ) , & __name
+end
+ );\\
+end
+anarray->size++;\\
+}\\
+
+
+void  !! copy_ __datatypename _array( __datatypename _array!!*dest, __datatypename _array!!*source)\\
+{\\
+!!int!!i;\\
+!! __datatypename !!*aux;\\
+!!dest->size=0;\\
+
+  for(i=0;i<source->size;i++)\\
+!!{\\
+!!!!aux=&source->array[i];\\
+ add_ __datatypename ( dest 
+repeat variables
+begin
+ifstatic
+begin 
+,aux-> __name
+end
+ifnotstatic
+begin 
+, aux-> __name 
+end
+end
+);\\
+!!}\\
+}\\
+int   !! equal_ __datatypename _array( __datatypename _array!!*a, __datatypename _array!!*b)\\
+{\\
+ int!!i,result;\\
+ result=1;\\
+ if(a->size!=b->size) !!return !!0;\\
+  for(i=0;i<a->size;i++)\\
+ result=result&&equal_ __datatypename ( &a->array[i],&b->array[i]);\\ 
+ return!!result;\\
+}\\
+void  !! init_ __datatypename _static_array( __datatypename !!*aninstance, int!!size)\\
+{\\
+int!!i;\\
+  for(i=0;i<size;i++)\\
+   !!init_ __datatypename (&aninstance[i]);\\
+}\\
+int   !! equal_ __datatypename _static_array( __datatypename !!*a, __datatypename !!*b, int!!size)\\
+{\\
+!!int!!i,result;\\
+!!result=1;\\
+  !!for(i=0;i<size;i++)\\
+   !!!!result=result&&equal_ __datatypename (&a[i],&b[i]);\\
+return !!result;\\
+}\\
+void  !! init_ __datatypename _array( __datatypename _array!!*aninstance)\\
+{\\     int!!i;\\
+        aninstance->size = 0;\\
+	aninstance->total_size = ARRAY_BLOCK_SIZE;\\
+	aninstance->array = ( __datatypename *)malloc(ARRAY_BLOCK_SIZE!!*sizeof( __datatypename ));\\ 
+         
+        for(i=0;i<aninstance->total_size;i++)\\
+        !!!!init_ __datatypename (&aninstance->array[i]);\\
+}\\
+
+void  !! reset_ __datatypename _array( __datatypename _array!!*aninstance)\\
+{\\
+        aninstance->size = 0;\\
+	
+}\\
+
+void  !! free_ __datatypename _array( __datatypename _array!!*aninstance)\\
+{\\     
+        int!!i;\\
+        for(i=0;i<aninstance->total_size;i++)\\
+        !!!!free_ __datatypename (&aninstance->array[i]);\\
+        free(aninstance->array) ;\\
+        aninstance->array=NULL;\\
+	
+}\\
+void  !! read_xml_ __datatypename ( __datatypename !!*aninstance, char!!*file, int!!*index)\\
+{\\
+
+ //printf("\n%d",*index);\\
+ //printf("reading !! __datatypename  %s \n",file);\\
+repeat variables
+begin 
+*index=*index+1;\\
+  ifstatic
+   begin
+    read_xml_ __dtype _array(aninstance-> __name , file,  __dim , index);\\
+   end
+  ifnotstatic
+   begin
+    read_xml_ __type (&aninstance-> __name , file, index);\\
+   end
+end	
+*index=*index+1;\\
+}\\
+
+void  !! read_xml_ __datatypename _array( __datatypename _array!!*aninstance, char!!*file, int!!*index)\\
+{\\
+//printf("reading !! __datatypename  __array %s \n",file);\\
+!!int!!len,cond;\\
+!!len=strlen(file);\\
+!!!!*index=*index+1;\\
+__datatypename !!aux;\\
+init_ __datatypename (&aux);\\
+//printf("%c",file[*index]);\\
+!!cond=1;\\
+while((*index<len-1)&&(file[*index]!='}'))\\
+   !!{\\
+!!!!cond=0;\\
+!!!!read_xml_ __datatypename ( &aux,file,index);\\
+!!!!add_ __datatypename (aninstance
+repeat variables
+begin
+, aux. __name
+end
+);\\
+!!!!*index=*index+1;\\
+   !!}\\
+!!!!if(cond) !!!!*index=*index+1;\\
+free_ __datatypename (&aux);\\
+}\\
+void!!read_xml_ __datatypename _static_array( __datatypename !!*aninstance,char !!*file, int!!size,int!!*index)\\
+ {\\ 
+ int!!i;\\
+ 
+  for(i=0;i<size;i++)\\
+!!!!{\\
+ *index=*index+1;\\
+!!!!!!read_xml_ __datatypename (&aninstance[i],file,index);\\
+!!!!}\\
+ *index=*index+1;\\
+ }\\
+
+void  !! print_xml_ __datatypename ( __datatypename !!*aninstance, FILE!!*file)\\
+{\\
+fprintf(file,"%c",'{');\\
+repeat variables
+begin
+  ifstatic
+   begin
+    print_xml_ __dtype _array(aninstance-> __name , file,  __dim );\\
+   end
+  ifnotstatic
+   begin
+    print_xml_ __type (&aninstance-> __name , file);\\
+   end
+ ifnotlast
+  begin
+ !!!!fprintf(file,",");\\
+  end
+end
+fprintf(file,"%c",'}');\\	
+}\\
+void  !! print_xml_ __datatypename _array( __datatypename _array!!*aninstance, FILE!!*file)\\
+{\\
+int!!i;\\
+fprintf(file,"%c",'{');\\
+for(i=0;i<aninstance->size;i++)\\
+!!{\\
+!!!!print_xml_ __datatypename (&aninstance->array[i],file);\\
+!!!!if(i<aninstance->size-1)\\
+!!!!!!fprintf(file,"%c",',');\\
+!!}\\
+fprintf(file,"%c",'}');\\
+}\\
+
+void !! print_xml_ __datatypename _static_array ( __datatypename !!*aninstance, FILE *file , int!!size)\\
+{\\
+int!!i;\\
+fprintf(file,"%c",'{');\\
+for(i=0;i<size;i++)\\
+{\\
+!!!! print_xml_ __datatypename (&aninstance[i], file );\\
+if(i<size-1) fprintf(file,"%c",',');\\
+}\\
+fprintf(file,"%c",'}');\\
+}\\
+void !! remove_ __datatypename ( __datatypename _array!!*aninstance, int!!index)\\
+{\\
+!!int!!i,size;\\
+!!size=aninstance->size;\\
+!!if(index <= size)\\
+!!!!{\\
+!!!!!!for(i = index; i < (size - 1); i++)
+!!!!!!!!copy_ __datatypename ( &aninstance->array[i] , &aninstance->array[i+1] );\\
+!!!!!!aninstance->size--;\\
+!!!!}\\
+}\\
+
+
+end
+
+
+
+
