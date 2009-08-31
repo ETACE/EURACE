@@ -1,0 +1,30 @@
+CC!!!!!!!!!!!!!!!!!!=!!gcc\\
+CFLAGS!!!!!!!!!!=!!-c!!-g!!-std=c99!!-Wall!!-pedantic!!!!\\
+LDFLAGS!!!!!!!!=\\
+LIBS!!!!!!!!!!!!!!= !!-lcunit !!-lxml2!!-lm!!\\
+
+SOURCES!!!!!!!!=!!xmachine.c!!datatype.c!!messages.c!!Suite.c!!unittest.c!!LauncherTest.c 
+repeat functions 
+begin
+!! __name 
+end
+\\
+OBJECTS!!!!!!!!=!!$(SOURCES:.c=.o)\\
+EXECUTABLE!!=!!LauncherTest\\
+DEPS!!!!!!!!!!!!!!=!!Makefile!!header.h!!Suite.h!!my_library_header.h!!
+repeat xagents 
+begin
+!! __xagentname _agent_header.h 
+end
+\\
+
+
+all:!!$(SOURCES)!!$(EXECUTABLE)\\
+	
+$(EXECUTABLE):!!$(OBJECTS)!!\\
+^^$(CC)!!$(LDFLAGS)!!$(OBJECTS)!!-o!!$@!!$(LIBS)\\
+
+$(OBJECTS):!!$(DEPS)\\
+
+.c.o:\\
+^^$(CC)!!$(CFLAGS)!!$<!!-o!!$@\\

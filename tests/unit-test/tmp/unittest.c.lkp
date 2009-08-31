@@ -1,0 +1,53 @@
+#include !!"Suite.h"\\
+repeat suites
+begin
+repeat utests
+begin
+void !! __utestname ()\\
+{\\
+
+char!!test_name[]=" __utestname ";\\
+!!current=(XMachineList *) malloc(sizeof(XMachineList));\\
+!!expected=(XMachineList *) malloc(sizeof(XMachineList));\\
+!!initialize_xmachinelist(current);\\
+!!initialize_xmachinelist(expected);\\
+!!reset_xmessagelist(current_messages);\\
+!!reset_xmessagelist(expected_messages);\\
+!!initialize_ __uagentname (current);\\
+!!initialize_ __uagentname (expected);\\
+repeat messages
+begin
+initialize_ __messagename (current_messages);\\
+initialize_ __messagename (expected_messages);\\
+
+end
+!!current_ __uagentname = current-> an __uagentname ;\\
+!!expected_ __uagentname = expected->an __uagentname ;\\
+!!read_suite_states(root_element->children, current, expected, current_messages,expected_messages,test_name );\\
+!!srand((unsigned!!int) constants.seed);\\
+!!printf("ecco!!il!!seed!!%d",constants.seed);\\
+!! __function_name ();\\
+print_initial_states(" __utestname .xml ",current);\\
+repeat variables
+begin
+ifnotstatic
+begin
+CU_ASSERT( equal_ __type (& current_ __uagentname -> __name , & expected_ __uagentname ->  __name ));\\
+end
+ifstatic
+begin
+CU_ASSERT( equal_ __dtype ( current_ __uagentname -> __name ,  expected_ __uagentname -> __name , __dim ));\\
+end
+end
+repeat messages 
+begin 
+CU_ASSERT(equal_ __messagename _messages ( current_messages-> __messagename _list, expected_messages-> __messagename _list));\\
+end
+free_xmachinelist(current);\\
+free_xmachinelist(expected);\\
+free(current);\\
+free(expected);\\
+
+}\\
+end
+end

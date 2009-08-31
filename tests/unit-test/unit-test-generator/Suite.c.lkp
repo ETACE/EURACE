@@ -1,0 +1,167 @@
+#include!!"Suite.h"\\
+#include!!"header.h"\\
+
+
+void!!print_example_results(void)\\
+{\\
+  fprintf(stdout, "\n\nExpected Test Results:"\\
+                  "\n\n  Error!!Handling!!Type!!!!!!# Run!!!!# Pass!!!!# Fail"\\
+                  "\n\n  ignore!!errors!!suites%9u%9u%9u"\\
+                    "\n  !!!!!!!!!!!!tests %9u%9u%9u"\\
+                    "\n  !!!!!!!!!!!!asserts%8u%9u%9u"\\
+                  "\n\n  stop!!on!!error!!suites%9u%9u%9u"\\
+                    "\n  !!!!!!!!!!!!tests %9u%9u%9u"\\
+                    "\n  !!!!!!!!!!!!asserts%8u%9u%9u\n\n",\\
+                  14, 14, 3,\\
+                  31, 10, 21,\\
+                  89, 47, 42,\\
+                  4, 4, 1,\\
+                  12, 9, 3,\\
+                  12, 9, 3);\\
+}\\
+
+void!!AddTests()\\
+{\\
+!!assert(NULL != CU_get_registry());\\
+!!assert(!CU_is_test_running());\\
+	if (CU_register_suites(suites) != CUE_SUCCESS)\\
+{\\
+		fprintf(stderr, "suite!!registration!!failed - %s\n",CU_get_error_msg());\\
+		exit(EXIT_FAILURE);\\
+}\\
+
+}\\
+repeat suites
+begin
+int!! __suitename _init(void)\\
+{\\
+!!current_messages=(XMessageList *) malloc(sizeof(XMessageList));\\
+!!expected_messages=(XMessageList *) malloc(sizeof(XMessageList));\\
+initialize_xmessagelist(current_messages);\\
+initialize_xmessagelist(expected_messages);\\
+read_suite(" __suitepath ", &root_element,&doc);\\
+   return !!0;\\
+}\\
+
+int!! __suitename _clean(void)\\
+{\\  
+free_suite(doc);\\
+free_xmessagelist(current_messages);\\
+free_xmessagelist(expected_messages);\\
+free(current_messages);
+free(expected_messages);
+    return !!0;\\
+}\\
+end
+
+void!!read_xml_states_and_messages( xmlNode!!*a_node, XMachineList !!*xmachinelist, XMessageList !!*xmessagelist)
+{\\
+
+!!xmlNode *cur_node = NULL;\\
+!!printf("reading!!x-agent !! state\n");\\
+!!for (cur_node = a_node; cur_node; cur_node = cur_node->next)\\
+!!!!!!{\\
+!!!!!!if (cur_node->type == XML_ELEMENT_NODE)\\
+!!!!!!{\\
+repeat xagents
+begin
+!!!!!!!!if(strcmp((char!!*)cur_node->name," __xagentname ")==0) !! read_xml_ __xagentname  ( xmachinelist-> an __xagentname ,cur_node->children);\\
+end
+!!!!!!!!if(strcmp((char!!*)cur_node->name,"messages")==0) !! read_xml_messages(cur_node->children,xmessagelist);\\
+
+!!!!!!}\\
+!!!!!!}\\
+!!printf("readed  !!x-agent !! state\n");\\
+}\\
+
+
+
+
+void!!read_xml_messages( xmlNode!!*a_node, XMessageList !!*xmessageslist)
+{\\
+!!{\\
+!!!!xmlNode!!*cur_node = NULL;\\
+!!!!xmlNode!!*aux_node;\\
+!!!!printf("reading !!   !! message \n");\\
+!!!!for (cur_node = a_node; cur_node; cur_node = cur_node->next)\\
+!!!!!!{\\
+!!!!!!if (cur_node->type == XML_ELEMENT_NODE)\\
+!!!!!!{\\
+      repeat messages
+      begin
+           !!!!!!!!{\\ 
+          
+           !!!!!!!!if(strcmp((char!!*)cur_node->name," __messagename ")==0)\\
+           !!!!!!!!!!{\\
+           !!!!!!!!!!!!int!!index;\\
+           !!!!!!!!!!!!index=0;\\
+           !!!!!!!!!!!!aux_node=cur_node->children;\\
+           !!!!!!!!!!!!printf("reading!! __messagename \n");\\
+           !!!!!!!!!!!!read_xml_ __messagename _messages(xmessageslist-> __messagename _list,(char!!*)aux_node->content,&index);\\
+           !!!!!!!!!!}\\
+           !!!!!!!!}\\
+      end
+!!!!!!}\\
+!!!!!!}\\
+!!}\\
+}\\
+
+void!!read_xml_values( xmlNode!!*a_node, XMachineList !!*current, XMachineList !!*expected, XMessageList !!*current_messages,XMessageList !!*expected_messages, char !!*unit_name)\\
+!!{\\
+!!char!!name[50];\\
+!!!!xmlNode *cur_node = NULL;\\
+!!!!printf("reading !!x-agent !! for!!unit!! tests\n");\\
+!!!!for (cur_node = a_node; cur_node; cur_node = cur_node->next)\\
+!!!!!!{\\
+!!!!!!if (cur_node->type == XML_ELEMENT_NODE)\\
+!!!!!!{\\
+!!!!!!!!if(strcmp((char!!*)cur_node->name,"name")==0)  !!compile_name(cur_node->children,name);\\
+!!!!!!!!if(strcmp(name,unit_name)==0)!!{\\
+!!!!!!!!if(strcmp((char!!*)cur_node->name,"expected")==0) !! read_xml_states_and_messages(cur_node->children,expected,expected_messages);\\
+!!!!!!!!if(strcmp((char!!*)cur_node->name,"fixture")==0) !! read_xml_states_and_messages(cur_node->children,current,current_messages);\\
+!!!!!!!!if(strcmp((char!!*)cur_node->name,"constants")==0)   !!read_xml_constants(&constants,cur_node->children);\\ 
+!!!!!!!!}\\
+!!!!!!}\\
+!!!!!!}\\
+!!!!printf("read !!x-agent !! for!!unit!! tests\n");\\
+}\\
+
+void !!compile_name(xmlNode !!*a_node, char !!*name)\\
+{\\
+   
+    strcpy(name,(char *)a_node->content);\\
+}\\
+
+void !!read_suite_states(xmlNode!!*a_node, XMachineList !!*current, XMachineList !!*expected, XMessageList !!*current_messages,XMessageList !!*expected_messages,char !!*unit_name )\\
+!!{\\
+!!!!printf("\nreading!!xml!!states\n");
+!!!!xmlNode *cur_node = NULL;\\
+!!!!for (cur_node = a_node; cur_node; cur_node = cur_node->next)\\
+!!!!!!{\\
+!!!!!!if (cur_node->type == XML_ELEMENT_NODE)\\
+!!!!!!{\\     
+!!!!!!if(strcmp((char!!*)cur_node->name,"unittest")==0)   !!read_xml_values(cur_node->children,current,expected,current_messages,expected_messages,unit_name);\\ 
+!!!!!!if(strcmp((char!!*)cur_node->name,"constants")==0)   !!read_xml_constants(&constants,cur_node->children);\\ 
+!!!!!!}\\
+!!}\\
+}\\
+
+int !! read_suite(char *filename,xmlNode !!**root_element, xmlDoc !!**doc)\\
+{\\   
+!! *doc = NULL;\\
+!!LIBXML_TEST_VERSION\\
+    /*parse the file and get the DOM */\\
+!! *doc = xmlReadFile(filename, NULL, 0);\\
+
+!!if (doc == NULL) {\\
+!!!!printf("error:!!could!!not!!parse!!file %s\n", filename);\\
+    }\\
+!!*root_element = xmlDocGetRootElement(*doc);\\
+!!return!!0;\\
+!!}\\
+int!!free_suite( xmlDoc !!*doc )\\
+{\\
+    xmlFreeDoc(doc);\\
+    xmlCleanupParser();\\
+return!!0;
+}\\
