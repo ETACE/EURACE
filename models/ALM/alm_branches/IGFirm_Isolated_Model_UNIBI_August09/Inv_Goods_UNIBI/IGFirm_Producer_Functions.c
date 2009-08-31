@@ -244,7 +244,7 @@ int IGFirm_calc_research_employees()
 	{
 		RESEARCH_EMPLOYEES_NEEDED = (int) (PERCENT_REVENUE_FOR_INNOVATION*
 		(REVENUE_FOR_INNOVATION/DURATION_UNTIL_NEXT_INNOVATION)
-		/WAGE_OFFER_FOR_SKILL_6);
+		/WAGE_OFFER_FOR_RD);
 
 		if(RESEARCH_EMPLOYEES_NEEDED > 10)
 		{
@@ -258,13 +258,13 @@ int IGFirm_calc_research_employees()
 	if(IGFIRM_PRODUCER_DEBUG == 1)
 	{
 		printf("REVENUE_FOR_INNOVATION: %f\n",REVENUE_FOR_INNOVATION/12);
-		printf("WAGE_OFFER_FOR_SKILL_6: %f\n",WAGE_OFFER_FOR_SKILL_6);
+		printf("WAGE_OFFER_FOR_RD: %f\n",WAGE_OFFER_FOR_RD);
 	}
 
 	/*2. option: The number Research employees is determined every year*/
 
 	RESEARCH_EMPLOYEES_NEEDED = (int) (PERCENT_REVENUE_FOR_INNOVATION*
-	(REVENUE_FOR_INNOVATION/12))/WAGE_OFFER_FOR_SKILL_6;
+	(REVENUE_FOR_INNOVATION/12))/WAGE_OFFER_FOR_RD;
 
 	REVENUE_FOR_INNOVATION = 0;
 
@@ -583,7 +583,7 @@ int IGFirm_calc_input_demands()
 
 	/*Calculated the number of production employees*/
 	EMPLOYEES_NEEDED = (int)(PLANNED_PRODUCTION_QUANTITY
-	/(PRODUCTION_PRODUCTIVITY*MEAN_SPECIFIC_SKILLS));
+	/PRODUCTION_PRODUCTIVITY);
 
 	
 	/*Planned production costs for the next period: for the calculation of
@@ -726,7 +726,7 @@ int IGFirm_produce_capital_good()
 		/*Minimum of the capital good store: directly before production*/
 		CAPITAL_GOOD_STORE_BEFORE_PRODUCTION = CAPITAL_GOOD_STORE;
 		
-		PRODUCTION_QUANTITY = NO_EMPLOYEES*PRODUCTION_PRODUCTIVITY*MEAN_SPECIFIC_SKILLS;
+		PRODUCTION_QUANTITY = NO_EMPLOYEES*PRODUCTION_PRODUCTIVITY;
 		OUTPUT = PRODUCTION_QUANTITY;
 	
 		/*Add the production quantity to the capital good store*/
