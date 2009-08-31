@@ -64,6 +64,11 @@
       <name>wage_offer</name>
       <description></description>
      </variable>
+	<variable>
+      <type>int</type>
+      <name>job_type</name>
+      <description></description>
+     </variable>
     </variables>
    </dataType>
    <dataType>
@@ -109,6 +114,11 @@
      <variable>
       <type>double</type>
       <name>wage_offer</name>
+      <description></description>
+     </variable>
+	<variable>
+      <type>int</type>
+      <name>job_type</name>
       <description></description>
      </variable>
     </variables>
@@ -651,6 +661,11 @@ of employees and the number of vacancies</description>
    <name>IGFirm</name>
    <description></description>
    <memory>
+<variable>
+     <type>int</type>
+     <name>igfirm_employer_debug</name>
+     <description></description>
+    </variable>
     <variable>
      <type>employee_array</type>
      <name>employees</name>
@@ -673,7 +688,12 @@ of employees and the number of vacancies</description>
     </variable>
     <variable>
      <type>double</type>
-     <name>wage_offer_for_skill_6</name>
+     <name>wage_offer_for_rd</name>
+     <description>The basic wage offer</description>
+    </variable>
+	<variable>
+     <type>double</type>
+     <name>base_wage_offer_for_rd</name>
      <description>The basic wage offer</description>
     </variable>
     <variable>
@@ -1580,7 +1600,7 @@ wage offer for the according general skill level.</description>
     </variable>
     <variable>
      <type>double</type>
-     <name>firm_wage_offer_for_skill_6</name>
+     <name>firm_wage_offer_for_rd</name>
      <description></description>
     </variable>
    </variables>
@@ -1627,7 +1647,7 @@ wage offer for the according general skill level.</description>
     </variable>
 <variable>
      <type>double</type>
-     <name>firm_wage_offer_for_skill_6</name>
+     <name>firm_wage_offer_for_rd</name>
      <description></description>
     </variable>
    </variables>
@@ -1678,6 +1698,11 @@ as well as the specific skills.</description>
      <name>specific_skill</name>
      <description></description>
     </variable>
+	<variable>
+     <type>int</type>
+     <name>job_type</name>
+     <description></description>
+    </variable>
    </variables>
   </message>
   <message>
@@ -1710,6 +1735,11 @@ as well as the specific skills.</description>
      <name>specific_skill</name>
      <description></description>
     </variable>
+	<variable>
+     <type>int</type>
+     <name>job_type</name>
+     <description></description>
+    </variable>
    </variables>
   </message>
   <message>
@@ -1737,6 +1767,11 @@ corresponding wage offer.</description>
      <name>wage_offer</name>
      <description></description>
     </variable>
+	<variable>
+     <type>int</type>
+     <name>job_type</name>
+     <description></description>
+    </variable>
    </variables>
   </message>
   <message>
@@ -1762,6 +1797,11 @@ corresponding wage offer.</description>
     <variable>
      <type>double</type>
      <name>wage_offer</name>
+     <description></description>
+    </variable>
+	<variable>
+     <type>int</type>
+     <name>job_type</name>
      <description></description>
     </variable>
    </variables>
@@ -1796,6 +1836,11 @@ as well as the specific skills.</description>
      <name>specific_skill</name>
      <description></description>
     </variable>
+	<variable>
+     <type>int</type>
+     <name>job_type</name>
+     <description></description>
+    </variable>
    </variables>
   </message>
   <message>
@@ -1826,6 +1871,11 @@ as well as the specific skills.</description>
     <variable>
      <type>double</type>
      <name>specific_skill</name>
+     <description></description>
+    </variable>
+	<variable>
+     <type>int</type>
+     <name>job_type</name>
      <description></description>
     </variable>
    </variables>
