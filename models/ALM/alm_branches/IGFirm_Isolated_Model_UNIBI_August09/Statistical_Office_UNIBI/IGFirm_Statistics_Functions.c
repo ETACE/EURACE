@@ -97,9 +97,9 @@ int IGFirm_receive_data()
 				if(DAY%20 == 1)
 				{
 					
-printf("IGFIRM: eurostat_send_specific_skills_message->productivity_progress %f \n",eurostat_send_specific_skills_message->productivity_progress);
+//printf("IGFIRM: eurostat_send_specific_skills_message->productivity_progress %f \n",eurostat_send_specific_skills_message->productivity_progress);
 
-					if(eurostat_send_specific_skills_message->productivity_progress > 0)
+					/*if(eurostat_send_specific_skills_message->productivity_progress > 0)
 					{
 						int i;
 						for(i = 0; i< EMPLOYEES.size; i++)
@@ -112,8 +112,11 @@ printf("IGFIRM: eurostat_send_specific_skills_message->productivity_progress %f 
 						{				
 							RESEARCH_EMPLOYEES.array[i].wage = RESEARCH_EMPLOYEES.array[i].wage*(1+ 
 							eurostat_send_specific_skills_message->productivity_progress);
+							
+							WAGE_OFFER_FOR_RD = WAGE_OFFER_FOR_RD
+							*(1+0.5*eurostat_send_specific_skills_message->productivity_progress);
 						}
-					}		
+					}*/		
 				}
 			
 		}
