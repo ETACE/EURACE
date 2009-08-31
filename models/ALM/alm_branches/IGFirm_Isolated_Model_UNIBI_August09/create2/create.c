@@ -149,7 +149,7 @@ int DELIVERY_PROB_IF_CRITICAL_STOCK_0 = 25;
 
 //int INNOVATION_PROBABILITY = 10; //10
 
-double PRODUCTIVITY_PROGRESS = 0.05;
+double PRODUCTIVITY_PROGRESS = 0.03;
 
 double LOGIT_PARAMETER_SPECIFIC_SKILLS = 0;
 
@@ -213,6 +213,7 @@ double MAX_CAPITAL_GOOD_PRICE_INCREASE = 0.05;
 	}	
 	
 	int igfirm_producer_debug = 0;
+	int igfirm_employer_debug = 1;
 
 	double 	tax_rate_corporate[2][1] = {0.05,0.05};
 	double	tax_rate_hh_labour[2][1]= {0.05,0.05};
@@ -847,6 +848,8 @@ double MAX_CAPITAL_GOOD_PRICE_INCREASE = 0.05;
 		sprintf(data, "%d",gov_id);	print_tag("gov_id", data, file);
 		sprintf(data, "%d",bank_id);		print_tag("bank_id", data, file);
 		sprintf(data, "%d",igfirm_producer_debug);		print_tag("igfirm_producer_debug", data, file);
+		sprintf(data, "%d",igfirm_employer_debug);		print_tag("igfirm_employer_debug", data, file);
+
 
 		sprintf(data, "{}");								print_tag("employees", data, file);
 		sprintf(data, "{}");								print_tag("research_employees", data, file);
@@ -858,7 +861,8 @@ double MAX_CAPITAL_GOOD_PRICE_INCREASE = 0.05;
 		sprintf(data, "%f",base_wage_offer);				print_tag("wage_offer_for_skill_3", data, file);
 		sprintf(data, "%f",base_wage_offer);				print_tag("wage_offer_for_skill_4", data, file);
 		sprintf(data, "%f",base_wage_offer);				print_tag("wage_offer_for_skill_5", data, file);
-		sprintf(data, "%f",base_wage_offer);				print_tag("wage_offer_for_skill_6", data, file);
+		sprintf(data, "%f",base_wage_offer);				print_tag("wage_offer_for_rd", data, file);
+		sprintf(data, "%f",base_wage_offer);				print_tag("base_wage_offer_for_rd", data, file);
 		sprintf(data, "%f",base_wage_offer);				print_tag("mean_research_wage", data, file);
 		sprintf(data, "%f",specific_skills_of_household[0][0]);	print_tag("mean_specific_skills", data, file);
 		sprintf(data, "%f",specific_skills_of_household[0][0]);	print_tag("average_s_skill_of_1", data, file);
