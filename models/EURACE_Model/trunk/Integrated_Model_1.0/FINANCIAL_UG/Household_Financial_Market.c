@@ -215,10 +215,12 @@ void computeLimitOrder( Asset *anAsset, double weight, double resource,Belief *b
       //aux=gauss(0,0.0001);
       limitPrice=lastprice*(1+aux); 
       deltaquantity=(int)(weight*resource/(limitPrice))-quantity;
-      if((deltaquantity<0)&&(deltaquantity<(-quantity))) 
+
+     /* if((deltaquantity<0)&&(deltaquantity<(-quantity))) 
              {  printf("last price %f exptected return %f\n",limitPrice,aux);
                 printf("id %d limitprice %f weight %f resource %lf deltaquantity %d quantity=%d\n",belief->asset_id,limitPrice,weight,resource,deltaquantity,quantity);
-             }
+             } */
+
       //if(deltaquantity<0) deltaquantity=deltaquantity*1.1;
       //else deltaquantity=deltaquantity*0.9;  
       setOrder(order,limitPrice,deltaquantity,assetId,trader_id);
@@ -286,7 +288,7 @@ void generatePendingOrders(Asset_array *assetsowned,Order_array *pending, Belief
   
   if(abs(resource)>abs(tem_wealth)) 
                                    { //printf("ERROR: consumption budeget %f resource %f wealth %f \n",CONSUMPTION_BUDGET,resource,tem_wealth);
-                                     getchar();
+                                     //getchar();
                                     }
   set_wealth(tem_wealth);
   size=beliefs->size;

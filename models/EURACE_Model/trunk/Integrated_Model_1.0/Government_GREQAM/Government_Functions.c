@@ -43,8 +43,34 @@ int Government_initialization()
 int Government_send_policy_announcements()
 {   
     //Set tax rate to global constant
-    TAX_RATE_HH_LABOUR = CONST_INCOME_TAX_RATE;
+    double yearly_tax_revenues_target;
+       
+    if ((POLICY_EXP1)&(GOV_POLICY_SWITCH_QUANTITATIVE_EASING==0))
+    {                   
+                    if (YEARLY_BUDGET_BALANCE>0)
+                    {
+                    if ((YEARLY_TAX_REVENUES-YEARLY_BUDGET_BALANCE)>0)
+                     yearly_tax_revenues_target = YEARLY_TAX_REVENUES-YEARLY_BUDGET_BALANCE;
+                     else yearly_tax_revenues_target = 0;}
+                    else
+                        yearly_tax_revenues_target = YEARLY_TAX_REVENUES-YEARLY_BUDGET_BALANCE;
+        
+        if (YEARLY_TAX_REVENUES>0)              
+        TAX_RATE_HH_LABOUR = (yearly_tax_revenues_target/YEARLY_TAX_REVENUES)*TAX_RATE_HH_LABOUR;
+        else
+        TAX_RATE_HH_LABOUR = CONST_INCOME_TAX_RATE;
+        
+        if (TAX_RATE_HH_LABOUR<CONST_INCOME_TAX_RATE) TAX_RATE_HH_LABOUR = CONST_INCOME_TAX_RATE;
+        
+        printf("\n Government_send_policy_announcements");
+        printf("\n %f %f %f %f",YEARLY_BUDGET_BALANCE,YEARLY_TAX_REVENUES,yearly_tax_revenues_target,TAX_RATE_HH_LABOUR);
+        }
 
+
+         
+    else TAX_RATE_HH_LABOUR = CONST_INCOME_TAX_RATE;
+
+                 
     //add announcements
     add_policy_announcement_message(ID, TAX_RATE_CORPORATE, TAX_RATE_HH_LABOUR, TAX_RATE_HH_CAPITAL, TAX_RATE_VAT, UNEMPLOYMENT_BENEFIT_PCT, HH_SUBSIDY_PAYMENT, FIRM_SUBSIDY_PAYMENT, HH_TRANSFER_PAYMENT, FIRM_TRANSFER_PAYMENT);
     
@@ -233,7 +259,7 @@ int Government_send_account_update()
         // At the very end of agent government: update the bank account
         add_gov_to_central_bank_account_update_message(ID, PAYMENT_ACCOUNT);
         
-        if (PRINT_DEBUG)
+        if (PRINT_DEBUG_EXP1 || PRINT_DEBUG)
         {
                         printf("\n\n Government_send_account_update ID: %d",ID);
                         printf("\n\t PAYMENT_ACCOUNT: %f",PAYMENT_ACCOUNT);
@@ -263,14 +289,14 @@ int Government_resolve_unsold_bonds()
 
             add_issue_bonds_to_ecb_message(last_market_price*BOND.quantity, BOND.quantity);
             
-            if (PRINT_DEBUG)
+            if (PRINT_DEBUG_EXP1 || PRINT_DEBUG)
             {
             printf("\n\n Government_resolve_unsold_bonds.QUANTITATIVE_EASING ID: %d",ID);
             printf("\n\t Payment account before easing: %f \n", PAYMENT_ACCOUNT);
             }
             //Assume that the ECB is FULLY accommodating the government's demand for fiat money:
             PAYMENT_ACCOUNT += last_market_price*BOND.quantity;
-            if (PRINT_DEBUG)
+            if (PRINT_DEBUG_EXP1 || PRINT_DEBUG)
             {
                 printf("\n\t Payment account after easing: %f", PAYMENT_ACCOUNT);
                 printf("n\t last_market_price %f BOND.quantity %d \n", last_market_price,BOND.quantity );
@@ -290,7 +316,8 @@ int Government_resolve_unsold_bonds()
 int Government_monthly_budget_accounting()
 {
     double in, out;
-    
+    FILE *file1;
+    char *filename;
 
     //Compute the following: the interest rate is the base rate of the Central Bank
     //GOV_INTEREST_RATE = (double) 0.05/12.0;
@@ -349,17 +376,33 @@ int Government_monthly_budget_accounting()
         add_request_fiat_money_message(TOTAL_MONEY_FINANCING);
 
         PAYMENT_ACCOUNT += TOTAL_MONEY_FINANCING;
-        if (PRINT_DEBUG_GOV)
+        if (PRINT_DEBUG_EXP1 || PRINT_DEBUG)
         {
         printf("\n\n Government_monthly_budget_accounting ID: %d",ID);
         printf("\n\t MONTHLY_TAX_REVENUES: %f MONTHLY_BENEFIT_PAYMENT: %f",MONTHLY_TAX_REVENUES, MONTHLY_BENEFIT_PAYMENT);
         printf("\n\t MONTHLY_BOND_INTEREST_PAYMENT: %f out: %f",MONTHLY_BOND_INTEREST_PAYMENT, out);
-        printf("\n\t MONTHLY_TAX_REVENUES: %f out: %f",MONTHLY_TAX_REVENUES, MONTHLY_BUDGET_BALANCE);
+        printf("\n\t out: %f MONTHLY_BUDGET_BALANCE: %f",out, MONTHLY_BUDGET_BALANCE);
         printf("\n\t PAYMENT_ACCOUNT: %f CUMULATED_DEFICIT: %f TOTAL_DEBT: %f",PAYMENT_ACCOUNT,CUMULATED_DEFICIT, TOTAL_DEBT);
- 
+        
         getchar();
         }
         
+        
+        if (PRINT_DEBUG_FILE_EXP1)
+    {                       
+                            filename = malloc(40*sizeof(char));
+                            filename[0]=0;
+                            strcpy(filename, "its/government.txt");      
+                            file1 = fopen(filename,"a");
+                            fprintf(file1,"%f %f ",MONTHLY_TAX_REVENUES,MONTHLY_BENEFIT_PAYMENT);
+                            fprintf(file1,"%f %f ",MONTHLY_BOND_INTEREST_PAYMENT,out);
+                            fprintf(file1,"%f %f ",MONTHLY_BUDGET_BALANCE,PAYMENT_ACCOUNT);
+                            fprintf(file1,"%f %f ",CUMULATED_DEFICIT,TOTAL_DEBT);
+                            fprintf(file1,"%f %f\n",BOND.prices[BOND.index],TAX_RATE_HH_LABOUR);
+                            fclose(file1);
+                            free(filename);
+                                }                
+ 
     return 0;
 }
 
@@ -382,7 +425,7 @@ int Government_bonds_issuing_decision()
     //bond->quantity = bond->quantity + new_bonds_amount;
     BOND.quantity = BOND.quantity + new_bonds_amount;
 
-    if (PRINT_DEBUG_GOV)
+    if (PRINT_DEBUG_EXP1 || PRINT_DEBUG)
     {
         printf("\n\n Government_bonds_issuing_decision ID: %d",ID);
         printf("\n\t last_market_price: %f limit_price: %f", last_market_price, limit_price);
@@ -459,6 +502,7 @@ int Government_yearly_resetting()
     YEARLY_INVESTMENT_EXPENDITURE =0.0;
     YEARLY_CONSUMPTION_EXPENDITURE =0.0;
     
+    
       if (PRINT_DEBUG_GOV)
         { 
                     printf("\n Government_yearly_resetting");
@@ -501,7 +545,7 @@ int Government_read_data_from_Eurostat()
         GDP_GROWTH = GDP/old_gdp;
     else GDP_GROWTH = 1.0; 
     
-    if (PRINT_DEBUG)
+    if (PRINT_DEBUG_EXP1 || PRINT_DEBUG)
     {
         printf("\n\n Government_read_data_from_Eurostat ID: %d",ID);
         printf("\n\t GDP: %f old GDP: %f",GDP,old_gdp);
