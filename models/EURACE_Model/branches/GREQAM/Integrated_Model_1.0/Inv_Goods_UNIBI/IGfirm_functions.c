@@ -1,3 +1,4 @@
+#include <math.h>
 #include "../header.h"
 #include "../IGFirm_agent_header.h"
 #include "../my_library_header.h"
@@ -36,12 +37,8 @@ int IGFirm_update_productivity_price()
         if(i < INNOVATION_PROBABILITY)
         {
             PRODUCTIVITY = PRODUCTIVITY*(1 + PRODUCTIVITY_PROGRESS);
-            CAPITAL_GOOD_PRICE = CAPITAL_GOOD_PRICE*(1 +1.0* PRODUCTIVITY_PROGRESS); 
+            CAPITAL_GOOD_PRICE = CAPITAL_GOOD_PRICE*(1 +.5* PRODUCTIVITY_PROGRESS); 
         }
-
-    
-    
-
 
 
     return 0;
@@ -51,7 +48,43 @@ int IGFirm_update_productivity_price()
  * \brief IGFirm send quality and price information */
 int IGFirm_send_quality_price_info()
 {
-    add_productivity_message(ID,PRODUCTIVITY,CAPITAL_GOOD_PRICE);
+    //Case 1: shock occurs multiple times
+    if (ENERGY_SHOCK_FREQUENCY!=0)
+    {   
+        // To simulate a REPEATED energy price shock over a time duration interval:    
+        if ((DAY>=ENERGY_SHOCK_START)&&(DAY<ENERGY_SHOCK_END)&&((DAY-ENERGY_SHOCK_START)%ENERGY_SHOCK_FREQUENCY==0))
+        {
+            ENERGY_PRICE_MARKUP = CONST_ENERGY_SHOCK_INTENSITY;
+        }
+        else ENERGY_PRICE_MARKUP = 0.0;
+        
+        //Multiplicative: mark up is defined in percentage terms
+        CAPITAL_GOOD_PRICE *= (1+ENERGY_PRICE_MARKUP);
+        
+        //At the end of the time interval there is a down_shock only if the shock is set to be symmetric:
+        if ((DAY==ENERGY_SHOCK_END)&&(SYMMETRIC_SHOCK==1))
+        {   
+            if(PRINT_DEBUG) printf("\nIn IGFirm_send_quality_price_info: Downward shock due to SYMMETRIC_SHOCK==1\n");
+            //Multiplicative: mark up defined in percentage terms
+            CAPITAL_GOOD_PRICE = CAPITAL_GOOD_PRICE*pow((1+CONST_ENERGY_SHOCK_INTENSITY),-(ENERGY_SHOCK_END-ENERGY_SHOCK_START)/ENERGY_SHOCK_FREQUENCY);
+        }        
+    }
+    
+    //Case 2: shock occurs only at start and end
+    if (ENERGY_SHOCK_FREQUENCY==0)
+    {   
+        //Only update the price with the energy markup once at the start
+        if (DAY==ENERGY_SHOCK_START)
+        {        
+            CAPITAL_GOOD_PRICE *= (1+CONST_ENERGY_SHOCK_INTENSITY);
+        }
+        //Reset price at end of period
+        if ((DAY==ENERGY_SHOCK_END)&&(SYMMETRIC_SHOCK==1))
+        {        
+            CAPITAL_GOOD_PRICE = CAPITAL_GOOD_PRICE/(1+CONST_ENERGY_SHOCK_INTENSITY);
+        }
+    }
+        add_productivity_message(ID,PRODUCTIVITY,CAPITAL_GOOD_PRICE);
     return 0;
 }
 
@@ -78,22 +111,27 @@ int IGFirm_send_capital_good()
 
 int IGFirm_receive_payment()
 {
+    
+    
     REVENUE_PER_DAY = 0;
 
     START_PAY_CAPITAL_GOODS_MESSAGE_LOOP
 
+        
+        
         REVENUE_PER_DAY += pay_capital_goods_message->capital_bill;
-
         
 
-    FINISH_PAY_CAPITAL_GOODS_MESSAGE_LOOP  
-
-    CUM_REVENUES += REVENUE_PER_DAY; 
-    PAYMENT_ACCOUNT += REVENUE_PER_DAY;
+    FINISH_PAY_CAPITAL_GOODS_MESSAGE_LOOP
     
-    //Send the payment_account to the bank at the end of the day
-    add_bank_account_update_message(ID, BANK_ID, PAYMENT_ACCOUNT);
- 
+    ENERGY_COSTS_PER_DAY = (ENERGY_PRICE_MARKUP/CAPITAL_GOOD_PRICE)*REVENUE_PER_DAY;
+    
+    EARNINGS_PER_DAY = REVENUE_PER_DAY - ENERGY_COSTS_PER_DAY;
+    
+
+    CUM_ENERGY_COSTS += ENERGY_COSTS_PER_DAY;
+    EARNINGS += EARNINGS_PER_DAY; 
+    PAYMENT_ACCOUNT += EARNINGS_PER_DAY;
     return 0;
 }
 
@@ -106,22 +144,17 @@ int IGFirm_receive_payment()
 int IGFirm_pay_taxes()
 {
     
-
-    TAX_PAYMENT = CUM_REVENUES*TAX_RATE_CORPORATE;
-    //TAX_PAYMENT = CUM_REVENUES*0.3;   
-
-
-
+    // Compute the monthly earnings from revenues minus energy 
+    
+    
+    //TAX_PAYMENT = CUM_REVENUES*TAX_RATE_CORPORATE;
+    TAX_PAYMENT = EARNINGS *0;  
     
     PAYMENT_ACCOUNT -= TAX_PAYMENT;
-    
-    NET_PROFIT = CUM_REVENUES - TAX_PAYMENT;
-    
-    CUM_REVENUE_LAST_MONTH = CUM_REVENUES;
-    CUM_REVENUES=0.0;
+
+    NET_PROFIT = EARNINGS  - TAX_PAYMENT;
+    EARNINGS =0.0;
     add_tax_payment_message(GOV_ID,TAX_PAYMENT);
-    
-    
     
     return 0;
 }
@@ -130,74 +163,20 @@ int IGFirm_pay_taxes()
 
 int IGFirm_dividend_payment()
 {
-
-
-    //double weight = 0.2;
-    double average_last_net_profits = 0.0;
     double total_dividend_payment;
-    DIVIDEND_PAYMENT = 0.0;
+    total_dividend_payment = NET_PROFIT;
+    
+    CURRENT_DIVIDEND_PER_SHARE = NET_PROFIT / OUTSTANDING_SHARES;
 
-    /*First: pay out complete NET_PROFIT as dividends*/
-/*CURRENT_DIVIDEND_PER_SHARE = NET_PROFIT / OUTSTANDING_SHARES;
-    printf("1: DIVIDEND %f \n",CURRENT_DIVIDEND_PER_SHARE);
-    
-    total_dividend_payment=NET_PROFIT;
-    printf("1: total_dividend_payment %f \n",total_dividend_payment);
-    
-    */
-    
-    
-    /*Second: pay out geometrical average as dividends*/
-    /*CURRENT_DIVIDEND_PER_SHARE = (weight*CUM_NET_PROFITS +(1-weight)*NET_PROFIT)/ OUTSTANDING_SHARES;
-    printf("2: DIVIDEND %f \n",CURRENT_DIVIDEND_PER_SHARE);
-    
-    total_dividend_payment=weight*CUM_NET_PROFITS +(1-weight)*NET_PROFIT;
-    printf("2: total_dividend_payment %f \n",total_dividend_payment);
-    
-    printf("1: CUM_NET_PROFITS %f\n",CUM_NET_PROFITS);
-    CUM_NET_PROFITS = (1- weight)*CUM_NET_PROFITS +weight*NET_PROFIT; 
-    printf("2: CUM_NET_PROFITS %f\n",CUM_NET_PROFITS);*/
-    
-    
-    
-    
-    
-    /*Third: pay out the average of the last 10 NET_PROFITs as dividends*/
-    remove_double(&LAST_NET_PROFITS,0);
-    add_double(&LAST_NET_PROFITS,NET_PROFIT);  
-    
-    int p;
-    for(p = 0; p < LAST_NET_PROFITS.size; p++)
-    {
-        average_last_net_profits += LAST_NET_PROFITS.array[p];
-    }
-    
-    average_last_net_profits = average_last_net_profits/LAST_NET_PROFITS.size;
-    
-    CURRENT_DIVIDEND_PER_SHARE = average_last_net_profits/ OUTSTANDING_SHARES;
-    //printf("3: DIVIDEND %f \n",CURRENT_DIVIDEND_PER_SHARE);
-    
-    total_dividend_payment = average_last_net_profits;
-    //printf("3: total_dividend_payment %f \n",total_dividend_payment);
-        
     
     //add dividend_per_share_msg(firm_id, current_dividend_per_share) to shareholders (dividend per share)     
     add_dividend_per_share_message(ID, CURRENT_DIVIDEND_PER_SHARE);
-
+    
     //decrease payment_account with the total_dividend_payment
     PAYMENT_ACCOUNT -= total_dividend_payment;
     
-    DIVIDEND_PAYMENT = total_dividend_payment;
-    
     return 0;
 }
 
 
-int IGFirm_set_quantities_zero()
-{
-    DIVIDEND_PAYMENT=0.0;
-    TAX_PAYMENT=0.0;
-
-    return 0;
-}
 
