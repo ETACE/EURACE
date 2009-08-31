@@ -1,0 +1,10 @@
+<fixture>
+<Household>
+<id>1</id>
+<assetsowned>{{1,10,100}}</assetsowned>
+<pendingOrders>{{1,50,90,1}}</pendingOrders>
+</Household>
+<messages>
+<order_status>{{1,1,110,1}}</order_status>
+</messages>
+</fixture>
