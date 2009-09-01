@@ -10,7 +10,24 @@
    <file>IGfirm_functions.c</file>
   </functionFiles>
   <timeUnits/>
-  <dataTypes/>
+  <dataTypes>
+<dataType>
+    <name>dt_scheme_innovation</name>
+    <description></description>
+    <variables>
+     <variable>
+      <type>int</type>
+      <name>day_of_innovation</name>
+      <description></description>
+     </variable>
+     <variable>
+      <type>double</type>
+      <name>productivity</name>
+      <description></description>
+     </variable>
+	</variables>
+   </dataType> 	
+</dataTypes>
  </environment>
  <agents>
   <xagent>
@@ -22,9 +39,14 @@
      <name>productivity</name>
      <description></description>
     </variable>
-    <variable>
+   <variable>
      <type>double</type>
      <name>capital_good_price</name>
+     <description></description>
+    </variable>	
+    <variable>
+     <type>dt_scheme_innovation_array</type>
+     <name>innovation_scheme</name>
      <description></description>
     </variable>
     <variable>

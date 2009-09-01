@@ -27,6 +27,10 @@ int IGFirm_idle()
  * \brief IGFirm inceases productivity via a stochastic process and the according price */
 int IGFirm_update_productivity_price()
 {
+	double prod_progress;
+	
+	if(INNOVATION_BY_RANDOM==1)
+	{
 	 if(DAY >= TRANSITION_PHASE)
 	 {
 	int i;
@@ -42,10 +46,31 @@ int IGFirm_update_productivity_price()
 
 		}
 
+	}
 	
-	
-	 }
+	 
+	}else{
 
+		if(DAY==INNOVATION_SCHEME.array[0].day_of_innovation)
+			{
+
+			printf("DAY %d== INNOVATION_SCHEME.array[0].day_of_innovation %d",DAY,INNOVATION_SCHEME.array[0].day_of_innovation);
+
+			printf(" INNOVATION_SCHEME.array[0].productivity %f \n", INNOVATION_SCHEME.array[0].productivity);
+
+			prod_progress = INNOVATION_SCHEME.array[0].productivity/PRODUCTIVITY;
+
+			PRODUCTIVITY =INNOVATION_SCHEME.array[0].productivity;
+
+			CAPITAL_GOOD_PRICE = CAPITAL_GOOD_PRICE*prod_progress;
+			remove_dt_scheme_innovation(&INNOVATION_SCHEME,0);
+
+			}
+
+
+
+
+	}
 
 	return 0;
 }
