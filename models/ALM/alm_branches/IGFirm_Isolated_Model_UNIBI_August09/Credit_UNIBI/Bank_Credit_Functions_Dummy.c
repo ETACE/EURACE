@@ -202,7 +202,7 @@ return 0;
 int Bank_pays_dividends_taxes()
 {
 
-	printf("XXXXXXXXXXXXXXX\n");
+	
 	//Compute the monthy earnings
 	EARNINGS = MONTHLY_INTEREST_REVENUE;
 	MONTHLY_INTEREST_REVENUE =0;
