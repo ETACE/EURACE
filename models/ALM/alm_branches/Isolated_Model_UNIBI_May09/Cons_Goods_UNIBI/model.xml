@@ -805,7 +805,7 @@ distribute the dividends to households.</description>
     <function>
      <name>idle</name>
      <description>Firm does nothing</description>
-     <currentState>14</currentState>
+     <currentState>14a</currentState>
      <nextState>Firm_End_Financial_Management_Role</nextState>
      <condition>
       <not>
@@ -821,7 +821,7 @@ distribute the dividends to households.</description>
     <function>
      <name>Firm_compute_sales_statistics</name>
      <description></description>
-     <currentState>14</currentState>
+     <currentState>14a</currentState>
      <nextState>Firm_Start_Financial_Management_Role</nextState>
      <condition>
       <time>
