@@ -90,6 +90,9 @@ int Firm_compute_income_statement()
     PREVIOUS_NET_EARNINGS = NET_EARNINGS;
     NET_EARNINGS = EARNINGS - TAX_PAYMENT;
 
+	add_double(&LAST_NET_EARNINGS,NET_EARNINGS);
+	
+
     //continue balance sheet (data pertaining to the period that just ended)
     if (CURRENT_SHARES_OUTSTANDING>0)
     {
@@ -110,55 +113,91 @@ int Firm_compute_income_statement()
 }
 
 
+int Firm_compute_dividend_accruals()
+{
+
+	int i;
+	double mean_earnings;
+	double dividend_share;
+
+	mean_earnings = 0.0;
+
+	for(i=0; i <LAST_NET_EARNINGS.size;i++)
+	{	
+
+	mean_earnings += LAST_NET_EARNINGS.array[i];	
+
+	}
+
+	mean_earnings= mean_earnings/ LAST_NET_EARNINGS.size;
+
+	dividend_share = mean_earnings* DIVIDEND_RATE;
+
+
+	if(ID==1)
+{
+printf(" dividend_share  %f \n", dividend_share);
+
+}
+
+
+	if(dividend_share<0.0)
+	{
+	PAYMENT_ACCOUNT += DIVIDEND_ACCRUALS;
+	ACCRUALS -= DIVIDEND_ACCRUALS;
+	DIVIDEND_ACCRUALS = 0;
+	ADDITIONAL_ACCRUALS = 0.0;
+	}
+	else
+	{
+		if(dividend_share < DIVIDEND_ACCRUALS)
+		{
+		
+		PAYMENT_ACCOUNT += (DIVIDEND_ACCRUALS - dividend_share);
+		ACCRUALS -= (DIVIDEND_ACCRUALS - dividend_share);
+		DIVIDEND_ACCRUALS = dividend_share;
+		ADDITIONAL_ACCRUALS = 0.0;
+
+		}else
+		{
+	
+		ADDITIONAL_ACCRUALS = dividend_share - DIVIDEND_ACCRUALS;
+		DIVIDEND_ACCRUALS = ADDITIONAL_ACCRUALS;
+	 
+		}
+	}
+
+return 0;
+}
+
 int Firm_compute_dividends()
 {
-    
-    
-    //Determine total_dividend_payment
-    //option 1: total divided payment remains constant
-    //TOTAL_DIVIDEND_PAYMENT *= 1;
-    
-    //option 2: total dividend payment increases with same ratio as net earnings
-    //This is very dangerous, since earnings may fluctuate violently
-    //TOTAL_DIVIDEND_PAYMENT *= NET_EARNINGS/PREVIOUS_NET_EARNINGS;
-    
-    //option 3: keep dividend per share constant
-    //total divided payment increases with same ratio as current_shares_outstanding
-    //TOTAL_DIVIDEND_PAYMENT *= CURRENT_SHARES_OUTSTANDING/PREVIOUS_SHARES_OUTSTANDING;
-    
-    //option 4: keep earnings per share constant
-    //total divided payment increases with same ratio as earnings per share
-    //if current_shares_outstanding remains constant, this keeps earnings per share constant
-    
-    //TOTAL_DIVIDEND_PAYMENT = TOTAL_DIVIDEND_PAYMENT * (EARNINGS_PER_SHARE/PREVIOUS_EARNINGS_PER_SHARE);
+    int i;
+	
+     	
+	// Compute the dividends paid out in 12 monthly pieces
+
+        TOTAL_DIVIDEND_PAYMENT = DIVIDEND_ACCRUALS/12; 
+
+if(ID==1)
+{
+printf("  TOTAL_DIVIDEND_PAYMENT  %f \n",  TOTAL_DIVIDEND_PAYMENT);
+
+}
 
 
-    if (NET_EARNINGS > 0.0 )
-        TOTAL_DIVIDEND_PAYMENT =  DIVIDEND_RATE*NET_EARNINGS; 
-    else
-    TOTAL_DIVIDEND_PAYMENT=0.0;
-    
-    //option 5: keep dividend to earnings ratio constant (dont let it fall), but do not decrease the dividend per share ratio.
-    /*
-        if (CURRENT_DIVIDEND_PER_EARNINGS < PREVIOUS_DIVIDEND_PER_EARNINGS)
-        {
-            //Maintain the dividend to earnings ratio
-            //D_{t} = (D_{t-1}/E_{t-1})*E_{t}
-            TOTAL_DIVIDEND_PAYMENT = PREVIOUS_DIVIDEND_PER_EARNINGS * NET_EARNINGS;
-            
-            //But do not decrease the dividend per share ratio
-            if (TOTAL_DIVIDEND_PAYMENT/CURRENT_SHARES_OUTSTANDING < CURRENT_DIVIDEND_PER_SHARE)
-            {
-                TOTAL_DIVIDEND_PAYMENT = CURRENT_DIVIDEND_PER_SHARE * CURRENT_SHARES_OUTSTANDING;
-            }
-        }
-        else
-        {
-            //the dividend to earnings ratio did not decrease
-            //else keep the dividend per share ratio constant
-            TOTAL_DIVIDEND_PAYMENT = PREVIOUS_DIVIDEND_PER_SHARE*CURRENT_SHARES_OUTSTANDING;
-        }
-    */
+//Resetting the DIVIDEND_ACCRUALS counter:
+
+	DIVIDEND_ACCRUALS =0.0;
+
+//Delete the monthly earnings 
+
+	for(i=0; i <LAST_NET_EARNINGS.size;i++)
+	{
+	remove_double(&LAST_NET_EARNINGS,0);
+	i--;
+	}    
+
 
     return 0;
 }
@@ -213,9 +252,9 @@ int Firm_compute_balance_sheet()
     TOTAL_VALUE_LOCAL_INVENTORY=sum;
     TOTAL_UNITS_LOCAL_INVENTORY = sum_1;
 
-    TOTAL_ASSETS = PAYMENT_ACCOUNT + TOTAL_VALUE_CAPITAL_STOCK + TOTAL_VALUE_LOCAL_INVENTORY;
+    TOTAL_ASSETS = PAYMENT_ACCOUNT + TOTAL_VALUE_CAPITAL_STOCK + TOTAL_VALUE_LOCAL_INVENTORY+ACCRUALS ;
         
-    PLANNED_TOTAL_ASSETS = PAYMENT_ACCOUNT  + PLANNED_VALUE_CAPITAL_STOCK +  TOTAL_VALUE_LOCAL_INVENTORY;
+    PLANNED_TOTAL_ASSETS = PAYMENT_ACCOUNT  + PLANNED_VALUE_CAPITAL_STOCK +  TOTAL_VALUE_LOCAL_INVENTORY+ACCRUALS ;
     
     EQUITY = TOTAL_ASSETS - TOTAL_DEBT;
     
@@ -237,7 +276,7 @@ int Firm_compute_total_liquidity_needs()
  
     //step 12B: set production and payout financial_needs
     PRODUCTION_LIQUIDITY_NEEDS = PLANNED_PRODUCTION_COSTS;
-    FINANCIAL_LIQUIDITY_NEEDS = TOTAL_INTEREST_PAYMENT + TOTAL_DEBT_INSTALLMENT_PAYMENT + TAX_PAYMENT + TOTAL_DIVIDEND_PAYMENT;
+    FINANCIAL_LIQUIDITY_NEEDS = TOTAL_INTEREST_PAYMENT + TOTAL_DEBT_INSTALLMENT_PAYMENT + TAX_PAYMENT + ADDITIONAL_ACCRUALS;
 
     //step 12C:
     //Check if additional external financial needs are required for total financial needs (direct payable and delayed payable)    
@@ -335,7 +374,13 @@ int Firm_execute_financial_payments()
                 }
       }
 
-        //step 3: actual dividend payments
+	//Step 3:
+	// Add additional accruals to the stock and decrease the payment account
+
+	ACCRUALS += ADDITIONAL_ACCRUALS;
+	PAYMENT_ACCOUNT -= ADDITIONAL_ACCRUALS;
+
+       //step 4: actual dividend payments
         //Actual payments to the bank are paid at end of day when the firm sends its bank_update message 
 
         //add dividend_per_share_msg(firm_id, current_dividend_per_share) to shareholders (dividend per share)     
@@ -343,8 +388,8 @@ int Firm_execute_financial_payments()
         {
             add_dividend_per_share_message(ID, CURRENT_DIVIDEND_PER_SHARE);
 
-            //decrease payment_account with the total_dividend_payment
-            PAYMENT_ACCOUNT -= TOTAL_DIVIDEND_PAYMENT;
+            //decrease accruals with the total_dividend_payment
+            ACCRUALS -= TOTAL_DIVIDEND_PAYMENT;
         }   
         
         

@@ -67,7 +67,7 @@
       <description>The number of periods before full repayment of the loan is due</description>
      </variable>
     </variables>
-   </dataType>
+   </dataType>	
   </dataTypes>
  </environment>
  <agents>
@@ -105,6 +105,21 @@
      <name>net_earnings</name>
      <description>Net earnings after tax payments (= ebit - interest - tax)</description>
     </variable>
+  <variable>
+     <type>double</type>
+     <name>accruals</name>
+     <description>accruals (stock variable)</description>
+    </variable>
+  <variable>
+     <type>double</type>
+     <name>dividend_accruals</name>
+     <description>cumulated accruals over one year</description>
+    </variable>	
+	<variable>
+     <type>double</type>
+     <name>additional_accruals</name>
+     <description>needed addtional accruals</description>
+    </variable>	
     <variable>
      <type>double</type>
      <name>previous_net_earnings</name>
@@ -270,6 +285,36 @@
     </function>
     <function>
      <name>Firm_compute_dividends</name>
+     <description></description>
+     <currentState>14</currentState>
+     <nextState>14a</nextState>
+	<condition>
+      <time>
+       <period>yearly</period>
+       <phase>1</phase>
+      </time>
+     </condition>
+     <inputs/>
+     <outputs/>
+    </function>
+	<function>
+     <name>idle</name>
+     <description></description>
+     <currentState>14</currentState>
+     <nextState>14a</nextState>
+     <condition>
+      <not>
+       <time>
+        <period>yearly</period>
+        <phase>1</phase>
+       </time>
+      </not>
+     </condition>
+     <inputs/>
+     <outputs/>
+    </function>
+	<function>
+     <name>Firm_compute_dividend_accruals</name>
      <description>Computation of dividends</description>
      <currentState>002</currentState>
      <nextState>003</nextState>
