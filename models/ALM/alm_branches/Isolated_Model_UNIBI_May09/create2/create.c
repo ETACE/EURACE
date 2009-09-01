@@ -39,6 +39,7 @@ int main(int argc, char ** argv)
 	char data1[1000000];
 	char initial_capi_costs[10000];
 	char skill_distribution[10000];
+	char innovation_scheme[10000];
 	int num;  /*used as an index to cycle through each agent*/
 	int num_start;
 	
@@ -82,7 +83,7 @@ double TETA = 0.0;
 
 
 /*brief Pricing rule: mark up on unit costs. */
-double MARK_UP = 0.05;
+double MARK_UP = 0.15;
 
 /*Strenght of the influence of the actual demand on the next production quantity: if LAMBDA = 0 then the planned production quantities of the last periods are recognized. If LAMBDA = 1 then the only the actual demand is recognized*/
 double LAMBDA = 0.5;
@@ -93,7 +94,9 @@ double wage_update = 0.01;//0.01
 /*min number of vacancies to trigger vacancy counter*/
 int MIN_VACANCY = 2;
 
-double QUANTIL_NORMAL_DISTRIBUTION = 1.96;
+double QUANTIL_NORMAL_DISTRIBUTION = 0.842;
+
+int INNOVATION_BY_RANDOM = 0;
 
 		
 /*adaption of the reservation wage: prercent*/
@@ -110,7 +113,7 @@ double region_cost_3 = 0.0;
 int day_change_region_costs_1 =10000;
 int day_change_region_costs_2 = 20000;
 
-int TRANSITION_PHASE = 0;
+int TRANSITION_PHASE = 1000;
 
 
 /*calculatory cost of storing one unit over one period*/
@@ -169,11 +172,29 @@ double SUBSIDY_FRACTION = 0.0;
 
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-	
-	
+
+//     1       
+//low tech progress  start value best practice: 1.0:
+//sprintf(innovation_scheme,"{{1120,1.012500},{1260,1.025156},{1460,1.037971},{1500,1.050945},{1600,1.064082},{1780,1.077383},{1820,1.090850},{2140,1.104486},{2160,1.118292},{2360,1.132271},{2440,1.146424},{3000,1.160755},{3080,1.175264},{3240,1.189955},{3420,1.204829},{3540,1.219890},{3980,1.235138},{4000,1.250577},{4140,1.266210},{4620,1.282037},{4660,1.298063},{4680,1.314288},{4840,1.330717}}");
+
+
+//      2
+//high tech progress  start value best practice: 1.0
+//sprintf(innovation_scheme,"{{1100,1.025000},{1300,1.050625},{1780,1.076891},{1900,1.103813},{2020,1.131408},{2360,1.159693},{2380,1.188686},{2420,1.218403},{2500,1.248863},{2600,1.280085},{2620,1.312087},{2920,1.344889},{2960,1.378511},{3120,1.412974},{3180,1.448298},{3220,1.484506},{3780,1.521618},{3820,1.559659},{4080,1.598650},{4300,1.638616},{4360,1.679582},{4900,1.721571}}");
+
+
+//    3	
+//low tech progress  start value best practice:1.5
+//sprintf(innovation_scheme,"{{1300,1.518750},{1360,1.537734},{1580,1.556956},{1760,1.576418},{1800,1.596123},{2240,1.616075},{2320,1.636276},{2360,1.656729},{2380,1.656729},{3020,1.677438},{3040,1.677438},{3380,1.698406},{3760,1.719636},{4040,1.741132},{4120,1.762896},{4340,1.784932},{4420,1.807244},{4440,1.829834},{4580,1.852707},{4680,1.875866}}");
+
+
+//    4
+//high tech progress  start value best practice:1.5
+sprintf(innovation_scheme,"{{1060,1.537500},{1120,1.575937},{1180,1.615336},{1460,1.655719},{1600,1.697112},{1860,1.739540},{1980,1.783029},{2120,1.827604},{2180,1.873294},{2480,1.920127},{2780,1.968130},{2800,2.017333},{2840,2.067767},{3560,2.172447},{3640,2.226758},{3660,2.282427},{4020,2.339488},{4380,2.397975},{4640,2.457925},{4760,2.519373},{4800,2.582357},{4940,2.646916}}");
+
 	/*Defining the geographical space as a rectangular grid  */	
 	
-	int num_regions_X=2;/*Number of columns*/
+	int num_regions_X=1;/*Number of columns*/
 	int num_regions_Y=1;/*Number of regions*/
 	int num_regions = num_regions_X*num_regions_Y; /*number of regions*/
 	
@@ -187,24 +208,38 @@ double SUBSIDY_FRACTION = 0.0;
 	int total_malls = num_regions;  /*one mall per region*/
 	//int num_app =  0.5*total_firms; /*number of applications per agent*/
 	int num_app =5;
-	int total_Governments =2;
+	int total_Governments =1;
 	int total_banks = 1;
 	
 
-	double 	tax_rate_corporate[2][1] = {0.05,0.05};
-	double	tax_rate_hh_labour[2][1]= {0.5,0.05};
+	double 	tax_rate_corporate[2][1] = {0.08,0.08};
+	double	tax_rate_hh_labour[2][1]= {0.08,0.08};
 	double	tax_rate_hh_capital[2][1] ={0.0,0.0};
 	double	unemployment_benefit_payment[2][1] = {0.7,0.7};
 	double	payment_account_government =1000.0;
 	double 	payment_account_household = 0;
 
 	double   cap_price; // temp variable for printing capital_good_price_region into memory variables of the firm
-	double	capital_good_price = 6;
+	double	capital_good_price = 2;
 	double	capital_good_price_region[2][1] = {2.0,2.0};
 	
-	double productivity_best_practice_igfirm = 1.1;  //Productivity of the technology offered by the IG firm
+	double productivity_best_practice_igfirm = 1.5;  //Productivity of the technology offered by the IG firm
 	double productivity_best_practice[2][1]=
-					{1.1,1.1};
+					{1.5,1.5};
+
+	//Firm's starting value of productivity of the capital stock
+			double technology[2][1]=
+							{1.5,1.5};
+
+	int skills_in_regions[2][1]=
+					{2,2};
+//region specific initial value of households specific skills
+		double spec_s_hh_reg1 = 1.5;
+		double spec_s_hh_reg2 = 1.5;
+		double specific_skills_of_household[2][1]=
+							{spec_s_hh_reg1,spec_s_hh_reg2};
+		
+
 
 
 	int decil_production_rule_upper_bound= 8;	
@@ -216,104 +251,23 @@ double SUBSIDY_FRACTION = 0.0;
 	/*Defining skill distributions in regions: only 1-4*/
 
 	double skilldistribution_1[5]={0.2,0.2,0.2,0.2,0.2};
-	double skilldistribution_2[5]={0.05,0.05,0.8,0.05,0.05};
+	double skilldistribution_2[5]={0.05,0.05,0.05,0.05,0.8};
 	double skilldistribution_3[5]={0.42,0.33,0.20,0.04,0.01};
 	double skilldistribution_4[5]={0.1,0.3,0.4,0.15,0.05};
 	
 	int id_igfirm ;
 	
-	/*++++++++++++++++++++++++++++++++++++++++++++++++++
-	 +++Initialization of region depending variables.
-	 For the following variables you can assign region specific initial values. The regions are arranged on a rectangular grid (num_regions_X x num_regions_Y), 
-	 so use the following template for the initalization( Example for a 3x3 region grid):
-	 
-	 region 1, 4, 9 ->x
-	 region 3, 5, 6, 7, 8 -> y
-	
-				{{x,y,y},{x,y,y},{y,y,x}};
-	 
-	 												++ 
-	 ++++++++++++++++++++++++++++++++++++++++++++++++*/
-
-	
-	
-	/*+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-	 * ++++++++++++++++   3  x 3 grid +++++++++++++++++++++++++++++++++*/	
-	
-	/*
 	
 	
 	//This determines the local skill distribution. Use numbers 1 .. 4 (see above, skill distribution_X) to give a region a skill distribution. 
-	  
-	int skills_in_regions[3][3]=
-				{{4,4,4},{4,4,4},{4,4,4}};
-	
-	
-	
-	//region specific initial value of households specific skills
-	
-	
-	
-	double specific_skills_of_household[3][3]=
-				{{0.8,0.8,0.8},{0.8,0.8,0.8},{0.8,0.8,0.8}};
-	
-	
-	
-
-	//Total production volume for a single firm
-	double total_production_quantity[3][3]=
-	{{10,10,10},{10,10,10},{10,10,10}};
-	
-	//This defines the initial capital stock of firm depending on the region.
-	double total_units_capital[3][3]=
-	            {{2,2,2},{2,2,2},{2,2,2}};
-	
-
 		
-	//Firm's starting value of productivity of the capital stock
-	
-	double technology[3][3]=
-		{{1,1,1},{1,1,1},{1,1,1}};
-
-
-	
-	//This defines the financial resources of firm at the beginning of a simulation
-	double payment_account[3][3]= 
-	{{50.0,50.0,50.0},{50.0,50.0,50.0},{50.0,50.0,50.0}};
-
-	//Initital wage offer of the firms
-	double wage_offer[3][3]= 
-		{{1.0,1.0,1.0},{1.0,1.0,1.0},{1.0,1.0,1.0}};
-	
-	
-	*/
-	
-	
-/*+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- * ++++++++++++++++   2  x 1 grid +++++++++++++++++++++++++++++++++*/		
-	
-	//This determines the local skill distribution. Use numbers 1 .. 4 (see above, skill distribution_X) to give a region a skill distribution. 
-		int skills_in_regions[2][1]=
-					{1,1};
-	
-	
-		//region specific initial value of households specific skills
-		double spec_s_hh_reg1 = 1.0;
-		double spec_s_hh_reg2 = 1.0;
-		double specific_skills_of_household[2][1]=
-							{spec_s_hh_reg1,spec_s_hh_reg2};
-		
-
 		//Total production volume for a single firm
 			double total_production_quantity[2][1]=
 						{27.0,27.0};
 			//This defines the initial capital stock of firm depending on the region.
 			double total_units_capital[2][1]=
 				                            {45.0,45.0};
-			//Firm's starting value of productivity of the capital stock
-			double technology[2][1]=
-							{1.0,1.0};
-
+		
 			//This defines the financial resources of firm at the beginning of a simulation
 			double payment_account[2][1]= 
 			{50.0,50.0};
@@ -433,6 +387,7 @@ sprintf(data, "%d",day_change_region_costs_1);    print_tag("day_change_region_c
 sprintf(data, "%d",day_change_region_costs_2);    print_tag("day_change_region_costs_2", data, file);
 
 	sprintf(data, "%d",TRANSITION_PHASE);    print_tag("transition_phase", data, file);
+	sprintf(data, "%d",INNOVATION_BY_RANDOM); print_tag("innovation_by_random", data, file);
 
 
 
@@ -681,9 +636,14 @@ sprintf(data, "%d",NO_REGIONS_PER_GOV);	print_tag("no_regions_per_gov", data, fi
 		sprintf(data, "%f", mss);	print_tag("mean_specific_skills", data, file);
 		sprintf(data, "%f", 0.0);	print_tag("unit_costs", data, file);
 		sprintf(data, "%f", 0.0);	print_tag("costs", data, file);
+		sprintf(data, "%f", 0.0);	print_tag("accruals", data, file);
+		sprintf(data, "%f", 0.0);	print_tag("additional_accruals", data, file);
+		sprintf(data, "%f", 0.0);	print_tag("dividend_accruals", data, file);
 		sprintf(data, "%f", 0.0);	print_tag("revenue", data, file);
 		sprintf(data, "%f", 0.0);	print_tag("cum_revenue", data, file);
 		sprintf(data, "%f", 0.0);	print_tag("out_of_stock_costs", data, file);
+		sprintf(data, "{%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f}",0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0);	
+	print_tag("last_net_earnings", data, file);
 		
 		
 		
@@ -697,6 +657,7 @@ sprintf(data, "%d",NO_REGIONS_PER_GOV);	print_tag("no_regions_per_gov", data, fi
 			if(m==1)
 			{
 			sprintf(data2, "{%d,%d,0.0,0,0.0}",m_id,m);
+			sprintf(data1,"%s",data2);
 			}
 			
 			else 
@@ -860,7 +821,9 @@ sprintf(data, "%d",NO_REGIONS_PER_GOV);	print_tag("no_regions_per_gov", data, fi
 		sprintf(data, "%f", 0.0);	print_tag("cum_revenues", data, file);
 		sprintf(data, "%f", 0.0);	print_tag("net_profit", data, file);
 		sprintf(data, "%f", 0.0);	print_tag("cum_net_profits", data, file);
-		sprintf(data, "{%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f}",0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);		print_tag("last_net_profits", data, file);
+		sprintf(data, "{%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f}",0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0);		print_tag("last_net_profits", data, file);
+
+print_tag("innovation_scheme", innovation_scheme, file);
 		
 		sprintf(data, "%f", 0.0);       print_tag("posx", data, file);
 		sprintf(data, "%f", 0.0);       print_tag("posy", data, file);
