@@ -15,7 +15,7 @@
 
 
 \begin{abstract} 
-The agent-based rappresentation of the economic model is made by a lot of functions that we need to be sure that it are working properly. The smallest function for an agent could be considered the transintion function, this function allows the agent to act and to communite with the others agents. The correct operation of all transiction functions  is a necessary condition for the correct functioning of the entire system.
+The agent-based representation of the economic model is made by a lot of functions that we need to be sure that it are working properly. The smallest function for an agent could be considered the transition function, this function allows the agent to act and to communicate with the others agents. The correct operation of all transition functions  is a necessary condition for the correct functioning of the entire system.
 The best way to test small parts of the system is the unitary test provided with a tool that collect all units in one o more suits and able to run automatically. We present a tool that provide an automatic way to write and run a collection of suites generating code from a collection of a suites, where each suite is described by a specified markup language.
 \end{abstract}
 \tableofcontents
@@ -24,7 +24,7 @@ The best way to test small parts of the system is the unitary test provided with
 
 \subsection{The unit-test generator tool:basics ideas}
 
-The agent-based rappresentation of the economic model is made by a lot of functions that we need to be sure that it are working properly. The smallest function for an agent could be considered the transintion function, this function allows to the agent acting and communicating with the others agents. The correct operation of all transiction functions is a necessary condition for the correct functioning of the entire system.
+The agent-based representation of the economic model is made by a lot of functions that we need to be sure that it are working properly. The smallest function for an agent could be considered the transition function, this function allows to the agent acting and communicating with the others agents. The correct operation of all transition functions is a necessary condition for the correct functioning of the entire system.
 The best way to test small parts of the system is the unitary test provided with a tool that collect all units in one o more suits and able to run automatically. In a system is large it is a good practice to divide the system in modules, which have to be tested with an automatic tool respecting the modular organization. In order to do this specific ... 
 
 %\verbatiminput{rules/grammar_rule.txt}
@@ -34,26 +34,44 @@ The rules that is following satisfy the lexical-grammar definition that we have 
 \section{General description}
 The automatic tool to run unitary test run a collection of suites, 
 where each suite contain a collection of unitary tests. 
-Each suite is related basically to a module mantaining the preexintent suddivision.
+Each suite is related basically to a module maintaining the preexistent subdivision, but it is possible to build more suites  for a single module, for example we can write three suites for the financial market regarding each agents that act in the financial market, so we will have a better subdivision. The set of the suites is collected in a xml file, this file allows to configure the system and group the suites.   
 \begin{figure}
 \centering
 \includegraphics[scale=0.9]{graph/suites} 
 \end{figure}
-
+\subsection{The configuration file}
+The set of the suites of the entire model are grouped by a configuration file, this file are used to configure the paths of each suite and the path of the model. This file is placed in the top of model in the same folder that contains the model description.
+\begin{figure}
+\label{fig:fig2}
+\verbatiminput{code/suites.xml}
+\caption{the configuration file suites.xml}
+\end{figure} 
+The previous code describes the configuration of the testing for the eurace model, it contains two fondamental tags that are following:
+\begin{itemize}
+\item the tag \textbf{modelPath}, associate the system of test to the FLAME agent model;
+\item the tag \textbf{suitePath}, it allows to add a new suite associating its path.
+\end{itemize}
 \subsection{The suite}
-The suite is described by a file called suite.xml that have to be placed in the linked module (this is only a conceptual constraint). The suite is identified by a name and is characterized by a collection of unitary tests.
+The suite is described by a file, this file has the extension .xml and  has to be placed in the linked module, in the same folder of the associated sub-module. The suite is identified by a name and is characterized by a collection of unitary tests. The agent model is set with a list of constants that need to be specified.
+The composition and elements of a suite is opened with the tag called \textbf{suite} and its specification is characterized by the following tags:
+
+\begin{itemize}
+\item the tag \textbf{name}: this tag specified the suite name, this name must be unique in the system.
+\item the tag \textbf{constants},this tag contain the values of each costants. We must specify only the constanst that are used in the collection of test-cases, this definition is explained with more details in the next paragraph.
+\item the tag \textbf{unittest}: this tag open the unit-test specification and it could be repeated more times , each time that we have to define a test-case.
+\end{itemize}
 \subsection{The unit test}
 The  unit test is set by the following items:
 \begin{itemize}
 \item the \textbf{name of the test}. This name has to be unique in the  system.
-\item the \textbf{name of the transiction function} that will has to be tested.
-\item the name of the owner of the transiction function. This part specifies the type of agent (for example Household or Firm) that are subject to the test.
+\item the \textbf{name of the transition function} that will has to be tested.
+\item the name of the owner of the transition function. This part specifies the type of agent (for example Household or Firm) that are subject to the test.
 \item the \textbf{declarative part}. This part is important because it specifies how the assertion parts have to be built .
 \item the \textbf{fixture}. 
 \item the \textbf{expected values}.
 \end{itemize}
 \subsubsection{The declarative part}
-The declarative part speciefies the variables and messages that are subject to assertions. This part is opened with the tag called \textit{declaration} and contains a list of variables and a list of messages. The list of variables 
+The declarative part specifies the variables and messages that are subject to assertions. This part is opened with the tag called \textit{declaration} and contains a list of variables and a list of messages. The list of variables 
 The following code shows an example of a typical declarative part:
 \verbatiminput{code/declarative.xml}
 The xml code above shows two variables and a messages that are subject to assertion. The \textbf{test\_generator} tool generate three types of assertion: the first assertion is related to the \textit{assetsowned}, the second to \textit{pending\_orders } and finally the third is related to the \textit{order }message.
@@ -62,7 +80,7 @@ The fixture is a set of memory variables and input messages, initialized to prop
 as repeatable input data for the tests. Each time a test case is run, its fixture is
 reinitialized, because previous tests might have corrupted the fixture, making
 the test fail not due to errors in the code, but to wrong test data. By defining
-a fixture, you decide what you will and won’t test for. A complete set of tests
+a fixture, you decide what you will and won't test for. A complete set of tests
 for a transition function  will have many fixtures, each of which will be used by many tests,
 in many ways.
 This part is opened with the tag called \textbf{fixture} and contains a  list of the initialization values of agent's variables and a list of the initialization values of messages.
