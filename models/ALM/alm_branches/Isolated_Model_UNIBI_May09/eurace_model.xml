@@ -77,6 +77,11 @@
     <name>quantil_normal_distribution</name>
     <description></description>
    </variable>
+ <variable>
+    <type>int</type>
+    <name>innovation_by_random</name>
+    <description></description>
+   </variable>	
    <variable>
     <type>double</type>
     <name>dividend_rate</name>
