@@ -57,7 +57,7 @@ int main(int argc, char ** argv)
  * Global parameters (formerly found in mylibrary_header.h)
  * +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/	
 
-int IGFIRM_SWITCH_ON = 1; /*1: complete functionality of the IGFirm  0: ISOLATED MODEL UNIBI MAY 09 */
+int IGFIRM_SWITCH_ON = 0; /*1: complete functionality of the IGFirm  0: ISOLATED MODEL UNIBI MAY 09 */
 
 /*Strenght of logit*/
 double GAMMA_CONST = -7.5;
@@ -147,9 +147,10 @@ int PERIODS_TO_REPAY_LOANS = 24;
 int DELIVERY_PROB_IF_CRITICAL_STOCK_0 = 25;
 
 
-//int INNOVATION_PROBABILITY = 10; //10
+int IGFIRM_EXOGENOUS_INNOVATION_PROBABILITY = 10; //10
 
 double PRODUCTIVITY_PROGRESS = 0.03;
+double IGFIRM_EXOGENOUS_PRODUCTIVITY_PROGRESS = 0.025;
 
 double LOGIT_PARAMETER_SPECIFIC_SKILLS = 0;
 
@@ -213,7 +214,8 @@ double MAX_CAPITAL_GOOD_PRICE_INCREASE = 0.05;
 	}	
 	
 	int igfirm_producer_debug = 0;
-	int igfirm_employer_debug = 1;
+	int igfirm_employer_debug = 0;
+	int igfirm_financial_debug = 0;
 
 	double 	tax_rate_corporate[2][1] = {0.05,0.05};
 	double	tax_rate_hh_labour[2][1]= {0.05,0.05};
@@ -465,8 +467,9 @@ double MAX_CAPITAL_GOOD_PRICE_INCREASE = 0.05;
 
 	sprintf(data, "%d",DELIVERY_PROB_IF_CRITICAL_STOCK_0);    print_tag("delivery_prob_if_critical_stock_0", data, file);
 	sprintf(data, "%d",PERIODS_TO_REPAY_LOANS);    print_tag("periods_to_repay_loans", data, file);
-	//sprintf(data, "%d",INNOVATION_PROBABILITY);    print_tag("innovation_probability", data, file);
+	sprintf(data, "%d",IGFIRM_EXOGENOUS_INNOVATION_PROBABILITY);    print_tag("igfirm_exogenous_innovation_probability", data, file);
 	sprintf(data, "%f",PRODUCTIVITY_PROGRESS);    print_tag("productivity_progress", data, file);
+	sprintf(data, "%f",IGFIRM_EXOGENOUS_PRODUCTIVITY_PROGRESS);    print_tag("igfirm_exogenous_productivity_progress", data, file);
 	sprintf(data, "%f",LOGIT_PARAMETER_SPECIFIC_SKILLS);    print_tag("logit_parameter_specific_skills", data, file);
 	sprintf(data, "%f",LOGIT_PARAMETER_GENERAL_SKILLS);    print_tag("logit_parameter_general_skills", data, file);
 	sprintf(data, "%d",CHANGE_IN_SKILL_DISTRIBUTION);    print_tag("change_in_skill_distribution", data, file);
@@ -849,6 +852,8 @@ double MAX_CAPITAL_GOOD_PRICE_INCREASE = 0.05;
 		sprintf(data, "%d",bank_id);		print_tag("bank_id", data, file);
 		sprintf(data, "%d",igfirm_producer_debug);		print_tag("igfirm_producer_debug", data, file);
 		sprintf(data, "%d",igfirm_employer_debug);		print_tag("igfirm_employer_debug", data, file);
+		sprintf(data, "%d",igfirm_financial_debug);		print_tag("igfirm_financial_debug", data, file);
+
 
 
 		sprintf(data, "{}");								print_tag("employees", data, file);
