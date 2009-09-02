@@ -645,6 +645,9 @@
       <input>
        <messageName>data_for_government</messageName>
       </input>
+      <input>
+       <messageName>eurostat_send_macrodata</messageName>
+      </input>
      </inputs>
      <outputs/>
     </function>
