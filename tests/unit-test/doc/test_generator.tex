@@ -58,9 +58,23 @@ The composition and elements of a suite is opened with the tag called \textbf{su
 \begin{itemize}
 \item the tag \textbf{name}: this tag specified the suite name, this name must be unique in the system.
 \item the tag \textbf{constants},this tag contain the values of each costants. We must specify only the constanst that are used in the collection of test-cases, this definition is explained with more details in the next paragraph.
-\item the tag \textbf{unittest}: this tag open the unit-test specification and it could be repeated more times , each time that we have to define a test-case.
+\item the tag \textbf{unittest}: this tag open the unit-test specification and it could be written more times , each time that we have to define a test-case.
 \end{itemize}
+\subsubsection{constants}
+The tag constant permit to open a tree that speciefies the  values of the constants which are defined in the related agent model. Moreover, there are a set of contants that can be defined only in the system of test, as an example the the \textit{seed} and the \textit{current\_day}. The \textit{seed} is a particular and fondamental constants useful to set the seed of the random number generator. The current\_day is the present day of a calendar, this constants is useful because more functions could change depending of the day of the calendar.
+The constants are defined as the example figure \ref{fig:fig3}.
+\begin{figure}
+\label{fig:fig3}
+\verbatiminput{code/constants.xml}
+\caption{the constants definition }
+\end{figure}
+The example show the value association of two constants , the constants named \textit{firm\_planning\_horizon } e the constants \textit{seed}. 
 \subsection{The unit test}
+A unit test is specified with the tag unittest and permit to define a test case. More test-case could be written for a particulare function, writing  more fixture in order to fill the greater part of cases. A complete verification of a program or a simple part of a program at any stage in the life cycle can be obtained
+by performing the test process for every element of the domain. If each instance succeeds, the program is the program is verified; otherwise,an error has been found. This testing method is known as exhaustive testing and
+is the technique that will guarantee the validity of a program.
+Unfortunately, this technique is not practical. Frequently, functional domains are infinite, or even if finite, sufficiently large to make the number of required test instances infeasible. The test case is a good test 
+In order to reduc
 The  unit test is set by the following items:
 \begin{itemize}
 \item the \textbf{name of the test}. This name has to be unique in the  system.
