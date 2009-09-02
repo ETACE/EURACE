@@ -112,7 +112,10 @@ int Firm_compute_income_statement()
     return 0;
 }
 
-
+/*
+ * \fn: int Firm_compute_dividend_accruals()
+ * \brief: This function computes a money stock that is put aside for the dividend payment on eanrings for the current year. These dividends are paid out in the next calendar year. The current accruals are thereby the mean of the monthly earnings gained in the current year times the dividend rate. If the accruals collected until the current month are smaller then this target value the firm has to put new resources aside. 
+ */
 int Firm_compute_dividend_accruals()
 {
 
@@ -122,6 +125,7 @@ int Firm_compute_dividend_accruals()
 
 	mean_earnings = 0.0;
 
+	//Compute the kmean earnings of the cuurent year
 	for(i=0; i <LAST_NET_EARNINGS.size;i++)
 	{	
 
@@ -130,17 +134,10 @@ int Firm_compute_dividend_accruals()
 	}
 
 	mean_earnings= mean_earnings/ LAST_NET_EARNINGS.size;
-
+	//Compute the dividend share 
 	dividend_share = mean_earnings* DIVIDEND_RATE;
 
-
-	if(ID==1)
-{
-printf(" dividend_share  %f \n", dividend_share);
-
-}
-
-
+	//If dividend share <0 (negative mean earnings ) -> no dividends are paid out and no accruals are needed. The present accruals can be reversed.
 	if(dividend_share<0.0)
 	{
 	PAYMENT_ACCOUNT += DIVIDEND_ACCRUALS;
@@ -150,6 +147,7 @@ printf(" dividend_share  %f \n", dividend_share);
 	}
 	else
 	{
+		//If dividend_share < DIVIDEND_ACCRUALS: The current accruals are to high and can partly be reversed.
 		if(dividend_share < DIVIDEND_ACCRUALS)
 		{
 		
@@ -160,7 +158,7 @@ printf(" dividend_share  %f \n", dividend_share);
 
 		}else
 		{
-	
+		//Otherwise additional accruals are required.
 		ADDITIONAL_ACCRUALS = dividend_share - DIVIDEND_ACCRUALS;
 		DIVIDEND_ACCRUALS = ADDITIONAL_ACCRUALS;
 	 
@@ -170,6 +168,12 @@ printf(" dividend_share  %f \n", dividend_share);
 return 0;
 }
 
+
+
+/*
+ * \fn: int Firm_compute_dividends()
+ * \brief: This function computes the total dividend amount for the next year and the monthly pay out. The dividends are simply the accruals for dividends collected over the last year.
+ */
 int Firm_compute_dividends()
 {
     int i;
@@ -178,12 +182,6 @@ int Firm_compute_dividends()
 	// Compute the dividends paid out in 12 monthly pieces
 
         TOTAL_DIVIDEND_PAYMENT = DIVIDEND_ACCRUALS/12; 
-
-if(ID==1)
-{
-printf("  TOTAL_DIVIDEND_PAYMENT  %f \n",  TOTAL_DIVIDEND_PAYMENT);
-
-}
 
 
 //Resetting the DIVIDEND_ACCRUALS counter:
@@ -375,7 +373,7 @@ int Firm_execute_financial_payments()
       }
 
 	//Step 3:
-	// Add additional accruals to the stock and decrease the payment account
+	// Add additional accruals to the accrual stock and decrease the payment account
 
 	ACCRUALS += ADDITIONAL_ACCRUALS;
 	PAYMENT_ACCOUNT -= ADDITIONAL_ACCRUALS;
