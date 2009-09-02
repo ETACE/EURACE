@@ -20,10 +20,14 @@
  */
 int IGFirm_compute_financial_payments()
 {
+	/*1: print the printf-statements*/
+	if(IGFIRM_FINANCIAL_DEBUG == 1)
+	{
+		printf("IN FUNCTION:IGFirm_compute_financial_payments() \n");
+		printf("****************************************************************** \n");
+		printf("Last day: %d \n", LAST_DAY_OF_MONTH_TO_ACT);
+	}
 
-	printf("IN FUNCTION:IGFirm_compute_financial_payments() \n");
-	printf("************************************************** \n");
-printf("Last day: %d \n", LAST_DAY_OF_MONTH_TO_ACT);
 	double interest_payment;
     	int imax;
     	int i;
@@ -71,10 +75,14 @@ printf("Last day: %d \n", LAST_DAY_OF_MONTH_TO_ACT);
         	TOTAL_DEBT_INSTALLMENT_PAYMENT += LOANS.array[i].installment_amount;
     	}
 
-	printf("TOTAL_INTEREST_PAYMENT %f \n",TOTAL_INTEREST_PAYMENT);
-	printf("TOTAL_DEBT %f \n",TOTAL_DEBT);
-	printf("TOTAL_DEBT_INSTALLMENT_PAYMENT %f \n",TOTAL_DEBT_INSTALLMENT_PAYMENT);
-	printf("**************************************************************** \n");
+	/*1: print the printf-statements*/
+	if(IGFIRM_FINANCIAL_DEBUG == 1)
+	{
+		printf("TOTAL_INTEREST_PAYMENT %f \n",TOTAL_INTEREST_PAYMENT);
+		printf("TOTAL_DEBT %f \n",TOTAL_DEBT);
+		printf("TOTAL_DEBT_INSTALLMENT_PAYMENT %f \n",TOTAL_DEBT_INSTALLMENT_PAYMENT);
+		printf("**************************************************************** \n");
+	}
 
 	
 	
@@ -87,8 +95,12 @@ printf("Last day: %d \n", LAST_DAY_OF_MONTH_TO_ACT);
  */
 int IGFirm_compute_income_statement()
 {
-	printf("IN FUNCTION: IGFirm_compute_income_statement() \n");
-	printf("***********************************************\n");
+	/*1: print the printf-statements*/
+	if(IGFIRM_FINANCIAL_DEBUG == 1)
+	{
+		printf("IN FUNCTION: IGFirm_compute_income_statement() \n");
+		printf("***************************************************************\n");
+	}
 	
 	//In the future: if we want to include sales_costs
     	//SALES_COSTS = 0;
@@ -96,10 +108,14 @@ int IGFirm_compute_income_statement()
     	// compute net earnings
     	EARNINGS = CUM_REVENUES - TOTAL_INTEREST_PAYMENT - PRODUCTION_COSTS;
 
-	printf("EARNINGS %f \n",EARNINGS);
-	printf("CUM_REVENUES %f \n",CUM_REVENUES);
-	printf("TOTAL_INTEREST_PAYMENT %f \n",TOTAL_INTEREST_PAYMENT);
-	printf("PRODUCTION_COSTS %f \n",PRODUCTION_COSTS);
+	/*1: print the printf-statements*/
+	if(IGFIRM_FINANCIAL_DEBUG == 1)
+	{
+		printf("EARNINGS %f \n",EARNINGS);
+		printf("CUM_REVENUES %f \n",CUM_REVENUES);
+		printf("TOTAL_INTEREST_PAYMENT %f \n",TOTAL_INTEREST_PAYMENT);
+		printf("PRODUCTION_COSTS %f \n",PRODUCTION_COSTS);
+	}
 	
 	
 	
@@ -131,11 +147,16 @@ int IGFirm_compute_income_statement()
        		CURRENT_DIVIDEND_PER_EARNINGS = TOTAL_DIVIDEND_PAYMENT/EARNINGS;
     	}
 
-	printf("PREVIOUS_NET_EARNINGS %f \n",PREVIOUS_NET_EARNINGS);
-	printf("NET_EARNINGS %f \n",NET_EARNINGS);
-	printf("TAX_RATE_CORPORATE %f \n",TAX_RATE_CORPORATE);
-	printf("TAX_PAYMENT %f \n",TAX_PAYMENT);
-	printf("*************************************************\n");
+
+	/*1: print the printf-statements*/
+	if(IGFIRM_FINANCIAL_DEBUG == 1)
+	{
+			printf("PREVIOUS_NET_EARNINGS %f \n",PREVIOUS_NET_EARNINGS);
+		printf("NET_EARNINGS %f \n",NET_EARNINGS);
+		printf("TAX_RATE_CORPORATE %f \n",TAX_RATE_CORPORATE);
+		printf("TAX_PAYMENT %f \n",TAX_PAYMENT);
+		printf("*************************************************************************\n");
+	}
 
    
 	
@@ -145,8 +166,12 @@ int IGFirm_compute_income_statement()
 
 int IGFirm_compute_dividends()
 {
-	printf("IN FUNCTION: IGFirm_compute_dividends()\n");
-	printf("**********************************************\n");
+	/*1: print the printf-statements*/
+	if(IGFIRM_FINANCIAL_DEBUG == 1)
+	{
+		printf("IN FUNCTION: IGFirm_compute_dividends()\n");
+		printf("*******************************************************************\n");
+	}
 
 	//Determine total_dividend_payment
 	//option 1: total divided payment remains constant
@@ -203,22 +228,29 @@ int IGFirm_compute_dividends()
 
 	
 
-
-	printf("NET_EARNINGS %f \n",NET_EARNINGS);
-	printf("CURRENT_SHARES_OUTSTANDING %d \n",CURRENT_SHARES_OUTSTANDING);
-	printf("TOTAL_DIVIDEND_PAYMENT %f \n",TOTAL_DIVIDEND_PAYMENT);
-	printf("PREVIOUS_EARNINGS_PER_SHARE %f \n",PREVIOUS_EARNINGS_PER_SHARE);
-	printf("EARNINGS_PER_SHARE %f \n",EARNINGS_PER_SHARE);
-	printf("PREVIOUS_DIVIDEND_PER_SHARE %f \n",PREVIOUS_DIVIDEND_PER_SHARE);
-	printf("CURRENT_DIVIDEND_PER_SHARE %f \n",CURRENT_DIVIDEND_PER_SHARE);
-	printf("**********************************************\n");	
+	/*1: print the printf-statements*/
+	if(IGFIRM_FINANCIAL_DEBUG == 1)
+	{
+		printf("NET_EARNINGS %f \n",NET_EARNINGS);
+		printf("CURRENT_SHARES_OUTSTANDING %d \n",CURRENT_SHARES_OUTSTANDING);
+		printf("TOTAL_DIVIDEND_PAYMENT %f \n",TOTAL_DIVIDEND_PAYMENT);
+		printf("PREVIOUS_EARNINGS_PER_SHARE %f \n",PREVIOUS_EARNINGS_PER_SHARE);
+		printf("EARNINGS_PER_SHARE %f \n",EARNINGS_PER_SHARE);
+		printf("PREVIOUS_DIVIDEND_PER_SHARE %f \n",PREVIOUS_DIVIDEND_PER_SHARE);
+		printf("CURRENT_DIVIDEND_PER_SHARE %f \n",CURRENT_DIVIDEND_PER_SHARE);
+		printf("****************************************************************************\n");
+	}	
     return 0;
 }
 
 int IGFirm_compute_total_financial_payments()
 {
-	printf("IN FUNCTION: IGFirm_compute_total_financial_payments()\n");
-	printf("*********************************************************\n");
+	/*1: print the printf-statements*/
+	if(IGFIRM_FINANCIAL_DEBUG == 1)
+	{
+		printf("IN FUNCTION: IGFirm_compute_total_financial_payments()\n");
+		printf("*********************************************************\n");
+	}
 	
 	//This variable is not used anywhere: it is the sum of financial_liquidity_needs and 
 	//production_liquidity_needs
@@ -227,13 +259,17 @@ int IGFirm_compute_total_financial_payments()
 	TOTAL_PAYMENTS = TOTAL_INTEREST_PAYMENT + TOTAL_DEBT_INSTALLMENT_PAYMENT + 		
 	TOTAL_DIVIDEND_PAYMENT + TAX_PAYMENT + PLANNED_PRODUCTION_COSTS;
 
-	printf("TOTAL_INTEREST_PAYMENT %f \n",TOTAL_INTEREST_PAYMENT);
-	printf("TOTAL_DEBT_INSTALLMENT_PAYMENT %f \n",TOTAL_DEBT_INSTALLMENT_PAYMENT);
-	printf("TOTAL_DIVIDEND_PAYMENT %f \n",TOTAL_DIVIDEND_PAYMENT);
-	printf("TAX_PAYMENT %f \n",TAX_PAYMENT);
-	printf("PLANNED_PRODUCTION_COSTS %f \n",PLANNED_PRODUCTION_COSTS);
-	printf("TOTAL_PAYMENTS %f \n",TOTAL_PAYMENTS);
-	printf("*********************************************************\n");
+	/*1: print the printf-statements*/
+	if(IGFIRM_FINANCIAL_DEBUG == 1)
+	{
+		printf("TOTAL_INTEREST_PAYMENT %f \n",TOTAL_INTEREST_PAYMENT);
+		printf("TOTAL_DEBT_INSTALLMENT_PAYMENT %f \n",TOTAL_DEBT_INSTALLMENT_PAYMENT);
+		printf("TOTAL_DIVIDEND_PAYMENT %f \n",TOTAL_DIVIDEND_PAYMENT);
+		printf("TAX_PAYMENT %f \n",TAX_PAYMENT);
+		printf("PLANNED_PRODUCTION_COSTS %f \n",PLANNED_PRODUCTION_COSTS);
+		printf("TOTAL_PAYMENTS %f \n",TOTAL_PAYMENTS);
+		printf("************************************************************************\n");
+	}
 
 	return 0;
 }
@@ -249,8 +285,12 @@ int IGFirm_compute_total_financial_payments()
  */ 
 int IGFirm_compute_balance_sheet()
 {
-	printf("IN FUNCTION: IGFirm_compute_balance_sheet() \n");
-	printf("************************************************ \n");
+	/*1: print the printf-statements*/
+	if(IGFIRM_FINANCIAL_DEBUG == 1)
+	{
+		printf("IN FUNCTION: IGFirm_compute_balance_sheet() \n");
+		printf("************************************************************************* \n");
+	}
     
     	//compute the equity of the firm
     	//TOTAL_ASSETS=
@@ -272,13 +312,17 @@ int IGFirm_compute_balance_sheet()
 	
     	EQUITY = TOTAL_ASSETS - TOTAL_DEBT;
 
-	printf("TOTAL_UNITS_LOCAL_INVENTORY %f \n",TOTAL_UNITS_LOCAL_INVENTORY);
-    	printf("TOTAL_VALUE_LOCAL_INVENTORY %f \n",TOTAL_VALUE_LOCAL_INVENTORY);	
-	printf("PAYMENT_ACCOUNT %f \n",PAYMENT_ACCOUNT);
-	printf("TOTAL_ASSETS %f \n",TOTAL_ASSETS);
-	printf("TOTAL_DEBT %f \n",TOTAL_DEBT);
-	printf("EQUITY %f \n",EQUITY);
-    	printf("************************************************ \n");
+	/*1: print the printf-statements*/
+	if(IGFIRM_FINANCIAL_DEBUG == 1)
+	{
+		printf("TOTAL_UNITS_LOCAL_INVENTORY %f \n",TOTAL_UNITS_LOCAL_INVENTORY);
+    		printf("TOTAL_VALUE_LOCAL_INVENTORY %f \n",TOTAL_VALUE_LOCAL_INVENTORY);	
+		printf("PAYMENT_ACCOUNT %f \n",PAYMENT_ACCOUNT);
+		printf("TOTAL_ASSETS %f \n",TOTAL_ASSETS);
+		printf("TOTAL_DEBT %f \n",TOTAL_DEBT);
+		printf("EQUITY %f \n",EQUITY);
+    		printf("**************************************************************************** \n");
+	}
   
     return 0;
 }
@@ -291,31 +335,46 @@ int IGFirm_compute_balance_sheet()
  * The payout policy can be subject to revision if it turns out to be unsupportable by the obtained financial resources.
  */
 int IGFirm_compute_total_liquidity_needs()
-{	printf("IN FUNCTION: IGFirm_compute_total_liquidity_needs() \n");
-	printf("*************************************************** \n");
+{
+	/*1: print the printf-statements*/
+	if(IGFIRM_FINANCIAL_DEBUG == 1)
+	{
+		printf("IN FUNCTION: IGFirm_compute_total_liquidity_needs() \n");
+		printf("*************************************************************************** \n");
+	}
 	
 	PRODUCTION_LIQUIDITY_NEEDS = PLANNED_PRODUCTION_COSTS;
     	FINANCIAL_LIQUIDITY_NEEDS = TOTAL_INTEREST_PAYMENT + TOTAL_DEBT_INSTALLMENT_PAYMENT + 	
 	TAX_PAYMENT + TOTAL_DIVIDEND_PAYMENT;
 	
-	printf("PLANNED_PRODUCTION_COSTS %f  = \n",PLANNED_PRODUCTION_COSTS);
-	printf("PRODUCTION_LIQUIDITY_NEEDS %f \n",PRODUCTION_LIQUIDITY_NEEDS);
-	printf("\n");
-	printf("FINANCIAL_LIQUIDITY_NEEDS %f = \n",FINANCIAL_LIQUIDITY_NEEDS);
-	printf("TOTAL_INTEREST_PAYMENT %f  + \n",TOTAL_INTEREST_PAYMENT);
-	printf("TOTAL_DEBT_INSTALLMENT_PAYMENT %f  + \n",TOTAL_DEBT_INSTALLMENT_PAYMENT);
-	printf("TAX_PAYMENT %f  + \n",TAX_PAYMENT);
-	printf("TOTAL_DIVIDEND_PAYMENT %f \n",TOTAL_DIVIDEND_PAYMENT);
 
-	printf("\n");
+	/*1: print the printf-statements*/
+	if(IGFIRM_FINANCIAL_DEBUG == 1)
+	{
+		printf("PLANNED_PRODUCTION_COSTS %f  = \n",PLANNED_PRODUCTION_COSTS);
+		printf("PRODUCTION_LIQUIDITY_NEEDS %f \n",PRODUCTION_LIQUIDITY_NEEDS);
+		printf("\n");
+		printf("FINANCIAL_LIQUIDITY_NEEDS %f = \n",FINANCIAL_LIQUIDITY_NEEDS);
+		printf("TOTAL_INTEREST_PAYMENT %f  + \n",TOTAL_INTEREST_PAYMENT);
+		printf("TOTAL_DEBT_INSTALLMENT_PAYMENT %f  + \n",TOTAL_DEBT_INSTALLMENT_PAYMENT);
+		printf("TAX_PAYMENT %f  + \n",TAX_PAYMENT);
+		printf("TOTAL_DIVIDEND_PAYMENT %f \n",TOTAL_DIVIDEND_PAYMENT);
+
+		printf("\n");
+	}
 	
     	
     	//Check if additional external financial needs are required for total financial needs 	
 	//(direct payable and delayed payable)    
     	TOTAL_FINANCIAL_NEEDS =  PRODUCTION_LIQUIDITY_NEEDS + FINANCIAL_LIQUIDITY_NEEDS;
 
-	printf("PAYMENT_ACCOUNT %f  > or < \n",PAYMENT_ACCOUNT);
-	printf("TOTAL_FINANCIAL_NEEDS %f  = PRODUCTION_LIQUIDITY_NEEDS + FINANCIAL_LIQUIDITY_NEEDS\n",TOTAL_FINANCIAL_NEEDS);
+
+	/*1: print the printf-statements*/
+	if(IGFIRM_FINANCIAL_DEBUG == 1)
+	{
+		printf("PAYMENT_ACCOUNT %f  > or < \n",PAYMENT_ACCOUNT);
+		printf("TOTAL_FINANCIAL_NEEDS %f  = PRODUCTION_LIQUIDITY_NEEDS + FINANCIAL_LIQUIDITY_NEEDS\n",TOTAL_FINANCIAL_NEEDS);
+	}
 
     	
     	//Check if external financing is needed
@@ -332,9 +391,13 @@ int IGFirm_compute_total_liquidity_needs()
         	EXTERNAL_FINANCIAL_NEEDS = TOTAL_FINANCIAL_NEEDS - PAYMENT_ACCOUNT;
         }
 	
-	
-	printf("EXTERNAL_FINANCIAL_NEEDS %f \n",EXTERNAL_FINANCIAL_NEEDS);
-	printf("********************************************************* \n");
+
+	/*1: print the printf-statements*/
+	if(IGFIRM_FINANCIAL_DEBUG == 1)
+	{	
+		printf("EXTERNAL_FINANCIAL_NEEDS %f \n",EXTERNAL_FINANCIAL_NEEDS);
+		printf("******************************************************************** \n");
+	}
  
  
     return 0;
@@ -350,8 +413,12 @@ int IGFirm_compute_total_liquidity_needs()
  */
 int IGFirm_execute_financial_payments()
 {	
-	printf("IN FUNCTION: IGFirm_execute_financial_payments()\n");
-	printf("**************************************************\n");
+	/*1: print the printf-statements*/
+	if(IGFIRM_FINANCIAL_DEBUG == 1)
+	{
+		printf("IN FUNCTION: IGFirm_execute_financial_payments()\n");
+		printf("*****************************************************************************\n");
+	}
 
 	int imax;
 	int i;	
@@ -366,8 +433,12 @@ int IGFirm_execute_financial_payments()
 		PAYMENT_ACCOUNT -= TAX_PAYMENT;
 	}
 
-	printf("PAYMENT_ACCOUNT  %f -  \n",PAYMENT_ACCOUNT);
-	printf("TAX_PAYMENT  %f - \n",TAX_PAYMENT);
+	/*1: print the printf-statements*/
+	if(IGFIRM_FINANCIAL_DEBUG == 1)
+	{
+		printf("PAYMENT_ACCOUNT  %f -  \n",PAYMENT_ACCOUNT);
+		printf("TAX_PAYMENT  %f - \n",TAX_PAYMENT);
+	}
 
 	//step 2: actual interest_payments and installment_payments
 
@@ -424,9 +495,12 @@ int IGFirm_execute_financial_payments()
 			}
 	  }
 
-	
-	printf("TOTAL_INTEREST_PAYMENT %f  - \n",TOTAL_INTEREST_PAYMENT);
-	printf("TOTAL_DEBT_INSTALLMENT_PAYMENT %f  -  \n",TOTAL_DEBT_INSTALLMENT_PAYMENT);
+	/*1: print the printf-statements*/
+	if(IGFIRM_FINANCIAL_DEBUG == 1)
+	{
+		printf("TOTAL_INTEREST_PAYMENT %f  - \n",TOTAL_INTEREST_PAYMENT);
+		printf("TOTAL_DEBT_INSTALLMENT_PAYMENT %f  -  \n",TOTAL_DEBT_INSTALLMENT_PAYMENT);
+	}
 	
 
 		//step 3: actual dividend payments
@@ -446,10 +520,13 @@ int IGFirm_execute_financial_payments()
 		}
 
 		
-	
-	printf("TOTAL_DIVIDEND_PAYMENT %f  = \n",TOTAL_DIVIDEND_PAYMENT);
-	printf("PAYMENT_ACCOUNT %f \n",PAYMENT_ACCOUNT);
-	printf("************************************************** \n");
+	/*1: print the printf-statements*/
+	if(IGFIRM_FINANCIAL_DEBUG == 1)
+	{
+		printf("TOTAL_DIVIDEND_PAYMENT %f  = \n",TOTAL_DIVIDEND_PAYMENT);
+		printf("PAYMENT_ACCOUNT %f \n",PAYMENT_ACCOUNT);
+		printf("****************************************************************** \n");
+	}
 	
 		
     return 0;

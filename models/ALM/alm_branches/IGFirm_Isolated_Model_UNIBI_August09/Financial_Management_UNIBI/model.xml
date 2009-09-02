@@ -358,6 +358,7 @@
 <memory>
 
 <!-- IGFirm_compute_income_statement -->
+<variable><type>int</type><name>igfirm_financial_debug</name><description></description>Earnings-before-interest-and-taxes: total revenue - sales_costs</variable>
 <variable><type>double</type><name>ebit</name><description></description>Earnings-before-interest-and-taxes: total revenue - sales_costs</variable>
 <variable><type>double</type><name>earnings</name><description>Earnings after interest payments (= ebit - interest)</description></variable>
 <variable><type>double</type><name>tax_rate_corporate</name><description>Tax rate on corporate profits (kept in memory)</description></variable>
