@@ -195,9 +195,19 @@
      <name>productivity</name>
      <description></description>
     </variable>
+	<variable>
+     <type>double</type>
+     <name>new_productivity</name>
+     <description></description>
+    </variable>
     <variable>
      <type>double</type>
      <name>capital_good_price</name>
+     <description></description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>new_capital_good_price</name>
      <description></description>
     </variable>
     <variable>
