@@ -209,12 +209,17 @@
    </variable>
    <variable>
     <type>int</type>
-    <name>innovation_probability</name>
+    <name>igfirm_exogenous_innovation_probability</name>
     <description>10</description>
    </variable>
    <variable>
     <type>double</type>
     <name>productivity_progress</name>
+    <description>0.05</description>
+   </variable>
+<variable>
+    <type>double</type>
+    <name>igfirm_exogenous_productivity_progress</name>
     <description>0.05</description>
    </variable>
 <variable>
