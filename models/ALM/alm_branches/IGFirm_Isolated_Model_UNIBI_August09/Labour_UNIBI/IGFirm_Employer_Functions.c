@@ -258,7 +258,8 @@ int IGFirm_send_redundancies()
 			case 4:
 				NO_EMPLOYEES_SKILL_4--;
 				break;
-			/*If employee have skill level 5 reduce the number of 					employees with skill level 5 by 1*/
+			/*If employee have skill level 5 reduce the number of 					
+			employees with skill level 5 by 1*/
 			case 5:
 				NO_EMPLOYEES_SKILL_5--;
 				break;
@@ -481,7 +482,7 @@ int IGFirm_read_job_applications_send_job_offer_or_rejection()
 	}
 /*+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
-	/*Shuffle applications before sorting: If two or more applications are equal then 			they will be ranked by chance*/
+	/*Shuffle applications before sorting: If two or more applications are equal then they will be ranked by chance*/
 	/*int i,k;
 	job_application * i_job_application, * k_job_application;
 	job_application * temp_job_application = (job_application *)malloc(sizeof
@@ -509,8 +510,8 @@ int IGFirm_read_job_applications_send_job_offer_or_rejection()
 	/*Rank job applications (function from my_library_functions) */
 	//sort_job_application_list(&job_application_list);
 
-	qsort(job_application_list.array, job_application_list.size, 
-	sizeof(job_application), job_application_list_rank_general_skill_function);
+	//qsort(job_application_list.array, job_application_list.size, 
+	//sizeof(job_application), job_application_list_rank_general_skill_function);
 
 	//qsort(job_application_RD_list.array, job_application_RD_list.size, 
 	//sizeof(job_application), job_application_list_rank_general_skill_function);
@@ -594,7 +595,7 @@ int IGFirm_read_job_applications_send_job_offer_or_rejection()
 			for(j = 0; j< job_application_list.size;j++)
 			{
 				denominator_logit+= 
-				exp(0.5*job_application_list.array[j].general_skill +
+				exp(0.0*job_application_list.array[j].general_skill +
 				0*job_application_list.array[j].specific_skill);
 			}
 
@@ -603,7 +604,7 @@ int IGFirm_read_job_applications_send_job_offer_or_rejection()
 
 			for( j = 0; j< job_application_list.size;j++)
 			{
-				logit = exp(0.5*job_application_list.array[j].general_skill +
+				logit = exp(0.0*job_application_list.array[j].general_skill +
 				0*job_application_list.array[j].specific_skill)/ denominator_logit;
 		
 				add_logit(&logit_applications_list, 100*logit,job_application_list.
@@ -1071,8 +1072,8 @@ int IGFirm_read_job_applications_send_job_offer_or_rejection_2()
 	/* Rank job applications (function from my_library_functions) */
 	//sort_job_application_list(&job_application_list);
 	
-	qsort(job_application_list.array, job_application_list.size, 
-	sizeof(job_application), job_application_list_rank_general_skill_function);
+	//qsort(job_application_list.array, job_application_list.size, 
+	//sizeof(job_application), job_application_list_rank_general_skill_function);
 
 	//qsort(job_application_RD_list.array, job_application_RD_list.size, 
 	//sizeof(job_application), job_application_list_rank_general_skill_function);
@@ -1156,7 +1157,7 @@ int IGFirm_read_job_applications_send_job_offer_or_rejection_2()
 			for(j = 0; j< job_application_list.size;j++)
 			{
 				denominator_logit+= 
-				exp(0.5*job_application_list.array[j].general_skill +
+				exp(0.0*job_application_list.array[j].general_skill +
 				0*job_application_list.array[j].specific_skill);
 			}
 
@@ -1164,7 +1165,7 @@ int IGFirm_read_job_applications_send_job_offer_or_rejection_2()
 
 			for(j = 0; j< job_application_list.size;j++)
 			{
-				logit = exp(0.5*job_application_list.array[j].general_skill +
+				logit = exp(0.0*job_application_list.array[j].general_skill +
 				0*job_application_list.array[j].specific_skill)/ denominator_logit;
 		
 				add_logit(&logit_applications_list, 100*logit,job_application_list.
