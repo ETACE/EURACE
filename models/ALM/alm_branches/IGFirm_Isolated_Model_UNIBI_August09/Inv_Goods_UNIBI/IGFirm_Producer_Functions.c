@@ -86,25 +86,21 @@ int IGFirm_update_productivity_price()
 		{
 			INNOVATION_SUCCESS = 1;
 			ADDITIONAL_PRODUCTIVITY =  (PRODUCTIVITY_PROGRESS + random_progress);
-			PRODUCTIVITY = PRODUCTIVITY*(1 + ADDITIONAL_PRODUCTIVITY);
+			NEW_PRODUCTIVITY = PRODUCTIVITY*(1 + ADDITIONAL_PRODUCTIVITY);
 
 			/*1: print the printf-statements*/
 			if(IGFIRM_PRODUCER_DEBUG == 1)
 			{
 				printf("Project completed with positive progress\n");
 				printf("PRODUCTIVITY %f\n",PRODUCTIVITY);
+				printf("NEW_PRODUCTIVITY %f\n",NEW_PRODUCTIVITY);
 				printf("ADDITIONAL_PRODUCTIVITY %f\n",ADDITIONAL_PRODUCTIVITY);
 			}
 		}
 	}
 
 	
-	/*1: complete functionality of the IGFirm  0: ISOLATED MODEL UNIBI MAY 09 */
-	if(IGFIRM_SWITCH_ON == 0)
-	{
-		PRODUCTIVITY = PRODUCTIVITY*(1 + PRODUCTIVITY_PROGRESS + 0.02);
-		CAPITAL_GOOD_PRICE = CAPITAL_GOOD_PRICE*(1 + PRODUCTIVITY_PROGRESS + 0.02);
-	}
+	
 	
 
 /**********************TEST: NORMAL DISTRIBUTION************************************************/
@@ -312,6 +308,31 @@ int IGFirm_send_quality_price_info()
 	{
 		printf("IN FUNCTION: IGFirm_send_quality_price_info\n");
 		printf("************************************************************************\n");
+	}
+
+
+	/*1: complete functionality of the IGFirm  0: ISOLATED MODEL UNIBI MAY 09 */
+	if(IGFIRM_SWITCH_ON == 0)
+	{
+
+		RESEARCH_EMPLOYEES_NEEDED = 0;
+
+		if(DAY >= TRANSITION_PHASE)
+	 	{
+
+			if(DAY%MONTH == DAY_OF_MONTH_TO_ACT)
+			{
+				int i;	
+				i = random_int( 0 ,100);
+		
+				if(i < IGFIRM_EXOGENOUS_INNOVATION_PROBABILITY)
+				{
+					PRODUCTIVITY = PRODUCTIVITY*(1 + IGFIRM_EXOGENOUS_PRODUCTIVITY_PROGRESS);
+					CAPITAL_GOOD_PRICE = 
+					CAPITAL_GOOD_PRICE*(1 +IGFIRM_EXOGENOUS_PRODUCTIVITY_PROGRESS);	
+				}
+	 		}
+		}
 	}
 
 	add_productivity_message(ID,PRODUCTIVITY,CAPITAL_GOOD_PRICE);
@@ -763,7 +784,7 @@ int IGFirm_calc_pay_costs()
 	}
 	
 	double average_production_quantity = 0.0;
-	double old_capital_good_price = 0.0;
+	//double old_capital_good_price = 0.0;
 	int i,m;
 	
 	LABOUR_COSTS = 0.0;
@@ -797,13 +818,14 @@ int IGFirm_calc_pay_costs()
 	PRODUCTION_COSTS = LABOUR_COSTS;
 
 	
-	old_capital_good_price = CAPITAL_GOOD_PRICE;
+	//old_capital_good_price = CAPITAL_GOOD_PRICE;
 	
 	/*Calculate the average of the last production quantities*/
 	for(m = 0; m < LAST_PRODUCTION_QUANTITIES.size; m++)
 	{
 		average_production_quantity += LAST_PRODUCTION_QUANTITIES.array[m];
 	}
+
 	average_production_quantity = 
 	average_production_quantity/(double)LAST_PRODUCTION_QUANTITIES.size;
 
@@ -816,13 +838,13 @@ int IGFirm_calc_pay_costs()
 		{
 			/*The average of the last production quantities is used to smooth the capital good price*/
 			UNIT_COSTS = LABOUR_COSTS/average_production_quantity;
-			CAPITAL_GOOD_PRICE = UNIT_COSTS*(1+IG_MARK_UP);
+			NEW_CAPITAL_GOOD_PRICE = UNIT_COSTS*(1+IG_MARK_UP);
 		}
 		/*If there was no production*/
 		else
 		{	/*Take the unit costs of the last period and also the price*/
 			UNIT_COSTS = UNIT_COSTS;
-			CAPITAL_GOOD_PRICE = CAPITAL_GOOD_PRICE;
+			NEW_CAPITAL_GOOD_PRICE = CAPITAL_GOOD_PRICE;
 		}
 	}
 	
@@ -833,6 +855,7 @@ int IGFirm_calc_pay_costs()
 		printf("AVERAGE PRODUCTION QUANTITY %f  =\n",average_production_quantity);
 		printf("UNIT_COSTS %f \n",UNIT_COSTS);
 		printf("CAPITAL_GOOD_PRICE %f \n",CAPITAL_GOOD_PRICE);
+		printf("NEW_CAPITAL_GOOD_PRICE %f \n",NEW_CAPITAL_GOOD_PRICE);
 		printf("***************************************************************************************\n");
 	}
 
@@ -1031,13 +1054,38 @@ if(DAY%MONTH==DAY_OF_MONTH_TO_ACT)
 		printf("CAPITAL_GOOD_STORE %f \n",CAPITAL_GOOD_STORE);
 	}
 	
-	
-	if(DAY%MONTH==DAY_OF_MONTH_TO_ACT)
-	{
-		/*1: print the printf-statements*/
-		if(IGFIRM_PRODUCER_DEBUG == 1)
+
+
+	if(IGFIRM_SWITCH_ON == 1)
+	{	
+		if(DAY%240 == DAY_OF_MONTH_TO_ACT)
 		{
-			printf("******************************************************************************************\n");
+			/*The new productivity is set here to make sure that the new productivity together with the new price is 				sent 	on the first day after the production. Hence it is avoided that the IGFIRM sent the new productivity 				with the old price. */
+			PRODUCTIVITY = NEW_PRODUCTIVITY;
+
+			/*1: print the printf-statements*/
+			if(IGFIRM_PRODUCER_DEBUG == 1)
+			{
+				printf("NEW_PRODUCTIVITY; %f \n",NEW_PRODUCTIVITY);
+			}
+		}
+
+
+
+		if(DAY%MONTH==DAY_OF_MONTH_TO_ACT)
+		{
+			/*Firms which buy goods on the day_of_month_to_act of the IGFIRM should pay the price which 
+			was announced in IGFirm_send_quality_price_info_message. Hence the new price after the 
+			last production is set here for the next 20 days.*/
+			CAPITAL_GOOD_PRICE = NEW_CAPITAL_GOOD_PRICE;
+
+			/*1: print the printf-statements*/
+			if(IGFIRM_PRODUCER_DEBUG == 1)
+			{
+				printf("CAPITAL_GOOD_PRICE %f\n",CAPITAL_GOOD_PRICE);
+				printf("******************************************************************************************\n");
+			}
+
 		}
 
 	}
