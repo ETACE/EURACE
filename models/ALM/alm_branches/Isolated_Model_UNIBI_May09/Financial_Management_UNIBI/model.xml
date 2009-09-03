@@ -299,7 +299,7 @@
 	<condition>
       <time>
        <period>yearly</period>
-       <phase>1</phase>
+       <phase>a.day_of_month_to_act</phase>
       </time>
      </condition>
      <inputs/>
@@ -314,7 +314,7 @@
       <not>
        <time>
         <period>yearly</period>
-        <phase>1</phase>
+        <phase>a.day_of_month_to_act</phase>
        </time>
       </not>
      </condition>
