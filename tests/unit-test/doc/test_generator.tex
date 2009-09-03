@@ -73,8 +73,9 @@ The example show the value association of two constants , the constants named \t
 A unit test is specified with the tag unittest and permit to define a test case. More test-case could be written for a particulare function, writing  more fixture in order to fill the greater part of cases. A complete verification of a program or a simple part of a program at any stage in the life cycle can be obtained
 by performing the test process for every element of the domain. If each instance succeeds, the program is the program is verified; otherwise,an error has been found. This testing method is known as exhaustive testing and
 is the technique that will guarantee the validity of a program.
-Unfortunately, this technique is not practical. Frequently, functional domains are infinite, or even if finite, sufficiently large to make the number of required test instances infeasible. The test case is a good test 
-In order to reduc
+Unfortunately, this technique is not practical. Frequently, functional domains are infinite, or even if finite, sufficiently large to make the number of required test instances infeasible. In order to reduce this potentially infinite exhaustive testing process to a feasible testing process, we must find criteria for choosing
+representative elements from the functional domain. 
+The subset of elements chosen for use in a testing process is called a test data set (test set for short). Thus the crux of the testing problem is to find an adequate test set, one large enough to span the domain and yet small enough that the testing process can be performed for each element in the set.
 The  unit test is set by the following items:
 \begin{itemize}
 \item the \textbf{name of the test}. This name has to be unique in the  system.
@@ -119,8 +120,8 @@ and using the performance evaluation tools, are given in the following sections.
 
 \subsection{Downloading}
 The first step is to download the test\_generator and install any necessary files. 
-It needs the  libxml and CUnit library that have to be installed properly.
-The  way to get test\_generator is to use the repository at the address  http://ccpforge.cse.rl.ac.uk/svn/eurace/tests. 
+It needs the  libxml and CUnit library that have to be installed properly, we send to the appendix for more details .
+The  way to get test\_generator is to use the repository at the address  http://ccpforge.cse.rl.ac.uk/svn/eurace/tests/unit-test. 
 Get the the entire folder unit-test-generator that contain the following files:
 main\_code.c, Makekile , datatype.c.tmp , header.h.tmp , Suite.h.tmp,
 Suite.c.tmp, messages.c.tmp, LauncherTest.c.tmp
@@ -132,22 +133,28 @@ Make test\_generator\\
 This may take a while, depending on the load on your system and on your file server,
 it may take anywhere from a few seconds to an minut or more.
 \subsection{Generating test case and suite organization}
-The test\_generator generate code by using the model information an the information contained in the files called suite.xml and present in each module. 
-The code generated is compounded by some C code files and a Makefile called Makefiletest, 
-\subsection{Running}
-Run a simple integrity test:\\
-\% cd ../integrity\_tests\\
-\% ./integrity tests/rules.xml target.txt\\
-At this point you have run an integrity test on your system. 
-\subsection{The examples: rules.xml}
-The Integrity distribution contains a simple programs, which are located in the
-integrity source tree.
-The rules.xml \ref{fig:fig1} is a simple example which is explained how configure an integrity test.
-\begin{figure}
-\label{fig:fig1}
-\verbatiminput{../tests/rules.xml}
+The test\_generator are used to generate the code of unit-test using the model's information and the suites's definition.
+The test\_generator  produces a platform to launch the agents's transition functions defined for the agents. This aim is reached creating an enviroment and its objects with the same interface builded in the flame project. This enviroment include a pseudo-messageboard and a pseudo-list of agents, and a template for generating  type of data and dynamic arrays .   
+The code generated is formed by a set of  C code files and a Makefile, this set of files form the system of test that we must be run executing the LauncherTest program, the figure \ref{fig:fig5} show the test\_generator's inputs and outputs. The output files that the test\_generator produces are placed in the same folder of the agent model and they need to be compiled.
+\subsubsection{Compiling the system of unit-test:LauncherTest }
+Before yuo can run the LauncherTest , you must make it.
+In order to obtain the an automatical tool to launch unit-test 
 
-\caption{the configuration file rules.xml}
+ \begin{figure}
+ \label{fig:fig5}
+\centering
+\includegraphics[scale=0.9]{graph/test_generator} 
+\caption{The inputs and outputs of the test\_generator }
 \end{figure}
-
+\subsection{Running}
+Run the system of unit-tests:\\
+\% cd ../unit-test/unit-test\_generator/\\
+\% ./test\_generator  path\_of\_model/suites.xml \\
+The directory path identified by the path path\_of\_model contains the agent model (typically model.xml) and the configuration file suites.xml.
+At this point you have create the system of test for your agent model that  needs to be compiled. This procedure will produce a set of C files and a make files.
+\subsection{The suite of eurace model test }
+The Unit test generator distribution contains as an  example of its validation  the suite related to the eurace model, with more precision the integrated\_model1.0, which are located in the same repository.
+The rules.xml \ref{fig:fig1} is a simple example which is explained how configure an integrity test.
+\section{Appendix}
+ddd
 \end{document}
