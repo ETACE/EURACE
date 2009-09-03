@@ -283,11 +283,19 @@
      <inputs/>
      <outputs/>
     </function>
+ <function>
+     <name>Firm_update_accruals</name>
+     <description>Updates the accruals and subtract them from payment account</description>
+     <currentState>Firm_End_External_Financing</currentState>
+     <nextState>Accruals_Updated</nextState>
+     <inputs/>
+     <outputs/>
+    </function>
     <function>
      <name>Firm_compute_dividends</name>
      <description></description>
-     <currentState>14</currentState>
-     <nextState>14a</nextState>
+     <currentState>Accruals_Updated</currentState>
+     <nextState>Firm_End_Dividend_Determination</nextState>
 	<condition>
       <time>
        <period>yearly</period>
@@ -300,8 +308,8 @@
 	<function>
      <name>idle</name>
      <description></description>
-     <currentState>14</currentState>
-     <nextState>14a</nextState>
+     <currentState>Accruals_Updated</currentState>
+     <nextState>Firm_End_Dividend_Determination</nextState>
      <condition>
       <not>
        <time>
@@ -348,7 +356,7 @@
     <function>
      <name>Firm_execute_financial_payments</name>
      <description>Function to execute financial payments</description>
-     <currentState>Firm_End_External_Financing</currentState>
+     <currentState>Firm_End_Dividend_Determination</currentState>
      <nextState>Firm_Start_Public_Sector_Role</nextState>
      <inputs/>
      <outputs>

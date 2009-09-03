@@ -114,60 +114,109 @@ int Firm_compute_income_statement()
 
 /*
  * \fn: int Firm_compute_dividend_accruals()
- * \brief: This function computes a money stock that is put aside for the dividend payment on eanrings for the current year. These dividends are paid out in the next calendar year. The current accruals are thereby the mean of the monthly earnings gained in the current year times the dividend rate. If the accruals collected until the current month are smaller then this target value the firm has to put new resources aside. 
+ * \brief: This function computes a money stock that is put aside for the dividend payment on eanrings for the current year.  
  */
 int Firm_compute_dividend_accruals()
 {
 
+	
 	int i;
 	double mean_earnings;
-	double dividend_share;
+	
 
 	mean_earnings = 0.0;
 
-	//Compute the kmean earnings of the cuurent year
 	for(i=0; i <LAST_NET_EARNINGS.size;i++)
-	{	
-
+	{	if(ID==1)
+		{
+		printf("EARNINGS: Period %d Amount: %f\n",(12-i),LAST_NET_EARNINGS.array[i]);
+		}		
 	mean_earnings += LAST_NET_EARNINGS.array[i];	
-
 	}
 
 	mean_earnings= mean_earnings/ LAST_NET_EARNINGS.size;
-	//Compute the dividend share 
-	dividend_share = mean_earnings* DIVIDEND_RATE;
 
-	//If dividend share <0 (negative mean earnings ) -> no dividends are paid out and no accruals are needed. The present accruals can be reversed.
-	if(dividend_share<0.0)
+	//dividend_share = mean_earnings* DIVIDEND_RATE;
+
+	
+	if(ID==1)
 	{
-	PAYMENT_ACCOUNT += DIVIDEND_ACCRUALS;
-	ACCRUALS -= DIVIDEND_ACCRUALS;
-	DIVIDEND_ACCRUALS = 0;
-	ADDITIONAL_ACCRUALS = 0.0;
+	printf(" MEAN EARNINGS %f\n",mean_earnings);
+	
+	printf("LAST ACCRUALS %f\n", ACCRUALS);
 	}
-	else
-	{
-		//If dividend_share < DIVIDEND_ACCRUALS: The current accruals are to high and can partly be reversed.
-		if(dividend_share < DIVIDEND_ACCRUALS)
-		{
-		
-		PAYMENT_ACCOUNT += (DIVIDEND_ACCRUALS - dividend_share);
-		ACCRUALS -= (DIVIDEND_ACCRUALS - dividend_share);
-		DIVIDEND_ACCRUALS = dividend_share;
-		ADDITIONAL_ACCRUALS = 0.0;
 
-		}else
+	/*SIMON*/
+	
+	ADDITIONAL_ACCRUALS = NET_EARNINGS* DIVIDEND_RATE;
+	DIVIDEND_ACCRUALS += ADDITIONAL_ACCRUALS;
+	if(ID==1)
+	{
+	printf("DIVIDEND_ACCRUALS %f\n", DIVIDEND_ACCRUALS);
+	printf("ADDITIONAL_ACCRUALS %f\n", ADDITIONAL_ACCRUALS);
+	}
+	if(ADDITIONAL_ACCRUALS < 0)
+	{
+		PAYMENT_ACCOUNT += min(ACCRUALS,-ADDITIONAL_ACCRUALS);
+		ACCRUALS -= min(ACCRUALS,-ADDITIONAL_ACCRUALS);
+		if(ID==1)
 		{
-		//Otherwise additional accruals are required.
-		ADDITIONAL_ACCRUALS = dividend_share - DIVIDEND_ACCRUALS;
-		DIVIDEND_ACCRUALS = ADDITIONAL_ACCRUALS;
-	 
+		printf("ADDITIONAL ACCRUALS NEGATIVE");
+		printf("ACCRUALS %f\n", ACCRUALS);
 		}
 	}
+		
+
+		//PAYMENT_ACCOUNT += DIVIDEND_ACCRUALS;
+		//ACCRUALS -= DIVIDEND_ACCRUALS;
+		//DIVIDEND_ACCRUALS = 0;
+		//ADDITIONAL_ACCRUALS = 0.0;
+		
+		
+		if(ID==1)
+		{
+		printf("CASE 1:\n");
+		printf("ACCRUALS %f\n", ACCRUALS);
+		printf("DIVIDEND_ACCRUALS %f\n", DIVIDEND_ACCRUALS);
+		printf("ADDITIONAL_ACCRUALS %f\n", ADDITIONAL_ACCRUALS);
+		}
+	
+	
+	
+	
+	
 
 return 0;
 }
 
+
+/*
+ * \fn: int Firm_compute_dividend_accruals()
+ * \brief: This function subtracts the accruals from the payment account
+ */
+int Firm_update_accruals()
+{
+
+	// Add additional accruals to the accrual stock and decrease the payment account
+	
+	if(DIVIDEND_ACCRUALS<0.0)
+	{
+
+	ACCRUALS+= max(0,ADDITIONAL_ACCRUALS+DIVIDEND_ACCRUALS);
+	PAYMENT_ACCOUNT - max(0,ADDITIONAL_ACCRUALS+DIVIDEND_ACCRUALS);
+	}else
+	{
+	ACCRUALS+= max(0,ADDITIONAL_ACCRUALS);
+	PAYMENT_ACCOUNT - max(0,ADDITIONAL_ACCRUALS);
+
+	}	
+		
+		
+			if(ID==1)
+			printf(" VERRECHNUNG:ACCRUALS%f   \n",ACCRUALS);
+
+return 0;
+}
 
 
 /*
@@ -176,26 +225,46 @@ return 0;
  */
 int Firm_compute_dividends()
 {
-    int i;
+   /*1: print the printf-statements*/
 	
-     	
+	 int i;
 	// Compute the dividends paid out in 12 monthly pieces
+	if(DIVIDEND_ACCRUALS > 0)
+	{
+		TOTAL_DIVIDEND_PAYMENT = DIVIDEND_ACCRUALS/12; 
+		if(ID==1)
+		printf("1:TOTAL_DIVIDEND_PAYMENT %f\n",TOTAL_DIVIDEND_PAYMENT);
+	}
+	else
+	{
+		TOTAL_DIVIDEND_PAYMENT = 0;
+		if(ID==1)
+		printf("2:TOTAL_DIVIDEND_PAYMENT %f\n",TOTAL_DIVIDEND_PAYMENT);
+	}
 
-        TOTAL_DIVIDEND_PAYMENT = DIVIDEND_ACCRUALS/12; 
-
-
-//Resetting the DIVIDEND_ACCRUALS counter:
-
+	//Resetting the DIVIDEND_ACCRUALS counter:
 	DIVIDEND_ACCRUALS =0.0;
 
-//Delete the monthly earnings 
-
+	//Delete the monthly earnings 
 	for(i=0; i <LAST_NET_EARNINGS.size;i++)
 	{
-	remove_double(&LAST_NET_EARNINGS,0);
-	i--;
+		remove_double(&LAST_NET_EARNINGS,0);
+		i--;
 	}    
 
+	/*1: print the printf-statements*/
+	if(ID==1)
+	{
+		printf("NET_EARNINGS %f \n",NET_EARNINGS);
+		printf("CURRENT_SHARES_OUTSTANDING %d \n",CURRENT_SHARES_OUTSTANDING);
+		printf("TOTAL_DIVIDEND_PAYMENT %f \n",TOTAL_DIVIDEND_PAYMENT);
+		printf("PREVIOUS_EARNINGS_PER_SHARE %f \n",PREVIOUS_EARNINGS_PER_SHARE);
+		printf("EARNINGS_PER_SHARE %f \n",EARNINGS_PER_SHARE);
+		printf("PREVIOUS_DIVIDEND_PER_SHARE %f \n",PREVIOUS_DIVIDEND_PER_SHARE);
+		printf("CURRENT_DIVIDEND_PER_SHARE %f \n",CURRENT_DIVIDEND_PER_SHARE);
+		printf("****************************************************************************\n");
+	}	
+    return 0;
 
     return 0;
 }
@@ -273,8 +342,9 @@ int Firm_compute_total_liquidity_needs()
 {
  
     //step 12B: set production and payout financial_needs
-    PRODUCTION_LIQUIDITY_NEEDS = PLANNED_PRODUCTION_COSTS;
-    FINANCIAL_LIQUIDITY_NEEDS = TOTAL_INTEREST_PAYMENT + TOTAL_DEBT_INSTALLMENT_PAYMENT + TAX_PAYMENT + ADDITIONAL_ACCRUALS;
+	PRODUCTION_LIQUIDITY_NEEDS = PLANNED_PRODUCTION_COSTS;
+    	FINANCIAL_LIQUIDITY_NEEDS = TOTAL_INTEREST_PAYMENT + TOTAL_DEBT_INSTALLMENT_PAYMENT + 	
+	TAX_PAYMENT + max(0,ADDITIONAL_ACCRUALS+min(0,DIVIDEND_ACCRUALS));
 
     //step 12C:
     //Check if additional external financial needs are required for total financial needs (direct payable and delayed payable)    
@@ -372,13 +442,9 @@ int Firm_execute_financial_payments()
                 }
       }
 
-	//Step 3:
-	// Add additional accruals to the accrual stock and decrease the payment account
+	
 
-	ACCRUALS += ADDITIONAL_ACCRUALS;
-	PAYMENT_ACCOUNT -= ADDITIONAL_ACCRUALS;
-
-       //step 4: actual dividend payments
+       //step 3: actual dividend payments
         //Actual payments to the bank are paid at end of day when the firm sends its bank_update message 
 
         //add dividend_per_share_msg(firm_id, current_dividend_per_share) to shareholders (dividend per share)     
