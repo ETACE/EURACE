@@ -951,9 +951,6 @@ return 0;
 
 void capitalize(char *simple_word)
     { char *result;
-      int len;
-      len=strlen(simple_word);
-      result=(char *) malloc(sizeof(char)*(len+1));
       int i;
       i=0;
      while(simple_word[i]!='\0') 
