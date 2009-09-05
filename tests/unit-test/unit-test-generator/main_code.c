@@ -64,9 +64,9 @@ copy_file("main.c",path);
 
 int generate_h_header_code()
 {
-char car[599][MAXCHAR];
+char car[602][MAXCHAR];
  char path[MAXPATH];
- read_intermediate_data("header.h.tmp",car,599);
+ read_intermediate_data("header.h.tmp",car,602);
 file=fopen("header.h","w");
 fprintf(file,"%s",car[28]);
 fprintf(file,"%s",car[27]);
@@ -1047,6 +1047,9 @@ fprintf(file,"%s",message->name);
 fprintf(file,"%s",car[529]);
 
   }}
+fprintf(file,"%s",car[552]);
+fprintf(file,"%s",car[551]);
+fprintf(file,"%s",car[550]);
 fprintf(file,"%s",car[549]);
 fprintf(file,"%s",car[548]);
 fprintf(file,"%s",car[547]);
@@ -1074,57 +1077,40 @@ for(i=0;i<=xmachines->index;i++)
   {
 xmachine=&xmachines->list[i];
 variables=&xmachine->variables;
+fprintf(file,"%s",car[575]);
+fprintf(file,"%s",car[574]);
+fprintf(file,"%s",xmachine->name);
+fprintf(file,"%s",car[573]);
 fprintf(file,"%s",car[572]);
 fprintf(file,"%s",car[571]);
-fprintf(file,"%s",xmachine->name);
 fprintf(file,"%s",car[570]);
 fprintf(file,"%s",car[569]);
 fprintf(file,"%s",car[568]);
+fprintf(file,"%s",xmachine->name);
 fprintf(file,"%s",car[567]);
+fprintf(file,"%s",xmachine->name);
 fprintf(file,"%s",car[566]);
 fprintf(file,"%s",car[565]);
-fprintf(file,"%s",xmachine->name);
 fprintf(file,"%s",car[564]);
-fprintf(file,"%s",xmachine->name);
 fprintf(file,"%s",car[563]);
 fprintf(file,"%s",car[562]);
 fprintf(file,"%s",car[561]);
 fprintf(file,"%s",car[560]);
 fprintf(file,"%s",car[559]);
+fprintf(file,"%s",xmachine->name);
 fprintf(file,"%s",car[558]);
 fprintf(file,"%s",car[557]);
+fprintf(file,"%s",xmachine->name);
 fprintf(file,"%s",car[556]);
 fprintf(file,"%s",xmachine->name);
 fprintf(file,"%s",car[555]);
 fprintf(file,"%s",car[554]);
 fprintf(file,"%s",xmachine->name);
 fprintf(file,"%s",car[553]);
-fprintf(file,"%s",xmachine->name);
-fprintf(file,"%s",car[552]);
-fprintf(file,"%s",car[551]);
-fprintf(file,"%s",xmachine->name);
-fprintf(file,"%s",car[550]);
 
   }
 }
-fprintf(file,"%s",car[573]);
-{
-  Message *message;
-  Variables *variables;
-  int w;
-for(w=0;w<=messages->index;w++)
-  {
-   message=&messages->list[w];
-   variables=&message->variables;
-fprintf(file,"%s",car[578]);
-fprintf(file,"%s",message->name);
-fprintf(file,"%s",car[577]);
 fprintf(file,"%s",car[576]);
-fprintf(file,"%s",message->name);
-fprintf(file,"%s",car[575]);
-fprintf(file,"%s",car[574]);
-
-  }}
 {
   Message *message;
   Variables *variables;
@@ -1133,17 +1119,34 @@ for(w=0;w<=messages->index;w++)
   {
    message=&messages->list[w];
    variables=&message->variables;
-fprintf(file,"%s",car[583]);
-fprintf(file,"%s",message->name);
-fprintf(file,"%s",car[582]);
 fprintf(file,"%s",car[581]);
+fprintf(file,"%s",message->name);
 fprintf(file,"%s",car[580]);
 fprintf(file,"%s",car[579]);
+fprintf(file,"%s",message->name);
+fprintf(file,"%s",car[578]);
+fprintf(file,"%s",car[577]);
 
   }}
+{
+  Message *message;
+  Variables *variables;
+  int w;
+for(w=0;w<=messages->index;w++)
+  {
+   message=&messages->list[w];
+   variables=&message->variables;
 fprintf(file,"%s",car[586]);
+fprintf(file,"%s",message->name);
 fprintf(file,"%s",car[585]);
 fprintf(file,"%s",car[584]);
+fprintf(file,"%s",car[583]);
+fprintf(file,"%s",car[582]);
+
+  }}
+fprintf(file,"%s",car[589]);
+fprintf(file,"%s",car[588]);
+fprintf(file,"%s",car[587]);
 {
   XMachine *xmachine;
   Variables *variables;
@@ -1163,25 +1166,25 @@ if((strcmp(variable->type,"int")==0)||(strcmp(variable->type,"double")==0)||(str
 if(variable->dim>0)
 {
 fprintf(file,"%s",variable->type);
-fprintf(file,"%s",car[588]);
+fprintf(file,"%s",car[591]);
 fprintf(file,"%s",variable->name);
-fprintf(file,"%s",car[587]);
+fprintf(file,"%s",car[590]);
 
 }
 if(variable->dim==0)
 {
 fprintf(file,"%s",variable->type);
+fprintf(file,"%s",car[598]);
+fprintf(file,"%s",variable->name);
+fprintf(file,"%s",car[597]);
+fprintf(file,"%s",car[596]);
 fprintf(file,"%s",car[595]);
 fprintf(file,"%s",variable->name);
 fprintf(file,"%s",car[594]);
-fprintf(file,"%s",car[593]);
-fprintf(file,"%s",car[592]);
-fprintf(file,"%s",variable->name);
-fprintf(file,"%s",car[591]);
 fprintf(file,"%s",variable->type);
-fprintf(file,"%s",car[590]);
+fprintf(file,"%s",car[593]);
 fprintf(file,"%s",variable->name);
-fprintf(file,"%s",car[589]);
+fprintf(file,"%s",car[592]);
 
 }
 
@@ -1189,9 +1192,9 @@ fprintf(file,"%s",car[589]);
 if(!((strcmp(variable->type,"int")==0)||(strcmp(variable->type,"double")==0)||(strcmp(variable->type,"float")==0)||(strcmp(variable->type,"char")==0)))
 {
 fprintf(file,"%s",variable->type);
-fprintf(file,"%s",car[597]);
+fprintf(file,"%s",car[600]);
 fprintf(file,"%s",variable->name);
-fprintf(file,"%s",car[596]);
+fprintf(file,"%s",car[599]);
 
 }
 
@@ -1200,7 +1203,7 @@ fprintf(file,"%s",car[596]);
 
   }
 }
-fprintf(file,"%s",car[598]);
+fprintf(file,"%s",car[601]);
 fclose(file);
 ffind_and_substitute("header.h");
 strcpy(path,new_path);
@@ -1995,9 +1998,9 @@ copy_file("Suite.h",path);
 
 int generate_c_messages_code()
 {
-char car[485][MAXCHAR];
+char car[504][MAXCHAR];
  char path[MAXPATH];
- read_intermediate_data("messages.c.tmp",car,485);
+ read_intermediate_data("messages.c.tmp",car,504);
 file=fopen("messages.c","w");
 fprintf(file,"%s",car[1]);
 fprintf(file,"%s",car[0]);
@@ -2613,47 +2616,52 @@ fprintf(file,"%s",car[321]);
 
    }
 }
+fprintf(file,"%s",car[391]);
+fprintf(file,"%s",car[390]);
+fprintf(file,"%s",car[389]);
 fprintf(file,"%s",car[388]);
 fprintf(file,"%s",car[387]);
+fprintf(file,"%s",message->name);
 fprintf(file,"%s",car[386]);
+fprintf(file,"%s",message->name);
 fprintf(file,"%s",car[385]);
 fprintf(file,"%s",car[384]);
-fprintf(file,"%s",message->name);
 fprintf(file,"%s",car[383]);
-fprintf(file,"%s",message->name);
 fprintf(file,"%s",car[382]);
 fprintf(file,"%s",car[381]);
+fprintf(file,"%s",message->name);
 fprintf(file,"%s",car[380]);
 fprintf(file,"%s",car[379]);
 fprintf(file,"%s",car[378]);
 fprintf(file,"%s",car[377]);
 fprintf(file,"%s",car[376]);
 fprintf(file,"%s",car[375]);
-fprintf(file,"%s",car[374]);
 fprintf(file,"%s",message->name);
+fprintf(file,"%s",car[374]);
 fprintf(file,"%s",car[373]);
 fprintf(file,"%s",car[372]);
 fprintf(file,"%s",car[371]);
 fprintf(file,"%s",car[370]);
 fprintf(file,"%s",car[369]);
+fprintf(file,"%s",message->name);
 fprintf(file,"%s",car[368]);
 fprintf(file,"%s",car[367]);
-fprintf(file,"%s",message->name);
 fprintf(file,"%s",car[366]);
 fprintf(file,"%s",message->name);
 fprintf(file,"%s",car[365]);
+fprintf(file,"%s",message->name);
 fprintf(file,"%s",car[364]);
 fprintf(file,"%s",car[363]);
 fprintf(file,"%s",car[362]);
-fprintf(file,"%s",message->name);
 fprintf(file,"%s",car[361]);
+fprintf(file,"%s",message->name);
 fprintf(file,"%s",car[360]);
 fprintf(file,"%s",car[359]);
-fprintf(file,"%s",message->name);
 fprintf(file,"%s",car[358]);
-fprintf(file,"%s",car[357]);
 fprintf(file,"%s",message->name);
+fprintf(file,"%s",car[357]);
 fprintf(file,"%s",car[356]);
+fprintf(file,"%s",message->name);
 fprintf(file,"%s",car[355]);
 fprintf(file,"%s",car[354]);
 fprintf(file,"%s",car[353]);
@@ -2704,25 +2712,12 @@ variable=&variables->list[j];
 if(variable->dim>0)
 {
 fprintf(file,"%s",variable->type);
-fprintf(file,"%s",car[391]);
-fprintf(file,"%s",variable->name);
-fprintf(file,"%s",car[390]);
-if(variable->dim>0)
- fprintf(file,"%d",variable->dim);
-fprintf(file,"%s",car[389]);
-if((variables->index)>j)
-{
-fprintf(file,"%s",car[392]);
-
-}
-
-}
-if(variable->dim==0)
-{
-fprintf(file,"%s",variable->type);
 fprintf(file,"%s",car[394]);
 fprintf(file,"%s",variable->name);
 fprintf(file,"%s",car[393]);
+if(variable->dim>0)
+ fprintf(file,"%d",variable->dim);
+fprintf(file,"%s",car[392]);
 if((variables->index)>j)
 {
 fprintf(file,"%s",car[395]);
@@ -2730,33 +2725,46 @@ fprintf(file,"%s",car[395]);
 }
 
 }
+if(variable->dim==0)
+{
+fprintf(file,"%s",variable->type);
+fprintf(file,"%s",car[397]);
+fprintf(file,"%s",variable->name);
+fprintf(file,"%s",car[396]);
+if((variables->index)>j)
+{
+fprintf(file,"%s",car[398]);
+
+}
+
+}
 
    }
 }
+fprintf(file,"%s",car[419]);
+fprintf(file,"%s",car[418]);
+fprintf(file,"%s",car[417]);
+fprintf(file,"%s",message->name);
 fprintf(file,"%s",car[416]);
 fprintf(file,"%s",car[415]);
 fprintf(file,"%s",car[414]);
-fprintf(file,"%s",message->name);
 fprintf(file,"%s",car[413]);
 fprintf(file,"%s",car[412]);
 fprintf(file,"%s",car[411]);
 fprintf(file,"%s",car[410]);
 fprintf(file,"%s",car[409]);
+fprintf(file,"%s",message->name);
 fprintf(file,"%s",car[408]);
 fprintf(file,"%s",car[407]);
 fprintf(file,"%s",car[406]);
-fprintf(file,"%s",message->name);
 fprintf(file,"%s",car[405]);
 fprintf(file,"%s",car[404]);
+fprintf(file,"%s",message->name);
 fprintf(file,"%s",car[403]);
 fprintf(file,"%s",car[402]);
 fprintf(file,"%s",car[401]);
-fprintf(file,"%s",message->name);
 fprintf(file,"%s",car[400]);
 fprintf(file,"%s",car[399]);
-fprintf(file,"%s",car[398]);
-fprintf(file,"%s",car[397]);
-fprintf(file,"%s",car[396]);
 {
    Variable *variable;
    int j;
@@ -2765,7 +2773,7 @@ fprintf(file,"%s",car[396]);
 variable=&variables->list[j];
 if(variable->dim>0)
 {
-fprintf(file,"%s",car[421]);
+fprintf(file,"%s",car[424]);
 if(variable->dim>0)
 {char aux[30];
  strcpy(aux,variable->type);
@@ -2773,40 +2781,40 @@ strcat(aux,"_static");
 fprintf(file,"%s",aux);
 }
  else fprintf(file,"%s",variable->type);
+fprintf(file,"%s",car[423]);
+fprintf(file,"%s",car[422]);
+fprintf(file,"%s",variable->name);
+fprintf(file,"%s",car[421]);
+fprintf(file,"%s",variable->name);
 fprintf(file,"%s",car[420]);
-fprintf(file,"%s",car[419]);
-fprintf(file,"%s",variable->name);
-fprintf(file,"%s",car[418]);
-fprintf(file,"%s",variable->name);
-fprintf(file,"%s",car[417]);
 if(variable->dim>0)
  fprintf(file,"%d",variable->dim);
 
 }
 if(variable->dim==0)
 {
-fprintf(file,"%s",car[426]);
+fprintf(file,"%s",car[429]);
 fprintf(file,"%s",variable->type);
-fprintf(file,"%s",car[425]);
+fprintf(file,"%s",car[428]);
 fprintf(file,"%s",variable->name);
-fprintf(file,"%s",car[424]);
-fprintf(file,"%s",car[423]);
-fprintf(file,"%s",car[422]);
+fprintf(file,"%s",car[427]);
+fprintf(file,"%s",car[426]);
+fprintf(file,"%s",car[425]);
 fprintf(file,"%s",variable->name);
 
 }
-fprintf(file,"%s",car[427]);
+fprintf(file,"%s",car[430]);
 
    }
 }
+fprintf(file,"%s",car[437]);
+fprintf(file,"%s",car[436]);
+fprintf(file,"%s",car[435]);
 fprintf(file,"%s",car[434]);
 fprintf(file,"%s",car[433]);
+fprintf(file,"%s",message->name);
 fprintf(file,"%s",car[432]);
 fprintf(file,"%s",car[431]);
-fprintf(file,"%s",car[430]);
-fprintf(file,"%s",message->name);
-fprintf(file,"%s",car[429]);
-fprintf(file,"%s",car[428]);
 {
    Variable *variable;
    int j;
@@ -2816,25 +2824,12 @@ variable=&variables->list[j];
 if(variable->dim>0)
 {
 fprintf(file,"%s",variable->type);
-fprintf(file,"%s",car[437]);
-fprintf(file,"%s",variable->name);
-fprintf(file,"%s",car[436]);
-if(variable->dim>0)
- fprintf(file,"%d",variable->dim);
-fprintf(file,"%s",car[435]);
-if((variables->index)>j)
-{
-fprintf(file,"%s",car[438]);
-
-}
-
-}
-if(variable->dim==0)
-{
-fprintf(file,"%s",variable->type);
 fprintf(file,"%s",car[440]);
 fprintf(file,"%s",variable->name);
 fprintf(file,"%s",car[439]);
+if(variable->dim>0)
+ fprintf(file,"%d",variable->dim);
+fprintf(file,"%s",car[438]);
 if((variables->index)>j)
 {
 fprintf(file,"%s",car[441]);
@@ -2842,20 +2837,33 @@ fprintf(file,"%s",car[441]);
 }
 
 }
+if(variable->dim==0)
+{
+fprintf(file,"%s",variable->type);
+fprintf(file,"%s",car[443]);
+fprintf(file,"%s",variable->name);
+fprintf(file,"%s",car[442]);
+if((variables->index)>j)
+{
+fprintf(file,"%s",car[444]);
+
+}
+
+}
 
    }
 }
+fprintf(file,"%s",car[452]);
+fprintf(file,"%s",car[451]);
+fprintf(file,"%s",message->name);
+fprintf(file,"%s",car[450]);
 fprintf(file,"%s",car[449]);
+fprintf(file,"%s",message->name);
 fprintf(file,"%s",car[448]);
-fprintf(file,"%s",message->name);
 fprintf(file,"%s",car[447]);
+fprintf(file,"%s",message->name);
 fprintf(file,"%s",car[446]);
-fprintf(file,"%s",message->name);
 fprintf(file,"%s",car[445]);
-fprintf(file,"%s",car[444]);
-fprintf(file,"%s",message->name);
-fprintf(file,"%s",car[443]);
-fprintf(file,"%s",car[442]);
 {
    Variable *variable;
    int j;
@@ -2865,70 +2873,50 @@ variable=&variables->list[j];
 fprintf(file,"%s",variable->name);
 if((variables->index)>j)
 {
-fprintf(file,"%s",car[450]);
+fprintf(file,"%s",car[453]);
 
 }
 
    }
 }
-fprintf(file,"%s",car[452]);
-fprintf(file,"%s",car[451]);
-
-  }}
 fprintf(file,"%s",car[455]);
 fprintf(file,"%s",car[454]);
-fprintf(file,"%s",car[453]);
-{
-  Message *message;
-  Variables *variables;
-  int w;
-for(w=0;w<=messages->index;w++)
-  {
-   message=&messages->list[w];
-   variables=&message->variables;
-fprintf(file,"%s",car[467]);
-fprintf(file,"%s",message->name);
-fprintf(file,"%s",car[466]);
-fprintf(file,"%s",car[465]);
-fprintf(file,"%s",message->name);
-fprintf(file,"%s",car[464]);
-fprintf(file,"%s",car[463]);
-fprintf(file,"%s",car[462]);
-fprintf(file,"%s",car[461]);
-fprintf(file,"%s",message->name);
-fprintf(file,"%s",car[460]);
-fprintf(file,"%s",car[459]);
-fprintf(file,"%s",message->name);
+
+  }}
 fprintf(file,"%s",car[458]);
 fprintf(file,"%s",car[457]);
-fprintf(file,"%s",message->name);
 fprintf(file,"%s",car[456]);
-
-  }}
-fprintf(file,"%s",car[471]);
+{
+  Message *message;
+  Variables *variables;
+  int w;
+for(w=0;w<=messages->index;w++)
+  {
+   message=&messages->list[w];
+   variables=&message->variables;
 fprintf(file,"%s",car[470]);
+fprintf(file,"%s",message->name);
 fprintf(file,"%s",car[469]);
 fprintf(file,"%s",car[468]);
-{
-  Message *message;
-  Variables *variables;
-  int w;
-for(w=0;w<=messages->index;w++)
-  {
-   message=&messages->list[w];
-   variables=&message->variables;
-fprintf(file,"%s",car[475]);
 fprintf(file,"%s",message->name);
+fprintf(file,"%s",car[467]);
+fprintf(file,"%s",car[466]);
+fprintf(file,"%s",car[465]);
+fprintf(file,"%s",car[464]);
+fprintf(file,"%s",message->name);
+fprintf(file,"%s",car[463]);
+fprintf(file,"%s",car[462]);
+fprintf(file,"%s",message->name);
+fprintf(file,"%s",car[461]);
+fprintf(file,"%s",car[460]);
+fprintf(file,"%s",message->name);
+fprintf(file,"%s",car[459]);
+
+  }}
 fprintf(file,"%s",car[474]);
 fprintf(file,"%s",car[473]);
-fprintf(file,"%s",message->name);
 fprintf(file,"%s",car[472]);
-
-  }}
-fprintf(file,"%s",car[479]);
-fprintf(file,"%s",car[478]);
-fprintf(file,"%s",car[477]);
-fprintf(file,"%s",car[476]);
+fprintf(file,"%s",car[471]);
 {
   Message *message;
   Variables *variables;
@@ -2937,15 +2925,64 @@ for(w=0;w<=messages->index;w++)
   {
    message=&messages->list[w];
    variables=&message->variables;
-fprintf(file,"%s",car[483]);
+fprintf(file,"%s",car[478]);
 fprintf(file,"%s",message->name);
-fprintf(file,"%s",car[482]);
-fprintf(file,"%s",car[481]);
+fprintf(file,"%s",car[477]);
+fprintf(file,"%s",car[476]);
 fprintf(file,"%s",message->name);
-fprintf(file,"%s",car[480]);
+fprintf(file,"%s",car[475]);
 
   }}
+fprintf(file,"%s",car[482]);
+fprintf(file,"%s",car[481]);
+fprintf(file,"%s",car[480]);
+fprintf(file,"%s",car[479]);
+{
+  Message *message;
+  Variables *variables;
+  int w;
+for(w=0;w<=messages->index;w++)
+  {
+   message=&messages->list[w];
+   variables=&message->variables;
+fprintf(file,"%s",car[486]);
+fprintf(file,"%s",message->name);
+fprintf(file,"%s",car[485]);
 fprintf(file,"%s",car[484]);
+fprintf(file,"%s",message->name);
+fprintf(file,"%s",car[483]);
+
+  }}
+fprintf(file,"%s",car[495]);
+fprintf(file,"%s",car[494]);
+fprintf(file,"%s",car[493]);
+fprintf(file,"%s",car[492]);
+fprintf(file,"%s",car[491]);
+fprintf(file,"%s",car[490]);
+fprintf(file,"%s",car[489]);
+fprintf(file,"%s",car[488]);
+fprintf(file,"%s",car[487]);
+{
+  Message *message;
+  Variables *variables;
+  int w;
+for(w=0;w<=messages->index;w++)
+  {
+   message=&messages->list[w];
+   variables=&message->variables;
+fprintf(file,"%s",car[500]);
+fprintf(file,"%s",message->name);
+fprintf(file,"%s",car[499]);
+fprintf(file,"%s",message->name);
+fprintf(file,"%s",car[498]);
+fprintf(file,"%s",message->name);
+fprintf(file,"%s",car[497]);
+fprintf(file,"%s",car[496]);
+
+  }}
+fprintf(file,"%s",car[503]);
+fprintf(file,"%s",car[502]);
+fprintf(file,"%s",car[501]);
 fclose(file);
 ffind_and_substitute("messages.c");
 strcpy(path,new_path);
@@ -3759,9 +3796,9 @@ copy_file("xmachine.c",path);
 
 int generate_c_unittest_code()
 {
-char car[80][MAXCHAR];
+char car[81][MAXCHAR];
  char path[MAXPATH];
- read_intermediate_data("unittest.c.tmp",car,80);
+ read_intermediate_data("unittest.c.tmp",car,81);
 file=fopen("unittest.c","w");
 fprintf(file,"%s",car[1]);
 fprintf(file,"%s",car[0]);
@@ -3813,26 +3850,21 @@ for(w=0;w<=messages->index;w++)
   {
    message=&messages->list[w];
    variables=&message->variables;
-fprintf(file,"%s",car[25]);
-fprintf(file,"%s",message->name);
-fprintf(file,"%s",car[24]);
-fprintf(file,"%s",car[23]);
-fprintf(file,"%s",message->name);
-fprintf(file,"%s",car[22]);
 
   }}
-fprintf(file,"%s",car[47]);
+fprintf(file,"%s",car[48]);
 fprintf(file,"%s",utest->xagent_name);
+fprintf(file,"%s",car[47]);
 fprintf(file,"%s",car[46]);
 fprintf(file,"%s",car[45]);
+fprintf(file,"%s",utest->xagent_name);
 fprintf(file,"%s",car[44]);
-fprintf(file,"%s",utest->xagent_name);
 fprintf(file,"%s",car[43]);
+fprintf(file,"%s",utest->xagent_name);
 fprintf(file,"%s",car[42]);
-fprintf(file,"%s",utest->xagent_name);
 fprintf(file,"%s",car[41]);
-fprintf(file,"%s",car[40]);
 fprintf(file,"%s",utest->xagent_name);
+fprintf(file,"%s",car[40]);
 fprintf(file,"%s",car[39]);
 fprintf(file,"%s",car[38]);
 fprintf(file,"%s",car[37]);
@@ -3842,13 +3874,18 @@ fprintf(file,"%s",car[34]);
 fprintf(file,"%s",car[33]);
 fprintf(file,"%s",car[32]);
 fprintf(file,"%s",car[31]);
-fprintf(file,"%s",car[30]);
 fprintf(file,"%s",utest->function_name);
+fprintf(file,"%s",car[30]);
 fprintf(file,"%s",car[29]);
-fprintf(file,"%s",car[28]);
 fprintf(file,"%s",utest->name);
+fprintf(file,"%s",car[28]);
 fprintf(file,"%s",car[27]);
 fprintf(file,"%s",car[26]);
+fprintf(file,"%s",car[25]);
+fprintf(file,"%s",utest->name);
+fprintf(file,"%s",car[24]);
+fprintf(file,"%s",car[23]);
+fprintf(file,"%s",car[22]);
 {
    Variable *variable;
    int j;
@@ -3857,27 +3894,27 @@ fprintf(file,"%s",car[26]);
 variable=&variables->list[j];
 if(variable->dim==0)
 {
+fprintf(file,"%s",car[58]);
 fprintf(file,"%s",car[57]);
-fprintf(file,"%s",car[56]);
 fprintf(file,"%s",variable->type);
+fprintf(file,"%s",car[56]);
 fprintf(file,"%s",car[55]);
-fprintf(file,"%s",car[54]);
 fprintf(file,"%s",utest->xagent_name);
-fprintf(file,"%s",car[53]);
+fprintf(file,"%s",car[54]);
 fprintf(file,"%s",variable->name);
+fprintf(file,"%s",car[53]);
 fprintf(file,"%s",car[52]);
 fprintf(file,"%s",car[51]);
-fprintf(file,"%s",car[50]);
 fprintf(file,"%s",utest->xagent_name);
-fprintf(file,"%s",car[49]);
+fprintf(file,"%s",car[50]);
 fprintf(file,"%s",variable->name);
-fprintf(file,"%s",car[48]);
+fprintf(file,"%s",car[49]);
 
 }
 if(variable->dim>0)
 {
+fprintf(file,"%s",car[68]);
 fprintf(file,"%s",car[67]);
-fprintf(file,"%s",car[66]);
 if(variable->dim>0)
 {char aux[30];
  strcpy(aux,variable->type);
@@ -3885,20 +3922,20 @@ strcat(aux,"_static");
 fprintf(file,"%s",aux);
 }
  else fprintf(file,"%s",variable->type);
+fprintf(file,"%s",car[66]);
 fprintf(file,"%s",car[65]);
+fprintf(file,"%s",utest->xagent_name);
 fprintf(file,"%s",car[64]);
-fprintf(file,"%s",utest->xagent_name);
+fprintf(file,"%s",variable->name);
 fprintf(file,"%s",car[63]);
-fprintf(file,"%s",variable->name);
 fprintf(file,"%s",car[62]);
-fprintf(file,"%s",car[61]);
 fprintf(file,"%s",utest->xagent_name);
-fprintf(file,"%s",car[60]);
+fprintf(file,"%s",car[61]);
 fprintf(file,"%s",variable->name);
-fprintf(file,"%s",car[59]);
+fprintf(file,"%s",car[60]);
 if(variable->dim>0)
  fprintf(file,"%d",variable->dim);
-fprintf(file,"%s",car[58]);
+fprintf(file,"%s",car[59]);
 
 }
 
@@ -3912,23 +3949,23 @@ for(w=0;w<=messages->index;w++)
   {
    message=&messages->list[w];
    variables=&message->variables;
-fprintf(file,"%s",car[74]);
+fprintf(file,"%s",car[75]);
 fprintf(file,"%s",message->name);
+fprintf(file,"%s",car[74]);
 fprintf(file,"%s",car[73]);
 fprintf(file,"%s",car[72]);
+fprintf(file,"%s",message->name);
 fprintf(file,"%s",car[71]);
-fprintf(file,"%s",message->name);
 fprintf(file,"%s",car[70]);
-fprintf(file,"%s",car[69]);
 fprintf(file,"%s",message->name);
-fprintf(file,"%s",car[68]);
+fprintf(file,"%s",car[69]);
 
   }}
+fprintf(file,"%s",car[80]);
 fprintf(file,"%s",car[79]);
 fprintf(file,"%s",car[78]);
 fprintf(file,"%s",car[77]);
 fprintf(file,"%s",car[76]);
-fprintf(file,"%s",car[75]);
 
   }
 }
