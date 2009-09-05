@@ -276,6 +276,7 @@ void!!initialize_xmachinelist(XMachineList !!*xmachinelist);\\
 void!!initialize_xmessagelist(XMessageList !!*xmessagelist);\\
 void!!reset_xmessagelist(XMessageList !!*xmessagelist);\\
 void!!free_xmessagelist(XMessageList !!*xmessagelist);\\
+void!!print_xmessagelist(XMessageList !!*xmessagelist, char!!*nome_file);\\
 
 
 XMachineList !!*current;\\

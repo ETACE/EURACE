@@ -17,17 +17,16 @@ char!!test_name[]=" __utestname ";\\
 !!initialize_ __uagentname (expected);\\
 repeat messages
 begin
-initialize_ __messagename (current_messages);\\
-initialize_ __messagename (expected_messages);\\
 
 end
 !!current_ __uagentname = current-> an __uagentname ;\\
 !!expected_ __uagentname = expected->an __uagentname ;\\
 !!read_suite_states(root_element->children, current, expected, current_messages,expected_messages,test_name );\\
-!!srand((unsigned!!int) constants.seed);\\
-!!printf("ecco!!il!!seed!!%d",constants.seed);\\
+//!!srand((unsigned!!int) constants.seed);\\
+//!!printf("ecco!!il!!seed!!%d",constants.seed);\\
 !! __function_name ();\\
-print_initial_states(" __utestname .xml ",current);\\
+//!!print_initial_states(" __utestname .xml ",current);\\
+//!!print_xmessagelist(current_messages, " __utestname _m .xml ");\\
 repeat variables
 begin
 ifnotstatic
