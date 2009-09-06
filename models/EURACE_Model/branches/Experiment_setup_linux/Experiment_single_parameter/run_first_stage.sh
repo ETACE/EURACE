@@ -16,17 +16,10 @@
 # - run
 # - remove
 
-echo '  Starting first stage of experiment...'
-BASE=$PWD
-NR_NODES='4'
-ITS=540
-MAIN='/media/DOCS/Docs/EURACE/X-models/SVN_linux/models/EURACE_Model/trunk/Integrated_Model_1.0/main'
-#MAIN='/media/DOCS/Docs/EURACE/X-models/SVN_linux/models/EURACE_Model/branches/Integrated_Model_1.0_energy_shock/main'
-#JOIN='/home/sander/cloning/scripts/join/join.sh'
-
+echo '  Starting first 
 echo '      Starting run for initial transient...'
 #$MAIN $ITS output_last.xml
-mpiexec -n $NR_NODES $MAIN $ITS output_last.xml -r
+mpiexec -n $NR_NODES $MAIN $ITS_PRE output_last.xml -r
 echo '      Finished run for initial transient.'
 
 #Concatenating the node files

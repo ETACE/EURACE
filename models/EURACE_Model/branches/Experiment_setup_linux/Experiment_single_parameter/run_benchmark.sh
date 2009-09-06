@@ -17,39 +17,23 @@
 # - remove
 
 echo '  Starting benchmark experiment...'
-BASE=$PWD
-NR_NODES=4
-ITS=1000
-
-MAIN_P='/media/DOCS/Docs/EURACE/X-models/SVN_linux/models/EURACE_Model/trunk/Integrated_Model_1.0/main_p'
-MAIN_S='/media/DOCS/Docs/EURACE/X-models/SVN_linux/models/EURACE_Model/trunk/Integrated_Model_1.0/main_s'
-
-MAIN_P='/media/DOCS/Docs/EURACE/X-models/SVN_linux/models/EURACE_Model/branches/GREQAM/Integrated_Model_1.0/main_p'
-#MAIN_P='/media/DOCS/Docs/EURACE/X-models/SVN_linux/models/EURACE_Model/branches/Hybrid_Model_A/main_p'
-#MAIN_S='/media/DOCS/Docs/EURACE/X-models/SVN_linux/models/EURACE_Model/branches/Hybrid_Model_A/main_s'
-
-
-#Construct the RUNS list:
-TOTAL_RUNS=1
-RUNS=''
-for ((j=0; j<TOTAL_RUNS; j++)); do
-    RUNS=$RUNS' '$j
-done
-echo 'RUNS='$RUNS
 
 mkdir -p 'its'
 cd ./its
 for run in $RUNS; do
     mkdir -p 'run'$run
     cd 'run'$run
-    cp $BASE/output_benchmark_snapshot.xml ./
-    echo '      Copied output file from' $BASE'/output_benchmark_snapshot.xml to folder: run'$run
+    cp $BASE/output_benchmark.xml ./
+    echo '      Copied output file from' $BASE'/output_benchmark.xml to folder: run'$run
+    #cp $BASE/output_benchmark_snapshot.xml ./
+    #echo '      Copied output file from' $BASE'/output_benchmark_snapshot.xml to folder: run'$run
     echo '      Starting run for benchmark experiment...'
 
 	#Run serial:
 	#$MAIN_S $ITS output_benchmark_snapshot.xml 
 	#Run parallel:
-	mpiexec -n $NR_NODES $MAIN_P $ITS 'output_benchmark_snapshot.xml' -r
+	#mpiexec -n $NR_NODES $MAIN_P $ITS 'output_benchmark_snapshot.xml' -r
+	mpiexec -n $NR_NODES $MAIN_P $ITS 'output_benchmark.xml' -r
 
 #	If the program exits:
 #	if [ $? -ne 0 ]; then
