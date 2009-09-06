@@ -6,17 +6,9 @@
 # - Create folders for multiple batch runs: its_"batch"
 # - Copy output.xml and run.sh from top-level to these run folders
 ########################################################################################
-BASE=$PWD
-
-F1="tax_0.01 tax_0.05 tax_0.10"
 
 
-#Construct the RUNS list:
-TOTAL_RUNS=4
-RUNS=''
-for ((j=0; j<TOTAL_RUNS; j++)); do
-    RUNS=$RUNS' '$j
-done
+#F1="tax_0.20 tax_0.30 tax_0.50"
 echo $RUNS
 
 echo '  Creating folder hierarchy...'

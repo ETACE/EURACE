@@ -6,18 +6,6 @@
 # - Level 2 : intensity of energy shock, measured as a percentage price increase
 # - Level 3 : frequency of energy shock, measured in days
 ###################################################################################################
-BASE=$PWD
-JOIN='/home/sander/cloning/scripts/join'
-NR_NODES=4
-
-F1="tax_0.01 tax_0.05 tax_0.10"
-
-#Construct the RUNS list:
-TOTAL_RUNS=3
-RUNS=''
-for ((j=0; j<TOTAL_RUNS; j++)); do
-    RUNS=$RUNS' '$j
-done
 
 echo '  Starting second stage of experiment: running all cases...'
 

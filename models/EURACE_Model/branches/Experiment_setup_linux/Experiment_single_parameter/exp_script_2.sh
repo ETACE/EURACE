@@ -5,15 +5,14 @@
 # - Enter folder ./value_x
 # - Write xml tags and parameter settings to the file specific.xml
 #####################################################################################################
-BASE=$PWD
 
-F1="0.01 0.05 0.10"
+#F1_values="0.20 0.30 0.50"
 echo '  Creating specific.xml files in folder hierarchy...'
 
 mkdir -p 'its'
 cd ./its
 
-for f1 in $F1; do
+for f1 in $F1_values; do
     folder1='tax_'$f1
                 #echo $PWD
                 cd $folder1
