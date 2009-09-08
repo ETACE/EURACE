@@ -36,9 +36,9 @@
 </fixture>
 <expected>
 <Government>
-<payment_account>-5000.00</payment_account>
-<monthly_transfer_payment>5000</monthly_transfer_payment>
-<yearly_transfer_payment>5000</yearly_transfer_payment>
+<payment_account>-9000.00</payment_account>
+<monthly_transfer_payment>9000</monthly_transfer_payment>
+<yearly_transfer_payment>9000</yearly_transfer_payment>
 </Government>
 </expected>
 </unittest>

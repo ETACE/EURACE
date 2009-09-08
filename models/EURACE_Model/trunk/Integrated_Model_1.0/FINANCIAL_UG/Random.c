@@ -53,8 +53,10 @@ double getSeed()
  * \param seed the seed.
  */
 void setSeed( double seme)
- { 
+ {  q = quo(m ,a);
+    r = fmod(m ,a);
     seed=seme;
+     next();
  }
 /** \fn double next()
  * \brief  This function generates random float number in the interval 0 to 1
