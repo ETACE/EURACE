@@ -137,7 +137,7 @@ void divide(double_array *coll, double denominator);
 
 void addIncSortDouble(double_array *coll,double value);
 void addIncSetSortDouble(double_array *coll,double value);
-
+void qSort_double_array(double_array *v,int first, int last);
 
 
 Order_array *newCOrder(int size);       
@@ -288,9 +288,9 @@ Order_array *buyOrders(ClearingMechanism *clear);
 Order_array *sellOrders(ClearingMechanism *clear);
 
 void sortOrders(ClearingMechanism *clear);
-int aggregateDemand(ClearingMechanism *aClearing,double aPriceValue );
+int aggregateDemand(ClearingMechanism *aClearing,double aPriceValue ,int *i, double start_value);
 
-int aggregateSupply(ClearingMechanism *aClearing,double aPriceValue );
+int aggregateSupply(ClearingMechanism *aClearing,double aPriceValue ,int *i, double start_value);
 
 
 

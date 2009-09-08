@@ -2,6 +2,8 @@
 #include "../Clearinghouse_agent_header.h"
 #include "my_library_header.h"
 
+
+
 void receiveOrderOnAsset(ClearingMechanism *mechanism, Asset *anAsset)
 {    Order *pord;
      Order ord;
@@ -96,9 +98,9 @@ void sendOrderStatus(ClearingMechanism *clearm)
 }
 
 int ClearingHouse_receive_orders_and_run()
-{ int size,i;
+{
+/*int size,i;
   ClearingMechanism *mechanism;
-  //mechanism=newClearing();
   mechanism=&CLEARINGMECHANISM;
   Asset_array *assets;
   Asset *asset;
@@ -117,13 +119,59 @@ int ClearingHouse_receive_orders_and_run()
   }
   emptyClearing(mechanism);
   //printf("sono qui---");
-  
+*/ 
+int prev_asset,asset_id,quantity,issuer,index;
+double limit_price;
+Asset *asset;
+Order *pord;
+Order ord;
+pord=&ord;
+prev_asset = -1;
+
+START_ORDER_MESSAGE_LOOP
+   asset_id    = order_message->asset_id;  
+   quantity    = order_message->quantity;
+   issuer      = order_message->trader_id;
+   limit_price = order_message->limit_price;
+   setOrder(pord, limit_price, quantity, asset_id, issuer);
+
+   if (prev_asset != asset_id) /* found a different asset */
+   {
+      /* handle previous asset first, unless there isn't one (-1) */
+      if (prev_asset != -1 ) 
+      {
+        index=findCAsset(&ASSETS, asset_id);
+        if(index>-1)
+         {
+         asset = elementAtCAsset(&ASSETS, index);
+         computeAssetPrice(&CLEARINGMECHANISM, asset);
+         sendOrderStatus(&CLEARINGMECHANISM);
+         }
+      }
+
+      /* start with new asset */
+      emptyClearing(&CLEARINGMECHANISM);
+      prev_asset =  asset_id;
+   }
+
+ if (isBuyOrder(pord))       addBuyOrder(&CLEARINGMECHANISM, pord);
+ else if (isSellOrder(pord)) addSellOrder(&CLEARINGMECHANISM, pord);
+
+FINISH_ORDER_MESSAGE_LOOP
+index=findCAsset(&ASSETS, asset_id);
+if(index>-1)
+       {
+           asset = elementAtCAsset(&ASSETS,index);
+            computeAssetPrice(&CLEARINGMECHANISM, asset);
+            sendOrderStatus(&CLEARINGMECHANISM); 
+        }
+        
   if (PRINT_DEBUG)  
   {
                     printf("\n\n ClearingHouse_receive_orders_and_run ID: %d",ID);
                     getchar();}
   
-  
+ 
   return 0;
 }
 
