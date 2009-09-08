@@ -55,7 +55,7 @@ int aggregateDemand(ClearingMechanism *aClearing,double aPriceValue ,int *i, dou
               if(each->price >= aPriceValue) 
               {
                total = total + each->quantity; 
-                 printf("%d %f %d\n",total,aPriceValue,*i);
+                 //printf("%d %f %d\n",total,aPriceValue,*i);
                *i=*i+1;
               }
               else found=0;
@@ -83,7 +83,7 @@ int aggregateSupply(ClearingMechanism *aClearing,double aPriceValue ,int *i, dou
               if(each->price <= aPriceValue) 
               {
                total = total + each->quantity; 
-                          printf("%d %f %d\n",total,aPriceValue,*i);
+                         // printf("%d %f %d\n",total,aPriceValue,*i);
                *i++;
               }
               else found=0;
