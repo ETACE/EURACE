@@ -31,7 +31,7 @@ Order_array *sellOrders(ClearingMechanism *clear)
 void sortOrders(ClearingMechanism *clear)
 { int size;
      size=sizeCOrder(&clear->buyOrders);
-     if(size>1)qSortCOrder(&clear->buyOrders,0,size-1);
+     if(size>1)qSortCOrderDec(&clear->buyOrders,0,size-1);
      size=sizeCOrder(&clear->sellOrders);
      if(size>1)qSortCOrder(&clear->sellOrders,0,size-1);
      size=sizeCDouble(&clear->prices);
@@ -55,7 +55,7 @@ int aggregateDemand(ClearingMechanism *aClearing,double aPriceValue ,int *i, dou
               if(each->price >= aPriceValue) 
               {
                total = total + each->quantity; 
-                 //printf("%d %f %d\n",total,aPriceValue,*i);
+                //printf("demand %d %f %d\n",total,aPriceValue,*i);
                *i=*i+1;
               }
               else found=0;
@@ -82,9 +82,9 @@ int aggregateSupply(ClearingMechanism *aClearing,double aPriceValue ,int *i, dou
               each=&(aux->array[*i]);
               if(each->price <= aPriceValue) 
               {
-               total = total + each->quantity; 
-                         // printf("%d %f %d\n",total,aPriceValue,*i);
-               *i++;
+               total = total +each->quantity; 
+                         // printf("supply %d %f %d\n",total,aPriceValue,*i);
+               *i=*i+1;
               }
               else found=0;
              
@@ -132,6 +132,7 @@ int aggregateSupply(ClearingMechanism *aClearing,double aPriceValue ,int *i, dou
 	                price = elementAtCDouble(sortedPrices,i);
 			demand = aggregateDemand(aClearing,price,&position_demand,demand);
 			supply = aggregateSupply(aClearing,price,&position_supply,supply);
+                        //printf("supply %d and demand %d price %f \n, ",supply,demand,price);
 			Qtrans = min(supply,demand);
 			balance=abs(supply-demand);
 		     if(Qcross<Qtrans) 
@@ -144,10 +145,14 @@ int aggregateSupply(ClearingMechanism *aClearing,double aPriceValue ,int *i, dou
 			     bestbalance=balance;
                             }
                         }
-      } 
+                   if(  Qcross>Qtrans) break;
+                   if(position_demand==sizeCOrder(&aClearing->buyOrders)) {position_demand=0;demand=0;}
+                  // if(position_supply==sizeCOrder(&aClearing->sellOrders)) {position_supply=0;supply=0;}
+
+           } 
       
       }
-   // printf("former price %f",formerprice);
+      printf("former price %f",formerprice);
      return formerprice;
 }                 
 void ordersMacthing(Order_array *coll, double price,int type)
