@@ -152,7 +152,7 @@ int aggregateSupply(ClearingMechanism *aClearing,double aPriceValue ,int *i, dou
            } 
       
       }
-      printf("former price %f",formerprice);
+     // printf("former price %f",formerprice);
      return formerprice;
 }                 
 void ordersMacthing(Order_array *coll, double price,int type)
