@@ -288,9 +288,9 @@ Order_array *buyOrders(ClearingMechanism *clear);
 Order_array *sellOrders(ClearingMechanism *clear);
 
 void sortOrders(ClearingMechanism *clear);
-int aggregateDemand(ClearingMechanism *aClearing,double aPriceValue ,int *i, double start_value);
+int aggregateDemand(ClearingMechanism *aClearing,double aPriceValue ,int *i, int start_value);
 
-int aggregateSupply(ClearingMechanism *aClearing,double aPriceValue ,int *i, double start_value);
+int aggregateSupply(ClearingMechanism *aClearing,double aPriceValue ,int *i, int start_value);
 
 
 
