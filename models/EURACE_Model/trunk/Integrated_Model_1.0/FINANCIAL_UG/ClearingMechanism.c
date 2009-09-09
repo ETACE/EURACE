@@ -119,7 +119,7 @@ int aggregateSupply(ClearingMechanism *aClearing,double aPriceValue ,int *i, int
      }
     
     if(cond)
-    {     bestbalance=10000000;
+    {     bestbalance=1000000000;
           position_demand=0;
           position_supply=0;
           supply=0;
@@ -129,7 +129,7 @@ int aggregateSupply(ClearingMechanism *aClearing,double aPriceValue ,int *i, int
 	  Qcross=0;
 	  formerprice=aClearing->lastPrice;
           start_value = aggregateDemand(aClearing,100000000,&position_demand,0);
-          printf(" demand %d  pos %d\n, ",start_value,position_demand);
+          //printf(" demand %d  pos %d\n, ",start_value,position_demand);
           position_demand=0;
 	  for(i=0;i<size;i++)
 	  {
@@ -137,12 +137,13 @@ int aggregateSupply(ClearingMechanism *aClearing,double aPriceValue ,int *i, int
 			tmp_value = aggregateDemand(aClearing,price,&position_demand,tmp_value);
                         demand=start_value-tmp_value;
 			supply = aggregateSupply(aClearing,price,&position_supply,supply);
-                        printf("supply %d and demand %d price %f pos %d\n, ",supply,demand,price,position_demand);
+                        //printf("supply %d and demand %d price %f pos %d\n, ",supply,demand,price,position_demand);
 			Qtrans = min(supply,demand);
 			balance=abs(supply-demand);
 		     if(Qcross<Qtrans) 
                           {Qcross=Qtrans;
-                           formerprice=price;
+                           formerprice=price; 
+                           bestbalance=1000000000;
                           }
                      if((Qtrans==Qcross) &&(Qcross!=0))
 			{ if(bestbalance>balance) 
@@ -155,6 +156,7 @@ int aggregateSupply(ClearingMechanism *aClearing,double aPriceValue ,int *i, int
            } 
       
       }
+ if (PRINT_DEBUG_AFM)
       printf("former price %f",formerprice);
      return formerprice;
 }                 
@@ -205,15 +207,16 @@ void rationing(Order_array *coll,int quantity )
     int balance,max,index,i;
     Order *ord; 
     max=sizeCOrder(coll);
-   // printf("sin qui ci siamo %d\n",max);
+   // printf("sin qui ci siamo %d\n",quantity);
     balance=quantity;
     randomize(coll,0,max-1);
   i=0;
   while(balance>0)
   { index=i%max;
-//  printf("sin qui ci siamo %d",index);
+   // printf("sin qui ci siamo %d",index);
     ord=elementAtCOrder(coll,index);
     if(ord->quantity>0) {ord->quantity--;balance--;}
+    //else printf("elemento =0%d\n",index);
     i++;
  
   }
@@ -262,13 +265,19 @@ void runClearing(ClearingMechanism *aClearing)
     demand=start_value-aggregateDemand(aClearing,price,&i,0);
     supply=aggregateSupply(aClearing,price,&j,0);
     
-   // if (PRINT_DEBUG_AFM)
-    printf("prima di bilanciare  supply %d demand %d\n",supply,demand);
+   if (PRINT_DEBUG_AFM)
+    printf("prima di bilanciare  supply %d demand %d start value %d\n",supply,demand,start_value);
     if((supply!=0) &&(demand!=0))
     {
     aClearing->quantity=min(supply,demand);
     ordersMacthing(buyorders, price,1);
     ordersMacthing(sellorders, price,-1);
+    i=0;
+    j=0; 
+    start_value = aggregateDemand(aClearing,100000000,&i,0);
+    i=0;
+    demand=start_value-aggregateDemand(aClearing,price,&i,0);
+    supply=aggregateSupply(aClearing,price,&j,0);
     balance=abs(supply-demand);
     if(supply>demand) rationing(sellorders, balance);
     if(supply<demand) rationing(buyorders, balance);
@@ -277,13 +286,13 @@ void runClearing(ClearingMechanism *aClearing)
     printf("sin qui ci siamo %d\n",balance);
     i=0;
     j=0;
-     start_value = aggregateDemand(aClearing,100000000,&i,0);
+    start_value = aggregateDemand(aClearing,100000000,&i,0);
     i=0;
     demand=start_value-aggregateDemand(aClearing,price,&i,0);
     supply=aggregateSupply(aClearing,price,&j,0);
    
    if (PRINT_DEBUG_AFM)
-     printf("former price %f supply %d demand %d\n",price,supply,demand);
+     printf("former price %f supply %d demand %d start_value %d\n",price,supply,demand,start_value);
    }
    else {
          reset_Order_array(sellorders);
