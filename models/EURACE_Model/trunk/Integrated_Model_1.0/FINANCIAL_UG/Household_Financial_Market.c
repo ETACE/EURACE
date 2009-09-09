@@ -163,7 +163,7 @@ int Household_update_its_portfolio()
          //printf("numero di execuzione =%d\n",info->asset_id);
        setOrder(currentOrder,info->price,info->quantity,info->asset_id,info->trader_id);
        if(sizeCOrder(pendingOrders)>0)
-       printf("payment_account %f\n",PAYMENT_ACCOUNT);
+       //printf("payment_account %f\n",PAYMENT_ACCOUNT);
           executeOrder(&PAYMENT_ACCOUNT,currentOrder,assets,pendingOrders);
        
        if (PRINT_DEBUG) printf("\n\t asset_id: %d price: %f quantity: %d",info->asset_id,info->price,info->quantity);
