@@ -144,15 +144,13 @@ int aggregateSupply(ClearingMechanism *aClearing,double aPriceValue ,int *i, int
                           {Qcross=Qtrans;
                            formerprice=price;
                           }
-                     if(Qtrans==Qcross) 
+                     if((Qtrans==Qcross) &&(Qcross!=0))
 			{ if(bestbalance>balance) 
 			    {formerprice=price;
 			     bestbalance=balance;
                             }
                         }
                    if(  Qcross>Qtrans) break;
-                   //if(position_demand==sizeCOrder(&aClearing->buyOrders)) {position_demand=0;demand=0;}
-                  // if(position_supply==sizeCOrder(&aClearing->sellOrders)) {position_supply=0;supply=0;}
 
            } 
       
@@ -266,7 +264,8 @@ void runClearing(ClearingMechanism *aClearing)
     
    // if (PRINT_DEBUG_AFM)
     printf("prima di bilanciare  supply %d demand %d\n",supply,demand);
-    
+    if((supply!=0) &&(demand!=0))
+    {
     aClearing->quantity=min(supply,demand);
     ordersMacthing(buyorders, price,1);
     ordersMacthing(sellorders, price,-1);
@@ -285,6 +284,11 @@ void runClearing(ClearingMechanism *aClearing)
    
    if (PRINT_DEBUG_AFM)
      printf("former price %f supply %d demand %d\n",price,supply,demand);
+   }
+   else {
+         reset_Order_array(sellorders);
+         reset_Order_array(buyorders);
+        }
 }
    
 void emptyClearing(ClearingMechanism *aClearing)
