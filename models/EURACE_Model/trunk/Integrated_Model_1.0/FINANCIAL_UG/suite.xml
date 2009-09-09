@@ -103,12 +103,13 @@
 </fixture>
 <expected>
 <messages>
-<order_status>{{5,1,50.200000,100},{4,1,50.200000,100},{3,1,50.200000,100},{2,1,50.200000,100},{8,1,50.200000,-100},{9,1,50.200000,-100},{6,1,50.200000,-100},{7,1,50.200000,-100}}</order_status>
+<order_status>{{2,1,50.200000,100},{3,1,50.200000,100},{4,1,50.200000,100},{5,1,50.200000,100},{8,1,50.200000,-100},{9,1,50.200000,-100},{6,1,50.200000,-100},{7,1,50.200000,-100}}</order_status>
 </messages>
 </expected>
 </unittest>
 <unittest>
 <name>test_ClearingHouse_receive_orders_and_run_2</name>
+<description>this case reppresents the standard way how the clearing house work, it compute the price from a group of orders that match  </description>
 <function>ClearingHouse_receive_orders_and_run</function>
 <xagent>Clearinghouse</xagent>
 <assertions>
@@ -132,13 +133,13 @@
 </fixture>
 <expected>
 <messages>
-<order_status>{{5,1,50.200000,100},{4,1,50.200000,100},{3,1,50.200000,100},{2,1,50.200000,100},{8,1,50.200000,-100},{9,1,50.200000,-100},{6,1,50.200000,-100},{7,1,50.200000,-100},{5,2,50.200000,100},{4,2,50.200000,100},{3,2,50.200000,100},{2,2,50.200000,100},{8,2,50.200000,-100},{9,2,50.200000,-100},{6,2,50.200000,-100},{7,2,50.200000,-100}}</order_status>
+<order_status>{{2,1,50.200000,100},{3,1,50.200000,100},{4,1,50.200000,100},{5,1,50.200000,100},{8,1,50.200000,-100},{9,1,50.200000,-100},{6,1,50.200000,-100},{7,1,50.200000,-100},{2,2,50.200000,100},{3,2,50.200000,100},{4,2,50.200000,100},{5,2,50.200000,100},{8,2,50.200000,-100},{9,2,50.200000,-100},{6,2,50.200000,-100},{7,2,50.200000,-100}}</order_status>
 </messages>
 </expected>
 </unittest>
 <unittest>
 <name>test_ClearingHouse_receive_orders_3</name>
-<description>this test verifies that the correct price computation with any sell orders  that match to a buy order</description>  
+<description>this test verifies that the correct price computation with any sell orders  match to a buy order</description>  
 <function>ClearingHouse_receive_orders_and_run</function>
 <xagent>Clearinghouse</xagent>
 <assertions>
@@ -192,7 +193,7 @@
 </fixture>
 <expected>
 <messages>
-<order_status>{{6,1,50.5,-100},{5,1,50.5,100}}</order_status>
+<order_status>{{5,1,50.500000,100},{6,1,50.500000,-100}}</order_status>
 </messages>
 </expected>
 </unittest>
