@@ -1,4 +1,3 @@
-#include <math.h>
 #include "../header.h"
 #include "../IGFirm_agent_header.h"
 #include "../my_library_header.h"
@@ -48,43 +47,49 @@ int IGFirm_update_productivity_price()
  * \brief IGFirm send quality and price information */
 int IGFirm_send_quality_price_info()
 {
-    //Case 1: shock occurs multiple times
-    if (ENERGY_SHOCK_FREQUENCY!=0)
-    {   
-        // To simulate a REPEATED energy price shock over a time duration interval:    
-        if ((DAY>=ENERGY_SHOCK_START)&&(DAY<ENERGY_SHOCK_END)&&((DAY-ENERGY_SHOCK_START)%ENERGY_SHOCK_FREQUENCY==0))
-        {
-            ENERGY_PRICE_MARKUP = CONST_ENERGY_SHOCK_INTENSITY;
-        }
-        else ENERGY_PRICE_MARKUP = 0.0;
-        
-        //Multiplicative: mark up is defined in percentage terms
-        CAPITAL_GOOD_PRICE *= (1+ENERGY_PRICE_MARKUP);
-        
-        //At the end of the time interval there is a down_shock only if the shock is set to be symmetric:
-        if ((DAY==ENERGY_SHOCK_END)&&(SYMMETRIC_SHOCK==1))
+
+    if(POLICY_EXP_ENERGY_SHOCK)
+    {
+        if (DISCRETE_SHOCK==0)
         {   
-            if(PRINT_DEBUG) printf("\nIn IGFirm_send_quality_price_info: Downward shock due to SYMMETRIC_SHOCK==1\n");
+            // To simulate a continuous energy price shock over a time interval:    
+            if ((DAY>=ENERGY_SHOCK_START)&&(DAY<=ENERGY_SHOCK_END))
+            {
+                ENERGY_PRICE_MARKUP = CONST_ENERGY_PRICE_MARKUP;
+            }
+            else ENERGY_PRICE_MARKUP = 0.0;
+        
+            //Additive: mark up defined in absolute terms
+            //CAPITAL_GOOD_PRICE += ENERGY_PRICE_MARKUP;
+        
             //Multiplicative: mark up defined in percentage terms
-            CAPITAL_GOOD_PRICE = CAPITAL_GOOD_PRICE*pow((1+CONST_ENERGY_SHOCK_INTENSITY),-(ENERGY_SHOCK_END-ENERGY_SHOCK_START)/ENERGY_SHOCK_FREQUENCY);
-        }        
-    }
-    
-    //Case 2: shock occurs only at start and end
-    if (ENERGY_SHOCK_FREQUENCY==0)
-    {   
-        //Only update the price with the energy markup once at the start
-        if (DAY==ENERGY_SHOCK_START)
-        {        
-            CAPITAL_GOOD_PRICE *= (1+CONST_ENERGY_SHOCK_INTENSITY);
+            CAPITAL_GOOD_PRICE *= (1+ENERGY_PRICE_MARKUP);
         }
-        //Reset price at end of period
-        if ((DAY==ENERGY_SHOCK_END)&&(SYMMETRIC_SHOCK==1))
-        {        
-            CAPITAL_GOOD_PRICE = CAPITAL_GOOD_PRICE/(1+CONST_ENERGY_SHOCK_INTENSITY);
+        
+        if (DISCRETE_SHOCK==1)
+        {   
+            //Only update the price with the energy markup once at the start
+            if (DAY==ENERGY_SHOCK_START)
+            {
+                //Additive: mark up defined in absolute terms
+                //CAPITAL_GOOD_PRICE += CONST_ENERGY_PRICE_MARKUP;
+            
+                //Multiplicative: mark up defined in percentage terms
+                CAPITAL_GOOD_PRICE *= (1+ENERGY_PRICE_MARKUP);
+            }
+            if (DAY==ENERGY_SHOCK_END)
+            {
+                //Additive: mark up defined in absolute terms
+                //CAPITAL_GOOD_PRICE -= CONST_ENERGY_PRICE_MARKUP;
+            
+                //Multiplicative: mark up defined in percentage terms
+                CAPITAL_GOOD_PRICE = CAPITAL_GOOD_PRICE/(1+ENERGY_PRICE_MARKUP);
+            }
         }
     }
+
         add_productivity_message(ID,PRODUCTIVITY,CAPITAL_GOOD_PRICE);
+
     return 0;
 }
 
