@@ -171,7 +171,7 @@ if(index>-1)
                     printf("\n\n ClearingHouse_receive_orders_and_run ID: %d",ID);
                     getchar();}
   
- 
+ emptyClearing(&CLEARINGMECHANISM);
   return 0;
 }
 
