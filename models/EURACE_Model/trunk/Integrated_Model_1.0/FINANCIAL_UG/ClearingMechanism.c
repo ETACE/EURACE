@@ -110,11 +110,11 @@ int aggregateSupply(ClearingMechanism *aClearing,double aPriceValue ,int *i, int
       buy_orders=buyOrders(aClearing);
       cond=1;
     if(isEmptyCOrder(buy_orders)) 
-     { formerprice=0.9*(aClearing->lastPrice);
+     { formerprice=0.99*(aClearing->lastPrice);
        cond=0;
      }
   else if(isEmptyCOrder(sell_orders)) 
-     { formerprice=1.1*(aClearing->lastPrice);
+     { formerprice=1.01*(aClearing->lastPrice);
        cond=0;
      }
     

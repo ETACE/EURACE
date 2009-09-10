@@ -197,5 +197,122 @@
 </messages>
 </expected>
 </unittest>
+<unittest>
+<name>test_ClearingHouse_receive_no_orders</name>
+<description>this test verifies that the correct price computation with an asset in the market but anyone send an order, in this case will be considered the last transaction related the specific asset</description>  
+<function>ClearingHouse_receive_orders_and_run</function>
+<xagent>Clearinghouse</xagent>
+<assertions>
+<messages>
+<message>
+<name>order_status</name>
+</message>
+</messages>
+<variables>
+ <variable>
+     <type>Asset_array</type>
+     <name>assets</name>
+ </variable>
+</variables>
+</assertions>
+<fixture>
+<Clearinghouse>
+<assets>{{1,1000,50}}</assets>
+<clearingmechanism>{0.0,0,{},{},{}}</clearingmechanism>
+<id>52</id>
+<region_id>1</region_id>
+<partition_id>0</partition_id>
+</Clearinghouse>
+<messages>
+<order>{}</order>
+</messages>
+</fixture>
+<expected>
+<Clearinghouse>
+<assets>{{1,1000,50}}</assets>
+</Clearinghouse>
+<messages>
+<order_status>{}</order_status>
+</messages>
+</expected>
+</unittest>
+<unittest>
+<name>test_ClearingHouse_receive_no_sell_orders</name>
+<description>this test verifies that the correct price computation with an asset in the market but anyone send an order of sell, in this case will be considered the price of last transaction  multiplied by 1.01 to avoid a possible deadlock</description>  
+<function>ClearingHouse_receive_orders_and_run</function>
+<xagent>Clearinghouse</xagent>
+<assertions>
+<messages>
+<message>
+<name>order_status</name>
+</message>
+</messages>
+<variables>
+ <variable>
+     <type>Asset_array</type>
+     <name>assets</name>
+ </variable>
+</variables>
+</assertions>
+<fixture>
+<Clearinghouse>
+<assets>{{1,1000,50}}</assets>
+<clearingmechanism>{0.0,0,{},{},{}}</clearingmechanism>
+<id>52</id>
+<region_id>1</region_id>
+<partition_id>0</partition_id>
+</Clearinghouse>
+<messages>
+<order>{{1,1,50.1,100},{2,1,50.2,100},{3,1,50.3,100},{4,1,50.4,100},{5,1,50.5,100}}</order>
+</messages>
+</fixture>
+<expected>
+<Clearinghouse>
+<assets>{{1,0,50.5}}</assets>
+</Clearinghouse>
+<messages>
+<order_status>{}</order_status>
+</messages>
+</expected>
+</unittest>
+<unittest>
+<name>test_ClearingHouse_receive_orders_with_rationing</name>
+<description>this test verifies that the correct price computation with some orders that match but there are unbalancing between the demand and the supply </description>  
+<function>ClearingHouse_receive_orders_and_run</function>
+<xagent>Clearinghouse</xagent>
+<assertions>
+<messages>
+<message>
+<name>order_status</name>
+</message>
+</messages>
+<variables>
+ <variable>
+     <type>Asset_array</type>
+     <name>assets</name>
+ </variable>
+</variables>
+</assertions>
+<fixture>
+<Clearinghouse>
+<assets>{{1,1000,50}}</assets>
+<clearingmechanism>{0.0,0,{},{},{}}</clearingmechanism>
+<id>52</id>
+<region_id>1</region_id>
+<partition_id>0</partition_id>
+</Clearinghouse>
+<messages>
+<order>{{1,1,50.1,100},{2,1,50.1,-40}}</order>
+</messages>
+</fixture>
+<expected>
+<Clearinghouse>
+<assets>{{1,40,50.1}}</assets>
+</Clearinghouse>
+<messages>
+<order_status>{{1,1,50.1,40},{2,1,50.1,-40}}</order_status>
+</messages>
+</expected>
+</unittest>
 </suite>
 
