@@ -58,7 +58,10 @@ int Government_send_policy_announcements()
     
         //Set subsidy percentages (these are used to compute individual subsidy payments)
         HH_SUBSIDY_PCT = 0.1*(-GDP_GROWTH*indicator_gdp + INFLATION_RATE*indicator_inflation + UNEMPLOYMENT_RATE);
-        FIRM_SUBSIDY_PCT = CONST_ENERGY_PRICE_MARKUP;
+        
+        //The firm is subsidized for the increase in capital_goods_price
+        //This is not so clear: the energy price markup = CONST_ENERGY_SHOCK_INTENSITY, but this only occurs in some iterations, not all
+        //FIRM_SUBSIDY_PCT = CONST_ENERGY_SHOCK_INTENSITY;
     }
 
     //add announcement
