@@ -135,7 +135,7 @@ int  Household_select_strategy()
 int Household_update_its_portfolio()
 { 
        
-  int i,issuer;
+  int issuer;
   Asset_array *assets;
   Order_array *pendingOrders;
   m_order_status *info;
@@ -147,28 +147,21 @@ int Household_update_its_portfolio()
   assets=get_assetsowned();
   issuer=get_id();
   info=get_first_order_status_message();
-  i=0;
-//if( info==NULL)  printf("numero di execuzione =\n");
-
+  
   if (PRINT_DEBUG) 
   {
                    printf("\n\n Household_update_its_portfolio ID: %d",ID);
                    printf("\n\t PAYMENT_ACCOUNT: %f",PAYMENT_ACCOUNT);}
   
   while(info)
-  {  //printf("numero di execuzione =%d\n",info->asset_id);
+  {  
      if(info->trader_id==issuer) 
-      { i++;
-        
-         //printf("numero di execuzione =%d\n",info->asset_id);
+      {        
        setOrder(currentOrder,info->price,info->quantity,info->asset_id,info->trader_id);
-       if(sizeCOrder(pendingOrders)>0)
-       //printf("payment_account %f\n",PAYMENT_ACCOUNT);
-          executeOrder(&PAYMENT_ACCOUNT,currentOrder,assets,pendingOrders);
-       
-       if (PRINT_DEBUG) printf("\n\t asset_id: %d price: %f quantity: %d",info->asset_id,info->price,info->quantity);
-        
-       }
+       if(sizeCOrder(pendingOrders)>0) executeOrder(&PAYMENT_ACCOUNT,currentOrder,assets,pendingOrders);
+       if (PRINT_DEBUG) 
+        printf("\n\t asset_id: %d price: %f quantity: %d",info->asset_id,info->price,info->quantity); 
+      }
 
      info=get_next_order_status_message(info);   
   }
@@ -192,7 +185,7 @@ int distribuite(double cash, double totalwealth)
 }
 
 
-/* it compute a limitOrder on an Asset  anAsset contained into its Portfolio , */
+/* it compute a limitOrder on an Asset  contained into its Portfolio , */
 void computeLimitOrder( Asset *anAsset, double weight, double resource,Belief *belief, Order *order)
 {
       double limitPrice,lastprice;
@@ -213,17 +206,9 @@ void computeLimitOrder( Asset *anAsset, double weight, double resource,Belief *b
       //if(abs(aux)>1) printf("\n assetId %d expected price return %f exp_price_tmp %f",assetId,aux,aux_tmp);
       if(aux<-1) aux=-1; 
        
-      //aux=gauss(0,0.0001);
+      
       limitPrice=lastprice*(1+aux); 
-      deltaquantity=(int)(weight*resource/(limitPrice))-quantity;
-
-     /* if((deltaquantity<0)&&(deltaquantity<(-quantity))) 
-             {  printf("last price %f exptected return %f\n",limitPrice,aux);
-                printf("id %d limitprice %f weight %f resource %lf deltaquantity %d quantity=%d\n",belief->asset_id,limitPrice,weight,resource,deltaquantity,quantity);
-             } */
-
-      //if(deltaquantity<0) deltaquantity=deltaquantity*1.1;
-      //else deltaquantity=deltaquantity*0.9;  
+      deltaquantity=(int)(weight*resource/(limitPrice))-quantity; 
       setOrder(order,limitPrice,deltaquantity,assetId,trader_id);
       
 }
