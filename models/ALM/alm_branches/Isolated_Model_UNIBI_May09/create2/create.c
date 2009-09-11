@@ -70,7 +70,7 @@ double ALPHA = 0.662;
 double BETA = 0.338;
 
 /*brief Dividend rate of consumption goods producers. */
-double DIVIDEND_RATE = 0.4;
+double DIVIDEND_RATE = 0.8;
 
 /*brief deprication rate. */
 double DEPRECIATION_RATE = 0.01;
@@ -83,7 +83,7 @@ double TETA = 0.0;
 
 
 /*brief Pricing rule: mark up on unit costs. */
-double MARK_UP = 0.15;
+double MARK_UP = 0.10;
 
 /*Strenght of the influence of the actual demand on the next production quantity: if LAMBDA = 0 then the planned production quantities of the last periods are recognized. If LAMBDA = 1 then the only the actual demand is recognized*/
 double LAMBDA = 0.5;
@@ -185,12 +185,24 @@ double SUBSIDY_FRACTION = 0.0;
 
 //    3	
 //low tech progress  start value best practice:1.5
-//sprintf(innovation_scheme,"{{1300,1.518750},{1360,1.537734},{1580,1.556956},{1760,1.576418},{1800,1.596123},{2240,1.616075},{2320,1.636276},{2360,1.656729},{2380,1.656729},{3020,1.677438},{3040,1.677438},{3380,1.698406},{3760,1.719636},{4040,1.741132},{4120,1.762896},{4340,1.784932},{4420,1.807244},{4440,1.829834},{4580,1.852707},{4680,1.875866}}");
+sprintf(innovation_scheme,"{{1300,1.518750},{1360,1.537734},{1580,1.556956},{1760,1.576418},{1800,1.596123},{2240,1.616075},{2320,1.636276},{2360,1.656729},{2380,1.656729},{3020,1.677438},{3040,1.677438},{3380,1.698406},{3760,1.719636},{4040,1.741132},{4120,1.762896},{4340,1.784932},{4420,1.807244},{4440,1.829834},{4580,1.852707},{4680,1.875866}}");
 
 
 //    4
 //high tech progress  start value best practice:1.5
-sprintf(innovation_scheme,"{{1060,1.537500},{1120,1.575937},{1180,1.615336},{1460,1.655719},{1600,1.697112},{1860,1.739540},{1980,1.783029},{2120,1.827604},{2180,1.873294},{2480,1.920127},{2780,1.968130},{2800,2.017333},{2840,2.067767},{3560,2.172447},{3640,2.226758},{3660,2.282427},{4020,2.339488},{4380,2.397975},{4640,2.457925},{4760,2.519373},{4800,2.582357},{4940,2.646916}}");
+//sprintf(innovation_scheme,"{{1060,1.537500},{1120,1.575937},{1180,1.615336},{1460,1.655719},{1600,1.697112},{1860,1.739540},{1980,1.783029},{2120,1.827604},{2180,1.873294},{2480,1.920127},{2780,1.968130},{2800,2.017333},{2840,2.067767},{3560,2.172447},{3640,2.226758},{3660,2.282427},{4020,2.339488},{4380,2.397975},{4640,2.457925},{4760,2.519373},{4800,2.582357},{4940,2.646916}}");
+
+
+// 5
+
+//exztra high start value 1.0
+
+//sprintf(innovation_scheme,"{{1300,1.092025},{1360,1.141166},{1580,1.192519},{1760,1.246182},{1800,1.30226},{2240,1.360862},{2320,1.422101},{2360,1.486095},{2380,1.552969},{3020, 1.622853},{3040,1.695881},{3380,1.772196},{3760,1.851945},{4040,1.935282},{4120,2.02237},{4340,2.113377},{4420,2.208479},{4440,2.307860},{4580,2.411714},{4680,2.520241}}");
+
+
+// 6 
+//extrqa high start value 1.5
+//sprintf(innovation_scheme,"{{1300,1.5675},{1360,1.638037},{1580,1.711749},{1760,1.788778},{1800,1.869273},{2240,1.95339},{2320,2.041293},{2360,2.133151},{2380,2.229143},{3020, 2.434280},{3040,2.543822},{3380,2.658294},{3760,2.777917},{4040,2.902924},{4120,3.033555},{4340,3.170065},{4420,3.312718},{4440,3.461790},{4580,3.617571},{4680,3.617571}}");
 
 	/*Defining the geographical space as a rectangular grid  */	
 	
@@ -232,7 +244,7 @@ sprintf(innovation_scheme,"{{1060,1.537500},{1120,1.575937},{1180,1.615336},{146
 							{1.5,1.5};
 
 	int skills_in_regions[2][1]=
-					{2,2};
+					{4,4};
 //region specific initial value of households specific skills
 		double spec_s_hh_reg1 = 1.5;
 		double spec_s_hh_reg2 = 1.5;
@@ -251,7 +263,7 @@ sprintf(innovation_scheme,"{{1060,1.537500},{1120,1.575937},{1180,1.615336},{146
 	/*Defining skill distributions in regions: only 1-4*/
 
 	double skilldistribution_1[5]={0.2,0.2,0.2,0.2,0.2};
-	double skilldistribution_2[5]={0.05,0.05,0.05,0.05,0.8};
+	double skilldistribution_2[5]={0.8,0.05,0.05,0.05,0.05};
 	double skilldistribution_3[5]={0.42,0.33,0.20,0.04,0.01};
 	double skilldistribution_4[5]={0.1,0.3,0.4,0.15,0.05};
 	
@@ -263,10 +275,10 @@ sprintf(innovation_scheme,"{{1060,1.537500},{1120,1.575937},{1180,1.615336},{146
 		
 		//Total production volume for a single firm
 			double total_production_quantity[2][1]=
-						{27.0,27.0};
+						{50.0,50.0};
 			//This defines the initial capital stock of firm depending on the region.
 			double total_units_capital[2][1]=
-				                            {45.0,45.0};
+				                            {90.0,90.0};
 		
 			//This defines the financial resources of firm at the beginning of a simulation
 			double payment_account[2][1]= 
@@ -274,9 +286,11 @@ sprintf(innovation_scheme,"{{1060,1.537500},{1120,1.575937},{1180,1.615336},{146
 			
 				
 			//Base wage offer per unit of specific skills:
-			double base_wage_offer = 1.0;
+			double base_wage_offer = 2.0;
 
 
+
+			
 			//Initital wage offer of the firms
 			double wage_offer_region_1 = base_wage_offer*specific_skills_of_household[0][0];
 			double wage_offer_region_2 = base_wage_offer*specific_skills_of_household[0][1];
@@ -287,10 +301,21 @@ sprintf(innovation_scheme,"{{1060,1.537500},{1120,1.575937},{1180,1.615336},{146
 				{wage_offer_region_1,wage_offer_region_2};
 			
 			double mall_delivery_fraction_1;
-			mall_delivery_fraction_1 = wage_offer_region_1/(wage_offer_region_1+wage_offer_region_2);
-			double mall_delivery_fraction_2;
-			mall_delivery_fraction_2 = wage_offer_region_2/(wage_offer_region_1+wage_offer_region_2);
 			
+			double mall_delivery_fraction_2;
+			
+			if(num_regions==2)
+			{
+
+			mall_delivery_fraction_1 = wage_offer_region_1/(wage_offer_region_1+wage_offer_region_2);
+			mall_delivery_fraction_2 = wage_offer_region_2/(wage_offer_region_1+wage_offer_region_2);
+
+			}else
+			{
+			mall_delivery_fraction_1 = 1.0;
+			mall_delivery_fraction_2 = 0.0;
+
+			}
 
 	
 	/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
