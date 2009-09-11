@@ -1,32 +1,6 @@
 #include "my_library_header.h"
-Belief *newBelief()
-{ 
-  Belief *temp;
-  temp=(Belief *)malloc(sizeof(Belief));
-  initializeBelief(temp);
-  return temp;
- 
-}
 
-void initializeBelief(Belief *belief)
-{
-      belief->expectedPriceReturns=0.0;
-      belief->expectedTotalReturns=0.0;
-      belief->expectedCashFlowYield=0.0;
-      belief->volatility=0.0;
-      //belief->forwardWindow=0;
-      //belief->backwardWindow=0;
-      //belief->binsNumber=0;
-      //belief->randomReturnWeight=0.0;
-      //belief->fundametalReturnWeight=0.0;
-      //belief->chartistReturnWeight=0.0;
-      //belief->holdingPeriodToForwardW=0;
-}
-/*
-void  assetBeliefFormation(Belief *belief, Asset_array *assets,Random *rnd)
-{ belief->expectedPriceReturns=gauss(rnd,0,sigma);
-}
-*/
+
 
 
 
@@ -153,12 +127,13 @@ void  stockBeliefFormation(Belief *belief, Stock *stock,int backwardWindow,int f
   double value,factor,dividend_yield_annualized,annual_coeff;
  
   annual_coeff=(NRDAYSINYEAR/forwardWindow);
-  rnd_avg=randomReturnStock(belief, stock,forwardWindow,backwardWindow,rndreturn);
-  //printf("random return%f\n",rnd_avg);
-  fundreturn= futureFundamentalReturn(belief,stock,currentDay,forwardWindow, equity);
-  //printf("fundamental return%f\n",fundreturn);
-  returns_avg=expectedReturnStock(stock,backwardWindow);
-  //printf("chartist return%f\n",returns_avg);
+ /*some of the  behavior weights are usually zero so this computation could be unuseful, this increase certanly the performance,*/
+  if(randomWeight!=0) rnd_avg=randomReturnStock(belief, stock,forwardWindow,backwardWindow,rndreturn);
+  else rnd_avg=0;
+  if (fundamentalWeight!=0) fundreturn= futureFundamentalReturn(belief,stock,currentDay,forwardWindow, equity);
+  else fundreturn=0;
+  if(chartistWeight!=0) returns_avg=expectedReturnStock(stock,backwardWindow);
+  else returns_avg=0;
   value= fundamentalWeight*fundreturn + belief->expectedCashFlowYield; 
   factor=forwardWindow*chartistWeight;
   price_returns_avg=((randomWeight*rnd_avg)+(fundamentalWeight*fundreturn)+(chartistWeight*forwardWindow*returns_avg))*annual_coeff;
