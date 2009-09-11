@@ -47,7 +47,7 @@ int Government_read_tax_payments()
 }
 
 /* \fn: int Government_read_unemployment_benefit_notifications()
- * \brief Counter of the unemployment benefit messages, monthly and yearly totals of the unemployment benefit payments.
+ * \brief This function counts the unemployment benefits at that day. If the sum exceeds the financial resources of the government the pay out is reduced until the budget constraint is not violated any more.
  */
 int Government_read_unemployment_benefit_notifications()
 {
@@ -103,9 +103,11 @@ int Government_read_unemployment_benefit_notifications()
 	        
 	    FINISH_UNEMPLOYMENT_NOTIFICATION_MESSAGE_LOOP
 	    
+		//This computes the ratio rate
 	    if(sum > PAYMENT_ACCOUNT && sum > 0.0 )
 	    {
-	    	UNEMPLOYMENT_BENEFIT_RATIONING_PERCENTAGE = 1 - PAYMENT_ACCOUNT/sum;	
+	    	//UNEMPLOYMENT_BENEFIT_RATIONING_PERCENTAGE = 1 - PAYMENT_ACCOUNT/sum;	
+		UNEMPLOYMENT_BENEFIT_RATIONING_PERCENTAGE  = 0.0;
 	    }
 	    
 		sum = (1- UNEMPLOYMENT_BENEFIT_RATIONING_PERCENTAGE)*sum;
