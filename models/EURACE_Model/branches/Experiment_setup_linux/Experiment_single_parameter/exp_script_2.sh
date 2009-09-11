@@ -1,21 +1,19 @@
 #!/bin/bash
-
-######### CREATION OF THE SPECIFIC SETTINGS #########################################################
-# Script to create the file specific.xml that contains the specific parameter settings for the cases
+# Script to create the file specific.xml that contains the specific parameter settings
 # - Enter folder ./value_x
 # - Write xml tags and parameter settings to the file specific.xml
-#####################################################################################################
 
-#F1_values="0.20 0.30 0.50"
 echo '  Creating specific.xml files in folder hierarchy...'
 
 mkdir -p 'its'
 cd ./its
 
+echo 'In exp_script_2.sh these values are used:'  '[' $F1_values ']'
+
 for f1 in $F1_values; do
     folder1='tax_'$f1
-                #echo $PWD
-                cd $folder1
+
+                cd 'tax_'$f1
                 rm -f specific.xml
                 echo '<environment>'>>specific.xml
 
