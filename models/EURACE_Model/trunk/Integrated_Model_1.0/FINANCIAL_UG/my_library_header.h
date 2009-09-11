@@ -329,9 +329,7 @@ double computeStockUtilityFunction(Stock *stock,int backwardWindow, double facto
 
 /********Belief*******************/
 
-Belief *newBelief();
-void initializeBelief(Belief *belief);
-//void  assetBeliefFormation(Belief *belief, Asset_array *assets,Random *rnd);
+
 
 /*it compute the price return of the stocks as a weighted sum of different components*/
 void computeStockExpectedPriceReturns(Belief *belief, Asset *asset);
