@@ -174,6 +174,9 @@
 /** \def REGION_HOUSEHOLD_DATA
  * \brief Direct access to region_household_data of Eurostat agent memory variable. */
 #define REGION_HOUSEHOLD_DATA (current_xmachine_Eurostat->region_household_data)
+/** \def REGION_GOVERNMENT_DATA
+ * \brief Direct access to region_government_data of Eurostat agent memory variable. */
+#define REGION_GOVERNMENT_DATA (current_xmachine_Eurostat->region_government_data)
 /** \def GOVERNMENT_TAX_RATES
  * \brief Direct access to government_tax_rates of Eurostat agent memory variable. */
 #define GOVERNMENT_TAX_RATES (current_xmachine_Eurostat->government_tax_rates)

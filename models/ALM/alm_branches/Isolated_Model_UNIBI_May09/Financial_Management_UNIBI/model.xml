@@ -110,6 +110,11 @@
      <name>accruals</name>
      <description>accruals (stock variable)</description>
     </variable>
+<variable>
+     <type>double</type>
+     <name>accruals_pay_out</name>
+     <description>accruals (stock variable)</description>
+    </variable>	
   <variable>
      <type>double</type>
      <name>dividend_accruals</name>

@@ -613,8 +613,6 @@ int Household_read_policy_announcements()
 
 /** \fn Household_send_unemployment_benefit_notification()
  * \brief This function sends a message to the government in case of being unemployed that contains the last earned labour income
- * The government then can calculate the unemployment benefit payment based on the last labour income and subtract the amount from its payment account.
- * The household uses the environment parameter GOV_POLICY_UNEMPLOYMENT_BENEFIT_PCT to calculate its own unemployment benefit as well (there is no need for a message from government).
  */
 int Household_send_unemployment_benefit_notification()
 {
@@ -634,6 +632,10 @@ double fraction_if_recently_unemployed=0;
 
 }
 
+
+/** \fn Household_receives_unemployment_benefit()
+ * \brief The household receives a message of the government that contains the information if a household gets the full benefit payment or if she is rationed due to a limited budget of the government.
+ */
 int Household_receives_unemployment_benefit()
 {
     double mean_income = 0.0;
@@ -646,8 +648,8 @@ int Household_receives_unemployment_benefit()
 
 	START_HH_UNEMPLOYMENT_BENEFIT_PAY_OUT_MESSAGE_LOOP
 	
-	//benefit_received =  (1-hh_unemployment_benefit_pay_out_message->rationing_rate)*fraction_if_recently_unemployed*UNEMPLOYMENT_BENEFIT_PCT * LAST_LABOUR_INCOME;
-	benefit_received =  fraction_if_recently_unemployed*UNEMPLOYMENT_BENEFIT_PCT * LAST_LABOUR_INCOME;
+	benefit_received =  (1-hh_unemployment_benefit_pay_out_message->rationing_rate)*fraction_if_recently_unemployed*UNEMPLOYMENT_BENEFIT_PCT * LAST_LABOUR_INCOME;
+	//benefit_received =  fraction_if_recently_unemployed*hh_unemployment*UNEMPLOYMENT_BENEFIT_PCT * LAST_LABOUR_INCOME;
 	
 	FINISH_HH_UNEMPLOYMENT_BENEFIT_PAY_OUT_MESSAGE_LOOP
     /*Add unemployment_benefit to account */

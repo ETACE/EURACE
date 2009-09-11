@@ -6,6 +6,9 @@
 /** \def ID
  * \brief Direct access to id of Government agent memory variable. */
 #define ID (current_xmachine_Government->id)
+/** \def REGION_ID
+ * \brief Direct access to region_id of Government agent memory variable. */
+#define REGION_ID (current_xmachine_Government->region_id)
 /** \def LIST_OF_REGIONS
  * \brief Direct access to list_of_regions of Government agent memory variable. */
 #define LIST_OF_REGIONS (current_xmachine_Government->list_of_regions)
@@ -51,6 +54,9 @@
 /** \def YEARLY_BENEFIT_PAYMENT
  * \brief Direct access to yearly_benefit_payment of Government agent memory variable. */
 #define YEARLY_BENEFIT_PAYMENT (current_xmachine_Government->yearly_benefit_payment)
+/** \def UNEMPLOYMENT_BENEFIT_RATIONING_PERCENTAGE
+ * \brief Direct access to unemployment_benefit_rationing_percentage of Government agent memory variable. */
+#define UNEMPLOYMENT_BENEFIT_RATIONING_PERCENTAGE (current_xmachine_Government->unemployment_benefit_rationing_percentage)
 /** \def HH_TRANSFER_PAYMENT
  * \brief Direct access to hh_transfer_payment of Government agent memory variable. */
 #define HH_TRANSFER_PAYMENT (current_xmachine_Government->hh_transfer_payment)

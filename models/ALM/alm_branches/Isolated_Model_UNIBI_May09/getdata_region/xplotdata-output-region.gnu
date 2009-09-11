@@ -20,7 +20,8 @@ set xlabel "Days"
 #set ylabel "value of a"
 
 
-plot 'data-output-region.csv' using 1:2 title "output",'data-output-region.csv' using 1:3 title "output-reg-1",'data-output-region.csv' using 1:4 title "output-reg-2"
+plot 'data-output-region.csv' using 1:2 title "output"
+#,'data-output-region.csv' using 1:3 title "output-reg-1",'data-output-region.csv' using 1:4 title "output-reg-2"
  
  
 

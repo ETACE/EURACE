@@ -24,6 +24,15 @@
 /** \def TOTAL_SUPPLY
  * \brief Direct access to total_supply of Mall agent memory variable. */
 #define TOTAL_SUPPLY (current_xmachine_Mall->total_supply)
+/** \def SALES
+ * \brief Direct access to sales of Mall agent memory variable. */
+#define SALES (current_xmachine_Mall->sales)
+/** \def SALES_OF_DOMESTIC_FIRMS
+ * \brief Direct access to sales_of_domestic_firms of Mall agent memory variable. */
+#define SALES_OF_DOMESTIC_FIRMS (current_xmachine_Mall->sales_of_domestic_firms)
+/** \def SALES_OF_FOREIGN_FIRMS
+ * \brief Direct access to sales_of_foreign_firms of Mall agent memory variable. */
+#define SALES_OF_FOREIGN_FIRMS (current_xmachine_Mall->sales_of_foreign_firms)
 /** \def EXPORT_VOLUME_MATRIX
  * \brief Direct access to export_volume_matrix of Mall agent memory variable. */
 #define EXPORT_VOLUME_MATRIX (current_xmachine_Mall->export_volume_matrix)

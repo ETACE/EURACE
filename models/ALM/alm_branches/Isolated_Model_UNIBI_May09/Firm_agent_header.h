@@ -51,6 +51,9 @@
 /** \def TOTAL_SUPPLY
  * \brief Direct access to total_supply of Firm agent memory variable. */
 #define TOTAL_SUPPLY (current_xmachine_Firm->total_supply)
+/** \def LAST_NET_EARNINGS
+ * \brief Direct access to last_net_earnings of Firm agent memory variable. */
+#define LAST_NET_EARNINGS (current_xmachine_Firm->last_net_earnings)
 /** \def TOTAL_UNITS_CAPITAL_STOCK
  * \brief Direct access to total_units_capital_stock of Firm agent memory variable. */
 #define TOTAL_UNITS_CAPITAL_STOCK (current_xmachine_Firm->total_units_capital_stock)
@@ -60,6 +63,9 @@
 /** \def REVENUE_PER_DAY
  * \brief Direct access to revenue_per_day of Firm agent memory variable. */
 #define REVENUE_PER_DAY (current_xmachine_Firm->revenue_per_day)
+/** \def LINEAR_REGRESSION_ESTIMATORS
+ * \brief Direct access to linear_regression_estimators of Firm agent memory variable. */
+#define LINEAR_REGRESSION_ESTIMATORS (current_xmachine_Firm->linear_regression_estimators)
 /** \def TECHNOLOGICAL_FRONTIER
  * \brief Direct access to technological_frontier of Firm agent memory variable. */
 #define TECHNOLOGICAL_FRONTIER (current_xmachine_Firm->technological_frontier)
@@ -81,6 +87,9 @@
 /** \def PRICE_LAST_MONTH
  * \brief Direct access to price_last_month of Firm agent memory variable. */
 #define PRICE_LAST_MONTH (current_xmachine_Firm->price_last_month)
+/** \def DECIL_PRODUCTION_RULE
+ * \brief Direct access to decil_production_rule of Firm agent memory variable. */
+#define DECIL_PRODUCTION_RULE (current_xmachine_Firm->decil_production_rule)
 /** \def DEMAND_CAPITAL_STOCK
  * \brief Direct access to demand_capital_stock of Firm agent memory variable. */
 #define DEMAND_CAPITAL_STOCK (current_xmachine_Firm->demand_capital_stock)
@@ -144,6 +153,24 @@
 /** \def FIRM_PRODUCTIVITY_PROGRESS
  * \brief Direct access to firm_productivity_progress of Firm agent memory variable. */
 #define FIRM_PRODUCTIVITY_PROGRESS (current_xmachine_Firm->firm_productivity_progress)
+/** \def DELIVERY
+ * \brief Direct access to delivery of Firm agent memory variable. */
+#define DELIVERY (current_xmachine_Firm->delivery)
+/** \def DELIVERY_TO_HOME_REGION
+ * \brief Direct access to delivery_to_home_region of Firm agent memory variable. */
+#define DELIVERY_TO_HOME_REGION (current_xmachine_Firm->delivery_to_home_region)
+/** \def DELIVERY_TO_FOREIGN_REGION
+ * \brief Direct access to delivery_to_foreign_region of Firm agent memory variable. */
+#define DELIVERY_TO_FOREIGN_REGION (current_xmachine_Firm->delivery_to_foreign_region)
+/** \def STOCKS
+ * \brief Direct access to stocks of Firm agent memory variable. */
+#define STOCKS (current_xmachine_Firm->stocks)
+/** \def STOCKS_IN_HOME_REGION
+ * \brief Direct access to stocks_in_home_region of Firm agent memory variable. */
+#define STOCKS_IN_HOME_REGION (current_xmachine_Firm->stocks_in_home_region)
+/** \def STOCKS_IN_FOREIGN_REGION
+ * \brief Direct access to stocks_in_foreign_region of Firm agent memory variable. */
+#define STOCKS_IN_FOREIGN_REGION (current_xmachine_Firm->stocks_in_foreign_region)
 /** \def BANK_ID
  * \brief Direct access to bank_id of Firm agent memory variable. */
 #define BANK_ID (current_xmachine_Firm->bank_id)
@@ -165,6 +192,18 @@
 /** \def NET_EARNINGS
  * \brief Direct access to net_earnings of Firm agent memory variable. */
 #define NET_EARNINGS (current_xmachine_Firm->net_earnings)
+/** \def ACCRUALS
+ * \brief Direct access to accruals of Firm agent memory variable. */
+#define ACCRUALS (current_xmachine_Firm->accruals)
+/** \def ACCRUALS_PAY_OUT
+ * \brief Direct access to accruals_pay_out of Firm agent memory variable. */
+#define ACCRUALS_PAY_OUT (current_xmachine_Firm->accruals_pay_out)
+/** \def DIVIDEND_ACCRUALS
+ * \brief Direct access to dividend_accruals of Firm agent memory variable. */
+#define DIVIDEND_ACCRUALS (current_xmachine_Firm->dividend_accruals)
+/** \def ADDITIONAL_ACCRUALS
+ * \brief Direct access to additional_accruals of Firm agent memory variable. */
+#define ADDITIONAL_ACCRUALS (current_xmachine_Firm->additional_accruals)
 /** \def PREVIOUS_NET_EARNINGS
  * \brief Direct access to previous_net_earnings of Firm agent memory variable. */
 #define PREVIOUS_NET_EARNINGS (current_xmachine_Firm->previous_net_earnings)

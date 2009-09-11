@@ -27,6 +27,9 @@
 /** \def CAPITAL_GOOD_PRICE
  * \brief Direct access to capital_good_price of IGFirm agent memory variable. */
 #define CAPITAL_GOOD_PRICE (current_xmachine_IGFirm->capital_good_price)
+/** \def INNOVATION_SCHEME
+ * \brief Direct access to innovation_scheme of IGFirm agent memory variable. */
+#define INNOVATION_SCHEME (current_xmachine_IGFirm->innovation_scheme)
 /** \def REVENUE_PER_DAY
  * \brief Direct access to revenue_per_day of IGFirm agent memory variable. */
 #define REVENUE_PER_DAY (current_xmachine_IGFirm->revenue_per_day)
@@ -51,6 +54,18 @@
 /** \def CUM_REVENUES
  * \brief Direct access to cum_revenues of IGFirm agent memory variable. */
 #define CUM_REVENUES (current_xmachine_IGFirm->cum_revenues)
+/** \def CUM_REVENUE_LAST_MONTH
+ * \brief Direct access to cum_revenue_last_month of IGFirm agent memory variable. */
+#define CUM_REVENUE_LAST_MONTH (current_xmachine_IGFirm->cum_revenue_last_month)
+/** \def CUM_NET_PROFITS
+ * \brief Direct access to cum_net_profits of IGFirm agent memory variable. */
+#define CUM_NET_PROFITS (current_xmachine_IGFirm->cum_net_profits)
+/** \def LAST_NET_PROFITS
+ * \brief Direct access to last_net_profits of IGFirm agent memory variable. */
+#define LAST_NET_PROFITS (current_xmachine_IGFirm->last_net_profits)
+/** \def DIVIDEND_PAYMENT
+ * \brief Direct access to dividend_payment of IGFirm agent memory variable. */
+#define DIVIDEND_PAYMENT (current_xmachine_IGFirm->dividend_payment)
 /** \def AGE
  * \brief Direct access to age of IGFirm agent memory variable. */
 #define AGE (current_xmachine_IGFirm->age)

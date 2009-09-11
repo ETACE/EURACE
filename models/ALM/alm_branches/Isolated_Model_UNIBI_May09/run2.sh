@@ -3,8 +3,8 @@ gcc -std=c99 create.c -o create
 ./create
 cp 0.xml ../its
 cd ..
-make
-./main 1000 ./its/0.xml -f 20
+
+./main 5000 ./its/0.xml -f 20
 cd getdata_region
 gcc getdata_region.c -o getdata_region
 ./getdata_region ../its/0.xml
@@ -95,4 +95,7 @@ mv revenues-IG.png ./Graph
 
 gnuplot xplotdata-dividend-payment-IG.gnu
 mv dividend-payment-IG.png ./Graph
+
+gnuplot xplotdata-technology-skills.gnu
+mv technology-skills.png ./Graph
 
