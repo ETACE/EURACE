@@ -36,3 +36,33 @@
 /** \def PAYMENT_ACCOUNT
  * \brief Direct access to payment_account of Bank agent memory variable. */
 #define PAYMENT_ACCOUNT (current_xmachine_Bank->payment_account)
+/** \def EARNINGS
+ * \brief Direct access to earnings of Bank agent memory variable. */
+#define EARNINGS (current_xmachine_Bank->earnings)
+/** \def MONTHLY_INTEREST_REVENUE
+ * \brief Direct access to monthly_interest_revenue of Bank agent memory variable. */
+#define MONTHLY_INTEREST_REVENUE (current_xmachine_Bank->monthly_interest_revenue)
+/** \def DAILY_INTEREST_REVENUE
+ * \brief Direct access to daily_interest_revenue of Bank agent memory variable. */
+#define DAILY_INTEREST_REVENUE (current_xmachine_Bank->daily_interest_revenue)
+/** \def TAX_PAYMENT
+ * \brief Direct access to tax_payment of Bank agent memory variable. */
+#define TAX_PAYMENT (current_xmachine_Bank->tax_payment)
+/** \def TAX_RATE_COPORATE
+ * \brief Direct access to tax_rate_coporate of Bank agent memory variable. */
+#define TAX_RATE_COPORATE (current_xmachine_Bank->tax_rate_coporate)
+/** \def NET_EARNINGS
+ * \brief Direct access to net_earnings of Bank agent memory variable. */
+#define NET_EARNINGS (current_xmachine_Bank->net_earnings)
+/** \def DIVIDEND_PAYMENT
+ * \brief Direct access to dividend_payment of Bank agent memory variable. */
+#define DIVIDEND_PAYMENT (current_xmachine_Bank->dividend_payment)
+/** \def CURRENT_DIVIDEND_PER_SHARE
+ * \brief Direct access to current_dividend_per_share of Bank agent memory variable. */
+#define CURRENT_DIVIDEND_PER_SHARE (current_xmachine_Bank->current_dividend_per_share)
+/** \def OUTSTANDING_SHARES
+ * \brief Direct access to outstanding_shares of Bank agent memory variable. */
+#define OUTSTANDING_SHARES (current_xmachine_Bank->outstanding_shares)
+/** \def DAY_OF_MONTH_TO_ACT
+ * \brief Direct access to day_of_month_to_act of Bank agent memory variable. */
+#define DAY_OF_MONTH_TO_ACT (current_xmachine_Bank->day_of_month_to_act)

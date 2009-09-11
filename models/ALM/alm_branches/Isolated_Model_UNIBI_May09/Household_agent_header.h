@@ -27,6 +27,9 @@
 /** \def CONSUMPTION_BUDGET
  * \brief Direct access to consumption_budget of Household agent memory variable. */
 #define CONSUMPTION_BUDGET (current_xmachine_Household->consumption_budget)
+/** \def CONSUMPTION_BUDGET_IN_MONTH
+ * \brief Direct access to consumption_budget_in_month of Household agent memory variable. */
+#define CONSUMPTION_BUDGET_IN_MONTH (current_xmachine_Household->consumption_budget_in_month)
 /** \def MEAN_INCOME
  * \brief Direct access to mean_income of Household agent memory variable. */
 #define MEAN_INCOME (current_xmachine_Household->mean_income)
@@ -108,24 +111,21 @@
 /** \def NUMBER_APPLICATIONS
  * \brief Direct access to number_applications of Household agent memory variable. */
 #define NUMBER_APPLICATIONS (current_xmachine_Household->number_applications)
-/** \def REGION_COST
- * \brief Direct access to region_cost of Household agent memory variable. */
-#define REGION_COST (current_xmachine_Household->region_cost)
 /** \def LAST_LABOUR_INCOME
  * \brief Direct access to last_labour_income of Household agent memory variable. */
 #define LAST_LABOUR_INCOME (current_xmachine_Household->last_labour_income)
 /** \def SPECIFIC_SKILL
  * \brief Direct access to specific_skill of Household agent memory variable. */
 #define SPECIFIC_SKILL (current_xmachine_Household->specific_skill)
+/** \def REGION_COST
+ * \brief Direct access to region_cost of Household agent memory variable. */
+#define REGION_COST (current_xmachine_Household->region_cost)
 /** \def EMPLOYEE_FIRM_ID
  * \brief Direct access to employee_firm_id of Household agent memory variable. */
 #define EMPLOYEE_FIRM_ID (current_xmachine_Household->employee_firm_id)
 /** \def EMPLOYER_REGION_ID
  * \brief Direct access to employer_region_id of Household agent memory variable. */
 #define EMPLOYER_REGION_ID (current_xmachine_Household->employer_region_id)
-/** \def FLAG_RECENTLY_BECOME_UNEMPLOYED
- * \brief Direct access to flag_recently_become_unemployed of Household agent memory variable. */
-#define FLAG_RECENTLY_BECOME_UNEMPLOYED (current_xmachine_Household->flag_recently_become_unemployed)
 /** \def DAY_OF_MONTH_RECEIVE_BENEFIT
  * \brief Direct access to day_of_month_receive_benefit of Household agent memory variable. */
 #define DAY_OF_MONTH_RECEIVE_BENEFIT (current_xmachine_Household->day_of_month_receive_benefit)
