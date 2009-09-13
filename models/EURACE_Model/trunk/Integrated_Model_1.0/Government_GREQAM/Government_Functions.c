@@ -42,6 +42,8 @@ int Government_initialization()
  */
 int Government_send_policy_announcements()
 {   
+    int indicator_gdp, indicator_inflation;
+
     //Set tax rate to global constant
     double yearly_tax_revenues_target;
        
@@ -66,19 +68,36 @@ int Government_send_policy_announcements()
         printf("\n %f %f %f %f",YEARLY_BUDGET_BALANCE,YEARLY_TAX_REVENUES,yearly_tax_revenues_target,TAX_RATE_HH_LABOUR);
         }
 
-
          
     else TAX_RATE_HH_LABOUR = CONST_INCOME_TAX_RATE;
 
                  
-    //add announcements
-    add_policy_announcement_message(ID, TAX_RATE_CORPORATE, TAX_RATE_HH_LABOUR, TAX_RATE_HH_CAPITAL, TAX_RATE_VAT, UNEMPLOYMENT_BENEFIT_PCT, HH_SUBSIDY_PAYMENT, FIRM_SUBSIDY_PAYMENT, HH_TRANSFER_PAYMENT, FIRM_TRANSFER_PAYMENT);
+    HH_SUBSIDY_PCT=0.0;
+    FIRM_SUBSIDY_PCT=0.0;
+
+    
+    if(POLICY_EXP_STABILIZATION)
+    {
+        //Set indicator functions:
+        if (GDP_GROWTH<0) indicator_gdp=1; else indicator_gdp=0;
+        if (INFLATION_RATE>0) indicator_inflation=1; else indicator_inflation=0;
+    
+        //Set subsidy percentages (these are used to compute individual subsidy payments)
+        HH_SUBSIDY_PCT = 0.1*(-GDP_GROWTH*indicator_gdp + INFLATION_RATE*indicator_inflation + UNEMPLOYMENT_RATE);
+        
+        //The firm is subsidized for the increase in capital_goods_price
+        //This is not so clear: the energy price markup = CONST_ENERGY_SHOCK_INTENSITY, but this only occurs in some iterations, not all
+        //FIRM_SUBSIDY_PCT = CONST_ENERGY_SHOCK_INTENSITY;
+    }
+
+    //add announcement
+    add_policy_announcement_message(ID, TAX_RATE_CORPORATE, TAX_RATE_HH_LABOUR, TAX_RATE_HH_CAPITAL, TAX_RATE_VAT, UNEMPLOYMENT_BENEFIT_PCT, HH_SUBSIDY_PCT, FIRM_SUBSIDY_PCT, HH_TRANSFER_PAYMENT, FIRM_TRANSFER_PAYMENT);
     
     if (PRINT_DEBUG_GOV)
         { 
                     printf("\n Government_send_policy_announcements ID: %d",ID);
                     printf("\n \t TAX_RATE_HH_LABOUR: %f TAX_RATE_CORPORATE: %f TAX_RATE_HH_CAPITAL: %f TAX_RATE_VAT: %f", TAX_RATE_HH_LABOUR, TAX_RATE_CORPORATE, TAX_RATE_HH_CAPITAL, TAX_RATE_VAT);
-                    printf("\n \t UNEMPLOYMENT_BENEFIT_PCT: %f HH_SUBSIDY_PAYMENT: %f FIRM_SUBSIDY_PAYMENT: %f HH_TRANSFER_PAYMENT: %f FIRM_TRANSFER_PAYMENT; %f", UNEMPLOYMENT_BENEFIT_PCT, HH_SUBSIDY_PAYMENT, FIRM_SUBSIDY_PAYMENT, HH_TRANSFER_PAYMENT, FIRM_TRANSFER_PAYMENT);
+                    printf("\n \t UNEMPLOYMENT_BENEFIT_PCT: %f HH_SUBSIDY_PCT: %f FIRM_SUBSIDY_PCT: %f HH_TRANSFER_PAYMENT: %f FIRM_TRANSFER_PAYMENT; %f", UNEMPLOYMENT_BENEFIT_PCT, HH_SUBSIDY_PCT, FIRM_SUBSIDY_PCT, HH_TRANSFER_PAYMENT, FIRM_TRANSFER_PAYMENT);
                     getchar();
         }
        
@@ -210,35 +229,35 @@ int Government_read_transfer_notifications()
  */
 int Government_read_subsidy_notifications()
 {
-    int sum;
+    double sum;
         
     //Start message loop 
-    sum=0;
+    sum=0.0;
     START_HH_SUBSIDY_NOTIFICATION_MESSAGE_LOOP
     //Filter: m.gov_id==a.id
         if(hh_subsidy_notification_message->gov_id==ID)
-            sum++;
+            sum += hh_subsidy_notification_message->subsidy_payment;
     FINISH_HH_SUBSIDY_NOTIFICATION_MESSAGE_LOOP
     
-    MONTHLY_SUBSIDY_PAYMENT += sum*HH_SUBSIDY_PAYMENT;
-    YEARLY_SUBSIDY_PAYMENT += sum*HH_SUBSIDY_PAYMENT;   
+    MONTHLY_SUBSIDY_PAYMENT += sum;
+    YEARLY_SUBSIDY_PAYMENT += sum;   
 
     // Update the payment account
-    PAYMENT_ACCOUNT -= sum*HH_SUBSIDY_PAYMENT;
+    PAYMENT_ACCOUNT -= sum;
 
     //Start message loop 
-    sum=0;
+    sum=0.0;
     START_FIRM_SUBSIDY_NOTIFICATION_MESSAGE_LOOP
     //Filter: m.gov_id==a.id
         if(firm_subsidy_notification_message->gov_id==ID)
-            sum++;
+            sum += firm_subsidy_notification_message->subsidy_payment;
     FINISH_FIRM_SUBSIDY_NOTIFICATION_MESSAGE_LOOP
     
-    MONTHLY_SUBSIDY_PAYMENT += sum*FIRM_SUBSIDY_PAYMENT;
-    YEARLY_SUBSIDY_PAYMENT += sum*FIRM_SUBSIDY_PAYMENT;     
+    MONTHLY_SUBSIDY_PAYMENT += sum;
+    YEARLY_SUBSIDY_PAYMENT += sum;     
 
     // Update the payment account
-    PAYMENT_ACCOUNT -= sum*FIRM_SUBSIDY_PAYMENT;
+    PAYMENT_ACCOUNT -= sum;
     
      if (PRINT_DEBUG)
    {
@@ -552,6 +571,13 @@ int Government_read_data_from_Eurostat()
         getchar();
     }
         
+    
+    //Now read the global economic data to retrieve the economy-wide inflation and unemployment rates:    
+    START_EUROSTAT_SEND_MACRODATA_MESSAGE_LOOP    
+        INFLATION_RATE = eurostat_send_macrodata_message->inflation;
+        UNEMPLOYMENT_RATE = eurostat_send_macrodata_message->unemployment_rate;
+    FINISH_EUROSTAT_SEND_MACRODATA_MESSAGE_LOOP
+    
     return 0;   
 }
 
@@ -616,14 +642,6 @@ int Government_set_policy()
     //Determine new government investment
      YEARLY_INVESTMENT_BUDGET = GOV_POLICY_GDP_FRACTION_INVESTMENT * GDP_FORECAST;
      MONTHLY_INVESTMENT_BUDGET = YEARLY_INVESTMENT_BUDGET/12;
-     
-    //Determine new transfer payment
-    HH_TRANSFER_PAYMENT =0.0;
-    FIRM_TRANSFER_PAYMENT =0.0;
-    
-    //Determine new subsidy payment
-    HH_SUBSIDY_PAYMENT =0.0;
-    FIRM_SUBSIDY_PAYMENT =0.0;
-    
+         
     return 0;
 }

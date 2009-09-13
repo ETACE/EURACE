@@ -5,7 +5,33 @@
  <description></description>
  <models/>
  <environment>
-  <constants/>
+  <constants>
+   <variable>
+    <type>int</type>
+    <name>symmetric_shock</name>
+    <description>Binary parameter to set if the energy shock is symmetric.</description>
+   </variable>
+   <variable>
+    <type>int</type>
+    <name>energy_shock_start</name>
+    <description>Day when the energy shock starts.</description>
+   </variable>
+   <variable>
+    <type>int</type>
+    <name>energy_shock_end</name>
+    <description>Day when the energy shock ends.</description>
+   </variable>
+   <variable>
+    <type>double</type>
+    <name>const_energy_shock_intensity</name>
+    <description>Mark up on the capital goods price that flows out of the system, representing energy costs.</description>
+   </variable>
+   <variable>
+    <type>int</type>
+    <name>energy_shock_frequency</name>
+    <description>The frequency at which the energy price is updated.</description>
+   </variable>
+  </constants>
   <functionFiles>
    <file>IGfirm_functions.c</file>
   </functionFiles>
@@ -20,72 +46,72 @@
     <variable>
      <type>double</type>
      <name>productivity</name>
-     <description>Current best practice technology of the IG firm.</description>
+     <description></description>
     </variable>
     <variable>
      <type>double</type>
      <name>capital_good_price</name>
-     <description>Price of the capital good.</description>
+     <description></description>
     </variable>
     <variable>
      <type>double</type>
      <name>revenue_per_day</name>
-     <description>Daily revenue.</description>
+     <description></description>
     </variable>
     <variable>
      <type>double</type>
      <name>tax_rate_corporate</name>
-     <description>Corporate tax rate.</description>
+     <description></description>
     </variable>
     <variable>
      <type>double</type>
      <name>tax_rate_vat</name>
-     <description>VAT tax rate.</description>
+     <description></description>
     </variable>
     <variable>
      <type>double</type>
      <name>tax_payment</name>
-     <description>Sum of taxes paid.</description>
+     <description></description>
     </variable>
     <variable>
      <type>double</type>
      <name>net_profit</name>
-     <description>Net profits: earnings after tax payment.</description>
+     <description></description>
     </variable>
     <variable>
      <type>int</type>
      <name>outstanding_shares</name>
-     <description>Number of outstanding shares</description>
+     <description></description>
     </variable>
     <variable>
      <type>double</type>
      <name>current_dividend_per_share</name>
-     <description>Dividends per share</description>
+     <description></description>
     </variable>
     <variable>
      <type>double</type>
-     <name>cum_revenues</name>
-     <description>This counts the monthly revenue.</description>
+     <name>earnings</name>
+     <description>Variable to sum monthly earnings.</description>
     </variable>
     <variable>
      <type>double</type>
-     <name>cum_revenue_last_month</name>
-     <description>Monthly revenue of the last month</description>
+     <name>energy_price_markup</name>
+     <description>Mark up on capital goods price.</description>
     </variable>
     <variable>
      <type>double</type>
-     <name>cum_net_profits</name>
-     <description>Sum of net profits of the last periods.</description>
-    </variable>
-    <variable>
-     <type>double_array</type>
-     <name>last_net_profits</name>
-     <description>Array of the planned production quantities in the past</description>
+     <name>energy_costs_per_day</name>
+     <description>The share of the daily capital bill that are energy costs.</description>
     </variable>
     <variable>
      <type>double</type>
-     <name>dividend_payment</name>
-     <description>Dividends paid.</description>
+     <name>earnings_per_day</name>
+     <description>The collected revenues minus energy costs.</description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>cum_energy_costs</name>
+     <description>This is to compute the total expenses for energy.</description>
     </variable>
    </memory>
    <functions>
@@ -157,11 +183,7 @@
        <messageName>pay_capital_goods</messageName>
       </input>
      </inputs>
-     <outputs>
-      <output>
-       <messageName>bank_account_update</messageName>
-      </output>
-     </outputs>
+     <outputs/>
     </function>
     <function>
      <name>IGFirm_pay_taxes</name>
@@ -221,7 +243,7 @@
  <messages>
   <message>
    <name>productivity</name>
-   <description>Sent by IG firm: Contains information about price and quality of the investment good.</description>
+   <description></description>
    <variables>
     <variable>
      <type>int</type>
@@ -242,7 +264,7 @@
   </message>
   <message>
    <name>capital_good_request</name>
-   <description>Sent by firms: Contains the capital goods demand.</description>
+   <description></description>
    <variables>
     <variable>
      <type>int</type>
@@ -257,8 +279,19 @@
    </variables>
   </message>
   <message>
+   <name>capital_good_profit_distribution</name>
+   <description></description>
+   <variables>
+    <variable>
+     <type>double</type>
+     <name>capital_good_profit_shares</name>
+     <description></description>
+    </variable>
+   </variables>
+  </message>
+  <message>
    <name>capital_good_delivery</name>
-   <description>Sent by IG firm: Delivery of the investment good.</description>
+   <description></description>
    <variables>
     <variable>
      <type>int</type>

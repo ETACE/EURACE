@@ -333,7 +333,7 @@
      </outputs>
     </function>
     <function>
-     <name>idle</name>
+     <name>Bank_set_quantities_zero</name>
      <description></description>
      <currentState>Bank_01</currentState>
      <nextState>Bank_01b</nextState>

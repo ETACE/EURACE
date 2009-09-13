@@ -131,13 +131,13 @@
     </variable>
     <variable>
      <type>double</type>
-     <name>hh_subsidy_payment</name>
-     <description></description>
+     <name>hh_subsidy_pct</name>
+     <description>The household subsidy percentage on the price of consumer goods.</description>
     </variable>
     <variable>
      <type>double</type>
-     <name>firm_subsidy_payment</name>
-     <description></description>
+     <name>firm_subsidy_pct</name>
+     <description>The firm subsidy percentage on the  price of capital goods.</description>
     </variable>
     <variable>
      <type>double</type>
@@ -217,7 +217,7 @@
     <variable>
      <type>double</type>
      <name>gdp</name>
-     <description></description>
+     <description>This is the GDP for the regions belonging to this government.</description>
     </variable>
     <variable>
      <type>double</type>
@@ -303,6 +303,16 @@
      <type>double</type>
      <name>cumulated_deficit</name>
      <description>The cumulative sum of deficits, updated monthly.</description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>inflation_rate</name>
+     <description>This is the economy-wide inflation_rate.</description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>unemployment_rate</name>
+     <description>This is the economy-wide unemployment_rate.</description>
     </variable>
    </memory>
    <functions>
@@ -641,6 +651,9 @@
       <input>
        <messageName>data_for_government</messageName>
       </input>
+      <input>
+       <messageName>eurostat_send_macrodata</messageName>
+      </input>
      </inputs>
      <outputs/>
     </function>
@@ -700,12 +713,12 @@
     </variable>
     <variable>
      <type>double</type>
-     <name>hh_subsidy_payment</name>
+     <name>hh_subsidy_pct</name>
      <description></description>
     </variable>
     <variable>
      <type>double</type>
-     <name>firm_subsidy_payment</name>
+     <name>firm_subsidy_pct</name>
      <description></description>
     </variable>
     <variable>
@@ -756,6 +769,11 @@
      <name>gov_id</name>
      <description></description>
     </variable>
+    <variable>
+     <type>double</type>
+     <name>subsidy_payment</name>
+     <description></description>
+    </variable>
    </variables>
   </message>
   <message>
@@ -776,6 +794,11 @@
     <variable>
      <type>int</type>
      <name>gov_id</name>
+     <description></description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>subsidy_payment</name>
      <description></description>
     </variable>
    </variables>

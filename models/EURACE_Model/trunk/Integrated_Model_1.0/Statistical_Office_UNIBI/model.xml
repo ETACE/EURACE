@@ -1168,12 +1168,12 @@
     <variable>
      <type>double</type>
      <name>transfer_payment</name>
-     <description>Amount of the transfer payment.</description>
+     <description>The transfer payment read from message.</description>
     </variable>
     <variable>
      <type>double</type>
-     <name>subsidy_payment</name>
-     <description>Amount of the subsidy payment.</description>
+     <name>subsidy_pct</name>
+     <description>The subsidy percentage read from message.</description>
     </variable>
     <variable>
      <type>int</type>
@@ -1204,6 +1204,11 @@
      <type>int</type>
      <name>financial_crisis_state</name>
      <description>0,1. Flag indicating whether the firm is in a financial crisis state.</description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>subsidy_payment</name>
+     <description></description>
     </variable>
    </memory>
    <functions>
@@ -1353,12 +1358,12 @@
     <variable>
      <type>double</type>
      <name>transfer_payment</name>
-     <description></description>
+     <description>The transfer_payment read from message.</description>
     </variable>
     <variable>
      <type>double</type>
-     <name>subsidy_payment</name>
-     <description></description>
+     <name>subsidy_pct</name>
+     <description>The subsidy percentage read from message.</description>
     </variable>
    </memory>
    <functions>
@@ -1423,8 +1428,8 @@
     </variable>
     <variable>
      <type>double</type>
-     <name>subsidy_payment</name>
-     <description>Amount of the subsidy payment.</description>
+     <name>subsidy_pct</name>
+     <description>The subsidy percentage read from message.</description>
     </variable>
     <variable>
      <type>double</type>
@@ -1474,6 +1479,11 @@
     <variable>
      <type>double</type>
      <name>monthly_bond_interest_income</name>
+     <description></description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>subsidy_payment</name>
      <description></description>
     </variable>
    </memory>
