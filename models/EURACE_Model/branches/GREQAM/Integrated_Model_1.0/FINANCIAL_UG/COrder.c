@@ -170,17 +170,13 @@ void randomize(Order_array *v, int first, int last)
     do {
       
       ci=elementAtCOrder(v,i);
-      while (next()<0.5) {  i++;ci=elementAtCOrder(v,i);}
- 
       cj=elementAtCOrder(v,j);
-      while (next()>0.5) {j--;cj=elementAtCOrder(v,j);}
-      if (i <= j) {
+      if (next() <= 0.5) {
         swapOrder(ci, cj);
         i++, j--;
       }
     } while (i <= j);  
-    randomize(v, first, j);
-    randomize(v, i, last);
+    
   }
 }
 void qSortCOrderDec(Order_array *v, int first, int last){
