@@ -1,7 +1,7 @@
+#include "../header.h"     
+#include "../Central_Bank_agent_header.h"
+#include "../my_library_header.h"
 
-    #include "../Central_Bank_agent_header.h"
-    #include "../my_library_header.h"
-    #include "../header.h"    
     
     
     /************Central_Bank Role: manage accounts for Governments and commercial banks********************************/
@@ -20,7 +20,7 @@ int Central_Bank_monetary_policy()
         unemployment_rate = eurostat_send_macrodata_message->unemployment_rate;
     FINISH_EUROSTAT_SEND_MACRODATA_MESSAGE_LOOP 
     
-    ECB_INTEREST_RATE = ECB_INTEREST_RATE;
+    ECB_INTEREST_RATE = 0.05;
     
     add_policy_rate_message(ECB_INTEREST_RATE);
     
@@ -64,6 +64,8 @@ int Central_Bank_read_account_update()
     int i;
     int bank_mesg_count=0; //debug
     int gov_mesg_count=0; //debug
+    FILE *file1;
+    char *filename;
 
     ECB_DEPOSITS=0.0;    
     FIAT_MONEY_BANKS=0.0;
@@ -130,6 +132,18 @@ int Central_Bank_read_account_update()
             else
                 printf("\n Nr of mesg equal to size of gov account array.\n");
         }
+        
+        
+         if (PRINT_DEBUG_FILE_EXP1)
+    {                       
+                            filename = malloc(40*sizeof(char));
+                            filename[0]=0;
+                            strcpy(filename, "its/CentralBank.txt");      
+                            file1 = fopen(filename,"a");
+                            fprintf(file1,"\n %d %f %f ",DAY,FIAT_MONEY_GOVS,FIAT_MONEY_BANKS);
+                            fclose(file1);
+                            free(filename);
+                                }                
 
     return 0;
 }

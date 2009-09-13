@@ -137,7 +137,7 @@ void divide(double_array *coll, double denominator);
 
 void addIncSortDouble(double_array *coll,double value);
 void addIncSetSortDouble(double_array *coll,double value);
-
+void qSort_double_array(double_array *v,int first, int last);
 
 
 Order_array *newCOrder(int size);       
@@ -288,9 +288,9 @@ Order_array *buyOrders(ClearingMechanism *clear);
 Order_array *sellOrders(ClearingMechanism *clear);
 
 void sortOrders(ClearingMechanism *clear);
-int aggregateDemand(ClearingMechanism *aClearing,double aPriceValue );
+int aggregateDemand(ClearingMechanism *aClearing,double aPriceValue ,int *i, int start_value);
 
-int aggregateSupply(ClearingMechanism *aClearing,double aPriceValue );
+int aggregateSupply(ClearingMechanism *aClearing,double aPriceValue ,int *i, int start_value);
 
 
 
@@ -329,9 +329,7 @@ double computeStockUtilityFunction(Stock *stock,int backwardWindow, double facto
 
 /********Belief*******************/
 
-Belief *newBelief();
-void initializeBelief(Belief *belief);
-//void  assetBeliefFormation(Belief *belief, Asset_array *assets,Random *rnd);
+
 
 /*it compute the price return of the stocks as a weighted sum of different components*/
 void computeStockExpectedPriceReturns(Belief *belief, Asset *asset);

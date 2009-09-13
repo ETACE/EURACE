@@ -185,3 +185,34 @@ void divide(double_array *coll, double denominator)
      for(i=0;i<coll->size;i++)
      coll->array[i]=(coll->array[i])/denominator;
 }
+
+void qSort_double_array(double_array *v,int first, int last)
+{
+  int i,j,index;
+  double pivot;
+  double ci;
+  double cj;
+  double aux;
+  if (first<last) {
+    i = first; j = last;
+     index=(first+last)/2;
+     pivot = elementAtCDouble(v,index);
+ 
+    do {
+      
+      ci=elementAtCDouble(v,i);
+      while (ci<pivot) {  i++;ci=elementAtCDouble(v,i);}
+ 
+      cj=elementAtCDouble(v,j);
+      while (cj>pivot) {j--;cj=elementAtCDouble(v,j);}
+      if (i <= j) {
+        aux=ci;
+        v->array[i]=cj;
+        v->array[j]=aux;
+        i++, j--;
+      }
+    } while (i <= j);  
+    qSort_double_array(v, first, j);
+    qSort_double_array(v, i, last);
+  }
+}

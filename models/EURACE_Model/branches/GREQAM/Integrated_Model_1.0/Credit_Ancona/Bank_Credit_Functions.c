@@ -39,11 +39,13 @@
     
     int Bank_decide_credit_conditions()
     {
+        FILE * file1;
+        char * filename;
         double e, c, d, r, i;
         double bankruptcy_prob;
         double credit_allowed;
-            
-         
+      
+    
         
                 
             START_LOAN_REQUEST_MESSAGE_LOOP
@@ -52,9 +54,16 @@
                 c = loan_request_message->external_financial_needs;
                 bankruptcy_prob = 1-exp(-(d+c)/e);
                 r = bankruptcy_prob*c/e;
-        
-                if ( VALUE_AT_RISK+r <= BANK_GAMMA[0]*ALFA*EQUITY )  //Instead of ALFA*EQUITY 
+                
+                if ((POLICY_EXP1)&(DAY>240))                
+                { credit_allowed = (1-(bankruptcy_prob/2.5))*c;
+                }
+                else
                 {
+        
+               if ( VALUE_AT_RISK+r <= BANK_GAMMA[0]*ALFA*EQUITY )  //Instead of ALFA*EQUITY 
+                {
+                    // printf("\n %f %f %f %f %f",VALUE_AT_RISK,r,BANK_GAMMA[0],ALFA,EQUITY);
                     credit_allowed = c;
                     if (credit_allowed<0)
                         printf("\n ERROR in function bank_decide_credit_condition: credit_allowed = %2.5f\n ", credit_allowed);
@@ -65,17 +74,39 @@
                     if (credit_allowed<0)
                         printf("\n ERROR in function bank_decide_credit_condition: credit_allowed = %2.5f\n ", credit_allowed);                
                 }
+                }
+                
+                
                 i = ECB_INTEREST_RATE + BANK_GAMMA[0]*r*(((double)rand()/(double)RAND_MAX)*0.01);
                 
-                    add_loan_conditions_message(loan_request_message->firm_id, ID, i, credit_allowed,  r*(c/credit_allowed));
+            
+                add_loan_conditions_message(loan_request_message->firm_id, ID, i, credit_allowed,  r*(c/credit_allowed));
+                
+            
+      
+             if (PRINT_DEBUG_EXP1 || PRINT_DEBUG)
+            {
+                  printf("\n Bank_decide_credit_conditions bank_id: %d firm_id: %d",ID,loan_request_message->firm_id);
+                  printf("\n\t credit_allowed: %f credit_requested: %f",credit_allowed,c);
+                  printf("\n\t ECB_INTEREST_RATE: %f i: %f r*(c/credit_allowed): %f",ECB_INTEREST_RATE,i,r*(c/credit_allowed));
+                  getchar();
+                  }  
+                  
+             
+                
             FINISH_LOAN_REQUEST_MESSAGE_LOOP
             
-            if (PRINT_DEBUG) 
-            {
-                             printf("\n Bank_decide_credit_conditions ID: %d",ID);
-                             printf("\n\t credit_allowed: %f rate: %f",credit_allowed,r*(c/credit_allowed));
-                             getchar();
-                             }       
+            if (PRINT_DEBUG_FILE_EXP1)
+              {
+                            filename = malloc(40*sizeof(char));
+                            filename[0]=0;
+                            strcpy(filename, "its/credit.txt");      
+                            file1 = fopen(filename,"a");
+                            fprintf(file1,"\n %d \t %f \t %f",DAY,credit_allowed,c);
+                            fclose(file1);
+                            free(filename);
+                                        }    
+      
         
         return 0;
     }
@@ -125,7 +156,7 @@
        
        add_bank_to_central_bank_account_update_message(ID, CASH, ECB_DEBT); 
        
-       if (PRINT_DEBUG)
+       if (PRINT_DEBUG_EXP1 || PRINT_DEBUG)
        {
                        printf("\n\n Bank_account_update_deposits ID: %d",ID);
                        printf("\n\t ECB_DEBT: %f DEPOSITS: %f EQUITY: %f",ECB_DEBT,DEPOSITS,EQUITY);
@@ -204,10 +235,10 @@
     {
         FIRM_LOAN_ISSUES=0.0;
         
-      if (PRINT_DEBUG)
+      if (PRINT_DEBUG_EXP1 || PRINT_DEBUG)
      {
        printf("\n\n Bank_give_loan ID: %d",ID); 
-       printf("\n\t TOTAL_CREDIT: %f",TOTAL_CREDIT);
+       printf("\n\t TOTAL_CREDIT before: %f",TOTAL_CREDIT);
       }        
         
         
@@ -224,7 +255,7 @@
     
         FINISH_LOAN_ACCEPTANCE_MESSAGE_LOOP
         
-    if (PRINT_DEBUG) printf("\n\t TOTAL_CREDIT: %f",TOTAL_CREDIT);
+    if (PRINT_DEBUG_EXP1 || PRINT_DEBUG) printf("\n\t TOTAL_CREDIT after: %f",TOTAL_CREDIT);
        
         
         return 0;
@@ -235,6 +266,8 @@
     int Bank_accounting()
     {
     
+         FILE *file1;
+         char *filename;
          double q, c, gro, int_to_ecb;  // total_dividends, dividend_per_share
          
          ECB_INTEREST_PAYMENT=0.0;
@@ -284,13 +317,25 @@
              //add_dividend_per_share_message(ID, DIVIDEND_PER_SHARE);                  
          }
           
-         if (PRINT_DEBUG)
+         if (PRINT_DEBUG_EXP1 || PRINT_DEBUG)
          {
                          printf("\n\n Bank_accounting ID: %d",ID);
                          printf("\n\t ECB_DEBT: %f int_to_ecb: %f",ECB_DEBT,int_to_ecb);
                          printf("\n\t PROFITS[0]: %f EQUITY: %f",PROFITS[0],EQUITY);
                          printf("\n\t CASH: %f TOTAL_DIVIDENDS: %f",CASH,TOTAL_DIVIDENDS);
                          } 
+                         
+          if (PRINT_DEBUG_FILE_EXP1)
+    {                       
+                            filename = malloc(40*sizeof(char));
+                            filename[0]=0;
+                            strcpy(filename, "its/banks.txt");      
+                            file1 = fopen(filename,"a");
+                            fprintf(file1,"\n %d %f %f ",DAY,PROFITS[0],ECB_DEBT);
+                            fprintf(file1,"%f %f %f",EQUITY,CASH,TOTAL_CREDIT);
+                            fclose(file1);
+                            free(filename);
+                                }                
           
          if (EQUITY < 0.0) //... and if is negative (if money is not enough), increase ECB debt
          {

@@ -561,6 +561,7 @@
      <inputs>
       <input>
        <messageName>order</messageName>
+       <sort><key>asset_id</key><order>descend</order></sort>
       </input>
      </inputs>
      <outputs>

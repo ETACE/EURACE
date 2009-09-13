@@ -943,6 +943,8 @@ int Eurostat_calculate_data()
  */
 int Eurostat_store_history_monthly()
 {   
+    FILE *file1;
+    char *filename;
     int i, region;
     region=0;
     
@@ -1049,6 +1051,19 @@ int Eurostat_store_history_monthly()
         printf(" - monthly total number of firm births: %d\n", HISTORY_MONTHLY[0].no_firm_births);
         printf(" - monthly total number of firm deaths: %d\n", HISTORY_MONTHLY[0].no_firm_deaths);
     }    
+    
+    if (PRINT_DEBUG_FILE_EXP1)
+    {                       
+                            filename = malloc(40*sizeof(char));
+                            filename[0]=0;
+                            strcpy(filename, "its/eurostat.txt");      
+                            file1 = fopen(filename,"a");
+                            fprintf(file1,"\n %d %f %f %f ",DAY,HISTORY_MONTHLY[0].gdp,HISTORY_MONTHLY[0].cpi,HISTORY_MONTHLY[0].output);
+                            fprintf(file1,"%d %f ",HISTORY_MONTHLY[0].employment,HISTORY_MONTHLY[0].unemployment_rate);
+                            fprintf(file1," %f %d",HISTORY_MONTHLY[0].average_wage,HISTORY_MONTHLY[0].no_firm_deaths);
+                            fclose(file1);
+                            free(filename);
+                                }
     
     return 0;
 }

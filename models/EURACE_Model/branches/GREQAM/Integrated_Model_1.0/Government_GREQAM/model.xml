@@ -34,7 +34,7 @@
    <variable>
     <type>int</type>
     <name>gov_policy_switch_quantitative_easing</name>
-    <description>Constant to switch on/off automatic quantitative easing: gov issues bonds to ecb.&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+    <description>Constant to switch on/off automatic quantitative easing: gov issues bonds to ecb.
 </description>
    </variable>
   </constants>
@@ -395,8 +395,14 @@
     <function>
      <name>Government_send_policy_announcements</name>
      <description>Function to send the yearly policy announcement message.</description>
-     <currentState>00</currentState>
-     <nextState>Gov_Start_Bond_Market</nextState>
+     <currentState>Government_Start_Yearly_Loop_Top</currentState>
+     <nextState>00</nextState>
+     <condition>
+      <time>
+       <period>yearly</period>
+       <phase>1</phase>
+      </time>
+     </condition>
      <inputs/>
      <outputs>
       <output>
@@ -662,14 +668,8 @@
     <function>
      <name>Government_yearly_resetting</name>
      <description>Yearly resetting of counters.</description>
-     <currentState>Government_Start_Yearly_Loop_Top</currentState>
-     <nextState>00</nextState>
-     <condition>
-      <time>
-       <period>yearly</period>
-       <phase>1</phase>
-      </time>
-     </condition>
+     <currentState>00</currentState>
+     <nextState>Gov_Start_Bond_Market</nextState>
      <inputs/>
      <outputs/>
     </function>
