@@ -41,6 +41,7 @@ int Firm_receive_stock_info(void)
              
           }
    FINISH_INFOASSETCH_MESSAGE_LOOP
+  // printf("questo viene eseguito tran%d\n",ID);
    
    return 0;
 }

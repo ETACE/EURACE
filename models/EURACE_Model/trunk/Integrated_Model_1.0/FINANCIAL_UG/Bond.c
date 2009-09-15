@@ -114,7 +114,8 @@ double computeBondUtilityFunction(Bond *bond, double *rnd_returns, int backwardW
 
   for(i=0;i<backwardWindow;i++)
     { 
-    r=backreturns_bond(bond,i)*factor_chartist + value + rnd_returns[i]*randomWeight;
+   if(randomWeight!=0) r=backreturns_bond(bond,i)*factor_chartist + value + rnd_returns[i]*randomWeight;
+   else r=backreturns_bond(bond,i)*factor_chartist + value;
     if (PRINT_DEBUG_CONSUMPTION)
     {
      rc = backreturns_bond(bond,i);     
