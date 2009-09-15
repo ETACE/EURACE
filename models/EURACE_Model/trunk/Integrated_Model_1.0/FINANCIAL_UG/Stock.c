@@ -1,18 +1,6 @@
 #include "my_library_header.h"
 
 
-Stock *newStock()
-{
-      Stock *temp;
-      temp=malloc(sizeof(Stock));
-
-      return temp;
-
-}
-void  freeStock(Stock *aStock)
-{
-    free(aStock);
-} 
 void initializeStock(Stock *aStock,int id,double price,int nr_outstanding)
 { int i; 
   double aux;
@@ -129,7 +117,8 @@ double computeStockUtilityFunction(Stock *stock,int backwardWindow, double facto
   utility=0;
   for(i=0;i<backwardWindow;i++)
     { 
-     r=backreturnsAt(stock,i)*factor+value+rndvect[i]*randomWeight;
+     if(randomWeight!=0)r=backreturnsAt(stock,i)*factor+value+rndvect[i]*randomWeight;
+     else r=backreturnsAt(stock,i)*factor+value; 
      //printf("\n r %f rndvect %f value %f randomWeight %f",r, rndvect[i], value, randomWeight);
      //getchar();
      if (r<0) utility=utility+r*lossaversion;

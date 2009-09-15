@@ -307,8 +307,6 @@ void emptyClearing(ClearingMechanism *aClearing);
 
 
 /***********Stock **************/
-Stock *newStock();
-void  freeStock(Stock *aStock);
 
 void initializeStock(Stock *aStock,int id,double price,int nr_outstanding);
 void setStock(Stock *aStock, int issuer, double price, int quantity);
