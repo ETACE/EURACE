@@ -135,9 +135,11 @@ START_ORDER_MESSAGE_LOOP
         index=findCAsset(&ASSETS, asset_id);
         if(index>-1)
          {
+       
          asset = elementAtCAsset(&ASSETS, index);
          computeAssetPrice(&CLEARINGMECHANISM, asset);
          sendOrderStatus(&CLEARINGMECHANISM);
+         
          }
       }
 
@@ -152,10 +154,11 @@ START_ORDER_MESSAGE_LOOP
 FINISH_ORDER_MESSAGE_LOOP
 index=findCAsset(&ASSETS, asset_id);
 if(index>-1)
-       {
+       {  
            asset = elementAtCAsset(&ASSETS,index);
             computeAssetPrice(&CLEARINGMECHANISM, asset);
             sendOrderStatus(&CLEARINGMECHANISM); 
+         
         }
         
   if (PRINT_DEBUG)  
