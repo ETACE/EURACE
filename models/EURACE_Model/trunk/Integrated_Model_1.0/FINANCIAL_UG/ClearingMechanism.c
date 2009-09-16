@@ -137,13 +137,14 @@ int aggregateSupply(ClearingMechanism *aClearing,double aPriceValue ,int *i, int
 			tmp_value = aggregateDemand(aClearing,price,&position_demand,tmp_value);
                         demand=start_value-tmp_value;
 			supply = aggregateSupply(aClearing,price,&position_supply,supply);
+                      
                         //printf("supply %d and demand %d price %f pos %d\n, ",supply,demand,price,position_demand);
 			Qtrans = min(supply,demand);
 			balance=abs(supply-demand);
 		     if(Qcross<Qtrans) 
                           {Qcross=Qtrans;
                            formerprice=price; 
-                           bestbalance=1000000000;
+                           bestbalance=balance;
                           }
                      if((Qtrans==Qcross) &&(Qcross!=0))
 			{ if(bestbalance>balance) 

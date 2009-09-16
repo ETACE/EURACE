@@ -117,7 +117,7 @@ double computeStockUtilityFunction(Stock *stock,int backwardWindow, double facto
   utility=0;
   for(i=0;i<backwardWindow;i++)
     { 
-     if(randomWeight!=0)r=backreturnsAt(stock,i)*factor+value+rndvect[i]*randomWeight;
+     if(randomWeight!=0) r=backreturnsAt(stock,i)*factor+value+rndvect[i]*randomWeight;
      else r=backreturnsAt(stock,i)*factor+value; 
      //printf("\n r %f rndvect %f value %f randomWeight %f",r, rndvect[i], value, randomWeight);
      //getchar();
