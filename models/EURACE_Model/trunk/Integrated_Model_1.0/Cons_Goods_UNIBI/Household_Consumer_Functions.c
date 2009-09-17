@@ -16,9 +16,11 @@
  */
 int Household_determine_consumption_budget()
 {
-    char * filename;
-    FILE * file1,*file2;
-    
+
+    #ifndef _DEBUG_MODE    
+        char * filename;
+        FILE * file1,*file2;
+
     if (PRINT_LOG)
     {
         //Start an empty string for the filename
@@ -34,7 +36,8 @@ int Household_determine_consumption_budget()
         strcpy(filename, "debug_consumption_budget.txt");
         file2 = fopen(filename,"a");
     }
-    
+    #endif
+        
     /*Determining the consumption budget of the month*/
             //Previous rule based Deaton rule: uses PAYMENT_ACCOUNT
             /*if(PAYMENT_ACCOUNT > (INITIAL_CONSUMPTION_PROPENSITY*MEAN_INCOME))
@@ -48,24 +51,28 @@ int Household_determine_consumption_budget()
                 CONSUMPTION_BUDGET = PAYMENT_ACCOUNT;
             }*/
 
-		/*Compute the wealth income ratio*/
-		
-		WEALTH_INCOME_RATIO_ACTUAL = WEALTH/ MEAN_INCOME;
+        /*Compute the wealth income ratio*/
+        
+        WEALTH_INCOME_RATIO_ACTUAL = WEALTH/ MEAN_INCOME;
 
             
             /*Based on Carrol-Rule: Determination of the consumption budget*/
             CONSUMPTION_BUDGET = MEAN_INCOME +CONSUMPTION_PROPENSITY*(WEALTH - WEALTH_INCOME_RATIO_TARGET*MEAN_INCOME);
+
+        #ifndef _DEBUG_MODE        
             if(PAYMENT_ACCOUNT < 0)
             {
-               if (PRINT_LOG)
+                if (PRINT_LOG)
                     fprintf(file1, "IT %d ID %d PAYMENT_ACCOUNT %f \n", DAY, ID, PAYMENT_ACCOUNT);
-
-		if (PRINT_DEBUG_CONSUMPTION)
-			printf("In Household_determine_consumption_budget, line 57: IT %d ID %d PAYMENT_ACCOUNT %f CONSUMPTION_BUDGET %f\n", DAY, ID, PAYMENT_ACCOUNT, CONSUMPTION_BUDGET);
+    
+                if (PRINT_DEBUG_CONSUMPTION)
+                    printf("In Household_determine_consumption_budget, line 57: IT %d ID %d PAYMENT_ACCOUNT %f CONSUMPTION_BUDGET %f\n", DAY, ID, PAYMENT_ACCOUNT, CONSUMPTION_BUDGET);
             }
-            
+        #endif            
+
             if(CONSUMPTION_BUDGET < 0.5*LAST_INCOME.array[3])
             {
+                #ifndef _DEBUG_MODE        
                 if(CONSUMPTION_BUDGET < 0)
                 {
                     //printf("___________In file Household_Consumer_Functions.c, function Household_determine_consumption_budget, line 65:\n"
@@ -74,6 +81,8 @@ int Household_determine_consumption_budget()
                     if (PRINT_LOG)
                         fprintf(file2,"IT %d ID %d CONSUMPTION_BUDGET %f\n",DAY,ID,CONSUMPTION_BUDGET);
                 }
+                #endif
+                
                 CONSUMPTION_BUDGET = 0.5*LAST_INCOME.array[3];
             }
 
@@ -86,6 +95,7 @@ int Household_determine_consumption_budget()
             
         EXCESS_WEEKLY_BUDGET = -1;
 
+    #ifndef _DEBUG_MODE
         if (PRINT_LOG)
         {
             //close the file pointer: FILE * file
@@ -93,7 +103,8 @@ int Household_determine_consumption_budget()
             fclose(file2);
             free(filename);
         }
-
+    #endif
+    
     return 0;   
 }
 

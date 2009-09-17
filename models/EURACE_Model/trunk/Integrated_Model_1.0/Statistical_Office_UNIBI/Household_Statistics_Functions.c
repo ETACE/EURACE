@@ -80,15 +80,17 @@ int Household_read_policy_announcements()
         SUBSIDY_PCT = policy_announcement_message->hh_subsidy_pct;
     }
     FINISH_POLICY_ANNOUNCEMENT_MESSAGE_LOOP
-    
+
+    #ifndef _DEBUG_MODE    
     if (PRINT_DEBUG_CONSUMPTION)
     {
-                                printf("\n Household_read_policy_announcements ID: %d",ID);
-                                printf("\n \t TAX_RATE_HH_LABOUR: %f TAX_RATE_HH_CAPITAL: %f",TAX_RATE_HH_LABOUR,TAX_RATE_HH_CAPITAL);
-                                printf("\n \t UNEMPLOYMENT_BENEFIT_PCT: %f TRANSFER_PAYMENT: %f SUBSIDY_PCT: %f", UNEMPLOYMENT_BENEFIT_PCT, TRANSFER_PAYMENT, SUBSIDY_PCT);
-                                getchar();
-                                }
-
+        printf("\n Household_read_policy_announcements ID: %d",ID);
+        printf("\n \t TAX_RATE_HH_LABOUR: %f TAX_RATE_HH_CAPITAL: %f",TAX_RATE_HH_LABOUR,TAX_RATE_HH_CAPITAL);
+        printf("\n \t UNEMPLOYMENT_BENEFIT_PCT: %f TRANSFER_PAYMENT: %f SUBSIDY_PCT: %f", UNEMPLOYMENT_BENEFIT_PCT, TRANSFER_PAYMENT, SUBSIDY_PCT);
+        getchar();
+    }
+    #endif
+    
     return 0;
 }
 
@@ -110,13 +112,14 @@ int Household_receive_data()
             }
         }
     FINISH_BANKRUPTCY_MESSAGE_LOOP  
-    
-        if (PRINT_DEBUG)
-     {
-       printf("\n Household receive data ID: %d",ID); 
-        
-      }          
 
+    #ifndef _DEBUG_MODE    
+    if (PRINT_DEBUG)
+    {
+        printf("\n Household receive data ID: %d",ID);     
+    }          
+    #endif
+    
     return 0;
 }
 

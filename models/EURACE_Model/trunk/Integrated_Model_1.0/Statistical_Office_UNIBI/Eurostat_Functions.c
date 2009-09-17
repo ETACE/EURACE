@@ -28,13 +28,15 @@ int Eurostat_initialization()
             printf("\n      TOTAL_REGIONS (%d) == size of REGION_FIRM_DATA array (%d)\n", TOTAL_REGIONS, REGION_FIRM_DATA.size);
     }
     assert(TOTAL_REGIONS==REGION_FIRM_DATA.size);
-    
+
+    #ifndef _DEBUG_MODE    
     if (PRINT_DEBUG)
     {
-                    printf("\n Eurostat_initialization");
-                    getchar();
-                    }
-
+        printf("\n Eurostat_initialization");
+        getchar();
+    }
+    #endif
+        
     return 0;   
 }
 
@@ -1033,6 +1035,7 @@ int Eurostat_store_history_monthly()
         HISTORY_MONTHLY[0].region_data.array[region].no_firm_deaths = REGION_FIRM_DATA.array[region].no_firm_deaths;   
     }
 
+    #ifndef _DEBUG_MODE
     if (PRINT_LOG)
     {
         printf("Monthly data recorded by Eurostat:\n");
@@ -1051,20 +1054,23 @@ int Eurostat_store_history_monthly()
         printf(" - monthly total number of firm births: %d\n", HISTORY_MONTHLY[0].no_firm_births);
         printf(" - monthly total number of firm deaths: %d\n", HISTORY_MONTHLY[0].no_firm_deaths);
     }    
-    
+    #endif
+
+    #ifndef _DEBUG_MODE
     if (PRINT_DEBUG_FILE_EXP1)
     {                       
-                            filename = malloc(40*sizeof(char));
-                            filename[0]=0;
-                            strcpy(filename, "its/eurostat.txt");      
-                            file1 = fopen(filename,"a");
-                            fprintf(file1,"\n %d %f %f %f ",DAY,HISTORY_MONTHLY[0].gdp,HISTORY_MONTHLY[0].cpi,HISTORY_MONTHLY[0].output);
-                            fprintf(file1,"%d %f ",HISTORY_MONTHLY[0].employment,HISTORY_MONTHLY[0].unemployment_rate);
-                            fprintf(file1," %f %d",HISTORY_MONTHLY[0].average_wage,HISTORY_MONTHLY[0].no_firm_deaths);
-                            fclose(file1);
-                            free(filename);
-                                }
-    
+        filename = malloc(40*sizeof(char));
+        filename[0]=0;
+        strcpy(filename, "its/eurostat.txt");      
+        file1 = fopen(filename,"a");
+        fprintf(file1,"\n %d %f %f %f ",DAY,HISTORY_MONTHLY[0].gdp,HISTORY_MONTHLY[0].cpi,HISTORY_MONTHLY[0].output);
+        fprintf(file1,"%d %f ",HISTORY_MONTHLY[0].employment,HISTORY_MONTHLY[0].unemployment_rate);
+        fprintf(file1," %f %d",HISTORY_MONTHLY[0].average_wage,HISTORY_MONTHLY[0].no_firm_deaths);
+        fclose(file1);
+        free(filename);
+    }
+    #endif
+        
     return 0;
 }
 
@@ -1223,6 +1229,7 @@ int Eurostat_store_history_quarterly()
         HISTORY_QUARTERLY[0].region_data.array[region].no_firm_deaths         = HISTORY_QUARTERLY[0].region_data.array[region].no_firm_deaths;    
     }
 
+    #ifndef _DEBUG_MODE
     if (PRINT_LOG)
     {
         printf("Quarterly data recorded by Eurostat:\n");
@@ -1236,7 +1243,8 @@ int Eurostat_store_history_quarterly()
         printf(" - quarterly total number of firm births: %d\n", HISTORY_QUARTERLY[0].no_firm_births);
         printf(" - quarterly total number of firm deaths: %d\n", HISTORY_QUARTERLY[0].no_firm_deaths);
     }
-    
+    #endif
+        
     return 0;
 }
 
@@ -1588,12 +1596,14 @@ int Eurostat_measure_recession()
         }
     }
 
+    #ifndef _DEBUG_MODE
     if (PRINT_LOG)
     {
         printf(" - recession started: %d\n", RECESSION_STARTED);
         printf(" - duration of recession: %d\n", RECESSION_DURATION);
     }
-    
+    #endif
+        
     return 0;
 }
 

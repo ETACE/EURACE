@@ -103,13 +103,15 @@ int Firm_calc_input_demands_2()
         /*This computes the financial needings for production*/
         PLANNED_PRODUCTION_COSTS = EMPLOYEES_NEEDED*MEAN_WAGE*(1.04) + DEMAND_CAPITAL_STOCK*ACTUAL_CAP_PRICE;
     
-    
+    #ifndef _DEBUG_MODE    
     if (PRINT_DEBUG_EXP1 || PRINT_DEBUG)
     {
-                    printf("\n\n Firm_calc_input_demands_2 ID: %d",ID);
-                    printf("\n\t TOTAL_UNITS_CAPITAL_STOCK: %f NEEDED_CAPITAL_STOCK: %f",TOTAL_UNITS_CAPITAL_STOCK,NEEDED_CAPITAL_STOCK);
-                    printf("\n\t DEMAND_CAPITAL_STOCK: %f EMPLOYEES_NEEDED: %d",DEMAND_CAPITAL_STOCK,EMPLOYEES_NEEDED);                    
-                    getchar();}
+        printf("\n\n Firm_calc_input_demands_2 ID: %d",ID);
+        printf("\n\t TOTAL_UNITS_CAPITAL_STOCK: %f NEEDED_CAPITAL_STOCK: %f",TOTAL_UNITS_CAPITAL_STOCK,NEEDED_CAPITAL_STOCK);
+        printf("\n\t DEMAND_CAPITAL_STOCK: %f EMPLOYEES_NEEDED: %d",DEMAND_CAPITAL_STOCK,EMPLOYEES_NEEDED);                    
+        getchar();
+    }
+    #endif
     
     return 0;
 }   
@@ -120,14 +122,16 @@ int Firm_calc_input_demands_2()
 
 int Firm_set_quantities_zero()
 {
-    
+
+    #ifndef _DEBUG_MODE    
     if (PRINT_DEBUG)
     {
-            printf("\n Firm_set_quantities_zero ID: %d",ID);
-            printf("\n\t DAY_OF_MONTH_TO_ACT: %d",DAY_OF_MONTH_TO_ACT);
-            getchar();
-             }
-                    
+        printf("\n Firm_set_quantities_zero ID: %d",ID);
+        printf("\n\t DAY_OF_MONTH_TO_ACT: %d",DAY_OF_MONTH_TO_ACT);
+        getchar();
+    }
+    #endif
+                        
     PLANNED_PRODUCTION_QUANTITY = 0;
     PRODUCTION_QUANTITY = 0;
 
@@ -263,12 +267,14 @@ int Firm_calc_production_quantity()
         //Set planned production value that is retained in memory during the month:
         PLANNED_OUTPUT = PLANNED_PRODUCTION_QUANTITY; 
         
-         if (PRINT_DEBUG_EXP1 || PRINT_DEBUG)
-               {
-                         printf("\n Firm_calc_production_quantity ID: %d",ID);
-                         printf("\n\t PLANNED_PRODUCTION_QUANTITY: %f",PLANNED_PRODUCTION_QUANTITY);
-                         getchar();
-             }
+        #ifndef _DEBUG_MODE
+        if (PRINT_DEBUG_EXP1 || PRINT_DEBUG)
+        {
+            printf("\n Firm_calc_production_quantity ID: %d",ID);
+            printf("\n\t PLANNED_PRODUCTION_QUANTITY: %f",PLANNED_PRODUCTION_QUANTITY);
+            getchar();
+        }
+        #endif
         
         //printf("In calculate production: Firm %d PLANNED_PRODUCTION_QUANTITY %f\n", ID, PLANNED_PRODUCTION_QUANTITY);
         //printf("In calculate production: Firm %d PLANNED_OUTPUT %f\n", ID, PLANNED_OUTPUT);
@@ -402,15 +408,16 @@ int Firm_calc_input_demands()
         
         PLANNED_PRODUCTION_COSTS = EMPLOYEES_NEEDED*(1.04)*MEAN_WAGE + DEMAND_CAPITAL_STOCK*ACTUAL_CAP_PRICE;
 
+        #ifndef _DEBUG_MODE
         if (PRINT_DEBUG_EXP1 || PRINT_DEBUG)
         { 
-                        printf("\n Firm_calc_input_demands ID: %d",ID);
-                        printf("\n\t EMPLOYEES_NEEDED: %d NEEDED_CAPITAL_STOCK: %f",EMPLOYEES_NEEDED,NEEDED_CAPITAL_STOCK);
-                        printf("\n\t TOTAL_UNITS_CAPITAL_STOCK: %f DEMAND_CAPITAL_STOCK: %f",TOTAL_UNITS_CAPITAL_STOCK,DEMAND_CAPITAL_STOCK);
-                        printf("\n\t PLANNED_VALUE_CAPITAL_STOCK: %f PLANNED_PRODUCTION_COSTS: %f",PLANNED_VALUE_CAPITAL_STOCK,PLANNED_PRODUCTION_COSTS);
-                        getchar();
-                        }
-
+            printf("\n Firm_calc_input_demands ID: %d",ID);
+            printf("\n\t EMPLOYEES_NEEDED: %d NEEDED_CAPITAL_STOCK: %f",EMPLOYEES_NEEDED,NEEDED_CAPITAL_STOCK);
+            printf("\n\t TOTAL_UNITS_CAPITAL_STOCK: %f DEMAND_CAPITAL_STOCK: %f",TOTAL_UNITS_CAPITAL_STOCK,DEMAND_CAPITAL_STOCK);
+            printf("\n\t PLANNED_VALUE_CAPITAL_STOCK: %f PLANNED_PRODUCTION_COSTS: %f",PLANNED_VALUE_CAPITAL_STOCK,PLANNED_PRODUCTION_COSTS);
+            getchar();
+        }
+        #endif
 
         //printf("Firm: %d  Labour: %d  Capital: %f  PLANNED_PROD_COSTS: %f\n", ID,EMPLOYEES_NEEDED,NEEDED_CAPITAL_STOCK,PLANNED_PRODUCTION_COSTS);
     
@@ -559,14 +566,16 @@ int Firm_execute_production()
     
     //Set actual production value that is retained  in memory during the month:
     OUTPUT = PRODUCTION_QUANTITY;
-    
+
+    #ifndef _DEBUG_MODE    
     if (PRINT_DEBUG_EXP1 || PRINT_DEBUG)
     {
-                         printf("\n\n Firm_execute_production ID: %d",ID);
-                         printf("\n\t PLANNED_PRODUCTION_QUANTITY: %f OUTPUT: %f",PLANNED_PRODUCTION_QUANTITY,OUTPUT);
-                         getchar();                         
-                         }
-    
+        printf("\n\n Firm_execute_production ID: %d",ID);
+        printf("\n\t PLANNED_PRODUCTION_QUANTITY: %f OUTPUT: %f",PLANNED_PRODUCTION_QUANTITY,OUTPUT);
+        getchar();                         
+    }
+    #endif
+        
     TOTAL_SUPPLY = TOTAL_UNITS_LOCAL_INVENTORY + OUTPUT;
     
     //printf("In Execute production: Firm %d PRODUCTION_QUANTITY: %.2f (%.2f) \n", ID, PRODUCTION_QUANTITY, diff);
@@ -643,15 +652,17 @@ int Firm_calc_pay_costs()
 
     remove_double(&LAST_PLANNED_PRODUCTION_QUANTITIES,0);
     add_double(&LAST_PLANNED_PRODUCTION_QUANTITIES,PLANNED_PRODUCTION_QUANTITY); 
-    
+
+    #ifndef _DEBUG_MODE    
     if (PRINT_DEBUG || PRINT_DEBUG_EXP1)
     {
-                    printf("\n\n Firm_calc_pay_costs ID: %d",ID);
-                    printf("\n\t CAPITAL_COSTS: %f LABOUR_COSTS: %f",CAPITAL_COSTS,LABOUR_COSTS);
-                    printf("\n\t UNIT_COSTS: %f PRICE_LAST_MONTH: %f PRICE: %f",UNIT_COSTS,PRICE_LAST_MONTH,PRICE);
-                    getchar();
-                    }   
-    
+        printf("\n\n Firm_calc_pay_costs ID: %d",ID);
+        printf("\n\t CAPITAL_COSTS: %f LABOUR_COSTS: %f",CAPITAL_COSTS,LABOUR_COSTS);
+        printf("\n\t UNIT_COSTS: %f PRICE_LAST_MONTH: %f PRICE: %f",UNIT_COSTS,PRICE_LAST_MONTH,PRICE);
+        getchar();
+    }   
+    #endif
+        
     return 0;
 }
 
