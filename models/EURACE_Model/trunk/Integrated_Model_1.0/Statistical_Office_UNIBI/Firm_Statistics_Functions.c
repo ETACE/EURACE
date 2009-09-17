@@ -76,14 +76,14 @@ int Firm_read_policy_announcements()
         }
     FINISH_POLICY_ANNOUNCEMENT_MESSAGE_LOOP
     
-    
+    #ifndef _DEBUG_MODE    
     if (PRINT_DEBUG)
-        {
-                    printf("\n Firm_read_policy_announcements ID: %d",ID);
-                    printf("\n \t TAX_RATE_CORPORATE: %f TAX_RATE_VAT: %f TRANSFER_PAYMENT: %f SUBSIDY_PCT: %f",TAX_RATE_CORPORATE,TAX_RATE_VAT,TRANSFER_PAYMENT,SUBSIDY_PCT);
-                    getchar();
-                    }
-        
+    {
+        printf("\n Firm_read_policy_announcements ID: %d",ID);
+        printf("\n \t TAX_RATE_CORPORATE: %f TAX_RATE_VAT: %f TRANSFER_PAYMENT: %f SUBSIDY_PCT: %f",TAX_RATE_CORPORATE,TAX_RATE_VAT,TRANSFER_PAYMENT,SUBSIDY_PCT);
+        getchar();
+    }
+    #endif        
     
     return 0;
 }
@@ -165,12 +165,11 @@ int Firm_receive_data()
             /*Increase wage offer regarding the productivity increase*/
             if(DAY%20 == 1)
             {
-    //if(ID < 3)
-    //printf("FIRM_ID %d \n",ID);
-    //if(ID < 3)
-    //printf("eurostat_send_specific_skills_message->productivity_progress %f \n",eurostat_send_specific_skills_message->productivity_progress);
-               
-                
+                //if(ID < 3)
+                //printf("FIRM_ID %d \n",ID);
+                //if(ID < 3)
+                //printf("eurostat_send_specific_skills_message->productivity_progress %f \n",eurostat_send_specific_skills_message->productivity_progress);
+                               
                 int i;
                 for(i = 0; i < EMPLOYEES.size; i++)
                 {  
@@ -178,17 +177,15 @@ int Firm_receive_data()
                     eurostat_send_specific_skills_message->productivity_progress);    
                 }
             }
-            
-            
         }
-        FINISH_EUROSTAT_SEND_SPECIFIC_SKILLS_MESSAGE_LOOP
+    FINISH_EUROSTAT_SEND_SPECIFIC_SKILLS_MESSAGE_LOOP
         
-        
-          if (PRINT_DEBUG)
-     {
-       printf("\n Firm receive data ID: %d",ID); 
-       
-      }          
-        
-        return 0;
+    #ifndef _DEBUG_MODE    
+    if (PRINT_DEBUG)
+    {
+        printf("\n Firm receive data ID: %d",ID);     
+    }          
+    #if        
+
+    return 0;
 }

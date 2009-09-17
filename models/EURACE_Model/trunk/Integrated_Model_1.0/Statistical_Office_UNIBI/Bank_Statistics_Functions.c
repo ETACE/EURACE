@@ -16,13 +16,15 @@ int Bank_read_policy_announcements()
             TAX_RATE_CORPORATE = policy_announcement_message->tax_rate_corporate;
         }
     FINISH_POLICY_ANNOUNCEMENT_MESSAGE_LOOP
-    
-     if (PRINT_DEBUG_CREDIT)
+
+    #ifndef _DEBUG_MODE    
+    if (PRINT_DEBUG_CREDIT)
     {
-                    printf("\n Bank_read_policy_announcements ID: %d",ID);
-                    printf("\n \t TAX_RATE_CORPORATE: %f",TAX_RATE_CORPORATE);
-                    getchar();
-                    }
-    
+        printf("\n Bank_read_policy_announcements ID: %d",ID);
+        printf("\n \t TAX_RATE_CORPORATE: %f",TAX_RATE_CORPORATE);
+        getchar();
+    }
+    #endif
+        
     return 0;
 }

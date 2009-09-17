@@ -23,15 +23,16 @@ int Central_Bank_monetary_policy()
     ECB_INTEREST_RATE = 0.05;
     
     add_policy_rate_message(ECB_INTEREST_RATE);
-    
-     if (PRINT_DEBUG)
-     {
-       printf("\n Central_Bank_monetary_policy ID: %d",ID); 
-       printf("\n\t inflation: %f gdp: %f unemployment_rate: %f",inflation,gdp,unemployment_rate);
-       printf("\n\t ECB_INTEREST_RATE: %f",ECB_INTEREST_RATE);   
-        getchar(); 
-      }              
 
+    #ifndef _DEBUG_MODE    
+    if (PRINT_DEBUG)
+    {
+        printf("\n Central_Bank_monetary_policy ID: %d",ID); 
+        printf("\n\t inflation: %f gdp: %f unemployment_rate: %f",inflation,gdp,unemployment_rate);
+        printf("\n\t ECB_INTEREST_RATE: %f",ECB_INTEREST_RATE);   
+        getchar(); 
+    }              
+    #endif    
     return 0;
 }
 
@@ -62,11 +63,14 @@ int Central_Bank_read_fiat_money_requests()
 int Central_Bank_read_account_update()
 {
     int i;
-    int bank_mesg_count=0; //debug
-    int gov_mesg_count=0; //debug
-    FILE *file1;
-    char *filename;
 
+    #ifndef _DEBUG_MODE
+        int bank_mesg_count=0; //debug
+        int gov_mesg_count=0; //debug
+        FILE *file1;
+        char *filename;
+    #endif
+    
     ECB_DEPOSITS=0.0;    
     FIAT_MONEY_BANKS=0.0;
 
@@ -82,14 +86,18 @@ int Central_Bank_read_account_update()
             ACCOUNTS_BANKS.array[i].payment_account = bank_to_central_bank_account_update_message->payment_account;
             }
         }
+        
+        #ifndef _DEBUG_MODE
         if(PRINT_DEBUG_CREDIT)
             bank_mesg_count++;        
+        #endif
     FINISH_BANK_TO_CENTRAL_BANK_ACCOUNT_UPDATE_MESSAGE_LOOP
 
     START_BANK_INTEREST_PAYMENT_MESSAGE_LOOP
         CASH += bank_interest_payment_message->bank_interest_amount;
     FINISH_BANK_INTEREST_PAYMENT_MESSAGE_LOOP
 
+    #ifndef _DEBUG_MODE
         if(PRINT_DEBUG_CREDIT)
         {                        
             if(bank_mesg_count!=ACCOUNTS_BANKS.size)
@@ -100,7 +108,8 @@ int Central_Bank_read_account_update()
             else
                 printf("\n Nr of mesg equal to size of bank account array.\n");
         }
-
+    #endif
+    
     START_GOV_TO_CENTRAL_BANK_ACCOUNT_UPDATE_MESSAGE_LOOP
         for (i=0;i<ACCOUNTS_GOVS.size;i++)
         {       
@@ -113,8 +122,12 @@ int Central_Bank_read_account_update()
             //Total deposits at ECB
             ECB_DEPOSITS += gov_to_central_bank_account_update_message->payment_account;
         }
+        
+        #ifndef _DEBUG_MODE        
         if(PRINT_DEBUG_CREDIT)
-        gov_mesg_count++;    
+            gov_mesg_count++;    
+        #endif
+        
     FINISH_GOV_TO_CENTRAL_BANK_ACCOUNT_UPDATE_MESSAGE_LOOP
 
 /* CHECK THIS FOR CORRECTNESS: if multiple governments pay different coupons?
@@ -122,6 +135,7 @@ int Central_Bank_read_account_update()
         CASH += payment_coupons_message->coupon*NR_GOV_BONDS;
     FINISH_PAYMENT_COUPONS_MESSAGE_LOOP
 */
+    #ifndef _DEBUG_MODE
         if(PRINT_DEBUG_CREDIT)
         {                        
             if(gov_mesg_count!=ACCOUNTS_GOVS.size)
@@ -132,18 +146,18 @@ int Central_Bank_read_account_update()
             else
                 printf("\n Nr of mesg equal to size of gov account array.\n");
         }
-        
-        
-         if (PRINT_DEBUG_FILE_EXP1)
-    {                       
-                            filename = malloc(40*sizeof(char));
-                            filename[0]=0;
-                            strcpy(filename, "its/CentralBank.txt");      
-                            file1 = fopen(filename,"a");
-                            fprintf(file1,"\n %d %f %f ",DAY,FIAT_MONEY_GOVS,FIAT_MONEY_BANKS);
-                            fclose(file1);
-                            free(filename);
-                                }                
-
+    #endif        
+    #ifndef _DEBUG_MODE        
+        if (PRINT_DEBUG_FILE_EXP1)
+        {                       
+            filename = malloc(40*sizeof(char));
+            filename[0]=0;
+            strcpy(filename, "its/CentralBank.txt");      
+            file1 = fopen(filename,"a");
+            fprintf(file1,"\n %d %f %f ",DAY,FIAT_MONEY_GOVS,FIAT_MONEY_BANKS);
+            fclose(file1);
+            free(filename);
+        }                
+    #endif
     return 0;
 }

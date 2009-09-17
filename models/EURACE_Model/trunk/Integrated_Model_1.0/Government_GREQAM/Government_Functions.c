@@ -27,15 +27,16 @@ int Government_initialization()
     reset_int_array(&LIST_OF_REGIONS);
     add_int(&LIST_OF_REGIONS, REGION_ID);
     
+    #ifndef _DEBUG_MODE
     if (PRINT_DEBUG_GOV)
         { 
                     printf("\n Government_initialization ID: %d",ID);
                     getchar();
         }
+    #endif
     
     return 0;   
 }
-
 
 /* \fn: int Government_send_policy_announcements()
  * \brief Function to send yearly policy announcement message.
@@ -93,6 +94,7 @@ int Government_send_policy_announcements()
     //add announcement
     add_policy_announcement_message(ID, TAX_RATE_CORPORATE, TAX_RATE_HH_LABOUR, TAX_RATE_HH_CAPITAL, TAX_RATE_VAT, UNEMPLOYMENT_BENEFIT_PCT, HH_SUBSIDY_PCT, FIRM_SUBSIDY_PCT, HH_TRANSFER_PAYMENT, FIRM_TRANSFER_PAYMENT);
     
+    #ifndef _DEBUG_MODE
     if (PRINT_DEBUG_GOV)
         { 
                     printf("\n Government_send_policy_announcements ID: %d",ID);
@@ -100,6 +102,7 @@ int Government_send_policy_announcements()
                     printf("\n \t UNEMPLOYMENT_BENEFIT_PCT: %f HH_SUBSIDY_PCT: %f FIRM_SUBSIDY_PCT: %f HH_TRANSFER_PAYMENT: %f FIRM_TRANSFER_PAYMENT; %f", UNEMPLOYMENT_BENEFIT_PCT, HH_SUBSIDY_PCT, FIRM_SUBSIDY_PCT, HH_TRANSFER_PAYMENT, FIRM_TRANSFER_PAYMENT);
                     getchar();
         }
+    #endif
        
     return 0;   
 }
@@ -118,14 +121,15 @@ int Government_read_tax_payments()
 
    PAYMENT_ACCOUNT += sum;
    
+   #ifndef _DEBUG_MODE
    if (PRINT_DEBUG)
    {
                    printf("\n\n Government_read_tax_payments ID: %d",ID);
                    printf("\n\n MONTHLY_TAX_REVENUES: %f sum: %f",MONTHLY_TAX_REVENUES,sum);
                    printf("\n\n PAYMENT_ACCOUNT: %f",PAYMENT_ACCOUNT);
                    getchar();
-                   }
-    
+   }
+   #endif 
     
     return 0;
 }
@@ -168,14 +172,16 @@ int Government_read_unemployment_benefit_notifications()
     
     PAYMENT_ACCOUNT -= sum;
     
+    #ifndef _DEBUG_MODE
     if (PRINT_DEBUG)
-   {
+    {
                    printf("\n\n Government_read_unemployment_benefit_notifications ID: %d",ID);
                    printf("\n\n MONTHLY_BENEFIT_PAYMENT: %f sum: %f",MONTHLY_BENEFIT_PAYMENT,sum);
                    printf("\n\n YEARLY_BENEFIT_PAYMENT: %f PAYMENT_ACCOUNT: %f",YEARLY_BENEFIT_PAYMENT,PAYMENT_ACCOUNT);
                    getchar();
-                   }
-    
+    }
+    #endif
+
     return 0;
 }
 
@@ -214,12 +220,15 @@ int Government_read_transfer_notifications()
     // Update the payment account
     PAYMENT_ACCOUNT -= sum*FIRM_TRANSFER_PAYMENT;
     
+
+    #ifndef _DEBUG_MODE
     if (PRINT_DEBUG)
-   {
+    {
                    printf("\n\n Government_read_transfer_notifications ID: %d",ID);
                    printf("\n\n MONTHLY_TRANSFER_PAYMENT: %f YEARLY_TRANSFER_PAYMENT: %f",MONTHLY_TRANSFER_PAYMENT,YEARLY_TRANSFER_PAYMENT);
                    getchar();
-                   }
+    }
+    #endif
     
     return 0;
 }
@@ -259,12 +268,14 @@ int Government_read_subsidy_notifications()
     // Update the payment account
     PAYMENT_ACCOUNT -= sum;
     
-     if (PRINT_DEBUG)
-   {
+    #ifndef _DEBUG_MODE
+    if (PRINT_DEBUG)
+    {
                    printf("\n\n Government_read_subsidy_notifications ID: %d",ID);
                    printf("\n\n MONTHLY_SUBSIDY_PAYMENT: %f YEARLY_SUBSIDY_PAYMENT: %f",MONTHLY_SUBSIDY_PAYMENT,YEARLY_SUBSIDY_PAYMENT);
                    getchar();
-                   }
+    }
+    #endif
 
     return 0;
 }
@@ -277,12 +288,15 @@ int Government_send_account_update()
 {
         // At the very end of agent government: update the bank account
         add_gov_to_central_bank_account_update_message(ID, PAYMENT_ACCOUNT);
-        
+
+        #ifndef _DEBUG_MODE
         if (PRINT_DEBUG_EXP1 || PRINT_DEBUG)
         {
                         printf("\n\n Government_send_account_update ID: %d",ID);
                         printf("\n\t PAYMENT_ACCOUNT: %f",PAYMENT_ACCOUNT);
-                        getchar();}
+                        getchar();
+        }
+        #endif
         
     return 0;
 }
@@ -307,20 +321,26 @@ int Government_resolve_unsold_bonds()
                 printf("\n In Government_resolve_unsold_bonds: Government nominal value %f \n", last_market_price*BOND.quantity);
 
             add_issue_bonds_to_ecb_message(last_market_price*BOND.quantity, BOND.quantity);
-            
+
+            #ifndef _DEBUG_MODE            
             if (PRINT_DEBUG_EXP1 || PRINT_DEBUG)
             {
-            printf("\n\n Government_resolve_unsold_bonds.QUANTITATIVE_EASING ID: %d",ID);
-            printf("\n\t Payment account before easing: %f \n", PAYMENT_ACCOUNT);
+                printf("\n\n Government_resolve_unsold_bonds.QUANTITATIVE_EASING ID: %d",ID);
+                printf("\n\t Payment account before easing: %f \n", PAYMENT_ACCOUNT);
             }
+            #endif
+            
             //Assume that the ECB is FULLY accommodating the government's demand for fiat money:
             PAYMENT_ACCOUNT += last_market_price*BOND.quantity;
+
+            #ifndef _DEBUG_MODE
             if (PRINT_DEBUG_EXP1 || PRINT_DEBUG)
             {
                 printf("\n\t Payment account after easing: %f", PAYMENT_ACCOUNT);
                 printf("n\t last_market_price %f BOND.quantity %d \n", last_market_price,BOND.quantity );
                 getchar();
-            }       
+            }
+            #endif       
         }   
              
         
@@ -366,11 +386,12 @@ int Government_monthly_budget_accounting()
         TOTAL_DEBT = BOND.nr_outstanding*BOND.face_value;
         
         //Check: value of payment account should be equal to total_debt:
-        //if (abs(TOTAL_DEBT + PAYMENT_ACCOUNT))> 0.001)
 
-        //if (PRINT_DEBUG && ((TOTAL_DEBT + PAYMENT_ACCOUNT) != 0.0))
-//            fprintf(stdout,"\n ERROR in Government: Total debt %2.5f is not equal to payment account %2.5f\n\n", TOTAL_DEBT, PAYMENT_ACCOUNT);
-        
+        #ifndef _DEBUG_MODE
+        if (PRINT_DEBUG && ((TOTAL_DEBT + PAYMENT_ACCOUNT) != 0.0))
+            fprintf(stdout,"\n ERROR in Government: Total debt %2.5f is not equal to payment account %2.5f\n\n", TOTAL_DEBT, PAYMENT_ACCOUNT);
+        #endif 
+                
     //Monetary policy rule: decide on fraction of deficit to be financed by bonds/fiar money
         TOTAL_MONEY_FINANCING=0;
         TOTAL_BOND_FINANCING=0;
@@ -395,33 +416,37 @@ int Government_monthly_budget_accounting()
         add_request_fiat_money_message(TOTAL_MONEY_FINANCING);
 
         PAYMENT_ACCOUNT += TOTAL_MONEY_FINANCING;
+
+        #ifndef _DEBUG_MODE
         if (PRINT_DEBUG_EXP1 || PRINT_DEBUG)
         {
-        printf("\n\n Government_monthly_budget_accounting ID: %d",ID);
-        printf("\n\t MONTHLY_TAX_REVENUES: %f MONTHLY_BENEFIT_PAYMENT: %f",MONTHLY_TAX_REVENUES, MONTHLY_BENEFIT_PAYMENT);
-        printf("\n\t MONTHLY_BOND_INTEREST_PAYMENT: %f out: %f",MONTHLY_BOND_INTEREST_PAYMENT, out);
-        printf("\n\t out: %f MONTHLY_BUDGET_BALANCE: %f",out, MONTHLY_BUDGET_BALANCE);
-        printf("\n\t PAYMENT_ACCOUNT: %f CUMULATED_DEFICIT: %f TOTAL_DEBT: %f",PAYMENT_ACCOUNT,CUMULATED_DEFICIT, TOTAL_DEBT);
-        
-        getchar();
+            printf("\n\n Government_monthly_budget_accounting ID: %d",ID);
+            printf("\n\t MONTHLY_TAX_REVENUES: %f MONTHLY_BENEFIT_PAYMENT: %f",MONTHLY_TAX_REVENUES, MONTHLY_BENEFIT_PAYMENT);
+            printf("\n\t MONTHLY_BOND_INTEREST_PAYMENT: %f out: %f",MONTHLY_BOND_INTEREST_PAYMENT, out);
+            printf("\n\t out: %f MONTHLY_BUDGET_BALANCE: %f",out, MONTHLY_BUDGET_BALANCE);
+            printf("\n\t PAYMENT_ACCOUNT: %f CUMULATED_DEFICIT: %f TOTAL_DEBT: %f",PAYMENT_ACCOUNT,CUMULATED_DEFICIT, TOTAL_DEBT);
+            
+            getchar();
         }
+        #endif 
         
-        
+        #ifndef _DEBUG_MODE
         if (PRINT_DEBUG_FILE_EXP1)
-    {                       
-                            filename = malloc(40*sizeof(char));
-                            filename[0]=0;
-                            strcpy(filename, "its/government.txt");      
-                            file1 = fopen(filename,"a");
-                            fprintf(file1,"%f %f ",MONTHLY_TAX_REVENUES,MONTHLY_BENEFIT_PAYMENT);
-                            fprintf(file1,"%f %f ",MONTHLY_BOND_INTEREST_PAYMENT,out);
-                            fprintf(file1,"%f %f ",MONTHLY_BUDGET_BALANCE,PAYMENT_ACCOUNT);
-                            fprintf(file1,"%f %f ",CUMULATED_DEFICIT,TOTAL_DEBT);
-                            fprintf(file1,"%f %f\n",BOND.prices[BOND.index],TAX_RATE_HH_LABOUR);
-                            fclose(file1);
-                            free(filename);
-                                }                
- 
+        {
+            filename = malloc(40*sizeof(char));
+            filename[0]=0;
+            strcpy(filename, "its/government.txt"); 
+            file1 = fopen(filename,"a");
+            fprintf(file1,"%f %f ",MONTHLY_TAX_REVENUES,MONTHLY_BENEFIT_PAYMENT);
+            fprintf(file1,"%f %f ",MONTHLY_BOND_INTEREST_PAYMENT,out);
+            fprintf(file1,"%f %f ",MONTHLY_BUDGET_BALANCE,PAYMENT_ACCOUNT);
+            fprintf(file1,"%f %f ",CUMULATED_DEFICIT,TOTAL_DEBT);
+            fprintf(file1,"%f %f\n",BOND.prices[BOND.index],TAX_RATE_HH_LABOUR);
+            fclose(file1);
+            free(filename);
+        }
+        #endif 
+
     return 0;
 }
 
@@ -444,12 +469,15 @@ int Government_bonds_issuing_decision()
     //bond->quantity = bond->quantity + new_bonds_amount;
     BOND.quantity = BOND.quantity + new_bonds_amount;
 
+    #ifndef _DEBUG_MODE    
     if (PRINT_DEBUG_EXP1 || PRINT_DEBUG)
     {
         printf("\n\n Government_bonds_issuing_decision ID: %d",ID);
         printf("\n\t last_market_price: %f limit_price: %f", last_market_price, limit_price);
         printf("\n\t new_bonds_amount: %d BOND.quantity: %d", new_bonds_amount, BOND.quantity);
     }
+    #endif 
+
     return 0;
 }
 
@@ -466,14 +494,15 @@ int Government_monthly_resetting()
     MONTHLY_BOND_INTEREST_PAYMENT =0.0;
     MONTHLY_INVESTMENT_EXPENDITURE =0.0;
     MONTHLY_CONSUMPTION_EXPENDITURE =0.0;
-    
-      if (PRINT_DEBUG_GOV)
-        { 
-                    printf("\n Government_monthly_resetting");
+
+    #ifndef _DEBUG_MODE    
+    if (PRINT_DEBUG_GOV)
+    { 
+             printf("\n Government_monthly_resetting");
                 
-        }
-    
-    
+    }
+    #endif 
+        
     return 0;
 }
 
@@ -521,12 +550,12 @@ int Government_yearly_resetting()
     YEARLY_INVESTMENT_EXPENDITURE =0.0;
     YEARLY_CONSUMPTION_EXPENDITURE =0.0;
     
-    
-      if (PRINT_DEBUG_GOV)
-        { 
-                    printf("\n Government_yearly_resetting");
-             
-        }
+    #ifndef _DEBUG_MODE    
+    if (PRINT_DEBUG_GOV)
+    { 
+        printf("\n Government_yearly_resetting");       
+    }
+    #endif 
     
     return 0;
 }
@@ -563,13 +592,15 @@ int Government_read_data_from_Eurostat()
     if (old_gdp > 0.0)
         GDP_GROWTH = GDP/old_gdp;
     else GDP_GROWTH = 1.0; 
-    
+
+    #ifndef _DEBUG_MODE        
     if (PRINT_DEBUG_EXP1 || PRINT_DEBUG)
     {
         printf("\n\n Government_read_data_from_Eurostat ID: %d",ID);
         printf("\n\t GDP: %f old GDP: %f",GDP,old_gdp);
         getchar();
     }
+    #endif 
         
     
     //Now read the global economic data to retrieve the economy-wide inflation and unemployment rates:    

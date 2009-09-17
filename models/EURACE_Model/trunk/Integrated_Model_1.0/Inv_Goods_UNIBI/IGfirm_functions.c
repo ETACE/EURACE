@@ -67,7 +67,10 @@ int IGFirm_send_quality_price_info()
             //At the end of the time interval there is a down_shock only if the shock is set to be symmetric:
             if ((DAY==ENERGY_SHOCK_END)&&(SYMMETRIC_SHOCK==1))
             {   
-                if(PRINT_DEBUG) printf("\nIn IGFirm_send_quality_price_info: Downward shock due to SYMMETRIC_SHOCK==1\n");
+                #ifndef _DEBUG_MODE
+                    if(PRINT_DEBUG) printf("\nIn IGFirm_send_quality_price_info: Downward shock due to SYMMETRIC_SHOCK==1\n");
+                #endif
+
                 //Multiplicative: mark up defined in percentage terms
                 CAPITAL_GOOD_PRICE = CAPITAL_GOOD_PRICE*pow((1+CONST_ENERGY_SHOCK_INTENSITY),-(ENERGY_SHOCK_END-ENERGY_SHOCK_START)/ENERGY_SHOCK_FREQUENCY);
             }        
