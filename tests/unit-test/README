@@ -1,0 +1,43 @@
+
+test_generator version 1.0
+-------
+
+to compile the test_generator latest Libxml2 is required. 
+to compile the launcher of test latest  CUnit v2.1.0 is required.
+ 
+
+The test_generator is a tool to generate the suites of tests written in C language,
+it needs a agents model written in XMML .
+
+
+	Usage Instructions
+	------------------
+
+	test_generator path_of_agents_model/configuration_suites.xml
+
+	
+
+	How to build the sources Instructions 
+	-------------------------------------
+
+	1. Install minGW from http://www.mingw.org/  (only for win32)
+        2. install the library libxml2 from http://xmlsoft.org/
+        3. install the library CUnit from http://cunit.sourceforge.net/"
+	4. Open a dos shell
+	5. run "make "
+
+
+	How to build the LauncherTest
+	----------------
+
+	1. Install minGW from http://www.mingw.org/  (only for win32)
+        2. install the library libxml2 from http://xmlsoft.org/
+        3. install the library CUnit from http://cunit.sourceforge.net/"
+	4. Open a dos/bash shell
+        5. cd path_of_agents_model ( open a shell in the path that is containing the generated source )
+	6. run "make -f Makefiletest" (unix version)
+        7. run "make -f MakefileWin32" (win32 version)
+
+
+
+

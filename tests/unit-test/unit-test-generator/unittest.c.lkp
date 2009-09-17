@@ -22,7 +22,8 @@ end
 !!current_ __uagentname = current-> an __uagentname ;\\
 !!expected_ __uagentname = expected->an __uagentname ;\\
 !!read_suite_states(root_element->children, current, expected, current_messages,expected_messages,test_name );\\
-//!!srand((unsigned!!int) constants.seed);\\
+!!srand((unsigned!!int) constants.seed);\\
+!!setSeed(constants.seed);\\
 //!!printf("ecco!!il!!seed!!%d",constants.seed);\\
 !! __function_name ();\\
 //!!print_initial_states(" __utestname .xml ",current);\\
