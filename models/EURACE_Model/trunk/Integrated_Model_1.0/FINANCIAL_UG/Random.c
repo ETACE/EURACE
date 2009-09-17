@@ -24,10 +24,20 @@ double r=2836.000000;
 
 double seed=2345678901.0;
 
+double quo(double c,double b)
+{  
+    double temp;
+    temp= (int)(c/b);
+ 
+    return temp;
+
+}
+
 
 /** \fn void initializeRandom()
  * \brief Set a reasonable Park-Miller starting seed 
  */
+
 
 
 void initializeRandom()
@@ -98,12 +108,12 @@ double nextValue()
 { 
     double answer,lo, hi, aLoRHi;
      
-	hi =  quo(seed,q);
+	hi =  (int)(seed/q);
 	lo = seed - (hi * q);
 	aLoRHi = a * lo - (r * hi);
 
     if(aLoRHi > 0.0)	answer = aLoRHi;
-				else answer =aLoRHi + m;
+    else answer =aLoRHi + m;
 	return answer;
 }
 /** \fn int eventFrom( double  probArray[] )
