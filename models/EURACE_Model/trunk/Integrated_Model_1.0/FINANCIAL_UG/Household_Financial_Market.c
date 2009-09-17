@@ -214,9 +214,12 @@ void computeLimitOrder( Asset *anAsset, double weight, double resource,Belief *b
       else
       if(limitPrice==0) deltaquantity=-quantity;
       else deltaquantity=(int)(weight*resource/(limitPrice))-quantity;
-      if(abs(deltaquantity)>10000) {
+      if( PRINT_DEBUG_AFM)
+      if(abs(deltaquantity)>10000) 
+        {
          printf("weight %f resource %f limitprice %f quantity %d\n",weight,resource,limitPrice,deltaquantity);
-         printf("fund %f random %f chartist %f\n",FUNDAMENTALWEIGHT,RANDOMWEIGHT,CHARTISTWEIGHT); }
+         printf("fund %f random %f chartist %f\n",FUNDAMENTALWEIGHT,RANDOMWEIGHT,CHARTISTWEIGHT); 
+        }
       setOrder(order,limitPrice,deltaquantity,assetId,trader_id);
       
 }

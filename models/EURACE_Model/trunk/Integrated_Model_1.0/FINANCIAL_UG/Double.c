@@ -15,14 +15,6 @@ int equals( double a1,double a2)
      return answer;
 }
      
-double quo(double c,double b)
-{  
-    double temp;
-    temp= (int)(c/b);
- 
-    return temp;
-
-}
 
 /*	"constrains a number into the a logaritmic interval of aValue. Examples:
 	120 forceTo: 50 logInterval: 2, returns 100
