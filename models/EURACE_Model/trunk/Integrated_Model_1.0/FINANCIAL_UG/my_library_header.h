@@ -53,6 +53,7 @@ double gauss(double avg ,double std );
 
 //Answer a normally distributed random number with zero mean and standard deviation 1.0.
 double gaussian();
+double fast_gauss();
 
 //Returns a random number with Lognormal distribution having average avg and s.d. std
 double logNormal( double  avg ,double std) ;

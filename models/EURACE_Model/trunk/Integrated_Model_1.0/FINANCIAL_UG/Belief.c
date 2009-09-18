@@ -54,7 +54,7 @@ double randomReturnStock(Belief *belief, Stock *stock, int forwardWindow, int ba
    sqrtvol=sqrt(forwardWindow)*volatility;
    for(i=0;i<backwardWindow;i++)
     { 
-     randn=gauss(0,1);
+     randn=fast_gauss();
      rndvect[i]= sqrtvol*randn;
      rndReturn=rndReturn+rndvect[i];
      if (PRINT_DEBUG_CONSUMPTION)              
@@ -76,7 +76,7 @@ double randomReturnBond(Belief *belief, Bond *bond,int backwardWindow,int forwar
    rndReturn=0;
    sqrtvol=sqrt(forwardWindow)*volatility;
    for(i=0;i<backwardWindow;i++)
-    { randn=gauss(0,1);
+    { randn=fast_gauss();
      rndvect[i]= sqrtvol*randn;
      rndReturn=rndReturn+rndvect[i];
      if (PRINT_DEBUG_CONSUMPTION)
