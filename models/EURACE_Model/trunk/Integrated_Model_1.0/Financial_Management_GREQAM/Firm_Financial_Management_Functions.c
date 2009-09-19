@@ -59,7 +59,12 @@ int Firm_compute_financial_payments()
  * \brief Function to compute the income statement of the firm.
  */
 int Firm_compute_income_statement()
+  
 {
+    //  #ifndef _DEBUG_MODE        
+        FILE *file1;
+        char *filename;
+   // #endif
     //In the future: if we want to include sales_costs
     //SALES_COSTS = 0;
 
@@ -90,6 +95,20 @@ int Firm_compute_income_statement()
         getchar();
     }    
     #endif
+    
+    // #ifndef _DEBUG_MODE    
+    if (PRINT_DEBUG_FILE_EXP1)
+    {
+        filename = malloc(40*sizeof(char));
+        filename[0]=0;
+        strcpy(filename, "its/firms_income_statement.txt");      
+        file1 = fopen(filename,"a");
+        fprintf(file1,"\n %d %d %f %f %f",DAY,ID,CUM_REVENUE,CALC_PRODUCTION_COSTS,TOTAL_INTEREST_PAYMENT);
+        fprintf(file1," %f %f %f",EARNINGS,TAX_PAYMENT,NET_EARNINGS);
+        fclose(file1);
+        free(filename);
+    }    
+   // #endif
     
     return 0;
 }
@@ -230,10 +249,10 @@ int Firm_compute_balance_sheet()
 {
     int i;
 
-    #ifndef _DEBUG_MODE        
+  //  #ifndef _DEBUG_MODE        
         FILE *file1;
         char *filename;
-    #endif
+   // #endif
     
     //compute the equity of the firm
     //TOTAL_ASSETS=
@@ -276,18 +295,19 @@ int Firm_compute_balance_sheet()
     }   
     #endif
 
-    #ifndef _DEBUG_MODE    
+   // #ifndef _DEBUG_MODE    
     if (PRINT_DEBUG_FILE_EXP1)
     {
         filename = malloc(40*sizeof(char));
         filename[0]=0;
         strcpy(filename, "its/firms_balance_sheet.txt");      
         file1 = fopen(filename,"a");
-        fprintf(file1,"\n %d %d %f %f %f",DAY,ID,TOTAL_UNITS_CAPITAL_STOCK,EQUITY,TOTAL_DEBT);
+        fprintf(file1,"\n %d %d %f %f %f",DAY,ID,TOTAL_UNITS_CAPITAL_STOCK,TOTAL_VALUE_CAPITAL_STOCK,TOTAL_VALUE_LOCAL_INVENTORY);
+        fprintf(file1," %f %f %f %f",PAYMENT_ACCOUNT,TOTAL_ASSETS,TOTAL_DEBT,EQUITY);
         fclose(file1);
         free(filename);
     }    
-    #endif
+   // #endif
                                                              
     return 0;
 }

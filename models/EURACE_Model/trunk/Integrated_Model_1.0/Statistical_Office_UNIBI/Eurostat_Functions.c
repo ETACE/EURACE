@@ -1056,7 +1056,7 @@ int Eurostat_store_history_monthly()
     }    
     #endif
 
-    #ifndef _DEBUG_MODE
+   // #ifndef _DEBUG_MODE
     if (PRINT_DEBUG_FILE_EXP1)
     {                       
         filename = malloc(40*sizeof(char));
@@ -1069,7 +1069,7 @@ int Eurostat_store_history_monthly()
         fclose(file1);
         free(filename);
     }
-    #endif
+   // #endif
         
     return 0;
 }

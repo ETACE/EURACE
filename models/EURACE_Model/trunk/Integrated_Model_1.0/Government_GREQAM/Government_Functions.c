@@ -430,7 +430,7 @@ int Government_monthly_budget_accounting()
         }
         #endif 
         
-        #ifndef _DEBUG_MODE
+        // #ifndef _DEBUG_MODE
         if (PRINT_DEBUG_FILE_EXP1)
         {
             filename = malloc(40*sizeof(char));
@@ -445,7 +445,7 @@ int Government_monthly_budget_accounting()
             fclose(file1);
             free(filename);
         }
-        #endif 
+        // #endif 
 
     return 0;
 }

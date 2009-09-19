@@ -141,12 +141,22 @@ int Household_update_its_portfolio()
   m_order_status *info;
   Order ord;
   Order *currentOrder;
+  float transactions;
+  int DAY;
+  
+    // #ifndef _DEBUG_MODE  
+  char * filename;
+  FILE * file1;
+  
+      // #endif
 
   currentOrder=&ord;
   pendingOrders=get_pendingOrders();
   assets=get_assetsowned();
   issuer=get_id();
   info=get_first_order_status_message();
+  
+  transactions = 0.0;
   
   if (PRINT_DEBUG) 
   {
@@ -158,13 +168,29 @@ int Household_update_its_portfolio()
      if(info->trader_id==issuer) 
       {        
        setOrder(currentOrder,info->price,info->quantity,info->asset_id,info->trader_id);
-       if(sizeCOrder(pendingOrders)>0) executeOrder(&PAYMENT_ACCOUNT,currentOrder,assets,pendingOrders);
-       if (PRINT_DEBUG) 
+       if(sizeCOrder(pendingOrders)>0) 
+       {
+         executeOrder(&PAYMENT_ACCOUNT,currentOrder,assets,pendingOrders);
+         transactions = transactions - (info->price)*(info->quantity);
+         if (PRINT_DEBUG) 
         printf("\n\t asset_id: %d price: %f quantity: %d",info->asset_id,info->price,info->quantity); 
-      }
-
+        }
+        }
      info=get_next_order_status_message(info);   
   }
+  
+  // #ifndef _DEBUG_MODE       
+   if (PRINT_DEBUG_FILE_EXP1)
+    {                       
+        filename = malloc(40*sizeof(char));
+        filename[0]=0;
+        strcpy(filename, "its/households_transactions.txt");      
+        file1 = fopen(filename,"a");
+        fprintf(file1,"\n %d %d %f",DAY,ID,transactions);
+        fclose(file1);
+        free(filename);
+    }                
+   // #endif
   
   if (PRINT_DEBUG) printf("\n\t PAYMENT_ACCOUNT: %f",PAYMENT_ACCOUNT);
     
