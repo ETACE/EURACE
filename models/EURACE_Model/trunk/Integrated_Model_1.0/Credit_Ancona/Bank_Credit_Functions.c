@@ -42,10 +42,10 @@ int Bank_communicate_identity()
 
 int Bank_decide_credit_conditions()
 {
-    #ifndef _DEBUG_MODE
+    //#ifndef _DEBUG_MODE
         FILE * file1;
         char * filename;
-    #endif
+  //  #endif
         
     double e, c, d, r, i;
     double bankruptcy_prob;
@@ -59,17 +59,13 @@ int Bank_decide_credit_conditions()
             d = loan_request_message->total_debt;
             c = loan_request_message->external_financial_needs;
             bankruptcy_prob = 1-exp(-(d+c)/e);
-            r = bankruptcy_prob*c/e;
+            r = bankruptcy_prob*c;
             
-            if ((POLICY_EXP1)&(DAY>240))                
-            { credit_allowed = (1-(bankruptcy_prob/2.5))*c;
-            }
-            else
-            {
     
            if ( VALUE_AT_RISK+r <= BANK_GAMMA[0]*ALFA*EQUITY )  //Instead of ALFA*EQUITY 
             {
-                // printf("\n %f %f %f %f %f",VALUE_AT_RISK,r,BANK_GAMMA[0],ALFA,EQUITY);
+                //printf("\n %f %f %f %f %f",VALUE_AT_RISK,r,BANK_GAMMA[0],ALFA,EQUITY);
+                //getchar();
                 credit_allowed = c;
                 if (credit_allowed<0)
                     printf("\n ERROR in function bank_decide_credit_condition: credit_allowed = %2.5f\n ", credit_allowed);
@@ -79,7 +75,6 @@ int Bank_decide_credit_conditions()
                 credit_allowed = max(0,(BANK_GAMMA[0]*ALFA*EQUITY - VALUE_AT_RISK)/bankruptcy_prob);  
                 if (credit_allowed<0)
                     printf("\n ERROR in function bank_decide_credit_condition: credit_allowed = %2.5f\n ", credit_allowed);                
-            }
             }
             
             
@@ -102,7 +97,7 @@ int Bank_decide_credit_conditions()
             
         FINISH_LOAN_REQUEST_MESSAGE_LOOP
 
-        #ifndef _DEBUG_MODE        
+      //  #ifndef _DEBUG_MODE        
             if (PRINT_DEBUG_FILE_EXP1)
             {
                 filename = malloc(40*sizeof(char));
@@ -113,7 +108,7 @@ int Bank_decide_credit_conditions()
                 fclose(file1);
                 free(filename);
             }    
-        #endif
+      //  #endif
     
     return 0;
 }
@@ -121,16 +116,21 @@ int Bank_decide_credit_conditions()
 
 int Bank_account_update_deposits()
 {
+   //  #ifndef _DEBUG_MODE  
+        FILE *file1;
+        char * filename;
+  //  #endif
+    
       DEPOSITS=0; //reset total deposits        
         
-      START_BANK_ACCOUNT_UPDATE_MESSAGE_LOOP
+      START_BANK_ACCOUNT_UPDATE_MESSAGE_LOOP 
       if (bank_account_update_message->bank_id==ID)
         {
          DEPOSITS += bank_account_update_message->payment_account; //new deposits as sum of all payments accounts 
         }
       FINISH_BANK_ACCOUNT_UPDATE_MESSAGE_LOOP
 
-//CASH += bank_account_update_message->payment_account;
+
 
   //Compute CASH
       CASH=DEPOSITS+ECB_DEBT+EQUITY-TOTAL_CREDIT;
@@ -172,9 +172,25 @@ int Bank_account_update_deposits()
         getchar();
     }
     #endif   
+    
+       // #ifndef _DEBUG_MODE                         
+    if (PRINT_DEBUG_FILE_EXP1)
+    {                       
+        filename = malloc(40*sizeof(char));
+        filename[0]=0;
+        strcpy(filename, "its/banks_daily_balance_sheet.txt");      
+        file1 = fopen(filename,"a");
+        fprintf(file1,"\n %d %d %f %f",DAY,ID,FIRM_LOAN_ISSUES,FIRM_LOAN_INSTALLMENTS);
+        fprintf(file1," %f %f %f %f %f",TOTAL_CREDIT,CASH,DEPOSITS,ECB_DEBT,EQUITY);
+        fclose(file1);
+        free(filename);
+        
+    }                 
+   // #endif
               
     return 0;
 }
+
 
 int Bank_receive_installment()
 {
@@ -242,6 +258,7 @@ int Bank_receive_installment()
       return 0;
 }
 
+
 int Bank_give_loan()
 {
     FIRM_LOAN_ISSUES=0.0;
@@ -282,10 +299,10 @@ int Bank_give_loan()
 int Bank_accounting()
 {
 
-    #ifndef _DEBUG_MODE  
+    // #ifndef _DEBUG_MODE  
         FILE *file1;
         char *filename;
-    #endif
+   // #endif
          
      double q, c, gro, int_to_ecb;  // total_dividends, dividend_per_share
      
@@ -346,19 +363,33 @@ int Bank_accounting()
         } 
     #endif
     
-    #ifndef _DEBUG_MODE                         
+   // #ifndef _DEBUG_MODE                         
     if (PRINT_DEBUG_FILE_EXP1)
     {                       
         filename = malloc(40*sizeof(char));
         filename[0]=0;
-        strcpy(filename, "its/banks.txt");      
+        strcpy(filename, "its/banks_monthly_income_statement.txt");      
         file1 = fopen(filename,"a");
-        fprintf(file1,"\n %d %f %f ",DAY,PROFITS[0],ECB_DEBT);
-        fprintf(file1,"%f %f %f",EQUITY,CASH,TOTAL_CREDIT);
+        fprintf(file1,"\n %d %d",DAY,ID);
+        fprintf(file1," %f %f %f %f",int_to_ecb,FIRM_INTEREST_PAYMENTS,TAXES,PROFITS[0]);
         fclose(file1);
         free(filename);
     }                
-    #endif
+   // #endif
+
+    // #ifndef _DEBUG_MODE                         
+    if (PRINT_DEBUG_FILE_EXP1)
+    {                       
+        filename = malloc(40*sizeof(char));
+        filename[0]=0;
+        strcpy(filename, "its/banks_monthly_balance_sheet.txt");      
+        file1 = fopen(filename,"a");
+        fprintf(file1,"\n %d %d %f %f %f %f",DAY,ID,DEPOSITS,ECB_DEBT,CASH,TOTAL_CREDIT);
+        fclose(file1);
+        free(filename);
+    }                
+   // #endif
+
           
      if (EQUITY < 0.0) //... and if is negative (if money is not enough), increase ECB debt
      {

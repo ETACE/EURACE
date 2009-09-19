@@ -17,7 +17,7 @@
 int Household_determine_consumption_budget()
 {
 
-    #ifndef _DEBUG_MODE    
+   // #ifndef _DEBUG_MODE    
         char * filename;
         FILE * file1,*file2;
 
@@ -36,7 +36,7 @@ int Household_determine_consumption_budget()
         strcpy(filename, "debug_consumption_budget.txt");
         file2 = fopen(filename,"a");
     }
-    #endif
+    //#endif
         
     /*Determining the consumption budget of the month*/
             //Previous rule based Deaton rule: uses PAYMENT_ACCOUNT
@@ -104,6 +104,24 @@ int Household_determine_consumption_budget()
             free(filename);
         }
     #endif
+    
+     // #ifndef _DEBUG_MODE                         
+    if (PRINT_DEBUG_FILE_EXP1)
+    {                       
+        filename = malloc(40*sizeof(char));
+        filename[0]=0;
+        strcpy(filename, "its/households_consumption_budget.txt");      
+        file1 = fopen(filename,"a");
+        fprintf(file1,"\n %d %d",DAY,ID);
+        if (EMPLOYEE_FIRM_ID==-1) fprintf(file1," %d %f",EMPLOYEE_FIRM_ID,UNEMPLOYMENT_BENEFIT_PCT * LAST_LABOUR_INCOME);
+         else fprintf(file1," %d %f",EMPLOYEE_FIRM_ID,WAGE);
+        fprintf(file1," %f %f %f %f",LAST_INCOME.array[3],MEAN_INCOME,PAYMENT_ACCOUNT,WEALTH);
+        fprintf(file1," %f %f %f",CUM_TOTAL_DIVIDENDS,MONTHLY_BOND_INTEREST_INCOME,CONSUMPTION_BUDGET);
+        fclose(file1);
+        free(filename);
+    }                
+   // #endif
+
     
     return 0;   
 }
@@ -550,8 +568,45 @@ int Household_handle_leftover_budget()
  */
 int Household_send_account_update()
 {
+     // #ifndef _DEBUG_MODE  
+    char * filename;
+    FILE * file1;
+    int remainder;
+      // #endif
+   
         /*GENUA*/
         add_bank_account_update_message(ID, BANK_ID, PAYMENT_ACCOUNT);
+    
+    // #ifndef _DEBUG_MODE                         
+    if (PRINT_DEBUG_FILE_EXP1)
+    {                       
+        filename = malloc(40*sizeof(char));
+        filename[0]=0;
+        strcpy(filename, "its/households_daily_income_statement.txt");      
+        file1 = fopen(filename,"a");
+        fprintf(file1,"\n %d %d",DAY,ID);
+        
+        remainder = DAY%20;        
+        if (remainder==DAY_OF_MONTH_RECEIVE_INCOME)
+        {
+           // printf("\n day of month to receive income %f %f",WAGE,UNEMPLOYMENT_BENEFIT_PCT * LAST_LABOUR_INCOME);
+            if (EMPLOYEE_FIRM_ID==-1) fprintf(file1," %f",UNEMPLOYMENT_BENEFIT_PCT * LAST_LABOUR_INCOME);
+            else fprintf(file1," %f",WAGE);}
+        else  fprintf(file1," %f",0.0);
+        
+        
+        if (remainder==1)
+                fprintf(file1," %f %f %f",RECEIVED_DIVIDEND,MONTHLY_BOND_INTEREST_INCOME,PAYMENT_ACCOUNT);
+        else
+                fprintf(file1," %f %f %f",RECEIVED_DIVIDEND,0.0,PAYMENT_ACCOUNT);
+                
+        fclose(file1);
+        free(filename);
+       
+    }                
+   
+   // #endif
+
     
     return 0;
 }
