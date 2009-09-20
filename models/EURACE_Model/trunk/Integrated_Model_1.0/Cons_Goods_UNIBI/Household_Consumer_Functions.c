@@ -596,10 +596,14 @@ int Household_send_account_update()
         
         
         if (remainder==1)
-                fprintf(file1," %f %f %f %f",RECEIVED_DIVIDEND,MONTHLY_BOND_INTEREST_INCOME,EXPENDITURES,PAYMENT_ACCOUNT);
+                fprintf(file1," %f",MONTHLY_BOND_INTEREST_INCOME);
         else
-                fprintf(file1," %f %f %f %f",RECEIVED_DIVIDEND,0.0,EXPENDITURES,PAYMENT_ACCOUNT);
-                
+                fprintf(file1," %f",0.0);
+        fprintf(file1," %f %f %f",RECEIVED_DIVIDEND,EXPENDITURES,PAYMENT_ACCOUNT);  
+        if (remainder==DAY_OF_MONTH_RECEIVE_INCOME)
+                fprintf(file1," %f",TAX_PAYMENT);
+        else
+                fprintf(file1," %f",0.0);      
         fclose(file1);
         free(filename);
        

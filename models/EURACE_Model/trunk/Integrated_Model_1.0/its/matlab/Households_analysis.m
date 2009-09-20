@@ -13,6 +13,8 @@ received_dividends = Data(:,4);
 monthly_bond_interest = Data(:,5);
 expenditures = Data(:,6);
 payment_account = Data(:,7);
+tax_payments = Data(:,8);
+
 
 for i=1:numel(days)
     
@@ -21,6 +23,7 @@ for i=1:numel(days)
     labor_income_sum(i) = sum(labor_income(days_idx));
     monthly_bond_interest_sum(i) = sum(monthly_bond_interest(days_idx));
     expenditures_sum(i) = sum(expenditures(days_idx));
+    tax_payments_sum(i) = sum(tax_payments(days_idx));
     payment_account_sum(i) = sum(payment_account(days_idx));
     
     clear days_idx
@@ -35,13 +38,14 @@ title('Households aggregate data','fontsize',font_sz)
 plot(days(find(received_dividends_sum)),received_dividends_sum(find(received_dividends_sum)),'o')
 plot(days(find(monthly_bond_interest_sum)),monthly_bond_interest_sum(find(monthly_bond_interest_sum)),'rv')
 plot(days(find(labor_income_sum)),labor_income_sum(find(labor_income_sum)),'sk')
+plot(days(find(tax_payments_sum)),tax_payments_sum(find(tax_payments_sum)),'gx')
 plot(days,expenditures_sum,'r')
 xlabel('days','fontsize',font_sz)
-legend('received dividends','monthly bond interest','labor income','expenditures',0)
+legend('received dividends','monthly bond interest','labor income','tax payments','expenditures',0)
 
 figure(2); hold on; grid on
 title('Households aggregate data','fontsize',font_sz)
-saving_sum = received_dividends_sum+monthly_bond_interest_sum+labor_income_sum-expenditures_sum;
+saving_sum = received_dividends_sum+monthly_bond_interest_sum+labor_income_sum-expenditures_sum-tax_payments_sum;
 plot(days,saving_sum)
 plot(days,payment_account_sum,'k')
 xlabel('days','fontsize',font_sz)
