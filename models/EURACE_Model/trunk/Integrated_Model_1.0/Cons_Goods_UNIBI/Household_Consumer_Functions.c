@@ -596,9 +596,9 @@ int Household_send_account_update()
         
         
         if (remainder==1)
-                fprintf(file1," %f %f %f",RECEIVED_DIVIDEND,MONTHLY_BOND_INTEREST_INCOME,PAYMENT_ACCOUNT);
+                fprintf(file1," %f %f %f %f",RECEIVED_DIVIDEND,MONTHLY_BOND_INTEREST_INCOME,EXPENDITURES,PAYMENT_ACCOUNT);
         else
-                fprintf(file1," %f %f %f",RECEIVED_DIVIDEND,0.0,PAYMENT_ACCOUNT);
+                fprintf(file1," %f %f %f %f",RECEIVED_DIVIDEND,0.0,EXPENDITURES,PAYMENT_ACCOUNT);
                 
         fclose(file1);
         free(filename);
