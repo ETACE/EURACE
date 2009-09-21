@@ -30,6 +30,23 @@ for i=1:numel(days)
     
 end
 
+
+clear Data
+Data = load([Pat, 'households_transactions.txt']);
+days = unique(Data(:,1));
+trades = Data(:,3);
+
+for i=1:numel(days)
+    
+    days_idx = find(Data(:,1)==i);
+    trades_sum(i) = sum(trades(days_idx));
+    
+    clear days_idx
+    
+end
+
+
+
 font_sz = 14;
 
 figure(1); hold on; grid on
@@ -58,3 +75,9 @@ plot(days,saving_sum)
 plot(days(2:end),diff(payment_account_sum),'k')
 xlabel('days','fontsize',font_sz)
 legend('savings','\Delta payment account')
+
+
+figure(4); hold on; grid on
+title('Households aggregate net transactions','fontsize',font_sz)
+plot(trades_sum)
+xlabel('days','fontsize',font_sz)
