@@ -142,7 +142,6 @@ int Household_update_its_portfolio()
   Order ord;
   Order *currentOrder;
   float transactions;
-  int DAY;
   
     // #ifndef _DEBUG_MODE  
   char * filename;
@@ -186,7 +185,7 @@ int Household_update_its_portfolio()
         filename[0]=0;
         strcpy(filename, "its/households_transactions.txt");      
         file1 = fopen(filename,"a");
-        fprintf(file1,"\n %d %d %f",DAY,ID,transactions);
+        fprintf(file1,"\n %d %d %f",CURRENTDAY,ID,transactions);
         fclose(file1);
         free(filename);
     }                
