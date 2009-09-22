@@ -93,13 +93,15 @@ int Firm_read_policy_announcements()
  */
 int Firm_send_subsidy_notification()
 {
-    SUBSIDY_PAYMENT = SUBSIDY_PCT*CAPITAL_COSTS;
-    
-    /*Add subsidy message */
-    add_firm_subsidy_notification_message(GOV_ID, SUBSIDY_PAYMENT);
-    
-    PAYMENT_ACCOUNT += SUBSIDY_PAYMENT;
+    if (POLICY_EXP_STABILIZATION==1)
+    {    
+        SUBSIDY_PAYMENT = SUBSIDY_PCT*CAPITAL_COSTS;
         
+        /*Add subsidy message */
+        add_firm_subsidy_notification_message(GOV_ID, SUBSIDY_PAYMENT);
+        
+        PAYMENT_ACCOUNT += SUBSIDY_PAYMENT;
+    }        
     return 0;       
 }
 
