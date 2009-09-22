@@ -18,7 +18,7 @@ payment_account = Data(:,7);
 tax_payments = Data(:,8);
 
 
-for i=1:63
+for i=1:numel(days)
     
     days_idx = find(Data(:,1)==i);
     received_dividends_sum(i) = sum(received_dividends(days_idx));
@@ -31,6 +31,7 @@ for i=1:63
     clear days_idx
     
 end
+
 
 
 figure(1); hold on; grid on
@@ -61,7 +62,7 @@ plot(days(2:end),diff(payment_account_sum),'k')
 xlabel('days','fontsize',font_sz)
 legend('savings','\Delta payment account')
 
-
+break
 
 clear Data
 Data = load([Pat, 'households_transactions.txt']);
