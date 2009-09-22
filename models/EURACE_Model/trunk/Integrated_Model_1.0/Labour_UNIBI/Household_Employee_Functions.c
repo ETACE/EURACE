@@ -652,7 +652,7 @@ int Household_send_tax_payment()
     if (DAY_OF_MONTH_RECEIVE_BENEFIT != DAY_OF_MONTH_RECEIVE_INCOME )
     {
         additional_tax = ((DAY_OF_MONTH_RECEIVE_BENEFIT + (20-DAY_OF_MONTH_RECEIVE_INCOME)%20)/20)
-                            * LAST_INCOME.array[3];
+                            * UNEMPLOYMENT_BENEFIT_PCT * LAST_LABOUR_INCOME;
     }
 
 
