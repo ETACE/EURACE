@@ -618,13 +618,14 @@ int Household_send_unemployment_benefit_notification()
  */
 int Household_send_subsidy_notification()
 {
-
-    //SUBSIDY_PAYMENT = SUBSIDY_PCT*EXPENDITURES;
-
-    /*Add subsidy message */
-    add_hh_subsidy_notification_message(GOV_ID, SUBSIDY_PAYMENT);
-    PAYMENT_ACCOUNT += SUBSIDY_PAYMENT;
-
+    if (POLICY_EXP_STABILIZATION==1)
+    {
+        SUBSIDY_PAYMENT = SUBSIDY_PCT*EXPENDITURES;
+    
+        /*Add subsidy message */
+        add_hh_subsidy_notification_message(GOV_ID, SUBSIDY_PAYMENT);
+        PAYMENT_ACCOUNT += SUBSIDY_PAYMENT;
+    }
     return 0;
 }
 
