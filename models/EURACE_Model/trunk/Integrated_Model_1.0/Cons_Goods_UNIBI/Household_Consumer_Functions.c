@@ -600,6 +600,7 @@ int Household_send_account_update()
         else
                 fprintf(file1," %f",0.0);
         fprintf(file1," %f %f %f",RECEIVED_DIVIDEND,EXPENDITURES,PAYMENT_ACCOUNT);  
+        
         if (remainder==DAY_OF_MONTH_RECEIVE_INCOME)
                 fprintf(file1," %f",TAX_PAYMENT);
         else

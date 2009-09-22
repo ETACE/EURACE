@@ -4,6 +4,8 @@ close all
 
 Pat = '..\';
 
+font_sz = 14;
+
 Data = load([Pat, 'households_daily_income_statement.txt']);
 
 days = unique(Data(:,1));
@@ -16,7 +18,7 @@ payment_account = Data(:,7);
 tax_payments = Data(:,8);
 
 
-for i=1:numel(days)
+for i=1:63
     
     days_idx = find(Data(:,1)==i);
     received_dividends_sum(i) = sum(received_dividends(days_idx));
@@ -30,24 +32,6 @@ for i=1:numel(days)
     
 end
 
-
-clear Data
-Data = load([Pat, 'households_transactions.txt']);
-days = unique(Data(:,1));
-trades = Data(:,3);
-
-for i=1:numel(days)
-    
-    days_idx = find(Data(:,1)==i);
-    trades_sum(i) = sum(trades(days_idx));
-    
-    clear days_idx
-    
-end
-
-
-
-font_sz = 14;
 
 figure(1); hold on; grid on
 title('Households aggregate data','fontsize',font_sz)
@@ -68,13 +52,30 @@ plot(days,payment_account_sum,'k')
 xlabel('days','fontsize',font_sz)
 legend('savings','payment account')
 
+
 figure(3); hold on; grid on
 title('Households aggregate data','fontsize',font_sz)
-saving_sum = received_dividends_sum+monthly_bond_interest_sum+labor_income_sum-expenditures_sum;
+saving_sum = received_dividends_sum+monthly_bond_interest_sum+labor_income_sum-expenditures_sum-tax_payments_sum;
 plot(days,saving_sum)
 plot(days(2:end),diff(payment_account_sum),'k')
 xlabel('days','fontsize',font_sz)
 legend('savings','\Delta payment account')
+
+
+
+clear Data
+Data = load([Pat, 'households_transactions.txt']);
+days = unique(Data(:,1));
+trades = Data(:,3);
+
+for i=1:numel(days)
+    
+    days_idx = find(Data(:,1)==i);
+    trades_sum(i) = sum(trades(days_idx));
+    
+    clear days_idx
+    
+end
 
 
 figure(4); hold on; grid on

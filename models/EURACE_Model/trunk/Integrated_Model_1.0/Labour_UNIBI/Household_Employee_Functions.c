@@ -586,7 +586,10 @@ int Household_send_unemployment_benefit_notification()
     add_unemployment_notification_message(GOV_ID,LAST_LABOUR_INCOME);
 
     /*Add unemployment_benefit to account */
+    //printf("\n PAYMENT_ACCOUNT before: %f",PAYMENT_ACCOUNT);
     PAYMENT_ACCOUNT +=  UNEMPLOYMENT_BENEFIT_PCT * LAST_LABOUR_INCOME;
+   //  printf("\n PAYMENT_ACCOUNT after: %f",PAYMENT_ACCOUNT);
+  //  printf("\n UNEMPLOYMENT_BENEFIT_PCT: %f LAST_LABOUR_INCOME: %f",UNEMPLOYMENT_BENEFIT_PCT,LAST_LABOUR_INCOME);
     TOTAL_INCOME=  UNEMPLOYMENT_BENEFIT_PCT * LAST_LABOUR_INCOME + CUM_TOTAL_DIVIDENDS + MONTHLY_BOND_INTEREST_INCOME;
     
     remove_double(&LAST_INCOME,0);
