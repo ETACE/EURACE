@@ -476,7 +476,7 @@ int Household_receives_payment_coupons()
 
 int Household_revises_expected_portfolio()
    {
-    reset_Asset_array(&PENDINGORDES);
+    reset_Asset_array(&PENDINGORDERS);
     return 0;
    }
 
