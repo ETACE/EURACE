@@ -13,10 +13,6 @@ int Household_send_orders()
     Belief_array *beliefs;
     double_array *assetWeights;
     double_array *assetUtilities;
-
-    //Sander: Added for debugging : fore scanf() in line 45
-    //int * tmp;
-
     assetsowned=get_assetsowned();
     pending=get_pendingOrders();
     assetWeights=get_assetWeights();
@@ -27,20 +23,12 @@ int Household_send_orders()
     generatePendingOrders(assetsowned,pending,beliefs,&PAYMENT_ACCOUNT);
     
     orders=get_pendingOrders();
-    //printf(" size = %d\n",sizeCOrder(orders));
     
-    if (PRINT_DEBUG) printf("\n Household_send_orders ID: %d",ID);
+    if (PRINT_DEBUG_AFM) printf("\n Household_send_orders ID: %d",ID);
     
     for(i=0;i<sizeCOrder(orders);i++)
     {
      ord=elementAtCOrder(orders,i);
-     //printf("price=%f\n",ord->price);
-     if(ord->quantity > 1000 )
-     {
-         //printf("ord->assetId %d\n",ord->assetId);
-         //printf("ord->quantity %d\n",ord->quantity);
-         //printf("ord->price %f\n",ord->price);
-     }
      if (ord->quantity>10e+6)
      {
         printf("Financial_UG/Household_Financial_Market.c/Household_send_orders()\n");
@@ -52,7 +40,7 @@ int Household_send_orders()
      
      add_order_message(ord->issuer,ord->assetId, ord->price, ord->quantity);
      
-     if (PRINT_DEBUG) printf("\n\t assetId: %d price: %f quantity: %d",ord->assetId,ord->price,ord->quantity);
+     if (PRINT_DEBUG_AFM) printf("\n\t assetId: %d price: %f quantity: %d",ord->assetId,ord->price,ord->quantity);
      
     }
     return 0;
@@ -73,19 +61,7 @@ void computeUtilities(Belief_array *beliefs, double_array *assetUtilities)
      belief=&(beliefs->array[i]);
 
      utility=belief->utility;
-     add_double(assetUtilities,utility);//da rivedere questo algoritmo
-     //printf("\n computeUtilities i %d utility %f",i, utility);
-     
-     /* printf("Asset ID %d  ;Utility %f \n",belief->asset_id,belief->utility);
-     printf("last_price %f\n", belief->last_price);
-     printf("expectedPriceReturns %f\n", belief->expectedPriceReturns);
-     printf("expectedTotalReturns %f\n", belief->expectedTotalReturns);
-     printf("expectedCashFlowYield %f\n", belief->expectedCashFlowYield);
-     printf("volatility %f\n", belief->volatility);
-     printf("expectedEarning %f\n", belief->expectedEarning);
-     printf("expectedEarningPayout %f\n", belief->expectedEarningPayout);
-     getchar(); */
-     
+     add_double(assetUtilities,utility);
      }
      //getchar();
 }
@@ -308,10 +284,7 @@ void generatePendingOrders(Asset_array *assetsowned,Order_array *pending, Belief
              
              } 
   
-  if(abs(resource)>abs(tem_wealth)) 
-                                   { //printf("ERROR: consumption budeget %f resource %f wealth %f \n",CONSUMPTION_BUDGET,resource,tem_wealth);
-                                     //getchar();
-                                    }
+
   set_wealth(tem_wealth);
   size=beliefs->size;
   reset_Order_array(pending);
@@ -498,6 +471,12 @@ int Household_receives_payment_coupons()
        getchar();
                    }   
      
+    return 0;
+   }
+
+int Household_revises_expected_portfolio()
+   {
+    reset_Asset_array(&ASSETSOWNED);
     return 0;
    }
 
