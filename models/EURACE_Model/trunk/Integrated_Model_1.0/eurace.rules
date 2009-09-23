@@ -37,7 +37,6 @@ igfirm_current_shares_outstanding = IGFirm(outstanding_shares)
 igfirm_tax_payment		= IGFirm(tax_payment)
 igfirm_net_profit		= IGFirm(net_profit) 
 igfirm_dividend_per_share 	= IGFirm(current_dividend_per_share)
-igfirm_total_dividends = igfirm_dividend_per_share*igfirm_current_shares_outstanding
 
 #Balance sheet: Household
 hh_payment_account  		= Household(payment_account)
@@ -100,7 +99,7 @@ abs( firm_payment_account + firm_total_value_local_inventory + firm_total_value_
 
 #RULE FAILED
 #IGFirm:
-abs( igfirm_net_profit - igfirm_total_dividends)< PRECISION
+abs( igfirm_net_profit - igfirm_dividend_per_share*igfirm_current_shares_outstanding)< PRECISION
 
 #RULE VERIFIED
 #Bank:
@@ -171,4 +170,4 @@ abs( eurostat_no_firms - firm_active - eurostat_no_firm_deaths) < PRECISION
 
 #RULE FAILED
 #Daily dividend payments send and received
-abs( firm_total_dividends + igfirm_total_dividends + bank_total_dividends - household_dividend_daily) < PRECISION
+abs( firm_total_dividends + igfirm_dividend_per_share*igfirm_current_shares_outstanding + bank_total_dividends - household_dividend_daily) < PRECISION
