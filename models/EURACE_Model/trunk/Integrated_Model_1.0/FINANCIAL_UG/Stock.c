@@ -1,26 +1,8 @@
 #include "my_library_header.h"
 
 
-void initializeStock(Stock *aStock,int id,double price,int nr_outstanding)
-{ int i; 
-  double aux;
-  double prec;
-  aStock->id=id;
-  aStock->index=0;
- aux=price;
-aStock->nrOutStandingShares=nr_outstanding;
- for(i=0;i<MAXPRICES;i++)
-     { prec=aux;
-      aux=prec+0.01*gauss(0,0.1);
-      addPriceStock(aStock,aux);
-     }
-}
-void setStock(Stock *aStock, int id, double price, int nrOutStandingShares)
-{
-     aStock->id=id;
-     addPriceStock(aStock,price);
-     aStock->nrOutStandingShares=nrOutStandingShares;
-}
+
+
 void addPriceStock(Stock *stock, double price)
 {    int precindex;
      precindex=stock->index;
@@ -37,10 +19,7 @@ int issuerStock(Stock *aStock)
   return aStock->id;
 } 
 
-/*void addVolume(Stock *aStock, double volume)
-{
-    anStock->quantity=volume;
-}*/
+
 
 double  backreturnsAt(Stock *stock,int ind)
     { int index;
@@ -91,9 +70,10 @@ void totalReturnsStock(Stock *stock, double *vect, int backwardWindow,double fac
      for(i=0;i<(backwardWindow);i++)
      vect[i]=backreturnsAt(stock,i)*factor+value;
   }
+
 void priceReturnsStock(Stock *stock, double *vect, int backwardWindow)
-  {  int i;
-    
+  {  
+     int i;
      for(i=0;i<(backwardWindow);i++)
      vect[i]=backreturnsAt(stock,i);
   }
@@ -101,7 +81,8 @@ void priceReturnsStock(Stock *stock, double *vect, int backwardWindow)
 
 
 void historicalReturnsStock(Stock *stock, double *vect, int backwardWindow,double forwardWindow)
-  {  int index,i;
+  {  
+     int index,i;
      double *returns;
      index=stock->index;
      returns=stock->returns;
@@ -118,18 +99,10 @@ double computeStockUtilityFunction(Stock *stock,int backwardWindow, double facto
   for(i=0;i<backwardWindow;i++)
     { 
      if(randomWeight!=0) r=backreturnsAt(stock,i)*factor+value+rndvect[i]*randomWeight;
-     else r=backreturnsAt(stock,i)*factor+value; 
-     //printf("\n r %f rndvect %f value %f randomWeight %f",r, rndvect[i], value, randomWeight);
-     //getchar();
+      else r=backreturnsAt(stock,i)*factor+value; 
      if (r<0) utility=utility+r*lossaversion;
-     else     utility=utility+r;
+       else     utility=utility+r;
     }
-    //printf ("\n utilitystock %f", utility);
-  //if(utility==NAN) printf("----------%f",rndvect[i]*randomWeight);
   return utility/backwardWindow;
 }
-/*aswer the variance of the prices with a time window.
- if the window is less than 2 the answer is zero because the array of the returns has a size equal to 1
-
-*/     
 

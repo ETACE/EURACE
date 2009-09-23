@@ -309,10 +309,11 @@ int prob(double p)
 double fast_gauss()
 {
  int i;
- double r,unif;
- unif=next(); 
- i=(int)(unif*200);
- r= (ierf[i] + (ierf[i+1] - ierf[i])*(unif*200 - i));
+ double r,unif,previous;
+ unif=next()*200; 
+ i=(int)(unif);
+ previous=ierf[i];
+ r= ( previous+ (ierf[i+1] - previous)*(unif - i));
 
  return r;
 }

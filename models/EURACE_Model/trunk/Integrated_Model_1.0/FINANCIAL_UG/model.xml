@@ -421,12 +421,20 @@
      <name>Household_receive_info_interest_from_bank</name>
      <description></description>
      <currentState>Household_received_coupons</currentState>
-     <nextState>SELECTSTRATEGY</nextState>
+     <nextState>REVISE_PORTFOLIO</nextState>
      <inputs>
       <input>
        <messageName>accountInterest</messageName>
       </input>
      </inputs>
+     <outputs/>
+    </function>
+   <function>
+     <name>Household_revises_expected_portfolio</name>
+     <description>the household revise his expected portfolio that is represented by the pendingOrders variable </description>
+     <currentState>REVISE_PORTFOLIO</currentState>
+     <nextState>SELECTSTRATEGY</nextState>
+     <inputs/>
      <outputs/>
     </function>
     <function>
