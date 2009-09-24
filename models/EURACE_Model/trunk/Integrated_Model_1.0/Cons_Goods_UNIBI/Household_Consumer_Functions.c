@@ -529,7 +529,7 @@ int Household_receive_dividends()
         }
         
     }
-    
+        
     FINISH_DIVIDEND_PER_SHARE_MESSAGE_LOOP
     
     return 0;   
@@ -599,6 +599,7 @@ int Household_send_account_update()
                 fprintf(file1," %f",MONTHLY_BOND_INTEREST_INCOME);
         else
                 fprintf(file1," %f",0.0);
+                
         fprintf(file1," %f %f %f",RECEIVED_DIVIDEND,EXPENDITURES,PAYMENT_ACCOUNT);  
         
         if (remainder==DAY_OF_MONTH_RECEIVE_INCOME)
@@ -609,6 +610,8 @@ int Household_send_account_update()
         free(filename);
        
     }                
+   
+     EXPENDITURES = 0;
    
    // #endif
 
