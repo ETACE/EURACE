@@ -620,7 +620,7 @@ int Household_send_subsidy_notification()
 {
     if (POLICY_EXP_STABILIZATION==1)
     {
-        SUBSIDY_PAYMENT = SUBSIDY_PCT*EXPENDITURES;
+        SUBSIDY_PAYMENT = SUBSIDY_PCT*MONTHLY_CONSUMPTION_EXPENDITURE;
     
         /*Add subsidy message */
         add_hh_subsidy_notification_message(GOV_ID, SUBSIDY_PAYMENT);
