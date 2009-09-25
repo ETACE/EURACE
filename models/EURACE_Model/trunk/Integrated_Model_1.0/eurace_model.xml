@@ -2,7 +2,7 @@
 <xmodel version="2" >
  <name>Eurace</name>
  <version>Aix, 10/02/2009</version>
- <description>Authors: Simon Coakley, Mariam Kiran, Simon Gemkow, Philipp Harting, Sander van der Hoog, Mario Locci, Sabrina Ecca, Marco Raberto, Andrea Teglio, Saul Desiderio, Federico Scarpa. </description>
+ <description>Authors: Simon Coakley, Mariam Kiran, Simon Gemkow, Philipp Harting, Sander van der Hoog, Mario Locci, Sabrina Ecca, Marco Raberto, Andrea Teglio, Saul Desiderio, Federico Scarpa.</description>
  <models>
   <model>
    <file>Cons_Goods_UNIBI/model.xml</file>
