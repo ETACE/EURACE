@@ -89,7 +89,7 @@ int Household_read_firing_messages()
             LAST_LABOUR_INCOME = WAGE;
             WAGE = 0;
             ON_THE_JOB_SEARCH = 0;
-            DAY_OF_MONTH_RECEIVE_INCOME = 0;
+            //DAY_OF_MONTH_RECEIVE_INCOME = 0;
         }
 
     FINISH_FIRING_MESSAGE_LOOP
