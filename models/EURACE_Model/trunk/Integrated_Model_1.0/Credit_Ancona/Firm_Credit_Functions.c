@@ -5,9 +5,11 @@
     
     int Firm_ask_loan()
     {
+          int connected=0;
+          int j=0;
+
         if (EXTERNAL_FINANCIAL_NEEDS>0.0)
         {
-          int connected, j;
          
          //Delete the old set of lenders
          for(j=NUMBER_OF_BANKS_ASKED-1;j>-1;j--)
@@ -68,7 +70,7 @@
     int Firm_get_loan()
     {
         int n, n1, k, i, primo;
-        
+        n=0; n1=0; k=0; i=0; primo=0;
     
         int rate_order_array[NUMBER_OF_BANKS_ASKED]; //constant size dynamic array: name of banks
         double interest_array[NUMBER_OF_BANKS_ASKED]; //constant size dynamic array
@@ -76,20 +78,20 @@
         double value_at_risk_array[NUMBER_OF_BANKS_ASKED]; //constant size dynamic array
         
         
-        double aux;
-        double credit_demand;
-        double credit_accepted;
-        double total_credit_taken=0;
+        double aux=0.0;
+        double credit_demand=0.0;
+        double credit_accepted=0.0;
+        double total_credit_taken=0.0;
     
-        int bank_id;
-        double loan_value;
-        double interest_rate;
-        double interest_amount;
-        double installment_amount;
-        double var_per_installment;
-        double residual_var;
-        double bad_debt;
-        int nr_periods_before_repayment;
+        int bank_id=0;
+        double loan_value=0.0;
+        double interest_rate=0.0;
+        double interest_amount=0.0;
+        double installment_amount=0.0;
+        double var_per_installment=0.0;
+        double residual_var=0.0;
+        double bad_debt=0.0;
+        int nr_periods_before_repayment=0;
         
          
         for (i=0; i<NUMBER_OF_BANKS_ASKED;i++)

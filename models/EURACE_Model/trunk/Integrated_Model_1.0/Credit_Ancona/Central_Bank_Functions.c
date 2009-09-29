@@ -11,7 +11,9 @@
 
 int Central_Bank_monetary_policy()
 {
-    double inflation, gdp, unemployment_rate;
+	double inflation=0.0;
+ 	double gdp=0.0;
+	double unemployment_rate=0.0;
 
  
     START_EUROSTAT_SEND_MACRODATA_MESSAGE_LOOP
@@ -67,8 +69,8 @@ int Central_Bank_read_account_update()
     #ifndef _DEBUG_MODE
         int bank_mesg_count=0; //debug
         int gov_mesg_count=0; //debug
-        FILE *file1;
-        char *filename;
+        FILE * file1=NULL;
+        char * filename="";
     #endif
     
     ECB_DEPOSITS=0.0;    
