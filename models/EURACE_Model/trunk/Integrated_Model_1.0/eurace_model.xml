@@ -121,7 +121,7 @@
    <variable>
     <type>int</type>
     <name>number_of_banks_to_apply</name>
-    <description>number of banks firms can ask loans</description>
+    <description>Number of banks to which firms can apply for loans.</description>
    </variable>
    <variable>
     <type>int</type>
@@ -131,12 +131,12 @@
    <variable>
     <type>int</type>
     <name>const_installment_periods</name>
-    <description></description>
+    <description>Number of months to make debt installment payments before a loan is fully repaid.</description>
    </variable>
    <variable>
     <type>double</type>
     <name>const_wage_wealth_ratio</name>
-    <description>The household's initial ratio between wage and wealth. This parametrises the link between the unit price of capital and the unit price of labour.</description>
+    <description>The household's initial ratio between wage and wealth. This parametrizes the link between the unit price of capital and the unit price of labour.</description>
    </variable>
    <variable>
     <type>double</type>
@@ -194,42 +194,42 @@
     <variable>
      <type>int</type>
      <name>id</name>
-     <description></description>
+     <description>Agent ID.</description>
     </variable>
     <variable>
      <type>int</type>
      <name>region_id</name>
-     <description></description>
+     <description>Region ID to which the agent is associated.</description>
     </variable>
     <variable>
      <type>int</type>
      <name>gov_id</name>
-     <description></description>
+     <description>Government  to which the agent is associated.</description>
     </variable>
     <variable>
      <type>int</type>
      <name>day_of_month_to_act</name>
-     <description></description>
+     <description>Activation day.</description>
     </variable>
     <variable>
      <type>int</type>
      <name>last_day_of_month_to_act</name>
-     <description></description>
+     <description>One day before the activation day.</description>
     </variable>
     <variable>
      <type>double</type>
      <name>payment_account</name>
-     <description></description>
+     <description>Current account value.</description>
     </variable>
     <variable>
      <type>int</type>
      <name>bank_id</name>
-     <description></description>
+     <description>Bank ID at which the agent maintains its payment account.</description>
     </variable>
     <variable>
      <type>int</type>
      <name>partition_id</name>
-     <description></description>
+     <description>Partition ID used for parallelization.</description>
     </variable>
    </memory>
    <functions/>
@@ -241,12 +241,12 @@
     <variable>
      <type>int</type>
      <name>id</name>
-     <description></description>
+     <description>Agent ID.</description>
     </variable>
     <variable>
      <type>int</type>
      <name>region_id</name>
-     <description></description>
+     <description>Region ID to which the agent is associated.</description>
     </variable>
     <variable>
      <type>int_array</type>
@@ -256,27 +256,27 @@
     <variable>
      <type>int</type>
      <name>gov_id</name>
-     <description></description>
+     <description>Government  to which the agent is associated.</description>
     </variable>
     <variable>
      <type>int</type>
      <name>day_of_month_to_act</name>
-     <description></description>
+     <description>Activation day.</description>
     </variable>
     <variable>
      <type>double</type>
      <name>payment_account</name>
-     <description></description>
+     <description>Current account value.</description>
     </variable>
     <variable>
      <type>int</type>
      <name>bank_id</name>
-     <description></description>
+     <description>Bank ID at which the agent maintains its payment account.</description>
     </variable>
     <variable>
      <type>int</type>
      <name>partition_id</name>
-     <description></description>
+     <description>Partition ID used for parallelization.</description>
     </variable>
    </memory>
    <functions/>
@@ -288,27 +288,27 @@
     <variable>
      <type>int</type>
      <name>id</name>
-     <description></description>
+     <description>Agent ID.</description>
     </variable>
     <variable>
      <type>int</type>
      <name>region_id</name>
-     <description></description>
+     <description>Region ID to which the agent is associated.</description>
     </variable>
     <variable>
      <type>int</type>
      <name>gov_id</name>
-     <description></description>
+     <description>Government  to which the agent is associated.</description>
     </variable>
     <variable>
      <type>int</type>
      <name>no_regions</name>
-     <description></description>
+     <description>Number of regions.</description>
     </variable>
     <variable>
      <type>int</type>
      <name>partition_id</name>
-     <description></description>
+     <description>Partition ID used for parallelization.</description>
     </variable>
    </memory>
    <functions/>
@@ -320,37 +320,37 @@
     <variable>
      <type>int</type>
      <name>id</name>
-     <description></description>
+     <description>Agent ID.</description>
     </variable>
     <variable>
      <type>int</type>
      <name>region_id</name>
-     <description></description>
+     <description>Region ID to which the agent is associated.</description>
     </variable>
     <variable>
      <type>int</type>
      <name>gov_id</name>
-     <description></description>
+     <description>Government  to which the agent is associated.</description>
     </variable>
     <variable>
      <type>int</type>
      <name>bank_id</name>
-     <description></description>
+     <description>Bank ID at which the agent maintains its payment account.</description>
     </variable>
     <variable>
      <type>int</type>
      <name>day_of_month_to_act</name>
-     <description></description>
+     <description>Activation day.</description>
     </variable>
     <variable>
      <type>double</type>
      <name>payment_account</name>
-     <description></description>
+     <description>Current account value.</description>
     </variable>
     <variable>
      <type>int</type>
      <name>partition_id</name>
-     <description></description>
+     <description>Partition ID used for parallelization.</description>
     </variable>
    </memory>
    <functions/>
@@ -362,12 +362,12 @@
     <variable>
      <type>int</type>
      <name>id</name>
-     <description></description>
+     <description>Agent ID.</description>
     </variable>
     <variable>
      <type>int</type>
      <name>region_id</name>
-     <description></description>
+     <description>Region ID to which the agent is associated.</description>
     </variable>
     <variable>
      <type>int</type>
@@ -377,7 +377,7 @@
     <variable>
      <type>int</type>
      <name>partition_id</name>
-     <description></description>
+     <description>Partition ID used for parallelization.</description>
     </variable>
    </memory>
    <functions/>
@@ -389,22 +389,22 @@
     <variable>
      <type>int</type>
      <name>id</name>
-     <description></description>
+     <description>Agent ID.</description>
     </variable>
     <variable>
      <type>int</type>
      <name>region_id</name>
-     <description></description>
+     <description>Region ID to which the agent is associated.</description>
     </variable>
     <variable>
      <type>int</type>
      <name>gov_id</name>
-     <description></description>
+     <description>Government  to which the agent is associated.</description>
     </variable>
     <variable>
      <type>int</type>
      <name>partition_id</name>
-     <description></description>
+     <description>Partition ID used for parallelization.</description>
     </variable>
    </memory>
    <functions/>
@@ -416,7 +416,7 @@
     <variable>
      <type>int</type>
      <name>id</name>
-     <description></description>
+     <description>Agent ID.</description>
     </variable>
     <variable>
      <type>int_array</type>
@@ -426,22 +426,22 @@
     <variable>
      <type>double</type>
      <name>payment_account</name>
-     <description></description>
+     <description>Current account value.</description>
     </variable>
     <variable>
      <type>int</type>
      <name>day_of_month_to_act</name>
-     <description></description>
+     <description>Activation day.</description>
     </variable>
     <variable>
      <type>int</type>
      <name>region_id</name>
-     <description></description>
+     <description>Region ID to which the agent is associated.</description>
     </variable>
     <variable>
      <type>int</type>
      <name>partition_id</name>
-     <description></description>
+     <description>Partition ID used for parallelization.</description>
     </variable>
    </memory>
    <functions/>
@@ -453,17 +453,17 @@
     <variable>
      <type>int</type>
      <name>id</name>
-     <description></description>
+     <description>Agent ID.</description>
     </variable>
     <variable>
      <type>int</type>
      <name>region_id</name>
-     <description></description>
+     <description>Region ID to which the agent is associated.</description>
     </variable>
     <variable>
      <type>int</type>
      <name>partition_id</name>
-     <description></description>
+     <description>Partition ID used for parallelization.</description>
     </variable>
    </memory>
    <functions/>
@@ -475,17 +475,17 @@
     <variable>
      <type>int</type>
      <name>id</name>
-     <description></description>
+     <description>Agent ID.</description>
     </variable>
     <variable>
      <type>int</type>
      <name>region_id</name>
-     <description></description>
+     <description>Region ID to which the agent is associated.</description>
     </variable>
     <variable>
      <type>int</type>
      <name>partition_id</name>
-     <description></description>
+     <description>Partition ID used for parallelization.</description>
     </variable>
    </memory>
    <functions/>
@@ -499,17 +499,17 @@
     <variable>
      <type>int</type>
      <name>id</name>
-     <description></description>
+     <description>Sending agent ID.</description>
     </variable>
     <variable>
      <type>int</type>
      <name>bank_id</name>
-     <description></description>
+     <description>Receiving bank agent ID.</description>
     </variable>
     <variable>
      <type>double</type>
      <name>payment_account</name>
-     <description></description>
+     <description>Current account value.</description>
     </variable>
    </variables>
   </message>
@@ -520,12 +520,12 @@
     <variable>
      <type>int</type>
      <name>id</name>
-     <description></description>
+     <description>Sending agent ID.</description>
     </variable>
     <variable>
      <type>double</type>
      <name>payment_account</name>
-     <description></description>
+     <description>Current account value.</description>
     </variable>
     <variable>
      <type>double</type>
@@ -541,12 +541,12 @@
     <variable>
      <type>int</type>
      <name>id</name>
-     <description></description>
+     <description>Sending agent ID.</description>
     </variable>
     <variable>
      <type>double</type>
      <name>payment_account</name>
-     <description></description>
+     <description>Current account value.</description>
     </variable>
    </variables>
   </message>
