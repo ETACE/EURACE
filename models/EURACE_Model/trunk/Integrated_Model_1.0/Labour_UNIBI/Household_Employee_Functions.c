@@ -11,7 +11,7 @@
 int Household_receive_wage()
 {
 
-    double mean_income = 0;
+    double mean_income = 0.0;
     
     /*Household reads the wage messages if employed*/
     START_WAGE_PAYMENT_MESSAGE_LOOP
@@ -108,8 +108,9 @@ int Household_UNEMPLOYED_read_job_vacancies_and_send_applications()
     /* Create a vacancy dynamic array to store vacancies*/
     vacancy_array  vacancy_list;
     init_vacancy_array(&vacancy_list);
-    int i, j;
-    double wage_offer;
+    int i=0;
+    int j=0;
+    double wage_offer=0.0;
     
     /*if unemployed: search for vacancies*/
 
@@ -340,8 +341,9 @@ int Household_UNEMPLOYED_read_job_vacancies_and_send_applications_2()
     /* Create a vacancy dynamic array */
     vacancy_array  vacancy_list;
     init_vacancy_array(&vacancy_list);
-    int i, j;
-    double wage_offer;
+    int i=0;
+    int j=0;
+    double wage_offer=0.0;
 
     /*If unemployed*/
     START_VACANCIES2_MESSAGE_LOOP
