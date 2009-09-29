@@ -18,8 +18,9 @@ int Household_determine_consumption_budget()
 {
 
    // #ifndef _DEBUG_MODE    
-        char * filename;
-        FILE * file1,*file2;
+        char * filename="";
+        FILE * file1=NULL;
+        FILE * file2=NULL;
 
     if (PRINT_LOG)
     {

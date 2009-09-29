@@ -43,16 +43,18 @@ int Bank_communicate_identity()
 int Bank_decide_credit_conditions()
 {
     //#ifndef _DEBUG_MODE
-        FILE * file1;
-        char * filename;
+        FILE * file1=NULL;
+        char * filename="";
   //  #endif
         
     double e, c, d, r, i;
-    double bankruptcy_prob;
-    double credit_allowed;
-  
-
-    
+    double bankruptcy_prob=0.0;
+    double credit_allowed=0.0;
+    e=0.0;
+    c=0.0;
+    d=0.0;
+    r=0.0;
+    i=0.0;
             
         START_LOAN_REQUEST_MESSAGE_LOOP
             e = loan_request_message->equity;
@@ -117,8 +119,8 @@ int Bank_decide_credit_conditions()
 int Bank_account_update_deposits()
 {
    //  #ifndef _DEBUG_MODE  
-        FILE *file1;
-        char * filename;
+        FILE *file1=NULL;
+        char * filename="";
   //  #endif
     
       DEPOSITS=0; //reset total deposits        
@@ -300,8 +302,8 @@ int Bank_accounting()
 {
 
     // #ifndef _DEBUG_MODE  
-        FILE *file1;
-        char *filename;
+        FILE *file1=NULL;
+        char *filename="";
    // #endif
          
      double q, c, gro, int_to_ecb;  // total_dividends, dividend_per_share
