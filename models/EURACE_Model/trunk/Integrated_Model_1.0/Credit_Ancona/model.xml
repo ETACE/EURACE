@@ -31,7 +31,7 @@
   <dataTypes>
    <dataType>
     <name>potential_lender</name>
-    <description>Collecing the name of an active bank found by firm when entering its credit market role</description>
+    <description>Collecting the name of an active bank found by firm when entering its credit market role.</description>
     <variables>
      <variable>
       <type>int</type>
@@ -41,7 +41,7 @@
      <variable>
       <type>int</type>
       <name>contacted</name>
-      <description>if the bank has been contacted (1) or not (0)</description>
+      <description>If the bank has been contacted (1) or not (0).</description>
      </variable>
     </variables>
    </dataType>
@@ -52,12 +52,12 @@
      <variable>
       <type>int</type>
       <name>id</name>
-      <description>id of the account's holder</description>
+      <description>Id of the account's holder.</description>
      </variable>
      <variable>
       <type>double</type>
       <name>payment_account</name>
-      <description>value in the account</description>
+      <description>Value in the account.</description>
      </variable>
     </variables>
    </dataType>
@@ -71,18 +71,18 @@
     <variable>
      <type>potential_lender_array</type>
      <name>set_of_lenders</name>
-     <description>Array of structs (potential lender) holding names of (found) active banks</description>
+     <description>Array of structs (potential lender) holding names of (found) active banks.</description>
     </variable>
     <variable>
      <type>int</type>
      <name>number_of_banks_asked</name>
-     <description>Number of banks where the firm has asked for loans</description>
+     <description>Number of banks where the firm has asked for loans.</description>
     </variable>
    </memory>
    <functions>
     <function>
      <name>Firm_ask_loan</name>
-     <description></description>
+     <description>Firm contacts banks asking for a loan and communicating its balance sheet.</description>
      <currentState>Firm_Start_Credit_Role</currentState>
      <nextState>Firm_Credit_02</nextState>
      <condition>
@@ -107,7 +107,7 @@
     </function>
     <function>
      <name>Firm_get_loan</name>
-     <description></description>
+     <description>Firm gets the money from banks, adds the loan to its liabilities and register all the loan features (VaR, interest rate).</description>
      <currentState>Firm_Credit_02</currentState>
      <nextState>Firm_End_Credit_Role</nextState>
      <inputs>
@@ -139,72 +139,72 @@
     <variable>
      <type>double</type>
      <name>cash</name>
-     <description></description>
+     <description>Bank's reserves.</description>
     </variable>
     <variable>
      <type>double</type>
      <name>total_credit</name>
-     <description></description>
+     <description>Sum of outstanding loans.</description>
     </variable>
     <variable>
      <type>double</type>
      <name>equity</name>
-     <description></description>
+     <description>Total assets minus total liabilities (or cumulated profits).</description>
     </variable>
     <variable>
      <type>double</type>
      <name>ecb_debt</name>
-     <description></description>
+     <description>Stock of liquidity borrowed from Central Bank.</description>
     </variable>
     <variable>
      <type>double</type>
      <name>alfa</name>
-     <description></description>
+     <description>Basel II regulatory parameter</description>
     </variable>
     <variable>
      <type>double</type>
      <name>value_at_risk</name>
-     <description></description>
+     <description>Total value at risk of bank's loan portfolio.</description>
     </variable>
     <variable>
      <type>double</type>
      <name>deposits_rate</name>
-     <description>rate on deposits</description>
+     <description>Rate on deposits.</description>
     </variable>
     <variable>
      <type>double</type>
      <name>bank_gamma[2]</name>
-     <description></description>
+     <description>Behavioural parameter used to set interest rates.</description>
     </variable>
     <variable>
      <type>double</type>
      <name>profits[2]</name>
-     <description></description>
+     <description>Current and past profits.</description>
     </variable>
     <variable>
      <type>double</type>
      <name>bank_lambda</name>
-     <description></description>
+     <description>Exogenous parameter regulating the speed of adjustment of BANK_GAMMA parameter.</description>
     </variable>
     <variable>
      <type>double</type>
      <name>ecb_interest_rate</name>
-     <description></description>
+     <description>Base interest rate charged by Central Bank.</description>
     </variable>
     <variable>
      <type>double</type>
      <name>bank_dividend_rate</name>
-     <description></description>
+     <description>Percentage of bank's dividends on profits.</description>
     </variable>
     <variable>
      <type>double</type>
      <name>tax_rate_corporate</name>
-     <description></description>
+     <description>Government tax rate on corporate profits.</description>
     </variable>
     <variable>
      <type>int</type>
      <name>current_shares_outstanding</name>
-     <description></description>
+     <description>Number of issued shares.</description>
     </variable>
     <variable>
      <type>double</type>
@@ -219,22 +219,22 @@
     <variable>
      <type>int</type>
      <name>day_of_month_to_act</name>
-     <description>Day of the month to act for bank accounting function</description>
+     <description>Day of the month to act for bank accounting function.</description>
     </variable>
     <variable>
      <type>double</type>
      <name>deposits</name>
-     <description></description>
+     <description>Total end-of-the-day deposits.</description>
     </variable>
     <variable>
      <type>double</type>
      <name>firm_loan_installments</name>
-     <description></description>
+     <description>Installment amount received by firms.</description>
     </variable>
     <variable>
      <type>double</type>
      <name>firm_interest_payments</name>
-     <description></description>
+     <description>Interests paid by firms.</description>
     </variable>
     <variable>
      <type>double</type>
@@ -244,7 +244,7 @@
     <variable>
      <type>double</type>
      <name>ecb_interest_payment</name>
-     <description></description>
+     <description>Interests bank pays to Central Bank.</description>
     </variable>
     <variable>
      <type>double</type>
@@ -259,12 +259,12 @@
     <variable>
      <type>double</type>
      <name>dividend_per_share</name>
-     <description></description>
+     <description>Dividends earned by one share.</description>
     </variable>
     <variable>
      <type>double</type>
      <name>current_share_price</name>
-     <description></description>
+     <description>Market price of bank's shares.</description>
     </variable>
    </memory>
    <functions>
@@ -304,7 +304,7 @@
     </function>
     <function>
      <name>Bank_communicate_identity</name>
-     <description></description>
+     <description>Active banks communicate their identity to firms at the opening of the credit market.</description>
      <currentState>Bank_start_credit_market_role</currentState>
      <nextState>Bank_01</nextState>
      <inputs/>
@@ -350,7 +350,7 @@
     </function>
     <function>
      <name>Bank_send_accountInterest</name>
-     <description></description>
+     <description>Bank communicates the interest rate on deposits.</description>
      <currentState>Bank_01b</currentState>
      <nextState>Bank_02</nextState>
      <inputs/>
@@ -362,7 +362,7 @@
     </function>
     <function>
      <name>Bank_decide_credit_conditions</name>
-     <description></description>
+     <description>Bank sets loan conditions for the applying firms.</description>
      <currentState>Bank_02</currentState>
      <nextState>Bank_03</nextState>
      <inputs>
@@ -387,7 +387,7 @@
     </function>
     <function>
      <name>Bank_give_loan</name>
-     <description></description>
+     <description>Bank accounts the feature of the granted loan and updates its portfolio.</description>
      <currentState>Bank_03</currentState>
      <nextState>Bank_04</nextState>
      <inputs>
@@ -408,7 +408,7 @@
     </function>
     <function>
      <name>Bank_receive_installment</name>
-     <description></description>
+     <description>Bank receives periodic interests and installments from client firms.</description>
      <currentState>Bank_04</currentState>
      <nextState>Bank_05</nextState>
      <inputs>
@@ -441,7 +441,7 @@
     </function>
     <function>
      <name>Bank_account_update_deposits</name>
-     <description></description>
+     <description>Bank updates its deposits and if needed reduces its exposition towards Central Bank.</description>
      <currentState>Bank_05</currentState>
      <nextState>Bank_06</nextState>
      <inputs>
@@ -466,7 +466,7 @@
     </function>
     <function>
      <name>Bank_accounting</name>
-     <description></description>
+     <description>Balance sheet updates are executed.</description>
      <currentState>Bank_06</currentState>
      <nextState>end_Bank</nextState>
      <condition>
@@ -510,7 +510,7 @@
     <variable>
      <type>double</type>
      <name>ecb_interest_rate</name>
-     <description>Base rate of the Central Bank</description>
+     <description>Base rate of the Central Bank.</description>
     </variable>
     <variable>
      <type>double</type>
@@ -545,13 +545,13 @@
     <variable>
      <type>double</type>
      <name>cash</name>
-     <description>CB liquid asset which takes into account interest payments to CB from banks and (in the future) from govs</description>
+     <description>CB liquid asset which takes into account interest payments to CB from banks and (in the future) from govs.</description>
     </variable>
    </memory>
    <functions>
     <function>
      <name>Central_Bank_read_account_update</name>
-     <description></description>
+     <description>Central Bank updates accounts of banks and Government.</description>
      <currentState>00</currentState>
      <nextState>end_Central_Bank</nextState>
      <inputs>
@@ -569,7 +569,7 @@
     </function>
     <function>
      <name>Central_Bank_monetary_policy</name>
-     <description>Central bank implements monetary policy</description>
+     <description>Central bank implements monetary policy.</description>
      <currentState>start_Central_Bank</currentState>
      <nextState>CB_market_operations</nextState>
      <condition>
@@ -591,7 +591,7 @@
     </function>
     <function>
      <name>idle</name>
-     <description>Central bank does not implement monetary policy</description>
+     <description>Central bank does not implement monetary policy.</description>
      <currentState>start_Central_Bank</currentState>
      <nextState>CB_market_operations</nextState>
      <condition>
@@ -626,7 +626,7 @@
  <messages>
   <message>
    <name>policy_rate</name>
-   <description>Message sent by CB to communicate the policy rate</description>
+   <description>Message sent by CB to communicate the policy rate.</description>
    <variables>
     <variable>
      <type>double</type>
