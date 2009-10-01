@@ -23,17 +23,29 @@ cd ./its
 for run in $RUNS; do
     mkdir -p 'run'$run
     cd 'run'$run
-    cp $BASE/output_benchmark.xml ./
-    echo '      Copied output file from' $BASE'/output_benchmark.xml to folder: run'$run
-    #cp $BASE/output_benchmark_snapshot.xml ./
-    #echo '      Copied output file from' $BASE'/output_benchmark_snapshot.xml to folder: run'$run
+
     echo '      Starting run for benchmark experiment...'
 
-	#Run serial:
-	#$MAIN_S $ITS output_benchmark_snapshot.xml 
+	#Run serial with no output:
+	cp $BASE/output_benchmark_none.xml ./
+	echo '      Copied output file from' $BASE'/output_none.xml to folder: run'$run
+	$MAIN_S $ITS 'output_benchmark_none.xml'
+
+	#Run serial with snapshot:
+	#cp $BASE/output_benchmark_snapshot.xml ./
+	#echo '      Copied output file from' $BASE'/output_benchmark_snapshot.xml to folder: run'$run
+	#$MAIN_S $ITS 'output_benchmark_snapshot.xml'
+	
+	#Run serial with small output:
+	#cp $BASE/output_benchmark.xml ./
+	#echo '      Copied output file from' $BASE'/output_benchmark.xml to folder: run'$run
+	#$MAIN_S $ITS 'output_benchmark.xml' 
+
+
 	#Run parallel:
 	#mpiexec -n $NR_NODES $MAIN_P $ITS 'output_benchmark_snapshot.xml' -r
-	mpiexec -n $NR_NODES $MAIN_P $ITS 'output_benchmark.xml' -r
+	#mpiexec -n $NR_NODES $MAIN_P $ITS 'output_benchmark.xml' -r
+	#mpiexec -n $NR_NODES $MAIN_P $ITS 'output_none.xml' -r
 
 #	If the program exits:
 #	if [ $? -ne 0 ]; then
@@ -42,13 +54,23 @@ for run in $RUNS; do
 #	fi 
 
 	#Concatenating the node files
-	echo '      Starting concatenation of the node output files'
-	bash $BASE/join.sh ./ $NR_NODES
-	echo '      Finished concatenation'
+	#echo '      Starting concatenation of the node output files'
+	#bash $BASE/join.sh ./ $NR_NODES
+	#echo '      Finished concatenation'
 
 	#Removing the node files
-	rm -f node*.xml
-	echo '      Removed node output files'
+	#rm -f node*.xml
+	#echo '      Removed node output files'
+
+	#tar -cj --file=xmlfiles.tar.bz *
+	#rm *.xml
+
+	#Create the SQL database
+	#python SQL_DB_DIR/gendb.py ./
+
+	#Compress the database
+	#
+
     cd ..
 done
 cd ..

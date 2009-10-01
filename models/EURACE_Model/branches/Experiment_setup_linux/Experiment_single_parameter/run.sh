@@ -12,10 +12,12 @@
 # - remove the node-*.xml files
 ###################################################################################
 
-#$MAIN_S $ITS output.xml
+$MAIN_S $ITS output.xml
 #mpiexec -n $NR_NODES $MAIN_P $ITS output.xml -r
 #bash $BASE/join.sh ./ $NR_NODES
 #rm node*.xml
+
+tar -cj --remove-files --overwrite --file=xmlfiles.tar.bz *
 
 echo 'Run '$PWD' --DONE'
 echo 'Run '$PWD':DONE' >>$BASE/STATUS 
