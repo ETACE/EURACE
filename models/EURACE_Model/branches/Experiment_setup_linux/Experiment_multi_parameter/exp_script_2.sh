@@ -7,23 +7,18 @@
 #####################################################################################################
 BASE=$PWD
 
-#F1="40 120 240 560"     #duration: 240+"40 120 240 560"=280 360 480 801
-#F2="0.01 0.05 0.10 0.20" #intensity
-#F3="0 20 40 60"         #frequency
-
-F1="40 240"     #duration: 240+"40 120 240 560"=280 360 480 801
-F2="0.01 0.05 0.10" #intensity
-F3="0 20 60"         #frequency
-
-
 echo '  Creating specific.xml files in folder hierarchy...'
+echo 'In exp_script_2.sh these values are used:'
+echo 'Duration: [' $F1_values ']'
+echo 'Intensity: [' $F2_values ']'
+echo 'Frequency: [' $F3_values ']'
 
-for f1 in $F1; do
-    folder1=duration_$f1
-    for f2 in $F2; do
-        folder2=intensity_$f2
-        for f3 in $F3; do
-            folder3=frequency_$f3
+for f1 in $F1_values; do
+    folder1='duration_'$f1
+    for f2 in $F2_values; do
+        folder2='intensity_'$f2
+        for f3 in $F3_values; do
+            folder3='frequency_'$f3
                 #echo $PWD
                 cd ./its/$folder1/$folder2/$folder3
                 rm -f specific.xml

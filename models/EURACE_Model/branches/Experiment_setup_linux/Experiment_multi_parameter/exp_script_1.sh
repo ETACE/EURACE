@@ -8,29 +8,11 @@
 ########################################################################################
 BASE=$PWD
 
-#F1="duration_40 duration_120 duration_240 duration_560"
-#F2="intensity_0.01 intensity_0.05 intensity_0.10 intensity_0.20"
-#F3="frequency_0 frequency_20 frequency_40 frequency_60"
-
-F1="duration_40 duration_240"
-F2="intensity_0.01 intensity_0.05 intensity_0.10"
-F3="frequency_0 frequency_20 frequency_60"
-
-
-#Construct the RUNS list:
-TOTAL_RUNS=4
-RUNS=''
-for ((j=0; j<TOTAL_RUNS; j++)); do
-    RUNS=$RUNS' '$j
-done
-#while [ $j -lt $TOTAL_RUNS ]; do
-#   RUNS=$RUNS' '$j
-#   let j="j + 1"
-#done
-echo $RUNS
-
 echo '  Creating folder hierarchy...'
-echo $F1
+echo 'In exp_script_1.sh these values are used:'
+echo 'Duration: [' $F1 ']'
+echo 'Intensity: [' $F2 ']'
+echo 'Frequency: [' $F3 ']'
 
 rm -f STATUS
 mkdir -p 'its'
