@@ -12,7 +12,7 @@ echo '  Starting second stage of experiment: running all cases...'
 rm -f STATUS
 cd ./its
 for folder1 in $F1; do
-		cd $folder1
+	cd $folder1
         for run in $RUNS; do
             cd 'its_'$run
        		bash run.sh				#Running single run

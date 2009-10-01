@@ -8,7 +8,8 @@
 ########################################################################################
 
 echo '  Creating folder hierarchy...'
-echo '  [' $F1 ']'
+echo 'In exp_script_1.sh these values are used:'
+echo 'Tax: [' $F1 ']'
 
 rm -f STATUS
 mkdir -p 'its'

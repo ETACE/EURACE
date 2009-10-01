@@ -8,7 +8,8 @@ echo '  Creating specific.xml files in folder hierarchy...'
 mkdir -p 'its'
 cd ./its
 
-echo 'In exp_script_2.sh these values are used:'  '[' $F1_values ']'
+echo 'In exp_script_2.sh these values are used:'
+echo 'Tax rate: [' $F1_values ']'
 
 for f1 in $F1_values; do
     folder1='tax_'$f1

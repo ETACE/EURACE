@@ -4,6 +4,7 @@
 <output><type>agent</type><name>IGFirm</name><location>./</location><format>xml</format><time><period>20</period><phase>0</phase><duration/></time></output>
 <output><type>agent</type><name>Eurostat</name><location>./</location><format>xml</format><time><period>20</period><phase>0</phase><duration/></time></output>
 <output><type>agent</type><name>Government</name><location>./</location><format>xml</format><time><period>20</period><phase>0</phase><duration/></time></output>
+<output><type>agent</type><name>Firm</name><location>./</location><format>xml</format><time><period>20</period><phase>0</phase><duration/></time></output>
 </outputs>
 <imports>
 <import>
