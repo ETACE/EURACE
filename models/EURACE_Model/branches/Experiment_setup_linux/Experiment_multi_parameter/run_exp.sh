@@ -29,7 +29,7 @@ export BASE=$PWD
 
 #Iterations
 export ITS_PRE=1000
-export ITS=20
+export ITS=1200
 
 #Set number of nodes to use
 export NR_NODES=4
@@ -63,8 +63,8 @@ export F3_values="0 20 60"         #frequency
 #Executables
 
 ##AIX settings:
-#export MAIN_P='/media/DOCS/Docs/EURACE/X-models/SVN_linux/models/EURACE_Model/trunk/Integrated_Model_1.0/main_p'
-#export MAIN_S='/media/DOCS/Docs/EURACE/X-models/SVN_linux/models/EURACE_Model/trunk/Integrated_Model_1.0/main_s'
+export MAIN_P='/media/DOCS/Docs/EURACE/X-models/SVN_linux/models/EURACE_Model/trunk/Integrated_Model_1.0/main_pp'
+export MAIN_S='/media/DOCS/Docs/EURACE/X-models/SVN_linux/models/EURACE_Model/trunk/Integrated_Model_1.0/main_sp'
 #export MAIN_P='/media/DOCS/Docs/EURACE/X-models/SVN_linux/models/EURACE_Model/branches/GREQAM/Integrated_Model_1.0/main_p'
 #export MAIN='/media/DOCS/Docs/EURACE/X-models/SVN_linux/models/EURACE_Model/branches/Integrated_Model_1.0_energy_shock/main'
 
@@ -77,12 +77,13 @@ export F3_values="0 20 60"         #frequency
 
 
 #For production version
-export MAIN_S='/home/svdhoog/EURACE/SVN/eurace/trunk/Integrated_Model_1.0/main_sp'
+#export MAIN_S='/home/svdhoog/EURACE/SVN/eurace/trunk/Integrated_Model_1.0/main_sp'
 #export MAIN_P='/home/svdhoog/EURACE/SVN/eurace/trunk/Integrated_Model_1.0/main_pp'
 #export MAIN_S='/home/svdhoog/EURACE/SVN/eurace/branches/GREQAM/Integrated_Model_2708/main_sp'
 
 #Location of the SQL database creation script:
 export SQL_DB_DIR='/home/svdhoog/EURACE/SVN/xagents/sim_validation'
+export MODEL_XML_DIR='/media/DOCS/Docs/EURACE/X-models/SVN_linux/models/EURACE_Model/trunk/Integrated_Model_1.0'
 
 ######### STEP 2: CREATION OF EXPERIMENT FOLDER HIERARCHY 
 #bash ./exp_script_1.sh
@@ -94,7 +95,7 @@ export SQL_DB_DIR='/home/svdhoog/EURACE/SVN/xagents/sim_validation'
 #bash ./run_first_stage.sh
 
 ######### STEP 4b: RUNNING BENCHMARK SCENARIO 
-#bash ./run_benchmark.sh
+bash ./run_benchmark.sh
 
 ######### STEP 5: RUNNING THE EXPERIMENT 
 #bash ./run_experiment.sh
@@ -103,7 +104,7 @@ export SQL_DB_DIR='/home/svdhoog/EURACE/SVN/xagents/sim_validation'
 #bash ./create_job_list.sh
 
 ######### STEP 7: LAUNCHING  JOB SCRIPTS 
-bash ./launch_job_list.sh
+#bash ./launch_job_list.sh
 
 
 echo 'Finished top-level experiment script.'
