@@ -37,6 +37,24 @@
     <description>Constant to switch on/off automatic quantitative easing: gov issues bonds to ecb.
 </description>
    </variable>
+   <variable>
+    <type>double</type>
+    <name>subsidy_trigger_on</name>
+    <description>Trigger floor level of the GDP growth rate, below which the subsidy is switched on. Typically set to -0.01.
+</description>
+   </variable>
+   <variable>
+    <type>double</type>
+    <name>subsidy_trigger_off</name>
+    <description>Trigger ceiling level of the GDP growth rate, above which the subsidy is switched off. Typically set to +0.01.
+</description>
+   </variable>
+   <variable>
+    <type>double</type>
+    <name>subsidy_gdp_ratio</name>
+    <description>The subsidy percentage is a ratio of the - GDP growth rate. Typical setting is tanh(gdp_growth).
+</description>
+   </variable>
   </constants>
   <functionFiles>
    <file>Government_Functions.c</file>
