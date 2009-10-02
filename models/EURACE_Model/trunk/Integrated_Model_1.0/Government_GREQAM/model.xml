@@ -158,6 +158,11 @@
      <description>The firm subsidy percentage on the  price of capital goods.</description>
     </variable>
     <variable>
+     <type>int</type>
+     <name>subsidy_flag</name>
+     <description>Indicator to indicate if stabilization subsidy is active. 1 means active, 0 means inactive.</description>
+    </variable>
+    <variable>
      <type>double</type>
      <name>monthly_subsidy_payment</name>
      <description></description>
