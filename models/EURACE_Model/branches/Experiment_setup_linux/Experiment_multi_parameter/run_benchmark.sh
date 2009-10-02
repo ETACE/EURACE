@@ -27,9 +27,9 @@ for run in $RUNS; do
     echo '      Starting run for benchmark experiment...'
 
 	#Run serial with no output:
-	cp $BASE/output_benchmark_none.xml ./
-	echo '      Copied output file from' $BASE'/output_none.xml to folder: run'$run
-	$MAIN_S $ITS 'output_benchmark_none.xml'
+	#cp $BASE/output_benchmark_none.xml ./
+	#echo '      Copied output file from' $BASE'/output_none.xml to folder: run'$run
+	#$MAIN_S $ITS 'output_benchmark_none.xml'
 
 	#Run serial with snapshot:
 	#cp $BASE/output_benchmark_snapshot.xml ./
@@ -37,9 +37,9 @@ for run in $RUNS; do
 	#$MAIN_S $ITS 'output_benchmark_snapshot.xml'
 	
 	#Run serial with small output:
-	#cp $BASE/output_benchmark.xml ./
-	#echo '      Copied output file from' $BASE'/output_benchmark.xml to folder: run'$run
-	#$MAIN_S $ITS 'output_benchmark.xml' 
+	cp $BASE/output_benchmark.xml ./
+	echo '      Copied output file from' $BASE'/output_benchmark.xml to folder: run'$run
+	$MAIN_S $ITS 'output_benchmark.xml' 
 
 
 	#Run parallel:
@@ -62,14 +62,17 @@ for run in $RUNS; do
 	#rm -f node*.xml
 	#echo '      Removed node output files'
 
-	#tar -cj --file=xmlfiles.tar.bz *
+	#tar -cj --remove-files --file=xmlfiles.tar.bz *
 	#rm *.xml
 
 	#Create the SQL database
-	#python SQL_DB_DIR/gendb.py ./
+	python $BASE/gendb.py $MODEL_XML_DIR/eurace_model.xml ./
+
+	#Rename to VisGUI default name
+	mv iterdata.db iters.db
 
 	#Compress the database
-	#
+	#tar -cj --remove-files --file=iters.tar.gz iters.db
 
     cd ..
 done
