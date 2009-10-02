@@ -43,7 +43,7 @@ int Government_initialization()
  */
 int Government_send_policy_announcements()
 {   
-    int indicator_gdp, indicator_inflation;
+    int indicator_gdp;
 
     //Set tax rate to global constant
     double yearly_tax_revenues_target;
@@ -80,12 +80,15 @@ int Government_send_policy_announcements()
     if(POLICY_EXP_STABILIZATION)
     {
         //Set indicator functions:
-        if (GDP_GROWTH<0) indicator_gdp=1; else indicator_gdp=0;
-        if (INFLATION_RATE>0) indicator_inflation=1; else indicator_inflation=0;
+        if ((GDP_GROWTH<SUBSIDY_TRIGGER_ON)&&(GDP_GROWTH>SUBSIDY_TRIGGER_OFF)) indicator_gdp=1;
+	else indicator_gdp=0;
     
-        //Set subsidy percentages (these are used to compute individual subsidy payments)
-        HH_SUBSIDY_PCT = 0.1*(-GDP_GROWTH*indicator_gdp + INFLATION_RATE*indicator_inflation + UNEMPLOYMENT_RATE);
-        
+        //Set subsidy percentage (these are used to compute individual subsidy payments)
+        //HH_SUBSIDY_PCT = SUBSIDY_GDP_RATIO*abs(GDP_GROWTH)*indicator_gdp;
+
+	//When the gdp growth rate is between the on and off trigger, multiply by the tanh() which gives a result between 0 and -1.
+        HH_SUBSIDY_PCT = -tanh(GDP_GROWTH - SUBSIDY_TRIGGER_OFF)*abs(GDP_GROWTH)*indicator_gdp;
+
         //The firm is subsidized for the increase in capital_goods_price
         //This is not so clear: the energy price markup = CONST_ENERGY_SHOCK_INTENSITY, but this only occurs in some iterations, not all
         //FIRM_SUBSIDY_PCT = CONST_ENERGY_SHOCK_INTENSITY;
@@ -486,7 +489,7 @@ int Government_bonds_issuing_decision()
  */
 int Government_monthly_resetting()
 {
-    //Reset the yearly counters:
+    //Reset the monthly counters:
     MONTHLY_TAX_REVENUES =0.0;
     MONTHLY_BENEFIT_PAYMENT =0.0;
     MONTHLY_TRANSFER_PAYMENT =0.0;
