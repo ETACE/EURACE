@@ -70,6 +70,11 @@
    </variable>
    <variable>
     <type>int</type>
+    <name>print_debug_file_exp2</name>
+    <description>0 or 1, A flag to print logging output to terminal or to file. Used in Government code.</description>
+   </variable>
+ <variable>
+    <type>int</type>
     <name>policy_exp1</name>
     <description>0 or 1, A flag to print logging output to terminal or to file.</description>
    </variable>
