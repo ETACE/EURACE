@@ -78,14 +78,14 @@ int Government_send_policy_announcements()
     if(POLICY_EXP_STABILIZATION)
     {
         //Set trigger function:
-	if ((SUBSIDY_FLAG==0)&&(GDP_GROWTH<SUBSIDY_TRIGGER_ON))
+	if ((SUBSIDY_FLAG==0)&&(GDP_GROWTH<1+SUBSIDY_TRIGGER_ON))
 	{
 		SUBSIDY_FLAG=1;
 		printf("\nIn Government line 84: switched SUBSIDY_FLAG=0 to SUBSIDY_FLAG=%d\n", SUBSIDY_FLAG);
 	}
 
 	//Release trigger function:
-	if ((SUBSIDY_FLAG==1)&&(GDP_GROWTH>SUBSIDY_TRIGGER_OFF))
+	if ((SUBSIDY_FLAG==1)&&(GDP_GROWTH>1+SUBSIDY_TRIGGER_OFF))
 	{
 		SUBSIDY_FLAG=0;
 		printf("\nIn Government line 91: switched SUBSIDY_FLAG=1 to SUBSIDY_FLAG=%d\n", SUBSIDY_FLAG);
