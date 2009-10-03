@@ -26,6 +26,9 @@ for run in $RUNS; do
 
     echo '      Starting run for benchmark experiment...'
 
+	#Empty the folder	
+	rm *
+
 	#Run serial with no output:
 	#cp $BASE/output_benchmark_none.xml ./
 	#echo '      Copied output file from' $BASE'/output_none.xml to folder: run'$run
