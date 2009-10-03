@@ -46,6 +46,9 @@ int Government_send_policy_announcements()
     //Set tax rate to global constant
     double yearly_tax_revenues_target;
        
+    FILE *file1=NULL;
+    char *filename=NULL;
+
     if ((POLICY_EXP1)&(GOV_POLICY_SWITCH_QUANTITATIVE_EASING==0))
     {                   
                     if (YEARLY_BUDGET_BALANCE>0)
@@ -78,14 +81,14 @@ int Government_send_policy_announcements()
     if(POLICY_EXP_STABILIZATION)
     {
         //Set trigger function:
-	if ((SUBSIDY_FLAG==0)&&(GDP_GROWTH<1+SUBSIDY_TRIGGER_ON))
+	if ((SUBSIDY_FLAG==0)&&(GDP_GROWTH<SUBSIDY_TRIGGER_ON))
 	{
 		SUBSIDY_FLAG=1;
 		printf("\nIn Government line 84: switched SUBSIDY_FLAG=0 to SUBSIDY_FLAG=%d\n", SUBSIDY_FLAG);
 	}
 
 	//Release trigger function:
-	if ((SUBSIDY_FLAG==1)&&(GDP_GROWTH>1+SUBSIDY_TRIGGER_OFF))
+	if ((SUBSIDY_FLAG==1)&&(GDP_GROWTH>SUBSIDY_TRIGGER_OFF))
 	{
 		SUBSIDY_FLAG=0;
 		printf("\nIn Government line 91: switched SUBSIDY_FLAG=1 to SUBSIDY_FLAG=%d\n", SUBSIDY_FLAG);
@@ -103,6 +106,20 @@ int Government_send_policy_announcements()
         //The firm is subsidized for the increase in capital_goods_price
         //This is not so clear: the energy price markup = CONST_ENERGY_SHOCK_INTENSITY, but this only occurs in some iterations, not all
         //FIRM_SUBSIDY_PCT = CONST_ENERGY_SHOCK_INTENSITY;
+
+       
+        // #ifndef _DEBUG_MODE
+        if (PRINT_DEBUG_FILE_EXP2)
+        {
+            filename = malloc(40*sizeof(char));
+            filename[0]=0;
+            strcpy(filename, "Government.txt"); 
+            file1 = fopen(filename,"a");
+            fprintf(file1,"%f\n",HH_SUBSIDY_PCT);
+            fclose(file1);
+            free(filename);
+        }
+        // #endif 
     }
 
     //add announcement
@@ -604,8 +621,8 @@ int Government_read_data_from_Eurostat()
     
     //Set GDP growth rate
     if (old_gdp > 0.0)
-        GDP_GROWTH = GDP/old_gdp;
-    else GDP_GROWTH = 1.0; 
+        GDP_GROWTH = (GDP/old_gdp) -1;
+    else GDP_GROWTH = 0.0; 
 
     #ifndef _DEBUG_MODE        
     if (PRINT_DEBUG_EXP1 || PRINT_DEBUG)
@@ -651,16 +668,16 @@ int Government_set_policy()
 */
         //Fiscal policy rule 2
 /*
-        //increase tax rates when GDP growth > 1.05
-        if(GDP_GROWTH>1.05)
+        //increase tax rates when GDP growth > 0.05
+        if(GDP_GROWTH>0.05)
         {
             TAX_RATE_CORPORATE  += 0.01;
             TAX_RATE_HH_LABOUR  += 0.01; 
             TAX_RATE_HH_CAPITAL += 0.01;
         }
-        else if(GDP_GROWTH<1.01)
+        else if(GDP_GROWTH<0.01)
         {
-            //decrease tax rates when GDP growth < 1.01
+            //decrease tax rates when GDP growth < 0.01
             TAX_RATE_CORPORATE  -= 0.01;
             TAX_RATE_HH_LABOUR  -= 0.01; 
             TAX_RATE_HH_CAPITAL -= 0.01;
@@ -668,13 +685,13 @@ int Government_set_policy()
 */
     
     //Set GDP forecast equal to extrapolation of previous growth rate*GDP
-    GDP_FORECAST = GDP_GROWTH*GDP;
+    GDP_FORECAST = (1+GDP_GROWTH)*GDP;
     
     //Set income forecast
-    YEARLY_INCOME_FORECAST = GDP_GROWTH*YEARLY_INCOME;
+    YEARLY_INCOME_FORECAST = (1+GDP_GROWTH)*YEARLY_INCOME;
 
     //Set expenditure forecast: counter-cyclical to gdp growth
-    YEARLY_EXPENDITURE_BUDGET = GDP_GROWTH*YEARLY_EXPENDITURE;
+    YEARLY_EXPENDITURE_BUDGET = (1+GDP_GROWTH)*YEARLY_EXPENDITURE;
     
     BUDGET_BALANCE_FORECAST = YEARLY_INCOME_FORECAST - YEARLY_EXPENDITURE_BUDGET;
     
