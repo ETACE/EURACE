@@ -74,11 +74,6 @@
     </variable>
     <variable>
      <type>double</type>
-     <name>money_financing_fraction</name>
-     <description>Parameter that sets the fraction of the budget deficit that is financed using money financing.</description>
-    </variable>
-    <variable>
-     <type>double</type>
      <name>gdp_fraction_consumption</name>
      <description>Parameter that sets the government consumption expenditure as a fraction of GDP.</description>
     </variable>
