@@ -16,9 +16,9 @@ for folder1 in $F1; do
         cd $folder1/$folder2/$folder3
         for run in $RUNS; do
             cd 'its_'$run
-       	    #bash run.sh				#Running single run
-	    #bash $BASE/join.sh ./ $NR_NODES 	#Concatenating the node files
-	    #rm node*.xml 			#Removing the node files
+       	    bash run.sh				#Running single run
+	    	#bash $BASE/join.sh ./ $NR_NODES 	#Concatenating the node files
+	    	#rm node*.xml 			#Removing the node files
             echo '              '$folder1'/'$folder2'/'$folder3'/its_'$run --DONE
             echo $folder1/$folder2/$folder3/'its_'$run':OK'>> $BASE/STATUS 
             cd ..
