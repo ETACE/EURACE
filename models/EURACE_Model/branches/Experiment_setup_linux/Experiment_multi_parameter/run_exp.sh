@@ -65,8 +65,12 @@ export F3_values="0 20 60"         #frequency
 ##AIX settings:
 export MAIN_P='/media/DOCS/Docs/EURACE/X-models/SVN_linux/models/EURACE_Model/trunk/Integrated_Model_1.0/main_pp'
 export MAIN_S='/media/DOCS/Docs/EURACE/X-models/SVN_linux/models/EURACE_Model/trunk/Integrated_Model_1.0/main_sp'
-#export MAIN_P='/media/DOCS/Docs/EURACE/X-models/SVN_linux/models/EURACE_Model/branches/GREQAM/Integrated_Model_1.0/main_p'
-#export MAIN='/media/DOCS/Docs/EURACE/X-models/SVN_linux/models/EURACE_Model/branches/Integrated_Model_1.0_energy_shock/main'
+
+#Location of the SQL database creation script:
+#export SQL_DB_DIR='/media/DOCS/Docs/EURACE/X-models/SVN_linux/xagents/sim_validation'
+
+#Location of the model XML (used to generate the SQL)
+export MODEL_XML_DIR='/media/DOCS/Docs/EURACE/X-models/SVN_linux/models/EURACE_Model/trunk/Integrated_Model_1.0'
 
 ##UNIBI settings:
 
@@ -82,8 +86,10 @@ export MAIN_S='/media/DOCS/Docs/EURACE/X-models/SVN_linux/models/EURACE_Model/tr
 #export MAIN_S='/home/svdhoog/EURACE/SVN/eurace/branches/GREQAM/Integrated_Model_2708/main_sp'
 
 #Location of the SQL database creation script:
-export SQL_DB_DIR='/home/svdhoog/EURACE/SVN/xagents/sim_validation'
-export MODEL_XML_DIR='/media/DOCS/Docs/EURACE/X-models/SVN_linux/models/EURACE_Model/trunk/Integrated_Model_1.0'
+#export SQL_DB_DIR='/home/svdhoog/EURACE/SVN/xagents/sim_validation'
+
+#Location of the model XML (used to generate the SQL)
+export MODEL_XML_DIR='/home/svdhoog/EURACE/SVN/eurace/trunk/Integrated_Model_1.0'
 
 ######### STEP 2: CREATION OF EXPERIMENT FOLDER HIERARCHY 
 #bash ./exp_script_1.sh
