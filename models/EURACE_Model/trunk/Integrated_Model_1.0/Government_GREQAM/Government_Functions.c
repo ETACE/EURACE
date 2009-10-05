@@ -2,7 +2,7 @@
 #include <math.h>
 #include "../header.h"
 #include "../Government_agent_header.h"
-
+#include "../my_library_header.h"
 //For Isolated model
 //#include <math.h>
 //#include "header.h"
@@ -317,6 +317,8 @@ int Government_read_subsidy_notifications()
  */
 int Government_send_account_update()
 {
+     FILE *file1;
+     char *filename;
         // At the very end of agent government: update the bank account
         add_gov_to_central_bank_account_update_message(ID, PAYMENT_ACCOUNT);
 
@@ -328,6 +330,17 @@ int Government_send_account_update()
                         getchar();
         }
         #endif
+        
+        if (PRINT_DEBUG_FILE_EXP1)
+        {                       
+            filename = malloc(40*sizeof(char));
+            filename[0]=0;
+            strcpy(filename, "its/Governments_balance_sheet.txt");      
+            file1 = fopen(filename,"a");
+            fprintf(file1,"\n %d %d %f",ID,DAY,PAYMENT_ACCOUNT);
+            fclose(file1);
+            free(filename);
+        }              
         
     return 0;
 }

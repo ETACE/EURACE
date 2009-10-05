@@ -8,8 +8,6 @@ font_sz = 14;
 
 agent_id = 104;
 
-
-
 Data = load([Pat, 'households_daily_income_statement.txt']);
 
 days = unique(Data(:,1));

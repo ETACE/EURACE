@@ -67,11 +67,12 @@ int Central_Bank_read_account_update()
     int i;
 
     #ifndef _DEBUG_MODE
-        int bank_mesg_count=0; //debug
+       int bank_mesg_count=0; //debug
         int gov_mesg_count=0; //debug
+    #endif
         FILE * file1=NULL;
         char * filename="";
-    #endif
+  
     
     ECB_DEPOSITS=0.0;    
     FIAT_MONEY_BANKS=0.0;
@@ -149,17 +150,18 @@ int Central_Bank_read_account_update()
                 printf("\n Nr of mesg equal to size of gov account array.\n");
         }
     #endif        
-    #ifndef _DEBUG_MODE        
+   // #ifndef _DEBUG_MODE        
         if (PRINT_DEBUG_FILE_EXP1)
         {                       
             filename = malloc(40*sizeof(char));
             filename[0]=0;
-            strcpy(filename, "its/CentralBank.txt");      
+            strcpy(filename, "its/CentralBank_balance_sheet.txt");      
             file1 = fopen(filename,"a");
-            fprintf(file1,"\n %d %f %f ",DAY,FIAT_MONEY_GOVS,FIAT_MONEY_BANKS);
+            fprintf(file1,"\n %d %f %f",DAY,FIAT_MONEY_GOVS,FIAT_MONEY_BANKS);
+            fprintf(file1," %f %f",CASH,ECB_DEPOSITS);
             fclose(file1);
             free(filename);
         }                
-    #endif
+   // #endif
     return 0;
 }
