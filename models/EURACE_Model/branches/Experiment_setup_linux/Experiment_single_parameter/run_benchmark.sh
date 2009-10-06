@@ -27,9 +27,9 @@ for run in $RUNS; do
     echo '      Starting run for benchmark experiment...'
 
 	#Run serial with no output:
-	cp $BASE/output_benchmark_none.xml ./
-	echo '      Copied output file from' $BASE'/output_none.xml to folder: run'$run
-	$MAIN_S $ITS 'output_benchmark_none.xml'
+	#cp $BASE/output_benchmark_none.xml ./
+	#echo '      Copied output file from' $BASE'/output_none.xml to folder: run'$run
+	#$MAIN_S $ITS 'output_benchmark_none.xml'
 
 	#Run serial with snapshot:
 	#cp $BASE/output_benchmark_snapshot.xml ./
@@ -37,9 +37,9 @@ for run in $RUNS; do
 	#$MAIN_S $ITS 'output_benchmark_snapshot.xml'
 	
 	#Run serial with small output:
-	#cp $BASE/output_benchmark.xml ./
-	#echo '      Copied output file from' $BASE'/output_benchmark.xml to folder: run'$run
-	#$MAIN_S $ITS 'output_benchmark.xml' 
+	cp $BASE/output_benchmark.xml ./
+	echo '      Copied output file from' $BASE'/output_benchmark.xml to folder: run'$run
+	$MAIN_S $ITS 'output_benchmark.xml' 
 
 
 	#Run parallel:
