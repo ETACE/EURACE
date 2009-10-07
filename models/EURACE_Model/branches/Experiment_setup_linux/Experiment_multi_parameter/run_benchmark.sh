@@ -20,6 +20,9 @@ echo '  Starting benchmark experiment...'
 
 mkdir -p 'its'
 cd ./its
+mkdir -p 'bench'
+cd ./bench
+
 for run in $RUNS; do
     mkdir -p 'run'$run
     cd 'run'$run
@@ -69,16 +72,16 @@ for run in $RUNS; do
 	#rm *.xml
 
 	#Create the SQL database
-	python $BASE/gendb.py $MODEL_XML_DIR/eurace_model.xml ./
+	#python $BASE/gendb.py $MODEL_XML_DIR/eurace_model.xml ./
 
 	#Rename to VisGUI default name
-	mv iterdata.db iters.db
+	#mv iterdata.db iters.db
 
 	#Compress the database
 	#tar -cj --remove-files --file=iters.tar.gz iters.db
 
     cd ..
 done
-cd ..
+cd ../..
 
 echo '  Finished benchmark experiment.'
