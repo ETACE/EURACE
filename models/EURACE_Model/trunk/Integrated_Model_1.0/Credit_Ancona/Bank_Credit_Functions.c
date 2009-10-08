@@ -208,30 +208,28 @@ int Bank_receive_installment()
     #endif
         
     START_INSTALLMENT_MESSAGE_LOOP
-        if(installment_message->bank_id==ID)
-        {
-    
-        //CASH +=installment_message->interest_amount;//installment_amount;   
-        PROFITS[0] += installment_message->interest_amount;
-        TOTAL_CREDIT-=installment_message->installment_amount;
-        EQUITY += installment_message->interest_amount;
-        VALUE_AT_RISK -= installment_message->var_per_installment;
-
-        #ifndef _DEBUG_MODE        
-        if (PRINT_DEBUG)
-        {
-            printf("\n\t interest_amount: %f installment_amount: %f",installment_message->interest_amount,installment_message->installment_amount);
-            printf("\n\t PROFITS: %f TOTAL_CREDIT: %f EQUITY: %f",PROFITS[0],TOTAL_CREDIT,EQUITY);
-            getchar();
-        }
-        #endif
-              
-        //Flow accounting
-        FIRM_INTEREST_PAYMENTS+= installment_message->interest_amount;
-        FIRM_LOAN_INSTALLMENTS += installment_message->installment_amount;
+        //if(installment_message->bank_id==ID)
+        //{
         
-        }
-
+            //CASH +=installment_message->interest_amount;//installment_amount;   
+            PROFITS[0] += installment_message->interest_amount;
+            TOTAL_CREDIT-=installment_message->installment_amount;
+            EQUITY += installment_message->interest_amount;
+            VALUE_AT_RISK -= installment_message->var_per_installment;
+    
+            #ifndef _DEBUG_MODE        
+            if (PRINT_DEBUG)
+            {
+                printf("\n\t interest_amount: %f installment_amount: %f",installment_message->interest_amount,installment_message->installment_amount);
+                printf("\n\t PROFITS: %f TOTAL_CREDIT: %f EQUITY: %f",PROFITS[0],TOTAL_CREDIT,EQUITY);
+                getchar();
+            }
+            #endif
+                
+            //Flow accounting
+            FIRM_INTEREST_PAYMENTS+= installment_message->interest_amount;
+            FIRM_LOAN_INSTALLMENTS += installment_message->installment_amount;
+        //}
     FINISH_INSTALLMENT_MESSAGE_LOOP
 
     START_BANKRUPTCY_MESSAGE_LOOP
