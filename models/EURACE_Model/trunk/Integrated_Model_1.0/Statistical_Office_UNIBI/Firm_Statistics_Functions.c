@@ -50,10 +50,23 @@ int Firm_send_data_to_Eurostat()
 
 int Firm_send_payments_to_bank()
 {
-    
+     FILE *file1;
+     char *filename;
+     
     add_bank_account_update_message(ID, BANK_ID, PAYMENT_ACCOUNT);
     if(PAYMENT_ACCOUNT<0)
         printf("PAYMENT_ACCOUNT of Firm %d:  %f \n",ID,PAYMENT_ACCOUNT);
+        
+   if (PRINT_DEBUG_FILE_EXP1)
+        {                       
+            filename = malloc(40*sizeof(char));
+            filename[0]=0;
+            strcpy(filename, "its/firms_daily_payment_account.txt");      
+            file1 = fopen(filename,"a");
+            fprintf(file1,"\n %d %d %f",DAY,ID,PAYMENT_ACCOUNT);
+            fclose(file1);
+            free(filename);
+        }                 
     
     return 0;
 }
