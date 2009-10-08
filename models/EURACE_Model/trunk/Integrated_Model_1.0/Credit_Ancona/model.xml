@@ -414,27 +414,9 @@
      <inputs>
       <input>
        <messageName>installment</messageName>
-       <filter>
-        <lhs>
-         <value>a.id</value>
-        </lhs>
-        <op>EQ</op>
-        <rhs>
-         <value>m.bank_id</value>
-        </rhs>
-       </filter>
       </input>
       <input>
        <messageName>bankruptcy</messageName>
-       <filter>
-        <lhs>
-         <value>a.id</value>
-        </lhs>
-        <op>EQ</op>
-        <rhs>
-         <value>m.bank_id</value>
-        </rhs>
-       </filter>
       </input>
      </inputs>
      <outputs/>
