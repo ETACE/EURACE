@@ -155,7 +155,7 @@ int Central_Bank_read_account_update()
         {                       
             filename = malloc(40*sizeof(char));
             filename[0]=0;
-            strcpy(filename, "its/CentralBank_balance_sheet.txt");      
+            strcpy(filename, "its/CentralBank_daily_balance_sheet.txt");      
             file1 = fopen(filename,"a");
             fprintf(file1,"\n %d %f %f",DAY,FIAT_MONEY_GOVS,FIAT_MONEY_BANKS);
             fprintf(file1," %f %f",CASH,ECB_DEPOSITS);

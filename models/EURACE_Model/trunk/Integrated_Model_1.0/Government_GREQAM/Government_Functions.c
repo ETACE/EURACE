@@ -335,9 +335,9 @@ int Government_send_account_update()
         {                       
             filename = malloc(40*sizeof(char));
             filename[0]=0;
-            strcpy(filename, "its/Governments_balance_sheet.txt");      
+            strcpy(filename, "its/Governments_daily_balance_sheet.txt");      
             file1 = fopen(filename,"a");
-            fprintf(file1,"\n %d %d %f",ID,DAY,PAYMENT_ACCOUNT);
+            fprintf(file1,"\n %d %d %f",DAY,ID,PAYMENT_ACCOUNT);
             fclose(file1);
             free(filename);
         }              
