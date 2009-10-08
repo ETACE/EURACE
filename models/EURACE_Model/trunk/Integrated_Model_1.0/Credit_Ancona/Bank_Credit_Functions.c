@@ -208,8 +208,8 @@ int Bank_receive_installment()
     #endif
         
     START_INSTALLMENT_MESSAGE_LOOP
-        //if(installment_message->bank_id==ID)
-        //{
+        if(installment_message->bank_id==ID)
+        {
         
             //CASH +=installment_message->interest_amount;//installment_amount;   
             PROFITS[0] += installment_message->interest_amount;
@@ -225,11 +225,11 @@ int Bank_receive_installment()
                 getchar();
             }
             #endif
-                
+
             //Flow accounting
-            FIRM_INTEREST_PAYMENTS+= installment_message->interest_amount;
+            FIRM_INTEREST_PAYMENTS += installment_message->interest_amount;
             FIRM_LOAN_INSTALLMENTS += installment_message->installment_amount;
-        //}
+        }
     FINISH_INSTALLMENT_MESSAGE_LOOP
 
     START_BANKRUPTCY_MESSAGE_LOOP
