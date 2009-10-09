@@ -11,9 +11,9 @@
 
 int Central_Bank_monetary_policy()
 {
-	double inflation=0.0;
- 	double gdp=0.0;
-	double unemployment_rate=0.0;
+    double inflation=0.0;
+    double gdp=0.0;
+    double unemployment_rate=0.0;
 
  
     START_EUROSTAT_SEND_MACRODATA_MESSAGE_LOOP
@@ -44,6 +44,7 @@ int Central_Bank_read_fiat_money_requests()
     //Read the bond emission -> fiat money request from governments
     START_ISSUE_BONDS_TO_ECB_MESSAGE_LOOP
         FIAT_MONEY_GOVS += issue_bonds_to_ecb_message->nominal_value;
+        FIAT_MONEY      += issue_bonds_to_ecb_message->nominal_value;
         BOND_HOLDINGS_VALUE += issue_bonds_to_ecb_message->nominal_value;
         NR_GOV_BONDS += issue_bonds_to_ecb_message->quantity;
     FINISH_ISSUE_BONDS_TO_ECB_MESSAGE_LOOP
@@ -53,6 +54,7 @@ int Central_Bank_read_fiat_money_requests()
     //request_fiat_money_message(nominal_value);
     START_REQUEST_FIAT_MONEY_MESSAGE_LOOP
         FIAT_MONEY_GOVS += request_fiat_money_message->nominal_value;
+        FIAT_MONEY      += request_fiat_money_message->nominal_value;
     FINISH_REQUEST_FIAT_MONEY_MESSAGE_LOOP
 
 
@@ -74,19 +76,23 @@ int Central_Bank_read_account_update()
         char * filename="";
   
     
-    ECB_DEPOSITS=0.0;    
+    ECB_DEPOSITS=0.0;
+
+    //Reducing fiat money
+    FIAT_MONEY -= FIAT_MONEY_BANKS;
     FIAT_MONEY_BANKS=0.0;
 
     START_BANK_TO_CENTRAL_BANK_ACCOUNT_UPDATE_MESSAGE_LOOP
         ECB_DEPOSITS += bank_to_central_bank_account_update_message->payment_account;
         FIAT_MONEY_BANKS += bank_to_central_bank_account_update_message->ecb_debt;
+        FIAT_MONEY +=  bank_to_central_bank_account_update_message->ecb_debt;
     
         //Search the correct account and update the value    
         for (i=0;i<ACCOUNTS_BANKS.size;i++)
         {       
             if(ACCOUNTS_BANKS.array[i].id == bank_to_central_bank_account_update_message->id)
             {
-            ACCOUNTS_BANKS.array[i].payment_account = bank_to_central_bank_account_update_message->payment_account;
+                ACCOUNTS_BANKS.array[i].payment_account = bank_to_central_bank_account_update_message->payment_account;
             }
         }
         
@@ -119,7 +125,7 @@ int Central_Bank_read_account_update()
             //Search the correct account and update the value
             if(ACCOUNTS_GOVS.array[i].id == gov_to_central_bank_account_update_message->id)
             {
-            ACCOUNTS_GOVS.array[i].payment_account = gov_to_central_bank_account_update_message->payment_account;
+                ACCOUNTS_GOVS.array[i].payment_account = gov_to_central_bank_account_update_message->payment_account;
             }
     
             //Total deposits at ECB
@@ -157,7 +163,7 @@ int Central_Bank_read_account_update()
             filename[0]=0;
             strcpy(filename, "its/CentralBank_daily_balance_sheet.txt");      
             file1 = fopen(filename,"a");
-            fprintf(file1,"\n %d %f %f",DAY,FIAT_MONEY_GOVS,FIAT_MONEY_BANKS);
+            fprintf(file1,"\n %d %f %f %f",DAY,FIAT_MONEY_GOVS,FIAT_MONEY_BANKS, FIAT_MONEY);
             fprintf(file1," %f %f",CASH,ECB_DEPOSITS);
             fclose(file1);
             free(filename);
