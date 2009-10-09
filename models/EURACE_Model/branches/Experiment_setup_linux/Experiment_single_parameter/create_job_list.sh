@@ -17,7 +17,7 @@ for folder1 in $F1; do
 	cd $folder1
 
         for run in $RUNS; do
-            cd 'its_'$run
+            cd 'run_'$run
 
 		#Add a line for this run
        		echo 'cd '$PWD>>$BASE/job_list_$count.sh
