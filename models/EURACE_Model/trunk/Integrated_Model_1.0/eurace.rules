@@ -63,11 +63,12 @@ bank_total_dividends                = Bank(total_dividends)
 
 #Balance sheet: ECB
 ecb_fiat_money_banks                = Central_Bank(fiat_money_banks)
-ecb_fiat_money_govs                     = Central_Bank(fiat_money_govs)
+ecb_fiat_money_govs                 = Central_Bank(fiat_money_govs)
+ecb_fiat_money                      = Central_Bank(fiat_money)
 ecb_bond_quantity                       = Central_Bank(nr_gov_bonds)
 ecb_bank_interest                   = Central_Bank(bank_interest)
 ecb_bond_holdings_value             = Central_Bank(bond_holdings_value)
-ecb_total_deposits                  = Central_Bank(ecb_deposits)
+ecb_deposits                  = Central_Bank(ecb_deposits)
 ecb_cash                            = Central_Bank(cash)
 
 #Balance sheet: Government
@@ -128,7 +129,7 @@ abs( ecb_bond_holdings_value + ecb_cash - ecb_fiat_money_banks - ecb_fiat_money_
 ########################## General Rules ################################
 #RULE 6: VERIFIED
 #Payment accounts:
-abs( firm_payment_account + hh_payment_account - bank_deposits) < PRECISION
+abs( firm_payment_account + igfirm_payment_account + hh_payment_account - bank_deposits) < PRECISION
 
 #RULE 7: VERIFIED
 #Credit money:
@@ -136,8 +137,7 @@ abs( bank_credit - firms_total_loans) < PRECISION
 
 #RULE 8: FAILED
 #Fiat money: count all cash in the banking sector and in the public sector (government). This should equal the fiat money #created by the central bank and given to government, plus all ecb debt given to the banks. 
-
-abs( bank_deposits + bank_cash + gov_payment_account + ecb_cash - bank_credit - ecb_fiat_money_govs - ecb_fiat_money_banks) < PRECISION
+abs( bank_deposits + bank_cash + gov_payment_account + ecb_cash - bank_credit - ecb_fiat_money) < PRECISION
 
 #RULE 9: FAILED
 #Monthly consumption expenditures: only holds when synchronized?
@@ -161,7 +161,7 @@ abs( firm_tax_payment + igfirm_tax_payment + household_tax_payment + bank_tax_pa
 
 #RULE 14: FAILED - small
 #Deposits at ECB
-abs( bank_payment_account + gov_payment_account - ecb_total_deposits)< PRECISION
+abs( bank_payment_account + gov_payment_account - ecb_deposits)< PRECISION
 
 #RULE 15: TO BE CHECKED Should be verified with longer runs, since banks do not yet have ECB debt after 100 iterations.
 #Bank's ECB debt
@@ -195,3 +195,11 @@ abs( eurostat_monthly_sold_quantity - firm_total_sold_quantity_volume ) < PRECIS
 #RULE 22. TO BE CHECKED
 #Comparing Eurostat export matrix with Mall export matrix (in value)
 #abs( eurostat_total_sold_quantity_value - mall_total_sold_quantity_value ) < PRECISION
+
+#RULE 23. TO BE CHECKED
+#ECB fiat money definition sum
+abs( ecb_fiat_money - ecb_fiat_money_govs - ecb_fiat_money_banks) < PRECISION
+
+#RULE 24. TO BE CHECKED
+#General money conservation rule
+abs( bank_deposits +  ecb_deposits + ecb_cash - bank_total_credit - ecb_fiat_money) < PRECISION
