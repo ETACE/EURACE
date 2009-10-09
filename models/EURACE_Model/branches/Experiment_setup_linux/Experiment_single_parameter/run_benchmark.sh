@@ -20,26 +20,32 @@ echo '  Starting benchmark experiment...'
 
 mkdir -p 'its'
 cd ./its
+mkdir -p 'bench'
+cd ./bench
+
 for run in $RUNS; do
-    mkdir -p 'run'$run
-    cd 'run'$run
+    mkdir -p 'run_'$run
+    cd 'run_'$run
 
     echo '      Starting run for benchmark experiment...'
 
+	#Empty the folder	
+	rm *
+
 	#Run serial with no output:
 	#cp $BASE/output_benchmark_none.xml ./
-	#echo '      Copied output file from' $BASE'/output_none.xml to folder: run'$run
+	#echo '      Copied output file from' $BASE'/output_none.xml to folder: run_'$run
 	#$MAIN_S $ITS 'output_benchmark_none.xml'
 
 	#Run serial with snapshot:
-	#cp $BASE/output_benchmark_snapshot.xml ./
-	#echo '      Copied output file from' $BASE'/output_benchmark_snapshot.xml to folder: run'$run
-	#$MAIN_S $ITS 'output_benchmark_snapshot.xml'
+	cp $BASE/output_benchmark_snapshot.xml ./
+	echo '      Copied output file from' $BASE'/output_benchmark_snapshot.xml to folder: run_'$run
+	$MAIN_S $ITS 'output_benchmark_snapshot.xml'
 	
 	#Run serial with small output:
-	cp $BASE/output_benchmark.xml ./
-	echo '      Copied output file from' $BASE'/output_benchmark.xml to folder: run'$run
-	$MAIN_S $ITS 'output_benchmark.xml' 
+	#cp $BASE/output_benchmark.xml ./
+	#echo '      Copied output file from' $BASE'/output_benchmark.xml to folder: run_'$run
+	#$MAIN_S $ITS 'output_benchmark.xml' 
 
 
 	#Run parallel:
@@ -62,17 +68,20 @@ for run in $RUNS; do
 	#rm -f node*.xml
 	#echo '      Removed node output files'
 
-	#tar -cj --file=xmlfiles.tar.bz *
+	#tar -cj --remove-files --file=xmlfiles.tar.bz *
 	#rm *.xml
 
 	#Create the SQL database
-	#python SQL_DB_DIR/gendb.py ./
+	python $BASE/gendb.py $MODEL_XML_DIR/eurace_model.xml ./
+
+	#Rename to VisGUI default name
+	mv iterdata.db iters.db
 
 	#Compress the database
-	#
+	#tar -cj --remove-files --file=iters.tar.gz iters.db
 
     cd ..
 done
-cd ..
+cd ../..
 
 echo '  Finished benchmark experiment.'

@@ -19,7 +19,7 @@ export BASE=$PWD
 
 #Iterations
 export ITS_PRE=1000
-export ITS=100
+export ITS=240
 
 #Set number of nodes to use
 export NR_NODES=2
@@ -29,18 +29,24 @@ export NUM_PROCS=4
 
 
 #Set number of batch runs
-export TOTAL_RUNS=4
+export TOTAL_RUNS=1
 RUNS=''
-for ((j=0; j<TOTAL_RUNS; j++)); do
+for ((j=1; j<=TOTAL_RUNS; j++)); do
     export RUNS=$RUNS' '$j
 done
 echo 'Batch runs:[' $RUNS ']'
 
 #Parameters
-#export F1="tax_0.05 tax_0.10 tax_0.15 tax_0.20 tax_0.25 tax_0.30"
-#export F1_values="0.05 0.10 0.15 0.20 0.25 0.30"
-export F1="tax_0.05"
-export F1_values="0.05"
+export F1="tax_0.05 tax_0.10 tax_0.15 tax_0.20 tax_0.25 tax_0.30"
+export F1_values="0.05 0.10 0.15 0.20 0.25 0.30"
+
+#export F1="tax_0.05"
+#export F1_values="0.05"
+#export F1="tax_0.05 tax_0.10"
+#export F1_values="0.05 0.10"
+
+#export F1="benchmark"
+#export F1_values=""
 
 #export F1="sim1 sim2 sim3 sim4 sim5 sim6 sim7"
 #export F1_values="0.10 0.10 0.10 0.10 0.10 0.10 0.10"
@@ -82,10 +88,10 @@ export MODEL_XML_DIR='/media/DOCS/Docs/EURACE/X-models/SVN_linux/models/EURACE_M
 #export MODEL_XML_DIR='/home/svdhoog/EURACE/SVN/eurace/trunk/Integrated_Model_1.0'
 
 ######### STEP 2: CREATION OF EXPERIMENT FOLDER HIERARCHY 
-bash ./exp_script_1.sh
+#bash ./exp_script_1.sh
 
 ######### STEP 3: CREATION OF THE SPECIFIC SETTINGS XML FILE 
-bash ./exp_script_2.sh
+#bash ./exp_script_2.sh
 
 ######### STEP 4: RUNNING THE INITIAL PHASE 
 #bash ./run_first_stage.sh
@@ -102,5 +108,7 @@ bash ./run_benchmark.sh
 ######### STEP 7: LAUNCHING  JOB SCRIPTS 
 #bash ./launch_job_list.sh
 
+######### STEP 8: CLEANING OUT THE FOLDERS AFTER VISGUI HAS CREATED DBs 
+#bash ./clean_up.sh
 
 echo 'Finished top-level experiment script.'
