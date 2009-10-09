@@ -67,6 +67,11 @@
     <description>0.95, Percentage of savings allocated to consumption.</description>
    </variable>
    <variable>
+    <type>double</type>
+    <name>quantil_normal_distribution</name>
+    <description>Quantil of the normal distribution  used for the production planning rule</description>
+   </variable>
+   <variable>
     <type>int</type>
     <name>firm_planning_horizon</name>
     <description>10, Planning horizon of firms</description>

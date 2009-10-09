@@ -152,74 +152,96 @@ int Firm_calc_production_quantity()
 
     double production_volume = 0;
     double prod_vol;
+    int i,j,k;
+    
+    double regressor, intercept, variance;
+    
+    double sum_1, sum_2;
 
     //Reset the counters at the start of month
     CUM_TOTAL_SOLD_QUANTITY = 0.0;
-    CUM_REVENUE = 0.0;        
+    CUM_REVENUE = 0.0;  
+   
+    
+    //Delete the LINEAR_REGRESSION_ESTIMATORS array
+    
+    
+    //New forcasting rule added on August, 24th
+   
 
     
-        /*Computing of mean critical stock levels*/
-        double mean_critical_stocks=0;
-        for (int j = 0; j < CURRENT_MALL_STOCKS.size;j++)
+    //Compute the estimatores for each mall
+    
+    for(i=0; i< MALLS_SALES_STATISTICS.size; i++)
+    {
+    	sum_1=0;
+    	sum_2=0;
+    	
+    	for (j=0;j<FIRM_PLANNING_HORIZON; j++)
+    	    	{
+    	    	sum_1+= (FIRM_PLANNING_HORIZON + 1 - MALLS_SALES_STATISTICS.array[i].sales.array[j].period)* MALLS_SALES_STATISTICS.array[i].sales.array[j].sales;
+
+    	    	sum_2+=  MALLS_SALES_STATISTICS.array[i].sales.array[j].sales;
+
+
+    	    	}
+    
+    	regressor = (FIRM_PLANNING_HORIZON * sum_1 - 0.5*FIRM_PLANNING_HORIZON*(FIRM_PLANNING_HORIZON+1)*sum_2)/
+        		(1/6.0*pow(FIRM_PLANNING_HORIZON,2)*(FIRM_PLANNING_HORIZON+1)*
+        		(2*FIRM_PLANNING_HORIZON+1)-1/4.0*(pow(FIRM_PLANNING_HORIZON,2)*pow((FIRM_PLANNING_HORIZON+1),2)));
+
+    	intercept =  1/(1.0*FIRM_PLANNING_HORIZON)*sum_2 - 0.5*regressor*(FIRM_PLANNING_HORIZON+1);
+    	
+    	variance = 0;
+    	
+    	  for(j=0; j< FIRM_PLANNING_HORIZON; j++)
+    	    {
+    		  variance+= pow(MALLS_SALES_STATISTICS.array[i].sales.array[j].sales-(intercept+ 
+    				 (FIRM_PLANNING_HORIZON + 1 - MALLS_SALES_STATISTICS.array[i].sales.array[j].period)* regressor),2)
+    				  /(FIRM_PLANNING_HORIZON-1);
+    	    }
+
+
+    		
+    	  for(k=0; k< LINEAR_REGRESSION_ESTIMATORS.size ;k++)
+    		   {
+
+	
+    		  if(MALLS_SALES_STATISTICS.array[i].mall_id==LINEAR_REGRESSION_ESTIMATORS.array[k].mall_id)
+    		  {
+
+				
+    			  LINEAR_REGRESSION_ESTIMATORS.array[k].intercept=intercept;
+    			  LINEAR_REGRESSION_ESTIMATORS.array[k].regressor=regressor;
+    			  LINEAR_REGRESSION_ESTIMATORS.array[k].variance=variance;
+    		  }
+    	  }
+    	  
+    	  
+    	 
+     
+    }
+         /*Setting the critical values*/
+    
+    for(int i = 0; i < CURRENT_MALL_STOCKS.size;i++)
         {
-            mean_critical_stocks += CURRENT_MALL_STOCKS.array[j].critical_stock;
-        }
-
-        mean_critical_stocks = mean_critical_stocks/CURRENT_MALL_STOCKS.size;
-
-
-        /*Creating a temporary array of the last X sales per mall*/
-        for(int i = 0; i < CURRENT_MALL_STOCKS.size;i++)
-        {
-            temporary_sales_statistics_array sales_mall;
-            init_temporary_sales_statistics_array(&sales_mall);
-
-            for(int j = 0; j < MALLS_SALES_STATISTICS.size;j++)
+        
+            for(int j = 0; j < LINEAR_REGRESSION_ESTIMATORS.size;j++)
             {
                 if(CURRENT_MALL_STOCKS.array[i].mall_id==
-                MALLS_SALES_STATISTICS.array[j].mall_id)
+                	LINEAR_REGRESSION_ESTIMATORS.array[j].mall_id)
                 {
-                    for(int k = 0; k < FIRM_PLANNING_HORIZON; k++)
-                    {
-                    add_temporary_sales_statistics(&sales_mall,
-                    MALLS_SALES_STATISTICS.array[j].mall_id,
-                    MALLS_SALES_STATISTICS.array[j].sales.array[k].period,
-                    MALLS_SALES_STATISTICS.array[j].sales.array[k].sales);
-                    }
+                	 CURRENT_MALL_STOCKS.array[i].critical_stock = 
+                		 LINEAR_REGRESSION_ESTIMATORS.array[j].intercept + (1+FIRM_PLANNING_HORIZON)*LINEAR_REGRESSION_ESTIMATORS.array[j].regressor + QUANTIL_NORMAL_DISTRIBUTION*pow(LINEAR_REGRESSION_ESTIMATORS.array[j].variance,0.5)  ;
+    
                 }
+                  
             }
             
-            /*Lowest number (sales) first*/ 
-            //sort_mall_sales_list(&sales_mall);
-            /* Sorting the sales lists   */
-            qsort(sales_mall.array, sales_mall.size, sizeof(temporary_sales_statistics),
-             sales_statistics_list_rank_sales_function);
-
-        
-
-
-            /*Setting the critical values*/
-            
-          CURRENT_MALL_STOCKS.array[i].critical_stock = 
-                                sales_mall.array[DECIL_PRODUCTION_RULE].sales;
-    
-
-            /*If the critical level for a mall is zero then the firm sets (with a certain prob )the 
-             * critical level equal the average CL in order to keep this mall on the delivery list */
-            if(CURRENT_MALL_STOCKS.array[i].critical_stock==0)
-            {
-                int random_nummer = random_int(0,100);
-                if(random_nummer < DELIVERY_PROB_IF_CRITICAL_STOCK_0)
-                {
-                    CURRENT_MALL_STOCKS.array[i].critical_stock=
-                    mean_critical_stocks;
-                }
-
-            }
-    
-            free_temporary_sales_statistics_array(&sales_mall);
         }
-
+                    
+            
+         
 
         /*checking whether or not the current mall stocks are below the critical values         
          * (sS-Rule) If this is the case refill the stock up to the max stock */
@@ -250,6 +272,9 @@ int Firm_calc_production_quantity()
 
                 PLANNED_DELIVERY_VOLUME.array[i].quantity= 0;
             }
+
+
+
         }
 
         /*Smoothing of production quantity in order to avoid high fluctuations*/
@@ -500,7 +525,7 @@ int Firm_receive_capital_goods()
         /*Determine the weighted average productivity of the total capital stock*/
     
         /*Update of productivity*/
-                TECHNOLOGY = TOTAL_UNITS_CAPITAL_STOCK /    (TOTAL_UNITS_CAPITAL_STOCK +capital_good_delivery_message->capital_good_delivery_volume)
+               TECHNOLOGY = TOTAL_UNITS_CAPITAL_STOCK /    (TOTAL_UNITS_CAPITAL_STOCK +capital_good_delivery_message->capital_good_delivery_volume)
                 *TECHNOLOGY + 
                 capital_good_delivery_message->capital_good_delivery_volume/
                 (TOTAL_UNITS_CAPITAL_STOCK + 
@@ -787,10 +812,13 @@ int Firm_calc_revenue()
     
     PAYMENT_ACCOUNT += REVENUE_PER_DAY;
     
-    //Resetting the calendar month sales
     
-    
-    /*The monthly sales statistics*/
+	//Resetting the calendar month counter
+	if(DAY%MONTH == 1)
+	{
+		 SOLD_QUANTITY_IN_CALENDAR_MONTH = 0;
+	}
+	/*The monthly sales statistics*/
     CUM_TOTAL_SOLD_QUANTITY += TOTAL_SOLD_QUANTITY; 
     SOLD_QUANTITY_IN_CALENDAR_MONTH+= TOTAL_SOLD_QUANTITY;
         
@@ -823,11 +851,8 @@ int Firm_compute_sales_statistics()
                 }
             }
         }
-                                            
-        
-        
-        /*Storing of mall sales in an array. if the delivery of the last month was not sufficient to satify the demand, then the sales volume of the last month is
-         * increased by a percentage. */ 
+                                         
+                
         for(int i=0; i< SOLD_QUANTITIES.size;i++)
                {
                    for(int j=0; j<MALLS_SALES_STATISTICS.size; j++)
