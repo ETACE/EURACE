@@ -19,16 +19,16 @@ export BASE=$PWD
 
 #Iterations
 export ITS_PRE=1000
-export ITS=900
+export ITS=3000
 
 #Set number of nodes to use
 export NR_NODES=4
 
 #Set number of job processes to use
-export NUM_PROCS=20
+export NUM_PROCS=4
 
 #Set number of batch runs
-export TOTAL_RUNS=20
+export TOTAL_RUNS=4
 RUNS=''
 for ((j=1; j<=TOTAL_RUNS; j++)); do
     export RUNS=$RUNS' '$j
@@ -50,12 +50,12 @@ export F1_values="40 240"     #duration: 240+"40 120 240 560"=280 360 480 801
 export F2_values="0.01 0.05 0.10" #intensity
 export F3_values="0 20 60"         #frequency
 
-export F1="duration_40"
-export F2="intensity_0.01"
-export F3="frequency_0"
-export F1_values="40"     #duration: 240+"40 120 240 560"=280 360 480 801
-export F2_values="0.01" #intensity
-export F3_values="0"         #frequency
+#export F1="duration_40"
+#export F2="intensity_0.01"
+#export F3="frequency_0"
+#export F1_values="40"     #duration: 240+"40 120 240 560"=280 360 480 801
+#export F2_values="0.01" #intensity
+#export F3_values="0"         #frequency
 
 
 #Executables
@@ -99,16 +99,16 @@ bash ./exp_script_2.sh
 #bash ./run_first_stage.sh
 
 ######### STEP 4b: RUNNING BENCHMARK SCENARIO 
-#bash ./run_benchmark.sh
+bash ./run_benchmark.sh
 
 ######### STEP 5: RUNNING THE EXPERIMENT 
 #bash ./run_experiment.sh
 
 ######### STEP 6: CREATING  JOB SCRIPTS 
-bash ./create_job_list.sh
+#bash ./create_job_list.sh
 
 ######### STEP 7: LAUNCHING  JOB SCRIPTS 
-bash ./launch_job_list.sh
+#bash ./launch_job_list.sh
 
 
 echo 'Finished top-level experiment script.'
