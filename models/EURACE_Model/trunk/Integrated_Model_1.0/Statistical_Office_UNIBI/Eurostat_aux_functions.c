@@ -878,7 +878,8 @@ void Eurostat_calc_macro_data(void)
     MONTHLY_OUTPUT = 0.0;
     MONTHLY_REVENUE = 0.0;
     MONTHLY_PLANNED_OUTPUT = 0.0;
-    
+    MONTHLY_INVESTMENT_VALUE =0.0;
+
     //Reset total economy sums: these are updated inside the message loop to sum across all firms
     sum_total_debt_earnings_ratios = 0.0;
     sum_total_debt_equity_ratios   = 0.0;
@@ -914,6 +915,10 @@ void Eurostat_calc_macro_data(void)
             REGION_FIRM_DATA.array[i].gdp += firm_send_data_message->cum_revenue + firm_send_data_message->capital_costs;
             GDP += firm_send_data_message->cum_revenue + firm_send_data_message->capital_costs;
 
+            /********sum of: total investment costs++++++++*/
+            REGION_FIRM_DATA.array[i].monthly_investment_value += firm_send_data_message->capital_costs;
+            MONTHLY_INVESTMENT_VALUE += firm_send_data_message->capital_costs;
+            
             /********sum of net earnings of the firms++++++++*/
             REGION_FIRM_DATA.array[i].total_earnings += firm_send_data_message->net_earnings;
             TOTAL_EARNINGS += firm_send_data_message->net_earnings;
@@ -984,6 +989,7 @@ void Eurostat_calc_macro_data(void)
         REGION_FIRM_DATA.array[i].monthly_output = sum_region_output;
         REGION_FIRM_DATA.array[i].monthly_revenue = sum_region_cum_revenue;
         REGION_FIRM_DATA.array[i].monthly_planned_output = sum_region_planned_output;
+        REGION_FIRM_DATA.array[i].investment_gdp_ratio = REGION_FIRM_DATA.array[i].monthly_investment_value/REGION_FIRM_DATA.array[i].gdp;
     }
     
     //Compute total averages after the region for-loop
@@ -995,6 +1001,7 @@ void Eurostat_calc_macro_data(void)
     MONTHLY_OUTPUT = sum_total_output;
     MONTHLY_REVENUE = sum_total_cum_revenue;
     MONTHLY_PLANNED_OUTPUT = sum_total_planned_output;
+    INVESTMENT_GDP_RATIO = MONTHLY_INVESTMENT_VALUE/GDP;
 }
     
 /* \fn: void Eurostat_calc_firm_population(void)
@@ -1383,36 +1390,44 @@ void Eurostat_calc_price_index(void)
     sum_2 = 0.0;
     for(j=0; j<REGION_FIRM_DATA.size; j++)
     {   
-        //Diagnostics: 
-        if (REGION_FIRM_DATA.array[j].monthly_sold_quantity<1e-5)
-            printf("\n DIVISION BY ZERO: In Eurostat_aux_functions.c, line 1360: "
-            "Monthly_sold_quantity in region %d =%f\n", j, REGION_FIRM_DATA.array[j].monthly_sold_quantity);
-    
-        if (MONTHLY_SOLD_QUANTITY<1e-5)
-            printf("\n DIVISION BY ZERO: In Eurostat_aux_functions.c, line 1364: "
-            "MONTHLY_SOLD_QUANTITY=%f\n", MONTHLY_SOLD_QUANTITY);
-    
-        quantity = REGION_FIRM_DATA.array[j].monthly_sold_quantity;
-        weight = quantity/MONTHLY_SOLD_QUANTITY;
-        price = REGION_FIRM_DATA.array[j].cpi;
-        price_last_month = REGION_FIRM_DATA.array[j].cpi_last_month;
-        sum_1 += weight * price * quantity;
-        sum_2 += weight * price_last_month * quantity;
-
-        if (MONTHLY_SOLD_QUANTITY<1e-5)
-            printf("\n DIVISION BY ZERO: In Eurostat_aux_functions.c, line 1380: "
-            "weight=%f\n", weight);
-
+        #ifndef _DEBUG_MODE
+        if (PRINT_DEBUG)
+        {
+            //Diagnostics: 
+            if (REGION_FIRM_DATA.array[j].monthly_sold_quantity<1e-5)
+                printf("\n DIVISION BY ZERO: In Eurostat_aux_functions.c, line 1360: "
+                "Monthly_sold_quantity in region %d =%f\n", j, REGION_FIRM_DATA.array[j].monthly_sold_quantity);
+        
+            if (MONTHLY_SOLD_QUANTITY<1e-5)
+                printf("\n DIVISION BY ZERO: In Eurostat_aux_functions.c, line 1364: "
+                "MONTHLY_SOLD_QUANTITY=%f\n", MONTHLY_SOLD_QUANTITY);
+                
+            if (MONTHLY_SOLD_QUANTITY<1e-5)
+                printf("\n DIVISION BY ZERO: In Eurostat_aux_functions.c, line 1380: "
+                "weight=%f\n", weight);
+        }
+        #endif
+        
+            quantity = REGION_FIRM_DATA.array[j].monthly_sold_quantity;
+            if (MONTHLY_SOLD_QUANTITY>0.0)
+             weight = quantity/MONTHLY_SOLD_QUANTITY;
+            else weight = 1;
+            
+            price = REGION_FIRM_DATA.array[j].cpi;
+            price_last_month = REGION_FIRM_DATA.array[j].cpi_last_month;
+            sum_1 += weight * price * quantity;
+            sum_2 += weight * price_last_month * quantity;
     }
     
     if (sum_2>1e-5)
         CPI = sum_1/sum_2;
-    else
-        printf("\n DIVISION BY ZERO: In Eurostat_aux_functions.c, line 1388: sum_2=%f", sum_2);
 
     #ifndef _DEBUG_MODE
     if (PRINT_DEBUG)
     {
+        if (sum_2 < 1e-5)
+            printf("\n DIVISION BY ZERO: In Eurostat_aux_functions.c, line 1388: sum_2=%f", sum_2);
+
         fprintf(stdout,"\n Economy-wide CPI = %f\n", CPI);
     }
     #endif

@@ -348,6 +348,16 @@
      </variable>
      <variable>
       <type>double</type>
+      <name>monthly_investment_value</name>
+      <description>Monthly aggregate value of investment over all firms (capital costs).</description>
+     </variable>
+     <variable>
+      <type>double</type>
+      <name>investment_gdp_ratio</name>
+      <description>Ratio of investment/gdp.</description>
+     </variable>     
+     <variable>
+      <type>double</type>
       <name>gdp</name>
       <description>GDP</description>
      </variable>
@@ -1930,6 +1940,11 @@
     </variable>
     <variable>
      <type>double</type>
+     <name>monthly_investment_value</name>
+     <description>Constructed macrovariable: monthly value of investments, aggregating the firms capital costs.</description>
+    </variable>
+    <variable>
+     <type>double</type>
      <name>monthly_sold_quantity</name>
      <description>Constructed macrovariable: regional sum of sold quantity</description>
     </variable>
@@ -2137,6 +2152,11 @@
      <type>double</type>
      <name>firm_average_productivity</name>
      <description></description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>investment_gdp_ratio</name>
+     <description>Ratio of investment/gdp.</description>
     </variable>
    </memory>
    <functions>
