@@ -37,8 +37,8 @@ for folder1 in $F1; do
 			#rm *.xml
 
 			#Compress the databases without removing originals
-			echo '+ Compressing iters.db, keeping the original'
-			tar -cjv --file=iters.tar.gz iters.db
+			#echo '+ Compressing iters.db, keeping the original'
+			#tar -cjv --file=iters.tar.gz iters.db
 
 			#Compress the databases and remove the originals
 			echo '+ Compressing iters.db and removing the original'

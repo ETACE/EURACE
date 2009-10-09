@@ -20,8 +20,8 @@ echo '  Starting benchmark experiment...'
 
 mkdir -p 'its'
 cd ./its
-#mkdir -p 'bench'
-#cd ./bench
+mkdir -p 'bench'
+cd ./bench
 
 for run in $RUNS; do
     mkdir -p 'run_'$run
@@ -77,8 +77,21 @@ for run in $RUNS; do
 	#Rename to VisGUI default name
 	mv iterdata.db iters.db
 
-	#Compress the database
-	#tar -cj --remove-files --file=iters.tar.gz iters.db
+	#Compress the xml files and remove them
+	#echo '+ Compressing and removing the xml files'
+	#tar -cvj --remove-files --overwrite --file=xmlfiles.tar.bz *.xml
+
+	#Just remove the xml files
+	#echo '+ Removing the xml files'
+	rm *.xml
+
+	#Compress the databases without removing originals
+	#echo '+ Compressing iters.db, keeping the original'
+	#tar -cjv --overwrite --file=iters.tar.gz iters.db
+
+	#Compress the databases and remove the originals
+	echo '+ Compressing iters.db and removing the original'
+	tar -cjv --remove-files --overwrite --file=iters.tar.gz iters.db
 
     cd ..
 done

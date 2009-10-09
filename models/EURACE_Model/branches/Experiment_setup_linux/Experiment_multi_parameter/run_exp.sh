@@ -99,16 +99,17 @@ bash ./exp_script_2.sh
 #bash ./run_first_stage.sh
 
 ######### STEP 4b: RUNNING BENCHMARK SCENARIO 
-bash ./run_benchmark.sh
+#bash ./run_benchmark.sh
 
 ######### STEP 5: RUNNING THE EXPERIMENT 
 #bash ./run_experiment.sh
 
 ######### STEP 6: CREATING  JOB SCRIPTS 
-#bash ./create_job_list.sh
+bash ./create_job_list.sh
 
 ######### STEP 7: LAUNCHING  JOB SCRIPTS 
-#bash ./launch_job_list.sh
+bash ./launch_job_list.sh
 
+#bash ./clean_up.sh
 
 echo 'Finished top-level experiment script.'

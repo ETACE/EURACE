@@ -1,5 +1,3 @@
-
-
 #!/bin/bash
 
 ######### BASE RUN ################################################################
@@ -19,16 +17,27 @@
 	#bash $BASE/join.sh ./ $NR_NODES
 	#rm node*.xml
 
-	#tar -cj --remove-files --overwrite --file=xmlfiles.tar.bz *
-
 	#Create the SQL database
-	#python $BASE/gendb.py $MODEL_XML_DIR/eurace_model.xml ./
+	python $BASE/gendb.py $MODEL_XML_DIR/eurace_model.xml ./
 
 	#Rename to VisGUI default name
-	#mv iterdata.db iters.db
+	mv iterdata.db iters.db
 
-	#Compress the database
-	#tar -cj --remove-files --file=iters.tar.gz iters.db
+	#Compress the xml files and remove them
+	#echo '+ Compressing and removing the xml files'
+	#tar -cvj --remove-files --overwrite --file=xmlfiles.tar.bz *.xml
+
+	#Just remove the xml files
+	#echo '+ Removing the xml files'
+	rm *.xml
+
+	#Compress the databases without removing originals
+	#echo '+ Compressing iters.db, keeping the original'
+	#tar -cjv --overwrite --file=iters.tar.gz iters.db
+
+	#Compress the databases and remove the originals
+	echo '+ Compressing iters.db and removing the original'
+	tar -cjv --remove-files --overwrite --file=iters.tar.gz iters.db
 
 echo 'Run '$PWD' --DONE'
 echo 'Run '$PWD':DONE' >>$BASE/STATUS 
