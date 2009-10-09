@@ -217,4 +217,9 @@ int IGFirm_dividend_payment()
 }
 
 
+int IGFirm_send_payment_account_to_bank()
+{
+	add_bank_account_update_message(ID, BANK_ID, PAYMENT_ACCOUNT);
 
+    return 0;
+}
