@@ -533,6 +533,13 @@ int Household_receive_dividends()
         
     FINISH_DIVIDEND_PER_SHARE_MESSAGE_LOOP
     
+    //Here the household sets its monthly consumption counter to zero at the first day of the month
+    
+    if(DAY%MONTH==1)
+    {
+    	MONTHLY_CONSUMPTION_EXPENDITURE = 0.0;
+    }
+    
     return 0;   
 }
 
