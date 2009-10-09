@@ -38,6 +38,7 @@ igfirm_shares_outstanding       = IGFirm(outstanding_shares)
 igfirm_tax_payment                  = IGFirm(tax_payment)
 igfirm_net_profit                   = IGFirm(net_profit) 
 igfirm_dividend_per_share           = IGFirm(current_dividend_per_share)
+igfirm_revenues                   = IGFirm(earnings) 
 
 #Balance sheet: Household
 hh_payment_account                  = Household(payment_account)
@@ -85,6 +86,8 @@ eurostat_no_firm_deaths             = Eurostat(no_firm_deaths)
 eurostat_monthly_sold_quantity = Eurostat(monthly_sold_quantity)
 #eurostat_total_sold_quantity_volume = Eurostat(export_volume_matrix[])
 #eurostat_total_sold_quantity_value = Eurostat(export_value_matrix[])
+eurostat_monthly_investment_value = Eurostat(monthly_investment_value)
+eurostat_monthly_gdp = Eurostat(gdp)
 
 #Mall
 #mall_total_sold_quantity_volume = Mall(export_volume_matrix[])
@@ -140,8 +143,8 @@ abs( bank_credit - firms_total_loans) < PRECISION
 abs( bank_deposits + bank_cash + gov_payment_account + ecb_cash - bank_credit - ecb_fiat_money) < PRECISION
 
 #RULE 9: FAILED
-#Monthly consumption expenditures: only holds when synchronized?
-abs( household_expenditures + govt_monthly_cons_expenditure - firm_cum_revenue) < PRECISION 
+#Monthly consumption expenditures: GDP = cum_revenues + investment_costs, so Eurostat Consumption = gdp - investment_value
+abs( eurostat_monthly_gdp - eurostat_monthly_investment_value - household_expenditures - govt_monthly_cons_expenditure ) < PRECISION 
 
 #RULE 10: VERIFIED
 #Firm shares + IGFirm shares + Bank shares + Gov bonds = Household's holdings of shares and bonds (+ ECB's holdings of Gov bonds?)
@@ -181,9 +184,25 @@ abs( eurostat_no_firms - firm_active - eurostat_no_firm_deaths) < PRECISION
 abs( firm_total_dividends + igfirm_dividend_per_share*igfirm_shares_outstanding + bank_total_dividends - household_dividend_daily) < PRECISION
 
 #RULE 19. TO BE CHECKED
+#General quantity conservation rule: nr of goods
 #Eurostat total sold quantity compared with firm data (in volume)
 abs( eurostat_monthly_sold_quantity - firm_total_sold_quantity_volume ) < PRECISION
 
+#RULE 20. TO BE CHECKED
+#ECB fiat money definition sum
+abs( ecb_fiat_money - ecb_fiat_money_govs - ecb_fiat_money_banks) < PRECISION
+
+#RULE 21. TO BE CHECKED
+#General money conservation rule
+abs( bank_deposits +  ecb_deposits + ecb_cash - bank_credit - ecb_fiat_money) < PRECISION
+
+#RULE 22. TO BE CHECKED
+#Investments in monetary value: Eurostat vs IGFirm
+abs( eurostat_monthly_investment_value - igfirm_revenues ) < PRECISION
+
+
+
+######## RULES THAT CANNOT BE CHECKED YET (since sums over arrays not possible)
 #RULE 20. TO BE CHECKED
 #Eurostat sum of export_volume_matrix compared with firm data (in volume)
 #abs( eurostat_total_sold_quantity_volume - firm_total_sold_quantity_volume ) < PRECISION
@@ -195,11 +214,3 @@ abs( eurostat_monthly_sold_quantity - firm_total_sold_quantity_volume ) < PRECIS
 #RULE 22. TO BE CHECKED
 #Comparing Eurostat export matrix with Mall export matrix (in value)
 #abs( eurostat_total_sold_quantity_value - mall_total_sold_quantity_value ) < PRECISION
-
-#RULE 23. TO BE CHECKED
-#ECB fiat money definition sum
-abs( ecb_fiat_money - ecb_fiat_money_govs - ecb_fiat_money_banks) < PRECISION
-
-#RULE 24. TO BE CHECKED
-#General money conservation rule
-abs( bank_deposits +  ecb_deposits + ecb_cash - bank_total_credit - ecb_fiat_money) < PRECISION
