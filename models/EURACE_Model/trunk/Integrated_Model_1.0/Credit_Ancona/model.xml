@@ -506,6 +506,11 @@
     </variable>
     <variable>
      <type>double</type>
+     <name>fiat_money</name>
+     <description>This is the total fiat money.</description>
+    </variable>
+    <variable>
+     <type>double</type>
      <name>fiat_money_banks</name>
      <description>This is the sum over banks' ECB_debt, on the ECB's balance sheet, here named as a CB liability.</description>
     </variable>
