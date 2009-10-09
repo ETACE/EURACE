@@ -82,12 +82,12 @@ gov_value_bonds                     = Government(bond.face_value)
 eurostat_no_firms                   = Eurostat(no_firms)
 eurostat_no_firm_deaths             = Eurostat(no_firm_deaths)
 eurostat_monthly_sold_quantity = Eurostat(monthly_sold_quantity)
-eurostat_total_sold_quantity_volume = Eurostat(export_volume_matrix[])
-eurostat_total_sold_quantity_value = Eurostat(export_value_matrix[])
+#eurostat_total_sold_quantity_volume = Eurostat(export_volume_matrix[])
+#eurostat_total_sold_quantity_value = Eurostat(export_value_matrix[])
 
 #Mall
-mall_total_sold_quantity_volume = Mall(export_volume_matrix[])
-mall_total_sold_quantity_value = Mall(export_value_matrix[])
+#mall_total_sold_quantity_volume = Mall(export_volume_matrix[])
+#mall_total_sold_quantity_value = Mall(export_value_matrix[])
 
 #########################################################################
 ::CONSTANTS
@@ -186,12 +186,12 @@ abs( eurostat_monthly_sold_quantity - firm_total_sold_quantity_volume ) < PRECIS
 
 #RULE 20. TO BE CHECKED
 #Eurostat sum of export_volume_matrix compared with firm data (in volume)
-abs( eurostat_total_sold_quantity_volume - firm_total_sold_quantity_volume ) < PRECISION
+#abs( eurostat_total_sold_quantity_volume - firm_total_sold_quantity_volume ) < PRECISION
 
 #RULE 21. TO BE CHECKED 
 #Comparing Eurostat export matrix with Mall export matrix (in volume)
-abs( eurostat_total_sold_quantity_value - mall_total_sold_quantity_volume ) < PRECISION
+#abs( eurostat_total_sold_quantity_value - mall_total_sold_quantity_volume ) < PRECISION
 
 #RULE 22. TO BE CHECKED
 #Comparing Eurostat export matrix with Mall export matrix (in value)
-abs( eurostat_total_sold_quantity_value - mall_total_sold_quantity_value ) < PRECISION
+#abs( eurostat_total_sold_quantity_value - mall_total_sold_quantity_value ) < PRECISION
