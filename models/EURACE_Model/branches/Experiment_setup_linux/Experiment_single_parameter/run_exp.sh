@@ -19,17 +19,17 @@ export BASE=$PWD
 
 #Iterations
 export ITS_PRE=1000
-export ITS=240
+export ITS=2400
 
 #Set number of nodes to use
 export NR_NODES=2
 
 #Set number of job processes to use
-export NUM_PROCS=4
+export NUM_PROCS=5
 
 
 #Set number of batch runs
-export TOTAL_RUNS=1
+export TOTAL_RUNS=5
 RUNS=''
 for ((j=1; j<=TOTAL_RUNS; j++)); do
     export RUNS=$RUNS' '$j
@@ -45,7 +45,7 @@ export F1_values="0.05 0.10 0.15 0.20 0.25 0.30"
 #export F1="tax_0.05 tax_0.10"
 #export F1_values="0.05 0.10"
 
-#export F1="benchmark"
+#export F1="bench"
 #export F1_values=""
 
 #export F1="sim1 sim2 sim3 sim4 sim5 sim6 sim7"

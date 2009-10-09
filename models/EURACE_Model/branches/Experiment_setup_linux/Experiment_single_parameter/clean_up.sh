@@ -22,7 +22,7 @@ cd ./its
 for folder1 in $F1; do
 	cd $folder1
         for run in $RUNS; do
-            cd 'its_'$run
+            cd 'run_'$run
 			echo 'Entered: '$PWD
 			
 			#Compress the xml files and remove them
@@ -38,8 +38,8 @@ for folder1 in $F1; do
 			#tar -cjv --file=iters.tar.gz iters.db
 
 			#Compress the databases and remove the originals
-			#echo '+ Compressing iters.db  and removing the original'
-			#tar -cjv --remove-files --file=iters.tar.gz iters.db
+			echo '+ Compressing iters.db  and removing the original'
+			tar -cjv --remove-files --file=iters.tar.gz iters.db
 
 			#Just remove the database files
 			#echo '+ Removing the .db files'
