@@ -177,16 +177,17 @@ int Eurostat_calculate_data_old_version()
     //Reconstruct empty data arrays
     for(i = 1; i <= TOTAL_REGIONS; i++)
     {
-        add_firm_data(&REGION_FIRM_DATA,
+            add_firm_data(&REGION_FIRM_DATA,
                 i,0,0,                   //region_id -> vacancies
                 0,0,0,0,0,0,             //employees_skill
                 0.0,0.0,0.0,0.0,0.0,0.0, //average_wage_skill
                 0.0,0.0,0.0,0.0,0.0,0.0, //average_s_skill
                 0.0,0.0,0.0,0.0,0.0,     //total_earnings -> average_debt_earnings_ratio
                 0.0,0.0,0.0,0.0,0.0,0.0, //average_debt_equity_ratio -> monthly_planned_output
+                0.0,0.0,                 //monthly_investment_value, investment_gdp_ratio
                 0.0,1.0,1.0,             //gdp, cpi, cpi_last_month 
-                0,0,                    //no_firm_births, no_firm_deaths
-                0,0);                   //productivity_progress, productivity
+                0,0,                     //no_firm_births, no_firm_deaths
+                0,0);                    //productivity_progress, productivity
         
         add_household_data(&REGION_HOUSEHOLD_DATA,
                 i,
@@ -882,8 +883,10 @@ int Eurostat_calculate_data_old_version()
     
     /*Execute auxiliary functions*/
     Eurostat_calc_macro_data();
+    
     Eurostat_calc_firm_population();
     //Eurostat_calc_firm_survival_rates();
+    
     Eurostat_measure_export();
     Eurostat_calc_price_index();    
     
@@ -909,7 +912,8 @@ int Eurostat_calculate_data()
 
      Eurostat_calc_macro_data();
      Eurostat_calc_firm_population();
-     Eurostat_calc_firm_survival_rates();
+     //Eurostat_calc_firm_survival_rates();
+     
      Eurostat_measure_export();
      Eurostat_calc_price_index();    
     

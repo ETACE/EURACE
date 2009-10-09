@@ -49,6 +49,7 @@ void Eurostat_reset_data(void)
                 0.0,0.0,0.0,0.0,0.0,0.0, //average_s_skill
                 0.0,0.0,0.0,0.0,0.0,     //total_earnings -> average_debt_earnings_ratio
                 0.0,0.0,0.0,0.0,0.0,0.0, //average_debt_equity_ratio -> monthly_planned_output
+                0.0,0.0,                 //monthly_investment_value, investment_gdp_ratio
                 0.0,1.0,1.0,             //gdp, cpi, cpi_last_month 
                 0,0,                     //no_firm_births, no_firm_deaths
                 0,0);                    //productivity_progress, productivity
@@ -1013,8 +1014,8 @@ void Eurostat_calc_firm_population(void)
 
     /* Reset the content of the memory variables*/
    // NO_FIRMS =0;
-   // NO_FIRM_BIRTHS=0;
-   // NO_FIRM_DEATHS=0;
+    NO_FIRM_BIRTHS=0;
+    NO_FIRM_DEATHS=0;
 
     //Reset the age distribution, and store the previous distribution (needed to compute the 1-period survival rates)
     for (i=0;i<MAX_FIRM_AGE;i++)
