@@ -30,6 +30,7 @@ firm_total_value_capital_stock      = Firm(total_value_capital_stock)
 firm_total_debt                     = Firm(total_debt)
 firm_equity                         = Firm(equity)
 firm_active                         = Firm(active)
+firm_total_sold_quantity_volume = Firm(sold_quantity_in_calendar_month)
 
 #Balance sheet: IGFirm
 igfirm_payment_account              = IGFirm(payment_account)
@@ -77,10 +78,16 @@ gov_payment_account             = Government(payment_account)
 gov_total_debt                      = Government(total_debt)
 gov_value_bonds                     = Government(bond.face_value)
 
-
 #Eurostat
 eurostat_no_firms                   = Eurostat(no_firms)
 eurostat_no_firm_deaths             = Eurostat(no_firm_deaths)
+eurostat_monthly_sold_quantity = Eurostat(monthly_sold_quantity)
+eurostat_total_sold_quantity_volume = Eurostat(export_volume_matrix[])
+eurostat_total_sold_quantity_value = Eurostat(export_value_matrix[])
+
+#Mall
+mall_total_sold_quantity_volume = Mall(export_volume_matrix[])
+mall_total_sold_quantity_value = Mall(export_value_matrix[])
 
 #########################################################################
 ::CONSTANTS
@@ -172,3 +179,19 @@ abs( eurostat_no_firms - firm_active - eurostat_no_firm_deaths) < PRECISION
 #RULE 18. FAILED
 #Daily dividend payments send and received
 abs( firm_total_dividends + igfirm_dividend_per_share*igfirm_shares_outstanding + bank_total_dividends - household_dividend_daily) < PRECISION
+
+#RULE 19. TO BE CHECKED
+#Eurostat total sold quantity compared with firm data (in volume)
+abs( eurostat_monthly_sold_quantity - firm_total_sold_quantity_volume ) < PRECISION
+
+#RULE 20. TO BE CHECKED
+#Eurostat sum of export_volume_matrix compared with firm data (in volume)
+abs( eurostat_total_sold_quantity_volume - firm_total_sold_quantity_volume ) < PRECISION
+
+#RULE 21. TO BE CHECKED 
+#Comparing Eurostat export matrix with Mall export matrix (in volume)
+abs( eurostat_total_sold_quantity_value - mall_total_sold_quantity_volume ) < PRECISION
+
+#RULE 22. TO BE CHECKED
+#Comparing Eurostat export matrix with Mall export matrix (in value)
+abs( eurostat_total_sold_quantity_value - mall_total_sold_quantity_value ) < PRECISION
