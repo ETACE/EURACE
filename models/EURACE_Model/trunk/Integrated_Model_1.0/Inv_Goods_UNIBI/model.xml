@@ -207,7 +207,7 @@
      <name>IGFirm_dividend_payment</name>
      <description></description>
      <currentState>04b</currentState>
-     <nextState>end_IGFirm</nextState>
+     <nextState>05</nextState>
      <condition>
       <time>
        <period>monthly</period>
@@ -225,7 +225,7 @@
      <name>IGFirm_idle</name>
      <description></description>
      <currentState>04</currentState>
-     <nextState>end_IGFirm</nextState>
+     <nextState>05</nextState>
      <condition>
       <not>
        <time>
@@ -236,6 +236,18 @@
      </condition>
      <inputs/>
      <outputs/>
+    </function>
+    <function>
+     <name>IGFirm_send_payment_account_to_bank</name>
+     <description></description>
+     <currentState>05</currentState>
+     <nextState>end_IGFirm</nextState>
+     <inputs/>
+     <outputs>
+      <output>
+       <messageName>bank_account_update</messageName>
+      </output>
+     </outputs>
     </function>
    </functions>
   </xagent>
