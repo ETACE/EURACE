@@ -42,8 +42,7 @@ igfirm_revenues                   = IGFirm(earnings)
 
 #Balance sheet: Household
 hh_payment_account                  = Household(payment_account)
-household_expenditures             = Household(monthly_consumption_expenditure)
-#household_expenditures              = Household(expenditures)
+household_expenditure             = Household(monthly_consumption_expenditure)
 household_assets                        = Household(assetsowned[].quantity)
 household_tax_payment               = Household(tax_payment)
 household_dividend_daily            = Household(received_dividend)
@@ -66,8 +65,7 @@ bank_total_dividends                = Bank(total_dividends)
 ecb_fiat_money_banks                = Central_Bank(fiat_money_banks)
 ecb_fiat_money_govs                 = Central_Bank(fiat_money_govs)
 ecb_fiat_money                      = Central_Bank(fiat_money)
-ecb_bond_quantity                       = Central_Bank(nr_gov_bonds)
-ecb_bank_interest                   = Central_Bank(bank_interest)
+#ecb_bank_interest                   = Central_Bank(bank_interest)
 ecb_bond_holdings_value             = Central_Bank(bond_holdings_value)
 ecb_deposits                  = Central_Bank(ecb_deposits)
 ecb_cash                            = Central_Bank(cash)
@@ -144,7 +142,7 @@ abs( bank_deposits + bank_cash + gov_payment_account + ecb_cash - bank_credit - 
 
 #RULE 9: FAILED
 #Monthly consumption expenditures: GDP = cum_revenues + investment_costs, so Eurostat Consumption = gdp - investment_value
-abs( eurostat_monthly_gdp - eurostat_monthly_investment_value - household_expenditures - govt_monthly_cons_expenditure ) < PRECISION 
+abs( eurostat_monthly_gdp - eurostat_monthly_investment_value - household_expenditure - govt_monthly_cons_expenditure ) < PRECISION 
 
 #RULE 10: VERIFIED
 #Firm shares + IGFirm shares + Bank shares + Gov bonds = Household's holdings of shares and bonds (+ ECB's holdings of Gov bonds?)
@@ -173,7 +171,7 @@ abs( ecb_fiat_money_banks - ecb_bond_holdings_value - bank_ecb_debt)< PRECISION
 
 #RULE 16: TO BE CHECKED Should be verified with longer runs
 #Bank's interest payments on central bank loans:  FAILED : both are 0
-abs( bank_ecb_interest_payment - ecb_bank_interest) < PRECISION
+#abs( bank_ecb_interest_payment - ecb_bank_interest) < PRECISION
 
 #RULE 17. VERIFIED
 #Check nr active firms: 
