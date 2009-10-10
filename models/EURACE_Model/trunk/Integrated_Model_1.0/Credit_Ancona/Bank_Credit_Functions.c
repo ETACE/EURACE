@@ -162,8 +162,6 @@ int Bank_account_update_deposits()
              }
          }
    //End of procedure
-   
-   add_bank_to_central_bank_account_update_message(ID, CASH, ECB_DEBT); 
 
     #ifndef _DEBUG_MODE   
     if (PRINT_DEBUG_EXP1 || PRINT_DEBUG)
@@ -451,6 +449,14 @@ int Bank_set_quantities_zero()
 {
     TOTAL_DIVIDENDS=0.0;
     TAXES=0.0;
+
+    return 0;
+}
+
+int Bank_update_ecb_account()
+{   
+
+   add_bank_to_central_bank_account_update_message(ID, CASH, ECB_DEBT); 
 
     return 0;
 }

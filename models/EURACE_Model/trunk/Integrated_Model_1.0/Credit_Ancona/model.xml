@@ -440,17 +440,13 @@
        </filter>
       </input>
      </inputs>
-     <outputs>
-      <output>
-       <messageName>bank_to_central_bank_account_update</messageName>
-      </output>
-     </outputs>
+     <outputs/>
     </function>
     <function>
      <name>Bank_accounting</name>
      <description>Balance sheet updates are executed.</description>
      <currentState>Bank_06</currentState>
-     <nextState>end_Bank</nextState>
+     <nextState>Bank_06</nextState>
      <condition>
       <time>
        <period>monthly</period>
@@ -471,7 +467,7 @@
      <name>Bank_idle</name>
      <description></description>
      <currentState>Bank_06</currentState>
-     <nextState>end_Bank</nextState>
+     <nextState>Bank_07</nextState>
      <condition>
       <not>
        <time>
@@ -482,6 +478,18 @@
      </condition>
      <inputs/>
      <outputs/>
+    </function>
+    <function>
+     <name>Bank_update_ecb_account</name>
+     <description>Bank sends a message to ECB with its cash (payment account of the Bank at the ECB).</description>
+     <currentState>Bank_07</currentState>
+     <nextState>end_Bank</nextState>
+     <inputs/>
+     <outputs>
+      <output>
+       <messageName>bank_to_central_bank_account_update</messageName>
+      </output>
+     </outputs>
     </function>
    </functions>
   </xagent>
