@@ -2,45 +2,45 @@
 \label{model_execution}
 
 FLAME contains a parser program called `xparser' that parses a model
-XML definition into simulation program source code that can be compiled
-together with model implementation source code. The xparser includes
+XML definition into simulation program source code. This can be compiled
+together with model implementation source code for the simulations. The xparser includes
 template files which are used to generate the simulation program source code.
 
 The xparser takes as parameters the location of the model file and an option
 for serial or parallel (MPI) version, serial being the default if the option is
 not specified.
 
-\subsection{Generated Files}
+\subsection{Xparser Generated Files}
 
-The xparser then generates simulation source code files in the same directory
-as the model file. These files include:
-
-\begin{itemize}
-  \item Doxyfile -- a configuration file for generating documentation using
- the program `doxygen'
-  \item header.h -- a C header file for global variables and function
-  declarations between source code files
-  \item low\_primes.h -- holds data used for partitioning agents
-  \item main.c -- the source code file containing the main program loop
-  \item Makefile -- the compilation script used by the program `make'
-  \item memory.c -- the source code file that handles the memory requirements
-  of the simulation
-  \item xml.c -- the source code file that handles inputs and outputs of the
-  simulation
-  \item <agent\_name>\_agent\_header.h -- the header file containing macros for
-  accessing agent memory variables
-  \item rules.c -- the source code file containing the generated rules for
-  function conditions and message input filters
-  \item messageboards.c -- deprecated?
-  \item partitioning.c -- still used?
-\end{itemize}
-
-and in parallel the additional files:
+The xparser  generates simulation source code files in the same directory
+as the model file. These files are:
 
 \begin{itemize}
-  \item propagate\_messages.c -- deprecated?
-  \item propagate\_agents.c -- still used?
+  \item Doxyfile - a configuration file for generating documentation using
+ the program `doxygen'.
+  \item header.h - a C header file for global variables and function
+  declarations between source code files.
+  \item low\_primes.h - holds data used for partitioning agents.
+  \item main.c - the source code file containing the main program loop.
+  \item Makefile - the compilation script used by the program `make'.
+  \item memory.c - the source code file that handles the memory requirements
+  of the simulation.
+  \item xml.c - the source code file that handles inputs and outputs of the
+  simulation.
+  \item <agent\_name>\_agent\_header.h - the header file containing macros for
+  accessing agent memory variables.
+  \item rules.c - the source code file containing the generated rules for
+  function conditions and message input filters.
+  \item messageboards.c - deprecated?
+  \item partitioning.c - still used?
 \end{itemize}
+
+For running in parallel, additional files are generated:
+
+\begin{itemize}
+  \item propagate\_messages.c - deprecated?
+  \item propagate\_agents.c - still used?
+\end{itemize
 
 The simulation source code files then require compilation, which can be easily
 achieved using the included compilation script `Makefile' using the `make'
@@ -53,7 +53,7 @@ The compiled program is called `main'. The parameters required to run a
 simulation include the number of iterations to run for and the initial start
 states (memory) of the agents, currently a formatted XML file.
 
-\subsection{Start States Files}
+\subsection{Start States Files 0.xml}
 
 The format of the initial start states XML is given by the following example:
 
@@ -89,3 +89,34 @@ brackets with commas between each element.
 When a simulation is running after every iteration, a states file is produced
 in the same directory and in the same format as the start states file with the
 values of each agent's memory.
+
+\subsection{Running a Simulation}
+
+After writing the model xml file and C functions files of the agent, the xparser has to be used to compile the simulation program. This is done by going into where the xparser is placed and writing the following commands:
+
+\begin{mylisting}
+\begin{verbatim}
+FLAME\_xparser> xparser.exe ../model/model.xml
+\end{verbatim}
+\end{mylisting}
+
+This creates all files which contain details of running the program. Extra files are created in `.dot' format which can be opened using Graphviz. The dot files represent graph structures of the agents which show a description of how the model will work.
+
+After creating these files, users have to go into the folder where the model was located and compile the files.
+
+\begin{mylisting}
+\begin{verbatim}
+Model>make 
+\end{verbatim}
+\end{mylisting}
+
+This creates a main program which is the main simulation program. The main.exe file can then be linked with the initial start states and the number of iterations wanted to be written out.
+\begin{mylisting}
+\begin{verbatim}
+Model>main.exe 10 its/0.xml
+\end{verbatim}
+\end{mylisting}
+
+Main.exe is the simulation program, 10 is the number of iterations to produce ad its/0.xml is the initial start states of the model which the modeller defined.
+
+
