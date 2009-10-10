@@ -19,20 +19,7 @@ int not_day_of_month_to_act()
 
 int IGFirm_idle()
 {
-     FILE *file1;
-    char *filename;
-    
-    if (PRINT_DEBUG_FILE_EXP1)
-        {                       
-            filename = malloc(40*sizeof(char));
-            filename[0]=0;
-            strcpy(filename, "its/IGFirm_daily_balance_sheet.txt");      
-            file1 = fopen(filename,"a");
-            fprintf(file1,"\n %d %d %f %f",DAY,ID, PAYMENT_ACCOUNT,CUM_ENERGY_COSTS);
-            fclose(file1);
-            free(filename);
-        }      
-        
+                 
     return 0;
 }
 
@@ -186,9 +173,7 @@ int IGFirm_pay_taxes()
 
 int IGFirm_dividend_payment()
 {
-    FILE *file1;
-    char *filename;
-    
+      
     double total_dividend_payment;
     total_dividend_payment = NET_PROFIT;
     
@@ -200,8 +185,20 @@ int IGFirm_dividend_payment()
     
     //decrease payment_account with the total_dividend_payment
     PAYMENT_ACCOUNT -= total_dividend_payment;
+        
     
-    if (PRINT_DEBUG_FILE_EXP1)
+    return 0;
+}
+
+
+int IGFirm_send_payment_account_to_bank()
+{
+      FILE *file1;
+    char *filename;
+    
+	add_bank_account_update_message(ID, BANK_ID, PAYMENT_ACCOUNT);
+	
+	    if (PRINT_DEBUG_FILE_EXP1)
         {                       
             filename = malloc(40*sizeof(char));
             filename[0]=0;
@@ -211,15 +208,6 @@ int IGFirm_dividend_payment()
             fclose(file1);
             free(filename);
         }           
-    
-    
-    return 0;
-}
-
-
-int IGFirm_send_payment_account_to_bank()
-{
-	add_bank_account_update_message(ID, BANK_ID, PAYMENT_ACCOUNT);
 
     return 0;
 }
