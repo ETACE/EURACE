@@ -2,33 +2,32 @@
 \label{model_design}
 
 Traditionally specifying software behaviour has used finite state
-machines. Extended finite state machines (X-machines) are more
-powerful than the simple finite state machine and are used to
-represent the agents. Using these machines, the following
-characteristics of the agents are identified:
+machines to express its working. Extended finite state machines (X-machines) are more
+powerful than the simple finite state machine as it gives the model more flexibility than a traditional finite state machine. 
+
+FLAME uses X-machines to represent all agents acting in the system. Each would thus possess the following characteristics:
 
 \begin{itemize}
-\item A finite set of internal states
+\item A finite set of internal states of the agent.
 \item Set of transitions functions that operate between the states.
 \item An internal memory set of the agent.
 \item A language for sending and receiving messages among agents.
 \end{itemize}
 
-
-Conventional state machines describe the state-dependent behaviour
-of a system in terms of its inputs, but this fails to include the
-effect of data. X-Machines are an extension to conventional state
+Figure \ref{fig:commxm} shows the structure of how two X-machines will communicate. The machines communicate through a common message board, to which they post and read from their messages.
+Using conventional state machines to describe the state-dependent behaviour
+of a system by outlining the inputs to the system, but this failed to include the
+effect of messages being read and the changes in the memory values of the machine. X-Machines are an extension to conventional state
 machines that include the manipulation of memory as part of the
 system behaviour, and thus are a suitable way to specify agents.
-Describing a system would thus include the following individual
-stages for creating a model:
+Describing a system in FLAME includes the following stages:
 
 \begin{itemize}
 \item Identifying the agents and their functions.
 \item Identify the states which impose some order of function
-execution.
+execution with in the agent.
 \item Identify the input messages and output messages of each function
-(including possible filters on inputs).
+(including possible filters on inputs which will be explained in Section \ref{sect:msgfilter}).
 \item Identify the memory as the set of variables that are accessed by
 functions (including possible conditions on variables for the
 functions to occur).
@@ -44,18 +43,21 @@ functions to occur).
   \end{center}
 \end{figure}
 
-Agent functions can accept an input stream of messages This is
-handled by the implementation of each function written in the source
-code.
+
 
 \subsection{Swarm Example}
 
-A swarm model is presented here as an example of how the agents
-behave. Swarm model describes the swarming behaviour in birds where
-they produce various patterns during flight. This simple flocking
-model would include agents which have to sense where other agents
-are and then respond accordingly. The functions they would possess
-would be:
+A swarm model in a model which presents the behaviour of birds flocking together. The individual birds follow simple rules, but collectively they produce complex behaviour of the group, as observed in nature.
+This simple flocking
+model involves birds to sense where other birds are and then respond accordingly. The activities or functions they perform are:
+
+\begin{itemize}
+\item Observe if there is a bird nearby.
+\item Adjust bird position, direction and velocity accordingly.
+\end{itemize}
+
+
+Converting this model into an agent-based model requires visualising the model as a collection of agents. As the only individuals involved in the model are birds, agents will be representing birds. The functions these bird agents would perform will be:
 
 \begin{itemize}
 \item Signal. The agent would send information of its current
@@ -66,10 +68,9 @@ velocity.
 velocity.
 \end{itemize}
 
-The functions would occur in an order as seen in Figure
-\ref{fig:swarm_1}. The agents would traverse through the states
-during one iteration. FLAME prevents the agents to loop back due to
-parallelisation constraints.
+The functions would occur in an order as shown in Figure
+\ref{fig:swarm_1}. The complete figure represents the functions the agents would be performing during one iteration\footnote{FLAME prevents the agents to loop back due to
+parallelisation constraints.}.
 
 
 
@@ -81,13 +82,8 @@ parallelisation constraints.
 \end{center}
 \end{figure}
 
-Functions can also have conditions in the model. For instance, in
-the swarm model, there can be a response function for flying and an
-alternate for resting on the ground. The condition on the flying
-response function would be that the z-axis position of the agent be
-greater than zero while the resting response function condition
-would be when the z-axis position was zero, see Figure
-\ref{fig:swarm_2}.
+Figure \ref{fig:swarm_2} depicts a situation where their would be conditions added to the functions of the agents. For instance, in the swarm model, there could be a condition added to the z-axis value to determine which response function to perform for the agent. If z is more than zero, the agent would be flying, else if z is zero, then the agent is stationary.
+
 
 \begin{figure}[ht]
 \begin{center}
@@ -97,48 +93,20 @@ would be when the z-axis position was zero, see Figure
 \end{center}
 \end{figure}
 
-
-\subsection{Transition Function}
- The transition functions allow the agents to change the state in
- which they are in, modifying their behaviour accordingly. These would
- require as inputs their current state $s_{1}$, current memory value
- $m_{1}$, and the possible arrival of a message that the agent is able to
- read, $t_{1}$. Depending on these three values the agent can then
- change to another state $s_{2}$, updates the memory to $m_{2}$ and
- optionally sends a message, $t_{2}$. Figure
- \ref{fig:trans} depicts how the transition function
- works within the agent.
-
-The messages required for communication between agents are a signal message,
-which is output from `signal' and input to `observe', see Figure
-\ref{fig:swarm_3}. This message would include the position of the agent that
-sent it, see Table \ref{tab:signal_message}. A feature of swarm models and most
-agent-based models is that there is generally a limit on incoming communication.
-In the swarm case this is the perceived distance of sight that an agent can view the location of other
-agents. This feature can be added to the model as a filter on inputs to a
-function, where the filter is a formula involving the position contained in the
-message (the position of the sending agent) and the receiving agent position.
+The message being used for communication between the agents, in the model, is a signal message, which is the output from `signal' function and the input to the `observe' function (Figure
+\ref{fig:swarm_3}). This message includes the position of the agent that
+sent it with the x, y and z coordinates (Table \ref{tab:signal_message}). 
 
 
- Some of the transition functions may not depend on the incoming
- message. Thus the message would then be represented as:
- \begin{equation}\label{msg}
-     Message = \{ \emptyset, <data> \}
- \end{equation}
+\begin{figure}[ht]
+\begin{center}
+\includegraphics*[scale=0.65]{swarm_3.ps}
+\caption{Swarm model including messages}
+\label{fig:swarm_3}
+\end{center}
+\end{figure}
 
- These agent transition functions may be expressed in terms of
- stochastic rules, thus allowing the multi-agent systems to be termed
- as stochastic systems.
 
- \subsection{Memory and States}
- The difference between the internal set of states and the internal
- memory set allows for added flexibility when modelling systems.
- There can be agents with one internal state and all the complexity
- defined in the memory or equivalently, there could be agents with
- a trivial memory with the complexity then bound up in a large state
- space. There are good examples of choosing an appropriate balance
- between these two as this enables the complexity of the models to be
- better managed.
 
 \begin{table}[ht]
 \centering
@@ -157,22 +125,35 @@ double&pz&z-axis position\\
 \label{tab:signal_message}
 \end{table}
 
-\begin{figure}[ht]
-\begin{center}
-\includegraphics*[scale=0.65]{swarm_3.ps}
-\caption{Swarm model including messages}
-\label{fig:swarm_3}
-\end{center}
-\end{figure}
 
-Functions that take a message type as input are only executed once all functions
-that output the same message type have finished. One iteration is taken as a
-standalone run of a simulation, so once all the functions that have a message
-type as an input have been executed, the messages are deleted as they are no
-longer required. Messages cannot be sent between iterations.
+An important factor to note here is that FLAME carries the features of a filter which can be added to the messages. This filter can ensure that only the messages in the agents viewing distance are being read, preventing each agent to traverse through all the messages on the message board. The filter will be a formula involving the position contained in the
+message (the position of the sending agent) and the receiving agent position.
 
-Finally the memory required by the agent functions include the position of the
-agent, and its velocity, as shown in Table \ref{tab:swarm_memory}.
+
+\subsection{Transition Functions}
+ Transition functions allow agents to change the state in
+ which they are in, modifying their behaviour. Transition functions take as input the current state $s_{1}$ of the agent, current memory value
+ $m_{1}$ and the possible arrival of a message that the agent reads  $t_{1}$. Depending on these three values the agent changes to another state $s_{2}$, updates the memory to $m_{2}$ and
+ optionally sends a message $t_{2}$. 
+ 
+ 
+There could be situations where some of the transition functions do not depend on the incoming
+ messages. Agent transition functions may also be expressed in terms of
+ stochastic rules, which allows the multi-agent systems to be called stochastic systems.
+
+ \subsection{Memory and States}
+ The difference between the internal set of states and the internal
+ memory set allows the added flexibility when modelling systems.
+ There can be agents with one internal state and all the complexity
+ defined in the memory or equivalently, there could be agents with
+ a trivial memory, with the complexity then bound up in a large state
+ space. It depends on the modeller's perspective on how he/she write the model and where the complexity is added.
+
+In FLAME, one iteration is taken as a
+standalone run of a simulation. Once all the functions in that iteration have taken place, the message board is emptied, deleting all the messages. This means that messages cannot be sent between iterations, thus models have to be written in a way which considers this.
+
+Table \ref{tab:swarm_memory} describes the memory variables being used by the bird agents in the swarm model. 
+
 
 \begin{table}[ht]
 \centering
@@ -197,17 +178,16 @@ double&vz&velocity in z-axis\\
 \label{tab:swarm_memory}
 \end{table}
 
-The swarm model can also be represented as a transition table, see Table
-\ref{tab:swarmtransition}, where:
+Modellers can add more variables to the agent memory as they see required. Table \ref{tab:swarmtransition} represents a transition table presentation of the swarm model. The terms in the table have been defined below:
 
 \begin{itemize}
-  \item Current State -- is the state the agent is currently in.
-  \item Input -- is any inputs into the transition function.
-  \item $M_{pre}$ -- are any preconditions of the memory on the transition.
-  \item Function -- is the function name.
-  \item $M_{post}$ -- is any change in the agent memory.
-  \item Output -- is any outputs from the transition.
-  \item Next State -- is the next state that is entered by the agent.
+  \item Current State - is the state the agent is currently in.
+  \item Input - is any inputs into the transition function.
+  \item $M_{pre}$ - are any preconditions of the memory on the transition.
+  \item Function - is the function name.
+  \item $M_{post}$ - is any change in the agent memory.
+  \item Output - is any outputs from the transition.
+  \item Next State - is the next state that is entered by the agent.
 \end{itemize}
 
 %\begin{landscape}
@@ -232,12 +212,11 @@ start&&&signal&&signal&1\\
 \end{table}
 %\end{landscape}
 
-Section \ref{model_description} on model description describes how to write a
-model description into an XML file that FLAME can understand. Section
-\ref{model_implementation} on model implementation describes how to implement
+The next Section \ref{model_description} describes how a model can be written up in the xml format that FLAME can understand. Section
+\ref{model_implementation} discusses how to implement
 the individual agent functions, i.e. $M_{post}$ from the transition table.
 Section \ref{model_execution} on model execution describes how to use the tools
-in FLAME to generate a simulation program, compile it, and run it.
+in FLAME to generate a simulation program and execute the simulations.
 
 % \begin{equation}\label{streamxmachine}
 %     X = (\Sigma, \Gamma, Q, M, \Phi, F, q_{0}, m_{0})

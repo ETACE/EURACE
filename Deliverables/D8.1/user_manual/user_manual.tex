@@ -47,8 +47,8 @@ hindrance to the modellers themselves.
 
 This document present a comprehensive guide to the keywords and
 functions available in the FLAME environment for the modellers to
-write their own agent models to facilitate research. This user
-manual describes how to create model description and write
+write their own agent models to facilitate their research. This user
+manual describes how to create a model description and write
 implementation code for the agents.
 
 Installation guides to the tools required with FLAME have been
@@ -64,29 +64,29 @@ example FLAME code and running your own models.
 
 \section{Introduction}
 
-The FLAME framework is an enabling tool to create agent-based models
+The FLAME framework is a tool which enables creation of agent-based models
 that can be run on high performance computers (HPCs). The framework
-is based on the the logical communicating extended finite state
+is based on the logical communicating extended finite state
 machine theory (X-machine) which gives the agents more power to
 enable writing of complex models for large complex systems.
 
 The agents are modelled as communicating X-machines allowing them to
 communicate through messages being sent to each other as per
-required by the modeller. This information is automatically read by
-the FLAME framework and generate a simulation program which enables
+designed by the modeller. This information is automatically read by
+the FLAME framework and generates a simulation program which enables
 these models to be parallelised efficiently over parallel computers.
 
 The simulation program for FLAME is called the \textbf{Xparser}. The
 Xparser is a series of compilation files which can be compiled with
-the modeller's files to produce the simulation package for running
+the modeller's files to produce a simulation package for running
 the simulations. Various tools have to be installed with the Xparser
-to allow the simulation program o be produced. These have been
+to allow the simulation program to be produced. These have been
 explained in the accompanying document, `\emph{Getting started with
 FLAME}'.
 
 Various parallel platforms like SCARF, (add more) have been used in
 the development process to test the efficiency of the FLAME
-framework. This work was done in conjunction with STFC and more
+framework. This work was done in conjunction with the STFC unit (Science and Technology Facilities Council) and more
 details of the results obtained can be found in `\emph{Deliverable
 1.4: Porting of agent models to parallel computers}'.
 
@@ -104,7 +104,7 @@ This document is a comprehensive guide to modellers of all
 disciplines to write their own agent models with ease. The key
 advantage of FLAME lies in the fact that modellers from all
 disciplines, regardless of belonging to the computer science
-background can write their own models with ease.
+background can write their own models easily and run parallel simulations of them.
 
 This document has been divided in the following order, Section
 \ref{chap:design} describes the X-machine methodology to explain the

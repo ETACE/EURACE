@@ -2,8 +2,8 @@
 \label{model_description}
 
 Models descriptions are formatted in XML (Extensible Markup Language) tag
-structures to allow easy human and computer readability, and allow easier collaborations between
-developers writing applications that interact with model definitions.
+structures to allow easy human and computer readability. This also allows easier collaborations between the
+developers writing the application functions that interact with model definitions in the XML.
 
 The DTD (Document Type Definition) of the XML document is currently located
 at:
@@ -14,7 +14,7 @@ http://eurace.cs.bilgi.edu.tr/XMML.dtd
 \end{verbatim}
 \end{mylisting}
 
-The start and end of a model file should be formatted as follows:
+For users who are familiar with the HTML structure, a XML document is structured in a similar way as a nested tree structure, where tags contain data or other tags within them. This structure can be condensed into one level or a number of levels within the parent levels. In FLAME, the start and the end of a model file looks like as follows:
 
 \begin{mylisting}
 \begin{verbatim}
@@ -29,35 +29,37 @@ The start and end of a model file should be formatted as follows:
 \end{verbatim}
 \end{mylisting}
 
-Where name is the name of the model, version is the version, and description
-allows the description of the model. Models can also contain:
+The complete model is contained within the tag level of '\emph{xmodel}' . The \emph{name} of the model is the name of the model being modelled, \emph{version} denotes the version number of the model. The \emph{description} tags allows the model description to be contained in it for modellers to make notes. 
+
+\subsection{Tags within the XModel}
+Defining the xmodel is the parent level in the xml file being read by FLAME. This xmodel can be condensed into a number of different tag trees which contain further details about the model. These tags can contain information about:
 
 \begin{itemize}
-\item \textbf{Other models} (enabled or disabled)
-\item \textbf{Environment}
+\item \textbf{Other models} - Other models can be enabled or disabled when being plugged into a model. This is to allow modeller to test more than one model at a time as well as mix a number of models together.
+\item \textbf{Environment} - The environment contains the global variables of the model in which the agents exist in. Sometimes modellers make the environment act as an agent too with functions and memory states. But this requires another agent to be listed. Here the environment can act as global with constant values for all agents.
 \begin{itemize}
-\item constant variables
-\item location of function files
-\item time units
+\item Constant variables - Global variables.
+\item Location of function files - Location where the functions or C files of the agents are located. 
+\item Time units - Enables the programming of calenders, which can be assigned to each function to enable it to be active only at specific times during the simulation.
 % \begin{itemize}
 % \item name
 % \item *** unit
 % \item *** period
 % \end{itemize}
-\item data types
+\item Data types - Agent memories can use data structures for some of the variables instead of the traditional C variable types like int, char or double. These data types can be defined by the modeller to contain more than one type or array within it.
 % \begin{itemize}
 % \item name
 % \item description
 % \item variables
 % \end{itemize}
 \end{itemize}
-\item \textbf{Agent types}
+\item \textbf{Agent types} - The agents involved in the system. For instance, in the swarm model, there was only one type of agent the bird agents. In an alternate model of the predator prey model there are two agent types, the fix and the rabbit. These depend on the model being modelled and the modeller's perspectives.
 \begin{itemize}
-\item name
-\item description
-\item memory
+\item Name - Name of the agent type
+\item Description - Textual description of the agent.
+\item Memory - A list of the memory variables for each type of agent.
 % *** variables
-\item functions
+\item Functions - A list of functions the agent can perform. These functions are encapsulated with states like the current and the next state to move to after this function has been executed. The functions would also contain the names of the messages being read in or output from the functions.
 % *** name
 % *** description
 % *** current state
@@ -67,24 +69,26 @@ allows the description of the model. Models can also contain:
 % **** filter
 % *** outputs
 \end{itemize}
-\item \textbf{Message types}
+\item \textbf{Message types} - These are a list of all the messages being used in the model.
 \begin{itemize}
-\item name
-\item description
-\item variables
+\item Name - Name of the message.
+\item Description - Textual description of the message.
+\item Variables - Variables encapsulated with in the message.
 \end{itemize}
 \end{itemize}
+
+Refer to the Appendix to see how these tags are brought together in one model xml file.
 
 \subsection{Model in Multiple Files}
 
-It is possible to define a model in multiple files. FLAME reads a model from
+It is possible to define a model in a collection of multiple files. FLAME reads a model from
 multiple files as if the model was defined in one file. This capability allows
 different parts of a model to be enabled or disabled easily. For example if a
-model includes different versions of a sub-model that can be exchanged, or a
+model includes different versions of a sub-model, these can be exchanged, or a
 subsystem of a model can be disabled to see how it affects the model.
 Alternatively this capability could be used as a hierarchy, for example a `body'
 model could include a model of the `cardiovascular system' that includes a
-model of the `heart'. The following tags show the inclusion of two models, one
+model of the `heart'. The following tags show the inclusion of two models, one is
 enabled and one disabled:
 
 \begin{mylisting}
@@ -96,19 +100,20 @@ enabled and one disabled:
 \end{verbatim}
 \end{mylisting}
 
+
 \subsection{Environment}
 
 The environment of a model holds information that maybe required by a model but
 is not part of an agent or a message. This includes:
 
 \begin{itemize}
-\item constant variables -- for setting up different simulations easily
-\item location of function files -- the path to the implementations of agent
-functions
-\item time units -- for easily activating agent functions dependent on time
-periods
-\item data types -- user defined data types used by agent memory or
-message variables
+\item Constant variables - for setting up different simulations easily.
+\item Location of function files - the path to the implementations of agent
+functions in C files.
+\item Time units - for easily activating agent functions dependent on time
+periods.
+\item Data types - user defined data types used by agent memory or
+message variables other that typical C data types.
 \end{itemize}
 
 This notion of environment does not correspond to an environment that would be
@@ -119,8 +124,7 @@ itself must be represented by an agent.
 
 \subsubsection{Constant Variables}
 
-These are constant variables that can be set as part of a simulation runs
-initial starting values, and can be defined as follows:
+Constant variables can be set up as part of a simulation for the runs. These are defined as follows:
 
 \begin{mylisting}
 \begin{verbatim}
@@ -133,25 +137,25 @@ initial starting values, and can be defined as follows:
 \end{verbatim}
 \end{mylisting}
 
-% Constant Variables refers to the global values used in the model. These can me
-% defined in a separate header file which can then be included in one of the
-% functions file.
-%
-% The header file would look as follows:
-%
-% \begin{mylisting}
-% \begin{verbatim}
-% #define <varname> <value>
-% \end{verbatim}
-% \end{mylisting}
-%
-% If this file was saved as a `my\_header.h' file, include this file into one of
-% the function files so that the compiler knows about these arguments.
+
+Constant Variables refers to the global values used in the model. These can also be
+defined in a separate header H file which can then be included in one of the
+functions C file.
+The header file should contain the global variable as:
+
+ \begin{mylisting}
+ \begin{verbatim}
+#define <varname> <value>
+ \end{verbatim}
+ \end{mylisting}
+
+ This file has to be saved as `my\_header.h' file, include this file into one of
+ the function files so that the compiler knows about these arguments.
 
 \subsubsection{Function Files}
 
 Function files hold the source code for the implementation of the
-agent functions.
+agent functions. These are programmed in C language.
 They are included in the compilation script (Makefile) of the produced model:
 
 \begin{mylisting}
@@ -180,9 +184,9 @@ definition to define other time units, for example weeks, months, and years.
 A time unit contains:
 
 \begin{itemize}
-\item name -- name of the time unit.
-\item unit -- can contain `iteration' or other defined time units.
-\item period -- the length of the time unit using the above units.
+\item Name - name of the time unit.
+\item Unit - can contain `iteration' or other defined time units.
+\item Period - the length of the time unit using the above units.
 \end{itemize}
 
 An example of a calendar based time unit set up is given below:
@@ -224,21 +228,23 @@ An example of a calendar based time unit set up is given below:
 \end{verbatim}
 \end{mylisting}
 
+These time units can be added to the functions, when they are listed as part of the agent. These time units act as conditions on the functions. This has been discussed in Section \ref{functioncond}.
+
 \subsubsection{Data Types}
 
 Data types are user defined data types that can be used in a model. They are a
-structure for holding variables. Variables can be:
+structure for holding variables. Variables can be a:
 
 \begin{itemize}
-  \item single C fundamental data types -- int, float, double, char.
-  \item static array -- of size ten: variable\_name[10].
-  \item dynamic array -- available by placing `\_array' after
+  \item Single C fundamental data types - int, float, double, char.
+  \item Static array - of size ten: variable\_name[10].
+  \item Dynamic array - available by placing `\_array' after
   the data type name: variable\_name\_array.
-  \item user defined data type -- defined before the current data type.
+  \item User defined data type - defined before the current data type.
 \end{itemize}
 
-The example below the data type \emph{line} contains a variable
-of data type \emph{position} which is defined above it:
+The example below contains a variable
+of data structure \emph{position} which contains the x, y and z position in one structure. The position data structure can then be a data type in the \emph{line} data structure.
 
 \begin{mylisting}
 \begin{verbatim}
@@ -279,7 +285,7 @@ of data type \emph{position} which is defined above it:
 
 \subsection{Agents}
 
-An agent type contains a name, a description, memory, and functions:
+A model has to constitute agents. These agents are defined as their type in the model xml file. An agent type contains a name, a description, memory, and functions:
 
 \begin{mylisting}
 \begin{verbatim}
@@ -356,26 +362,29 @@ description:
  <variable><type>double</type><name>x</name>
   <description>position in x-axis</description>
  </variable>
+  <variable><type>position</type><name>xyz</name>
+  <description>position in x-axis, y-axis, z-axis</description>
+ </variable>
 </memory>
 \end{verbatim}
 \end{mylisting}
 
 \subsubsection{Agent Functions}
 
-An agent function contains:
+The model xml file requires the agent functions to be listed as well to tell FLAME when the functions will be called in from the C files. An agent function contains:
 
 \begin{itemize}
-\item name - the function name which must correspond to an implemented function
+\item Name - the function name which must correspond to an implemented function
 name
-\item description
-\item current state - the current state the agent has to be in.
-\item next state - the next state the agent will transition to.
-\item condition - a possible condition of the function transition.
-\item inputs - the possible input messages.
-\item outputs - the possible output messages.
+\item Description
+\item Current state - the current state the agent has to be in for this function to execute.
+\item Next state - the next state the agent will transition to after the function.
+\item Condition - a possible condition of the function transition.
+\item Inputs - the possible input messages.
+\item Outputs - the possible output messages.
 \end{itemize}
 
-And as tags:
+And as tags, the xml file will contain:
 
 \begin{mylisting}
 \begin{verbatim}
@@ -402,27 +411,26 @@ only place where states are defined. State names must coordinate with other
 functions states to produce a transitional graph from the start state to end
 states.
 
-%\paragraph{Function Condition}
+\subsubsection{Function Condition}
 \label{functioncond}
 
 A function can have a condition on its transition. This condition can include
 conditions on the agent memory and also on any time units defined in the
-environment. At any state with outgoing transitions with conditions it must be
-possible for a transition to happen, i.e. it must be possible for every agent
-to transition from the start state to an end state. Each possible transition
-must be mutually exclusive, i.e. the order that the function conditions are
-tested is not defined. A function named `idle' is available to be used for
-functions that do not require an implementation.
+environment. Each transition will take the agent from a starting state to an end state at the end of the simulation.
+
+Each possible transition
+must be mutually exclusive. This means that if a certain condition is true on one part of the branch of functions, there should be an alternate branch which would be the opposite of this condition. This will ensure the model does not halt in the middle during simulation if the condition fails. A function named `idle' is available to be used for
+functions that do not require an implementation and a reverse of the conditions.
 
 Conditions (that are not just time unit based) take the form:
 
 \begin{itemize}
-  \item lhs -- left hand side of comparison
-  \item op -- the comparison operator
-  \item rhs -- the right hand side of the comparison
+  \item lhs - left hand side of comparison.
+  \item op - the comparison operator.
+  \item rhs - the right hand side of the comparison.
 \end{itemize}
 
-Or in tags:
+Or in tags form:
 
 \begin{mylisting}
 \begin{verbatim}
@@ -430,30 +438,30 @@ Or in tags:
 \end{verbatim}
 \end{mylisting}
 
-Sides to compare (lhs or rhs) can be either a value, denoted by value tags,
-a formula, currently also in value tags, or another comparison rule.
-Values and formula can include agent variables which are preceded by `a'.
+Sides to compare (lhs or rhs) can be either a value, denoted within value tags or
+a formula. 
+Values and formulas can include agent variables, which are preceded by `a', or message variables, which are preceded by `m.'.
 
-% \begin{mylisting}
-% \begin{verbatim}
-% a.agent_var
-% m.message_var
-% \end{verbatim}
-% \end{mylisting}
+ \begin{mylisting}
+ \begin{verbatim}
+ a.agent_var
+ m.message_var
+ \end{verbatim}
+ \end{mylisting}
 
-The comparison operator can be one of the following comparison functions:
+The comparison operator, op, can be one of the following comparison functions:
 
 \begin{itemize}
-\item EQ -- equal to
-\item NEQ -- not equal to
-\item LEQ -- less than or equal to
-\item GEQ -- greater than or equal to
-\item LT -- less then
-\item GT -- greater than
-\item IN -- an integer (in lhs) is a member of an array of integers (in rhs)
+\item EQ - equal to.
+\item NEQ - not equal to.
+\item LEQ - less than or equal to.
+\item GEQ - greater than or equal to.
+\item LT - less then.
+\item GT - greater than.
+\item IN - an integer (in lhs) is a member of an array of integers (in rhs).
 \end{itemize}
 
-or can be one of the following logic operators as well:
+Or one of the following logic operators can be used as well:
 
 \begin{itemize}
 \item AND
@@ -484,6 +492,8 @@ the `z' variable of the agent is greater than zero and less than ten:
 \end{verbatim}
 \end{mylisting}
 
+\subsubsection{Time conditions}
+
 A condition can also depend on any time units described in the environment. For
 example the following condition is true when the agent variable
 `day\_of\_month\_to\_act' is equal to the number of iterations since of the
@@ -501,19 +511,20 @@ the time unit:
 \end{verbatim}
 \end{mylisting}
 
-% The condition allows the function to run \emph{monthly} at the phase
-% of \emph{day\_of\_month\_to\_act}. The
-% \emph{day\_of\_month\_to\_act} is a variable extracted from the
-% agent memory and is thus defined as
-% \emph{a.day\_of\_month\_to\_act}.
+ The condition allows the function to run \emph{monthly} at the phase
+ of \emph{day\_of\_month\_to\_act}. The
+ \emph{day\_of\_month\_to\_act} is a variable extracted from the
+ agent memory and is thus defined as
+ \emph{a.day\_of\_month\_to\_act}.
+
 %
 % Refer to section \ref{functioncond} for more details on function
 % condition definitions.
 %
 % These rules are then parsed into rule functions and placed in a file
 % called rules.c
-
-Functions can have input and output message types. For example the following
+\subsubsection{Messages in and out of Functions}
+Functions can have input and output message types. For example, the following
 example the function takes message types `a' and `b' as inputs and outputs
 message type `c':
 
@@ -530,10 +541,10 @@ message type `c':
 \end{mylisting}
 
 %\paragraph{Message Filter}
-
-Message filters can be applied to message inputs and allow the messages to be
+\subsubsection{Filters}\label{sect:msgfilter}
+Message filters can be applied to message inputs to allow the messages to be
 filtered. Filters are defined similar to function conditions but include
-message variables which are prefixed by an `m'. The following filter only
+message variables which are prefixed by an `m'. The following example filter only
 allows messages where the agent variable `id' is equal to the message variable
 `worker\_id':
 

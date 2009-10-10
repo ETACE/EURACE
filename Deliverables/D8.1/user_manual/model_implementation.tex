@@ -2,7 +2,7 @@
 \label{model_implementation}
 
 The implementations of each agent's functions are currently written in separate
-files written in C, suffixed with `.c'. Each file must include two
+files in C language, suffixed with `.c'. Each file must include two
 header files, one for the overall framework and one for the particular agent that the functions are for.
 Functions for different agents cannot be contained in the same file.
 Thus, at the top of each file two headers are required:
@@ -14,7 +14,7 @@ Thus, at the top of each file two headers are required:
 \end{verbatim}
 \end{mylisting}
 
-Where `<agent\_name>' is replaced with the actual agent name.
+Where `<agent\_name>' is replaced with the actual agent type name.
 Agent functions can then be written in the following style:
 
 \begin{mylisting}
@@ -78,7 +78,7 @@ MY_DATA_TYPE.variablename
 \subsubsection{Using Model Data Types}
 
 The following is an example of how to use a data type called
-\emph{vacancy}:
+\emph{vacancy} which was defined in the model xml file:
 
 \begin{mylisting}
 \begin{verbatim}
@@ -146,7 +146,7 @@ array variable name must be capitalised.
 
 \subsection{Sending and receiving messages}
 
-Messages can be read using macros to loop through the incoming message list as
+Messages can be traversed with in a function. The messages can be read using macros to loop through the incoming message list as
 per the template below, where `messagename' is replaced by the actual message
 name. Message variables can be accessed using an arrow `->':
 
@@ -158,7 +158,7 @@ FINISH_MESSAGENAME_MESSAGE_LOOP
 \end{verbatim}
 \end{mylisting}
 
-Messages are sent or added to the message list by
+Messages are sent or added to the message list by,
 \begin{mylisting}
 \begin{verbatim}
  add_messagename_message(var1, .. varN);
