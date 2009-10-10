@@ -102,6 +102,16 @@ FLAME\_xparser> xparser.exe ../model/model.xml
 
 This creates all files which contain details of running the program. Extra files are created in `.dot' format which can be opened using Graphviz. The dot files represent graph structures of the agents which show a description of how the model will work.
 
+By default, the xparser will generate files for running the model in a serial format. If parallel version of the model was required then just an extra tag has to be added,
+
+\begin{mylisting}
+\begin{verbatim}
+FLAME\_xparser> xparser.exe ../model/model.xml -p
+\end{verbatim}
+\end{mylisting}
+
+The parallel version, by default, produces code for geometric partitioning of the agents depending on the locations. 
+
 After creating these files, users have to go into the folder where the model was located and compile the files.
 
 \begin{mylisting}
@@ -119,4 +129,11 @@ Model>main.exe 10 its/0.xml
 
 Main.exe is the simulation program, 10 is the number of iterations to produce ad its/0.xml is the initial start states of the model which the modeller defined.
 
+\begin{mylisting}
+\begin{verbatim}
+Model>mpirun -np 2 main.exe 10 its/0.xml -r
+\end{verbatim}
+\end{mylisting}
+
+If the model is being executed in parallel, the mpirun is called to use MPI (Message passing Interface) for running the model. 2 denotes the number of nodes the model is being divided over and the `-r' flag denotes a round robin distribution of the agents over the modes. This flag is optionary.
 
