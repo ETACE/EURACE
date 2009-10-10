@@ -446,7 +446,7 @@
      <name>Bank_accounting</name>
      <description>Balance sheet updates are executed.</description>
      <currentState>Bank_06</currentState>
-     <nextState>Bank_06</nextState>
+     <nextState>Bank_07</nextState>
      <condition>
       <time>
        <period>monthly</period>
