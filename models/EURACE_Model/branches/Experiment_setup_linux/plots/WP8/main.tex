@@ -1,0 +1,108 @@
+\documentclass{article}
+\usepackage{epsfig,graphicx,verbatim, boxedminipage, url}
+\begin{document}
+\section{Benchmark Simulations with the EURACE Model}
+%\today
+
+
+\section{Simulation results}
+
+\subsection{Transient period}
+Before we show the benchmark results, we show a transient run for the default parameter settings.
+Figure \ref{Figure: transient time} shows a simulation of the model for $20$ batch runs of $5000$ iterations.
+After approximately $1000$ iterations the transient phase settles down to quasi-stable stochastic behavior.
+
+We summarize the data using a box-and-whisker plot in which the dark grey area shows the data between Q1 and Q3 ($50\%$ of the data) and
+ the light grey area indicates the outer hinges of the distribution, i.e. $1.5$ times the interquartile range (IQR).
+In Figure \ref{Figure: run batch} the box plots show the distribution for each single run.
+The outlyers are shown individualy.
+
+\bigskip
+[These points need to be written in a paragraph of text:]
+\begin{itemize}
+\item GDP converges to 
+\item The unemployment rate approaches a stable level of $30\%$.
+\item Inflation rates are between $-5\%$ and $+5\%$ for most periods,
+ but in some periods inflation rates of $-20\%$ and $+20\%$ can occur.
+\item The investment/GDP ratio cycles around $15\%$.
+\end{itemize}
+
+\subsection{Benchmark scenario}
+In this section we show a more detailed overview of the economy that will serve as our benchmark scenario.
+We show cross sectional data across the various sectors of the economy (Consumption goods, Investment goods, Credit market),
+and for the different agent types (Firms, Banks, Households). 
+See Table \ref{Table: Constants} for a listing of all parameter settings.
+
+Of course there is always a danger of showing too many plots and too much data,
+but it appears to us essential to do this exercise one time and to show the reader how
+all the elements of the EURACE system fit together.
+
+In this and all following sections we ommit the transient phase of $1000$ periods and show only results for iterations $1001-5000$.
+All plots show distributional data for $20$ batch runs. The results reported here are for an income tax rate of $10\%$.
+
+\subsubsection*{Macrodata}
+We have already shown the general trends pertaining to the macroeconomic data in \ref{Figure: transient time} above. 
+In Figure \ref{Figure: Eurostat macrodata growth rates} we show the growth rates of GDP, monthly output, the unemployment rate, and the average wage.
+
+
+[These points need to be written in a paragraph of text:]
+\begin{itemize}
+\item The GDP growth rate is about $3-4\%$ annually.
+\item Output growth rate is approx. $4\%$.
+\item The average wage grows about $3\%$ per year.
+\end{itemize}
+
+\subsubsection*{Government}
+For the Government financing we show in Figure \ref{Figure: Government} the monthly tax revenues, total benefit payments, the monthly budget balance,
+and the total amount of bond financing.
+
+The growth rate of tax revenues and of benefit payments are approximately equal, but
+since the level of tax revenues is lower than the unemployment benefit payout there is a monthly budget deficit.
+This deficit needs to be financed by government bonds, as showns in Fig. \ref{Figure: Government}d.
+
+\subsubsection*{Firms}
+For the firms we show in Figure \ref{Figure: Firm Production} the monthly output, cumulative revenues, number of employees, the actual capital price paid for machinery, and the firm's payment account. The number of employees is 25 on average.
+
+The earnings data and the cumulative revenues show a wide distribution. To show that this is not due to one or two runs in the $20$ batch runs, but a general feature of all the runs, we  show in \ref{Figure: Firm Production batch} the complete set of batch run box plots. This plot makes clear that in each run the distribution across firms of earnings and cumulative revenues is a wide distribution.
+Whether or not the earnings distribution has power law tails we have not yet investigated.
+
+The firms' financial data are shown in Figure \ref{Figure: Firm Financial Data}. We show total assets, debt and equity, as well as
+the average debt earnings ratio and the average debt equity ratio (first averaged across firms, then averaged across runs).
+
+Total assets increase, while total debt decreases, so equity is increased. Total earnings stabilize to a level of 50.
+The debt earnings ratios and the debt equity ratios decrease asymptotically to 0 since debt decreases.
+
+\subsubsection*{Labour market}
+From the labour market data we show the average unemployment rate, the unemployment rate for skill level 1 and 5, the average wage and 
+average wage for skill level 1 and 5. Then we show the total number of vacancies, the labour/profit share ratio and the average specific skill level in the economy.
+
+Figure \ref{Figure: Labour Market} shows that the unemployment rate stabilizes to $32\%$, but due to the heteregeneity in workers' skill level there are stark differences: the unemployment for skill level 1 is $56\%$ while for skill level  5 it is $14\%$.
+
+Figure \ref{Figure: Labour Market 2} shows that the average labour share ratio converges to 3, which means that the total wage bill is 3 times the profits.
+
+\subsubsection*{Consumption Goods Market}
+Figure \ref{Figure: Consumption Market}.
+From the consumption goods market we show data pertaining to: monthly outpu, monthly planned output, quantity sold, totall monthly revenues,
+the firms' average productivity, and the firms' average productivity progress. This should give a good idea of the production sector.
+All data are steadily increasing with the average productivity progress of $0.25\%$.
+
+\subsubsection*{Credit Market}
+There are 2 banks in the system. 
+We show the banks' cash, total deposits, the total credit given to firms, its equity, ECB debt, and its total dividend payout.
+On the credit market we see in Figure \ref{Figure: Credit Market} that banks deposits are incresing, total credits to firms are converging to a constant levele, and banks' equity is increasing. Furthermore, banks have 0 ECB debt, and are able to pay out positive dividends to the households.
+
+
+\section{Tax rate scenarios}
+In a first sensitivity analysis we consider four income tax rate scenarios using respectively $5\%$, $10\%$, $20\%$ and $25\%$.
+
+In Figure \ref{Figure: scenarios} we show the results for GDP and the unemployment rate across the four tax rate scenarios.
+If we increase the tax rate the GDP decreases and unemployment increases.
+
+
+%%%%%%%%%%%%%%% Include all figures
+\input{transient}
+\input{Overview}
+\input{scenarios}
+
+\end{document}
+
