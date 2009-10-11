@@ -136,67 +136,67 @@ abs( firm_payment_account + igfirm_payment_account + hh_payment_account - bank_d
 #Credit money:
 abs( bank_credit - firms_total_loans) < PRECISION
 
-#RULE 8: FAILED
-#Fiat money: count all cash in the banking sector and in the public sector (government). This should equal the fiat money #created by the central bank and given to government, plus all ecb debt given to the banks. 
-abs( bank_deposits + bank_cash + gov_payment_account + ecb_cash - bank_credit - ecb_fiat_money) < PRECISION
-
 #RULE 9: FAILED
 #Monthly consumption expenditures: GDP = cum_revenues + investment_costs, so Eurostat Consumption = gdp - investment_value
 abs( eurostat_monthly_gdp - eurostat_monthly_investment_value - household_expenditure - govt_monthly_cons_expenditure ) < PRECISION 
 
-#RULE 10: VERIFIED
+#RULE 9: VERIFIED
 #Firm shares + IGFirm shares + Bank shares + Gov bonds = Household's holdings of shares and bonds (+ ECB's holdings of Gov bonds?)
 abs( firm_current_shares_outstanding + igfirm_shares_outstanding + bank_current_shares_outstanding + govt_outstanding_bonds - household_assets) < PRECISION
 
-#RULE 11: FAILED
+#RULE 10: FAILED
 #Debt installment payments by firms to banks: 
 abs( firm_debt_installments - bank_loan_installments) < PRECISION
 
-#RULE 12: FAILED
+#RULE 11: FAILED
 #Interest payments by firms to banks:
 abs( firm_interest_payments_to_banks - bank_interest_payments_from_firms) < PRECISION
 
-#RULE 13: VERIFIED
+#RULE 12: VERIFIED
 #Taxes: 
 abs( firm_tax_payment + igfirm_tax_payment + household_tax_payment + bank_tax_payment - govt_monthly_tax_revenues) < PRECISION
 
-#RULE 14: FAILED - small
+#RULE 13: FAILED - small
 #Deposits at ECB
 abs( bank_payment_account + gov_payment_account - ecb_deposits)< PRECISION
 
-#RULE 15: TO BE CHECKED Should be verified with longer runs, since banks do not yet have ECB debt after 100 iterations.
-#Bank's ECB debt
-#The total debt of banks to ecb is found on the ECB balance sheet (LHS), and on the bank balance sheet (RHS)
-abs( ecb_fiat_money_banks - ecb_bond_holdings_value - bank_ecb_debt)< PRECISION
-
-#RULE 16: TO BE CHECKED Should be verified with longer runs
+#RULE 14: TO BE CHECKED Should be verified with longer runs
 #Bank's interest payments on central bank loans:  FAILED : both are 0
 #abs( bank_ecb_interest_payment - ecb_bank_interest) < PRECISION
 
-#RULE 17. VERIFIED
+#RULE 15: VERIFIED
 #Check nr active firms: 
 abs( eurostat_no_firms - firm_active - eurostat_no_firm_deaths) < PRECISION
 
-#RULE 18. FAILED
+#RULE 16: FAILED, reason: likely the resetting of flow variables
 #Daily dividend payments send and received
 abs( firm_total_dividends + igfirm_dividend_per_share*igfirm_shares_outstanding + bank_total_dividends - household_dividend_daily) < PRECISION
 
-#RULE 19. TO BE CHECKED
+#RULE 17: VERIFIED
 #General quantity conservation rule: nr of goods
 #Eurostat total sold quantity compared with firm data (in volume)
 abs( eurostat_monthly_sold_quantity - firm_total_sold_quantity_volume ) < PRECISION
 
-#RULE 20. TO BE CHECKED
+#RULE 18: TO BE CHECKED
+#Investments in monetary value: Eurostat vs IGFirm
+abs( eurostat_monthly_investment_value - igfirm_revenues ) < PRECISION
+
+#RULE 19: TO BE CHECKED Should be verified with longer runs, since banks do not yet have ECB debt after 100 iterations.
+#Bank's ECB debt
+#The total debt of banks to ecb is found on the ECB balance sheet (LHS), and on the bank balance sheet (RHS)
+abs( ecb_fiat_money_banks - ecb_bond_holdings_value - bank_ecb_debt)< PRECISION
+
+#RULE 20: TO BE CHECKED
 #ECB fiat money definition sum
 abs( ecb_fiat_money - ecb_fiat_money_govs - ecb_fiat_money_banks) < PRECISION
 
-#RULE 21. TO BE CHECKED
+#RULE 21: FAILED
+#Fiat money: count all cash in the banking sector and in the public sector (government). This should equal the fiat money #created by the central bank and given to government, plus all ecb debt given to the banks. 
+abs( bank_deposits + bank_cash + gov_payment_account + ecb_cash - bank_credit - ecb_fiat_money) < PRECISION
+
+#RULE 22: TO BE CHECKED
 #General money conservation rule
 abs( bank_deposits +  ecb_deposits + ecb_cash - bank_credit - ecb_fiat_money) < PRECISION
-
-#RULE 22. TO BE CHECKED
-#Investments in monetary value: Eurostat vs IGFirm
-abs( eurostat_monthly_investment_value - igfirm_revenues ) < PRECISION
 
 
 
