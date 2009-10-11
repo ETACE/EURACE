@@ -118,11 +118,7 @@ int Bank_decide_credit_conditions()
 
 int Bank_account_update_deposits()
 {
-   //  #ifndef _DEBUG_MODE  
-        FILE *file1=NULL;
-        char * filename="";
-  //  #endif
-    
+  
       DEPOSITS=0; //reset total deposits        
         
       START_BANK_ACCOUNT_UPDATE_MESSAGE_LOOP 
@@ -172,22 +168,7 @@ int Bank_account_update_deposits()
         getchar();
     }
     #endif   
-    
-       // #ifndef _DEBUG_MODE                         
-    if (PRINT_DEBUG_FILE_EXP1)
-    {                       
-        filename = malloc(40*sizeof(char));
-        filename[0]=0;
-        strcpy(filename, "its/banks_daily_balance_sheet.txt");      
-        file1 = fopen(filename,"a");
-        fprintf(file1,"\n %d %d %f %f",DAY,ID,FIRM_LOAN_ISSUES,FIRM_LOAN_INSTALLMENTS);
-        fprintf(file1," %f %f %f %f %f",TOTAL_CREDIT,CASH,DEPOSITS,ECB_DEBT,EQUITY);
-        fclose(file1);
-        free(filename);
-        
-    }                 
-   // #endif
-              
+             
     return 0;
 }
 
@@ -455,8 +436,28 @@ int Bank_set_quantities_zero()
 
 int Bank_update_ecb_account()
 {   
+     //  #ifndef _DEBUG_MODE  
+        FILE *file1=NULL;
+        char * filename="";
+  //  #endif
+    
 
    add_bank_to_central_bank_account_update_message(ID, CASH, ECB_DEBT); 
+   
+      // #ifndef _DEBUG_MODE                         
+    if (PRINT_DEBUG_FILE_EXP1)
+    {                       
+        filename = malloc(40*sizeof(char));
+        filename[0]=0;
+        strcpy(filename, "its/banks_daily_balance_sheet.txt");      
+        file1 = fopen(filename,"a");
+        fprintf(file1,"\n %d %d %f %f",DAY,ID,FIRM_LOAN_ISSUES,FIRM_LOAN_INSTALLMENTS);
+        fprintf(file1," %f %f %f %f %f",TOTAL_CREDIT,CASH,DEPOSITS,ECB_DEBT,EQUITY);
+        fclose(file1);
+        free(filename);
+        
+    }                 
+   // #endif
 
     return 0;
 }
