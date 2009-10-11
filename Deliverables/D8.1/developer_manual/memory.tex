@@ -1,22 +1,152 @@
+
+\section{XParser Distribution}
+The xparser is distributed as a series of template files accompanied with a few header files. These template files can be downloaded in to the desired directory. The freely available GCC compiler is then used to compile the files on the machine.
+
+The libmboard is an additional feature of the xparser which is being developed to increase the efficiency of parallel communication of large computers. This file can also be downloaded and compiled on the machine for running the simulations. Details of installation and tools have been provided in an accompanying guide `\emph{Getting started with Flame}'.
+
+\section{XParser generated files}
+Reading the accompanying document `\emph{FLAME User Manual}', it is explained that when executing the xparser with the model, a number of files are generated as part of the simulation package. These files are as follows,
+
+\begin{itemize}
+\item Doxyfile - Generated documentation for the model.
+\item Header files for each agent memory - Contains pointers for accessing agent memory during simulation.
+\item Header.h  - Memory for the xparser.
+\item Low\_primes.h - For partitioning of the agents.
+\item Main.c - The main C code for running the simulation.
+\item Main.exe - The simulation file.
+\item MakeFile - Makefile contains the details of the locations of the files, flags associated etc.
+\item Memory.c - contains the memory functions like reading through messages or agents.
+\item Messageboard.c - deprecated?
+\item Partitioning.c -deprecated?
+\item Rules.c - deprecated?
+\item Xml.c - Contains functions to parse through the xml file.
+\end{itemize}
+
+Figure \caption{block diagram of the series of files read for creating the model simulation package}
+
+Figure \ref{} describes a series of steps which the xparser goes through to generate a simulation package of the model. These steps have been explained as follows:
+\begin{enumerate}
+\item Reading in the model. The template Readmodel.tmpl provides these functions. This file allows reading of the various tags in the model xml file.
+\item Creating of dependency graph. The dot files are generated which are known as a series of stategraph files. These diagrams display the description of the model, which order the functions are called in and the different layers which denote the synchronisation points among the agent functions due to communication dependencies.
+\item Writing out the make file. This file contains the location of various files, like the libmboard and more.
+\item Writing out the xml.c file. This file contains functions for reading specific data variables like static arrays, ints or doubles with in the agent memory. It also contain functions for reading the data structures within the agent memory, for example:
+
+\begin{mylisting}
+\begin{verbatim}
+read_mall_strategy(char * buffer, int * counter, mall_strategy * tempdatatype)
+\end{verbatim}
+\end{mylisting}
+
+The file also contains functions on reading the initial starting states file for the agent memories. For this purpose it opens the `0.xml' file and reads these values.
+
+For parallel computation, an array is initialised for allowing round robin distribution of the agents.
+
+\item Writing out the main.c file. This is the main file which contains the complete xparser functions being called. It reads in the number of iterations needed for the simulation, the initial start states file, generate partitions for parallel computing and saves the iteration data in progressive xml files. This file also performs additional functions, like
+
+\begin{itemize}
+\item traverses through the different agent states.
+\item checks conditions of the agent functions before calling them.
+\item calls the synchronisation code for the message boards. These are specific MB functions which have been documented in the libmboard documentation.
+\item creates iterator for the messages.
+\item freeing agents when moving to next states.
+\item clears the message board at the end of the iteration.
+\item clean up.
+\end{itemize}
+
+\item Header.h file. This file provides the names being used in the simulation. For instance, the xmachine agent memory, the states and the prototypes for the agent functions.
+Various definitions for the messageboards like names of the iterators are also defined here, along with prototypes for reading and writing various agent memory variables.
+
+\item Writing the memory.c file. Memory.c file contains the actual function code of the functions being used by the xparser. These are functions like free agents, or freeing messages by calling MB\_Clear. The file contains various functions to initialize memory variables like arrays or data structures. Functions for adding and freeing agents are also contained here.
+
+\item Writing the rules.c file. Rules .c contains the rules being used in the model. For instance,
+
+\begin{itemize}
+\item For function conditions,
+
+\begin{mylisting}
+\begin{verbatim}
+ iteration loop\%20==6 return 1 else return 0;  
+ \end{verbatim}
+ \end{mylisting}
+ 
+ \item Or for agent memory conditions,\\
+
+ \begin{mylisting}
+\begin{verbatim}
+ a->learningwindow==0 return 1 else return 0;
+ \end{verbatim}
+ \end{mylisting}
+ 
+ \end{itemize}
+ 
+ \item Writing the low\_primes.c file. Low primes file defines the arrays which are used for partitioning of the data.
+ \item Writing the messageboards.c files. Messageboard.c if used for writing functions which allows access to the messageboard. For instance,\\
+ 
+ \begin{mylisting}
+\begin{verbatim}
+ /*for adding messages*/
+ MB_AddMessage(b_messagename,&msg) 
+
+/*Rewinding an iterator*/
+MB_Iterator_Rewind(i_mall_strategy_to_use)
+
+/* getting a message*/
+MB_Iterator_GetMessage(i_mall_strategy_to_use, (void**)&msg);
+\end{verbatim}
+\end{mylisting}
+
+\item Writing the partitioning.c file Partitioning.c file contains details for generating partitions as geometric nodes and saves this data.
+\item The timing.c returns the time it takes to run the code.
+\item The Doxygen file writes out data about the model file.
+
+\end{enumerate}
+
+Details of the message board functions are available at \url{www.softeng.cse.clrc.ac.uk/wiki/EURACE/MessageBoards/ImplementationNotes/API}
+
+\section{XParser Versions}
+
+During the development process, the Xparser has gone through a series of development versions, each being modified to include more features for making use easy for the modellers and increasing efficiency.
+
+Change logs for the different versions has been stored at the CcpForge repository for the developers. The XParser has a number of versions, with the latest version 0.15.13 which containing the following additions:
+\begin{itemize}
+\item Checks added for environment variables and data type names.
+\item Fixes of writing out of output settings to command line.
+\item Merging of messages filters.
+\item	 stategraph colour version added.
+\item	 fix bug where import file not taken relative from 0.xml location.
+\item	 merge of sync filters.
+\item	 bug fix for nested filter rules.
+\item added 'IN' operator for filter rule.
+\item added random tag to message inputs.
+\item added sort tag to message inputs.
+\item parallel application can read pre-partitioned input files.
+\item added constant tag for agent memory variables.
+\item add option -f to xparser for final production run.
+\end{itemize}
+
+The current final version xparser 0.15.13 has been tested and used for various simulations of the economic EURACE model and has been proved to be very stable and good for economic modelling.
+
+This version has thus been tagged to be released as FLAME version 1.0. Any future updates to this version will be announced as new versions of FLAME.
+ 
 \section{Memory Allocation and its Problems}
 
 Memory allocation for the agents and the messages is done as a continuous block size of memory.
-The command \enph{sizeof} is used to return a byte size of the agent memory in use.
+The command \emph{sizeof} is used to return a byte size of the agent memory in use.
 This is an important facet for parallelisation when using MPI. Sending data from one node to the other requires the program to know how many bytes have to be sent across to package it up in small packets. Thus it becomes important to determine its size.
 
 \subsection{Dynamic Arrays}
 FLAME also allows the use of dynamic arrays which causes a hindrance to this area of parallelisation. It is strongly discouraged for dynamic arrays to be used as part of the agent memory, if the agents have to be moved around in parallel. Dynamic arrays also prevents the associated memory to be allocated as blocks of continuous memory. Messages are another factor which discourages the use of dynamic arrays within the messages. The size of the message becomes difficult to be determined and sent to and fro for this reason.
 
-\subsection{Data types}
+\subsection{Data Types}
 
 User-defined data types are allocated as pointers in agent memory but
 this has been modified in a new version to be released. This means that instead
-of user using an arrow '-\textgreater' to dereference variables, a dot '.' is
+of user using an arrow `-\textgreater' to dereference variables, a dot `.' is
 used to access the data structure.
 
 Dynamic array data structures are also not allocated as a pointer (but the actual
 dynamic array is) which means functions to interact with a dynamic array data
-structure need to pass a pointer. This means the use of the ampersand '\&' to
+structure need to pass a pointer. This means the use of the ampersand `\&' to
 reference the data structure.
 
 \subsection{Agent Memory Management}
