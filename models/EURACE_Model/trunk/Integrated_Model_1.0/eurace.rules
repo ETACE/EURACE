@@ -39,6 +39,7 @@ igfirm_tax_payment                  = IGFirm(tax_payment)
 igfirm_net_profit                   = IGFirm(net_profit) 
 igfirm_dividend_per_share           = IGFirm(current_dividend_per_share)
 igfirm_revenues                   = IGFirm(earnings) 
+igfirm_cum_energy_costs              = IGFirm(cum_energy_costs)
 
 #Balance sheet: Household
 hh_payment_account                  = Household(payment_account)
@@ -51,13 +52,13 @@ household_dividend_daily            = Household(received_dividend)
 bank_deposits                           = Bank(deposits)
 bank_credit                             = Bank(total_credit)
 bank_cash                               = Bank(cash)
+bank_equity                         = Bank(equity)
 bank_payment_account                = Bank(cash)
 bank_tax_payment                    = Bank(taxes)
 bank_loan_installments              = Bank(firm_loan_installments)
 bank_interest_payments_from_firms = Bank(firm_interest_payments)
 bank_ecb_debt                       = Bank(ecb_debt)
 bank_ecb_interest_payment       = Bank(ecb_interest_payment)
-bank_equity                         = Bank(equity)
 bank_current_shares_outstanding = Bank(current_shares_outstanding)
 bank_total_dividends                = Bank(total_dividends)
 
@@ -192,13 +193,11 @@ abs( ecb_fiat_money - ecb_fiat_money_govs - ecb_fiat_money_banks) < PRECISION
 
 #RULE 21: FAILED
 #Fiat money: count all cash in the banking sector and in the public sector (government). This should equal the fiat money #created by the central bank and given to government, plus all ecb debt given to the banks. 
-abs( bank_deposits + bank_cash + gov_payment_account + ecb_cash - bank_credit - ecb_fiat_money) < PRECISION
+abs( bank_deposits + bank_equity + gov_payment_account + ecb_cash - bank_credit - ecb_fiat_money) < PRECISION
 
 #RULE 22: TO BE CHECKED
 #General money conservation rule
-abs( bank_deposits +  ecb_deposits + ecb_cash - bank_credit - ecb_fiat_money) < PRECISION
-
-
+abs( bank_deposits +  ecb_deposits + ecb_cash + igfirm_cum_energy_costs - bank_credit - ecb_fiat_money) < PRECISION
 
 ######## RULES THAT CANNOT BE CHECKED YET (since sums over arrays not possible)
 #RULE 20. TO BE CHECKED
