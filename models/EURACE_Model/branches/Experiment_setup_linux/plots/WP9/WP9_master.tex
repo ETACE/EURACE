@@ -1,0 +1,64 @@
+\documentclass[a4paper,11pt]{book}
+\usepackage{makeidx}
+\usepackage{graphicx}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{euscript}
+\usepackage{boxedminipage}
+\usepackage{lscape}
+\usepackage{minitoc}
+\usepackage{epsfig,psfrag,verbatim}
+\usepackage{url,natbib}
+\usepackage{booktabs, longtable}
+
+\vfuzz2pt % Don't report over-full v-boxes if over-edge is small
+\hfuzz2pt % Don't report over-full h-boxes if over-edge is small
+
+\setlength{\oddsidemargin}{0cm}
+\setlength{\evensidemargin}{0cm}
+\setlength{\textwidth}{16cm}
+\setlength{\textheight}{23cm}
+
+\psdraft
+
+\begin{document}
+\title{Work package 9}
+\author{}
+\date{\today}
+\maketitle
+\tableofcontents
+
+\subsubsection*{Acknowledgement}
+This work was carried out in conjunction with the EURACE project (EU IST FP6
+STREP grant 035086) which is a consortium lead by S. Cincotti (Universit\`{a} di
+Genova), H. Dawid (Universitaet Bielefeld), C. Deissenberg (Universit\'{e} de la
+M\'{e}diterran\'{e}e), K. Erkan (TUBITAK National Research Institute of Electronics
+and Cryptology), M. Gallegati  (Universit\`{a} Politecnica delle Marche), M.
+Holcombe (University of Sheffield), M. Marchesi (Universit\`{a} di Cagliari), C.
+Greenough (STFC - Rutherford Appleton Laboratory).
+
+
+\chapter{Innovation experiment}
+%\input{Innovation_main}
+
+\chapter{Energy shock experiment}
+\input{./energy_shock/Energy_main} %4 pages
+%\begin{comment}
+\clearpage
+\pagebreak
+\pagebreak
+\pagebreak
+\pagebreak
+\input{./energy_shock/Energy_shock_analysis}
+%\end{comment}
+
+\chapter{Macroeconomic stabilization policies}
+\input{./stabilization/Stabilization_policy_main} %1.5 pages
+\clearpage
+\pagebreak
+\pagebreak
+\input{./stabilization/Stabilization_policy_analysis}
+
+
+\end{document} 
