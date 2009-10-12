@@ -27,7 +27,9 @@ Agents within FLAME are allowed to have dynamic memory variables (i.e.\ their si
 
 Since agents do not communicate directly with other agents but via message boards, the communication data will be the volume of message data sent from one node to another. This does not allow for identification of individual agents that may be causing problems but, by analysing the messages that are sent by a certain type of agent at the time of the imbalance it may be possible to identify a set of agents of a certain type whose redistribution could help.
 
-Implementation has started with a timer which allows developers to insert timing into any section of FLAME, from the framework itself to the user's model functions. The details of the implementation are described in the next section.
+Implementation has started with a timer which allows developers to insert timing into any section of FLAME, from the framework itself to the user's model functions. The details of the implementation are described in the next section. 
+
+This timer package has proved extremely useful during analysis of the model during its development, allowing STFC to place timers around calls to all agent functions and messageboard synchronisations. The elapsed time for each function and synchronisation for each iteration can then be printed and the analysis of the top 10 longest elapsed times over the whole simulation performed. The timers are implemented to work correctly for parallel applications so that timings of each function on each process can be recorded and analysed to look for load imbalances.
 
 \subsection{The \textit{timer} Package}
 
@@ -67,3 +69,11 @@ There is a cautionary note to be struck however. The timing data for circles has
  \label{fig:timings_problems}
 \end{figure}
 
+A further example, this time from the full EURACE model, shows the top 5 elapsed times for each iteration for the first 40 iterations: see Figure \ref{fig:timing_example}.
+
+\begin{figure}[h]
+  \hspace{-10mm}
+  \includegraphics[scale=0.5]{timing_example.png}
+ \caption{Example function timing results for EURACE Model}
+ \label{fig:timing_example}
+\end{figure}
