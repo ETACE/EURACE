@@ -13,19 +13,77 @@ Model used: EURACE Integrated Model, rev 2800, October 10, 2009\\
 \centering\leavevmode
 \begin{minipage}{16cm}
 \centering\leavevmode
-%\includegraphics[width=5cm]{./energy_shock/bench/IGFirm-capital_good_price.png}
-%\includegraphics[width=5cm]{./energy_shock/bench/Eurostat-gdp.png}
-%\includegraphics[width=5cm]{./energy_shock/bench/Eurostat-unemployment_rate.png}
+\includegraphics[width=5cm]{./energy_shock/bench/Eurostat-gdp.png}
+\includegraphics[width=5cm]{./energy_shock/bench/Eurostat-unemployment_rate.png}
+\includegraphics[width=5cm]{./energy_shock/bench/IGFirm-capital_good_price.png}
 \end{minipage}
 \caption{Benchmark scenario for the energy shock experiment. The capital good price, GDP and unemployment rate.}
 \label{Figure: benchmark}
 \end{figure}
 %\pagebreak
 
-%\input{./energy_shock/png/duration_240/intensity_0.05/frequency_20/plot}
+\begin{figure}[ht!]
+\centering\leavevmode
+\begin{minipage}{17cm}
+\centering\leavevmode
+{$d=240, \pi=0.01, \Pi=0$}\\
+\includegraphics[width=5cm]{./energy_shock/png/duration_240/intensity_0.01/frequency_0/Eurostat-gdp.png}
+\includegraphics[width=5cm]{./energy_shock/png/duration_240/intensity_0.01/frequency_0/Eurostat-unemployment_rate.png}
+\includegraphics[width=5cm]{./energy_shock/png/duration_240/intensity_0.01/frequency_0/IGFirm-capital_good_price.png}
+\end{minipage}
+\caption{Energy shock parameters: duration $d=240$, intensity $\pi=0.01$, periodicity $\Pi=0$.}
+\label{Figure: energy shock 1}
+\end{figure}
+
+\begin{figure}[ht!]
+\centering\leavevmode
+\begin{minipage}{17cm}
+\centering\leavevmode
+{$d=240, \pi=0.05, \Pi=0$}\\
+\includegraphics[width=5cm]{./energy_shock/png/duration_240/intensity_0.05/frequency_0/Eurostat-gdp.png}
+\includegraphics[width=5cm]{./energy_shock/png/duration_240/intensity_0.05/frequency_0/Eurostat-unemployment_rate.png}
+\includegraphics[width=5cm]{./energy_shock/png/duration_240/intensity_0.05/frequency_0/IGFirm-capital_good_price.png}
+\end{minipage}
+\caption{Energy shock parameters: duration $d=240$, intensity $\pi=0.05$, periodicity $\Pi=0$.}
+\label{Figure: energy shock 2}
+\end{figure}
+
+\begin{figure}[ht!]
+\centering\leavevmode
+\begin{minipage}{17cm}
+\centering\leavevmode
+{$d=240, \pi=0.01, \Pi=20$}\\
+\includegraphics[width=8cm]{./energy_shock/png/duration_240/intensity_0.01/frequency_20/Eurostat-gdp.png}
+\includegraphics[width=8cm]{./energy_shock/png/duration_240/intensity_0.01/frequency_20/Eurostat-unemployment_rate.png}
+\includegraphics[width=8cm]{./energy_shock/png/duration_240/intensity_0.01/frequency_20/IGFirm-capital_good_price.png}
+\includegraphics[width=8cm]{./energy_shock/png/duration_240/intensity_0.01/frequency_20/IGFirm-energy_costs_per_day.png}
+\end{minipage}
+\caption{Energy shock parameters: duration $d=240$, intensity $\pi=0.01$, periodicity $\Pi=20$.}
+\label{Figure: energy shock 3}
+\end{figure}
+
+\begin{figure}[ht!]
+\centering\leavevmode
+\begin{minipage}{17cm}
+\centering\leavevmode
+{$d=240, \pi=0.05, \Pi=20$}\\
+\includegraphics[width=8cm]{./energy_shock/png/duration_240/intensity_0.05/frequency_20/Eurostat-gdp.png}
+\includegraphics[width=8cm]{./energy_shock/png/duration_240/intensity_0.05/frequency_20/Eurostat-unemployment_rate.png}
+\includegraphics[width=8cm]{./energy_shock/png/duration_240/intensity_0.05/frequency_20/IGFirm-capital_good_price.png}
+\includegraphics[width=8cm]{./energy_shock/png/duration_240/intensity_0.05/frequency_20/IGFirm-energy_costs_per_day.png}
+\end{minipage}
+\caption{Energy shock parameters: duration $d=240$, intensity $\pi=0.05$, periodicity $\Pi=20$.}
+\label{Figure: energy shock 4}
+\end{figure}
+
 
 %\end{document}
 \begin{comment}
+%\input{./energy_shock/png/duration_240/intensity_0.01/frequency_0/plot}%\ref{Figure: energy shock 1}
+%\input{./energy_shock/png/duration_240/intensity_0.05/frequency_0/plot}%\ref{Figure: energy shock 2}
+%\input{./energy_shock/png/duration_240/intensity_0.01/frequency_20/plot}%\ref{Figure: energy shock 3}
+%\input{./energy_shock/png/duration_240/intensity_0.05/frequency_20/plot}%\ref{Figure: energy shock 4}
+
 %\subsubsection*{Duration $40$, intensity $1\%$, frequency $\{0,20,60\}$}
 \input{./energy_shock/png/duration_40/intensity_0.01/frequency_0/plot}
 \input{./energy_shock/png/duration_40/intensity_0.01/frequency_20/plot}
