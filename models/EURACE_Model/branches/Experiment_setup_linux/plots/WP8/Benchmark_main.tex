@@ -1,13 +1,7 @@
-\documentclass{article}
-\usepackage{epsfig,graphicx,verbatim, boxedminipage, url}
-\begin{document}
-\section{Benchmark Simulations with the EURACE Model}
-%\today
 
+\section{Introduction}
 
-\section{Simulation results}
-
-\subsection{Transient period}
+\section{Transient period}
 Before we show the benchmark results, we show a transient run for the default parameter settings.
 Figure \ref{Figure: transient time} shows a simulation of the model for $20$ batch runs of $5000$ iterations.
 After approximately $1000$ iterations the transient phase settles down to quasi-stable stochastic behavior.
@@ -27,7 +21,7 @@ The outlyers are shown individualy.
 \item The investment/GDP ratio cycles around $15\%$.
 \end{itemize}
 
-\subsection{Benchmark scenario}
+\section{Benchmark scenario}
 In this section we show a more detailed overview of the economy that will serve as our benchmark scenario.
 We show cross sectional data across the various sectors of the economy (Consumption goods, Investment goods, Credit market),
 and for the different agent types (Firms, Banks, Households). 
@@ -98,11 +92,8 @@ In a first sensitivity analysis we consider three tax rate scenarios. using resp
 In Figure \ref{Figure: scenarios} we show the results for GDP, the unemployment rate and the investment/GDP ratio.
 If we increase the tax rate the GDP decreases and unemployment increases. The investment/GDP ratio remains constant which means that the total investments in the economy show the same decrease as GDP when the tax rate is increased.
 
-
 %%%%%%%%%%%%%%% Include all figures
 \input{transient}
 \input{Overview}
 \input{scenarios}
-
-\end{document}
 
