@@ -134,10 +134,10 @@ setting.
 \begin{tabular}{llll}
 \hline\hline
 Name & Symbol & Values & Description \\ \hline
-duration & $d$ & $\{40, 240\}$ & Duration of the energy crisis in days \\
-intensity & $\pi$ & $\{0.01, 0.10, 0.20\}$ & Percentage price change for a
+duration & $d$ & $240$ & Duration of the energy crisis in days \\
+intensity & $\pi$ & $\{0.01, 0.05\}$ & Percentage price change for a
 single shock \\
-periodicity & $\Pi$ & $\{20, 40, +\infty\}$ & Periodicity of the shock in days%
+periodicity & $\Pi$ & $\{20, +\infty\}$ & Periodicity of the shock in days%
 \end{tabular}%
 \label{Table: parameter settings}
 \end{table}
@@ -151,7 +151,27 @@ periodicity & $\Pi$ & $\{20, 40, +\infty\}$ & Periodicity of the shock in days%
 Name & Value \\ \hline
 Cases & $18$ \\
 Batch runs per case & $20$ \\
-Iterations per run & $720$ \\
+Iterations per run & $300$ \\
 Pre-iterations & $1000$ \\ \hline
 \end{tabular}%
 \end{table}
+
+\section{Simulations}
+We focus our analysis on the four cases in Table \ref{Table: parameter settings}.
+The duration of the energy crisis is always $240$ days (1 year), and we
+have either a periodicity of $20$ days or a single shock at the beginning and a single shock downward at the end.
+
+We recall the benchmark results in Fig. \ref{Figure: benchmark}: GDP settles down to a stable growth path, the unemployment rate is stable as well, and the capital goods price shows a characteristic staircase.
+
+In Figure \ref{Figure: energy shock 1} we introduce a mild energy shock of $1\%$ at iteration $1240$.
+After $240$ days there is a downward shock of $1\%$. As can be seen from the figure there is a small blip in the capital goods price (Fig. \ref{Figure: energy shock 1}c), but this has hardly any effect on the economy.
+
+Figure \ref{Figure: energy shock 2} shows a single shock of $5\%$, and a symmetric downward shock at the end.
+For one year the capital goods price is significantly increased, but still this does not have any significant effect on key macroeconomic variables such as GDP and the unemployment rate.
+
+A more prolonged energy crisis is shown in Figure \ref{Figure: energy shock 3}, where there are multiple shocks of $1\%$, one every $20$ days. This results in a more pronounced energy spike, as can be seen in Fig. \ref{Figure: energy shock 3}c. But the effect on GDP and the unemployment rate remains relatively minor. 
+We also show the daily energy costs that are accumulated during the energy crisis (Fig. \ref{Figure: energy shock 3}d). The unemployment rate goes down during the energy crisis, which can be explained due to the substitution effect of labour for capital.
+
+The final case is the one shown in Figure \ref{Figure: energy shock 4} where we have multiple shocks of $5\%$, one every $20$ days. Here finally we have the signature of a true energy crisis, where at its peak capital goods cost 3 times as much as it did at the start of the crisis. The downward effect on GDP and unemployment is pronounced.
+
+This case will now be used in the next section, where we introduce a macroeconomic stabilization policy to mitigate the effects of such a negative shock to the economy.
