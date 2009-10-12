@@ -1,0 +1,167 @@
+This is pdfTeXk, Version 3.141592-1.40.3 (Web2C 7.5.6) (format=pdflatex 2009.6.29)  12 NOV 2009 12:43
+entering extended mode
+ %&-line parsing enabled.
+**Energy_shock_analysis.tex
+(./Energy_shock_analysis.tex
+LaTeX2e <2005/12/01>
+Babel <v3.8h> and hyphenation patterns for english, usenglishmax, dumylang, noh
+yphenation, loaded.
+(/usr/share/texmf-texlive/tex/latex/base/article.cls
+Document Class: article 2005/09/16 v1.4f Standard LaTeX document class
+(/usr/share/texmf-texlive/tex/latex/base/size10.clo
+File: size10.clo 2005/09/16 v1.4f Standard LaTeX file (size option)
+)
+\c@part=\count79
+\c@section=\count80
+\c@subsection=\count81
+\c@subsubsection=\count82
+\c@paragraph=\count83
+\c@subparagraph=\count84
+\c@figure=\count85
+\c@table=\count86
+\abovecaptionskip=\skip41
+\belowcaptionskip=\skip42
+\bibindent=\dimen102
+)
+(/usr/share/texmf-texlive/tex/latex/graphics/epsfig.sty
+Package: epsfig 1999/02/16 v1.7a (e)psfig emulation (SPQR)
+
+(/usr/share/texmf-texlive/tex/latex/graphics/graphicx.sty
+Package: graphicx 1999/02/16 v1.0f Enhanced LaTeX Graphics (DPC,SPQR)
+
+(/usr/share/texmf-texlive/tex/latex/graphics/keyval.sty
+Package: keyval 1999/03/16 v1.13 key=value parser (DPC)
+\KV@toks@=\toks14
+)
+(/usr/share/texmf-texlive/tex/latex/graphics/graphics.sty
+Package: graphics 2006/02/20 v1.0o Standard LaTeX Graphics (DPC,SPQR)
+
+(/usr/share/texmf-texlive/tex/latex/graphics/trig.sty
+Package: trig 1999/03/16 v1.09 sin cos tan (DPC)
+)
+(/etc/texmf/tex/latex/config/graphics.cfg
+File: graphics.cfg 2007/01/18 v1.5 graphics configuration of teTeX/TeXLive
+)
+Package graphics Info: Driver file: pdftex.def on input line 90.
+
+(/usr/share/texmf-texlive/tex/latex/pdftex-def/pdftex.def
+File: pdftex.def 2007/01/08 v0.04d Graphics/color for pdfTeX
+\Gread@gobject=\count87
+))
+\Gin@req@height=\dimen103
+\Gin@req@width=\dimen104
+)
+\epsfxsize=\dimen105
+\epsfysize=\dimen106
+)
+(/usr/share/texmf-texlive/tex/latex/tools/verbatim.sty
+Package: verbatim 2003/08/22 v1.5q LaTeX2e package for verbatim enhancements
+\every@verbatim=\toks15
+\verbatim@line=\toks16
+\verbatim@in@stream=\read1
+)
+(/usr/share/texmf-texlive/tex/latex/ltxmisc/boxedminipage.sty)
+(/usr/share/texmf-texlive/tex/latex/ltxmisc/url.sty
+\Urlmuskip=\muskip10
+Package: url 2005/06/27  ver 3.2  Verb mode for urls, etc.
+)
+(./Energy_shock_analysis.aux)
+\openout1 = `Energy_shock_analysis.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 4.
+LaTeX Font Info:    ... okay on input line 4.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 4.
+LaTeX Font Info:    ... okay on input line 4.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 4.
+LaTeX Font Info:    ... okay on input line 4.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 4.
+LaTeX Font Info:    ... okay on input line 4.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 4.
+LaTeX Font Info:    ... okay on input line 4.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 4.
+LaTeX Font Info:    ... okay on input line 4.
+
+Underfull \hbox (badness 10000) in paragraph at lines 7--10
+
+ []
+
+<./bench/IGFirm-capital_good_price.png, id=1, 481.8pt x 481.8pt>
+File: ./bench/IGFirm-capital_good_price.png Graphic file (type png)
+
+<use ./bench/IGFirm-capital_good_price.png>
+<./bench/Eurostat-gdp.png, id=2, 481.8pt x 481.8pt>
+File: ./bench/Eurostat-gdp.png Graphic file (type png)
+
+<use ./bench/Eurostat-gdp.png>
+<./bench/Eurostat-unemployment_rate.png, id=3, 481.8pt x 481.8pt>
+File: ./bench/Eurostat-unemployment_rate.png Graphic file (type png)
+
+<use ./bench/Eurostat-unemployment_rate.png>
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <7> on input line 19.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <5> on input line 19.
+
+Overfull \hbox (110.24408pt too wide) in paragraph at lines 13--20
+ []$[]$ 
+ []
+
+(./png/duration_240/intensity_0.05/frequency_20/plot.tex
+<./png/duration_240/intensity_0.05/frequency_20/IGFirm-capital_good_price.png, 
+id=4, 481.8pt x 481.8pt>
+File: ./png/duration_240/intensity_0.05/frequency_20/IGFirm-capital_good_price.
+png Graphic file (type png)
+
+<use ./png/duration_240/intensity_0.05/frequency_20/IGFirm-capital_good_price.p
+ng>
+<./png/duration_240/intensity_0.05/frequency_20/IGFirm-energy_costs_per_day.png
+, id=5, 481.8pt x 481.8pt>
+File: ./png/duration_240/intensity_0.05/frequency_20/IGFirm-energy_costs_per_da
+y.png Graphic file (type png)
+
+<use ./png/duration_240/intensity_0.05/frequency_20/IGFirm-energy_costs_per_day
+.png>
+<./png/duration_240/intensity_0.05/frequency_20/Eurostat-gdp.png, id=6, 481.8pt
+ x 481.8pt>
+File: ./png/duration_240/intensity_0.05/frequency_20/Eurostat-gdp.png Graphic f
+ile (type png)
+
+<use ./png/duration_240/intensity_0.05/frequency_20/Eurostat-gdp.png>
+<./png/duration_240/intensity_0.05/frequency_20/Eurostat-unemployment_rate.png,
+ id=7, 481.8pt x 481.8pt>
+File: ./png/duration_240/intensity_0.05/frequency_20/Eurostat-unemployment_rate
+.png Graphic file (type png)
+
+<use ./png/duration_240/intensity_0.05/frequency_20/Eurostat-unemployment_rate.
+png>
+Overfull \hbox (24.88582pt too wide) in paragraph at lines 2--13
+ []$[]$ 
+ []
+
+) [1
+
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map} <./bench/IGFirm-capital_goo
+d_price.png (PNG copy)> <./bench/Eurostat-gdp.png (PNG copy)> <./bench/Eurostat
+-unemployment_rate.png (PNG copy)>] [2 <./png/duration_240/intensity_0.05/frequ
+ency_20/IGFirm-capital_good_price.png (PNG copy)> <./png/duration_240/intensity
+_0.05/frequency_20/IGFirm-energy_costs_per_day.png (PNG copy)> <./png/duration_
+240/intensity_0.05/frequency_20/Eurostat-gdp.png (PNG copy)> <./png/duration_24
+0/intensity_0.05/frequency_20/Eurostat-unemployment_rate.png (PNG copy)>]
+(./Energy_shock_analysis.aux) ) 
+Here is how much of TeX's memory you used:
+ 739 strings out of 95086
+ 10815 string characters out of 1183255
+ 55948 words of memory out of 1500000
+ 3951 multiletter control sequences out of 10000+50000
+ 3948 words of font info for 15 fonts, out of 1200000 for 2000
+ 28 hyphenation exceptions out of 8191
+ 32i,7n,21p,281b,258s stack positions out of 5000i,500n,6000p,200000b,5000s
+</usr/share/texmf-texlive/fonts/type1/bluesky/cm
+/cmbx10.pfb></usr/share/texmf-texlive/fonts/type1/bluesky/cm/cmmi10.pfb></usr/s
+hare/texmf-texlive/fonts/type1/bluesky/cm/cmr10.pfb>
+Output written on Energy_shock_analysis.pdf (2 pages, 164203 bytes).
+PDF statistics:
+ 35 PDF objects out of 1000 (max. 8388607)
+ 0 named destinations out of 1000 (max. 131072)
+ 36 words of extra memory for PDF output out of 10000 (max. 10000000)
+
