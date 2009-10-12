@@ -185,7 +185,7 @@ abs( eurostat_monthly_investment_value - igfirm_revenues ) < PRECISION
 #RULE 19: TO BE CHECKED Should be verified with longer runs, since banks do not yet have ECB debt after 100 iterations.
 #Bank's ECB debt
 #The total debt of banks to ecb is found on the ECB balance sheet (LHS), and on the bank balance sheet (RHS)
-abs( ecb_fiat_money_banks - ecb_bond_holdings_value - bank_ecb_debt)< PRECISION
+abs( ecb_fiat_money_banks + ecb_fiat_money_govs - ecb_bond_holdings_value - bank_ecb_debt)< PRECISION
 
 #RULE 20: TO BE CHECKED
 #ECB fiat money definition sum
