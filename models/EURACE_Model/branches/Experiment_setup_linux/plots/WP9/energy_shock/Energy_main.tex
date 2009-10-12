@@ -1,0 +1,160 @@
+
+\section{Introduction}
+
+As a benchmark, we first consider a situation in which there are no active
+policy measures to counter the negative effects of an energy shock. This is the
+benchmark scenario. We quantify the correlation between the level of the
+energy shock and the change in GDP growth rate in this scenario.
+
+We typically assume that an energy shock consists of a succession of
+consecutive, identical (in length and magnitude) energy price increases.
+Thus, an energy shock is captured by three parameters: the magnitude of the
+single price increases ($\pi$), their periodicity $\Pi$ (the number of
+days between two consecutive price increases), and the number of price
+increases ($n).$ The total duration of the energy crisis ($d$) is then $%
+d=\Pi n$. The price increase $\pi$ is assumed to instantaneously disappear at the end
+of the total duration. The time profile of a typical energy shock is illustrated in Figure
+\ref{Figure: energy shock} below.
+We analyze the model response to variations to the three parameters duration
+$d$, magnitude $\pi$, and periodicity $\Pi$.
+
+\section{Description}
+
+In the basic EURACE version, the investment goods producers update the price
+of the investment good based on the increase in productivity of the
+machinery. This reflects innovation and technological progress, which occurs
+probabilistically. We now enrich the model by including the impact of the
+energy costs on the investment goods.
+
+The energy costs of the investment goods producers are incorporated into the
+price of the capital good by an energy price mark-up equal to the magnitude
+of the price shock ($\pi $):
+\begin{equation}
+p_{t+1}=(p_{t}+p_{t,c})(1+\pi ),
+\end{equation}%
+where($p_{t}$) is the price in period $t$ and ($p_{t,c}$) is the price
+update due to the productivity increase.
+
+The additional revenues stemming from the technologically motivated price
+increase ($p_{t,c}$) are partly paid out as taxes and partly paid out as
+dividends to households. BUT:\ HOW\ DO\ YOU\ COMPUTE\ THEM?\ A\ PRICE\
+INCREASE\ NORMALLY\ HAS\ ALSO\ A\ QUANTITY\ EFFECT. THE\ QUANTITY\ EFFECT\
+RESULTS\ BOTH\ FROM\ THE\ TECHNOLOGIACAL\ PRICE\ INCREASE\ AND\ FROM\ THE\
+ENERGY\ PRICE\ INCREASE. HOW\ DO\ YOU\ UNTANGLE\ THAT?
+
+The revenues that accrue due to the energy costs mark-up are not paid out in
+taxes or dividends. Instead, the money is stored in a variable called %
+\url{cum_energy_costs} that represents the total cumulative income of the
+owners of the energy source (the Sheik of Qatar, Dubai, etc.), which does
+not play any role in the EURACE dynamics. In other words, it leaves the
+economic system decribed by EURACE.
+
+\section{Experimental design}
+
+In this section we describe how we setup the computational experiments.
+
+\subsubsection*{Preliminaries.}
+
+\bigskip We consider an energy shock over a pre-determined time interval $%
+\left[ T_{a},T_{b}\right]$. The first, pre-shock $1000$ iterations are
+ignored in the analysis of the experiment. Following these $1000$ initial
+iterations, we run the model for $240$ further iterations before starting
+the energy shock ($T_{a}=240$). After the energy shock period, at $t=T_{b}$,
+we run the model for another $240$ iterations in order to analyze the legacy
+of the shock. Thus, the total number of iterations for a single run (without
+the transient period) is $240+(T_{b}-T_{a})+240$. To obtain statistically
+significant results we perform $20$ batch runs per case (parameter
+combination). See Table \ref{Table: experimental design} for details.
+
+Figure \ref{Figure: energy shock} shows the time profile of such an
+experiment. Figure \ref{Figure: empirical energy shock} shows the real
+energy price behavior during the 2008 energy crisis. The price of Brent
+crude oil went up by $+675\%$ between 2002.1-2008.6 (79 months), which
+translates to a monthly increase of $2.45\%$. Then it went sharply down by $%
+-70\%$ between 2008.7-2009.1 (7 months), which implies a monthly decrease of
+$-5.8\%$.
+
+\begin{figure}[th]
+\centering\leavevmode
+\begin{boxedminipage}{15cm}
+\centering\leavevmode
+\resizebox{7cm}{7cm}{\input{./energy_shock/eps/energy.tex}}
+\resizebox{7cm}{7cm}{\input{./energy_shock/eps/energy_single.tex}}
+\end{boxedminipage}
+\caption{The time profile of an energy shock experiment. Left panel:
+periodicity $0<\Pi<+\infty $, right panel: periodicity $\Pi=+\infty $.}
+\label{Figure: energy shock}
+\end{figure}
+
+\begin{figure}[ht!]
+\centering\leavevmode
+\begin{boxedminipage}{10.5cm}
+\centering\leavevmode
+\resizebox{10cm}{7cm}{\includegraphics{./energy_shock/eps/Brent_1988_2009.eps}}
+\end{boxedminipage}
+\caption{Empirical energy prices during the 2008 energy crisis. An increase
+of $2.45\%$ per month over a period of 79 months ($+675\%$), followed by a
+sharp decline of $-5.8\%$ per month during 7 months ($-70\%$).}
+\label{Figure: empirical energy shock}
+\end{figure}
+
+We consider the following values of $d$:
+\begin{itemize}
+\item Short energy crisis scenario: $d=40$ days,
+\item Long energy crisis scenario: $d=240$ days,
+\end{itemize}
+and for each of these two values the following cases:
+
+\begin{itemize}
+\item Case 1: periodicity $\Pi=0$
+\end{itemize}
+
+There is a single instantaneous energy price increase $\pi$ at $T_{a},$ and
+an instantaneous decrease of the same magnitude at $T_{b}.$ However, in the
+meantime the capital goods price is updated as usual with the productivity
+progress, so the price of the investment goods at $T_{b}$ will nonetheless
+differ from their price level at $T_{a}$.
+
+\begin{itemize}
+\item Case 2: periodicity $\Pi>0$
+
+\item There are $n$ consecutive instantaneous price increases between $T_{a}$
+and $T_{b}$, at equidistant time intervals, and an instantaneous decrease
+of magnitude $(1+\pi)^{-n}$ in $T_{b}$. This brings the price back to its pre-shock level, 
+if no other influences affected the price in the meantime.
+\end{itemize}
+
+Table \ref{Table: parameter settings} gives the parameter values used in the
+computational experiments, and Table \ref{Table: computational setting} summarizes the computational
+setting.
+
+\begin{table}[tbp]
+\caption{Parameter values}
+\centering
+\begin{tabular}{llll}
+\hline\hline
+Name & Symbol & Values & Description \\ \hline
+duration & $d$ & $\{40, 240\}$ & Duration of the energy crisis in days \\
+intensity & $\pi$ & $\{0.01, 0.10, 0.20\}$ & Percentage price change for a
+single shock \\
+periodicity & $\Pi$ & $\{20, 40, +\infty\}$ & Periodicity of the shock in days%
+\end{tabular}%
+\label{Table: parameter settings}
+\end{table}
+
+\begin{table}[tbp]
+\caption{Overview of the computational setting.}
+\label{Table: computational setting}
+\centering
+\begin{tabular}{ll}
+\hline\hline
+Name & Value \\ \hline
+Cases & $18$ \\
+Batch runs per case & $20$ \\
+Iterations per run & $720$ \\
+Pre-iterations & $1000$ \\ \hline
+\end{tabular}%
+\end{table}
+
+\section{Scenarios}
+%\input{energy} 
