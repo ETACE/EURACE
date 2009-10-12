@@ -12,6 +12,11 @@
 \vfuzz2pt % Don't report over-full v-boxes if over-edge is small
 \hfuzz2pt % Don't report over-full h-boxes if over-edge is small
 
+
+\newenvironment{mylisting}
+{\begin{list}{}{\setlength{\leftmargin}{1em}}\item\small\bfseries}
+{\end{list}}
+
 \parskip 6pt         % sets spacing between paragraphs
 \parindent 0pt       % sets leading space for paragraphs
 
@@ -38,7 +43,7 @@ hindrance to the modellers themselves.
 
 The report presents a developer manual for the FLAME framework. The manual
 describes the management of the agent memory, execution and
-agent communication through the libmboard. The document also contain a details description of the implementation of the xparser and how it traverses through the code. The document also summarises the various versions of the xparser and the changes updated to them. 
+agent communication through the libmboard. The document also contain a details description of the implementation of the xparser and how it traverses through the code. The document also summarises the various versions of the xparser and the changes updated to them.
 \end{abstract}
 
 \pagebreak
