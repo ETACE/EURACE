@@ -1,15 +1,5 @@
-In this report we have described the parallel implementation of the FLAME framework and
-demonstrated its use in a number of EURACE related simulations including one of the complete EURACE model. The new message board library abstracts away from the FLAME framework all interactions with the message boards and provides an appropriate API for the FLAME developer.
+In this report we have described the parallel implementation of the FLAME framework and the assessment and benchmarking of the EURACE Model. We have also demonstrated FLAMEs use in a number of EURACE related simulations in addition to complete EURACE model on populations ranging from a few hundereds of agents, through tens of thousands to, in one case, a million agents.  In some of these simulations the parallel implementation of FLAME has shown reasonable scalability and parallel efficiency.
 
-Implementing the message functions in this way will enable the developers to improve the  efficiency of the parallel implementation without affecting the interface to the FLAME framework.
+However the presence of substanial serial components in any model has resulted in very poor parallel scalability. It is well known that parallel speedup is limited by the serial faction of a code - this is Amdah's Law. The analyses performed on the EURACE Model have shown that the singleton agents - in particularly the Clearing House - have a significant impact of the parallel performance of the model.
 
-The current implementation has been tested on a variety of models ranging form the simple \textsl{Circles} model to the current \textsl{complete} EURACE model. Some benchmarking of the FLAME application has been performed and the process of optimisation started.
-
-Two areas that will require significant development have been noted:
-\begin{description}
-	\item [Message board optimisation:] We are aware that there are a variety of ways in which the current message board implementation can be improved. The first of these is a more considered approach to defining \textsl{Filters} and \textsl{Filter} variables in the FLAME models to represent any \textsl{locality} in the models. This will lead on to an optimisation of how they are used within the FLAME framework.
- \item [Dynamic load balancing:] The nature of a model might well change during a simulation. The computational or communications load of an agent may change leading to an imbalance in process usage. Although a simulation may tolerate a certain level of imbalance there will be level at which the elapsed time of the simulation will deteriorate. In this case dynamic re-balancing of the processor loads may help.
- \end{description}
-Both of these activities are very much research areas but there is very little literature currently published.
-
-Although at the end of EURACE we will not have achieved the \textsl{optimum} solution to these problems we hope to have at least advanced the current state of the art.
+Although at the end of EURACE we have not achieved the \textsl{optimum} solution to these problems we have at least advanced the current state of the art in the parallel implementation of agent-based simulations in the context of the FLAME Framework.
