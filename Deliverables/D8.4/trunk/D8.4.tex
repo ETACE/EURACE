@@ -1,7 +1,7 @@
 \documentclass[a4paper,11pt]{article}
 \usepackage[pdftex]{graphicx}
-\usepackage{draftwatermark}
-\SetWatermarkScale{5.0}
+%\usepackage{draftwatermark}
+%\SetWatermarkScale{5.0}
 
 
 \vfuzz2pt % Don't report over-full v-boxes if over-edge is small
@@ -42,11 +42,15 @@ Thematic Priority: IST FET PROACTIVE INITIATIVE ``SIMULATING EMERGENT PROPERTIES
 \begin{center}
 {\bf
 Deliverable reference number and title\\
-D1.4: Porting of agent models to parallel computers\\
+%D1.4: Porting of agent models to parallel computers\\
+D8.4: Porting of the software platform to parallel computers
 }
 Due date of deliverable:\\
-31/08/2008\\
+%31/08/2008\\
+31/08/2009\\
 Actual submission date:\\
+%30/09/2008\\
+30/09/2009\\
 \end{center}
 
 
@@ -59,7 +63,7 @@ Actual submission date:\\
 Organisation name of lead contractor for this deliverable\\
 {\bf STFC Rutherford Appleton Laboratory - STFC}
 \begin{flushright} 
-Revision 1
+Revision 2
 \end{flushright}
 
 \vspace{\baselineskip}
@@ -85,10 +89,12 @@ Revision 1
 \begin{abstract}\noindent
 Making use of high performance computers in agent-based simulation is a complex and difficult task. This report describes the approach being explored within the EURACE project to exploit parallel computing technology in large-scale agent-based simulations involving millions of agents. The underlying software is the FLAME framework and the report will give an overview of the features and use of FLAME and discuss the implementation of techniques that attempt to exploit large parallel computing systems.  
 
-Some early simulation results will be presented together with a discussion of the requirements for efficient parallel simulations and the performance of the current implementation. Although these results demonstrate that the parallel implementation works and is portable between a number of systems the efficiency is quite poor as the full implementation of message filtering is not yet complete and filtering is not yet fully exploited within the EURACE models.
+This report updating the ealier deliverable on porting FLAME to parallel systems - Deliverable D1.4 - and presents the developments of FLAME and the porting of the EURACE Model during the final year of the project.
 
-Finally the report also gives an indication of the work planned for the final year of the project which is focused around improving the parallel performance of the basic implementation. The optimisation and effective use of the message filtering will be an important element of this work.
-\end{abstract}
+In the first report the results presented demonstrated that the parallel implementation of FLAME worked and is portable between a number of systems the efficiency is quite poor as the full implementation of message filtering is not yet complete and filtering is not yet fully exploited within the EURACE models. During the
+final year significant developments have been made to FLAME and the underlying Message Board Library that significantly improved both its serial and parallel performance.
+
+The report presents the developments of FLAME and its associated analysis tools\end{abstract}
 \pagebreak
 \pagenumbering{arabic}
 
