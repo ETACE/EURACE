@@ -42,11 +42,7 @@ int Bank_communicate_identity()
 
 int Bank_decide_credit_conditions()
 {
-    //#ifndef _DEBUG_MODE
-        FILE * file1=NULL;
-        char * filename="";
-  //  #endif
-        
+           
     double e, c, d, r, i;
     double bankruptcy_prob=0.0;
     double credit_allowed=0.0;
@@ -98,19 +94,6 @@ int Bank_decide_credit_conditions()
          
             
         FINISH_LOAN_REQUEST_MESSAGE_LOOP
-
-      //  #ifndef _DEBUG_MODE        
-            if (PRINT_DEBUG_FILE_EXP1)
-            {
-                filename = malloc(40*sizeof(char));
-                filename[0]=0;
-                strcpy(filename, "its/credit.txt");      
-                file1 = fopen(filename,"a");
-                fprintf(file1,"\n %d \t %f \t %f",DAY,credit_allowed,c);
-                fclose(file1);
-                free(filename);
-            }    
-      //  #endif
     
     return 0;
 }
@@ -240,6 +223,7 @@ int Bank_receive_installment()
 
 int Bank_give_loan()
 {
+    
     FIRM_LOAN_ISSUES=0.0;
 
     #ifndef _DEBUG_MODE    
@@ -262,6 +246,12 @@ int Bank_give_loan()
             #ifndef _DEBUG_MODE
                 if (PRINT_DEBUG) printf("\n\t credit_amount_taken: %f",loan_acceptance_message->credit_amount_taken);     
             #endif
+            
+            //  #ifndef _DEBUG_MODE        
+     
+      //  #endif
+
+            
         }
 
     FINISH_LOAN_ACCEPTANCE_MESSAGE_LOOP
