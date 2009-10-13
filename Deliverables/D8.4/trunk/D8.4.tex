@@ -89,12 +89,17 @@ Revision 2
 \begin{abstract}\noindent
 Making use of high performance computers in agent-based simulation is a complex and difficult task. This report describes the approach being explored within the EURACE project to exploit parallel computing technology in large-scale agent-based simulations involving millions of agents. The underlying software is the FLAME framework and the report will give an overview of the features and use of FLAME and discuss the implementation of techniques that attempt to exploit large parallel computing systems.  
 
-This report updating the ealier deliverable on porting FLAME to parallel systems - Deliverable D1.4 - and presents the developments of FLAME and the porting of the EURACE Model during the final year of the project.
+This report updates the ealier deliverable on porting FLAME to parallel systems - Deliverable D1.4 - and presents the developments of FLAME and the porting of the Full Integrated EURACE Model during the final year of the project.
+
+Some of the initial results from the initial benchmarking activities have been included in the Appendix so as to provide a complete record of the FLAME developments.
 
 In the first report the results presented demonstrated that the parallel implementation of FLAME worked and is portable between a number of systems the efficiency is quite poor as the full implementation of message filtering is not yet complete and filtering is not yet fully exploited within the EURACE models. During the
-final year significant developments have been made to FLAME and the underlying Message Board Library that significantly improved both its serial and parallel performance.
+final year significant developments have been made to FLAME and the underlying Message Board Library that significantly improved both its serial and parallel performance. The filtering available within FLAME has been enriched and its utilisation within the framework improved. 
 
-The report presents the developments of FLAME and its associated analysis tools\end{abstract}
+The report presents the developments of FLAME and its associated analysis tools during the final period which including a model consistency check, a initial validation tool and various static and dynamic analysis tools to help the assessment of model performance.
+
+The final section of the report describes the results achieved in benchmarking the EURACE Model at the time of writing. Although largist populations can be simulated - in the order of 30,000 agents - we have not been able to achieve the 100,000s that was the potential goal of the project.
+\end{abstract}
 \pagebreak
 \pagenumbering{arabic}
 
