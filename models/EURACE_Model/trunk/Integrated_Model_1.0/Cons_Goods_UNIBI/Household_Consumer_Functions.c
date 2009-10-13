@@ -106,8 +106,8 @@ int Household_determine_consumption_budget()
         }
     #endif
     
-     // #ifndef _DEBUG_MODE                         
-    if (PRINT_DEBUG_FILE_EXP1)
+     #ifndef _DEBUG_MODE                         
+   /* if (PRINT_DEBUG_FILE_EXP1)
     {                       
         filename = malloc(40*sizeof(char));
         filename[0]=0;
@@ -120,8 +120,8 @@ int Household_determine_consumption_budget()
         fprintf(file1," %f %f %f",CUM_TOTAL_DIVIDENDS,MONTHLY_BOND_INTEREST_INCOME,CONSUMPTION_BUDGET);
         fclose(file1);
         free(filename);
-    }                
-   // #endif
+    }                */
+    #endif
 
     
     return 0;   
@@ -577,16 +577,16 @@ int Household_handle_leftover_budget()
 int Household_send_account_update()
 {
      // #ifndef _DEBUG_MODE  
-    char * filename;
+   /* char * filename;
     FILE * file1;
-    int remainder;
+    int remainder; */
       // #endif
    
         /*GENUA*/
         add_bank_account_update_message(ID, BANK_ID, PAYMENT_ACCOUNT);
     
-    // #ifndef _DEBUG_MODE                         
-    if (PRINT_DEBUG_FILE_EXP1)
+     #ifndef _DEBUG_MODE                         
+   /* if (PRINT_DEBUG_FILE_EXP1)
     {                       
         filename = malloc(40*sizeof(char));
         filename[0]=0;
@@ -617,11 +617,11 @@ int Household_send_account_update()
         fclose(file1);
         free(filename);
        
-    }                
+    }        */        
    
      EXPENDITURES = 0;
    
-   // #endif
+    #endif
 
     
     return 0;
