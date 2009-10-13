@@ -22,6 +22,7 @@ PAYMENT_ACCOUNT_BANKS = Data(:,6);
 DEPOSITS = Data(:,7);
 ECB_DEBT = Data(:,8);
 EQUITY = Data(:,9);
+PROFITS = Data(:,10);
 
 for i=1:numel(days)
     
@@ -33,6 +34,7 @@ for i=1:numel(days)
     DEPOSITS_sum(i) = sum(DEPOSITS(days_idx));
     ECB_DEBT_sum(i) = sum(ECB_DEBT(days_idx));
     EQUITY_sum(i) = sum(EQUITY(days_idx));
+    PROFITS_sum(i) = sum(PROFITS(days_idx));
     
     clear days_idx
     
@@ -45,8 +47,9 @@ Data = load([Pat, 'CentralBank_daily_balance_sheet.txt']);
 
 FIAT_MONEY_GOVS = Data(:,2);
 FIAT_MONEY_BANKS = Data(:,3);
-PAYMENT_ACCOUNT_CB = Data(:,4);
-ECB_DEPOSITS = Data(:,5);
+FIAT_MONEY = Data(:,4);
+PAYMENT_ACCOUNT_CB = Data(:,5);
+ECB_DEPOSITS = Data(:,6);
 
 
 clear Data
@@ -102,11 +105,6 @@ for i=1:numel(days)
     
 end
 
-figure(2); hold on; grid on; box on
-plot(DEPOSITS_sum)
-plot(PAYMENT_ACCOUNT_HOUSEHOLDS_sum+PAYMENT_ACCOUNT_FIRMS_sum,'ko')
-legend('aggregate BANK DEPOSITS','Aggregate PAYMENT ACCOUNT HOUSEHOLDS + PAYMENT ACCOUNT FIRMS',0)
-
 clear Data
 
 %%% IGFirm
@@ -128,9 +126,14 @@ for i=1:numel(days)
     
 end
 
+
+clear Data
+
+break
+
 figure(2); hold on; grid on; box on
 plot(DEPOSITS_sum)
-plot(PAYMENT_ACCOUNT_HOUSEHOLDS_sum+PAYMENT_ACCOUNT_FIRMS_sum,'ko')
+plot(PAYMENT_ACCOUNT_HOUSEHOLDS_sum+PAYMENT_ACCOUNT_FIRMS_sum+PAYMENT_ACCOUNT_IGFIRMS_sum,'ko')
 legend('aggregate BANK DEPOSITS','Aggregate PAYMENT ACCOUNT HOUSEHOLDS + PAYMENT ACCOUNT FIRMS',0)
 
 clear Data
@@ -138,3 +141,8 @@ clear Data
 figure(3); hold on; grid on; plot(DEPOSITS_sum'+ECB_DEPOSITS+PAYMENT_ACCOUNT_IGFIRMS_sum'-TOTAL_CREDIT_sum')
 
 legend('aggregate BANK DEPOSITS + ECB DEPOSITS + PAY ACC IGFIRM - TOTAL CREDIT')
+
+
+figure(4); hold on; grid on; box on
+plot(PAYMENT_ACCOUNT_IGFIRMS)
+legend('PAYMENT ACCOUNT IGFIRM',0)

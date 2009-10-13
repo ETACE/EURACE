@@ -44,36 +44,10 @@ int Government_initialization()
 int Government_send_policy_announcements()
 {   
     //Set tax rate to global constant
-    double yearly_tax_revenues_target;
        
     FILE *file1=NULL;
     char *filename=NULL;
-
-    if ((POLICY_EXP1)&(GOV_POLICY_SWITCH_QUANTITATIVE_EASING==0))
-    {                   
-                    if (YEARLY_BUDGET_BALANCE>0)
-                    {
-                    if ((YEARLY_TAX_REVENUES-YEARLY_BUDGET_BALANCE)>0)
-                     yearly_tax_revenues_target = YEARLY_TAX_REVENUES-YEARLY_BUDGET_BALANCE;
-                     else yearly_tax_revenues_target = 0;}
-                    else
-                        yearly_tax_revenues_target = YEARLY_TAX_REVENUES-YEARLY_BUDGET_BALANCE;
-        
-        if (YEARLY_TAX_REVENUES>0)              
-        TAX_RATE_HH_LABOUR = (yearly_tax_revenues_target/YEARLY_TAX_REVENUES)*TAX_RATE_HH_LABOUR;
-        else
-        TAX_RATE_HH_LABOUR = CONST_INCOME_TAX_RATE;
-        
-        if (TAX_RATE_HH_LABOUR<CONST_INCOME_TAX_RATE) TAX_RATE_HH_LABOUR = CONST_INCOME_TAX_RATE;
-        
-        printf("\n Government_send_policy_announcements");
-        printf("\n %f %f %f %f",YEARLY_BUDGET_BALANCE,YEARLY_TAX_REVENUES,yearly_tax_revenues_target,TAX_RATE_HH_LABOUR);
-        }
-
          
-    else TAX_RATE_HH_LABOUR = CONST_INCOME_TAX_RATE;
-
-                 
     HH_SUBSIDY_PCT=0.0;
     FIRM_SUBSIDY_PCT=0.0;
 
@@ -121,6 +95,18 @@ int Government_send_policy_announcements()
         }
         // #endif 
     }
+
+     if (PRINT_DEBUG_FILE_EXP1)
+        {
+            filename = malloc(40*sizeof(char));
+            filename[0]=0;
+            strcpy(filename, "its/Government_policies.txt"); 
+            file1 = fopen(filename,"a");
+            fprintf(file1,"\n %f %f %f",TAX_RATE_HH_LABOUR,TAX_RATE_CORPORATE,TAX_RATE_HH_CAPITAL);
+            fclose(file1);
+            free(filename);
+        }
+
 
     //add announcement
     add_policy_announcement_message(ID, TAX_RATE_CORPORATE, TAX_RATE_HH_LABOUR, TAX_RATE_HH_CAPITAL, TAX_RATE_VAT, UNEMPLOYMENT_BENEFIT_PCT, HH_SUBSIDY_PCT, FIRM_SUBSIDY_PCT, HH_TRANSFER_PAYMENT, FIRM_TRANSFER_PAYMENT);
@@ -338,6 +324,7 @@ int Government_send_account_update()
             strcpy(filename, "its/Governments_daily_balance_sheet.txt");      
             file1 = fopen(filename,"a");
             fprintf(file1,"\n %d %d %f",DAY,ID,PAYMENT_ACCOUNT);
+            fprintf(file1," %d %d %f",BOND.nr_outstanding,BOND.quantity,BOND.prices[BOND.index]);
             fclose(file1);
             free(filename);
         }              
@@ -479,13 +466,12 @@ int Government_monthly_budget_accounting()
         {
             filename = malloc(40*sizeof(char));
             filename[0]=0;
-            strcpy(filename, "its/government.txt"); 
+            strcpy(filename, "its/government_monthly_accounting.txt"); 
             file1 = fopen(filename,"a");
-            fprintf(file1,"%f %f ",MONTHLY_TAX_REVENUES,MONTHLY_BENEFIT_PAYMENT);
+            fprintf(file1,"\n %f %f ",MONTHLY_TAX_REVENUES,MONTHLY_BENEFIT_PAYMENT);
             fprintf(file1,"%f %f ",MONTHLY_BOND_INTEREST_PAYMENT,out);
             fprintf(file1,"%f %f ",MONTHLY_BUDGET_BALANCE,PAYMENT_ACCOUNT);
             fprintf(file1,"%f %f ",CUMULATED_DEFICIT,TOTAL_DEBT);
-            fprintf(file1,"%f %f\n",BOND.prices[BOND.index],TAX_RATE_HH_LABOUR);
             fclose(file1);
             free(filename);
         }
@@ -661,7 +647,8 @@ int Government_read_data_from_Eurostat()
  */
 int Government_set_policy()
 {   
-/*      
+    double yearly_tax_revenues_target; 
+/*     
     //Fiscal policy rule 1
 
         //increase tax rates when in debt
@@ -717,6 +704,26 @@ int Government_set_policy()
     //Determine new government investment
      YEARLY_INVESTMENT_BUDGET = GOV_POLICY_GDP_FRACTION_INVESTMENT * GDP_FORECAST;
      MONTHLY_INVESTMENT_BUDGET = YEARLY_INVESTMENT_BUDGET/12;
+
+    //if ((POLICY_EXP1)&(GOV_POLICY_SWITCH_QUANTITATIVE_EASING==0))
+    if (POLICY_EXP1)
+    {                   
+                    if (YEARLY_BUDGET_BALANCE>0)
+                      { 
+                        if ((YEARLY_TAX_REVENUES-YEARLY_BUDGET_BALANCE)>0)
+                           yearly_tax_revenues_target = YEARLY_TAX_REVENUES-YEARLY_BUDGET_BALANCE;
+                        else yearly_tax_revenues_target = 1.0;
+                      }
+                    else
+                        yearly_tax_revenues_target = YEARLY_TAX_REVENUES-YEARLY_BUDGET_BALANCE;
+        
+        TAX_RATE_HH_LABOUR = (yearly_tax_revenues_target/YEARLY_TAX_REVENUES)*TAX_RATE_HH_LABOUR;
+        TAX_RATE_CORPORATE = (yearly_tax_revenues_target/YEARLY_TAX_REVENUES)*TAX_RATE_CORPORATE;
+        TAX_RATE_HH_CAPITAL = (yearly_tax_revenues_target/YEARLY_TAX_REVENUES)*TAX_RATE_HH_CAPITAL;
+        
+        if (TAX_RATE_HH_LABOUR<CONST_INCOME_TAX_RATE) TAX_RATE_HH_LABOUR = CONST_INCOME_TAX_RATE;
+        
+     }
          
     return 0;
 }
