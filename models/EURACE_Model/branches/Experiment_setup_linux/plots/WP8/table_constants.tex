@@ -1,0 +1,76 @@
+In Table \ref{Table: constants} we provide a listing of all the model parameters.
+
+\begin{landscape}
+\begin{longtable}[H!]{lll}
+\caption{{\bfseries List of parameters.}}
+\label{Table: constants}\\
+\toprule 
+\bfseries Name & \bfseries Value & \bfseries Description \\ \hline 
+\midrule
+\endfirsthead
+\multicolumn{3}{c}%
+{{\bfseries \tablename\ \thetable{} -- continued from previous page}} \\
+\toprule
+\bfseries Name & \bfseries Value & \bfseries Description \\ \hline 
+\midrule
+\endhead
+\multicolumn{3}{r}{{\emph{Continued on next page}}} \\
+\endfoot
+\bottomrule
+\endlastfoot
+\url{int} \url{total_regions} & 1 & \parbox{10cm}{Total number of regions.}\\
+\url{int} \url{const_bankruptcy_idle_period} & 240 & \parbox{10cm}{Number of iterations that a bankrupt firm remains idle, before resuming production activity.}\\
+\url{int} \url{days_per_month} & 20 & \parbox{10cm}{Optional setting for the number of days in a month.}\\
+\url{int} \url{number_of_banks_to_apply} & 2 & \parbox{10cm}{Number of banks to which firms can apply for loans.}\\
+\url{int} \url{const_number_of_banks} & 2 & \parbox{10cm}{Total number of banks.}\\
+\url{int} \url{const_installment_periods} & 24 & \parbox{10cm}{Number of months to make debt installment payments before a loan is fully repaid.}\\
+\url{double} \url{const_wage_wealth_ratio} & 0.2 & \parbox{10cm}{The household's initial ratio between wage and wealth. This parametrizes the link between the unit price of capital and the unit price of labour.}\\
+\url{double} \url{const_firm_leverage} & 2 & \parbox{10cm}{Initial leverage (debt/equity ratio) of each firm.}\\
+\url{double} \url{const_income_tax_rate} & 0.2 & \parbox{10cm}{Constant income tax rate for sensitivity analysis.}\\
+\url{double} \url{debt_rescaling_factor} & 0.8 & \parbox{10cm}{The debt rescaling factor $\omega$ is used in case of a firm bankruptcy to rescale the debt. This is a process of debt-to-equity transformation. It sets the target debt level in relation to the value of total assets: $L^*=\omega A^*$. The firm will not refund all of its loans completely, but will write off every loan with a certain ratio: $w\_j = (1-L^*/L)L\_j$ for loan $j$. The fraction $(1-L^*/L)$ is the write-off ratio, and $w\_j$ is the monetary amount of the write-off for loan $j$.}\\
+\url{double} \url{target_leverage_ratio} & 2 & \parbox{10cm}{The target leverage ratio is the proportion of the target debt to target equity: $\ell = L^*/E^*$. This determines the target equity level as $E^*= (1/\ell) L^*$ and sets the amount of equity that the firm should raise on the financial market.}\\
+\url{double} \url{target_liquidity_ratio} & 1.5 & \parbox{10cm}{The target liquidity ratio is a parameter used in the case of firm bankruptcy due to illiquidity. The amount of equity to raise on the AFM equals $\alpha (F-P)$, where $\alpha$ is the target liquidity ratio, F are the financial commitments, and P is the payment account.}\\
+\url{double} \url{const_dividend_earnings_ratio} & 0.1 & \parbox{10cm}{The parameter const\_dividend\_earnings\_ratio is used to determine the first positive dividend payment (if the dividend was set to 0, or at the start): TOTAL\_DIVIDEND\_PAYMENT = CONST\_DIVIDEND\_EARNINGS\_RATIO *NET\_EARNINGS;}\\
+\url{double} \url{trading_activity} & 0.01 & \parbox{10cm}{household choose randomly to trade or not.}\\
+\url{double} \url{bonds_newissue_discount} & 0 & \parbox{10cm}{}\\
+\url{int} \url{couponperiodicitynrmonths} & 1 & \parbox{10cm}{payment coupon period expressed in number of months: typical value is 6 }\\
+\url{double} \url{fundamental_return_weight_min} & 0.1 & \parbox{10cm}{constant value that regulate the minumum value of the fundamental weight:typical value is 0.1}\\
+\url{int} \url{days_in_month} & 20 & \parbox{10cm}{number of days in month : typical value is 20}\\
+\url{int} \url{symmetric_shock} & 0 & \parbox{10cm}{Binary parameter to set if the energy shock is symmetric.}\\
+\url{int} \url{energy_shock_start} & 0 & \parbox{10cm}{Day when the energy shock starts.}\\
+\url{int} \url{energy_shock_end} & 0 & \parbox{10cm}{Day when the energy shock ends.}\\
+\url{double} \url{const_energy_shock_intensity} & 0 & \parbox{10cm}{Mark up on the capital goods price that flows out of the system, representing energy costs.}\\
+\url{int} \url{energy_shock_frequency} & 0 & \parbox{10cm}{The frequency at which the energy price is updated.}\\
+\url{double} \url{gamma_const} & -6.5 & \parbox{10cm}{ -2, Strength of logit rule for consumption}\\
+\url{double} \url{alpha} & 0.668 & \parbox{10cm}{0.662, Parameter for production function.}\\
+\url{double} \url{beta} & 0.332 & \parbox{10cm}{0.338, Parameter for production function.}\\
+\url{double} \url{depreciation_rate} & 0.01 & \parbox{10cm}{0.01, Capital depreciation rate.}\\
+\url{double} \url{mark_up} & 0.05 & \parbox{10cm}{0.2, Pricing rule: mark up on unit costs.}\\
+\url{double} \url{lambda} & 0.5 & \parbox{10cm}{0.5, Strength of the influence of the actual demand on the next production quantity: if LAMBDA = 0 then the planned production quantities of the last periods are recognized. If LAMBDA = 1 then only the actual demand is recognized.}\\
+\url{double} \url{wage_update} & 0.01 & \parbox{10cm}{0.02, Parameter for adaption of the wage offer: percentage}\\
+\url{int} \url{min_vacancy} & 2 & \parbox{10cm}{2, minimum number of vacancies to trigger vacancy counter}\\
+\url{double} \url{wage_reservation_update} & 0.01 & \parbox{10cm}{0.02, Parameter adaption of the reservation wage: percentage.}\\
+\url{double} \url{region_cost} & 0.5 & \parbox{10cm}{0.2, Cost of working in a different region: commuting costs.}\\
+\url{double} \url{on_the_job_search_rate} & 0 & \parbox{10cm}{10.0, Percentage of employees who are searching for a new job.}\\
+\url{double} \url{consumption_propensity} & 0.2 & \parbox{10cm}{0.95, Percentage of savings allocated to consumption.}\\
+\url{int} \url{firm_planning_horizon} & 10 & \parbox{10cm}{10, Planning horizon of firms}\\
+\url{double} \url{inv_inertia} & 2 & \parbox{10cm}{Inertia of investing in the physical capital.}\\
+\url{double} \url{adaption_delivery_volume} & 0.1 & \parbox{10cm}{This variable increses the sales reported by the mall when the stock was sold out. It is used as an rough demand estimation.}\\
+\url{double} \url{delivery_prob_if_critical_stock_0} & 0 & \parbox{10cm}{25, Probability for the delivery if the critical stock of one mall was zero for the last periods.}\\
+\url{double} \url{innovation_probability} & 10 & \parbox{10cm}{10. Probability that the investment goods producer innovate a new technology.}\\
+\url{double} \url{productivity_progress} & 0.025 & \parbox{10cm}{0.05. Gives the increase of productivity of an innovation.}\\
+\url{int} \url{lower_bound_firing} & 0 & \parbox{10cm}{}\\
+\url{int} \url{upper_bound_firing} & 10 & \parbox{10cm}{Upper bound of the range from that the firm draws randomly the number of fired workers.}\\
+\url{double} \url{logit_parameter_specific_skills} & 0 & \parbox{10cm}{Logit parameter for specific skills used in firm's hiring decision.}\\
+\url{double} \url{logit_parameter_general_skills} & 0.5 & \parbox{10cm}{Logit parameter for general skills used in firm's hiring decision.}\\
+\url{double} \url{gov_policy_unemployment_benefit_pct} & 0.7 & \parbox{10cm}{Parameter to set the net replacement rate (the unemployment benefit as a fraction of last labour income).}\\
+\url{double} \url{gov_policy_money_financing_fraction} & 1 & \parbox{10cm}{Parameter to set the fraction of the budget deficit to be financed by money financing.}\\
+\url{double} \url{gov_policy_gdp_fraction_consumption} & 0 & \parbox{10cm}{Parameter to set government consumption expenditure as a fraction of GDP.}\\
+\url{double} \url{gov_policy_gdp_fraction_investment} & 0 & \parbox{10cm}{Parameter to set government investment expenditure as a fraction of GDP.}\\
+\url{int} \url{no_regions_per_gov} & 1 & \parbox{10cm}{Number of regions per government. Default 2.}\\
+\url{int} \url{gov_policy_switch_quantitative_easing} & 1 & \parbox{10cm}{Constant to switch on/off automatic quantitative easing: gov issues bonds to ecb.}\\
+\url{double} \url{subsidy_trigger_on} & 0.03 & \parbox{10cm}{Trigger floor level of the GDP growth rate, below which the subsidy is switched on. Typically set to 0.03.}\\
+\url{double} \url{subsidy_trigger_off} & 0.03 & \parbox{10cm}{Trigger ceiling level of the GDP growth rate, above which the subsidy is switched off. Typically set to 0.03.}\\
+\url{double} \url{subsidy_gdp_ratio} & 1 & \parbox{10cm}{The subsidy percentage is a ratio of the GDP growth rate.}\\
+\end{longtable}
+\end{landscape}
