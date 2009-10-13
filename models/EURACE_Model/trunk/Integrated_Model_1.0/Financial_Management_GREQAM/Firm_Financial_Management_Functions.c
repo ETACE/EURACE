@@ -930,6 +930,8 @@ int Firm_compute_and_send_stock_orders()
  */
 int Firm_read_stock_transactions()
 {
+     FILE *file1;
+     char *filename;
     double finances;
     
     //Before updating the share count
@@ -972,6 +974,18 @@ int Firm_read_stock_transactions()
         #endif
     }
     FINISH_ORDER_STATUS_MESSAGE_LOOP
+    
+    if (PRINT_DEBUG_FILE_EXP1)
+        {
+            filename = malloc(40*sizeof(char));
+            filename[0]=0;
+            strcpy(filename, "its/firms_stock_transactions.txt"); 
+            file1 = fopen(filename,"a");
+            fprintf(file1,"\n %d %d %d %d %f",DAY,ID,PREVIOUS_SHARES_OUTSTANDING,CURRENT_SHARES_OUTSTANDING,finances);
+            fclose(file1);
+            free(filename);
+        }
+    
     
     return 0;
 }
