@@ -102,7 +102,7 @@ int Government_send_policy_announcements()
             filename[0]=0;
             strcpy(filename, "its/Government_policies.txt"); 
             file1 = fopen(filename,"a");
-            fprintf(file1,"\n %f %f %f",TAX_RATE_HH_LABOUR,TAX_RATE_CORPORATE,TAX_RATE_HH_CAPITAL);
+            fprintf(file1,"\n %d %d %f %f %f",DAY,ID,TAX_RATE_HH_LABOUR,TAX_RATE_CORPORATE,TAX_RATE_HH_CAPITAL);
             fclose(file1);
             free(filename);
         }
