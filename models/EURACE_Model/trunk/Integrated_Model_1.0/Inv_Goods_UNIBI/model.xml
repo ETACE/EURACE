@@ -46,42 +46,42 @@
     <variable>
      <type>double</type>
      <name>productivity</name>
-     <description></description>
+     <description>Current productivity of the offered capital good</description>
     </variable>
     <variable>
      <type>double</type>
      <name>capital_good_price</name>
-     <description></description>
+     <description>Current price of the offered capital good</description>
     </variable>
     <variable>
      <type>double</type>
      <name>revenue_per_day</name>
-     <description></description>
+     <description>Revenue of the current  day</description>
     </variable>
     <variable>
      <type>double</type>
      <name>tax_rate_corporate</name>
-     <description></description>
+     <description>Tax rate on revenues</description>
     </variable>
     <variable>
      <type>double</type>
      <name>tax_rate_vat</name>
-     <description></description>
+     <description>Value added tax</description>
     </variable>
     <variable>
      <type>double</type>
      <name>tax_payment</name>
-     <description></description>
+     <description>Sum of all taxes the IGFirm has to pay</description>
     </variable>
     <variable>
      <type>double</type>
      <name>net_profit</name>
-     <description></description>
+     <description>Earnings minus tax payment</description>
     </variable>
     <variable>
      <type>int</type>
      <name>outstanding_shares</name>
-     <description></description>
+     <description>Number of shares outstanding</description>
     </variable>
     <variable>
      <type>double</type>
