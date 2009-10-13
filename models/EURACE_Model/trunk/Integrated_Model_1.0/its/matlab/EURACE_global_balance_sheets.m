@@ -22,7 +22,8 @@ PAYMENT_ACCOUNT_BANKS = Data(:,6);
 DEPOSITS = Data(:,7);
 ECB_DEBT = Data(:,8);
 EQUITY = Data(:,9);
-PROFITS = Data(:,10);
+
+%PROFITS = Data(:,10);
 
 for i=1:numel(days)
     
@@ -34,13 +35,15 @@ for i=1:numel(days)
     DEPOSITS_sum(i) = sum(DEPOSITS(days_idx));
     ECB_DEBT_sum(i) = sum(ECB_DEBT(days_idx));
     EQUITY_sum(i) = sum(EQUITY(days_idx));
-    PROFITS_sum(i) = sum(PROFITS(days_idx));
+ %   PROFITS_sum(i) = sum(PROFITS(days_idx));
     
     clear days_idx
     
 end
 
 clear Data
+
+
 
 %%% Central Bank
 Data = load([Pat, 'CentralBank_daily_balance_sheet.txt']);

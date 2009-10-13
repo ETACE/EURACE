@@ -69,6 +69,10 @@
     
     int Firm_get_loan()
     {
+        //#ifndef _DEBUG_MODE
+        FILE * file1=NULL;
+        char * filename="";
+        //  #endif
         int n, n1, k, i, primo;
         n=0; n1=0; k=0; i=0; primo=0;
     
@@ -210,6 +214,19 @@
         
           }
         }
+
+        
+        if (PRINT_DEBUG_FILE_EXP1)
+            {
+                filename = malloc(40*sizeof(char));
+                filename[0]=0;
+                strcpy(filename, "its/credit_rationing.txt");      
+                file1 = fopen(filename,"a");
+                fprintf(file1,"\n %d %d %f %f",DAY,ID,EXTERNAL_FINANCIAL_NEEDS,total_credit_taken);
+                fclose(file1);
+                free(filename);
+            }    
+        
         
         if (PAYMENT_ACCOUNT >= TOTAL_FINANCIAL_NEEDS)
             {           
