@@ -19,16 +19,16 @@ export BASE=$PWD
 
 #Iterations
 export ITS_PRE=1000
-export ITS=3000
+export ITS=6000
 
 #Set number of nodes to use
 export NR_NODES=4
 
 #Set number of job processes to use
-export NUM_PROCS=4
+export NUM_PROCS=1
 
 #Set number of batch runs
-export TOTAL_RUNS=4
+export TOTAL_RUNS=1
 RUNS=''
 for ((j=1; j<=TOTAL_RUNS; j++)); do
     export RUNS=$RUNS' '$j
@@ -50,11 +50,18 @@ export F1_values="40 240"     #duration: 240+"40 120 240 560"=280 360 480 801
 export F2_values="0.01 0.05 0.10" #intensity
 export F3_values="0 20 60"         #frequency
 
-#export F1="duration_40"
-#export F2="intensity_0.01"
+export F1="duration_240"
+export F2="intensity_0.05"
+export F3="frequency_20"
+export F1_values="240"     #duration: 240+"40 120 240 560"=280 360 480 801
+export F2_values="0.05" #intensity
+export F3_values="20"         #frequency
+
+#export F1="duration_240"
+#export F2="intensity_0.05"
 #export F3="frequency_0"
-#export F1_values="40"     #duration: 240+"40 120 240 560"=280 360 480 801
-#export F2_values="0.01" #intensity
+#export F1_values="240"     #duration: 240+"40 120 240 560"=280 360 480 801
+#export F2_values="0.05" #intensity
 #export F3_values="0"         #frequency
 
 

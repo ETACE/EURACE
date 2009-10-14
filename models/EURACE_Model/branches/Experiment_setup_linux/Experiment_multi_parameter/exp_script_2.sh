@@ -24,6 +24,11 @@ for f1 in $F1_values; do
                 rm -f specific.xml
                 echo '<environment>'>>specific.xml
 
+				#Policy switch
+                echo -n '<policy_exp_energy_shock>'>>specific.xml
+                echo -n '1'>>specific.xml
+                echo '</policy_exp_energy_shock>'>>specific.xml
+
                 #Symmetric shock:
                 echo -n '<symmetric_shock>'>>specific.xml
                 echo -n '1'>>specific.xml
@@ -31,11 +36,11 @@ for f1 in $F1_values; do
         
                 #Duration:
                 echo -n '<energy_shock_start>'>>specific.xml
-                echo -n '240'>>specific.xml
+                echo -n '1240'>>specific.xml
                 echo '</energy_shock_start>'>>specific.xml
         
                 echo -n '<energy_shock_end>'>>specific.xml
-                echo -n $[240+$f1]>>specific.xml
+                echo -n $[1240+$f1]>>specific.xml
                 echo '</energy_shock_end>'>>specific.xml
         
                 #Intensity:
