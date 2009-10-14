@@ -264,107 +264,107 @@
     <variable>
      <type>double</type>
      <name>wage_offer</name>
-     <description>The basic wage offer</description>
+     <description>The basic wage offer paid per unit of specific skills</description>
     </variable>
     <variable>
      <type>double</type>
      <name>technology</name>
-     <description>average technology/productivity of the capital</description>
+     <description>Average technology/productivity of the capital</description>
     </variable>
     <variable>
      <type>int</type>
      <name>no_employees</name>
-     <description>number of employees</description>
+     <description>Number of employees</description>
     </variable>
     <variable>
      <type>int</type>
      <name>no_employees_skill_1</name>
-     <description>number of employees with general skills 1</description>
+     <description>Number of employees with general skills 1</description>
     </variable>
     <variable>
      <type>int</type>
      <name>no_employees_skill_2</name>
-     <description>number of employees with general skills 2</description>
+     <description>Number of employees with general skills 2</description>
     </variable>
     <variable>
      <type>int</type>
      <name>no_employees_skill_3</name>
-     <description>number of employees with general skills 3</description>
+     <description>Number of employees with general skills 3</description>
     </variable>
     <variable>
      <type>int</type>
      <name>no_employees_skill_4</name>
-     <description>number of employees with general skills 4</description>
+     <description>Number of employees with general skills 4</description>
     </variable>
     <variable>
      <type>int</type>
      <name>no_employees_skill_5</name>
-     <description>number of employees with general skills 5</description>
+     <description>Number of employees with general skills 5</description>
     </variable>
     <variable>
      <type>int</type>
      <name>vacancies</name>
-     <description>number of vacancies</description>
+     <description>Number of vacancies</description>
     </variable>
     <variable>
      <type>double</type>
      <name>average_g_skill</name>
-     <description>average general skills of the workforce</description>
+     <description>Average general skills of the workforce</description>
     </variable>
     <variable>
      <type>double</type>
      <name>average_s_skill_of_1</name>
-     <description>average specific skills of employees with general skills 1</description>
+     <description>Average specific skills of employees with general skills 1</description>
     </variable>
     <variable>
      <type>double</type>
      <name>average_s_skill_of_2</name>
-     <description>average specific skills of employees with general skills 2</description>
+     <description>Average specific skills of employees with general skills 2</description>
     </variable>
     <variable>
      <type>double</type>
      <name>average_s_skill_of_3</name>
-     <description>average specific skills of employees with general skills 3</description>
+     <description>Average specific skills of employees with general skills 3</description>
     </variable>
     <variable>
      <type>double</type>
      <name>average_s_skill_of_4</name>
-     <description>average specific skills of employees with general skills 4</description>
+     <description>Average specific skills of employees with general skills 4</description>
     </variable>
     <variable>
      <type>double</type>
      <name>average_s_skill_of_5</name>
-     <description>average specific skills of employees with general skills 5</description>
+     <description>Average specific skills of employees with general skills 5</description>
     </variable>
     <variable>
      <type>double</type>
      <name>wage_offer_for_skill_1</name>
-     <description>wage offer for workers with skill level 1</description>
+     <description>Wage offer for workers with skill level 1</description>
     </variable>
     <variable>
      <type>double</type>
      <name>wage_offer_for_skill_2</name>
-     <description>wage offer for workers with skill level 2</description>
+     <description>Wage offer for workers with skill level 2</description>
     </variable>
     <variable>
      <type>double</type>
      <name>wage_offer_for_skill_3</name>
-     <description>wage offer for workers with skill level 3</description>
+     <description>Wage offer for workers with skill level 3</description>
     </variable>
     <variable>
      <type>double</type>
      <name>wage_offer_for_skill_4</name>
-     <description>wage offer for workers with skill level 4</description>
+     <description>Wage offer for workers with skill level 4</description>
     </variable>
     <variable>
      <type>double</type>
      <name>wage_offer_for_skill_5</name>
-     <description>wage offer for workers with skill level 5</description>
+     <description>Wage offer for workers with skill level 5</description>
     </variable>
     <variable>
      <type>int</type>
      <name>employees_needed</name>
-     <description>number of workers a firm needs for next production</description>
+     <description>Number of workers a firm needs for next production</description>
     </variable>
    </memory>
    <functions>
@@ -378,7 +378,7 @@
     </function>
     <function>
      <name>Firm_send_vacancies</name>
-     <description>If additional workers are needed the firm sends vacancies messages
+     <description>If additional workers are needed the firm sends vacancies messages&#xd;&#xd;&#xd;
  espacially the different wage offers for the different general skill groups</description>
      <currentState>04ccc</currentState>
      <nextState>03</nextState>
@@ -438,9 +438,9 @@
     </function>
     <function>
      <name>Firm_read_job_applications_send_job_offer_or_rejection</name>
-     <description>Firm reads the application, ranks the applicants according to 
-their general and specific skills and sends as many job offers to the 
-first ranked applicants as the firm has vacancies to fill. 
+     <description>Firm reads the application, ranks the applicants according to &#xd;&#xd;&#xd;
+their general and specific skills and sends as many job offers to the &#xd;&#xd;&#xd;
+first ranked applicants as the firm has vacancies to fill. &#xd;&#xd;&#xd;
 The other applicants are refused.</description>
      <currentState>03</currentState>
      <nextState>04</nextState>
@@ -466,7 +466,7 @@ The other applicants are refused.</description>
     </function>
     <function>
      <name>Firm_read_job_responses</name>
-     <description>The firm reads the responses to their job offers and updates the number of 
+     <description>The firm reads the responses to their job offers and updates the number of &#xd;&#xd;&#xd;
 employees and the number of vacancies</description>
      <currentState>04</currentState>
      <nextState>05a</nextState>
@@ -488,7 +488,7 @@ employees and the number of vacancies</description>
     </function>
     <function>
      <name>Firm_read_job_quitting</name>
-     <description>The firm reads quitting messages and updates the number 
+     <description>The firm reads quitting messages and updates the number &#xd;&#xd;&#xd;
 of employees and the number of vacancies</description>
      <currentState>05a</currentState>
      <nextState>05b</nextState>
@@ -501,7 +501,7 @@ of employees and the number of vacancies</description>
     </function>
     <function>
      <name>Firm_read_job_quitting</name>
-     <description>The firm reads quitting messages and updates the number 
+     <description>The firm reads quitting messages and updates the number &#xd;&#xd;&#xd;
 of employees and the number of vacancies</description>
      <currentState>00b</currentState>
      <nextState>09c</nextState>
@@ -514,7 +514,7 @@ of employees and the number of vacancies</description>
     </function>
     <function>
      <name>Firm_read_job_quitting</name>
-     <description>The firm reads quitting messages and updates the number 
+     <description>The firm reads quitting messages and updates the number &#xd;&#xd;&#xd;
 of employees and the number of vacancies</description>
      <currentState>03c</currentState>
      <nextState>03d</nextState>
@@ -527,7 +527,7 @@ of employees and the number of vacancies</description>
     </function>
     <function>
      <name>Firm_start_labour_market</name>
-     <description>Dummy function if a firm has to enter the Labor Market 
+     <description>Dummy function if a firm has to enter the Labor Market &#xd;&#xd;&#xd;
 in the second round after receiving quittings</description>
      <currentState>03d</currentState>
      <nextState>06</nextState>
@@ -598,7 +598,7 @@ in the second round after receiving quittings</description>
     </function>
     <function>
      <name>Firm_send_vacancies_2</name>
-     <description>If additional workers are needed the firm sends vacancies messages
+     <description>If additional workers are needed the firm sends vacancies messages&#xd;&#xd;&#xd;
  espacially the different wage offers for the different general skill groups</description>
      <currentState>06</currentState>
      <nextState>07</nextState>
@@ -611,9 +611,9 @@ in the second round after receiving quittings</description>
     </function>
     <function>
      <name>Firm_read_job_applications_send_job_offer_or_rejection_2</name>
-     <description>Firm reads the application, ranks the applicants according to 
-their general and specific skills and sends as many job offers to the 
-first ranked applicants as the firm has vacancies to fill. 
+     <description>Firm reads the application, ranks the applicants according to &#xd;&#xd;&#xd;
+their general and specific skills and sends as many job offers to the &#xd;&#xd;&#xd;
+first ranked applicants as the firm has vacancies to fill. &#xd;&#xd;&#xd;
 The other applicants are refused.</description>
      <currentState>07</currentState>
      <nextState>08</nextState>
@@ -639,7 +639,7 @@ The other applicants are refused.</description>
     </function>
     <function>
      <name>Firm_read_job_responses_2</name>
-     <description>The firm reads the responses to their job offers and updates the number of 
+     <description>The firm reads the responses to their job offers and updates the number of &#xd;&#xd;&#xd;
 employees and the number of vacancies</description>
      <currentState>08</currentState>
      <nextState>09a</nextState>
@@ -661,7 +661,7 @@ employees and the number of vacancies</description>
     </function>
     <function>
      <name>Firm_read_job_quitting_2</name>
-     <description>The firm reads quitting messages and updates the number 
+     <description>The firm reads quitting messages and updates the number &#xd;&#xd;&#xd;
 of employees and the number of vacancies</description>
      <currentState>09a</currentState>
      <nextState>09b</nextState>
@@ -674,7 +674,7 @@ of employees and the number of vacancies</description>
     </function>
     <function>
      <name>Firm_read_job_quitting_2</name>
-     <description>The firm reads quitting messages and updates the number 
+     <description>The firm reads quitting messages and updates the number &#xd;&#xd;&#xd;
 of employees and the number of vacancies</description>
      <currentState>09c</currentState>
      <nextState>Firm_Start_Seller_Role</nextState>
@@ -772,12 +772,12 @@ of employees and the number of vacancies</description>
     <variable>
      <type>double</type>
      <name>wage_reservation</name>
-     <description>Reservation wage</description>
+     <description>Reservation wage: Worker does not accept a wage offer below the reservation wage</description>
     </variable>
     <variable>
      <type>int</type>
      <name>general_skill</name>
-     <description>The general skill level</description>
+     <description>The general skill level (1-5)</description>
     </variable>
     <variable>
      <type>int</type>
@@ -787,17 +787,17 @@ of employees and the number of vacancies</description>
     <variable>
      <type>int</type>
      <name>number_applications</name>
-     <description>Number of applications a household can sent</description>
+     <description>Number of applications a worker can sent</description>
     </variable>
     <variable>
      <type>double</type>
      <name>last_labour_income</name>
-     <description>The last labour income earned by the household if hh is unemployed</description>
+     <description>The last labour income received by the worker if the Household is unemployed</description>
     </variable>
     <variable>
      <type>double</type>
      <name>specific_skill</name>
-     <description>The specific skills of a household</description>
+     <description>The specific skills of a worker</description>
     </variable>
     <variable>
      <type>int</type>
@@ -807,12 +807,12 @@ of employees and the number of vacancies</description>
     <variable>
      <type>int</type>
      <name>employer_region_id</name>
-     <description>The id of the region</description>
+     <description>The region_id of the employer</description>
     </variable>
     <variable>
      <type>int</type>
      <name>day_of_month_receive_benefit</name>
-     <description>The day of the month that the household receives its unemployment benefit. Equal to the day on which it became unemployed. This value will change when the household becomes re-employed again by another (or the same) firm, with the exception in case the new firm has the same activation day as the old firm.</description>
+     <description>The day of the month on whivh the household receives its unemployment benefit. Equal to the day on which it became unemployed. This value will change when the household becomes re-employed again by another (or the same) firm, with the exception in case the new firm has the same activation day as the old firm.</description>
     </variable>
    </memory>
    <functions>
@@ -924,7 +924,7 @@ of employees and the number of vacancies</description>
     </function>
     <function>
      <name>Household_read_job_offers_send_response</name>
-     <description>Household reads the job offers and ranks them 
+     <description>Household reads the job offers and ranks them &#xd;&#xd;&#xd;
 according to the wage offer</description>
      <currentState>01</currentState>
      <nextState>02</nextState>
@@ -970,7 +970,7 @@ according to the wage offer</description>
     </function>
     <function>
      <name>Household_read_application_rejection_update_wage_reservation</name>
-     <description>Household reads the application rejections and decreases the 
+     <description>Household reads the application rejections and decreases the &#xd;&#xd;&#xd;
 reservation wage</description>
      <currentState>02</currentState>
      <nextState>03</nextState>
@@ -1013,7 +1013,7 @@ reservation wage</description>
     </function>
     <function>
      <name>Household_read_job_offers_send_response_2</name>
-     <description>Household reads the job offers and ranks them 
+     <description>Household reads the job offers and ranks them &#xd;&#xd;&#xd;
 according to the wage offer</description>
      <currentState>04</currentState>
      <nextState>05</nextState>
@@ -1042,7 +1042,7 @@ according to the wage offer</description>
     </function>
     <function>
      <name>Household_read_application_rejection_update_wage_reservation_2</name>
-     <description>Household reads the application rejections and decreases 
+     <description>Household reads the application rejections and decreases &#xd;&#xd;&#xd;
 the reservation wage</description>
      <currentState>05</currentState>
      <nextState>06</nextState>
@@ -1230,7 +1230,7 @@ the reservation wage</description>
  <messages>
   <message>
    <name>vacancies</name>
-   <description>Send by firms. Includes the id, the region id the number of vacancies and the 
+   <description>Send by firms. Includes the id, the region id the number of vacancies and the &#xd;&#xd;&#xd;
 wage offer for the according general skill level.</description>
    <variables>
     <variable>
@@ -1272,7 +1272,7 @@ wage offer for the according general skill level.</description>
   </message>
   <message>
    <name>vacancies2</name>
-   <description>Send by firms. Includes the id, the region id the number of vacancies and the 
+   <description>Send by firms. Includes the id, the region id the number of vacancies and the &#xd;&#xd;&#xd;
 wage offer for the according general skill level.</description>
    <variables>
     <variable>
@@ -1330,7 +1330,7 @@ wage offer for the according general skill level.</description>
   </message>
   <message>
    <name>job_application</name>
-   <description>Send by households to apply for a job. Includes the id, firm id, region id the general 
+   <description>Send by households to apply for a job. Includes the id, firm id, region id the general &#xd;&#xd;&#xd;
 as well as the specific skills.</description>
    <variables>
     <variable>
@@ -1362,7 +1362,7 @@ as well as the specific skills.</description>
   </message>
   <message>
    <name>job_application2</name>
-   <description>Send by households to apply for a job. Includes the id, firm id, region id the general 
+   <description>Send by households to apply for a job. Includes the id, firm id, region id the general &#xd;&#xd;&#xd;
 as well as the specific skills.</description>
    <variables>
     <variable>
@@ -1394,7 +1394,7 @@ as well as the specific skills.</description>
   </message>
   <message>
    <name>job_offer</name>
-   <description>Send by firms to make a job offer for a household. Includes the id, worker id and the 
+   <description>Send by firms to make a job offer for a household. Includes the id, worker id and the &#xd;&#xd;&#xd;
 corresponding wage offer.</description>
    <variables>
     <variable>
@@ -1421,7 +1421,7 @@ corresponding wage offer.</description>
   </message>
   <message>
    <name>job_offer2</name>
-   <description>Send by firms to make a job offer for a household. Includes the id, worker id and the 
+   <description>Send by firms to make a job offer for a household. Includes the id, worker id and the &#xd;&#xd;&#xd;
 corresponding wage offer.</description>
    <variables>
     <variable>
@@ -1448,7 +1448,7 @@ corresponding wage offer.</description>
   </message>
   <message>
    <name>job_acceptance</name>
-   <description>Send by households to accept the job offer. Includes the id, firm id, region id, the general 
+   <description>Send by households to accept the job offer. Includes the id, firm id, region id, the general &#xd;&#xd;&#xd;
 as well as the specific skills.</description>
    <variables>
     <variable>
@@ -1480,7 +1480,7 @@ as well as the specific skills.</description>
   </message>
   <message>
    <name>job_acceptance2</name>
-   <description>Send by households to accept the job offer. Includes the id, firm id, region id the general 
+   <description>Send by households to accept the job offer. Includes the id, firm id, region id the general &#xd;&#xd;&#xd;
 as well as the specific skills.</description>
    <variables>
     <variable>
