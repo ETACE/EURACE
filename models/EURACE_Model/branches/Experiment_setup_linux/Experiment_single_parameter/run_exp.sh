@@ -19,7 +19,7 @@ export BASE=$PWD
 
 #Iterations
 export ITS_PRE=1000
-export ITS=2400
+export ITS=8000
 
 #Set number of nodes to use
 export NR_NODES=2
@@ -37,11 +37,13 @@ done
 echo 'Batch runs:[' $RUNS ']'
 
 #Parameters
-export F1="tax_0.05 tax_0.10 tax_0.15 tax_0.20 tax_0.25 tax_0.30"
-export F1_values="0.05 0.10 0.15 0.20 0.25 0.30"
+export F1="tax_0.0 tax_0.01 tax_0.02 tax_0.03 tax_0.04 tax_0.05 tax_0.06 tax_0.07"
+export F1_values="0.0 0.01 0.02 0.03 0.04 0.05 0.06 0.07"
 
-#export F1="tax_0.05"
-#export F1_values="0.05"
+#export F1="tax_0.10 tax_0.15 tax_0.20 tax_0.25"
+#export F1_values="0.10 0.15 0.20 0.25"
+#export F1="tax_0.04"
+#export F1_values="0.04"
 #export F1="tax_0.05 tax_0.10"
 #export F1_values="0.05 0.10"
 
@@ -64,6 +66,7 @@ export MAIN_S='/media/DOCS/Docs/EURACE/X-models/SVN_linux/models/EURACE_Model/tr
 export MAIN_P='/media/DOCS/Docs/EURACE/X-models/SVN_linux/models/EURACE_Model/trunk/Integrated_Model_1.0/main_pp'
 echo 'MAIN_S:'$MAIN_S
 echo 'MAIN_P:'$MAIN_P
+
 
 #Location of the SQL database creation script (not actually used currently):
 #export SQL_DB_DIR='/media/DOCS/Docs/EURACE/X-models/SVN_linux/xagents/sim_validation'
@@ -88,25 +91,25 @@ export MODEL_XML_DIR='/media/DOCS/Docs/EURACE/X-models/SVN_linux/models/EURACE_M
 #export MODEL_XML_DIR='/home/svdhoog/EURACE/SVN/eurace/trunk/Integrated_Model_1.0'
 
 ######### STEP 2: CREATION OF EXPERIMENT FOLDER HIERARCHY 
-#bash ./exp_script_1.sh
+bash ./exp_script_1.sh
 
 ######### STEP 3: CREATION OF THE SPECIFIC SETTINGS XML FILE 
-#bash ./exp_script_2.sh
+bash ./exp_script_2.sh
 
 ######### STEP 4: RUNNING THE INITIAL PHASE 
 #bash ./run_first_stage.sh
 
 ######### STEP 4b: RUNNING BENCHMARK SCENARIO 
-bash ./run_benchmark.sh
+#bash ./run_benchmark.sh
 
 ######### STEP 5: RUNNING THE EXPERIMENT 
 #bash ./run_experiment.sh
 
 ######### STEP 6: CREATING  JOB SCRIPTS 
-#bash ./create_job_list.sh
+bash ./create_job_list.sh
 
 ######### STEP 7: LAUNCHING  JOB SCRIPTS 
-#bash ./launch_job_list.sh
+bash ./launch_job_list.sh
 
 ######### STEP 8: CLEANING OUT THE FOLDERS AFTER VISGUI HAS CREATED DBs 
 #bash ./clean_up.sh

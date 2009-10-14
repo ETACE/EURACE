@@ -38,14 +38,19 @@ for run in $RUNS; do
 	#$MAIN_S $ITS 'output_benchmark_none.xml'
 
 	#Run serial with snapshot:
-	cp $BASE/output_benchmark_snapshot.xml ./
-	echo '      Copied output file from' $BASE'/output_benchmark_snapshot.xml to folder: run_'$run
-	$MAIN_S $ITS 'output_benchmark_snapshot.xml'
+	#cp $BASE/output_benchmark_snapshot.xml ./
+	#echo '      Copied output file from' $BASE'/output_benchmark_snapshot.xml to folder: run_'$run
+	#$MAIN_S $ITS 'output_benchmark_snapshot.xml'
 	
+	#Run serial with all but household output:
+	#cp $BASE/output_benchmark_no_hh.xml ./
+	#echo '      Copied output file from' $BASE'/output_benchmark_no_hh.xml to folder: run_'$run
+	#$MAIN_S $ITS 'output_benchmark_no_hh.xml' 
+
 	#Run serial with small output:
-	#cp $BASE/output_benchmark.xml ./
-	#echo '      Copied output file from' $BASE'/output_benchmark.xml to folder: run_'$run
-	#$MAIN_S $ITS 'output_benchmark.xml' 
+	cp $BASE/output_benchmark.xml ./
+	echo '      Copied output file from' $BASE'/output_benchmark.xml to folder: run_'$run
+	$MAIN_S $ITS 'output_benchmark.xml' 
 
 
 	#Run parallel:
@@ -86,8 +91,8 @@ for run in $RUNS; do
 	rm *.xml
 
 	#Compress the databases without removing originals
-	echo '+ Compressing iters.db, keeping the original'
-	tar -cjv --overwrite --file=iters.tar.gz iters.db
+	#echo '+ Compressing iters.db, keeping the original'
+	#tar -cjv --overwrite --file=iters.tar.gz iters.db
 
 	#Compress the databases and remove the originals
 	#echo '+ Compressing iters.db and removing the original'
