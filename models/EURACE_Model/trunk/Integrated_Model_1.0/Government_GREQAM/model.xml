@@ -34,25 +34,25 @@
    <variable>
     <type>int</type>
     <name>gov_policy_switch_quantitative_easing</name>
-    <description>Constant to switch on/off automatic quantitative easing: gov issues bonds to ecb.
+    <description>Constant to switch on/off automatic quantitative easing: gov issues bonds to ecb.&#xd;
 </description>
    </variable>
    <variable>
     <type>double</type>
     <name>subsidy_trigger_on</name>
-    <description>Trigger floor level of the GDP growth rate, below which the subsidy is switched on. Typically set to -0.01.
+    <description>Trigger floor level of the GDP growth rate, below which the subsidy is switched on. Typically set to -0.01.&#xd;
 </description>
    </variable>
    <variable>
     <type>double</type>
     <name>subsidy_trigger_off</name>
-    <description>Trigger ceiling level of the GDP growth rate, above which the subsidy is switched off. Typically set to +0.01.
+    <description>Trigger ceiling level of the GDP growth rate, above which the subsidy is switched off. Typically set to +0.01.&#xd;
 </description>
    </variable>
    <variable>
     <type>double</type>
     <name>subsidy_gdp_ratio</name>
-    <description>The subsidy percentage is a ratio of the - GDP growth rate. Typical setting is tanh(gdp_growth).
+    <description>The subsidy percentage is a ratio of the - GDP growth rate. Typical setting is tanh(gdp_growth).&#xd;
 </description>
    </variable>
   </constants>
@@ -85,37 +85,37 @@
     <variable>
      <type>double</type>
      <name>tax_rate_corporate</name>
-     <description></description>
+     <description>Corporate tax rate on firm and bank profits.</description>
     </variable>
     <variable>
      <type>double</type>
      <name>tax_rate_hh_labour</name>
-     <description></description>
+     <description>Labour income tax rate for households.</description>
     </variable>
     <variable>
      <type>double</type>
      <name>tax_rate_hh_capital</name>
-     <description></description>
+     <description>Capital gains tax rate for households.</description>
     </variable>
     <variable>
      <type>double</type>
      <name>tax_rate_vat</name>
-     <description></description>
+     <description>VAT tax.</description>
     </variable>
     <variable>
      <type>double</type>
      <name>monthly_tax_revenues</name>
-     <description></description>
+     <description>Monthly tax revenues.</description>
     </variable>
     <variable>
      <type>double</type>
      <name>yearly_tax_revenues</name>
-     <description></description>
+     <description>Yearly tax revenues.</description>
     </variable>
     <variable>
      <type>double</type>
      <name>monthly_benefit_payment</name>
-     <description>Unemployment benefit payments for all unemployed households.</description>
+     <description>Unemployment benefit payments to all unemployed households.</description>
     </variable>
     <variable>
      <type>double</type>
@@ -125,22 +125,22 @@
     <variable>
      <type>double</type>
      <name>hh_transfer_payment</name>
-     <description></description>
+     <description>Household transfer payment amount.</description>
     </variable>
     <variable>
      <type>double</type>
      <name>firm_transfer_payment</name>
-     <description></description>
+     <description>Firm transfer payment amount.</description>
     </variable>
     <variable>
      <type>double</type>
      <name>monthly_transfer_payment</name>
-     <description></description>
+     <description>Aggregate monthly transfer payments.</description>
     </variable>
     <variable>
      <type>double</type>
      <name>yearly_transfer_payment</name>
-     <description></description>
+     <description>Aggregate yearly transfer payments.</description>
     </variable>
     <variable>
      <type>double</type>
@@ -160,27 +160,27 @@
     <variable>
      <type>double</type>
      <name>monthly_subsidy_payment</name>
-     <description></description>
+     <description>Aggregate monthly subsidy payments.</description>
     </variable>
     <variable>
      <type>double</type>
      <name>yearly_subsidy_payment</name>
-     <description></description>
+     <description>Aggregate yearly subsidy payments.</description>
     </variable>
     <variable>
      <type>double</type>
      <name>monthly_bond_interest_payment</name>
-     <description></description>
+     <description>Aggregate monthly bond interest payments.</description>
     </variable>
     <variable>
      <type>double</type>
      <name>yearly_bond_interest_payment</name>
-     <description></description>
+     <description>Aggregate yearly bond interest payments.</description>
     </variable>
     <variable>
      <type>double</type>
      <name>gov_interest_rate</name>
-     <description>Interest rate the gov uses to interest on the public debt.</description>
+     <description>Interest rate the government uses to pay interest on the public debt.</description>
     </variable>
     <variable>
      <type>double</type>
@@ -205,7 +205,7 @@
     <variable>
      <type>double</type>
      <name>total_debt</name>
-     <description></description>
+     <description>Government debt.</description>
     </variable>
     <variable>
      <type>double</type>
@@ -225,12 +225,12 @@
     <variable>
      <type>double</type>
      <name>country_wide_mean_wage</name>
-     <description></description>
+     <description>Country wide mean wage is the mean wage for all regions associated to this government.</description>
     </variable>
     <variable>
      <type>int</type>
      <name>num_unemployed</name>
-     <description></description>
+     <description>The number of unemployed that are associated to the government.</description>
     </variable>
     <variable>
      <type>double</type>
@@ -240,12 +240,12 @@
     <variable>
      <type>double</type>
      <name>gdp_growth</name>
-     <description></description>
+     <description>GDP growth rate (updated once per year).</description>
     </variable>
     <variable>
      <type>double</type>
      <name>gdp_forecast</name>
-     <description></description>
+     <description>Forecast for next year's GDP.</description>
     </variable>
     <variable>
      <type>double</type>
@@ -554,7 +554,7 @@
     </function>
     <function>
      <name>Government_resolve_unsold_bonds</name>
-     <description></description>
+     <description>To resolve the remaining deficit that remains after bond rationing on the bond market, the government sells the unsold bonds to the ECB, in return for newly created fiat money (quantitative easing).</description>
      <currentState>Gov_Start_Monthly_Loop</currentState>
      <nextState>05a</nextState>
      <condition>
