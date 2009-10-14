@@ -36,8 +36,8 @@
 	#tar -cjv --overwrite --file=iters.tar.gz iters.db
 
 	#Compress the databases and remove the originals
-	echo '+ Compressing iters.db and removing the original'
-	tar -cjv --remove-files --overwrite --file=iters.tar.gz iters.db
+	#echo '+ Compressing iters.db and removing the original'
+	#tar -cjv --remove-files --overwrite --file=iters.tar.gz iters.db
 
 echo 'Run '$PWD' --DONE'
 echo 'Run '$PWD':DONE' >>$BASE/STATUS 
