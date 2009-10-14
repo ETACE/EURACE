@@ -42,6 +42,11 @@ for run in $RUNS; do
 	#echo '      Copied output file from' $BASE'/output_benchmark_snapshot.xml to folder: run_'$run
 	#$MAIN_S $ITS 'output_benchmark_snapshot.xml'
 	
+	#Run serial with all but household output:
+	#cp $BASE/output_benchmark_no_hh.xml ./
+	#echo '      Copied output file from' $BASE'/output_benchmark_no_hh.xml to folder: run_'$run
+	#$MAIN_S $ITS 'output_benchmark_no_hh.xml' 
+
 	#Run serial with small output:
 	cp $BASE/output_benchmark.xml ./
 	echo '      Copied output file from' $BASE'/output_benchmark.xml to folder: run_'$run
@@ -90,8 +95,8 @@ for run in $RUNS; do
 	#tar -cjv --overwrite --file=iters.tar.gz iters.db
 
 	#Compress the databases and remove the originals
-	echo '+ Compressing iters.db and removing the original'
-	tar -cjv --remove-files --overwrite --file=iters.tar.gz iters.db
+	#echo '+ Compressing iters.db and removing the original'
+	#tar -cjv --remove-files --overwrite --file=iters.tar.gz iters.db
 
     cd ..
 done
