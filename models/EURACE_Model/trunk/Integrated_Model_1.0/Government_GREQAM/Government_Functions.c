@@ -55,27 +55,44 @@ int Government_send_policy_announcements()
     if(POLICY_EXP_STABILIZATION)
     {
         //Set trigger function:
-	if ((SUBSIDY_FLAG==0)&&(GDP_GROWTH<SUBSIDY_TRIGGER_ON))
-	{
-		SUBSIDY_FLAG=1;
-		printf("\nIn Government line 84: switched SUBSIDY_FLAG=0 to SUBSIDY_FLAG=%d\n", SUBSIDY_FLAG);
-	}
+		if ((SUBSIDY_FLAG==0)&&(GDP_GROWTH<SUBSIDY_TRIGGER_ON))
+		{
+			SUBSIDY_FLAG=1;
+			//printf("\nIn Government line 84: switched SUBSIDY_FLAG=0 to SUBSIDY_FLAG=%d\n", SUBSIDY_FLAG);
+			HH_SUBSIDY_PCT = -tanh(GDP_GROWTH - SUBSIDY_TRIGGER_OFF)*abs(GDP_GROWTH);
 
-	//Release trigger function:
-	if ((SUBSIDY_FLAG==1)&&(GDP_GROWTH>SUBSIDY_TRIGGER_OFF))
-	{
-		SUBSIDY_FLAG=0;
-		printf("\nIn Government line 91: switched SUBSIDY_FLAG=1 to SUBSIDY_FLAG=%d\n", SUBSIDY_FLAG);
-	}
-	printf("\nIn Government line 93: SUBSIDY_FLAG=%d\n", SUBSIDY_FLAG);
+			//Lower the income tax 
+			//TAX_RATE_HH_LABOUR = CONST_INCOME_TAX_RATE + tanh(GDP_GROWTH - SUBSIDY_TRIGGER_OFF)*abs(GDP_GROWTH);
+		}
+
+		//Release trigger function:
+		if ((SUBSIDY_FLAG==1)&&(GDP_GROWTH>SUBSIDY_TRIGGER_OFF))
+		{
+			SUBSIDY_FLAG=0;
+			//printf("\nIn Government line 91: switched SUBSIDY_FLAG=1 to SUBSIDY_FLAG=%d\n", SUBSIDY_FLAG);
+			HH_SUBSIDY_PCT = 0.0;
+
+			//Reset the income tax to its normal value
+			//TAX_RATE_HH_LABOUR = CONST_INCOME_TAX_RATE;
+		}
+
+		//Subsidy regime
+		if ((SUBSIDY_FLAG==1)&&(GDP_GROWTH<SUBSIDY_TRIGGER_OFF))
+		{
+			HH_SUBSIDY_PCT = -tanh(GDP_GROWTH - SUBSIDY_TRIGGER_OFF)*abs(GDP_GROWTH);
+
+			//Lower the income tax 
+			//TAX_RATE_HH_LABOUR = CONST_INCOME_TAX_RATE + tanh(GDP_GROWTH - SUBSIDY_TRIGGER_OFF)*abs(GDP_GROWTH);
+		}
+
+
+		//printf("\nIn Government line 93: SUBSIDY_FLAG=%d\n", SUBSIDY_FLAG);
 
         //Set subsidy percentage (these are used to compute individual subsidy payments)
-        //HH_SUBSIDY_PCT = SUBSIDY_GDP_RATIO*abs(GDP_GROWTH)*indicator_gdp;
+		//When the gdp growth rate is between the on and off trigger, multiply by the tanh() which gives a result between 0 and -1.
+        //HH_SUBSIDY_PCT = -tanh(GDP_GROWTH - SUBSIDY_TRIGGER_OFF)*abs(GDP_GROWTH)*SUBSIDY_FLAG;
 
-	//When the gdp growth rate is between the on and off trigger, multiply by the tanh() which gives a result between 0 and -1.
-        HH_SUBSIDY_PCT = -tanh(GDP_GROWTH - SUBSIDY_TRIGGER_OFF)*abs(GDP_GROWTH)*SUBSIDY_FLAG;
-
-	if (HH_SUBSIDY_PCT>0.0) printf("\nIn Government: HH_SUBSIDY_PCT=%f\n", HH_SUBSIDY_PCT);
+		//if (HH_SUBSIDY_PCT>0.0) printf("\nIn Government: HH_SUBSIDY_PCT=%f\n", HH_SUBSIDY_PCT);
 
         //The firm is subsidized for the increase in capital_goods_price
         //This is not so clear: the energy price markup = CONST_ENERGY_SHOCK_INTENSITY, but this only occurs in some iterations, not all
