@@ -1,6 +1,0 @@
-<environment>
-<energy_shock_start>240</energy_shock_start>
-<energy_shock_end>800</energy_shock_end>
-<const_energy_shock_intensity>0.20</const_energy_shock_intensity>
-<energy_shock_frequency>60</energy_shock_frequency>
-</environment>
