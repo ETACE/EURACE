@@ -194,16 +194,20 @@ Data = load([Pat, 'stock_prices.txt']);
 firms_id = Data(:,2);
 firms_nr = numel(unique(firms_id));
 days = unique(Data(:,1));
-prices = zeros(numel(days),firms_nr);
+%prices = zeros(numel(days),firms_nr);
+
+colore = {'r';'k';'g';'b';'y'};
+
 
 for i=1:firms_nr
     Idx_id = find(firms_id==i);
-    prices(:,i) = Data(Idx_id,3);   
+    stock_prices_values{i} = Data(Idx_id,3);
+    stock_prices_days{i} = Data(Idx_id,1);
+    figure(61); hold on; grid on
+    plot(stock_prices_days{i},stock_prices_values{i},colore{i})
     clear Idx_id
 end
 
-figure(61); hold on; grid on
-plot(prices)
 
 
 clear Data
@@ -211,13 +215,15 @@ clear Data
 %%% Credit market
 Data = load([Pat, 'credit_rationing.txt']);
 Credit_requested = Data(:,3);
-Credit_allowed = Data(:,2);
+Credit_allowed = Data(:,4);
 
 days = unique(Data(:,1));
 
 for i=1:numel(days)
     
-    days_idx = find(Data(:,1)==i);
+    d = days(i);
+    
+    days_idx = find(Data(:,1)==d);
     Credit_requested_sum(i) = sum(Credit_requested(days_idx));
     Credit_allowed_sum(i) = sum(Credit_allowed(days_idx));
     
@@ -227,9 +233,9 @@ end
 
 
 figure(71); hold on; grid on
-plot(find(Credit_requested_sum),Credit_requested_sum(find(Credit_requested_sum)))
-plot(find(Credit_requested_sum),Credit_allowed_sum(find(Credit_requested_sum)),'r')
-legend('Credit allowed','Credit requested',0)
+plot(days,Credit_requested_sum)
+plot(days,Credit_allowed_sum,'r')
+legend('Credit requested','Credit allowed',0)
 
 clear Data
 
@@ -240,16 +246,72 @@ firms_nr = numel(unique(firms_id));
 
 days = unique(Data(:,1));
 
+figure(81); hold on; grid on
+
+testo = [];
+
 for i=1:firms_nr
 
     Idx_id = find(firms_id==i);
     Shares_outstanding_nr{i} = Data(Idx_id,4);   
     Shares_outstanding_days{i} = Data(Idx_id,1);   
     new_capital_raised{i} = Data(Idx_id,5);
+    stairs(Shares_outstanding_days{i},Shares_outstanding_nr{i},colore{i})
     clear Idx_id      
+    
+    testo{i} = ['firm ', num2str(i)];
   
 end
 
+legend(testo,0)
+
+clear Data
+
+%%% Eurostat
+Data = load([Pat, 'eurostat.txt']);
+
+figure(91); hold on; grid on
+GDP = Data(:,2);
+CPI = Data(:,3);
+OUTPUT = Data(:,4);
+UNEMPLOYMENT = Data(:,6);
+AVERAGE_WAGE = Data(:,7);
+
+colore = 'b';
+figure(91); 
+subplot(2,1,1); hold on; grid on
+plot(Data(:,1),GDP,colore)
+plot(Data(:,1),OUTPUT,[colore, ':'])
+legend('GDP','OUTPUT')
+
+subplot(2,1,2); hold on; grid on
+plot(Data(:,1),UNEMPLOYMENT,colore)
+legend('unemployment')
+
+figure(92); 
+subplot(2,1,1); hold on; grid on
+plot(Data(:,1),CPI,colore)
+legend('CPI')
+
+subplot(2,1,2); hold on; grid on
+plot(Data(:,1),AVERAGE_WAGE,colore)
+legend('AVERAGE_WAGE')
+
+
+
+%%% INVARIANTS
+
+MONEY_PRIVATE_SECTOR = DEPOSITS_sum+ EQUITY_sum;
+
+MONEY_PRIVATE_SECTOR_counterpart = TOTAL_CREDIT_sum + ...
+    FIAT_MONEY' - PAYMENT_ACCOUNT_CB' - CUM_ENERGY_COSTS_sum - PAYMENT_ACCOUNT_GOVS_sum;
+
+figure(101); 
+subplot(2,1,1); hold on; grid on
+plot(MONEY_PRIVATE_SECTOR)
+
+subplot(2,1,2); hold on; grid on
+plot(MONEY_PRIVATE_SECTOR_counterpart)
 
 %%%%%%%%%%%%%%%
 
