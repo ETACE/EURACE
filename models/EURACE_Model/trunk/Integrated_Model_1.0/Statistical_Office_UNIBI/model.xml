@@ -355,7 +355,7 @@
       <type>double</type>
       <name>investment_gdp_ratio</name>
       <description>Ratio of investment/gdp.</description>
-     </variable>     
+     </variable>
      <variable>
       <type>double</type>
       <name>gdp</name>
@@ -1363,7 +1363,7 @@
     <variable>
      <type>int</type>
      <name>age</name>
-     <description></description>
+     <description>Age of the firm in months.</description>
     </variable>
     <variable>
      <type>double</type>
@@ -1691,7 +1691,7 @@
     <variable>
      <type>int</type>
      <name>unemployed</name>
-     <description></description>
+     <description>Number of unemployed Hoseholds</description>
     </variable>
     <variable>
      <type>double</type>
@@ -2146,12 +2146,12 @@
     <variable>
      <type>double</type>
      <name>firm_average_productivity_progress</name>
-     <description></description>
+     <description>Average productivity progress of the firms in the last month.</description>
     </variable>
     <variable>
      <type>double</type>
      <name>firm_average_productivity</name>
-     <description></description>
+     <description>Average productivty of the firms in the last month.</description>
     </variable>
     <variable>
      <type>double</type>
