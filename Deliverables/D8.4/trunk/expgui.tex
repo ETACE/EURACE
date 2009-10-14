@@ -1,0 +1,18 @@
+%\subsection{Integration with Experimental GUI}
+\subsection{The EURACE GUIs}
+\subsection{Integration}
+It was thought at first that the job submission bash shell scripts could be used by the experimental GUI for remote working, even on a Windows machine using Cygwin or MSYS. A later decision to make the Windows GUIs work natively meant that this could not happen and so an alternative implementation has been necessary. By making use of paramiko (\verb+http://www.lag.net/paramiko/+) and implementation of the SSH2 protocol for python, the remote execution and copying of files has been implemented to run natively on all platforms.  Scripts that run on the remote machine have been left as bash scripts as all the compute clusters run some version of Linux or Unix and the existing remote host configuration files can be used. 
+
+At present from the experiment GUI the user can:
+
+\begin{itemize}
+\item choose the remote host
+\item specify a serial or parallel job
+\item specify the number of processes for a parallel job
+\item run the job
+\item check on job status (if remote system uses batch processing)
+\item retrieve results.
+\end{itemize}
+
+Resource constraints have meant that it has not been possible to implement the full requirements of Projects containing Jobs within the experimental GUI.
+
