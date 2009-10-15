@@ -1,7 +1,7 @@
 \section{Transient period}
 Before we show the benchmark results, we show a transient run for the default parameter settings.
 Figure \ref{Figure: transient time} shows a simulation of the model for $20$ batch runs of $5000$ iterations.
-After approximately $1000$ iterations the transient phase settles down to stochastic steady state.
+After approximately $4000$ periods (days, i.e. 16 years) the transient phase settles down to a stochastic steady state.
 
 The data is summarized using a box-and-whisker plot in which the dark grey area shows the data between Q1 and Q3 ($50\%$ of the data) and
  the light grey area indicates the outer hinges of the distribution, i.e. $1.5$ times the interquartile range (IQR).
@@ -11,10 +11,10 @@ In Figure \ref{Figure: run batch} the box plots show the distribution for each s
 The main features of the benchmark runs are:
 \begin{itemize}
 \item GDP converges to a level of $1300$ and then sets off on a stable growth path.
-\item The unemployment rate approaches a stable level of $XX\%$.
-\item Inflation rates are between $XX\%$ and $XX\%$ for most periods,
+\item The unemployment rate approaches a stable level of $20\%$.
+\item Inflation rates are between $-10\%$ and $+10\%$ annual for most periods,
 although in some periods inflation rates of $-20\%$ and $+20\%$ can occur.
-\item The investment/GDP ratio fluctuates around $XX\%$.
+\item The investment/GDP ratio fluctuates around $16\%$.
 \end{itemize}
 
 \section{Benchmark scenario}
@@ -35,10 +35,10 @@ In Figure \ref{Figure: Eurostat macrodata growth rates} we show the growth rates
 
 The growth rates of the benchmark runs are:
 \begin{itemize}
-\item The GDP growth rate is about $3$ to $4\%$ annually, with a minimum of $XX\%$ and a maximum of $XX\%$.
-\item The output growth rate is approx. $4\%$, with minima of $XX\%$ and maxima of $XX\%$.
+\item The GDP growth rate is about $3\%$ annually, with a minimum of $-2\%$ and a maximum of $+9\%$.
+\item The output growth rate is approx. $3\%$, with minima of $-0.5\%$ and maxima of $7\%$.
 \item The growth rate of the average wage is around $3.2\%$ per year, with minima of $2.5\%$ and maxima of $4.5\%$.
-\item The growth rate of unemployment is centered around $0\%$, and fluctuates between $-16\%$ and $+20\%$ on an annual basis.
+\item The growth rate of unemployment is centred around $0\%$, and fluctuates between $-16\%$ and $+20\%$ on an annual basis.
 \end{itemize}
 
 \subsubsection*{Government}
@@ -50,7 +50,7 @@ since the level of tax revenues is lower than that of the unemployment benefit p
 This deficit needs to be financed by government bonds, as shown in Fig. \ref{Figure: Government}d.
 
 \subsubsection*{Firms}
-For the firms we show in Figure \ref{Figure: Firm Production} the monthly output, cumulative revenues, number of employees, the actual capital price paid for machinery, and the firm's payment account. The average firm size measured by the number of employees is $25$.
+For the firms we show in Figure \ref{Figure: Firm Production} the monthly output, cumulative revenues, number of employees, the actual capital price paid for machinery, and the firm's payment account. The firm size measured by the number of employees is $16$ on average.
 
 The earnings data and the cumulative revenues show a wide distribution. To show that this is not due to one or two special runs but a general feature of all runs, we  show in Figure \ref{Figure: Firm Production batch} the complete set of batch run box plots. This plot makes clear that in each run the population distribution of the firms' earnings and cumulative revenues is wide.
 Whether or not the earnings distribution has power law tails we have not yet investigated.
@@ -58,16 +58,16 @@ Whether or not the earnings distribution has power law tails we have not yet inv
 The firms' financial data are shown in Figure \ref{Figure: Firm Financial Data}. We show total assets, debt and equity, as well as
 the average debt earnings ratio and the average debt equity ratio (first averaged across firms, then averaged across runs).
 
-Total assets increase, while total debt decreases, so equity is increased. Total earnings stabilize to a level of 50.
-The debt earnings ratios and the debt equity ratios decrease asymptotically to 0 since debt decreases.
+Total assets increase, while total debt increases slower, so equity is increased. Total earnings stabilize to a level of 100.
+The average debt earnings ratio is approximately $50\%$, while the average debt equity ratio is around $5\%$.
 
 \subsubsection*{Labour market}
 From the labour market data we show the average unemployment rate, the unemployment rate for skill level 1 and 5, the average wage and 
 average wage for skill level 1 and 5. Next we show the total number of vacancies and the labour/profit share ratio.
 
-Figure \ref{Figure: Labour Market} shows that the unemployment rate stabilizes to $32\%$, but due to the heterogeneity in workers' skill level there are stark differences: the unemployment rate for skill level 1 is $56\%$ while for skill level  5 it is $14\%$.
+Figure \ref{Figure: Labour Market} shows that the unemployment rate stabilizes to $20\%$, but due to the heterogeneity in workers' skill level there are stark differences: the unemployment rate for skill level 1 is $35\%$ while for skill level  5 it is $8\%$.
 
-Figure \ref{Figure: Labour Market 2} shows that the average labour share ratio converges to 3, which means that the total wage bill is 3 times the profits.
+Figure \ref{Figure: Labour Market 2} shows that the average labour share ratio is around 1.
 
 \subsubsection*{Consumption Goods Market}
 From the consumption goods market we show data pertaining to: monthly output, monthly planned output, quantity sold, total monthly revenues,
@@ -77,19 +77,19 @@ All data are steadily increasing with the average productivity progress of $2.5\
 \subsubsection*{Credit Market}
 There are two banks in the system. 
 We show the banks' cash, total deposits, the total credit given to firms, bank equity, ECB debt, and the banks' total dividend payout.
-On the credit market we see in Figure \ref{Figure: Credit Market} that banks deposits are increasing, total credits to firms are converging to a constant level, and banks' equity is increasing as well. Furthermore, banks have no ECB debt, and are able to pay out positive dividends to the households.
+On the credit market we see in Figure \ref{Figure: Credit Market} that banks deposits are increasing, total credits to firms are fluctuating around a positive trend, and banks' equity is constant. Furthermore, banks have no ECB debt, and are able to pay out positive dividends to the households.
 
 
 \section{Tax rate scenarios}
-In a first sensitivity analysis we consider three income tax rate scenarios, using respectively a $5\%$, $10\%$ and $15\%$ income tax.
-
-In Figure \ref{Figure: scenarios} we show results for GDP, the unemployment rate and the investment/GDP ratio.
-It is clear that if we increase the tax rate the GDP decreases and unemployment increases.
+As a first sensitivity analysis we consider a variation in the income tax rate from $5\%$ to $15\%$, see Figure \ref{Figure: scenarios}.
+We show results for $20$ batch runs, $4000$ periods each, for each value of the tax rate parameter.
+It is clear that if we increase the tax rate then GDP decreases and unemployment increases.
 The investment/GDP ratio remains constant which means that total investments in the economy show the same decrease as GDP when the tax rate is increased.
 
 
 %%%%%%%%%%%%%%% Include all figures
 \input{transient}
 \input{benchmarks}
+%\input{benchmarks-0.08}
 \input{scenarios}
 
