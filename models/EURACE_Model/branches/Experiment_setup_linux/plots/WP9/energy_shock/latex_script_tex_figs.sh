@@ -37,10 +37,11 @@ for folder0 in $F0; do
 				echo 'Entering folder: '$PWD
                 rm -f plot.tex
 
-				#mv IGFirm-capital_good_price\(double\).png IGFirm-capital_good_price.png &
-				#mv Eurostat-unemployment_rate\(double\).png Eurostat-unemployment_rate.png &
-				#mv Eurostat-gdp\(double\).png Eurostat-gdp.png &
-				#mv IGFirm-energy_costs_per_day\(double\).png IGFirm-energy_costs_per_day.png &
+				mv IGFirm-capital_good_price\(double\).png IGFirm-capital_good_price.png &
+				mv Eurostat-unemployment_rate\(double\).png Eurostat-unemployment_rate.png &
+				mv Eurostat-gdp\(double\).png Eurostat-gdp.png &
+				mv IGFirm-energy_costs_per_day\(double\).png IGFirm-energy_costs_per_day.png &
+				mv IGFirm-cum_energy_costs\(double\).png IGFirm-cum_energy_costs.png &
 
 				echo '\begin{figure}[ht!]'>>plot.tex
 				echo '\centering\leavevmode'>>plot.tex
