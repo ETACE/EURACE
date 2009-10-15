@@ -1,22 +1,21 @@
+\section{Introduction }
 
-\section{Introduction}
-
-As a benchmark, we first consider a situation in which there are no active
-policy measures to counter the negative effects of an energy shock. This is the
-benchmark scenario. We quantify the correlation between the level of the
-energy shock and the change in GDP growth rate in this scenario.
+We first consider a benchmark scenario in which there are no active policy
+measures to counter the negative effects of an energy shock. We quantify the
+correlation between the level of the energy shock and the change in GDP
+growth rate in this scenario.
 
 We typically assume that an energy shock consists of a succession of
-consecutive, identical (in length and magnitude) energy price increases.
-Thus, an energy shock is captured by three parameters: the magnitude of the
-single price increases ($\pi$), their periodicity $\Pi$ (the number of
-days between two consecutive price increases), and the number of price
-increases ($n).$ The total duration of the energy crisis ($d$) is then $%
-d=\Pi n$. The price increase $\pi$ is assumed to instantaneously disappear at the end
-of the total duration. The time profile of a typical energy shock is illustrated in Figure
-\ref{Figure: energy shock} below.
-We analyze the model response to variations to the three parameters duration
-$d$, magnitude $\pi$, and periodicity $\Pi$.
+consecutive, identical (in length and intensity) energy price increases.
+Thus, an energy shock is captured by three parameters: the intensity of the
+single price increases ($\pi $), see (\ref{intensity}) below; their
+periodicity $\Pi $ (the number of days between two consecutive price
+increases), and the number of price increases ($n).$ The total duration of
+the energy crisis ($d$) is then $d=\Pi n$. The price increase is assumed to
+instantaneously disappear at the end of the total duration. The time profile
+of a typical energy shock is illustrated in Figure \ref{Figure: energy shock}
+below. We analyze the model response to variations to the three parameters
+duration $d$, intensity $\pi $, and periodicity $\Pi $.
 
 \section{Description}
 
@@ -27,13 +26,12 @@ probabilistically. We now enrich the model by including the impact of the
 energy costs on the investment goods.
 
 The energy costs of the investment goods producers are incorporated into the
-price of the capital good by an energy price mark-up equal to the magnitude
-of the price shock ($\pi $):
+price of the capital good according to: 
 \begin{equation}
-p_{t+1}=(p_{t}+p_{t,c})(1+\pi ),
+p_{t+1}=(p_{t}+p_{t,c})(1+\pi ),  \label{intensity}
 \end{equation}%
-where($p_{t}$) is the price in period $t$ and ($p_{t,c}$) is the price
-update due to the productivity increase.
+where($p_{t}$) is the starting price in period $t$ and ($p_{t,c}$) is the
+price change due to the productivity increase.
 
 The additional revenues stemming from the technologically motivated price
 increase ($p_{t,c}$) are partly paid out as taxes and partly paid out as
@@ -44,7 +42,7 @@ taxes or dividends. Instead, the money is stored in a variable called %
 \url{cum_energy_costs} that represents the total cumulative income of the
 owners of the energy source (the Sheik of Qatar, Dubai, etc.), which does
 not play any role in the EURACE dynamics. In other words, it leaves the
-economic system decribed by EURACE.
+economic system described by EURACE.
 
 \section{Experimental design}
 
@@ -68,7 +66,7 @@ experiment. Figure \ref{Figure: empirical energy shock} shows the real
 energy price behavior during the 2008 energy crisis. The price of Brent
 crude oil went up by $+675\%$ between 2002.1-2008.6 (79 months), which
 translates to a monthly increase of $2.45\%$. Then it went sharply down by $%
--70\%$ between 2008.7-2009.1 (7 months), which implies a monthly decrease of
+-70\%$ between 2008.7-2009.1 (7 months), which implies a monthly decrease of 
 $-5.8\%$.
 
 \begin{figure}[th]
@@ -96,79 +94,102 @@ sharp decline of $-5.8\%$ per month during 7 months ($-70\%$).}
 \end{figure}
 
 We consider the following values of $d$:
+
 \begin{itemize}
 \item Short energy crisis scenario: $d=40$ days,
+
 \item Long energy crisis scenario: $d=240$ days,
 \end{itemize}
+
 and for each of these two values the following cases:
 
 \begin{itemize}
 \item Case 1: periodicity $\Pi=0$
 \end{itemize}
 
-There is a single instantaneous energy price increase $\pi$ at $T_{a},$ and
-an instantaneous decrease of the same magnitude at $T_{b}.$ However, in the
-meantime the capital goods price is updated as usual with the productivity
-progress, so the price of the investment goods at $T_{b}$ will nonetheless
-differ from their price level at $T_{a}$.
+There is a single instantaneous energy price increase of intensity $\pi $ at 
+$T_{a},$ and an instantaneous decrease of the same magnitude at $T_{b}.$
+However, in the meantime the capital goods price is updated as usual with
+the productivity progress, so the price of the investment goods at $T_{b}$
+will nonetheless differ from their price level at $T_{a}$.
 
 \begin{itemize}
 \item Case 2: periodicity $\Pi>0$
 
-\item There are $n$ consecutive instantaneous price increases between $T_{a}$
-and $T_{b}$, at equidistant time intervals, and an instantaneous decrease
-of magnitude $(1+\pi)^{-n}$ in $T_{b}$. This brings the price back to its pre-shock level, 
-if no other influences affected the price in the meantime.
+\item There are $n$ consecutive instantaneous price increases of intensity $%
+\pi $ between $T_{a}$ and $T_{b}$, at equidistant time intervals, and an
+instantaneous decrease of intensity $(1+\pi )^{-n}$ in $T_{b}$. This brings
+the price back to its pre-shock level, if no other influences affected the
+price in the meantime.
 \end{itemize}
 
 Table \ref{Table: parameter settings} gives the parameter values used in the
-computational experiments, and Table \ref{Table: computational setting} summarizes the computational
-setting.
+computational experiments, and Table \ref{Table: computational setting}
+summarizes the computational setting.
 
 \begin{table}[tbp]
 \caption{Parameter values}
-\centering
+\label{Table: parameter settings}\centering
 \begin{tabular}{llll}
 \hline\hline
 Name & Symbol & Values & Description \\ \hline
-duration & $d$ & $240$ & Duration of the energy crisis in days \\
-intensity & $\pi$ & $\{0.01, 0.05\}$ & Percentage price change for a
-single shock \\
+duration & $d$ & $240$ & Duration of the energy crisis in days \\ 
+intensity & $\pi$ & $\{0.01, 0.05\}$ & Percentage price change for a single
+shock \\ 
 periodicity & $\Pi$ & $\{20, +\infty\}$ & Periodicity of the shock in days%
 \end{tabular}%
-\label{Table: parameter settings}
 \end{table}
 
 \begin{table}[tbp]
 \caption{Overview of the computational setting.}
-\label{Table: computational setting}
-\centering
+\label{Table: computational setting}\centering
 \begin{tabular}{ll}
 \hline\hline
 Name & Value \\ \hline
-Cases & $18$ \\
-Batch runs per case & $20$ \\
-Iterations per run & $300$ \\
+Cases & $18$ \\ 
+Batch runs per case & $20$ \\ 
+Iterations per run & $300$ \\ 
 Pre-iterations & $1000$ \\ \hline
 \end{tabular}%
 \end{table}
 
 \section{Simulations}
-We focus our analysis on the four cases in Table \ref{Table: parameter settings}.
-The duration of the energy crisis is always $240$ days (1 year), and we
-have either a periodicity of $20$ days or a single shock at the beginning and a single shock downward at the end.
 
-We recall the benchmark results in Fig. \ref{Figure: benchmark}: GDP settles down to a stable growth path, the unemployment rate is stable as well, and the capital goods price shows a characteristic staircase.
+We focus our analysis on the four cases in Table \ref{Table: parameter
+settings}. The duration of the energy crisis is always $240$ days (1 year),
+and we have either a periodicity of $20$ days or a single shock at the
+beginning and a single shock downward at the end.
 
-In Figure \ref{Figure: energy shock 1} we introduce a mild energy shock of $1\%$ at iteration $1240$.
-After $240$ days there is a downward shock of $1\%$. As can be seen from the figure there is a small blip in the capital goods price (Fig. \ref{Figure: energy shock 1}c), but this has hardly any effect on the economy.
+We recall the benchmark results in Fig. \ref{Figure: benchmark}: GDP settles
+down to a stable growth path, the unemployment rate is stable as well, and
+the capital goods price shows a characteristic staircase.
 
-Figure \ref{Figure: energy shock 2} shows a single shock of $5\%$, and a symmetric downward shock at the end.
-For one year the capital goods price is significantly increased, but still this does not have any significant effect on key macroeconomic variables such as GDP and the unemployment rate.
+In Figure \ref{Figure: energy shock 1} we introduce a mild energy shock of $%
+1\%$ at iteration $1240$. After $240$ days there is a downward shock of $1\%$%
+. As can be seen from the figure there is a small blip in the capital goods
+price (Fig. \ref{Figure: energy shock 1}c), but this has hardly any effect
+on the economy.
 
-A more prolonged energy crisis is shown in Figure \ref{Figure: energy shock 3}, where there are multiple shocks of $1\%$, one every $20$ days. This results in a more pronounced energy spike, as can be seen in Fig. \ref{Figure: energy shock 3}c. But the effect on GDP and the unemployment rate remains relatively minor. 
-We also show the daily energy costs that are accumulated during the energy crisis (Fig. \ref{Figure: energy shock 3}d). The unemployment rate goes down during the energy crisis, which can be explained due to the substitution effect of labour for capital.
+Figure \ref{Figure: energy shock 2} shows a single shock of $5\%$, and a
+symmetric downward shock at the end. For one year the capital goods price is
+significantly increased, but still this does not have any significant effect
+on key macroeconomic variables such as GDP and the unemployment rate.
 
-The final case is the one shown in Figure \ref{Figure: energy shock 4} where we have multiple shocks of $5\%$, one every $20$ days. Here finally we have the signature of a true energy crisis, where at its peak capital goods cost 3 times as much as it did at the start of the crisis. The downward effect on GDP and unemployment is pronounced.
+A more prolonged energy crisis is shown in Figure \ref{Figure: energy shock
+3}, where there are multiple shocks of $1\%$, one every $20$ days. This
+results in a more pronounced energy spike, as can be seen in Fig. \ref%
+{Figure: energy shock 3}c. But the effect on GDP and the unemployment rate
+remains relatively minor. We also show the daily energy costs that are
+accumulated during the energy crisis (Fig. \ref{Figure: energy shock 3}d).
+The unemployment rate goes down during the energy crisis, which can be
+explained due to the substitution effect of labour for capital.
 
-This case will now be used in the next section, where we introduce a macroeconomic stabilization policy to mitigate the effects of such a negative shock to the economy.
+The final case is the one shown in Figure \ref{Figure: energy shock 4} where
+we have multiple shocks of $5\%$, one every $20$ days. Here finally we have
+the signature of a true energy crisis, where at its peak capital goods cost
+3 times as much as it did at the start of the crisis. The downward effect on
+GDP and unemployment is pronounced.
+
+This case will now be used in the next section, where we introduce a
+macroeconomic stabilization policy to mitigate the effects of such a
+negative shock to the economy.
