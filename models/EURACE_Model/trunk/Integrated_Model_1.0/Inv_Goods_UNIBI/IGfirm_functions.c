@@ -54,7 +54,6 @@ int IGFirm_update_productivity_price()
 	{
 		if(DAY==INNOVATION_SCHEME.array[0].day_of_innovation)
 		{
->>>>>>> .r2916
 
 			prod_progress = INNOVATION_SCHEME.array[0].productivity/PRODUCTIVITY;
 
