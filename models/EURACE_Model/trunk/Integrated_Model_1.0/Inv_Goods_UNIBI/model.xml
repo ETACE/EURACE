@@ -113,6 +113,16 @@
      <name>cum_energy_costs</name>
      <description>This is to compute the total expenses for energy.</description>
     </variable>
+ <variable>
+     <type>double_array</type>
+     <name>last_net_profits</name>
+     <description>Array of the planned production quantities in the past</description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>dividend_payment</name>
+     <description></description>
+    </variable>
    </memory>
    <functions>
     <function>

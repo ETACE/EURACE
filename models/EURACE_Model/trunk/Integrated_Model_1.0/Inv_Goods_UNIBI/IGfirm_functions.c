@@ -42,6 +42,7 @@ int IGFirm_update_productivity_price()
 			
        			i = random_int( 0 ,100);
         
+
         		if(i < INNOVATION_PROBABILITY)
         		{
             			PRODUCTIVITY = PRODUCTIVITY*(1 + PRODUCTIVITY_PROGRESS);
@@ -53,6 +54,7 @@ int IGFirm_update_productivity_price()
 	{
 		if(DAY==INNOVATION_SCHEME.array[0].day_of_innovation)
 		{
+>>>>>>> .r2916
 
 			prod_progress = INNOVATION_SCHEME.array[0].productivity/PRODUCTIVITY;
 
@@ -196,20 +198,66 @@ int IGFirm_pay_taxes()
 int IGFirm_dividend_payment()
 {
       
-    double total_dividend_payment;
-    total_dividend_payment = NET_PROFIT;
-    
-    CURRENT_DIVIDEND_PER_SHARE = NET_PROFIT / OUTSTANDING_SHARES;
+   
+	//double weight = 0.2;
+	double average_last_net_profits;
+	double total_dividend_payment;
+	DIVIDEND_PAYMENT = 0.0;
 
-    
-    //add dividend_per_share_msg(firm_id, current_dividend_per_share) to shareholders (dividend per share)     
-    add_dividend_per_share_message(ID, CURRENT_DIVIDEND_PER_SHARE);
-    
-    //decrease payment_account with the total_dividend_payment
-    PAYMENT_ACCOUNT -= total_dividend_payment;
-        
-    
-    return 0;
+	/*First: pay out complete NET_PROFIT as dividends*/
+
+/*CURRENT_DIVIDEND_PER_SHARE = NET_PROFIT / OUTSTANDING_SHARES;
+	printf("1: DIVIDEND %f \n",CURRENT_DIVIDEND_PER_SHARE);
+	
+	total_dividend_payment=NET_PROFIT;
+	printf("1: total_dividend_payment %f \n",total_dividend_payment);
+	
+	
+	
+	
+	/*Second: pay out geometrical average as dividends*/
+	/*CURRENT_DIVIDEND_PER_SHARE = (weight*CUM_NET_PROFITS +(1-weight)*NET_PROFIT)/ OUTSTANDING_SHARES;
+	printf("2: DIVIDEND %f \n",CURRENT_DIVIDEND_PER_SHARE);
+	
+	total_dividend_payment=weight*CUM_NET_PROFITS +(1-weight)*NET_PROFIT;
+	printf("2: total_dividend_payment %f \n",total_dividend_payment);
+	
+	printf("1: CUM_NET_PROFITS %f\n",CUM_NET_PROFITS);
+	CUM_NET_PROFITS = (1- weight)*CUM_NET_PROFITS +weight*NET_PROFIT; 
+	printf("2: CUM_NET_PROFITS %f\n",CUM_NET_PROFITS);*/
+	
+	
+	
+	
+	
+	/*Third: pay out the average of the last 10 NET_PROFITs as dividends*/
+	remove_double(& LAST_NET_PROFITS,0);
+	add_double(& LAST_NET_PROFITS,NET_PROFIT);  
+	
+	int p;
+	for(p = 0; p < LAST_NET_PROFITS.size; p++)
+	{
+		average_last_net_profits += LAST_NET_PROFITS.array[p];
+	}
+	
+	average_last_net_profits = average_last_net_profits/LAST_NET_PROFITS.size;
+	
+	CURRENT_DIVIDEND_PER_SHARE = average_last_net_profits/ OUTSTANDING_SHARES;
+	//printf("3: DIVIDEND %f \n",CURRENT_DIVIDEND_PER_SHARE);
+	
+	total_dividend_payment = average_last_net_profits;
+	//printf("3: total_dividend_payment %f \n",total_dividend_payment);
+		
+		
+	//add dividend_per_share_msg(firm_id, current_dividend_per_share) to shareholders (dividend per share)     
+	add_dividend_per_share_message(ID, CURRENT_DIVIDEND_PER_SHARE);
+
+	//decrease payment_account with the total_dividend_payment
+	PAYMENT_ACCOUNT -= total_dividend_payment;
+	
+	DIVIDEND_PAYMENT = total_dividend_payment;
+	
+	return 0;
 }
 
 
