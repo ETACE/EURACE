@@ -1,0 +1,10 @@
+The parallel implementation of FLAME seeks to use an SPMD paradyn - each node of the parallel system is running the essentially same $program$. However given the nature of agent-bsaed modelling and the FLAME implementation each nodal program could perform a very different sequence of instructions and function activations as it traverses its part of the state space. 
+
+The two fundamental design features of FLAME is that all communications between agents takes place through a specified message board - a message respository - and that these message boards are distributed over the processing nodes of the parallel system. These message boards can be considered the data load and the agents themselves the computational load. In FLAME both these are distributed over the computational nodes.
+
+However, although there may be some imbalance in computational load, with a reasonable initial data - agents - distribution, any imbalance should be small. The crucial element in the parallel implementation of FLAME is the distribution of the message boards over the system and their syncronisation.
+
+Use Times Library to measure the wait time for each message board to complete syncronisation.
+
+
+ 
