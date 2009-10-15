@@ -654,8 +654,10 @@ int Household_send_tax_payment()
     //Additional tax: repayment of the already received monthly unemployment benefits if recently re-employed
     if (DAY_OF_MONTH_RECEIVE_BENEFIT != DAY_OF_MONTH_RECEIVE_INCOME )
     {
-        additional_tax = ((DAY_OF_MONTH_RECEIVE_BENEFIT + (20-DAY_OF_MONTH_RECEIVE_INCOME)%20)/20)
+        additional_tax = ((DAY_OF_MONTH_RECEIVE_BENEFIT + (20-DAY_OF_MONTH_RECEIVE_INCOME)%20)/20.0)
                             * UNEMPLOYMENT_BENEFIT_PCT * LAST_LABOUR_INCOME;
+        //Reset
+        DAY_OF_MONTH_RECEIVE_BENEFIT = DAY_OF_MONTH_RECEIVE_INCOME;
     }
 
 
