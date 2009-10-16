@@ -410,6 +410,8 @@ int Firm_check_financial_and_bankruptcy_state()
  */
 int Firm_set_bankruptcy_illiquidity()
 {
+     FILE *file1;
+    char *filename;
     //Set active flag to 0
     ACTIVE=0;
     
@@ -434,6 +436,17 @@ int Firm_set_bankruptcy_illiquidity()
     
     //send msg to malls
     add_bankruptcy_illiquidity_message(ID);
+    
+    if (PRINT_DEBUG_FILE_EXP1)
+    {
+        filename = malloc(40*sizeof(char));
+        filename[0]=0;
+        strcpy(filename, "its/firms_bankruptcies.txt");      
+        file1 = fopen(filename,"a");
+        fprintf(file1,"\n %d %d %f %f %f %d",DAY,ID,PAYMENT_ACCOUNT,TOTAL_DEBT,EQUITY,-1);
+        fclose(file1);
+        free(filename);
+    }    
         
     return 0;
 }
@@ -517,6 +530,8 @@ int Firm_execute_financial_payments()
 {
 
     //No bankruptcy
+    char * filename="";
+    FILE * file1=NULL;
     int i;
     double temp_interest=0.0;
     
@@ -524,6 +539,16 @@ int Firm_execute_financial_payments()
     add_tax_payment_message(GOV_ID, TAX_PAYMENT);
     PAYMENT_ACCOUNT -= TAX_PAYMENT;
 
+     if (PRINT_DEBUG_FILE_EXP1)
+        {                       
+            filename = malloc(40*sizeof(char));
+            filename[0]=0;
+            strcpy(filename, "its/firms_tax_payments.txt");      
+            file1 = fopen(filename,"a");
+            fprintf(file1,"\n %d %d %f %f %f",DAY,ID,EARNINGS,TAX_RATE_CORPORATE,TAX_PAYMENT);
+            fclose(file1);
+            free(filename);
+        }  
     //step 2: actual interest_payments and installment_payments
     //Sending installment_message to banks at which the firm has a loan 
 
@@ -657,6 +682,8 @@ int Firm_execute_financial_payments()
  */
 int Firm_set_bankruptcy_insolvency()
 {
+    FILE *file1;
+    char *filename;
     //Set active flag to 0
     ACTIVE=0;
     
@@ -672,6 +699,18 @@ int Firm_set_bankruptcy_insolvency()
     
     //send msg to malls
     add_bankruptcy_insolvency_message(ID);
+    
+        if (PRINT_DEBUG_FILE_EXP1)
+    {
+        filename = malloc(40*sizeof(char));
+        filename[0]=0;
+        strcpy(filename, "its/firms_bankruptcies.txt");      
+        file1 = fopen(filename,"a");
+        fprintf(file1,"\n %d %d %f %f %f %d",DAY,ID,PAYMENT_ACCOUNT,TOTAL_DEBT,EQUITY,-11);
+        fclose(file1);
+        free(filename);
+    }    
+
         
     return 0;
 }
@@ -867,6 +906,8 @@ int Firm_bankruptcy_idle_counter()
  */
 int Firm_reset_bankruptcy_flags()
 {
+     FILE *file1;
+    char *filename;
     #ifndef _DEBUG_MODE
     if (PRINT_DEBUG_EXP1 || PRINT_DEBUG)
     {
@@ -891,6 +932,17 @@ int Firm_reset_bankruptcy_flags()
     }
     #endif   
     
+      if (PRINT_DEBUG_FILE_EXP1)
+    {
+        filename = malloc(40*sizeof(char));
+        filename[0]=0;
+        strcpy(filename, "its/firms_bankruptcies.txt");      
+        file1 = fopen(filename,"a");
+        fprintf(file1,"\n %d %d %f %f %f %d",DAY,ID,PAYMENT_ACCOUNT,TOTAL_DEBT,EQUITY,0);
+        fclose(file1);
+        free(filename);
+    }    
+    
     return 0;
 }
 
@@ -907,10 +959,7 @@ int Firm_compute_and_send_stock_orders()
     //If the quantity is fractional, take the ceiling, such that EXTERNAL_FINANCIAL_NEEDS are met.
     int quantity = -1*ceil(EXTERNAL_FINANCIAL_NEEDS/limit_price);
     
-    if (POLICY_EXP1)
-    {}
-    else  
-    {add_order_message(ID, ID, limit_price, quantity);}
+   add_order_message(ID, ID, limit_price, quantity);
 
     #ifndef _DEBUG_MODE
     if (PRINT_DEBUG)

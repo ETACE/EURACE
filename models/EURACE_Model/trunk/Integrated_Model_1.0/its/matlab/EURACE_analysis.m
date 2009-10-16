@@ -2,9 +2,11 @@ clc
 clear all
 close all
 
+Pat = '..\qe1\';
 Pat = '..\';
 
 font_sz = 14;
+colore = 'b';
 
 %%% BANKS
 
@@ -42,11 +44,11 @@ for i=1:numel(days)
 end
 
 figure(11); grid on; hold on
-plot(TOTAL_CREDIT_sum)
-plot(PAYMENT_ACCOUNT_BANKS_sum,'g')
-plot(DEPOSITS_sum,'m')
-plot(ECB_DEBT_sum,'k')
-plot(EQUITY_sum,'r')
+plot(TOTAL_CREDIT_sum,colore)
+plot(PAYMENT_ACCOUNT_BANKS_sum,[colore, '--'])
+plot(DEPOSITS_sum,[colore, '-.'])
+plot(ECB_DEBT_sum,[colore, '-o'])
+plot(EQUITY_sum,[colore,':'])
 legend('TOTAL CREDIT','PAYMENT ACCOUNT BANKS','DEPOSITS','ECB DEBT','EQUITY',0)
 xlabel('days','fontsize',font_sz)
 ylabel('aribitrary monetary units','fontsize',font_sz)
@@ -64,11 +66,11 @@ PAYMENT_ACCOUNT_CB = Data(:,5);
 ECB_DEPOSITS = Data(:,6);
 
 figure(21); grid on; hold on
-plot(FIAT_MONEY_GOVS)
-plot(FIAT_MONEY_BANKS,'g')
-plot(FIAT_MONEY,'m')
-plot(PAYMENT_ACCOUNT_CB,'k')
-plot(ECB_DEPOSITS,'r')
+plot(FIAT_MONEY_GOVS,[colore, ':'])
+plot(FIAT_MONEY_BANKS,[colore, '-.'])
+plot(FIAT_MONEY,colore)
+plot(PAYMENT_ACCOUNT_CB,[colore,'--'])
+plot(ECB_DEPOSITS,[colore,'-o'])
 legend('FIAT MONEY GOVS','FIAT MONEY BANKS','FIAT MONEY','PAYMENT ACCOUNT CB','ECB DEPOSITS',0)
 xlabel('days','fontsize',font_sz)
 ylabel('aribitrary monetary units','fontsize',font_sz)
@@ -97,19 +99,19 @@ title('Goverments aggregate data','fontsize',font_sz)
 grid on; hold on
 
 subplot(2,2,1)
-plot(PAYMENT_ACCOUNT_GOVS_sum)
+plot(PAYMENT_ACCOUNT_GOVS_sum,colore)
 title('payment account government')
 
 subplot(2,2,2)
-plot(BONDS_NR_OUTSTANDING_sum)
+plot(BONDS_NR_OUTSTANDING_sum,colore)
 title('Nr Outstanding bonds')
 
 subplot(2,2,3)
-plot(BOND_QUANTITY)
+plot(BOND_QUANTITY,colore)
 title('Bond quantity')
 
 subplot(2,2,4)
-plot(BOND_PRICE)
+plot(BOND_PRICE,colore)
 title('Bond price')
 
 
@@ -134,7 +136,7 @@ end
 clear Data
 
 figure(41); hold on; grid on
-plot(PAYMENT_ACCOUNT_FIRMS_sum)
+plot(PAYMENT_ACCOUNT_FIRMS_sum,colore)
 title('Firms aggregate data','fontsize',font_sz)
 xlabel('days','fontsize',font_sz)
 ylabel('aribitrary monetary units','fontsize',font_sz)
@@ -182,10 +184,10 @@ clear Data
 
 figure(51); hold on; grid on
 subplot(2,1,1)
-plot(PAYMENT_ACCOUNT_IGFIRMS_sum)
+plot(PAYMENT_ACCOUNT_IGFIRMS_sum,colore)
 title('PAYMENT ACCOUNT IGFIRM')
 subplot(2,1,2)
-plot(CUM_ENERGY_COSTS_sum)
+plot(CUM_ENERGY_COSTS_sum,colore)
 title('CUMULATED ENERGY COST')
 
 
@@ -196,20 +198,27 @@ firms_nr = numel(unique(firms_id));
 days = unique(Data(:,1));
 %prices = zeros(numel(days),firms_nr);
 
-colore = {'r';'k';'g';'b';'y'};
+
 
 
 for i=1:firms_nr
     Idx_id = find(firms_id==i);
+    
     stock_prices_values{i} = Data(Idx_id,3);
     stock_prices_days{i} = Data(Idx_id,1);
-    figure(61); hold on; grid on
-    plot(stock_prices_days{i},stock_prices_values{i},colore{i})
+%    figure(61); hold on; grid on
+ %   plot(stock_prices_days{i},stock_prices_values{i},colore{i})
     clear Idx_id
 end
 
+for d=1:numel(days) 
+    Idx_days = find(days==d);
+    stock_index(d) = mean(Data(Idx_days,3));
+    clear Idx_days
+end
 
-
+    figure(61); hold on; grid on
+   plot(stock_index,colore)
 clear Data
 
 %%% Credit market
@@ -233,42 +242,43 @@ end
 
 
 figure(71); hold on; grid on
-plot(days,Credit_requested_sum)
-plot(days,Credit_allowed_sum,'r')
+plot(days,Credit_requested_sum,[':',colore])
+plot(days,Credit_allowed_sum,colore)
 legend('Credit requested','Credit allowed',0)
 
 clear Data
 
-%%% Firm stock transaction
-Data = load([Pat, 'firms_stock_transactions.txt']);
-firms_id = Data(:,2);
-firms_nr = numel(unique(firms_id));
-
-days = unique(Data(:,1));
-
-figure(81); hold on; grid on
-
-testo = [];
-
-for i=1:firms_nr
-
-    Idx_id = find(firms_id==i);
-    Shares_outstanding_nr{i} = Data(Idx_id,4);   
-    Shares_outstanding_days{i} = Data(Idx_id,1);   
-    new_capital_raised{i} = Data(Idx_id,5);
-    stairs(Shares_outstanding_days{i},Shares_outstanding_nr{i},colore{i})
-    clear Idx_id      
-    
-    testo{i} = ['firm ', num2str(i)];
-  
-end
-
-legend(testo,0)
-
-clear Data
+% %%% Firm stock transaction
+% Data = load([Pat, 'firms_stock_transactions.txt']);
+% firms_id = Data(:,2);
+% firms_nr = numel(unique(firms_id));
+% 
+% days = unique(Data(:,1));
+% 
+% figure(81); hold on; grid on
+% 
+% testo = [];
+% 
+% for i=1:firms_nr
+% 
+%     Idx_id = find(firms_id==i);
+%     Shares_outstanding_nr{i} = Data(Idx_id,4);   
+%     Shares_outstanding_days{i} = Data(Idx_id,1);   
+%     new_capital_raised{i} = Data(Idx_id,5);
+%     stairs(Shares_outstanding_days{i},Shares_outstanding_nr{i},colore{i})
+%     clear Idx_id      
+%     
+%     testo{i} = ['firm ', num2str(i)];
+%   
+% end
+% 
+% legend(testo,0)
+% 
+% clear Data
 
 %%% Eurostat
 Data = load([Pat, 'eurostat.txt']);
+Data2 = load([Pat, 'eurostat2.txt']);
 
 figure(91); hold on; grid on
 GDP = Data(:,2);
@@ -276,28 +286,33 @@ CPI = Data(:,3);
 OUTPUT = Data(:,4);
 UNEMPLOYMENT = Data(:,6);
 AVERAGE_WAGE = Data(:,7);
+NrFailures = Data(:,8);
+MONTHLY_INVESTMENT = Data2(:,end);
+SOLD_QUANTITY = Data2(:,2);
+MONTHLY_OUTPUT = Data2(:,3);
 
-colore = 'b';
 figure(91); 
 subplot(2,1,1); hold on; grid on
 plot(Data(:,1),GDP,colore)
-plot(Data(:,1),OUTPUT,[colore, ':'])
-legend('GDP','OUTPUT')
+legend('monthly GDP',0)
 
 subplot(2,1,2); hold on; grid on
 plot(Data(:,1),UNEMPLOYMENT,colore)
-legend('unemployment')
+legend('monthly unemployment rate (%)',0)
 
 figure(92); 
 subplot(2,1,1); hold on; grid on
 plot(Data(:,1),CPI,colore)
-legend('CPI')
+legend('monthly CPI',0)
 
 subplot(2,1,2); hold on; grid on
 plot(Data(:,1),AVERAGE_WAGE,colore)
-legend('AVERAGE_WAGE')
+legend('monthly average wage',0)
 
-
+figure(93); hold on; grid on
+plot(Data(:,1),SOLD_QUANTITY,colore)
+plot(Data(:,1),MONTHLY_OUTPUT,[colore, ':'])
+legend('sold quantity','output',0)
 
 %%% INVARIANTS
 
@@ -308,12 +323,78 @@ MONEY_PRIVATE_SECTOR_counterpart = TOTAL_CREDIT_sum + ...
 
 figure(101); 
 subplot(2,1,1); hold on; grid on
-plot(MONEY_PRIVATE_SECTOR)
+plot(MONEY_PRIVATE_SECTOR,colore)
 
 subplot(2,1,2); hold on; grid on
-plot(MONEY_PRIVATE_SECTOR_counterpart)
+plot(MONEY_PRIVATE_SECTOR_counterpart,colore)
 
-%%%%%%%%%%%%%%%
+figure(102);  hold on; grid on
+plot(MONEY_PRIVATE_SECTOR-MONEY_PRIVATE_SECTOR_counterpart,colore)
+
+clear Data Data2
+
+%%% Firm monthly balance sheet
+Data = load([Pat, 'firms_balance_sheet.txt']);
+
+TOTAL_UNITS_CAPITAL_STOCK_FIRMS = Data(:,3);
+TOTAL_VALUE_CAPITAL_STOCK_FIRMS = Data(:,4);
+TOTAL_VALUE_LOCAL_INVENTORY_FIRMS = Data(:,5);
+PAYMENT_ACCOUNT_FIRMS = Data(:,6);
+TOTAL_ASSETS_FIRMS = Data(:,7);
+TOTAL_DEBT_FIRMS = Data(:,8);
+EQUITY_FIRMS = Data(:,9);
+days = unique(Data(:,1));
+
+k = 0;
+for d=1:21:days(end)
+    Idx_days = find((Data(:,1)>=d)&(Data(:,1)<(d+20)));
+    k = k + 1;
+    TOTAL_UNITS_CAPITAL_STOCK_FIRMS_sum(k) = sum(TOTAL_UNITS_CAPITAL_STOCK_FIRMS(Idx_days));
+    TOTAL_VALUE_CAPITAL_STOCK_FIRMS_sum(k) = sum(TOTAL_VALUE_CAPITAL_STOCK_FIRMS(Idx_days));
+    TOTAL_VALUE_LOCAL_INVENTORY_FIRMS_sum(k) = sum(TOTAL_VALUE_LOCAL_INVENTORY_FIRMS(Idx_days));
+    TOTAL_ASSETS_FIRMS_sum(k) = sum(TOTAL_ASSETS_FIRMS(Idx_days));
+    TOTAL_DEBT_FIRMS_sum(k) = sum(TOTAL_DEBT_FIRMS(Idx_days));
+    EQUITY_FIRMS_sum(k) = sum(EQUITY_FIRMS(Idx_days));
+    clear Idx_days
+end    
+
+figure(111); 
+subplot(2,1,1); hold on; grid on
+plot(1:21:days(end),TOTAL_UNITS_CAPITAL_STOCK_FIRMS_sum,colore)
+legend('firms total units capital stock',0)
+
+subplot(2,1,2); hold on; grid on
+plot(1:21:days(end),TOTAL_VALUE_CAPITAL_STOCK_FIRMS_sum,colore)
+legend('firms total value capital stock',0)
+
+figure(112); 
+subplot(2,1,1); hold on; grid on
+plot(1:21:days(end),TOTAL_DEBT_FIRMS_sum,colore)
+legend('firms total debt',0)
+
+subplot(2,1,2); hold on; grid on
+plot(1:21:days(end),EQUITY_FIRMS_sum,colore)
+legend('firms total equity',0)
+
+clear Data
+
+%%% VALUE AT RISK
+Data = load([Pat, 'banks_value_at_risk.txt']);
+Value_at_Risk = Data(:,3);
+Banks_ids = unique(Data(:,2));
+
+figure(121);
+for i= 1:numel(Banks_ids)
+    Idx = find(Data(:,2)==Banks_ids(i));
+    subplot(2,1,1); hold on; grid on
+    plot(Value_at_Risk(Idx(1:900)),colore)
+    clear Idx
+end
+legend('Value at risk',0)
+
+subplot(2,1,2); hold on; grid
+plot(TOTAL_CREDIT_sum(1:900),colore)
+legend('Total Credit',0)
 
 break
 

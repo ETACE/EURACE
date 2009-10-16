@@ -844,7 +844,8 @@ void Eurostat_compute_global_household_data(void)
 void Eurostat_calc_macro_data(void)
 {
     int i;
-
+    FILE *file1;
+     char *filename;
     //Auxiliary sums:
     double sum_total_debt_earnings_ratios;
     double sum_total_debt_equity_ratios;
@@ -1003,6 +1004,19 @@ void Eurostat_calc_macro_data(void)
     MONTHLY_REVENUE = sum_total_cum_revenue;
     MONTHLY_PLANNED_OUTPUT = sum_total_planned_output;
     INVESTMENT_GDP_RATIO = MONTHLY_INVESTMENT_VALUE/GDP;
+    
+     if (PRINT_DEBUG_FILE_EXP1)
+        {
+            filename = malloc(40*sizeof(char));
+            filename[0]=0;
+            strcpy(filename, "its/eurostat2.txt"); 
+            file1 = fopen(filename,"a");
+            fprintf(file1,"\n %d %f %f",DAY,MONTHLY_SOLD_QUANTITY,MONTHLY_OUTPUT);
+            fprintf(file1," %f %f",MONTHLY_REVENUE,MONTHLY_INVESTMENT_VALUE);
+            fclose(file1);
+            free(filename);
+        }
+   
 }
     
 /* \fn: void Eurostat_calc_firm_population(void)
