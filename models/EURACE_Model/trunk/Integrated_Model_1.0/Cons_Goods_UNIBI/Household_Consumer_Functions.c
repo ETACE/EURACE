@@ -56,10 +56,13 @@ int Household_determine_consumption_budget()
         
         WEALTH_INCOME_RATIO_ACTUAL = WEALTH/ MEAN_INCOME;
 
-            
+              
+       
             /*Based on Carrol-Rule: Determination of the consumption budget*/
             CONSUMPTION_BUDGET = MEAN_INCOME +CONSUMPTION_PROPENSITY*(WEALTH - WEALTH_INCOME_RATIO_TARGET*MEAN_INCOME);
 
+        
+        
         #ifndef _DEBUG_MODE        
             if(PAYMENT_ACCOUNT < 0)
             {
@@ -525,7 +528,8 @@ int Household_receive_dividends()
             
             RECEIVED_DIVIDEND +=dividend;
             CUM_TOTAL_DIVIDENDS +=dividend;
-            PAYMENT_ACCOUNT += dividend;
+            PAYMENT_ACCOUNT += dividend;           
+           
             break;
         }
         
@@ -550,6 +554,8 @@ int Household_receive_dividends()
 int Household_handle_leftover_budget()
 {
         CONSUMPTION_BUDGET -= EXPENDITURES;
+
+       
 
         if(WEEK_OF_MONTH !=1)
         {               

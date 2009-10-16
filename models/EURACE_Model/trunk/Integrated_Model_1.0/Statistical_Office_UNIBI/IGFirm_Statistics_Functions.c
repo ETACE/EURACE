@@ -19,6 +19,6 @@ int IGFirm_read_policy_announcements()
             SUBSIDY_PCT = policy_announcement_message->firm_subsidy_pct;
         }
     FINISH_POLICY_ANNOUNCEMENT_MESSAGE_LOOP
-
+    
     return 0;
 }

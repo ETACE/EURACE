@@ -23,7 +23,7 @@ int Household_receive_wage()
         remove_double(&LAST_INCOME,0);
         
         TOTAL_INCOME= wage_payment_message->payment +  CUM_TOTAL_DIVIDENDS + MONTHLY_BOND_INTEREST_INCOME;
-        
+             
         add_double(&LAST_INCOME,TOTAL_INCOME);
 
         /*Compute a mean income of the last four month*/
@@ -37,7 +37,8 @@ int Household_receive_wage()
 
         /*Add wage on account   */
         PAYMENT_ACCOUNT += wage_payment_message->payment;
-
+        
+   
     CURRENT_PRODUCTIVITY_EMPLOYER = wage_payment_message-> productivity;
     CURRENT_MEAN_SPECIFIC_SKILLS_EMPLOYER =wage_payment_message->average_specific_skills;
     FINISH_WAGE_PAYMENT_MESSAGE_LOOP
@@ -587,7 +588,7 @@ int Household_send_unemployment_benefit_notification()
     /*Add unemployment_benefit message */
     add_unemployment_notification_message(GOV_ID,LAST_LABOUR_INCOME);
 
-    /*Add unemployment_benefit to account */
+        /*Add unemployment_benefit to account */
     //printf("\n PAYMENT_ACCOUNT before: %f",PAYMENT_ACCOUNT);
     PAYMENT_ACCOUNT +=  UNEMPLOYMENT_BENEFIT_PCT * LAST_LABOUR_INCOME;
    //  printf("\n PAYMENT_ACCOUNT after: %f",PAYMENT_ACCOUNT);
@@ -597,8 +598,7 @@ int Household_send_unemployment_benefit_notification()
     remove_double(&LAST_INCOME,0);
     add_double(&LAST_INCOME, TOTAL_INCOME);
 
-
-    /*Compute a mean income of the last four month*/
+     /*Compute a mean income of the last four month*/
     int i;
     for(i = 0; i < 4;i++)
     {
@@ -648,6 +648,10 @@ int Household_send_transfer_notification()
  */
 int Household_send_tax_payment()
 {
+    // #ifndef _DEBUG_MODE  
+        FILE *file1=NULL;
+        char *filename="";
+   // #endif
     double additional_tax;
     additional_tax =0.0;
 
@@ -672,6 +676,17 @@ int Household_send_tax_payment()
 
     /*Setting the counter of monthly dividends = 0*/
     CUM_TOTAL_DIVIDENDS=0;
+    
+    if (PRINT_DEBUG_FILE_EXP1)
+        {                       
+            filename = malloc(40*sizeof(char));
+            filename[0]=0;
+            strcpy(filename, "its/households_tax_payments.txt");      
+            file1 = fopen(filename,"a");
+            fprintf(file1,"\n %d %d %f %f",DAY,ID,additional_tax,TAX_PAYMENT);
+            fclose(file1);
+            free(filename);
+        }  
 
 
     return 0;
