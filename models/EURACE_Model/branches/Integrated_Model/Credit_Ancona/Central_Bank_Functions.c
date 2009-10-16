@@ -41,12 +41,12 @@ int Central_Bank_read_account_update()
     {       
         if(ACCOUNTS.array[i].id == central_bank_account_update_message->id)
             {
-                 ACCOUNTS.array[i].payment_account = central_bank_account_update_message->payment_account;
+                 ACCOUNTS.array[i].payment_account = central_bank_account_update_message->payment_account;// mettere il '+='
             }
             
         //if  (central_bank_account_update_message->payment_account<0)
           //  { 
-                 TOTAL_ECB_DEBT+=fabs(central_bank_account_update_message->payment_account);
+                 TOTAL_ECB_DEBT+=fabs(central_bank_account_update_message->payment_account);//togliere il fabs 
           //  }                  
             
     }
