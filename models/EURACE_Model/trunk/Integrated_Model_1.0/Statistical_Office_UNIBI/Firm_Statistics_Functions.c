@@ -88,12 +88,12 @@ int Firm_read_policy_announcements()
     FINISH_POLICY_ANNOUNCEMENT_MESSAGE_LOOP
     
     #ifndef _DEBUG_MODE    
-    if (PRINT_DEBUG)
-    {
+   // if (PRINT_DEBUG)
+    //{
         printf("\n Firm_read_policy_announcements ID: %d",ID);
         printf("\n \t TAX_RATE_CORPORATE: %f TAX_RATE_VAT: %f TRANSFER_PAYMENT: %f SUBSIDY_PCT: %f",TAX_RATE_CORPORATE,TAX_RATE_VAT,TRANSFER_PAYMENT,SUBSIDY_PCT);
         getchar();
-    }
+    //}
     #endif        
     
     return 0;

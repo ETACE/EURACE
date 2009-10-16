@@ -102,7 +102,10 @@ int Government_update_its_portfolio()
 }
 
 int Government_receive_info_bond(void)
-{ Bond *bond;
+{ 
+   FILE *file1;
+   char *filename;    
+   Bond *bond;
    double price;
    bond =get_bond();
   
@@ -119,7 +122,16 @@ int Government_receive_info_bond(void)
     current=get_next_infoAssetCH_message(current);
    }
    
-   if (PRINT_DEBUG) printf("\n\n Government_receive_info_bond ID: %d",ID);
+   if (PRINT_DEBUG_FILE_EXP1)
+        {
+            filename = malloc(40*sizeof(char));
+            filename[0]=0;
+            strcpy(filename, "its/bond_price.txt"); 
+            file1 = fopen(filename,"a");
+            fprintf(file1,"\n %d %d %f",CURRENTDAY,ID,price);
+            fclose(file1);
+            free(filename);
+        }
    
   return 0;
 }

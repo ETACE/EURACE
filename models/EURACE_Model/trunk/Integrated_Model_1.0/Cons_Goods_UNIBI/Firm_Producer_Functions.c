@@ -517,9 +517,12 @@ int Firm_send_capital_demand()
 
 int Firm_receive_capital_goods()
 {
-        
+        FILE *file1;
+        char *filename;
+        double capital_good_price = 0.0;
         
         CAPITAL_COSTS = 0.0;
+        
         START_CAPITAL_GOOD_DELIVERY_MESSAGE_LOOP
         
         /*Determine the weighted average productivity of the total capital stock*/
@@ -545,14 +548,27 @@ int Firm_receive_capital_goods()
         CAPITAL_COSTS += capital_good_delivery_message
         ->capital_good_delivery_volume* capital_good_delivery_message
         ->capital_good_price;
-
         
+        capital_good_price = capital_good_delivery_message->capital_good_price;
         
     FINISH_CAPITAL_GOOD_DELIVERY_MESSAGE_LOOP
+
         if(CAPITAL_COSTS>0.0)
         {
         add_financing_capital(&CAPITAL_FINANCING,CAPITAL_COSTS/CONST_INSTALLMENT_PERIODS,CONST_INSTALLMENT_PERIODS);
         }
+
+          if (PRINT_DEBUG_FILE_EXP1)
+        {
+            filename = malloc(40*sizeof(char));
+            filename[0]=0;
+            strcpy(filename, "its/firms_capital_goods.txt"); 
+            file1 = fopen(filename,"a");
+            fprintf(file1,"\n %d %d %f %f",DAY,ID,TOTAL_UNITS_CAPITAL_STOCK,capital_good_price);
+            fclose(file1);
+            free(filename);
+        }
+
 return 0;
 }
 

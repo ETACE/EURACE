@@ -59,7 +59,6 @@ int Bank_decide_credit_conditions()
             bankruptcy_prob = 1-exp(-(d+c)/e);
             r = bankruptcy_prob*c;
             
-    
            if ( VALUE_AT_RISK+r <= BANK_GAMMA[0]*ALFA*EQUITY )  //Instead of ALFA*EQUITY 
             {
                 //printf("\n %f %f %f %f %f",VALUE_AT_RISK,r,BANK_GAMMA[0],ALFA,EQUITY);
@@ -317,6 +316,16 @@ int Bank_accounting()
          TOTAL_DIVIDENDS = BANK_DIVIDEND_RATE*PROFITS[0];     //Proposal by Sander, Marco, Andrea and Philipp
          DIVIDEND_PER_SHARE = TOTAL_DIVIDENDS/CURRENT_SHARES_OUTSTANDING; 
          
+          if (PRINT_DEBUG_FILE_EXP1)
+        {                       
+            filename = malloc(40*sizeof(char));
+            filename[0]=0;
+            strcpy(filename, "its/banks_tax_payments.txt");      
+            file1 = fopen(filename,"a");
+            fprintf(file1,"\n %d %d %f %f %f",DAY,ID,PROFITS[0],TAX_RATE_CORPORATE,TAXES);
+            fclose(file1);
+            free(filename);
+        }  
          
          //The dividend msg is send in the function Bank_send_dividend_payment (see below)      
          //add_dividend_per_share_message(ID, DIVIDEND_PER_SHARE);                  
@@ -443,6 +452,18 @@ int Bank_update_ecb_account()
         file1 = fopen(filename,"a");
         fprintf(file1,"\n %d %d %f %f",DAY,ID,FIRM_LOAN_ISSUES,FIRM_LOAN_INSTALLMENTS);
         fprintf(file1," %f %f %f %f %f",TOTAL_CREDIT,CASH,DEPOSITS,ECB_DEBT,EQUITY);
+        fclose(file1);
+        free(filename);
+        
+    }    
+    
+    if (PRINT_DEBUG_FILE_EXP1)
+    {                       
+        filename = malloc(40*sizeof(char));
+        filename[0]=0;
+        strcpy(filename, "its/banks_value_at_risk.txt");      
+        file1 = fopen(filename,"a");
+        fprintf(file1,"\n %d %d %f",DAY,ID,VALUE_AT_RISK);
         fclose(file1);
         free(filename);
         

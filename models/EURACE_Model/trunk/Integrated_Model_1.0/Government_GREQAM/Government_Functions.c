@@ -129,13 +129,13 @@ int Government_send_policy_announcements()
     add_policy_announcement_message(ID, TAX_RATE_CORPORATE, TAX_RATE_HH_LABOUR, TAX_RATE_HH_CAPITAL, TAX_RATE_VAT, UNEMPLOYMENT_BENEFIT_PCT, HH_SUBSIDY_PCT, FIRM_SUBSIDY_PCT, HH_TRANSFER_PAYMENT, FIRM_TRANSFER_PAYMENT);
     
     #ifndef _DEBUG_MODE
-    if (PRINT_DEBUG_GOV)
-        { 
+ //   if (PRINT_DEBUG_GOV)
+  //      { 
                     printf("\n Government_send_policy_announcements ID: %d",ID);
                     printf("\n \t TAX_RATE_HH_LABOUR: %f TAX_RATE_CORPORATE: %f TAX_RATE_HH_CAPITAL: %f TAX_RATE_VAT: %f", TAX_RATE_HH_LABOUR, TAX_RATE_CORPORATE, TAX_RATE_HH_CAPITAL, TAX_RATE_VAT);
                     printf("\n \t UNEMPLOYMENT_BENEFIT_PCT: %f HH_SUBSIDY_PCT: %f FIRM_SUBSIDY_PCT: %f HH_TRANSFER_PAYMENT: %f FIRM_TRANSFER_PAYMENT; %f", UNEMPLOYMENT_BENEFIT_PCT, HH_SUBSIDY_PCT, FIRM_SUBSIDY_PCT, HH_TRANSFER_PAYMENT, FIRM_TRANSFER_PAYMENT);
                     getchar();
-        }
+   //     }
     #endif
        
     return 0;   
@@ -485,7 +485,7 @@ int Government_monthly_budget_accounting()
             filename[0]=0;
             strcpy(filename, "its/government_monthly_accounting.txt"); 
             file1 = fopen(filename,"a");
-            fprintf(file1,"\n %f %f ",MONTHLY_TAX_REVENUES,MONTHLY_BENEFIT_PAYMENT);
+            fprintf(file1,"\n %d %d %f %f ",DAY,ID,MONTHLY_TAX_REVENUES,MONTHLY_BENEFIT_PAYMENT);
             fprintf(file1,"%f %f ",MONTHLY_BOND_INTEREST_PAYMENT,out);
             fprintf(file1,"%f %f ",MONTHLY_BUDGET_BALANCE,PAYMENT_ACCOUNT);
             fprintf(file1,"%f %f ",CUMULATED_DEFICIT,TOTAL_DEBT);
@@ -722,25 +722,36 @@ int Government_set_policy()
      YEARLY_INVESTMENT_BUDGET = GOV_POLICY_GDP_FRACTION_INVESTMENT * GDP_FORECAST;
      MONTHLY_INVESTMENT_BUDGET = YEARLY_INVESTMENT_BUDGET/12;
 
-    if ((POLICY_EXP1)&(GOV_POLICY_SWITCH_QUANTITATIVE_EASING==0))
-   // if (POLICY_EXP1)
+    if POLICY_EXP1
     {                   
-                    if (YEARLY_BUDGET_BALANCE>0)
+                  /*  if ( (YEARLY_BUDGET_BALANCE+PAYMENT_ACCOUNT)>0)
                       { 
-                        if ((YEARLY_TAX_REVENUES-YEARLY_BUDGET_BALANCE)>0)
-                           yearly_tax_revenues_target = YEARLY_TAX_REVENUES-YEARLY_BUDGET_BALANCE;
+                        if ((YEARLY_TAX_REVENUES-(YEARLY_BUDGET_BALANCE+PAYMENT_ACCOUNT))>0)
+                           yearly_tax_revenues_target = YEARLY_TAX_REVENUES-(YEARLY_BUDGET_BALANCE+PAYMENT_ACCOUNT);
                         else yearly_tax_revenues_target = 1.0;
                       }
                     else
-                        yearly_tax_revenues_target = YEARLY_TAX_REVENUES-YEARLY_BUDGET_BALANCE;
+                        yearly_tax_revenues_target = YEARLY_TAX_REVENUES-(YEARLY_BUDGET_BALANCE+PAYMENT_ACCOUNT); 
         
+
         TAX_RATE_HH_LABOUR = (yearly_tax_revenues_target/YEARLY_TAX_REVENUES)*TAX_RATE_HH_LABOUR;
         TAX_RATE_CORPORATE = (yearly_tax_revenues_target/YEARLY_TAX_REVENUES)*TAX_RATE_CORPORATE;
         TAX_RATE_HH_CAPITAL = (yearly_tax_revenues_target/YEARLY_TAX_REVENUES)*TAX_RATE_HH_CAPITAL;
+        */
         
-        if (TAX_RATE_HH_LABOUR<CONST_INCOME_TAX_RATE) TAX_RATE_HH_LABOUR = CONST_INCOME_TAX_RATE;
-        
-     }
+        if ( (YEARLY_BUDGET_BALANCE+PAYMENT_ACCOUNT)>0)
+        {
+             TAX_RATE_HH_LABOUR = TAX_RATE_HH_LABOUR - 0.05;
+             TAX_RATE_CORPORATE = TAX_RATE_CORPORATE - 0.05;
+             }
+             else
+        {
+             TAX_RATE_HH_LABOUR = TAX_RATE_HH_LABOUR + 0.05;
+             TAX_RATE_CORPORATE = TAX_RATE_CORPORATE + 0.05;
+             }
+        if (TAX_RATE_HH_LABOUR<0.05) TAX_RATE_HH_LABOUR = 0.05;
+        if (TAX_RATE_CORPORATE<0.05) TAX_RATE_CORPORATE = 0.05;
+      }
          
     return 0;
 }
