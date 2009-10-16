@@ -59,7 +59,7 @@ int Bank_decide_credit_conditions()
             bankruptcy_prob = 1-exp(-(d+c)/e);
             r = bankruptcy_prob*c;
             
-           if ( VALUE_AT_RISK+r <= BANK_GAMMA[0]*ALFA*EQUITY )  //Instead of ALFA*EQUITY 
+           if ( VALUE_AT_RISK+r <= ALFA*EQUITY )  //Instead of ALFA*EQUITY 
             {
                 //printf("\n %f %f %f %f %f",VALUE_AT_RISK,r,BANK_GAMMA[0],ALFA,EQUITY);
                 //getchar();
@@ -69,7 +69,7 @@ int Bank_decide_credit_conditions()
             }
             else 
             {
-                credit_allowed = max(0,(BANK_GAMMA[0]*ALFA*EQUITY - VALUE_AT_RISK)/bankruptcy_prob);  
+                credit_allowed = max(0,(ALFA*EQUITY - VALUE_AT_RISK)/bankruptcy_prob);  
                 if (credit_allowed<0)
                     printf("\n ERROR in function bank_decide_credit_condition: credit_allowed = %2.5f\n ", credit_allowed);                
             }
@@ -78,7 +78,7 @@ int Bank_decide_credit_conditions()
             i = ECB_INTEREST_RATE + BANK_GAMMA[0]*r*(((double)rand()/(double)RAND_MAX)*0.01);
             
         
-            add_loan_conditions_message(loan_request_message->firm_id, ID, i, credit_allowed,  r*(c/credit_allowed));
+            add_loan_conditions_message(loan_request_message->firm_id, ID, i, credit_allowed,  r*(credit_allowed/c));
             
         
         #ifndef _DEBUG_MODE
