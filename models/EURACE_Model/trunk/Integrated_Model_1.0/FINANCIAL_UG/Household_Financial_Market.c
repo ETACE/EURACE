@@ -31,11 +31,13 @@ int Household_send_orders()
      ord=elementAtCOrder(orders,i);
      if (ord->quantity>10e+6)
      {
-        printf("Financial_UG/Household_Financial_Market.c/Household_send_orders()\n");
-        printf("Line: 42 ->  ord->quantity>10e+6\n");
-        printf("ASSET_ID %d, In Household_send_orders: Order quantity=%d\n", ord->assetId,ord->quantity);
+        printf("Household_send_orders()\n");
+        //printf("Line: 42 ->  ord->quantity>10e+6\n");
+        printf("ID: %d PAYMENT_ACCOUNT: %f \n",ID,PAYMENT_ACCOUNT);
+        printf("ASSET_ID %d, Order quantity: %d price: %f\n", ord->assetId,ord->quantity,ord->price);
         //printf("Press a number and then ENTER to continue ...");
         //scanf("%d", tmp);
+        getchar();
      }
      
      add_order_message(ord->issuer,ord->assetId, ord->price, ord->quantity);

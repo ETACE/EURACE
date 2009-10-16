@@ -212,7 +212,7 @@ for i=1:firms_nr
 end
 
 for d=1:numel(days) 
-    Idx_days = find(days==d);
+    Idx_days = find(Data(:,1)==d);
     stock_index(d) = mean(Data(Idx_days,3));
     clear Idx_days
 end
@@ -387,13 +387,13 @@ figure(121);
 for i= 1:numel(Banks_ids)
     Idx = find(Data(:,2)==Banks_ids(i));
     subplot(2,1,1); hold on; grid on
-    plot(Value_at_Risk(Idx(1:900)),colore)
+    plot(Value_at_Risk(Idx),colore)
     clear Idx
 end
 legend('Value at risk',0)
 
 subplot(2,1,2); hold on; grid
-plot(TOTAL_CREDIT_sum(1:900),colore)
+plot(TOTAL_CREDIT_sum,colore)
 legend('Total Credit',0)
 
 break

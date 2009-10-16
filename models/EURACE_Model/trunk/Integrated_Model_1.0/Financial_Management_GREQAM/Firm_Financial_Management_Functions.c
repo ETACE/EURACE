@@ -922,16 +922,8 @@ int Firm_reset_bankruptcy_flags()
         ACTIVE=1;
         BANKRUPTCY_INSOLVENCY_STATE  = 0;
         BANKRUPTCY_ILLIQUIDITY_STATE = 0;
-    }
-
-    #ifndef _DEBUG_MODE    
-    if (PRINT_DEBUG_EXP1 || PRINT_DEBUG)
-    {
-        printf("\n\t BANKRUPTCY_INSOLVENCY_STATE: %d BANKRUPTCY_ILLIQUIDITY_STATE: %d",BANKRUPTCY_INSOLVENCY_STATE,BANKRUPTCY_ILLIQUIDITY_STATE);
-        getchar();
-    }
-    #endif   
-    
+        
+        
       if (PRINT_DEBUG_FILE_EXP1)
     {
         filename = malloc(40*sizeof(char));
@@ -942,6 +934,16 @@ int Firm_reset_bankruptcy_flags()
         fclose(file1);
         free(filename);
     }    
+    }
+
+    #ifndef _DEBUG_MODE    
+    if (PRINT_DEBUG_EXP1 || PRINT_DEBUG)
+    {
+        printf("\n\t BANKRUPTCY_INSOLVENCY_STATE: %d BANKRUPTCY_ILLIQUIDITY_STATE: %d",BANKRUPTCY_INSOLVENCY_STATE,BANKRUPTCY_ILLIQUIDITY_STATE);
+        getchar();
+    }
+    #endif   
+    
     
     return 0;
 }
