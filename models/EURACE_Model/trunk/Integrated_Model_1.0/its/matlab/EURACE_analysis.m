@@ -8,7 +8,7 @@ Pat = '..\';
 font_sz = 14;
 colore = 'b';
 
-mf = 18;
+mf = 84;
 tf = 20*mf;
 
 %%% BANKS

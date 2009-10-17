@@ -743,13 +743,15 @@ int Firm_bankruptcy_insolvency_procedure()
     
     //Effect on credit market
     
-    //Renegotiating debt: refunding credit, computing bad debt
     
 //printf("\n Firm_bankruptcy_insolvency_procedure BANKRUPTCY_IDLE_COUNTER %d",BANKRUPTCY_IDLE_COUNTER);
 
 if (BANKRUPTCY_IDLE_COUNTER == CONST_BANKRUPTCY_IDLE_PERIOD - 1)
 {
-    TOTAL_ASSETS = TOTAL_VALUE_CAPITAL_STOCK + PAYMENT_ACCOUNT;
+                            
+   
+    //Renegotiating debt: refunding credit, computing bad debt
+     TOTAL_ASSETS = TOTAL_VALUE_CAPITAL_STOCK + PAYMENT_ACCOUNT;
     //Set the target debt
     target_debt = DEBT_RESCALING_FACTOR*TOTAL_ASSETS;
 
@@ -780,25 +782,24 @@ if (BANKRUPTCY_IDLE_COUNTER == CONST_BANKRUPTCY_IDLE_PERIOD - 1)
                 
    }
    reset_debt_item_array(&LOANS);
+   
+    target_equity = (1/TARGET_LEVERAGE_RATIO) * target_debt;
+    ipo_amount = max(0,target_equity + target_debt - TOTAL_ASSETS);
+     EXTERNAL_FINANCIAL_NEEDS = max(0,ipo_amount);
 }   
     //Check that after refunding credit the payment account is depleted:
-    if (PAYMENT_ACCOUNT>1e-6)
+    /*if (PAYMENT_ACCOUNT>1e-6)
 	{
         printf("\n ERROR in Firm_bankruptcy_insolvency_procedure:"
                 " payment_account not depleted after refunding credit. \n"
                 "PAYMENT_ACCOUNT=%f\n", PAYMENT_ACCOUNT);
-	}    
+	} */   
     //Effect on financial market
     //Wiping out all existing shareholders by cancelling their shares
     
     //Set the IPO_AMOUNT to raise:
-    target_equity = (1/TARGET_LEVERAGE_RATIO) * target_debt;
-    ipo_amount = max(0,target_equity + target_debt - TOTAL_ASSETS);
-    
-    
-    //To use already implemented functions, we use the EXTERNAL_FINANCIAL_NEEDS to send the share emmission
-    EXTERNAL_FINANCIAL_NEEDS = max(0,ipo_amount);
-
+   
+  
     #ifndef _DEBUG_MODE
     if(PRINT_DEBUG)
     {
