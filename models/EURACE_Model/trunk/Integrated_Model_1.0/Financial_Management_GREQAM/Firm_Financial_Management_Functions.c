@@ -856,7 +856,7 @@ int Firm_bankruptcy_illiquidity_procedure()
     ipo_amount = TARGET_LIQUIDITY_RATIO*(FINANCIAL_LIQUIDITY_NEEDS - PAYMENT_ACCOUNT);
 
     //To use already implemented functions, we use the EXTERNAL_FINANCIAL_NEEDS to send the share emmission
-    EXTERNAL_FINANCIAL_NEEDS = max(0,ipo_amount);
+    EXTERNAL_FINANCIAL_NEEDS = max(0.0,ipo_amount);
     
     //Effect on investment goods market
     //Left-over capital
