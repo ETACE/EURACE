@@ -33,7 +33,7 @@ int Firm_compute_financial_payments()
     for (i=0; i<LOANS.size; i++)
     {
         if(LOANS.array[i].loan_value < 0.0)
-        printf("\n ERROR in function Firm_compute_financial_payments: loan_value is NEGATIVE.\n ");
+        printf("\n ERROR in function Firm_compute_financial_payments: loan_value is NEGATIVE: %f.\n", LOANS.array[i].loan_value);
 
         //step 1: compute total interest payments
         TOTAL_INTEREST_PAYMENT += LOANS.array[i].interest_rate * LOANS.array[i].loan_value;
@@ -782,11 +782,12 @@ if (BANKRUPTCY_IDLE_COUNTER == CONST_BANKRUPTCY_IDLE_PERIOD - 1)
    reset_debt_item_array(&LOANS);
 }   
     //Check that after refunding credit the payment account is depleted:
-    if (PAYMENT_ACCOUNT>0)
+    if (PAYMENT_ACCOUNT>1e-6)
+	{
         printf("\n ERROR in Firm_bankruptcy_insolvency_procedure:"
                 " payment_account not depleted after refunding credit. \n"
                 "PAYMENT_ACCOUNT=%f\n", PAYMENT_ACCOUNT);
-    
+	}    
     //Effect on financial market
     //Wiping out all existing shareholders by cancelling their shares
     
