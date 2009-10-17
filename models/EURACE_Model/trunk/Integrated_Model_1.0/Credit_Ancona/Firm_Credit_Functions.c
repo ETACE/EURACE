@@ -190,12 +190,12 @@
                     
                 if (credit_accepted>0.0)
                 {
-                    var_per_installment = value_at_risk_array[primo]*
-                        (credit_offer_array[primo]/credit_accepted); //RESIDUAL_VAR[rate_order_array[primo]].value[CONST_INSTALLMENT_PERIODS-1]/CONST_INSTALLMENT_PERIODS; //rate_order_array[primo]][CONST_INSTALLMENT_PERIODS-1]/CONST_INSTALLMENT_PERIODS;
+                     residual_var = value_at_risk_array[primo]*
+                        (credit_accepted/credit_offer_array[primo]); //RESIDUAL_VAR[rate_order_array[primo]].value[CONST_INSTALLMENT_PERIODS-1]/CONST_INSTALLMENT_PERIODS; //rate_order_array[primo]][CONST_INSTALLMENT_PERIODS-1]/CONST_INSTALLMENT_PERIODS;
                 }
                 else var_per_installment=0.0;
                 
-                residual_var = var_per_installment*CONST_INSTALLMENT_PERIODS;// value_at_risk_array[rate_order_array[primo]]*(credit_offer_array[rate_order_array[primo]]/credit_accepted);
+                var_per_installment = residual_var/CONST_INSTALLMENT_PERIODS;// value_at_risk_array[rate_order_array[primo]]*(credit_offer_array[rate_order_array[primo]]/credit_accepted);
                 bad_debt = 0.0;
                 nr_periods_before_repayment=CONST_INSTALLMENT_PERIODS+1;
                 

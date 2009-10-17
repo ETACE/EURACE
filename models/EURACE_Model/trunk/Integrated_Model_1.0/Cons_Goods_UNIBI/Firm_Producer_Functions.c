@@ -631,7 +631,8 @@ return 0;
  * \brief In this function the firm receives the purchased investment goods and pays the goods and  the wage bill. Additionally, the new mean wage and tthe new average specific skill level is     computed. */
 int Firm_calc_pay_costs()
 {
-        
+     FILE *file1;
+     char *filename;    
     int i;
     
         /*Pay capital costs*/
@@ -677,13 +678,22 @@ int Firm_calc_pay_costs()
             PRICE_LAST_MONTH = PRICE;
             PRICE = UNIT_COSTS*(1 + MARK_UP);
             
-            
-            
+            if (PRINT_DEBUG_FILE_EXP1)
+             {
+             filename = malloc(40*sizeof(char));
+             filename[0]=0;
+             strcpy(filename, "its/firms_pricing.txt");      
+             file1 = fopen(filename,"a");
+             fprintf(file1,"\n %d %d %f %f %f",DAY,ID,UNIT_COSTS,PRICE,PRODUCTION_QUANTITY);
+             fclose(file1);
+             free(filename);
 
+              }    
+
+            
             
         }
 
-        
         PRODUCTION_COSTS = CAPITAL_COSTS + LABOUR_COSTS;
         CALC_PRODUCTION_COSTS= LABOUR_COSTS + CALC_CAPITAL_COSTS;
         PAYMENT_ACCOUNT -= PRODUCTION_COSTS;
@@ -782,7 +792,8 @@ int Firm_send_goods_to_mall()
  */
 int Firm_calc_revenue()
 {
-    
+    FILE *file1;
+     char *filename;
     REVENUE_PER_DAY=0.0;
     TOTAL_SOLD_QUANTITY=0.0;
 
@@ -822,6 +833,16 @@ int Firm_calc_revenue()
     
     FINISH_SALES_MESSAGE_LOOP
     
+        if (PRINT_DEBUG_FILE_EXP1)
+    {
+        filename = malloc(40*sizeof(char));
+        filename[0]=0;
+        strcpy(filename, "its/firms_goods_market.txt");      
+        file1 = fopen(filename,"a");
+        fprintf(file1,"\n %d %d %f %f",DAY,ID,TOTAL_SOLD_QUANTITY,PRICE);
+        fclose(file1);
+        free(filename);
+    }    
     /*GENUA*/
     /*add_bank_account_update_message(BANK_ID, PAYMENT_ACCOUNT);*/
     //Not needed here: there is a function after this called Firm_send_payments_to_bank
