@@ -249,11 +249,7 @@ int Firm_compute_balance_sheet()
 {
     int i;
 
-  //  #ifndef _DEBUG_MODE        
-        FILE *file1;
-        char *filename;
-   // #endif
-    
+      
     //compute the equity of the firm
     //TOTAL_ASSETS=
     //+ PAYMENT_ACCOUNT: remaining cash holdings of the firm
@@ -270,6 +266,9 @@ int Firm_compute_balance_sheet()
         //When malls have different current_price use this code:
         //TOTAL_VALUE_LOCAL_INVENTORY += CURRENT_MALL_STOCKS.array[i].current_price * CURRENT_MALL_STOCKS.array[i].current_stock;
     }
+
+    if POLICY_EXP1
+        TOTAL_VALUE_LOCAL_INVENTORY=0.0;
 
     TOTAL_ASSETS = PAYMENT_ACCOUNT + TOTAL_VALUE_CAPITAL_STOCK
             + TOTAL_VALUE_LOCAL_INVENTORY;
@@ -295,19 +294,7 @@ int Firm_compute_balance_sheet()
     }   
     #endif
 
-   // #ifndef _DEBUG_MODE    
-    if (PRINT_DEBUG_FILE_EXP1)
-    {
-        filename = malloc(40*sizeof(char));
-        filename[0]=0;
-        strcpy(filename, "its/firms_balance_sheet.txt");      
-        file1 = fopen(filename,"a");
-        fprintf(file1,"\n %d %d %f %f %f",DAY,ID,TOTAL_UNITS_CAPITAL_STOCK,TOTAL_VALUE_CAPITAL_STOCK,TOTAL_VALUE_LOCAL_INVENTORY);
-        fprintf(file1," %f %f %f %f",PAYMENT_ACCOUNT,TOTAL_ASSETS,TOTAL_DEBT,EQUITY);
-        fclose(file1);
-        free(filename);
-    }    
-   // #endif
+  
                                                              
     return 0;
 }
@@ -755,10 +742,6 @@ int Firm_bankruptcy_insolvency_procedure()
     #endif
     
     //Effect on credit market
-    TOTAL_ASSETS = TOTAL_VALUE_CAPITAL_STOCK;
-
-    //Set the target debt
-     target_debt = (1-DEBT_RESCALING_FACTOR)*(TOTAL_ASSETS-PAYMENT_ACCOUNT);
     
     //Renegotiating debt: refunding credit, computing bad debt
     
@@ -766,6 +749,10 @@ int Firm_bankruptcy_insolvency_procedure()
 
 if (BANKRUPTCY_IDLE_COUNTER == CONST_BANKRUPTCY_IDLE_PERIOD - 1)
 {
+    TOTAL_ASSETS = TOTAL_VALUE_CAPITAL_STOCK + PAYMENT_ACCOUNT;
+    //Set the target debt
+    target_debt = DEBT_RESCALING_FACTOR*TOTAL_ASSETS;
+
     for (i=0; i<LOANS.size; i++)
     {
         residual_var = LOANS.array[i].var_per_installment
@@ -773,9 +760,10 @@ if (BANKRUPTCY_IDLE_COUNTER == CONST_BANKRUPTCY_IDLE_PERIOD - 1)
 
         //step 1: refunding credit
         //the credit_refunded is that part of the loan which can be refunded using the payment_account
-        credit_refunded = (PAYMENT_ACCOUNT/TOTAL_DEBT)*LOANS.array[i].loan_value;
-        PAYMENT_ACCOUNT -= credit_refunded;
-        TOTAL_ASSETS -= credit_refunded;
+        //credit_refunded = (PAYMENT_ACCOUNT/TOTAL_DEBT)*LOANS.array[i].loan_value;
+        //PAYMENT_ACCOUNT -= credit_refunded;
+        //TOTAL_ASSETS -= credit_refunded;
+        credit_refunded = 0;  // credit_refunded is not more used 
         
         //step 2: computing bad debt
         write_off_ratio = (TOTAL_DEBT - target_debt)/TOTAL_DEBT;
@@ -788,7 +776,7 @@ if (BANKRUPTCY_IDLE_COUNTER == CONST_BANKRUPTCY_IDLE_PERIOD - 1)
         //add_bankruptcy_message(firm_id, bank_id, bad_debt, credit_refunded, residual_var);
         
         add_bankruptcy_message(ID, LOANS.array[i].bank_id, bad_debt,
-        credit_refunded, residual_var);        
+        credit_refunded, write_off_ratio*residual_var);        
                 
    }
    reset_debt_item_array(&LOANS);
@@ -804,7 +792,7 @@ if (BANKRUPTCY_IDLE_COUNTER == CONST_BANKRUPTCY_IDLE_PERIOD - 1)
     
     //Set the IPO_AMOUNT to raise:
     target_equity = (1/TARGET_LEVERAGE_RATIO) * target_debt;
-    ipo_amount = target_equity + target_debt - TOTAL_ASSETS;
+    ipo_amount = max(0,target_equity + target_debt - TOTAL_ASSETS);
     
     
     //To use already implemented functions, we use the EXTERNAL_FINANCIAL_NEEDS to send the share emmission

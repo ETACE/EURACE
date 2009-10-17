@@ -199,7 +199,7 @@ int Bank_receive_installment()
     
        //CASH +=bankruptcy_message->credit_refunded;
        EQUITY -= bankruptcy_message->bad_debt;
-       TOTAL_CREDIT-=(bankruptcy_message->credit_refunded+bankruptcy_message->bad_debt);
+       TOTAL_CREDIT-= bankruptcy_message->bad_debt;
        PROFITS[0] -= bankruptcy_message->bad_debt;
        VALUE_AT_RISK -= bankruptcy_message->residual_var;
        
@@ -305,6 +305,12 @@ int Bank_accounting()
          BANK_GAMMA[0]=0.02;
      }
 
+     if (EQUITY<VALUE_AT_RISK/(ALFA/2))
+     BANK_DIVIDEND_RATE = 0.0;
+     else
+     BANK_DIVIDEND_RATE = 1.0;
+     
+
      // tax and dividends payment
      if (PROFITS[0]>0)
      {
@@ -349,7 +355,7 @@ int Bank_accounting()
         strcpy(filename, "its/banks_monthly_income_statement.txt");      
         file1 = fopen(filename,"a");
         fprintf(file1,"\n %d %d",DAY,ID);
-        fprintf(file1," %f %f %f %f",int_to_ecb,FIRM_INTEREST_PAYMENTS,TAXES,PROFITS[0]);
+        fprintf(file1," %f %f %f %f %f",int_to_ecb,FIRM_INTEREST_PAYMENTS,TAXES,PROFITS[0],BANK_DIVIDEND_RATE);
         fclose(file1);
         free(filename);
     }                
