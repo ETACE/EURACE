@@ -781,6 +781,7 @@ if (BANKRUPTCY_IDLE_COUNTER == CONST_BANKRUPTCY_IDLE_PERIOD - 1)
         credit_refunded, write_off_ratio*residual_var);        
                 
    }
+   TOTAL_DEBT = target_debt;
    reset_debt_item_array(&LOANS);
    
     target_equity = (1/TARGET_LEVERAGE_RATIO) * target_debt;
@@ -913,6 +914,8 @@ int Firm_reset_bankruptcy_flags()
         BANKRUPTCY_INSOLVENCY_STATE  = 0;
         BANKRUPTCY_ILLIQUIDITY_STATE = 0;
         
+        TOTAL_ASSETS = PAYMENT_ACCOUNT + TOTAL_VALUE_CAPITAL_STOCK + TOTAL_VALUE_LOCAL_INVENTORY;
+        EQUITY = TOTAL_ASSETS - TOTAL_DEBT;
         
       if (PRINT_DEBUG_FILE_EXP1)
     {
