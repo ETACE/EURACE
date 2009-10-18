@@ -59,7 +59,7 @@ int Household_determine_consumption_budget()
               
        
             /*Based on Carrol-Rule: Determination of the consumption budget*/
-            CONSUMPTION_BUDGET = MEAN_INCOME +CONSUMPTION_PROPENSITY*(WEALTH - WEALTH_INCOME_RATIO_TARGET*MEAN_INCOME);
+            CONSUMPTION_BUDGET = MEAN_INCOME + CARROL_CONSUMPTION_PARAMETER*(WEALTH - WEALTH_INCOME_RATIO_TARGET*MEAN_INCOME);
 
         
         
@@ -541,7 +541,7 @@ int Household_receive_dividends()
     
     if(DAY%MONTH==1)
     {
-    	MONTHLY_CONSUMPTION_EXPENDITURE = 0.0;
+        MONTHLY_CONSUMPTION_EXPENDITURE = 0.0;
     }
     
     return 0;   
