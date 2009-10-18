@@ -74,7 +74,9 @@ int Bank_decide_credit_conditions()
                     printf("\n ERROR in function bank_decide_credit_condition: credit_allowed = %2.5f\n ", credit_allowed);                
             }
             
-            
+          if (e<0)
+          printf("\n Error ! The equity of the firm is negative: %f",e); 
+           
             i = ECB_INTEREST_RATE + BANK_GAMMA[0]*r*(((double)rand()/(double)RAND_MAX)*0.01);
             
         
@@ -445,7 +447,6 @@ int Bank_update_ecb_account()
         FILE *file1=NULL;
         char * filename="";
   //  #endif
-    
 
    add_bank_to_central_bank_account_update_message(ID, CASH, ECB_DEBT); 
    
