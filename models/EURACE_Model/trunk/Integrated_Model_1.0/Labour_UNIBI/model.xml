@@ -63,8 +63,8 @@
    </variable>
    <variable>
     <type>double</type>
-    <name>consumption_propensity</name>
-    <description>0.95, Percentage of savings allocated to consumption.</description>
+    <name>carrol_consumption_parameter</name>
+    <description>0.01, Percentage of the excess (wealth-target_wealth) allocated to the consumption budget.</description>
    </variable>
    <variable>
     <type>double</type>
