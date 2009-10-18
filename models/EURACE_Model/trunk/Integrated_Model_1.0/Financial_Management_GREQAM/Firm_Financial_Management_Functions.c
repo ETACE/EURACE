@@ -754,12 +754,15 @@ if (BANKRUPTCY_IDLE_COUNTER == CONST_BANKRUPTCY_IDLE_PERIOD - 1)
      TOTAL_ASSETS = TOTAL_VALUE_CAPITAL_STOCK + PAYMENT_ACCOUNT;
     //Set the target debt
     target_debt = DEBT_RESCALING_FACTOR*TOTAL_ASSETS;
+    write_off_ratio = (TOTAL_DEBT - target_debt)/TOTAL_DEBT;
 
     for (i=0; i<LOANS.size; i++)
     {
         residual_var = LOANS.array[i].var_per_installment
                 * LOANS.array[i].nr_periods_before_repayment;
-
+                
+        LOANS.array[i].var_per_installment =  (1-write_off_ratio)*write_off_ratio*LOANS.array[i].var_per_installment;        
+        LOANS.array[i].loan_value =  (1-write_off_ratio)*LOANS.array[i].loan_value;
         //step 1: refunding credit
         //the credit_refunded is that part of the loan which can be refunded using the payment_account
         //credit_refunded = (PAYMENT_ACCOUNT/TOTAL_DEBT)*LOANS.array[i].loan_value;
@@ -768,7 +771,7 @@ if (BANKRUPTCY_IDLE_COUNTER == CONST_BANKRUPTCY_IDLE_PERIOD - 1)
         credit_refunded = 0;  // credit_refunded is not more used 
         
         //step 2: computing bad debt
-        write_off_ratio = (TOTAL_DEBT - target_debt)/TOTAL_DEBT;
+       
         bad_debt = write_off_ratio*LOANS.array[i].loan_value;
         
         //the credit_remaining is that part of the debt which is not written off
@@ -782,7 +785,7 @@ if (BANKRUPTCY_IDLE_COUNTER == CONST_BANKRUPTCY_IDLE_PERIOD - 1)
                 
    }
    TOTAL_DEBT = target_debt;
-   reset_debt_item_array(&LOANS);
+  // reset_debt_item_array(&LOANS); the loan structure must not be cancelled, but rescaled
    
     target_equity = (1/TARGET_LEVERAGE_RATIO) * target_debt;
     ipo_amount = max(0,target_equity + target_debt - TOTAL_ASSETS);
