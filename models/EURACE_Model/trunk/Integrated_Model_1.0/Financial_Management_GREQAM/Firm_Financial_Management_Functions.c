@@ -761,8 +761,12 @@ if (BANKRUPTCY_IDLE_COUNTER == CONST_BANKRUPTCY_IDLE_PERIOD - 1)
         residual_var = LOANS.array[i].var_per_installment
                 * LOANS.array[i].nr_periods_before_repayment;
                 
-        LOANS.array[i].var_per_installment =  (1-write_off_ratio)*write_off_ratio*LOANS.array[i].var_per_installment;        
+        LOANS.array[i].var_per_installment =  (1-write_off_ratio)*LOANS.array[i].var_per_installment;        
         LOANS.array[i].loan_value =  (1-write_off_ratio)*LOANS.array[i].loan_value;
+        
+        LOANS.array[i].installment_amount = LOANS.array[i].loan_value/LOANS.array[i].nr_periods_before_repayment;
+        
+        
         //step 1: refunding credit
         //the credit_refunded is that part of the loan which can be refunded using the payment_account
         //credit_refunded = (PAYMENT_ACCOUNT/TOTAL_DEBT)*LOANS.array[i].loan_value;
