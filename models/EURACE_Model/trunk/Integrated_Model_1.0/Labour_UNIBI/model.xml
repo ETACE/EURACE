@@ -62,6 +62,11 @@
     <description>10.0, Percentage of employees who are searching for a new job.</description>
    </variable>
    <variable>
+   <type>double</type>
+    <name>target_savings_rate</name>
+    <description>This is the target savings rate of an household. Typical value: 0.1</description>
+   </variable>
+  <variable>
     <type>double</type>
     <name>carrol_consumption_parameter</name>
     <description>0.01, Percentage of the excess (wealth-target_wealth) allocated to the consumption budget.</description>
