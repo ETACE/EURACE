@@ -191,6 +191,7 @@ int Firm_receive_data()
                     EMPLOYEES.array[i].wage = EMPLOYEES.array[i].wage*(1+
                     eurostat_send_specific_skills_message->productivity_progress);    
                 }
+                CPI = eurostat_send_specific_skills_message->cpi;
             }
         }
     FINISH_EUROSTAT_SEND_SPECIFIC_SKILLS_MESSAGE_LOOP

@@ -83,7 +83,8 @@ int Eurostat_send_data()
         REGION_HOUSEHOLD_DATA.array[i].average_s_skill_3, 
         REGION_HOUSEHOLD_DATA.array[i].average_s_skill_4, 
         REGION_HOUSEHOLD_DATA.array[i].average_s_skill_5,
-        REGION_FIRM_DATA.array[i].productivity_progress);
+        REGION_FIRM_DATA.array[i].productivity_progress,
+        CPI);
     }
     
     add_eurostat_send_macrodata_message(ANNUAL_GROWTH_RATES_MONTHLY.cpi, GDP, UNEMPLOYMENT_RATE);
