@@ -377,6 +377,11 @@
    <name>Firm</name>
    <description></description>
    <memory>
+   <variable>
+     <type>double</type>
+     <name>cpi</name>
+     <description>This is the CPI in firm memory, used in the evaluation of the inventory stock.</description>
+    </variable>
     <variable>
      <type>double</type>
      <name>mean_wage</name>
