@@ -36,20 +36,23 @@ int Firm_compute_financial_payments()
         printf("\n ERROR in function Firm_compute_financial_payments: loan_value is NEGATIVE: %f.\n", LOANS.array[i].loan_value);
 
         //step 1: compute total interest payments
-        TOTAL_INTEREST_PAYMENT += LOANS.array[i].interest_rate * LOANS.array[i].loan_value;
+        TOTAL_INTEREST_PAYMENT += (LOANS.array[i].interest_rate/12.0) * LOANS.array[i].loan_value;
                 
         //step 2: compute total debt installment payments
         TOTAL_DEBT_INSTALLMENT_PAYMENT += LOANS.array[i].installment_amount;
+        
+        printf("\n\n Firm_compute_financial_payments ID: %d",ID);
+        printf("\n\t interest_rate: %f loan_value: %f",LOANS.array[i].interest_rate,LOANS.array[i].loan_value);
+        printf("\n\t TOTAL_INTEREST_PAYMENT: %f TOTAL_DEBT_INSTALLMENT_PAYMENT: %f",TOTAL_INTEREST_PAYMENT,TOTAL_DEBT_INSTALLMENT_PAYMENT);
+
     }
 
-    #ifndef _DEBUG_MODE    
-    if (PRINT_DEBUG)
-    { 
-        printf("\n\n Firm_compute_financial_payments ID: %d",ID);
-        printf("\n\t TOTAL_INTEREST_PAYMENT: %f TOTAL_DEBT_INSTALLMENT_PAYMENT: %f",TOTAL_INTEREST_PAYMENT,TOTAL_DEBT_INSTALLMENT_PAYMENT);
-        getchar();
-     }    
-    #endif
+  //  #ifndef _DEBUG_MODE    
+  //  if (PRINT_DEBUG)
+  //  { 
+               getchar();
+    // }    
+    //#endif
     
     return 0;
 }
@@ -585,7 +588,7 @@ int Firm_execute_financial_payments()
             #endif
             
             //pay interest            
-            temp_interest=LOANS.array[i].interest_rate*LOANS.array[i].loan_value;
+            temp_interest=(LOANS.array[i].interest_rate/12.0)*LOANS.array[i].loan_value;
             PAYMENT_ACCOUNT -= temp_interest;
     
             //decrease payment_account with the installment payment
