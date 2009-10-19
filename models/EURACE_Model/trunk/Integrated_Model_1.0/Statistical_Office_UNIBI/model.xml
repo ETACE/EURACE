@@ -2864,6 +2864,11 @@
      <name>productivity_progress</name>
      <description></description>
     </variable>
+    <variable>
+     <type>double</type>
+     <name>cpi</name>
+     <description></description>
+    </variable>
    </variables>
   </message>
   <message>
