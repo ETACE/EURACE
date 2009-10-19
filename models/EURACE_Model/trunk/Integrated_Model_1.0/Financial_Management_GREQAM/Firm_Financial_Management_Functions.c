@@ -262,7 +262,7 @@ int Firm_compute_balance_sheet()
     TOTAL_VALUE_LOCAL_INVENTORY=0.0;
     for (i=0; i<CURRENT_MALL_STOCKS.size; i++)
     {
-        TOTAL_VALUE_LOCAL_INVENTORY += PRICE*CURRENT_MALL_STOCKS.array[i].current_stock;
+        TOTAL_VALUE_LOCAL_INVENTORY += CPI*CURRENT_MALL_STOCKS.array[i].current_stock;
         //When malls have different current_price use this code:
         //TOTAL_VALUE_LOCAL_INVENTORY += CURRENT_MALL_STOCKS.array[i].current_price * CURRENT_MALL_STOCKS.array[i].current_stock;
     }
