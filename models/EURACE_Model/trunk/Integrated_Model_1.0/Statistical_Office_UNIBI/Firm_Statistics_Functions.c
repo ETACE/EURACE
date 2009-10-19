@@ -135,11 +135,7 @@ int Firm_send_transfer_notification()
  */
 int Firm_receive_data()
 {
-
-                
-    /* If day of month to act... */
     
-        
     START_EUROSTAT_SEND_SPECIFIC_SKILLS_MESSAGE_LOOP
         
         /*Specific skills of the domestic region*/
