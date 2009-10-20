@@ -1,0 +1,27 @@
+A number of the partners in the EURACE project have their own parallel systems. The FLAME Framework and the EURACE Model have been ported to these systems.
+\begin{table}[ht]
+\renewcommand{\arraystretch}{1.2}
+	\centering
+	{\scriptsize
+		\begin{tabular}{|l|l|l|l|}\hline
+	\bf	Unit &	\bf GREQAM &\bf	 TUBITAK &\bf	 UNIBI\\\hline
+\bf Processor Type 	& Intel Xeon 5140 (Dual Core)&	Intel Xeon E5355 (Quad Core) &	Intel Xeon 5160 (Dual Core)\\\hline
+\bf Total Cores 	&4 (2 x 2) &	4 (1 x 4) &	4 (2 x 2)\\\hline
+\bf Total Memory &	4GB (4 x 1GB) &	16GB (4 x 4GB) &	2GB\\\hline
+\bf Memory per core &	1GB &	4GB &	512MB\\\hline
+\bf Total Storage &	146GB (2 x 73GB) &	292GB (2 x 146GB) &	219GB (3 x 73GB)\\\hline
+\bf Usable Storage &	~73GB (RAID 1) &	 ? &	 ?\\\hline
+\bf Operating System &	Windows XP Pro x64 &	 ? &	Red Hat Enterprise Linux 4\\\hline
+\bf MPI Library$^1$ 	& MPI 1 &	 MPI 1 &	 MPI 1 \\\hline
+			
+		\end{tabular}
+		}
+\end{table}
+STFC has a large number of different parallel computing systems which it has made available to the project and used in testing the EURACE Model. Each of these machine has a different hardware architecture and software infrastructure.
+\begin{description}
+\item[HPCx]: The HPCx platform is currently number 43 in the 28th Top 500 Supercomputer list (Nov 2006). It is based on the IBM pSeries 575 system, and has a total of 2560 processors. The HPCx system uses IBM eServer 575 nodes for the compute and IBM eServer 575 nodes for login and disk I/O. Each eServer node contains 16 processors. At present there are two service nodes. The main HPCx service provides 160 nodes for compute jobs for users, giving a total of 2560 processors. There is a separate partition of 12 nodes reserved for certain projects. The peak computational power of the HPCx system is 15.3 Tflops peak.
+\item[SCARF]: SCARF is a compute cluster run by the STFC's e-Science Centre (HPC services group). It uses the RedHat Enterprise Linux 4.4 Operating System, and provides the LSF scheduler and SCALI-MPI. SCARF has the following hardware specification:360 2.2GHz AMD Opteron processor cores, 1.296TB total memory, Gigabit networking and Myrinet M3F-PCIXD-2 low latency interconnect.
+\item[HAPU]: HAPU is an HP Cluster Platform 4000 based on Redhat Enterprise Linux 4. It has 128 x 2.4GHz Opteron cores, with 2Gb memory per core, and a Voltaire InfiniBand interconnect.
+\item[NW-GRID]: The NW-GRID Cluster comprises three compute racks, with each rack containing 32 SUN x4100 nodes. Each node contains 2 Dual Core 2.4Ghz Opterons with 8GB of memory. That brings the total processor count to 192 Dual-Core Opterons (384 processor cores). 
+\item[MANO]: MANO is an IBM Blue Gene/L machine. It comprises 1024 nodes of dual-core 700MHz PowerPC chips with the second cpu usually dedicated i/o and communications. The frontend (or login) node is a p5-520Q with 4x1.5GHz processors, 16GB RAM and running SuSE Linux Enterprise Server 9 and this is supplemented with an identical service node for system control. GPFS is provided through two p5-505 servers each with 2x1.5GHz processors and 4GB RAM. 
+\end{description}
