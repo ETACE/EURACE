@@ -41,10 +41,10 @@ int Firm_compute_financial_payments()
         //step 2: compute total debt installment payments
         TOTAL_DEBT_INSTALLMENT_PAYMENT += LOANS.array[i].installment_amount;
         
-      /*  printf("\n\n Firm_compute_financial_payments ID: %d",ID);
+       /* printf("\n\n Firm_compute_financial_payments ID: %d",ID);
         printf("\n\t interest_rate: %f loan_value: %f",LOANS.array[i].interest_rate,LOANS.array[i].loan_value);
         printf("\n\t TOTAL_INTEREST_PAYMENT: %f TOTAL_DEBT_INSTALLMENT_PAYMENT: %f",TOTAL_INTEREST_PAYMENT,TOTAL_DEBT_INSTALLMENT_PAYMENT);
-*/
+        */
     }
 
   //  #ifndef _DEBUG_MODE    
@@ -270,8 +270,8 @@ int Firm_compute_balance_sheet()
         //TOTAL_VALUE_LOCAL_INVENTORY += CURRENT_MALL_STOCKS.array[i].current_price * CURRENT_MALL_STOCKS.array[i].current_stock;
     }
 
-    if POLICY_EXP1
-        TOTAL_VALUE_LOCAL_INVENTORY=0.0;
+    //if POLICY_EXP1
+     //   TOTAL_VALUE_LOCAL_INVENTORY=0.0;
 
     TOTAL_ASSETS = PAYMENT_ACCOUNT + TOTAL_VALUE_CAPITAL_STOCK
             + TOTAL_VALUE_LOCAL_INVENTORY;
