@@ -1,9 +1,125 @@
 \subsection{Assessment and Benchmarking for the EURACE Model}
 \label{sec:benchmarks}
 In this section we consider the benchmarking of the full EURACE Model as
-describe in the other deliverables of the project. We have developed a
+described in the other deliverables of the project. We have developed a
 number of analysis tools that have allowed us to benchmark any
 FLAME model and assess its serial and parallel performance.
 
 We have used a number of versions of the EURACE Model in this benchmarking - the model
 has been under constant development.
+
+\subsubsection{Analysis of Agent Function Times}
+
+This section comprises tables of agent function CPU times recorded with the timer package as the EURACE integrated model has evolved in recent revisions. The code was compiled with debugging and profiling turned on which will have an effect on the absolute timings but not on the proportion of time spent in each routine. 
+
+Most of the results are for serial runs since the focus is on timing of agent functions but Tables \ref{table_r2754_0} and \ref{table_r2754_1} show timings of a parallel run (16 regions on 2 nodes). Note that the \textit{order} message synchronisation appears in the tables but takes less than 1\% of the run time.
+
+\begin{landscape}
+\begin{table}
+\begin{tabular}{|l|l|l|l|l|}\hline
+Function & State from & State to & Time (s) & \% \\ \hline
+ClearingHouse$\_$receive$\_$orders$\_$and$\_$run & RECEIVEDINFOSTOCK & COMPUTEDPRICES &  82.81 & 72 \\ \hline
+Household$\_$stock$\_$beliefs$\_$formation & CHOOSE$\_$TO$\_$UPDATE$\_$BELIEFS$\_$OR$\_$NOT & BOND$\_$BELIEF$\_$FORMATION &  25.32 & 22 \\ \hline
+Household$\_$send$\_$orders & SEND$\_$ORDERS & WAITORDERSTATUS &  2.06 & 1.7 \\ \hline
+Household$\_$bond$\_$beliefs$\_$formation & BOND$\_$BELIEF$\_$FORMATION &SEND$\_$ORDERS &  0.44 & 0.38 \\ \hline
+Household$\_$rank$\_$and$\_$buy$\_$goods$\_$1 & 09 & 09b &  0.42 & 0.36 \\ \hline
+Firm$\_$read$\_$job$\_$applications$\_$send$\_$job$\_$offer$\_$or$\_$rejection & 03 & 04 &  0.37 & 0.32 \\ \hline
+Household$\_$update$\_$its$\_$portfolio & WAITORDERSTATUS & Household$\_$Start$\_$Labour$\_$Role &  0.16 & 0.14 \\ \hline
+Household$\_$receive$\_$dividends & 06 & 06b &  0.11 & $<$0.1 \\ \hline
+Household$\_$receive$\_$info$\_$interest$\_$from$\_$bank & Household$\_$received$\_$coupons & SELECTSTRATEGY &  0.09 & $<$0.1 \\ \hline
+Household$\_$send$\_$account$\_$update & 15 & 16 &  0.09 & $<$0.1 \\ \hline
+\end{tabular}
+\caption{Revision \textbf{2701}, Serial, 40 iterations, small population. Total run time 1:55[m:s]}
+\end{table}
+
+\begin{table}
+\begin{tabular}{|l|l|l|l|l|}\hline
+Function & State from & State to & Time (s) & \% \\ \hline
+Household$\_$stock$\_$beliefs$\_$formation & CHOOSE$\_$TO$\_$UPDATE$\_$BELIEFS$\_$OR$\_$NOT & BOND$\_$BELIEF$\_$FORMATION &  245.78 & 61 \\ \hline
+Household$\_$send$\_$orders & SEND$\_$ORDERS & WAITORDERSTATUS &  46.44 & 11 \\ \hline
+ClearingHouse$\_$receive$\_$orders$\_$and$\_$run & RECEIVEDINFOSTOCK & COMPUTEDPRICES &  41.76 & 10 \\ \hline
+Household$\_$bond$\_$beliefs$\_$formation & BOND$\_$BELIEF$\_$FORMATION &SEND$\_$ORDERS &  4.98 & 1.2 \\ \hline
+Household$\_$update$\_$its$\_$portfolio & WAITORDERSTATUS & Household$\_$Start$\_$Labour$\_$Role &  1.48 & 0.3 \\ \hline
+Household$\_$rank$\_$and$\_$buy$\_$goods$\_$1 & 09 & 09b &  1.04 & 0.28 \\ \hline
+Household$\_$rank$\_$and$\_$buy$\_$goods$\_$2 & 11 & 12 &  0.9 & 0.22 \\ \hline
+Household$\_$receive$\_$dividends & 06 & 06b &  0.8 & 0.20 \\ \hline
+Household$\_$receive$\_$info$\_$interest$\_$from$\_$bank & Household$\_$received$\_$coupons & SELECTSTRATEGY &  0.79 & 0.20 \\ \hline
+Firm$\_$read$\_$job$\_$applications$\_$send$\_$job$\_$offer$\_$or$\_$rejection & 03 & 04 &  0.62 & 0.15 \\ \hline
+\end{tabular}
+\caption{Revision \textbf{2723}, Serial, 240 iterations, small population. Total run time 6:42[m:s]}
+\end{table}
+
+
+\begin{table}
+\begin{tabular}{|l|l|l|l|l|}\hline
+Function & State from & State to & Time (s) & \% \\ \hline
+Household$\_$send$\_$orders & SEND$\_$ORDERS & WAITORDERSTATUS &   2083.3 & 14.2 \\ \hline
+Household$\_$stock$\_$beliefs$\_$formation & CHOOSE$\_$TO$\_$UPDATE$\_$BELIEFS$\_$OR$\_$NOT & BOND$\_$BELIEF$\_$FORMATION &   211.144 & 1.4 \\ \hline
+order &  &  &   137.024 & 0.9 \\ \hline
+Household$\_$receive$\_$dividends & 06 & 06b &   104.891 & 0.7 \\ \hline
+Household$\_$receive$\_$data & Household$\_$Start$\_$Policy$\_$Data & Household$\_$Start$\_$Financial$\_$Market$\_$Role &   43.6602 & 0.3 \\ \hline
+Household$\_$receive$\_$info$\_$interest$\_$from$\_$bank & Household$\_$received$\_$coupons & SELECTSTRATEGY &   37.1621 & 0.3 \\ \hline
+Household$\_$update$\_$its$\_$portfolio & WAITORDERSTATUS & Household$\_$Start$\_$Labour$\_$Role &   34.5611 & 0.2 \\ \hline
+Firm$\_$read$\_$stock$\_$transactions & 0003 & End$\_$Firm$\_$Financial$\_$Role &   17.7424 & 0.1 \\ \hline
+Household$\_$rank$\_$and$\_$buy$\_$goods$\_$1 & 09 & 09b &   16.1013 & 0.1 \\ \hline
+Household$\_$send$\_$account$\_$update & 15 & 16 &   16.049 & 0.1 \\ \hline
+\end{tabular}
+\caption{Revision \textbf{2754}, Parallel, 240 iterations, 16 region population. Total run time 244:25[m:s]. Node 0\label{table_r2754_0}}
+\end{table}
+
+
+\begin{table}
+\begin{tabular}{|l|l|l|l|l|}\hline
+Function & State from & State to & Time (s) & \% \\ \hline
+ClearingHouse$\_$receive$\_$orders$\_$and$\_$run & RECEIVEDINFOSTOCK & COMPUTEDPRICES &   5125.29 & 35.0 \\ \hline
+Household$\_$send$\_$orders & SEND$\_$ORDERS & WAITORDERSTATUS &   2067.41 & 14.1 \\ \hline
+Household$\_$stock$\_$beliefs$\_$formation & CHOOSE$\_$TO$\_$UPDATE$\_$BELIEFS$\_$OR$\_$NOT & BOND$\_$BELIEF$\_$FORMATION &  222.105 & 1.5 \\ \hline
+Household$\_$receive$\_$dividends & 06 & 06b &   104.267 & 0.7 \\ \hline
+order &  &  &   75.312 & 0.5 \\ \hline
+Household$\_$receive$\_$data & Household$\_$Start$\_$Policy$\_$Data & Household$\_$Start$\_$Financial$\_$Market$\_$Role &   43.5033 & 0.3 \\ \hline
+Household$\_$receive$\_$info$\_$interest$\_$from$\_$bank & Household$\_$received$\_$coupons & SELECTSTRATEGY &   37.0695 & 0.3 \\ \hline
+Household$\_$update$\_$its$\_$portfolio & WAITORDERSTATUS & Household$\_$Start$\_$Labour$\_$Role &   34.4162 & 0.2 \\ \hline
+Household$\_$rank$\_$and$\_$buy$\_$goods$\_$1 & 09 & 09b &   16.4965 & 0.1 \\ \hline
+Firm$\_$read$\_$stock$\_$transactions & 0003 & End$\_$Firm$\_$Financial$\_$Role &   15.9953 & 0.1 \\ \hline
+\end{tabular}
+\caption{Revision \textbf{2754}, Parallel, 240 iterations, 16 region population. Total run time 244:25[m:s]. Node 1\label{table_r2754_1}}
+\end{table}
+
+
+\begin{table}
+\begin{tabular}{|l|l|l|l|l|}\hline
+Function & State from & State to & Time (s) & \% \\ \hline
+Household$\_$send$\_$orders & SEND$\_$ORDERS & WAITORDERSTATUS &  63.8842 & 33.3 \\ \hline
+ClearingHouse$\_$receive$\_$orders$\_$and$\_$run & RECEIVEDINFOSTOCK & COMPUTEDPRICES &  59.7536 & 31.1 \\ \hline
+Household$\_$stock$\_$beliefs$\_$formation & CHOOSE$\_$TO$\_$UPDATE$\_$BELIEFS$\_$OR$\_$NOT & BOND$\_$BELIEF$\_$FORMATION &   8.82473 & 4.6 \\ \hline
+Household$\_$rank$\_$and$\_$buy$\_$goods$\_$1 & 09 & 09b &   5.23093 & 2.7 \\ \hline
+\parbox[t]{7cm}{Firm$\_$read$\_$job$\_$applications$\_$send$\_$job$\_$offer$\_\\[-4pt]$or$\_$rejection} & 03 & 04 &   1.41734 & 0.7 \\ \hline
+Household$\_$receive$\_$dividends & 06 & 06b &   1.38099 & 0.7 \\ \hline
+Household$\_$receive$\_$info$\_$interest$\_$from$\_$bank & Household$\_$received$\_$coupons & SELECTSTRATEGY &   1.14297 & 0.6 \\ \hline
+Household$\_$update$\_$its$\_$portfolio & WAITORDERSTATUS & Household$\_$Start$\_$Labour$\_$Role &   1.11446 & 0.6 \\ \hline
+Household$\_$receive$\_$data & Household$\_$Start$\_$Policy$\_$Data & Household$\_$Start$\_$Financial$\_$Market$\_$Role &   0.619365 & 0.3 \\ \hline
+Household$\_$send$\_$account$\_$update & 15 & 16 &   0.607822 & 0.3 \\ \hline
+\end{tabular}
+\caption{Revision \textbf{2772}, Serial, 240 iterations, small population. Total run time 3:12[m:s]}
+\end{table}
+
+
+\begin{table}
+\begin{tabular}{|l|l|l|l|l|}\hline
+Function & State from & State to & Time (s) & \% \\ \hline
+Household$\_$send$\_$orders & SEND$\_$ORDERS & WAITORDERSTATUS &  77.95 & 37.5 \\ \hline
+ClearingHouse$\_$receive$\_$orders$\_$and$\_$run & RECEIVEDINFOSTOCK & COMPUTEDPRICES &   54.51 & 26.2 \\ \hline
+Household$\_$stock$\_$beliefs$\_$formation & CHOOSE$\_$TO$\_$UPDATE$\_$BELIEFS$\_$OR$\_$NOT & BOND$\_$BELIEF$\_$FORMATION &   9.83 & 4.7 \\ \hline
+Household$\_$rank$\_$and$\_$buy$\_$goods$\_$1 & 09 & 09b &   3.91 & 1.9 \\ \hline
+Household$\_$receive$\_$dividends & 06 & 06b &   1.47 & 0.7 \\ \hline
+Household$\_$update$\_$its$\_$portfolio & WAITORDERSTATUS & Household$\_$Start$\_$Labour$\_$Role &   1.34 & 0.6 \\ \hline
+\parbox[t]{7cm}{Firm$\_$read$\_$job$\_$applications$\_$send$\_$job$\_$offer$\_$\\[-4pt]or$\_$rejection} & 03 & 04 &   0.98 & 0.5 \\ \hline
+Household$\_$select$\_$strategy & SELECTSTRATEGY & CHOOSE$\_$TO$\_$UPDATE$\_$BELIEFS$\_$OR$\_$NOT &   0.8 & 0.4 \\ \hline
+Household$\_$receive$\_$info$\_$interest$\_$from$\_$bank & Household$\_$received$\_$coupons & REVISE$\_$PORTFOLIO &   0.76 & 0.4 \\ \hline
+Household$\_$send$\_$account$\_$update & 15 & 16 &  0.64 & 0.3 \\ \hline
+\end{tabular}
+\caption{Revision \textbf{2802}, Serial, 240 iterations, small population. Total run time 3:28[m:s]}
+\end{table}
+
+\end{landscape}
+
