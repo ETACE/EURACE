@@ -1,14 +1,14 @@
 clc
 clear all
-close all
+%close all
 
-Pat = '..\qe1\';
-Pat = '..\';
+Pat = '..\qe0\';
+%Pat = '..\';
 
-font_sz = 14;
-colore = 'b';
+font_sz = 23;
+colore = 'r';
 
-mf = 37;
+mf = 84;
 tf = 20*mf;
 
 %%% BANKS

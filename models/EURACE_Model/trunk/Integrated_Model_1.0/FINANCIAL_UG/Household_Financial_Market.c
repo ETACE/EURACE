@@ -29,6 +29,9 @@ int Household_send_orders()
     for(i=0;i<sizeCOrder(orders);i++)
     {
      ord=elementAtCOrder(orders,i);
+     
+     if PRINT_DEBUG_AFM
+     {
      if (ord->quantity>10e+6)
      {
         printf("Household_send_orders()\n");
@@ -37,7 +40,8 @@ int Household_send_orders()
         printf("ASSET_ID %d, Order quantity: %d price: %f\n", ord->assetId,ord->quantity,ord->price);
         //printf("Press a number and then ENTER to continue ...");
         //scanf("%d", tmp);
-        getchar();
+     //   getchar();
+     }
      }
      
      add_order_message(ord->issuer,ord->assetId, ord->price, ord->quantity);
