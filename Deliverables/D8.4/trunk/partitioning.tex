@@ -6,7 +6,7 @@ As achieving some form of load balance - each processor performing a similar wor
 
 Although achieving a load balance over the processors is important in reducing elapsed time, reducing inter-processor communication is equally if not more important in agent-based applications. Deriving information on the communications load of an agent population can only be achieved whilst the application is executing although some information can be derived from the XML and C code.
 
-Two basic methods of static partitioning have been developed: partitioning based on a separator and \textsl{round robin} partitioning.
+Two basic methods of static partitioning have been developed: partitioning based on a separator and \textsl{round robin} partitioning. Both are implemented within FLAME and the user can request one or the other with command line flags when the model is run.
 
 \subsection{Separator Partitioning}
 
@@ -20,8 +20,8 @@ This is the simplest form of partitioning in which agents are distributed, one a
 
 It is possible to extend this method by using the agent type as a discriminator. Agents of a particular type would be allocated to one partition (or set of partitions) on a round robin basis if it were known (or envisaged) that agents communicated with other agents of their own type more than any other type. (This could also be seen as a special form of separator partitioning.)
 
-\subsection{Other Benefits}
+\subsection{Pre-partitioning}
 
-As well as hoping to improve the load balance, partitioning of the initial data will mean that each node in the compute system will have to read only its data. In the current version of FLAME one node has to read all the data, decide on the partitioning and then distribute the data with which agents can be partitioned. Then all the nodes have to read all the initial data picking out only those agents that fall within their partition.
+In a parallel application FLAME can accept pre-partitioned initial data in separate files, one file per process. Each process reads one file thereby reducing the time taken reading initial data, which may be significant for very large populations. The data can be partitioned in any way but the user must remember that FLAME does not provide any redistribute the agents if the initial distribution causes a load imbalance.
 
-
+In EURACE the cloning of intial data (see Section \ref{sec:cloning}) can easily produce pre-partitioned initial data with one or more regions on one processor.
