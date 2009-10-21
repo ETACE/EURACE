@@ -14,7 +14,7 @@ Using distributed Message Boards, agents can be farmed out across multiple proce
 \end{figure}
 
 \subsection{The Message Board library}
-In the recent code release, the Message Board was decoupled from the FLAME framework and implemented as a separate library. This provided the flexibility to experiment with different parallelisation strategies while minimising the impact on current users of the FLAME framework.
+The Message Board Library is decoupled from the FLAME framework and implemented as a separate library. This provided the flexibility to experiment with different parallelisation strategies while minimising the impact on current users of the FLAME framework.
 
 \begin{figure}[ht]
  \centering
@@ -56,7 +56,7 @@ In the following sections we discuss the use of Boards, Iterators and Synchronis
 %\end{itemize} 
 
 % ---------------------------------------------------------------------------
-\subsubsection{Boards}
+\subsubsection{The Message Boards}
 
 Message Boards are essentially distributed data structures that can be read from and written to by agents on all processing nodes. Up to 4096 different Message Boards can be created, whereby each Board is created to store message objects of a specified size.
 
@@ -69,7 +69,7 @@ Messages added to the Board are immediately available to all agents within the l
 The API provides further routines from emptying (\texttt{MB\_Clear()}) and deleting  (\texttt{MB\_Delete()}) Boards.
 
 % ---------------------------------------------------------------------------
-\subsubsection{Iterators}
+\subsubsection{Message Board Iterators}
 \label{sec:mb_iterators}
 
 Iterators are opaque objects used for traversing Message Board content. They provide \textit{libmboard} users access to messages while isolating them from the internal data representation of Boards. It also aids in enforcing the rule that Boards should be not modified in any way by a read access. With this rule in place, multiple Iterators can be created to traverse the Board independently using different access patterns.
@@ -98,7 +98,7 @@ Other Iterator routines include \texttt{MB\_Iterator\_Randomise()} for randomisi
 %\end{itemize} 
 
 % ---------------------------------------------------------------------------
-\subsubsection{Synchronisation}
+\subsubsection{Message Board Synchronisation}
 \label{sec:mb_sync}
 
 Synchronisation of Boards involves the propagation of message data such that agents farmed out across the different processing nodes have a unified view of the collective content through their local Boards. This is vital to ensure that the simulation is coherent even though instances of the Board are distributed across different processing nodes.
@@ -121,7 +121,7 @@ The sequence diagram in  Figure~\ref{fig:syncboard} depicts how a board synchron
 To make the most of the concurrent nature of \textit{libmboard}, calls to \texttt{MB\_SyncStart()} should be placed as early as possible within the code (immediately after the final message has been written) such that more work can be scheduled before \texttt{MB\_SyncComplete()} is called. This will maximise the amount of overlap between useful computation and the synchronisation overheads.
 
 % ---------------------------------------------------------------------------
-\subsubsection{Sync optimisation based on Message Tagging}
+\subsubsection{Message Board synchronisation optimisation}
 \label{sec:mb_tagging}
 
 In its simplest form, a Board synchronisation may be implemented as a full replication of all messages within each local Board. This method is rather straightforward to implement, and would indeed serve its purpose of providing every agent access to the collective Board content. Unfortunately, it is also extremely expensive in terms of communication and memory requirements, and would therefore defeat the purpose of running in parallel (considering the key reasons behind parallelisation are to reduce elapsed time and per-node memory usage).
@@ -192,48 +192,23 @@ For example, when a Board is in the \texttt{PRE\_PROPAGATION} state (see Board s
 By ensuring that transition functions never involve idle waits for events or specific conditions, the \textit{Communication Thread} can continuously cycle through all pending synchronisations and perform the transition of each Board as they are ready.
 
 % ===========================================================================
-\subsection{Issues}
+\subsection{Use of \textit{pthreads} with FLAME Message Boards}
 
-\subsubsection{Use of \textit{pthreads}}
-
-During the design stage of \textit{libmboard}, several complications were identified when considering the use of  \textit{pthreads} for implementing the \textit{Communication Thread}. It was eventually decided that the possibilities brought about by using a threaded model  outweighed the potential drawbacks. Some of the issues that were recognise are:
+During the design stage of \textit{libmboard}, several complications were identified when considering the use of  \textit{pthreads} for implementing the \textit{Communication Thread}.  Some of the issues that were recognise are:
 \begin{itemize}
 \item Portability -- some platforms do not natively support \textit{pthreads}. For example, \textit{pthreads} are not supported on the IBM Bluegene/L system. They are also not available natively on Microsoft Windows Operating Systems. However, \textit{pthreads} support has been introduced in the latest generation of Bluegene (Bluegene/P), and on Windows, \textit{pthreads} can be used through Cygwin or by using third-party libraries.
 \item Thread-safety -- Not all MPI Libraries currently available are thread-safe. This made the development of \textit{libmboard} much harder as this introduces an additional limitation that the parent thread (which includes the calling code and the API routines themselves) must not issue MPI calls when the Communication Thread is also issuing a call or has any outstanding MPI communication. Extensive testing had to be performed using different compilers and MPI Libraries to ensure that \textit{libmboard} functions correctly.
 \item Process mapping -- Mixed-mode programming (Multi-threaded + MPI) makes the launching of jobs on multi-core SMP clusters more complicated. Choosing the most efficient mapping of threads and MPI tasks to the various cores of different affinity is not immediately obvious. Additionally, once a reasonable mapping is decided upon, conveying it in a request to the different job schedulers when launching jobs on shared clusters could prove to be a challenge.
 \end{itemize} 
 
-% ---------------------------------------------------------------------------
-\subsubsection{Ensuring uniform assignment of Handles}
 
-All opaque objects (Boards, Iterators, and Registered Functions) are assigned integer-based Handles upon creation. To enable collective operations (such as board synchronisation), instances of the same object must be allocated the same Handle on all processing nodes. Coordinating the assignment of Handles to object instances across all nodes would therefore require additional communication and possibly some form of processing barrier to ensure all nodes arrive at the same point in the code before proceeding. 
-The overhead that this would incur is non-trivial, especially for more substantial simulations where numerous objects need to be created across large numbers of nodes. 
-
-In the interest of performance, we address this problem by delegating some of the responsibility to the FLAME framework. The framework is expected to generate  simulation code that issues object creation calls in the same order on all nodes, while \textit{libmboard} ensures that Handles are issued in the same sequence on all nodes. 
-
-\textit{libmboard} provides a debug version of all libraries which performs additional checks to ensure that this condition, among many others, is met. FLAME framework developers and modellers are therefore expected to use the debug version for all development and validation work. The production version, which has all these checks removed, should only be used once the simulation code has been tested and validated.
-
-
-% ----------------u-----------------------------------------------------------
-\subsubsection{\texttt{<filter>} tags not widely used}
+\subsection{Use of \texttt{<filter>} in the FLAME Message Boards}
 
 As mentioned previously in Section~\ref{sec:mb_tagging}, \textit{libmboard} relies on the filter functions assigned to Boards to reduce communication and avoid full data replication by tagging messages. This in turn relies on the FLAME framework providing the relevant information gleaned from \texttt{<filter>} tags in the model definition.
 
-However, the \texttt{<filter>} tag was introduced quite recently along with the new specification of XMML and is therefore yet to be widely adopted in models. While this does not affect the correctness of the simulation, the full potential of the Message Board library will not be realised. We therefore expect the performance of the current versions of FLAME generated models to be worse than previous versions (as seen in the benchmark results listed in Section~\ref{sec:benchmarks}).
+The \texttt{<filter>} tags provide additional information to the FLAME framework about the information required buy agents. This information is use in two ways: firstly in constructuing iterators (see Section~\ref{sec:mb_iterators}) to reduce the number of messages presented to an agent for processing and secondly they are use by the Message Board sychronisation routines to reduce the volume of data being gathered from other nodes.
 
-Additionally, without any available models (of realistic size and complexity) making full use of \textit{libmboard}, there is a lack of empirical data that can be used for analysing and optimising the performance of the library. 
-
-This issue will be addressed in the near future by actively encouraging the uses of the \texttt{<filter>} tag in models and optimising the translation of the tags to API calls within the FLAME framework.
-
-
-% ---------------------------------------------------------------------------
-\subsubsection{Temporary buffers for MPI routines}
-
-Every MPI send and receive operation requires a contiguous block of memory as its buffer. These buffers need to be allocated and maintained throughout the duration of the operation. As \textit{libmboard} is capable of synchronising numerous Boards simultaneously, the amount of buffer space that is required could lead to substantial overheads in terms of memory usage and time taken to allocate and deallocate memory. 
-
-This problem is partially alleviated by the fact that memory allocation and deallocation are performed by the \textit{Communication Thread} and the elapsed time could therefore be overlapped by that of useful computation.
-
-Further research and optimisation are in the pipeline to improve memory usage. These include implementing an adaptive synchronising algorithm that selects the best communication pattern based on memory usage analysis, and improved agent distribution that minimises communication.
+The analysis and use of this information is performed by the FLAME framework which generates suitable call to the \textit{libmboards} API. The use and combination of message filters  requires developing some complex algorithms and strategies. In the current release of FLAME although the iterator can use any form of filter only \textit{constant} data is use in the synchronisation filters. This will be extended in future releases.
 
 
 % ===========================================================================

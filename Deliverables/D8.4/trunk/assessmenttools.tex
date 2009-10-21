@@ -1,13 +1,29 @@
 \subsection{Static Analysis of Models}
 
-EURACE has developed a very complex model in which there are many agents and many communications. The nested model directories contain ?? directories and ?? $xml$ and C-code files. Checking the consistency of the model is a very difficult task. Although FLAME's parser will check the validity of $xml$ within the contex of the DDT of FLAME tags, checking that messages are used in a consistent way is difficult.
+EURACE has developed a very complex model in which there are many agents and many communications. The nested model directories contain 11 subdirectories and $\sim$50 \textit{xml} and C-code files. Checking the consistency of the model is a very difficult task. Although FLAME's parser will check the validity of $xml$ within the contex of the DDT of FLAME tags, checking that messages are used in a consistent way is difficult.
 
-A number of static analysis tools have been developed to perform these types of tasks.
+A number of static analysis tools have been developed to perform these types of tasks.
 
-\subsection{Dynamic Message Monitoring}
+SVN: http://ccpforge.cse.rl.ac.uk/svn/eurace/models/utils/model_analysis
 
-text about sql data base implementation which can be use to verify the model.
+    * analyse_model.py - Python script to do a static analysis of a model.
+    * check_message_consistency.py - Python script to check consistency between XMML code and C code. 
 
-\subsection{Dynamic Performance Analysis}
+[edit] Features
 
-The timer package described in Appendix \ref{timer} has been used to measure elapsed CPU time for functions and message board synchronisations. Knowing which functions take the longest time has helped to narrow the application of more detailed profiling tools such as \texttt{gprof} allowing for quicker identification of problems and possible solutions. Analysis of message board synchronisation times has shown that the message board implementation has provided excellent overlap of communication and computation.
+A set of model consistency scripts to do a static analysis of a model.
+
+    * Outputs the communication graph between agent types.
+    * Check consistency of messages defined in XMML and in C code 
+
+\subsection{Dynamic Message Monitoring}
+
+text about sql data base implementation which can be use to verify the model.
+
+\subsection{Dynamic Performance Analysis}
+
+The timer package described in Appendix \ref{timer} has been used to measure elapsed CPU time for functions and message board synchronisations. Knowing which functions take the longest time has helped to narrow the application of more detailed profiling tools such as \texttt{gprof} allowing for quicker identification of problems and possible solutions. Analysis of message board synchronisation times has shown that the message board implementation has provided excellent overlap of communication and computation.
+
+\subsection {FLAME Verification}
+
+\subsection{Model Validation}

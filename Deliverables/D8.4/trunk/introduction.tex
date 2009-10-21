@@ -33,3 +33,5 @@ The starting point of FLAME is different from these systems - high performance c
 MPI is a language-independent communications protocol used to program parallel computers. Both point-to-point and collective communication are supported. MPI is a message-passing application programmer interface, together with protocol and semantic specifications for how its features must behave in any implementation. MPI remains the dominant model used in high-performance computing today.
 
 OpenMP is an application programming interface (API) that supports multi-platform shared memory multiprocessing programming in C, C++ and Fortran on many architectures, including Unix and Microsoft Windows platforms. It consists of a set of compiler directives, library routines, and environment variables that influence run-time behavior.
+
+Although MPI will be used in the parallel implementation of FLAME many high performance systems use multi-core nodes - dual or even quad core processors. On these types of system OpenMP can provide an additional way of expoiting any potential parallelism in an application. 
