@@ -587,6 +587,9 @@ int Household_send_unemployment_benefit_notification()
     
     /*Add unemployment_benefit message */
     add_unemployment_notification_message(GOV_ID,LAST_LABOUR_INCOME);
+    
+  //  if (DAY>238)
+   // printf("\n LAST_LABOUR_INCOME: %f",LAST_LABOUR_INCOME);
 
         /*Add unemployment_benefit to account */
     //printf("\n PAYMENT_ACCOUNT before: %f",PAYMENT_ACCOUNT);

@@ -77,6 +77,8 @@ See Table \ref{Table: Firm Memory}.
 \midrule
 \url{int} \url{partition_id} & \parbox{10cm}{Partition ID used for parallelization.} \\
 \midrule
+\url{double} \url{cpi} & \parbox{10cm}{This is the CPI in firm memory, used in the evaluation of the inventory stock.} \\
+\midrule
 \url{double} \url{mean_wage} & \parbox{10cm}{Average wage paid by a firm} \\
 \midrule
 \url{double} \url{needed_capital_stock} & \parbox{10cm}{The overall capital stock a firm wants to have} \\
@@ -2325,6 +2327,7 @@ as well as the specific skills.}\\
     \url{double} \url{specific_skill_4} & \parbox{10cm}{}\\
     \url{double} \url{specific_skill_5} & \parbox{10cm}{}\\
     \url{double} \url{productivity_progress} & \parbox{10cm}{}\\
+    \url{double} \url{cpi} & \parbox{10cm}{}\\
 \midrule
 \url{data_for_government} & \parbox{10cm}{Sent by Eurostat to governments. Includes the region\_id and gdp for the region. Used by gov to compute its GDP. Also contains the mean wage for the region.}\\
     \url{int} \url{region_id} & \parbox{10cm}{Region to which the data applies.}\\
@@ -2453,7 +2456,9 @@ TOTAL\_DIVIDEND\_PAYMENT = CONST\_DIVIDEND\_EARNINGS\_RATIO *NET\_EARNINGS;}\\
 \midrule
 \url{double} \url{on_the_job_search_rate} &  \parbox{10cm}{10.0, Percentage of employees who are searching for a new job.}\\
 \midrule
-\url{double} \url{consumption_propensity} &  \parbox{10cm}{0.95, Percentage of savings allocated to consumption.}\\
+\url{double} \url{target_savings_rate} &  \parbox{10cm}{This is the target savings rate of an household. Typical value: 0.1}\\
+\midrule
+\url{double} \url{carrol_consumption_parameter} &  \parbox{10cm}{0.01, Percentage of the excess (wealth-target\_wealth) allocated to the consumption budget.}\\
 \midrule
 \url{double} \url{quantil_normal_distribution} &  \parbox{10cm}{Quantil of the normal distribution  used for the production planning rule}\\
 \midrule

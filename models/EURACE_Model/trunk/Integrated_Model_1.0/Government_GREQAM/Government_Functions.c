@@ -129,13 +129,13 @@ int Government_send_policy_announcements()
     add_policy_announcement_message(ID, TAX_RATE_CORPORATE, TAX_RATE_HH_LABOUR, TAX_RATE_HH_CAPITAL, TAX_RATE_VAT, UNEMPLOYMENT_BENEFIT_PCT, HH_SUBSIDY_PCT, FIRM_SUBSIDY_PCT, HH_TRANSFER_PAYMENT, FIRM_TRANSFER_PAYMENT);
     
     #ifndef _DEBUG_MODE
- //   if (PRINT_DEBUG_GOV)
-  //      { 
+    if (PRINT_DEBUG_GOV)
+        { 
                     printf("\n Government_send_policy_announcements ID: %d",ID);
                     printf("\n \t TAX_RATE_HH_LABOUR: %f TAX_RATE_CORPORATE: %f TAX_RATE_HH_CAPITAL: %f TAX_RATE_VAT: %f", TAX_RATE_HH_LABOUR, TAX_RATE_CORPORATE, TAX_RATE_HH_CAPITAL, TAX_RATE_VAT);
                     printf("\n \t UNEMPLOYMENT_BENEFIT_PCT: %f HH_SUBSIDY_PCT: %f FIRM_SUBSIDY_PCT: %f HH_TRANSFER_PAYMENT: %f FIRM_TRANSFER_PAYMENT; %f", UNEMPLOYMENT_BENEFIT_PCT, HH_SUBSIDY_PCT, FIRM_SUBSIDY_PCT, HH_TRANSFER_PAYMENT, FIRM_TRANSFER_PAYMENT);
                     getchar();
-   //     }
+        }
     #endif
        
     return 0;   
@@ -157,7 +157,7 @@ int Government_read_tax_payments()
    
    #ifndef _DEBUG_MODE
    if (PRINT_DEBUG)
-   {
+  {
                    printf("\n\n Government_read_tax_payments ID: %d",ID);
                    printf("\n\n MONTHLY_TAX_REVENUES: %f sum: %f",MONTHLY_TAX_REVENUES,sum);
                    printf("\n\n PAYMENT_ACCOUNT: %f",PAYMENT_ACCOUNT);
@@ -184,7 +184,11 @@ int Government_read_unemployment_benefit_notifications()
         
         //Compute the individual unemployment benefit payment as a fraction of the last labour income       
         //if unemployment benefit is larger than the mean wage:
-        if(unemployment_notification_message->last_labour_income*UNEMPLOYMENT_BENEFIT_PCT > COUNTRY_WIDE_MEAN_WAGE*0.5 )
+             
+       // if (DAY>230)
+       // printf("\n COUNTRY_WIDE_MEAN_WAGE: %f UNEMPLOYMENT_BENEFIT_PCT: %f last_labour_income: %f",COUNTRY_WIDE_MEAN_WAGE,UNEMPLOYMENT_BENEFIT_PCT,unemployment_notification_message->last_labour_income);     
+             
+        if(unemployment_notification_message->last_labour_income*UNEMPLOYMENT_BENEFIT_PCT > COUNTRY_WIDE_MEAN_WAGE*0.5)
         {       
             unemployment_payment = unemployment_notification_message->last_labour_income*UNEMPLOYMENT_BENEFIT_PCT;  
             //unemployment_payment = 0.8;
@@ -207,14 +211,14 @@ int Government_read_unemployment_benefit_notifications()
     PAYMENT_ACCOUNT -= sum;
     
     #ifndef _DEBUG_MODE
-    if (PRINT_DEBUG)
+   if (PRINT_DEBUG)
     {
                    printf("\n\n Government_read_unemployment_benefit_notifications ID: %d",ID);
                    printf("\n\n MONTHLY_BENEFIT_PAYMENT: %f sum: %f",MONTHLY_BENEFIT_PAYMENT,sum);
                    printf("\n\n YEARLY_BENEFIT_PAYMENT: %f PAYMENT_ACCOUNT: %f",YEARLY_BENEFIT_PAYMENT,PAYMENT_ACCOUNT);
                    getchar();
     }
-    #endif
+   #endif
 
     return 0;
 }
