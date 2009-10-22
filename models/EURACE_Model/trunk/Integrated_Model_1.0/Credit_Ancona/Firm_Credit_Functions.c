@@ -222,7 +222,7 @@
                 filename[0]=0;
                 strcpy(filename, "its/credit_rationing.txt");      
                 file1 = fopen(filename,"a");
-                fprintf(file1,"\n %d %d %f %f",DAY,ID,EXTERNAL_FINANCIAL_NEEDS,total_credit_taken);
+                fprintf(file1,"\n %d %d %f %f %d",DAY,ID,EXTERNAL_FINANCIAL_NEEDS,total_credit_taken,REGION_ID);
                 fclose(file1);
                 free(filename);
             }    

@@ -62,7 +62,7 @@ int Firm_send_payments_to_bank()
         strcpy(filename, "its/firms_balance_sheet.txt");      
         file1 = fopen(filename,"a");
         fprintf(file1,"\n %d %d %f %f %f %f",DAY,ID,TOTAL_UNITS_CAPITAL_STOCK,TOTAL_VALUE_CAPITAL_STOCK,TOTAL_UNITS_LOCAL_INVENTORY,TOTAL_VALUE_LOCAL_INVENTORY);
-        fprintf(file1," %f %f %f %f",PAYMENT_ACCOUNT,TOTAL_ASSETS,TOTAL_DEBT,EQUITY);
+        fprintf(file1," %f %f %f %f %d",PAYMENT_ACCOUNT,TOTAL_ASSETS,TOTAL_DEBT,EQUITY,REGION_ID);
         fclose(file1);
         free(filename);
 
