@@ -55,44 +55,44 @@ int Government_send_policy_announcements()
     if(POLICY_EXP_STABILIZATION)
     {
         //Set trigger function:
-		if ((SUBSIDY_FLAG==0)&&(GDP_GROWTH<SUBSIDY_TRIGGER_ON))
-		{
-			SUBSIDY_FLAG=1;
-			//printf("\nIn Government line 84: switched SUBSIDY_FLAG=0 to SUBSIDY_FLAG=%d\n", SUBSIDY_FLAG);
-			HH_SUBSIDY_PCT = -tanh(GDP_GROWTH - SUBSIDY_TRIGGER_OFF)*abs(GDP_GROWTH);
+        if ((SUBSIDY_FLAG==0)&&(GDP_GROWTH<SUBSIDY_TRIGGER_ON))
+        {
+            SUBSIDY_FLAG=1;
+            //printf("\nIn Government line 84: switched SUBSIDY_FLAG=0 to SUBSIDY_FLAG=%d\n", SUBSIDY_FLAG);
+            HH_SUBSIDY_PCT = -tanh(GDP_GROWTH - SUBSIDY_TRIGGER_OFF)*abs(GDP_GROWTH);
 
-			//Lower the income tax 
-			//TAX_RATE_HH_LABOUR = CONST_INCOME_TAX_RATE + tanh(GDP_GROWTH - SUBSIDY_TRIGGER_OFF)*abs(GDP_GROWTH);
-		}
+            //Lower the income tax 
+            //TAX_RATE_HH_LABOUR = CONST_INCOME_TAX_RATE + tanh(GDP_GROWTH - SUBSIDY_TRIGGER_OFF)*abs(GDP_GROWTH);
+        }
 
-		//Release trigger function:
-		if ((SUBSIDY_FLAG==1)&&(GDP_GROWTH>SUBSIDY_TRIGGER_OFF))
-		{
-			SUBSIDY_FLAG=0;
-			//printf("\nIn Government line 91: switched SUBSIDY_FLAG=1 to SUBSIDY_FLAG=%d\n", SUBSIDY_FLAG);
-			HH_SUBSIDY_PCT = 0.0;
+        //Release trigger function:
+        if ((SUBSIDY_FLAG==1)&&(GDP_GROWTH>SUBSIDY_TRIGGER_OFF))
+        {
+            SUBSIDY_FLAG=0;
+            //printf("\nIn Government line 91: switched SUBSIDY_FLAG=1 to SUBSIDY_FLAG=%d\n", SUBSIDY_FLAG);
+            HH_SUBSIDY_PCT = 0.0;
 
-			//Reset the income tax to its normal value
-			//TAX_RATE_HH_LABOUR = CONST_INCOME_TAX_RATE;
-		}
+            //Reset the income tax to its normal value
+            //TAX_RATE_HH_LABOUR = CONST_INCOME_TAX_RATE;
+        }
 
-		//Subsidy regime
-		if ((SUBSIDY_FLAG==1)&&(GDP_GROWTH<SUBSIDY_TRIGGER_OFF))
-		{
-			HH_SUBSIDY_PCT = -tanh(GDP_GROWTH - SUBSIDY_TRIGGER_OFF)*abs(GDP_GROWTH);
+        //Subsidy regime
+        if ((SUBSIDY_FLAG==1)&&(GDP_GROWTH<SUBSIDY_TRIGGER_OFF))
+        {
+            HH_SUBSIDY_PCT = -tanh(GDP_GROWTH - SUBSIDY_TRIGGER_OFF)*abs(GDP_GROWTH);
 
-			//Lower the income tax 
-			//TAX_RATE_HH_LABOUR = CONST_INCOME_TAX_RATE + tanh(GDP_GROWTH - SUBSIDY_TRIGGER_OFF)*abs(GDP_GROWTH);
-		}
+            //Lower the income tax 
+            //TAX_RATE_HH_LABOUR = CONST_INCOME_TAX_RATE + tanh(GDP_GROWTH - SUBSIDY_TRIGGER_OFF)*abs(GDP_GROWTH);
+        }
 
 
-		//printf("\nIn Government line 93: SUBSIDY_FLAG=%d\n", SUBSIDY_FLAG);
+        //printf("\nIn Government line 93: SUBSIDY_FLAG=%d\n", SUBSIDY_FLAG);
 
         //Set subsidy percentage (these are used to compute individual subsidy payments)
-		//When the gdp growth rate is between the on and off trigger, multiply by the tanh() which gives a result between 0 and -1.
+        //When the gdp growth rate is between the on and off trigger, multiply by the tanh() which gives a result between 0 and -1.
         //HH_SUBSIDY_PCT = -tanh(GDP_GROWTH - SUBSIDY_TRIGGER_OFF)*abs(GDP_GROWTH)*SUBSIDY_FLAG;
 
-		//if (HH_SUBSIDY_PCT>0.0) printf("\nIn Government: HH_SUBSIDY_PCT=%f\n", HH_SUBSIDY_PCT);
+        //if (HH_SUBSIDY_PCT>0.0) printf("\nIn Government: HH_SUBSIDY_PCT=%f\n", HH_SUBSIDY_PCT);
 
         //The firm is subsidized for the increase in capital_goods_price
         //This is not so clear: the energy price markup = CONST_ENERGY_SHOCK_INTENSITY, but this only occurs in some iterations, not all
@@ -129,13 +129,13 @@ int Government_send_policy_announcements()
     add_policy_announcement_message(ID, TAX_RATE_CORPORATE, TAX_RATE_HH_LABOUR, TAX_RATE_HH_CAPITAL, TAX_RATE_VAT, UNEMPLOYMENT_BENEFIT_PCT, HH_SUBSIDY_PCT, FIRM_SUBSIDY_PCT, HH_TRANSFER_PAYMENT, FIRM_TRANSFER_PAYMENT);
     
     #ifndef _DEBUG_MODE
-    if (PRINT_DEBUG_GOV)
-        { 
+ //   if (PRINT_DEBUG_GOV)
+  //      { 
                     printf("\n Government_send_policy_announcements ID: %d",ID);
                     printf("\n \t TAX_RATE_HH_LABOUR: %f TAX_RATE_CORPORATE: %f TAX_RATE_HH_CAPITAL: %f TAX_RATE_VAT: %f", TAX_RATE_HH_LABOUR, TAX_RATE_CORPORATE, TAX_RATE_HH_CAPITAL, TAX_RATE_VAT);
                     printf("\n \t UNEMPLOYMENT_BENEFIT_PCT: %f HH_SUBSIDY_PCT: %f FIRM_SUBSIDY_PCT: %f HH_TRANSFER_PAYMENT: %f FIRM_TRANSFER_PAYMENT; %f", UNEMPLOYMENT_BENEFIT_PCT, HH_SUBSIDY_PCT, FIRM_SUBSIDY_PCT, HH_TRANSFER_PAYMENT, FIRM_TRANSFER_PAYMENT);
                     getchar();
-        }
+   //     }
     #endif
        
     return 0;   
@@ -157,7 +157,7 @@ int Government_read_tax_payments()
    
    #ifndef _DEBUG_MODE
    if (PRINT_DEBUG)
-  {
+   {
                    printf("\n\n Government_read_tax_payments ID: %d",ID);
                    printf("\n\n MONTHLY_TAX_REVENUES: %f sum: %f",MONTHLY_TAX_REVENUES,sum);
                    printf("\n\n PAYMENT_ACCOUNT: %f",PAYMENT_ACCOUNT);
@@ -184,11 +184,7 @@ int Government_read_unemployment_benefit_notifications()
         
         //Compute the individual unemployment benefit payment as a fraction of the last labour income       
         //if unemployment benefit is larger than the mean wage:
-             
-       // if (DAY>230)
-       // printf("\n COUNTRY_WIDE_MEAN_WAGE: %f UNEMPLOYMENT_BENEFIT_PCT: %f last_labour_income: %f",COUNTRY_WIDE_MEAN_WAGE,UNEMPLOYMENT_BENEFIT_PCT,unemployment_notification_message->last_labour_income);     
-             
-        if(unemployment_notification_message->last_labour_income*UNEMPLOYMENT_BENEFIT_PCT > COUNTRY_WIDE_MEAN_WAGE*0.5)
+        if(unemployment_notification_message->last_labour_income*UNEMPLOYMENT_BENEFIT_PCT > COUNTRY_WIDE_MEAN_WAGE*0.5 )
         {       
             unemployment_payment = unemployment_notification_message->last_labour_income*UNEMPLOYMENT_BENEFIT_PCT;  
             //unemployment_payment = 0.8;
@@ -211,14 +207,14 @@ int Government_read_unemployment_benefit_notifications()
     PAYMENT_ACCOUNT -= sum;
     
     #ifndef _DEBUG_MODE
-   if (PRINT_DEBUG)
+    if (PRINT_DEBUG)
     {
                    printf("\n\n Government_read_unemployment_benefit_notifications ID: %d",ID);
                    printf("\n\n MONTHLY_BENEFIT_PAYMENT: %f sum: %f",MONTHLY_BENEFIT_PAYMENT,sum);
                    printf("\n\n YEARLY_BENEFIT_PAYMENT: %f PAYMENT_ACCOUNT: %f",YEARLY_BENEFIT_PAYMENT,PAYMENT_ACCOUNT);
                    getchar();
     }
-   #endif
+    #endif
 
     return 0;
 }
@@ -637,8 +633,12 @@ int Government_read_data_from_Eurostat()
     FINISH_DATA_FOR_GOVERNMENT_MESSAGE_LOOP
     
     //Set country-wide mean wage as avg of region's mean wages
-    COUNTRY_WIDE_MEAN_WAGE = COUNTRY_WIDE_MEAN_WAGE/NO_REGIONS_PER_GOV;
-    
+    if(NO_REGIONS_PER_GOV>0)
+        COUNTRY_WIDE_MEAN_WAGE = COUNTRY_WIDE_MEAN_WAGE/NO_REGIONS_PER_GOV;
+    else
+        printf("\n Please set constant NO_REGIONS_PER_GOV>0, now NO_REGIONS_PER_GOV = %d\n", NO_REGIONS_PER_GOV);
+        
+        
     //Set GDP growth rate
     if (old_gdp > 0.0)
         GDP_GROWTH = (GDP/old_gdp) -1;
