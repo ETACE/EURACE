@@ -237,6 +237,21 @@ int Eurostat_store_history_monthly()
         HISTORY_MONTHLY[0].region_data.array[region].no_firms = REGION_FIRM_DATA.array[region].no_firms;
         HISTORY_MONTHLY[0].region_data.array[region].no_firm_births = REGION_FIRM_DATA.array[region].no_firm_births; 
         HISTORY_MONTHLY[0].region_data.array[region].no_firm_deaths = REGION_FIRM_DATA.array[region].no_firm_deaths;   
+        
+        if (PRINT_DEBUG_FILE_EXP1)
+    {                       
+        filename = malloc(40*sizeof(char));
+        filename[0]=0;
+        strcpy(filename, "its/eurostat_regional.txt");      
+        file1 = fopen(filename,"a");
+        fprintf(file1,"\n %d %f %f %f ",DAY,REGION_FIRM_DATA.array[region].gdp,REGION_FIRM_DATA.array[region].cpi,REGION_FIRM_DATA.array[region].monthly_output);
+        fprintf(file1,"%d %f ",REGION_FIRM_DATA.array[region].employees,REGION_HOUSEHOLD_DATA.array[region].unemployment_rate);
+        fprintf(file1," %f %d",REGION_HOUSEHOLD_DATA.array[region].average_wage,REGION_FIRM_DATA.array[region].no_firm_deaths);
+        fprintf(file1," %d",region);
+        fclose(file1);
+        free(filename);
+    }
+
     }
 
     #ifndef _DEBUG_MODE
