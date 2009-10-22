@@ -200,6 +200,7 @@ During the design stage of \textit{libmboard}, several complications were identi
 \item Thread-safety -- Not all MPI Libraries currently available are thread-safe. This made the development of \textit{libmboard} much harder as this introduces an additional limitation that the parent thread (which includes the calling code and the API routines themselves) must not issue MPI calls when the Communication Thread is also issuing a call or has any outstanding MPI communication. Extensive testing had to be performed using different compilers and MPI Libraries to ensure that \textit{libmboard} functions correctly.
 \item Process mapping -- Mixed-mode programming (Multi-threaded + MPI) makes the launching of jobs on multi-core SMP clusters more complicated. Choosing the most efficient mapping of threads and MPI tasks to the various cores of different affinity is not immediately obvious. Additionally, once a reasonable mapping is decided upon, conveying it in a request to the different job schedulers when launching jobs on shared clusters could prove to be a challenge.
 \end{itemize} 
+It was evebtually decided that the possibilities brought about by using a threaded model outweighed the potential drawbacks.
 
 
 \subsection{Use of \texttt{<filter>} in the FLAME Message Boards}

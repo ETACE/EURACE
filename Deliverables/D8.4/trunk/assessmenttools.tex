@@ -1,29 +1,30 @@
-\subsection{Static Analysis of Models}
+%\section{Tools for FLAME and Model Assessment}
+\subsection{Static and Dynamic Analysis Tools}
+EURACE has developed a very complex model in which there are many agents and many communications. The nested model directories contain 11 subdirectories and $\sim$50 XMML and C-code files. Checking the consistency of the model is a very difficult task. Although FLAME's parser will check the validity of $xml$ within the contex of the DDT of FLAME tags, checking that messages are used in a consistent way is difficult.
 
-EURACE has developed a very complex model in which there are many agents and many communications. The nested model directories contain 11 subdirectories and $\sim$50 \textit{xml} and C-code files. Checking the consistency of the model is a very difficult task. Although FLAME's parser will check the validity of $xml$ within the contex of the DDT of FLAME tags, checking that messages are used in a consistent way is difficult.
+There are many elements to the testing and assessment of an application. This is the harder in the case of FLAME as FLAME is a program generator. The project has agreed development standards for all software developed which includes FLAME and any C code component of the EURACE Model. These are detailed in other reports and on the EURACE Wiki. We have not only to verify that FLAME generates \textit{correct} code as defined in the FLAME Model definition but also that the generated code is also \textit{correct}.
 
-A number of static analysis tools have been developed to perform these types of tasks.
+Although there is a Unit Testing suite for FLAME it is not for FLAME its targetare the FLAME model functions. It addresses the verification and consistency of agent function calls once the model has been parsed by the \texttt{xparser} using the model XMML files.
+??????????????May be more here about Unit Testing
 
-SVN: http://ccpforge.cse.rl.ac.uk/svn/eurace/models/utils/model$\_$analysis
-
-    * analyse$\_$model.py - Python script to do a static analysis of a model.
-    * check$\_$message$\_$consistency.py - Python script to check consistency between XMML code and C code. 
-
-[edit] Features
-
-A set of model consistency scripts to do a static analysis of a model.
-
-    * Outputs the communication graph between agent types.
-    * Check consistency of messages defined in XMML and in C code 
-
-\subsection{Dynamic Message Monitoring}
-
-text about sql data base implementation which can be use to verify the model.
-
-\subsection{Dynamic Performance Analysis}
-
-The timer package described in Appendix \ref{timer} has been used to measure elapsed CPU time for functions and message board synchronisations. Knowing which functions take the longest time has helped to narrow the application of more detailed profiling tools such as \texttt{gprof} allowing for quicker identification of problems and possible solutions. Analysis of message board synchronisation times has shown that the message board implementation has provided excellent overlap of communication and computation.
+A number of static and dynamic analysis tools have been developed to perform these types of analyses. These tools include the following analyses:
+\begin{description}
+	\item [analyses\_mode.py]: a static analysis of the FLAME model which gives detailed information on the components of a model: agent, funtcion and messages types, number and sizes, a static communications table, a weighted communications table.
+	\item [check\_message\_consistency.py]: a static consistency checker which compares the XMML definition with C code and ensures that the number and usage of messages is consistent.
+	\item [The MM Package]: The \textit{MM} package is a dynamic to monitor message traffic in the simulation. It is a set additional directives included in the FLAME Templates which embedded in the application code that monitor all message traffic and outputs to an SQL data base. The data base can be post processed by the developed to assess the message traffic in the model. It also gathers information on the agent population in the simulation and the records of all function calls.
+	\item [The Time Package]: The \textit{Timer} package described in Appendix \ref{timer} has been used to measure elapsed CPU time for functions and message board synchronisations. Knowing which functions take the longest time has helped to narrow the application of more detailed profiling tools such as \texttt{gprof} allowing for quicker identification of problems and possible solutions. Analysis of message board synchronisation times has shown that the message board implementation has provided excellent overlap of communication and computation.
+\end{description}
 
 \subsection {FLAME Verification}
+Verification and validation of FLAME and its parallel implementation is again made difficult by its nature. We must verify and validation FLAME itself and we must also verify in some way the application generated by FLAME. It should be noted that FLAME has two distinct parts: the \texttt{xparser} which generates the application from the models XMML and C code files and \textit{The Message Board Library - libmboard} which is the underlying infrastructure that manages the inter-agent communications. \textit{libmboard} also provides an application to any parallel hardware through the MPI message passing interface.
+
+\textit{libmboard} has is own set of unit tests and test programs. It has been developed using an agile test driven methodology.
+?????????????????????More text????????????????????
+
+The \texttt{xparser} has its own set of tests which are detailed in other reports.
+
+For the developers we need to verify that FLAME is generating the model specified in the XMML and C code and that the execution of the generated application is \textit{correct}. Throughout the project we have gather a number of test examples which help verify the FLAME implementation. These test examples are model definitions and their associated C code. 
 
 \subsection{Model Validation}
+Validating the outputs of any simulation code generated by FLAME is in itself difficult. This will really require mining the outputs of the application and making comparisons with analytic or observer results.
+
