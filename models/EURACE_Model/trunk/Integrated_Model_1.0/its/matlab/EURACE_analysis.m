@@ -2,14 +2,14 @@ clc
 clear all
 %close all
 
-Pat = '..\qe0_d0.1\';
+Pat = '..\qe0_d0.5\';
 %Pat = '..\';
 
 font_sz = 14;
 colore = 'r';
 
-mf = 84;
-af = floor(mf/12);
+mf = 120;
+af = ceil(mf/12);
 tf = 20*mf;
 daily_month_index = (1:tf)/20;
 yearly_month_index = (1:af)*12;
@@ -24,7 +24,7 @@ days = unique(Data(:,1));
 agents_ids = unique(Data(:,2));
 %agent_id_data_ids = find(Data(:,2)==agent_id);
 
-print_flag = 0;
+print_flag = 1;
 
 FIRM_LOAN_ISSUES = Data(:,3);
 FIRM_LOAN_INSTALLMENTS = Data(:,4);
@@ -89,7 +89,7 @@ plot(daily_month_index,FIAT_MONEY_BANKS(1:tf),[colore, '-.'])
 plot(daily_month_index,FIAT_MONEY(1:tf),[colore, ':'])
 plot(daily_month_index,PAYMENT_ACCOUNT_CB(1:tf),[colore,'--'])
 plot(daily_month_index,ECB_DEPOSITS(1:tf),colore,'linewidth',2)
-legend('fiat money to government','fiart money to the banking sector','total fiat money',,'Location','Best')
+legend('fiat money to government','fiart money to the banking sector','total fiat money','Location','Best')
 set(gca,'xtick',monthly_index,'fontsize',font_sz)
 xlabel('months','fontsize',font_sz)
 ylabel('aribitrary monetary units','fontsize',font_sz)
@@ -159,7 +159,7 @@ set(gca,'xtick',monthly_index,'fontsize',font_sz)
 xlabel('months','fontsize',font_sz)
 ylabel('arbitrary monetary units','fontsize',font_sz)
 set(gca,'xlim',[0, mf])
-legend('government liquidity',,'Location','Best')
+legend('government liquidity','Location','Best')
 
 subplot(3,1,2); hold on; grid on; box on
 plot(daily_month_index,BONDS_NR_OUTSTANDING_sum(1:tf),colore)
@@ -167,7 +167,7 @@ set(gca,'xtick',monthly_index,'fontsize',font_sz)
 xlabel('months','fontsize',font_sz)
 ylabel('units','fontsize',font_sz)
 set(gca,'xlim',[0, mf])
-legend('number of outstanding bonds',,'Location','Best')
+legend('number of outstanding bonds','Location','Best')
 
 subplot(3,1,3); hold on; grid on; box on
 plot(daily_month_index,BOND_PRICE(1:tf),colore)
@@ -175,7 +175,7 @@ set(gca,'xtick',monthly_index,'fontsize',font_sz)
 xlabel('months','fontsize',font_sz)
 ylabel('arbitrary monetary units','fontsize',font_sz)
 set(gca,'xlim',[0, mf])
-legend('government bond price',,'Location','Best')
+legend('government bond price','Location','Best')
 
 if print_flag
     print('-dpsc2','figure02.eps')
@@ -274,7 +274,7 @@ set(gca,'xtick',monthly_index,'fontsize',font_sz)
 xlabel('months','fontsize',font_sz)
 ylabel('aribitrary monetary units','fontsize',font_sz)
 set(gca,'xlim',[0, mf])
-legend('stock price index',,'Location','Best')
+legend('stock price index','Location','Best')
 
 if print_flag
     print('-dpsc2','figure03.eps')
@@ -395,7 +395,7 @@ plot(daily_month_index,MONEY_PRIVATE_SECTOR(1:tf),colore)
 set(gca,'xtick',monthly_index,'fontsize',font_sz)
 xlabel('months','fontsize',font_sz)
 ylabel('aribitrary monetary units','fontsize',font_sz)
-legend('private sectors deposits',,'Location','Best')
+legend('private sectors deposits','Location','Best')
 set(gca,'xlim',[0, mf])
 
 subplot(2,1,2); hold on; grid on; box on
@@ -403,7 +403,7 @@ plot(daily_month_index,MONEY_PRIVATE_SECTOR_counterpart(1:tf),colore)
 set(gca,'xtick',monthly_index,'fontsize',font_sz)
 xlabel('months','fontsize',font_sz)
 ylabel('aribitrary monetary units','fontsize',font_sz)
-legend('total loans + fiat money - public sectors deposits',,'Location','Best')
+legend('total loans + fiat money - public sectors deposits','Location','Best')
 set(gca,'xlim',[0, mf])
 
 if print_flag
@@ -447,7 +447,7 @@ set(gca,'xtick',monthly_index,'fontsize',font_sz)
 xlabel('months','fontsize',font_sz)
 ylabel('aribitrary monetary units','fontsize',font_sz)
 set(gca,'xlim',[0, mf])
-legend('CPI Matlab','CPI Eurostat',,'Location','Best')
+legend('CPI Matlab','CPI Eurostat','Location','Best')
 
 subplot(2,1,2); hold on; grid on; box on
 plot(AVERAGE_WAGE(1:mf),colore)
@@ -455,7 +455,7 @@ set(gca,'xtick',monthly_index,'fontsize',font_sz)
 xlabel('months','fontsize',font_sz)
 ylabel('aribitrary monetary units','fontsize',font_sz)
 set(gca,'xlim',[0, mf])
-legend('wage index',,'Location','Best')
+legend('wage index','Location','Best')
 
 if print_flag
     print('-dpsc2','figure05.eps')
@@ -470,7 +470,7 @@ set(gca,'xtick',monthly_index,'fontsize',font_sz)
 xlabel('months','fontsize',font_sz)
 ylabel('arbitrary monetary units','fontsize',font_sz)
 set(gca,'xlim',[0, mf])
-legend('Firms revenues (Matlab)','Firms revenues (Eurostat)',,'Location','Best')
+legend('Firms revenues (Matlab)','Firms revenues (Eurostat)','Location','Best')
 
 subplot(2,1,1); hold on; grid on; box on
 plot(q_sold_tot(1:mf),colore)
@@ -479,7 +479,7 @@ set(gca,'xtick',monthly_index,'fontsize',font_sz)
 xlabel('months','fontsize',font_sz)
 ylabel('units','fontsize',font_sz)
 set(gca,'xlim',[0, mf])
-legend('Sold quantity (Matlab)','Sold quantity (Eurostat)',,'Location','Best')
+legend('Sold quantity (Matlab)','Sold quantity (Eurostat)','Location','Best')
 
 if print_flag
     print('-dpsc2','figure06.eps')
@@ -489,7 +489,7 @@ end
 figure(97);
 subplot(2,1,1); hold on; grid on; box on
 plot(q_sold_tot(1:mf),colore)
-plot(MONTHLY_OUTPUT(1:mf),':','linewidth',2)
+plot(MONTHLY_OUTPUT(1:mf),[colore, ':'],'linewidth',2)
 set(gca,'xtick',monthly_index,'fontsize',font_sz)
 xlabel('months','fontsize',font_sz)
 ylabel('units','fontsize',font_sz)
@@ -666,12 +666,12 @@ Data = load([Pat, 'Government_policies.txt']);
 TaxRates = Data(:,3);
 
 subplot(2,1,1); hold on; grid on; box on
-plot(yearly_month_index,TaxRates,colore)
+plot(yearly_month_index,TaxRates(1:af),colore)
 set(gca,'xtick',monthly_index,'fontsize',font_sz)
 xlabel('months','fontsize',font_sz)
 ylabel('%','fontsize',font_sz)
 %title('Central Bank aggregate data','fontsize',font_sz)
-legend('tax rates','Location','location','Best')
+legend('tax rates','location','Best')
 set(gca,'xlim',[0, 12*af])
 
 clear Data
@@ -691,6 +691,10 @@ title('Central Bank aggregate data','fontsize',font_sz)
 set(gca,'xlim',[0, mf])
 
 clear Data
+
+if print_flag
+    print('-dpsc2','figure12.eps')
+end
 
 break
 
