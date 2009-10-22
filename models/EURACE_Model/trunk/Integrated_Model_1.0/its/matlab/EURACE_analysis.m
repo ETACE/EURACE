@@ -3,10 +3,10 @@ clear all
 %close all
 
 Pat = '..\qe0_d0.5\';
-%Pat = '..\';
+Pat = '..\';
 
 font_sz = 14;
-colore = 'r';
+colore = 'k';
 
 mf = 120;
 af = ceil(mf/12);

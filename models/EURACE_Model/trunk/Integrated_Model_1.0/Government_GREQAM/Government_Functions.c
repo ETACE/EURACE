@@ -342,6 +342,7 @@ int Government_send_account_update()
             file1 = fopen(filename,"a");
             fprintf(file1,"\n %d %d %f",DAY,ID,PAYMENT_ACCOUNT);
             fprintf(file1," %d %d %f",BOND.nr_outstanding,BOND.quantity,BOND.prices[BOND.index]);
+            fprintf(file1," %d",REGION_ID);
             fclose(file1);
             free(filename);
         }              
@@ -488,7 +489,7 @@ int Government_monthly_budget_accounting()
             fprintf(file1,"\n %d %d %f %f ",DAY,ID,MONTHLY_TAX_REVENUES,MONTHLY_BENEFIT_PAYMENT);
             fprintf(file1,"%f %f ",MONTHLY_BOND_INTEREST_PAYMENT,out);
             fprintf(file1,"%f %f ",MONTHLY_BUDGET_BALANCE,PAYMENT_ACCOUNT);
-            fprintf(file1,"%f %f ",CUMULATED_DEFICIT,TOTAL_DEBT);
+            fprintf(file1,"%f %f %d",CUMULATED_DEFICIT,TOTAL_DEBT,REGION_ID);
             fclose(file1);
             free(filename);
         }
@@ -726,23 +727,9 @@ int Government_set_policy()
      YEARLY_INVESTMENT_BUDGET = GOV_POLICY_GDP_FRACTION_INVESTMENT * GDP_FORECAST;
      MONTHLY_INVESTMENT_BUDGET = YEARLY_INVESTMENT_BUDGET/12;
 
-    if POLICY_EXP1
+    if ((POLICY_EXP1)&&(GOV_POLICY_SWITCH_QUANTITATIVE_EASING==0))
     {                   
-                  /*  if ( (YEARLY_BUDGET_BALANCE+PAYMENT_ACCOUNT)>0)
-                      { 
-                        if ((YEARLY_TAX_REVENUES-(YEARLY_BUDGET_BALANCE+PAYMENT_ACCOUNT))>0)
-                           yearly_tax_revenues_target = YEARLY_TAX_REVENUES-(YEARLY_BUDGET_BALANCE+PAYMENT_ACCOUNT);
-                        else yearly_tax_revenues_target = 1.0;
-                      }
-                    else
-                        yearly_tax_revenues_target = YEARLY_TAX_REVENUES-(YEARLY_BUDGET_BALANCE+PAYMENT_ACCOUNT); 
-        
-
-        TAX_RATE_HH_LABOUR = (yearly_tax_revenues_target/YEARLY_TAX_REVENUES)*TAX_RATE_HH_LABOUR;
-        TAX_RATE_CORPORATE = (yearly_tax_revenues_target/YEARLY_TAX_REVENUES)*TAX_RATE_CORPORATE;
-        TAX_RATE_HH_CAPITAL = (yearly_tax_revenues_target/YEARLY_TAX_REVENUES)*TAX_RATE_HH_CAPITAL;
-        */
-        
+                
         if ( (YEARLY_BUDGET_BALANCE+PAYMENT_ACCOUNT)>0)
         {
              TAX_RATE_HH_LABOUR = TAX_RATE_HH_LABOUR - 0.05;
