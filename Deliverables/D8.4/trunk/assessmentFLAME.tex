@@ -1,4 +1,16 @@
-The parallel implementation of FLAME seeks to use an SPMD paradigm - each node of the parallel system is running essentially the same $program$. However given the nature of agent-bsaed modelling and the FLAME implementation each nodal program could perform a very different sequence of instructions and function activations as it traverses its part of the state space. 
+%\section{Performance of the FLAME Framework}
+FLAME is a agent-based modelling framework which generates an application program. It manages the communications between agents through the Message Board Library and provide mechanisms in the model definition file (XMML) and the through the FAME API for the application developer to definite and optimise his application.
+
+By design FLAME will generate both serial and parallel versions of an application. They both use the functions of the \textit{libmboard} to manage messages. It is \textit{libmboard} that performs the mapping of the application onto a parallel system. The parallel implementation of FLAME seeks to use an SPMD paradigm - each node of the parallel system is running essentially the same $program$. 
+
+It is clearly essential that the FLAME infrastructure does not impose a high overhead on the application. The \textit{Timer} package has been use to estimate the overhead of the FLAME infrastrusture. 
+
+\par
+?????????????????????????????
+It is interesting/suprising/shocking to note that in the EURACE model even with no overlapping, all the messageboard synchronisations are only taking 5\% of the total run time.
+???????????????????????????????
+\par
+However given the nature of agent-bsaed modelling and the FLAME implementation each nodal program could perform a very different sequence of instructions and function activations as it traverses its part of the state space. 
 
 The two fundamental design features of FLAME are that all communications between agents takes place through a specified message board - a message respository - and that these message boards are distributed over the processing nodes of the parallel system. These message boards can be considered the data load and the agents themselves the computational load. In FLAME both these are distributed over the computational nodes.
 
@@ -15,11 +27,13 @@ To illustrate the effect of overlapping communication and computation a special 
  \label{fig:overlap}
 \end{figure}
 
+?????? Some tables of numbers would be useful.????????????????
+
 It is clear that the \texttt{eurostat$\_$send$\_$macrodata} message board is a significant beneficiary of overlapping. Looking at the state graph for the model shows that the messages are sent by the Eurostat agent very early in an iteration and read by the Government agents very late in the iteration.
 
 The \texttt{order} message board benefits less since order messages are required very soon after they are sent (again from the state graph).
 
-It is interesting/suprising/shocking to note that in the EURACE model even with no overlapping, all the messageboard synchronisations are only taking 5\% of the total run time.
+
 
 
 
