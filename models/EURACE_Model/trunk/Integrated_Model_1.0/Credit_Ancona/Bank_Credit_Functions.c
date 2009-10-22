@@ -357,7 +357,7 @@ int Bank_accounting()
         strcpy(filename, "its/banks_monthly_income_statement.txt");      
         file1 = fopen(filename,"a");
         fprintf(file1,"\n %d %d",DAY,ID);
-        fprintf(file1," %f %f %f %f %f",int_to_ecb,FIRM_INTEREST_PAYMENTS,TAXES,PROFITS[0],BANK_DIVIDEND_RATE);
+        fprintf(file1," %f %f %f %f %f %d",int_to_ecb,FIRM_INTEREST_PAYMENTS,TAXES,PROFITS[0],BANK_DIVIDEND_RATE,REGION_ID);
         fclose(file1);
         free(filename);
     }                
@@ -370,7 +370,7 @@ int Bank_accounting()
         filename[0]=0;
         strcpy(filename, "its/banks_monthly_balance_sheet.txt");      
         file1 = fopen(filename,"a");
-        fprintf(file1,"\n %d %d %f %f %f %f",DAY,ID,DEPOSITS,ECB_DEBT,CASH,TOTAL_CREDIT);
+        fprintf(file1,"\n %d %d %f %f %f %f %d",DAY,ID,DEPOSITS,ECB_DEBT,CASH,TOTAL_CREDIT,REGION_ID);
         fclose(file1);
         free(filename);
     }                
@@ -458,7 +458,7 @@ int Bank_update_ecb_account()
         strcpy(filename, "its/banks_daily_balance_sheet.txt");      
         file1 = fopen(filename,"a");
         fprintf(file1,"\n %d %d %f %f",DAY,ID,FIRM_LOAN_ISSUES,FIRM_LOAN_INSTALLMENTS);
-        fprintf(file1," %f %f %f %f %f",TOTAL_CREDIT,CASH,DEPOSITS,ECB_DEBT,EQUITY);
+        fprintf(file1," %f %f %f %f %f %d",TOTAL_CREDIT,CASH,DEPOSITS,ECB_DEBT,EQUITY,REGION_ID);
         fclose(file1);
         free(filename);
         
@@ -470,7 +470,7 @@ int Bank_update_ecb_account()
         filename[0]=0;
         strcpy(filename, "its/banks_value_at_risk.txt");      
         file1 = fopen(filename,"a");
-        fprintf(file1,"\n %d %d %f",DAY,ID,VALUE_AT_RISK);
+        fprintf(file1,"\n %d %d %f %d",DAY,ID,VALUE_AT_RISK,REGION_ID);
         fclose(file1);
         free(filename);
         

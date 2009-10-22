@@ -107,7 +107,7 @@ int Firm_compute_income_statement()
         strcpy(filename, "its/firms_income_statement.txt");      
         file1 = fopen(filename,"a");
         fprintf(file1,"\n %d %d %f %f %f",DAY,ID,CUM_REVENUE,CALC_PRODUCTION_COSTS,TOTAL_INTEREST_PAYMENT);
-        fprintf(file1," %f %f %f",EARNINGS,TAX_PAYMENT,NET_EARNINGS);
+        fprintf(file1," %f %f %f %d",EARNINGS,TAX_PAYMENT,NET_EARNINGS,REGION_ID);
         fclose(file1);
         free(filename);
     }    
@@ -433,7 +433,7 @@ int Firm_set_bankruptcy_illiquidity()
         filename[0]=0;
         strcpy(filename, "its/firms_bankruptcies.txt");      
         file1 = fopen(filename,"a");
-        fprintf(file1,"\n %d %d %f %f %f %d",DAY,ID,PAYMENT_ACCOUNT,TOTAL_DEBT,EQUITY,-1);
+        fprintf(file1,"\n %d %d %f %f %f %d %d",DAY,ID,PAYMENT_ACCOUNT,TOTAL_DEBT,EQUITY,-1,REGION_ID);
         fclose(file1);
         free(filename);
     }    
@@ -535,7 +535,7 @@ int Firm_execute_financial_payments()
             filename[0]=0;
             strcpy(filename, "its/firms_tax_payments.txt");      
             file1 = fopen(filename,"a");
-            fprintf(file1,"\n %d %d %f %f %f",DAY,ID,EARNINGS,TAX_RATE_CORPORATE,TAX_PAYMENT);
+            fprintf(file1,"\n %d %d %f %f %f %d",DAY,ID,EARNINGS,TAX_RATE_CORPORATE,TAX_PAYMENT,REGION_ID);
             fclose(file1);
             free(filename);
         }  
@@ -696,7 +696,7 @@ int Firm_set_bankruptcy_insolvency()
         filename[0]=0;
         strcpy(filename, "its/firms_bankruptcies.txt");      
         file1 = fopen(filename,"a");
-        fprintf(file1,"\n %d %d %f %f %f %d",DAY,ID,PAYMENT_ACCOUNT,TOTAL_DEBT,EQUITY,-11);
+        fprintf(file1,"\n %d %d %f %f %f %d %d",DAY,ID,PAYMENT_ACCOUNT,TOTAL_DEBT,EQUITY,-11,REGION_ID);
         fclose(file1);
         free(filename);
     }    
@@ -933,7 +933,7 @@ int Firm_reset_bankruptcy_flags()
         filename[0]=0;
         strcpy(filename, "its/firms_bankruptcies.txt");      
         file1 = fopen(filename,"a");
-        fprintf(file1,"\n %d %d %f %f %f %d",DAY,ID,PAYMENT_ACCOUNT,TOTAL_DEBT,EQUITY,0);
+        fprintf(file1,"\n %d %d %f %f %f %d %d",DAY,ID,PAYMENT_ACCOUNT,TOTAL_DEBT,EQUITY,0,REGION_ID);
         fclose(file1);
         free(filename);
     }    
