@@ -1383,6 +1383,7 @@ void Eurostat_calc_price_index(void)
     double weight, price, price_last_month, quantity, sum_1, sum_2;
     
     //Compute the regional CPI as the ratio between sum(p_t*q_t)/sum(p_t-1*q_t)
+    //Then the price index is the multiplication of all previous CPI factors.
     //NOTE: we also need to include the diagonal value of the original export_value_matrix, which was excluded from the import/export sums.
     for (j=0; j<TOTAL_REGIONS; j++)
     {    
@@ -1390,7 +1391,7 @@ void Eurostat_calc_price_index(void)
         REGION_FIRM_DATA.array[j].cpi_last_month = HISTORY_MONTHLY[0].region_data.array[j].cpi;
 
         if((REGION_IMPORT_PREVIOUS_VALUE[j]+EXPORT_PREVIOUS_VALUE_MATRIX[index])>1e-5)
-            REGION_FIRM_DATA.array[j].cpi = (REGION_IMPORT_VALUE[j]+EXPORT_VALUE_MATRIX[index])/(REGION_IMPORT_PREVIOUS_VALUE[j]+EXPORT_PREVIOUS_VALUE_MATRIX[index]);
+            REGION_FIRM_DATA.array[j].cpi = REGION_FIRM_DATA.array[j].cpi * (REGION_IMPORT_VALUE[j]+EXPORT_VALUE_MATRIX[index])/(REGION_IMPORT_PREVIOUS_VALUE[j]+EXPORT_PREVIOUS_VALUE_MATRIX[index]);
         else
             printf("\n DIVISION BY ZERO: In Eurostat_aux_functions.c, line 1350:"
                     "REGION_IMPORT_PREVIOUS_VALUE[%d]+EXPORT_PREVIOUS_VALUE_MATRIX[%d][%d](index=%d)=%f", j,j,j,index, REGION_IMPORT_PREVIOUS_VALUE[j]+EXPORT_PREVIOUS_VALUE_MATRIX[index]);
@@ -1435,7 +1436,7 @@ void Eurostat_calc_price_index(void)
     }
     
     if (sum_2>1e-5)
-        CPI = sum_1/sum_2;
+        CPI = CPI*sum_1/sum_2;
 
     #ifndef _DEBUG_MODE
     if (PRINT_DEBUG)
