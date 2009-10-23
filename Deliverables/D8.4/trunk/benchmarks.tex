@@ -204,14 +204,32 @@ Household$\_$send$\_$account$\_$update & 15 & 16 &  0.64 & 0.3 \\ \hline
 
 Analysis of parallel performance includes profiling the agent functions as for the serial case but also investigating how the EURACE application performs as the number of processes is increased for a fixed initial population. The profiling of agent functions is shown in Tables \ref{table:r2754_0} and \ref{table:r2754_1} and it is clear that the clearinghouse agent function for finding the correct market price for assets is dominant. Not only that; because there is only one clearinghouse it is a \textbf{serial bottleneck}. All agents have to wait for it to complete its calculations before they can carry on. The household function for sending orders is not a bottleneck since the agents are distributed round the processes by FLAME.
 
-Using a 16 region model with 26948 agents runs have been carried out on large parallel machines available to STFC, namely HAPU, NW-Grid and Hector. Details of these machines can be found in Appendix \ref{systems}. The graph of average iteration time (seconds) against number of processes is shown in Figure \ref{fig:speedup} from which it can be observed that Hector shows good speedup, NW-Grid shows a little and HAPU shows rather eratic results.
+Using a 16 region model with 26948 agents runs have been carried out on large parallel machines available to STFC, namely HAPU, NW-Grid and Hector. Details of these machines can be found in Appendix \ref{systems}. The graph of average iteration time (seconds) against number of processes is shown in Figure \ref{fig:speedup} from which it can be observed that Hector shows good speedup, NW-Grid shows a little and HAPU shows rather eratic results. The iteration times are given in table \ref{table:speedup}.
 
 \begin{figure}[ht]
  \centering
-  \includegraphics[width=400pt]{speedup.png}
+  \includegraphics[width=330pt]{speedup.png}
  \caption{Average iteration times (s) 240 iterations of 16 region EURACE model}
  \label{fig:speedup}
 \end{figure}
+
+\begin{table}[ht]
+\begin{center}
+\begin{tabular}{|l|l|l|l|} \hline
+Num processes & HAPU & NW-Grid & Hector \\ \hline
+2   & 92.3 & 43.2 & - \\ \hline
+4   & 43.3 & 32.4 & 29.8 \\ \hline
+6   & 76.9 & 29.3 & 26.6 \\ \hline
+8   & 63.6 & 30.8 & 24.1 \\ \hline
+10  & 72.1 & 37.3 & 22.9 \\ \hline
+12  & 34.6 & 36.5 & 22.0 \\ \hline
+14  & 82.5 & 40.5 & 22.1 \\ \hline
+16  & 45.0 & 41.0 & 21.7 \\ \hline
+\end{tabular}
+\caption{Average iteration times for 16 region EURACE model}
+\label{table:speedup}
+\end{center}
+\end{table}
 
 \begin{landscape}
 \begin{table}
