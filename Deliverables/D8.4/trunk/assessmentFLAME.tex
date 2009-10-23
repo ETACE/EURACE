@@ -5,11 +5,27 @@ By design FLAME will generate both serial and parallel versions of an applicatio
 
 It is clearly essential that the FLAME infrastructure does not impose a high overhead on the application. The \textit{Timer} package has been use to estimate the overhead of the FLAME infrastrusture. 
 
-\par
-?????????????????????????????
-It is interesting/suprising/shocking to note that in the EURACE model even with no overlapping, all the messageboard synchronisations are only taking 5\% of the total run time.
-???????????????????????????????
-\par
+Table \ref{table:overlap} shows that in the EURACE model, even with no overlapping, all the messageboard synchronisations are only taking 5\% of the total run time.
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{|l|l|l|l|l|}\hline
+              & \multicolumn{2}{c|}{No overlap} & \multicolumn{2}{c|}{Overlap} \\ \hline
+Message board & Node 0 & Node 1 & Node 0 & Node 1 \\ \hline \hline
+order & 3.3 & 2.9 & 3.0 & 2.2 \\ \hline
+loan$\_$conditions & 0.1 & 0.2 & - & - \\ \hline
+info$\_$firm & $<0.1$ & $<0.1$ & - & -  \\ \hline
+order$\_$status & $<0.1$ & $<0.1$ & $<0.1$ & $<0.1$ \\ \hline
+bank$\_$account$\_$update & $<0.1$ & - & $<0.1$ & $<0.1$ \\ \hline
+eurostat$\_$send$\_$macrodata & - & 1.2 & - & -  \\ \hline
+vacancies2 & - & - & $<0.1$ & -  \\ \hline
+capital$\_$good$\_$request & - & - & $<0.1$ & $<0.1$ \\ \hline
+capital$\_$good$\_$delivery & - & - & - & $<0.1$ \\ \hline 
+\end{tabular}
+\caption{Percentage of total time spent synchronising top 5 message boards}
+\label{table:overlap}
+\end{table}
+
 However given the nature of agent-bsaed modelling and the FLAME implementation each nodal program could perform a very different sequence of instructions and function activations as it traverses its part of the state space. 
 
 The two fundamental design features of FLAME are that all communications between agents takes place through a specified message board - a message respository - and that these message boards are distributed over the processing nodes of the parallel system. These message boards can be considered the data load and the agents themselves the computational load. In FLAME both these are distributed over the computational nodes.
@@ -27,7 +43,7 @@ To illustrate the effect of overlapping communication and computation a special 
  \label{fig:overlap}
 \end{figure}
 
-?????? Some tables of numbers would be useful.????????????????
+
 
 It is clear that the \texttt{eurostat$\_$send$\_$macrodata} message board is a significant beneficiary of overlapping. Looking at the state graph for the model shows that the messages are sent by the Eurostat agent very early in an iteration and read by the Government agents very late in the iteration.
 
