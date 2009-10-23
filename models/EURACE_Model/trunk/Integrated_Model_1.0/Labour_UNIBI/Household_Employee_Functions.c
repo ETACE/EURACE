@@ -577,26 +577,45 @@ int Household_finish_labour_market()
 /**********************************Household Role: Public Sector *********************/
 
 /** \fn Household_send_unemployment_benefit_notification()
- * \brief This function sends a message to the government in case of being unemployed that contains the last earned labour income
- * The government then can calculate the unemployment benefit payment based on the last labour income and subtract the amount from its payment account.
- * The household uses the environment parameter GOV_POLICY_UNEMPLOYMENT_BENEFIT_PCT to calculate its own unemployment benefit as well (there is no need for a message from government).
+ * \brief This function sends a message to the government in case of being unemployed that contains the unemployment benefit.
+ * The government aggregates the unemployment benefit payments and subtract the amount from its payment account.
+ * The household uses the own memory variable UNEMPLOYMENT_BENEFIT_PCT to calculate its own unemployment benefit.
  */
 int Household_send_unemployment_benefit_notification()
 {
     double mean_income = 0.0;
     
+    /*Compute unemployment_benefit*/
+    //Sander, 23.10.09: Transferred this code from the government to the household
+    //Now the household does the complete computation and only sends the outcome to government
+            
+    //Compute the individual unemployment benefit payment as a fraction of the last labour income       
+    //if unemployment benefit is larger than the mean wage:
+        if(LAST_LABOUR_INCOME*UNEMPLOYMENT_BENEFIT_PCT > REGION_WIDE_MEAN_WAGE*0.5 )
+        {       
+            UNEMPLOYMENT_PAYMENT = LAST_LABOUR_INCOME*UNEMPLOYMENT_BENEFIT_PCT;  
+        }
+        else    
+        {
+            //if unemployment benefit is below the mean wage: pay 0.5 * MEAN_WAGE
+            UNEMPLOYMENT_PAYMENT =  REGION_WIDE_MEAN_WAGE*0.5; 
+        }
+    
     /*Add unemployment_benefit message */
-    add_unemployment_notification_message(GOV_ID,LAST_LABOUR_INCOME);
+    add_unemployment_notification_message(GOV_ID, UNEMPLOYMENT_PAYMENT );
+    
+    /*Add unemployment_benefit to account */
+    PAYMENT_ACCOUNT +=  UNEMPLOYMENT_PAYMENT;
+
     
   //  if (DAY>238)
-   // printf("\n LAST_LABOUR_INCOME: %f",LAST_LABOUR_INCOME);
-
-        /*Add unemployment_benefit to account */
+   // printf("\n LAST_LABOUR_INCOME: %f",LAST_LABOUR_INCOME);        
     //printf("\n PAYMENT_ACCOUNT before: %f",PAYMENT_ACCOUNT);
-    PAYMENT_ACCOUNT +=  UNEMPLOYMENT_BENEFIT_PCT * LAST_LABOUR_INCOME;
+    //PAYMENT_ACCOUNT +=  UNEMPLOYMENT_BENEFIT_PCT * LAST_LABOUR_INCOME;
    //  printf("\n PAYMENT_ACCOUNT after: %f",PAYMENT_ACCOUNT);
   //  printf("\n UNEMPLOYMENT_BENEFIT_PCT: %f LAST_LABOUR_INCOME: %f",UNEMPLOYMENT_BENEFIT_PCT,LAST_LABOUR_INCOME);
-    TOTAL_INCOME=  UNEMPLOYMENT_BENEFIT_PCT * LAST_LABOUR_INCOME + CUM_TOTAL_DIVIDENDS + MONTHLY_BOND_INTEREST_INCOME;
+
+    TOTAL_INCOME=  UNEMPLOYMENT_PAYMENT + CUM_TOTAL_DIVIDENDS + MONTHLY_BOND_INTEREST_INCOME;
     
     remove_double(&LAST_INCOME,0);
     add_double(&LAST_INCOME, TOTAL_INCOME);
@@ -662,7 +681,7 @@ int Household_send_tax_payment()
     if (DAY_OF_MONTH_RECEIVE_BENEFIT != DAY_OF_MONTH_RECEIVE_INCOME )
     {
         additional_tax = ((DAY_OF_MONTH_RECEIVE_BENEFIT + (20-DAY_OF_MONTH_RECEIVE_INCOME)%20)/20.0)
-                            * UNEMPLOYMENT_BENEFIT_PCT * LAST_LABOUR_INCOME;
+                            * UNEMPLOYMENT_PAYMENT;
         //Reset
         DAY_OF_MONTH_RECEIVE_BENEFIT = DAY_OF_MONTH_RECEIVE_INCOME;
     }
