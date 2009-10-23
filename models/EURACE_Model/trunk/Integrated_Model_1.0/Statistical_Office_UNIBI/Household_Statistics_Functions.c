@@ -124,13 +124,34 @@ int Household_receive_data()
     return 0;
 }
 
-/** \fn Household_send_data_to_Market_Research()
- * \brief Firms send data to Market Research: controlling results and creating macro data
+/** \fn Household_send_data_to_Eurostat()
+ * \brief Households send data to Eurostat
  */
 int Household_send_data_to_Eurostat()
 {   
     add_household_send_data_message(ID, REGION_ID, GENERAL_SKILL,EMPLOYEE_FIRM_ID,
     WAGE, SPECIFIC_SKILL);
+    
+    return 0;
+}
+
+
+/** \fn Household_read_data_from_Eurostat()
+ * \brief Households read data from Eurostat
+ */
+int Household_read_data_from_Eurostat()
+{   
+    //The household reads the mean wage in its region (we assume this is a country)
+    START_DATA_FOR_GOVERNMENT_MESSAGE_LOOP
+        for (i=0; i<NO_REGIONS_PER_GOV; i++)
+        {
+            if(data_for_government_message->region_id==REGION_ID)
+            {
+                //Read region mean wage
+                REGION_MEAN_WAGE = data_for_government_message->mean_wage;
+            }
+        }
+    FINISH_DATA_FOR_GOVERNMENT_MESSAGE_LOOP
     
     return 0;
 }
