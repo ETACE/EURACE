@@ -29,40 +29,40 @@ int IGFirm_idle()
  * \brief IGFirm inceases productivity via a stochastic process and the according price */
 int IGFirm_update_productivity_price()
 {
-    	int i;
+        int i;
 
-	
-    	//double prod_progress;
-	
-	/*If the innovation progress is random and has not a predetermined shape*/
-	/*if(INNOVATION_BY_RANDOM==1)
-	{
-		 if(DAY >= TRANSITION_PHASE)
-	 	 {*/
-			
-       			i = random_int( 0 ,100);
+    
+        //double prod_progress;
+    
+    /*If the innovation progress is random and has not a predetermined shape*/
+    /*if(INNOVATION_BY_RANDOM==1)
+    {
+         if(DAY >= TRANSITION_PHASE)
+         {*/
+            
+                i = random_int( 0 ,100);
         
 
-        		if(i < INNOVATION_PROBABILITY)
-        		{
-            			PRODUCTIVITY = PRODUCTIVITY*(1 + PRODUCTIVITY_PROGRESS);
-            			CAPITAL_GOOD_PRICE = CAPITAL_GOOD_PRICE*(1 +PRODUCTIVITY_PROGRESS); 
-        		}
-		/*}
-	}
-	else//Innovation progress has a predetermined shape
-	{
-		if(DAY==INNOVATION_SCHEME.array[0].day_of_innovation)
-		{
+                if(i < INNOVATION_PROBABILITY)
+                {
+                        PRODUCTIVITY = PRODUCTIVITY*(1 + PRODUCTIVITY_PROGRESS);
+                        CAPITAL_GOOD_PRICE = CAPITAL_GOOD_PRICE*(1 +PRODUCTIVITY_PROGRESS); 
+                }
+        /*}
+    }
+    else//Innovation progress has a predetermined shape
+    {
+        if(DAY==INNOVATION_SCHEME.array[0].day_of_innovation)
+        {
 
-			prod_progress = INNOVATION_SCHEME.array[0].productivity/PRODUCTIVITY;
+            prod_progress = INNOVATION_SCHEME.array[0].productivity/PRODUCTIVITY;
 
-			PRODUCTIVITY =INNOVATION_SCHEME.array[0].productivity;
+            PRODUCTIVITY =INNOVATION_SCHEME.array[0].productivity;
 
-			CAPITAL_GOOD_PRICE = CAPITAL_GOOD_PRICE*prod_progress;
-			remove_dt_scheme_innovation(&INNOVATION_SCHEME,0);
-		}
-	}*/
+            CAPITAL_GOOD_PRICE = CAPITAL_GOOD_PRICE*prod_progress;
+            remove_dt_scheme_innovation(&INNOVATION_SCHEME,0);
+        }
+    }*/
 
 
     return 0;
@@ -198,72 +198,69 @@ int IGFirm_dividend_payment()
 {
       
    
-	//double weight = 0.2;
-	double average_last_net_profits = 0.0;
-	double total_dividend_payment;
-	DIVIDEND_PAYMENT = 0.0;
+    //double weight = 0.2;
+    double average_last_net_profits = 0.0;
+    double total_dividend_payment;
+    DIVIDEND_PAYMENT = 0.0;
 
-	/*First: pay out complete NET_PROFIT as dividends*/
+    /*First: pay out complete NET_PROFIT as dividends*/
 
-/*CURRENT_DIVIDEND_PER_SHARE = NET_PROFIT / OUTSTANDING_SHARES;
-	printf("1: DIVIDEND %f \n",CURRENT_DIVIDEND_PER_SHARE);
-	
-	total_dividend_payment=NET_PROFIT;
-	printf("1: total_dividend_payment %f \n",total_dividend_payment);
-	
-	
-	
-	
-	/*Second: pay out geometrical average as dividends*/
-	/*CURRENT_DIVIDEND_PER_SHARE = (weight*CUM_NET_PROFITS +(1-weight)*NET_PROFIT)/ OUTSTANDING_SHARES;
-	printf("2: DIVIDEND %f \n",CURRENT_DIVIDEND_PER_SHARE);
-	
-	total_dividend_payment=weight*CUM_NET_PROFITS +(1-weight)*NET_PROFIT;
-	printf("2: total_dividend_payment %f \n",total_dividend_payment);
-	
-	printf("1: CUM_NET_PROFITS %f\n",CUM_NET_PROFITS);
-	CUM_NET_PROFITS = (1- weight)*CUM_NET_PROFITS +weight*NET_PROFIT; 
-	printf("2: CUM_NET_PROFITS %f\n",CUM_NET_PROFITS);*/
-	
-	
-	
-	
-	
-	/*Third: pay out the average of the last 10 NET_PROFITs as dividends*/
-	remove_double(& LAST_NET_PROFITS,0);
-	add_double(& LAST_NET_PROFITS,NET_PROFIT);  
-	
-	int p;
-	for(p = 0; p < LAST_NET_PROFITS.size; p++)
-	{
-		average_last_net_profits += LAST_NET_PROFITS.array[p];
-	}
-	
+/*
+    CURRENT_DIVIDEND_PER_SHARE = NET_PROFIT / OUTSTANDING_SHARES;
+    printf("1: DIVIDEND %f \n",CURRENT_DIVIDEND_PER_SHARE);
+    
+    total_dividend_payment=NET_PROFIT;
+    printf("1: total_dividend_payment %f \n",total_dividend_payment);
+*/    
+    
+    /*Second: pay out geometrical average as dividends*/
+/*
+    CURRENT_DIVIDEND_PER_SHARE = (weight*CUM_NET_PROFITS +(1-weight)*NET_PROFIT)/ OUTSTANDING_SHARES;
+    printf("2: DIVIDEND %f \n",CURRENT_DIVIDEND_PER_SHARE);
+    
+    total_dividend_payment=weight*CUM_NET_PROFITS +(1-weight)*NET_PROFIT;
+    printf("2: total_dividend_payment %f \n",total_dividend_payment);
+    
+    printf("1: CUM_NET_PROFITS %f\n",CUM_NET_PROFITS);
+    CUM_NET_PROFITS = (1- weight)*CUM_NET_PROFITS +weight*NET_PROFIT; 
+    printf("2: CUM_NET_PROFITS %f\n",CUM_NET_PROFITS);
+*/    
+
+    /*Third: pay out the average of the last 10 NET_PROFITs as dividends*/
+    remove_double(& LAST_NET_PROFITS,0);
+    add_double(& LAST_NET_PROFITS,NET_PROFIT);  
+    
+    int p;
+    for(p = 0; p < LAST_NET_PROFITS.size; p++)
+    {
+        average_last_net_profits += LAST_NET_PROFITS.array[p];
+    }
+    
         if (LAST_NET_PROFITS.size > 0) 
-    	    average_last_net_profits = average_last_net_profits/LAST_NET_PROFITS.size;
+            average_last_net_profits = average_last_net_profits/LAST_NET_PROFITS.size;
         else
             average_last_net_profits = 0.0;
-	
+    
         if (OUTSTANDING_SHARES > 0)
-	    CURRENT_DIVIDEND_PER_SHARE = average_last_net_profits/ OUTSTANDING_SHARES;
+        CURRENT_DIVIDEND_PER_SHARE = average_last_net_profits/ OUTSTANDING_SHARES;
         else
             CURRENT_DIVIDEND_PER_SHARE = 0.0;
     
-	//printf("\n IGFirm %d CURRENT_DIVIDEND_PER_SHARE %f %f\n",ID,CURRENT_DIVIDEND_PER_SHARE,OUTSTANDING_SHARES);
-	
-	total_dividend_payment = average_last_net_profits;
-	//printf("3: total_dividend_payment %f \n",total_dividend_payment);
-		
-		
-	//add dividend_per_share_msg(firm_id, current_dividend_per_share) to shareholders (dividend per share)     
-	add_dividend_per_share_message(ID, CURRENT_DIVIDEND_PER_SHARE);
+    //printf("\n IGFirm %d CURRENT_DIVIDEND_PER_SHARE %f %f\n",ID,CURRENT_DIVIDEND_PER_SHARE,OUTSTANDING_SHARES);
+    
+    total_dividend_payment = average_last_net_profits;
+    //printf("3: total_dividend_payment %f \n",total_dividend_payment);
+        
+        
+    //add dividend_per_share_msg(firm_id, current_dividend_per_share) to shareholders (dividend per share)     
+    add_dividend_per_share_message(ID, CURRENT_DIVIDEND_PER_SHARE);
 
-	//decrease payment_account with the total_dividend_payment
-	PAYMENT_ACCOUNT -= total_dividend_payment;
-	
-	DIVIDEND_PAYMENT = total_dividend_payment;
-	
-	return 0;
+    //decrease payment_account with the total_dividend_payment
+    PAYMENT_ACCOUNT -= total_dividend_payment;
+    
+    DIVIDEND_PAYMENT = total_dividend_payment;
+    
+    return 0;
 }
 
 
@@ -272,9 +269,9 @@ int IGFirm_send_payment_account_to_bank()
       FILE *file1;
     char *filename;
     
-	add_bank_account_update_message(ID, BANK_ID, PAYMENT_ACCOUNT);
-	
-	    if (PRINT_DEBUG_FILE_EXP1)
+    add_bank_account_update_message(ID, BANK_ID, PAYMENT_ACCOUNT);
+    
+        if (PRINT_DEBUG_FILE_EXP1)
         {                       
             filename = malloc(40*sizeof(char));
             filename[0]=0;
