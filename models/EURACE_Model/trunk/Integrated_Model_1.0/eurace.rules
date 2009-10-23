@@ -31,6 +31,7 @@ firm_total_debt                     = Firm(total_debt)
 firm_equity                         = Firm(equity)
 firm_active                         = Firm(active)
 firm_total_sold_quantity_volume     = Firm(sold_quantity_in_calendar_month)
+firm_capital_costs                  = Firm(capital_costs)
 
 #Balance sheet: IGFirm
 igfirm_payment_account              = IGFirm(payment_account)
@@ -210,6 +211,10 @@ abs( ecb_fiat_money - ecb_fiat_money_govs - ecb_fiat_money_banks) < PRECISION
 #bank_deposits + bank_equity + gov_payment_account + ecb_cash == bank_credit + ecb_fiat_money 
 abs( bank_deposits + bank_equity + gov_payment_account + ecb_cash - bank_credit - ecb_fiat_money) < PRECISION
 
+
+#RULE 21:
+#Consistency between IGFirm sales revenues and Firm capital costs
+abs( firm_capital_costs - igfirm_revenues) < PRECISION
 
 ######## RULES THAT CANNOT BE CHECKED YET (since sums over arrays are not possible)
 #RULE XX: TO BE CHECKED Should be verified with longer runs
