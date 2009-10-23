@@ -1624,12 +1624,21 @@
     </function>
     <function>
      <name>Household_read_data_from_Eurostat</name>
-     <description></description>
+     <description>Read the region_wide_mean_wage.</description>
      <currentState>17</currentState>
      <nextState>end_Household</nextState>
      <inputs>
       <input>
        <messageName>data_for_government</messageName>
+       <filter>
+        <lhs>
+         <value>a.region_id</value>
+        </lhs>
+        <op>EQ</op>
+        <rhs>
+         <value>m.region_id</value>
+        </rhs>
+       </filter>
       </input>
      </inputs>
      <outputs/>
