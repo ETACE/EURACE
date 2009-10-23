@@ -1496,6 +1496,11 @@
      <name>subsidy_payment</name>
      <description></description>
     </variable>
+    <variable>
+     <type>double</type>
+     <name>region_mean_wage</name>
+     <description>The mean_wage in the househol's region. Used in the computation of the unemployment benefits.</description>
+    </variable>
    </memory>
    <functions>
     <function>
@@ -1587,7 +1592,7 @@
      <name>Household_send_data_to_Eurostat</name>
      <description>Household sends message to the eurostat agent including several micro data.</description>
      <currentState>16</currentState>
-     <nextState>end_Household</nextState>
+     <nextState>17</nextState>
      <condition>
       <time>
        <period>monthly</period>
@@ -1615,6 +1620,18 @@
       </not>
      </condition>
      <inputs/>
+     <outputs/>
+    </function>
+    <function>
+     <name>Household_read_data_from_Eurostat</name>
+     <description></description>
+     <currentState>17</currentState>
+     <nextState>end_Household</nextState>
+     <inputs>
+      <input>
+       <messageName>data_for_government</messageName>
+      </input>
+     </inputs>
      <outputs/>
     </function>
    </functions>
