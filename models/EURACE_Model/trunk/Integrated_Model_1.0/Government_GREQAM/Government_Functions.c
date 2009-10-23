@@ -181,21 +181,7 @@ int Government_read_unemployment_benefit_notifications()
     START_UNEMPLOYMENT_NOTIFICATION_MESSAGE_LOOP
         
         NUM_UNEMPLOYED++;
-        
-        //Compute the individual unemployment benefit payment as a fraction of the last labour income       
-        //if unemployment benefit is larger than the mean wage:
-        if(unemployment_notification_message->last_labour_income*UNEMPLOYMENT_BENEFIT_PCT > COUNTRY_WIDE_MEAN_WAGE*0.5 )
-        {       
-            unemployment_payment = unemployment_notification_message->last_labour_income*UNEMPLOYMENT_BENEFIT_PCT;  
-            //unemployment_payment = 0.8;
-        }
-        else    
-        {
-            //if unemployment benefit is below the mean wage: pay 0.5 * MEAN_WAGE
-            unemployment_payment =  COUNTRY_WIDE_MEAN_WAGE*0.5; 
-            //unemployment_payment = 0.8;
-        }
-        sum += unemployment_payment;
+        sum += unemployment_notification_message->unemployment_payment;
         
     FINISH_UNEMPLOYMENT_NOTIFICATION_MESSAGE_LOOP
 
