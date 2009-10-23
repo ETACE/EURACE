@@ -199,7 +199,7 @@ int IGFirm_dividend_payment()
       
    
 	//double weight = 0.2;
-	double average_last_net_profits;
+	double average_last_net_profits = 0.0;
 	double total_dividend_payment;
 	DIVIDEND_PAYMENT = 0.0;
 
@@ -239,9 +239,16 @@ int IGFirm_dividend_payment()
 		average_last_net_profits += LAST_NET_PROFITS.array[p];
 	}
 	
-	average_last_net_profits = average_last_net_profits/LAST_NET_PROFITS.size;
+        if (LAST_NET_PROFITS.size > 0) 
+    	    average_last_net_profits = average_last_net_profits/LAST_NET_PROFITS.size;
+        else
+            average_last_net_profits = 0.0;
 	
-	CURRENT_DIVIDEND_PER_SHARE = average_last_net_profits/ OUTSTANDING_SHARES;
+        if (OUTSTANDING_SHARES > 0)
+	    CURRENT_DIVIDEND_PER_SHARE = average_last_net_profits/ OUTSTANDING_SHARES;
+        else
+            CURRENT_DIVIDEND_PER_SHARE = 0.0;
+    
 	//printf("\n IGFirm %d CURRENT_DIVIDEND_PER_SHARE %f %f\n",ID,CURRENT_DIVIDEND_PER_SHARE,OUTSTANDING_SHARES);
 	
 	total_dividend_payment = average_last_net_profits;
