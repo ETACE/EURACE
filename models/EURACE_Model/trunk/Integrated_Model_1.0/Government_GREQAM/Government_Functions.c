@@ -173,7 +173,7 @@ int Government_read_tax_payments()
  */
 int Government_read_unemployment_benefit_notifications()
 {
-    double sum, unemployment_payment;
+    double sum;
     NUM_UNEMPLOYED = 0;
     
     //Start message loop
@@ -655,7 +655,8 @@ int Government_read_data_from_Eurostat()
  */
 int Government_set_policy()
 {   
-    double yearly_tax_revenues_target; 
+
+//    double yearly_tax_revenues_target; 
 /*     
     //Fiscal policy rule 1
 
