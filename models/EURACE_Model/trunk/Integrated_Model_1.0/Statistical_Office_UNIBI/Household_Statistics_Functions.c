@@ -143,14 +143,11 @@ int Household_read_data_from_Eurostat()
 {   
     //The household reads the mean wage in its region (we assume this is a country)
     START_DATA_FOR_GOVERNMENT_MESSAGE_LOOP
-        for (i=0; i<NO_REGIONS_PER_GOV; i++)
-        {
             if(data_for_government_message->region_id==REGION_ID)
             {
                 //Read region mean wage
-                REGION_MEAN_WAGE = data_for_government_message->mean_wage;
+                REGION_WIDE_MEAN_WAGE = data_for_government_message->mean_wage;
             }
-        }
     FINISH_DATA_FOR_GOVERNMENT_MESSAGE_LOOP
     
     return 0;
