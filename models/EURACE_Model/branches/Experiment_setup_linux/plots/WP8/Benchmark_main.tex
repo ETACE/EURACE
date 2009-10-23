@@ -1,5 +1,30 @@
+\begin{table}[tbp]
+\caption{Summary of benchmark settings.}
+\label{Table: Benchmark Settings}\centering
+\begin{tabular}{ll}
+\hline\hline
+Agent           & Totals\\
+\hline
+Regions         & 1\\
+\hline
+Household       & 1600\\
+Firm            & 80\\
+IGFirm          & 1\\
+Mall            & 1\\
+Bank            & 2\\
+Clearinghouse   & 1\\
+Government      & 1\\
+Central Bank    & 1\\
+Eurostat        & 1\\
+\hline
+\end{tabular}%
+\end{table}
+
+
 \section{Transient period}
 Before we show the benchmark results, we show a transient run for the default parameter settings.
+The numbers of agents are given in Table \ref{Table: Benchmark Settings}.
+
 Figure \ref{Figure: transient time} shows a simulation of the model for $20$ batch runs of $5000$ iterations.
 After approximately $4000$ periods (days, i.e. 16 years) the transient phase settles down to a stochastic steady state.
 
@@ -81,10 +106,10 @@ On the credit market we see in Figure \ref{Figure: Credit Market} that banks dep
 
 
 \section{Tax rate scenarios}
-As a first sensitivity analysis we consider a variation in the income tax rate from $5\%$ to $15\%$, see Figure \ref{Figure: scenarios}.
+As a first sensitivity analysis we consider a variation in the income tax rate from $1\%$ to $8\%$, see Figure \ref{Figure: scenarios}.
 We show results for $20$ batch runs, $4000$ periods each, for each value of the tax rate parameter.
-It is clear that if we increase the tax rate then GDP decreases and unemployment increases.
-The investment/GDP ratio remains constant which means that total investments in the economy show the same decrease as GDP when the tax rate is increased.
+It appears that GDP and unemployment are not very sensitive to increases in the tax rate.
+The investment/GDP ratio remains constant which means that total investments in the economy show the same fluctuations as GDP when the tax rate is increased.
 
 
 %%%%%%%%%%%%%%% Include all figures
