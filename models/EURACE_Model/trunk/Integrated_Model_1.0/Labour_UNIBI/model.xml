@@ -824,6 +824,11 @@ of employees and the number of vacancies</description>
      <name>unemployment_payment</name>
      <description>Unemployment benefit in case the household is unemployed.</description>
     </variable>
+    <variable>
+     <type>double</type>
+     <name>region_wide_mean_wage</name>
+     <description>Mean wage of the household's region. Used in the computation of unemployment benefits.</description>
+    </variable>
    </memory>
    <functions>
     <function>
