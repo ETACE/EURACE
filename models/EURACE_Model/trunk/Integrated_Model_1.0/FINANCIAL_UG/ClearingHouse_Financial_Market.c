@@ -58,7 +58,7 @@ void computeAssetPrice(ClearingMechanism *mechanism, Asset *anAsset)
      if (PRINT_DEBUG_AFM)
         {
         printf("\t Clearing of asset: %d volume: %d price: %f \n",anAsset->id,quantity,price);
-        getchar();
+        //getchar();
         }
      
    }
@@ -112,7 +112,7 @@ int ClearingHouse_receive_orders_and_run()
   emptyClearing(mechanism);
   //printf("sono qui---");
 */ 
-int prev_asset,asset_id,quantity,issuer,index;
+int prev_asset,asset_id = 0,quantity,issuer,index;
 double limit_price;
 Asset *asset;
 Order *pord;
@@ -152,19 +152,20 @@ START_ORDER_MESSAGE_LOOP
  else if (isSellOrder(pord)) addSellOrder(&CLEARINGMECHANISM, pord);
 
 FINISH_ORDER_MESSAGE_LOOP
-index=findCAsset(&ASSETS, asset_id);
+/*index=findCAsset(&ASSETS, asset_id);
 if(index>-1)
        {  
            asset = elementAtCAsset(&ASSETS,index);
             computeAssetPrice(&CLEARINGMECHANISM, asset);
             sendOrderStatus(&CLEARINGMECHANISM); 
          
-        }
+        }*/
         
   if (PRINT_DEBUG)  
   {
                     printf("\n\n ClearingHouse_receive_orders_and_run ID: %d",ID);
-                    getchar();}
+                    //getchar();
+  }
   
  emptyClearing(&CLEARINGMECHANISM);
   return 0;
@@ -202,7 +203,7 @@ int ClearingHouse_receive_info()
     
     if (PRINT_DEBUG)
     { printf("\n ClearingHouse_receive_info ID: %d",ID);
-    getchar();
+    //getchar();
                     }
     
  return 0;
