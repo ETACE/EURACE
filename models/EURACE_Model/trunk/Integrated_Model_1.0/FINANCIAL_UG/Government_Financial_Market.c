@@ -106,7 +106,7 @@ int Government_receive_info_bond(void)
    FILE *file1;
    char *filename;    
    Bond *bond;
-   double price;
+   double price=0.0;
    bond =get_bond();
   
    m_infoAssetCH  *current;

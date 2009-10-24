@@ -715,8 +715,13 @@ int Firm_set_bankruptcy_insolvency()
 int Firm_bankruptcy_insolvency_procedure()
 {
     int i;
-    double target_debt, bad_debt, credit_refunded, residual_var;
-    double write_off_ratio, target_equity, ipo_amount;
+    double target_debt=0.0;
+    double bad_debt=0.0, 
+    double credit_refunded=0.0, 
+    double residual_var=0.0;
+    double write_off_ratio=0.0;
+    double target_equity=0.0;
+    double ipo_amount=0.0;
   
     #ifndef _DEBUG_MODE  
         char * filename;
@@ -800,11 +805,11 @@ if (BANKRUPTCY_IDLE_COUNTER == CONST_BANKRUPTCY_IDLE_PERIOD - 1)
 }   
     //Check that after refunding credit the payment account is depleted:
     /*if (PAYMENT_ACCOUNT>1e-6)
-	{
+    {
         printf("\n ERROR in Firm_bankruptcy_insolvency_procedure:"
                 " payment_account not depleted after refunding credit. \n"
                 "PAYMENT_ACCOUNT=%f\n", PAYMENT_ACCOUNT);
-	} */   
+    } */   
     //Effect on financial market
     //Wiping out all existing shareholders by cancelling their shares
     
@@ -986,7 +991,7 @@ int Firm_read_stock_transactions()
 {
      FILE *file1;
      char *filename;
-    double finances;
+     double finances =0.0;
     
     //Before updating the share count
     PREVIOUS_SHARES_OUTSTANDING = CURRENT_SHARES_OUTSTANDING;
