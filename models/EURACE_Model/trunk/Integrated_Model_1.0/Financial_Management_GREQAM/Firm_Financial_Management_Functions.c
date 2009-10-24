@@ -716,8 +716,8 @@ int Firm_bankruptcy_insolvency_procedure()
 {
     int i;
     double target_debt=0.0;
-    double bad_debt=0.0, 
-    double credit_refunded=0.0, 
+    double bad_debt=0.0;
+    double credit_refunded=0.0;
     double residual_var=0.0;
     double write_off_ratio=0.0;
     double target_equity=0.0;
