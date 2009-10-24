@@ -446,7 +446,8 @@ int Household_receive_info_interest_from_bank() {
 }
 
 int Household_receives_payment_coupons()
-   { int index,quantity;
+   { int index=0;
+     int quantity=0;
      Asset *asset;
      Asset_array *assetsowned;
      assetsowned=get_assetsowned();

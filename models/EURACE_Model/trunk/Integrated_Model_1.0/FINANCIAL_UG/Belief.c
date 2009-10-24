@@ -141,6 +141,7 @@ void  bondBeliefFormation(Belief *belief, Bond *bond,int backwardWindow,int forw
   double coupon_stream,last_market_price;
   double fundamental_return_weight_bond;
   double random_return_weight_bond, return_rnd;
+  return_rnd =0.0;
   double chartist_return_weight_bond;
   double fundamentalReturn,aux;
   double factor_chartist,factor_random,value,coupon_yield,coupon_yield_annualized,returns_char,annual_coeff;

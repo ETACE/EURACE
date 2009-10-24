@@ -1381,7 +1381,8 @@ void Eurostat_calc_price_index(void)
 {
     int j, index;
     double weight, price, price_last_month, quantity, sum_1, sum_2;
-    
+    weight=0.0; price=0.0; price_last_month=0.0; quantity=0.0; sum_1=0.0; sum_2=0.0;
+        
     //Compute the regional CPI as the ratio between sum(p_t*q_t)/sum(p_t-1*q_t)
     //Then the price index is the multiplication of all previous CPI factors.
     //NOTE: we also need to include the diagonal value of the original export_value_matrix, which was excluded from the import/export sums.
