@@ -67,8 +67,45 @@ constant development.
 \label{sec:performance-serial}
 This section comprises tables of agent function CPU times recorded with the timer package as the EURACE integrated model has evolved in recent revisions. The code was compiled with debugging and profiling turned on which will have an effect on the absolute timings but not on the proportion of time spent in each routine. 
 
-At the start of this analysis (Table \ref{table:r2701}) one clearinghouse agent function took up 72\% of the run time. When this function was profiled with the GNU \texttt{gprof} tool (see Figure \ref{fig:CH_call_graph}) it was found that the algorithm implemented in \texttt{newPrice} could be improved in a number of ways which would lead to a halving of the number of calls to \texttt{aggregateDemand}.  The improvements were passed on to the modellers and were incroporated into a new version of the code. 
+At the start of this analysis (Table \ref{table:r2701}) one \texttt{clearinghouse} agent function took up 72\% of the run time. When this function was profiled with the GNU \texttt{gprof} tool (see Figure \ref{fig:CH_call_graph}) it was found that the algorithm implemented in \texttt{newPrice} could be improved in a number of ways which would lead to a halving of the number of calls to \texttt{aggregateDemand}.  
+\begin{table}[ht]
+	\centering
+	{\small\renewcommand{\arraystretch}{1.2}
+		\begin{tabular}{|l|r|p{5mm}|l|r|}\hline
+		\multicolumn{2}{|c|}{\bf Writing}& &\multicolumn{2}{|c|}{\bf Reading}\\\hline
+\bf Message Name & \bf Counts & & \bf Message Name & \bf Counts \\\hline
+			order&	57557	&	&order&	2935407 \\
+bank\_account\_update	&1551	&	&quality\_price\_info\_1	&13700\\
+job\_application	& 666	&	&info\_firm	&7850\\
+job\_application2 &	552	&	&accountInterest&	6000\\
+order\_status&	337	&	&dividend\_per\_share&	3000\\
+accepted\_consumption\_1&	274	&	&bank\_account\_update	&1551\\
+consumption\_request\_1&	274	&	&job\_application&	666\\
+tax\_payment	&62	&	&vacancies	&666\\
+hh\_subsidy\_notification&	60&	&	job\_application2&	552\\
+hh\_transfer\_notification&	60&	&	vacancies2&	552\\\hline
+		\end{tabular}
+		}
+		\label{table:message-counts-1}
+		\caption{Top ten counts of message Reads and Write}
+\end{table}
+Table~\ref{table:message-counts-1} shows the number of message of a particular type that have passed through the system board system. From the timings it is cleat that \texttt{clearinghouse} agent is a serious bottleneck in the simulation. This is re-enforced by Table~\ref{table:message-counts-1} as the \texttt{order} message is the most used message type and this is the primary input message for the \texttt{clearinghouse} agent.
 
+Considerable time was taken in understanding these restuls and various improvements to the algorithms used by the\texttt{clearinghouse} agent were suggested to the modellers.  These improvements were passed on to the modellers and were incroporated into a new version of the code.
+
+Table~\ref{table:message-counts-2} show the message counts after these improvements had been implemented.
+\begin{table}[ht]
+	\centering
+	{\small\renewcommand{\arraystretch}{1.2}
+		\begin{tabular}{|l|r|p{5mm}|l|r|}\hline
+		\multicolumn{2}{|c|}{\bf Writing}& &\multicolumn{2}{|c|}{\bf Reading}\\\hline
+\bf Message Name & \bf Counts & & \bf Message Name & \bf Counts \\\hline
+
+		\end{tabular}
+		}
+		\label{table:message-counts-2}
+		\caption{Top ten counts of message Reads and Write}
+\end{table}
 These changes significantly lowered the time taken by the clearinghouse and this was enough to bring the second placed function in Table \ref{table:r2701} to the top in Table \ref{table:r2723}.
 
 \begin{figure}
@@ -259,6 +296,9 @@ Num processes & HAPU & NW-Grid & Hector \\ \hline
 \label{table:speedup}
 \end{center}
 \end{table}
+
+
+
 
 \begin{landscape}
 \begin{table}
