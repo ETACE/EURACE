@@ -1,5 +1,5 @@
 \subsection{Assessment and Benchmarking for the EURACE Model}
-\label{sec:benchmarks}
+\label{sec:performance-eurace}
 In this section we consider the benchmarking of the full EURACE Model as
 described in the other deliverables of the project. Before presenting the
 results of the benchmarks it is useful to consider what we are measuring
@@ -45,9 +45,9 @@ this was for a \textbf{fixed size} application.  Gustafson's Law paints a
 different picture. It states that any sufficiently large problem can be 
 efficiently parallelized and the speedup that can be gained is:
 \begin{equation}
-	S(P) = P - \alpha\cdot(P-1)
+	S(N) = N - \alpha\cdot(N-1)
 \end{equation}
-where $P$ is the number of processors, $S$ is the speedup, and $\alpha$ the non-parallelizable part of the process.
+where $N$ is the number of processors, $S$ is the speedup, and $\alpha$ the non-parallelizable part of the process i.e. the serial part.
 
 Gustafson's law addresses the shortcomings of Amdahl's law, which cannot scale to match availability of computing power as the machine size increases. It removes the fixed problem size or fixed computation load on the parallel processors: instead, he proposed a fixed time concept which leads to scaled speed up for larger problem sizes (i.e. weak or soft scaling).
 
@@ -56,13 +56,15 @@ Amdahl's law is based on fixed workload or fixed problem size (i.e. strong or ha
 In both of these formalisations of potential parallel speedup to proportional of serial activity has a significant effect of the potential parallel speedup. However Gustason's Law gives the hope that for
 a \textit{sufficiently large} problem parallel performance can be demonstrated.
 
+Although neither of these models completely characterises the exectly situation - it is very difficult to estimate the serial part of a parallel code - it is clear that the serial part has a significant effect on the speed up of any application. So in the assessment of the EURACE Model we will focus on identifying the serial part.
+
 We have developed a number of analysis tools that have allowed us to benchmark any
 FLAME model and assess its serial and parallel performance. We have used a number 
 of versions of the EURACE Model in this benchmarking - the model has been under 
 constant development.
 
 \subsection{Serial Performance Analysis}
-
+\label{sec:performance-serial}
 This section comprises tables of agent function CPU times recorded with the timer package as the EURACE integrated model has evolved in recent revisions. The code was compiled with debugging and profiling turned on which will have an effect on the absolute timings but not on the proportion of time spent in each routine. 
 
 At the start of this analysis (Table \ref{table:r2701}) one clearinghouse agent function took up 72\% of the run time. When this function was profiled with the GNU \texttt{gprof} tool (see Figure \ref{fig:CH_call_graph}) it was found that the algorithm implemented in \texttt{newPrice} could be improved in a number of ways which would lead to a halving of the number of calls to \texttt{aggregateDemand}.  The improvements were passed on to the modellers and were incroporated into a new version of the code. 
@@ -70,6 +72,7 @@ At the start of this analysis (Table \ref{table:r2701}) one clearinghouse agent 
 These changes significantly lowered the time taken by the clearinghouse and this was enough to bring the second placed function in Table \ref{table:r2701} to the top in Table \ref{table:r2723}.
 
 \begin{figure}
+{\small
 \begin{verbatim}
  ClearingHouse_receive_orders_and_run (73.5%, called 40 times)
    +----emptyClearing
@@ -105,7 +108,9 @@ These changes significantly lowered the time taken by the clearinghouse and this
    +----sendOrderStatus
      +----buyOrders
      +----formedPrice
-     +----sellOrders\end{verbatim}
+     +----sellOrders
+     \end{verbatim}
+     }
 \caption{Call graph for \texttt{ClearingHouse$\_$receive$\_$orders$\_$and$\_$run} showing work done in most expensive call path\label{fig:CH_call_graph}}
 \end{figure}
 
@@ -201,10 +206,34 @@ Household$\_$send$\_$account$\_$update & 15 & 16 &  0.64 & 0.3 \\ \hline
 \end{landscape}
 
 \subsection{Parallel Performance Analysis}
+\label{sec:performance-parallel}
+In Appendix~\ref{app:initial-benchmarks} the results from the initial parallel benchmarks are described. These models are characterised in Tabel~\ref{table:initial-models}. In general the results showed promising parallel speedup using up to 40 processors.
+\begin{table}[ht]
+ \centering
+  \begin{tabular}{l|ccc}
+  Model     & Agents & Messages & Population   \\\hline
+   Circles     &   1    &   1      &  10$^5$    \\
+   C@S       &   3    &   9      &  124,000 \\
+   Labour Market &   4    &   10     &  110,101 \\ 
+   Bielefeld     &   4    &   29     &  43100     \\\hline
+   \end{tabular}
+   \caption{Details of Initial Benchmark Models}
+   \label{table:initial-models}
+ \end{table}
+ However as the number of message used by a model - as in the case of the Bielefeld model - some irratic behaviour was observed. Table~\ref{table:eurace-model} gives the characteristics of the full integrated EURACE Model. It is most important to note that the number of message types is 62 -  a great many more than previous models. 
+\begin{table}[ht]
+ \centering
+  \begin{tabular}{l|ccc}
+  Model     & Agents & Messages & Population   \\\hline
+  EURACE     &   9    &   62      &  ~30,000 \\
+  \end{tabular}
+  \caption{Details of the EURACE Model}
+  \label{table:eurace-model}
+ \end{table}
 
 Analysis of parallel performance includes profiling the agent functions as for the serial case but also investigating how the EURACE application performs as the number of processes is increased for a fixed initial population. The profiling of agent functions is shown in Tables \ref{table:r2754_0} and \ref{table:r2754_1} and it is clear that the clearinghouse agent function for finding the correct market price for assets is dominant. Not only that; because there is only one clearinghouse it is a \textbf{serial bottleneck}. All agents have to wait for it to complete its calculations before they can carry on. The household function for sending orders is not a bottleneck since the agents are distributed round the processes by FLAME.
 
-Using a 16 region model with 26948 agents runs have been carried out on large parallel machines available to STFC, namely HAPU, NW-Grid and Hector. Details of these machines can be found in Appendix \ref{systems}. The graph of average iteration time (seconds) against number of processes is shown in Figure \ref{fig:speedup} from which it can be observed that Hector shows good speedup, NW-Grid shows a little and HAPU shows rather eratic results. The iteration times are given in table \ref{table:speedup}.
+Using a 16 region model with 26948 agents runs have been carried out on large parallel machines available to STFC, namely HAPU, NW-Grid and Hector. Details of these machines can be found in Appendix \ref{app:parallel-systems}. The graph of average iteration time (seconds) against number of processes is shown in Figure \ref{fig:speedup} from which it can be observed that Hector shows good speedup, NW-Grid shows a little and HAPU shows rather eratic results. The iteration times are given in table \ref{table:speedup}.
 
 \begin{figure}[ht]
  \centering
