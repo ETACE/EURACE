@@ -203,7 +203,7 @@ void computeLimitOrder( Asset *anAsset, double weight, double resource,Belief *b
       trader_id=get_id();
       quantity=anAsset->quantity;
       assetId=anAsset->id;
-      if(assetId!=belief->asset_id) printf("------------errore----------\n");
+     
       lastprice=belief->last_price;
       anAsset->lastPrice=belief->last_price;
       
