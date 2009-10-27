@@ -8,16 +8,16 @@ A variety of implementations were tried, \texttt{bash} scripts using \texttt{sed
 Cloning from a single region also has the benefit that it is possible to provide pre-partitioned input data for the parallel implementation of the EURACE model. For example, clone one region to give 16 regions and input files for 1, 2, 4, 8 and 16 processes can be easily produced.
 
 The cloning process relies on a special \texttt{xml} file in which any agent ids are marked with \texttt{REPLACE\_ID\_n} where \texttt{n} is the id of the agent in the region being cloned. This \texttt{xml} file is produced from a \texttt{pop} file by the \texttt{instantiate.py} script written by Tubitak and using code from the population GUI. The script is invoked as
-
-\begin{verbatim}
-python instantiate.py -r 0_bench_oct_12.pop 0_markers_oct_12.xml
-\end{verbatim}
-
+\begin {quote}
+\tt
+python instantiate.py -r 0\_bench\_oct\_12.pop 0\_markers\_oct\_12.xml
+\end{quote}
 Actually cloning the region is illustrated by the following example:
 
-\begin{verbatim}
-./clone.sh 0_markers_oct_12.xml 8 tmp -r 2
-\end{verbatim}
+\begin{quote}
+\tt
+./clone.sh 0\_markers\_oct\_12.xml 8 tmp -r 2
+\end{quote}
 
 This clones \texttt{0\_markers\_oct\_12.xml} creating 2 input files each containing 8 regions. The output files are put into a directory called \texttt{16R\_2P} indicating that this is input for a 16 region run on 2 processes.
 
@@ -29,4 +29,8 @@ The cloning application runs from the commandline using a \texttt{bash} script t
 
 The serial code works by repeatedly calling it with arguments that are the increment to make in id numbers between regions and a number (0 based) of this particular clone. The id increment is set to the number of agents in the original region since there can be no more agents in any cloned region. Running the code in paralle requires only the increment value to be given as each process can get the clone number as its node id by calling \texttt{MPI\_Comm\_rank}.
 
-{\raggedright Source code is available from the EURACE Subversion repository \break \verb+http://ccpforge.cse.rl.ac.uk/svn/eurace/models/utils/cloning+.}
+Source code is available from the EURACE Subversion repository:
+\begin{quote}
+http://ccpforge.cse.rl.ac.uk/svn/eurace/models/utils/cloning
+\end{quote}
+Using these tools we are able to generate large data sets from a small seed population.
