@@ -66,9 +66,25 @@ constant development.
 \subsection{Serial Performance Analysis}
 \label{sec:performance-serial}
 This section comprises tables of agent function CPU times recorded with the timer package as the EURACE integrated model has evolved in recent revisions. The code was compiled with debugging and profiling turned on which will have an effect on the absolute timings but not on the proportion of time spent in each routine. 
-
+\begin{table}[h]
+	\centering
+		\begin{tabular}{|l|c|}\hline
+     \bf Agent type & \bf Number of agents\\\hline
+Government & 1\\
+Central\_Bank & 1 \\
+Clearinghouse & 1\\
+Eurostat & 1\\
+IGFirm & 1\\
+Mall &		1\\
+Bank & 2\\
+Firm &80\\
+Household & 1600\\		\hline
+\end{tabular}
+		\label{table:small-population}
+		\caption{Distribution of agent population (small)}
+\end{table}
 At the start of this analysis (Table \ref{table:r2701}) one \texttt{clearinghouse} agent function took up 72\% of the run time. When this function was profiled with the GNU \texttt{gprof} tool (see Figure \ref{fig:CH_call_graph}) it was found that the algorithm implemented in \texttt{newPrice} could be improved in a number of ways which would lead to a halving of the number of calls to \texttt{aggregateDemand}.  
-\begin{table}[ht]
+\begin{table}[h]
 	\centering
 	{\small\renewcommand{\arraystretch}{1.2}
 		\begin{tabular}{|l|r|p{5mm}|l|r|}\hline
@@ -87,7 +103,7 @@ hh\_transfer\_notification&	60&	&	vacancies2&	552\\\hline
 		\end{tabular}
 		}
 		\label{table:message-counts-1}
-		\caption{Top ten counts of message Reads and Write}
+		\caption{Top ten counts of message Reads and Write (population: 1600 agents}
 \end{table}
 Table~\ref{table:message-counts-1} shows the number of message of a particular type that have passed through the system board system. From the timings it is cleat that \texttt{clearinghouse} agent is a serious bottleneck in the simulation. This is re-enforced by Table~\ref{table:message-counts-1} as the \texttt{order} message is the most used message type and this is the primary input message for the \texttt{clearinghouse} agent.
 
@@ -104,12 +120,12 @@ Table~\ref{table:message-counts-2} show the message counts after these improveme
 		\end{tabular}
 		}
 		\label{table:message-counts-2}
-		\caption{Top ten counts of message Reads and Write}
+		\caption{Top ten counts of message Reads and Write (population: 1600 agents)}
 \end{table}
 These changes significantly lowered the time taken by the clearinghouse and this was enough to bring the second placed function in Table \ref{table:r2701} to the top in Table \ref{table:r2723}.
 
 \begin{figure}
-{\small
+{\footnotesize
 \begin{verbatim}
  ClearingHouse_receive_orders_and_run (73.5%, called 40 times)
    +----emptyClearing
@@ -153,7 +169,7 @@ These changes significantly lowered the time taken by the clearinghouse and this
 
 \begin{landscape}
 
-\begin{table}
+\begin{table}[c]
 \begin{center}
 {\small\renewcommand{\arraystretch}{1.3}
 \begin{tabular}{|p{70mm}|p{70mm}|p{70mm}|c|c|}\hline
@@ -174,8 +190,9 @@ Household$\_$send$\_$account$\_$update & 15 & 16 &  0.09 & $<$0.1 \\ \hline
 \end{center}
 \end{table}
 
+\clearpage
 
-\begin{table}
+\begin{table}[c]
 \begin{center}
 {\small\renewcommand{\arraystretch}{1.3}
 \begin{tabular}{|p{70mm}|p{70mm}|p{70mm}|c|c|}\hline
@@ -195,9 +212,9 @@ Household$\_$receive$\_$info$\_$interest$\_$from$\_$bank & Household$\_$received
 \caption{Revision \textbf{2723}, Serial, 240 iterations, small population. Total run time 6:42[m:s]\label{table:r2723}}
 \end{center}
 \end{table}
+\clearpage
 
-
-\begin{table}
+\begin{table}[c]
 \begin{center}
 {\small\renewcommand{\arraystretch}{1.3}
 \begin{tabular}{|p{70mm}|p{70mm}|p{70mm}|c|c|}\hline
@@ -218,8 +235,8 @@ Household$\_$send$\_$account$\_$update & 15 & 16 &   0.607822 & 0.3 \\ \hline
 \end{center}
 \end{table}
 
-
-\begin{table}
+\clearpage
+\begin{table}[c]
 \begin{center}
 {\small\renewcommand{\arraystretch}{1.3}
 \begin{tabular}{|p{70mm}|p{70mm}|p{70mm}|c|c|}\hline
@@ -270,7 +287,7 @@ In Appendix~\ref{app:initial-benchmarks} the results from the initial parallel b
 
 Analysis of parallel performance includes profiling the agent functions as for the serial case but also investigating how the EURACE application performs as the number of processes is increased for a fixed initial population. The profiling of agent functions is shown in Tables \ref{table:r2754_0} and \ref{table:r2754_1} and it is clear that the clearinghouse agent function for finding the correct market price for assets is dominant. Not only that; because there is only one clearinghouse it is a \textbf{serial bottleneck}. All agents have to wait for it to complete its calculations before they can carry on. The household function for sending orders is not a bottleneck since the agents are distributed round the processes by FLAME.
 
-Using a 16 region model with 26948 agents runs have been carried out on large parallel machines available to STFC, namely HAPU, NW-Grid and Hector. Details of these machines can be found in Appendix \ref{app:parallel-systems}. The graph of average iteration time (seconds) against number of processes is shown in Figure \ref{fig:speedup} from which it can be observed that Hector shows good speedup, NW-Grid shows a little and HAPU shows rather eratic results. The iteration times are given in table \ref{table:speedup}.
+Using a 16 region model with 26948 agents runs have been carried out on large parallel machines available to STFC, namely HAPU, NW-Grid and Hector. Details of these machines can be found in Appendix \ref{app:parallel-systems}. The graph of average iteration time (seconds) against number of processes is shown in Figure \ref{fig:speedup} from which it can be observed that Hector shows good speedup, NW-Grid shows a little and HAPU shows rather eratic results. The iteration times are given in Table \ref{table:speedup}.
 
 \begin{figure}[ht]
  \centering
@@ -301,7 +318,7 @@ Num processes & HAPU & NW-Grid & Hector \\ \hline
 
 
 \begin{landscape}
-\begin{table}
+\begin{table}[c]
 \begin{center}
 {\small\renewcommand{\arraystretch}{1.3}
 \begin{tabular}{|p{70mm}|p{70mm}|p{70mm}|c|c|}\hline
@@ -322,8 +339,8 @@ Household$\_$send$\_$account$\_$update & 15 & 16 &   16.049 & 0.1 \\ \hline
 \end{center}
 \end{table}
 
-
-\begin{table}
+\clearpage
+\begin{table}[c]
 \begin{center}
 {\footnotesize\renewcommand{\arraystretch}{1.3}
 \begin{tabular}{|p{70mm}|p{70mm}|p{70mm}|c|c|}\hline
@@ -345,3 +362,6 @@ Firm$\_$read$\_$stock$\_$transactions & 0003 & End$\_$Firm$\_$Financial$\_$Role 
 
 \end{landscape}
 
+The results from running the EURACE Model in parallel have been very disappointing. The stability of the model has been very poor and as are these intial results.
+
+As mentioned earlier the EURACE Model is being continually improve and developed so the results in this report are only a snapshot of the status at the time of writing.
