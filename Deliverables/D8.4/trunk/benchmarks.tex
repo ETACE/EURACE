@@ -103,7 +103,7 @@ hh\_transfer\_notification&	60&	&	vacancies2&	552\\\hline
 		\end{tabular}
 		}
 		\label{table:message-counts-1}
-		\caption{Top ten counts of message Reads and Write (population: 1600 agents}
+		\caption{Initial top ten counts of message Reads and Write (population: 1688 agents)}
 \end{table}
 Table~\ref{table:message-counts-1} shows the number of message of a particular type that have passed through the system board system. From the timings it is cleat that \texttt{clearinghouse} agent is a serious bottleneck in the simulation. This is re-enforced by Table~\ref{table:message-counts-1} as the \texttt{order} message is the most used message type and this is the primary input message for the \texttt{clearinghouse} agent.
 
@@ -116,11 +116,20 @@ Table~\ref{table:message-counts-2} show the message counts after these improveme
 		\begin{tabular}{|l|r|p{5mm}|l|r|}\hline
 		\multicolumn{2}{|c|}{\bf Writing}& &\multicolumn{2}{|c|}{\bf Reading}\\\hline
 \bf Message Name & \bf Counts & & \bf Message Name & \bf Counts \\\hline
-
+order   &   11929&&quality\_price\_info\_1 &4480 \\
+job\_application  &3704&&order & 11929 \\
+job\_application2  & 3408&&dividend\_per\_share  & 6400\\
+bank\_account\_update&  1681&&job\_application &  3704\\
+vaaccepted\_consumption\_1 &  306&&cancies   &  3704\\
+consumption\_request\_1   &  306&&job\_application2 & 3408\\
+tax\_payment  &  84&&vacancies2    &    3408\\
+infoAssetCH  & 81&&accountInterest &  3200\\
+hh\_transfer\_notification & 80&&bank\_account\_update &  1681\\
+info\_firm    &  80&&info\_firm   &   880\\\hline
 		\end{tabular}
 		}
 		\label{table:message-counts-2}
-		\caption{Top ten counts of message Reads and Write (population: 1600 agents)}
+		\caption{Optimisaed top ten counts of message Reads and Write (population: 1688 agents)}
 \end{table}
 These changes significantly lowered the time taken by the clearinghouse and this was enough to bring the second placed function in Table \ref{table:r2701} to the top in Table \ref{table:r2723}.
 
