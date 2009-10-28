@@ -31,7 +31,10 @@ int IGFirm_update_productivity_price()
 {
         int i;
 
-    
+
+	
+	EARNINGS =0.0;
+	
         //double prod_progress;
     
     /*If the innovation progress is random and has not a predetermined shape*/
@@ -186,7 +189,7 @@ int IGFirm_pay_taxes()
     PAYMENT_ACCOUNT -= TAX_PAYMENT;
 
     NET_PROFIT = EARNINGS  - TAX_PAYMENT;
-    EARNINGS =0.0;
+   
     add_tax_payment_message(GOV_ID,TAX_PAYMENT);
     
     return 0;
