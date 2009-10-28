@@ -63,6 +63,12 @@ FLAME model and assess its serial and parallel performance. We have used a numbe
 of versions of the EURACE Model in this benchmarking - the model has been under 
 constant development.
 
+
+
+
+% Serial Performance
+
+
 \subsection{Serial Performance Analysis}
 \label{sec:performance-serial}
 This section comprises tables of agent function CPU times recorded with the timer package as the EURACE integrated model has evolved in recent revisions. The code was compiled with debugging and profiling turned on which will have an effect on the absolute timings but not on the proportion of time spent in each routine. 
@@ -85,7 +91,8 @@ Household & 1600\\		\hline
 		\label{table:small-population}
 		\caption{Distribution of agent population (small)}
 \end{table}
-At the start of this analysis (Table \ref{table:r2701}) one \texttt{clearinghouse} agent function took up 72\% of the run time. When this function was profiled with the GNU \texttt{gprof} tool (see Figure \ref{fig:CH_call_graph}) it was found that the algorithm implemented in \texttt{newPrice} could be improved in a number of ways which would lead to a halving of the number of calls to \texttt{aggregateDemand}.  
+At the start of this analysis (Table \ref{table:r2701}) one \texttt{clearinghouse} agent function took up 72\% of the run time. When this function was profiled with the GNU \texttt{gprof} tool (see Figure \ref{fig:CH_call_graph}) it was found that the time was being taken buy the routine \texttt{newPrice}.
+After reviewing the algorithm implemented in \texttt{newPrice} ways were found to improved it in a number of ways which would lead to a halving of the number of calls to \texttt{aggregateDemand} - a core routine of \texttt{newPrice}.  
 \begin{table}[h]
 	\centering
 	{\small\renewcommand{\arraystretch}{1.2}
@@ -107,7 +114,7 @@ hh\_transfer\_notification&	60&	&	vacancies2&	552\\\hline
 		\label{table:message-counts-1}
 		\caption{Initial top ten counts of message Reads and Write (population: 1688 agents)}
 \end{table}
-Table~\ref{table:message-counts-1} shows the number of message of a particular type that have passed through the system board system. From the timings it is cleat that \texttt{clearinghouse} agent is a serious bottleneck in the simulation. This is re-enforced by Table~\ref{table:message-counts-1} as the \texttt{order} message is the most used message type and this is the primary input message for the \texttt{clearinghouse} agent.
+During a second phase the message counts table - Table~\ref{table:message-counts-1} was generated, This shows the number of message of a particular type that have passed through the system board system. From the timings it is cleat that \texttt{clearinghouse} agent is a serious bottleneck in the simulation. This is re-enforced by Table~\ref{table:message-counts-1} as the \texttt{order} message is the most used message type and this is the primary input message for the \texttt{clearinghouse} agent.
 
 Considerable time was taken in understanding these restuls and various improvements to the algorithms used by the\texttt{clearinghouse} agent were suggested to the modellers.  These improvements were passed on to the modellers and were incroporated into a new version of the code.
 
@@ -269,6 +276,10 @@ Household$\_$send$\_$account$\_$update & 15 & 16 &  0.64 & 0.3 \\ \hline
 \end{table}
 
 \end{landscape}
+This types of iterative analysis and optimisation has been used to improve the performance the EURACE model.
+
+
+%Parallel Performance
 
 \subsection{Parallel Performance Analysis}
 \label{sec:performance-parallel}
@@ -285,7 +296,7 @@ In Appendix~\ref{app:initial-benchmarks} the results from the initial parallel b
    \caption{Details of Initial Benchmark Models}
    \label{table:initial-models}
  \end{table}
- However as the number of message used by a model - as in the case of the Bielefeld model - some irratic behaviour was observed. Table~\ref{table:eurace-model} gives the characteristics of the full integrated EURACE Model. It is most important to note that the number of message types is 62 -  a great many more than previous models. 
+However as the number of message used by a model - as in the case of the Bielefeld model - some irratic behaviour was observed. Table~\ref{table:eurace-model} gives the characteristics of the full integrated EURACE Model. It is most important to note that the number of message types is 62 -  a great many more than previous models. 
 \begin{table}[ht]
  \centering
   \begin{tabular}{l|ccc}
@@ -296,35 +307,11 @@ In Appendix~\ref{app:initial-benchmarks} the results from the initial parallel b
   \label{table:eurace-model}
  \end{table}
 
-Analysis of parallel performance includes profiling the agent functions as for the serial case but also investigating how the EURACE application performs as the number of processes is increased for a fixed initial population. The profiling of agent functions is shown in Tables \ref{table:r2754_0} and \ref{table:r2754_1} and it is clear that the clearinghouse agent function for finding the correct market price for assets is dominant. Not only that; because there is only one clearinghouse it is a \textbf{serial bottleneck}. All agents have to wait for it to complete its calculations before they can carry on. The household function for sending orders is not a bottleneck since the agents are distributed round the processes by FLAME.
+Analysis of parallel performance includes profiling the agent functions as for the serial case but also investigating how the EURACE application performs as the number of processes is increased for a fixed initial population. The profiling of agent functions is shown in Tables \ref{table:r2754_0} and \ref{table:r2754_1} and it is clear that the clearinghouse agent function for finding the correct market price for assets is dominant. Not only that; because there is only one clearinghouse it is a serious \textbf{serial bottleneck}. All agents have to wait for it to complete its calculations before they can carry on. The household function for sending orders is not a bottleneck since the agents are distributed round the processes by FLAME.
 
-Using a 16 region model with 26948 agents runs have been carried out on large parallel machines available to STFC, namely HAPU, NW-Grid and Hector. Details of these machines can be found in Appendix \ref{app:parallel-systems}. The graph of average iteration time (seconds) against number of processes is shown in Figure \ref{fig:speedup} from which it can be observed that Hector shows good speedup, NW-Grid shows a little and HAPU shows rather eratic results. The iteration times are given in Table \ref{table:speedup}.
+Although FLAME makes great efforts to maximise the time available to synchronise the message boards, as explained in Section~\label{sec:performance-flame}, this will only have an effect if the function in question has potential parallel tasks. Unfortunately the Clearing House, and particular when computing the correct market price for assets, requires asset and order information from all Firm and Household agents before it is able to perform the calculation. This generates a serial bottleneck which will have a serious effect on performance. This is reflected in the timings in Table~\ref{table:r2754_1} - the Clear House is top of the list. All other agents - and processors - much wait until the Clear House completes its work - which is around 35\% of the runtime.
 
-\begin{figure}[ht]
- \centering
-  \includegraphics[width=330pt]{speedup.png}
- \caption{Average iteration times (s) 240 iterations of 16 region EURACE model}
- \label{fig:speedup}
-\end{figure}
-
-\begin{table}[ht]
-\begin{center}
-\begin{tabular}{|l|l|l|l|} \hline
-Num processes & HAPU & NW-Grid & Hector \\ \hline
-2   & 92.3 & 43.2 & - \\ \hline
-4   & 43.3 & 32.4 & 29.8 \\ \hline
-6   & 76.9 & 29.3 & 26.6 \\ \hline
-8   & 63.6 & 30.8 & 24.1 \\ \hline
-10  & 72.1 & 37.3 & 22.9 \\ \hline
-12  & 34.6 & 36.5 & 22.0 \\ \hline
-14  & 82.5 & 40.5 & 22.1 \\ \hline
-16  & 45.0 & 41.0 & 21.7 \\ \hline
-\end{tabular}
-\caption{Average iteration times for 16 region EURACE model}
-\label{table:speedup}
-\end{center}
-\end{table}
-
+Although this is a serious problem in terms of performance it is still possible to perform runs of the EURACE model with larger populations. Using a 16 region model with 26948 agents runs have been carried out on large parallel machines available to STFC, namely HAPU, NW-Grid and Hector. Details of these machines can be found in Appendix \ref{app:parallel-systems}. 
 
 
 
@@ -372,6 +359,38 @@ Firm$\_$read$\_$stock$\_$transactions & 0003 & End$\_$Firm$\_$Financial$\_$Role 
 \end{table}
 
 \end{landscape}
+
+The graph of average iteration time (seconds) against number of processes is shown in Figure \ref{fig:speedup}. 	Some interesting features can be seen in this graph: it can be observed that Hector shows generally good speedup, the NW-Grid machine shows a little but HAPU shows some seriously eratic behaviour. The iteration times are given in Table \ref{table:speedup}.
+
+\begin{figure}[ht]
+ \centering
+  \includegraphics[width=330pt]{speedup.png}
+ \caption{Average iteration times (s) 240 iterations of 16 region EURACE model}
+ \label{fig:speedup}
+\end{figure}
+
+\begin{table}[ht]
+\begin{center}
+\begin{tabular}{|l|l|l|l|} \hline
+Num processes & HAPU & NW-Grid & Hector \\ \hline
+2   & 92.3 & 43.2 & - \\ \hline
+4   & 43.3 & 32.4 & 29.8 \\ \hline
+6   & 76.9 & 29.3 & 26.6 \\ \hline
+8   & 63.6 & 30.8 & 24.1 \\ \hline
+10  & 72.1 & 37.3 & 22.9 \\ \hline
+12  & 34.6 & 36.5 & 22.0 \\ \hline
+14  & 82.5 & 40.5 & 22.1 \\ \hline
+16  & 45.0 & 41.0 & 21.7 \\ \hline
+\end{tabular}
+\caption{Average iteration times for 16 region EURACE model}
+\label{table:speedup}
+\end{center}
+\end{table}
+
+Although the HECToR and NW-GRID results show some parallel performance it is disappointing. The HAPU results show some very strange behaviour which can only really be explained by defficiencies in the EURACE Model algorithms. During the assessment of the model it has been shown to be very sensitive to changes in parameter values: sometimes failing with zero divides but more often or not terminating in an infinite loop. The model in very
+complex and it is very difficult to debug. Programming conventions and testing proceedures - as defined in the project - have help elliminate many problems but as one might expect there will be residual bugs.
+
+Throughout the assessment critical algorithms have been review and improvements made but there are still many processes that are not particularly robust. Given the very complex interactions between agents one could not expect every computational situation to have been covered. Only significant more testing and detailed evaluation and detailed assessment of the EURACE algorithm will lead to a robust simulator.
 
 The results from running the EURACE Model in parallel have been very disappointing. The stability of the model has been very poor and as are these intial results.
 
