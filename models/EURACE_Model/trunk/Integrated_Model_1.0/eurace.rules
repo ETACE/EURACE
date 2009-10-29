@@ -39,7 +39,7 @@ igfirm_shares_outstanding           = IGFirm(outstanding_shares)
 igfirm_tax_payment                  = IGFirm(tax_payment)
 igfirm_net_profit                   = IGFirm(net_profit) 
 igfirm_dividend_per_share           = IGFirm(current_dividend_per_share)
-igfirm_revenues                     = IGFirm(earnings) 
+igfirm_monthly_revenues             = IGFirm(earnings) 
 igfirm_cum_energy_costs             = IGFirm(cum_energy_costs)
 
 #Balance sheet: Household
@@ -190,8 +190,8 @@ abs( eurostat_monthly_sold_quantity - firm_total_sold_quantity_volume ) < PRECIS
 
 #RULE 17: VERIFIED
 #Investments in monetary value: Eurostat data (aggregated across the firms' investment costs) equals the IGFirm revenues.
-#eurostat_monthly_investment_value = igfirm_revenues
-abs( eurostat_monthly_investment_value - igfirm_revenues ) < PRECISION
+#eurostat_monthly_investment_value = igfirm_monthly_revenues
+abs( eurostat_monthly_investment_value - igfirm_monthly_revenues ) < PRECISION
 
 #RULE 18: VERIFIED The difference is constant and equal to the initial value of ecb_fiat_money_govs
 #The Banks' aggregate ECB debt is found on the ECB balance sheet (fiat_money_banks, LHS), and on the banks' balance sheet (bank_ecb_debt, RHS).
@@ -214,7 +214,7 @@ abs( bank_deposits + bank_equity + gov_payment_account + ecb_cash - bank_credit 
 
 #RULE 21:
 #Consistency between IGFirm sales revenues and Firm capital costs
-abs( firm_capital_costs - igfirm_revenues) < PRECISION
+abs( firm_capital_costs - igfirm_monthly_revenues) < PRECISION
 
 ######## RULES THAT CANNOT BE CHECKED YET (since sums over arrays are not possible)
 #RULE XX: TO BE CHECKED Should be verified with longer runs
