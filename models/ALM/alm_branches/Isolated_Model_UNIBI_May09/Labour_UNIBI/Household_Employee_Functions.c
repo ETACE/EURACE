@@ -301,7 +301,7 @@ int Household_read_job_offers_send_response()
         EMPLOYEE_FIRM_ID = job_offer_list.array[0].firm_id;
         EMPLOYER_REGION_ID = job_offer_list.array[0].region_id;
         DAY_OF_MONTH_RECEIVE_INCOME = DAY%MONTH;
-        UNEMPLOYMENT_BENEFITS_RECEIVED=0.0;
+        
 
         /*update some memory variables because of the new job*/
         if(REGION_ID == job_offer_list.array[0].region_id)
@@ -532,7 +532,7 @@ int Household_read_job_offers_send_response_2()
         EMPLOYEE_FIRM_ID = job_offer_list.array[0].firm_id;
         EMPLOYER_REGION_ID = job_offer_list.array[0].region_id;
         DAY_OF_MONTH_RECEIVE_INCOME = DAY%MONTH;
-        UNEMPLOYMENT_BENEFITS_RECEIVED=0.0;
+        
 
         /*Update some memory variables because of the new job*/
         if(REGION_ID == job_offer_list.array[0].region_id)
