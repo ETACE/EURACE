@@ -301,6 +301,7 @@ int Household_read_job_offers_send_response()
         EMPLOYEE_FIRM_ID = job_offer_list.array[0].firm_id;
         EMPLOYER_REGION_ID = job_offer_list.array[0].region_id;
         DAY_OF_MONTH_RECEIVE_INCOME = DAY%MONTH;
+        UNEMPLOYMENT_BENEFITS_RECEIVED=0.0;
 
         /*update some memory variables because of the new job*/
         if(REGION_ID == job_offer_list.array[0].region_id)
@@ -531,6 +532,7 @@ int Household_read_job_offers_send_response_2()
         EMPLOYEE_FIRM_ID = job_offer_list.array[0].firm_id;
         EMPLOYER_REGION_ID = job_offer_list.array[0].region_id;
         DAY_OF_MONTH_RECEIVE_INCOME = DAY%MONTH;
+        UNEMPLOYMENT_BENEFITS_RECEIVED=0.0;
 
         /*Update some memory variables because of the new job*/
         if(REGION_ID == job_offer_list.array[0].region_id)
@@ -639,7 +641,7 @@ double fraction_if_recently_unemployed=0;
 int Household_receives_unemployment_benefit()
 {
     double mean_income = 0.0;
-    double benefit_received;
+    UNEMPLOYMENT_BENEFITS_RECEIVED=0.0;
     
 
    
@@ -647,16 +649,16 @@ int Household_receives_unemployment_benefit()
 
 	START_HH_UNEMPLOYMENT_BENEFIT_PAY_OUT_MESSAGE_LOOP
 	
-	benefit_received =  (1-hh_unemployment_benefit_pay_out_message->rationing_rate)*UNEMPLOYMENT_BENEFIT_PCT * LAST_LABOUR_INCOME;
+	UNEMPLOYMENT_BENEFITS_RECEIVED =  (1-hh_unemployment_benefit_pay_out_message->rationing_rate)*UNEMPLOYMENT_BENEFIT_PCT * LAST_LABOUR_INCOME;
 	//benefit_received =  fraction_if_recently_unemployed*hh_unemployment*UNEMPLOYMENT_BENEFIT_PCT * LAST_LABOUR_INCOME;
 	
 	FINISH_HH_UNEMPLOYMENT_BENEFIT_PAY_OUT_MESSAGE_LOOP
     /*Add unemployment_benefit to account */
-    PAYMENT_ACCOUNT +=  benefit_received;
+    PAYMENT_ACCOUNT +=  UNEMPLOYMENT_BENEFITS_RECEIVED;
   
 
     	remove_double(&LAST_INCOME,0);
-    	add_double(&LAST_INCOME, benefit_received);
+    	add_double(&LAST_INCOME, UNEMPLOYMENT_BENEFITS_RECEIVED);
    
 
     /*Compute a mean income of the last four month*/
@@ -716,7 +718,7 @@ int Household_send_tax_payment()
     if (DAY_OF_MONTH_RECEIVE_BENEFIT != DAY_OF_MONTH_RECEIVE_INCOME )
     {
     	ADDITIONAL_TAX = ((DAY_OF_MONTH_RECEIVE_BENEFIT + (20-DAY_OF_MONTH_RECEIVE_INCOME)%20)/20.0)
-                            * LAST_INCOME.array[3];
+                            * UNEMPLOYMENT_BENEFITS_RECEIVED;
         DAY_OF_MONTH_RECEIVE_BENEFIT =DAY_OF_MONTH_RECEIVE_INCOME;
     }
 

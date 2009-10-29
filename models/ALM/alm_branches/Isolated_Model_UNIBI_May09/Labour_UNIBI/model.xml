@@ -673,6 +673,11 @@ of employees and the number of vacancies</description>
      <name>additional_tax</name>
      <description></description>
     </variable>
+      <variable>
+     <type>double</type>
+     <name>unemployment_benefits_received</name>
+     <description></description>
+    </variable>
     <variable>
      <type>int</type>
      <name>number_applications</name>
