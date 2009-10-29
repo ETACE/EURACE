@@ -722,7 +722,7 @@ int Household_send_tax_payment()
 
 
     /*Compute the total taxes*/
-    TAX_PAYMENT = additional_tax + CUM_TOTAL_DIVIDENDS*TAX_RATE_HH_CAPITAL + WAGE*TAX_RATE_HH_LABOUR;
+    TAX_PAYMENT = ADDITIONAL_TAX + CUM_TOTAL_DIVIDENDS*TAX_RATE_HH_CAPITAL + WAGE*TAX_RATE_HH_LABOUR;
 
     /*Send a message to the government*/
     add_tax_payment_message(GOV_ID, TAX_PAYMENT);
