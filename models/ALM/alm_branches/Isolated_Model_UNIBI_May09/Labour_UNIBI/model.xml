@@ -669,6 +669,11 @@ of employees and the number of vacancies</description>
      <description>Indicator variable: 1 on the job search; 0 no on the job search</description>
     </variable>
     <variable>
+     <type>double</type>
+     <name>additional_tax</name>
+     <description></description>
+    </variable>
+    <variable>
      <type>int</type>
      <name>number_applications</name>
      <description>Number of applications a household can sent</description>
