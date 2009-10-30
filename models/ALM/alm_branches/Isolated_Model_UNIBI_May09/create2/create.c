@@ -286,14 +286,14 @@ sprintf(innovation_scheme,"{{1300,1.518750},{1360,1.537734},{1580,1.556956},{176
 			
 				
 			//Base wage offer per unit of specific skills:
-			double base_wage_offer = 2.0;
+			double base_wage_offer[2][1] = {1.5,1.0};
 
 
 
 			
 			//Initital wage offer of the firms
-			double wage_offer_region_1 = base_wage_offer*specific_skills_of_household[0][0];
-			double wage_offer_region_2 = base_wage_offer*specific_skills_of_household[0][1];
+			double wage_offer_region_1 = base_wage_offer[0][0]*specific_skills_of_household[0][0];
+			double wage_offer_region_2 = base_wage_offer[0][1]*specific_skills_of_household[0][1];
 			//printf("specific_skills_of_household[1][1] %f \n",specific_skills_of_household[2][1]);
 			//printf("specific_skills_of_household[2][1] %f \n",specific_skills_of_household[1][1]);
 
@@ -490,7 +490,7 @@ sprintf(data, "%d",NO_REGIONS_PER_GOV);	print_tag("no_regions_per_gov", data, fi
 		int decil_production_rule = random_int(decil_production_rule_lower_bound,decil_production_rule_upper_bound);
 
 		sprintf(data, "%d",decil_production_rule);	print_tag("decil_production_rule", data, file);	
-		sprintf(data, "%f",base_wage_offer);		print_tag("wage_offer", data, file);
+		sprintf(data, "%f",base_wage_offer[column][row]);		print_tag("wage_offer", data, file);
 
 		sprintf(data, "%f",wage_offer[column][row]);	print_tag("wage_offer_for_skill_1", data, file);
 		sprintf(data, "%f",wage_offer[column][row]);	print_tag("wage_offer_for_skill_2", data, file);
