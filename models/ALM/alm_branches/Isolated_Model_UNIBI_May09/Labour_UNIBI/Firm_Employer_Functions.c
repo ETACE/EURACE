@@ -162,6 +162,7 @@ int Firm_send_vacancies()
     {
         /*Number of Vacancies/additional employees wanted*/
         VACANCIES = EMPLOYEES_NEEDED - NO_EMPLOYEES;
+	POSTED_VACANCIES = VACANCIES;
 
         /*For every skill group send vacancy message with the correspondent wage offer*/
         
@@ -343,6 +344,7 @@ int Firm_send_random_redundancies()
 int Firm_read_job_applications_send_job_offer_or_rejection()
 {
     int no_applications;
+	
             
         /* Create a job application dynamic array */
         job_application_array job_application_list; 
@@ -368,6 +370,8 @@ int Firm_read_job_applications_send_job_offer_or_rejection()
 
 
         no_applications = job_application_list.size;
+	NO_APPLICATIONS = no_applications;
+
         
         qsort(job_application_list.array, job_application_list.size, 
         sizeof(job_application), job_application_list_rank_general_skill_function);
@@ -386,7 +390,7 @@ int Firm_read_job_applications_send_job_offer_or_rejection()
             for(i = 0; i < (job_application_list.size); i++)
             {
             /*A firm cannot send more job offers than it has vacancies to fill*/
-            
+            NO_JOB_OFFERS++;
                 /*For the different skill levels */
                 switch(job_application_list.array[i].general_skill)
                 {
@@ -479,23 +483,28 @@ int Firm_read_job_applications_send_job_offer_or_rejection()
                         case 1:
                             add_job_offer_message(ID, logit_applications_list.array[j]
                     .worker_id,REGION_ID, WAGE_OFFER_FOR_SKILL_1);
+NO_JOB_OFFERS++;
                             break;
                         case 2:
                             add_job_offer_message(ID, logit_applications_list.array[j]
                     .worker_id,REGION_ID, WAGE_OFFER_FOR_SKILL_2);
+NO_JOB_OFFERS++;
                             break;
                         case 3:
                             add_job_offer_message(ID, logit_applications_list.array[j]
                     .worker_id,REGION_ID, WAGE_OFFER_FOR_SKILL_3);
+NO_JOB_OFFERS++;
                             break;
                         case 4:
                             add_job_offer_message(ID, logit_applications_list.array[j]
                     .worker_id,REGION_ID, WAGE_OFFER_FOR_SKILL_4);
+NO_JOB_OFFERS++;
                             break;
                         /*If general skill level is 5 send job offer with wage offer for general skill level 5*/
                         case 5:
                             add_job_offer_message(ID, logit_applications_list.array[j]
                     .worker_id,REGION_ID, WAGE_OFFER_FOR_SKILL_5);
+NO_JOB_OFFERS++;
                                 break;
                         }
 
@@ -560,6 +569,7 @@ int Firm_read_job_responses()
             /*Add employee to employee list */
             VACANCIES--;
             NO_EMPLOYEES++;
+	    JOB_ACCEPTANCE++;
 
             switch(job_acceptance_message->general_skill)
             {
@@ -692,7 +702,8 @@ int Firm_update_wage_offer()
         WAGE_OFFER_FOR_SKILL_2 = WAGE_OFFER_FOR_SKILL_2*(1+WAGE_UPDATE);
         WAGE_OFFER_FOR_SKILL_3 = WAGE_OFFER_FOR_SKILL_3*(1+WAGE_UPDATE);
         WAGE_OFFER_FOR_SKILL_4 = WAGE_OFFER_FOR_SKILL_4*(1+WAGE_UPDATE);
-        WAGE_OFFER_FOR_SKILL_5 = WAGE_OFFER_FOR_SKILL_5*(1+WAGE_UPDATE);    
+        WAGE_OFFER_FOR_SKILL_5 = WAGE_OFFER_FOR_SKILL_5*(1+WAGE_UPDATE);  
+	WAGE_INCREASE=1;  
     }
     
     return 0;
@@ -767,7 +778,7 @@ int Firm_read_job_applications_send_job_offer_or_rejection_2()
             for(i = 0; i < (job_application_list.size); i++)
             {
             /*A firm cannot send more job offers than it has vacancies to fill*/
-            
+            NO_JOB_OFFERS++;
                 /*For the different skill levels */
                 switch(job_application_list.array[i].general_skill)
                 {
@@ -854,24 +865,24 @@ int Firm_read_job_applications_send_job_offer_or_rejection_2()
                 /*If general skill level is 1 send job offer with wage offer for                    general skill level 1*/
                         case 1:
                             add_job_offer2_message(ID, logit_applications_list.array[j]
-                    .worker_id,REGION_ID, WAGE_OFFER_FOR_SKILL_1);
+                    .worker_id,REGION_ID, WAGE_OFFER_FOR_SKILL_1);NO_JOB_OFFERS++;
                             break;
                         case 2:
                             add_job_offer2_message(ID, logit_applications_list.array[j]
-                    .worker_id,REGION_ID, WAGE_OFFER_FOR_SKILL_2);
+                    .worker_id,REGION_ID, WAGE_OFFER_FOR_SKILL_2);NO_JOB_OFFERS++;
                             break;
                         case 3:
                             add_job_offer2_message(ID, logit_applications_list.array[j]
-                    .worker_id,REGION_ID, WAGE_OFFER_FOR_SKILL_3);
+                    .worker_id,REGION_ID, WAGE_OFFER_FOR_SKILL_3);NO_JOB_OFFERS++;
                             break;
                         case 4:
                             add_job_offer2_message(ID, logit_applications_list.array[j]
-                    .worker_id,REGION_ID, WAGE_OFFER_FOR_SKILL_4);
+                    .worker_id,REGION_ID, WAGE_OFFER_FOR_SKILL_4);NO_JOB_OFFERS++;
                             break;
                         /*If general skill level is 5 send job offer with wage offer for general skill level 5*/
                         case 5:
                             add_job_offer2_message(ID, logit_applications_list.array[j]
-                    .worker_id,REGION_ID, WAGE_OFFER_FOR_SKILL_5);
+                    .worker_id,REGION_ID, WAGE_OFFER_FOR_SKILL_5);NO_JOB_OFFERS++;
                                 break;
                         }
 
@@ -937,6 +948,7 @@ int Firm_read_job_responses_2()
             
             VACANCIES--;
             NO_EMPLOYEES++;
+		JOB_ACCEPTANCE++;
 
             switch(job_acceptance2_message->general_skill)
             {

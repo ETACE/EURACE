@@ -190,6 +190,31 @@
      <name>vacancies</name>
      <description>number of vacancies</description>
     </variable>
+	<variable>
+     <type>int</type>
+     <name>posted_vacancies</name>
+     <description>number of vacancies</description>
+    </variable>
+	<variable>
+     <type>int</type>
+     <name>no_applications</name>
+     <description>number of applications</description>
+    </variable>
+	<variable>
+     <type>int</type>
+     <name>job_acceptance</name>
+     <description>number of accepted job_offers</description>
+    </variable>
+	<variable>
+     <type>int</type>
+     <name>wage_increase</name>
+     <description>Indicator: wage increase yes or no</description>
+    </variable>
+	<variable>
+     <type>int</type>
+     <name>no_job_offers</name>
+     <description>number of job_offers</description>
+    </variable>
     <variable>
      <type>double</type>
      <name>average_g_skill</name>
@@ -707,6 +732,21 @@ of employees and the number of vacancies</description>
      <type>int</type>
      <name>employer_region_id</name>
      <description>The id of the region</description>
+    </variable>
+<variable>
+     <type>int</type>
+     <name>no_job_offers</name>
+     <description>number of  received job_offers</description>
+    </variable>
+<variable>
+     <type>int</type>
+     <name>employed_this_period</name>
+     <description></description>
+    </variable>
+<variable>
+     <type>int</type>
+     <name>fired_this_period</name>
+     <description></description>
     </variable>
     <variable>
      <type>int</type>
