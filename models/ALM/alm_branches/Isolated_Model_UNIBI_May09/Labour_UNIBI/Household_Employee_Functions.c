@@ -87,6 +87,7 @@ int Household_read_firing_messages()
             LAST_LABOUR_INCOME = WAGE;
             WAGE = 0;
             ON_THE_JOB_SEARCH = 0;
+		FIRED_THIS_PERIOD = 1;
             
 		
         }
@@ -287,10 +288,15 @@ int Household_read_job_offers_send_response()
     qsort(job_offer_list.array, job_offer_list.size, sizeof(job_offer),
     job_offer_list_rank_wage_offer_function);
 
+	
+	NO_JOB_OFFERS = job_offer_list.size;
+
     /* Accept best job: first on the list (array[0]) */
     if(job_offer_list.size > 0)
     {
         add_job_acceptance_message(ID, job_offer_list.array[0].firm_id,                 REGION_ID, GENERAL_SKILL, SPECIFIC_SKILL);
+
+	EMPLOYED_THIS_PERIOD = 1;
 
         /*If on the job search: send quitting message*/
         if(ON_THE_JOB_SEARCH == 1)
@@ -517,11 +523,14 @@ int Household_read_job_offers_send_response_2()
     qsort(job_offer_list.array, job_offer_list.size, sizeof(job_offer),
     job_offer_list_rank_wage_offer_function);
 
+	NO_JOB_OFFERS = job_offer_list.size;
 
     /* Accept best job: first on the list (array[0]) */
     if(job_offer_list.size > 0)
     {
         add_job_acceptance2_message(ID, job_offer_list.array[0].firm_id,                REGION_ID, GENERAL_SKILL, SPECIFIC_SKILL);
+
+	EMPLOYED_THIS_PERIOD = 1;
 
         /*If on the job search add quitting message*/
         if(ON_THE_JOB_SEARCH == 1)
