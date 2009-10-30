@@ -122,7 +122,13 @@ int Firm_send_transfer_notification()
 int Firm_receive_data()
 {
 
-				
+	
+NO_JOB_OFFERS = 0;
+JOB_ACCEPTANCE = 0;
+POSTED_VACANCIES = 0;
+NO_APPLICATIONS = 0;
+WAGE_INCREASE = 0;
+			
 	/* If day of month to act... */
 	
 		

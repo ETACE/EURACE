@@ -12,7 +12,10 @@
  */
 int Household_receive_data()
 {
-
+/*For getdata: labor market flows*/
+NO_JOB_OFFERS = 0;
+EMPLOYED_THIS_PERIOD = 0;
+FIRED_THIS_PERIOD = 0;
 
 START_EUROSTAT_SEND_PRICE_INDEX_MESSAGE_LOOP
 
