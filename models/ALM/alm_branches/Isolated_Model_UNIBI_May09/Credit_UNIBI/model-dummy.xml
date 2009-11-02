@@ -364,12 +364,8 @@
 	</not> 
      </condition>
      <intputs/>
-
-     </outputs/>
-     
+     <outputs/>
     </function>
-	
-
    </functions>
   </xagent>
   <xagent>
