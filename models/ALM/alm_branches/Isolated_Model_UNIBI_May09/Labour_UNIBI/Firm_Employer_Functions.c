@@ -224,6 +224,7 @@ int Firm_send_redundancies()
 
         //for(int i = 0; i < (NO_EMPLOYEES - EMPLOYEES_NEEDED); i++)
         int no_redundancies = NO_EMPLOYEES - EMPLOYEES_NEEDED;
+
         int i;
         for(i = 0; i < no_redundancies; i++)
         {   

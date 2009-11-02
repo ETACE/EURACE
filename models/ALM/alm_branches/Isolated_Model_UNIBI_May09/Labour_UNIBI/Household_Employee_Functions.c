@@ -628,17 +628,10 @@ int Household_read_policy_announcements()
 int Household_send_unemployment_benefit_notification()
 {
   
-double fraction_if_recently_unemployed=0;
-
     /*Add unemployment_benefit message */
-
-	
-	
     add_unemployment_notification_message(GOV_ID,LAST_LABOUR_INCOME);
 
-   
 
-	//printf("fraction_if_recently_unemployed%f \n", fraction_if_recently_unemployed);
     return 0;
 
 }

@@ -129,7 +129,7 @@ int Firm_compute_dividend_accruals()
 	for(i=0; i <LAST_NET_EARNINGS.size;i++)
 	{	if(ID==1)
 		{
-		printf("EARNINGS: Period %d Amount: %f\n",(12-i),LAST_NET_EARNINGS.array[i]);
+		//printf("EARNINGS: Period %d Amount: %f\n",(12-i),LAST_NET_EARNINGS.array[i]);
 		}		
 	mean_earnings += LAST_NET_EARNINGS.array[i];	
 	}
@@ -139,31 +139,31 @@ int Firm_compute_dividend_accruals()
 	//dividend_share = mean_earnings* DIVIDEND_RATE;
 
 	
-	if(ID==1)
-	{
-	printf(" MEAN EARNINGS %f\n",mean_earnings);
+	//if(ID==1)
+	//{
+	//printf(" MEAN EARNINGS %f\n",mean_earnings);
 	
-	printf("LAST ACCRUALS %f\n", ACCRUALS);
-	}
+	//printf("LAST ACCRUALS %f\n", ACCRUALS);
+	//}
 
 	/*SIMON*/
 	
 	ADDITIONAL_ACCRUALS = NET_EARNINGS* DIVIDEND_RATE;
 	DIVIDEND_ACCRUALS += ADDITIONAL_ACCRUALS;
-	if(ID==1)
+	/*if(ID==1)
 	{
 	printf("DIVIDEND_ACCRUALS %f\n", DIVIDEND_ACCRUALS);
 	printf("ADDITIONAL_ACCRUALS %f\n", ADDITIONAL_ACCRUALS);
-	}
+	}*/
 	if(ADDITIONAL_ACCRUALS < 0)
 	{
 		PAYMENT_ACCOUNT += min(ACCRUALS,-ADDITIONAL_ACCRUALS);
 		ACCRUALS -= min(ACCRUALS,-ADDITIONAL_ACCRUALS);
-		if(ID==1)
+		/*if(ID==1)
 		{
 		printf("ADDITIONAL ACCRUALS NEGATIVE");
 		printf("ACCRUALS %f\n", ACCRUALS);
-		}
+		}*/
 	}
 		
 
@@ -173,13 +173,13 @@ int Firm_compute_dividend_accruals()
 		//ADDITIONAL_ACCRUALS = 0.0;
 		
 		
-		if(ID==1)
+		/*if(ID==1)
 		{
 		printf("CASE 1:\n");
 		printf("ACCRUALS %f\n", ACCRUALS);
 		printf("DIVIDEND_ACCRUALS %f\n", DIVIDEND_ACCRUALS);
 		printf("ADDITIONAL_ACCRUALS %f\n", ADDITIONAL_ACCRUALS);
-		}
+		}*/
 	
 	
 	
@@ -212,8 +212,8 @@ int Firm_update_accruals()
 	}	
 		
 		
-			if(ID==1)
-			printf(" VERRECHNUNG:ACCRUALS%f   \n",ACCRUALS);
+			//if(ID==1)
+			//printf(" VERRECHNUNG:ACCRUALS%f   \n",ACCRUALS);
 
 return 0;
 }
@@ -232,14 +232,14 @@ int Firm_compute_dividends()
 	if(DIVIDEND_ACCRUALS > 0)
 	{
 		TOTAL_DIVIDEND_PAYMENT = DIVIDEND_ACCRUALS/12; 
-		if(ID==1)
-		printf("1:TOTAL_DIVIDEND_PAYMENT %f\n",TOTAL_DIVIDEND_PAYMENT);
+		//if(ID==1)
+		//printf("1:TOTAL_DIVIDEND_PAYMENT %f\n",TOTAL_DIVIDEND_PAYMENT);
 	}
 	else
 	{
 		TOTAL_DIVIDEND_PAYMENT = 0;
-		if(ID==1)
-		printf("2:TOTAL_DIVIDEND_PAYMENT %f\n",TOTAL_DIVIDEND_PAYMENT);
+		//if(ID==1)
+		//printf("2:TOTAL_DIVIDEND_PAYMENT %f\n",TOTAL_DIVIDEND_PAYMENT);
 	}
 	ACCRUALS_PAY_OUT = ACCRUALS_PAY_OUT  + ACCRUALS;
 	ACCRUALS = 0.0;
@@ -259,7 +259,7 @@ int Firm_compute_dividends()
 	}    
 
 	/*1: print the printf-statements*/
-	if(ID==1)
+	/*if(ID==1)
 	{
 		printf("NET_EARNINGS %f \n",NET_EARNINGS);
 		printf("CURRENT_SHARES_OUTSTANDING %d \n",CURRENT_SHARES_OUTSTANDING);
@@ -269,7 +269,7 @@ int Firm_compute_dividends()
 		printf("PREVIOUS_DIVIDEND_PER_SHARE %f \n",PREVIOUS_DIVIDEND_PER_SHARE);
 		printf("CURRENT_DIVIDEND_PER_SHARE %f \n",CURRENT_DIVIDEND_PER_SHARE);
 		printf("****************************************************************************\n");
-	}	
+	}*/	
     return 0;
 
     return 0;
