@@ -17,7 +17,7 @@
 int Household_determine_consumption_budget()
 {
 
-   // #ifndef _DEBUG_MODE    
+   // #ifdef _DEBUG_MODE    
         char * filename="";
         FILE * file1=NULL;
         FILE * file2=NULL;
@@ -63,7 +63,7 @@ int Household_determine_consumption_budget()
 
         
         
-        #ifndef _DEBUG_MODE        
+        #ifdef _DEBUG_MODE        
             if(PAYMENT_ACCOUNT < 0)
             {
                 if (PRINT_LOG)
@@ -76,7 +76,7 @@ int Household_determine_consumption_budget()
 
             if(CONSUMPTION_BUDGET < 0.5*LAST_INCOME.array[3])
             {
-                #ifndef _DEBUG_MODE        
+                #ifdef _DEBUG_MODE        
                 if(CONSUMPTION_BUDGET < 0)
                 {
                     //printf("___________In file Household_Consumer_Functions.c, function Household_determine_consumption_budget, line 65:\n"
@@ -99,7 +99,7 @@ int Household_determine_consumption_budget()
             
         EXCESS_WEEKLY_BUDGET = -1;
 
-    #ifndef _DEBUG_MODE
+    #ifdef _DEBUG_MODE
         if (PRINT_LOG)
         {
             //close the file pointer: FILE * file
@@ -109,7 +109,7 @@ int Household_determine_consumption_budget()
         }
     #endif
     
-     #ifndef _DEBUG_MODE                         
+     #ifdef _DEBUG_MODE                         
    /* if (PRINT_DEBUG_FILE_EXP1)
     {                       
         filename = malloc(40*sizeof(char));
@@ -582,7 +582,7 @@ int Household_handle_leftover_budget()
  */
 int Household_send_account_update()
 {
-     // #ifndef _DEBUG_MODE  
+     // #ifdef _DEBUG_MODE  
    /* char * filename;
     FILE * file1;
     int remainder; */
@@ -591,7 +591,7 @@ int Household_send_account_update()
         /*GENUA*/
         add_bank_account_update_message(ID, BANK_ID, PAYMENT_ACCOUNT);
     
-     #ifndef _DEBUG_MODE                         
+     #ifdef _DEBUG_MODE                         
    /* if (PRINT_DEBUG_FILE_EXP1)
     {                       
         filename = malloc(40*sizeof(char));

@@ -10,7 +10,7 @@ int Bank_read_policy_rate()
       
     DEPOSITS_RATE = 0.9 * ECB_INTEREST_RATE;
 
-    #ifndef _DEBUG_MODE        
+    #ifdef _DEBUG_MODE        
         if (PRINT_DEBUG)
         {
             printf("\n\n Bank_read_policy_rate ID: %d",ID); 
@@ -27,7 +27,7 @@ int Bank_communicate_identity()
 {
     add_bank_identity_message(ID);
 
-    #ifndef _DEBUG_MODE    
+    #ifdef _DEBUG_MODE    
     if (PRINT_DEBUG)
     {
         printf("\n Bank_communicate_identity ID: %d",ID);
@@ -42,7 +42,7 @@ int Bank_communicate_identity()
 
 int Bank_decide_credit_conditions()
 {
-    //#ifndef _DEBUG_MODE
+    //#ifdef _DEBUG_MODE
         FILE * file1=NULL;
         char * filename="";
   //  #endif
@@ -92,7 +92,7 @@ int Bank_decide_credit_conditions()
             add_loan_conditions_message(loan_request_message->firm_id, ID, i, credit_allowed,  r*(c/credit_allowed));
             
         
-        #ifndef _DEBUG_MODE
+        #ifdef _DEBUG_MODE
             if (PRINT_DEBUG_EXP1 || PRINT_DEBUG)
             {
                 printf("\n Bank_decide_credit_conditions bank_id: %d firm_id: %d",ID,loan_request_message->firm_id);
@@ -105,7 +105,7 @@ int Bank_decide_credit_conditions()
             
         FINISH_LOAN_REQUEST_MESSAGE_LOOP
 
-      //  #ifndef _DEBUG_MODE        
+      //  #ifdef _DEBUG_MODE        
             if (PRINT_DEBUG_FILE_EXP1)
             {
                 filename = malloc(40*sizeof(char));
@@ -124,7 +124,7 @@ int Bank_decide_credit_conditions()
 
 int Bank_account_update_deposits()
 {
-   //  #ifndef _DEBUG_MODE  
+   //  #ifdef _DEBUG_MODE  
         FILE *file1=NULL;
         char * filename="";
   //  #endif
@@ -169,7 +169,7 @@ int Bank_account_update_deposits()
          }
    //End of procedure
    
-    #ifndef _DEBUG_MODE   
+    #ifdef _DEBUG_MODE   
     if (PRINT_DEBUG_EXP1 || PRINT_DEBUG)
     {
         printf("\n\n Bank_account_update_deposits ID: %d",ID);
@@ -179,7 +179,7 @@ int Bank_account_update_deposits()
     }
     #endif   
     
-       // #ifndef _DEBUG_MODE                         
+       // #ifdef _DEBUG_MODE                         
     if (PRINT_DEBUG_FILE_EXP1)
     {                       
         filename = malloc(40*sizeof(char));
@@ -203,7 +203,7 @@ int Bank_receive_installment()
     FIRM_LOAN_INSTALLMENTS=0.0;
     FIRM_INTEREST_PAYMENTS=0.0;
 
-    #ifndef _DEBUG_MODE     
+    #ifdef _DEBUG_MODE     
     if (PRINT_DEBUG) 
     {
         printf("\n\n Bank_receive_installment ID: %d",ID);
@@ -221,7 +221,7 @@ int Bank_receive_installment()
             EQUITY += installment_message->interest_amount;
             VALUE_AT_RISK -= installment_message->var_per_installment;
     
-            #ifndef _DEBUG_MODE        
+            #ifdef _DEBUG_MODE        
             if (PRINT_DEBUG)
             {
                 printf("\n\t interest_amount: %f installment_amount: %f",installment_message->interest_amount,installment_message->installment_amount);
@@ -246,7 +246,7 @@ int Bank_receive_installment()
        PROFITS[0] -= bankruptcy_message->bad_debt;
        VALUE_AT_RISK -= bankruptcy_message->residual_var;
        
-        #ifndef _DEBUG_MODE       
+        #ifdef _DEBUG_MODE       
         if (PRINT_DEBUG)
         {
             printf("\n\t BANKRUPTCY_MESSAGE_LOOP");
@@ -267,7 +267,7 @@ int Bank_give_loan()
 {
     FIRM_LOAN_ISSUES=0.0;
 
-    #ifndef _DEBUG_MODE    
+    #ifdef _DEBUG_MODE    
     if (PRINT_DEBUG_EXP1 || PRINT_DEBUG)
     {
         printf("\n\n Bank_give_loan ID: %d",ID); 
@@ -284,14 +284,14 @@ int Bank_give_loan()
             //Flow accounting 
             FIRM_LOAN_ISSUES+=loan_acceptance_message->credit_amount_taken;    
 
-            #ifndef _DEBUG_MODE
+            #ifdef _DEBUG_MODE
                 if (PRINT_DEBUG) printf("\n\t credit_amount_taken: %f",loan_acceptance_message->credit_amount_taken);     
             #endif
         }
 
     FINISH_LOAN_ACCEPTANCE_MESSAGE_LOOP
 
-    #ifndef _DEBUG_MODE
+    #ifdef _DEBUG_MODE
         if (PRINT_DEBUG_EXP1 || PRINT_DEBUG) printf("\n\t TOTAL_CREDIT after: %f",TOTAL_CREDIT);
     #endif
     
@@ -303,7 +303,7 @@ int Bank_give_loan()
 int Bank_accounting()
 {
 
-    // #ifndef _DEBUG_MODE  
+    // #ifdef _DEBUG_MODE  
         FILE *file1=NULL;
         char *filename="";
    // #endif
@@ -357,7 +357,7 @@ int Bank_accounting()
          //add_dividend_per_share_message(ID, DIVIDEND_PER_SHARE);                  
      }
       
-    #ifndef _DEBUG_MODE
+    #ifdef _DEBUG_MODE
         if (PRINT_DEBUG_EXP1 || PRINT_DEBUG)
         {
             printf("\n\n Bank_accounting ID: %d",ID);
@@ -367,7 +367,7 @@ int Bank_accounting()
         } 
     #endif
     
-   // #ifndef _DEBUG_MODE                         
+   // #ifdef _DEBUG_MODE                         
     if (PRINT_DEBUG_FILE_EXP1)
     {                       
         filename = malloc(40*sizeof(char));
@@ -381,7 +381,7 @@ int Bank_accounting()
     }                
    // #endif
 
-    // #ifndef _DEBUG_MODE                         
+    // #ifdef _DEBUG_MODE                         
     if (PRINT_DEBUG_FILE_EXP1)
     {                       
         filename = malloc(40*sizeof(char));
@@ -421,7 +421,7 @@ int Bank_send_accountInterest(void)
 {
    add_accountInterest_message(get_id(), DEPOSITS_RATE);
 
-    #ifndef _DEBUG_MODE   
+    #ifdef _DEBUG_MODE   
     if (PRINT_DEBUG)
     {
         printf("\n Bank_send_accountInterest ID: %d",ID);
@@ -439,7 +439,7 @@ int Bank_send_dividend_payment()
          EQUITY -=  TOTAL_DIVIDENDS;     
       CASH -=  TOTAL_DIVIDENDS;
 
-    #ifndef _DEBUG_MODE    
+    #ifdef _DEBUG_MODE    
     if (PRINT_DEBUG)
     {
       printf("\n Bank_send_dividend_payment ID: %d",ID);

@@ -29,7 +29,7 @@ int Eurostat_initialization()
     }
     assert(TOTAL_REGIONS==REGION_FIRM_DATA.size);
 
-    #ifndef _DEBUG_MODE    
+    #ifdef _DEBUG_MODE    
     if (PRINT_DEBUG)
     {
         printf("\n Eurostat_initialization");
@@ -254,7 +254,7 @@ int Eurostat_store_history_monthly()
 
     }
 
-    #ifndef _DEBUG_MODE
+    #ifdef _DEBUG_MODE
     if (PRINT_LOG)
     {
         printf("Monthly data recorded by Eurostat:\n");
@@ -275,7 +275,7 @@ int Eurostat_store_history_monthly()
     }    
     #endif
 
-   // #ifndef _DEBUG_MODE
+   // #ifdef _DEBUG_MODE
     if (PRINT_DEBUG_FILE_EXP1)
     {                       
         filename = malloc(40*sizeof(char));
@@ -448,7 +448,7 @@ int Eurostat_store_history_quarterly()
         HISTORY_QUARTERLY[0].region_data.array[region].no_firm_deaths         = HISTORY_QUARTERLY[0].region_data.array[region].no_firm_deaths;    
     }
 
-    #ifndef _DEBUG_MODE
+    #ifdef _DEBUG_MODE
     if (PRINT_LOG)
     {
         printf("Quarterly data recorded by Eurostat:\n");
@@ -815,7 +815,7 @@ int Eurostat_measure_recession()
         }
     }
 
-    #ifndef _DEBUG_MODE
+    #ifdef _DEBUG_MODE
     if (PRINT_LOG)
     {
         printf(" - recession started: %d\n", RECESSION_STARTED);

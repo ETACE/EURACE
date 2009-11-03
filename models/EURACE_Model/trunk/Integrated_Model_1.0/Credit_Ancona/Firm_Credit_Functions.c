@@ -53,7 +53,7 @@
                 
         NUMBER_OF_BANKS_ASKED=SET_OF_LENDERS.size;  //provvisorio
 
-        #ifndef _DEBUG_MODE
+        #ifdef _DEBUG_MODE
             if (PRINT_DEBUG)
             {
                 printf("\n\n Firm_ask_loan ID: %d",ID);
@@ -69,7 +69,7 @@
     
     int Firm_get_loan()
     {
-        //#ifndef _DEBUG_MODE
+        //#ifdef _DEBUG_MODE
         FILE * file1=NULL;
         char * filename="";
         //  #endif
@@ -238,7 +238,7 @@
                 //external financing needed
                 EXTERNAL_FINANCIAL_NEEDS = TOTAL_FINANCIAL_NEEDS - PAYMENT_ACCOUNT;
             }
-        #ifndef _DEBUG_MODE        
+        #ifdef _DEBUG_MODE        
         if (PRINT_DEBUG)
         {
             printf("\n Firm_get_loan ID: %d",ID); 

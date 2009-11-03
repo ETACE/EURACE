@@ -27,7 +27,7 @@ int Government_initialization()
     reset_int_array(&LIST_OF_REGIONS);
     add_int(&LIST_OF_REGIONS, REGION_ID);
     
-    #ifndef _DEBUG_MODE
+    #ifdef _DEBUG_MODE
     if (PRINT_DEBUG_GOV)
         { 
                     printf("\n Government_initialization ID: %d",ID);
@@ -99,7 +99,7 @@ int Government_send_policy_announcements()
         //FIRM_SUBSIDY_PCT = CONST_ENERGY_SHOCK_INTENSITY;
 
        
-        // #ifndef _DEBUG_MODE
+        // #ifdef _DEBUG_MODE
         if (PRINT_DEBUG_FILE_EXP2)
         {
             filename = malloc(40*sizeof(char));
@@ -128,7 +128,7 @@ int Government_send_policy_announcements()
     //add announcement
     add_policy_announcement_message(ID, TAX_RATE_CORPORATE, TAX_RATE_HH_LABOUR, TAX_RATE_HH_CAPITAL, TAX_RATE_VAT, UNEMPLOYMENT_BENEFIT_PCT, HH_SUBSIDY_PCT, FIRM_SUBSIDY_PCT, HH_TRANSFER_PAYMENT, FIRM_TRANSFER_PAYMENT);
     
-    #ifndef _DEBUG_MODE
+    #ifdef _DEBUG_MODE
     if (PRINT_DEBUG_GOV)
     { 
                     printf("\n Government_send_policy_announcements ID: %d",ID);
@@ -155,7 +155,7 @@ int Government_read_tax_payments()
 
    PAYMENT_ACCOUNT += sum;
    
-   #ifndef _DEBUG_MODE
+   #ifdef _DEBUG_MODE
    if (PRINT_DEBUG)
    {
                    printf("\n\n Government_read_tax_payments ID: %d",ID);
@@ -192,7 +192,7 @@ int Government_read_unemployment_benefit_notifications()
     
     PAYMENT_ACCOUNT -= sum;
     
-    #ifndef _DEBUG_MODE
+    #ifdef _DEBUG_MODE
     if (PRINT_DEBUG)
     {
                    printf("\n\n Government_read_unemployment_benefit_notifications ID: %d",ID);
@@ -241,7 +241,7 @@ int Government_read_transfer_notifications()
     PAYMENT_ACCOUNT -= sum*FIRM_TRANSFER_PAYMENT;
     
 
-    #ifndef _DEBUG_MODE
+    #ifdef _DEBUG_MODE
     if (PRINT_DEBUG)
     {
                    printf("\n\n Government_read_transfer_notifications ID: %d",ID);
@@ -288,7 +288,7 @@ int Government_read_subsidy_notifications()
     // Update the payment account
     PAYMENT_ACCOUNT -= sum;
     
-    #ifndef _DEBUG_MODE
+    #ifdef _DEBUG_MODE
     if (PRINT_DEBUG)
     {
                    printf("\n\n Government_read_subsidy_notifications ID: %d",ID);
@@ -311,7 +311,7 @@ int Government_send_account_update()
         // At the very end of agent government: update the bank account
         add_gov_to_central_bank_account_update_message(ID, PAYMENT_ACCOUNT);
 
-        #ifndef _DEBUG_MODE
+        #ifdef _DEBUG_MODE
         if (PRINT_DEBUG_EXP1 || PRINT_DEBUG)
         {
                         printf("\n\n Government_send_account_update ID: %d",ID);
@@ -357,7 +357,7 @@ int Government_resolve_unsold_bonds()
 
             add_issue_bonds_to_ecb_message(last_market_price*BOND.quantity, BOND.quantity);
 
-            #ifndef _DEBUG_MODE            
+            #ifdef _DEBUG_MODE            
             if (PRINT_DEBUG_EXP1 || PRINT_DEBUG)
             {
                 printf("\n\n Government_resolve_unsold_bonds.QUANTITATIVE_EASING ID: %d",ID);
@@ -368,7 +368,7 @@ int Government_resolve_unsold_bonds()
             //Assume that the ECB is FULLY accommodating the government's demand for fiat money:
             PAYMENT_ACCOUNT += last_market_price*BOND.quantity;
 
-            #ifndef _DEBUG_MODE
+            #ifdef _DEBUG_MODE
             if (PRINT_DEBUG_EXP1 || PRINT_DEBUG)
             {
                 printf("\n\t Payment account after easing: %f", PAYMENT_ACCOUNT);
@@ -422,7 +422,7 @@ int Government_monthly_budget_accounting()
         
         //Check: value of payment account should be equal to total_debt:
 
-        #ifndef _DEBUG_MODE
+        #ifdef _DEBUG_MODE
         if (PRINT_DEBUG && ((TOTAL_DEBT + PAYMENT_ACCOUNT) != 0.0))
             fprintf(stdout,"\n ERROR in Government: Total debt %2.5f is not equal to payment account %2.5f\n\n", TOTAL_DEBT, PAYMENT_ACCOUNT);
         #endif 
@@ -452,7 +452,7 @@ int Government_monthly_budget_accounting()
 
         PAYMENT_ACCOUNT += TOTAL_MONEY_FINANCING;
 
-        #ifndef _DEBUG_MODE
+        #ifdef _DEBUG_MODE
         if (PRINT_DEBUG_EXP1 || PRINT_DEBUG)
         {
             printf("\n\n Government_monthly_budget_accounting ID: %d",ID);
@@ -465,7 +465,7 @@ int Government_monthly_budget_accounting()
         }
         #endif 
         
-        // #ifndef _DEBUG_MODE
+        // #ifdef _DEBUG_MODE
         if (PRINT_DEBUG_FILE_EXP1)
         {
             filename = malloc(40*sizeof(char));
@@ -503,7 +503,7 @@ int Government_bonds_issuing_decision()
     //bond->quantity = bond->quantity + new_bonds_amount;
     BOND.quantity = BOND.quantity + new_bonds_amount;
 
-    #ifndef _DEBUG_MODE    
+    #ifdef _DEBUG_MODE    
     if (PRINT_DEBUG_EXP1 || PRINT_DEBUG)
     {
         printf("\n\n Government_bonds_issuing_decision ID: %d",ID);
@@ -529,7 +529,7 @@ int Government_monthly_resetting()
     MONTHLY_INVESTMENT_EXPENDITURE =0.0;
     MONTHLY_CONSUMPTION_EXPENDITURE =0.0;
 
-    #ifndef _DEBUG_MODE    
+    #ifdef _DEBUG_MODE    
     if (PRINT_DEBUG_GOV)
     { 
              printf("\n Government_monthly_resetting");
@@ -584,7 +584,7 @@ int Government_yearly_resetting()
     YEARLY_INVESTMENT_EXPENDITURE =0.0;
     YEARLY_CONSUMPTION_EXPENDITURE =0.0;
     
-    #ifndef _DEBUG_MODE    
+    #ifdef _DEBUG_MODE    
     if (PRINT_DEBUG_GOV)
     { 
         printf("\n Government_yearly_resetting");       
@@ -631,7 +631,7 @@ int Government_read_data_from_Eurostat()
         GDP_GROWTH = (GDP/old_gdp) -1;
     else GDP_GROWTH = 0.0; 
 
-    #ifndef _DEBUG_MODE        
+    #ifdef _DEBUG_MODE        
     if (PRINT_DEBUG_EXP1 || PRINT_DEBUG)
     {
         printf("\n\n Government_read_data_from_Eurostat ID: %d",ID);

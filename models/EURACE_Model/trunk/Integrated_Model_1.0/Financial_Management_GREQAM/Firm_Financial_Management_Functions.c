@@ -47,7 +47,7 @@ int Firm_compute_financial_payments()
         */
     }
 
-  //  #ifndef _DEBUG_MODE    
+  //  #ifdef _DEBUG_MODE    
   //  if (PRINT_DEBUG)
   //  { 
                // getchar();
@@ -64,7 +64,7 @@ int Firm_compute_financial_payments()
 int Firm_compute_income_statement()
   
 {
-    //  #ifndef _DEBUG_MODE        
+    //  #ifdef _DEBUG_MODE        
         FILE *file1;
         char *filename;
    // #endif
@@ -88,7 +88,7 @@ int Firm_compute_income_statement()
     if (CURRENT_SHARES_OUTSTANDING>0)
         EARNINGS_PER_SHARE = NET_EARNINGS/CURRENT_SHARES_OUTSTANDING;
 
-    #ifndef _DEBUG_MODE    
+    #ifdef _DEBUG_MODE    
     if (PRINT_DEBUG_EXP1 || PRINT_DEBUG)
     { 
         printf("\n\n Firm_compute_income_statement ID: %d",ID);
@@ -99,7 +99,7 @@ int Firm_compute_income_statement()
     }    
     #endif
     
-    // #ifndef _DEBUG_MODE    
+    // #ifdef _DEBUG_MODE    
     if (PRINT_DEBUG_FILE_EXP1)
     {
         filename = malloc(40*sizeof(char));
@@ -198,7 +198,7 @@ int Firm_compute_dividends()
     else
         CURRENT_DIVIDEND_PER_EARNINGS = 0.0;
 
-    #ifndef _DEBUG_MODE         
+    #ifdef _DEBUG_MODE         
     if (PRINT_DEBUG)
     { 
         printf("\n\n Firm_compute_dividends ID: %d",ID);
@@ -227,7 +227,7 @@ int Firm_compute_total_financial_payments()
     TOTAL_PAYMENTS = TOTAL_INTEREST_PAYMENT + TOTAL_DEBT_INSTALLMENT_PAYMENT
             + TOTAL_DIVIDEND_PAYMENT + TAX_PAYMENT + CALC_PRODUCTION_COSTS;
 
-    #ifndef _DEBUG_MODE         
+    #ifdef _DEBUG_MODE         
     if (PRINT_DEBUG)
     { 
         printf("\n\n Firm_compute_total_financial_payments ID: %d",ID);
@@ -286,7 +286,7 @@ int Firm_compute_balance_sheet()
         DEBT_EARNINGS_RATIO = TOTAL_DEBT/NET_EARNINGS;
     else DEBT_EARNINGS_RATIO = 0.0;
     
-    #ifndef _DEBUG_MODE
+    #ifdef _DEBUG_MODE
     if (PRINT_DEBUG_EXP1 || PRINT_DEBUG)
     { 
         printf("\n\n Firm_compute_balance_sheet ID: %d",ID);
@@ -337,7 +337,7 @@ int Firm_compute_total_liquidity_needs()
         EXTERNAL_FINANCIAL_NEEDS = TOTAL_FINANCIAL_NEEDS - PAYMENT_ACCOUNT;
     }
 
-    #ifndef _DEBUG_MODE
+    #ifdef _DEBUG_MODE
     if (PRINT_DEBUG_EXP1 || PRINT_DEBUG)
     {
         printf("\n Firm_compute_total_liquidity_needs ID: %d",ID);
@@ -382,7 +382,7 @@ int Firm_check_financial_and_bankruptcy_state()
         }
     }
 
-    #ifndef _DEBUG_MODE    
+    #ifdef _DEBUG_MODE    
     if (PRINT_DEBUG)
     {
         printf("\n Firm_check_financial_and_bankruptcy_state ID: %d",ID);
@@ -415,7 +415,7 @@ int Firm_set_bankruptcy_illiquidity()
     
     TOTAL_VALUE_LOCAL_INVENTORY = 0.0;
     
-    #ifndef _DEBUG_MODE    
+    #ifdef _DEBUG_MODE    
     if (PRINT_DEBUG_EXP1 || PRINT_DEBUG)
     {
         printf("\n\n Firm_set_bankruptcy_illiquidity ID: %d",ID);
@@ -457,7 +457,7 @@ int Firm_in_financial_crisis()
             - (TOTAL_INTEREST_PAYMENT + TOTAL_DEBT_INSTALLMENT_PAYMENT
                     + TAX_PAYMENT);
 
-    #ifndef _DEBUG_MODE    
+    #ifdef _DEBUG_MODE    
     if (PRINT_DEBUG_EXP1 || PRINT_DEBUG)
     {
         printf("\n\n Firm_in_financial_crisis ID: %d",ID);
@@ -481,7 +481,7 @@ int Firm_in_financial_crisis()
         //Code should never reach this point
          printf("\nERROR in Firm_in_financial_crisis: financial crisis not resolved. \n");
 
-    #ifndef _DEBUG_MODE
+    #ifdef _DEBUG_MODE
     if (PRINT_DEBUG_EXP1 || PRINT_DEBUG)
     {               
         printf("\n\t new TOTAL_DIVIDEND_PAYMENT: %f",TOTAL_DIVIDEND_PAYMENT);
@@ -499,7 +499,7 @@ int Firm_in_financial_crisis()
  */
 int Firm_not_in_bankruptcy()
 {   
-    #ifndef _DEBUG_MODE    
+    #ifdef _DEBUG_MODE    
     if (PRINT_DEBUG_EXP1 || PRINT_DEBUG) printf("\n\n Firm_not_in_bankruptcy");
     #endif
         
@@ -542,7 +542,7 @@ int Firm_execute_financial_payments()
     //step 2: actual interest_payments and installment_payments
     //Sending installment_message to banks at which the firm has a loan 
 
-    #ifndef _DEBUG_MODE
+    #ifdef _DEBUG_MODE
     if (PRINT_DEBUG_EXP1 || PRINT_DEBUG)
     {
         printf("\n Firm_execute_financial_payments ID: %d",ID);
@@ -578,7 +578,7 @@ int Firm_execute_financial_payments()
             //decrease the residual_var of the loan with the var_per_installment:
             LOANS.array[i].residual_var -= LOANS.array[i].var_per_installment;
 
-            #ifndef _DEBUG_MODE
+            #ifdef _DEBUG_MODE
             if (PRINT_DEBUG_EXP1 || PRINT_DEBUG)
             {
                 printf("\n\t repayment LOAN: %d",i);
@@ -723,12 +723,12 @@ int Firm_bankruptcy_insolvency_procedure()
     double target_equity=0.0;
     double ipo_amount=0.0;
   
-    #ifndef _DEBUG_MODE  
+    #ifdef _DEBUG_MODE  
         char * filename;
         FILE * file1;
     #endif
 
-    #ifndef _DEBUG_MODE
+    #ifdef _DEBUG_MODE
     if (PRINT_LOG)
     {
         //Start an empty string for the filename
@@ -816,7 +816,7 @@ if (BANKRUPTCY_IDLE_COUNTER == CONST_BANKRUPTCY_IDLE_PERIOD - 1)
     //Set the IPO_AMOUNT to raise:
    
   
-    #ifndef _DEBUG_MODE
+    #ifdef _DEBUG_MODE
     if(PRINT_DEBUG)
     {
         printf("\n In function Firm_bankruptcy_insolvency_procedure:\n"
@@ -914,7 +914,7 @@ int Firm_reset_bankruptcy_flags()
 {
      FILE *file1;
     char *filename;
-    #ifndef _DEBUG_MODE
+    #ifdef _DEBUG_MODE
     if (PRINT_DEBUG_EXP1 || PRINT_DEBUG)
     {
         printf("\n\n Firm_reset_bankruptcy_flags ID: %d",ID);
@@ -944,7 +944,7 @@ int Firm_reset_bankruptcy_flags()
     }    
     }
 
-    #ifndef _DEBUG_MODE    
+    #ifdef _DEBUG_MODE    
     if (PRINT_DEBUG_EXP1 || PRINT_DEBUG)
     {
         printf("\n\t BANKRUPTCY_INSOLVENCY_STATE: %d BANKRUPTCY_ILLIQUIDITY_STATE: %d",BANKRUPTCY_INSOLVENCY_STATE,BANKRUPTCY_ILLIQUIDITY_STATE);
@@ -971,7 +971,7 @@ int Firm_compute_and_send_stock_orders()
     
    add_order_message(ID, ID, limit_price, quantity);
 
-    #ifndef _DEBUG_MODE
+    #ifdef _DEBUG_MODE
     if (PRINT_DEBUG)
     {
         printf("\n\n Firm_compute_and_send_stock_orders ID: %d",ID);
@@ -1000,7 +1000,7 @@ int Firm_read_stock_transactions()
     EXTERNAL_FINANCIAL_NEEDS = 0.0;
     }
 
-    #ifndef _DEBUG_MODE    
+    #ifdef _DEBUG_MODE    
     if (PRINT_DEBUG) 
     {
         printf("\n\n Firm_read_stock_transactions ID: %d",ID);
@@ -1023,7 +1023,7 @@ int Firm_read_stock_transactions()
         //Decrease external financial needs with the finances obtained
         EXTERNAL_FINANCIAL_NEEDS -= finances;
         
-        #ifndef _DEBUG_MODE
+        #ifdef _DEBUG_MODE
         if (PRINT_DEBUG) 
         {
             printf("\n\t price: %f quantity: %d",order_status_message->price,order_status_message->quantity);

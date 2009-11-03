@@ -17,7 +17,7 @@ int Bank_read_policy_announcements()
         }
     FINISH_POLICY_ANNOUNCEMENT_MESSAGE_LOOP
 
-    #ifndef _DEBUG_MODE    
+    #ifdef _DEBUG_MODE    
     if (PRINT_DEBUG_CREDIT)
     {
         printf("\n Bank_read_policy_announcements ID: %d",ID);

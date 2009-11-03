@@ -125,7 +125,7 @@ int Household_update_its_portfolio()
   Order *currentOrder;
   float transactions;
   
-    // #ifndef _DEBUG_MODE  
+    // #ifdef _DEBUG_MODE  
   char * filename;
   FILE * file1;
   
@@ -160,7 +160,7 @@ int Household_update_its_portfolio()
      info=get_next_order_status_message(info);   
   }
   
-  // #ifndef _DEBUG_MODE       
+  // #ifdef _DEBUG_MODE       
    if (PRINT_DEBUG_FILE_EXP1)
     {                       
         filename = malloc(40*sizeof(char));

@@ -82,7 +82,7 @@ int Household_read_policy_announcements()
     }
     FINISH_POLICY_ANNOUNCEMENT_MESSAGE_LOOP
 
-    #ifndef _DEBUG_MODE    
+    #ifdef _DEBUG_MODE    
     if (PRINT_DEBUG_CONSUMPTION)
     {
         printf("\n Household_read_policy_announcements ID: %d",ID);
@@ -114,7 +114,7 @@ int Household_receive_data()
         }
     FINISH_BANKRUPTCY_MESSAGE_LOOP  
 
-    #ifndef _DEBUG_MODE    
+    #ifdef _DEBUG_MODE    
     if (PRINT_DEBUG)
     {
         printf("\n Household receive data ID: %d",ID);     

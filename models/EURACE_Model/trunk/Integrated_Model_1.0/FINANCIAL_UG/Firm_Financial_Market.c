@@ -14,7 +14,7 @@ int Firm_send_info(void)
      earnings_exp = EARNINGS;
      earnings_payout_exp = TOTAL_DIVIDEND_PAYMENT;
 
-     //#ifndef _DEBUG_MODE
+     //#ifdef _DEBUG_MODE
      if (PRINT_DEBUG)
      {
      
