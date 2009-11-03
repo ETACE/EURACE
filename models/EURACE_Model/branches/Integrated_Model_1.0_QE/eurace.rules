@@ -1,0 +1,234 @@
+# (Example rules for sim_validator)
+#
+# $Id: test.rules 1892 2009-06-18 16:08:55Z lsc $
+# 
+# Copyright (c) 2009 STFC Rutherford Appleton Laboratory 
+# Author: Lee-Shawn Chin 
+# Date  : June 2009
+# 
+# NOTE: This is a proof-of-concept implementation. It was not designed for
+#       production use but merely to explore what is possible
+#       Use at your own risk ;)
+#
+# Edited: Sander van der Hoog
+# Date  : July 2009
+#
+#########################################################################
+::VARIABLES
+
+#Balance sheet: Firm
+firm_payment_account                = Firm(payment_account)
+firm_cum_revenue                    = Firm(cum_revenue)
+firm_current_shares_outstanding     = Firm(current_shares_outstanding)
+firms_total_loans                   = Firm(loans[].loan_value)
+firm_tax_payment                    = Firm(tax_payment)
+firm_debt_installments              = Firm(total_debt_installment_payment)
+firm_interest_payments_to_banks     = Firm(total_interest_payment)
+firm_total_dividends                = Firm(total_dividend_payment)
+firm_total_value_local_inventory    = Firm(total_value_local_inventory)
+firm_total_value_capital_stock      = Firm(total_value_capital_stock)
+firm_total_debt                     = Firm(total_debt)
+firm_equity                         = Firm(equity)
+firm_active                         = Firm(active)
+firm_total_sold_quantity_volume     = Firm(sold_quantity_in_calendar_month)
+firm_capital_costs                  = Firm(capital_costs)
+
+#Balance sheet: IGFirm
+igfirm_payment_account              = IGFirm(payment_account)
+igfirm_shares_outstanding           = IGFirm(outstanding_shares)
+igfirm_tax_payment                  = IGFirm(tax_payment)
+igfirm_net_profit                   = IGFirm(net_profit) 
+igfirm_dividend_per_share           = IGFirm(current_dividend_per_share)
+igfirm_monthly_revenues             = IGFirm(earnings) 
+igfirm_cum_energy_costs             = IGFirm(cum_energy_costs)
+
+#Balance sheet: Household
+hh_payment_account                  = Household(payment_account)
+household_expenditure               = Household(monthly_consumption_expenditure)
+household_assets                    = Household(assetsowned[].quantity)
+household_tax_payment               = Household(tax_payment)
+household_dividend_daily            = Household(received_dividend)
+
+#Balance sheet: Bank
+bank_deposits                       = Bank(deposits)
+bank_credit                         = Bank(total_credit)
+bank_cash                           = Bank(cash)
+bank_equity                         = Bank(equity)
+bank_payment_account                = Bank(cash)
+bank_tax_payment                    = Bank(taxes)
+bank_loan_installments              = Bank(firm_loan_installments)
+bank_interest_payments_from_firms   = Bank(firm_interest_payments)
+bank_ecb_debt                       = Bank(ecb_debt)
+bank_ecb_interest_payment           = Bank(ecb_interest_payment)
+bank_current_shares_outstanding     = Bank(current_shares_outstanding)
+bank_total_dividends                = Bank(total_dividends)
+
+#Balance sheet: ECB
+ecb_fiat_money_banks                = Central_Bank(fiat_money_banks)
+ecb_fiat_money_govs                 = Central_Bank(fiat_money_govs)
+ecb_fiat_money                      = Central_Bank(fiat_money)
+#ecb_bank_interest                  = Central_Bank(bank_interest)
+ecb_bond_holdings_value             = Central_Bank(bond_holdings_value)
+ecb_deposits                        = Central_Bank(ecb_deposits)
+ecb_cash                            = Central_Bank(cash)
+
+#Balance sheet: Government
+govt_monthly_cons_expenditure       = Government(monthly_consumption_expenditure)
+govt_outstanding_bonds              = Government(bond.nr_outstanding)
+govt_monthly_tax_revenues           = Government(monthly_tax_revenues)
+gov_payment_account                 = Government(payment_account)
+gov_total_debt                      = Government(total_debt)
+gov_value_bonds                     = Government(bond.face_value)
+
+#Eurostat
+eurostat_no_firms                   = Eurostat(no_firms)
+eurostat_no_firm_deaths             = Eurostat(no_firm_deaths)
+eurostat_monthly_sold_quantity      = Eurostat(monthly_sold_quantity)
+#eurostat_total_sold_quantity_volume= Eurostat(export_volume_matrix[])
+#eurostat_total_sold_quantity_value = Eurostat(export_value_matrix[])
+eurostat_monthly_investment_value   = Eurostat(monthly_investment_value)
+eurostat_monthly_gdp                = Eurostat(gdp)
+
+#Mall
+#mall_total_sold_quantity_volume    = Mall(export_volume_matrix[])
+#mall_total_sold_quantity_value     = Mall(export_value_matrix[])
+
+#########################################################################
+::CONSTANTS
+
+# while not necessary, using all caps for constants help us to identify
+# them within the rules
+PRECISION = 1.0 # tolerance when comparing doubles
+
+#########################################################################
+::RULES
+
+
+########################## Balance Sheets ################################
+#RULE 1: VERIFIED if synchronized day of month to act
+#Firm balance sheet: assets and liabilities
+#firm_payment_account + firm_total_value_local_inventory + firm_total_value_capital_stock = firm_total_debt + firm_equity
+abs( firm_payment_account + firm_total_value_local_inventory + firm_total_value_capital_stock - firm_total_debt - firm_equity)< PRECISION
+
+#RULE 2: VERIFIED
+#IGFirm balance sheet: assets and liabilities, all net profits are paid in dividends
+#igfirm_net_profit = igfirm_dividend_per_share*igfirm_shares_outstanding
+abs( igfirm_net_profit - igfirm_dividend_per_share*igfirm_shares_outstanding)< PRECISION
+
+#RULE 3: VERIFIED
+#Bank balance sheet: assets and liabilities
+#bank_cash + bank_credit = bank_equity + bank_ecb_debt + bank_deposits
+abs( bank_cash + bank_credit - bank_equity - bank_ecb_debt - bank_deposits)< PRECISION
+
+#RULE 4: VERIFIED
+#Government total debt is the value of its outstanding bonds
+#gov_total_debt = gov_value_bonds*govt_outstanding_bonds
+abs( gov_total_debt - gov_value_bonds*govt_outstanding_bonds)< PRECISION
+
+#RULE 5: VERIFIED The difference is constant and equal to the initial value of ecb_fiat_money_govs 
+#ECB: The issued fiat money to government(s) equals the total value of bond holdings of the ECB
+#ecb_bond_holdings_value + ecb_cash = ecb_fiat_money_govs + ecb_fiat_money_banks
+abs( ecb_bond_holdings_value + ecb_cash - ecb_fiat_money_banks - ecb_fiat_money_govs)< PRECISION
+
+
+########################## General Rules ################################
+#RULE 6: VERIFIED
+#Payment accounts: aggregate bank deposits equals the sum of payment accounts in agent memory
+#bank_deposits = firm_payment_account + igfirm_payment_account + hh_payment_account
+abs( firm_payment_account + igfirm_payment_account + hh_payment_account - bank_deposits) < PRECISION
+
+#RULE 7: VERIFIED
+#Credit money: aggregate Bank credit outstand equals total loans to firms
+#bank_credit = firms_total_loans
+abs( bank_credit - firms_total_loans) < PRECISION
+
+#RULE 8: VERIFIED
+#Monthly consumption expenditures: GDP = cum_revenues + investment_costs, so Eurostat Consumption = gdp - investment_value
+#eurostat_monthly_gdp = eurostat_monthly_investment_value + household_expenditure + govt_monthly_cons_expenditure
+abs( eurostat_monthly_gdp - eurostat_monthly_investment_value - household_expenditure - govt_monthly_cons_expenditure ) < PRECISION 
+
+#RULE 9: VERIFIED
+#Total number of shares outstanding equals the total number of shares in household portfolios
+#Firm shares + IGFirm shares + Bank shares + Gov bonds = Household's holdings of shares and bonds (+ ECB's holdings of Gov bonds?)
+#household_assets = firm_current_shares_outstanding + igfirm_shares_outstanding + bank_current_shares_outstanding + govt_outstanding_bonds
+abs( firm_current_shares_outstanding + igfirm_shares_outstanding + bank_current_shares_outstanding + govt_outstanding_bonds - household_assets) < PRECISION
+
+#RULE 10: FAILED
+#Debt installment payments by firms to banks:
+#firm_debt_installments = bank_loan_installments
+abs( firm_debt_installments - bank_loan_installments) < PRECISION
+
+#RULE 11: FAILED
+#Interest payments by firms to banks:
+#firm_interest_payments_to_banks = bank_interest_payments_from_firms
+abs( firm_interest_payments_to_banks - bank_interest_payments_from_firms) < PRECISION
+
+#RULE 12: VERIFIED
+#Taxes paid and received: 
+#govt_monthly_tax_revenues = firm_tax_payment + igfirm_tax_payment + household_tax_payment + bank_tax_payment
+abs( firm_tax_payment + igfirm_tax_payment + household_tax_payment + bank_tax_payment - govt_monthly_tax_revenues) < PRECISION
+
+#RULE 13: VERIFIED
+#Deposits at ECB
+#ecb_deposits = bank_payment_account + gov_payment_account
+abs( bank_payment_account + gov_payment_account - ecb_deposits)< PRECISION
+
+#RULE 14: VERIFIED
+#Check the number of active firms: 
+#eurostat_no_firms = firm_active + eurostat_no_firm_bankruptcies
+abs( eurostat_no_firms - firm_active - eurostat_no_firm_deaths) < PRECISION
+
+#RULE 15: FAILED, reason: likely the resetting of household_dividend_daily is too soon
+#Daily dividend payments send and received are equal.
+#firm_total_dividends + igfirm_total_dividends + bank_total_dividends = household_dividend_daily
+abs( firm_total_dividends + igfirm_dividend_per_share*igfirm_shares_outstanding + bank_total_dividends - household_dividend_daily) < PRECISION
+
+#RULE 16: VERIFIED
+#Material quantity conservation rule: Eurostat total sold quantity compared with firm data on number of goods sold (in volume).
+#eurostat_monthly_sold_quantity = firm_total_sold_quantity_volume
+abs( eurostat_monthly_sold_quantity - firm_total_sold_quantity_volume ) < PRECISION
+
+#RULE 17: VERIFIED
+#Investments in monetary value: Eurostat data (aggregated across the firms' investment costs) equals the IGFirm revenues.
+#eurostat_monthly_investment_value = igfirm_monthly_revenues
+abs( eurostat_monthly_investment_value - igfirm_monthly_revenues ) < PRECISION
+
+#RULE 18: VERIFIED The difference is constant and equal to the initial value of ecb_fiat_money_govs
+#The Banks' aggregate ECB debt is found on the ECB balance sheet (fiat_money_banks, LHS), and on the banks' balance sheet (bank_ecb_debt, RHS).
+#Similarly, the governments' debts are on the ECB balance sheet (fiat_money_govs, LHS), and equals the value of the ECB bond holdings (bond_holdings_value, RHS).
+#ecb_fiat_money_banks + ecb_fiat_money_govs = ecb_bond_holdings_value + bank_ecb_debt
+abs( ecb_fiat_money_banks + ecb_fiat_money_govs - ecb_bond_holdings_value - bank_ecb_debt)< PRECISION
+
+#RULE 19: VERIFIED
+#ECB fiat money is by definition the sum of the fiat money created for governments and for banks.
+#ecb_fiat_money = ecb_fiat_money_govs + ecb_fiat_money_banks
+abs( ecb_fiat_money - ecb_fiat_money_govs - ecb_fiat_money_banks) < PRECISION
+
+#RULE 20: VERIFIED
+#Monetary conservation rule
+#All deposits in the banking sector plus bank equity, plus the money in the public sector (government payment account), 
+#should equal the credit money created by the banks plus the fiat money created by the central bank.
+#bank_deposits + bank_equity + gov_payment_account + ecb_cash == bank_credit + ecb_fiat_money 
+abs( bank_deposits + bank_equity + gov_payment_account + ecb_cash - bank_credit - ecb_fiat_money) < PRECISION
+
+
+#RULE 21:
+#Consistency between IGFirm sales revenues and Firm capital costs
+abs( firm_capital_costs - igfirm_monthly_revenues) < PRECISION
+
+######## RULES THAT CANNOT BE CHECKED YET (since sums over arrays are not possible)
+#RULE XX: TO BE CHECKED Should be verified with longer runs
+#Bank's interest payments on central bank loans:  FAILED : both are 0
+#abs( bank_ecb_interest_payment - ecb_bank_interest) < PRECISION
+
+#RULE XX: TO BE CHECKED
+#Eurostat sum of export_volume_matrix compared with firm data (in volume)
+#abs( eurostat_total_sold_quantity_volume - firm_total_sold_quantity_volume ) < PRECISION
+
+#RULE XX: TO BE CHECKED 
+#Comparing Eurostat export matrix with Mall export matrix (in volume)
+#abs( eurostat_total_sold_quantity_value - mall_total_sold_quantity_volume ) < PRECISION
+
+#RULE XX: TO BE CHECKED
+#Comparing Eurostat export matrix with Mall export matrix (in value)
+#abs( eurostat_total_sold_quantity_value - mall_total_sold_quantity_value ) < PRECISION
