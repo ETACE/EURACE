@@ -94,7 +94,7 @@ int IGFirm_send_quality_price_info()
             //At the end of the time interval there is a down_shock only if the shock is set to be symmetric:
             if ((DAY==ENERGY_SHOCK_END)&&(SYMMETRIC_SHOCK==1))
             {   
-                #ifndef _DEBUG_MODE
+                #ifdef _DEBUG_MODE
                     if(PRINT_DEBUG) printf("\nIn IGFirm_send_quality_price_info: Downward shock due to SYMMETRIC_SHOCK==1\n");
                 #endif
 

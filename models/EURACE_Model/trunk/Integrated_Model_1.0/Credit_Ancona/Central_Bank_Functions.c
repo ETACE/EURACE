@@ -26,7 +26,7 @@ int Central_Bank_monetary_policy()
     
     add_policy_rate_message(ECB_INTEREST_RATE);
 
-    #ifndef _DEBUG_MODE    
+    #ifdef _DEBUG_MODE    
     if (PRINT_DEBUG)
     {
         printf("\n Central_Bank_monetary_policy ID: %d",ID); 
@@ -68,7 +68,7 @@ int Central_Bank_read_account_update()
 {
     int i;
 
-    #ifndef _DEBUG_MODE
+    #ifdef _DEBUG_MODE
        int bank_mesg_count=0; //debug
         int gov_mesg_count=0; //debug
     #endif
@@ -96,7 +96,7 @@ int Central_Bank_read_account_update()
             }
         }
         
-        #ifndef _DEBUG_MODE
+        #ifdef _DEBUG_MODE
         if(PRINT_DEBUG_CREDIT)
             bank_mesg_count++;        
         #endif
@@ -106,7 +106,7 @@ int Central_Bank_read_account_update()
         CASH += bank_interest_payment_message->bank_interest_amount;
     FINISH_BANK_INTEREST_PAYMENT_MESSAGE_LOOP
 
-    #ifndef _DEBUG_MODE
+    #ifdef _DEBUG_MODE
         if(PRINT_DEBUG_CREDIT)
         {                        
             if(bank_mesg_count!=ACCOUNTS_BANKS.size)
@@ -132,7 +132,7 @@ int Central_Bank_read_account_update()
             ECB_DEPOSITS += gov_to_central_bank_account_update_message->payment_account;
         }
         
-        #ifndef _DEBUG_MODE        
+        #ifdef _DEBUG_MODE        
         if(PRINT_DEBUG_CREDIT)
             gov_mesg_count++;    
         #endif
@@ -144,7 +144,7 @@ int Central_Bank_read_account_update()
         CASH += payment_coupons_message->coupon*NR_GOV_BONDS;
     FINISH_PAYMENT_COUPONS_MESSAGE_LOOP
 */
-    #ifndef _DEBUG_MODE
+    #ifdef _DEBUG_MODE
         if(PRINT_DEBUG_CREDIT)
         {                        
             if(gov_mesg_count!=ACCOUNTS_GOVS.size)
@@ -156,7 +156,7 @@ int Central_Bank_read_account_update()
                 printf("\n Nr of mesg equal to size of gov account array.\n");
         }
     #endif        
-   // #ifndef _DEBUG_MODE        
+   // #ifdef _DEBUG_MODE        
         if (PRINT_DEBUG_FILE_EXP1)
         {                       
             filename = malloc(40*sizeof(char));

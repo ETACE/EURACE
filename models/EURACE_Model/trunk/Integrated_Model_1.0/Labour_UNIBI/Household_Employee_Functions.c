@@ -670,7 +670,7 @@ int Household_send_transfer_notification()
  */
 int Household_send_tax_payment()
 {
-    // #ifndef _DEBUG_MODE  
+    // #ifdef _DEBUG_MODE  
         FILE *file1=NULL;
         char *filename="";
    // #endif

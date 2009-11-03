@@ -103,7 +103,7 @@ int Firm_calc_input_demands_2()
         /*This computes the financial needings for production*/
         PLANNED_PRODUCTION_COSTS = EMPLOYEES_NEEDED*MEAN_WAGE*(1.04) + DEMAND_CAPITAL_STOCK*ACTUAL_CAP_PRICE;
     
-    #ifndef _DEBUG_MODE    
+    #ifdef _DEBUG_MODE    
     if (PRINT_DEBUG_EXP1 || PRINT_DEBUG)
     {
         printf("\n\n Firm_calc_input_demands_2 ID: %d",ID);
@@ -123,7 +123,7 @@ int Firm_calc_input_demands_2()
 int Firm_set_quantities_zero()
 {
 
-    #ifndef _DEBUG_MODE    
+    #ifdef _DEBUG_MODE    
     if (PRINT_DEBUG)
     {
         printf("\n Firm_set_quantities_zero ID: %d",ID);
@@ -292,7 +292,7 @@ int Firm_calc_production_quantity()
         //Set planned production value that is retained in memory during the month:
         PLANNED_OUTPUT = PLANNED_PRODUCTION_QUANTITY; 
         
-        #ifndef _DEBUG_MODE
+        #ifdef _DEBUG_MODE
         if (PRINT_DEBUG_EXP1 || PRINT_DEBUG)
         {
             printf("\n Firm_calc_production_quantity ID: %d",ID);
@@ -433,7 +433,7 @@ int Firm_calc_input_demands()
         
         PLANNED_PRODUCTION_COSTS = EMPLOYEES_NEEDED*(1.04)*MEAN_WAGE + DEMAND_CAPITAL_STOCK*ACTUAL_CAP_PRICE;
 
-        #ifndef _DEBUG_MODE
+        #ifdef _DEBUG_MODE
         if (PRINT_DEBUG_EXP1 || PRINT_DEBUG)
         { 
             printf("\n Firm_calc_input_demands ID: %d",ID);
@@ -608,7 +608,7 @@ int Firm_execute_production()
     //Set actual production value that is retained  in memory during the month:
     OUTPUT = PRODUCTION_QUANTITY;
 
-    #ifndef _DEBUG_MODE    
+    #ifdef _DEBUG_MODE    
     if (PRINT_DEBUG_EXP1 || PRINT_DEBUG)
     {
         printf("\n\n Firm_execute_production ID: %d",ID);
@@ -705,7 +705,7 @@ int Firm_calc_pay_costs()
     remove_double(&LAST_PLANNED_PRODUCTION_QUANTITIES,0);
     add_double(&LAST_PLANNED_PRODUCTION_QUANTITIES,PLANNED_PRODUCTION_QUANTITY); 
 
-    #ifndef _DEBUG_MODE    
+    #ifdef _DEBUG_MODE    
     if (PRINT_DEBUG || PRINT_DEBUG_EXP1)
     {
         printf("\n\n Firm_calc_pay_costs ID: %d",ID);
