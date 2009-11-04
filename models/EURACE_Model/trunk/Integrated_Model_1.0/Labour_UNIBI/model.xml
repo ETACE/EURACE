@@ -903,7 +903,7 @@ of employees and the number of vacancies</description>
      <inputs>
       <input>
        <messageName>vacancies</messageName>
-       <filter>
+      <!-- <filter>
         <lhs>
          <value>a.region_id</value>
         </lhs>
@@ -911,7 +911,7 @@ of employees and the number of vacancies</description>
         <rhs>
          <value>m.region_id</value>
         </rhs>
-       </filter>
+       </filter>-->
       </input>
      </inputs>
      <outputs>
@@ -1009,7 +1009,7 @@ reservation wage</description>
      <inputs>
       <input>
        <messageName>vacancies2</messageName>
-       <filter>
+       <!--<filter>
         <lhs>
          <value>a.region_id</value>
         </lhs>
@@ -1017,7 +1017,7 @@ reservation wage</description>
         <rhs>
          <value>m.region_id</value>
         </rhs>
-       </filter>
+       </filter>-->
       </input>
      </inputs>
      <outputs>
