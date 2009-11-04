@@ -415,7 +415,7 @@ int Household_UNEMPLOYED_read_job_vacancies_and_send_applications_2()
                         {
                             add_vacancy(&vacancy_list,
                             vacancies2_message->firm_id, vacancies2_message->region_id,
-                            (wage_offer - REGION_COST);
+                            (wage_offer - REGION_COST));
 
 			/*add_vacancy(&vacancy_list,
                             vacancies2_message->firm_id, vacancies2_message->region_id,
