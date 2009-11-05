@@ -1,0 +1,927 @@
+/***********************************
+Description: 
+This file contains details of various changes made to the different versions.
+15/05/2008: Start of logfile
+*************************************/
+
+------------------------------------------------------------------------------------------
+Sander, rev 925
+
+New functions:
+
+Government_UG/Government_Functions.c:   Government_send_tax_rates
+Statistical_Office_UNIBI/Eurostat_Functions.c: Eurostat_read_tax_rates
+Statistical_Office_UNIBI/Household_Statistics_Functions.c: Household_receive_data
+Labour_UNIBI/Firm_Employer_Functions.c: Firm_receive_data
+
+New tax rate messages:
+
+Government_UG/model.xml
+- Government sends government_tax_rates_message to Eurostat
+
+Statistical_Office_UNIBI/model.xml
+- Eurostat sends eurostat_tax_rates_message to Household, Firm
+- HH reads government_tax_rates_message and eurostat_tax_rates_message
+- Firm reads government_tax_rates_message and eurostat_tax_rates_message
+-------------------------------------------------------------------------------------------
+Sander, rev 940
+
+Moved id, payment_account to upper level xml.
+First successful parsing wit xParser 0.15.6
+-------------------------------------------------------------------------------------------
+Sander, rev 941
+
+Added TimeUnits: Quarterly = 3 monthly, yearly = 12 monthly 
+Moved Eurostat_read_tax_data upwards to beginning, condition: Period: yearly, phase: 0
+-------------------------------------------------------------------------------------------
+Sander, rev 942
+
+- moved some vars top top xml
+- tax rates is now a yearly message from government
+- Firms read tax_rates message from gov in function Firm_read_tax_rates which is run yearly.
+- IGFirms read tax_rates message from gov in function IGFirm_read_tax_rates which is run yearly.
+- Households read tax_rates message from gov in function Household_read_tax_rates which is run yearly.
+-------------------------------------------------------------------------------------------
+Sander, rev 985, 986 
+
+Firm_fin_management.c:
+- Firm_in_bankruptcy returns 1 to remove the agent from simulation
+- Added debt_equity_ratio, debt_earnings_ratio to firm memory
+
+Statistical_Office_UNIBI/model.xml:
+- added a new message that contains data from the firm's balance sheet:
+    
+    firm_balance_sheet_data_message(cum_revenue, investment_costs, net_earnings, total_debt, total_assets, equity).
+
+This message is send in the function Firm_send_data_to_Eurostat, together with the firm_send_data_message.
+
+- added 8 new memory variables to Eurostat agent:
+    gdp
+    total_earnings
+    total_debt
+    total_assets
+    total_equity
+    average_debt_earnings_ratio
+    average_debt_equity_ratio  
+    wage_profit_ratio
+
+- added those elements to the struct FIRM_DATA as well
+
+Statistical_Office_UNIBI/Eurostat_Functions.c:
+
+fn Eurostat_Initialization():
+- added 8 zeros to the line add_firm_data(&REGION_FIRM_DATA,...)
+
+fn: Eurostat_calculate_data()
+- initialized the elements to 0 in the Eurostat memory at start of each iteration
+- added 8 zeros to the line add_firm_data(&REGION_FIRM_DATA,...)
+- constructed 3 macrovariables, both regional and global, in the Eurostat memory:
+    AVERAGE_DEBT_EARNINGS_RATIO = TOTAL_DEBT/TOTAL_EARNINGS;
+    AVERAGE_DEBT_EQUITY_RATIO = TOTAL_DEBT/TOTAL_EQUITY;
+    WAGE_PROFIT_RATIO = FIRM_AVERAGE_WAGE/TOTAL_EARNINGS;
+-------------------------------------------------------------------------------------------
+Sander, rev 987
+
+- moved data from firm_balance_sheet_data_message to firm_send_data_message.
+-------------------------------------------------------------------------------------------
+Sander, rev 1023
+14/6/08
+
+Changes to euracemodel.xml:
+- Credit_UNIBI/model-sander.xml: scenario with different interest rates per region
+- Statistical_Office_UNIBI/model-new.xml: changes to memory of Eurostat, messages, and order of functions.
+
+
+1. Why is the function Firm_send_data_to_Eurostat run with phase 19 and not phase 0?
+
+It should be on the last day of the month, so on day 20, 40, ...
+Therefore: Period: Monthly, Phase: 0 ?
+It seems that this is what it should be, if I compare the planned production and executed production with the data send to Eurostat.
+
+
+2. New feature: Eurostat now also computes regional sums and total sums of production macrovariables.
+
+* Added message variables to Eurostat:
+    MONTHLY_SOLD_QUANTITY
+    MONTHLY_OUTPUT
+    MONTHLY_REVENUE
+    MONTHLY_PLANNED_OUTPUT
+
+* Added message variables to Firm:
+    output (equal to production_quantity)
+    planned_output (equal to planned_production_quantity)
+
+* Added message variables to Firm_send_data_message:
+    cum_total_sold_quantity
+    output
+    planned_output
+
+
+3. Accounting at the end of an iteration instead of at the beginning
+
+In order to have correct monthly data in Eurostat, the accounting of the firm needs to be done at the end of the month. The functions firms_compute_income_statement and balance sheet were at the beginning, but are now at the end of the iteration, so that all firms compute their data at the end of the month, instead of on the first day of the next month. This means that when they send their data to Eurostat, the message includes the most up-to-date financial data and Eurostat can compute the correct monthly macroeconomic statistics (otherwise the statistics refer to the previous month!). The computation of the liquidity needs for paying the production and financial commitments remains at the beginning of the iteration.
+
+Each iteration now starts with:
+
+(Period: Monthly, Phase: day_of_month_to_act)
+Firm_calc_production_quantity
+Firm_calc_input_demands
+Firm_compute_total_liquidity_needs
+etc.
+
+At the end of an iteration, after Fim_calc_revenue (every day), we have:
+
+(Period: Monthly, Phase: day_of_month_to_act)
+Firm_compute_sales_statistics
+Firm_compute_financial_payments
+Firm_compute_income_statement
+Firm_compute_dividends
+Firm_compute_total_financial_payments
+Firm_compute_balance_sheet
+
+
+4. Order of states in the stategraph
+After Firm_calc_revenue: state 13a
+state 13a -> state 13b: Firm_compute_sales_statistics
+state 13b -> state 13c: all the financial management stuff
+From state 13c: Firm_update_specific_skills_of_workers
+There is an idle going from 13a to 14 in case of not(day_of_month_to_act)
+
+5. The resetting of counters:
+
+    //Reset the counters
+    CUM_TOTAL_SOLD_QUANTITY = 0.0;
+    CUM_REVENUE = 0.0;        
+
+This has to be done at the start of the month, so it is moved from 
+Firm_calculate_income_statement to Firm_calc_production_quantity.
+
+6. 
+In Firm_set_quantities_zero:
+
+    PLANNED_PRODUCTION_QUANTITY = 0;
+    PRODUCTION_QUANTITY = 0;
+    
+This is run every day, except on the first day of the month. The reason we need this is that otherwise the same PRODUCTION_QUANTITY is added daily, while it is only a monthly quantity.
+In order to get the production quantities correctly in the monthly statistics, we need 2 variables that stay in memory during the month:
+
+    In Firm_calc_production_quantity and Firm_calc_production_quantity_2:
+    PLANNED_OUTPUT=PLANNED_PRODUCTION_QUANTITY; 
+    
+    In Firm_execute_production:
+    OUTPUT        = PRODUCTION_QUANTITY; 
+
+These values can now be send at the end of the month to Eurostat in the send_data_message.
+----------------------------------------------------------------------
+Sander, rev 1025
+NOTE: New features are still experimental and have been turned off in the model.xml
+28/07/08: After the Sheffield Meeting, the features have been turned on.
+
+Feature: history storage in Eurostat
+
+- The memory of the Eurostat agent now contains a running history of monthly and quarterly data,
+being overwritten using a rolling horizon.
+- All data is stored at the end of the last day of the month or quarter.
+- All growth rates are stored as percentages. For example, 0.25 means 25% growth.
+
+Added files:
+    model-sander.xml
+    Eurostat_Functions-sander.c
+
+Datatype for storage of selected macroeconomic statistics
+
+      struct history_item
+      {
+            double gdp;
+            double output;
+            double employment;
+            double unemployment_rate;
+            double wages;    
+       }
+
+Static arrays for history:
+
+     history_item history_monthly[13];
+     history_item history_quarterly[5];
+    
+    - For monthly history: we store the current month in [0] and the history in [1]...[12].
+    
+    - For quarterly history: we store the current quarter in [0] and the history in [1]...[4].
+    
+Single history_items for storing monthly and quarterly growth rates of each variable:
+
+    history_item monthly_growth_rates:          month-to-month growth rate statistics
+    history_item quarterly__growth_rates:       quarter-to-quarter growth rate statistics
+    history_item annual_growth_rates_monthly:   annual growth rates (per month), measured as the percentage change over the same month in the previous year.
+    history_item annual_growth_rates_quarterly: annual growth rates (per quarter), measured as the percentage change over the same quarter in the previous year.
+
+----------------------------------------------------------------------
+Sander, rev 1046
+NOTE: New features are still experimental and have been turned off in the model.xml
+28/07/08: After the Sheffield Meeting, the features have been turned on.
+
+New feature: Eurostat collects data on firm demises and firm births (related to bankruptcy process and firm creation process)
+New feature: Firms now have an age!! This is necessary to measure the average firm survival rate.
+
+            
+CHANGES
+Affects files:
+    model-sander.xml
+    Eurostat_Functions-sander.c
+    Firm_Stat_Functions-sander.c
+
+Firm memory
+ AGE: age of the firm (in months)
+
+Firm_Stat_Functions-sander.c:
+    Firm_send_data_to_Eurostat: AGE in Firm_send_data_msg
+
+model-sander.xml:
+Added to datatype history_item for storing monthly and quarterly:
+ no_firms
+ no_firm_births
+ no_firm_deaths
+ 
+Added to Firm memory:
+  age
+  
+Added to Eurostat memory:
+ no_firms
+ no_firm_births
+ no_firm_deaths
+ firm_age_distribution[60]
+ firm_birth_rate
+ firm_death_rate
+ 
+ 
+Eurostat_Functions-sander.c
+    Added no_firm_births, no_firm_deaths to monthly/quarterly data+growth rates
+----------------------------------------------------------------------
+Sander, rev 1046
+    Firm_credit_functions_sander.c: only difference is the apply_for_loans msg: added the region_id
+----------------------------------------------------------------------
+Sander, rev 1063
+
+Added FM_GREQAM to: afm_branches/Model_Sheffield
+
+Differences between the FM_UNIBI and FM_GREQAM:
+
+1. Removed variables in FM_GREQAM:
+- different credit items
+ used old version from trunk, includes bad_debt and var
+
+- related to capital depreciation:
+dataype capital_stock_item: removed 
+capital_stock_item_array  capital_stock: removed
+total_units_capital_stock: removed
+
+2. Added variables to FM_GREQAM:
+
+financial_resources_for_production
+planned_value_capital_stock
+planned_total_assets
+total payments
+----------------------------------------------------------------------
+Sander, rev 1087-1090
+
+* Merged:
+
+ - Government:
+   model.xml from Philipp (include )
+ 
+ - Eurostat:
+   model-sander.xml from Sander (includes history items)
+   replaces model.xml
+   Eurostat_Functions-sander.c replaces Eurostat_Functions.c
+   
+ - Statistical_Office:
+   Firm_Statistics_Functions-sander.c replaces Firm_Statistics_Functions.c
+   includes AGE in firm message
+   
+* Updated: model.xml headers: pre-Sheffield, date, authors
+
+* Dummy Credit_GREQAM is now separate from Credit_UNIBI
+----------------------------------------------------------------------
+Sander, rev 1100
+
+- Eurostat
+* added inflation rate
+* firm age_distribution is used to compute the survival rate
+----------------------------------------------------------------------
+Sander, rev 1282
+
+Changes to model.xml files
+===========================
+1. Cons_Goods_UNIBI/model_s.xml
+Old code: layer 6 started with Firm_Start_Financial_Management_Role
+
+New code: layer 6 starts with the Firm_Producer_Rol:e
+Firm_set_quantities_zero
+Firm_calc_production_quantity
+
+
+2. Financial_Management_GREQAM/model_s.xml
+- Moved sequence of functions to the end of iteration.
+
+Old code: layer 11
+- after the Firm_Bankruptcy_check, the firm would continue with production, or goes into bankruptcy.
+
+New code: layers 68-70
+- after the Firm_Bankruptcy_check, the firm is idle, or goes into bankruptcy and gets removed from simulation.
+
+
+3. Statistical_Office_UNIBI/model_s.xml
+- made to correspond
+
+4. FINANCIAL_UG/model_s.xml
+- made to correspond
+
+Changes to C code (lines refer to the old code)
+====================================
+Function: .../trunk/Financial_Management_GREQAM/Firm_Financial_Management_functions.c
+
+- line 31
+    double interest_payment =0.0;   //          : interest to be paid this period
+
+Why is this??
+
+
+- line 86-88: should be removed, it was related to the new order of functions.
+
+These resets were still in Firm_calc_production_quantity(), line 137-138.
+So the resets were done twice in a row.
+
+- line 182 - 186 removed. This was reading the current_mall_stock_info_message.
+
+- line 386:
+
+            //decrease payment_account with the interest_payment
+            temp_interest=LOANS.array[i].interest_rate*LOANS.array[i].installment_amount;
+            PAYMENT_ACCOUNT -= temp_interest;
+
+This means the interest is computed not on the total debt still outstanding, but only on the installment payment.
+Who coded this?
+
+----------------------------------------------------------------------
+Sander, rev 1285
+
+Changed time condition on accounting functions to run on the last day of the firms production cycle:
+
+<condition><time><period>monthly</period><phase><value>a.day_of_month_to_act-1</value></phase></time></condition>
+
+But this produced a bug. Reported to Simon on 28/07/08.
+----------------------------------------------------------------------
+Sander, rev 1288
+
+Merged changes of model_s.xml files into model.xml in the trunk.
+Note: also changes by Mario rev 1286 should be merged in this.
+----------------------------------------------------------------------
+Sander, rev 1291
+
+eurace_model.xml:
+    Added Firm variable: last_day_of_month_to_act
+    The function Firm_compute_sales_statistics now is active on this day.
+
+./its/0-eurace.pop: 
+    includes all environment variables
+    Firm: day_of_month_to_act should still be manually set to 1
+    
+./its/0-alt.xml: 
+    manually replace: day=1 --> day=iteration_loop
+    manually replace: day_of_month_to_act = 0 --> day_of_month_to_act = 1
+
+./Cons_Goods_UNIBI/model.xml
+
+    line 315: on Firm_compute_sales_statistics
+    - commented out condition (a.day_of_month_to_act)
+    - added condition (a.last_day_of_month_to_act)
+    
+    line 339: on idle
+    - commented out condition (not a.day_of_month_to_act)
+    - added condition (not a.last_day_of_month_to_act)
+ 
+----------------------------------------------------------------------
+Sander, rev 1291
+
+File: Firm_Financial_Management.c
+
+Function: Firm_compute_income_statement()
+Removed lines:
+
+    //Reset the counters
+    CUM_TOTAL_SOLD_QUANTITY = 0.0;
+    CUM_REVENUE = 0.0;        
+
+
+Function: Firm_compute_dividends()
+line 109: Added condition
+    if (PREVIOUS_EARNINGS_PER_SHARE>0.0)
+
+Function: Firm_execute_financial_payments
+line 361:
+    temp_interest=LOANS.array[i].interest_rate*LOANS.array[i].installment_amount;
+    -->temp_interest=LOANS.array[i].interest_rate*LOANS.array[i].loan_value;
+    
+File: Cons_Goods_UNIBI/model.xml
+
+Removed two old variables:
+    direct_financial_needs_require_external_financing
+    delayed_financial_needs_require_external_financing
+----------------------------------------------------------------------
+Sander, rev 1306
+
+File: Cons_Goods_UNIBI/Firm_Producer_Functions.c:
+line 424 - 463:
+
+I have changed the function Firm_calc_prod_quantity_2 to use the mem var
+PAYMENT_ACCOUNT instead of FINANCIAL_RESOURCES_FOR_PRODUCTION.
+
+If (PLANNED_PRODUCTION_COSTS <= PAYMENT_ACCOUNT) this function does nothing, since the while loop does not get executed..
+
+File: Cons_Goods_UNIBI/model.xml:
+line 231 -236
+
+Firm_calc_prod_quantity_2 now goes from state Firm_End_Financial_Management  to state Firm_Start_Labour_Role. This puts the function Firm_calc_prod_quantity_2 
+between the end of the financial management and the beginning of the labour market role.
+It is after the function Firm_execute_financial_payments, which ensures that the financial payments are already subtracted from the PAYMENT_ACCOUNT.
+
+- Removed the condition (a.financial_resources_for_production >=a.planned_production_costs)
+- Removed the memvar financial_resources_for_production from the firm's memory.
+
+File: Financial_Management_GREQAM/Firm_Financial_Management_Functions.c
+
+In the function Firm_execute_financial_payments the firm pays the following:
+- taxes
+- installments
+- interest
+- dividends
+
+After this, all that is left over on the payment_account can be used to pay for factor inputs for production.
+
+So it is now no longer necessary to have this code:
+FINANCIAL_RESOURCES_FOR_PRODUCTION = 
+PAYMENT_ACCOUNT - TOTAL_INTEREST_PAYMENTS - TOTAL_DEBT_INSTALLMENT_PAYMENTS _ TOTAL_TAX_PAYMENTS - TOTAL_DIVIDEND_PAYMENT;
+
+The variable FINANCIAL_RESOURCES_FOR_PRODUCTION is redundant, since all payments have already been subtracted from the PAYMENT_ACCOUNT.
+
+File: Financial_Management_GREQAM/model.xml:
+- Changed state Update_01 into: Firm_Ends_External_Financing
+----------------------------------------------------------------------
+Sander, rev 1310
+
+BUG FIXED:
+The debt installment and interest payments should not be executed for newly obtained loans,
+in the first period of a loan contract.
+This would mean that a loan is serviced on the same day it is acquired.
+The fix is that we service the loan for the first time in the following month. 
+
+File: Credit_Ancona/Firm_Credit_Functions.c
+Function: Firm_get_loan
+Line: 203
+
+When a firm gets a credit it adds this credit in the loan array in the function Firm_Credit_Functions.c,
+and the initial value for the variable nr_periods_before_maturity is set to:
+
+nr_periods_before_repayment=CONST_INSTALLMENT_PERIODS+1;
+
+File: Financial_Management_GREQAM/Firm_Financial_Management.c:
+Function: Firm_execute_financial_payments() 
+line: 367
+ 
+The  reason is that debt installment and interest payments aren't scheduled in the financial planning
+phase because the planned financial payments are calculated before a firm goes on the credit market,
+in the function Firm_compute_total_financial_payments.
+
+
+By using the condition
+
+if(LOANS.array[i].nr_periods_before_repayment!=CONST_INSTALLMENT_PERIODS+1)
+
+the debt installment and interest payments are not executed for a new loan item.
+Any other loan items that have nr_periods_before_repayment<13 do get serviced.
+
+To decrease the nr_periods_before_repayment immediately in the first period of the contract,
+we should decrease it from 13 to 12. This is done at the end:
+
+            if (LOANS.array[i].nr_periods_before_repayment==0)
+            {
+                remove_debt_item(&LOANS, i);
+            }
+            else
+            {
+                LOANS.array[i].nr_periods_before_repayment -= 1;
+            }
+----------------------------------------------------------------------
+Sander, rev 1311
+    Merged Isolated_Model/FFM_UNIBI code with trunk FFM_GREQAM code.
+----------------------------------------------------------------------
+Sander, rev 1323
+
+Added to firm_send_data_message:
+price_last_month
+
+Added to struct firm_data:
+cpi
+cpi_last_month
+
+Added to memory: region_firm_data now contains:
+REGION_FIRM_DATA.array[i].cpi
+REGION_FIRM_DATA.array[i].cpi_last_month
+
+Added code for price index computations:
+File: Eurostat_Functions.c
+Function: Eurostat_calculate_data
+Lines: 483-497 and 517-529
+----------------------------------------------------------------------
+Sander, rev 1324
+
+Added Eurostat recession function
+----------------------------------------------------------------------
+Sander, rev 1325
+
+Added Eurostat measure export and import function
+NOTE: In Mall_functions.c the number of regions NO_REGIONS is now hard-coded as 2.
+This should be removed later on.
+----------------------------------------------------------------------
+Sander, rev 1394
+Refactoring of Eurostat code: simplification of REGION_FIRM_DATA loops into smaller functions.
+
+The function Eurostat_calculate_data
+should be broken up into smaller functions:
+
+Eurostat_aux_functions.c:
+    Eurostat_calc_macro_data();
+    Eurostat_calc_price_index();
+    Eurostat_calc_firm_population();
+    Eurostat_calc_firm_survival_rates();
+    Eurostat_measure_export();
+
+----------------------------------------------------------------------
+Sander, rev 1397
+
+- Added a region_data_item to hold macro data for each region:
+(the data is a selection from region_firm_data and region_household_data)
+cpi
+cpi_last_month
+gdp
+output
+employment
+unemployment_rate
+unemployment_rate_skill_1
+unemployment_rate_skill_2
+unemployment_rate_skill_3
+unemployment_rate_skill_4
+unemployment_rate_skill_5
+average_wage
+no_firms
+no_firm_births
+no_firm_deaths
+
+
+- Added a region array to the history item:
+<type>region_data_item_array</type><name>region_data</name>
+
+- This allows us to refer also to the history of regional data.
+
+Reference to current data of region i:
+REGION_DATA.array[i].gdp
+
+Reference to historical data of region i:
+HISTORY_MONTHLY[0].region_data.array[i].gdp
+
+----------------------------------------------------------------------
+Sander, rev 1405
+
+Added new government model: 
+Government_GREQAM
+
+To merge into main Eurace model, integrate changed to:
+- Cons_Goods_UNIBI
+- Labour_UNIBI
+- Government_GREQAM
+- Stat_Ofice_UNIBI
+
+
+Government
+- all policy announcements: yearly, start
+- unemployment benefit notification: read daily
+Same for subsidy, transfers.
+- remove interaction with Eurostat at beginning of year, replace by message end of the year.
+Eurostat_send_data_to_government
+Government_read_data_from_Eurostat
+
+Household:
+- If unemployed:
+Set day_of_month_receive_benefit
+
+- On re-employment of previously unemployed household: HH has to pay additional taxes to repay its unemployment benefits!
+1. New day_of_month_receive_income equals day_of_month_to_act of the firm
+so it is no longer equal to the day_of_month_receive_benefit.
+2. Use the condition:
+    if (day_of_month_receive_benefit != day_of_month_receive_income)
+to determine whether HH needs to repay part of the unemployment benefit to government.
+3. Set day_of_month_receive_benefit = day_of_month_receive_income so that next month the HH does not pay additional taxes.
+
+
+
+Messages:
+- the mean_wage_for_government is now integrated into the data_for_government(region_id, gdp, mean_wage).
+Note: In Gov_UNIBI there is still the function Eurostat_send_data_to_government and Government_read_data_from_Eurostat
+that are sending/reading the mean_wage_for_government msg. This needs to be replaced by the new msg at the end of year loop.
+Government_read_data_from_Eurostat moves to bottom of stategraph.
+
+Changes to interaction HH <-> Gov:
+- replaced Household_send_unemployment_notification_to_Government with Household_receive_unemployment_benefit
+- replaced Government_send_unemployment_benefit_payment with Government_read_unemployment_benefit_notifications
+- replaced Household_receive_unemployment_benefits: no longer needed, gov no longer needs to send individual payment,
+ household simply computes own benefits.
+
+In Cons_goods_UNIBI:
+- model-sander.xml: edits Household_Consumer_Functions.c
+Removed functions from Household_Consumer_Functions.c -> Household_Employee_Functions.c
+
+This changes the interaction for HH and Gov
+Removed: "Household_send_unemployment_notification_to_Government"
+Household_pay_taxes -> Household_send_tax_payment
+
+- Mall_Functions.c
+This includes new mall functions at end of file.
+
+In Labour_UNIBI:
+model-sander.xml
+Household_Consumer_Functions-sander.c
+ReMoved functions from Household_Consumer_Functions.c -> Household_Employee_Functions.c 
+
+Changes:
+Household_receive_wage
+Household_update_specific_skills
+Household_send_unemployment_notification_to_Government: 
+Household_receive_unemployment_benefits: remove this, replaced by HH own computation
+Household_pay_taxes: -> Household_send_tax_payment
+
+In Credit and Gov:
+- central_bank_account_update_message appears in both, but different syntax.
+
+TODO:
+- unittest of Government_GREQAM
+- fix the region_data[30] inside the history_monthly[] structure.
+- uncomment all code related to region_data in files Eurostat_Functions.c and Eurostat_aux_Functions.c 
+----------------------------------------------------------------------
+Sander, rev 1423
+
+Changed monthly growth rates for CPI: inflation measure is based on a chained price index, instead of a base year price index.
+MONTHLY_GROWTH_RATES.cpi = (HISTORY_MONTHLY[0].cpi/HISTORY_MONTHLY[1].cpi-1)*100;
+--->
+MONTHLY_GROWTH_RATES.cpi = (HISTORY_MONTHLY[0].cpi-1)*100;
+----------------------------------------------------------------------
+Sander, Rev 1428
+
+Proposal: everything from state 06 to state 09 refers to the labour role, not the consumer role of HH.
+In ConsGoods/model.xml all functions from Household_receive_dividends to Household_determine_consumption_budget
+should be moved from ConsGoods to the Labour.
+
+At the moment HHs receive their income (wage, dividends, benefits), they also receive subsidies and transfers.
+All income is taxed, before HHs can go the the ConsGoods market.
+
+Changed:
+HH sends:
+hh_subsidy_notification
+hh_transfer_notification
+
+Firm sends:
+firm_subsidy_notification
+firm_transfer_notification
+
+Updated:
+trunk/Gov/model.xml
+trunk/Gov/model-isolated.xml
+trunk/Gov/Gov.c
+trunk/Labour/model-sander.xml
+trunk/Labour/HH_functions.c
+
+
+
+TODO:
+- unittest of Government_GREQAM
+REGION_DATA.array[i].gdp
+HISTORY_MONTHLY[0].region_data.array[i].gdp
+----------------------------------------------------------------------
+Philipp, rev 1432
+
+Added code for Mall export of data to Eurostat
+----------------------------------------------------------------------
+Sander, rev 1433
+
+Added code for Mall export of data to Eurostat:
+export_volume_matrix[900]
+export_value_matrix[900]
+export_previous_value_matrix[900]
+
+Added code for Eurostat compute regional CPI
+region_export_volume[30]
+...
+region_import_previous_value[30]
+
+Changed "End_Firm_Labour_Role" into "Firm_End_Labour_Role" between Firm_compute_mean_wage_specific_skills and Firm_send_capital_demand to make it more consistent.
+
+
+Differences between Isolated Model in alm_branches/sander/ConsGoods and the trunk/ConsGoods version
+
+some extra datatypes are needed:
+<dataType><name>portfolio</name>
+
+some memory variables are needed:
+total_units_capital_stock
+
+some memory variables are NOT needed:
+financial_resources_for_production
+
+----------------------------------------------------------------------
+Sander, rev 1435
+
+Moved tax_payment_msg from eurace_model.xml to Gov_GREQAM/model.xml
+add_tax_payment_message(GOV_ID, TAX_PAYMENT);
+
+HH and firms only transmit the amount, not their ID.
+----------------------------------------------------------------------
+Sander, rev 1436
+
+Added gov policy parameters and policy rules for consumption and investment.
+----------------------------------------------------------------------
+Sander, rev 1644
+
+Statename changes
+=================
+FM_UG:
+Before the first function of AFM: Household_receive_info_interest_from_bank.
+
+start_Household_financial_market_role
+-> Household_Start_Financial_Market_Role
+
+After the last function of AFM: Household_update_its_portfolio
+Start_Household_Labour_Role
+-> Household_Start_Labour_Role
+
+Statistical_Office_UNIBI:
+After the last functions: Household_idle, Household_receive_data
+
+start_Household_financial_market_role
+-> Household_Start_Financial_Market_Role
+
+Labour_UNIBI:
+Before the first functions: Idle, Household_read_firing_messages
+
+Start_Household_Labour_Role
+-> Household_Start_Labour_Role
+
+----------------------------------------------------------------------
+Sander, rev 1645
+
+Hybrid_Model_A
+===============
+Merged model.xml files from the trunk to the Hybrid_Model_A
+
+Added dummy C code for Financial_Management_GREQAM.
+External financial needs are always satisfied, such that bankruptcy never occurs.
+
+Added memory variable: current_shares_outstanding
+
+Firm_compute_and_send_stock_orders:
+    no order_message is sent
+
+Firm_read_stock_transactions:
+    PAYMENT_ACCOUNT += EXTERNAL_FINANCIAL_NEEDS;
+    EXTERNAL_FINANCIAL_NEEDS =0.0;
+
+----------------------------------------------------------------------
+Sander, rev 1646
+
+Hybrid_Model_A/Financial_UNIBI
+===============================
+Added dummy C code
+Added empty functions for Clearinghouse and Bank.
+
+Household_receive_dividends: empty function.
+----------------------------------------------------------------------
+Sander, rev 1710
+
+Hybrid_Model_A
+==============
+28/01/09
+- Separated library functions per module: Labour, Cons_Goods
+- Eurostat: remove initialisation function
+
+29/01/09
+- Government: list_of_regions is a dynamic int array
+- Statistical_Office, Firm: checked that active is int
+- Statistical_Office, Eurostat: 
+checked that Eurostat_Initialization_dummy is used, NOT Eurostat_Initialization!!
+checked that firm,household_region_data have correct initialisations in 0.xml.
+- Constant: const_bankruptcy_idle_period
+---------------------------------------------------------------------- 
+Sander, rev 1710
+
+Hybrid_Model_A
+==============
+06/02/09
+- remove Eurostat init function from state graph
+- copied FM_GREQAM functions.c to trunk
+- TODO: unit tests with constants
+----------------------------------------------------------------------
+Sander, rev
+
+Eurostat feature: Stock-flow consistency
+
+1) To make it to work, I had to add some functionality to the 
+Cons_Good_Market, Credit_Market, AND Stat_Office.
+This involved adding functions that need to send messages with the balance sheet information and the flows.
+
+2) Most balance sheet items could make use of existing names, but I also
+had to invent some new memory variable names that were not there yet.
+All variables are in the Eurostat function that does the actual summing oer the balance sheets:
+
+Stat_Office_UNIBI/Eurostat_Function.c:
+    Eurostat_check_flow_consistency()
+    Eurostat_check_stock_consistency()
+
+For the Bank: the flows were not separated, I propose to make new variables for them:
+
+firm_loan_installments: installment payments by firms
+firm_interest_payments: interest payments by firms  
+firm_loan_issues: newly issued loans
+ecb_interest_payment
+dividend_payment
+tax_payment
+
+3) Functions from where the <agent>_balance_sheet_messages are being sent:
+(either a new function or a pre-existing one)
+
+Firm: existing function
+Stat_Office/Firm_Statistics_Functions.c
+Firm_send_data_to_Eurostat (calendar month)
+Condition switch: if condition in C
+
+IGFirm: None yet
+Stat_Office/Stat_Office/IGFirm_Statistics_Functions.c
+IGFirm_send_data_to_Eurostat
+Condition: if condition in C
+
+Household: existing function
+Stat_Office/Household_Statistics_Functions.c
+Household_send_data_to_Eurostat (calendar month)
+Condition: if condition in C
+
+Bank: new function
+Credit_Ancona/Bank_Credit_Functions.c
+Bank_send_data_to_Eurostat (calendar month)
+Condition: xml, C
+
+Gov: existing function
+Government_GREQAM/Government_Functions.c
+Government_send_data_to_Eurostat (calendar DAY)
+Condition: if condition in C
+
+Government_send_account_update (calendar month)
+Condition: if condition in C
+
+ECB: new function
+Credit_Ancona/Central_Bank_Functions.c
+Central_Bank_send_data_to_Eurostat (calendar month)
+Condition: xml, C
+
+----------------------------------------------------------------------
+Sander, rev
+09/07/2009
+
++ UNDO of all balance sheet messages. See above for functions affected.
++ Removal of constants 
+switch_stock_consistency_check
+switch_flow_consistency_check
+----------------------------------------------------------------------
+Sander, rev
+09/07/2009
+
+XML code changes
+================
+In Central_Bank_read_account_update(): 
+
++ ECB account split into 2: ACCOUNTS_BANKS , ACCOUNTS_GOVS
++ added 2 new messages to root folder:
+bank_to_central_bank_account_update
+gov_to_central_bank_account_update
+
+Inputs to function: Central_Bank_read_account_update
+bank_to_central_bank_account_update_message
+gov_to_central_bank_account_update_message
+
+Bank: output to function Bank_account_update_deposits
+bank_to_central_bank_account_update_message
+
+Gov: output to function Government_send_account_update
+gov_to_central_bank_account_update_message
+
+C code changes
+==============
+Bank: Bank_account_update_deposits sends: bank_to_central_bank_account_update_message
+Gov: Government_send_account_update sends: gov_to_central_bank_account_update_message
+----------------------------------------------------------------------
