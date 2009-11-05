@@ -1255,7 +1255,7 @@ spent in both consumtion steps, into the PAYMENT_ACCOUNT.</description>
     <function>
      <name>Mall_reset_export_data</name>
      <description>Mall resets the export data at start of month.</description>
-     <currentState>start_Mall</currentState>
+     <currentState>001</currentState>
      <nextState>01</nextState>
      <condition>
       <time>
@@ -1269,7 +1269,7 @@ spent in both consumtion steps, into the PAYMENT_ACCOUNT.</description>
     <function>
      <name>idle</name>
      <description></description>
-     <currentState>start_Mall</currentState>
+     <currentState>001</currentState>
      <nextState>01</nextState>
      <condition>
       <not>

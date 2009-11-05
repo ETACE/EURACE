@@ -674,7 +674,7 @@ Also sets the active flag to 0 and starts the bankruptcy idle counter.</descript
      <name>Firm_bankruptcy_idle_counter</name>
      <description>Function to decrease the bankruptcy_idle_counter by 1. 
 Note that a negative count means the financing condition has not been yet satisfied at the end of the default idle period.</description>
-     <currentState>start_Firm</currentState>
+     <currentState>Firm_checks_if_active</currentState>
      <nextState>Firm_not_active</nextState>
      <condition>
       <lhs>
@@ -691,7 +691,7 @@ Note that a negative count means the financing condition has not been yet satisf
     <function>
      <name>idle</name>
      <description></description>
-     <currentState>start_Firm</currentState>
+     <currentState>Firm_checks_if_active</currentState>
      <nextState>Firm_is_active</nextState>
      <condition>
       <lhs>
