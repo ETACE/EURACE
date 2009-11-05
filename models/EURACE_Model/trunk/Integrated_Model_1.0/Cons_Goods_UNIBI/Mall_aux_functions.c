@@ -34,9 +34,9 @@ void Mall_add_export_data(int firm_region, int household_region, double export_v
 	
 	//add value to export matrix
 	index=(firm_region-1)*NO_REGIONS+(household_region-1);
-	EXPORT_VOLUME_MATRIX[index] = export_volume;
-	EXPORT_VALUE_MATRIX[index] = export_value;
-	EXPORT_PREVIOUS_VALUE_MATRIX[index] = export_previous_value;
+	EXPORT_VOLUME_MATRIX[index] += export_volume;
+	EXPORT_VALUE_MATRIX[index] += export_value;
+	EXPORT_PREVIOUS_VALUE_MATRIX[index] += export_previous_value;
 }
 
 
