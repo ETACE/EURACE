@@ -2,6 +2,82 @@
 #include "../Firm_agent_header.h"
 #include "../my_library_header.h"
 
+
+int Firm_send_id_to_malls()
+{
+
+//Add the message to malls
+add_msg_firm_id_to_malls_message(ID,REGION_ID);
+
+return 0;
+}
+
+
+
+
+
+
+
+
+
+
+int Firm_initialize_mall_arrays()
+{
+int i,k,l;
+int num_malls=0;
+double production_quantity_per_mall;
+
+//1. Count the number of total malls
+
+START_MSG_MALL_ID_TO_FIRMS_MESSAGE_LOOP
+
+num_malls++;
+
+FINISH_MSG_MALL_ID_TO_FIRMS_MESSAGE_LOOP
+
+//Compute the new production quantities for the malls
+production_quantity_per_mall = LAST_PLANNED_PRODUCTION_QUANTITIES.array[3] / num_malls;
+
+
+// Clean up all arrays
+
+for(i=0;i<SOLD_QUANTITIES.size;i++)
+{
+remove_estimators_linear_regression(&LINEAR_REGRESSION_ESTIMATORS,i);
+remove_sales_statistics(&MALLS_SALES_STATISTICS,i);
+remove_sold_quantities_per_mall(&SOLD_QUANTITIES,i);
+remove_delivery_volume_per_mall(&DELIVERY_VOLUME,i);
+remove_delivery_volume_per_mall(&PLANNED_DELIVERY_VOLUME,i);
+remove_mall_info(&CURRENT_MALL_STOCKS,i);
+}
+
+//Set up the data arrays
+
+k=0;
+
+START_MSG_MALL_ID_TO_FIRMS_MESSAGE_LOOP
+
+add_estimators_linear_regression(&LINEAR_REGRESSION_ESTIMATORS,msg_mall_id_to_firms_message->mall_id,0.0,0.0,0.0);
+
+add_sales_statistics(&MALLS_SALES_STATISTICS,msg_mall_id_to_firms_message->mall_id,0);
+for(l=0;l<FIRM_PLANNING_HORIZON;l++)
+{
+add_data_type_sales(&MALLS_SALES_STATISTICS.array[k].sales,l+1,production_quantity_per_mall);
+}
+add_sold_quantities_per_mall(&SOLD_QUANTITIES,msg_mall_id_to_firms_message->mall_id, production_quantity_per_mall, 0,0.0);
+add_delivery_volume_per_mall(&DELIVERY_VOLUME,msg_mall_id_to_firms_message->mall_id,0.0,0.0,0.0);
+add_delivery_volume_per_mall(&PLANNED_DELIVERY_VOLUME,msg_mall_id_to_firms_message->mall_id,0.0,0.0,0.0);
+add_mall_info(&CURRENT_MALL_STOCKS,msg_mall_id_to_firms_message->mall_id, production_quantity_per_mall,0.0);
+
+k++;
+FINISH_MSG_MALL_ID_TO_FIRMS_MESSAGE_LOOP
+
+
+return 0;
+}
+
+
+
 /** \fn Firm_send_data_to_Eurostat()
  * \brief Firms send data to Market Research: controlling results and creating macro data
  */
@@ -10,9 +86,11 @@ int Firm_send_data_to_Eurostat()
     
     /*Determine the productivity of the firm. Send data to Eurostat in 
      * order to calculate the productivity progress once a year*/
-    if(DAY%20 == 0)
-    {   
-    
+  
+
+	if(ID ==1)
+	printf("FIRM_PRODUCTIVITY %f \n",  FIRM_PRODUCTIVITY);
+
         FIRM_PRODUCTIVITY_LAST_YEAR = FIRM_PRODUCTIVITY;
         
         if(MEAN_SPECIFIC_SKILLS >= TECHNOLOGY)
@@ -23,10 +101,15 @@ int Firm_send_data_to_Eurostat()
         {
             FIRM_PRODUCTIVITY = MEAN_SPECIFIC_SKILLS;
         }
-        
+        if(ID ==1)
+	printf("FIRM_PRODUCTIVITY %f \n",  FIRM_PRODUCTIVITY);
+	if(ID ==1)
+	printf("FIRM_PRODUCTIVITY_PROGRESS %f  FIRM_PRODUCTIVITY_LAST_YEAR %f \n", FIRM_PRODUCTIVITY_PROGRESS, FIRM_PRODUCTIVITY_LAST_YEAR);
+
+
         FIRM_PRODUCTIVITY_PROGRESS = FIRM_PRODUCTIVITY/FIRM_PRODUCTIVITY_LAST_YEAR -1;
         
-    }
+    
     
     //Increase the age of the firm in months
     AGE++;
