@@ -1,7 +1,7 @@
 <!DOCTYPE xmodel SYSTEM "http://eurace.cs.bilgi.edu.tr/XMML.dtd">
 <xmodel version="2" >
  <name>Eurace</name>
- <version>Aix, 10/02/2009</version>
+ <version>Version 1.0, 11/01/2009</version>
  <description>Authors: Simon Coakley, Mariam Kiran, Simon Gemkow, Philipp Harting, Sander van der Hoog, Mario Locci, Sabrina Ecca, Marco Raberto, Andrea Teglio, Saul Desiderio, Federico Scarpa.</description>
  <models>
   <model>
@@ -73,7 +73,7 @@
     <name>print_debug_file_exp2</name>
     <description>0 or 1, A flag to print logging output to terminal or to file. Used in Government code.</description>
    </variable>
- <variable>
+   <variable>
     <type>int</type>
     <name>policy_exp1</name>
     <description>0 or 1, A flag to print logging output to terminal or to file.</description>
