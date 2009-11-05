@@ -13,6 +13,7 @@
    <file>Eurostat_aux_functions.c</file>
    <file>IGFirm_Statistics_Functions.c</file>
    <file>Bank_Statistics_Functions.c</file>
+   <file>Mall_Statistics_Functions.c</file>
   </functionFiles>
   <timeUnits/>
   <dataTypes>
@@ -1222,6 +1223,52 @@
     </variable>
    </memory>
    <functions>
+	 <function>
+     <name>Firm_send_id_to_malls</name>
+     <description>In this function the firm sends its id to the malls. The malls can set up its data array properly if the population file was built with the cloning procedure. </description>
+     <currentState>start_Firm</currentState>
+     <nextState>Firm_initialize</nextState>
+     <condition>
+       <time>
+        <period>millionyearly</period>
+        <phase>1</phase>
+       </time>
+     </condition>
+     <inputs/>
+     <outputs>
+	 <output>
+	<messageName>msg_firm_id_to_malls</messageName>
+     </output>
+     </outputs>
+    </function>
+	<function>
+     <name>Firm_initialize_mall_arrays</name>
+     <description>In case of cloned population: Firms receive mall ids and set up their memory variables that are related to the malls.</description>
+     <currentState>Firm_initialize</currentState>
+     <nextState>Firm_checks_if_active</nextState>
+     <inputs>
+	 <input>
+	<messageName>msg_mall_id_to_firms</messageName>
+     </input>
+     </inputs>
+	<outputs/>
+    </function>
+ <function>
+     <name>idle</name>
+     <description></description>
+     <currentState>start_Firm</currentState>
+     <nextState>Firm_checks_if_active</nextState>
+     <condition>
+      <not>
+       <time>
+        <period>millionyearly</period>
+        <phase>1</phase>
+       </time>
+      </not>
+     </condition>
+     <inputs/>
+     <outputs/>
+    </function>
     <function>
      <name>idle</name>
      <description></description>
@@ -2616,6 +2663,59 @@
    </memory>
    <functions/>
   </xagent>
+<xagent>
+<name>Mall</name>
+   <description></description>
+   <memory/>
+   <functions>
+	<function>
+     <name>Mall_send_id_to_firms</name>
+     <description>In this function the mall sends its id to the firms. The firms can set up its data array properly if the population file was built with the cloning procedure. </description>
+     <currentState>start_Mall</currentState>
+     <nextState>Mall_initialize</nextState>
+     <condition>
+       <time>
+        <period>millionyearly</period>
+        <phase>1</phase>
+       </time>
+     </condition>
+     <inputs/>
+     <outputs>
+	 <output>
+	<messageName>msg_mall_id_to_firms</messageName>
+     </output>
+     </outputs>
+    </function>
+	<function>
+     <name>Mall_initialize_firm_arrays</name>
+     <description>In case of cloned population: Malls receive firm ids and set up their memory variables that are related to the firms.</description>
+     <currentState>Mall_initialize</currentState>
+     <nextState>001</nextState>
+     <inputs>
+	 <input>
+	<messageName>msg_firm_id_to_malls</messageName>
+     </input>
+     </inputs>
+	<outputs/>
+    </function>
+	<function>
+     <name>idle</name>
+     <description> </description>
+     <currentState>start_Mall</currentState>
+     <nextState>001</nextState>
+    <condition>
+      <not>
+       <time>
+        <period>millionyearly</period>
+        <phase>1</phase>
+       </time>
+      </not>
+     </condition>
+     <inputs/>
+     <outputs/>
+    </function>
+</functions>
+  </xagent>
  </agents>
  <messages>
   <message>
@@ -2938,6 +3038,33 @@
      <description></description>
     </variable>
    </variables>
+  </message>
+ <message>
+   <name>msg_firm_id_to_malls</name>
+   <description></description>
+   <variables>
+    <variable>
+     <type>int</type>
+     <name>firm_id</name>
+     <description></description>
+    </variable>
+	 <variable>
+<type>int</type>
+     <name>region_id</name>
+     <description></description>
+    </variable>
+</variables>	
+  </message>
+ <message>
+   <name>msg_mall_id_to_firms</name>
+   <description></description>
+   <variables>
+    <variable>
+     <type>int</type>
+     <name>mall_id</name>
+     <description></description>
+    </variable>
+  </variables>	
   </message>
  </messages>
 </xmodel>
