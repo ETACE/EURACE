@@ -113,7 +113,7 @@
      <name>cum_energy_costs</name>
      <description>This is to compute the total expenses for energy.</description>
     </variable>
- <variable>
+    <variable>
      <type>double_array</type>
      <name>last_net_profits</name>
      <description>Array of the planned production quantities in the past</description>
@@ -301,17 +301,6 @@
    </variables>
   </message>
   <message>
-   <name>capital_good_profit_distribution</name>
-   <description></description>
-   <variables>
-    <variable>
-     <type>double</type>
-     <name>capital_good_profit_shares</name>
-     <description></description>
-    </variable>
-   </variables>
-  </message>
-  <message>
    <name>capital_good_delivery</name>
    <description></description>
    <variables>
@@ -333,17 +322,6 @@
     <variable>
      <type>double</type>
      <name>capital_good_price</name>
-     <description></description>
-    </variable>
-   </variables>
-  </message>
-  <message>
-   <name>dividend</name>
-   <description></description>
-   <variables>
-    <variable>
-     <type>double</type>
-     <name>dividend</name>
      <description></description>
     </variable>
    </variables>
