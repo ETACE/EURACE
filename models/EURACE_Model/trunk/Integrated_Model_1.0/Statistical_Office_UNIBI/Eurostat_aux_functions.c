@@ -21,11 +21,18 @@
 void Eurostat_reset_data(void)
 {
     int i;
+ double mean_specific_skills;
 
     /*delete the content of the data arrays in order to store the data for the new month*/
     //free(REGION_HOUSEHOLD_DATA);
     //free(REGION_FIRM_DATA);
     
+    
+	/*Save the mean specific skills from REGION_HOUSEHOLD_DATA in a temproray memory variable in order to have an initial value for the reconstruction of the array*/
+
+	mean_specific_skills = REGION_HOUSEHOLD_DATA.array[0].average_s_skill;
+
+
     //Remove all data arrays
     for(i = 0; i < REGION_FIRM_DATA.size; i++)
     {
@@ -61,7 +68,7 @@ void Eurostat_reset_data(void)
                 0,
                 0.0,0.0,0.0,0.0,0.0,0.0,
                 0.0,0.0,0.0,0.0,0.0,0.0,
-                0.0,0.0,0.0,0.0,0.0,0.0);
+                mean_specific_skills,mean_specific_skills,mean_specific_skills,mean_specific_skills,mean_specific_skills,mean_specific_skills);
     }
     
 }
