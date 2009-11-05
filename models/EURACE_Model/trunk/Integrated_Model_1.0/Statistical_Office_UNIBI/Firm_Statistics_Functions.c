@@ -88,9 +88,6 @@ int Firm_send_data_to_Eurostat()
      * order to calculate the productivity progress once a year*/
   
 
-	if(ID ==1)
-	printf("FIRM_PRODUCTIVITY %f \n",  FIRM_PRODUCTIVITY);
-
         FIRM_PRODUCTIVITY_LAST_YEAR = FIRM_PRODUCTIVITY;
         
         if(MEAN_SPECIFIC_SKILLS >= TECHNOLOGY)
@@ -100,12 +97,7 @@ int Firm_send_data_to_Eurostat()
         else
         {
             FIRM_PRODUCTIVITY = MEAN_SPECIFIC_SKILLS;
-        }
-        if(ID ==1)
-	printf("FIRM_PRODUCTIVITY %f \n",  FIRM_PRODUCTIVITY);
-	if(ID ==1)
-	printf("FIRM_PRODUCTIVITY_PROGRESS %f  FIRM_PRODUCTIVITY_LAST_YEAR %f \n", FIRM_PRODUCTIVITY_PROGRESS, FIRM_PRODUCTIVITY_LAST_YEAR);
-
+        
 
         FIRM_PRODUCTIVITY_PROGRESS = FIRM_PRODUCTIVITY/FIRM_PRODUCTIVITY_LAST_YEAR -1;
         
