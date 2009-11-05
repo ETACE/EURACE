@@ -97,7 +97,7 @@ int Firm_send_data_to_Eurostat()
         else
         {
             FIRM_PRODUCTIVITY = MEAN_SPECIFIC_SKILLS;
-        
+        }
 
         FIRM_PRODUCTIVITY_PROGRESS = FIRM_PRODUCTIVITY/FIRM_PRODUCTIVITY_LAST_YEAR -1;
         
