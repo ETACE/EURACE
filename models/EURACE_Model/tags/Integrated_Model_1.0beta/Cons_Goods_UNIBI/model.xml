@@ -1237,17 +1237,17 @@ spent in both consumtion steps, into the PAYMENT_ACCOUNT.</description>
     </variable>
     <variable>
      <type>double</type>
-     <name>export_volume_matrix[900]</name>
+     <name>export_volume_matrix[10000]</name>
      <description>Matrix holding data on exports between regions, measured in volume.</description>
     </variable>
     <variable>
      <type>double</type>
-     <name>export_value_matrix[900]</name>
+     <name>export_value_matrix[10000]</name>
      <description>Matrix holding data on exports between regions, measured in value.</description>
     </variable>
     <variable>
      <type>double</type>
-     <name>export_previous_value_matrix[900]</name>
+     <name>export_previous_value_matrix[10000]</name>
      <description>Matrix holding data on exports between regions, measured against previous prices.</description>
     </variable>
    </memory>
