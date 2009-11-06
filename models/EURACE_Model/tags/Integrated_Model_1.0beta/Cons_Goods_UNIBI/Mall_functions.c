@@ -3,7 +3,6 @@
 #include "../my_library_header.h"
 #include "Mall_aux_header.h"
 
-//#define NO_REGIONS 2 //number of regions (hard-coded here, but should be a environment constant)
 
 
 /********************Mall agent functions*****************/
@@ -416,13 +415,13 @@ int Mall_reset_export_data()
     int i,j;
     
     //reset export matrix
-    for (i=0; i<NO_REGIONS; i++)
+    for (i=0; i<TOTAL_REGIONS; i++)
     {
-        for (j=0; j<NO_REGIONS; j++)
+        for (j=0; j<TOTAL_REGIONS; j++)
         {
-            EXPORT_VOLUME_MATRIX[i*NO_REGIONS+j]=0.0;
-            EXPORT_VALUE_MATRIX[i*NO_REGIONS+j]=0.0;
-            EXPORT_PREVIOUS_VALUE_MATRIX[i*NO_REGIONS+j]=0.0;
+            EXPORT_VOLUME_MATRIX[i*TOTAL_REGIONS+j]=0.0;
+            EXPORT_VALUE_MATRIX[i*TOTAL_REGIONS+j]=0.0;
+            EXPORT_PREVIOUS_VALUE_MATRIX[i*TOTAL_REGIONS+j]=0.0;
         }
     }
     return 0;
@@ -437,13 +436,13 @@ int Mall_send_export_data()
     double export_volume, export_value, export_previous_value;
 
     //mall sends a bunch of messages with export data (only the non-zero elements)
-    for (firm_region=1; firm_region<=NO_REGIONS; firm_region++)
+    for (firm_region=1; firm_region<=TOTAL_REGIONS; firm_region++)
     {
-        for (household_region=1; household_region<=NO_REGIONS; household_region++)
+        for (household_region=1; household_region<=TOTAL_REGIONS; household_region++)
         {
-            export_volume = EXPORT_VOLUME_MATRIX[(firm_region-1)*NO_REGIONS+(household_region-1)];
-            export_value = EXPORT_VALUE_MATRIX[(firm_region-1)*NO_REGIONS+(household_region-1)];
-            export_previous_value = EXPORT_PREVIOUS_VALUE_MATRIX[(firm_region-1)*NO_REGIONS+(household_region-1)];
+            export_volume = EXPORT_VOLUME_MATRIX[(firm_region-1)*TOTAL_REGIONS+(household_region-1)];
+            export_value = EXPORT_VALUE_MATRIX[(firm_region-1)*TOTAL_REGIONS+(household_region-1)];
+            export_previous_value = EXPORT_PREVIOUS_VALUE_MATRIX[(firm_region-1)*TOTAL_REGIONS+(household_region-1)];
             if (export_volume > 0.0)
             {
                 add_mall_data_message(ID, firm_region, household_region, export_volume, export_value, export_previous_value);
