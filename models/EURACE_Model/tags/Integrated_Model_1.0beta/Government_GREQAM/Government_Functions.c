@@ -26,7 +26,9 @@ int Government_initialization()
     //add only the region_id of the government to its list_of_regions
     reset_int_array(&LIST_OF_REGIONS);
     add_int(&LIST_OF_REGIONS, REGION_ID);
-    
+
+    TAX_RATE_HH_LABOUR = CONST_INCOME_TAX_RATE;
+
     #ifdef _DEBUG_MODE
     if (PRINT_DEBUG_GOV)
         { 
