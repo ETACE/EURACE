@@ -9,7 +9,6 @@
 #include "../Mall_agent_header.h"
 #include "Mall_aux_header.h"
 
-//#define NO_REGIONS 2 //number of regions (hard-coded here, but should be a environment constant)
 
 /* \fn: int sales_statistics_list_rank_sales_function(const void *x, const void *y)
  * \brief: 
@@ -33,7 +32,7 @@ void Mall_add_export_data(int firm_region, int household_region, double export_v
 	int index;
 	
 	//add value to export matrix
-	index=(firm_region-1)*NO_REGIONS+(household_region-1);
+	index=(firm_region-1)*TOTAL_REGIONS+(household_region-1);
 	EXPORT_VOLUME_MATRIX[index] += export_volume;
 	EXPORT_VALUE_MATRIX[index] += export_value;
 	EXPORT_PREVIOUS_VALUE_MATRIX[index] += export_previous_value;
