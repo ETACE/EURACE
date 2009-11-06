@@ -307,11 +307,6 @@
     </variable>
     <variable>
      <type>int</type>
-     <name>no_regions</name>
-     <description>Number of regions.</description>
-    </variable>
-    <variable>
-     <type>int</type>
      <name>partition_id</name>
      <description>Partition ID used for parallelization.</description>
     </variable>
@@ -373,11 +368,6 @@
      <type>int</type>
      <name>region_id</name>
      <description>Region ID to which the agent is associated.</description>
-    </variable>
-    <variable>
-     <type>int</type>
-     <name>no_regions</name>
-     <description>Number of regions. Max=30.</description>
     </variable>
     <variable>
      <type>int</type>
