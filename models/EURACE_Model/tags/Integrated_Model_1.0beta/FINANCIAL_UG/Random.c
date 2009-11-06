@@ -243,7 +243,9 @@ int poissonNr( double lambda )
 
 {
      double expLambda ,lambdaRTX,rnd, accum , fatt ;
-     int answer,cond;
+     int answer=0;
+     int cond=0;
+
     double k ;
     if(lambda < 2.0E-8) answer=0;
     else
