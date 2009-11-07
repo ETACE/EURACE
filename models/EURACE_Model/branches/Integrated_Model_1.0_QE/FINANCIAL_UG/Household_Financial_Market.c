@@ -24,8 +24,7 @@ int Household_send_orders()
     
     orders=get_pendingOrders();
     
-    if (PRINT_DEBUG_AFM) printf("\n Household_send_orders ID: %d",ID);
-    
+
     for(i=0;i<sizeCOrder(orders);i++)
     {
      ord=elementAtCOrder(orders,i);
@@ -46,7 +45,8 @@ int Household_send_orders()
      
      add_order_message(ord->issuer,ord->assetId, ord->price, ord->quantity);
      
-     if (PRINT_DEBUG_AFM) printf("\n\t assetId: %d price: %f quantity: %d",ord->assetId,ord->price,ord->quantity);
+ //    if (PRINT_DEBUG_AFM) 
+  //   printf("\n\t Household send order for asset: %d price: %f quantity: %d",ord->assetId,ord->price,ord->quantity);
      
     }
     return 0;
@@ -392,6 +392,7 @@ return 0;
 
 int Household_bond_beliefs_formation()
 { 
+ 
   Bond *bond;
   int i;
   m_info_bond *cinfo_bond;
@@ -416,6 +417,7 @@ int Household_bond_beliefs_formation()
     }
     
     if (PRINT_DEBUG) printf("\n Household_bond_beliefs_formation ID: %d",ID);
+    
     
 return 0;
 }
