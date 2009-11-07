@@ -12,10 +12,10 @@ void receiveOrderOnAsset(ClearingMechanism *mechanism, Asset *anAsset)
      int issuer;
      int quantity;
      double limit_price;
-     if (PRINT_DEBUG_AFM)
-        {
-        printf("\n Orders sent to clearing house. Asset: %d\n",anAsset->id);
-        }
+    // if (PRINT_DEBUG_AFM)
+     //   {
+     //   printf("\n Orders sent to clearing house. Asset: %d",anAsset->id);
+     //   }
      START_ORDER_MESSAGE_LOOP                        
        id=order_message->asset_id;
        if(anAsset->id==id)
@@ -30,10 +30,10 @@ void receiveOrderOnAsset(ClearingMechanism *mechanism, Asset *anAsset)
 //          printf("\t quantity: %d limit Price: %f trader: %d\n",quantity,limit_price,issuer);
 //          }
               
-          if (PRINT_DEBUG_AFM)
-          {
-          printf("\t quantity: %d limit Price: %f trader: %d\n",quantity,limit_price,issuer);
-          }
+ //         if (PRINT_DEBUG_AFM)
+  //        {
+  //        printf("\n\t asset_id: %d quantity: %d limit Price: %f trader: %d",id,quantity,limit_price,issuer);
+  //        }
           
        //printf("id %d price %f quantity %d\n",id,limit_price,quantity);
            if(isBuyOrder(pord)) addBuyOrder(mechanism,pord);
@@ -55,11 +55,11 @@ void computeAssetPrice(ClearingMechanism *mechanism, Asset *anAsset)
      price=mechanism->lastPrice;
      addPrice(anAsset,price);
      addVolume(anAsset,quantity);   
-     if (PRINT_DEBUG_AFM)
-        {
-        printf("\t Clearing of asset: %d volume: %d price: %f \n",anAsset->id,quantity,price);
-        //getchar();
-        }
+    // if (PRINT_DEBUG_AFM)
+    //    {
+   //     printf("\n Clearing of asset: %d volume: %d price: %f \n",anAsset->id,quantity,price);
+     //   getchar();
+     //   }
      
    }
 
@@ -127,12 +127,16 @@ START_ORDER_MESSAGE_LOOP
    limit_price = order_message->limit_price;
    setOrder(pord, limit_price, quantity, asset_id, issuer);
 
+  // printf("\n ClearignHouse receive order for asset: %d price: %f quantity: %d",asset_id,limit_price,quantity);
+
    if (prev_asset != asset_id) /* found a different asset */
    {
       /* handle previous asset first, unless there isn't one (-1) */
       if (prev_asset != -1 ) 
       {
-        index=findCAsset(&ASSETS, asset_id);
+        index=findCAsset(&ASSETS, prev_asset);
+   //     printf("\n index: %d",index);
+        //getchar();
         if(index>-1)
          {
        
@@ -152,14 +156,17 @@ START_ORDER_MESSAGE_LOOP
  else if (isSellOrder(pord)) addSellOrder(&CLEARINGMECHANISM, pord);
 
 FINISH_ORDER_MESSAGE_LOOP
-/*index=findCAsset(&ASSETS, asset_id);
+
+index=findCAsset(&ASSETS, asset_id);
 if(index>-1)
        {  
            asset = elementAtCAsset(&ASSETS,index);
+  //         printf("\n index: %d",index);
             computeAssetPrice(&CLEARINGMECHANISM, asset);
             sendOrderStatus(&CLEARINGMECHANISM); 
+            emptyClearing(&CLEARINGMECHANISM);
          
-        }*/
+        }
         
   if (PRINT_DEBUG)  
   {
@@ -179,16 +186,16 @@ int ClearingHouse_send_asset_information()
    double price;
    assets =get_assets();
    size=sizeCAsset(assets);  
-   if (PRINT_DEBUG) 
-     printf("\n\n ClearingHouse_send_asset_information ID: %d",ID);
+  // if (PRINT_DEBUG) 
+  //   printf("\n\n ClearingHouse_send_asset_information ID: %d",ID);
    
    for(i=0;i<size;i++)
    {
       asset=elementAtCAsset(assets,i);
       price=lastPrice(asset);
       add_infoAssetCH_message(asset->id,price,asset->quantity);
-    if (PRINT_DEBUG) 
-      printf("\n\t asset_id: %d  price: %f quanity: %d",asset->id,price,asset->quantity);
+ //   if (PRINT_DEBUG) 
+  //    printf("\n\t asset_id: %d  price: %f quanity: %d",asset->id,price,asset->quantity);
    }
   return 0;
 }
@@ -201,13 +208,15 @@ int ClearingHouse_receive_info()
     ClearingHouse_receive_info_stock(assets);
     ClearingHouse_receive_info_bond(assets);
     
-    if (PRINT_DEBUG)
-    { printf("\n ClearingHouse_receive_info ID: %d",ID);
+  //  if (PRINT_DEBUG)
+     
+   //      printf("\n ClearingHouse_receive_info ID: %d",ID);
     //getchar();
-                    }
+                    
     
  return 0;
    }
+   
 void ClearingHouse_receive_info_stock(Asset_array *assets)
 {  
    m_info_firm *cinfo_stock; 
@@ -219,6 +228,7 @@ void ClearingHouse_receive_info_stock(Asset_array *assets)
     {  
      stock= &(cinfo_stock->stock);
      add_Asset(assets, stock->id,stock-> nrOutStandingShares, lastPriceStock(stock));
+ //    printf("\n ClearingHouse_receive_info_stock id: %d",stock->id);
     
      cinfo_stock= get_next_info_firm_message(cinfo_stock);
   

@@ -105,23 +105,16 @@ int  coupons_payment_days(Bond *bond,int currentDay,int holding_period)
    return nrCoupons;
 }
 
-double computeBondUtilityFunction(Bond *bond, double *rnd_returns, int backwardWindow, double factor_chartist, double factor_random, double value, double lossaversion, double randomWeight)
+double computeBondUtilityFunction(Bond *bond, double *rnd_returns, int backwardWindow, double return_fundamental, double factor_chartist, double factor_random, double factor_fundamental, double lossaversion)
 { 
   int i;
   double utility;
-  double r,rc;
+  double r;
   utility=0;
 
   for(i=0;i<backwardWindow;i++)
     { 
-   if(randomWeight!=0) r=backreturns_bond(bond,i)*factor_chartist + value + rnd_returns[i]*randomWeight;
-   else r=backreturns_bond(bond,i)*factor_chartist + value;
-    if (PRINT_DEBUG_CONSUMPTION)
-    {
-     rc = backreturns_bond(bond,i);     
-    //printf("\n computeBondUtilityFunction");               
-    printf("\n i %d r %f rit_ch %f rit_fu %f rit_rnd %f", i, r, rc, value,rnd_returns[i] );                      
-    }                       
+   r=factor_chartist*backreturns_bond(bond,i) + factor_fundamental*return_fundamental + factor_random*rnd_returns[i];
   
      if (r<0) utility=utility+r*lossaversion;
      else     utility=utility+r;

@@ -62,29 +62,26 @@ double randomReturnStock(Belief *belief, Stock *stock, int forwardWindow, int ba
    return rndReturn/backwardWindow;
 }
 
-double randomReturnBond(Belief *belief, Bond *bond,int backwardWindow,int forwardWindow,double *rndvect)
+double randomReturnBond(Bond *bond,int backwardWindow,int holding_period,double *rndvect)
 {  double rndReturn;
    double volatility;
    double randn;
-    double sqrtvol;
+    double factor;
    int i;
    
    volatility=volatilityBond(bond,backwardWindow);
    //printf("\n backwardWindow %d",backwardWindow);
    volatility=max(0.0001,volatility);
    rndReturn=0;
-   sqrtvol=sqrt(forwardWindow)*volatility;
+   factor=sqrt(holding_period)*volatility;
    for(i=0;i<backwardWindow;i++)
     { randn=fast_gauss();
-     rndvect[i]= sqrtvol*randn;
+     rndvect[i]= factor*randn;
      rndReturn=rndReturn+rndvect[i];
      }
         
    return rndReturn/backwardWindow;
 }
-
-
-
 
 void dividendYield(Belief *belief,Stock *stock,int currentDay, int forwardWindow,double dividendExp)
    {  int fwmonths;
@@ -134,23 +131,27 @@ void  stockBeliefFormation(Belief *belief, Stock *stock,int backwardWindow,int f
 
 
 void  bondBeliefFormation(Belief *belief, Bond *bond,int backwardWindow,int forwardWindow, double randomWeight,double  fundamentalWeight,double chartistWeight, int bins ,int currentDay,int holdingPeriodToForwardW, double lossaversion)
-{ int holding_period;
-  int nrCoupons;
+{
+  FILE *file1=NULL;
+  char * filename="";
   //int bins_number;
-  double coupon;
-  double coupon_stream,last_market_price;
-  double fundamental_return_weight_bond;
-  double random_return_weight_bond, return_rnd;
+  int holding_period;
+  int nrCoupons;
+  double coupon, coupon_stream, coupon_yield, coupon_yield_annualized, last_market_price;
+  double random_return_weight_bond, fundamental_return_weight_bond, chartist_return_weight_bond;
+  double return_rnd;
   return_rnd =0.0;
-  double chartist_return_weight_bond;
-  double fundamentalReturn,aux;
-  double factor_chartist,factor_random,value,coupon_yield,coupon_yield_annualized,returns_char,annual_coeff;
+  double return_fundamental, return_chartist, return_random;
+  double days2maturity;
+  double factor_chartist, factor_random, factor_fundamental, factor_chartist2;
+  double annual_coeff;
   double rndreturns[100];
 
   holding_period=holdingPeriodToForwardW*forwardWindow;
   nrCoupons=coupons_payment_days(bond,currentDay,holding_period);
   //printf("numero di coupon%d\n",nrCoupons);
   last_market_price=lastPriceBond(bond);
+  annual_coeff=(NRDAYSINYEAR/holding_period);
 
 if (nrCoupons>0)
     {
@@ -160,13 +161,12 @@ if (nrCoupons>0)
     }
 else coupon_yield = 0;
 
+coupon_yield_annualized = annual_coeff*coupon_yield;
+
 // Fundamental Return
-aux=bond->maturity_day-currentDay;
-fundamentalReturn=min(holding_period,aux)/aux;
-fundamentalReturn=fundamentalReturn*(bond->face_value-last_market_price)/last_market_price;
-//yearly fundamental return
+days2maturity = bond->maturity_day-currentDay;
 
-
+// weights rescaling for bonds
 fundamental_return_weight_bond = max(FUNDAMENTAL_RETURN_WEIGHT_MIN,fundamentalWeight);
 if (fundamental_return_weight_bond==1)
     {
@@ -175,32 +175,53 @@ if (fundamental_return_weight_bond==1)
     }
 else
     {
-
     random_return_weight_bond = (randomWeight/(randomWeight+chartistWeight))*(1-fundamental_return_weight_bond);
     chartist_return_weight_bond = (chartistWeight/(randomWeight+chartistWeight))*(1-fundamental_return_weight_bond);
     }
 
-if (holding_period>=aux)
-    {value=fundamentalReturn; 
+// factor computation
+if (holding_period>=days2maturity)
+    {factor_fundamental = 1; 
      factor_chartist=0;
      factor_random=0;
-    }//priceReturns=fundamentalReturn;
+    }
 else
-    // Random Return
    {
-     return_rnd = randomReturnBond(belief,bond, backwardWindow, forwardWindow,rndreturns);
-     value= fundamental_return_weight_bond*fundamentalReturn;
-     factor_chartist = holding_period* chartist_return_weight_bond;
+     factor_fundamental = fundamental_return_weight_bond;
+     factor_chartist = chartist_return_weight_bond;
      factor_random = random_return_weight_bond;
    }
- annual_coeff=(NRDAYSINYEAR/holding_period);
- returns_char=expectedReturnBond(bond,backwardWindow);
+
+// The three components of returns expected in the holding period
+return_fundamental = (min(holding_period,days2maturity)/days2maturity)*(bond->face_value-last_market_price)/last_market_price;
+return_chartist = holding_period*expectedReturnBond(bond,backwardWindow);
+return_random = randomReturnBond(bond, backwardWindow, holding_period, rndreturns);
+   
+
 //return_rnd = sumvector(rndreturns,backwardWindow)/backwardWindow;
-belief->expectedPriceReturns=(value+factor_chartist*returns_char+ factor_random*return_rnd)*annual_coeff;
-if (abs(belief->expectedPriceReturns)/NRDAYSINYEAR > 1)
-   printf("\n bondBeliefFormation \n exp_price_ret %f fund %f char %f rnd %f ",belief->expectedPriceReturns, value, factor_chartist*returns_char,factor_random*return_rnd);
-coupon_yield_annualized = coupon_yield*annual_coeff;
+belief->expectedPriceReturns=annual_coeff*(factor_fundamental*return_fundamental+factor_chartist*return_chartist+ factor_random*return_random);
+//if (abs(belief->expectedPriceReturns)/NRDAYSINYEAR > 1)
+ //  printf("\n bondBeliefFormation \n exp_price_ret %f fund %f char %f rnd %f ",belief->expectedPriceReturns, value, factor_chartist*returns_char,factor_random*return_rnd);
+
 belief->expectedTotalReturns = belief->expectedPriceReturns + coupon_yield_annualized;
-belief->utility = computeBondUtilityFunction(bond, rndreturns, backwardWindow, factor_chartist, factor_random, value, lossaversion, random_return_weight_bond);
+
+factor_chartist2 = holding_period*factor_chartist;
+belief->utility = computeBondUtilityFunction(bond, rndreturns, backwardWindow, return_fundamental, factor_chartist2, factor_random, factor_fundamental, lossaversion);
+
 belief->last_price=lastPriceBond(bond);
+
+
+      if (PRINT_DEBUG_FILE_EXP1)
+    {                       
+        filename = malloc(40*sizeof(char));
+        filename[0]=0;
+        strcpy(filename, "its/households_bonds_beliefs.txt");      
+        file1 = fopen(filename,"a");
+        fprintf(file1,"%d %f %d %f %f %f",CURRENTDAY,bond->nominal_yield,nrCoupons,coupon_stream,last_market_price,coupon_yield_annualized);
+        fprintf(file1," %f %f %f %f %f %f",factor_random,return_random,factor_chartist,return_chartist,factor_fundamental,return_fundamental);
+        fprintf(file1," %f %f\n",belief->expectedPriceReturns,belief->expectedTotalReturns);
+        fclose(file1);
+        free(filename);        
+    }
+  
 }
