@@ -78,7 +78,7 @@ int IGFirm_send_quality_price_info()
 	
 	//resetting the EARNINGS counter
 	
-	if(DAY%MONTH == DAY_OF_MONTH_TO_ACT%%MONTH)
+	if(DAY%MONTH == DAY_OF_MONTH_TO_ACT%MONTH)
 	{
 		EARNINGS = 0.0;
 	}
