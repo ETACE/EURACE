@@ -33,7 +33,7 @@ int IGFirm_update_productivity_price()
 
 
 	
-	EARNINGS =0.0;
+	
 	
         //double prod_progress;
     
@@ -75,6 +75,15 @@ int IGFirm_update_productivity_price()
  * \brief IGFirm send quality and price information */
 int IGFirm_send_quality_price_info()
 {
+	
+	//resetting the EARNINGS counter
+	
+	if(DAY%MONTH == DAY_OF_MONTH_TO_ACT%%MONTH)
+	{
+		EARNINGS = 0.0;
+	}
+	
+	
     //In case we run the energy shock experiment: determine the CAPITAL_GOOD_PRICE
     if (POLICY_EXP_ENERGY_SHOCK)
     {
@@ -183,8 +192,8 @@ int IGFirm_pay_taxes()
     // Compute the monthly earnings from revenues minus energy 
     
     
-    //TAX_PAYMENT = CUM_REVENUES*TAX_RATE_CORPORATE;
-    TAX_PAYMENT = EARNINGS *0;  
+    TAX_PAYMENT = CUM_REVENUES*TAX_RATE_CORPORATE;
+    //TAX_PAYMENT = EARNINGS *0;  
     
     PAYMENT_ACCOUNT -= TAX_PAYMENT;
 
