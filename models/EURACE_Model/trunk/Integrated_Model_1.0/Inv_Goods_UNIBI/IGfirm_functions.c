@@ -192,7 +192,7 @@ int IGFirm_pay_taxes()
     // Compute the monthly earnings from revenues minus energy 
     
     
-    TAX_PAYMENT = CUM_REVENUES*TAX_RATE_CORPORATE;
+    TAX_PAYMENT = EARNINGS*TAX_RATE_CORPORATE;
     //TAX_PAYMENT = EARNINGS *0;  
     
     PAYMENT_ACCOUNT -= TAX_PAYMENT;
