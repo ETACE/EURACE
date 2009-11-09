@@ -30,7 +30,7 @@ int Household_send_orders()
     {
      ord=elementAtCOrder(orders,i);
      
-     if PRINT_DEBUG_AFM
+     if (PRINT_DEBUG_AFM)
      {
      if (ord->quantity>10e+6)
      {
