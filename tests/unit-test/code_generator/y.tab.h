@@ -70,15 +70,17 @@
      IFNOTSTATIC = 286,
      IFPRIMTYPE = 287,
      IFINAGENT = 288,
-     IFNOTPRIMTYPE = 289,
-     PRIMITIVETYPES = 290,
-     PRIMTYPE = 291,
-     SPECIFIER = 292,
-     UNITTESTS = 293,
-     SUITES = 294,
-     UAGENTNAME = 295,
-     SUITEPATH = 296,
-     XAGENTHEADERS = 297
+     IFDYNAMIC = 289,
+     IFNOTDYNAMIC = 290,
+     IFNOTPRIMTYPE = 291,
+     PRIMITIVETYPES = 292,
+     PRIMTYPE = 293,
+     SPECIFIER = 294,
+     UNITTESTS = 295,
+     SUITES = 296,
+     UAGENTNAME = 297,
+     SUITEPATH = 298,
+     XAGENTHEADERS = 299
    };
 #endif
 /* Tokens.  */
@@ -113,15 +115,17 @@
 #define IFNOTSTATIC 286
 #define IFPRIMTYPE 287
 #define IFINAGENT 288
-#define IFNOTPRIMTYPE 289
-#define PRIMITIVETYPES 290
-#define PRIMTYPE 291
-#define SPECIFIER 292
-#define UNITTESTS 293
-#define SUITES 294
-#define UAGENTNAME 295
-#define SUITEPATH 296
-#define XAGENTHEADERS 297
+#define IFDYNAMIC 289
+#define IFNOTDYNAMIC 290
+#define IFNOTPRIMTYPE 291
+#define PRIMITIVETYPES 292
+#define PRIMTYPE 293
+#define SPECIFIER 294
+#define UNITTESTS 295
+#define SUITES 296
+#define UAGENTNAME 297
+#define SUITEPATH 298
+#define XAGENTHEADERS 299
 
 
 
@@ -133,7 +137,7 @@ typedef union YYSTYPE
     char name[41500];                       /* names                   */
 }
 /* Line 1489 of yacc.c.  */
-#line 137 "y.tab.h"
+#line 141 "y.tab.h"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1

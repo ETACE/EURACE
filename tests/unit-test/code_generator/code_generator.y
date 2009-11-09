@@ -145,6 +145,8 @@ int copy_file(char *from_name,char *to_name )
 %token IFNOTSTATIC
 %token IFPRIMTYPE
 %token IFINAGENT
+%token IFDYNAMIC
+%token IFNOTDYNAMIC
 %token IFNOTPRIMTYPE 
 %token PRIMITIVETYPES
 %token PRIMTYPE
@@ -164,7 +166,7 @@ int copy_file(char *from_name,char *to_name )
 %type  <name>  identifier
 %type  <name>  iteration_expr
 %type  <name>  expression
-%type  <name>  CONSTANT  NAME DIM TYPE DTYPE XAGENTS MESSAGES VARIABLES FUNCTIONS DATATYPES PRIMITIVETYPES PRIMTYPE SPECIFIER CONSTANTS UNITTESTS SUITES  UAGENTNAME  FUNCTIONNAME UTESTNAME SUITEPATH XAGENTHEADERS CAPNAME IFPRIMTYPE IFNOTPRIMTYPE  ALLVARIABLES 
+%type  <name>  CONSTANT  NAME DIM TYPE DTYPE XAGENTS MESSAGES VARIABLES FUNCTIONS DATATYPES PRIMITIVETYPES PRIMTYPE SPECIFIER CONSTANTS UNITTESTS SUITES  UAGENTNAME  FUNCTIONNAME UTESTNAME SUITEPATH XAGENTHEADERS CAPNAME IFPRIMTYPE IFNOTPRIMTYPE  ALLVARIABLES IFNOTDYNAMIC IFDYNAMIC
 
 %%
 input   : 
@@ -217,7 +219,16 @@ IFPRIMTYPE EOL block EOL {strcpy($$,"if((strcmp(variable->type,\"int\")==0)||(st
 IFNOTPRIMTYPE EOL block EOL {strcpy($$,"if(!((strcmp(variable->type,\"int\")==0)||(strcmp(variable->type,\"double\")==0)||(strcmp(variable->type,\"float\")==0)||(strcmp(variable->type,\"char\")==0)))\n{\n");
                           strcat($$,$3);
                           strcat($$,"\n}\n");
-                          }; 
+                          };|
+IFDYNAMIC EOL block EOL {strcpy($$,"if((strstr(variable->type,\"_array\")!=NULL)&&(strstr(variable->type,\"_static\")==NULL)) \n{\n");
+                          strcat($$,$3);
+                          strcat($$,"\n}\n");
+                          };|
+IFNOTDYNAMIC EOL block EOL {strcpy($$,"if(strstr(variable->type,\"_array\")==NULL) \n{\n");
+                          strcat($$,$3);
+                          strcat($$,"\n}\n");
+                          };
+
 
 forexp  : REPEAT iteration_expr EOL block EOL 
                                        {  char aux[300];

@@ -270,8 +270,15 @@ begin
 , __type !! __name [ __dim ]
 end
 ifnotstatic
+begin
+ifnotdynamic
 begin 
-, __type !! __name !!
+, __type !! __name !! 
+end
+ifdynamic
+begin 
+, __type !!* __name !!
+end
 end
 end
 )\\
@@ -298,9 +305,14 @@ copy_ __dtype _array( aux-> __name , __name
 end
 ifnotstatic
 begin
-//__type !!tmp_ __name ;\\
-//!!tmp_ __name = __name ;\\
+ifnotdynamic
+begin
 copy_ __type (&(aux-> __name ) , & __name
+end
+ifdynamic
+begin
+copy_ __type (&(aux-> __name ) ,  __name
+end
 end
  );\\
 end
@@ -325,8 +337,15 @@ begin
 ,aux-> __name
 end
 ifnotstatic
+begin
+ifdynamic
+begin 
+, &aux-> __name 
+end
+ifnotdynamic
 begin 
 , aux-> __name 
+end
 end
 end
 );\\
@@ -402,13 +421,11 @@ end
 
 void  !! read_xml_ __datatypename _array( __datatypename _array!!*aninstance, char!!*file, int!!*index)\\
 {\\
-//printf("reading !! __datatypename  __array %s \n",file);\\
 !!int!!len,cond;\\
 !!len=strlen(file);\\
 !!!!*index=*index+1;\\
 __datatypename !!aux;\\
 init_ __datatypename (&aux);\\
-//printf("%c",file[*index]);\\
 !!cond=1;\\
 while((*index<len-1)&&(file[*index]!='}'))\\
    !!{\\
@@ -417,7 +434,15 @@ while((*index<len-1)&&(file[*index]!='}'))\\
 !!!!add_ __datatypename (aninstance
 repeat variables
 begin
+ifdynamic
+begin
+, &aux. __name
+end
+ifnotdynamic
+begin
 , aux. __name
+end
+
 end
 );\\
 !!!!*index=*index+1;\\

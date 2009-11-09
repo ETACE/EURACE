@@ -1,6 +1,6 @@
 #ifndef TAGH
 #define TAGH
-#define PRECISION 0.000000000001
+#define PRECISION 0.0000000001
 #define DEFAULTDIRECTORY ""
 #include <string.h>
 #include <stdio.h>
