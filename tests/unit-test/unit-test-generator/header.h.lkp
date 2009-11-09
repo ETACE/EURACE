@@ -140,7 +140,7 @@ void  !! free_ __datatypename ( __datatypename !!*aninstance);\\
 
 void  !!copy_ __datatypename ( __datatypename !!*dest, __datatypename !!*source);\\
 int !!equal_ __datatypename ( __datatypename !!*dest, __datatypename !!*source);\\
-void  !!add_ __datatypename ( __datatypename _array!!*anarray
+void!!add_ __datatypename ( __datatypename _array!!*anarray
 repeat variables
 begin
 ifstatic
@@ -148,8 +148,15 @@ begin
 , __type !! __name [ __dim ]
 end
 ifnotstatic
+begin
+ifnotdynamic
 begin 
-, __type !! __name !!
+, __type !! __name !! 
+end
+ifdynamic
+begin 
+, __type !!* __name !!
+end
 end
 end
 );\\

@@ -31,6 +31,8 @@ extern FILE *yyout;
 "ifprimtype"  copy_and_return(IFPRIMTYPE);
 "ifnotprimtype"  copy_and_return(IFNOTPRIMTYPE);
 "ifstatic"      copy_and_return(IFSTATIC);
+"ifdynamic"      copy_and_return(IFDYNAMIC);
+"ifnotdynamic"      copy_and_return(IFNOTDYNAMIC);
 "ifnotlast"      copy_and_return(IFNOTLAST);
 "ifinagent"      copy_and_return(IFINAGENT);
 "ifnotstatic" copy_and_return(IFNOTSTATIC);
