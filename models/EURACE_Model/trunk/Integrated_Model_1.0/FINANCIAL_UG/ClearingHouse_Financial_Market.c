@@ -132,7 +132,7 @@ START_ORDER_MESSAGE_LOOP
       /* handle previous asset first, unless there isn't one (-1) */
       if (prev_asset != -1 ) 
       {
-        index=findCAsset(&ASSETS, asset_id);
+        index=findCAsset(&ASSETS, prev_asset);
         if(index>-1)
          {
        
@@ -150,8 +150,8 @@ START_ORDER_MESSAGE_LOOP
 
  if (isBuyOrder(pord))       addBuyOrder(&CLEARINGMECHANISM, pord);
  else if (isSellOrder(pord)) addSellOrder(&CLEARINGMECHANISM, pord);
-
 FINISH_ORDER_MESSAGE_LOOP
+
 index=findCAsset(&ASSETS, asset_id);
 if(index>-1)
        {  
