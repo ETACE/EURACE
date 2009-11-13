@@ -8,7 +8,6 @@
 #   $3 - New 0.xml file
 #   $4 - -j if files are to be joined. -r if you want region partitioned input files. Otherwise use <import>
 #   $5 - Number of nodes if -r used (Optional, if not set then number of nodes = number of clones+1.)
-# echo $0 $1 $2 $3 $4 $5
 
 if [ -e clone_parallel ]; then
   echo "Will do parallel cloning"
@@ -34,8 +33,6 @@ else
   let "num_regions = $num_nodes"
 fi
 
-#echo "cg:" $num_regions, $num_nodes
-
 # Work out the increment to add to agent ids for each clone
 increment=`grep "<xagent" "$1" | wc -l`
 
@@ -58,9 +55,11 @@ if [ -x clone_parallel ]; then
       let "offset = (i - 1) * 20"
       mpirun -np 20 ./clone_parallel $increment $offset
     done
-    echo Do remaining $remain
-    let "offset = $div * 20"
-    mpirun -np $remain ./clone_parallel $increment $offset
+    if [ $remain -gt 0 ]; then
+      echo Do remaining $remain
+      let "offset = $div * 20"
+      mpirun -np $remain ./clone_parallel $increment $offset
+    fi
   fi
 elif [ -x clone_serial ]; then
   let "times = $num_regions - 1"
@@ -70,6 +69,8 @@ elif [ -x clone_serial ]; then
     ./clone_serial $increment $i
   done
 fi
+
+echo "Cloned data available. Now building node files"
 
 # If -r option supplied then copy the extra stuff from original 0.xml to tmp1
 # tmp1 is added to 0_* later
@@ -105,6 +106,7 @@ elif [ x$4 != "x" ] && [ $4 = "-r" ]; then
   let "limit = $num_nodes - 1"
   for i in `seq 0 $limit`
   do
+    echo "Building node$i-0.xml"
     if [ $i -gt 0 ]; then cat tmp1 > node$i-0.xml; fi
     for j in `seq 1 $clones_per_node`
     do
