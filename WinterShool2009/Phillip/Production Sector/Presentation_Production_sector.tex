@@ -288,7 +288,7 @@ Harting, and M. Neugart}
 {
   \frametitle{Production planning} 
 \begin{itemize}
-	\item Standard inventory rule with stochastic demand (see e.g. \cite{Nahmias_2008}): The firms compute different delivery volumes for all served malls.
+	\item Standard inventory rule with stochastic demand: The firms compute different delivery volumes for all served malls (newsboy problem).
 	
 	\item $Y_{i,r,t}$ is the critical stock of firm $i$ in mall $r$, $SL_{i,r,t}$ is the current mall stock at the activation day.
 		
@@ -306,13 +306,31 @@ Harting, and M. Neugart}
 
 }
 
+\frame
+{
+
+  \frametitle{Production planning} 
+\begin{itemize}
+
+\item Demand is estimated by computing a linear trend from the previous demands.
+
+\item Estimated demand of the last $\tau$ periods for mall $r$: $\left\{ \hat{D}_{i,r,t-\tau},...,\hat{D}_{i,r,t-1} \right\}$.
+
+\item Determination of the estimated demand:  
+		\[
+				\hat{D}_{i,r,t}=\begin{cases}  S_{i,r,t} & if SL_{i,r,t}>0 \\ S_{i,r,t}\cdot (1+ \nu) & if SL_{i,r,t}=0, \end{cases}
+		\]
+		where $0 < \nu < 1$.
+\end{itemize}
+  
+}
 
 
 \frame
 {
   \frametitle{Production planning} 
 \begin{itemize}
-	\item  Estimated demand of the last $\tau$ periods for mall $r$: $\left\{ \hat{D}_{i,r,t-\tau},...,\hat{D}_{i,r,t-1} \right\}$.
+	
 	
 	\item $Y_{i,r,t}$ is chosen such that the firm expects to be able to satisfy the market demand with probability $1-\chi$ ($\chi$, stock-out probability).
 	
@@ -592,25 +610,8 @@ EBIT_{i,t}= \sum_{R}S_{i,r,t}p_{i,t} - Cost^{Prod}_{i,t}.
   
 }
 
-
-\frame
-{
-
-  \frametitle{Earnings statement} 
-\begin{itemize}
-
-\item Determination of the (estimated) demand in all malls over the selling period.   
-\begin{itemize}
-	\item Used for the determination of the production quantity in the following periods.
-\end{itemize}
-		\[
-				\hat{D}_{i,r,t}=\begin{cases}  S_{i,r,t} & if SL_{i,r,t}>0 \\ S_{i,r,t}\cdot (1+ \nu) & if SL_{i,r,t}=0, \end{cases}
-		\]
-		where $0 < \nu < 1$.
-\end{itemize}
-  
-}
 \section{The Investment Goods Producer}
+
 
 
 \frame
@@ -643,7 +644,7 @@ EBIT_{i,t}= \sum_{R}S_{i,r,t}p_{i,t} - Cost^{Prod}_{i,t}.
 
 \item The IG firm carries out R\&D activities to improve the technology.
 
-\item With a probability $prob^{Inno}$ the R\&D is successful.
+\item R\&D is successful with a probability $prob^{Inno}$ .
 \begin{itemize}
 	
 	\item The productivity increases: $q_t^{Inv}=(1+\theta)q_{t-1}^{Inv}$.
@@ -687,7 +688,7 @@ EBIT_{i,t}= \sum_{R}S_{i,r,t}p_{i,t} - Cost^{Prod}_{i,t}.
   \frametitle{Households purchasing decision} 
 \begin{itemize}
 
-\item Once a week a household goes to the closest located mall.
+\item Once a week a household goes to the  mall located in their home region.
 
 \item $CB_{k,week_t}$ is the weekly consumption budget which a household can spend. 
 
@@ -761,10 +762,7 @@ is rolled over to the following week.
 \end{itemize}
 }
 
- 
-\bibliography{Eurace}
-
-\bibliographystyle{apa} % ecta   
+  
 
 \end{document}
     
