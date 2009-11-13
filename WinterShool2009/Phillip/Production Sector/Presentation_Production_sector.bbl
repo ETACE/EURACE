@@ -1,0 +1,9 @@
+\newcommand{\SortNoop}[1]{}
+\begin{thebibliography}{}
+
+\bibitem[\protect\astroncite{Nahmias}{2008}]{Nahmias_2008}
+Nahmias, S. (2008).
+\newblock {\em Production and operations analysis}.
+\newblock Mcgraw-Hill.
+
+\end{thebibliography}
