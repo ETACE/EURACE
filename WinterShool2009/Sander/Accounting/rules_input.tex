@@ -1,0 +1,130 @@
+\section{Validation rules}
+
+To validate the internal consistency of the model we list $20$ rules that we have successfully tested.
+On the one hand these rules are balance sheet accounting identities, and on the other they are 
+conservation rules for material quantities and monetary values. Having thus validated the model
+we are confident that the EURACE model is stock-flow consistent, and can form a solid basis for further extensions in the future.
+
+\subsubsection*{Balance sheet identities}
+
+\subsubsection*{RULE 1}
+Firm balance sheet: assets and liabilities.
+
+\bigskip
+\url{firm_payment_account + firm_total_value_local_inventory + firm_total_value_capital_stock = firm_total_debt + firm_equity}
+
+\subsubsection*{RULE 2}
+IGFirm balance sheet: assets and liabilities, all net profits are paid in dividends.
+
+\bigskip
+\url{igfirm_net_profit = igfirm_dividend_per_share*igfirm_shares_outstanding}
+
+\subsubsection*{RULE 3}
+Bank balance sheet: assets and liabilities.
+
+\bigskip
+\url{bank_cash + bank_credit = bank_equity + bank_ecb_debt + bank_deposits}
+
+\subsubsection*{RULE 4}
+Government total debt is the value of its outstanding bonds.
+
+\bigskip
+\url{gov_total_debt = gov_value_bonds*govt_outstanding_bonds}
+
+\subsubsection*{RULE 5}
+ECB: The issued fiat money to government(s) equals the total value of bond holdings of the ECB.
+
+\bigskip
+\url{ecb_bond_holdings_value + ecb_cash = ecb_fiat_money_govs + ecb_fiat_money_banks}
+
+\subsubsection*{Aggregates across sectors}
+
+\subsubsection*{RULE 6}
+Payment accounts: aggregate bank deposits equals the sum of payment accounts in agent memory.
+
+\bigskip
+\url{bank_deposits = firm_payment_account + igfirm_payment_account + hh_payment_account}
+
+\subsubsection*{RULE 7}
+Credit money: aggregate Bank credit outstand equals total loans to firms.
+
+\bigskip
+\url{bank_credit = firms_total_loans}
+
+\subsubsection*{RULE 8}
+Definition of GDP.
+
+\bigskip
+\url{eurostat_monthly_gdp = eurostat_monthly_investment_value + household_expenditure + govt_monthly_cons_expenditure}
+
+\subsubsection*{RULE 9}
+Total number of shares outstanding equals the total number of shares in household portfolios.
+
+\bigskip
+\url{household_assets = firm_current_shares_outstanding + igfirm_shares_outstanding + bank_current_shares_outstanding + govt_outstanding_bonds}
+
+\subsubsection*{RULE 10}
+Debt installment payments by firms to banks and received by banks are equal.
+\url{firm_debt_installments = bank_loan_installments}
+
+\subsubsection*{RULE 11}
+Interest payments by firms to banks and received by banks are equal.
+
+\bigskip
+\url{firm_interest_payments_to_banks = bank_interest_payments_from_firms}
+
+\subsubsection*{RULE 12}
+Taxes paid and received are equal.
+
+\bigskip
+\url{govt_monthly_tax_revenues = firm_tax_payment + igfirm_tax_payment + household_tax_payment + bank_tax_payment}
+
+\subsubsection*{RULE 13}
+Deposits at ECB.
+
+\bigskip
+\url{ecb_deposits = bank_payment_account + gov_payment_account}
+
+\subsubsection*{RULE 14}
+Check the number of active firms.
+
+\bigskip
+\url{eurostat_no_firms = firm_active + eurostat_no_firm_bankruptcies}
+
+\subsubsection*{RULE 15}
+Daily dividend payments send and received are equal.
+
+\bigskip
+\url{firm_total_dividends + igfirm_total_dividends + bank_total_dividends = household_dividend_daily}
+
+\subsubsection*{RULE 16}
+Material quantity conservation rule: Eurostat total sold quantity compared with firm data on number of goods sold (in volume).
+
+\bigskip
+\url{eurostat_monthly_sold_quantity = firm_total_sold_quantity_volume}
+
+\subsubsection*{RULE 17}
+Investments in monetary value: Eurostat data (aggregated across the firms' investment costs) equals the IGFirm revenues.
+
+\bigskip
+\url{eurostat_monthly_investment_value = igfirm_revenues}
+
+\subsubsection*{RULE 18}
+The Banks' aggregate ECB debt is found on the ECB balance sheet (\url{fiat_money_banks}, LHS), and on the banks' balance sheet (\url{bank_ecb_debt}, RHS). Similarly, the governments' debts are on the ECB balance sheet (\url{fiat_money_govs}, LHS), and equals the value of the ECB bond holdings (\url{bond_holdings_value}, RHS).
+
+\bigskip
+\url{ecb_fiat_money_banks + ecb_fiat_money_govs = ecb_bond_holdings_value + bank_ecb_debt}
+
+\subsubsection*{RULE 19}
+ECB fiat money is by definition the sum of the fiat money created for governments and for banks.
+
+\bigskip
+\url{ecb_fiat_money = ecb_fiat_money_govs + ecb_fiat_money_banks}
+
+\subsubsection*{RULE 20}
+Monetary conservation rule
+All deposits in the banking sector plus bank equity, plus the money in the public sector (government payment account), 
+should equal the credit money created by the banks plus the fiat money created by the central bank.
+
+\bigskip
+\url{bank_deposits + bank_equity + gov_payment_account + ecb_cash == bank_credit + ecb_fiat_money}

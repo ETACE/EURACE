@@ -1,0 +1,373 @@
+%\chapter{System of National Accounts}
+
+\section{Introduction: Stock-flow consistent models}
+An important part of the testing and verification process will be the verification of the internal consistency of the model. For this task we need a stock-flow consistent (SFC) model, that can be defined as:
+\begin{quote}
+``[...] models that identify economic agents with the main social categories/institutional sectors of actual capitalist economies -- thoroughly describe these agents' short-period behaviors and consistently model the `period by period' balance sheet dynamics implied by the latter.'' (\citet[p. 2]{Macedo-e-Silva:2008})
+\end{quote}
+Using a SFC model we need to check that all monetary flows are accounted for, and that all changes to stock variables are consistent with these flows. This can be accomplished by tracking the time evolution of the balance sheets across the different sectors of the economy. This could be done by constructing a Social Accounting Matrix (SAM) that contains all the monetary flows and changes to the balance sheet between the beginning and end of an accounting period. A SAM consists of a double-entry accounting system in which each flow comes from somewhere and goes to somewhere. It shows how the balance sheets of the different economic sectors (agents) are interlinked, and it also shows how the period-by-period balance sheets change dynamically over time. Such an accounting system at the macro level provides us with a number of accounting identities that should always hold and this can be tested by an external invariant detector such as Daikon.
+
+This provides us with a solid and economically well-founded methodology to test the consistency of the model and it increases the credibility that can be attached to the model's results. Thereby it is not only part of the testing and verification procedure, but is also part of the accreditation process. It will help to raise the acceptability and trust in the model.
+
+\section{Balance sheets}
+Below we list for each agent type the items on its balance sheet. The cash flows indicated only relate to the financing activities.
+
+\subsection{Household}
+Refer to Tables \ref{Table: Household balance sheet} and \ref{Table: Household cash flow}.
+
+Households can have bank deposits ($M^h$) but they do not receive any interest ($r^{m} M^h=0$).
+They can purchase government bonds ($B^h$) and private equity shares ($E^h$). They do not take out bank loans. They receive interest on the government bonds ($+r^gB^h$) and dividends on the shares ($+Div^h$). The equity transactions are denoted in this text as a share purchase by the household ($-SP^h$) or a share repurchase by the firm ($+SR^h$).
+
+\subsection{Firm - CGP and IGP}
+Refer to Tables \ref{Table: Firm income statement},\ref{Table: Firm balance sheet} and \ref{Table: Firm cash flow}.
+
+Firms can have bank deposits ($M^f$) and bank loans ($L^f$). They do not receive any interest on the deposits ($r^{m} M^f=0$), but do have to pay interest on the loans ($r^b L^f$). They can also issue equity shares ($E^f$) on which they pay dividends ($-Div^f$). They can also do a share repurchase ($SR^f$). They they do not purchase government bonds, or shares of other firms.
+
+\subsection{Bank}
+%\subsection{Bank balance sheet}
+Refer to Tables \ref{Table: Bank balance sheet} and \ref{Table: Bank cash flow}.
+
+Banks can issue equity shares on which they pay dividends ($E^b$, $-Div^b$). They have a portfolio of outstanding loans ($L^b$) on which they receive interest ($+r^b L^b$) and debt instalment payments ($-\Delta L^b$).
+They do not purchase government bonds, and they do not purchase shares in other firms or banks. The banks have a standing facility with the Central Bank from which they can draw advances freely ($A^b$), on which they have to pay an interest to the Central Bank ($-r^{cb}A^b$).
+
+\subsection{Government}
+%\subsection{Government balance sheet}
+Refer to Tables \ref{Table: Government balance sheet} and \ref{Table: Government cash flow}.
+
+The government has a bank account at the Central Bank. If there are any changes to the payment account of the government (i.e. withdrawals to pay for unemployment benefits or subsidies) this is recorded as a change in the stock of the asset $M^{g}$ ($-\Delta M^{g}$), with a counterpart liability on the balance sheet of the Central Bank ($+\Delta M^{g}$). The government also has a standing facility at the Central Bank that allows it to have a negative payment account. The government has a liability that is given by the stock of currently outstanding government bonds ($B^g$) on which it pays the interest rate ($-r^g B^g$).
+
+\subsection{Central Bank}
+%\subsection{Central Bank balance sheet}
+Refer to Tables \ref{Table: Central Bank cash flow} and \ref{Table: Central Bank balance sheet}.
+
+The Central Bank can purchase government bonds ($B^{cb}$) on which it receives interest ($+r^{g}B^{cb}$).
+The Central Bank gives advances to the banks ($-\Delta A^{cb}$), on which the banks have to pay an interest ($+r^{cb}A^{cb}$). Since the Central Bank is not allowed to make a profit, its revenues from government bonds and bank advances ($+r^{g}B^{cb}$, $+r^{cb}A^{cb}$) are distributed to the government in the form of a dividend ($-Div^{cb}$). In case of multiple governments, the total dividend payment is equally divided among the governments.
+
+\clearpage
+\begin{table}[H!]
+\caption{Household balance sheet.}
+\label{Table: Household balance sheet}\centering
+\begin{boxedminipage}{14cm}
+\centering\leavevmode
+\begin{tabular}{ll}
+\underline{Assets} & \underline{Liabilities} \\
+Cash deposits & (none)\\
+Government bonds &\\
+Firm stocks &\\
+\end{tabular}%
+\end{boxedminipage}
+\end{table}
+
+\begin{table}[H!]
+\caption{Household cash flow.}
+\label{Table: Household cash flow}\centering
+\begin{boxedminipage}{14cm}
+\centering\leavevmode
+\begin{tabular}{ll}
+\underline{Positive cash flows} & \underline{Negative cash flows} \\
+\emph{Cash flow from employment activities:} & \\
+Salary  & Consumption expenditure\\
+Benefits & Tax payments \\
+Subsidies&\\
+Transfers&\\
+\emph{Cash flow from financing activities:} & \\
+%New loans              & Loan repayments\\
+%                       & Interest payments\\
+Interest on gov bonds   & Gov bond purchases \\
+%Firm bond redeeming    & \\
+%Interest on corporate bonds & Firm bond purchases\\
+Firm share sales        & Firm share purchases \\
+Dividend income  & \\
+\line(1,0){75} & \line(1,0){85} \\
+Total income & Total expenses \\
+\end{tabular}%
+\end{boxedminipage}
+\end{table}
+
+\begin{table}[H!]
+\caption{Firm income statement (CGP/IGP).}
+\label{Table: Firm income statement}\centering
+\begin{boxedminipage}{14cm}
+\centering\leavevmode
+\begin{tabular}{ll}
+Revenues from sales of goods and services &  \\
+\emph{Operating expenses:}&\\
+%-- cost of sales &  \\
+-- total payroll &  \\
+-- investment payments (CGP) or energy costs (IGP)&  \\
+\line(1,0){200} &  \\
+= Operating income (earnings before interest and taxes) &  \\
+\emph{Non-operating expenses:} &  \\
+-- interest payments &  \\
+-- debt repayments &  \\
+%-- bond coupon payments &  \\
+%-- bond redeeming payments &  \\
+\line(1,0){200} &  \\
+= Gross income (earnings before taxes) &  \\
+-- tax payments &  \\
+\line(1,0){200} &  \\
+= Net income (net profit) &  \\
+\end{tabular}%
+\end{boxedminipage}
+\end{table}
+
+\begin{table}[H!]
+\caption{Firm balance sheet.}
+\label{Table: Firm balance sheet}\centering
+\begin{boxedminipage}{14cm}
+\centering\leavevmode
+\begin{tabular}{ll}
+\underline{Assets} & \underline{Liabilities} \\
+Cash deposits  & Total debt \\
+Total value physical capital stock & Shareholder equity \\
+Total value local inventory stocks &  \\
+\end{tabular}%
+\end{boxedminipage}
+\end{table}
+
+%\subsection{Firm cash flow}
+
+\begin{table}[H!]
+\caption{Firm cash flow (CGP and IGP differ only in the item Investment costs or Energy costs).}
+\label{Table: Firm cash flow}\centering
+\begin{boxedminipage}{14cm}
+\centering\leavevmode
+\begin{tabular}{ll}
+\underline{Positive cash flows} & \underline{Negative cash flows} \\
+\emph{Cash flow from operating activities:} & \\
+Sales revenues  & Total payroll \\
+                & Investment costs (CGP)\\
+                & Energy costs (IGP)\\
+                & Tax payments \\
+\emph{Cash flow from financing activities:} & \\
+New loans       & Debt installment payments \\
+                & Interest payments\\
+%New bond issues  & Bond redeeming at maturity\\
+%                 & Bond interest payments\\
+New share issues & Dividend payout\\
+%                 & Share repurchases \\
+\line(1,0){75}   & \line(1,0){85} \\
+Total income     & Total expenses \\
+\end{tabular}%
+\end{boxedminipage}
+\end{table}
+
+\begin{table}[H!]
+\caption{Bank balance sheet.}
+\label{Table: Bank balance sheet}\centering
+\begin{boxedminipage}{14cm}
+\centering\leavevmode
+\begin{tabular}{ll}
+\underline{Assets}  & \underline{Liabilities} \\
+Cash             & Total deposits\\
+Loans to firms   & ECB debt \\
+                 & Shareholder equity\\
+\end{tabular}%
+\end{boxedminipage}
+\end{table}
+
+
+\begin{table}[H!]
+\caption{Bank cash flow.}
+\label{Table: Bank cash flow}\centering
+\begin{boxedminipage}{14cm}
+\centering\leavevmode
+\begin{tabular}{ll}
+\underline{Positive cash flows} & \underline{Negative cash flows} \\
+Loan installments & New loans to firms \\
+Interest payments & Interest on ECB debt \\
+%New share issues  & Share repurchases\\
+                  & Dividend payout \\
+                  & Tax payment \\
+\line(1,0){75}    & \line(1,0){85} \\
+Total income      & Total expenses \\
+\end{tabular}%
+\end{boxedminipage}
+\end{table}
+
+\begin{table}[H!]
+\caption{Government balance sheet.}
+\label{Table: Government balance sheet}\centering
+\begin{boxedminipage}{14cm}
+\centering\leavevmode
+\begin{tabular}{ll}
+\underline{Assets} & \underline{Liabilities} \\
+Gov. cash holdings  & Outstanding bonds \\
+\end{tabular}%
+\end{boxedminipage}
+\end{table}
+
+%\subsection{Government cash flow}
+\begin{table}[H!]
+\caption{Government cash flow.}
+\label{Table: Government cash flow}\centering
+\begin{boxedminipage}{14cm}
+\centering\leavevmode
+\begin{tabular}{ll}
+\underline{Positive cash flows} & \underline{Negative cash flows} \\
+\emph{Cash flow from public sector activities:} & \\
+Tax revenues    & Investments\\
+                & Consumption\\
+                & Total unemployment benefit payments\\
+                & Total subsidy payments\\
+                & Total transfer payments\\
+\emph{Cash flow from financing activities:} & \\
+New bond issues  & Bond interest payments\\
+\line(1,0){75} & \line(1,0){85} \\
+Total income    & Total expenses \\
+\end{tabular}%
+\end{boxedminipage}
+\end{table}
+
+
+\begin{table}[H!]
+\caption{Central Bank balance sheet.}
+\label{Table: Central Bank balance sheet}\centering
+\begin{boxedminipage}{14cm}
+\centering\leavevmode
+\begin{tabular}{ll}
+\underline{Assets}  & \underline{Liabilities} \\
+Loans to banks    & Payment accounts of banks and govs \\
+Gov bond holdings & Fiat money\\
+                  & ECB equity\\
+\end{tabular}%
+\end{boxedminipage}
+\end{table}
+
+%\subsection{Central Bank cash flow}
+
+\begin{table}[H!]
+\caption{Central Bank cash flow.}
+\label{Table: Central Bank cash flow}\centering
+\begin{boxedminipage}{14cm}
+\centering\leavevmode
+\begin{tabular}{ll}
+\underline{Positive cash flows} & \underline{Negative cash flows} \\
+Interest on ECB loans to banks  & New ECB loans to banks\\
+Gov bond interest payment       & Gov bond purchases\\
+Gov cash deposits               & \\
+Bank cash deposits              & \\
+\line(1,0){75} & \line(1,0){85} \\
+Total income & Total expenses \\
+\end{tabular}%
+\end{boxedminipage}
+\end{table}
+
+\clearpage
+\section{Social accounting matrix}
+The social accounting matrix in Table \ref{Accounting matrix: flows} is based on the following set of assumptions:
+\begin{itemize}
+    \item There are four types of financial assets: cash holdings in the form of bank deposits, bank loans, government bonds, and private equity shares (issued by firms and banks). There is no cash hoarding since all money is held inside the banking sector.
+    \item Every agent has a current account and a capital account. All flows (income and payments) are on the current account while all changes in asset holdings are on the capital account.
+    \item Pure capital gains from holdings of equity must be added separately, since there are no transactions underlying them.
+    \item All rows sum to zero, except current savings, which indicates a net wealth creation by the private sector and the public sector combined.
+\end{itemize}
+
+\begin{landscape}
+\thispagestyle{empty}
+\begin{table}
+  \centering\footnotesize
+  \begin{tabular}{|l|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+  \hline\hline
+    Account     & \multicolumn{2}{c|}{Household} & \multicolumn{2}{c|}{Firm I (CGP)} & \multicolumn{2}{c|}{Firm II (IGP)} & \multicolumn{2}{c|}{Bank} & \multicolumn{2}{c|}{Government}  & \multicolumn{2}{c|}{CB} & Total \\\hline
+      & current & capital & current & capital & current & capital & current & capital & current & capital & current  & capital &  \\
+    \hline
+\textbf{\emph{Real economic activity}} &&&&&&&&&&&&&\\
+    \hline
+    Consumption & $-C$ &     & $+C$ & &     &       &       &       &       &     &       &      & 0\\\hline
+    Gov. cons   &      &     & $+G$ & & &   &  &  & $-G$ & &  & & 0\\\hline
+    Investment  &      &  & $-I^{fI}$ &  &  $+I^{fI}+I^g$ & &  &  & $-I^g$ & &  & & 0\\\hline
+    Salaries    & $+W$ & & $-W^{fI}$ &  & $-W^{fII}$  &  &  &  &  & &  & & 0\\\hline
+    Taxes       & $-T^h$ &  & $-T^{fI}$ &  & $-T^{fII}$ &  &  &  &  $+T$ & &  & & 0\\
+    \hline
+\textbf{\emph{Financing activity}}  &&&&&&&&&&&&&\\
+    \hline
+    Share purchase     & $-SP^h$ &   & $+SP^{fI}$ & & $+SP^{fII}$ &  & $+SP^{b}$ & & & & & &  0   \\\hline  
+    Share repurchase   & $+SR^h$ &   & $-SR^{fI}$ & & $-SR^{fII}$ &  & $-SR^{b}$ & & & & & &  0\\\hline
+    Dividend on stocks & $+Div^h$&   & $-Div^{fI}$& & $-Div^{fII}$&  & $-Div^{b}$& & $+Div^{cb}$ & & $-Div^{cb}$ & &  0\\\hline
+    Interest on deposits & $r^{m}M^{h}=0$ &  & $r^{m}M^{fI}=0$ &  & $r^{m}M^{fII}=0$ & & $r^{m} M=0$ &  &  & &  & & 0\\\hline
+    Interest on bank loans  &  &  & $-r^{b} L^{fI}$ &  & $-r^{b} L^{fII}$ &  & $+r^b L^b - r^{cb}A^b$ & &  & & $+r^{cb}A^{cb}$ & & 0\\\hline
+%    Interest on corp. bonds & $+r^f FB$ & & $-r^{fI} FB^{fI}$ &  & $-r^{fII} FB^{fII}$ &  &  &  &  &  &  & & 0\\\hline
+    Interest on gov. bonds  & $+r^{g} B^h$ & &  &  &   &  &  & &  $-r^g B^g$ & & $+r^{g} B^{cb}$ & & 0\\
+\hline
+\textbf{\emph{Public sector activity}}  &&&&&&&&&&&&&\\
+\hline
+    Benefits    & $+Ben^{h}$ & &  &             &  &               &  &   & $-Ben$  &  &  &  & 0\\\hline    
+    Subsidies   & $+Sub^{h}$ & & $+Sub^{fI}$ &  & $+Sub^{fII}$  &  &  &   & $-Sub$  &  &  &  & 0\\\hline    
+    Transfers   & $+Tr^{h}$  & & $+Tr^{fI}$  &  & $+Tr^{fII}$   &  &  &   & $-Tr$   &  &  &  & 0\\
+    \hline
+\textbf{\emph{Current savings}} &  \multicolumn{2}{c|}{$Sav^{h}$} &  \multicolumn{2}{c|}{$Prof^{fI}$} &  \multicolumn{2}{c|}{$Prof^{fII}$} &  \multicolumn{2}{c|}{$Prof^{b}$}  &  \multicolumn{2}{c|}{$Sav^{g}$} &  \multicolumn{2}{c|}{$0$} & $+SAV$\\
+    \hline\hline
+\textbf{\emph{Changes in asset stocks}}  &&&&&&&&&&&&&\\
+    \hline
+%$\Delta$Cash holdings   & & $-\Delta H^h$ &  & & &  & & $-\Delta H^b$ & & & & $+\Delta H$ & 0\\\hline
+$\Delta$Bank deposits   & & $-\Delta M^h$ &  & $-\Delta M^{fI}$ & & $-\Delta M^{fII}$ & & $+\Delta M^b$ &  &  $-\Delta M^g$ & & $+\Delta M^g$ & 0\\\hline
+$\Delta$Bank loans to firms  & & & & $+\Delta L^{fI}$ & & $+\Delta L^{fII}$  &  & $-\Delta L^b$ &  & & & & 0\\\hline
+$\Delta$CB loans to banks  &               & &  & & &  & & $+\Delta A^b$   & & & & $-\Delta A^{cb}$ & 0\\\hline
+$\Delta$Gov. bonds      & & $-\Delta B^{h}$  &  &  &   &   & &  & & $+\Delta B^g$  & & $-\Delta B^{cb}$ & 0\\\hline
+%$\Delta$Corp. bonds     & & $-\Delta FB^{h}$  & & $+\Delta FB^{fI}$ & & $+\Delta FB^{fII}$ & & & & &  & & 0\\\hline
+$\Delta$Firm shares   & & $-\Delta E^{h}$   & & $+\Delta E^{fI}$ & & $+\Delta E^{fII}$ & & $+\Delta E^b$ & & & & & 0\\
+    \hline
+\textbf{\emph{Current savings}}  &&&&&&&&&&&&&\\
+    \hline
+\textbf{\emph{+ net capital transactions}}&  \multicolumn{2}{c|}{$0$} &  \multicolumn{2}{c|}{$0$} &  \multicolumn{2}{c|}{$0$} &  \multicolumn{2}{c|}{$0$}  &  \multicolumn{2}{c|}{$0$} &  \multicolumn{2}{c|}{$0$} & $+SAV$\\
+    \hline\hline
+  \end{tabular}
+  \caption{Social accounting matrix (SAM) of monetary flows between different sectors of the economy. The variables denote sums over all agents in each sector. The top section of the table indicates the cash flows, the bottom half denotes the changes in asset holdings. A $(+)$ sign denotes a receipt while a $(-)$ sign denotes a payment.}
+  \label{Accounting matrix: flows}
+\end{table}
+\end{landscape}
+
+
+\begin{comment}
+\thispagestyle{empty}
+\begin{landscape}
+\begin{table}
+  \centering\footnotesize
+  \begin{tabular}{|l|l|}
+  \hline\hline
+    Account     & \\
+    \hline
+\textbf{\emph{Real economic activity}} &\\
+    \hline
+    Consumption & $\sum$ (HH: \url{monthly_consumption_expenditure}) + $\sum$ (GOV: \url{monthly_consumption_expenditure}) = $\sum$ (CGP:  \url{cum_revenue})\\\hline
+    Investment  & $\sum$ (CGP: \url{capital_costs}) + $\sum$ (GOV: \url{monthly_investment_expenditure}) =  $\sum$ (IGP: \url{cum_revenue})\\\hline
+    Salaries    & $\sum$ (HH: \url{wage}) = $\sum$ (CGP: \url{labour_costs}) + $\sum$ (IGP: \url{labour_costs})\\\hline
+    Taxes       & $\sum$ (HH: \url{tax_payment})+ $\sum$ (CGP: \url{tax_payment})+ $\sum$ (IGP: \url{tax_payment}) + + $\sum$ (Bank: \url{tax_payment}) = $\sum$ (GOV:  \url{monthly_tax_revenues})\\\hline
+%Liquidity pressure ratio & \url{liquidity_pressure_ratio} = $\sum$ (Banks: \url{total_credit}) / $\sum$ (Banks: \url{deposits})\\
+    \hline    
+\textbf{\emph{Financing activity}}  &\\
+    \hline
+%    Share purchase     & $\sum$ (HH: \url{stock_purchases}) = $\sum$ (CGP: \url{equity_financing_obtained}) + $\sum$ (IGP: \url{equity_financing_obtained}) + $\sum$ (Bank: \url{equity_financing_obtained}) \\\hline  
+%    Share repurchase   & $\sum$ (HH: \url{equity_sales_income}) = $\sum$ (CGP: \url{share_repurchase}) + $\sum$ (IGP: \url{share_repurchase}) + $\sum$ (Bank: \url{share_repurchase})\\\hline
+    Dividends & $\sum$ (HH: \url{cum_total_dividends}) = $\sum$ (CGP: \url{total_dividend_payment}) + $\sum$ (IGP: \url{total_dividend_payment}) + $\sum$ (Bank: \url{total_dividend_payment})\\\hline
+%    Interest on deposits & $\sum$ (HH: \url{deposit_interest_income}) + $\sum$ (CGP: \url{deposit_interest_income}) + $\sum$ (IGP: \url{deposit_interest_income}) + $\sum$ (Bank: \url{deposit_interest_payment})\\\hline
+    Interest on bank loans to firms & $\sum$ (CGP: \url{total_interest_payment}) + $\sum$ (IGP: \url{total_interest_payment}) = $\sum$ (Bank: \url{firm_interest_payments})\\\hline
+    Interest on CB loans to banks & $\sum$ (Bank: \url{ecb_interest_payment}) = (CB: \url{bank_interest})\\\hline
+%    Interest on corp. bonds & $\sum$ (HH: \url{corp_bond_interest_income}) =  $\sum$ (CGP: \url{bond_interest_payment}) + $\sum$ (IGP: \url{bond_interest_payment})\\\hline
+    Interest on gov. bonds  & $\sum$ (HH: \url{gov_interest}) + (ECB: \url{gov_interest}) = $\sum$ (GOV: \url{monthly_bond_interest_payment})\\
+\hline
+\textbf{\emph{Public sector activity}}  &\\
+\hline
+    Benefits    & $\sum$ (HH: \url{benefit_income}) = $\sum$ (GOV: \url{monthly_benefit_payment})\\\hline    
+    Subsidies   & $\sum$ (HH: \url{subsidy_income}) +  $\sum$ (CGP: \url{subsidy_income}) + $\sum$ (IGP: \url{subsidy_income}) = $\sum$ (GOV: \url{monthly_subsidy_payment})\\\hline    
+    Transfers   & $\sum$ (HH: \url{transfer_income}) +  $\sum$ (CGP: \url{transfer_income}) + $\sum$ (IGP: \url{transfer_income}) = $\sum$ (GOV: \url{monthly_transfer_payment})\\
+    \hline
+\textbf{\emph{Current savings}} & $\sum$ (HH: \url{savings}) +  $\sum$ (CGP: \url{net_profit}) + $\sum$ (IGP: \url{net_profit}) + $\sum$ (Bank: \url{net_profit}) + $\sum$ (GOV: \url{budget_deficit}) = (\url{total_net_savings}) \\
+    \hline\hline
+\textbf{\emph{Total asset stocks}}  &\\
+    \hline
+Bank deposits   & $\sum$ (HH: \url{payment_account}) + $\sum$ (CGP: \url{payment_account}) + $\sum$ (IGP: \url{payment_account}) = $\sum$ (Bank: \url{deposits})\\\hline
+Central Bank fiat money & $\sum$ (Bank: \url{deposits}) + $\sum$ (Bank: \url{cash}) - $\sum$ (Bank: \url{total_credit})= (CB: \url{fiat_money})\\\hline
+Bank loans to firms   & $\sum$ (CGP: \url{total_debt}) + $\sum$ (IGP: $\Delta$ \url{total_debt}) = $\sum$ (Bank:  \url{total_credit})\\\hline 
+Central Bank loans to banks & $\sum$ (Bank: \url{ecb_debt}) = (ECB: \url{total_ecb_debt})\\\hline 
+Nr. Gov. bonds      & $\sum$ (HH: \url{nr_gov_bonds}) + $\sum$ (CB: \url{nr_gov_bonds}) = $\sum$ (GOV: \url{nr_bonds_outstanding})\\\hline
+%Nr. firm bonds     & $\sum$ (HH: \url{corp_bond_holdings}) = $\sum$ (CGP: \url{outstanding_corp_bonds}) + $\sum$ (IGP:  \url{outstanding_corp_bonds})\\\hline
+Nr. firm shares   & $\sum$ (HH: \url{nr_firm_shares}) = $\sum$ (CGP: \url{current_shares_outstanding}) + $\sum$ (IGP: \url{current_shares_outstanding})\\
+\hline\hline
+  \end{tabular}
+  \caption{Memory variables and accounting identities that are given by the row sums of the SAM. $\Delta$ means the change in the memory variable over the time period that is used to detect the invariants (monthly, quarterly, yearly).}
+  \label{Accounting matrix: Memory variables}
+\end{table}
+\end{landscape}
+\end{comment}
