@@ -110,7 +110,7 @@ Harting, and M. Neugart}
 	\item Consumption Goods Market: Semi local market
 	
 \begin{itemize}
-	\item On the supply side the market the CGM is global: producers can deliver goods
+	\item On the supply side the market is global: producers can deliver goods
 to all malls.
 	\item On the demand side the CGM is a local market: consumers shop in their region
 \end{itemize}
@@ -181,7 +181,7 @@ to all malls.
 	\item There are barriers to hire workers from outside regions (commuting costs).
 \end{itemize}
 
-	\item The firm can finance the production internally and externally.
+	\item The firm can finance the production and investments internally and externally.
 	\end{itemize}
 
 
@@ -205,7 +205,8 @@ to all malls.
   \frametitle{Technology} 
 \begin{itemize}
 	\item The production technology of firm $i$ is embedded in firm's capital stock $K_{i,t}$ and is characterized by its 		technical productivity $A_{i,t}$.
-		\item Average productivity $A_{i,t}$ depends on past investments.
+	\item Provided by capital goods producers with a quality that increases over time.
+		\item Average productivity $A_{i,t}$ of the capital stock depends on past investments.
 		\item $A_{i,t}$ is updated by depreciation and new physical investments.
 		\item The firm depreciates its capital stock $K_{i,t}$ at a rate $\delta$, it follows $K_{i,t}=(1-\delta)K_{i,t-1}+I_{i,t}$.
 	\end{itemize}
@@ -221,7 +222,7 @@ to all malls.
 	\begin{itemize}
 	\item General skills: Education and general abilities measured in 5 discrete skill groups $b_w^{gen}=\left\{1,...5\right\}.$
 	\item Specific skills: $b_{w,t}$ are experiences and know how obtained on the job. 
-	\item Specific skills of a worker $w$ employed in firm $i$ evolve through learning by doing etc. according to \[ b_{w,t}=b_{w,t-1}+ \chi (b_w^{gen})\cdot (A_{i,t}-b_{w,t-1}). \]
+	\item Specific skills of a worker $w$ employed in firm $i$ evolve through learning by doing etc. according to \[ b_{w,t}=b_{w,t-1}+ \chi (b_w^{gen})\cdot \max\left[0,(A_{i,t}-b_{w,t-1}).\right] \]
 		
 \begin{itemize}
 	\item Building up specific skills depends on educational level. 
@@ -346,13 +347,13 @@ to all malls.
 
 \item Demand is estimated by computing a linear trend from the previous demands.
 
-\item Estimated demand of the last $\tau$ periods for mall $r$: $\left\{ \hat{D}_{i,r,t-\tau},...,\hat{D}_{i,r,t-1} \right\}$.
+\item Demand of the last $\tau$ periods for mall $r$: $\left\{ \hat{D}_{i,r,t-\tau},...,\hat{D}_{i,r,t-1} \right\}$.
 
-\item Determination of the estimated demand:  
+\item Determination of the demand (Estimation with a simple adaption rule):  
 		\[
 				\hat{D}_{i,r,t}=\begin{cases}  S_{i,r,t} & if SL_{i,r,t}>0 \\ S_{i,r,t}\cdot (1+ \nu) & if SL_{i,r,t}=0, \end{cases}
 		\]
-		where $0 < \nu < 1$.
+		where $0 < \nu < 1$ and $S_{i,r,t}$ is the sold quantity in mall $r$.
 \end{itemize}
   
 }
@@ -414,7 +415,7 @@ to all malls.
 	
 	\item Smoothing of (planned) production quantity: 
 	 \[
-	 \tilde{Q}_{i,t}=\xi \tilde{D}_{i,t} + (1-\xi)\frac{1}{T}\sum_{k=t-T}^{t-1}Q_{i,k}.
+	 \tilde{Q}_{i,t}=\xi \tilde{D}_{i,t} + (1-\xi)\frac{1}{T}\sum_{k=t-T}^{t-1}\tilde{Q}_{i,k}.
 	 \]
 	
 	\item Proportional adjustment of delivery volumes: $D_{i,r,t}=\frac{ \tilde{D}_{i,r,t}}{\tilde{D}_{i,t}}\tilde{Q}_{i,t}.$
@@ -539,14 +540,14 @@ Q_{i,t}}{(\alpha p^{inv})^{\alpha} \min [A_{i,t-1}, B_{i,t-1}]}.
   \frametitle{Financial planning} 
 \begin{itemize}
 
-\item If the firm has to raise external liquidity:
+\item If the firm had to raise external liquidity:
 \begin{itemize}
-	\item Firm checks if it obtains the complete external financial needs.
+	\item Firm checks if it has obtained the complete external financial needs.
 	\item If this is not the case: The firm has to adapt its expenditures.
 	
 \begin{itemize}
 	\item Priority to serve the financial obligations.
-	\item Firm reduces the output quantity as longs as the recalculated expected expenditures are covered by the resources.
+	\item Firm reduces the output quantity as long as the recalculated expected expenditures are covered by the resources.
 	\item If the firm is still not able to serve its financial obligations: Bankruptcy.   
 \end{itemize}
 \end{itemize}
@@ -740,7 +741,10 @@ EBIT_{i,t}= \sum_{R}S_{i,r,t}p_{i,t} - Cost^{Prod}_{i,t}.
  \frametitle{Households purchasing decision} 
 \begin{itemize}
 	\item The household decides about one good to purchase using a standard discrete choice model.
-	\item Logit model based on price differences.
+	
+\begin{itemize}
+	\item  Logit model based on price differences.
+\end{itemize}
 	\item The value of consumption good $i$ is given by $v_k(p_{i,t})=-\ln(p_{i,t}).$
 	\item Consumer $k$ selects one good where the probability for good $i$ to be selected is
 	\[
