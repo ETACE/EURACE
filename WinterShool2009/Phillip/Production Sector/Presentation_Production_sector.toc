@@ -2,5 +2,5 @@
 \beamer@sectionintoc {2}{Introduction}{3}{0}{1}
 \beamer@sectionintoc {3}{The Consumption Goods Producer}{7}{0}{2}
 \beamer@sectionintoc {4}{The Investment Goods Producer}{29}{0}{3}
-\beamer@sectionintoc {5}{Malls and Consumers' Consumption decision}{31}{0}{4}
+\beamer@sectionintoc {5}{Malls and Households' Consumption Decision}{31}{0}{4}
 \beamer@sectionintoc {6}{Summary}{35}{0}{5}

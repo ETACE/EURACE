@@ -16,10 +16,12 @@
 \author{H. Dawid, S. Gemkow, P.
 Harting, and M. Neugart}
 
-
 \begin{document}
-
-\frame{\titlepage}
+\begin{frame}{}
+\centering
+\includegraphics[scale=0.1]{EURACE_Flag.png}
+\titlepage
+\end{frame}
 
 \section[Overview]{}
 \frame{\tableofcontents}
@@ -34,36 +36,63 @@ Harting, and M. Neugart}
 {
   \frametitle{The real side of EURACE} 
 
-\begin{itemize}
+%\begin{itemize}
 
-\item 3 real markets in EURACE:
+%\item 3 real markets in EURACE:
 		
-		\begin{itemize}
-				\item Consumption Goods Market.
-				\begin{itemize}
-					\item Production and selling of a homogeneous consumption good.
+%		\begin{itemize}
+%				\item Consumption Goods Market.
+%				\begin{itemize}
+%					\item Production and selling of a homogeneous consumption good.
 		
-		\end{itemize}
+%		\end{itemize}
 		
-		\item Capital Goods Market.
+%		\item Capital Goods Market.
 		
-	\begin{itemize}
-		\item Capital goods are vertically differentiated among their productivity. 
+%	\begin{itemize}
+%		\item Capital goods are vertically differentiated among their productivity. 
 	
 	 
 
-	\end{itemize}
-		\item Labor Market.
-		\begin{itemize}
-	\item  Labor differentiated among general and specific skills.
+%	\end{itemize}
+%		\item Labor Market.
+%		\begin{itemize}
+%	\item  Labor differentiated among general and specific skills.
+
+%\end{itemize}
+
+%	\item Labor and capital goods are input factors for the production of the consumption good.
+
+%		\end{itemize}
+%\end{itemize}	
+
+
+
+\begin{itemize}
+	\item The core of the Production Sector: Consumption Goods Market
+	
+\begin{itemize}
+	\item Production and selling of a homogeneous consumption good.
 
 \end{itemize}
 
-	\item Labor and capital goods are input factors for the production of the consumption good.
+	\item 2 Factor Markets:
+	
+\begin{itemize}
+	\item Capital Goods Market: 
+	
+\begin{itemize}
+	\item Capital goods are vertically differentiated among their productivity.
+\end{itemize}
 
-		\end{itemize}
-\end{itemize}	
+\item Labor Market:
+\begin{itemize}
+	\item Labor differentiated among general and specific skills.
+\end{itemize}
+\end{itemize}
 
+
+\end{itemize}
 }
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -91,11 +120,11 @@ Harting, and M. Neugart}
 	\item Supplier on the Investment Goods Market.
 \end{itemize}
 
-\item Malls:
+\item Malls (passive agent type):
 
 \begin{itemize}
 	\item Market platforms where consumption goods producers store and offer their commodities.
-	\item Transfer of information and goods from producers to consumers.
+	\item Transfer of information and goods between producers and consumers.
 \end{itemize}
 	
 \end{itemize}
@@ -117,7 +146,7 @@ to all malls.
 
 \item Investment Goods Market: Global market
 \begin{itemize}
-	\item : All firms have frictionless access to the IG market.
+	\item  All firms have frictionless access to the IG market.
 \end{itemize}
 \item Labor Market: Semi local market
 \begin{itemize}
@@ -205,7 +234,9 @@ to all malls.
   \frametitle{Technology} 
 \begin{itemize}
 	\item The production technology of firm $i$ is embedded in firm's capital stock $K_{i,t}$ and is characterized by its 		technical productivity $A_{i,t}$.
-	\item Provided by capital goods producers with a quality that increases over time.
+\begin{itemize}
+ 	\item Provided by capital goods producers with a quality that increases over time.
+\end{itemize}
 		\item Average productivity $A_{i,t}$ of the capital stock depends on past investments.
 		\item $A_{i,t}$ is updated by depreciation and new physical investments.
 		\item The firm depreciates its capital stock $K_{i,t}$ at a rate $\delta$, it follows $K_{i,t}=(1-\delta)K_{i,t-1}+I_{i,t}$.
@@ -222,7 +253,7 @@ to all malls.
 	\begin{itemize}
 	\item General skills: Education and general abilities measured in 5 discrete skill groups $b_w^{gen}=\left\{1,...5\right\}.$
 	\item Specific skills: $b_{w,t}$ are experiences and know how obtained on the job. 
-	\item Specific skills of a worker $w$ employed in firm $i$ evolve through learning by doing etc. according to \[ b_{w,t}=b_{w,t-1}+ \chi (b_w^{gen})\cdot \max\left[0,(A_{i,t}-b_{w,t-1}).\right] \]
+	\item Specific skills of a worker $w$ employed in firm $i$ evolve through learning by doing etc. according to \[ b_{w,t}=b_{w,t-1}+ \chi (b_w^{gen})\cdot \max\left[0,(A_{i,t}-b_{w,t-1})\right]. \]
 		
 \begin{itemize}
 	\item Building up specific skills depends on educational level. 
@@ -286,7 +317,7 @@ to all malls.
 	\item Production planning.
 	\item Tentative input factor planning.
 	\item Financial planning.
-	\item Final production and input factor determination.
+	\item Final production planning and input factor determination.
 	\item Labor and Capital Market transactions.
 	\item Production and delivery.
 	\item Periodic earnings statement.
@@ -306,7 +337,7 @@ to all malls.
 	\item Timing of production
 	
 \begin{itemize}
-	\item Length of the production cycle: 1 month. 
+	\item Length of the production and selling cycle: 1 month. 
 	\item At the monthly activation day (first day of the cycle): Production planing, financing, production, and delivery to the malls.
 	\item Selling during the whole of the month.
 	\item Earnings statement at the last day of the production cycle.
@@ -693,7 +724,7 @@ EBIT_{i,t}= \sum_{R}S_{i,r,t}p_{i,t} - Cost^{Prod}_{i,t}.
   
 }
 
-\section{Malls and Consumers' Consumption decision}
+\section{Malls and Households' Consumption Decision}
 
 \frame
 {
@@ -718,7 +749,7 @@ EBIT_{i,t}= \sum_{R}S_{i,r,t}p_{i,t} - Cost^{Prod}_{i,t}.
 \frame
 {
 
-  \frametitle{Households purchasing decision} 
+  \frametitle{Household's purchasing decision} 
 \begin{itemize}
 
 \item Once a week households go to the  mall located in their home region.
@@ -738,7 +769,7 @@ EBIT_{i,t}= \sum_{R}S_{i,r,t}p_{i,t} - Cost^{Prod}_{i,t}.
 \frame
 {
 
- \frametitle{Households purchasing decision} 
+ \frametitle{Household's purchasing decision} 
 \begin{itemize}
 	\item The household decides about one good to purchase using a standard discrete choice model.
 	
@@ -762,7 +793,7 @@ v_{k}(p_{i,t})]}{\sum_{i' \in G_{k,week_t}}
 \frame
 {
 
-  \frametitle{Households purchasing decision} 
+  \frametitle{Household's purchasing decision} 
 \begin{itemize}
 
 \item The household orders $\frac{CB_{k,week_t}}{p_{i,t}}$ units of the selected good $i$.
