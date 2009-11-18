@@ -47,7 +47,7 @@ double randomReturnStock(Belief *belief, Stock *stock, int forwardWindow, int ba
    double randn;
    double sqrtvol;
    int i;
-   volatility=volatilityStock(stock,backwardWindow);
+   volatility = volatilityStock(stock,backwardWindow);
   // printf("volatility %f\n",volatility);
    volatility=max(0.0001,volatility);
    rndReturn=0;
@@ -59,7 +59,7 @@ double randomReturnStock(Belief *belief, Stock *stock, int forwardWindow, int ba
      rndReturn=rndReturn+rndvect[i];
              
     }
-   return rndReturn/backwardWindow;
+    return rndvect[1];
 }
 
 double randomReturnBond(Bond *bond,int backwardWindow,int holding_period,double *rndvect)
@@ -80,7 +80,8 @@ double randomReturnBond(Bond *bond,int backwardWindow,int holding_period,double 
      rndReturn=rndReturn+rndvect[i];
      }
         
-   return rndReturn/backwardWindow;
+   //return rndReturn/backwardWindow;
+   return rndvect[1];
 }
 
 void dividendYield(Belief *belief,Stock *stock,int currentDay, int forwardWindow,double dividendExp)
@@ -101,31 +102,73 @@ void firmBeliefFormation(Belief *belief,Stock *stock,int currentDay,int forwardW
 
 void  stockBeliefFormation(Belief *belief, Stock *stock,int backwardWindow,int forwardWindow, double randomWeight,double  fundamentalWeight,double chartistWeight, int bins ,int currentDay,double equity,double lossaversion)
 { 
-  double fundreturn;
   double rndreturn[100];
   double total_returns_avg;
   double price_returns_avg;
-  double returns_avg;
-  double rnd_avg;
-  double value,factor,dividend_yield_annualized,annual_coeff;
+  double return_random, return_chartist, return_fundamental;
+  double dividend_yield_annualized,annual_coeff;
+  double r1, r2, r3, r, utility_tmp;
+     FILE *file1=NULL;
+  char * filename="";
+  int i;
  
   annual_coeff=(NRDAYSINYEAR/forwardWindow);
  /*some of the  behavior weights are usually zero so some computation could be unuseful, this increase certanly the performance,*/
-  if(randomWeight!=0) rnd_avg=randomReturnStock(belief, stock,forwardWindow,backwardWindow,rndreturn);
-     else rnd_avg=0;
-  if (fundamentalWeight!=0) fundreturn= futureFundamentalReturn(belief,stock,currentDay,forwardWindow, equity);
-     else fundreturn=0;
-  if(chartistWeight!=0) returns_avg=expectedReturnStock(stock,backwardWindow);
-     else returns_avg=0;
-  value= fundamentalWeight*fundreturn + belief->expectedCashFlowYield; 
-  factor=forwardWindow*chartistWeight;
-  price_returns_avg=((randomWeight*rnd_avg)+(fundamentalWeight*fundreturn)+(chartistWeight*forwardWindow*returns_avg))*annual_coeff;
-  dividend_yield_annualized=belief->expectedCashFlowYield*annual_coeff;
-  total_returns_avg=price_returns_avg+ dividend_yield_annualized;
-  belief->utility= computeStockUtilityFunction(stock, backwardWindow, factor,  value, lossaversion,rndreturn, randomWeight);
-  belief->expectedPriceReturns=price_returns_avg;
-  belief->expectedTotalReturns=total_returns_avg;
-  belief->last_price=lastPriceStock(stock);
+  if(randomWeight!=0) 
+    return_random = randomReturnStock(belief, stock,forwardWindow,backwardWindow,rndreturn);
+  else return_random=0;
+     
+  if (fundamentalWeight!=0) 
+     return_fundamental = futureFundamentalReturn(belief,stock,currentDay,forwardWindow, equity);
+  else return_fundamental=0;
+     
+  if(chartistWeight!=0) 
+     return_chartist = forwardWindow*expectedReturnStock(stock,backwardWindow);
+  else return_chartist=0;
+  
+  price_returns_avg = annual_coeff*(randomWeight*return_random + chartistWeight*return_chartist + fundamentalWeight*return_fundamental);
+
+  dividend_yield_annualized = annual_coeff*belief->expectedCashFlowYield;
+
+  total_returns_avg = price_returns_avg + dividend_yield_annualized;
+
+  belief->expectedPriceReturns = price_returns_avg;
+  belief->expectedTotalReturns = total_returns_avg;
+  belief->last_price = lastPriceStock(stock);
+  
+  utility_tmp = 0;
+  
+// Computation of utility  
+  for(i=0;i<backwardWindow;i++)
+    {
+     r1 = chartistWeight*forwardWindow*backreturnsAt(stock,i);
+     r2 = fundamentalWeight*return_fundamental;
+     r3 = randomWeight*rndreturn[i];                           
+     r = r1 + r2 + r3 + dividend_yield_annualized;
+  
+     if (r<0) utility_tmp = utility_tmp + r*lossaversion;
+     else     utility_tmp = utility_tmp+r;
+    }
+// 
+  
+  belief->utility = utility_tmp/backwardWindow;
+ 
+  
+/*        if (PRINT_DEBUG_FILE_EXP1)
+    {                       
+        filename = malloc(40*sizeof(char));
+        filename[0]=0;
+        strcpy(filename, "its/households_stocks_beliefs.txt");      
+        file1 = fopen(filename,"a");
+    //    fprintf(file1,"%d %f %d %f %f %f",CURRENTDAY,bond->nominal_yield,nrCoupons,coupon_stream,last_market_price,coupon_yield_annualized);
+     //   fprintf(file1," %f %f %f %f %f %f",factor_random,return_random,factor_chartist,return_chartist,factor_fundamental,return_fundamental);
+     //   fprintf(file1," %f %f\n",belief->expectedPriceReturns,belief->expectedTotalReturns);
+        fprintf(file1,"\n%d %f %f %f %f",CURRENTDAY,belief->last_price,return_random,return_chartist,return_fundamental);
+        fprintf(file1," %f %f %f %f",price_returns_avg,dividend_yield_annualized,total_returns_avg,belief->utility);
+        fclose(file1);
+        free(filename);        
+    } */
+  
 }
 
 
@@ -136,7 +179,7 @@ void  bondBeliefFormation(Belief *belief, Bond *bond,int backwardWindow,int forw
   char * filename="";
   //int bins_number;
   int holding_period;
-  int nrCoupons;
+  int i, nrCoupons;
   double coupon, coupon_stream, coupon_yield, coupon_yield_annualized, last_market_price;
   double random_return_weight_bond, fundamental_return_weight_bond, chartist_return_weight_bond;
   double return_rnd;
@@ -146,6 +189,7 @@ void  bondBeliefFormation(Belief *belief, Bond *bond,int backwardWindow,int forw
   double factor_chartist, factor_random, factor_fundamental, factor_chartist2;
   double annual_coeff;
   double rndreturns[100];
+  double r1, r2, r3, r, utility_tmp;
 
   holding_period=holdingPeriodToForwardW*forwardWindow;
   nrCoupons=coupons_payment_days(bond,currentDay,holding_period);
@@ -206,12 +250,28 @@ belief->expectedPriceReturns=annual_coeff*(factor_fundamental*return_fundamental
 belief->expectedTotalReturns = belief->expectedPriceReturns + coupon_yield_annualized;
 
 factor_chartist2 = holding_period*factor_chartist;
-belief->utility = computeBondUtilityFunction(bond, rndreturns, backwardWindow, return_fundamental, factor_chartist2, factor_random, factor_fundamental, lossaversion);
+
+utility_tmp = 0;
+  
+// Computation of utility  
+  for(i=0;i<backwardWindow;i++)
+    {
+     r1 = holding_period*factor_chartist*backreturns_bond(bond,i);
+     r2 = factor_fundamental*return_fundamental;
+     r3 = factor_random*rndreturns[i];                           
+     r = r1 + r2 + r3 + coupon_yield_annualized;
+  
+     if (r<0) utility_tmp = utility_tmp + r*lossaversion;
+     else     utility_tmp = utility_tmp+r;
+    }
+// 
+    
+belief->utility = utility_tmp/backwardWindow;
 
 belief->last_price=lastPriceBond(bond);
 
 
-      if (PRINT_DEBUG_FILE_EXP1)
+  /*    if (PRINT_DEBUG_FILE_EXP1)
     {                       
         filename = malloc(40*sizeof(char));
         filename[0]=0;
@@ -219,9 +279,9 @@ belief->last_price=lastPriceBond(bond);
         file1 = fopen(filename,"a");
         fprintf(file1,"%d %f %d %f %f %f",CURRENTDAY,bond->nominal_yield,nrCoupons,coupon_stream,last_market_price,coupon_yield_annualized);
         fprintf(file1," %f %f %f %f %f %f",factor_random,return_random,factor_chartist,return_chartist,factor_fundamental,return_fundamental);
-        fprintf(file1," %f %f\n",belief->expectedPriceReturns,belief->expectedTotalReturns);
+        fprintf(file1," %f %f %f\n",belief->expectedPriceReturns,belief->expectedTotalReturns,belief->utility);
         fclose(file1);
         free(filename);        
-    }
+    } */
   
 }
