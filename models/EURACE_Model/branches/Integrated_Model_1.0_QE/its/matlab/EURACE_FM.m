@@ -1,14 +1,14 @@
 clc
 clear all
-%close all
+close all
 
-Pat = '..\qe1_d0.5_es1\';
-%Pat = '..\';
+Pat = '..\qe0_d0.5\';
+Pat = '..\';
 
 font_sz = 14;
-colore = 'r';
+colore = 'k';
 
-mf = 120;
+mf = 40;
 af = ceil(mf/12);
 tf = 20*mf;
 daily_month_index = (1:tf)/20;
@@ -16,9 +16,81 @@ yearly_month_index = (1:af)*12;
 monthly_index = 0:6:mf; 
 yearly_index  = 0:af
 
-%%% BANKS
+%%% BONDS
 
-Data = load([Pat, 'banks_daily_balance_sheet.txt']);
+Data = load([Pat, 'households_bonds_beliefs.txt']);
+
+days = unique(Data(:,1));
+
+for d=1:days(end)
+    Idx_day = find(Data(:,1)==days(d));
+    price(d,1) = Data(Idx_day(1),5);
+    return_random_mean(d,1) = mean(Data(Idx_day,8));
+    return_chartist_mean(d,1) = mean(Data(Idx_day,10));
+    return_fundamental_mean(d,1) = mean(Data(Idx_day,12));
+    
+    ExpectedPriceReturn(d,1) = mean(Data(Idx_day,13));
+    ExpectedTotalReturn(d,1) = mean(Data(Idx_day,14));
+
+    coupon_yeld(d,1) = mean(Data(Idx_day,6));
+    utility_bond(d,1) = mean(Data(Idx_day,15));
+    
+    clear Idx_day
+    
+end
+    
+figure(1); plot(price)
+figure(2); hold on; grid on
+plot(return_random_mean)
+plot(return_chartist_mean,'r')
+plot(return_fundamental_mean,'k')
+
+figure(3); hold on; grid on
+plot(ExpectedPriceReturn)
+plot(ExpectedTotalReturn,'r')
+plot(coupon_yeld,'k')
+
+figure(100); hold on; grid on
+plot(utility_bond)
+clear Data
+%%% STOCKS
+
+Data = load([Pat, 'households_stocks_beliefs.txt']);
+
+days = unique(Data(:,1));
+
+for d=1:days(end)
+    Idx_day = find(Data(:,1)==days(d));
+    price(d,1) = Data(Idx_day(1),2);
+%     return_random_mean(d,1) = mean(Data(Idx_day,8));
+%     return_chartist_mean(d,1) = mean(Data(Idx_day,10));
+%     return_fundamental_mean(d,1) = mean(Data(Idx_day,12));
+%     
+    ExpectedPriceReturn(d,1) = mean(Data(Idx_day,3));
+    ExpectedTotalReturn(d,1) = mean(Data(Idx_day,5));
+
+    dividend_yeld(d,1) = mean(Data(Idx_day,4));
+    utility_stock(d,1) = mean(Data(Idx_day,6));
+    
+    clear Idx_day
+    
+end
+    
+figure(11); plot(price)
+% figure(12); hold on; grid on
+% plot(return_random_mean)
+% plot(return_chartist_mean,'r')
+% plot(return_fundamental_mean,'k')
+
+figure(13); hold on; grid on
+plot(ExpectedPriceReturn)
+plot(ExpectedTotalReturn,'r')
+plot(dividend_yeld,'k')
+
+figure(100); hold on; grid on
+plot(utility_stock,'r')
+
+break
 
 days = unique(Data(:,1));
 agents_ids = unique(Data(:,2));
