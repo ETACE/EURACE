@@ -1,0 +1,122 @@
+<xmodel>
+	<name>ABM_Experiment</name>
+	<version>0.1</version>
+    <author>Shawn Chin</author>
+	<description>Capturing emergent properties</description>
+	
+	<environment>
+		<functionFiles>
+			<file>person_functions.c</file>
+		</functionFiles>
+		
+		<constants>
+			<variable>
+				<type>double</type>
+				<name>step_size</name>
+				<description>Size of each step</description>
+			</variable>
+			<variable>
+				<type>int</type>
+				<name>width</name>
+				<description>Width of simulation space</description>
+			</variable>
+			<variable>
+				<type>int</type>
+				<name>height</name>
+				<description>Height of simulation space</description>
+			</variable>
+		</constants>
+	</environment>
+	
+	<agents>
+		<xagent>
+			<name>person</name>
+			<description>A person</description>
+			
+			<memory>
+				<variable>
+					<type>int</type>
+					<name>id</name>
+					<description>Agent identifier</description>
+				</variable>
+				<variable>
+					<type>double</type>
+					<name>x</name>
+					<description>x coordinate</description>
+				</variable>
+				<variable>
+					<type>double</type>
+					<name>y</name>
+					<description>y coordinate</description>
+				</variable>
+				<variable>
+					<type>double</type>
+					<name>direction</name>
+					<description>Direction of movement (in radians)</description>
+				</variable>
+				<variable>
+					<type>int</type>
+					<name>friend_1</name>
+					<description>First friend</description>
+				</variable>
+				<variable>
+					<type>int</type>
+					<name>friend_2</name>
+					<description>Second friend</description>
+				</variable>
+			</memory>
+			
+			<functions>
+				<function>
+					<name>move_forward</name>
+					<description>Take a small step in previous direction</description>
+					<currentState>START</currentState>
+					<nextState>LOOKING_FOR_FRIENDS</nextState>
+					<outputs>
+						<output>
+							<messageName>location</messageName>
+						</output>
+					</outputs>
+				</function>
+				
+				<function>
+					<name>change_direction</name>
+					<description>Update direction</description>
+					<currentState>LOOKING_FOR_FRIENDS</currentState>
+					<nextState>END</nextState>
+					<inputs>
+						<input>
+							<messageName>location</messageName>
+						</input>
+					</inputs>
+				</function>
+				
+			</functions>
+		</xagent>
+	</agents>
+	
+	<messages>
+		<message>
+			<name>location</name>
+			<description>location of agent</description>
+			<variables>
+				<variable>
+					<type>int</type>
+					<name>sender_id</name>
+					<description>ID of sender</description>
+				</variable>
+				<variable>
+					<type>double</type>
+					<name>x</name>
+					<description>x coordinate</description>
+				</variable>
+				<variable>
+					<type>double</type>
+					<name>y</name>
+					<description>y coordinate</description>
+				</variable>
+			</variables>
+			
+		</message>
+	</messages>
+</xmodel>
