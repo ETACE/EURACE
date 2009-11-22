@@ -6,11 +6,11 @@
 \mode<presentation>
 {
   %1st CHOICE:
-  \usetheme{Darmstadt}
+  %\usetheme{Darmstadt}
   %2nd CHOICE:
   %\usetheme{Dresden}
   %3rd CHOICE:
-  %\usetheme{Warsaw}
+  \usetheme{Warsaw}
   %\setbeamercovered{transparent}
 }
 \mode<article>
@@ -41,35 +41,50 @@
 \title{The Public Sector in EURACE}
 \subtitle[EURACE WS '09]{EURACE Winter School 2009}
 \author{Sander van der Hoog}
-\date[Genoa '09]{Genoa, 19 Nov 2009}
+\institute{GREQAM, Universit\'{e} de la M\'{e}diterran\'{e}e Aix-Marseille II}
+\date{18 November 2009}
+
+\setcounter{tocdepth}{1}
 
 \begin{document}
-\frame{\titlepage}
+\begin{frame}{}
+\thispagestyle{empty}
+\centering
+\includegraphics[scale=0.1]{EURACE_Flag.png}
+\titlepage
+\end{frame}
 
-\section[Overview]{}
+\section{}
+\subsection{Overview}
 \begin{frame}{}
 \frametitle{Overview}
 Topics of this presentation:
 \tableofcontents
 \end{frame}
 
-\section{The public sector module}
+\begin{frame}{}
+\centering
+\includegraphics[scale=0.2]{EURACE-Markets.png}
+\end{frame}
+
+\section{Main aim of the public sector module}
+\subsection{Main aim}
 \begin{frame}{}
 \frametitle{Main aim}
-Major policy issue in the EU: Lisbon Strategy
+Major policy issue in the EU: Lisbon Strategy (Lisbon, 2000)
 \begin{quote}
-`EU should become the most competitive and dynamic knowledge based economy'
+`The EU should become the most competitive and dynamic knowledge-based economy in the world capable of sustainable economic growth with more and better jobs and greater social cohesion.'
 \end{quote}
 
-\bigskip
-Objectives of the "Lisbon Strategy for Growth and Jobs" (2000):
+\smallskip
+Objectives of the "Lisbon Strategy for Growth and Jobs" (2005):
 \begin{itemize}
-\item Fostering sustainable economic growth and job creation
-\item Invest in R\&D activities: total (public and private) investment of $3\%$ of Europe's GDP in research and development by 2010
+\item Invest in R\&D activities: total (public and private) investment of $3\%$ of Europe's GDP in research and development by 2010.
 \item Invest in human capital: an employment rate of $70\%$ by the same date.
 \end{itemize}
 \end{frame}
 
+\subsection{Research questions}
 \begin{frame}{}
 \frametitle{Research questions}
 \begin{itemize}
@@ -85,53 +100,57 @@ economy-wide) growth?
 \end{itemize}
 \end{frame}
 
+\section{The Government module}
+\subsection{Features}
 \begin{frame}{}
-\frametitle{Features}
-Empirical calibration according to European data as much as possible:
+\frametitle{The Government module}
+Features:
 \begin{itemize}
-\item unemployment benefit schemes differ across European counties, e.g. the net replacement rate (the percentage of the last
-earned wage paid out as unemployment benefit in the first month of unemployment)
-\item size of Government expenditures as a fraction of GDP
-\item distribution of the budget between different kind of expenditures
+\item Taxation: income tax, corporate tax (capital gains tax, VAT)
+\item Unemployment benefits
+\item Subsidies and transfers
+\item (Government consumption and investment)
+\item (Government employment)
 \end{itemize}
 \end{frame}
 
-\section{The Government module}
+\subsection{Stages}
 \begin{frame}{}
 \frametitle{Stages of model development}
 Stage 1: Government only has redistributive functions
 \begin{itemize}
-\item Simple taxation: only income and corporate profit tax (these are social security contributions)
-\item Expenditures: unemployment benefits
-\item A provisional Government budget is thus given by the total subsidies and total unemployment benefits.
-\item Deficit financing: bond issuing to households, ECB, or fiat money creation by ECB
-\item Any surplus is deposited at the central bank.
+\item Simple taxation: only income and corporate profit tax (only unemployment insurance fees).
+\item Expenditures: unemployment benefits, bond interest payments.
+\item Deficit financing: bond issuing to households, ECB, or fiat money creation by ECB.
+\item Any surplus is deposited in an account at the central bank.
 \end{itemize}
 \end{frame}
 
+\subsection{Budgeting}
 \begin{frame}{}
-\frametitle{Budget forecasting}
+\frametitle{Budget projection}
+\small
 \begin{itemize}
 \item The forecast for next year's GDP is a naive expectation that follows from extrapolating the current GDP growth rate:
 \begin{equation}
 Y^e_{t+1} = (Y_t/Y_{t-1}) Y_t.
 \end{equation}
-\item The Government budgeting starts with an estimate of next year's Government income which is expected to grow at the same rate as the GDP growth rate:
+\item Next year's Government income is expected to grow at the same rate as the GDP growth rate:
 \begin{equation}
-Y^g_{t+1} = (Y_t/Y_{t-1})Y^g_{t}.
+I^g_{t+1} = (Y_t/Y_{t-1})I^g_{t}.
 \end{equation}
 \item Projected Government expenditures:
-	\begin{equation}
-		G^e_{t+1} = (Y_t/Y_{t-1})G_t
-	\end{equation}
-	\item Projected Government budget balance (surplus/deficit):
-	\begin{equation}
-		B^e_{t+1} = Y^g_{t+1} - G^e_{t+1}
-	\end{equation}
+    \begin{equation}
+        G^e_{t+1} = (Y_t/Y_{t-1})G_t
+    \end{equation}
+    \item Projected Government budget balance (surplus/deficit):
+    \begin{equation}
+        B^e_{t+1} = I^g_{t+1} - G^e_{t+1}
+    \end{equation}
 \end{itemize}
 \end{frame}
 
-
+\subsection{Deficit financing}
 \begin{frame}{}
 \frametitle{Deficit financing}
 When does the Government execute the actual financing of the deficit?
@@ -146,12 +165,13 @@ When does the Government execute the actual financing of the deficit?
 \frametitle{Deficit financing (cont.)}
 Financing options:
 \begin{itemize}
-\item Bond financing: The budget deficit can be $100\%$ financed by selling bonds on the bond market to households
-\item Money financing: Bonds can be sold to ECB, which creates fiat money to buy the bonds.
-\item Quantitative easing: no bonds are sold, but the ECB directly creates fiat money for the government.
+\item Bond financing: The budget deficit can be $100\%$ financed by selling bonds on the bond market to households.
+\item Quantitative easing: In case of bond market rationing, the unsold bonds can be sold to the ECB, which creates fiat money to buy the bonds.
+\item Money financing: no bonds are sold, but the ECB directly creates fiat money for the government.
 \end{itemize}
 \end{frame}
 
+\subsection{Balance sheet}
 \begin{frame}{}
 \frametitle{Government balance sheet}
 \begin{table}[ht!]
@@ -183,25 +203,24 @@ Gov. cash holdings \hspace{1cm}  & Outstanding bonds \\
 \end{table}
 \end{frame}
 
+\subsection{Subsidies}
 \begin{frame}{Stage 2}
 \frametitle{Stage 2: Subsidies}
 Stage 2: Government distributes subsidies
 \begin{itemize}
-\item Expenditures: unemployment benefits, household subsidies
 \item Subsidies are conditional on a specific purpose under which they
 are granted:
-	\begin{itemize}
-	\item a firm can receive a subsidy for internal training of employees that
-	will raise the general skills.
-	\item a firm can receive an investment subsidy to buy investment goods
-	\item a household can receive a consumption subsidy to buy consumption goods
-	\end{itemize}
-\item The subsidies are non-discriminatory: they are available to all firms
-or households. 
+    \begin{itemize}
+    \item a firm can receive a subsidy for internal training of employees that
+    will raise the general skills.
+    \item a firm can receive an investment subsidy to buy investment goods.
+    \item a household can receive a consumption subsidy to buy consumption goods.
+    \end{itemize}
+\item The subsidies are non-discriminatory: they are available to all firms or households. 
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Stage 2}
+\begin{frame}{}
 \frametitle{Stage 2: Subsidies (cont.)}
 \begin{itemize}
 \item Allows the possibility of regional policies:
@@ -213,8 +232,8 @@ they spend it as required by the Government.
 \end{itemize}
 \end{frame}
 
-
-\begin{frame}{Stage 3}
+%\subsection{Stage 3: Government consumption and investment}
+\begin{frame}{}
 \frametitle{Stage 3: Government consumption and investment}
 (Stage 3 is not yet implemented)
 \begin{itemize}
@@ -226,12 +245,13 @@ expenditure for any capital formation, e.g. infrastructure projects).
 
 The investment and/or consumption can have diverse impacts, such as:
 \begin{itemize}
-\item lowering transportation costs (commuting and/or distribution costs)
-\item augmenting the productivity of the firms
-\item augmenting the productivity of labour
+\item lowering transportation costs (commuting and/or distribution costs).
+\item augmenting the productivity of the firms.
+\item augmenting the productivity of labour.
 \end{itemize}
 \end{frame}
 
+%\subsection{Stage 4: Government employment}
 \begin{frame}{Stage 4}
 \frametitle{Stage 4: Government employment}
 Government buys investment and consumption goods, hires labour, and uses it to produce a public good.
@@ -240,25 +260,27 @@ Government buys investment and consumption goods, hires labour, and uses it to p
 \begin{itemize}
 \item The Government hires workers with specific characteristics (government officers).
 \item Hiring can be local or interregional.
-\item The public good can have diverse local or inter-regional impacts
-	\begin{itemize}
-	\item augmenting the productivity of the firms (technological infrastructure)
-	\item augmenting the productivity of labour (general skill level)
-	\end{itemize}
+\item The public good can have diverse local or inter-regional impacts:
+    \begin{itemize}
+    \item augmenting the productivity of the firms (technological infrastructure).
+    \item augmenting the productivity of labour (general skill level).
+    \end{itemize}
 \end{itemize}
 \end{frame}
 
+%\subsection{Stage 5: Government finance}
 \begin{frame}{Stage 5}
 \frametitle{Stage 5: Government finance}
 Advanced Government fiscal and monetary policy.
 (Stage 5 is not yet implemented)
 \begin{itemize}
-\item As in Stage 1, but in addition the Government has a more refined financial policy; smoothing expenditures in response to macroeconomic variables
+\item As in Stage 1, but in addition the Government has a more refined financial policy; smoothing expenditures in response to macroeconomic variables.
 \item It manages its debt and/or surpluses on the money and bond market according
 to standard fiscal and monetary  policy rules.
 \end{itemize}
 \end{frame}
 
+\subsection{Implementation details}
 \begin{frame}{}
 \frametitle{Implementation details}
 \begin{itemize}
@@ -271,7 +293,7 @@ sending a general \url{policy_announcement_message}:
 \url{tax_rate_hh_capital}\\
 \url{tax_rate_vat}\\
 \url{unemployment_benefit_pct}\\
-\url{hh_subsidy_pct}
+\url{hh_subsidy_pct}\\
 \url{firm_subsidy_pct}
 \end{tabular}
 \end{itemize}
@@ -281,9 +303,9 @@ sending a general \url{policy_announcement_message}:
 \frametitle{}
 \begin{itemize}
 \item At the start of the year: all agents read the Government policy
-announcements (only from their own Government), and store that information
-in memory variables for later use. When an agent applies for any payment
-(benefits, subsidies, or transfers) it sends a notification message to its
+announcements (only from their own Government).
+\item Store that information in memory variables for later use.
+\item When an agent applies for any payment (benefits, subsidies, or transfers) it sends a notification message to its
 Government.
 \end{itemize}
 \end{frame}
@@ -292,13 +314,14 @@ Government.
 \frametitle{}
 \begin{itemize}
 \item List of notification messages:
+
 \begin{tabular}{l}
-\hspace{-0.5cm}\small\url{tax_payment_message(gov_id, tax_payment)} \\
-\hspace{-0.5cm}\small\url{unemployment_notification_message(gov_id, unemployment_benefit)} \\
-\hspace{-0.5cm}\small\url{hh_subsidy_notification_message(gov_id, subsidy_payment)} \\
-\hspace{-0.5cm}\small\url{firm_subsidy_notification_message(gov_id, subsidy_payment)} \\
-\hspace{-0.5cm}\small\url{hh_transfer_notification_message(gov_id, transfer_payment)} \\
-\hspace{-0.5cm}\small\url{firm_transfer_notification_message(gov_id, transfer_payment)}%
+\hspace{-1.7cm}\small\url{tax_payment_message(gov_id, tax_payment)} \\
+\hspace{-1.7cm}\small\url{unemployment_notification_message(gov_id, unemployment_benefit)} \\
+\hspace{-1.7cm}\small\url{hh_subsidy_notification_message(gov_id, subsidy_payment)} \\
+\hspace{-1.7cm}\small\url{firm_subsidy_notification_message(gov_id, subsidy_payment)} \\
+\hspace{-1.7cm}\small\url{hh_transfer_notification_message(gov_id, transfer_payment)} \\
+\hspace{-1.7cm}\small\url{firm_transfer_notification_message(gov_id, transfer_payment)}%
 \end{tabular}
 
 \item Government computes total payments by looping over these notification
@@ -325,6 +348,7 @@ data for that region.
 \LARGE Eurostat module
 \end{frame}
 
+\subsection{Aims}
 \begin{frame}{}
 \frametitle{Aims of the Eurostat module}
 Data collection:
@@ -351,59 +375,97 @@ EU-27:
 \end{itemize}
 \end{frame}
 
+\subsection{Contents of Eurostat memory}
 \begin{frame}{}
 \frametitle{Contents of Eurostat memory}
 \begin{itemize}
-    \item Storing histories of simple statistics: output, GDP, employment, ...
-    \item Storing month-on-month growth rates and `monthly based' annual growth rates
-    \item Storing quarter-on-quarter growth rates and `quarterly based' annual growth rates
-    \item Composite indices: CPI
-    \item Measuring imports and exports
-    \item Firm demographics: firm birth and death rates, firm survival rates
-    \item Indicators for the start/end of recessions, duration of recessions
+    \item Constructed data: GDP, CPI, inflation rate, total output, unemployment rates, ...
+    \item Stores histories of monthly and quarterly statistics
+    \item Stores month-on-month growth rates and `monthly based' annual growth rates.
+    \item Stores quarter-on-quarter growth rates and `quarterly based' annual growth rates.
+    \item Measuring imports and exports between regions.
+    \item Firm demographics: firm birth and death rates, firm survival rates.
+    \item Indicators for the start and end of recessions, duration of recessions.
 \end{itemize}    
 \end{frame}
-\end{document}
 
+\subsection{History storage}
 \begin{frame}{}
 \frametitle{History storage}
+The memory of the Eurostat agent contains a moving history of monthly and quarterly data:
 \begin{itemize}
-\item The memory of the Eurostat agent contains a running history of monthly and quarterly data.
-\item The ADT for storing an item in the history is available as:
+\item cpi
+\item gdp
+\item output
+\item employment
+\item unemployment rate averaged
+\item unemployment rate per skill level
+\item wage averaged
+\item wage per skill level
+\item number of active firms
+\item number of firm `births' (reactivations)
+\item number of firm `deaths' (bankruptcies)
 \end{itemize}
-\begin{verbatim}
-      struct history_item
-      {
-            double cpi
-            double gdp
-            double output
-            employment
-            unemployment_rate
-            unemployment_rate_skill_1
-            unemployment_rate_skill_2
-            unemployment_rate_skill_3
-            unemployment_rate_skill_4
-            unemployment_rate_skill_5
-            double average_wage   
-            double no_firms
-            double no_firm_births
-            double no_firm_deaths
-       }
-\end{verbatim}
 \end{frame}
 
+
+\subsection{GDP computation}
 \begin{frame}{}
+\frametitle{GDP computation}
+GDP can measured using three different approaches:
+\begin{enumerate}
+\item The `expenditure' approach: measures total expenditure on finished or final goods and services produced in the domestic economy.
+
+\item The `production' approach: measures the contribution of each economic unit by estimating the value of an output (goods or services) less the value of inputs used in that output's production process.
+
+\item The `income' approach: measures the incomes earned by individuals (e.g. wages) and corporations (e.g. profits) in the production of outputs (goods or services).
+\end{enumerate}
+
+$\rightarrow$ Here: we use the expenditure approach.
+\end{frame}
+
+\begin{frame}{GDP computation (cont.)}
+\frametitle{}
+\[ GDP = \sum_{h\in H} C + \sum_{f\in F}I + \sum_{g\in I_g}G \]
+\begin{itemize}
+\item Household consumption expenditure: aggregated by the mall on a transaction basis
+\item Firm investments: aggregated in the IGFirm as revenues from selling investment goods
+\item Government consumption: aggregated by Eurostat
+\end{itemize}
+\end{frame}
+
+\subsection{Imports and exports}
+\begin{frame}{}
+\frametitle{Imports and exports}
+From the perspective of region 1:
+\begin{figure}[ht!]
+\centering\leavevmode
+\resizebox{10cm}{!}{\includegraphics{ImportExport.png}}
+\end{figure}
+\end{frame}
+
+\subsection{Start/end of recessions}
+\begin{frame}{}
+\frametitle{Indicators for the start/end of recessions}
+\small
+The definition for the start of a recession:
+\begin{definition}
+A recession begins at the beginning of the month at the start of two successive quarters with negative GDP growth: $X_{t+2}/X_{t+1}<1$ and $X_{t+1}/X_{t}<1$, where $X_{t}$ is quarterly GDP.
+\end{definition}
+
+The definition for the end of a recession:
+\begin{definition}
+A recession ends at the beginning of the month following one quarter with positive GDP growth after the start of a recession: $X_{t+k+1}/X_{t+k}\geq 1$. The duration of the recession is $k$ quarters.
+\end{definition}
+\end{frame}
+
+\begin{frame}{Macro-feedback}
 \frametitle{}
 \begin{itemize}
-\item 
+\item Regional data: Eurostat knows all, so sends messages back
+\item National data: each Government has a list of regions
+\item Supra-national data: stored in Eurostat for analysis
 \end{itemize}
 \end{frame}
 
-\begin{frame}{}
-\frametitle{}
-\begin{itemize}
-\item 
-\end{itemize}
-\end{frame}
-
-\end{document}
+\end{document} 
