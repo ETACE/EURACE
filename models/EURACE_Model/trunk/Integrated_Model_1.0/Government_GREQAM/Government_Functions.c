@@ -46,13 +46,13 @@ int Government_initialization()
 int Government_send_policy_announcements()
 {   
     //Set tax rate to global constant
-       
+    double tax_policy=0.0;     
     FILE *file1=NULL;
     char *filename=NULL;
          
     HH_SUBSIDY_PCT=0.0;
     FIRM_SUBSIDY_PCT=0.0;
-
+    UNEMPLOYMENT_BENEFIT_PCT=GOV_POLICY_UNEMPLOYMENT_BENEFIT_PCT;
     
     if(POLICY_EXP_STABILIZATION)
     {
@@ -64,7 +64,7 @@ int Government_send_policy_announcements()
             HH_SUBSIDY_PCT = -tanh(GDP_GROWTH - SUBSIDY_TRIGGER_OFF)*abs(GDP_GROWTH);
 
             //Lower the income tax 
-            //TAX_RATE_HH_LABOUR = CONST_INCOME_TAX_RATE + tanh(GDP_GROWTH - SUBSIDY_TRIGGER_OFF)*abs(GDP_GROWTH);
+            tax_policy = TAX_RATE_HH_LABOUR + tanh(GDP_GROWTH - SUBSIDY_TRIGGER_OFF)*abs(GDP_GROWTH);
         }
 
         //Release trigger function:
@@ -75,7 +75,7 @@ int Government_send_policy_announcements()
             HH_SUBSIDY_PCT = 0.0;
 
             //Reset the income tax to its normal value
-            //TAX_RATE_HH_LABOUR = CONST_INCOME_TAX_RATE;
+            TAX_RATE_HH_LABOUR = CONST_INCOME_TAX_RATE;
         }
 
         //Subsidy regime
@@ -84,7 +84,7 @@ int Government_send_policy_announcements()
             HH_SUBSIDY_PCT = -tanh(GDP_GROWTH - SUBSIDY_TRIGGER_OFF)*abs(GDP_GROWTH);
 
             //Lower the income tax 
-            //TAX_RATE_HH_LABOUR = CONST_INCOME_TAX_RATE + tanh(GDP_GROWTH - SUBSIDY_TRIGGER_OFF)*abs(GDP_GROWTH);
+            tax_policy = TAX_RATE_HH_LABOUR + tanh(GDP_GROWTH - SUBSIDY_TRIGGER_OFF)*abs(GDP_GROWTH);
         }
 
 
@@ -128,7 +128,7 @@ int Government_send_policy_announcements()
 
 
     //add announcement
-    add_policy_announcement_message(ID, TAX_RATE_CORPORATE, TAX_RATE_HH_LABOUR, TAX_RATE_HH_CAPITAL, TAX_RATE_VAT, UNEMPLOYMENT_BENEFIT_PCT, HH_SUBSIDY_PCT, FIRM_SUBSIDY_PCT, HH_TRANSFER_PAYMENT, FIRM_TRANSFER_PAYMENT);
+    add_policy_announcement_message(ID, tax_policy, tax_policy, TAX_RATE_HH_CAPITAL, TAX_RATE_VAT, UNEMPLOYMENT_BENEFIT_PCT, HH_SUBSIDY_PCT, FIRM_SUBSIDY_PCT, HH_TRANSFER_PAYMENT, FIRM_TRANSFER_PAYMENT);
     
     #ifdef _DEBUG_MODE
     if (PRINT_DEBUG_GOV)
@@ -716,7 +716,7 @@ int Government_set_policy()
      YEARLY_INVESTMENT_BUDGET = GOV_POLICY_GDP_FRACTION_INVESTMENT * GDP_FORECAST;
      MONTHLY_INVESTMENT_BUDGET = YEARLY_INVESTMENT_BUDGET/12;
 
-    if ((POLICY_EXP1)&&(GOV_POLICY_SWITCH_QUANTITATIVE_EASING==0))
+    if ((POLICY_EXP1)&&(REGION_ID==2))
     {                   
                 
         if ( (YEARLY_BUDGET_BALANCE+PAYMENT_ACCOUNT)>0)
