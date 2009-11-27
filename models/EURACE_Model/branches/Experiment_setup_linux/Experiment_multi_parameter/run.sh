@@ -29,7 +29,17 @@
 
 	#Just remove the xml files
 	#echo '+ Removing the xml files'
-	rm *.xml
+	#rm *.xml
+
+	#Remove the xml files, except multiples of 240
+	echo '+ Removing xml files, except multiples of 240'
+	for i in *.xml; do
+	   filebase=`basename $i .xml`
+	   if (( filebase % 240 != 0 )); then
+	       echo "Removing $i"
+	       rm $i
+	   fi
+	done
 
 	#Compress the databases without removing originals
 	#echo '+ Compressing iters.db, keeping the original'
