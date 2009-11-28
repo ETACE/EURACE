@@ -968,6 +968,7 @@ int Firm_compute_and_send_stock_orders()
     
     //If the quantity is fractional, take the ceiling, such that EXTERNAL_FINANCIAL_NEEDS are met.
     int quantity = -1*ceil(EXTERNAL_FINANCIAL_NEEDS/limit_price);
+ //   quantity = 0.0;
     
    add_order_message(ID, ID, limit_price, quantity);
 
