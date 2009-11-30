@@ -1223,37 +1223,37 @@
     </variable>
    </memory>
    <functions>
-	 <function>
+    <function>
      <name>Firm_send_id_to_malls</name>
      <description>In this function the firm sends its id to the malls. The malls can set up its data array properly if the population file was built with the cloning procedure. </description>
      <currentState>start_Firm</currentState>
      <nextState>Firm_initialize</nextState>
      <condition>
-       <time>
-        <period>millionyearly</period>
-        <phase>1</phase>
-       </time>
+      <time>
+       <period>millionyearly</period>
+       <phase>1</phase>
+      </time>
      </condition>
      <inputs/>
      <outputs>
-	 <output>
-	<messageName>msg_firm_id_to_malls</messageName>
-     </output>
+      <output>
+       <messageName>msg_firm_id_to_malls</messageName>
+      </output>
      </outputs>
     </function>
-	<function>
+    <function>
      <name>Firm_initialize_mall_arrays</name>
      <description>In case of cloned population: Firms receive mall ids and set up their memory variables that are related to the malls.</description>
      <currentState>Firm_initialize</currentState>
      <nextState>Firm_checks_if_active</nextState>
      <inputs>
-	 <input>
-	<messageName>msg_mall_id_to_firms</messageName>
-     </input>
+      <input>
+       <messageName>msg_mall_id_to_firms</messageName>
+      </input>
      </inputs>
-	<outputs/>
+     <outputs/>
     </function>
- <function>
+    <function>
      <name>idle</name>
      <description></description>
      <currentState>start_Firm</currentState>
@@ -2187,36 +2187,6 @@
      <description>Array holding data on total imports of each region, measured in value against previous prices.</description>
     </variable>
     <variable>
-     <type>firm_balance_sheet_adt</type>
-     <name>firm_balance_sheets</name>
-     <description></description>
-    </variable>
-    <variable>
-     <type>household_balance_sheet_adt</type>
-     <name>household_balance_sheets</name>
-     <description></description>
-    </variable>
-    <variable>
-     <type>igfirm_balance_sheet_adt</type>
-     <name>igfirm_balance_sheets</name>
-     <description></description>
-    </variable>
-    <variable>
-     <type>gov_balance_sheet_adt</type>
-     <name>gov_balance_sheets</name>
-     <description></description>
-    </variable>
-    <variable>
-     <type>bank_balance_sheet_adt</type>
-     <name>bank_balance_sheets</name>
-     <description></description>
-    </variable>
-    <variable>
-     <type>ecb_balance_sheet_adt</type>
-     <name>ecb_balance_sheets</name>
-     <description></description>
-    </variable>
-    <variable>
      <type>double</type>
      <name>firm_average_productivity_progress</name>
      <description>Average productivity progress of the firms in the last month.</description>
@@ -2663,47 +2633,47 @@
    </memory>
    <functions/>
   </xagent>
-<xagent>
-<name>Mall</name>
+  <xagent>
+   <name>Mall</name>
    <description></description>
    <memory/>
    <functions>
-	<function>
+    <function>
      <name>Mall_send_id_to_firms</name>
      <description>In this function the mall sends its id to the firms. The firms can set up its data array properly if the population file was built with the cloning procedure. </description>
      <currentState>start_Mall</currentState>
      <nextState>Mall_initialize</nextState>
      <condition>
-       <time>
-        <period>millionyearly</period>
-        <phase>1</phase>
-       </time>
+      <time>
+       <period>millionyearly</period>
+       <phase>1</phase>
+      </time>
      </condition>
      <inputs/>
      <outputs>
-	 <output>
-	<messageName>msg_mall_id_to_firms</messageName>
-     </output>
+      <output>
+       <messageName>msg_mall_id_to_firms</messageName>
+      </output>
      </outputs>
     </function>
-	<function>
+    <function>
      <name>Mall_initialize_firm_arrays</name>
      <description>In case of cloned population: Malls receive firm ids and set up their memory variables that are related to the firms.</description>
      <currentState>Mall_initialize</currentState>
      <nextState>001</nextState>
      <inputs>
-	 <input>
-	<messageName>msg_firm_id_to_malls</messageName>
-     </input>
+      <input>
+       <messageName>msg_firm_id_to_malls</messageName>
+      </input>
      </inputs>
-	<outputs/>
+     <outputs/>
     </function>
-	<function>
+    <function>
      <name>idle</name>
-     <description> </description>
+     <description></description>
      <currentState>start_Mall</currentState>
      <nextState>001</nextState>
-    <condition>
+     <condition>
       <not>
        <time>
         <period>millionyearly</period>
@@ -2714,7 +2684,7 @@
      <inputs/>
      <outputs/>
     </function>
-</functions>
+   </functions>
   </xagent>
  </agents>
  <messages>
@@ -3039,7 +3009,7 @@
     </variable>
    </variables>
   </message>
- <message>
+  <message>
    <name>msg_firm_id_to_malls</name>
    <description></description>
    <variables>
@@ -3048,14 +3018,14 @@
      <name>firm_id</name>
      <description></description>
     </variable>
-	 <variable>
-<type>int</type>
+    <variable>
+     <type>int</type>
      <name>region_id</name>
      <description></description>
     </variable>
-</variables>	
+   </variables>
   </message>
- <message>
+  <message>
    <name>msg_mall_id_to_firms</name>
    <description></description>
    <variables>
@@ -3064,7 +3034,7 @@
      <name>mall_id</name>
      <description></description>
     </variable>
-  </variables>	
+   </variables>
   </message>
  </messages>
 </xmodel>
