@@ -34,7 +34,7 @@
       <description></description>
      </variable>
     </variables>
-   </dataType> 
+   </dataType>
    <dataType>
     <name>estimators_linear_regression</name>
     <description>Used by firms to estimated the demand by applying a linear regression</description>
@@ -377,7 +377,7 @@
    <name>Firm</name>
    <description></description>
    <memory>
-   <variable>
+    <variable>
      <type>double</type>
      <name>cpi</name>
      <description>This is the CPI in firm memory, used in the evaluation of the inventory stock.</description>
@@ -442,7 +442,7 @@
      <name>revenue_per_day</name>
      <description>Daily revenue</description>
     </variable>
-      <variable>
+    <variable>
      <type>estimators_linear_regression_array</type>
      <name>linear_regression_estimators</name>
      <description>Holds the estimators for the linear regression model</description>
@@ -456,11 +456,6 @@
      <type>double</type>
      <name>cum_revenue</name>
      <description>Monthly revenue</description>
-    </variable>
-    <variable>
-     <type>double</type>
-     <name>out_of_stock_costs</name>
-     <description></description>
     </variable>
     <variable>
      <type>sales_statistics_array</type>
@@ -481,11 +476,6 @@
      <type>double</type>
      <name>price_last_month</name>
      <description>Price of the consumption good in the last month</description>
-    </variable>
-     <variable>
-     <type>int</type>
-     <name>decil_production_rule</name>
-     <description>Actual output is the same as production quantity, but retains its value during the month.</description>
     </variable>
     <variable>
      <type>double</type>
@@ -653,8 +643,8 @@
     </function>
     <function>
      <name>Firm_calc_production_quantity_2</name>
-     <description>Firms iterate over the planned production quantity decreasing it incrementally,
- such that the corresponding labor demand and capital demand can be financed by 
+     <description>Firms iterate over the planned production quantity decreasing it incrementally,&#xd;&#xd;
+ such that the corresponding labor demand and capital demand can be financed by &#xd;&#xd;
  the actually obtained financial resources, AFTER all prior financial commitments have been paid.</description>
      <currentState>Firm_End_Financial_Management</currentState>
      <nextState>Firm_Start_Labour_Role</nextState>
@@ -704,8 +694,8 @@
     </function>
     <function>
      <name>Firm_calc_pay_costs</name>
-     <description>In this function the firm receives the purchased investment
- goods and pays the goods and   the wage bill. Additionally, the 
+     <description>In this function the firm receives the purchased investment&#xd;&#xd;
+ goods and pays the goods and   the wage bill. Additionally, the &#xd;&#xd;
  new mean wage and the new average specific skill level is computed.</description>
      <currentState>11</currentState>
      <nextState>12</nextState>
@@ -721,9 +711,9 @@
     </function>
     <function>
      <name>Firm_send_goods_to_mall</name>
-     <description>Here the firms send the produced goods to the malls. 
-If the realized output is less than the intended one, then 
-the malls are only delivered with a proportional 
+     <description>Here the firms send the produced goods to the malls. &#xd;&#xd;
+If the realized output is less than the intended one, then &#xd;&#xd;
+the malls are only delivered with a proportional &#xd;&#xd;
 share of their planned delivery volumes.</description>
      <currentState>12</currentState>
      <nextState>Firm_Start_Seller_Role</nextState>
@@ -736,7 +726,7 @@ share of their planned delivery volumes.</description>
     </function>
     <function>
      <name>Firm_calc_revenue</name>
-     <description>Here the firms calc the revenues and profits and then 
+     <description>Here the firms calc the revenues and profits and then &#xd;&#xd;
 distribute the dividends to households.</description>
      <currentState>Firm_Start_Seller_Role</currentState>
      <nextState>Firm_End_Seller_Role</nextState>
@@ -788,7 +778,7 @@ distribute the dividends to households.</description>
     </function>
     <function>
      <name>Firm_update_specific_skills_of_workers</name>
-     <description>Because the specific skills of workers have changed the 
+     <description>Because the specific skills of workers have changed the &#xd;&#xd;
 firms update the specific skill levels of the workers.</description>
      <currentState>Firm_End_Seller_Role</currentState>
      <nextState>14</nextState>
@@ -975,7 +965,7 @@ firms update the specific skill levels of the workers.</description>
    <functions>
     <function>
      <name>Household_idle</name>
-     <description>household does nothing</description>
+     <description></description>
      <currentState>09</currentState>
      <nextState>15</nextState>
      <condition>
@@ -991,30 +981,14 @@ firms update the specific skill levels of the workers.</description>
     </function>
     <function>
      <name>Household_rank_and_buy_goods_1</name>
-     <description>Household receives information about the offered range 
-of goods in the malls. Depending on these infos the household 
-sends its good request.</description>
+     <description></description>
      <currentState>09</currentState>
-     <nextState>09b</nextState>
+     <nextState>10</nextState>
      <condition>
-      <lhs>
-       <time>
-        <period>weekly</period>
-        <phase>a.day_of_week_to_act</phase>
-       </time>
-      </lhs>
-      <op>AND</op>
-      <rhs>
-       <not>
-        <lhs>
-         <value>a.excess_weekly_budget</value>
-        </lhs>
-        <op>GT</op>
-        <rhs>
-         <value>0.0000001</value>
-        </rhs>
-       </not>
-      </rhs>
+      <time>
+       <period>weekly</period>
+       <phase>a.day_of_week_to_act</phase>
+      </time>
      </condition>
      <inputs>
       <input>
@@ -1038,8 +1012,8 @@ sends its good request.</description>
     </function>
     <function>
      <name>Household_receive_goods_read_rationing</name>
-     <description>The household gets information about the accepted amount of 
-goods and, if the mall is completely sold out then the households set the 
+     <description>The household gets information about the accepted amount of &#xd;&#xd;
+goods and, if the mall is completely sold out then the households set the &#xd;&#xd;
 order and delivery volumes befor the second step to zero.</description>
      <currentState>10</currentState>
      <nextState>11</nextState>
@@ -1078,8 +1052,8 @@ order and delivery volumes befor the second step to zero.</description>
     </function>
     <function>
      <name>Household_rank_and_buy_goods_2</name>
-     <description>Household receives information about the offered range 
-of goods in the malls. Depending on these infos the household 
+     <description>Household receives information about the offered range &#xd;&#xd;
+of goods in the malls. Depending on these infos the household &#xd;&#xd;
 sends its good request.</description>
      <currentState>11</currentState>
      <nextState>12</nextState>
@@ -1135,70 +1109,10 @@ sends its good request.</description>
     </function>
     <function>
      <name>Household_handle_leftover_budget</name>
-     <description>This function convert the remaining budget, that is not 
+     <description>This function convert the remaining budget, that is not &#xd;&#xd;
 spent in both consumtion steps, into the PAYMENT_ACCOUNT.</description>
      <currentState>14</currentState>
      <nextState>15</nextState>
-     <inputs/>
-     <outputs/>
-    </function>
-    <function>
-     <name>Household_back_shifting_consumption_day</name>
-     <description></description>
-     <currentState>09b</currentState>
-     <nextState>10</nextState>
-     <condition>
-      <lhs>
-       <value>a.flag_consumption_shifting</value>
-      </lhs>
-      <op>EQ</op>
-      <rhs>
-       <value>1</value>
-      </rhs>
-     </condition>
-     <inputs/>
-     <outputs/>
-    </function>
-    <function>
-     <name>Household_idle</name>
-     <description></description>
-     <currentState>09b</currentState>
-     <nextState>10</nextState>
-     <condition>
-      <lhs>
-       <value>a.flag_consumption_shifting</value>
-      </lhs>
-      <op>NEQ</op>
-      <rhs>
-       <value>1</value>
-      </rhs>
-     </condition>
-     <inputs/>
-     <outputs/>
-    </function>
-    <function>
-     <name>Household_shifting_consumption_day</name>
-     <description></description>
-     <currentState>09</currentState>
-     <nextState>15</nextState>
-     <condition>
-      <lhs>
-       <time>
-        <period>weekly</period>
-        <phase>a.day_of_week_to_act</phase>
-       </time>
-      </lhs>
-      <op>AND</op>
-      <rhs>
-       <lhs>
-        <value>a.excess_weekly_budget</value>
-       </lhs>
-       <op>GT</op>
-       <rhs>
-        <value>0.0000001</value>
-       </rhs>
-      </rhs>
-     </condition>
      <inputs/>
      <outputs/>
     </function>
@@ -1311,7 +1225,7 @@ spent in both consumtion steps, into the PAYMENT_ACCOUNT.</description>
     </function>
     <function>
      <name>Mall_update_mall_stocks_sales_rationing_1</name>
-     <description>Mall reads the consumption requests and satisfies the demand 
+     <description>Mall reads the consumption requests and satisfies the demand &#xd;&#xd;
 if possible (otherwise rationing).</description>
      <currentState>03</currentState>
      <nextState>04</nextState>
@@ -1340,7 +1254,7 @@ if possible (otherwise rationing).</description>
     </function>
     <function>
      <name>Mall_update_mall_stocks_sales_rationing_2</name>
-     <description>After the second request round the mall satisfies the demand if 
+     <description>After the second request round the mall satisfies the demand if &#xd;&#xd;
 possible, otherwise rationing.</description>
      <currentState>04</currentState>
      <nextState>05</nextState>
@@ -1428,8 +1342,8 @@ possible, otherwise rationing.</description>
  <messages>
   <message>
    <name>wage_payment</name>
-   <description>Sent by firms. Including the id, the worker id, the wage and 
-the productivity  and mean specific skills of the employer in 
+   <description>Sent by firms. Including the id, the worker id, the wage and &#xd;&#xd;
+the productivity  and mean specific skills of the employer in &#xd;&#xd;
 order to update the specific skills.</description>
    <variables>
     <variable>
@@ -1461,7 +1375,7 @@ order to update the specific skills.</description>
   </message>
   <message>
    <name>quality_price_info_1</name>
-   <description>Sent by mall. Including id, region id, id of the supplier (firm), the 
+   <description>Sent by mall. Including id, region id, id of the supplier (firm), the &#xd;&#xd;
 quality and price of the goods to inform the hosueholds about these goods. </description>
    <variables>
     <variable>
@@ -1498,7 +1412,7 @@ quality and price of the goods to inform the hosueholds about these goods. </des
   </message>
   <message>
    <name>quality_price_info_2</name>
-   <description>Sent by mall. Including id, region id, id of the supplier (firm), 
+   <description>Sent by mall. Including id, region id, id of the supplier (firm), &#xd;&#xd;
 the quality and price of the goods to inform the hosueholds about these goods.</description>
    <variables>
     <variable>
@@ -1571,7 +1485,7 @@ the quality and price of the goods to inform the hosueholds about these goods.</
   </message>
   <message>
    <name>consumption_request_1</name>
-   <description>Sent by household. Including the id, the mall id, the id of the 
+   <description>Sent by household. Including the id, the mall id, the id of the &#xd;&#xd;
 supplier and the quantity of the good a household wants to have.</description>
    <variables>
     <variable>
@@ -1603,7 +1517,7 @@ supplier and the quantity of the good a household wants to have.</description>
   </message>
   <message>
    <name>consumption_request_2</name>
-   <description>Sent by household. Including the id, the mall id, the id of the 
+   <description>Sent by household. Including the id, the mall id, the id of the &#xd;&#xd;
 supplier and the quantity of the good a household wants to have.</description>
    <variables>
     <variable>
