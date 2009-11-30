@@ -27,7 +27,9 @@ int Government_initialization()
     reset_int_array(&LIST_OF_REGIONS);
     add_int(&LIST_OF_REGIONS, REGION_ID);
 
+    //Set tax rate to global constant
     TAX_RATE_HH_LABOUR = CONST_INCOME_TAX_RATE;
+    TAX_RATE_CORPORATE = CONST_INCOME_TAX_RATE;
 
     #ifdef _DEBUG_MODE
     if (PRINT_DEBUG_GOV)
@@ -45,7 +47,6 @@ int Government_initialization()
  */
 int Government_send_policy_announcements()
 {   
-    //Set tax rate to global constant
     double tax_policy=0.0;     
     FILE *file1=NULL;
     char *filename=NULL;
@@ -53,29 +54,39 @@ int Government_send_policy_announcements()
     HH_SUBSIDY_PCT=0.0;
     FIRM_SUBSIDY_PCT=0.0;
     UNEMPLOYMENT_BENEFIT_PCT=GOV_POLICY_UNEMPLOYMENT_BENEFIT_PCT;
-    
+
+    //Default case
+    if(POLICY_EXP_STABILIZATION==0)
+    {
+	    //add announcement
+	    add_policy_announcement_message(ID, TAX_RATE_HH_LABOUR, TAX_RATE_CORPORATE, TAX_RATE_HH_CAPITAL, TAX_RATE_VAT, UNEMPLOYMENT_BENEFIT_PCT, HH_SUBSIDY_PCT, FIRM_SUBSIDY_PCT, HH_TRANSFER_PAYMENT, FIRM_TRANSFER_PAYMENT);
+    }
+
     if(POLICY_EXP_STABILIZATION)
     {
         //Set trigger function:
         if ((SUBSIDY_FLAG==0)&&(GDP_GROWTH<SUBSIDY_TRIGGER_ON))
         {
             SUBSIDY_FLAG=1;
-            //printf("\nIn Government line 84: switched SUBSIDY_FLAG=0 to SUBSIDY_FLAG=%d\n", SUBSIDY_FLAG);
+            printf("\nIn Government line 84: switched SUBSIDY_FLAG=0 to SUBSIDY_FLAG=%d\n", SUBSIDY_FLAG);
             HH_SUBSIDY_PCT = -tanh(GDP_GROWTH - SUBSIDY_TRIGGER_OFF)*abs(GDP_GROWTH);
 
             //Lower the income tax 
-            tax_policy = TAX_RATE_HH_LABOUR + tanh(GDP_GROWTH - SUBSIDY_TRIGGER_OFF)*abs(GDP_GROWTH);
+            tax_policy = CONST_INCOME_TAX_RATE + tanh(GDP_GROWTH - SUBSIDY_TRIGGER_OFF)*abs(GDP_GROWTH);
+	    TAX_RATE_HH_LABOUR = CONST_INCOME_TAX_RATE + tanh(GDP_GROWTH - SUBSIDY_TRIGGER_OFF)*abs(GDP_GROWTH);
+	    TAX_RATE_CORPORATE = CONST_INCOME_TAX_RATE + tanh(GDP_GROWTH - SUBSIDY_TRIGGER_OFF)*abs(GDP_GROWTH);
         }
 
         //Release trigger function:
         if ((SUBSIDY_FLAG==1)&&(GDP_GROWTH>SUBSIDY_TRIGGER_OFF))
         {
             SUBSIDY_FLAG=0;
-            //printf("\nIn Government line 91: switched SUBSIDY_FLAG=1 to SUBSIDY_FLAG=%d\n", SUBSIDY_FLAG);
+            printf("\nIn Government line 91: switched SUBSIDY_FLAG=1 to SUBSIDY_FLAG=%d\n", SUBSIDY_FLAG);
             HH_SUBSIDY_PCT = 0.0;
 
             //Reset the income tax to its normal value
             TAX_RATE_HH_LABOUR = CONST_INCOME_TAX_RATE;
+	    TAX_RATE_CORPORATE = CONST_INCOME_TAX_RATE;
         }
 
         //Subsidy regime
@@ -84,22 +95,10 @@ int Government_send_policy_announcements()
             HH_SUBSIDY_PCT = -tanh(GDP_GROWTH - SUBSIDY_TRIGGER_OFF)*abs(GDP_GROWTH);
 
             //Lower the income tax 
-            tax_policy = TAX_RATE_HH_LABOUR + tanh(GDP_GROWTH - SUBSIDY_TRIGGER_OFF)*abs(GDP_GROWTH);
+            tax_policy = CONST_INCOME_TAX_RATE + tanh(GDP_GROWTH - SUBSIDY_TRIGGER_OFF)*abs(GDP_GROWTH);
+	    TAX_RATE_HH_LABOUR = CONST_INCOME_TAX_RATE + tanh(GDP_GROWTH - SUBSIDY_TRIGGER_OFF)*abs(GDP_GROWTH);
+	    TAX_RATE_CORPORATE = CONST_INCOME_TAX_RATE + tanh(GDP_GROWTH - SUBSIDY_TRIGGER_OFF)*abs(GDP_GROWTH);
         }
-
-
-        //printf("\nIn Government line 93: SUBSIDY_FLAG=%d\n", SUBSIDY_FLAG);
-
-        //Set subsidy percentage (these are used to compute individual subsidy payments)
-        //When the gdp growth rate is between the on and off trigger, multiply by the tanh() which gives a result between 0 and -1.
-        //HH_SUBSIDY_PCT = -tanh(GDP_GROWTH - SUBSIDY_TRIGGER_OFF)*abs(GDP_GROWTH)*SUBSIDY_FLAG;
-
-        //if (HH_SUBSIDY_PCT>0.0) printf("\nIn Government: HH_SUBSIDY_PCT=%f\n", HH_SUBSIDY_PCT);
-
-        //The firm is subsidized for the increase in capital_goods_price
-        //This is not so clear: the energy price markup = CONST_ENERGY_SHOCK_INTENSITY, but this only occurs in some iterations, not all
-        //FIRM_SUBSIDY_PCT = CONST_ENERGY_SHOCK_INTENSITY;
-
        
         // #ifdef _DEBUG_MODE
         if (PRINT_DEBUG_FILE_EXP2)
@@ -113,6 +112,12 @@ int Government_send_policy_announcements()
             free(filename);
         }
         // #endif 
+
+	    //add announcement in case of stabilization policy
+	    add_policy_announcement_message(ID, tax_policy, tax_policy, TAX_RATE_HH_CAPITAL, TAX_RATE_VAT, UNEMPLOYMENT_BENEFIT_PCT, HH_SUBSIDY_PCT, FIRM_SUBSIDY_PCT, HH_TRANSFER_PAYMENT, FIRM_TRANSFER_PAYMENT);
+
+//	    add_policy_announcement_message(ID, TAX_RATE_HH_LABOUR, TAX_RATE_CORPORATE, TAX_RATE_HH_CAPITAL, TAX_RATE_VAT, UNEMPLOYMENT_BENEFIT_PCT, HH_SUBSIDY_PCT, FIRM_SUBSIDY_PCT, HH_TRANSFER_PAYMENT, FIRM_TRANSFER_PAYMENT);
+
     }
 
      if (PRINT_DEBUG_FILE_EXP1)
@@ -125,10 +130,6 @@ int Government_send_policy_announcements()
             fclose(file1);
             free(filename);
         }
-
-
-    //add announcement
-    add_policy_announcement_message(ID, tax_policy, tax_policy, TAX_RATE_HH_CAPITAL, TAX_RATE_VAT, UNEMPLOYMENT_BENEFIT_PCT, HH_SUBSIDY_PCT, FIRM_SUBSIDY_PCT, HH_TRANSFER_PAYMENT, FIRM_TRANSFER_PAYMENT);
     
     #ifdef _DEBUG_MODE
     if (PRINT_DEBUG_GOV)
