@@ -520,6 +520,7 @@ int Firm_receive_capital_goods()
         FILE *file1;
         char *filename;
         double capital_good_price = 0.0;
+        double capital_good_delivery_volume = 0.0;
         
         CAPITAL_COSTS = 0.0;
         
@@ -550,6 +551,7 @@ int Firm_receive_capital_goods()
         ->capital_good_price;
         
         capital_good_price = capital_good_delivery_message->capital_good_price;
+        capital_good_delivery_volume = capital_good_delivery_message->capital_good_delivery_volume;
         
     FINISH_CAPITAL_GOOD_DELIVERY_MESSAGE_LOOP
 
@@ -564,7 +566,7 @@ int Firm_receive_capital_goods()
             filename[0]=0;
             strcpy(filename, "its/firms_capital_goods.txt"); 
             file1 = fopen(filename,"a");
-            fprintf(file1,"\n %d %d %f %f",DAY,ID,TOTAL_UNITS_CAPITAL_STOCK,capital_good_price);
+            fprintf(file1,"\n %d %d %f %f %f",DAY,ID,TOTAL_UNITS_CAPITAL_STOCK,capital_good_delivery_volume,capital_good_price);
             fclose(file1);
             free(filename);
         }
