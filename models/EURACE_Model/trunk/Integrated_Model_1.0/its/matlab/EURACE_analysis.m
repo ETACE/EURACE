@@ -1,12 +1,12 @@
 clc
 clear all
-%close all
+close all
 
-Pat = '..\qe0_d0.5\';
-Pat = '..\';
+Pat = '..\qe1_d0.1_ef1_se0\';
+%Pat = '..\';
 
 font_sz = 14;
-colore = 'k';
+colore = 'b';
 
 mf = 120;
 af = ceil(mf/12);
@@ -14,6 +14,7 @@ tf = 20*mf;
 daily_month_index = (1:tf)/20;
 yearly_month_index = (1:af)*12;
 monthly_index = 0:6:mf; 
+monthly_index2 = 0:12:mf; 
 yearly_index  = 0:af
 
 %%% BANKS
@@ -52,25 +53,49 @@ for i=1:numel(days)
     
 end
 
-figure(11); grid on; hold on; box
-plot(daily_month_index,TOTAL_CREDIT_sum(1:tf),colore)
-plot(daily_month_index,PAYMENT_ACCOUNT_BANKS_sum(1:tf),[colore, '--'])
-plot(daily_month_index,DEPOSITS_sum(1:tf),[colore, '-.'])
-plot(daily_month_index,ECB_DEBT_sum(1:tf),colore,'linewidth',2)
-plot(daily_month_index,EQUITY_sum(1:tf),[colore,':'])
-legend('loans to firms','liquidity','private sector deposits','account at CB','equity','Location','Best')
-set(gca,'xtick',monthly_index,'fontsize',font_sz)
-xlabel('months','fontsize',font_sz)
-ylabel('aribitrary monetary units','fontsize',font_sz)
-title('Banking sector aggregate data','fontsize',font_sz)
+%h_Bank_aggregate_data =  figure('Name','Bank aggregate data'); 
 
+figure(1)
+set(gcf,'Name','Bank aggregate data')
+subplot(2,2,1); grid on; hold on; box
+plot(daily_month_index,TOTAL_CREDIT_sum(1:tf),colore)
+set(gca,'xtick',monthly_index2,'fontsize',font_sz)
 set(gca,'xlim',[0, mf])
+title('loans to firms','fontsize',font_sz)
+xlabel('months','fontsize',font_sz)
+
+subplot(2,2,2); grid on; hold on; box
+plot(daily_month_index,PAYMENT_ACCOUNT_BANKS_sum(1:tf),colore)
+set(gca,'xtick',monthly_index2,'fontsize',font_sz)
+set(gca,'xlim',[0, mf])
+title('reserves at the CB','fontsize',font_sz)
+xlabel('months','fontsize',font_sz)
+
+subplot(2,2,3); grid on; hold on; box
+plot(daily_month_index,DEPOSITS_sum(1:tf),colore)
+set(gca,'xtick',monthly_index2,'fontsize',font_sz)
+set(gca,'xlim',[0, mf])
+title('private sector deposits','fontsize',font_sz)
+xlabel('months','fontsize',font_sz)
+
+subplot(2,2,4); grid on; hold on; box
+plot(daily_month_index,ECB_DEBT_sum(1:tf),colore)
+set(gca,'xtick',monthly_index2,'fontsize',font_sz)
+set(gca,'xlim',[0, mf])
+title('loans from the the CB','fontsize',font_sz)
+xlabel('months','fontsize',font_sz)
+
+
+
+figure(2); grid on; hold on; box
+set(gcf,'Name','Bank aggregate equity')
+plot(daily_month_index,EQUITY_sum(1:tf),colore)
+set(gca,'xtick',monthly_index2,'fontsize',font_sz)
+set(gca,'xlim',[0, mf])
+xlabel('months','fontsize',font_sz)
+title('Bank aggregate equity','fontsize',font_sz)
 
 clear Data
-
-if print_flag
-    print('-dpsc2','figure01.eps')
-end
 
 
 
@@ -83,33 +108,37 @@ FIAT_MONEY = Data(:,4);
 PAYMENT_ACCOUNT_CB = Data(:,5);
 ECB_DEPOSITS = Data(:,6);
 
-figure(21); grid on; hold on
-plot(daily_month_index,FIAT_MONEY_GOVS(1:tf)-FIAT_MONEY(1),colore)
-plot(daily_month_index,FIAT_MONEY_BANKS(1:tf),[colore, '-.'])
-plot(daily_month_index,FIAT_MONEY(1:tf),[colore, ':'])
-plot(daily_month_index,PAYMENT_ACCOUNT_CB(1:tf),[colore,'--'])
-plot(daily_month_index,ECB_DEPOSITS(1:tf),colore,'linewidth',2)
-legend('fiat money to government','fiart money to the banking sector','total fiat money','Location','Best')
-set(gca,'xtick',monthly_index,'fontsize',font_sz)
-xlabel('months','fontsize',font_sz)
-ylabel('aribitrary monetary units','fontsize',font_sz)
-title('Central Bank aggregate data','fontsize',font_sz)
-
-set(gca,'xlim',[0, mf])
-
-figure(22); grid on; hold on
+figure(11); 
+set(gcf,'Name','Central bank data')
+subplot(2,2,1); grid on; hold on; box
 plot(daily_month_index,FIAT_MONEY_GOVS(1:tf),colore)
-legend('fiat money to government',0)
-set(gca,'xtick',monthly_index,'fontsize',font_sz)
-xlabel('months','fontsize',font_sz)
-ylabel('aribitrary monetary units','fontsize',font_sz)
-
+set(gca,'xtick',monthly_index2,'fontsize',font_sz)
 set(gca,'xlim',[0, mf])
+title('Fiat money to the government','fontsize',font_sz)
+xlabel('months','fontsize',font_sz)
 
+subplot(2,2,2); grid on; hold on; box
+plot(daily_month_index,FIAT_MONEY_BANKS(1:tf),colore)
+set(gca,'xtick',monthly_index2,'fontsize',font_sz)
+set(gca,'xlim',[0, mf])
+title('Fiat money to banks','fontsize',font_sz)
+xlabel('months','fontsize',font_sz)
+
+subplot(2,2,3); grid on; hold on; box
+plot(daily_month_index,PAYMENT_ACCOUNT_CB(1:tf),colore)
+set(gca,'xtick',monthly_index2,'fontsize',font_sz)
+set(gca,'xlim',[0, mf])
+title('CB reserves','fontsize',font_sz)
+xlabel('months','fontsize',font_sz)
+
+subplot(2,2,4); grid on; hold on; box
+plot(daily_month_index,ECB_DEPOSITS(1:tf),colore)
+set(gca,'xtick',monthly_index2,'fontsize',font_sz)
+set(gca,'xlim',[0, mf])
+title('public sector deposits at CB','fontsize',font_sz)
+xlabel('months','fontsize',font_sz)
 
 clear Data
-
-
 
 %%% Government
 Data = load([Pat, 'Governments_daily_balance_sheet.txt']);
@@ -128,67 +157,41 @@ for i=1:numel(days)
 end
 
 figure(31); 
-title('Goverments aggregate data','fontsize',font_sz)
-grid on; hold on
-
-subplot(2,2,1); hold on; grid on
-plot(PAYMENT_ACCOUNT_GOVS_sum(1:tf),colore)
-xlabel('days','fontsize',font_sz)
-title('payment account government','fontsize',font_sz)
-
-subplot(2,2,2); hold on; grid on
-plot(BONDS_NR_OUTSTANDING_sum(1:tf),colore)
-xlabel('days','fontsize',font_sz)
-title('Nr Outstanding bonds','fontsize',font_sz)
-
-subplot(2,2,3); hold on; grid on
-plot(BOND_QUANTITY(1:tf),colore)
-xlabel('days','fontsize',font_sz)
-title('Bond quantity','fontsize',font_sz)
-
-subplot(2,2,4); hold on; grid on
-plot(BOND_PRICE(1:tf),colore)
-xlabel('days','fontsize',font_sz)
-title('Bond price','fontsize',font_sz)
-
-
-figure(32); 
-subplot(3,1,1); hold on; grid on; box on
+set(gcf,'Name','Government data')
+subplot(2,2,1); grid on; hold on; box
 plot(daily_month_index,PAYMENT_ACCOUNT_GOVS_sum(1:tf),colore)
-set(gca,'xtick',monthly_index,'fontsize',font_sz)
-xlabel('months','fontsize',font_sz)
-ylabel('arbitrary monetary units','fontsize',font_sz)
+set(gca,'xtick',monthly_index2,'fontsize',font_sz)
 set(gca,'xlim',[0, mf])
-legend('government liquidity','Location','Best')
+title('Government liquidity','fontsize',font_sz)
+xlabel('months','fontsize',font_sz)
 
-subplot(3,1,2); hold on; grid on; box on
+subplot(2,2,2); grid on; hold on; box
 plot(daily_month_index,BONDS_NR_OUTSTANDING_sum(1:tf),colore)
-set(gca,'xtick',monthly_index,'fontsize',font_sz)
-xlabel('months','fontsize',font_sz)
-ylabel('units','fontsize',font_sz)
+set(gca,'xtick',monthly_index2,'fontsize',font_sz)
 set(gca,'xlim',[0, mf])
-legend('number of outstanding bonds','Location','Best')
+title('Nr bonds outstanding','fontsize',font_sz)
+xlabel('months','fontsize',font_sz)
 
-subplot(3,1,3); hold on; grid on; box on
+subplot(2,2,3); grid on; hold on; box
+plot(daily_month_index,BOND_QUANTITY(1:tf),colore)
+set(gca,'xtick',monthly_index2,'fontsize',font_sz)
+set(gca,'xlim',[0, mf])
+title('Bonds new issueing','fontsize',font_sz)
+xlabel('months','fontsize',font_sz)
+
+subplot(2,2,4); grid on; hold on; box
 plot(daily_month_index,BOND_PRICE(1:tf),colore)
-set(gca,'xtick',monthly_index,'fontsize',font_sz)
-xlabel('months','fontsize',font_sz)
-ylabel('arbitrary monetary units','fontsize',font_sz)
+set(gca,'xtick',monthly_index2,'fontsize',font_sz)
 set(gca,'xlim',[0, mf])
-legend('government bond price','Location','Best')
+title('bond price','fontsize',font_sz)
+xlabel('months','fontsize',font_sz)
 
-if print_flag
-    print('-dpsc2','figure02.eps')
-end
-
-
-
-
-figure(1); hold on; grid on; box on
+figure(1000); hold on; grid on; box on
 plot(ECB_DEPOSITS'-(PAYMENT_ACCOUNT_GOVS_sum+PAYMENT_ACCOUNT_BANKS_sum))
 legend('ECB DEPOSITS - Aggregate PAYMENT ACCOUNT GOVS - PAYMENT ACCOUNT BANKS',0)
 
 clear Data
+
 
 %%% Households
 
@@ -212,6 +215,7 @@ clear Data
 
 %%% IGFirm
 Data = load([Pat, 'IGFirm_daily_balance_sheet.txt']);
+set(gcf,'Name','Central bank data')
 
 PAYMENT_ACCOUNT_IGFIRMS = Data(:,3);
 CUM_ENERGY_COSTS = Data(:,4);
@@ -231,19 +235,20 @@ end
 
 clear Data
 
-figure(51); hold on; grid on
+figure(51); 
+subplot(2,1,1); hold on; grid on; box on
 plot(PAYMENT_ACCOUNT_IGFIRMS_sum(1:tf),colore)
 
 xlabel('months','fontsize',font_sz)
 ylabel('arbitrary monetary units','fontsize',font_sz)
 title('PAYMENT ACCOUNT IGFIRM')
 
-figure(52); hold on; grid on
+subplot(2,1,2); hold on; grid on; box on
 plot(CUM_ENERGY_COSTS_sum(1:tf),colore)
 xlabel('days','fontsize',font_sz)
 title('CUMULATED ENERGY COST')
 
-
+break 
 %%% Stock prices
 Data = load([Pat, 'stock_prices.txt']);
 firms_id = Data(:,2);
