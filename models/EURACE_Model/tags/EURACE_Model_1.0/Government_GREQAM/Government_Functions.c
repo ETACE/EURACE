@@ -47,7 +47,6 @@ int Government_initialization()
  */
 int Government_send_policy_announcements()
 {   
-    double tax_policy=0.0;     
     FILE *file1=NULL;
     char *filename=NULL;
          
@@ -55,49 +54,27 @@ int Government_send_policy_announcements()
     FIRM_SUBSIDY_PCT=0.0;
     UNEMPLOYMENT_BENEFIT_PCT=GOV_POLICY_UNEMPLOYMENT_BENEFIT_PCT;
 
-    //Default case
-    if(POLICY_EXP_STABILIZATION==0)
-    {
-	    //add announcement
-	    add_policy_announcement_message(ID, TAX_RATE_HH_LABOUR, TAX_RATE_CORPORATE, TAX_RATE_HH_CAPITAL, TAX_RATE_VAT, UNEMPLOYMENT_BENEFIT_PCT, HH_SUBSIDY_PCT, FIRM_SUBSIDY_PCT, HH_TRANSFER_PAYMENT, FIRM_TRANSFER_PAYMENT);
-    }
 
-    if(POLICY_EXP_STABILIZATION)
+    if(POLICY_EXP_STABILIZATION_SUBSIDY)
     {
         //Set trigger function:
         if ((SUBSIDY_FLAG==0)&&(GDP_GROWTH<SUBSIDY_TRIGGER_ON))
         {
             SUBSIDY_FLAG=1;
-            printf("\nIn Government line 84: switched SUBSIDY_FLAG=0 to SUBSIDY_FLAG=%d\n", SUBSIDY_FLAG);
-            HH_SUBSIDY_PCT = -tanh(GDP_GROWTH - SUBSIDY_TRIGGER_OFF)*abs(GDP_GROWTH);
-
-            //Lower the income tax 
-            tax_policy = CONST_INCOME_TAX_RATE + tanh(GDP_GROWTH - SUBSIDY_TRIGGER_OFF)*abs(GDP_GROWTH);
-	    TAX_RATE_HH_LABOUR = CONST_INCOME_TAX_RATE + tanh(GDP_GROWTH - SUBSIDY_TRIGGER_OFF)*abs(GDP_GROWTH);
-	    TAX_RATE_CORPORATE = CONST_INCOME_TAX_RATE + tanh(GDP_GROWTH - SUBSIDY_TRIGGER_OFF)*abs(GDP_GROWTH);
+            HH_SUBSIDY_PCT = -tanh(GDP_GROWTH - SUBSIDY_TRIGGER_OFF)*fabs(GDP_GROWTH);
         }
 
         //Release trigger function:
         if ((SUBSIDY_FLAG==1)&&(GDP_GROWTH>SUBSIDY_TRIGGER_OFF))
         {
             SUBSIDY_FLAG=0;
-            printf("\nIn Government line 91: switched SUBSIDY_FLAG=1 to SUBSIDY_FLAG=%d\n", SUBSIDY_FLAG);
             HH_SUBSIDY_PCT = 0.0;
-
-            //Reset the income tax to its normal value
-            TAX_RATE_HH_LABOUR = CONST_INCOME_TAX_RATE;
-	    TAX_RATE_CORPORATE = CONST_INCOME_TAX_RATE;
         }
 
         //Subsidy regime
         if ((SUBSIDY_FLAG==1)&&(GDP_GROWTH<SUBSIDY_TRIGGER_OFF))
         {
-            HH_SUBSIDY_PCT = -tanh(GDP_GROWTH - SUBSIDY_TRIGGER_OFF)*abs(GDP_GROWTH);
-
-            //Lower the income tax 
-            tax_policy = CONST_INCOME_TAX_RATE + tanh(GDP_GROWTH - SUBSIDY_TRIGGER_OFF)*abs(GDP_GROWTH);
-	    TAX_RATE_HH_LABOUR = CONST_INCOME_TAX_RATE + tanh(GDP_GROWTH - SUBSIDY_TRIGGER_OFF)*abs(GDP_GROWTH);
-	    TAX_RATE_CORPORATE = CONST_INCOME_TAX_RATE + tanh(GDP_GROWTH - SUBSIDY_TRIGGER_OFF)*abs(GDP_GROWTH);
+            HH_SUBSIDY_PCT = -tanh(GDP_GROWTH - SUBSIDY_TRIGGER_OFF)*fabs(GDP_GROWTH);
         }
        
         // #ifdef _DEBUG_MODE
@@ -113,13 +90,82 @@ int Government_send_policy_announcements()
         }
         // #endif 
 
-	    //add announcement in case of stabilization policy
-	    add_policy_announcement_message(ID, tax_policy, tax_policy, TAX_RATE_HH_CAPITAL, TAX_RATE_VAT, UNEMPLOYMENT_BENEFIT_PCT, HH_SUBSIDY_PCT, FIRM_SUBSIDY_PCT, HH_TRANSFER_PAYMENT, FIRM_TRANSFER_PAYMENT);
-
-//	    add_policy_announcement_message(ID, TAX_RATE_HH_LABOUR, TAX_RATE_CORPORATE, TAX_RATE_HH_CAPITAL, TAX_RATE_VAT, UNEMPLOYMENT_BENEFIT_PCT, HH_SUBSIDY_PCT, FIRM_SUBSIDY_PCT, HH_TRANSFER_PAYMENT, FIRM_TRANSFER_PAYMENT);
-
+	    #ifdef _DEBUG_MODE
+	    if ((PRINT_DEBUG_GOV)&&(SUBSIDY_FLAG==1))
+	    { 
+              printf("\n Stabilization: Government_send_policy_announcements ID: %d",ID);
+              printf("\n SUBSIDY_FLAG: %d",SUBSIDY_FLAG);
+              printf("\n CONST_INCOME_TAX_RATE: %f", CONST_INCOME_TAX_RATE);
+              printf("\n GDP_GROWTH: %f", GDP_GROWTH);
+              printf("\n fabs(GDP_GROWTH): %f", fabs(GDP_GROWTH));
+              printf("\n SUBSIDY_TRIGGER_ON %f", SUBSIDY_TRIGGER_ON);
+              printf("\n SUBSIDY_TRIGGER_OFF: %f", SUBSIDY_TRIGGER_OFF);
+              printf("\n tanh(GDP_GROWTH - SUBSIDY_TRIGGER_OFF): %f", tanh(GDP_GROWTH - SUBSIDY_TRIGGER_OFF));
+              printf("\n HH_SUBSIDY_PCT: %f*%f= %f", -tanh(GDP_GROWTH - SUBSIDY_TRIGGER_OFF), fabs(GDP_GROWTH), HH_SUBSIDY_PCT);
+              printf("\n \t TAX_RATE_HH_LABOUR: %f TAX_RATE_CORPORATE: %f TAX_RATE_HH_CAPITAL: %f TAX_RATE_VAT: %f",
+				 TAX_RATE_HH_LABOUR, TAX_RATE_CORPORATE, TAX_RATE_HH_CAPITAL, TAX_RATE_VAT);
+              printf("\n \t UNEMPLOYMENT_BENEFIT_PCT: %f HH_SUBSIDY_PCT: %f FIRM_SUBSIDY_PCT: %f HH_TRANSFER_PAYMENT: %f FIRM_TRANSFER_PAYMENT; %f",
+				 UNEMPLOYMENT_BENEFIT_PCT, HH_SUBSIDY_PCT, FIRM_SUBSIDY_PCT, HH_TRANSFER_PAYMENT, FIRM_TRANSFER_PAYMENT);
+              getchar();
+	    }
+   	    #endif
     }
 
+    if(POLICY_EXP_STABILIZATION_TAX)
+    {
+        //Set trigger function:
+        if ((SUBSIDY_FLAG==0)&&(GDP_GROWTH<SUBSIDY_TRIGGER_ON))
+        {
+            SUBSIDY_FLAG=1;
+
+            //Lower the income tax 
+	    TAX_RATE_HH_LABOUR = CONST_INCOME_TAX_RATE + tanh(GDP_GROWTH - SUBSIDY_TRIGGER_OFF)*fabs(GDP_GROWTH);
+	    TAX_RATE_CORPORATE = CONST_INCOME_TAX_RATE + tanh(GDP_GROWTH - SUBSIDY_TRIGGER_OFF)*fabs(GDP_GROWTH);
+        }
+
+        //Release trigger function:
+        if ((SUBSIDY_FLAG==1)&&(GDP_GROWTH>SUBSIDY_TRIGGER_OFF))
+        {
+            SUBSIDY_FLAG=0;
+
+            //Reset the income tax to its normal value
+            TAX_RATE_HH_LABOUR = CONST_INCOME_TAX_RATE;
+	    TAX_RATE_CORPORATE = CONST_INCOME_TAX_RATE;
+        }
+
+        //Subsidy regime
+        if ((SUBSIDY_FLAG==1)&&(GDP_GROWTH<SUBSIDY_TRIGGER_OFF))
+        {
+            //Lower the income tax 
+	    TAX_RATE_HH_LABOUR = CONST_INCOME_TAX_RATE + tanh(GDP_GROWTH - SUBSIDY_TRIGGER_OFF)*fabs(GDP_GROWTH);
+	    TAX_RATE_CORPORATE = CONST_INCOME_TAX_RATE + tanh(GDP_GROWTH - SUBSIDY_TRIGGER_OFF)*fabs(GDP_GROWTH);
+        }
+
+	    #ifdef _DEBUG_MODE
+	    if ((PRINT_DEBUG_GOV)&&(SUBSIDY_FLAG==1))
+	    { 
+              printf("\n Stabilization: Government_send_policy_announcements ID: %d",ID);
+              printf("\n SUBSIDY_FLAG: %d",SUBSIDY_FLAG);
+              printf("\n CONST_INCOME_TAX_RATE: %f", CONST_INCOME_TAX_RATE);
+              printf("\n GDP_GROWTH: %f", GDP_GROWTH);
+              printf("\n fabs(GDP_GROWTH): %f", fabs(GDP_GROWTH));
+              printf("\n SUBSIDY_TRIGGER_ON %f", SUBSIDY_TRIGGER_ON);
+              printf("\n SUBSIDY_TRIGGER_OFF: %f", SUBSIDY_TRIGGER_OFF);
+              printf("\n tanh(GDP_GROWTH - SUBSIDY_TRIGGER_OFF): %f", tanh(GDP_GROWTH - SUBSIDY_TRIGGER_OFF));
+              printf("\n tanh(GDP_GROWTH - SUBSIDY_TRIGGER_OFF)*fabs(GDP_GROWTH): %f", tanh(GDP_GROWTH - SUBSIDY_TRIGGER_OFF)*fabs(GDP_GROWTH));
+              printf("\n New Tax: %f %f = %f", CONST_INCOME_TAX_RATE, tanh(GDP_GROWTH - SUBSIDY_TRIGGER_OFF)*fabs(GDP_GROWTH), CONST_INCOME_TAX_RATE + tanh(GDP_GROWTH - SUBSIDY_TRIGGER_OFF)*fabs(GDP_GROWTH));
+              printf("\n HH_SUBSIDY_PCT: %f", HH_SUBSIDY_PCT);
+              printf("\n \t TAX_RATE_HH_LABOUR: %f TAX_RATE_CORPORATE: %f TAX_RATE_HH_CAPITAL: %f TAX_RATE_VAT: %f",
+				 TAX_RATE_HH_LABOUR, TAX_RATE_CORPORATE, TAX_RATE_HH_CAPITAL, TAX_RATE_VAT);
+              printf("\n \t UNEMPLOYMENT_BENEFIT_PCT: %f HH_SUBSIDY_PCT: %f FIRM_SUBSIDY_PCT: %f HH_TRANSFER_PAYMENT: %f FIRM_TRANSFER_PAYMENT; %f",
+				 UNEMPLOYMENT_BENEFIT_PCT, HH_SUBSIDY_PCT, FIRM_SUBSIDY_PCT, HH_TRANSFER_PAYMENT, FIRM_TRANSFER_PAYMENT);
+              getchar();
+	    }
+   	    #endif
+     }
+
+/*
+    #ifdef _DEBUG_MODE
      if (PRINT_DEBUG_FILE_EXP1)
         {
             filename = malloc(40*sizeof(char));
@@ -130,17 +176,24 @@ int Government_send_policy_announcements()
             fclose(file1);
             free(filename);
         }
+    #endif
     
     #ifdef _DEBUG_MODE
     if (PRINT_DEBUG_GOV)
     { 
-                    printf("\n Government_send_policy_announcements ID: %d",ID);
-                    printf("\n \t TAX_RATE_HH_LABOUR: %f TAX_RATE_CORPORATE: %f TAX_RATE_HH_CAPITAL: %f TAX_RATE_VAT: %f", TAX_RATE_HH_LABOUR, TAX_RATE_CORPORATE, TAX_RATE_HH_CAPITAL, TAX_RATE_VAT);
-                    printf("\n \t UNEMPLOYMENT_BENEFIT_PCT: %f HH_SUBSIDY_PCT: %f FIRM_SUBSIDY_PCT: %f HH_TRANSFER_PAYMENT: %f FIRM_TRANSFER_PAYMENT; %f", UNEMPLOYMENT_BENEFIT_PCT, HH_SUBSIDY_PCT, FIRM_SUBSIDY_PCT, HH_TRANSFER_PAYMENT, FIRM_TRANSFER_PAYMENT);
-                    getchar();
+	printf("\n Government_send_policy_announcements ID: %d",ID);
+	printf("\n \t TAX_RATE_HH_LABOUR: %f TAX_RATE_CORPORATE: %f TAX_RATE_HH_CAPITAL: %f TAX_RATE_VAT: %f",
+		 TAX_RATE_HH_LABOUR, TAX_RATE_CORPORATE, TAX_RATE_HH_CAPITAL, TAX_RATE_VAT);
+       printf("\n \t UNEMPLOYMENT_BENEFIT_PCT: %f HH_SUBSIDY_PCT: %f FIRM_SUBSIDY_PCT: %f HH_TRANSFER_PAYMENT: %f FIRM_TRANSFER_PAYMENT: %f",
+		 UNEMPLOYMENT_BENEFIT_PCT, HH_SUBSIDY_PCT, FIRM_SUBSIDY_PCT, HH_TRANSFER_PAYMENT, FIRM_TRANSFER_PAYMENT);
+     	getchar();
     }
     #endif
+*/
        
+    //add announcement
+    add_policy_announcement_message(ID, TAX_RATE_HH_LABOUR, TAX_RATE_CORPORATE, TAX_RATE_HH_CAPITAL, TAX_RATE_VAT, UNEMPLOYMENT_BENEFIT_PCT, HH_SUBSIDY_PCT, FIRM_SUBSIDY_PCT, HH_TRANSFER_PAYMENT, FIRM_TRANSFER_PAYMENT);
+
     return 0;   
 }
 
@@ -437,15 +490,15 @@ int Government_monthly_budget_accounting()
 /* Sander, 17.06.09: Old style code: refers to the monthly budget deficit        
         if (MONTHLY_BUDGET_BALANCE<0.0)
         {
-            TOTAL_MONEY_FINANCING = GOV_POLICY_MONEY_FINANCING_FRACTION*abs(MONTHLY_BUDGET_BALANCE);
-            TOTAL_BOND_FINANCING = (1-GOV_POLICY_MONEY_FINANCING_FRACTION)*abs(MONTHLY_BUDGET_BALANCE);
+            TOTAL_MONEY_FINANCING = GOV_POLICY_MONEY_FINANCING_FRACTION*fabs(MONTHLY_BUDGET_BALANCE);
+            TOTAL_BOND_FINANCING = (1-GOV_POLICY_MONEY_FINANCING_FRACTION)*fabs(MONTHLY_BUDGET_BALANCE);
         }
 */        
 /* Sander, 17.06.09: Marco proposed code: refers to a negative payment_account*/
         if (PAYMENT_ACCOUNT<0.0)
         {
-            TOTAL_MONEY_FINANCING = GOV_POLICY_MONEY_FINANCING_FRACTION*abs(PAYMENT_ACCOUNT);
-            TOTAL_BOND_FINANCING = (1-GOV_POLICY_MONEY_FINANCING_FRACTION)*abs(PAYMENT_ACCOUNT);
+            TOTAL_MONEY_FINANCING = GOV_POLICY_MONEY_FINANCING_FRACTION*fabs(PAYMENT_ACCOUNT);
+            TOTAL_BOND_FINANCING = (1-GOV_POLICY_MONEY_FINANCING_FRACTION)*fabs(PAYMENT_ACCOUNT);
         }
         
         //Government sends a message to ECB with the value of fiat money requested

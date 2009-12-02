@@ -181,7 +181,7 @@ int Firm_read_policy_announcements()
  */
 int Firm_send_subsidy_notification()
 {
-    if (POLICY_EXP_STABILIZATION==1)
+    if (POLICY_EXP_STABILIZATION_SUBSIDY==1)
     {    
         SUBSIDY_PAYMENT = SUBSIDY_PCT*CAPITAL_COSTS;
         

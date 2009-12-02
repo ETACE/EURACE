@@ -402,7 +402,7 @@
      <condition>
       <not>
        <time>
-        <period>yearly</period>
+        <period>monthly</period>
         <phase>1</phase>
        </time>
       </not>
@@ -417,7 +417,7 @@
      <nextState>00</nextState>
      <condition>
       <time>
-       <period>yearly</period>
+       <period>monthly</period>
        <phase>1</phase>
       </time>
      </condition>
