@@ -671,7 +671,7 @@ int Household_send_unemployment_benefit_notification()
  */
 int Household_send_subsidy_notification()
 {
-    if (POLICY_EXP_STABILIZATION==1)
+    if (POLICY_EXP_STABILIZATION_SUBSIDY==1)
     {
         SUBSIDY_PAYMENT = SUBSIDY_PCT*MONTHLY_CONSUMPTION_EXPENDITURE;
     
