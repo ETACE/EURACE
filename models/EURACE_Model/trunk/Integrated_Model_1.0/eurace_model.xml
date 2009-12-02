@@ -110,8 +110,13 @@
    </variable>
    <variable>
     <type>int</type>
-    <name>policy_exp_stabilization</name>
-    <description>Switch for policy experiment: stabilization policy.</description>
+    <name>policy_exp_stabilization_subsidy</name>
+    <description>Switch for policy experiment: stabilization policy using subsidy scheme.</description>
+   </variable>
+   <variable>
+    <type>int</type>
+    <name>policy_exp_stabilization_tax</name>
+    <description>Switch for policy experiment: stabilization policy using tax reduction scheme.</description>
    </variable>
    <variable>
     <type>int</type>

@@ -17,7 +17,7 @@
  * \brief: Unit tests for: Government_send_policy_announcements
  * Status: NOT Tested
  */
-void unittest_Government_send_policy_announcements()
+void unittest1_Government_send_policy_announcements()
 {
     int rc;
     
@@ -25,6 +25,12 @@ void unittest_Government_send_policy_announcements()
     unittest_init_Government_agent();
     
     /***** Variables: Memory pre-conditions **************************/
+     TAX_RATE_HH_LABOUR=0.0;
+     TAX_RATE_CORPORATE=0.0;
+
+    /************* Setting environment variables **************/
+    FLAME_environment_variable_policy_exp_stabilization = 0;
+    FLAME_environment_variable_const_income_tax_rate = 0.05;
 
     /***** Messages: initialize message boards **********************************/
 
@@ -82,10 +88,102 @@ void unittest_Government_send_policy_announcements()
     //start a reading loop
 
     START_POLICY_ANNOUNCEMENT_MESSAGE_LOOP
-         //CU_ASSERT_EQUAL(policy_announcement_message->var, value);
-         //CU_ASSERT_DOUBLE_EQUAL(policy_announcement_message->var, value, 1e-3);
+         CU_ASSERT_DOUBLE_EQUAL(policy_announcement_message->tax_rate_hh_labour, 0.05, 1e-3);
+	 CU_ASSERT_DOUBLE_EQUAL(policy_announcement_message->tax_rate_corporate, 0.05, 1e-3);
     FINISH_POLICY_ANNOUNCEMENT_MESSAGE_LOOP
     
+    /************* At end of unit test, free the agent **************/
+    unittest_free_Government_agent();
+    /************* At end of unit tests, free all Messages **********/
+    free_messages();
+}
+
+/*
+ * \fn: void unittest_Government_send_policy_announcements()
+ * \brief: Unit tests for: Government_send_policy_announcements
+ * Status: NOT Tested
+ */
+void unittest2_Government_send_policy_announcements()
+{
+    int rc;
+    
+    /************* At start of unit test, add one agent **************/
+    unittest_init_Government_agent();
+    
+    /***** Variables: Memory pre-conditions **************************/
+     TAX_RATE_HH_LABOUR=0.0;
+     TAX_RATE_CORPORATE=0.0;
+     SUBSIDY_FLAG=0;
+     GDP_GROWTH=0.01;
+     SUBSIDY_TRIGGER_ON=0.03;
+     SUBSIDY_TRIGGER_OFF=0.03;
+
+    /************* Setting environment variables **************/
+    FLAME_environment_variable_policy_exp_stabilization = 1;
+    FLAME_environment_variable_const_income_tax_rate = 0.05;
+
+    /***** Messages: initialize message boards **********************************/
+
+    rc = MB_Create(&b_policy_announcement, sizeof(m_policy_announcement));
+            #ifdef ERRCHECK
+            if (rc != MB_SUCCESS)
+            {
+               fprintf(stderr, "ERROR: Could not create 'policy_announcement' board\n");
+               switch(rc) {
+                   case MB_ERR_INVALID:
+                       fprintf(stderr, "\t reason: Invalid message size\n");
+                       break;
+                   case MB_ERR_MEMALLOC:
+                       fprintf(stderr, "\t reason: out of memory\n");
+                       break;
+                   case MB_ERR_INTERNAL:
+                       fprintf(stderr, "\t reason: internal error. Recompile libmoard in debug mode for more info \n");
+                       break;
+               }
+            }
+            #endif
+    
+    /***** Messages: pre-conditions **********************************/
+            
+    /***** Adding message iterators ***************************************/
+
+    rc = MB_Iterator_Create(b_policy_announcement, &i_policy_announcement);
+            
+    if (rc != MB_SUCCESS)
+            {
+               fprintf(stderr, "ERROR: Could not create Iterator for 'policy_announcement'\n");
+               switch(rc) {
+                   case MB_ERR_INVALID:
+                       fprintf(stderr, "\t reason: 'policy_announcement' board is invalid\n");
+                       break;
+                   case MB_ERR_LOCKED:
+                       fprintf(stderr, "\t reason: 'policy_announcement' board is locked\n");
+                       break;
+                   case MB_ERR_MEMALLOC:
+                       fprintf(stderr, "\t reason: out of memory\n");
+                       break;
+                   case MB_ERR_INTERNAL:
+                       fprintf(stderr, "\t reason: internal error. Recompile libmoard in debug mode for more info \n");
+                       break;
+               }
+            }
+                
+    /***** Function evaluation ***************************************/
+    Government_send_policy_announcements();
+    
+    /***** Variables: Memory post-conditions *****/
+//  CU_ASSERT_DOUBLE_EQUAL(var, result, 1e-3);
+
+    /***** Variables: Message post-conditions *****/
+    //start a reading loop
+
+    START_POLICY_ANNOUNCEMENT_MESSAGE_LOOP
+         CU_ASSERT_DOUBLE_EQUAL(policy_announcement_message->tax_rate_hh_labour, 0.01, 1e-3);
+	 CU_ASSERT_DOUBLE_EQUAL(policy_announcement_message->tax_rate_corporate, 0.01, 1e-3);
+    FINISH_POLICY_ANNOUNCEMENT_MESSAGE_LOOP
+    
+	CU_ASSERT_EQUAL(SUBSIDY_FLAG, 1);
+
     /************* At end of unit test, free the agent **************/
     unittest_free_Government_agent();
     /************* At end of unit tests, free all Messages **********/
