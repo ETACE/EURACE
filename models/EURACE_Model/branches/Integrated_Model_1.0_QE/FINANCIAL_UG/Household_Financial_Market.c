@@ -160,7 +160,7 @@ int Household_update_its_portfolio()
      info=get_next_order_status_message(info);   
   }
   
-  // #ifdef _DEBUG_MODE       
+   #ifdef _DEBUG_MODE       
    if (PRINT_DEBUG_FILE_EXP1)
     {                       
         filename = malloc(40*sizeof(char));
@@ -171,7 +171,7 @@ int Household_update_its_portfolio()
         fclose(file1);
         free(filename);
     }                
-   // #endif
+    #endif
   
   if (PRINT_DEBUG) printf("\n\t PAYMENT_ACCOUNT: %f",PAYMENT_ACCOUNT);
     
