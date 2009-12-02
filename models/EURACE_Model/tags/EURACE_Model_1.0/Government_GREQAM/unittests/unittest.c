@@ -7,7 +7,8 @@
 #include <CUnit/Basic.h>
 
 /*************************** unittest prototypes ***************************/
-void unittest_Government_send_policy_announcements();
+void unittest1_Government_send_policy_announcements();
+void unittest2_Government_send_policy_announcements();
 void unittest_Government_read_tax_payments();
 void unittest1_Government_read_unemployment_benefit_notifications();
 void unittest2_Government_read_unemployment_benefit_notifications();
@@ -60,7 +61,8 @@ int main(int argc, char * argv[])
     /* add extra tests using || */
     
     if(
-    	//NULL == CU_add_test(pSuite, "Government_send_policy_announcements", unittest_Government_send_policy_announcements) ||
+    	NULL == CU_add_test(pSuite, "Government_send_policy_announcements Case 1", unittest1_Government_send_policy_announcements) ||
+    	NULL == CU_add_test(pSuite, "Government_send_policy_announcements Case 2", unittest2_Government_send_policy_announcements)) // ||
      	//NULL == CU_add_test(pSuite, "Government_read_tax_payments", unittest_Government_read_tax_payments) ||
     	//NULL == CU_add_test(pSuite, "Government_read_unemployment_benefit_notifications: case 1", unittest1_Government_read_unemployment_benefit_notifications) ||
     	//NULL == CU_add_test(pSuite, "Government_read_unemployment_benefit_notifications: case 2", unittest2_Government_read_unemployment_benefit_notifications) ||
@@ -69,7 +71,7 @@ int main(int argc, char * argv[])
 
     	//NULL == CU_add_test(pSuite, "Government_budget_accounting", unittest_Government_budget_accounting))
 		//NULL == CU_add_test(pSuite, "Government_send_account_update", unittest_Government_send_account_update))
-		NULL == CU_add_test(pSuite, "Government_read_data_from_Eurostat", unittest_Government_read_data_from_Eurostat))
+		//NULL == CU_add_test(pSuite, "Government_read_data_from_Eurostat", unittest_Government_read_data_from_Eurostat))
 
 		//NULL == CU_add_test(pSuite, "Government_set_policy", unittest_Government_set_policy))
 		//NULL == CU_add_test(pSuite, "Government_yearly_resetting", unittest_Government_yearly_resetting))
