@@ -1,0 +1,2843 @@
+\documentclass[a4paper,11pt]{article}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{euscript}
+\usepackage{boxedminipage}
+\usepackage{lscape}
+\usepackage{minitoc}
+\usepackage{epsfig,psfrag,graphicx,verbatim}
+\usepackage{natbib}
+\usepackage{booktabs, longtable}
+\usepackage{url}
+\usepackage{makeidx}
+
+%% Define a new 'code' style for the url package that will use a sans serif font.
+\makeatletter
+\def\url@codestyle{%
+  \@ifundefined{selectfont}{\def\UrlFont{\sf}}{\def\UrlFont{\sffamily}}}
+\makeatother
+%% Now actually use the newly defined style.
+\urlstyle{code}
+
+\vfuzz2pt % Don't report over-full v-boxes if over-edge is small
+\hfuzz2pt % Don't report over-full h-boxes if over-edge is small
+\setlength{\oddsidemargin}{0cm}
+\setlength{\evensidemargin}{0cm}
+\setlength{\textwidth}{16cm}
+\setlength{\textheight}{23cm}
+\title{Eurace Reference Manual}
+\author{Author names to add}
+\date{\today}
+
+\makeindex
+
+\begin{document}
+\maketitle
+\tableofcontents
+\clearpage
+
+\section{Eurace FLAME Implementation}
+
+
+\clearpage
+\subsection{Firm}
+
+\begin{landscape}
+\begin{longtable}[H!]{ll}
+\caption{{\bfseries List of memory variables for Firm agent.}}
+\label{Table: Firm Memory}\\
+\toprule 
+\bfseries Name & \bfseries Description \\ \hline 
+\midrule
+\endfirsthead
+\multicolumn{2}{c}%
+{{\bfseries \tablename\ \thetable{} -- continued from previous page}} \\
+\toprule
+\bfseries Name & \bfseries Description \\ \hline 
+\midrule
+\endhead
+\multicolumn{2}{r}{{\emph{Continued on next page}}} \\
+\endfoot
+\bottomrule
+\endlastfoot
+\midrule
+\url{int} \url{id} \index{\url{id}} & \parbox{10cm}{Agent ID.} \\
+\midrule
+\url{int} \url{region_id} \index{\url{region_id}} & \parbox{10cm}{Region ID to which the agent is associated.} \\
+\midrule
+\url{int} \url{gov_id} \index{\url{gov_id}} & \parbox{10cm}{Government  to which the agent is associated.} \\
+\midrule
+\url{int} \url{day_of_month_to_act} \index{\url{day_of_month_to_act}} & \parbox{10cm}{Activation day.} \\
+\midrule
+\url{int} \url{last_day_of_month_to_act} \index{\url{last_day_of_month_to_act}} & \parbox{10cm}{One day before the activation day.} \\
+\midrule
+\url{double} \url{payment_account} \index{\url{payment_account}} & \parbox{10cm}{Current account value.} \\
+\midrule
+\url{int} \url{bank_id} \index{\url{bank_id}} & \parbox{10cm}{Bank ID at which the agent maintains its payment account.} \\
+\midrule
+\url{int} \url{partition_id} \index{\url{partition_id}} & \parbox{10cm}{Partition ID used for parallelization.} \\
+\midrule
+\url{double} \url{cpi} \index{\url{cpi}} & \parbox{10cm}{This is the CPI in firm memory, used in the evaluation of the inventory stock.} \\
+\midrule
+\url{double} \url{mean_wage} \index{\url{mean_wage}} & \parbox{10cm}{Average wage paid by a firm} \\
+\midrule
+\url{double} \url{needed_capital_stock} \index{\url{needed_capital_stock}} & \parbox{10cm}{The overall capital stock a firm wants to have} \\
+\midrule
+\url{double} \url{actual_cap_price} \index{\url{actual_cap_price}} & \parbox{10cm}{Price of the latest capital good} \\
+\midrule
+\url{double} \url{mean_specific_skills} \index{\url{mean_specific_skills}} & \parbox{10cm}{Average specific skills of the workforce} \\
+\midrule
+\url{double} \url{planned_production_quantity} \index{\url{planned_production_quantity}} & \parbox{10cm}{Planned production quantity, has a value on production day, but is reset on other days.} \\
+\midrule
+\url{double} \url{production_quantity} \index{\url{production_quantity}} & \parbox{10cm}{Actual production quantity, has a value on production day, but is reset on other days.} \\
+\midrule
+\url{double} \url{planned_output} \index{\url{planned_output}} & \parbox{10cm}{Planned output is the same as planned production quantity, but retains its value during the month.} \\
+\midrule
+\url{double} \url{output} \index{\url{output}} & \parbox{10cm}{Actual output is the same as production quantity, but retains its value during the month.} \\
+\midrule
+\url{double} \url{unit_costs} \index{\url{unit_costs}} & \parbox{10cm}{Cost per unit of the consumption good} \\
+\midrule
+\url{double} \url{total_supply} \index{\url{total_supply}} & \parbox{10cm}{The sum of local inventory and produced output gives the total supplied quantity} \\
+\midrule
+\url{double} \url{production_costs} \index{\url{production_costs}} & \parbox{10cm}{Actual production costs, labor and capital} \\
+\midrule
+\url{double} \url{revenue_per_day} \index{\url{revenue_per_day}} & \parbox{10cm}{Daily revenue} \\
+\midrule
+\url{estimators_linear_regression_array} \url{linear_regression_estimators} \index{\url{linear_regression_estimators}} & \parbox{10cm}{Holds the estimators for the linear regression model} \\
+\midrule
+\url{double} \url{technological_frontier} \index{\url{technological_frontier}} & \parbox{10cm}{Best available technology in the economy} \\
+\midrule
+\url{double} \url{cum_revenue} \index{\url{cum_revenue}} & \parbox{10cm}{Monthly revenue} \\
+\midrule
+\url{sales_statistics_array} \url{malls_sales_statistics} \index{\url{malls_sales_statistics}} & \parbox{10cm}{Sales of the last ten months} \\
+\midrule
+\url{double} \url{quality} \index{\url{quality}} & \parbox{10cm}{Quality of the consumption good} \\
+\midrule
+\url{double} \url{price} \index{\url{price}} & \parbox{10cm}{Price of the consumption good} \\
+\midrule
+\url{double} \url{price_last_month} \index{\url{price_last_month}} & \parbox{10cm}{Price of the consumption good in the last month} \\
+\midrule
+\url{double} \url{demand_capital_stock} \index{\url{demand_capital_stock}} & \parbox{10cm}{Demand for capital goods} \\
+\midrule
+\url{double} \url{planned_production_costs} \index{\url{planned_production_costs}} & \parbox{10cm}{ Planned production costs} \\
+\midrule
+\url{double} \url{adaption_production_volume_due_to_insufficient_finances} \index{\url{adaption_production_volume_due_to_insufficient_finances}} & \parbox{10cm}{Percentage of production by which the quantity is reduced} \\
+\midrule
+\url{double} \url{fraction_reserved_for_delayed_payments} \index{\url{fraction_reserved_for_delayed_payments}} & \parbox{10cm}{} \\
+\midrule
+\url{sold_quantities_per_mall_array} \url{sold_quantities} \index{\url{sold_quantities}} & \parbox{10cm}{Sold quantities in the different malls} \\
+\midrule
+\url{double} \url{total_sold_quantity} \index{\url{total_sold_quantity}} & \parbox{10cm}{Daily sum of sold quantities in all malls. The sold quantity of one firm in all malls.} \\
+\midrule
+\url{double} \url{cum_total_sold_quantity} \index{\url{cum_total_sold_quantity}} & \parbox{10cm}{Monthly sum of sold quantities in all malls. The monthly sold quantity of one firm in all malls.} \\
+\midrule
+\url{double} \url{sold_quantity_in_calendar_month} \index{\url{sold_quantity_in_calendar_month}} & \parbox{10cm}{Monthly sum of sold quantities in all malls. The quantity sold in one calendar month.} \\
+\midrule
+\url{delivery_volume_per_mall_array} \url{delivery_volume} \index{\url{delivery_volume}} & \parbox{10cm}{Delivery volume for each mall} \\
+\midrule
+\url{delivery_volume_per_mall_array} \url{planned_delivery_volume} \index{\url{planned_delivery_volume}} & \parbox{10cm}{Planned delivery volume for each  mall} \\
+\midrule
+\url{mall_info_array} \url{current_mall_stocks} \index{\url{current_mall_stocks}} & \parbox{10cm}{Current stock in each mall} \\
+\midrule
+\url{double_array} \url{last_planned_production_quantities} \index{\url{last_planned_production_quantities}} & \parbox{10cm}{Array of the planned production quantities in the past} \\
+\midrule
+\url{double} \url{total_external_financing_obtained} \index{\url{total_external_financing_obtained}} & \parbox{10cm}{} \\
+\midrule
+\url{double} \url{capital_costs} \index{\url{capital_costs}} & \parbox{10cm}{} \\
+\midrule
+\url{double} \url{labour_costs} \index{\url{labour_costs}} & \parbox{10cm}{} \\
+\midrule
+\url{financing_capital_array} \url{capital_financing} \index{\url{capital_financing}} & \parbox{10cm}{} \\
+\midrule
+\url{double} \url{financial_resources_for_production} \index{\url{financial_resources_for_production}} & \parbox{10cm}{} \\
+\midrule
+\url{double} \url{planned_value_capital_stock} \index{\url{planned_value_capital_stock}} & \parbox{10cm}{} \\
+\midrule
+\url{double} \url{total_units_local_inventory} \index{\url{total_units_local_inventory}} & \parbox{10cm}{} \\
+\midrule
+\url{double} \url{calc_capital_costs} \index{\url{calc_capital_costs}} & \parbox{10cm}{Calculative capital costs} \\
+\midrule
+\url{double} \url{calc_production_costs} \index{\url{calc_production_costs}} & \parbox{10cm}{Calculative production costs} \\
+\midrule
+\url{double} \url{firm_productivity} \index{\url{firm_productivity}} & \parbox{10cm}{min of technology and mean\_specific\_skills} \\
+\midrule
+\url{double} \url{firm_productivity_last_year} \index{\url{firm_productivity_last_year}} & \parbox{10cm}{} \\
+\midrule
+\url{double} \url{firm_productivity_progress} \index{\url{firm_productivity_progress}} & \parbox{10cm}{} \\
+\midrule
+\url{potential_lender_array} \url{set_of_lenders} \index{\url{set_of_lenders}} & \parbox{10cm}{Array of structs (potential lender) holding names of (found) active banks.} \\
+\midrule
+\url{int} \url{number_of_banks_asked} \index{\url{number_of_banks_asked}} & \parbox{10cm}{Number of banks where the firm has asked for loans.} \\
+\midrule
+\url{double} \url{ebit} \index{\url{ebit}} & \parbox{10cm}{Earnings-before-interest-and-taxes: total revenue - sales\_costs} \\
+\midrule
+\url{double} \url{earnings} \index{\url{earnings}} & \parbox{10cm}{Earnings after interest payments (= ebit - interest)} \\
+\midrule
+\url{double} \url{tax_rate_corporate} \index{\url{tax_rate_corporate}} & \parbox{10cm}{Tax rate on corporate profits (kept in memory)} \\
+\midrule
+\url{double} \url{tax_rate_vat} \index{\url{tax_rate_vat}} & \parbox{10cm}{VAT tax rate} \\
+\midrule
+\url{double} \url{tax_payment} \index{\url{tax_payment}} & \parbox{10cm}{Tax payment over earnings after interest payments (tax\_corporate*earnings)} \\
+\midrule
+\url{double} \url{net_earnings} \index{\url{net_earnings}} & \parbox{10cm}{Net earnings after tax payments (= ebit - interest - tax)} \\
+\midrule
+\url{double} \url{previous_net_earnings} \index{\url{previous_net_earnings}} & \parbox{10cm}{Net earnings from previous production period} \\
+\midrule
+\url{double} \url{total_interest_payment} \index{\url{total_interest_payment}} & \parbox{10cm}{Total interest payments on outstanding debts} \\
+\midrule
+\url{double} \url{total_debt_installment_payment} \index{\url{total_debt_installment_payment}} & \parbox{10cm}{Total debt installment payments on outstanding debts} \\
+\midrule
+\url{double} \url{total_dividend_payment} \index{\url{total_dividend_payment}} & \parbox{10cm}{Total dividend payment} \\
+\midrule
+\url{double} \url{current_share_price} \index{\url{current_share_price}} & \parbox{10cm}{Current share price on the market} \\
+\midrule
+\url{double} \url{previous_dividend_per_share} \index{\url{previous_dividend_per_share}} & \parbox{10cm}{Dividend-per-share ratio (previous production cycle)} \\
+\midrule
+\url{double} \url{current_dividend_per_share} \index{\url{current_dividend_per_share}} & \parbox{10cm}{Dividend-per-share ratio} \\
+\midrule
+\url{double} \url{previous_earnings_per_share} \index{\url{previous_earnings_per_share}} & \parbox{10cm}{Earnings-per-Share ratio (previous production cycle)} \\
+\midrule
+\url{double} \url{current_earnings_per_share} \index{\url{current_earnings_per_share}} & \parbox{10cm}{Earnings-per-Share ratio} \\
+\midrule
+\url{double} \url{previous_dividend_per_earnings} \index{\url{previous_dividend_per_earnings}} & \parbox{10cm}{Dividend-to-Earnings ratio (previous production cycle)} \\
+\midrule
+\url{double} \url{current_dividend_per_earnings} \index{\url{current_dividend_per_earnings}} & \parbox{10cm}{Dividend-to-Earnings ratio} \\
+\midrule
+\url{double} \url{debt_earnings_ratio} \index{\url{debt_earnings_ratio}} & \parbox{10cm}{Debt-to-Earnings ratio} \\
+\midrule
+\url{double} \url{debt_equity_ratio} \index{\url{debt_equity_ratio}} & \parbox{10cm}{Debt-to-Equity ratio} \\
+\midrule
+\url{double} \url{price_earnings_ratio} \index{\url{price_earnings_ratio}} & \parbox{10cm}{Price-to-Earnings ratio} \\
+\midrule
+\url{double} \url{retained_earnings_ratio} \index{\url{retained_earnings_ratio}} & \parbox{10cm}{Retained earnings-to-Earnings ratio} \\
+\midrule
+\url{double} \url{earnings_per_share_ratio_growth} \index{\url{earnings_per_share_ratio_growth}} & \parbox{10cm}{Target growth of the Earnings-per-Share ratio} \\
+\midrule
+\url{double} \url{critical_price_earnings_ratio} \index{\url{critical_price_earnings_ratio}} & \parbox{10cm}{Critical (target) value for the Price-Earnings ratio (can be set by the firm)} \\
+\midrule
+\url{double} \url{critical_earnings_per_share_ratio} \index{\url{critical_earnings_per_share_ratio}} & \parbox{10cm}{Critical (target) value for the Earnings-per-Share ratio (derived from the growth level)} \\
+\midrule
+\url{debt_item_array} \url{loans} \index{\url{loans}} & \parbox{10cm}{Array of structs holding all loans of the firm} \\
+\midrule
+\url{double} \url{total_debt} \index{\url{total_debt}} & \parbox{10cm}{Total value of all loans outstanding} \\
+\midrule
+\url{double} \url{total_value_local_inventory} \index{\url{total_value_local_inventory}} & \parbox{10cm}{Total value of all local inventory stocks held at malls} \\
+\midrule
+\url{double} \url{total_units_capital_stock} \index{\url{total_units_capital_stock}} & \parbox{10cm}{Units of capital stock} \\
+\midrule
+\url{double} \url{total_value_capital_stock} \index{\url{total_value_capital_stock}} & \parbox{10cm}{Value of the capital stock} \\
+\midrule
+\url{double} \url{total_capital_depreciation_value} \index{\url{total_capital_depreciation_value}} & \parbox{10cm}{Sum over all units of capital of the depreciation value} \\
+\midrule
+\url{double} \url{total_capital_depreciation_units} \index{\url{total_capital_depreciation_units}} & \parbox{10cm}{Sum over all units of capital of the depreciation in units} \\
+\midrule
+\url{double} \url{total_assets} \index{\url{total_assets}} & \parbox{10cm}{Value of total assets} \\
+\midrule
+\url{double} \url{equity} \index{\url{equity}} & \parbox{10cm}{equity = total assets - total liabilities} \\
+\midrule
+\url{double} \url{production_liquidity_needs} \index{\url{production_liquidity_needs}} & \parbox{10cm}{Production liquidity needs are production costs (labour costs and investments)} \\
+\midrule
+\url{double} \url{financial_liquidity_needs} \index{\url{financial_liquidity_needs}} & \parbox{10cm}{Financial liquidity needs are prior financial commitments (interests, installments, taxes)} \\
+\midrule
+\url{double} \url{total_financial_needs} \index{\url{total_financial_needs}} & \parbox{10cm}{Total financial needs = Production liquidity needs + Financial liquidity needs + dividends} \\
+\midrule
+\url{double} \url{external_financial_needs} \index{\url{external_financial_needs}} & \parbox{10cm}{External financing} \\
+\midrule
+\url{double} \url{earnings_per_share} \index{\url{earnings_per_share}} & \parbox{10cm}{} \\
+\midrule
+\url{double} \url{total_payments} \index{\url{total_payments}} & \parbox{10cm}{} \\
+\midrule
+\url{int} \url{previous_shares_outstanding} \index{\url{previous_shares_outstanding}} & \parbox{10cm}{} \\
+\midrule
+\url{double} \url{total_income} \index{\url{total_income}} & \parbox{10cm}{Total monthly income (revenues, new bank loans, new share issues). Used for the balance sheet accounting.} \\
+\midrule
+\url{double} \url{total_liabilities} \index{\url{total_liabilities}} & \parbox{10cm}{} \\
+\midrule
+\url{double} \url{total_expenses} \index{\url{total_expenses}} & \parbox{10cm}{} \\
+\midrule
+\url{double} \url{earnings_payout} \index{\url{earnings_payout}} & \parbox{10cm}{} \\
+\midrule
+\url{int} \url{current_shares_outstanding} \index{\url{current_shares_outstanding}} & \parbox{10cm}{} \\
+\midrule
+\url{Stock} \url{stock} \index{\url{stock}} & \parbox{10cm}{} \\
+\midrule
+\url{employee_array} \url{employees} \index{\url{employees}} & \parbox{10cm}{Used to store the data-type Employee} \\
+\midrule
+\url{double} \url{wage_offer} \index{\url{wage_offer}} & \parbox{10cm}{The basic wage offer paid per unit of specific skills} \\
+\midrule
+\url{double} \url{technology} \index{\url{technology}} & \parbox{10cm}{Average technology/productivity of the capital} \\
+\midrule
+\url{int} \url{no_employees} \index{\url{no_employees}} & \parbox{10cm}{Number of employees} \\
+\midrule
+\url{int} \url{no_employees_skill_1} \index{\url{no_employees_skill_1}} & \parbox{10cm}{Number of employees with general skills 1} \\
+\midrule
+\url{int} \url{no_employees_skill_2} \index{\url{no_employees_skill_2}} & \parbox{10cm}{Number of employees with general skills 2} \\
+\midrule
+\url{int} \url{no_employees_skill_3} \index{\url{no_employees_skill_3}} & \parbox{10cm}{Number of employees with general skills 3} \\
+\midrule
+\url{int} \url{no_employees_skill_4} \index{\url{no_employees_skill_4}} & \parbox{10cm}{Number of employees with general skills 4} \\
+\midrule
+\url{int} \url{no_employees_skill_5} \index{\url{no_employees_skill_5}} & \parbox{10cm}{Number of employees with general skills 5} \\
+\midrule
+\url{int} \url{vacancies} \index{\url{vacancies}} & \parbox{10cm}{Number of vacancies} \\
+\midrule
+\url{double} \url{average_g_skill} \index{\url{average_g_skill}} & \parbox{10cm}{Average general skills of the workforce} \\
+\midrule
+\url{double} \url{average_s_skill_of_1} \index{\url{average_s_skill_of_1}} & \parbox{10cm}{Average specific skills of employees with general skills 1} \\
+\midrule
+\url{double} \url{average_s_skill_of_2} \index{\url{average_s_skill_of_2}} & \parbox{10cm}{Average specific skills of employees with general skills 2} \\
+\midrule
+\url{double} \url{average_s_skill_of_3} \index{\url{average_s_skill_of_3}} & \parbox{10cm}{Average specific skills of employees with general skills 3} \\
+\midrule
+\url{double} \url{average_s_skill_of_4} \index{\url{average_s_skill_of_4}} & \parbox{10cm}{Average specific skills of employees with general skills 4} \\
+\midrule
+\url{double} \url{average_s_skill_of_5} \index{\url{average_s_skill_of_5}} & \parbox{10cm}{Average specific skills of employees with general skills 5} \\
+\midrule
+\url{double} \url{wage_offer_for_skill_1} \index{\url{wage_offer_for_skill_1}} & \parbox{10cm}{Wage offer for workers with skill level 1} \\
+\midrule
+\url{double} \url{wage_offer_for_skill_2} \index{\url{wage_offer_for_skill_2}} & \parbox{10cm}{Wage offer for workers with skill level 2} \\
+\midrule
+\url{double} \url{wage_offer_for_skill_3} \index{\url{wage_offer_for_skill_3}} & \parbox{10cm}{Wage offer for workers with skill level 3} \\
+\midrule
+\url{double} \url{wage_offer_for_skill_4} \index{\url{wage_offer_for_skill_4}} & \parbox{10cm}{Wage offer for workers with skill level 4} \\
+\midrule
+\url{double} \url{wage_offer_for_skill_5} \index{\url{wage_offer_for_skill_5}} & \parbox{10cm}{Wage offer for workers with skill level 5} \\
+\midrule
+\url{int} \url{employees_needed} \index{\url{employees_needed}} & \parbox{10cm}{Number of workers a firm needs for next production} \\
+\midrule
+\url{int} \url{age} \index{\url{age}} & \parbox{10cm}{Age of the firm in months.} \\
+\midrule
+\url{double} \url{transfer_payment} \index{\url{transfer_payment}} & \parbox{10cm}{The transfer payment read from message.} \\
+\midrule
+\url{double} \url{subsidy_pct} \index{\url{subsidy_pct}} & \parbox{10cm}{The subsidy percentage read from message.} \\
+\midrule
+\url{int} \url{active} \index{\url{active}} & \parbox{10cm}{0,1. Flag indicating whether the firm should start production activity.} \\
+\midrule
+\url{int} \url{bankruptcy_idle_counter} \index{\url{bankruptcy_idle_counter}} & \parbox{10cm}{Number of iterations before the bankrupt firm becomes active again and resumes production activity.} \\
+\midrule
+\url{int} \url{bankruptcy_state} \index{\url{bankruptcy_state}} & \parbox{10cm}{0,1. Flag indicating whether the firm is in bankruptcy.} \\
+\midrule
+\url{int} \url{bankruptcy_insolvency_state} \index{\url{bankruptcy_insolvency_state}} & \parbox{10cm}{0,1. Flag indicating whether the firm is in bankruptcy case: insolvency.} \\
+\midrule
+\url{int} \url{bankruptcy_illiquidity_state} \index{\url{bankruptcy_illiquidity_state}} & \parbox{10cm}{0,1. Flag indicating whether the firm is in bankruptcy case: illiquidity.} \\
+\midrule
+\url{int} \url{financial_crisis_state} \index{\url{financial_crisis_state}} & \parbox{10cm}{0,1. Flag indicating whether the firm is in a financial crisis state.} \\
+\midrule
+\url{double} \url{subsidy_payment} \index{\url{subsidy_payment}} & \parbox{10cm}{} \\
+\end{longtable}
+\end{landscape}
+
+\begin{landscape}
+\begin{longtable}[H!]{ll}
+\caption{{\bfseries List of functions for Firm agent.}}
+\label{Table: Firm Functions}\\
+\toprule 
+\bfseries Name & \bfseries Description \\ \hline 
+\midrule
+\endfirsthead
+\multicolumn{2}{c}%
+{{\bfseries \tablename\ \thetable{} -- continued from previous page}} \\
+\toprule
+\bfseries Name & \bfseries Description \\ \hline 
+\midrule
+\endhead
+\multicolumn{2}{r}{{\emph{Continued on next page}}} \\
+\endfoot
+\bottomrule
+\endlastfoot
+\midrule
+\url{Firm_calc_production_quantity} \index{\url{Firm_calc_production_quantity}} & \parbox{10cm}{Firm calculate the intended production volume depending on the current stocks in the malls} \\
+\midrule
+\url{Firm_set_quantities_zero} \index{\url{Firm_set_quantities_zero}} & \parbox{10cm}{Dummy: no production on not\_day\_of\_month\_to\_act} \\
+\midrule
+\url{Firm_calc_input_demands} \index{\url{Firm_calc_input_demands}} & \parbox{10cm}{Firms calculate the labor demand and the demand for capital goods} \\
+\midrule
+\url{Firm_calc_production_quantity_2} \index{\url{Firm_calc_production_quantity_2}} & \parbox{10cm}{Firms iterate over the planned production quantity decreasing it incrementally,\&\#xd;\&\#xd;
+ such that the corresponding labor demand and capital demand can be financed by \&\#xd;\&\#xd;
+ the actually obtained financial resources, AFTER all prior financial commitments have been paid.} \\
+\midrule
+\url{Firm_send_capital_demand} \index{\url{Firm_send_capital_demand}} & \parbox{10cm}{Firm sends demand for capital to the capital goods market.} \\
+\midrule
+\url{Firm_receive_capital_goods} \index{\url{Firm_receive_capital_goods}} & \parbox{10cm}{Firm sends demand for capital to the capital goods market.} \\
+\midrule
+\url{Firm_execute_production} \index{\url{Firm_execute_production}} & \parbox{10cm}{Firm sends demand for capital to the capital goods market.} \\
+\midrule
+\url{Firm_calc_pay_costs} \index{\url{Firm_calc_pay_costs}} & \parbox{10cm}{In this function the firm receives the purchased investment\&\#xd;\&\#xd;
+ goods and pays the goods and   the wage bill. Additionally, the \&\#xd;\&\#xd;
+ new mean wage and the new average specific skill level is computed.} \\
+\midrule
+\url{Firm_send_goods_to_mall} \index{\url{Firm_send_goods_to_mall}} & \parbox{10cm}{Here the firms send the produced goods to the malls. \&\#xd;\&\#xd;
+If the realized output is less than the intended one, then \&\#xd;\&\#xd;
+the malls are only delivered with a proportional \&\#xd;\&\#xd;
+share of their planned delivery volumes.} \\
+\midrule
+\url{Firm_calc_revenue} \index{\url{Firm_calc_revenue}} & \parbox{10cm}{Here the firms calc the revenues and profits and then \&\#xd;\&\#xd;
+distribute the dividends to households.} \\
+\midrule
+\url{idle} \index{\url{idle}} & \parbox{10cm}{Firm does nothing} \\
+\midrule
+\url{Firm_compute_sales_statistics} \index{\url{Firm_compute_sales_statistics}} & \parbox{10cm}{} \\
+\midrule
+\url{Firm_update_specific_skills_of_workers} \index{\url{Firm_update_specific_skills_of_workers}} & \parbox{10cm}{Because the specific skills of workers have changed the \&\#xd;\&\#xd;
+firms update the specific skill levels of the workers.} \\
+\midrule
+\url{idle} \index{\url{idle}} & \parbox{10cm}{} \\
+\midrule
+\url{Firm_ask_loan} \index{\url{Firm_ask_loan}} & \parbox{10cm}{Firm contacts banks asking for a loan and communicating its balance sheet.} \\
+\midrule
+\url{Firm_get_loan} \index{\url{Firm_get_loan}} & \parbox{10cm}{Firm gets the money from banks, adds the loan to its liabilities and register all the loan features (VaR, interest rate).} \\
+\midrule
+\url{Firm_compute_financial_payments} \index{\url{Firm_compute_financial_payments}} & \parbox{10cm}{Function to compute the prior financial commitments of the firm: interests, installments, taxes.} \\
+\midrule
+\url{Firm_compute_income_statement} \index{\url{Firm_compute_income_statement}} & \parbox{10cm}{Function to compute the income statement of the firm.} \\
+\midrule
+\url{Firm_compute_dividends} \index{\url{Firm_compute_dividends}} & \parbox{10cm}{Function to compute the total dividend payout of the firm.} \\
+\midrule
+\url{Firm_compute_total_financial_payments} \index{\url{Firm_compute_total_financial_payments}} & \parbox{10cm}{Function to compute the total financial payments of the firm: interest, installments, taxes, production costs, dividends.} \\
+\midrule
+\url{Firm_compute_balance_sheet} \index{\url{Firm_compute_balance_sheet}} & \parbox{10cm}{Function to compute the balance sheet of the firm.} \\
+\midrule
+\url{Firm_set_bankruptcy_insolvency} \index{\url{Firm_set_bankruptcy_insolvency}} & \parbox{10cm}{Function to set the type of bankruptcy to `insolvency' and go to end\_Firm state. 
+Also sets the active flag to 0 and starts the bankruptcy idle counter. 
+} \\
+\midrule
+\url{idle} \index{\url{idle}} & \parbox{10cm}{} \\
+\midrule
+\url{Firm_compute_total_liquidity_needs} \index{\url{Firm_compute_total_liquidity_needs}} & \parbox{10cm}{Function to compute the total liquidity needs for executing payments.} \\
+\midrule
+\url{Firm_compute_and_send_stock_orders} \index{\url{Firm_compute_and_send_stock_orders}} & \parbox{10cm}{Function to send order\_messages to the clearinghouse (share emission or repurchase).} \\
+\midrule
+\url{Firm_read_stock_transactions} \index{\url{Firm_read_stock_transactions}} & \parbox{10cm}{Function to read order\_status messages from the clearinghouse, and update the firm's trading account.} \\
+\midrule
+\url{Firm_check_financial_and_bankruptcy_state} \index{\url{Firm_check_financial_and_bankruptcy_state}} & \parbox{10cm}{Function that checks the balance sheet and sets flags for the bankruptcy- or financial crisis state.} \\
+\midrule
+\url{Firm_set_bankruptcy_illiquidity} \index{\url{Firm_set_bankruptcy_illiquidity}} & \parbox{10cm}{unction to set the type of bankruptcy to `illiquidity' and then go to end\_Firm state. 
+Also sets the active flag to 0 and starts the bankruptcy idle counter.} \\
+\midrule
+\url{Firm_in_financial_crisis} \index{\url{Firm_in_financial_crisis}} & \parbox{10cm}{Function to resolve the financial crisis by reducing dividends.} \\
+\midrule
+\url{Firm_not_in_bankruptcy} \index{\url{Firm_not_in_bankruptcy}} & \parbox{10cm}{Idle function to transit from state Firm\_bankruptcy\_checked to state Firm\_checks\_financial\_crisis.} \\
+\midrule
+\url{idle} \index{\url{idle}} & \parbox{10cm}{} \\
+\midrule
+\url{idle} \index{\url{idle}} & \parbox{10cm}{} \\
+\midrule
+\url{idle} \index{\url{idle}} & \parbox{10cm}{} \\
+\midrule
+\url{Firm_execute_financial_payments} \index{\url{Firm_execute_financial_payments}} & \parbox{10cm}{Function to execute financial payments.} \\
+\midrule
+\url{Firm_send_subsidy_notification} \index{\url{Firm_send_subsidy_notification}} & \parbox{10cm}{Function to send a subsidy\_notification\_message to the government.} \\
+\midrule
+\url{Firm_send_transfer_notification} \index{\url{Firm_send_transfer_notification}} & \parbox{10cm}{Function to send a transfer\_notification\_message to the government.} \\
+\midrule
+\url{Firm_bankruptcy_insolvency_procedure} \index{\url{Firm_bankruptcy_insolvency_procedure}} & \parbox{10cm}{Function to process the bankruptcy condition in case of insolvency.} \\
+\midrule
+\url{Firm_bankruptcy_illiquidity_procedure} \index{\url{Firm_bankruptcy_illiquidity_procedure}} & \parbox{10cm}{Function to process the bankruptcy condition in case of illiquidity.} \\
+\midrule
+\url{Firm_bankruptcy_idle_counter} \index{\url{Firm_bankruptcy_idle_counter}} & \parbox{10cm}{Function to decrease the bankruptcy\_idle\_counter by 1. 
+Note that a negative count means the financing condition has not been yet satisfied at the end of the default idle period.} \\
+\midrule
+\url{idle} \index{\url{idle}} & \parbox{10cm}{} \\
+\midrule
+\url{Firm_compute_and_send_stock_orders} \index{\url{Firm_compute_and_send_stock_orders}} & \parbox{10cm}{Function to send order\_messages to the clearinghouse (new share emission).} \\
+\midrule
+\url{Firm_read_stock_transactions} \index{\url{Firm_read_stock_transactions}} & \parbox{10cm}{Function to read order\_status messages from the clearinghouse, and update the firm's trading account.} \\
+\midrule
+\url{Firm_reset_bankruptcy_flags} \index{\url{Firm_reset_bankruptcy_flags}} & \parbox{10cm}{Function to reset the bankruptcy flags when the bankruptcy process has finished.} \\
+\midrule
+\url{idle} \index{\url{idle}} & \parbox{10cm}{} \\
+\midrule
+\url{Firm_send_info} \index{\url{Firm_send_info}} & \parbox{10cm}{} \\
+\midrule
+\url{Firm_send_info} \index{\url{Firm_send_info}} & \parbox{10cm}{} \\
+\midrule
+\url{Firm_receive_stock_info} \index{\url{Firm_receive_stock_info}} & \parbox{10cm}{} \\
+\midrule
+\url{Firm_calculate_specific_skills_and_wage_offer} \index{\url{Firm_calculate_specific_skills_and_wage_offer}} & \parbox{10cm}{} \\
+\midrule
+\url{Firm_send_vacancies} \index{\url{Firm_send_vacancies}} & \parbox{10cm}{If additional workers are needed the firm sends vacancies messages\&\#xd;\&\#xd;\&\#xd;\&\#xd;\&\#xd;\&\#xd;
+ espacially the different wage offers for the different general skill groups} \\
+\midrule
+\url{Firm_send_redundancies} \index{\url{Firm_send_redundancies}} & \parbox{10cm}{If the firm wants to decrease the workforce it sends redundancies} \\
+\midrule
+\url{Firm_idle} \index{\url{Firm_idle}} & \parbox{10cm}{Firm does nothing} \\
+\midrule
+\url{Firm_read_job_applications_send_job_offer_or_rejection} \index{\url{Firm_read_job_applications_send_job_offer_or_rejection}} & \parbox{10cm}{Firm reads the application, ranks the applicants according to \&\#xd;\&\#xd;\&\#xd;\&\#xd;\&\#xd;\&\#xd;
+their general and specific skills and sends as many job offers to the \&\#xd;\&\#xd;\&\#xd;\&\#xd;\&\#xd;\&\#xd;
+first ranked applicants as the firm has vacancies to fill. \&\#xd;\&\#xd;\&\#xd;\&\#xd;\&\#xd;\&\#xd;
+The other applicants are refused.} \\
+\midrule
+\url{Firm_read_job_responses} \index{\url{Firm_read_job_responses}} & \parbox{10cm}{The firm reads the responses to their job offers and updates the number of \&\#xd;\&\#xd;\&\#xd;\&\#xd;\&\#xd;\&\#xd;
+employees and the number of vacancies} \\
+\midrule
+\url{Firm_read_job_quitting} \index{\url{Firm_read_job_quitting}} & \parbox{10cm}{The firm reads quitting messages and updates the number \&\#xd;\&\#xd;\&\#xd;\&\#xd;\&\#xd;\&\#xd;
+of employees and the number of vacancies} \\
+\midrule
+\url{Firm_read_job_quitting} \index{\url{Firm_read_job_quitting}} & \parbox{10cm}{The firm reads quitting messages and updates the number \&\#xd;\&\#xd;\&\#xd;\&\#xd;\&\#xd;\&\#xd;
+of employees and the number of vacancies} \\
+\midrule
+\url{Firm_read_job_quitting} \index{\url{Firm_read_job_quitting}} & \parbox{10cm}{The firm reads quitting messages and updates the number \&\#xd;\&\#xd;\&\#xd;\&\#xd;\&\#xd;\&\#xd;
+of employees and the number of vacancies} \\
+\midrule
+\url{Firm_start_labour_market} \index{\url{Firm_start_labour_market}} & \parbox{10cm}{Dummy function if a firm has to enter the Labor Market \&\#xd;\&\#xd;\&\#xd;\&\#xd;\&\#xd;\&\#xd;
+in the second round after receiving quittings} \\
+\midrule
+\url{Firm_finish_labour_market_first_round} \index{\url{Firm_finish_labour_market_first_round}} & \parbox{10cm}{} \\
+\midrule
+\url{Firm_finish_labour_market_first_round} \index{\url{Firm_finish_labour_market_first_round}} & \parbox{10cm}{} \\
+\midrule
+\url{Firm_update_wage_offer} \index{\url{Firm_update_wage_offer}} & \parbox{10cm}{The firm increases the wage offer if there are vacancies left} \\
+\midrule
+\url{Firm_send_vacancies_2} \index{\url{Firm_send_vacancies_2}} & \parbox{10cm}{If additional workers are needed the firm sends vacancies messages\&\#xd;\&\#xd;\&\#xd;\&\#xd;\&\#xd;\&\#xd;
+ espacially the different wage offers for the different general skill groups} \\
+\midrule
+\url{Firm_read_job_applications_send_job_offer_or_rejection_2} \index{\url{Firm_read_job_applications_send_job_offer_or_rejection_2}} & \parbox{10cm}{Firm reads the application, ranks the applicants according to \&\#xd;\&\#xd;\&\#xd;\&\#xd;\&\#xd;\&\#xd;
+their general and specific skills and sends as many job offers to the \&\#xd;\&\#xd;\&\#xd;\&\#xd;\&\#xd;\&\#xd;
+first ranked applicants as the firm has vacancies to fill. \&\#xd;\&\#xd;\&\#xd;\&\#xd;\&\#xd;\&\#xd;
+The other applicants are refused.} \\
+\midrule
+\url{Firm_read_job_responses_2} \index{\url{Firm_read_job_responses_2}} & \parbox{10cm}{The firm reads the responses to their job offers and updates the number of \&\#xd;\&\#xd;\&\#xd;\&\#xd;\&\#xd;\&\#xd;
+employees and the number of vacancies} \\
+\midrule
+\url{Firm_read_job_quitting_2} \index{\url{Firm_read_job_quitting_2}} & \parbox{10cm}{The firm reads quitting messages and updates the number \&\#xd;\&\#xd;\&\#xd;\&\#xd;\&\#xd;\&\#xd;
+of employees and the number of vacancies} \\
+\midrule
+\url{Firm_read_job_quitting_2} \index{\url{Firm_read_job_quitting_2}} & \parbox{10cm}{The firm reads quitting messages and updates the number \&\#xd;\&\#xd;\&\#xd;\&\#xd;\&\#xd;\&\#xd;
+of employees and the number of vacancies} \\
+\midrule
+\url{Firm_update_wage_offer_2} \index{\url{Firm_update_wage_offer_2}} & \parbox{10cm}{The firm increases the wage offer if there are vacancies left} \\
+\midrule
+\url{Firm_idle} \index{\url{Firm_idle}} & \parbox{10cm}{Firm does nothing} \\
+\midrule
+\url{Firm_compute_mean_wage_specific_skills} \index{\url{Firm_compute_mean_wage_specific_skills}} & \parbox{10cm}{Firm does nothing} \\
+\midrule
+\url{Firm_send_random_redundancies} \index{\url{Firm_send_random_redundancies}} & \parbox{10cm}{Firms fire workers randomly.} \\
+\midrule
+\url{idle} \index{\url{idle}} & \parbox{10cm}{} \\
+\midrule
+\url{Firm_send_id_to_malls} \index{\url{Firm_send_id_to_malls}} & \parbox{10cm}{In this function the firm sends its id to the malls. The malls can set up its data array properly if the population file was built with the cloning procedure. } \\
+\midrule
+\url{Firm_initialize_mall_arrays} \index{\url{Firm_initialize_mall_arrays}} & \parbox{10cm}{In case of cloned population: Firms receive mall ids and set up their memory variables that are related to the malls.} \\
+\midrule
+\url{idle} \index{\url{idle}} & \parbox{10cm}{} \\
+\midrule
+\url{idle} \index{\url{idle}} & \parbox{10cm}{} \\
+\midrule
+\url{Firm_read_policy_announcements} \index{\url{Firm_read_policy_announcements}} & \parbox{10cm}{Function to read the policy\_announcements from Governments.} \\
+\midrule
+\url{Firm_receive_data} \index{\url{Firm_receive_data}} & \parbox{10cm}{Function to read the messages from the eurostat agent.} \\
+\midrule
+\url{idle} \index{\url{idle}} & \parbox{10cm}{Firm does nothing} \\
+\midrule
+\url{Firm_send_data_to_Eurostat} \index{\url{Firm_send_data_to_Eurostat}} & \parbox{10cm}{Function to send a data\_message to the eurostat agent including several micro data.} \\
+\midrule
+\url{idle} \index{\url{idle}} & \parbox{10cm}{Firm does nothing} \\
+\midrule
+\url{Firm_send_payments_to_bank} \index{\url{Firm_send_payments_to_bank}} & \parbox{10cm}{} \\
+\end{longtable}
+\end{landscape}
+
+
+
+\clearpage
+\subsection{Household}
+
+\begin{landscape}
+\begin{longtable}[H!]{ll}
+\caption{{\bfseries List of memory variables for Household agent.}}
+\label{Table: Household Memory}\\
+\toprule 
+\bfseries Name & \bfseries Description \\ \hline 
+\midrule
+\endfirsthead
+\multicolumn{2}{c}%
+{{\bfseries \tablename\ \thetable{} -- continued from previous page}} \\
+\toprule
+\bfseries Name & \bfseries Description \\ \hline 
+\midrule
+\endhead
+\multicolumn{2}{r}{{\emph{Continued on next page}}} \\
+\endfoot
+\bottomrule
+\endlastfoot
+\midrule
+\url{int} \url{id} \index{\url{id}} & \parbox{10cm}{Agent ID.} \\
+\midrule
+\url{int} \url{region_id} \index{\url{region_id}} & \parbox{10cm}{Region ID to which the agent is associated.} \\
+\midrule
+\url{int_array} \url{neighboring_region_ids} \index{\url{neighboring_region_ids}} & \parbox{10cm}{} \\
+\midrule
+\url{int} \url{gov_id} \index{\url{gov_id}} & \parbox{10cm}{Government  to which the agent is associated.} \\
+\midrule
+\url{int} \url{day_of_month_to_act} \index{\url{day_of_month_to_act}} & \parbox{10cm}{Activation day.} \\
+\midrule
+\url{double} \url{payment_account} \index{\url{payment_account}} & \parbox{10cm}{Current account value.} \\
+\midrule
+\url{int} \url{bank_id} \index{\url{bank_id}} & \parbox{10cm}{Bank ID at which the agent maintains its payment account.} \\
+\midrule
+\url{int} \url{partition_id} \index{\url{partition_id}} & \parbox{10cm}{Partition ID used for parallelization.} \\
+\midrule
+\url{double} \url{consumption_budget} \index{\url{consumption_budget}} & \parbox{10cm}{Part of the budget for consumption} \\
+\midrule
+\url{double} \url{consumption_budget_in_month} \index{\url{consumption_budget_in_month}} & \parbox{10cm}{The budget that is available for consumption during the month} \\
+\midrule
+\url{double} \url{mean_income} \index{\url{mean_income}} & \parbox{10cm}{This holds the mean income of the last four periods} \\
+\midrule
+\url{int} \url{week_of_month} \index{\url{week_of_month}} & \parbox{10cm}{Week counter} \\
+\midrule
+\url{double} \url{weekly_budget} \index{\url{weekly_budget}} & \parbox{10cm}{Budget for one week} \\
+\midrule
+\url{int} \url{rationed} \index{\url{rationed}} & \parbox{10cm}{Indicator: 1: desired good is sold out; 0: else} \\
+\midrule
+\url{int} \url{mall_completely_sold_out} \index{\url{mall_completely_sold_out}} & \parbox{10cm}{Indicator: 1: no stocks in the mall, 0: else} \\
+\midrule
+\url{ordered_quantity} \url{order_quantity} \index{\url{order_quantity}} & \parbox{10cm}{The ordered quantity of the desired good} \\
+\midrule
+\url{received_quantities} \url{received_quantity} \index{\url{received_quantity}} & \parbox{10cm}{Received quantity of the desired good } \\
+\midrule
+\url{int} \url{day_of_week_to_act} \index{\url{day_of_week_to_act}} & \parbox{10cm}{Weekly shopping day} \\
+\midrule
+\url{int} \url{day_of_month_receive_income} \index{\url{day_of_month_receive_income}} & \parbox{10cm}{The day when the household receives the wage or unemployment benefit} \\
+\midrule
+\url{double} \url{current_productivity_employer} \index{\url{current_productivity_employer}} & \parbox{10cm}{Actual capital productivity of the employer} \\
+\midrule
+\url{double} \url{current_mean_specific_skills_employer} \index{\url{current_mean_specific_skills_employer}} & \parbox{10cm}{Average specific skills of the workforce of the employer} \\
+\midrule
+\url{double} \url{tax_payment} \index{\url{tax_payment}} & \parbox{10cm}{The total amount of taxes paid by household.} \\
+\midrule
+\url{double} \url{cum_total_dividends} \index{\url{cum_total_dividends}} & \parbox{10cm}{Because dividends are paid daily and taxes monthly, the household has to cumulate dividens} \\
+\midrule
+\url{double} \url{tax_rate_hh_capital} \index{\url{tax_rate_hh_capital}} & \parbox{10cm}{The current tax rates on capital income} \\
+\midrule
+\url{double} \url{tax_rate_hh_labour} \index{\url{tax_rate_hh_labour}} & \parbox{10cm}{The current tax rates on labour income} \\
+\midrule
+\url{double} \url{price_index} \index{\url{price_index}} & \parbox{10cm}{The current mean prices sent by Eurostat} \\
+\midrule
+\url{double} \url{price_index_base_period} \index{\url{price_index_base_period}} & \parbox{10cm}{The mean prices of a base period} \\
+\midrule
+\url{double} \url{commuting_costs_price_level_weight} \index{\url{commuting_costs_price_level_weight}} & \parbox{10cm}{Weight of price level that influences the commuting costs} \\
+\midrule
+\url{double_array} \url{last_income} \index{\url{last_income}} & \parbox{10cm}{} \\
+\midrule
+\url{double} \url{expenditures} \index{\url{expenditures}} & \parbox{10cm}{} \\
+\midrule
+\url{double} \url{received_dividend} \index{\url{received_dividend}} & \parbox{10cm}{} \\
+\midrule
+\url{int} \url{flag_consumption_shifting} \index{\url{flag_consumption_shifting}} & \parbox{10cm}{Indicator variable that shows if the consumer has to shift the consumption day due to selling restrictions on the Finacual market.} \\
+\midrule
+\url{double} \url{excess_weekly_budget} \index{\url{excess_weekly_budget}} & \parbox{10cm}{Auxiliary variable to be used in stategraph condition, excess\_weekly\_budget=weekly\_budget-payment\_account} \\
+\midrule
+\url{double} \url{wealth_income_ratio_actual} \index{\url{wealth_income_ratio_actual}} & \parbox{10cm}{The actual wealth/mean\_income ratio of the household.} \\
+\midrule
+\url{double} \url{wealth_income_ratio_target} \index{\url{wealth_income_ratio_target}} & \parbox{10cm}{Target value of wealth/mean\_income ratio used in the Carrol rule for consumption\_budget decision.} \\
+\midrule
+\url{double} \url{risk_free_rate} \index{\url{risk_free_rate}} & \parbox{10cm}{Remuneration rate sent by Bank} \\
+\midrule
+\url{double} \url{wealth} \index{\url{wealth}} & \parbox{10cm}{} \\
+\midrule
+\url{Belief_array} \url{beliefs} \index{\url{beliefs}} & \parbox{10cm}{} \\
+\midrule
+\url{Order_array} \url{pendingOrders} \index{\url{pendingOrders}} & \parbox{10cm}{} \\
+\midrule
+\url{Asset_array} \url{assetsowned} \index{\url{assetsowned}} & \parbox{10cm}{} \\
+\midrule
+\url{double_array} \url{assetWeights} \index{\url{assetWeights}} & \parbox{10cm}{} \\
+\midrule
+\url{double_array} \url{assetUtilities} \index{\url{assetUtilities}} & \parbox{10cm}{} \\
+\midrule
+\url{double} \url{cash_on_hand} \index{\url{cash_on_hand}} & \parbox{10cm}{} \\
+\midrule
+\url{int} \url{forwardWindow} \index{\url{forwardWindow}} & \parbox{10cm}{} \\
+\midrule
+\url{int} \url{backwardWindow} \index{\url{backwardWindow}} & \parbox{10cm}{} \\
+\midrule
+\url{int} \url{bins} \index{\url{bins}} & \parbox{10cm}{} \\
+\midrule
+\url{double} \url{randomWeight} \index{\url{randomWeight}} & \parbox{10cm}{} \\
+\midrule
+\url{double} \url{fundamentalWeight} \index{\url{fundamentalWeight}} & \parbox{10cm}{} \\
+\midrule
+\url{double} \url{chartistWeight} \index{\url{chartistWeight}} & \parbox{10cm}{} \\
+\midrule
+\url{int} \url{holdingPeriodToForwardW} \index{\url{holdingPeriodToForwardW}} & \parbox{10cm}{} \\
+\midrule
+\url{double} \url{lossaversion} \index{\url{lossaversion}} & \parbox{10cm}{} \\
+\midrule
+\url{double} \url{strategy} \index{\url{strategy}} & \parbox{10cm}{} \\
+\midrule
+\url{double} \url{wage} \index{\url{wage}} & \parbox{10cm}{The wage a household receives} \\
+\midrule
+\url{double} \url{wage_reservation} \index{\url{wage_reservation}} & \parbox{10cm}{Reservation wage: Worker does not accept a wage offer below the reservation wage} \\
+\midrule
+\url{int} \url{general_skill} \index{\url{general_skill}} & \parbox{10cm}{The general skill level (1-5)} \\
+\midrule
+\url{int} \url{on_the_job_search} \index{\url{on_the_job_search}} & \parbox{10cm}{Indicator variable: 1 on the job search; 0 no on the job search} \\
+\midrule
+\url{int} \url{number_applications} \index{\url{number_applications}} & \parbox{10cm}{Number of applications a worker can sent} \\
+\midrule
+\url{double} \url{last_labour_income} \index{\url{last_labour_income}} & \parbox{10cm}{The last labour income received by the worker if the Household is unemployed} \\
+\midrule
+\url{double} \url{specific_skill} \index{\url{specific_skill}} & \parbox{10cm}{The specific skills of a worker} \\
+\midrule
+\url{int} \url{employee_firm_id} \index{\url{employee_firm_id}} & \parbox{10cm}{The id of the employer} \\
+\midrule
+\url{int} \url{employer_region_id} \index{\url{employer_region_id}} & \parbox{10cm}{The region\_id of the employer} \\
+\midrule
+\url{int} \url{day_of_month_receive_benefit} \index{\url{day_of_month_receive_benefit}} & \parbox{10cm}{The day of the month on whivh the household receives its unemployment benefit. Equal to the day on which it became unemployed. This value will change when the household becomes re-employed again by another (or the same) firm, with the exception in case the new firm has the same activation day as the old firm.} \\
+\midrule
+\url{double} \url{unemployment_payment} \index{\url{unemployment_payment}} & \parbox{10cm}{Unemployment benefit in case the household is unemployed.} \\
+\midrule
+\url{double} \url{region_wide_mean_wage} \index{\url{region_wide_mean_wage}} & \parbox{10cm}{Mean wage of the household's region. Used in the computation of unemployment benefits.} \\
+\midrule
+\url{double} \url{unemployment_benefit_pct} \index{\url{unemployment_benefit_pct}} & \parbox{10cm}{Percentage of last earned wage that is received as unemployment benefit, the net replacement rate.} \\
+\midrule
+\url{double} \url{transfer_payment} \index{\url{transfer_payment}} & \parbox{10cm}{Amount of the transfer payment.} \\
+\midrule
+\url{double} \url{subsidy_pct} \index{\url{subsidy_pct}} & \parbox{10cm}{The subsidy percentage read from message.} \\
+\midrule
+\url{double} \url{total_income} \index{\url{total_income}} & \parbox{10cm}{} \\
+\midrule
+\url{double} \url{total_expenses} \index{\url{total_expenses}} & \parbox{10cm}{} \\
+\midrule
+\url{double} \url{total_assets} \index{\url{total_assets}} & \parbox{10cm}{} \\
+\midrule
+\url{double} \url{total_liabilities} \index{\url{total_liabilities}} & \parbox{10cm}{} \\
+\midrule
+\url{double} \url{gov_interest} \index{\url{gov_interest}} & \parbox{10cm}{} \\
+\midrule
+\url{double} \url{stock_sales} \index{\url{stock_sales}} & \parbox{10cm}{} \\
+\midrule
+\url{double} \url{stock_purchases} \index{\url{stock_purchases}} & \parbox{10cm}{} \\
+\midrule
+\url{double} \url{gov_bond_purchases} \index{\url{gov_bond_purchases}} & \parbox{10cm}{} \\
+\midrule
+\url{double} \url{monthly_consumption_expenditure} \index{\url{monthly_consumption_expenditure}} & \parbox{10cm}{} \\
+\midrule
+\url{double} \url{monthly_bond_interest_income} \index{\url{monthly_bond_interest_income}} & \parbox{10cm}{} \\
+\midrule
+\url{double} \url{subsidy_payment} \index{\url{subsidy_payment}} & \parbox{10cm}{} \\
+\midrule
+\url{double} \url{region_mean_wage} \index{\url{region_mean_wage}} & \parbox{10cm}{The mean\_wage in the househol's region. Used in the computation of the unemployment benefits.} \\
+\end{longtable}
+\end{landscape}
+
+\begin{landscape}
+\begin{longtable}[H!]{ll}
+\caption{{\bfseries List of functions for Household agent.}}
+\label{Table: Household Functions}\\
+\toprule 
+\bfseries Name & \bfseries Description \\ \hline 
+\midrule
+\endfirsthead
+\multicolumn{2}{c}%
+{{\bfseries \tablename\ \thetable{} -- continued from previous page}} \\
+\toprule
+\bfseries Name & \bfseries Description \\ \hline 
+\midrule
+\endhead
+\multicolumn{2}{r}{{\emph{Continued on next page}}} \\
+\endfoot
+\bottomrule
+\endlastfoot
+\midrule
+\url{Household_idle} \index{\url{Household_idle}} & \parbox{10cm}{} \\
+\midrule
+\url{Household_rank_and_buy_goods_1} \index{\url{Household_rank_and_buy_goods_1}} & \parbox{10cm}{} \\
+\midrule
+\url{Household_receive_goods_read_rationing} \index{\url{Household_receive_goods_read_rationing}} & \parbox{10cm}{The household gets information about the accepted amount of \&\#xd;\&\#xd;
+goods and, if the mall is completely sold out then the households set the \&\#xd;\&\#xd;
+order and delivery volumes befor the second step to zero.} \\
+\midrule
+\url{Household_set_values_zero} \index{\url{Household_set_values_zero}} & \parbox{10cm}{} \\
+\midrule
+\url{Household_rank_and_buy_goods_2} \index{\url{Household_rank_and_buy_goods_2}} & \parbox{10cm}{Household receives information about the offered range \&\#xd;\&\#xd;
+of goods in the malls. Depending on these infos the household \&\#xd;\&\#xd;
+sends its good request.} \\
+\midrule
+\url{Household_receive_goods_read_rationing_2} \index{\url{Household_receive_goods_read_rationing_2}} & \parbox{10cm}{This function stores in memory the realized consumption if HH was rationed in first round. } \\
+\midrule
+\url{Household_handle_leftover_budget} \index{\url{Household_handle_leftover_budget}} & \parbox{10cm}{This function convert the remaining budget, that is not \&\#xd;\&\#xd;
+spent in both consumtion steps, into the PAYMENT\_ACCOUNT.} \\
+\midrule
+\url{Household_send_account_update} \index{\url{Household_send_account_update}} & \parbox{10cm}{Household sends account update to bank.} \\
+\midrule
+\url{Household_receives_payment_coupons} \index{\url{Household_receives_payment_coupons}} & \parbox{10cm}{} \\
+\midrule
+\url{idle} \index{\url{idle}} & \parbox{10cm}{} \\
+\midrule
+\url{Household_receive_info_interest_from_bank} \index{\url{Household_receive_info_interest_from_bank}} & \parbox{10cm}{} \\
+\midrule
+\url{Household_revises_expected_portfolio} \index{\url{Household_revises_expected_portfolio}} & \parbox{10cm}{the household revise his expected portfolio that is represented by the pendingOrders variable } \\
+\midrule
+\url{Household_select_strategy} \index{\url{Household_select_strategy}} & \parbox{10cm}{} \\
+\midrule
+\url{Household_stock_beliefs_formation} \index{\url{Household_stock_beliefs_formation}} & \parbox{10cm}{} \\
+\midrule
+\url{Household_bond_beliefs_formation} \index{\url{Household_bond_beliefs_formation}} & \parbox{10cm}{} \\
+\midrule
+\url{idle} \index{\url{idle}} & \parbox{10cm}{} \\
+\midrule
+\url{Household_send_orders} \index{\url{Household_send_orders}} & \parbox{10cm}{} \\
+\midrule
+\url{Household_update_its_portfolio} \index{\url{Household_update_its_portfolio}} & \parbox{10cm}{} \\
+\midrule
+\url{Household_read_firing_messages} \index{\url{Household_read_firing_messages}} & \parbox{10cm}{The household checks whether is is fired or not} \\
+\midrule
+\url{Household_idle} \index{\url{Household_idle}} & \parbox{10cm}{Household does nothing} \\
+\midrule
+\url{Household_idle} \index{\url{Household_idle}} & \parbox{10cm}{Household does nothing} \\
+\midrule
+\url{Household_UNEMPLOYED_read_job_vacancies_and_send_applications} \index{\url{Household_UNEMPLOYED_read_job_vacancies_and_send_applications}} & \parbox{10cm}{ Household reads vacancies messages and sends applications} \\
+\midrule
+\url{Household_idle} \index{\url{Household_idle}} & \parbox{10cm}{Household does nothing} \\
+\midrule
+\url{Household_read_job_offers_send_response} \index{\url{Household_read_job_offers_send_response}} & \parbox{10cm}{Household reads the job offers and ranks them \&\#xd;\&\#xd;\&\#xd;\&\#xd;\&\#xd;\&\#xd;
+according to the wage offer} \\
+\midrule
+\url{Household_finish_labour_market} \index{\url{Household_finish_labour_market}} & \parbox{10cm}{} \\
+\midrule
+\url{Household_read_application_rejection_update_wage_reservation} \index{\url{Household_read_application_rejection_update_wage_reservation}} & \parbox{10cm}{Household reads the application rejections and decreases the \&\#xd;\&\#xd;\&\#xd;\&\#xd;\&\#xd;\&\#xd;
+reservation wage} \\
+\midrule
+\url{Household_UNEMPLOYED_read_job_vacancies_and_send_applications_2} \index{\url{Household_UNEMPLOYED_read_job_vacancies_and_send_applications_2}} & \parbox{10cm}{Household reads vacancies messages and sends applications} \\
+\midrule
+\url{Household_read_job_offers_send_response_2} \index{\url{Household_read_job_offers_send_response_2}} & \parbox{10cm}{Household reads the job offers and ranks them \&\#xd;\&\#xd;\&\#xd;\&\#xd;\&\#xd;\&\#xd;
+according to the wage offer} \\
+\midrule
+\url{Household_read_application_rejection_update_wage_reservation_2} \index{\url{Household_read_application_rejection_update_wage_reservation_2}} & \parbox{10cm}{Household reads the application rejections and decreases \&\#xd;\&\#xd;\&\#xd;\&\#xd;\&\#xd;\&\#xd;
+the reservation wage} \\
+\midrule
+\url{Household_idle} \index{\url{Household_idle}} & \parbox{10cm}{Household does nothing} \\
+\midrule
+\url{Household_receive_dividends} \index{\url{Household_receive_dividends}} & \parbox{10cm}{Household receives the dividend payments} \\
+\midrule
+\url{Household_idle} \index{\url{Household_idle}} & \parbox{10cm}{Household does nothing} \\
+\midrule
+\url{Household_idle} \index{\url{Household_idle}} & \parbox{10cm}{Household does nothing} \\
+\midrule
+\url{Household_send_subsidy_notification} \index{\url{Household_send_subsidy_notification}} & \parbox{10cm}{Household } \\
+\midrule
+\url{Household_send_transfer_notification} \index{\url{Household_send_transfer_notification}} & \parbox{10cm}{Household } \\
+\midrule
+\url{Household_receive_wage} \index{\url{Household_receive_wage}} & \parbox{10cm}{Household receives the wage /wage\_payment\_message} \\
+\midrule
+\url{Household_update_specific_skills} \index{\url{Household_update_specific_skills}} & \parbox{10cm}{Household's specific skills are updated if the household is employed.} \\
+\midrule
+\url{Household_send_unemployment_benefit_notification} \index{\url{Household_send_unemployment_benefit_notification}} & \parbox{10cm}{Household receives the unemployment benefit.} \\
+\midrule
+\url{Household_send_tax_payment} \index{\url{Household_send_tax_payment}} & \parbox{10cm}{Household pays the income taxes} \\
+\midrule
+\url{Household_determine_consumption_budget} \index{\url{Household_determine_consumption_budget}} & \parbox{10cm}{Household determines the consumption and portfolio budegt} \\
+\midrule
+\url{Household_initialization} \index{\url{Household_initialization}} & \parbox{10cm}{Initialization function for household.} \\
+\midrule
+\url{idle} \index{\url{idle}} & \parbox{10cm}{Idle for initialization function.} \\
+\midrule
+\url{Household_read_policy_announcements} \index{\url{Household_read_policy_announcements}} & \parbox{10cm}{} \\
+\midrule
+\url{idle} \index{\url{idle}} & \parbox{10cm}{Idle for read\_policy\_announcement} \\
+\midrule
+\url{Household_receive_data} \index{\url{Household_receive_data}} & \parbox{10cm}{The household reads the messages from the eurostat agent and stores the needed data.} \\
+\midrule
+\url{Household_send_data_to_Eurostat} \index{\url{Household_send_data_to_Eurostat}} & \parbox{10cm}{Household sends message to the eurostat agent including several micro data.} \\
+\midrule
+\url{idle} \index{\url{idle}} & \parbox{10cm}{Idle for send\_data\_to\_eurostat} \\
+\midrule
+\url{Household_read_data_from_Eurostat} \index{\url{Household_read_data_from_Eurostat}} & \parbox{10cm}{Read the region\_wide\_mean\_wage.} \\
+\end{longtable}
+\end{landscape}
+
+
+
+\clearpage
+\subsection{Mall}
+
+\begin{landscape}
+\begin{longtable}[H!]{ll}
+\caption{{\bfseries List of memory variables for Mall agent.}}
+\label{Table: Mall Memory}\\
+\toprule 
+\bfseries Name & \bfseries Description \\ \hline 
+\midrule
+\endfirsthead
+\multicolumn{2}{c}%
+{{\bfseries \tablename\ \thetable{} -- continued from previous page}} \\
+\toprule
+\bfseries Name & \bfseries Description \\ \hline 
+\midrule
+\endhead
+\multicolumn{2}{r}{{\emph{Continued on next page}}} \\
+\endfoot
+\bottomrule
+\endlastfoot
+\midrule
+\url{int} \url{id} \index{\url{id}} & \parbox{10cm}{Agent ID.} \\
+\midrule
+\url{int} \url{region_id} \index{\url{region_id}} & \parbox{10cm}{Region ID to which the agent is associated.} \\
+\midrule
+\url{int} \url{gov_id} \index{\url{gov_id}} & \parbox{10cm}{Government  to which the agent is associated.} \\
+\midrule
+\url{int} \url{partition_id} \index{\url{partition_id}} & \parbox{10cm}{Partition ID used for parallelization.} \\
+\midrule
+\url{mall_stock_array} \url{current_stock} \index{\url{current_stock}} & \parbox{10cm}{Actual stock of the different firms} \\
+\midrule
+\url{sales_in_mall_array} \url{firm_revenues} \index{\url{firm_revenues}} & \parbox{10cm}{Actual revenue of the different firms} \\
+\midrule
+\url{double} \url{total_supply} \index{\url{total_supply}} & \parbox{10cm}{Total number of goods} \\
+\midrule
+\url{double} \url{export_volume_matrix} \index{\url{export_volume_matrix}} & \parbox{10cm}{Matrix holding data on exports between regions, measured in volume.} \\
+\midrule
+\url{double} \url{export_value_matrix} \index{\url{export_value_matrix}} & \parbox{10cm}{Matrix holding data on exports between regions, measured in value.} \\
+\midrule
+\url{double} \url{export_previous_value_matrix} \index{\url{export_previous_value_matrix}} & \parbox{10cm}{Matrix holding data on exports between regions, measured against previous prices.} \\
+\end{longtable}
+\end{landscape}
+
+\begin{landscape}
+\begin{longtable}[H!]{ll}
+\caption{{\bfseries List of functions for Mall agent.}}
+\label{Table: Mall Functions}\\
+\toprule 
+\bfseries Name & \bfseries Description \\ \hline 
+\midrule
+\endfirsthead
+\multicolumn{2}{c}%
+{{\bfseries \tablename\ \thetable{} -- continued from previous page}} \\
+\toprule
+\bfseries Name & \bfseries Description \\ \hline 
+\midrule
+\endhead
+\multicolumn{2}{r}{{\emph{Continued on next page}}} \\
+\endfoot
+\bottomrule
+\endlastfoot
+\midrule
+\url{Mall_reset_export_data} \index{\url{Mall_reset_export_data}} & \parbox{10cm}{Mall resets the export data at start of month.} \\
+\midrule
+\url{idle} \index{\url{idle}} & \parbox{10cm}{} \\
+\midrule
+\url{Mall_update_mall_stock} \index{\url{Mall_update_mall_stock}} & \parbox{10cm}{Malls receive the goods deliveries.} \\
+\midrule
+\url{Mall_send_quality_price_info_1} \index{\url{Mall_send_quality_price_info_1}} & \parbox{10cm}{Malls send message with quality and price information.} \\
+\midrule
+\url{Mall_update_mall_stocks_sales_rationing_1} \index{\url{Mall_update_mall_stocks_sales_rationing_1}} & \parbox{10cm}{Mall reads the consumption requests and satisfies the demand \&\#xd;\&\#xd;
+if possible (otherwise rationing).} \\
+\midrule
+\url{Mall_update_mall_stocks_sales_rationing_2} \index{\url{Mall_update_mall_stocks_sales_rationing_2}} & \parbox{10cm}{After the second request round the mall satisfies the demand if \&\#xd;\&\#xd;
+possible, otherwise rationing.} \\
+\midrule
+\url{Mall_pay_firm} \index{\url{Mall_pay_firm}} & \parbox{10cm}{Mall transfers the revenues to the firms.} \\
+\midrule
+\url{Mall_send_export_data} \index{\url{Mall_send_export_data}} & \parbox{10cm}{Mall sends the export data to Eurostat at end of each month.} \\
+\midrule
+\url{idle} \index{\url{idle}} & \parbox{10cm}{} \\
+\midrule
+\url{Mall_read_insolvency_bankruptcy} \index{\url{Mall_read_insolvency_bankruptcy}} & \parbox{10cm}{This function reads the bankruptcy message of firms that are in a insolvency.} \\
+\midrule
+\url{Mall_send_id_to_firms} \index{\url{Mall_send_id_to_firms}} & \parbox{10cm}{In this function the mall sends its id to the firms. The firms can set up its data array properly if the population file was built with the cloning procedure. } \\
+\midrule
+\url{Mall_initialize_firm_arrays} \index{\url{Mall_initialize_firm_arrays}} & \parbox{10cm}{In case of cloned population: Malls receive firm ids and set up their memory variables that are related to the firms.} \\
+\midrule
+\url{idle} \index{\url{idle}} & \parbox{10cm}{} \\
+\end{longtable}
+\end{landscape}
+
+
+
+\clearpage
+\subsection{IGFirm}
+
+\begin{landscape}
+\begin{longtable}[H!]{ll}
+\caption{{\bfseries List of memory variables for IGFirm agent.}}
+\label{Table: IGFirm Memory}\\
+\toprule 
+\bfseries Name & \bfseries Description \\ \hline 
+\midrule
+\endfirsthead
+\multicolumn{2}{c}%
+{{\bfseries \tablename\ \thetable{} -- continued from previous page}} \\
+\toprule
+\bfseries Name & \bfseries Description \\ \hline 
+\midrule
+\endhead
+\multicolumn{2}{r}{{\emph{Continued on next page}}} \\
+\endfoot
+\bottomrule
+\endlastfoot
+\midrule
+\url{int} \url{id} \index{\url{id}} & \parbox{10cm}{Agent ID.} \\
+\midrule
+\url{int} \url{region_id} \index{\url{region_id}} & \parbox{10cm}{Region ID to which the agent is associated.} \\
+\midrule
+\url{int} \url{gov_id} \index{\url{gov_id}} & \parbox{10cm}{Government  to which the agent is associated.} \\
+\midrule
+\url{int} \url{bank_id} \index{\url{bank_id}} & \parbox{10cm}{Bank ID at which the agent maintains its payment account.} \\
+\midrule
+\url{int} \url{day_of_month_to_act} \index{\url{day_of_month_to_act}} & \parbox{10cm}{Activation day.} \\
+\midrule
+\url{double} \url{payment_account} \index{\url{payment_account}} & \parbox{10cm}{Current account value.} \\
+\midrule
+\url{int} \url{partition_id} \index{\url{partition_id}} & \parbox{10cm}{Partition ID used for parallelization.} \\
+\midrule
+\url{double} \url{productivity} \index{\url{productivity}} & \parbox{10cm}{Current productivity of the offered capital good} \\
+\midrule
+\url{double} \url{capital_good_price} \index{\url{capital_good_price}} & \parbox{10cm}{Current price of the offered capital good} \\
+\midrule
+\url{double} \url{revenue_per_day} \index{\url{revenue_per_day}} & \parbox{10cm}{Revenue of the current  day} \\
+\midrule
+\url{double} \url{tax_rate_corporate} \index{\url{tax_rate_corporate}} & \parbox{10cm}{Tax rate on revenues} \\
+\midrule
+\url{double} \url{tax_rate_vat} \index{\url{tax_rate_vat}} & \parbox{10cm}{Value added tax} \\
+\midrule
+\url{double} \url{tax_payment} \index{\url{tax_payment}} & \parbox{10cm}{Sum of all taxes the IGFirm has to pay} \\
+\midrule
+\url{double} \url{net_profit} \index{\url{net_profit}} & \parbox{10cm}{Earnings minus tax payment} \\
+\midrule
+\url{int} \url{outstanding_shares} \index{\url{outstanding_shares}} & \parbox{10cm}{Number of shares outstanding} \\
+\midrule
+\url{double} \url{current_dividend_per_share} \index{\url{current_dividend_per_share}} & \parbox{10cm}{} \\
+\midrule
+\url{double} \url{earnings} \index{\url{earnings}} & \parbox{10cm}{Variable to sum monthly earnings.} \\
+\midrule
+\url{double} \url{energy_price_markup} \index{\url{energy_price_markup}} & \parbox{10cm}{Mark up on capital goods price.} \\
+\midrule
+\url{double} \url{energy_costs_per_day} \index{\url{energy_costs_per_day}} & \parbox{10cm}{The share of the daily capital bill that are energy costs.} \\
+\midrule
+\url{double} \url{earnings_per_day} \index{\url{earnings_per_day}} & \parbox{10cm}{The collected revenues minus energy costs.} \\
+\midrule
+\url{double} \url{cum_energy_costs} \index{\url{cum_energy_costs}} & \parbox{10cm}{This is to compute the total expenses for energy.} \\
+\midrule
+\url{double_array} \url{last_net_profits} \index{\url{last_net_profits}} & \parbox{10cm}{Array of the planned production quantities in the past} \\
+\midrule
+\url{double} \url{dividend_payment} \index{\url{dividend_payment}} & \parbox{10cm}{} \\
+\midrule
+\url{int} \url{age} \index{\url{age}} & \parbox{10cm}{Age of the firm in months.} \\
+\midrule
+\url{double} \url{transfer_payment} \index{\url{transfer_payment}} & \parbox{10cm}{The transfer\_payment read from message.} \\
+\midrule
+\url{double} \url{subsidy_pct} \index{\url{subsidy_pct}} & \parbox{10cm}{The subsidy percentage read from message.} \\
+\end{longtable}
+\end{landscape}
+
+\begin{landscape}
+\begin{longtable}[H!]{ll}
+\caption{{\bfseries List of functions for IGFirm agent.}}
+\label{Table: IGFirm Functions}\\
+\toprule 
+\bfseries Name & \bfseries Description \\ \hline 
+\midrule
+\endfirsthead
+\multicolumn{2}{c}%
+{{\bfseries \tablename\ \thetable{} -- continued from previous page}} \\
+\toprule
+\bfseries Name & \bfseries Description \\ \hline 
+\midrule
+\endhead
+\multicolumn{2}{r}{{\emph{Continued on next page}}} \\
+\endfoot
+\bottomrule
+\endlastfoot
+\midrule
+\url{IGFirm_update_productivity_price} \index{\url{IGFirm_update_productivity_price}} & \parbox{10cm}{} \\
+\midrule
+\url{IGFirm_idle} \index{\url{IGFirm_idle}} & \parbox{10cm}{} \\
+\midrule
+\url{IGFirm_send_quality_price_info} \index{\url{IGFirm_send_quality_price_info}} & \parbox{10cm}{} \\
+\midrule
+\url{IGFirm_send_capital_good} \index{\url{IGFirm_send_capital_good}} & \parbox{10cm}{} \\
+\midrule
+\url{IGFirm_receive_payment} \index{\url{IGFirm_receive_payment}} & \parbox{10cm}{} \\
+\midrule
+\url{IGFirm_pay_taxes} \index{\url{IGFirm_pay_taxes}} & \parbox{10cm}{} \\
+\midrule
+\url{IGFirm_dividend_payment} \index{\url{IGFirm_dividend_payment}} & \parbox{10cm}{} \\
+\midrule
+\url{IGFirm_idle} \index{\url{IGFirm_idle}} & \parbox{10cm}{} \\
+\midrule
+\url{IGFirm_send_payment_account_to_bank} \index{\url{IGFirm_send_payment_account_to_bank}} & \parbox{10cm}{} \\
+\midrule
+\url{IGFirm_idle} \index{\url{IGFirm_idle}} & \parbox{10cm}{} \\
+\midrule
+\url{IGFirm_read_policy_announcements} \index{\url{IGFirm_read_policy_announcements}} & \parbox{10cm}{} \\
+\end{longtable}
+\end{landscape}
+
+
+
+\clearpage
+\subsection{Eurostat}
+
+\begin{landscape}
+\begin{longtable}[H!]{ll}
+\caption{{\bfseries List of memory variables for Eurostat agent.}}
+\label{Table: Eurostat Memory}\\
+\toprule 
+\bfseries Name & \bfseries Description \\ \hline 
+\midrule
+\endfirsthead
+\multicolumn{2}{c}%
+{{\bfseries \tablename\ \thetable{} -- continued from previous page}} \\
+\toprule
+\bfseries Name & \bfseries Description \\ \hline 
+\midrule
+\endhead
+\multicolumn{2}{r}{{\emph{Continued on next page}}} \\
+\endfoot
+\bottomrule
+\endlastfoot
+\midrule
+\url{int} \url{id} \index{\url{id}} & \parbox{10cm}{Agent ID.} \\
+\midrule
+\url{int} \url{region_id} \index{\url{region_id}} & \parbox{10cm}{Region ID to which the agent is associated.} \\
+\midrule
+\url{int} \url{partition_id} \index{\url{partition_id}} & \parbox{10cm}{Partition ID used for parallelization.} \\
+\midrule
+\url{int} \url{switch_datastorage} \index{\url{switch_datastorage}} & \parbox{10cm}{Switch to turn on/off datastorage} \\
+\midrule
+\url{int} \url{num_households} \index{\url{num_households}} & \parbox{10cm}{Number of households in the economy} \\
+\midrule
+\url{int} \url{no_households_skill_1} \index{\url{no_households_skill_1}} & \parbox{10cm}{Number of households in the economy with general skill level 1} \\
+\midrule
+\url{int} \url{no_households_skill_2} \index{\url{no_households_skill_2}} & \parbox{10cm}{Number of households in the economy with general skill level 2} \\
+\midrule
+\url{int} \url{no_households_skill_3} \index{\url{no_households_skill_3}} & \parbox{10cm}{Number of households in the economy with general skill level 3} \\
+\midrule
+\url{int} \url{no_households_skill_4} \index{\url{no_households_skill_4}} & \parbox{10cm}{Number of households in the economy with general skill level 4} \\
+\midrule
+\url{int} \url{no_households_skill_5} \index{\url{no_households_skill_5}} & \parbox{10cm}{Number of households in the economy with general skill level 5} \\
+\midrule
+\url{int} \url{employed} \index{\url{employed}} & \parbox{10cm}{Number of employed households} \\
+\midrule
+\url{int} \url{employed_skill_1} \index{\url{employed_skill_1}} & \parbox{10cm}{Number of employed households with general skill level 1} \\
+\midrule
+\url{int} \url{employed_skill_2} \index{\url{employed_skill_2}} & \parbox{10cm}{Number of employed households with general skill level 2} \\
+\midrule
+\url{int} \url{employed_skill_3} \index{\url{employed_skill_3}} & \parbox{10cm}{Number of employed households with general skill level 3} \\
+\midrule
+\url{int} \url{employed_skill_4} \index{\url{employed_skill_4}} & \parbox{10cm}{Number of employed households with general skill level 4} \\
+\midrule
+\url{int} \url{employed_skill_5} \index{\url{employed_skill_5}} & \parbox{10cm}{Number of employed households with general skill level 5} \\
+\midrule
+\url{int} \url{unemployed} \index{\url{unemployed}} & \parbox{10cm}{Number of unemployed Hoseholds} \\
+\midrule
+\url{double} \url{unemployment_rate} \index{\url{unemployment_rate}} & \parbox{10cm}{Unemployment rate} \\
+\midrule
+\url{double} \url{unemployment_rate_skill_1} \index{\url{unemployment_rate_skill_1}} & \parbox{10cm}{Unemployment rate general skill level 1} \\
+\midrule
+\url{double} \url{unemployment_rate_skill_2} \index{\url{unemployment_rate_skill_2}} & \parbox{10cm}{Unemployment rate general skill level 2} \\
+\midrule
+\url{double} \url{unemployment_rate_skill_3} \index{\url{unemployment_rate_skill_3}} & \parbox{10cm}{Unemployment rate general skill level 3} \\
+\midrule
+\url{double} \url{unemployment_rate_skill_4} \index{\url{unemployment_rate_skill_4}} & \parbox{10cm}{Unemployment rate general skill level 4} \\
+\midrule
+\url{double} \url{unemployment_rate_skill_5} \index{\url{unemployment_rate_skill_5}} & \parbox{10cm}{Unemployment rate general skill level 5} \\
+\midrule
+\url{double} \url{average_wage} \index{\url{average_wage}} & \parbox{10cm}{Average wage in the economy} \\
+\midrule
+\url{double} \url{average_wage_skill_1} \index{\url{average_wage_skill_1}} & \parbox{10cm}{Average wage of households with general skill level 1 in the economy} \\
+\midrule
+\url{double} \url{average_wage_skill_2} \index{\url{average_wage_skill_2}} & \parbox{10cm}{Average wage of households with general skill level 2 in the economy} \\
+\midrule
+\url{double} \url{average_wage_skill_3} \index{\url{average_wage_skill_3}} & \parbox{10cm}{Average wage of households with general skill level 3 in the economy} \\
+\midrule
+\url{double} \url{average_wage_skill_4} \index{\url{average_wage_skill_4}} & \parbox{10cm}{Average wage of households with general skill level 4 in the economy} \\
+\midrule
+\url{double} \url{average_wage_skill_5} \index{\url{average_wage_skill_5}} & \parbox{10cm}{Average wage of households with general skill level 5 in the economy} \\
+\midrule
+\url{double} \url{average_s_skill} \index{\url{average_s_skill}} & \parbox{10cm}{Average specific skills in the economy} \\
+\midrule
+\url{double} \url{average_s_skill_1} \index{\url{average_s_skill_1}} & \parbox{10cm}{Average specific skills of households with general skill level 1 in the economy} \\
+\midrule
+\url{double} \url{average_s_skill_2} \index{\url{average_s_skill_2}} & \parbox{10cm}{Average specific skills of households with general skill level 1 in the economy} \\
+\midrule
+\url{double} \url{average_s_skill_3} \index{\url{average_s_skill_3}} & \parbox{10cm}{Average specific skills of households with general skill level 1 in the economy} \\
+\midrule
+\url{double} \url{average_s_skill_4} \index{\url{average_s_skill_4}} & \parbox{10cm}{Average specific skills of households with general skill level 1 in the economy} \\
+\midrule
+\url{double} \url{average_s_skill_5} \index{\url{average_s_skill_5}} & \parbox{10cm}{Average specific skills of households with general skill level 1 in the economy} \\
+\midrule
+\url{int} \url{no_firms} \index{\url{no_firms}} & \parbox{10cm}{Number of firms in the economy} \\
+\midrule
+\url{int} \url{no_vacancies} \index{\url{no_vacancies}} & \parbox{10cm}{Number of vacancies in the economy} \\
+\midrule
+\url{int} \url{no_employees} \index{\url{no_employees}} & \parbox{10cm}{Number of employees in the economy (in firms)} \\
+\midrule
+\url{int} \url{no_employees_skill_1} \index{\url{no_employees_skill_1}} & \parbox{10cm}{Number of employees in the economy with general skill level 1 (in firms)} \\
+\midrule
+\url{int} \url{no_employees_skill_2} \index{\url{no_employees_skill_2}} & \parbox{10cm}{Number of employees in the economy with general skill level 2 (in firms)} \\
+\midrule
+\url{int} \url{no_employees_skill_3} \index{\url{no_employees_skill_3}} & \parbox{10cm}{Number of employees in the economy with general skill level 3 (in firms)} \\
+\midrule
+\url{int} \url{no_employees_skill_4} \index{\url{no_employees_skill_4}} & \parbox{10cm}{Number of employees in the economy with general skill level 4 (in firms)} \\
+\midrule
+\url{int} \url{no_employees_skill_5} \index{\url{no_employees_skill_5}} & \parbox{10cm}{Number of employees in the economy with general skill level 5 (in firms)} \\
+\midrule
+\url{double} \url{firm_average_wage} \index{\url{firm_average_wage}} & \parbox{10cm}{verage wage in the economy paid by firms} \\
+\midrule
+\url{double} \url{firm_average_wage_skill_1} \index{\url{firm_average_wage_skill_1}} & \parbox{10cm}{Average wage in the economy paid by firms for general skill level 1} \\
+\midrule
+\url{double} \url{firm_average_wage_skill_2} \index{\url{firm_average_wage_skill_2}} & \parbox{10cm}{Average wage in the economy paid by firms for general skill level 2} \\
+\midrule
+\url{double} \url{firm_average_wage_skill_3} \index{\url{firm_average_wage_skill_3}} & \parbox{10cm}{Average wage in the economy paid by firms for general skill level 3} \\
+\midrule
+\url{double} \url{firm_average_wage_skill_4} \index{\url{firm_average_wage_skill_4}} & \parbox{10cm}{Average wage in the economy paid by firms for general skill level 4} \\
+\midrule
+\url{double} \url{firm_average_wage_skill_5} \index{\url{firm_average_wage_skill_5}} & \parbox{10cm}{Average wage in the economy paid by firms for general skill level 5} \\
+\midrule
+\url{double} \url{firm_average_s_skill} \index{\url{firm_average_s_skill}} & \parbox{10cm}{Average specific skills in firm in the economy} \\
+\midrule
+\url{double} \url{firm_average_s_skill_1} \index{\url{firm_average_s_skill_1}} & \parbox{10cm}{Average specific skills of general skill level 1 in firms in the economy} \\
+\midrule
+\url{double} \url{firm_average_s_skill_2} \index{\url{firm_average_s_skill_2}} & \parbox{10cm}{Average specific skills of general skill level 2 in firms in the economy} \\
+\midrule
+\url{double} \url{firm_average_s_skill_3} \index{\url{firm_average_s_skill_3}} & \parbox{10cm}{Average specific skills of general skill level 3 in firms in the economy} \\
+\midrule
+\url{double} \url{firm_average_s_skill_4} \index{\url{firm_average_s_skill_4}} & \parbox{10cm}{Average specific skills of general skill level 4 in firms in the economy} \\
+\midrule
+\url{double} \url{firm_average_s_skill_5} \index{\url{firm_average_s_skill_5}} & \parbox{10cm}{Average specific skills of general skill level 5 in firms in the economy} \\
+\midrule
+\url{firm_data_array} \url{region_firm_data} \index{\url{region_firm_data}} & \parbox{10cm}{Stores the eurostat memory variables concerning the firms for the different regions} \\
+\midrule
+\url{household_data_array} \url{region_household_data} \index{\url{region_household_data}} & \parbox{10cm}{Stores the eurostat memory variables concerning the households for the different regions} \\
+\midrule
+\url{double} \url{total_earnings} \index{\url{total_earnings}} & \parbox{10cm}{Total profits across firms (sum of net\_earnings)} \\
+\midrule
+\url{double} \url{total_debt} \index{\url{total_debt}} & \parbox{10cm}{Total debts across firms (sum of total\_debt)} \\
+\midrule
+\url{double} \url{total_assets} \index{\url{total_assets}} & \parbox{10cm}{Total value of assets across firms} \\
+\midrule
+\url{double} \url{total_equity} \index{\url{total_equity}} & \parbox{10cm}{Total value of equity across firms} \\
+\midrule
+\url{double} \url{average_debt_earnings_ratio} \index{\url{average_debt_earnings_ratio}} & \parbox{10cm}{Constructed macrovariable: average debt/earnings ratio across firms (total debt divided by total earnings)} \\
+\midrule
+\url{double} \url{average_debt_equity_ratio} \index{\url{average_debt_equity_ratio}} & \parbox{10cm}{Constructed macrovariable: average debt/equity ratio across firms (total debt divided by total equity)} \\
+\midrule
+\url{double} \url{labour_share_ratio} \index{\url{labour_share_ratio}} & \parbox{10cm}{Constructed macrovariable: average labour share across firms (defined as total wages divided by total profits)} \\
+\midrule
+\url{double} \url{cpi} \index{\url{cpi}} & \parbox{10cm}{Consumer Price Index. Measured as a weighted price index across all firms, all malls, using as weights the firms' market shares.} \\
+\midrule
+\url{double} \url{gdp} \index{\url{gdp}} & \parbox{10cm}{GDP = Consumption + Investments (measured at firms, sum of cum\_revenues + investment\_costs)} \\
+\midrule
+\url{double} \url{monthly_investment_value} \index{\url{monthly_investment_value}} & \parbox{10cm}{Constructed macrovariable: monthly value of investments, aggregating the firms capital costs.} \\
+\midrule
+\url{double} \url{monthly_sold_quantity} \index{\url{monthly_sold_quantity}} & \parbox{10cm}{Constructed macrovariable: regional sum of sold quantity} \\
+\midrule
+\url{double} \url{monthly_output} \index{\url{monthly_output}} & \parbox{10cm}{Constructed macrovariable: regional sum of output} \\
+\midrule
+\url{double} \url{monthly_revenue} \index{\url{monthly_revenue}} & \parbox{10cm}{Constructed macrovariable: regional sum of cum\_revenue} \\
+\midrule
+\url{double} \url{monthly_planned_output} \index{\url{monthly_planned_output}} & \parbox{10cm}{Constructed macrovariable: regional sum of planned output} \\
+\midrule
+\url{double} \url{price_index} \index{\url{price_index}} & \parbox{10cm}{Constructed macrovariable: weighted mean prices} \\
+\midrule
+\url{history_item} \url{history_monthly} \index{\url{history_monthly}} & \parbox{10cm}{History: monthly data} \\
+\midrule
+\url{history_item} \url{history_quarterly} \index{\url{history_quarterly}} & \parbox{10cm}{History: quarterly data} \\
+\midrule
+\url{history_item} \url{monthly_growth_rates} \index{\url{monthly_growth_rates}} & \parbox{10cm}{History: monthly growth rates} \\
+\midrule
+\url{history_item} \url{quarterly_growth_rates} \index{\url{quarterly_growth_rates}} & \parbox{10cm}{History: quarterly growth rates} \\
+\midrule
+\url{history_item} \url{annual_growth_rates_monthly} \index{\url{annual_growth_rates_monthly}} & \parbox{10cm}{History: annual growth rates measured each month} \\
+\midrule
+\url{history_item} \url{annual_growth_rates_quarterly} \index{\url{annual_growth_rates_quarterly}} & \parbox{10cm}{History: annual growth rates measured each quarter} \\
+\midrule
+\url{int} \url{no_firm_births} \index{\url{no_firm_births}} & \parbox{10cm}{Number of new firms in the economy this month} \\
+\midrule
+\url{int} \url{no_firm_deaths} \index{\url{no_firm_deaths}} & \parbox{10cm}{Number of firm demises in the economy this month} \\
+\midrule
+\url{int} \url{firm_age_distribution} \index{\url{firm_age_distribution}} & \parbox{10cm}{Distribution of firm ages in 60 bins (in months, max age 60 months)} \\
+\midrule
+\url{int} \url{firm_age_distribution_multiperiod} \index{\url{firm_age_distribution_multiperiod}} & \parbox{10cm}{Distribution of firm ages in 60 bins (in months, max age 60 months)} \\
+\midrule
+\url{int} \url{firm_age_distribution_1_period_lag} \index{\url{firm_age_distribution_1_period_lag}} & \parbox{10cm}{Copy of firm\_age\_distribution[60], needed for the computation of survival rates.} \\
+\midrule
+\url{int} \url{firm_age_distribution_2_period_lag} \index{\url{firm_age_distribution_2_period_lag}} & \parbox{10cm}{Copy of firm\_age\_distribution[60], needed for the computation of survival rates.} \\
+\midrule
+\url{double} \url{firm_birth_rate} \index{\url{firm_birth_rate}} & \parbox{10cm}{Firm birth rate: Number of new firms in the economy this month, divided by the total number of firms that are active this month.} \\
+\midrule
+\url{double} \url{firm_death_rate} \index{\url{firm_death_rate}} & \parbox{10cm}{Firm death rate: Number of firm demises in the economy this month, divided by the total number of firms that are active this month.} \\
+\midrule
+\url{double} \url{survival_rate} \index{\url{survival_rate}} & \parbox{10cm}{Firm survival rates in 60 age bins: Definition "The survival rate after 1 year is the percentage of all enterprise births of year n which are still active in year n+1." We only measure the 1-month survival rate: the percentage of firms age 0-59 months that are still active in the next month, thus having age 1-60 months.} \\
+\midrule
+\url{double} \url{survival_rate_multiperiod_1} \index{\url{survival_rate_multiperiod_1}} & \parbox{10cm}{Multi-period survival rates. Definition: "The survival rate after x years is the percentage of all enterprise births of year n which are still active in year n+x." The 1st row survival\_rate\_multiperiod[0][.] equals survival\_rate[], and contains the 1-period survival rates (for all age bins 0-59). The 2nd row survival\_rate\_multiperiod[1][.] contains the 2-period survival rates (for all age bins 0-59), etc.} \\
+\midrule
+\url{double} \url{survival_rate_multiperiod_2} \index{\url{survival_rate_multiperiod_2}} & \parbox{10cm}{Multi-period survival rates. Definition: "The survival rate after x years is the percentage of all enterprise births of year n which are still active in year n+x." The 1st row survival\_rate\_multiperiod[0][.] equals survival\_rate[], and contains the 1-period survival rates (for all age bins 0-59). The 2nd row survival\_rate\_multiperiod[1][.] contains the 2-period survival rates (for all age bins 0-59), etc.} \\
+\midrule
+\url{double} \url{survival_rate_multiperiod} \index{\url{survival_rate_multiperiod}} & \parbox{10cm}{Multi-period survival rates. Definition: "The survival rate after x years is the percentage of all enterprise births of year n which are still active in year n+x." The 1st row survival\_rate\_multiperiod[0][.] equals survival\_rate[], and contains the 1-period survival rates (for all age bins 0-59). The 2nd row survival\_rate\_multiperiod contains all survival rates (for periods 1...12, for all age bins 0-59), etc.} \\
+\midrule
+\url{int} \url{max_firm_creation} \index{\url{max_firm_creation}} & \parbox{10cm}{} \\
+\midrule
+\url{int} \url{recession_started} \index{\url{recession_started}} & \parbox{10cm}{Indicator signalling the start of a recession. 0: no recession, 1: recession.} \\
+\midrule
+\url{int} \url{recession_duration} \index{\url{recession_duration}} & \parbox{10cm}{Duration of a recession measured in quarters.} \\
+\midrule
+\url{double} \url{export_volume_matrix} \index{\url{export_volume_matrix}} & \parbox{10cm}{Matrix holding data on exports between regions, measured in volume.} \\
+\midrule
+\url{double} \url{export_value_matrix} \index{\url{export_value_matrix}} & \parbox{10cm}{Matrix holding data on exports between regions, measured in value.} \\
+\midrule
+\url{double} \url{export_previous_value_matrix} \index{\url{export_previous_value_matrix}} & \parbox{10cm}{Matrix holding data on exports between regions, measured against previous prices.} \\
+\midrule
+\url{double} \url{region_export_volume} \index{\url{region_export_volume}} & \parbox{10cm}{Array holding data on total exports of each region, measured in volume.} \\
+\midrule
+\url{double} \url{region_import_volume} \index{\url{region_import_volume}} & \parbox{10cm}{Array holding data on total imports of each region, measured in volume.} \\
+\midrule
+\url{double} \url{region_export_value} \index{\url{region_export_value}} & \parbox{10cm}{Array holding data on total exports of each region, measured in value.} \\
+\midrule
+\url{double} \url{region_import_value} \index{\url{region_import_value}} & \parbox{10cm}{Array holding data on total imports of each region, measured in value.} \\
+\midrule
+\url{double} \url{region_import_previous_value} \index{\url{region_import_previous_value}} & \parbox{10cm}{Array holding data on total imports of each region, measured in value against previous prices.} \\
+\midrule
+\url{double} \url{firm_average_productivity_progress} \index{\url{firm_average_productivity_progress}} & \parbox{10cm}{Average productivity progress of the firms in the last month.} \\
+\midrule
+\url{double} \url{firm_average_productivity} \index{\url{firm_average_productivity}} & \parbox{10cm}{Average productivty of the firms in the last month.} \\
+\midrule
+\url{double} \url{investment_gdp_ratio} \index{\url{investment_gdp_ratio}} & \parbox{10cm}{Ratio of investment/gdp.} \\
+\end{longtable}
+\end{landscape}
+
+\begin{landscape}
+\begin{longtable}[H!]{ll}
+\caption{{\bfseries List of functions for Eurostat agent.}}
+\label{Table: Eurostat Functions}\\
+\toprule 
+\bfseries Name & \bfseries Description \\ \hline 
+\midrule
+\endfirsthead
+\multicolumn{2}{c}%
+{{\bfseries \tablename\ \thetable{} -- continued from previous page}} \\
+\toprule
+\bfseries Name & \bfseries Description \\ \hline 
+\midrule
+\endhead
+\multicolumn{2}{r}{{\emph{Continued on next page}}} \\
+\endfoot
+\bottomrule
+\endlastfoot
+\midrule
+\url{Eurostat_send_data} \index{\url{Eurostat_send_data}} & \parbox{10cm}{Eurostat sends the data to the other agents} \\
+\midrule
+\url{Eurostat_idle} \index{\url{Eurostat_idle}} & \parbox{10cm}{Eurostat does nothing} \\
+\midrule
+\url{Eurostat_idle} \index{\url{Eurostat_idle}} & \parbox{10cm}{} \\
+\midrule
+\url{Eurostat_calculate_data} \index{\url{Eurostat_calculate_data}} & \parbox{10cm}{Eurostat calculates the global and regional macro data based on the received micro data} \\
+\midrule
+\url{Eurostat_store_history_monthly} \index{\url{Eurostat_store_history_monthly}} & \parbox{10cm}{Eurostat stores monthly macro data in its history struct.} \\
+\midrule
+\url{Eurostat_compute_growth_rates_monthly} \index{\url{Eurostat_compute_growth_rates_monthly}} & \parbox{10cm}{Eurostat computes monthly growth rates for macro data stored in its monthly history struct.} \\
+\midrule
+\url{Eurostat_idle} \index{\url{Eurostat_idle}} & \parbox{10cm}{Eurostat does nothing} \\
+\midrule
+\url{Eurostat_store_history_quarterly} \index{\url{Eurostat_store_history_quarterly}} & \parbox{10cm}{Eurostat stores quarterly macro data in its history struct.} \\
+\midrule
+\url{Eurostat_compute_growth_rates_quarterly} \index{\url{Eurostat_compute_growth_rates_quarterly}} & \parbox{10cm}{Eurostat computes quarterly growth rates for macro data stored in its quarterly history struct.} \\
+\midrule
+\url{Eurostat_measure_recession} \index{\url{Eurostat_measure_recession}} & \parbox{10cm}{Eurostat measures the start or end of recessions.} \\
+\midrule
+\url{Eurostat_idle} \index{\url{Eurostat_idle}} & \parbox{10cm}{Eurostat does nothing} \\
+\midrule
+\url{Eurostat_idle} \index{\url{Eurostat_idle}} & \parbox{10cm}{Eurostat idle} \\
+\midrule
+\url{Eurostat_send_data_to_government} \index{\url{Eurostat_send_data_to_government}} & \parbox{10cm}{Eurostat sends the data to the governments for determining policies.} \\
+\midrule
+\url{Eurostat_initialization} \index{\url{Eurostat_initialization}} & \parbox{10cm}{Initialization function for Eurostat.} \\
+\midrule
+\url{idle} \index{\url{idle}} & \parbox{10cm}{Idle for initialization function.} \\
+\end{longtable}
+\end{landscape}
+
+
+
+\clearpage
+\subsection{Bank}
+
+\begin{landscape}
+\begin{longtable}[H!]{ll}
+\caption{{\bfseries List of memory variables for Bank agent.}}
+\label{Table: Bank Memory}\\
+\toprule 
+\bfseries Name & \bfseries Description \\ \hline 
+\midrule
+\endfirsthead
+\multicolumn{2}{c}%
+{{\bfseries \tablename\ \thetable{} -- continued from previous page}} \\
+\toprule
+\bfseries Name & \bfseries Description \\ \hline 
+\midrule
+\endhead
+\multicolumn{2}{r}{{\emph{Continued on next page}}} \\
+\endfoot
+\bottomrule
+\endlastfoot
+\midrule
+\url{int} \url{id} \index{\url{id}} & \parbox{10cm}{Agent ID.} \\
+\midrule
+\url{int} \url{region_id} \index{\url{region_id}} & \parbox{10cm}{Region ID to which the agent is associated.} \\
+\midrule
+\url{int} \url{gov_id} \index{\url{gov_id}} & \parbox{10cm}{Government  to which the agent is associated.} \\
+\midrule
+\url{int} \url{partition_id} \index{\url{partition_id}} & \parbox{10cm}{Partition ID used for parallelization.} \\
+\midrule
+\url{double} \url{cash} \index{\url{cash}} & \parbox{10cm}{Bank's reserves.} \\
+\midrule
+\url{double} \url{total_credit} \index{\url{total_credit}} & \parbox{10cm}{Sum of outstanding loans.} \\
+\midrule
+\url{double} \url{equity} \index{\url{equity}} & \parbox{10cm}{Total assets minus total liabilities (or cumulated profits).} \\
+\midrule
+\url{double} \url{ecb_debt} \index{\url{ecb_debt}} & \parbox{10cm}{Stock of liquidity borrowed from Central Bank.} \\
+\midrule
+\url{double} \url{alfa} \index{\url{alfa}} & \parbox{10cm}{Basel II regulatory parameter} \\
+\midrule
+\url{double} \url{value_at_risk} \index{\url{value_at_risk}} & \parbox{10cm}{Total value at risk of bank's loan portfolio.} \\
+\midrule
+\url{double} \url{deposits_rate} \index{\url{deposits_rate}} & \parbox{10cm}{Rate on deposits.} \\
+\midrule
+\url{double} \url{bank_gamma} \index{\url{bank_gamma}} & \parbox{10cm}{Behavioural parameter used to set interest rates.} \\
+\midrule
+\url{double} \url{profits} \index{\url{profits}} & \parbox{10cm}{Current and past profits.} \\
+\midrule
+\url{double} \url{bank_lambda} \index{\url{bank_lambda}} & \parbox{10cm}{Exogenous parameter regulating the speed of adjustment of BANK\_GAMMA parameter.} \\
+\midrule
+\url{double} \url{ecb_interest_rate} \index{\url{ecb_interest_rate}} & \parbox{10cm}{Base interest rate charged by Central Bank.} \\
+\midrule
+\url{double} \url{bank_dividend_rate} \index{\url{bank_dividend_rate}} & \parbox{10cm}{Percentage of bank's dividends on profits.} \\
+\midrule
+\url{double} \url{tax_rate_corporate} \index{\url{tax_rate_corporate}} & \parbox{10cm}{Government tax rate on corporate profits.} \\
+\midrule
+\url{int} \url{current_shares_outstanding} \index{\url{current_shares_outstanding}} & \parbox{10cm}{Number of issued shares.} \\
+\midrule
+\url{double} \url{debt_period} \index{\url{debt_period}} & \parbox{10cm}{} \\
+\midrule
+\url{int} \url{loan_request_message_found} \index{\url{loan_request_message_found}} & \parbox{10cm}{} \\
+\midrule
+\url{int} \url{day_of_month_to_act} \index{\url{day_of_month_to_act}} & \parbox{10cm}{Day of the month to act for bank accounting function.} \\
+\midrule
+\url{double} \url{deposits} \index{\url{deposits}} & \parbox{10cm}{Total end-of-the-day deposits.} \\
+\midrule
+\url{double} \url{firm_loan_installments} \index{\url{firm_loan_installments}} & \parbox{10cm}{Installment amount received by firms.} \\
+\midrule
+\url{double} \url{firm_interest_payments} \index{\url{firm_interest_payments}} & \parbox{10cm}{Interests paid by firms.} \\
+\midrule
+\url{double} \url{firm_loan_issues} \index{\url{firm_loan_issues}} & \parbox{10cm}{} \\
+\midrule
+\url{double} \url{ecb_interest_payment} \index{\url{ecb_interest_payment}} & \parbox{10cm}{Interests bank pays to Central Bank.} \\
+\midrule
+\url{double} \url{total_dividends} \index{\url{total_dividends}} & \parbox{10cm}{} \\
+\midrule
+\url{double} \url{taxes} \index{\url{taxes}} & \parbox{10cm}{} \\
+\midrule
+\url{double} \url{dividend_per_share} \index{\url{dividend_per_share}} & \parbox{10cm}{Dividends earned by one share.} \\
+\midrule
+\url{double} \url{current_share_price} \index{\url{current_share_price}} & \parbox{10cm}{Market price of bank's shares.} \\
+\midrule
+\url{double} \url{total_income} \index{\url{total_income}} & \parbox{10cm}{} \\
+\midrule
+\url{double} \url{total_expenses} \index{\url{total_expenses}} & \parbox{10cm}{} \\
+\midrule
+\url{double} \url{total_assets} \index{\url{total_assets}} & \parbox{10cm}{} \\
+\midrule
+\url{double} \url{total_liabilities} \index{\url{total_liabilities}} & \parbox{10cm}{} \\
+\end{longtable}
+\end{landscape}
+
+\begin{landscape}
+\begin{longtable}[H!]{ll}
+\caption{{\bfseries List of functions for Bank agent.}}
+\label{Table: Bank Functions}\\
+\toprule 
+\bfseries Name & \bfseries Description \\ \hline 
+\midrule
+\endfirsthead
+\multicolumn{2}{c}%
+{{\bfseries \tablename\ \thetable{} -- continued from previous page}} \\
+\toprule
+\bfseries Name & \bfseries Description \\ \hline 
+\midrule
+\endhead
+\multicolumn{2}{r}{{\emph{Continued on next page}}} \\
+\endfoot
+\bottomrule
+\endlastfoot
+\midrule
+\url{Bank_read_policy_rate} \index{\url{Bank_read_policy_rate}} & \parbox{10cm}{The bank reads policy rate and updated risk free rate} \\
+\midrule
+\url{idle} \index{\url{idle}} & \parbox{10cm}{The bank does not update risk free rate} \\
+\midrule
+\url{Bank_communicate_identity} \index{\url{Bank_communicate_identity}} & \parbox{10cm}{Active banks communicate their identity to firms at the opening of the credit market.} \\
+\midrule
+\url{Bank_send_dividend_payment} \index{\url{Bank_send_dividend_payment}} & \parbox{10cm}{Function to send the dividend\_per\_share message to households.} \\
+\midrule
+\url{Bank_set_quantities_zero} \index{\url{Bank_set_quantities_zero}} & \parbox{10cm}{} \\
+\midrule
+\url{Bank_send_accountInterest} \index{\url{Bank_send_accountInterest}} & \parbox{10cm}{Bank communicates the interest rate on deposits.} \\
+\midrule
+\url{Bank_decide_credit_conditions} \index{\url{Bank_decide_credit_conditions}} & \parbox{10cm}{Bank sets loan conditions for the applying firms.} \\
+\midrule
+\url{Bank_give_loan} \index{\url{Bank_give_loan}} & \parbox{10cm}{Bank accounts the feature of the granted loan and updates its portfolio.} \\
+\midrule
+\url{Bank_receive_installment} \index{\url{Bank_receive_installment}} & \parbox{10cm}{Bank receives periodic interests and installments from client firms.} \\
+\midrule
+\url{Bank_account_update_deposits} \index{\url{Bank_account_update_deposits}} & \parbox{10cm}{Bank updates its deposits and if needed reduces its exposition towards Central Bank.} \\
+\midrule
+\url{Bank_accounting} \index{\url{Bank_accounting}} & \parbox{10cm}{Balance sheet updates are executed.} \\
+\midrule
+\url{Bank_idle} \index{\url{Bank_idle}} & \parbox{10cm}{} \\
+\midrule
+\url{Bank_update_ecb_account} \index{\url{Bank_update_ecb_account}} & \parbox{10cm}{Bank sends a message to ECB with its cash (payment account of the Bank at the ECB).} \\
+\midrule
+\url{idle} \index{\url{idle}} & \parbox{10cm}{} \\
+\midrule
+\url{Bank_read_policy_announcements} \index{\url{Bank_read_policy_announcements}} & \parbox{10cm}{} \\
+\end{longtable}
+\end{landscape}
+
+
+
+\clearpage
+\subsection{Government}
+
+\begin{landscape}
+\begin{longtable}[H!]{ll}
+\caption{{\bfseries List of memory variables for Government agent.}}
+\label{Table: Government Memory}\\
+\toprule 
+\bfseries Name & \bfseries Description \\ \hline 
+\midrule
+\endfirsthead
+\multicolumn{2}{c}%
+{{\bfseries \tablename\ \thetable{} -- continued from previous page}} \\
+\toprule
+\bfseries Name & \bfseries Description \\ \hline 
+\midrule
+\endhead
+\multicolumn{2}{r}{{\emph{Continued on next page}}} \\
+\endfoot
+\bottomrule
+\endlastfoot
+\midrule
+\url{int} \url{id} \index{\url{id}} & \parbox{10cm}{Agent ID.} \\
+\midrule
+\url{int_array} \url{list_of_regions} \index{\url{list_of_regions}} & \parbox{10cm}{List of regions that are associated to the government.} \\
+\midrule
+\url{double} \url{payment_account} \index{\url{payment_account}} & \parbox{10cm}{Current account value.} \\
+\midrule
+\url{int} \url{day_of_month_to_act} \index{\url{day_of_month_to_act}} & \parbox{10cm}{Activation day.} \\
+\midrule
+\url{int} \url{region_id} \index{\url{region_id}} & \parbox{10cm}{Region ID to which the agent is associated.} \\
+\midrule
+\url{int} \url{partition_id} \index{\url{partition_id}} & \parbox{10cm}{Partition ID used for parallelization.} \\
+\midrule
+\url{Bond} \url{bond} \index{\url{bond}} & \parbox{10cm}{} \\
+\midrule
+\url{Order} \url{pending_order} \index{\url{pending_order}} & \parbox{10cm}{} \\
+\midrule
+\url{double} \url{unemployment_benefit_pct} \index{\url{unemployment_benefit_pct}} & \parbox{10cm}{Variable that sets the unemployment benefit as a fraction of last labour income.} \\
+\midrule
+\url{double} \url{gdp_fraction_consumption} \index{\url{gdp_fraction_consumption}} & \parbox{10cm}{Parameter that sets the government consumption expenditure as a fraction of GDP.} \\
+\midrule
+\url{double} \url{gdp_fraction_investment} \index{\url{gdp_fraction_investment}} & \parbox{10cm}{Parameter that sets the government investment expenditure as a fraction of GDP.} \\
+\midrule
+\url{double} \url{tax_rate_corporate} \index{\url{tax_rate_corporate}} & \parbox{10cm}{Corporate tax rate on firm and bank profits.} \\
+\midrule
+\url{double} \url{tax_rate_hh_labour} \index{\url{tax_rate_hh_labour}} & \parbox{10cm}{Labour income tax rate for households.} \\
+\midrule
+\url{double} \url{tax_rate_hh_capital} \index{\url{tax_rate_hh_capital}} & \parbox{10cm}{Capital gains tax rate for households.} \\
+\midrule
+\url{double} \url{tax_rate_vat} \index{\url{tax_rate_vat}} & \parbox{10cm}{VAT tax.} \\
+\midrule
+\url{double} \url{monthly_tax_revenues} \index{\url{monthly_tax_revenues}} & \parbox{10cm}{Monthly tax revenues.} \\
+\midrule
+\url{double} \url{yearly_tax_revenues} \index{\url{yearly_tax_revenues}} & \parbox{10cm}{Yearly tax revenues.} \\
+\midrule
+\url{double} \url{monthly_benefit_payment} \index{\url{monthly_benefit_payment}} & \parbox{10cm}{Unemployment benefit payments to all unemployed households.} \\
+\midrule
+\url{double} \url{yearly_benefit_payment} \index{\url{yearly_benefit_payment}} & \parbox{10cm}{Unemployment benefit payments for all unemployed households.} \\
+\midrule
+\url{double} \url{hh_transfer_payment} \index{\url{hh_transfer_payment}} & \parbox{10cm}{Household transfer payment amount.} \\
+\midrule
+\url{double} \url{firm_transfer_payment} \index{\url{firm_transfer_payment}} & \parbox{10cm}{Firm transfer payment amount.} \\
+\midrule
+\url{double} \url{monthly_transfer_payment} \index{\url{monthly_transfer_payment}} & \parbox{10cm}{Aggregate monthly transfer payments.} \\
+\midrule
+\url{double} \url{yearly_transfer_payment} \index{\url{yearly_transfer_payment}} & \parbox{10cm}{Aggregate yearly transfer payments.} \\
+\midrule
+\url{double} \url{hh_subsidy_pct} \index{\url{hh_subsidy_pct}} & \parbox{10cm}{The household subsidy percentage on the price of consumer goods.} \\
+\midrule
+\url{double} \url{firm_subsidy_pct} \index{\url{firm_subsidy_pct}} & \parbox{10cm}{The firm subsidy percentage on the  price of capital goods.} \\
+\midrule
+\url{int} \url{subsidy_flag} \index{\url{subsidy_flag}} & \parbox{10cm}{Indicator to indicate if stabilization subsidy is active. 1 means active, 0 means inactive.} \\
+\midrule
+\url{double} \url{monthly_subsidy_payment} \index{\url{monthly_subsidy_payment}} & \parbox{10cm}{Aggregate monthly subsidy payments.} \\
+\midrule
+\url{double} \url{yearly_subsidy_payment} \index{\url{yearly_subsidy_payment}} & \parbox{10cm}{Aggregate yearly subsidy payments.} \\
+\midrule
+\url{double} \url{monthly_bond_interest_payment} \index{\url{monthly_bond_interest_payment}} & \parbox{10cm}{Aggregate monthly bond interest payments.} \\
+\midrule
+\url{double} \url{yearly_bond_interest_payment} \index{\url{yearly_bond_interest_payment}} & \parbox{10cm}{Aggregate yearly bond interest payments.} \\
+\midrule
+\url{double} \url{gov_interest_rate} \index{\url{gov_interest_rate}} & \parbox{10cm}{Interest rate the government uses to pay interest on the public debt.} \\
+\midrule
+\url{double} \url{yearly_investment_expenditure} \index{\url{yearly_investment_expenditure}} & \parbox{10cm}{The actual yearly government investment expenditure that is realised at the end of the year.} \\
+\midrule
+\url{double} \url{yearly_consumption_expenditure} \index{\url{yearly_consumption_expenditure}} & \parbox{10cm}{The actual yearly government consumption expenditure that is realised at the end of the year.} \\
+\midrule
+\url{double} \url{yearly_income} \index{\url{yearly_income}} & \parbox{10cm}{The actual total government income received at the end of the year.} \\
+\midrule
+\url{double} \url{yearly_expenditure} \index{\url{yearly_expenditure}} & \parbox{10cm}{The actual total government expenditure at the end of the year.} \\
+\midrule
+\url{double} \url{total_debt} \index{\url{total_debt}} & \parbox{10cm}{Government debt.} \\
+\midrule
+\url{double} \url{yearly_budget_balance} \index{\url{yearly_budget_balance}} & \parbox{10cm}{The budget balance (deficit/surplus) that is realised at the end of the year.} \\
+\midrule
+\url{double} \url{total_money_financing} \index{\url{total_money_financing}} & \parbox{10cm}{The fraction of the budget deficit that is financed by money creation.} \\
+\midrule
+\url{double} \url{total_bond_financing} \index{\url{total_bond_financing}} & \parbox{10cm}{The fraction of the budget deficit that is financed by government bonds.} \\
+\midrule
+\url{double} \url{country_wide_mean_wage} \index{\url{country_wide_mean_wage}} & \parbox{10cm}{Country wide mean wage is the mean wage for all regions associated to this government.} \\
+\midrule
+\url{int} \url{num_unemployed} \index{\url{num_unemployed}} & \parbox{10cm}{The number of unemployed that are associated to the government.} \\
+\midrule
+\url{double} \url{gdp} \index{\url{gdp}} & \parbox{10cm}{This is the GDP for the regions belonging to this government.} \\
+\midrule
+\url{double} \url{gdp_growth} \index{\url{gdp_growth}} & \parbox{10cm}{GDP growth rate (updated once per year).} \\
+\midrule
+\url{double} \url{gdp_forecast} \index{\url{gdp_forecast}} & \parbox{10cm}{Forecast for next year's GDP.} \\
+\midrule
+\url{double} \url{yearly_income_forecast} \index{\url{yearly_income_forecast}} & \parbox{10cm}{Forecasted/planned total government income for the next year.} \\
+\midrule
+\url{double} \url{yearly_expenditure_budget} \index{\url{yearly_expenditure_budget}} & \parbox{10cm}{The total expenditure budget for the next year.} \\
+\midrule
+\url{double} \url{budget_balance_forecast} \index{\url{budget_balance_forecast}} & \parbox{10cm}{Forcast for the budget balance (deficit/surplus).} \\
+\midrule
+\url{double} \url{monthly_consumption_expenditure} \index{\url{monthly_consumption_expenditure}} & \parbox{10cm}{The actual monthly government consumption expenditure that is realised at the end of the month.} \\
+\midrule
+\url{double} \url{monthly_investment_expenditure} \index{\url{monthly_investment_expenditure}} & \parbox{10cm}{The actual monthly government investment expenditure that is realised at the end of the month.} \\
+\midrule
+\url{double} \url{monthly_budget_balance} \index{\url{monthly_budget_balance}} & \parbox{10cm}{The budget balance (deficit/surplus) that is realised at the end of the month.} \\
+\midrule
+\url{double} \url{monthly_consumption_budget} \index{\url{monthly_consumption_budget}} & \parbox{10cm}{The consumption budget for the next month.} \\
+\midrule
+\url{double} \url{monthly_investment_budget} \index{\url{monthly_investment_budget}} & \parbox{10cm}{The investment budget for the next month.} \\
+\midrule
+\url{double} \url{monthly_income} \index{\url{monthly_income}} & \parbox{10cm}{The actual total government income at end of month.} \\
+\midrule
+\url{double} \url{monthly_expenditure} \index{\url{monthly_expenditure}} & \parbox{10cm}{The actual total government expenditure at end of month.} \\
+\midrule
+\url{double} \url{yearly_consumption_budget} \index{\url{yearly_consumption_budget}} & \parbox{10cm}{The planned consumption budget for the next year.} \\
+\midrule
+\url{double} \url{yearly_investment_budget} \index{\url{yearly_investment_budget}} & \parbox{10cm}{The planned investment budget for the next year.} \\
+\midrule
+\url{double} \url{total_assets} \index{\url{total_assets}} & \parbox{10cm}{} \\
+\midrule
+\url{double} \url{total_liabilities} \index{\url{total_liabilities}} & \parbox{10cm}{} \\
+\midrule
+\url{double} \url{cumulated_deficit} \index{\url{cumulated_deficit}} & \parbox{10cm}{The cumulative sum of deficits, updated monthly.} \\
+\midrule
+\url{double} \url{inflation_rate} \index{\url{inflation_rate}} & \parbox{10cm}{This is the economy-wide inflation\_rate.} \\
+\midrule
+\url{double} \url{unemployment_rate} \index{\url{unemployment_rate}} & \parbox{10cm}{This is the economy-wide unemployment\_rate.} \\
+\end{longtable}
+\end{landscape}
+
+\begin{landscape}
+\begin{longtable}[H!]{ll}
+\caption{{\bfseries List of functions for Government agent.}}
+\label{Table: Government Functions}\\
+\toprule 
+\bfseries Name & \bfseries Description \\ \hline 
+\midrule
+\endfirsthead
+\multicolumn{2}{c}%
+{{\bfseries \tablename\ \thetable{} -- continued from previous page}} \\
+\toprule
+\bfseries Name & \bfseries Description \\ \hline 
+\midrule
+\endhead
+\multicolumn{2}{r}{{\emph{Continued on next page}}} \\
+\endfoot
+\bottomrule
+\endlastfoot
+\midrule
+\url{Government_pays_coupons} \index{\url{Government_pays_coupons}} & \parbox{10cm}{} \\
+\midrule
+\url{Government_read_policy_rate} \index{\url{Government_read_policy_rate}} & \parbox{10cm}{Government reads the policy rate from the CB and updates the bonds yield} \\
+\midrule
+\url{Government_send_info_bond} \index{\url{Government_send_info_bond}} & \parbox{10cm}{} \\
+\midrule
+\url{Government_orders_issuing} \index{\url{Government_orders_issuing}} & \parbox{10cm}{} \\
+\midrule
+\url{Government_update_its_portfolio} \index{\url{Government_update_its_portfolio}} & \parbox{10cm}{} \\
+\midrule
+\url{Government_receive_info_bond} \index{\url{Government_receive_info_bond}} & \parbox{10cm}{} \\
+\midrule
+\url{idle} \index{\url{idle}} & \parbox{10cm}{} \\
+\midrule
+\url{Government_initialization} \index{\url{Government_initialization}} & \parbox{10cm}{Initialization function, runs only once at the start.} \\
+\midrule
+\url{idle} \index{\url{idle}} & \parbox{10cm}{Idle for initialization function.} \\
+\midrule
+\url{Government_monthly_resetting} \index{\url{Government_monthly_resetting}} & \parbox{10cm}{Monthly resetting of counters.} \\
+\midrule
+\url{idle} \index{\url{idle}} & \parbox{10cm}{Idle for monthly resetting loop at top.} \\
+\midrule
+\url{idle} \index{\url{idle}} & \parbox{10cm}{Idle for yearly loop at top.} \\
+\midrule
+\url{Government_send_policy_announcements} \index{\url{Government_send_policy_announcements}} & \parbox{10cm}{Function to send the yearly policy announcement message.} \\
+\midrule
+\url{Government_read_tax_payments} \index{\url{Government_read_tax_payments}} & \parbox{10cm}{Function to read the tax revenues and store the monthly and yearly totals.} \\
+\midrule
+\url{Government_read_subsidy_notifications} \index{\url{Government_read_subsidy_notifications}} & \parbox{10cm}{Counter of the \url{subsidy\_notification} messages, monthly and yearly totals of the subsidy payments.} \\
+\midrule
+\url{Government_read_transfer_notifications} \index{\url{Government_read_transfer_notifications}} & \parbox{10cm}{Counter of the \url{transfer\_notification} messages, monthly and yearly totals of the transfer payments.} \\
+\midrule
+\url{Government_read_unemployment_benefit_notifications} \index{\url{Government_read_unemployment_benefit_notifications}} & \parbox{10cm}{Counter of the \url{unemployment} messages, monthly and yearly totals of the unemployment benefit payments.} \\
+\midrule
+\url{idle} \index{\url{idle}} & \parbox{10cm}{Idle for yearly loop} \\
+\midrule
+\url{Government_resolve_unsold_bonds} \index{\url{Government_resolve_unsold_bonds}} & \parbox{10cm}{To resolve the remaining deficit that remains after bond rationing on the bond market, the government sells the unsold bonds to the ECB, in return for newly created fiat money (quantitative easing).} \\
+\midrule
+\url{Government_monthly_budget_accounting} \index{\url{Government_monthly_budget_accounting}} & \parbox{10cm}{Function to perform accounting at the end of each month.} \\
+\midrule
+\url{Government_bonds_issuing_decision} \index{\url{Government_bonds_issuing_decision}} & \parbox{10cm}{Function to decide how many bonds to issue.} \\
+\midrule
+\url{idle} \index{\url{idle}} & \parbox{10cm}{Idle function if Gov does not issue new bonds.} \\
+\midrule
+\url{Government_send_account_update} \index{\url{Government_send_account_update}} & \parbox{10cm}{Function to send the payment\_account value to the Central Bank.} \\
+\midrule
+\url{idle} \index{\url{idle}} & \parbox{10cm}{} \\
+\midrule
+\url{Government_yearly_budget_accounting} \index{\url{Government_yearly_budget_accounting}} & \parbox{10cm}{Function to perform accounting at the end of each year.} \\
+\midrule
+\url{Government_read_data_from_Eurostat} \index{\url{Government_read_data_from_Eurostat}} & \parbox{10cm}{Function to read data from Eurostat.} \\
+\midrule
+\url{Government_set_policy} \index{\url{Government_set_policy}} & \parbox{10cm}{Function to set policy rules: income forecast and expenditure budget.} \\
+\midrule
+\url{Government_yearly_resetting} \index{\url{Government_yearly_resetting}} & \parbox{10cm}{Yearly resetting of counters.} \\
+\end{longtable}
+\end{landscape}
+
+
+
+\clearpage
+\subsection{Central\_Bank}
+
+\begin{landscape}
+\begin{longtable}[H!]{ll}
+\caption{{\bfseries List of memory variables for Central\_Bank agent.}}
+\label{Table: Central\_Bank Memory}\\
+\toprule 
+\bfseries Name & \bfseries Description \\ \hline 
+\midrule
+\endfirsthead
+\multicolumn{2}{c}%
+{{\bfseries \tablename\ \thetable{} -- continued from previous page}} \\
+\toprule
+\bfseries Name & \bfseries Description \\ \hline 
+\midrule
+\endhead
+\multicolumn{2}{r}{{\emph{Continued on next page}}} \\
+\endfoot
+\bottomrule
+\endlastfoot
+\midrule
+\url{int} \url{id} \index{\url{id}} & \parbox{10cm}{Agent ID.} \\
+\midrule
+\url{int} \url{region_id} \index{\url{region_id}} & \parbox{10cm}{Region ID to which the agent is associated.} \\
+\midrule
+\url{int} \url{partition_id} \index{\url{partition_id}} & \parbox{10cm}{Partition ID used for parallelization.} \\
+\midrule
+\url{double} \url{ecb_interest_rate} \index{\url{ecb_interest_rate}} & \parbox{10cm}{Base rate of the Central Bank.} \\
+\midrule
+\url{double} \url{equity} \index{\url{equity}} & \parbox{10cm}{The ECB equity is the account to collect the interest payments from the banks and the government bond interest rate payments. The equity of ECB is paid out to all governments as dividends, in proportion to their population.} \\
+\midrule
+\url{double} \url{dividend_payment} \index{\url{dividend_payment}} & \parbox{10cm}{The equity of ECB is paid out to all governments as dividends, in proportion to their population.} \\
+\midrule
+\url{double} \url{fiat_money} \index{\url{fiat_money}} & \parbox{10cm}{This is the total fiat money.} \\
+\midrule
+\url{double} \url{fiat_money_banks} \index{\url{fiat_money_banks}} & \parbox{10cm}{This is the sum over banks' ECB\_debt, on the ECB's balance sheet, here named as a CB liability.} \\
+\midrule
+\url{double} \url{ecb_deposits} \index{\url{ecb_deposits}} & \parbox{10cm}{Total sum of deposits by governments and banks at the ECB.} \\
+\midrule
+\url{account_item_array} \url{accounts_banks} \index{\url{accounts_banks}} & \parbox{10cm}{} \\
+\midrule
+\url{account_item_array} \url{accounts_govs} \index{\url{accounts_govs}} & \parbox{10cm}{} \\
+\midrule
+\url{double} \url{cash} \index{\url{cash}} & \parbox{10cm}{CB liquid asset which takes into account interest payments to CB from banks and (in the future) from govs.} \\
+\midrule
+\url{double} \url{bond_holdings_value} \index{\url{bond_holdings_value}} & \parbox{10cm}{Total monetary amount of the ECBs government bond holdings.} \\
+\midrule
+\url{int} \url{nr_gov_bonds} \index{\url{nr_gov_bonds}} & \parbox{10cm}{} \\
+\midrule
+\url{double} \url{fiat_money_govs} \index{\url{fiat_money_govs}} & \parbox{10cm}{Money given to governments in exchange of gov bonds or for free} \\
+\midrule
+\url{double} \url{bank_interest} \index{\url{bank_interest}} & \parbox{10cm}{} \\
+\midrule
+\url{double} \url{gov_interest} \index{\url{gov_interest}} & \parbox{10cm}{} \\
+\midrule
+\url{double} \url{gov_bond_purchase} \index{\url{gov_bond_purchase}} & \parbox{10cm}{} \\
+\midrule
+\url{double} \url{total_income} \index{\url{total_income}} & \parbox{10cm}{} \\
+\midrule
+\url{double} \url{total_expenses} \index{\url{total_expenses}} & \parbox{10cm}{} \\
+\midrule
+\url{double} \url{total_assets} \index{\url{total_assets}} & \parbox{10cm}{} \\
+\midrule
+\url{double} \url{total_liabilities} \index{\url{total_liabilities}} & \parbox{10cm}{} \\
+\end{longtable}
+\end{landscape}
+
+\begin{landscape}
+\begin{longtable}[H!]{ll}
+\caption{{\bfseries List of functions for Central\_Bank agent.}}
+\label{Table: Central\_Bank Functions}\\
+\toprule 
+\bfseries Name & \bfseries Description \\ \hline 
+\midrule
+\endfirsthead
+\multicolumn{2}{c}%
+{{\bfseries \tablename\ \thetable{} -- continued from previous page}} \\
+\toprule
+\bfseries Name & \bfseries Description \\ \hline 
+\midrule
+\endhead
+\multicolumn{2}{r}{{\emph{Continued on next page}}} \\
+\endfoot
+\bottomrule
+\endlastfoot
+\midrule
+\url{Central_Bank_read_account_update} \index{\url{Central_Bank_read_account_update}} & \parbox{10cm}{Central Bank updates accounts of banks and Government.} \\
+\midrule
+\url{Central_Bank_monetary_policy} \index{\url{Central_Bank_monetary_policy}} & \parbox{10cm}{Central bank implements monetary policy.} \\
+\midrule
+\url{idle} \index{\url{idle}} & \parbox{10cm}{Central bank does not implement monetary policy.} \\
+\midrule
+\url{Central_Bank_read_fiat_money_requests} \index{\url{Central_Bank_read_fiat_money_requests}} & \parbox{10cm}{Function read the requests for fiat money sent by governments.} \\
+\end{longtable}
+\end{landscape}
+
+
+
+\clearpage
+\subsection{Clearinghouse}
+
+\begin{landscape}
+\begin{longtable}[H!]{ll}
+\caption{{\bfseries List of memory variables for Clearinghouse agent.}}
+\label{Table: Clearinghouse Memory}\\
+\toprule 
+\bfseries Name & \bfseries Description \\ \hline 
+\midrule
+\endfirsthead
+\multicolumn{2}{c}%
+{{\bfseries \tablename\ \thetable{} -- continued from previous page}} \\
+\toprule
+\bfseries Name & \bfseries Description \\ \hline 
+\midrule
+\endhead
+\multicolumn{2}{r}{{\emph{Continued on next page}}} \\
+\endfoot
+\bottomrule
+\endlastfoot
+\midrule
+\url{int} \url{id} \index{\url{id}} & \parbox{10cm}{Agent ID.} \\
+\midrule
+\url{int} \url{region_id} \index{\url{region_id}} & \parbox{10cm}{Region ID to which the agent is associated.} \\
+\midrule
+\url{int} \url{partition_id} \index{\url{partition_id}} & \parbox{10cm}{Partition ID used for parallelization.} \\
+\midrule
+\url{Asset_array} \url{assets} \index{\url{assets}} & \parbox{10cm}{} \\
+\midrule
+\url{ClearingMechanism} \url{clearingmechanism} \index{\url{clearingmechanism}} & \parbox{10cm}{} \\
+\end{longtable}
+\end{landscape}
+
+\begin{landscape}
+\begin{longtable}[H!]{ll}
+\caption{{\bfseries List of functions for Clearinghouse agent.}}
+\label{Table: Clearinghouse Functions}\\
+\toprule 
+\bfseries Name & \bfseries Description \\ \hline 
+\midrule
+\endfirsthead
+\multicolumn{2}{c}%
+{{\bfseries \tablename\ \thetable{} -- continued from previous page}} \\
+\toprule
+\bfseries Name & \bfseries Description \\ \hline 
+\midrule
+\endhead
+\multicolumn{2}{r}{{\emph{Continued on next page}}} \\
+\endfoot
+\bottomrule
+\endlastfoot
+\midrule
+\url{ClearingHouse_receive_info} \index{\url{ClearingHouse_receive_info}} & \parbox{10cm}{} \\
+\midrule
+\url{ClearingHouse_receive_orders_and_run} \index{\url{ClearingHouse_receive_orders_and_run}} & \parbox{10cm}{} \\
+\midrule
+\url{ClearingHouse_send_asset_information} \index{\url{ClearingHouse_send_asset_information}} & \parbox{10cm}{} \\
+\end{longtable}
+\end{landscape}
+
+\subsection{Messages}
+See Table \ref{Table: Messages}.\begin{landscape}
+\begin{longtable}[H!]{ll}
+\caption{{\bfseries List of messages.}}
+\label{Table: Messages}\\
+\toprule 
+\bfseries Name & \bfseries Description \\ \hline 
+\midrule
+\endfirsthead
+\multicolumn{2}{c}%
+{{\bfseries \tablename\ \thetable{} -- continued from previous page}} \\
+\toprule
+\bfseries Name & \bfseries Description \\ \hline 
+\midrule
+\endhead
+\multicolumn{2}{r}{{\emph{Continued on next page}}} \\
+\endfoot
+\bottomrule
+\endlastfoot
+\url{bank_account_update} & \parbox{10cm}{Sent by agents to inform their bank about the current payment account balance.}\\
+    \url{int} \url{id} \index{\url{id}} & \parbox{10cm}{Sending agent ID.}\\
+    \url{int} \url{bank_id} \index{\url{bank_id}} & \parbox{10cm}{Receiving bank agent ID.}\\
+    \url{double} \url{payment_account} \index{\url{payment_account}} & \parbox{10cm}{Current account value.}\\
+\midrule
+\url{bank_to_central_bank_account_update} & \parbox{10cm}{Banks send account information to central bank}\\
+    \url{int} \url{id} \index{\url{id}} & \parbox{10cm}{Sending agent ID.}\\
+    \url{double} \url{payment_account} \index{\url{payment_account}} & \parbox{10cm}{Current account value.}\\
+    \url{double} \url{ecb_debt} \index{\url{ecb_debt}} & \parbox{10cm}{Debt of the bank to the Central Bank}\\
+\midrule
+\url{gov_to_central_bank_account_update} & \parbox{10cm}{Governments send account information to central bank}\\
+    \url{int} \url{id} \index{\url{id}} & \parbox{10cm}{Sending agent ID.}\\
+    \url{double} \url{payment_account} \index{\url{payment_account}} & \parbox{10cm}{Current account value.}\\
+\midrule
+\url{wage_payment} & \parbox{10cm}{Sent by firms. Including the id, the worker id, the wage and \&\#xd;\&\#xd;
+the productivity  and mean specific skills of the employer in \&\#xd;\&\#xd;
+order to update the specific skills.}\\
+    \url{int} \url{firm_id} \index{\url{firm_id}} & \parbox{10cm}{}\\
+    \url{int} \url{worker_id} \index{\url{worker_id}} & \parbox{10cm}{}\\
+    \url{double} \url{payment} \index{\url{payment}} & \parbox{10cm}{}\\
+    \url{double} \url{productivity} \index{\url{productivity}} & \parbox{10cm}{}\\
+    \url{double} \url{average_specific_skills} \index{\url{average_specific_skills}} & \parbox{10cm}{}\\
+\midrule
+\url{quality_price_info_1} & \parbox{10cm}{Sent by mall. Including id, region id, id of the supplier (firm), the \&\#xd;\&\#xd;
+quality and price of the goods to inform the hosueholds about these goods. }\\
+    \url{int} \url{mall_id} \index{\url{mall_id}} & \parbox{10cm}{}\\
+    \url{int} \url{mall_region_id} \index{\url{mall_region_id}} & \parbox{10cm}{}\\
+    \url{int} \url{firm_id} \index{\url{firm_id}} & \parbox{10cm}{}\\
+    \url{double} \url{quality} \index{\url{quality}} & \parbox{10cm}{}\\
+    \url{double} \url{price} \index{\url{price}} & \parbox{10cm}{}\\
+    \url{int} \url{available} \index{\url{available}} & \parbox{10cm}{}\\
+\midrule
+\url{quality_price_info_2} & \parbox{10cm}{Sent by mall. Including id, region id, id of the supplier (firm), \&\#xd;\&\#xd;
+the quality and price of the goods to inform the hosueholds about these goods.}\\
+    \url{int} \url{mall_id} \index{\url{mall_id}} & \parbox{10cm}{}\\
+    \url{int} \url{mall_region_id} \index{\url{mall_region_id}} & \parbox{10cm}{}\\
+    \url{int} \url{firm_id} \index{\url{firm_id}} & \parbox{10cm}{}\\
+    \url{double} \url{quality} \index{\url{quality}} & \parbox{10cm}{}\\
+    \url{double} \url{price} \index{\url{price}} & \parbox{10cm}{}\\
+    \url{int} \url{available} \index{\url{available}} & \parbox{10cm}{}\\
+\midrule
+\url{update_mall_stock} & \parbox{10cm}{Send by mall. Updates the firm regarding the stocks of the firm in the mall.}\\
+    \url{int} \url{mall_id} \index{\url{mall_id}} & \parbox{10cm}{}\\
+    \url{int} \url{firm_id} \index{\url{firm_id}} & \parbox{10cm}{}\\
+    \url{double} \url{quantity} \index{\url{quantity}} & \parbox{10cm}{}\\
+    \url{double} \url{quality} \index{\url{quality}} & \parbox{10cm}{}\\
+    \url{double} \url{price} \index{\url{price}} & \parbox{10cm}{}\\
+    \url{double} \url{previous_price} \index{\url{previous_price}} & \parbox{10cm}{}\\
+\midrule
+\url{consumption_request_1} & \parbox{10cm}{Sent by household. Including the id, the mall id, the id of the \&\#xd;\&\#xd;
+supplier and the quantity of the good a household wants to have.}\\
+    \url{int} \url{mall_id} \index{\url{mall_id}} & \parbox{10cm}{}\\
+    \url{int} \url{worker_id} \index{\url{worker_id}} & \parbox{10cm}{}\\
+    \url{int} \url{region_id} \index{\url{region_id}} & \parbox{10cm}{}\\
+    \url{int} \url{firm_id} \index{\url{firm_id}} & \parbox{10cm}{}\\
+    \url{double} \url{quantity} \index{\url{quantity}} & \parbox{10cm}{}\\
+\midrule
+\url{consumption_request_2} & \parbox{10cm}{Sent by household. Including the id, the mall id, the id of the \&\#xd;\&\#xd;
+supplier and the quantity of the good a household wants to have.}\\
+    \url{int} \url{mall_id} \index{\url{mall_id}} & \parbox{10cm}{}\\
+    \url{int} \url{worker_id} \index{\url{worker_id}} & \parbox{10cm}{}\\
+    \url{int} \url{region_id} \index{\url{region_id}} & \parbox{10cm}{}\\
+    \url{int} \url{firm_id} \index{\url{firm_id}} & \parbox{10cm}{}\\
+    \url{double} \url{quantity} \index{\url{quantity}} & \parbox{10cm}{}\\
+\midrule
+\url{accepted_consumption_1} & \parbox{10cm}{Sent by mall. Quantity of the good which can be delivered by the mall.}\\
+    \url{int} \url{mall_id} \index{\url{mall_id}} & \parbox{10cm}{}\\
+    \url{int} \url{household_id} \index{\url{household_id}} & \parbox{10cm}{}\\
+    \url{double} \url{offered_consumption_volume} \index{\url{offered_consumption_volume}} & \parbox{10cm}{}\\
+    \url{int} \url{rationed} \index{\url{rationed}} & \parbox{10cm}{}\\
+\midrule
+\url{accepted_consumption_2} & \parbox{10cm}{Sent by mall. Quantity of the good which can be delivered by the mall.}\\
+    \url{int} \url{mall_id} \index{\url{mall_id}} & \parbox{10cm}{}\\
+    \url{int} \url{household_id} \index{\url{household_id}} & \parbox{10cm}{}\\
+    \url{double} \url{offered_consumption_volume} \index{\url{offered_consumption_volume}} & \parbox{10cm}{}\\
+    \url{int} \url{rationed} \index{\url{rationed}} & \parbox{10cm}{}\\
+\midrule
+\url{sales} & \parbox{10cm}{Sent by mall. Mall informs the firms about the revenue and if there are some stocks left.}\\
+    \url{int} \url{mall_id} \index{\url{mall_id}} & \parbox{10cm}{}\\
+    \url{int} \url{firm_id} \index{\url{firm_id}} & \parbox{10cm}{}\\
+    \url{double} \url{revenue} \index{\url{revenue}} & \parbox{10cm}{}\\
+    \url{int} \url{stock_empty} \index{\url{stock_empty}} & \parbox{10cm}{}\\
+    \url{double} \url{current_stock} \index{\url{current_stock}} & \parbox{10cm}{}\\
+\midrule
+\url{specific_skill_update} & \parbox{10cm}{Sent by households. Household informs the firm about the updates specific skills.}\\
+    \url{int} \url{id} \index{\url{id}} & \parbox{10cm}{}\\
+    \url{int} \url{firm_id} \index{\url{firm_id}} & \parbox{10cm}{}\\
+    \url{double} \url{specific_skills} \index{\url{specific_skills}} & \parbox{10cm}{}\\
+\midrule
+\url{policy_rate} & \parbox{10cm}{Message sent by CB to communicate the policy rate.}\\
+    \url{double} \url{policy_rate_value} \index{\url{policy_rate_value}} & \parbox{10cm}{rate value}\\
+\midrule
+\url{bank_identity} & \parbox{10cm}{Message added by bank to communicate its existence to firms.}\\
+    \url{int} \url{bank_id} \index{\url{bank_id}} & \parbox{10cm}{name of the bank}\\
+\midrule
+\url{loan_request} & \parbox{10cm}{Message added by firm to demand credit with bank\_id, with financial info of applying firm.}\\
+    \url{int} \url{firm_id} \index{\url{firm_id}} & \parbox{10cm}{}\\
+    \url{int} \url{bank_id} \index{\url{bank_id}} & \parbox{10cm}{}\\
+    \url{double} \url{equity} \index{\url{equity}} & \parbox{10cm}{}\\
+    \url{double} \url{total_debt} \index{\url{total_debt}} & \parbox{10cm}{}\\
+    \url{double} \url{external_financial_needs} \index{\url{external_financial_needs}} & \parbox{10cm}{}\\
+\midrule
+\url{loan_conditions} & \parbox{10cm}{ Message added by bank to offer credit; contains the interest rate, the amount of offered credit, and the value\_at\_risk.}\\
+    \url{int} \url{firm_id} \index{\url{firm_id}} & \parbox{10cm}{}\\
+    \url{int} \url{bank_id} \index{\url{bank_id}} & \parbox{10cm}{}\\
+    \url{double} \url{proposed_interest_rate} \index{\url{proposed_interest_rate}} & \parbox{10cm}{}\\
+    \url{double} \url{amount_offered_credit} \index{\url{amount_offered_credit}} & \parbox{10cm}{}\\
+    \url{double} \url{value_at_risk} \index{\url{value_at_risk}} & \parbox{10cm}{}\\
+\midrule
+\url{loan_acceptance} & \parbox{10cm}{Message added by firm to accept a loan with bank\_id, for the amount credit\_taken and VAR. The bank does not need to know the firm\_id.}\\
+    \url{int} \url{bank_id} \index{\url{bank_id}} & \parbox{10cm}{}\\
+    \url{double} \url{credit_amount_taken} \index{\url{credit_amount_taken}} & \parbox{10cm}{}\\
+    \url{double} \url{loan_total_var} \index{\url{loan_total_var}} & \parbox{10cm}{}\\
+\midrule
+\url{installment} & \parbox{10cm}{Message added by firm pays installment and interest to the bank.}\\
+    \url{int} \url{bank_id} \index{\url{bank_id}} & \parbox{10cm}{}\\
+    \url{double} \url{installment_amount} \index{\url{installment_amount}} & \parbox{10cm}{installment\_amount is 0 in case of bankruptcy, positive in case of No\_bankruptcy}\\
+    \url{double} \url{interest_amount} \index{\url{interest_amount}} & \parbox{10cm}{}\\
+    \url{double} \url{var_per_installment} \index{\url{var_per_installment}} & \parbox{10cm}{}\\
+\midrule
+\url{bankruptcy} & \parbox{10cm}{Message added by firm to bank to signal bankruptcy.}\\
+    \url{int} \url{firm_id} \index{\url{firm_id}} & \parbox{10cm}{}\\
+    \url{int} \url{bank_id} \index{\url{bank_id}} & \parbox{10cm}{}\\
+    \url{double} \url{bad_debt} \index{\url{bad_debt}} & \parbox{10cm}{}\\
+    \url{double} \url{credit_refunded} \index{\url{credit_refunded}} & \parbox{10cm}{}\\
+    \url{double} \url{residual_var} \index{\url{residual_var}} & \parbox{10cm}{}\\
+\midrule
+\url{bank_interest_payment} & \parbox{10cm}{Interests paid by banks to ecb}\\
+    \url{double} \url{bank_interest_amount} \index{\url{bank_interest_amount}} & \parbox{10cm}{}\\
+\midrule
+\url{accountInterest} & \parbox{10cm}{message posted by the Bank }\\
+    \url{int} \url{bank_id} \index{\url{bank_id}} & \parbox{10cm}{}\\
+    \url{double} \url{interest} \index{\url{interest}} & \parbox{10cm}{}\\
+\midrule
+\url{dividend_per_share} & \parbox{10cm}{Added by firm to send msg to shareholders with dividends per share}\\
+    \url{int} \url{firm_id} \index{\url{firm_id}} & \parbox{10cm}{}\\
+    \url{double} \url{current_dividend_per_share} \index{\url{current_dividend_per_share}} & \parbox{10cm}{}\\
+\midrule
+\url{bankruptcy_illiquidity} & \parbox{10cm}{Bankruptcy msg send by firm to mall.}\\
+    \url{int} \url{firm_id} \index{\url{firm_id}} & \parbox{10cm}{}\\
+\midrule
+\url{bankruptcy_insolvency} & \parbox{10cm}{Bankruptcy msg send by firm to mall.}\\
+    \url{int} \url{firm_id} \index{\url{firm_id}} & \parbox{10cm}{}\\
+\midrule
+\url{order} & \parbox{10cm}{order posted by the Household}\\
+    \url{int} \url{trader_id} \index{\url{trader_id}} & \parbox{10cm}{}\\
+    \url{int} \url{asset_id} \index{\url{asset_id}} & \parbox{10cm}{}\\
+    \url{double} \url{limit_price} \index{\url{limit_price}} & \parbox{10cm}{}\\
+    \url{int} \url{quantity} \index{\url{quantity}} & \parbox{10cm}{}\\
+\midrule
+\url{order_status} & \parbox{10cm}{order status posted by clearing house}\\
+    \url{int} \url{trader_id} \index{\url{trader_id}} & \parbox{10cm}{}\\
+    \url{int} \url{asset_id} \index{\url{asset_id}} & \parbox{10cm}{}\\
+    \url{double} \url{price} \index{\url{price}} & \parbox{10cm}{}\\
+    \url{int} \url{quantity} \index{\url{quantity}} & \parbox{10cm}{}\\
+\midrule
+\url{infoAssetCH} & \parbox{10cm}{message posted by the Clearing House }\\
+    \url{int} \url{asset_id} \index{\url{asset_id}} & \parbox{10cm}{}\\
+    \url{double} \url{price} \index{\url{price}} & \parbox{10cm}{}\\
+    \url{int} \url{quantity} \index{\url{quantity}} & \parbox{10cm}{}\\
+\midrule
+\url{info_firm} & \parbox{10cm}{message posted by the Firm}\\
+    \url{int} \url{id} \index{\url{id}} & \parbox{10cm}{}\\
+    \url{double} \url{earnings} \index{\url{earnings}} & \parbox{10cm}{}\\
+    \url{double} \url{dividend} \index{\url{dividend}} & \parbox{10cm}{}\\
+    \url{double} \url{earnings_payout} \index{\url{earnings_payout}} & \parbox{10cm}{}\\
+    \url{double} \url{equity} \index{\url{equity}} & \parbox{10cm}{}\\
+    \url{Stock} \url{stock} \index{\url{stock}} & \parbox{10cm}{}\\
+\midrule
+\url{info_bond} & \parbox{10cm}{message posted by the Government }\\
+    \url{Bond} \url{bond} \index{\url{bond}} & \parbox{10cm}{}\\
+\midrule
+\url{payment_coupons} & \parbox{10cm}{message posted by the Government, announce the payment coupons and it decreases its payment\_account }\\
+    \url{double} \url{coupon} \index{\url{coupon}} & \parbox{10cm}{}\\
+    \url{int} \url{government_id} \index{\url{government_id}} & \parbox{10cm}{the unitary cost of a coupon}\\
+\midrule
+\url{productivity} & \parbox{10cm}{}\\
+    \url{int} \url{IGfirm_id} \index{\url{IGfirm_id}} & \parbox{10cm}{}\\
+    \url{double} \url{cap_productivity} \index{\url{cap_productivity}} & \parbox{10cm}{}\\
+    \url{double} \url{cap_good_price} \index{\url{cap_good_price}} & \parbox{10cm}{}\\
+\midrule
+\url{capital_good_request} & \parbox{10cm}{}\\
+    \url{int} \url{firm_id} \index{\url{firm_id}} & \parbox{10cm}{}\\
+    \url{double} \url{capital_good_demand} \index{\url{capital_good_demand}} & \parbox{10cm}{}\\
+\midrule
+\url{capital_good_delivery} & \parbox{10cm}{}\\
+    \url{int} \url{firm_id} \index{\url{firm_id}} & \parbox{10cm}{}\\
+    \url{double} \url{capital_good_delivery_volume} \index{\url{capital_good_delivery_volume}} & \parbox{10cm}{}\\
+    \url{double} \url{productivity} \index{\url{productivity}} & \parbox{10cm}{}\\
+    \url{double} \url{capital_good_price} \index{\url{capital_good_price}} & \parbox{10cm}{}\\
+\midrule
+\url{pay_capital_goods} & \parbox{10cm}{}\\
+    \url{int} \url{firm_id} \index{\url{firm_id}} & \parbox{10cm}{}\\
+    \url{double} \url{capital_bill} \index{\url{capital_bill}} & \parbox{10cm}{}\\
+\midrule
+\url{vacancies} & \parbox{10cm}{Send by firms. Includes the id, the region id the number of vacancies and the \&\#xd;\&\#xd;\&\#xd;\&\#xd;\&\#xd;\&\#xd;
+wage offer for the according general skill level.}\\
+    \url{int} \url{firm_id} \index{\url{firm_id}} & \parbox{10cm}{}\\
+    \url{int} \url{region_id} \index{\url{region_id}} & \parbox{10cm}{}\\
+    \url{double} \url{firm_wage_offer_for_skill_1} \index{\url{firm_wage_offer_for_skill_1}} & \parbox{10cm}{}\\
+    \url{double} \url{firm_wage_offer_for_skill_2} \index{\url{firm_wage_offer_for_skill_2}} & \parbox{10cm}{}\\
+    \url{double} \url{firm_wage_offer_for_skill_3} \index{\url{firm_wage_offer_for_skill_3}} & \parbox{10cm}{}\\
+    \url{double} \url{firm_wage_offer_for_skill_4} \index{\url{firm_wage_offer_for_skill_4}} & \parbox{10cm}{}\\
+    \url{double} \url{firm_wage_offer_for_skill_5} \index{\url{firm_wage_offer_for_skill_5}} & \parbox{10cm}{}\\
+\midrule
+\url{vacancies2} & \parbox{10cm}{Send by firms. Includes the id, the region id the number of vacancies and the \&\#xd;\&\#xd;\&\#xd;\&\#xd;\&\#xd;\&\#xd;
+wage offer for the according general skill level.}\\
+    \url{int} \url{firm_id} \index{\url{firm_id}} & \parbox{10cm}{}\\
+    \url{int} \url{region_id} \index{\url{region_id}} & \parbox{10cm}{}\\
+    \url{double} \url{firm_wage_offer_for_skill_1} \index{\url{firm_wage_offer_for_skill_1}} & \parbox{10cm}{}\\
+    \url{double} \url{firm_wage_offer_for_skill_2} \index{\url{firm_wage_offer_for_skill_2}} & \parbox{10cm}{}\\
+    \url{double} \url{firm_wage_offer_for_skill_3} \index{\url{firm_wage_offer_for_skill_3}} & \parbox{10cm}{}\\
+    \url{double} \url{firm_wage_offer_for_skill_4} \index{\url{firm_wage_offer_for_skill_4}} & \parbox{10cm}{}\\
+    \url{double} \url{firm_wage_offer_for_skill_5} \index{\url{firm_wage_offer_for_skill_5}} & \parbox{10cm}{}\\
+\midrule
+\url{firing} & \parbox{10cm}{Send by firms. Includes the firm\_id and the id of the dismissed employee.}\\
+    \url{int} \url{firm_id} \index{\url{firm_id}} & \parbox{10cm}{}\\
+    \url{int} \url{worker_id} \index{\url{worker_id}} & \parbox{10cm}{}\\
+\midrule
+\url{job_application} & \parbox{10cm}{Send by households to apply for a job. Includes the id, firm id, region id the general \&\#xd;\&\#xd;\&\#xd;\&\#xd;\&\#xd;\&\#xd;
+as well as the specific skills.}\\
+    \url{int} \url{worker_id} \index{\url{worker_id}} & \parbox{10cm}{}\\
+    \url{int} \url{firm_id} \index{\url{firm_id}} & \parbox{10cm}{}\\
+    \url{int} \url{region_id} \index{\url{region_id}} & \parbox{10cm}{}\\
+    \url{int} \url{general_skill} \index{\url{general_skill}} & \parbox{10cm}{}\\
+    \url{double} \url{specific_skill} \index{\url{specific_skill}} & \parbox{10cm}{}\\
+\midrule
+\url{job_application2} & \parbox{10cm}{Send by households to apply for a job. Includes the id, firm id, region id the general \&\#xd;\&\#xd;\&\#xd;\&\#xd;\&\#xd;\&\#xd;
+as well as the specific skills.}\\
+    \url{int} \url{worker_id} \index{\url{worker_id}} & \parbox{10cm}{}\\
+    \url{int} \url{firm_id} \index{\url{firm_id}} & \parbox{10cm}{}\\
+    \url{int} \url{region_id} \index{\url{region_id}} & \parbox{10cm}{}\\
+    \url{int} \url{general_skill} \index{\url{general_skill}} & \parbox{10cm}{}\\
+    \url{double} \url{specific_skill} \index{\url{specific_skill}} & \parbox{10cm}{}\\
+\midrule
+\url{job_offer} & \parbox{10cm}{Send by firms to make a job offer for a household. Includes the id, worker id and the \&\#xd;\&\#xd;\&\#xd;\&\#xd;\&\#xd;\&\#xd;
+corresponding wage offer.}\\
+    \url{int} \url{firm_id} \index{\url{firm_id}} & \parbox{10cm}{}\\
+    \url{int} \url{worker_id} \index{\url{worker_id}} & \parbox{10cm}{}\\
+    \url{int} \url{region_id} \index{\url{region_id}} & \parbox{10cm}{}\\
+    \url{double} \url{wage_offer} \index{\url{wage_offer}} & \parbox{10cm}{}\\
+\midrule
+\url{job_offer2} & \parbox{10cm}{Send by firms to make a job offer for a household. Includes the id, worker id and the \&\#xd;\&\#xd;\&\#xd;\&\#xd;\&\#xd;\&\#xd;
+corresponding wage offer.}\\
+    \url{int} \url{firm_id} \index{\url{firm_id}} & \parbox{10cm}{}\\
+    \url{int} \url{worker_id} \index{\url{worker_id}} & \parbox{10cm}{}\\
+    \url{int} \url{region_id} \index{\url{region_id}} & \parbox{10cm}{}\\
+    \url{double} \url{wage_offer} \index{\url{wage_offer}} & \parbox{10cm}{}\\
+\midrule
+\url{job_acceptance} & \parbox{10cm}{Send by households to accept the job offer. Includes the id, firm id, region id, the general \&\#xd;\&\#xd;\&\#xd;\&\#xd;\&\#xd;\&\#xd;
+as well as the specific skills.}\\
+    \url{int} \url{worker_id} \index{\url{worker_id}} & \parbox{10cm}{}\\
+    \url{int} \url{firm_id} \index{\url{firm_id}} & \parbox{10cm}{}\\
+    \url{int} \url{region_id} \index{\url{region_id}} & \parbox{10cm}{}\\
+    \url{int} \url{general_skill} \index{\url{general_skill}} & \parbox{10cm}{}\\
+    \url{double} \url{specific_skill} \index{\url{specific_skill}} & \parbox{10cm}{}\\
+\midrule
+\url{job_acceptance2} & \parbox{10cm}{Send by households to accept the job offer. Includes the id, firm id, region id the general \&\#xd;\&\#xd;\&\#xd;\&\#xd;\&\#xd;\&\#xd;
+as well as the specific skills.}\\
+    \url{int} \url{worker_id} \index{\url{worker_id}} & \parbox{10cm}{}\\
+    \url{int} \url{firm_id} \index{\url{firm_id}} & \parbox{10cm}{}\\
+    \url{int} \url{region_id} \index{\url{region_id}} & \parbox{10cm}{}\\
+    \url{int} \url{general_skill} \index{\url{general_skill}} & \parbox{10cm}{}\\
+    \url{double} \url{specific_skill} \index{\url{specific_skill}} & \parbox{10cm}{}\\
+\midrule
+\url{quitting} & \parbox{10cm}{Send by households to quit the current job. Includes the id, firm id.}\\
+    \url{int} \url{worker_id} \index{\url{worker_id}} & \parbox{10cm}{}\\
+    \url{int} \url{firm_id} \index{\url{firm_id}} & \parbox{10cm}{}\\
+\midrule
+\url{quitting2} & \parbox{10cm}{Send by households to quit the current job. Includes the id, firm id.}\\
+    \url{int} \url{worker_id} \index{\url{worker_id}} & \parbox{10cm}{}\\
+    \url{int} \url{firm_id} \index{\url{firm_id}} & \parbox{10cm}{}\\
+\midrule
+\url{unemployment_notification} & \parbox{10cm}{Household sends unemployment notification to gov, applying for unemployment benefits.}\\
+    \url{int} \url{gov_id} \index{\url{gov_id}} & \parbox{10cm}{}\\
+    \url{double} \url{unemployment_payment} \index{\url{unemployment_payment}} & \parbox{10cm}{}\\
+\midrule
+\url{policy_announcement} & \parbox{10cm}{Government announcing tax rates, benefits, transfer payments and subsidies.}\\
+    \url{int} \url{gov_id} \index{\url{gov_id}} & \parbox{10cm}{}\\
+    \url{double} \url{tax_rate_corporate} \index{\url{tax_rate_corporate}} & \parbox{10cm}{}\\
+    \url{double} \url{tax_rate_hh_labour} \index{\url{tax_rate_hh_labour}} & \parbox{10cm}{}\\
+    \url{double} \url{tax_rate_hh_capital} \index{\url{tax_rate_hh_capital}} & \parbox{10cm}{}\\
+    \url{double} \url{tax_rate_vat} \index{\url{tax_rate_vat}} & \parbox{10cm}{}\\
+    \url{double} \url{unemployment_benefit_pct} \index{\url{unemployment_benefit_pct}} & \parbox{10cm}{}\\
+    \url{double} \url{hh_subsidy_pct} \index{\url{hh_subsidy_pct}} & \parbox{10cm}{}\\
+    \url{double} \url{firm_subsidy_pct} \index{\url{firm_subsidy_pct}} & \parbox{10cm}{}\\
+    \url{double} \url{hh_transfer_payment} \index{\url{hh_transfer_payment}} & \parbox{10cm}{}\\
+    \url{double} \url{firm_transfer_payment} \index{\url{firm_transfer_payment}} & \parbox{10cm}{}\\
+\midrule
+\url{tax_payment} & \parbox{10cm}{Added by agents to pay taxes}\\
+    \url{int} \url{gov_id} \index{\url{gov_id}} & \parbox{10cm}{}\\
+    \url{double} \url{tax_payment} \index{\url{tax_payment}} & \parbox{10cm}{}\\
+\midrule
+\url{hh_transfer_notification} & \parbox{10cm}{An agent applies for a transfer payment and notifies its government.}\\
+    \url{int} \url{gov_id} \index{\url{gov_id}} & \parbox{10cm}{}\\
+\midrule
+\url{hh_subsidy_notification} & \parbox{10cm}{An agent applies for a subsidy payment and notifies its government.}\\
+    \url{int} \url{gov_id} \index{\url{gov_id}} & \parbox{10cm}{}\\
+    \url{double} \url{subsidy_payment} \index{\url{subsidy_payment}} & \parbox{10cm}{}\\
+\midrule
+\url{firm_transfer_notification} & \parbox{10cm}{An agent applies for a transfer payment and notifies its government.}\\
+    \url{int} \url{gov_id} \index{\url{gov_id}} & \parbox{10cm}{}\\
+\midrule
+\url{firm_subsidy_notification} & \parbox{10cm}{An agent applies for a subsidy payment and notifies its government.}\\
+    \url{int} \url{gov_id} \index{\url{gov_id}} & \parbox{10cm}{}\\
+    \url{double} \url{subsidy_payment} \index{\url{subsidy_payment}} & \parbox{10cm}{}\\
+\midrule
+\url{request_fiat_money} & \parbox{10cm}{The government requests fiat money directly from the ECB, without issuing bonds.}\\
+    \url{double} \url{nominal_value} \index{\url{nominal_value}} & \parbox{10cm}{}\\
+\midrule
+\url{issue_bonds_to_ecb} & \parbox{10cm}{The government issues bonds to the ECB in case it cannot sell them on the bond market.}\\
+    \url{double} \url{nominal_value} \index{\url{nominal_value}} & \parbox{10cm}{Nominal value of the bond issue.}\\
+    \url{int} \url{quantity} \index{\url{quantity}} & \parbox{10cm}{Number of bonds issued}\\
+\midrule
+\url{firm_send_data} & \parbox{10cm}{Send by firms to Eurostat. Includes micro data.}\\
+    \url{int} \url{firm_id} \index{\url{firm_id}} & \parbox{10cm}{}\\
+    \url{int} \url{region_id} \index{\url{region_id}} & \parbox{10cm}{}\\
+    \url{int} \url{vacancies} \index{\url{vacancies}} & \parbox{10cm}{}\\
+    \url{int} \url{employees} \index{\url{employees}} & \parbox{10cm}{}\\
+    \url{int} \url{employees_skill_1} \index{\url{employees_skill_1}} & \parbox{10cm}{}\\
+    \url{int} \url{employees_skill_2} \index{\url{employees_skill_2}} & \parbox{10cm}{}\\
+    \url{int} \url{employees_skill_3} \index{\url{employees_skill_3}} & \parbox{10cm}{}\\
+    \url{int} \url{employees_skill_4} \index{\url{employees_skill_4}} & \parbox{10cm}{}\\
+    \url{int} \url{employees_skill_5} \index{\url{employees_skill_5}} & \parbox{10cm}{}\\
+    \url{double} \url{average_wage} \index{\url{average_wage}} & \parbox{10cm}{}\\
+    \url{double} \url{average_s_skill} \index{\url{average_s_skill}} & \parbox{10cm}{}\\
+    \url{double} \url{average_s_skill_1} \index{\url{average_s_skill_1}} & \parbox{10cm}{}\\
+    \url{double} \url{average_s_skill_2} \index{\url{average_s_skill_2}} & \parbox{10cm}{}\\
+    \url{double} \url{average_s_skill_3} \index{\url{average_s_skill_3}} & \parbox{10cm}{}\\
+    \url{double} \url{average_s_skill_4} \index{\url{average_s_skill_4}} & \parbox{10cm}{}\\
+    \url{double} \url{average_s_skill_5} \index{\url{average_s_skill_5}} & \parbox{10cm}{}\\
+    \url{double} \url{cum_revenue} \index{\url{cum_revenue}} & \parbox{10cm}{}\\
+    \url{double} \url{capital_costs} \index{\url{capital_costs}} & \parbox{10cm}{}\\
+    \url{double} \url{net_earnings} \index{\url{net_earnings}} & \parbox{10cm}{}\\
+    \url{double} \url{total_debt} \index{\url{total_debt}} & \parbox{10cm}{}\\
+    \url{double} \url{total_assets} \index{\url{total_assets}} & \parbox{10cm}{}\\
+    \url{double} \url{equity} \index{\url{equity}} & \parbox{10cm}{}\\
+    \url{double} \url{price} \index{\url{price}} & \parbox{10cm}{}\\
+    \url{double} \url{price_last_month} \index{\url{price_last_month}} & \parbox{10cm}{Price of the consumption good in the last month}\\
+    \url{double} \url{total_supply} \index{\url{total_supply}} & \parbox{10cm}{}\\
+    \url{double} \url{cum_total_sold_quantity} \index{\url{cum_total_sold_quantity}} & \parbox{10cm}{Monthly sum of sold quantities in the different malls}\\
+    \url{double} \url{output} \index{\url{output}} & \parbox{10cm}{}\\
+    \url{double} \url{planned_output} \index{\url{planned_output}} & \parbox{10cm}{}\\
+    \url{int} \url{age} \index{\url{age}} & \parbox{10cm}{Age of the firm in months}\\
+    \url{double} \url{firm_productivity} \index{\url{firm_productivity}} & \parbox{10cm}{}\\
+    \url{double} \url{firm_productivity_progress} \index{\url{firm_productivity_progress}} & \parbox{10cm}{}\\
+\midrule
+\url{household_send_data} & \parbox{10cm}{Sent by households to eurostat. Includes micro data.}\\
+    \url{int} \url{household_id} \index{\url{household_id}} & \parbox{10cm}{}\\
+    \url{int} \url{region_id} \index{\url{region_id}} & \parbox{10cm}{}\\
+    \url{int} \url{general_skill} \index{\url{general_skill}} & \parbox{10cm}{}\\
+    \url{int} \url{employment_status} \index{\url{employment_status}} & \parbox{10cm}{}\\
+    \url{double} \url{wage} \index{\url{wage}} & \parbox{10cm}{}\\
+    \url{double} \url{specific_skill} \index{\url{specific_skill}} & \parbox{10cm}{}\\
+\midrule
+\url{mall_data} & \parbox{10cm}{Sent by mall. Mall informs Eurostat about exports between regions.}\\
+    \url{int} \url{mall_id} \index{\url{mall_id}} & \parbox{10cm}{}\\
+    \url{int} \url{firm_region} \index{\url{firm_region}} & \parbox{10cm}{}\\
+    \url{int} \url{household_region} \index{\url{household_region}} & \parbox{10cm}{}\\
+    \url{double} \url{export_volume} \index{\url{export_volume}} & \parbox{10cm}{}\\
+    \url{double} \url{export_value} \index{\url{export_value}} & \parbox{10cm}{}\\
+    \url{double} \url{export_previous_value} \index{\url{export_previous_value}} & \parbox{10cm}{}\\
+\midrule
+\url{eurostat_send_specific_skills} & \parbox{10cm}{Sent by Eurostat. Includes the average specific skills of the different general skill groups for each region.}\\
+    \url{int} \url{region_id} \index{\url{region_id}} & \parbox{10cm}{}\\
+    \url{double} \url{specific_skill_1} \index{\url{specific_skill_1}} & \parbox{10cm}{}\\
+    \url{double} \url{specific_skill_2} \index{\url{specific_skill_2}} & \parbox{10cm}{}\\
+    \url{double} \url{specific_skill_3} \index{\url{specific_skill_3}} & \parbox{10cm}{}\\
+    \url{double} \url{specific_skill_4} \index{\url{specific_skill_4}} & \parbox{10cm}{}\\
+    \url{double} \url{specific_skill_5} \index{\url{specific_skill_5}} & \parbox{10cm}{}\\
+    \url{double} \url{productivity_progress} \index{\url{productivity_progress}} & \parbox{10cm}{}\\
+    \url{double} \url{cpi} \index{\url{cpi}} & \parbox{10cm}{}\\
+\midrule
+\url{data_for_government} & \parbox{10cm}{Sent by Eurostat to governments. Includes the region\_id and gdp for the region. Used by gov to compute its GDP. Also contains the mean wage for the region.}\\
+    \url{int} \url{region_id} \index{\url{region_id}} & \parbox{10cm}{Region to which the data applies.}\\
+    \url{double} \url{gdp} \index{\url{gdp}} & \parbox{10cm}{GDP in the region.}\\
+    \url{double} \url{mean_wage} \index{\url{mean_wage}} & \parbox{10cm}{Mean wage in the region.}\\
+\midrule
+\url{eurostat_send_macrodata} & \parbox{10cm}{}\\
+    \url{double} \url{inflation} \index{\url{inflation}} & \parbox{10cm}{}\\
+    \url{double} \url{gdp} \index{\url{gdp}} & \parbox{10cm}{}\\
+    \url{double} \url{unemployment_rate} \index{\url{unemployment_rate}} & \parbox{10cm}{}\\
+\midrule
+\url{msg_firm_id_to_malls} & \parbox{10cm}{}\\
+    \url{int} \url{firm_id} \index{\url{firm_id}} & \parbox{10cm}{}\\
+    \url{int} \url{region_id} \index{\url{region_id}} & \parbox{10cm}{}\\
+\midrule
+\url{msg_mall_id_to_firms} & \parbox{10cm}{}\\
+    \url{int} \url{mall_id} \index{\url{mall_id}} & \parbox{10cm}{}\\
+\end{longtable}
+\end{landscape}
+
+\subsection{Constants}
+See Table \ref{Table: constants}.
+\begin{landscape}
+\begin{longtable}[H!]{ll}
+\caption{{\bfseries List of constants.}}
+\label{Table: constants}\\
+\toprule 
+\bfseries Name & \bfseries Description \\ \hline 
+\midrule
+\endfirsthead
+\multicolumn{2}{c}%
+{{\bfseries \tablename\ \thetable{} -- continued from previous page}} \\
+\toprule
+\bfseries Name & \bfseries Description \\ \hline 
+\midrule
+\endhead
+\multicolumn{2}{r}{{\emph{Continued on next page}}} \\
+\endfoot
+\bottomrule
+\endlastfoot
+\url{int} \url{total_regions} \index{\url{total_regions}} & \parbox{10cm}{Total number of regions.}\\
+\url{int} \url{print_log} \index{\url{print_log}} & \parbox{10cm}{0 or 1, A flag to print logging output to terminal or to file.}\\
+\url{int} \url{print_debug_afm} \index{\url{print_debug_afm}} & \parbox{10cm}{0 or 1, A flag to print logging output to terminal or to file.}\\
+\url{int} \url{print_debug_exp1} \index{\url{print_debug_exp1}} & \parbox{10cm}{0 or 1, A flag to print logging output to terminal or to file.}\\
+\url{int} \url{print_debug_file_exp1} \index{\url{print_debug_file_exp1}} & \parbox{10cm}{0 or 1, A flag to print logging output to terminal or to file.}\\
+\url{int} \url{print_debug_file_exp2} \index{\url{print_debug_file_exp2}} & \parbox{10cm}{0 or 1, A flag to print logging output to terminal or to file. Used in Government code.}\\
+\url{int} \url{policy_exp1} \index{\url{policy_exp1}} & \parbox{10cm}{0 or 1, A flag to print logging output to terminal or to file.}\\
+\url{int} \url{print_debug_gov} \index{\url{print_debug_gov}} & \parbox{10cm}{0 or 1, A flag to print logging output to terminal or to file.}\\
+\url{int} \url{print_debug_andrea} \index{\url{print_debug_andrea}} & \parbox{10cm}{0 or 1, A flag to print logging output to terminal or to file.}\\
+\url{int} \url{print_debug_credit} \index{\url{print_debug_credit}} & \parbox{10cm}{0 or 1, A flag to print logging output to terminal or to file.}\\
+\url{int} \url{print_debug_consumption} \index{\url{print_debug_consumption}} & \parbox{10cm}{0 or 1, A flag to print logging output to terminal or to file.}\\
+\url{int} \url{print_debug} \index{\url{print_debug}} & \parbox{10cm}{0 or 1, A flag to print debugging output to terminal.}\\
+\url{int} \url{policy_exp_energy_shock} \index{\url{policy_exp_energy_shock}} & \parbox{10cm}{Switch for policy experiment: energy shock.}\\
+\url{int} \url{policy_exp_stabilization} \index{\url{policy_exp_stabilization}} & \parbox{10cm}{Switch for policy experiment: stabilization policy.}\\
+\url{int} \url{const_bankruptcy_idle_period} \index{\url{const_bankruptcy_idle_period}} & \parbox{10cm}{Number of iterations that a bankrupt firm remains idle, before resuming production activity.}\\
+\url{int} \url{days_per_month} \index{\url{days_per_month}} & \parbox{10cm}{Optional setting for the number of days in a month.}\\
+\url{int} \url{number_of_banks_to_apply} \index{\url{number_of_banks_to_apply}} & \parbox{10cm}{Number of banks to which firms can apply for loans.}\\
+\url{int} \url{const_number_of_banks} \index{\url{const_number_of_banks}} & \parbox{10cm}{Total number of banks.}\\
+\url{int} \url{const_installment_periods} \index{\url{const_installment_periods}} & \parbox{10cm}{Number of months to make debt installment payments before a loan is fully repaid.}\\
+\url{double} \url{const_wage_wealth_ratio} \index{\url{const_wage_wealth_ratio}} & \parbox{10cm}{The household's initial ratio between wage and wealth. This parametrizes the link between the unit price of capital and the unit price of labour.}\\
+\url{double} \url{const_firm_leverage} \index{\url{const_firm_leverage}} & \parbox{10cm}{Initial leverage (debt/equity ratio) of each firm.}\\
+\url{double} \url{const_income_tax_rate} \index{\url{const_income_tax_rate}} & \parbox{10cm}{Constant income tax rate for sensitivity analysis.}\\
+\url{double} \url{debt_rescaling_factor} \index{\url{debt_rescaling_factor}} & \parbox{10cm}{The debt rescaling factor $\omega$ is used in case of a firm bankruptcy to rescale the debt. This is a process of debt-to-equity transformation. It sets the target debt level in relation to the value of total assets: $L^*=\omega A^*$. The firm will not refund all of its loans completely, but will write off every loan with a certain ratio: $w\_j = (1-L^*/L)L\_j$ for loan $j$. The fraction $(1-L^*/L)$ is the write-off ratio, and $w\_j$ is the monetary amount of the write-off for loan $j$.}\\
+\url{double} \url{target_leverage_ratio} \index{\url{target_leverage_ratio}} & \parbox{10cm}{The target leverage ratio is the proportion of the target debt to target equity: $\ell = L^*/E^*$. This determines the target equity level as $E^*= (1/\ell) L^*$ and sets the amount of equity that the firm should raise on the financial market.}\\
+\url{double} \url{target_liquidity_ratio} \index{\url{target_liquidity_ratio}} & \parbox{10cm}{The target liquidity ratio is a parameter used in the case of firm bankruptcy due to illiquidity. The amount of equity to raise on the AFM equals $\alpha (F-P)$, where $\alpha$ is the target liquidity ratio, F are the financial commitments, and P is the payment account.}\\
+\url{double} \url{const_dividend_earnings_ratio} \index{\url{const_dividend_earnings_ratio}} & \parbox{10cm}{The parameter const\_dividend\_earnings\_ratio is used to determine the first positive dividend payment (if the dividend was set to 0, or at the start): 
+TOTAL\_DIVIDEND\_PAYMENT = CONST\_DIVIDEND\_EARNINGS\_RATIO *NET\_EARNINGS;}\\
+\url{double} \url{trading_activity} \index{\url{trading_activity}} & \parbox{10cm}{household choose randomly to trade or not.}\\
+\url{double} \url{bonds_newissue_discount} \index{\url{bonds_newissue_discount}} & \parbox{10cm}{}\\
+\url{int} \url{couponperiodicitynrmonths} \index{\url{couponperiodicitynrmonths}} & \parbox{10cm}{payment coupon period expressed in number of months: typical value is 6 }\\
+\url{double} \url{fundamental_return_weight_min} \index{\url{fundamental_return_weight_min}} & \parbox{10cm}{constant value that regulate the minumum value of the fundamental weight:typical value is 0.1}\\
+\url{int} \url{days_in_month} \index{\url{days_in_month}} & \parbox{10cm}{number of days in month : typical value is 20}\\
+\url{int} \url{symmetric_shock} \index{\url{symmetric_shock}} & \parbox{10cm}{Binary parameter to set if the energy shock is symmetric.}\\
+\url{int} \url{energy_shock_start} \index{\url{energy_shock_start}} & \parbox{10cm}{Day when the energy shock starts.}\\
+\url{int} \url{energy_shock_end} \index{\url{energy_shock_end}} & \parbox{10cm}{Day when the energy shock ends.}\\
+\url{double} \url{const_energy_shock_intensity} \index{\url{const_energy_shock_intensity}} & \parbox{10cm}{Mark up on the capital goods price that flows out of the system, representing energy costs.}\\
+\url{int} \url{energy_shock_frequency} \index{\url{energy_shock_frequency}} & \parbox{10cm}{The frequency at which the energy price is updated.}\\
+\url{double} \url{gamma_const} \index{\url{gamma_const}} & \parbox{10cm}{ -2, Strength of logit rule for consumption}\\
+\url{double} \url{alpha} \index{\url{alpha}} & \parbox{10cm}{0.662, Parameter for production function.}\\
+\url{double} \url{beta} \index{\url{beta}} & \parbox{10cm}{0.338, Parameter for production function.}\\
+\url{double} \url{depreciation_rate} \index{\url{depreciation_rate}} & \parbox{10cm}{0.01, Capital depreciation rate.}\\
+\url{double} \url{mark_up} \index{\url{mark_up}} & \parbox{10cm}{0.2, Pricing rule: mark up on unit costs.}\\
+\url{double} \url{lambda} \index{\url{lambda}} & \parbox{10cm}{0.5, Strength of the influence of the actual demand on the next production quantity: if LAMBDA = 0 then the planned production quantities of the last periods are recognized. If LAMBDA = 1 then only the actual demand is recognized.}\\
+\url{double} \url{wage_update} \index{\url{wage_update}} & \parbox{10cm}{0.02, Parameter for adaption of the wage offer: percentage}\\
+\url{int} \url{min_vacancy} \index{\url{min_vacancy}} & \parbox{10cm}{2, minimum number of vacancies to trigger vacancy counter}\\
+\url{double} \url{wage_reservation_update} \index{\url{wage_reservation_update}} & \parbox{10cm}{0.02, Parameter adaption of the reservation wage: percentage.}\\
+\url{double} \url{region_cost} \index{\url{region_cost}} & \parbox{10cm}{0.2, Cost of working in a different region: commuting costs.}\\
+\url{double} \url{target_savings_rate} \index{\url{target_savings_rate}} & \parbox{10cm}{This is the target savings rate of an household. Typical value: 0.1}\\
+\url{double} \url{carrol_consumption_parameter} \index{\url{carrol_consumption_parameter}} & \parbox{10cm}{0.01, Percentage of the excess (wealth-target\_wealth) allocated to the consumption budget.}\\
+\url{double} \url{quantil_normal_distribution} \index{\url{quantil_normal_distribution}} & \parbox{10cm}{Quantil of the normal distribution  used for the production planning rule}\\
+\url{int} \url{firm_planning_horizon} \index{\url{firm_planning_horizon}} & \parbox{10cm}{10, Planning horizon of firms}\\
+\url{double} \url{inv_inertia} \index{\url{inv_inertia}} & \parbox{10cm}{Inertia of investing in the physical capital.}\\
+\url{double} \url{adaption_delivery_volume} \index{\url{adaption_delivery_volume}} & \parbox{10cm}{This variable increses the sales reported by the mall when the stock was sold out. It is used as an rough demand estimation.}\\
+\url{double} \url{delivery_prob_if_critical_stock_0} \index{\url{delivery_prob_if_critical_stock_0}} & \parbox{10cm}{25, Probability for the delivery if the critical stock of one mall was zero for the last periods.}\\
+\url{double} \url{innovation_probability} \index{\url{innovation_probability}} & \parbox{10cm}{10. Probability that the investment goods producer innovate a new technology.}\\
+\url{double} \url{productivity_progress} \index{\url{productivity_progress}} & \parbox{10cm}{0.05. Gives the increase of productivity of an innovation.}\\
+\url{int} \url{lower_bound_firing} \index{\url{lower_bound_firing}} & \parbox{10cm}{}\\
+\url{int} \url{upper_bound_firing} \index{\url{upper_bound_firing}} & \parbox{10cm}{Upper bound of the range from that the firm draws randomly the number of fired workers.}\\
+\url{double} \url{logit_parameter_specific_skills} \index{\url{logit_parameter_specific_skills}} & \parbox{10cm}{Logit parameter for specific skills used in firm's hiring decision.}\\
+\url{double} \url{logit_parameter_general_skills} \index{\url{logit_parameter_general_skills}} & \parbox{10cm}{Logit parameter for general skills used in firm's hiring decision.}\\
+\url{double} \url{gov_policy_unemployment_benefit_pct} \index{\url{gov_policy_unemployment_benefit_pct}} & \parbox{10cm}{Parameter to set the net replacement rate (the unemployment benefit as a fraction of last labour income).}\\
+\url{double} \url{gov_policy_money_financing_fraction} \index{\url{gov_policy_money_financing_fraction}} & \parbox{10cm}{Parameter to set the fraction of the budget deficit to be financed by money financing.}\\
+\url{double} \url{gov_policy_gdp_fraction_consumption} \index{\url{gov_policy_gdp_fraction_consumption}} & \parbox{10cm}{Parameter to set government consumption expenditure as a fraction of GDP.}\\
+\url{double} \url{gov_policy_gdp_fraction_investment} \index{\url{gov_policy_gdp_fraction_investment}} & \parbox{10cm}{Parameter to set government investment expenditure as a fraction of GDP.}\\
+\url{int} \url{no_regions_per_gov} \index{\url{no_regions_per_gov}} & \parbox{10cm}{Number of regions per government. Default 2.}\\
+\url{int} \url{gov_policy_switch_quantitative_easing} \index{\url{gov_policy_switch_quantitative_easing}} & \parbox{10cm}{Constant to switch on/off automatic quantitative easing: gov issues bonds to ecb.\&\#xd;
+}\\
+\url{double} \url{subsidy_trigger_on} \index{\url{subsidy_trigger_on}} & \parbox{10cm}{Trigger floor level of the GDP growth rate, below which the subsidy is switched on. Typically set to -0.01.\&\#xd;
+}\\
+\url{double} \url{subsidy_trigger_off} \index{\url{subsidy_trigger_off}} & \parbox{10cm}{Trigger ceiling level of the GDP growth rate, above which the subsidy is switched off. Typically set to +0.01.\&\#xd;
+}\\
+\url{double} \url{subsidy_gdp_ratio} \index{\url{subsidy_gdp_ratio}} & \parbox{10cm}{The subsidy percentage is a ratio of the - GDP growth rate. Typical setting is tanh(gdp\_growth).\&\#xd;
+}\\
+\end{longtable}
+\end{landscape}
+
+\subsection{Datatypes}
+See Table \ref{Table: datatypes}.
+\begin{landscape}
+\begin{longtable}[H!]{ll}
+\caption{{\bfseries List of attributes for ADTs.}}
+\label{Table: datatypes}\\
+\toprule 
+\bfseries Name & \bfseries Description \\ \hline 
+\midrule
+\endfirsthead
+\multicolumn{2}{c}%
+{{\bfseries \tablename\ \thetable{} -- continued from previous page}} \\
+\toprule
+\bfseries Name & \bfseries Description \\ \hline 
+\midrule
+\endhead
+\multicolumn{2}{r}{{\emph{Continued on next page}}} \\
+\endfoot
+\bottomrule
+\endlastfoot
+\url{consumption_goods_offer} \index{\url{consumption_goods_offer}} & \parbox{10cm}{} \\
+    \url{int} \url{id} & \parbox{8cm}{}\\
+    \url{double} \url{quality} & \parbox{8cm}{}\\
+    \url{double} \url{price} & \parbox{8cm}{}\\
+\midrule
+\url{estimators_linear_regression} \index{\url{estimators_linear_regression}} & \parbox{10cm}{} \\
+    \url{int} \url{mall_id} & \parbox{8cm}{}\\
+    \url{double} \url{intercept} & \parbox{8cm}{}\\
+    \url{double} \url{regressor} & \parbox{8cm}{}\\
+    \url{double} \url{variance} & \parbox{8cm}{}\\
+\midrule
+\url{consumption_request} \index{\url{consumption_request}} & \parbox{10cm}{} \\
+    \url{int} \url{worker_id} & \parbox{8cm}{}\\
+    \url{int} \url{consumer_region_id} & \parbox{8cm}{}\\
+    \url{int} \url{firm_id} & \parbox{8cm}{}\\
+    \url{double} \url{quantity} & \parbox{8cm}{}\\
+\midrule
+\url{mall_info} \index{\url{mall_info}} & \parbox{10cm}{} \\
+    \url{int} \url{mall_id} & \parbox{8cm}{}\\
+    \url{double} \url{critical_stock} & \parbox{8cm}{}\\
+    \url{double} \url{current_stock} & \parbox{8cm}{}\\
+\midrule
+\url{mall_quality_price_info} \index{\url{mall_quality_price_info}} & \parbox{10cm}{} \\
+    \url{int} \url{mall_id} & \parbox{8cm}{}\\
+    \url{int} \url{firm_id} & \parbox{8cm}{}\\
+    \url{int} \url{mall_region_id} & \parbox{8cm}{}\\
+    \url{double} \url{quality} & \parbox{8cm}{}\\
+    \url{double} \url{price} & \parbox{8cm}{}\\
+    \url{int} \url{available} & \parbox{8cm}{}\\
+\midrule
+\url{mall_stock} \index{\url{mall_stock}} & \parbox{10cm}{} \\
+    \url{int} \url{firm_id} & \parbox{8cm}{}\\
+    \url{int} \url{region_id} & \parbox{8cm}{}\\
+    \url{double} \url{stock} & \parbox{8cm}{}\\
+    \url{double} \url{price} & \parbox{8cm}{}\\
+    \url{double} \url{quality} & \parbox{8cm}{}\\
+    \url{double} \url{previous_price} & \parbox{8cm}{}\\
+\midrule
+\url{delivery_volume_per_mall} \index{\url{delivery_volume_per_mall}} & \parbox{10cm}{} \\
+    \url{int} \url{mall_id} & \parbox{8cm}{}\\
+    \url{double} \url{quantity} & \parbox{8cm}{}\\
+    \url{double} \url{price} & \parbox{8cm}{}\\
+    \url{double} \url{quality} & \parbox{8cm}{}\\
+\midrule
+\url{logit_firm_id} \index{\url{logit_firm_id}} & \parbox{10cm}{} \\
+    \url{double} \url{logit} & \parbox{8cm}{}\\
+    \url{int} \url{firm_id} & \parbox{8cm}{}\\
+\midrule
+\url{sales_in_mall} \index{\url{sales_in_mall}} & \parbox{10cm}{} \\
+    \url{int} \url{firm_id} & \parbox{8cm}{}\\
+    \url{double} \url{sales} & \parbox{8cm}{}\\
+\midrule
+\url{ordered_quantity} \index{\url{ordered_quantity}} & \parbox{10cm}{} \\
+    \url{int} \url{firm_id} & \parbox{8cm}{}\\
+    \url{double} \url{quantity} & \parbox{8cm}{}\\
+    \url{double} \url{price} & \parbox{8cm}{}\\
+\midrule
+\url{received_quantities} \index{\url{received_quantities}} & \parbox{10cm}{} \\
+    \url{int} \url{firm_id} & \parbox{8cm}{}\\
+    \url{double} \url{quantity} & \parbox{8cm}{}\\
+\midrule
+\url{sold_quantities_per_mall} \index{\url{sold_quantities_per_mall}} & \parbox{10cm}{} \\
+    \url{int} \url{mall_id} & \parbox{8cm}{}\\
+    \url{double} \url{sold_quantity} & \parbox{8cm}{}\\
+    \url{int} \url{stock_empty} & \parbox{8cm}{}\\
+    \url{double} \url{estimated_demand} & \parbox{8cm}{}\\
+\midrule
+\url{data_type_sales} \index{\url{data_type_sales}} & \parbox{10cm}{Sales in that mall in the certain period.} \\
+    \url{int} \url{period} & \parbox{8cm}{}\\
+    \url{double} \url{sales} & \parbox{8cm}{}\\
+\midrule
+\url{sales_statistics} \index{\url{sales_statistics}} & \parbox{10cm}{A lower array that stores the sales of the last periods for the mall. } \\
+    \url{int} \url{mall_id} & \parbox{8cm}{}\\
+    \url{data_type_sales_array} \url{sales} & \parbox{8cm}{}\\
+\midrule
+\url{financing_capital} \index{\url{financing_capital}} & \parbox{10cm}{} \\
+    \url{double} \url{financing_per_month} & \parbox{8cm}{}\\
+    \url{int} \url{nr_periods_before_repayment} & \parbox{8cm}{}\\
+\midrule
+\url{temporary_sales_statistics} \index{\url{temporary_sales_statistics}} & \parbox{10cm}{Sales in the mall.} \\
+    \url{int} \url{mall_id} & \parbox{8cm}{}\\
+    \url{int} \url{period} & \parbox{8cm}{}\\
+    \url{double} \url{sales} & \parbox{8cm}{}\\
+\midrule
+\url{potential_lender} \index{\url{potential_lender}} & \parbox{10cm}{If the bank has been contacted (1) or not (0).} \\
+    \url{int} \url{bank_name} & \parbox{8cm}{}\\
+    \url{int} \url{contacted} & \parbox{8cm}{}\\
+\midrule
+\url{account_item} \index{\url{account_item}} & \parbox{10cm}{Value in the account.} \\
+    \url{int} \url{id} & \parbox{8cm}{}\\
+    \url{double} \url{payment_account} & \parbox{8cm}{}\\
+\midrule
+\url{debt_item} \index{\url{debt_item}} & \parbox{10cm}{The number of periods left before full repayment of the loan is due.} \\
+    \url{int} \url{bank_id} & \parbox{8cm}{}\\
+    \url{double} \url{loan_value} & \parbox{8cm}{}\\
+    \url{double} \url{interest_rate} & \parbox{8cm}{}\\
+    \url{double} \url{installment_amount} & \parbox{8cm}{}\\
+    \url{double} \url{var_per_installment} & \parbox{8cm}{}\\
+    \url{double} \url{residual_var} & \parbox{8cm}{}\\
+    \url{double} \url{bad_debt} & \parbox{8cm}{}\\
+    \url{int} \url{nr_periods_before_repayment} & \parbox{8cm}{}\\
+\midrule
+\url{Order} \index{\url{Order}} & \parbox{10cm}{} \\
+    \url{int} \url{issuer} & \parbox{8cm}{}\\
+    \url{int} \url{quantity} & \parbox{8cm}{}\\
+    \url{double} \url{price} & \parbox{8cm}{}\\
+    \url{int} \url{assetId} & \parbox{8cm}{}\\
+\midrule
+\url{Belief} \index{\url{Belief}} & \parbox{10cm}{} \\
+    \url{int} \url{asset_id} & \parbox{8cm}{}\\
+    \url{double} \url{expectedPriceReturns} & \parbox{8cm}{}\\
+    \url{double} \url{expectedTotalReturns} & \parbox{8cm}{}\\
+    \url{double} \url{expectedCashFlowYield} & \parbox{8cm}{}\\
+    \url{double} \url{volatility} & \parbox{8cm}{}\\
+    \url{double} \url{expectedEarning} & \parbox{8cm}{}\\
+    \url{double} \url{expectedEarningPayout} & \parbox{8cm}{}\\
+    \url{double} \url{last_price} & \parbox{8cm}{}\\
+    \url{double} \url{utility} & \parbox{8cm}{}\\
+\midrule
+\url{Stock} \index{\url{Stock}} & \parbox{10cm}{} \\
+    \url{int} \url{id} & \parbox{8cm}{}\\
+    \url{int} \url{nrOutStandingShares} & \parbox{8cm}{}\\
+    \url{int} \url{index} & \parbox{8cm}{}\\
+    \url{double} \url{prices} & \parbox{8cm}{}\\
+    \url{double} \url{returns} & \parbox{8cm}{}\\
+\midrule
+\url{Bond} \index{\url{Bond}} & \parbox{10cm}{} \\
+    \url{int} \url{id} & \parbox{8cm}{}\\
+    \url{int} \url{nr_outstanding} & \parbox{8cm}{}\\
+    \url{int} \url{quantity} & \parbox{8cm}{}\\
+    \url{double} \url{face_value} & \parbox{8cm}{}\\
+    \url{double} \url{nominal_yield} & \parbox{8cm}{}\\
+    \url{int} \url{maturity_day} & \parbox{8cm}{}\\
+    \url{int} \url{issue_day} & \parbox{8cm}{}\\
+    \url{double} \url{yield2maturity} & \parbox{8cm}{}\\
+    \url{double} \url{prices} & \parbox{8cm}{}\\
+    \url{int} \url{index} & \parbox{8cm}{}\\
+    \url{double} \url{returns} & \parbox{8cm}{}\\
+\midrule
+\url{Asset} \index{\url{Asset}} & \parbox{10cm}{} \\
+    \url{int} \url{id} & \parbox{8cm}{}\\
+    \url{int} \url{quantity} & \parbox{8cm}{}\\
+    \url{double} \url{lastPrice} & \parbox{8cm}{}\\
+\midrule
+\url{ClearingMechanism} \index{\url{ClearingMechanism}} & \parbox{10cm}{} \\
+    \url{double} \url{lastPrice} & \parbox{8cm}{}\\
+    \url{int} \url{quantity} & \parbox{8cm}{}\\
+    \url{Order_array} \url{sellOrders} & \parbox{8cm}{}\\
+    \url{Order_array} \url{buyOrders} & \parbox{8cm}{}\\
+    \url{double_array} \url{prices} & \parbox{8cm}{}\\
+\midrule
+\url{employee} \index{\url{employee}} & \parbox{10cm}{} \\
+    \url{int} \url{id} & \parbox{8cm}{}\\
+    \url{int} \url{region_id} & \parbox{8cm}{}\\
+    \url{double} \url{wage} & \parbox{8cm}{}\\
+    \url{int} \url{general_skill} & \parbox{8cm}{}\\
+    \url{double} \url{specific_skill} & \parbox{8cm}{}\\
+\midrule
+\url{vacancy} \index{\url{vacancy}} & \parbox{10cm}{} \\
+    \url{int} \url{firm_id} & \parbox{8cm}{}\\
+    \url{int} \url{region_id} & \parbox{8cm}{}\\
+    \url{double} \url{wage_offer} & \parbox{8cm}{}\\
+\midrule
+\url{job_application} \index{\url{job_application}} & \parbox{10cm}{} \\
+    \url{int} \url{worker_id} & \parbox{8cm}{}\\
+    \url{int} \url{region_id} & \parbox{8cm}{}\\
+    \url{int} \url{general_skill} & \parbox{8cm}{}\\
+    \url{double} \url{specific_skill} & \parbox{8cm}{}\\
+\midrule
+\url{job_offer} \index{\url{job_offer}} & \parbox{10cm}{} \\
+    \url{int} \url{firm_id} & \parbox{8cm}{}\\
+    \url{int} \url{region_id} & \parbox{8cm}{}\\
+    \url{double} \url{wage_offer} & \parbox{8cm}{}\\
+\midrule
+\url{logit} \index{\url{logit}} & \parbox{10cm}{} \\
+    \url{double} \url{logit_value} & \parbox{8cm}{}\\
+    \url{int} \url{worker_id} & \parbox{8cm}{}\\
+    \url{int} \url{general_skill} & \parbox{8cm}{}\\
+\midrule
+\url{household_data} \index{\url{household_data}} & \parbox{10cm}{} \\
+    \url{int} \url{region_id} & \parbox{8cm}{}\\
+    \url{int} \url{no_households} & \parbox{8cm}{}\\
+    \url{int} \url{no_households_skill_1} & \parbox{8cm}{}\\
+    \url{int} \url{no_households_skill_2} & \parbox{8cm}{}\\
+    \url{int} \url{no_households_skill_3} & \parbox{8cm}{}\\
+    \url{int} \url{no_households_skill_4} & \parbox{8cm}{}\\
+    \url{int} \url{no_households_skill_5} & \parbox{8cm}{}\\
+    \url{int} \url{employed} & \parbox{8cm}{}\\
+    \url{int} \url{employed_skill_1} & \parbox{8cm}{}\\
+    \url{int} \url{employed_skill_2} & \parbox{8cm}{}\\
+    \url{int} \url{employed_skill_3} & \parbox{8cm}{}\\
+    \url{int} \url{employed_skill_4} & \parbox{8cm}{}\\
+    \url{int} \url{employed_skill_5} & \parbox{8cm}{}\\
+    \url{int} \url{unemployed} & \parbox{8cm}{}\\
+    \url{double} \url{unemployment_rate} & \parbox{8cm}{}\\
+    \url{double} \url{unemployment_rate_skill_1} & \parbox{8cm}{}\\
+    \url{double} \url{unemployment_rate_skill_2} & \parbox{8cm}{}\\
+    \url{double} \url{unemployment_rate_skill_3} & \parbox{8cm}{}\\
+    \url{double} \url{unemployment_rate_skill_4} & \parbox{8cm}{}\\
+    \url{double} \url{unemployment_rate_skill_5} & \parbox{8cm}{}\\
+    \url{double} \url{average_wage} & \parbox{8cm}{}\\
+    \url{double} \url{average_wage_skill_1} & \parbox{8cm}{}\\
+    \url{double} \url{average_wage_skill_2} & \parbox{8cm}{}\\
+    \url{double} \url{average_wage_skill_3} & \parbox{8cm}{}\\
+    \url{double} \url{average_wage_skill_4} & \parbox{8cm}{}\\
+    \url{double} \url{average_wage_skill_5} & \parbox{8cm}{}\\
+    \url{double} \url{average_s_skill} & \parbox{8cm}{}\\
+    \url{double} \url{average_s_skill_1} & \parbox{8cm}{}\\
+    \url{double} \url{average_s_skill_2} & \parbox{8cm}{}\\
+    \url{double} \url{average_s_skill_3} & \parbox{8cm}{}\\
+    \url{double} \url{average_s_skill_4} & \parbox{8cm}{}\\
+    \url{double} \url{average_s_skill_5} & \parbox{8cm}{}\\
+\midrule
+\url{firm_data} \index{\url{firm_data}} & \parbox{10cm}{} \\
+    \url{int} \url{region_id} & \parbox{8cm}{}\\
+    \url{int} \url{no_firms} & \parbox{8cm}{}\\
+    \url{int} \url{vacancies} & \parbox{8cm}{}\\
+    \url{int} \url{employees} & \parbox{8cm}{}\\
+    \url{int} \url{employees_skill_1} & \parbox{8cm}{}\\
+    \url{int} \url{employees_skill_2} & \parbox{8cm}{}\\
+    \url{int} \url{employees_skill_3} & \parbox{8cm}{}\\
+    \url{int} \url{employees_skill_4} & \parbox{8cm}{}\\
+    \url{int} \url{employees_skill_5} & \parbox{8cm}{}\\
+    \url{double} \url{average_wage} & \parbox{8cm}{}\\
+    \url{double} \url{average_wage_skill_1} & \parbox{8cm}{}\\
+    \url{double} \url{average_wage_skill_2} & \parbox{8cm}{}\\
+    \url{double} \url{average_wage_skill_3} & \parbox{8cm}{}\\
+    \url{double} \url{average_wage_skill_4} & \parbox{8cm}{}\\
+    \url{double} \url{average_wage_skill_5} & \parbox{8cm}{}\\
+    \url{double} \url{average_s_skill} & \parbox{8cm}{}\\
+    \url{double} \url{average_s_skill_1} & \parbox{8cm}{}\\
+    \url{double} \url{average_s_skill_2} & \parbox{8cm}{}\\
+    \url{double} \url{average_s_skill_3} & \parbox{8cm}{}\\
+    \url{double} \url{average_s_skill_4} & \parbox{8cm}{}\\
+    \url{double} \url{average_s_skill_5} & \parbox{8cm}{}\\
+    \url{double} \url{total_earnings} & \parbox{8cm}{}\\
+    \url{double} \url{total_debt} & \parbox{8cm}{}\\
+    \url{double} \url{total_assets} & \parbox{8cm}{}\\
+    \url{double} \url{total_equity} & \parbox{8cm}{}\\
+    \url{double} \url{average_debt_earnings_ratio} & \parbox{8cm}{}\\
+    \url{double} \url{average_debt_equity_ratio} & \parbox{8cm}{}\\
+    \url{double} \url{labour_share_ratio} & \parbox{8cm}{}\\
+    \url{double} \url{monthly_sold_quantity} & \parbox{8cm}{}\\
+    \url{double} \url{monthly_output} & \parbox{8cm}{}\\
+    \url{double} \url{monthly_revenue} & \parbox{8cm}{}\\
+    \url{double} \url{monthly_planned_output} & \parbox{8cm}{}\\
+    \url{double} \url{monthly_investment_value} & \parbox{8cm}{}\\
+    \url{double} \url{investment_gdp_ratio} & \parbox{8cm}{}\\
+    \url{double} \url{gdp} & \parbox{8cm}{}\\
+    \url{double} \url{cpi} & \parbox{8cm}{}\\
+    \url{double} \url{cpi_last_month} & \parbox{8cm}{}\\
+    \url{int} \url{no_firm_births} & \parbox{8cm}{}\\
+    \url{int} \url{no_firm_deaths} & \parbox{8cm}{}\\
+    \url{double} \url{productivity_progress} & \parbox{8cm}{}\\
+    \url{double} \url{productivity} & \parbox{8cm}{}\\
+\midrule
+\url{region_data_item} \index{\url{region_data_item}} & \parbox{10cm}{Number of firm deaths} \\
+    \url{double} \url{cpi} & \parbox{8cm}{}\\
+    \url{double} \url{cpi_last_month} & \parbox{8cm}{}\\
+    \url{double} \url{gdp} & \parbox{8cm}{}\\
+    \url{double} \url{output} & \parbox{8cm}{}\\
+    \url{int} \url{employment} & \parbox{8cm}{}\\
+    \url{double} \url{unemployment_rate} & \parbox{8cm}{}\\
+    \url{double} \url{unemployment_rate_skill_1} & \parbox{8cm}{}\\
+    \url{double} \url{unemployment_rate_skill_2} & \parbox{8cm}{}\\
+    \url{double} \url{unemployment_rate_skill_3} & \parbox{8cm}{}\\
+    \url{double} \url{unemployment_rate_skill_4} & \parbox{8cm}{}\\
+    \url{double} \url{unemployment_rate_skill_5} & \parbox{8cm}{}\\
+    \url{double} \url{average_wage} & \parbox{8cm}{}\\
+    \url{int} \url{no_firms} & \parbox{8cm}{}\\
+    \url{int} \url{no_firm_births} & \parbox{8cm}{}\\
+    \url{int} \url{no_firm_deaths} & \parbox{8cm}{}\\
+\midrule
+\url{history_item} \index{\url{history_item}} & \parbox{10cm}{In the history item we store the array region\_data with data for all regions.} \\
+    \url{double} \url{cpi} & \parbox{8cm}{}\\
+    \url{double} \url{gdp} & \parbox{8cm}{}\\
+    \url{double} \url{output} & \parbox{8cm}{}\\
+    \url{int} \url{employment} & \parbox{8cm}{}\\
+    \url{double} \url{unemployment_rate} & \parbox{8cm}{}\\
+    \url{double} \url{unemployment_rate_skill_1} & \parbox{8cm}{}\\
+    \url{double} \url{unemployment_rate_skill_2} & \parbox{8cm}{}\\
+    \url{double} \url{unemployment_rate_skill_3} & \parbox{8cm}{}\\
+    \url{double} \url{unemployment_rate_skill_4} & \parbox{8cm}{}\\
+    \url{double} \url{unemployment_rate_skill_5} & \parbox{8cm}{}\\
+    \url{double} \url{average_wage} & \parbox{8cm}{}\\
+    \url{int} \url{no_firms} & \parbox{8cm}{}\\
+    \url{int} \url{no_firm_births} & \parbox{8cm}{}\\
+    \url{int} \url{no_firm_deaths} & \parbox{8cm}{}\\
+    \url{region_data_item_array} \url{region_data} & \parbox{8cm}{}\\
+\midrule
+\url{firm_stocks_adt} \index{\url{firm_stocks_adt}} & \parbox{10cm}{} \\
+    \url{double} \url{payment_account} & \parbox{8cm}{}\\
+    \url{double} \url{total_value_local_inventory} & \parbox{8cm}{}\\
+    \url{double} \url{total_value_capital_stock} & \parbox{8cm}{}\\
+    \url{double} \url{total_debt} & \parbox{8cm}{}\\
+    \url{int} \url{current_shares_outstanding} & \parbox{8cm}{}\\
+    \url{double} \url{total_assets} & \parbox{8cm}{}\\
+    \url{double} \url{total_liabilities} & \parbox{8cm}{}\\
+\midrule
+\url{firm_flows_adt} \index{\url{firm_flows_adt}} & \parbox{10cm}{} \\
+    \url{double} \url{cum_revenue} & \parbox{8cm}{}\\
+    \url{double} \url{labour_costs} & \parbox{8cm}{}\\
+    \url{double} \url{capital_costs} & \parbox{8cm}{}\\
+    \url{double} \url{tax_payment} & \parbox{8cm}{}\\
+    \url{double} \url{total_debt_installment_payment} & \parbox{8cm}{}\\
+    \url{double} \url{total_interest_payment} & \parbox{8cm}{}\\
+    \url{double} \url{total_dividend_payment} & \parbox{8cm}{}\\
+    \url{double} \url{total_income} & \parbox{8cm}{}\\
+    \url{double} \url{total_expenses} & \parbox{8cm}{}\\
+\midrule
+\url{household_stocks_adt} \index{\url{household_stocks_adt}} & \parbox{10cm}{} \\
+    \url{double} \url{payment_account} & \parbox{8cm}{}\\
+    \url{double} \url{gov_bond_holdings} & \parbox{8cm}{}\\
+    \url{int} \url{nr_gov_bonds} & \parbox{8cm}{}\\
+    \url{int} \url{nr_firm_shares} & \parbox{8cm}{}\\
+    \url{double} \url{total_assets} & \parbox{8cm}{}\\
+    \url{double} \url{total_liabilities} & \parbox{8cm}{}\\
+\midrule
+\url{household_flows_adt} \index{\url{household_flows_adt}} & \parbox{10cm}{} \\
+    \url{double} \url{wage} & \parbox{8cm}{}\\
+    \url{double} \url{gov_interest} & \parbox{8cm}{}\\
+    \url{double} \url{stock_sales} & \parbox{8cm}{}\\
+    \url{double} \url{cum_total_dividends} & \parbox{8cm}{}\\
+    \url{double} \url{monthly_consumption_expenditure} & \parbox{8cm}{}\\
+    \url{double} \url{tax_payment} & \parbox{8cm}{}\\
+    \url{double} \url{stock_purchases} & \parbox{8cm}{}\\
+    \url{double} \url{total_income} & \parbox{8cm}{}\\
+    \url{double} \url{total_expenses} & \parbox{8cm}{}\\
+\midrule
+\url{igfirm_stocks_adt} \index{\url{igfirm_stocks_adt}} & \parbox{10cm}{} \\
+    \url{double} \url{payment_account} & \parbox{8cm}{}\\
+    \url{double} \url{total_debt} & \parbox{8cm}{}\\
+    \url{int} \url{current_shares_outstanding} & \parbox{8cm}{}\\
+    \url{double} \url{total_assets} & \parbox{8cm}{}\\
+    \url{double} \url{total_liabilities} & \parbox{8cm}{}\\
+\midrule
+\url{igfirm_flows_adt} \index{\url{igfirm_flows_adt}} & \parbox{10cm}{} \\
+    \url{double} \url{cum_revenue} & \parbox{8cm}{}\\
+    \url{double} \url{labour_costs} & \parbox{8cm}{}\\
+    \url{double} \url{energy_costs} & \parbox{8cm}{}\\
+    \url{double} \url{tax_payment} & \parbox{8cm}{}\\
+    \url{double} \url{total_debt_installment_payment} & \parbox{8cm}{}\\
+    \url{double} \url{total_interest_payment} & \parbox{8cm}{}\\
+    \url{double} \url{total_dividend_payment} & \parbox{8cm}{}\\
+    \url{double} \url{total_income} & \parbox{8cm}{}\\
+    \url{double} \url{total_expenses} & \parbox{8cm}{}\\
+\midrule
+\url{bank_stocks_adt} \index{\url{bank_stocks_adt}} & \parbox{10cm}{} \\
+    \url{double} \url{cash} & \parbox{8cm}{}\\
+    \url{double} \url{total_credit} & \parbox{8cm}{}\\
+    \url{double} \url{deposits} & \parbox{8cm}{}\\
+    \url{double} \url{ecb_debt} & \parbox{8cm}{}\\
+    \url{double} \url{total_assets} & \parbox{8cm}{}\\
+    \url{double} \url{total_liabilities} & \parbox{8cm}{}\\
+\midrule
+\url{bank_flows_adt} \index{\url{bank_flows_adt}} & \parbox{10cm}{} \\
+    \url{double} \url{firm_loan_installments} & \parbox{8cm}{}\\
+    \url{double} \url{firm_interest_payments} & \parbox{8cm}{}\\
+    \url{double} \url{firm_loan_issues} & \parbox{8cm}{}\\
+    \url{double} \url{ecb_interest_payment} & \parbox{8cm}{}\\
+    \url{double} \url{dividend_payment} & \parbox{8cm}{}\\
+    \url{double} \url{tax_payment} & \parbox{8cm}{}\\
+    \url{double} \url{total_income} & \parbox{8cm}{}\\
+    \url{double} \url{total_expenses} & \parbox{8cm}{}\\
+\midrule
+\url{gov_stocks_adt} \index{\url{gov_stocks_adt}} & \parbox{10cm}{} \\
+    \url{double} \url{payment_account} & \parbox{8cm}{}\\
+    \url{double} \url{value_bonds_outstanding} & \parbox{8cm}{}\\
+    \url{int} \url{nr_bonds_outstanding} & \parbox{8cm}{}\\
+    \url{double} \url{total_assets} & \parbox{8cm}{}\\
+    \url{double} \url{total_liabilities} & \parbox{8cm}{}\\
+\midrule
+\url{gov_flows_adt} \index{\url{gov_flows_adt}} & \parbox{10cm}{} \\
+    \url{double} \url{monthly_tax_revenues} & \parbox{8cm}{}\\
+    \url{double} \url{total_bond_financing} & \parbox{8cm}{}\\
+    \url{double} \url{monthly_investment_expenditure} & \parbox{8cm}{}\\
+    \url{double} \url{monthly_consumption_expenditure} & \parbox{8cm}{}\\
+    \url{double} \url{monthly_benefit_payment} & \parbox{8cm}{}\\
+    \url{double} \url{monthly_subsidy_payment} & \parbox{8cm}{}\\
+    \url{double} \url{monthly_transfer_payment} & \parbox{8cm}{}\\
+    \url{double} \url{monthly_bond_interest_payment} & \parbox{8cm}{}\\
+    \url{double} \url{total_income} & \parbox{8cm}{}\\
+    \url{double} \url{total_expenses} & \parbox{8cm}{}\\
+\midrule
+\url{ecb_stocks_adt} \index{\url{ecb_stocks_adt}} & \parbox{10cm}{} \\
+    \url{double} \url{gov_bond_holdings} & \parbox{8cm}{}\\
+    \url{int} \url{nr_gov_bonds} & \parbox{8cm}{}\\
+    \url{double} \url{total_ecb_debt} & \parbox{8cm}{}\\
+    \url{double} \url{payment_account_private_sector} & \parbox{8cm}{}\\
+    \url{double} \url{payment_account_public_sector} & \parbox{8cm}{}\\
+    \url{double} \url{fiat_money} & \parbox{8cm}{}\\
+    \url{double} \url{total_assets} & \parbox{8cm}{}\\
+    \url{double} \url{total_liabilities} & \parbox{8cm}{}\\
+\midrule
+\url{ecb_flows_adt} \index{\url{ecb_flows_adt}} & \parbox{10cm}{} \\
+    \url{double} \url{bank_interest} & \parbox{8cm}{}\\
+    \url{double} \url{gov_interest} & \parbox{8cm}{}\\
+    \url{double} \url{gov_bond_purchase} & \parbox{8cm}{}\\
+    \url{double} \url{dividend_payment} & \parbox{8cm}{}\\
+    \url{double} \url{total_income} & \parbox{8cm}{}\\
+    \url{double} \url{total_expenses} & \parbox{8cm}{}\\
+\midrule
+\url{firm_balance_sheet_adt} \index{\url{firm_balance_sheet_adt}} & \parbox{10cm}{} \\
+    \url{firm_stocks_adt} \url{stocks} & \parbox{8cm}{}\\
+    \url{firm_flows_adt} \url{flows} & \parbox{8cm}{}\\
+\midrule
+\url{household_balance_sheet_adt} \index{\url{household_balance_sheet_adt}} & \parbox{10cm}{} \\
+    \url{household_stocks_adt} \url{stocks} & \parbox{8cm}{}\\
+    \url{household_flows_adt} \url{flows} & \parbox{8cm}{}\\
+\midrule
+\url{igfirm_balance_sheet_adt} \index{\url{igfirm_balance_sheet_adt}} & \parbox{10cm}{} \\
+    \url{igfirm_stocks_adt} \url{stocks} & \parbox{8cm}{}\\
+    \url{igfirm_flows_adt} \url{flows} & \parbox{8cm}{}\\
+\midrule
+\url{bank_balance_sheet_adt} \index{\url{bank_balance_sheet_adt}} & \parbox{10cm}{} \\
+    \url{bank_stocks_adt} \url{stocks} & \parbox{8cm}{}\\
+    \url{bank_flows_adt} \url{flows} & \parbox{8cm}{}\\
+\midrule
+\url{gov_balance_sheet_adt} \index{\url{gov_balance_sheet_adt}} & \parbox{10cm}{} \\
+    \url{gov_stocks_adt} \url{stocks} & \parbox{8cm}{}\\
+    \url{gov_flows_adt} \url{flows} & \parbox{8cm}{}\\
+\midrule
+\url{ecb_balance_sheet_adt} \index{\url{ecb_balance_sheet_adt}} & \parbox{10cm}{} \\
+    \url{ecb_stocks_adt} \url{stocks} & \parbox{8cm}{}\\
+    \url{ecb_flows_adt} \url{flows} & \parbox{8cm}{}\\
+\midrule
+\end{longtable}
+\end{landscape}
+
+
+\printindex
+
+\end{document}
