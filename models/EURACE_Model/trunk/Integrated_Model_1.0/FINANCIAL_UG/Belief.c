@@ -203,4 +203,5 @@ coupon_yield_annualized = coupon_yield*annual_coeff;
 belief->expectedTotalReturns = belief->expectedPriceReturns + coupon_yield_annualized;
 belief->utility = computeBondUtilityFunction(bond, rndreturns, backwardWindow, factor_chartist, factor_random, value, lossaversion, random_return_weight_bond);
 belief->last_price=lastPriceBond(bond);
+
 }
