@@ -603,7 +603,7 @@
     <function>
      <name>Central_Bank_read_fiat_money_requests</name>
      <description>Function read the requests for fiat money sent by governments.</description>
-     <currentState>CB_market_operations</currentState>
+     <currentState>CB_financial_operations_end</currentState>
      <nextState>00</nextState>
      <inputs>
       <input>

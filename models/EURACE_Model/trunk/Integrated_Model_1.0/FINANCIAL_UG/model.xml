@@ -49,6 +49,7 @@
    <file>ClearingMechanism.c</file>
    <file>Household_Financial_Market.c</file>
    <file>Government_Financial_Market.c</file>
+   <file>Central_Bank_Financial_Market.c</file>
   </functionFiles>
   <timeUnits>
    <timeUnit>
@@ -429,7 +430,7 @@
      </inputs>
      <outputs/>
     </function>
-   <function>
+    <function>
      <name>Household_revises_expected_portfolio</name>
      <description>the household revise his expected portfolio that is represented by the pendingOrders variable </description>
      <currentState>REVISE_PORTFOLIO</currentState>
@@ -569,7 +570,6 @@
      <inputs>
       <input>
        <messageName>order</messageName>
-       <sort><key>asset_id</key><order>descend</order></sort>
       </input>
      </inputs>
      <outputs>
@@ -774,6 +774,50 @@
       </not>
      </condition>
      <inputs/>
+     <outputs/>
+    </function>
+   </functions>
+  </xagent>
+  <xagent>
+   <name>Central_Bank</name>
+   <description></description>
+   <memory/>
+   <functions>
+    <function>
+     <name>CB_receives_info_bond</name>
+     <description></description>
+     <currentState>CB_market_operations</currentState>
+     <nextState>CB_FM_role</nextState>
+     <inputs>
+      <input>
+       <messageName>info_bond</messageName>
+      </input>
+     </inputs>
+     <outputs/>
+    </function>
+    <function>
+     <name>CB_issues_orders</name>
+     <description></description>
+     <currentState>CB_FM_role</currentState>
+     <nextState>CB_waiting_for_clearing</nextState>
+     <inputs/>
+     <outputs>
+      <output>
+       <messageName>order</messageName>
+		<sort><key>asset_id</key><order>descend</order></sort>
+      </output>
+     </outputs>
+    </function>
+    <function>
+     <name>CB_receives_order_status</name>
+     <description></description>
+     <currentState>CB_waiting_for_clearing</currentState>
+     <nextState>CB_financial_operations_end</nextState>
+     <inputs>
+      <input>
+       <messageName>order_status</messageName>
+      </input>
+     </inputs>
      <outputs/>
     </function>
    </functions>
