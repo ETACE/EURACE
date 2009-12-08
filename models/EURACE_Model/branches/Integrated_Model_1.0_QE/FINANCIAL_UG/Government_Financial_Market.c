@@ -55,7 +55,10 @@ int Government_orders_issuing(void)
    }
 
 int Government_update_its_portfolio()
-{ int issuer;
+{ 
+  FILE *file1=NULL;
+  char * filename="";
+  int issuer;
   double payment_account;
   Bond *bond;
   Order *pending_order;
@@ -71,6 +74,18 @@ int Government_update_its_portfolio()
   printf("\n\n Government_update_its_portfolio ID: %d",ID);
   printf("\n\t payment account before: %f",payment_account);
   }
+  
+    if (PRINT_DEBUG_FILE_EXP1)
+        {
+            filename = malloc(40*sizeof(char));
+            filename[0]=0;
+            strcpy(filename, "its/bond_market.txt"); 
+            file1 = fopen(filename,"a");
+            fprintf(file1,"\n %d %d %d %f",CURRENTDAY,bond->nr_outstanding,sold_quantity, payment_account);
+            fclose(file1);
+            free(filename);
+        }
+  
   if(pending_order->quantity!=0)
   {
   order_status=get_first_order_status_message();
@@ -90,6 +105,17 @@ int Government_update_its_portfolio()
   }
 
   bond->nr_outstanding = bond->nr_outstanding +sold_quantity;
+
+  if (PRINT_DEBUG_FILE_EXP1)
+        {
+            filename = malloc(40*sizeof(char));
+            filename[0]=0;
+            strcpy(filename, "its/bond_market.txt"); 
+            file1 = fopen(filename,"a");
+            fprintf(file1,"\n %d %d %d %f",CURRENTDAY,bond->nr_outstanding,sold_quantity, payment_account);
+            fclose(file1);
+            free(filename);
+        }
  
  if (PRINT_DEBUG_GOV)
  {
