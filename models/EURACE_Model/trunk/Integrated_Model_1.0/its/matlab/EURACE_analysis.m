@@ -1,20 +1,21 @@
 clc
 clear all
-close all
+%close all
 
-Pat = '..\qe1_d0.1_ef1_se0\';
-%Pat = '..\';
+Pat = '..\qe1_d1_ef1_se0\';
+Pat = '..\';
 
 font_sz = 14;
 colore = 'b';
 
-mf = 120;
+mf = 45;
 af = ceil(mf/12);
 tf = 20*mf;
 daily_month_index = (1:tf)/20;
+monthly_month_index = 1:mf;
 yearly_month_index = (1:af)*12;
 monthly_index = 0:6:mf; 
-monthly_index2 = 0:12:mf; 
+monthly_index2 = 0:24:mf; 
 yearly_index  = 0:af
 
 %%% BANKS
@@ -55,6 +56,7 @@ end
 
 %h_Bank_aggregate_data =  figure('Name','Bank aggregate data'); 
 
+%%% FIGURE: Bank aggregate data %%%
 figure(1)
 set(gcf,'Name','Bank aggregate data')
 subplot(2,2,1); grid on; hold on; box
@@ -84,9 +86,9 @@ set(gca,'xtick',monthly_index2,'fontsize',font_sz)
 set(gca,'xlim',[0, mf])
 title('loans from the the CB','fontsize',font_sz)
 xlabel('months','fontsize',font_sz)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-
-
+%%% FIGURE: Bank aggregate equity %%%
 figure(2); grid on; hold on; box
 set(gcf,'Name','Bank aggregate equity')
 plot(daily_month_index,EQUITY_sum(1:tf),colore)
@@ -96,7 +98,7 @@ xlabel('months','fontsize',font_sz)
 title('Bank aggregate equity','fontsize',font_sz)
 
 clear Data
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 %%% Central Bank
@@ -108,6 +110,7 @@ FIAT_MONEY = Data(:,4);
 PAYMENT_ACCOUNT_CB = Data(:,5);
 ECB_DEPOSITS = Data(:,6);
 
+%%% FIGURE: Central bank data %%%
 figure(11); 
 set(gcf,'Name','Central bank data')
 subplot(2,2,1); grid on; hold on; box
@@ -139,6 +142,7 @@ title('public sector deposits at CB','fontsize',font_sz)
 xlabel('months','fontsize',font_sz)
 
 clear Data
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%% Government
 Data = load([Pat, 'Governments_daily_balance_sheet.txt']);
@@ -156,6 +160,7 @@ for i=1:numel(days)
     BONDS_NR_OUTSTANDING_sum(i) = sum(BONDS_NR_OUTSTANDING(days_idx));
 end
 
+%%% FIGURE: Government data %%%
 figure(31); 
 set(gcf,'Name','Government data')
 subplot(2,2,1); grid on; hold on; box
@@ -185,6 +190,13 @@ set(gca,'xtick',monthly_index2,'fontsize',font_sz)
 set(gca,'xlim',[0, mf])
 title('bond price','fontsize',font_sz)
 xlabel('months','fontsize',font_sz)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%% FIGURE: Government data %%%
+%figure(41); 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 
 figure(1000); hold on; grid on; box on
 plot(ECB_DEPOSITS'-(PAYMENT_ACCOUNT_GOVS_sum+PAYMENT_ACCOUNT_BANKS_sum))
@@ -213,109 +225,109 @@ clear Data
 % 
 % clear Data
 
-%%% IGFirm
-Data = load([Pat, 'IGFirm_daily_balance_sheet.txt']);
-set(gcf,'Name','Central bank data')
+% %%% IGFirm
+% Data = load([Pat, 'IGFirm_daily_balance_sheet.txt']);
+% set(gcf,'Name','Central bank data')
+% 
+% PAYMENT_ACCOUNT_IGFIRMS = Data(:,3);
+% CUM_ENERGY_COSTS = Data(:,4);
+% 
+% days = unique(Data(:,1));
+% agents_ids = unique(Data(:,2));
+% 
+% for i=1:numel(days)
+%     
+%     days_idx = find(Data(:,1)==i);
+%     PAYMENT_ACCOUNT_IGFIRMS_sum(i) = sum(PAYMENT_ACCOUNT_IGFIRMS(days_idx));
+%     CUM_ENERGY_COSTS_sum(i) = sum(CUM_ENERGY_COSTS(days_idx));
+%     
+%     clear days_idx
+%     
+% end
+% 
+% clear Data
 
-PAYMENT_ACCOUNT_IGFIRMS = Data(:,3);
-CUM_ENERGY_COSTS = Data(:,4);
-
-days = unique(Data(:,1));
-agents_ids = unique(Data(:,2));
-
-for i=1:numel(days)
-    
-    days_idx = find(Data(:,1)==i);
-    PAYMENT_ACCOUNT_IGFIRMS_sum(i) = sum(PAYMENT_ACCOUNT_IGFIRMS(days_idx));
-    CUM_ENERGY_COSTS_sum(i) = sum(CUM_ENERGY_COSTS(days_idx));
-    
-    clear days_idx
-    
-end
-
-clear Data
-
-figure(51); 
-subplot(2,1,1); hold on; grid on; box on
-plot(PAYMENT_ACCOUNT_IGFIRMS_sum(1:tf),colore)
-
-xlabel('months','fontsize',font_sz)
-ylabel('arbitrary monetary units','fontsize',font_sz)
-title('PAYMENT ACCOUNT IGFIRM')
-
-subplot(2,1,2); hold on; grid on; box on
-plot(CUM_ENERGY_COSTS_sum(1:tf),colore)
-xlabel('days','fontsize',font_sz)
-title('CUMULATED ENERGY COST')
-
-break 
-%%% Stock prices
-Data = load([Pat, 'stock_prices.txt']);
-firms_id = Data(:,2);
-firms_nr = numel(unique(firms_id));
-days = unique(Data(:,1));
-%prices = zeros(numel(days),firms_nr);
-
-
-for i=1:firms_nr
-    Idx_id = find(firms_id==i);
-    
-    stock_prices_values{i} = Data(Idx_id,3);
-    stock_prices_days{i} = Data(Idx_id,1);
-%    figure(61); hold on; grid on
- %   plot(stock_prices_days{i},stock_prices_values{i},colore{i})
-    clear Idx_id
-end
-
-for d=1:numel(days) 
-    Idx_days = find(Data(:,1)==d);
-    stock_index(d) = mean(Data(Idx_days,3));
-    clear Idx_days
-end
-
-figure(61); hold on; grid on; box on
-plot(daily_month_index,stock_index(1:tf),colore)
-set(gca,'xtick',monthly_index,'fontsize',font_sz)
-xlabel('months','fontsize',font_sz)
-ylabel('aribitrary monetary units','fontsize',font_sz)
-set(gca,'xlim',[0, mf])
-legend('stock price index','Location','Best')
-
-if print_flag
-    print('-dpsc2','figure03.eps')
-end
-
-
-clear Data
+% figure(51); 
+% subplot(2,1,1); hold on; grid on; box on
+% plot(PAYMENT_ACCOUNT_IGFIRMS_sum(1:tf),colore)
+% 
+% xlabel('months','fontsize',font_sz)
+% ylabel('arbitrary monetary units','fontsize',font_sz)
+% title('PAYMENT ACCOUNT IGFIRM')
+% 
+% subplot(2,1,2); hold on; grid on; box on
+% plot(CUM_ENERGY_COSTS_sum(1:tf),colore)
+% xlabel('days','fontsize',font_sz)
+% title('CUMULATED ENERGY COST')
+% 
+% break 
+% %%% Stock prices
+% Data = load([Pat, 'stock_prices.txt']);
+% firms_id = Data(:,2);
+% firms_nr = numel(unique(firms_id));
+% days = unique(Data(:,1));
+% %prices = zeros(numel(days),firms_nr);
+% 
+% 
+% for i=1:firms_nr
+%     Idx_id = find(firms_id==i);
+%     
+%     stock_prices_values{i} = Data(Idx_id,3);
+%     stock_prices_days{i} = Data(Idx_id,1);
+% %    figure(61); hold on; grid on
+%  %   plot(stock_prices_days{i},stock_prices_values{i},colore{i})
+%     clear Idx_id
+% end
+% 
+% for d=1:numel(days) 
+%     Idx_days = find(Data(:,1)==d);
+%     stock_index(d) = mean(Data(Idx_days,3));
+%     clear Idx_days
+% end
+% 
+% figure(61); hold on; grid on; box on
+% plot(daily_month_index,stock_index(1:tf),colore)
+% set(gca,'xtick',monthly_index,'fontsize',font_sz)
+% xlabel('months','fontsize',font_sz)
+% ylabel('aribitrary monetary units','fontsize',font_sz)
+% set(gca,'xlim',[0, mf])
+% legend('stock price index','Location','Best')
+% 
+% if print_flag
+%     print('-dpsc2','figure03.eps')
+% end
+% 
+% 
+% clear Data
 
 
 
 %%% Credit market
-Data = load([Pat, 'credit_rationing.txt']);
-Credit_requested = Data(:,3);
-Credit_allowed = Data(:,4);
-
-days = unique(Data(:,1));
-
-for i=1:numel(days)
-    
-    d = days(i);
-    
-    days_idx = find(Data(:,1)==d);
-    Credit_requested_sum(i) = sum(Credit_requested(days_idx));
-    Credit_allowed_sum(i) = sum(Credit_allowed(days_idx));
-    
-    clear days_idx
-    
-end
-
-
-figure(71); hold on; grid on
-plot(days,Credit_requested_sum,[':',colore])
-plot(days,Credit_allowed_sum,colore)
-legend('Credit requested','Credit allowed',0)
-
-clear Data
+% Data = load([Pat, 'credit_rationing.txt']);
+% Credit_requested = Data(:,3);
+% Credit_allowed = Data(:,4);
+% 
+% days = unique(Data(:,1));
+% 
+% for i=1:numel(days)
+%     
+%     d = days(i);
+%     
+%     days_idx = find(Data(:,1)==d);
+%     Credit_requested_sum(i) = sum(Credit_requested(days_idx));
+%     Credit_allowed_sum(i) = sum(Credit_allowed(days_idx));
+%     
+%     clear days_idx
+%     
+% end
+% 
+% 
+% figure(71); hold on; grid on
+% plot(days,Credit_requested_sum,[':',colore])
+% plot(days,Credit_allowed_sum,colore)
+% legend('Credit requested','Credit allowed',0)
+% 
+% clear Data
 
 % %%% Firm stock transaction
 % Data = load([Pat, 'firms_stock_transactions.txt']);
@@ -362,28 +374,148 @@ MONTHLY_OUTPUT = Data2(:,3);
 MONTHLY_REVENUES = Data2(:,4);
 MONTHLY_INVESTMENT = Data2(:,5);
 
-figure(91); 
-subplot(2,1,1); hold on; grid on
-plot(Data(1:mf,1),GDP(1:mf),colore)
-legend('monthly GDP',0)
+% figure(91); 
+% subplot(2,1,1); hold on; grid on
+% plot(Data(1:mf,1),GDP(1:mf),colore)
+% legend('monthly GDP',0)
+% 
+% subplot(2,1,2); hold on; grid on
+% plot(Data(1:mf,1),UNEMPLOYMENT(1:mf),colore)
+% legend('monthly unemployment rate (%)',0)
+% 
+% figure(92); 
+% subplot(2,1,1); hold on; grid on
+% plot(Data(1:mf,1),CPI(1:mf),colore)
+% legend('monthly CPI',0)
+% 
+% subplot(2,1,2); hold on; grid on
+% plot(Data(1:mf,1),AVERAGE_WAGE(1:mf),colore)
+% legend('monthly average wage',0)
 
-subplot(2,1,2); hold on; grid on
-plot(Data(1:mf,1),UNEMPLOYMENT(1:mf),colore)
-legend('monthly unemployment rate (%)',0)
+figure(91); grid on; hold on; box on
+set(gcf,'Name','Production & Sales')
+plot(monthly_month_index,SOLD_QUANTITY(monthly_month_index),colore)
+plot(monthly_month_index,MONTHLY_OUTPUT(monthly_month_index),[colore, ':'])
+set(gca,'xtick',monthly_index,'fontsize',font_sz)
+xlabel('months','fontsize',font_sz)
+set(gca,'xlim',[0, mf])
+ylabel('real values','fontsize',font_sz)
+legend('sales','production',0)
 
-figure(92); 
-subplot(2,1,1); hold on; grid on
-plot(Data(1:mf,1),CPI(1:mf),colore)
-legend('monthly CPI',0)
+clear Data Data2
 
-subplot(2,1,2); hold on; grid on
-plot(Data(1:mf,1),AVERAGE_WAGE(1:mf),colore)
-legend('monthly average wage',0)
+%%%%%%  Good market statistics
+Data = load([Pat, 'firms_goods_market.txt']);
+days = unique(Data(:,1));
 
-figure(93); hold on; grid on
-plot(Data(1:mf,1),SOLD_QUANTITY(1:mf),colore)
-plot(Data(1:mf,1),MONTHLY_OUTPUT(1:mf),[colore, ':'])
-legend('sold quantity','output',0)
+k = 0;
+for d=1:20:(numel(days)-19)
+    Idx = find((Data(:,1)>=d)&(Data(:,1)<(d+20)));
+    Idx_q_sold = find(Data(Idx,3));
+    q_sold = Data(Idx(Idx_q_sold),3);
+    p_sold = Data(Idx(Idx_q_sold),4);
+    k = k + 1;
+    
+    q_sold_tot(k) = sum(q_sold);
+    Revenues(k) = sum(q_sold.*p_sold);
+    p_index(k,1) = sum(q_sold.*p_sold)/q_sold_tot(k);
+    
+    clear Idx q_sold p_sold
+end
+
+
+figure(92);
+set(gcf,'Name','Price & Wage Level')
+subplot(2,1,1); hold on; grid on; box on
+plot(monthly_month_index,p_index(1:mf),colore)
+set(gca,'xtick',monthly_index,'fontsize',font_sz)
+xlabel('months','fontsize',font_sz)
+ylabel('consumption goods price level','fontsize',font_sz)
+set(gca,'xlim',[0, mf])
+
+subplot(2,1,2); hold on; grid on; box on
+plot(monthly_month_index,AVERAGE_WAGE(1:mf),colore)
+set(gca,'xtick',monthly_index,'fontsize',font_sz)
+xlabel('months','fontsize',font_sz)
+ylabel('wage level','fontsize',font_sz)
+set(gca,'xlim',[0, mf])
+
+clear Data
+
+%%%%  Capital goods and GDP components
+Data = load([Pat, 'firms_capital_goods.txt']);
+
+k = 1;
+for d=1:20:(numel(days)-19)
+    Idx = find((Data(:,1)>=d)&(Data(:,1)<(d+20)));
+
+    tota_units_capital_stock(k,1) = sum(Data(Idx,3));
+    capital_goods_investment(k,1) = sum(Data(Idx,4));
+    capital_goods_price(k,1) = sum(Data(Idx,5))/numel(find(Data(Idx,5)>0));
+    k = k + 1;
+       
+    clear Idx 
+end
+
+nominal_investment = capital_goods_investment(1:mf).*capital_goods_price(1:mf);
+
+figure(93);
+set(gcf,'Name','Nominal GDP components')
+
+subplot(2,1,1); hold on; grid on; box on
+plot(monthly_month_index,Revenues(monthly_month_index),colore)
+%plot(MONTHLY_REVENUES(1:mf),colore,'linewidth',2)
+set(gca,'xtick',monthly_index,'fontsize',font_sz)
+xlabel('months','fontsize',font_sz)
+ylabel('nominal consumption','fontsize',font_sz)
+set(gca,'xlim',[0, mf])
+
+subplot(2,1,2); hold on; grid on; box on
+plot(monthly_month_index,nominal_investment(monthly_month_index),colore)
+%plot(MONTHLY_REVENUES(1:mf),colore,'linewidth',2)
+set(gca,'xtick',monthly_index,'fontsize',font_sz)
+xlabel('months','fontsize',font_sz)
+ylabel('nominal investment','fontsize',font_sz)
+set(gca,'xlim',[0, mf])
+
+
+figure(94);
+set(gcf,'Name','Real GDP components')
+
+subplot(2,1,1); hold on; grid on; box on
+plot(monthly_month_index,SOLD_QUANTITY(monthly_month_index),colore)
+plot(monthly_month_index,MONTHLY_OUTPUT(monthly_month_index),[colore, ':'])
+set(gca,'xtick',monthly_index,'fontsize',font_sz)
+xlabel('months','fontsize',font_sz)
+set(gca,'xlim',[0, mf])
+ylabel('real values','fontsize',font_sz)
+legend('sales','production',0)
+
+subplot(2,1,2); hold on; grid on; box on
+plot(monthly_month_index,capital_goods_investment(monthly_month_index),colore)
+%plot(MONTHLY_REVENUES(1:mf),colore,'linewidth',2)
+set(gca,'xtick',monthly_index,'fontsize',font_sz)
+xlabel('months','fontsize',font_sz)
+ylabel('real investment','fontsize',font_sz)
+set(gca,'xlim',[0, mf])
+
+
+break
+
+
+figure(94); hold on; grid on; box on
+set(gcf,'Name','Nominal GDP')
+
+
+
+break
+plot(Revenues(1:mf),colore)
+%plot(MONTHLY_REVENUES(1:mf),colore,'linewidth',2)
+set(gca,'xtick',monthly_index,'fontsize',font_sz)
+xlabel('months','fontsize',font_sz)
+ylabel('nominal consumption','fontsize',font_sz)
+set(gca,'xlim',[0, mf])
+
 
 
 %%% INVARIANTS
@@ -419,52 +551,7 @@ end
 figure(102);  hold on; grid on
 plot(MONEY_PRIVATE_SECTOR(1:tf)-MONEY_PRIVATE_SECTOR_counterpart(1:tf),colore)
 
-clear Data Data2
 
-
-
-%%%%%%  Good market statistics
-Data = load([Pat, 'firms_goods_market.txt']);
-days = unique(Data(:,1));
-
-k = 0;
-for d=1:20:(numel(days)-19)
-    Idx = find((Data(:,1)>=d)&(Data(:,1)<(d+20)));
-    Idx_q_sold = find(Data(Idx,3));
-    q_sold = Data(Idx(Idx_q_sold),3);
-    p_sold = Data(Idx(Idx_q_sold),4);
-    k = k + 1;
-    
-    q_sold_tot(k) = sum(q_sold);
-    Revenues(k) = sum(q_sold.*p_sold);
-    p_index(k,1) = sum(q_sold.*p_sold)/q_sold_tot(k);
-    
-    clear Idx q_sold p_sold
-end
-
-
-
-figure(95);
-subplot(2,1,1); hold on; grid on; box on
-plot(p_index(1:mf),colore,'linewidth',2)
-plot(CPI(1:mf),colore)
-set(gca,'xtick',monthly_index,'fontsize',font_sz)
-xlabel('months','fontsize',font_sz)
-ylabel('aribitrary monetary units','fontsize',font_sz)
-set(gca,'xlim',[0, mf])
-legend('CPI Matlab','CPI Eurostat','Location','Best')
-
-subplot(2,1,2); hold on; grid on; box on
-plot(AVERAGE_WAGE(1:mf),colore)
-set(gca,'xtick',monthly_index,'fontsize',font_sz)
-xlabel('months','fontsize',font_sz)
-ylabel('aribitrary monetary units','fontsize',font_sz)
-set(gca,'xlim',[0, mf])
-legend('wage index','Location','Best')
-
-if print_flag
-    print('-dpsc2','figure05.eps')
-end
 
 
 figure(96);
