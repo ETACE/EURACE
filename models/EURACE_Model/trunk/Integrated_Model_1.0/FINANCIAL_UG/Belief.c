@@ -233,8 +233,8 @@ if (holding_period>=days2maturity)
 else
    {
      factor_fundamental = fundamental_return_weight_bond;
-     factor_chartist = chartist_return_weight_bond;
-     factor_random = random_return_weight_bond;
+     factor_chartist = 0;
+     factor_random = 1-factor_fundamental;
    }
 
 // The three components of returns expected in the holding period
