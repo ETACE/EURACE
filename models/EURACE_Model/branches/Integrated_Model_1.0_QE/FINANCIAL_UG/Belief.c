@@ -59,7 +59,7 @@ double randomReturnStock(Belief *belief, Stock *stock, int forwardWindow, int ba
      rndReturn=rndReturn+rndvect[i];
              
     }
-    return rndvect[1];
+    return rndReturn/backwardWindow;
 }
 
 double randomReturnBond(Bond *bond,int backwardWindow,int holding_period,double *rndvect)
@@ -81,7 +81,7 @@ double randomReturnBond(Bond *bond,int backwardWindow,int holding_period,double 
      }
         
    //return rndReturn/backwardWindow;
-   return rndvect[1];
+   return rndReturn/backwardWindow;
 }
 
 void dividendYield(Belief *belief,Stock *stock,int currentDay, int forwardWindow,double dividendExp)
@@ -154,7 +154,7 @@ void  stockBeliefFormation(Belief *belief, Stock *stock,int backwardWindow,int f
   belief->utility = utility_tmp/backwardWindow;
  
   
-/*        if (PRINT_DEBUG_FILE_EXP1)
+   /*     if (PRINT_DEBUG_FILE_EXP1)
     {                       
         filename = malloc(40*sizeof(char));
         filename[0]=0;
@@ -163,11 +163,12 @@ void  stockBeliefFormation(Belief *belief, Stock *stock,int backwardWindow,int f
     //    fprintf(file1,"%d %f %d %f %f %f",CURRENTDAY,bond->nominal_yield,nrCoupons,coupon_stream,last_market_price,coupon_yield_annualized);
      //   fprintf(file1," %f %f %f %f %f %f",factor_random,return_random,factor_chartist,return_chartist,factor_fundamental,return_fundamental);
      //   fprintf(file1," %f %f\n",belief->expectedPriceReturns,belief->expectedTotalReturns);
+        fprintf(file1,"\n%d %f %f %f %f",CURRENTDAY,belief->last_price);
         fprintf(file1,"\n%d %f %f %f %f",CURRENTDAY,belief->last_price,return_random,return_chartist,return_fundamental);
         fprintf(file1," %f %f %f %f",price_returns_avg,dividend_yield_annualized,total_returns_avg,belief->utility);
         fclose(file1);
         free(filename);        
-    } */
+    } */ 
   
 }
 
@@ -256,7 +257,7 @@ utility_tmp = 0;
 // Computation of utility  
   for(i=0;i<backwardWindow;i++)
     {
-     r1 = holding_period*factor_chartist*backreturns_bond(bond,i);
+     r1 = factor_chartist*holding_period*backreturns_bond(bond,i);
      r2 = factor_fundamental*return_fundamental;
      r3 = factor_random*rndreturns[i];                           
      r = r1 + r2 + r3 + coupon_yield_annualized;
@@ -271,7 +272,7 @@ belief->utility = utility_tmp/backwardWindow;
 belief->last_price=lastPriceBond(bond);
 
 
-  /*    if (PRINT_DEBUG_FILE_EXP1)
+    if (PRINT_DEBUG_FILE_EXP1)
     {                       
         filename = malloc(40*sizeof(char));
         filename[0]=0;
@@ -282,6 +283,6 @@ belief->last_price=lastPriceBond(bond);
         fprintf(file1," %f %f %f\n",belief->expectedPriceReturns,belief->expectedTotalReturns,belief->utility);
         fclose(file1);
         free(filename);        
-    } */
+    } 
   
 }
