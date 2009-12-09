@@ -605,14 +605,36 @@
      <description>Function read the requests for fiat money sent by governments.</description>
      <currentState>CB_financial_operations_end</currentState>
      <nextState>00</nextState>
+     <condition>
+      <time>
+       <period>monthly</period>
+       <phase>0</phase>
+      </time>
+     </condition>
      <inputs>
       <input>
        <messageName>request_fiat_money</messageName>
       </input>
       <input>
-       <messageName>issue_bonds_to_ecb</messageName>
+       <messageName>info_new_bonds_amount</messageName>
       </input>
      </inputs>
+     <outputs/>
+    </function>
+    <function>
+     <name>idle</name>
+     <description></description>
+     <currentState>CB_financial_operations_end</currentState>
+     <nextState>00</nextState>
+     <condition>
+      <not>
+       <time>
+        <period>monthly</period>
+        <phase>0</phase>
+       </time>
+      </not>
+     </condition>
+     <inputs/>
      <outputs/>
     </function>
    </functions>

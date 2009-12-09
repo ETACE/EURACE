@@ -24,7 +24,7 @@
    <variable>
     <type>double</type>
     <name>const_dividend_earnings_ratio</name>
-    <description>The parameter const_dividend_earnings_ratio is used to determine the first positive dividend payment (if the dividend was set to 0, or at the start): &#xd;&#xd;
+    <description>The parameter const_dividend_earnings_ratio is used to determine the first positive dividend payment (if the dividend was set to 0, or at the start): &#xd;&#xd;&#xd;&#xd;
 TOTAL_DIVIDEND_PAYMENT = CONST_DIVIDEND_EARNINGS_RATIO *NET_EARNINGS;</description>
    </variable>
   </constants>
@@ -361,8 +361,8 @@ TOTAL_DIVIDEND_PAYMENT = CONST_DIVIDEND_EARNINGS_RATIO *NET_EARNINGS;</descripti
     </function>
     <function>
      <name>Firm_set_bankruptcy_insolvency</name>
-     <description>Function to set the type of bankruptcy to `insolvency' and go to end_Firm state. &#xd;&#xd;
-Also sets the active flag to 0 and starts the bankruptcy idle counter. &#xd;&#xd;
+     <description>Function to set the type of bankruptcy to `insolvency' and go to end_Firm state. &#xd;&#xd;&#xd;&#xd;
+Also sets the active flag to 0 and starts the bankruptcy idle counter. &#xd;&#xd;&#xd;&#xd;
 </description>
      <currentState>Firm_Bankruptcy_check</currentState>
      <nextState>Firm_End_Financial_Management_Role</nextState>
@@ -459,7 +459,7 @@ Also sets the active flag to 0 and starts the bankruptcy idle counter. &#xd;&#xd
     </function>
     <function>
      <name>Firm_set_bankruptcy_illiquidity</name>
-     <description>unction to set the type of bankruptcy to `illiquidity' and then go to end_Firm state. &#xd;&#xd;
+     <description>unction to set the type of bankruptcy to `illiquidity' and then go to end_Firm state. &#xd;&#xd;&#xd;&#xd;
 Also sets the active flag to 0 and starts the bankruptcy idle counter.</description>
      <currentState>Firm_bankruptcy_checked</currentState>
      <nextState>Firm_End_Financial_Management_Role</nextState>
@@ -672,7 +672,7 @@ Also sets the active flag to 0 and starts the bankruptcy idle counter.</descript
     </function>
     <function>
      <name>Firm_bankruptcy_idle_counter</name>
-     <description>Function to decrease the bankruptcy_idle_counter by 1. &#xd;&#xd;
+     <description>Function to decrease the bankruptcy_idle_counter by 1. &#xd;&#xd;&#xd;&#xd;
 Note that a negative count means the financing condition has not been yet satisfied at the end of the default idle period.</description>
      <currentState>Firm_checks_if_active</currentState>
      <nextState>Firm_not_active</nextState>

@@ -34,25 +34,25 @@
    <variable>
     <type>int</type>
     <name>gov_policy_switch_quantitative_easing</name>
-    <description>Constant to switch on/off automatic quantitative easing: gov issues bonds to ecb.&#xd;&#xd;&#xd;
+    <description>Constant to switch on/off automatic quantitative easing: gov issues bonds to ecb.&#xd;&#xd;&#xd;&#xd;&#xd;
 </description>
    </variable>
    <variable>
     <type>double</type>
     <name>subsidy_trigger_on</name>
-    <description>Trigger floor level of the GDP growth rate, below which the subsidy is switched on. Typically set to -0.01.&#xd;&#xd;&#xd;
+    <description>Trigger floor level of the GDP growth rate, below which the subsidy is switched on. Typically set to -0.01.&#xd;&#xd;&#xd;&#xd;&#xd;
 </description>
    </variable>
    <variable>
     <type>double</type>
     <name>subsidy_trigger_off</name>
-    <description>Trigger ceiling level of the GDP growth rate, above which the subsidy is switched off. Typically set to +0.01.&#xd;&#xd;&#xd;
+    <description>Trigger ceiling level of the GDP growth rate, above which the subsidy is switched off. Typically set to +0.01.&#xd;&#xd;&#xd;&#xd;&#xd;
 </description>
    </variable>
    <variable>
     <type>double</type>
     <name>subsidy_gdp_ratio</name>
-    <description>The subsidy percentage is a ratio of the - GDP growth rate. Typical setting is tanh(gdp_growth).&#xd;&#xd;&#xd;
+    <description>The subsidy percentage is a ratio of the - GDP growth rate. Typical setting is tanh(gdp_growth).&#xd;&#xd;&#xd;&#xd;&#xd;
 </description>
    </variable>
   </constants>
@@ -564,11 +564,7 @@
       </time>
      </condition>
      <inputs/>
-     <outputs>
-      <output>
-       <messageName>issue_bonds_to_ecb</messageName>
-      </output>
-     </outputs>
+     <outputs/>
     </function>
     <function>
      <name>Government_monthly_budget_accounting</name>
@@ -597,7 +593,11 @@
       </rhs>
      </condition>
      <inputs/>
-     <outputs/>
+     <outputs>
+      <output>
+       <messageName>info_new_bonds_amount</messageName>
+      </output>
+     </outputs>
     </function>
     <function>
      <name>idle</name>
@@ -845,6 +845,17 @@
      <type>int</type>
      <name>quantity</name>
      <description>Number of bonds issued</description>
+    </variable>
+   </variables>
+  </message>
+  <message>
+   <name>info_new_bonds_amount</name>
+   <description></description>
+   <variables>
+    <variable>
+     <type>double</type>
+     <name>quantity</name>
+     <description>bonds quantity needed by the Government</description>
     </variable>
    </variables>
   </message>

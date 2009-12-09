@@ -404,35 +404,35 @@ int Government_resolve_unsold_bonds()
     {
         //Government sends a new type of message to ECB with the nr of bonds, and the value:
         
-        if (GOV_POLICY_SWITCH_QUANTITATIVE_EASING)
-        {   
-            last_market_price = BOND.prices[BOND.index];
-            
-            if(last_market_price*BOND.quantity<0.0)
-                printf("\n In Government_resolve_unsold_bonds: Government nominal value %f \n", last_market_price*BOND.quantity);
-
-            add_issue_bonds_to_ecb_message(last_market_price*BOND.quantity, BOND.quantity);
-
-            #ifdef _DEBUG_MODE            
-            if (PRINT_DEBUG_EXP1 || PRINT_DEBUG)
-            {
-                printf("\n\n Government_resolve_unsold_bonds.QUANTITATIVE_EASING ID: %d",ID);
-                printf("\n\t Payment account before easing: %f \n", PAYMENT_ACCOUNT);
-            }
-            #endif
-            
-            //Assume that the ECB is FULLY accommodating the government's demand for fiat money:
-            PAYMENT_ACCOUNT += last_market_price*BOND.quantity;
-
-            #ifdef _DEBUG_MODE
-            if (PRINT_DEBUG_EXP1 || PRINT_DEBUG)
-            {
-                printf("\n\t Payment account after easing: %f", PAYMENT_ACCOUNT);
-                printf("n\t last_market_price %f BOND.quantity %d \n", last_market_price,BOND.quantity );
-                getchar();
-            }
-            #endif       
-        }   
+        //if (GOV_POLICY_SWITCH_QUANTITATIVE_EASING)
+//        {   
+//            last_market_price = BOND.prices[BOND.index];
+//            
+//            if(last_market_price*BOND.quantity<0.0)
+//                printf("\n In Government_resolve_unsold_bonds: Government nominal value %f \n", last_market_price*BOND.quantity);
+//
+//            add_issue_bonds_to_ecb_message(last_market_price*BOND.quantity, BOND.quantity);
+//
+//            #ifdef _DEBUG_MODE            
+//            if (PRINT_DEBUG_EXP1 || PRINT_DEBUG)
+//            {
+//                printf("\n\n Government_resolve_unsold_bonds.QUANTITATIVE_EASING ID: %d",ID);
+//                printf("\n\t Payment account before easing: %f \n", PAYMENT_ACCOUNT);
+//            }
+//            #endif
+//            
+//            //Assume that the ECB is FULLY accommodating the government's demand for fiat money:
+//            PAYMENT_ACCOUNT += last_market_price*BOND.quantity;
+//
+//            #ifdef _DEBUG_MODE
+//            if (PRINT_DEBUG_EXP1 || PRINT_DEBUG)
+//            {
+//                printf("\n\t Payment account after easing: %f", PAYMENT_ACCOUNT);
+//                printf("n\t last_market_price %f BOND.quantity %d \n", last_market_price,BOND.quantity );
+//                getchar();
+//            }
+//            #endif       
+//        }   
              
         
         BOND.quantity = 0;
@@ -555,6 +555,8 @@ int Government_bonds_issuing_decision()
     //Set the bond issue price a bit lower than the last_market_price
     limit_price = (1-BONDS_NEWISSUE_DISCOUNT)*last_market_price;
     new_bonds_amount = ceil(TOTAL_BOND_FINANCING/limit_price);
+    
+    add_info_new_bonds_amount_message(new_bonds_amount);
 
     //bond->quantity = bond->quantity + new_bonds_amount;
     BOND.quantity = BOND.quantity + new_bonds_amount;

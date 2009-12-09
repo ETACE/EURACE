@@ -42,12 +42,12 @@ int Central_Bank_read_fiat_money_requests()
 {
 
     //Read the bond emission -> fiat money request from governments
-    START_ISSUE_BONDS_TO_ECB_MESSAGE_LOOP
-        FIAT_MONEY_GOVS += issue_bonds_to_ecb_message->nominal_value;
-        FIAT_MONEY      += issue_bonds_to_ecb_message->nominal_value;
-        BOND_HOLDINGS_VALUE += issue_bonds_to_ecb_message->nominal_value;
-        NR_GOV_BONDS += issue_bonds_to_ecb_message->quantity;
-    FINISH_ISSUE_BONDS_TO_ECB_MESSAGE_LOOP
+//    START_ISSUE_BONDS_TO_ECB_MESSAGE_LOOP
+//        FIAT_MONEY_GOVS += issue_bonds_to_ecb_message->nominal_value;
+//        FIAT_MONEY      += issue_bonds_to_ecb_message->nominal_value;
+//        BOND_HOLDINGS_VALUE += issue_bonds_to_ecb_message->nominal_value;
+//        NR_GOV_BONDS += issue_bonds_to_ecb_message->quantity;
+//    FINISH_ISSUE_BONDS_TO_ECB_MESSAGE_LOOP
 
 
     //Read the fiat money request from governments

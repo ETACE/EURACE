@@ -49,6 +49,7 @@
    <file>ClearingMechanism.c</file>
    <file>Household_Financial_Market.c</file>
    <file>Government_Financial_Market.c</file>
+   <file>Central_Bank_Financial_Market.c</file>
   </functionFiles>
   <timeUnits>
    <timeUnit>
@@ -383,7 +384,7 @@
     </variable>
    </memory>
    <functions>
-   <function>
+    <function>
      <name>Household_receives_payment_coupons</name>
      <description></description>
      <currentState>Household_Start_Financial_Market_Role</currentState>
@@ -407,24 +408,34 @@
      <currentState>Household_Start_Financial_Market_Role</currentState>
      <nextState>Household_received_coupons</nextState>
      <condition>
-     <not>
-      <time>
-       <period>monthly</period>
-       <phase>1</phase>
-      </time>
+      <not>
+       <time>
+        <period>monthly</period>
+        <phase>1</phase>
+       </time>
       </not>
      </condition>
+     <inputs/>
+     <outputs/>
     </function>
     <function>
      <name>Household_receive_info_interest_from_bank</name>
      <description></description>
      <currentState>Household_received_coupons</currentState>
-     <nextState>SELECTSTRATEGY</nextState>
+     <nextState>REVISE_PORTFOLIO</nextState>
      <inputs>
       <input>
        <messageName>accountInterest</messageName>
       </input>
      </inputs>
+     <outputs/>
+    </function>
+    <function>
+     <name>Household_revises_expected_portfolio</name>
+     <description>the household revise his expected portfolio that is represented by the pendingOrders variable </description>
+     <currentState>REVISE_PORTFOLIO</currentState>
+     <nextState>SELECTSTRATEGY</nextState>
+     <inputs/>
      <outputs/>
     </function>
     <function>
@@ -461,15 +472,6 @@
      <description></description>
      <currentState>BOND_BELIEF_FORMATION</currentState>
      <nextState>SEND_ORDERS</nextState>
-     <condition>
-      <lhs>
-       <value>a.strategy</value>
-      </lhs>
-      <op>NEQ</op>
-      <rhs>
-       <value>0</value>
-      </rhs>
-     </condition>
      <inputs>
       <input>
        <messageName>info_bond</messageName>
@@ -478,10 +480,10 @@
      <outputs/>
     </function>
     <function>
-     <name>Household_does_not_trading</name>
+     <name>idle</name>
      <description></description>
-     <currentState>CHOOSE_TO_TRADE_OR_NOT</currentState>
-     <nextState>Household_Start_Labour_Role</nextState>
+     <currentState>CHOOSE_TO_UPDATE_BELIEFS_OR_NOT</currentState>
+     <nextState>SEND_ORDERS</nextState>
      <condition>
       <lhs>
        <value>a.strategy</value>
@@ -661,22 +663,26 @@
      <description></description>
     </variable>
    </memory>
-   <functions>   
-   <function>
+   <functions>
+    <function>
      <name>Government_pays_coupons</name>
      <description></description>
      <currentState>Gov_Start_Bond_Market</currentState>
      <nextState>Gov_rate_upgrade</nextState>
-      <condition>
+     <condition>
       <time>
        <period>monthly</period>
        <phase>1</phase>
       </time>
      </condition>
      <inputs/>
-     <outputs/>
+     <outputs>
+      <output>
+       <messageName>payment_coupons</messageName>
+      </output>
+     </outputs>
     </function>
-     <function>
+    <function>
      <name>Government_read_policy_rate</name>
      <description>Government reads the policy rate from the CB and updates the bonds yield</description>
      <currentState>Gov_rate_upgrade</currentState>
@@ -769,7 +775,50 @@
      </condition>
      <inputs/>
      <outputs/>
-    </function>   
+    </function>
+   </functions>
+  </xagent>
+  <xagent>
+   <name>Central_Bank</name>
+   <description></description>
+   <memory/>
+   <functions>
+    <function>
+     <name>CB_receives_info_bond</name>
+     <description></description>
+     <currentState>CB_market_operations</currentState>
+     <nextState>CB_FM_role</nextState>
+     <inputs>
+      <input>
+       <messageName>info_bond</messageName>
+      </input>
+     </inputs>
+     <outputs/>
+    </function>
+    <function>
+     <name>CB_issues_orders</name>
+     <description></description>
+     <currentState>CB_FM_role</currentState>
+     <nextState>CB_waiting_for_clearing</nextState>
+     <inputs/>
+     <outputs>
+      <output>
+       <messageName>order</messageName>
+      </output>
+     </outputs>
+    </function>
+    <function>
+     <name>CB_receives_order_status</name>
+     <description></description>
+     <currentState>CB_waiting_for_clearing</currentState>
+     <nextState>CB_financial_operations_end</nextState>
+     <inputs>
+      <input>
+       <messageName>order_status</messageName>
+      </input>
+     </inputs>
+     <outputs/>
+    </function>
    </functions>
   </xagent>
  </agents>
@@ -894,15 +943,16 @@
     </variable>
    </variables>
   </message>
-   <message>
+  <message>
    <name>payment_coupons</name>
    <description>message posted by the Government, announce the payment coupons and it decreases its payment_account </description>
    <variables>
     <variable>
      <type>double</type>
      <name>coupon</name>
-   </variable>
-   <variable>
+     <description></description>
+    </variable>
+    <variable>
      <type>int</type>
      <name>government_id</name>
      <description>the unitary cost of a coupon</description>

@@ -8,14 +8,14 @@ Pat = '..\';
 font_sz = 14;
 colore = 'b';
 
-mf = 45;
+mf = 50;
 af = ceil(mf/12);
 tf = 20*mf;
 daily_month_index = (1:tf)/20;
 monthly_month_index = 1:mf;
 yearly_month_index = (1:af)*12;
-monthly_index = 0:6:mf; 
-monthly_index2 = 0:24:mf; 
+monthly_index = 0:12:mf; 
+monthly_index2 = 0:36:mf; 
 yearly_index  = 0:af
 
 %%% BANKS
