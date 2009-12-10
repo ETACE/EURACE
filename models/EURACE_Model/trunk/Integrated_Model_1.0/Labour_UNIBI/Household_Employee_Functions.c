@@ -703,27 +703,27 @@ int Household_send_tax_payment()
         FILE *file1=NULL;
         char *filename="";
    // #endif
-    double additional_tax;
-    additional_tax =0.0;
+    double restitution_payment=0.0;
 
-    //Additional tax: repayment of the already received monthly unemployment benefits if recently re-employed
+    //Benefit restitution: repayment of the already received monthly unemployment benefits if recently re-employed
     if (DAY_OF_MONTH_RECEIVE_BENEFIT != DAY_OF_MONTH_RECEIVE_INCOME )
     {
-        additional_tax = ((DAY_OF_MONTH_RECEIVE_BENEFIT + (20-DAY_OF_MONTH_RECEIVE_INCOME)%20)/20.0)
+        restitution_payment = ((DAY_OF_MONTH_RECEIVE_BENEFIT + (20-DAY_OF_MONTH_RECEIVE_INCOME)%20)/20.0)
                             * UNEMPLOYMENT_PAYMENT;
         //Reset
         DAY_OF_MONTH_RECEIVE_BENEFIT = DAY_OF_MONTH_RECEIVE_INCOME;
     }
-
+    /*Send a message to the government*/
+	add_unemployment_benefit_restitution_message(GOV_ID, restitution_payment);
 
     /*Compute the total taxes*/
-    TAX_PAYMENT = additional_tax + CUM_TOTAL_DIVIDENDS*TAX_RATE_HH_CAPITAL + WAGE*TAX_RATE_HH_LABOUR;
+    TAX_PAYMENT = CUM_TOTAL_DIVIDENDS*TAX_RATE_HH_CAPITAL + WAGE*TAX_RATE_HH_LABOUR;
 
     /*Send a message to the government*/
     add_tax_payment_message(GOV_ID, TAX_PAYMENT);
 
     /*Reduce the payment account*/
-    PAYMENT_ACCOUNT-=TAX_PAYMENT;
+    PAYMENT_ACCOUNT -= restitution_payment + TAX_PAYMENT;
 
     /*Setting the counter of monthly dividends = 0*/
     CUM_TOTAL_DIVIDENDS=0;
@@ -734,7 +734,7 @@ int Household_send_tax_payment()
             filename[0]=0;
             strcpy(filename, "its/households_tax_payments.txt");      
             file1 = fopen(filename,"a");
-            fprintf(file1,"\n %d %d %f %f",DAY,ID,additional_tax,TAX_PAYMENT);
+            fprintf(file1,"\n %d %d %f %f",DAY,ID,restitution_payment,TAX_PAYMENT);
             fclose(file1);
             free(filename);
         }  
