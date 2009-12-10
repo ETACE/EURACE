@@ -446,6 +446,18 @@
         </rhs>
        </filter>
       </input>
+      <input>
+       <messageName>unemployment_benefit_restitution</messageName>
+       <filter>
+        <lhs>
+         <value>a.id</value>
+        </lhs>
+        <op>EQ</op>
+        <rhs>
+         <value>m.gov_id</value>
+        </rhs>
+       </filter>
+      </input>
      </inputs>
      <outputs/>
     </function>
@@ -763,6 +775,22 @@
     <variable>
      <type>double</type>
      <name>tax_payment</name>
+     <description></description>
+    </variable>
+   </variables>
+  </message>
+  <message>
+   <name>unemployment_benefit_restitution</name>
+   <description>Added by agents to refund unemployment benefit payments if they are re-employed.</description>
+   <variables>
+    <variable>
+     <type>int</type>
+     <name>gov_id</name>
+     <description></description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>restitution_payment</name>
      <description></description>
     </variable>
    </variables>

@@ -1206,6 +1206,9 @@ the reservation wage</description>
       <output>
        <messageName>tax_payment</messageName>
       </output>
+      <output>
+       <messageName>unemployment_benefit_restitution</messageName>
+      </output>
      </outputs>
     </function>
     <function>

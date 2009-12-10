@@ -202,12 +202,17 @@ int Government_send_policy_announcements()
  */
 int Government_read_tax_payments()
 {   
-    double sum =0;
+    double sum =0.0;
+
     START_TAX_PAYMENT_MESSAGE_LOOP
-        
         MONTHLY_TAX_REVENUES += tax_payment_message->tax_payment;
         sum+= tax_payment_message->tax_payment;
     FINISH_TAX_PAYMENT_MESSAGE_LOOP 
+
+    START_UNEMPLOYMENT_BENEFIT_RESTITUTION_MESSAGE_LOOP
+        MONTHLY_BENEFIT_PAYMENT -= unemployment_benefit_restitution_message->restitution_payment;
+        sum -= unemployment_benefit_restitution_message->restitution_payment;
+    FINISH_UNEMPLOYMENT_BENEFIT_RESTITUTION_MESSAGE_LOOP 
 
    PAYMENT_ACCOUNT += sum;
    
