@@ -40,7 +40,8 @@ int Central_Bank_monetary_policy()
 
 int Central_Bank_read_fiat_money_requests()
 {
-
+   
+    int i=0;
     //Read the bond emission -> fiat money request from governments
 //    START_ISSUE_BONDS_TO_ECB_MESSAGE_LOOP
 //        FIAT_MONEY_GOVS += issue_bonds_to_ecb_message->nominal_value;
@@ -51,12 +52,36 @@ int Central_Bank_read_fiat_money_requests()
 
 
     //Read the fiat money request from governments
-    //request_fiat_money_message(nominal_value);
+
     START_REQUEST_FIAT_MONEY_MESSAGE_LOOP
         FIAT_MONEY_GOVS += request_fiat_money_message->nominal_value;
         FIAT_MONEY      += request_fiat_money_message->nominal_value;
     FINISH_REQUEST_FIAT_MONEY_MESSAGE_LOOP
-
+    
+        //request_fiat_money_message(nominal_value);
+        
+     for(int j = 0; j < NEW_BONDS_QUANTITY.size; j++)
+        {
+            NEW_BONDS_QUANTITY.array[j] = 0;
+            NEW_BONDS_GOV_ID.array[j] = 0;
+        }    
+        
+     
+        
+    START_INFO_NEW_BONDS_AMOUNT_MESSAGE_LOOP
+        NEW_BONDS_QUANTITY.array[i] = info_new_bonds_amount_message->quantity;
+        NEW_BONDS_GOV_ID.array[i] = info_new_bonds_amount_message->gov_id;
+       
+        
+    //    printf("\n\n Central_Bank_read_fiat_money_requests");
+     //  printf("\n index: %d NEW_BONDS_QUANTITY: %d NEW_BONDS_GOV_ID: %d",i,NEW_BONDS_QUANTITY.array[i],NEW_BONDS_GOV_ID.array[i]);
+         i++;
+        
+    FINISH_INFO_NEW_BONDS_AMOUNT_MESSAGE_LOOP
+    
+  //  printf("\n NEW_BONDS_QUANTITY.size: %d",NEW_BONDS_QUANTITY.size);   
+    
+   
 
     return 0;
 }
