@@ -2220,6 +2220,9 @@
        <messageName>eurostat_send_specific_skills</messageName>
       </output>
       <output>
+       <messageName>data_for_government</messageName>
+      </output>
+      <output>
        <messageName>eurostat_send_macrodata</messageName>
       </output>
      </outputs>
@@ -2456,8 +2459,8 @@
      <outputs/>
     </function>
     <function>
-     <name>Eurostat_send_data_to_government</name>
-     <description>Eurostat sends the data to the governments for determining policies.</description>
+     <name>idle</name>
+     <description></description>
      <currentState>Eurostat_Start_EndOfYear_Loop</currentState>
      <nextState>end_Eurostat</nextState>
      <condition>
@@ -2467,11 +2470,7 @@
       </time>
      </condition>
      <inputs/>
-     <outputs>
-      <output>
-       <messageName>data_for_government</messageName>
-      </output>
-     </outputs>
+     <outputs/>
     </function>
     <function>
      <name>Eurostat_initialization</name>

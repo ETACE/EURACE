@@ -42,6 +42,7 @@ int Eurostat_initialization()
 
 /** \Eurostat_send_data_to_government()
  * \brief Eurostat send data: mean wage  ...
+ * OBSOLETE FUNCTION
  */   
 int Eurostat_send_data_to_government()
 {
@@ -70,7 +71,8 @@ int Eurostat_send_data_to_government()
  */
 int Eurostat_send_data()
 {
-    int i;   
+    int i, region;
+    double gdp;
     
     /*First of every month*/
     /*Send the data*/
@@ -87,8 +89,20 @@ int Eurostat_send_data()
         CPI);
     }
     
-    add_eurostat_send_macrodata_message(ANNUAL_GROWTH_RATES_MONTHLY.cpi, GDP, UNEMPLOYMENT_RATE);
-    
+    //Add message for each region
+    for (i=0; i<TOTAL_REGIONS; i++)
+    {
+        region = i+1;
+        
+        gdp = REGION_FIRM_DATA.array[i].gdp;
+        
+        printf("\n Region %d GDP=%2.2f\n", region, gdp);
+        add_data_for_government_message(region, gdp, AVERAGE_WAGE);
+    }
+
+    //Add message for general economy-wide macrodata 
+    add_eurostat_send_macrodata_message(ANNUAL_GROWTH_RATES_MONTHLY.cpi, GDP, UNEMPLOYMENT_RATE);    
+
     return 0;
 }
 
