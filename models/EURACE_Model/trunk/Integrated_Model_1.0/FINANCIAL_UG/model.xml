@@ -570,7 +570,7 @@
      <inputs>
       <input>
        <messageName>order</messageName>
-        <sort><key>asset_id</key><order>descend</order></sort>
+       <sort><key>asset_id</key><order>descend</order></sort>
       </input>
      </inputs>
      <outputs>
@@ -782,7 +782,33 @@
   <xagent>
    <name>Central_Bank</name>
    <description></description>
-   <memory/>
+   <memory>
+    <variable>
+     <type>double_array</type>
+     <name>new_bonds_last_price</name>
+     <description></description>
+    </variable>
+   <variable>
+     <type>int_array</type>
+     <name>gov_bonds_holding</name>
+     <description></description>
+    </variable>
+    <variable>
+     <type>int_array</type>
+     <name>new_bonds_quantity</name>
+     <description></description>
+    </variable>
+    <variable>
+     <type>int_array</type>
+     <name>new_bonds_gov_id</name>
+     <description></description>
+    </variable>
+   <variable>
+     <type>int</type>
+     <name>QE_policy</name>
+     <description></description>
+    </variable>
+   </memory>
    <functions>
     <function>
      <name>CB_receives_info_bond</name>

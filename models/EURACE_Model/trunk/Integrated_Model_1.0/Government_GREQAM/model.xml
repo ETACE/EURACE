@@ -32,27 +32,21 @@
     <description>Number of regions per government. Default 2.</description>
    </variable>
    <variable>
-    <type>int</type>
-    <name>gov_policy_switch_quantitative_easing</name>
-    <description>Constant to switch on/off automatic quantitative easing: gov issues bonds to ecb.&#xd;&#xd;&#xd;&#xd;&#xd;
-</description>
-   </variable>
-   <variable>
     <type>double</type>
     <name>subsidy_trigger_on</name>
-    <description>Trigger floor level of the GDP growth rate, below which the subsidy is switched on. Typically set to -0.01.&#xd;&#xd;&#xd;&#xd;&#xd;
+    <description>Trigger floor level of the GDP growth rate, below which the subsidy is switched on. Typically set to -0.01.&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
 </description>
    </variable>
    <variable>
     <type>double</type>
     <name>subsidy_trigger_off</name>
-    <description>Trigger ceiling level of the GDP growth rate, above which the subsidy is switched off. Typically set to +0.01.&#xd;&#xd;&#xd;&#xd;&#xd;
+    <description>Trigger ceiling level of the GDP growth rate, above which the subsidy is switched off. Typically set to +0.01.&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
 </description>
    </variable>
    <variable>
     <type>double</type>
     <name>subsidy_gdp_ratio</name>
-    <description>The subsidy percentage is a ratio of the - GDP growth rate. Typical setting is tanh(gdp_growth).&#xd;&#xd;&#xd;&#xd;&#xd;
+    <description>The subsidy percentage is a ratio of the - GDP growth rate. Typical setting is tanh(gdp_growth).&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
 </description>
    </variable>
   </constants>
@@ -881,9 +875,14 @@
    <description></description>
    <variables>
     <variable>
-     <type>double</type>
+     <type>int</type>
      <name>quantity</name>
      <description>bonds quantity needed by the Government</description>
+    </variable>
+    <variable>
+     <type>int</type>
+     <name>gov_id</name>
+     <description></description>
     </variable>
    </variables>
   </message>

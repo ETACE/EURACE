@@ -24,13 +24,19 @@ int Government_orders_issuing(void)
        Order *pending_order;
        Bond *bond;
        int issuer, qty;
+       int diluition_coefficient;
+     
+       if ((CURRENTDAY%DAYS_PER_MONTH)==0)
+          diluition_coefficient = 1;
+       else
+           diluition_coefficient = DAYS_PER_MONTH-(CURRENTDAY%DAYS_PER_MONTH)+1;
        
        bond = get_bond();
        last_market_price = bond->prices[bond->index];
        limit_price = (1-BONDS_NEWISSUE_DISCOUNT)*last_market_price;
        
        pending_order=get_pending_order();
-       qty =-bond->quantity;
+       qty =-bond->quantity/diluition_coefficient;
        pending_order->quantity= qty;
        pending_order->price=limit_price;
        pending_order->issuer=ID;

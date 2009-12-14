@@ -402,43 +402,13 @@ int Government_send_account_update()
  */
 int Government_resolve_unsold_bonds()
 {   
-    double last_market_price;
+   // double last_market_price;
     
     //At the end of the month: check if the nr of bonds in the gov's own portfolio is positive
     if (BOND.quantity>0)
     {
-        //Government sends a new type of message to ECB with the nr of bonds, and the value:
-        
-        //if (GOV_POLICY_SWITCH_QUANTITATIVE_EASING)
-//        {   
-//            last_market_price = BOND.prices[BOND.index];
-//            
-//            if(last_market_price*BOND.quantity<0.0)
-//                printf("\n In Government_resolve_unsold_bonds: Government nominal value %f \n", last_market_price*BOND.quantity);
-//
-//            add_issue_bonds_to_ecb_message(last_market_price*BOND.quantity, BOND.quantity);
-//
-//            #ifdef _DEBUG_MODE            
-//            if (PRINT_DEBUG_EXP1 || PRINT_DEBUG)
-//            {
-//                printf("\n\n Government_resolve_unsold_bonds.QUANTITATIVE_EASING ID: %d",ID);
-//                printf("\n\t Payment account before easing: %f \n", PAYMENT_ACCOUNT);
-//            }
-//            #endif
-//            
-//            //Assume that the ECB is FULLY accommodating the government's demand for fiat money:
-//            PAYMENT_ACCOUNT += last_market_price*BOND.quantity;
-//
-//            #ifdef _DEBUG_MODE
-//            if (PRINT_DEBUG_EXP1 || PRINT_DEBUG)
-//            {
-//                printf("\n\t Payment account after easing: %f", PAYMENT_ACCOUNT);
-//                printf("n\t last_market_price %f BOND.quantity %d \n", last_market_price,BOND.quantity );
-//                getchar();
-//            }
-//            #endif       
-//        }   
-             
+      
+ 
         
         BOND.quantity = 0;
     }
@@ -561,7 +531,8 @@ int Government_bonds_issuing_decision()
     limit_price = (1-BONDS_NEWISSUE_DISCOUNT)*last_market_price;
     new_bonds_amount = ceil(TOTAL_BOND_FINANCING/limit_price);
     
-    add_info_new_bonds_amount_message(new_bonds_amount);
+    add_info_new_bonds_amount_message(new_bonds_amount,ID);
+  //  printf("\n\n add_info_new_bonds_amount_message. qty: %d ID: %d",new_bonds_amount,ID);
 
     //bond->quantity = bond->quantity + new_bonds_amount;
     BOND.quantity = BOND.quantity + new_bonds_amount;
@@ -777,7 +748,7 @@ int Government_set_policy()
      YEARLY_INVESTMENT_BUDGET = GOV_POLICY_GDP_FRACTION_INVESTMENT * GDP_FORECAST;
      MONTHLY_INVESTMENT_BUDGET = YEARLY_INVESTMENT_BUDGET/12;
 
-    if ((POLICY_EXP1)&&(GOV_POLICY_SWITCH_QUANTITATIVE_EASING==0))
+ /*   if ((POLICY_EXP1)&&(GOV_POLICY_SWITCH_QUANTITATIVE_EASING==0))
     {                   
                 
         if ( (YEARLY_BUDGET_BALANCE+PAYMENT_ACCOUNT)>0)
@@ -792,7 +763,7 @@ int Government_set_policy()
              }
         if (TAX_RATE_HH_LABOUR<0.05) TAX_RATE_HH_LABOUR = 0.05;
         if (TAX_RATE_CORPORATE<0.05) TAX_RATE_CORPORATE = 0.05;
-      }
+      } */
          
     return 0;
 }
