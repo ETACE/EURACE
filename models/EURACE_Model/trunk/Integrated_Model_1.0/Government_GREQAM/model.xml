@@ -34,19 +34,23 @@
    <variable>
     <type>double</type>
     <name>subsidy_trigger_on</name>
-    <description>Trigger floor level of the GDP growth rate, below which the subsidy is switched on. Typically set to -0.01.&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+    <description>Trigger floor level of the GDP growth rate, below which the subsidy is switched on. Typically set to -0.01.&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
 </description>
    </variable>
    <variable>
     <type>double</type>
     <name>subsidy_trigger_off</name>
-    <description>Trigger ceiling level of the GDP growth rate, above which the subsidy is switched off. Typically set to +0.01.&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+    <description>Trigger ceiling level of the GDP growth rate, above which the subsidy is switched off. Typically set to +0.01.&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
 </description>
    </variable>
    <variable>
-    <type>double</type>
-    <name>subsidy_gdp_ratio</name>
-    <description>The subsidy percentage is a ratio of the - GDP growth rate. Typical setting is tanh(gdp_growth).&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
+    <type>int</type>
+    <name>gov_policy_swith_quantitative_easing</name>
+    <description>Swith to turn on quantitative easing.
+
+
+
+
 </description>
    </variable>
   </constants>
@@ -228,8 +232,8 @@
     </variable>
     <variable>
      <type>double</type>
-     <name>gdp</name>
-     <description>This is the GDP for the regions belonging to this government.</description>
+     <name>yearly_gdp</name>
+     <description>This is yearly GDP, summed over the regions belonging to this government.</description>
     </variable>
     <variable>
      <type>double</type>
@@ -326,6 +330,21 @@
      <name>unemployment_rate</name>
      <description>This is the economy-wide unemployment_rate.</description>
     </variable>
+    <variable>
+     <type>double</type>
+     <name>monthly_gdp</name>
+     <description>This is monthly GDP, summed over the regions belonging to this government.</description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>monthly_budget_balance_gdp_fraction</name>
+     <description>The monthly budget balance as a percentage of monthly gdp.</description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>yearly_budget_balance_gdp_fraction</name>
+     <description>The yearly budget balance as a percentage of yearly gdp.</description>
+    </variable>
    </memory>
    <functions>
     <function>
@@ -360,9 +379,9 @@
     </function>
     <function>
      <name>Government_monthly_resetting</name>
-     <description>Monthly resetting of counters.</description>
+     <description></description>
      <currentState>Government_Start_Monthly_Loop_Top</currentState>
-     <nextState>Government_Start_Yearly_Loop_Top</nextState>
+     <nextState>001</nextState>
      <condition>
       <time>
        <period>monthly</period>
@@ -390,13 +409,13 @@
     </function>
     <function>
      <name>idle</name>
-     <description>Idle for yearly loop at top.</description>
+     <description></description>
      <currentState>Government_Start_Yearly_Loop_Top</currentState>
      <nextState>Gov_Start_Bond_Market</nextState>
      <condition>
       <not>
        <time>
-        <period>monthly</period>
+        <period>yearly</period>
         <phase>1</phase>
        </time>
       </not>
@@ -406,15 +425,9 @@
     </function>
     <function>
      <name>Government_send_policy_announcements</name>
-     <description>Function to send the yearly policy announcement message.</description>
-     <currentState>Government_Start_Yearly_Loop_Top</currentState>
-     <nextState>00</nextState>
-     <condition>
-      <time>
-       <period>monthly</period>
-       <phase>1</phase>
-      </time>
-     </condition>
+     <description></description>
+     <currentState>003</currentState>
+     <nextState>Government_Start_Yearly_Loop_Top</nextState>
      <inputs/>
      <outputs>
       <output>
@@ -654,9 +667,9 @@
     </function>
     <function>
      <name>Government_yearly_budget_accounting</name>
-     <description>Function to perform accounting at the end of each year.</description>
+     <description></description>
      <currentState>Gov_Start_Yearly_Loop</currentState>
-     <nextState>07</nextState>
+     <nextState>end_Government</nextState>
      <condition>
       <time>
        <period>yearly</period>
@@ -668,9 +681,9 @@
     </function>
     <function>
      <name>Government_read_data_from_Eurostat</name>
-     <description>Function to read data from Eurostat.</description>
-     <currentState>07</currentState>
-     <nextState>08</nextState>
+     <description></description>
+     <currentState>001</currentState>
+     <nextState>002</nextState>
      <inputs>
       <input>
        <messageName>data_for_government</messageName>
@@ -683,17 +696,23 @@
     </function>
     <function>
      <name>Government_set_policy</name>
-     <description>Function to set policy rules: income forecast and expenditure budget.</description>
-     <currentState>08</currentState>
-     <nextState>end_Government</nextState>
+     <description></description>
+     <currentState>002</currentState>
+     <nextState>003</nextState>
      <inputs/>
      <outputs/>
     </function>
     <function>
      <name>Government_yearly_resetting</name>
-     <description>Yearly resetting of counters.</description>
-     <currentState>00</currentState>
+     <description></description>
+     <currentState>Government_Start_Yearly_Loop_Top</currentState>
      <nextState>Gov_Start_Bond_Market</nextState>
+     <condition>
+      <time>
+       <period>yearly</period>
+       <phase>1</phase>
+      </time>
+     </condition>
      <inputs/>
      <outputs/>
     </function>

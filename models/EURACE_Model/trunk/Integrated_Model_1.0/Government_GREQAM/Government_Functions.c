@@ -90,9 +90,9 @@ int Government_send_policy_announcements()
         }
         // #endif 
 
-	    #ifdef _DEBUG_MODE
-	    if ((PRINT_DEBUG_GOV)&&(SUBSIDY_FLAG==1))
-	    { 
+        #ifdef _DEBUG_MODE
+        if ((PRINT_DEBUG_GOV)&&(SUBSIDY_FLAG==1))
+        { 
               printf("\n Stabilization: Government_send_policy_announcements ID: %d",ID);
               printf("\n SUBSIDY_FLAG: %d",SUBSIDY_FLAG);
               printf("\n CONST_INCOME_TAX_RATE: %f", CONST_INCOME_TAX_RATE);
@@ -103,12 +103,12 @@ int Government_send_policy_announcements()
               printf("\n tanh(GDP_GROWTH - SUBSIDY_TRIGGER_OFF): %f", tanh(GDP_GROWTH - SUBSIDY_TRIGGER_OFF));
               printf("\n HH_SUBSIDY_PCT: %f*%f= %f", -tanh(GDP_GROWTH - SUBSIDY_TRIGGER_OFF), fabs(GDP_GROWTH), HH_SUBSIDY_PCT);
               printf("\n \t TAX_RATE_HH_LABOUR: %f TAX_RATE_CORPORATE: %f TAX_RATE_HH_CAPITAL: %f TAX_RATE_VAT: %f",
-				 TAX_RATE_HH_LABOUR, TAX_RATE_CORPORATE, TAX_RATE_HH_CAPITAL, TAX_RATE_VAT);
+                 TAX_RATE_HH_LABOUR, TAX_RATE_CORPORATE, TAX_RATE_HH_CAPITAL, TAX_RATE_VAT);
               printf("\n \t UNEMPLOYMENT_BENEFIT_PCT: %f HH_SUBSIDY_PCT: %f FIRM_SUBSIDY_PCT: %f HH_TRANSFER_PAYMENT: %f FIRM_TRANSFER_PAYMENT; %f",
-				 UNEMPLOYMENT_BENEFIT_PCT, HH_SUBSIDY_PCT, FIRM_SUBSIDY_PCT, HH_TRANSFER_PAYMENT, FIRM_TRANSFER_PAYMENT);
+                 UNEMPLOYMENT_BENEFIT_PCT, HH_SUBSIDY_PCT, FIRM_SUBSIDY_PCT, HH_TRANSFER_PAYMENT, FIRM_TRANSFER_PAYMENT);
               getchar();
-	    }
-   	    #endif
+        }
+        #endif
     }
 
     if(POLICY_EXP_STABILIZATION_TAX)
@@ -119,8 +119,8 @@ int Government_send_policy_announcements()
             SUBSIDY_FLAG=1;
 
             //Lower the income tax 
-	    TAX_RATE_HH_LABOUR = CONST_INCOME_TAX_RATE + tanh(GDP_GROWTH - SUBSIDY_TRIGGER_OFF)*fabs(GDP_GROWTH);
-	    TAX_RATE_CORPORATE = CONST_INCOME_TAX_RATE + tanh(GDP_GROWTH - SUBSIDY_TRIGGER_OFF)*fabs(GDP_GROWTH);
+        TAX_RATE_HH_LABOUR = CONST_INCOME_TAX_RATE + tanh(GDP_GROWTH - SUBSIDY_TRIGGER_OFF)*fabs(GDP_GROWTH);
+        TAX_RATE_CORPORATE = CONST_INCOME_TAX_RATE + tanh(GDP_GROWTH - SUBSIDY_TRIGGER_OFF)*fabs(GDP_GROWTH);
         }
 
         //Release trigger function:
@@ -130,20 +130,20 @@ int Government_send_policy_announcements()
 
             //Reset the income tax to its normal value
             TAX_RATE_HH_LABOUR = CONST_INCOME_TAX_RATE;
-	    TAX_RATE_CORPORATE = CONST_INCOME_TAX_RATE;
+        TAX_RATE_CORPORATE = CONST_INCOME_TAX_RATE;
         }
 
         //Subsidy regime
         if ((SUBSIDY_FLAG==1)&&(GDP_GROWTH<SUBSIDY_TRIGGER_OFF))
         {
             //Lower the income tax 
-	    TAX_RATE_HH_LABOUR = CONST_INCOME_TAX_RATE + tanh(GDP_GROWTH - SUBSIDY_TRIGGER_OFF)*fabs(GDP_GROWTH);
-	    TAX_RATE_CORPORATE = CONST_INCOME_TAX_RATE + tanh(GDP_GROWTH - SUBSIDY_TRIGGER_OFF)*fabs(GDP_GROWTH);
+        TAX_RATE_HH_LABOUR = CONST_INCOME_TAX_RATE + tanh(GDP_GROWTH - SUBSIDY_TRIGGER_OFF)*fabs(GDP_GROWTH);
+        TAX_RATE_CORPORATE = CONST_INCOME_TAX_RATE + tanh(GDP_GROWTH - SUBSIDY_TRIGGER_OFF)*fabs(GDP_GROWTH);
         }
 
-	    #ifdef _DEBUG_MODE
-	    if ((PRINT_DEBUG_GOV)&&(SUBSIDY_FLAG==1))
-	    { 
+        #ifdef _DEBUG_MODE
+        if ((PRINT_DEBUG_GOV)&&(SUBSIDY_FLAG==1))
+        { 
               printf("\n Stabilization: Government_send_policy_announcements ID: %d",ID);
               printf("\n SUBSIDY_FLAG: %d",SUBSIDY_FLAG);
               printf("\n CONST_INCOME_TAX_RATE: %f", CONST_INCOME_TAX_RATE);
@@ -156,12 +156,12 @@ int Government_send_policy_announcements()
               printf("\n New Tax: %f %f = %f", CONST_INCOME_TAX_RATE, tanh(GDP_GROWTH - SUBSIDY_TRIGGER_OFF)*fabs(GDP_GROWTH), CONST_INCOME_TAX_RATE + tanh(GDP_GROWTH - SUBSIDY_TRIGGER_OFF)*fabs(GDP_GROWTH));
               printf("\n HH_SUBSIDY_PCT: %f", HH_SUBSIDY_PCT);
               printf("\n \t TAX_RATE_HH_LABOUR: %f TAX_RATE_CORPORATE: %f TAX_RATE_HH_CAPITAL: %f TAX_RATE_VAT: %f",
-				 TAX_RATE_HH_LABOUR, TAX_RATE_CORPORATE, TAX_RATE_HH_CAPITAL, TAX_RATE_VAT);
+                 TAX_RATE_HH_LABOUR, TAX_RATE_CORPORATE, TAX_RATE_HH_CAPITAL, TAX_RATE_VAT);
               printf("\n \t UNEMPLOYMENT_BENEFIT_PCT: %f HH_SUBSIDY_PCT: %f FIRM_SUBSIDY_PCT: %f HH_TRANSFER_PAYMENT: %f FIRM_TRANSFER_PAYMENT; %f",
-				 UNEMPLOYMENT_BENEFIT_PCT, HH_SUBSIDY_PCT, FIRM_SUBSIDY_PCT, HH_TRANSFER_PAYMENT, FIRM_TRANSFER_PAYMENT);
+                 UNEMPLOYMENT_BENEFIT_PCT, HH_SUBSIDY_PCT, FIRM_SUBSIDY_PCT, HH_TRANSFER_PAYMENT, FIRM_TRANSFER_PAYMENT);
               getchar();
-	    }
-   	    #endif
+        }
+        #endif
      }
 
 /*
@@ -181,12 +181,12 @@ int Government_send_policy_announcements()
     #ifdef _DEBUG_MODE
     if (PRINT_DEBUG_GOV)
     { 
-	printf("\n Government_send_policy_announcements ID: %d",ID);
-	printf("\n \t TAX_RATE_HH_LABOUR: %f TAX_RATE_CORPORATE: %f TAX_RATE_HH_CAPITAL: %f TAX_RATE_VAT: %f",
-		 TAX_RATE_HH_LABOUR, TAX_RATE_CORPORATE, TAX_RATE_HH_CAPITAL, TAX_RATE_VAT);
+    printf("\n Government_send_policy_announcements ID: %d",ID);
+    printf("\n \t TAX_RATE_HH_LABOUR: %f TAX_RATE_CORPORATE: %f TAX_RATE_HH_CAPITAL: %f TAX_RATE_VAT: %f",
+         TAX_RATE_HH_LABOUR, TAX_RATE_CORPORATE, TAX_RATE_HH_CAPITAL, TAX_RATE_VAT);
        printf("\n \t UNEMPLOYMENT_BENEFIT_PCT: %f HH_SUBSIDY_PCT: %f FIRM_SUBSIDY_PCT: %f HH_TRANSFER_PAYMENT: %f FIRM_TRANSFER_PAYMENT: %f",
-		 UNEMPLOYMENT_BENEFIT_PCT, HH_SUBSIDY_PCT, FIRM_SUBSIDY_PCT, HH_TRANSFER_PAYMENT, FIRM_TRANSFER_PAYMENT);
-     	getchar();
+         UNEMPLOYMENT_BENEFIT_PCT, HH_SUBSIDY_PCT, FIRM_SUBSIDY_PCT, HH_TRANSFER_PAYMENT, FIRM_TRANSFER_PAYMENT);
+        getchar();
     }
     #endif
 */
@@ -636,8 +636,15 @@ int Government_read_data_from_Eurostat()
     int i;
     double old_gdp;
     
-    old_gdp=GDP;
-    GDP=0.0;
+    old_gdp = YEARLY_GDP;
+    
+    //Reset the yearly GDP counter to zero on 1st day of the year:
+    if (DAY%240==1)
+    {
+        YEARLY_GDP=0.0;
+    }
+    
+    MONTHLY_GDP=0.0;
     COUNTRY_WIDE_MEAN_WAGE=0.0;
     
     START_DATA_FOR_GOVERNMENT_MESSAGE_LOOP
@@ -647,8 +654,10 @@ int Government_read_data_from_Eurostat()
             {
                 //Read region mean wage
                 COUNTRY_WIDE_MEAN_WAGE += data_for_government_message->mean_wage;
+
                 //Read region GDP
-                GDP += data_for_government_message->gdp;
+                MONTHLY_GDP += data_for_government_message->gdp;
+                YEARLY_GDP += data_for_government_message->gdp;
             }
         }
     FINISH_DATA_FOR_GOVERNMENT_MESSAGE_LOOP
@@ -660,21 +669,35 @@ int Government_read_data_from_Eurostat()
         printf("\n Please set constant NO_REGIONS_PER_GOV>0, now NO_REGIONS_PER_GOV = %d\n", NO_REGIONS_PER_GOV);
         
         
-    //Set GDP growth rate
+    //Set annualized GDP growth rate:
     if (old_gdp > 0.0)
-        GDP_GROWTH = (GDP/old_gdp) -1;
+        GDP_GROWTH = (YEARLY_GDP/old_gdp) -1;
     else GDP_GROWTH = 0.0; 
 
     #ifdef _DEBUG_MODE        
     if (PRINT_DEBUG_EXP1 || PRINT_DEBUG)
     {
         printf("\n\n Government_read_data_from_Eurostat ID: %d",ID);
-        printf("\n\t GDP: %f old GDP: %f",GDP,old_gdp);
+        printf("\n\t YEARLY_GDP: %f old YEARLY_GDP: %f",YEARLY_GDP, old_gdp);
         getchar();
     }
     #endif 
         
-    
+    //Set GDP as percentage of the deficit:
+    if(MONTHLY_GDP>0.0)
+    {
+        MONTHLY_BUDGET_BALANCE_GDP_FRACTION = MONTHLY_BUDGET_BALANCE/MONTHLY_GDP;
+    }
+    else 
+        MONTHLY_BUDGET_BALANCE_GDP_FRACTION=0.0;
+
+    if(YEARLY_GDP>0.0)
+    {
+        YEARLY_BUDGET_BALANCE_GDP_FRACTION = YEARLY_BUDGET_BALANCE/YEARLY_GDP;
+    }
+    else 
+        YEARLY_BUDGET_BALANCE_GDP_FRACTION=0.0;
+        
     //Now read the global economic data to retrieve the economy-wide inflation and unemployment rates:    
     START_EUROSTAT_SEND_MACRODATA_MESSAGE_LOOP    
         INFLATION_RATE = eurostat_send_macrodata_message->inflation;
@@ -728,7 +751,7 @@ int Government_set_policy()
 */
     
     //Set GDP forecast equal to extrapolation of previous growth rate*GDP
-    GDP_FORECAST = (1+GDP_GROWTH)*GDP;
+    GDP_FORECAST = (1+GDP_GROWTH)*YEARLY_GDP;
     
     //Set income forecast
     YEARLY_INCOME_FORECAST = (1+GDP_GROWTH)*YEARLY_INCOME;
@@ -763,7 +786,8 @@ int Government_set_policy()
              }
         if (TAX_RATE_HH_LABOUR<0.05) TAX_RATE_HH_LABOUR = 0.05;
         if (TAX_RATE_CORPORATE<0.05) TAX_RATE_CORPORATE = 0.05;
-      } */
+      } 
+*/
          
     return 0;
 }
