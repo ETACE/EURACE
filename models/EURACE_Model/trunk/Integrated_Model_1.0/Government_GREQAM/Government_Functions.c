@@ -562,7 +562,6 @@ int Government_monthly_resetting()
     MONTHLY_BOND_INTEREST_PAYMENT =0.0;
     MONTHLY_INVESTMENT_EXPENDITURE =0.0;
     MONTHLY_CONSUMPTION_EXPENDITURE =0.0;
-//    MONTHLY_BUDGET_BALANCE =0.0;
 
     #ifdef _DEBUG_MODE    
     if (PRINT_DEBUG_GOV)
@@ -618,7 +617,6 @@ int Government_yearly_resetting()
     YEARLY_BOND_INTEREST_PAYMENT =0.0;
     YEARLY_INVESTMENT_EXPENDITURE =0.0;
     YEARLY_CONSUMPTION_EXPENDITURE =0.0;
-//    YEARLY_BUDGET_BALANCE =0.0;
 
 	//Store last year's GDP    
 	PREVIOUS_YEAR_GDP = YEARLY_GDP;
@@ -685,7 +683,7 @@ int Government_read_data_from_Eurostat()
     if (PRINT_DEBUG_EXP1 || PRINT_DEBUG)
     {
         printf("\n\n Government_read_data_from_Eurostat ID: %d",ID);
-        printf("\n\t YEARLY_GDP: %f old YEARLY_GDP: %f",YEARLY_GDP, old_gdp);
+        printf("\n\t YEARLY_GDP: %f PREVIOUS_YEAR_GDP: %f",YEARLY_GDP, PREVIOUS_YEAR_GDP);
         getchar();
     }
     #endif 
