@@ -562,7 +562,7 @@ int Government_monthly_resetting()
     MONTHLY_BOND_INTEREST_PAYMENT =0.0;
     MONTHLY_INVESTMENT_EXPENDITURE =0.0;
     MONTHLY_CONSUMPTION_EXPENDITURE =0.0;
-    MONTHLY_BUDGET_BALANCE =0.0;
+//    MONTHLY_BUDGET_BALANCE =0.0;
 
     #ifdef _DEBUG_MODE    
     if (PRINT_DEBUG_GOV)
@@ -618,8 +618,11 @@ int Government_yearly_resetting()
     YEARLY_BOND_INTEREST_PAYMENT =0.0;
     YEARLY_INVESTMENT_EXPENDITURE =0.0;
     YEARLY_CONSUMPTION_EXPENDITURE =0.0;
-    YEARLY_BUDGET_BALANCE =0.0;
-    
+//    YEARLY_BUDGET_BALANCE =0.0;
+
+	//Store last year's GDP    
+	PREVIOUS_YEAR_GDP = YEARLY_GDP;
+
     #ifdef _DEBUG_MODE    
     if (PRINT_DEBUG_GOV)
     { 
@@ -636,17 +639,8 @@ int Government_yearly_resetting()
 int Government_read_data_from_Eurostat()
 {
     int i;
-    double old_gdp;
-    
-    old_gdp = YEARLY_GDP;
-    
-    //Reset the yearly GDP counter to zero on 1st day of the year:
-    if (DAY%240==1)
-    {
-        YEARLY_GDP=0.0;
-    }
-    
-    MONTHLY_GDP=0.0;
+
+	MONTHLY_GDP=0.0;
     COUNTRY_WIDE_MEAN_WAGE=0.0;
     
     START_DATA_FOR_GOVERNMENT_MESSAGE_LOOP
@@ -659,7 +653,6 @@ int Government_read_data_from_Eurostat()
 
                 //Read region GDP
                 MONTHLY_GDP += data_for_government_message->gdp;
-                YEARLY_GDP += data_for_government_message->gdp;
             }
         }
     FINISH_DATA_FOR_GOVERNMENT_MESSAGE_LOOP
@@ -670,11 +663,23 @@ int Government_read_data_from_Eurostat()
     else
         printf("\n Please set constant NO_REGIONS_PER_GOV>0, now NO_REGIONS_PER_GOV = %d\n", NO_REGIONS_PER_GOV);
         
+
+	//If it is the start of the year, reset yearly GDP
+    if ((DAY%240)==1)
+    {
+		YEARLY_GDP=0.0;
+	}
         
-    //Set annualized GDP growth rate:
-    if (old_gdp > 0.0)
-        GDP_GROWTH = (YEARLY_GDP/old_gdp) -1;
-    else GDP_GROWTH = 0.0; 
+	//Update the yearly GDP with the monthly value:
+	YEARLY_GDP += MONTHLY_GDP;
+
+    //Compute annual GDP growth rate only once a year (retains its value during the year):
+    if ((DAY%240)==1)
+    {
+	    if (PREVIOUS_YEAR_GDP > 0.0)
+	        GDP_GROWTH = (YEARLY_GDP/PREVIOUS_YEAR_GDP) -1;
+	    else GDP_GROWTH = 0.0; 
+	}
 
     #ifdef _DEBUG_MODE        
     if (PRINT_DEBUG_EXP1 || PRINT_DEBUG)
