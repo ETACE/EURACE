@@ -157,13 +157,8 @@
     </variable>
     <variable>
      <type>double</type>
-     <name>monthly_subsidy_payment</name>
-     <description>Aggregate monthly subsidy payments.</description>
-    </variable>
-    <variable>
-     <type>double</type>
-     <name>yearly_subsidy_payment</name>
-     <description>Aggregate yearly subsidy payments.</description>
+     <name>gov_interest_rate</name>
+     <description>Interest rate the government uses to pay interest on the public debt.</description>
     </variable>
     <variable>
      <type>double</type>
@@ -172,13 +167,63 @@
     </variable>
     <variable>
      <type>double</type>
-     <name>yearly_bond_interest_payment</name>
-     <description>Aggregate yearly bond interest payments.</description>
+     <name>monthly_subsidy_payment</name>
+     <description>Aggregate monthly subsidy payments.</description>
     </variable>
     <variable>
      <type>double</type>
-     <name>gov_interest_rate</name>
-     <description>Interest rate the government uses to pay interest on the public debt.</description>
+     <name>monthly_consumption_expenditure</name>
+     <description>The actual monthly government consumption expenditure that is realised at the end of the month.</description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>monthly_investment_expenditure</name>
+     <description>The actual monthly government investment expenditure that is realised at the end of the month.</description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>monthly_budget_balance</name>
+     <description>The budget balance (deficit/surplus) that is realised at the end of the month.</description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>monthly_gdp</name>
+     <description>This is monthly GDP, summed over the regions belonging to this government.</description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>monthly_budget_balance_gdp_fraction</name>
+     <description>The monthly budget balance as a percentage of monthly gdp.</description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>monthly_consumption_budget</name>
+     <description>The consumption budget for the next month.</description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>monthly_investment_budget</name>
+     <description>The investment budget for the next month.</description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>monthly_income</name>
+     <description>The actual total government income at end of month.</description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>monthly_expenditure</name>
+     <description>The actual total government expenditure at end of month.</description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>yearly_subsidy_payment</name>
+     <description>Aggregate yearly subsidy payments.</description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>yearly_bond_interest_payment</name>
+     <description>Aggregate yearly bond interest payments.</description>
     </variable>
     <variable>
      <type>double</type>
@@ -237,8 +282,13 @@
     </variable>
     <variable>
      <type>double</type>
+     <name>previous_year_gdp</name>
+     <description>This is GDP of the previous year, for this government.</description>
+    </variable>
+    <variable>
+     <type>double</type>
      <name>gdp_growth</name>
-     <description>GDP growth rate (updated once per year).</description>
+     <description>GDP growth rate (updated once a year).</description>
     </variable>
     <variable>
      <type>double</type>
@@ -262,41 +312,6 @@
     </variable>
     <variable>
      <type>double</type>
-     <name>monthly_consumption_expenditure</name>
-     <description>The actual monthly government consumption expenditure that is realised at the end of the month.</description>
-    </variable>
-    <variable>
-     <type>double</type>
-     <name>monthly_investment_expenditure</name>
-     <description>The actual monthly government investment expenditure that is realised at the end of the month.</description>
-    </variable>
-    <variable>
-     <type>double</type>
-     <name>monthly_budget_balance</name>
-     <description>The budget balance (deficit/surplus) that is realised at the end of the month.</description>
-    </variable>
-    <variable>
-     <type>double</type>
-     <name>monthly_consumption_budget</name>
-     <description>The consumption budget for the next month.</description>
-    </variable>
-    <variable>
-     <type>double</type>
-     <name>monthly_investment_budget</name>
-     <description>The investment budget for the next month.</description>
-    </variable>
-    <variable>
-     <type>double</type>
-     <name>monthly_income</name>
-     <description>The actual total government income at end of month.</description>
-    </variable>
-    <variable>
-     <type>double</type>
-     <name>monthly_expenditure</name>
-     <description>The actual total government expenditure at end of month.</description>
-    </variable>
-    <variable>
-     <type>double</type>
      <name>yearly_consumption_budget</name>
      <description>The planned consumption budget for the next year.</description>
     </variable>
@@ -304,6 +319,11 @@
      <type>double</type>
      <name>yearly_investment_budget</name>
      <description>The planned investment budget for the next year.</description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>yearly_budget_balance_gdp_fraction</name>
+     <description>The yearly budget balance as a percentage of yearly gdp.</description>
     </variable>
     <variable>
      <type>double</type>
@@ -329,21 +349,6 @@
      <type>double</type>
      <name>unemployment_rate</name>
      <description>This is the economy-wide unemployment_rate.</description>
-    </variable>
-    <variable>
-     <type>double</type>
-     <name>monthly_gdp</name>
-     <description>This is monthly GDP, summed over the regions belonging to this government.</description>
-    </variable>
-    <variable>
-     <type>double</type>
-     <name>monthly_budget_balance_gdp_fraction</name>
-     <description>The monthly budget balance as a percentage of monthly gdp.</description>
-    </variable>
-    <variable>
-     <type>double</type>
-     <name>yearly_budget_balance_gdp_fraction</name>
-     <description>The yearly budget balance as a percentage of yearly gdp.</description>
     </variable>
    </memory>
    <functions>
@@ -392,6 +397,21 @@
      <outputs/>
     </function>
     <function>
+     <name>Government_read_data_from_Eurostat</name>
+     <description></description>
+     <currentState>001</currentState>
+     <nextState>Government_Start_Yearly_Loop_Top</nextState>
+     <inputs>
+      <input>
+       <messageName>data_for_government</messageName>
+      </input>
+      <input>
+       <messageName>eurostat_send_macrodata</messageName>
+      </input>
+     </inputs>
+     <outputs/>
+    </function>
+    <function>
      <name>idle</name>
      <description>Idle for monthly resetting loop at top.</description>
      <currentState>Government_Start_Monthly_Loop_Top</currentState>
@@ -408,8 +428,42 @@
      <outputs/>
     </function>
     <function>
-     <name>idle</name>
+     <name>Government_set_policy</name>
      <description></description>
+     <currentState>Government_Start_Yearly_Loop_Top</currentState>
+     <nextState>002</nextState>
+     <condition>
+      <time>
+       <period>yearly</period>
+       <phase>1</phase>
+      </time>
+     </condition>
+     <inputs/>
+     <outputs/>
+    </function>
+    <function>
+     <name>Government_send_policy_announcements</name>
+     <description></description>
+     <currentState>002</currentState>
+     <nextState>003</nextState>
+     <inputs/>
+     <outputs>
+      <output>
+       <messageName>policy_announcement</messageName>
+      </output>
+     </outputs>
+    </function>
+    <function>
+     <name>Government_yearly_resetting</name>
+     <description></description>
+     <currentState>003</currentState>
+     <nextState>Gov_Start_Bond_Market</nextState>
+     <inputs/>
+     <outputs/>
+    </function>
+    <function>
+     <name>idle</name>
+     <description>Idle for yearly resetting loop at top.</description>
      <currentState>Government_Start_Yearly_Loop_Top</currentState>
      <nextState>Gov_Start_Bond_Market</nextState>
      <condition>
@@ -422,18 +476,6 @@
      </condition>
      <inputs/>
      <outputs/>
-    </function>
-    <function>
-     <name>Government_send_policy_announcements</name>
-     <description></description>
-     <currentState>003</currentState>
-     <nextState>Government_Start_Yearly_Loop_Top</nextState>
-     <inputs/>
-     <outputs>
-      <output>
-       <messageName>policy_announcement</messageName>
-      </output>
-     </outputs>
     </function>
     <function>
      <name>Government_read_tax_payments</name>
@@ -674,43 +716,6 @@
       <time>
        <period>yearly</period>
        <phase>0</phase>
-      </time>
-     </condition>
-     <inputs/>
-     <outputs/>
-    </function>
-    <function>
-     <name>Government_read_data_from_Eurostat</name>
-     <description></description>
-     <currentState>001</currentState>
-     <nextState>002</nextState>
-     <inputs>
-      <input>
-       <messageName>data_for_government</messageName>
-      </input>
-      <input>
-       <messageName>eurostat_send_macrodata</messageName>
-      </input>
-     </inputs>
-     <outputs/>
-    </function>
-    <function>
-     <name>Government_set_policy</name>
-     <description></description>
-     <currentState>002</currentState>
-     <nextState>003</nextState>
-     <inputs/>
-     <outputs/>
-    </function>
-    <function>
-     <name>Government_yearly_resetting</name>
-     <description></description>
-     <currentState>Government_Start_Yearly_Loop_Top</currentState>
-     <nextState>Gov_Start_Bond_Market</nextState>
-     <condition>
-      <time>
-       <period>yearly</period>
-       <phase>1</phase>
       </time>
      </condition>
      <inputs/>
