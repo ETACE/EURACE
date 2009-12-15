@@ -436,7 +436,7 @@ int Government_monthly_budget_accounting()
         
     //Items that have already been subtracted from the payment_account
         out = MONTHLY_BENEFIT_PAYMENT +
-        MONTHLY_TRANSFER_PAYMENT +
+        MONTHLY_TRANSFER_PAYMENT + MONTHLY_SUBSIDY_PAYMENT +
         MONTHLY_BOND_INTEREST_PAYMENT +
         MONTHLY_INVESTMENT_EXPENDITURE +
         MONTHLY_CONSUMPTION_EXPENDITURE;
@@ -562,6 +562,7 @@ int Government_monthly_resetting()
     MONTHLY_BOND_INTEREST_PAYMENT =0.0;
     MONTHLY_INVESTMENT_EXPENDITURE =0.0;
     MONTHLY_CONSUMPTION_EXPENDITURE =0.0;
+    MONTHLY_BUDGET_BALANCE =0.0;
 
     #ifdef _DEBUG_MODE    
     if (PRINT_DEBUG_GOV)
@@ -591,7 +592,7 @@ int Government_yearly_budget_accounting()
         
     //Items that have already been subtracted from the payment_account
         out = YEARLY_BENEFIT_PAYMENT +
-        YEARLY_TRANSFER_PAYMENT +
+        YEARLY_TRANSFER_PAYMENT + YEARLY_SUBSIDY_PAYMENT +
         YEARLY_BOND_INTEREST_PAYMENT +
         YEARLY_INVESTMENT_EXPENDITURE +
         YEARLY_CONSUMPTION_EXPENDITURE;
@@ -617,6 +618,7 @@ int Government_yearly_resetting()
     YEARLY_BOND_INTEREST_PAYMENT =0.0;
     YEARLY_INVESTMENT_EXPENDITURE =0.0;
     YEARLY_CONSUMPTION_EXPENDITURE =0.0;
+    YEARLY_BUDGET_BALANCE =0.0;
     
     #ifdef _DEBUG_MODE    
     if (PRINT_DEBUG_GOV)
