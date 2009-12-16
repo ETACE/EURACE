@@ -211,7 +211,7 @@ int Government_read_tax_payments()
 
     START_UNEMPLOYMENT_BENEFIT_RESTITUTION_MESSAGE_LOOP
         MONTHLY_BENEFIT_PAYMENT -= unemployment_benefit_restitution_message->restitution_payment;
-        sum -= unemployment_benefit_restitution_message->restitution_payment;
+        sum += unemployment_benefit_restitution_message->restitution_payment;
     FINISH_UNEMPLOYMENT_BENEFIT_RESTITUTION_MESSAGE_LOOP 
 
    PAYMENT_ACCOUNT += sum;
