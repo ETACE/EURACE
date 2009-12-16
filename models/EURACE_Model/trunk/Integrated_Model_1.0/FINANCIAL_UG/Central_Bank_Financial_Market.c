@@ -36,7 +36,7 @@ int CB_receives_info_bond(void)
 int CB_issues_orders(void)
 {    
      
-     if (QE_POLICY==1)
+     if (GOV_POLICY_SWITH_QUANTITATIVE_EASING==1)
      {
      int j;
      int diluition_coefficient;
