@@ -46,7 +46,7 @@ int Household_send_orders()
      add_order_message(ord->issuer,ord->assetId, ord->price, ord->quantity);
      
  //    if (PRINT_DEBUG_AFM) 
-  //   printf("\n\t Household send order for asset: %d price: %f quantity: %d",ord->assetId,ord->price,ord->quantity);
+  // printf("\n\t Household send order for asset: %d price: %f quantity: %d",ord->assetId,ord->price,ord->quantity);
      
     }
     return 0;
@@ -68,6 +68,7 @@ void computeUtilities(Belief_array *beliefs, double_array *assetUtilities)
 
      utility=belief->utility;
      add_double(assetUtilities,utility);
+     // printf("\n assetUtilities: %f",utility);
      }
      //getchar();
 }
@@ -76,17 +77,23 @@ void assetUtilitiesToWeights(double_array *assetWeights,double_array *assetUtili
       double minimo;
       int size,i;
       double somma;
-
+      
+   //   printf("assetUtilitiesToWeights",size);
+    //  getchar();
+      
       reset_double_array(assetWeights);
       
       minimo=lessthan(assetUtilities);
+  //     printf("minimo ====%f\n",minimo);
       size=sizeCDouble(assetUtilities);
- //printf("size ====%d\n",size);
+ //     printf("size ====%d\n",size);
       somma=0;
       for(i=0;i<size;i++)
          { if(minimo<0) add_double(assetWeights,assetUtilities->array[i]-minimo);
            else add_double(assetWeights,assetUtilities->array[i]);
            somma=somma+assetWeights->array[i];
+   //        printf("somma ====%f assetUtilities->array[i]: %f assetWeights->array[i] ====%f\n",somma,assetUtilities->array[i],assetWeights->array[i]);
+           
          }
 
      if(minimo<0)  { somma=somma+bankrate-minimo;
@@ -95,6 +102,7 @@ void assetUtilitiesToWeights(double_array *assetWeights,double_array *assetUtili
               else { somma=somma+bankrate;
                      add_double(assetWeights,bankrate);
                    }
+  // printf("\n\n bankrate: %f assetWeights->array[i]: %f somma: %f",bankrate,assetWeights->array[i],somma);                
  //printf("size pesi =====%d\n",assetWeights->size);
     divide(assetWeights,somma);
 }
@@ -221,6 +229,9 @@ void computeLimitOrder( Asset *anAsset, double weight, double resource,Belief *b
       else
       if(limitPrice==0) deltaquantity=-quantity;
       else deltaquantity=(int)(weight*resource/(limitPrice))-quantity;
+      
+     // printf("\n limitPrice: %f resource: %f weight: %f quantity: %d deltaquantity: %d",limitPrice,resource,weight,quantity,deltaquantity);
+      
       if( PRINT_DEBUG_AFM)
       if(abs(deltaquantity)>10000) 
         {
@@ -287,7 +298,7 @@ void generatePendingOrders(Asset_array *assetsowned,Order_array *pending, Belief
              printf("\n HOUSEHOLD %d generatePendingOrders (I): \n",ID);
              printf("\t PAYMENT_ACCOUNT %f WEALTH %f \n",PAYMENT_ACCOUNT,WEALTH);
              printf("\t tem_wealth %f CONSUMPTION_BUDGET %f resource %f\n",tem_wealth,CONSUMPTION_BUDGET,resource);
-             
+             getchar();  
              } 
   
 

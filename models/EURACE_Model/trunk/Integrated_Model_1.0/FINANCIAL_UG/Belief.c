@@ -52,6 +52,9 @@ double randomReturnStock(Belief *belief, Stock *stock, int forwardWindow, int ba
    volatility=max(0.0001,volatility);
    rndReturn=0;
    sqrtvol=sqrt(forwardWindow)*volatility;
+   //printf("randomReturnStock");
+   //getchar();
+   
    for(i=0;i<backwardWindow;i++)
     { 
      randn=fast_gauss();
@@ -108,15 +111,14 @@ void  stockBeliefFormation(Belief *belief, Stock *stock,int backwardWindow,int f
   double return_random, return_chartist, return_fundamental;
   double dividend_yield_annualized,annual_coeff;
   double r1, r2, r3, r, utility_tmp;
-     FILE *file1=NULL;
-  char * filename="";
+  //   FILE *file1=NULL;
+ // char * filename="";
   int i;
  
   annual_coeff=(NRDAYSINYEAR/forwardWindow);
  /*some of the  behavior weights are usually zero so some computation could be unuseful, this increase certanly the performance,*/
-  if(randomWeight!=0) 
-    return_random = randomReturnStock(belief, stock,forwardWindow,backwardWindow,rndreturn);
-  else return_random=0;
+
+  return_random = randomReturnStock(belief, stock,forwardWindow,backwardWindow,rndreturn);
      
   if (fundamentalWeight!=0) 
      return_fundamental = futureFundamentalReturn(belief,stock,currentDay,forwardWindow, equity);
@@ -138,6 +140,8 @@ void  stockBeliefFormation(Belief *belief, Stock *stock,int backwardWindow,int f
   
   utility_tmp = 0;
   
+//  printf("n chartistWeight %f fundamentalWeight %f randomWeight %f",chartistWeight,fundamentalWeight,randomWeight);
+//  getchar();
 // Computation of utility  
   for(i=0;i<backwardWindow;i++)
     {
@@ -148,11 +152,14 @@ void  stockBeliefFormation(Belief *belief, Stock *stock,int backwardWindow,int f
   
      if (r<0) utility_tmp = utility_tmp + r*lossaversion;
      else     utility_tmp = utility_tmp+r;
+  //   printf("\n r1: %f r2: %f rndreturn[i]: %f r3: %f r: %f utility_tmp %f",r1,r2,rndreturn[i],r3,r,utility_tmp);  
     }
 // 
-  
+ // printf("\n return_fundamental: %f dividend_yield_annualized: %f lossaversion: %f",return_fundamental,dividend_yield_annualized,lossaversion);
+
   belief->utility = utility_tmp/backwardWindow;
- 
+ //printf("\n stock id: %d belief->utility: %f backwardWindow: %d",stock->id,belief->utility,backwardWindow);
+ //getchar();
   
    /*     if (PRINT_DEBUG_FILE_EXP1)
     {                       
@@ -176,8 +183,8 @@ void  stockBeliefFormation(Belief *belief, Stock *stock,int backwardWindow,int f
 
 void  bondBeliefFormation(Belief *belief, Bond *bond,int backwardWindow,int forwardWindow, double randomWeight,double  fundamentalWeight,double chartistWeight, int bins ,int currentDay,int holdingPeriodToForwardW, double lossaversion)
 {
-  FILE *file1=NULL;
-  char * filename="";
+  // FILE *file1=NULL;
+  // char * filename="";
   //int bins_number;
   int holding_period;
   int i, nrCoupons;
@@ -246,13 +253,17 @@ return_random = randomReturnBond(bond, backwardWindow, holding_period, rndreturn
 //return_rnd = sumvector(rndreturns,backwardWindow)/backwardWindow;
 belief->expectedPriceReturns=annual_coeff*(factor_fundamental*return_fundamental+factor_chartist*return_chartist+ factor_random*return_random);
 //if (abs(belief->expectedPriceReturns)/NRDAYSINYEAR > 1)
- //  printf("\n bondBeliefFormation \n exp_price_ret %f fund %f char %f rnd %f ",belief->expectedPriceReturns, value, factor_chartist*returns_char,factor_random*return_rnd);
+ //printf("\n bondBeliefFormation \n exp_price_ret %f fund %f char %f rnd %f ",belief->expectedPriceReturns, value, factor_chartist*returns_char,factor_random*return_rnd);
 
 belief->expectedTotalReturns = belief->expectedPriceReturns + coupon_yield_annualized;
+
+//printf("\n TotalReturns: %f PriceReturns %f coupon_yield_annualized %f",belief->expectedTotalReturns,belief->expectedPriceReturns,coupon_yield_annualized);
 
 factor_chartist2 = holding_period*factor_chartist;
 
 utility_tmp = 0;
+
+//printf("\n factor_chartist: %f factor_fundamental: %f factor_random: %f",factor_chartist,factor_fundamental,factor_random);
   
 // Computation of utility  
   for(i=0;i<backwardWindow;i++)
@@ -264,15 +275,17 @@ utility_tmp = 0;
   
      if (r<0) utility_tmp = utility_tmp + r*lossaversion;
      else     utility_tmp = utility_tmp+r;
+  //   printf("\n utility_tmp: %f",utility_tmp);
     }
 // 
     
 belief->utility = utility_tmp/backwardWindow;
+//printf("\n bond belief->utility: %f backwardWindow: %d",belief->utility,backwardWindow);
 
 belief->last_price=lastPriceBond(bond);
 
 
-    if (PRINT_DEBUG_FILE_EXP1)
+   /* if (PRINT_DEBUG_FILE_EXP1)
     {                       
         filename = malloc(40*sizeof(char));
         filename[0]=0;
@@ -283,6 +296,6 @@ belief->last_price=lastPriceBond(bond);
         fprintf(file1," %f %f %f\n",belief->expectedPriceReturns,belief->expectedTotalReturns,belief->utility);
         fclose(file1);
         free(filename);        
-    } 
+    } */
   
 }

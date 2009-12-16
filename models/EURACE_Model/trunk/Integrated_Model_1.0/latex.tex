@@ -1341,7 +1341,7 @@ possible, otherwise rationing.} \\
 \midrule
 \url{Eurostat_idle} \index{\url{Eurostat_idle}} & \parbox{10cm}{Eurostat idle} \\
 \midrule
-\url{Eurostat_send_data_to_government} \index{\url{Eurostat_send_data_to_government}} & \parbox{10cm}{Eurostat sends the data to the governments for determining policies.} \\
+\url{idle} \index{\url{idle}} & \parbox{10cm}{} \\
 \midrule
 \url{Eurostat_initialization} \index{\url{Eurostat_initialization}} & \parbox{10cm}{Initialization function for Eurostat.} \\
 \midrule
@@ -1570,15 +1570,33 @@ possible, otherwise rationing.} \\
 \midrule
 \url{int} \url{subsidy_flag} \index{\url{subsidy_flag}} & \parbox{10cm}{Indicator to indicate if stabilization subsidy is active. 1 means active, 0 means inactive.} \\
 \midrule
-\url{double} \url{monthly_subsidy_payment} \index{\url{monthly_subsidy_payment}} & \parbox{10cm}{Aggregate monthly subsidy payments.} \\
-\midrule
-\url{double} \url{yearly_subsidy_payment} \index{\url{yearly_subsidy_payment}} & \parbox{10cm}{Aggregate yearly subsidy payments.} \\
+\url{double} \url{gov_interest_rate} \index{\url{gov_interest_rate}} & \parbox{10cm}{Interest rate the government uses to pay interest on the public debt.} \\
 \midrule
 \url{double} \url{monthly_bond_interest_payment} \index{\url{monthly_bond_interest_payment}} & \parbox{10cm}{Aggregate monthly bond interest payments.} \\
 \midrule
-\url{double} \url{yearly_bond_interest_payment} \index{\url{yearly_bond_interest_payment}} & \parbox{10cm}{Aggregate yearly bond interest payments.} \\
+\url{double} \url{monthly_subsidy_payment} \index{\url{monthly_subsidy_payment}} & \parbox{10cm}{Aggregate monthly subsidy payments.} \\
 \midrule
-\url{double} \url{gov_interest_rate} \index{\url{gov_interest_rate}} & \parbox{10cm}{Interest rate the government uses to pay interest on the public debt.} \\
+\url{double} \url{monthly_consumption_expenditure} \index{\url{monthly_consumption_expenditure}} & \parbox{10cm}{The actual monthly government consumption expenditure that is realised at the end of the month.} \\
+\midrule
+\url{double} \url{monthly_investment_expenditure} \index{\url{monthly_investment_expenditure}} & \parbox{10cm}{The actual monthly government investment expenditure that is realised at the end of the month.} \\
+\midrule
+\url{double} \url{monthly_budget_balance} \index{\url{monthly_budget_balance}} & \parbox{10cm}{The budget balance (deficit/surplus) that is realised at the end of the month.} \\
+\midrule
+\url{double} \url{monthly_gdp} \index{\url{monthly_gdp}} & \parbox{10cm}{This is monthly GDP, summed over the regions belonging to this government.} \\
+\midrule
+\url{double} \url{monthly_budget_balance_gdp_fraction} \index{\url{monthly_budget_balance_gdp_fraction}} & \parbox{10cm}{The monthly budget balance as a percentage of monthly gdp.} \\
+\midrule
+\url{double} \url{monthly_consumption_budget} \index{\url{monthly_consumption_budget}} & \parbox{10cm}{The consumption budget for the next month.} \\
+\midrule
+\url{double} \url{monthly_investment_budget} \index{\url{monthly_investment_budget}} & \parbox{10cm}{The investment budget for the next month.} \\
+\midrule
+\url{double} \url{monthly_income} \index{\url{monthly_income}} & \parbox{10cm}{The actual total government income at end of month.} \\
+\midrule
+\url{double} \url{monthly_expenditure} \index{\url{monthly_expenditure}} & \parbox{10cm}{The actual total government expenditure at end of month.} \\
+\midrule
+\url{double} \url{yearly_subsidy_payment} \index{\url{yearly_subsidy_payment}} & \parbox{10cm}{Aggregate yearly subsidy payments.} \\
+\midrule
+\url{double} \url{yearly_bond_interest_payment} \index{\url{yearly_bond_interest_payment}} & \parbox{10cm}{Aggregate yearly bond interest payments.} \\
 \midrule
 \url{double} \url{yearly_investment_expenditure} \index{\url{yearly_investment_expenditure}} & \parbox{10cm}{The actual yearly government investment expenditure that is realised at the end of the year.} \\
 \midrule
@@ -1600,9 +1618,11 @@ possible, otherwise rationing.} \\
 \midrule
 \url{int} \url{num_unemployed} \index{\url{num_unemployed}} & \parbox{10cm}{The number of unemployed that are associated to the government.} \\
 \midrule
-\url{double} \url{gdp} \index{\url{gdp}} & \parbox{10cm}{This is the GDP for the regions belonging to this government.} \\
+\url{double} \url{yearly_gdp} \index{\url{yearly_gdp}} & \parbox{10cm}{This is yearly GDP, summed over the regions belonging to this government.} \\
 \midrule
-\url{double} \url{gdp_growth} \index{\url{gdp_growth}} & \parbox{10cm}{GDP growth rate (updated once per year).} \\
+\url{double} \url{previous_year_gdp} \index{\url{previous_year_gdp}} & \parbox{10cm}{This is GDP of the previous year, for this government.} \\
+\midrule
+\url{double} \url{gdp_growth} \index{\url{gdp_growth}} & \parbox{10cm}{GDP growth rate (updated once a year).} \\
 \midrule
 \url{double} \url{gdp_forecast} \index{\url{gdp_forecast}} & \parbox{10cm}{Forecast for next year's GDP.} \\
 \midrule
@@ -1612,23 +1632,11 @@ possible, otherwise rationing.} \\
 \midrule
 \url{double} \url{budget_balance_forecast} \index{\url{budget_balance_forecast}} & \parbox{10cm}{Forcast for the budget balance (deficit/surplus).} \\
 \midrule
-\url{double} \url{monthly_consumption_expenditure} \index{\url{monthly_consumption_expenditure}} & \parbox{10cm}{The actual monthly government consumption expenditure that is realised at the end of the month.} \\
-\midrule
-\url{double} \url{monthly_investment_expenditure} \index{\url{monthly_investment_expenditure}} & \parbox{10cm}{The actual monthly government investment expenditure that is realised at the end of the month.} \\
-\midrule
-\url{double} \url{monthly_budget_balance} \index{\url{monthly_budget_balance}} & \parbox{10cm}{The budget balance (deficit/surplus) that is realised at the end of the month.} \\
-\midrule
-\url{double} \url{monthly_consumption_budget} \index{\url{monthly_consumption_budget}} & \parbox{10cm}{The consumption budget for the next month.} \\
-\midrule
-\url{double} \url{monthly_investment_budget} \index{\url{monthly_investment_budget}} & \parbox{10cm}{The investment budget for the next month.} \\
-\midrule
-\url{double} \url{monthly_income} \index{\url{monthly_income}} & \parbox{10cm}{The actual total government income at end of month.} \\
-\midrule
-\url{double} \url{monthly_expenditure} \index{\url{monthly_expenditure}} & \parbox{10cm}{The actual total government expenditure at end of month.} \\
-\midrule
 \url{double} \url{yearly_consumption_budget} \index{\url{yearly_consumption_budget}} & \parbox{10cm}{The planned consumption budget for the next year.} \\
 \midrule
 \url{double} \url{yearly_investment_budget} \index{\url{yearly_investment_budget}} & \parbox{10cm}{The planned investment budget for the next year.} \\
+\midrule
+\url{double} \url{yearly_budget_balance_gdp_fraction} \index{\url{yearly_budget_balance_gdp_fraction}} & \parbox{10cm}{The yearly budget balance as a percentage of yearly gdp.} \\
 \midrule
 \url{double} \url{total_assets} \index{\url{total_assets}} & \parbox{10cm}{} \\
 \midrule
@@ -1679,13 +1687,19 @@ possible, otherwise rationing.} \\
 \midrule
 \url{idle} \index{\url{idle}} & \parbox{10cm}{Idle for initialization function.} \\
 \midrule
-\url{Government_monthly_resetting} \index{\url{Government_monthly_resetting}} & \parbox{10cm}{Monthly resetting of counters.} \\
+\url{Government_monthly_resetting} \index{\url{Government_monthly_resetting}} & \parbox{10cm}{} \\
+\midrule
+\url{Government_read_data_from_Eurostat} \index{\url{Government_read_data_from_Eurostat}} & \parbox{10cm}{} \\
 \midrule
 \url{idle} \index{\url{idle}} & \parbox{10cm}{Idle for monthly resetting loop at top.} \\
 \midrule
-\url{idle} \index{\url{idle}} & \parbox{10cm}{Idle for yearly loop at top.} \\
+\url{Government_set_policy} \index{\url{Government_set_policy}} & \parbox{10cm}{} \\
 \midrule
-\url{Government_send_policy_announcements} \index{\url{Government_send_policy_announcements}} & \parbox{10cm}{Function to send the yearly policy announcement message.} \\
+\url{Government_send_policy_announcements} \index{\url{Government_send_policy_announcements}} & \parbox{10cm}{} \\
+\midrule
+\url{Government_yearly_resetting} \index{\url{Government_yearly_resetting}} & \parbox{10cm}{} \\
+\midrule
+\url{idle} \index{\url{idle}} & \parbox{10cm}{Idle for yearly resetting loop at top.} \\
 \midrule
 \url{Government_read_tax_payments} \index{\url{Government_read_tax_payments}} & \parbox{10cm}{Function to read the tax revenues and store the monthly and yearly totals.} \\
 \midrule
@@ -1709,13 +1723,7 @@ possible, otherwise rationing.} \\
 \midrule
 \url{idle} \index{\url{idle}} & \parbox{10cm}{} \\
 \midrule
-\url{Government_yearly_budget_accounting} \index{\url{Government_yearly_budget_accounting}} & \parbox{10cm}{Function to perform accounting at the end of each year.} \\
-\midrule
-\url{Government_read_data_from_Eurostat} \index{\url{Government_read_data_from_Eurostat}} & \parbox{10cm}{Function to read data from Eurostat.} \\
-\midrule
-\url{Government_set_policy} \index{\url{Government_set_policy}} & \parbox{10cm}{Function to set policy rules: income forecast and expenditure budget.} \\
-\midrule
-\url{Government_yearly_resetting} \index{\url{Government_yearly_resetting}} & \parbox{10cm}{Yearly resetting of counters.} \\
+\url{Government_yearly_budget_accounting} \index{\url{Government_yearly_budget_accounting}} & \parbox{10cm}{} \\
 \end{longtable}
 \end{landscape}
 
@@ -2400,11 +2408,15 @@ TOTAL\_DIVIDEND\_PAYMENT = CONST\_DIVIDEND\_EARNINGS\_RATIO *NET\_EARNINGS;}\\
 \url{double} \url{gov_policy_gdp_fraction_consumption} \index{\url{gov_policy_gdp_fraction_consumption}} & \parbox{10cm}{Parameter to set government consumption expenditure as a fraction of GDP.}\\
 \url{double} \url{gov_policy_gdp_fraction_investment} \index{\url{gov_policy_gdp_fraction_investment}} & \parbox{10cm}{Parameter to set government investment expenditure as a fraction of GDP.}\\
 \url{int} \url{no_regions_per_gov} \index{\url{no_regions_per_gov}} & \parbox{10cm}{Number of regions per government. Default 2.}\\
-\url{double} \url{subsidy_trigger_on} \index{\url{subsidy_trigger_on}} & \parbox{10cm}{Trigger floor level of the GDP growth rate, below which the subsidy is switched on. Typically set to -0.01.\&\#xd;\&\#xd;\&\#xd;\&\#xd;\&\#xd;\&\#xd;
+\url{double} \url{subsidy_trigger_on} \index{\url{subsidy_trigger_on}} & \parbox{10cm}{Trigger floor level of the GDP growth rate, below which the subsidy is switched on. Typically set to -0.01.\&\#xd;\&\#xd;\&\#xd;\&\#xd;\&\#xd;\&\#xd;\&\#xd;
 }\\
-\url{double} \url{subsidy_trigger_off} \index{\url{subsidy_trigger_off}} & \parbox{10cm}{Trigger ceiling level of the GDP growth rate, above which the subsidy is switched off. Typically set to +0.01.\&\#xd;\&\#xd;\&\#xd;\&\#xd;\&\#xd;\&\#xd;
+\url{double} \url{subsidy_trigger_off} \index{\url{subsidy_trigger_off}} & \parbox{10cm}{Trigger ceiling level of the GDP growth rate, above which the subsidy is switched off. Typically set to +0.01.\&\#xd;\&\#xd;\&\#xd;\&\#xd;\&\#xd;\&\#xd;\&\#xd;
 }\\
-\url{double} \url{subsidy_gdp_ratio} \index{\url{subsidy_gdp_ratio}} & \parbox{10cm}{The subsidy percentage is a ratio of the - GDP growth rate. Typical setting is tanh(gdp\_growth).\&\#xd;\&\#xd;\&\#xd;\&\#xd;\&\#xd;\&\#xd;
+\url{int} \url{gov_policy_swith_quantitative_easing} \index{\url{gov_policy_swith_quantitative_easing}} & \parbox{10cm}{Swith to turn on quantitative easing.
+
+
+
+
 }\\
 \end{longtable}
 \end{landscape}

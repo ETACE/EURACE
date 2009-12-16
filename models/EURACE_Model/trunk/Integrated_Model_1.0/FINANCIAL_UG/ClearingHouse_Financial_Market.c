@@ -48,13 +48,14 @@ void receiveOrderOnAsset(ClearingMechanism *mechanism, Asset *anAsset)
 void computeAssetPrice(ClearingMechanism *mechanism, Asset *anAsset)
   {  double price;
      int quantity;
-      // printf("computed asset price id ===%d\n",anAsset->id);
+      //printf("computed asset price id ===%d\n",anAsset->id);
      setClearingMechanism(mechanism,lastPrice(anAsset));
      runClearing(mechanism);
      quantity=mechanism->quantity;
      price=mechanism->lastPrice;
      addPrice(anAsset,price);
      addVolume(anAsset,quantity);   
+    
      if (PRINT_DEBUG_AFM)
         {
         printf("\t Clearing of asset: %d volume: %d price: %f \n",anAsset->id,quantity,price);
@@ -119,7 +120,9 @@ Order *pord;
 Order ord;
 pord=&ord;
 prev_asset = -1;
-
+ FILE * file1=NULL;
+ char * filename="";
+        
 START_ORDER_MESSAGE_LOOP
    asset_id    = order_message->asset_id;  
    quantity    = order_message->quantity;
@@ -127,6 +130,7 @@ START_ORDER_MESSAGE_LOOP
    limit_price = order_message->limit_price;
    setOrder(pord, limit_price, quantity, asset_id, issuer);
 
+  // printf("\n asset_id: %d quantity: %d limit_price: %f issuer: %d",asset_id,quantity,limit_price,issuer);
    if (prev_asset != asset_id) /* found a different asset */
    {
       /* handle previous asset first, unless there isn't one (-1) */
@@ -139,6 +143,17 @@ START_ORDER_MESSAGE_LOOP
          asset = elementAtCAsset(&ASSETS, index);
          computeAssetPrice(&CLEARINGMECHANISM, asset);
          sendOrderStatus(&CLEARINGMECHANISM);
+         
+         if (PRINT_DEBUG_FILE_EXP1)
+           {                       
+            filename = malloc(40*sizeof(char));
+            filename[0]=0;
+            strcpy(filename, "its/stock_prices_volumes.txt");      
+            file1 = fopen(filename,"a");
+            fprintf(file1,"\n %d %d %f %d",CURRENTDAY,asset->id,asset->lastPrice,asset->quantity);
+            fclose(file1);
+            free(filename);
+            }  
          
          }
       }
@@ -158,6 +173,17 @@ if(index>-1)
            asset = elementAtCAsset(&ASSETS,index);
             computeAssetPrice(&CLEARINGMECHANISM, asset);
             sendOrderStatus(&CLEARINGMECHANISM); 
+            
+              if (PRINT_DEBUG_FILE_EXP1)
+           {                       
+            filename = malloc(40*sizeof(char));
+            filename[0]=0;
+            strcpy(filename, "its/stock_prices_volumes.txt");      
+            file1 = fopen(filename,"a");
+            fprintf(file1,"\n %d %d %f %d",CURRENTDAY,asset->id,asset->lastPrice,asset->quantity);
+            fclose(file1);
+            free(filename);
+            }  
          
         }
         

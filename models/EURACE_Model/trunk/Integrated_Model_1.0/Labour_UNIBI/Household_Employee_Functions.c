@@ -705,14 +705,24 @@ int Household_send_tax_payment()
    // #endif
     double restitution_payment=0.0;
 
+   
     //Benefit restitution: repayment of the already received monthly unemployment benefits if recently re-employed
     if (DAY_OF_MONTH_RECEIVE_BENEFIT != DAY_OF_MONTH_RECEIVE_INCOME )
     {
+        //printf("\n DAY: %d DAY_OF_MONTH_RECEIVE_INCOME: %d DAY_OF_MONTH_RECEIVE_BENEFIT: %d",DAY,DAY_OF_MONTH_RECEIVE_INCOME,DAY_OF_MONTH_RECEIVE_BENEFIT);
         restitution_payment = ((DAY_OF_MONTH_RECEIVE_BENEFIT + (20-DAY_OF_MONTH_RECEIVE_INCOME)%20)/20.0)
                             * UNEMPLOYMENT_PAYMENT;
         //Reset
         DAY_OF_MONTH_RECEIVE_BENEFIT = DAY_OF_MONTH_RECEIVE_INCOME;
+        
+       //  printf("\n DAY: %d restitution_payment: %f UNEMPLOYMENT_PAYMENT: %f",DAY,restitution_payment,UNEMPLOYMENT_PAYMENT);
+            
+
     }
+    
+     
+    
+    
     /*Send a message to the government*/
 	add_unemployment_benefit_restitution_message(GOV_ID, restitution_payment);
 
