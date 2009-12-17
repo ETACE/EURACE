@@ -1,12 +1,12 @@
 clc
 clear all
-close all
+%close all
 
-Pat = '..\tmp\';
+Pat = '..\qe1_d1_ef1_se0_r2\';
 %Pat = '..\';
 
 font_sz = 14;
-colore = 'b';
+colore = 'r';
 
 mf = 66;
 af = ceil(mf/12);
