@@ -49,7 +49,7 @@ double randomReturnStock(Belief *belief, Stock *stock, int forwardWindow, int ba
    int i;
    volatility = volatilityStock(stock,backwardWindow);
   // printf("volatility %f\n",volatility);
-   volatility=max(0.0001,volatility);
+   volatility=max(0.001,volatility);
    rndReturn=0;
    sqrtvol=sqrt(forwardWindow)*volatility;
    //printf("randomReturnStock");
@@ -74,7 +74,7 @@ double randomReturnBond(Bond *bond,int backwardWindow,int holding_period,double 
    
    volatility=volatilityBond(bond,backwardWindow);
    //printf("\n backwardWindow %d",backwardWindow);
-   volatility=max(0.0001,volatility);
+   volatility=max(0.001,volatility);
    rndReturn=0;
    factor=sqrt(holding_period)*volatility;
    for(i=0;i<backwardWindow;i++)
