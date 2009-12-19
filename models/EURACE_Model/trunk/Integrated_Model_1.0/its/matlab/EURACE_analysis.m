@@ -2,13 +2,13 @@ clc
 clear all
 close all
 
-Pat = '..\qe1_d1_ef1_es0_r5\its\';
+Pat = '..\qe1_d1_es0_r1\its\';
 %Pat = '..\';
 
 font_sz = 14;
-colore = 'b';
+colore = 'r';
 
-mf = 240;
+mf = 120;
 af = ceil(mf/12);
 tf = 20*mf;
 daily_month_index = (1:tf)/20;

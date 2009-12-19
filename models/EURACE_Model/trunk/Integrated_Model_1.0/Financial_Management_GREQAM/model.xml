@@ -742,7 +742,7 @@ Note that a negative count means the financing condition has not been yet satisf
      <name>Firm_reset_bankruptcy_flags</name>
      <description>Function to reset the bankruptcy flags when the bankruptcy process has finished.</description>
      <currentState>Firm_bankruptcy_state_3</currentState>
-     <nextState>16</nextState>
+     <nextState>15</nextState>
      <inputs/>
      <outputs/>
     </function>
