@@ -1,14 +1,14 @@
 clc
 clear all
-%close all
+close all
 
-Pat = '..\qe1_d1_ef1_se0_r2\';
+Pat = '..\qe1_d1_ef1_es0_r5\its\';
 %Pat = '..\';
 
 font_sz = 14;
-colore = 'r';
+colore = 'b';
 
-mf = 66;
+mf = 240;
 af = ceil(mf/12);
 tf = 20*mf;
 daily_month_index = (1:tf)/20;
@@ -192,8 +192,30 @@ title('bond price','fontsize',font_sz)
 xlabel('months','fontsize',font_sz)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%%% FIGURE: Government data %%%
-%figure(41); 
+% Firm bankruptcies
+Data = load([Pat, 'firms_bankruptcies.txt']);
+Bankruptcies_nr = zeros(size(Data,1),1);
+Bankruptcies_nr_tmp = 0;
+
+for i=1:size(Data,1)
+    if Data(i,6)<0
+        Bankruptcies_nr_tmp = Bankruptcies_nr_tmp + 1;
+    else 
+        Bankruptcies_nr_tmp = Bankruptcies_nr_tmp - 1;
+    end
+    Bankruptcies_nr(i) = Bankruptcies_nr_tmp;
+    Bankruptcies_times(i) = Data(i,1);
+end
+
+figure(41); hold on; grid; box on
+set(gcf,'Name','Bankruptcies')
+stairs(Bankruptcies_times/20,Bankruptcies_nr,colore)
+set(gca,'xtick',monthly_index,'fontsize',font_sz)
+xlabel('months','fontsize',font_sz)
+ylabel('Nr firms in bankruptcy','fontsize',font_sz)
+set(gca,'xlim',[0, mf])
+
+clear Data
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -298,32 +320,48 @@ clear Data
 
 
 
-%%% Credit market
-% Data = load([Pat, 'credit_rationing.txt']);
-% Credit_requested = Data(:,3);
-% Credit_allowed = Data(:,4);
+%%% Credit rationing
+ Data = load([Pat, 'credit_rationing.txt']);
+ Credit_requested = Data(:,3);
+ Credit_allowed = Data(:,4);
 % 
-% days = unique(Data(:,1));
+ days = unique(Data(:,1));
 % 
-% for i=1:numel(days)
-%     
-%     d = days(i);
-%     
-%     days_idx = find(Data(:,1)==d);
-%     Credit_requested_sum(i) = sum(Credit_requested(days_idx));
-%     Credit_allowed_sum(i) = sum(Credit_allowed(days_idx));
-%     
-%     clear days_idx
-%     
-% end
+
+credit_rationing_time = [];
+credit_rationing_qty = [];
+j = 0;
+for i=1:numel(days)
+    
+    d = days(i);
+    
+    days_idx = find(Data(:,1)==d);
+    Credit_requested_sum(i) = sum(Credit_requested(days_idx));
+    Credit_allowed_sum(i) = sum(Credit_allowed(days_idx));
+    
+    if Credit_requested_sum(i)>Credit_allowed_sum(i)
+        j = j + 1;
+        credit_rationing_time(j) = d;
+        credit_rationing_qty(j) = Credit_requested_sum(i)-Credit_allowed_sum(i);
+    end
+   
+    clear days_idx
+    
+end
 % 
 % 
-% figure(71); hold on; grid on
-% plot(days,Credit_requested_sum,[':',colore])
-% plot(days,Credit_allowed_sum,colore)
-% legend('Credit requested','Credit allowed',0)
-% 
-% clear Data
+if j>0
+figure(71); hold on; grid on
+set(gcf,'Name','credit rationing')
+bar(credit_rationing_time/20,credit_rationing_qty,colore)
+
+set(gca,'xtick',monthly_index,'fontsize',font_sz)
+xlabel('months','fontsize',font_sz)
+ylabel('credit rationing','fontsize',font_sz)
+set(gca,'xlim',[0, mf])
+end
+
+clear Data
 
 % %%% Firm stock transaction
 % Data = load([Pat, 'firms_stock_transactions.txt']);
@@ -643,7 +681,7 @@ figure(122);
 set(gcf,'Name','Firms Debt and Equity')
 subplot(2,1,1); hold on; grid on; box on
 plot(daily_month_index,TOTAL_DEBT_FIRMS_sum(1:tf),colore)
-legend('firms total debt',0)
+legend('firms total debt','Location','Best')
 set(gca,'xtick',monthly_index,'fontsize',font_sz)
 xlabel('months','fontsize',font_sz)
 ylabel('firms debt','fontsize',font_sz)
@@ -654,7 +692,7 @@ plot(daily_month_index,EQUITY_FIRMS_sum(1:tf),colore)
 set(gca,'xtick',monthly_index,'fontsize',font_sz)
 xlabel('months','fontsize',font_sz)
 ylabel('firms equity','fontsize',font_sz)
-legend('firms equity','Best')
+legend('firms equity','Location','Best')
 set(gca,'xlim',[0, mf])
 
 
@@ -691,11 +729,12 @@ xlabel('months','fontsize',font_sz)
 ylabel('Total loans to firms','fontsize',font_sz)
 set(gca,'xlim',[0, mf])
 
-
 clear Data
 
 
 
+
+clear Data
 % figure(131); 
 % 
 % Data = load([Pat, 'Government_policies.txt']);
