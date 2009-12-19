@@ -797,6 +797,7 @@ if (BANKRUPTCY_IDLE_COUNTER == CONST_BANKRUPTCY_IDLE_PERIOD - 1)
                 
    }
    TOTAL_DEBT = target_debt;
+   EQUITY = TOTAL_ASSETS - TOTAL_DEBT;
   // reset_debt_item_array(&LOANS); the loan structure must not be cancelled, but rescaled
    
     target_equity = (1/TARGET_LEVERAGE_RATIO) * target_debt;
@@ -922,15 +923,15 @@ int Firm_reset_bankruptcy_flags()
     }
     #endif
     
+    TOTAL_ASSETS = PAYMENT_ACCOUNT + TOTAL_VALUE_CAPITAL_STOCK + TOTAL_VALUE_LOCAL_INVENTORY;
+    EQUITY = TOTAL_ASSETS - TOTAL_DEBT;
+    
     //Add conditions for resetting the active flag to 1:
     if ((BANKRUPTCY_IDLE_COUNTER<=0)&&(EXTERNAL_FINANCIAL_NEEDS<=0.0))
     {
         ACTIVE=1;
         BANKRUPTCY_INSOLVENCY_STATE  = 0;
         BANKRUPTCY_ILLIQUIDITY_STATE = 0;
-        
-        TOTAL_ASSETS = PAYMENT_ACCOUNT + TOTAL_VALUE_CAPITAL_STOCK + TOTAL_VALUE_LOCAL_INVENTORY;
-        EQUITY = TOTAL_ASSETS - TOTAL_DEBT;
         
       if (PRINT_DEBUG_FILE_EXP1)
     {
@@ -972,7 +973,7 @@ int Firm_compute_and_send_stock_orders()
     
     if (POLICY_EXP1)
     {
- //   quantity = 0.0;
+    //quantity = 0.0;
     }
 
    add_order_message(ID, ID, limit_price, quantity);
