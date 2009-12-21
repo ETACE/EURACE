@@ -1,14 +1,14 @@
 clc
 clear all
-close all
+%close all
 
-Pat = '..\qe1_d1_es0_r1\its\';
+Pat = '..\qe1_d0.5_es0_r2\its\';
 %Pat = '..\';
 
 font_sz = 14;
-colore = 'r';
+colore = 'k';
 
-mf = 120;
+mf = 240;
 af = ceil(mf/12);
 tf = 20*mf;
 daily_month_index = (1:tf)/20;
@@ -193,29 +193,34 @@ xlabel('months','fontsize',font_sz)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Firm bankruptcies
-Data = load([Pat, 'firms_bankruptcies.txt']);
-Bankruptcies_nr = zeros(size(Data,1),1);
-Bankruptcies_nr_tmp = 0;
 
-for i=1:size(Data,1)
-    if Data(i,6)<0
-        Bankruptcies_nr_tmp = Bankruptcies_nr_tmp + 1;
-    else 
-        Bankruptcies_nr_tmp = Bankruptcies_nr_tmp - 1;
+if exist([Pat, '\firms_bankruptcies.txt'])==2
+    
+    Data = load([Pat, 'firms_bankruptcies.txt']);
+    Bankruptcies_nr = zeros(size(Data,1),1);
+    Bankruptcies_nr_tmp = 0;
+
+    for i=1:size(Data,1)
+        if Data(i,6)<0
+            Bankruptcies_nr_tmp = Bankruptcies_nr_tmp + 1;
+        else
+            Bankruptcies_nr_tmp = Bankruptcies_nr_tmp - 1;
+        end
+        Bankruptcies_nr(i) = Bankruptcies_nr_tmp;
+        Bankruptcies_times(i) = Data(i,1);
     end
-    Bankruptcies_nr(i) = Bankruptcies_nr_tmp;
-    Bankruptcies_times(i) = Data(i,1);
+
+    figure(41); hold on; grid; box on
+    set(gcf,'Name','Bankruptcies')
+    stairs(Bankruptcies_times/20,Bankruptcies_nr,colore)
+    set(gca,'xtick',monthly_index,'fontsize',font_sz)
+    xlabel('months','fontsize',font_sz)
+    ylabel('Nr firms in bankruptcy','fontsize',font_sz)
+    set(gca,'xlim',[0, mf]) 
+    clear Data
+else
+    fprintf('\r\r No bankruptcy file found')
 end
-
-figure(41); hold on; grid; box on
-set(gcf,'Name','Bankruptcies')
-stairs(Bankruptcies_times/20,Bankruptcies_nr,colore)
-set(gca,'xtick',monthly_index,'fontsize',font_sz)
-xlabel('months','fontsize',font_sz)
-ylabel('Nr firms in bankruptcy','fontsize',font_sz)
-set(gca,'xlim',[0, mf])
-
-clear Data
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

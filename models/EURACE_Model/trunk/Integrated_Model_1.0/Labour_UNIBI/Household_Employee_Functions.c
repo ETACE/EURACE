@@ -738,7 +738,7 @@ int Household_send_tax_payment()
     /*Setting the counter of monthly dividends = 0*/
     CUM_TOTAL_DIVIDENDS=0;
     
-    if (PRINT_DEBUG_FILE_EXP1)
+  /*  if (PRINT_DEBUG_FILE_EXP1)
         {                       
             filename = malloc(40*sizeof(char));
             filename[0]=0;
@@ -747,7 +747,7 @@ int Household_send_tax_payment()
             fprintf(file1,"\n %d %d %f %f",DAY,ID,restitution_payment,TAX_PAYMENT);
             fclose(file1);
             free(filename);
-        }  
+        }  */
 
 
     return 0;
