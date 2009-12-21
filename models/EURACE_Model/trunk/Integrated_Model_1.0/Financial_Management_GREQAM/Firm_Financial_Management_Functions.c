@@ -796,6 +796,7 @@ if (BANKRUPTCY_IDLE_COUNTER == CONST_BANKRUPTCY_IDLE_PERIOD - 1)
         credit_refunded, write_off_ratio*residual_var);        
                 
    }
+   
    TOTAL_DEBT = target_debt;
    EQUITY = TOTAL_ASSETS - TOTAL_DEBT;
   // reset_debt_item_array(&LOANS); the loan structure must not be cancelled, but rescaled
@@ -803,6 +804,10 @@ if (BANKRUPTCY_IDLE_COUNTER == CONST_BANKRUPTCY_IDLE_PERIOD - 1)
     target_equity = (1/TARGET_LEVERAGE_RATIO) * target_debt;
     ipo_amount = max(0,target_equity + target_debt - TOTAL_ASSETS);
      EXTERNAL_FINANCIAL_NEEDS = max(0,ipo_amount);
+     
+     //add a bankruptcy_message for households only, with bank_id=0 so no bank will ever read it:
+     add_bankruptcy_message(ID, 0, 0.0, 0.0, 0.0); // This is to wipe out present shareholders
+     CURRENT_SHARES_OUTSTANDING = 0;
 }   
     //Check that after refunding credit the payment account is depleted:
     /*if (PAYMENT_ACCOUNT>1e-6)
@@ -815,8 +820,7 @@ if (BANKRUPTCY_IDLE_COUNTER == CONST_BANKRUPTCY_IDLE_PERIOD - 1)
     //Effect on financial market
     //Wiping out all existing shareholders by cancelling their shares
 
-    //add a bankruptcy_message for households only, with bank_id=0 so no bank will ever read it:
-     add_bankruptcy_message(ID, 0, 0.0, 0.0, 0.0);
+    
 
     //Set the IPO_AMOUNT to raise:
    
@@ -866,9 +870,6 @@ int Firm_bankruptcy_illiquidity_procedure()
     int i;
     double ipo_amount;
     
-    //add a bankruptcy_message for households only, with bank_id=0 so no bank will ever read it:
-     add_bankruptcy_message(ID, 0, 0.0, 0.0, 0.0);
-                
     //Effect on credit market   
     //Renegotiating debt not needed
     
@@ -981,6 +982,33 @@ int Firm_compute_and_send_stock_orders()
     }
 
    add_order_message(ID, ID, limit_price, quantity);
+
+    #ifdef _DEBUG_MODE
+    if (PRINT_DEBUG)
+    {
+        printf("\n\n Firm_compute_and_send_stock_orders ID: %d",ID);
+        printf("\n\t EXTERNAL_FINANCIAL_NEEDS: %f limit_price: %f quantity: %d",EXTERNAL_FINANCIAL_NEEDS,limit_price,quantity);       
+        getchar();             
+    }
+    #endif
+    
+    return 0;
+}
+
+
+int Firm_compute_and_send_stock_orders_bankruptcy()
+{
+    //Note: This function only runs if EXTERNAL_FINANCIAL_NEEDS>0.0
+
+    double limit_price=CURRENT_SHARE_PRICE*0.99;
+    
+    //If the quantity is fractional, take the ceiling, such that EXTERNAL_FINANCIAL_NEEDS are met.
+    int target_shares_outstanding = ceil(EQUITY+EXTERNAL_FINANCIAL_NEEDS/limit_price);
+    int quantity = -1*(target_shares_outstanding-CURRENT_SHARES_OUTSTANDING);
+    
+       
+     if (quantity<0)
+       add_order_message(ID, ID, limit_price, quantity);
 
     #ifdef _DEBUG_MODE
     if (PRINT_DEBUG)
