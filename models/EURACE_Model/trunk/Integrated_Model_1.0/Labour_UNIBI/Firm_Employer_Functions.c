@@ -1099,6 +1099,9 @@ int Firm_compute_mean_wage_specific_skills()
 {
     double ave_wage =0.0;
     double ave_spec_skills =0.0;
+        FILE *file1;
+     char *filename;    
+     int check_if;
     
     int i;
     for(i=0;i<EMPLOYEES.size;i++)
@@ -1112,11 +1115,32 @@ int Firm_compute_mean_wage_specific_skills()
     {
         MEAN_WAGE = WAGE_OFFER;
         MEAN_SPECIFIC_SKILLS = AVERAGE_S_SKILL_OF_1;
+        check_if = 0;
     }
     else
     {
         MEAN_WAGE = ave_wage /( no_employees);
         MEAN_SPECIFIC_SKILLS =ave_spec_skills/no_employees;
+        check_if = 1;
     }
+    
+  /*   printf("\n %d %d %d %d",DAY,ID,NO_EMPLOYEES,check_if);
+    printf(" %f %f %f %d",WAGE_OFFER,MEAN_WAGE,MEAN_SPECIFIC_SKILLS,REGION_ID);
+    
+       if (PRINT_DEBUG_FILE_EXP1)
+        {                       
+            filename = malloc(40*sizeof(char));
+            filename[0]=0;
+            strcpy(filename, "its/Firm_compute_mean_wage_specific_skills.txt");      
+            file1 = fopen(filename,"a");
+            fprintf(file1,"\n %d %d %d %d",DAY,ID,NO_EMPLOYEES,check_if);
+            fprintf(file1," %f %f %f %d",WAGE_OFFER,MEAN_WAGE,MEAN_SPECIFIC_SKILLS,REGION_ID);
+            printf("\n pippo 1");
+            fclose(file1);
+            free(filename);
+        }  
+        
+     printf("\n pippo 2");   */
+    
 return 0;
 }

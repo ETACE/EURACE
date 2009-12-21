@@ -153,6 +153,8 @@ int Firm_calc_production_quantity()
     double production_volume = 0;
     double prod_vol;
     int i,j,k;
+    FILE *file1;
+     char *filename;    
     
     double regressor, intercept, variance;
     
@@ -300,6 +302,18 @@ int Firm_calc_production_quantity()
             getchar();
         }
         #endif
+        
+        if (PRINT_DEBUG_FILE_EXP1)
+        {                       
+            filename = malloc(40*sizeof(char));
+            filename[0]=0;
+            strcpy(filename, "its/Firm_calc_production_quantity.txt");      
+            file1 = fopen(filename,"a");
+            fprintf(file1,"\n %d %d %f %d",DAY,ID,PLANNED_PRODUCTION_QUANTITY,REGION_ID);
+            fclose(file1);
+            free(filename);
+        }  
+        
         
         //printf("In calculate production: Firm %d PLANNED_PRODUCTION_QUANTITY %f\n", ID, PLANNED_PRODUCTION_QUANTITY);
         //printf("In calculate production: Firm %d PLANNED_OUTPUT %f\n", ID, PLANNED_OUTPUT);
@@ -466,6 +480,8 @@ int Firm_calc_production_quantity_2()
     double decrement;
     double diff;
     diff = PLANNED_PRODUCTION_QUANTITY;
+    FILE *file1;
+     char *filename;    
 
     //Here we set a fraction of the planned production quantity
     decrement = ADAPTION_PRODUCTION_VOLUME_DUE_TO_INSUFFICIENT_FINANCES*PLANNED_PRODUCTION_QUANTITY;
@@ -496,7 +512,18 @@ int Firm_calc_production_quantity_2()
 
         //printf("In calculate production 2: Firm %d PLANNED_PRODUCTION_QUANTITY %.2f (-%.2f)\n", ID, PLANNED_PRODUCTION_QUANTITY, diff);
         //printf("In calculate production 2: Firm %d PLANNED_OUTPUT %.2f (-%.2f)\n", ID, PLANNED_OUTPUT, diff);
-
+        
+        if (PRINT_DEBUG_FILE_EXP1)
+        {                       
+            filename = malloc(40*sizeof(char));
+            filename[0]=0;
+            strcpy(filename, "its/Firm_calc_production_quantity_2.txt");      
+            file1 = fopen(filename,"a");
+            fprintf(file1,"\n %d %d %f %d",DAY,ID,PLANNED_PRODUCTION_QUANTITY,REGION_ID);
+            fclose(file1);
+            free(filename);
+        }  
+        
     return 0;
 }
 
@@ -581,6 +608,8 @@ return 0;
 int Firm_execute_production()
 {
     double diff;
+    FILE *file1;
+     char *filename;    
     
     /* This determines the realized production volume*/
     if(PLANNED_PRODUCTION_QUANTITY != 0)
@@ -623,6 +652,17 @@ int Firm_execute_production()
     
     //printf("In Execute production: Firm %d PRODUCTION_QUANTITY: %.2f (%.2f) \n", ID, PRODUCTION_QUANTITY, diff);
     //printf("In Execute production: Firm %d OUTPUT: %.2f (%.2f)\n", ID, OUTPUT, diff);
+    
+    if (PRINT_DEBUG_FILE_EXP1)
+        {                       
+            filename = malloc(40*sizeof(char));
+            filename[0]=0;
+            strcpy(filename, "its/Firm_execute_production.txt");      
+            file1 = fopen(filename,"a");
+            fprintf(file1,"\n %d %d %d %f %f %f %d",DAY,ID,NO_EMPLOYEES,OUTPUT,TOTAL_UNITS_LOCAL_INVENTORY,TOTAL_SUPPLY,REGION_ID);
+            fclose(file1);
+            free(filename);
+        }  
 
 return 0;
 }

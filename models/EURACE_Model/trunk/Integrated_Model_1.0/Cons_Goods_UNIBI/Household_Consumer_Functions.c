@@ -583,9 +583,13 @@ int Household_handle_leftover_budget()
 int Household_send_account_update()
 {
      // #ifdef _DEBUG_MODE  
-   /* char * filename;
+   char * filename;
     FILE * file1;
-    int remainder; */
+    Asset_array *assets;
+    Asset *asset;
+    int size, i;
+
+   // int remainder; */
       // #endif
    
         /*GENUA*/
@@ -624,10 +628,35 @@ int Household_send_account_update()
         free(filename);
        
     }        */        
-   
+       
      EXPENDITURES = 0;
-   
-    #endif
+     
+      #endif
+      
+     assets =get_assetsowned();
+     size = assets->size;
+    
+    if ((ID>20)&&(ID<=30))
+    { 
+    if (PRINT_DEBUG_FILE_EXP1)
+    {                       
+        filename = malloc(40*sizeof(char));
+        filename[0]=0;
+        strcpy(filename, "its/households_portfolio.txt");      
+        file1 = fopen(filename,"a");
+        fprintf(file1,"\n %d %d",DAY,ID);
+         for(i=0;i<size;i++)
+         {
+          asset=elementAtCAsset(assets,i);
+          fprintf(file1," %d %d",asset->id,asset->quantity);
+          }
+        fclose(file1);
+        free(filename);
+    }              
+   } 
+     
+//      printf("\n %d %d %d",ID,assets->size,assets->total_size);
+  
 
     
     return 0;
