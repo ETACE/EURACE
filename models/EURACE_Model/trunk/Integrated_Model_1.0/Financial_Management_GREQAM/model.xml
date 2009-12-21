@@ -706,7 +706,7 @@ Note that a negative count means the financing condition has not been yet satisf
      <outputs/>
     </function>
     <function>
-     <name>Firm_compute_and_send_stock_orders</name>
+     <name>Firm_compute_and_send_stock_orders_bankruptcy</name>
      <description>Function to send order_messages to the clearinghouse (new share emission).</description>
      <currentState>Firm_bankruptcy_state_1b</currentState>
      <nextState>Firm_bankruptcy_state_2</nextState>
