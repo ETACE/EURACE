@@ -811,9 +811,13 @@ if (BANKRUPTCY_IDLE_COUNTER == CONST_BANKRUPTCY_IDLE_PERIOD - 1)
                 " payment_account not depleted after refunding credit. \n"
                 "PAYMENT_ACCOUNT=%f\n", PAYMENT_ACCOUNT);
     } */   
+
     //Effect on financial market
     //Wiping out all existing shareholders by cancelling their shares
-    
+
+    //add a bankruptcy_message for households only, with bank_id=0 so no bank will ever read it:
+     add_bankruptcy_message(ID, 0, 0.0, 0.0, 0.0);
+
     //Set the IPO_AMOUNT to raise:
    
   
