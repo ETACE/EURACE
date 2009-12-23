@@ -2,13 +2,13 @@ clc
 clear all
 %close all
 
-Pat = '..\qe1_d0.5_es0_r2\its\';
+Pat = '..\qe1_d0.6_es0_r10\its\';
 %Pat = '..\';
 
-font_sz = 14;
-colore = 'k';
+font_sz = 11;
+colore = ':b';
 
-mf = 240;
+mf = 360;
 af = ceil(mf/12);
 tf = 20*mf;
 daily_month_index = (1:tf)/20;
@@ -225,9 +225,9 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-figure(1000); hold on; grid on; box on
-plot(ECB_DEPOSITS'-(PAYMENT_ACCOUNT_GOVS_sum+PAYMENT_ACCOUNT_BANKS_sum))
-legend('ECB DEPOSITS - Aggregate PAYMENT ACCOUNT GOVS - PAYMENT ACCOUNT BANKS',0)
+% figure(1000); hold on; grid on; box on
+% plot(ECB_DEPOSITS(i:tf)'-(PAYMENT_ACCOUNT_GOVS_sum(i:tf)+PAYMENT_ACCOUNT_BANKS_sum(i:tf)))
+% legend('ECB DEPOSITS - Aggregate PAYMENT ACCOUNT GOVS - PAYMENT ACCOUNT BANKS',0)
 
 clear Data
 
@@ -558,7 +558,7 @@ set(gca,'xlim',[0, mf])
 
 %%% INVARIANTS
 
-MONEY_PRIVATE_SECTOR = DEPOSITS_sum + EQUITY_sum + FIAT_MONEY_BANKS';
+MONEY_PRIVATE_SECTOR = DEPOSITS_sum(1:tf) + EQUITY_sum(1:tf) + FIAT_MONEY_BANKS(1:tf)';
 
 MONEY_PRIVATE_SECTOR_counterpart = TOTAL_CREDIT_sum(1:tf) + ...
     FIAT_MONEY(1:tf)' - PAYMENT_ACCOUNT_CB(1:tf)' - CUM_ENERGY_COSTS_sum(1:tf) - PAYMENT_ACCOUNT_GOVS_sum(1:tf);
