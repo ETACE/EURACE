@@ -717,6 +717,8 @@ int Government_read_data_from_Eurostat()
  */
 int Government_set_policy()
 {   
+    FILE *file1=NULL;
+    char *filename=NULL;
 
 //    double yearly_tax_revenues_target; 
 /*     
@@ -776,7 +778,7 @@ int Government_set_policy()
      YEARLY_INVESTMENT_BUDGET = GOV_POLICY_GDP_FRACTION_INVESTMENT * GDP_FORECAST;
      MONTHLY_INVESTMENT_BUDGET = YEARLY_INVESTMENT_BUDGET/12;
 
- /*   if ((POLICY_EXP1)&&(GOV_POLICY_SWITCH_QUANTITATIVE_EASING==0))
+    if ((POLICY_EXP1)&&(GOV_POLICY_SWITH_QUANTITATIVE_EASING==0))
     {                   
                 
         if ( (YEARLY_BUDGET_BALANCE+PAYMENT_ACCOUNT)>0)
@@ -792,7 +794,19 @@ int Government_set_policy()
         if (TAX_RATE_HH_LABOUR<0.05) TAX_RATE_HH_LABOUR = 0.05;
         if (TAX_RATE_CORPORATE<0.05) TAX_RATE_CORPORATE = 0.05;
       } 
-*/
+
+      
+        if (PRINT_DEBUG_FILE_EXP1)
+        {
+            filename = malloc(40*sizeof(char));
+            filename[0]=0;
+            strcpy(filename, "its/Government_policies.txt"); 
+            file1 = fopen(filename,"a");
+            fprintf(file1,"%d %d %f %f\n",DAY,ID,TAX_RATE_HH_LABOUR,TAX_RATE_CORPORATE);
+            fclose(file1);
+            free(filename);
+        }
+      
          
     return 0;
 }
