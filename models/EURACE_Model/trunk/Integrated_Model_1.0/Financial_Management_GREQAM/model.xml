@@ -663,9 +663,6 @@ Also sets the active flag to 0 and starts the bankruptcy idle counter.</descript
      <inputs/>
      <outputs>
       <output>
-       <messageName>bankruptcy</messageName>
-      </output>
-      <output>
        <messageName>firing</messageName>
       </output>
      </outputs>
