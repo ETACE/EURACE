@@ -3,31 +3,36 @@
 #include "../my_library_header.h"
 #include "Labour_aux_headers.h"
 
-/**********************************Household Role: Labour Market**********************************/
-/** \fn Household_receive_wage()
- * \brief Household receives wage if the household is employed
- */
 
+/**********************************Household Role: Labour Market*********************************.*/
+/** \fn Household_receive_wage()
+ * \brief: 
+    - Household receives wage if the household is employed.
+    - Sets reservation wage equal to the new wage.
+    - Calculates the income in this period add to last_income_array.
+*/
 int Household_receive_wage()
 {
-
+    int i;
     double mean_income = 0.0;
-    
-    /*Household reads the wage messages if employed*/
+
+    /*Household reads the wage messages if employed.*/
     START_WAGE_PAYMENT_MESSAGE_LOOP
 
-    
+        /*Set wage and reservation wage.*/
         WAGE = wage_payment_message->payment;
-    /*Simon: 16.06.2009*/
         WAGE_RESERVATION = WAGE;
+    
+
+        /*Calculate the total income.*/
+        TOTAL_INCOME= wage_payment_message->payment +  CUM_TOTAL_DIVIDENDS +
+        MONTHLY_BOND_INTEREST_INCOME;
+ 
+        /*Remove the oldest income and add the recent.*/
         remove_double(&LAST_INCOME,0);
-        
-        TOTAL_INCOME= wage_payment_message->payment +  CUM_TOTAL_DIVIDENDS + MONTHLY_BOND_INTEREST_INCOME;
-             
         add_double(&LAST_INCOME,TOTAL_INCOME);
 
-        /*Compute a mean income of the last four month*/
-        int i;
+        /*Compute the mean income of the last four month.*/
         for(i = 0; i < 4;i++)
         {
             mean_income += LAST_INCOME.array[i];
@@ -35,161 +40,175 @@ int Household_receive_wage()
 
         MEAN_INCOME= mean_income/4;
 
-        /*Add wage on account   */
+        /*Add wage to payment account.*/
         PAYMENT_ACCOUNT += wage_payment_message->payment;
-        
-   
-    CURRENT_PRODUCTIVITY_EMPLOYER = wage_payment_message-> productivity;
-    CURRENT_MEAN_SPECIFIC_SKILLS_EMPLOYER =wage_payment_message->average_specific_skills;
+
+        /*Store the productivity and the average specific skills 
+        of the employer in order to update the specific skills later.*/
+        CURRENT_PRODUCTIVITY_EMPLOYER = wage_payment_message-> productivity;
+        CURRENT_MEAN_SPECIFIC_SKILLS_EMPLOYER =wage_payment_message->average_specific_skills;
+    
     FINISH_WAGE_PAYMENT_MESSAGE_LOOP
 
-
     return 0;
-
 }
 
-/** \fn Household_update_specific_skills()
- * \brief Household's specific skills are updated if the household is employed
- */
 
+/** \fn Household_update_specific_skills()
+ * \brief:
+    - Household updates specific skills if the household is employed
+    - Household sends the new specific skill to the employer
+*/
 int Household_update_specific_skills()
 {
-
-
+    /*If the specific skill of household is lower than the productivity of the employer
+    - no negative effect: no forgetting.*/
     if(SPECIFIC_SKILL < CURRENT_PRODUCTIVITY_EMPLOYER)
     {
+        /*Update the specific skill: depends on the actual specific skill, 
+        the gap between the actual specific skills and the actual productivity of the employer,
+        and the general skill which determines the speed of closing the this gap.*/
+        SPECIFIC_SKILL = SPECIFIC_SKILL + 
+        (CURRENT_PRODUCTIVITY_EMPLOYER - SPECIFIC_SKILL)*((1-pow(0.5,1/(20+0.25*(GENERAL_SKILL-1)*(4-20))))
+        + 0*CURRENT_MEAN_SPECIFIC_SKILLS_EMPLOYER);
 
-
-
-        SPECIFIC_SKILL = SPECIFIC_SKILL + (CURRENT_PRODUCTIVITY_EMPLOYER - SPECIFIC_SKILL)*((1-pow(0.5,1/(20+0.25*(GENERAL_SKILL-1)*(4-20))))+ 0*CURRENT_MEAN_SPECIFIC_SKILLS_EMPLOYER);
-
-
+        /*Send specific skill to employer.*/
         add_specific_skill_update_message(ID,EMPLOYEE_FIRM_ID,SPECIFIC_SKILL);
-
     }
 
     return 0;
-
 }
 
+
+
 /** \fn Household_read_firing_messages()
- * \brief Read firing messages
- */
+ * \brief 
+    - Household reads firing messages if the household is employed
+    - Household becomes unemployed: no employer and no wage
+    - Stores the last_labor_income for the benefit notification
+*/
 int Household_read_firing_messages()
 {
 
-    /* If employed... */
-
-    /* Check for firing message */
+    /* Check for firing message*/
     START_FIRING_MESSAGE_LOOP
 
-        /*If employee is fired*/
+        /*If employee is fired.*/
         if(firing_message->worker_id == ID)
         {
+            /*No employer.*/
             EMPLOYEE_FIRM_ID = -1;
+            
+            /*Information for unemployment benefit notification.*/
             LAST_LABOUR_INCOME = WAGE;
             WAGE = 0;
-            ON_THE_JOB_SEARCH = 0;
-            //DAY_OF_MONTH_RECEIVE_INCOME = 0;
         }
 
     FINISH_FIRING_MESSAGE_LOOP
-
-
+    
     return 0;
 }
 
 
 
-/** \fn Household_UNEMPLOYED_read_job_offers_send_response()
- * \brief Read job offers, rank, and send response
- */
+/** \fn Household_UNEMPLOYED_read_job_vacancies_and_send_applications()
+ * \brief: 
+    - Household reads vacancy messages. 
+    - Selects vacancies regarding the posted wage offer: 
+        1: Household and firm are in the same region: wage offer has to be higher than reservation wage
+        2: Household and firm are not in the same region: wage offer - commuting costs has to be higher than the res-wage
+    - Sends application. 
+*/
 int Household_UNEMPLOYED_read_job_vacancies_and_send_applications()
 {
-    /* Create a vacancy dynamic array to store vacancies*/
-    vacancy_array  vacancy_list;
-    init_vacancy_array(&vacancy_list);
     int i=0;
     int j=0;
     double wage_offer=0.0;
-    
-    /*if unemployed: search for vacancies*/
 
+    /* Create a vacancy dynamic array to store vacancies.*/
+    vacancy_array  vacancy_list;
+    init_vacancy_array(&vacancy_list);
+    
+    /*Searchs for vacancies.*/
     START_VACANCIES_MESSAGE_LOOP
  
-    /*Unemployed take into account only the vacancy messages with the wage offer for            the correspondent general skill level*/
+        /*Unemployed take only the wage offer for the correspondent general skill level into account.*/
         if(GENERAL_SKILL == 1)
         {
             wage_offer = vacancies_message->firm_wage_offer_for_skill_1;
         }
-    
+
         if(GENERAL_SKILL == 2)
         {
             wage_offer = vacancies_message->firm_wage_offer_for_skill_2;
         }
-    
+
         if(GENERAL_SKILL == 3)
         {
             wage_offer =  vacancies_message->firm_wage_offer_for_skill_3;
         }
-    
+
         if(GENERAL_SKILL == 4)
         {
             wage_offer =  vacancies_message->firm_wage_offer_for_skill_4;
         }
-    
+
         if(GENERAL_SKILL == 5)
         {
             wage_offer =  vacancies_message->firm_wage_offer_for_skill_5;
         }
-    
-        /*wage offer has to be equal or higher than the reservation wage*/
+
+        /*Wage offer has to be equal or higher than the reservation wage.*/
         if(wage_offer >= WAGE_RESERVATION)
         {
-            /*same region: Firm and Household*/
+            /*Firm and Household are in the same region: no commuting costs.*/
             if(REGION_ID == vacancies_message->region_id)
             {
+                /*Add vacancy to vacancy list (possible job candidates).*/
                 add_vacancy(&vacancy_list,
-                vacancies_message->firm_id, vacancies_message->region_id,
+                vacancies_message->firm_id, 
+                vacancies_message->region_id,
                 wage_offer);
             }
-            else /*take into account the costs of a different region:                           Firm and Household; Households can only apply in                            neighboring regions*/
+            /*Firm and Household are not in the same region: Household has to bear commuting costs.*/
+            else 
             {
-                /*For every neighboring region*/
-                
+                /*For every neighboring region.*/
                 for(i = 0;i < NEIGHBORING_REGION_IDS.size; i++)
                 {
-                    /*If vacancy is in a neighboring region*/
-                    if(vacancies_message->region_id
-                    ==NEIGHBORING_REGION_IDS.array[i])
+                    /*If vacancy is in a neighboring region.*/
+                    if(vacancies_message->region_id == NEIGHBORING_REGION_IDS.array[i])
                     {
-
-			/* if((wage_offer -
-                         REGION_COST*COMMUTING_COSTS_PRICE_LEVEL_WEIGHT) >= WAGE_RESERVATION)*/
-                        if((wage_offer -
-                         REGION_COST) >= WAGE_RESERVATION)
+                        /*Wage offer minus commuting costs has to be higher than the reservation wage.*/
+                        //if((wage_offer -REGION_COST*COMMUTING_COSTS_PRICE_LEVEL_WEIGHT) >= WAGE_RESERVATION)
+                        if((wage_offer - REGION_COST) >= WAGE_RESERVATION)
                         {
-                            add_vacancy(&vacancy_list, vacancies_message->firm_id,                                     vacancies_message->region_id,
+                            /*Add vacancy to vacancy list (possible job candidates).*/
+                            add_vacancy(&vacancy_list, 
+                            vacancies_message->firm_id, 
+                            vacancies_message->region_id,
                             (wage_offer - REGION_COST));
 
-
-			/*add_vacancy(&vacancy_list, vacancies_message->firm_id,                                     vacancies_message->region_id,
-                            (wage_offer - REGION_COST*COMMUTING_COSTS_PRICE_LEVEL_WEIGHT));*/
+                            /*add_vacancy(&vacancy_list, 
+                            vacancies_message->firm_id, 
+                            vacancies_message->region_id,
+                            (wage_offer - REGION_COST*COMMUTING_COSTS_PRICE_LEVEL_WEIGHT));.*/
                         }
                         break;
                     }
-                 }
+                }
             }
         }
-    
 
     FINISH_VACANCIES_MESSAGE_LOOP
 
 
-    /*Maximum number of applications for each person*/
+    /*If there are more vacancies on the list than the maximum number of applications the household can send.*/
     if(vacancy_list.size > NUMBER_APPLICATIONS)
     {
-        /*remove vacancies from the list randomly until the list contains as many               vacancies as a household can send applications*/
+        /*Remove vacancies from the list randomly until the list contains as many
+        vacancies as a household can send applications.
+        ->imperfect information.*/
         while(vacancy_list.size > NUMBER_APPLICATIONS)
         {
             j = random_int(0, (vacancy_list.size-1));
@@ -197,131 +216,105 @@ int Household_UNEMPLOYED_read_job_vacancies_and_send_applications()
         }
     }
 
-    /* Rank the vacancy list (function from my_library_functions) */
-    //sort_vacancy_list(&vacancy_list);
+    /*Sorting vacancies regarding their posted wage offer.*/
+    //qsort(vacancy_list.array, vacancy_list.size, sizeof(vacancy),vacancy_list_rank_wage_offer_function);
 
-    qsort(vacancy_list.array, vacancy_list.size, sizeof(vacancy),
-    vacancy_list_rank_wage_offer_function);
-
-    /* If the vacancy list is bigger than zero then send a job application to every         vacancy on the list */
+    /* Sends applications to all vacancies which are still on the list.*/
     for(i = 0; i < (vacancy_list.size); i++)
     {
-        add_job_application_message(ID, vacancy_list.array[i].firm_id,              REGION_ID, GENERAL_SKILL, SPECIFIC_SKILL);
+        add_job_application_message(ID, 
+        vacancy_list.array[i].firm_id,  
+        REGION_ID, 
+        GENERAL_SKILL, 
+        SPECIFIC_SKILL);
     }
 
-
-
-    /* Free the vacancy dynamic array */
+    /*Free the vacancy dynamic array.*/
     free_vacancy_array(&vacancy_list);
 
     return 0;
 }
 
 /** \fn Household_read_job_offers_send_response()
- * \brief Read job offers, rank, and send response
- */
+ * \brief: 
+    - Household reads job offer(s) and accepts the offer with the highest wage offer net of commuting costs.
+*/
 int Household_read_job_offers_send_response()
 {
-    /* Create a job offer dynamic array */
+    /* Create a job offer dynamic array*/
     job_offer_array job_offer_list;
     init_job_offer_array(&job_offer_list);
 
-    /* If unemployed...or on the job search */
-
     START_JOB_OFFER_MESSAGE_LOOP
 
-        /* Read job offer messages for this Household */
+        /*Read job offer messages for this Household.*/
         if(job_offer_message->worker_id == ID)
         {
-            /*Job offers of firms in the same region*/
+            /*Job offers of firms in the same region: no commuting costs.*/
             if(REGION_ID == job_offer_message->region_id)
             {
+                /*Add job offer to the job offer list.*/
                 add_job_offer(&job_offer_list,
-                job_offer_message->firm_id, job_offer_message->region_id,
+                job_offer_message->firm_id, 
+                job_offer_message->region_id,
                 job_offer_message->wage_offer);
             }
-            else/*Job offers of firms in different regions*/
+            /*Job offers of firms in different regions: Household has to bear commuting costs.*/
+            else
             {
                 add_job_offer(&job_offer_list,
-                job_offer_message->firm_id, job_offer_message->region_id,
+                job_offer_message->firm_id, 
+                job_offer_message->region_id,
                 (job_offer_message->wage_offer - REGION_COST));
 
-		 /*add_job_offer(&job_offer_list,
-                job_offer_message->firm_id, job_offer_message->region_id,
-                (job_offer_message->wage_offer - REGION_COST*COMMUTING_COSTS_PRICE_LEVEL_WEIGHT));*/
+                /*add_job_offer(&job_offer_list,
+                job_offer_message->firm_id, 
+                job_offer_message->region_id,
+                (job_offer_message->wage_offer - REGION_COST*COMMUTING_COSTS_PRICE_LEVEL_WEIGHT));.*/
             }
         }
 
     FINISH_JOB_OFFER_MESSAGE_LOOP
-/*+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-
-    /*Shuffle job offers before sorting: two or more equal offers will be ranked be         chance*/
-    /*int i,k;
-    job_offer * i_job_offer, * k_job_offer;
-    job_offer * temp_job_offer = (job_offer *)malloc(sizeof(job_offer));
-
-    for(i = 0; i < (job_offer_list.size);i++)
-    {
-        k = random_int(i, (job_offer_list.size-1));
-
-        i_job_offer = &job_offer_list.array[i];
-        k_job_offer = &job_offer_list.array[k];*/
-
-            /* Swap neighbours */
-            /** temp_job_offer = * i_job_offer;
-            * i_job_offer = * k_job_offer;
-            * k_job_offer = * temp_job_offer;
-    }
-
-    free(temp_job_offer);*/
 
 
-/*+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+    /*Ranks job offers regarding the posted wage offer net of commuting costs.*/
+    qsort(job_offer_list.array, job_offer_list.size, sizeof(job_offer),job_offer_list_rank_wage_offer_function);
 
-    /* Rank job offers (function from my_library_functions) */
-    //sort_job_offer_list(&job_offer_list);
-
-    /* Rank job offers with random for equal elements (function from
-     my_library_functions) */
-    qsort(job_offer_list.array, job_offer_list.size, sizeof(job_offer),
-    job_offer_list_rank_wage_offer_function);
-
-    /* Accept best job: first on the list (array[0]) */
+    /* Accept  job with highest net wage offer: first on the list (array[0]).*/
     if(job_offer_list.size > 0)
     {
-        add_job_acceptance_message(ID, job_offer_list.array[0].firm_id,                 REGION_ID, GENERAL_SKILL, SPECIFIC_SKILL);
+        add_job_acceptance_message(ID, 
+        job_offer_list.array[0].firm_id, 
+        REGION_ID, 
+        GENERAL_SKILL, 
+        SPECIFIC_SKILL);
 
-        /*If on the job search: send quitting message*/
-        if(ON_THE_JOB_SEARCH == 1)
-        {
-            add_quitting_message(ID, EMPLOYEE_FIRM_ID);
-        }
-
+        /*Sets employer_id, employer_region_id and the day when the household will receive the wage.*/
         EMPLOYEE_FIRM_ID = job_offer_list.array[0].firm_id;
         EMPLOYER_REGION_ID = job_offer_list.array[0].region_id;
         DAY_OF_MONTH_RECEIVE_INCOME = DAY%MONTH;
 
-        /*update some memory variables because of the new job*/
+        /*If household and firm are in the same region.*/
         if(REGION_ID == job_offer_list.array[0].region_id)
         {
+            /*Add the new wage and sets the reservation wage to the new wage.*/
             WAGE = job_offer_list.array[0].wage_offer;
             WAGE_RESERVATION = WAGE;
-            ON_THE_JOB_SEARCH = 0;
         }
+        /*If household and firm are not in the same region.*/
         else
-        {   /*Have to add the region cost: region costs are important for                   ranking but are part of the wage*/
-
-           // WAGE = (job_offer_list.array[0].wage_offer + REGION_COST*COMMUTING_COSTS_PRICE_LEVEL_WEIGHT);
+        {   
+            //WAGE = (job_offer_list.array[0].wage_offer + REGION_COST*COMMUTING_COSTS_PRICE_LEVEL_WEIGHT);
             //WAGE_RESERVATION = WAGE - REGION_COST*COMMUTING_COSTS_PRICE_LEVEL_WEIGHT;
-
-	WAGE = (job_offer_list.array[0].wage_offer + REGION_COST);
-        WAGE_RESERVATION = WAGE - REGION_COST;
-
-            ON_THE_JOB_SEARCH = 0;
+            
+            /*Add the new wage minus commuting costs and 
+            sets the reservation wage to the new wage minus commuting costs.*/
+            WAGE = (job_offer_list.array[0].wage_offer + REGION_COST);
+            WAGE_RESERVATION = WAGE - REGION_COST;
         }
     }
 
-    /* Free the job offer dynamic array */
+    /*Free the job offer dynamic array.*/
     free_job_offer_array(&job_offer_list);
 
     return 0;
@@ -330,111 +323,123 @@ int Household_read_job_offers_send_response()
 
 
 /** \fn Household_read_application_rejection_update_wage_reservation()
- * \brief Read job application rejections and update wage reservation
- */
+ * \brief: 
+    - If the household is still unemployed it updates (decreases) its wage reservation.
+*/
 int Household_read_application_rejection_update_wage_reservation()
 {
-    /* If unemployed... */
-
-    
+    /*Updates the reservation wage by a certain fraction according to the parameter WAGE_RESERVATION_UPDATE.*/
     WAGE_RESERVATION = WAGE_RESERVATION - WAGE_RESERVATION*WAGE_RESERVATION_UPDATE;
-    
 
-    /* Don't let wage reservation be below the current unemplyoment benefit pct*/
+    /* Don't let wage reservation be below the current unemplyoment benefit pct.*/
     if(WAGE_RESERVATION < LAST_LABOUR_INCOME*UNEMPLOYMENT_BENEFIT_PCT)
     {
         WAGE_RESERVATION = LAST_LABOUR_INCOME*UNEMPLOYMENT_BENEFIT_PCT;
     }
     
-
-
     return 0;
 }
 
 
-
+/** \fn Household_UNEMPLOYED_read_job_vacancies_and_send_applications2()
+ * \brief: 
+    - Household reads vacancy messages. 
+    - Selects vacancies regarding the posted wage offer: 
+        1: Household and firm are in the same region: wage offer has to be higher than reservation wage
+        2: Household and firm are not in the same region: wage offer - commuting costs has to be higher than the res-wage
+    - Sends application. 
+*/
 int Household_UNEMPLOYED_read_job_vacancies_and_send_applications_2()
 {
-    /* Create a vacancy dynamic array */
-    vacancy_array  vacancy_list;
-    init_vacancy_array(&vacancy_list);
     int i=0;
     int j=0;
     double wage_offer=0.0;
 
-    /*If unemployed*/
+    /* Create a vacancy dynamic array*/
+    vacancy_array  vacancy_list;
+    init_vacancy_array(&vacancy_list);
+
+    /*Searchs for vacancies.*/
     START_VACANCIES2_MESSAGE_LOOP
-    /*read vacancy messages with the wage offer for the correspondent general skill         level of the household*/
+    
+        /*Unemployed take only the wage offer for the correspondent general skill level into account.*/
         if(GENERAL_SKILL == 1)
         {
             wage_offer = vacancies2_message->firm_wage_offer_for_skill_1;
         }
-    
+
         if(GENERAL_SKILL == 2)
         {
             wage_offer = vacancies2_message->firm_wage_offer_for_skill_2;
         }
-    
+
         if(GENERAL_SKILL == 3)
         {
             wage_offer =  vacancies2_message->firm_wage_offer_for_skill_3;
         }
-    
+
         if(GENERAL_SKILL == 4)
         {
             wage_offer =  vacancies2_message->firm_wage_offer_for_skill_4;
         }
-    
+
         if(GENERAL_SKILL == 5)
         {
             wage_offer =  vacancies2_message->firm_wage_offer_for_skill_5;
         }
 
+        /*Wage offer has to be equal or higher than the reservation wage.*/
         if(wage_offer >= WAGE_RESERVATION)
         {
-            /*Firm and Household are in the same region*/
+            /*Firm and Household are in the same region: no commuting costs.*/
             if(REGION_ID == vacancies2_message->region_id)
             {
-                add_vacancy(&vacancy_list, vacancies2_message->firm_id, vacancies2_message->region_id,
+                /*Add vacancy to vacancy list (possible job candidates).*/
+                add_vacancy(&vacancy_list, 
+                vacancies2_message->firm_id, 
+                vacancies2_message->region_id,
                 wage_offer);
             }
-            else /*Firm and Household are in different region: take                     into account the region costs*/
+            /*Firm and Household are not in the same region: Household has to bear commuting costs.*/
+            else
             {
-                /*For every neighboring region*/
-                int i;
+                /*For every neighboring region.*/
                 for(i = 0; i < NEIGHBORING_REGION_IDS.size;i++)
                 {
-                    /*If vacancy is in a neighboring region*/
-                    if(vacancies2_message->region_id
-                    ==NEIGHBORING_REGION_IDS.array[i])
+                    /*If vacancy is in a neighboring region.*/
+                    if(vacancies2_message->region_id == NEIGHBORING_REGION_IDS.array[i])
                     {
-                      /*  if((wage_offer -
-                        REGION_COST*COMMUTING_COSTS_PRICE_LEVEL_WEIGHT) >= WAGE_RESERVATION)*/
-			 if((wage_offer -
-                        REGION_COST) >= WAGE_RESERVATION)
+                        /*Wage offer minus commuting costs has to be higher than the reservation wage.*/
+                        //if((wage_offer - REGION_COST*COMMUTING_COSTS_PRICE_LEVEL_WEIGHT) >=WAGE_RESERVATION)
+                        if((wage_offer - REGION_COST) >= WAGE_RESERVATION)
                         {
+                            /*Add vacancy to vacancy list (possible job candidates).*/
                             add_vacancy(&vacancy_list,
-                            vacancies2_message->firm_id, vacancies2_message->region_id,
+                            vacancies2_message->firm_id, 
+                            vacancies2_message->region_id,
                             (wage_offer - REGION_COST));
 
-			/*add_vacancy(&vacancy_list,
-                            vacancies2_message->firm_id, vacancies2_message->region_id,
-                            (wage_offer - REGION_COST*COMMUTING_COSTS_PRICE_LEVEL_WEIGHT));*/
+                            /*add_vacancy(&vacancy_list,
+                            vacancies2_message->firm_id, 
+                            vacancies2_message->region_id,
+                            (wage_offer - REGION_COST*COMMUTING_COSTS_PRICE_LEVEL_WEIGHT));.*/
                         }
+                    
                         break;
 
                     }
-                 }
+                }
             }
         }
-    
 
     FINISH_VACANCIES2_MESSAGE_LOOP
 
-    /*Maximum number of applications for each person*/
+    /*If there are more vacancies on the list than the maximum number of applications the household can send.*/
     if(vacancy_list.size > NUMBER_APPLICATIONS)
     {
-        /*remove vacancies from the list randomly until the list contains as many               vacancies as a household can send applications*/
+        /*Remove vacancies from the list randomly until the list contains as many
+        vacancies as a household can send applications.
+        ->imperfect information.*/
         while(vacancy_list.size > NUMBER_APPLICATIONS)
         {
             j = random_int(0, (vacancy_list.size-1));
@@ -442,153 +447,127 @@ int Household_UNEMPLOYED_read_job_vacancies_and_send_applications_2()
         }
     }
 
-    /* Rank the vacancy list (function from my_library_functions) */
-    //sort_vacancy_list(&vacancy_list);
+    /*Sorting vacancies regarding their posted wage offer.*/
+    //qsort(vacancy_list.array, vacancy_list.size, sizeof(vacancy),vacancy_list_rank_wage_offer_function);
 
-    qsort(vacancy_list.array, vacancy_list.size, sizeof(vacancy),
-    vacancy_list_rank_wage_offer_function);
-
-    /* If the vacancy list is bigger than zero then send  job applications to every         vacancy on the list */
+    /* Sends applications to all vacancies which are still on the list.*/
     for(i = 0; i < (vacancy_list.size); i++)
     {
-        add_job_application2_message(ID, vacancy_list.array[i].firm_id,                 REGION_ID, GENERAL_SKILL, SPECIFIC_SKILL);
+        add_job_application2_message(ID, 
+        vacancy_list.array[i].firm_id, 
+        REGION_ID, 
+        GENERAL_SKILL, 
+        SPECIFIC_SKILL);
     }
 
+    /* Free the vacancy dynamic array*/
+    free_vacancy_array(&vacancy_list);
 
-    /* Free the vacancy dynamic array */
-        free_vacancy_array(&vacancy_list);
-
-
-        return 0;
+    return 0;
 }
 
-/** \fn Household_read_job_offers_send_response_2()
- * \brief Read job offers, rank, and send response
- */
+
+/** \fn Household_read_job_offers_send_response2()
+ * \brief: 
+    - Household reads job offer(s) and accepts the offer with the highest wage offer net of commuting costs.
+*/
 int Household_read_job_offers_send_response_2()
 {
-    /* Create a job offer dynamic array */
+    /* Create a job offer dynamic array*/
     job_offer_array  job_offer_list;
     init_job_offer_array(&job_offer_list);
 
-    /* If unemployed... or on the job search*/
-
     START_JOB_OFFER2_MESSAGE_LOOP
-        /* Read job offer messages for this Household */
+    
+        /* Read job offer messages for this Household*/
         if(job_offer2_message->worker_id == ID)
         {
-            /*Job offers of firms in the same region*/
+            /*Job offers of firms in the same region: no commuting costs.*/
             if(REGION_ID == job_offer2_message->region_id)
             {
+                /*Add job offer to the job offer list.*/
                 add_job_offer(&job_offer_list,
-                job_offer2_message->firm_id,job_offer2_message->region_id,
+                job_offer2_message->firm_id,
+                job_offer2_message->region_id,
                 job_offer2_message->wage_offer);
-
             }
-            else/*Job offers of firms in different region*/
+            /*Job offers of firms in different regions: Household has to bear commuting costs.*/
+            else
             {
                 /*add_job_offer(&job_offer_list,
-                job_offer2_message->firm_id,job_offer2_message->region_id,
-                (job_offer2_message->wage_offer - REGION_COST*COMMUTING_COSTS_PRICE_LEVEL_WEIGHT));*/
+                job_offer2_message->firm_id,
+                job_offer2_message->region_id,
+                (job_offer2_message->wage_offer - REGION_COST*COMMUTING_COSTS_PRICE_LEVEL_WEIGHT));.*/
 
-		add_job_offer(&job_offer_list,
-                job_offer2_message->firm_id,job_offer2_message->region_id,
+                /*Add job offer to the job offer list.*/
+                add_job_offer(&job_offer_list,
+                job_offer2_message->firm_id,
+                job_offer2_message->region_id,
                 (job_offer2_message->wage_offer - REGION_COST));
             }
         }
 
     FINISH_JOB_OFFER2_MESSAGE_LOOP
 
+    /*Ranks job offers regarding the posted wage offer net of commuting costs.*/
+    qsort(job_offer_list.array, job_offer_list.size, sizeof(job_offer),job_offer_list_rank_wage_offer_function);
 
-/*+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-
-
-    /*int i,k;
-    job_offer * i_job_offer, * k_job_offer;
-    job_offer * temp_job_offer = (job_offer *)malloc(sizeof(job_offer));
-
-    for(i = 0; i < (job_offer_list.size);i++)
-    {
-        k = random_int(i, (job_offer_list.size-1));
-
-        i_job_offer = &job_offer_list.array[i];
-        k_job_offer = &job_offer_list.array[k];*/
-
-            /* Swap neighbours */
-            /** temp_job_offer = * i_job_offer;
-            * i_job_offer = * k_job_offer;
-            * k_job_offer = * temp_job_offer;
-    }
-
-    free(temp_job_offer);*/
-
-
-/*+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-
-    /* Rank job offers (function from my_library_functions) */
-    //sort_job_offer_list(&job_offer_list);
-
-    qsort(job_offer_list.array, job_offer_list.size, sizeof(job_offer),
-    job_offer_list_rank_wage_offer_function);
-
-
-    /* Accept best job: first on the list (array[0]) */
+    /* Accept  job with highest net wage offer: first on the list (array[0]).*/
     if(job_offer_list.size > 0)
     {
-        add_job_acceptance2_message(ID, job_offer_list.array[0].firm_id,                REGION_ID, GENERAL_SKILL, SPECIFIC_SKILL);
+        add_job_acceptance2_message(ID, 
+        job_offer_list.array[0].firm_id,
+        REGION_ID, 
+        GENERAL_SKILL, 
+        SPECIFIC_SKILL);
 
-        /*If on the job search add quitting message*/
-        if(ON_THE_JOB_SEARCH == 1)
-        {
-            add_quitting2_message(ID, EMPLOYEE_FIRM_ID);
-        }
-
+        /*Sets employer_id, employer_region_id and the day when the household will receive the wage.*/
         EMPLOYEE_FIRM_ID = job_offer_list.array[0].firm_id;
         EMPLOYER_REGION_ID = job_offer_list.array[0].region_id;
         DAY_OF_MONTH_RECEIVE_INCOME = DAY%MONTH;
 
-        /*Update some memory variables because of the new job*/
+        /*If household and firm are in the same region.*/
         if(REGION_ID == job_offer_list.array[0].region_id)
         {
+            /*Add the new wage and sets the reservation wage to the new wage.*/
             WAGE = job_offer_list.array[0].wage_offer;
-            WAGE_RESERVATION = WAGE;
-            ON_THE_JOB_SEARCH = 0;
+            WAGE_RESERVATION = WAGE;    
         }
+         /*If household and firm are not in the same region.*/
         else
-        {   /*Have to add the region cost: region costs are important for                   ranking but are part of the wage*/
+        {  
+            //WAGE = (job_offer_list.array[0].wage_offer + REGION_COST*COMMUTING_COSTS_PRICE_LEVEL_WEIGHT);
+            //WAGE_RESERVATION = WAGE - REGION_COST*COMMUTING_COSTS_PRICE_LEVEL_WEIGHT;
+            
+            /*Add the new wage minus commuting costs and 
+            sets the reservation wage to the new wage minus commuting costs.*/
             WAGE = (job_offer_list.array[0].wage_offer + REGION_COST);
-
-	/*WAGE = (job_offer_list.array[0].wage_offer + REGION_COST*COMMUTING_COSTS_PRICE_LEVEL_WEIGHT);*/
             WAGE_RESERVATION = WAGE - REGION_COST;
-	/*WAGE_RESERVATION = WAGE - REGION_COST*COMMUTING_COSTS_PRICE_LEVEL_WEIGHT;*/
-            ON_THE_JOB_SEARCH = 0;
         }
     }
 
-    /* Free the job offer dynamic array */
-        free_job_offer_array(&job_offer_list);
+    /* Free the job offer dynamic array*/
+    free_job_offer_array(&job_offer_list);
 
     return 0;
 }
 
 
 
-/** \fn Household_read_application_rejection_update_wage_reservation_2()
- * \brief Read job application rejections and update wage reservation
- */
+/** \fn Household_read_application_rejection_update_wage_reservation2()
+ * \brief: 
+    - If the household is still unemployed it updates (decreases) its wage reservation.
+*/
 int Household_read_application_rejection_update_wage_reservation_2()
 {
-
-    /* If unemployed... */
-
+    /*Updates the reservation wage by a certain fraction according to the parameter WAGE_RESERVATION_UPDATE.*/
     WAGE_RESERVATION = WAGE_RESERVATION-WAGE_RESERVATION*WAGE_RESERVATION_UPDATE;
-    
-    /* Don't let wage reservation be below 1 */
+
+    /* Don't let wage reservation be below the current unemplyoment benefit pct.*/
     if(WAGE_RESERVATION < LAST_LABOUR_INCOME*UNEMPLOYMENT_BENEFIT_PCT)
     {
         WAGE_RESERVATION = LAST_LABOUR_INCOME*UNEMPLOYMENT_BENEFIT_PCT;
     }
-    
 
     return 0;
 }
@@ -724,7 +703,7 @@ int Household_send_tax_payment()
     
     
     /*Send a message to the government*/
-	add_unemployment_benefit_restitution_message(GOV_ID, restitution_payment);
+    add_unemployment_benefit_restitution_message(GOV_ID, restitution_payment);
 
     /*Compute the total taxes*/
     TAX_PAYMENT = CUM_TOTAL_DIVIDENDS*TAX_RATE_HH_CAPITAL + WAGE*TAX_RATE_HH_LABOUR;
