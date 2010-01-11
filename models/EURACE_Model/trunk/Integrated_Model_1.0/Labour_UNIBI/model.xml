@@ -493,9 +493,6 @@ of employees and the number of vacancies</description>
      <currentState>05a</currentState>
      <nextState>05b</nextState>
      <inputs>
-      <input>
-       <messageName>quitting</messageName>
-      </input>
      </inputs>
      <outputs/>
     </function>
@@ -506,9 +503,6 @@ of employees and the number of vacancies</description>
      <currentState>00b</currentState>
      <nextState>09c</nextState>
      <inputs>
-      <input>
-       <messageName>quitting</messageName>
-      </input>
      </inputs>
      <outputs/>
     </function>
@@ -519,9 +513,6 @@ of employees and the number of vacancies</description>
      <currentState>03c</currentState>
      <nextState>03d</nextState>
      <inputs>
-      <input>
-       <messageName>quitting</messageName>
-      </input>
      </inputs>
      <outputs/>
     </function>
@@ -666,9 +657,6 @@ of employees and the number of vacancies</description>
      <currentState>09a</currentState>
      <nextState>09b</nextState>
      <inputs>
-      <input>
-       <messageName>quitting2</messageName>
-      </input>
      </inputs>
      <outputs/>
     </function>
@@ -679,9 +667,6 @@ of employees and the number of vacancies</description>
      <currentState>09c</currentState>
      <nextState>Firm_Start_Seller_Role</nextState>
      <inputs>
-      <input>
-       <messageName>quitting2</messageName>
-      </input>
      </inputs>
      <outputs/>
     </function>
@@ -945,9 +930,6 @@ according to the wage offer</description>
      </inputs>
      <outputs>
       <output>
-       <messageName>quitting</messageName>
-      </output>
-      <output>
        <messageName>job_acceptance</messageName>
       </output>
      </outputs>
@@ -1026,9 +1008,6 @@ according to the wage offer</description>
      <outputs>
       <output>
        <messageName>job_acceptance2</messageName>
-      </output>
-      <output>
-       <messageName>quitting2</messageName>
       </output>
      </outputs>
     </function>
