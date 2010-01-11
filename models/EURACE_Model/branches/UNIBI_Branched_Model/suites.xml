@@ -1,6 +1,0 @@
-<suites>
-<modelPath>eurace_model.xml</modelPath>
-<suitePath>FINANCIAL_UG/suite.xml</suitePath>
-<suitePath>Government_GREQAM/suite.xml</suitePath>
-<suitePath>Cons_Goods_UNIBI/suite.xml</suitePath>
-</suites>
