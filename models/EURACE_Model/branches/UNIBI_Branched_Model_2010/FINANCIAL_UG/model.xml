@@ -43,6 +43,7 @@
    <file>CAsset.c</file>
    <file>Belief.c</file>
    <file>Firm_Financial_Market.c</file>
+   <file>IGFirm_Financial_Market.c</file>
    <file>Random.c</file>
    <file>Bond.c</file>
    <file>ClearingHouse_Financial_Market.c</file>
@@ -649,6 +650,38 @@
     </function>
    </functions>
   </xagent>
+  
+  <xagent>
+   <name>IGFirm</name>
+   <description></description>
+   <memory>
+	</memory>
+      <functions>
+      <function>
+     <name>IGFirm_receive_stock_info</name>
+     <description></description>
+     <currentState>06</currentState>
+     <nextState>07</nextState>
+     <inputs>
+      <input>
+       <messageName>infoAssetCH</messageName>
+       <filter>
+        <lhs>
+         <value>a.id</value>
+        </lhs>
+        <op>EQ</op>
+        <rhs>
+         <value>m.asset_id</value>
+        </rhs>
+       </filter>
+      </input>
+     </inputs>
+     <outputs/>
+    </function>
+   </functions>
+  </xagent>
+  
+  
   <xagent>
    <name>Government</name>
    <description></description>

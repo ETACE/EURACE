@@ -36,7 +36,24 @@
    <file>IGfirm_functions.c</file>
   </functionFiles>
   <timeUnits/>
-  <dataTypes/>
+  <dataTypes>
+<dataType>
+    <name>capital_good_request</name>
+    <description></description>
+    <variables>
+     <variable>
+      <type>int</type>
+      <name>firm_id</name>
+      <description></description>
+     </variable>
+     <variable>
+      <type>double</type>
+      <name>capital_good_order</name>
+      <description></description>
+     </variable>
+    </variables>
+   </dataType>
+</dataTypes>
  </environment>
  <agents>
   <xagent>
@@ -129,16 +146,26 @@
      <name>IGFirm_update_productivity_price</name>
      <description></description>
      <currentState>Start_IGFirm_Productivity</currentState>
-     <nextState>01</nextState>
+     <nextState>01x</nextState>
      <condition>
       <time>
-       <period>monthly</period>
+       <period>yearly</period>
        <phase>a.day_of_month_to_act</phase>
       </time>
      </condition>
      <inputs/>
      <outputs/>
     </function>
+    
+    <function>
+     <name>IGFirm_calc_research_employees</name>
+     <description></description>
+     <currentState>01x</currentState>
+     <nextState>01</nextState>
+     <inputs/>
+     <outputs/>
+    </function>
+    
     <function>
      <name>IGFirm_idle</name>
      <description></description>
@@ -147,7 +174,7 @@
      <condition>
       <not>
        <time>
-        <period>monthly</period>
+        <period>yearly</period>
         <phase>a.day_of_month_to_act</phase>
        </time>
       </not>
@@ -159,7 +186,7 @@
      <name>IGFirm_send_quality_price_info</name>
      <description></description>
      <currentState>01</currentState>
-     <nextState>02</nextState>
+     <nextState>01ii</nextState>
      <inputs/>
      <outputs>
       <output>
@@ -167,10 +194,84 @@
       </output>
      </outputs>
     </function>
+  
+    <function>
+     <name>IGFirm_idle</name>
+     <description></description>
+     <currentState>01ii</currentState>
+     <nextState>03x</nextState>
+     <condition>
+      <not>
+       <time>
+        <period>monthly</period>
+        <phase>a.day_of_month_to_act</phase>
+       </time>
+      </not>
+     </condition>
+     <inputs/>
+     <outputs/>
+    </function>
+    
+    <function>
+     <name>IGFirm_calc_production_quantity</name>
+     <description></description>
+     <currentState>01ii</currentState>
+     <nextState>01jj</nextState>
+	<condition>
+       <time>
+        <period>monthly</period>
+        <phase>a.day_of_month_to_act</phase>
+       </time>
+     </condition>
+     <inputs/>
+     <outputs/>
+    </function>
+
+   <function>
+     <name>IGFirm_calc_input_demands</name>
+     <description></description>
+     <currentState>01jj</currentState>
+     <nextState>01kk</nextState>
+     <inputs/>
+     <outputs/>
+    </function>
+    
+    <function>
+     <name>IGFirm_calc_production_quantity_2</name>
+     <description></description>
+     <currentState>IGFirm_End_Financial_Management</currentState>
+     <nextState>Start_IGFirm_Employer_Role</nextState>
+     <inputs/>
+     <outputs/>
+    </function>
+    
+    
+    <function>
+     <name>IGFirm_produce_capital_good</name>
+     <description></description>
+     <currentState>Start_IGFirm_Production</currentState>
+     <nextState>03ig</nextState>
+	<condition>
+       <time>
+        <period>monthly</period>
+        <phase>a.day_of_month_to_act</phase>
+       </time>
+     </condition>
+     <inputs/>
+     <outputs/>
+    </function>
+
+<function>
+     <name>IGFirm_calc_pay_costs</name>
+     <description></description>
+     <currentState>03ig</currentState>
+     <nextState>03x</nextState>
+    </function>
+    
     <function>
      <name>IGFirm_send_capital_good</name>
      <description></description>
-     <currentState>02</currentState>
+     <currentState>03x</currentState>
      <nextState>03</nextState>
      <inputs>
       <input>
@@ -183,11 +284,12 @@
       </output>
      </outputs>
     </function>
+    
     <function>
-     <name>IGFirm_receive_payment</name>
+     <name>IGFirm_calc_revenue</name>
      <description></description>
      <currentState>03</currentState>
-     <nextState>04</nextState>
+     <nextState>IGFirm_Start_Financial_Management_Role</nextState>
      <inputs>
       <input>
        <messageName>pay_capital_goods</messageName>
@@ -195,7 +297,8 @@
      </inputs>
      <outputs/>
     </function>
-    <function>
+    
+    <!--<function>
      <name>IGFirm_pay_taxes</name>
      <description></description>
      <currentState>04</currentState>
@@ -258,7 +361,9 @@
        <messageName>bank_account_update</messageName>
       </output>
      </outputs>
-    </function>
+    </function>-->
+    
+    
    </functions>
   </xagent>
  </agents>

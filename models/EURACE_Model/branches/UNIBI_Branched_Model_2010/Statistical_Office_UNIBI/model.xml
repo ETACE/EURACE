@@ -1422,13 +1422,34 @@
      <name>subsidy_pct</name>
      <description>The subsidy percentage read from message.</description>
     </variable>
+    <variable>
+     <type>int</type>
+     <name>bankruptcy_illiquidity_state</name>
+     <description>0,1. Flag indicating whether the firm is in bankruptcy case: illiquidity.</description>
+    </variable>
+    <variable>
+     <type>int</type>
+     <name>financial_crisis_state</name>
+     <description>0,1. Flag indicating whether the firm is in a financial crisis state.</description>
+    </variable>
+    <variable>
+     <type>int</type>
+     <name>active</name>
+     <description>0,1. Flag indicating whether the firm should start production activity.</description>
+    </variable>
+    <variable>
+     <type>int</type>
+     <name>bankruptcy_insolvency_state</name>
+     <description>0,1. Flag indicating whether the firm is in bankruptcy case: insolvency.</description>
+    </variable>
    </memory>
    <functions>
+   
     <function>
      <name>IGFirm_idle</name>
      <description></description>
-     <currentState>start_IGFirm</currentState>
-     <nextState>Start_IGFirm_Productivity</nextState>
+     <currentState>IGFirm_is_active</currentState>
+     <nextState>IGFirm_Start_Macro_Data</nextState>
      <condition>
       <not>
        <time>
@@ -1440,11 +1461,12 @@
      <inputs/>
      <outputs/>
     </function>
+    
     <function>
      <name>IGFirm_read_policy_announcements</name>
      <description></description>
-     <currentState>start_IGFirm</currentState>
-     <nextState>Start_IGFirm_Productivity</nextState>
+     <currentState>IGFirm_is_active</currentState>
+     <nextState>IGFirm_Start_Macro_Data</nextState>
      <condition>
       <time>
        <period>monthly</period>
@@ -1467,6 +1489,103 @@
      </inputs>
      <outputs/>
     </function>
+    
+    <function>
+     <name>IGFirm_receive_data</name>
+     <description>Function to read the messages from the eurostat agent.</description>
+     <currentState>IGFirm_Start_Macro_Data</currentState>
+     <nextState>Start_IGFirm_Productivity</nextState>
+     <condition>
+      <time>
+       <period>monthly</period>
+       <phase>1</phase>
+      </time>
+     </condition>
+     <inputs>
+      <input>
+       <messageName>eurostat_send_specific_skills</messageName>
+       <filter>
+        <lhs>
+         <value>a.region_id</value>
+        </lhs>
+        <op>EQ</op>
+        <rhs>
+         <value>m.region_id</value>
+        </rhs>
+       </filter>
+      </input>
+     </inputs>
+     <outputs/>
+    </function>
+
+<function>
+     <name>idle</name>
+     <description>IGFirm does nothing</description>
+     <currentState>IGFirm_Start_Macro_Data</currentState>
+     <nextState>Start_IGFirm_Productivity</nextState>
+     <condition>
+      <not>
+       <time>
+        <period>monthly</period>
+        <phase>1</phase>
+       </time>
+      </not>
+     </condition>
+     <inputs/>
+     <outputs/>
+    </function>
+  
+    
+      <function>
+     <name>IGFirm_send_data_to_Eurostat</name>
+     <description>Function to send a data_message to the eurostat agent including several micro data.</description>
+     <currentState>IGFirm_End_Financial_Management_Role</currentState>
+     <nextState>06</nextState>
+     <condition>
+      <time>
+       <period>monthly</period>
+       <phase>0</phase>
+      </time>
+     </condition>
+     <inputs/>
+     <outputs>
+      <output>
+       <messageName>firm_send_data</messageName>
+      </output>
+     </outputs>
+    </function>
+
+    <function>
+     <name>idle</name>
+     <description>Firm does nothing</description>
+     <currentState>IGFirm_End_Financial_Management_Role</currentState>
+     <nextState>06</nextState>
+     <condition>
+      <not>
+       <time>
+        <period>monthly</period>
+        <phase>0</phase>
+       </time>
+      </not>
+     </condition>
+     <inputs/>
+     <outputs/>
+    </function>
+       
+        <function>
+     <name>IGFirm_send_payments_to_bank</name>
+     <description></description>
+     <currentState>07</currentState>
+     <nextState>end_IGFirm</nextState>
+     <inputs/>
+     <outputs>
+      <output>
+       <messageName>bank_account_update</messageName>
+      </output>
+     </outputs>
+    </function> 
+          
+              
    </functions>
   </xagent>
   <xagent>
