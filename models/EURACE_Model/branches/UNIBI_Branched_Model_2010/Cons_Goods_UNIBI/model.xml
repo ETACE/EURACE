@@ -1371,6 +1371,11 @@ order to update the specific skills.</description>
      <name>average_specific_skills</name>
      <description></description>
     </variable>
+    <variable>
+     <type>int</type>
+     <name>employer_igfirm</name>
+     <description></description>
+    </variable>
    </variables>
   </message>
   <message>

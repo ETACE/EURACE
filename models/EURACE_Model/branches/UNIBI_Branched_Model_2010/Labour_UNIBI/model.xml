@@ -6,6 +6,11 @@
  <models/>
  <environment>
   <constants>
+  <variable>
+    <type>int</type>
+    <name>igfirm_switch_on</name>
+    <description>1: complete functionality--- 0: Exogenous stochastic innovation process</description>
+   </variable>
    <variable>
     <type>double</type>
     <name>gamma_const</name>
@@ -33,8 +38,18 @@
    </variable>
    <variable>
     <type>double</type>
+    <name>ig_mark_up</name>
+    <description>0.2, Pricing rule: mark up on unit costs.</description>
+   </variable>
+   <variable>
+    <type>double</type>
     <name>lambda</name>
     <description>0.5, Strength of the influence of the actual demand on the next production quantity: if LAMBDA = 0 then the planned production quantities of the last periods are recognized. If LAMBDA = 1 then only the actual demand is recognized.</description>
+   </variable>
+   <variable>
+    <type>double</type>
+    <name>ig_lambda</name>
+    <description>Strength of the influence of the actual demand on the next production quantity: if LAMBDA = 0 then the planned production quantities of the last periods are recognized. If LAMBDA = 1 then only the actual demand is recognized.</description>
    </variable>
    <variable>
     <type>double</type>
@@ -88,18 +103,33 @@
    </variable>
    <variable>
     <type>double</type>
+    <name>additional_capital_good_production</name>
+    <description>If IGFirm is sold out increase the production be a certain fraction.</description>
+   </variable>
+   <variable>
+    <type>double</type>
+    <name>production_productivity</name>
+    <description>Productivity of production workers in the IGFirm.</description>
+   </variable>
+   <variable>
+    <type>double</type>
     <name>delivery_prob_if_critical_stock_0</name>
     <description>25, Probability for the delivery if the critical stock of one mall was zero for the last periods.</description>
    </variable>
    <variable>
     <type>double</type>
-    <name>innovation_probability</name>
-    <description>10. Probability that the investment goods producer innovate a new technology.</description>
+    <name>igfirm_exogenous_innovation_probability</name>
+    <description>10. Probability that the investment goods producer innovate a new technology if igfirm is switchoff.</description>
    </variable>
    <variable>
     <type>double</type>
     <name>productivity_progress</name>
-    <description>0.05. Gives the increase of productivity of an innovation.</description>
+    <description>Gives the basic increase of productivity of an innovation if igfirm is switched on.</description>
+   </variable>
+   <variable>
+    <type>double</type>
+    <name>igfirm_exogenous_productivity_progress</name>
+    <description>Gives the increase of productivity of an innovation if igfirm is switch off.</description>
    </variable>
    <variable>
     <type>int</type>
@@ -120,6 +150,16 @@
     <type>double</type>
     <name>logit_parameter_general_skills</name>
     <description>Logit parameter for general skills used in firm's hiring decision.</description>
+   </variable>
+   <variable>
+    <type>int</type>
+    <name>transition_phase</name>
+    <description>Number of periods to settle down the simulation.</description>
+   </variable>
+   <variable>
+    <type>double</type>
+    <name>efficiency_innovation</name>
+    <description>Parameter for steering the influence of a researcher on the innovation probability.</description>
    </variable>
   </constants>
   <functionFiles>
@@ -180,6 +220,11 @@
       <name>wage_offer</name>
       <description></description>
      </variable>
+     <variable>
+      <type>int</type>
+      <name>job_type</name>
+      <description></description>
+     </variable>
     </variables>
    </dataType>
    <dataType>
@@ -225,6 +270,11 @@
      <variable>
       <type>double</type>
       <name>wage_offer</name>
+      <description></description>
+     </variable>
+     <variable>
+      <type>int</type>
+      <name>job_type</name>
       <description></description>
      </variable>
     </variables>
@@ -762,14 +812,7 @@ of employees and the number of vacancies</description>
    </functions>
   </xagent>
   
-  
-  
-  
-  
-  
-  
-  
-  
+
   <xagent>
    <name>IGFirm</name>
    <description></description>
@@ -778,6 +821,11 @@ of employees and the number of vacancies</description>
      <type>int</type>
      <name>igfirm_employer_debug</name>
      <description></description>
+    </variable>
+    <variable>
+     <type>int</type>
+     <name>percent_revenue_for_innovation</name>
+     <description>Fraction of the revenue which is spent for RD</description>
     </variable>
     <variable>
      <type>employee_array</type>
@@ -1245,6 +1293,11 @@ of employees and the number of vacancies</description>
     </variable>
     <variable>
      <type>int</type>
+     <name>employer_igfirm</name>
+     <description>The region_id of the employer</description>
+    </variable>
+    <variable>
+     <type>int</type>
      <name>day_of_month_receive_benefit</name>
      <description>The day of the month on whivh the household receives its unemployment benefit. Equal to the day on which it became unemployed. This value will change when the household becomes re-employed again by another (or the same) firm, with the exception in case the new firm has the same activation day as the old firm.</description>
     </variable>
@@ -1697,6 +1750,11 @@ wage offer for the according general skill level.</description>
      <name>firm_wage_offer_for_skill_5</name>
      <description></description>
     </variable>
+    <variable>
+     <type>double</type>
+     <name>firm_wage_offer_for_rd</name>
+     <description></description>
+    </variable>
    </variables>
   </message>
   <message>
@@ -1737,6 +1795,11 @@ wage offer for the according general skill level.</description>
     <variable>
      <type>double</type>
      <name>firm_wage_offer_for_skill_5</name>
+     <description></description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>firm_wage_offer_for_rd</name>
      <description></description>
     </variable>
    </variables>
@@ -1787,6 +1850,11 @@ as well as the specific skills.</description>
      <name>specific_skill</name>
      <description></description>
     </variable>
+    <variable>
+     <type>int</type>
+     <name>job_type</name>
+     <description></description>
+    </variable>
    </variables>
   </message>
   <message>
@@ -1819,6 +1887,11 @@ as well as the specific skills.</description>
      <name>specific_skill</name>
      <description></description>
     </variable>
+    <variable>
+     <type>int</type>
+     <name>job_type</name>
+     <description></description>
+    </variable>
    </variables>
   </message>
   <message>
@@ -1846,6 +1919,11 @@ corresponding wage offer.</description>
      <name>wage_offer</name>
      <description></description>
     </variable>
+    <variable>
+     <type>int</type>
+     <name>job_type</name>
+     <description></description>
+    </variable>
    </variables>
   </message>
   <message>
@@ -1871,6 +1949,11 @@ corresponding wage offer.</description>
     <variable>
      <type>double</type>
      <name>wage_offer</name>
+     <description></description>
+    </variable>
+    <variable>
+     <type>int</type>
+     <name>job_type</name>
      <description></description>
     </variable>
    </variables>
@@ -1905,6 +1988,11 @@ as well as the specific skills.</description>
      <name>specific_skill</name>
      <description></description>
     </variable>
+    <variable>
+     <type>int</type>
+     <name>job_type</name>
+     <description></description>
+    </variable>
    </variables>
   </message>
   <message>
@@ -1935,6 +2023,11 @@ as well as the specific skills.</description>
     <variable>
      <type>double</type>
      <name>specific_skill</name>
+     <description></description>
+    </variable>
+    <variable>
+     <type>int</type>
+     <name>job_type</name>
      <description></description>
     </variable>
    </variables>

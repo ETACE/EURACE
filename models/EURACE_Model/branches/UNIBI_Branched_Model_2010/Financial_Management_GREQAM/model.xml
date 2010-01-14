@@ -790,15 +790,220 @@ Note that a negative count means the financing condition has not been yet satisf
    <name>IGFirm</name>
    <description></description>
    <memory>
-   <variable>
+    <variable>
+     <type>double</type>
+     <name>ebit</name>
+     <description>Earnings-before-interest-and-taxes: total revenue - sales_costs</description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>earnings</name>
+     <description>Earnings after interest payments (= ebit - interest)</description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>tax_rate_corporate</name>
+     <description>Tax rate on corporate profits (kept in memory)</description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>tax_rate_vat</name>
+     <description>VAT tax rate</description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>tax_payment</name>
+     <description>Tax payment over earnings after interest payments (tax_corporate*earnings)</description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>net_earnings</name>
+     <description>Net earnings after tax payments (= ebit - interest - tax)</description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>previous_net_earnings</name>
+     <description>Net earnings from previous production period</description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>total_interest_payment</name>
+     <description>Total interest payments on outstanding debts</description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>total_debt_installment_payment</name>
+     <description>Total debt installment payments on outstanding debts</description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>total_dividend_payment</name>
+     <description>Total dividend payment</description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>current_share_price</name>
+     <description>Current share price on the market</description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>previous_dividend_per_share</name>
+     <description>Dividend-per-share ratio (previous production cycle)</description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>current_dividend_per_share</name>
+     <description>Dividend-per-share ratio</description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>previous_earnings_per_share</name>
+     <description>Earnings-per-Share ratio (previous production cycle)</description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>current_earnings_per_share</name>
+     <description>Earnings-per-Share ratio</description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>previous_dividend_per_earnings</name>
+     <description>Dividend-to-Earnings ratio (previous production cycle)</description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>current_dividend_per_earnings</name>
+     <description>Dividend-to-Earnings ratio</description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>debt_earnings_ratio</name>
+     <description>Debt-to-Earnings ratio</description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>debt_equity_ratio</name>
+     <description>Debt-to-Equity ratio</description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>price_earnings_ratio</name>
+     <description>Price-to-Earnings ratio</description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>retained_earnings_ratio</name>
+     <description>Retained earnings-to-Earnings ratio</description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>earnings_per_share_ratio_growth</name>
+     <description>Target growth of the Earnings-per-Share ratio</description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>critical_price_earnings_ratio</name>
+     <description>Critical (target) value for the Price-Earnings ratio (can be set by the firm)</description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>critical_earnings_per_share_ratio</name>
+     <description>Critical (target) value for the Earnings-per-Share ratio (derived from the growth level)</description>
+    </variable>
+    <variable>
+     <type>debt_item_array</type>
+     <name>loans</name>
+     <description>Array of structs holding all loans of the firm</description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>total_debt</name>
+     <description>Total value of all loans outstanding</description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>total_value_local_inventory</name>
+     <description>Total value of all local inventory stocks held at malls</description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>total_units_capital_stock</name>
+     <description>Units of capital stock</description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>total_value_capital_stock</name>
+     <description>Value of the capital stock</description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>total_capital_depreciation_value</name>
+     <description>Sum over all units of capital of the depreciation value</description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>total_capital_depreciation_units</name>
+     <description>Sum over all units of capital of the depreciation in units</description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>total_assets</name>
+     <description>Value of total assets</description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>equity</name>
+     <description>equity = total assets - total liabilities</description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>production_liquidity_needs</name>
+     <description>Production liquidity needs are production costs (labour costs and investments)</description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>financial_liquidity_needs</name>
+     <description>Financial liquidity needs are prior financial commitments (interests, installments, taxes)</description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>total_financial_needs</name>
+     <description>Total financial needs = Production liquidity needs + Financial liquidity needs + dividends</description>
+    </variable>
+    <variable>
      <type>double</type>
      <name>external_financial_needs</name>
      <description>External financing</description>
     </variable>
     <variable>
      <type>double</type>
-     <name>equity</name>
-     <description>equity = total assets - total liabilities</description>
+     <name>earnings_per_share</name>
+     <description></description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>total_payments</name>
+     <description></description>
+    </variable>
+    <variable>
+     <type>int</type>
+     <name>previous_shares_outstanding</name>
+     <description></description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>total_income</name>
+     <description>Total monthly income (revenues, new bank loans, new share issues). Used for the balance sheet accounting.</description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>total_liabilities</name>
+     <description></description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>total_expenses</name>
+     <description></description>
     </variable>
    </memory>
    <functions>

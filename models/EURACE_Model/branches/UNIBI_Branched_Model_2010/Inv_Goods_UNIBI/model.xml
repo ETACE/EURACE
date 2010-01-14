@@ -33,7 +33,7 @@
    </variable>
   </constants>
   <functionFiles>
-   <file>IGfirm_functions.c</file>
+   <file>IGFirm_Producer_Functions.c</file>
   </functionFiles>
   <timeUnits/>
   <dataTypes>
@@ -77,21 +77,6 @@
     </variable>
     <variable>
      <type>double</type>
-     <name>tax_rate_corporate</name>
-     <description>Tax rate on revenues</description>
-    </variable>
-    <variable>
-     <type>double</type>
-     <name>tax_rate_vat</name>
-     <description>Value added tax</description>
-    </variable>
-    <variable>
-     <type>double</type>
-     <name>tax_payment</name>
-     <description>Sum of all taxes the IGFirm has to pay</description>
-    </variable>
-    <variable>
-     <type>double</type>
      <name>net_profit</name>
      <description>Earnings minus tax payment</description>
     </variable>
@@ -100,16 +85,7 @@
      <name>outstanding_shares</name>
      <description>Number of shares outstanding</description>
     </variable>
-    <variable>
-     <type>double</type>
-     <name>current_dividend_per_share</name>
-     <description></description>
-    </variable>
-    <variable>
-     <type>double</type>
-     <name>earnings</name>
-     <description>Variable to sum monthly earnings.</description>
-    </variable>
+    
     <variable>
      <type>double</type>
      <name>energy_price_markup</name>
@@ -140,6 +116,174 @@
      <name>dividend_payment</name>
      <description></description>
     </variable>
+    
+  <!-- Variable for IGFirm improvement-->  
+      
+    <variable>
+     <type>int</type>
+     <name>igfirm_producer_debug</name>
+     <description></description>
+    </variable>
+<variable>
+     <type>int</type>
+     <name>duration_until_next_innovation</name>
+     <description></description>
+    </variable>   
+<variable>
+     <type>int</type>
+     <name>innovation_success</name>
+     <description></description>
+    </variable>
+<variable>
+     <type>double</type>
+     <name>additional_productivity</name>
+     <description></description>
+    </variable>
+<variable>
+     <type>double</type>
+     <name>revenue_for_innovation</name>
+     <description></description>
+    </variable>
+<variable>
+     <type>double</type>
+     <name>capital_good_demand_after_last_innovation</name>
+     <description></description>
+    </variable>
+<variable>
+     <type>double</type>
+     <name>capital_good_demand</name>
+     <description></description>
+    </variable>
+<variable>
+     <type>double</type>
+     <name>capital_good_demand_last_month</name>
+     <description></description>
+    </variable>
+<variable>
+     <type>double_array</type>
+     <name>last_capital_good_demand</name>
+     <description></description>
+    </variable>
+<variable>
+     <type>double_array</type>
+     <name>last_capital_good_sales</name>
+     <description></description>
+    </variable>
+<variable>
+     <type>int</type>
+     <name>no_zero_demand</name>
+     <description></description>
+    </variable>
+<variable>
+     <type>double</type>
+     <name>critical_stock</name>
+     <description></description>
+    </variable>   
+<variable>
+     <type>double</type>
+     <name>output</name>
+     <description></description>
+    </variable>
+<variable>
+     <type>double</type>
+     <name>planned_output</name>
+     <description></description>
+    </variable>
+<variable>
+     <type>double</type>
+     <name>capital_good_store</name>
+     <description></description>
+    </variable>
+<variable>
+     <type>double</type>
+     <name>capital_good_store_after_production</name>
+     <description></description>
+    </variable>
+<variable>
+     <type>double</type>
+     <name>capital_good_store_before_production</name>
+     <description></description>
+    </variable>
+<variable>
+     <type>double</type>
+     <name>planned_production_quantity</name>
+     <description></description>
+    </variable>
+<variable>
+     <type>double</type>
+     <name>planned_production_costs</name>
+     <description></description>
+    </variable>
+<variable>
+     <type>double</type>
+     <name>production_costs</name>
+     <description></description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>production_costs_last_month</name>
+     <description></description>
+    </variable>
+<variable>
+     <type>double</type>
+     <name>production_quantity</name>
+     <description></description>
+    </variable>
+<variable>
+     <type>double_array</type>
+     <name>last_production_quantities</name>
+     <description></description>
+    </variable>
+<variable>
+     <type>double</type>
+     <name>labour_costs</name>
+     <description></description>
+    </variable>
+<variable>
+     <type>double</type>
+     <name>unit_costs</name>
+     <description></description>
+    </variable>
+<variable>
+     <type>double</type>
+     <name>sales</name>
+     <description></description>
+    </variable>
+<variable>
+     <type>double</type>
+     <name>sales_last_month</name>
+     <description></description>
+    </variable>
+	<variable>
+     <type>double</type>
+     <name>new_productivity</name>
+     <description></description>
+    </variable>   
+    <variable>
+     <type>double</type>
+     <name>new_capital_good_price</name>
+     <description></description>
+    </variable>   
+    <variable>
+     <type>double</type>
+     <name>cum_revenues</name>
+     <description></description>
+    </variable>
+<variable>
+     <type>double</type>
+     <name>cum_revenue_last_month</name>
+     <description></description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>cum_net_profits</name>
+     <description></description>
+    </variable>  
+	<variable>
+     <type>double</type>
+     <name>financial_resources_for_production</name>
+     <description></description>
+    </variable> 
    </memory>
    <functions>
     <function>
