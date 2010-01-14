@@ -138,6 +138,16 @@
    <name>IGFirm</name>
    <description></description>
    <memory>
+    <variable>
+     <type>potential_lender_array</type>
+     <name>set_of_lenders</name>
+     <description>Array of structs (potential lender) holding names of (found) active banks.</description>
+    </variable>
+    <variable>
+     <type>int</type>
+     <name>number_of_banks_asked</name>
+     <description>Number of banks where the firm has asked for loans.</description>
+    </variable>
    </memory>
    <functions>
    

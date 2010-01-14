@@ -655,7 +655,22 @@
    <name>IGFirm</name>
    <description></description>
    <memory>
-	</memory>
+    <variable>
+     <type>double</type>
+     <name>earnings_payout</name>
+     <description></description>
+    </variable>
+    <variable>
+     <type>int</type>
+     <name>current_shares_outstanding</name>
+     <description></description>
+    </variable>
+    <variable>
+     <type>Stock</type>
+     <name>stock</name>
+     <description></description>
+    </variable>
+   </memory>
       <functions>
       <function>
      <name>IGFirm_receive_stock_info</name>

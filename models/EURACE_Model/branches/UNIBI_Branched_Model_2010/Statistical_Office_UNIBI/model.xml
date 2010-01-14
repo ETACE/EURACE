@@ -1415,12 +1415,32 @@
     <variable>
      <type>double</type>
      <name>transfer_payment</name>
-     <description>The transfer_payment read from message.</description>
+     <description>The transfer payment read from message.</description>
     </variable>
     <variable>
      <type>double</type>
      <name>subsidy_pct</name>
      <description>The subsidy percentage read from message.</description>
+    </variable>
+    <variable>
+     <type>int</type>
+     <name>active</name>
+     <description>0,1. Flag indicating whether the firm should start production activity.</description>
+    </variable>
+    <variable>
+     <type>int</type>
+     <name>bankruptcy_idle_counter</name>
+     <description>Number of iterations before the bankrupt firm becomes active again and resumes production activity.</description>
+    </variable>
+    <variable>
+     <type>int</type>
+     <name>bankruptcy_state</name>
+     <description>0,1. Flag indicating whether the firm is in bankruptcy.</description>
+    </variable>
+    <variable>
+     <type>int</type>
+     <name>bankruptcy_insolvency_state</name>
+     <description>0,1. Flag indicating whether the firm is in bankruptcy case: insolvency.</description>
     </variable>
     <variable>
      <type>int</type>
@@ -1433,14 +1453,9 @@
      <description>0,1. Flag indicating whether the firm is in a financial crisis state.</description>
     </variable>
     <variable>
-     <type>int</type>
-     <name>active</name>
-     <description>0,1. Flag indicating whether the firm should start production activity.</description>
-    </variable>
-    <variable>
-     <type>int</type>
-     <name>bankruptcy_insolvency_state</name>
-     <description>0,1. Flag indicating whether the firm is in bankruptcy case: insolvency.</description>
+     <type>double</type>
+     <name>subsidy_payment</name>
+     <description></description>
     </variable>
    </memory>
    <functions>
