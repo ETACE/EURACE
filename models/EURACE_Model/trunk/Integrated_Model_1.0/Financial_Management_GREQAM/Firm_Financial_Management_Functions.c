@@ -847,7 +847,10 @@ if (BANKRUPTCY_IDLE_COUNTER == CONST_BANKRUPTCY_IDLE_PERIOD - 1)
     //Effect on labour market
     //Firing all employees --> see Firm_bankruptcy_procedures
     for (i=0;i<EMPLOYEES.size;i++)
+    {
             add_firing_message(ID, EMPLOYEES.array[i].id);
+            remove_employee(&EMPLOYEES, i);
+    }
         
     //Effect on consumption goods market
     //Option 1: all local inventory stock is lost
