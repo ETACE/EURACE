@@ -823,7 +823,7 @@ of employees and the number of vacancies</description>
      <description></description>
     </variable>
     <variable>
-     <type>int</type>
+     <type>double</type>
      <name>percent_revenue_for_innovation</name>
      <description>Fraction of the revenue which is spent for RD</description>
     </variable>
