@@ -689,7 +689,7 @@ int Firm_calc_pay_costs()
 
             add_wage_payment_message(ID,
             EMPLOYEES.array[i].id,EMPLOYEES.array[i].wage,
-            TECHNOLOGY,MEAN_SPECIFIC_SKILLS);
+            TECHNOLOGY,MEAN_SPECIFIC_SKILLS,0);
 
             
         }
