@@ -139,7 +139,8 @@ int Firm_send_vacancies()
 	WAGE_OFFER_FOR_SKILL_2, 
 	WAGE_OFFER_FOR_SKILL_3, 
 	WAGE_OFFER_FOR_SKILL_4, 
-	WAGE_OFFER_FOR_SKILL_5);
+	WAGE_OFFER_FOR_SKILL_5,
+	0);
 	
 
 	return 0;
@@ -252,7 +253,7 @@ int Firm_send_random_redundancies()
 		/*Firing: by chance*/
 		j = random_int(0,(EMPLOYEES.size-1));
 		add_firing_message(ID, EMPLOYEES.array[j].id);
-		switch(EMPLOYEES.array[j].general_skill)
+				switch(EMPLOYEES.array[j].general_skill)
 		{
 			/*If dismissed employee has skill level 5 reduce the number of employees with skill level 1 by 1.*/
 			case 1:
@@ -343,28 +344,28 @@ int Firm_read_job_applications_send_job_offer_or_rejection()
 					add_job_offer_message(ID, 
 					job_application_list.array[i].worker_id, 
 					REGION_ID, 
-					WAGE_OFFER_FOR_SKILL_1);
+					WAGE_OFFER_FOR_SKILL_1,0);
 					break;
 					
 				case 2:
 					add_job_offer_message(ID, 
 					job_application_list.array[i].worker_id,
 					REGION_ID, 
-					WAGE_OFFER_FOR_SKILL_2);
+					WAGE_OFFER_FOR_SKILL_2,0);
 					break;
 
 				case 3:
 					add_job_offer_message(ID,
 					job_application_list.array[i].worker_id,
 					REGION_ID, 
-					WAGE_OFFER_FOR_SKILL_3);
+					WAGE_OFFER_FOR_SKILL_3,0);
 					break;
 
 				case 4:
 					add_job_offer_message(ID, 
 					job_application_list.array[i].worker_id,
 					REGION_ID, 
-					WAGE_OFFER_FOR_SKILL_4);
+					WAGE_OFFER_FOR_SKILL_4,0);
 					break;
 
 				/*If applicant has general skill level 1 send job offer with wage offer for general skill level 5.*/
@@ -372,7 +373,7 @@ int Firm_read_job_applications_send_job_offer_or_rejection()
 					add_job_offer_message(ID, 
 					job_application_list.array[i].worker_id,
 					REGION_ID, 
-					WAGE_OFFER_FOR_SKILL_5);
+					WAGE_OFFER_FOR_SKILL_5,0);
 					break;
 			}
 
@@ -442,28 +443,28 @@ int Firm_read_job_applications_send_job_offer_or_rejection()
 							add_job_offer_message(ID, 
 							logit_applications_list.array[j].worker_id,
 							REGION_ID, 
-							WAGE_OFFER_FOR_SKILL_1);
+							WAGE_OFFER_FOR_SKILL_1,0);
 							break;
 							
 						case 2:
 							add_job_offer_message(ID, 
 							logit_applications_list.array[j].worker_id,
 							REGION_ID, 
-							WAGE_OFFER_FOR_SKILL_2);
+							WAGE_OFFER_FOR_SKILL_2,0);
 							break;
 
 						case 3:
 							add_job_offer_message(ID, 
 							logit_applications_list.array[j].worker_id,
 							REGION_ID, 
-							WAGE_OFFER_FOR_SKILL_3);
+							WAGE_OFFER_FOR_SKILL_3,0);
 							break;
 
 						case 4:
 							add_job_offer_message(ID, 
 							logit_applications_list.array[j].worker_id,
 							REGION_ID, 
-							WAGE_OFFER_FOR_SKILL_4);
+							WAGE_OFFER_FOR_SKILL_4,0);
 							break;
 
 						/*If the applicant has general skill level 1 send job offer with wage offer for general skill level 5*/
@@ -471,7 +472,7 @@ int Firm_read_job_applications_send_job_offer_or_rejection()
 							add_job_offer_message(ID, 
 							logit_applications_list.array[j].worker_id,
 							REGION_ID, 
-							WAGE_OFFER_FOR_SKILL_5);
+							WAGE_OFFER_FOR_SKILL_5,0);
 							break;
 					}
 
@@ -625,7 +626,8 @@ int Firm_send_vacancies_2()
 		WAGE_OFFER_FOR_SKILL_2, 
 		WAGE_OFFER_FOR_SKILL_3, 
 		WAGE_OFFER_FOR_SKILL_4, 
-		WAGE_OFFER_FOR_SKILL_5);
+		WAGE_OFFER_FOR_SKILL_5,
+		0);
 	}   
 
 	return 0;
@@ -689,28 +691,28 @@ int Firm_read_job_applications_send_job_offer_or_rejection_2()
 					add_job_offer2_message(ID, 
 					job_application_list.array[i].worker_id, 
 					REGION_ID, 
-					WAGE_OFFER_FOR_SKILL_1);
+					WAGE_OFFER_FOR_SKILL_1,0);
 					break;
 					
 				case 2:
 					add_job_offer2_message(ID, 
 					job_application_list.array[i].worker_id,
 					REGION_ID, 
-					WAGE_OFFER_FOR_SKILL_2);
+					WAGE_OFFER_FOR_SKILL_2,0);
 					break;
 
 				case 3:
 					add_job_offer2_message(ID,
 					job_application_list.array[i].worker_id,
 					REGION_ID, 
-					WAGE_OFFER_FOR_SKILL_3);
+					WAGE_OFFER_FOR_SKILL_3,0);
 					break;
 
 				case 4:
 					add_job_offer2_message(ID, 
 					job_application_list.array[i].worker_id,
 					REGION_ID, 
-					WAGE_OFFER_FOR_SKILL_4);
+					WAGE_OFFER_FOR_SKILL_4,0);
 					break;
 
 				/*If applicant has general skill level 1 send job offer with wage offer for general skill level 5.*/
@@ -718,7 +720,7 @@ int Firm_read_job_applications_send_job_offer_or_rejection_2()
 					add_job_offer2_message(ID, 
 					job_application_list.array[i].worker_id,
 					REGION_ID, 
-					WAGE_OFFER_FOR_SKILL_5);
+					WAGE_OFFER_FOR_SKILL_5,0);
 					break;
 			}
 
@@ -788,28 +790,28 @@ int Firm_read_job_applications_send_job_offer_or_rejection_2()
 							add_job_offer2_message(ID, 
 							logit_applications_list.array[j].worker_id,
 							REGION_ID, 
-							WAGE_OFFER_FOR_SKILL_1);
+							WAGE_OFFER_FOR_SKILL_1,0);
 							break;
 							
 						case 2:
 							add_job_offer2_message(ID, 
 							logit_applications_list.array[j].worker_id,
 							REGION_ID, 
-							WAGE_OFFER_FOR_SKILL_2);
+							WAGE_OFFER_FOR_SKILL_2,0);
 							break;
 
 						case 3:
 							add_job_offer2_message(ID, 
 							logit_applications_list.array[j].worker_id,
 							REGION_ID, 
-							WAGE_OFFER_FOR_SKILL_3);
+							WAGE_OFFER_FOR_SKILL_3,0);
 							break;
 
 						case 4:
 							add_job_offer2_message(ID, 
 							logit_applications_list.array[j].worker_id,
 							REGION_ID, 
-							WAGE_OFFER_FOR_SKILL_4);
+							WAGE_OFFER_FOR_SKILL_4,0);
 							break;
 
 						/*If the applicant has general skill level 1 send job offer with wage offer for general skill level 5*/
@@ -817,7 +819,7 @@ int Firm_read_job_applications_send_job_offer_or_rejection_2()
 							add_job_offer2_message(ID, 
 							logit_applications_list.array[j].worker_id,
 							REGION_ID, 
-							WAGE_OFFER_FOR_SKILL_5);
+							WAGE_OFFER_FOR_SKILL_5,0);
 							break;
 					}
 

@@ -43,11 +43,19 @@ int Household_receive_wage()
         /*Add wage to payment account.*/
         PAYMENT_ACCOUNT += wage_payment_message->payment;
 
-        /*Store the productivity and the average specific skills 
-        of the employer in order to update the specific skills later.*/
-        CURRENT_PRODUCTIVITY_EMPLOYER = wage_payment_message-> productivity;
-        CURRENT_MEAN_SPECIFIC_SKILLS_EMPLOYER =wage_payment_message->average_specific_skills;
-    
+		if( wage_payment_message->employer_igfirm == 0 )
+		{
+			/*Store the productivity and the average specific skills 
+			of the employer in order to update the specific skills later.*/
+			EMPLOYER_IGFIRM = 0; // Employer is a consumption goods producer
+			CURRENT_PRODUCTIVITY_EMPLOYER = wage_payment_message-> productivity;
+			CURRENT_MEAN_SPECIFIC_SKILLS_EMPLOYER =wage_payment_message->average_specific_skills;
+		}
+		else
+		{
+			EMPLOYER_IGFIRM = 1; // Employer is a capital goods producer
+		}
+
     FINISH_WAGE_PAYMENT_MESSAGE_LOOP
 
     return 0;
@@ -123,8 +131,25 @@ int Household_UNEMPLOYED_read_job_vacancies_and_send_applications()
 {
     int i=0;
     int j=0;
+    int job_type = 0;//job type = 0 -> production  =1 -> R&D
     double wage_offer=0.0;
 
+	/*if(DAY<DAY_CHANGE_REGION_COSTS_1)
+	{		REGION_COST=REGION_COST_1;	}
+	else 
+	{
+		if(DAY>=DAY_CHANGE_REGION_COSTS_1 && DAY<DAY_CHANGE_REGION_COSTS_2)
+		{
+			REGION_COST=REGION_COST_2;
+		}
+		else
+		{
+			REGION_COST=REGION_COST_3;
+		}
+	}*/
+
+
+    
     /* Create a vacancy dynamic array to store vacancies.*/
     vacancy_array  vacancy_list;
     init_vacancy_array(&vacancy_list);
@@ -136,27 +161,44 @@ int Household_UNEMPLOYED_read_job_vacancies_and_send_applications()
         if(GENERAL_SKILL == 1)
         {
             wage_offer = vacancies_message->firm_wage_offer_for_skill_1;
+            job_type = 0;
         }
 
         if(GENERAL_SKILL == 2)
         {
             wage_offer = vacancies_message->firm_wage_offer_for_skill_2;
+            job_type = 0;
         }
 
         if(GENERAL_SKILL == 3)
         {
             wage_offer =  vacancies_message->firm_wage_offer_for_skill_3;
+            job_type = 0;
         }
 
         if(GENERAL_SKILL == 4)
         {
             wage_offer =  vacancies_message->firm_wage_offer_for_skill_4;
+            job_type = 0;
         }
 
-        if(GENERAL_SKILL == 5)
-        {
-            wage_offer =  vacancies_message->firm_wage_offer_for_skill_5;
-        }
+		if(GENERAL_SKILL == 5)		{
+			/*Vacancies for production*/
+			if(vacancies_message->firm_wage_offer_for_skill_5 > 0 
+				&& vacancies_message->firm_wage_offer_for_rd == 0)
+			{ 
+				wage_offer =  vacancies_message->firm_wage_offer_for_skill_5;
+				job_type = 0;
+			}
+
+			/*Vacancies for R&D*/
+			if(vacancies_message->firm_wage_offer_for_skill_5 == 0 
+				&& vacancies_message->firm_wage_offer_for_rd > 0)
+			{ 				wage_offer =  vacancies_message->firm_wage_offer_for_rd;
+				job_type = 1;
+			}
+		}
+
 
         /*Wage offer has to be equal or higher than the reservation wage.*/
         if(wage_offer >= WAGE_RESERVATION)
@@ -168,7 +210,7 @@ int Household_UNEMPLOYED_read_job_vacancies_and_send_applications()
                 add_vacancy(&vacancy_list,
                 vacancies_message->firm_id, 
                 vacancies_message->region_id,
-                wage_offer);
+                wage_offer,job_type);
             }
             /*Firm and Household are not in the same region: Household has to bear commuting costs.*/
             else 
@@ -187,12 +229,12 @@ int Household_UNEMPLOYED_read_job_vacancies_and_send_applications()
                             add_vacancy(&vacancy_list, 
                             vacancies_message->firm_id, 
                             vacancies_message->region_id,
-                            (wage_offer - REGION_COST));
+                            (wage_offer - REGION_COST),job_type);
 
                             /*add_vacancy(&vacancy_list, 
                             vacancies_message->firm_id, 
                             vacancies_message->region_id,
-                            (wage_offer - REGION_COST*COMMUTING_COSTS_PRICE_LEVEL_WEIGHT));.*/
+                            (wage_offer - REGION_COST*COMMUTING_COSTS_PRICE_LEVEL_WEIGHT),job_type);.*/
                         }
                         break;
                     }
@@ -226,7 +268,8 @@ int Household_UNEMPLOYED_read_job_vacancies_and_send_applications()
         vacancy_list.array[i].firm_id,  
         REGION_ID, 
         GENERAL_SKILL, 
-        SPECIFIC_SKILL);
+        SPECIFIC_SKILL,
+		vacancy_list.array[i].job_type);
     }
 
     /*Free the vacancy dynamic array.*/
@@ -257,7 +300,8 @@ int Household_read_job_offers_send_response()
                 add_job_offer(&job_offer_list,
                 job_offer_message->firm_id, 
                 job_offer_message->region_id,
-                job_offer_message->wage_offer);
+                job_offer_message->wage_offer,
+				job_offer_message->job_type);
             }
             /*Job offers of firms in different regions: Household has to bear commuting costs.*/
             else
@@ -265,12 +309,14 @@ int Household_read_job_offers_send_response()
                 add_job_offer(&job_offer_list,
                 job_offer_message->firm_id, 
                 job_offer_message->region_id,
-                (job_offer_message->wage_offer - REGION_COST));
+                (job_offer_message->wage_offer - REGION_COST),
+				job_offer_message->job_type);
 
                 /*add_job_offer(&job_offer_list,
                 job_offer_message->firm_id, 
                 job_offer_message->region_id,
-                (job_offer_message->wage_offer - REGION_COST*COMMUTING_COSTS_PRICE_LEVEL_WEIGHT));.*/
+                (job_offer_message->wage_offer - REGION_COST*COMMUTING_COSTS_PRICE_LEVEL_WEIGHT)
+				job_offer_message->job_type);.*/
             }
         }
 
@@ -287,8 +333,9 @@ int Household_read_job_offers_send_response()
         job_offer_list.array[0].firm_id, 
         REGION_ID, 
         GENERAL_SKILL, 
-        SPECIFIC_SKILL);
-
+        SPECIFIC_SKILL,
+		job_offer_list.array[0].job_type);
+		
         /*Sets employer_id, employer_region_id and the day when the household will receive the wage.*/
         EMPLOYEE_FIRM_ID = job_offer_list.array[0].firm_id;
         EMPLOYER_REGION_ID = job_offer_list.array[0].region_id;
@@ -353,6 +400,7 @@ int Household_UNEMPLOYED_read_job_vacancies_and_send_applications_2()
 {
     int i=0;
     int j=0;
+    int job_type=0;
     double wage_offer=0.0;
 
     /* Create a vacancy dynamic array*/
@@ -383,10 +431,24 @@ int Household_UNEMPLOYED_read_job_vacancies_and_send_applications_2()
             wage_offer =  vacancies2_message->firm_wage_offer_for_skill_4;
         }
 
-        if(GENERAL_SKILL == 5)
-        {
-            wage_offer =  vacancies2_message->firm_wage_offer_for_skill_5;
-        }
+		if(GENERAL_SKILL == 5)
+		{
+			/*Vacancies for production*/
+			if(vacancies2_message->firm_wage_offer_for_skill_5 > 0 
+				&& vacancies2_message->firm_wage_offer_for_rd == 0)
+			{ 
+				wage_offer =  vacancies2_message->firm_wage_offer_for_skill_5;
+				job_type = 0;
+			}
+
+			/*Vacancies for R&D*/
+			if(vacancies2_message->firm_wage_offer_for_skill_5 == 0 
+				&& vacancies2_message->firm_wage_offer_for_rd > 0)
+			{ 
+				wage_offer =  vacancies2_message->firm_wage_offer_for_rd;
+				job_type = 1;
+			}
+		}
 
         /*Wage offer has to be equal or higher than the reservation wage.*/
         if(wage_offer >= WAGE_RESERVATION)
@@ -398,7 +460,7 @@ int Household_UNEMPLOYED_read_job_vacancies_and_send_applications_2()
                 add_vacancy(&vacancy_list, 
                 vacancies2_message->firm_id, 
                 vacancies2_message->region_id,
-                wage_offer);
+                wage_offer,job_type);
             }
             /*Firm and Household are not in the same region: Household has to bear commuting costs.*/
             else
@@ -417,12 +479,13 @@ int Household_UNEMPLOYED_read_job_vacancies_and_send_applications_2()
                             add_vacancy(&vacancy_list,
                             vacancies2_message->firm_id, 
                             vacancies2_message->region_id,
-                            (wage_offer - REGION_COST));
+                            (wage_offer - REGION_COST),job_type);
 
                             /*add_vacancy(&vacancy_list,
                             vacancies2_message->firm_id, 
                             vacancies2_message->region_id,
-                            (wage_offer - REGION_COST*COMMUTING_COSTS_PRICE_LEVEL_WEIGHT));.*/
+                            (wage_offer - REGION_COST*COMMUTING_COSTS_PRICE_LEVEL_WEIGHT),
+							vacancies2_message->job_type);.*/
                         }
                     
                         break;
@@ -457,7 +520,8 @@ int Household_UNEMPLOYED_read_job_vacancies_and_send_applications_2()
         vacancy_list.array[i].firm_id, 
         REGION_ID, 
         GENERAL_SKILL, 
-        SPECIFIC_SKILL);
+        SPECIFIC_SKILL,
+		job_type);
     }
 
     /* Free the vacancy dynamic array*/
@@ -489,7 +553,8 @@ int Household_read_job_offers_send_response_2()
                 add_job_offer(&job_offer_list,
                 job_offer2_message->firm_id,
                 job_offer2_message->region_id,
-                job_offer2_message->wage_offer);
+                job_offer2_message->wage_offer,
+				job_offer2_message->job_type);
             }
             /*Job offers of firms in different regions: Household has to bear commuting costs.*/
             else
@@ -497,13 +562,15 @@ int Household_read_job_offers_send_response_2()
                 /*add_job_offer(&job_offer_list,
                 job_offer2_message->firm_id,
                 job_offer2_message->region_id,
-                (job_offer2_message->wage_offer - REGION_COST*COMMUTING_COSTS_PRICE_LEVEL_WEIGHT));.*/
+                (job_offer2_message->wage_offer - REGION_COST*COMMUTING_COSTS_PRICE_LEVEL_WEIGHT),
+				job_offer2_message->job_type);.*/
 
                 /*Add job offer to the job offer list.*/
                 add_job_offer(&job_offer_list,
                 job_offer2_message->firm_id,
                 job_offer2_message->region_id,
-                (job_offer2_message->wage_offer - REGION_COST));
+                (job_offer2_message->wage_offer - REGION_COST),
+				job_offer2_message->job_type);
             }
         }
 
@@ -519,7 +586,8 @@ int Household_read_job_offers_send_response_2()
         job_offer_list.array[0].firm_id,
         REGION_ID, 
         GENERAL_SKILL, 
-        SPECIFIC_SKILL);
+        SPECIFIC_SKILL,
+		job_offer_list.array[0].job_type);
 
         /*Sets employer_id, employer_region_id and the day when the household will receive the wage.*/
         EMPLOYEE_FIRM_ID = job_offer_list.array[0].firm_id;
@@ -679,8 +747,8 @@ int Household_send_transfer_notification()
 int Household_send_tax_payment()
 {
     // #ifdef _DEBUG_MODE  
-        FILE *file1=NULL;
-        char *filename="";
+        //FILE *file1=NULL;
+        //char *filename="";
    // #endif
     double restitution_payment=0.0;
 
@@ -689,15 +757,12 @@ int Household_send_tax_payment()
     if (DAY_OF_MONTH_RECEIVE_BENEFIT != DAY_OF_MONTH_RECEIVE_INCOME )
     {
         //printf("\n DAY: %d DAY_OF_MONTH_RECEIVE_INCOME: %d DAY_OF_MONTH_RECEIVE_BENEFIT: %d",DAY,DAY_OF_MONTH_RECEIVE_INCOME,DAY_OF_MONTH_RECEIVE_BENEFIT);
-        restitution_payment = ((DAY_OF_MONTH_RECEIVE_BENEFIT + (20-DAY_OF_MONTH_RECEIVE_INCOME)%20)/20.0)
-                            * UNEMPLOYMENT_PAYMENT;
+        restitution_payment = ((DAY_OF_MONTH_RECEIVE_BENEFIT + 
+		(20-DAY_OF_MONTH_RECEIVE_INCOME)%20)/20.0)* UNEMPLOYMENT_PAYMENT;
+		
         //Reset
-        DAY_OF_MONTH_RECEIVE_BENEFIT = DAY_OF_MONTH_RECEIVE_INCOME;
-        
-       //  printf("\n DAY: %d restitution_payment: %f UNEMPLOYMENT_PAYMENT: %f",DAY,restitution_payment,UNEMPLOYMENT_PAYMENT);
-            
-
-    }
+        DAY_OF_MONTH_RECEIVE_BENEFIT = DAY_OF_MONTH_RECEIVE_INCOME;   
+	}
     
      
     
