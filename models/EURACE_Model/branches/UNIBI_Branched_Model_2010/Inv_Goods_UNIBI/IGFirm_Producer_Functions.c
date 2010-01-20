@@ -788,6 +788,7 @@ int IGFirm_calc_pay_costs()
 	int i,m;
 	
 	LABOUR_COSTS = 0.0;
+	CALC_PRODUCTION_COSTS=0.0;
 
 	/*Sum up the wages for production workers*/
 	for(i=0; i<EMPLOYEES.size;i++)
@@ -816,6 +817,7 @@ int IGFirm_calc_pay_costs()
 
 	/*Production costs are only labor costs*/
 	PRODUCTION_COSTS = LABOUR_COSTS;
+	CALC_PRODUCTION_COSTS= LABOUR_COSTS;
 
 	
 	//old_capital_good_price = CAPITAL_GOOD_PRICE;
@@ -1113,8 +1115,8 @@ int IGFirm_calc_revenue()
 		}
 	
 		/*Store the revenue for getdata*/
-		CUM_REVENUE_LAST_MONTH = CUM_REVENUES;
-		CUM_REVENUES = 0.0;
+		CUM_REVENUE_LAST_MONTH = CUM_REVENUE;
+		CUM_REVENUE = 0.0;
 	}
 
 	REVENUE_PER_DAY = 0;
@@ -1126,7 +1128,7 @@ int IGFirm_calc_revenue()
 
 	FINISH_PAY_CAPITAL_GOODS_MESSAGE_LOOP  
 
-	CUM_REVENUES += REVENUE_PER_DAY; 
+	CUM_REVENUE += REVENUE_PER_DAY; 
 	PAYMENT_ACCOUNT += REVENUE_PER_DAY;
 	/*Sum up revenues for the R&D budget: not necessary if research employees are 
 	calculated every year -> then: CUM_REVENUES = REVENUE FOR INNOVATION*/

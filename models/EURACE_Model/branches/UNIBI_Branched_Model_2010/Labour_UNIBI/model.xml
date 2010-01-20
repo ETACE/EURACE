@@ -12,6 +12,21 @@
     <description>1: complete functionality--- 0: Exogenous stochastic innovation process</description>
    </variable>
    <variable>
+     <type>int</type>
+     <name>igfirm_employer_debug</name>
+     <description></description>
+    </variable>
+    <variable>
+     <type>int</type>
+     <name>igfirm_fin_man_debug</name>
+     <description></description>
+    </variable>
+    <variable>
+     <type>int</type>
+     <name>igfirm_producer_debug</name>
+     <description></description>
+    </variable>
+   <variable>
     <type>double</type>
     <name>gamma_const</name>
     <description> -2, Strength of logit rule for consumption</description>
@@ -817,11 +832,6 @@ of employees and the number of vacancies</description>
    <name>IGFirm</name>
    <description></description>
    <memory>
-<variable>
-     <type>int</type>
-     <name>igfirm_employer_debug</name>
-     <description></description>
-    </variable>
     <variable>
      <type>double</type>
      <name>percent_revenue_for_innovation</name>

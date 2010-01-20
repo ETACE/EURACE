@@ -134,9 +134,16 @@ int Firm_compute_dividends()
     //option 4: keep earnings per share constant
     //total divided payment increases with same ratio as earnings per share
     //this keeps earnings per share constant
-    if (PREVIOUS_EARNINGS_PER_SHARE>0.0)
+    if ((PREVIOUS_EARNINGS_PER_SHARE>0.0)&&(PREVIOUS_SHARES_OUTSTANDING>0))
+    {
         TOTAL_DIVIDEND_PAYMENT *= (EARNINGS_PER_SHARE/PREVIOUS_EARNINGS_PER_SHARE)
                                    *(CURRENT_SHARES_OUTSTANDING/PREVIOUS_SHARES_OUTSTANDING);
+	}
+    else
+	{
+		//printf("ERROR in Firm_compute_dividends:PREVIOUS_EARNINGS_PER_SHARE = %f PREVIOUS_SHARES_OUTSTANDING = %d\n", PREVIOUS_EARNINGS_PER_SHARE,
+		 //PREVIOUS_SHARES_OUTSTANDING);	
+	}
 
     //option 5: keep dividend to earnings ratio constant (dont let it fall), but do not decrease the dividend per share ratio.
     /*
@@ -298,7 +305,7 @@ int Firm_compute_balance_sheet()
     #endif
 
   
-                                                             
+                                                          
     return 0;
 }
 
@@ -701,7 +708,7 @@ int Firm_set_bankruptcy_insolvency()
         free(filename);
     }    
 
-        
+      
     return 0;
 }
 

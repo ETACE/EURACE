@@ -119,11 +119,7 @@
     
   <!-- Variable for IGFirm improvement-->  
       
-    <variable>
-     <type>int</type>
-     <name>igfirm_producer_debug</name>
-     <description></description>
-    </variable>
+    
 <variable>
      <type>int</type>
      <name>duration_until_next_innovation</name>
@@ -221,6 +217,11 @@
     </variable>
     <variable>
      <type>double</type>
+     <name>calc_production_costs</name>
+     <description></description>
+    </variable>
+    <variable>
+     <type>double</type>
      <name>production_costs_last_month</name>
      <description></description>
     </variable>
@@ -266,7 +267,7 @@
     </variable>   
     <variable>
      <type>double</type>
-     <name>cum_revenues</name>
+     <name>cum_revenue</name>
      <description></description>
     </variable>
 <variable>
