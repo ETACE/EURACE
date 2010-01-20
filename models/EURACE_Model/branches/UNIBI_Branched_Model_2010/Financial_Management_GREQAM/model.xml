@@ -1373,7 +1373,7 @@ Also sets the active flag to 0 and starts the bankruptcy idle counter.</descript
       <not>
        <time>
         <period>monthly</period>
-        <phase>a.day_of_month_to_act</phase>
+        <phase>a.last_day_of_month_to_act</phase>
        </time>
       </not>
      </condition>
@@ -1388,7 +1388,7 @@ Also sets the active flag to 0 and starts the bankruptcy idle counter.</descript
      <condition>
       <time>
        <period>monthly</period>
-       <phase>a.day_of_month_to_act</phase>
+       <phase>a.last_day_of_month_to_act</phase>
       </time>
      </condition>
      <inputs/>

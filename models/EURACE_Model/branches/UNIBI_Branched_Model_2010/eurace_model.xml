@@ -348,6 +348,11 @@
      <description>Activation day.</description>
     </variable>
     <variable>
+     <type>int</type>
+     <name>last_day_of_month_to_act</name>
+     <description>One day before the activation day.</description>
+    </variable>
+    <variable>
      <type>double</type>
      <name>payment_account</name>
      <description>Current account value.</description>
