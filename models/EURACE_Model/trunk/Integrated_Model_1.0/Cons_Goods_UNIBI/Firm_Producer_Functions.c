@@ -332,6 +332,10 @@ int Firm_calc_input_demands()
     double temp_labour_demand;
     double temp_capital_demand;
     
+    
+    if(DAY >= TRANSITION_PHASE)
+        {
+    
         START_PRODUCTIVITY_MESSAGE_LOOP
             /*Update of the actual capital good information*/
             TECHNOLOGICAL_FRONTIER = productivity_message->cap_productivity;
@@ -342,7 +346,7 @@ int Firm_calc_input_demands()
         /*Calculate labor demand and needed capital goods. 
          * Complementarity between specific skills and productivity*/
         
-
+        }
 
         /*Specific skills are limiting factor*/
         if(MEAN_SPECIFIC_SKILLS < TECHNOLOGY)
@@ -561,12 +565,12 @@ int Firm_receive_capital_goods()
                 capital_good_delivery_message->capital_good_delivery_volume/
                 (TOTAL_UNITS_CAPITAL_STOCK + 
                 capital_good_delivery_message->capital_good_delivery_volume)
-                *capital_good_delivery_message->productivity;
+                *TECHNOLOGICAL_FRONTIER;
         /*Update of current value of capital stock*/
  
                 TOTAL_VALUE_CAPITAL_STOCK =
                 TOTAL_VALUE_CAPITAL_STOCK + capital_good_delivery_message->capital_good_delivery_volume
-                *capital_good_delivery_message->capital_good_price;              
+                *ACTUAL_CAP_PRICE;              
 
                 /*Adding the new capital*/
                 TOTAL_UNITS_CAPITAL_STOCK += capital_good_delivery_message
@@ -574,8 +578,8 @@ int Firm_receive_capital_goods()
 
         /*Computing the capital bill*/
         CAPITAL_COSTS += capital_good_delivery_message
-        ->capital_good_delivery_volume* capital_good_delivery_message
-        ->capital_good_price;
+        ->capital_good_delivery_volume* ACTUAL_CAP_PRICE;
+
         
         capital_good_price = capital_good_delivery_message->capital_good_price;
         capital_good_delivery_volume = capital_good_delivery_message->capital_good_delivery_volume;
