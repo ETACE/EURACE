@@ -1056,12 +1056,17 @@ int IGFirm_calc_revenue()
         FILE *file1;
         char *filename;
    // #endif
+   
+   if(DAY%MONTH == 1)
+   {
+    CUM_REVENUE_LAST_MONTH = 0.0;
+   }
 
 	if(DAY%MONTH==DAY_OF_MONTH_TO_ACT)
 	{
 		
 		/*Store the revenue for getdata*/
-		CUM_REVENUE_LAST_MONTH = CUM_REVENUE;
+		//CUM_REVENUE_LAST_MONTH = CUM_REVENUE;
 		CUM_REVENUE = 0.0;
 	}
 
@@ -1080,6 +1085,7 @@ int IGFirm_calc_revenue()
 	/*Sum up revenues for the R&D budget: not necessary if research employees are 
 	calculated every year -> then: CUM_REVENUES = REVENUE FOR INNOVATION*/
 	REVENUE_FOR_INNOVATION += REVENUE_PER_DAY;
+	CUM_REVENUE_LAST_MONTH +=REVENUE_PER_DAY;
 
 	
 	if (IGFIRM_PRODUCER_DEBUG)
@@ -1094,6 +1100,7 @@ int IGFirm_calc_revenue()
         fprintf(file1," CUM_REVENUE = %f\n",CUM_REVENUE);
         fprintf(file1," PAYMENT_ACCOUNT = %f\n",PAYMENT_ACCOUNT);
 		fprintf(file1,"\n");
+		fprintf(file1," CUM_REVENUE_LAST_MONTH = %f\n",CUM_REVENUE_LAST_MONTH);
         fprintf(file1,"\n");
         fclose(file1);
         free(filename);
