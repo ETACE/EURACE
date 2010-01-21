@@ -36,6 +36,11 @@
     <name>transition_phase</name>
     <description> </description>
    </variable>
+    <variable>
+    <type>int</type>
+    <name>innovation_by_random</name>
+    <description> </description>
+   </variable>
    </constants>
   <functionFiles>
    <file>IGfirm_functions.c</file>
