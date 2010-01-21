@@ -319,8 +319,9 @@ int IGFirm_send_quality_price_info()
 
 	add_productivity_message(ID,PRODUCTIVITY,CAPITAL_GOOD_PRICE);
 
-if(DAY%MONTH==DAY_OF_MONTH_TO_ACT)
-		{
+if((DAY%MONTH==DAY_OF_MONTH_TO_ACT) || (DAY%MONTH==(DAY_OF_MONTH_TO_ACT+1)))
+{
+		
 	if (IGFIRM_PRODUCER_DEBUG)
     {
         filename = malloc(40*sizeof(char));
@@ -666,16 +667,16 @@ int IGFirm_produce_capital_good()
 		PLANNED_OUTPUT = PLANNED_PRODUCTION_QUANTITY;
 	
 		/*Minimum of the capital good store: directly before production*/
-		CAPITAL_GOOD_STORE_BEFORE_PRODUCTION = CAPITAL_GOOD_STORE;
+		//CAPITAL_GOOD_STORE_BEFORE_PRODUCTION = CAPITAL_GOOD_STORE;
 		
 		PRODUCTION_QUANTITY = NO_EMPLOYEES*PRODUCTION_PRODUCTIVITY;
 		OUTPUT = PRODUCTION_QUANTITY;
 	
 		/*Add the production quantity to the capital good store*/
-		CAPITAL_GOOD_STORE += PRODUCTION_QUANTITY;
+		//CAPITAL_GOOD_STORE += PRODUCTION_QUANTITY;
 	
 		/*Maximum of the capital good store: directly after production*/
-		CAPITAL_GOOD_STORE_AFTER_PRODUCTION = CAPITAL_GOOD_STORE;
+		//CAPITAL_GOOD_STORE_AFTER_PRODUCTION = CAPITAL_GOOD_STORE;
 	
 		remove_double(&LAST_PRODUCTION_QUANTITIES,0);
 		add_double(&LAST_PRODUCTION_QUANTITIES, PRODUCTION_QUANTITY);
@@ -724,6 +725,7 @@ int IGFirm_calc_pay_costs()
 	//double old_capital_good_price = 0.0;
 	int i,m;
 	double temp_payment_account= 0.0;
+	
 	
 	LABOUR_COSTS = 0.0;
 	CALC_PRODUCTION_COSTS=0.0;
@@ -778,7 +780,7 @@ int IGFirm_calc_pay_costs()
 		if(PRODUCTION_QUANTITY > 0)
 		{
 			/*The average of the last production quantities is used to smooth the capital good price*/
-			UNIT_COSTS = LABOUR_COSTS/average_production_quantity;
+			UNIT_COSTS = (LABOUR_COSTS+TOTAL_INTEREST_PAYMENT)/average_production_quantity;
 			NEW_CAPITAL_GOOD_PRICE = UNIT_COSTS*(1+IG_MARK_UP);
 		}
 		/*If there was no production*/
@@ -801,6 +803,7 @@ int IGFirm_calc_pay_costs()
         fprintf(file1,"---------------------------------------------------------------------------------\n");
         fprintf(file1," DAY %d \t ID %d \n",DAY,ID);
         fprintf(file1," LABOUR_COSTS = %f  \n",LABOUR_COSTS);
+        fprintf(file1," TOTAL_INTEREST_PAYMENT = %f  \n",TOTAL_INTEREST_PAYMENT);
 		fprintf(file1," AVERAGE PRODUCTION QUANTITY = %f  \n",average_production_quantity);
 		fprintf(file1," UNIT_COSTS = %f \n",UNIT_COSTS);
 		fprintf(file1," NEW_CAPITAL_GOOD_PRICE = %f \n",NEW_CAPITAL_GOOD_PRICE);
@@ -834,6 +837,8 @@ int IGFirm_send_capital_good()
 
 	double daily_capital_good_demand = 0.0;
 	double daily_sales = 0.0;	
+	double temp_capital_good_store = CAPITAL_GOOD_STORE;
+	double selling_capital_good_price = CAPITAL_GOOD_PRICE;
 
 	if(DAY%MONTH==DAY_OF_MONTH_TO_ACT)
 	{	
@@ -886,6 +891,7 @@ int IGFirm_send_capital_good()
 	
 				CAPITAL_GOOD_STORE -= capital_good_request_list.
 				array[v].capital_good_order;
+				temp_capital_good_store = CAPITAL_GOOD_STORE;
 	
 				SALES += capital_good_request_list.
 				array[v].capital_good_order;
@@ -914,6 +920,7 @@ int IGFirm_send_capital_good()
 	
 					CAPITAL_GOOD_STORE -= capital_good_request_list.
 					array[v].capital_good_order *fraction_order;
+					temp_capital_good_store = CAPITAL_GOOD_STORE;
 	
 					SALES += capital_good_request_list.
 					array[v].capital_good_order*fraction_order;
@@ -959,6 +966,7 @@ int IGFirm_send_capital_good()
 		
 			CAPITAL_GOOD_STORE -= capital_good_request_list.
 			array[v].capital_good_order;
+			temp_capital_good_store = CAPITAL_GOOD_STORE;
 	
 			SALES += capital_good_request_list.
 			array[v].capital_good_order;
@@ -989,6 +997,14 @@ int IGFirm_send_capital_good()
 			was announced in IGFirm_send_quality_price_info_message. Hence the new price after the 
 			last production is set here for the next 20 days.*/
 			CAPITAL_GOOD_PRICE = NEW_CAPITAL_GOOD_PRICE;
+			
+			CAPITAL_GOOD_STORE_BEFORE_PRODUCTION = CAPITAL_GOOD_STORE;
+		
+			/*Add the production quantity to the capital good store*/
+			CAPITAL_GOOD_STORE += PRODUCTION_QUANTITY;
+	
+			/*Maximum of the capital good store: directly after production*/
+			CAPITAL_GOOD_STORE_AFTER_PRODUCTION = CAPITAL_GOOD_STORE;
 
 		}
 
@@ -1007,8 +1023,14 @@ int IGFirm_send_capital_good()
         fprintf(file1," daily_capital_good_demand = %f\n",daily_capital_good_demand);
         fprintf(file1," daily_sales = %f\n",daily_sales);
 		fprintf(file1," SALES = %f\n",SALES);
-		fprintf(file1," CAPITAL_GOOD_STORE = %f \n",CAPITAL_GOOD_STORE);
+		fprintf(file1," selling_capital_good_price = %f \n",selling_capital_good_price);
+		fprintf(file1," CAPITAL_GOOD_STORE = %f \n",temp_capital_good_store);
 		fprintf(file1,"\n");
+		if(DAY%MONTH == DAY_OF_MONTH_TO_ACT)
+		{
+			fprintf(file1," CAP_STORE_BEFORE_PRODUCTION = %f \n",CAPITAL_GOOD_STORE_BEFORE_PRODUCTION);
+			fprintf(file1," CAP_STORE_AFTR_PRODUCTION = %f \n",CAPITAL_GOOD_STORE_AFTER_PRODUCTION);
+		}
 		fprintf(file1," CAPITAL_GOOD_PRICE = %f \n",CAPITAL_GOOD_PRICE);
 		fprintf(file1," PRODUCTIVITY = %f \n",PRODUCTIVITY);
 		fprintf(file1,"\n");
@@ -1051,7 +1073,8 @@ int IGFirm_calc_revenue()
 		REVENUE_PER_DAY += pay_capital_goods_message->capital_bill;
 
 	FINISH_PAY_CAPITAL_GOODS_MESSAGE_LOOP  
-
+	
+	
 	CUM_REVENUE += REVENUE_PER_DAY; 
 	PAYMENT_ACCOUNT += REVENUE_PER_DAY;
 	/*Sum up revenues for the R&D budget: not necessary if research employees are 
