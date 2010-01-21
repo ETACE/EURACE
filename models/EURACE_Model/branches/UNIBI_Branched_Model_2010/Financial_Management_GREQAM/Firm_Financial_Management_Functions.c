@@ -857,7 +857,15 @@ if (BANKRUPTCY_IDLE_COUNTER == CONST_BANKRUPTCY_IDLE_PERIOD - 1)
     {
             add_firing_message(ID, EMPLOYEES.array[i].id);
             remove_employee(&EMPLOYEES, i);
-	}
+    }
+    
+    NO_EMPLOYEES  = 0;
+    NO_EMPLOYEES_SKILL_1= 0;
+    NO_EMPLOYEES_SKILL_2= 0;
+    NO_EMPLOYEES_SKILL_3= 0;
+    NO_EMPLOYEES_SKILL_4= 0;
+    NO_EMPLOYEES_SKILL_5= 0;
+
         
     //Effect on consumption goods market
     //Option 1: all local inventory stock is lost
@@ -900,9 +908,16 @@ int Firm_bankruptcy_illiquidity_procedure()
     for (i=0;i<EMPLOYEES.size;i++)
     {
             add_firing_message(ID, EMPLOYEES.array[i].id);
-            remove_employee(&EMPLOYEES, i);
-	}
-        
+           remove_employee(&EMPLOYEES, i);
+    }
+    
+
+    NO_EMPLOYEES  = 0;
+    NO_EMPLOYEES_SKILL_1= 0;
+    NO_EMPLOYEES_SKILL_2= 0;
+    NO_EMPLOYEES_SKILL_3= 0;
+    NO_EMPLOYEES_SKILL_4= 0;
+    NO_EMPLOYEES_SKILL_5= 0;
     //Effect on consumption goods market
     //Option 1: all local inventory stock is lost
     //Option 2: send back local inventory stock to factory
