@@ -402,7 +402,8 @@ int IGFirm_compute_balance_sheet()
         getchar();
     }   
     #endif
-    
+   
+     
     if (IGFIRM_FIN_MAN_DEBUG)
     {
         filename = malloc(40*sizeof(char));
@@ -1063,6 +1064,21 @@ if (BANKRUPTCY_IDLE_COUNTER == CONST_BANKRUPTCY_IDLE_PERIOD - 1)
             remove_employee(&EMPLOYEES, i);
 	}
         
+    NO_EMPLOYEES  = 0;
+    NO_EMPLOYEES_SKILL_1= 0;
+    NO_EMPLOYEES_SKILL_2= 0;
+    NO_EMPLOYEES_SKILL_3= 0;
+    NO_EMPLOYEES_SKILL_4= 0;
+    NO_EMPLOYEES_SKILL_5= 0;
+    
+    for (i=0;i<RESEARCH_EMPLOYEES.size;i++)
+    {
+            add_firing_message(ID, RESEARCH_EMPLOYEES.array[i].id);
+            remove_employee(&RESEARCH_EMPLOYEES, i);
+	}
+	
+	NO_RESEARCH_EMPLOYEES = 0;
+        
     //Effect on consumption goods market
     //Option 1: all local inventory stock is lost
     //Option 2: send back local inventory stock to factory
@@ -1106,6 +1122,21 @@ int IGFirm_bankruptcy_illiquidity_procedure()
             add_firing_message(ID, EMPLOYEES.array[i].id);
             remove_employee(&EMPLOYEES, i);
 	}
+	
+	NO_EMPLOYEES  = 0;
+    NO_EMPLOYEES_SKILL_1= 0;
+    NO_EMPLOYEES_SKILL_2= 0;
+    NO_EMPLOYEES_SKILL_3= 0;
+    NO_EMPLOYEES_SKILL_4= 0;
+    NO_EMPLOYEES_SKILL_5= 0;
+    
+    for (i=0;i<RESEARCH_EMPLOYEES.size;i++)
+    {
+            add_firing_message(ID, RESEARCH_EMPLOYEES.array[i].id);
+            remove_employee(&RESEARCH_EMPLOYEES, i);
+	}
+	
+	NO_RESEARCH_EMPLOYEES = 0;
         
     //Effect on consumption goods market
     //Option 1: all local inventory stock is lost
