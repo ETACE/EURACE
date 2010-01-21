@@ -35,10 +35,10 @@ int IGFirm_update_productivity_price()
 	
 	
 	
-        //double prod_progress;
+     double prod_progress;
     
     /*If the innovation progress is random and has not a predetermined shape*/
-    /if(INNOVATION_BY_RANDOM==1)
+    if(INNOVATION_BY_RANDOM==1)
     {
          if(DAY >= TRANSITION_PHASE)
          {
@@ -51,7 +51,7 @@ int IGFirm_update_productivity_price()
                         PRODUCTIVITY = PRODUCTIVITY*(1 + PRODUCTIVITY_PROGRESS);
                         CAPITAL_GOOD_PRICE = CAPITAL_GOOD_PRICE*(1 +PRODUCTIVITY_PROGRESS); 
                 }
-        
+         }
     }
     else//Innovation progress has a predetermined shape
     {
