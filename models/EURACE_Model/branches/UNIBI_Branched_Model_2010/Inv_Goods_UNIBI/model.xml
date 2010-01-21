@@ -31,12 +31,38 @@
     <name>energy_shock_frequency</name>
     <description>The frequency at which the energy price is updated.</description>
    </variable>
-  </constants>
+     <variable>
+    <type>double</type>
+    <name>transition_phase</name>
+    <description> </description>
+   </variable>
+    <variable>
+    <type>int</type>
+    <name>innovation_by_random</name>
+    <description> </description>
+   </variable>
+   </constants>
   <functionFiles>
    <file>IGFirm_Producer_Functions.c</file>
   </functionFiles>
   <timeUnits/>
   <dataTypes>
+  <dataType>
+    <name>dt_scheme_innovation</name>
+    <description></description>
+    <variables>
+     <variable>
+      <type>int</type>
+      <name>day_of_innovation</name>
+      <description></description>
+     </variable>
+     <variable>
+      <type>double</type>
+      <name>productivity</name>
+      <description></description>
+     </variable>
+	</variables>
+   </dataType> 	
 <dataType>
     <name>capital_good_request</name>
     <description></description>
@@ -74,6 +100,11 @@
      <type>double</type>
      <name>revenue_per_day</name>
      <description>Revenue of the current  day</description>
+    </variable>
+     <variable>
+     <type>dt_scheme_innovation_array</type>
+     <name>innovation_scheme</name>
+     <description></description>
     </variable>
     <variable>
      <type>double</type>
