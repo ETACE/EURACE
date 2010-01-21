@@ -31,7 +31,6 @@
     <name>energy_shock_frequency</name>
     <description>The frequency at which the energy price is updated.</description>
    </variable>
-  </constants>
      <variable>
     <type>double</type>
     <name>transition_phase</name>
