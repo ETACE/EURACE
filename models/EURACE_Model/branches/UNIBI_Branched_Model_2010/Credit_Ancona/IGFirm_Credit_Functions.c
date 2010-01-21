@@ -5,6 +5,11 @@
     
     int IGFirm_ask_loan()
     {
+    	//  #ifdef _DEBUG_MODE        
+        FILE *file1;
+        char *filename;
+   // #endif
+    
         int connected=0;
           int j=0;
 
@@ -61,7 +66,26 @@
                 printf("\n\t EQUITY: %f TOTAL_DEBT: %f EXTERNAL_FINANCIAL_NEEDS: %f",EQUITY,TOTAL_DEBT,EXTERNAL_FINANCIAL_NEEDS);
                 getchar();
             }
-        #endif       
+        #endif    
+        
+          if (IGFIRM_FIN_MAN_DEBUG)
+    {
+        filename = malloc(40*sizeof(char));
+        filename[0]=0;
+        strcpy(filename, "its/IGFirm_fin_man.txt");      
+        file1 = fopen(filename,"a");
+        fprintf(file1,"IGFirm_ask_loan() \n");
+        fprintf(file1,"---------------------------------------------------------------------------------\n");
+        fprintf(file1," DAY %d \t ID %d \n",DAY,ID);
+        fprintf(file1," NUMBER_OF_BANKS_ASKED: %d",NUMBER_OF_BANKS_ASKED);
+        fprintf(file1," EQUITY = %f \n",EQUITY);
+        fprintf(file1," TOTAL_DEBT = %f \n", TOTAL_DEBT);
+        fprintf(file1," EXTERNAL_FINANCIAL_NEEDS = %f \n",EXTERNAL_FINANCIAL_NEEDS);
+        fprintf(file1,"\n");
+        fprintf(file1,"\n");
+        fclose(file1);
+        free(filename);
+    }        
 
         return 0;
     }
@@ -70,9 +94,15 @@
     int IGFirm_get_loan()
     {
         //#ifdef _DEBUG_MODE
-        FILE * file1=NULL;
-        char * filename="";
+        //FILE * file1=NULL;
+        //char * filename="";
         //  #endif
+        
+        //  #ifdef _DEBUG_MODE        
+        FILE *file1;
+        char *filename;
+   // #endif
+        
         int n, n1, k, i, primo;
         n=0; n1=0; k=0; i=0; primo=0;
     
@@ -96,6 +126,8 @@
         double residual_var=0.0;
         double bad_debt=0.0;
         int nr_periods_before_repayment=0;
+        
+        double temp_credit_accepted = 0.0;
         
          
         for (i=0; i<NUMBER_OF_BANKS_ASKED;i++)
@@ -180,7 +212,8 @@
                    credit_accepted=credit_demand;
                 }
                 
-                
+   				temp_credit_accepted+=credit_accepted;
+                           
                 total_credit_taken += credit_accepted;                  
                 bank_id = rate_order_array[primo];
                 loan_value = credit_accepted;
@@ -248,6 +281,25 @@
             getchar(); 
         }                  
         #endif
+        
+        
+         if (IGFIRM_FIN_MAN_DEBUG)
+    {
+        filename = malloc(40*sizeof(char));
+        filename[0]=0;
+        strcpy(filename, "its/IGFirm_fin_man.txt");      
+        file1 = fopen(filename,"a");
+        fprintf(file1,"IGFirm_get_loan() \n");
+        fprintf(file1,"---------------------------------------------------------------------------------\n");
+        fprintf(file1," DAY %d \t ID %d \n",DAY,ID);
+        fprintf(file1," credit_accepted: %f",temp_credit_accepted);
+        fprintf(file1," PAYMENT_ACCOUNT = %f \n",PAYMENT_ACCOUNT);
+        fprintf(file1," EXTERNAL_FINANCIAL_NEEDS = %f \n",EXTERNAL_FINANCIAL_NEEDS);
+        fprintf(file1,"\n");
+        fprintf(file1,"\n");
+        fclose(file1);
+        free(filename);
+    }        
         
         return 0;
     }
