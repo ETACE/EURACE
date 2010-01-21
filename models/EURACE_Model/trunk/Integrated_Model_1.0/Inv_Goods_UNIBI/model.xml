@@ -31,23 +31,23 @@
     <name>energy_shock_frequency</name>
     <description>The frequency at which the energy price is updated.</description>
    </variable>
-     <variable>
-    <type>double</type>
+   <variable>
+    <type>int</type>
     <name>transition_phase</name>
-    <description> </description>
+    <description></description>
    </variable>
-    <variable>
+   <variable>
     <type>int</type>
     <name>innovation_by_random</name>
-    <description> </description>
+    <description></description>
    </variable>
-   </constants>
+  </constants>
   <functionFiles>
    <file>IGfirm_functions.c</file>
   </functionFiles>
   <timeUnits/>
-   <dataTypes>
-<dataType>
+  <dataTypes>
+   <dataType>
     <name>dt_scheme_innovation</name>
     <description></description>
     <variables>
@@ -61,9 +61,9 @@
       <name>productivity</name>
       <description></description>
      </variable>
-	</variables>
-   </dataType> 	
-</dataTypes>
+    </variables>
+   </dataType>
+  </dataTypes>
  </environment>
  <agents>
   <xagent>
@@ -120,7 +120,7 @@
      <name>earnings</name>
      <description>Variable to sum monthly earnings.</description>
     </variable>
-     <variable>
+    <variable>
      <type>dt_scheme_innovation_array</type>
      <name>innovation_scheme</name>
      <description></description>
