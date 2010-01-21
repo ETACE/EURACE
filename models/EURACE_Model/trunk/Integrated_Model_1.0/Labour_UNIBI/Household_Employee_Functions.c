@@ -68,10 +68,24 @@ int Household_update_specific_skills()
         /*Update the specific skill: depends on the actual specific skill, 
         the gap between the actual specific skills and the actual productivity of the employer,
         and the general skill which determines the speed of closing the this gap.*/
-        SPECIFIC_SKILL = SPECIFIC_SKILL + 
+        
+    	if(SKILL_UPGRADE_PREDETERMINED==0)
+    	{
+    	SPECIFIC_SKILL = SPECIFIC_SKILL + 
         (CURRENT_PRODUCTIVITY_EMPLOYER - SPECIFIC_SKILL)*((1-pow(0.5,1/(20+0.25*(GENERAL_SKILL-1)*(4-20))))
         + 0*CURRENT_MEAN_SPECIFIC_SKILLS_EMPLOYER);
-
+    	}else
+    	{
+    		if(GENERAL_SKILL == 1)
+    		{
+    			SPECIFIC_SKILL = SPECIFIC_SKILL + 
+    			        (CURRENT_PRODUCTIVITY_EMPLOYER - SPECIFIC_SKILL)*LOW_SKILL_UPGRADE;
+    		}else
+    		{
+    			SPECIFIC_SKILL = SPECIFIC_SKILL + 
+    			    			        (CURRENT_PRODUCTIVITY_EMPLOYER - SPECIFIC_SKILL)*HIGH_SKILL_UPGRADE;
+    		}
+    	}
         /*Send specific skill to employer.*/
         add_specific_skill_update_message(ID,EMPLOYEE_FIRM_ID,SPECIFIC_SKILL);
     }
