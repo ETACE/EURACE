@@ -167,11 +167,6 @@
     <description>Logit parameter for general skills used in firm's hiring decision.</description>
    </variable>
    <variable>
-    <type>int</type>
-    <name>transition_phase</name>
-    <description>Number of periods to settle down the simulation.</description>
-   </variable>
-   <variable>
     <type>double</type>
     <name>efficiency_innovation</name>
     <description>Parameter for steering the influence of a researcher on the innovation probability.</description>
