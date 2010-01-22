@@ -32,7 +32,7 @@
     <description>The frequency at which the energy price is updated.</description>
    </variable>
      <variable>
-    <type>double</type>
+    <type>int</type>
     <name>transition_phase</name>
     <description> </description>
    </variable>
