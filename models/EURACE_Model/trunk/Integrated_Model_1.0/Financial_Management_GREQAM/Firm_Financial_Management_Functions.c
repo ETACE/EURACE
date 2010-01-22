@@ -141,8 +141,8 @@ int Firm_compute_dividends()
 	}
     else
 	{
-		printf("ERROR in Firm_compute_dividends:PREVIOUS_EARNINGS_PER_SHARE = %f PREVIOUS_SHARES_OUTSTANDING = %d\n", PREVIOUS_EARNINGS_PER_SHARE,
-		 PREVIOUS_SHARES_OUTSTANDING);	
+		//printf("ERROR in Firm_compute_dividends:PREVIOUS_EARNINGS_PER_SHARE = %f PREVIOUS_SHARES_OUTSTANDING = %d\n", PREVIOUS_EARNINGS_PER_SHARE,
+		 //PREVIOUS_SHARES_OUTSTANDING);	
 	}
 
     //option 5: keep dividend to earnings ratio constant (dont let it fall), but do not decrease the dividend per share ratio.
