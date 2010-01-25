@@ -669,10 +669,11 @@ int Firm_execute_financial_payments()
     {
     	CURRENT_DIVIDEND_PER_SHARE = TOTAL_DIVIDEND_PAYMENT/CURRENT_SHARES_OUTSTANDING;
     	add_dividend_per_share_message(ID, CURRENT_DIVIDEND_PER_SHARE);
+    	//decrease payment_account with the total_dividend_payment
+    	PAYMENT_ACCOUNT -= TOTAL_DIVIDEND_PAYMENT;
     }	
 
-    //decrease payment_account with the total_dividend_payment
-    PAYMENT_ACCOUNT -= TOTAL_DIVIDEND_PAYMENT;
+    
 
     return 0;
 }
