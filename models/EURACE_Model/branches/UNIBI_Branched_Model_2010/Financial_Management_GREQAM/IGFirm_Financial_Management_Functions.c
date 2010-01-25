@@ -169,6 +169,10 @@ int IGFirm_compute_dividends()
         FILE *file1;
         char *filename;
    // #endif
+   
+   /*1: complete functionality of the IGFirm -- 0: Exogenous stochastic innovation process  */
+	if(IGFIRM_SWITCH_ON == 1 )
+	{
 //option 2: total dividend payment increases with same ratio as net earnings
     //This is very dangerous, since earnings may fluctuate violently
     //TOTAL_DIVIDEND_PAYMENT *= NET_EARNINGS/PREVIOUS_NET_EARNINGS;
@@ -187,9 +191,8 @@ int IGFirm_compute_dividends()
 	}
 	else
 	{
-		printf("ERROR in IGFirm_compute_dividends:PREVIOUS_EARNINGS_PER_SHARE = %f PREVIOUS_SHARES_OUTSTANDING = %d\n", PREVIOUS_EARNINGS_PER_SHARE,
-						 PREVIOUS_SHARES_OUTSTANDING);
-		
+		if(PREVIOUS_SHARES_OUTSTANDING == 0 || CURRENT_SHARES_OUTSTANDING == 0)
+		printf("ERROR in Firm_compute_dividends: PREVIOUS_SHARES_OUTSTANDING = %d --- CURRENT_SHARES_OUTSTANDING = %d\n", PREVIOUS_SHARES_OUTSTANDING, CURRENT_SHARES_OUTSTANDING);	
 	}
     //option 5: keep dividend to earnings ratio constant (dont let it fall), but do not decrease the dividend per share ratio.
     /*
@@ -250,6 +253,55 @@ int IGFirm_compute_dividends()
         CURRENT_DIVIDEND_PER_EARNINGS = TOTAL_DIVIDEND_PAYMENT/NET_EARNINGS;
     else
         CURRENT_DIVIDEND_PER_EARNINGS = 0.0;
+        
+    }
+    
+    
+    else //IGFIRM_SWITCH_ON == 0
+    {
+    		double average_last_net_profits = 0.0;
+    		double total_dividend_payment;
+    		TOTAL_DIVIDEND_PAYMENT = 0.0;
+    		
+    		remove_double(& LAST_NET_PROFITS,0);
+    add_double(& LAST_NET_PROFITS,NET_EARNINGS); 
+    		
+    		 int p;
+    		for(p = 0; p < LAST_NET_PROFITS.size; p++)
+    		{
+        		average_last_net_profits += LAST_NET_PROFITS.array[p];
+    		}
+    
+        	if (LAST_NET_PROFITS.size > 0) 
+            average_last_net_profits = average_last_net_profits/LAST_NET_PROFITS.size;
+        	else
+            average_last_net_profits = 0.0;
+    
+        	if (OUTSTANDING_SHARES > 0)
+       		 	CURRENT_DIVIDEND_PER_SHARE = average_last_net_profits/ OUTSTANDING_SHARES;
+        	else
+            	CURRENT_DIVIDEND_PER_SHARE = 0.0;
+    
+    		//printf("\n IGFirm %d CURRENT_DIVIDEND_PER_SHARE %f %f			\n",ID,CURRENT_DIVIDEND_PER_SHARE,OUTSTANDING_SHARES);
+    
+    		total_dividend_payment = average_last_net_profits;
+    		//printf("3: total_dividend_payment %f \n",total_dividend_payment);
+        
+        
+    		//add dividend_per_share_msg(firm_id, current_dividend_per_share) to shareholders (dividend per share)     
+    		//add_dividend_per_share_message(ID, CURRENT_DIVIDEND_PER_SHARE);
+
+    		//decrease payment_account with the total_dividend_payment
+    		//PAYMENT_ACCOUNT -= total_dividend_payment;
+    		if(PAYMENT_ACCOUNT > total_dividend_payment+TAX_PAYMENT)
+			{
+    			TOTAL_DIVIDEND_PAYMENT = total_dividend_payment;
+    		}
+    		else
+    		{
+    			TOTAL_DIVIDEND_PAYMENT = PAYMENT_ACCOUNT-TAX_PAYMENT;
+    		}
+    }
 
     #ifdef _DEBUG_MODE         
     if (PRINT_DEBUG)
