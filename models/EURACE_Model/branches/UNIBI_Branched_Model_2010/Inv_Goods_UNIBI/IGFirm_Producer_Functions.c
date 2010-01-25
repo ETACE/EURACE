@@ -20,8 +20,6 @@ int IGFirm_update_productivity_price()
 	char *filename;
 	// #endif
 
-	if(DAY >= TRANSITION_PHASE)
-	{}
 
 	int i,j;
 	/*Increase this variable to get a lower variance of the normal distribution/the random
@@ -191,6 +189,8 @@ int IGFirm_update_productivity_price()
 }
 
 
+
+
 /** \fn int IGFirm_calc_research_employees()
  * \brief IGFirm determines the number of research_employees.
 	- IGFirm invests 10% of the last year revenues for RD (Wages for Research Employees). */
@@ -275,6 +275,8 @@ int IGFirm_calc_research_employees()
 }
 
 
+
+
 int IGFirm_set_quantities_zero()
 {
 	return 0;
@@ -294,6 +296,7 @@ int IGFirm_send_quality_price_info()
 	// #endif
 
 	int i;
+	double prod_progress;
 	
 	/*1: complete functionality of the IGFirm -- 0: Exogenous stochastic innovation process  */
 	if(IGFIRM_SWITCH_ON == 0)
@@ -312,20 +315,36 @@ int IGFirm_send_quality_price_info()
 			RESEARCH_EMPLOYEES_NEEDED = 0.0;
 		}
 
-		/*If transition phase is over. During the transition phase there is no productivity progress.*/
-		if(DAY >= TRANSITION_PHASE)
-	 	{
-			if(DAY%MONTH == DAY_OF_MONTH_TO_ACT)
-			{	
-				i = random_int( 0 ,100);
-				/*If i is smaller than the exogenous innovation probability the productivity and the price will be increased.*/
-				if(i < IGFIRM_EXOGENOUS_INNOVATION_PROBABILITY)
-				{
-					PRODUCTIVITY = PRODUCTIVITY*(1 + IGFIRM_EXOGENOUS_PRODUCTIVITY_PROGRESS);
-					CAPITAL_GOOD_PRICE = 
-					CAPITAL_GOOD_PRICE*(1 +IGFIRM_EXOGENOUS_PRODUCTIVITY_PROGRESS);	
-				}
-	 		}
+		/*If the innovation progress is random and has not a predetermined shape*/
+		if(INNOVATION_BY_RANDOM==1)
+		{
+			/*If transition phase is over. During the transition phase there is no productivity progress.*/
+			if(DAY >= TRANSITION_PHASE)
+	 		{
+				if(DAY%MONTH == DAY_OF_MONTH_TO_ACT)
+				{	
+					i = random_int( 0 ,100);
+					/*If i is smaller than the exogenous innovation probability the productivity and the price will be increased.*/
+					if(i < IGFIRM_EXOGENOUS_INNOVATION_PROBABILITY)
+					{
+						PRODUCTIVITY = PRODUCTIVITY*(1 + IGFIRM_EXOGENOUS_PRODUCTIVITY_PROGRESS);
+						CAPITAL_GOOD_PRICE = 
+						CAPITAL_GOOD_PRICE*(1 +IGFIRM_EXOGENOUS_PRODUCTIVITY_PROGRESS);	
+					}
+	 			}
+			}
+		}
+		else//Innovation progress has a predetermined shape
+		{
+			if(DAY==INNOVATION_SCHEME.array[0].day_of_innovation)
+			{
+				prod_progress = INNOVATION_SCHEME.array[0].productivity/PRODUCTIVITY;
+
+				PRODUCTIVITY =INNOVATION_SCHEME.array[0].productivity;
+
+				CAPITAL_GOOD_PRICE = CAPITAL_GOOD_PRICE*prod_progress;
+				remove_dt_scheme_innovation(&INNOVATION_SCHEME,0);
+			}
 		}
 	}
 
@@ -354,6 +373,8 @@ int IGFirm_send_quality_price_info()
 	}
 	return 0;
 }
+
+
 
 
 /** \fn IGFirm_calc_production_quantity()
@@ -523,6 +544,9 @@ int IGFirm_calc_production_quantity()
 }
 
 
+
+
+
 /* \fn IGFirm_calc_input_demands()
  * \brief IGFirms calculate the labor demand.
 	- IGFirm computes the number of production employees and the corresponding production costs.*/
@@ -579,6 +603,9 @@ int IGFirm_calc_input_demands()
 
 	return 0;	
 }
+
+
+
 
 
 /* \fn IGFirm_calc_input_demands2()
@@ -668,6 +695,8 @@ int IGFirm_calc_production_quantity_2()
 
 
 
+
+
 /* \fn IGFirm_produce_capital_good()
  * \brief IGFirms produce the capital good*/
 int IGFirm_produce_capital_good()
@@ -726,6 +755,8 @@ int IGFirm_produce_capital_good()
 
 	return 0;
 }
+
+
 
 
 
@@ -839,6 +870,7 @@ int IGFirm_calc_pay_costs()
 
 	return 0;
 }
+
 
 
 
@@ -1057,6 +1089,7 @@ int IGFirm_send_capital_good()
 
 
 
+
 /** \fn IGFirm_calc_revenue()
  * \brief IGFirm calculates revenues.
  */
@@ -1118,6 +1151,7 @@ int IGFirm_calc_revenue()
 	
 	return 0;
 }
+
 
 
 
