@@ -664,9 +664,12 @@ int Firm_execute_financial_payments()
     //step 3: actual dividend payments
     //Actual bank account updates are send to the bank at end of day when the firm sends its bank_update message 
 
-    //add dividend_per_share_msg(firm_id, current_dividend_per_share) to shareholders (dividend per share)     
-    CURRENT_DIVIDEND_PER_SHARE = TOTAL_DIVIDEND_PAYMENT/CURRENT_SHARES_OUTSTANDING;
-    add_dividend_per_share_message(ID, CURRENT_DIVIDEND_PER_SHARE);
+    //add dividend_per_share_msg(firm_id, current_dividend_per_share) to shareholders (dividend per share)  
+    if(CURRENT_SHARES_OUTSTANDING>0)
+    {
+    	CURRENT_DIVIDEND_PER_SHARE = TOTAL_DIVIDEND_PAYMENT/CURRENT_SHARES_OUTSTANDING;
+    	add_dividend_per_share_message(ID, CURRENT_DIVIDEND_PER_SHARE);
+    }	
 
     //decrease payment_account with the total_dividend_payment
     PAYMENT_ACCOUNT -= TOTAL_DIVIDEND_PAYMENT;
