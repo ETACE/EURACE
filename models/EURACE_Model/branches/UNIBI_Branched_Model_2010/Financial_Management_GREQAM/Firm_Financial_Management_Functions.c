@@ -84,7 +84,6 @@ int Firm_compute_income_statement()
 
     //continue balance sheet (data pertaining to the period that just ended)
     PREVIOUS_EARNINGS_PER_SHARE = EARNINGS_PER_SHARE;
-    
     if (CURRENT_SHARES_OUTSTANDING>0)
         EARNINGS_PER_SHARE = NET_EARNINGS/CURRENT_SHARES_OUTSTANDING;
 
@@ -141,8 +140,8 @@ int Firm_compute_dividends()
 	}
     else
 	{
-		//printf("ERROR in Firm_compute_dividends:PREVIOUS_EARNINGS_PER_SHARE = %f PREVIOUS_SHARES_OUTSTANDING = %d\n", PREVIOUS_EARNINGS_PER_SHARE,
-		 //PREVIOUS_SHARES_OUTSTANDING);	
+		if(PREVIOUS_SHARES_OUTSTANDING == 0 || CURRENT_SHARES_OUTSTANDING == 0)
+		printf("ERROR in Firm_compute_dividends: PREVIOUS_SHARES_OUTSTANDING = %d --- CURRENT_SHARES_OUTSTANDING = %d\n", PREVIOUS_SHARES_OUTSTANDING, CURRENT_SHARES_OUTSTANDING);	
 	}
 
     //option 5: keep dividend to earnings ratio constant (dont let it fall), but do not decrease the dividend per share ratio.
@@ -304,7 +303,7 @@ int Firm_compute_balance_sheet()
     }   
     #endif
 
-  
+     
                                                           
     return 0;
 }
@@ -660,10 +659,16 @@ int Firm_execute_financial_payments()
     
     //step 3: actual dividend payments
     //Actual bank account updates are send to the bank at end of day when the firm sends its bank_update message 
-
-    //add dividend_per_share_msg(firm_id, current_dividend_per_share) to shareholders (dividend per share)     
+    
+    
+    //add dividend_per_share_msg(firm_id, current_dividend_per_share) to shareholders (dividend per share)  
+   if(CURRENT_SHARES_OUTSTANDING>0) 
+   {   
     CURRENT_DIVIDEND_PER_SHARE = TOTAL_DIVIDEND_PAYMENT/CURRENT_SHARES_OUTSTANDING;
     add_dividend_per_share_message(ID, CURRENT_DIVIDEND_PER_SHARE);
+   }
+   
+    
 
     //decrease payment_account with the total_dividend_payment
     PAYMENT_ACCOUNT -= TOTAL_DIVIDEND_PAYMENT;
