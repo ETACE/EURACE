@@ -45,11 +45,11 @@ int IGFirm_update_productivity_price()
 	/*1.Step: Innovation process:
 	Calculate the probability of completing the innovation project depending on the number of research employees: 
 	The probability can not be larger than 1*/
-	if((NO_RESEARCH_EMPLOYEES*EFFICIENCY_INNOVATION) < 1)
+	if((NO_RESEARCH_EMPLOYEES*EFFICIENCY_INNOVATION) <= 1)
 	{
 		innovation_probability = NO_RESEARCH_EMPLOYEES*EFFICIENCY_INNOVATION;	
 	}
-	else //if NO_RESEARCH_EMPLOYEES*EFFICIENCY_INNOVATION >= 1
+	else //if NO_RESEARCH_EMPLOYEES*EFFICIENCY_INNOVATION > 1
 	{
 		/*Project completed.*/
 		innovation_probability = 1;	
