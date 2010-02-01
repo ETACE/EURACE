@@ -13,8 +13,6 @@
 */
 int Household_receive_wage()
 {
-    int i;
-    double mean_income = 0.0;
 
     /*Household reads the wage messages if employed.*/
     START_WAGE_PAYMENT_MESSAGE_LOOP
@@ -27,18 +25,6 @@ int Household_receive_wage()
         /*Calculate the total income.*/
         TOTAL_INCOME= wage_payment_message->payment +  CUM_TOTAL_DIVIDENDS +
         MONTHLY_BOND_INTEREST_INCOME;
- 
-        /*Remove the oldest income and add the recent.*/
-        remove_double(&LAST_INCOME,0);
-        add_double(&LAST_INCOME,TOTAL_INCOME);
-
-        /*Compute the mean income of the last four month.*/
-        for(i = 0; i < 4;i++)
-        {
-            mean_income += LAST_INCOME.array[i];
-        }
-
-        MEAN_INCOME= mean_income/4;
 
         /*Add wage to payment account.*/
         PAYMENT_ACCOUNT += wage_payment_message->payment;
@@ -605,7 +591,6 @@ int Household_finish_labour_market()
  */
 int Household_send_unemployment_benefit_notification()
 {
-    double mean_income = 0.0;
     
     /*Compute unemployment_benefit*/
     //Sander, 23.10.09: Transferred this code from the government to the household
@@ -638,18 +623,7 @@ int Household_send_unemployment_benefit_notification()
   //  printf("\n UNEMPLOYMENT_BENEFIT_PCT: %f LAST_LABOUR_INCOME: %f",UNEMPLOYMENT_BENEFIT_PCT,LAST_LABOUR_INCOME);
 
     TOTAL_INCOME=  UNEMPLOYMENT_PAYMENT + CUM_TOTAL_DIVIDENDS + MONTHLY_BOND_INTEREST_INCOME;
-    
-    remove_double(&LAST_INCOME,0);
-    add_double(&LAST_INCOME, TOTAL_INCOME);
 
-     /*Compute a mean income of the last four month*/
-    int i;
-    for(i = 0; i < 4;i++)
-    {
-        mean_income += LAST_INCOME.array[i];
-    }
-
-    MEAN_INCOME = mean_income/4;
 
     //Set the benefit reception day
     DAY_OF_MONTH_RECEIVE_BENEFIT = DAY_OF_MONTH_RECEIVE_INCOME;
@@ -697,7 +671,7 @@ int Household_send_tax_payment()
         char *filename="";
    // #endif
     double restitution_payment=0.0;
-
+    int i;
    
     //Benefit restitution: repayment of the already received monthly unemployment benefits if recently re-employed
     if (DAY_OF_MONTH_RECEIVE_BENEFIT != DAY_OF_MONTH_RECEIVE_INCOME )
@@ -721,6 +695,20 @@ int Household_send_tax_payment()
 
     /*Compute the total taxes*/
     TAX_PAYMENT = CUM_TOTAL_DIVIDENDS*TAX_RATE_HH_CAPITAL + WAGE*TAX_RATE_HH_LABOUR;
+    
+    
+    //Store the net income in an array
+    remove_double(&LAST_NET_INCOME,0);
+         add_double(&LAST_NET_INCOME,TOTAL_INCOME-TAX_PAYMENT);
+         
+    //Compute the mean net income:
+         
+         double net_inc = 0;
+         for(i=0;i<LAST_NET_INCOME.size;i++)
+         {
+        	 net_inc+=LAST_NET_INCOME.array[i];
+         }
+         MEAN_NET_INCOME = net_inc/LAST_NET_INCOME.size;
 
     /*Send a message to the government*/
     add_tax_payment_message(GOV_ID, TAX_PAYMENT);
