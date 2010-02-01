@@ -54,12 +54,12 @@ int Household_determine_consumption_budget()
 
         /*Compute the wealth income ratio*/
         
-        WEALTH_INCOME_RATIO_ACTUAL = WEALTH/ MEAN_INCOME;
+        WEALTH_INCOME_RATIO_ACTUAL = WEALTH/ MEAN_NET_INCOME;
 
               
        
             /*Based on Carrol-Rule: Determination of the consumption budget*/
-            CONSUMPTION_BUDGET = MEAN_INCOME + CARROL_CONSUMPTION_PARAMETER*(WEALTH - WEALTH_INCOME_RATIO_TARGET*MEAN_INCOME);
+            CONSUMPTION_BUDGET = MEAN_NET_INCOME + CARROL_CONSUMPTION_PARAMETER*(WEALTH - WEALTH_INCOME_RATIO_TARGET*MEAN_NET_INCOME);
 
         
         
@@ -74,7 +74,7 @@ int Household_determine_consumption_budget()
             }
         #endif            
 
-            if(CONSUMPTION_BUDGET < 0.5*LAST_INCOME.array[3])
+            if(CONSUMPTION_BUDGET < 0.5*LAST_NET_INCOME.array[3])
             {
                 #ifdef _DEBUG_MODE        
                 if(CONSUMPTION_BUDGET < 0)
@@ -87,7 +87,7 @@ int Household_determine_consumption_budget()
                 }
                 #endif
                 
-                CONSUMPTION_BUDGET = 0.5*LAST_INCOME.array[3];
+                CONSUMPTION_BUDGET = 0.5*LAST_NET_INCOME.array[3];
             }
 
             CONSUMPTION_BUDGET_IN_MONTH = CONSUMPTION_BUDGET;
