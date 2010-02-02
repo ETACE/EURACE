@@ -12,7 +12,9 @@ let count=0
 rm -f job_list_*.sh
 
 cd ./its
-for folder1 in $F1; do
+cd ./$EXPERIMENT_NAME
+
+for folder1 in $F1_values; do
 
 	cd $folder1
 

@@ -1,6 +1,7 @@
 <states>
 <outputs>
 <output><type>snapshot</type><name/><location>./</location><format>xml</format><time><period>20</period><phase>0</phase><duration/></time></output>
+<output><type>snapshot</type><name/><location>./</location><format>xml</format><time><period>20</period><phase>1</phase><duration/></time></output>
 </outputs>
 <imports>
 <import>

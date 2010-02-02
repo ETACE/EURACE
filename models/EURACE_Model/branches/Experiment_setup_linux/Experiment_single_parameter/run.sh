@@ -18,7 +18,7 @@
 	#rm node*.xml
 
 	#Create the SQL database
-	python $BASE/gendb.py $MODEL_XML_DIR/eurace_model.xml ./
+	python $BASE/gendb.py $MODEL_XML_DIR/$MODEL_XML_FILE ./
 
 	#Rename to VisGUI default name
 	mv iterdata.db iters.db
@@ -35,7 +35,7 @@
 	echo '+ Removing xml files, except multiples of 240'
 	for i in *.xml; do
 	   filebase=`basename $i .xml`
-	   if (( filebase % 240 != 0 )); then
+	   if (( filebase % 600 != 0 )); then
 	       echo "Removing $i"
 	       rm $i
 	   fi

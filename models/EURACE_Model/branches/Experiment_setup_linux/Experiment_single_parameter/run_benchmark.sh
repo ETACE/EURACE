@@ -49,7 +49,7 @@ for run in $RUNS; do
 
 	#Run serial with small output:
 	cp $BASE/output_benchmark.xml ./
-	echo '      Copied output file from' $BASE'/output_benchmark.xml to folder: run_'$run
+	echo '      Copied output file from' $BASE'/output_benchmark.xml to folder: '$PWD
 	$MAIN_S $ITS 'output_benchmark.xml' 
 
 
