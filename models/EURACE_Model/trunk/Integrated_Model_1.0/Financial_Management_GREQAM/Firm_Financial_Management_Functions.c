@@ -763,66 +763,68 @@ int Firm_bankruptcy_insolvency_procedure()
     }
     #endif
     
-    //Effect on credit market
-    
-    
-//printf("\n Firm_bankruptcy_insolvency_procedure BANKRUPTCY_IDLE_COUNTER %d",BANKRUPTCY_IDLE_COUNTER);
+    //Effect on credit market  
+  	if (BANKRUPTCY_IDLE_COUNTER == CONST_BANKRUPTCY_IDLE_PERIOD - 1)
+	{
+		//Renegotiating debt: refunding credit, computing bad debt
+		 TOTAL_ASSETS = TOTAL_VALUE_CAPITAL_STOCK + PAYMENT_ACCOUNT;
+		//Set the target debt
+		target_debt = DEBT_RESCALING_FACTOR*TOTAL_ASSETS;
+		write_off_ratio = (TOTAL_DEBT - target_debt)/TOTAL_DEBT;
 
-if (BANKRUPTCY_IDLE_COUNTER == CONST_BANKRUPTCY_IDLE_PERIOD - 1)
-{
-                            
-   
-    //Renegotiating debt: refunding credit, computing bad debt
-     TOTAL_ASSETS = TOTAL_VALUE_CAPITAL_STOCK + PAYMENT_ACCOUNT;
-    //Set the target debt
-    target_debt = DEBT_RESCALING_FACTOR*TOTAL_ASSETS;
-    write_off_ratio = (TOTAL_DEBT - target_debt)/TOTAL_DEBT;
+		for (i=0; i<LOANS.size; i++)
+		{
+		    residual_var = LOANS.array[i].var_per_installment
+		            * LOANS.array[i].nr_periods_before_repayment;
+		            
+		    LOANS.array[i].var_per_installment =  (1-write_off_ratio)*LOANS.array[i].var_per_installment;        
+		    LOANS.array[i].loan_value =  (1-write_off_ratio)*LOANS.array[i].loan_value;
+		    
+		    LOANS.array[i].installment_amount = LOANS.array[i].loan_value/LOANS.array[i].nr_periods_before_repayment;
+		    
+		    
+		    //step 1: refunding credit
+		    //the credit_refunded is that part of the loan which can be refunded using the payment_account
+		    //credit_refunded = (PAYMENT_ACCOUNT/TOTAL_DEBT)*LOANS.array[i].loan_value;
+		    //PAYMENT_ACCOUNT -= credit_refunded;
+		    //TOTAL_ASSETS -= credit_refunded;
+		    credit_refunded = 0;  // credit_refunded is not more used 
+		    
+		    //step 2: computing bad debt
+		   
+		    bad_debt = write_off_ratio*LOANS.array[i].loan_value;
+		    
+		    //the credit_remaining is that part of the debt which is not written off
+		    //credit_remaining = (1-write_off_ratio)*LOANS.array[i].loan_value
 
-    for (i=0; i<LOANS.size; i++)
-    {
-        residual_var = LOANS.array[i].var_per_installment
-                * LOANS.array[i].nr_periods_before_repayment;
-                
-        LOANS.array[i].var_per_installment =  (1-write_off_ratio)*LOANS.array[i].var_per_installment;        
-        LOANS.array[i].loan_value =  (1-write_off_ratio)*LOANS.array[i].loan_value;
-        
-        LOANS.array[i].installment_amount = LOANS.array[i].loan_value/LOANS.array[i].nr_periods_before_repayment;
-        
-        
-        //step 1: refunding credit
-        //the credit_refunded is that part of the loan which can be refunded using the payment_account
-        //credit_refunded = (PAYMENT_ACCOUNT/TOTAL_DEBT)*LOANS.array[i].loan_value;
-        //PAYMENT_ACCOUNT -= credit_refunded;
-        //TOTAL_ASSETS -= credit_refunded;
-        credit_refunded = 0;  // credit_refunded is not more used 
-        
-        //step 2: computing bad debt
-       
-        bad_debt = write_off_ratio*LOANS.array[i].loan_value;
-        
-        //the credit_remaining is that part of the debt which is not written off
-        //credit_remaining = (1-write_off_ratio)*LOANS.array[i].loan_value
+		    //step 3: send the bankruptcy_message to write off part of the debt
+		    //add_bankruptcy_message(firm_id, bank_id, bad_debt, credit_refunded, residual_var);
+		    
+		    add_bankruptcy_message(ID, LOANS.array[i].bank_id, bad_debt,
+		    credit_refunded, write_off_ratio*residual_var);        
+		            
+	   }
+	   
+	   TOTAL_DEBT = target_debt;
+	   EQUITY = TOTAL_ASSETS - TOTAL_DEBT;
+	  // reset_debt_item_array(&LOANS); the loan structure must not be cancelled, but rescaled
 
-        //step 3: send the bankruptcy_message to write off part of the debt
-        //add_bankruptcy_message(firm_id, bank_id, bad_debt, credit_refunded, residual_var);
-        
-        add_bankruptcy_message(ID, LOANS.array[i].bank_id, bad_debt,
-        credit_refunded, write_off_ratio*residual_var);        
-                
-   }
-   
-   TOTAL_DEBT = target_debt;
-   EQUITY = TOTAL_ASSETS - TOTAL_DEBT;
-  // reset_debt_item_array(&LOANS); the loan structure must not be cancelled, but rescaled
-   
-    target_equity = (1/TARGET_LEVERAGE_RATIO) * target_debt;
-    ipo_amount = max(0,target_equity + target_debt - TOTAL_ASSETS);
-     EXTERNAL_FINANCIAL_NEEDS = max(0,ipo_amount);
-     
-     //add a bankruptcy_message for households only, with bank_id=0 so no bank will ever read it:
-     add_bankruptcy_message(ID, 0, 0.0, 0.0, 0.0); // This is to wipe out present shareholders
-     CURRENT_SHARES_OUTSTANDING = 0;
-}   
+	    //Effect on financial market
+		if (TRADING_ACTIVITY > 1e-8)
+		{
+		    //Set the IPO_AMOUNT to raise:
+			target_equity = (1/TARGET_LEVERAGE_RATIO) * target_debt;
+			ipo_amount = max(0,target_equity + target_debt - TOTAL_ASSETS);
+			EXTERNAL_FINANCIAL_NEEDS = max(0,ipo_amount);
+
+		    //Wiping out all existing shareholders by cancelling their shares			 
+			//add a bankruptcy_message for households only, with bank_id=0 so no bank will ever read it:
+			add_bankruptcy_message(ID, 0, 0.0, 0.0, 0.0); // This is to wipe out present shareholders
+			CURRENT_SHARES_OUTSTANDING = 0;
+		}
+
+	}   
+
     //Check that after refunding credit the payment account is depleted:
     /*if (PAYMENT_ACCOUNT>1e-6)
     {
@@ -831,14 +833,6 @@ if (BANKRUPTCY_IDLE_COUNTER == CONST_BANKRUPTCY_IDLE_PERIOD - 1)
                 "PAYMENT_ACCOUNT=%f\n", PAYMENT_ACCOUNT);
     } */   
 
-    //Effect on financial market
-    //Wiping out all existing shareholders by cancelling their shares
-
-    
-
-    //Set the IPO_AMOUNT to raise:
-   
-  
     #ifdef _DEBUG_MODE
     if(PRINT_DEBUG)
     {
@@ -900,12 +894,17 @@ int Firm_bankruptcy_illiquidity_procedure()
     
     //Effect on financial market:
     //Shareholders retain their shares.
-    
-    //Set the IPO_AMOUNT to raise:
-    ipo_amount = TARGET_LIQUIDITY_RATIO*(FINANCIAL_LIQUIDITY_NEEDS - PAYMENT_ACCOUNT);
 
-    //To use already implemented functions, we use the EXTERNAL_FINANCIAL_NEEDS to send the share emmission
-    EXTERNAL_FINANCIAL_NEEDS = max(0.0,ipo_amount);
+    //Effect on financial market:
+    //New equity
+	if (TRADING_ACTIVITY > 1e-8)
+	{
+		//Set the IPO_AMOUNT to raise:
+		ipo_amount = TARGET_LIQUIDITY_RATIO*(FINANCIAL_LIQUIDITY_NEEDS - PAYMENT_ACCOUNT);
+
+		//To use already implemented functions, we use the EXTERNAL_FINANCIAL_NEEDS to send the share emmission
+		EXTERNAL_FINANCIAL_NEEDS = max(0.0,ipo_amount);
+	}
     
     //Effect on investment goods market
     //Left-over capital
