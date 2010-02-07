@@ -972,6 +972,7 @@ int Firm_reset_bankruptcy_flags()
         BANKRUPTCY_INSOLVENCY_STATE  = 0;
         BANKRUPTCY_ILLIQUIDITY_STATE = 0;
         DAY_OF_MONTH_TO_ACT = ((DAY+1)%MONTH);
+		AGE =0;
 
       if (PRINT_DEBUG_FILE_EXP1)
     {
