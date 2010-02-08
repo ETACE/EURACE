@@ -35,7 +35,7 @@
 	echo '+ Removing xml files, except multiples of 240'
 	for i in *.xml; do
 	   filebase=`basename $i .xml`
-	   if (( filebase % 600 != 0 )); then
+	   if (( filebase % 240 != 0 )); then
 	       echo "Removing $i"
 	       rm $i
 	   fi

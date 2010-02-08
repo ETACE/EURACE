@@ -19,13 +19,13 @@ export BASE=$PWD
 
 #Iterations
 export ITS_PRE=1000
-export ITS=4000
+export ITS=2500
 
 #Set number of nodes to use (only valid for parallel)
 export NR_NODES=1
 
 #Set number of job processes to use (nr of job lists: job_list_$n.sh)
-export NUM_PROCS=1
+export NUM_PROCS=2
 
 #Set number of batch runs
 export TOTAL_RUNS=1
@@ -47,13 +47,13 @@ echo 'Batch runs:[' $RUNS ']'
 
 
 #Technological progress experiment:
-#export EXPERIMENT_NAME="poductivity_progress"
+#export EXPERIMENT_NAME="productivity_progress"
 #export F1_values=$(seq 0.00 0.0125 0.05)
 
 #Debt installment period
-export EXPERIMENT_NAME="const_debt_installment_periods"
-export F1_values=$(seq 12 2 24)
-export F1_values=$(seq 12 1 12)
+export EXPERIMENT_NAME="const_installment_periods"
+#export F1_values=$(seq 6 3 12)
+export F1_values=$(seq 6 1 6)
 
 #Debt rescaling factor
 #export EXPERIMENT_NAME="debt_rescaling_factor"
@@ -67,6 +67,13 @@ export F1_values=$(seq 12 1 12)
 #export EXPERIMENT_NAME="target_liquidity_ratio"
 #export F1_values=$(seq 0.0 0.2 0.8)
 
+#bank capital reserve ratio: value-at-risk <= alfa * equity
+#export EXPERIMENT_NAME="alfa"
+#export F1_values=$(seq 5 5 20)
+
+#ECB base interest rate
+#export EXPERIMENT_NAME="ecb_interest_rate"
+#export F1_values=$(seq 0.01 0.01 0.05)
 
 #Executables
 

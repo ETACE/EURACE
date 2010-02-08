@@ -4,12 +4,12 @@
 </outputs>
 <imports>
 <import>
- <location>../../0_transient.xml</location>       # the location of the data
+ <location>../../../0_transient.xml</location>       # the location of the data
  <format>xml</format>                # the format of the data
  <type>environment</type>            # environment or agent data
 </import>
 <import>
- <location>../../0_transient.xml</location>       # the location of the data
+ <location>../../../0_transient.xml</location>       # the location of the data
  <format>xml</format>                # the format of the data
  <type>agent</type>            # environment or agent data
 </import>
