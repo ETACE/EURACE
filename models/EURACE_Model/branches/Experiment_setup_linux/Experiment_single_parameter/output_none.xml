@@ -13,5 +13,10 @@
  <format>xml</format>                # the format of the data
  <type>agent</type>            # environment or agent data
 </import>
+<import>
+ <location>../specific.xml</location>       # the location of the data
+ <format>xml</format>                # the format of the data
+ <type>environment</type>            # environment or agent data
+</import>
 </imports>
 </states>
