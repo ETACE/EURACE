@@ -19,7 +19,7 @@ export BASE=$PWD
 
 #Iterations
 export ITS_PRE=1000
-export ITS=2500
+export ITS=6000
 
 #Set number of nodes to use (only valid for parallel)
 export NR_NODES=1
@@ -52,12 +52,13 @@ echo 'Batch runs:[' $RUNS ']'
 
 #Debt installment period
 export EXPERIMENT_NAME="const_installment_periods"
-#export F1_values=$(seq 6 3 12)
-export F1_values=$(seq 6 1 6)
+#export F1_values=$(seq 24 2 24)
+export F1_values=$(seq 24 2 24)
 
 #Debt rescaling factor
 #export EXPERIMENT_NAME="debt_rescaling_factor"
-#export F1_values=$(seq 0.0 0.2 0.8)
+#export F1_values=$(seq 0.0 0.2 1.0)
+#export F1_values=$(seq 0.0 1.0 0.0)
 
 #target leverage ratio
 #export EXPERIMENT_NAME="target_leverage_ratio"
@@ -69,11 +70,18 @@ export F1_values=$(seq 6 1 6)
 
 #bank capital reserve ratio: value-at-risk <= alfa * equity
 #export EXPERIMENT_NAME="alfa"
-#export F1_values=$(seq 5 5 20)
+#export F1_values=$(seq 2 2 10)
+#export F1_values=$(seq 4.0 0.1 4.20)
 
 #ECB base interest rate
 #export EXPERIMENT_NAME="ecb_interest_rate"
 #export F1_values=$(seq 0.01 0.01 0.05)
+
+#Dividend/earnings payout ratio
+#export EXPERIMENT_NAME="const_dividend_earnings_ratio"
+#export F1_values=$(seq 0.1 0.1 0.1)
+#export F1_values=$(seq 0.8 0.1 0.8)
+
 
 #Executables
 
@@ -123,6 +131,8 @@ export MAIN_S='/media/DataStorageLinux/SVN/geole/branches/UNIBI_Branched_Model_2
 
 #For production version
 export MAIN_S='/media/DataStorageLinux/SVN/geole/branches/UNIBI_Branched_Model_2010/main_sp'
+#export MAIN_S='/media/DataStorageLinux/SVN/geole/branches/rev146/main_sp'
+#export MAIN_S='/media/DataStorageLinux/SVN/geole/branches/rev152/main_sp'
 #export MAIN_S='/media/DataStorageLinux/SVN/eurace/trunk/Integrated_Model_1.0/main_sp'
 #export MAIN_S='/media/DataStorageLinux/SVN/eurace/tags/Integrated_Model_1.0beta/main_sp'
 #export MAIN_P='/media/DataStorageLinux/SVN/eurace/trunk/Integrated_Model_1.0/main_pp'
