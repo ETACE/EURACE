@@ -36,41 +36,37 @@ done
 echo 'Batch runs:[' $RUNS ']'
 
 #Parameters
-#Tax experiment
+#1. Tax experiment
 #export EXPERIMENT_NAME="const_income_tax_rate"
-#export F1_values=$(seq 0.05 0.05 0.25)
+#export F1_values=$(seq 0.04 0.02 0.14)
 #export F1_values=$(seq 0.05 0.05 0.05)
 
-#Unemployment benefit experiment:
+#2. Unemployment benefit experiment:
 #export EXPERIMENT_NAME="gov_policy_unemployment_benefit_pct"
 #export F1_values=$(seq 0.60 0.10 1.00)
 
-#Technological progress experiment:
+#3. Technological progress experiment:
 #export EXPERIMENT_NAME="productivity_progress"
 #export F1_values=$(seq 0.00 0.0125 0.05)
 
-#Debt installment period
+#4. Debt installment period
 #export EXPERIMENT_NAME="const_installment_periods"
 #export F1_values=$(seq 6 3 24)
 #export F1_values=$(seq 6 1 6)
 
-#Debt rescaling factor
+#5. Debt rescaling factor
 export EXPERIMENT_NAME="debt_rescaling_factor"
 export F1_values=$(seq 0.0 0.2 0.8)
 
-#target leverage ratio
-#export EXPERIMENT_NAME="target_leverage_ratio"
-#export F1_values=$(seq 0.0 0.2 0.8)
+#6. Dividend earnings ratio
+#export EXPERIMENT_NAME="const_dividend_earnings_ratio"
+#export F1_values=$(seq 0.1 0.1 0.7)
 
-#target liquidity ratio
-#export EXPERIMENT_NAME="target_liquidity_ratio"
-#export F1_values=$(seq 0.0 0.2 0.8)
-
-#bank capital reserve ratio: value-at-risk <= alfa * equity
+#7. Bank leverage ratio: value-at-risk <= alfa * equity
 #export EXPERIMENT_NAME="alfa"
 #export F1_values=$(seq 4 0.5 10)
 
-#ECB base interest rate
+#8. ECB base interest rate
 #export EXPERIMENT_NAME="ecb_interest_rate"
 #export F1_values=$(seq 0.01 0.01 0.05)
 
@@ -97,10 +93,12 @@ export F1_values=$(seq 0.0 0.2 0.8)
 ##UNIBI settings:
 
 #For debug version
+export MAIN_S='/home/svdhoog/EURACE/SVN/geole/branches/UNIBI_Branched_Model_2010/main_sd'
 #export MAIN_S='/home/svdhoog/EURACE/SVN/eurace/trunk/Integrated_Model_1.0/main_sd'
 #export MAIN_P='/home/svdhoog/EURACE/SVN/eurace/trunk/Integrated_Model_1.0/main_pd'
 
 #For production version
+export MAIN_S='/home/svdhoog/EURACE/SVN/geole/branches/UNIBI_Branched_Model_2010/main_sp'
 #export MAIN_S='/home/svdhoog/EURACE/SVN/eurace/trunk/Integrated_Model_1.0/main_sp'
 #export MAIN_P='/home/svdhoog/EURACE/SVN/eurace/trunk/Integrated_Model_1.0/main_pp'
 
@@ -114,14 +112,14 @@ export F1_values=$(seq 0.0 0.2 0.8)
 ##Ubuntu Laptop settings:
 
 #For debug version
-export MAIN_S='/media/DataStorageLinux/SVN/geole/branches/UNIBI_Branched_Model_2010/main_sd'
+#export MAIN_S='/media/DataStorageLinux/SVN/geole/branches/UNIBI_Branched_Model_2010/main_sd'
 #export MAIN_S='/media/DataStorageLinux/SVN/eurace/trunk/Integrated_Model_1.0/main_sd'
 #export MAIN_P='/media/DataStorageLinux/SVN/eurace/trunk/Integrated_Model_1.0/main_pd'
 #export MAIN_S='/media/DataStorageLinux/SVN/eurace/tags/exported/main_sd'
 #export MAIN_S='/media/DataStorageLinux/SVN/eurace/branches/UNIBI_Branched_Model/main_sd'
 
 #For production version
-export MAIN_S='/media/DataStorageLinux/SVN/geole/branches/UNIBI_Branched_Model_2010/main_sp'
+#export MAIN_S='/media/DataStorageLinux/SVN/geole/branches/UNIBI_Branched_Model_2010/main_sp'
 #export MAIN_S='/media/DataStorageLinux/SVN/eurace/trunk/Integrated_Model_1.0/main_sp'
 #export MAIN_S='/media/DataStorageLinux/SVN/eurace/tags/Integrated_Model_1.0beta/main_sp'
 #export MAIN_P='/media/DataStorageLinux/SVN/eurace/trunk/Integrated_Model_1.0/main_pp'
@@ -134,7 +132,7 @@ export MAIN_S='/media/DataStorageLinux/SVN/geole/branches/UNIBI_Branched_Model_2
 
 #Location of the model XML (used to generate the SQL DB)
 #export MODEL_XML_DIR='/media/DataStorageLinux/SVN/eurace/trunk/Integrated_Model_1.0'
-export MODEL_XML_DIR='/media/DataStorageLinux/SVN/geole/branches/UNIBI_Branched_Model_2010'
+#export MODEL_XML_DIR='/media/DataStorageLinux/SVN/geole/branches/UNIBI_Branched_Model_2010'
 export MODEL_XML_FILE='eurace_model.xml'
 
 ######### STEP 2: CREATION OF EXPERIMENT FOLDER HIERARCHY 
