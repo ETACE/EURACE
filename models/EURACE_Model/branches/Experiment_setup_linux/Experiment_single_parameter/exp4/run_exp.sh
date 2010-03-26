@@ -28,7 +28,7 @@ export NR_NODES=1
 export NUM_PROCS=2
 
 #Set number of batch runs
-export TOTAL_RUNS=10
+export TOTAL_RUNS=1
 RUNS=''
 for ((j=1; j<=TOTAL_RUNS; j++)); do
     export RUNS=$RUNS' '$j
@@ -51,8 +51,8 @@ echo 'Batch runs:[' $RUNS ']'
 
 #4. Debt installment period
 export EXPERIMENT_NAME="const_installment_periods"
-export F1_values=$(seq 6 3 24)
-#export F1_values=$(seq 6 1 6)
+#export F1_values=$(seq 6 3 24)
+export F1_values=$(seq 6 1 6)
 
 #5. Debt rescaling factor
 #export EXPERIMENT_NAME="debt_rescaling_factor"
@@ -107,7 +107,7 @@ export MAIN_S='/home/svdhoog/EURACE/SVN/geole/branches/UNIBI_Branched_Model_2010
 
 #Location of the model XML (used to generate the SQL)
 #export MODEL_XML_DIR='/home/svdhoog/EURACE/SVN/eurace/trunk/Integrated_Model_1.0'
-
+export MODEL_XML_DIR='/media/DataStorageLinux/SVN/geole/branches/UNIBI_Branched_Model_2010'
 
 ##Ubuntu Laptop settings:
 
@@ -132,7 +132,7 @@ export MAIN_S='/home/svdhoog/EURACE/SVN/geole/branches/UNIBI_Branched_Model_2010
 
 #Location of the model XML (used to generate the SQL DB)
 #export MODEL_XML_DIR='/media/DataStorageLinux/SVN/eurace/trunk/Integrated_Model_1.0'
-#export MODEL_XML_DIR='/media/DataStorageLinux/SVN/geole/branches/UNIBI_Branched_Model_2010'
+export MODEL_XML_DIR='/media/DataStorageLinux/SVN/geole/branches/UNIBI_Branched_Model_2010'
 export MODEL_XML_FILE='eurace_model.xml'
 
 ######### STEP 2: CREATION OF EXPERIMENT FOLDER HIERARCHY 
