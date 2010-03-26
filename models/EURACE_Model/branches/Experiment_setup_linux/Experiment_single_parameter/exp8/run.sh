@@ -18,28 +18,28 @@
 	#rm node*.xml
 
 	#Create the SQL database
-	python $BASE/gendb.py $MODEL_XML_DIR/$MODEL_XML_FILE ./
+#	python $BASE/gendb.py $MODEL_XML_DIR/$MODEL_XML_FILE ./
 
 	#Rename to VisGUI default name
-	mv iterdata.db iters.db
+#	mv iterdata.db iters.db
 
 	#Compress the xml files and remove them
-	#echo '+ Compressing and removing the xml files'
-	#tar -cvj --remove-files --overwrite --file=xmlfiles.tar.bz *.xml
+	echo '+ Compressing and removing the xml files'
+	tar -cvj --remove-files --overwrite --file=xmlfiles.tar.bz *.xml
 
 	#Just remove the xml files
 	#echo '+ Removing the xml files'
 	#rm *.xml
 
 	#Remove the xml files, except multiples of 240
-	echo '+ Removing xml files, except multiples of 240'
-	for i in *.xml; do
-	   filebase=`basename $i .xml`
-	   if (( filebase % 240 != 0 )); then
-	       echo "Removing $i"
-	       rm $i
-	   fi
-	done
+	#echo '+ Removing xml files, except multiples of 240'
+	#for i in *.xml; do
+	#   filebase=`basename $i .xml`
+	#   if (( filebase % 240 != 0 )); then
+	#       echo "Removing $i"
+	#       rm $i
+	#   fi
+	#done
 
 	#Compress the databases without removing originals
 	#echo '+ Compressing iters.db, keeping the original'
