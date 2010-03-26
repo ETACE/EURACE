@@ -132,7 +132,7 @@ export MAIN_S='/home/svdhoog/EURACE/SVN/geole/branches/UNIBI_Branched_Model_2010
 
 #Location of the model XML (used to generate the SQL DB)
 #export MODEL_XML_DIR='/media/DataStorageLinux/SVN/eurace/trunk/Integrated_Model_1.0'
-#export MODEL_XML_DIR='/media/DataStorageLinux/SVN/geole/branches/UNIBI_Branched_Model_2010'
+export MODEL_XML_DIR='/media/DataStorageLinux/SVN/geole/branches/UNIBI_Branched_Model_2010'
 export MODEL_XML_FILE='eurace_model.xml'
 
 ######### STEP 2: CREATION OF EXPERIMENT FOLDER HIERARCHY 
