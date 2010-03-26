@@ -12,6 +12,11 @@
 # - remove the node-*.xml files
 ###################################################################################
 
+	#TIMEFILE=$BASE'/timing.txt'
+	#echo 'BASE='$BASE
+	#echo 'TIMEFILE='$TIMEFILE
+	#/usr/bin/time -o $TIMEFILE "Time (s): %e" -a $MAIN_S $ITS output.xml
+
 	$MAIN_S $ITS output.xml
 	#mpiexec -n $NR_NODES $MAIN_P $ITS output.xml -r
 	#bash $BASE/join.sh ./ $NR_NODES
@@ -32,14 +37,17 @@
 	#rm *.xml
 
 	#Remove the xml files, except multiples of 240
-	echo '+ Removing xml files, except multiples of 240'
-	for i in *.xml; do
-	   filebase=`basename $i .xml`
-	   if (( filebase % 240 != 0 )); then
-	       echo "Removing $i"
-	       rm $i
-	   fi
-	done
+#	echo '+ Removing xml files, except multiples of 240'
+#	for i in *.xml; do
+#	   filebase=`basename $i .xml`
+#	   if (( filebase % 240 != 0 )); then
+#	      echo "Removing $i"
+#	      rm $i
+#	   fi
+#	done
+
+	#python $BASE/gendb.py $MODEL_XML_DIR/$MODEL_XML_FILE ./
+	#mv iterdata.db iters.db
 
 	#Compress the databases without removing originals
 	#echo '+ Compressing iters.db, keeping the original'
