@@ -46,7 +46,7 @@ echo 'Batch runs:[' $RUNS ']'
 #export F1_values=$(seq 0.60 0.10 1.00)
 
 #3. Technological progress experiment:
-export EXPERIMENT_NAME="productivity_progress"
+export EXPERIMENT_NAME="igfirm_exogenous_productivity_progress"
 export F1_values=$(seq 0.00 0.0125 0.05)
 
 #4. Debt installment period

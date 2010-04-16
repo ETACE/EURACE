@@ -24,6 +24,9 @@ for f1 in $F1_values; do
                 echo -n $f1>>specific.xml
                 echo '</'$EXPERIMENT_NAME'>'>>specific.xml
 
+                echo -n '<'income_tax_rate'>'>>specific.xml
+                echo "scale=2;$f1/10"|bc -l>>specific.xml			#use bc to do division, 2 decimals
+                echo '</income_tax_rate>'>>specific.xml
                 echo '</environment>'>>specific.xml
                 
                 cd -

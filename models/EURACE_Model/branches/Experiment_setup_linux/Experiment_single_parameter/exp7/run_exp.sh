@@ -64,7 +64,8 @@ echo 'Batch runs:[' $RUNS ']'
 
 #7. Bank leverage ratio: value-at-risk <= alfa * equity
 export EXPERIMENT_NAME="alfa"
-export F1_values=$(seq 4 0.5 10)
+export F1_values=$(seq 3.0 0.5 3.5)
+#export F1_values=$(seq 4 0.5 10)
 
 #8. ECB base interest rate
 #export EXPERIMENT_NAME="ecb_interest_rate"
