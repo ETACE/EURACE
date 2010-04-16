@@ -1,0 +1,23 @@
+<states>
+<outputs>
+<output><type>snapshot</type><name/><location>./</location><format>xml</format><time><period>10000</period><phase>0</phase><duration/></time></output>
+<output><type>agent</type><name>Eurostat</name><location>./</location><format>xml</format><time><period>20</period><phase>0</phase><duration/></time></output>
+</outputs>
+<imports>
+<import>
+ <location>../../../0_transient.xml</location>       # the location of the data
+ <format>xml</format>                # the format of the data
+ <type>environment</type>            # environment or agent data
+</import>
+<import>
+ <location>../../../0_transient.xml</location>       # the location of the data
+ <format>xml</format>                # the format of the data
+ <type>agent</type>            # environment or agent data
+</import>
+<import>
+ <location>../specific.xml</location>       # the location of the data
+ <format>xml</format>                # the format of the data
+ <type>environment</type>            # environment or agent data
+</import>
+</imports>
+</states>

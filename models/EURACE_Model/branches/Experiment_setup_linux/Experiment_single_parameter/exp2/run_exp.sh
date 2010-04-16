@@ -43,7 +43,8 @@ echo 'Batch runs:[' $RUNS ']'
 
 #2. Unemployment benefit experiment:
 export EXPERIMENT_NAME="gov_policy_unemployment_benefit_pct"
-export F1_values=$(seq 0.60 0.10 1.00)
+export F1_values=$(seq 0.50 0.10 0.90)
+#export F1_values=$(seq 5 1 9)
 
 #3. Technological progress experiment:
 #export EXPERIMENT_NAME="productivity_progress"
