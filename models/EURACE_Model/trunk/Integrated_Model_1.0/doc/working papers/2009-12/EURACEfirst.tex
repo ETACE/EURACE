@@ -1,0 +1,779 @@
+% Please use this template when submitting a paper in LaTex to E-conomics.
+% Please note the following:
+%   1. If possible, do not include any other packages and do not change any other settings in the header of this file without consultation of the editorial board.
+%   2. Please insert all Tables as a LaTex-Table-object (see below).
+%   3. Please insert all Figures from eps-formatted graphs (see below).
+%   4. Do not use BibTex for your references unless you can provide a style-file that replicates the required format for E-conomics.
+%   5. Please provide the title page for your paper as a separate document.
+%   6. Please pay attention to the notes given below.
+% Revision schedule:
+% Written by Jonas Dovern, March 2007
+%   November 2008, revised by Jonas Dovern for use by external users
+
+
+\documentclass[12pt,twoside,fleqn,a4paper]{article}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage[paper=a4paper,left=30mm,right=30mm,top=30mm,bottom=30mm]{geometry}
+\usepackage{amsmath,amssymb,latexsym,amsfonts,url,rotating,dcolumn,ifthen,subfigure}
+\usepackage[mathscr]{eucal}
+\usepackage[usenames]{color}
+\usepackage[dvips]{hyperref}
+\usepackage{longtable}
+\usepackage[latin1]{inputenc}
+\usepackage[comma,authoryear]{natbib}
+\usepackage{graphicx}
+\usepackage{epsfig}
+\usepackage{lscape}
+\usepackage{fancyhdr}
+\usepackage{setspace}
+\usepackage{geometry}
+
+\setcounter{MaxMatrixCols}{10}
+%TCIDATA{OutputFilter=LATEX.DLL}
+%TCIDATA{Version=5.50.0.2890}
+%TCIDATA{<META NAME="SaveForMode" CONTENT="1">}
+%TCIDATA{BibliographyScheme=Manual}
+%TCIDATA{LastRevised=Friday, February 27, 2009 12:08:51}
+%TCIDATA{<META NAME="GraphicsSave" CONTENT="32">}
+
+\fancyhf{}
+\fancyhead[RE,LO]{{\small \emph{Economics Discussion Paper}}}
+\fancyhead[LE,RO]{{\small \thepage}}
+\fancyfoot[LE,RO]{{\small \emph{www.economics-ejournal.org}}}
+\setstretch{1.0}
+\input{tcilatex}
+
+\begin{document}
+
+\setcounter{page}{1} \pagestyle{fancy}
+
+\section*{Introduction}
+\label{intro}
+The paper presents a study on the interplay between the amount of credit money in the economy and the macroeconomic performance, based on the Eurace model and simulator.
+
+This simulator is the outcome of a three years project September 2006 with the aim to
+design an agent-based macroeconomic simulation platform that integrates
+different sectors and markets. A description of the simulator and of its main features
+is given in section \ref{The Model}, while in this introduction we want to
+point out some general aspects that are relevant to specific investigation
+issue of the paper.
+
+The overall philosophy of the Eurace Project is part of the research program on
+a Generative Social Science \citep{Epstein99,Epstein96}, which seeks to explain
+socio-economic phenomena by constructing artificial societies that generates
+possible explanations from the bottom-up. The field of agent-based
+computational economics (ACE) has been characterized by a great deal of
+development in recent years (see \cite{tesfatsion06} for a recent survey), but
+we think that the Eurace project has been the first successful effort to build
+a complete economy that integrates all the main markets and economic mechanisms
+which exist in the real world. In particular, the interactions between the real
+and the financial sides of the economy are essential to generate and to
+understand the results presented in this study. In the last decade, in the ACE
+field, there have been many studies regarding finance (see \cite{lebaron06} for
+a review), while others have focused on labour and goods market
+\cite{tassier01,tesfatsion01c} or industrial organization \cite{kutschinski03}.
+However, only a few partial attempts have been made to model a multiple-market
+economy as a whole \citep{basu98,bruun99,sallans03}. In this respect, the
+Eurace simulator is certainly more complete, incorporating many crucial
+connections between the real economy and the credit and financial markets. We
+think that, in order to understand the recent crisis, and in general the
+profound functioning of modern economies, it is not possible to ignore that
+connections any more.
+
+The Eurace agent-based framework provides a powerful computational facility
+where experiments concerning policy design issues can be performed. It offers a
+realistic environment, characterized by non-clearing markets and bounded
+rational agents, well suited for studying the out-of equilibrium transitory
+dynamics of the economy caused by policy parameters changes.
+
+From a strictly macroeconomic point of view, we focus our analysis on the
+understanding of output and prices variabilities in the Eurace economic
+environment. This central topic has been addressed by S. Bernanke in a well
+known speech at the Federal Reserve Board in 2004, but after the crisis it
+surely needs to be revisited \citep{Bernanke04}. The talk of Bernanke regarded
+the so called ``Great Moderation", i.e., the decline in the variability of both
+output and inflation in the last twenty years, and argued that it could be
+explained by the improved ability of the economy to absorb shocks. Shocks are
+considered, in line with the dynamic stochastic general equilibrium modeling
+approach, as the main source of economic instability. In this paper we show
+that instability can also endogenously arise as a consequence of agents
+decision making. The issue is of primary importance because, as Bernanke says,
+reducing macroeconomic volatility has numerous benefits. Lower volatility of
+inflation improves market functioning, makes economic planning easier, and
+reduces the resources devoted to hedging inflation risks. Lower volatility of
+output tends to imply more stable employment and a reduction in the extent of
+economic uncertainty confronting households and firms. Unfortunately, the
+recent crisis pointed out the times we are living are not so ``moderate" as the
+FED chairman and many main stream economists showed to think. Moreover, the
+effectiveness of monetary policies based on a ``Taylor rule" structure is
+seriously in question.
+
+The aim of our paper is twofold. First we investigate if the decision about
+dividends payment by the firms can affect the variability of output and prices,
+and our results are clearly affirmative in this respect. Then we adopt the
+policy measure of quantitative easing, that has been largely used by the FED
+and the Bank of England during the recent crisis \footnote{See, for instance,
+Willem Buiter blog at FT for a report on Bank of England balance sheet
+explosion (
+http://blogs.ft.com/maverecon/2009/09/what-can-be-done-to-enhance-qe-and-ce-in-the-uk-and-who-decides/)},
+in order to understand its effect on economic instability.
+
+In concrete terms, our experiments on the Eurace platform consist of different
+simulations for different parameter values. We take into consideration the
+effects of two critical parameters of the model.
+
+The first one, as said above, regards the financial management decision making
+of the firms, and corresponds to the fraction of net earnings paid by the firm
+to shareholders in form of dividends. The dividends decision impacts on many
+sectors of the model. In the financial market, for instance, agents beliefs on
+asset returns take into account corporate equity and expected cash flows,
+establishing an endogenous integration between the financial side and the real
+side of the economy. In particular, fundamentalist trading behavior is based on
+the difference between stock market capitalization and the book value of equity,
+therefore generating an interaction between the equity of the firm and the price
+of its asset in the financial market. Concerning the credit market, the
+dividends payment is strongly correlated with the loans request of the firm and
+consequently influences the amount of credit created by the commercial banks; as
+our results show in section \ref{Computational Experiments}, the credit amount
+proves to be decisive for its effects on the variability of output and prices.
+
+The second parameter of our study is a binary flag that activates the
+possibility for the central bank to buy treasure bills in the financial market,
+when a government asks for it. In practical terms, the central bank expands its
+balance sheet by purchasing government bonds. This form of monetary policy,
+widely adopted during the global financial and economic crisis of the years
+2007-09, which is used to stimulate an economy where interest rates are close
+to zero, is called quantitative easing (QE). The creation of this new money is
+intended to seed the increase in the overall money supply through deposit
+multiplication by encouraging lending by these institutions and reducing the
+cost of borrowing, thereby stimulating the economy. Besides, quantitative
+easing is intended to help the funding of government budget deficit, by
+reducing the cost of debt as well as reducing the risk of debt rolling over.
+
+The paper is organized as follows. In section \ref{The Model} it is given an
+overall description of the model with particular attention to the features that
+are relevant to this article. Section \ref{Computational Experiments} presents
+the computational results of our study and a related discussion.
+
+
+\section{The Model}
+\label{The Model}
+
+\subsection{The Eurace simulator}
+The EURACE model is, probably by far, the largest and most complete agent-based
+model developed in the world to date. It represents a fully integrated
+macroeconomy consisting of three economic spheres: the real sphere (consumption
+goods, investment goods, and labour market), the financial sphere (credit and
+financial markets), and the public sector (Government, Central Bank and
+Eurostat).
+
+Given the complexity of the underlying technological framework and given the
+considerable extension of the Eurace model, it is not possible to present
+within this paper an exhaustive explanation of the economic modelling choices,
+together with a related mathematical or algorithmic description. Consequently,
+we will limit our approach to a general qualitative explanation of the main key
+features of the model, treating in a concise way each different market, and
+giving prominence to the those modelling aspects that attain to the argument of
+the specific analysis we are presenting in this paper.
+
+If the reader will need more details about the Eurace implementation, he will
+find a quite exhaustive summary in the \cite{Eurace_Final_Report}. Moreover,
+when needed, we will cite specific Eurace deliverables. Some general
+information on Eurace can be found in \cite{Deissenberg08}.
+
+Before proceeding with the description of agents and markets of Eurace, we
+introduce some general aspects of the model.
+
+
+\subsection{General features}
+The choice of time scales for the agents' decision making in Eurace has been
+made in order to reflect the real time scales in economic activities, and
+interaction among households are generally asynchronous. This means that
+different agents are active on the same markets on different days. Synchronous
+decision making or synchronous interactions are used whenever it reflects what
+happens in reality.
+
+Both the modelling of agents behaviors and the modelling of markets protocols
+are empirically inspired by the real world.
+
+Agent decision processes follow the usual and realistic assumptions of
+agent-based economics about bounded rationality, limited information gathering
+and storage capacities, and limited computational capabilities of the economic
+agents; see e.g. \citet{Tesfatsion06} for a recent survey on this approach.
+These assumptions lead us to use simple heuristics to model the agents'
+behaviour, derived from the management literature for firms, and from
+experimental and behavioural economics for consumers/investors
+\citep{Deaton92,Benartzi95}. We also make use of experimental evidence from the
+psychological literature on decision making. For example, the modelling of
+households' portfolio decisions on the financial market is based on Prospect
+Theory (see \cite{Kahneman79,Tversky92}).
+
+The rules used by the agents are simple but not necessarily fixed. Their
+parameters can be subject to learning, and thus adapted to a changing economic
+environment. Here we can make a distinction between adaptive agents and
+learning agents: the first use simple stimulus-response behaviour to only adapt
+their response to their environment, while the last use a conscious effort to
+learn about the underlying structure of their environment.
+
+Different market protocols characterize the markets of the Eurace model. For the
+consumption goods market all consumer-firm interactions go through the local
+outlet malls. Households go shopping on a weekly basis. This closely mimics
+reality and is a simple form to model localized markets with potential
+rationing on both sides. In particular the used market protocols capture
+important market frictions based on problems of search, matching and
+expectation formation in turbulent environments that are present in real world
+labour and goods markets. The labour market functions by way of a local
+search-and-matching protocol that likewise resembles a real world job search by
+unemployed workers. For the artificial financial market we model a
+clearinghouse. For the credit market we use a firm-bank network interaction
+mechanism where firms can apply for loans with at most $n$ banks, where $n$ is
+a parameter that can be set by the modeler.
+
+\subsection{The balance sheet approach}
+
+In this section we stress the importance of using a balance sheet approach as a
+modelling paradigm.
+
+ In the Eurace model, a double-entry balance sheet with a detailed account of
+all monetary and real assets as well as monetary liabilities is defined for
+each agent. Monetary and real flows, given by agents' behaviors and
+interactions, determine the period by period balance sheet dynamics. A
+stock-flow model is then created and used to check that all monetary and real
+flows are accounted for, and that all changes to stock variables are consistent
+with these flows. This provides us with a solid and economically well-founded
+methodology to test the consistency of the model.
+
+%In order to explain our approach, let us consider the monetary and financial assets in Eurace,
+
+%\begin{itemize}
+%  \item cash holdings in the form of commercial bank or central bank
+%deposits. There is no cash hoarding since all money is held
+%inside the banking sector,
+%  \item bank loans,
+%  \item central bank standing facility,
+%  \item government bonds,
+%  \item equity shares (issued by firms and banks),
+%\end{itemize}
+%
+%and real assets,
+%
+%\begin{itemize}
+%  \item firms inventories,
+%  \item physical capital,
+%  \item human capital.
+%\end{itemize}
+
+\begin{table}
+  \centering
+  \begin{tabular}{|l|l|}
+  \hline
+  % after \\: \hline or \cline{col1-col2} \cline{col3-col4} ...
+ \textbf{Assets}  &  \textbf{Liabilities} \\ \hline
+
+   $M^h$: liquidity deposited at a given \emph{bank} & \\
+
+   $n^h_g$:  government bonds holdings & (none)\\
+
+   $n^h_f$, $n^h_b$:  equity shares holdings of  & \\
+   \hspace{1.1cm} firm $f$ and bank $b$ & \\
+  \hline
+\end{tabular}
+\caption{Household (H): balance sheet overview}
+\label{bshousehold}
+\end{table}
+
+In order to explain our approach, let us consider the balance sheets of the
+different agents of the model.
+
+Household's balance sheet is reported in table \ref{bshousehold}. Its financial
+wealth is given by
+
+$$W = M^h + \sum_{f \in \{firms\}} n^h_f p_f + \sum_{b \in \{banks\}} n^h_b p_b
++ \sum_{g \in \{ governments\}} n^h_g p_g$$
+
+where  $p_f$, $p_b$ are daily prices of equity shares issued by firm $f$ and
+bank $b$, respectively; while $p_g$ is the daily price of the bond issued by
+government $g$.
+
+\begin{table}
+  \centering
+  \begin{tabular}{|l|l|}
+  \hline
+  % after \\: \hline or \cline{col1-col2} \cline{col3-col4} ...
+ \textbf{Assets}  &  \textbf{Liabilities} \\ \hline
+
+   $M^f$: liquidity deposited at a given \emph{bank} & $D^f_b$: debts to
+\emph{banks} \\
+
+   $I^f_m$: inventories at \emph{malls} & $E^f$: equity\\
+
+   $K^f$: physical capital &  \\
+  \hline
+\end{tabular}
+\caption{Firm (f): balance sheet overview}
+\label{bsfirm}
+\end{table}
+
+
+Firm's balance sheet is shown in table \ref{bsfirm}. $M^f$ and $I^f_m$ are
+updated daily following firms' cash flows and sales, while $K^f$ and $D^f_b$
+are updated updated monthly. The equity $E^{f}$ is also updated monthly
+according to the following rule:
+
+  $$E^{f} = M^{f} + p_C \sum_{m \in \{ malls\}} I^f_m + p_K K^f -\sum_{b \in \{
+banks\}} D^f_b$$
+
+where $p_C$ is the average price level of consumption goods and $p_K$ is the
+price of capital goods.
+
+\begin{table}
+  \centering
+  \begin{tabular}{|l|l|}
+  \hline
+  % after \\: \hline or \cline{col1-col2} \cline{col3-col4} ...
+ \textbf{Assets}  &  \textbf{Liabilities} \\ \hline
+
+   $M^b$: liquidity (reserves) & $D^{b}$: standing facility \\
+   \hspace{0.7cm} deposited at the \emph{central bank} & \hspace{0.7cm}  (debts
+to the \emph{central bank}) \\
+
+   $L^b_f$: loans to firms & $M^b_h$: households' deposits \\
+    & \hspace{0.6cm} at the bank \\
+
+    & $M^b_f$: firms' deposits at the bank \\
+
+   & $E^b$: equity\\
+  \hline
+\end{tabular}
+\caption{Bank (b): balance sheet overview}
+\label{bsbank}
+\end{table}
+
+Table \ref{bsbank} reports the balance sheet of the bank. $M^b_h$, $M^b_f$,
+$L^b_f$ are updated daily following the private sector deposits changes and the
+credit market outcomes. $M^b$ and $E^b$ are updated daily following banks cash
+flows and also:
+
+$$M^b = D^b + \sum_{h \in \{ households\}} M^b_h + \sum_{f \in \{ firms\}} M^b_f
++ E^b - \sum_{f \in \{ firms\}} L^b_f$$
+
+If $M^b$ becomes negative, $D^b$ is increased to set $M^b = 0$. If both $M^b$
+and $D^b$ are positive, $D^b$ is partially or totally repaid.
+
+In order to understand the functioning of money creation, circulation and
+destruction in EURACE, as a starting point we need to have clear in mind how
+bank's balance sheet looks like.
+
+Let's start with the money creation issue: four channels of money formation are
+open. The most important is, as explained above, when banks grant loans to
+firms, and new money (M1) appears in the form of firm's increased payment
+account (and, thus, increased deposits). The second channel operates when the
+central bank is financing banks through lending of last resort, and money
+creation (Fiat money) translates in augmented bank's reserves. Government Bond
+issuing constitutes the third channel: it is at work whenever the quantitative
+easing (QE) feature is active and thus the CB is forced to buy government bonds
+in the financial market. Finally, the fourth and last channel is represented by
+bailouts of commercial banks by the CB.
+
+So far we have dealt with money creation, but money's story has other two
+chapters: circulation and destruction. Since there is not currency, that is no
+money is present outside the banking system, when agents (firms, households or
+Government) use their liquid assets to settle in favor of other agents, money
+should simply flow from payer's bank account to taker's bank account, obviously
+keeping itself constant (such cash movements are accounted at the end of the
+day, when agents communicate to banks all their payments).
+On the contrary, whenever a debt is repaid, money stock has to decrease
+accordingly. For technical details and a more exhaustive discussion on these
+issues, see \cite{Eurace_Final_Report}.
+
+
+\begin{table}
+  \centering
+  \begin{tabular}{|l|l|}
+  \hline
+  % after \\: \hline or \cline{col1-col2} \cline{col3-col4} ...
+ \textbf{Assets}  &  \textbf{Liabilities} \\ \hline
+
+   $M^g$: liquidity deposited at the   & $D^g$: standing facility with the\\
+   \hspace{0.7cm} central bank & \hspace{0.7cm} central bank\\
+
+    & $n^g$: number of outstanding bonds\\
+  \hline
+\end{tabular}
+\caption{Government (g): balance sheet overview}
+\label{bsgov}
+\end{table}
+
+
+Finally, the balance sheets of the government and of the central bank are
+reported in tables \ref{bsgov} and \ref{bscb}, respectively.
+
+The government budget is composed by taxes on corporate profits, household labor
+and capital income, as revenues, and unemployment benefits, transfer and
+subsidies, as expenses.
+
+Since the Central Bank is not allowed to make a profit, its revenues from
+government bonds and bank advances are distributed to the government in the
+form of a dividend. In case of multiple governments, the total dividend payment
+is equally divided among the different governments.
+
+These modelling hypothesis lead to the definition of a precise ``EURACE time
+invariant" feature, consisting in a fundamental macroeconomic accounting
+identity:\\
+
+$$\Delta \Big( \sum_{h} M^h + \sum_{f} M^f \Big) + \Delta \Big( \sum_{b}E^b
+\Big) + \Delta  \Big( \sum_{g} M^g + M^c \Big)$$
+\tiny \hspace{1cm} private sector deposits  \hspace{0.5cm} + \hspace{0.5cm}
+banks' equity  \hspace{0.5cm} + \hspace{0.5cm} public sector deposits
+\normalsize
+$$=$$
+$$ \Delta \Big( M^c + \sum_{b} L^c_b + \sum_{g} L^c_g \Big) + \Delta \Big(
+\sum_{b} \sum_{f} L^b_f \Big)$$
+\tiny \hspace{3cm} fiat money  \hspace{1.5cm} + \hspace{1cm} credit money
+\normalsize
+
+
+The meeting of this equation is a necessary condition to validate the aggregate
+stock-flow consistency of EURACE model. For policy considerations, it is
+clearly important to consider the monetary endowment of agents in the private
+sector, i.e.,
+
+    $$ \sum_{h} M^h + \sum_{f} M^f  + \sum_{b}E^b  $$
+
+
+An higher monetary endowment due, e.g., to a loose fiscal policy and QE, leads
+to a higher nominal demand that not necessarily translates into a higher real
+demand. It depends on the behavior of prices.
+
+\begin{table}
+  \centering
+  \begin{tabular}{|l|l|}
+  \hline
+  % after \\: \hline or \cline{col1-col2} \cline{col3-col4} ...
+ \textbf{Assets}  &  \textbf{Liabilities} \\ \hline
+
+   $n^{c}_g$: Government bonds (QE)  & $M^c$: fiat money due to QE\\
+
+   $M^{c}$: liquidity & $M_g^c$: Governments liquidity \\
+
+   $L^{c}_b$: loans to banks & $M_b^c$: banks reserves\\
+
+   $L^{c}_g$: loans to governments & $E^c$: equity\\
+  \hline
+\end{tabular}
+\caption{Central Bank (c): balance sheet overview}
+\label{bscb}
+\end{table}
+
+
+%In EURACE two kinds of money are present: monetary base issued by the Central Bank (Fiat money) and credit money issued by the commercial banks. Monetary base and commercial banks' money have not been distinguished, but this is not a problem using the due precaution. Assuming that money is a debt, whenever a financial agent issues new debts, money stock has to increase of the same amount, while it has to decrease when a debt is repaid.
+%In the model banks are at the core of the system of payments: each transaction passes through the bank channel. Firms and households do not hold money as currency but under the form of bank deposits. Hence, the sum of payment accounts of bank's clients is equal to bank's deposits. As a consequence, every transaction (payment) between two non-financial agents translates into a transaction between two banks. At the end of every day, agents communicate the consistency of their liquid assets to their banks; then each bank can account for the net difference between inflows and outflows of money from and to the other banks and, if its reserves are negative, a compensating lending of last resort by the central bank is always granted. Thus, a sort of Deferred Net Settlement System has been implemented.
+%
+%
+%In order to understand the functioning of money creation, circulation and destruction in EURACE, as a starting point we need to have clear in mind how bank's balance sheet looks like.
+%
+%
+%Let's start with the money creation issue: four channels of money formation are open. The most important is, as explained above, when banks grant loans to firms, and new money (M1) appears in the form of firm's increased payment account (and, thus, increased deposits). The second channel operates when the central bank is financing banks through lending of last resort, and money creation (Fiat money) translates in augmented bank's reserves. Government Bond issuing constitutes the third channel: it is at work whenever the quantitative easing (QE) feature is active and thus the CB is forced to buy government bonds in the financial market. Finally, the fourth and last channel is represented by  bailouts of commercial banks by the CB. These modelling hypothesis lead to the definition of a precise "EURACE time invariant" feature, consisting in a fundamental macroeconomic accounting identity:\\
+%
+%$TOTAL LOANS + FIAT MONEY = PRIVATE SECTOR DEPOSITS + P
+%UBLIC SECTOR DEPOSITS$ \\
+%
+%The meeting of this equation is a necessary condition to validate the aggregate stock-flow consistency of EURACE model.
+%
+%
+%So far we have dealt with money creation, but money's story has other two chapters: circulation and destruction. Since there is not currency, that is no money is present outside the banking system, when agents (firms, households or Government) use their liquid assets to settle in favor of other agents, money should simply flow from payer's bank account to taker's bank account, obviously keeping itself constant (such cash movements are accounted at the end of the day, when agents communicate to banks all their payments). %On the contrary, whenever a debt is repaid, money stock has to decrease accordingly. For technical details and a more exhaustive discussion on these issues, see FINAL REPORT. \cite{Deissenberg08}
+
+\subsection{The goods market}
+For detailed information about the economic modelling choices characterizing the
+goods and the labor markets, see \cite{EuraceD7.1,EuraceD7.2}. See also
+\cite{Dawid08} and \cite{Dawid09} for additional explanations and for some
+discussion and analysis of computational experiments directly involving the two
+markets. What follows is a qualitative description of the main aspects that are
+relevant to the paper.
+
+The goods markets are populated by IGFirms (investment goods firms) that sell
+capital goods to CGfirms, that produce the final consumption good. Stocks of
+firms product are kept in regional malls that sell them directly to households.
+A standard inventory rule is employed for managing the stock holding. Standard
+results from inventory theory suggest that the firm should choose its desired
+replenishment quantity for a mall according to its expectations on demand,
+calculated by means of a linear regression based on previous demands.
+
+Consumption good producers need physical capital and labor to produce. The
+production technology in the consumption goods sector is represented by a
+Cobb-Douglas type production function with complementarities between the
+quality of the investment good and the specific skills of employees for using
+that type of technology. Factor productivity is determined by the minimum of
+the average quality of physical capital and the average level of relevant
+specific skills of the workers. Capital and labor input is substitutable with a
+constant elasticity and we assume constant returns to scale. The monthly
+realized profit of a consumption goods producer is the difference of sales
+revenues achieved in the malls during the previous period and costs as well as
+investments (i.e. labor costs and capital good investments) borne for
+production in the current period. Wages for the full month are paid to all
+workers at the day when the firm updates its labor force. Investment goods are
+paid at the day when they are delivered.
+
+Consumption good producers employ a standard approach from the management
+literature, the so-called `break-even analysis' to set their prices. The
+break-even formula determines at what point the change in sales becomes large
+enough to make a price reduction profitable and at what point the decrease in
+sales becomes small enough to justify a rise in the price. Basically, this
+managerial pricing rule corresponds to standard elasticity based pricing.
+
+Once a month households receive their income. Depending on the available cash,
+that is the current income from factor markets (i.e. labor income and dividends
+distributed by capital and consumption goods producers) plus assets carried over
+from the previous period, the household sets the budget which it will spend for
+consumption and consequently determines the remaining part which is saved. This
+decision is taken according to the buffer-stock saving theory
+\citep{Deaton92,Carroll01}.
+
+At the weekly visit to the mall in his region each consumer collects information
+about the range of goods provided and about the prices and inventories of the
+different goods. In the Marketing literature it is standard to describe
+individual consumption decisions using logit models. These models represent the
+stochastic influence of factors not explicitly modelled on consumption.We assume
+that a consumer's decision about which good to buy is random, where purchasing
+probabilities are based on the values he attaches to the different choices he
+is aware of. Since in our setup there are no quality differences between
+consumer goods and we also do not take account of horizontal product
+differentiation, choice probabilities depend solely on prices. Once the
+consumer has selected a good he spends his entire budget for that good if the
+stock at the mall is sufficiently large. In case the consumer cannot spend all
+his budget on the product selected first, he spends as much as possible,
+removes that product from its list, and selects another product to spend the
+remaining consumption budget there. If he is rationed again, he spends as much
+as possible on the second selected product and rolls over the remaining budget
+to the following week.
+
+\subsection{The labor market}
+The labor market is governed by a matching procedure that relates directly
+workers looking for a job and firms looking for labor force. On the demand
+side, firms post vacancies with corresponding wage offers. On the supply side,
+unemployed workers or workers seeking for a better job, compare the wage offers
+with their actual reservation wages. Then the matching algorithm operates by
+means of ranking procedures on the side both of firms and households (see
+\cite{Eurace_Final_Report} for more details).
+
+ The algorithm might lead to rationing of firms on the labor market and
+therefore to deviations of actual output quantities from the planned
+quantities. In such a case the quantities delivered by the consumption good
+producer to the malls is reduced proportionally. This results in lower stock
+levels and therefore it generally increases the expected planned production
+quantities in the following period.
+
+\subsection{The financial market}
+ For more detailed information on the financial market, see \cite{EuraceD6.1}
+and \cite{EuraceD6.2}. \cite{Teglio09} shows also economic results obtained by
+means of computational experiments in the financial market, mainly regarding
+the problem of the equity premium puzzle.
+
+ The EURACE artificial financial market operates on a daily basis and is
+characterized by a clearing house mechanism for price formation which is based
+on the matching of the demand and supply curves. The trading activity regards
+both stock and government bonds, while market participants are households,
+firms and the governments. Both firms and governments may occasionally
+participate to the market as sellers, with the purpose to raise funds by the
+issue of new shares or governments bonds. Households provide most of the
+trading activity in the market, to which they participate both for saving and
+speculation opportunities. Household preferences are designed taking into
+account the psychological findings emerged in the framework of behavioral
+finance and in particular of prospect theory \citep{Kahneman79,Tversky92}.
+Households portfolio allocation is then modeled according to a preference
+structure based on a key prospect theory insight, i.e., the myopic loss
+aversion, which depends on the limited foresight capabilities characterizing
+humans when forming beliefs about financial returns (see \citet{Benartzi95}).
+
+ A very relevant aspect with respect to the presented analysis, is fraction of
+earning $d$ that firms pay to shareholders in form of dividends. In this paper
+it is treated as a constant and varied in the different computational
+experiments.
+
+
+ \subsection{The credit market}
+
+ Concerning the credit market of Eurace, in the project deliverables
+\cite{EuraceD5.1,EuraceD5.2} the modelling philosophy and the technical details
+can be found.
+
+ Firms finance investments and production plans preferably with internal
+resources. When these funds are not sufficient, firms rely on external
+financing, applying for loans to the banks in the Credit Market. The decision
+about firms loan request is taken by the bank to which the firm applies and
+depends on the total amount of risk the bank is exposed to, as increased by the
+risk generated by the additional loan. If a firm is credit-rationed in the
+Credit Market, then it has other possibilities of financing, i.e. issuing new
+equity on the financial market.
+
+
+Commercial banks have two roles: one consists in financing the production
+activities of the firms, operating under a Basel II-like regulatory regime. The
+other role is to ensure the functioning of the payment system among trading
+agents. Finally, firms and households deposit entirely their liquid assets in
+the banks.
+
+In the model banks are at the core of the system of payments: each transaction
+passes through the bank channel. Firms and households do not hold money as
+currency but under the form of bank deposits. Hence, the sum of payment
+accounts of bank's clients is equal to bank's deposits. As a consequence, every
+transaction (payment) between two non-financial agents translates into a
+transaction between two banks. At the end of every day, agents communicate the
+consistency of their liquid assets to their banks; then each bank can account
+for the net difference between inflows and outflows of money from and to the
+other banks and, if its reserves are negative, a compensating lending of last
+resort by the central bank is always granted. Thus, a sort of Deferred Net
+Settlement System has been implemented.
+
+The Central Bank has several function in the Eurace model. It helps banks by
+providing them with liquidity when they are in short supply. It has the role of
+monitoring the banking sector setting the maximum level of leverage each bank
+can afford. It decides the lowest level of the interest rate, which is a
+reference value for the banking sector. If the quantitative easing feature is
+active, the central bank expands its balance sheet by purchasing government
+bonds in the financial market.
+
+
+\section{Computational Experiments}
+\label{Computational Experiments}
+A number of computational experiments has been performed in order to study the interplay between the supply of endogenous credit money and the performance of the economy, measured by the dynamics of the gross domestic product (GDP), the unemployment level, the dynamics of prices and the accumulation of physical capital in the economy.
+
+The dynamics of credit money is fully endogenous and depends on the supply of credit from the banking system, which is constrained by its equity base, and the demand of credit from firms in order to finance their production activity. Alternative dynamic paths for credit money have been produced by setting different firms' dividend policies. The ratio $d$ of net earnings that firms pay out as dividends has been exogenously set to four different values, namely, 0.6, 0.7, 0.8, and 0.9. It is clear that for higher values of $d$, firms' investments and hiring of new labor force must be financed more by new loans than by retained earnings, thus determining a higher amount of credit money in the economy.
+
+Besides, the non conventional monetary policy practice called quantitative easing is considered, alongside the fiscal policy pursued by the Government. The central bank policy rate is kept fixed at low levels, however, if the quantitative easing (QE) policy is active, the central bank may buy government bonds directly on the market, thus increasing the overall amount of fiat money in the economy. Under quantitative easing, the government budget deficit is funded just by the issue and sale of bonds on the market. In this case, the intervention of the central bank is finalized to sustain bond prices and thus to facilitate the financing of government debt. If quantitative easing is not active, the government budget deficit in funded both by the issue of new bonds in the market and by an increase of tax rates.
+
+Each parameters' setting is then characterized by one of the four values of $d$ and by a binary variable which denotes whether the quantitative monetary policy is adopted. The total number of parameters settings then sums up to 8. In order to corroborate the significance of results, for each parameters setting, three different simulation runs have been considered, where each run is characterized by a proper seed of the pseudorandom numbers generator. The same set of three random seeds has been employed for all parameters' settings.
+
+The agents' population is constituted by 1000 households, 10 consumption goods producing firms, 1 investment goods producing firms, 2 banks, 1 government and 1 central bank. The duration of each simulation is set to 360 months (30 years).
+
+\begin{table}
+  \centering
+  \begin{tabular}{|c|c|c|c|c|}
+    \hline
+    % after \\: \hline or \cline{col1-col2} \cline{col3-col4} ...
+    & & physical capital & unemployment & real GDP \\
+     [-1ex] \raisebox{1.5ex}{$d$} &  \raisebox{1.5ex}{QE}  & growth rate (\%) &  rate (\%) & growth rate (\%) \\
+        \hline  \hline
+     & no  & -0.0015 & 14.9 & 0.13\\
+    [-1ex] \raisebox{1.5ex}{0.6} & yes & 0.0021 & 12.3 & 0.14 \\
+    \hline
+     & no  & 0.0005 & 13.2 & 0.11 \\
+    [-1ex] \raisebox{1.5ex}{0.7} & yes & 0.0027 &  11.4 & 0.15\\
+    \hline
+     & no  & 0.0038 & 13.6 & 0.15\\
+    [-1ex] \raisebox{1.5ex}{0.8} & yes & 0.0035 & 11.8 & 0.15 \\
+    \hline
+         & no  & 0.014 & 10.8 & 0.17\\
+    [-1ex] \raisebox{1.5ex}{0.9} & yes & 0.013 &  11.7 & 0.16 \\
+    \hline
+
+  \end{tabular}
+  \caption{Values report the ensemble averages over three different simulation runs of mean monthly rates. Each run is characterized by a different random seed. For each simulation run, mean monthly rates are computed over the entire simulation period, except for the first 12 months which have been considered as a transient and discarded.}\label{Tab:RealVariables}
+\end{table}
+
+
+\begin{table}
+  \centering
+  \begin{tabular}{|c|c|c|c|c|}
+    \hline
+    % after \\: \hline or \cline{col1-col2} \cline{col3-col4} ...
+    & & Private sector money endowment &  price inflation & wage inflation \\
+     [-1ex] \raisebox{1.5ex}{$d$} &  \raisebox{1.5ex}{QE}  &  growth rate (\%) &  rate (\%) & rate (\%) \\
+    \hline  \hline
+     & no  & -0.10 & 0.0019 & 0.19\\
+    [-1ex] \raisebox{1.5ex}{0.6} & yes & -0.11 & -0.0093 & 0.17\\
+    \hline
+     & no  & -0.09 & -0.005 & 0.17\\
+    [-1ex] \raisebox{1.5ex}{0.7} & yes &  -0.11 &  -0.011 & 0.17\\
+    \hline
+     & no  & 0.04 & -0.08 & 0.18\\
+    [-1ex] \raisebox{1.5ex}{0.8} & yes & 0.089 & 0.030 & 0.18 \\
+    \hline
+         & no  & 0.35 & 0.12 & 0.28\\
+    [-1ex] \raisebox{1.5ex}{0.9} & yes & 0.33 & 0.10 & 0.27 \\
+    \hline
+
+  \end{tabular}
+  \caption{Values report the ensemble averages over three different simulation runs of mean monthly rates. Each run is characterized by a different random seed. For each simulation run, mean monthly rates are computed over the entire simulation period, except for the first 12 months which have been considered as a transient and discarded.}\label{Tab:NominalVariables}
+\end{table}
+
+
+\begin{table}
+  \centering
+  \begin{tabular}{|c|c|c|c|}
+    \hline
+    % after \\: \hline or \cline{col1-col2} \cline{col3-col4} ...
+    & & first half & second half \\
+     [-1ex] \raisebox{1.5ex}{$d$} &  \raisebox{1.5ex}{QE}  &  (months: 12-180) & (months: 181-360) \\
+    \hline  \hline
+     & no   & -19.2 & -18.7\\
+    [-1ex] \raisebox{1.5ex}{0.6} & yes  & -18.8 & -22.0 \\
+    \hline
+     & no &  -18.9 &  -16.6 \\
+    [-1ex] \raisebox{1.5ex}{0.7} & yes   &  -20.0 & -21.0\\
+    \hline
+     & no    & -19.8 & -26.1\\
+    [-1ex] \raisebox{1.5ex}{0.8} & yes   & -21.3 & -22.9 \\
+    \hline
+         & no  & -22.7 & -31.1 \\
+    [-1ex] \raisebox{1.5ex}{0.9} & yes   & -25.2 & -37.5 \\
+    \hline
+
+  \end{tabular}
+  \caption{Values report the ensemble averages over three different simulation runs of the maximum percentage variability of the real GDP over a moving window of 60 month (5 years).}\label{Tab:GDPdrop}
+\end{table}
+
+
+Tables \ref{Tab:RealVariables} and \ref{Tab:NominalVariables} report the simulation results for the main real and nominal variables of the economy, respectively,  obtained with the 8 parameters' settings considered. Figures \ref{Fig:RealVariables} and \ref{Fig:NominalVariables} show two representative time paths for some of the variables considered. A clear and important empirical evidence that emerges from the path of GDP is that the EURACE model is able to exhibit endogenous business cycles. The main source of the observed business cycles is the strict relation between the real economic activity and its financing through the credit market, as it will be clear in what will follows.
+
+
+Here, we will describe the simulation results with respect to the different values of $d$ considered. The qualitative considerations which emerge with respect to the value of $d$ do not depend wether the quantitative easing policy is active or not.
+In particular, table \ref{Tab:NominalVariables} show that, as expected, an increase of the fraction $d$ of firms' earnings, which is payed out as dividends, increases the private sector money endowment.  The effects on nominal variables is also evident from the Figure \ref{Fig:NominalVariables}, where the simulation paths for the two extremes values of $d$, i.e., $d = 0.6$ and $d = 0.9$ are reported. The credit money supplied by the banking system is the source, together with the fiat money supplied by the central bank, of the endowment of liquid resources held by both the private sector (households, firms and banks) and the public sector (government and central bank). An increase in the demand for credit by firms, if supplied by banks, then increases the amount of liquid resources in the economy.
+
+Table \ref{Tab:NominalVariables} also shows that higher inflation and wage rates are associated to higher values of $d$. Higher inflation rates for higher values of $d$ should not be explained in this framework according to the quantity theory of money, due to the higher amount of liquidity in the economy. This because prices are not set by a fictitious Walrasian auctioneer at the cross between demand and supply, but are set by firms, based on their costs, which are labor costs, capital costs and debt financing costs.  Higher credit money means higher debt and higher debt financing costs. Higher credit money induces also higher wage inflation, and thus again higher price inflation through the cost channel. The wage inflation can be explained by the labor market conditions, i.e., the level of unemployment, as it will be clear in the following.
+
+Table \ref{Tab:RealVariables} presents the outcomes of the simulation concerning the real variables of the economy, i.e., unemployment level and rate of growth of physical capital and of real GDP. A clear indication emerges for a better macroeconomic performance, i.e., lower unemployment, and higher growth rate of real GDP and physical capital, related to higher levels of credit money in the economy. This indication is also corroborated by Figure \ref{Fig:RealVariables}, where two simulation paths for the real GDP and the unemployment levels are reported for the two extreme values of $d$, i.e., $d=0.6$ and $d=0.9$.
+
+It is worth noting, however, that a higher credit money may increases the amplitude of the business cycle. This feature emerges from Figure \ref{Fig:RealVariables} where both the real GDP and the unemployment level associated to $d=0.9$ exhibit fluctuations which are far larger than the $d=0.6$ case. In fact, a higher amount of credit money in the economy means higher levels of debt and leverage for firms. Firms bankruptcies due to insolvency (the equity goes negative) become more likely, and a firm bankruptcy causes mass layoffs and a sudden decrease in production. Besides, when a firm defaults on its debt, the lending bank suffers a reduction of its equity base, this in turn determine a reduction of the supply of credit and the production sector may face a credit rationing, thus triggering further bankruptcies, due to liquidity problems.
+
+Table \ref{Tab:GDPdrop}, which reports the maximum percentage variability of real GDP in a moving time window of 60 months (5 years), confirms the graphic evidence of Figure \ref{Fig:RealVariables}. In particular, a further interesting pattern emerges if we divide the time period of the simulation into two parts, and the maximum is computed separately in each part. For values of $d$ like 0.8 and 0.9, i.e., a parameters setting where firms are more constrained to borrow credit money to fund their activity, the percentage variability in the second part of the simulation time span is clearly higher. This fact can be explained by looking to the leverage of firms and number of bankruptcies which is higher in the second part, after the first part is characterized by increasing levels of firms debt and leverage to unsustainable levels. This empirical finding may somewhat resembles the relation between the so-called  ``great moderation" period of the 90s and the first part of the 00s for the world economy, and the so-called ``great recession" observed during the last two years.
+
+The disaggregation of results with respect to the adoption or not of the quantitative easing monetary policy does not give a clear answer in the experiments considered about the goodness of a choice respect to another. The reason may be that in the setting considered, the government finances are usually sounds, so even if a quantitative easing policy is in principle adopted, it is applied just a few times. 
+
+
+\begin{figure}
+  % Requires \usepackage{graphicx}
+  \includegraphics[width=0.9\textwidth]{figure1.eps}\\
+  \caption{Results of a simulation path for the real gross domestic product (GDP) and the unemployment rate. Two values of $d$ are considered, i.e., $d=0.6$ (thick line) and $d=0.9$ (thin line).}\label{Fig:RealVariables}
+\end{figure}
+
+
+\begin{figure}
+  % Requires \usepackage{graphicx}
+  \includegraphics[width=0.9\textwidth]{figure2.eps}\\
+  \caption{Results of a simulation path for the private sector money endowment and the price level. Two values of $d$ are considered, i.e., $d=0.6$ (thick line) and $d=0.9$ (thin line).}\label{Fig:NominalVariables}
+\end{figure}
+
+\section{Concluding remarks}
+The paper presented some results produced by the agent-based model simulator Eurace. In particular, we investigated the relationship between the amount of credit money in the artificial economy and the macroeconomic performance. Given that the dynamics of credit money is determined endogenously in the system, the different dynamic paths has been produces by setting different firms dividend policies. Results show the emergence of endogenous business cycles which are mainly due to the interplay between the real economic activity and its financing through the credit market. In particular, the amplitude of the business cycles strongly raises when the fraction of earnings paid out by firms as dividends is higher, that is when firms are more constrained to borrow credit money to fund their activity. This interesting evidence can be explained by the fact that the level of firms leverage, defined as the debt-equity ratio, can be considered ad a proxy of the likelihood of bankruptcy, an event which causes mass layoffs and supply decrease.
+
+Finally, this results show the possibility to explain the emerge of business cycle based on the complex internal functioning of the economy, without any ad-hoc exogenous shocks. The adopted agent-based framework has been able to address this complexity, and these results reinforce the validity of the Eurace model and simulator for future research in economics.
+
+
+\section*{Acknowledgements}
+This work was carried out in conjunction with the EURACE project (EU IST FP6
+STREP grant: 035086) which is a collaboration lead by S. Cincotti (Università
+di Genova), H Dawid (Universitaet Bielefeld), C. Deissenberg (Université de la
+Méditerranée), K. Erkan (TUBITAK-UEKAE National Research Institute of
+Electronics and Cryptology), M. Gallegati (Università Politecnica delle
+Marche), M. Holcombe (University of Sheffield), M. Marchesi (Università di
+Cagliari), C. Greenough (Science and Technology Facilities Council 
+Rutherford Appleton Laboratory).
+
+%\bibliographystyle{IEEEtran}
+%\addcontentsline{toc}{chapter}{References}
+\bibliographystyle{elsarticle-harv}
+\bibliography{CINEFreferences}
+%\end{linenumbers}
+
+\end{document}
