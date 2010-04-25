@@ -2,11 +2,12 @@ clc
 clear all
 %close all
 
-Pat = '..\qe1_d0.6_es0_r10\its\';
+%Pat = '..\qe1_d0.6_es0_r10\its\';
+Pat = '\\Galileo\Library\EURACE results 7200\seed122\qe1_d0.9\its\';
 %Pat = '..\';
 
 font_sz = 11;
-colore = ':b';
+colore = 'b';
 
 mf = 360;
 af = ceil(mf/12);
@@ -658,6 +659,7 @@ for i=1:numel(days)
     TOTAL_ASSETS_FIRMS_sum(i) = sum(TOTAL_ASSETS_FIRMS(days_idx));
     TOTAL_DEBT_FIRMS_sum(i) = sum(TOTAL_DEBT_FIRMS(days_idx));
     EQUITY_FIRMS_sum(i) = sum(EQUITY_FIRMS(days_idx));
+    LEVERAGE_FIRMS(i,:) = TOTAL_DEBT_FIRMS(days_idx)./EQUITY_FIRMS(days_idx);
     clear days_idx
 end    
 
@@ -736,57 +738,148 @@ set(gca,'xlim',[0, mf])
 
 clear Data
 
+m1 = 180;
+
+GDP_real = capital_goods_investment + MONTHLY_OUTPUT;
+GDP_fluctuations = diff(log(GDP_real));
+
+fprintf('\n\n GDP fluctuations statistics')
+fprintf('\n 12:end. m: %f s: %f',mean(GDP_fluctuations(12:end)),std(GDP_fluctuations(12:end)))
+fprintf('\n 12:m1. m: %f s: %f',mean(GDP_fluctuations(12:m1)),std(GDP_fluctuations(12:m1)))
+fprintf('\n m1:end. m: %f s: %f',mean(GDP_fluctuations(m1:end)),std(GDP_fluctuations(m1:end)))
+
+price_inflation = diff(log(p_index));
+
+fprintf('\n\n Inflation statistics')
+fprintf('\n 12:end. m: %f s: %f',mean(price_inflation(12:end)),std(price_inflation(12:end)))
+fprintf('\n 12:m1. m: %f s: %f',mean(price_inflation(12:m1)),std(price_inflation(12:m1)))
+fprintf('\n m1:end. m: %f s: %f',mean(price_inflation(m1:end)),std(price_inflation(m1:end)))
+
+wage_inflation = diff(log(AVERAGE_WAGE));
+
+fprintf('\n\n wage statistics')
+fprintf('\n 12:end. m: %f s: %f',mean(wage_inflation(12:end)),std(wage_inflation(12:end)))
+fprintf('\n 12:m1. m: %f s: %f',mean(wage_inflation(12:m1)),std(wage_inflation(12:m1)))
+fprintf('\n m1:end. m: %f s: %f',mean(wage_inflation(m1:end)),std(wage_inflation(m1:end)))
+
+fprintf('\n\n Unemployment statistics')
+fprintf('\n 12:end. m: %f s: %f',mean(UNEMPLOYMENT(12:end)),std(UNEMPLOYMENT(12:end)))
+fprintf('\n 12:m1. m: %f s: %f',mean(UNEMPLOYMENT(12:m1)),std(UNEMPLOYMENT(12:m1)))
+fprintf('\n m1:end. m: %f s: %f',mean(UNEMPLOYMENT(m1:end)),std(UNEMPLOYMENT(m1:end)))
+
+fprintf('\n\n Money private sector statistics (I)')
+fprintf('\n 12:end. m: %f s: %f',mean(MONEY_PRIVATE_SECTOR(12*20:end)),std(MONEY_PRIVATE_SECTOR(12*20:end)))
+fprintf('\n 12:m1. m: %f s: %f',mean(MONEY_PRIVATE_SECTOR(12*20:m1*20)),std(MONEY_PRIVATE_SECTOR(12*20:m1*20)))
+fprintf('\n m1:end. m: %f s: %f',mean(MONEY_PRIVATE_SECTOR(m1*20:end)),std(MONEY_PRIVATE_SECTOR(m1*20:end)))
+
+Kapital_growth = diff(log(TOTAL_UNITS_CAPITAL_STOCK_FIRMS_sum));
+
+fprintf('\n\n kapital stock growth statistics')
+fprintf('\n 12:end. m: %f s: %f',mean(Kapital_growth(12*20:end)),std(Kapital_growth(12*20:end)))
+fprintf('\n 12:m1. m: %f s: %f',mean(Kapital_growth(12*20:m1*20)),std(Kapital_growth(12*20:m1*20)))
+fprintf('\n m1:end. m: %f s: %f',mean(Kapital_growth(m1*20:end)),std(Kapital_growth(m1*20:end)))
+
+
+fprintf('\n\n Leverage firms statistics')
+fprintf('\n 12:end. m: %f',max(max(LEVERAGE_FIRMS(12*20:end,:))))
+fprintf('\n 12:m1. m: %f',max(max(LEVERAGE_FIRMS(12*20:m1*20,:))))
+fprintf('\n m1:end. m: %f',max(max(LEVERAGE_FIRMS(m1*20:end,:))))
+
+
+stock_index_returns = diff(log(stock_index));
+fprintf('\n\n Stock index returns statistics')
+fprintf('\n 12:end. m: %f s: %f',mean(stock_index_returns(12*20:end)),std(stock_index_returns(12*20:end)))
+fprintf('\n 12:m1. m: %f s: %f',mean(stock_index_returns(12*20:m1*20)),std(stock_index_returns(12*20:m1*20)))
+fprintf('\n m1:end. m: %f s: %f',mean(stock_index_returns(m1*20:end)),std(stock_index_returns(m1*20:end)))
+
+k = 0;
+for d=1:20:tf
+    k = k + 1;
+    TOTAL_CREDIT_sum_monthly(k,1) = sum(TOTAL_CREDIT_sum(d:d+19));
+    MONEY_PRIVATE_SECTOR_monthly(k,1) = sum(MONEY_PRIVATE_SECTOR(d:d+19));
+end
+
+fprintf('\n\n Money private sector statistics (II)')
+fprintf('\n 12:end. m: %f s: %f',mean(diff(log(MONEY_PRIVATE_SECTOR_monthly))),std(diff(log(MONEY_PRIVATE_SECTOR_monthly))))
+fprintf('\n 12:m1. m: %f s: %f',mean(diff(log(MONEY_PRIVATE_SECTOR_monthly))),std(diff(log(MONEY_PRIVATE_SECTOR_monthly))))
+fprintf('\n m1:end. m: %f s: %f',mean(diff(log(MONEY_PRIVATE_SECTOR_monthly))),std(diff(log(MONEY_PRIVATE_SECTOR_monthly))))
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+w = 60; k = 0;
+for d = 1:(numel(GDP_real)-w)
+    k = k + 1;
+    massimo(k,1) = max(GDP_real(d:d+w));
+    minimo(k,1) = min(GDP_real(d:d+w));
+end
+   
+GDP_drop = (massimo-minimo)./massimo;
 
 
 
-clear Data
-% figure(131); 
-% 
-% Data = load([Pat, 'Government_policies.txt']);
-% TaxRates = Data(:,3);
-% 
-% subplot(2,1,1); hold on; grid on; box on
-% plot(yearly_month_index,TaxRates(1:af),colore)
-% set(gca,'xtick',monthly_index,'fontsize',font_sz)
-% xlabel('months','fontsize',font_sz)
-% ylabel('%','fontsize',font_sz)
-% %title('Central Bank aggregate data','fontsize',font_sz)
-% legend('tax rates','location','Best')
-% set(gca,'xlim',[0, 12*af])
-% 
-% clear Data
-% 
-% Data = load([Pat, 'CentralBank_daily_balance_sheet.txt']);
-% FIAT_MONEY_GOVS = Data(:,2);
-% FIAT_MONEY_BANKS = Data(:,3);
-% 
-% subplot(2,1,2); hold on; grid on; box on
-% plot(daily_month_index,FIAT_MONEY_GOVS(1:tf),colore)
-% plot(daily_month_index,FIAT_MONEY_BANKS(1:tf),[colore, '-.'])
-% legend('fiat money to governments','fiart money to the banking sector','location','Best')
-% set(gca,'xtick',monthly_index,'fontsize',font_sz)
-% xlabel('months','fontsize',font_sz)
-% ylabel('aribitrary monetary units','fontsize',font_sz)
-% title('Central Bank aggregate data','fontsize',font_sz)
-% set(gca,'xlim',[0, mf])
-% 
-% clear Data
-% 
-% 
-% break
-% 
-% figure(2); hold on; grid on; box on
-% plot(DEPOSITS_sum)
-% plot(PAYMENT_ACCOUNT_HOUSEHOLDS_sum+PAYMENT_ACCOUNT_FIRMS_sum+PAYMENT_ACCOUNT_IGFIRMS_sum,'ko')
-% legend('aggregate BANK DEPOSITS','Aggregate PAYMENT ACCOUNT HOUSEHOLDS + PAYMENT ACCOUNT FIRMS',0)
-% 
-% clear Data
-% 
-% figure(3); hold on; grid on; plot(DEPOSITS_sum'+ECB_DEPOSITS+PAYMENT_ACCOUNT_IGFIRMS_sum'-TOTAL_CREDIT_sum')
-% 
-% legend('aggregate BANK DEPOSITS + ECB DEPOSITS + PAY ACC IGFIRM - TOTAL CREDIT')
-% 
-% 
-% figure(4); hold on; grid on; box on
-% plot(PAYMENT_ACCOUNT_IGFIRMS)
-% legend('PAYMENT ACCOUNT IGFIRM',0)
+fprintf('\n\n GDP drop statistics')
+fprintf('\n Mean 12:end %f 12:%d: %f %d:end: %f',...
+    mean(GDP_drop(12:end)),m1,mean(GDP_drop(12:m1)),m1,mean(GDP_drop(m1:end)))
+fprintf('\n Max 12:end %f 12:%d: %f %d:end: %f',...
+    max(GDP_drop(12:end)),m1,max(GDP_drop(12:m1)),m1,max(GDP_drop(m1:end)))
+fprintf('\n Min 12:end %f 12:%d: %f %d:end: %f',...
+    min(GDP_drop(12:end)),m1,min(GDP_drop(12:m1)),m1,min(GDP_drop(m1:end)))
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+fprintf('\n\n Cross correlations')
+c = corrcoef(diff(log(TOTAL_CREDIT_sum_monthly)),UNEMPLOYMENT(2:mf));
+fprintf('\n TOTAL_CREDIT_sum_monthly fluctuations vs UNEMPLOYMENT: %f',c(1,2))
+c = corrcoef(diff(log(MONEY_PRIVATE_SECTOR_monthly)),UNEMPLOYMENT(2:mf));
+fprintf('\n MONEY_PRIVATE_SECTOR_monthly fluctuations vs UNEMPLOYMENT: %f',c(1,2))
+c = corrcoef(diff(log(TOTAL_CREDIT_sum_monthly)),diff(log(MONTHLY_OUTPUT)));
+fprintf('\n TOTAL_CREDIT_sum_monthly fluctuations vs Monthly output: %f',c(1,2))
+c = corrcoef(diff(log(MONEY_PRIVATE_SECTOR_monthly)),diff(log(MONTHLY_OUTPUT)));
+fprintf('\n MONEY_PRIVATE_SECTOR_monthly fluctuations vs Monthly output: %f',c(1,2))
+c = corrcoef(diff(log(TOTAL_CREDIT_sum_monthly)),capital_goods_investment(2:end));
+fprintf('\n TOTAL_CREDIT_sum_monthly fluctuations vs Investments: %f',c(1,2))
+c = corrcoef(diff(log(MONEY_PRIVATE_SECTOR_monthly)),capital_goods_investment(2:end));
+fprintf('\n MONEY_PRIVATE_SECTOR_monthly fluctuations vs Investments: %f',c(1,2))
+c = corrcoef(diff(log(TOTAL_CREDIT_sum_monthly)),GDP_fluctuations);
+fprintf('\n TOTAL_CREDIT_sum_monthly fluctuations vs GDP fluctuations: %f',c(1,2))
+c = corrcoef(diff(log(MONEY_PRIVATE_SECTOR_monthly)),GDP_fluctuations);
+fprintf('\n MONEY_PRIVATE_SECTOR_monthly fluctuations vs GDP fluctuations: %f',c(1,2))
+
+   
+    
+    
+%%% FIGURE DEFINITIVE %%%%%%%%%%%%%%%%%%%%
+
+font_sz = 16;
+
+figure(201);
+set(gcf,'Name','GDP and unemployment')
+subplot(2,1,1); hold on; grid on; box on
+plot(monthly_month_index,GDP_real(1:mf),colore)
+set(gca,'xtick',monthly_index2,'fontsize',font_sz)
+xlabel('months','fontsize',font_sz)
+ylabel('real GDP','fontsize',font_sz)
+set(gca,'xlim',[0, mf])
+
+subplot(2,1,2); hold on; grid on; box on
+plot(monthly_month_index,UNEMPLOYMENT(1:mf),colore)
+set(gca,'xtick',monthly_index2,'fontsize',font_sz)
+xlabel('months','fontsize',font_sz)
+ylabel('Unemployment rate (%)','fontsize',font_sz)
+set(gca,'xlim',[0, mf])
+
+
+figure(202);
+subplot(2,1,1); hold on; grid on; box on
+plot(daily_month_index,MONEY_PRIVATE_SECTOR(1:tf),colore)
+set(gca,'xtick',monthly_index2,'fontsize',font_sz)
+xlabel('months','fontsize',font_sz)
+ylabel('Private sector money endowment','fontsize',font_sz)
+set(gca,'xlim',[0, mf])
+
+subplot(2,1,2); hold on; grid on; box on
+plot(monthly_month_index,p_index(1:mf),colore)
+set(gca,'xtick',monthly_index2,'fontsize',font_sz)
+xlabel('months','fontsize',font_sz)
+ylabel('Price level','fontsize',font_sz)
+set(gca,'xlim',[0, mf])
+
