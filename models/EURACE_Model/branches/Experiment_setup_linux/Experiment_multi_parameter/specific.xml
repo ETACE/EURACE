@@ -1,7 +1,0 @@
-<environment>
-<symmetric_shock>1</symmetric_shock>
-<energy_shock_start>240</energy_shock_start>
-<energy_shock_end>480</energy_shock_end>
-<const_energy_shock_intensity>0.10</const_energy_shock_intensity>
-<energy_shock_frequency>60</energy_shock_frequency>
-</environment>
