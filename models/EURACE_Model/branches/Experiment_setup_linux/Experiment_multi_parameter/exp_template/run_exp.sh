@@ -28,7 +28,7 @@ export NR_NODES=4
 export NUM_PROCS=1
 
 #Set number of batch runs
-export TOTAL_RUNS=1
+export TOTAL_RUNS=10
 RUNS=''
 for ((j=1; j<=TOTAL_RUNS; j++)); do
     export RUNS=$RUNS' '$j
@@ -43,18 +43,18 @@ echo 'Batch runs:[' $RUNS ']'
 #export F2_values="0.01 0.05 0.10 0.20" #intensity
 #export F3_values="0 20 40 60"         #frequency
 
-export F1="duration_40 duration_240"
-export F2="intensity_0.01 intensity_0.05 intensity_0.10"
-export F3="frequency_0 frequency_20 frequency_60"
-export F1_values="40 240"     #duration: 240+"40 120 240 560"=280 360 480 801
-export F2_values="0.01 0.05 0.10" #intensity
-export F3_values="0 20 60"         #frequency
+#export F1="duration_240"
+#export F2="intensity_0.01 intensity_0.05"
+#export F3="frequency_20"
+#export F1_values="240"     #duration: 240+"40 120 240 560"=280 360 480 801
+#export F2_values="0.01 0.05" #intensity
+#export F3_values="20"         #frequency
 
 export F1="duration_240"
-export F2="intensity_0.05"
+export F2="intensity_0.025"
 export F3="frequency_20"
 export F1_values="240"     #duration: 240+"40 120 240 560"=280 360 480 801
-export F2_values="0.05" #intensity
+export F2_values="0.025" #intensity
 export F3_values="20"         #frequency
 
 #export F1="duration_240"
@@ -94,7 +94,7 @@ export F3_values="20"         #frequency
 #For production version
 #export MAIN_S='/home/svdhoog/EURACE/SVN/eurace/trunk/Integrated_Model_1.0/main_sp'
 #export MAIN_P='/home/svdhoog/EURACE/SVN/eurace/trunk/Integrated_Model_1.0/main_pp'
-export MAIN_S='/home/svdhoog/EURACE/SVN/geole/branches/UNIBI_Branched_Model_2010_energy/main_sp'
+#export MAIN_S='/home/svdhoog/EURACE/SVN/geole/branches/UNIBI_Branched_Model_2010_energy/main_sp'
 
 #Location of the SQL database creation script (not actually used currently):
 #export SQL_DB_DIR='/home/svdhoog/EURACE/SVN/xagents/sim_validation'
@@ -112,6 +112,7 @@ export MODEL_XML_FILE='eurace_model.xml'
 #export MAIN_P='/media/DataStorageLinux/SVN/eurace/trunk/Integrated_Model_1.0/main_pd'
 
 #For production version
+export MAIN_S='/media/DataStorageLinux/SVN/geole/branches/UNIBI_Branched_Model_2010_energy/main_sp'
 #export MAIN_S='/media/DataStorageLinux/SVN/eurace/trunk/Integrated_Model_1.0/main_sp'
 #export MAIN_S='/media/DataStorageLinux/SVN/eurace/tags/Integrated_Model_1.0beta/main_sp'
 #export MAIN_P='/media/DataStorageLinux/SVN/eurace/trunk/Integrated_Model_1.0/main_pp'
@@ -121,6 +122,8 @@ export MODEL_XML_FILE='eurace_model.xml'
 
 #Location of the model XML (used to validate the rules after generating the SQL)
 #export MODEL_XML_DIR='/media/DataStorageLinux/SVN/eurace/trunk/Integrated_Model_1.0'
+export MODEL_XML_DIR='/media/DataStorageLinux/SVN/geole/branches/UNIBI_Branched_Model_2010_energy'
+export MODEL_XML_FILE='eurace_model.xml'
 
 ######### STEP 2: CREATION OF EXPERIMENT FOLDER HIERARCHY 
 bash ./exp_script_1.sh
