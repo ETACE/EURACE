@@ -22,4 +22,9 @@
  <type>environment</type>            # environment or agent data
 </import>
 </imports>
+<environment>
+<policy_exp_energy_shock>1</policy_exp_energy_shock>
+<policy_exp_stabilization_subsidy>0</policy_exp_stabilization_subsidy>
+<policy_exp_stabilization_tax>0</policy_exp_stabilization_tax>
+</environment>
 </states>
