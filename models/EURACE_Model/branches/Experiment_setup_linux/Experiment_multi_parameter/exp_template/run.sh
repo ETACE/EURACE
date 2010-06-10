@@ -55,5 +55,10 @@
 	#echo '+ Compressing iters.db and removing the original'
 	#tar -cjv --remove-files --overwrite --file=iters.tar.gz iters.db
 
+	#Plot
+	#export PATH_R_SCRIPTS="/media/DataStorageLinux/SVN/unibi-svn/branches/R_scripts/scripts/Single_Run_Analysis_Sander"
+	#export PATH_R_SCRIPTS="/home/svdhoog/EURACE/SVN/unibi-svn/branches/R_scripts/scripts/Single_Run_Analysis_Sander"
+	#bash R <$PATH_R_SCRIPTS/Single_Run_Analysis --no-save
+
 echo 'Run '$PWD' --DONE'
 echo 'Run '$PWD':DONE' >>$BASE/STATUS 
