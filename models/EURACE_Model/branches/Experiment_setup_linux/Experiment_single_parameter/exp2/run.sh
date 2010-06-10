@@ -20,19 +20,19 @@
 
 	#Decompress the xml files
 	#echo '+ DeCompressing and removing the xml files'
-	bzip2 -d xmlfiles.tar.bz
-	tar -xf xmlfiles.tar
+	#bzip2 -d xmlfiles.tar.bz
+	#tar -xf xmlfiles.tar
 
 	#Create the SQL database
-	python $BASE/gendb.py $MODEL_XML_DIR/$MODEL_XML_FILE ./
+	#python $BASE/gendb.py $MODEL_XML_DIR/$MODEL_XML_FILE ./
 
 	#Rename to VisGUI default name
-	mv iterdata.db iters.db
+	#mv iterdata.db iters.db
 
 	#Compress the xml files and remove them
-	echo '+ Compressing and removing the xml files'
-	tar -cvj --remove-files --overwrite --file=xmlfiles.tar.bz *.xml
-	rm xmlfiles.tar
+	#echo '+ Compressing and removing the xml files'
+	#tar -cvj --remove-files --overwrite --file=xmlfiles.tar.bz *.xml
+	#rm xmlfiles.tar
 
 	#Just remove the xml files
 	#echo '+ Removing the xml files'
@@ -55,6 +55,13 @@
 	#Compress the databases and remove the originals
 	#echo '+ Compressing iters.db and removing the original'
 	#tar -cjv --remove-files --overwrite --file=iters.tar.gz iters.db
+
+
+	#Plot
+	#export PATH_R_SCRIPTS="/media/DataStorageLinux/SVN/unibi-svn/branches/R_scripts/scripts/Single_Run_Analysis_Sander"
+	#export PATH_R_SCRIPTS="/home/svdhoog/EURACE/SVN/unibi-svn/branches/R_scripts/scripts/Single_Run_Analysis_Sander"
+	#bash R <$PATH_R_SCRIPTS/Single_Run_Analysis --no-save
+
 
 echo 'Run '$PWD' --DONE'
 echo 'Run '$PWD':DONE' >>$BASE/STATUS 
