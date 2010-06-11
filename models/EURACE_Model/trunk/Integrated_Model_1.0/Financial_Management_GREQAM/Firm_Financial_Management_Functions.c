@@ -1032,28 +1032,63 @@ int Firm_compute_and_send_stock_orders()
 }
 
 
-int Firm_compute_and_send_stock_orders_bankruptcy()
+int Firm_compute_and_send_stock_orders_bankruptcy_insolvency()
 {
     //Note: This function only runs if EXTERNAL_FINANCIAL_NEEDS>0.0
+
+    char * filename;
+    FILE * file1;
 
     double limit_price=CURRENT_SHARE_PRICE*0.99;
     
     //If the quantity is fractional, take the ceiling, such that EXTERNAL_FINANCIAL_NEEDS are met.
-    int target_shares_outstanding = ceil(EQUITY+EXTERNAL_FINANCIAL_NEEDS/limit_price);
+    int target_shares_outstanding = ceil((EQUITY+EXTERNAL_FINANCIAL_NEEDS)/limit_price);
     int quantity = -1*(target_shares_outstanding-CURRENT_SHARES_OUTSTANDING);
-    
+   
        
      if (quantity<0)
        add_order_message(ID, ID, limit_price, quantity);
 
-    #ifdef _DEBUG_MODE
-    if (PRINT_DEBUG)
-    {
-        printf("\n\n Firm_compute_and_send_stock_orders ID: %d",ID);
-        printf("\n\t EXTERNAL_FINANCIAL_NEEDS: %f limit_price: %f quantity: %d",EXTERNAL_FINANCIAL_NEEDS,limit_price,quantity);       
-        getchar();             
-    }
-    #endif
+    if (PRINT_DEBUG_FILE_EXP1)
+        {
+            filename = malloc(40*sizeof(char));
+            filename[0]=0;
+            strcpy(filename, "its/firms_send_stock_orders_bankruptcy_insolvency.txt"); 
+            file1 = fopen(filename,"a");
+            fprintf(file1,"\n %d %d %f %f %f %d %d",DAY,ID,limit_price,EQUITY,EXTERNAL_FINANCIAL_NEEDS,CURRENT_SHARES_OUTSTANDING,quantity);
+            fclose(file1);
+            free(filename);
+        }
+    
+    return 0;
+}
+
+
+int Firm_compute_and_send_stock_orders_bankruptcy_illiquidity()
+{
+    //Note: This function only runs if EXTERNAL_FINANCIAL_NEEDS>0.0
+
+     char * filename;
+     FILE * file1;
+
+    double limit_price=CURRENT_SHARE_PRICE*0.99;
+    
+    int quantity = -1*ceil(EXTERNAL_FINANCIAL_NEEDS/limit_price);
+   
+       
+     if (quantity<0)
+       add_order_message(ID, ID, limit_price, quantity);
+
+    if (PRINT_DEBUG_FILE_EXP1)
+        {
+            filename = malloc(40*sizeof(char));
+            filename[0]=0;
+            strcpy(filename, "its/firms_send_stock_orders_bankruptcy_illiquidity.txt"); 
+            file1 = fopen(filename,"a");
+            fprintf(file1,"\n %d %d %f %f %d",DAY,ID,limit_price,EXTERNAL_FINANCIAL_NEEDS,quantity);
+            fclose(file1);
+            free(filename);
+        }
     
     return 0;
 }
