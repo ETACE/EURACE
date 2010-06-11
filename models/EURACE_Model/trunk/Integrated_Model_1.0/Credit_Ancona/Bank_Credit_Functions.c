@@ -125,7 +125,6 @@ int Bank_account_update_deposits()
          }
         
         
-        
    // Procedure to reduce ECB debt
       if ( (ECB_DEBT != 0)&& (CASH>0) ) 
         {
@@ -141,6 +140,8 @@ int Bank_account_update_deposits()
                  CASH=0.0;
              }
          }
+         
+    ECB_DEBT_CUM_MONTHLY  =  ECB_DEBT_CUM_MONTHLY  +  ECB_DEBT;       
    //End of procedure
 
     #ifdef _DEBUG_MODE   
@@ -279,7 +280,8 @@ int Bank_accounting()
      ECB_INTEREST_PAYMENT=0.0;
      
      //Pay interests to ecb
-     int_to_ecb=ECB_DEBT*ECB_INTEREST_RATE/12;
+     int_to_ecb=ECB_DEBT_CUM_MONTHLY*ECB_INTEREST_RATE/(12*DAYS_PER_MONTH);
+     ECB_DEBT_CUM_MONTHLY  = 0.0;
      PROFITS[0]-=int_to_ecb; 
      CASH-=int_to_ecb;
      EQUITY-=int_to_ecb;

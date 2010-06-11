@@ -440,7 +440,9 @@ Note that a negative count means the financing condition has not been yet satisf
 \midrule
 \url{idle} \index{\url{idle}} & \parbox{10cm}{} \\
 \midrule
-\url{Firm_compute_and_send_stock_orders_bankruptcy} \index{\url{Firm_compute_and_send_stock_orders_bankruptcy}} & \parbox{10cm}{Function to send order\_messages to the clearinghouse (new share emission).} \\
+\url{Firm_compute_and_send_stock_orders_bankruptcy_insolvency} \index{\url{Firm_compute_and_send_stock_orders_bankruptcy_insolvency}} & \parbox{10cm}{Function to send order\_messages to the clearinghouse (new share emission).} \\
+\midrule
+\url{Firm_compute_and_send_stock_orders_bankruptcy_illiquidity} \index{\url{Firm_compute_and_send_stock_orders_bankruptcy_illiquidity}} & \parbox{10cm}{Function to send order\_messages to the clearinghouse (new share emission).} \\
 \midrule
 \url{Firm_read_stock_transactions} \index{\url{Firm_read_stock_transactions}} & \parbox{10cm}{Function to read order\_status messages from the clearinghouse, and update the firm's trading account.} \\
 \midrule
@@ -1386,6 +1388,8 @@ possible, otherwise rationing.} \\
 \url{double} \url{cash} \index{\url{cash}} & \parbox{10cm}{Bank's reserves.} \\
 \midrule
 \url{double} \url{total_credit} \index{\url{total_credit}} & \parbox{10cm}{Sum of outstanding loans.} \\
+\midrule
+\url{double} \url{ECB_debt_cum_monthly} \index{\url{ECB_debt_cum_monthly}} & \parbox{10cm}{cumulated sum of ECB debt on a monthly basis} \\
 \midrule
 \url{double} \url{equity} \index{\url{equity}} & \parbox{10cm}{Total assets minus total liabilities (or cumulated profits).} \\
 \midrule
