@@ -1055,7 +1055,7 @@ int Firm_compute_and_send_stock_orders_bankruptcy_insolvency()
             filename[0]=0;
             strcpy(filename, "its/firms_send_stock_orders_bankruptcy_insolvency.txt"); 
             file1 = fopen(filename,"a");
-            fprintf(file1,"\n %d %d %f %f %f %d %d",DAY,ID,limit_price,EQUITY,EXTERNAL_FINANCIAL_NEEDS,CURRENT_SHARES_OUTSTANDING,quantity);
+            fprintf(file1,"\n %d %d %f %f %f %d %d %d",DAY,ID,limit_price,EQUITY,EXTERNAL_FINANCIAL_NEEDS,CURRENT_SHARES_OUTSTANDING,target_shares_outstanding,quantity);
             fclose(file1);
             free(filename);
         }
