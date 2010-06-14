@@ -1,15 +1,16 @@
 clc
 clear all
-close all
+%close all
 
 %Pat = '..\qe1_d0.6_es0_r10\its\';
-Pat = 'E:\research\X-EURACE\models\EURACE_Model\trunk\Integrated_Model_1.0\its\seed_1230\q1_d0.9\its\';
+Pat = 'C:\DATA\research\X-EURACE\models\EURACE_Model\trunk\Integrated_Model_1.0\its\seed_1230\andrea\q1_d0.6\its\';
+%Pat = 'C:\DATA\research\X-EURACE\models\EURACE_Model\trunk\Integrated_Model_1.0\its\seed_1230\q1_d0.6\its\';
 %Pat = '..\';
 
 font_sz = 11;
-colore = 'k';
+colore = 'g';
 
-mf = 60;
+mf = 250;
 af = ceil(mf/12);
 tf = 20*mf;
 daily_month_index = (1:tf)/20;
