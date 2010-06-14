@@ -641,23 +641,11 @@ Also sets the active flag to 0 and starts the bankruptcy idle counter.</descript
      <nextState>Firm_bankruptcy_state_1</nextState>
      <condition>
       <lhs>
-       <lhs>
-        <value>a.bankruptcy_illiquidity_state</value>
-       </lhs>
-       <op>EQ</op>
-       <rhs>
-        <value>1</value>
-       </rhs>
+       <value>a.bankruptcy_illiquidity_state</value>
       </lhs>
-      <op>AND</op>
+      <op>EQ</op>
       <rhs>
-       <lhs>
-        <value>a.bankruptcy_insolvency_state</value>
-       </lhs>
-       <op>EQ</op>
-       <rhs>
-        <value>0</value>
-       </rhs>
+       <value>1</value>
       </rhs>
      </condition>
      <inputs/>
