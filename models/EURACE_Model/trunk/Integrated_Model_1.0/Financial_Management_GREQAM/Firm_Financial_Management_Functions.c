@@ -763,6 +763,17 @@ int Firm_bankruptcy_insolvency_procedure()
     }
     #endif
     
+     if (PRINT_DEBUG_FILE_EXP1)
+    {
+        filename = malloc(40*sizeof(char));
+        filename[0]=0;
+        strcpy(filename, "its/firms_bankruptcy_insolvency_procedure.txt");      
+        file1 = fopen(filename,"a");
+        fprintf(file1,"\n %d %d",DAY,ID);
+        fclose(file1);
+        free(filename);
+    }    
+    
     //Effect on credit market  
   	if (BANKRUPTCY_IDLE_COUNTER == CONST_BANKRUPTCY_IDLE_PERIOD - 1)
 	{
@@ -941,7 +952,21 @@ int Firm_bankruptcy_illiquidity_procedure()
  */
 int Firm_bankruptcy_idle_counter()
 {   
+    char * filename;
+        FILE * file1;
+        
     BANKRUPTCY_IDLE_COUNTER -= 1;
+    
+     if (PRINT_DEBUG_FILE_EXP1)
+    {
+        filename = malloc(40*sizeof(char));
+        filename[0]=0;
+        strcpy(filename, "its/firms_bankruptcy_idle_counter.txt");      
+        file1 = fopen(filename,"a");
+        fprintf(file1,"\n %d %d %d %d",DAY,ID,BANKRUPTCY_INSOLVENCY_STATE,BANKRUPTCY_ILLIQUIDITY_STATE);
+        fclose(file1);
+        free(filename);
+    }    
         
     return 0;
 }

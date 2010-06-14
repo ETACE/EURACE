@@ -1,15 +1,15 @@
 clc
 clear all
-%close all
+close all
 
 %Pat = '..\qe1_d0.6_es0_r10\its\';
-Pat = 'E:\research\X-EURACE\models\EURACE_Model\trunk\Integrated_Model_1.0\its\seed_1234\qe1_d0.9\its\';
+Pat = 'E:\research\X-EURACE\models\EURACE_Model\trunk\Integrated_Model_1.0\its\seed_1230\q1_d0.9\its\';
 %Pat = '..\';
 
 font_sz = 11;
 colore = 'k';
 
-mf = 120;
+mf = 60;
 af = ceil(mf/12);
 tf = 20*mf;
 daily_month_index = (1:tf)/20;
@@ -737,6 +737,8 @@ ylabel('Total loans to firms','fontsize',font_sz)
 set(gca,'xlim',[0, mf])
 
 clear Data
+
+break
 
 GDP_real = capital_goods_investment + MONTHLY_OUTPUT;
 GDP_fluctuations = diff(log(GDP_real));
