@@ -833,6 +833,20 @@ int Firm_bankruptcy_insolvency_procedure()
 			add_bankruptcy_message(ID, 0, 0.0, 0.0, 0.0); // This is to wipe out present shareholders
 			CURRENT_SHARES_OUTSTANDING = 0;
 		}
+		
+		 for (i=0;i<EMPLOYEES.size;i++)
+    {
+            add_firing_message(ID, EMPLOYEES.array[i].id);
+            remove_employee(&EMPLOYEES, i);
+    }
+    
+    NO_EMPLOYEES  = 0;
+    NO_EMPLOYEES_SKILL_1= 0;
+    NO_EMPLOYEES_SKILL_2= 0;
+    NO_EMPLOYEES_SKILL_3= 0;
+    NO_EMPLOYEES_SKILL_4= 0;
+    NO_EMPLOYEES_SKILL_5= 0;
+		
 
 	}   
 
@@ -865,18 +879,7 @@ int Firm_bankruptcy_insolvency_procedure()
     
     //Effect on labour market
     //Firing all employees --> see Firm_bankruptcy_procedures
-    for (i=0;i<EMPLOYEES.size;i++)
-    {
-            add_firing_message(ID, EMPLOYEES.array[i].id);
-            remove_employee(&EMPLOYEES, i);
-    }
-    
-    NO_EMPLOYEES  = 0;
-    NO_EMPLOYEES_SKILL_1= 0;
-    NO_EMPLOYEES_SKILL_2= 0;
-    NO_EMPLOYEES_SKILL_3= 0;
-    NO_EMPLOYEES_SKILL_4= 0;
-    NO_EMPLOYEES_SKILL_5= 0;
+   
 
         
     //Effect on consumption goods market
@@ -979,6 +982,7 @@ int Firm_reset_bankruptcy_flags()
 {
      FILE *file1;
     char *filename;
+    
     #ifdef _DEBUG_MODE
     if (PRINT_DEBUG_EXP1 || PRINT_DEBUG)
     {
@@ -989,6 +993,17 @@ int Firm_reset_bankruptcy_flags()
     
     TOTAL_ASSETS = PAYMENT_ACCOUNT + TOTAL_VALUE_CAPITAL_STOCK + TOTAL_VALUE_LOCAL_INVENTORY;
     EQUITY = TOTAL_ASSETS - TOTAL_DEBT;
+    
+    if (PRINT_DEBUG_FILE_EXP1)
+    {
+        filename = malloc(40*sizeof(char));
+        filename[0]=0;
+        strcpy(filename, "its/firms_reset_bankruptcy_flags.txt");      
+        file1 = fopen(filename,"a");
+        fprintf(file1,"\n %d %d %d %d %f",DAY,ID,BANKRUPTCY_INSOLVENCY_STATE,BANKRUPTCY_ILLIQUIDITY_STATE,EXTERNAL_FINANCIAL_NEEDS);
+        fclose(file1);
+        free(filename);
+    } 
     
     //Add conditions for resetting the active flag to 1:
     if ((BANKRUPTCY_IDLE_COUNTER<=0)&&(EXTERNAL_FINANCIAL_NEEDS<=0.0))

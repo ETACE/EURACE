@@ -168,8 +168,10 @@ int Household_update_its_portfolio()
      info=get_next_order_status_message(info);   
   }
   
-  /*
+ 
    #ifdef _DEBUG_MODE       
+   if (ID==21)
+   {
    if (PRINT_DEBUG_FILE_EXP1)
     {                       
         filename = malloc(40*sizeof(char));
@@ -179,9 +181,10 @@ int Household_update_its_portfolio()
         fprintf(file1,"\n %d %d %f",CURRENTDAY,ID,transactions);
         fclose(file1);
         free(filename);
+    }
     }                
     #endif
-  */
+
   
   if (PRINT_DEBUG) printf("\n\t PAYMENT_ACCOUNT: %f",PAYMENT_ACCOUNT);
     
