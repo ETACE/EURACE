@@ -3,12 +3,12 @@ clear all
 %close all
 
 %Pat = '..\qe1_d0.6_es0_r10\its\';
-Pat = 'C:\DATA\research\X-EURACE\models\EURACE_Model\trunk\Integrated_Model_1.0\its\seed_1230\andrea\q1_d0.6\its\';
-%Pat = 'C:\DATA\research\X-EURACE\models\EURACE_Model\trunk\Integrated_Model_1.0\its\seed_1230\q1_d0.6\its\';
+Pat = 'C:\DATA\research\X-EURACE\models\EURACE_Model\trunk\Integrated_Model_1.0\its\seed_1230\q1_d0.6\its\';
+Pat = 'C:\DATA\research\X-EURACE\models\EURACE_Model\trunk\Integrated_Model_1.0\its\seed_1230_old\q1_d0.6\its\';
 %Pat = '..\';
 
 font_sz = 11;
-colore = 'g';
+colore = 'r';
 
 mf = 250;
 af = ceil(mf/12);

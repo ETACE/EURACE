@@ -1,6 +1,9 @@
 #include "../header.h"
 #include "../Household_agent_header.h"
 #include "../my_library_header.h"
+#include "../FINANCIAL_UG/my_library_header.h"
+
+
 
 
 /********************************* Household agent functions *************************************/
@@ -587,7 +590,8 @@ int Household_send_account_update()
     FILE * file1;
     Asset_array *assets;
     Asset *asset;
-    int size, i;
+    int size;
+    int i;
 
    // int remainder; */
       // #endif
@@ -629,13 +633,14 @@ int Household_send_account_update()
        
     }        */        
        
-     EXPENDITURES = 0;
+    
      
       #endif
-      
+       EXPENDITURES = 0;
      assets =get_assetsowned();
      size = assets->size;
     
+
     if ((ID>20)&&(ID<=30))
     { 
     if (PRINT_DEBUG_FILE_EXP1)
@@ -654,6 +659,7 @@ int Household_send_account_update()
         free(filename);
     }              
    } 
+
      
 //      printf("\n %d %d %d",ID,assets->size,assets->total_size);
   
