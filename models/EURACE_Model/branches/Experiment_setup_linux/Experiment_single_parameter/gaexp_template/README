@@ -1,0 +1,14 @@
+DESCRIPTION
+
+GA experiment:
+- run 120.000 its
+- 2 cases
+- store XML.bzip2
+
+Storage:
+1 it: 104Kb
+50 GA steps
+600.000 its
+3Gb per run
+4 runs: 12Gb (raw xml)
+compressed: 120Mb
