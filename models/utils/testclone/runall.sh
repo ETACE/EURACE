@@ -2,8 +2,8 @@
 
 #Set directories:
 BASE=$PWD
-POP_GUI_DIR='/media/DOCS/Docs/EURACE/X-models/SVN_linux/guis/popgui-trunk'
-SIM_DIR='/media/DOCS/Docs/EURACE/X-models/SVN_linux/models/EURACE_Model/trunk/Integrated_Model_1.0/its'
+POP_GUI_DIR='/media/DataStorageLinux/SVN/guis/popgui-trunk'
+SIM_DIR='/media/DataStorageLinux/SVN/geole/branches/UNIBI_Branched_Model_2010/its'
 
 #CLONE_SCRIPT_DIR='~/cloning/utils/cloning'
 #PREPARTITION_DIR='~/cloning/utils/prepartitioning'
