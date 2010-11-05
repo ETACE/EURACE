@@ -42,7 +42,9 @@ int Bank_communicate_identity()
 
 int Bank_decide_credit_conditions()
 {
-           
+
+    FILE *file1=NULL;
+    char * filename="";
     double e, c, d, r, i;
     double bankruptcy_prob=0.0;
     double credit_allowed=0.0;
@@ -73,6 +75,19 @@ int Bank_decide_credit_conditions()
                 if (credit_allowed<0)
                     printf("\n ERROR in function bank_decide_credit_condition: credit_allowed = %2.5f\n ", credit_allowed);                
             }
+            
+      
+      if (PRINT_DEBUG_FILE_EXP1)
+        {                       
+            filename = malloc(40*sizeof(char));
+            filename[0]=0;
+            strcpy(filename, "its/banks_decide_credit_conditions.txt");      
+            file1 = fopen(filename,"a");
+            fprintf(file1,"\n %d %d %f %f %f %f %f %f %f %f",DAY,ID,d,c,e,bankruptcy_prob,r,VALUE_AT_RISK,EQUITY,credit_allowed);
+            fclose(file1);
+            free(filename);
+        }  
+            
             
           if (e<0)
           printf("\n Error ! The equity of the firm is negative: %f",e); 
@@ -269,11 +284,10 @@ int Bank_give_loan()
 
 int Bank_accounting()
 {
+   // The function is activated according to a monthly periodicity at the end of the state_graph 
 
-    // #ifdef _DEBUG_MODE  
         FILE *file1=NULL;
         char *filename="";
-   // #endif
          
      double q, c, gro, int_to_ecb;  // total_dividends, dividend_per_share
      
@@ -309,7 +323,7 @@ int Bank_accounting()
          BANK_GAMMA[0]=0.02;
      }
 
-     if (EQUITY<VALUE_AT_RISK/(ALFA/2))
+     if (EQUITY<VALUE_AT_RISK/ALFA)
      BANK_DIVIDEND_RATE = 0.0;
      else
      BANK_DIVIDEND_RATE = 1.0;
@@ -322,8 +336,8 @@ int Bank_accounting()
          PROFITS[0] -= TAXES;
          EQUITY -= TAXES;  
          CASH -= TAXES; 
-         add_tax_payment_message(GOV_ID, TAXES);  
-         TOTAL_DIVIDENDS = BANK_DIVIDEND_RATE*PROFITS[0];     //Proposal by Sander, Marco, Andrea and Philipp
+         add_tax_payment_message(GOV_ID, TAXES); 
+         TOTAL_DIVIDENDS = BANK_DIVIDEND_RATE*PROFITS[0];
          DIVIDEND_PER_SHARE = TOTAL_DIVIDENDS/CURRENT_SHARES_OUTSTANDING; 
          
           if (PRINT_DEBUG_FILE_EXP1)
@@ -359,7 +373,7 @@ int Bank_accounting()
         strcpy(filename, "its/banks_monthly_income_statement.txt");      
         file1 = fopen(filename,"a");
         fprintf(file1,"\n %d %d",DAY,ID);
-        fprintf(file1," %f %f %f %f %f %d",int_to_ecb,FIRM_INTEREST_PAYMENTS,TAXES,PROFITS[0],BANK_DIVIDEND_RATE,REGION_ID);
+        fprintf(file1," %f %f %f %f %f %d",int_to_ecb,FIRM_INTEREST_PAYMENTS,TAXES,PROFITS[0],TOTAL_DIVIDENDS,REGION_ID);
         fclose(file1);
         free(filename);
     }                
@@ -419,6 +433,7 @@ int Bank_send_accountInterest(void)
 
 int Bank_send_dividend_payment()
 {
+    // The function is activated according to a monthly periodicity at the beginning of the state_graph
     add_dividend_per_share_message(ID, DIVIDEND_PER_SHARE);
          EQUITY -=  TOTAL_DIVIDENDS;     
       CASH -=  TOTAL_DIVIDENDS;
@@ -437,6 +452,7 @@ int Bank_send_dividend_payment()
 
 int Bank_set_quantities_zero()
 {
+    DIVIDEND_PER_SHARE=0.0;
     TOTAL_DIVIDENDS=0.0;
     TAXES=0.0;
 
