@@ -2225,6 +2225,9 @@
       <output>
        <messageName>eurostat_send_macrodata</messageName>
       </output>
+      <output>
+       <messageName>data_for_bankruptcy_firms</messageName>
+      </output>
      </outputs>
     </function>
     <function>
@@ -3032,6 +3035,27 @@
      <type>int</type>
      <name>mall_id</name>
      <description></description>
+    </variable>
+   </variables>
+  </message>
+  <message>
+   <name>data_for_bankruptcy_firms</name>
+   <description></description>
+   <variables>
+    <variable>
+     <type>int</type>
+     <name>region_id</name>
+     <description> region of the firm</description>
+    </variable>
+    <variable>
+     <type>int</type>
+     <name>no_firms</name>
+     <description>number firms in region</description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>soldq</name>
+     <description>avg sold quantitiy in region</description>
     </variable>
    </variables>
   </message>

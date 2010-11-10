@@ -72,7 +72,8 @@ int Eurostat_send_data_to_government()
 int Eurostat_send_data()
 {
     int i, region;
-    double gdp;
+    double gdp, soldq;
+    int no_firms;
     
     /*First of every month*/
     /*Send the data*/
@@ -95,9 +96,13 @@ int Eurostat_send_data()
         region = i+1;
         
         gdp = REGION_FIRM_DATA.array[i].gdp;
+        soldq =  REGION_FIRM_DATA.array[i].monthly_sold_quantity; //added to handle bankrupcy;
+        no_firms = REGION_FIRM_DATA.array[i].no_firms;
+        //printf("\n SOLDSQ1=%2.2f\n", soldq);
         
-        printf("\n Region %d GDP=%2.2f\n", region, gdp);
+        //printf("\n Region %d GDP=%2.2f\n", region, gdp);
         add_data_for_government_message(region, gdp, AVERAGE_WAGE);
+       add_data_for_bankruptcy_firms_message(region, no_firms, soldq); //added to handle bankrupcy;
     }
 
     //Add message for general economy-wide macrodata 
