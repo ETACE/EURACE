@@ -185,7 +185,10 @@ int Firm_calc_production_quantity()
 
     	    	sum_2+=  MALLS_SALES_STATISTICS.array[i].sales.array[j].sales;
 
-
+                         if (ID == 3)
+                         {
+                                printf("\n ID_firm %d sales %2.2f\n", ID, MALLS_SALES_STATISTICS.array[i].sales.array[j].sales);
+                         }
     	    	}
     
     	regressor = (FIRM_PLANNING_HORIZON * sum_1 - 0.5*FIRM_PLANNING_HORIZON*(FIRM_PLANNING_HORIZON+1)*sum_2)/
@@ -235,7 +238,7 @@ int Firm_calc_production_quantity()
                 {
                 	 CURRENT_MALL_STOCKS.array[i].critical_stock = 
                 		 LINEAR_REGRESSION_ESTIMATORS.array[j].intercept + (1+FIRM_PLANNING_HORIZON)*LINEAR_REGRESSION_ESTIMATORS.array[j].regressor + QUANTIL_NORMAL_DISTRIBUTION*pow(LINEAR_REGRESSION_ESTIMATORS.array[j].variance,0.5)  ;
-    
+                         
                 }
                   
             }
@@ -258,6 +261,10 @@ int Firm_calc_production_quantity()
                  * critical stock for this mall*/
               
                     prod_vol = CURRENT_MALL_STOCKS.array[i].critical_stock - CURRENT_MALL_STOCKS.array[i].current_stock;
+                        if (ID == 3)
+                         {
+                                printf("\n ID_firm %d current stocks %2.2f critical stock %2.2f", ID, CURRENT_MALL_STOCKS.array[i].current_stock, CURRENT_MALL_STOCKS.array[i].critical_stock);
+                         }
     
                     PLANNED_DELIVERY_VOLUME.array[i].mall_id = 
                     CURRENT_MALL_STOCKS.array[i].mall_id;

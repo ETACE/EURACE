@@ -982,7 +982,28 @@ int Firm_reset_bankruptcy_flags()
 {
      FILE *file1;
     char *filename;
+    int i,j,no_firms;
+    double avg_soldq;
     
+    		
+		//Reading loop added for recovering avg sold quantities in firm's region
+        START_DATA_FOR_BANKRUPTCY_FIRMS_MESSAGE_LOOP
+        if(data_for_bankruptcy_firms_message->region_id == REGION_ID)
+        {
+        no_firms = data_for_bankruptcy_firms_message->no_firms;
+        avg_soldq = (data_for_bankruptcy_firms_message->soldq)/no_firms;
+        printf("\n Firm_id %d AVGSOLDSQ=%2.2f\n", ID, avg_soldq);
+        for(i=0; i< MALLS_SALES_STATISTICS.size; i++)
+                    {
+    	    	for (j=0;j<FIRM_PLANNING_HORIZON; j++)
+                                                  {
+    	    	                                  MALLS_SALES_STATISTICS.array[i].sales.array[j].sales = avg_soldq/MALLS_SALES_STATISTICS.size;
+    	    	                                  }
+                    }
+   	     }
+         FINISH_DATA_FOR_BANKRUPTCY_FIRMS_MESSAGE_LOOP
+         
+        
     #ifdef _DEBUG_MODE
     if (PRINT_DEBUG_EXP1 || PRINT_DEBUG)
     {
@@ -1013,6 +1034,7 @@ int Firm_reset_bankruptcy_flags()
         BANKRUPTCY_ILLIQUIDITY_STATE = 0;
         DAY_OF_MONTH_TO_ACT = ((DAY+1)%MONTH);
 		AGE =0;
+
 
       if (PRINT_DEBUG_FILE_EXP1)
     {
