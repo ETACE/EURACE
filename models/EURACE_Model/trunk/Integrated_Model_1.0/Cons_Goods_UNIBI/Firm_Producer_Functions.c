@@ -155,6 +155,9 @@ int Firm_calc_production_quantity()
     int i,j,k;
     FILE *file1;
      char *filename;    
+    double  mall_sales_total = 0.0;
+    double stock_crit_tot = 0.0;
+    double stock_corrent_tot = 0.0;
     
     double regressor, intercept, variance;
     
@@ -164,7 +167,6 @@ int Firm_calc_production_quantity()
     CUM_TOTAL_SOLD_QUANTITY = 0.0;
     CUM_REVENUE = 0.0;  
    
-    
     //Delete the LINEAR_REGRESSION_ESTIMATORS array
     
     
@@ -184,12 +186,10 @@ int Firm_calc_production_quantity()
     	    	sum_1+= (FIRM_PLANNING_HORIZON + 1 - MALLS_SALES_STATISTICS.array[i].sales.array[j].period)* MALLS_SALES_STATISTICS.array[i].sales.array[j].sales;
 
     	    	sum_2+=  MALLS_SALES_STATISTICS.array[i].sales.array[j].sales;
-
-                         if (ID == 3)
-                         {
-                                printf("\n ID_firm %d sales %2.2f\n", ID, MALLS_SALES_STATISTICS.array[i].sales.array[j].sales);
-                         }
+                         
     	    	}
+    	    	
+  		mall_sales_total += MALLS_SALES_STATISTICS.array[i].sales.array[FIRM_PLANNING_HORIZON-1].sales;;    	
     
     	regressor = (FIRM_PLANNING_HORIZON * sum_1 - 0.5*FIRM_PLANNING_HORIZON*(FIRM_PLANNING_HORIZON+1)*sum_2)/
         		(1/6.0*pow(FIRM_PLANNING_HORIZON,2)*(FIRM_PLANNING_HORIZON+1)*
@@ -221,9 +221,6 @@ int Firm_calc_production_quantity()
     			  LINEAR_REGRESSION_ESTIMATORS.array[k].variance=variance;
     		  }
     	  }
-    	  
-    	  
-    	 
      
     }
          /*Setting the critical values*/
@@ -238,21 +235,20 @@ int Firm_calc_production_quantity()
                 {
                 	 CURRENT_MALL_STOCKS.array[i].critical_stock = 
                 		 LINEAR_REGRESSION_ESTIMATORS.array[j].intercept + (1+FIRM_PLANNING_HORIZON)*LINEAR_REGRESSION_ESTIMATORS.array[j].regressor + QUANTIL_NORMAL_DISTRIBUTION*pow(LINEAR_REGRESSION_ESTIMATORS.array[j].variance,0.5)  ;
-                         
+                     stock_crit_tot += CURRENT_MALL_STOCKS.array[i].critical_stock;
+    
                 }
                   
             }
             
         }
-                    
-            
-         
 
         /*checking whether or not the current mall stocks are below the critical values         
          * (sS-Rule) If this is the case refill the stock up to the max stock */
         for(int i = 0; i < CURRENT_MALL_STOCKS.size; i++)
         {
-            
+           
+            stock_corrent_tot += CURRENT_MALL_STOCKS.array[i].current_stock; 
             if(CURRENT_MALL_STOCKS.array[i].current_stock <= 
             CURRENT_MALL_STOCKS.array[i].critical_stock)    
             {
@@ -261,10 +257,6 @@ int Firm_calc_production_quantity()
                  * critical stock for this mall*/
               
                     prod_vol = CURRENT_MALL_STOCKS.array[i].critical_stock - CURRENT_MALL_STOCKS.array[i].current_stock;
-                        if (ID == 3)
-                         {
-                                printf("\n ID_firm %d current stocks %2.2f critical stock %2.2f", ID, CURRENT_MALL_STOCKS.array[i].current_stock, CURRENT_MALL_STOCKS.array[i].critical_stock);
-                         }
     
                     PLANNED_DELIVERY_VOLUME.array[i].mall_id = 
                     CURRENT_MALL_STOCKS.array[i].mall_id;
@@ -279,10 +271,8 @@ int Firm_calc_production_quantity()
                 PLANNED_DELIVERY_VOLUME.array[i].mall_id= 
                 CURRENT_MALL_STOCKS.array[i].mall_id;
 
-                PLANNED_DELIVERY_VOLUME.array[i].quantity= 0;
+                PLANNED_DELIVERY_VOLUME.array[i].quantity= 0.0;
             }
-
-
 
         }
 
@@ -291,7 +281,7 @@ int Firm_calc_production_quantity()
         for(int i = 0; i < LAST_PLANNED_PRODUCTION_QUANTITIES.size; i++)
         {
             mean_production_quantity += LAST_PLANNED_PRODUCTION_QUANTITIES.array[i];
-        }
+         }
 
         mean_production_quantity = mean_production_quantity/
         LAST_PLANNED_PRODUCTION_QUANTITIES.size;
@@ -316,11 +306,12 @@ int Firm_calc_production_quantity()
             filename[0]=0;
             strcpy(filename, "its/Firm_calc_production_quantity.txt");      
             file1 = fopen(filename,"a");
-            fprintf(file1,"\n %d %d %f %d",DAY,ID,PLANNED_PRODUCTION_QUANTITY,REGION_ID);
+            fprintf(file1,"\n %d %d %f %f %f",DAY,ID,mall_sales_total,stock_corrent_tot,stock_crit_tot);
+            fprintf(file1," %f %f",production_volume,mean_production_quantity);
+            fprintf(file1," %f %d",PLANNED_PRODUCTION_QUANTITY,REGION_ID);
             fclose(file1);
             free(filename);
         }  
-        
         
         //printf("In calculate production: Firm %d PLANNED_PRODUCTION_QUANTITY %f\n", ID, PLANNED_PRODUCTION_QUANTITY);
         //printf("In calculate production: Firm %d PLANNED_OUTPUT %f\n", ID, PLANNED_OUTPUT);
