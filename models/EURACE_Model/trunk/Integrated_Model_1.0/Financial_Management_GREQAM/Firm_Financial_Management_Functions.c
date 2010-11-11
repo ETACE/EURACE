@@ -424,6 +424,10 @@ int Firm_set_bankruptcy_illiquidity()
     BANKRUPTCY_ILLIQUIDITY_STATE = 1;
     
     TOTAL_VALUE_LOCAL_INVENTORY = 0.0;
+     for(int i = 0; i < CURRENT_MALL_STOCKS.size;i++)
+        {
+            CURRENT_MALL_STOCKS.array[i].current_stock = 0.0;
+        }
     
     #ifdef _DEBUG_MODE    
     if (PRINT_DEBUG_EXP1 || PRINT_DEBUG)
@@ -700,6 +704,10 @@ int Firm_set_bankruptcy_insolvency()
     BANKRUPTCY_ILLIQUIDITY_STATE = 0;
     
     TOTAL_VALUE_LOCAL_INVENTORY = 0.0;
+     for(int i = 0; i < CURRENT_MALL_STOCKS.size;i++)
+        {
+            CURRENT_MALL_STOCKS.array[i].current_stock = 0.0;
+        }
     
     //send msg to malls
     add_bankruptcy_insolvency_message(ID);
@@ -995,13 +1003,19 @@ int Firm_reset_bankruptcy_flags()
         printf("\n Firm_id %d AVGSOLDSQ=%2.2f\n", ID, avg_soldq);
         for(i=0; i< MALLS_SALES_STATISTICS.size; i++)
                     {
-    	    	for (j=0;j<FIRM_PLANNING_HORIZON; j++)
+    	    	     for (j=0;j<FIRM_PLANNING_HORIZON; j++)
                                                   {
     	    	                                  MALLS_SALES_STATISTICS.array[i].sales.array[j].sales = avg_soldq/MALLS_SALES_STATISTICS.size;
     	    	                                  }
                     }
+         for(int i = 0; i < LAST_PLANNED_PRODUCTION_QUANTITIES.size; i++)
+        {
+            LAST_PLANNED_PRODUCTION_QUANTITIES.array[i] = avg_soldq;
+         }                    
    	     }
          FINISH_DATA_FOR_BANKRUPTCY_FIRMS_MESSAGE_LOOP
+         
+          
          
         
     #ifdef _DEBUG_MODE
