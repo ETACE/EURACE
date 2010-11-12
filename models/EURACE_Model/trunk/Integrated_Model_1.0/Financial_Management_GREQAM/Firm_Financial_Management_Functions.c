@@ -134,16 +134,17 @@ int Firm_compute_dividends()
     //option 4: keep earnings per share constant
     //total divided payment increases with same ratio as earnings per share
     //this keeps earnings per share constant
-    if ((PREVIOUS_EARNINGS_PER_SHARE>0.0)&&(PREVIOUS_SHARES_OUTSTANDING>0))
+   /* if ((PREVIOUS_EARNINGS_PER_SHARE>0.0)&&(PREVIOUS_SHARES_OUTSTANDING>0))
     {
         TOTAL_DIVIDEND_PAYMENT *= (EARNINGS_PER_SHARE/PREVIOUS_EARNINGS_PER_SHARE)
                                    *(CURRENT_SHARES_OUTSTANDING/PREVIOUS_SHARES_OUTSTANDING);
+        printf("\n ID: %d NET_EARNINGS: %2.4f TOTAL_DIVIDEND_PAYMENT = %2.4f\n", ID,NET_EARNINGS,TOTAL_DIVIDEND_PAYMENT);                           
 	}
     else
     	{
     		if((PREVIOUS_SHARES_OUTSTANDING == 0) || (CURRENT_SHARES_OUTSTANDING == 0))
     		printf("ERROR in Firm_compute_dividends: PREVIOUS_SHARES_OUTSTANDING = %d --- CURRENT_SHARES_OUTSTANDING = %d\n", PREVIOUS_SHARES_OUTSTANDING, CURRENT_SHARES_OUTSTANDING);	
-    	}
+    	} */
 
     //option 5: keep dividend to earnings ratio constant (dont let it fall), but do not decrease the dividend per share ratio.
     /*
@@ -181,18 +182,22 @@ int Firm_compute_dividends()
     //Determine total_dividend_payment when it is zero, and there are positive net earnings.
     //Set total divided payment equal to some dividend-earnings ratio (a parameter)
     
-    if(TOTAL_DIVIDEND_PAYMENT<1e-6 && NET_EARNINGS>0.0)
+    if(NET_EARNINGS>0.0)
     {
         TOTAL_DIVIDEND_PAYMENT = CONST_DIVIDEND_EARNINGS_RATIO * NET_EARNINGS;
-        //printf("\n In Firm_compute_dividends: setting TOTAL_DIVIDEND_PAYMENT = %2.4f\n", TOTAL_DIVIDEND_PAYMENT):
+     //   printf("\n ID: %d In Firm_compute_dividends: setting TOTAL_DIVIDEND_PAYMENT = %2.4f\n", ID,TOTAL_DIVIDEND_PAYMENT);
+     }
+     else
+     {
+         TOTAL_DIVIDEND_PAYMENT = 0.0;
     }
     
     //Always check:
-    if (EARNINGS<0.0)
-        TOTAL_DIVIDEND_PAYMENT = 0.0;
+/*    if (EARNINGS<0.0)
+        TOTAL_DIVIDEND_PAYMENT = 0.0; */
     
     //Continue with computation of ratios
-    PREVIOUS_DIVIDEND_PER_SHARE = CURRENT_DIVIDEND_PER_SHARE;
+   PREVIOUS_DIVIDEND_PER_SHARE = CURRENT_DIVIDEND_PER_SHARE;
     
     if (CURRENT_SHARES_OUTSTANDING>0)
         CURRENT_DIVIDEND_PER_SHARE = TOTAL_DIVIDEND_PAYMENT/CURRENT_SHARES_OUTSTANDING;
@@ -200,7 +205,7 @@ int Firm_compute_dividends()
     	CURRENT_DIVIDEND_PER_SHARE = 0.0;
     	TOTAL_DIVIDEND_PAYMENT = 0.0;
     }
-    
+   
     PREVIOUS_DIVIDEND_PER_EARNINGS = CURRENT_DIVIDEND_PER_EARNINGS;
     
     if (NET_EARNINGS>0.0)
@@ -669,7 +674,7 @@ int Firm_execute_financial_payments()
     //Actual bank account updates are send to the bank at end of day when the firm sends its bank_update message 
 
     //add dividend_per_share_msg(firm_id, current_dividend_per_share) to shareholders (dividend per share)  
-    if(CURRENT_SHARES_OUTSTANDING>0)
+       if(CURRENT_SHARES_OUTSTANDING>0)
     {
     	CURRENT_DIVIDEND_PER_SHARE = TOTAL_DIVIDEND_PAYMENT/CURRENT_SHARES_OUTSTANDING;
     	add_dividend_per_share_message(ID, CURRENT_DIVIDEND_PER_SHARE);
@@ -677,7 +682,8 @@ int Firm_execute_financial_payments()
     	PAYMENT_ACCOUNT -= TOTAL_DIVIDEND_PAYMENT;
     }	
 
-    
+   //  printf("\n ID: %d Exec. TOTAL_DIVIDEND_PAYMENT: %2.2f CURRENT_DIVIDEND_PER_SHARE %2.2f",ID,TOTAL_DIVIDEND_PAYMENT,CURRENT_DIVIDEND_PER_SHARE);
+
 
     return 0;
 }
