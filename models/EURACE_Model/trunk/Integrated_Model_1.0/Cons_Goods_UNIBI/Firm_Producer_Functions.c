@@ -104,13 +104,7 @@ int Firm_calc_input_demands_2()
         PLANNED_PRODUCTION_COSTS = EMPLOYEES_NEEDED*MEAN_WAGE*(1.04) + DEMAND_CAPITAL_STOCK*ACTUAL_CAP_PRICE;
     
     #ifdef _DEBUG_MODE    
-    if (PRINT_DEBUG_EXP1 || PRINT_DEBUG)
-    {
-        printf("\n\n Firm_calc_input_demands_2 ID: %d",ID);
-        printf("\n\t TOTAL_UNITS_CAPITAL_STOCK: %f NEEDED_CAPITAL_STOCK: %f",TOTAL_UNITS_CAPITAL_STOCK,NEEDED_CAPITAL_STOCK);
-        printf("\n\t DEMAND_CAPITAL_STOCK: %f EMPLOYEES_NEEDED: %d",DEMAND_CAPITAL_STOCK,EMPLOYEES_NEEDED);                    
-        getchar();
-    }
+  
     #endif
     
     return 0;
@@ -325,8 +319,10 @@ int Firm_calc_production_quantity()
  * \brief Firms calculate the labor demand and the demand for capital goods*/
 int Firm_calc_input_demands()
 {
-
-
+ 
+     FILE *file1;
+     char *filename;    
+     
     double temp_labour_demand;
     double temp_capital_demand;
     
@@ -459,6 +455,17 @@ int Firm_calc_input_demands()
             getchar();
         }
         #endif
+        
+          if (PRINT_DEBUG_FILE_EXP1)
+        {                       
+            filename = malloc(40*sizeof(char));
+            filename[0]=0;
+            strcpy(filename, "its/Firm_calc_input_demands.txt");      
+            file1 = fopen(filename,"a");
+            fprintf(file1,"\n %d %d %d %f",DAY,ID,EMPLOYEES_NEEDED,NEEDED_CAPITAL_STOCK);
+            fclose(file1);
+            free(filename);
+        }  
 
         //printf("Firm: %d  Labour: %d  Capital: %f  PLANNED_PROD_COSTS: %f\n", ID,EMPLOYEES_NEEDED,NEEDED_CAPITAL_STOCK,PLANNED_PRODUCTION_COSTS);
     

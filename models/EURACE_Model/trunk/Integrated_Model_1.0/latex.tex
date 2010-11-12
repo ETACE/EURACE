@@ -2317,6 +2317,11 @@ as well as the specific skills.}\\
 \midrule
 \url{msg_mall_id_to_firms} & \parbox{10cm}{}\\
     \url{int} \url{mall_id} \index{\url{mall_id}} & \parbox{10cm}{}\\
+\midrule
+\url{data_for_bankruptcy_firms} & \parbox{10cm}{}\\
+    \url{int} \url{region_id} \index{\url{region_id}} & \parbox{10cm}{ region of the firm}\\
+    \url{int} \url{no_firms} \index{\url{no_firms}} & \parbox{10cm}{number firms in region}\\
+    \url{double} \url{soldq} \index{\url{soldq}} & \parbox{10cm}{avg sold quantitiy in region}\\
 \end{longtable}
 \end{landscape}
 
@@ -2414,15 +2419,15 @@ TOTAL\_DIVIDEND\_PAYMENT = CONST\_DIVIDEND\_EARNINGS\_RATIO *NET\_EARNINGS;}\\
 \url{double} \url{gov_policy_gdp_fraction_consumption} \index{\url{gov_policy_gdp_fraction_consumption}} & \parbox{10cm}{Parameter to set government consumption expenditure as a fraction of GDP.}\\
 \url{double} \url{gov_policy_gdp_fraction_investment} \index{\url{gov_policy_gdp_fraction_investment}} & \parbox{10cm}{Parameter to set government investment expenditure as a fraction of GDP.}\\
 \url{int} \url{no_regions_per_gov} \index{\url{no_regions_per_gov}} & \parbox{10cm}{Number of regions per government. Default 2.}\\
-\url{double} \url{subsidy_trigger_on} \index{\url{subsidy_trigger_on}} & \parbox{10cm}{Trigger floor level of the GDP growth rate, below which the subsidy is switched on. Typically set to -0.01.\&\#xd;\&\#xd;\&\#xd;\&\#xd;\&\#xd;\&\#xd;\&\#xd;
+\url{double} \url{subsidy_trigger_on} \index{\url{subsidy_trigger_on}} & \parbox{10cm}{Trigger floor level of the GDP growth rate, below which the subsidy is switched on. Typically set to -0.01.\&\#xd;\&\#xd;\&\#xd;\&\#xd;\&\#xd;\&\#xd;\&\#xd;\&\#xd;
 }\\
-\url{double} \url{subsidy_trigger_off} \index{\url{subsidy_trigger_off}} & \parbox{10cm}{Trigger ceiling level of the GDP growth rate, above which the subsidy is switched off. Typically set to +0.01.\&\#xd;\&\#xd;\&\#xd;\&\#xd;\&\#xd;\&\#xd;\&\#xd;
+\url{double} \url{subsidy_trigger_off} \index{\url{subsidy_trigger_off}} & \parbox{10cm}{Trigger ceiling level of the GDP growth rate, above which the subsidy is switched off. Typically set to +0.01.\&\#xd;\&\#xd;\&\#xd;\&\#xd;\&\#xd;\&\#xd;\&\#xd;\&\#xd;
 }\\
-\url{int} \url{gov_policy_swith_quantitative_easing} \index{\url{gov_policy_swith_quantitative_easing}} & \parbox{10cm}{Swith to turn on quantitative easing.
-
-
-
-
+\url{int} \url{gov_policy_swith_quantitative_easing} \index{\url{gov_policy_swith_quantitative_easing}} & \parbox{10cm}{Swith to turn on quantitative easing.\&\#xd;
+\&\#xd;
+\&\#xd;
+\&\#xd;
+\&\#xd;
 }\\
 \end{longtable}
 \end{landscape}

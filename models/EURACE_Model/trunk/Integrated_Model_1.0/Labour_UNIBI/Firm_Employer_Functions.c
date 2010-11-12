@@ -8,7 +8,8 @@
 
 /** \fn Firm_calculate_specific_skills_and_wage_offer()
  * \brief: 
-	- Firm calculates the average specific skills for each general skill group. 	- Firm determines the wage offer for each general skill group.*/
+	- Firm calculates the average specific skills for each general skill group. 
+	- Firm determines the wage offer for each general skill group.*/
 int Firm_calculate_specific_skills_and_wage_offer()
 {
 	int n;
@@ -129,8 +130,22 @@ int Firm_calculate_specific_skills_and_wage_offer()
  */
 int Firm_send_vacancies()
 {
+    char * filename;
+    FILE * file1;
+    
 	/*Number of Vacancies/additional employees wanted*/
 	VACANCIES = EMPLOYEES_NEEDED - NO_EMPLOYEES;
+	
+	  if (PRINT_DEBUG_FILE_EXP1)
+    {
+        filename = malloc(40*sizeof(char));
+        filename[0]=0;
+        strcpy(filename, "its/firms_send_vacancies.txt");      
+        file1 = fopen(filename,"a");
+        fprintf(file1,"\n %d %d %d %d %d",DAY,ID,NO_EMPLOYEES,EMPLOYEES_NEEDED,VACANCIES);
+        fclose(file1);
+        free(filename);
+    }    
 
 	/*Send vacancies message with different wage offers for each general skill group.*/
 	add_vacancies_message(ID, 
@@ -252,7 +267,8 @@ int Firm_send_random_redundancies()
 		/*Firing: by chance*/
 		j = random_int(0,(EMPLOYEES.size-1));
 		add_firing_message(ID, EMPLOYEES.array[j].id);
-		switch(EMPLOYEES.array[j].general_skill)
+
+		switch(EMPLOYEES.array[j].general_skill)
 		{
 			/*If dismissed employee has skill level 5 reduce the number of employees with skill level 1 by 1.*/
 			case 1:
@@ -589,6 +605,8 @@ int Firm_read_job_responses()
  */
 int Firm_update_wage_offer()
 {
+    char * filename;
+    FILE * file1;
 	/*If there are "a lot" of vacancies still open...*/ 
 	if(VACANCIES > MIN_VACANCY)  
 	{
@@ -602,6 +620,17 @@ int Firm_update_wage_offer()
 		WAGE_OFFER_FOR_SKILL_4 = WAGE_OFFER_FOR_SKILL_4*(1+WAGE_UPDATE);
 		WAGE_OFFER_FOR_SKILL_5 = WAGE_OFFER_FOR_SKILL_5*(1+WAGE_UPDATE);
 	}
+	
+    if (PRINT_DEBUG_FILE_EXP1)
+    {
+        filename = malloc(40*sizeof(char));
+        filename[0]=0;
+        strcpy(filename, "its/firms_update_wage_offer.txt");      
+        file1 = fopen(filename,"a");
+        fprintf(file1,"\n %d %d %f",DAY,ID,WAGE_OFFER);
+        fclose(file1);
+        free(filename);
+    }    
 
 return 0;
 }
