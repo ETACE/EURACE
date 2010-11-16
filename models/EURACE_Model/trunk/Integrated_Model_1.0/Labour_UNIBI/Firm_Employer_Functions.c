@@ -15,6 +15,9 @@ int Firm_calculate_specific_skills_and_wage_offer()
 	int n;
 	int m;
 	
+    char * filename;
+    FILE * file1;
+	
 	/*Sum up the specific skills of employees  for each general skill group (1-5): for average*/
 	double sum_1 = 0;
 	double sum_2 = 0;
@@ -117,6 +120,18 @@ int Firm_calculate_specific_skills_and_wage_offer()
 				break;  
 		}
 	}
+	
+	 if (PRINT_DEBUG_FILE_EXP1)
+    {
+        filename = malloc(40*sizeof(char));
+        filename[0]=0;
+        strcpy(filename, "its/firm_calculate_wage_offer.txt");      
+        file1 = fopen(filename,"a");
+        fprintf(file1,"\n %d %d %f",DAY,ID,WAGE_OFFER);
+        fclose(file1);
+        free(filename);
+    }    
+	
 
 	return 0;
 }
@@ -130,22 +145,11 @@ int Firm_calculate_specific_skills_and_wage_offer()
  */
 int Firm_send_vacancies()
 {
-    char * filename;
-    FILE * file1;
-    
+       
 	/*Number of Vacancies/additional employees wanted*/
 	VACANCIES = EMPLOYEES_NEEDED - NO_EMPLOYEES;
 	
-	  if (PRINT_DEBUG_FILE_EXP1)
-    {
-        filename = malloc(40*sizeof(char));
-        filename[0]=0;
-        strcpy(filename, "its/firms_send_vacancies.txt");      
-        file1 = fopen(filename,"a");
-        fprintf(file1,"\n %d %d %d %d %d",DAY,ID,NO_EMPLOYEES,EMPLOYEES_NEEDED,VACANCIES);
-        fclose(file1);
-        free(filename);
-    }    
+   
 
 	/*Send vacancies message with different wage offers for each general skill group.*/
 	add_vacancies_message(ID, 
@@ -248,6 +252,8 @@ int Firm_send_random_redundancies()
 	int j;
 	int random_num;
 	int no_redundancies;
+	char * filename;
+    FILE * file1;
 
 	/*Determine the fraction of employyes who will be dismissed.*/
 	random_num = random_int(LOWER_BOUND_FIRING,UPPER_BOUND_FIRING);
@@ -298,6 +304,18 @@ int Firm_send_random_redundancies()
 		/*Reduce the overall number of employees by 1.*/
 		NO_EMPLOYEES--;
 	}
+	
+	if (PRINT_DEBUG_FILE_EXP1)
+    {
+        filename = malloc(40*sizeof(char));
+        filename[0]=0;
+        strcpy(filename, "its/firms_send_rndredundancies.txt");      
+        file1 = fopen(filename,"a");
+        fprintf(file1,"\n %d %d %d %d",DAY,ID,NO_EMPLOYEES,EMPLOYEES_NEEDED);
+        fclose(file1);
+        free(filename);
+    } 
+	
  
 	return 0;
 } 
@@ -318,6 +336,8 @@ int Firm_read_job_applications_send_job_offer_or_rejection()
 	int j;
 	int k;
 	int no_applications;
+     char * filename;
+     FILE * file1;
 
 	/* Create a job application dynamic array */
 	job_application_array job_application_list; 
@@ -340,6 +360,17 @@ int Firm_read_job_applications_send_job_offer_or_rejection()
 
 
 	no_applications = job_application_list.size;
+	
+	if (PRINT_DEBUG_FILE_EXP1)
+    {
+        filename = malloc(40*sizeof(char));
+        filename[0]=0;
+        strcpy(filename, "its/Firm_read_job_appl.txt");      
+        file1 = fopen(filename,"a");
+        fprintf(file1,"\n %d %d %d",DAY,ID,no_applications);
+        fclose(file1);
+        free(filename);
+    } 
 
 	/*Sort the applications. Highest general skills first.*/
 	/*qsort(job_application_list.array, job_application_list.size, 
@@ -523,6 +554,9 @@ int Firm_read_job_applications_send_job_offer_or_rejection()
  */
 int Firm_read_job_responses()
 {   
+    char * filename;
+    FILE * file1;
+    
 	START_JOB_ACCEPTANCE_MESSAGE_LOOP
 
 		/* Read job acceptance messages for this Firm */
@@ -593,6 +627,17 @@ int Firm_read_job_responses()
 		}
 
 	FINISH_JOB_ACCEPTANCE_MESSAGE_LOOP
+	
+		if (PRINT_DEBUG_FILE_EXP1)
+    {
+        filename = malloc(40*sizeof(char));
+        filename[0]=0;
+        strcpy(filename, "its/Firm_read_job_responses.txt");      
+        file1 = fopen(filename,"a");
+        fprintf(file1,"\n %d %d %d %d",DAY,ID,NO_EMPLOYEES,VACANCIES);
+        fclose(file1);
+        free(filename);
+    } 
 
 	return 0;
 }
@@ -605,9 +650,12 @@ int Firm_read_job_responses()
  */
 int Firm_update_wage_offer()
 {
-    char * filename;
-    FILE * file1;
+   char * filename;
+   FILE * file1;
+    double wage_old  = 0.0;
 	/*If there are "a lot" of vacancies still open...*/ 
+	
+	wage_old = WAGE_OFFER;
 	if(VACANCIES > MIN_VACANCY)  
 	{
 		/*Update the basic wage offer.*/
@@ -621,13 +669,13 @@ int Firm_update_wage_offer()
 		WAGE_OFFER_FOR_SKILL_5 = WAGE_OFFER_FOR_SKILL_5*(1+WAGE_UPDATE);
 	}
 	
-    if (PRINT_DEBUG_FILE_EXP1)
+  if (PRINT_DEBUG_FILE_EXP1)
     {
         filename = malloc(40*sizeof(char));
         filename[0]=0;
         strcpy(filename, "its/firms_update_wage_offer.txt");      
         file1 = fopen(filename,"a");
-        fprintf(file1,"\n %d %d %f",DAY,ID,WAGE_OFFER);
+        fprintf(file1,"\n %d %d %d %f %f",DAY,ID,VACANCIES,wage_old,WAGE_OFFER);
         fclose(file1);
         free(filename);
     }    
@@ -677,6 +725,8 @@ int Firm_read_job_applications_send_job_offer_or_rejection_2()
 	int j;
 	int k;
 	int no_applications;
+	char * filename;
+    FILE * file1;
 
 	/* Create a job application dynamic array */
 	job_application_array job_application_list; 
@@ -699,6 +749,17 @@ int Firm_read_job_applications_send_job_offer_or_rejection_2()
 
 
 	no_applications = job_application_list.size;
+	
+	if (PRINT_DEBUG_FILE_EXP1)
+    {
+        filename = malloc(40*sizeof(char));
+        filename[0]=0;
+        strcpy(filename, "its/Firm_read_job_appl2.txt");      
+        file1 = fopen(filename,"a");
+        fprintf(file1,"\n %d %d %d",DAY,ID,no_applications);
+        fclose(file1);
+        free(filename);
+    } 
 
 	/*Sort the applications. Highest general skills first.*/
 	/*qsort(job_application_list.array, job_application_list.size, 
@@ -882,6 +943,9 @@ int Firm_read_job_applications_send_job_offer_or_rejection_2()
  */
 int Firm_read_job_responses_2()
 {   
+    char * filename;
+    FILE * file1;
+    
 	START_JOB_ACCEPTANCE2_MESSAGE_LOOP
 
 		/* Read job acceptance messages for this Firm */
@@ -952,6 +1016,17 @@ int Firm_read_job_responses_2()
 		}
 
 	FINISH_JOB_ACCEPTANCE2_MESSAGE_LOOP
+
+    if (PRINT_DEBUG_FILE_EXP1)
+    {
+        filename = malloc(40*sizeof(char));
+        filename[0]=0;
+        strcpy(filename, "its/Firm_read_job_responses2.txt");      
+        file1 = fopen(filename,"a");
+        fprintf(file1,"\n %d %d %d %d %d",DAY,ID,NO_EMPLOYEES,VACANCIES);
+        fclose(file1);
+        free(filename);
+    } 
 
 	return 0;
 }

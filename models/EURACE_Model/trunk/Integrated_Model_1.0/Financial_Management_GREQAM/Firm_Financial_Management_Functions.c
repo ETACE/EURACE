@@ -292,6 +292,7 @@ int Firm_compute_balance_sheet()
             + TOTAL_VALUE_LOCAL_INVENTORY;
 
     EQUITY = TOTAL_ASSETS - TOTAL_DEBT;
+  
 
     if (EQUITY>0.0)
         DEBT_EQUITY_RATIO = TOTAL_DEBT/EQUITY;
@@ -300,6 +301,13 @@ int Firm_compute_balance_sheet()
     if(NET_EARNINGS>0.0)
         DEBT_EARNINGS_RATIO = TOTAL_DEBT/NET_EARNINGS;
     else DEBT_EARNINGS_RATIO = 0.0;
+    
+      
+    /*if (ID==7)
+    {
+            if (DAY==(200+DAY_OF_MONTH_TO_ACT-1)) 
+            {EQUITY = -1.0;}
+    }*/
     
     #ifdef _DEBUG_MODE
     if (PRINT_DEBUG_EXP1 || PRINT_DEBUG)
@@ -752,12 +760,12 @@ int Firm_bankruptcy_insolvency_procedure()
     double ipo_amount=0.0;
   
     #ifdef _DEBUG_MODE  
-        char * filename;
-        FILE * file1;
+    //    char * filename;
+    //    FILE * file1;
     #endif
 
     #ifdef _DEBUG_MODE
-    if (PRINT_LOG)
+   /* if (PRINT_LOG)
     {
         //Start an empty string for the filename
         filename = malloc(40*sizeof(char));
@@ -774,19 +782,19 @@ int Firm_bankruptcy_insolvency_procedure()
         //close the file pointer: FILE * file 
         fclose(file1);
         free(filename);
-    }
+    }*/
     #endif
     
-     if (PRINT_DEBUG_FILE_EXP1)
+   /*  if (PRINT_DEBUG_FILE_EXP1)
     {
         filename = malloc(40*sizeof(char));
         filename[0]=0;
-        strcpy(filename, "its/firms_bankruptcy_insolvency_procedure.txt");      
+        strcpy(filename, "its/firms_bankruptcy_insolvency.txt");      
         file1 = fopen(filename,"a");
         fprintf(file1,"\n %d %d",DAY,ID);
         fclose(file1);
         free(filename);
-    }    
+    }    */
     
     //Effect on credit market  
   	if (BANKRUPTCY_IDLE_COUNTER == CONST_BANKRUPTCY_IDLE_PERIOD - 1)
@@ -969,21 +977,21 @@ int Firm_bankruptcy_illiquidity_procedure()
  */
 int Firm_bankruptcy_idle_counter()
 {   
-    char * filename;
-        FILE * file1;
+   // char * filename;
+   //     FILE * file1;
         
     BANKRUPTCY_IDLE_COUNTER -= 1;
     
-     if (PRINT_DEBUG_FILE_EXP1)
+ /*    if (PRINT_DEBUG_FILE_EXP1)
     {
         filename = malloc(40*sizeof(char));
         filename[0]=0;
-        strcpy(filename, "its/firms_bankruptcy_idle_counter.txt");      
+        strcpy(filename, "its/firms_bankruptcy_counter.txt");      
         file1 = fopen(filename,"a");
         fprintf(file1,"\n %d %d %d %d",DAY,ID,BANKRUPTCY_INSOLVENCY_STATE,BANKRUPTCY_ILLIQUIDITY_STATE);
         fclose(file1);
         free(filename);
-    }    
+    }   */ 
         
     return 0;
 }
@@ -1135,7 +1143,7 @@ int Firm_compute_and_send_stock_orders_bankruptcy_insolvency()
         {
             filename = malloc(40*sizeof(char));
             filename[0]=0;
-            strcpy(filename, "its/firms_send_stock_orders_bankruptcy_insolvency.txt"); 
+            strcpy(filename, "its/firms_stock_orders_bankruptcy_insolvency.txt"); 
             file1 = fopen(filename,"a");
             fprintf(file1,"\n %d %d %f %f %f %d %d %d",DAY,ID,limit_price,EQUITY,EXTERNAL_FINANCIAL_NEEDS,CURRENT_SHARES_OUTSTANDING,target_shares_outstanding,quantity);
             fclose(file1);
@@ -1165,7 +1173,7 @@ int Firm_compute_and_send_stock_orders_bankruptcy_illiquidity()
         {
             filename = malloc(40*sizeof(char));
             filename[0]=0;
-            strcpy(filename, "its/firms_send_stock_orders_bankruptcy_illiquidity.txt"); 
+            strcpy(filename, "its/firms_stock_orders_bankruptcy_illiquidity.txt"); 
             file1 = fopen(filename,"a");
             fprintf(file1,"\n %d %d %f %f %d",DAY,ID,limit_price,EXTERNAL_FINANCIAL_NEEDS,quantity);
             fclose(file1);
