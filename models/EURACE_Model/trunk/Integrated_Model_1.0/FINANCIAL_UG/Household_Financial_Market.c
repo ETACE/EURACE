@@ -170,7 +170,7 @@ int Household_update_its_portfolio()
   
  
    #ifdef _DEBUG_MODE       
-   if (ID==21)
+  /* if (ID==21)
    {
    if (PRINT_DEBUG_FILE_EXP1)
     {                       
@@ -182,8 +182,10 @@ int Household_update_its_portfolio()
         fclose(file1);
         free(filename);
     }
-    }                
+    }       */         
     #endif
+
+
 
   
   if (PRINT_DEBUG) printf("\n\t PAYMENT_ACCOUNT: %f",PAYMENT_ACCOUNT);
