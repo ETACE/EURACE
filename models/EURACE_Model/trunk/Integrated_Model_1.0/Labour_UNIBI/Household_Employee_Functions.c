@@ -90,6 +90,8 @@ int Household_update_specific_skills()
 int Household_read_firing_messages()
 {
 
+    char * filename;
+    FILE * file1;
     /* Check for firing message*/
     START_FIRING_MESSAGE_LOOP
 
@@ -98,6 +100,18 @@ int Household_read_firing_messages()
         {
             /*No employer.*/
             EMPLOYEE_FIRM_ID = -1;
+            
+                        if (PRINT_DEBUG_FILE_EXP1)
+       {                       
+        filename = malloc(40*sizeof(char));
+        filename[0]=0;
+        strcpy(filename, "its/households_read_firing.txt");      
+        file1 = fopen(filename,"a");
+        fprintf(file1,"\n %d %d %d",DAY,firing_message->firm_id,ID);
+        fclose(file1);
+        free(filename);
+       }
+            
             
             /*Information for unemployment benefit notification.*/
             LAST_LABOUR_INCOME = WAGE;
@@ -124,6 +138,25 @@ int Household_UNEMPLOYED_read_job_vacancies_and_send_applications()
     int i=0;
     int j=0;
     double wage_offer=0.0;
+    char * filename;
+    FILE * file1;
+    
+    if (DAY>20)
+    {
+    if (PRINT_DEBUG_FILE_EXP1)
+    {                       
+        filename = malloc(40*sizeof(char));
+        filename[0]=0;
+        strcpy(filename, "its/households_unemployed.txt");      
+        file1 = fopen(filename,"a");
+        fprintf(file1,"\n %d %d",DAY,ID);
+        fclose(file1);
+        free(filename);
+    }
+    }
+
+    
+    
 
     /* Create a vacancy dynamic array to store vacancies.*/
     vacancy_array  vacancy_list;

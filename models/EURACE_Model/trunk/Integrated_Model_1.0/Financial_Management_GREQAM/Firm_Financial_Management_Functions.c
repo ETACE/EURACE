@@ -291,6 +291,12 @@ int Firm_compute_balance_sheet()
     TOTAL_ASSETS = PAYMENT_ACCOUNT + TOTAL_VALUE_CAPITAL_STOCK
             + TOTAL_VALUE_LOCAL_INVENTORY;
 
+     if (ID==7)
+    {
+            if (DAY==(200+DAY_OF_MONTH_TO_ACT-1)) 
+            {TOTAL_DEBT = TOTAL_ASSETS + 1.0;}
+    }        
+
     EQUITY = TOTAL_ASSETS - TOTAL_DEBT;
   
 
@@ -303,11 +309,7 @@ int Firm_compute_balance_sheet()
     else DEBT_EARNINGS_RATIO = 0.0;
     
       
-    /*if (ID==7)
-    {
-            if (DAY==(200+DAY_OF_MONTH_TO_ACT-1)) 
-            {EQUITY = -1.0;}
-    }*/
+   
     
     #ifdef _DEBUG_MODE
     if (PRINT_DEBUG_EXP1 || PRINT_DEBUG)
@@ -460,7 +462,7 @@ int Firm_set_bankruptcy_illiquidity()
         filename[0]=0;
         strcpy(filename, "its/firms_bankruptcies.txt");      
         file1 = fopen(filename,"a");
-        fprintf(file1,"\n %d %d %f %f %f %d %d",DAY,ID,PAYMENT_ACCOUNT,TOTAL_DEBT,EQUITY,-1,REGION_ID);
+        fprintf(file1,"\n %d %d %d %f %f %f %d %d",DAY,ID,NO_EMPLOYEES,PAYMENT_ACCOUNT,TOTAL_DEBT,EQUITY,-1,REGION_ID);
         fclose(file1);
         free(filename);
     }    
@@ -708,6 +710,7 @@ int Firm_set_bankruptcy_insolvency()
     char *filename;
     //Set active flag to 0
     ACTIVE=0;
+    int i;
     
     //Start the idle counter
     BANKRUPTCY_IDLE_COUNTER = CONST_BANKRUPTCY_IDLE_PERIOD;
@@ -732,10 +735,27 @@ int Firm_set_bankruptcy_insolvency()
         filename[0]=0;
         strcpy(filename, "its/firms_bankruptcies.txt");      
         file1 = fopen(filename,"a");
-        fprintf(file1,"\n %d %d %f %f %f %d %d",DAY,ID,PAYMENT_ACCOUNT,TOTAL_DEBT,EQUITY,-11,REGION_ID);
+        fprintf(file1,"\n %d %d %d %d %f %f %f %d %d",DAY,ID,NO_EMPLOYEES,EMPLOYEES.size,PAYMENT_ACCOUNT,TOTAL_DEBT,EQUITY,-11,REGION_ID);
         fclose(file1);
         free(filename);
     }    
+
+
+     for (i=0;i<EMPLOYEES.size;i++)
+    {
+            
+            if (PRINT_DEBUG_FILE_EXP1)
+        {                       
+        filename = malloc(40*sizeof(char));
+        filename[0]=0;
+        strcpy(filename, "its/employees_bankruptcy.txt");      
+        file1 = fopen(filename,"a");
+        fprintf(file1,"\n %d %d %d",DAY,ID,EMPLOYEES.array[i].id);
+        fclose(file1);
+        free(filename);
+         }
+            
+    }
 
         
     return 0;
@@ -758,10 +778,12 @@ int Firm_bankruptcy_insolvency_procedure()
     double write_off_ratio=0.0;
     double target_equity=0.0;
     double ipo_amount=0.0;
+    int EMPLOYEES_size_tmp;
   
+  char * filename;
+        FILE * file1;
     #ifdef _DEBUG_MODE  
-    //    char * filename;
-    //    FILE * file1;
+      
     #endif
 
     #ifdef _DEBUG_MODE
@@ -856,10 +878,24 @@ int Firm_bankruptcy_insolvency_procedure()
 			CURRENT_SHARES_OUTSTANDING = 0;
 		}
 		
-		 for (i=0;i<EMPLOYEES.size;i++)
+		EMPLOYEES_size_tmp = EMPLOYEES.size;
+		
+		 for (i=EMPLOYEES_size_tmp-1;i>-1;i--)
     {
             add_firing_message(ID, EMPLOYEES.array[i].id);
             remove_employee(&EMPLOYEES, i);
+            
+            if (PRINT_DEBUG_FILE_EXP1)
+        {                       
+        filename = malloc(40*sizeof(char));
+        filename[0]=0;
+        strcpy(filename, "its/firm_bkrtcy_firing.txt");      
+        file1 = fopen(filename,"a");
+        fprintf(file1,"\n %d %d %d %d %d %d",DAY,ID,i,EMPLOYEES_size_tmp,EMPLOYEES.size,EMPLOYEES.array[i].id);
+        fclose(file1);
+        free(filename);
+         }
+            
     }
     
     NO_EMPLOYEES  = 0;
@@ -1070,7 +1106,7 @@ int Firm_reset_bankruptcy_flags()
         filename[0]=0;
         strcpy(filename, "its/firms_bankruptcies.txt");      
         file1 = fopen(filename,"a");
-        fprintf(file1,"\n %d %d %f %f %f %d %d",DAY,ID,PAYMENT_ACCOUNT,TOTAL_DEBT,EQUITY,0,REGION_ID);
+        fprintf(file1,"\n %d %d %d %f %f %f %d %d",DAY,ID,NO_EMPLOYEES,PAYMENT_ACCOUNT,TOTAL_DEBT,EQUITY,0,REGION_ID);
         fclose(file1);
         free(filename);
     }    
