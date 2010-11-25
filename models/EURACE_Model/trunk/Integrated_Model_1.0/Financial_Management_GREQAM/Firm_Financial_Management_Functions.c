@@ -291,11 +291,11 @@ int Firm_compute_balance_sheet()
     TOTAL_ASSETS = PAYMENT_ACCOUNT + TOTAL_VALUE_CAPITAL_STOCK
             + TOTAL_VALUE_LOCAL_INVENTORY;
 
-     if (ID==7)
+  /*   if (ID==7)
     {
             if (DAY==(200+DAY_OF_MONTH_TO_ACT-1)) 
             {TOTAL_DEBT = TOTAL_ASSETS + 1.0;}
-    }        
+    } */       
 
     EQUITY = TOTAL_ASSETS - TOTAL_DEBT;
   
@@ -960,6 +960,9 @@ int Firm_bankruptcy_illiquidity_procedure()
 {   
     int i;
     double ipo_amount;
+    char * filename;
+    FILE * file1;
+    int EMPLOYEES_size_tmp;
     
     //Effect on credit market   
     //Renegotiating debt not needed
@@ -983,10 +986,25 @@ int Firm_bankruptcy_illiquidity_procedure()
     
     //Effect on labour market
     //Firing all employees --> see Firm_bankruptcy_procedures
-    for (i=0;i<EMPLOYEES.size;i++)
+    
+  	EMPLOYEES_size_tmp = EMPLOYEES.size;
+    
+    for (i=EMPLOYEES_size_tmp-1;i>-1;i--)
     {
             add_firing_message(ID, EMPLOYEES.array[i].id);
-           remove_employee(&EMPLOYEES, i);
+            remove_employee(&EMPLOYEES, i);
+            
+            if (PRINT_DEBUG_FILE_EXP1)
+        {                       
+        filename = malloc(40*sizeof(char));
+        filename[0]=0;
+        strcpy(filename, "its/firm_bkrtcy_firing.txt");      
+        file1 = fopen(filename,"a");
+        fprintf(file1,"\n %d %d %d %d %d %d",DAY,ID,i,EMPLOYEES_size_tmp,EMPLOYEES.size,EMPLOYEES.array[i].id);
+        fclose(file1);
+        free(filename);
+         }
+            
     }
     
 

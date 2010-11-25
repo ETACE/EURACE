@@ -134,8 +134,8 @@ int Household_update_its_portfolio()
   float transactions;
   
     // #ifdef _DEBUG_MODE  
-  char * filename;
-  FILE * file1;
+  //char * filename;
+  //FILE * file1;
   
       // #endif
 
