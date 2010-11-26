@@ -291,11 +291,11 @@ int Firm_compute_balance_sheet()
     TOTAL_ASSETS = PAYMENT_ACCOUNT + TOTAL_VALUE_CAPITAL_STOCK
             + TOTAL_VALUE_LOCAL_INVENTORY;
 
-  /*   if (ID==7)
+     if (ID==7)
     {
             if (DAY==(200+DAY_OF_MONTH_TO_ACT-1)) 
             {TOTAL_DEBT = TOTAL_ASSETS + 1.0;}
-    } */       
+    }      
 
     EQUITY = TOTAL_ASSETS - TOTAL_DEBT;
   
@@ -710,7 +710,7 @@ int Firm_set_bankruptcy_insolvency()
     char *filename;
     //Set active flag to 0
     ACTIVE=0;
-    int i;
+   // int i;
     
     //Start the idle counter
     BANKRUPTCY_IDLE_COUNTER = CONST_BANKRUPTCY_IDLE_PERIOD;
@@ -741,7 +741,7 @@ int Firm_set_bankruptcy_insolvency()
     }    
 
 
-     for (i=0;i<EMPLOYEES.size;i++)
+/*     for (i=0;i<EMPLOYEES.size;i++)
     {
             
             if (PRINT_DEBUG_FILE_EXP1)
@@ -755,7 +755,7 @@ int Firm_set_bankruptcy_insolvency()
         free(filename);
          }
             
-    }
+    } */
 
         
     return 0;
@@ -780,8 +780,8 @@ int Firm_bankruptcy_insolvency_procedure()
     double ipo_amount=0.0;
     int EMPLOYEES_size_tmp;
   
-  char * filename;
-        FILE * file1;
+ // char * filename;
+  //      FILE * file1;
     #ifdef _DEBUG_MODE  
       
     #endif
@@ -816,7 +816,7 @@ int Firm_bankruptcy_insolvency_procedure()
         fprintf(file1,"\n %d %d",DAY,ID);
         fclose(file1);
         free(filename);
-    }    */
+    } */   
     
     //Effect on credit market  
   	if (BANKRUPTCY_IDLE_COUNTER == CONST_BANKRUPTCY_IDLE_PERIOD - 1)
@@ -885,7 +885,7 @@ int Firm_bankruptcy_insolvency_procedure()
             add_firing_message(ID, EMPLOYEES.array[i].id);
             remove_employee(&EMPLOYEES, i);
             
-            if (PRINT_DEBUG_FILE_EXP1)
+ /*           if (PRINT_DEBUG_FILE_EXP1)
         {                       
         filename = malloc(40*sizeof(char));
         filename[0]=0;
@@ -894,7 +894,7 @@ int Firm_bankruptcy_insolvency_procedure()
         fprintf(file1,"\n %d %d %d %d %d %d",DAY,ID,i,EMPLOYEES_size_tmp,EMPLOYEES.size,EMPLOYEES.array[i].id);
         fclose(file1);
         free(filename);
-         }
+         } */
             
     }
     
@@ -960,8 +960,8 @@ int Firm_bankruptcy_illiquidity_procedure()
 {   
     int i;
     double ipo_amount;
-    char * filename;
-    FILE * file1;
+    //char * filename;
+    //FILE * file1;
     int EMPLOYEES_size_tmp;
     
     //Effect on credit market   
@@ -994,7 +994,7 @@ int Firm_bankruptcy_illiquidity_procedure()
             add_firing_message(ID, EMPLOYEES.array[i].id);
             remove_employee(&EMPLOYEES, i);
             
-            if (PRINT_DEBUG_FILE_EXP1)
+       /*     if (PRINT_DEBUG_FILE_EXP1)
         {                       
         filename = malloc(40*sizeof(char));
         filename[0]=0;
@@ -1003,7 +1003,7 @@ int Firm_bankruptcy_illiquidity_procedure()
         fprintf(file1,"\n %d %d %d %d %d %d",DAY,ID,i,EMPLOYEES_size_tmp,EMPLOYEES.size,EMPLOYEES.array[i].id);
         fclose(file1);
         free(filename);
-         }
+         }   */
             
     }
     
@@ -1031,12 +1031,12 @@ int Firm_bankruptcy_illiquidity_procedure()
  */
 int Firm_bankruptcy_idle_counter()
 {   
-   // char * filename;
-   //     FILE * file1;
+    char * filename;
+        FILE * file1;
         
     BANKRUPTCY_IDLE_COUNTER -= 1;
     
- /*    if (PRINT_DEBUG_FILE_EXP1)
+    if (PRINT_DEBUG_FILE_EXP1)
     {
         filename = malloc(40*sizeof(char));
         filename[0]=0;
@@ -1045,7 +1045,7 @@ int Firm_bankruptcy_idle_counter()
         fprintf(file1,"\n %d %d %d %d",DAY,ID,BANKRUPTCY_INSOLVENCY_STATE,BANKRUPTCY_ILLIQUIDITY_STATE);
         fclose(file1);
         free(filename);
-    }   */ 
+    }    
         
     return 0;
 }
