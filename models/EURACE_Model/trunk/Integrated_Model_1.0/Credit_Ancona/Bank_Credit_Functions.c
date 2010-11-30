@@ -77,22 +77,26 @@ int Bank_decide_credit_conditions()
             }
             
       
-      if (PRINT_DEBUG_FILE_EXP1)
-        {                       
-            filename = malloc(40*sizeof(char));
-            filename[0]=0;
-            strcpy(filename, "its/banks_decide_credit_conditions.txt");      
-            file1 = fopen(filename,"a");
-            fprintf(file1,"\n %d %d %f %f %f %f %f %f %f %f",DAY,ID,d,c,e,bankruptcy_prob,r,VALUE_AT_RISK,EQUITY,credit_allowed);
-            fclose(file1);
-            free(filename);
-        }  
+
             
             
           if (e<0)
           printf("\n Error ! The equity of the firm is negative: %f",e); 
            
             i = ECB_INTEREST_RATE + BANK_GAMMA[0]*r*(((double)rand()/(double)RAND_MAX)*0.01);
+            
+        //    if (PRINT_DEBUG_FILE_EXP1)
+        //{                       
+            if (DAY>2500)
+            {filename = malloc(40*sizeof(char));
+            filename[0]=0;
+            strcpy(filename, "its/banks_decide_credit_conditions.txt");      
+            file1 = fopen(filename,"a");
+            fprintf(file1,"\n %d %d %d",DAY,ID,loan_request_message->firm_id);
+            fprintf(file1," %f %f %f %f %f %f %f %f %f",d,c,e,bankruptcy_prob,r,i,VALUE_AT_RISK,EQUITY,credit_allowed);
+            fclose(file1);
+            free(filename);}
+        //}  
             
         
             add_loan_conditions_message(loan_request_message->firm_id, ID, i, credit_allowed,  r*(credit_allowed/c));
@@ -469,8 +473,8 @@ int Bank_update_ecb_account()
    add_bank_to_central_bank_account_update_message(ID, CASH, ECB_DEBT); 
    
       // #ifdef _DEBUG_MODE                         
-    if (PRINT_DEBUG_FILE_EXP1)
-    {                       
+   // if (PRINT_DEBUG_FILE_EXP1)
+   // {                       
         filename = malloc(40*sizeof(char));
         filename[0]=0;
         strcpy(filename, "its/banks_daily_balance_sheet.txt");      
@@ -480,10 +484,10 @@ int Bank_update_ecb_account()
         fclose(file1);
         free(filename);
         
-    }    
+    //}    
     
-    if (PRINT_DEBUG_FILE_EXP1)
-    {                       
+   // if (PRINT_DEBUG_FILE_EXP1)
+   // {                       
         filename = malloc(40*sizeof(char));
         filename[0]=0;
         strcpy(filename, "its/banks_value_at_risk.txt");      
@@ -492,7 +496,7 @@ int Bank_update_ecb_account()
         fclose(file1);
         free(filename);
         
-    }                 
+    //}                 
    // #endif
 
     return 0;
