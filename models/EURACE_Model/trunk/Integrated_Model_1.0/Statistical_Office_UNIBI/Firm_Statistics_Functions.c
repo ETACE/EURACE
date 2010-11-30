@@ -130,8 +130,8 @@ int Firm_send_payments_to_bank()
     if(PAYMENT_ACCOUNT<0)
         printf("PAYMENT_ACCOUNT of Firm %d:  %f \n",ID,PAYMENT_ACCOUNT);
                
-        if (PRINT_DEBUG_FILE_EXP1)
-    {
+    //    if (PRINT_DEBUG_FILE_EXP1)
+    //{
         filename = malloc(40*sizeof(char));
         filename[0]=0;
         strcpy(filename, "its/firms_balance_sheet.txt");      
@@ -141,7 +141,7 @@ int Firm_send_payments_to_bank()
         fclose(file1);
         free(filename);
 
-    }    
+    //}    
     
     return 0;
 }
