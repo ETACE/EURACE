@@ -76,27 +76,23 @@ int Bank_decide_credit_conditions()
                     printf("\n ERROR in function bank_decide_credit_condition: credit_allowed = %2.5f\n ", credit_allowed);                
             }
             
-      
-
-            
             
           if (e<0)
           printf("\n Error ! The equity of the firm is negative: %f",e); 
            
-            i = ECB_INTEREST_RATE + BANK_GAMMA[0]*r*(((double)rand()/(double)RAND_MAX)*0.01);
+            i = ECB_INTEREST_RATE + BANK_GAMMA[0]*r*(((double)rand()/(double)RAND_MAX)*0.005);
             
         //    if (PRINT_DEBUG_FILE_EXP1)
         //{                       
-            if (DAY>2500)
-            {filename = malloc(40*sizeof(char));
+            filename = malloc(40*sizeof(char));
             filename[0]=0;
-            strcpy(filename, "its/banks_decide_credit_conditions.txt");      
+            strcpy(filename, "its/bank_decide_credit_conditions.txt");      
             file1 = fopen(filename,"a");
             fprintf(file1,"\n %d %d %d",DAY,ID,loan_request_message->firm_id);
             fprintf(file1," %f %f %f %f %f %f %f %f %f",d,c,e,bankruptcy_prob,r,i,VALUE_AT_RISK,EQUITY,credit_allowed);
             fclose(file1);
-            free(filename);}
-        //}  
+            free(filename); 
+                    //}  
             
         
             add_loan_conditions_message(loan_request_message->firm_id, ID, i, credit_allowed,  r*(credit_allowed/c));
@@ -244,7 +240,9 @@ int Bank_receive_installment()
 
 int Bank_give_loan()
 {
-    
+    FILE *file1=NULL;
+    char * filename="";
+
     FIRM_LOAN_ISSUES=0.0;
 
     #ifdef _DEBUG_MODE    
@@ -271,6 +269,18 @@ int Bank_give_loan()
             //  #ifdef _DEBUG_MODE        
      
       //  #endif
+      
+              //    if (PRINT_DEBUG_FILE_EXP1)
+        //{                       
+            filename = malloc(40*sizeof(char));
+            filename[0]=0;
+            strcpy(filename, "its/bank_give_loan.txt");      
+            file1 = fopen(filename,"a");
+            fprintf(file1,"\n %d %d %f",DAY,ID,loan_acceptance_message->credit_amount_taken);
+            fprintf(file1," %f %f %f",TOTAL_CREDIT,loan_acceptance_message->loan_total_var,VALUE_AT_RISK);
+            fclose(file1);
+            free(filename); 
+        //}  
 
             
         }
