@@ -7,6 +7,9 @@
     {
           int connected=0;
           int j=0;
+          
+            FILE * file1=NULL;
+        char * filename="";
 
         if (EXTERNAL_FINANCIAL_NEEDS>0.0)
         {
@@ -21,10 +24,8 @@
          
         //Search for active banks' name
          START_BANK_IDENTITY_MESSAGE_LOOP
-         
                  add_potential_lender(&SET_OF_LENDERS,bank_identity_message->bank_id,0);
                  NUMBER_OF_BANKS_ASKED++;
-         
          FINISH_BANK_IDENTITY_MESSAGE_LOOP
     
          
@@ -39,6 +40,15 @@
                 add_loan_request_message(ID, SET_OF_LENDERS.array[j].bank_name, EQUITY, TOTAL_DEBT, EXTERNAL_FINANCIAL_NEEDS);
                 SET_OF_LENDERS.array[j].contacted=1;
                 connected++;         
+
+                filename = malloc(40*sizeof(char));
+                filename[0]=0;
+                strcpy(filename, "its/firm_ask_loan.txt");      
+                file1 = fopen(filename,"a");
+                fprintf(file1,"\n %d %d %d %d",DAY,ID,j,SET_OF_LENDERS.array[j].bank_name);
+                fprintf(file1," %f %f %f %d",EQUITY, TOTAL_DEBT, EXTERNAL_FINANCIAL_NEEDS,REGION_ID);
+                fclose(file1);
+                free(filename);
           }
           
           //delete from the list not contacted banks
@@ -207,7 +217,20 @@
              if (credit_accepted>0.0)
              {
                 add_debt_item(&LOANS, bank_id, loan_value, interest_rate, installment_amount, var_per_installment, residual_var, bad_debt, nr_periods_before_repayment);         
-                add_loan_acceptance_message(bank_id, credit_accepted, residual_var);     
+                add_loan_acceptance_message(bank_id, credit_accepted, residual_var);   
+                
+                
+             //    if (PRINT_DEBUG_FILE_EXP1)
+            // {
+                filename = malloc(40*sizeof(char));
+                filename[0]=0;
+                strcpy(filename, "its/firm_get_loan.txt");      
+                file1 = fopen(filename,"a");
+                fprintf(file1,"\n %d %d %d %f %d",DAY,ID,bank_id,credit_accepted,REGION_ID);
+                fclose(file1);
+                free(filename);
+            //}    
+                  
              }
                 //update the payment_account with the amount of credit obtained
                 PAYMENT_ACCOUNT += credit_accepted;
