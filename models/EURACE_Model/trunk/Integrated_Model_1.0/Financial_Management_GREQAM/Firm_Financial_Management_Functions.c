@@ -304,11 +304,11 @@ int Firm_compute_balance_sheet()
     TOTAL_ASSETS = PAYMENT_ACCOUNT + TOTAL_VALUE_CAPITAL_STOCK
             + TOTAL_VALUE_LOCAL_INVENTORY;
 
-     if (ID==7)
+  /*   if (ID==7)
     {
             if (DAY==(200+DAY_OF_MONTH_TO_ACT-1)) 
             {TOTAL_DEBT = TOTAL_ASSETS + 1.0;}
-    }      
+    } */     
 
     EQUITY = TOTAL_ASSETS - TOTAL_DEBT;
   
