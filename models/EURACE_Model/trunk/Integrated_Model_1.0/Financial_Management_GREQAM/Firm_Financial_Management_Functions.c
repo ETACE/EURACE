@@ -44,9 +44,10 @@ int Firm_compute_financial_payments()
         {
         filename = malloc(40*sizeof(char));
         filename[0]=0;
-        strcpy(filename, "its/firms_loan_structure.txt"); 
+        strcpy(filename, "its/firm_loan_structure.txt"); 
         file1 = fopen(filename,"a");
-        fprintf(file1,"\n %d %d %f %f",DAY,ID,LOANS.array[i].loan_value,LOANS.array[i].interest_rate);
+        fprintf(file1,"\n %d %d %f",DAY,ID,LOANS.array[i].loan_value);
+        fprintf(file1," %f %f",LOANS.array[i].interest_rate,LOANS.array[i].installment_amount);
         fclose(file1);
         free(filename);
         }
@@ -66,6 +67,14 @@ int Firm_compute_financial_payments()
                // getchar();
     // }    
     //#endif
+        filename = malloc(40*sizeof(char));
+        filename[0]=0;
+        strcpy(filename, "its/firm_compute_financial_payments.txt"); 
+        file1 = fopen(filename,"a");
+        fprintf(file1,"\n %d %d %f %f",DAY,ID,TOTAL_INTEREST_PAYMENT,TOTAL_DEBT_INSTALLMENT_PAYMENT);
+        fclose(file1);
+        free(filename);
+
     
     return 0;
 }
@@ -629,10 +638,8 @@ int Firm_execute_financial_payments()
             LOANS.array[i].nr_periods_before_repayment -= 1;
 
             //Add loan_value to the current total debt
-            TOTAL_DEBT += LOANS.array[i].loan_value;
             //printf("\n Loan item %d: adding debt value =%2.2f\n", i, LOANS.array[i].loan_value);
             //printf("\n TOTAL_DEBT=%2.2f\n", TOTAL_DEBT);
-
                 
             //decrease the residual_var of the loan with the var_per_installment:
             LOANS.array[i].residual_var -= LOANS.array[i].var_per_installment;
@@ -655,6 +662,8 @@ int Firm_execute_financial_payments()
     
             //decrease the value of the loan with the debt_installment_payment:
             LOANS.array[i].loan_value -= LOANS.array[i].installment_amount;
+            
+            TOTAL_DEBT += LOANS.array[i].loan_value;
             
             //printf("Now subtracted debt_installment_payment from loan_value: %f (new value:%f).\n", LOANS.array[i].debt_installment_payment, LOANS.array[i].loan_value);
 
@@ -864,7 +873,10 @@ int Firm_bankruptcy_insolvency_procedure()
 		            * LOANS.array[i].nr_periods_before_repayment;
 		            
 		    LOANS.array[i].var_per_installment =  (1-write_off_ratio)*LOANS.array[i].var_per_installment;        
-		    LOANS.array[i].loan_value =  (1-write_off_ratio)*LOANS.array[i].loan_value;
+		    
+		    bad_debt = write_off_ratio*LOANS.array[i].loan_value;
+            
+            LOANS.array[i].loan_value =  (1-write_off_ratio)*LOANS.array[i].loan_value;
 		    
 		    LOANS.array[i].installment_amount = LOANS.array[i].loan_value/LOANS.array[i].nr_periods_before_repayment;
 		    
@@ -876,9 +888,6 @@ int Firm_bankruptcy_insolvency_procedure()
 		    //TOTAL_ASSETS -= credit_refunded;
 		    credit_refunded = 0;  // credit_refunded is not more used 
 		    
-		    //step 2: computing bad debt
-		   
-		    bad_debt = write_off_ratio*LOANS.array[i].loan_value;
 		    
 		    //the credit_remaining is that part of the debt which is not written off
 		    //credit_remaining = (1-write_off_ratio)*LOANS.array[i].loan_value
