@@ -118,7 +118,7 @@ int Bank_decide_credit_conditions()
 int Bank_account_update_deposits()
 {
   
-      DEPOSITS=0; //reset total deposits        
+      DEPOSITS=0.0; //reset total deposits        
         
       START_BANK_ACCOUNT_UPDATE_MESSAGE_LOOP 
       if (bank_account_update_message->bank_id==ID)
@@ -130,12 +130,12 @@ int Bank_account_update_deposits()
 
 
   //Compute CASH
-      CASH=DEPOSITS+ECB_DEBT+EQUITY-TOTAL_CREDIT;
+      CASH = EQUITY+DEPOSITS+ECB_DEBT-TOTAL_CREDIT;
 
    if (CASH<0)
         {
          ECB_DEBT+=-CASH; //Monetary base is increased     
-         CASH=0;
+         CASH=0.0;
          
          }
         
@@ -176,7 +176,6 @@ int Bank_account_update_deposits()
 int Bank_receive_installment()
 {
     FIRM_LOAN_INSTALLMENTS=0.0;
-    FIRM_INTEREST_PAYMENTS=0.0;
 
     #ifdef _DEBUG_MODE     
     if (PRINT_DEBUG) 
@@ -189,21 +188,10 @@ int Bank_receive_installment()
     START_INSTALLMENT_MESSAGE_LOOP
         if(installment_message->bank_id==ID)
         {
-        
-            //CASH +=installment_message->interest_amount;//installment_amount;   
-            PROFITS[0] += installment_message->interest_amount;
             TOTAL_CREDIT-=installment_message->installment_amount;
             EQUITY += installment_message->interest_amount;
+            PROFITS[0] += installment_message->interest_amount;
             VALUE_AT_RISK -= installment_message->var_per_installment;
-    
-            #ifdef _DEBUG_MODE        
-            if (PRINT_DEBUG)
-            {
-                printf("\n\t interest_amount: %f installment_amount: %f",installment_message->interest_amount,installment_message->installment_amount);
-                printf("\n\t PROFITS: %f TOTAL_CREDIT: %f EQUITY: %f",PROFITS[0],TOTAL_CREDIT,EQUITY);
-                getchar();
-            }
-            #endif
 
             //Flow accounting
             FIRM_INTEREST_PAYMENTS += installment_message->interest_amount;
@@ -215,21 +203,9 @@ int Bank_receive_installment()
     if(bankruptcy_message->bank_id==ID)
     {
     
-       //CASH +=bankruptcy_message->credit_refunded;
-       EQUITY -= bankruptcy_message->bad_debt;
        TOTAL_CREDIT-= bankruptcy_message->bad_debt;
-       PROFITS[0] -= bankruptcy_message->bad_debt;
+       EQUITY-= bankruptcy_message->bad_debt;
        VALUE_AT_RISK -= bankruptcy_message->residual_var;
-       
-        #ifdef _DEBUG_MODE       
-        if (PRINT_DEBUG)
-        {
-            printf("\n\t BANKRUPTCY_MESSAGE_LOOP");
-            printf("\n\t bad_debt: %f",bankruptcy_message->bad_debt);
-            printf("\n\t PROFITS: %f TOTAL_CREDIT: %f EQUITY: %f",PROFITS[0],TOTAL_CREDIT,EQUITY);
-            getchar();
-        }
-        #endif
        
     }
     FINISH_BANKRUPTCY_MESSAGE_LOOP   
@@ -311,9 +287,9 @@ int Bank_accounting()
      int_to_ecb=ECB_DEBT_CUM_MONTHLY*ECB_INTEREST_RATE/(12*DAYS_PER_MONTH);
      ECB_DEBT_CUM_MONTHLY  = 0.0;
      PROFITS[0]-=int_to_ecb; 
+     add_bank_interest_payment_message(int_to_ecb);
      CASH-=int_to_ecb;
      EQUITY-=int_to_ecb;
-     add_bank_interest_payment_message(int_to_ecb);
      
      //Flow accounting
      ECB_INTEREST_PAYMENT=int_to_ecb;
@@ -348,9 +324,10 @@ int Bank_accounting()
      {
          TAXES = TAX_RATE_CORPORATE*PROFITS[0]; // We do not want bank to accumulate too much money...
          PROFITS[0] -= TAXES;
-         EQUITY -= TAXES;  
-         CASH -= TAXES; 
          add_tax_payment_message(GOV_ID, TAXES); 
+         CASH -= TAXES; 
+         EQUITY-=TAXES;
+     
          TOTAL_DIVIDENDS = BANK_DIVIDEND_RATE*PROFITS[0];
          DIVIDEND_PER_SHARE = TOTAL_DIVIDENDS/CURRENT_SHARES_OUTSTANDING; 
          
@@ -380,17 +357,17 @@ int Bank_accounting()
     #endif
     
    // #ifdef _DEBUG_MODE                         
-    if (PRINT_DEBUG_FILE_EXP1)
-    {                       
+   // if (PRINT_DEBUG_FILE_EXP1)
+   // {                       
         filename = malloc(40*sizeof(char));
         filename[0]=0;
         strcpy(filename, "its/banks_monthly_income_statement.txt");      
         file1 = fopen(filename,"a");
         fprintf(file1,"\n %d %d",DAY,ID);
-        fprintf(file1," %f %f %f %f %f %d",int_to_ecb,FIRM_INTEREST_PAYMENTS,TAXES,PROFITS[0],TOTAL_DIVIDENDS,REGION_ID);
+        fprintf(file1," %f %f %f %f %f %d",ECB_INTEREST_PAYMENT,FIRM_INTEREST_PAYMENTS,TAXES,PROFITS[0],TOTAL_DIVIDENDS,REGION_ID);
         fclose(file1);
         free(filename);
-    }                
+    //}                
    // #endif
 
     // #ifdef _DEBUG_MODE                         
@@ -415,8 +392,8 @@ int Bank_accounting()
      }
     
   
-     PROFITS[0]=0;  //update
-     
+     PROFITS[0]=0.0;  //update
+     FIRM_INTEREST_PAYMENTS = 0.0;
     //at the end of the month, the bank changes its lending strategy, reducing or not its 
     
     
@@ -449,8 +426,8 @@ int Bank_send_dividend_payment()
 {
     // The function is activated according to a monthly periodicity at the beginning of the state_graph
     add_dividend_per_share_message(ID, DIVIDEND_PER_SHARE);
-         EQUITY -=  TOTAL_DIVIDENDS;     
-      CASH -=  TOTAL_DIVIDENDS;
+    EQUITY -=  TOTAL_DIVIDENDS;     
+    CASH -=  TOTAL_DIVIDENDS;
 
     #ifdef _DEBUG_MODE    
     if (PRINT_DEBUG)
