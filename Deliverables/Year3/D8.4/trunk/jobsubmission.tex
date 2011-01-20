@@ -1,0 +1,73 @@
+%job submission
+\label{app:job-submission}
+\subsection{Introduction}
+
+A job submission system for FLAME jobs has been designed and implemented  so that it is easy to run EURACE on remote (parallel) machines. It will rely on the user knowing details of how to connect to the remote machine and details of the job scheduling software it uses. This data will be stored in the appropriate format in a machine configuration file. The sequence of steps for job submission was drawn up in discussion with TUBITAK and is as follows:
+
+\begin{enumerate}
+ \item \textbf{Check authentication}. Does the user provided information allow a log in to the target machine? Return code for success/failure.
+    \item \textbf{Check FLAME version}. Is the required version of FLAME available on the target machine? If not copy files onto target and install. Return code for success/failure of installation or success if installed. Could be some output text to say when FLAME has to be installed.
+    \item \textbf{Create a project}. Send the model XMML file and C code. Parse and compile the model. Return code for parse failure/compilation failure/success. Success return code is the project id.
+    \item \textbf{Submit job}. Send the 0.xml file(s) and project id. Submit the job according to data in the machine's configuration file. Return code code for success/failure. Success return code is the job id.
+    \item \textbf{Query job status}. Send project and job id. Return code pending/done/running/failed.
+    \item \textbf{Query status of all jobs in project}. Send project id. Return code is whether data is returned or not. Return text could be {job id, status} for each job.
+    \item \textbf{Query status of all jobs in all projects}. Return code is whether data is returned or not. Return text could be {job id, status} for each job.
+    \item \textbf{Get results}. Send project and job id. Copy results back and gather if parallel. Return code for success/failure. 
+\end{enumerate}
+
+The details for each of these steps are given later.
+
+Connection to remote machines will be via \texttt{ssh} a standard secure connection mechanism which encrypts data between machines, or \texttt{gsissh} a grid-enabled version of ssh (part of Globus \verb+http://www.globus.org+) which requires the user to have a grid (X.509) certificate. The scripts will work best if the user arranges for login authentication without a password. For ssh this means generating a public/private key pair (see the Authentication section of \texttt{ssh} manual and the \texttt{ssh-keygen} manual for details). The public key should be copied to the remote machine and then, using \texttt{ssh-agent} as shown below, the operations can be carried out without further authentication.
+
+\begin{verbatim}
+# Get the environment variables for ssh-agent
+ssh-agent > file
+# Set the variables
+. ./file
+# Add the private key to this session. Will require pass phrase for ssh key
+ssh-add
+# Run the job submission you want. As an example I have put in a simple ssh
+ssh user@remote.machine.ac.uk
+# Kill the ssh-agent session
+ssh-agent -k	
+\end{verbatim}
+
+
+For gsissh the process is different. The local Grid computing community will have details on obtaining and using a Grid certificate and possibly be able to give advice on installing enough of Globus to use gsissh. It is beyond the scope of this document to go further.
+
+\subsection{Authentication}
+
+This will check whether the user and remote machine data given in the configuration file allow a log in to the remote machine. Comparing the hostname of the remote machine with that in the configuration file will indicate whether the log in was successful or not.
+
+\subsection{Check FLAME}
+
+Check for the xparser executable on the remote machine, assuming that its presence means that necessary libraries (such as the message board library) are therefore present. First look in the \texttt{\$PATH} environment variable and if not found then look in a known directory where a previous check may have installed the parser. If the parser is found then check the version against that version required by the user. If the version is correct the script finishes. 
+
+If the parser is not found or the version is incorrect then the script copies the source for the parser and associated libraries to the remote machine and builds and installs them in a known directory.
+
+\subsection{Create Project}
+
+A project comprises the XMML file and C code for a model and then jobs are added to projects by giving the initial data, number of iterations and number of partitions for a FLAME run. The project is created by giving a directory on the local machine where the XMML and C code files can be found and they are copied to the remote machine. The xparser is run on the copied data and the resulting C code compiled. Errors from the parsing or compilation stages are reported where necessary and when the project has been successfully created it is given a project id that is returned to the user. 
+
+\subsection{Submit Job}
+
+The initial data file is copied to the remote machine and the run initiated for the user defined number of iterations and number of partitions. The job should be assigned to a particular project so the system knows what model is to be run.  Typically large parallel machines use some form of job scheduler to ensure users get a fair share of the machine and details of how to submit jobs to the scheduler should be provided by the user. These details go in the configuration file. When the job is scheduled on the remote machine the script returns a job id for the user to use later in queries.
+
+It is possible to run jobs interactively, that is the script starts the job and waits until it is complete before returning.
+
+\subsection{Query Job Status}
+
+There are a number of variations for job status query, the simplest being querying the status of one job from one project. The information returned to the user will indicate whether the job has finished, is waiting to be started by the job scheduler, is running or has failed. The progress of a job can be monitored by comparing the names of output files (currently named \texttt{node$<$node-id$>$-$<$iteration$>$.xml}) against the number of iterations required for the job.
+
+This basic query can be extended to retrieve the status for all jobs in a project and all jobs in all projects.
+
+\subsection{Get Results}
+
+When a job is complete the results will be left on the remote machine and will need to be copied to the local machine. For a parallel run each node writes its results to separate files, one for each iteration. Current analysis techniques require the results files from each node to be amalgamated into one file for each iteration. There is a script to do this and further scripts based on XSLT (a language for transforming XML documents into other XML documents, see \verb+http://www.w3.org/TR/xslt.html+) can be written to extract information about particular variables of interest.
+
+\subsection{Implementation}
+
+Since the job submission ideas described above require a lot of work with \texttt{ssh/scp} and other command line utilities the job submission system has been implemented as a number of (bash) shell scripts each performing one of the tasks described above. Integration with a GUI which TUBITAK have indicated will be written in Python is simple using the \texttt{os.system} module. The script results can be redirected to a file and the file parsed by the GUI to extract useful information to display to the user.
+
+Data on projects and jobs will be stored in a file on the remote system so that project and job ids will be unique and details about the parameters for a particular job can be retrieved at a later time, e.g.\ for a job status query and retrieving the results. For simplicity this is a text file at present.
+
