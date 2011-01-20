@@ -1,0 +1,141 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage{t1enc}
+\usepackage[latin1]{inputenc}
+\usepackage[english]{babel}
+\usepackage{url,graphics,lscape}
+\usepackage{a4wide}
+\usepackage{graphicx}
+\usepackage{color}
+%\usepackage{fancyheadings}
+\usepackage{verbatim}
+
+\vfuzz2pt % Don't report over-full v-boxes if over-edge is small
+\hfuzz2pt % Don't report over-full h-boxes if over-edge is small
+
+\newenvironment{mylisting}
+{\begin{list}{}{\setlength{\leftmargin}{1em}}\item\small\bfseries}
+{\end{list}}
+
+\parskip 6pt         % sets spacing between paragraphs
+\parindent 0pt       % sets leading space for paragraphs
+%\pagestyle{fancy}
+\begin{document}
+
+
+
+\title{\textbf{FLAME}
+\\Flexible Large-scale Agent-based Modelling Environment\\
+ \emph{User Manual}}
+\author{Simon Coakley\\Mariam Kiran
+\\
+\\ University of Sheffield
+\\ Unit - USFD}
+%\date{17 May 2006}
+
+\maketitle
+
+\pagebreak
+
+\begin{abstract}
+
+FLAME (Flexible Large-scale Agent-based Modelling Environment) is a
+tool which allows modellers from all disciplines, economics, biology
+or social sciences to easily write their own agent-based models. The
+environment is a first of its kind which allows simulations of large
+concentrations of agents to be run on parallel computers without any
+hindrance to the modellers themselves.
+
+This document present a comprehensive guide to the keywords and
+functions available in the FLAME environment for the modellers to
+write their own agent models to facilitate their research. This user
+manual describes how to create a model description and write
+implementation code for the agents.
+
+Installation guides to the tools required with FLAME have been
+provided separately in the document titled `\emph{Getting started
+with FLAME}'. this documentation also contains details on executing
+example FLAME code and running your own models.
+
+\end{abstract}
+
+\pagebreak
+\tableofcontents
+\pagebreak
+
+\section{Introduction}
+
+The FLAME framework is a tool which enables creation of agent-based models
+that can be run on high performance computers (HPCs). The framework
+is based on the logical communicating extended finite state
+machine theory (X-machine) which gives the agents more power to
+enable writing of complex models for large complex systems.
+
+The agents are modelled as communicating X-machines allowing them to
+communicate through messages being sent to each other as per
+designed by the modeller. This information is automatically read by
+the FLAME framework and generates a simulation program which enables
+these models to be parallelised efficiently over parallel computers.
+
+The simulation program for FLAME is called the \textbf{Xparser}. The
+Xparser is a series of compilation files which can be compiled with
+the modeller's files to produce a simulation package for running
+the simulations. Various tools have to be installed with the Xparser
+to allow the simulation program to be produced. These have been
+explained in the accompanying document, `\emph{Getting started with
+FLAME}'.
+
+Various parallel platforms like SCARF, (add more) have been used in
+the development process to test the efficiency of the FLAME
+framework. This work was done in conjunction with the STFC unit (Science and Technology Facilities Council) and more
+details of the results obtained can be found in `\emph{Deliverable
+1.4: Porting of agent models to parallel computers}'.
+
+
+
+\begin{figure}[!htb]
+\begin{center}
+  \includegraphics*[scale=0.35]{xparserdiag.eps}
+  \caption{Block diagram of the Xparser, the FLAME simulation program. Blocks in blue are the files automatically generated. The green blocks are modeller files.}
+  \label{fig:xparserdiag}
+  \end{center}
+\end{figure}
+
+This document is a comprehensive guide to modellers of all
+disciplines to write their own agent models with ease. The key
+advantage of FLAME lies in the fact that modellers from all
+disciplines, regardless of belonging to the computer science
+background can write their own models easily and run parallel simulations of them.
+
+This document has been divided in the following order, Section
+\ref{chap:design} describes the X-machine methodology to explain the
+structure of the agents. Modellers are required to write only two
+files for their model, model.xml and the functions of the agents.
+Section \ref{model_description} describes how the model is written
+focussing on writing the `model.xml' file which contains the
+complete description of the model, with the agents involved, their
+structures and the environment they exist in. Section
+\ref{model_implementation} focuses on the second modeller file which
+is writing the agent functions and the routines provided by FLAME.
+Section \ref{model_execution} gives a brief description of how the
+model can be executed with a summary of the facilities provided by
+FLAME for data analysis for the output files generated. Appendices
+provides a listing of the tags and the data flow documentation used
+by FLAME.
+
+\include{model_design}
+\include{model_description}
+\include{model_implementation}
+\include{model_execution}
+
+\appendix
+
+\section{XML DTD}                       % B
+\label{cha_xmldtd}
+
+\small{{\tt \verbatiminput{xmml.dtd}}}
+
+
+%\bibliographystyle{alpha}
+%\bibliography{EURACE_refs}
+
+\end{document}
