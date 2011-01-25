@@ -144,75 +144,46 @@ int Firm_compute_income_statement()
  */
 int Firm_compute_dividends()
 {
-
-    //option 2: total dividend payment increases with same ratio as net earnings
-    //This is very dangerous, since earnings may fluctuate violently
-    //TOTAL_DIVIDEND_PAYMENT *= NET_EARNINGS/PREVIOUS_NET_EARNINGS;
-
-    //option 3: keep dividend per share constant
-    //total divided payment increases with same ratio as current_shares_outstanding
-    //TOTAL_DIVIDEND_PAYMENT *= CURRENT_SHARES_OUTSTANDING/PREVIOUS_SHARES_OUTSTANDING;
-
-    //option 4: keep earnings per share constant
-    //total divided payment increases with same ratio as earnings per share
-    //this keeps earnings per share constant
-   /* if ((PREVIOUS_EARNINGS_PER_SHARE>0.0)&&(PREVIOUS_SHARES_OUTSTANDING>0))
+       FILE *file1;
+       char *filename;
+       
+       double dividend_increase_perc;
+       
+    if (NET_EARNINGS>0)
     {
-        TOTAL_DIVIDEND_PAYMENT *= (EARNINGS_PER_SHARE/PREVIOUS_EARNINGS_PER_SHARE)
-                                   *(CURRENT_SHARES_OUTSTANDING/PREVIOUS_SHARES_OUTSTANDING);
-        printf("\n ID: %d NET_EARNINGS: %2.4f TOTAL_DIVIDEND_PAYMENT = %2.4f\n", ID,NET_EARNINGS,TOTAL_DIVIDEND_PAYMENT);                           
-	}
-    else
-    	{
-    		if((PREVIOUS_SHARES_OUTSTANDING == 0) || (CURRENT_SHARES_OUTSTANDING == 0))
-    		printf("ERROR in Firm_compute_dividends: PREVIOUS_SHARES_OUTSTANDING = %d --- CURRENT_SHARES_OUTSTANDING = %d\n", PREVIOUS_SHARES_OUTSTANDING, CURRENT_SHARES_OUTSTANDING);	
-    	} */
-
-    //option 5: keep dividend to earnings ratio constant (dont let it fall), but do not decrease the dividend per share ratio.
-    /*
-     if (CURRENT_DIVIDEND_PER_EARNINGS < PREVIOUS_DIVIDEND_PER_EARNINGS)
-     {
-         //Maintain the dividend to earnings ratio
-         //D_{t} = (D_{t-1}/E_{t-1})*E_{t}
-         TOTAL_DIVIDEND_PAYMENT = PREVIOUS_DIVIDEND_PER_EARNINGS * NET_EARNINGS;
-         
-         //But do not decrease the dividend per share ratio
-         if (TOTAL_DIVIDEND_PAYMENT/CURRENT_SHARES_OUTSTANDING < CURRENT_DIVIDEND_PER_SHARE)
-            TOTAL_DIVIDEND_PAYMENT = CURRENT_DIVIDEND_PER_SHARE * CURRENT_SHARES_OUTSTANDING;
-     }
-     else
-     {
-         //the dividend to earnings ratio did not decrease
-         //else keep the dividend per share ratio constant
-         TOTAL_DIVIDEND_PAYMENT = PREVIOUS_DIVIDEND_PER_SHARE*CURRENT_SHARES_OUTSTANDING;
-     }
-     */
-
-    //option 6: replace the total divided payment by the same amount in share repurchases
-    // This option should be conditional on the current share price being "historically" low
-    /*
-     if(CURRENT_STOCK_PRICE LOW)
-     {
-         TOTAL_STOCK_REPURCHASE = TOTAL_DIVIDEND_PAYMENT;
-         TOTAL_DIVIDEND_PAYMENT =0.0;
-         
-         //Number of shares repurchased (stock buying order)
-         NR_STOCK_REPURCHASE = TOTAL_STOCK_REPURCHASE/CURRENT_STOCK_PRICE;
-     }
-     */
-
-    //Determine total_dividend_payment when it is zero, and there are positive net earnings.
-    //Set total divided payment equal to some dividend-earnings ratio (a parameter)
-    
-    if(NET_EARNINGS>0.0)
-    {
-        TOTAL_DIVIDEND_PAYMENT = CONST_DIVIDEND_EARNINGS_RATIO * NET_EARNINGS;
-     //   printf("\n ID: %d In Firm_compute_dividends: setting TOTAL_DIVIDEND_PAYMENT = %2.4f\n", ID,TOTAL_DIVIDEND_PAYMENT);
-     }
-     else
-     {
-         TOTAL_DIVIDEND_PAYMENT = 0.0;
+        if(NET_EARNINGS>PREVIOUS_NET_EARNINGS)
+        {
+         if (PREVIOUS_NET_EARNINGS>0)
+           {dividend_increase_perc = (NET_EARNINGS-PREVIOUS_NET_EARNINGS)/PREVIOUS_NET_EARNINGS;
+           TOTAL_DIVIDEND_PAYMENT = (1.0+dividend_increase_perc)*PREVIOUS_TOTAL_DIVIDEND_PAYMENT;}
+         else
+           TOTAL_DIVIDEND_PAYMENT = CONST_DIVIDEND_EARNINGS_RATIO*NET_EARNINGS;
+         }
+        else
+          {
+          if (NET_EARNINGS>=PREVIOUS_TOTAL_DIVIDEND_PAYMENT) 
+          TOTAL_DIVIDEND_PAYMENT = PREVIOUS_TOTAL_DIVIDEND_PAYMENT;
+          else
+          TOTAL_DIVIDEND_PAYMENT = CONST_DIVIDEND_EARNINGS_RATIO*NET_EARNINGS;
+          }
     }
+    else
+    { 
+    TOTAL_DIVIDEND_PAYMENT = 0.0;    
+    }
+    
+   
+    filename = malloc(40*sizeof(char));
+    filename[0]=0;
+    strcpy(filename, "its/firms_dividends_earnings.txt");      
+    file1 = fopen(filename,"a");
+    fprintf(file1,"\n %d %d %f %f",DAY,ID,PREVIOUS_NET_EARNINGS,NET_EARNINGS);
+    fprintf(file1," %f %f",PREVIOUS_TOTAL_DIVIDEND_PAYMENT,TOTAL_DIVIDEND_PAYMENT);
+    fclose(file1);
+    free(filename); 
+
+    
+    PREVIOUS_TOTAL_DIVIDEND_PAYMENT = TOTAL_DIVIDEND_PAYMENT;
     
     //Always check:
 /*    if (EARNINGS<0.0)

@@ -154,6 +154,11 @@ TOTAL_DIVIDEND_PAYMENT = CONST_DIVIDEND_EARNINGS_RATIO *NET_EARNINGS;</descripti
     </variable>
     <variable>
      <type>double</type>
+     <name>previous_total_dividend_payment</name>
+     <description>Previous total dividend payment</description>
+    </variable>
+    <variable>
+     <type>double</type>
      <name>current_share_price</name>
      <description>Current share price on the market</description>
     </variable>
