@@ -734,7 +734,7 @@ int Household_send_tax_payment()
     remove_double(&LAST_NET_INCOME,0);
          add_double(&LAST_NET_INCOME,TOTAL_INCOME-TAX_PAYMENT);
          
-    //Compute the mean net income:
+    //Compute tche mean net income:
          
          double net_inc = 0;
          for(i=0;i<LAST_NET_INCOME.size;i++)

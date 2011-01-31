@@ -93,6 +93,9 @@ int Household_determine_consumption_budget()
                 CONSUMPTION_BUDGET = 0.5*LAST_NET_INCOME.array[3];
             }
 
+
+            CONSUMPTION_BUDGET = max(0.0,min(PAYMENT_ACCOUNT,CONSUMPTION_BUDGET));             
+
             CONSUMPTION_BUDGET_IN_MONTH = CONSUMPTION_BUDGET;
                         
             
