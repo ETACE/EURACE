@@ -313,7 +313,7 @@ int Bank_accounting()
          BANK_GAMMA[0]=0.02;
      }
 
-     if (EQUITY<VALUE_AT_RISK/ALFA)
+     if ((EQUITY*ALFA)<(1.2*VALUE_AT_RISK))
      BANK_DIVIDEND_RATE = 0.0;
      else
      BANK_DIVIDEND_RATE = 1.0;
