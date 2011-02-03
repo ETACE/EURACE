@@ -65,12 +65,14 @@ int Bank_decide_credit_conditions()
             {
                 //printf("\n %f %f %f %f %f",VALUE_AT_RISK,r,BANK_GAMMA[0],ALFA,EQUITY);
                 //getchar();
+                CREDIT_RATIONING = max(0,CREDIT_RATIONING-1);
                 credit_allowed = c;
                 if (credit_allowed<0)
                     printf("\n ERROR in function bank_decide_credit_condition: credit_allowed = %2.5f\n ", credit_allowed);
             }
             else 
             {
+                CREDIT_RATIONING = CREDIT_RATIONING+1; 
                 credit_allowed = max(0,(ALFA*EQUITY - VALUE_AT_RISK)/bankruptcy_prob);  
                 if (credit_allowed<0)
                     printf("\n ERROR in function bank_decide_credit_condition: credit_allowed = %2.5f\n ", credit_allowed);                
@@ -89,7 +91,8 @@ int Bank_decide_credit_conditions()
             strcpy(filename, "its/bank_decide_credit_conditions.txt");      
             file1 = fopen(filename,"a");
             fprintf(file1,"\n %d %d %d",DAY,ID,loan_request_message->firm_id);
-            fprintf(file1," %f %f %f %f %f %f %f %f %f",d,c,e,bankruptcy_prob,r,i,VALUE_AT_RISK,EQUITY,credit_allowed);
+            fprintf(file1," %f %f %f %f %f %f %f %f %f",d,c,e,bankruptcy_prob,r,i,VALUE_AT_RISK,EQUITY);
+            fprintf(file1," %f %d",credit_allowed,CREDIT_RATIONING);
             fclose(file1);
             free(filename); 
                     //}  
@@ -313,11 +316,12 @@ int Bank_accounting()
          BANK_GAMMA[0]=0.02;
      }
 
-     if ((EQUITY*ALFA)<(1.2*VALUE_AT_RISK))
+     if (((EQUITY*ALFA)<VALUE_AT_RISK)||(CREDIT_RATIONING>0))
      BANK_DIVIDEND_RATE = 0.0;
      else
      BANK_DIVIDEND_RATE = 1.0;
      
+     CREDIT_RATIONING = 0;
 
      // tax and dividends payment
      if (PROFITS[0]>0)

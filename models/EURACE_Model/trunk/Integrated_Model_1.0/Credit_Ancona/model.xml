@@ -167,6 +167,11 @@
      <description>Basel II regulatory parameter</description>
     </variable>
     <variable>
+     <type>int</type>
+     <name>credit_rationing</name>
+     <description>number of firms rationed in one month</description>
+    </variable>
+    <variable>
      <type>double</type>
      <name>value_at_risk</name>
      <description>Total value at risk of bank's loan portfolio.</description>
