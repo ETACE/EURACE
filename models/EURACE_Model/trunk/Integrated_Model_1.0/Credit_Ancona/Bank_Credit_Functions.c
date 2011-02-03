@@ -91,7 +91,7 @@ int Bank_decide_credit_conditions()
             strcpy(filename, "its/bank_decide_credit_conditions.txt");      
             file1 = fopen(filename,"a");
             fprintf(file1,"\n %d %d %d",DAY,ID,loan_request_message->firm_id);
-            fprintf(file1," %f %f %f %f %f %f %f %f %f",d,c,e,bankruptcy_prob,r,i,VALUE_AT_RISK,EQUITY);
+            fprintf(file1," %f %f %f %f %f %f %f %f",d,c,e,bankruptcy_prob,r,i,VALUE_AT_RISK,EQUITY);
             fprintf(file1," %f %d",credit_allowed,CREDIT_RATIONING);
             fclose(file1);
             free(filename); 
