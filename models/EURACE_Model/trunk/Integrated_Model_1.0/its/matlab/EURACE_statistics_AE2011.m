@@ -7,13 +7,13 @@ Pat = 'E:\research\Conferences\Artificial Economics 2011 - The Hague\data\seed';
 seeds_grid = [1234:1237];
 nrseeds = numel(seeds_grid);
 qe = 0;
-alfa = 2;
+alfa = 5;
 
 m0 = 1;  %181
 mf = 180;  % 360
 
-day_0 = 1+12*(m0-1);
-day_f = 12*mf;
+day_0 = 1+20*(m0-1);
+day_f = 20*mf;
 
 fprintf('\n\n qe: %d \t alfa: %1.1f TIME AVERAGES',qe,alfa)
 
@@ -75,9 +75,7 @@ for seme = seeds_grid
     %%%%%%%%%%% Bank equity and total credit
     Data5 = load([FileName, 'banks_daily_balance_sheet.txt']);
     
-    days = day_0:day_f;
-    
-    for i=1:numel(days)
+    for i=day_0:day_f
          
          days_idx = find(Data5(:,1)==i);
          TOTAL_CREDIT(i,s) = sum(Data5(days_idx,5));
