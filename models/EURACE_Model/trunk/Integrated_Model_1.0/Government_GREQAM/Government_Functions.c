@@ -211,6 +211,7 @@ int Government_read_tax_payments()
 
     START_UNEMPLOYMENT_BENEFIT_RESTITUTION_MESSAGE_LOOP
         MONTHLY_BENEFIT_PAYMENT -= unemployment_benefit_restitution_message->restitution_payment;
+        YEARLY_BENEFIT_PAYMENT -= unemployment_benefit_restitution_message->restitution_payment;
         sum += unemployment_benefit_restitution_message->restitution_payment;
     FINISH_UNEMPLOYMENT_BENEFIT_RESTITUTION_MESSAGE_LOOP 
 
@@ -580,6 +581,8 @@ int Government_monthly_resetting()
  */
 int Government_yearly_budget_accounting()
 {
+     FILE *file1=NULL;
+    char *filename=NULL;
     double in, out;
 
     //Compute the following:
@@ -602,6 +605,20 @@ int Government_yearly_budget_accounting()
         
     //Compute budget deficit
         YEARLY_BUDGET_BALANCE = in - out;
+        
+        
+    if (PRINT_DEBUG_FILE_EXP1)
+    {
+            filename = malloc(40*sizeof(char));
+            filename[0]=0;
+            strcpy(filename, "its/government_yearly_accounting.txt"); 
+            file1 = fopen(filename,"a");
+            fprintf(file1,"%d %d %f %f",DAY,ID,YEARLY_TAX_REVENUES,YEARLY_BENEFIT_PAYMENT);
+            fprintf(file1," %f %f\n",YEARLY_BOND_INTEREST_PAYMENT,YEARLY_BUDGET_BALANCE);
+            fclose(file1);
+            free(filename);
+	}    
+        
 
     return 0;
 }
@@ -807,7 +824,7 @@ int Government_set_policy()
     {
             filename = malloc(40*sizeof(char));
             filename[0]=0;
-            strcpy(filename, "its/Government_policies.txt"); 
+            strcpy(filename, "its/government_policies.txt"); 
             file1 = fopen(filename,"a");
             fprintf(file1,"%d %d %f %f\n",DAY,ID,TAX_RATE_HH_LABOUR,TAX_RATE_CORPORATE);
             fclose(file1);
