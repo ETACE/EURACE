@@ -174,6 +174,7 @@ int Government_pays_coupons()
      PAYMENT_ACCOUNT=PAYMENT_ACCOUNT-(coupon*BOND.nr_outstanding);
      MONTHLY_BOND_INTEREST_PAYMENT = coupon*BOND.nr_outstanding; //Defined in Government/model.xml Gov memory
      add_payment_coupons_message(coupon,ID);
+     YEARLY_BOND_INTEREST_PAYMENT += MONTHLY_BOND_INTEREST_PAYMENT;
      
      if (PRINT_DEBUG)
      {
