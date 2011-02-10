@@ -111,7 +111,7 @@ void  stockBeliefFormation(Belief *belief, Stock *stock,int backwardWindow,int f
   double return_random, return_chartist, return_fundamental;
   double dividend_yield_annualized,annual_coeff;
   double r1, r2, r3, r, utility_tmp;
-  //   FILE *file1=NULL;
+ //   FILE *file1=NULL;
  // char * filename="";
   int i;
  
@@ -161,7 +161,9 @@ void  stockBeliefFormation(Belief *belief, Stock *stock,int backwardWindow,int f
  //printf("\n stock id: %d belief->utility: %f backwardWindow: %d",stock->id,belief->utility,backwardWindow);
  //getchar();
   
-   /*     if (PRINT_DEBUG_FILE_EXP1)
+ /* if (CURRENTDAY>100)
+    {
+        if (PRINT_DEBUG_FILE_EXP1)
     {                       
         filename = malloc(40*sizeof(char));
         filename[0]=0;
@@ -170,12 +172,13 @@ void  stockBeliefFormation(Belief *belief, Stock *stock,int backwardWindow,int f
     //    fprintf(file1,"%d %f %d %f %f %f",CURRENTDAY,bond->nominal_yield,nrCoupons,coupon_stream,last_market_price,coupon_yield_annualized);
      //   fprintf(file1," %f %f %f %f %f %f",factor_random,return_random,factor_chartist,return_chartist,factor_fundamental,return_fundamental);
      //   fprintf(file1," %f %f\n",belief->expectedPriceReturns,belief->expectedTotalReturns);
-        fprintf(file1,"\n%d %f %f %f %f",CURRENTDAY,belief->last_price);
+      //  fprintf(file1,"\n%d %f %f %f %f",CURRENTDAY,belief->last_price);
         fprintf(file1,"\n%d %f %f %f %f",CURRENTDAY,belief->last_price,return_random,return_chartist,return_fundamental);
         fprintf(file1," %f %f %f %f",price_returns_avg,dividend_yield_annualized,total_returns_avg,belief->utility);
         fclose(file1);
         free(filename);        
-    } */ 
+    }
+    }  */
   
 }
 
@@ -183,8 +186,8 @@ void  stockBeliefFormation(Belief *belief, Stock *stock,int backwardWindow,int f
 
 void  bondBeliefFormation(Belief *belief, Bond *bond,int backwardWindow,int forwardWindow, double randomWeight,double  fundamentalWeight,double chartistWeight, int bins ,int currentDay,int holdingPeriodToForwardW, double lossaversion)
 {
-  // FILE *file1=NULL;
-  // char * filename="";
+ //  FILE *file1=NULL;
+ //  char * filename="";
   //int bins_number;
   int holding_period;
   int i, nrCoupons;
@@ -239,7 +242,7 @@ if (holding_period>=days2maturity)
     }
 else
    {
-     factor_fundamental = fundamental_return_weight_bond;
+     factor_fundamental = 0.9;
      factor_chartist = 0;
      factor_random = 1-factor_fundamental;
    }
@@ -285,7 +288,9 @@ belief->utility = utility_tmp/backwardWindow;
 belief->last_price=lastPriceBond(bond);
 
 
-   /* if (PRINT_DEBUG_FILE_EXP1)
+/* if (CURRENTDAY>100)
+    {
+    if (PRINT_DEBUG_FILE_EXP1)
     {                       
         filename = malloc(40*sizeof(char));
         filename[0]=0;
@@ -296,6 +301,6 @@ belief->last_price=lastPriceBond(bond);
         fprintf(file1," %f %f %f\n",belief->expectedPriceReturns,belief->expectedTotalReturns,belief->utility);
         fclose(file1);
         free(filename);        
-    } */
-  
+    } 
+  } */
 }
