@@ -2,12 +2,12 @@ clc
 clear all
 %close all
 
-Pat = 'E:\research\Conferences\Artificial Economics 2011 - The Hague\data\seed';
+Pat = 'E:\research\Conferences\Artificial Economics 2011 - The Hague\data\seed_';
 
-seeds_grid = [1234:1237];
+seeds_grid = [1236:1238];
 nrseeds = numel(seeds_grid);
 qe = 0;
-alfa = 5;
+alfa = 10;
 
 m0 = 1;  %181
 mf = 180;  % 360
@@ -20,7 +20,7 @@ fprintf('\n\n qe: %d \t alfa: %1.1f TIME AVERAGES',qe,alfa)
 s = 0;
 for seme = seeds_grid
     s = s + 1;
-    FileName = [Pat, num2str(seme), 'bis\alfa_', num2str(alfa), '\its\'];
+    FileName = [Pat, num2str(seme), '\qe0_alfa', num2str(alfa), '\its\'];
       
     Data1 = load([FileName, 'eurostat2.txt']);
     Data2 = load([FileName, 'firms_capital_goods.txt']);

@@ -35,7 +35,7 @@ double futureFundamentalReturn(Belief *belief,Stock *stock,int currentDay,int fo
   double fundamentalReturn;
   int hRetainedEarnings;
   hRetainedEarnings=horizonRetainedEarnings(belief,currentDay,forwardWindow);
-  futureFundPrice = (equity+hRetainedEarnings)/(stock->nrOutStandingShares);
+  futureFundPrice = 3.0*(equity+hRetainedEarnings)/(stock->nrOutStandingShares);
  // printf(" return%f\n",futureFundPrice);
   fundamentalReturn = (futureFundPrice-lastPriceStock(stock))/lastPriceStock(stock);
   return fundamentalReturn;
