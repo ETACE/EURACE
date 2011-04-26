@@ -22,7 +22,7 @@ int Central_Bank_monetary_policy()
         unemployment_rate = eurostat_send_macrodata_message->unemployment_rate;
     FINISH_EUROSTAT_SEND_MACRODATA_MESSAGE_LOOP 
     
-    ECB_INTEREST_RATE = 0.05;
+    ECB_INTEREST_RATE = 0.02;
     
     add_policy_rate_message(ECB_INTEREST_RATE);
 
