@@ -190,6 +190,8 @@
 \midrule
 \url{double} \url{total_dividend_payment} \index{\url{total_dividend_payment}} & \parbox{10cm}{Total dividend payment} \\
 \midrule
+\url{double} \url{previous_total_dividend_payment} \index{\url{previous_total_dividend_payment}} & \parbox{10cm}{Previous total dividend payment} \\
+\midrule
 \url{double} \url{current_share_price} \index{\url{current_share_price}} & \parbox{10cm}{Current share price on the market} \\
 \midrule
 \url{double} \url{previous_dividend_per_share} \index{\url{previous_dividend_per_share}} & \parbox{10cm}{Dividend-per-share ratio (previous production cycle)} \\
@@ -255,6 +257,10 @@
 \url{double} \url{total_liabilities} \index{\url{total_liabilities}} & \parbox{10cm}{} \\
 \midrule
 \url{double} \url{total_expenses} \index{\url{total_expenses}} & \parbox{10cm}{} \\
+\midrule
+\url{double} \url{avg_loan_rate} \index{\url{avg_loan_rate}} & \parbox{10cm}{Loan rate weighted average according to firm's loan portfolio } \\
+\midrule
+\url{double} \url{wacc} \index{\url{wacc}} & \parbox{10cm}{Weighted average cost of capital} \\
 \midrule
 \url{double} \url{earnings_payout} \index{\url{earnings_payout}} & \parbox{10cm}{} \\
 \midrule
@@ -1396,6 +1402,8 @@ possible, otherwise rationing.} \\
 \url{double} \url{ecb_debt} \index{\url{ecb_debt}} & \parbox{10cm}{Stock of liquidity borrowed from Central Bank.} \\
 \midrule
 \url{double} \url{alfa} \index{\url{alfa}} & \parbox{10cm}{Basel II regulatory parameter} \\
+\midrule
+\url{int} \url{credit_rationing} \index{\url{credit_rationing}} & \parbox{10cm}{number of firms rationed in one month} \\
 \midrule
 \url{double} \url{value_at_risk} \index{\url{value_at_risk}} & \parbox{10cm}{Total value at risk of bank's loan portfolio.} \\
 \midrule

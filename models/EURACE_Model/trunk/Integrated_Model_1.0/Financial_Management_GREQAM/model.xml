@@ -322,6 +322,16 @@ TOTAL_DIVIDEND_PAYMENT = CONST_DIVIDEND_EARNINGS_RATIO *NET_EARNINGS;</descripti
      <name>total_expenses</name>
      <description></description>
     </variable>
+     <variable>
+      <type>double</type>
+      <name>avg_loan_rate</name>
+      <description>Loan rate weighted average according to firm's loan portfolio </description>
+     </variable>
+    <variable>
+     <type>double</type>
+     <name>wacc</name>
+     <description>Weighted average cost of capital</description>
+    </variable>
    </memory>
    <functions>
     <function>
