@@ -314,7 +314,36 @@ int Firm_calc_production_quantity()
 
 }
 
-    
+int Firm_calc_avg_loan_rate()
+{
+         FILE *file1;
+         char *filename;  
+     
+ int i;
+ double weighted_loan_value;
+ /*double tmp_total_debt;*/
+ 
+ weighted_loan_value = 0;
+ for (i=LOANS.size-1; i>-1; i--)
+ {
+ weighted_loan_value += LOANS.array[i].loan_value*LOANS.array[i].interest_rate;
+ /*tmp_total_debt += LOANS.array[i].loan_value*/;
+ } 
+ AVG_LOAN_RATE = weighted_loan_value/TOTAL_DEBT;
+ 
+         if (PRINT_DEBUG_FILE_EXP1)
+        {                       
+            filename = malloc(40*sizeof(char));
+            filename[0]=0;
+            strcpy(filename, "its/Firm_calc_avg_loan_rate.txt");      
+            file1 = fopen(filename,"a");
+            fprintf(file1,"\n %d %d %f %f",DAY,ID, AVG_LOAN_RATE,TOTAL_DEBT);
+            fclose(file1);
+            free(filename);
+        } 
+        
+ return 0;
+}   
 /** \fn Firm_calc_input_demands()
  * \brief Firms calculate the labor demand and the demand for capital goods*/
 int Firm_calc_input_demands()
@@ -341,13 +370,13 @@ int Firm_calc_input_demands()
          * Complementarity between specific skills and productivity*/
         
         }
-
+        Firm_calc_avg_loan_rate();
         /*Specific skills are limiting factor*/
         if(MEAN_SPECIFIC_SKILLS < TECHNOLOGY)
         {
     
             temp_capital_demand = PLANNED_PRODUCTION_QUANTITY * 
-            (pow((BETA*MEAN_WAGE*(1.04))/((ACTUAL_CAP_PRICE/CONST_INSTALLMENT_PERIODS)*ALPHA),ALPHA)/
+            (pow((BETA*MEAN_WAGE*(1.04))/((AVG_LOAN_RATE/12)*ALPHA),ALPHA)/
             MEAN_SPECIFIC_SKILLS);
             
             /*Smoothing of capital good demand*/
@@ -370,7 +399,7 @@ int Firm_calc_input_demands()
         else
         {
             temp_capital_demand = PLANNED_PRODUCTION_QUANTITY * 
-            (pow((BETA*MEAN_WAGE*(1.04))/   ((ACTUAL_CAP_PRICE/CONST_INSTALLMENT_PERIODS)*ALPHA),ALPHA)/
+            (pow((BETA*MEAN_WAGE*(1.04))/((AVG_LOAN_RATE/12)*ALPHA),ALPHA)/
             TECHNOLOGY);
             
                 /*Smoothing of capital good demand*/
