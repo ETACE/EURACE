@@ -82,7 +82,7 @@ int Bank_decide_credit_conditions()
           if (e<0)
           printf("\n Error ! The equity of the firm is negative: %f",e); 
            
-          i = ECB_INTEREST_RATE + BANK_GAMMA[0]*bankruptcy_prob*(double)rand();
+          i = ECB_INTEREST_RATE + BANK_GAMMA[0]*bankruptcy_prob*(double)rand()/RAND_MAX;
             
         //    if (PRINT_DEBUG_FILE_EXP1)
         //{                       
