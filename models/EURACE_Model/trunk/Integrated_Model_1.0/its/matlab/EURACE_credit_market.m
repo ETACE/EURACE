@@ -1,8 +1,8 @@
 clc
 clear all
-close all
+%close all
 
-Pat = 'C:\DATA\research\X-EURACE\models\EURACE_Model\trunk\Integrated_Model_1.0\its\prova\its\';
+Pat = 'E:\research\X-EURACE\models\EURACE_Model\trunk\Integrated_Model_1.0\its\seed_1234\qe1_alpha5\its\';
 
 BanksBalanceSheet = load([Pat, 'banks_daily_balance_sheet.txt']);
 FirmsBalanceSheet = load([Pat, 'firms_balance_sheet.txt']);
@@ -21,8 +21,8 @@ for d=1:T
 end
 
 figure(1); hold on; grid on
-plot(TOTAL_LOANS)
-plot(TOTAL_DEBT,'--r')
+plot(TOTAL_LOANS,'g')
+plot(TOTAL_DEBT,'--k')
 
 figure(2); hold on; grid on
 Difference = TOTAL_LOANS - TOTAL_DEBT;

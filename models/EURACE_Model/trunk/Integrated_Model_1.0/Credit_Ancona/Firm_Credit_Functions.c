@@ -34,9 +34,11 @@
         
         
         //Create bank network for this firm
+        j = 0;
           while(connected<NUMBER_OF_BANKS_TO_APPLY)
           {
-                j= rand() % NUMBER_OF_BANKS_ASKED ;// choose banks
+                //j= rand() % NUMBER_OF_BANKS_ASKED ;// choose banks
+                j = j + 1;
                 add_loan_request_message(ID, SET_OF_LENDERS.array[j].bank_name, EQUITY, TOTAL_DEBT, EXTERNAL_FINANCIAL_NEEDS);
                 SET_OF_LENDERS.array[j].contacted=1;
                 connected++;         
@@ -226,7 +228,7 @@
                 filename[0]=0;
                 strcpy(filename, "its/firm_get_loan.txt");      
                 file1 = fopen(filename,"a");
-                fprintf(file1,"\n %d %d %d %f %d",DAY,ID,bank_id,credit_accepted,REGION_ID);
+                fprintf(file1,"\n %d %d %d %f %f %d",DAY,ID,bank_id,credit_accepted,interest_rate,REGION_ID);
                 fclose(file1);
                 free(filename);
             //}    

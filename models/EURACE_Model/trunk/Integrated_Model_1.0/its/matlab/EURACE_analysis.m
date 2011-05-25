@@ -1,25 +1,26 @@
 clc
 clear all
-%close all
+close all
 
-seme = 1237;
-qe = 1;
-div = 0.9;
+seme = 1253;
+qe = 0;
+alfa = 5;
 
-Pat = ['C:\DATA\research\X-EURACE\models\EURACE_Model\trunk\Integrated_Model_1.0\its\seed_', num2str(seme), ...
-'\qe', num2str(qe), '_d', num2str(div),'\its\'];
+Pat = ['E:\research\X-EURACE\models\EURACE_Model\trunk\Integrated_Model_1.0\its\seed_', num2str(seme), ...
+'\qe', num2str(qe), '_alfa', num2str(alfa),'\its\'];
+
 
 font_sz = 14;
-colore = 'k';
+colore = 'k ';
 
-mf = 240;
+mf = 480;
 af = ceil(mf/12);
 tf = 20*mf;
 daily_month_index = (1:tf)/20;
 monthly_month_index = 1:mf;
 yearly_month_index = (1:af)*12;
 monthly_index = 0:12:mf; 
-monthly_index2 = 0:24:mf; 
+monthly_index2 = 0:48:mf; 
 yearly_index  = 0:af;
 
 %%% BANKS
@@ -196,35 +197,37 @@ title('bond price','fontsize',font_sz)
 xlabel('months','fontsize',font_sz)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Firm bankruptcies
+%break
 
-if exist([Pat, '\firms_bankruptcies.txt'])==2
-    
-    Data = load([Pat, 'firms_bankruptcies.txt']);
-    Bankruptcies_nr = zeros(size(Data,1),1);
-    Bankruptcies_nr_tmp = 0;
-
-    for i=1:size(Data,1)
-        if Data(i,6)<0
-            Bankruptcies_nr_tmp = Bankruptcies_nr_tmp + 1;
-        else
-            Bankruptcies_nr_tmp = Bankruptcies_nr_tmp - 1;
-        end
-        Bankruptcies_nr(i) = Bankruptcies_nr_tmp;
-        Bankruptcies_times(i) = Data(i,1);
-    end
-
-    figure(41); hold on; grid; box on
-    set(gcf,'Name','Bankruptcies')
-    stairs(Bankruptcies_times/20,Bankruptcies_nr,colore)
-    set(gca,'xtick',monthly_index,'fontsize',font_sz)
-    xlabel('months','fontsize',font_sz)
-    ylabel('Nr firms in bankruptcy','fontsize',font_sz)
-    set(gca,'xlim',[0, mf]) 
-    clear Data
-else
-    fprintf('\r\r No bankruptcy file found')
-end
+% % Firm bankruptcies
+% 
+% if exist([Pat, '\firms_bankruptcies.txt'])==2
+%     
+%     Data = load([Pat, 'firms_bankruptcies.txt']);
+%     Bankruptcies_nr = zeros(size(Data,1),1);
+%     Bankruptcies_nr_tmp = 0;
+% 
+%     for i=1:size(Data,1)
+%         if Data(i,6)<0
+%             Bankruptcies_nr_tmp = Bankruptcies_nr_tmp + 1;
+%         else
+%             Bankruptcies_nr_tmp = Bankruptcies_nr_tmp - 1;
+%         end
+%         Bankruptcies_nr(i) = Bankruptcies_nr_tmp;
+%         Bankruptcies_times(i) = Data(i,1);
+%     end
+% 
+%     figure(41); hold on; grid; box on
+%     set(gcf,'Name','Bankruptcies')
+%     stairs(Bankruptcies_times/20,Bankruptcies_nr,colore)
+%     set(gca,'xtick',monthly_index,'fontsize',font_sz)
+%     xlabel('months','fontsize',font_sz)
+%     ylabel('Nr firms in bankruptcy','fontsize',font_sz)
+%     set(gca,'xlim',[0, mf]) 
+%     clear Data
+% else
+%     fprintf('\r\r No bankruptcy file found')
+% end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -365,7 +368,7 @@ end
 if j>0
 figure(71); hold on; grid on
 set(gcf,'Name','credit rationing')
-bar(credit_rationing_time/20,credit_rationing_qty,colore)
+plot(credit_rationing_time/20,credit_rationing_qty,colore)
 
 set(gca,'xtick',monthly_index,'fontsize',font_sz)
 xlabel('months','fontsize',font_sz)
@@ -462,8 +465,8 @@ for d=1:20:(numel(days)-19)
     p_sold = Data(Idx(Idx_q_sold),4);
     k = k + 1;
     
-    q_sold_tot(k) = sum(q_sold);
-    Revenues(k) = sum(q_sold.*p_sold);
+    q_sold_tot(k,1) = sum(q_sold);
+    Revenues(k,1) = sum(q_sold.*p_sold);
     p_index(k,1) = sum(q_sold.*p_sold)/q_sold_tot(k);
     
     clear Idx q_sold p_sold
@@ -636,12 +639,37 @@ xlabel('months','fontsize',font_sz)
 ylabel('Unemployment rate (%)','fontsize',font_sz)
 set(gca,'xlim',[0, mf])
 
+clear Data
 
 
+%%% Firm monthly income statement
+Data = load([Pat, 'firms_income_statement.txt']);
+k = 1;
+for d=1:20:(numel(days)-19)
+    Idx = find((Data(:,1)>=d)&(Data(:,1)<(d+20)));
+
+    FIRMS_REVENUES(k,1) = sum(Data(Idx,3));
+    k = k + 1;
+       
+    clear Idx 
+end
+
+% %%% Firm execute production
+% Data = load([Pat, 'Firm_execute_production.txt']);
+% k = 1;
+% for d=1:20:(numel(days)-19)
+%     Idx = find((Data(:,1)>=d)&(Data(:,1)<(d+20)));
+% 
+%     FIRMS_RPRODUCTION(k,1) = sum(Data(Idx,4));
+%     k = k + 1;
+%        
+%     clear Idx 
+% end
+
+
+clear Data
 %%% Firm monthly balance sheet
 Data = load([Pat, 'firms_balance_sheet.txt']);
-
-
 
 days = unique(Data(:,1));
 TOTAL_UNITS_CAPITAL_STOCK_FIRMS = Data(:,3);
@@ -860,37 +888,144 @@ clear Data
 font_sz = 16;
 
 figure(201);
-set(gcf,'Name','GDP and unemployment')
+set(gcf,'Name','Unemployment and GDP')
+
 subplot(2,1,1); hold on; grid on; box on
+plot(monthly_month_index,UNEMPLOYMENT(1:mf),colore)
+set(gca,'xtick',monthly_index2,'fontsize',font_sz)
+xlabel('months','fontsize',font_sz)
+ylabel('unemployment rate (%)','fontsize',font_sz)
+set(gca,'xlim',[0, mf])
+
+subplot(2,1,2); hold on; grid on; box on
 plot(monthly_month_index,GDP_real(1:mf),colore)
 set(gca,'xtick',monthly_index2,'fontsize',font_sz)
 xlabel('months','fontsize',font_sz)
 ylabel('real GDP','fontsize',font_sz)
 set(gca,'xlim',[0, mf])
 
-subplot(2,1,2); hold on; grid on; box on
+
+%%% Capital, unemployment and GDP %%%
+
+figure(301);
+set(gcf,'Name','Capital, unemployment and GDP')
+
+subplot(3,1,1); hold on; grid on; box on
+plot(daily_month_index,TOTAL_UNITS_CAPITAL_STOCK_FIRMS_sum(1:tf),colore)
+set(gca,'xtick',monthly_index2,'fontsize',font_sz)
+xlabel('months','fontsize',font_sz)
+ylabel('firms capital stock','fontsize',font_sz)
+set(gca,'xlim',[0, mf])
+
+subplot(3,1,2); hold on; grid on; box on
 plot(monthly_month_index,UNEMPLOYMENT(1:mf),colore)
 set(gca,'xtick',monthly_index2,'fontsize',font_sz)
 xlabel('months','fontsize',font_sz)
-ylabel('Unemployment rate (%)','fontsize',font_sz)
+ylabel('unemployment rate (%)','fontsize',font_sz)
+set(gca,'xlim',[0, mf])
+
+subplot(3,1,3); hold on; grid on; box on
+plot(monthly_month_index,GDP_real(1:mf),colore)
+set(gca,'xtick',monthly_index2,'fontsize',font_sz)
+xlabel('months','fontsize',font_sz)
+ylabel('real GDP','fontsize',font_sz)
 set(gca,'xlim',[0, mf])
 
 
-figure(202);
+%%% Equity and loans %%%%%%%
+
+figure(302);
+set(gcf,'Name','Equity and Loans')
+
 subplot(2,1,1); hold on; grid on; box on
-plot(daily_month_index,MONEY_PRIVATE_SECTOR(1:tf),colore)
+plot(daily_month_index,EQUITY_sum(1:tf),colore)
 set(gca,'xtick',monthly_index2,'fontsize',font_sz)
 xlabel('months','fontsize',font_sz)
-ylabel('Private sector money endowment','fontsize',font_sz)
+ylabel('banks equity','fontsize',font_sz)
 set(gca,'xlim',[0, mf])
 
 subplot(2,1,2); hold on; grid on; box on
+plot(daily_month_index,TOTAL_CREDIT_sum(1:tf),colore)
+set(gca,'xtick',monthly_index2,'fontsize',font_sz)
+xlabel('months','fontsize',font_sz)
+ylabel('banks loans','fontsize',font_sz)
+set(gca,'xlim',[0, mf])
+
+
+%%% Price Index and Wage Level %%%%%%%
+
+figure(303);
+set(gcf,'Name','Price & Wage Level')
+
+subplot(2,1,1); hold on; grid on; box on
 plot(monthly_month_index,p_index(1:mf),colore)
 set(gca,'xtick',monthly_index2,'fontsize',font_sz)
 xlabel('months','fontsize',font_sz)
-ylabel('Price level','fontsize',font_sz)
+ylabel('consumption goods price level','fontsize',font_sz)
 set(gca,'xlim',[0, mf])
 
+subplot(2,1,2); hold on; grid on; box on
+plot(monthly_month_index,AVERAGE_WAGE(1:mf),colore)
+set(gca,'xtick',monthly_index2,'fontsize',font_sz)
+xlabel('months','fontsize',font_sz)
+ylabel('wage level','fontsize',font_sz)
+set(gca,'xlim',[0, mf])
+
+
+%%%  Monetary aggregates %%%%
+
+M3 = DEPOSITS_sum(1:tf)' + EQUITY_sum(1:tf)' + PAYMENT_ACCOUNT_CB(1:tf) +PAYMENT_ACCOUNT_GOVS_sum(1:tf)';
+
+figure(304);
+set(gcf,'Name','Invariants')
+
+subplot(2,1,1); hold on; grid on; box on
+plot(daily_month_index,M3,colore)
+set(gca,'xtick',monthly_index2,'fontsize',font_sz)
+xlabel('months','fontsize',font_sz)
+ylabel('Aggreate private and public sector deposits','fontsize',font_sz)
+set(gca,'xlim',[0, mf])
+
+subplot(2,1,2); hold on; grid on; box on
+plot(daily_month_index,TOTAL_CREDIT_sum(1:tf)'+ FIAT_MONEY_GOVS(1:tf),colore)
+set(gca,'xtick',monthly_index2,'fontsize',font_sz)
+xlabel('months','fontsize',font_sz)
+ylabel('Banks credit-money + CB fiat money','fontsize',font_sz)
+set(gca,'xlim',[0, mf])
+
+
+%%%  Production & Sales
+
+figure(305); grid on; hold on; box on
+set(gcf,'Name','Production & Sales')
+plot(monthly_month_index,SOLD_QUANTITY(monthly_month_index),colore)
+plot(monthly_month_index,MONTHLY_OUTPUT(monthly_month_index),[colore, ':'])
+set(gca,'xtick',monthly_index2,'fontsize',font_sz)
+xlabel('months','fontsize',font_sz)
+set(gca,'xlim',[0, mf])
+ylabel('real values','fontsize',font_sz)
+legend('sales','production',0)
+
+
+figure(306); 
+subplot(2,1,1); grid on; hold on; box on
+set(gcf,'Name','Production, Sales & Investments')
+plot(monthly_month_index,SOLD_QUANTITY(monthly_month_index),colore)
+plot(monthly_month_index,MONTHLY_OUTPUT(monthly_month_index),[colore, ':'])
+set(gca,'xtick',monthly_index2,'fontsize',font_sz)
+xlabel('months','fontsize',font_sz)
+set(gca,'xlim',[0, mf])
+ylabel('real values','fontsize',font_sz)
+legend('sales','production',0)
+
+subplot(2,1,2); hold on; grid on; box on
+plot(monthly_month_index,capital_goods_investment(monthly_month_index),colore)
+%plot(MONTHLY_REVENUES(1:mf),colore,'linewidth',2)
+set(gca,'xtick',monthly_index2,'fontsize',font_sz)
+xlabel('months','fontsize',font_sz)
+set(gca,'xlim',[0, mf])
+ylabel('real values','fontsize',font_sz)
+legend('investments',0)
 
 %%% FIGURE: Government data %%%
 
@@ -920,6 +1055,7 @@ title('Nr bonds outstanding','fontsize',font_sz)
 xlabel('months','fontsize',font_sz)
 
 
+
 subplot(2,2,4); grid on; hold on; box on
 plot(daily_month_index,BOND_PRICE(1:tf),colore)
 set(gca,'xtick',monthly_index2,'fontsize',font_sz)
@@ -927,5 +1063,6 @@ set(gca,'xlim',[0, mf])
 title('bond price','fontsize',font_sz)
 xlabel('months','fontsize',font_sz)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 
 

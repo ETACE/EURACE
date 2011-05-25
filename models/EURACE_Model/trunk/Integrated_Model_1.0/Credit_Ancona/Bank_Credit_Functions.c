@@ -82,7 +82,7 @@ int Bank_decide_credit_conditions()
           if (e<0)
           printf("\n Error ! The equity of the firm is negative: %f",e); 
            
-            i = ECB_INTEREST_RATE + BANK_GAMMA[0]*r*(((double)rand()/(double)RAND_MAX)*0.005);
+          i = ECB_INTEREST_RATE + BANK_GAMMA[0]*bankruptcy_prob*(double)rand();
             
         //    if (PRINT_DEBUG_FILE_EXP1)
         //{                       
@@ -282,7 +282,8 @@ int Bank_accounting()
         FILE *file1=NULL;
         char *filename="";
          
-     double q, c, gro, int_to_ecb;  // total_dividends, dividend_per_share
+     //double q, c
+     double gro, int_to_ecb;  // total_dividends, dividend_per_share
      
      ECB_INTEREST_PAYMENT=0.0;
      
@@ -306,7 +307,8 @@ int Bank_accounting()
      gro=0;
  
      PROFITS[1]=PROFITS[0]; //update
-     q=BANK_GAMMA[0]; 
+     
+     /* q=BANK_GAMMA[0]; 
      c=BANK_GAMMA[1];
      BANK_GAMMA[1]= q;
      BANK_GAMMA[0]=(q+(BANK_LAMBDA*(q-c)*gro)+(((double)rand()/(double)RAND_MAX)*0.01)); //Cambiare formula
@@ -315,7 +317,8 @@ int Bank_accounting()
      {
          BANK_GAMMA[0]=0.02;
      }
-
+     */
+     BANK_GAMMA[0] = 0.1;
      if (((EQUITY*ALFA)<(1.1*VALUE_AT_RISK))||(CREDIT_RATIONING>0))
      BANK_DIVIDEND_RATE = 0.0;
      else
