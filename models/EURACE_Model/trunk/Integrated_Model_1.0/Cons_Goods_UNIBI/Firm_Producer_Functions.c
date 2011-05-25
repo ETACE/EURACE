@@ -321,14 +321,19 @@ int Firm_calc_avg_loan_rate()
      
  int i;
  double weighted_loan_value;
+ double loan_values_sum;
  /*double tmp_total_debt;*/
  
- weighted_loan_value = 0;
+ weighted_loan_value = 0.0;
+ loan_values_sum = 0.0;
+ 
  for (i=LOANS.size-1; i>-1; i--)
  {
  weighted_loan_value += LOANS.array[i].loan_value*LOANS.array[i].interest_rate;
+ loan_values_sum += LOANS.array[i].loan_value; 
  /*tmp_total_debt += LOANS.array[i].loan_value*/;
  } 
+
  AVG_LOAN_RATE = weighted_loan_value/TOTAL_DEBT;
  
          if (PRINT_DEBUG_FILE_EXP1)
@@ -337,7 +342,7 @@ int Firm_calc_avg_loan_rate()
             filename[0]=0;
             strcpy(filename, "its/Firm_calc_avg_loan_rate.txt");      
             file1 = fopen(filename,"a");
-            fprintf(file1,"\n %d %d %f %f",DAY,ID, AVG_LOAN_RATE,TOTAL_DEBT);
+            fprintf(file1,"\n %d %d %f %f %f",DAY,ID, AVG_LOAN_RATE,TOTAL_DEBT,loan_values_sum);
             fclose(file1);
             free(filename);
         } 

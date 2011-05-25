@@ -1,16 +1,16 @@
 clc
 clear all
-%close all
+close all
 
-Pat = 'E:\research\Conferences\Artificial Economics 2011 - The Hague\data\seed_';
+Pat = 'E:\research\X-EURACE\models\EURACE_Model\trunk\Integrated_Model_1.0\its\seed_';
 
-seeds_grid = [1236:1238];
+seeds_grid = [1228:1230, 1250:1254];
 nrseeds = numel(seeds_grid);
 qe = 0;
-alfa = 10;
+alfa = 8;
 
-m0 = 1;  %181
-mf = 180;  % 360
+m0 = 241;  %181
+mf = 480;  % 360
 
 day_0 = 1+20*(m0-1);
 day_f = 20*mf;
@@ -60,13 +60,20 @@ for seme = seeds_grid
 
         
     unemployment_mt(s) = mean(Data3(m0:mf,6)); 
+    
+    output_PV(:,s) = diff(output(:,s))./output(1:end-1,s);
+    GDP_PV_mt(s) = mean(output_PV(:,s));
+    
     fprintf('\n\t\t K_mt: %f GDP_mt: %f U: %f',K_mt(s),GDP_mt(s),unemployment_mt(s))
+    fprintf(' GDP_PV_mt: %f',GDP_PV_mt(s))
 
 
     %%%%%%%%%%%% Wage and price level
     wage(:,s) = Data3(m0:mf,7);
     wage_mt(s) = mean(wage(:,s));
     p_index_mt(s) = mean(p_index(:,s));
+
+    inflation(:,s) = diff(p_index(:,s))./p_index(1:end-1,s);
     
     fprintf('\n\t\t wage_mt: %f p_index_mt: %f',wage_mt(s),p_index_mt(s))
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -78,17 +85,30 @@ for seme = seeds_grid
     for i=day_0:day_f
          
          days_idx = find(Data5(:,1)==i);
-         TOTAL_CREDIT(i,s) = sum(Data5(days_idx,5));
-         EQUITY(i,s) = sum(Data5(days_idx,9));
+         TOTAL_CREDIT(i-day_0+1,s) = sum(Data5(days_idx,5));
+         EQUITY(i-day_0+1,s) = sum(Data5(days_idx,9));
  
          clear days_idx
          
+    end
+
+    m_index = 0;
+    for mm=m0:mf
+        m_index = m_index + 1;
+        m_index0 = 20*(mm-m0)+1;
+        m_indexf = 20*(mm-m0)+20;
+        TOTAL_CREDIT_MONTHLY(m_index,s) = mean(TOTAL_CREDIT(m_index0:m_indexf,s));
     end
     
     TOTAL_CREDIT_mt(s,1) = mean(TOTAL_CREDIT(:,s));
     EQUITY_mt(s,1) = mean(EQUITY(:,s));
     
+    
+    TOTAL_CREDIT_MONTHLY_PV(:,s) = diff(TOTAL_CREDIT_MONTHLY(:,s))./TOTAL_CREDIT_MONTHLY(1:end-1,s);
+    TOTAL_CREDIT_MONTHLY_PV_mt(s) = mean(TOTAL_CREDIT_MONTHLY_PV(:,s));
+    
     fprintf('\n\t\t TOTAL_CREDIT_mt: %f EQUITY_mt: %f',TOTAL_CREDIT_mt(s),EQUITY_mt(s))
+    fprintf(' TOTAL_CREDIT_MONTHLY_PV_mt: %f',TOTAL_CREDIT_MONTHLY_PV_mt(s))
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     
 end
@@ -96,16 +116,18 @@ end
 
 fprintf('\n\n qe: %d \t alfa: %1.1f ENSEMBLE AVERAGES',qe,alfa)
 
-K_me = mean(K_mt);  K_se = std(K_mt)/sqrt(nrseeds);
-GDP_me = mean(GDP_mt); GDP_se = std(GDP_mt)/sqrt(nrseeds);
-unemployment_me = mean(unemployment_mt);   unemployment_se = std(unemployment_mt)/sqrt(nrseeds);
-p_index_me = mean(p_index_mt);  p_index_se = std(p_index_mt)/sqrt(nrseeds);
-wage_me = mean(wage_mt);  wage_se = std(wage_mt)/sqrt(nrseeds);
-TOTAL_CREDIT_me = mean(TOTAL_CREDIT_mt);  TOTAL_CREDIT_se = std(TOTAL_CREDIT_mt)/sqrt(nrseeds);
-EQUITY_me = mean(EQUITY_mt);  EQUITY_se = std(EQUITY_mt)/sqrt(nrseeds);
+fprintf('\n\t day_0: %d day_f: %d',day_0,day_f);
+   
+K_me = mean(K_mt);  K_std = std(K_mt);
+GDP_me = mean(GDP_mt); GDP_std = std(GDP_mt);
+unemployment_me = mean(unemployment_mt);   unemployment_std = std(unemployment_mt);
+p_index_me = mean(p_index_mt);  p_index_std = std(p_index_mt);
+wage_me = mean(wage_mt);  wage_std = std(wage_mt);
+TOTAL_CREDIT_me = mean(TOTAL_CREDIT_mt);  TOTAL_CREDIT_std = std(TOTAL_CREDIT_mt);
+EQUITY_me = mean(EQUITY_mt);  EQUITY_std = std(EQUITY_mt);
 
-fprintf('\n\t K_me: %f (%f) GDP_me: %f (%f) unemployment_me: %f (%f)',K_me,K_se,GDP_me,GDP_se,unemployment_me,unemployment_se)
-fprintf('\n\t wage_me: %f (%f) p_index_me: %f (%f)',wage_me,wage_se,p_index_me,p_index_se)
-fprintf('\n\t TOTAL_CREDIT_me: %f (%f) EQUITY_me: %f (%f)',TOTAL_CREDIT_me,TOTAL_CREDIT_se,EQUITY_me,EQUITY_se)
+fprintf('\n\t K_me: %f (%f) GDP_me: %f (%f) unemployment_me: %f (%f)',K_me,K_std,GDP_me,GDP_std,unemployment_me,unemployment_std)
+fprintf('\n\t wage_me: %f (%f) p_index_me: %f (%f)',wage_me,wage_std,p_index_me,p_index_std)
+fprintf('\n\t TOTAL_CREDIT_me: %f (%f) EQUITY_me: %f (%f)',TOTAL_CREDIT_me,TOTAL_CREDIT_std,EQUITY_me,EQUITY_std)
 
 
