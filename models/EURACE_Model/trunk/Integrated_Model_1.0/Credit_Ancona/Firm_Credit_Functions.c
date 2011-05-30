@@ -8,7 +8,7 @@
           int connected=0;
           int j=0;
           int k=0;
-          int p=0;
+          
           
             FILE * file1=NULL;
         char * filename="";
@@ -39,11 +39,11 @@
          k = rand() % NUMBER_OF_BANKS_ASKED + 1;// choose banks
           while(connected<NUMBER_OF_BANKS_TO_APPLY)
           {
-                p = (k % NUMBER_OF_BANKS_ASKED);
-                if (connected <= p)
-                {j = k - 1 + connected;}
+                if (connected <= (NUMBER_OF_BANKS_ASKED-k))
+                {j = (k + connected) - 1 ;}
                 else
-                {j = connected - p - 1;}
+                {j = (NUMBER_OF_BANKS_ASKED - connected) - 1 ;}
+
                 add_loan_request_message(ID, SET_OF_LENDERS.array[j].bank_name, EQUITY, TOTAL_DEBT, EXTERNAL_FINANCIAL_NEEDS);
                 SET_OF_LENDERS.array[j].contacted=1;
                 connected++;         
