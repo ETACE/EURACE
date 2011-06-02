@@ -16,6 +16,109 @@
 /************************************ Firm agent functions ************************************/
 
 
+int Firm_calc_input_demands_2()
+{
+ 
+    double temp_labour_demand;
+    double temp_capital_demand;
+    double max_cap_increase;
+    
+    max_cap_increase = 0.05;
+    
+        
+        /*Calculate labor demand and needed capital goods.
+        Complementarity between specific skills and productivity*/
+        
+        /*Specific skills are limiting factor*/
+     
+             if(MEAN_SPECIFIC_SKILLS < TECHNOLOGY)
+        {
+    
+            temp_capital_demand = PLANNED_PRODUCTION_QUANTITY * 
+            (pow((BETA*MEAN_WAGE)/((ACTUAL_CAP_PRICE*AVG_LOAN_RATE/12)*ALPHA),ALPHA)/
+            MEAN_SPECIFIC_SKILLS);
+            
+            /*Smoothing of capital good demand*/
+            
+            if (temp_capital_demand < TOTAL_UNITS_CAPITAL_STOCK * (1 - DEPRECIATION_RATE))
+               { NEEDED_CAPITAL_STOCK = TOTAL_UNITS_CAPITAL_STOCK * (1 - DEPRECIATION_RATE);}
+               /* This is the minimum capital that can be used without investments and should be used because its cost is always paid*/
+               else if (temp_capital_demand > (1 + max_cap_increase)*TOTAL_UNITS_CAPITAL_STOCK)
+               {NEEDED_CAPITAL_STOCK = (1 + max_cap_increase)*TOTAL_UNITS_CAPITAL_STOCK;}
+               /*Rule setting the maximum capital increase, given the supposed technological constraint*/
+               else
+               {NEEDED_CAPITAL_STOCK = temp_capital_demand;}
+            
+                
+        temp_labour_demand = pow(PLANNED_PRODUCTION_QUANTITY /
+        (pow(NEEDED_CAPITAL_STOCK,BETA)*MEAN_SPECIFIC_SKILLS),1/ALPHA);
+ 
+        }
+        /*Technological productivity is limiting factor*/
+        else
+        {
+            temp_capital_demand = PLANNED_PRODUCTION_QUANTITY * 
+            (pow((BETA*MEAN_WAGE)/((ACTUAL_CAP_PRICE*AVG_LOAN_RATE/12)*ALPHA),ALPHA)/
+            TECHNOLOGY);
+            
+                /*Smoothing of capital good demand*/
+            if (temp_capital_demand < TOTAL_UNITS_CAPITAL_STOCK * (1 - DEPRECIATION_RATE))
+               { NEEDED_CAPITAL_STOCK = TOTAL_UNITS_CAPITAL_STOCK * (1 - DEPRECIATION_RATE);}
+               /* This is the minimum capital that can be used without investments and should be used because its cost is always paid*/
+               else if (temp_capital_demand > (1 + max_cap_increase)*TOTAL_UNITS_CAPITAL_STOCK)
+               {NEEDED_CAPITAL_STOCK = (1 + max_cap_increase)*TOTAL_UNITS_CAPITAL_STOCK;}
+               /*Rule setting the maximum capital increase, given the supposed technological constraint*/
+               else
+               {NEEDED_CAPITAL_STOCK = temp_capital_demand;}            
+            
+        temp_labour_demand = pow(PLANNED_PRODUCTION_QUANTITY /
+        (pow(NEEDED_CAPITAL_STOCK,BETA)*TECHNOLOGY),1/ALPHA);
+        }
+        
+        
+         if(NEEDED_CAPITAL_STOCK > TOTAL_UNITS_CAPITAL_STOCK)
+        {       
+            if(temp_labour_demand < 1 && temp_labour_demand > 0)
+            {
+                EMPLOYEES_NEEDED = 1;
+            }else
+            {
+                EMPLOYEES_NEEDED = (int) ceil(temp_labour_demand);
+            }
+        }
+        else/*... if capital stock is higher than the needed one..*/
+        {
+            /*Recalculation of the labor demand*/
+            if(MEAN_SPECIFIC_SKILLS > TECHNOLOGY)
+            {
+                EMPLOYEES_NEEDED = (int) ceil((pow(PLANNED_PRODUCTION_QUANTITY/
+                (TECHNOLOGY*pow(TOTAL_UNITS_CAPITAL_STOCK,BETA)),1/ALPHA)));
+            }
+            else
+            {
+                EMPLOYEES_NEEDED = (int) ceil((pow(PLANNED_PRODUCTION_QUANTITY/
+                (MEAN_SPECIFIC_SKILLS*pow(TOTAL_UNITS_CAPITAL_STOCK,BETA)),1/ALPHA)));
+            }
+        }
+        /*This calculates the needed capital investments*/
+    
+        DEMAND_CAPITAL_STOCK = NEEDED_CAPITAL_STOCK - TOTAL_UNITS_CAPITAL_STOCK;
+        if(DEMAND_CAPITAL_STOCK<0)
+        {printf("\n Firm_calc_input_demands ID: %d DEMAND_CAPITAL_STOCK = %f",ID, DEMAND_CAPITAL_STOCK);
+            DEMAND_CAPITAL_STOCK=0;} 
+        
+        /*This computes the financial needings for production*/
+        PLANNED_PRODUCTION_COSTS = EMPLOYEES_NEEDED*MEAN_WAGE + DEMAND_CAPITAL_STOCK*ACTUAL_CAP_PRICE;
+    
+    #ifdef _DEBUG_MODE    
+  
+    #endif
+    
+    return 0;
+}   
+
+
+
 int Firm_set_quantities_zero()
 {
 
