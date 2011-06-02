@@ -8,7 +8,7 @@ font_sz = 14;
 
 %agent_id = 110;
 
-Data = load([Pat, 'banks_daily_balance_sheet.txt']);
+Data = load("K:/ricerca/Eurace/SVN_integrated_model_1.0/its/prova2/its/banks_daily_balance_sheet.txt");
 
 days = unique(Data(:,1));
 agents_ids = unique(Data(:,2));
@@ -41,7 +41,7 @@ end
 
 clear Data
 
-Data = load([Pat, 'CentralBank_balance_sheet.txt']);
+Data = load("K:/ricerca/Eurace/SVN_integrated_model_1.0/its/prova2/its/CentralBank_daily_balance_sheet.txt");
 
 
 break

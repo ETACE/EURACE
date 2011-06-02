@@ -359,6 +359,7 @@ int Firm_calc_input_demands()
      
     double temp_labour_demand;
     double temp_capital_demand;
+    double total_units_capital_stock_old, max_cap_increase;
     
     
     if(DAY >= TRANSITION_PHASE)
@@ -376,22 +377,27 @@ int Firm_calc_input_demands()
         
         }
         Firm_calc_avg_loan_rate();
+        max_cap_increase = 0.05;
+        ACTUAL_CAP_PRICE = 10;
         /*Specific skills are limiting factor*/
         if(MEAN_SPECIFIC_SKILLS < TECHNOLOGY)
         {
     
             temp_capital_demand = PLANNED_PRODUCTION_QUANTITY * 
-            (pow((BETA*MEAN_WAGE*(1.04))/((AVG_LOAN_RATE/12)*ALPHA),ALPHA)/
+            (pow((BETA*MEAN_WAGE*(1.04))/((ACTUAL_CAP_PRICE*AVG_LOAN_RATE/12)*ALPHA),ALPHA)/
             MEAN_SPECIFIC_SKILLS);
             
             /*Smoothing of capital good demand*/
-            if(temp_capital_demand > TOTAL_UNITS_CAPITAL_STOCK + (INV_INERTIA-1)*TOTAL_CAPITAL_DEPRECIATION_UNITS)
-            {
-                NEEDED_CAPITAL_STOCK = TOTAL_UNITS_CAPITAL_STOCK + (INV_INERTIA-1)*TOTAL_CAPITAL_DEPRECIATION_UNITS;
-            }else
-            {
-                NEEDED_CAPITAL_STOCK = temp_capital_demand;
-            }
+            
+            if (temp_capital_demand < TOTAL_UNITS_CAPITAL_STOCK * (1 - DEPRECIATION_RATE))
+               { NEEDED_CAPITAL_STOCK = TOTAL_UNITS_CAPITAL_STOCK * (1 - DEPRECIATION_RATE);}
+               /* This is the minimum capital that can be used without investments and should be used because its cost is always paid*/
+               else if (temp_capital_demand > (1 + max_cap_increase)*TOTAL_UNITS_CAPITAL_STOCK)
+               {NEEDED_CAPITAL_STOCK = (1 + max_cap_increase)*TOTAL_UNITS_CAPITAL_STOCK;}
+               /*Rule setting the maximum capital increase, given the supposed technological constraint*/
+               else
+               {NEEDED_CAPITAL_STOCK = temp_capital_demand;}
+    
             
                 
             
@@ -404,17 +410,18 @@ int Firm_calc_input_demands()
         else
         {
             temp_capital_demand = PLANNED_PRODUCTION_QUANTITY * 
-            (pow((BETA*MEAN_WAGE*(1.04))/((AVG_LOAN_RATE/12)*ALPHA),ALPHA)/
+            (pow((BETA*MEAN_WAGE*(1.04))/((ACTUAL_CAP_PRICE*AVG_LOAN_RATE/12)*ALPHA),ALPHA)/
             TECHNOLOGY);
             
                 /*Smoothing of capital good demand*/
-            if(temp_capital_demand > TOTAL_UNITS_CAPITAL_STOCK + (INV_INERTIA-1)*TOTAL_CAPITAL_DEPRECIATION_UNITS)
-            {
-                NEEDED_CAPITAL_STOCK = TOTAL_UNITS_CAPITAL_STOCK + (INV_INERTIA-1)*TOTAL_CAPITAL_DEPRECIATION_UNITS;
-            }else
-            {
-                NEEDED_CAPITAL_STOCK = temp_capital_demand;
-            }
+            if (temp_capital_demand < TOTAL_UNITS_CAPITAL_STOCK * (1 - DEPRECIATION_RATE))
+               { NEEDED_CAPITAL_STOCK = TOTAL_UNITS_CAPITAL_STOCK * (1 - DEPRECIATION_RATE);}
+               /* This is the minimum capital that can be used without investments and should be used because its cost is always paid*/
+               else if (temp_capital_demand > (1 + max_cap_increase)*TOTAL_UNITS_CAPITAL_STOCK)
+               {NEEDED_CAPITAL_STOCK = (1 + max_cap_increase)*TOTAL_UNITS_CAPITAL_STOCK;}
+               /*Rule setting the maximum capital increase, given the supposed technological constraint*/
+               else
+               {NEEDED_CAPITAL_STOCK = temp_capital_demand;}
             
             
         
@@ -436,7 +443,7 @@ int Firm_calc_input_demands()
             
         
         
-            
+        total_units_capital_stock_old = TOTAL_UNITS_CAPITAL_STOCK;   
         TOTAL_CAPITAL_DEPRECIATION_UNITS = TOTAL_UNITS_CAPITAL_STOCK*DEPRECIATION_RATE;
         TOTAL_CAPITAL_DEPRECIATION_VALUE= TOTAL_VALUE_CAPITAL_STOCK*DEPRECIATION_RATE;
         TOTAL_VALUE_CAPITAL_STOCK *=(1-DEPRECIATION_RATE);
@@ -471,7 +478,8 @@ int Firm_calc_input_demands()
     
         DEMAND_CAPITAL_STOCK = NEEDED_CAPITAL_STOCK - TOTAL_UNITS_CAPITAL_STOCK;
         if(DEMAND_CAPITAL_STOCK<0)
-            DEMAND_CAPITAL_STOCK=0; 
+        {printf("\n Firm_calc_input_demands ID: %d DEMAND_CAPITAL_STOCK = %f",ID, DEMAND_CAPITAL_STOCK);
+            DEMAND_CAPITAL_STOCK=0;} 
         /*This computes the financial needings for production*/
 
         
@@ -496,7 +504,7 @@ int Firm_calc_input_demands()
             filename[0]=0;
             strcpy(filename, "its/Firm_calc_input_demands.txt");      
             file1 = fopen(filename,"a");
-            fprintf(file1,"\n %d %d %d %f",DAY,ID,EMPLOYEES_NEEDED,NEEDED_CAPITAL_STOCK);
+            fprintf(file1,"\n %d %d %d %f %f %f %f %f %f",DAY,ID,EMPLOYEES_NEEDED,temp_labour_demand,NEEDED_CAPITAL_STOCK,temp_capital_demand,DEMAND_CAPITAL_STOCK,total_units_capital_stock_old,TOTAL_UNITS_CAPITAL_STOCK);
             fclose(file1);
             free(filename);
         }  
