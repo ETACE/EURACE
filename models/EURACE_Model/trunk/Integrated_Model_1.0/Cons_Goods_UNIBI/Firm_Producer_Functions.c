@@ -11,104 +11,6 @@
  * This function is iterated multiple times by the function Firm_calc_production_quantity_2
  * in order to find the maximal possible production_quantity that can be financed.
  */
-int Firm_calc_input_demands_2()
-{
-
- 
-    double temp_labour_demand;
-    double temp_capital_demand;
-    
-
-        
-        
-        /*Calculate labor demand and needed capital goods.
-        Complementarity between specific skills and productivity*/
-        
-        
-        /*Specific skills are limiting factor*/
-        if(MEAN_SPECIFIC_SKILLS < TECHNOLOGY)
-        {
-    
-            temp_capital_demand = PLANNED_PRODUCTION_QUANTITY * 
-            (pow((BETA*MEAN_WAGE*(1.04))/((ACTUAL_CAP_PRICE/CONST_INSTALLMENT_PERIODS)*ALPHA),ALPHA)/
-            MEAN_SPECIFIC_SKILLS);
-            
-            /*Smoothing of capital good demand*/
-            if(temp_capital_demand > TOTAL_UNITS_CAPITAL_STOCK + (INV_INERTIA-1)*TOTAL_CAPITAL_DEPRECIATION_UNITS)
-            {
-                NEEDED_CAPITAL_STOCK = TOTAL_UNITS_CAPITAL_STOCK + (INV_INERTIA-1)*TOTAL_CAPITAL_DEPRECIATION_UNITS;
-            }else
-            {
-                NEEDED_CAPITAL_STOCK = temp_capital_demand;
-            }
-            
-            
-                
-        temp_labour_demand = pow(PLANNED_PRODUCTION_QUANTITY /
-        (pow(NEEDED_CAPITAL_STOCK,BETA)*MEAN_SPECIFIC_SKILLS),1/ALPHA);
- 
-        }
-        /*Technological productivity is limiting factor*/
-        else
-        {
-            temp_capital_demand = PLANNED_PRODUCTION_QUANTITY * 
-            (pow((BETA*MEAN_WAGE*(1.04))/   ((ACTUAL_CAP_PRICE/CONST_INSTALLMENT_PERIODS)*ALPHA),ALPHA)/
-            TECHNOLOGY);
-
-            /*Smoothing of capital good demand*/
-            if(temp_capital_demand > TOTAL_UNITS_CAPITAL_STOCK + (INV_INERTIA-1)*TOTAL_CAPITAL_DEPRECIATION_UNITS)
-            {
-                NEEDED_CAPITAL_STOCK = TOTAL_UNITS_CAPITAL_STOCK + (INV_INERTIA-1)*TOTAL_CAPITAL_DEPRECIATION_UNITS;
-            }else
-            {
-                NEEDED_CAPITAL_STOCK = temp_capital_demand;
-            }
-        
-
-        temp_labour_demand = pow(PLANNED_PRODUCTION_QUANTITY /
-        (pow(NEEDED_CAPITAL_STOCK,BETA)*TECHNOLOGY),1/ALPHA);
-        }
-   
-        
-
-        if(NEEDED_CAPITAL_STOCK > TOTAL_UNITS_CAPITAL_STOCK)
-        {       
-            if(temp_labour_demand < 1 && temp_labour_demand > 0)
-            {
-                EMPLOYEES_NEEDED = 1;
-            }else
-            {
-                EMPLOYEES_NEEDED = (int) temp_labour_demand;
-            }
-        }
-        else/*... if capital stock is higher than the needed one..*/
-        {
-            /*Recalculation of the labor demand*/
-            if(MEAN_SPECIFIC_SKILLS > TECHNOLOGY)
-            {
-                EMPLOYEES_NEEDED = (int) (pow(PLANNED_PRODUCTION_QUANTITY/
-                (TECHNOLOGY*pow(TOTAL_UNITS_CAPITAL_STOCK,BETA)),1/ALPHA));
-            }
-            else
-            {
-                EMPLOYEES_NEEDED = (int) (pow(PLANNED_PRODUCTION_QUANTITY/
-                (MEAN_SPECIFIC_SKILLS*pow(TOTAL_UNITS_CAPITAL_STOCK,BETA)),1/ALPHA));
-            }
-        }
-        /*This calculates the needed capital investments*/
-        DEMAND_CAPITAL_STOCK=  NEEDED_CAPITAL_STOCK - TOTAL_UNITS_CAPITAL_STOCK;
-        if(DEMAND_CAPITAL_STOCK< 0)
-            DEMAND_CAPITAL_STOCK=0;     
-        
-        /*This computes the financial needings for production*/
-        PLANNED_PRODUCTION_COSTS = EMPLOYEES_NEEDED*MEAN_WAGE*(1.04) + DEMAND_CAPITAL_STOCK*ACTUAL_CAP_PRICE;
-    
-    #ifdef _DEBUG_MODE    
-  
-    #endif
-    
-    return 0;
-}   
 
 
 /************************************ Firm agent functions ************************************/
@@ -378,13 +280,13 @@ int Firm_calc_input_demands()
         }
         Firm_calc_avg_loan_rate();
         max_cap_increase = 0.05;
-        ACTUAL_CAP_PRICE = 10;
+        
         /*Specific skills are limiting factor*/
         if(MEAN_SPECIFIC_SKILLS < TECHNOLOGY)
         {
     
             temp_capital_demand = PLANNED_PRODUCTION_QUANTITY * 
-            (pow((BETA*MEAN_WAGE*(1.04))/((ACTUAL_CAP_PRICE*AVG_LOAN_RATE/12)*ALPHA),ALPHA)/
+            (pow((BETA*MEAN_WAGE)/((ACTUAL_CAP_PRICE*AVG_LOAN_RATE/12)*ALPHA),ALPHA)/
             MEAN_SPECIFIC_SKILLS);
             
             /*Smoothing of capital good demand*/
@@ -397,9 +299,6 @@ int Firm_calc_input_demands()
                /*Rule setting the maximum capital increase, given the supposed technological constraint*/
                else
                {NEEDED_CAPITAL_STOCK = temp_capital_demand;}
-    
-            
-                
             
                 
         temp_labour_demand = pow(PLANNED_PRODUCTION_QUANTITY /
@@ -410,7 +309,7 @@ int Firm_calc_input_demands()
         else
         {
             temp_capital_demand = PLANNED_PRODUCTION_QUANTITY * 
-            (pow((BETA*MEAN_WAGE*(1.04))/((ACTUAL_CAP_PRICE*AVG_LOAN_RATE/12)*ALPHA),ALPHA)/
+            (pow((BETA*MEAN_WAGE)/((ACTUAL_CAP_PRICE*AVG_LOAN_RATE/12)*ALPHA),ALPHA)/
             TECHNOLOGY);
             
                 /*Smoothing of capital good demand*/
@@ -421,12 +320,7 @@ int Firm_calc_input_demands()
                {NEEDED_CAPITAL_STOCK = (1 + max_cap_increase)*TOTAL_UNITS_CAPITAL_STOCK;}
                /*Rule setting the maximum capital increase, given the supposed technological constraint*/
                else
-               {NEEDED_CAPITAL_STOCK = temp_capital_demand;}
-            
-            
-        
-                
-            
+               {NEEDED_CAPITAL_STOCK = temp_capital_demand;}            
             
         temp_labour_demand = pow(PLANNED_PRODUCTION_QUANTITY /
         (pow(NEEDED_CAPITAL_STOCK,BETA)*TECHNOLOGY),1/ALPHA);
@@ -435,14 +329,10 @@ int Firm_calc_input_demands()
         
         /*Compute new capital stock, in units and in value*/
         
-    
-    
         
         /*Depriciation of the old capital stock.
         If additional capital goods are needed...*/
-            
-        
-        
+                   
         total_units_capital_stock_old = TOTAL_UNITS_CAPITAL_STOCK;   
         TOTAL_CAPITAL_DEPRECIATION_UNITS = TOTAL_UNITS_CAPITAL_STOCK*DEPRECIATION_RATE;
         TOTAL_CAPITAL_DEPRECIATION_VALUE= TOTAL_VALUE_CAPITAL_STOCK*DEPRECIATION_RATE;
@@ -457,7 +347,7 @@ int Firm_calc_input_demands()
                 EMPLOYEES_NEEDED = 1;
             }else
             {
-                EMPLOYEES_NEEDED = (int) temp_labour_demand;
+                EMPLOYEES_NEEDED = (int) ceil(temp_labour_demand);
             }
         }
         else/*... if capital stock is higher than the needed one..*/
@@ -465,13 +355,13 @@ int Firm_calc_input_demands()
             /*Recalculation of the labor demand*/
             if(MEAN_SPECIFIC_SKILLS > TECHNOLOGY)
             {
-                EMPLOYEES_NEEDED = (int) (pow(PLANNED_PRODUCTION_QUANTITY/
-                (TECHNOLOGY*pow(TOTAL_UNITS_CAPITAL_STOCK,BETA)),1/ALPHA));
+                EMPLOYEES_NEEDED = (int) ceil((pow(PLANNED_PRODUCTION_QUANTITY/
+                (TECHNOLOGY*pow(TOTAL_UNITS_CAPITAL_STOCK,BETA)),1/ALPHA)));
             }
             else
             {
-                EMPLOYEES_NEEDED = (int) (pow(PLANNED_PRODUCTION_QUANTITY/
-                (MEAN_SPECIFIC_SKILLS*pow(TOTAL_UNITS_CAPITAL_STOCK,BETA)),1/ALPHA));
+                EMPLOYEES_NEEDED = (int) ceil((pow(PLANNED_PRODUCTION_QUANTITY/
+                (MEAN_SPECIFIC_SKILLS*pow(TOTAL_UNITS_CAPITAL_STOCK,BETA)),1/ALPHA)));
             }
         }
         /*This calculates the needed capital investments*/
@@ -485,7 +375,7 @@ int Firm_calc_input_demands()
         
         PLANNED_VALUE_CAPITAL_STOCK = TOTAL_UNITS_CAPITAL_STOCK /max(NEEDED_CAPITAL_STOCK,TOTAL_UNITS_CAPITAL_STOCK)*TOTAL_VALUE_CAPITAL_STOCK + DEMAND_CAPITAL_STOCK/max(NEEDED_CAPITAL_STOCK,TOTAL_UNITS_CAPITAL_STOCK)*ACTUAL_CAP_PRICE;
         
-        PLANNED_PRODUCTION_COSTS = EMPLOYEES_NEEDED*(1.04)*MEAN_WAGE + DEMAND_CAPITAL_STOCK*ACTUAL_CAP_PRICE;
+        PLANNED_PRODUCTION_COSTS = EMPLOYEES_NEEDED*MEAN_WAGE + DEMAND_CAPITAL_STOCK*ACTUAL_CAP_PRICE;
 
         #ifdef _DEBUG_MODE
         if (PRINT_DEBUG_EXP1 || PRINT_DEBUG)
