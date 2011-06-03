@@ -104,7 +104,7 @@ int Firm_calc_input_demands_2()
     
         DEMAND_CAPITAL_STOCK = NEEDED_CAPITAL_STOCK - TOTAL_UNITS_CAPITAL_STOCK;
         if(DEMAND_CAPITAL_STOCK<0)
-        {printf("\n Firm_calc_input_demands ID: %d DEMAND_CAPITAL_STOCK = %f",ID, DEMAND_CAPITAL_STOCK);
+        {//printf("\n Firm_calc_input_demands ID: %d DEMAND_CAPITAL_STOCK = %f",ID, DEMAND_CAPITAL_STOCK);
             DEMAND_CAPITAL_STOCK=0;} 
         
         /*This computes the financial needings for production*/
@@ -471,7 +471,7 @@ int Firm_calc_input_demands()
     
         DEMAND_CAPITAL_STOCK = NEEDED_CAPITAL_STOCK - TOTAL_UNITS_CAPITAL_STOCK;
         if(DEMAND_CAPITAL_STOCK<0)
-        {printf("\n Firm_calc_input_demands ID: %d DEMAND_CAPITAL_STOCK = %f",ID, DEMAND_CAPITAL_STOCK);
+        {//printf("\n Firm_calc_input_demands ID: %d DEMAND_CAPITAL_STOCK = %f",ID, DEMAND_CAPITAL_STOCK);
             DEMAND_CAPITAL_STOCK=0;} 
         /*This computes the financial needings for production*/
 
@@ -719,7 +719,7 @@ int Firm_calc_pay_costs()
 {
      FILE *file1;
      char *filename;    
-    int i;
+   // int i;
     
         /*Pay capital costs*/
 
@@ -741,7 +741,7 @@ int Firm_calc_pay_costs()
         if(PRODUCTION_QUANTITY!=0 )
         {
             
-            CALC_CAPITAL_COSTS = 0;
+        /*    CALC_CAPITAL_COSTS = 0;
         for( i = 0; i<CAPITAL_FINANCING.size;i++) 
             {
                 if(CAPITAL_FINANCING.array[i].nr_periods_before_repayment==0)
@@ -755,8 +755,9 @@ int Firm_calc_pay_costs()
                 }
                 
 
-            } 
-            
+            } */
+
+            CALC_CAPITAL_COSTS = DEPRECIATION_RATE*ACTUAL_CAP_PRICE*TOTAL_UNITS_CAPITAL_STOCK;
         
             UNIT_COSTS=(LABOUR_COSTS + CALC_CAPITAL_COSTS + TOTAL_INTEREST_PAYMENT) / PRODUCTION_QUANTITY;
     
