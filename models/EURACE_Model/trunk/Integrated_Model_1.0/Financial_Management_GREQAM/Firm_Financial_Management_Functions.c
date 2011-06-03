@@ -95,6 +95,7 @@ int Firm_compute_income_statement()
 
     // compute net earnings
     EARNINGS = CUM_REVENUE - TOTAL_INTEREST_PAYMENT - CALC_PRODUCTION_COSTS;
+    EBIT = CUM_REVENUE - CALC_PRODUCTION_COSTS;
 
     if (EARNINGS>0.0)
         TAX_PAYMENT = TAX_RATE_CORPORATE * EARNINGS;
@@ -129,7 +130,7 @@ int Firm_compute_income_statement()
         strcpy(filename, "its/firms_income_statement.txt");      
         file1 = fopen(filename,"a");
         fprintf(file1,"\n %d %d %f %f %f",DAY,ID,CUM_REVENUE,CALC_PRODUCTION_COSTS,TOTAL_INTEREST_PAYMENT);
-        fprintf(file1," %f %f %f %d",EARNINGS,TAX_PAYMENT,NET_EARNINGS,REGION_ID);
+        fprintf(file1," %f %f %f %f %d",EARNINGS,TAX_PAYMENT,NET_EARNINGS,EBIT,REGION_ID);
         fclose(file1);
         free(filename);
    // }    
