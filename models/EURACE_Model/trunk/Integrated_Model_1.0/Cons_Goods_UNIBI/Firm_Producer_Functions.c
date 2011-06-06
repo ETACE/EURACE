@@ -719,6 +719,8 @@ int Firm_calc_pay_costs()
 {
      FILE *file1;
      char *filename;    
+     double unit_costs_old;
+     double unit_costs_new;
    // int i;
     
         /*Pay capital costs*/
@@ -759,8 +761,9 @@ int Firm_calc_pay_costs()
 
             CALC_CAPITAL_COSTS = DEPRECIATION_RATE*ACTUAL_CAP_PRICE*TOTAL_UNITS_CAPITAL_STOCK;
         
-            UNIT_COSTS=(LABOUR_COSTS + CALC_CAPITAL_COSTS + TOTAL_INTEREST_PAYMENT) / PRODUCTION_QUANTITY;
-    
+            unit_costs_old = UNIT_COSTS;
+            unit_costs_new = (LABOUR_COSTS + CALC_CAPITAL_COSTS + TOTAL_INTEREST_PAYMENT) / PRODUCTION_QUANTITY;
+            UNIT_COSTS = (unit_costs_old*TOTAL_UNITS_LOCAL_INVENTORY + unit_costs_new*PRODUCTION_QUANTITY)/(TOTAL_UNITS_LOCAL_INVENTORY+PRODUCTION_QUANTITY);                         
             
             PRICE_LAST_MONTH = PRICE;
             PRICE = UNIT_COSTS*(1 + MARK_UP);
@@ -773,6 +776,7 @@ int Firm_calc_pay_costs()
              file1 = fopen(filename,"a");
              fprintf(file1,"\n %d %d %f %f %f",DAY,ID,LABOUR_COSTS,CALC_CAPITAL_COSTS,TOTAL_INTEREST_PAYMENT);
              fprintf(file1," %f %f %f",PRODUCTION_QUANTITY,UNIT_COSTS,PRICE);
+             fprintf(file1," %f %f %d",unit_costs_old,unit_costs_new,REGION_ID);
              fclose(file1);
              free(filename);
 
