@@ -400,6 +400,11 @@
     </variable>
     <variable>
      <type>double</type>
+     <name>price_index</name>
+     <description>price index</description>
+    </variable>
+    <variable>
+     <type>double</type>
      <name>mean_wage</name>
      <description>Average wage paid by a firm</description>
     </variable>
@@ -477,6 +482,11 @@
      <type>sales_statistics_array</type>
      <name>malls_sales_statistics</name>
      <description>Sales of the last ten months</description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>mall_sales_total</name>
+     <description>total sales of the firm</description>
     </variable>
     <variable>
      <type>double</type>

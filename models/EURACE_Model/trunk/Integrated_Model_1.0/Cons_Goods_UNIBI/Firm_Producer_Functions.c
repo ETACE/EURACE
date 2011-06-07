@@ -154,7 +154,6 @@ int Firm_calc_production_quantity()
     int i,j,k;
     FILE *file1;
      char *filename;    
-    double  mall_sales_total = 0.0;
     double stock_crit_tot = 0.0;
     double stock_corrent_tot = 0.0;
     
@@ -164,7 +163,8 @@ int Firm_calc_production_quantity()
 
     //Reset the counters at the start of month
     CUM_TOTAL_SOLD_QUANTITY = 0.0;
-    CUM_REVENUE = 0.0;  
+    CUM_REVENUE = 0.0; 
+    MALL_SALES_TOTAL = 0.0; 
    
     //Delete the LINEAR_REGRESSION_ESTIMATORS array
     
@@ -188,7 +188,7 @@ int Firm_calc_production_quantity()
                          
     	    	}
     	    	
-  		mall_sales_total += MALLS_SALES_STATISTICS.array[i].sales.array[FIRM_PLANNING_HORIZON-1].sales;;    	
+  		MALL_SALES_TOTAL += MALLS_SALES_STATISTICS.array[i].sales.array[FIRM_PLANNING_HORIZON-1].sales;;    	
     
     	regressor = (FIRM_PLANNING_HORIZON * sum_1 - 0.5*FIRM_PLANNING_HORIZON*(FIRM_PLANNING_HORIZON+1)*sum_2)/
         		(1/6.0*pow(FIRM_PLANNING_HORIZON,2)*(FIRM_PLANNING_HORIZON+1)*
@@ -305,7 +305,7 @@ int Firm_calc_production_quantity()
             filename[0]=0;
             strcpy(filename, "its/Firm_calc_production_quantity.txt");      
             file1 = fopen(filename,"a");
-            fprintf(file1,"\n %d %d %f %f %f",DAY,ID,mall_sales_total,stock_corrent_tot,stock_crit_tot);
+            fprintf(file1,"\n %d %d %f %f %f",DAY,ID,MALL_SALES_TOTAL,stock_corrent_tot,stock_crit_tot);
             fprintf(file1," %f %f",production_volume,mean_production_quantity);
             fprintf(file1," %f %d",PLANNED_PRODUCTION_QUANTITY,REGION_ID);
             fclose(file1);
@@ -765,8 +765,16 @@ int Firm_calc_pay_costs()
             unit_costs_new = (LABOUR_COSTS + CALC_CAPITAL_COSTS + TOTAL_INTEREST_PAYMENT) / PRODUCTION_QUANTITY;
             UNIT_COSTS = (unit_costs_old*TOTAL_UNITS_LOCAL_INVENTORY + unit_costs_new*PRODUCTION_QUANTITY)/(TOTAL_UNITS_LOCAL_INVENTORY+PRODUCTION_QUANTITY);                         
             
-            PRICE_LAST_MONTH = PRICE;
-            PRICE = UNIT_COSTS*(1 + MARK_UP);
+            if ((TOTAL_UNITS_LOCAL_INVENTORY > (2*MALL_SALES_TOTAL))&(PRICE > PRICE_INDEX))
+            PRICE = PRICE*(0.9);
+                   else if (UNIT_COSTS > PRICE_INDEX)
+                   PRICE = UNIT_COSTS;  /*0.001*(rand() % 10 + 1)*/
+                   else
+                   PRICE = UNIT_COSTS*(1 + MARK_UP);
+                   /*PRICE = (UNIT_COSTS + PRICE_INDEX)/2;*/
+            
+            /*PRICE_LAST_MONTH = PRICE;
+            PRICE = UNIT_COSTS*(1 + MARK_UP);*/
             
             if (PRINT_DEBUG_FILE_EXP1)
              {
@@ -775,7 +783,7 @@ int Firm_calc_pay_costs()
              strcpy(filename, "its/firms_pricing.txt");      
              file1 = fopen(filename,"a");
              fprintf(file1,"\n %d %d %f %f %f",DAY,ID,LABOUR_COSTS,CALC_CAPITAL_COSTS,TOTAL_INTEREST_PAYMENT);
-             fprintf(file1," %f %f %f",PRODUCTION_QUANTITY,UNIT_COSTS,PRICE);
+             fprintf(file1," %f %f %f %f %f",PRODUCTION_QUANTITY,UNIT_COSTS,PRICE,CPI,PRICE_INDEX);
              fprintf(file1," %f %f %d",unit_costs_old,unit_costs_new,REGION_ID);
              fclose(file1);
              free(filename);

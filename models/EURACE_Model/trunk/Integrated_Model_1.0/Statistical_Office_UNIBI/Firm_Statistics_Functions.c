@@ -263,6 +263,7 @@ int Firm_receive_data()
                     eurostat_send_specific_skills_message->productivity_progress);    
                 }
                 CPI = eurostat_send_specific_skills_message->cpi;
+                PRICE_INDEX = eurostat_send_specific_skills_message->price_index;
             }
         }
     FINISH_EUROSTAT_SEND_SPECIFIC_SKILLS_MESSAGE_LOOP
