@@ -87,7 +87,7 @@ int Eurostat_send_data()
         REGION_HOUSEHOLD_DATA.array[i].average_s_skill_4, 
         REGION_HOUSEHOLD_DATA.array[i].average_s_skill_5,
         REGION_FIRM_DATA.array[i].productivity_progress,
-        CPI);
+        CPI,PRICE_INDEX);
     }
     
     //Add message for each region

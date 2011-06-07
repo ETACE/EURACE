@@ -30,7 +30,7 @@
       <type>int</type>
       <name>no_households</name>
       <description></description>
-     </variable>
+     </variable>fir
      <variable>
       <type>int</type>
       <name>no_households_skill_1</name>
@@ -2965,6 +2965,11 @@
     <variable>
      <type>double</type>
      <name>cpi</name>
+     <description></description>
+    </variable>
+    <variable>
+     <type>double</type>
+     <name>price_index</name>
      <description></description>
     </variable>
    </variables>
