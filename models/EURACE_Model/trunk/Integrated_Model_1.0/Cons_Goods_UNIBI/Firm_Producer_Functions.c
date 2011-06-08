@@ -18,6 +18,8 @@
 
 int Firm_calc_input_demands_2()
 {
+         FILE *file1;
+     char *filename;  
  
     double temp_labour_demand;
     double temp_capital_demand;
@@ -113,7 +115,17 @@ int Firm_calc_input_demands_2()
     #ifdef _DEBUG_MODE    
   
     #endif
-    
+            if (PRINT_DEBUG_FILE_EXP1)
+        {                       
+            filename = malloc(40*sizeof(char));
+            filename[0]=0;
+            strcpy(filename, "its/Firm_calc_input_demands2.txt");      
+            file1 = fopen(filename,"a");
+            fprintf(file1,"\n %d %d %d %f %f %f %f",DAY,ID,EMPLOYEES_NEEDED,temp_labour_demand,NEEDED_CAPITAL_STOCK,temp_capital_demand,DEMAND_CAPITAL_STOCK);
+            fclose(file1);
+            free(filename);
+        } 
+          
     return 0;
 }   
 
@@ -765,13 +777,18 @@ int Firm_calc_pay_costs()
             unit_costs_new = (LABOUR_COSTS + CALC_CAPITAL_COSTS + TOTAL_INTEREST_PAYMENT) / PRODUCTION_QUANTITY;
             UNIT_COSTS = (unit_costs_old*TOTAL_UNITS_LOCAL_INVENTORY + unit_costs_new*PRODUCTION_QUANTITY)/(TOTAL_UNITS_LOCAL_INVENTORY+PRODUCTION_QUANTITY);                         
             
-            if ((TOTAL_UNITS_LOCAL_INVENTORY > (2*MALL_SALES_TOTAL))&(PRICE > PRICE_INDEX))
+            /*if ((TOTAL_UNITS_LOCAL_INVENTORY > (*MALL_SALES_TOTAL))&(PRICE > PRICE_INDEX))
             PRICE = PRICE*(0.9);
                    else if (UNIT_COSTS > PRICE_INDEX)
-                   PRICE = UNIT_COSTS;  /*0.001*(rand() % 10 + 1)*/
+                   PRICE = UNIT_COSTS;  
                    else
                    PRICE = UNIT_COSTS*(1 + MARK_UP);
-                   /*PRICE = (UNIT_COSTS + PRICE_INDEX)/2;*/
+                   PRICE = (UNIT_COSTS + PRICE_INDEX)/2;*/
+            
+            if (UNIT_COSTS > PRICE_INDEX)
+                   PRICE = UNIT_COSTS;
+               else
+                   PRICE = (UNIT_COSTS + PRICE_INDEX)/2;
             
             /*PRICE_LAST_MONTH = PRICE;
             PRICE = UNIT_COSTS*(1 + MARK_UP);*/
