@@ -276,7 +276,7 @@ int Firm_compute_balance_sheet()
     for (i=0; i<CURRENT_MALL_STOCKS.size; i++)
     {
         TOTAL_UNITS_LOCAL_INVENTORY += CURRENT_MALL_STOCKS.array[i].current_stock;
-        TOTAL_VALUE_LOCAL_INVENTORY += CPI*CURRENT_MALL_STOCKS.array[i].current_stock;
+        TOTAL_VALUE_LOCAL_INVENTORY += PRICE_INDEX*CURRENT_MALL_STOCKS.array[i].current_stock;
         //When malls have different current_price use this code:
         //TOTAL_VALUE_LOCAL_INVENTORY += CURRENT_MALL_STOCKS.array[i].current_price * CURRENT_MALL_STOCKS.array[i].current_stock;
     }
@@ -1128,7 +1128,8 @@ int Firm_reset_bankruptcy_flags()
         ACTIVE=1;
         BANKRUPTCY_INSOLVENCY_STATE  = 0;
         BANKRUPTCY_ILLIQUIDITY_STATE = 0;
-        DAY_OF_MONTH_TO_ACT = ((DAY+1)%MONTH);
+        DAY_OF_MONTH_TO_ACT = ((DAY+1)%DAYS_IN_MONTH);
+        LAST_DAY_OF_MONTH_TO_ACT = DAY%DAYS_IN_MONTH;
 		AGE =0;
 
 
