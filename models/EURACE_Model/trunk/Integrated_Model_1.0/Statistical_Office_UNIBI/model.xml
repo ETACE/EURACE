@@ -2993,6 +2993,11 @@
      <name>mean_wage</name>
      <description>Mean wage in the region.</description>
     </variable>
+    <variable>
+     <type>double</type>
+     <name>price_index</name>
+     <description>Consumption goods price index</description>
+    </variable>
    </variables>
   </message>
   <message>
