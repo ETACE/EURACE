@@ -60,7 +60,7 @@ int Eurostat_send_data_to_government()
         gdp = REGION_FIRM_DATA.array[i].gdp;
         
         printf("\n Region %d GDP=%2.2f\n", region, gdp);
-        add_data_for_government_message(region, gdp, AVERAGE_WAGE);
+        add_data_for_government_message(region, gdp, AVERAGE_WAGE,PRICE_INDEX);
     }
     
     return 0;
@@ -101,7 +101,7 @@ int Eurostat_send_data()
         //printf("\n SOLDSQ1=%2.2f\n", soldq);
         
         //printf("\n Region %d GDP=%2.2f\n", region, gdp);
-        add_data_for_government_message(region, gdp, AVERAGE_WAGE);
+        add_data_for_government_message(region, gdp, AVERAGE_WAGE, PRICE_INDEX);
        add_data_for_bankruptcy_firms_message(region, no_firms, soldq); //added to handle bankrupcy;
     }
 

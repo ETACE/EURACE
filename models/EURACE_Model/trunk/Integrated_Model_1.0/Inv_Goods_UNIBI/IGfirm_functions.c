@@ -30,10 +30,11 @@ int IGFirm_idle()
 int IGFirm_update_productivity_price()
 {
         int i;
-
-
-	
-	
+        double price_index_old;
+        double capital_goods_price_old;
+        
+        // FILE *file1;
+       //char *filename;
 	
      double prod_progress;
     
@@ -66,6 +67,39 @@ int IGFirm_update_productivity_price()
             remove_dt_scheme_innovation(&INNOVATION_SCHEME,0);
         }
     }
+
+   price_index_old = PRICE_INDEX;
+
+   START_EUROSTAT_SEND_SPECIFIC_SKILLS_MESSAGE_LOOP
+   if(DAY%20 == 1)
+            {
+              PRICE_INDEX = eurostat_send_specific_skills_message->price_index;
+            }
+   
+   FINISH_EUROSTAT_SEND_SPECIFIC_SKILLS_MESSAGE_LOOP
+   
+   capital_goods_price_old = CAPITAL_GOOD_PRICE;
+
+   CAPITAL_GOOD_PRICE = 1.005*CAPITAL_GOOD_PRICE;
+  /* if ((PRICE_INDEX>0.0)&&(price_index_old>0.0))
+   {
+    CAPITAL_GOOD_PRICE = (PRICE_INDEX/price_index_old)*CAPITAL_GOOD_PRICE;
+   }*/
+
+
+
+
+  /* if (PRINT_DEBUG_FILE_EXP1)
+        {                       
+            filename = malloc(40*sizeof(char));
+            filename[0]=0;
+            strcpy(filename, "its/IGFirm_update_productivity_price.txt");      
+            file1 = fopen(filename,"a");
+            fprintf(file1,"\n %d %d %f %f",DAY,ID, price_index_old,PRICE_INDEX);
+            fprintf(file1," %f %f",capital_goods_price_old,CAPITAL_GOOD_PRICE);
+            fclose(file1);
+            free(filename);
+        }         */
 
 
     return 0;
@@ -254,13 +288,14 @@ int IGFirm_dividend_payment()
             average_last_net_profits = 0.0;
     
         if (OUTSTANDING_SHARES > 0)
-        CURRENT_DIVIDEND_PER_SHARE = average_last_net_profits/ OUTSTANDING_SHARES;
+        CURRENT_DIVIDEND_PER_SHARE = 0.666*average_last_net_profits/ OUTSTANDING_SHARES;
+        
         else
             CURRENT_DIVIDEND_PER_SHARE = 0.0;
     
     //printf("\n IGFirm %d CURRENT_DIVIDEND_PER_SHARE %f %f\n",ID,CURRENT_DIVIDEND_PER_SHARE,OUTSTANDING_SHARES);
     
-    total_dividend_payment = average_last_net_profits;
+    total_dividend_payment = CURRENT_DIVIDEND_PER_SHARE*OUTSTANDING_SHARES;
     //printf("3: total_dividend_payment %f \n",total_dividend_payment);
         
         

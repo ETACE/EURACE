@@ -508,7 +508,7 @@ int Government_monthly_budget_accounting()
             fprintf(file1,"\n %d %d %f %f ",DAY,ID,MONTHLY_TAX_REVENUES,MONTHLY_BENEFIT_PAYMENT);
             fprintf(file1,"%f %f ",MONTHLY_BOND_INTEREST_PAYMENT,out);
             fprintf(file1,"%f %f ",MONTHLY_BUDGET_BALANCE,PAYMENT_ACCOUNT);
-            fprintf(file1,"%f %f %d",CUMULATED_DEFICIT,TOTAL_DEBT,REGION_ID);
+            fprintf(file1,"%f %f %f %d",CUMULATED_DEFICIT,TOTAL_DEBT,MONTHLY_TRANSFER_PAYMENT,REGION_ID);
             fclose(file1);
             free(filename);
         }
@@ -673,6 +673,7 @@ int Government_read_data_from_Eurostat()
                 MONTHLY_GDP += data_for_government_message->gdp;
             }
         }
+        HH_TRANSFER_PAYMENT = 0.5*data_for_government_message->price_index;
     FINISH_DATA_FOR_GOVERNMENT_MESSAGE_LOOP
     
     //Set country-wide mean wage as avg of region's mean wages

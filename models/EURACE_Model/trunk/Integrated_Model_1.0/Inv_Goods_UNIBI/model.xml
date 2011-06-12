@@ -82,6 +82,11 @@
     </variable>
     <variable>
      <type>double</type>
+     <name>price_index</name>
+     <description>price index of consumption goods</description>
+    </variable>
+    <variable>
+     <type>double</type>
      <name>revenue_per_day</name>
      <description>Revenue of the current  day</description>
     </variable>
@@ -168,7 +173,20 @@
        <phase>a.day_of_month_to_act</phase>
       </time>
      </condition>
-     <inputs/>
+          <inputs>
+      <input>
+       <messageName>eurostat_send_specific_skills</messageName>
+       <filter>
+        <lhs>
+         <value>a.region_id</value>
+        </lhs>
+        <op>EQ</op>
+        <rhs>
+         <value>m.region_id</value>
+        </rhs>
+       </filter>
+      </input>
+     </inputs>
      <outputs/>
     </function>
     <function>
