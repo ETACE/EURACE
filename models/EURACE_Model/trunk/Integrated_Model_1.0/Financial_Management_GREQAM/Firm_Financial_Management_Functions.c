@@ -40,7 +40,7 @@ int Firm_compute_financial_payments()
         //step 1: compute total interest payments
         TOTAL_INTEREST_PAYMENT += (LOANS.array[i].interest_rate/12.0) * LOANS.array[i].loan_value;
         
-        if (DAY>2556)
+   /*     if (DAY>2556)
         {
         filename = malloc(40*sizeof(char));
         filename[0]=0;
@@ -50,7 +50,7 @@ int Firm_compute_financial_payments()
         fprintf(file1," %f %f",LOANS.array[i].interest_rate,LOANS.array[i].installment_amount);
         fclose(file1);
         free(filename);
-        }
+        }  */
                 
         //step 2: compute total debt installment payments
         TOTAL_DEBT_INSTALLMENT_PAYMENT += LOANS.array[i].installment_amount;

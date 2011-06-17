@@ -138,10 +138,10 @@ int Household_UNEMPLOYED_read_job_vacancies_and_send_applications()
     int i=0;
     int j=0;
     double wage_offer=0.0;
-    char * filename;
-    FILE * file1;
+ //   char * filename;
+ //   FILE * file1;
     
-    if (DAY>20)
+  /*  if (DAY>20)
     {
     if (PRINT_DEBUG_FILE_EXP1)
     {                       
@@ -153,7 +153,7 @@ int Household_UNEMPLOYED_read_job_vacancies_and_send_applications()
         fclose(file1);
         free(filename);
     }
-    }
+    }*/
 
     
     
