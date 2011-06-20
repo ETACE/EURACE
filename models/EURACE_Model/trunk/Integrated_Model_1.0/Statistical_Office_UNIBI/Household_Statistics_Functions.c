@@ -65,6 +65,7 @@ int Household_initialization()
  */
 int Household_read_policy_announcements()
 {
+   
     /*Read tax announcement*/
     /*Read unemployment benefit announcement*/
     /*Read transfer announcement*/
@@ -79,6 +80,8 @@ int Household_read_policy_announcements()
         UNEMPLOYMENT_BENEFIT_PCT = policy_announcement_message->unemployment_benefit_pct;
         TRANSFER_PAYMENT = policy_announcement_message->hh_transfer_payment;
         SUBSIDY_PCT = policy_announcement_message->hh_subsidy_pct;
+        
+        
     }
     FINISH_POLICY_ANNOUNCEMENT_MESSAGE_LOOP
 
@@ -91,6 +94,9 @@ int Household_read_policy_announcements()
         getchar();
     }
     #endif
+    
+   
+    
     
     return 0;
 }

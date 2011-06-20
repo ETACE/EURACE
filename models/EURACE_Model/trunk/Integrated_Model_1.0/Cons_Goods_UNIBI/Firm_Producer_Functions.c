@@ -786,13 +786,13 @@ int Firm_calc_pay_costs()
                    PRICE = UNIT_COSTS*(1 + MARK_UP);
                    PRICE = (UNIT_COSTS + PRICE_INDEX)/2;*/
             
-            if (UNIT_COSTS > PRICE_INDEX)
+           /* if (UNIT_COSTS > PRICE_INDEX)
                    PRICE = UNIT_COSTS;
                else
-                   PRICE = (UNIT_COSTS + PRICE_INDEX)/2;
+                   PRICE = (UNIT_COSTS + PRICE_INDEX)/2;*/
             
-            /*PRICE_LAST_MONTH = PRICE;
-            PRICE = UNIT_COSTS*(1 + MARK_UP);*/
+          
+            PRICE = UNIT_COSTS*(1 + MARK_UP);
             
             if (PRINT_DEBUG_FILE_EXP1)
              {
@@ -801,7 +801,7 @@ int Firm_calc_pay_costs()
              strcpy(filename, "its/firms_pricing.txt");      
              file1 = fopen(filename,"a");
              fprintf(file1,"\n %d %d %f %f %f",DAY,ID,LABOUR_COSTS,CALC_CAPITAL_COSTS,TOTAL_INTEREST_PAYMENT);
-             fprintf(file1," %f %f %f %f %f",PRODUCTION_QUANTITY,UNIT_COSTS,PRICE,CPI,PRICE_INDEX);
+             fprintf(file1," %f %f %f %f %f %f",TOTAL_UNITS_LOCAL_INVENTORY,PRODUCTION_QUANTITY,UNIT_COSTS,PRICE,CPI,PRICE_INDEX);
              fprintf(file1," %f %f %d",unit_costs_old,unit_costs_new,REGION_ID);
              fclose(file1);
              free(filename);

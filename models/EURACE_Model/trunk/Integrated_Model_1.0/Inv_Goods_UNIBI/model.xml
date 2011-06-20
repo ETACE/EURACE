@@ -85,6 +85,11 @@
      <name>price_index</name>
      <description>price index of consumption goods</description>
     </variable>
+   <variable>
+     <type>double</type>
+     <name>revenues</name>
+     <description>Revenue of the current  month</description>
+    </variable>
     <variable>
      <type>double</type>
      <name>revenue_per_day</name>

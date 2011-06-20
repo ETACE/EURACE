@@ -47,13 +47,13 @@ int Government_initialization()
  */
 int Government_send_policy_announcements()
 {   
-    FILE *file1=NULL;
-    char *filename=NULL;
+    //FILE *file1=NULL;
+    //char *filename=NULL;
          
     HH_SUBSIDY_PCT=0.0;
     FIRM_SUBSIDY_PCT=0.0;
     UNEMPLOYMENT_BENEFIT_PCT=GOV_POLICY_UNEMPLOYMENT_BENEFIT_PCT;
-
+    HH_TRANSFER_PAYMENT = 0.0;
 
     if(POLICY_EXP_STABILIZATION_SUBSIDY)
     {
@@ -78,16 +78,6 @@ int Government_send_policy_announcements()
         }
        
         // #ifdef _DEBUG_MODE
-        if (PRINT_DEBUG_FILE_EXP2)
-        {
-            filename = malloc(40*sizeof(char));
-            filename[0]=0;
-            strcpy(filename, "Government.txt"); 
-            file1 = fopen(filename,"a");
-            fprintf(file1,"%f\n",HH_SUBSIDY_PCT);
-            fclose(file1);
-            free(filename);
-        }
         // #endif 
 
         #ifdef _DEBUG_MODE
@@ -165,19 +155,7 @@ int Government_send_policy_announcements()
      }
 
 /*
-    #ifdef _DEBUG_MODE
-     if (PRINT_DEBUG_FILE_EXP1)
-        {
-            filename = malloc(40*sizeof(char));
-            filename[0]=0;
-            strcpy(filename, "its/Government_policies.txt"); 
-            file1 = fopen(filename,"a");
-            fprintf(file1,"\n %d %d %f %f %f %d",DAY,ID,TAX_RATE_HH_LABOUR,TAX_RATE_CORPORATE,TAX_RATE_HH_CAPITAL,REGION_ID);
-            fclose(file1);
-            free(filename);
-        }
-    #endif
-    
+      
     #ifdef _DEBUG_MODE
     if (PRINT_DEBUG_GOV)
     { 
@@ -673,7 +651,7 @@ int Government_read_data_from_Eurostat()
                 MONTHLY_GDP += data_for_government_message->gdp;
             }
         }
-        HH_TRANSFER_PAYMENT = 0.5*data_for_government_message->price_index;
+     
     FINISH_DATA_FOR_GOVERNMENT_MESSAGE_LOOP
     
     //Set country-wide mean wage as avg of region's mean wages
