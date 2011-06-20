@@ -179,7 +179,7 @@ int Firm_compute_dividends()
     strcpy(filename, "its/firms_dividends_earnings.txt");      
     file1 = fopen(filename,"a");
     fprintf(file1,"\n %d %d %f %f",DAY,ID,PREVIOUS_NET_EARNINGS,NET_EARNINGS);
-    fprintf(file1," %f %f",PREVIOUS_TOTAL_DIVIDEND_PAYMENT,TOTAL_DIVIDEND_PAYMENT);
+    fprintf(file1," %f %f %d",PREVIOUS_TOTAL_DIVIDEND_PAYMENT,TOTAL_DIVIDEND_PAYMENT,REGION_ID);
     fclose(file1);
     free(filename); 
 

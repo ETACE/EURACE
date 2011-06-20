@@ -687,9 +687,25 @@ int Household_send_subsidy_notification()
  */
 int Household_send_transfer_notification()
 {
+  //  FILE *file1=NULL;
+  //  char *filename=NULL;
     /*Add transfer message */
+    double payment_account_old;
+    
+    payment_account_old = PAYMENT_ACCOUNT;
+    
     add_hh_transfer_notification_message(GOV_ID);
     PAYMENT_ACCOUNT += TRANSFER_PAYMENT;
+    
+    
+  //  filename = malloc(40*sizeof(char));
+  //  filename[0]=0;
+  //  strcpy(filename, "its/households_transfer_not.txt");      
+  //  file1 = fopen(filename,"a");
+  //  fprintf(file1,"\n %d %d %f %f %f",DAY,ID,payment_account_old,TRANSFER_PAYMENT,PAYMENT_ACCOUNT);
+  //  fclose(file1);
+  //  free(filename);
+    
 
     return 0;
 }
@@ -750,7 +766,7 @@ int Household_send_tax_payment()
     PAYMENT_ACCOUNT -= restitution_payment + TAX_PAYMENT;
 
     /*Setting the counter of monthly dividends = 0*/
-    CUM_TOTAL_DIVIDENDS=0;
+  
     
   /*  if (PRINT_DEBUG_FILE_EXP1)
         {                       

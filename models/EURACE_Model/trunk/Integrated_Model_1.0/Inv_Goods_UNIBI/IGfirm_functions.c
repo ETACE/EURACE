@@ -110,16 +110,8 @@ int IGFirm_update_productivity_price()
 int IGFirm_send_quality_price_info()
 {
 	
-	//resetting the EARNINGS counter
-	
-	if(DAY%MONTH == (DAY_OF_MONTH_TO_ACT+1)%MONTH)
-	{
-		EARNINGS = 0.0;
-	}
-	
-	
     //In case we run the energy shock experiment: determine the CAPITAL_GOOD_PRICE
-    if (POLICY_EXP_ENERGY_SHOCK)
+/*    if (POLICY_EXP_ENERGY_SHOCK)
     {
         //Case 1: shock occurs multiple times
         if (ENERGY_SHOCK_FREQUENCY!=0)
@@ -160,7 +152,7 @@ int IGFirm_send_quality_price_info()
                 CAPITAL_GOOD_PRICE = CAPITAL_GOOD_PRICE/(1+CONST_ENERGY_SHOCK_INTENSITY);
             }
         }
-    } 
+    } */
    
         add_productivity_message(ID,PRODUCTIVITY,CAPITAL_GOOD_PRICE);
 
@@ -195,15 +187,14 @@ int IGFirm_receive_payment()
     REVENUE_PER_DAY = 0;
 
     START_PAY_CAPITAL_GOODS_MESSAGE_LOOP
-
-        
         
         REVENUE_PER_DAY += pay_capital_goods_message->capital_bill;
-        
 
     FINISH_PAY_CAPITAL_GOODS_MESSAGE_LOOP
     
-    ENERGY_COSTS_PER_DAY = (ENERGY_PRICE_MARKUP/CAPITAL_GOOD_PRICE)*REVENUE_PER_DAY;
+    REVENUES += REVENUE_PER_DAY;
+    
+    ENERGY_COSTS_PER_DAY = ENERGY_PRICE_MARKUP*REVENUE_PER_DAY;
     
     EARNINGS_PER_DAY = REVENUE_PER_DAY - ENERGY_COSTS_PER_DAY;
     
@@ -247,6 +238,8 @@ int IGFirm_dividend_payment()
     //double weight = 0.2;
     double average_last_net_profits = 0.0;
     double total_dividend_payment;
+    FILE *file1;
+    char *filename;
     DIVIDEND_PAYMENT = 0.0;
 
     /*First: pay out complete NET_PROFIT as dividends*/
@@ -288,7 +281,7 @@ int IGFirm_dividend_payment()
             average_last_net_profits = 0.0;
     
         if (OUTSTANDING_SHARES > 0)
-        CURRENT_DIVIDEND_PER_SHARE = 0.666*average_last_net_profits/ OUTSTANDING_SHARES;
+        CURRENT_DIVIDEND_PER_SHARE = max(0,NET_PROFIT)/ OUTSTANDING_SHARES;
         
         else
             CURRENT_DIVIDEND_PER_SHARE = 0.0;
@@ -307,6 +300,19 @@ int IGFirm_dividend_payment()
     
     DIVIDEND_PAYMENT = total_dividend_payment;
     
+    
+      if (PRINT_DEBUG_FILE_EXP1)
+        {                       
+            filename = malloc(40*sizeof(char));
+            filename[0]=0;
+            strcpy(filename, "its/IGFirm_income_statement.txt");      
+            file1 = fopen(filename,"a");
+            fprintf(file1,"\n %d %d %f %f %f",DAY,ID, NET_PROFIT,DIVIDEND_PAYMENT,TAX_PAYMENT);
+            fclose(file1);
+            free(filename);
+        }           
+    
+    
     return 0;
 }
 
@@ -324,10 +330,19 @@ int IGFirm_send_payment_account_to_bank()
             filename[0]=0;
             strcpy(filename, "its/IGFirm_daily_balance_sheet.txt");      
             file1 = fopen(filename,"a");
-            fprintf(file1,"\n %d %d %f %f",DAY,ID, PAYMENT_ACCOUNT,CUM_ENERGY_COSTS);
-            fclose(file1);
+            fprintf(file1,"\n %d %d %f %f %f %f",DAY,ID, PAYMENT_ACCOUNT,REVENUES,EARNINGS,CUM_ENERGY_COSTS);
+           fclose(file1);
             free(filename);
         }           
+   
+  
+       
+   if ((DAY%MONTH)==DAY_OF_MONTH_TO_ACT)
+   {
+      REVENUES = 0.0;
+      EARNINGS = 0.0;
+    }
+ 
 
     return 0;
 }

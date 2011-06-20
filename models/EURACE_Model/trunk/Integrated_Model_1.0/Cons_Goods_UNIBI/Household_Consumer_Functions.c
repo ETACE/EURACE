@@ -20,7 +20,7 @@
 int Household_determine_consumption_budget()
 {
 
-   // #ifdef _DEBUG_MODE    
+  
         char * filename="";
         FILE * file1=NULL;
         FILE * file2=NULL;
@@ -105,18 +105,9 @@ int Household_determine_consumption_budget()
             
         EXCESS_WEEKLY_BUDGET = -1;
 
-    #ifdef _DEBUG_MODE
-        if (PRINT_LOG)
-        {
-            //close the file pointer: FILE * file
-            fclose(file1);
-            fclose(file2);
-            free(filename);
-        }
-    #endif
-    
-     #ifdef _DEBUG_MODE                         
-   /* if (PRINT_DEBUG_FILE_EXP1)
+  if ((ID>21)&&(ID<=22))
+   {
+   if (PRINT_DEBUG_FILE_EXP2)
     {                       
         filename = malloc(40*sizeof(char));
         filename[0]=0;
@@ -125,13 +116,14 @@ int Household_determine_consumption_budget()
         fprintf(file1,"\n %d %d",DAY,ID);
         if (EMPLOYEE_FIRM_ID==-1) fprintf(file1," %d %f",EMPLOYEE_FIRM_ID,UNEMPLOYMENT_BENEFIT_PCT * LAST_LABOUR_INCOME);
          else fprintf(file1," %d %f",EMPLOYEE_FIRM_ID,WAGE);
-        fprintf(file1," %f %f %f %f",LAST_INCOME.array[3],MEAN_INCOME,PAYMENT_ACCOUNT,WEALTH);
+        fprintf(file1," %f %f",PAYMENT_ACCOUNT,WEALTH);
         fprintf(file1," %f %f %f",CUM_TOTAL_DIVIDENDS,MONTHLY_BOND_INTEREST_INCOME,CONSUMPTION_BUDGET);
         fclose(file1);
         free(filename);
-    }                */
-    #endif
-
+    }                
+}
+    
+    CUM_TOTAL_DIVIDENDS=0.0;
     
     return 0;   
 }
@@ -355,6 +347,25 @@ int Household_receive_goods_read_rationing()
         MONTHLY_CONSUMPTION_EXPENDITURE = 0.0;
     
     MONTHLY_CONSUMPTION_EXPENDITURE += EXPENDITURES;
+    
+    if ((ID>21)&&(ID<=22))
+   { 
+    if (PRINT_DEBUG_FILE_EXP2)
+    {                       
+       char * filename;
+       FILE * file1;
+       filename = malloc(40*sizeof(char));
+       filename[0]=0;
+       strcpy(filename, "its/households_receive_goods.txt");      
+       file1 = fopen(filename,"a");
+       fprintf(file1,"\n %d %d %f %f",DAY,ID,RECEIVED_QUANTITY[0].quantity,ORDER_QUANTITY[0].price);
+       fprintf(file1," %f %f %f",WEEKLY_BUDGET,EXPENDITURES,MONTHLY_CONSUMPTION_EXPENDITURE);
+       fclose(file1);
+       free(filename);
+    }              
+ } 
+    
+    
 
     return 0;
 }
@@ -498,6 +509,11 @@ int Household_receive_goods_read_rationing_2()
                 
                 RECEIVED_QUANTITY[1].firm_id = 
                 ORDER_QUANTITY[1].firm_id; 
+                
+                WEEKLY_BUDGET = WEEKLY_BUDGET - RECEIVED_QUANTITY[1].quantity *ORDER_QUANTITY[1].price;
+                EXPENDITURES += RECEIVED_QUANTITY[1].quantity * ORDER_QUANTITY[1].price;
+                
+                MONTHLY_CONSUMPTION_EXPENDITURE += RECEIVED_QUANTITY[1].quantity * ORDER_QUANTITY[1].price;
 
         FINISH_ACCEPTED_CONSUMPTION_2_MESSAGE_LOOP
     }
@@ -506,13 +522,26 @@ int Household_receive_goods_read_rationing_2()
         RECEIVED_QUANTITY[1].quantity=0.0;
         RECEIVED_QUANTITY[1].firm_id =0; 
     }
-
-    WEEKLY_BUDGET = WEEKLY_BUDGET - RECEIVED_QUANTITY[1].quantity 
-    *ORDER_QUANTITY[1].price;
+   
     
-    EXPENDITURES += RECEIVED_QUANTITY[1].quantity * ORDER_QUANTITY[1].price;
     
-    MONTHLY_CONSUMPTION_EXPENDITURE += EXPENDITURES;
+   if ((ID>21)&&(ID<=22))
+   { 
+    if (PRINT_DEBUG_FILE_EXP2)
+    {                       
+       char * filename;
+       FILE * file1;
+       filename = malloc(40*sizeof(char));
+       filename[0]=0;
+       strcpy(filename, "its/households_receive_goods2.txt");      
+       file1 = fopen(filename,"a");
+       fprintf(file1,"\n %d %d %f %f",DAY,ID,RECEIVED_QUANTITY[1].quantity,ORDER_QUANTITY[1].price);
+       fprintf(file1," %f %f %f",WEEKLY_BUDGET,EXPENDITURES,MONTHLY_CONSUMPTION_EXPENDITURE);
+      fclose(file1);
+       free(filename);
+    }              
+   } 
+    
 
     return 0;
 }
@@ -589,83 +618,40 @@ int Household_handle_leftover_budget()
 int Household_send_account_update()
 {
      // #ifdef _DEBUG_MODE  
- //  char * filename;
- //   FILE * file1;
-  //  Asset_array *assets;
-  //  Asset *asset;
-  //  int size;
- //   int i;
 
-   // int remainder; */
-      // #endif
-     
-        /*GENUA*/
-        add_bank_account_update_message(ID, BANK_ID, PAYMENT_ACCOUNT);
-    
-     #ifdef _DEBUG_MODE                         
-   /* if (PRINT_DEBUG_FILE_EXP1)
-    {                       
-        filename = malloc(40*sizeof(char));
-        filename[0]=0;
-        strcpy(filename, "its/households_daily_income_statement.txt");      
-        file1 = fopen(filename,"a");
-        fprintf(file1,"\n %d %d",DAY,ID);
-        
-        remainder = DAY%20;        
-        if (remainder==DAY_OF_MONTH_RECEIVE_INCOME)
-        {
-           // printf("\n day of month to receive income %f %f",WAGE,UNEMPLOYMENT_BENEFIT_PCT * LAST_LABOUR_INCOME);
-            if (EMPLOYEE_FIRM_ID==-1) fprintf(file1," %f",UNEMPLOYMENT_BENEFIT_PCT * LAST_LABOUR_INCOME);
-            else fprintf(file1," %f",WAGE);}
-        else  fprintf(file1," %f",0.0);
-        
-        
-        if (remainder==1)
-                fprintf(file1," %f",MONTHLY_BOND_INTEREST_INCOME);
-        else
-                fprintf(file1," %f",0.0);
-                
-        fprintf(file1," %f %f %f",RECEIVED_DIVIDEND,EXPENDITURES,PAYMENT_ACCOUNT);  
-        
-        if (remainder==DAY_OF_MONTH_RECEIVE_INCOME)
-                fprintf(file1," %f",TAX_PAYMENT);
-        else
-                fprintf(file1," %f",0.0);      
-        fclose(file1);
-        free(filename);
-       
-    }        */        
-       
-    
-     
-      #endif
-       EXPENDITURES = 0;
-    // assets =get_assetsowned();
-    // size = assets->size;
-    
-
- /*   if ((ID>20)&&(ID<=30))
+   if ((ID>21)&&(ID<=30))
     { 
-    if (PRINT_DEBUG_FILE_EXP1)
+    if (PRINT_DEBUG_FILE_EXP2)
     {                       
-        filename = malloc(40*sizeof(char));
-        filename[0]=0;
-        strcpy(filename, "its/households_portfolio.txt");      
-        file1 = fopen(filename,"a");
-        fprintf(file1,"\n %d %d",DAY,ID);
-         for(i=0;i<size;i++)
-         {
-          asset=elementAtCAsset(assets,i);
-          fprintf(file1," %d %d",asset->id,asset->quantity);
-          }
-        fclose(file1);
-        free(filename);
+       char * filename;
+       FILE * file1;
+       Asset_array *assets;
+       Asset *asset;
+       int size;
+       int i;
+       assets =get_assetsowned();
+       size = assets->size;                    
+       filename = malloc(40*sizeof(char));
+       filename[0]=0;
+       strcpy(filename, "its/households_portfolio.txt");      
+       file1 = fopen(filename,"a");
+       fprintf(file1,"\n %d %d",DAY,ID);
+       for(i=0;i<size;i++)
+        {
+         asset=elementAtCAsset(assets,i);
+         fprintf(file1," %d %d",asset->id,asset->quantity);
+        }
+       fclose(file1);
+       free(filename);
     }              
-   } */
+   } 
 
+
+   add_bank_account_update_message(ID, BANK_ID, PAYMENT_ACCOUNT);
+ 
+   EXPENDITURES = 0;
      
 //      printf("\n %d %d %d",ID,assets->size,assets->total_size);
-  
 
     
     return 0;
