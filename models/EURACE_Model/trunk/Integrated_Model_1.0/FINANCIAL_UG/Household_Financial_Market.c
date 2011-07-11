@@ -5,7 +5,10 @@
 //utility functions
 
 int Household_send_orders()
-{   Order_array *orders;
+{   
+    char * filename;
+    FILE * file1;
+    Order_array *orders;
     Order *ord;
     int i;
     Order_array *pending;
@@ -18,9 +21,26 @@ int Household_send_orders()
     assetWeights=get_assetWeights();
     assetUtilities=get_assetUtilities();
     beliefs=get_beliefs();
+    
+  if ((ID>=101)&&(ID<=120))
+   {
+  if (PRINT_DEBUG_FILE_EXP2)
+    {                       
+        filename = malloc(40*sizeof(char));
+        filename[0]=0;
+        strcpy(filename, "its/households_financial_market.txt");      
+        file1 = fopen(filename,"a");
+        fprintf(file1,"\n %d %d %f %f",CURRENTDAY,ID,PAYMENT_ACCOUNT,STRATEGY);
+        fclose(file1);
+        free(filename);
+    }         
+   }     
     computeUtilities(beliefs,assetUtilities);
-    assetUtilitiesToWeights(assetWeights,assetUtilities,get_risk_free_rate());
+    assetUtilitiesToWeights(assetWeights,assetUtilities,get_risk_free_rate());   
     generatePendingOrders(assetsowned,pending,beliefs,&PAYMENT_ACCOUNT);
+    
+   
+    
     
     orders=get_pendingOrders();
     
@@ -44,6 +64,20 @@ int Household_send_orders()
      }
      
      add_order_message(ord->issuer,ord->assetId, ord->price, ord->quantity);
+     
+  /*  if (PRINT_DEBUG_FILE_EXP2)
+    {                       
+        filename = malloc(40*sizeof(char));
+        filename[0]=0;
+        strcpy(filename, "its/households_financial_market.txt");      
+        file1 = fopen(filename,"a");
+        fprintf(file1,"%d %f %d ",ord->assetId, ord->price, ord->quantity);
+        fclose(file1);
+        free(filename);
+    }        */
+
+     
+     
      
  //    if (PRINT_DEBUG_AFM) 
   // printf("\n\t Household send order for asset: %d price: %f quantity: %d",ord->assetId,ord->price,ord->quantity);
@@ -74,6 +108,8 @@ void computeUtilities(Belief_array *beliefs, double_array *assetUtilities)
 }
 void assetUtilitiesToWeights(double_array *assetWeights,double_array *assetUtilities,double bankrate)
 {
+   //  char * filename;
+   // FILE * file1;
       double minimo;
       int size,i;
       double somma;
@@ -103,13 +139,30 @@ void assetUtilitiesToWeights(double_array *assetWeights,double_array *assetUtili
                      add_double(assetWeights,bankrate);
                    }
   // printf("\n\n bankrate: %f assetWeights->array[i]: %f somma: %f",bankrate,assetWeights->array[i],somma);                
- //printf("size pesi =====%d\n",assetWeights->size);
+  // printf("size pesi =====%d\n",assetWeights->size);
     divide(assetWeights,somma);
+   
+   /*   if (PRINT_DEBUG_FILE_EXP2)
+    {                       
+        filename = malloc(40*sizeof(char));
+        filename[0]=0;
+        strcpy(filename, "its/households_financial_market.txt");      
+        file1 = fopen(filename,"a");
+        fprintf(file1,"\n\t %d %d %f %f\n",assetUtilities->size,assetWeights->size,minimo,bankrate);
+        fclose(file1);
+        free(filename);
+    } */          
+    
 }
 
 int  Household_select_strategy()
   { 
-    set_strategy(next()<TRADING_ACTIVITY);
+    
+    if (PAYMENT_ACCOUNT<0.0)
+    {STRATEGY = 1.0;}
+    else
+    {set_strategy(next()<TRADING_ACTIVITY);};
+    //set_strategy(next()<TRADING_ACTIVITY);
     
     if (PRINT_DEBUG)
     {
@@ -134,8 +187,8 @@ int Household_update_its_portfolio()
   float transactions;
   
     // #ifdef _DEBUG_MODE  
-  //char * filename;
-  //FILE * file1;
+  char * filename;
+  FILE * file1;
   
       // #endif
 
@@ -169,10 +222,10 @@ int Household_update_its_portfolio()
   }
   
  
-   #ifdef _DEBUG_MODE       
-  /* if (ID==21)
+    
+  if ((ID>=101)&&(ID<=120))
    {
-   if (PRINT_DEBUG_FILE_EXP1)
+   if (PRINT_DEBUG_FILE_EXP2)
     {                       
         filename = malloc(40*sizeof(char));
         filename[0]=0;
@@ -182,8 +235,8 @@ int Household_update_its_portfolio()
         fclose(file1);
         free(filename);
     }
-    }       */         
-    #endif
+    }                
+ 
 
 
 
@@ -231,7 +284,10 @@ void computeLimitOrder( Asset *anAsset, double weight, double resource,Belief *b
       if(aux<-1) aux=-1; 
        //if(aux==-1) {printf("errore");getchar();} 
       
-      limitPrice=lastprice*(1+aux); 
+      if (resource > 0.0)
+      {limitPrice=lastprice*(1+aux);}
+      else
+      {limitPrice = 0;} 
       if((weight==0)&&(limitPrice==0)) deltaquantity=-quantity;
       else
       if(limitPrice==0) deltaquantity=-quantity;
@@ -291,14 +347,24 @@ void generatePendingOrders(Asset_array *assetsowned,Order_array *pending, Belief
   Order anorder;
   double resource;
   double weight;
-  double tem_wealth;
+  double tem_wealth; double payment_account_target;
   Asset *asset;
   Belief *belief;
   int target_quantity;
   ord=&anorder;
   double_array *weights;
   tem_wealth=wealth(PAYMENT_ACCOUNT,assetsowned);
-  resource=wealth(PAYMENT_ACCOUNT-CONSUMPTION_BUDGET,assetsowned);
+   //resource=wealth(PAYMENT_ACCOUNT-CONSUMPTION_BUDGET,assetsowned);
+  if (PAYMENT_ACCOUNT<0.0)
+//  {resource = max(0.0,resource+PAYMENT_ACCOUNT);}
+  {resource = 0.0;}
+  else
+  { payment_account_target = MEAN_NET_INCOME*WEALTH_INCOME_RATIO_TARGET;
+    resource = max(0.0,tem_wealth-payment_account_target-CONSUMPTION_BUDGET);
+      }
+   
+  
+  
   
    if (PRINT_DEBUG_AFM)
              {

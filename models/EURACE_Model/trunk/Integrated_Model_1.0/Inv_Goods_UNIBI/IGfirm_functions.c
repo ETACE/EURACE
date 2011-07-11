@@ -63,7 +63,7 @@ int IGFirm_update_productivity_price()
 
             PRODUCTIVITY =INNOVATION_SCHEME.array[0].productivity;
 
-            CAPITAL_GOOD_PRICE = CAPITAL_GOOD_PRICE*prod_progress;
+            CAPITAL_GOOD_PRICE = 1.00*CAPITAL_GOOD_PRICE*prod_progress;
             remove_dt_scheme_innovation(&INNOVATION_SCHEME,0);
         }
     }
@@ -81,7 +81,7 @@ int IGFirm_update_productivity_price()
    capital_goods_price_old = CAPITAL_GOOD_PRICE;
 
    CAPITAL_GOOD_PRICE = 1.005*CAPITAL_GOOD_PRICE;
-  /* if ((PRICE_INDEX>0.0)&&(price_index_old>0.0))
+  /*if ((PRICE_INDEX>0.0)&&(price_index_old>0.0))
    {
     CAPITAL_GOOD_PRICE = (PRICE_INDEX/price_index_old)*CAPITAL_GOOD_PRICE;
    }*/

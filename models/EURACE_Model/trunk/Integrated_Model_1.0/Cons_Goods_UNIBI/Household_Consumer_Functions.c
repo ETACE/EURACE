@@ -57,16 +57,10 @@ int Household_determine_consumption_budget()
 
         /*Compute the wealth income ratio*/
         
-        WEALTH_INCOME_RATIO_ACTUAL = WEALTH/ MEAN_NET_INCOME;
-
-              
-       
-            /*Based on Carrol-Rule: Determination of the consumption budget*/
+        /* WEALTH_INCOME_RATIO_ACTUAL = WEALTH/ MEAN_NET_INCOME;
+            //Based on Carrol-Rule: Determination of the consumption budget
             CONSUMPTION_BUDGET = MEAN_NET_INCOME + CARROL_CONSUMPTION_PARAMETER*(WEALTH - WEALTH_INCOME_RATIO_TARGET*MEAN_NET_INCOME);
-
-        
-        
-        #ifdef _DEBUG_MODE        
+       #ifdef _DEBUG_MODE        
             if(PAYMENT_ACCOUNT < 0)
             {
                 if (PRINT_LOG)
@@ -76,7 +70,6 @@ int Household_determine_consumption_budget()
                     printf("In Household_determine_consumption_budget, line 57: IT %d ID %d PAYMENT_ACCOUNT %f CONSUMPTION_BUDGET %f\n", DAY, ID, PAYMENT_ACCOUNT, CONSUMPTION_BUDGET);
             }
         #endif            
-
             if(CONSUMPTION_BUDGET < 0.5*LAST_NET_INCOME.array[3])
             {
                 #ifdef _DEBUG_MODE        
@@ -92,9 +85,20 @@ int Household_determine_consumption_budget()
                 
                 CONSUMPTION_BUDGET = 0.5*LAST_NET_INCOME.array[3];
             }
+            CONSUMPTION_BUDGET = max(0.0,min(WEALTH,CONSUMPTION_BUDGET));             
+            */
+
+           if (PAYMENT_ACCOUNT>0.0)
+          {      
+                 WEALTH_INCOME_RATIO_ACTUAL = PAYMENT_ACCOUNT / MEAN_NET_INCOME;
+                 CONSUMPTION_BUDGET = MEAN_NET_INCOME + CARROL_CONSUMPTION_PARAMETER*(PAYMENT_ACCOUNT - WEALTH_INCOME_RATIO_TARGET*MEAN_NET_INCOME);
+                 CONSUMPTION_BUDGET = max(CONSUMPTION_BUDGET,0.5*LAST_NET_INCOME.array[0]);
+                 }
+                 else  {WEALTH_INCOME_RATIO_ACTUAL = 0.0;
+                       CONSUMPTION_BUDGET = 0.5*LAST_NET_INCOME.array[0];};                         
 
 
-            CONSUMPTION_BUDGET = max(0.0,min(PAYMENT_ACCOUNT,CONSUMPTION_BUDGET));             
+
 
             CONSUMPTION_BUDGET_IN_MONTH = CONSUMPTION_BUDGET;
                         
@@ -105,7 +109,7 @@ int Household_determine_consumption_budget()
             
         EXCESS_WEEKLY_BUDGET = -1;
 
-  if ((ID>21)&&(ID<=22))
+  if ((ID>=101)&&(ID<=120))
    {
    if (PRINT_DEBUG_FILE_EXP2)
     {                       
@@ -118,6 +122,8 @@ int Household_determine_consumption_budget()
          else fprintf(file1," %d %f",EMPLOYEE_FIRM_ID,WAGE);
         fprintf(file1," %f %f",PAYMENT_ACCOUNT,WEALTH);
         fprintf(file1," %f %f %f",CUM_TOTAL_DIVIDENDS,MONTHLY_BOND_INTEREST_INCOME,CONSUMPTION_BUDGET);
+         fprintf(file1," %f %f",MEAN_NET_INCOME,LAST_NET_INCOME.array[0]);
+         fprintf(file1," %f (%f)",WEALTH_INCOME_RATIO_ACTUAL,WEALTH_INCOME_RATIO_TARGET);
         fclose(file1);
         free(filename);
     }                
@@ -619,8 +625,8 @@ int Household_send_account_update()
 {
      // #ifdef _DEBUG_MODE  
 
-   if ((ID>21)&&(ID<=30))
-    { 
+   if ((ID>=101)&&(ID<=120))
+   {
     if (PRINT_DEBUG_FILE_EXP2)
     {                       
        char * filename;
