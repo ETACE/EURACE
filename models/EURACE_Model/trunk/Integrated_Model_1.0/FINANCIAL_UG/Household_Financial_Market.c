@@ -345,7 +345,7 @@ void generatePendingOrders(Asset_array *assetsowned,Order_array *pending, Belief
   int index;
   Order *ord;
   Order anorder;
-  double resource;
+  double resource, account_buffer;
   double weight;
   double tem_wealth; double payment_account_target;
   Asset *asset;
@@ -354,14 +354,16 @@ void generatePendingOrders(Asset_array *assetsowned,Order_array *pending, Belief
   ord=&anorder;
   double_array *weights;
   tem_wealth=wealth(PAYMENT_ACCOUNT,assetsowned);
-   //resource=wealth(PAYMENT_ACCOUNT-CONSUMPTION_BUDGET,assetsowned);
-  if (PAYMENT_ACCOUNT<0.0)
-//  {resource = max(0.0,resource+PAYMENT_ACCOUNT);}
+  account_buffer = 10.0;
+  
+    payment_account_target = account_buffer*CONSUMPTION_BUDGET;
+    resource = max(0.0,tem_wealth-payment_account_target-CONSUMPTION_BUDGET);
+  /*if (PAYMENT_ACCOUNT<0.0)
   {resource = 0.0;}
   else
-  { payment_account_target = MEAN_NET_INCOME*WEALTH_INCOME_RATIO_TARGET;
+  { payment_account_target = account_buffer*CONSUMPTION_BUDGET;
     resource = max(0.0,tem_wealth-payment_account_target-CONSUMPTION_BUDGET);
-      }
+      }*/
    
   
   
