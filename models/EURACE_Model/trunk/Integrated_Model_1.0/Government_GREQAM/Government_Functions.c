@@ -720,6 +720,7 @@ int Government_set_policy()
 {   
     FILE *file1=NULL;
     char *filename=NULL;
+    double tax_rate_max; 
 
 //    double yearly_tax_revenues_target; 
 /*     
@@ -780,24 +781,21 @@ int Government_set_policy()
      MONTHLY_INVESTMENT_BUDGET = YEARLY_INVESTMENT_BUDGET/12;
 
     if ((POLICY_EXP1)&&(GOV_POLICY_SWITH_QUANTITATIVE_EASING==0))
-    {                   
+    {       tax_rate_max = 0.5;}
+    else       
+    {      tax_rate_max = 0.05;}     
                 
-        if ( (YEARLY_BUDGET_BALANCE+PAYMENT_ACCOUNT)>0)
+    if ((YEARLY_BUDGET_BALANCE+PAYMENT_ACCOUNT)>0)
         {
-             TAX_RATE_HH_LABOUR = TAX_RATE_HH_LABOUR - 0.05;
-             TAX_RATE_CORPORATE = TAX_RATE_CORPORATE - 0.05;
+             TAX_RATE_HH_LABOUR = max(0.0,TAX_RATE_HH_LABOUR - 0.05);
+             TAX_RATE_CORPORATE = max(0.0,TAX_RATE_CORPORATE - 0.05);
              }
              else
         {
-             TAX_RATE_HH_LABOUR = TAX_RATE_HH_LABOUR + 0.05;
-             TAX_RATE_CORPORATE = TAX_RATE_CORPORATE + 0.05;
+             TAX_RATE_HH_LABOUR = min(tax_rate_max,TAX_RATE_HH_LABOUR + 0.05);
+             TAX_RATE_CORPORATE = min(tax_rate_max,TAX_RATE_CORPORATE + 0.05);
              }
-        if (TAX_RATE_HH_LABOUR<0.0) TAX_RATE_HH_LABOUR = 0.0;
-        if (TAX_RATE_CORPORATE<0.0) TAX_RATE_CORPORATE = 0.0;
-        if (TAX_RATE_HH_LABOUR>0.5) TAX_RATE_HH_LABOUR = 0.5;
-        if (TAX_RATE_CORPORATE>0.5) TAX_RATE_CORPORATE = 0.5;
-      } 
-
+ 
     
 	if (PRINT_DEBUG_FILE_EXP1)
     {
