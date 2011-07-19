@@ -2042,6 +2042,11 @@
      <description>Constructed macrovariable: weighted mean prices</description>
     </variable>
     <variable>
+     <type>double</type>
+     <name>price_growth</name>
+     <description>Constructed macrovariable: monthly inflation</description>
+    </variable>
+    <variable>
      <type>history_item</type>
      <name>history_monthly[13]</name>
      <description>History: monthly data</description>
@@ -3004,6 +3009,11 @@
    <name>eurostat_send_macrodata</name>
    <description></description>
    <variables>
+    <variable>
+     <type>double</type>
+     <name>price_growth</name>
+     <description></description>
+    </variable>
     <variable>
      <type>double</type>
      <name>inflation</name>

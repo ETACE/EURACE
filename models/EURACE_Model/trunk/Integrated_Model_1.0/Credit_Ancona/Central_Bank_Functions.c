@@ -12,19 +12,29 @@
 int Central_Bank_monetary_policy()
 {
     double inflation=0.0;
+    double price_growth = 0.0;
+    double increment = 0.0;
     double gdp=0.0;
     double unemployment_rate=0.0;
-
- 
+    
     START_EUROSTAT_SEND_MACRODATA_MESSAGE_LOOP
+        price_growth = eurostat_send_macrodata_message->price_growth;                                      
         inflation = eurostat_send_macrodata_message->inflation;
         gdp = eurostat_send_macrodata_message->gdp;
         unemployment_rate = eurostat_send_macrodata_message->unemployment_rate;
     FINISH_EUROSTAT_SEND_MACRODATA_MESSAGE_LOOP 
     
-    ECB_INTEREST_RATE = 0.02;
+    increment = (price_growth - ECB_INTEREST_RATE/12.0);
+    if (increment > 0.1)
+    {increment = 0.1;}
+    if (increment < -0.1)
+    {increment = -0.1;}
+    
+    ECB_INTEREST_RATE = max(ECB_INTEREST_RATE + increment, 0.005);
+
     
     add_policy_rate_message(ECB_INTEREST_RATE);
+    
 
     #ifdef _DEBUG_MODE    
     if (PRINT_DEBUG)
@@ -189,7 +199,7 @@ int Central_Bank_read_account_update()
             strcpy(filename, "its/CentralBank_daily_balance_sheet.txt");      
             file1 = fopen(filename,"a");
             fprintf(file1,"\n %d %f %f %f",DAY,FIAT_MONEY_GOVS,FIAT_MONEY_BANKS, FIAT_MONEY);
-            fprintf(file1," %f %f",CASH,ECB_DEPOSITS);
+            fprintf(file1," %f %f %f",CASH,ECB_DEPOSITS,ECB_INTEREST_RATE);
             fclose(file1);
             free(filename);
         }                
