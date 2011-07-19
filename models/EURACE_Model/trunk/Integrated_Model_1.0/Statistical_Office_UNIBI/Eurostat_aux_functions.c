@@ -79,6 +79,10 @@ void Eurostat_reset_data(void)
 void Eurostat_compute_mean_price(void)
 {
     double sum_consumption_good_supply = 0.0;
+    double price_index_old = 0.0;
+    
+    price_index_old = PRICE_INDEX;
+    PRICE_GROWTH = 0.0;
     PRICE_INDEX = 0.0;
 
     /*Compute a weighted mean price*/
@@ -90,6 +94,10 @@ void Eurostat_compute_mean_price(void)
     START_FIRM_SEND_DATA_MESSAGE_LOOP
         PRICE_INDEX += (firm_send_data_message->price*firm_send_data_message->total_supply)/ sum_consumption_good_supply;
     FINISH_FIRM_SEND_DATA_MESSAGE_LOOP
+    
+    if (price_index_old > 0.0)
+    {PRICE_GROWTH = (PRICE_INDEX - price_index_old)/price_index_old;}
+    else {PRICE_GROWTH = 0.02;}
 }
 
 /* \fn: void Eurostat_read_firm_data(void)

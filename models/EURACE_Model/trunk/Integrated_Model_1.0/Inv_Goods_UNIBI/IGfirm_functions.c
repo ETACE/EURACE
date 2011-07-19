@@ -80,7 +80,7 @@ int IGFirm_update_productivity_price()
    
    capital_goods_price_old = CAPITAL_GOOD_PRICE;
 
-   CAPITAL_GOOD_PRICE = 1.005*CAPITAL_GOOD_PRICE;
+   CAPITAL_GOOD_PRICE = 1.0*CAPITAL_GOOD_PRICE;
   /*if ((PRICE_INDEX>0.0)&&(price_index_old>0.0))
    {
     CAPITAL_GOOD_PRICE = (PRICE_INDEX/price_index_old)*CAPITAL_GOOD_PRICE;

@@ -106,7 +106,7 @@ int Eurostat_send_data()
     }
 
     //Add message for general economy-wide macrodata 
-    add_eurostat_send_macrodata_message(ANNUAL_GROWTH_RATES_MONTHLY.cpi, GDP, UNEMPLOYMENT_RATE);    
+    add_eurostat_send_macrodata_message(PRICE_GROWTH, ANNUAL_GROWTH_RATES_MONTHLY.cpi, GDP, UNEMPLOYMENT_RATE);    
 
     return 0;
 }
@@ -303,7 +303,7 @@ int Eurostat_store_history_monthly()
         file1 = fopen(filename,"a");
         fprintf(file1,"\n %d %f %f %f ",DAY,HISTORY_MONTHLY[0].gdp,HISTORY_MONTHLY[0].cpi,HISTORY_MONTHLY[0].output);
         fprintf(file1,"%d %f ",HISTORY_MONTHLY[0].employment,HISTORY_MONTHLY[0].unemployment_rate);
-        fprintf(file1," %f %d",HISTORY_MONTHLY[0].average_wage,HISTORY_MONTHLY[0].no_firm_deaths);
+        fprintf(file1," %f %d %f",HISTORY_MONTHLY[0].average_wage,HISTORY_MONTHLY[0].no_firm_deaths,PRICE_GROWTH);
         fclose(file1);
         free(filename);
     }
