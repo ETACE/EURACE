@@ -783,7 +783,7 @@ int Government_set_policy()
     if ((POLICY_EXP1)&&(GOV_POLICY_SWITH_QUANTITATIVE_EASING==0))
     {       tax_rate_max = 0.5;}
     else       
-    {      tax_rate_max = 0.05;}     
+    {      tax_rate_max = 0.5;}     
                 
     if ((YEARLY_BUDGET_BALANCE+PAYMENT_ACCOUNT)>0)
         {

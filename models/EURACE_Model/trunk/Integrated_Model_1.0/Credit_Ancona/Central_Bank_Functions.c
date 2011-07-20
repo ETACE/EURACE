@@ -25,10 +25,10 @@ int Central_Bank_monetary_policy()
     FINISH_EUROSTAT_SEND_MACRODATA_MESSAGE_LOOP 
     
     increment = (price_growth - ECB_INTEREST_RATE/12.0);
-    if (increment > 0.1)
-    {increment = 0.1;}
-    if (increment < -0.1)
-    {increment = -0.1;}
+    if (increment > 0.01)
+    {increment = 0.01;}
+    if (increment < -0.01)
+    {increment = -0.01;}
     
     ECB_INTEREST_RATE = max(ECB_INTEREST_RATE + increment, 0.005);
 
