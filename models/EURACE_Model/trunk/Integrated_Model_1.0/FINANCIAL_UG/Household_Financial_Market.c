@@ -287,10 +287,10 @@ void computeLimitOrder( Asset *anAsset, double weight, double resource,Belief *b
       if (resource > 0.0)
       {limitPrice=lastprice*(1+aux);}
       else
-      {limitPrice = 0;} 
-      if((weight==0)&&(limitPrice==0)) deltaquantity=-quantity;
+      {limitPrice = 0.0;} 
+      if((weight==0.0)&&(limitPrice==0.0)) deltaquantity=-quantity;
       else
-      if(limitPrice==0) deltaquantity=-quantity;
+      if(limitPrice==0.0) deltaquantity=-quantity;
       else deltaquantity=(int)(weight*resource/(limitPrice))-quantity;
       
      // printf("\n limitPrice: %f resource: %f weight: %f quantity: %d deltaquantity: %d",limitPrice,resource,weight,quantity,deltaquantity);
@@ -356,8 +356,14 @@ void generatePendingOrders(Asset_array *assetsowned,Order_array *pending, Belief
   tem_wealth=wealth(PAYMENT_ACCOUNT,assetsowned);
   account_buffer = 10.0;
   
+  if (PAYMENT_ACCOUNT<0.0)
+  {resource = 0.0;}
+  else
+  {
     payment_account_target = account_buffer*CONSUMPTION_BUDGET;
     resource = max(0.0,tem_wealth-payment_account_target-CONSUMPTION_BUDGET);
+  }
+   
   /*if (PAYMENT_ACCOUNT<0.0)
   {resource = 0.0;}
   else
