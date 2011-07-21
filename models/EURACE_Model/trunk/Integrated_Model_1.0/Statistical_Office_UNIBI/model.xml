@@ -1903,6 +1903,11 @@
     </variable>
     <variable>
      <type>double</type>
+     <name>firm_average_wage_offer</name>
+     <description>verage wage in the economy paid by firms</description>
+    </variable>
+    <variable>
+     <type>double</type>
      <name>firm_average_wage_skill_1</name>
      <description>Average wage in the economy paid by firms for general skill level 1</description>
     </variable>
@@ -2751,6 +2756,11 @@
     </variable>
     <variable>
      <type>double</type>
+     <name>wage_offer</name>
+     <description></description>
+    </variable>
+    <variable>
+     <type>double</type>
      <name>average_s_skill</name>
      <description></description>
     </variable>
@@ -3076,6 +3086,16 @@
      <type>double</type>
      <name>soldq</name>
      <description>avg sold quantitiy in region</description>
+    </variable>
+   <variable>
+     <type>double</type>
+     <name>price_index</name>
+     <description>price index (in region?)</description>
+    </variable>
+   <variable>
+     <type>double</type>
+     <name>avg_wage_offer</name>
+     <description>average wage offer</description>
     </variable>
    </variables>
   </message>
