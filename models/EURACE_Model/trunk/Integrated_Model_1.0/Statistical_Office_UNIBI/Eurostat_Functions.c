@@ -102,7 +102,7 @@ int Eurostat_send_data()
         
         //printf("\n Region %d GDP=%2.2f\n", region, gdp);
         add_data_for_government_message(region, gdp, AVERAGE_WAGE, PRICE_INDEX);
-       add_data_for_bankruptcy_firms_message(region, no_firms, soldq); //added to handle bankrupcy;
+       add_data_for_bankruptcy_firms_message(region, no_firms, soldq, PRICE_INDEX, FIRM_AVERAGE_WAGE_OFFER); //added to handle bankrupcy;
     }
 
     //Add message for general economy-wide macrodata 
@@ -303,7 +303,7 @@ int Eurostat_store_history_monthly()
         file1 = fopen(filename,"a");
         fprintf(file1,"\n %d %f %f %f ",DAY,HISTORY_MONTHLY[0].gdp,HISTORY_MONTHLY[0].cpi,HISTORY_MONTHLY[0].output);
         fprintf(file1,"%d %f ",HISTORY_MONTHLY[0].employment,HISTORY_MONTHLY[0].unemployment_rate);
-        fprintf(file1," %f %d %f",HISTORY_MONTHLY[0].average_wage,HISTORY_MONTHLY[0].no_firm_deaths,PRICE_GROWTH);
+        fprintf(file1," %f %d %f",HISTORY_MONTHLY[0].average_wage, HISTORY_MONTHLY[0].no_firm_deaths,PRICE_GROWTH, FIRM_AVERAGE_WAGE_OFFER);
         fclose(file1);
         free(filename);
     }

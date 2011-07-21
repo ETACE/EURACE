@@ -116,6 +116,7 @@ void Eurostat_read_firm_data(void)
     NO_EMPLOYEES_SKILL_5 = 0.0;
 
     FIRM_AVERAGE_WAGE = 0.0;
+    FIRM_AVERAGE_WAGE_OFFER = 0.0;
 
     FIRM_AVERAGE_S_SKILL = 0.0;
     FIRM_AVERAGE_S_SKILL_1 = 0.0;
@@ -181,6 +182,9 @@ void Eurostat_read_firm_data(void)
                 firm_send_data_message->employees;
             FIRM_AVERAGE_WAGE += firm_send_data_message->average_wage*
                 firm_send_data_message->employees;
+            FIRM_AVERAGE_WAGE_OFFER += firm_send_data_message->wage_offer*
+                firm_send_data_message->employees;
+                
     
     
             /********sum of specific skills of the firms++++++++*/
@@ -337,6 +341,7 @@ void Eurostat_compute_global_firm_data(void)
     if(NO_EMPLOYEES > 0)
     {
         FIRM_AVERAGE_WAGE = FIRM_AVERAGE_WAGE/(double)NO_EMPLOYEES;
+        FIRM_AVERAGE_WAGE_OFFER = FIRM_AVERAGE_WAGE_OFFER/(double)NO_EMPLOYEES;
     }
     
     

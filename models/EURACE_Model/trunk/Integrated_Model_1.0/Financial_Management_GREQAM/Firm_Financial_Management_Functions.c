@@ -1082,7 +1082,9 @@ int Firm_reset_bankruptcy_flags()
         {
         no_firms = data_for_bankruptcy_firms_message->no_firms;
         avg_soldq = (data_for_bankruptcy_firms_message->soldq)/no_firms;
-        printf("\n Firm_id %d AVGSOLDSQ=%2.2f\n", ID, avg_soldq);
+        PRICE_INDEX = data_for_bankruptcy_firms_message->price_index;
+        WAGE_OFFER = data_for_bankruptcy_firms_message->avg_wage_offer;
+        /*printf("\n Firm_id %d AVGSOLDSQ=%2.2f\n", ID, avg_soldq);*/
         for(i=0; i< MALLS_SALES_STATISTICS.size; i++)
                     {
     	    	     for (j=0;j<FIRM_PLANNING_HORIZON; j++)
