@@ -793,6 +793,8 @@ int Firm_bankruptcy_insolvency_procedure()
     double target_equity=0.0;
     double ipo_amount=0.0;
     int EMPLOYEES_size_tmp;
+    FILE *file1;
+    char *filename;
   
  // char * filename;
   //      FILE * file1;
@@ -871,6 +873,33 @@ int Firm_bankruptcy_insolvency_procedure()
 		    
 		    add_bankruptcy_message(ID, LOANS.array[i].bank_id, bad_debt,
 		    credit_refunded, write_off_ratio*residual_var);        
+		    
+		    
+            TOTAL_INTEREST_PAYMENT=0.0;
+            TOTAL_DEBT_INSTALLMENT_PAYMENT=0.0;
+
+           for (i=0; i<LOANS.size; i++)
+          {
+           if(LOANS.array[i].loan_value < 0.0)
+           printf("\n ERROR in function Firm_compute_financial_payments: loan_value is NEGATIVE: %f.\n", LOANS.array[i].loan_value);
+
+        //step 1: compute total interest payments
+           TOTAL_INTEREST_PAYMENT += (LOANS.array[i].interest_rate/12.0) * LOANS.array[i].loan_value;
+        //step 2: compute total debt installment payments
+           TOTAL_DEBT_INSTALLMENT_PAYMENT += LOANS.array[i].installment_amount;
+           }
+
+           filename = malloc(40*sizeof(char));
+           filename[0]=0;
+           strcpy(filename, "its/firm_recompute_financial_payments.txt"); 
+           file1 = fopen(filename,"a");
+           fprintf(file1,"\n %d %d %f %f",DAY,ID,TOTAL_INTEREST_PAYMENT,TOTAL_DEBT_INSTALLMENT_PAYMENT);
+           fclose(file1);
+           free(filename);
+           
+           PREVIOUS_NET_EARNINGS = 0.0;
+           PREVIOUS_TOTAL_DIVIDEND_PAYMENT = 0.0;
+           TOTAL_DIVIDEND_PAYMENT = 0.0;
 		            
 	   }
 	   
