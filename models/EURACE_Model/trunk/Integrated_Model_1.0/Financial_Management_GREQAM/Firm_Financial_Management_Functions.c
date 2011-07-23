@@ -873,15 +873,20 @@ int Firm_bankruptcy_insolvency_procedure()
 		    
 		    add_bankruptcy_message(ID, LOANS.array[i].bank_id, bad_debt,
 		    credit_refunded, write_off_ratio*residual_var);        
-		    
-		    
-            TOTAL_INTEREST_PAYMENT=0.0;
-            TOTAL_DEBT_INSTALLMENT_PAYMENT=0.0;
+		    		               	            
+	   }
+	   
+	   TOTAL_DEBT = target_debt;
+	   EQUITY = TOTAL_ASSETS - TOTAL_DEBT;
+	  // reset_debt_item_array(&LOANS); the loan structure must not be cancelled, but rescaled
+	  
+       TOTAL_INTEREST_PAYMENT=0.0;
+       TOTAL_DEBT_INSTALLMENT_PAYMENT=0.0;
 
            for (i=0; i<LOANS.size; i++)
           {
            if(LOANS.array[i].loan_value < 0.0)
-           printf("\n ERROR in function Firm_compute_financial_payments: loan_value is NEGATIVE: %f.\n", LOANS.array[i].loan_value);
+           {printf("\n ERROR in function Firm_compute_financial_payments: loan_value is NEGATIVE: %f.\n", LOANS.array[i].loan_value);}
 
         //step 1: compute total interest payments
            TOTAL_INTEREST_PAYMENT += (LOANS.array[i].interest_rate/12.0) * LOANS.array[i].loan_value;
@@ -891,7 +896,7 @@ int Firm_bankruptcy_insolvency_procedure()
 
            filename = malloc(40*sizeof(char));
            filename[0]=0;
-           strcpy(filename, "its/firm_recompute_financial_payments.txt"); 
+           strcpy(filename, "its/firm_recal_financial_payments.txt"); 
            file1 = fopen(filename,"a");
            fprintf(file1,"\n %d %d %f %f",DAY,ID,TOTAL_INTEREST_PAYMENT,TOTAL_DEBT_INSTALLMENT_PAYMENT);
            fclose(file1);
@@ -900,12 +905,6 @@ int Firm_bankruptcy_insolvency_procedure()
            PREVIOUS_NET_EARNINGS = 0.0;
            PREVIOUS_TOTAL_DIVIDEND_PAYMENT = 0.0;
            TOTAL_DIVIDEND_PAYMENT = 0.0;
-		            
-	   }
-	   
-	   TOTAL_DEBT = target_debt;
-	   EQUITY = TOTAL_ASSETS - TOTAL_DEBT;
-	  // reset_debt_item_array(&LOANS); the loan structure must not be cancelled, but rescaled
 
 	    //Effect on financial market
 		if (TRADING_ACTIVITY > 1e-8)
