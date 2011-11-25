@@ -1,0 +1,181 @@
+VERSION 0.7.12, 2009-02-13
+    This is a feature release. Most features implemented were collected prior to or during Aix Meeting in February 2009.
+
+    2009-02-13: Now throws exception for constant type mismatch which went undetected before (bug discovered in Aix).
+    2009-02-13: Added a function to produce real number sequences: rsequence(), later changed name rsequence() to realsequence()
+    2009-02-13: Added checkt for string-ness of Constant.setExpression(), for integrity ensurance when used from ExpGUI.
+    2009-02-13: Added capability to use getAgentCount() in constants.
+    2009-02-13: Fixed progressbar display during instantiation.
+    2009-02-12: Added createEnvironment option to Population.instantiate().
+    2009-02-12: Added 'subsubequals' initform to address deep level variable conditions.
+    2009-02-11: Fixed bug which caused problems during validation phase of array initializations.
+    2009-02-11: Better reporting of cyclic agent dependencies, population and GUI versions are upgraded.
+    2009-02-11: Fixed problems with the getSibling() multi-level access, and updated manual.
+    2009-02-11  Implemented and improved the getSibling() to access higher levels in the ADT hierarchy.
+    2009-02-10: Shuffle function added for randomization of selections.
+    2009-02-09: Added exp() function from math module.
+    2009-01-29: Fixed MooreNeighbour function implementation bug.
+    2009-01-29: Removed dependency of getNumRegions() to instantiation. Now it works during validation also by means of a global variable named popguinumregions.
+    2009-01-28: Fixed a minor bug related to dependency of Poplib to gtk progress bar. Fixed a typo regarding randomize option, added time reporting after instantiation.
+    2009-01-27: Changed population instantiate() to dump directly to 0.xml instead of passing strings around. This saves a lot of memory. Added cleanup to beginning of Pupulation.instantiate() to remove AgentInstance's left over a previous instantiation.
+    2009-01-25: (1)constanst were all strings in a new pop, fixed, (2)populations now save model.xml contents to incerase mobility, (3)as a result of the previous item population version is increased to 0.2.4, along with program version to 0.7.4, (4) problems im population importing was causing a submodel import to set top level things (regions and constants) als0, fixed.
+    2009-01-25: When accessed through getSelfVar or getAgentVar region id needs to be faked as incremented by one otherwise conditions,etc., fails. Fixed.
+    2009-01-23: Added constraint function contains() to baseForm for agent selection, getAgent. Updated initforms getAllAgentsRegional() and global, so that the have an optional parameter to turn of randomization shuffling of returned list (upon request of Bielefeld). Agent initialization order was not working correctly, fixed.
+    2009-01-21: Added getNumRegions() to initform functions upon Philipp Harting's (Bielefeld) request.
+    2009-01-19:  Fixed bugs discovered by Philipp Harting of Bielefeld:
+(1) Bad defaults (0 values) in DummyMemVar was causing division by zero errors in validation of 
+expression that involve a division operation
+(2) Agent.validateReferenceDependencies() would only register the first dependency (detected as 
+a result of exception thrown) because further ones are supressed since valmap values are 
+already filled in during the first pass in the for loop. Fixed by breaking 
+from the loop during an iteration, rather than simply passing on.
+    Fixed a typo in poplib which prevented MemVar creation (during XMME 
+parse) to report problems correctly.
+Changed model file reading order so that it reads nested models before 
+memvar definitions in the toplevel file.
+    2008-12-02: Added initform feature to select all agents mathcing a criteria.
+    2008-12-01: Added capability to get a list of agent IDs, upon Sander's request (Grequam).
+    2008-11-26: Implemented requested initforms: getConstant(), getAgentCount(), deterministic().  Implemented discrete probability in initforms
+    2008-10-06: Added between() function to memvar language.
+
+******************************************************************************************************************************
+VERSION 0.6.1, 2008-08-21
+    Bugfix release. Most fixes are related to implementation of new features (agent and memory varaible referenceing)
+
+  2008-08-20 : getAgentXXX() now chooses agents randomly, ie. does not check for suitability in the fixed order
+  2008-08-21 :  getAgentGlobal() now actually set dependence for agents of all regions. This also is linked to implemenation of bias problem: instantiate same agents of all regions, not all agents of same region.
+  2008-08-21 : Put a cancel button to cancel population instantiation
+  2008-08-21 :  Implemented multi stage initialization to create depended agents of all regions first, instead of creating all agents of a region before proceeding to another region. Necessary for global agent selection to work in a statistically proper way
+  2008-08-21 : Choose agents randomly in getAgent(), ie. does not check for suitability in the fixed order
+  2008-08-21 : Error messages were too messy and cryptic. Now cleaned up.
+
+******************************************************************************************************************************
+VERSION 0.6.0, 2008-08-20
+    This is a feature release. Implementing references to other agents in the population
+
+  2008-08-19 : Capability to refer to other agents
+    Syntax for this is getAgent(agentname, conditions[cond1,...],definitions=...) where definitions is a list of python statements (eg containing lambda functions) or a string containing a python file to be executed prior to conditions (e.g. containing function definitions)
+    When succeeds, it returns memvarregistry of the chosen agent. 
+    IMPLEMENTATION DETAILS:
+       Agent now knows its model, Region now knows its parentpop, AgentInstance knows its region, MemVarRegistry knows its agentinstance (but for dependency checking it is none), Region has an agentinitorder varable, thus increased verion of population (Note backward incompatibility)
+       MemVarRegistry.getAgent(), and getAgentVar().
+       Created OrderedDict class to substitute memvar storage for structs, to remember key order.
+       Added exclusivelytaken attribute to AgentInstance.
+       Region -> processAgentDependencies() : stores agent initialization order.
+  2008-08-19 : BUGFIX -> When instantiation fails at some point, progress bar is removed from display.
+  2008-08-19 : Moore Neighbourhood implementation is done as requested by Bielefeld.
+  2008-08-21 : added main window title.
+
+******************************************************************************************************************************
+VERSION 0.4.0, 2008-08-18
+    This is a feature release. One of the targets in the roadmap was referring to agent memory variables.
+
+  2008-07-16 : MAJOR FEATURE: Capability to refer to other variables in initialization forms
+ The key to solution was to keep a dictionary of initialized memvars in agents. Normally MemVar belongs to models' agents', not to AgentInstance, but initialization is a function of AgentInstance. 
+ This was the original difference of 'validate' and 'instantiate': validate is called as per MemVar, 'instantiate' is triggered by AgentInstance. Therefore for validation the new 'this.getVar()' function will (1)check if the referenced var exists at Agent,(2)whether  there are cyclic references, (3)return an instance, and it will return separate exceptions for three steps.
+  On the other hand for instantiation check step must check if an instance is registered at AgentInstance
+  so for the system to work Agent objects must be able to check cyclic references and make an ordering of instantiations. Thus where AgentInstance keeps instantiated values of toplevel memvars, Agent keeps a mapping of which memvar depends on which others and necessary methods to check cyclicity. This checking must be implemented for Agent instances of a model when validating and prior to instantiation.
+  Another difficulty is that memvar instantiation is recursive! The solution was to allow only referencing top level memvars, but allow access to their content as a dictionary, such as by defining a __getitem(i)__ method to allow X[i] access. In this case cyclicity check reduces to top level only
+    IMPLEMENTATION DETAILS:
+      Created a MemVarRegistry class, whose instances are put into the global variable named 'this' by Agent or AgentInstance 
+      'getVar()' becomes a MemVarRegistry method, if var is not found a newly created 'PoplibDependencyException' is thrown and dependency and ordering data in the class is updated accordingly.
+      Agent instance must have a method which makes several iterations to detect and resolve dependencies, or report cases of cyclic dependency, other validation errors will prevent completion of this! 
+      AgentInstance ensures that the above step is done (put a  flag or something in Agent), and instantiates memvars in some order, not in random order as it does now.
+      Validation works now, using DummyMemVars.
+    INTERFACE CHANGES:
+      Defined PoplibDependencyException, PoplibInvalidDependencyException class
+      Defined MemVarRegistry class
+      Defined DummyMemVar class
+      Agent:
+        getMemVarRegistry() method
+        validateReferenceDependencies()
+      MemVar:
+        getCandidates()
+        setCandidate(field,val)
+        validateCandidates()
+      Global:
+        set global variable 'this' to none at module load.
+      PopGUI:
+        changed validate method of memvardialog to use Agent's validaeReferenceDependencies() method
+      Agent:
+        getVarInitOrder()
+      Population:
+        processsMemVarDependencies() -> calls all Agent's validateReferenceDependencies() and getVarInitOrder()
+
+******************************************************************************************************************************
+VERSION 0.3.6, 2008-07-16
+  Some features and bugfixes requested by users
+
+  2008-07-07 : PRogress bar when creating large populations
+  2008-07-07 : needed to include constants in 0.xml output
+  2008-07-07 : BUGFIX -> Regions dialog allows <0 entries
+  2008-07-16 : BUGFIX -> Region ids in 0.xml starts from 0, it should start from 1
+  2008-07-16 : Memory variable keyboard entry falls into search mode?
+  2008-07-16 : When closing the GUI by closing the main window: same safety check.
+  2008-07-16 : Import should import regions and constants as well
+  2008-07-16 : Quit commands should have "save", "save as" --> REJECT
+  2008-07-16 : Spelling: "Modifications to current population is not saved." -> are
+  2008-07-16 : Region copy dialog -> copy to all regions option needed
+  2008-07-16 : Error message goes "lambda ...", should be "sequence ..."
+  2008-07-16 : "Save population as" menu requested
+
+******************************************************************************************************************************
+VERSION 0.3.4, 2008-07-02, OFFICIAL RELEASE
+    This was the first official release to be circulated around all units of EURACE
+
+  2008-06-29 : Changed title of model summary window from "Population summary" to "model summary".
+  2008-06-29 : Put the memvar syntax help into memvar screen as a button. 
+  2008-06-29 : Fixed the initial sorting of memory variables order.
+  2008-06-29 : Special vars were not showing up in the memvar screen, fixed.
+  2008-07-01 : BUGFIX -> When an environment data type has a field which is an array (E.g. Firm->Stock->returns[100]), program would not check id user entered list has the correct size or values -> tied up to list init clarification.
+  2008-07-01 : Nested structs->Now handled as requested by Grequam but list initializations have no clarification.
+
+
+******************************************************************************************************************************
+VERSION 0.3.2, 2008-06-28
+    This is a bugfix release
+
+  2008-06-25 : Memvar edit dialog (and other dialogs) were not modal)
+  2008-06-25 : Store which model.xml file is used when creating the population, and show on the properties screen.
+  2008-06-25 : BUGFIX -> When an array size is described in terms of a model constant it is not rendered into a number in the output 0.xml (now constants can be used and edited in pogui)
+  2008-06-26 : With the new memory var editing screen, region copy feature was lost.
+  2008-06-26 : now agent/varnames can be sorted by clicking on the column
+  2008-06-28 : tab skipping in memvars window lacks focus vscoll etc adjustment
+  2008-06-28 : In the output 0.xml: the order of the memory variables is garbled, ie it is not the same as the order in the model.xml file.
+  2008-06-28 : Allow changing model.xml for a population, and reuse memory variable values and other stuff  (before only imported memvars!)   
+
+******************************************************************************************************************************
+VERSION 0.3.0, 2008-06-24
+    This version was developed by using feedback from a slighly larger group of users from a few EURACE partners. It is a feature release. During development XMML schema of FLAME was changed again to use a multi-file structure, and PopGUI is adopted to use the new structure.
+
+  2008-06-10 : Added capability to copy initialization forms for one region to another. It is likely that initialization forms are the same for the most part, except perhaps some distribution parameters. This should ease the entry procedure.
+  2008-06-19 : Relaxed 'desc' field requirement for environment variables. Fixed wrong tag opening in 0.xml generation
+  2008-06-19 : Added 'sample' method to initform language. Removed unnecessary max lenght limitation in initform entry widgets.
+  2008-06-20 : BUGFIX -> the opening xml tag in the output file is wrong: </id>1</id>
+  2008-06-20 : BUGFIX -> the input field does not allow me to type more than "choice([1," (note: this was due to default length of text input fields in GTK)
+  2008-06-20 : Save population is changed to append .pop extension to file names automatically
+  2008-06-20 : Save population re-saving an already saved pop file overwrites, instead of opening a dialog asking for a filename. The behavior is changed to be more sane
+  2008-06-20 : In the save dialog: On bottom right it is indicated "Open". "Save" would seem more appropriate.
+  2008-06-20 : In the save dialog: typing a filename without extension saves it without any extension, while it would seem more intuitive that the extension .xml is appended. If user types 0.xml then of course no append is needed.
+  2008-06-20 : Open  population: has "untitled filter" on bottom right, changed to "show all files" and ".pop"
+  2008-06-20 : window now have a fullscreen button
+  2008-06-20 : Region number started from 0, changed to start counting from region 1
+  2008-06-20 : In 3-Edit memory: the type was mentioned  twice (id int int)
+  2008-06-20 : inputting an int for a variable that is a double output an int in the 0.xml as well. Cast it to a double.
+  2008-06-20 : scrolling up and down with arrows works, both the panel did not scroll down automatically, the mouse focus just disappears from view. Fixed to be automatic
+  2008-06-20 : Implemented initform for the whole array (e.g. choice without replacement)
+  2008-06-20 : Added sequence(start:increment:end) that fills the elements of an array with successive values from the sequence
+  2008-06-23 : Compatibility with new XMML schema and multi-file structure is implemented
+  2008-06-23 : A hierarchical tree editing is implemented for memory variables window, for easier editing  
+  2008-06-24 : In some models, arrays are entered wrong as using stock_array[2] for variable name, instead an array should be indicated using [2] in the type name (solution: accept either)
+
+******************************************************************************************************************************
+VERSION 0.2.0, 2008-06-05
+    Up to this first version development versions are tested by a pilot group of users within EURACE and TUBITAK-UEKAE.
+
+  2008-04-15 : poplib was extracted and completely reorganized using the codes from an initial attempt to create a simulation GUI
+  2008-06-03 : poplib was updated to reflect use of different distributions for different regions.
+  2008-06-03 : Initial version was written in Python using Tk library for GUI.
+  2008-06-04 : User interface rewritten using GTK+ library which is more feature rich than Tk.
+
+
