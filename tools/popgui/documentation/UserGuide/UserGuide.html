@@ -1,0 +1,469 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>EURACE Population GUI User Guide</TITLE>
+<META NAME="description" CONTENT="EURACE Population GUI User Guide">
+<META NAME="keywords" CONTENT="UserGuide">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="UserGuide.css">
+
+</HEAD>
+
+<BODY >
+
+<P>
+
+<P>
+
+<H1 ALIGN="CENTER">EURACE Population GUI User Guide</H1>
+<DIV CLASS="author_info">
+
+<P ALIGN="CENTER"><STRONG>Mehmet Gencer</STRONG></P>
+</DIV>
+
+<P>
+This user guide applies to PopGUI software v0.6.1. Latest stable version of the guide and the software can be downloaded from <TT><A NAME="tex2html1"
+  HREF="http://ccpforge.cse.rl.ac.uk/projects/eurace/">http://ccpforge.cse.rl.ac.uk/projects/eurace/</A></TT>http://ccpforge.cse.rl.ac.uk/. Latest development snapshots can be obtained from Subversion repository at <TT><A NAME="tex2html2"
+  HREF="http://eurace.cs.bilgi.edu.tr/svn/simgui/trunk">http://eurace.cs.bilgi.edu.tr/svn/simgui/trunk</A></TT>http://eurace.cs.bilgi.edu.tr/svn/simgui/trunk.
+
+<P>
+<BR>
+
+<H2><A NAME="SECTION00010000000000000000">
+Contents</A>
+</H2>
+<!--Table of Contents-->
+
+<UL CLASS="TofC">
+<LI><A NAME="tex2html29"
+  HREF="UserGuide.html#SECTION00020000000000000000">Introduction: Uses and features of PopGUI</A>
+<LI><A NAME="tex2html30"
+  HREF="UserGuide.html#SECTION00030000000000000000">Software Requirements and Installation</A>
+<UL>
+<LI><A NAME="tex2html31"
+  HREF="UserGuide.html#SECTION00031000000000000000">Installation on GNU/Linux</A>
+<LI><A NAME="tex2html32"
+  HREF="UserGuide.html#SECTION00032000000000000000">Installation on Windows</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html33"
+  HREF="UserGuide.html#SECTION00040000000000000000">Using PopGUI</A>
+<UL>
+<LI><A NAME="tex2html34"
+  HREF="UserGuide.html#SECTION00041000000000000000">STEP 1: Creating a population</A>
+<LI><A NAME="tex2html35"
+  HREF="UserGuide.html#SECTION00042000000000000000">STEP 2: Specifying population composition</A>
+<LI><A NAME="tex2html36"
+  HREF="UserGuide.html#SECTION00043000000000000000">STEP 3: Specifying agent memory variables</A>
+<LI><A NAME="tex2html37"
+  HREF="UserGuide.html#SECTION00044000000000000000">STEP 4: Instantiating population and finishing up</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html38"
+  HREF="UserGuide.html#SECTION00050000000000000000">Command line options and debugging</A>
+</UL>
+<!--End of Table of Contents-->
+<P>
+
+<H1><A NAME="SECTION00020000000000000000">
+Introduction: Uses and features of PopGUI</A>
+</H1>
+PopGUI is written for creating agent populations for EURACE  Project<A NAME="tex2html3"
+  HREF="#foot113"><SUP><SPAN CLASS="arabic">1</SPAN></SUP></A> simulations using FLAME multi-agent framework. The program reads already designed agent models described in FLAME XMML format, and provides facilities to specify composition of population and specifications for initializing each agent's memory variables. Populations created by the program is then exported as an XML file (so called 0.xml file in FLAME), which is fed into simulation engine which uses these initial conditions and agent behavior described in models to carry out the simulations.
+
+<P>
+When reading through this guide it is important to distinguish the terms `population' and `population instance'. PopGUI's central concern is to maintain specifications for creating initial populations. `Population' refers to these specifications and the program stores them in its own format in '.pop' files. Whereas many `population instance's(0.xml files) can be created from the same population specification. Although PopGUI is designed to create valid population instances, the program does not read them back or allow their manipulation.
+
+<P>
+Population specification involves two main phases. First is population composition. In the FLAME framework an agent population can be divided into any number of sub-populations. For example, the EURACE model contains geographical regions, such as countries, and we can distribute the agents among these regions using the PopGUI. One most straightforward example is countries of the world. Although each country's social life is composed of same types of agents such as workers/consumers, firms, banks, etc., their compositions and demographic features are different since each country have a different population (number of people), number and average size of firms, etc. To account for such realistic populations, PopGUI allows its user to create several regions and specify numbers of each type agent separately for each region; therefore allowing each region to have a different composition.
+
+<P>
+The second phase of specifying a population involves assigning values to agents' memory variables. Each type of agent is described by a different set of variables. For example employees can be described with their skill set, income and employment status, whereas a firm is described by number of workers, production capacity, etc. For a realistic population one usually needs standard or empirical random  distributions. For instance in our economic world example, sizes of firms in a country usually shows a normal distribution, although its mean is different for each country/region. PopGUI provides such random distributions for memory variables, and use of empirical distributions is planned for future releases.
+
+<P>
+Another feature of a realistic population is that the agents in it are not isolated but relate to one another. For examples workers are employed by firms in their region, or firms borrow money from banks in their country. Therefore these relations must also be initialized in order to create a population, and they must be stored in agent memory variables. In the case of employment relation example, firms will have employees whose skillset is suitable for what firm produces, and furthermore the relation is exclusive (i.e. if a person is employed in a firm, he/she cannot be employed by another). In the firm-bank relation example firms usually borrow money from banks in their own region, and the relation is not exclusive (i.e. other firms also borrow money from the same bank). PopGUI provides a rich set of features for creating relations between agents, both exclusive and otherwise. 
+
+<P>
+In additional to those substantial features mentioned above, some rather practical features were also implemented to address needs of agent modelers. For example agent models change through time. New agent types may be added, or agent memory variables are changed. It would be quite impractical to start over with the population design when such changes occur. For this reason PopGUI allows importing population specifications from populations that were worked out for older versions of models. With the help of this feature populations can be re-used with only incremental changes. Such features are introduced in the relevant sections below.
+
+<P>
+
+<H1><A NAME="SECTION00030000000000000000">
+Software Requirements and Installation</A>
+</H1>
+PopGUI is written in Python language for faster development and portability reasons. It uses GTK+ for its graphical user interface, Therefore PopGUI will run on any platform for which Python (version 2.5 or higher) and GTK+(version 2.0 or higher) is available, including GNU/linux, Microsoft Windows, and many Unixes, and others.
+
+<P>
+The program itself consists of two files only: poplib.py which contains the library functions, and popgui.py which provides the GUI. Follow the instructions below for your operating system to start using PopGUI.
+
+<P>
+
+<H2><A NAME="SECTION00031000000000000000">
+Installation on GNU/Linux</A>
+</H2>
+Install python-gtk2 package. Then copy poplib.py and popgui.py into some directory, and run popgui.py. If you want to do these from a command line, do as follows:
+<PRE>
+ $ sudo aptitude install python-gtk2
+ $ python popgui.py
+</PRE>
+
+<P>
+
+<H2><A NAME="SECTION00032000000000000000">
+Installation on Windows</A>
+</H2>
+Install the following in order (See <TT><A NAME="tex2html5"
+  HREF="http://www.pygtk.org/downloads.html">http://www.pygtk.org/downloads.html</A></TT>http://www.pygtk.org/downloads.html for detailed instructions and links for setting up Python with GTK support):
+
+<OL>
+<LI>Python 2.5 or newer
+</LI>
+<LI>GTK+ win32 runtime
+</LI>
+<LI>PyCairo
+</LI>
+<LI>PyGObject
+</LI>
+<LI>PyGTK
+</LI>
+</OL>
+
+<P>
+After that copy poplib.py and popgui.py into a directory, and run popgui.py.
+
+<P>
+
+<H1><A NAME="SECTION00040000000000000000">
+Using PopGUI</A>
+</H1>
+In order to create populations with PopGUI, you need a model describing your agents (their memory and behavior). Since PopGUI was written as a part of EURACE project (see <TT><A NAME="tex2html6"
+  HREF="http://www.eurace.org">http://www.eurace.org</A></TT>http://www.eurace.org), it currently can use only  models given in XMML format, which is the format of the FLAME framework, the official simulation environment of EURACE. Similarly the population instances created by the program are exported in the XML format adhering to FLAME specifications only. 
+
+<P>
+Although agent models contain behavior in addition to memory of agents, only the memory is of interest when creating populations. Agent behavior is used later by the simulation engine, along with the population created by PopGUI.
+
+<P>
+
+<H2><A NAME="SECTION00041000000000000000">
+STEP 1: Creating a population</A>
+</H2>
+First create a new population, from file menu. When creating a population you'll be asked for the model xml file which must be in FLAME XMML format. Then you can give a name to the population and set the number of regions in the window that pops up, as shown in Figure <A HREF="#fig:properties">1</A>. The default number o regions is 1. You can increase this number depending on your needs. When you are finished you must save your changes using ``Update and close'' button in the properties dialog. You can later view or change these properties using the ``Properties'' button in the toolbar. The update operation only updates the population in your session, and does not save the changes in the file system. To save your changes permanently at any point, you must use ``Save population'' or ``Save population as'' menu items from the ``File'' menu group. The population information is saved in a file with `.pop' extension in your file system.
+
+<DIV ALIGN="CENTER"><A NAME="fig:properties"></A><A NAME="37"></A>
+<TABLE>
+<CAPTION ALIGN="BOTTOM"><STRONG>Figure 1:</STRONG>
+Population properties dialog</CAPTION>
+<TR><TD>
+<DIV ALIGN="CENTER">
+<IMG
+  WIDTH="353" HEIGHT="267" ALIGN="BOTTOM" BORDER="0"
+ SRC="./properties.jpg"
+ ALT="Image properties">
+  
+</DIV></TD></TR>
+</TABLE>
+</DIV>
+If you want to use a previously created population, click the ``Open population'' menu in the ``File'' menu group, then choose a population. Alternatively the name of a `.pop' file can be given as a command line argument to PopGUI when invoking the program (see section on command line options below).
+
+<P>
+Once you have a population loaded to PopGUI, pressing ``Model summary'' button will display the rudimentary structure of the model you have chosen, for inspection purposes. 
+
+<P>
+Note that there's also an ``import...'' button on the properties dialog. The import feature is provided for a practical concern in modeling work. Once a population is created, PopGUI forgets about the original model and only remembers agents and their memory variables. However the agent models may change while work on population continues. It would be quite impractical to start over entering population specifications every time the model changes, and when the changes are minor (e.g. a few memory variables are added or updated in the model). In such cases what you need to do is to create a new population using the newest model, and then import your previous work into the new population using this ``import...'' button on the properties menu. However special care must be paid since import operation will import agent memory variable specifications for only those that exists in your latest model. Therefore if there are newly added memory variables or agents, it is up to you to complete the specifications for such new variables and agents.
+
+<P>
+A restriction of import operation is that number of regions in the current population must match that of the population you are importing from. Therefore even if you plan to change number of regions, you must do so only after importing.
+
+<P>
+NOTE: Since the program is at its development stage it may not be backwards compatible. When you create and save a population, a version number is stored with it indicating version of its data structure. Later if you try to use that population with a newer versions of the PopGUI there is a chance that it will fail with a warning about the versions. The recommended way to handle such situations is to create a population from scratch and import memory variables as described above.
+
+<P>
+
+<H2><A NAME="SECTION00042000000000000000">
+STEP 2: Specifying population composition</A>
+</H2>
+Next step is to set number of each type of agent in each region. When you click ``Edit Regions'' button in the toolbar, you will be presented a table whose columns are regions and whose rows are agents (see Figure <A HREF="#fig:regions">2</A>). You can enter the number of agents in this grid and then press ``update and close'' button if you want to save these changes. Your entries must be either positive integers or zero. 
+
+<DIV ALIGN="CENTER"><A NAME="fig:regions"></A><A NAME="46"></A>
+<TABLE>
+<CAPTION ALIGN="BOTTOM"><STRONG>Figure 2:</STRONG>
+Editing population composition</CAPTION>
+<TR><TD>
+<DIV ALIGN="CENTER">
+<IMG
+  WIDTH="410" HEIGHT="317" ALIGN="BOTTOM" BORDER="0"
+ SRC="./regions.jpg"
+ ALT="Image regions">
+  
+</DIV></TD></TR>
+</TABLE>
+</DIV>
+
+<P>
+
+<H2><A NAME="SECTION00043000000000000000">
+STEP 3: Specifying agent memory variables</A>
+</H2>
+This is the most elaborate step of specifying populations in PopGUI. When you press ``Edit memory variables'' toolbar button, you will be presented with a detailed display of agents and their variables with several buttons at the bottom part of screen, as shown in Figure <A HREF="#fig:memvars">3</A>. Agents, their memory variables, and sub-components of these memory variables are presented in the form of a tree parts of which can be collapsed or expanded by clicking on the branches. Alternatively all branches can be expanded or collapsed using the ``Expand all''/''Collapse All'' buttons at the bottom of the screen. 
+
+<DIV ALIGN="CENTER"><A NAME="fig:memvars"></A><A NAME="55"></A>
+<TABLE>
+<CAPTION ALIGN="BOTTOM"><STRONG>Figure 3:</STRONG>
+Editing memory variables</CAPTION>
+<TR><TD>
+<DIV ALIGN="CENTER">
+<IMG
+  WIDTH="370" HEIGHT="272" ALIGN="BOTTOM" BORDER="0"
+ SRC="./memvars.jpg"
+ ALT="Image memvars">
+  
+</DIV></TD></TR>
+</TABLE>
+</DIV>
+
+<P>
+This display also have a grid structure since one must provide specification for memory variables separately for each of the regions. However in most cases the specifications for different regions of the same variable are same or very similar. For this reason a ``Region copy'' button is provided in this screen. Using this feature you can copy specifications for one region to other regions, and then make incremental changes, to speed up your work.
+
+<P>
+As described above, specifications of memory variables are elaborate and has two basis: values and relations. Although both are addressed in the language used for memory variable initialization (or 'initform' as we refer to them in EURACE), different features are required and thus we will present them in separate sections below. The 'syntax help' button on the memory variables screen displays up-to-date reference on the initform language for user convenience. As a note to users, the initform language is based on dynamic interpretation capability of Python, and hence it is a Pythonic syntax. However. it is not necessary at all for users to have any experience in Python language (although a little bit can help if one wants to use lambda expressions for extending the initform language as will be shown below).
+
+<P>
+
+<H3><A NAME="SECTION00043100000000000000">
+Specifying values</A>
+</H3>
+Next to each variable's name in the memory variable editing screen, you will see a variable type. Following are the varieties of these types:
+
+<UL>
+<LI>A few variables are special. Currently these are the ones named `id' and `region_id'. Users cannot enter anything for these variables. The `id' is a unique identifier of each agent in the population (for referencing purposes) and it will be assigned sequentially during population instantiation. This variable must exist for FLAME simulations to work. `region_id', when used, will contain an integer which is the number of the region.
+</LI>
+<LI>Some variables are STATIC or CONSTANT. These appear in cases where their value is fixed in the model or taken from a constant. The names of constants are defined in agent model, but their values are entered in PopGUI using ``Edit constants'' toolbar button.
+</LI>
+<LI>Simple variables has a type which is one of `int' or `double'.
+</LI>
+<LI>Composite variables are actually C structs. The names of these structs come from agent model which is used when creating a new population. When a variable is of a composite type, its sub-fields can be expanded and will be entered in separate boxes.
+</LI>
+<LI>Finally, a variable can be an array of a simple of composite type. For such variables users will enter a specification for the length of array in addition to the variable (which is used for each element of the array). Special features are provided when one wishes to address all elements of an array, such as when they will be selected from a set without replacement.
+
+<P>
+Most common use of STATIC or CONSTANT variables occur in array sizes, when array size is fixed in the model either hard coding or by tying to a constant.
+</LI>
+</UL>
+
+<P>
+The entries for memory variables are arithmetic expression which produce a single numeric value (except the special situation of array initialization). Therefore the expressions entered into the boxes in this screen can be as simple as a constant number, or a simple arithmetic expression: e.g. ``<TT>2</TT>'' or ``<TT>2*2-(3.14/4)</TT>''. Whenever necessary, PopGUI will convert integer values to real numbers, or vice verse.
+
+<P>
+
+<H4><A NAME="SECTION00043110000000000000">
+Using random or deterministic distributions</A>
+</H4>
+In most cases the values are not constants. Use of random or deterministic initializations are very common. Following functions are provided for use in such cases in initforms:
+<DL>
+<DT><STRONG>rand(int,int)</STRONG></DT>
+<DD>: a random integer from the inclusive range.
+   
+</DD>
+<DT><STRONG>rand(real,real)</STRONG></DT>
+<DD>: a random real number from the range.
+   
+</DD>
+<DT><STRONG>choice([v1,v2,...])</STRONG></DT>
+<DD>: Choose a value from the list randomly.
+   
+</DD>
+<DT><STRONG>normal(mu, sigma)</STRONG></DT>
+<DD>: Normal distribution. mu is the mean, and sigma is the standard deviation. 
+   
+</DD>
+<DT><STRONG>discrete( (probability,value), (probability,value),... )</STRONG></DT>
+<DD>: Choose value given discrete probabilities. Probabilities must add up to 1.0.
+   
+</DD>
+<DT><STRONG>deterministic(min,max, lambda function)</STRONG></DT>
+<DD>:  Assign values by taking one value at a time from inclusive range and applying function to selected value. Min and Max must be integer, and Max must be greater than Min. e.g. ``<TT>deterministic(0,10,lambda x:x*10)</TT>'' will initialize the memory variable of a sequence of agents as:
+     <PRE>
+      agent[0]=0
+      agent[1]=10
+      ...
+      agent[10]=100
+      agent[11]=0
+      ...
+</PRE>
+</DD>
+</DL>
+Also you can combine any of the above in arithmetic expressions: e.g. ``<TT>2+rand(0,5)</TT>'' or ``<TT>rand(2,6)+choice([1,3,6])</TT>'', etc. Discrete versions of random distributions are automatically chosen by PopGUI. In other words even if you use ``<TT>random(1.0,2.0)</TT>'' for a variable whose type is integer, it will be automatically treated as  ``<TT>random(1,2)</TT>'' by PopGUI.
+
+<P>
+
+<H4><A NAME="SECTION00043120000000000000">
+Using other memory variables in expressions</A>
+</H4>
+It is possible to use value of a memory variable of agent itself in specification of another. The ``<TT>getSelfVar()</TT>'' function is provided for this purpose. For example if agent has two memory variables of simple types named `numberofchildren' and `monthlyexpenses', one can depend on the other by using ``<TT>getSelfVar("numberofchildren")*1250+2000</TT>'' in the box for `monthlyexpenses'. However you must be careful about dependencies of variables. PopGUI will analyse which other memory variables a variable depends on and sets their values in proper order. But if there are cyclic dependencies which cannot be satisfied, you will face an error at some point.
+
+<P>
+In the example above ``<TT>getSelfVar()</TT>'' returned simply a numeric value since the named variable was a simple variable. However, if the memory variable referred to is an array or a composite type, rather than a simple variable, one usually needs to further refer to its elements. For example if the returned value is an array ``<TT>getSelfVar("somearray")[0]</TT>'' will return first (zero indexed) element of it. If the returned value is a composite variable ``<TT>getSelfVar("somecomposite")["x"]</TT>'' will return its sub-field named `x', and so on.
+
+<P>
+
+<H4><A NAME="SECTION00043130000000000000">
+Initializing arrays</A>
+</H4>
+The only case where the result of your expression is not a single numeric value is when you want elements of an array specified at once. In this case your expressions must yield a list whose length is the same with the array length. For example if you have an array of length four, you can use something like ``<TT>[1,2,3,4]</TT>'' to initialize the array. A few functions whose return values are lists are provided for such purposes:
+<DL>
+<DT><STRONG>sample([1,2,3,...],k)</STRONG></DT>
+<DD>: Return a k length list of unique elements chosen from the sequence. Used for random sampling without replacement.
+   
+</DD>
+<DT><STRONG>sequence(start,end,increment)</STRONG></DT>
+<DD>: generate a sequence of integers with given increment within the inclusive interval: [start, start+increment, start+2*increment, ..., END] where END<SPAN CLASS="MATH"><IMG
+ WIDTH="17" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img1.png"
+ ALT="$\le$"></SPAN>end.
+</DD>
+</DL>
+<H4><A NAME="SECTION00043140000000000000">
+Using model constants or population size for scalability purposes</A>
+</H4>
+You can access model constants or number of agents in the population using the following:
+<DL>
+<DT><STRONG>getConstant(constantname)</STRONG></DT>
+<DD>: Returns the value of model constant. e.g. ``<TT>getConstant("alpha")</TT>'' to retrieve the value of constant named "alpha". (These constant values are what you set in the ``Edit constants'' tab of the program).
+   
+</DD>
+<DT><STRONG>getAgentCount(agentname)</STRONG></DT>
+<DD>: Get global count of agents with given name, i.e. sum of number of agents in all regions. e.g. ``<TT>getAgentCount("Firm")</TT>''
+</DD>
+</DL>
+<H3><A NAME="SECTION00043200000000000000">
+Accessing other agents and Initializing agent relations</A>
+</H3>
+Agents are not isolated. For example employees and firms in an economics simulation are related to one another through employment relations. To address this aspect of populations PopGUI provides a means to select other agents in the population using some criteria, and use their memory variables in specifying another agent's memory.
+
+<P>
+In order to pick an agent one can use ``<TT>getAgentRegional(agentname)</TT>'' or ``<TT>getAgentGlobal(agentname)</TT>'' functions, where the former selects an agent from the same region with the referring agent, the latter selects one from the whole population. Both variants can be provided with conditions on the agent to be selected using the following format:
+<BR>``<TT>getAgentRegional("Bank", conditions=[("givescredit",equals(1)),("badreputation",equals(0),...])</TT>''
+<BR>
+Please note that conditions is a list of tuples <TT>(variable name, condition function)</TT>. Variable name must be a variable of the selected agent, and condition is one of the special functions defined. These functions can be one of the following:
+<DL>
+<DT><STRONG>equals(what)</STRONG></DT>
+<DD>: is the value of selected variable equals  to the value
+   
+</DD>
+<DT><STRONG>between(a,b)</STRONG></DT>
+<DD>: is the value of selected variable within the range
+   
+</DD>
+<DT><STRONG>MooreNeighbour(numcolumns,no)</STRONG></DT>
+<DD>: checks whether the variable (an integer) is in the Moore neighbourhood of "no" in a geography where regions are laid out in rows with a width of 'numcomulmns'. For example if there are 9 regions laid out as follows:
+      1    2    3
+      4    5    6
+      7    8    9
+    then neighbours of region 1 are 2,5,4, whereas neighbours of region 5 are1,2,3,4,6,7,8,9, etc.
+   
+</DD>
+<DT><STRONG>your own functions</STRONG></DT>
+<DD>: Other conditions can be defined using so called lambda functions in Python language, such as  ``<TT>lambda x: x&lt;100 and x&gt;=5</TT>''. For example ``<TT>getAgentRegional("Employee", conditions=[("skill",lambda skill:skill&lt;100 and skill&gt;50)])</TT>''
+</DD>
+</DL>
+One can use a valid expression as a parameter to these functions. For example ``<TT>equals(getSelfVar("id"))</TT>'' will work.
+
+<P>
+Once an agent is selected, its variables can be accessed using a function called ``<TT>getAgentVar(variablename)</TT>''. For example:
+  ``<TT>getAgentGlobal("Bank", conditions=[("region_id", MooreNeighbour(10,getSelfVar("region_id"))]).getAgentVar("id")</TT>''. If the selected variable is a struct or a list, its elements can be accessed using a syntax similar to the examples given for ``<TT>getSelfVar()</TT>'', e.g. ``<TT>getAgent("Bank").getAgentVar("interestrates")["shortterm"]</TT>''.
+
+<P>
+Finally if one wishes to prevent others from selecting the same agent, it is possible to do so by setting the 'exclusive' flag to 1 in getAgent variants, i.e. ``<TT>getAgentRegional("Employee",exclusive=1)</TT>''. Once you do this, the selected employee will never be selected again. However one must be careful since it is possible, depending on the composition of the population, that such conditions may not be satisfied once all agents are taken.
+
+<P>
+NOTE: The agents are selected randomly by the current implementation of the above functions in PopGUI.
+
+<P>
+
+<H3><A NAME="SECTION00043300000000000000">
+Validating and saving memory variable specifications</A>
+</H3>
+Before saving memory variables you can use the 'Validate' button on the window, which does some elementary syntax checking. However it only validates expressions you enter and does not attempt a full initialization and checking of expressions and references for fitness. Thus you may still catch some problems when you attempt to instantiate population later. After validation use ``Save and close'' button on the memory variables screen to save your entries.
+
+<P>
+
+<H2><A NAME="SECTION00044000000000000000">
+STEP 4: Instantiating population and finishing up</A>
+</H2>
+Once you finish entering memory variables update your changes using the 'save and close' button. Finally you can create an instance of the population (i.e. the 0.xml file in EURACE parlance) using 'Instantiate population' button. You will be asked for the name of the file to export the population. 
+
+<P>
+Depending on the number of agents in your population this process can take a long time, and the progress will be displayed on the main screen. You can cancel this operation using the ``Cancel'' button at any time.
+
+<P>
+Once you are finished working with your population remember to save it before you quit the program. Later you can re-open them from the file menu, and create new population instances for the same population, or modifying other things.
+
+<P>
+
+<H1><A NAME="SECTION00050000000000000000">
+Command line options and debugging</A>
+</H1>
+The program accepts a few command line options. Use:
+<PRE>
+python popgui.py -h
+</PRE>
+to display help on these options. Option ``-v'' will display program version, and ``-d'' will turn on debugging so that program will dump a lot of messages in the terminal it is being run, which can be helpful in reporting bugs. 
+
+<P>
+Also you can give a population file as command line argument for the program to open the population during start up. For example:
+<PRE>
+python popgui.py -d test.pop
+</PRE>
+will open the population saved in ``test.pop'' and will turn on debugging while you work.
+
+<P>
+PopGUI uses versioning for the saved populations to identify the data structure changes that are not backwards compatible, and denies to open populations that were created using past versions of the program and are not compatible with the current version. You can disable version checking using ``-i'' parameter at the command line, however it is strongly recommended that such usage should be avoided.
+
+<P>
+
+<H1><A NAME="SECTION00060000000000000000">
+About this document ...</A>
+</H1>
+ <STRONG>EURACE Population GUI User Guide</STRONG><P>
+This document was generated using the
+<A HREF="http://www.latex2html.org/"><STRONG>LaTeX</STRONG>2<tt>HTML</tt></A> translator Version 2002-2-1 (1.71)
+<P>
+Copyright &#169; 1993, 1994, 1995, 1996,
+Nikos Drakos, 
+Computer Based Learning Unit, University of Leeds.
+<BR>
+Copyright &#169; 1997, 1998, 1999,
+<A HREF="http://www.maths.mq.edu.au/~ross/">Ross Moore</A>, 
+Mathematics Department, Macquarie University, Sydney.
+<P>
+The command line arguments were: <BR>
+ <STRONG>latex2html</STRONG> <TT>-split 0 -no_navigation UserGuide.tex</TT>
+<P>
+The translation was initiated by Vehbi Sinan Tunalioglu on 2008-11-27
+<BR><HR><H4>Footnotes</H4>
+<DL>
+<DT><A NAME="foot113">... Project</A><A
+ HREF="UserGuide.html#tex2html3"><SUP><SPAN CLASS="arabic">1</SPAN></SUP></A></DT>
+<DD><TT><A NAME="tex2html4"
+  HREF="http://www.eurace.org">http://www.eurace.org</A></TT>http://www.eurace.org
+
+</DD>
+</DL>
+<BR><HR>
+<ADDRESS>
+Vehbi Sinan Tunalioglu
+2008-11-27
+</ADDRESS>
+</BODY>
+</HTML>
