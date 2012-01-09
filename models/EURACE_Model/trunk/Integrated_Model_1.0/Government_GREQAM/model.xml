@@ -34,24 +34,17 @@
    <variable>
     <type>double</type>
     <name>subsidy_trigger_on</name>
-    <description>Trigger floor level of the GDP growth rate, below which the subsidy is switched on. Typically set to -0.01.&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-</description>
+    <description>Trigger floor level of the GDP growth rate, below which the subsidy is switched on. Typically set to -0.01.</description>
    </variable>
    <variable>
     <type>double</type>
     <name>subsidy_trigger_off</name>
-    <description>Trigger ceiling level of the GDP growth rate, above which the subsidy is switched off. Typically set to +0.01.&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-</description>
+    <description>Trigger ceiling level of the GDP growth rate, above which the subsidy is switched off. Typically set to +0.01.</description>
    </variable>
    <variable>
     <type>int</type>
     <name>gov_policy_swith_quantitative_easing</name>
-    <description>Swith to turn on quantitative easing.&#xd;
-&#xd;
-&#xd;
-&#xd;
-&#xd;
-</description>
+    <description>Swith to turn on quantitative easing.</description>
    </variable>
   </constants>
   <functionFiles>
