@@ -669,9 +669,7 @@
     </function>
     <function>
      <name>Firm_calc_production_quantity_2</name>
-     <description>Firms iterate over the planned production quantity decreasing it incrementally,&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
- such that the corresponding labor demand and capital demand can be financed by &#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
- the actually obtained financial resources, AFTER all prior financial commitments have been paid.</description>
+     <description>Firms iterate over the planned production quantity decreasing it incrementally, such that the corresponding labor demand and capital demand can be financed by  the actually obtained financial resources, AFTER all prior financial commitments have been paid.</description>
      <currentState>Firm_End_Financial_Management</currentState>
      <nextState>Firm_Start_Labour_Role</nextState>
      <inputs/>
@@ -720,9 +718,7 @@
     </function>
     <function>
      <name>Firm_calc_pay_costs</name>
-     <description>In this function the firm receives the purchased investment&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
- goods and pays the goods and   the wage bill. Additionally, the &#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
- new mean wage and the new average specific skill level is computed.</description>
+     <description>In this function the firm receives the purchased investment goods and pays the goods and the wage bill. Additionally, the new mean wage and the new average specific skill level is computed.</description>
      <currentState>11</currentState>
      <nextState>12</nextState>
      <inputs/>
@@ -737,10 +733,7 @@
     </function>
     <function>
      <name>Firm_send_goods_to_mall</name>
-     <description>Here the firms send the produced goods to the malls. &#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-If the realized output is less than the intended one, then &#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-the malls are only delivered with a proportional &#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-share of their planned delivery volumes.</description>
+     <description>Here the firms send the produced goods to the malls. If the realized output is less than the intended one, then the malls are only delivered with a proportional share of their planned delivery volumes.</description>
      <currentState>12</currentState>
      <nextState>Firm_Start_Seller_Role</nextState>
      <inputs/>
@@ -752,8 +745,7 @@ share of their planned delivery volumes.</description>
     </function>
     <function>
      <name>Firm_calc_revenue</name>
-     <description>Here the firms calc the revenues and profits and then &#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-distribute the dividends to households.</description>
+     <description>Here the firms calc the revenues and profits and then distribute the dividends to households.</description>
      <currentState>Firm_Start_Seller_Role</currentState>
      <nextState>Firm_End_Seller_Role</nextState>
      <inputs>
@@ -804,8 +796,7 @@ distribute the dividends to households.</description>
     </function>
     <function>
      <name>Firm_update_specific_skills_of_workers</name>
-     <description>Because the specific skills of workers have changed the &#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-firms update the specific skill levels of the workers.</description>
+     <description>Because the specific skills of workers have changed the firms update the specific skill levels of the workers.</description>
      <currentState>Firm_End_Seller_Role</currentState>
      <nextState>14</nextState>
      <condition>
@@ -1028,9 +1019,7 @@ firms update the specific skill levels of the workers.</description>
     </function>
     <function>
      <name>Household_receive_goods_read_rationing</name>
-     <description>The household gets information about the accepted amount of &#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-goods and, if the mall is completely sold out then the households set the &#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-order and delivery volumes befor the second step to zero.</description>
+     <description>The household gets information about the accepted amount of goods and, if the mall is completely sold out then the households set the order and delivery volumes befor the second step to zero.</description>
      <currentState>10</currentState>
      <nextState>11</nextState>
      <inputs>
@@ -1068,9 +1057,7 @@ order and delivery volumes befor the second step to zero.</description>
     </function>
     <function>
      <name>Household_rank_and_buy_goods_2</name>
-     <description>Household receives information about the offered range &#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-of goods in the malls. Depending on these infos the household &#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-sends its good request.</description>
+     <description>Household receives information about the offered range of goods in the malls. Depending on these infos the household sends its good request.</description>
      <currentState>11</currentState>
      <nextState>12</nextState>
      <condition>
@@ -1125,8 +1112,7 @@ sends its good request.</description>
     </function>
     <function>
      <name>Household_handle_leftover_budget</name>
-     <description>This function convert the remaining budget, that is not &#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-spent in both consumtion steps, into the PAYMENT_ACCOUNT.</description>
+     <description>This function convert the remaining budget, that is not spent in both consumtion steps, into the PAYMENT_ACCOUNT.</description>
      <currentState>14</currentState>
      <nextState>15</nextState>
      <inputs/>
@@ -1241,8 +1227,7 @@ spent in both consumtion steps, into the PAYMENT_ACCOUNT.</description>
     </function>
     <function>
      <name>Mall_update_mall_stocks_sales_rationing_1</name>
-     <description>Mall reads the consumption requests and satisfies the demand &#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-if possible (otherwise rationing).</description>
+     <description>Mall reads the consumption requests and satisfies the demand if possible (otherwise rationing).</description>
      <currentState>03</currentState>
      <nextState>04</nextState>
      <inputs>
@@ -1270,8 +1255,7 @@ if possible (otherwise rationing).</description>
     </function>
     <function>
      <name>Mall_update_mall_stocks_sales_rationing_2</name>
-     <description>After the second request round the mall satisfies the demand if &#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-possible, otherwise rationing.</description>
+     <description>After the second request round the mall satisfies the demand if possible, otherwise rationing.</description>
      <currentState>04</currentState>
      <nextState>05</nextState>
      <inputs>
@@ -1358,9 +1342,7 @@ possible, otherwise rationing.</description>
  <messages>
   <message>
    <name>wage_payment</name>
-   <description>Sent by firms. Including the id, the worker id, the wage and &#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-the productivity  and mean specific skills of the employer in &#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-order to update the specific skills.</description>
+   <description>Sent by firms. Including the id, the worker id, the wage and the productivity and mean specific skills of the employer in order to update the specific skills.</description>
    <variables>
     <variable>
      <type>int</type>
@@ -1391,8 +1373,7 @@ order to update the specific skills.</description>
   </message>
   <message>
    <name>quality_price_info_1</name>
-   <description>Sent by mall. Including id, region id, id of the supplier (firm), the &#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-quality and price of the goods to inform the hosueholds about these goods. </description>
+   <description>Sent by mall. Including id, region id, id of the supplier (firm), the quality and price of the goods to inform the hosueholds about these goods. </description>
    <variables>
     <variable>
      <type>int</type>
@@ -1428,8 +1409,7 @@ quality and price of the goods to inform the hosueholds about these goods. </des
   </message>
   <message>
    <name>quality_price_info_2</name>
-   <description>Sent by mall. Including id, region id, id of the supplier (firm), &#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-the quality and price of the goods to inform the hosueholds about these goods.</description>
+   <description>Sent by mall. Including id, region id, id of the supplier (firm), the quality and price of the goods to inform the hosueholds about these goods.</description>
    <variables>
     <variable>
      <type>int</type>
@@ -1501,8 +1481,7 @@ the quality and price of the goods to inform the hosueholds about these goods.</
   </message>
   <message>
    <name>consumption_request_1</name>
-   <description>Sent by household. Including the id, the mall id, the id of the &#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-supplier and the quantity of the good a household wants to have.</description>
+   <description>Sent by household. Including the id, the mall id, the id of the supplier and the quantity of the good a household wants to have.</description>
    <variables>
     <variable>
      <type>int</type>
@@ -1533,8 +1512,7 @@ supplier and the quantity of the good a household wants to have.</description>
   </message>
   <message>
    <name>consumption_request_2</name>
-   <description>Sent by household. Including the id, the mall id, the id of the &#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;&#xd;
-supplier and the quantity of the good a household wants to have.</description>
+   <description>Sent by household. Including the id, the mall id, the id of the supplier and the quantity of the good a household wants to have.</description>
    <variables>
     <variable>
      <type>int</type>
