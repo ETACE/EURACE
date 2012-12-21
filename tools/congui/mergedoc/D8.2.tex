@@ -1,0 +1,234 @@
+\documentclass[urop]{socreport}
+\usepackage[pdftex]{graphicx}
+\usepackage[english]{babel}
+\usepackage{rotating}
+\usepackage[utf8]{inputenc}
+\usepackage{hyperref}
+\usepackage{natbib}
+\usepackage{makeidx}
+\makeindex
+
+\setlength{\oddsidemargin}{0cm}
+\setlength{\evensidemargin}{0cm}
+\setlength{\textwidth}{16cm}
+\setlength{\textheight}{23cm}
+
+\pagestyle{headings}
+
+\begin{document}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   COMMANDS %%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\screenshot}[1]{\includegraphics[scale=0.4]{screenshots/#1.jpg}}
+\newcommand{\graphic}[1]{\includegraphics[scale=0.8]{graphics/#1.jpg}}
+\newcommand{\example}[1]{``{\tt #1}''}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\pagenumbering{roman}
+\thispagestyle{empty}
+
+\begin{center}
+\includegraphics[scale=0.1]{./graphics/EURACE-Flag.jpg} \hfill
+\includegraphics[scale=0.5]{./graphics/6fp.jpg}
+
+\end{center}
+%\vspace{1cm}
+
+
+%\begin{tabular}{p{4.5cm}p{12cm}}
+\begin{center}
+Project no.\\
+035086\\
+Project acronym \\
+\textbf{EURACE}\\
+Project title\\ 
+\small{\textbf{An Agent-Based software platform for European economic policy design with heterogeneous interacting agents: new insights from a bottom up approach to economic modeling and simulation}}\\
+\end{center}
+
+%\vspace{0.1cm}
+
+\noindent Instrument STREP \\
+\small{Thematic priority IST FET PROACTIVE INITIATIVE ``SIMULATING EMERGENT PROPERTIES IN COMPLEX SYSTEMS"}\\
+%\vspace{0.1cm}
+\begin{center}
+\textbf{Deliverable reference and title} \\
+\small{\textbf{D8.2: Development of inference tools and of a friendly user interface}} \\
+Due date of deliverable: \\
+28/02/2009 \\ 
+Actual submission date: \\
+31/05/2009
+%September 3rd 2008 \\
+
+\vspace{0.1cm}
+Start date of project: September 1st 2006 \hfill
+Duration: 36 months \\
+\end{center}
+
+\noindent \small{Organisation name of lead contractor for this deliverable} \\
+TUBITAK-UEKAE\\
+
+\hfill Revision 1 \\
+
+\vspace{0.3cm}
+%\begin{comment}
+\begin{tabular}{|l|l|c|}
+\hline
+\multicolumn{3}{|l|}{\small{Project co-funded by the European Commission within the Sixth Framework Programme (2002-2006)}}\\
+\hline
+\multicolumn{3}{|l|}{Dissemination Level:}\\
+\hline
+PU & \small{Public} &\\
+\hline
+PP &\small{Restricted to other programme participants (including the Commission Services)}&   \\
+\hline RE & \small{Restricted to a group specified by the consortium (including the Commission Services)}&   \\
+\hline CO & \small{Confidential, only for members of the consortium (including the Commission Services)}& X \\
+\hline
+\end{tabular}
+%\end{comment}
+%\pagebreak
+
+%\vspace{0.5cm}
+%\textbf{Attachments:}\\
+%\begin{tabular}{p{1cm}p{14cm}}
+%1&Software on CD \\
+%2 & Software User Manual\\
+%\end{tabular}
+%\pagebreak
+
+
+\tableofcontents
+\listoffigures
+%\listoftables
+
+
+\chapter{Executive Summary}
+Creation of software utilities for use in design of agents, design of agent populations, preparation of simulations, and visualization of simulation results has been an essential objective of EURACE project in order to present a complete platform to facilitate use of agent based simulations in policy design. The EURACE Graphical User Interface (GUI) presented here refers to a collection of compatible software tools which provide the components that correspond to these functions of the EURACE software platform.
+
+Design of the EURACE GUI reflects our intention that these software tools reflect most general definition of the particular problems they intend to solve in agent based approach, to the extend that it is possible, while at the same time they are complete in the sense that they can be deployed in the EURACE project. In particular that they work with the FLAME simulation framework \citep{HOLCOMBE:2006}.
+
+Following are the components of EURACE GUI that correspond to different aspects of simulation development work:
+\begin{description}
+\item[XMML Editor] Agent design requires a tedious process of describing agent memory and behavior in an XML format specific to FLAME (the so called XMML format) while controlling for consistency of design in terms of parameters that affect the overall model. The XMML Editor provides a graphical interface which allows the agent designer to focus in his/her job, in addition to providing facilities for detecting errors in the design. It was named after the fact that it translates the design into the XMML format which is usable in FLAME framework.
+\item[GXparser] Once a model composed of several agent types is designed, it has to be compiled by the so called XParser component of the FLAME. The GXparser provides a graphical tool to ease this manual process and report possible compilation errors back to the designer.
+\item[PopGUI] A population corresponding to the European Economy in EURACE simulations is composed of multiple (thousands) copies of several types of agents in several geographical regions, whose memory and relations with each other are characterized by statistical features derived from actual data. The PopGUI component enables simulation designers to describe composition of populations and statistical features of agents, and produce population instances that are used as initial states for simulations.
+\item[ExpGUI] Policy experiments require comparison of outcomes of alternative simulations, where the compared cases correspond to covariation of several parameters among their corresponding ranges. ExpGUI facilitates creation of a series of simulation tasks from description of the experiment, thus reducing errors in creation of policy experiments.
+\item[VisGUI] The VisGUI component provides a tool for visualization and analysis of simulation outcomes.
+\item[ConGUI] Since simulation development requires several iterations over the various tasks described above, the ConGUI component was added to the EURACE GUI to ease launching of the various components described above.
+\end{description}
+
+\begin{figure}[h]
+  % Requires \usepackage{graphicx}
+  \centering
+\screenshot{congui}
+  \caption{EURACE GUI}
+  \label{figure:congui}
+\end{figure}
+Figure~\ref{figure:congui} is the flow diagram and the graphical user interface of the toolkits developed for EURACE. The deliverable presented here first describes the architecture of EURACE GUI in relation to other components of the EURACE Software Platform, then proceeds to instructions for using various components of the GUI as part of simulation development work.
+
+
+
+
+\chapter{Introduction}
+This document serves as the definitive documentation for the suite of user level programs that are created as part of the EURACE project effort. The EURACE project aims to produce socio-economic models and multi-agent simulation software for use in economic policy experiments. The project has started in September 2006, and will conclude in September 2009. Information on EURACE project can be found at \url{http://www.eurace.org}.
+
+An important requirement for EURACE project was creation of a software platform for design and implementation of agents, creation of agent populations, creation and execution of experiment sets, and evaluation and visualization of simulation results. While an existing multi-agent framework (FLAME/Xagents framework) was adopted in EURACE project and improved as part of the project effort \citep{Greenough2007}, such tools for pipeline of agent, population, and experiment design not existed at the time and created as part of the EURACE project. 
+
+The set of user interface tools in EURACE software platform, collectively called here as EURACE-GUI, were distributed individually during early stages of project. This documentation provides a single entry introduction to capabilities and usage of EURACE-GUI. Up-to-date information about the EURACE-GUI can be accessed online at \url{http://eurace.cs.bilgi.edu.tr}.
+
+EURACE-GUI consists of several independent modules that were created at different stages of the project. Various different technologies were employed for each module in order to satisfy implementation and agile development needs. For this reason modules are written using different computer languages (C++, Python), and uses various software and libraries (GTK, Qt, R-project). Despite their independence, the modules in EURACE-GUI can be invoked easily from within an entry point program called Control GUI (ConGUI).
+
+These independent modules all correspond to stages of the process of designing, running, and evaluation multi-agent simulations of complex systems. Following is a brief description of each module in the EURACE-GUI:
+\begin{description}
+\item[ConGUI]: ConGUI is a front-end which facilitates invocation of different modules of EURACE-GUI easily as part of a design pipeline.
+\item[XMML-Editor]: Used for designing different types of agents, their memory variables and behavior, in addition to global constants and messages used in a multi-agent system.
+\item[GXparser]: Used as a front-end for validating agent models produced with XMML-Editor, by parsing them through FLAME's xparser.
+\item[PopGUI]: Used for creating populations of agents whose state variables and relations can be initialized according to given criteria.
+\item[ExpGUI]: Used for creating sets of experiments using agent models and populations, then for executing them on a FLAME simulation engine.
+\item[VisGUI]: Used for visualization and statistical analysis of simulation outcomes.
+\end{description}
+
+The reader is recommended to read Chapter \ref{ch:overview} which provides an overview of the multi-agent model, population and experiment design process, before proceeding to subsequent chapters which explain usage of individual modules. 
+
+ 
+\chapter{Requirements and Installation}
+EURACE-GUI is written with portability in mind. Despite the variety of libraries it depends upon, all such dependencies are available for common computing platforms including 32-bit or 64-bit variants of GNU/Linux, Unix or BSD, and Microsoft Windows. While it is likely that it can be run on other systems such as Mac OS, it is neither tested on those platforms not we provide installation packages for them. Manual installation of individual modules of EURACE-GUI and libraries required by them can be cumbersome. Nevertheless, details of doing so are described in Appendix \ref{ch:manualinstall} and module sources can be downloaded from \url{http://eurace.cs.bilgi.edu.tr}.
+
+Before installing EURACE-GUI using installation packages, you are recommended to install the following software separately:
+\begin{description}
+\item[FLAME]: FLAME multi-agent platform is developed and distributed by University of Sheffield. Please check \url{http://ccpforge.cse.rl.ac.uk} for FLAME installers.
+\item[R]: R statistics package installers are available for a variety of platforms and is distributed under the GPL license. R installers can be downloaded from \url{http://www.r-project.org}.
+\end{description}
+Although you can install and run EURACE-GUI without having the above software, you should be aware that created simulations cannot be run without FLAME platform, and most features of the VisGUI component will not be available without R. However, if your intention is merely using a computer as a multi-agent design workstation, it is perfectly possible to install and run EURACE-GUI without these two software packages.
+
+\section{Installing required software}
+Although EURACE-GUI can be installed and run without the following software, its use and features are limited without them. Therefore it is recommended that the following are installed, in this order:
+\begin{description}
+\item[R]: R statistics package can be downloaded and installed from \url{http://www.R-project.org}. If you are using a Debian or Ubuntu Linux, it can also be installed using the package `r-base'.
+\item[FLAME]: First get the sources from \url{http://ccpforge.cse.rl.ac.uk}. After unzipping the sources, you need to compile and install two components from FLAME tree: libmboard and xparser. Enter to these directories in the given order, run `make' then `make install'.
+\end{description}
+
+\section{Installing EURACE-GUI from binary distribution}
+To get a copy of EURACE-GUI installer, go to \url{http://eurace.cs.bilgi.edu.tr} and download the most recent binary package for your platform (supported platforms are Windows, Linux and other Unix variants). Execute this file to complete the installation.
+
+\section{Installing EURACE-GUI from sources}
+If you are working on Microsoft Windows, MinGW is required to compile and install the EURACE GUI from sourse distribution. It can be downloaded from \url{http://www.mingw.org}. On Ubuntu or Debian Linux platforms you will need to have the package named build-essentals installed. Once you have this built environment for your platform, follow the instructions in Appendix \ref{ch:manualinstall}.
+
+\chapter{Overview of Agent and Population Design Process}
+\label{ch:overview}
+Certain stages of multi-agent simulation design envisioned in EURACE depend on output of other stages. Figure \ref{fig:workflow} visualizes the flow of work through modules in EURACE-GUI, also indicating the type of data that comes out from modules and used as input to others. This visualization is exactly what you will see when you launch the ConGUI, which acts as  the control panel for invocation of different modules in EURACE-GUI.
+\begin{figure}
+\caption{Flow of multi-agent design in EURACE}
+\label{fig:workflow}
+\graphic{workflow}
+\end{figure}
+
+The first stage in EURACE multi-agent simulation design is creation of agents and shared environment using XMML-Editor. Agent design involves (1) designing agent memory for different types of agents, (2) describing agent behavior, in the case of EURACE/FLAME the language used for such description is C programming language using a few FLAME specific constructs, (3) designing global environment variables shared by agents, (4) designing data types that occur in memory variables and exchanged as data units between communicating agents. Use of XMML-Editor to carry out these tasks is described in Chapter \ref{ch:xmme}. Once the multi-agent model design is completed, the model is saved in a FLAME specific format called XMML. 
+
+The next stage is designing a population of agents which will be the initial state of simulation. The model created in XMML-Editor is used as an input to PopGUI, which enables one to specify how different geographical regions in the simulated system are composed of different number of each type of agents, how each agent's memory should be initialized, and what should be the values of environment constants shared by all agents. PopGUI provides a variety of expressions which can be used to specify random distributions for initializing agent memory, or to establish relations between agents (e.g. employment relations in an economic simulation). Using these specifications PopGUI can create population instances which are different but has the same stochastic properties.
+
+The model and a population instance is sufficient to run a simulation. The model contains what are the memory variables of agents and program code describing their behavior. The population instance on the other hand contains initial values of agent memory for a whole set of agents comprising the population. Before a simulation is run however, the model must be compiled to generate an executable. The GXparser module allows user to do this without going down the elaborate steps of xparser program in FLAME. 
+
+Economic simulations are useful when one can compare outcomes of different environments, populations, or behavior. The ExpGUI program provides facilities to create a set of different initial conditions (populations) and to run simulations easily.
+
+Finally the VisGUI program can be used to visualize and analyze the results of simulations. The program use plotting and statistical facilities of R statistics package \citep{Rproject}.
+\chapter{Agent Design with XMML-Editor}
+\label{ch:xmme}
+\input{xmme.tex}
+\chapter{Compiling Agents with GXparser}
+\input{gxparser.tex}
+\chapter{Population Design with PopGUI}
+\input{popgui.tex}
+\chapter{Running Simulations through ExpGUI}
+\input{expgui.tex}
+\chapter{Analysis of results using VisGUI}
+\input{visgui.tex}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   APPENDICES   %%%%%%%%%%%%%%%%%%%
+\appendix
+\chapter{Manual installation from sources}
+\label{ch:manualinstall}
+\section{Installing PopGUI}
+PopGUI is written in Python language for faster development and portability reasons. It uses GTK+ for its graphical user interface, Therefore PopGUI will run on any platform for which Python (version 2.5 or higher) and GTK+(version 2.0 or higher) is available, including GNU/linux, Microsoft Windows, most Unixes, and others.
+
+The program itself consists of two files only: poplib.py which contains the library functions, and popgui.py which provides the GUI. Follow the instructions below for your operating system to start using PopGUI.
+
+\subsection{Installation on GNU/Linux}
+Install python-gtk2 package. Then place poplib.py and popgui.py into some directory, and run popgui.py. If you want to do these from a command line, do as follows (example for Debian or Ubuntu Linux):
+\begin{verbatim}
+ $ sudo aptitude install python-gtk2
+ $ python popgui.py
+\end{verbatim}
+
+\subsection{Installation on Windows}
+Install the following in order (See \url{http://www.pygtk.org/downloads.html} for detailed instructions and links for setting up Python with GTK support):
+\begin{enumerate}
+\item Python 2.5 or newer
+\item GTK+ win32 runtime
+\item PyCairo
+\item PyGObject
+\item PyGTK
+\end{enumerate}
+
+After that copy poplib.py and popgui.py into a directory, and run popgui.py.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%    BIBLIOGRAPHY  %%%%%%%%%%%%%%%%%%%%%%
+\bibliographystyle{plain}
+\bibliography{eurace}
+\end{document}

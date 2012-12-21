@@ -1,0 +1,104 @@
+\section{Overview}
+The VisGUI design takes an advanced GUI workspace approach where designers or policy makers can import, visualize, analyze, edit and export simulation results.
+
+The VisGUI architecture is designed aiming an overall modular implementation. It employs a Model View Controller(MVC) scheme, which enables its modularity and extendability. Although the package is a sub-module within EURACE Software Toolkit, it can be installed and run independently. This design decision is taken for several reasons. First, this flexibility is targeted to allow it to be integrated for other multi-agent computational tools as an analyses and visualization tool. For that reason, importation and exportation of standard data formats are adopted for better interoperability. Second, it allows designers or policy makers easily install and run VisGUI to perform analyses and visualizations of simulations data which are generated elsewhere. Third, this decoupling feature allowed us to develop the application upon existing GPL\footnote{GNU Public License, see url{http://www.gnu.org/}} licensed tools and software. In return, after a maturation stage of the application, the package will be made available publicly on public repositories\footnote{Such as url{http://sourceforge.net/}} as a GPL package. This will enable a contribution back to the open source community and contribution from the developers from the community to extend and maintain it in the future.
+\begin{figure}[h]
+  % Requires \usepackage{graphicx}
+  \centering
+\screenshot{db}
+  \caption{Parallel Database Creation}
+  \label{figure:db}
+\end{figure}
+\begin{figure}[h]
+  % Requires \usepackage{graphicx}
+  \centering
+\screenshot{db2}
+  \caption{Parallel Database Creation}
+  \label{figure:db2}
+\end{figure}
+
+\section{Features}
+A set of features are developed and made available to designers. The features are briefly listed below and some snapshots of their use are given accordingly to ease presentation:
+\begin{figure}[h]
+  % Requires \usepackage{graphicx}
+  \centering
+\screenshot{VisGUIScreenshot}
+  \caption{Visualization of Time Series a Variable}
+  \label{figure:visTS}
+\end{figure}
+\begin{itemize}
+\item \textbf{Importing Simulation Results:} The user is made able to import either result of a single simulation or a set of it. If this option is opted, the application reads in a sample iteration and retrieves information on the set of agents and their available memory variables. This automatically detected set of memory variables are used automatically to populate variable menus.
+\item \textbf{Database Creation:} The creation of a database is necessary when there is a very long and large simulation. It is also necessary when there are a set of policy experiment results. Created database speeds up time to visualize and analyze the results. It also allows portability of experiment results in a standard and light format to other platforms and visualization applications. We have taken a novel approach to integrate database creation into the application. It exploits multi-threading and parallelisation paradigms both to decrease the time of database creation and to keep doing analysis at the main workspace during any lengthy process of database creation. See Figure~\ref{figure:db} and Figure~\ref{figure:db2}.
+\begin{figure}[h]
+  % Requires \usepackage{graphicx}
+  \centering
+\screenshot{visdistro}
+  \caption{Visualization of Distribution of a Variable}
+  \label{figure:visdistro}
+\end{figure}
+\item \textbf{Visualization of Time Series of Memory Variables:} The nature of simulation necessitates a quick trace of some variables over iterations before further examination or more advanced policy experiments. User can directly check raw simulation data to examine time series of a memory variable. See Figure~\ref{figure:visTS}.
+
+\item \textbf{Visualization of Distribution of Memory Variables:} In the same manner as a quick time series visualization of raw data, users are also allowed to examine distribution of a variable at a desired iteration.See Figure~\ref{figure:visdistro}.
+
+\item \textbf{Advanced Visualization of Policy Experiments:} The application also allows designer to examine impact of a policy parameter on macro results, sensitivity of the computational model to an initialization and effects of random interactions in between agents across different runs by advanced visualization tool of the application. The feature allows to examine multiple variables at the same time very quickly. See Figure~\ref{figure:advancedTS}.
+\begin{figure}[h]
+  % Requires \usepackage{graphicx}
+  \centering
+\screenshot{advancedTS}
+  \caption{Visualization of Advanced Time Series Plots of an Experiment}
+  \label{figure:advancedTS}
+\end{figure}
+\item \textbf{Automatic Report Generation of Data Points:} This feature allows designers to view summary statistics and exact data points of visualization of a variable.
+\item \textbf{Exporting Raw Data of Plots:} The feature allows to export data points of a plot in standard data format, presumably to be tested or re-visualized by a different application. See Figure~\ref{figure:export}.
+\begin{figure}[h]
+  % Requires \usepackage{graphicx}
+  \centering
+\screenshot{export}
+  \caption{Exporting Raw Data of Plots}
+  \label{figure:export}
+\end{figure} 
+\item \textbf{Managing Generated Reports and Plots:} Analyses and visualizations of an experiment results in many reports and plots. This set of feature allows user either visualize or close them easily or automatically store them on a secondary memory space.
+\item \textbf{Automatic Storage and Re-storage of State of Application:} This feature allows both the main application and all interactive GUI dialogs to store its latest state for subsequent uses.
+\item \textbf{GUI Interaction and Validity Checks:} All of GUI dialogs are interactive to user preferences and automatically checks validity of user actions.
+\begin{figure}[h]
+  % Requires \usepackage{graphicx}
+  \centering
+\screenshot{fileop}
+  \caption{File Operations}
+  \label{figure:fileop}
+\end{figure}
+\item \textbf{Writing and Editing Reports:} VisGUI Workspace provides a text editor with basic functions to enable user to write reports or edit automatically generated reports for convenience.
+\item \textbf{Logging Status and Actions in the Workspace:} All major user actions are logged and displayed. The user can scroll and examine his/her previous actions.
+\item \textbf{File Operations:} All basic file operations including printing options are provided. See Figure~\ref{figure:fileop}.
+
+\item \textbf{Configuring Workspace:} The application provides configuration options for the workspace, its state, and automatic management of produced plots and reports. See Figure~\ref{figure:config}.
+\begin{figure}[h]
+  % Requires \usepackage{graphicx}
+  \centering
+\screenshot{config}
+  \caption{Configuring Workspace}
+  \label{figure:config}
+\end{figure}
+\item \textbf{Help Menu:} VisGUI provides an HTML based navigable help interface. 
+\end{itemize}
+
+\section{Using VisGUI}
+In this section, we will very briefly demonstrate how VisGUI can be used. 
+
+\subsection{Platforms}
+VisGUI is developed and tested both in Linux and Windows environments. The application will also be adopted for MAC platforms.
+\subsection{External Packages}
+The application is being implemented using Python2.5 and Qt4. All distributional statistics, and time series analysis and inference analysis are being performed by employing and integrating RPy2. RPy has provided an efficient and practical Python interface to the R Programming Language. More specifically, the software is implemented using Python 2.5 with the help of following packages:
+\begin{itemize}
+\item GUI: PyQt4.QtGui
+\item XML: PyQt4.QtXml
+\item Statistics: RPy 2
+\item DB: SqlLite
+\end{itemize}
+
+\subsection{Standalone Installation}
+The modular design approach of VisGUI allows it to be installed and used as a standalone application. This flexibility will allow the package to be later developed as an platform and economic model independent workspace which can be used to analyse and and visualize results of other computational economics platforms.
+
+\section{Summary}
+The section has presented a brief overview of VisGUI. The modular approach of the its implementation and its major design principles will provide us to further develop it and share it with computational economics community in the future.
+

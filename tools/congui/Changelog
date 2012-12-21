@@ -1,0 +1,273 @@
+------------------------------------------------------------------------
+r29 | vst | 2009-04-20 05:49:07 +0300 (Mon, 20 Apr 2009) | 1 line
+Changed paths:
+   D /tags/congui_v0.04
+
+tag removed. New tag is to replace
+------------------------------------------------------------------------
+r28 | vst | 2009-04-20 05:47:59 +0300 (Mon, 20 Apr 2009) | 1 line
+Changed paths:
+   A /trunk/images/diagram-old.png (from /trunk/images/diagram.png:26)
+   M /trunk/src/ConGUIMainWindow.cpp
+   M /trunk/src/ConGUISettingsDialog.cpp
+   M /trunk/ui/ConGUIMainWindow.ui
+   M /trunk/ui/ConGUISettingsDialog.ui
+
+XMME -> AgentGUI changed
+------------------------------------------------------------------------
+r27 | vst | 2009-04-20 05:35:17 +0300 (Mon, 20 Apr 2009) | 4 lines
+Changed paths:
+   M /trunk/Changelog
+
+- Changelog updated
+- Previous ci message was wrong. The correct version is:
+	"ConGUI tagged: version v0.04"
+
+------------------------------------------------------------------------
+r26 | vst | 2009-04-19 18:34:02 +0300 (Sun, 19 Apr 2009) | 4 lines
+Changed paths:
+   A /tags/congui_v0.04 (from /trunk:25)
+   M /tags/congui_v0.04/Changelog
+   M /trunk/Changelog
+
+ - ConGUI tagged: version v0.03
+ - Changelog updated
+
+
+------------------------------------------------------------------------
+r25 | vst | 2009-04-19 17:56:54 +0300 (Sun, 19 Apr 2009) | 1 line
+Changed paths:
+   M /trunk/src/ConGUIMainWindow.cpp
+
+ConGUI now feeds ExpGUI with command line arguments
+------------------------------------------------------------------------
+r24 | vst | 2009-04-17 16:06:07 +0300 (Fri, 17 Apr 2009) | 1 line
+Changed paths:
+   A /tags/congui_v0.03 (from /trunk:23)
+   M /tags/congui_v0.03/Changelog
+   M /trunk/Changelog
+
+ConGUI tagged: version v0.03
+------------------------------------------------------------------------
+r23 | vst | 2009-04-14 19:07:16 +0300 (Tue, 14 Apr 2009) | 1 line
+Changed paths:
+   M /trunk/congui.pro
+   A /trunk/congui.rc
+   A /trunk/images/euracelogo.ico
+
+ICON file and related settings added for Win32 platform
+------------------------------------------------------------------------
+r22 | mgencer | 2009-03-31 17:27:23 +0300 (Tue, 31 Mar 2009) | 1 line
+Changed paths:
+   M /trunk/mergedoc/EuraceGUI-UserManual.bib
+   M /trunk/mergedoc/EuraceGUI-UserManual.tex
+   M /trunk/mergedoc/popgui.tex
+
+mergedoc: completed introduction chapter
+------------------------------------------------------------------------
+r21 | mgencer | 2009-03-31 15:21:38 +0300 (Tue, 31 Mar 2009) | 1 line
+Changed paths:
+   A /trunk/mergedoc/EuraceGUI-UserManual.bib
+
+mergedoc: bibliography added
+------------------------------------------------------------------------
+r20 | mgencer | 2009-03-31 15:21:03 +0300 (Tue, 31 Mar 2009) | 1 line
+Changed paths:
+   M /trunk/mergedoc/EuraceGUI-UserManual.tex
+
+mergedoc: introduction modified
+------------------------------------------------------------------------
+r19 | vst | 2009-03-29 18:38:54 +0300 (Sun, 29 Mar 2009) | 1 line
+Changed paths:
+   A /tags/congui_v0.02 (from /trunk:17)
+   A /tags/congui_v0.02/Changelog (from /trunk/Changelog:18)
+
+congui tagged: v0.02
+------------------------------------------------------------------------
+r18 | vst | 2009-03-29 18:38:31 +0300 (Sun, 29 Mar 2009) | 1 line
+Changed paths:
+   A /trunk/Changelog
+
+changelog added
+------------------------------------------------------------------------
+r17 | vst | 2009-03-29 18:37:52 +0300 (Sun, 29 Mar 2009) | 1 line
+Changed paths:
+   D /trunk/mergedoc/EuraceGUI-UserManual.pdf
+   D /trunk/mergedoc/graphics/workflow.fig.bak
+
+cleanup
+------------------------------------------------------------------------
+r16 | vst | 2009-03-29 18:36:59 +0300 (Sun, 29 Mar 2009) | 1 line
+Changed paths:
+   M /trunk/src/globals.h
+
+minor version increased
+------------------------------------------------------------------------
+r15 | vst | 2009-03-29 18:35:58 +0300 (Sun, 29 Mar 2009) | 1 line
+Changed paths:
+   M /trunk/src/ConGUIMainWindow.cpp
+   M /trunk/src/ConGUISettingsDialog.cpp
+   M /trunk/ui/ConGUIMainWindow.ui
+   M /trunk/ui/ConGUISettingsDialog.ui
+   D /trunk/winsetup
+
+ExpGUI integration completed
+------------------------------------------------------------------------
+r14 | vst | 2009-03-29 17:59:21 +0300 (Sun, 29 Mar 2009) | 1 line
+Changed paths:
+   M /trunk/src/ConGUIMainWindow.cpp
+   M /trunk/src/ConGUIMainWindow.h
+   M /trunk/src/globals.h
+   M /trunk/ui/ConGUIMainWindow.ui
+
+missing ci
+------------------------------------------------------------------------
+r13 | mgencer | 2009-03-29 01:28:02 +0200 (Sun, 29 Mar 2009) | 1 line
+Changed paths:
+   M /trunk/mergedoc/EuraceGUI-UserManual.pdf
+   M /trunk/mergedoc/EuraceGUI-UserManual.tex
+   A /trunk/mergedoc/graphics
+   A /trunk/mergedoc/graphics/workflow.fig
+   A /trunk/mergedoc/graphics/workflow.fig.bak
+   A /trunk/mergedoc/graphics/workflow.jpg
+
+merged documentation: started overview section, prepared new workflow diagram to include expgui
+------------------------------------------------------------------------
+r12 | mgencer | 2009-03-29 00:44:29 +0200 (Sun, 29 Mar 2009) | 1 line
+Changed paths:
+   D /trunk/mergedoc/EuraceGUI-UserManual.aux
+   D /trunk/mergedoc/EuraceGUI-UserManual.log
+   D /trunk/mergedoc/EuraceGUI-UserManual.out
+   M /trunk/mergedoc/EuraceGUI-UserManual.pdf
+   M /trunk/mergedoc/EuraceGUI-UserManual.tex
+   D /trunk/mergedoc/EuraceGUI-UserManual.toc
+   M /trunk/mergedoc/popgui.tex
+
+merged documentation: introduction completed, document structure updated
+------------------------------------------------------------------------
+r11 | mgencer | 2009-03-28 17:45:45 +0200 (Sat, 28 Mar 2009) | 1 line
+Changed paths:
+   M /trunk/mergedoc/EuraceGUI-UserManual.aux
+   M /trunk/mergedoc/EuraceGUI-UserManual.log
+   M /trunk/mergedoc/EuraceGUI-UserManual.out
+   M /trunk/mergedoc/EuraceGUI-UserManual.pdf
+   M /trunk/mergedoc/EuraceGUI-UserManual.tex
+   M /trunk/mergedoc/EuraceGUI-UserManual.toc
+   A /trunk/mergedoc/expgui.tex
+   A /trunk/mergedoc/gxparser.tex
+   A /trunk/mergedoc/popgui.tex
+   A /trunk/mergedoc/screenshots
+   A /trunk/mergedoc/screenshots/memvars.jpg
+   A /trunk/mergedoc/screenshots/properties.jpg
+   A /trunk/mergedoc/screenshots/regions.jpg
+   A /trunk/mergedoc/visgui.tex
+   A /trunk/mergedoc/xmme.tex
+
+(1)created separate docs for visgui, popgui, etc. (2)added screenshots directory
+------------------------------------------------------------------------
+r10 | mgencer | 2009-03-28 17:36:22 +0200 (Sat, 28 Mar 2009) | 1 line
+Changed paths:
+   A /trunk/mergedoc
+   A /trunk/mergedoc/EuraceGUI-UserManual.aux
+   A /trunk/mergedoc/EuraceGUI-UserManual.log
+   A /trunk/mergedoc/EuraceGUI-UserManual.out
+   A /trunk/mergedoc/EuraceGUI-UserManual.pdf
+   A /trunk/mergedoc/EuraceGUI-UserManual.tex
+   A /trunk/mergedoc/EuraceGUI-UserManual.toc
+
+added merged documentation
+------------------------------------------------------------------------
+r9 | vst | 2008-11-27 13:32:08 +0200 (Thu, 27 Nov 2008) | 1 line
+Changed paths:
+   M /trunk/src/globals.h
+
+new version
+------------------------------------------------------------------------
+r8 | vst | 2008-11-27 13:03:02 +0200 (Thu, 27 Nov 2008) | 1 line
+Changed paths:
+   M /trunk/congui.pro
+   M /trunk/src/ConGUIMainWindow.cpp
+   A /trunk/src/ConsoleOutputViewer.cpp
+   A /trunk/src/ConsoleOutputViewer.h
+   A /trunk/ui/ConsoleOutputViewer.ui
+
+new prompts and dialogs added for simulation controller
+------------------------------------------------------------------------
+r7 | vst | 2008-10-13 18:47:22 +0300 (Mon, 13 Oct 2008) | 1 line
+Changed paths:
+   M /trunk/src/ConGUIMainWindow.cpp
+
+feeding visgui with a trailing slash
+------------------------------------------------------------------------
+r6 | vst | 2008-10-12 06:23:13 +0300 (Sun, 12 Oct 2008) | 1 line
+Changed paths:
+   M /trunk/src/ConGUIMainWindow.cpp
+
+properly waits for the simulation executable compilation
+------------------------------------------------------------------------
+r5 | vst | 2008-10-11 23:36:05 +0300 (Sat, 11 Oct 2008) | 1 line
+Changed paths:
+   M /trunk/congui.qrc
+   A /trunk/images/exit.png
+   A /trunk/images/fileopen.png
+   A /trunk/images/ok.png
+   M /trunk/src/ConGUIMainWindow.cpp
+   M /trunk/src/ConGUIMainWindow.h
+   M /trunk/ui/ConGUIMainWindow.ui
+
+icons and the way programs executed changed
+------------------------------------------------------------------------
+r4 | vst | 2008-10-10 21:31:15 +0300 (Fri, 10 Oct 2008) | 1 line
+Changed paths:
+   M /trunk/congui.pro
+   M /trunk/congui.qrc
+   A /trunk/images/euracelogo.png
+   M /trunk/src/ConGUIMainWindow.cpp
+   M /trunk/src/main.cpp
+
+
+------------------------------------------------------------------------
+r3 | vst | 2008-10-10 02:52:44 +0300 (Fri, 10 Oct 2008) | 1 line
+Changed paths:
+   M /trunk/src/ConGUIMainWindow.cpp
+   M /trunk/src/ConGUIMainWindow.h
+
+simulation and popgui integrated
+------------------------------------------------------------------------
+r2 | vst | 2008-10-03 03:37:53 +0300 (Fri, 03 Oct 2008) | 1 line
+Changed paths:
+   M /trunk/congui.pro
+   M /trunk/src/ConGUIMainWindow.cpp
+   M /trunk/src/ConGUIMainWindow.h
+   A /trunk/src/ConGUISettingsDialog.cpp
+   A /trunk/src/ConGUISettingsDialog.h
+   M /trunk/src/globals.h
+   M /trunk/ui/ConGUIMainWindow.ui
+   A /trunk/ui/ConGUISettingsDialog.ui
+
+implemented settings for executables, now running xmme and gxparser
+------------------------------------------------------------------------
+r1 | vst | 2008-10-02 04:16:43 +0300 (Thu, 02 Oct 2008) | 1 line
+Changed paths:
+   A /branches
+   A /tags
+   A /trunk
+   A /trunk/LICENSE
+   A /trunk/compilation
+   A /trunk/congui.pro
+   A /trunk/congui.qrc
+   A /trunk/headache.cfg
+   A /trunk/header.txt
+   A /trunk/images
+   A /trunk/images/diagram.png
+   A /trunk/src
+   A /trunk/src/ConGUIMainWindow.cpp
+   A /trunk/src/ConGUIMainWindow.h
+   A /trunk/src/globals.h
+   A /trunk/src/main.cpp
+   A /trunk/ui
+   A /trunk/ui/ConGUIMainWindow.ui
+   A /trunk/winsetup
+
+initial checkin
+------------------------------------------------------------------------

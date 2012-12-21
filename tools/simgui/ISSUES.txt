@@ -1,0 +1,135 @@
+#TYPE; REPORTED AT DATE; STATUS ; DESCRIPTION
+# TYPE CAN BE:
+#   IMPROVEMENT: improvement on the GUI
+#   FEATURE: a new feature
+#   BUG:
+
+#AWAITING ISSUES
+IMPROVEMENT;2008-06-29; Progress (mgencer 2008-06-29);  Change title of model summary window from "Population summary" to "model summary"(OK). Make the summary more usable?(Open)
+IMPROVEMENT; 2008-06-29; Open; Progress (mgencer 2008-06-29); Put the memvar syntax help into memvar screen as a button (OK). Add program help somehow (from UserManual?) Done but need better layout or something, once the userguide content is settled, for now it will display initformhelp when UserGuide.txt cannot be found.
+IMPROVEMENT; 2008-07-01; Open; Program will not check types when array initialization is used (i.e. it must check that list members have the correct type)
+IMPROVEMENT; 2008-07-03; Open; Request for a copy feature in regions dialog as well
+  Reported at 2008-08-02 : Convenience capability to export specifications as LaTeX tables for dissemination papers
+IMPROVEMENT; 2008-08-19; Put a cancel button to cancel population instantiation
+IMPROVEMENT; 2008-08-20; Implement multi stage initialization to create depended agents of all regions first, instead of creating all agents of a region before proceeding to another region. Necessary for global agent selection to work in a statistically proper way
+IMPROVEMENT; 2008-08-20; Must choose agents randomly, ie. should not check for suitability in the fixed order
+IMPROVEMENT; 2008-08-20; Error messages are too messy    
+############### URGENT #################1
+UNKNOWN; 2008-07-09; Open; There may be a problem with lowercase names?
+
+#SOLVED ISSUES
+BUG; 2008-06-20; Solved (mgencer 2008-06-19); the opening xml tag in the output file is wrong: </id>1</id>
+BUG; 2008-06-20; Solved (mgencer 2008-06-19); the input field does not allow me to type more than "choice([1,"
+IMPROVEMENT; 2008-06-18; Solved (mgencer 2008-06-20); Save population: append .pop automatically
+IMPROVEMENT; 2008-06-18; Solved (mgencer 2008-06-20); Save population re-saving an already saved pop file overwrites, instead of opening a dialog asking for a filename.
+IMPROVEMENT; 2008-06-18; Solved (mgencer 2008-06-20); In the save dialog: On bottom right it is indicated "Open". "Save" would seem more appropriate.
+IMPROVEMENT; 2008-06-18; Solved (mgencer 2008-06-20); In the save dialog: typing a filename without extension saves it without any extension, while it would seem more intuitive that the extension .xml is appended. If user types 0.xml then of course no append is needed.
+IMPROVEMENT; 2008-06-18; Solved (mgencer 2008-06-20); Open  population: has "untitled filter" on bottom right, should this have "show all files" and ".pop"?
+IMPROVEMENT; 2008-06-18; Solved (mgencer 2008-06-20); can the window have a fullscreen button?
+IMPROVEMENT; 2008-06-18; Solved (mgencer 2008-06-20); Region number starts from 0, is it a problem to start counting from region 1?
+IMPROVEMENT; 2008-06-19; Solved (mgencer 2008-06-20); In 3-Edit memory: the type is mentioned  twice (id int int)
+IMPROVEMENT; 2008-06-18; Solved (mgencer 2008-06-20); inputting an int for a variable that is a double output an int in the 0.xml as well. Perhaps cast it to a double?
+IMPROVEMENT; 2008-06-19; Solved (mgencer 2008-06-20); scrolling up and down with arrows works, both the panel does not scroll down automatically, the mouse focus just disappears from view.
+FEATURE; 2008-06-19; Solved (mgencer 2008-06-20); One needs to provide initform for the whole array (e.g. choice without replacement)
+FEATURE; 2008-06-19; Solved (mgencer 2008-06-20); Can we add: sequence(start:increment:end) that fills the elements of an array with successive values from the sequence?
+FEATURE; 2008-06-19; Solved (mgencer 2008-06-20); choice([v1,v2,...]). Does this do draws with replacement or without replacement?
+OTHER; 2008-06-24; Solved (mgencer 2008-06-24); In some models, arrays are entered wrong as using stock_array[2] for variable name, instead an array should be indicated using [2] in the type name (solution: accept either)
+IMPROVEMENT; 2008-06-25; Solved (mgencer 2008-06-25; Memvar edit dialog (andf other dialogs are not modal)
+IMPROVEMENT; 2008-06-25; Solved (mgencer 2008-06-25; Store which model.xml file is used when creating the population, and show on the properties screen.
+BUG; 2008-06-24; Solved (mgencer 2008-06-25; When an array size is described in terms of a model constant it is not rendered into a number in the output 0.xml (now constants can be used and edited in pogui
+IMPROVEMENT; 2008-06-24; Solved (mgencer 2008-06-26); With the new memory var editing screen, region copy feature is lost.
+IMPROVEMENT:2008-06-24; Solved (mgencer 2008-06-26); now agent/varnames can be sorted by clicking on the column
+IMPROVEMENT; 2008-06-28; Solved (mgencer 2008-06-28);tab skipping in memvars window lacks focus vscoll etc adjustment
+IMPROVEMENT; 2008-06-18; Solved (mgencer 2008-06-28); In the output 0.xml: the order of the memory variables is garbled, ie it is not the same as the order in the model.xml file.
+IMPROVEMENT; 2008-06-25; Solved (mgencer 2008-06-28); Allow changing model.xml for a population, and reuse memory variable values and other stuff ? (Currently only imports memvars!)
+IMPROVEMENT;2008-06-29; Solved (mgencer 2008-06-29); Fix the initial sorting of memory variables (perhaps the original memvarorder?)
+IMPROVEMENT;2008-06-29; Solved (mgencer 2008-06-29); Special vars were not showing up in the memvar screen
+BUG; 2008-06-24; Solved (mgencer 2008-07-01); When an environment data type has a field which is an array (E.g. Firm->Stock->returns[100]), program will not check id user entered list has the correct size or values -> tied up to list init clarification
+IMPROVEMENT; 2008-06-25; Solved (mgencer 2008-07-01); Nested structs->Now handled but list initializations have no clarification (See Sander's email)
+IMPROVEMENT; 2008-07-03; Solved (mgencer 2008-07-07); PRogress bar when creating large populations
+BUG; 2008-06-29; Solved (mgencer 2008-07-07); need to include constants in 0.xml output: <states>
+  <itno>0</itno>
+  <environment>
+  <constant_name>value</constant_name>
+  </environment>
+BUG; 2008-08-03; Solved (mgencer 2008-07-07); Regions dialog allows <0 entries
+BUG; 2008-07-09; Solved (mgencer 2008-07-16); Region ids in 0.xml starts from 0, it should start from 1
+IMPROVEMENT; 2008-07-09; Solved (mgencer 2008-07-16); Memory variable keyboard entry falls into search mode?
+IMPROVEMENT; 2008-07-09; Solved (mgencer 2008-07-16); When closing the GUI by closing the main window: same safety check.
+IMPROVEMENT; 2008-07-09; Solved (mgencer 2008-07-16); Import should import regions and constants as well
+IMPROVEMENT; 2008-07-09; Deferred; Quit commands should have "save", "save as" --> REJECT
+IMPROVEMENT; 2008-07-09; Solved (mgencer 2008-07-16); Spelling: "Modifications to current population is not saved." -> are
+IMPROVEMENT; 2008-07-09; Solved (mgencer 2008-07-16); Region copy dialog -> copy to all regions option needed
+IMPROVEMENT; 2008-07-09; Solved (mgencer 2008-07-16); Error message goes "lambda ...", should be "sequence ..."
+IMPROVEMENT; 2008-07-09; Solved (mgencer 2008-07-16); "Save population as" menu requested
+IMPROVEMENT; 2008-08-15;(mgencer 2008-08-15); Capability to refer to other variables in initialization forms
+ The key to solution is to keep a dictionary of initialized memvars in agents. Normally MemVar belongs to models' agents', not to AgentInstance, but
+ initialization is a function of AgentInstance. 
+ This was the original difference of 'validate' and 'instantiate': validate is called as per MemVar, 'instantiate' is triggered by AgentInstance
+ Therefore for validation the new 'this.getVar()' function will (1)check if the referenced var exists at Agent,(2)whether  there are cyclic references, (3)return an instance,
+    and it will return separate exceptions for three steps
+  on the other hand for instantiation check step must check if an instance is registered at AgentInstance
+  so for the system to work Agent objects must be able to check cyclic references and make an ordering of instantiations. Thus where AgentInstance keeps instantiated values of toplevel memvars, Agent keeps a mapping of which memvar depends on which others and necessary methods to check cyclicity. This checking must be implemented for Agent instances of a model when validating and prior to instantiation.
+  another difficulty is that memvar instantiation is recursive! The solution is to allow only referencing top level memvars, but allow access to their content as a dictionary, such as by defining a __getitem(i)__ method to allow X[i] access. In this case cyclicity check reduces to top level only
+    PLAN SUMMARY:
+      Create a MemVarRegistry class, whose instances will be put into the global variable named 'this' by Agent or AgentInstance 
+      'getVar()' becomes a MemVarRegistry method, if var is not found a newly created 'PoplibDependencyException' is thrown and dependency and ordering data in the class is updated accordingly
+      Agent instance must have a method which makes several iterations to detect and resolve dependencies, or report cases of cyclic dependency, other validation errors will prevent completion of this! 
+      AgentInstance ensures that the above step is done (put a  flag or something in Agent), and instantiates memvars in some order, not in random order as it does now
+    IMPLEMENTATION SUMMARY:
+      Defined PoplibDependencyException, PoplibInvalidDependencyException class
+      Defined MemVarRegistry class
+      Defined DummyMemVar class
+      Agent:
+        getMemVarRegistry() method
+        validateReferenceDependencies()
+      MemVar:
+        getCandidates()
+        setCandidate(field,val)
+        validateCandidates()
+      Global:
+        set global variable 'this' to none at module load
+      PopGUI:
+        changed validate method of memvardialog to use Agent's validaeReferenceDependencies() method
+STATUS!!!:
+    Validate works now, using DummyMemVars
+    Now do this:
+      (0) Check if second or more level of recursion is done in dependency validation, how?? (NO IT DOESN'T. sandermodel.xml has an example of deep levels FIXED)
+      (1) in Population, before creating agents, make sure each Agent of each Region does validateReferenceDependencies() using saved initforms(not candidates)
+      (2) Agent can return an ordering of memvars for initialization
+      (3) AgentInstance sets 'this' for instantiation
+MORE IMPLEMENTATION:
+      Agent:
+        getVarInitOrder()
+      Population:
+        processsMemVarDependencies() -> calls all Agent's validateReferenceDependencies() and getVarInitOrder()
+
+IMPROVEMENT; 2008-08-19;mgencer; Capability to refer to other agents
+    Proposed sytax is getAgent(agentname, conditions[cond1,...],definitions=...) where definitions is a list of python statements (eg containing lambda functions) or a string containing a python file to be executed prior to conditions (e.g. containing function definitions)
+    When succeeds, it returns memvarregistry of the chosen agent. 
+
+    IMPLEMENTATION:
+       Agent now knows its model, Region now knows its parentpop, AgentInstance knows its region, MemVarRegistry knows its agentinstance (but for dependency checking it is none), Region has an agentinitorder varable, thus increased verion of population (Note backward incompatibility)
+       MemVarRegistry.getAgent(), and getAgentVar()
+       Created ORderedDict class to substitute memvar storage for structs, to remember key order
+       Added exclusivelytaken attribute to AgentInstance
+       Region -> processAgentDependencies() : stores agentinitorder
+BUG; 2008-08-15; Solved (mgencer 2008 -08-19; When instantiation fails at some point, progress bar msut be removed from display
+IMPROVEMENT; 2008-08-19;mgencer; Moore Neighbourhood implementation
+IMPROvEMENT; 2008-08-21; added main window title
+BUG; 2008-08-20;Open ; !!!!!!!!!!!! IMPORTANT !!!!!!!!!!!!!!!!!!!
+  getAgentGlobal() should actuallt set dependence for agents of all regions!! This also is linked to implemenation of bias problem: instantiate same agents of all regions, not all agents of same region.
+
+################################   ROLLUP 2008-08-21  ####################################################
+ISSUES:
+  Reported at 2008-06-29 :  Make the summary more usable
+  Reported at 2008-06-29 : Need better layout for program help
+  Reported at 2008-07-01 : Program does not check types when array initialization is used (i.e. it must check that list members have the correct type)
+  Reported at 2008-07-03 : for a copy feature in regions dialog as well
+  (done 2008-08-21) Reported at 2008-08-20 : URGENT getAgentGlobal() should actuallt set dependence for agents of all regions!! This also is linked to implemenation of bias problem: instantiate same agents of all regions, not all agents of same region.
+  Reported at 2008-08-02 : Convenience capability to export specifications as LaTeX tables for dissemination papers
+  (done 2008-08-21) Reported at 2008-08-19 : Put a cancel button to cancel population instantiation
+  (done 2008-08-21) Reported at 2008-08-20 : Implement multi stage initialization to create depended agents of all regions first, instead of creating all agents of a region before proceeding to another region. Necessary for global agent selection to work in a statistically proper way
+  (done 2008-08-21) Reported at 2008-08-20 : Must choose agents randomly, ie. should not check for suitability in the fixed order
+  (done 2008-08-21) Reported at 2008-08-20 : Error messages are too messy and cryptic. Must be cleaned up.
+

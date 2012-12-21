@@ -1,0 +1,581 @@
+------------------------------------------------------------------------
+r53 | vst | 2009-04-20 05:56:30 +0300 (Mon, 20 Apr 2009) | 1 line
+Changed paths:
+   M /trunk/src/XMMEMainWindow.cpp
+   M /trunk/src/main.cpp
+   M /trunk/ui/XMMEMainWindow.ui
+   M /trunk/xmme.pro
+
+XMME -> AgentGUI changed
+------------------------------------------------------------------------
+r52 | vst | 2009-04-17 15:40:02 +0300 (Fri, 17 Apr 2009) | 1 line
+Changed paths:
+   A /tags/xmme_v0.02 (from /trunk:51)
+
+XMME tagged: version v0.02
+------------------------------------------------------------------------
+r51 | vst | 2009-04-17 15:39:30 +0300 (Fri, 17 Apr 2009) | 1 line
+Changed paths:
+   M /trunk/Changelog
+
+Changelog updated
+------------------------------------------------------------------------
+r50 | vst | 2009-04-17 15:39:00 +0300 (Fri, 17 Apr 2009) | 4 lines
+Changed paths:
+   M /trunk/Changelog
+   D /trunk/TODO.org
+   M /trunk/src/globals.h
+
+ - version upgraded
+ - Changelog updated
+ - unnecessary file TODO.org removed
+
+------------------------------------------------------------------------
+r49 | vst | 2009-04-16 18:29:06 +0300 (Thu, 16 Apr 2009) | 5 lines
+Changed paths:
+   M /trunk/src/XMMEMainWindow.cpp
+   M /trunk/src/XWidgetEditModel.h
+   M /trunk/ui/XWidgetEditModel.ui
+
+ - Model editing widget now does not allow manual editing of file paths
+ - Select button is disabled
+ - New models can now be saved
+ - "File->Open" can now cancel
+
+------------------------------------------------------------------------
+r48 | vst | 2009-04-14 19:07:37 +0300 (Tue, 14 Apr 2009) | 1 line
+Changed paths:
+   M /trunk/xmme.pro
+   A /trunk/xmme.rc
+
+ICON file and related settings added for Win32 platform
+------------------------------------------------------------------------
+r47 | vst | 2009-03-29 16:34:06 +0300 (Sun, 29 Mar 2009) | 1 line
+Changed paths:
+   A /tags/xmme_v0.01 (from /trunk:46)
+
+xmme tagged: v0.01
+------------------------------------------------------------------------
+r46 | vst | 2009-03-29 16:33:41 +0300 (Sun, 29 Mar 2009) | 1 line
+Changed paths:
+   M /trunk/Changelog
+
+Changelog updated
+------------------------------------------------------------------------
+r45 | vst | 2009-03-29 16:32:34 +0300 (Sun, 29 Mar 2009) | 1 line
+Changed paths:
+   D /trunk/winsetup
+
+unnecessary files removed
+------------------------------------------------------------------------
+r44 | vst | 2009-03-29 16:29:45 +0300 (Sun, 29 Mar 2009) | 1 line
+Changed paths:
+   A /trunk/Changelog
+
+Changelog added
+------------------------------------------------------------------------
+r43 | vst | 2008-11-27 13:32:53 +0200 (Thu, 27 Nov 2008) | 2 lines
+Changed paths:
+   M /trunk/src/globals.h
+   M /trunk/xmme.pro
+
+ - Win32 qsci path corrected
+ - new version
+------------------------------------------------------------------------
+r42 | vst | 2008-11-27 13:02:32 +0200 (Thu, 27 Nov 2008) | 1 line
+Changed paths:
+   M /trunk/src/XWidgetEditFunction.h
+   M /trunk/ui/XWidgetEditFunction.ui
+   M /trunk/xmme.pro
+
+Qsci added for LaTeX editing
+------------------------------------------------------------------------
+r41 | vst | 2008-11-25 21:17:51 +0200 (Tue, 25 Nov 2008) | 1 line
+Changed paths:
+   M /trunk/src/globals.h
+
+version changed
+------------------------------------------------------------------------
+r40 | vst | 2008-11-25 13:26:15 +0200 (Tue, 25 Nov 2008) | 1 line
+Changed paths:
+   M /trunk/src/XMMEMainWindow.cpp
+   M /trunk/src/XMMEMainWindow.h
+   M /trunk/src/XModelTree.cpp
+   M /trunk/src/XModelView.cpp
+   M /trunk/src/XWidgetEditFunctionInMessages.h
+   M /trunk/src/XWidgetEditFunctionOutMessages.h
+   A /trunk/src/XWidgetEditIOMessage.h
+   M /trunk/src/main.cpp
+   A /trunk/ui/XWidgetEditIOMessage.ui
+   M /trunk/xmme.pro
+
+function input filters dialog implemented, some labels changed and program now prompts on close
+------------------------------------------------------------------------
+r39 | vst | 2008-11-17 00:36:40 +0200 (Mon, 17 Nov 2008) | 1 line
+Changed paths:
+   M /trunk/src/XMMEMainWindow.cpp
+   M /trunk/src/XMMEMainWindow.h
+   M /trunk/src/XModelView.cpp
+   A /trunk/src/XWidgetEditFunctionInMessages.h
+   A /trunk/src/XWidgetEditFunctionOutMessages.h
+   M /trunk/ui/XMMEMainWindow.ui
+   A /trunk/ui/XWidgetEditFunctionInMessages.ui
+   A /trunk/ui/XWidgetEditFunctionOutMessages.ui
+   M /trunk/xmme.pro
+   M /trunk/xmme.qrc
+
+icons added and functions' in/out message dialogs implemented
+------------------------------------------------------------------------
+r38 | vst | 2008-11-14 19:53:29 +0200 (Fri, 14 Nov 2008) | 1 line
+Changed paths:
+   M /trunk/src/XModelView.h
+   M /trunk/xmme.pro
+
+compilation error fixed
+------------------------------------------------------------------------
+r37 | vst | 2008-11-14 19:49:07 +0200 (Fri, 14 Nov 2008) | 2 lines
+Changed paths:
+   M /trunk/xmme.pro
+
+libxmm2 path changed
+
+------------------------------------------------------------------------
+r36 | vst | 2008-10-10 21:32:45 +0300 (Fri, 10 Oct 2008) | 1 line
+Changed paths:
+   A /trunk/winsetup/eurace_review_II_v0.01.iss
+   A /trunk/winsetup/eurace_review_II_v0.02.iss
+
+
+------------------------------------------------------------------------
+r35 | vst | 2008-10-10 21:32:05 +0300 (Fri, 10 Oct 2008) | 1 line
+Changed paths:
+   M /trunk/images/euracelogo.ico
+   M /trunk/src/main.cpp
+   M /trunk/ui/XMMEMainWindow.ui
+   M /trunk/xmme.pro
+   M /trunk/xmme.qrc
+
+
+------------------------------------------------------------------------
+r34 | vst | 2008-10-10 14:36:00 +0300 (Fri, 10 Oct 2008) | 1 line
+Changed paths:
+   A /trunk/images/euracelogo-orig.png (from /trunk/images/euracelogo.png:32)
+   M /trunk/images/euracelogo.ico
+   M /trunk/images/euracelogo.png
+
+n
+------------------------------------------------------------------------
+r33 | vst | 2008-10-10 14:33:20 +0300 (Fri, 10 Oct 2008) | 1 line
+Changed paths:
+   M /trunk/images/euracelogo.ico
+
+size corrected
+------------------------------------------------------------------------
+r32 | vst | 2008-10-10 13:52:01 +0300 (Fri, 10 Oct 2008) | 1 line
+Changed paths:
+   A /trunk/images/euracelogo.ico
+   A /trunk/images/euracelogo.png
+
+euracelogo added
+------------------------------------------------------------------------
+r31 | vst | 2008-10-03 03:37:02 +0300 (Fri, 03 Oct 2008) | 1 line
+Changed paths:
+   M /trunk/TODO.org
+   M /trunk/src/XMMEMainWindow.cpp
+   M /trunk/src/XMMEMainWindow.h
+   M /trunk/src/XModelView.cpp
+   M /trunk/src/main.cpp
+   M /trunk/ui/XMMEMainWindow.ui
+
+some todos done
+------------------------------------------------------------------------
+r30 | vst | 2008-10-03 00:57:50 +0300 (Fri, 03 Oct 2008) | 1 line
+Changed paths:
+   M /trunk/TODO.org
+   M /trunk/src/XMMEMainWindow.cpp
+   M /trunk/src/globals.h
+   M /trunk/src/main.cpp
+
+some todos done
+------------------------------------------------------------------------
+r29 | vst | 2008-10-03 00:34:01 +0300 (Fri, 03 Oct 2008) | 1 line
+Changed paths:
+   M /trunk/TODO.org
+
+new todos
+------------------------------------------------------------------------
+r28 | vst | 2008-09-25 03:00:31 +0300 (Thu, 25 Sep 2008) | 1 line
+Changed paths:
+   A /trunk/TODO.org
+   M /trunk/src/XMMEMainWindow.cpp
+   M /trunk/src/XMMEMainWindow.h
+   M /trunk/src/XModelTree.cpp
+   M /trunk/src/XModelView.cpp
+   A /trunk/src/XWidgetEditDataType.h
+   M /trunk/src/XWidgetEditFunction.h
+   M /trunk/src/XWidgetEditModel.h
+   M /trunk/src/main.cpp
+   M /trunk/ui/XMMEMainWindow.ui
+   A /trunk/ui/XWidgetEditDataType.ui
+   M /trunk/ui/XWidgetEditFunction.ui
+   M /trunk/ui/XWidgetEditModel.ui
+   M /trunk/xmme.pro
+
+missing tags now integrated into the gui, file paths corrected
+------------------------------------------------------------------------
+r27 | vst | 2008-07-24 21:49:38 +0300 (Thu, 24 Jul 2008) | 1 line
+Changed paths:
+   M /trunk/compilation
+
+compilation files ignored
+------------------------------------------------------------------------
+r26 | vst | 2008-07-24 21:48:42 +0300 (Thu, 24 Jul 2008) | 1 line
+Changed paths:
+   M /trunk/compilation
+
+compilation files ignored
+------------------------------------------------------------------------
+r25 | vst | 2008-07-24 21:48:29 +0300 (Thu, 24 Jul 2008) | 1 line
+Changed paths:
+   M /trunk/compilation
+
+compilation files ignored
+------------------------------------------------------------------------
+r24 | vst | 2008-07-24 21:48:17 +0300 (Thu, 24 Jul 2008) | 1 line
+Changed paths:
+   M /trunk/compilation
+
+compilation files ignored
+------------------------------------------------------------------------
+r23 | vst | 2008-07-24 21:46:43 +0300 (Thu, 24 Jul 2008) | 1 line
+Changed paths:
+   M /trunk/compilation
+
+compilation files ignored
+------------------------------------------------------------------------
+r22 | vst | 2008-07-24 21:43:34 +0300 (Thu, 24 Jul 2008) | 1 line
+Changed paths:
+   M /trunk
+
+makefiles ignored
+------------------------------------------------------------------------
+r21 | vst | 2008-07-24 21:43:12 +0300 (Thu, 24 Jul 2008) | 1 line
+Changed paths:
+   M /trunk
+   M /trunk/compilation
+
+compilation directory ignored
+------------------------------------------------------------------------
+r20 | vst | 2008-07-24 21:42:08 +0300 (Thu, 24 Jul 2008) | 1 line
+Changed paths:
+   M /trunk/compilation
+
+compilation directory ignored
+------------------------------------------------------------------------
+r19 | vst | 2008-07-24 21:41:39 +0300 (Thu, 24 Jul 2008) | 1 line
+Changed paths:
+   M /trunk
+   M /trunk/compilation
+
+compilation directory ignored
+------------------------------------------------------------------------
+r18 | vst | 2008-07-24 21:14:29 +0300 (Thu, 24 Jul 2008) | 1 line
+Changed paths:
+   M /trunk/src/XModelTree.cpp
+   M /trunk/src/XModelView.cpp
+   M /trunk/src/XModelView.h
+
+context menu added
+------------------------------------------------------------------------
+r17 | vst | 2008-07-24 20:06:18 +0300 (Thu, 24 Jul 2008) | 1 line
+Changed paths:
+   M /trunk/src/globals.h
+
+revision id information seperated
+------------------------------------------------------------------------
+r16 | vst | 2008-07-24 20:03:57 +0300 (Thu, 24 Jul 2008) | 1 line
+Changed paths:
+   M /trunk/src/globals.h
+
+revision tests
+------------------------------------------------------------------------
+r15 | vst | 2008-07-24 20:03:13 +0300 (Thu, 24 Jul 2008) | 1 line
+Changed paths:
+   M /trunk/src/globals.h
+
+revision tests
+------------------------------------------------------------------------
+r14 | vst | 2008-07-24 20:02:38 +0300 (Thu, 24 Jul 2008) | 1 line
+Changed paths:
+   M /trunk/src/globals.h
+
+revision tests
+------------------------------------------------------------------------
+r13 | vst | 2008-07-24 20:02:07 +0300 (Thu, 24 Jul 2008) | 1 line
+Changed paths:
+   M /trunk/src/globals.h
+
+revision test
+------------------------------------------------------------------------
+r12 | vst | 2008-07-24 19:59:53 +0300 (Thu, 24 Jul 2008) | 1 line
+Changed paths:
+   M /trunk/headache.cfg
+   M /trunk/src/XMMEMainWindow.cpp
+   M /trunk/src/XMMEMainWindow.h
+   M /trunk/src/XModelTree.cpp
+   M /trunk/src/XModelTree.h
+   M /trunk/src/XModelView.cpp
+   M /trunk/src/XModelView.h
+   M /trunk/src/XWidgetEditAgent.h
+   M /trunk/src/XWidgetEditFile.h
+   M /trunk/src/XWidgetEditFunction.h
+   M /trunk/src/XWidgetEditMessage.h
+   M /trunk/src/XWidgetEditModel.h
+   M /trunk/src/XWidgetEditTimeUnit.h
+   M /trunk/src/XWidgetEditVariable.h
+   M /trunk/src/globals.h
+   M /trunk/src/main.cpp
+
+headers added
+------------------------------------------------------------------------
+r11 | vst | 2008-07-24 19:47:44 +0300 (Thu, 24 Jul 2008) | 1 line
+Changed paths:
+   M /trunk/src/XMMEMainWindow.cpp
+   M /trunk/src/XMMEMainWindow.h
+   M /trunk/src/XModelView.cpp
+   A /trunk/src/XWidgetEditAgent.h
+   A /trunk/src/XWidgetEditFile.h
+   A /trunk/src/XWidgetEditFunction.h
+   A /trunk/src/XWidgetEditMessage.h
+   A /trunk/src/XWidgetEditTimeUnit.h
+   A /trunk/src/XWidgetEditVariable.h
+   M /trunk/ui/XMMEMainWindow.ui
+   A /trunk/ui/XWidgetEditAgent.ui
+   A /trunk/ui/XWidgetEditFile.ui
+   A /trunk/ui/XWidgetEditFunction.ui
+   A /trunk/ui/XWidgetEditMessage.ui
+   M /trunk/ui/XWidgetEditModel.ui
+   A /trunk/ui/XWidgetEditTimeUnit.ui
+   A /trunk/ui/XWidgetEditVariable.ui
+   M /trunk/xmme.pro
+
+edit widgets for particular nodes added.
+------------------------------------------------------------------------
+r10 | vst | 2008-07-23 21:53:59 +0300 (Wed, 23 Jul 2008) | 1 line
+Changed paths:
+   M /trunk/src/XMMEMainWindow.cpp
+   M /trunk/src/XMMEMainWindow.h
+   M /trunk/src/XModelTree.cpp
+   M /trunk/src/XModelView.cpp
+   M /trunk/src/XModelView.h
+   A /trunk/src/XWidgetEditModel.h
+   M /trunk/ui/XMMEMainWindow.ui
+   A /trunk/ui/XWidgetEditModel.ui
+   M /trunk/xmme.pro
+
+XModel information can be edited
+------------------------------------------------------------------------
+r9 | vst | 2008-07-23 19:06:38 +0300 (Wed, 23 Jul 2008) | 1 line
+Changed paths:
+   M /trunk/images/function.png
+   A /trunk/images/functionFile.png
+   M /trunk/src/XMMEMainWindow.cpp
+   M /trunk/src/XModelTree.cpp
+   M /trunk/src/XModelTree.h
+   M /trunk/src/XModelView.cpp
+   M /trunk/src/main.cpp
+   M /trunk/xmme.qrc
+
+one step ahead
+------------------------------------------------------------------------
+r8 | vst | 2008-07-22 16:18:53 +0300 (Tue, 22 Jul 2008) | 1 line
+Changed paths:
+   M /trunk/xmme.pro
+
+win32 and unix linking seperated
+------------------------------------------------------------------------
+r7 | vst | 2008-07-22 16:15:30 +0300 (Tue, 22 Jul 2008) | 1 line
+Changed paths:
+   A /trunk/winsetup
+   A /trunk/winsetup/winsetup_v1.9.0.iss
+   A /trunk/winsetup/xmme_v1.9.0.exe
+   M /trunk/xmme.pro
+
+first compilation for windows for the upcoming XMME2 series.
+------------------------------------------------------------------------
+r6 | vst | 2008-07-22 15:53:47 +0300 (Tue, 22 Jul 2008) | 1 line
+Changed paths:
+   M /trunk/xmme.pro
+
+conflict resolved
+------------------------------------------------------------------------
+r5 | vst | 2008-07-22 15:50:37 +0300 (Tue, 22 Jul 2008) | 1 line
+Changed paths:
+   D /trunk/Makefile
+
+no need for the Makefile
+------------------------------------------------------------------------
+r4 | vst | 2008-07-22 15:50:17 +0300 (Tue, 22 Jul 2008) | 1 line
+Changed paths:
+   M /trunk/Makefile
+   M /trunk/src/XModelTree.cpp
+   M /trunk/xmme.pro
+
+compilation error for win32 fixed
+------------------------------------------------------------------------
+r3 | vst | 2008-07-22 14:54:26 +0300 (Tue, 22 Jul 2008) | 1 line
+Changed paths:
+   A /trunk/images/stock_mail-druid-accountmake.png
+   M /trunk/src/XMMEMainWindow.cpp
+   M /trunk/src/XMMEMainWindow.h
+   M /trunk/src/main.cpp
+
+now prompting for the file
+------------------------------------------------------------------------
+r2 | vst | 2008-07-22 14:23:22 +0300 (Tue, 22 Jul 2008) | 1 line
+Changed paths:
+   A /trunk/LICENSE
+   A /trunk/Makefile
+   A /trunk/compilation
+   A /trunk/headache.cfg
+   A /trunk/header.txt
+   A /trunk/images
+   A /trunk/images/address-book-new.png
+   A /trunk/images/application-exit.png
+   A /trunk/images/appointment-new.png
+   A /trunk/images/bookmark-new.png
+   A /trunk/images/contact-new.png
+   A /trunk/images/document-new.png
+   A /trunk/images/document-open-recent.png
+   A /trunk/images/document-open.png
+   A /trunk/images/document-page-setup.png
+   A /trunk/images/document-print-preview.png
+   A /trunk/images/document-print.png
+   A /trunk/images/document-properties.png
+   A /trunk/images/document-revert.png
+   A /trunk/images/document-save-as.png
+   A /trunk/images/document-save.png
+   A /trunk/images/document-send.png
+   A /trunk/images/edit-clear.png
+   A /trunk/images/edit-copy.png
+   A /trunk/images/edit-cut.png
+   A /trunk/images/edit-delete.png
+   A /trunk/images/edit-find-replace.png
+   A /trunk/images/edit-find.png
+   A /trunk/images/edit-paste.png
+   A /trunk/images/edit-redo.png
+   A /trunk/images/edit-select-all.png
+   A /trunk/images/edit-undo.png
+   A /trunk/images/emblem-OK.png
+   A /trunk/images/emblem-certified.png
+   A /trunk/images/emblem-people.png
+   A /trunk/images/emblem-trash.png
+   A /trunk/images/folder-new.png
+   A /trunk/images/format-indent-less.png
+   A /trunk/images/format-indent-more.png
+   A /trunk/images/format-justify-center.png
+   A /trunk/images/format-justify-fill.png
+   A /trunk/images/format-justify-left.png
+   A /trunk/images/format-justify-right.png
+   A /trunk/images/format-text-bold.png
+   A /trunk/images/format-text-direction-ltr.png
+   A /trunk/images/format-text-direction-rtl.png
+   A /trunk/images/format-text-italic.png
+   A /trunk/images/format-text-strikethrough.png
+   A /trunk/images/format-text-underline.png
+   A /trunk/images/function.png
+   A /trunk/images/gnome-searchtool-animation-rest.png
+   A /trunk/images/gnome-searchtool-animation.png
+   A /trunk/images/go-bottom.png
+   A /trunk/images/go-down.png
+   A /trunk/images/go-first.png
+   A /trunk/images/go-home.png
+   A /trunk/images/go-jump.png
+   A /trunk/images/go-last.png
+   A /trunk/images/go-next.png
+   A /trunk/images/go-previous.png
+   A /trunk/images/go-top.png
+   A /trunk/images/go-up.png
+   A /trunk/images/help-about.png
+   A /trunk/images/help-browser.png
+   A /trunk/images/help-contents.png
+   A /trunk/images/help-faq.png
+   A /trunk/images/im.png
+   A /trunk/images/insert-image.png
+   A /trunk/images/insert-link.png
+   A /trunk/images/insert-object.png
+   A /trunk/images/insert-text.png
+   A /trunk/images/list-add.png
+   A /trunk/images/list-remove.png
+   A /trunk/images/mail-forward.png
+   A /trunk/images/mail-mark-important.png
+   A /trunk/images/mail-mark-read.png
+   A /trunk/images/mail-mark-unread.png
+   A /trunk/images/mail-message-new.png
+   A /trunk/images/mail-reply-all.png
+   A /trunk/images/mail-reply-sender.png
+   A /trunk/images/mail-send-receive.png
+   A /trunk/images/mail-send.png
+   A /trunk/images/media-eject.png
+   A /trunk/images/media-playback-pause.png
+   A /trunk/images/media-playback-start.png
+   A /trunk/images/media-playback-stop.png
+   A /trunk/images/media-record.png
+   A /trunk/images/media-seek-backward.png
+   A /trunk/images/media-seek-forward.png
+   A /trunk/images/media-skip-backward.png
+   A /trunk/images/media-skip-forward.png
+   A /trunk/images/object-flip-horizontal.png
+   A /trunk/images/object-flip-vertical.png
+   A /trunk/images/object-rotate-left.png
+   A /trunk/images/object-rotate-right.png
+   A /trunk/images/process-stop.png
+   A /trunk/images/stock_briefcase.png
+   A /trunk/images/stock_edit.png
+   A /trunk/images/stock_mail-druid-account.png
+   A /trunk/images/stock_mail-open.png
+   A /trunk/images/stock_mail.png
+   A /trunk/images/stock_new-labels.png
+   A /trunk/images/stock_unknown.png
+   A /trunk/images/system-lock-screen.png
+   A /trunk/images/system-log-out.png
+   A /trunk/images/system-run.png
+   A /trunk/images/system-search.png
+   A /trunk/images/tools-check-spelling.png
+   A /trunk/images/view-fullscreen.png
+   A /trunk/images/view-refresh.png
+   A /trunk/images/view-restore.png
+   A /trunk/images/view-sort-ascending.png
+   A /trunk/images/view-sort-descending.png
+   A /trunk/images/window-close.png
+   A /trunk/images/window-new.png
+   A /trunk/images/xmme.ico
+   A /trunk/images/xmme.png
+   A /trunk/images/zoom-fit-best.png
+   A /trunk/images/zoom-in.png
+   A /trunk/images/zoom-original.png
+   A /trunk/images/zoom-out.png
+   A /trunk/src
+   A /trunk/src/XMMEMainWindow.cpp
+   A /trunk/src/XMMEMainWindow.h
+   A /trunk/src/XModelTree.cpp
+   A /trunk/src/XModelTree.h
+   A /trunk/src/XModelView.cpp
+   A /trunk/src/XModelView.h
+   A /trunk/src/globals.h
+   A /trunk/src/main.cpp
+   A /trunk/ui
+   A /trunk/ui/XMMEMainWindow.ui
+   A /trunk/xmme.pro
+   A /trunk/xmme.qrc
+
+initial checkin
+------------------------------------------------------------------------
+r1 | vst | 2007-11-12 11:32:45 +0200 (Mon, 12 Nov 2007) | 1 line
+Changed paths:
+   A /branches
+   A /tags
+   A /trunk
+
+repository layout added
+------------------------------------------------------------------------
