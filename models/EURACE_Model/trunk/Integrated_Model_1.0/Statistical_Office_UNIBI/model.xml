@@ -2124,7 +2124,7 @@
     <variable>
      <type>double</type>
      <name>survival_rate[60]</name>
-     <description>Firm survival rates in 60 age bins: Definition "The survival rate after 1 year is the percentage of all enterprise births of year n which are still active in year n+1." We only measure the 1-month survival rate: the percentage of firms age 0-59 months that are still active in the next month, thus having age 1-60 months.</description>
+     <description>Firm survival rates in 60 age bins: Definition 'The survival rate after 1 year is the percentage of all enterprise births of year n which are still active in year n+1.' We only measure the 1-month survival rate: the percentage of firms age 0-59 months that are still active in the next month, thus having age 1-60 months.</description>
     </variable>
     <variable>
      <type>double</type>
