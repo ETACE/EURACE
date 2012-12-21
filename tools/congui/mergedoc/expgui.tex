@@ -1,0 +1,20 @@
+The experiment manager module is highly coupled with policy analysis module. Policy experiments require comparison of outcomes of alternative simulations, where the compared cases correspond to co-variation of several parameters among their corresponding ranges. ExpGUI facilitates creation of a series of simulation tasks via a GUI, thus reducing errors in creation of policy experiments.
+
+\begin{figure}[h]
+  \centering
+\screenshot{expgui}
+  \caption{Experiment Manager}
+  \label{figure:expgui}
+\end{figure}
+
+ExpGUI inherits an initial population file from PopGUI. It principally facilitates designer to run the designed model for desired number of iterations within a policy experimentation. Policy maker is able to test the designed model on following conditions:
+\begin{itemize}
+\item sensitivity to policy parameters
+\item sensitivity to initial population
+\item sensitivity to stochastic process through out iterations.
+\end{itemize}
+
+Figure~\ref{figure:expgui} is a snapshot of the experimet manager under Windows.
+ 
+
+

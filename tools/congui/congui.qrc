@@ -1,0 +1,17 @@
+<RCC>
+    <qresource prefix="/bg" >
+        <file>images/diagram.png</file>
+    </qresource>
+    <qresource prefix="/icons" >
+        <file>images/euracelogo.png</file>
+    </qresource>
+    <qresource prefix="/icons" >
+        <file>images/exit.png</file>
+    </qresource>
+    <qresource prefix="/icons" >
+        <file>images/fileopen.png</file>
+    </qresource>
+    <qresource prefix="/icons" >
+        <file>images/ok.png</file>
+    </qresource>
+</RCC>

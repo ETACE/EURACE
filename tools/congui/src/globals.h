@@ -1,0 +1,8 @@
+#define ORGANIZATION "EURACE"
+#define ORGANIZATION_DOMAIN "eurace.org"
+#define SOFTWARE_NAME "ConGUI"
+
+#define VERSION_MAJOR 0
+#define VERSION_MINOR 02
+#define VERSION_BUILD 0
+
